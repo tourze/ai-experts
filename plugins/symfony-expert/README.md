@@ -1,0 +1,30 @@
+# symfony-expert
+
+Symfony 框架专家插件，覆盖 Doctrine ORM、Twig 模板、Messenger 异步消息、Voters 授权和 UX 前端栈。
+
+## Skills
+
+| Skill | 用途 |
+|-------|------|
+| `symfony-ux` | Symfony UX 前端栈决策树（Stimulus/Turbo/React/Vue） |
+| `symfony-messenger` | Messenger 异步工作流（幂等/重试/运维） |
+| `symfony-voters` | 授权与验证边界（Voter 模式） |
+| `doctrine-batch-processing` | Doctrine ORM 批处理与 schema 迁移 |
+| `twig-components` | Twig 模板组件开发 |
+
+## Hooks
+
+| 事件 | Hook | 作用 |
+|------|------|------|
+| PostToolUse Edit\|Write | `syntax-doctrine-entity` | Doctrine Entity 映射校验 |
+| PostToolUse Edit\|Write | `syntax-twig` | Twig 模板语法校验（lint:twig / twigcs） |
+| PostToolUse Edit\|Write | `encoding-guard` | Twig 文件编码检查 |
+| PreToolUse Edit\|Write | `protected-paths` | symfony.lock/var/cache/migrations 保护 |
+
+## 安装
+
+```bash
+claude --plugin-dir /path/to/plugins/symfony-expert
+```
+
+建议同时安装 `php-expert` 插件以获得 PHP 语法检查和 PHPStan 支持。

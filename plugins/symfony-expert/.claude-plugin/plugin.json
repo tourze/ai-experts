@@ -1,0 +1,6 @@
+{
+  "name": "symfony-expert",
+  "version": "0.1.0",
+  "description": "Symfony 框架专家插件：Doctrine ORM、Twig 模板、Messenger 异步、Voters 授权",
+  "keywords": ["symfony", "doctrine", "twig", "messenger"]
+}
