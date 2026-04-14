@@ -1,0 +1,18 @@
+{
+  "name": "microsoft-expert",
+  "version": "0.2.0",
+  "description": "Microsoft 技术专家插件：Microsoft Learn 官方文档检索、SDK 代码示例校验与 CLI 回退链路自检",
+  "author": {
+    "name": "ai-experts"
+  },
+  "keywords": [
+    "microsoft",
+    "azure",
+    "dotnet",
+    "windows",
+    "microsoft-learn",
+    "sdk"
+  ],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
+}
