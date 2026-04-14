@@ -1,0 +1,58 @@
+# linux-expert
+
+Linux 系统专家插件，覆盖 Shell 守卫、发行版问题排查、磁盘/网络/性能诊断。
+
+## 结构
+
+- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/` 与 `hooks/hooks.json`。
+- `hooks/`：`hooks.json`、`dispatch.mjs` 与 6 个 `PostToolUse Edit|Write` 守卫脚本。
+- `skills/`：8 个 Linux 专向技能文档，统一采用中文结构。
+- `tests/`：manifest、dispatch、hook 逻辑、SKILL 文档与示例校验。
+
+## Skills
+
+| Skill | 用途 |
+|-------|------|
+| `arch-linux-triage` | Arch Linux 问题排查（pacman/systemd/滚动更新） |
+| `centos-linux-triage` | CentOS 问题排查（RHEL 兼容/SELinux） |
+| `debian-linux-triage` | Debian 问题排查（apt/systemd/AppArmor） |
+| `linux-shell-scripting` | Bash 脚本编写与自动化 |
+| `disk-cleanup` | 磁盘空间清理与大文件定位 |
+| `system-diagnostics` | 系统健康检查与资源诊断 |
+| `performance-optimizer` | 系统性能调优与资源释放 |
+| `network-troubleshooter` | 网络连通性/DNS/服务可达性排查 |
+
+## 外部依赖
+
+- `bash`：`syntax-bash.mjs` 的语法检查依赖。
+- `zsh`：`syntax-zsh.mjs` 的语法检查依赖。
+- `shellcheck`：`lint-shellcheck.mjs` 可选依赖；未安装时自动降级为仅检查 `set -euo pipefail`。
+
+## Hooks
+
+| 事件 | Hook | 作用 |
+|------|------|------|
+| PostToolUse Edit\|Write | `syntax-bash` | `bash -n` 语法检查 |
+| PostToolUse Edit\|Write | `syntax-zsh` | Zsh 语法检查 |
+| PostToolUse Edit\|Write | `lint-shellcheck` | ShellCheck 静态分析 |
+| PostToolUse Edit\|Write | `debug-statement-guard` | set -x 等调试语句检测 |
+| PostToolUse Edit\|Write | `encoding-guard` | 文件编码检查 |
+| PostToolUse Edit\|Write | `file-budget-guard` | Shell 脚本行数预算（300 行） |
+
+## 安装
+
+```bash
+claude --plugin-dir /path/to/plugins/linux-expert
+```
+
+## 验证
+
+```bash
+python3 -m json.tool plugins/linux-expert/.claude-plugin/plugin.json >/dev/null
+python3 -m json.tool plugins/linux-expert/hooks/hooks.json >/dev/null
+node --check plugins/linux-expert/hooks/dispatch.mjs
+for f in plugins/linux-expert/hooks/post-tool-use/edit-write/*.mjs; do
+  node --check "$f"
+done
+node --test plugins/linux-expert/tests/*.mjs
+```
