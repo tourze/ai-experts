@@ -1,6 +1,6 @@
 # docs-expert
 
-文档专家插件，覆盖 Word/PPT/Excel/PDF 读写转换、Markdown/Mermaid 写作、结构化表达和 README 生成。
+文档专家插件，覆盖 Word/PPT/Excel/PDF 读写转换、Markdown/Mermaid 写作、Mermaid 成品图渲染、结构化表达和 README 生成。
 
 ## 结构
 
@@ -16,6 +16,7 @@
 | `doc-coauthoring` | 结构化文档协同写作流程 |
 | `docx` | Word 文档创建/读取/编辑 |
 | `markdown-mermaid-writing` | Markdown + Mermaid 图表写作 |
+| `pretty-mermaid` | Mermaid 图表主题化渲染为 SVG / ASCII |
 | `md-to-pdf` | Markdown 转 PDF（含 Mermaid 支持） |
 | `pdf` | PDF 文件读写操作 |
 | `pdf-extraction` | PDF 文本/表格/元数据提取 |
@@ -33,7 +34,7 @@
 ## Hooks
 
 - `SessionStart`：校验 `plugin.json`、`hooks/hooks.json`、`dispatch.mjs` 与所有 `SKILL.md` 是否完整存在。
-- `UserPromptSubmit`：当用户请求架构、链路、迁移、阶段计划、风险拆解或方案对比时，注入纯文本可视化与结构化表达规则。
+- `UserPromptSubmit`：当用户请求架构、链路、迁移、阶段计划、风险拆解或方案对比时，注入纯文本可视化与结构化表达规则，并主动引导使用 `pretty-mermaid` 产出成品图。
 - 设计原则：全部 `report` / `context`、不 `block`，保证插件加载路径保持 fail-open。
 
 ## 安装

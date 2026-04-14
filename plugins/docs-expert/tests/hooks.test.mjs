@@ -18,6 +18,8 @@ test("visual-structure-primer 在命中结构化表达信号时注入 context", 
   assert.match(result?.reason ?? "", /结构化表达 触发/);
   assert.match(result?.reason ?? "", /现状全貌/);
   assert.match(result?.reason ?? "", /阶段 \/ 优先级 \/ 执行计划/);
+  assert.match(result?.reason ?? "", /pretty-mermaid/);
+  assert.match(result?.reason ?? "", /markdown-mermaid-writing/);
 });
 
 test("visual-structure-primer 对普通短问答不注入 context", async () => {
