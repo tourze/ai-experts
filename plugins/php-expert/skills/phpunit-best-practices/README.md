@@ -1,41 +1,39 @@
-# PHPUnit 最佳实践
+# PHPUnit 最佳实践规则库
 
-为代理和 LLM 优化的 PHPUnit 最佳实践创建和维护的结构化仓库。
+`phpunit-best-practices` skill 使用本目录中的规则文件作为细粒度参考资料。这里不是“自动生成物目录”，而是人工维护的规则源。
 
-## 结构
+## 当前结构
 
-- `rules/` - 单独的规则文件（每条规则一个文件）
-  - `_sections.md` - 章节元数据（标题、影响程度、描述）
-  - `_template.md` - 创建新规则的模板
-  - `area-description.md` - 单独的规则文件
-- `metadata.json` - 文档元数据（版本、组织、摘要）
-- __`AGENTS.md`__ - 编译后的输出（自动生成）
+- `SKILL.md`：面向代理的入口说明，定义触发场景、约束、代码模式和交叉引用。
+- `rules/`：分主题拆开的规则文件，每个文件只描述一条实践。
+- `rules/_sections.md`：章节元数据。
+- `rules/_template.md`：新增规则时的模板。
+- `metadata.json`：规则库版本、摘要和参考链接。
 
-## 创建新规则
+## 新增或修改规则
 
-1. 将 `rules/_template.md` 复制为 `rules/area-description.md`
-2. 选择合适的区域前缀：
-   - `principle-` 用于原则与模式（第 1 节）
-   - `standard-` 用于编码标准（第 2 节）
-   - `attr-` 用于测试属性（第 3 节）
-   - `data-` 用于数据管理（第 4 节）
-   - `doc-` 用于测试文档（第 5 节）
-   - `mock-` 用于 Mock（第 6 节）
-   - `integration-` 用于集成测试（第 7 节）
-   - `config-` 用于配置（第 8 节）
-3. 填写 frontmatter 和内容
-4. 确保有清晰的示例和说明
-5. 重新构建 AGENTS.md 以包含新规则
+1. 复制 `rules/_template.md` 为新文件。
+2. 使用正确的区域前缀：
+   - `principle-`：原则与模式
+   - `standard-`：编码标准
+   - `attr-`：测试属性
+   - `data-`：数据提供者与数据构造
+   - `doc-`：测试文档与命名
+   - `mock-`：Mock 策略
+   - `integration-`：集成测试
+   - `config-`：phpunit.xml 与工具配置
+3. 填写 frontmatter、错误示例、正确示例和简短说明。
+4. 在 `SKILL.md` 的“检查清单”里补充必要的交叉引用。
 
-## 规则文件结构
+## 规则文件格式
 
-每个规则文件应遵循以下结构：
+每个规则文件遵循同一模板：
 
-```markdown
+````markdown
 ---
 title: 规则标题
 impact: MEDIUM
-impactDescription: 可选的描述
+impactDescription: 可选说明
 tags: tag1, tag2, tag3
 ---
 
@@ -43,51 +41,37 @@ tags: tag1, tag2, tag3
 
 规则的简要说明及其重要性。
 
-**错误（描述问题所在）：**
+**错误（问题示例）：**
 
 ```php
-// 错误代码示例
+// 错误代码
 ```
 
-**正确（描述正确做法）：**
+**正确（推荐写法）：**
 
 ```php
-// 正确代码示例
+// 正确代码
 ```
 
-示例后的可选说明文字。
+补充说明。
+````
 
-参考：[链接](https://example.com)
-```
+## 命名约定
 
-## 文件命名约定
-
-- 以 `_` 开头的文件是特殊文件（从构建中排除）
-- 规则文件：`area-description.md`（例如 `principle-aaa-pattern.md`）
-- 章节从文件名前缀自动推断
-- 规则在每个章节内按标题字母顺序排序
+- 以 `_` 开头的文件保留给模板或元数据。
+- 规则文件命名格式为 `area-description.md`，例如 `principle-aaa-pattern.md`。
+- 章节由文件名前缀推导；同章节内按标题字母序展示。
 
 ## 影响级别
 
-- `CRITICAL` - 最高优先级，基础实践
-- `HIGH` - 显著的质量提升
-- `MEDIUM-HIGH` - 中高收益
-- `MEDIUM` - 中等改进
-- `LOW-MEDIUM` - 中低收益
-- `LOW` - 增量改进
-
-## 贡献
-
-添加或修改规则时：
-
-1. 使用正确的文件名前缀对应章节
-2. 遵循 `_template.md` 结构
-3. 包含清晰的错误/正确 PHP 示例和说明
-4. 添加合适的标签
-5. 重新构建 AGENTS.md 以包含你的更改
+- `CRITICAL`：基础实践，默认优先执行
+- `HIGH`：收益显著
+- `MEDIUM-HIGH`：中高收益
+- `MEDIUM`：中等收益
+- `LOW-MEDIUM`：次优先
+- `LOW`：增量优化
 
 ## 致谢
 
-结构灵感来自 [Vercel 的 React Best Practices](https://github.com/vercel-labs/agent-skills) skill，作者 [@shuding](https://x.com/shuding)。
-
-内容基于 [PHPUnit Best Practices](https://gnugat.github.io/2025/07/31/phpunit-best-practices.html)，作者 Loic Faugeron，以及通用 PHPUnit 专业知识。
+结构灵感来自 [Vercel 的 React Best Practices](https://github.com/vercel-labs/agent-skills)。
+内容整理参考 [PHPUnit Best Practices](https://gnugat.github.io/2025/07/31/phpunit-best-practices.html) 与 PHPUnit 官方文档。

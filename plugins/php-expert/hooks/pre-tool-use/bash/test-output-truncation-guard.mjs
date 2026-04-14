@@ -2,12 +2,12 @@
  * 测试输出截断拦截 hook（PreToolUse — Bash）
  * php-expert 插件提取的 PHP 专用版本。
  *
- * 检测 phpunit/phpstan 命令的输出被 | tail / | head 截断的模式。
+ * 检测 phpunit/phpstan/pest/psalm 命令的输出被 | tail / | head 截断的模式。
  * 截断会导致关键错误信息丢失 → agent 盲猜修复 → 反复执行。
  */
 
 // 重量级命令关键词（仅 PHP，正则片段，用于构造匹配）
-const HEAVY_COMMANDS = ["phpunit", "phpstan"];
+const HEAVY_COMMANDS = ["phpunit", "phpstan", "pest", "psalm"];
 
 const HEAVY_RE = new RegExp(`\\b(?:${HEAVY_COMMANDS.join("|")})\\b`);
 
@@ -25,8 +25,8 @@ export async function run(payload) {
   if (!match) return null;
 
   const lines = parseInt(match[1], 10);
-  // tail -1 / head -1 是取摘要，合理
-  if (lines <= 2) return null;
+  // tail -1 / head -1 常用于取单行摘要，保留
+  if (lines === 1) return null;
 
   return {
     decision: "report",

@@ -2,7 +2,7 @@
  * 重量级命令重复执行拦截 hook（PreToolUse — Bash）
  * php-expert 插件提取的 PHP 专用版本。
  *
- * 追踪同一会话中 phpunit/phpstan 等重量级命令的执行次数：
+ * 追踪同一会话中 phpunit/phpstan/pest/psalm 等重量级命令的执行次数：
  *   ≥ 3 次 → report（建议先分析错误）
  *   ≥ 6 次 → block（强制停下来）
  *
@@ -20,7 +20,7 @@ const BLOCK_THRESHOLD = 6;
 const EXPIRY_MS = 30 * 60 * 1000; // 30 分钟无调用自动重置
 
 // 重量级命令关键词（仅 PHP）
-const HEAVY_COMMANDS = ["phpunit", "phpstan"];
+const HEAVY_COMMANDS = ["phpunit", "phpstan", "pest", "psalm"];
 
 const HEAVY_RE = new RegExp(`\\b(?:${HEAVY_COMMANDS.join("|")})\\b`);
 

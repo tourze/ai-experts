@@ -1,143 +1,124 @@
 ---
 name: php-doc
-description: 当用户编写 phpDoc 注释时调用。提供 Nette 风格的文档块约定：何时跳过文档、类/方法/属性/异常文档、泛型数组类型（array<T>、list<T>）、条件返回类型。当编写或编辑任何 /** */ 注释时使用——即使用户只说"给这个加文档"而未提及 phpDoc。
+description: 当用户新增、补写或重构 PHPDoc 时使用。适用于为方法、属性、异常、数组泛型、数组结构和条件返回类型补充签名之外的关键信息；当用户只说“补文档”“整理注释”“修正 phpDoc”时也应触发。
 ---
 
-## 文档（phpDoc）
+# PHPDoc 规范
 
-### 黄金法则
+## 适用场景
 
-**永远不要在没有附加价值的情况下重复签名信息。** 如果类名、方法名、参数名和 PHP 类型已经完整表达了含义，直接跳过文档块。
+- 为现有 PHP 代码补写或收敛 `/** */` 文档块。
+- 审查 PHPDoc 是否只是重复签名，或是否遗漏了数组结构、异常、业务约束等关键信息。
+- 修正 `array<T>`、`list<T>`、`array<string, T>`、数组结构与条件返回类型。
+- 在框架代码、DTO、值对象、仓库与服务层中统一文档风格。
 
-跳过文档的情况：
-- 方法是平凡且自解释的（getter、setter、简单委托）
-- 文档块只会重复签名已经表达的内容
-- 参数名已经足够描述性（`$width`、`$height`、`$name`）
+## 核心约束
 
-需要编写文档的情况：
-- 方法有非显而易见的行为（在特定条件下返回 null、抛出异常）
-- 数组内容需要说明（`@return string[]`）
-- 参数有 PHP 类型无法捕获的约束、格式或有效范围
-- "为什么"这样设计对调用方很重要
+- 默认先判断“是否真的需要文档”，签名已经完整表达意图时直接省略。
+- 只记录 PHP 类型系统无法表达的事实：数组元素类型、键约束、单位/范围、前置条件、副作用、异常原因。
+- 参数名、返回类型、属性类型已经清晰时，不再重复“用户 ID”“字符串名称”这类无信息量描述。
+- 为英文摘要行使用简洁动词短语，例如 `Returns...`、`Creates...`、`Formats...`、`Checks...`。
+- `list<T>` 仅用于“从 0 开始且连续的整数键”；如果只知道是数组，不要过度收紧成 `list<T>`。
+- `@throws` 描述失败事实，而不是模板句；优先写“为什么会失败”，不要写“Exception thrown when...”。
+- 属性文档优先单行 `@var`；只有当用途、兼容性或生命周期不明显时，才补一行说明。
 
-### 编写风格
-- 简洁直接——避免不必要的词汇
-- 方法描述以第三人称单数现在时动词开头：Returns、Formats、Checks、Creates、Converts、Sets
-- 跳过诸如"Class that..."、"Interface for..."、"Method that..."之类的短语
-- 不要在类文档块中重复方法列表或实现细节
-- 使用主动语态描述主要职责
+## 代码模式
 
-### 属性文档
-简单的 `@var` 注解使用单行格式：
+### 为数组内容和顺序补充信息
 
 ```php
-/** @var string[] */
-private array $name;
+<?php
+
+declare(strict_types=1);
+
+namespace App\Catalog;
+
+final class LanguageCatalog
+{
+    /** @var list<string> */
+    private array $supportedLanguages = ['en', 'zh-CN', 'ja'];
+
+    /**
+     * Returns supported language codes in UI display order.
+     *
+     * @return list<string>
+     */
+    public function supportedLanguages(): array
+    {
+        return $this->supportedLanguages;
+    }
+}
 ```
 
-非显而易见的属性使用简短注释：
-```php
-/** 用于向后兼容 */
-protected Explorer $context;
-```
-
-### 参数和返回值
-- 可空类型优先使用 `?Type` 而非 `Type|null`
-- 仅当需要补充 PHP 类型之外的信息时才为参数添加文档
-- 多参数块使用两空格对齐以提高可读性：
-  ```php
-  /**
-   * @return string  主列序列名称
-   * @param  mixed   $var  此处描述
-   */
-  ```
-
-仅在需要说明以下内容时添加参数文档：
-- 额外的上下文或约束
-- 限制或条件
-- 非常规使用模式
-
-### 泛型数组类型
-
-#### 数组键类型
-- `array<T>` = `array<int|string, T>` —— 任意键（省略键类型表示 int|string）
-- `array<int, T>` —— 仅限 int 键（不一定连续）
-- `array<string, T>` —— 仅限 string 键
-- `list<T>` —— 从 0 开始的连续 int 键（0, 1, 2...）
-
-#### 输入与输出的区分
-- **@return**：如果函数总是返回连续键，`list<T>` 是准确的
-- **@param**：`list<T>` 可能过于严格——可能拒绝非连续键的有效输入
-
-#### 何时对输入使用 `list<T>`
-分析实现：
-- `foreach ($arr as $v)` —— 不使用键 → `array<T>` 就足够了
-- `$arr[0]`、`$arr[1]` —— 按索引访问 → 需要 `list<T>`
-
-#### 条件返回类型
-对于依赖参数的返回类型：
-```php
-/**
- * @return ($flag is true ? list<array{string, int}> : list<string>)
- */
-```
-
-#### 如何确定正确的类型
-1. 检查实现——数组是如何被使用的？
-2. 如果需要，编写一个测试脚本来输出结果结构
-3. 对于嵌套数组，逐层分析每个嵌套级别
-
-### 异常文档
-- 使用一句自然语言描述问题
-- 避免诸如"Exception that is thrown when..."之类的短语
-- 使用一致的短语：
-  - "does not exist" —— 用于缺失的项目
-  - "failed to" —— 用于操作失败
-  - "cannot" —— 用于不可能的操作
-  - "is not supported" —— 用于不支持的功能
-
-示例：
-- "The file does not exist."
-- "Cannot access the requested class property."
-- "The value is outside the allowed range."
-- "Failed to read from or write to a stream."
-
-### 示例
-
-#### 良好的文档
-
-目的清晰，补充了数组内容信息：
-```php
-/**
- * Returns list of supported languages.
- * @return string[]  语言代码数组
- */
-public function getSupportedLanguages(): array
-```
-
-描述非常规行为：
-```php
-/**
- * Creates new transaction. Returns null if user has exceeded daily limit.
- */
-public function createTransaction(float $amount): ?Transaction
-```
-
-#### 何时跳过
+### 只为非显而易见的行为写文档
 
 ```php
-// 签名已经说明一切——不需要文档块
-protected readonly string $name;
+<?php
 
-public function getWidth(): int
+declare(strict_types=1);
 
-public function setName(string $name): void
+namespace App\Service;
+
+use App\Entity\Transaction;
+
+final class TransactionService
+{
+    /**
+     * Creates a transaction and returns null when the caller exceeds the daily limit.
+     */
+    public function create(float $amountInCents): ?Transaction
+    {
+        if ($amountInCents > 50_000) {
+            return null;
+        }
+
+        return new Transaction($amountInCents);
+    }
+}
 ```
 
-自解释的参数——仅文档化方法目的：
+### 用异常说明失败原因，而不是重复异常类型
+
 ```php
-/**
- * Calculates dimensions of image cutout.
- */
-public function calculateCutout(int $left, int $top, int $width, int $height): array
+<?php
+
+declare(strict_types=1);
+
+namespace App\Import;
+
+use RuntimeException;
+
+final class CsvImporter
+{
+    /**
+     * Imports user rows from a UTF-8 CSV file.
+     *
+     * @throws RuntimeException Source file does not exist.
+     * @throws RuntimeException File contents are not valid UTF-8 CSV data.
+     */
+    public function import(string $path): void
+    {
+        if ($path === '') {
+            throw new RuntimeException('Source file does not exist.');
+        }
+    }
+}
 ```
+
+## 检查清单
+
+- 每个文档块都回答了“签名之外新增了什么信息”。
+- `@return`、`@param`、`@var` 的泛型/数组结构与实现一致，没有把普通数组误写成 `list<T>`。
+- 删除了 getter、setter、简单委托、显式类型属性上的冗余 PHPDoc。
+- `@throws` 描述的是失败条件，而不是异常类名的同义反复。
+- 文档与代码一起改动；签名变化后同步清理陈旧注释。
+- 涉及实现模式或分层取舍时，联动查看 [php-pro](../php-pro/SKILL.md)。
+- 涉及测试命名、`#[Test]`、数据提供者与覆盖率边界时，联动查看 [phpunit-best-practices](../phpunit-best-practices/SKILL.md)。
+
+## 反模式
+
+- 为每个 getter / setter / 构造参数机械复制一份签名说明。
+- 在 `@param` 里重复 `string $email 用户邮箱` 这类签名已表达的信息。
+- 把任意数组都标成 `list<T>`，导致调用方被错误约束。
+- 在类级文档里罗列方法名单、实现细节或历史变更记录。
+- 使用“Exception thrown when...”或“Class that...”这类无意义模板句。

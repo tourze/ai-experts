@@ -1,6 +1,6 @@
 ---
 name: php-pro
-description: 当用户使用现代 PHP 8.3+ 特性、Laravel 或 Symfony 框架构建 PHP 应用时使用。涵盖严格类型、PHPStan level 9、Swoole 异步模式和 PSR 标准。创建控制器、配置中间件、生成迁移、编写 PHPUnit/Pest 测试、定义类型化 DTO 和值对象、设置依赖注入，以及搭建 REST/GraphQL API。当涉及 Eloquent、Doctrine、Composer、Psalm、ReactPHP 或任何 PHP API 开发时使用。
+description: 当用户实现或重构现代 PHP 8.3+、Laravel、Symfony、Composer、PHPStan、PSR 工作流时使用。适用于搭建 DTO / 值对象 / 服务层 / 控制器 / API / 队列 / 测试，并在交付前用静态分析与测试收敛风险。
 license: MIT
 metadata:
   author: https://github.com/Jeffallan
@@ -10,59 +10,37 @@ metadata:
   role: specialist
   scope: implementation
   output-format: code
-  related-skills: fullstack-guardian, fastapi-expert
+  related-skills: php-doc, phpunit-best-practices, laravel-specialist, symfony-ux
 ---
 
-# PHP Pro
+# PHP 工程实现
 
-资深 PHP 开发者，深入精通 PHP 8.3+、Laravel、Symfony 以及现代 PHP 模式，擅长严格类型和企业级架构。
+## 适用场景
 
-## 核心工作流
+- 使用 PHP 8.3+ 编写新功能、重构服务层或收敛弱类型边界。
+- 构建 Laravel / Symfony 控制器、服务、DTO、值对象、仓库、任务队列与 API。
+- 接手 Composer、PHPStan、Psalm、PHPUnit、Pest 驱动的质量门禁。
+- 需要把“能跑”的 PHP 代码提升到“可维护、可分析、可验证”的工程形态。
 
-1. **分析架构** —— 审查框架、PHP 版本、依赖和模式
-2. **设计模型** —— 创建类型化的领域模型、值对象、DTO
-3. **实现** —— 编写符合 PSR 规范的严格类型代码，使用依赖注入和仓库模式
-4. **安全** —— 添加验证、认证、XSS/SQL 注入防护
-5. **验证** —— 运行 `vendor/bin/phpstan analyse --level=9`；修复所有错误后再继续。运行 `vendor/bin/phpunit` 或 `vendor/bin/pest`；确保 80%+ 覆盖率。两项均通过后方可交付。
+## 核心约束
 
-## 参考指南
-
-根据上下文加载详细指导：
-
-| 主题 | 参考文件 | 加载时机 |
-|------|----------|----------|
-| 现代 PHP | `references/modern-php-features.md` | Readonly、枚举、属性、纤程、类型 |
-| Laravel | `references/laravel-patterns.md` | 服务、仓库、资源、队列任务 |
-| Symfony | `references/symfony-patterns.md` | 依赖注入、事件、命令、投票器 |
-| 异步 PHP | `references/async-patterns.md` | Swoole、ReactPHP、纤程、流 |
-| 测试 | `references/testing-quality.md` | PHPUnit、PHPStan、Pest、Mock |
-
-## 约束
-
-### 必须做
-- 声明严格类型（`declare(strict_types=1)`）
-- 为所有属性、参数、返回值使用类型提示
-- 遵循 PSR-12 编码标准
-- 交付前运行 PHPStan level 9
-- 适用时使用 readonly 属性
-- 为复杂逻辑编写 PHPDoc 文档块
-- 使用类型化请求验证所有用户输入
-- 使用依赖注入而非全局状态
-
-### 禁止做
-- 跳过类型声明（不使用 mixed 类型）
-- 明文存储密码（使用 bcrypt/argon2）
-- 编写容易受 SQL 注入攻击的查询
-- 在控制器中混入业务逻辑
-- 硬编码配置（使用 .env）
-- 未运行测试和静态分析就部署
-- 在生产代码中使用 var_dump
+- 所有生产代码默认启用 `declare(strict_types=1)`。
+- 方法参数、返回值、属性与集合元素都要有明确类型；无法收窄时优先定义 DTO、值对象或数组结构，而不是退回 `mixed`。
+- 控制器只做编排：输入验证、鉴权、调用服务、映射响应；业务规则放到服务或领域对象。
+- 依赖通过构造函数注入，避免隐藏的全局状态、静态单例与服务定位器。
+- 用户输入必须在进入业务逻辑前完成验证、过滤和归一化。
+- 数据访问默认使用参数化查询/ORM，禁止手拼 SQL 字符串。
+- 交付前必须运行静态分析和测试；至少覆盖 `php -l`、`phpstan`/`psalm` 与 `phpunit`/`pest` 中适用的项。
+- 根据任务上下文加载补充资料：
+  - 现代语言特性：[modern-php-features.md](references/modern-php-features.md)
+  - Laravel 模式：[laravel-patterns.md](references/laravel-patterns.md)
+  - Symfony 模式：[symfony-patterns.md](references/symfony-patterns.md)
+  - 异步与并发：[async-patterns.md](references/async-patterns.md)
+  - 测试质量：[testing-quality.md](references/testing-quality.md)
 
 ## 代码模式
 
-每个完整实现包含：一个类型化的实体/DTO、一个服务类和一个测试。以下作为基准结构。
-
-### Readonly DTO / 值对象
+### 用只读 DTO 收紧输入边界
 
 ```php
 <?php
@@ -71,136 +49,150 @@ declare(strict_types=1);
 
 namespace App\DTO;
 
-final readonly class CreateUserDTO
+final readonly class CreateUserData
 {
     public function __construct(
         public string $name,
         public string $email,
         public string $password,
-    ) {}
+    ) {
+    }
 
-    public static function fromArray(array $data): self
+    /**
+     * @param array{name: string, email: string, password: string} $input
+     */
+    public static function fromArray(array $input): self
     {
         return new self(
-            name: $data['name'],
-            email: $data['email'],
-            password: $data['password'],
+            name: trim($input['name']),
+            email: mb_strtolower(trim($input['email'])),
+            password: $input['password'],
         );
     }
 }
 ```
 
-### 带构造函数注入的类型化服务
+### 用服务层封装业务规则与仓储交互
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace App\Services;
+namespace App\Service;
 
-use App\DTO\CreateUserDTO;
-use App\Models\User;
-use App\Repositories\UserRepositoryInterface;
-use Illuminate\Support\Facades\Hash;
+use App\DTO\CreateUserData;
+use App\Entity\User;
+use App\Repository\UserRepositoryInterface;
+use RuntimeException;
 
-final class UserService
+final class UserCreator
 {
     public function __construct(
         private readonly UserRepositoryInterface $users,
-    ) {}
+        private readonly PasswordHasherInterface $hasher,
+    ) {
+    }
 
-    public function create(CreateUserDTO $dto): User
+    public function create(CreateUserData $data): User
     {
-        return $this->users->create([
-            'name'     => $dto->name,
-            'email'    => $dto->email,
-            'password' => Hash::make($dto->password),
-        ]);
+        if ($this->users->existsByEmail($data->email)) {
+            throw new RuntimeException('Email already exists.');
+        }
+
+        $user = new User(
+            name: $data->name,
+            email: $data->email,
+            passwordHash: $this->hasher->hash($data->password),
+        );
+
+        return $this->users->save($user);
     }
 }
 ```
 
-### PHPUnit 测试结构
+### 用 PHPUnit 锁住行为，而不是只断言“对象存在”
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Services;
+namespace Tests\Unit\Service;
 
-use App\DTO\CreateUserDTO;
-use App\Models\User;
-use App\Repositories\UserRepositoryInterface;
-use App\Services\UserService;
+use App\DTO\CreateUserData;
+use App\Entity\User;
+use App\Repository\UserRepositoryInterface;
+use App\Service\PasswordHasherInterface;
+use App\Service\UserCreator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
-final class UserServiceTest extends TestCase
+final class UserCreatorTest extends TestCase
 {
     private UserRepositoryInterface&MockObject $users;
-    private UserService $service;
+    private PasswordHasherInterface&MockObject $hasher;
+    private UserCreator $creator;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->users   = $this->createMock(UserRepositoryInterface::class);
-        $this->service = new UserService($this->users);
+        $this->users = $this->createMock(UserRepositoryInterface::class);
+        $this->hasher = $this->createMock(PasswordHasherInterface::class);
+        $this->creator = new UserCreator($this->users, $this->hasher);
     }
 
-    public function testCreateHashesPassword(): void
+    public function testCreateRejectsDuplicateEmail(): void
     {
-        $dto  = new CreateUserDTO('Alice', 'alice@example.com', 'secret');
-        $user = new User(['name' => 'Alice', 'email' => 'alice@example.com']);
+        $this->users->method('existsByEmail')->with('alice@example.com')->willReturn(true);
 
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Email already exists.');
+
+        $this->creator->create(new CreateUserData('Alice', 'alice@example.com', 'secret'));
+    }
+
+    public function testCreateHashesPasswordBeforePersisting(): void
+    {
+        $data = new CreateUserData('Alice', 'alice@example.com', 'secret');
+
+        $this->users->method('existsByEmail')->with('alice@example.com')->willReturn(false);
+        $this->hasher->method('hash')->with('secret')->willReturn('hashed-secret');
         $this->users
             ->expects($this->once())
-            ->method('create')
-            ->willReturn($user);
+            ->method('save')
+            ->with($this->callback(
+                static fn (User $user): bool => $user->email === 'alice@example.com'
+                    && $user->passwordHash === 'hashed-secret',
+            ))
+            ->willReturn(new User('Alice', 'alice@example.com', 'hashed-secret'));
 
-        $result = $this->service->create($dto);
+        $result = $this->creator->create($data);
 
-        $this->assertSame('Alice', $result->name);
+        $this->assertSame('alice@example.com', $result->email);
     }
 }
 ```
 
-### 枚举（PHP 8.1+）
+## 检查清单
 
-```php
-<?php
+- 已确认当前任务属于哪一层：控制器、服务、领域对象、仓储、队列或测试。
+- 所有输入边界都被收紧为显式类型、DTO、值对象或数组结构。
+- 控制器没有吞入业务逻辑；副作用由服务层或消息处理器负责。
+- 新增代码通过了适用的语法检查、静态分析与测试：
+  - `php -l`
+  - `./vendor/bin/phpstan analyse`
+  - `./vendor/bin/psalm`
+  - `./vendor/bin/phpunit` 或 `./vendor/bin/pest`
+- 对外契约、数组结构和异常语义需要文档时，联动查看 [php-doc](../php-doc/SKILL.md)。
+- 涉及测试命名、属性、数据提供者与配置约束时，联动查看 [phpunit-best-practices](../phpunit-best-practices/SKILL.md)。
 
-declare(strict_types=1);
+## 反模式
 
-namespace App\Enums;
-
-enum UserStatus: string
-{
-    case Active   = 'active';
-    case Inactive = 'inactive';
-    case Banned   = 'banned';
-
-    public function label(): string
-    {
-        return match($this) {
-            self::Active   => 'Active',
-            self::Inactive => 'Inactive',
-            self::Banned   => 'Banned',
-        };
-    }
-}
-```
-
-## 输出模板
-
-实现功能时，按以下顺序交付：
-1. 领域模型（实体、值对象、枚举）
-2. 服务/仓库类
-3. 控制器/API 端点
-4. 测试文件（PHPUnit/Pest）
-5. 简要说明架构决策
-
-## 知识参考
-
-PHP 8.3+、Laravel 11、Symfony 7、Composer、PHPStan、Psalm、PHPUnit、Pest、Eloquent ORM、Doctrine、PSR 标准、Swoole、ReactPHP、Redis、MySQL/PostgreSQL、REST/GraphQL API
+- 用 `mixed`、裸数组和匿名对象把真实约束藏起来。
+- 在控制器里直接写业务流程、发通知、做鉴权分支和数据库写入。
+- 在生产代码里保留 `dd()`、`dump()`、`var_dump()` 或临时调试输出。
+- 依赖静态 Facade/全局函数而没有显式边界，导致测试难以隔离。
+- 只断言“返回了对象”，却没有锁住关键业务规则、异常和副作用。
+- 静态分析或测试失败时仍然宣称“已经完成”。

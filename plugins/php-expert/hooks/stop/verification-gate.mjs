@@ -84,6 +84,7 @@ const VERIFICATION_COMMANDS = [
   /\bphpstan\b/,
   /\bvendor\/bin\/(?:phpunit|phpstan|pest|psalm)\b/,
   /\bpest\b/,
+  /\bpsalm\b/,
 ];
 
 function parseTranscript(path) {
