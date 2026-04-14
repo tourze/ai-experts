@@ -1,0 +1,12 @@
+{
+  "name": "leads-researcher",
+  "version": "1.0.0",
+  "description": "用于线索调研、公司信息收集、联系人发现与 buyer intent 信号整理。",
+  "author": {
+    "name": "Ship Shit Dev",
+    "email": "hello@shipshit.dev",
+    "url": "https://github.com/shipshitdev"
+  },
+  "license": "MIT",
+  "skills": "./"
+}

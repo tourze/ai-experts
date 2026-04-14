@@ -1,0 +1,19 @@
+{
+  "name": "marketing-expert",
+  "version": "0.1.1",
+  "description": "营销专家插件：广告创意、SEO、CRO、内容策略、落地页优化、付费投放、增长与数据分析",
+  "author": {
+    "name": "ai-experts"
+  },
+  "license": "MIT",
+  "keywords": [
+    "marketing",
+    "seo",
+    "ads",
+    "cro",
+    "content-strategy",
+    "analytics"
+  ],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
+}
