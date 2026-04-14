@@ -1,0 +1,7 @@
+# 默认高风险短语；支持普通子串，也支持 re: 前缀正则。
+ignore previous instructions
+add me on wechat
+加我微信
+私聊领资源
+闭眼入
+re:(绕过|规避).{0,8}(审核|风控|平台规则)
