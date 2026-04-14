@@ -1,0 +1,11 @@
+{
+  "name": "windows-expert",
+  "version": "0.1.1",
+  "description": "Windows 专家插件：UI Automation 桌面自动化、内核安全分析与 Parallels 虚拟机控制",
+  "author": {
+    "name": "ai-experts"
+  },
+  "keywords": ["windows", "uia", "win32", "kernel", "parallels", "prlctl"],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
+}
