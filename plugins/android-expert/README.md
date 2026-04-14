@@ -1,0 +1,22 @@
+# android-expert
+
+Android 开发专家插件，覆盖架构模式、Kotlin Coroutines、无障碍访问、Material Design 3、模拟器自动化和测试策略。
+
+## Skills
+
+| Skill | 用途 |
+|-------|------|
+| `android-accessibility` | 无障碍审计与修复（TalkBack/语义化） |
+| `android-architecture` | 现代 Android 架构（MVVM/MVI/Clean Architecture） |
+| `android-coroutines` | Kotlin Coroutines 生产级模式 |
+| `android-design-guidelines` | Material Design 3 与平台设计规范 |
+| `android-emulator-skill` | 模拟器自动化脚本（构建/测试/截图） |
+| `android-testing` | Unit/Integration/Hilt/Screenshot 全链路测试 |
+
+## 安装
+
+```bash
+claude --plugin-dir /path/to/plugins/android-expert
+```
+
+建议同时安装 `java-expert` 插件以获得 Java/Kotlin 语法检查。
