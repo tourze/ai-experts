@@ -24,4 +24,8 @@ test("manifest 显式声明 skills、hooks 与作者", () => {
   const sessionHooks = hooks.hooks?.SessionStart?.[0]?.hooks ?? [];
   assert.equal(sessionHooks.length, 1);
   assert.equal(sessionHooks[0].command, "node ${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.mjs session-start");
+
+  const userPromptHooks = hooks.hooks?.UserPromptSubmit?.[0]?.hooks ?? [];
+  assert.equal(userPromptHooks.length, 1);
+  assert.equal(userPromptHooks[0].command, "node ${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.mjs user-prompt-submit");
 });

@@ -90,3 +90,24 @@ test("dispatch 聚合多个 report 输出", () => {
     assert.match(output.reason, /report-b/);
   });
 });
+
+test("dispatch 聚合多个 context 输出", () => {
+  withTempDispatch((hooksRoot) => {
+    const hookDir = join(hooksRoot, "user-prompt-submit");
+    mkdirSync(hookDir, { recursive: true });
+    writeFileSync(join(hookDir, "a.mjs"), "export async function run() { return { decision: 'context', reason: 'context-a' }; }\n", "utf-8");
+    writeFileSync(join(hookDir, "b.mjs"), "export async function run() { return { decision: 'context', reason: 'context-b' }; }\n", "utf-8");
+
+    const result = spawnSync("node", [join(hooksRoot, "dispatch.mjs"), "user-prompt-submit"], {
+      cwd: pluginRoot,
+      input: "{\"prompt\":\"分析迁移计划\"}",
+      encoding: "utf-8",
+    });
+
+    assert.equal(result.status, 0);
+    const output = JSON.parse(result.stdout);
+    assert.equal(output.hookSpecificOutput?.hookEventName, "UserPromptSubmit");
+    assert.match(output.hookSpecificOutput?.additionalContext ?? "", /context-a/);
+    assert.match(output.hookSpecificOutput?.additionalContext ?? "", /context-b/);
+  });
+});

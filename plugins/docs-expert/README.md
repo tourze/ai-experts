@@ -1,11 +1,11 @@
 # docs-expert
 
-文档专家插件，覆盖 Word/PPT/Excel/PDF 读写转换、Markdown/Mermaid 写作和 README 生成。
+文档专家插件，覆盖 Word/PPT/Excel/PDF 读写转换、Markdown/Mermaid 写作、结构化表达和 README 生成。
 
 ## 结构
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/` 与 `hooks/hooks.json`。
-- `hooks/`：`hooks.json`、`dispatch.mjs` 与 `session-start` 自检脚本。
+- `hooks/`：`hooks.json`、`dispatch.mjs`、`session-start` 自检脚本与 `user-prompt-submit` 结构化表达 primer。
 - `skills/`：文档处理、提案撰写、Markdown/PDF 转换等技能目录。
 - `tests/`：manifest、dispatch、skill 文档和脚本语法的最小回归测试。
 
@@ -33,8 +33,8 @@
 ## Hooks
 
 - `SessionStart`：校验 `plugin.json`、`hooks/hooks.json`、`dispatch.mjs` 与所有 `SKILL.md` 是否完整存在。
-- `SessionStart`：检查 `python3`、`node`、`bash` 以及 `soffice`、`pandoc`、`mmdc`、`katex`、`pypdf`、`pdfplumber` 等依赖是否可用。
-- 设计原则：全部 `report`、不 `block`，保证插件加载路径保持 fail-open。
+- `UserPromptSubmit`：当用户请求架构、链路、迁移、阶段计划、风险拆解或方案对比时，注入纯文本可视化与结构化表达规则。
+- 设计原则：全部 `report` / `context`、不 `block`，保证插件加载路径保持 fail-open。
 
 ## 安装
 
