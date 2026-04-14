@@ -7,7 +7,7 @@
  */
 
 import { existsSync, readFileSync } from "fs";
-import { extname } from "path";
+import { basename, extname } from "path";
 
 // 文本类文件扩展名（完整集，覆盖所有主流语言和模板）
 const TEXT_EXTENSIONS = new Set([
@@ -20,12 +20,30 @@ const TEXT_EXTENSIONS = new Set([
   ".sh", ".bash", ".zsh", ".fish",
   ".sql", ".graphql", ".gql",
   ".md", ".txt", ".rst", ".adoc",
-  ".twig", ".blade.php", ".ejs", ".hbs",
+  ".twig", ".ejs", ".hbs",
   ".wxml", ".wxss", ".wxs",
-  ".env", ".env.example", ".env.local",
-  ".gitignore", ".dockerignore", ".editorconfig",
   ".pl", ".pm", ".r", ".R",
 ]);
+
+const TEXT_FILE_NAMES = new Set([
+  ".gitignore",
+  ".dockerignore",
+  ".editorconfig",
+]);
+
+const TEXT_SUFFIXES = [".blade.php"];
+
+function shouldCheck(filePath) {
+  const normalizedPath = filePath.replaceAll("\\", "/").toLowerCase();
+  const baseName = basename(normalizedPath);
+
+  if (TEXT_FILE_NAMES.has(baseName)) return true;
+  if (baseName === ".env" || baseName.startsWith(".env.")) return true;
+  if (TEXT_SUFFIXES.some((suffix) => normalizedPath.endsWith(suffix))) return true;
+
+  const ext = extname(baseName).toLowerCase();
+  return !ext || TEXT_EXTENSIONS.has(ext);
+}
 
 // BOM 签名字节
 const BOM_SIGNATURES = [
@@ -41,8 +59,7 @@ export async function run(payload) {
   if (!filePath || !existsSync(filePath)) return null;
 
   // 按扩展名过滤；无扩展名的文件也检查（可能是 Makefile、Dockerfile 等）
-  const ext = extname(filePath).toLowerCase();
-  if (ext && !TEXT_EXTENSIONS.has(ext)) return null;
+  if (!shouldCheck(filePath)) return null;
 
   const buf = readFileSync(filePath);
   if (buf.length === 0) return null;

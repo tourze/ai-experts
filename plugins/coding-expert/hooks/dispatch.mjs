@@ -14,7 +14,7 @@
 
 import { readdirSync, existsSync } from "fs";
 import { join, dirname } from "path";
-import { fileURLToPath } from "url";
+import { fileURLToPath, pathToFileURL } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const subdir = process.argv[2];
@@ -33,12 +33,27 @@ for (const sig of ["SIGINT", "SIGTERM"]) {
   process.on(sig, () => process.exit(sig === "SIGINT" ? 130 : 143));
 }
 
-// 读取 payload（只读一次）
-const payload = JSON.parse(await new Promise((resolve) => {
-  let data = "";
-  process.stdin.on("data", (chunk) => (data += chunk));
-  process.stdin.on("end", () => resolve(data));
-}));
+async function readPayload() {
+  const chunks = [];
+  for await (const chunk of process.stdin) {
+    chunks.push(chunk);
+  }
+
+  const raw = chunks.join("").trim();
+  if (!raw) return {};
+
+  try {
+    return JSON.parse(raw);
+  } catch (err) {
+    console.log(JSON.stringify({
+      decision: "report",
+      reason: `[dispatch] stdin 不是合法 JSON：${err.message || err}`,
+    }));
+    process.exit(0);
+  }
+}
+
+const payload = await readPayload();
 
 // 发现并加载 hook 模块（跳过 _ 前缀的工具模块）
 const files = readdirSync(dir)
@@ -50,7 +65,7 @@ const contexts = [];
 
 for (const file of files) {
   try {
-    const mod = await import(join(dir, file));
+    const mod = await import(pathToFileURL(join(dir, file)).href);
     if (typeof mod.run !== "function") continue;
 
     const result = await mod.run(payload);
