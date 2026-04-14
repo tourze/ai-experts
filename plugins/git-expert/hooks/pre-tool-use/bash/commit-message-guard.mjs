@@ -19,6 +19,7 @@ const GARBLED_PATTERN = /\uFFFD|[\x00-\x08\x0E-\x1F\x7F]|[\uE000-\uF8FF]|\u00C3[
 const CC_PATTERN = new RegExp(
   `^(${CC_TYPES.join("|")})(\\([^)]+\\))?!?:\\s.+`
 );
+const GENERIC_DESCRIPTION_PATTERN = /^(fix|update|move|迁移|修复|优化|调整|兼容|补充|完善|修改|cleanup|clean up|refactor|misc|stuff)$/i;
 
 function readMessageFromFile(filePath, cwd) {
   if (!filePath || filePath === "-" || filePath === "/dev/stdin") return null;
@@ -97,11 +98,12 @@ export async function run(payload) {
     .split("\n")
     .map((line) => line.trim())
     .find(Boolean) || "";
+  const description = (firstLine.match(/^[^:]+:\s*(.+)$/)?.[1] || firstLine).trim();
   const errors = [];
 
-  // 1. 禁止纯 "fix"、"update"、"完善" 等模糊信息
-  if (/^(fix|update|完善|修复|优化|调整|兼容|补充|紧急修改|ecf|修改)\s*$/i.test(firstLine)) {
-    errors.push("提交信息过于模糊，必须说明：修了什么/改了什么/为什么改");
+  // 1. 禁止纯 "fix"、"update"、"move"、"迁移" 等模糊描述
+  if (GENERIC_DESCRIPTION_PATTERN.test(description) || /^(紧急修改|ecf)\s*$/i.test(firstLine)) {
+    errors.push("提交描述过于模糊，必须说明具体改了什么、范围在哪里、为什么要改");
   }
 
   // 2. 首行长度检查

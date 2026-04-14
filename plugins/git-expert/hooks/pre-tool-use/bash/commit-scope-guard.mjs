@@ -5,10 +5,11 @@
  * 在 git commit 前分析暂存文件的范围，当变更跨越多个子系统或
  * 混合不同关注点时提醒开发者考虑拆分提交。
  *
- * 三条启发式规则：
+ * 四条启发式规则：
  *   1. 暂存文件数 > 15 → 建议拆分
  *   2. 变更跨越 4+ 个顶层目录 → 建议按子系统拆分
- *   3. 同时包含业务代码和配置/基础设施变更 → 建议分开提交
+ *   3. 同时触及多个 monorepo 包/项目目录 → 建议一包一提
+ *   4. 同时包含业务代码和配置/基础设施变更 → 建议分开提交
  *
  * 仅 report，不 block — 跨切面的合理变更确实存在。
  */
@@ -62,6 +63,7 @@ const CONFIG_PATTERNS = [
 const IGNORED_DIRS = new Set([
   ".github", ".vscode", ".idea", "docs", "doc", ".husky", "node_modules",
 ]);
+const WORKSPACE_ROOTS = new Set(["plugins", "packages", "apps", "services", "skills", "libs"]);
 
 // ── 安全执行 git 命令 ──
 
@@ -77,6 +79,13 @@ function gitNameOnly(args, cwd) {
   } catch {
     return null;
   }
+}
+
+function getWorkspaceScope(file) {
+  const parts = file.split("/");
+  if (parts.length < 3) return null;
+  if (!WORKSPACE_ROOTS.has(parts[0])) return null;
+  return `${parts[0]}/${parts[1]}`;
 }
 
 export async function run(payload) {
@@ -136,7 +145,22 @@ export async function run(payload) {
     );
   }
 
-  // ── 3. 关注点混合检查（业务代码 + 配置/基础设施） ──
+  // ── 3. monorepo 包/项目目录扩散检查 ──
+
+  const workspaceScopes = new Set();
+  for (const f of files) {
+    const scope = getWorkspaceScope(f);
+    if (scope) workspaceScopes.add(scope);
+  }
+
+  if (workspaceScopes.size >= 2) {
+    issues.push(
+      `变更同时触及多个包/项目目录（${[...workspaceScopes].sort().join("、")}），` +
+        "建议按包拆分提交：一次只处理一个插件/包/应用目录"
+    );
+  }
+
+  // ── 4. 关注点混合检查（业务代码 + 配置/基础设施） ──
 
   let hasSource = false;
   let hasConfig = false;

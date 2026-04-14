@@ -10,6 +10,8 @@ test("git-workflow-context 注入 Git 工作流纪律", async () => {
   const result = await run({ cwd: resolve(".") });
   assert.equal(result?.decision, "context");
   assert.match(result?.reason ?? "", /📌 Git 工作流/);
+  assert.match(result?.reason ?? "", /共享工作区/);
+  assert.match(result?.reason ?? "", /git worktree/);
   assert.match(result?.reason ?? "", /git status --short/);
   assert.match(result?.reason ?? "", /git diff --cached --stat/);
   assert.match(result?.reason ?? "", /git reset --hard/);
