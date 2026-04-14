@@ -1,0 +1,13 @@
+{
+  "name": "vue-expert",
+  "version": "0.1.1",
+  "description": "Vue 专家插件：Vue 3 JavaScript 组件、Composition API、JSDoc 类型标注与 Vite 配置",
+  "author": {
+    "name": "ai-experts"
+  },
+  "license": "MIT",
+  "keywords": ["vue", "vue3", "vite", "composables", "pinia", "jsdoc"],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json",
+  "dependencies": ["javascript-expert"]
+}
