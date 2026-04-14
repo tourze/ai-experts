@@ -23,6 +23,7 @@
 | Stop | `desktop-notification` | 任务完成通知 |
 | SessionStart | `context-injector` | 会话上下文注入 |
 | UserPromptSubmit | `debug-methodology-primer` | 调试方法论引导 |
+| UserPromptSubmit | `comment-discipline-primer` | 注释纪律引导（WHY/WORKAROUND/契约/并发） |
 | UserPromptSubmit | `feedback-detector` | 用户反馈检测 |
 | UserPromptSubmit | `investigation-primer` | 调查先行引导 |
 | UserPromptSubmit | `over-engineering-primer` | 过度工程化检测 |
@@ -39,3 +40,10 @@ claude --plugin-dir /path/to/plugins/coding-expert
 ```
 
 建议与语言专用插件配合使用。
+
+## 验证
+
+```bash
+find hooks -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
+node --test tests/*.test.mjs
+```
