@@ -1,0 +1,11 @@
+{
+  "name": "swift-expert",
+  "version": "0.1.0",
+  "description": "Swift/Apple 平台专家插件：Swift Concurrency、SwiftUI 性能与模式、HIG 设计规范、App Store 审核与发布",
+  "author": {
+    "name": "ai-experts"
+  },
+  "keywords": ["swift", "swiftui", "ios", "macos", "xcode", "app-store"],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
+}

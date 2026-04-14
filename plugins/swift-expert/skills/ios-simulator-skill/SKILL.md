@@ -1,0 +1,76 @@
+---
+name: ios-simulator-skill
+description: 面向 iOS 模拟器的构建、调试、导航、日志、截图与设备生命周期脚本集合，适用于自动化验证、SwiftUI / UIKit 调试和提审前回归。
+---
+
+# iOS 模拟器自动化
+
+## 适用场景
+
+- 需要在模拟器里构建、运行、排查 iOS 应用问题。
+- 需要通过无障碍树导航界面，而不是靠像素坐标硬点。
+- 需要抓日志、截图、UI 树、权限状态、状态栏和推送来复现问题。
+- 需要批量启动、关闭、擦除、创建或选择模拟器。
+
+## 核心约束
+
+- 仅把 `scripts/` 目录下的可执行 Python / Shell 脚本当作入口；`scripts/common/` 与 `scripts/xcode/` 是内部模块，不直接执行。
+- 优先走无障碍树：先 `screen_mapper.py` / `navigator.py`，最后才用坐标。
+- 大多数脚本在未传 `--udid` 时会自动选择 booted simulator；`log_monitor.py` 例外，参数名是 `--device-udid`。
+- `visual_diff.py` 与截图缩放能力依赖 `Pillow`；若缺失，需要先安装对应 Python 包。
+
+## 代码模式
+
+### 环境与设备
+
+```bash
+bash scripts/sim_health_check.sh
+python3 scripts/sim_list.py --json
+python3 scripts/simulator_selector.py --list --json
+python3 scripts/simctl_create.py --list-devices --json
+python3 scripts/simctl_create.py --list-runtimes --json
+```
+
+### 启动 App 与交互
+
+```bash
+python3 scripts/app_launcher.py --launch com.example.app
+python3 scripts/screen_mapper.py --hints
+python3 scripts/navigator.py --find-text "Login" --tap
+python3 scripts/keyboard.py --type "user@example.com"
+python3 scripts/gesture.py --scroll down --scroll-amount 3
+```
+
+### 调试与构建
+
+```bash
+python3 scripts/app_state_capture.py --app-bundle-id com.example.app --size half
+python3 scripts/log_monitor.py --app com.example.app --duration 30s --json
+python3 scripts/build_and_test.py --project MyApp.xcodeproj --test
+python3 scripts/build_and_test.py --list-xcresults --json
+```
+
+### 设备状态与权限
+
+```bash
+python3 scripts/status_bar.py --preset testing
+python3 scripts/privacy_manager.py --grant camera --bundle-id com.example.app
+python3 scripts/push_notification.py --bundle-id com.example.app --title "Hello" --body "World"
+python3 scripts/simctl_boot.py --name "iPhone 17 Pro" --wait-ready
+python3 scripts/simctl_shutdown.py --all
+```
+
+## 检查清单
+
+- 先跑 `bash scripts/sim_health_check.sh`，确认 `xcrun`、`simctl`、Python 环境可用。
+- 每次交互前先看 `screen_mapper.py` 或 `navigator.py --list`，不要盲点。
+- 需要日志时确认参数名：`log_monitor.py` 用 `--device-udid`，不是 `--udid`。
+- 需要脚本化输出时统一使用 `--json`；需要完整参数时直接跑 `python3 scripts/<tool>.py --help`。
+- 交叉引用：性能瓶颈排查看 `swiftui-performance-audit`；审核流程复现看 `apple-appstore-reviewer`。
+
+## 反模式
+
+- 直接执行 `scripts/common/__init__.py`、`scripts/xcode/__init__.py` 这类内部模块。
+- 跳过无障碍树，直接用截图坐标做主导航方案。
+- 在没有 booted simulator 的情况下默认认为脚本会自动创建设备。
+- 文档里穷举一大堆过时参数，而不以 `--help` 作为最终真值。
