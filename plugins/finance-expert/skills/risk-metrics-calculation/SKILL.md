@@ -1,0 +1,127 @@
+---
+name: risk-metrics-calculation
+description: 用于投资组合风险指标计算，包括 VaR、CVaR、Sharpe、Sortino、回撤与滚动风险分析。适合 portfolio risk、risk limits、risk monitoring 等任务。
+---
+
+# 风险指标技能
+
+## 适用场景
+
+- 需要衡量收益波动、尾部风险、最大回撤和风险调整后收益。
+- 需要构建投组级风险监控，而不是公司经营分析或企业估值。
+- 需要把日收益率序列转换成 Sharpe、Sortino、VaR、CVaR、Max Drawdown 等指标。
+- 若问题是公司经营质量、预算偏差或滚动预测，转到 [financial-analyst](../financial-analyst/SKILL.md)。
+- 若问题是企业估值模型与假设敏感性，转到 [creating-financial-models](../creating-financial-models/SKILL.md)。
+
+## 核心约束
+
+- 示例代码依赖 `numpy` 与 `pandas`，不依赖 `scipy`。
+- 输入收益率必须使用小数制，例如 `0.01` 代表 1%，不能混用百分数。
+- 年化因子要与数据频率一致；以下示例默认日频、252 个交易日。
+- 历史 VaR/CVaR 只描述样本分布，不等于极端行情的完整上界。
+- 没有仓库内置 CLI；这是方法技能，代码模式需要按任务落地到 Notebook、脚本或服务。
+
+## 代码模式
+
+### 模式 1：单资产核心风险指标
+
+```python
+import numpy as np
+import pandas as pd
+
+returns = pd.Series([0.012, -0.008, 0.004, -0.021, 0.015, 0.006, -0.003])
+ann_factor = 252
+rf_rate = 0.02
+
+volatility = returns.std(ddof=1) * np.sqrt(ann_factor)
+downside = returns[returns < 0]
+downside_dev = downside.std(ddof=1) * np.sqrt(ann_factor) if len(downside) > 1 else 0.0
+var_95 = -np.percentile(returns, 5)
+cvar_95 = -returns[returns <= -var_95].mean()
+
+cumulative = (1 + returns).cumprod()
+running_max = cumulative.cummax()
+drawdown = (cumulative - running_max) / running_max
+
+excess_return = returns.mean() * ann_factor - rf_rate
+sharpe = excess_return / volatility if volatility > 0 else 0.0
+sortino = excess_return / downside_dev if downside_dev > 0 else 0.0
+
+summary = {
+    "annual_volatility": float(volatility),
+    "var_95": float(var_95),
+    "cvar_95": float(cvar_95),
+    "max_drawdown": float(drawdown.min()),
+    "sharpe_ratio": float(sharpe),
+    "sortino_ratio": float(sortino),
+}
+print(summary)
+```
+
+### 模式 2：投资组合波动率与分散化比率
+
+```python
+import numpy as np
+import pandas as pd
+
+returns = pd.DataFrame(
+    {
+        "equity": [0.012, -0.008, 0.004, -0.021, 0.015],
+        "bond": [0.002, 0.001, -0.001, 0.003, 0.002],
+        "gold": [0.004, 0.006, -0.002, 0.007, -0.001],
+    }
+)
+weights = pd.Series({"equity": 0.6, "bond": 0.25, "gold": 0.15})
+ann_factor = 252
+
+cov_matrix = returns.cov() * ann_factor
+portfolio_vol = float(np.sqrt(weights @ cov_matrix @ weights))
+asset_vols = returns.std(ddof=1) * np.sqrt(ann_factor)
+diversification_ratio = float((weights * asset_vols).sum() / portfolio_vol) if portfolio_vol > 0 else 1.0
+
+print(
+    {
+        "portfolio_volatility": portfolio_vol,
+        "diversification_ratio": diversification_ratio,
+        "correlation_matrix": returns.corr().round(4).to_dict(),
+    }
+)
+```
+
+### 模式 3：滚动风险监控
+
+```python
+import numpy as np
+import pandas as pd
+
+returns = pd.Series(np.linspace(-0.02, 0.02, 90))
+window = 21
+
+rolling_vol = returns.rolling(window).std(ddof=1) * np.sqrt(252)
+rolling_var_95 = returns.rolling(window).apply(lambda x: -np.percentile(x, 5), raw=True)
+
+print(
+    pd.DataFrame(
+        {
+            "rolling_volatility": rolling_vol,
+            "rolling_var_95": rolling_var_95,
+        }
+    ).tail()
+)
+```
+
+## 检查清单
+
+- 收益率是否统一为同一频率、同一计量方式。
+- 风险自由利率是否与年化方式一致。
+- 组合权重是否和为 1，且索引与收益列完全对齐。
+- 计算 CVaR 时是否基于同一个 VaR 阈值样本集。
+- 做滚动窗口时是否确认窗口长度足以覆盖一个完整风险观察周期。
+- 需要把风险结论放回企业经营上下文时，是否回到 [financial-analyst](../financial-analyst/SKILL.md) 或 [creating-financial-models](../creating-financial-models/SKILL.md) 联动解释。
+
+## 反模式
+
+- 不要把百分数 `5` 当成收益率 `0.05`。
+- 不要只报 VaR 而省略 CVaR、回撤或波动率。
+- 不要在窗口过短、样本极少时输出看似精确的风险结论。
+- 不要把企业估值敏感性分析误当成投资组合风险监控。

@@ -1,0 +1,115 @@
+{
+  "historical_periods": [
+    {
+      "period": "Q1 2024",
+      "revenue": 10500000,
+      "gross_profit": 4200000,
+      "operating_income": 1575000
+    },
+    {
+      "period": "Q2 2024",
+      "revenue": 11200000,
+      "gross_profit": 4480000,
+      "operating_income": 1680000
+    },
+    {
+      "period": "Q3 2024",
+      "revenue": 11800000,
+      "gross_profit": 4720000,
+      "operating_income": 1770000
+    },
+    {
+      "period": "Q4 2024",
+      "revenue": 12500000,
+      "gross_profit": 5000000,
+      "operating_income": 1875000
+    },
+    {
+      "period": "Q1 2025",
+      "revenue": 12800000,
+      "gross_profit": 5120000,
+      "operating_income": 1920000
+    },
+    {
+      "period": "Q2 2025",
+      "revenue": 13500000,
+      "gross_profit": 5400000,
+      "operating_income": 2025000
+    },
+    {
+      "period": "Q3 2025",
+      "revenue": 14100000,
+      "gross_profit": 5640000,
+      "operating_income": 2115000
+    },
+    {
+      "period": "Q4 2025",
+      "revenue": 15700000,
+      "gross_profit": 6280000,
+      "operating_income": 2355000
+    }
+  ],
+  "drivers": {
+    "units": {
+      "base_units": 5000,
+      "growth_rate": 0.04
+    },
+    "pricing": {
+      "base_price": 2800,
+      "annual_increase": 0.03
+    }
+  },
+  "assumptions": {
+    "revenue_growth_rate": 0.08,
+    "gross_margin": 0.4,
+    "opex_pct_revenue": 0.25,
+    "forecast_periods": 12
+  },
+  "scenarios": {
+    "base": {
+      "growth_adjustment": 0.0,
+      "margin_adjustment": 0.0
+    },
+    "bull": {
+      "growth_adjustment": 0.04,
+      "margin_adjustment": 0.03
+    },
+    "bear": {
+      "growth_adjustment": -0.03,
+      "margin_adjustment": -0.02
+    }
+  },
+  "cash_flow_inputs": {
+    "opening_cash_balance": 2500000,
+    "weekly_revenue": 350000,
+    "collection_rate": 0.85,
+    "collection_lag_weeks": 2,
+    "weekly_payroll": 160000,
+    "weekly_rent": 15000,
+    "weekly_operating": 45000,
+    "weekly_other": 20000,
+    "one_time_items": [
+      {
+        "week": 3,
+        "amount": -250000,
+        "description": "Annual insurance premium"
+      },
+      {
+        "week": 6,
+        "amount": 500000,
+        "description": "Customer prepayment"
+      },
+      {
+        "week": 9,
+        "amount": -180000,
+        "description": "Equipment purchase"
+      },
+      {
+        "week": 13,
+        "amount": -75000,
+        "description": "Quarterly tax payment"
+      }
+    ]
+  },
+  "forecast_periods": 12
+}

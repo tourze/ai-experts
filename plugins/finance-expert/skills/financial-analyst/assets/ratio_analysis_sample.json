@@ -1,0 +1,30 @@
+{
+  "income_statement": {
+    "revenue": 50000000,
+    "cost_of_goods_sold": 30000000,
+    "operating_income": 8000000,
+    "ebitda": 10000000,
+    "net_income": 5500000,
+    "interest_expense": 1200000
+  },
+  "balance_sheet": {
+    "total_assets": 40000000,
+    "current_assets": 15000000,
+    "cash_and_equivalents": 5000000,
+    "accounts_receivable": 6000000,
+    "inventory": 3500000,
+    "total_equity": 22000000,
+    "total_debt": 12000000,
+    "current_liabilities": 8000000
+  },
+  "cash_flow": {
+    "operating_cash_flow": 7500000,
+    "total_debt_service": 3000000
+  },
+  "market_data": {
+    "share_price": 45.0,
+    "shares_outstanding": 10000000,
+    "market_cap": 450000000,
+    "earnings_growth_rate": 0.12
+  }
+}

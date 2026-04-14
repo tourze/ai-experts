@@ -1,0 +1,27 @@
+{
+  "historical": {
+    "revenue": [38000000, 42000000, 45000000, 48000000, 50000000],
+    "net_income": [3800000, 4200000, 4500000, 5000000, 5500000],
+    "net_debt": 7000000,
+    "shares_outstanding": 10000000
+  },
+  "assumptions": {
+    "projection_years": 5,
+    "revenue_growth_rates": [0.1, 0.09, 0.08, 0.07, 0.06],
+    "fcf_margins": [0.12, 0.13, 0.13, 0.14, 0.14],
+    "default_revenue_growth": 0.05,
+    "default_fcf_margin": 0.1,
+    "terminal_growth_rate": 0.025,
+    "terminal_ebitda_margin": 0.2,
+    "exit_ev_ebitda_multiple": 12.0,
+    "wacc_inputs": {
+      "risk_free_rate": 0.04,
+      "equity_risk_premium": 0.06,
+      "beta": 1.1,
+      "cost_of_debt": 0.055,
+      "tax_rate": 0.25,
+      "debt_weight": 0.3,
+      "equity_weight": 0.7
+    }
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "company": "Acme Corp",
+  "period": "Q4 2025",
+  "line_items": [
+    {
+      "name": "Product Revenue",
+      "type": "revenue",
+      "department": "Sales",
+      "category": "Revenue",
+      "actual": 12500000,
+      "budget": 12000000,
+      "prior_year": 10800000
+    },
+    {
+      "name": "Service Revenue",
+      "type": "revenue",
+      "department": "Sales",
+      "category": "Revenue",
+      "actual": 3200000,
+      "budget": 3500000,
+      "prior_year": 2900000
+    },
+    {
+      "name": "Cost of Goods Sold",
+      "type": "expense",
+      "department": "Operations",
+      "category": "COGS",
+      "actual": 7800000,
+      "budget": 7200000,
+      "prior_year": 6700000
+    },
+    {
+      "name": "Salaries & Wages",
+      "type": "expense",
+      "department": "Human Resources",
+      "category": "Personnel",
+      "actual": 2100000,
+      "budget": 2200000,
+      "prior_year": 1950000
+    },
+    {
+      "name": "Marketing & Advertising",
+      "type": "expense",
+      "department": "Marketing",
+      "category": "Sales & Marketing",
+      "actual": 850000,
+      "budget": 750000,
+      "prior_year": 680000
+    },
+    {
+      "name": "Software & Technology",
+      "type": "expense",
+      "department": "Engineering",
+      "category": "Technology",
+      "actual": 420000,
+      "budget": 400000,
+      "prior_year": 350000
+    },
+    {
+      "name": "Office & Facilities",
+      "type": "expense",
+      "department": "Operations",
+      "category": "G&A",
+      "actual": 180000,
+      "budget": 200000,
+      "prior_year": 175000
+    },
+    {
+      "name": "Travel & Entertainment",
+      "type": "expense",
+      "department": "Sales",
+      "category": "Sales & Marketing",
+      "actual": 95000,
+      "budget": 120000,
+      "prior_year": 88000
+    },
+    {
+      "name": "Professional Services",
+      "type": "expense",
+      "department": "Finance",
+      "category": "G&A",
+      "actual": 310000,
+      "budget": 250000,
+      "prior_year": 220000
+    },
+    {
+      "name": "R&D Expenses",
+      "type": "expense",
+      "department": "Engineering",
+      "category": "R&D",
+      "actual": 1500000,
+      "budget": 1400000,
+      "prior_year": 1200000
+    }
+  ]
+}
