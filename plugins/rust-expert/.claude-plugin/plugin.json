@@ -1,0 +1,11 @@
+{
+  "name": "rust-expert",
+  "version": "0.2.0",
+  "description": "Rust 开发专家插件：惯用 Rust 规范、Tokio 异步模式，以及 Edit|Write 后的调试语句、编码与文件预算守卫",
+  "author": {
+    "name": "ai-experts"
+  },
+  "keywords": ["rust", "cargo", "tokio", "async", "ownership", "clippy"],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
+}
