@@ -1,179 +1,63 @@
 ---
 name: laravel-verification
-description: Laravel 项目验证循环：环境检查、代码检查、静态分析、带覆盖率的测试、安全扫描和部署就绪检查。
-origin: ECC
+description: Laravel 发布前验证技能。用于执行格式化、静态分析、测试、依赖审计、迁移检查、缓存预热和队列调度自检；当用户提到 Laravel 自检、发版前检查、CI 流水线、composer audit、phpstan、pint 或 migrate --pretend 时启用。
 ---
 
 # Laravel 验证循环
 
-在发起 PR 前、进行重大更改后以及部署前运行。
+## 适用场景
 
-## 使用时机
+- 提交 PR 前、重构后、依赖升级后、预发布前需要跑一套完整的 Laravel 验证。
+- 需要把“本地能跑”提升为“格式、静态分析、测试、迁移和运行时配置都过关”。
+- 需要把验证命令落到 CI 或交接文档中。
+- 代码级实现和安全基线分别参考 [laravel-specialist](../laravel-specialist/SKILL.md) 与 [laravel-security](../laravel-security/SKILL.md)。
 
-* 在为一个 Laravel 项目开启拉取请求之前
-* 在重大重构或依赖升级之后
-* 为预生产或生产环境进行部署前验证
-* 运行完整的 代码检查 -> 测试 -> 安全检查 -> 部署就绪 流水线
+## 核心约束
 
-## 工作原理
+- 环境检查是第一关：PHP、Composer、Artisan、`.env` 与数据库连接不对时，后续命令没有意义。
+- 格式化和静态分析先于全量测试；测试先于迁移与部署缓存。
+- 迁移检查不仅看 `up()`，还要看 `down()`、幂等性、命名和破坏性变更。
+- 缓存预热、调度器、队列工作者属于运行时契约，不能只在 README 里假定它们存在。
+- 任何一步失败都必须阻断“准备发布”的结论，不能用手工解释覆盖掉红灯。
 
-* 按顺序运行从环境检查到部署就绪的各个阶段，每一层都建立在前一层的基础上。
-* 环境和 Composer 检查是所有其他步骤的关卡；如果它们失败，立即停止。
-* 代码检查/静态分析应在运行完整测试和覆盖率检查前确保通过。
-* 安全性和迁移审查在测试之后进行，以便在涉及数据或发布步骤之前验证行为。
-* 构建/部署就绪以及队列/调度器检查是最后的关卡；任何失败都会阻止发布。
-
-## 第一阶段：环境检查
+## 代码模式
 
 ```bash
 php -v
 composer --version
 php artisan --version
-```
-
-* 验证 `.env` 文件存在且包含必需的键
-* 确认生产环境已设置 `APP_DEBUG=false`
-* 确认 `APP_ENV` 与目标部署环境匹配（`production`、`staging`）
-
-如果在本地使用 Laravel Sail：
-
-```bash
-./vendor/bin/sail php -v
-./vendor/bin/sail artisan --version
-```
-
-## 第一阶段补充：Composer 和自动加载
-
-```bash
 composer validate
 composer dump-autoload -o
-```
-
-## 第二阶段：代码检查和静态分析
-
-```bash
 vendor/bin/pint --test
 vendor/bin/phpstan analyse
-```
-
-如果你的项目使用 Psalm 而不是 PHPStan：
-
-```bash
-vendor/bin/psalm
-```
-
-## 第三阶段：测试和覆盖率
-
-```bash
 php artisan test
-```
-
-覆盖率（CI 环境）：
-
-```bash
-XDEBUG_MODE=coverage php artisan test --coverage
-```
-
-CI 示例（格式化 -> 静态分析 -> 测试）：
-
-```bash
-vendor/bin/pint --test
-vendor/bin/phpstan analyse
-XDEBUG_MODE=coverage php artisan test --coverage
-```
-
-## 第四阶段：安全和依赖项检查
-
-```bash
 composer audit
-```
-
-## 第五阶段：数据库和迁移
-
-```bash
 php artisan migrate --pretend
 php artisan migrate:status
 ```
 
-* 仔细审查破坏性迁移
-* 确保迁移文件名遵循 `Y_m_d_His_*` 格式（例如，`2025_03_14_154210_create_orders_table.php`）并清晰地描述变更
-* 确保可以执行回滚
-* 验证 `down()` 方法，避免在没有明确备份的情况下造成不可逆的数据丢失
-
-## 第六阶段：构建和部署就绪
-
 ```bash
 php artisan optimize:clear
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
-```
-
-* 确保在生产配置下缓存预热成功
-* 验证队列工作者和调度器已配置
-* 确认在目标环境中 `storage/` 和 `bootstrap/cache/` 目录可写
-
-## 第七阶段：队列和调度器检查
-
-```bash
 php artisan schedule:list
 php artisan queue:failed
-```
-
-如果使用了 Horizon：
-
-```bash
 php artisan horizon:status
 ```
 
-如果 `queue:monitor` 命令可用，可以用它来检查积压作业而无需处理它们：
+## 检查清单
 
-```bash
-php artisan queue:monitor default --max=100
-```
+- 确认 PHP、Composer、Artisan 和 `.env` 与目标环境一致，`APP_DEBUG` 在生产为 `false`。
+- `pint`、`phpstan` / `psalm`、测试、`composer audit` 全部通过后再看迁移与缓存命令。
+- 审查迁移文件名、破坏性 SQL、`down()` 回滚路径和是否需要灰度步骤。
+- 运行缓存预热后确认没有闭包路由、环境变量缺失或不可写目录问题。
+- 检查调度器、队列、Horizon、失败作业和健康检查队列是否符合目标环境配置。
 
-主动验证（仅限预生产环境）：向一个专用队列分发一个无操作作业，并运行一个单独的工作者来处理它（确保配置了一个非 `sync` 的队列连接）。
+## 反模式
 
-```bash
-php artisan tinker --execute="dispatch((new App\\Jobs\\QueueHealthcheck())->onQueue('healthcheck'))"
-php artisan queue:work --once --queue=healthcheck
-```
-
-验证该作业产生了预期的副作用（日志条目、健康检查表行或指标）。
-
-仅在处理测试作业是安全的非生产环境中运行此检查。
-
-## 示例
-
-最小流程：
-
-```bash
-php -v
-composer --version
-php artisan --version
-composer validate
-vendor/bin/pint --test
-vendor/bin/phpstan analyse
-php artisan test
-composer audit
-php artisan migrate --pretend
-php artisan config:cache
-php artisan queue:failed
-```
-
-CI 风格流水线：
-
-```bash
-composer validate
-composer dump-autoload -o
-vendor/bin/pint --test
-vendor/bin/phpstan analyse
-XDEBUG_MODE=coverage php artisan test --coverage
-composer audit
-php artisan migrate --pretend
-php artisan optimize:clear
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-php artisan schedule:list
-```
+- 跳过静态分析，直接拿“测试通过”当发布凭证。
+- 只跑 `php artisan test`，完全不看 `composer audit` 和迁移副作用。
+- 在本地开发环境成功后，默认线上缓存、调度器和队列也会一样工作。
+- 把 `migrate --pretend` 当成数据库变更的全部审查手段。
+- 出现红灯时用“这次先发”掩盖环境、迁移或安全问题。

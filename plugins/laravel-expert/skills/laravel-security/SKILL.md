@@ -1,285 +1,80 @@
 ---
 name: laravel-security
-description: Laravel 安全最佳实践，涵盖认证/授权、验证、CSRF、批量赋值、文件上传、密钥管理、速率限制和安全部署。
-origin: ECC
+description: Laravel 安全基线技能。用于认证授权、输入验证、CSRF、批量赋值、文件上传、速率限制、签名链接和部署加固；当用户提到 Sanctum、Policy、FormRequest、文件上传安全、CORS、安全头或密钥管理时启用。
 ---
 
-# Laravel 安全最佳实践
+# Laravel 安全基线
 
-针对 Laravel 应用程序的全面安全指导，以防范常见漏洞。
+## 适用场景
 
-## 何时启用
+- 新增登录、API 令牌、策略、上传接口、Webhook 或任何处理用户输入的 Laravel 端点。
+- 需要为 Laravel 应用补齐认证授权、验证、速率限制和部署安全设置。
+- 发布前检查安全配置、签名链接、CORS 与日志脱敏是否到位。
+- 需要实现层面的配套测试时参考 [laravel-tdd](../laravel-tdd/SKILL.md)；需要发布前全量自检时参考 [laravel-verification](../laravel-verification/SKILL.md)。
 
-* 添加身份验证或授权时
-* 处理用户输入和文件上传时
-* 构建新的 API 端点时
-* 管理密钥和环境设置时
-* 强化生产环境部署时
+## 核心约束
 
-## 工作原理
+- 认证不等于授权：`auth:sanctum` 保护入口，`Policy` / `authorize()` 决定资源权限。
+- 用户输入默认不可信，所有写入口先经 `FormRequest`，禁止把派生字段从请求直接灌进模型。
+- 批量赋值必须显式控制；敏感文件默认落到非公开磁盘，并校验 MIME、大小和扩展名。
+- 对登录、重置密码、OTP、导出等高风险入口设置独立限流，不共享宽松阈值。
+- `APP_DEBUG=false`、密钥轮换、日志脱敏和 HTTPS 代理配置属于基线，而不是可选项。
 
-* 中间件提供基础保护（通过 `VerifyCsrfToken` 实现 CSRF，通过 `SecurityHeaders` 实现安全标头）。
-* 守卫和策略强制执行访问控制（`auth:sanctum`、`$this->authorize`、策略中间件）。
-* 表单请求在输入到达服务之前进行验证和整形（`UploadInvoiceRequest`）。
-* 速率限制在身份验证控制之外增加滥用保护（`RateLimiter::for('login')`）。
-* 数据安全来自加密转换、批量赋值保护以及签名路由（`URL::temporarySignedRoute` + `signed` 中间件）。
-
-## 核心安全设置
-
-* 生产环境中设置 `APP_DEBUG=false`
-* `APP_KEY` 必须设置，并在泄露时轮换
-* 设置 `SESSION_SECURE_COOKIE=true` 和 `SESSION_SAME_SITE=lax`（对于敏感应用，使用 `strict`）
-* 配置受信任的代理以正确检测 HTTPS
-
-## 会话和 Cookie 强化
-
-* 设置 `SESSION_HTTP_ONLY=true` 以防止 JavaScript 访问
-* 对高风险流程使用 `SESSION_SAME_SITE=strict`
-* 在登录和权限变更时重新生成会话
-
-## 身份验证与令牌
-
-* 使用 Laravel Sanctum 或 Passport 进行 API 身份验证
-* 对于敏感数据，优先使用带有刷新流程的短期令牌
-* 在注销和账户泄露时撤销令牌
-
-路由保护示例：
+## 代码模式
 
 ```php
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+<?php
 
-Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
-    return $request->user();
-});
-```
+declare(strict_types=1);
 
-## 密码安全
+namespace App\Http\Requests;
 
-* 使用 `Hash::make()` 哈希密码，切勿存储明文
-* 使用 Laravel 的密码代理进行重置流程
+use App\Models\Invoice;
+use Illuminate\Foundation\Http\FormRequest;
 
-```php
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
-
-$validated = $request->validate([
-    'password' => ['required', 'string', Password::min(12)->letters()->mixedCase()->numbers()->symbols()],
-]);
-
-$user->update(['password' => Hash::make($validated['password'])]);
-```
-
-## 授权：策略与门面
-
-* 使用策略进行模型级授权
-* 在控制器和服务中强制执行授权
-
-```php
-$this->authorize('update', $project);
-```
-
-使用策略中间件进行路由级强制执行：
-
-```php
-use Illuminate\Support\Facades\Route;
-
-Route::put('/projects/{project}', [ProjectController::class, 'update'])
-    ->middleware(['auth:sanctum', 'can:update,project']);
-```
-
-## 验证与数据清理
-
-* 始终使用表单请求验证输入
-* 使用严格的验证规则和类型检查
-* 切勿信任请求负载中的派生字段
-
-## 批量赋值保护
-
-* 使用 `$fillable` 或 `$guarded`，避免使用 `Model::unguard()`
-* 优先使用 DTO 或显式的属性映射
-
-## SQL 注入防范
-
-* 使用 Eloquent 或查询构建器的参数绑定
-* 除非绝对必要，避免使用原生 SQL
-
-```php
-DB::select('select * from users where email = ?', [$email]);
-```
-
-## XSS 防范
-
-* Blade 默认转义输出（`{{ }}`）
-* 仅对可信的、已清理的 HTML 使用 `{!! !!}`
-* 使用专用库清理富文本
-
-## CSRF 保护
-
-* 保持 `VerifyCsrfToken` 中间件启用
-* 在表单中包含 `@csrf`，并为 SPA 请求发送 XSRF 令牌
-
-对于使用 Sanctum 的 SPA 身份验证，确保配置了有状态请求：
-
-```php
-// config/sanctum.php
-'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', 'localhost')),
-```
-
-## 文件上传安全
-
-* 验证文件大小、MIME 类型和扩展名
-* 尽可能将上传文件存储在公开路径之外
-* 如果需要，扫描文件以查找恶意软件
-
-```php
 final class UploadInvoiceRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return (bool) $this->user()?->can('upload-invoice');
+        return $this->user()?->can('upload', Invoice::class) ?? false;
     }
 
     public function rules(): array
     {
         return [
-            'invoice' => ['required', 'file', 'mimes:pdf', 'max:5120'],
+            'invoice' => ['required', 'file', 'mimetypes:application/pdf', 'max:5120'],
         ];
     }
 }
 ```
 
 ```php
-$path = $request->file('invoice')->store(
-    'invoices',
-    config('filesystems.private_disk', 'local') // 设置为非公开磁盘
-);
-```
+<?php
 
-## 速率限制
-
-* 在身份验证和写入端点应用 `throttle` 中间件
-* 对登录、密码重置和 OTP 使用更严格的限制
-
-```php
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 
-RateLimiter::for('login', function (Request $request) {
+RateLimiter::for('login', function (Request $request): array {
     return [
-        Limit::perMinute(5)->by($request->ip()),
+        Limit::perMinute(5)->by((string) $request->ip()),
         Limit::perMinute(5)->by(strtolower((string) $request->input('email'))),
     ];
 });
 ```
 
-## 密钥与凭据
+## 检查清单
 
-* 切勿将密钥提交到源代码管理
-* 使用环境变量和密钥管理器
-* 密钥暴露后及时轮换，并使会话失效
+- 每个受保护路由都同时检查“谁能进来”和“谁能操作这个资源”。
+- 文件上传是否验证 MIME、大小、目标磁盘和后续扫描流程。
+- 模型是否显式声明 `$fillable` 或 `$guarded`，避免 `Model::unguard()` 渗透全局。
+- 登录、重置密码、OTP、导出、Webhook 是否有独立速率限制和审计日志。
+- `APP_DEBUG`、`APP_KEY`、HTTPS 代理、Cookie 标志位、CORS 和安全头是否在目标环境真实生效。
 
-## 加密属性
+## 反模式
 
-对静态的敏感列使用加密转换。
-
-```php
-protected $casts = [
-    'api_token' => 'encrypted',
-];
-```
-
-## 安全标头
-
-* 在适当的地方添加 CSP、HSTS 和框架保护
-* 使用受信任的代理配置来强制执行 HTTPS 重定向
-
-设置标头的中间件示例：
-
-```php
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
-
-final class SecurityHeaders
-{
-    public function handle(Request $request, \Closure $next): Response
-    {
-        $response = $next($request);
-
-        $response->headers->add([
-            'Content-Security-Policy' => "default-src 'self'",
-            'Strict-Transport-Security' => 'max-age=31536000', // 仅在所有子域都启用 HTTPS 时添加 includeSubDomains/preload
-            'X-Frame-Options' => 'DENY',
-            'X-Content-Type-Options' => 'nosniff',
-            'Referrer-Policy' => 'no-referrer',
-        ]);
-
-        return $response;
-    }
-}
-```
-
-## CORS 与 API 暴露
-
-* 在 `config/cors.php` 中限制来源
-* 对于经过身份验证的路由，避免使用通配符来源
-
-```php
-// config/cors.php
-return [
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
-    'allowed_methods' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-    'allowed_origins' => ['https://app.example.com'],
-    'allowed_headers' => [
-        'Content-Type',
-        'Authorization',
-        'X-Requested-With',
-        'X-XSRF-TOKEN',
-        'X-CSRF-TOKEN',
-    ],
-    'supports_credentials' => true,
-];
-```
-
-## 日志记录与 PII
-
-* 切勿记录密码、令牌或完整的卡片数据
-* 在结构化日志中编辑敏感字段
-
-```php
-use Illuminate\Support\Facades\Log;
-
-Log::info('User updated profile', [
-    'user_id' => $user->id,
-    'email' => '[REDACTED]',
-    'token' => '[REDACTED]',
-]);
-```
-
-## 依赖项安全
-
-* 定期运行 `composer audit`
-* 谨慎固定依赖项版本，并在出现 CVE 时及时更新
-
-## 签名 URL
-
-使用签名路由生成临时的、防篡改的链接。
-
-```php
-use Illuminate\Support\Facades\URL;
-
-$url = URL::temporarySignedRoute(
-    'downloads.invoice',
-    now()->addMinutes(15),
-    ['invoice' => $invoice->id]
-);
-```
-
-```php
-use Illuminate\Support\Facades\Route;
-
-Route::get('/invoices/{invoice}/download', [InvoiceController::class, 'download'])
-    ->name('downloads.invoice')
-    ->middleware('signed');
-```
+- 只加 `auth` 中间件就以为完成了授权。
+- 直接 `Post::create($request->all())` 或接受客户端上传的派生字段。
+- 把上传文件放在公开目录，再指望前端不去猜测路径。
+- 记录明文 token、密码、完整邮箱或卡号到日志。
+- 线上依赖 `APP_DEBUG=true` 或把密钥管理当成部署后再补的事情。

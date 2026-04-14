@@ -1,6 +1,13 @@
 {
   "name": "laravel-expert",
-  "version": "0.1.0",
-  "description": "Laravel 框架专家插件：Eloquent ORM、路由、队列、Livewire、安全最佳实践、TDD 工作流",
-  "keywords": ["laravel", "eloquent", "livewire", "blade"]
+  "version": "0.2.0",
+  "description": "Laravel 专家插件：Laravel 10+ 实现、架构模式、安全基线、TDD 与发布验证",
+  "license": "MIT",
+  "author": {
+    "name": "ai-experts"
+  },
+  "keywords": ["laravel", "eloquent", "sanctum", "livewire", "pest", "php"],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json",
+  "dependencies": ["php-expert"]
 }

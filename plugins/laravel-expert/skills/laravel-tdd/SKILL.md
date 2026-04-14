@@ -1,283 +1,86 @@
 ---
 name: laravel-tdd
-description: 使用 PHPUnit 和 Pest、工厂、数据库测试、模拟以及覆盖率目标进行 Laravel 的测试驱动开发。
-origin: ECC
+description: Laravel 测试驱动开发技能。用于使用 Pest 或 PHPUnit 为控制器、模型、策略、作业和 Sanctum API 编写测试；当用户提到 Laravel 测试、Pest、PHPUnit、RefreshDatabase、Queue::fake、HTTP fake 或覆盖率目标时启用。
 ---
 
 # Laravel TDD 工作流
 
-使用 PHPUnit 和 Pest 为 Laravel 应用程序进行测试驱动开发，覆盖率（单元 + 功能）达到 80% 以上。
+## 适用场景
 
-## 使用时机
+- Laravel 新功能、Bug 修复、重构、授权规则或副作用链路需要先写测试再实现。
+- 需要测试 HTTP 端点、Eloquent 模型、策略、队列作业、通知和 Sanctum 认证。
+- 需要把回归范围从“手点一下”提升到可重复执行的自动化验证。
+- 发布前整体验证看 [laravel-verification](../laravel-verification/SKILL.md)，实现边界约束看 [laravel-patterns](../laravel-patterns/SKILL.md)。
 
-* Laravel 中的新功能或端点
-* 错误修复或重构
-* 测试 Eloquent 模型、策略、作业和通知
-* 除非项目已标准化使用 PHPUnit，否则新测试首选 Pest
+## 核心约束
 
-## 工作原理
+- 保持红绿重构循环：先写失败测试，再做最小实现，再清理结构。
+- 优先用 Pest 写新测试；只有项目已有 PHPUnit 约定或需要特定基类时才回退 PHPUnit。
+- 触库测试默认 `RefreshDatabase`；外部副作用默认 `Queue::fake()`、`Event::fake()`、`Http::fake()`。
+- 一个测试只验证一个行为边界：成功、授权失败、验证失败、外部依赖失败分开覆盖。
+- 覆盖率只是结果，不是借口；关键路径没有断言细节时，80% 也可能毫无意义。
 
-### 红-绿-重构循环
-
-1. 编写一个失败的测试
-2. 实施最小更改以通过测试
-3. 在保持测试通过的同时进行重构
-
-### 测试层级
-
-* **单元**：纯 PHP 类、值对象、服务
-* **功能**：HTTP 端点、身份验证、验证、策略
-* **集成**：数据库 + 队列 + 外部边界
-
-根据范围选择层级：
-
-* 对纯业务逻辑和服务使用**单元**测试。
-* 对 HTTP、身份验证、验证和响应结构使用**功能**测试。
-* 当需要验证数据库/队列/外部服务组合时使用**集成**测试。
-
-### 数据库策略
-
-* 对于大多数功能/集成测试使用 `RefreshDatabase`（每次测试运行运行一次迁移，然后在支持时将每个测试包装在事务中；内存数据库可能每次测试重新迁移）
-* 当模式已迁移且仅需要每次测试回滚时使用 `DatabaseTransactions`
-* 当每次测试都需要完整迁移/刷新且可以承担其开销时使用 `DatabaseMigrations`
-
-将 `RefreshDatabase` 作为触及数据库的测试的默认选择：对于支持事务的数据库，它每次测试运行运行一次迁移（通过静态标志）并将每个测试包装在事务中；对于 `:memory:` SQLite 或不支持事务的连接，它在每次测试前进行迁移。当模式已迁移且仅需要每次测试回滚时使用 `DatabaseTransactions`。
-
-### 测试框架选择
-
-* 新测试默认使用 **Pest**（当可用时）。
-* 仅在项目已标准化使用它或需要 PHPUnit 特定工具时使用 **PHPUnit**。
-
-## 示例
-
-### PHPUnit 示例
+## 代码模式
 
 ```php
+<?php
+
+use App\Jobs\PublishPost;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
-
-final class ProjectControllerTest extends TestCase
-{
-    use RefreshDatabase;
-
-    public function test_owner_can_create_project(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->postJson('/api/projects', [
-            'name' => 'New Project',
-        ]);
-
-        $response->assertCreated();
-        $this->assertDatabaseHas('projects', ['name' => 'New Project']);
-    }
-}
-```
-
-### 功能测试示例（HTTP 层）
-
-```php
-use App\Models\Project;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
-
-final class ProjectIndexTest extends TestCase
-{
-    use RefreshDatabase;
-
-    public function test_projects_index_returns_paginated_results(): void
-    {
-        $user = User::factory()->create();
-        Project::factory()->count(3)->for($user)->create();
-
-        $response = $this->actingAs($user)->getJson('/api/projects');
-
-        $response->assertOk();
-        $response->assertJsonStructure(['success', 'data', 'error', 'meta']);
-    }
-}
-```
-
-### Pest 示例
-
-```php
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-use function Pest\Laravel\actingAs;
-use function Pest\Laravel\assertDatabaseHas;
-
-uses(RefreshDatabase::class);
-
-test('owner can create project', function () {
-    $user = User::factory()->create();
-
-    $response = actingAs($user)->postJson('/api/projects', [
-        'name' => 'New Project',
-    ]);
-
-    $response->assertCreated();
-    assertDatabaseHas('projects', ['name' => 'New Project']);
-});
-```
-
-### Pest 功能测试示例（HTTP 层）
-
-```php
-use App\Models\Project;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-use function Pest\Laravel\actingAs;
-
-uses(RefreshDatabase::class);
-
-test('projects index returns paginated results', function () {
-    $user = User::factory()->create();
-    Project::factory()->count(3)->for($user)->create();
-
-    $response = actingAs($user)->getJson('/api/projects');
-
-    $response->assertOk();
-    $response->assertJsonStructure(['success', 'data', 'error', 'meta']);
-});
-```
-
-### 工厂和状态
-
-* 使用工厂生成测试数据
-* 为边缘情况定义状态（已归档、管理员、试用）
-
-```php
-$user = User::factory()->state(['role' => 'admin'])->create();
-```
-
-### 数据库测试
-
-* 使用 `RefreshDatabase` 保持干净状态
-* 保持测试隔离和确定性
-* 优先使用 `assertDatabaseHas` 而非手动查询
-
-### 持久性测试示例
-
-```php
-use App\Models\Project;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
-
-final class ProjectRepositoryTest extends TestCase
-{
-    use RefreshDatabase;
-
-    public function test_project_can_be_retrieved_by_slug(): void
-    {
-        $project = Project::factory()->create(['slug' => 'alpha']);
-
-        $found = Project::query()->where('slug', 'alpha')->firstOrFail();
-
-        $this->assertSame($project->id, $found->id);
-    }
-}
-```
-
-### 副作用模拟
-
-* 作业使用 `Bus::fake()`
-* 队列工作使用 `Queue::fake()`
-* 通知使用 `Mail::fake()` 和 `Notification::fake()`
-* 领域事件使用 `Event::fake()`
-
-```php
 use Illuminate\Support\Facades\Queue;
-
-Queue::fake();
-
-dispatch(new SendOrderConfirmation($order->id));
-
-Queue::assertPushed(SendOrderConfirmation::class);
-```
-
-```php
-use Illuminate\Support\Facades\Notification;
-
-Notification::fake();
-
-$user->notify(new InvoiceReady($invoice));
-
-Notification::assertSentTo($user, InvoiceReady::class);
-```
-
-### 身份验证测试（Sanctum）
-
-```php
 use Laravel\Sanctum\Sanctum;
 
-Sanctum::actingAs($user);
+uses(RefreshDatabase::class);
 
-$response = $this->getJson('/api/projects');
-$response->assertOk();
+it('发布文章时会将作业加入队列', function (): void {
+    Queue::fake();
+    $user = User::factory()->create();
+    $post = Post::factory()->draft()->for($user, 'author')->create();
+
+    Sanctum::actingAs($user);
+
+    $this->postJson("/api/posts/{$post->id}/publish")
+        ->assertAccepted();
+
+    Queue::assertPushed(PublishPost::class);
+});
 ```
 
-### HTTP 和外部服务
-
-* 使用 `Http::fake()` 隔离外部 API
-* 使用 `Http::assertSent()` 断言出站负载
-
-### 覆盖率目标
-
-* 对单元 + 功能测试强制执行 80% 以上的覆盖率
-* 在 CI 中使用 `pcov` 或 `XDEBUG_MODE=coverage`
-
-### 测试命令
-
-* `php artisan test`
-* `vendor/bin/phpunit`
-* `vendor/bin/pest`
-
-### 测试配置
-
-* 使用 `phpunit.xml` 设置 `DB_CONNECTION=sqlite` 和 `DB_DATABASE=:memory:` 以进行快速测试
-* 为测试保持独立的环境，以避免触及开发/生产数据
-
-### 授权测试
-
 ```php
-use Illuminate\Support\Facades\Gate;
+<?php
 
-$this->assertTrue(Gate::forUser($user)->allows('update', $project));
-$this->assertFalse(Gate::forUser($otherUser)->allows('update', $project));
-```
+declare(strict_types=1);
 
-### Inertia 功能测试
+namespace Tests\Unit\Actions;
 
-使用 Inertia.js 时，使用 Inertia 测试辅助函数来断言组件名称和属性。
+use App\Actions\Posts\NormalizeSlug;
+use PHPUnit\Framework\TestCase;
 
-```php
-use App\Models\User;
-use Inertia\Testing\AssertableInertia;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
-
-final class DashboardInertiaTest extends TestCase
+final class NormalizeSlugTest extends TestCase
 {
-    use RefreshDatabase;
-
-    public function test_dashboard_inertia_props(): void
+    public function test_it_normalizes_basic_titles(): void
     {
-        $user = User::factory()->create();
+        $action = new NormalizeSlug();
 
-        $response = $this->actingAs($user)->get('/dashboard');
-
-        $response->assertOk();
-        $response->assertInertia(fn (AssertableInertia $page) => $page
-            ->component('Dashboard')
-            ->where('user.id', $user->id)
-            ->has('projects')
-        );
+        self::assertSame('hello-laravel', $action->handle('Hello Laravel'));
     }
 }
 ```
 
-优先使用 `assertInertia` 而非原始 JSON 断言，以保持测试与 Inertia 响应一致。
+## 检查清单
+
+- 新增入口前先定义成功路径，再补授权失败和验证失败。
+- 触及数据库时确认是否需要工厂状态、软删除断言、资源断言或 JSON 结构断言。
+- 引入队列、事件、通知、HTTP 客户端时，先决定 fake 的边界和需要断言的副作用。
+- 测试名称直接描述业务行为，不写 `test_1` 或“should work”。
+- 合并前至少能回答：哪些行为被测试锁住了，哪些风险仍靠人工验证。
+
+## 反模式
+
+- 先把功能写完，再“顺手补两个 happy path 测试”。
+- 一个测试同时断言多个行为，失败后完全不知道哪条约束坏了。
+- 真实调用外部 HTTP、队列、邮件、存储，导致测试不稳定。
+- 为了让测试通过而绕开授权、中间件或验证逻辑。
+- 只看覆盖率数字，不检查断言是否真正保护了业务约束。
