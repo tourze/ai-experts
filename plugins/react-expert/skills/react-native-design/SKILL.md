@@ -1,0 +1,144 @@
+---
+name: react-native-design
+description: 适用于 React Native 样式系统、导航、手势与 Reanimated 动画实现。用户提到跨端移动 UI、React Navigation、Reanimated、Gesture Handler、平台差异化布局时使用。
+---
+
+# React Native 设计实现
+
+## 适用场景
+
+- 需要实现跨 iOS / Android 的 React Native 页面、组件和交互。
+- 需要落地 React Navigation、手势驱动交互、转场动画或复杂布局。
+- 需要处理响应式尺寸、平台差异、触控反馈与动效时序。
+- 如果重点是“性能排障”，优先看 [react-native-best-practices](../react-native-best-practices/SKILL.md)。
+- 如果目标平台是 macOS，优先看 [react-native-macos](../react-native-macos/SKILL.md)。
+
+## 核心约束
+
+- 默认使用 `StyleSheet.create` 固化样式；热路径里避免频繁新建内联样式对象。
+- 导航层级要稳定：路由负责页面切换，组件不要私下维护另一套“伪导航”状态。
+- 高帧率动画优先走 Reanimated worklet；不要把跟手动画压回 JS 线程。
+- 平台分支应尽量收敛在边界组件或样式层，不要把 `Platform.OS` 散落在整页 JSX 里。
+- 触控区、可见状态、加载态必须明确；移动端交互不能只看静态视觉。
+
+## 代码模式
+
+```tsx
+import { StyleSheet, Text, View } from "react-native";
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: "#ffffff",
+  },
+  card: {
+    borderRadius: 16,
+    padding: 16,
+    backgroundColor: "#111827",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: "#ffffff",
+  },
+  subtitle: {
+    marginTop: 8,
+    fontSize: 14,
+    lineHeight: 20,
+    color: "#cbd5e1",
+  },
+});
+
+export function ProfileCard() {
+  return (
+    <View style={styles.screen}>
+      <View style={styles.card}>
+        <Text style={styles.title}>Profile</Text>
+        <Text style={styles.subtitle}>React Native screen with stable styles.</Text>
+      </View>
+    </View>
+  );
+}
+```
+
+```tsx
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
+import { Pressable, Text } from "react-native";
+
+export function AnimatedCTA() {
+  const scale = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  return (
+    <Pressable
+      onPressIn={() => {
+        scale.value = withSpring(0.96);
+      }}
+      onPressOut={() => {
+        scale.value = withSpring(1);
+      }}
+    >
+      <Animated.View style={animatedStyle}>
+        <Text>Continue</Text>
+      </Animated.View>
+    </Pressable>
+  );
+}
+```
+
+```tsx
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Text, View } from "react-native";
+
+const Stack = createNativeStackNavigator();
+
+function HomeScreen() {
+  return (
+    <View>
+      <Text>Home</Text>
+    </View>
+  );
+}
+
+function DetailsScreen() {
+  return (
+    <View>
+      <Text>Details</Text>
+    </View>
+  );
+}
+
+export function AppStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShadowVisible: false }}>
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Details" component={DetailsScreen} />
+    </Stack.Navigator>
+  );
+}
+```
+
+## 检查清单
+
+- [ ] 样式是否主要通过 `StyleSheet.create` 或稳定引用构建？
+- [ ] 手势与动画是否放在 Reanimated / Gesture Handler 的正确线程模型上？
+- [ ] 页面切换是否通过导航栈管理，而不是手写隐藏/显示分支模拟导航？
+- [ ] 不同尺寸、刘海屏、安全区与横竖屏下是否都可用？
+- [ ] 平台分支是否集中在边界层，而不是散在业务组件内部？
+- [ ] 交互反馈、禁用态、加载态与错误态是否明确可见？
+
+## 反模式
+
+- 每次 render 都构造新 style 数组和匿名对象，导致列表子项频繁失稳。
+- 用 JS 线程动画处理拖拽、滑动、跟手缩放等高频交互。
+- 组件内部自己维护“当前页面”状态，和导航系统互相打架。
+- 整个页面充满 `Platform.OS === ...` 判断，维护成本失控。
+- 只做视觉稿还原，不处理可点击区域、禁用态、空态与错误态。

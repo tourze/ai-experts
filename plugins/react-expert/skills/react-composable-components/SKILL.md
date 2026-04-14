@@ -1,0 +1,125 @@
+---
+name: react-composable-components
+description: 适用于拆分臃肿 React 组件、设计 compound components、规范 props 透传与样式合并的技能。用户提到“组件太大”“想做可组合组件”“要抽设计系统组件”“要提高复用性/可维护性”时使用。
+---
+
+# React 可组合组件
+
+## 适用场景
+
+- 单个组件已经承担过多布局、状态和渲染分支，读写成本很高。
+- 需要把业务页面抽成设计系统组件，且保留插槽、样式扩展和 `ref` 能力。
+- 同一组件开始出现成串布尔 props，如 `hasHeader`、`showFooter`、`compact`、`withActions`。
+- 如果问题的根因是“外部状态订阅导致整棵树频繁重渲染”，优先看 [react-render-performance](../react-render-performance/SKILL.md)。
+
+## 核心约束
+
+- 一个组件只做一件事；结构组合优先于“超级配置对象”。
+- 复用型 UI 组件默认接受 `className`、`children`、`...props`，像原生元素一样透明。
+- 包装原生 DOM 元素时，默认补上 `forwardRef`，避免把焦点、测量、滚动能力截断。
+- 共享状态只在局部 compound components 内部用 Context；不要把业务级全局状态塞进组件库内部。
+- 样式覆盖必须可预期；Tailwind 场景下合并类名时要做去重。
+- 避免为了“复用”提炼出过浅抽象；抽象失败时宁可保留两处小重复。
+
+## 代码模式
+
+```tsx
+import {
+  createContext,
+  forwardRef,
+  useContext,
+  useMemo,
+  useState,
+  type ButtonHTMLAttributes,
+  type PropsWithChildren,
+} from "react";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
+
+type CardContextValue = {
+  dense: boolean;
+};
+
+const CardContext = createContext<CardContextValue | null>(null);
+
+type CardProps = PropsWithChildren<{
+  dense?: boolean;
+  className?: string;
+}>;
+
+export function Card({ dense = false, className, children }: CardProps) {
+  const value = useMemo(() => ({ dense }), [dense]);
+  return (
+    <CardContext.Provider value={value}>
+      <section className={cn("rounded-xl border bg-white shadow-sm", className)}>
+        {children}
+      </section>
+    </CardContext.Provider>
+  );
+}
+
+export function CardHeader({ className, children }: PropsWithChildren<{ className?: string }>) {
+  const ctx = useContext(CardContext);
+  return <header className={cn(ctx?.dense ? "p-4" : "p-6", className)}>{children}</header>;
+}
+
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: "primary" | "secondary";
+};
+
+export const CardAction = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant = "primary", ...props }, ref) => (
+    <button
+      ref={ref}
+      className={cn(
+        "rounded-md px-3 py-2 text-sm transition-colors",
+        variant === "primary"
+          ? "bg-slate-900 text-white"
+          : "bg-slate-100 text-slate-900",
+        className,
+      )}
+      {...props}
+    />
+  ),
+);
+
+CardAction.displayName = "CardAction";
+```
+
+```tsx
+import { useState } from "react";
+
+export function Example() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Card dense={open}>
+      <CardHeader className="flex items-center justify-between">
+        <h2 className="font-semibold">Project</h2>
+        <CardAction onClick={() => setOpen((value) => !value)}>
+          {open ? "收起" : "展开"}
+        </CardAction>
+      </CardHeader>
+    </Card>
+  );
+}
+```
+
+## 检查清单
+
+- [ ] 是否把大组件拆成了可独立测试、可复用的结构片段？
+- [ ] 可复用组件是否支持 `children`、`className` 与原生属性透传？
+- [ ] 包装原生元素时是否保留了 `ref`？
+- [ ] 样式合并是否会让调用方可靠覆盖默认样式？
+- [ ] 需要共享状态时，是否把 Context 作用域控制在局部复合组件内？
+- [ ] 是否优先通过组合表达结构，而不是继续叠加布尔 props？
+
+## 反模式
+
+- 单个组件同时负责数据获取、布局、交互和十几个视觉变体。
+- 用 `footerButtons={<... />}`、`headerContent={<... />}` 之类配置型 props 模拟插槽，却不暴露结构组件。
+- 不透传原生属性，导致 `aria-*`、`data-*`、`disabled`、`type` 等能力丢失。
+- 不做类名合并，调用方无法覆盖默认样式；或无节制叠加样式导致冲突难排查。
+- 为了复用而把完全不同语义的 UI 生硬塞进同一抽象。

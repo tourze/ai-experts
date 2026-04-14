@@ -1,0 +1,11 @@
+{
+  "name": "react-expert",
+  "version": "0.2.0",
+  "description": "React 生态专家插件：组件组合、Hooks 模式、性能优化、Server Components、React Native 跨平台开发",
+  "author": {
+    "name": "ai-experts"
+  },
+  "keywords": ["react", "hooks", "rsc", "react-native", "next", "vercel"],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
+}
