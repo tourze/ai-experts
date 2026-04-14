@@ -1,0 +1,11 @@
+{
+  "name": "skill-expert",
+  "version": "0.1.0",
+  "description": "Skill 工程专家插件：Skill 创建、评审、发现与治理",
+  "author": {
+    "name": "ai-experts"
+  },
+  "keywords": ["skills", "plugin", "evaluation", "prompting", "tooling"],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
+}
