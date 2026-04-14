@@ -1,0 +1,11 @@
+{
+  "name": "ruby-expert",
+  "version": "0.2.0",
+  "description": "Ruby 开发专家插件：Ruby / Rails / RSpec / Bundler / Rake 工作流与 Edit|Write 后守卫",
+  "author": {
+    "name": "ai-experts"
+  },
+  "keywords": ["ruby", "rails", "rspec", "bundler", "rake", "rubocop"],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
+}
