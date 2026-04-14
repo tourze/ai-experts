@@ -30,17 +30,7 @@ function readMessageFromFile(filePath, cwd) {
   }
 }
 
-function extractHeredocMessage(command) {
-  const match = command.match(
-    /(?:^|\s)(?:--message|-m|-[A-Za-z]*m[A-Za-z]*)\s+"?\$\(cat\s+<<'?EOF'?\n([\s\S]*?)\nEOF\s*\)"?/
-  );
-  return match?.[1]?.trim() || "";
-}
-
 function extractCommitMessage(command, cwd) {
-  const heredocMessage = extractHeredocMessage(command);
-  if (heredocMessage) return heredocMessage;
-
   const paragraphs = [];
 
   for (const args of findGitSubcommandInvocations(command, "commit")) {
