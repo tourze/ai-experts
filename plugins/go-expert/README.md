@@ -1,0 +1,45 @@
+# go-expert
+
+Go 开发专家插件，覆盖 Go 并发模式、Edit|Write 后的语法与静态检查、调试语句检测，以及编码守卫。
+
+## 目录结构
+
+- `.claude-plugin/plugin.json`：插件清单，显式注册 `skills/` 与 `hooks/hooks.json`。
+- `hooks/`：`hooks.json`、`dispatch.mjs` 与 4 个 PostToolUse 守卫脚本。
+- `skills/`：`go-concurrency-patterns` 并发模式技能。
+
+## Skills
+
+| Skill | 用途 |
+|-------|------|
+| `go-concurrency-patterns` | goroutine 生命周期、channel 关闭语义、errgroup/限流/优雅停机模式 |
+
+## Hooks
+
+| 事件 | Hook | 作用 |
+|------|------|------|
+| PostToolUse Edit\|Write | `syntax-go` | Go 语法检查；在存在 `go.mod` / `go.work` 时执行 `go vet` |
+| PostToolUse Edit\|Write | `debug-statement-guard` | fmt.Print\*() / spew.Dump() 检测 |
+| PostToolUse Edit\|Write | `encoding-guard` | 文件编码检查（BOM / 非 UTF-8，含 `.env.local` / `go.mod` 等点文件） |
+| PostToolUse Edit\|Write | `file-budget-guard` | Go 文件行数预算（800 行） |
+
+## 验证命令
+
+在插件目录执行：
+
+```bash
+jq empty .claude-plugin/plugin.json
+jq empty hooks/hooks.json
+find hooks tests -type f \( -name '*.mjs' -o -name '*.js' \) -print0 | xargs -0 -n1 node --check
+node --test tests/*.test.mjs
+node hooks/dispatch.mjs post-tool-use/edit-write </dev/null
+printf '{not-json' | node hooks/dispatch.mjs post-tool-use/edit-write
+```
+
+## 安装
+
+```bash
+claude --plugin-dir /path/to/plugins/go-expert
+```
+
+运行时依赖：`node` 必需；`go` / `gofmt` 可选。缺少 Go 工具链时，`syntax-go` 会自动回退到本地括号/字符串/注释闭合检查，不会因为缺少 `go.mod` 而误阻塞。
