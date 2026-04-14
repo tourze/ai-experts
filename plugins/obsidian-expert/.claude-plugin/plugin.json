@@ -1,0 +1,8 @@
+{
+  "name": "obsidian-expert",
+  "version": "0.1.0",
+  "description": "Obsidian 专家插件：Bases 视图/过滤/公式管理、CLI 笔记读写搜索",
+  "keywords": ["obsidian", "notes", "knowledge-base", "markdown", "bases", "cli"],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
+}
