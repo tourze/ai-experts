@@ -1,0 +1,13 @@
+{
+  "name": "nextjs-expert",
+  "version": "0.1.1",
+  "description": "Next.js 专家插件：App Router、Server Components、Server Actions、Vercel 部署",
+  "author": {
+    "name": "Jeffallan",
+    "url": "https://github.com/Jeffallan"
+  },
+  "license": "MIT",
+  "keywords": ["nextjs", "react", "app-router", "server-components", "vercel"],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
+}
