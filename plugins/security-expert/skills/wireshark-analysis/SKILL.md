@@ -1,0 +1,35 @@
+---
+name: wireshark-analysis
+description: "当需要分析 PCAP、提取关键会话、定位异常连接、排查协议行为或重建时间线时使用。"
+---
+
+# 网络流量分析
+
+## 适用场景
+- 需要对抓包文件进行过滤、跟流、字段提取和异常定位。
+- 需要与 [nmap](../nmap/SKILL.md) 的端口画像交叉验证暴露服务。
+- 需要把会话样本交给 [protocol-reverse-engineering](../protocol-reverse-engineering/SKILL.md) 深挖协议。
+
+## 核心约束
+- 先确认抓包点、时区和采集窗口，再解释流量。
+- 优先用显示过滤器收窄数据集，避免在全量流量里盲看。
+- 保存原始 PCAP，不在原始证据上改写。
+- 异常结论必须绑定具体流、时间和端点。
+
+## 代码模式
+```bash
+tshark -r capture.pcap -Y 'http || tls || dns'
+tshark -r capture.pcap -q -z conv,tcp
+tshark -r capture.pcap -Y 'ip.addr == 10.0.0.10 && tcp.port == 443' -V | sed -n '1,120p'
+```
+
+## 检查清单
+- 确认时间线、端点、协议层次和异常流。
+- 对关键连接跟流并导出证据。
+- 把基线流量与异常流量分开描述。
+- 必要时导出字段表供后续协议分析。
+
+## 反模式
+- 不加过滤直接在整包里肉眼翻。
+- 只截几张图，不保留可复核过滤表达式。
+- 没有时间线和端点就直接定性攻击行为。
