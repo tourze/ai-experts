@@ -1,0 +1,6 @@
+interface:
+  display_name: "GitHub CI 排障"
+  short_description: "定位失败的 GitHub Actions 检查并提炼根因"
+  icon_small: "./assets/github-small.svg"
+  icon_large: "./assets/github.png"
+  default_prompt: "检查当前仓库失败的 GitHub Actions 检查，提炼根因并给出聚焦修复方案。"

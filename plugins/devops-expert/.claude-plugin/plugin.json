@@ -1,0 +1,11 @@
+{
+  "name": "devops-expert",
+  "version": "0.1.1",
+  "description": "DevOps 专家插件：Docker/Helm/K8s、CI/CD、Nginx、监控告警与故障处置",
+  "author": {
+    "name": "ai-experts"
+  },
+  "keywords": ["docker", "kubernetes", "helm", "ci-cd", "nginx", "terraform", "github-actions"],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
+}

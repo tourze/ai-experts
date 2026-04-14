@@ -1,0 +1,6 @@
+interface:
+  display_name: "GitHub 评审处理"
+  short_description: "梳理当前分支 PR 的评论并推进修复"
+  icon_small: "./assets/github-small.svg"
+  icon_large: "./assets/github.png"
+  default_prompt: "检查当前分支关联 PR 的待处理评论，归类可执行项，并总结修复结果。"
