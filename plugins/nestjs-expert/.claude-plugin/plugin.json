@@ -1,0 +1,12 @@
+{
+  "name": "nestjs-expert",
+  "version": "0.1.1",
+  "description": "NestJS 专家插件：模块/控制器/服务/DTO/Guard/拦截器配置",
+  "license": "MIT",
+  "keywords": ["nestjs", "typescript", "express", "fastify", "decorator"],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json",
+  "dependencies": {
+    "required": ["typescript-expert"]
+  }
+}
