@@ -1,0 +1,74 @@
+---
+name: python-design-patterns
+description: 当用户要拆分职责、设计服务层、减少耦合、在组合与继承之间做选择，或重构 Python 组件结构时使用。
+---
+
+# Python 设计模式
+
+## 适用场景
+
+- 新建 service、repository、adapter 等核心组件时需要先定边界。
+- 现有类已经变成 God object，职责缠绕、难测、难改。
+- 需要在继承、组合、协议、工具函数之间做取舍。
+- 需要把类型约束补齐时，联动 [python-type-safety](../python-type-safety/SKILL.md)。
+- 需要把每层拆开后补测试时，联动 [python-testing-patterns](../python-testing-patterns/SKILL.md)。
+- 需要把边界错误表达清楚时，联动 [python-error-handling](../python-error-handling/SKILL.md)。
+
+## 核心约束
+
+- 先满足 KISS 和单一职责，再谈抽象优雅。
+- 组合优先于继承；只有存在稳定“is-a”关系时才继承。
+- 抽象要基于重复痛点，不要为了“以后可能会用到”提前造层。
+- 业务逻辑、I/O、框架适配、序列化分别放在不同边界。
+- 依赖方向必须单向清晰，避免低层反向 import 高层。
+
+## 代码模式
+
+```python
+from dataclasses import dataclass
+from typing import Protocol
+
+
+@dataclass(slots=True)
+class User:
+    id: str
+    email: str
+
+
+class UserRepository(Protocol):
+    def get(self, user_id: str) -> User | None:
+        ...
+
+
+class EmailSender(Protocol):
+    def send(self, recipient: str, subject: str, body: str) -> None:
+        ...
+
+
+class WelcomeService:
+    def __init__(self, repo: UserRepository, sender: EmailSender) -> None:
+        self._repo = repo
+        self._sender = sender
+
+    def run(self, user_id: str) -> None:
+        user = self._repo.get(user_id)
+        if user is None:
+            raise LookupError(f"user {user_id} not found")
+        self._sender.send(user.email, "欢迎加入", "账号已创建")
+```
+
+## 检查清单
+
+- 一个类是否只有一个主要变化原因。
+- I/O 能否被替身替换，从而让业务逻辑单测独立运行。
+- 抽象层是否真正减少了重复，而不是引入更多跳转。
+- 模块之间是否只暴露最小接口，而不是互相知道对方内部实现。
+- 代码结构是否让“读路径”和“改路径”都足够短。
+
+## 反模式
+
+- 看到两个相似函数就立刻上抽象框架。
+- 服务层直接拼 SQL，仓储层又偷偷写业务规则。
+- 用继承叠出一串基类，只为复用几行代码。
+- 构造函数参数越来越多，却不承认这是职责失控。
+- 用“灵活性”当借口，把边界和依赖方向做成一团。
