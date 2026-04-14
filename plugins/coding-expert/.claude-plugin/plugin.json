@@ -2,5 +2,9 @@
   "name": "coding-expert",
   "version": "0.1.0",
   "description": "通用编码守卫插件：文件编码检查（BOM/UTF-8）等语言无关的代码质量防护",
+  "author": {
+    "name": "tourze",
+    "email": "tourze@users.noreply.github.com"
+  },
   "keywords": ["encoding", "utf-8", "bom", "guard"]
 }
