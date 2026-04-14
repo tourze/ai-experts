@@ -9,7 +9,6 @@ import { run as runPluginSanity } from "../hooks/session-start/plugin-sanity.mjs
 const pluginRoot = resolve("plugins/tauri-expert");
 const scriptFiles = [
   "hooks/dispatch.mjs",
-  "hooks/session-start/dependency-check.mjs",
   "hooks/session-start/plugin-sanity.mjs",
 ].map((file) => resolve(pluginRoot, file));
 

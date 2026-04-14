@@ -31,15 +31,3 @@ test("dispatch 在空 stdin 下不崩溃", () => {
   }
 });
 
-test("dispatch 在非法 JSON stdin 下返回 report", () => {
-  const result = spawnSync("node", [dispatchPath, hookSubdir], {
-    cwd: pluginRoot,
-    input: "{not-json",
-    encoding: "utf-8",
-  });
-
-  assert.equal(result.status, 0);
-  const output = JSON.parse(result.stdout);
-  assert.equal(output.decision, "report");
-  assert.match(output.reason, /stdin 不是合法 JSON/);
-});

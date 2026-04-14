@@ -11,7 +11,6 @@ const hookFiles = [
   "hooks/post-tool-use/edit-write/syntax-doctrine-entity.mjs",
   "hooks/post-tool-use/edit-write/syntax-twig.mjs",
   "hooks/pre-tool-use/edit-write/protected-paths.mjs",
-  "hooks/session-start/dependency-check.mjs",
 ].map((file) => resolve(pluginRoot, file));
 
 test("所有 hook 脚本都能通过 node --check", () => {

@@ -5,7 +5,7 @@
 ## 目录结构
 
 - `.claude-plugin/plugin.json`：插件清单，显式注册 `skills/` 与 `hooks/hooks.json`。
-- `hooks/`：`hooks.json`、`dispatch.mjs` 与 `session-start/dependency-check.mjs`。
+- `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：7 个创意与可视化技能包。
 - `tests/`：`dispatch` 的最小回归测试。
 
@@ -21,12 +21,6 @@
 | `plantuml-ascii` | PlantUML ASCII 图表生成 |
 | `screenshot` | 桌面/系统截图 |
 
-## Hooks
-
-| 事件 | Hook | 作用 |
-|------|------|------|
-| `SessionStart` | `dependency-check` | 检查 Python/ffmpeg/PlantUML/Playwright/Manim 等运行依赖是否可用 |
-
 ## 验证命令
 
 在插件目录执行：
@@ -38,8 +32,6 @@ find hooks tests -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
 find skills -type f -name '*.py' -print0 | xargs -0 -n1 python3 -m py_compile
 find skills/screenshot/scripts -type f -name '*.swift' -print0 | xargs -0 -n1 swiftc -typecheck
 node --test tests/*.test.mjs
-node hooks/dispatch.mjs session-start </dev/null
-printf '{not-json' | node hooks/dispatch.mjs session-start
 npx -y tsx skills/baoyu-article-illustrator/scripts/build-batch.ts --help
 npx -y tsx skills/baoyu-compress-image/scripts/main.ts --help
 python3 skills/concept-to-image/scripts/render_to_image.py --help

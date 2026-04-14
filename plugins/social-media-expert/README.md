@@ -1,11 +1,11 @@
 # social-media-expert
 
-社交媒体运营专家插件，覆盖小红书图文、小红书商业增长、抖音内容分析、粉丝运营、私域引流与个人品牌建设。当前版本补齐了插件级 hook 入口、依赖自检、脚本语法校验和 SKILL 文档统一规范。
+社交媒体运营专家插件，覆盖小红书图文、小红书商业增长、抖音内容分析、粉丝运营、私域引流与个人品牌建设。当前版本补齐了插件级 hook 入口、脚本语法校验和 SKILL 文档统一规范。
 
 ## 目录结构
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/` 与 `hooks/`。
-- `hooks/`：`hooks.json`、`dispatch.mjs` 与 `session-start/dependency-check.mjs`。
+- `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：8 个社交媒体技能，均采用统一的中文结构。
 - `tests/`：覆盖 `dispatch`、脚本语法与 SKILL 链接校验。
 

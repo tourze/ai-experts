@@ -9,7 +9,6 @@ const pluginRoot = resolve("plugins/frontend-expert");
 
 const nodeScripts = [
   "hooks/dispatch.mjs",
-  "hooks/session-start/dependency-check.mjs",
   "skills/icon-retrieval/scripts/search.js",
 ];
 

@@ -5,7 +5,7 @@
 ## 结构
 
 - `.claude-plugin/plugin.json`：插件 manifest，显式注册 `skills/` 与 `hooks/hooks.json`
-- `hooks/`：`hooks.json`、`dispatch.mjs` 与 `session-start/dependency-check.mjs`
+- `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：15 个前端设计与实现 skill
 - `tests/`：manifest、dispatch、脚本回归测试
 
@@ -34,8 +34,6 @@
 ```bash
 claude --plugin-dir /path/to/plugins/frontend-expert
 ```
-
-`SessionStart` 会提示可选协作插件：`javascript-expert`、`typescript-expert`、`react-expert`、`nextjs-expert`。
 
 ## 验证
 

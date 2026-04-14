@@ -24,20 +24,16 @@ React 生态专家插件，覆盖组件组合、Hooks 模式、性能优化、Se
 claude --plugin-dir /path/to/plugins/react-expert
 ```
 
-建议同时安装 `javascript-expert`、`typescript-expert` 与 `nextjs-expert` 插件；`SessionStart` 会在本机可见插件中检查这些协作插件是否存在。
-
 ## 结构
 
 - `.claude-plugin/plugin.json`：插件 manifest，显式声明 `skills/` 与 `hooks/hooks.json`
-- `hooks/hooks.json`：注册 `SessionStart`，统一走 `hooks/dispatch.mjs`
-- `hooks/session-start/dependency-check.mjs`：扫描本机插件并提示缺失的协作插件
+- `hooks/hooks.json`：保留插件 hooks 入口配置
 - `skills/*/SKILL.md`：中文 skill 入口，统一使用「适用场景 → 核心约束 → 代码模式 → 检查清单 → 反模式」
-- `tests/`：manifest、dispatch、dependency-check 与 skill 文档一致性校验
+- `tests/`：manifest、dispatch 与 skill 文档一致性校验
 
 ## 校验
 
 ```bash
 node --check plugins/react-expert/hooks/dispatch.mjs
-node --check plugins/react-expert/hooks/session-start/dependency-check.mjs
 node --test plugins/react-expert/tests/*.test.mjs
 ```

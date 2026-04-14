@@ -8,7 +8,6 @@ const pluginRoot = resolve("plugins/vue-expert");
 
 const nodeScripts = [
   "hooks/dispatch.mjs",
-  "hooks/session-start/dependency-check.mjs",
 ];
 
 test("所有 Node 脚本都能通过语法检查", () => {

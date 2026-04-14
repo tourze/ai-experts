@@ -5,9 +5,9 @@
 ## 目录结构
 
 - `.claude-plugin/plugin.json`：插件清单、依赖声明、skills 与 hooks 入口。
-- `hooks/`：`hooks.json`、`dispatch.mjs` 与 `session-start/dependency-check.mjs`。
+- `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：5 个 Laravel 顶层技能，以及 `laravel-specialist/references/` 下的专题参考。
-- `tests/`：manifest、dispatch、依赖检查与文档结构测试。
+- `tests/`：manifest、dispatch 与文档结构测试。
 
 ## Skills
 
@@ -28,8 +28,6 @@ claude plugin validate plugins/laravel-expert
 jq empty plugins/laravel-expert/.claude-plugin/plugin.json
 jq empty plugins/laravel-expert/hooks/hooks.json
 node --check plugins/laravel-expert/hooks/dispatch.mjs
-node --check plugins/laravel-expert/hooks/session-start/dependency-check.mjs
-node plugins/laravel-expert/hooks/dispatch.mjs session-start </dev/null
 node --test plugins/laravel-expert/tests/*.test.mjs
 ```
 
@@ -38,5 +36,3 @@ node --test plugins/laravel-expert/tests/*.test.mjs
 ```bash
 claude --plugin-dir /path/to/plugins/laravel-expert
 ```
-
-该插件显式依赖 `php-expert`。SessionStart hook 只做依赖自检并输出 `report`，不会阻塞插件加载。

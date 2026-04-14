@@ -5,7 +5,7 @@
 ## 目录结构
 
 - `.claude-plugin/plugin.json`：插件清单与 hook 注册。
-- `hooks/`：`hooks.json`、`dispatch.mjs` 和 `session-start` hook。
+- `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：架构、设计、重构、计划与债务治理技能。
 - `tests/`：脚本级回归测试，覆盖 `scan_codebase.sh` 与 `complexity_report.py`。
 

@@ -5,7 +5,7 @@
 ## 目录结构
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/` 与 `hooks/hooks.json`。
-- `hooks/`：`hooks.json`、`dispatch.mjs` 与 `session-start/dependency-check.mjs`。
+- `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：35 个产品与战略类技能，统一采用「适用场景 → 核心约束 → 代码模式 → 检查清单 → 反模式」结构。
 - `tests/`：覆盖 manifest、dispatch、脚本行为与 `SKILL.md` 链接校验。
 
