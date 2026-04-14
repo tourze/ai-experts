@@ -38,7 +38,9 @@ test("dispatch 在空 stdin 下可以执行 session-start hook", () => {
   });
 
   assert.equal(result.status, 0);
-  assert.equal(result.stdout.trim(), "");
+  const output = JSON.parse(result.stdout);
+  assert.equal(output.hookSpecificOutput?.hookEventName, "SessionStart");
+  assert.match(output.hookSpecificOutput?.additionalContext ?? "", /📌 Skill 路由/);
 });
 
 test("dispatch 在非法 JSON stdin 下返回 report", () => {
@@ -52,4 +54,15 @@ test("dispatch 在非法 JSON stdin 下返回 report", () => {
   const output = JSON.parse(result.stdout);
   assert.equal(output.decision, "report");
   assert.match(output.reason, /stdin 不是合法 JSON/);
+});
+
+test("dispatch 在空 stdin 下执行 stop hook 时不崩溃", () => {
+  const result = spawnSync("node", [dispatchPath, "stop"], {
+    cwd: pluginRoot,
+    input: "",
+    encoding: "utf-8",
+  });
+
+  assert.equal(result.status, 0);
+  assert.equal(result.stdout.trim(), "");
 });

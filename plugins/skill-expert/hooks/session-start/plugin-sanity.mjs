@@ -161,7 +161,7 @@ export async function run() {
   }
 
   return {
-    decision: "report",
+    decision: "context",
     reason: `[Plugin Sanity] ${EXPECTED_NAME} 自检失败：\n- ${issues.join("\n- ")}`,
   };
 }
