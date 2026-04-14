@@ -8,7 +8,7 @@
  * 在 Edit/Write 执行前检查目标路径，阻止修改 Symfony 自动生成的文件和目录。
  * 规则在 PROTECTED_PATTERNS 中集中管理，新增保护路径只需加一行。
  */
-import { normalize } from "path";
+import { normalize } from "node:path";
 
 // ── Symfony 专用保护规则：[正则, 描述] ──
 const PROTECTED_PATTERNS = [

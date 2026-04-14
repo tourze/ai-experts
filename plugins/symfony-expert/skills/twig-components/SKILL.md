@@ -1,38 +1,110 @@
 ---
 name: twig-components
-allowed-tools:
-  - Read
-  - Glob
-  - Grep
-description: 应用生产级 Symfony 架构和执行工作流，具有受控范围和清晰的检查点。当处理 Twig 组件相关任务时触发。
+description: 设计和实现 Symfony TwigComponent 与 LiveComponent，覆盖组件边界、属性建模、模板组合与渐进增强
 ---
 
-# Twig 组件 (Symfony)
+# Twig Components
 
-## 使用场景
-- 在 Symfony 项目中优化架构/工作流/上下文处理。
-- 安全地规划和执行中等/复杂级别的变更。
+## 适用场景
 
-## 默认工作流
-1. 确定当前的边界、约束和耦合点。
-2. 提出最小且连贯的架构调整方案。
-3. 按检查点执行，每个阶段进行验证。
-4. 总结权衡取舍和后续待办事项。
+- 需要在 Symfony 项目中抽取可复用的 TwigComponent 或交互式 LiveComponent。
+- 组件已经重复出现在多个 Twig 模板里，或模板逻辑复杂到难以维护。
+- 想在服务端渲染优先的前提下，为局部界面增加响应式交互。
+- 如果还在决定应该用 Stimulus、Turbo、TwigComponent 还是 LiveComponent，可先看 [symfony-ux](../symfony-ux/SKILL.md)。
+- 更细的组件示例见 [reference.md](reference.md)。
 
-## 防护机制
-- 默认使用项目现有模式。
-- 没有明确需要时避免大范围重构。
-- 保持决策日志清晰且可审计。
+## 核心约束
 
-## 渐进式信息披露
-- 使用本文件了解执行姿态和风险控制。
-- 需要深入实现细节时打开参考文档。
+- 先判断组件类型：静态可复用 UI 用 TwigComponent，交互后需要服务端重渲染时再上 LiveComponent。
+- 组件公共属性必须稳定、可命名、可组合，避免把页面级上下文隐式塞进组件内部。
+- 模板只负责展示，不要在 Twig 里堆复杂业务判断或副作用。
+- LiveComponent 的可写状态必须显式标记为 `LiveProp(writable: true)`，不要靠隐式提交。
+- 组件应该复用现有样式和路由，不要为了抽组件而重造一层平行 UI 体系。
 
-## 输出契约
-- 架构/工作流变更。
-- 检查点验证结果。
-- 残余风险和后续步骤。
+## 代码模式
 
-## 参考文档
-- `reference.md`
-- `docs/complexity-tiers.md`
+```php
+<?php
+
+namespace App\Twig\Components;
+
+use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
+
+#[AsTwigComponent]
+final class Alert
+{
+    public string $type = 'info';
+    public string $message = '';
+}
+```
+
+```twig
+{# templates/components/Alert.html.twig #}
+<div class="alert alert-{{ type }}" {{ attributes }}>
+    {{ message }}
+</div>
+```
+
+```php
+<?php
+
+namespace App\Twig\Components;
+
+use App\Repository\ProductRepository;
+use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
+use Symfony\UX\LiveComponent\Attribute\LiveProp;
+use Symfony\UX\LiveComponent\DefaultActionTrait;
+
+#[AsLiveComponent]
+final class ProductSearch
+{
+    use DefaultActionTrait;
+
+    #[LiveProp(writable: true, url: true)]
+    public string $query = '';
+
+    public function __construct(
+        private readonly ProductRepository $products,
+    ) {}
+
+    public function getResults(): array
+    {
+        if (mb_strlen($this->query) < 2) {
+            return [];
+        }
+
+        return $this->products->search($this->query);
+    }
+}
+```
+
+```twig
+{# templates/components/ProductSearch.html.twig #}
+<div {{ attributes }}>
+    <input data-model="debounce(300)|query" placeholder="搜索产品">
+
+    {% for product in this.results %}
+        <div>{{ product.name }}</div>
+    {% else %}
+        {% if query|length >= 2 %}
+            <div>没有匹配结果。</div>
+        {% endif %}
+    {% endfor %}
+</div>
+```
+
+## 检查清单
+
+- 组件职责是否单一，且名字能准确表达它提供的 UI 能力。
+- 公共属性、slots、`attributes` 合并策略是否清晰，而不是依赖模板外部魔法变量。
+- LiveComponent 是否只暴露必要的可写状态，并处理了空值、快速输入和重复请求。
+- 组件模板是否避免直接访问全局状态，改为通过显式 props 或 getter 输入。
+- 相同样式或交互是否已经有现成组件可复用，避免再造近似组件。
+
+## 反模式
+
+- 为了“组件化”把整页模板硬拆成巨大万能组件，结果 props 爆炸。
+- 静态展示块也上 LiveComponent，平白增加 AJAX 往返和状态序列化成本。
+- 在 Twig 模板里写复杂业务条件、数据库访问或权限分支。
+- 组件 API 今天传 `user`、明天传 `author`、后天再传 `owner`，没有稳定语义。
+- 组件内部偷偷依赖当前路由、全局变量或容器服务，导致迁移后立刻失效。

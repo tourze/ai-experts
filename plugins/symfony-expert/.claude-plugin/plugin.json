@@ -1,6 +1,9 @@
 {
   "name": "symfony-expert",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Symfony 框架专家插件：Doctrine ORM、Twig 模板、Messenger 异步、Voters 授权",
-  "keywords": ["symfony", "doctrine", "twig", "messenger"]
+  "license": "MIT",
+  "keywords": ["symfony", "doctrine", "twig", "messenger"],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
 }

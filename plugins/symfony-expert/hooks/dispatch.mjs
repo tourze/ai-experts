@@ -12,9 +12,9 @@
  *   export async function run(payload) → { decision, reason } | null
  */
 
-import { readdirSync, existsSync } from "fs";
-import { join, dirname } from "path";
-import { fileURLToPath } from "url";
+import { existsSync, readdirSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const subdir = process.argv[2];
@@ -33,12 +33,34 @@ for (const sig of ["SIGINT", "SIGTERM"]) {
   process.on(sig, () => process.exit(sig === "SIGINT" ? 130 : 143));
 }
 
-// 读取 payload（只读一次）
-const payload = JSON.parse(await new Promise((resolve) => {
-  let data = "";
-  process.stdin.on("data", (chunk) => (data += chunk));
-  process.stdin.on("end", () => resolve(data));
-}));
+function formatErrorMessage(error) {
+  return error instanceof Error ? error.message : String(error);
+}
+
+async function readPayload() {
+  const chunks = [];
+
+  for await (const chunk of process.stdin) {
+    chunks.push(typeof chunk === "string" ? chunk : chunk.toString("utf-8"));
+  }
+
+  const raw = chunks.join("").trim();
+  if (!raw) {
+    return {};
+  }
+
+  try {
+    return JSON.parse(raw);
+  } catch (error) {
+    console.log(JSON.stringify({
+      decision: "report",
+      reason: `[dispatch] stdin 不是合法 JSON：${formatErrorMessage(error)}`,
+    }));
+    process.exit(0);
+  }
+}
+
+const payload = await readPayload();
 
 // 发现并加载 hook 模块（跳过 _ 前缀的工具模块）
 const files = readdirSync(dir)
@@ -50,7 +72,7 @@ const contexts = [];
 
 for (const file of files) {
   try {
-    const mod = await import(join(dir, file));
+    const mod = await import(pathToFileURL(join(dir, file)).href);
     if (typeof mod.run !== "function") continue;
 
     const result = await mod.run(payload);
@@ -75,7 +97,7 @@ for (const file of files) {
     // hook 异常不应崩溃整个 dispatch，降级为 report
     reports.push({
       decision: "report",
-      reason: `[dispatch] hook ${file} 执行异常: ${err.message || err}`,
+      reason: `[dispatch] hook ${file} 执行异常：${formatErrorMessage(err)}`,
     });
   }
 }

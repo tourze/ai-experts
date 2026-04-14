@@ -1,6 +1,6 @@
-import { execFileSync } from "child_process";
-import { existsSync } from "fs";
-import { extname, basename, dirname, join, resolve } from "path";
+import { execFileSync } from "node:child_process";
+import { existsSync } from "node:fs";
+import { basename, dirname, extname, join, resolve } from "node:path";
 
 const isWin = process.platform === "win32";
 

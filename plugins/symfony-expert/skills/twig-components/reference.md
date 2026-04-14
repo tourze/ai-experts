@@ -323,12 +323,12 @@ class ContactForm extends AbstractController
             {{ form_row(form.message) }}
 
             <button
-                type="submit"
+                type="button"
                 data-action="live#action"
                 data-live-action-param="submit"
                 class="btn btn-primary"
             >
-                Send
+                发送
             </button>
         {{ form_end(form) }}
     {% endif %}
@@ -353,11 +353,11 @@ class ContactForm extends AbstractController
 - 同时测试正常路径和异常路径行为。
 
 ### 验证命令
-- rg --files
-- composer validate
+- php bin/console lint:twig templates/
+- ./vendor/bin/phpunit --filter=Component
 - ./vendor/bin/phpstan analyse
 
 ### 需要测试的失败模式
-- 无效负载或未授权操作者。
-- 边界值/未找到的情况。
-- 异步流程的重试或部分失败行为。
+- 组件属性缺失或类型不匹配，导致模板渲染异常。
+- LiveComponent 的 `LiveProp` 未标记可写，交互后状态没有更新。
+- slot / block / attributes 合并错误，导致组件在嵌套场景下样式或结构错乱。
