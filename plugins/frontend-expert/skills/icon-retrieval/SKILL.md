@@ -1,6 +1,6 @@
 ---
 name: icon-retrieval
-description: 用于搜索图标库并返回 SVG。适合“找一个下载/安全/文档图标”“需要 SVG 字符串”“要批量筛选图标候选”的任务。
+description: 当需要搜索图标、查找 SVG 或批量筛选图标候选时使用。
 dependency:
   nodejs: ">=18.0.0"
 ---

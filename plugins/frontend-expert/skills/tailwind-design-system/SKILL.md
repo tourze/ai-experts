@@ -1,6 +1,6 @@
 ---
 name: tailwind-design-system
-description: 用于用 Tailwind CSS v4 构建设计系统，包括 token、组件变体、主题和响应式模式。当任务涉及 Tailwind 设计系统、CSS-first 配置、组件库规范时使用。
+description: 当需要用 Tailwind CSS v4 构建设计系统、定义 token、组件变体或主题时使用。当用户提到 Tailwind 设计系统、CSS-first 配置或组件库规范时触发。
 ---
 
 # Tailwind 设计系统

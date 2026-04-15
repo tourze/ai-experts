@@ -1,6 +1,6 @@
 ---
 name: meeting-minutes
-description: "用于将 60 分钟内的内部会议转成结构化会议纪要，要求同时输出元信息、决策、行动项、风险和后续安排。"
+description: 当需要把内部会议转成正式结构化会议纪要时使用；若只要轻量摘要和行动项，改用 `meeting-notes-and-actions`。
 ---
 
 # 会议纪要

@@ -1,10 +1,6 @@
 ---
 name: youtube-search
-description:
-  "按关键词搜索 YouTube，并输出结构化结果。底层使用 yt-dlp 的 ytsearch，
-  不需要 API Key；适合做视频发现、选题调研、内容源搜集。用户提到搜 YouTube、
-  找教程、找最近/最热门的视频、列候选清单时使用。如果用户已经给出单条视频链接并要总结内容，
-  改用 youtube-analysis。"
+description: "当用户要按关键词搜索 YouTube 视频、找教程、找热门视频或列候选清单时使用。如果用户已经给出单条视频链接并要总结内容，改用 youtube-analysis。"
 metadata:
   version: 1.2.0
   category: research

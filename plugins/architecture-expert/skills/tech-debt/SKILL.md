@@ -1,6 +1,6 @@
 ---
 name: tech-debt
-description: "在需要识别、分类和排序技术债时使用；重点是形成债项清单、评分规则和分期治理建议。"
+description: "在需要识别、分类和排序技术债时使用。"
 ---
 
 # tech-debt

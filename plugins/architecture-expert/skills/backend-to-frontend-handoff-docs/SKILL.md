@@ -1,6 +1,6 @@
 ---
 name: backend-to-frontend-handoff-docs
-description: "在后端接口完成后，为前端或前端代理生成交接文档时使用；重点覆盖业务背景、接口契约、校验规则、边界场景和联调建议。"
+description: "在后端接口完成后，为前端或前端代理生成交接文档时使用。"
 ---
 
 # backend-to-frontend-handoff-docs

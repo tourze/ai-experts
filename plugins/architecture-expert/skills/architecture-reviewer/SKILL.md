@@ -1,6 +1,6 @@
 ---
 name: architecture-reviewer
-description: "在需要按 7 个维度评审架构、文档或代码库时使用；输出带证据的评分、风险等级和整改优先级。"
+description: 在需要评审架构、文档或代码库的设计质量时使用。
 ---
 
 # architecture-reviewer

@@ -1,6 +1,6 @@
 ---
 name: react-native-native-module-ios
-description: "React Native iOS 原生模块（ObjC/Swift）：TurboModule、getTurboModule、GCD 调度与 CocoaPods 集成。用户提到 iOS 原生模块、ObjC++ TurboModule、podspec、Swift 桥接时使用。"
+description: "当用户要用 ObjC/Swift 实现 React Native iOS 原生模块或 TurboModule 时使用。用户提到 iOS 原生模块、ObjC++ TurboModule、podspec、Swift 桥接时触发。"
 ---
 
 # iOS 原生模块开发

@@ -1,6 +1,6 @@
 ---
 name: protocol-freezing-patterns
-description: "在需要管理协议版本冻结、线格式演进、向后兼容、版本协商和 breaking change 流程时使用；覆盖 VPN 协议、RPC 系统、IPC 契约等场景。"
+description: "在需要管理协议版本冻结、线格式演进、向后兼容、版本协商和 breaking change 流程时使用。"
 ---
 
 # protocol-freezing-patterns

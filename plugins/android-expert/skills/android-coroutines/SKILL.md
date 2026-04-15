@@ -1,6 +1,6 @@
 ---
 name: android-coroutines
-description: Kotlin Coroutines 在 Android 上的生产级模式，覆盖结构化并发、生命周期集成、响应式流和异常处理。
+description: 当用户要在 Android 上使用 Kotlin Coroutines、结构化并发、Flow、生命周期集成或协程异常处理时使用。
 ---
 
 # Android Coroutines 专家

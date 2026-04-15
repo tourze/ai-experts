@@ -1,6 +1,6 @@
 ---
 name: android-testing
-description: Android 全链路测试策略，覆盖 Unit Test、Hilt 集成测试、Roborazzi 截图测试和 Compose UI 测试。
+description: 当用户要为 Android 写单元测试、Hilt 集成测试、Roborazzi 截图测试或 Compose 测试时使用。
 ---
 
 # Android 测试策略

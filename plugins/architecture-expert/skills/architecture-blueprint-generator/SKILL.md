@@ -1,6 +1,6 @@
 ---
 name: architecture-blueprint-generator
-description: "在需要为现有代码库生成可维护、可扩展的架构蓝图文档时使用；重点输出技术栈识别、边界划分、扩展点、数据流和实现约定。"
+description: "在需要为现有代码库生成可维护、可扩展的架构蓝图文档时使用。"
 ---
 
 # architecture-blueprint-generator

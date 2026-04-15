@@ -1,6 +1,6 @@
 ---
 name: network-troubleshooter
-description: "当用户遇到 Linux 网络不通、DNS 解析异常、端口连不上、连接超时、TLS 报错或链路抖动时必须使用。坚持从链路层到应用层逐层排查，并输出证据化结论。"
+description: 当用户遇到 Linux 网络不通、DNS 解析异常、端口连不上、连接超时、TLS 报错或链路抖动时使用。
 ---
 
 # Linux 网络排障

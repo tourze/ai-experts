@@ -1,6 +1,6 @@
 ---
 name: ruby-expert
-description: Ruby 3.x 与 Rails 7/8 应用开发和审查，覆盖 service object、Active Record 边界、Bundler / Rake 工作流，以及典型业务代码组织方式。
+description: 当进行 Ruby 3.x / Rails 7+ 开发、审查或重构时使用。
 ---
 
 # Ruby Expert

@@ -1,6 +1,6 @@
 ---
 name: helm-chart-scaffolding
-description: 当用户需要创建、重构或验证 Helm Chart 时使用，重点覆盖目录结构、values 分层、模板复用与发布校验。
+description: 当用户要创建、重构或验证 Helm Chart 时使用。
 ---
 
 # Helm Chart 搭建

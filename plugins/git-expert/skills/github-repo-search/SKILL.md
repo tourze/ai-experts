@@ -1,6 +1,6 @@
 ---
 name: github-repo-search
-description: 根据用户主题、门槛和目标形态搜索并筛选 GitHub 开源项目，输出结构化推荐清单。适用于“帮我找开源项目”“GitHub 上这个方向有什么仓库”“做一份可比较的仓库推荐榜单”等场景。
+description: 当用户要搜索 GitHub 开源项目、找某个方向的仓库或做可比较的仓库推荐时使用。
 ---
 
 # GitHub 仓库搜索

@@ -1,6 +1,6 @@
 ---
 name: graalvm-native-image
-description: 构建并排障 GraalVM Native Image，可用于 Spring Boot、Quarkus、Micronaut 与纯 Java 应用
+description: 当需要构建或排障 GraalVM Native Image 时使用。
 ---
 
 # GraalVM Native Image

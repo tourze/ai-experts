@@ -1,6 +1,6 @@
 ---
 name: baoyu-article-illustrator
-description: 面向“给文章配图”“按段落补解释图”“为长文批量生成插图”的文章配图技能。它会先分析文章结构，再确定插图位点、生成 `outline.md` 与提示词文件，最后批量出图；如果用户只需要单张静态图，改用 `concept-to-image`。
+description: 当用户要给文章配图、按段落补解释图或为长文批量生成插图时使用；如果只需要单张静态图，改用 concept-to-image。
 version: 1.57.0
 metadata:
   openclaw:

@@ -1,6 +1,6 @@
 ---
 name: java-junit
-description: 编写和审查 JUnit 5 测试，覆盖单元测试、参数化测试与 Mockito 隔离
+description: 当需要编写或审查 JUnit 5 测试、参数化测试或 Mockito 隔离时使用。
 ---
 
 # Java JUnit

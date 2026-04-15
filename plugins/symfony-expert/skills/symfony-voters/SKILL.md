@@ -1,6 +1,6 @@
 ---
 name: symfony-voters
-description: 设计和修复 Symfony 授权边界，覆盖 Voter、属性检查、控制器集成、默认拒绝与拒绝路径测试
+description: 当用户要设计或修复 Symfony Voter 授权逻辑、IsGranted 属性或权限决策矩阵时使用。
 ---
 
 # Symfony Voters

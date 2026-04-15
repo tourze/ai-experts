@@ -1,6 +1,6 @@
 ---
 name: java-expert
-description: Java 21+ 与 Spring Boot 3.x 开发和审查，覆盖 REST API、JPA、事务与微服务边界
+description: 当进行 Java 21+ 或 Spring Boot 3.x 开发、审查或重构时使用。
 ---
 
 # Java Expert

@@ -1,6 +1,6 @@
 ---
 name: webman-naming-conventions
-description: Webman 命名规范。覆盖目录大小写、接口后缀、Service 命名、命名空间对齐与 Repository 命名。
+description: 当用户要统一或审查 Webman 项目的目录命名、接口后缀、Service 命名或命名空间时使用。
 license: MIT
 metadata:
   author: webman-design

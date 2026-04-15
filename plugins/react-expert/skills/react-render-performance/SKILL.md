@@ -1,6 +1,6 @@
 ---
 name: react-render-performance
-description: 适用于 React 消费外部状态时的重渲染控制，重点覆盖 XState、@xstate/store、Zustand、Redux、Nanostores 与 Context 的 selector 模式。用户提到 store 订阅、selector、whole object、无意义 re-render 时使用。
+description: 当 React 组件因外部 store 订阅导致无意义重渲染时使用。用户提到 store 订阅、selector、whole object、re-render、XState、Zustand、Redux、Context 时触发。
 ---
 
 # React 渲染性能

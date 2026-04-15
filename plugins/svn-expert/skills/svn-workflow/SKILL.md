@@ -1,8 +1,6 @@
 ---
 name: svn-workflow
-description: >
-  SVN（Subversion）工作流 skill。用于 SVN 日常开发、分支与标签管理、合并与冲突处理、
-  属性配置、仓库维护、SVN→Git 迁移，以及审查或修复 SVN 命令使用问题。
+description: 当用户要执行 SVN 日常操作、管理分支标签、处理合并冲突、配置属性、维护仓库或做 SVN 到 Git 迁移时使用。
 ---
 
 # SVN 工作流

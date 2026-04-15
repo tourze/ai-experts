@@ -1,6 +1,6 @@
 ---
 name: symfony-bundle-architecture
-description: 设计和审查 Symfony Bundle 的目录结构、DI Extension、CompilerPass、服务配置与 Bundle 间依赖声明
+description: 当用户要设计或审查 Symfony Bundle 的目录结构、DI Extension、CompilerPass 或 Bundle 间依赖时使用。
 ---
 
 # Symfony Bundle Architecture

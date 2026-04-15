@@ -1,6 +1,6 @@
 ---
 name: ddia-systems
-description: "在需要基于 DDIA 思路设计数据系统时使用；覆盖存储引擎、复制、分区、事务、一致性、容错以及批处理/流处理取舍。"
+description: "在需要基于 DDIA 思路设计数据系统时使用。"
 ---
 
 # ddia-systems

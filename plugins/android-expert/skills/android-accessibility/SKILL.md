@@ -1,6 +1,6 @@
 ---
 name: android-accessibility
-description: Android 无障碍审计与修复，聚焦 Jetpack Compose 的 TalkBack 语义化、触摸目标、色彩对比度和焦点管理。
+description: 当用户要审计或修复 Android 无障碍、TalkBack、触摸目标、对比度或焦点管理时使用。
 ---
 
 # Android 无障碍审计

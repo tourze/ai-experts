@@ -1,6 +1,6 @@
 ---
 name: webman-custom-processes
-description: Webman 自定义进程。覆盖进程声明、生命周期、Timer、Crontab、事件循环与 crash-restart。
+description: 当用户要声明或排查 Webman 自定义进程、Timer、Crontab 或 crash-restart 时使用。
 license: MIT
 metadata:
   author: webman-design

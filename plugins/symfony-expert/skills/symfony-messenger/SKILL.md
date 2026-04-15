@@ -1,6 +1,6 @@
 ---
 name: symfony-messenger
-description: 设计和修复 Symfony Messenger 异步工作流，覆盖消息契约、路由、重试、失败队列、幂等性与消费侧运维
+description: 当用户要设计或修复 Symfony Messenger 异步消息处理、重试、失败队列或消费者时使用。
 ---
 
 # Symfony Messenger

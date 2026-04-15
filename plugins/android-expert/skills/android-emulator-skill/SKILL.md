@@ -1,6 +1,6 @@
 ---
 name: android-emulator-skill
-description: Android 模拟器自动化脚本集，提供语义化 UI 导航、构建自动化、日志监控和模拟器生命周期管理，为 AI Agent 优化了精简输出。
+description: 当用户要启动、操作或管理 Android 模拟器、自动化构建部署、查看模拟器日志或做 UI 导航时使用。
 ---
 
 # Android 模拟器自动化

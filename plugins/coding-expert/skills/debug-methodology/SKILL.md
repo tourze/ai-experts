@@ -1,6 +1,6 @@
 ---
 name: debug-methodology
-description: "系统化调试方法论。按复现、隔离、假设、验证、修复、回归测试六步推进，防止随机乱试式调试。"
+description: "当用户卡在 bug 上、遇到非预期行为或需要系统化调试思路时使用。"
 metadata:
   version: "0.1.0"
   category: "debugging"

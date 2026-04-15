@@ -1,6 +1,6 @@
 ---
 name: javascript-typescript-jest
-description: 使用 Jest 为 JavaScript/TypeScript 编写可靠测试，覆盖 mocking、异步测试、test structure、常见断言与 React Testing Library 协作方式。
+description: 当需要用 Jest 为 JavaScript 或 TypeScript 编写单元测试、mock 或异步测试时使用。
 ---
 
 # Jest 测试模式

@@ -1,6 +1,6 @@
 ---
 name: gradle-build-performance
-description: 排查并优化 Gradle 构建性能，覆盖本地开发、CI/CD、配置阶段与执行阶段
+description: 当 Gradle 构建变慢、需要排查配置阶段或执行阶段瓶颈时使用。
 ---
 
 # Gradle 构建性能

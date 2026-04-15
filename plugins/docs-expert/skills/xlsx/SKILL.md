@@ -1,6 +1,6 @@
 ---
 name: xlsx
-description: 当任务以 .xlsx、.xlsm、.csv、.tsv 等表格文件为主输入或输出时使用，包括修表、建模、重算公式、清洗结构和回写为 Excel 成品。
+description: 当用户要处理 .xlsx、.xlsm、.csv、.tsv 等表格文件时使用。
 ---
 
 # XLSX

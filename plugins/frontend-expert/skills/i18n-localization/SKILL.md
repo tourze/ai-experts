@@ -1,6 +1,6 @@
 ---
 name: i18n-localization
-description: 国际化与本地化模式。用于排查硬编码文案、管理翻译资源、设计 locale 结构、处理 RTL 与日期数字格式等问题。
+description: 当需要实现多语言、排查硬编码文案、管理翻译资源、设计 locale 结构或处理 RTL 与日期数字格式时使用。
 risk: safe
 source: community
 date_added: "2026-02-27"

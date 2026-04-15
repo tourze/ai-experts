@@ -1,6 +1,6 @@
 ---
 name: employment-contract-templates
-description: 起草劳动合同、录用通知与 HR 制度文本，覆盖岗位、薪酬、保密、知识产权、离职限制与法域差异的最小合规骨架
+description: 当需要起草劳动合同、录用通知、保密协议或 HR 制度文本时使用。
 ---
 
 # 劳动合同与 HR 模板

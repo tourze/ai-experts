@@ -1,6 +1,6 @@
 ---
 name: performance-optimizer
-description: "当用户要定位 Linux 主机卡顿、高 CPU、高内存、高 IO、负载暴涨或需要安全提速时必须使用。坚持先测量再优化，只推荐可回滚的动作。"
+description: 当用户要定位 Linux 主机卡顿、高 CPU、高内存、高 IO 或负载暴涨时使用。
 ---
 
 # Linux 性能优化

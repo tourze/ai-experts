@@ -1,6 +1,6 @@
 ---
 name: doctrine-batch-processing
-description: 设计和修复 Symfony / Doctrine 批处理、批量迁移与大数据量写入，覆盖内存控制、flush/clear 节奏与发布安全
+description: 当用户要实现或修复 Symfony / Doctrine 批处理、批量导入、数据回填或大数据量写入时使用。
 ---
 
 # Doctrine 批处理

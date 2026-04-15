@@ -1,6 +1,6 @@
 ---
 name: laravel-specialist
-description: Laravel 10+ 实现技能。用于创建或修改 Eloquent 模型、迁移、控制器、表单请求、API 资源、队列作业、Livewire 组件和 Sanctum 认证流程；当用户提到 Laravel、Eloquent、Artisan、Sanctum、Horizon、Livewire、Pest 或 Laravel API 时启用。
+description: 当用户提到 Laravel、Eloquent、Artisan、Sanctum、Horizon、Livewire、Pest 或 Laravel API 实现时使用。
 ---
 
 # Laravel 专项实现

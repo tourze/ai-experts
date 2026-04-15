@@ -1,6 +1,6 @@
 ---
 name: web-quality-audit
-description: 用于对网站做质量审计，覆盖性能、可访问性、SEO 与最佳实践。当用户提到“审计网站质量”“跑 Lighthouse”“检查页面问题”“优化网站体验”时使用。
+description: 当用户提到审计网站质量、跑 Lighthouse、检查页面问题或优化网站体验时使用。
 license: MIT
 metadata:
   author: web-quality-skills

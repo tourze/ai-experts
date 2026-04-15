@@ -1,6 +1,6 @@
 ---
 name: git-advanced-workflows
-description: 处理复杂 Git 历史与恢复现场时使用，包括 rebase、cherry-pick、bisect、worktree 与 reflog。适用于清理 PR 历史、跨分支搬运修复、定位引入 bug 的提交、并行多分支开发与误操作恢复。
+description: 当需要 rebase、cherry-pick、bisect、worktree、reflog 或从 Git 误操作中恢复时使用。
 ---
 
 # Git 高级工作流

@@ -1,6 +1,6 @@
 ---
 name: pragmatic-programmer
-description: "在需要用务实工程原则校准设计、实现和协作方式时使用；覆盖 DRY、正交性、示踪弹、可逆性、契约式思考和估算观。"
+description: "在需要用务实工程原则校准设计、实现和协作方式时使用。"
 ---
 
 # pragmatic-programmer

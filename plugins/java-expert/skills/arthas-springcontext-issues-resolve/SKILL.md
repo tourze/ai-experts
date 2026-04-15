@@ -1,6 +1,6 @@
 ---
 name: arthas-springcontext-issues-resolve
-description: 排查 Spring ApplicationContext、Bean 注册、条件装配与配置注入问题
+description: 当需要排查 Spring ApplicationContext、Bean 注册、条件装配或配置注入问题时使用。
 ---
 
 # Arthas Spring Context 排查

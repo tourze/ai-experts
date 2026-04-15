@@ -1,6 +1,6 @@
 ---
 name: linux-shell-scripting
-description: "当用户要编写 Bash/Zsh 自动化、运维脚本、巡检脚本、备份脚本或命令行工具时必须使用。默认产出可维护、可观测、带失败保护的生产级 Shell 模板。"
+description: 当用户要编写 Bash/Zsh 自动化、运维脚本、巡检脚本、备份脚本或命令行工具时使用。
 ---
 
 # Linux Shell 脚本

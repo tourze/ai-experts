@@ -1,6 +1,6 @@
 ---
 name: vercel-react-best-practices
-description: 适用于按 Vercel 工程团队规则审视 React/Next.js 代码，重点覆盖 async waterfalls、bundle、server/client 边界、重渲染与前端微优化。用户提到 Next.js 性能、Vercel 规则、waterfall、bundle、resource hints 时使用。
+description: 当用户要按 Vercel 规则审查或优化 React/Next.js 代码时使用。用户提到 Next.js 性能、Vercel 规则、waterfall、bundle、server/client 边界、resource hints 时触发。
 ---
 
 # Vercel React 最佳实践

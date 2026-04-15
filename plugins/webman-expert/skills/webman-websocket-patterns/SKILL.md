@@ -1,6 +1,6 @@
 ---
 name: webman-websocket-patterns
-description: Webman WebSocket 开发。覆盖服务端搭建、连接生命周期、心跳、频道广播与客户端重连。
+description: 当用户要在 Webman 中搭建或排查 WebSocket 服务端、心跳、频道广播或客户端重连时使用。
 license: MIT
 metadata:
   author: webman-design

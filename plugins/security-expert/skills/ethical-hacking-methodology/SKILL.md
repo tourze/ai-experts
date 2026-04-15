@@ -1,6 +1,6 @@
 ---
 name: ethical-hacking-methodology
-description: "当用户需要在合法授权前提下规划渗透测试全流程、整理证据和输出报告时使用。"
+description: "当用户需要在合法授权前提下规划渗透测试全流程时使用。"
 ---
 
 # 授权渗透测试方法论

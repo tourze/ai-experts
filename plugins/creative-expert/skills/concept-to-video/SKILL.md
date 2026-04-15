@@ -1,6 +1,6 @@
 ---
 name: concept-to-video
-description: 面向“把技术概念做成动画”“制作解释型视频”“把流程或算法做成 Manim 动画”的视频技能。它以 Manim 场景文件作为中间产物，再导出 MP4、GIF 或 WEBM；如果只要静态图，改用 `concept-to-image`。
+description: 当用户要把概念做成动画、制作解释型视频或用 Manim 做流程动画时使用；如果只要静态图，改用 concept-to-image。
 metadata:
   version: 1.1.0
   category: visualization

@@ -1,6 +1,6 @@
 ---
 name: perl-testing
-description: 使用 Test2::V0 和 prove 为 Perl 代码编写可靠测试，覆盖单元测试、模块测试、DBI mock 与 CPAN 发行前检查。
+description: 当要为 Perl 代码编写或审查测试时使用。
 ---
 
 # Perl Testing

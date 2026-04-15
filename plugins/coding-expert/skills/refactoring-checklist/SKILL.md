@@ -1,6 +1,6 @@
 ---
 name: refactoring-checklist
-description: "重构前安全检查清单。确保测试存在、范围有界、行为不变、步骤增量化，防止重构变成重写。"
+description: "当用户要重构、重组或清理代码，需要确保安全性和增量推进时使用。"
 metadata:
   version: "0.1.0"
   category: "refactoring"

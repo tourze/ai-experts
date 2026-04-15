@@ -1,6 +1,6 @@
 ---
 name: architecture-diagram
-description: "在需要生成自包含 HTML 架构图时使用；强调分层区域、节点说明、连接语义和可直接交付的静态产物。"
+description: "在需要生成自包含 HTML 架构图时使用。"
 ---
 
 # architecture-diagram

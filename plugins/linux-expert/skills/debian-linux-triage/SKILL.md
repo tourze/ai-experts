@@ -1,6 +1,6 @@
 ---
 name: debian-linux-triage
-description: "当用户遇到 Debian 或 Ubuntu 系系的 apt、dpkg、systemd、AppArmor、仓库签名或升级故障时必须使用。核心目标是先保留现场、避免破坏 dpkg 状态，并给出可验证的恢复步骤。"
+description: 当用户遇到 Debian 或 Ubuntu 的 apt、dpkg、systemd、AppArmor、仓库签名或升级故障时使用。
 ---
 
 # Debian 系排障

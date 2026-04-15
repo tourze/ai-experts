@@ -1,6 +1,6 @@
 ---
 name: apple-reminders
-description: 通过 `remindctl` 管理 Apple Reminders，支持查看过滤、列表管理、创建、完成与删除提醒，并可输出 JSON 或纯文本。
+description: 当用户要查看、创建、完成、删除或管理 Apple Reminders 提醒事项时使用。
 homepage: https://github.com/steipete/remindctl
 metadata:
   openclaw:

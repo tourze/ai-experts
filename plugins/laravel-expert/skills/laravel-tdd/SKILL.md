@@ -1,6 +1,6 @@
 ---
 name: laravel-tdd
-description: Laravel 测试驱动开发技能。用于使用 Pest 或 PHPUnit 为控制器、模型、策略、作业和 Sanctum API 编写测试；当用户提到 Laravel 测试、Pest、PHPUnit、RefreshDatabase、Queue::fake、HTTP fake 或覆盖率目标时启用。
+description: 当用户提到 Laravel 测试、Pest、PHPUnit、RefreshDatabase、Queue::fake 或 HTTP fake 时使用。
 ---
 
 # Laravel TDD 工作流

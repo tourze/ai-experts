@@ -1,6 +1,6 @@
 ---
 name: refactoring-patterns
-description: "在需要使用命名化重构动作改善结构而不改变行为时使用；覆盖异味识别、重构序列、风险控制和验证策略。"
+description: "在需要使用命名化重构动作改善结构而不改变行为时使用。"
 ---
 
 # refactoring-patterns

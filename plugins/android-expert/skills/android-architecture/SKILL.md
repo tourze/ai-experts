@@ -1,6 +1,6 @@
 ---
 name: android-architecture
-description: 现代 Android 应用架构指南，覆盖 Clean Architecture 分层、Hilt 依赖注入和多模块策略。
+description: 当用户要设计或重构 Android 架构、Clean Architecture、Hilt 注入或多模块时使用。
 ---
 
 # Android 现代架构

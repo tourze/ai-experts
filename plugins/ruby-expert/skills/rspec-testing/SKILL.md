@@ -1,6 +1,6 @@
 ---
 name: rspec-testing
-description: 使用 RSpec 为 Ruby / Rails 代码编写可靠测试，覆盖 service spec、request spec、factory 管理、时间控制与外部依赖隔离。
+description: 当要为 Ruby / Rails 代码编写或审查 RSpec 测试时使用。
 ---
 
 # RSpec Testing

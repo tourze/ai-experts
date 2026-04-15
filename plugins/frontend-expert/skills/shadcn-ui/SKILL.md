@@ -1,6 +1,6 @@
 ---
 name: shadcn-ui
-description: 用于集成和定制 shadcn/ui 组件，包括组件发现、安装、迁移和项目配置核验。当任务涉及 shadcn/ui、components.json、Registry、Radix/Base UI 或项目初始化时使用。
+description: 当任务涉及 shadcn/ui 组件集成、components.json 配置、Registry 或 Radix/Base UI 迁移时使用。
 allowed-tools:
   - "shadcn*:*"
   - "mcp_shadcn*"

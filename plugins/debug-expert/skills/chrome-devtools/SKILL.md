@@ -1,6 +1,6 @@
 ---
 name: chrome-devtools
-description: 使用 Chrome DevTools MCP 做页面交互、控制台与网络排障、性能 trace、Lighthouse 与内存快照分析
+description: 当用户要用 Chrome DevTools 做页面调试、网络排障、性能分析或 Lighthouse 审计时使用。
 ---
 
 # Chrome DevTools

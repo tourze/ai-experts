@@ -1,6 +1,6 @@
 ---
 name: content-strategy
-description: "在需要制定内容策略、栏目规划、选题池或编辑节奏时使用；若已经有具体文案需要修改，改用 `copy-editing`，若重点是搜索流量，配合 `seo`。"
+description: 在需要制定内容策略、栏目规划、选题池或编辑节奏时使用；若已有具体文案要修改，改用 `copy-editing`，若重点是搜索流量，配合 `seo`。
 metadata:
   version: 1.1.0
 ---

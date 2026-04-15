@@ -1,6 +1,6 @@
 ---
 name: agile-product-owner
-description: 当用户需要编写用户故事、补齐验收标准、拆分 Epic、规划 Sprint 或排序 Backlog 时使用；覆盖 INVEST、Given-When-Then、容量规划与节奏管理。
+description: 当用户需要编写用户故事、补齐验收标准、拆分 Epic、规划 Sprint 或排序 Backlog 时使用。
 ---
 
 # 敏捷产品负责人

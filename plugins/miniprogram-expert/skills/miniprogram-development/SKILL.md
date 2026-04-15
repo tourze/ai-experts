@@ -1,6 +1,6 @@
 ---
 name: miniprogram-development
-description: 用于微信小程序开发、调试、预览、测试、发布与优化。用户提到小程序页面、组件、路由、project.config.json、appid、真机预览、微信开发者工具、miniprogram-ci、CloudBase、wx.cloud、腾讯云开发、云开发时启用。
+description: 当用户提到微信小程序、小程序页面、组件、project.config.json、appid、真机预览、miniprogram-ci、CloudBase 或 wx.cloud 时使用。
 version: 2.15.5
 alwaysApply: false
 ---

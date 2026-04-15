@@ -1,6 +1,6 @@
 ---
 name: app-store-optimization
-description: 面向 Apple App Store 与 Google Play 的 ASO 工具集，覆盖关键词研究、元数据优化、竞品分析、评论洞察、本地化与 A/B 测试规划。
+description: 当用户要做 App Store 或 Google Play 的 ASO 优化时使用。
 risk: unknown
 source: community
 date_added: "2026-02-27"

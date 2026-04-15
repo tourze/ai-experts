@@ -1,6 +1,6 @@
 ---
 name: detox-mobile-test
-description: 适用于 React Native 应用的 Detox 端到端测试，包括配置、稳定选择器、同步等待、CI 执行与 flakiness 排查。用户提到 Detox、RN E2E、移动端自动化、CI 上的 E2E 不稳定时使用。
+description: 当用户要为 React Native 应用编写或排查 Detox E2E 测试时使用。用户提到 Detox、RN E2E、移动端自动化、CI 上的 E2E 不稳定时触发。
 ---
 
 # Detox 移动端测试

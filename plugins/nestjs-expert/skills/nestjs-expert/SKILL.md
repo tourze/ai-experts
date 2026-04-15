@@ -1,6 +1,6 @@
 ---
 name: nestjs-expert
-description: 用于构建或审查 NestJS 模块、控制器、服务、DTO、Guard、Interceptor、Pipe、Swagger 文档与 Jest 测试。用户提到 NestJS、.module.ts、.controller.ts、.service.ts、ValidationPipe、JWT/Passport、TypeORM/Prisma、GraphQL 或 Express 迁移时启用。
+description: 当用户提到 NestJS、.module.ts、.controller.ts、.service.ts、ValidationPipe、JWT/Passport、TypeORM/Prisma、GraphQL 或 Express 迁移时使用。
 version: "1.2.0"
 alwaysApply: false
 ---

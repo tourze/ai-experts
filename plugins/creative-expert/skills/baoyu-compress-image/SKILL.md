@@ -1,6 +1,6 @@
 ---
 name: baoyu-compress-image
-description: 面向“压缩图片”“转成 WebP”“导出更小的 PNG/JPEG”的图片压缩技能。它会自动选择 `sips`、`cwebp`、ImageMagick 或 `sharp` 作为后端；若文章配图批量生成后需要减重，也适合用这个技能处理。
+description: 当用户要压缩图片、转成 WebP 或导出更小的 PNG/JPEG 时使用。
 version: 1.56.1
 metadata:
   openclaw:

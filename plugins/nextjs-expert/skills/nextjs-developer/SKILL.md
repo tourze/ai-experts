@@ -1,6 +1,6 @@
 ---
 name: nextjs-developer
-description: "在构建 Next.js 14+ App Router 应用、Server Components、Server Actions、Route Handlers、Metadata API、缓存策略或 Vercel 部署链路时使用。适用于路由组织、渲染策略选择、数据获取与重验证、表单提交、SEO、边缘运行时和生产优化；当需求中出现 Next.js、App Router、RSC、use server、generateMetadata、loading.tsx、error.tsx、Route Handler、Vercel、Next.js 性能等关键词时触发。"
+description: 当用户提到 Next.js、App Router、Server Components、Server Actions、Route Handlers、generateMetadata、loading.tsx、error.tsx 或 Vercel 部署时使用。
 license: MIT
 metadata:
   author: https://github.com/Jeffallan

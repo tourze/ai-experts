@@ -1,6 +1,6 @@
 ---
 name: android-design-guidelines
-description: Material Design 3 与 Android 平台设计规范，106 条规则覆盖 Material You、动态颜色、导航、Compose 组件、无障碍、自适应布局和 Android 特有交互。
+description: 当用户要构建或评审 Android UI、应用 Material Design 3 规范、动态颜色、Compose 组件或自适应布局时使用。
 ---
 
 # Android 平台设计规范 — Material Design 3

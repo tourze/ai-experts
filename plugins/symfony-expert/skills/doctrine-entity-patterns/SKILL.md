@@ -1,6 +1,6 @@
 ---
 name: doctrine-entity-patterns
-description: 设计和审查 Doctrine ORM Entity 的属性映射、关联关系、Repository、Migration 与生命周期回调
+description: 当用户要设计或审查 Doctrine ORM Entity、关联关系、Repository 或 Migration 时使用。
 ---
 
 # Doctrine Entity Patterns

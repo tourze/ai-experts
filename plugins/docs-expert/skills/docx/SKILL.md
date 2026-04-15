@@ -1,6 +1,6 @@
 ---
 name: docx
-description: 当任务涉及创建、读取、编辑或修复 .docx Word 文档时使用，包括模板输出、批注、修订、结构化改写、原始 XML 级操作和回写成品。
+description: 当用户要创建、读取、编辑或修复 .docx Word 文档时使用。
 ---
 
 # DOCX

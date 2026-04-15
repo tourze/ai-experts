@@ -1,6 +1,6 @@
 ---
 name: leads-researcher
-description: "在已经明确目标方向后，用于深挖公司信息、联系人、买家信号和公开线索情报；若还没定义 ICP，先用 `lead-research-assistant`。"
+description: 在已明确目标方向后需要深挖公司信息、联系人或买家信号时使用；若还没定义 ICP，先用 `lead-research-assistant`。
 metadata:
   version: 1.0.0
 ---

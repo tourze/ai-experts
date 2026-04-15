@@ -1,6 +1,6 @@
 ---
 name: twig-components
-description: 设计和实现 Symfony TwigComponent 与 LiveComponent，覆盖组件边界、属性建模、模板组合与渐进增强
+description: 当用户要抽取或实现 Symfony TwigComponent 或 LiveComponent 时使用。
 ---
 
 # Twig Components

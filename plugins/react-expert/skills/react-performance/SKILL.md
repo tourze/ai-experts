@@ -1,6 +1,6 @@
 ---
 name: react-performance
-description: 适用于 React 渲染性能分析与优化，包括 memoization、虚拟列表、代码分割、Profiler、稳定引用与 bundle 负担。用户提到慢组件、重渲染、memo、virtualization、code splitting、bundle size 时使用。
+description: 当用户要分析或优化 React 渲染性能时使用。用户提到慢组件、重渲染、memo、virtualization、code splitting、bundle size、Profiler 时触发。
 ---
 
 # React 性能优化

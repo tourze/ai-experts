@@ -1,6 +1,6 @@
 ---
 name: responsive-design
-description: 用于实现现代响应式布局，包括 container queries、fluid typography、CSS Grid 和移动优先断点策略。当用户提到“响应式布局”“适配移动端”“流式排版”“容器查询”时使用。
+description: 当用户提到响应式布局、适配移动端、流式排版、容器查询、container queries 或移动优先断点时使用。
 ---
 
 # 响应式设计

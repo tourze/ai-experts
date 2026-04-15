@@ -1,6 +1,6 @@
 ---
 name: financial-analyst
-description: 用于财务比率分析、DCF 估值、预算差异分析与滚动预测。适合财报分析、cash flow analysis、company valuation、budget variance、financial projections 等任务。
+description: 当需要做财报比率分析、DCF 估值、预算偏差或滚动预测时使用。英文触发词包括 cash flow analysis、budget variance、financial projections。
 ---
 
 # 财务分析师技能
@@ -73,6 +73,5 @@ python3 scripts/forecast_builder.py assets/sample_financial_data.json --scenario
 ## 反模式
 
 - 不要在未整理 JSON 的情况下直接把 Excel 概念字段名硬塞给脚本。
-- 不要把 `assets/sample_financial_data.json` 当成单一工具专用 schema；它是聚合样例。
 - 不要把 0 输出默认为业务结论，先排查输入结构是否错位。
-- 不要把基础 CLI 工具当作完整财务模型平台；复杂场景切换到库脚本或专门建模技能。
+- 复杂场景切换到库脚本或 [creating-financial-models](../creating-financial-models/SKILL.md)。

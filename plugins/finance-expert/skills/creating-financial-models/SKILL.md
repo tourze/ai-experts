@@ -1,6 +1,6 @@
 ---
 name: creating-financial-models
-description: 用于高级财务建模、DCF 模型、敏感性分析、情景分析与盈亏平衡分析。适合 investment analysis、valuation modeling、scenario planning 等任务。
+description: 当需要构建 DCF 估值模型、敏感性分析、情景分析或盈亏平衡分析时使用。英文触发词包括 valuation modeling、scenario planning。
 ---
 
 # 财务建模技能
@@ -134,6 +134,5 @@ print(df[["scenario", "probability", "output"]])
 ## 反模式
 
 - 不要宣称本技能已提供 Monte Carlo、LBO 或并购协同建模脚本；仓库当前没有这些实现。
-- 不要在输入序列长度不一致时硬跑模型。
 - 不要在 `WACC <= terminal_growth` 时继续使用增长法终值。
 - 不要让场景分析在共享对象上连续累积状态而不回滚。

@@ -1,6 +1,6 @@
 ---
 name: openapi-spec-generation
-description: 当用户需要创建、维护或校验 OpenAPI 3.1 规范时使用，覆盖设计优先、代码优先与契约校验场景。
+description: 当用户要创建、维护或校验 OpenAPI 3.1 规范时使用。
 ---
 
 # OpenAPI 规范生成

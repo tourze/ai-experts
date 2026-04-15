@@ -1,6 +1,6 @@
 ---
 name: react-native-jsi-bridge
-description: "React Native C++ JSI 直接绑定：HostObject、CallInvoker 跨线程、ArrayBuffer 零拷贝。用户提到 JSI、HostObject、零拷贝、C++ 绑定、同步原生调用时使用。"
+description: "当用户要实现 React Native JSI C++ 绑定或排查 JSI 相关问题时使用。用户提到 JSI、HostObject、零拷贝、C++ 绑定、同步原生调用时触发。"
 ---
 
 # JSI Bridge

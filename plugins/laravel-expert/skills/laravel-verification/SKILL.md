@@ -1,6 +1,6 @@
 ---
 name: laravel-verification
-description: Laravel 发布前验证技能。用于执行格式化、静态分析、测试、依赖审计、迁移检查、缓存预热和队列调度自检；当用户提到 Laravel 自检、发版前检查、CI 流水线、composer audit、phpstan、pint 或 migrate --pretend 时启用。
+description: 当用户提到 Laravel 自检、发版前检查、CI 流水线、composer audit、phpstan、pint 或 migrate --pretend 时使用。
 ---
 
 # Laravel 验证循环

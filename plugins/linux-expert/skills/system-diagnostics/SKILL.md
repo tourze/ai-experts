@@ -1,6 +1,6 @@
 ---
 name: system-diagnostics
-description: "当用户说 Linux 主机变慢、服务异常、需要健康检查、要先摸清系统现状时必须使用。要求执行只读诊断命令、产出结构化快照，并为后续技能提供基线。"
+description: 当用户说 Linux 主机变慢、服务异常、需要健康检查或要先摸清系统现状时使用。
 ---
 
 # Linux 系统诊断

@@ -1,6 +1,6 @@
 ---
 name: obsidian-bases
-description: 编辑和生成 Obsidian Bases 的 `.base` 文件，适用于 table / list / cards / map 视图、filters、formulas、summaries、嵌入 Base 文件或 `base` 代码块。触发词包括 Bases、.base、table view、cards、list、map、filter、formula、summary。
+description: 当用户要新建、修复或重构 Obsidian Bases 的 `.base` 文件时使用。触发词包括 Bases、.base、table view、cards、list、map、filter、formula、summary。
 ---
 
 # Obsidian Bases

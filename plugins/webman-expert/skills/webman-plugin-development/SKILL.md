@@ -1,6 +1,6 @@
 ---
 name: webman-plugin-development
-description: Webman 插件开发。覆盖 Install.php、config 发布路径、进程声明与 Bootstrap。
+description: 当用户要开发或审查 Webman 插件的 Install.php、config 发布、进程声明或 Bootstrap 时使用。
 license: MIT
 metadata:
   author: webman-design

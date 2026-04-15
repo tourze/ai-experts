@@ -1,6 +1,6 @@
 ---
 name: react-native-platform-fork
-description: "React Native 跨平台代码组织：平台文件扩展名、Platform.select、边界层抽象与 Metro 自定义平台解析。用户提到平台分叉、跨端代码、.native.ts、.tauri.ts 时使用。"
+description: "当用户要组织 React Native 跨平台代码或配置平台分叉时使用。用户提到平台分叉、跨端代码、.native.ts、.tauri.ts、Platform.select 时触发。"
 ---
 
 # 跨平台代码组织

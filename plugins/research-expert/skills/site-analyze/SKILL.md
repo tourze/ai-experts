@@ -1,6 +1,6 @@
 ---
 name: site-analyze
-description: 需要分析域名或 IP 的 DNS、IP 归属、路由路径、延迟、WHOIS 与 robots 策略时使用，适合做站点画像、机房判断、GeoDNS/CDN 识别与网络质量排查。
+description: 当需要分析域名或 IP 的 DNS、IP 归属、路由路径、延迟、WHOIS 或 robots 策略时使用。
 ---
 
 # 站点画像分析

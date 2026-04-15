@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: "语言无关的代码审查。聚焦命名、函数大小、单一职责、错误处理、边界情况、可读性和 DRY 违反，不涉及风格。"
+description: "当用户要求审查代码质量、发现命名或职责问题、检查错误处理和边界情况时使用。"
 metadata:
   version: "0.1.0"
   category: "code-quality"

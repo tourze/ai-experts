@@ -1,6 +1,6 @@
 ---
 name: concept-to-image
-description: 面向“把概念做成静态图”“把 HTML 导出成 PNG/SVG”“做结构化信息图、卡片、示意图”的静态视觉技能。它使用 HTML/CSS/SVG 作为可迭代中间层，再导出最终图片；如果用户要动画，请改用 `concept-to-video`。
+description: 当用户要把概念做成静态图、HTML 导出 PNG/SVG、做信息图或卡片时使用；如果要动画，改用 concept-to-video。
 metadata:
   version: 1.2.0
   category: business

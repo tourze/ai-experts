@@ -1,6 +1,6 @@
 ---
 name: paid-ads
-description: "在需要规划、优化或扩展 Google Ads、Meta、LinkedIn、TikTok 等付费投放时使用，覆盖目标、预算、受众、结构、出价和放量策略。"
+description: 在需要规划、优化或扩展 Google Ads、Meta、LinkedIn、TikTok 等付费投放时使用。
 metadata:
   version: 1.1.0
 ---

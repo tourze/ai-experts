@@ -1,6 +1,6 @@
 ---
 name: react-native-turbomodule
-description: "React Native 0.76+ TurboModule 开发：Spec 定义、Codegen、Android Kotlin / iOS ObjC++ 实现。用户提到 TurboModule、TurboModuleRegistry、Codegen、codegenConfig 时使用。"
+description: "当用户要创建或迁移 React Native 0.76+ TurboModule 时使用。用户提到 TurboModule、TurboModuleRegistry、Codegen、codegenConfig 时触发。"
 ---
 
 # TurboModule 开发

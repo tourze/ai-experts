@@ -1,6 +1,6 @@
 ---
 name: arthas-cpu-high
-description: 排查 JVM 或应用 CPU 飙高，聚焦线程定位、热点方法确认与证据化结论
+description: 当 JVM 或 Java 应用 CPU 飙高、负载异常时使用。
 ---
 
 # Arthas CPU 飙高排查

@@ -1,6 +1,6 @@
 ---
 name: feature-dev
-description: "在实现跨多个文件或涉及架构取舍的功能时使用；按“发现→探索→澄清→设计→实现→质检→总结”七阶段推进。"
+description: "在实现跨多个文件或涉及架构取舍的功能时使用。"
 ---
 
 # feature-dev

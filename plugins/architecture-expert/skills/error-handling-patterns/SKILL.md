@@ -1,6 +1,6 @@
 ---
 name: error-handling-patterns
-description: "在需要设计异常传播、Result 风格错误、局部降级、重试边界和错误分层时使用；重点是让失败可解释、可恢复、可观测。"
+description: "在需要设计异常传播、Result 风格错误、局部降级、重试边界和错误分层时使用。"
 ---
 
 # error-handling-patterns

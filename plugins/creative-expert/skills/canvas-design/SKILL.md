@@ -1,6 +1,6 @@
 ---
 name: canvas-design
-description: 面向“做海报”“做艺术化静态画面”“做一页高完成度视觉作品”的静态设计技能。它要求先产出设计哲学，再把哲学表达成单页 PNG 或 PDF；禁止照搬现成艺术家风格。
+description: 当用户要做海报、封面、艺术化静态画面或一页高完成度视觉作品时使用。
 license: Complete terms in LICENSE.txt
 ---
 

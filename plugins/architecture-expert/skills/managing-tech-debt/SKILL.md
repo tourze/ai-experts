@@ -1,6 +1,6 @@
 ---
 name: managing-tech-debt
-description: "在需要战略性管理技术债时使用；重点是债务发现、业务影响、切分节奏、团队共识和落地治理，而不是泛泛喊重构。"
+description: "在需要战略性管理技术债时使用。"
 ---
 
 # managing-tech-debt

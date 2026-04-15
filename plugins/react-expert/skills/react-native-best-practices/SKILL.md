@@ -1,6 +1,6 @@
 ---
 name: react-native-best-practices
-description: 适用于 React Native 性能排查与优化，包括 FPS、TTI、包体积、内存泄漏、动画卡顿、Hermes 与原生线程问题。用户提到掉帧、启动慢、包太大、内存涨、FlashList、Turbo Module、Hermes 时使用。
+description: 当用户要排查或优化 React Native 性能时使用。用户提到掉帧、启动慢、包太大、内存涨、FPS、TTI、FlashList、Hermes 时触发。
 ---
 
 # React Native 最佳实践

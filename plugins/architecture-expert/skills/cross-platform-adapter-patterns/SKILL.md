@@ -1,6 +1,6 @@
 ---
 name: cross-platform-adapter-patterns
-description: "在设计跨平台应用的平台抽象层、适配器接口、运行时分支和 monorepo 组织时使用；覆盖 React Native、Tauri、Web 等多目标平台的共享与隔离策略。"
+description: "在设计跨平台应用的平台抽象层、适配器接口、运行时分支和 monorepo 组织时使用。"
 ---
 
 # cross-platform-adapter-patterns

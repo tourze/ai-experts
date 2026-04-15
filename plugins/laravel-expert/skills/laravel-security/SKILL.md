@@ -1,6 +1,6 @@
 ---
 name: laravel-security
-description: Laravel 安全基线技能。用于认证授权、输入验证、CSRF、批量赋值、文件上传、速率限制、签名链接和部署加固；当用户提到 Sanctum、Policy、FormRequest、文件上传安全、CORS、安全头或密钥管理时启用。
+description: 当用户提到 Laravel 安全、Sanctum、Policy、FormRequest、文件上传安全、CORS、安全头或密钥管理时使用。
 ---
 
 # Laravel 安全基线

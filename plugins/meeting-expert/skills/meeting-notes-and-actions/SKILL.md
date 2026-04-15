@@ -1,6 +1,6 @@
 ---
 name: meeting-notes-and-actions
-description: "用于把会议转写、电话纪要或零散笔记整理成可分享的摘要、决策、风险与行动项，适合 Zoom/Meet/Teams/电话纪要等原始文本。"
+description: 当需要把会议转写、电话纪要或零散笔记整理成摘要与行动项时使用；若要正式纪要格式，改用 `meeting-minutes`。
 ---
 
 # 会议笔记与行动项

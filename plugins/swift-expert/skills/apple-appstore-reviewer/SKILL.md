@@ -1,6 +1,6 @@
 ---
 name: apple-appstore-reviewer
-description: 从 Apple App Store 审核视角审查 iOS / iPadOS / macOS 应用的代码与配置，识别拒审风险、审核摩擦点和可快速修正的合规问题。
+description: 当用户要从 App Store 审核视角审查 iOS/macOS 应用、识别拒审风险或准备提审材料时使用。
 ---
 
 # App Store 审核审查

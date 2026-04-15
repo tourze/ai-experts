@@ -1,6 +1,6 @@
 ---
 name: web-design-guidelines
-description: 用于构建和审查 Web 平台界面规范，覆盖语义 HTML、无障碍、表单、响应式和性能基线。当任务涉及 HTML/CSS、WCAG、键盘访问或 Web UI 审查时使用。
+description: 当任务涉及语义 HTML、无障碍、WCAG、键盘访问、表单规范或 Web UI 审查时使用。
 license: MIT
 metadata:
   author: platform-design-skills

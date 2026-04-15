@@ -1,6 +1,6 @@
 ---
 name: typescript-magician
-description: 当需要定位 TypeScript 编译错误、清理 `any`、设计复杂泛型、补齐类型守卫或收敛工具类型时使用。重点是先找到根因，再给出既严格又可维护的类型修复方案。
+description: 当需要定位 TypeScript 编译错误、清理 `any`、设计复杂泛型、补齐类型守卫或收敛工具类型时使用。
 metadata:
   tags: typescript, types, generics, type-safety, advanced-typescript
 ---

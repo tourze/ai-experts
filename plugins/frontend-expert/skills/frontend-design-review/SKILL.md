@@ -1,7 +1,6 @@
 ---
 name: frontend-design-review
-description: >
-  用于审查或设计高质量前端界面。适合 PR 设计评审、可访问性检查、设计系统一致性检查、响应式检查，以及需要避免 AI 套版感的界面设计任务。
+description: 当需要审查前端界面质量或避免 AI 套版感时使用。适合 PR 设计评审、可访问性检查、设计系统一致性检查和响应式检查。
 acknowledgments: |
   设计评审框架参考 @Quirinevwm 的质量支柱方法；
   创意前端约束受 Anthropic frontend-design 思路启发。

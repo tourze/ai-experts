@@ -1,6 +1,6 @@
 ---
 name: offensive-typesafety
-description: 在搭建新的 TypeScript 技术栈、设计路由/API/数据库边界，或把字符串协议升级为编译器可验证合同的时候使用。优先让 schema 和类型系统成为开发加速器，而不是事后补丁。
+description: 在搭建新的 TypeScript 技术栈、设计路由/API/数据库边界，或把字符串协议升级为编译器可验证合同的时候使用。
 ---
 
 # Offensive Typesafety

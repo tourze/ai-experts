@@ -1,6 +1,6 @@
 ---
 name: laravel-patterns
-description: Laravel 架构与组织模式。用于设计控制器/动作/服务边界、路由模型绑定、事务、缓存失效和 API 资源结构；当用户提到 Laravel 分层、Service/Action、scopeBindings、多租户路由、N+1 或 API 设计时启用。
+description: 当用户提到 Laravel 分层、Service/Action 边界、scopeBindings、多租户路由、N+1 或 API 资源设计时使用。
 ---
 
 # Laravel 开发模式

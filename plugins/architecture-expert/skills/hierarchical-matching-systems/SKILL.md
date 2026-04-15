@@ -1,6 +1,6 @@
 ---
 name: hierarchical-matching-systems
-description: "在设计、评审或排查层级匹配系统时使用；覆盖稳定匹配、分配优化、层级约束、多目标权重和匹配质量诊断。"
+description: "在设计、评审或排查层级匹配系统时使用。"
 ---
 
 # hierarchical-matching-systems

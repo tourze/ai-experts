@@ -1,6 +1,6 @@
 ---
 name: centos-linux-triage
-description: "当用户遇到 CentOS、CentOS Stream、RHEL 兼容发行版上的 systemd、SELinux、firewalld、dnf/yum 或服务启动问题时必须使用。重点是最小化破坏、先验证发行版代际，再给出可执行修复。"
+description: 当用户遇到 CentOS、CentOS Stream 或 RHEL 兼容发行版上的 systemd、SELinux、firewalld、dnf/yum 或服务启动问题时使用。
 ---
 
 # CentOS 排障

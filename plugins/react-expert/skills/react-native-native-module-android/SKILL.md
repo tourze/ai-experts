@@ -1,6 +1,6 @@
 ---
 name: react-native-native-module-android
-description: "React Native Android 原生模块（Kotlin）：TurboModule 实现、ReactModuleInfo 注册、线程模型与 Gradle Codegen。用户提到 Android 原生模块、Kotlin TurboModule、Gradle codegen 时使用。"
+description: "当用户要用 Kotlin 实现 React Native Android 原生模块或 TurboModule 时使用。用户提到 Android 原生模块、Kotlin TurboModule、Gradle codegen 时触发。"
 ---
 
 # Android 原生模块开发

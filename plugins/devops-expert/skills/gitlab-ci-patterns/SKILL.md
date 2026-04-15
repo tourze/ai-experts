@@ -1,6 +1,6 @@
 ---
 name: gitlab-ci-patterns
-description: 当用户需要设计、优化或排查 GitLab CI/CD 流水线时使用，重点覆盖阶段拆分、缓存、制品与部署策略。
+description: 当用户要设计、优化或排查 GitLab CI/CD 流水线时使用。
 ---
 
 # GitLab CI/CD 模式

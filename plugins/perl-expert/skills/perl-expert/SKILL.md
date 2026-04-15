@@ -1,6 +1,6 @@
 ---
 name: perl-expert
-description: 现代 Perl 5.36+ 应用开发和审查，覆盖 Moose/Moo 对象系统、DBI 数据库访问、CPAN 依赖管理、模块组织与常见业务代码模式。
+description: 当进行 Perl 5.36+ 开发、审查或重构时使用。
 ---
 
 # Perl Expert

@@ -1,6 +1,6 @@
 ---
 name: symfony-ux
-description: 选择和组合 Symfony UX 前端栈，覆盖 Stimulus、Turbo、TwigComponent、LiveComponent、UX Icons 与 UX Map 的取舍与协作方式
+description: 当用户要在 Symfony 项目中选择或组合 Stimulus、Turbo、TwigComponent、LiveComponent 等 UX 工具时使用。
 ---
 
 # Symfony UX

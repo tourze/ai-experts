@@ -1,10 +1,6 @@
 ---
 name: youtube-analysis
-description:
-  "提取 YouTube 视频字幕并产出结构化内容分析。优先使用 youtube-transcript-api，
-  失败时回退到 yt-dlp；不需要 API Key，也不依赖 MCP。用户提到分析 YouTube 视频、
-  总结字幕、拆解演讲、提炼技术分享要点、读取 youtube.com 或 youtu.be 链接时使用。
-  如果用户只是想搜视频而不是分析单个视频，改用 youtube-search。"
+description: "当用户提供 YouTube 视频链接并要求分析内容、总结字幕、拆解演讲或提炼要点时使用。如果用户只是想搜视频而不是分析单个视频，改用 youtube-search。"
 metadata:
   version: 1.2.0
   category: research

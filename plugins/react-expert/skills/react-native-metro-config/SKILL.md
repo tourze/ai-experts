@@ -1,6 +1,6 @@
 ---
 name: react-native-metro-config
-description: "React Native Metro 打包器配置：Monorepo watchFolders、自定义 resolver、Transformer 调优与 CI 性能。用户提到 Metro 配置、watchFolders、inlineRequires、打包慢时使用。"
+description: "当用户要配置或排查 React Native Metro 打包器时使用。用户提到 Metro 配置、watchFolders、inlineRequires、打包慢、自定义 resolver 时触发。"
 ---
 
 # Metro 配置

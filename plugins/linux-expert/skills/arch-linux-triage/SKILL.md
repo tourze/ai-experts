@@ -1,6 +1,6 @@
 ---
 name: arch-linux-triage
-description: "当用户遇到 Arch Linux 的 pacman、systemd、滚动升级、AUR、内核或启动故障时必须使用。聚焦只读取证、避免 partial upgrade，并给出可回滚的修复步骤。"
+description: 当用户遇到 Arch Linux 的 pacman、systemd、滚动升级、AUR、内核或启动故障时使用。
 ---
 
 # Arch Linux 排障

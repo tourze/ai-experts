@@ -1,6 +1,6 @@
 ---
 name: legal-risk-assessment
-description: 用严重度 × 发生概率框架评估合同、合规、劳动与争议事项的法律风险，并给出升级与缓释建议
+description: 当需要评估合同、合规、劳动或争议事项的法律风险时使用。
 ---
 
 # 法律风险评估

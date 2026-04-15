@@ -1,6 +1,6 @@
 ---
 name: plantuml-ascii
-description: 面向“生成 ASCII 图”“在终端里看图”“把 PlantUML 转成纯文本图表”的文本图技能。适合 README、邮件、终端日志或不方便放图片的场景；如果用户需要真正的图片或海报，请改用 `concept-to-image`。
+description: 当用户要生成 ASCII 图、在终端看图或把 PlantUML 转成纯文本图表时使用；如果需要图片或海报，改用 concept-to-image。
 license: MIT
 allowed-tools: Bash, Write, Read
 ---

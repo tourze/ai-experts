@@ -1,6 +1,6 @@
 ---
 name: complexity-reducer
-description: "识别和简化不必要的复杂代码。针对深嵌套、长函数、特性嫉妒、原始类型偏执、布尔参数爆炸等，给出具体简化路径。"
+description: "当代码过于复杂、嵌套太深、函数太长或耦合严重，用户要求简化时使用。"
 metadata:
   version: "0.1.0"
   category: "code-quality"

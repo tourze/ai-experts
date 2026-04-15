@@ -1,6 +1,6 @@
 ---
 name: modern-javascript-patterns
-description: 使用现代 JavaScript（ES6+）特性与常见模式编写可维护代码，覆盖 async/await、destructuring、spread、modules、iterators、generators 与数据转换流程。
+description: 当需要用现代 ES6+ 特性重构旧代码或编写可维护 JavaScript 时使用。
 ---
 
 # 现代 JavaScript 模式

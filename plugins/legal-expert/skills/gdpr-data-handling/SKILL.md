@@ -1,6 +1,6 @@
 ---
 name: gdpr-data-handling
-description: 设计 GDPR 合规的数据处理流程，覆盖合法性基础、同意管理、数据主体请求、保留删除与 breach 响应
+description: 当需要设计 GDPR 合规流程、同意管理、数据主体请求或 breach 响应时使用。
 ---
 
 # GDPR 数据处理
