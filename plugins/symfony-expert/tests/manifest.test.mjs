@@ -13,12 +13,12 @@ test("manifest 与 hooks 配置指向真实文件，且不再使用非标准 dep
 
   assert.equal(manifest.name, "symfony-expert");
   assert.equal(manifest.skills, "./skills/");
-  assert.equal(manifest.hooks, "./hooks/hooks.json");
+  assert.equal("hooks" in manifest, false);
   assert.equal(manifest.license, "MIT");
   assert.equal("dependencies" in manifest, false);
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
-  assert.ok(existsSync(resolve(pluginRoot, manifest.hooks)));
+  assert.ok(existsSync(hooksPath));
   const postToolHooks = hooks.hooks?.PostToolUse?.[0]?.hooks ?? [];
   const preToolHooks = hooks.hooks?.PreToolUse?.[0]?.hooks ?? [];
   assert.equal(postToolHooks[0]?.command, "node ${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.mjs post-tool-use/edit-write");

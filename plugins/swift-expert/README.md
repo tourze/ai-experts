@@ -4,7 +4,7 @@ Swift/Apple 平台专家插件，覆盖 Swift Concurrency、SwiftUI 性能与模
 
 ## 目录结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/` 与 `hooks/hooks.json`。
+- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json`、`dispatch.mjs` 和 4 个 PostToolUse 守卫。
 - `skills/`：13 个 Swift / Apple 平台技能与配套参考资料、脚本。
 

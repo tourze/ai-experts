@@ -1,11 +1,16 @@
 {
   "name": "research-expert",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "深度研究专家插件：多轮 Web 研究、代码库知识挖掘、多源信息综合、技术资讯搜索、站点画像分析",
   "author": {
     "name": "ai-experts"
   },
-  "keywords": ["research", "web-search", "knowledge", "wiki", "technology"],
-  "skills": "./skills/",
-  "hooks": "./hooks/hooks.json"
+  "keywords": [
+    "research",
+    "web-search",
+    "knowledge",
+    "wiki",
+    "technology"
+  ],
+  "skills": "./skills/"
 }

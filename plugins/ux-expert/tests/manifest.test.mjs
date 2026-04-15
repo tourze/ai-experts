@@ -15,12 +15,12 @@ test("manifest 显式声明 skills、hooks、作者，且不再使用无效 depe
   assert.match(manifest.version, /^\d+\.\d+\.\d+$/);
   assert.equal(manifest.author?.name, "ai-experts");
   assert.equal(manifest.skills, "./skills/");
-  assert.equal(manifest.hooks, "./hooks/hooks.json");
+  assert.equal("hooks" in manifest, false);
   assert.deepEqual(manifest.keywords, ["ux", "usability", "user-research", "visual-design", "heuristics"]);
   assert.equal("dependencies" in manifest, false);
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
-  assert.ok(existsSync(resolve(pluginRoot, manifest.hooks)));
+  assert.ok(existsSync(hooksPath));
 
   const sessionHooks = hooks.hooks?.SessionStart?.[0]?.hooks ?? [];
   assert.equal(sessionHooks.length, 1);

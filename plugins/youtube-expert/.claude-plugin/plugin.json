@@ -1,12 +1,17 @@
 {
   "name": "youtube-expert",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "YouTube 专家插件：视频转录与概念分析、关键词搜索与元数据提取",
   "author": {
     "name": "ai-experts"
   },
   "license": "MIT",
-  "keywords": ["youtube", "video", "transcript", "search", "yt-dlp"],
-  "skills": "./skills/",
-  "hooks": "./hooks/hooks.json"
+  "keywords": [
+    "youtube",
+    "video",
+    "transcript",
+    "search",
+    "yt-dlp"
+  ],
+  "skills": "./skills/"
 }

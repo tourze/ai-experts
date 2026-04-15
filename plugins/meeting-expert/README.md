@@ -4,7 +4,7 @@
 
 ## 结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/` 与 `hooks/hooks.json`。
+- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json`、`dispatch.mjs` 与 `session-start/plugin-sanity.mjs`，负责插件自检。
 - `skills/`：会议纪要、会议笔记整理、沟通洞察 3 个技能目录。
 - `tests/`：manifest、dispatch、hook、自检与 `SKILL.md` 结构回归测试。

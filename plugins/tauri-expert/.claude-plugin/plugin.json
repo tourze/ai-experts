@@ -1,12 +1,17 @@
 {
   "name": "tauri-expert",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Tauri 专家插件：Tauri v2+ 跨平台应用开发（Rust 后端 + Web 前端）",
   "author": {
     "name": "ai-experts"
   },
   "license": "MIT",
-  "keywords": ["tauri", "rust", "desktop", "cross-platform", "webview"],
-  "skills": "./skills/",
-  "hooks": "./hooks/hooks.json"
+  "keywords": [
+    "tauri",
+    "rust",
+    "desktop",
+    "cross-platform",
+    "webview"
+  ],
+  "skills": "./skills/"
 }

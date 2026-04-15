@@ -4,7 +4,7 @@ Linux 系统专家插件，覆盖 Shell 守卫、发行版问题排查、磁盘/
 
 ## 结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/` 与 `hooks/hooks.json`。
+- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json`、`dispatch.mjs` 与 6 个 `PostToolUse Edit|Write` 守卫脚本。
 - `skills/`：8 个 Linux 专向技能文档，统一采用中文结构。
 - `tests/`：manifest、dispatch、hook 逻辑、SKILL 文档与示例校验。

@@ -14,11 +14,11 @@ test("manifest 显式声明 skills、hooks 与合法 dependencies", () => {
   assert.equal(manifest.name, "nestjs-expert");
   assert.equal(manifest.license, "MIT");
   assert.equal(manifest.skills, "./skills/");
-  assert.equal(manifest.hooks, "./hooks/hooks.json");
+  assert.equal("hooks" in manifest, false);
   assert.deepEqual(manifest.dependencies, ["typescript-expert"]);
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
-  assert.ok(existsSync(resolve(pluginRoot, manifest.hooks)));
+  assert.ok(existsSync(hooksPath));
   assert.ok(existsSync(resolve(pluginRoot, "..", "typescript-expert", ".claude-plugin", "plugin.json")));
   assert.deepEqual(hooks.hooks ?? {}, {});
 });

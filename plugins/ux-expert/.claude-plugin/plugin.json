@@ -1,11 +1,16 @@
 {
   "name": "ux-expert",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "UX 设计专家插件：启发式可用性评估、用户研究方法、视觉设计基础（排版/色彩/间距/图标）",
   "author": {
     "name": "ai-experts"
   },
-  "keywords": ["ux", "usability", "user-research", "visual-design", "heuristics"],
-  "skills": "./skills/",
-  "hooks": "./hooks/hooks.json"
+  "keywords": [
+    "ux",
+    "usability",
+    "user-research",
+    "visual-design",
+    "heuristics"
+  ],
+  "skills": "./skills/"
 }

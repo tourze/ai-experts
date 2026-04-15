@@ -4,7 +4,7 @@ Rust 开发专家插件，提供惯用 Rust 编码规范、Tokio 异步编程指
 
 ## 目录
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/` 与 `hooks/hooks.json`
+- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json`、`dispatch.mjs` 和 3 个 PostToolUse 守卫
 - `skills/`：`rust-best-practices` 与 `rust-async-patterns`
 - `tests/`：manifest、dispatch、编码守卫回归测试

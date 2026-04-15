@@ -1,11 +1,16 @@
 {
   "name": "finance-expert",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "财务分析专家插件：DCF 估值、财务建模、比率分析、投资组合风险指标（VaR/Sharpe/Sortino）",
   "author": {
     "name": "ai-experts"
   },
-  "keywords": ["finance", "dcf", "valuation", "risk", "portfolio"],
-  "skills": "./skills/",
-  "hooks": "./hooks/hooks.json"
+  "keywords": [
+    "finance",
+    "dcf",
+    "valuation",
+    "risk",
+    "portfolio"
+  ],
+  "skills": "./skills/"
 }

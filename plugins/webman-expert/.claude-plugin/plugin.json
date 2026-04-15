@@ -1,12 +1,16 @@
 {
   "name": "webman-expert",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Webman 框架专家插件：DDD 架构、依赖注入、领域模型、命名规范、代码风格最佳实践",
   "license": "MIT",
   "author": {
     "name": "ai-experts"
   },
-  "keywords": ["webman", "workerman", "ddd", "php"],
-  "skills": "./skills/",
-  "hooks": "./hooks/hooks.json"
+  "keywords": [
+    "webman",
+    "workerman",
+    "ddd",
+    "php"
+  ],
+  "skills": "./skills/"
 }

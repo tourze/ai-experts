@@ -15,7 +15,7 @@
 
 ## 结构
 
-- `.claude-plugin/plugin.json`：插件 manifest，显式声明 `skills/` 与 `hooks/hooks.json`
+- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json`、`dispatch.mjs` 与 `session-start/plugin-sanity.mjs`
 - `skills/`：研究类技能与配套脚本
 - `tests/`：manifest、hooks、skills 结构自检

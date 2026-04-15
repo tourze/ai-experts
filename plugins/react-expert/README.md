@@ -42,7 +42,7 @@ claude plugin uninstall react-expert --scope project
 
 ## 结构
 
-- `.claude-plugin/plugin.json`：插件 manifest，显式声明 `skills/` 与 `hooks/hooks.json`
+- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/hooks.json`：保留插件 hooks 入口配置
 - `skills/*/SKILL.md`：中文 skill 入口，统一使用「适用场景 → 核心约束 → 代码模式 → 检查清单 → 反模式」
 - `tests/`：manifest、dispatch 与 skill 文档一致性校验

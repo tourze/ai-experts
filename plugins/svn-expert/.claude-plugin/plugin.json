@@ -1,8 +1,13 @@
 {
   "name": "svn-expert",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "SVN 版本控制专家插件：Subversion 工作流、分支合并策略、提交信息守卫、批量操作拦截",
-  "keywords": ["svn", "subversion", "trunk", "branches", "tags"],
-  "skills": "./skills/",
-  "hooks": "./hooks/hooks.json"
+  "keywords": [
+    "svn",
+    "subversion",
+    "trunk",
+    "branches",
+    "tags"
+  ],
+  "skills": "./skills/"
 }

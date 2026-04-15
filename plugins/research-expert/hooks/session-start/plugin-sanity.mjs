@@ -50,19 +50,17 @@ function collectIssues() {
     issues.push(`plugin.json.name 应为 ${EXPECTED_NAME}，实际为 ${String(manifest.name) || "<empty>"}`);
   }
 
-  for (const [key, expected] of [
-    ["skills", "./skills/"],
-    ["hooks", "./hooks/hooks.json"],
-  ]) {
-    if (manifest[key] !== expected) {
-      issues.push(`plugin.json.${key} 应为 ${expected}，实际为 ${String(manifest[key]) || "<empty>"}`);
-      continue;
+  if (manifest.skills !== "./skills/") {
+    issues.push(`plugin.json.skills 应为 ./skills/，实际为 ${String(manifest.skills) || "<empty>"}`);
+  } else {
+    const skillsPath = resolve(PLUGIN_ROOT, manifest.skills);
+    if (!existsSync(skillsPath)) {
+      issues.push(`plugin.json.skills 指向的路径不存在：${manifest.skills}`);
     }
+  }
 
-    const target = resolve(PLUGIN_ROOT, manifest[key]);
-    if (!existsSync(target)) {
-      issues.push(`plugin.json.${key} 指向的路径不存在：${manifest[key]}`);
-    }
+  if ("hooks" in manifest) {
+    issues.push(`plugin.json.hooks 不应重复声明标准 hooks/hooks.json；Claude 会自动加载该文件，实际为 ${String(manifest.hooks) || "<empty>"}`);
   }
 
   for (const [filePath, label] of [

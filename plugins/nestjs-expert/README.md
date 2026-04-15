@@ -4,7 +4,7 @@ NestJS 框架专家插件，覆盖模块/控制器/服务/DTO/Guard/拦截器配
 
 ## 结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`、`hooks/hooks.json` 与依赖 `typescript-expert`。
+- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/nestjs-expert/`：主技能说明与 NestJS 参考资料。
 - `tests/`：manifest、dispatch 与依赖检查的最小回归测试。

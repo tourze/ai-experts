@@ -15,11 +15,11 @@ test("manifest 显式声明作者、skills、hooks 与依赖", () => {
   assert.equal(manifest.author?.name, "ai-experts");
   assert.equal(manifest.license, "MIT");
   assert.equal(manifest.skills, "./skills/");
-  assert.equal(manifest.hooks, "./hooks/hooks.json");
+  assert.equal("hooks" in manifest, false);
   assert.deepEqual(manifest.dependencies, ["php-expert"]);
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
-  assert.ok(existsSync(resolve(pluginRoot, manifest.hooks)));
+  assert.ok(existsSync(hooksPath));
   assert.ok(existsSync(resolve(pluginRoot, "..", "php-expert", ".claude-plugin", "plugin.json")));
   assert.deepEqual(hooks.hooks ?? {}, {});
 });

@@ -1,9 +1,16 @@
 {
   "name": "android-expert",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Android 开发专家插件：架构模式、Kotlin Coroutines、无障碍、Material Design 3、模拟器自动化、测试策略",
-  "keywords": ["android", "kotlin", "coroutines", "material-design", "jetpack"],
+  "keywords": [
+    "android",
+    "kotlin",
+    "coroutines",
+    "material-design",
+    "jetpack"
+  ],
   "skills": "./skills/",
-  "hooks": "./hooks/hooks.json",
-  "dependencies": ["java-expert"]
+  "dependencies": [
+    "java-expert"
+  ]
 }

@@ -2,7 +2,7 @@
 
 DevOps 专家插件，覆盖 Docker/Helm/K8s、CI/CD 流水线、Nginx 配置、监控告警和事件响应。
 
-- `.claude-plugin/plugin.json`：显式声明 `skills/` 与 `hooks/hooks.json`。
+- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/dispatch.mjs`：统一分发 `PostToolUse Edit|Write` 校验器。
 - `skills/*/SKILL.md`：全部采用中文统一结构，便于按场景快速触发。
 

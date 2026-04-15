@@ -4,7 +4,7 @@ Next.js 框架专家插件，覆盖 App Router、Server Components、Server Acti
 
 ## 结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/` 与 `hooks/hooks.json`。
+- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/nextjs-developer/`：主技能说明与 App Router / 数据获取 / Server Actions / 部署参考资料。
 - `tests/`：manifest、dispatch 与文档结构的最小回归测试。

@@ -1,11 +1,18 @@
 {
   "name": "database-expert",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "数据库专家插件：MySQL/PostgreSQL 模式设计、Redis 缓存策略、SQL 审查与性能优化",
   "author": {
     "name": "ai-experts"
   },
-  "keywords": ["database", "mysql", "postgresql", "redis", "sql", "schema", "performance"],
-  "skills": "./skills/",
-  "hooks": "./hooks/hooks.json"
+  "keywords": [
+    "database",
+    "mysql",
+    "postgresql",
+    "redis",
+    "sql",
+    "schema",
+    "performance"
+  ],
+  "skills": "./skills/"
 }

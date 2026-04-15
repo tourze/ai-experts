@@ -14,10 +14,10 @@ test("manifest 显式声明 skills、hooks 与 author", () => {
   assert.equal(manifest.name, "javascript-expert");
   assert.equal(manifest.author?.name, "ai-experts");
   assert.equal(manifest.skills, "./skills/");
-  assert.equal(manifest.hooks, "./hooks/hooks.json");
+  assert.equal("hooks" in manifest, false);
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
-  assert.ok(existsSync(resolve(pluginRoot, manifest.hooks)));
+  assert.ok(existsSync(hooksPath));
 
   const postToolHooks = hooks.hooks?.PostToolUse?.[0]?.hooks ?? [];
   assert.equal(postToolHooks.length, 1);

@@ -14,10 +14,10 @@ test("manifest 显式声明作者、skills 与 hooks", () => {
   assert.equal(manifest.name, "python-expert");
   assert.deepEqual(manifest.author, { name: "ai-experts" });
   assert.equal(manifest.skills, "./skills/");
-  assert.equal(manifest.hooks, "./hooks/hooks.json");
+  assert.equal("hooks" in manifest, false);
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
-  assert.ok(existsSync(resolve(pluginRoot, manifest.hooks)));
+  assert.ok(existsSync(hooksPath));
 
   const postToolUse = hooks.hooks?.PostToolUse?.[0];
   assert.equal(postToolUse?.matcher, "Edit|Write");

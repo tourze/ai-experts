@@ -1,13 +1,21 @@
 {
   "name": "laravel-expert",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Laravel 专家插件：Laravel 10+ 实现、架构模式、安全基线、TDD 与发布验证",
   "license": "MIT",
   "author": {
     "name": "ai-experts"
   },
-  "keywords": ["laravel", "eloquent", "sanctum", "livewire", "pest", "php"],
+  "keywords": [
+    "laravel",
+    "eloquent",
+    "sanctum",
+    "livewire",
+    "pest",
+    "php"
+  ],
   "skills": "./skills/",
-  "hooks": "./hooks/hooks.json",
-  "dependencies": ["php-expert"]
+  "dependencies": [
+    "php-expert"
+  ]
 }

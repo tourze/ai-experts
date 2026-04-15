@@ -63,8 +63,8 @@ function collectManifestIssues() {
     if (manifest.skills !== "./skills/") {
       issues.push(`manifest.skills 应为 ./skills/，当前为 ${JSON.stringify(manifest.skills)}`);
     }
-    if (manifest.hooks !== "./hooks/hooks.json") {
-      issues.push(`manifest.hooks 应为 ./hooks/hooks.json，当前为 ${JSON.stringify(manifest.hooks)}`);
+    if ("hooks" in manifest) {
+      issues.push(`manifest.hooks 不应重复声明标准 hooks/hooks.json，当前为 ${JSON.stringify(manifest.hooks)}`);
     }
     if (manifest.author?.name !== "ai-experts") {
       issues.push(`manifest.author.name 应为 ai-experts，当前为 ${JSON.stringify(manifest.author?.name)}`);

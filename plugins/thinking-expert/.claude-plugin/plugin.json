@@ -1,6 +1,6 @@
 {
   "name": "thinking-expert",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "思维专家插件：思考陪跑、优先级判断、第一性原理、逆向推演、多视角审议与科研脑暴",
   "author": {
     "name": "ai-experts"
@@ -13,6 +13,5 @@
     "brainstorming",
     "prioritization"
   ],
-  "skills": "./skills/",
-  "hooks": "./hooks/hooks.json"
+  "skills": "./skills/"
 }

@@ -1,11 +1,16 @@
 {
   "name": "go-expert",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Go 开发专家插件：Go 并发模式、Edit|Write 后的 Go 语法与静态检查、调试语句与编码守卫",
   "author": {
     "name": "ai-experts"
   },
-  "keywords": ["go", "golang", "goroutine", "channel", "gofmt"],
-  "skills": "./skills/",
-  "hooks": "./hooks/hooks.json"
+  "keywords": [
+    "go",
+    "golang",
+    "goroutine",
+    "channel",
+    "gofmt"
+  ],
+  "skills": "./skills/"
 }

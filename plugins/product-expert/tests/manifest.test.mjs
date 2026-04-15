@@ -13,9 +13,9 @@ test("manifest 声明 skills 与 hooks 并指向真实路径", () => {
 
   assert.equal(manifest.name, "product-expert");
   assert.equal(manifest.skills, "./skills/");
-  assert.equal(manifest.hooks, "./hooks/hooks.json");
+  assert.equal("hooks" in manifest, false);
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
-  assert.ok(existsSync(resolve(pluginRoot, manifest.hooks)));
+  assert.ok(existsSync(hooksPath));
   assert.deepEqual(hooks.hooks ?? {}, {});
 });

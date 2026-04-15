@@ -15,11 +15,11 @@ test("manifest 显式声明 author、skills 与 hooks", () => {
   assert.match(manifest.version, /^\d+\.\d+\.\d+$/);
   assert.equal(manifest.author?.name, "ai-experts");
   assert.equal(manifest.skills, "./skills/");
-  assert.equal(manifest.hooks, "./hooks/hooks.json");
+  assert.equal("hooks" in manifest, false);
   assert.deepEqual(manifest.keywords, ["linux", "bash", "shell", "systemd", "debian", "centos", "arch"]);
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
-  assert.ok(existsSync(resolve(pluginRoot, manifest.hooks)));
+  assert.ok(existsSync(hooksPath));
 
   const postToolHooks = hooks.hooks?.PostToolUse?.[0]?.hooks ?? [];
   assert.equal(postToolHooks.length, 1);

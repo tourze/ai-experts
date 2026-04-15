@@ -4,7 +4,7 @@
 
 ## 目录结构
 
-- `.claude-plugin/plugin.json`：插件清单、依赖声明、skills 与 hooks 入口。
+- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：5 个 Laravel 顶层技能，以及 `laravel-specialist/references/` 下的专题参考。
 - `tests/`：manifest、dispatch 与文档结构测试。

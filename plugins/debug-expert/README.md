@@ -4,7 +4,7 @@
 
 ## 结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/` 与 `hooks/hooks.json`。
+- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json`、`dispatch.mjs` 与 `session-start/plugin-sanity.mjs`。
 - `skills/`：3 个技能目录，分别面向桌面卡死分析、Chrome DevTools 调试和 `browser-use` CLI 自动化。
 - `tests/`：manifest、dispatch、hook、自述文档与脚本语法的最小回归测试。

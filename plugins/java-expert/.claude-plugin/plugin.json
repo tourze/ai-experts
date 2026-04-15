@@ -1,11 +1,18 @@
 {
   "name": "java-expert",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Java 开发专家插件：Java / Spring Boot / JUnit / GraalVM 工作流与 Edit|Write 后守卫",
   "author": {
     "name": "ai-experts"
   },
-  "keywords": ["java", "spring-boot", "junit", "jpa", "maven", "gradle", "graalvm"],
-  "skills": "./skills/",
-  "hooks": "./hooks/hooks.json"
+  "keywords": [
+    "java",
+    "spring-boot",
+    "junit",
+    "jpa",
+    "maven",
+    "gradle",
+    "graalvm"
+  ],
+  "skills": "./skills/"
 }

@@ -1,11 +1,16 @@
 {
   "name": "debug-expert",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "调试专家插件：LLDB/GDB 卡死线程回溯、Chrome DevTools 调试与 browser-use 浏览器自动化",
   "author": {
     "name": "ai-experts"
   },
-  "keywords": ["debug", "lldb", "gdb", "chrome-devtools", "browser-use"],
-  "skills": "./skills/",
-  "hooks": "./hooks/hooks.json"
+  "keywords": [
+    "debug",
+    "lldb",
+    "gdb",
+    "chrome-devtools",
+    "browser-use"
+  ],
+  "skills": "./skills/"
 }

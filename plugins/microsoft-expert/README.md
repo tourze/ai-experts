@@ -4,7 +4,7 @@
 
 ## 目录结构
 
-- `.claude-plugin/plugin.json`：插件清单、skills 路径与 hook 注册。
+- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json`、`dispatch.mjs` 和 `session-start/learn-cli-check.mjs`。
 - `skills/`：`microsoft-docs` 与 `microsoft-code-reference` 两个技能。
 

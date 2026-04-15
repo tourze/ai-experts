@@ -15,12 +15,12 @@ test("manifest 显式声明 author、license、skills 与 hooks", () => {
   assert.equal(manifest.author?.name, "ai-experts");
   assert.equal(manifest.license, "MIT");
   assert.equal(manifest.skills, "./skills/");
-  assert.equal(manifest.hooks, "./hooks/hooks.json");
+  assert.equal("hooks" in manifest, false);
   assert.ok(Array.isArray(manifest.keywords));
   assert.ok(manifest.keywords.includes("yt-dlp"));
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
-  assert.ok(existsSync(resolve(pluginRoot, manifest.hooks)));
+  assert.ok(existsSync(hooksPath));
 
   const sessionHooks = hooks.hooks?.SessionStart?.[0]?.hooks ?? [];
   assert.equal(sessionHooks.length, 1);
