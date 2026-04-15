@@ -1,6 +1,6 @@
 ---
 name: ux-researcher-designer
-description: 用结构化研究方法产出 persona、旅程图、可用性测试计划和研究结论。适用于用户研究、需求验证、设计复盘，以及需要把访谈与行为数据收敛成可执行设计输入的场景。
+description: 当用户需要做用户研究、需求验证、persona 构建或设计复盘时使用。适用于用户研究、需求验证、设计复盘，以及需要把访谈与行为数据收敛成可执行设计输入的场景。
 ---
 
 # UX Researcher Designer

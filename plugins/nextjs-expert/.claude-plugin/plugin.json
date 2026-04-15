@@ -14,5 +14,9 @@
     "server-components",
     "vercel"
   ],
+  "dependencies": [
+    "typescript-expert",
+    "react-expert"
+  ],
   "skills": "./skills/"
 }

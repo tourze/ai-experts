@@ -13,5 +13,9 @@
     "cross-platform",
     "webview"
   ],
+  "dependencies": [
+    "rust-expert",
+    "typescript-expert"
+  ],
   "skills": "./skills/"
 }

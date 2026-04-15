@@ -1,6 +1,6 @@
 ---
 name: visual-design-foundations
-description: 用排版、颜色、间距和图标体系搭建设计基础。适用于设计 token 建模、视觉一致性治理、可访问性修正，以及把“看起来乱”收敛成可实现规范的场景。
+description: 当用户需要搭建排版、颜色、间距或图标体系等设计基础时使用。
 ---
 
 # Visual Design Foundations

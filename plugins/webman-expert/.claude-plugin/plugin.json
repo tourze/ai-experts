@@ -13,5 +13,8 @@
     "websocket",
     "php"
   ],
+  "dependencies": [
+    "php-expert"
+  ],
   "skills": "./skills/"
 }

@@ -1,6 +1,6 @@
 ---
 name: apple-notes
-description: 通过 macOS 上的 `memo` CLI 管理 Apple Notes，适用于查看、搜索、编辑、移动和导出备忘录。
+description: 当用户需要查看、搜索、编辑或导出 Apple Notes 备忘录时使用。
 homepage: https://github.com/antoniorodr/memo
 metadata:
   openclaw:

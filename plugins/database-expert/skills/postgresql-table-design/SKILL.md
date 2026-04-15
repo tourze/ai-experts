@@ -1,6 +1,6 @@
 ---
 name: postgresql-table-design
-description: 设计和审查 PostgreSQL 表结构、类型、约束、索引与分区策略，适用于利用 PG 原生特性的模式设计
+description: 当用户需要设计或审查 PostgreSQL 表结构、类型、约束、索引或分区策略时使用。
 ---
 
 # PostgreSQL Table Design

@@ -1,6 +1,6 @@
 ---
 name: swiftui-ui-patterns
-description: 面向 SwiftUI 视图、导航、Tab 架构、sheet 和组件拆分的模式库，适用于新建界面、重构界面和查找项目内可复用范式。
+description: 当用户需要构建或重构 SwiftUI 视图、导航、Tab 架构或组件拆分时使用。适用于新建界面、重构界面和查找项目内可复用范式。
 ---
 
 # SwiftUI UI 模式

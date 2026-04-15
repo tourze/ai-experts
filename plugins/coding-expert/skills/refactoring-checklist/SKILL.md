@@ -44,6 +44,12 @@ metadata:
 - [ ] 重构提交不混入行为变更
 - [ ] 重构后覆盖率不低于基线
 
+## 纪律守卫
+
+**Iron Law：没有测试覆盖的代码，不允许开始重构。**
+
+完整的 Red Flags 表和 Rationalizations 对照表见 [references/discipline-guard.md](./references/discipline-guard.md)，开始重构前必须读取。
+
 ## 反模式
 - 没测试就重构，改完不知道有没有破坏行为。
 - 重构变重写：本来说"整理一下"，最后推翻重来。

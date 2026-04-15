@@ -1,6 +1,6 @@
 ---
 name: lottie-animations
-description: 用于实现 Lottie / dotLottie 动画、交互动效图标和加载动画。当任务涉及 lottie-web、dotLottie、After Effects 导出动画或 Lottie 性能优化时使用。
+description: 当任务涉及 Lottie / dotLottie 动画、lottie-web、After Effects 导出动画、交互动效图标、加载动画或 Lottie 性能优化时使用。
 ---
 
 # Lottie 动画

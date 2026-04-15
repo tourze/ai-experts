@@ -1,6 +1,6 @@
 ---
 name: redis-best-practices
-description: 设计和审查 Redis 键空间、缓存策略、并发控制与高可用方案，适用于缓存、计数器、锁、队列和流处理
+description: 当用户需要设计或审查 Redis 键空间、缓存策略、并发控制或高可用方案时使用。
 ---
 
 # Redis Best Practices

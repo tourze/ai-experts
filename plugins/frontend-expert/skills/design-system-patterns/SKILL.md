@@ -1,6 +1,6 @@
 ---
 name: design-system-patterns
-description: 用于搭建设计令牌、主题系统和组件架构。当用户提到“设计系统”“design tokens”“主题切换”“组件库规范”“多品牌主题”时使用。
+description: 当用户需要搭建设计令牌、主题系统或组件架构时使用。适合涉及”设计系统””design tokens””主题切换””组件库规范””多品牌主题”的场景。
 ---
 
 # 设计系统模式

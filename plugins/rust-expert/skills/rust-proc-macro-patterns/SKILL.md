@@ -1,6 +1,6 @@
 ---
 name: rust-proc-macro-patterns
-description: 用于 Rust 过程宏开发；当任务涉及 derive macro、attribute macro、syn/quote、proc-macro2 Span、trybuild 测试或 cargo-expand 调试时触发。
+description: 当用户需要开发 Rust 过程宏时使用；涉及 derive macro、attribute macro、syn/quote 或 proc-macro2 时触发。
 ---
 
 # Rust Proc Macro Patterns

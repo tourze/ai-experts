@@ -39,6 +39,12 @@ metadata:
 - [ ] 按严重度分级输出
 - [ ] 未混入 linter 能抓的风格问题
 
+## 纪律守卫
+
+**Iron Law：没有读取实际代码或 diff，不允许给出审查意见。**
+
+完整的 Red Flags 表和 Rationalizations 对照表见 [references/discipline-guard.md](./references/discipline-guard.md)，开始审查前必须读取。
+
 ## 反模式
 - 不读代码，凭函数名猜问题。
 - 把个人风格偏好当成质量问题。

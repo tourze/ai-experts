@@ -13,5 +13,8 @@
     "responsive",
     "web-vitals"
   ],
+  "dependencies": [
+    "javascript-expert"
+  ],
   "skills": "./skills/"
 }

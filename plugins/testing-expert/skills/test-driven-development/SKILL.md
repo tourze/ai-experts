@@ -1,6 +1,6 @@
 ---
 name: test-driven-development
-description: 实现新功能、修 bug、做行为重构前优先使用。适用于“先写测试再写代码”“按 TDD 干”“补一个失败测试再修”“红绿重构”这类请求，要求先看到失败，再写最小实现。
+description: 当用户要按 TDD 流程编码、先写测试再写实现、或要求红绿重构时使用。
 ---
 
 # 测试驱动开发
@@ -81,6 +81,12 @@ npm test
 - [ ] 当前测试与相关回归测试都通过
 - [ ] 没在绿灯阶段偷偷加需求
 - [ ] 若用了 mock，确认没在测试 mock 自己
+
+## 纪律守卫
+
+**Iron Law：没有失败测试，不写生产代码。**
+
+完整的 Red Flags 表和 Rationalizations 对照表见 [references/discipline-guard.md](./references/discipline-guard.md)，开始编码前必须读取。
 
 ## 反模式
 

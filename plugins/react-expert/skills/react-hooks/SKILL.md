@@ -1,6 +1,6 @@
 ---
 name: react-hooks
-description: 适用于 React Hooks 规则、自定义 Hook 设计、依赖数组、effect 清理与状态建模。用户提到 useState/useEffect/useReducer/useMemo/useCallback、自定义 Hook、依赖项、闭包问题时使用。
+description: 当用户需要设计自定义 Hook、修复依赖数组、处理 effect 清理或优化状态建模时使用。
 ---
 
 # React Hooks

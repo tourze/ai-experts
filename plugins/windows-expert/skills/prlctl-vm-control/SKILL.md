@@ -1,6 +1,6 @@
 ---
 name: prlctl-vm-control
-description: 通过 macOS 主机上的 `prlctl` 控制 Parallels Desktop 虚拟机，并在 Windows 或 Linux 客体中执行命令；适用于虚拟机定位、状态采集、电源控制、快照检查与客体侧批量排障。
+description: 当用户需要通过 prlctl 控制 Parallels Desktop 虚拟机时使用。覆盖虚拟机定位、状态采集、电源控制、快照检查与客体侧命令执行。
 ---
 
 # prlctl-vm-control

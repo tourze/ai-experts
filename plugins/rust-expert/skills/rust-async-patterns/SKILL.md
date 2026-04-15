@@ -1,6 +1,6 @@
 ---
 name: rust-async-patterns
-description: 用于 Rust Tokio 异步开发与排障；当任务涉及 `tokio::spawn`、`JoinSet`、channel、`select!`、取消、超时、`async_trait`、`Send + 'static`、锁跨 `await` 或 async 死锁/阻塞时触发。
+description: 当用户需要开发或排障 Tokio 异步代码时使用；涉及 tokio::spawn、JoinSet、channel、select! 或异步生命周期时触发。
 ---
 
 # Rust Async Patterns

@@ -1,6 +1,6 @@
 ---
 name: vue-expert-js
-description: 使用纯 JavaScript 构建 Vue 3 组件、composable、Pinia store 与 Vite 项目，并通过 JSDoc 提供类型约束；适用于不引入 TypeScript 但仍要求结构化类型信息的 Vue 项目。
+description: 当用户需要用纯 JavaScript（非 TypeScript）编写 Vue 3 组件、composable 或 Pinia store 时使用。覆盖 Vite 项目配置与 JSDoc 类型约束。
 license: MIT
 metadata:
   author: https://github.com/Jeffallan

@@ -14,5 +14,8 @@
     "twig",
     "messenger"
   ],
+  "dependencies": [
+    "php-expert"
+  ],
   "skills": "./skills/"
 }

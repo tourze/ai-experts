@@ -1,6 +1,6 @@
 ---
 name: rust-tokio-runtime-tuning
-description: 用于 Tokio 运行时配置与调优；当任务涉及 Runtime::builder、worker 线程数、blocking 线程池、current_thread、Runtime::block_on 桥接或 tokio-console 监控时触发。
+description: 当用户需要调优 Tokio 运行时配置时使用；涉及 Runtime::builder、worker 线程数、blocking 线程池或 current_thread 时触发。
 ---
 
 # Rust Tokio Runtime Tuning

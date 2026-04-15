@@ -1,6 +1,6 @@
 ---
 name: ios-simulator-skill
-description: 面向 iOS 模拟器的构建、调试、导航、日志、截图与设备生命周期脚本集合，适用于自动化验证、SwiftUI / UIKit 调试和提审前回归。
+description: 当用户需要在 iOS 模拟器中构建、调试、截图或做自动化验证时使用。适用于自动化验证、SwiftUI / UIKit 调试和提审前回归。
 ---
 
 # iOS 模拟器自动化

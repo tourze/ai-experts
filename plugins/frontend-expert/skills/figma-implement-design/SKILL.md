@@ -1,6 +1,6 @@
 ---
 name: figma-implement-design
-description: 用于把 Figma 设计稿转成可落地代码。当用户提供 Figma 链接、要求 1:1 还原界面、根据设计稿实现组件或页面时使用。
+description: 当用户提供 Figma 链接、要求 1:1 还原界面、或需要根据设计稿实现组件或页面时使用。
 ---
 
 # Figma 设计实现

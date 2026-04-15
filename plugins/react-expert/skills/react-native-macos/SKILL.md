@@ -1,6 +1,6 @@
 ---
 name: react-native-macos
-description: 适用于基于 react-native-macos 构建桌面应用、处理 AppKit 集成、多窗口、菜单栏、键鼠输入与 iOS 到 macOS 移植。用户提到 react-native-macos、AppKit、macOS 桌面端、Platform.OS === 'macos' 时使用。
+description: 当用户需要用 react-native-macos 构建桌面应用或从 iOS 移植到 macOS 时使用。
 ---
 
 # React Native macOS

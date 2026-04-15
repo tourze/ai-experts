@@ -1,6 +1,6 @@
 ---
 name: react-server-components
-description: 适用于 React Server Components、Next.js App Router、Server Actions、流式渲染与服务端数据获取。用户提到 RSC、use server、Server Actions、App Router、零 bundle 成本、服务端组件时使用。
+description: 当用户需要使用 React Server Components、Server Actions 或流式渲染时使用。
 ---
 
 # React Server Components

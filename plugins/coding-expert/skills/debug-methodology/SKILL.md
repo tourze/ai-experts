@@ -44,6 +44,12 @@ metadata:
 - [ ] 修复针对根因
 - [ ] 已补回归测试
 
+## 纪律守卫
+
+**Iron Law：没有根因调查，不允许提出修复方案。**
+
+完整的 Red Flags 表和 Rationalizations 对照表见 [references/discipline-guard.md](./references/discipline-guard.md)，开始调试前必须读取。
+
 ## 反模式
 - 不复现就猜原因。
 - 同时改多处，不知道哪个改动修好的。

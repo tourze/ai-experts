@@ -1,6 +1,6 @@
 ---
 name: rust-ffi-bindings
-description: 用于 Rust FFI 跨语言集成；当任务涉及 `extern "C"`、`#[no_mangle]`、CStr/CString、opaque pointer、cbindgen、uniffi、函数指针回调或 FFI 边界内存安全时触发。
+description: 当用户需要通过 FFI 集成 Rust 与 C/C++ 或其他语言时使用；涉及 extern C、#[no_mangle]、CStr/CString 或 opaque pointer 时触发。
 ---
 
 # Rust FFI Bindings

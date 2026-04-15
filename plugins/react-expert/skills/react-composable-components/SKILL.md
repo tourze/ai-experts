@@ -1,6 +1,6 @@
 ---
 name: react-composable-components
-description: 适用于拆分臃肿 React 组件、设计 compound components、规范 props 透传与样式合并的技能。用户提到“组件太大”“想做可组合组件”“要抽设计系统组件”“要提高复用性/可维护性”时使用。
+description: 当用户需要拆分臃肿 React 组件、设计 compound components 或规范 props 透传时使用。
 ---
 
 # React 可组合组件

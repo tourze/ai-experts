@@ -1,6 +1,6 @@
 ---
 name: rust-serde-patterns
-description: 用于 Rust serde 序列化/反序列化；当任务涉及 serde derive 属性、enum 标签策略、自定义 Serializer/Deserializer、字段别名、向后兼容演进、flatten 或 skip_serializing_if 时触发。
+description: 当用户需要设计或调试 serde 序列化/反序列化逻辑时使用；涉及 serde derive 属性、enum 标签策略或自定义 Serializer 时触发。
 ---
 
 # Rust Serde Patterns

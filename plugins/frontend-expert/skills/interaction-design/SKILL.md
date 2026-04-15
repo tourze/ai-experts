@@ -1,6 +1,6 @@
 ---
 name: interaction-design
-description: 用于设计微交互、动效、过渡和反馈状态。当用户提到“加点交互感”“做 loading/skeleton”“优化 hover/focus/transition”“让界面更顺滑”时使用。
+description: 当用户需要设计微交互、动效、过渡或反馈状态时使用。适合”加点交互感””做 loading/skeleton””优化 hover/focus/transition””让界面更顺滑”等场景。
 ---
 
 # 交互设计

@@ -1,6 +1,6 @@
 ---
 name: rust-cargo-workspace
-description: 用于 Cargo workspace 管理；当任务涉及 `[workspace]`、workspace.dependencies、feature flag 组合、path 依赖、build.rs、跨 crate 可见性或 CI 缓存时触发。
+description: 当用户需要管理 Cargo workspace 时使用；涉及 [workspace]、workspace.dependencies、feature flag 或 crate 拆分时触发。
 ---
 
 # Rust Cargo Workspace

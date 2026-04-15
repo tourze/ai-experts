@@ -1,6 +1,6 @@
 ---
 name: engineering-retro
-description: 按时间窗口生成基于 Git 历史的工程回顾，输出提交量、改动规模、活跃时段、热点文件、作者亮点与可选的 PR 指标。适用于“这周发了什么”“做个 sprint retro”“看最近 30 天开发节奏”等场景。
+description: 当用户需要回顾最近一段时间的开发进度、提交量或热点文件时使用。基于 Git 历史按时间窗口输出改动规模、活跃时段、作者亮点与可选 PR 指标。
 metadata:
   version: 1.1.0
   category: review

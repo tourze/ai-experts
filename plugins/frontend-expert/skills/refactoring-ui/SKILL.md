@@ -1,6 +1,6 @@
 ---
 name: refactoring-ui
-description: 用于修复视觉层级、间距、颜色和深度问题。当用户说“界面看起来不对劲”“帮我调视觉层级”“Tailwind 样式太乱”“配色和间距需要整理”时使用。
+description: 当用户需要修复视觉层级、间距、颜色或深度问题时使用。适合”界面看起来不对劲””帮我调视觉层级””Tailwind 样式太乱””配色和间距需要整理”等场景。
 license: MIT
 metadata:
   author: wondelai

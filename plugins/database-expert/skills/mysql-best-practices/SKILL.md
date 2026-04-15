@@ -1,6 +1,6 @@
 ---
 name: mysql-best-practices
-description: 设计和审查 MySQL 表结构、索引、事务、复制与运维基线，适用于 OLTP 场景下的建模与性能优化
+description: 当用户需要设计或审查 MySQL 表结构、索引、事务或复制策略时使用。
 ---
 
 # MySQL Best Practices

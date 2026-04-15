@@ -1,6 +1,6 @@
 ---
 name: rust-best-practices
-description: 用于 Rust 代码编写、评审与重构；当任务涉及借用/所有权、错误边界、Clippy、性能、测试、文档，或“该不该 clone、unwrap、box、dyn Trait”这类取舍时触发。
+description: 当用户需要编写、评审或重构 Rust 代码时使用；涉及借用/所有权、错误边界、Clippy、性能或测试时触发。
 ---
 
 # Rust Best Practices

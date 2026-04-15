@@ -1,6 +1,6 @@
 ---
 name: pre-landing-review
-description: 在代码合并或落地前做安全门审查时使用。适用于“这次改动能不能落”“上线前安全检查”“pre-merge review”“gate check”等请求，输出阻断项、建议项和最终放行结论。
+description: 当用户需要判断代码是否可以合并或上线时使用。适用于 pre-merge review、gate check、上线前安全检查等请求。
 ---
 
 # 落地前审查
@@ -68,10 +68,16 @@ git diff origin/main... -- path/to/file
 - [ ] 结论明确为 `CLEAR TO LAND` 或 `BLOCKED`
 - [ ] 没把普通代码风格问题误报成阻断项
 
+## 纪律守卫
+
+**Iron Law：没有读取实际 diff 和跑验证命令，不允许声称”可以落地”。**
+
+完整的 Red Flags 表和 Rationalizations 对照表见 [references/discipline-guard.md](./references/discipline-guard.md)，开始审查前必须读取。
+
 ## 反模式
 
 - 不看 diff，直接对整仓库泛泛而谈。
-- 把“命名不喜欢”之类问题当成阻断项。
+- 把”命名不喜欢”之类问题当成阻断项。
 - 发现高风险后不给用户处理选项。
 - 用户没授权修复，却直接改代码。
-- 只给“看起来没问题”而不写门禁结论。
+- 只给”看起来没问题”而不写门禁结论。
