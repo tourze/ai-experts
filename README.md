@@ -32,6 +32,18 @@ claude plugin install docs-expert@ai-experts
 claude plugin install git-expert@ai-experts --scope project
 ```
 
+如果要一次安装 marketplace 中的全部插件，Claude CLI 当前没有内置 `install-all` 子命令，可以直接使用：
+
+```bash
+jq -r '.plugins[].name + "@ai-experts"' .claude-plugin/marketplace.json | while read -r plugin; do claude plugin install "$plugin"; done
+```
+
+如果要全部按当前项目范围安装：
+
+```bash
+jq -r '.plugins[].name + "@ai-experts"' .claude-plugin/marketplace.json | while read -r plugin; do claude plugin install "$plugin" --scope project; done
+```
+
 4. 激活新插件
 
 在 Claude Code 中执行：
