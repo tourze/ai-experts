@@ -9,6 +9,12 @@
 - `skills/`：架构、设计、重构、计划与债务治理技能。
 - `tests/`：脚本级回归测试，覆盖 `scan_codebase.sh` 与 `complexity_report.py`。
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `codebase-analyst` | 只读架构分析：模块边界映射、依赖图追踪、分层违规检测、结构健康评分 |
+
 ## 核心能力
 
 - 架构蓝图、架构图、架构评审、系统设计。
