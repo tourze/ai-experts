@@ -1,11 +1,13 @@
 {
   "name": "symfony-expert",
   "version": "0.2.1",
-  "description": "Symfony 框架专家插件：Doctrine ORM、Twig 模板、Messenger 异步、Voters 授权",
+  "description": "Symfony 框架专家插件：Bundle 架构、Doctrine ORM Entity、Twig 模板、Messenger 异步、Voters 授权",
   "license": "MIT",
   "keywords": [
     "symfony",
+    "bundle",
     "doctrine",
+    "entity",
     "twig",
     "messenger"
   ],

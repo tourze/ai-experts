@@ -7,6 +7,8 @@ const doctrineRef = resolve("plugins/symfony-expert/skills/doctrine-batch-proces
 const twigRef = resolve("plugins/symfony-expert/skills/twig-components/reference.md");
 const votersRef = resolve("plugins/symfony-expert/skills/symfony-voters/reference.md");
 const messengerRef = resolve("plugins/symfony-expert/skills/symfony-messenger/reference.md");
+const bundleArchRef = resolve("plugins/symfony-expert/skills/symfony-bundle-architecture/reference.md");
+const entityPatternsRef = resolve("plugins/symfony-expert/skills/doctrine-entity-patterns/reference.md");
 
 test("参考文档不再包含本次修复的已知错误片段", () => {
   const doctrine = readFileSync(doctrineRef, "utf-8");
@@ -14,11 +16,16 @@ test("参考文档不再包含本次修复的已知错误片段", () => {
   const voters = readFileSync(votersRef, "utf-8");
   const messenger = readFileSync(messengerRef, "utf-8");
 
+  const bundleArch = readFileSync(bundleArchRef, "utf-8");
+  const entityPatterns = readFileSync(entityPatternsRef, "utf-8");
+
   for (const [file, content] of [
     [doctrineRef, doctrine],
     [twigRef, twig],
     [votersRef, voters],
     [messengerRef, messenger],
+    [bundleArchRef, bundleArch],
+    [entityPatternsRef, entityPatterns],
   ]) {
     assert.doesNotMatch(content, /\b(TODO|FIXME|TBD|HACK|XXX)\b/, `${file} 仍有占位符`);
   }
@@ -35,4 +42,13 @@ test("参考文档不再包含本次修复的已知错误片段", () => {
 
   assert.match(messenger, /failure_transport/);
   assert.match(messenger, /messenger:failed:retry/);
+
+  assert.match(bundleArch, /CompilerPass/);
+  assert.match(bundleArch, /autowire/);
+  assert.match(bundleArch, /debug:container/);
+
+  assert.match(entityPatterns, /ORM\\Entity/);
+  assert.match(entityPatterns, /DateTimeImmutable/);
+  assert.match(entityPatterns, /ServiceEntityRepository/);
+  assert.match(entityPatterns, /AbstractMigration/);
 });
