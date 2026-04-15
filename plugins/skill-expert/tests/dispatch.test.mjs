@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import test from "node:test";
 
-const pluginRoot = resolve("plugins/skill-expert");
+const pluginRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const dispatchPath = resolve(pluginRoot, "hooks/dispatch.mjs");
 
 test("dispatch 对不存在的 hook 子目录直接退出", () => {

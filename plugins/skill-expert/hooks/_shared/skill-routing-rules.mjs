@@ -51,8 +51,26 @@ export const NEXT_STEP_RULES = [
 export const SHORT_CONFIRMATION_RE =
   /^(好的|好|可以|收到|明白|了解|继续|请继续|请确认|稍等|已完成|完成了|ok|okay|done)[。！!？? ]*$/i;
 
+export const ROUTING_REMINDER = [
+  "[Skill Routing Reminder] 每轮路由提醒",
+  "",
+  "你的回复必须在开头包含路由声明（📌 Skill 路由 或 📌 本轮未命中 skill），",
+  "在结尾包含下一步推荐（📌 下一步推荐）。",
+  "如果本轮实际通过 Skill tool 调用了 skill，请在路由声明中注明「已调用」；",
+  "如果仅凭已有知识回答而未调用 Skill tool，请注明「未调用，凭已有知识回答」。",
+].join("\n");
+
+export const SESSION_USAGE_SUMMARY_TEMPLATE = [
+  "---",
+  "📌 本次会话 Skill 使用汇总",
+  "- 已调用：`skill-name-1`、`skill-name-2`（通过 Skill tool 实际加载的）",
+  "- 已命中但未调用：`skill-name-3`（路由声明中提到但未通过 Skill tool 加载的）",
+  "- 建议下次使用：`skill-name-4`：一句话说明 → 期望效果",
+].join("\n");
+
 export function hasNextStepSection(text) {
-  return /(^|\n)📌 下一步推荐\b/m.test(text) || /本轮无推荐，原因[:：]/.test(text);
+  // 注意：\b 对中文字符无效（JS 的 \w 只匹配 [a-zA-Z0-9_]），所以不用 \b。
+  return /(^|\n)📌 下一步推荐/m.test(text) || /本轮无推荐，原因[:：]/.test(text);
 }
 
 export function shouldSkipNextStepRequirement(text) {

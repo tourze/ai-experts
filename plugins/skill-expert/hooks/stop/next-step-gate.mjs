@@ -75,45 +75,22 @@ function extractTextContent(content) {
     .join("\n");
 }
 
-function isTextOnlyAssistant(record) {
-  const content = record?.message?.content;
-  if (typeof content === "string") {
-    return content.trim().length > 0;
-  }
-  if (!Array.isArray(content)) {
-    return false;
-  }
-
-  let hasText = false;
-  for (const item of content) {
-    if (!item) {
-      continue;
-    }
-    if (item.type === "tool_use") {
-      return false;
-    }
-    if (item.type === "text" && typeof item.text === "string" && item.text.trim()) {
-      hasText = true;
-    }
-  }
-  return hasText;
-}
-
 function getFinalAssistantText(records, promptId) {
-  let finalAssistantRecord = null;
-
+  // 聚合当前 promptId 下所有 assistant 消息的文本内容。
+  // 这修复了「最后一轮是 tool_use 导致 gate 被绕过」的问题：
+  // 旧逻辑要求最后一条 assistant 消息必须是纯文本才检查,
+  // 实际场景中最后一条经常含 tool_use,导致 gate 直接放行。
+  const texts = [];
   for (const record of records) {
     if (record?.promptId !== promptId || record?.isSidechain === true || record?.type !== "assistant") {
       continue;
     }
-    finalAssistantRecord = record;
+    const text = extractTextContent(record.message?.content).trim();
+    if (text) {
+      texts.push(text);
+    }
   }
-
-  if (!finalAssistantRecord || !isTextOnlyAssistant(finalAssistantRecord)) {
-    return "";
-  }
-
-  return extractTextContent(finalAssistantRecord.message?.content).trim();
+  return texts.join("\n");
 }
 
 export async function run(payload) {

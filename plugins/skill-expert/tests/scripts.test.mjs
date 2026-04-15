@@ -1,10 +1,11 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { readFileSync, readdirSync } from "node:fs";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import test from "node:test";
 
-const pluginRoot = resolve("plugins/skill-expert");
+const pluginRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 function collectFiles(dir, predicate) {
   const files = [];

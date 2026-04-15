@@ -6,6 +6,33 @@ import test from "node:test";
 
 import { run as runSkillRoutingContext } from "../hooks/session-start/skill-routing-context.mjs";
 import { run as runNextStepGate } from "../hooks/stop/next-step-gate.mjs";
+import { run as runSkillRoutingReminder } from "../hooks/user-prompt-submit/skill-routing-reminder.mjs";
+
+// ── UserPromptSubmit: skill-routing-reminder ──
+
+test("skill-routing-reminder 对编码任务注入路由提醒", async () => {
+  const result = await runSkillRoutingReminder({ prompt: "帮我重构一下这个模块的错误处理" });
+  assert.equal(result?.decision, "context");
+  assert.match(result?.reason ?? "", /Skill Routing Reminder/);
+  assert.match(result?.reason ?? "", /📌 Skill 路由/);
+});
+
+test("skill-routing-reminder 对短消息放行", async () => {
+  const result = await runSkillRoutingReminder({ prompt: "好的" });
+  assert.equal(result, null);
+});
+
+test("skill-routing-reminder 对斜杠命令放行", async () => {
+  const result = await runSkillRoutingReminder({ prompt: "/commit 提交当前改动" });
+  assert.equal(result, null);
+});
+
+test("skill-routing-reminder 对确认性回复放行", async () => {
+  const result = await runSkillRoutingReminder({ prompt: "继续" });
+  assert.equal(result, null);
+});
+
+// ── SessionStart: skill-routing-context ──
 
 test("skill-routing-context 会注入 Skill 路由声明要求", async () => {
   const result = await runSkillRoutingContext();
@@ -100,6 +127,87 @@ test("next-step-gate 对简短确认类回复放行", async () => {
             {
               type: "text",
               text: "好的",
+            },
+          ],
+        },
+      }),
+    ],
+    async (transcriptPath) => {
+      const result = await runNextStepGate({ transcript_path: transcriptPath });
+      assert.equal(result, null);
+    },
+  );
+});
+
+test("next-step-gate 在最后消息含 tool_use 时仍能检测前一条文本", async () => {
+  await withTranscript(
+    [
+      JSON.stringify({
+        type: "user",
+        promptId: "turn-mix",
+        message: { content: "帮我重构这个模块" },
+      }),
+      JSON.stringify({
+        type: "assistant",
+        promptId: "turn-mix",
+        message: {
+          content: [
+            {
+              type: "text",
+              text: "重构已完成，所有测试通过。以下是变更摘要：修改了 3 个文件，删除了 2 个冗余函数，提取了 1 个公共模块。代码行数减少了 15%，可读性显著提升。",
+            },
+          ],
+        },
+      }),
+      JSON.stringify({
+        type: "assistant",
+        promptId: "turn-mix",
+        message: {
+          content: [
+            {
+              type: "text",
+              text: "让我再确认一下。",
+            },
+            {
+              type: "tool_use",
+              id: "tool-1",
+              name: "Bash",
+              input: { command: "npm test" },
+            },
+          ],
+        },
+      }),
+    ],
+    async (transcriptPath) => {
+      const result = await runNextStepGate({ transcript_path: transcriptPath });
+      // 最后含文本的 assistant 消息缺少 📌 下一步推荐 → 应 block
+      assert.equal(result?.decision, "block");
+    },
+  );
+});
+
+test("next-step-gate 在混合消息含下一步推荐时放行", async () => {
+  await withTranscript(
+    [
+      JSON.stringify({
+        type: "user",
+        promptId: "turn-mix2",
+        message: { content: "帮我优化性能" },
+      }),
+      JSON.stringify({
+        type: "assistant",
+        promptId: "turn-mix2",
+        message: {
+          content: [
+            {
+              type: "text",
+              text: "优化完成。\n\n---\n📌 下一步推荐\n- `testing-expert:benchmark-runner`：跑基准测试验证优化效果 → 对比前后延迟。",
+            },
+            {
+              type: "tool_use",
+              id: "tool-2",
+              name: "Bash",
+              input: { command: "npm run bench" },
             },
           ],
         },

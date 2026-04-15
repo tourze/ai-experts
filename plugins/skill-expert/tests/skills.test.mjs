@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import test from "node:test";
 
-const pluginRoot = resolve("plugins/skill-expert");
+const pluginRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const skillsRoot = resolve(pluginRoot, "skills");
 const readmePath = resolve(pluginRoot, "README.md");
 const expectedResources = [
