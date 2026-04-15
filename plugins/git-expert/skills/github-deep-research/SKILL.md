@@ -24,11 +24,11 @@ description: 对单个 GitHub 仓库做多轮深度研究，结合 GitHub API、
 ### 1. 先拿 GitHub 基线数据
 
 ```bash
-python3 plugins/git-expert/skills/github-deep-research/scripts/github_api.py <owner> <repo> summary
-python3 plugins/git-expert/skills/github-deep-research/scripts/github_api.py <owner> <repo> readme
-python3 plugins/git-expert/skills/github-deep-research/scripts/github_api.py <owner> <repo> tree
-python3 plugins/git-expert/skills/github-deep-research/scripts/github_api.py <owner> <repo> releases
-python3 plugins/git-expert/skills/github-deep-research/scripts/github_api.py <owner> <repo> tags
+python3 scripts/github_api.py <owner> <repo> summary
+python3 scripts/github_api.py <owner> <repo> readme
+python3 scripts/github_api.py <owner> <repo> tree
+python3 scripts/github_api.py <owner> <repo> releases
+python3 scripts/github_api.py <owner> <repo> tags
 ```
 
 可用命令：

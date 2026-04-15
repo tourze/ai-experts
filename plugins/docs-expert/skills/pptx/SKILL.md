@@ -48,5 +48,5 @@ python3 scripts/office/pack.py unpacked slides-fixed.pptx --validate true
 
 - 直接在压缩包里删文件，不更新关系引用。
 - 加页面只复制 XML，不补内容类型和 presentation 入口。
-- 为了赶进度跳过 `clean.py` 和 `pack.py --validate true`。
+- 为了赶进度跳过 `scripts/clean.py` 和 `scripts/office/pack.py --validate true`。
 - 设计方案都没定，就开始微调每一页 XML。

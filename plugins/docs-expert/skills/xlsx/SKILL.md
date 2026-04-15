@@ -32,7 +32,7 @@ python3 scripts/office/pack.py unpacked model-fixed.xlsx --validate true
 
 - 是否确认了输出仍需是 `.xlsx/.xlsm/.csv/.tsv`。
 - 是否识别出关键工作表、公式区、命名范围和依赖关系。
-- 是否在交付前运行过 `recalc.py` 或等价重算流程。
+- 是否在交付前运行过 `scripts/recalc.py` 或等价重算流程。
 - 是否抽查了典型公式、错误单元格和格式保留情况。
 - 若只是提取数据供写作或分析，可交给 [markitdown](../markitdown/SKILL.md) 或 [consulting-analysis](../consulting-analysis/SKILL.md)。
 

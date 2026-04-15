@@ -21,7 +21,7 @@ metadata:
 - 只基于字幕与元数据分析，不做画面、PPT、代码演示或肢体语言的臆测。
 - 首选 `youtube-transcript-api`；如果字幕库不可用，再回退到 `yt-dlp` 的字幕提取。
 - 运行脚本时至少需要 `python`；推荐统一用 `uv run --with ... --no-project` 拉起临时依赖。
-- `analyze_video.py` 生成的是“分析脚手架”，其中的 `[TO BE ANALYZED]` 是有意保留的占位符，不代表脚本缺失实现。
+- `scripts/analyze_video.py` 生成的是“分析脚手架”，其中的 `[TO BE ANALYZED]` 是有意保留的占位符，不代表脚本缺失实现。
 - 没有字幕、视频私有、年龄限制或被地区封锁时，必须直接说明限制，不要伪造摘要。
 - 需要按视频类型调整提炼重点时，参考 `references/analysis-patterns.md`。
 
@@ -38,7 +38,7 @@ metadata:
 
 ```bash
 uv run --with youtube-transcript-api --with yt-dlp --no-project \
-  python plugins/youtube-expert/skills/youtube-analysis/scripts/fetch_transcript.py \
+  python scripts/fetch_transcript.py \
   "https://www.youtube.com/watch?v=dQw4w9WgXcQ" \
   --lang en
 ```
@@ -59,7 +59,7 @@ uv run --with youtube-transcript-api --with yt-dlp --no-project \
 
 ```bash
 uv run --with youtube-transcript-api --with yt-dlp --no-project \
-  python plugins/youtube-expert/skills/youtube-analysis/scripts/analyze_video.py \
+  python scripts/analyze_video.py \
   "https://www.youtube.com/watch?v=dQw4w9WgXcQ" \
   --depth quick \
   --output /tmp/youtube-analysis.md
@@ -79,7 +79,7 @@ uv run --with youtube-transcript-api --with yt-dlp --no-project \
 import sys
 from pathlib import Path
 
-scripts_dir = Path("plugins/youtube-expert/skills/youtube-analysis/scripts")
+scripts_dir = Path("scripts")
 sys.path.insert(0, str(scripts_dir))
 
 from fetch_transcript import fetch_video
@@ -94,7 +94,7 @@ print(data["title"], data["language"], len(data["transcript"]))
 import sys
 from pathlib import Path
 
-scripts_dir = Path("plugins/youtube-expert/skills/youtube-analysis/scripts")
+scripts_dir = Path("scripts")
 sys.path.insert(0, str(scripts_dir))
 
 from fetch_transcript import fetch_video
@@ -109,7 +109,7 @@ for chunk in chunks:
 ## 检查清单
 
 - 先确认输入是合法的 YouTube 链接或 11 位视频 ID。
-- 需要真实内容而不是占位稿时，优先读取 `fetch_transcript.py` 的 JSON，再在上下文里完成分析。
+- 需要真实内容而不是占位稿时，优先读取 `scripts/fetch_transcript.py` 的 JSON，再在上下文里完成分析。
 - 输出结论前确认 `source` 与 `language`，不要把自动字幕误写成官方字幕。
 - 如果视频明显依赖画面内容，结尾必须提示“仅基于字幕，视觉信息未覆盖”。
 - 用户只是想找视频而不是分析当前视频时，切换到 [youtube-search](../youtube-search/SKILL.md)。
@@ -118,7 +118,7 @@ for chunk in chunks:
 ## 反模式
 
 - 不要把没有字幕的视频硬总结成“可能讲了什么”。
-- 不要把 `analyze_video.py` 产出的占位文本直接当最终答案发给用户。
+- 不要把 `scripts/analyze_video.py` 产出的占位文本直接当最终答案发给用户。
 - 不要假设画面里的代码、图表、Demo 一定和字幕一致。
 - 不要承诺精确的说话人识别；绝大多数字幕源并不包含 speaker attribution。
 - 不要在搜视频、批量比选视频的场景误触发本技能；那是 [youtube-search](../youtube-search/SKILL.md) 的职责。

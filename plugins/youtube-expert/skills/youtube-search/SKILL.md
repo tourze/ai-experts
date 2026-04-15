@@ -34,7 +34,7 @@ metadata:
 
 ```bash
 uv run --with yt-dlp --no-project \
-  python plugins/youtube-expert/skills/youtube-search/scripts/search_youtube.py \
+  python scripts/search_youtube.py \
   "claude code skills" \
   --count 5 \
   --format table
@@ -44,7 +44,7 @@ uv run --with yt-dlp --no-project \
 
 ```bash
 uv run --with yt-dlp --no-project \
-  python plugins/youtube-expert/skills/youtube-search/scripts/search_youtube.py \
+  python scripts/search_youtube.py \
   "claude code mcp servers" \
   --count 5 \
   --format json
@@ -54,7 +54,7 @@ uv run --with yt-dlp --no-project \
 
 ```bash
 uv run --with yt-dlp --no-project \
-  python plugins/youtube-expert/skills/youtube-search/scripts/search_youtube.py \
+  python scripts/search_youtube.py \
   "AI agents" \
   --count 10 \
   --sort views \
@@ -65,7 +65,7 @@ uv run --with yt-dlp --no-project \
 
 ```bash
 uv run --with yt-dlp --no-project \
-  python plugins/youtube-expert/skills/youtube-search/scripts/search_youtube.py \
+  python scripts/search_youtube.py \
   "claude code tutorial" \
   --count 10 \
   --days 30 \
@@ -76,7 +76,7 @@ uv run --with yt-dlp --no-project \
 
 ```bash
 uv run --with yt-dlp --no-project \
-  python plugins/youtube-expert/skills/youtube-search/scripts/search_youtube.py \
+  python scripts/search_youtube.py \
   "claude code hooks" \
   --count 5 \
   --format urls

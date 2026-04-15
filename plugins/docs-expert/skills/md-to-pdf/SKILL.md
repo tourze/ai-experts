@@ -46,7 +46,7 @@ python3 scripts/md_to_pdf.py tests/test_document.md sample.pdf --no-mermaid
 
 ## 反模式
 
-- 没跑 `setup.sh` 就直接渲染复杂文档。
+- 没跑 `scripts/setup.sh` 就直接渲染复杂文档。
 - 发现依赖缺失后继续硬跑，最后拿到半成品 PDF。
 - 用重型自定义 CSS 覆盖默认样式，导致打印版不可读。
 - 把 Markdown 里的排版问题归咎于 PDF 渲染器，而不修源文件。

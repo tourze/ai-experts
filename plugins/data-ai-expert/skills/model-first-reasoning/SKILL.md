@@ -23,8 +23,8 @@ description: 当用户明确要求 model-first 或任务涉及状态机、约束
 ## 代码模式
 
 ```bash
-python3 plugins/data-ai-expert/skills/model-first-reasoning/scripts/validate-model.py \
-  plugins/data-ai-expert/skills/model-first-reasoning/MODEL_TEMPLATE.json
+python3 scripts/validate-model.py \
+  MODEL_TEMPLATE.json
 ```
 
 ```json

@@ -17,9 +17,9 @@ description: "在需要只读追踪接口、任务、事件或定时任务的调
 - 输出标题固定为 `入口`、`调用链`、`数据读写`、`异步副作用`、`风险点`、`验证方式`。
 
 ## 代码模式
-- 先读 `skills/api-trace-reader/references/entry-types.md` 判断入口类型。
-- 调用链格式遵循 `skills/api-trace-reader/references/output-example.md`。
-- 风险分级使用 `skills/api-trace-reader/references/risk-rubric.md`。
+- 先读 [入口类型说明](references/entry-types.md) 判断入口类型。
+- 调用链格式遵循 [输出示例](references/output-example.md)。
+- 风险分级使用 [风险分级表](references/risk-rubric.md)。
 
 
 ## 检查清单

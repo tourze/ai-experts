@@ -39,7 +39,7 @@ python3 scripts/accept_changes.py tracked.docx clean.docx
 - 是否确认输出必须是 `.docx` 而不是 PDF 或 Markdown。
 - 是否在编辑前备份原件，尤其是存在修订、批注、页眉页脚和域代码时。
 - 是否使用 [scripts/comment.py](scripts/comment.py) 或 `scripts/office/` 工具链，而不是手动拼接 XML。
-- 是否在回包前运行 `validate.py`，并根据需要提供 `--original` 做差异校验。
+- 是否在回包前运行 `scripts/office/validate.py`，并根据需要提供 `--original` 做差异校验。
 - 若需要后续导出 PDF，可转给 [pdf](../pdf/SKILL.md) 或 [md-to-pdf](../md-to-pdf/SKILL.md)。
 
 ## 反模式

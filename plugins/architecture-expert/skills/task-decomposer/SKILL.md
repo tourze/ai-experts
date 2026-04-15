@@ -17,7 +17,7 @@ description: "在需要把需求拆成带依赖关系和测试策略的结构化
 - 如果需求太模糊，要先写清假设而不是硬拆。
 
 ## 代码模式
-- 拆解策略、依赖建模、边界清单和 sizing 参考 `skills/task-decomposer/references/*.md`。
+- 拆解策略、依赖建模、边界清单和 sizing 参考 `references/*.md`。
 - 默认分成 Foundation / Core Logic / Integration / Polish 四阶段。
 - 输出中建议带任务表、依赖箭头、风险标记和测试等级。
 

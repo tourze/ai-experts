@@ -62,8 +62,8 @@ python3 scripts/add_audio.py final.mp4 voiceover.mp3 \
 
 当前脚本约束：
 
-- `render_video.py` 会校验 `--output` 后缀是否与 `--format` 一致。
-- `add_audio.py` 的淡出时间会按最终输出时长计算，不会再从 `0` 秒开始错误淡出。
+- `scripts/render_video.py` 会校验 `--output` 后缀是否与 `--format` 一致。
+- `scripts/add_audio.py` 的淡出时间会按最终输出时长计算，不会再从 `0` 秒开始错误淡出。
 
 ## 检查清单
 

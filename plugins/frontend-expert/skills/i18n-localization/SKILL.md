@@ -54,7 +54,7 @@ python3 ./scripts/i18n_checker.py /path/to/project
 - [ ] 缺失翻译时有明确回退语言。
 - [ ] 日期、时间、数字、货币都使用地区化 API。
 - [ ] RTL 页面已验证布局、图标方向和文本对齐。
-- [ ] 提交前已跑 `i18n_checker.py` 或等价 lint。
+- [ ] 提交前已跑 `scripts/i18n_checker.py` 或等价 lint。
 
 ## 反模式
 

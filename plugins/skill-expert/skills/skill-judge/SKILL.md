@@ -338,18 +338,18 @@ Loading too little ◄───────────────────�
 ### Creating New Document
 
 **MANDATORY - READ ENTIRE FILE**: Before proceeding, you MUST read
-`docx-js.md` (~500 lines) completely from start to finish.
+`references/<document-creation-guide>.md` (~500 lines) completely from start to finish.
 **NEVER set any range limits when reading this file.**
 
-**Do NOT load** `ooxml.md` or `redlining.md` for this task.
+**Do NOT load** `references/<ooxml-editing-guide>.md` or `references/<redlining-guide>.md` for this task.
 ```
 
 **Bad loading trigger** (just listed):
 ```markdown
 ## References
-- docx-js.md - for creating documents
-- ooxml.md - for editing
-- redlining.md - for tracking changes
+- references/<document-creation-guide>.md - for creating documents
+- references/<ooxml-editing-guide>.md - for editing
+- references/<redlining-guide>.md - for tracking changes
 ```
 
 **For simple Skills** (no references, <100 lines): Score based on conciseness and self-containment.
@@ -394,7 +394,7 @@ Review priority:
 
 **Low freedom** (specific scripts, exact steps):
 ```markdown
-**MANDATORY**: Use exact script in `scripts/create-doc.py`
+**MANDATORY**: Use exact script in `scripts/<required-tool>.py`
 Parameters: --title "X" --author "Y"
 Do NOT modify the script.
 ```

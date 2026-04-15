@@ -44,7 +44,7 @@ bash "<skill_dir>/scripts/search-news.sh" "Kubernetes" --max-age 3 --limit 12
 
 ## 检查清单
 
-- 命令是否使用了当前目录下的 `scripts/search-news.sh` 或 `search-news.ps1`。
+- 命令是否使用了当前目录下的 `scripts/search-news.sh` 或 `scripts/search-news.ps1`。
 - 是否根据用户时效要求设置了合理的 `--max-age`。
 - 是否区分“精准匹配结果”和“推荐补位结果”。
 - 是否在输出里保留来源、发布时间和热度。

@@ -42,7 +42,7 @@ User:
 ```
 
 ```bash
-python3 plugins/data-ai-expert/skills/prompt-engineering-patterns/scripts/optimize-prompt.py
+python3 scripts/optimize-prompt.py
 ```
 
 ## 检查清单

@@ -26,7 +26,7 @@ python scripts/navigator.py --find-text "登录" --tap
 python scripts/navigator.py --find-class EditText --enter-text "user@example.com"
 ```
 
-所有脚本支持 `--help` 查看详细选项。`screen_mapper.py` 支持 `--json` 输出机器可读格式。
+所有脚本支持 `--help` 查看详细选项。`scripts/screen_mapper.py` 支持 `--json` 输出机器可读格式。
 
 ## 脚本清单
 
@@ -34,24 +34,24 @@ python scripts/navigator.py --find-class EditText --enter-text "user@example.com
 
 | 脚本 | 用途 | 关键选项 |
 |------|------|----------|
-| `build_and_test.py` | Gradle 构建、安装、测试 | `--task`, `--clean`, `--json` |
-| `log_monitor.py` | 实时日志监控与过滤 | `--package`, `--tag`, `--priority`, `--duration`, `--json` |
+| `scripts/build_and_test.py` | Gradle 构建、安装、测试 | `--task`, `--clean`, `--json` |
+| `scripts/log_monitor.py` | 实时日志监控与过滤 | `--package`, `--tag`, `--priority`, `--duration`, `--json` |
 
 ### 导航与交互
 
 | 脚本 | 用途 | 关键选项 |
 |------|------|----------|
-| `screen_mapper.py` | 分析当前屏幕 UI 层级 | `--verbose`, `--json` |
-| `navigator.py` | 语义化查找并操作元素 | `--find-text`, `--find-id`, `--tap`, `--enter-text`, `--json` |
-| `gesture.py` | 滑动、滚动等手势操作 | `--swipe`, `--scroll`, `--duration`, `--json` |
-| `keyboard.py` | 按键事件与硬件按钮 | `--key`, `--text`, `--json` |
-| `app_launcher.py` | 应用启动/停止/安装/卸载 | `--launch`, `--terminate`, `--install`, `--uninstall`, `--list`, `--json` |
+| `scripts/screen_mapper.py` | 分析当前屏幕 UI 层级 | `--verbose`, `--json` |
+| `scripts/navigator.py` | 语义化查找并操作元素 | `--find-text`, `--find-id`, `--tap`, `--enter-text`, `--json` |
+| `scripts/gesture.py` | 滑动、滚动等手势操作 | `--swipe`, `--scroll`, `--duration`, `--json` |
+| `scripts/keyboard.py` | 按键事件与硬件按钮 | `--key`, `--text`, `--json` |
+| `scripts/app_launcher.py` | 应用启动/停止/安装/卸载 | `--launch`, `--terminate`, `--install`, `--uninstall`, `--list`, `--json` |
 
 ### 模拟器管理
 
 | 脚本 | 用途 | 关键选项 |
 |------|------|----------|
-| `emulator_manage.py` | AVD 列表/启动/关闭 | `--list`, `--boot`, `--shutdown`, `--json` |
+| `scripts/emulator_manage.py` | AVD 列表/启动/关闭 | `--list`, `--boot`, `--shutdown`, `--json` |
 | `emu_health_check` | 环境检查（ADB/Java/SDK） | `.sh`（macOS/Linux）/ `.ps1`（Windows） |
 
 ## 设计原则

@@ -18,7 +18,7 @@ description: "在需要制定技术债治理策略、规划重构路线图、争
 
 ## 代码模式
 - 先列债项清单，再标影响面、风险、收益、机会窗口和建议时机。
-- 必要时读取 `skills/managing-tech-debt/references/guest-insights.md` 获取治理视角。
+- 必要时读取 [治理视角补充](references/guest-insights.md) 获取治理视角。
 - 输出建议按“立即止血 / 近期治理 / 长期重构”三层切分。
 
 
