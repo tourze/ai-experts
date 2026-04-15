@@ -1,7 +1,7 @@
 {
   "name": "linux-expert",
   "version": "0.1.2",
-  "description": "Linux 系统专家插件：Shell 语法与编码守卫、发行版问题排查、磁盘/网络/性能诊断",
+  "description": "Linux 系统专家插件：Shell 语法守卫、发行版问题排查、磁盘/网络/性能诊断",
   "author": {
     "name": "ai-experts"
   },

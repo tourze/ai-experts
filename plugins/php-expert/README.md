@@ -5,7 +5,7 @@ PHP 开发专家插件，覆盖 PHP 代码质量守卫、Composer/PHPStan/PHPUni
 ## 目录结构
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
-- `hooks/`：`hooks.json`、`dispatch.mjs` 与 10 个运行时守卫脚本。
+- `hooks/`：`hooks.json`、`dispatch.mjs` 与 9 个运行时守卫脚本。
 - `skills/`：`php-doc`、`php-pro`、`phpunit-best-practices` 三个技能及其参考资料。
 - `tests/`：manifest、dispatch、hook 与 SKILL 结构的最小回归测试。
 
@@ -25,12 +25,13 @@ PHP 开发专家插件，覆盖 PHP 代码质量守卫、Composer/PHPStan/PHPUni
 | PostToolUse Edit\|Write | `syntax-composer` | `composer validate` 校验 |
 | PostToolUse Edit\|Write | `lint-phpstan` | PHPStan 静态分析 |
 | PostToolUse Edit\|Write | `debug-statement-guard` | `dd()` / `var_dump()` / `print_r()` / `dump()` 检测 |
-| PostToolUse Edit\|Write | `encoding-guard` | PHP / Composer / 配置文件 BOM 与非 UTF-8 编码提醒 |
 | PostToolUse Edit\|Write | `file-budget-guard` | PHP 文件行数预算（500 行） |
 | PreToolUse Edit\|Write | `protected-paths` | `vendor/`、`composer.lock`、`.phpunit.result.cache` 保护 |
 | PreToolUse Bash | `heavy-command-repeat-guard` | `phpunit` / `phpstan` / `pest` / `psalm` 重复执行拦截 |
 | PreToolUse Bash | `test-output-truncation-guard` | 测试输出被 `tail/head` 截断时提醒 |
 | Stop | `verification-gate` | 完成声明必须伴随测试或静态分析证据 |
+
+如需通用 BOM / UTF-8 编码检查，请叠加安装 [coding-expert](../coding-expert/README.md)。
 
 ## 验证命令
 

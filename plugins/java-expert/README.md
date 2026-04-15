@@ -19,8 +19,9 @@ Java 开发专家插件，覆盖 Java 21 / Spring Boot 3.x 开发规范、JUnit 
 |------|------|------|
 | PostToolUse Edit\|Write | `syntax-java` | javac 语法检查（回退括号配对检测） |
 | PostToolUse Edit\|Write | `debug-statement-guard` | System.out.print / printStackTrace 检测 |
-| PostToolUse Edit\|Write | `encoding-guard` | 文件编码检查（BOM / 非 UTF-8，含 `.env.local` 等点文件） |
 | PostToolUse Edit\|Write | `file-budget-guard` | Java 文件行数预算（800 行） |
+
+如需通用 BOM / UTF-8 编码检查，请叠加安装 [coding-expert](../coding-expert/README.md)。
 
 ## 安装
 

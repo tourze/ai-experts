@@ -5,7 +5,6 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 
 import { run as runDebugGuard } from "../hooks/post-tool-use/edit-write/debug-statement-guard.mjs";
-import { run as runEncodingGuard } from "../hooks/post-tool-use/edit-write/encoding-guard.mjs";
 import { run as runFileBudgetGuard } from "../hooks/post-tool-use/edit-write/file-budget-guard.mjs";
 
 async function withTempDir(fn) {
@@ -20,28 +19,6 @@ async function withTempDir(fn) {
 function payload(filePath, extra = {}) {
   return { tool_input: { file_path: filePath, ...extra } };
 }
-
-test("encoding-guard 正确识别 UTF-32 LE BOM", async () => {
-  await withTempDir(async (dir) => {
-    const filePath = join(dir, "CMakeLists.txt");
-    writeFileSync(filePath, Buffer.from([0xff, 0xfe, 0x00, 0x00, 0x41]));
-
-    const result = await runEncodingGuard(payload(filePath));
-    assert.equal(result?.decision, "report");
-    assert.match(result?.reason ?? "", /UTF-32 LE BOM/);
-  });
-});
-
-test("encoding-guard 会检查 .clang-tidy 这类命名文件", async () => {
-  await withTempDir(async (dir) => {
-    const filePath = join(dir, ".clang-tidy");
-    writeFileSync(filePath, Buffer.from([0xef, 0xbb, 0xbf, 0x41]));
-
-    const result = await runEncodingGuard(payload(filePath));
-    assert.equal(result?.decision, "report");
-    assert.match(result?.reason ?? "", /UTF-8 BOM/);
-  });
-});
 
 test("debug-statement-guard 只检查 C/C++ 文件", async () => {
   await withTempDir(async (dir) => {

@@ -4,7 +4,6 @@ import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import test from "node:test";
 
-import { run as runEncodingGuard } from "../hooks/post-tool-use/edit-write/encoding-guard.mjs";
 import { run as runLintEslint } from "../hooks/post-tool-use/edit-write/lint-eslint.mjs";
 
 async function withTempDir(fn) {
@@ -25,19 +24,6 @@ function writeExecutable(filePath, content) {
   writeFileSync(filePath, content, "utf8");
   chmodSync(filePath, 0o755);
 }
-
-test("encoding-guard 会检查 .env.local 与 .env.example", async () => {
-  await withTempDir(async (dir) => {
-    for (const name of [".env.local", ".env.example"]) {
-      const filePath = join(dir, name);
-      writeFileSync(filePath, Buffer.from([0xef, 0xbb, 0xbf, 0x41]));
-
-      const result = await runEncodingGuard(payload(filePath));
-      assert.equal(result?.decision, "report", `${name} 应被识别为文本文件`);
-      assert.match(result?.reason ?? "", /UTF-8 BOM/);
-    }
-  });
-});
 
 test("lint-eslint 能在 monorepo 根目录 node_modules/.bin 找到 eslint", async () => {
   await withTempDir(async (dir) => {

@@ -89,7 +89,7 @@
     {
       "name": "go-expert",
       "source": "./plugins/go-expert",
-      "description": "Go 开发专家插件：Go 并发模式、Edit|Write 后的 Go 语法与静态检查、调试语句与编码守卫",
+      "description": "Go 开发专家插件：Go 并发模式、Edit|Write 后的 Go 语法与静态检查、调试语句守卫",
       "version": "0.2.0"
     },
     {
@@ -125,7 +125,7 @@
     {
       "name": "linux-expert",
       "source": "./plugins/linux-expert",
-      "description": "Linux 系统专家插件：Shell 语法与编码守卫、发行版问题排查、磁盘/网络/性能诊断",
+      "description": "Linux 系统专家插件：Shell 语法守卫、发行版问题排查、磁盘/网络/性能诊断",
       "version": "0.1.1"
     },
     {

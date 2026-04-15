@@ -5,7 +5,7 @@ Swift/Apple 平台专家插件，覆盖 Swift Concurrency、SwiftUI 性能与模
 ## 目录结构
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
-- `hooks/`：`hooks.json`、`dispatch.mjs` 和 4 个 PostToolUse 守卫。
+- `hooks/`：`hooks.json`、`dispatch.mjs` 和 3 个 PostToolUse 守卫。
 - `skills/`：13 个 Swift / Apple 平台技能与配套参考资料、脚本。
 
 ## Skills
@@ -32,8 +32,9 @@ Swift/Apple 平台专家插件，覆盖 Swift Concurrency、SwiftUI 性能与模
 |------|------|------|
 | PostToolUse Edit\|Write | `lint-swift-concurrency` | Swift Concurrency 并发安全检查 |
 | PostToolUse Edit\|Write | `debug-statement-guard` | 调试语句残留检测 |
-| PostToolUse Edit\|Write | `encoding-guard` | 文件编码检查 |
 | PostToolUse Edit\|Write | `file-budget-guard` | Swift 文件行数预算（500 行） |
+
+如需通用 BOM / UTF-8 编码检查，请叠加安装 [coding-expert](../coding-expert/README.md)。
 
 ## 验证命令
 

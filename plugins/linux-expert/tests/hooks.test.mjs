@@ -5,7 +5,6 @@ import { tmpdir } from "node:os";
 import test from "node:test";
 
 import { run as runDebugStatementGuard } from "../hooks/post-tool-use/edit-write/debug-statement-guard.mjs";
-import { run as runEncodingGuard } from "../hooks/post-tool-use/edit-write/encoding-guard.mjs";
 import { run as runFileBudgetGuard } from "../hooks/post-tool-use/edit-write/file-budget-guard.mjs";
 import { run as runLintShellcheck } from "../hooks/post-tool-use/edit-write/lint-shellcheck.mjs";
 
@@ -21,17 +20,6 @@ async function withTempDir(fn) {
 function filePayload(filePath) {
   return { tool_input: { file_path: filePath } };
 }
-
-test("encoding-guard 会检查 .env.local 这类点文件", async () => {
-  await withTempDir(async (dir) => {
-    const filePath = join(dir, ".env.local");
-    writeFileSync(filePath, Buffer.from([0xEF, 0xBB, 0xBF, 0x41]));
-
-    const result = await runEncodingGuard(filePayload(filePath));
-    assert.equal(result?.decision, "report");
-    assert.match(result?.reason ?? "", /UTF-8 BOM/);
-  });
-});
 
 test("lint-shellcheck 会阻止缺少 set -euo pipefail 的新脚本", async () => {
   await withTempDir(async (dir) => {

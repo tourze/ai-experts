@@ -4,7 +4,6 @@ import { chmodSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:f
 import { dirname, join } from "node:path";
 import { tmpdir } from "node:os";
 
-import { run as runEncodingGuard } from "../hooks/post-tool-use/edit-write/encoding-guard.mjs";
 import { run as runSyntaxGo } from "../hooks/post-tool-use/edit-write/syntax-go.mjs";
 
 async function withTempDir(fn) {
@@ -35,17 +34,6 @@ async function withPath(dir, fn) {
     process.env.PATH = originalPath;
   }
 }
-
-test("encoding-guard 会检查 .env.local 这类点文件", async () => {
-  await withTempDir(async (dir) => {
-    const filePath = join(dir, ".env.local");
-    writeFileSync(filePath, Buffer.from([0xef, 0xbb, 0xbf, 0x41]));
-
-    const result = await runEncodingGuard(payload(filePath));
-    assert.equal(result?.decision, "report");
-    assert.match(result?.reason ?? "", /UTF-8 BOM/);
-  });
-});
 
 test("syntax-go 在缺少 go.mod / go.work 时不会因 go vet 误拦截", async () => {
   await withTempDir(async (dir) => {

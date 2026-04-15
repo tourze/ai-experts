@@ -4,7 +4,6 @@ import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 
-import { run as runEncodingGuard } from "../hooks/post-tool-use/edit-write/encoding-guard.mjs";
 import { run as runTaroDomGuard } from "../hooks/post-tool-use/edit-write/syntax-taro-dom.mjs";
 import { run as runWxmlGuard } from "../hooks/post-tool-use/edit-write/syntax-wxml.mjs";
 import { run as runWxssGuard } from "../hooks/post-tool-use/edit-write/syntax-wxss.mjs";
@@ -74,16 +73,5 @@ test("syntax-taro-dom 只在 Taro 文件中拦截 DOM API", async () => {
     const plainFile = join(dir, "plain.ts");
     writeFileSync(plainFile, "const node = document.querySelector('.page');\n", "utf8");
     assert.equal(await runTaroDomGuard(payload(plainFile)), null);
-  });
-});
-
-test("encoding-guard 会检查 .env.local 这类点文件", async () => {
-  await withTempDir(async (dir) => {
-    const filePath = join(dir, ".env.local");
-    writeFileSync(filePath, Buffer.from([0xef, 0xbb, 0xbf, 0x41]));
-
-    const result = await runEncodingGuard(payload(filePath));
-    assert.equal(result?.decision, "report");
-    assert.match(result?.reason ?? "", /UTF-8 BOM/);
   });
 });

@@ -5,7 +5,6 @@ import { tmpdir } from "node:os";
 import test from "node:test";
 
 import { run as runDebugGuard } from "../hooks/post-tool-use/edit-write/debug-statement-guard.mjs";
-import { run as runEncodingGuard } from "../hooks/post-tool-use/edit-write/encoding-guard.mjs";
 import { run as runFileBudgetGuard } from "../hooks/post-tool-use/edit-write/file-budget-guard.mjs";
 import { run as runSyntaxRuby } from "../hooks/post-tool-use/edit-write/syntax-ruby.mjs";
 
@@ -42,17 +41,6 @@ async function withPath(dir, fn) {
     process.env.PATH = originalPath;
   }
 }
-
-test("encoding-guard 会检查 .ruby-version 这类点文件", async () => {
-  await withTempDir(async (dir) => {
-    const filePath = join(dir, ".ruby-version");
-    writeFileSync(filePath, Buffer.from([0xef, 0xbb, 0xbf, 0x33, 0x2e, 0x33]));
-
-    const result = await runEncodingGuard(payload(filePath));
-    assert.equal(result?.decision, "report");
-    assert.match(result?.reason ?? "", /UTF-8 BOM/);
-  });
-});
 
 test("syntax-ruby 在 ruby -c 报错时会阻塞", async () => {
   await withTempDir(async (dir) => {

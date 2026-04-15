@@ -1,11 +1,11 @@
 # ruby-expert
 
-Ruby 开发专家插件，覆盖 Ruby / Rails / RSpec / Bundler / Rake 工作流，以及 `Edit|Write` 后的语法、调试语句、编码和文件预算守卫。
+Ruby 开发专家插件，覆盖 Ruby / Rails / RSpec / Bundler / Rake 工作流，以及 `Edit|Write` 后的语法、调试语句和文件预算守卫。
 
 ## 目录结构
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
-- `hooks/`：`hooks.json`、`dispatch.mjs` 与 4 个 `PostToolUse Edit|Write` 守卫脚本。
+- `hooks/`：`hooks.json`、`dispatch.mjs` 与 3 个 `PostToolUse Edit|Write` 守卫脚本。
 - `skills/`：Ruby 开发与 RSpec 测试技能文档。
 - `tests/`：manifest、dispatch、hook、脚本文档回归测试。
 
@@ -22,8 +22,9 @@ Ruby 开发专家插件，覆盖 Ruby / Rails / RSpec / Bundler / Rake 工作流
 |------|------|------|
 | PostToolUse Edit\|Write | `syntax-ruby` | 对 `.rb` / `.rake` / `.gemspec` / `Gemfile` / `Rakefile` 等执行 `ruby -c` |
 | PostToolUse Edit\|Write | `debug-statement-guard` | `binding.pry` / `binding.irb` / `byebug` / `debugger` / `puts` / `pp` 检测 |
-| PostToolUse Edit\|Write | `encoding-guard` | 检查 Ruby 相关文本文件与点文件的 BOM / 非 UTF-8（含 `.ruby-version` / `Gemfile` / `Rakefile` 等） |
 | PostToolUse Edit\|Write | `file-budget-guard` | Ruby 源文件与 `Rakefile` / `config.ru` 等命名文件的行数预算与棘轮治理 |
+
+如需通用 BOM / UTF-8 编码检查，请叠加安装 [coding-expert](../coding-expert/README.md)。
 
 ## 验证命令
 
