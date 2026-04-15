@@ -112,8 +112,7 @@ final class CsvImporter
 - 删除了 getter、setter、简单委托、显式类型属性上的冗余 PHPDoc。
 - `@throws` 描述的是失败条件，而不是异常类名的同义反复。
 - 文档与代码一起改动；签名变化后同步清理陈旧注释。
-- 涉及实现模式或分层取舍时，联动查看 [php-pro](../php-pro/SKILL.md)。
-- 涉及测试命名、`#[Test]`、数据提供者与覆盖率边界时，联动查看 [phpunit-best-practices](../phpunit-best-practices/SKILL.md)。
+- 联动：[php-pro](../php-pro/SKILL.md) · [php-design-patterns](../php-design-patterns/SKILL.md) · [php-type-safety](../php-type-safety/SKILL.md) · [php-testing](../php-testing/SKILL.md)
 
 ## 反模式
 

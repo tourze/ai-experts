@@ -1,198 +1,232 @@
 ---
 name: php-pro
-description: 当用户实现或重构现代 PHP 8.3+ 项目时使用。
+description: 当用户实现或重构 PHP 8.3+ 类、函数或模块，需要用到 strict_types、readonly class、枚举、match 表达式、命名参数、构造器提升或交叉类型时使用。
 license: MIT
 metadata:
   author: https://github.com/Jeffallan
-  version: "1.1.0"
+  version: "2.0.0"
   domain: language
-  triggers: PHP, Laravel, Symfony, Composer, PHPStan, PSR, PHP API, Eloquent, Doctrine
+  triggers: PHP 8.3, strict_types, readonly, enum, match, named arguments, constructor promotion, intersection types, never type, fibers, first-class callable
   role: specialist
   scope: implementation
   output-format: code
-  related-skills: php-doc, phpunit-best-practices, laravel-specialist, symfony-ux
+  related-skills: php-design-patterns, php-error-handling, php-type-safety, php-async-patterns, php-doc, php-testing
 ---
 
-# PHP 工程实现
+# PHP 8.3+ 语言特性与核心纪律
 
 ## 适用场景
 
-- 使用 PHP 8.3+ 编写新功能、重构服务层或收敛弱类型边界。
-- 构建 Laravel / Symfony 控制器、服务、DTO、值对象、仓库、任务队列与 API。
-- 接手 Composer、PHPStan、Psalm、PHPUnit、Pest 驱动的质量门禁。
-- 需要把“能跑”的 PHP 代码提升到“可维护、可分析、可验证”的工程形态。
+- 新建 PHP 类、函数或模块，需要选择合适的 PHP 8.x 语言特性。
+- 把遗留 PHP 5/7 代码升级到 PHP 8.1-8.3+ 的现代写法。
+- 在 readonly class、枚举、match、交叉类型之间做取舍。
+- 需要快速查阅某个 PHP 8.x 特性的正确用法。
 
 ## 核心约束
 
 - 所有生产代码默认启用 `declare(strict_types=1)`。
-- 方法参数、返回值、属性与集合元素都要有明确类型；无法收窄时优先定义 DTO、值对象或数组结构，而不是退回 `mixed`。
-- 控制器只做编排：输入验证、鉴权、调用服务、映射响应；业务规则放到服务或领域对象。
-- 依赖通过构造函数注入，避免隐藏的全局状态、静态单例与服务定位器。
-- 用户输入必须在进入业务逻辑前完成验证、过滤和归一化。
-- 数据访问默认使用参数化查询/ORM，禁止手拼 SQL 字符串。
-- 交付前必须运行静态分析和测试；至少覆盖 `php -l`、`phpstan`/`psalm` 与 `phpunit`/`pest` 中适用的项。
-- 根据任务上下文加载补充资料：
-  - 现代语言特性：[modern-php-features.md](references/modern-php-features.md)
-  - Laravel 模式：[laravel-patterns.md](references/laravel-patterns.md)
-  - Symfony 模式：[symfony-patterns.md](references/symfony-patterns.md)
-  - 异步与并发：[async-patterns.md](references/async-patterns.md)
-  - 测试质量：[testing-quality.md](references/testing-quality.md)
+- 方法参数、返回值、属性都要有明确类型；无法收窄时优先定义 DTO 或值对象，不要退回 `mixed`。
+- 优先使用 `readonly` 属性和 `readonly class` 来表达不可变数据。
+- 枚举替代 class 常量组和魔法字符串；有底层值时用 backed enum。
+- `match` 替代多分支 `switch`；利用其穷尽性检查和严格比较。
+- 构造器提升（constructor promotion）简化属性声明，减少样板代码。
+- 命名参数只在调用点提升可读性时使用，不要滥用到每个函数调用。
 
 ## 代码模式
 
-### 用只读 DTO 收紧输入边界
+### Readonly class 与构造器提升
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace App\DTO;
+namespace App\Domain\User;
 
-final readonly class CreateUserData
+final readonly class User
 {
     public function __construct(
-        public string $name,
+        public int $id,
         public string $email,
-        public string $password,
-    ) {
-    }
-
-    /**
-     * @param array{name: string, email: string, password: string} $input
-     */
-    public static function fromArray(array $input): self
-    {
-        return new self(
-            name: trim($input['name']),
-            email: mb_strtolower(trim($input['email'])),
-            password: $input['password'],
-        );
-    }
+        public UserStatus $status,
+        public \DateTimeImmutable $createdAt,
+    ) {}
 }
 ```
 
-### 用服务层封装业务规则与仓储交互
+### 带方法的枚举
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Domain\User;
 
-use App\DTO\CreateUserData;
-use App\Entity\User;
-use App\Repository\UserRepositoryInterface;
-use RuntimeException;
+enum UserStatus: string
+{
+    case Active = 'active';
+    case Suspended = 'suspended';
+    case Deleted = 'deleted';
 
-final class UserCreator
+    public function label(): string
+    {
+        return match ($this) {
+            self::Active => '活跃',
+            self::Suspended => '已暂停',
+            self::Deleted => '已删除',
+        };
+    }
+
+    public function canLogin(): bool
+    {
+        return $this === self::Active;
+    }
+}
+```
+
+### Match 表达式替代 switch
+
+```php
+<?php
+
+declare(strict_types=1);
+
+function calculateShipping(int $weightGrams, string $zone): float
+{
+    return match (true) {
+        $weightGrams < 1000 => 5.00,
+        $weightGrams < 5000 && $zone === 'local' => 10.00,
+        $weightGrams < 5000 => 15.00,
+        default => 25.00,
+    };
+}
+```
+
+### 联合类型、交叉类型与 DNF 类型
+
+```php
+<?php
+
+declare(strict_types=1);
+
+// 联合类型
+function processId(int|string $id): string
+{
+    return is_int($id) ? (string) $id : $id;
+}
+
+// 交叉类型
+interface Timestamped {}
+interface Authenticatable {}
+
+function handleUser(Timestamped&Authenticatable $user): void {}
+
+// DNF 类型（PHP 8.2+）
+function process((Timestamped&Authenticatable)|null $user): void {}
+```
+
+### 一等公民可调用对象与箭头函数
+
+```php
+<?php
+
+declare(strict_types=1);
+
+class UserService
+{
+    public function findById(int $id): ?User { /* ... */ }
+}
+
+$service = new UserService();
+
+// PHP 8.1+ 一等公民可调用对象
+$finder = $service->findById(...);
+
+// 箭头函数
+$numbers = [1, 2, 3, 4, 5];
+$even = array_filter($numbers, fn(int $n): bool => $n % 2 === 0);
+```
+
+### Never 返回类型
+
+```php
+<?php
+
+declare(strict_types=1);
+
+function redirect(string $url): never
+{
+    header("Location: {$url}");
+    exit;
+}
+
+function abort(int $code, string $message): never
+{
+    http_response_code($code);
+    echo json_encode(['error' => $message]);
+    exit;
+}
+```
+
+### PHP 8.x 属性（Attributes）
+
+```php
+<?php
+
+declare(strict_types=1);
+
+#[\Attribute(\Attribute::TARGET_CLASS)]
+final readonly class Route
 {
     public function __construct(
-        private readonly UserRepositoryInterface $users,
-        private readonly PasswordHasherInterface $hasher,
-    ) {
-    }
-
-    public function create(CreateUserData $data): User
-    {
-        if ($this->users->existsByEmail($data->email)) {
-            throw new RuntimeException('Email already exists.');
-        }
-
-        $user = new User(
-            name: $data->name,
-            email: $data->email,
-            passwordHash: $this->hasher->hash($data->password),
-        );
-
-        return $this->users->save($user);
-    }
+        public string $path,
+        public string $method = 'GET',
+        public array $middleware = [],
+    ) {}
 }
-```
 
-### 用 PHPUnit 锁住行为，而不是只断言“对象存在”
-
-```php
-<?php
-
-declare(strict_types=1);
-
-namespace Tests\Unit\Service;
-
-use App\DTO\CreateUserData;
-use App\Entity\User;
-use App\Repository\UserRepositoryInterface;
-use App\Service\PasswordHasherInterface;
-use App\Service\UserCreator;
-use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
-use RuntimeException;
-
-final class UserCreatorTest extends TestCase
+#[Route('/api/users', method: 'POST', middleware: ['auth'])]
+final class CreateUserController
 {
-    private UserRepositoryInterface&MockObject $users;
-    private PasswordHasherInterface&MockObject $hasher;
-    private UserCreator $creator;
-
-    protected function setUp(): void
+    public function __invoke(CreateUserRequest $request): JsonResponse
     {
-        parent::setUp();
-        $this->users = $this->createMock(UserRepositoryInterface::class);
-        $this->hasher = $this->createMock(PasswordHasherInterface::class);
-        $this->creator = new UserCreator($this->users, $this->hasher);
-    }
-
-    public function testCreateRejectsDuplicateEmail(): void
-    {
-        $this->users->method('existsByEmail')->with('alice@example.com')->willReturn(true);
-
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Email already exists.');
-
-        $this->creator->create(new CreateUserData('Alice', 'alice@example.com', 'secret'));
-    }
-
-    public function testCreateHashesPasswordBeforePersisting(): void
-    {
-        $data = new CreateUserData('Alice', 'alice@example.com', 'secret');
-
-        $this->users->method('existsByEmail')->with('alice@example.com')->willReturn(false);
-        $this->hasher->method('hash')->with('secret')->willReturn('hashed-secret');
-        $this->users
-            ->expects($this->once())
-            ->method('save')
-            ->with($this->callback(
-                static fn (User $user): bool => $user->email === 'alice@example.com'
-                    && $user->passwordHash === 'hashed-secret',
-            ))
-            ->willReturn(new User('Alice', 'alice@example.com', 'hashed-secret'));
-
-        $result = $this->creator->create($data);
-
-        $this->assertSame('alice@example.com', $result->email);
+        // ...
     }
 }
 ```
+
+## 快速参考
+
+| 特性 | PHP 版本 | 用法 |
+|------|----------|------|
+| Readonly 属性 | 8.1+ | `public readonly string $name` |
+| Readonly 类 | 8.2+ | `readonly class User {}` |
+| 枚举 | 8.1+ | `enum Status: string {}` |
+| 一等公民可调用对象 | 8.1+ | `$fn = $obj->method(...)` |
+| Never 类型 | 8.1+ | `function exit(): never` |
+| 纤程 | 8.1+ | `new \Fiber(fn() => ...)` |
+| 纯交叉类型 | 8.1+ | `A&B $param` |
+| DNF 类型 | 8.2+ | `(A&B)\|C $param` |
+| Trait 中的常量 | 8.2+ | `trait T { const X = 1; }` |
+| 动态常量获取 | 8.3+ | `$enum::{$name}` |
+| `#[\Override]` | 8.3+ | 标记方法为覆写，父类签名变更时编译报错 |
 
 ## 检查清单
 
-- 已确认当前任务属于哪一层：控制器、服务、领域对象、仓储、队列或测试。
-- 所有输入边界都被收紧为显式类型、DTO、值对象或数组结构。
-- 控制器没有吞入业务逻辑；副作用由服务层或消息处理器负责。
-- 新增代码通过了适用的语法检查、静态分析与测试：
-  - `php -l`
-  - `./vendor/bin/phpstan analyse`
-  - `./vendor/bin/psalm`
-  - `./vendor/bin/phpunit` 或 `./vendor/bin/pest`
-- 对外契约、数组结构和异常语义需要文档时，联动查看 [php-doc](../php-doc/SKILL.md)。
-- 涉及测试命名、属性、数据提供者与配置约束时，联动查看 [phpunit-best-practices](../phpunit-best-practices/SKILL.md)。
+- `declare(strict_types=1)` 出现在每个 PHP 文件顶部。
+- 所有参数、返回值和属性都有显式类型声明。
+- 常量组已迁移为枚举，魔法字符串已消除。
+- 多分支 `switch` 已替换为 `match`。
+- 不可变数据使用了 `readonly class` 或 `readonly` 属性。
+- 需要设计服务层、DTO、Repository 时，联动查看 [php-design-patterns](../php-design-patterns/SKILL.md)。
+- 需要设计异常层级或输入校验时，联动查看 [php-error-handling](../php-error-handling/SKILL.md)。
+- 需要配置 PHPStan/Psalm 或补泛型标注时，联动查看 [php-type-safety](../php-type-safety/SKILL.md)。
 
 ## 反模式
 
-- 用 `mixed`、裸数组和匿名对象把真实约束藏起来。
-- 在控制器里直接写业务流程、发通知、做鉴权分支和数据库写入。
-- 在生产代码里保留 `dd()`、`dump()`、`var_dump()` 或临时调试输出。
-- 依赖静态 Facade/全局函数而没有显式边界，导致测试难以隔离。
-- 只断言“返回了对象”，却没有锁住关键业务规则、异常和副作用。
-- 静态分析或测试失败时仍然宣称“已经完成”。
+- 在 PHP 8.1+ 项目中仍用 class 常量组代替枚举。
+- 用 `switch` 写 5+ 分支而不迁移到 `match`。
+- 数据传输对象不加 `readonly`，留下意外修改的风险。
+- 用 `mixed` 逃避类型声明，而不是定义 DTO 或联合类型。
+- 在生产代码里保留 `dd()`、`dump()`、`var_dump()` 或 `print_r()`。

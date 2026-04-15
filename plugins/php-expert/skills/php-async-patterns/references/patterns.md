@@ -1,4 +1,4 @@
-# 异步 PHP 模式
+# PHP 异步模式 — 代码示例
 
 ## Swoole HTTP 服务器
 
@@ -16,14 +16,12 @@ $server = new Server('0.0.0.0', 9501);
 $server->set([
     'worker_num' => 4,
     'max_request' => 10000,
-    'task_worker_num' => 2,
     'enable_coroutine' => true,
 ]);
 
 $server->on('request', function (Request $request, Response $response) {
     $response->header('Content-Type', 'application/json');
     match ($request->server['request_uri']) {
-        '/api/users' => handleUsers($request, $response),
         '/api/health' => $response->end(json_encode(['status' => 'healthy'])),
         default => $response->status(404)->end(json_encode(['error' => 'Not found'])),
     };
@@ -32,7 +30,7 @@ $server->on('request', function (Request $request, Response $response) {
 $server->start();
 ```
 
-## Swoole 协程
+## Swoole 协程并发
 
 ```php
 <?php
@@ -40,12 +38,11 @@ $server->start();
 declare(strict_types=1);
 
 use Swoole\Coroutine;
-use Swoole\Coroutine\Http\Client;
+use Swoole\Coroutine\WaitGroup;
 
-// 并发 HTTP 请求
 Coroutine\run(function () {
     $results = [];
-    $wg = new Coroutine\WaitGroup();
+    $wg = new WaitGroup();
     $urls = [
         'https://api.example.com/users',
         'https://api.example.com/posts',
@@ -54,10 +51,10 @@ Coroutine\run(function () {
     foreach ($urls as $url) {
         $wg->add();
         go(function () use ($url, &$results, $wg) {
-            $client = new Client(parse_url($url, PHP_URL_HOST), 443, true);
+            $client = new Coroutine\Http\Client(parse_url($url, PHP_URL_HOST), 443, true);
             $client->set(['timeout' => 5]);
             $client->get(parse_url($url, PHP_URL_PATH));
-            $results[$url] = ['status' => $client->statusCode, 'body' => $client->body];
+            $results[$url] = $client->statusCode;
             $client->close();
             $wg->done();
         });
@@ -66,7 +63,7 @@ Coroutine\run(function () {
 });
 ```
 
-## Swoole Channel（通信）
+## Swoole Channel 通信
 
 ```php
 <?php
@@ -77,7 +74,7 @@ use Swoole\Coroutine;
 use Swoole\Coroutine\Channel;
 
 Coroutine\run(function () {
-    $channel = new Channel(10); // 缓冲区大小：10
+    $channel = new Channel(10);
 
     // 生产者
     go(function () use ($channel) {
@@ -92,7 +89,9 @@ Coroutine\run(function () {
     go(function () use ($channel) {
         while (true) {
             $task = $channel->pop();
-            if ($task === false && $channel->errCode === SWOOLE_CHANNEL_CLOSED) { break; }
+            if ($task === false && $channel->errCode === SWOOLE_CHANNEL_CLOSED) {
+                break;
+            }
             echo "Consumed: {$task}\n";
         }
     });
@@ -121,40 +120,18 @@ $socket = new React\Socket\SocketServer('0.0.0.0:8080');
 $server->listen($socket);
 ```
 
-## PHP 纤程（原生 PHP 8.1+）
+## 原生 Fiber
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-// 使用纤程实现简单异步函数
-function async(callable $callback): Fiber
-{
-    return new Fiber($callback);
-}
+$fiber = new Fiber(function (): string {
+    $value = Fiber::suspend('fiber started');
+    return "Received: {$value}";
+});
 
-function await(Fiber $fiber): mixed
-{
-    if (!$fiber->isStarted()) { return $fiber->start(); }
-    if ($fiber->isTerminated()) { return $fiber->getReturn(); }
-    return $fiber->resume();
-}
+$result1 = $fiber->start();       // 'fiber started'
+$result2 = $fiber->resume('data'); // Fiber 返回 'Received: data'
 ```
-
-## 快速参考
-
-| 技术 | 适用场景 | 性能 |
-|------|----------|------|
-| Swoole | 高性能服务器、WebSocket | 非常高 |
-| ReactPHP | 事件驱动应用、实时场景 | 高 |
-| Amphp | 现代异步框架 | 高 |
-| 纤程 | 原生异步（PHP 8.1+） | 中等 |
-
-| 特性 | Swoole | ReactPHP | Amphp |
-|------|--------|----------|-------|
-| 协程 | 是 | 否（Promise） | 是（纤程） |
-| HTTP 服务器 | 内置 | 通过包 | 通过包 |
-| WebSocket | 内置 | 通过包 | 通过包 |
-| 扩展要求 | 需要 | 不需要 | 不需要 |
-| 学习曲线 | 中等 | 低 | 中等 |

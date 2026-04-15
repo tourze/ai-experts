@@ -1,21 +1,25 @@
 # php-expert
 
-PHP 开发专家插件，覆盖 PHP 代码质量守卫、Composer/PHPStan/PHPUnit 工作流，以及 3 个面向实现/文档/测试的技能。
+PHP 开发专家插件，覆盖 PHP 代码质量守卫、Composer/PHPStan/PHPUnit 工作流，以及 7 个面向语言特性、设计模式、错误处理、类型安全、异步、文档和测试的技能。
 
 ## 目录结构
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json`、`dispatch.mjs` 与 9 个运行时守卫脚本。
-- `skills/`：`php-doc`、`php-pro`、`phpunit-best-practices` 三个技能及其参考资料。
+- `skills/`：7 个技能目录及其参考资料。
 - `tests/`：manifest、dispatch、hook 与 SKILL 结构的最小回归测试。
 
 ## Skills
 
 | Skill | 用途 |
 |-------|------|
+| `php-pro` | PHP 8.3+ 语言特性：strict_types、readonly、枚举、match、交叉类型 |
+| `php-design-patterns` | 服务层、Repository、DTO、值对象、DI 纪律、控制器薄化 |
+| `php-error-handling` | 异常分层、输入校验边界、错误映射、批量部分失败 |
+| `php-type-safety` | PHPStan/Psalm 配置、array shapes、泛型、条件返回类型 |
+| `php-async-patterns` | Swoole、ReactPHP、Amphp、原生 Fibers |
 | `php-doc` | PHPDoc 取舍、数组泛型、异常文档与注释收敛 |
-| `php-pro` | 现代 PHP 8.3+ / Laravel / Symfony 实现约束与工程模式 |
-| `phpunit-best-practices` | PHPUnit 测试结构、属性、数据提供者、Mock 与配置规范 |
+| `php-testing` | PHPUnit/Pest 测试结构、属性、数据提供者、Mock 与配置 |
 
 ## Hooks
 
