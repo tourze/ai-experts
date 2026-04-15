@@ -5,7 +5,7 @@
 ## 结构
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
-- `hooks/`：`hooks.json`、`dispatch.mjs`、`session-start` 自检脚本与 `user-prompt-submit` 结构化表达 primer。
+- `hooks/`：`hooks.json`、`dispatch.mjs` 与 `user-prompt-submit` 结构化表达 primer。
 - `skills/`：文档处理、提案撰写、Markdown/PDF 转换等技能目录。
 - `tests/`：manifest、dispatch、skill 文档和脚本语法的最小回归测试。
 
@@ -33,7 +33,6 @@
 
 ## Hooks
 
-- `SessionStart`：校验 `plugin.json`、`hooks/hooks.json`、`dispatch.mjs` 与所有 `SKILL.md` 是否完整存在。
 - `UserPromptSubmit`：当用户请求架构、链路、迁移、阶段计划、风险拆解或方案对比时，注入纯文本可视化与结构化表达规则，并主动引导使用 `pretty-mermaid` 产出成品图。
 - 设计原则：全部 `report` / `context`、不 `block`，保证插件加载路径保持 fail-open。
 

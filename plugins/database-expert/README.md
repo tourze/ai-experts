@@ -12,11 +12,6 @@
 | `sql-code-review` | SQL 安全、正确性、可维护性审查 |
 | `sql-optimization` | SQL 调优、执行计划分析、分页与批处理优化 |
 
-## Hooks
-
-- `SessionStart`：运行插件自检，确认 `plugin.json` 声明的 `skills`、`hooks` 路径以及各个 `SKILL.md` 文件完整存在。
-- 设计原则：只 `report` 不 `block`，检测失败时保持 fail-open，不影响正常加载。
-
 ## 安装
 
 ```bash

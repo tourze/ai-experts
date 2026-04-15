@@ -21,8 +21,5 @@ test("manifest 显式声明 skills、hooks、作者，且不再使用无效 depe
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
   assert.ok(existsSync(hooksPath));
-
-  const sessionHooks = hooks.hooks?.SessionStart?.[0]?.hooks ?? [];
-  assert.equal(sessionHooks.length, 1);
-  assert.equal(sessionHooks[0].command, "node ${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.mjs session-start");
+  assert.deepEqual(hooks.hooks ?? {}, {});
 });

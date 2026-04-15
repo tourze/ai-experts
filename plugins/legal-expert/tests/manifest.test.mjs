@@ -17,8 +17,5 @@ test("manifest 与 hooks 配置指向真实文件", () => {
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
   assert.ok(existsSync(hooksPath));
-
-  const sessionHooks = hooks.hooks?.SessionStart?.[0]?.hooks ?? [];
-  assert.equal(sessionHooks.length, 1);
-  assert.equal(sessionHooks[0].command, "node ${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.mjs session-start");
+  assert.deepEqual(hooks.hooks ?? {}, {});
 });

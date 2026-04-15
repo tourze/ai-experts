@@ -6,9 +6,7 @@ import test from "node:test";
 
 const pluginRoot = resolve("plugins/legal-expert");
 const scriptFiles = [
-  "hooks/dispatch.mjs",
-  "hooks/session-start/plugin-sanity.mjs",
-].map((file) => resolve(pluginRoot, file));
+  "hooks/dispatch.mjs",].map((file) => resolve(pluginRoot, file));
 
 test("所有 hook 脚本都能通过 node --check", () => {
   for (const file of scriptFiles) {

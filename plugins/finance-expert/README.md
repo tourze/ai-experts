@@ -5,7 +5,7 @@
 ## 目录
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
-- `hooks/`：`dispatch.mjs`、`hooks.json` 与 `session-start/plugin-sanity.mjs`
+- `hooks/`：`dispatch.mjs` 与 `hooks.json`。
 - `skills/financial-analyst/`：4 个可直接运行的标准库 CLI 脚本与样例数据
 - `skills/creating-financial-models/`：依赖 `numpy`/`pandas` 的 DCF 与敏感性建模脚本
 - `skills/risk-metrics-calculation/`：风险指标方法论与经校验的代码模式

@@ -30,10 +30,7 @@ test("manifest 声明 skills 与 hooks 并指向真实路径", () => {
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
   assert.ok(existsSync(hooksPath));
-
-  const sessionHooks = hooks.hooks?.SessionStart?.[0]?.hooks ?? [];
-  assert.equal(sessionHooks.length, 1);
-  assert.equal(sessionHooks[0].command, "node ${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.mjs session-start");
+  assert.deepEqual(hooks.hooks ?? {}, {});
 });
 
 test("README 中列出的 skill 与实际目录一致", () => {

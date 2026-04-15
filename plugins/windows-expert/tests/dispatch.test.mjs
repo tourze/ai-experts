@@ -85,17 +85,6 @@ test("dispatch 在非法 JSON stdin 下返回 report", () => {
   });
 });
 
-test("dispatch 可以执行真实的 session-start 自检且无输出", () => {
-  const result = spawnSync("node", [dispatchSource, "session-start"], {
-    cwd: pluginRoot,
-    input: "",
-    encoding: "utf-8",
-  });
-
-  assert.equal(result.status, 0, result.stderr);
-  assert.equal(result.stdout.trim(), "");
-});
-
 test("dispatch 优先输出 block 并终止后续聚合", () => {
   withTempDispatch((hooksRoot) => {
     const hookDir = join(hooksRoot, "session-start");

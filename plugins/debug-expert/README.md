@@ -5,7 +5,7 @@
 ## 结构
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
-- `hooks/`：`hooks.json`、`dispatch.mjs` 与 `session-start/plugin-sanity.mjs`。
+- `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：3 个技能目录，分别面向桌面卡死分析、Chrome DevTools 调试和 `browser-use` CLI 自动化。
 - `tests/`：manifest、dispatch、hook、自述文档与脚本语法的最小回归测试。
 
@@ -38,11 +38,6 @@ claude plugin uninstall debug-expert --scope project
 ```
 
 如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
-
-## Hooks
-
-- `SessionStart`：运行插件自检，确认 `plugin.json`、`hooks/hooks.json`、`hooks/dispatch.mjs` 与各个 `SKILL.md` 文件完整存在。
-- 设计原则：只 `report` 不 `block`；即使 hook 自身异常，也不影响插件被加载。
 
 ## 验证
 

@@ -10,11 +10,6 @@
 | `employment-contract-templates` | 劳动合同 / Offer / HR 政策模板 |
 | `gdpr-data-handling` | GDPR 合规数据处理（同意管理 / 数据主体权利） |
 
-## Hooks
-
-- `SessionStart`：执行插件自检，校验 `plugin.json`、`hooks/hooks.json`、`skills/` 的结构，以及 `README.md` 是否存在。
-- 设计原则：仅 `report` 不 `block`，发现问题时保持 fail-open，不影响继续使用。
-
 ## 安装
 
 ```bash

@@ -7,7 +7,6 @@ import test from "node:test";
 const pluginRoot = resolve("plugins/thinking-expert");
 const scriptFiles = [
   "hooks/dispatch.mjs",
-  "hooks/session-start/plugin-sanity.mjs",
 ];
 
 function run(command, args) {

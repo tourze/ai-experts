@@ -8,7 +8,6 @@ const pluginRoot = resolve("plugins/youtube-expert");
 
 const nodeScripts = [
   "hooks/dispatch.mjs",
-  "hooks/session-start/plugin-sanity.mjs",
 ];
 
 const pythonScripts = [

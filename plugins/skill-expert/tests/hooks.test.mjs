@@ -4,14 +4,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-import { run as runPluginSanity } from "../hooks/session-start/plugin-sanity.mjs";
 import { run as runSkillRoutingContext } from "../hooks/session-start/skill-routing-context.mjs";
 import { run as runNextStepGate } from "../hooks/stop/next-step-gate.mjs";
-
-test("plugin-sanity 在当前插件结构正确时不报告问题", async () => {
-  const result = await runPluginSanity();
-  assert.equal(result, null);
-});
 
 test("skill-routing-context 会注入 Skill 路由声明要求", async () => {
   const result = await runSkillRoutingContext();
