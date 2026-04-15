@@ -6,7 +6,13 @@
  */
 
 const DANGEROUS_PATTERNS = [
-  [/\brm\s+-[A-Za-z]*[rR][A-Za-z]*\s+[\/~]/, "rm -r[f] 根路径或家目录极其危险"],
+  // rm -r / (根文件系统)
+  [/\brm\s+-[A-Za-z]*[rR][A-Za-z]*\s+\/(\s|$|;|&|\|)/, "rm -r / 会删除整个文件系统"],
+  // rm -r 顶层目录 (如 /tmp、/home、/Users，但允许 /a/b/c 等深层路径)
+  [/\brm\s+-[A-Za-z]*[rR][A-Za-z]*\s+\/[^\/\s]+\/?(\s|$|;|&|\|)/, "rm -r 顶层目录（如 /tmp /home）极其危险"],
+  // rm -r ~ (家目录及其子路径)
+  [/\brm\s+-[A-Za-z]*[rR][A-Za-z]*\s+~/, "rm -r ~ 家目录极其危险"],
+  // rm -r . 或 rm -r ./
   [/\brm\s+-[A-Za-z]*[rR][A-Za-z]*\s+\.\/?(\s|$|;|&|\|)/, "rm -r . 会删除当前目录所有内容"],
 ];
 

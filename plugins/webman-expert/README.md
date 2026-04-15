@@ -1,12 +1,15 @@
 # webman-expert
 
-Webman 框架专家插件，覆盖 DDD 架构、依赖注入、领域模型、命名规范和代码风格最佳实践。
+Webman 框架专家插件，覆盖命名规范、自定义进程、WebSocket 和插件开发。
 
 ## Skills
 
 | Skill | 用途 |
 |-------|------|
-| `webman-best-practices` | Webman 的 DDD 分层、依赖边界、命名规范、领域建模与 PER 风格约束 |
+| `webman-naming-conventions` | 目录大小写、接口后缀、Service 命名、命名空间对齐与 Repository 命名 |
+| `webman-custom-processes` | 自定义进程声明、生命周期、Timer 定时器、Crontab 调度、事件循环与 crash-restart |
+| `webman-websocket-patterns` | WebSocket 服务端/客户端、连接生命周期、心跳、频道广播与指数退避重连 |
+| `webman-plugin-development` | 插件打包、Install.php、config 发布路径、Bootstrap 与插件进程声明 |
 
 ## 安装
 

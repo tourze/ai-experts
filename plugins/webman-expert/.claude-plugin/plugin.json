@@ -1,7 +1,7 @@
 {
   "name": "webman-expert",
-  "version": "0.1.1",
-  "description": "Webman 框架专家插件：DDD 架构、依赖注入、领域模型、命名规范、代码风格最佳实践",
+  "version": "0.2.0",
+  "description": "Webman 框架专家插件：命名规范、自定义进程、WebSocket、插件开发",
   "license": "MIT",
   "author": {
     "name": "ai-experts"
@@ -10,6 +10,7 @@
     "webman",
     "workerman",
     "ddd",
+    "websocket",
     "php"
   ],
   "skills": "./skills/"
