@@ -2,6 +2,13 @@
 
 Android 开发专家插件，覆盖架构模式、Kotlin Coroutines、无障碍访问、Material Design 3、模拟器自动化和测试策略。
 
+## 结构
+
+- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`、`hooks/hooks.json` 与依赖 `java-expert`。
+- `hooks/`：`hooks.json` 与 `dispatch.mjs`。
+- `skills/`：6 个 Android 主题技能文档。
+- `tests/`：manifest 最小回归测试。
+
 ## Skills
 
 | Skill | 用途 |
@@ -36,3 +43,12 @@ claude plugin uninstall android-expert --scope project
 如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
 
 建议同时安装 `java-expert` 插件以获得 Java/Kotlin 语法检查。
+
+## 验证
+
+```bash
+jq empty plugins/android-expert/.claude-plugin/plugin.json
+jq empty plugins/android-expert/hooks/hooks.json
+node --check plugins/android-expert/hooks/dispatch.mjs
+node --test plugins/android-expert/tests/*.test.mjs
+```

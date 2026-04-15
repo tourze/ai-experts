@@ -6,7 +6,5 @@
   "keywords": ["nestjs", "typescript", "express", "fastify", "decorator"],
   "skills": "./skills/",
   "hooks": "./hooks/hooks.json",
-  "dependencies": {
-    "required": ["typescript-expert"]
-  }
+  "dependencies": ["typescript-expert"]
 }

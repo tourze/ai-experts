@@ -7,7 +7,7 @@ const pluginRoot = resolve("plugins/ux-expert");
 const manifestPath = resolve(pluginRoot, ".claude-plugin/plugin.json");
 const hooksPath = resolve(pluginRoot, "hooks/hooks.json");
 
-test("manifest 显式声明 skills、hooks、作者与依赖", () => {
+test("manifest 显式声明 skills、hooks、作者，且不再使用无效 dependencies 对象", () => {
   const manifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
   const hooks = JSON.parse(readFileSync(hooksPath, "utf-8"));
 
@@ -17,9 +17,7 @@ test("manifest 显式声明 skills、hooks、作者与依赖", () => {
   assert.equal(manifest.skills, "./skills/");
   assert.equal(manifest.hooks, "./hooks/hooks.json");
   assert.deepEqual(manifest.keywords, ["ux", "usability", "user-research", "visual-design", "heuristics"]);
-  assert.deepEqual(manifest.dependencies, {
-    optional: ["frontend-expert"],
-  });
+  assert.equal("dependencies" in manifest, false);
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
   assert.ok(existsSync(resolve(pluginRoot, manifest.hooks)));

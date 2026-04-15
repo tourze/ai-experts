@@ -4,7 +4,7 @@ TypeScript 开发专家插件，提供显式 manifest 注册、`PostToolUse Edit
 
 ## 目录
 
-- `.claude-plugin/plugin.json`：插件 manifest，显式声明 `skills/`、`hooks/hooks.json` 与可选协作插件。
+- `.claude-plugin/plugin.json`：插件 manifest，显式声明 `skills/` 与 `hooks/hooks.json`，不再使用无效 `dependencies` 对象。
 - `hooks/`：`hooks.json`、`dispatch.mjs` 与 5 个 `PostToolUse Edit|Write` 守卫。
 - `skills/`：3 份 TypeScript 主题技能文档，统一采用「适用场景 → 核心约束 → 代码模式 → 检查清单 → 反模式」结构。
 - `tests/`：校验 manifest、dispatch、脚本语法与技能文档结构/链接。
@@ -27,9 +27,9 @@ TypeScript 开发专家插件，提供显式 manifest 注册、`PostToolUse Edit
 | PostToolUse Edit\|Write | `encoding-guard` | 文件编码检查（BOM / 非 UTF-8） |
 | PostToolUse Edit\|Write | `file-budget-guard` | TS 文件行数预算（500 行） |
 
-## 依赖关系
+## 协作插件
 
-- `javascript-expert`：可选协作插件。适合需要同时覆盖 JS/TS 双栈守卫、测试模式和迁移策略的场景。
+- `javascript-expert`：推荐协作插件。适合需要同时覆盖 JS/TS 双栈守卫、测试模式和迁移策略的场景。
 - `syntax-typescript` 只有在本地可解析到 `esbuild` 时才执行语法检查；找不到依赖时会静默跳过。
 - `lint-eslint` 只有在向上找到 `eslint.config.*` 且本地安装 `eslint` 包时才执行。
 

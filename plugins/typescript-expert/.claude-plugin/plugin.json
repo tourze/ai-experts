@@ -7,8 +7,5 @@
   },
   "keywords": ["typescript", "ts", "eslint", "generics", "esbuild"],
   "skills": "./skills/",
-  "hooks": "./hooks/hooks.json",
-  "dependencies": {
-    "optional": ["javascript-expert"]
-  }
+  "hooks": "./hooks/hooks.json"
 }

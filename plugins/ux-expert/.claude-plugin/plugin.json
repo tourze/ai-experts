@@ -6,9 +6,6 @@
     "name": "ai-experts"
   },
   "keywords": ["ux", "usability", "user-research", "visual-design", "heuristics"],
-  "dependencies": {
-    "optional": ["frontend-expert"]
-  },
   "skills": "./skills/",
   "hooks": "./hooks/hooks.json"
 }
