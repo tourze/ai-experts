@@ -1,0 +1,306 @@
+{
+  "name": "ai-experts",
+  "owner": {
+    "name": "ai-experts"
+  },
+  "metadata": {
+    "description": "Curated Claude Code expert plugin marketplace for the ai-experts repository",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "android-expert",
+      "source": "./plugins/android-expert",
+      "description": "Android 开发专家插件：架构模式、Kotlin Coroutines、无障碍、Material Design 3、模拟器自动化、测试策略",
+      "version": "0.1.0"
+    },
+    {
+      "name": "architecture-expert",
+      "source": "./plugins/architecture-expert",
+      "description": "软件架构专家插件：架构蓝图生成、架构评审、DDIA 分布式系统、设计模式、重构模式",
+      "version": "0.2.0"
+    },
+    {
+      "name": "coding-expert",
+      "source": "./plugins/coding-expert",
+      "description": "通用编码守卫插件：文件编码检查（BOM/UTF-8）等语言无关的代码质量防护",
+      "version": "0.1.0"
+    },
+    {
+      "name": "cpp-expert",
+      "source": "./plugins/cpp-expert",
+      "description": "C/C++ 开发专家插件：调试语句检测、内存安全模式（RAII/智能指针/所有权）、编码与行数守护",
+      "version": "0.1.0"
+    },
+    {
+      "name": "creative-expert",
+      "source": "./plugins/creative-expert",
+      "description": "创意与可视化专家插件：视觉设计、概念转图片/视频、文章配图、图片压缩、ASCII 图表、截图",
+      "version": "0.2.0"
+    },
+    {
+      "name": "data-ai-expert",
+      "source": "./plugins/data-ai-expert",
+      "description": "数据与 AI 专家插件：数据分析与可视化、Embedding/RAG/向量搜索、Prompt 工程、LLM 评估、统计分析",
+      "version": "0.1.1"
+    },
+    {
+      "name": "database-expert",
+      "source": "./plugins/database-expert",
+      "description": "数据库专家插件：MySQL/PostgreSQL 模式设计、Redis 缓存策略、SQL 审查与性能优化",
+      "version": "0.1.1"
+    },
+    {
+      "name": "debug-expert",
+      "source": "./plugins/debug-expert",
+      "description": "调试专家插件：LLDB/GDB 卡死线程回溯、Chrome DevTools 调试与 browser-use 浏览器自动化",
+      "version": "0.1.1"
+    },
+    {
+      "name": "devops-expert",
+      "source": "./plugins/devops-expert",
+      "description": "DevOps 专家插件：Docker/Helm/K8s、CI/CD、Nginx、监控告警与故障处置",
+      "version": "0.1.1"
+    },
+    {
+      "name": "docs-expert",
+      "source": "./plugins/docs-expert",
+      "description": "文档专家插件：Word/PPT/Excel/PDF 处理、Markdown/Mermaid 写作与提案文档生成",
+      "version": "0.1.1"
+    },
+    {
+      "name": "finance-expert",
+      "source": "./plugins/finance-expert",
+      "description": "财务分析专家插件：DCF 估值、财务建模、比率分析、投资组合风险指标（VaR/Sharpe/Sortino）",
+      "version": "0.2.0"
+    },
+    {
+      "name": "frontend-expert",
+      "source": "./plugins/frontend-expert",
+      "description": "前端设计专家插件：Core Web Vitals、Design System、Tailwind CSS、响应式布局、交互设计、UI 重构",
+      "version": "0.1.0"
+    },
+    {
+      "name": "git-expert",
+      "source": "./plugins/git-expert",
+      "description": "Git 版本控制专家插件：分支命名规范、提交信息守卫、提交范围检查、批量暂存拦截、锁文件处理",
+      "version": "0.1.1"
+    },
+    {
+      "name": "go-expert",
+      "source": "./plugins/go-expert",
+      "description": "Go 开发专家插件：Go 并发模式、Edit|Write 后的 Go 语法与静态检查、调试语句与编码守卫",
+      "version": "0.2.0"
+    },
+    {
+      "name": "godot-expert",
+      "source": "./plugins/godot-expert",
+      "description": "Godot 专家插件：GDScript 模式、场景状态切换、资源建模与运行时校验",
+      "version": "0.2.0"
+    },
+    {
+      "name": "java-expert",
+      "source": "./plugins/java-expert",
+      "description": "Java 开发专家插件：Java / Spring Boot / JUnit / GraalVM 工作流与 Edit|Write 后守卫",
+      "version": "0.2.0"
+    },
+    {
+      "name": "javascript-expert",
+      "source": "./plugins/javascript-expert",
+      "description": "JavaScript 开发专家插件：语法检查、ESLint 代码质量、调试语句检测、现代 ES6+ 模式、Jest 测试",
+      "version": "0.1.0"
+    },
+    {
+      "name": "laravel-expert",
+      "source": "./plugins/laravel-expert",
+      "description": "Laravel 专家插件：Laravel 10+ 实现、架构模式、安全基线、TDD 与发布验证",
+      "version": "0.2.0"
+    },
+    {
+      "name": "legal-expert",
+      "source": "./plugins/legal-expert",
+      "description": "法务合规专家插件：法律风险评估、劳动合同模板、GDPR 数据合规",
+      "version": "0.1.1"
+    },
+    {
+      "name": "linux-expert",
+      "source": "./plugins/linux-expert",
+      "description": "Linux 系统专家插件：Shell 语法与编码守卫、发行版问题排查、磁盘/网络/性能诊断",
+      "version": "0.1.1"
+    },
+    {
+      "name": "marketing-expert",
+      "source": "./plugins/marketing-expert",
+      "description": "营销专家插件：广告创意、SEO、CRO、内容策略、落地页优化、付费投放、增长与数据分析",
+      "version": "0.1.1"
+    },
+    {
+      "name": "meeting-expert",
+      "source": "./plugins/meeting-expert",
+      "description": "会议管理专家插件：会议纪要生成、会议笔记转行动项、沟通行为洞察与复盘",
+      "version": "0.1.0"
+    },
+    {
+      "name": "microsoft-expert",
+      "source": "./plugins/microsoft-expert",
+      "description": "Microsoft 技术专家插件：Microsoft Learn 官方文档检索、SDK 代码示例校验与 CLI 回退链路自检",
+      "version": "0.2.0"
+    },
+    {
+      "name": "miniprogram-expert",
+      "source": "./plugins/miniprogram-expert",
+      "description": "小程序开发专家插件：微信小程序构建/调试/发布、WXML/WXSS/Taro 语法检查",
+      "version": "0.1.0"
+    },
+    {
+      "name": "nestjs-expert",
+      "source": "./plugins/nestjs-expert",
+      "description": "NestJS 专家插件：模块/控制器/服务/DTO/Guard/拦截器配置",
+      "version": "0.1.1"
+    },
+    {
+      "name": "nextjs-expert",
+      "source": "./plugins/nextjs-expert",
+      "description": "Next.js 专家插件：App Router、Server Components、Server Actions、Vercel 部署",
+      "version": "0.1.1"
+    },
+    {
+      "name": "obsidian-expert",
+      "source": "./plugins/obsidian-expert",
+      "description": "Obsidian 专家插件：Bases 视图/过滤/公式管理、CLI 笔记读写搜索",
+      "version": "0.1.0"
+    },
+    {
+      "name": "php-expert",
+      "source": "./plugins/php-expert",
+      "description": "PHP 开发专家插件：语法检查、PHPStan 静态分析、Composer 校验、编码与调试语句守卫、PHPUnit 测试最佳实践等",
+      "version": "0.1.0"
+    },
+    {
+      "name": "product-expert",
+      "source": "./plugins/product-expert",
+      "description": "产品管理专家插件：PRD 撰写、商业模型、竞品分析、用户旅程、定价策略、敏捷迭代、市场规模估算",
+      "version": "0.2.0"
+    },
+    {
+      "name": "python-expert",
+      "source": "./plugins/python-expert",
+      "description": "Python 开发专家插件：语法检查、Ruff 守卫、异步模式、任务队列、测试、类型安全、可观测性与性能优化",
+      "version": "0.2.0"
+    },
+    {
+      "name": "react-expert",
+      "source": "./plugins/react-expert",
+      "description": "React 生态专家插件：组件组合、Hooks 模式、性能优化、Server Components、React Native 跨平台开发",
+      "version": "0.2.0"
+    },
+    {
+      "name": "research-expert",
+      "source": "./plugins/research-expert",
+      "description": "深度研究专家插件：多轮 Web 研究、代码库知识挖掘、多源信息综合、技术资讯搜索、站点画像分析",
+      "version": "0.2.0"
+    },
+    {
+      "name": "ruby-expert",
+      "source": "./plugins/ruby-expert",
+      "description": "Ruby 开发专家插件：Ruby / Rails / RSpec / Bundler / Rake 工作流与 Edit|Write 后守卫",
+      "version": "0.2.0"
+    },
+    {
+      "name": "rust-expert",
+      "source": "./plugins/rust-expert",
+      "description": "Rust 开发专家插件：惯用 Rust 规范、Tokio 异步模式，以及 Edit|Write 后的调试语句、编码与文件预算守卫",
+      "version": "0.2.0"
+    },
+    {
+      "name": "security-expert",
+      "source": "./plugins/security-expert",
+      "description": "安全攻防专家插件：威胁建模、渗透测试、逆向工程、漏洞分析、网络取证、STRIDE/攻击树方法论",
+      "version": "0.1.0"
+    },
+    {
+      "name": "skill-expert",
+      "source": "./plugins/skill-expert",
+      "description": "Skill 工程专家插件：Skill 创建、评审、发现与治理",
+      "version": "0.1.0"
+    },
+    {
+      "name": "social-media-expert",
+      "source": "./plugins/social-media-expert",
+      "description": "社交媒体运营专家插件：小红书图文/商业增长、抖音爆款文案、粉丝运营、私域引流、个人品牌",
+      "version": "0.1.1"
+    },
+    {
+      "name": "svn-expert",
+      "source": "./plugins/svn-expert",
+      "description": "SVN 版本控制专家插件：Subversion 工作流、分支合并策略、提交信息守卫、批量操作拦截",
+      "version": "0.1.1"
+    },
+    {
+      "name": "swift-expert",
+      "source": "./plugins/swift-expert",
+      "description": "Swift/Apple 平台专家插件：Swift Concurrency、SwiftUI 性能与模式、HIG 设计规范、App Store 审核与发布",
+      "version": "0.1.0"
+    },
+    {
+      "name": "symfony-expert",
+      "source": "./plugins/symfony-expert",
+      "description": "Symfony 框架专家插件：Doctrine ORM、Twig 模板、Messenger 异步、Voters 授权",
+      "version": "0.2.0"
+    },
+    {
+      "name": "tauri-expert",
+      "source": "./plugins/tauri-expert",
+      "description": "Tauri 专家插件：Tauri v2+ 跨平台应用开发（Rust 后端 + Web 前端）",
+      "version": "0.1.1"
+    },
+    {
+      "name": "testing-expert",
+      "source": "./plugins/testing-expert",
+      "description": "测试专家插件：覆盖 TDD、测试策略、预落地审查、Web 应用测试与基准设计的中文测试工作流集合。",
+      "version": "0.2.0"
+    },
+    {
+      "name": "thinking-expert",
+      "source": "./plugins/thinking-expert",
+      "description": "思维专家插件：思考陪跑、优先级判断、第一性原理、逆向推演、多视角审议与科研脑暴",
+      "version": "0.2.0"
+    },
+    {
+      "name": "typescript-expert",
+      "source": "./plugins/typescript-expert",
+      "description": "TypeScript 开发专家插件：esbuild 语法检查、ESLint 代码质量、高级类型系统、泛型与类型体操",
+      "version": "0.1.0"
+    },
+    {
+      "name": "ux-expert",
+      "source": "./plugins/ux-expert",
+      "description": "UX 设计专家插件：启发式可用性评估、用户研究方法、视觉设计基础（排版/色彩/间距/图标）",
+      "version": "0.1.1"
+    },
+    {
+      "name": "vue-expert",
+      "source": "./plugins/vue-expert",
+      "description": "Vue 专家插件：Vue 3 JavaScript 组件、Composition API、JSDoc 类型标注与 Vite 配置",
+      "version": "0.1.1"
+    },
+    {
+      "name": "webman-expert",
+      "source": "./plugins/webman-expert",
+      "description": "Webman 框架专家插件：DDD 架构、依赖注入、领域模型、命名规范、代码风格最佳实践",
+      "version": "0.1.0"
+    },
+    {
+      "name": "windows-expert",
+      "source": "./plugins/windows-expert",
+      "description": "Windows 专家插件：UI Automation 桌面自动化、内核安全分析与 Parallels 虚拟机控制",
+      "version": "0.1.1"
+    },
+    {
+      "name": "youtube-expert",
+      "source": "./plugins/youtube-expert",
+      "description": "YouTube 专家插件：视频转录与概念分析、关键词搜索与元数据提取",
+      "version": "0.1.1"
+    }
+  ]
+}
