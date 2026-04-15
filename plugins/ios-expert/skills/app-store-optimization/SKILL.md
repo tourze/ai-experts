@@ -29,7 +29,7 @@ date_added: "2026-02-27"
 ```bash
 python3 - <<'PY'
 import sys
-sys.path.insert(0, "plugins/swift-expert/skills/app-store-optimization")
+sys.path.insert(0, "plugins/ios-expert/skills/app-store-optimization")
 from metadata_optimizer import optimize_app_metadata
 
 report = optimize_app_metadata(
@@ -52,7 +52,7 @@ PY
 ```bash
 python3 - <<'PY'
 import sys
-sys.path.insert(0, "plugins/swift-expert/skills/app-store-optimization")
+sys.path.insert(0, "plugins/ios-expert/skills/app-store-optimization")
 from aso_scorer import calculate_aso_score
 
 score = calculate_aso_score(
@@ -70,7 +70,7 @@ PY
 ```bash
 python3 - <<'PY'
 import sys
-sys.path.insert(0, "plugins/swift-expert/skills/app-store-optimization")
+sys.path.insert(0, "plugins/ios-expert/skills/app-store-optimization")
 from review_analyzer import analyze_reviews
 from competitor_analyzer import analyze_competitor_set
 from localization_helper import plan_localization_strategy

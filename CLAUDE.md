@@ -19,7 +19,7 @@ Claude Code 插件集合，包含 53 个领域专家插件，每个插件提供 
    - 跨语言的工作流守卫（git 纪律、测试策略、文档处理）
    - 与基座层和语言层正交，按需安装
 
-3. **语言层** — python-expert, javascript-expert, typescript-expert, java-expert, go-expert, rust-expert, ruby-expert, php-expert, cpp-expert, swift-expert, perl-expert 等
+3. **语言层** — python-expert, javascript-expert, typescript-expert, java-expert, go-expert, rust-expert, ruby-expert, php-expert, cpp-expert, ios-expert, perl-expert 等
    - 在基座层之上叠加语言特有的 syntax check、lint、debug-statement 检测
    - 各自包含自己的 dispatch.mjs 和语言特有的 PostToolUse 守卫
 

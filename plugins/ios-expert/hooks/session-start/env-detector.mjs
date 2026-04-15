@@ -1,7 +1,7 @@
 /**
- * env-detector (SessionStart) — 探测 Swift 项目环境
+ * env-detector (SessionStart) — 探测 Apple 客户端项目环境
  *
- * 检测 Xcode 项目、SPM/CocoaPods、Swift 版本与平台目标，
+ * 检测 Xcode 项目、SPM/CocoaPods、Swift 版本与 Apple 平台目标，
  * 帮助 Claude 从第一条消息起就使用正确的构建方式和平台约束。
  */
 
@@ -94,7 +94,7 @@ export async function run(payload) {
   return {
     decision: "context",
     reason: [
-      "[Swift Env] 项目环境探测",
+      "[Apple Env] 项目环境探测",
       "",
       ...facts.map((f) => `  ${f}`),
     ].join("\n"),

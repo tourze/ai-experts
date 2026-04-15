@@ -243,10 +243,10 @@
       "version": "0.1.1"
     },
     {
-      "name": "swift-expert",
-      "source": "./plugins/swift-expert",
-      "description": "Swift/Apple 平台专家插件：Swift Concurrency、SwiftUI 性能与模式、HIG 设计规范、App Store 审核与发布",
-      "version": "0.1.0"
+      "name": "ios-expert",
+      "source": "./plugins/ios-expert",
+      "description": "iOS / Apple 平台专家插件：Swift Concurrency、SwiftUI 性能与模式、iOS/macOS HIG、App Store 审核发布与 Apple 工具自动化",
+      "version": "0.1.1"
     },
     {
       "name": "symfony-expert",

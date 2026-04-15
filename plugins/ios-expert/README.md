@@ -1,12 +1,14 @@
-# swift-expert
+# ios-expert
 
-Swift/Apple 平台专家插件，覆盖 Swift Concurrency、SwiftUI 性能与模式、HIG 设计规范、App Store 审核与发布。
+iOS / Apple 平台专家插件，覆盖 Swift Concurrency、SwiftUI 性能与模式、iOS/macOS HIG、App Store 审核与发布，以及 Apple 工具自动化。
 
 ## 目录结构
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json`、`dispatch.mjs` 和 3 个 PostToolUse 守卫。
-- `skills/`：13 个 Swift / Apple 平台技能与配套参考资料、脚本。
+- `skills/`：13 个 iOS / Apple 平台技能与配套参考资料、脚本。
+- `agents/`：2 个 iOS 运行审计与模拟器冒烟测试代理。
+- `tests/`：manifest 最小回归测试。
 
 ## Skills
 
@@ -36,6 +38,13 @@ Swift/Apple 平台专家插件，覆盖 Swift Concurrency、SwiftUI 性能与模
 
 如需通用 BOM / UTF-8 编码检查，请叠加安装 [coding-expert](../coding-expert/README.md)。
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `ios-release-auditor` | 只读审计 Info.plist、entitlements、能力开关与 App Review 风险 |
+| `ios-simulator-smoke-tester` | 使用本插件模拟器脚本执行关键流程冒烟测试 |
+
 ## 验证命令
 
 在插件目录执行：
@@ -47,26 +56,27 @@ jq empty hooks/hooks.json
 find hooks -name '*.mjs' -print0 | xargs -0 -n1 node --check
 find skills -path '*/scripts/*.py' -print0 | xargs -0 python3 -m py_compile
 find skills -path '*/scripts/*.sh' -print0 | xargs -0 -n1 bash -n
+node --test tests/*.test.mjs
 ```
 
 ## 安装
 
 ```bash
-claude --plugin-dir /path/to/plugins/swift-expert
+claude --plugin-dir /path/to/plugins/ios-expert
 ```
 
 如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
 
 ```bash
-claude plugin install swift-expert@ai-experts
-claude plugin install swift-expert@ai-experts --scope project
+claude plugin install ios-expert@ai-experts
+claude plugin install ios-expert@ai-experts --scope project
 ```
 
 ## 卸载
 
 ```bash
-claude plugin uninstall swift-expert
-claude plugin uninstall swift-expert --scope project
+claude plugin uninstall ios-expert
+claude plugin uninstall ios-expert --scope project
 ```
 
 如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
