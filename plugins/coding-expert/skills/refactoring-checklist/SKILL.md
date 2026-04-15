@@ -21,6 +21,9 @@ metadata:
 - 交叉引用：降低复杂度配合 `complexity-reducer`；审查结果配合 `code-review`；具体重构手法参考 `refactoring-patterns`。
 
 ## 核心约束
+
+**违反字面规则 = 违反规则精神。不存在"灵活变通"。**
+
 - 重构 = 改结构不改行为。行为变更（bug 修复、新功能）必须另开提交。
 - 没有测试覆盖的代码，先补表征测试再重构。
 - 每步保持系统可运行、测试可通过。
@@ -48,7 +51,16 @@ metadata:
 
 **Iron Law：没有测试覆盖的代码，不允许开始重构。**
 
-完整的 Red Flags 表和 Rationalizations 对照表见 [references/discipline-guard.md](./references/discipline-guard.md)，开始重构前必须读取。
+### Red Flags — 出现以下念头时立即停下
+
+| 念头 | 现实 |
+|------|------|
+| "这段代码很乱，先整理一下" | 先界定范围和目标，不要"先动手再说"。 |
+| "顺手把这个 bug 也修了吧" | 重构和 bug 修复必须分开提交。搭车 = 无法回滚。 |
+| "这个不需要测试，改动很小" | 越觉得安全越容易出事。跑测试只要几秒。 |
+| "先改完再补测试" | 没有测试基线，你无法证明行为没变。先补测试。 |
+
+完整的 Red Flags 表和 Rationalizations 对照表见 [references/discipline-guard.md](./references/discipline-guard.md)。
 
 ## 反模式
 - 没测试就重构，改完不知道有没有破坏行为。

@@ -21,6 +21,9 @@ metadata:
 - 交叉引用：高压审查配合 `brutal-honesty-review`；降低复杂度配合 `complexity-reducer`。
 
 ## 核心约束
+
+**违反字面规则 = 违反规则精神。不存在"灵活变通"。**
+
 - 先读真实代码或 diff，不凭猜测。
 - 不审查纯风格问题（缩进、括号、行长度）——那是 linter 的事。
 - 每条发现必须包含：文件位置、问题描述、改进建议。
@@ -43,7 +46,15 @@ metadata:
 
 **Iron Law：没有读取实际代码或 diff，不允许给出审查意见。**
 
-完整的 Red Flags 表和 Rationalizations 对照表见 [references/discipline-guard.md](./references/discipline-guard.md)，开始审查前必须读取。
+### Red Flags — 出现以下念头时立即停下
+
+| 念头 | 现实 |
+|------|------|
+| "代码看起来没问题" | "看起来"不是证据。逐维度检查了吗？ |
+| "没什么大问题，LGTM" | 没发现问题和没有问题是两回事。六个维度都过了吗？ |
+| "我来重写一下更好" | 审查是指出问题，不是替人写代码。给建议，不给整段代码。 |
+
+完整的 Red Flags 表和 Rationalizations 对照表见 [references/discipline-guard.md](./references/discipline-guard.md)。
 
 ## 反模式
 - 不读代码，凭函数名猜问题。

@@ -21,6 +21,9 @@ metadata:
 - 交叉引用：修复后补测试配合 `test-driven-development`；修复涉及重构配合 `refactoring-checklist`。
 
 ## 核心约束
+
+**违反字面规则 = 违反规则精神。不存在"灵活变通"。**
+
 - 严格按六步流程推进，不跳步，尤其不能跳过"复现"直接猜原因。
 - 每步都要有可观测证据，不靠直觉。
 - 同一时间只变更一个变量。
@@ -48,7 +51,16 @@ metadata:
 
 **Iron Law：没有根因调查，不允许提出修复方案。**
 
-完整的 Red Flags 表和 Rationalizations 对照表见 [references/discipline-guard.md](./references/discipline-guard.md)，开始调试前必须读取。
+### Red Flags — 出现以下念头时立即停下
+
+| 念头 | 现实 |
+|------|------|
+| "我知道问题在哪，先改改试试" | 你看到的是症状，不是根因。走流程。 |
+| "这个很简单，不用系统化" | 简单的 bug 也有根因。流程对简单 bug 更快。 |
+| "紧急，没时间走流程" | 系统化调试比乱猜快。瞎试 3 次浪费的时间 > 走流程。 |
+| "先加个 try-catch 顶一下" | 吞掉异常 = 藏住 bug，不是修好 bug。 |
+
+完整的 Red Flags 表和 Rationalizations 对照表见 [references/discipline-guard.md](./references/discipline-guard.md)。
 
 ## 反模式
 - 不复现就猜原因。
