@@ -1,4 +1,20 @@
 import { basename, extname } from "path";
+import { execFileSync } from "child_process";
+
+const isWin = process.platform === "win32";
+
+export function cmd(name) {
+  return isWin ? `${name}.exe` : name;
+}
+
+export function hasCommand(name) {
+  try {
+    execFileSync(cmd(name), ["--version"], { stdio: "ignore", timeout: 5000 });
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 export const CPP_SOURCE_EXTENSIONS = new Set([
   ".c",
