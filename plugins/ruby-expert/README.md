@@ -44,4 +44,20 @@ printf '{not-json' | node plugins/ruby-expert/hooks/dispatch.mjs post-tool-use/e
 claude --plugin-dir /path/to/plugins/ruby-expert
 ```
 
+如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
+
+```bash
+claude plugin install ruby-expert@ai-experts
+claude plugin install ruby-expert@ai-experts --scope project
+```
+
+## 卸载
+
+```bash
+claude plugin uninstall ruby-expert
+claude plugin uninstall ruby-expert --scope project
+```
+
+如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+
 运行时依赖：`node` 必需；`ruby` 用于 `syntax-ruby`。若本机缺少 Ruby 解释器，语法守卫会跳过，其他守卫仍可继续工作。

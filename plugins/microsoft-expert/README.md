@@ -35,4 +35,20 @@ npx -y @microsoft/learn-cli doctor --format json
 claude --plugin-dir /path/to/plugins/microsoft-expert
 ```
 
+如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
+
+```bash
+claude plugin install microsoft-expert@ai-experts
+claude plugin install microsoft-expert@ai-experts --scope project
+```
+
+## 卸载
+
+```bash
+claude plugin uninstall microsoft-expert
+claude plugin uninstall microsoft-expert --scope project
+```
+
+如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+
 优先使用 Microsoft Learn MCP 工具；`mslearn` CLI 只作为回退链路。SessionStart hook 仅做健康检查并报告异常，不会阻塞插件使用。

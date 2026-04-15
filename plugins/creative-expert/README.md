@@ -45,3 +45,19 @@ python3 skills/screenshot/scripts/take_screenshot.py --help
 ```bash
 claude --plugin-dir /path/to/plugins/creative-expert
 ```
+
+如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
+
+```bash
+claude plugin install creative-expert@ai-experts
+claude plugin install creative-expert@ai-experts --scope project
+```
+
+## 卸载
+
+```bash
+claude plugin uninstall creative-expert
+claude plugin uninstall creative-expert --scope project
+```
+
+如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。

@@ -42,4 +42,20 @@ printf '{not-json' | node hooks/dispatch.mjs post-tool-use/edit-write
 claude --plugin-dir /path/to/plugins/go-expert
 ```
 
+如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
+
+```bash
+claude plugin install go-expert@ai-experts
+claude plugin install go-expert@ai-experts --scope project
+```
+
+## 卸载
+
+```bash
+claude plugin uninstall go-expert
+claude plugin uninstall go-expert --scope project
+```
+
+如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+
 运行时依赖：`node` 必需；`go` / `gofmt` 可选。缺少 Go 工具链时，`syntax-go` 会自动回退到本地括号/字符串/注释闭合检查，不会因为缺少 `go.mod` 而误阻塞。

@@ -24,6 +24,28 @@ Rust 开发专家插件，提供惯用 Rust 编码规范、Tokio 异步编程指
 | PostToolUse Edit\|Write | `encoding-guard` | 检查 BOM、非法 UTF-8 字节，以及 `.env.local` 这类多后缀文本文件 |
 | PostToolUse Edit\|Write | `file-budget-guard` | 按扩展名执行文件预算与棘轮治理；`.rs` 默认预算 800 行 |
 
+## 安装
+
+```bash
+claude --plugin-dir /path/to/plugins/rust-expert
+```
+
+如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
+
+```bash
+claude plugin install rust-expert@ai-experts
+claude plugin install rust-expert@ai-experts --scope project
+```
+
+## 卸载
+
+```bash
+claude plugin uninstall rust-expert
+claude plugin uninstall rust-expert --scope project
+```
+
+如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+
 ## 验证
 
 ```bash

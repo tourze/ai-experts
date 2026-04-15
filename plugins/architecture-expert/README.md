@@ -16,6 +16,28 @@
 - 功能开发流程、计划评审、任务拆解、技术债治理。
 - 代码精炼、重构模式、错误处理、设计哲学与务实工程原则。
 
+## 安装
+
+```bash
+claude --plugin-dir /path/to/plugins/architecture-expert
+```
+
+如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
+
+```bash
+claude plugin install architecture-expert@ai-experts
+claude plugin install architecture-expert@ai-experts --scope project
+```
+
+## 卸载
+
+```bash
+claude plugin uninstall architecture-expert
+claude plugin uninstall architecture-expert --scope project
+```
+
+如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+
 ## 验证命令
 
 ```bash

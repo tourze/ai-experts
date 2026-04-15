@@ -34,6 +34,22 @@ YouTube 专家插件，覆盖“视频发现”与“单视频分析”两条链
 claude --plugin-dir /path/to/plugins/youtube-expert
 ```
 
+如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
+
+```bash
+claude plugin install youtube-expert@ai-experts
+claude plugin install youtube-expert@ai-experts --scope project
+```
+
+## 卸载
+
+```bash
+claude plugin uninstall youtube-expert
+claude plugin uninstall youtube-expert --scope project
+```
+
+如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+
 ## Hooks
 
 - `SessionStart`：执行插件自检，确认 manifest、hooks、README、所有 `SKILL.md` 以及 skill 间交叉引用完整存在。

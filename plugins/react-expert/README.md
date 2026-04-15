@@ -24,6 +24,22 @@ React 生态专家插件，覆盖组件组合、Hooks 模式、性能优化、Se
 claude --plugin-dir /path/to/plugins/react-expert
 ```
 
+如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
+
+```bash
+claude plugin install react-expert@ai-experts
+claude plugin install react-expert@ai-experts --scope project
+```
+
+## 卸载
+
+```bash
+claude plugin uninstall react-expert
+claude plugin uninstall react-expert --scope project
+```
+
+如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+
 ## 结构
 
 - `.claude-plugin/plugin.json`：插件 manifest，显式声明 `skills/` 与 `hooks/hooks.json`

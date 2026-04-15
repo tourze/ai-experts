@@ -39,6 +39,22 @@ TypeScript 开发专家插件，提供显式 manifest 注册、`PostToolUse Edit
 claude --plugin-dir /path/to/plugins/typescript-expert
 ```
 
+如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
+
+```bash
+claude plugin install typescript-expert@ai-experts
+claude plugin install typescript-expert@ai-experts --scope project
+```
+
+## 卸载
+
+```bash
+claude plugin uninstall typescript-expert
+claude plugin uninstall typescript-expert --scope project
+```
+
+如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+
 建议同时安装 `javascript-expert` 插件以获得完整的 JS/TS 开发体验。
 
 ## 验证

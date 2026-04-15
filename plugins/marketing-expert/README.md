@@ -42,6 +42,22 @@
 claude --plugin-dir /path/to/plugins/marketing-expert
 ```
 
+如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
+
+```bash
+claude plugin install marketing-expert@ai-experts
+claude plugin install marketing-expert@ai-experts --scope project
+```
+
+## 卸载
+
+```bash
+claude plugin uninstall marketing-expert
+claude plugin uninstall marketing-expert --scope project
+```
+
+如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+
 ## 验证
 
 ```bash

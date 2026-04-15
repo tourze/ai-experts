@@ -28,6 +28,22 @@ Java 开发专家插件，覆盖 Java 21 / Spring Boot 3.x 开发规范、JUnit 
 claude --plugin-dir /path/to/plugins/java-expert
 ```
 
+如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
+
+```bash
+claude plugin install java-expert@ai-experts
+claude plugin install java-expert@ai-experts --scope project
+```
+
+## 卸载
+
+```bash
+claude plugin uninstall java-expert
+claude plugin uninstall java-expert --scope project
+```
+
+如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+
 ## 验证
 
 ```bash

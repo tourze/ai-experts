@@ -44,7 +44,36 @@ jq -r '.plugins[].name + "@ai-experts"' .claude-plugin/marketplace.json | while 
 jq -r '.plugins[].name + "@ai-experts"' .claude-plugin/marketplace.json | while read -r plugin; do claude plugin install "$plugin" --scope project; done
 ```
 
-4. 激活新插件
+4. 卸载插件或移除 marketplace
+
+卸载单个插件：
+
+```bash
+claude plugin uninstall docs-expert
+claude plugin uninstall git-expert --scope project
+```
+
+如果要一次卸载当前 marketplace 中的全部插件：
+
+```bash
+claude plugin list --json | jq -r '.[] | select(.id | endswith("@ai-experts")) | select(.scope == "user") | .id | split("@")[0]' | while read -r plugin; do claude plugin uninstall "$plugin"; done
+```
+
+如果要全部按当前项目范围卸载：
+
+```bash
+claude plugin list --json | jq -r '.[] | select(.id | endswith("@ai-experts")) | select(.scope == "project") | .id | split("@")[0]' | while read -r plugin; do claude plugin uninstall "$plugin" --scope project; done
+```
+
+如果只是想移除 marketplace 注册，而不是卸载已安装插件：
+
+```bash
+claude plugin marketplace remove ai-experts
+```
+
+注意：`claude plugin marketplace remove ai-experts` 只会移除 marketplace 配置，不会自动卸载已经安装到 `user` / `project` / `local` scope 的插件。
+
+5. 刷新插件状态
 
 在 Claude Code 中执行：
 
@@ -52,7 +81,7 @@ jq -r '.plugins[].name + "@ai-experts"' .claude-plugin/marketplace.json | while 
 /reload-plugins
 ```
 
-或者直接重启 Claude Code 会话。
+或者直接重启 Claude Code 会话。无论安装还是卸载，执行一次刷新都更稳妥。
 
 ## 仓库结构
 

@@ -51,4 +51,20 @@ printf '{not-json' | node hooks/dispatch.mjs post-tool-use/edit-write
 claude --plugin-dir /path/to/plugins/php-expert
 ```
 
+如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
+
+```bash
+claude plugin install php-expert@ai-experts
+claude plugin install php-expert@ai-experts --scope project
+```
+
+## 卸载
+
+```bash
+claude plugin uninstall php-expert
+claude plugin uninstall php-expert --scope project
+```
+
+如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+
 运行时依赖：`node` 必需；`php`、`composer`、`vendor/bin/phpstan` 按需启用。缺少对应工具时，相关 hook 会自动降级为静默跳过或仅保留本地检查。
