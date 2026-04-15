@@ -1,15 +1,15 @@
 {
   "name": "react-expert",
   "version": "0.2.1",
-  "description": "React 生态专家插件：组件组合、Hooks 模式、性能优化、Server Components、React Native 跨平台开发",
+  "description": "React Web 专家插件：组件组合、Hooks 模式、渲染性能、Server Components、Vercel/Next.js 最佳实践",
   "author": {
     "name": "ai-experts"
   },
+  "license": "MIT",
   "keywords": [
     "react",
     "hooks",
     "rsc",
-    "react-native",
     "next",
     "vercel"
   ],

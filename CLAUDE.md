@@ -34,6 +34,7 @@ Claude Code 插件集合，包含 53 个领域专家插件，每个插件提供 
 - nestjs-expert → typescript-expert
 - laravel-expert → php-expert
 - pgsql-expert → database-expert
+- react-native-expert → react-expert
 - redis-expert → database-expert
 - vue-expert → javascript-expert
 
