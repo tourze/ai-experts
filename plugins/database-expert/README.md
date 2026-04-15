@@ -12,6 +12,12 @@
 | `sql-code-review` | SQL 安全、正确性、可维护性审查 |
 | `sql-optimization` | SQL 调优、执行计划分析、分页与批处理优化 |
 
+## Hooks
+
+| 事件 | Hook | 作用 |
+|------|------|------|
+| PreToolUse Bash | `dangerous-sql-guard` | 拦截 `DROP DATABASE/TABLE/SCHEMA` 和 `TRUNCATE TABLE` |
+
 ## 安装
 
 ```bash

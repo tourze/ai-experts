@@ -18,5 +18,10 @@ test("manifest 显式声明 author、skills 与 hooks", () => {
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
   assert.ok(existsSync(hooksPath));
-  assert.deepEqual(hooks.hooks ?? {}, {});
+  const preToolHooks = hooks.hooks?.PreToolUse?.[0]?.hooks ?? [];
+  assert.equal(preToolHooks.length, 1);
+  assert.equal(
+    preToolHooks[0]?.command,
+    "node ${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.mjs pre-tool-use/bash",
+  );
 });

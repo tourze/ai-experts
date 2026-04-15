@@ -13,8 +13,7 @@
 | PostToolUse Edit\|Write | `markdown-budget-guard` | Markdown token 预算 |
 | PostToolUse Edit\|Write | `syntax-json` | JSON 语法检查 |
 | PostToolUse Edit\|Write | `syntax-xml` | XML 语法检查 |
-| PostToolUse Edit\|Write | `syntax-perl` | Perl 语法检查 |
-| PreToolUse Bash | `dangerous-command-guard` | 高危命令拦截（rm -rf/force push 等） |
+| PreToolUse Bash | `dangerous-command-guard` | 破坏性文件系统命令拦截（rm -rf 等） |
 | PreToolUse Bash | `error-retry-guard` | 无修复重试循环检测 |
 | PreToolUse Bash | `sed-inplace-guard` | sed 原地编辑警告 |
 | PreToolUse Bash | `cat-write-guard` | cat > file 写入模式拦截 |
