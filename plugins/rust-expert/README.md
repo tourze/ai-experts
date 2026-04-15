@@ -1,25 +1,30 @@
 # rust-expert
 
-Rust 开发专家插件，提供惯用 Rust 编码规范、Tokio 异步编程指导，以及 Edit|Write 后的调试语句与文件预算守卫。
+Rust 开发专家插件，提供 12 个细粒度技能覆盖语言纪律、错误处理、测试、类型设计、性能、文档、异步、FFI、serde、过程宏、workspace 与运行时调优，以及 Edit|Write 后的调试语句与文件预算守卫。
 
 ## 目录
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json`、`dispatch.mjs` 和 2 个 PostToolUse 守卫
-- `skills/`：`rust-best-practices` 与 `rust-async-patterns`
+- `skills/`：12 个技能目录及其参考资料
 - `tests/`：manifest 与 dispatch 回归测试
 
 ## Skills
 
 | Skill | 用途 |
 |-------|------|
-| `rust-best-practices` | 惯用 Rust 编码、借用与所有权、错误边界、Clippy、测试与文档 |
-| `rust-async-patterns` | Tokio 异步运行时、取消/超时、JoinSet、channel、并发上限与常见死锁场景 |
-| `rust-ffi-bindings` | FFI 导出：extern "C"、opaque handle、CStr/CString、回调、cbindgen/uniffi |
-| `rust-cargo-workspace` | Cargo workspace 管理：共享依赖、feature flag 组合、build.rs、CI 缓存 |
-| `rust-proc-macro-patterns` | 过程宏：derive/attribute macro、syn+quote、Span 错误报告、trybuild 测试 |
-| `rust-tokio-runtime-tuning` | Tokio 运行时调优：worker 线程、阻塞线程池、按需创建/idle 关闭、metrics |
-| `rust-serde-patterns` | Serde 序列化模式：tagged enum、字段演进、自定义 ser/de、反序列化校验 |
+| `rust-pro` | 借用/所有权/Clone/Copy、智能指针、Send/Sync、Clippy 纪律 |
+| `rust-error-handling` | 错误类型设计、Result、thiserror、anyhow、? 操作符 |
+| `rust-testing` | 测试命名、单元/集成/文档测试、snapshot、cargo-insta |
+| `rust-type-design` | 泛型、静态/动态分发、trait object、类型状态模式 |
+| `rust-performance` | 性能剖析、flamegraph、benchmark、分配优化 |
+| `rust-documentation` | rustdoc、注释 vs 文档、# Safety/Errors/Panics |
+| `rust-async-patterns` | Tokio 异步：JoinSet、channel、取消/超时、并发上限 |
+| `rust-cargo-workspace` | Cargo workspace：共享依赖、feature flag、build.rs、CI 缓存 |
+| `rust-ffi-bindings` | FFI：extern "C"、opaque handle、CStr/CString、cbindgen/uniffi |
+| `rust-proc-macro-patterns` | 过程宏：derive/attribute macro、syn+quote、trybuild |
+| `rust-serde-patterns` | Serde：tagged enum、字段演进、自定义 ser/de |
+| `rust-tokio-runtime-tuning` | Tokio 运行时调优：worker 线程、blocking pool、metrics |
 
 ## Hooks
 
