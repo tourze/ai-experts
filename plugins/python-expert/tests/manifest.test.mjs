@@ -19,6 +19,10 @@ test("manifest 显式声明作者、skills 与 hooks", () => {
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
   assert.ok(existsSync(hooksPath));
 
+  const sessionHooks = hooks.hooks?.SessionStart?.[0]?.hooks ?? [];
+  assert.equal(sessionHooks.length, 1);
+  assert.equal(sessionHooks[0].command, "node ${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.mjs session-start");
+
   const postToolUse = hooks.hooks?.PostToolUse?.[0];
   assert.equal(postToolUse?.matcher, "Edit|Write");
   assert.equal(postToolUse?.hooks?.length, 1);
