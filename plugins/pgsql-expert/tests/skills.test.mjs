@@ -3,7 +3,7 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import test from "node:test";
 
-const pluginRoot = resolve("plugins/database-expert");
+const pluginRoot = resolve("plugins/pgsql-expert");
 const skillsRoot = resolve(pluginRoot, "skills");
 const readmePath = resolve(pluginRoot, "README.md");
 const requiredSections = [
@@ -73,4 +73,3 @@ for (const skillName of getSkillDirs()) {
     }
   });
 }
-

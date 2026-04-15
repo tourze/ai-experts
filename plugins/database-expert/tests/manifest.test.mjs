@@ -12,9 +12,11 @@ test("manifest 显式声明 author、skills 与 hooks", () => {
   const hooks = JSON.parse(readFileSync(hooksPath, "utf-8"));
 
   assert.equal(manifest.name, "database-expert");
+  assert.equal(manifest.version, "0.2.0");
   assert.equal(manifest.author?.name, "ai-experts");
   assert.equal(manifest.skills, "./skills/");
   assert.equal("hooks" in manifest, false);
+  assert.equal("dependencies" in manifest, false);
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
   assert.ok(existsSync(hooksPath));

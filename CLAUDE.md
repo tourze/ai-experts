@@ -1,7 +1,7 @@
 # AI Experts - Claude Code Plugin Collection
 
 ## 项目概述
-Claude Code 插件集合，包含 50 个领域专家插件，每个插件提供 skills、hooks 和/或 agents。
+Claude Code 插件集合，包含 53 个领域专家插件，每个插件提供 skills、hooks 和/或 agents。
 
 ## 核心架构约束
 - **插件必须自包含**：每个插件最终以独立 copy 方式分发，不能依赖共享目录或跨插件引用。dispatch.mjs、guard 等即使重复也必须各插件自带。
@@ -30,8 +30,11 @@ Claude Code 插件集合，包含 50 个领域专家插件，每个插件提供 
 
 ## 已声明的插件依赖
 - android-expert → java-expert
+- mysql-expert → database-expert
 - nestjs-expert → typescript-expert
 - laravel-expert → php-expert
+- pgsql-expert → database-expert
+- redis-expert → database-expert
 - vue-expert → javascript-expert
 
 ## 技术栈

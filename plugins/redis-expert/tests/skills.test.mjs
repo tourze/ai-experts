@@ -1,9 +1,11 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync, readdirSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { tmpdir } from "node:os";
+import { dirname, join, resolve } from "node:path";
 import test from "node:test";
 
-const pluginRoot = resolve("plugins/database-expert");
+const pluginRoot = resolve("plugins/redis-expert");
 const skillsRoot = resolve(pluginRoot, "skills");
 const readmePath = resolve(pluginRoot, "README.md");
 const requiredSections = [
@@ -18,6 +20,7 @@ const forbiddenPatterns = [
   /\bTODO\b/i,
   /\bFIXME\b/i,
   /\bTBD\b/i,
+  /SETNX\s+\S+\s+\S+\s+EX\s+\d+/,
 ];
 
 function getSkillDirs() {
@@ -31,6 +34,11 @@ function extractRelativeLinks(markdown) {
   return [...markdown.matchAll(/\[[^\]]+\]\(([^)]+)\)/g)]
     .map((match) => match[1])
     .filter((href) => !href.startsWith("#") && !/^[a-z]+:/i.test(href));
+}
+
+function extractCodeBlocks(markdown, language) {
+  return [...markdown.matchAll(new RegExp(`\\\`\\\`\\\`${language}\\n([\\s\\S]*?)\\\`\\\`\\\``, "g"))]
+    .map((match) => match[1]);
 }
 
 test("README 技能列表与实际 skill 目录一致", () => {
@@ -74,3 +82,32 @@ for (const skillName of getSkillDirs()) {
   });
 }
 
+test("Redis skill 中的 Python 示例可通过 py_compile", () => {
+  for (const skillName of getSkillDirs()) {
+    const skillPath = resolve(skillsRoot, skillName, "SKILL.md");
+    const content = readFileSync(skillPath, "utf-8");
+    const codeBlocks = extractCodeBlocks(content, "python");
+
+    if (codeBlocks.length === 0) continue;
+
+    const tempDir = mkdtempSync(join(tmpdir(), "redis-expert-skill-"));
+    try {
+      codeBlocks.forEach((code, index) => {
+        const tempFile = join(tempDir, `${skillName}-${index}.py`);
+        writeFileSync(tempFile, code, "utf8");
+
+        const result = spawnSync("python3", ["-m", "py_compile", tempFile], {
+          encoding: "utf-8",
+        });
+
+        assert.equal(
+          result.status,
+          0,
+          `${skillPath} 第 ${index + 1} 个 Python 示例语法错误：${result.stderr || result.stdout}`,
+        );
+      });
+    } finally {
+      rmSync(tempDir, { recursive: true, force: true });
+    }
+  }
+});
