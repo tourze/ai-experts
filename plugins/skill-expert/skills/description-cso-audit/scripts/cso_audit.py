@@ -71,12 +71,11 @@ WORKFLOW_PATTERNS = [
 ]
 
 # Tool names in trigger context (e.g. "当要用 pytest 写测试时") are valid trigger keywords.
-# Only flag tools that appear outside a trigger context.
-TOOL_PATTERNS = [
-    (r"(?:RAII|SOLID|SUCCESs|INVEST|DACI)", "tool_leak", "包含方法论缩写"),
-]
+# Methodology acronyms (RAII, SOLID, SUCCESs, INVEST, DACI, RAPID) are domain concepts
+# that serve as legitimate trigger keywords, not "tools" — do not flag them.
+TOOL_PATTERNS = []
 
-TRIGGER_RE = re.compile(r"(当.*时使用|在.*时使用|Use when|适用于|用于)")
+TRIGGER_RE = re.compile(r"(当.*时(?:候)?使用|在.*时(?:候)?使用|Use when|适用于|用于)")
 
 
 # ── helpers ──────────────────────────────────────────────────────────

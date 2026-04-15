@@ -1,6 +1,6 @@
 ---
 name: tech-debt
-description: "在需要识别、分类和排序技术债时使用。"
+description: "在需要盘点代码健康状况、识别和排序技术债、整理重构优先级或清理维护 backlog 时使用。"
 ---
 
 # tech-debt

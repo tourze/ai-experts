@@ -1,6 +1,6 @@
 ---
 name: managing-tech-debt
-description: "在需要战略性管理技术债时使用。"
+description: "在需要制定技术债治理策略、规划重构路线图、争取债务预算或协调遗留系统改造节奏时使用。"
 ---
 
 # managing-tech-debt
