@@ -1,3 +1,16 @@
 {
-  "hooks": {}
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.mjs session-start",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
 }
