@@ -1,6 +1,6 @@
 ---
 name: api-trace-reader
-description: "在需要只读追踪接口、任务、事件或定时任务调用链时使用；输出入口、调用链、数据读写、异步副作用、风险点和验证方式，禁止任何写操作。"
+description: "在需要只读追踪接口、任务、事件或定时任务的调用链时使用。"
 ---
 
 # api-trace-reader

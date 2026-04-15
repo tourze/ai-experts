@@ -1,6 +1,6 @@
 ---
 name: php-pro
-description: 当用户实现或重构现代 PHP 8.3+、Laravel、Symfony、Composer、PHPStan、PSR 工作流时使用。适用于搭建 DTO / 值对象 / 服务层 / 控制器 / API / 队列 / 测试，并在交付前用静态分析与测试收敛风险。
+description: 当用户实现或重构现代 PHP 8.3+ 项目时使用。
 license: MIT
 metadata:
   author: https://github.com/Jeffallan

@@ -1,6 +1,6 @@
 ---
 name: customer-journey-map
-description: 当用户需要绘制端到端用户旅程、梳理触点、情绪、痛点与机会点时使用；适合 onboarding、转化、留存和服务体验诊断。
+description: 当用户需要绘制端到端用户旅程或诊断体验断点时使用。
 ---
 
 # 用户旅程地图

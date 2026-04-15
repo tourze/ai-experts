@@ -1,6 +1,6 @@
 ---
 name: microsoft-code-reference
-description: "在编写、调试、评审任何 Microsoft SDK、.NET、Azure 客户端或 Microsoft API 代码时使用；先校验官方 API 与示例，再生成或修复代码，避免方法名、包名、签名和版本混淆。"
+description: "在编写、调试或评审 Microsoft SDK、.NET、Azure 客户端或 Microsoft API 代码时使用。"
 context: fork
 compatibility: "优先使用 Microsoft Learn MCP Server（https://learn.microsoft.com/api/mcp）；不可用时回退到 `mslearn` CLI（`npx -y @microsoft/learn-cli`）。"
 ---

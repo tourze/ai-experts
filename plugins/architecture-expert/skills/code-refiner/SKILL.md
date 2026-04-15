@@ -1,6 +1,6 @@
 ---
 name: code-refiner
-description: "在需要保持行为不变的前提下简化代码、降低复杂度、整理结构和提升可读性时使用；支持 Python、Go、TypeScript/JavaScript、Rust。"
+description: "在需要保持行为不变的前提下简化代码、降低复杂度或提升可读性时使用。"
 ---
 
 # code-refiner

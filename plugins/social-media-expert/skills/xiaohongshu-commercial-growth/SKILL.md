@@ -1,6 +1,6 @@
 ---
 name: xiaohongshu-commercial-growth
-description: 当用户要制定小红书起号、内容增长、搜索布局、店播带货、投放种草或变现闭环方案时使用。
+description: 当用户要制定小红书商业增长或变现方案时使用。
 ---
 
 # 小红书商业增长

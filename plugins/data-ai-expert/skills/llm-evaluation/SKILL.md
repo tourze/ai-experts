@@ -1,6 +1,6 @@
 ---
 name: llm-evaluation
-description: 当用户要评估 LLM 应用效果、比较 prompt 或模型、设计 benchmark、做回归检测、建立自动化评分体系时使用。英文触发词包括 evaluation、benchmark、A/B test、regression、judge。
+description: 当用户要评估 LLM 应用效果或比较 prompt、模型表现时使用。
 ---
 
 # llm-evaluation

@@ -1,6 +1,6 @@
 ---
 name: memory-safety-patterns
-description: "在编写或评审 C/C++ 系统代码、梳理资源所有权、用 RAII/智能指针替换裸指针、修复泄漏/UAF/异常安全问题时使用；必要时用 Rust 所有权模型做对照。"
+description: "在编写或评审 C/C++ 系统代码、梳理资源所有权或修复内存安全问题时使用。"
 ---
 
 ## 适用场景

@@ -1,6 +1,6 @@
 ---
 name: data-analysis
-description: 当用户上传 `.xlsx` 或 `.csv` 文件，想做结构化数据分析、SQL 查询、统计摘要、透视汇总、导出结果，或要求读取本地表格文件并给出分析结论时使用。旧式 `.xls` 建议先转成 `.xlsx`。
+description: 当用户上传或指定 .xlsx、.csv 等表格文件，需要分析数据并给出结论时使用。
 ---
 
 # data-analysis

@@ -1,6 +1,6 @@
 ---
 name: go-concurrency-patterns
-description: Go 并发模式与 goroutine 生命周期控制。适用于 worker pool、pipeline、限流、errgroup 取消传播、优雅停机与竞态排查；不适用于纯串行 CRUD 或只想复述 Go 基础语法的场景。
+description: 当 Go 代码涉及并发、goroutine 生命周期控制或竞态排查时使用。
 ---
 
 # go-concurrency-patterns

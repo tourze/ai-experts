@@ -1,6 +1,6 @@
 ---
 name: rag-auditor
-description: 当用户要审计 RAG 管线质量、拆解 retrieval 与 generation 问题、评估 grounding 或 hallucination、排查 chunk/embedding/index/生成链路故障时使用。英文触发词包括 RAG audit、grounding、hallucination、retrieval quality、RAG evaluation。
+description: 当用户要审计 RAG 管线质量或排查检索与生成链路故障时使用。
 ---
 
 # rag-auditor

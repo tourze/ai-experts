@@ -1,6 +1,6 @@
 ---
 name: data-storytelling
-description: 当用户希望把数据分析结果讲给业务方、管理层、客户或投资人听，需要把数字整理成叙事结构、结论顺序、行动建议和页面文案时使用。
+description: 当用户需要把数据分析结果面向业务方讲清楚时使用。
 ---
 
 # data-storytelling

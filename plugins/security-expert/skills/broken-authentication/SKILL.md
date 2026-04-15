@@ -1,6 +1,6 @@
 ---
 name: broken-authentication
-description: "当需要测试登录、密码策略、会话管理、MFA、找回密码和凭据滥用风险时使用。"
+description: "当需要测试认证与会话管理的安全性时使用。"
 ---
 
 # 认证与会话缺陷测试

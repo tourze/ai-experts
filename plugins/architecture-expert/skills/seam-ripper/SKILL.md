@@ -1,6 +1,6 @@
 ---
 name: seam-ripper
-description: "在需要审视模块接缝、接口、依赖方向和抽象泄漏时使用；输出强约束、强批判、可落地的边界重组建议。"
+description: "在需要审视模块接缝、接口边界、依赖方向或抽象泄漏时使用。"
 ---
 
 # seam-ripper

@@ -1,6 +1,6 @@
 ---
 name: threat-mitigation-mapping
-description: "当需要把已识别威胁映射到具体安全控制、落点和优先级时使用。"
+description: "当已识别威胁需要映射到具体安全控制与优先级时使用。"
 ---
 
 # 威胁到缓解措施映射

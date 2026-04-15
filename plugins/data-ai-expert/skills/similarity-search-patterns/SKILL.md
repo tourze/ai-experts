@@ -1,6 +1,6 @@
 ---
 name: similarity-search-patterns
-description: 当用户要实现语义搜索、向量数据库检索、nearest neighbor 查询、hybrid search 或检索系统工程方案时使用。英文触发词包括 similarity search、vector database、semantic search、ANN、nearest neighbor。
+description: 当用户要实现语义搜索或向量检索系统时使用。
 ---
 
 # similarity-search-patterns

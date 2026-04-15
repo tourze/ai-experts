@@ -1,6 +1,6 @@
 ---
 name: model-first-reasoning
-description: 当用户明确要求 model-first、MFR、formal model、先建模后实现，或任务涉及状态机、约束系统、复杂规则、需要先冻结领域模型再编码时使用。
+description: 当用户明确要求 model-first 或任务涉及状态机、约束系统等需要先建模的场景时使用。
 ---
 
 # model-first-reasoning

@@ -1,6 +1,6 @@
 ---
 name: swiftui-performance-audit
-description: 审查和改进 SwiftUI 运行时性能，适用于卡顿、滚动掉帧、高 CPU / 内存、重渲染风暴与布局抖动问题。
+description: 当 SwiftUI 界面出现卡顿、掉帧、高 CPU 或重渲染问题时使用。
 ---
 
 # SwiftUI 性能审计

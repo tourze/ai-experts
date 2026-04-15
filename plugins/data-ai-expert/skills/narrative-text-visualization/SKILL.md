@@ -1,6 +1,6 @@
 ---
 name: narrative-text-visualization
-description: 当用户要用 T8 Syntax 把数据洞察写成结构化叙事文本、分析短文、报告摘要或可嵌入前端的 narrative text visualization 时使用。英文触发词包括 T8、narrative text、semantic annotation。
+description: 当用户要用 T8 Syntax 把数据洞察写成结构化叙事文本时使用。
 ---
 
 # narrative-text-visualization

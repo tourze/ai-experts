@@ -1,6 +1,6 @@
 ---
 name: douyin-viral-content
-description: 当用户要生成抖音文案、改写短视频脚本、复盘历史内容或基于素材做爆款方向优化时使用。
+description: 当用户要创作或优化抖音短视频文案与脚本时使用。
 ---
 
 # 抖音爆款文案生成

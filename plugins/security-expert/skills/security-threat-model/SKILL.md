@@ -1,6 +1,6 @@
 ---
 name: security-threat-model
-description: "当用户明确要求对代码仓库或目录做 AppSec 威胁建模、列出信任边界、资产、攻击者能力和滥用路径时使用。"
+description: "当用户明确要求对代码仓库或目录做 AppSec 威胁建模时使用。"
 ---
 
 # 仓库级威胁建模

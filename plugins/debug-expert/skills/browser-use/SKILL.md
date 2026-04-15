@@ -1,6 +1,6 @@
 ---
 name: browser-use
-description: 使用 browser-use CLI 做浏览器自动化、表单填写、截图与页面数据提取；当需要快速驱动真实网页而不是做性能剖析时使用
+description: 当需要通过真实浏览器自动化验证网页或提取页面数据时使用。
 allowed-tools: Bash(browser-use:*)
 ---
 

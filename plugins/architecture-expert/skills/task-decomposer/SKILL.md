@@ -1,6 +1,6 @@
 ---
 name: task-decomposer
-description: "在需要把需求拆成分阶段、带依赖关系和测试策略的任务板时使用；输出比普通步骤列表更结构化。"
+description: "在需要把需求拆成带依赖关系和测试策略的结构化任务板时使用。"
 ---
 
 # task-decomposer

@@ -1,6 +1,6 @@
 ---
 name: security-requirement-extraction
-description: "当需要把威胁模型、攻击路径或合规要求转成可交付、可测试、可追踪的安全需求时使用。"
+description: "当威胁模型、攻击路径或合规要求已明确，需要落地为安全需求时使用。"
 ---
 
 # 安全需求提炼

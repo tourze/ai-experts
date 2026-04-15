@@ -1,6 +1,6 @@
 ---
 name: prompt-lab
-description: 当用户要系统化诊断和优化 prompt，需要失败模式分析、变体设计、评测 rubric、测试样例、A/B 对比或 prompt iteration 时使用。英文触发词包括 prompt lab、prompt evaluation、prompt variants、failure modes、rubric。
+description: 当用户要系统化诊断和优化 prompt 时使用。
 ---
 
 # prompt-lab

@@ -1,6 +1,6 @@
 ---
 name: xhs-graphic-generator
-description: 当用户要把主题、文章或提纲转成小红书图文卡片，并需要生成图片 Prompt 与配套文案时使用。
+description: 当用户要生成小红书图文卡片时使用。
 ---
 
 # 小红书图文生成

@@ -1,6 +1,6 @@
 ---
 name: designing-surveys
-description: 当用户需要设计客户调研、NPS、PMF 问卷或功能反馈表单时使用；帮助明确目标、样本、问题设计和结果解释方式。
+description: 当用户需要设计客户调研、NPS、PMF 问卷或反馈表单时使用。
 ---
 
 # 设计问卷

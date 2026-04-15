@@ -1,6 +1,6 @@
 ---
 name: embedding-strategies
-description: 当用户要为语义搜索、RAG、向量检索选择 embedding 模型、切块策略、评估方式，或比较不同 embedding 方案时使用。英文触发词包括 embedding model、chunking、semantic search、retrieval quality。
+description: 当用户要选择或比较 embedding 模型、切块策略或向量检索方案时使用。
 ---
 
 # embedding-strategies

@@ -1,6 +1,6 @@
 ---
 name: statistical-analysis
-description: 当用户要做描述统计、异常检测、趋势分析、假设检验、相关性解释或判断统计结论是否站得住时使用。英文触发词包括 hypothesis test、outlier、correlation、significance、distribution。
+description: 当用户要做统计分析或判断统计结论是否站得住时使用。
 user-invocable: false
 ---
 

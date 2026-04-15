@@ -1,6 +1,6 @@
 ---
 name: exhaustive-systems-analysis
-description: "在需要把系统拆成子系统并做穷举式问题审计时使用；关注 correctness、竞态、文档漂移、死代码和高风险边界。"
+description: "在需要对系统做穷举式子系统拆解与问题审计时使用。"
 ---
 
 # exhaustive-systems-analysis
