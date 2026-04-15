@@ -1,0 +1,34 @@
+cases:
+  - id: worker_pool_pattern
+    prompt: "Implement a Go worker pool that processes jobs from a channel with graceful shutdown"
+    fixtures: []
+    rubric:
+      - "creates a bounded worker pool with configurable concurrency"
+      - "implements graceful shutdown with context cancellation and sync.WaitGroup"
+      - "handles panics in workers and error propagation"
+    trigger_expected: true
+
+  - id: goroutine_leak_fix
+    prompt: "I suspect goroutine leaks in my Go service, pprof shows 10k goroutines stuck in channel receive"
+    fixtures: []
+    rubric:
+      - "diagnoses blocked goroutines from missing channel close or context cancellation"
+      - "recommends select with context.Done() for all blocking operations"
+      - "covers errgroup for structured goroutine lifecycle management"
+    trigger_expected: true
+
+  - id: negative_go_http_handler
+    prompt: "Write an HTTP handler in Go that returns JSON with proper status codes"
+    fixtures: []
+    rubric:
+      - "does not activate go concurrency patterns workflow"
+      - "HTTP handler implementation is a web task, not a concurrency pattern"
+    trigger_expected: false
+
+  - id: negative_go_module_setup
+    prompt: "How do I initialize a Go module and manage dependencies with go.mod?"
+    fixtures: []
+    rubric:
+      - "does not activate go concurrency patterns workflow"
+      - "module management is a project setup task, not concurrency"
+    trigger_expected: false

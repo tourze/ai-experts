@@ -1,0 +1,34 @@
+cases:
+  - id: design_notification_system
+    prompt: "Design a notification system that supports email, SMS, and push notifications with delivery guarantees"
+    fixtures: []
+    rubric:
+      - "clarifies requirements: throughput, latency SLA, retry semantics"
+      - "proposes high-level architecture with message queue, dispatcher, and channel adapters"
+      - "addresses reliability concerns: idempotency, dead letter queue, delivery tracking"
+    trigger_expected: true
+
+  - id: design_rate_limiter
+    prompt: "I need to design a distributed rate limiter for our API gateway serving 100k RPS"
+    fixtures: []
+    rubric:
+      - "discusses algorithm tradeoffs (token bucket, sliding window, leaky bucket)"
+      - "addresses distributed coordination with Redis or similar"
+      - "covers edge cases: race conditions, clock skew, burst handling"
+    trigger_expected: true
+
+  - id: negative_fix_specific_bug
+    prompt: "Fix the null pointer exception on line 145 of UserService.java"
+    fixtures: []
+    rubric:
+      - "does not activate system design workflow"
+      - "fixing a specific bug is a code-level task, not system design"
+    trigger_expected: false
+
+  - id: negative_code_formatting
+    prompt: "Set up ESLint and Prettier for our TypeScript project"
+    fixtures: []
+    rubric:
+      - "does not activate system design workflow"
+      - "linter configuration is a tooling task, not system design"
+    trigger_expected: false

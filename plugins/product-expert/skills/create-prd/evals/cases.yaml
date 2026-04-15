@@ -1,0 +1,34 @@
+cases:
+  - id: create_feature_prd
+    prompt: "Write a PRD for adding team collaboration features to our project management tool"
+    fixtures: []
+    rubric:
+      - "includes problem statement, target users, and success metrics"
+      - "defines functional requirements with user stories or use cases"
+      - "covers constraints, dependencies, and phased release plan"
+    trigger_expected: true
+
+  - id: create_prd_from_idea
+    prompt: "I have an idea for an AI-powered code review tool, help me write the product requirements document"
+    fixtures: []
+    rubric:
+      - "clarifies the problem space and target persona before requirements"
+      - "defines scope boundaries and non-goals"
+      - "produces actionable requirements with acceptance criteria"
+    trigger_expected: true
+
+  - id: negative_write_code
+    prompt: "Implement the user authentication module based on this requirements doc"
+    fixtures: []
+    rubric:
+      - "does not activate create PRD workflow"
+      - "code implementation is a development task, not requirements documentation"
+    trigger_expected: false
+
+  - id: negative_market_research
+    prompt: "Research the market size for AI-powered developer tools in 2025"
+    fixtures: []
+    rubric:
+      - "does not activate create PRD workflow"
+      - "market research is an analysis task, not product requirements documentation"
+    trigger_expected: false

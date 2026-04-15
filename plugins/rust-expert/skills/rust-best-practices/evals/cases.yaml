@@ -1,0 +1,35 @@
+cases:
+  - id: ownership_borrowing_fix
+    prompt: "I'm getting 'cannot borrow as mutable because it is also borrowed as immutable' - how do I restructure this?"
+    fixtures: []
+    rubric:
+      - "explains the borrow checker rule being violated"
+      - "provides restructuring options: scope separation, clone, RefCell, or API redesign"
+      - "recommends the idiomatic approach over just silencing the compiler"
+    trigger_expected: true
+
+  - id: error_handling_design
+    prompt: "Should I use anyhow or thiserror for error handling in my Rust library?"
+    fixtures: []
+    rubric:
+      - "distinguishes library (thiserror) vs application (anyhow) error patterns"
+      - "shows custom error enum with From implementations"
+      - "covers error propagation with ? operator and context addition"
+    trigger_expected: true
+
+  - id: clippy_and_idioms
+    prompt: "Review this Rust code for idiomatic patterns and common Clippy warnings"
+    fixtures: []
+    rubric:
+      - "identifies non-idiomatic patterns: unnecessary clone, manual map/filter, String vs &str"
+      - "applies Clippy recommendations with explanations"
+      - "covers iterator chains, pattern matching, and Option/Result combinators"
+    trigger_expected: true
+
+  - id: negative_cargo_publish
+    prompt: "How do I publish my Rust crate to crates.io?"
+    fixtures: []
+    rubric:
+      - "does not activate rust best practices workflow"
+      - "crate publishing is a distribution task, not code quality review"
+    trigger_expected: false

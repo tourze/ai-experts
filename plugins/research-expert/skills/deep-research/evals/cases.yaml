@@ -1,0 +1,34 @@
+cases:
+  - id: technology_comparison
+    prompt: "Research the current state of WebAssembly vs JavaScript for compute-heavy browser applications"
+    fixtures: []
+    rubric:
+      - "performs multi-round web searches for up-to-date information"
+      - "cross-references multiple sources for accuracy"
+      - "produces a structured comparison with citations and evidence"
+    trigger_expected: true
+
+  - id: industry_trend_research
+    prompt: "What are the latest developments in edge computing for AI inference in 2025?"
+    fixtures: []
+    rubric:
+      - "searches for recent publications, announcements, and benchmarks"
+      - "synthesizes findings from multiple credible sources"
+      - "distinguishes established facts from emerging trends"
+    trigger_expected: true
+
+  - id: negative_codebase_analysis
+    prompt: "Analyze the dependency graph of our monorepo and find circular imports"
+    fixtures: []
+    rubric:
+      - "does not activate deep research workflow"
+      - "codebase analysis is an internal code task, not external web research"
+    trigger_expected: false
+
+  - id: negative_simple_question
+    prompt: "What is the default port for PostgreSQL?"
+    fixtures: []
+    rubric:
+      - "does not activate deep research workflow"
+      - "a simple factual question does not require multi-round research"
+    trigger_expected: false

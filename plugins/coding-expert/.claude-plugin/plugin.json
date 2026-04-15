@@ -6,5 +6,6 @@
     "name": "tourze",
     "email": "tourze@users.noreply.github.com"
   },
-  "keywords": ["encoding", "utf-8", "bom", "guard"]
+  "keywords": ["encoding", "utf-8", "bom", "guard", "code-review", "debug", "refactoring", "complexity"],
+  "skills": "./skills/"
 }

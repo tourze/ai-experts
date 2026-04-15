@@ -2,6 +2,9 @@
   "name": "nestjs-expert",
   "version": "0.1.2",
   "description": "NestJS 专家插件：模块/控制器/服务/DTO/Guard/拦截器配置",
+  "author": {
+    "name": "ai-experts"
+  },
   "license": "MIT",
   "keywords": [
     "nestjs",

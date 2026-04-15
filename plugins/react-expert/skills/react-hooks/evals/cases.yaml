@@ -1,0 +1,35 @@
+cases:
+  - id: custom_hook_data_fetching
+    prompt: "I need a custom React hook for data fetching with loading, error, and retry states"
+    fixtures: []
+    rubric:
+      - "creates a well-typed custom hook with proper state management"
+      - "handles loading, error, and success states correctly"
+      - "demonstrates cleanup with AbortController and dependency array discipline"
+    trigger_expected: true
+
+  - id: useeffect_cleanup_issue
+    prompt: "My useEffect is causing a memory leak warning, the cleanup function isn't working right"
+    fixtures: []
+    rubric:
+      - "explains useEffect cleanup lifecycle and when cleanup runs"
+      - "identifies common causes like stale closures or missing cleanup"
+      - "provides correct cleanup patterns for subscriptions, timers, and fetch calls"
+    trigger_expected: true
+
+  - id: hook_dependency_array
+    prompt: "React keeps re-rendering my component because of useCallback dependency changes"
+    fixtures: []
+    rubric:
+      - "explains dependency array semantics and reference equality"
+      - "demonstrates useCallback, useMemo, and useRef for stable references"
+      - "covers when memoization is appropriate vs premature"
+    trigger_expected: true
+
+  - id: negative_css_styling
+    prompt: "How do I center a div in React using CSS flexbox?"
+    fixtures: []
+    rubric:
+      - "does not activate react hooks workflow"
+      - "CSS styling is a layout concern, not a hooks pattern"
+    trigger_expected: false

@@ -32,6 +32,7 @@ description: |
 
 model: inherit
 color: red
+memory: project
 tools: ["Read", "Grep", "Glob", "Bash"]
 ---
 

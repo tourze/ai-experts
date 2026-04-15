@@ -1,0 +1,34 @@
+cases:
+  - id: challenge_assumptions
+    prompt: "Everyone says we need a microservices architecture, break this down from first principles"
+    fixtures: []
+    rubric:
+      - "strips away conventional wisdom to identify fundamental truths"
+      - "decomposes the problem to irreducible facts about the system requirements"
+      - "rebuilds the solution from those facts, which may or may not be microservices"
+    trigger_expected: true
+
+  - id: redesign_from_scratch
+    prompt: "If we were building our deployment pipeline from scratch with no legacy constraints, what would it look like?"
+    fixtures: []
+    rubric:
+      - "identifies the core invariants: what must be true for deployments"
+      - "challenges inherited assumptions about tools, processes, and structures"
+      - "constructs a solution grounded in fundamental requirements, not convention"
+    trigger_expected: true
+
+  - id: negative_step_by_step_guide
+    prompt: "Give me a step-by-step guide to set up CI/CD with GitHub Actions"
+    fixtures: []
+    rubric:
+      - "does not activate first principles decomposer workflow"
+      - "a how-to tutorial follows known patterns, not first-principles reasoning"
+    trigger_expected: false
+
+  - id: negative_comparison_request
+    prompt: "Compare React, Vue, and Angular for our next frontend project"
+    fixtures: []
+    rubric:
+      - "does not activate first principles decomposer workflow"
+      - "framework comparison is an evaluation task, not fundamental decomposition"
+    trigger_expected: false

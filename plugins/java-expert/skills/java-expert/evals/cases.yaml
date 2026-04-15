@@ -1,0 +1,26 @@
+cases:
+  - id: spring_boot_rest_api
+    prompt: "Help me build a Spring Boot 3 REST API with JPA entities, validation, and proper error handling"
+    fixtures: []
+    rubric:
+      - "uses Java 21+ features and Spring Boot 3.x conventions"
+      - "includes proper DTO validation with Jakarta annotations"
+      - "implements structured error handling with @ControllerAdvice"
+    trigger_expected: true
+
+  - id: jpa_transaction_issue
+    prompt: "I'm getting LazyInitializationException when accessing a @OneToMany collection outside the transaction"
+    fixtures: []
+    rubric:
+      - "explains JPA session lifecycle and lazy loading boundaries"
+      - "provides solutions: fetch join, @EntityGraph, DTO projection, or @Transactional scope"
+      - "warns against open-in-view anti-pattern and n+1 query risks"
+    trigger_expected: true
+
+  - id: negative_android_development
+    prompt: "Create an Android Activity with RecyclerView and ViewModel using Jetpack Compose"
+    fixtures: []
+    rubric:
+      - "does not activate java expert workflow"
+      - "Android UI development is a mobile-specific domain"
+    trigger_expected: false

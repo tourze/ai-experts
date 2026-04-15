@@ -1,0 +1,26 @@
+cases:
+  - id: risk_driven_strategy
+    prompt: "We have limited QA resources for a fintech app, help me build a risk-driven test strategy"
+    fixtures: []
+    rubric:
+      - "produces a risk matrix mapping features to business impact and failure likelihood"
+      - "defines test layers (unit, integration, e2e) with allocation rationale"
+      - "specifies quality gates and coverage targets per risk tier"
+    trigger_expected: true
+
+  - id: microservices_test_strategy
+    prompt: "Design a testing strategy for our microservices architecture with 12 services"
+    fixtures: []
+    rubric:
+      - "addresses contract testing between services"
+      - "defines service-level vs system-level test boundaries"
+      - "covers environment strategy and test data management"
+    trigger_expected: true
+
+  - id: negative_write_specific_test
+    prompt: "Write a unit test for the calculateTax function in utils.ts"
+    fixtures: []
+    rubric:
+      - "does not activate test strategy workflow"
+      - "writing a specific unit test is an implementation task, not strategy"
+    trigger_expected: false

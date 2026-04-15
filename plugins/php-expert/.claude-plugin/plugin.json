@@ -2,6 +2,9 @@
   "name": "php-expert",
   "version": "0.1.1",
   "description": "PHP 开发专家插件：语法检查、PHPStan 静态分析、Composer 校验、编码与调试语句守卫、PHPUnit 测试最佳实践等",
+  "author": {
+    "name": "ai-experts"
+  },
   "license": "MIT",
   "keywords": [
     "php",

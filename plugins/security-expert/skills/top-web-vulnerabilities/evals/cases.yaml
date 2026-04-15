@@ -1,0 +1,26 @@
+cases:
+  - id: identify_xss_risk
+    prompt: "Is this code vulnerable to XSS? We're rendering user input with dangerouslySetInnerHTML"
+    fixtures: []
+    rubric:
+      - "identifies the XSS vulnerability in unsanitized user input rendering"
+      - "explains the attack vector and potential impact"
+      - "provides remediation: sanitization library, CSP headers, or safe alternatives"
+    trigger_expected: true
+
+  - id: classify_web_vulns
+    prompt: "What are the most critical web security vulnerabilities I should check for in our e-commerce app?"
+    fixtures: []
+    rubric:
+      - "covers OWASP Top 10 categories relevant to e-commerce"
+      - "explains each vulnerability type with root cause and fix direction"
+      - "prioritizes by impact: injection, broken auth, SSRF, insecure deserialization"
+    trigger_expected: true
+
+  - id: negative_network_firewall
+    prompt: "Help me configure iptables rules for our production server"
+    fixtures: []
+    rubric:
+      - "does not activate top web vulnerabilities workflow"
+      - "network firewall configuration is infrastructure security, not web application vulnerabilities"
+    trigger_expected: false

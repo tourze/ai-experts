@@ -1,0 +1,34 @@
+cases:
+  - id: navigation_architecture
+    prompt: "How should I structure SwiftUI navigation for a multi-tab app with nested detail views?"
+    fixtures: []
+    rubric:
+      - "uses NavigationStack with path-based navigation or NavigationSplitView"
+      - "demonstrates coordinator or router pattern for decoupled navigation"
+      - "covers deep linking and state restoration considerations"
+    trigger_expected: true
+
+  - id: reusable_component_design
+    prompt: "I have a card component used across 5 screens with slight variations, help me make it reusable in SwiftUI"
+    fixtures: []
+    rubric:
+      - "applies ViewBuilder and generic content slots for composition"
+      - "uses environment values or configuration structs for theming"
+      - "demonstrates preview-driven development with multiple configurations"
+    trigger_expected: true
+
+  - id: negative_core_data_migration
+    prompt: "How do I handle Core Data lightweight migration when adding a new entity attribute?"
+    fixtures: []
+    rubric:
+      - "does not activate swiftui ui patterns workflow"
+      - "Core Data migration is a persistence concern, not UI patterns"
+    trigger_expected: false
+
+  - id: negative_swift_performance
+    prompt: "My Swift build time is 8 minutes, how do I speed up Xcode compilation?"
+    fixtures: []
+    rubric:
+      - "does not activate swiftui ui patterns workflow"
+      - "build performance is a tooling concern, not SwiftUI view patterns"
+    trigger_expected: false

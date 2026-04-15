@@ -1,0 +1,34 @@
+cases:
+  - id: unnecessary_rerenders
+    prompt: "My React app is slow, the Profiler shows components re-rendering on every keystroke"
+    fixtures: []
+    rubric:
+      - "diagnoses unnecessary re-renders using React DevTools Profiler"
+      - "suggests React.memo, useMemo, useCallback where appropriate"
+      - "identifies state lifting or state colocation as structural fixes"
+    trigger_expected: true
+
+  - id: large_list_virtualization
+    prompt: "I have a table with 10,000 rows and scrolling is janky, how do I fix React rendering?"
+    fixtures: []
+    rubric:
+      - "recommends virtualization with react-window or react-virtuoso"
+      - "explains windowing concept and why rendering all rows is expensive"
+      - "covers row height estimation and overscan configuration"
+    trigger_expected: true
+
+  - id: negative_react_routing
+    prompt: "How do I set up nested routes with React Router v6?"
+    fixtures: []
+    rubric:
+      - "does not activate react performance workflow"
+      - "routing configuration is a navigation concern, not a performance task"
+    trigger_expected: false
+
+  - id: negative_state_management_choice
+    prompt: "Should I use Redux or Zustand for my React app state management?"
+    fixtures: []
+    rubric:
+      - "does not activate react performance workflow"
+      - "state library selection is an architecture decision, not performance optimization"
+    trigger_expected: false

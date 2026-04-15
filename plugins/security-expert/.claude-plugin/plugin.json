@@ -5,5 +5,12 @@
   "author": {
     "name": "ai-experts maintainers"
   },
-  "keywords": ["security", "pentest", "threat-model", "reverse-engineering", "forensics"]
+  "keywords": [
+    "security",
+    "pentest",
+    "threat-model",
+    "reverse-engineering",
+    "forensics"
+  ],
+  "skills": "./skills/"
 }

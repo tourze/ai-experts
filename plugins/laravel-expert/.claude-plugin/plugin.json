@@ -2,10 +2,10 @@
   "name": "laravel-expert",
   "version": "0.2.1",
   "description": "Laravel 专家插件：Laravel 10+ 实现、架构模式、安全基线、TDD 与发布验证",
-  "license": "MIT",
   "author": {
     "name": "ai-experts"
   },
+  "license": "MIT",
   "keywords": [
     "laravel",
     "eloquent",

@@ -12,46 +12,61 @@
  *   export async function run(payload) → { decision, reason } | null
  */
 
-import { readdirSync, existsSync } from "fs";
-import { join, dirname } from "path";
-import { fileURLToPath, pathToFileURL } from "url";
+import { existsSync, readdirSync } from "node:fs";
+import { dirname, join, resolve, sep } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const subdir = process.argv[2];
+
 if (!subdir) {
   console.error("Usage: node dispatch.mjs <subdir>");
   process.exit(1);
 }
 
-const dir = join(__dirname, subdir);
+// ── 路径遍历防护 ──────────────────────────────────────
+const hooksRoot = resolve(__dirname);
+const dir = resolve(__dirname, subdir);
+if (dir !== hooksRoot && !dir.startsWith(`${hooksRoot}${sep}`)) {
+  console.log(
+    JSON.stringify({
+      decision: "report",
+      reason: `[dispatch] 非法 hook 子目录：${subdir}`,
+    }),
+  );
+  process.exit(0);
+}
+
 if (!existsSync(dir)) process.exit(0);
 
 // ── 信号处理：确保被杀时不留残尸 ────────────────────
-// Node 默认 SIGINT 直接退出（exit code 130），这里显式处理以确保
-// 子进程（linter / git 等）能被正确回收，不留孤儿锁文件。
 for (const sig of ["SIGINT", "SIGTERM"]) {
   process.on(sig, () => process.exit(sig === "SIGINT" ? 130 : 143));
 }
 
-// 读取 payload（只读一次）。允许空 stdin，便于手工验证 dispatch。
-const rawPayload = await new Promise((resolve) => {
-  let data = "";
-  process.stdin.on("data", (chunk) => (data += chunk));
-  process.stdin.on("end", () => resolve(data));
-});
+async function readPayload() {
+  const chunks = [];
+  for await (const chunk of process.stdin) {
+    chunks.push(typeof chunk === "string" ? chunk : chunk.toString("utf-8"));
+  }
 
-let payload = {};
-if (rawPayload.trim()) {
+  const raw = chunks.join("").trim();
+  if (!raw) return {};
+
   try {
-    payload = JSON.parse(rawPayload);
+    return JSON.parse(raw);
   } catch (err) {
-    console.log(JSON.stringify({
-      decision: "report",
-      reason: `[dispatch] 无法解析 hook payload JSON: ${err.message || err}`,
-    }));
+    console.log(
+      JSON.stringify({
+        decision: "report",
+        reason: `[dispatch] stdin 不是合法 JSON：${err.message || err}`,
+      }),
+    );
     process.exit(0);
   }
 }
+
+const payload = await readPayload();
 
 // 发现并加载 hook 模块（跳过 _ 前缀的工具模块）
 const files = readdirSync(dir)
@@ -88,7 +103,7 @@ for (const file of files) {
     // hook 异常不应崩溃整个 dispatch，降级为 report
     reports.push({
       decision: "report",
-      reason: `[dispatch] hook ${file} 执行异常: ${err.message || err}`,
+      reason: `[dispatch] hook ${file} 执行异常：${err.message || err}`,
     });
   }
 }
@@ -101,15 +116,19 @@ if (contexts.length > 0) {
     .split("-")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join("");
-  console.log(JSON.stringify({
-    hookSpecificOutput: {
-      hookEventName: eventName,
-      additionalContext: contexts.map((c) => c.reason).join("\n\n"),
-    },
-  }));
+  console.log(
+    JSON.stringify({
+      hookSpecificOutput: {
+        hookEventName: eventName,
+        additionalContext: contexts.map((c) => c.reason).join("\n\n"),
+      },
+    }),
+  );
 } else if (reports.length > 0) {
-  console.log(JSON.stringify({
-    decision: "report",
-    reason: reports.map((r) => r.reason).join("\n\n"),
-  }));
+  console.log(
+    JSON.stringify({
+      decision: "report",
+      reason: reports.map((r) => r.reason).join("\n\n"),
+    }),
+  );
 }

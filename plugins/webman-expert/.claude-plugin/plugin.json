@@ -2,10 +2,10 @@
   "name": "webman-expert",
   "version": "0.2.0",
   "description": "Webman 框架专家插件：命名规范、自定义进程、WebSocket、插件开发",
-  "license": "MIT",
   "author": {
     "name": "ai-experts"
   },
+  "license": "MIT",
   "keywords": [
     "webman",
     "workerman",

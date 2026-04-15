@@ -1,0 +1,26 @@
+cases:
+  - id: fix_failing_pr_checks
+    prompt: "My PR checks are failing on GitHub Actions, can you look at the CI errors and fix them?"
+    fixtures: []
+    rubric:
+      - "uses gh CLI to fetch the failing check run details"
+      - "analyzes error logs to identify root cause"
+      - "proposes and implements a fix for the specific failure"
+    trigger_expected: true
+
+  - id: ci_test_timeout
+    prompt: "The test job in our GitHub Actions workflow keeps timing out after 30 minutes"
+    fixtures: []
+    rubric:
+      - "retrieves the workflow run logs via gh CLI"
+      - "identifies which test or step causes the timeout"
+      - "suggests fixes: parallelization, test filtering, or timeout adjustment"
+    trigger_expected: true
+
+  - id: negative_write_new_workflow
+    prompt: "Create a new GitHub Actions workflow for deploying to production on tag push"
+    fixtures: []
+    rubric:
+      - "does not activate gh-fix-ci workflow"
+      - "creating a new workflow is different from fixing failing CI checks"
+    trigger_expected: false

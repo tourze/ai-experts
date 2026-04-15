@@ -1,0 +1,34 @@
+cases:
+  - id: threat_model_api
+    prompt: "Do a threat model for our REST API that handles user authentication and payment processing"
+    fixtures: []
+    rubric:
+      - "identifies trust boundaries between client, API, and payment provider"
+      - "enumerates assets: credentials, tokens, payment data, PII"
+      - "produces structured threat list with attacker capabilities and abuse paths"
+    trigger_expected: true
+
+  - id: threat_model_microservices
+    prompt: "Create a security threat model for our microservices architecture with service mesh"
+    fixtures: []
+    rubric:
+      - "maps inter-service trust boundaries and communication channels"
+      - "identifies threats to service identity, mTLS, and east-west traffic"
+      - "covers data flow threats across service boundaries"
+    trigger_expected: true
+
+  - id: negative_code_review
+    prompt: "Review this Python function for code quality and best practices"
+    fixtures: []
+    rubric:
+      - "does not activate security threat model workflow"
+      - "general code review is different from structured threat modeling"
+    trigger_expected: false
+
+  - id: negative_fix_vulnerability
+    prompt: "Fix the SQL injection vulnerability in our login endpoint"
+    fixtures: []
+    rubric:
+      - "does not activate security threat model workflow"
+      - "fixing a known specific vulnerability is remediation, not threat modeling"
+    trigger_expected: false

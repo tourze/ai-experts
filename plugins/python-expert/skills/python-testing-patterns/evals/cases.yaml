@@ -1,0 +1,35 @@
+cases:
+  - id: pytest_fixture_design
+    prompt: "Help me write pytest fixtures for a Flask app that needs database setup and teardown"
+    fixtures: []
+    rubric:
+      - "provides pytest fixture examples with proper scope (function, module, session)"
+      - "demonstrates database setup/teardown patterns with yield fixtures"
+      - "covers conftest.py organization and fixture reuse"
+    trigger_expected: true
+
+  - id: mock_external_service
+    prompt: "How do I mock an HTTP API call in my Python tests using pytest-mock?"
+    fixtures: []
+    rubric:
+      - "demonstrates monkeypatch or pytest-mock usage for external dependencies"
+      - "shows how to assert call arguments and return values"
+      - "covers both sync and async mocking patterns"
+    trigger_expected: true
+
+  - id: parametrize_edge_cases
+    prompt: "I need to test a date parsing function with many edge cases using parametrize"
+    fixtures: []
+    rubric:
+      - "uses @pytest.mark.parametrize with clear test IDs"
+      - "includes boundary values, invalid inputs, and format variations"
+      - "demonstrates indirect parametrize if appropriate"
+    trigger_expected: true
+
+  - id: negative_django_deployment
+    prompt: "How do I deploy my Django app to AWS with gunicorn?"
+    fixtures: []
+    rubric:
+      - "does not activate python testing patterns workflow"
+      - "deployment configuration is a different domain from testing"
+    trigger_expected: false

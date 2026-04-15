@@ -1,0 +1,34 @@
+cases:
+  - id: untangle_messy_situation
+    prompt: "I'm stuck on a decision about whether to rewrite our legacy system or keep patching it, help me think through this"
+    fixtures: []
+    rubric:
+      - "asks clarifying questions to understand the real constraints"
+      - "helps decompose the messy problem into concrete sub-questions"
+      - "converges toward an actionable next step rather than endless analysis"
+    trigger_expected: true
+
+  - id: career_decision
+    prompt: "I got two job offers and I can't decide, one is higher pay at a big corp, the other is a startup with equity"
+    fixtures: []
+    rubric:
+      - "helps identify the core tradeoffs and personal priorities"
+      - "surfaces hidden assumptions and risks for each option"
+      - "guides toward a decision framework rather than making the choice"
+    trigger_expected: true
+
+  - id: negative_write_code
+    prompt: "Write a Python function to merge two sorted arrays"
+    fixtures: []
+    rubric:
+      - "does not activate thinking partner workflow"
+      - "a direct coding task does not need thinking partnership"
+    trigger_expected: false
+
+  - id: negative_factual_lookup
+    prompt: "What is the population of Tokyo?"
+    fixtures: []
+    rubric:
+      - "does not activate thinking partner workflow"
+      - "a factual lookup does not require structured thinking facilitation"
+    trigger_expected: false

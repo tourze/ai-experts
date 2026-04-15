@@ -1,0 +1,35 @@
+cases:
+  - id: fix_type_error
+    prompt: "I'm getting TS2322: Type 'string | undefined' is not assignable to type 'string' and I don't understand why"
+    fixtures: []
+    rubric:
+      - "explains the root cause of the type narrowing issue"
+      - "provides multiple fix approaches (type guard, non-null assertion, default value)"
+      - "recommends the safest approach rather than just suppressing the error"
+    trigger_expected: true
+
+  - id: design_generic_utility
+    prompt: "Help me create a TypeScript generic type that makes all nested properties optional recursively"
+    fixtures: []
+    rubric:
+      - "implements a recursive DeepPartial or similar mapped type"
+      - "handles edge cases like arrays, functions, and primitives"
+      - "explains conditional type and mapped type mechanics"
+    trigger_expected: true
+
+  - id: remove_any_types
+    prompt: "My codebase has 47 'any' types, help me replace them with proper types"
+    fixtures: []
+    rubric:
+      - "provides a systematic strategy for eliminating any types"
+      - "demonstrates unknown, type guards, and generic constraints as replacements"
+      - "suggests tsconfig strict mode settings to prevent future any usage"
+    trigger_expected: true
+
+  - id: negative_javascript_runtime
+    prompt: "My Node.js server keeps crashing with ECONNREFUSED when connecting to Redis"
+    fixtures: []
+    rubric:
+      - "does not activate typescript magician workflow"
+      - "runtime connection errors are not TypeScript type system issues"
+    trigger_expected: false

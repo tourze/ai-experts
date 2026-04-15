@@ -1,0 +1,26 @@
+cases:
+  - id: mobile_first_layout
+    prompt: "Convert our desktop-only dashboard layout to work on mobile with container queries"
+    fixtures: []
+    rubric:
+      - "applies mobile-first breakpoint strategy with min-width media queries"
+      - "demonstrates container queries for component-level responsiveness"
+      - "covers fluid typography and spacing with clamp()"
+    trigger_expected: true
+
+  - id: responsive_grid_system
+    prompt: "I need a responsive product grid that shows 1 column on mobile, 2 on tablet, 4 on desktop"
+    fixtures: []
+    rubric:
+      - "uses CSS Grid with auto-fill/auto-fit and minmax for fluid grids"
+      - "defines sensible breakpoints aligned with common device sizes"
+      - "handles image aspect ratios and card height consistency"
+    trigger_expected: true
+
+  - id: negative_animation_performance
+    prompt: "My CSS animations are janky on mobile, how do I use GPU acceleration?"
+    fixtures: []
+    rubric:
+      - "does not activate responsive design workflow"
+      - "animation performance is a rendering concern, not responsive layout"
+    trigger_expected: false

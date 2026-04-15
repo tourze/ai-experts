@@ -1,0 +1,26 @@
+cases:
+  - id: fill_pdf_form
+    prompt: "I need to fill out this PDF form programmatically with data from a JSON file"
+    fixtures: []
+    rubric:
+      - "identifies form fields in the PDF document"
+      - "maps JSON data to PDF form fields"
+      - "produces a filled PDF with correct field values and formatting"
+    trigger_expected: true
+
+  - id: extract_pdf_structure
+    prompt: "Read this PDF invoice and extract the line items, totals, and vendor information"
+    fixtures: []
+    rubric:
+      - "parses PDF structure to locate tables and text blocks"
+      - "extracts structured data with field labels and values"
+      - "handles multi-page documents and varied layouts"
+    trigger_expected: true
+
+  - id: negative_create_document
+    prompt: "Write a technical design document for our new authentication system"
+    fixtures: []
+    rubric:
+      - "does not activate PDF workflow"
+      - "writing a design document from scratch is a content creation task, not PDF processing"
+    trigger_expected: false

@@ -2,11 +2,15 @@
   "name": "architecture-expert",
   "version": "0.2.1",
   "description": "软件架构专家插件：架构蓝图生成、架构评审、DDIA 分布式系统、设计模式、重构模式",
+  "author": {
+    "name": "ai-experts"
+  },
   "keywords": [
     "architecture",
     "design-patterns",
     "ddia",
     "refactoring",
     "system-design"
-  ]
+  ],
+  "skills": "./skills/"
 }

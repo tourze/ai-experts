@@ -1,0 +1,35 @@
+cases:
+  - id: async_error_handling
+    prompt: "What's the best pattern for handling errors in async/await chains with multiple API calls?"
+    fixtures: []
+    rubric:
+      - "demonstrates try/catch with async/await for sequential and parallel calls"
+      - "covers Promise.allSettled for partial failure scenarios"
+      - "shows error aggregation and fallback patterns"
+    trigger_expected: true
+
+  - id: destructuring_and_spread
+    prompt: "Show me modern JavaScript patterns for merging objects and handling optional properties"
+    fixtures: []
+    rubric:
+      - "demonstrates spread operator for shallow merge and object rest"
+      - "covers optional chaining (?.) and nullish coalescing (??)"
+      - "shows structuredClone for deep copy when needed"
+    trigger_expected: true
+
+  - id: es_modules_patterns
+    prompt: "Help me refactor my CommonJS require() calls to ES module import/export syntax"
+    fixtures: []
+    rubric:
+      - "maps require/module.exports to import/export equivalents"
+      - "handles dynamic imports with import() for conditional loading"
+      - "covers package.json type field and file extension requirements"
+    trigger_expected: true
+
+  - id: negative_css_framework
+    prompt: "Should I use Tailwind CSS or Bootstrap for my project?"
+    fixtures: []
+    rubric:
+      - "does not activate modern javascript patterns workflow"
+      - "CSS framework selection is a styling concern, not a JavaScript pattern"
+    trigger_expected: false
