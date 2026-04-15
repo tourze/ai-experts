@@ -15,6 +15,11 @@ Rust 开发专家插件，提供惯用 Rust 编码规范、Tokio 异步编程指
 |-------|------|
 | `rust-best-practices` | 惯用 Rust 编码、借用与所有权、错误边界、Clippy、测试与文档 |
 | `rust-async-patterns` | Tokio 异步运行时、取消/超时、JoinSet、channel、并发上限与常见死锁场景 |
+| `rust-ffi-bindings` | FFI 导出：extern "C"、opaque handle、CStr/CString、回调、cbindgen/uniffi |
+| `rust-cargo-workspace` | Cargo workspace 管理：共享依赖、feature flag 组合、build.rs、CI 缓存 |
+| `rust-proc-macro-patterns` | 过程宏：derive/attribute macro、syn+quote、Span 错误报告、trybuild 测试 |
+| `rust-tokio-runtime-tuning` | Tokio 运行时调优：worker 线程、阻塞线程池、按需创建/idle 关闭、metrics |
+| `rust-serde-patterns` | Serde 序列化模式：tagged enum、字段演进、自定义 ser/de、反序列化校验 |
 
 ## Hooks
 

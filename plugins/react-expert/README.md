@@ -17,6 +17,12 @@ React 生态专家插件，覆盖组件组合、Hooks 模式、性能优化、Se
 | `upgrading-react-native` | React Native 版本升级（rn-diff-purge） |
 | `vercel-react-best-practices` | Vercel 工程团队的 React/Next.js 性能指南 |
 | `detox-mobile-test` | React Native E2E 测试（Detox） |
+| `react-native-turbomodule` | TurboModule 开发：Spec 定义、codegen、Android Kotlin / iOS ObjC++ 实现 |
+| `react-native-jsi-bridge` | C++ JSI 直接绑定：HostObject、CallInvoker、ArrayBuffer 零拷贝 |
+| `react-native-platform-fork` | 跨平台代码组织：.native.ts/.ios.ts/.tauri.ts 分叉规范、边界文件模式 |
+| `react-native-metro-config` | Metro 配置：monorepo watchFolders、自定义平台扩展、CI 性能调优 |
+| `react-native-native-module-android` | Android 原生模块：Kotlin TurboModule、ReactModuleInfo、Gradle codegen |
+| `react-native-native-module-ios` | iOS 原生模块：ObjC++ TurboModule、getTurboModule、Swift 桥接、CocoaPods |
 
 ## 安装
 
