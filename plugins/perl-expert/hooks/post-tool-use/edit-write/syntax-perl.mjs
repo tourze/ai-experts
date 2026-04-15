@@ -1,9 +1,15 @@
-import { existsSync } from "fs";
-import { execFileSync } from "child_process";
-import { hasCommand, cmd, matchExt } from "./_utils.mjs";
+import { existsSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { hasCommand, cmd, matchExt, matchName } from "./_utils.mjs";
+
+const PERL_EXTENSIONS = [".pl", ".pm", ".t", ".psgi"];
+const PERL_FILE_NAMES = [
+  "Makefile.PL",
+  "Build.PL",
+];
 
 function matches(filePath) {
-  return matchExt(filePath, [".pl", ".pm"]);
+  return matchExt(filePath, PERL_EXTENSIONS) || matchName(filePath, PERL_FILE_NAMES);
 }
 
 async function check(filePath) {
@@ -16,7 +22,6 @@ async function check(filePath) {
     return output.trim() ? { lang: "Perl Syntax", message: output } : null;
   }
 }
-
 
 export async function run(payload) {
   const filePath = payload?.tool_input?.file_path;

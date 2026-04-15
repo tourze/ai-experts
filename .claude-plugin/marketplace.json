@@ -177,6 +177,12 @@
       "version": "0.1.0"
     },
     {
+      "name": "perl-expert",
+      "source": "./plugins/perl-expert",
+      "description": "Perl 开发专家插件：语法检查、调试语句检测、编码与行数守卫，以及现代 Perl 开发与测试技能",
+      "version": "0.1.0"
+    },
+    {
       "name": "product-expert",
       "source": "./plugins/product-expert",
       "description": "产品管理专家插件：PRD 撰写、商业模型、竞品分析、用户旅程、定价策略、敏捷迭代、市场规模估算",
