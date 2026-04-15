@@ -5,3 +5,10 @@ node_modules/
 skills/.system/
 
 __pycache__
+
+# Prevent accidental commit of API keys / secrets
+.env
+.env.*
+!.env.example
+!.env.template
+!.env.sample

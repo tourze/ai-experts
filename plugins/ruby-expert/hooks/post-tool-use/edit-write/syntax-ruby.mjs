@@ -14,14 +14,29 @@ const RUBY_FILE_NAMES = [
   "config.ru",
 ];
 
+// macOS sandbox: deny network/file-write, allow reads — prevents BEGIN{} side effects
+const SANDBOX_PROFILE =
+  "(version 1)(deny default)(allow process-exec)(allow process-fork)" +
+  "(allow file-read*)(allow sysctl-read)(allow mach-lookup)";
+
 function matches(filePath) {
   return matchExt(filePath, RUBY_EXTENSIONS) || matchName(filePath, RUBY_FILE_NAMES);
 }
 
 async function check(filePath) {
   if (!hasCommand("ruby")) return null;
+  const safeEnv = { ...process.env, RUBYOPT: "", RUBY_DISABLE_GEMS: "1" };
+  const opts = { stdio: "pipe", timeout: 15000, env: safeEnv };
   try {
-    execFileSync(cmd("ruby"), ["-c", filePath], { stdio: "pipe", timeout: 15000 });
+    if (process.platform === "darwin" && hasCommand("sandbox-exec")) {
+      execFileSync(
+        cmd("sandbox-exec"),
+        ["-p", SANDBOX_PROFILE, cmd("ruby"), "-c", filePath],
+        opts,
+      );
+    } else {
+      execFileSync(cmd("ruby"), ["-c", filePath], opts);
+    }
     return null;
   } catch (err) {
     const output = (err.stdout?.toString() || "") + (err.stderr?.toString() || "");
