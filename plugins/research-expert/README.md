@@ -6,16 +6,23 @@
 
 | Skill | 用途 |
 |-------|------|
+| `comparative-analysis` | 多对象结构化对比分析 |
 | `deep-research` | 多轮迭代 Web 深度研究 |
+| `knowledge-synthesis` | 多源搜索结果综合去重 |
+| `repo-analyzer` | 外部仓库克隆与结构化分析 |
+| `site-analyze` | 域名/IP 站点画像分析 |
+| `technology-search` | 技术博客/论坛/媒体搜索 |
 | `web-content-fetcher` | URL 正文提取为 Markdown |
 | `wiki-researcher` | 代码库主题迭代深度研究 |
-| `knowledge-synthesis` | 多源搜索结果综合去重 |
-| `technology-search` | 技术博客/论坛/媒体搜索 |
-| `site-analyze` | 域名/IP 站点画像分析 |
+
+## Agents
+
+- **deep-researcher** — 自主多轮研究：Web 搜索 + 网页抓取 + 仓库分析 + 知识综合
 
 ## 结构
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
+- `agents/`：自主研究 agent 定义
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`
 - `skills/`：研究类技能与配套脚本
 - `tests/`：manifest、hooks、skills 结构自检
