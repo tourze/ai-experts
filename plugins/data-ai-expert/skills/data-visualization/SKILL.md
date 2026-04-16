@@ -62,7 +62,40 @@ plt.show()
 
 ## 反模式
 
-- 能用条形图解决的问题，硬用饼图或 3D 图。
-- 一张图塞入过多系列，导致没有主视觉层级。
-- 使用颜色区分重要性，却不给色盲可读方案。
-- 画出图以后才发现并没有回答用户真正的问题。
+### FAIL: 6 系列折线 + 双 Y 轴
+
+```python
+ax.plot(x, revenue, label='Revenue')  # 左轴 $
+ax.plot(x, users, label='Users')       # 左轴混
+ax2 = ax.twinx()
+ax2.plot(x, churn_rate, label='Churn %')  # 右轴 %
+# 6 条线 2 个轴 → 用户 5 秒读不出主信息
+```
+
+### PASS: 一图一问题
+
+```python
+# 只回答："收入趋势怎么样"
+fig, ax = plt.subplots()
+ax.plot(months, revenue, marker='o')
+ax.set_title('Monthly Revenue ($k)')
+ax.bar_label(bars, fmt='$%dk')
+# 留存、流失另起一张图，各自 own 一个故事
+```
+
+### FAIL: 颜色是唯一编码
+
+```python
+plt.scatter(x, y, c=['red', 'green', 'blue', 'orange', 'purple'])
+# 色盲用户只看到深浅渐变，无法区分类别
+```
+
+### PASS: 颜色 + 形状 + 标签
+
+```python
+markers = ['o', 's', '^', 'D', 'P']
+for i, group in enumerate(groups):
+    plt.scatter(x[i], y[i], marker=markers[i], label=group, alpha=0.7)
+plt.legend()
+# 即使打印成黑白，也能区分类别
+```
