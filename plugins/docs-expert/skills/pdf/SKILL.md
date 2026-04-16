@@ -45,7 +45,35 @@ python3 scripts/fill_pdf_form_with_annotations.py scanned.pdf fields.json annota
 
 ## 反模式
 
-- 不先探测字段，直接往 PDF 里盲填。
-- 把视觉型表单当可填写表单处理，最后写不进去。
-- 发现字段值报错后继续生成输出 PDF，造成脏数据。
-- 写回后不校验版面，结果文本遮挡原表格或跑到错误页。
+### FAIL: 不探测字段直接填
+
+```python
+filler.fill("form.pdf", {"name": "...", "address": "..."}, "out.pdf")
+# 字段实际叫 "applicant_name" / "addr_line1" → 全部填空
+```
+
+### PASS: extract → fill
+
+```bash
+python3 scripts/check_fillable_fields.py form.pdf  # 是否可填表
+python3 scripts/extract_form_field_info.py form.pdf fields.json  # 拿到真实字段名
+# 编辑 fields.json
+python3 scripts/fill_fillable_fields.py form.pdf fields.json filled.pdf
+```
+
+### FAIL: 视觉型当填写型
+
+```python
+# scanned.pdf 是扫描件，无 AcroForm 字段
+filler.fill("scanned.pdf", values, "out.pdf")
+# 输出和原件一模一样，写不进去
+```
+
+### PASS: 走标注路径
+
+```bash
+python3 scripts/check_fillable_fields.py scanned.pdf
+# → "no fillable fields detected, use annotation mode"
+python3 scripts/fill_pdf_form_with_annotations.py scanned.pdf coords.json out.pdf
+# coords.json 含每个字段的 page + x/y + 字号
+```

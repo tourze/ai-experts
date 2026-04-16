@@ -46,7 +46,42 @@ python3 scripts/office/pack.py unpacked slides-fixed.pptx --validate true
 
 ## 反模式
 
-- 直接在压缩包里删文件，不更新关系引用。
-- 加页面只复制 XML，不补内容类型和 presentation 入口。
-- 为了赶进度跳过 `scripts/clean.py` 和 `scripts/office/pack.py --validate true`。
-- 设计方案都没定，就开始微调每一页 XML。
+### FAIL: 删 XML 不更新关系
+
+```bash
+unzip slides.pptx
+rm ppt/slides/slide5.xml
+zip -r slides.pptx .
+# 打开报错：[Content_Types].xml 仍引用 slide5
+# presentation.xml 仍含 slide5 sldId
+```
+
+### PASS: 完整流程
+
+```bash
+python3 scripts/office/unpack.py slides.pptx unpacked
+# 删除目标 slide
+rm unpacked/ppt/slides/slide5.xml
+# 关键：清理引用
+python3 scripts/clean.py unpacked
+# 校验 + 打包
+python3 scripts/office/pack.py unpacked slides-fixed.pptx --validate true
+```
+
+### FAIL: 设计未定就 XML 调整
+
+```
+直接编辑 unpacked/ppt/slides/slide3.xml：
+- 调字体颜色
+- 改字号
+- 移动文本框位置
+→ 客户："视觉方向想换风格" → XML 修改全部作废
+```
+
+### PASS: 先视觉再 XML
+
+```
+1. 调用 ppt-visual 定 5 要素
+2. 用户确认风格
+3. 才进入 PPTX 文件编辑
+```

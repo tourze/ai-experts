@@ -42,7 +42,44 @@ with pdfplumber.open("report.pdf") as pdf:
 
 ## 反模式
 
-- 把扫描件当文本型 PDF 直接抽，结果输出空文本。
-- 只保留纯文本，不保留页码和结构，后面无法校对。
-- 表格列错位了仍继续使用，没有任何人工核验。
-- 明明需要写回 PDF，却仍停留在抽取流程里。
+### FAIL: 扫描件当文本型
+
+```python
+with pdfplumber.open("scanned.pdf") as pdf:
+    text = pdf.pages[0].extract_text()
+print(text)  # ""（空）
+# 不知道是文件坏了还是需要 OCR
+```
+
+### PASS: 先识别类型
+
+```python
+def is_text_pdf(path):
+    with pdfplumber.open(path) as pdf:
+        return any(p.extract_text() for p in pdf.pages[:3])
+
+if is_text_pdf("doc.pdf"):
+    # 文本型：pdfplumber 直接抽
+else:
+    # 扫描型：走 ocrmypdf / Tesseract → 再抽
+```
+
+### FAIL: 丢页码信息
+
+```python
+all_text = "\n".join(p.extract_text() for p in pdf.pages)
+# 后续："这段话出自哪一页？" → 答不上
+```
+
+### PASS: 保留页码 + 结构
+
+```python
+result = []
+for i, page in enumerate(pdf.pages, 1):
+    result.append({
+        "page": i,
+        "text": page.extract_text(),
+        "tables": [{"rows": t} for t in page.extract_tables()]
+    })
+# 每段都可回溯
+```

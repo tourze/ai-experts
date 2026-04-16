@@ -46,7 +46,54 @@ python3 scripts/md_to_pdf.py tests/test_document.md sample.pdf --no-mermaid
 
 ## 反模式
 
-- 没跑 `scripts/setup.sh` 就直接渲染复杂文档。
-- 发现依赖缺失后继续硬跑，最后拿到半成品 PDF。
-- 用重型自定义 CSS 覆盖默认样式，导致打印版不可读。
-- 把 Markdown 里的排版问题归咎于 PDF 渲染器，而不修源文件。
+### FAIL: 不检查依赖
+
+```bash
+python3 scripts/md_to_pdf.py report.md report.pdf
+# Error: mmdc not found
+# 但已经渲染了 80% 页面 → 拿到半成品 PDF（图为空）
+```
+
+### PASS: setup → render
+
+```bash
+bash scripts/setup.sh  # 检查 pandoc/mmdc/katex/playwright
+# 全部通过 → render
+python3 scripts/md_to_pdf.py report.md report.pdf --format A4 --header-footer
+```
+
+### FAIL: 重型 CSS 覆盖
+
+```css
+/* custom.css */
+* { font-size: 8px !important; color: #aaa; }
+table { border: none; }
+/* 打印出来读不清 / 表格无法分辨行列 */
+```
+
+### PASS: 增量调整
+
+```css
+/* 仅微调，不破坏基础排版 */
+h1 { font-family: 'Source Han Serif', serif; }
+table th { background-color: #f6f6f6; }
+/* 保留默认字号 / 间距 / 边框 */
+```
+
+### FAIL: 怪渲染器不修源
+
+```md
+[源 MD]
+- 表格 12 列宽到溢出
+- 图片直接 ![](huge.png) 不指定尺寸
+
+[抱怨]
+"PDF 把表格切坏了 / 图占整页"
+```
+
+### PASS: 修源文件
+
+```md
+- 表格拆成两个或加 `--margin 0.5in --landscape`
+- 图片：`![alt](huge.png){ width=80% }`
+```

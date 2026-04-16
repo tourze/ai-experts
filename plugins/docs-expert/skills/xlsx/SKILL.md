@@ -38,7 +38,63 @@ python3 scripts/office/pack.py unpacked model-fixed.xlsx --validate true
 
 ## 反模式
 
-- 只改显示值，不重算公式就宣称修好了。
-- 直接覆盖模板，导致格式、条件格式或隐藏工作表丢失。
-- 交付前不检查 `#VALUE!`、`#REF!` 等错误。
-- 用户要的是表格文件，结果只回了文本摘要。
+### FAIL: 只改显示不重算
+
+```python
+ws['D5'] = 1500  # 改了显示值
+wb.save('out.xlsx')
+# 但 D5 的依赖单元格 E5/F5 仍是旧公式结果
+# 用户打开后："总和怎么不对？"
+```
+
+### PASS: 重算后保存
+
+```python
+ws['D5'] = 1500
+wb.save('out.xlsx')
+# 强制重算
+python3 scripts/recalc.py out.xlsx 60
+# 或在 Excel 打开自动 F9
+```
+
+### FAIL: 覆盖模板
+
+```python
+wb = openpyxl.Workbook()  # 全新空工作簿
+wb.save('template.xlsx')
+# 原模板的：
+# - 条件格式 / 数据验证
+# - 隐藏 sheet
+# - 命名范围
+# 全部丢失
+```
+
+### PASS: 在副本上改
+
+```python
+shutil.copy('template.xlsx', 'output.xlsx')
+wb = openpyxl.load_workbook('output.xlsx')
+# 在副本上改 → 保留所有原有结构
+```
+
+### FAIL: 不检查错误单元格
+
+```python
+wb.save('result.xlsx')
+# 客户打开发现 #VALUE! / #REF! / #DIV/0!
+# 信任崩
+```
+
+### PASS: 校验
+
+```python
+errors = []
+for sheet in wb.sheetnames:
+    for row in wb[sheet].iter_rows():
+        for cell in row:
+            if isinstance(cell.value, str) and cell.value.startswith('#'):
+                errors.append(f"{sheet}!{cell.coordinate}={cell.value}")
+if errors:
+    print(f"⚠️ {len(errors)} 个错误单元格：{errors[:5]}")
+    # 修复或显式标注后再交付
+```

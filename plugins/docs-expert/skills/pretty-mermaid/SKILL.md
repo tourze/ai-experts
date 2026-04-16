@@ -81,8 +81,51 @@ node scripts/batch.mjs \
 
 ## 反模式
 
-- 只交付渲染后的图片，不保留 Mermaid 源码。
-- 明明只是两三步流程，却强行画复杂大图，反而更难读。
-- 文档里已经有 Mermaid 代码块，还额外输出一套风格冲突的图。
-- 未确认阅读场景就默认深色主题，导致打印或浅色文档中难以阅读。
-- 遇到图不清晰时继续往同一张图塞节点，而不是拆图或重选图种。
+### FAIL: 只交付图片
+
+```
+[architecture.svg]
+→ 6 个月后想改 → 没人有源码 → 只能从头画
+```
+
+### PASS: 源码 + 图
+
+```
+docs/diagrams/architecture.mmd  ← 维护这个
+docs/diagrams/architecture.svg  ← 渲染输出
+git diff 时能看到 .mmd 变化，svg 自动重渲
+```
+
+### FAIL: 一图塞所有
+
+```mermaid
+flowchart TB
+  A --> B --> C --> D --> ...
+  E --> F --> G
+  H --> I --> J
+  ... 50 个节点交叉
+```
+
+### PASS: 拆主题
+
+```
+图 1：核心流程（5-8 节点）
+图 2：错误处理子图
+图 3：异步事件链
+→ 每张服务一个理解目标
+```
+
+### FAIL: 默认深色主题
+
+```bash
+node scripts/render.mjs --theme tokyo-night
+# 渲染到打印 PDF → 黑底灰字几乎不可读
+```
+
+### PASS: 按场景选
+
+```
+打印 / 浅色文档：github-light / default
+深色仪表盘：tokyo-night / dracula
+演示投影：高对比 + 大字号
+```

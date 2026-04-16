@@ -44,7 +44,37 @@ python3 scripts/accept_changes.py tracked.docx clean.docx
 
 ## 反模式
 
-- 用户要的是 PDF，结果先输出 DOCX 再让对方自己转。
-- 直接改 zip 内部 XML，却没有重新校验和回包测试。
-- 在存在修订的文档里批量替换文本，导致引用、批注锚点或段落结构损坏。
-- 只交付正文，不保留用户需要的模板元素、页眉页脚或批注历史。
+### FAIL: 直接改 zip 内 XML
+
+```bash
+unzip -o report.docx
+sed -i 's/old/new/g' word/document.xml
+zip -r report.docx .
+# document.xml.rels 引用未更新 → Word 打开报损坏
+```
+
+### PASS: 解包 → 改 → 校验 → 打包
+
+```bash
+python3 scripts/office/unpack.py report.docx unpacked
+# 用脚本工具改，自动维护关系
+python3 scripts/comment.py unpacked 7 "请补充" --author "Claude"
+python3 scripts/office/validate.py unpacked
+python3 scripts/office/pack.py unpacked report-v2.docx --validate true
+```
+
+### FAIL: 修订文档批量替换
+
+```python
+# 文档有 30 处 tracked changes
+content = content.replace("OldName", "NewName")
+# w:ins / w:del 元素被破坏 → 修订记录全乱
+```
+
+### PASS: 先 accept 再改
+
+```bash
+python3 scripts/accept_changes.py tracked.docx clean.docx
+# 所有修订接受 → 普通文本 → 再批量替换
+# 或：用 python-docx API 仅修改 paragraph.text，保留结构
+```
