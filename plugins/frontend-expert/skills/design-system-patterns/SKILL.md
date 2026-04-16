@@ -74,6 +74,19 @@ type ButtonProps = {
 - 通过增加 `variant2`、`variant3` 逃避 API 设计。
 - 为单个页面临时加 token，最后令牌表膨胀失控。
 
+## 跨会话持久化：Master + Overrides
+
+在 AI 协作场景下，把设计系统落到仓库里的 Markdown 比留在聊天记录里更可靠。推荐结构：
+
+```
+design-system/
+├── MASTER.md          # 全局 token、风格、字体、反模式
+└── pages/
+    └── <name>.md      # 仅记录相对 MASTER 的**覆盖项**
+```
+
+实现/审查具体页面时，先读 `MASTER.md`，再查 `pages/<页面 slug>.md`；存在则覆盖，不存在则按 MASTER 落地。详见 [references/master-overrides-pattern.md](references/master-overrides-pattern.md)。
+
 ## 参考资料
 
 - [tailwind-design-system](../tailwind-design-system/SKILL.md)
@@ -82,3 +95,4 @@ type ButtonProps = {
 - [references/design-tokens.md](references/design-tokens.md)
 - [references/theming-architecture.md](references/theming-architecture.md)
 - [references/component-architecture.md](references/component-architecture.md)
+- [references/master-overrides-pattern.md](references/master-overrides-pattern.md)
