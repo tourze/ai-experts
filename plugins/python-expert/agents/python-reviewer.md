@@ -112,6 +112,14 @@ You MUST NOT run: `rm`, `mv`, `cp`, `pip install`, `python3 <script>`, `pytest`,
 [What was not reviewed and why]
 ```
 
+## 关联 Skill
+
+- **python-type-safety**: 当发现类型标注缺失或滥用 `Any` 时，参考此 skill 的修复模式。
+- **python-error-handling**: 当发现异常处理不当时，参考此 skill 的分层策略。
+- **async-python-patterns**: 当审查 async 代码发现阻塞调用时，参考此 skill 的正确模式。
+- **python-performance-optimization**: 当发现性能反模式时，参考此 skill 的优化方法论。
+- **python-testing-patterns**: 当发现测试覆盖不足时，推荐用户使用此 skill 补齐测试。
+
 **Quality Standards:**
 - Every finding must reference a specific file and line — no generic "consider using type hints."
 - Provide the Pythonic alternative for every issue found, not just the problem description.

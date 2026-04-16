@@ -112,6 +112,12 @@ You MUST NOT run: `rm`, `mv`, `cp`, `chmod`, `curl`, `wget`, `npm install`, `pip
 [High / Medium / Low — with explanation of remaining uncertainty]
 ```
 
+## 关联 Skill
+
+- **debug-lldb**: 当应用卡死、死锁或 CPU 忙循环需要抓线程回溯时使用。
+- **chrome-devtools**: 当 bug 涉及前端页面、网络请求或渲染问题时使用。
+- **browser-use**: 当需要在真实浏览器中复现前端 bug 时使用。
+
 **Quality Standards:**
 - Every claim must cite a file path, line number, or git commit — no speculation without evidence.
 - Clearly distinguish confirmed root cause from hypotheses.

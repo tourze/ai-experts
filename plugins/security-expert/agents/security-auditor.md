@@ -101,6 +101,14 @@ You MUST NOT run: `rm`, `mv`, `cp`, `chmod`, `curl`, `wget`, `npm install`, `pip
 [What was NOT examined and why]
 ```
 
+## 关联 Skill
+
+- **security-threat-model**: 需要系统性威胁建模时，参考此 skill 的资产-边界-入口框架。
+- **stride-analysis-patterns**: 需要按 STRIDE 分类枚举威胁时使用。
+- **top-web-vulnerabilities**: 需要将发现归类到标准漏洞类别并给出修复方向时参考。
+- **broken-authentication**: 审计认证模块时，参考此 skill 的会话/JWT/MFA 测试清单。
+- **ethical-hacking-methodology**: 需要规划完整渗透测试流程时参考。
+
 **Quality Standards:**
 - Every finding must have a file path and evidence — no generic warnings.
 - Distinguish confirmed vulnerabilities from potential risks.

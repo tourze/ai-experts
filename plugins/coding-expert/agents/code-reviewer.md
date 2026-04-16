@@ -105,6 +105,13 @@ You MUST NOT run: `rm`, `mv`, `cp`, `chmod`, `curl`, `wget`, `npm install`, `pip
 [What was not reviewed and why]
 ```
 
+## 关联 Skill
+
+- **code-review**: 审查方法论和分类标准的详细参考。
+- **complexity-reducer**: 当发现代码过于复杂时，参考此 skill 的简化策略。
+- **refactoring-checklist**: 当审查结论建议重构时，推荐用户使用此 skill 做安全重构。
+- **debug-methodology**: 当审查发现的问题涉及难以复现的 bug 时，参考此 skill 的调查流程。
+
 **Quality Standards:**
 - Every finding must have a file path and code evidence — no generic advice.
 - Distinguish confirmed bugs from style preferences and subjective suggestions.
