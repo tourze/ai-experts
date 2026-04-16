@@ -585,74 +585,50 @@ Max = 120 points
 
 ## Common Failure Patterns
 
-### Pattern 1: The Tutorial
+### FAIL: The Tutorial (Pattern 1)
+
 ```
-Symptom: Explains what PDF is, how Python works, basic library usage
-Root cause: Author assumes Skill should "teach" the model
-Fix: Claude already knows this. Delete all basic explanations.
-     Focus on expert decisions, trade-offs, and anti-patterns.
+"What is PDF?" / "How to write a for-loop" / basic library usage
+→ Claude already knows this → token waste
 ```
 
-### Pattern 2: The Dump
+### PASS: Expert knowledge only
+
 ```
-Symptom: SKILL.md is 800+ lines with everything included
-Root cause: No progressive disclosure design
-Fix: Core routing and decision trees in SKILL.md (<300 lines ideal)
-     Detailed content in references/, loaded on-demand
+Decision trees for non-obvious choices
+Trade-offs only an expert would know
+Edge cases from real-world experience
 ```
 
-### Pattern 3: The Orphan References
+### FAIL: The Dump (Pattern 2)
+
 ```
-Symptom: References directory exists but files are never loaded
-Root cause: No explicit loading triggers
-Fix: Add "MANDATORY - READ ENTIRE FILE" at workflow decision points
-     Add "Do NOT Load" to prevent over-loading
+SKILL.md 800+ lines with everything inline
+→ Context window waste / key info diluted
 ```
 
-### Pattern 4: The Checkbox Procedure
+### PASS: Progressive disclosure
+
 ```
-Symptom: Step 1, Step 2, Step 3... mechanical procedures
-Root cause: Author thinks in procedures, not thinking frameworks
-Fix: Transform into "Before doing X, ask yourself..."
-     Focus on decision principles, not operation sequences
+SKILL.md < 300 lines (routing + decisions)
+references/ for details, loaded on-demand
 ```
 
-### Pattern 5: The Vague Warning
+### FAIL: The Invisible Skill (Pattern 6)
+
 ```
-Symptom: "Be careful", "avoid errors", "consider edge cases"
-Root cause: Author knows things can go wrong but hasn't articulated specifics
-Fix: Specific NEVER list with concrete examples and non-obvious reasons
-     "NEVER use X because [specific problem that takes experience to learn]"
+description: "Helps with document tasks"
+→ Agent never activates it
 ```
 
-### Pattern 6: The Invisible Skill
-```
-Symptom: Great content but skill rarely gets activated
-Root cause: Description is vague, missing keywords, or lacks trigger scenarios
-Fix: Description must answer WHAT, WHEN, and include KEYWORDS
-     "Use when..." + specific scenarios + searchable terms
+### PASS: WHAT + WHEN + KEYWORDS
 
-Example fix:
-BAD:  "Helps with document tasks"
-GOOD: "Create, edit, and analyze .docx files. Use when working with
-       Word documents, tracked changes, or professional document formatting."
+```
+description: "Create, edit, and analyze .docx files. Use when working with
+Word documents, tracked changes, or professional document formatting."
 ```
 
-### Pattern 7: The Wrong Location
-```
-Symptom: "When to use this Skill" section in body, not in description
-Root cause: Misunderstanding of three-layer loading
-Fix: Move all triggering information to description field
-     Body is only loaded AFTER triggering decision is made
-```
-
-### Pattern 8: The Over-Engineered
-```
-Symptom: README.md, CHANGELOG.md, INSTALLATION_GUIDE.md, CONTRIBUTING.md
-Root cause: Treating Skill like a software project
-Fix: Delete all auxiliary files. Only include what Agent needs for the task.
-     No documentation about the Skill itself.
-```
+Patterns 3-5, 7-9 follow the same structure: identify symptom → root cause → fix.
 
 ### Pattern 9: The Freedom Mismatch
 ```

@@ -181,176 +181,66 @@ class MainActivity : ComponentActivity() {
 
 ---
 
-## 4. 排版 [HIGH]
+## 4-10. 排版、组件、无障碍、手势、通知、权限、系统集成
 
-### Material 字体比例
+完整规则详见 [references/rules-4-to-10.md](references/rules-4-to-10.md)，包含：
+- 排版：Material 字体比例、sp 单位、200% 缩放测试（R4.1-R4.5）
+- 组件：FAB / Top App Bar / Bottom Sheet / Dialog / Snackbar / Chip（R5.1-R5.19）
+- 无障碍：contentDescription / 触摸目标 ≥ 48dp / 对比度 / TalkBack（R6.1-R6.13）
+- 手势：系统手势区域 / 涟漪 / 长按（R7.1-R7.7）
+- 通知：Channel / MessagingStyle / 前台服务（R8.1-R8.9）
+- 权限：按需请求 / Photo Picker / 定位降级（R9.1-R9.8）
+- 系统集成：Widget Glance API / App Links / 快捷方式（R10.1-R10.10）
+- 交叉引用表
 
-| 角色 | 默认大小 | 用途 |
-|------|---------|------|
-| displayLarge | 57sp | 超大标题 |
-| displayMedium | 45sp | 大标题 |
-| displaySmall | 36sp | 标题 |
-| headlineLarge | 32sp | 页面标题 |
-| headlineMedium | 28sp | 区域标题 |
-| headlineSmall | 24sp | 子标题 |
-| titleLarge | 22sp | 顶栏标题 |
-| titleMedium | 16sp | 列表项标题 |
-| titleSmall | 14sp | 辅助标题 |
-| bodyLarge | 16sp | 正文（主要） |
-| bodyMedium | 14sp | 正文（次要） |
-| bodySmall | 12sp | 辅助文字 |
-| labelLarge | 14sp | 按钮文字 |
-| labelMedium | 12sp | 标签、Badge |
-| labelSmall | 11sp | 时间戳、角标 |
+## 反模式
 
-**规则：**
-- **R4.1** — 所有文字尺寸使用 `sp` 单位（不用 `dp`），以支持用户字体缩放
-- **R4.2** — 正文最小 12sp，标签最小 11sp
-- **R4.3** — 引用 `MaterialTheme.typography` 角色，不硬编码尺寸
-- **R4.4** — 在 200% 字体缩放下测试，确认无裁切
-- **R4.5** — 行高为字号的 1.2-1.5 倍
+### FAIL: 硬编码颜色
 
----
+```kotlin
+Text("Hello", color = Color(0xFF3B82F6))
+// 忽略动态颜色 → 暗色模式不可读 / 与壁纸冲突
+```
 
-## 5. 组件 [HIGH]
+### PASS: 引用 color role
 
-### 5.1 FAB（浮动操作按钮）
+```kotlin
+Text("Hello", color = MaterialTheme.colorScheme.primary)
+// 动态颜色自动适配 / 暗色模式自动切换
+```
 
-- **R5.1** — 每个屏幕最多一个 FAB
-- **R5.2** — FAB 定位在右下角，位于底部导航栏之上
-- **R5.3** — FAB 默认使用 `primaryContainer` 颜色
-- **R5.4** — 优先使用带文字标签的 `ExtendedFloatingActionButton`
+### FAIL: 底部导航 → 平板
 
-### 5.2 顶栏（Top App Bar）
+```kotlin
+// 在 Expanded 屏幕（840dp+）仍用底部导航栏
+NavigationBar { ... }
+// 浪费宝贵垂直空间 / HIG 要求平板用 Rail
+```
 
-- **R5.5** — 大多数页面用 Small Top App Bar；突出标题时用 Medium / Large
-- **R5.6** — 顶栏与滚动行为联动（`TopAppBarScrollBehavior`）
-- **R5.7** — 操作图标限制 2-3 个，其余收入溢出菜单
+### PASS: WindowSizeClass 适配
 
-### 5.3 底部弹窗（Bottom Sheet）
+```kotlin
+when (windowSizeClass.widthSizeClass) {
+    WindowWidthSizeClass.Compact -> NavigationBar { ... }
+    else -> NavigationRail { ... }
+}
+```
 
-- **R5.8** — Modal 用于补充内容，Standard 用于持久面板
-- **R5.9** — 底部弹窗必须有可见拖拽手柄
-- **R5.10** — 弹窗内容溢出时必须可滚动
+### FAIL: 启动批量请求权限
 
-### 5.4 对话框（Dialog）
+```kotlin
+// onCreate 里一次性弹 5 个权限
+requestPermissions(arrayOf(CAMERA, LOCATION, CONTACTS, PHONE, STORAGE))
+// 用户被吓到 → 全部拒绝
+```
 
-- **R5.11** — 仅用于关键决策，非关键信息用 Snackbar 或 Bottom Sheet
-- **R5.12** — 确认按钮为文本按钮；取消按钮在左侧
-- **R5.13** — 标题用简洁的问句或陈述句
+### PASS: 按功能延迟请求
 
-### 5.5 Snackbar
-
-- **R5.14** — 用于简短的非关键反馈
-- **R5.15** — Snackbar 位于底部导航栏之上、FAB 之下
-- **R5.16** — 可撤销操作附带 undo 按钮
-
-### 5.6 Chip
-
-- **R5.17** — 按场景选择正确的 Chip 类型：Filter / Assist / Input / Suggestion
-- **R5.18** — Chip 水平滚动或流式布局排列，不垂直堆叠
-
-### 5.7 等待状态
-
-- **R5.19** — 立即展示等待状态；长时间操作提供可见进度指示
-
-### 组件选择参考
-
-| 需求 | 推荐组件 |
-|------|----------|
-| 页面主操作 | FAB / ExtendedFAB |
-| 页面标题 + 操作 | Top App Bar |
-| 补充操作面板 | Bottom Sheet |
-| 关键确认 | AlertDialog |
-| 简短反馈 | Snackbar |
-| 过滤/选择标签 | FilterChip |
-| 辅助建议 | AssistChip / SuggestionChip |
-
----
-
-## 6. 无障碍 [CRITICAL]
-
-> 详细审计流程和代码示例参见 `android-accessibility` skill。
-
-- **R6.1** — 每个可交互元素必须有 `contentDescription`
-- **R6.2** — 描述动作/含义，不描述视觉外观
-- **R6.3** — 关联元素用 `mergeDescendants` 合并播报
-- **R6.4** — 仅手势/长按触发的操作必须提供 `customActions`
-- **R6.5** — 触摸目标最小 48×48dp
-- **R6.6** — 不以缩小触摸目标换取更紧凑的布局
-- **R6.7** — 文字对比度 ≥ 4.5:1（普通），≥ 3:1（大文本）
-- **R6.8** — 禁止仅靠颜色传递信息
-- **R6.9** — 支持系统粗体文本和高对比度设置
-- **R6.10** — 焦点顺序遵循从上到下、从 Start 到 End 的逻辑
-- **R6.11** — 导航/Dialog 关闭后焦点移至逻辑目标
-- **R6.12** — 全部功能可通过 TalkBack、Switch Access、键盘操作
-- **R6.13** — Canvas 自绘视图必须通过 `ExploreByTouchHelper` 构建虚拟无障碍树
-
----
-
-## 7. 手势与输入 [MEDIUM]
-
-- **R7.1** — 不在系统手势区域放置交互元素
-- **R7.2** — 使用 `WindowInsets.systemGestures` 检测冲突区域
-- **R7.3** — 滑动删除必须可撤销或需确认
-- **R7.4** — 所有手势操作必须有非手势替代方式
-- **R7.5** — 所有可点击元素添加 Material 涟漪效果
-- **R7.6** — 长按触发上下文菜单，但长按不能是唯一入口
-- **R7.7** — 长按操作附带触觉反馈
-
----
-
-## 8. 通知 [MEDIUM]
-
-- **R8.1** — 每种通知类型使用独立 Channel
-- **R8.2** — 保守选择 importance 级别
-- **R8.3** — 所有通知必须有点击动作
-- **R8.4** — 通知图标提供 `contentDescription`
-- **R8.5** — 会话通知使用 `MessagingStyle`
-- **R8.6** — 消息通知提供直接回复 action
-- **R8.7** — 消息通知提供"标为已读" action
-- **R8.8** — 富内容使用可展开样式
-- **R8.9** — 前台服务通知描述正在进行的操作 + 提供停止按钮
-
----
-
-## 9. 权限与隐私 [HIGH]
-
-- **R9.1** — 在功能使用时请求权限，不在启动时批量请求
-- **R9.2** — 请求前展示理由说明
-- **R9.3** — 权限被拒后优雅降级，不阻塞核心功能
-- **R9.4** — 不请求非必要权限
-- **R9.5** — 选择照片用 Photo Picker，不申请 `READ_MEDIA_IMAGES`
-- **R9.6** — 除非精确定位必不可少，优先用 `ACCESS_COARSE_LOCATION`
-- **R9.7** — 非录制场景对相机/麦克风使用一次性权限
-- **R9.8** — 相机/麦克风使用中显示隐私指示器
-
----
-
-## 10. 系统集成 [MEDIUM]
-
-- **R10.1** — Widget 使用 Glance API，支持动态颜色
-- **R10.2** — Widget 放置后必须立即可用
-- **R10.3** — 实际可行时提供多种 Widget 尺寸
-- **R10.4** — Widget 圆角匹配系统 Widget 形状
-- **R10.5** — 2-4 个静态快捷方式；按需支持动态快捷方式
-- **R10.6** — 快捷方式图标：简单剪影 + 圆形背景
-- **R10.7** — 长按和设置中都测试快捷方式
-- **R10.8** — 公开内容 URL 使用 Android App Links
-- **R10.9** — 分享时提供富预览
-- **R10.10** — 处理传入的分享 Intent，按内容类型过滤
-
----
-
-## 交叉引用
-
-| 主题 | 主要章节 | 另见 |
-|------|----------|------|
-| 深色主题 | 1.3 | 6.7（对比度） |
-| 触摸目标 | 6.5 | 7.1（手势区域） |
-| 系统栏 | 3.3 | 7.1（手势 insets） |
-| FAB 定位 | 5.1 | 2.2（Rail 顶部 FAB）、5.15（Snackbar） |
-| 字体缩放 | 4.1 | 4.4（200% 测试）、6.9（粗体文本） |
-| 权限 | 9.1 | 9.5（Photo Picker） |
-| 导航选型 | 2（表格） | 3.1（Window Size Class） |
-| 颜色角色 | 1.2 | 2.4（导航指示器）、5.3（FAB 颜色） |
+```kotlin
+// 用户点"拍照"时
+if (!hasCameraPermission) {
+    showRationale("需要相机权限来扫描发票")
+    requestPermission(CAMERA)
+}
+// 上下文清楚 → 授权率高
+```
