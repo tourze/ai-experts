@@ -93,8 +93,46 @@ git switch -c recovery/<topic> <sha>
 
 ## 反模式
 
-- 在共享分支上直接 `git rebase -i` 后再裸 `git push --force`。
-- 为了“省事”把整个功能分支 merge 进 hotfix，只因为其中有一个可复用提交。
-- 没有稳定复现条件，却盲目启动 bisect。
-- 把 worktree 当临时目录乱删，忘记清理关联记录。
-- reflog 还没看清楚，就继续 `reset --hard` 叠加第二次破坏。
+### FAIL: 共享分支裸 force push
+
+```bash
+git checkout main
+git rebase -i HEAD~5
+git push --force origin main
+# 团队冲突，CI 历史断裂
+```
+
+### PASS: 个人分支改 + --force-with-lease
+
+```bash
+git checkout feature/my-branch
+git rebase -i --autosquash “$(git merge-base HEAD origin/main)”
+git push --force-with-lease origin feature/my-branch
+```
+
+### FAIL: 整支 merge 取一个提交
+
+```bash
+git merge feature/half-done  # 只要里面一个改动
+# 半成品代码污染 hotfix 分支
+```
+
+### PASS: cherry-pick 精准搬运
+
+```bash
+git cherry-pick <sha>
+```
+
+### FAIL: 无稳定复现跑 bisect
+
+```bash
+git bisect start; git bisect bad HEAD; git bisect good v1.0
+# 手工测试 → “这个版本好像有问题？”
+```
+
+### PASS: 可脚本化复现
+
+```bash
+git bisect start HEAD v1.0
+git bisect run ./reproduce.sh  # 自动定位
+```

@@ -56,7 +56,37 @@ journalctl -b -p err..alert --no-pager | tail -n 80
 
 ## 反模式
 
-- 不要把 `top` 的一帧截图当成完整诊断。
-- 不要在诊断阶段偷偷执行清理、重启、安装包或改 sysctl。
-- 不要只有命令清单，没有结论和下一步建议。
-- 不要忽略 `journalctl` 与 `systemctl --failed` 这两个最便宜的高价值证据源。
+### FAIL: 诊断时偷偷改系统
+
+```bash
+# 用户："看下系统慢的原因"
+systemctl restart nginx     # 自己重启了
+apt autoremove              # 顺手清理
+sysctl -w vm.swappiness=10  # 调参数
+# 原问题复现不了
+```
+
+### PASS: 只读采样
+
+```bash
+uptime; free -h
+ps --sort=-%cpu | head
+journalctl -p err..alert --no-pager | tail -80
+systemctl --failed --no-pager
+```
+
+### FAIL: 只有命令清单无结论
+
+```
+跑了 uptime / free / df / top
+→ 粘贴 500 行 output → 用户："所以呢？"
+```
+
+### PASS: 采样 + 结论 + 下一步
+
+```
+指标：load 12.5（应<4）、mem 93%
+Top CPU：postgres PID 2341（85% 持续 5 分钟）
+结论：CPU 压力来自 PG 慢查询
+下一步：切 log-analyzer 查 PG 慢查询日志
+```

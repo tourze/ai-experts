@@ -63,11 +63,41 @@ function CardSkeleton() {
 
 ## 反模式
 
-- 动效只为“显得高级”，却不传递任何状态。
-- 在列表、表格、表单里同时堆叠大量淡入、缩放、弹跳。
+### FAIL: 按钮无即时反馈
+
+```tsx
+<button onClick={submit}>提交</button>
+// 用户点完没变化，继续狂点
+```
+
+### PASS: 反馈 + 锁定
+
+```tsx
+<button onClick={submit} disabled={pending} className=”transition active:scale-95”>
+  {pending ? <Spinner /> : “提交”}
+</button>
+```
+
+### FAIL: 到处都在动
+
+```tsx
+{items.map(i =>
+  <motion.li animate={{ y: 0, opacity: 1 }} initial={{ y: 20, opacity: 0 }}>
+    {i.title}
+  </motion.li>
+)}
+// 100 个列表项同时淡入 → 主线程卡 200ms
+```
+
+### PASS: 动效克制
+
+```tsx
+// 列表项不动，只给新加入的行 enter 动画
+{items.map(i => <li key={i.id}>{i.title}</li>)}
+```
+
+- 动效只为”显得高级”，却不传递任何状态。
 - 用 motion 掩盖信息架构问题。
-- 忽略 `prefers-reduced-motion`。
-- 按钮点击后没有即时反馈，只让用户猜有没有触发。
 
 ## 参考资料
 

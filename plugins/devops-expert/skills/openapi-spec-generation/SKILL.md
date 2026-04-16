@@ -57,7 +57,44 @@ components:
 - 如果 API 生成流程嵌入 CI，参阅 [create-github-action-workflow-specification](../create-github-action-workflow-specification/SKILL.md)。
 
 ## 反模式
-- 把实现细节和运行命令写进契约规范。
-- 只有 200 响应，没有 4xx/5xx 错误模型。
-- 同一个字段在多个路径下重复定义、互相漂移。
-- 使用 OpenAPI 3.1，却继续沿用与 JSON Schema 不兼容的旧写法而不校验。
+
+### FAIL: 只写 200 无错误模型
+
+```yaml
+responses:
+  "200":
+    description: 创建成功
+# 客户端不知道 4xx/5xx 长什么样
+```
+
+### PASS: 覆盖错误模型
+
+```yaml
+responses:
+  "201": { description: 创建成功 }
+  "400": { $ref: '#/components/responses/ValidationError' }
+  "409": { $ref: '#/components/responses/Conflict' }
+```
+
+### FAIL: 字段重复定义漂移
+
+```yaml
+# /users/{id} GET：id 是 string
+# /users POST：id 是 integer
+# → 客户端代码生成崩溃
+```
+
+### PASS: 共享 schema 组件
+
+```yaml
+components:
+  schemas:
+    User:
+      type: object
+      required: [id, email]
+      properties:
+        id:    { type: string, format: uuid }
+        email: { type: string, format: email }
+
+# 所有路径复用 $ref: '#/components/schemas/User'
+```

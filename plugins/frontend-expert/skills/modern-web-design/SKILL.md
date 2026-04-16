@@ -62,11 +62,43 @@ python3 ./scripts/design_audit.py --file ./index.html
 
 ## 反模式
 
-- 所有设计决策都交给“默认值”。
-- 页面每一屏都想成为主视觉，导致信息密度失控。
-- 只会复制 Dribbble 风格，不关心真实内容与业务目标。
-- 使用高频动画、视频背景和重型视觉效果，却不做性能预算。
-- 把“现代”理解成更多毛玻璃、更多渐变、更多阴影。
+### FAIL: AI 套版感
+
+```tsx
+<div className=”bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-xl”>
+  <h1>最好的 SaaS 解决方案</h1>
+  <p>致力于为企业提供智能化的效率提升</p>
+</div>
+// 紫粉渐变 + 均匀圆角 + 空洞口号 → AI 生成感
+```
+
+### PASS: 有方向的视觉
+
+```tsx
+<section style={{ fontFamily: 'Fraunces, serif', backgroundColor: '#f7f3eb' }}>
+  <h1 className=”text-[clamp(3rem,7vw,6rem)] leading-[0.92]”>
+    销售每周省 6 小时
+  </h1>
+  <p>自动化报表 · 真实客户数据</p>
+</section>
+```
+
+### FAIL: 重型视觉无预算
+
+```tsx
+<VideoBackground src=”/hero-4k.mp4” autoPlay loop />
+<ParallaxSection />
+// LCP 1.5s → 6s，移动端卡死
+```
+
+### PASS: 配性能预算
+
+```
+预算：LCP < 2.5s，JS < 300KB
+- hero 用渐变+静态图
+- 滚动动效用 IntersectionObserver + CSS
+- 重型效果仅桌面 + prefers-reduced-motion 降级
+```
 
 ## 参考资料
 

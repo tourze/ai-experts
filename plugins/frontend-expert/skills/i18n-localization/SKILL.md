@@ -58,11 +58,48 @@ python3 ./scripts/i18n_checker.py /path/to/project
 
 ## 反模式
 
-- 在 JSX 或模板里直接写整句自然语言。
-- 通过字符串拼接构造句子。
-- 把业务键命名成当前语言文案本身。
-- 忽略阿拉伯语、希伯来语等 RTL 情况。
-- 只翻译默认页面，不翻错误态、空态、邮件和通知。
+### FAIL: 字符串拼接造句
+
+```tsx
+<p>{t("cart.youHave")} {count} {t("cart.items")}</p>
+// 英文勉强可用，阿拉伯语语序反、俄语词形变化 → 全错
+```
+
+### PASS: 句子级 + ICU plural
+
+```tsx
+<p>{t("cart.itemCount", { count })}</p>
+
+// zh-CN: "itemCount": "{count, plural, =0 {购物车为空} other {# 件商品}}"
+// ar:    "itemCount": "{count, plural, =0 {السلة فارغة} one {# عنصر} other {# عناصر}}"
+```
+
+### FAIL: 业务键是语言文案
+
+```json
+{ "click_here_to_submit": "点击这里提交" }
+// 改文案 = 改键，跨语言查找困难
+```
+
+### PASS: 语义键
+
+```json
+{ "form.submit": "点击这里提交" }
+```
+
+### FAIL: 只翻默认页面
+
+```
+登录页：已翻译
+404/支付失败邮件：仍是英文
+→ 用户在非母语错误信息中迷路
+```
+
+### PASS: 全覆盖翻译矩阵
+
+```
+页面 + 错误态 + 空态 + toast + 邮件模板 + 推送通知
+```
 
 ## 参考资料
 

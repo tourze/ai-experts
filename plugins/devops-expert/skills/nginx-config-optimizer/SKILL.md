@@ -61,7 +61,53 @@ systemctl reload nginx
 - 如果要补充告警与指标，参阅 [monitoring-observability](../monitoring-observability/SKILL.md)。
 
 ## 反模式
-- 把所有站点都套同一份 CSP 或缓存策略。
-- 忽略 `X-Forwarded-*` 头，导致后端拿不到真实请求信息。
-- 用无限超时掩盖后端慢请求。
-- 未经验证就 reload 配置。
+
+### FAIL: 反代不传 X-Forwarded-*
+
+```nginx
+location / {
+    proxy_pass http://backend;
+    # 忘记 X-Forwarded-For / -Proto
+}
+```
+
+→ 后端所有请求 IP 都是 Nginx 本身，HTTPS 识别失败。
+
+### PASS: 完整回源头
+
+```nginx
+location / {
+    proxy_pass http://backend;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+```
+
+### FAIL: 无限超时掩盖慢后端
+
+```nginx
+proxy_read_timeout 3600s;  # 慢请求堆积 → 连接池耗尽
+```
+
+### PASS: 显式超时 + 熔断
+
+```nginx
+proxy_connect_timeout 5s;
+proxy_read_timeout 60s;
+# 上游 max_fails=3 fail_timeout=30s 自动摘除
+```
+
+### FAIL: 未 -t 直接 reload
+
+```bash
+vim /etc/nginx/nginx.conf
+systemctl reload nginx  # 语法错误 → 502
+```
+
+### PASS: 验证后 reload
+
+```bash
+nginx -t && systemctl reload nginx
+```

@@ -56,7 +56,47 @@ traceroute -n "$target_host" 2>/dev/null || tracepath "$target_host"
 
 ## 反模式
 
-- 不要网关都 ping 不通时还继续分析 TLS 或应用协议。
-- 不要把 `Connection refused` 与 `timeout` 混为一谈，它们指向的层级不同。
-- 不要在未确认前提下修改 `iptables`、`nftables`、`firewalld` 或 DNS 配置。
-- 不要只跑一次 `ping` 就对间歇问题下结论。
+### FAIL: 跳层诊断
+
+```
+"HTTPS 握手失败" → 直接 openssl 分析 TLS
+→ 实际：ping 网关都不通
+```
+
+### PASS: 分层递进
+
+```
+1. ip -br addr → 接口 UP
+2. ip route    → 默认路由存在
+3. ping 网关   → 不通
+结论：L2/L3 问题，不必查 TLS
+```
+
+### FAIL: refused vs timeout 不分
+
+```
+"端口连不上" → 防火墙问题
+→ 实际：refused = 服务没监听；timeout = 防火墙/丢包
+```
+
+### PASS: 按症状定位
+
+```
+Connection refused → ss -tulpen 查监听
+timeout            → 查防火墙/路由
+no route to host   → ip route
+```
+
+### FAIL: 单次 ping 判断间歇问题
+
+```
+ping -c 3 example.com  # 全通 → "网络正常"
+→ 用户报的是"每 30 分钟抖一次"
+```
+
+### PASS: 长时采样
+
+```bash
+mtr --report --report-cycles 300 example.com
+# 或 ping 跑 10 分钟统计丢包分布
+```

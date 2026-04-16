@@ -71,8 +71,66 @@ end
 
 ## 反模式
 
-- 用 `allow_any_instance_of` 或深层 stub 掩盖设计问题，让测试和实现一起变脆。
-- 把多个场景塞进一个 example，失败后无法定位到底是哪条行为回归。
-- request spec 只断言 `200 OK`，却不验证数据库副作用和错误响应体。
-- factory 默认创建大量关联对象，让每个测试都慢且难读。
-- 在测试里遗留 `binding.pry`、`puts`、`pp` 等调试语句，破坏自动化稳定性。
+### FAIL: allow_any_instance_of 掩盖设计
+
+```ruby
+it "creates user" do
+  allow_any_instance_of(User).to receive(:save).and_return(true)
+  allow_any_instance_of(AuditLog).to receive(:log).and_return(nil)
+  service.call(params)
+  # 测试通过，未验证真实行为
+end
+```
+
+### PASS: 隔离外部边界 + 真实对象
+
+```ruby
+it "creates user and audit log" do
+  expect { service.call(params) }.to change(User, :count).by(1)
+    .and change(AuditLog, :count).by(1)
+end
+```
+
+### FAIL: request spec 只断言 200
+
+```ruby
+it "creates user" do
+  post "/users", params: { email: "a@b.com" }
+  expect(response).to have_http_status(200)
+  # 未验证真创建、响应体正确
+end
+```
+
+### PASS: 状态码 + 响应体 + 副作用
+
+```ruby
+it "creates user" do
+  expect { post "/users", params: { user: { email: "a@b.com" } } }
+    .to change(User, :count).by(1)
+  expect(response).to have_http_status(:created)
+  expect(JSON.parse(response.body)).to include("email" => "a@b.com")
+end
+```
+
+### FAIL: factory 默认关联爆炸
+
+```ruby
+factory :user do
+  association :profile
+  association :company
+  after(:create) { |u| create_list(:post, 10, author: u) }
+end
+# 每个测试 10+ 记录，跑 3 分钟
+```
+
+### PASS: 最小化 + trait
+
+```ruby
+factory :user do
+  email { generate(:email) }
+end
+trait :with_posts do
+  after(:create) { |u| create_list(:post, 3, author: u) }
+end
+# 按需 create(:user, :with_posts)
+```
