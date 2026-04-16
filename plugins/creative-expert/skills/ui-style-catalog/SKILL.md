@@ -82,11 +82,39 @@ description: 当用户要按 UI 风格名称（Glassmorphism、Neubrutalism、Be
 
 ## 反模式
 
-- 抄 1-2 个表面特征就声称"已经做成 X 风格"。
-- 一个页面同时有 Glass + Neumorphism + Brutalism，三风格打架。
-- 风格选对了但忽略"反适用"——例如银行做 Cyberpunk。
-- 给 AI 生图时 prompt 关键词自创，结果图风不稳定。
-- 把风格当装饰套用，没改字体/间距/圆角 token。
+### FAIL: 三风格混搭
+
+```css
+/* 同一页面 */
+.glass-card { backdrop-filter: blur(10px); }
+.neu-button { box-shadow: inset 5px 5px 10px #000; }
+.brutalist-section { border: 4px solid black; transform: rotate(-1deg); }
+/* 三种语言互相打架 / "AI 套版"嫌疑 */
+```
+
+### PASS: 一页一风格
+
+```
+全局风格：Bento + 微 Glass 强调
+- 主体：Bento 网格 / 圆角 / 浅阴影
+- 强调元素：Glass 玻璃浮层（仅 1-2 处）
+不混入：Neumorphism / Brutalism / Cyberpunk
+```
+
+### FAIL: 银行 + Cyberpunk
+
+```
+金融产品 → 用霓虹色 / 故障文字 / 深色网格
+→ 用户："这看起来像不靠谱网站，我不会把钱放这里"
+```
+
+### PASS: 行业 → 风格反查
+
+```
+banking → 反适用：Cyberpunk / Neubrutalism / Y2K
+banking → 推荐：Editorial / Skeuomorphism (轻) / Bento
+→ 先过反适用清单，再选风格
+```
 
 ## 参考资料
 

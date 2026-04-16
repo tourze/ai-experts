@@ -76,8 +76,41 @@ python3 scripts/render_to_image.py output.html output.svg --selector ".canvas"
 
 ## 反模式
 
-- 让脚本去导出一个交互式 dashboard。
-- 误以为任意 HTML/CSS 都能得到真正的矢量 SVG。
-- 在文档里承诺脚本根本没有实现的参数。
-- 使用外链资源，导致本地导出和最终显示不一致。
-- 为了做动画还坚持走静态图片链路。
+### FAIL: 外链资源
+
+```html
+<link href="https://fonts.googleapis.com/css?family=Inter">
+<img src="https://cdn.example.com/icon.svg">
+<!-- 本地预览正常 / 出图机器无网 → 字体失败 / 图片为空 -->
+```
+
+### PASS: 自包含
+
+```html
+<style>
+  @font-face { font-family: 'Inter'; src: url(data:font/woff2;base64,...); }
+</style>
+<svg><!-- 内联 SVG --></svg>
+<!-- 完全离线可渲染 -->
+```
+
+### FAIL: 任意 HTML 期望矢量 SVG
+
+```html
+<div class="canvas">
+  <div>多层嵌套 div + 复杂 CSS</div>
+</div>
+```
+```bash
+python3 scripts/render_to_image.py x.html out.svg
+# 自动回退 PNG / 用户疑惑为什么不是 SVG
+```
+
+### PASS: 单根 SVG
+
+```html
+<svg class="canvas" viewBox="0 0 1200 630">
+  <rect /> <text /> <path />
+</svg>
+<!-- 真正的矢量导出 -->
+```

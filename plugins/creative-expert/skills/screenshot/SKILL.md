@@ -58,7 +58,35 @@ powershell -ExecutionPolicy Bypass -File scripts/take_screenshot.ps1 -Region 100
 
 ## 反模式
 
-- 在 Linux 上使用 `--app` 或 `--window-name`。
-- 没做 macOS 权限预检查就直接抓窗口，结果反复弹权限问题。
-- 本来只是代理临时自检，却把截图写进项目目录污染工作区。
-- 同时传 `--region` 和 `--window-id` 这类互斥参数。
+### FAIL: 不预检查 macOS 权限
+
+```bash
+python3 scripts/take_screenshot.py --app "Codex"
+# 弹"未授权 Screen Recording"
+# 用户授权 → 重跑 → 仍弹（macOS 缓存问题）
+# 反复 5 次
+```
+
+### PASS: 先 ensure_permissions
+
+```bash
+bash scripts/ensure_macos_permissions.sh
+# 一次性处理权限链 → 后续命令稳定
+python3 scripts/take_screenshot.py --app "Codex"
+```
+
+### FAIL: 临时截图污染项目
+
+```bash
+# 代理自检
+python3 scripts/take_screenshot.py --path ./debug.png
+git status  # ./debug.png 进了暂存区
+# 不小心 commit / push
+```
+
+### PASS: 临时模式
+
+```bash
+python3 scripts/take_screenshot.py --mode temp
+# 输出到 /tmp/xxx.png，不污染项目
+```

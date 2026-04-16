@@ -60,7 +60,40 @@ java -jar plantuml.jar -utxt login.puml
 
 ## 反模式
 
-- 拿一张超复杂部署图硬转 ASCII。
-- 在图里塞整句说明文字，导致边框和箭头错位。
-- 明明需要图片，还坚持用文本图凑合。
-- 只保留导出结果，不保留源 `.puml`。
+### FAIL: 复杂部署图硬转
+
+```plantuml
+@startuml
+node "AWS" {
+  cloud "VPC" { ... 50 个节点交叉 }
+}
+@enduml
+```
+```bash
+plantuml -utxt deploy.puml
+# ASCII 输出 200 行 / 箭头错位 / 不可读
+```
+
+### PASS: 拆图 / 选图种
+
+```
+复杂部署：用 PNG/SVG（concept-to-image）
+ASCII 适合：≤ 10 节点的序列图 / 简单流程
+```
+
+### FAIL: 长标签破坏对齐
+
+```plantuml
+participant "用户登录前先验证邮箱格式和强度" as User
+User -> System : 提交注册表单包含完整信息
+```
+
+### PASS: 短标签
+
+```plantuml
+participant User
+participant Auth
+User -> Auth : register(email, pwd)
+Auth --> User : ok
+note right: 详细规则见 doc/auth.md
+```

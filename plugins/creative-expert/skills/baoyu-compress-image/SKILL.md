@@ -66,8 +66,35 @@ npx -y tsx scripts/main.ts ./imgs --recursive --quality 72 --json
 
 ## 反模式
 
-- 目录批处理时还期待 `--output` 生效。
-- 以为默认会保留原图，结果误删源文件。
-- 把 `quality` 设成负数或超过 `100`。
-- 假定 `sharp` 一定安装好了，却没有准备任意系统压缩后端。
-- 把“压缩图片”和“重新设计图片”混成一件事。
+### FAIL: 误删源文件
+
+```bash
+npx -y tsx scripts/main.ts ./imgs --recursive --quality 70
+# 默认 --keep=false → 100 张原图被删
+# 用户：”我的原图呢？”
+```
+
+### PASS: --keep 显式
+
+```bash
+npx -y tsx scripts/main.ts ./imgs --recursive --quality 70 --keep
+# 或：先备份 → cp -r ./imgs ./imgs.bak → 再压
+```
+
+### FAIL: 批处理传 --output
+
+```bash
+npx -y tsx scripts/main.ts ./imgs --output ./out --recursive
+# Error: --output 仅支持单文件
+# 用户困惑
+```
+
+### PASS: 单/批分清
+
+```bash
+# 单文件：可改名
+npx -y tsx scripts/main.ts photo.png --output thumbnail.webp --quality 70
+
+# 批处理：原地改后缀
+npx -y tsx scripts/main.ts ./imgs --recursive --quality 70 --keep
+```

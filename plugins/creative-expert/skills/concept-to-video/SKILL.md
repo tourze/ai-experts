@@ -70,8 +70,41 @@ python3 scripts/add_audio.py final.mp4 voiceover.mp3 \
 
 ## 反模式
 
-- 明明只是做静态信息图，却强行走视频链路。
-- 还没预览就直接高质量渲染。
-- 继续承诺不存在或不成立的 `png` 成片导出。
-- 屏幕上堆大段文字，靠字幕代替动画表达。
-- 让所有元素同时出现，没有节奏、没有层级。
+### FAIL: 跳过 low 直接 high
+
+```bash
+python3 scripts/render_video.py scene.py --quality high
+# 30 分钟渲染 → 发现节奏问题 → 重渲 30 分钟
+```
+
+### PASS: low → 检查 → high
+
+```bash
+# 1. low 预览（30 秒）
+python3 scripts/render_video.py scene.py --quality low
+# 2. 看效果，调节奏 / 元素位置
+# 3. 再 high 渲染（30 分钟一次过）
+```
+
+### FAIL: 字幕代替动画
+
+```python
+class Scene1(Scene):
+    def construct(self):
+        self.add(Text("第一步：检查输入。第二步：处理。第三步：输出。", font_size=24))
+        self.wait(5)
+# 屏幕上一大段字 / 没有动画 / 视频形式无意义
+```
+
+### PASS: 节奏 + 层级
+
+```python
+class Scene1(Scene):
+    def construct(self):
+        step1 = Text("检查输入", font_size=48).to_edge(UP)
+        self.play(Write(step1))
+        diagram = create_input_diagram()
+        self.play(FadeIn(diagram))
+        self.wait(1)
+        # 元素逐个出现，每步 1-2 秒
+```
