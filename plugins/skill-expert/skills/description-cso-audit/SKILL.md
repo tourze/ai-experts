@@ -64,3 +64,33 @@ python3 <SKILL_DIR>/scripts/cso_audit.py [--plugins-dir <path>] [--fix-preview] 
 - Critical violations（workflow_leak + output_leak）: 0
 
 改写示例见 `references/rewrite-examples.md`。
+
+## 反模式
+
+### FAIL: description 含工作流
+
+```yaml
+description: "审查 PR 时按 7 步执行：先扫安全，再看测试覆盖，再看命名，
+然后输出 P0/P1/P2 风险表，最后给修复建议。"
+```
+→ Claude 把 description 当摘要，按这 7 步走捷径，跳过 SKILL.md 详细流程。
+
+### PASS: description 只写触发条件
+
+```yaml
+description: "当用户要求审查 PR、合并前检查代码或评估上线风险时使用；
+英文触发词包括 review PR / pre-merge check / gate review。"
+```
+→ 触发即加载完整 SKILL.md，详细流程不被跳过。
+
+### FAIL: 含具体数字 / 工具名
+
+```yaml
+description: "覆盖 106 条规则，使用 Ruff + pytest + mypy 做 7 个维度检查"
+```
+
+### PASS: 触发场景驱动
+
+```yaml
+description: "当用户审查 Python 代码质量、检查 lint 警告或评估测试覆盖时使用"
+```

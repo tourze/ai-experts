@@ -51,3 +51,34 @@ python3 scripts/curate_skills.py sync-readme --repo-root . --check
 - 只更新 `README.md` 中 `## Skill 清单` 到 `## 数据来源` 之间的区块。
 - 现有表格里的摘要优先保留；新增 skill 才从 `description` 自动生成摘要。
 - 不要手工改技能数量统计，统一交给 `sync-readme` 子命令。
+
+## 反模式
+
+### FAIL: 模糊相似度批量删
+
+```
+"看 description 似乎重复" → 不审计直接 prune
+→ 误删父-子专项关系 / 误删触发边界已分清的近似 skill
+```
+
+### PASS: 先 audit 再点名删
+
+```bash
+python3 scripts/curate_skills.py audit  # 看证据
+# 用户确认要删的 skill 列表
+python3 scripts/curate_skills.py prune --skills A B C --yes
+```
+
+### FAIL: 手动改 README 表格
+
+```
+删了 5 个 skill → 手动维护 README "## Skill 清单"
+→ 次月再删 3 个 → 漏改 → 漂移
+```
+
+### PASS: sync-readme 子命令
+
+```bash
+python3 scripts/curate_skills.py sync-readme --write
+python3 scripts/curate_skills.py sync-readme --check  # CI 校验
+```

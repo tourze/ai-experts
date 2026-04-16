@@ -140,3 +140,17 @@ I can still help you with this task directly! Would you like me to proceed?
 If this is something you do often, you could create your own skill:
 npx skills init my-xyz-skill
 ```
+
+## Anti-Patterns
+
+### FAIL: Recommend by search alone
+First result with 5 installs → "try this!" → low quality / breaks.
+
+### PASS: Verify count + source
+Require ≥ 1K installs, prefer official sources (vercel-labs, anthropics).
+
+### FAIL: Silent on no-match
+Just say "no skill found" → user stuck.
+
+### PASS: Fallback + suggest init
+Offer general-capability help + `npx skills init` for recurring tasks.
