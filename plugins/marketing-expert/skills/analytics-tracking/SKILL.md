@@ -44,6 +44,38 @@ python3 scripts/tracking_plan_generator.py input.json --json
 - 是否避免了同义事件并存，例如 `signup_complete` 与 `signup_completed`。
 
 ## 反模式
-- 把“看起来重要”的一切都埋成事件，最后没人能用。
-- 把广告分析问题误判为埋点问题，或反之。
-- 只给事件名，不给参数、触发器和验证方式。
+
+### FAIL: 全埋
+
+```
+“先把所有按钮点击都埋进 GA4，以后再说”
+→ 200 个事件 / 无 owner / 命名混乱
+→ 6 个月后没人知道哪个事件是真业务转化
+```
+
+### PASS: 业务漏斗驱动
+
+```
+1. 主转化：signup_completed（必埋）
+2. 微转化：pricing_viewed, demo_requested
+3. 用户属性：plan_tier, account_age_days
+→ 每个事件都对应一个分析问题
+→ ≤ 30 个核心事件，可维护
+```
+
+### FAIL: 同义事件并存
+
+```
+- signup_complete（旧版埋的）
+- signup_completed（新版改名）
+- user_signup（A/B 实验时另埋）
+→ Looker 报表合不到一起
+```
+
+### PASS: 命名 taxonomy + 迁移
+
+```
+统一规则：{object}_{action_past_tense}
+标准：signup_completed
+旧事件：标 deprecated → 等 90 天数据 backfill → 移除
+```

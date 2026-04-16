@@ -44,6 +44,38 @@ python3 scripts/funnel_analyzer.py assets/sample_campaign_data.json --format jso
 - 是否指出哪些结论依赖埋点准确性。
 
 ## 反模式
-- 用单一 ROAS 指标替代整个投放判断。
-- 忽略时间窗和归因模型差异，直接比较不同报表。
-- 看到漏斗下降就默认是页面问题，不查流量质量与埋点。
+
+### FAIL: 单一 ROAS
+
+```
+"Meta ROAS 3.2，Google ROAS 2.8 → 加大 Meta 预算"
+→ Meta 是 last-touch 归因，多数转化已被 SEO 预热
+→ 砍 Google 后 Meta ROAS 也跌到 1.5
+```
+
+### PASS: 多模型 + 全漏斗
+
+```
+| 渠道 | First-touch ROAS | Last-touch ROAS | 漏斗位置 | 建议 |
+| Meta | 0.8 | 3.2 | 收割 | 维持 |
+| Google Search | 1.2 | 2.8 | 收割 | 维持 |
+| SEO/内容 | 4.5 | 0.3 | 引流 | 加大 |
+| Display | 0.4 | 0.5 | 暂停 | 砍 |
+```
+
+### FAIL: 不同口径混比
+
+```
+"GA4 显示转化 100 / Meta Ads 显示转化 80 → Meta 漏 20"
+→ GA4 7-day window vs Meta 28-day → 口径不同
+→ 错误归因排查方向
+```
+
+### PASS: 口径对齐
+
+```
+统一：30 天 click + 1 天 view
+统一：转化定义 = paid signup（不是注册）
+统一：去重规则
+→ 跨平台 reconcile 报表，差异 < 5% 才有意义
+```

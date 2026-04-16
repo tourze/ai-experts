@@ -38,6 +38,59 @@ L2: /product/analytics /blog/revenue-ops /docs/getting-started
 - 是否考虑旧 URL 迁移与重定向影响。
 
 ## 反模式
-- 只画 sitemap，不解释每一层服务什么目标。
-- 页面层级过深，关键入口要点四五次才能到。
-- 用导航去承载一切，导致首层信息过载。
+
+### FAIL: 只画 sitemap
+
+```
+[一张漂亮 mermaid sitemap]
+→ "为什么 /pricing 在第二级？" → 答不上
+→ "/blog 下分类规则是什么？" → 答不上
+```
+
+### PASS: 每层有目标
+
+```md
+L0 /：3 秒说服访客继续
+L1 /pricing：转化（购买决策）
+L1 /docs：减少售前疑问 + 留住已购用户
+L1 /blog：SEO 引流 + 教育
+L2 /pricing/enterprise：高客单专属，独立设计
+L2 /blog/{category}：SEO 长尾汇聚
+
+每层服务一个明确动作
+```
+
+### FAIL: 关键入口埋深
+
+```
+首页 → 产品 → 行业 → 子行业 → 案例 → 立即试用
+共 5 次点击才能注册
+→ 80% 用户中途流失
+```
+
+### PASS: ≤ 3 步主路径
+
+```
+首页 → 注册（1 步，CTA 全屏可见）
+首页 → 定价 → 注册（2 步）
+首页 → 案例 → 注册（2 步）
+任何关键转化路径不超过 3 步
+```
+
+### FAIL: 导航过载
+
+```
+顶部导航：Home / Product / Solutions / Industries /
+Pricing / Customers / Resources / Blog / Docs / Company / About /
+Careers / Contact / Login / Sign Up
+→ 14 项 → 移动端崩 / 用户找不到东西
+```
+
+### PASS: 5-7 项 + 二级菜单
+
+```
+顶部：Product | Solutions | Pricing | Customers | Resources | [Login][Sign Up]
+- Product 鼠标悬停 → 分类列表
+- Resources → Blog / Docs / Help
+- Company / Careers / Contact 移到 Footer
+```
