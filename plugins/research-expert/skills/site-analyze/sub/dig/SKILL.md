@@ -1,6 +1,6 @@
 ---
 name: site-analyze/dig
-description: 只需要查看域名的国内外 DNS 解析差异、A/AAAA/CNAME 记录和 GeoDNS/CDN 迹象时使用。
+description: 当只需要查看域名的国内外 DNS 解析差异、A/AAAA/CNAME 记录和 GeoDNS/CDN 迹象时使用。
 ---
 
 # DNS 解析

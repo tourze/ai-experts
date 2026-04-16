@@ -1,6 +1,6 @@
 ---
 name: app-store-changelog
-description: 基于 git tag 或指定提交范围提取用户可感知改动，并生成 App Store「新内容」发布说明。适用于发布说明、版本更新文案和门店更新摘要。
+description: 当用户要写 App Store 发布说明、版本更新文案或门店更新摘要时使用。
 ---
 
 # App Store 发布说明

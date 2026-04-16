@@ -1,6 +1,6 @@
 ---
 name: pgsql-row-level-security
-description: "实现 PostgreSQL 行级安全策略、多租户隔离与角色权限管理，适用于共享表的数据边界控制"
+description: "当用户要实现或审查 PostgreSQL 行级安全策略、多租户隔离或角色权限管理时使用。适用于共享表的数据边界控制。"
 ---
 
 # PostgreSQL Row-Level Security

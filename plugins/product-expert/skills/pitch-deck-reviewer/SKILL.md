@@ -1,6 +1,6 @@
 ---
 name: pitch-deck-reviewer
-description: 当用户要审查 VC 路演 Deck、重构融资叙事、检查单页逻辑或判断投资人信服度时使用；输出逐页问题、叙事断点和修改建议。
+description: 当用户要审查 VC 路演 Deck、重构融资叙事、检查单页逻辑或判断投资人信服度时使用。
 ---
 
 # 路演 Deck 审查

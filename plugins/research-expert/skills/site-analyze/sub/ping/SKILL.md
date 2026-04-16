@@ -1,6 +1,6 @@
 ---
 name: site-analyze/ping
-description: 只需要测目标主机的 ICMP 与 TCP 时延、丢包率和端口连通性时使用。
+description: 当只需要测目标主机的 ICMP 与 TCP 时延、丢包率和端口连通性时使用。
 ---
 
 # 延迟探测

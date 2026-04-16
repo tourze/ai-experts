@@ -1,6 +1,6 @@
 ---
 name: mysql-index-strategy
-description: "设计和审查 MySQL 索引布局、复合索引顺序、覆盖索引与 EXPLAIN 解读，适用于查询路径优化"
+description: "当用户要设计、审查或优化 MySQL 索引布局、复合索引顺序、覆盖索引或解读 EXPLAIN 时使用。"
 ---
 
 # MySQL Index Strategy

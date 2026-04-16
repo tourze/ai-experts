@@ -1,6 +1,6 @@
 ---
 name: swiftui-view-refactor
-description: 统一 SwiftUI 视图文件的结构、依赖注入与 Observation 用法，适用于清理视图顺序、拆分大视图和收敛可选 view model。
+description: 当用户要清理 SwiftUI 视图结构、拆分大视图或收敛依赖注入与 Observation 用法时使用。
 ---
 
 # SwiftUI 视图重构

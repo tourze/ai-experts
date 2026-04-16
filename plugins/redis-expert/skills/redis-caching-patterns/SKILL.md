@@ -1,6 +1,6 @@
 ---
 name: redis-caching-patterns
-description: "实现 Redis 缓存旁路、写穿、缓存雪崩与穿透防护，适用于数据库前缓存与热点保护"
+description: "当用户要实现或排查 Redis 缓存旁路、写穿、缓存雪崩或穿透防护时使用。适用于数据库前缓存与热点保护。"
 ---
 
 # Redis Caching Patterns

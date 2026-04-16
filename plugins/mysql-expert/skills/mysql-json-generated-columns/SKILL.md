@@ -1,6 +1,6 @@
 ---
 name: mysql-json-generated-columns
-description: "在 MySQL 中正确使用 JSON 列、虚拟列与存储生成列，适用于稀疏属性建模与索引化"
+description: "当用户要在 MySQL 中使用 JSON 列、虚拟列或存储生成列做稀疏属性建模与索引化时使用。"
 ---
 
 # MySQL JSON & Generated Columns

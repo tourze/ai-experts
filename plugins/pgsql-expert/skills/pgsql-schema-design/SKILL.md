@@ -1,6 +1,6 @@
 ---
 name: pgsql-schema-design
-description: "设计和审查 PostgreSQL 表结构、原生类型、约束与命名规范，适用于利用 PG 特性的业务建模"
+description: "当用户要设计或审查 PostgreSQL 表结构、原生类型、约束或命名规范时使用。"
 ---
 
 # PostgreSQL Schema Design

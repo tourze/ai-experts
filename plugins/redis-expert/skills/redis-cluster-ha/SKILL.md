@@ -1,6 +1,6 @@
 ---
 name: redis-cluster-ha
-description: "部署和运维 Redis Sentinel、Cluster 与持久化策略，适用于高可用架构与容量规划"
+description: "当用户要部署、运维或排查 Redis Sentinel、Cluster 或持久化策略时使用。适用于高可用架构与容量规划。"
 ---
 
 # Redis Cluster & High Availability

@@ -1,6 +1,6 @@
 ---
 name: mysql-transaction-locking
-description: "诊断和优化 MySQL InnoDB 事务隔离、行锁、间隙锁与死锁，适用于并发冲突排查"
+description: "当用户要诊断或优化 MySQL InnoDB 事务隔离、行锁、间隙锁或死锁时使用。适用于并发冲突排查。"
 ---
 
 # MySQL Transaction & Locking

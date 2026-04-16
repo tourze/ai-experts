@@ -1,6 +1,6 @@
 ---
 name: site-analyze/whois
-description: 只需要查询域名注册商、注册时间、到期时间、注册地或 IP 段归属信息时使用。
+description: 当只需要查询域名注册商、注册时间、到期时间、注册地或 IP 段归属信息时使用。
 ---
 
 # WHOIS 查询

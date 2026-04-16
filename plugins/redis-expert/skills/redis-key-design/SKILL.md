@@ -1,6 +1,6 @@
 ---
 name: redis-key-design
-description: "设计 Redis 键命名规范、命名空间、TTL 策略与生命周期管理，适用于多业务共享实例的键空间治理"
+description: "当用户要设计 Redis 键命名规范、命名空间、TTL 策略或生命周期管理时使用。适用于多业务共享实例的键空间治理。"
 ---
 
 # Redis Key Design

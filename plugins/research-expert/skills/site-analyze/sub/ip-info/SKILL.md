@@ -1,6 +1,6 @@
 ---
 name: site-analyze/ip-info
-description: 只需要查询一个或多个 IP 的国家、城市、运营商、组织和 ASN 时使用，支持自动跳过私网地址。
+description: 当只需要查询一个或多个 IP 的国家、城市、运营商、组织和 ASN 时使用，支持自动跳过私网地址。
 ---
 
 # IP 归属

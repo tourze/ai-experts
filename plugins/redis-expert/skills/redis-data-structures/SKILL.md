@@ -1,6 +1,6 @@
 ---
 name: redis-data-structures
-description: "按访问模式选择 Redis String、Hash、List、Set、ZSet、Stream 与 HyperLogLog，适用于数据建模决策"
+description: "当用户要为 Redis 选择合适的数据结构（String、Hash、List、Set、ZSet、Stream、HyperLogLog）时使用。"
 ---
 
 # Redis Data Structures

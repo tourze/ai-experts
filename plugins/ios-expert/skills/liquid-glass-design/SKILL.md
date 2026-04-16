@@ -1,6 +1,6 @@
 ---
 name: liquid-glass-design
-description: iOS 26 液态玻璃设计系统，适用于 SwiftUI、UIKit 与 WidgetKit 的玻璃材质、容器融合、交互反馈与变形过渡。
+description: 当用户要在 iOS 26 中使用液态玻璃设计系统时使用。适用于 SwiftUI、UIKit 与 WidgetKit 的玻璃材质、容器融合、交互反馈与变形过渡。
 ---
 
 # Liquid Glass 设计

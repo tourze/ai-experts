@@ -1,6 +1,6 @@
 ---
 name: site-analyze/traceroute
-description: 只需要分析 traceroute 路由路径、首个公网出口、跨境跳点或粘贴的 traceroute 文本时使用。
+description: 当只需要分析 traceroute 路由路径、首个公网出口、跨境跳点或粘贴的 traceroute 文本时使用。
 ---
 
 # 路由追踪

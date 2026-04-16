@@ -1,6 +1,6 @@
 ---
 name: sql-code-review
-description: 审查 SQL 的安全性、正确性、可维护性与运维风险，适用于查询、迁移、存储过程和 ORM 生成语句的评审
+description: 当用户要审查 SQL 查询、迁移脚本、存储过程或 ORM 生成语句的安全性、正确性与运维风险时使用。
 ---
 
 # SQL Code Review

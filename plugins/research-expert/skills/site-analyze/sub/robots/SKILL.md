@@ -1,6 +1,6 @@
 ---
 name: site-analyze/robots
-description: 只需要抓取并解析目标站点 robots.txt、判断各爬虫可访问范围和 Sitemap 时使用。
+description: 当只需要抓取并解析目标站点 robots.txt、判断各爬虫可访问范围和 Sitemap 时使用。
 ---
 
 # robots 策略

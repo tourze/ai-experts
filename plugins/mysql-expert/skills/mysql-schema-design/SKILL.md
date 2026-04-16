@@ -1,6 +1,6 @@
 ---
 name: mysql-schema-design
-description: "设计和审查 MySQL 8.x 表结构、列类型、字符集、引擎选择与主键策略，适用于 OLTP 业务建模"
+description: "当用户要设计或审查 MySQL 8.x 表结构、列类型、字符集、引擎选择或主键策略时使用。"
 ---
 
 # MySQL Schema Design

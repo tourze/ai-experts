@@ -1,6 +1,6 @@
 ---
 name: skills-prune-and-sync-readme
-description: 遍历当前仓库的 `skills/` 目录，依据证据定位低质量、重复或触发冲突的 skill，按明确名单删除目标目录，并重建 `README.md` 中的 Skill 清单。用户提到“清理 skills”“删除重复/低质量 skill”“治理 skill 冲突”“更新 README 的 skill 列表”时使用。
+description: 当用户提到”清理 skills””删除重复/低质量 skill””治理 skill 冲突””更新 README 的 skill 列表”时使用。
 ---
 
 # Skills Prune And Sync README

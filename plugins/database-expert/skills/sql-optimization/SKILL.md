@@ -1,6 +1,6 @@
 ---
 name: sql-optimization
-description: 优化 SQL 的访问路径、索引策略、分页和批处理表现，适用于慢查询分析、执行计划解读与容量增长场景
+description: 当用户要分析慢查询、解读执行计划、优化索引策略或改善分页与批处理性能时使用。
 ---
 
 # SQL Optimization

@@ -1,6 +1,6 @@
 ---
 name: pgsql-jsonb-patterns
-description: "在 PostgreSQL 中正确使用 JSONB 存储、查询、索引与验证，适用于稀疏属性和半结构化数据"
+description: "当用户要在 PostgreSQL 中使用 JSONB 存储、查询、索引或验证时使用。适用于稀疏属性和半结构化数据。"
 ---
 
 # PostgreSQL JSONB Patterns

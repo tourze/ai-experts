@@ -1,6 +1,6 @@
 ---
 name: mysql-replication-ops
-description: "配置和维护 MySQL 主从复制、GTID、半同步与故障切换，适用于读写分离与高可用运维"
+description: "当用户要配置或排查 MySQL 主从复制、GTID、半同步或故障切换时使用。适用于读写分离与高可用运维。"
 ---
 
 # MySQL Replication Operations

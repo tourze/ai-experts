@@ -1,6 +1,6 @@
 ---
 name: pgsql-index-strategy
-description: "设计和审查 PostgreSQL B-tree、GIN、GiST、部分索引与表达式索引，适用于查询路径覆盖"
+description: "当用户要设计或审查 PostgreSQL B-tree、GIN、GiST、部分索引或表达式索引时使用。"
 ---
 
 # PostgreSQL Index Strategy

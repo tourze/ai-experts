@@ -1,6 +1,6 @@
 ---
 name: github-deep-research
-description: 对单个 GitHub 仓库做多轮深度研究，结合 GitHub API、官方文档、技术文章与社区讨论生成带时间线、指标、对比与引用的报告。适用于“深挖这个仓库”“做演进时间线”“分析架构与竞争格局”等场景。
+description: 当用户要深挖单个 GitHub 仓库、做演进时间线或分析架构与竞争格局时使用。
 ---
 
 # GitHub 深度研究

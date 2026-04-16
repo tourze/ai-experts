@@ -1,6 +1,6 @@
 ---
 name: redis-distributed-lock
-description: "实现 Redis 分布式锁的获取、续期与安全释放，适用于跨进程互斥与资源竞争控制"
+description: "当用户要实现或排查 Redis 分布式锁时使用。适用于跨进程互斥与资源竞争控制。"
 ---
 
 # Redis Distributed Lock
