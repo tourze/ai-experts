@@ -59,8 +59,35 @@ Negative prompts: <15-25 个约束词>
 
 ## 反模式
 
-- 没有卡片结构就直接堆视觉关键词。
-- 一张图塞 300 字以上，导致小红书阅读压力过高。
-- Prompt 里只有风格，没有明确中文文本和版式约束。
-- API Key 未配置却假装已经生成完图片。
-- 图文主题偏离账号定位，只追“好看”不追“有效”。
+### FAIL: 一图 300 字
+
+```
+[图片：6 段长文 + 引用 + 标签 + 二维码]
+→ 用户两秒滑过 / 完读率 5%
+```
+
+### PASS: 一图一信息
+
+```
+封面：标题 + 一个数据点（≤ 20 字）
+P2：核心结论（≤ 50 字）
+P3-N：每页 1 个支撑点（≤ 80 字）
+→ 18 张卡可表达完整故事
+```
+
+### FAIL: Prompt 只写风格
+
+```
+“小红书风格图，简约清新，3:4”
+→ 生成图：精美但中文文本随机生成 / 排版无法预测
+```
+
+### PASS: Prompt 含 文本 + 版式 + 负向
+
+```
+3:4 vertical XHS card
+Style: warm minimal, beige #F5F0E8 bg
+Text Content (Chinese): “30 岁后省心穿搭法”
+Typography: Source Han Sans 72pt, top center, dark brown
+Negative: blurry text, watermark, English text, low contrast
+```

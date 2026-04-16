@@ -72,8 +72,34 @@ bash scripts/transcribe.sh ./audio.mp4 ./output models/ggml-small.bin zh
 
 ## 反模式
 
-- 把 `yt-dlp`、`aria2c` 403 失败链路当成默认方案。
-- 没拿到音频就直接承诺“已经完成转录”。
-- 将摘要写成营销话术，丢失原视频结构。
-- 生成大段逐字稿却不提炼重点，导致用户还得再清洗一遍。
-- 遇到工具缺失时静默失败，不给出缺少的命令或模型路径。
+### FAIL: yt-dlp 默认
+
+```bash
+yt-dlp 'https://v.douyin.com/xxx/'
+# 403 Forbidden / Cookie 失效 / 短时可用长时挂
+```
+
+### PASS: 浏览器拦截直链
+
+```bash
+# 1. 打开 v.douyin.com/xxx/ DevTools → Network → 筛 .mp4
+# 2. 复制音频请求 URL
+bash scripts/download_audio.sh “<audio_url>” ./audio.mp4
+```
+
+### FAIL: 大段逐字稿
+
+```
+[3000 字逐字稿]
+“以上就是视频内容”
+→ 用户还得自己清洗一遍
+```
+
+### PASS: 提炼结构
+
+```md
+📹 标题：xxx | 作者：yyy | 时长：3:42
+## 核心结论（3-5 条）
+## 关键细节（1-3 条带时间戳）
+## 一句话总结（30 字）
+```
