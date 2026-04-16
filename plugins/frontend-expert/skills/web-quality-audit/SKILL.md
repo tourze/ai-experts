@@ -60,9 +60,21 @@ bash ./scripts/analyze.sh ./index.html
 - 混淆真实用户问题和实验室假阳性。
 - 只给“应该更快/更无障碍”这类空泛建议。
 
+## 额外静态扫描：AI 设计指纹
+
+Lighthouse 不检测"AI 味"。补一步 [pbakaus/impeccable](https://github.com/pbakaus/impeccable) (Apache-2.0) 的 CLI 扫描，25 条规则覆盖 side-tab border、gradient text、AI color palette、nested cards、bounce easing 等模式：
+
+```bash
+npx impeccable detect src/            # 扫目录
+npx impeccable detect --json --fast . # 大项目快速模式
+```
+
+命中项标 **P0 阻塞**，禁止改颜色/宽度绕开——参考 [frontend-design-review/references/absolute-bans.md](../frontend-design-review/references/absolute-bans.md) 的正确重写方案。
+
 ## 参考资料
 
 - [core-web-vitals](../core-web-vitals/SKILL.md)
 - [web-design-guidelines](../web-design-guidelines/SKILL.md)
 - [frontend-design-review](../frontend-design-review/SKILL.md)
+- [frontend-design-review/references/absolute-bans.md](../frontend-design-review/references/absolute-bans.md) — AI 指纹 CSS 模式禁令
 - [scripts/analyze.sh](scripts/analyze.sh)

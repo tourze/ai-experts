@@ -59,11 +59,16 @@ acknowledgments: |
 - 用复杂动画掩盖信息组织问题。
 - 明明有设计系统却继续手写大量一次性样式。
 
+## Absolute Bans（CSS 模式级硬禁令）
+
+审查时有 10 条"AI 指纹"CSS 模式**必须直接 P0 阻塞**，不能改颜色或宽度绕开，要换结构重写——包括 `border-left/right ≥ 2px` 侧条、`background-clip: text` 渐变文字、紫蓝 AI 色盘、深色霓虹光晕、嵌套卡片、装饰 sparkline、全居中、modal 滥用等。详情和正确重写方案见 [references/absolute-bans.md](references/absolute-bans.md)。
+
 ## 参考资料
 
 - [refactoring-ui](../refactoring-ui/SKILL.md)
 - [responsive-design](../responsive-design/SKILL.md)
 - [web-design-guidelines](../web-design-guidelines/SKILL.md)
+- [references/absolute-bans.md](references/absolute-bans.md) — 10 条 CSS 模式级硬禁令
 - [references/review-output-format.md](references/review-output-format.md)
 - [references/review-type-modifiers.md](references/review-type-modifiers.md)
 - [references/quick-checklist.md](references/quick-checklist.md)
