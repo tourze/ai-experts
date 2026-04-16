@@ -1,9 +1,9 @@
 ---
-name: laravel-specialist
-description: 当用户提到 Laravel、Eloquent、Artisan、Sanctum、Horizon、Livewire、Pest 或 Laravel API 实现时使用。
+name: laravel-layering-patterns
+description: 当需要实现 Laravel 10+ 的 Model/Migration、FormRequest 校验、JsonResource 序列化、Controller 瘦身、异步 Job 编排或 Livewire 组件时使用。
 ---
 
-# Laravel 专项实现
+# Laravel 分层实现模式
 
 ## 适用场景
 

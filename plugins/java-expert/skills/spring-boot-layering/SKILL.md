@@ -1,9 +1,9 @@
 ---
-name: java-expert
-description: 当进行 Java 21+ 或 Spring Boot 3.x 开发、审查或重构时使用。
+name: spring-boot-layering
+description: 当需要设计或审查 Spring Boot 3.x 分层（Controller/Service/Repository）、DTO 与 Entity 隔离、事务边界或 `@RestControllerAdvice` 异常处理时使用。
 ---
 
-# Java Expert
+# Spring Boot 分层模式
 
 ## 适用场景
 

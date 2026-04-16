@@ -13,7 +13,7 @@ PHP 开发专家插件，覆盖 PHP 代码质量守卫、Composer/PHPStan/PHPUni
 
 | Skill | 用途 |
 |-------|------|
-| `php-pro` | PHP 8.3+ 语言特性：strict_types、readonly、枚举、match、交叉类型 |
+| `php-8x-features` | PHP 8.x 语言特性：readonly class、enum、match、交叉类型、DNF、Override |
 | `php-design-patterns` | 服务层、Repository、DTO、值对象、DI 纪律、控制器薄化 |
 | `php-error-handling` | 异常分层、输入校验边界、错误映射、批量部分失败 |
 | `php-type-safety` | PHPStan/Psalm 配置、array shapes、泛型、条件返回类型 |

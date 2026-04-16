@@ -11,7 +11,7 @@ description: 当用户需要开发或排障 Tokio 异步代码时使用；涉及
 - 排查 `future is not Send`、`spawn` 要求 `'static`、任务泄漏、取消不生效、超时缺失、锁跨 `await` 等问题。
 - 需要确定 channel、`JoinSet`、`Semaphore`、`CancellationToken`、`select!` 的使用边界时。
 - trait 需要异步方法，或者需要把同步代码安全地接到 async 边界上时。
-- 如果问题核心是借用/克隆、错误类型、文档或测试风格，而不是运行时行为，切到 [rust-pro](../rust-pro/SKILL.md)。
+- 如果问题核心是借用/克隆、错误类型、文档或测试风格，而不是运行时行为，切到 [rust-ownership-idioms](../rust-ownership-idioms/SKILL.md)。
 
 ## 核心约束
 
@@ -159,7 +159,6 @@ async fn run_with_timeout() -> Result<u64, JobError> {
 - channel 容量、关闭语义和消费者退出条件是否明确？
 - 是否存在取消信号发出后任务仍然卡住的路径？
 - 错误和超时是在入口边界统一处理，还是在每个内部 helper 里各自吞掉？
-- 如果排查点开始转向所有权、clone、错误类型或文档规范，回到 [rust-pro](../rust-pro/SKILL.md)。
 
 ## 反模式
 

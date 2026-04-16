@@ -9,7 +9,7 @@ description: 当要为 Perl 代码编写或审查测试时使用。
 
 - 为 Perl 模块补单元测试、集成测试或回归测试。
 - 验证 DBI 交互、文件操作、错误处理路径是否稳定。
-- 需要先收紧生产代码结构时，联动 [perl-expert](../perl-expert/SKILL.md)。
+- 需要先收紧生产代码结构时，联动 [perl-modern-style](../perl-modern-style/SKILL.md)。
 
 ## 核心约束
 

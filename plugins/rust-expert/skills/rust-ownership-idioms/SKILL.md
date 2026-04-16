@@ -1,9 +1,9 @@
 ---
-name: rust-pro
-description: 当用户编写或评审 Rust 代码，涉及借用/所有权/Clone/Copy、智能指针（Box/Rc/Arc）、Send/Sync、Clippy lint 或惯用迭代器模式时使用。
+name: rust-ownership-idioms
+description: 当需要决定 Rust 借用/所有权边界、选择 Box/Rc/Arc 智能指针、在静态分发与 `dyn Trait` 之间取舍、或配置 Clippy lint 基线时使用。
 ---
 
-# Rust 核心语言纪律
+# Rust 所有权与惯用法
 
 ## 适用场景
 

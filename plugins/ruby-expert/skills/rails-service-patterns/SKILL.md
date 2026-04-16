@@ -1,9 +1,9 @@
 ---
-name: ruby-expert
-description: 当进行 Ruby 3.x / Rails 7+ 开发、审查或重构时使用。
+name: rails-service-patterns
+description: 当需要设计 Rails 7+ service/command object、收紧 Active Record 查询与事务边界、或按 `bundle exec` 工作流规范 controller 职责时使用。
 ---
 
-# Ruby Expert
+# Rails Service 模式
 
 ## 适用场景
 

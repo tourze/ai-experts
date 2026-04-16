@@ -1,9 +1,9 @@
 ---
-name: perl-expert
-description: 当进行 Perl 5.36+ 开发、审查或重构时使用。
+name: perl-modern-style
+description: 当需要按 Perl 5.36+ 现代约定编写模块时使用，覆盖 `use v5.36`、Moo/Moose 对象、DBI 占位符、`cpanfile` + `carton` 依赖、`croak`/`die` + `try/catch` 错误处理。
 ---
 
-# Perl Expert
+# Perl 5.36+ 现代风格
 
 ## 适用场景
 

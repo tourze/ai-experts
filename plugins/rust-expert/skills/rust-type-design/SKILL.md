@@ -56,7 +56,7 @@ impl Document<Draft> {
 - 用了 `dyn Trait` 的地方，是否真的需要运行时多态？
 - trait 是否 object-safe？是否意外加了泛型方法？
 - 类型状态的阶段数是否可控（<5）？
-- 联动：[rust-pro](../rust-pro/SKILL.md) · [rust-performance](../rust-performance/SKILL.md)
+- 联动：[rust-ownership-idioms](../rust-ownership-idioms/SKILL.md) · [rust-performance](../rust-performance/SKILL.md)
 
 ## 反模式
 

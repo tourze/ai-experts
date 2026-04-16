@@ -37,7 +37,7 @@ description: 当用户要设计 Rust 错误类型、选择 thiserror 还是 anyh
 - 错误类型是否让调用方有机会恢复，还是被过早揉成字符串？
 - 库 crate 是否暴露了 `anyhow`？应该只在二进制入口出现。
 - `unwrap()` 是否都有合理理由或限制在测试中？
-- 联动：[rust-pro](../rust-pro/SKILL.md) · [rust-testing](../rust-testing/SKILL.md) · [rust-async-patterns](../rust-async-patterns/SKILL.md)
+- 联动：[rust-ownership-idioms](../rust-ownership-idioms/SKILL.md) · [rust-testing](../rust-testing/SKILL.md) · [rust-async-patterns](../rust-async-patterns/SKILL.md)
 
 ## 反模式
 

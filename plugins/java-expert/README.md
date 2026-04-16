@@ -6,7 +6,7 @@ Java 开发专家插件，覆盖 Java 21 / Spring Boot 3.x 开发规范、JUnit 
 
 | Skill | 用途 |
 |-------|------|
-| `java-expert` | Java 21+ 与 Spring Boot 全栈开发（REST API、JPA、微服务） |
+| `spring-boot-layering` | Spring Boot 3.x 分层（Controller/Service/Repository）+ DTO/事务/异常处理 |
 | `java-junit` | JUnit 5 单元测试最佳实践（含数据驱动测试） |
 | `arthas-cpu-high` | JVM/应用 CPU 飙高排查（线程定位 + 代码路径） |
 | `arthas-springcontext-issues-resolve` | Spring ApplicationContext/Bean 配置问题诊断 |

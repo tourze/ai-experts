@@ -13,7 +13,7 @@ Ruby 开发专家插件，覆盖 Ruby / Rails / RSpec / Bundler / Rake 工作流
 
 | Skill | 用途 |
 |-------|------|
-| `ruby-expert` | Ruby / Rails 业务代码组织、事务边界、Bundler / Rake 工作流 |
+| `rails-service-patterns` | Rails service/command object、Active Record 查询与事务、bundle exec 工作流 |
 | `rspec-testing` | RSpec service spec、request spec、时间控制与依赖隔离 |
 
 ## Hooks

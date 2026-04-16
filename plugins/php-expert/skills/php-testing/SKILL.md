@@ -29,7 +29,7 @@ description: 当用户编写、审查或重构 PHP 测试时使用。覆盖 PHPU
 - 编码标准：[strict_types](rules/standard-strict-types.md) · [final 类](rules/standard-final-classes.md) · [类型提示](rules/standard-visibility-type-hints.md)
 - 属性与数据集：[#[Test]](rules/attr-test-attribute.md) · [#[CoversClass]](rules/attr-covers-class.md) · [DataProvider](rules/data-provider.md)
 - Mock 与集成：[避免过度 Mock](rules/mock-avoid-over-mocking.md) · [HTTP 冒烟](rules/integration-smoke-http.md) · [事务清理](rules/integration-transactions.md)
-- 联动：[php-pro](../php-pro/SKILL.md) · [php-error-handling](../php-error-handling/SKILL.md) · [php-doc](../php-doc/SKILL.md)
+- 联动：[php-8x-features](../php-8x-features/SKILL.md) · [php-error-handling](../php-error-handling/SKILL.md) · [php-doc](../php-doc/SKILL.md)
 
 ## 反模式
 

@@ -10,7 +10,7 @@ description: 当用户提到 Laravel 分层、Service/Action 边界、scopeBindi
 - 设计或重构控制器、动作、服务、查询对象和 API 资源边界。
 - 需要在父子资源路由、多租户隔离、事务和缓存之间建立稳定约束。
 - 需要把“能跑”的实现提升为“可维护”的 Laravel 代码组织方式。
-- 具体落地实现看 [laravel-specialist](../laravel-specialist/SKILL.md)，安全边界看 [laravel-security](../laravel-security/SKILL.md)，测试回归看 [laravel-tdd](../laravel-tdd/SKILL.md)。
+- 具体落地实现看 [laravel-layering-patterns](../laravel-layering-patterns/SKILL.md)，安全边界看 [laravel-security](../laravel-security/SKILL.md)，测试回归看 [laravel-tdd](../laravel-tdd/SKILL.md)。
 
 ## 核心约束
 

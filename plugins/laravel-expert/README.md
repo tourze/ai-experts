@@ -6,14 +6,14 @@
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
-- `skills/`：5 个 Laravel 顶层技能，以及 `laravel-specialist/references/` 下的专题参考。
+- `skills/`：5 个 Laravel 顶层技能，以及 `laravel-layering-patterns/references/` 下的专题参考。
 - `tests/`：manifest、dispatch 与文档结构测试。
 
 ## Skills
 
 | Skill | 用途 |
 |-------|------|
-| `laravel-specialist` | Laravel 10+ 模型、迁移、请求、资源、队列与 Livewire 实现入口 |
+| `laravel-layering-patterns` | Laravel 10+ Model/Migration/FormRequest/Resource/Controller/Job/Livewire 实现 |
 | `laravel-patterns` | 控制器/动作/服务分层、路由绑定、事务、缓存与 API 结构 |
 | `laravel-security` | 认证授权、输入验证、文件上传、速率限制、签名链接与安全头 |
 | `laravel-tdd` | Pest/PHPUnit 测试驱动开发、HTTP/队列/Sanctum 测试模式 |
