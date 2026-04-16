@@ -1,8 +1,6 @@
 ---
 name: analytics-tracking
 description: 在需要规划、审计或排查 GA4/GTM 埋点时使用；若重点是活动 ROI 分析，改用 `campaign-analytics`。
-metadata:
-  version: 1.0.0
 ---
 
 # 埋点与追踪（analytics-tracking）

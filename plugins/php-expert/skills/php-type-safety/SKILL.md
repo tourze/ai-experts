@@ -1,15 +1,6 @@
 ---
 name: php-type-safety
 description: 当用户要配置 PHPStan 或 Psalm、补 array shapes 和泛型标注、使用条件返回类型、做类型收窄或消除 mixed 时使用。
-license: MIT
-metadata:
-  version: "1.0.0"
-  domain: language
-  triggers: PHPStan, Psalm, array shape, generics, template, conditional return, type narrowing, mixed, level 9, phpstan.neon
-  role: specialist
-  scope: quality
-  output-format: code
-  related-skills: php-pro, php-doc, php-error-handling, php-testing
 ---
 
 # PHP 类型安全

@@ -1,8 +1,6 @@
 ---
 name: competitor-alternatives
 description: "在需要编写竞品对比页、替代页或 VS 页面时使用，兼顾 SEO 捕获和销售辅助；适合 `X alternative`、`A vs B`、竞品迁移等场景。"
-metadata:
-  version: 1.0.0
 ---
 
 # 竞品对比页（competitor-alternatives）

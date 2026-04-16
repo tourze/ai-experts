@@ -1,8 +1,6 @@
 ---
 name: site-architecture
 description: "在需要规划或重构网站层级、导航、URL 结构和内链关系时使用；若任务转向页面 SEO 细节，配合 `seo`。"
-metadata:
-  version: 1.1.0
 ---
 
 # 站点架构（site-architecture）

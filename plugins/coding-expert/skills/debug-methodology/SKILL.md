@@ -1,16 +1,6 @@
 ---
 name: debug-methodology
 description: "当用户卡在 bug 上、遇到非预期行为或需要系统化调试思路时使用。"
-metadata:
-  version: "0.1.0"
-  category: "debugging"
-  tags: ["debug", "troubleshooting", "methodology"]
-  when_to_use: "当用户卡在 bug 上、报告非预期行为，或请求帮助调试时使用"
-  trigger:
-    - "debug this"
-    - "why is this broken"
-    - "help me find the bug"
-    - "排查问题"
 ---
 
 # 系统化调试方法论
@@ -31,7 +21,7 @@ metadata:
 - 假设 10 分钟未证实就换假设。
 
 ## 六步流程
-详细步骤和模板见 [references/six-steps.md](./references/six-steps.md)。
+详细步骤见 [references/six-steps.md](./references/six-steps.md)，决策流程图见 [references/debug-flow.dot](./references/debug-flow.dot)。
 
 1. **复现** — 稳定复现问题，明确期望 vs 实际行为。
 2. **隔离** — 二分法缩小范围到具体模块/函数/行。

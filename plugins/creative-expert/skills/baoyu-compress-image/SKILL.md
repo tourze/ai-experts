@@ -1,14 +1,6 @@
 ---
 name: baoyu-compress-image
 description: 当用户要压缩图片、转成 WebP 或导出更小的 PNG/JPEG 时使用。
-version: 1.56.1
-metadata:
-  openclaw:
-    homepage: https://github.com/JimLiu/baoyu-skills#baoyu-compress-image
-    requires:
-      anyBins:
-        - bun
-        - npx
 ---
 
 # 图片压缩器

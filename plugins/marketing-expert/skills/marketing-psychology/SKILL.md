@@ -1,8 +1,6 @@
 ---
 name: marketing-psychology
 description: "在需要用决策心理学、认知偏差和行为科学解释用户为什么会买、为什么犹豫，以及营销设计该如何响应时使用。"
-metadata:
-  version: 1.1.0
 ---
 
 # 营销心理学（marketing-psychology）

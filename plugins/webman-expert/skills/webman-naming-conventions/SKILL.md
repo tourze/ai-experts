@@ -1,10 +1,6 @@
 ---
 name: webman-naming-conventions
 description: 当用户要统一或审查 Webman 项目的目录命名、接口后缀、Service 命名或命名空间时使用。
-license: MIT
-metadata:
-  author: webman-design
-  version: "1.0.0"
 ---
 
 Webman 项目命名与目录约束。

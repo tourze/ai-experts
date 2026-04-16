@@ -1,8 +1,6 @@
 ---
 name: influence-psychology
 description: "在需要把互惠、承诺一致、社会证明、权威、喜好、稀缺等说服原则用到文案、页面或销售材料时使用。"
-metadata:
-  version: 1.0.1
 ---
 
 # 影响力心理学（influence-psychology）

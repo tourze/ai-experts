@@ -1,10 +1,6 @@
 ---
 name: baoyu-article-illustrator
 description: 当用户要给文章配图、按段落补解释图或为长文批量生成插图时使用；如果只需要单张静态图，改用 concept-to-image。
-version: 1.57.0
-metadata:
-  openclaw:
-    homepage: https://github.com/JimLiu/baoyu-skills#baoyu-article-illustrator
 ---
 
 # 文章配图器

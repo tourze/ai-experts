@@ -1,8 +1,6 @@
 ---
 name: made-to-stick
 description: "在需要让信息更容易被理解、记住和传播时使用，基于 SUCCESs 框架组织表达；适合标语、价值主张、产品叙事和销售信息。"
-metadata:
-  version: 1.0.1
 ---
 
 # 粘性表达（made-to-stick）

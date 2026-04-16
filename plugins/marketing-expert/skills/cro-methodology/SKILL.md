@@ -1,8 +1,6 @@
 ---
 name: cro-methodology
 description: "在需要审计网站或落地页转化问题、梳理实验假设和设计 A/B 测试时使用；若任务已明确是弹窗优化或页面实现，分别配合 `popup-cro` 与 `redesign-my-landingpage`。"
-metadata:
-  version: 1.1.1
 ---
 
 # 转化优化方法（cro-methodology）

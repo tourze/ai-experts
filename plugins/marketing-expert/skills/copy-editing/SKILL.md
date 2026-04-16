@@ -1,8 +1,6 @@
 ---
 name: copy-editing
 description: 在需要审校、润色或提升既有营销文案时使用；若任务重点是去除 AI 腔，可配合 `content-humanizer`。
-metadata:
-  version: 1.0.0
 ---
 
 # 文案编辑（copy-editing）

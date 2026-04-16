@@ -1,8 +1,6 @@
 ---
 name: campaign-analytics
 description: "在需要分析活动表现、归因模型、漏斗转化率和 ROI/ROAS/CPA 时使用；适合渠道复盘、预算调整和投放诊断。"
-metadata:
-  version: 1.0.0
 ---
 
 # 活动分析（campaign-analytics）

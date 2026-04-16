@@ -1,11 +1,6 @@
 ---
 name: concept-to-video
 description: 当用户要把概念做成动画、制作解释型视频或用 Manim 做流程动画时使用；如果只要静态图，改用 concept-to-image。
-metadata:
-  version: 1.1.0
-  category: visualization
-  tags: [video, manim, animation, explainer]
-  difficulty: advanced
 ---
 
 # 概念转视频

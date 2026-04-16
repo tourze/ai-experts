@@ -1,6 +1,6 @@
 ---
 name: macos-design-guidelines
-description: 按 Apple Human Interface Guidelines 设计 macOS 原生界面，适用于菜单栏、窗口、工具栏、键盘快捷键、侧边栏和桌面交互。
+description: 当用户要按 Apple Human Interface Guidelines 设计 macOS 原生界面时使用。适用于菜单栏、窗口、工具栏、键盘快捷键、侧边栏和桌面交互。
 license: MIT
 metadata:
   author: platform-design-skills

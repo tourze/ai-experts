@@ -1,8 +1,6 @@
 ---
 name: competitive-ads-extractor
 description: "在需要拆解竞品广告素材、卖点、受众假设和创意模式时使用；适合投放前研究、广告复盘和差异化定位。"
-metadata:
-  version: 1.0.0
 ---
 
 # 竞品广告拆解（competitive-ads-extractor）

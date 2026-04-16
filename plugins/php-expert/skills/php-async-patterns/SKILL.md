@@ -1,15 +1,6 @@
 ---
 name: php-async-patterns
 description: 当用户要在 PHP 中实现异步并发、使用 Swoole 协程/服务器、ReactPHP 事件循环、Amphp 或原生 Fibers 时使用。
-license: MIT
-metadata:
-  version: "1.0.0"
-  domain: language
-  triggers: Swoole, ReactPHP, Amphp, Fiber, 协程, coroutine, async PHP, event loop, 并发, WebSocket PHP
-  role: specialist
-  scope: implementation
-  output-format: code
-  related-skills: php-pro, php-error-handling, php-design-patterns
 ---
 
 # PHP 异步模式

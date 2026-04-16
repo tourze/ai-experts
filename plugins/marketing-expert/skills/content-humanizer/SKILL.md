@@ -1,8 +1,6 @@
 ---
 name: content-humanizer
 description: "在内容显得机器腔、套话重、节奏僵硬或缺乏品牌个性时使用；若任务是直接编辑营销文案，可与 `copy-editing` 配合。"
-metadata:
-  version: 1.0.0
 ---
 
 # 人性化改写（content-humanizer）

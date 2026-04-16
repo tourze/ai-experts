@@ -1,10 +1,6 @@
 ---
 name: web-design-guidelines
 description: 当任务涉及语义 HTML、无障碍、WCAG、键盘访问、表单规范或 Web UI 审查时使用。
-license: MIT
-metadata:
-  author: platform-design-skills
-  version: "1.0.0"
 ---
 
 # Web 设计规范

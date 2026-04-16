@@ -1,16 +1,6 @@
 ---
 name: nextjs-developer
 description: 当用户提到 Next.js、App Router、Server Components、Server Actions、Route Handlers、generateMetadata、loading.tsx、error.tsx 或 Vercel 部署时使用。
-license: MIT
-metadata:
-  author: https://github.com/Jeffallan
-  version: "1.2.0"
-  domain: frontend
-  triggers: Next.js, App Router, Server Components, Server Actions, Route Handlers, generateMetadata, loading.tsx, error.tsx, Vercel, Next.js performance
-  role: specialist
-  scope: implementation
-  output-format: code
-  related-skills: react-server-components, vercel-react-best-practices, typescript-magician, typescript-advanced-types
 ---
 
 # Next.js Developer

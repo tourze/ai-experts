@@ -1,8 +1,6 @@
 ---
 name: lead-research-assistant
 description: "在需要围绕 ICP 寻找高质量目标客户、筛选公司名单并给出联系切入点时使用；如果已经有明确名单并需要深挖联系人与买家信号，优先使用 `leads-researcher`。"
-metadata:
-  version: 1.0.0
 ---
 
 # 目标客户发现（lead-research-assistant）

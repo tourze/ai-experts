@@ -1,16 +1,6 @@
 ---
 name: complexity-reducer
 description: "当代码过于复杂、嵌套太深、函数太长或耦合严重，用户要求简化时使用。"
-metadata:
-  version: "0.1.0"
-  category: "code-quality"
-  tags: ["complexity", "simplification", "readability"]
-  when_to_use: "当代码难以理解、过于复杂，或用户要求简化时使用"
-  trigger:
-    - "simplify this"
-    - "too complex"
-    - "hard to understand"
-    - "降低复杂度"
 ---
 
 # 复杂度识别与简化

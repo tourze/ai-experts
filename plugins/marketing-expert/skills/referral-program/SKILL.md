@@ -1,8 +1,6 @@
 ---
 name: referral-program
 description: "在需要设计、优化或复盘推荐计划、联盟计划和口碑增长机制时使用；适合客户转介绍、affiliate、partner program 等场景。"
-metadata:
-  version: 1.1.0
 ---
 
 # 推荐与联盟（referral-program）

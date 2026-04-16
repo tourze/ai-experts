@@ -1,8 +1,6 @@
 ---
 name: seo
 description: "在需要提升搜索可见性、修复技术 SEO、优化元数据、结构化数据与索引策略时使用；若任务是站点结构规划，可配合 `site-architecture`。"
-metadata:
-  version: "1.0"
 ---
 
 # 搜索引擎优化（seo）

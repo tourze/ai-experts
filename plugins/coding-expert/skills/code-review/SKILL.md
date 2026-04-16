@@ -1,16 +1,6 @@
 ---
 name: code-review
 description: "当用户要求审查代码质量、发现命名或职责问题、检查错误处理和边界情况时使用。"
-metadata:
-  version: "0.1.0"
-  category: "code-quality"
-  tags: ["review", "quality", "design", "readability"]
-  when_to_use: "当用户要求审查代码、检查代码质量或发现实现中的问题时使用"
-  trigger:
-    - "review this code"
-    - "code review"
-    - "review PR"
-    - "审查代码"
 ---
 
 # 代码审查

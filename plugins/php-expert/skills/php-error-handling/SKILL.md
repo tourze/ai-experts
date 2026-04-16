@@ -1,15 +1,6 @@
 ---
 name: php-error-handling
 description: 当用户要设计 PHP 异常层级、实现输入校验边界、做错误映射、处理批量部分失败或规范 try/catch 纪律时使用。
-license: MIT
-metadata:
-  version: "1.0.0"
-  domain: language
-  triggers: PHP exception, 异常, 错误处理, input validation, try/catch, error boundary, RuntimeException, 批量失败
-  role: specialist
-  scope: implementation
-  output-format: code
-  related-skills: php-pro, php-design-patterns, php-type-safety, php-testing
 ---
 
 # PHP 错误处理

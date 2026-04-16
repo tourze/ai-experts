@@ -1,15 +1,6 @@
 ---
 name: php-design-patterns
 description: 当用户要拆分 PHP 类职责、设计服务层与 Repository、构建 DTO/值对象、规范依赖注入或让控制器保持薄化时使用。
-license: MIT
-metadata:
-  version: "1.0.0"
-  domain: language
-  triggers: PHP service layer, Repository, DTO, Value Object, dependency injection, controller, SOLID, 职责拆分, 分层, 解耦
-  role: specialist
-  scope: design
-  output-format: code
-  related-skills: php-pro, php-error-handling, php-type-safety, php-doc, php-testing
 ---
 
 # PHP 设计模式与分层

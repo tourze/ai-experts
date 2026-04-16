@@ -1,10 +1,6 @@
 ---
 name: core-web-vitals
 description: 当用户需要修复或优化 Core Web Vitals（LCP、INP、CLS）时使用。适合”优化首屏性能””修 LCP/INP/CLS””减少布局抖动””提升页面体验”等场景。
-license: MIT
-metadata:
-  author: web-quality-skills
-  version: "1.0"
 ---
 
 # Core Web Vitals 优化

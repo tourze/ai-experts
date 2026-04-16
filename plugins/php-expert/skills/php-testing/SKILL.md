@@ -1,16 +1,6 @@
 ---
 name: php-testing
 description: 当用户编写、审查或重构 PHP 测试时使用。覆盖 PHPUnit 和 Pest 的测试结构、数据提供者、属性、Mock、集成测试与 phpunit.xml 配置收敛。
-license: MIT
-metadata:
-  author: pentiminax
-  version: "2.0.0"
-  domain: language
-  triggers: PHPUnit, Pest, PHP test, 测试, TestCase, DataProvider, Mock, phpunit.xml, 覆盖率, 集成测试
-  role: specialist
-  scope: testing
-  output-format: code
-  related-skills: php-pro, php-design-patterns, php-error-handling, php-doc
 ---
 
 # PHP 测试

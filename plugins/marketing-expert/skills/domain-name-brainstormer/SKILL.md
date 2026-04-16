@@ -1,8 +1,6 @@
 ---
 name: domain-name-brainstormer
 description: "在需要为产品、栏目或品牌发散域名方向并做初步筛选时使用，适合命名早期探索和备选池收敛。"
-metadata:
-  version: 1.0.0
 ---
 
 # 域名脑暴（domain-name-brainstormer）

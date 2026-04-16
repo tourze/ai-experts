@@ -1,10 +1,6 @@
 ---
 name: refactoring-ui
 description: 当用户需要修复视觉层级、间距、颜色或深度问题时使用。适合”界面看起来不对劲””帮我调视觉层级””Tailwind 样式太乱””配色和间距需要整理”等场景。
-license: MIT
-metadata:
-  author: wondelai
-  version: "1.1.1"
 ---
 
 # Refactoring UI

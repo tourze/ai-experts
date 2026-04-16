@@ -1,16 +1,6 @@
 ---
 name: refactoring-checklist
 description: "当用户要重构、重组或清理代码，需要确保安全性和增量推进时使用。"
-metadata:
-  version: "0.1.0"
-  category: "refactoring"
-  tags: ["refactoring", "safety", "checklist", "incremental"]
-  when_to_use: "当用户要重构、重组或清理代码时使用"
-  trigger:
-    - "refactor this"
-    - "clean up"
-    - "restructure"
-    - "重构"
 ---
 
 # 重构前安全检查清单
@@ -38,7 +28,7 @@ metadata:
 4. **回滚方案** — 干净分支、每步独立提交、知道怎么回到起点。
 
 ## 增量步骤循环
-做一个小变更 → 跑测试 → 提交 → 重复。常见动作和风险等级见 [references/incremental-actions.md](./references/incremental-actions.md)。
+流程图见 [references/refactor-loop.dot](./references/refactor-loop.dot)。做一个小变更 → 跑测试 → 提交 → 重复。常见动作见 [references/incremental-actions.md](./references/incremental-actions.md)。
 
 ## 检查清单
 - [ ] 有测试覆盖（或已补表征测试）

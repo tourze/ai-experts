@@ -1,11 +1,6 @@
 ---
 name: concept-to-image
 description: 当用户要把概念做成静态图、HTML 导出 PNG/SVG、做信息图或卡片时使用；如果要动画，改用 concept-to-video。
-metadata:
-  version: 1.2.0
-  category: business
-  tags: [image-generation, html-to-png, svg, visual-design]
-  difficulty: intermediate
 ---
 
 # 概念转图片

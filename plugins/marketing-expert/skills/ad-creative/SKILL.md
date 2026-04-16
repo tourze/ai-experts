@@ -1,8 +1,6 @@
 ---
 name: ad-creative
 description: 在需要批量生成、迭代或放大广告创意时使用；若重点是投放结构与预算，改用 `paid-ads`，若重点是落地页文案，改用 `copy-editing`。
-metadata:
-  version: 1.1.0
 ---
 
 # 广告创意（ad-creative）

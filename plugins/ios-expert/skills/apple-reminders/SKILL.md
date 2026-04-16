@@ -1,22 +1,6 @@
 ---
 name: apple-reminders
 description: 当用户要查看、创建、完成、删除或管理 Apple Reminders 提醒事项时使用。
-homepage: https://github.com/steipete/remindctl
-metadata:
-  openclaw:
-    emoji: "⏰"
-    os:
-      - "darwin"
-    requires:
-      bins:
-        - "remindctl"
-    install:
-      - id: "brew"
-        kind: "brew"
-        formula: "steipete/tap/remindctl"
-        bins:
-          - "remindctl"
-        label: "Install remindctl via Homebrew"
 ---
 
 # Apple Reminders CLI

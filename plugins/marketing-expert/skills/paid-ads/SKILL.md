@@ -1,8 +1,6 @@
 ---
 name: paid-ads
 description: 在需要规划、优化或扩展 Google Ads、Meta、LinkedIn、TikTok 等付费投放时使用。
-metadata:
-  version: 1.1.0
 ---
 
 # 付费投放（paid-ads）

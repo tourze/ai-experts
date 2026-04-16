@@ -1,10 +1,6 @@
 ---
 name: web-quality-audit
 description: 当用户提到审计网站质量、跑 Lighthouse、检查页面问题或优化网站体验时使用。
-license: MIT
-metadata:
-  author: web-quality-skills
-  version: "1.0"
 ---
 
 # Web 质量审计

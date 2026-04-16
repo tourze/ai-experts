@@ -1,10 +1,6 @@
 ---
 name: webman-plugin-development
 description: 当用户要开发或审查 Webman 插件的 Install.php、config 发布、进程声明或 Bootstrap 时使用。
-license: MIT
-metadata:
-  author: webman-design
-  version: "1.0.0"
 ---
 
 Webman 插件的打包、安装和配置约定。

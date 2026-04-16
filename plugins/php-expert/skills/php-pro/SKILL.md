@@ -1,16 +1,6 @@
 ---
 name: php-pro
 description: 当用户实现或重构 PHP 8.3+ 类、函数或模块，需要用到 strict_types、readonly class、枚举、match 表达式、命名参数、构造器提升或交叉类型时使用。
-license: MIT
-metadata:
-  author: https://github.com/Jeffallan
-  version: "2.0.0"
-  domain: language
-  triggers: PHP 8.3, strict_types, readonly, enum, match, named arguments, constructor promotion, intersection types, never type, fibers, first-class callable
-  role: specialist
-  scope: implementation
-  output-format: code
-  related-skills: php-design-patterns, php-error-handling, php-type-safety, php-async-patterns, php-doc, php-testing
 ---
 
 # PHP 8.3+ 语言特性与核心纪律

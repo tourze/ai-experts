@@ -1,8 +1,6 @@
 ---
 name: popup-cro
 description: "在需要优化弹窗、模态框、滑入层、通知条或 exit intent 组件时使用；如果问题已经上升到整页转化结构，配合 `cro-methodology` 或 `redesign-my-landingpage`。"
-metadata:
-  version: 1.1.0
 ---
 
 # 弹窗转化优化（popup-cro）

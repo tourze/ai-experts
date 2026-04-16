@@ -1,10 +1,6 @@
 ---
 name: webman-websocket-patterns
 description: 当用户要在 Webman 中搭建或排查 WebSocket 服务端、心跳、频道广播或客户端重连时使用。
-license: MIT
-metadata:
-  author: webman-design
-  version: "1.0.0"
 ---
 
 Workerman WebSocket 在 webman 自定义进程中的使用模式。

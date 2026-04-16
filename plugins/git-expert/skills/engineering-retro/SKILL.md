@@ -1,6 +1,6 @@
 ---
 name: engineering-retro
-description: 当用户需要回顾最近一段时间的开发进度、提交量或热点文件时使用。基于 Git 历史按时间窗口输出改动规模、活跃时段、作者亮点与可选 PR 指标。
+description: 当用户需要回顾最近一段时间的开发进度、提交量或热点文件时使用。
 metadata:
   version: 1.1.0
   category: review
