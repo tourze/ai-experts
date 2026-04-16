@@ -97,9 +97,13 @@ description: 当用户要选择字体搭配、为页面确定标题/正文字体
 - 为了节省体积用系统字体，导致品牌识别度崩塌（营销页要谨慎）。
 - 选了 8 档字重全导入，首屏 CSS 膨胀。
 
+## Catalog 派 vs 反 Reflex 派
+
+B2B / Dashboard / 快速稳妥 → 查 [pairings-catalog.md](references/pairings-catalog.md)。品牌差异化 / 创意 / "不要 AI 味" → 走 [anti-reflex-protocol.md](references/anti-reflex-protocol.md)，该协议会明确拒绝 catalog 里的 Fraunces / Inter / Plus Jakarta Sans 等 20 个反射字体。按场景二选一。
+
 ## 参考资料
 
-- [references/pairings-catalog.md](references/pairings-catalog.md) — 40+ 配对清单（语气 / 标题字 / 正文字 / Google Fonts URL / 最佳场景）
+- [references/pairings-catalog.md](references/pairings-catalog.md) — 45 对稳妥起点
+- [references/anti-reflex-protocol.md](references/anti-reflex-protocol.md) — 反 reflex 协议
 - [design-system-patterns](../design-system-patterns/SKILL.md)
 - [tailwind-design-system](../tailwind-design-system/SKILL.md)
-- [modern-web-design](../modern-web-design/SKILL.md)
