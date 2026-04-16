@@ -75,7 +75,78 @@ struct MyWidgetView: View {
 
 ## 反模式
 
-- 把液态玻璃当作“任何地方都能加”的视觉糖。
-- 不做系统版本判断，直接把新 API 下沉到全量代码路径。
-- 用玻璃替代信息层次，导致文本对比度和可读性下降。
-- 多元素玻璃不放容器，最后用手工阴影和遮罩补救。
+### FAIL: 不做版本判断
+
+```swift
+Text("Focus")
+    .glassEffect(.regular)  // iOS 26+ API
+// iOS 17/18 设备：编译错误 / 运行 crash
+```
+
+### PASS: availability 兜底
+
+```swift
+extension View {
+    @ViewBuilder
+    func adaptiveGlass() -> some View {
+        if #available(iOS 26, *) {
+            self.glassEffect(.regular.tint(.blue))
+        } else {
+            self.background(.ultraThinMaterial)  // 旧版本回退
+        }
+    }
+}
+Text("Focus").adaptiveGlass()
+```
+
+### FAIL: 多元素不放容器
+
+```swift
+HStack {
+    Image(systemName: "a").glassEffect()  // 独立玻璃
+    Image(systemName: "b").glassEffect()  // 独立玻璃
+    Image(systemName: "c").glassEffect()
+}
+// 三块独立模糊层 → 性能下降 + 边缘融合断裂
+// 后期用阴影/遮罩硬补救
+```
+
+### PASS: GlassEffectContainer 统一
+
+```swift
+GlassEffectContainer(spacing: 24) {
+    HStack(spacing: 24) {
+        Image(systemName: "a").frame(width: 72, height: 72).glassEffect()
+        Image(systemName: "b").frame(width: 72, height: 72).glassEffect()
+    }
+}
+// 系统统一管理融合 + 性能优化
+```
+
+### FAIL: 玻璃替代信息层次
+
+```swift
+ZStack {
+    Color.gray.glassEffect()  // 整页玻璃
+    Text("用户：alice").foregroundColor(.white.opacity(0.6))
+    Text("订单：1234").foregroundColor(.white.opacity(0.6))
+}
+// 文本对比度 < 3:1 → WCAG 失败
+// 用户可读性差，但"看起来很高级"
+```
+
+### PASS: 玻璃只用于强调层
+
+```swift
+ScrollView {
+    LazyVStack(alignment: .leading) {
+        ForEach(items) { item in
+            Text(item.title).foregroundStyle(.primary)  // 主信息常规渲染
+        }
+    }
+}
+.safeAreaInset(edge: .top) {
+    Toolbar()
+        .glassEffect(.regular.interactive())  // 仅工具栏强调用玻璃
+}
+```

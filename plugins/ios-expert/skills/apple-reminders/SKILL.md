@@ -59,7 +59,53 @@ remindctl delete 4A83 --force
 
 ## 反模式
 
-- 把 `today`、`week` 当成独立子命令文档化，而忽略它们本质上是 `show` 的过滤器。
-- 没确认用户是否真的要写入 Reminders，就直接创建系统待办。
-- 省略权限检查，导致命令在首次运行时失败。
-- 不校验提醒 ID 就执行批量完成或删除。
+### FAIL: 误把过滤器当子命令
+
+```md
+## 子命令
+- `remindctl today` 显示今日任务
+- `remindctl week` 显示本周任务
+- `remindctl overdue` 显示逾期
+→ 文档遗漏了真正的入口 `show`
+→ `remindctl tomorrow` / `remindctl 2026-04-20` 用户不知道存在
+```
+
+### PASS: show 是入口
+
+```md
+## 入口
+remindctl show [filter]
+filter ∈ today | tomorrow | week | overdue | all | YYYY-MM-DD
+
+`remindctl today` 是 `show today` 的快捷别名
+```
+
+### FAIL: 跳过权限检查
+
+```bash
+remindctl add "买牛奶"
+# Error: not authorized to access reminders
+# 用户首次运行被拦
+```
+
+### PASS: 自动 status + authorize
+
+```bash
+status=$(remindctl status)
+[[ "$status" != *"granted"* ]] && remindctl authorize
+remindctl add "买牛奶" --due tomorrow
+```
+
+### FAIL: 不校验 ID 批量删
+
+```bash
+remindctl delete 1 2 3 4 5  # ID 取自上次会话
+# 列表已变化 → 删错任务
+```
+
+### PASS: 先 show 再删
+
+```bash
+remindctl show today --json | jq '.[].id'  # 拿当前 ID
+# 用户确认 → 再 delete
+```

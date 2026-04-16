@@ -70,7 +70,55 @@ python3 scripts/simctl_shutdown.py --all
 
 ## 反模式
 
-- 直接执行 `scripts/common/__init__.py`、`scripts/xcode/__init__.py` 这类内部模块。
-- 跳过无障碍树，直接用截图坐标做主导航方案。
-- 在没有 booted simulator 的情况下默认认为脚本会自动创建设备。
-- 文档里穷举一大堆过时参数，而不以 `--help` 作为最终真值。
+### FAIL: 用截图坐标导航
+
+```python
+# 截图后凭眼力定位"登录"按钮
+device.tap(187, 642)  # 写死坐标
+# iPhone 14 → iPhone 15 屏幕变 → 坐标偏移 → 点到别处
+# Dynamic Type 大字号 → 按钮位置变 → 失败
+```
+
+### PASS: 无障碍树语义查找
+
+```bash
+# 先看屏幕结构
+python3 scripts/screen_mapper.py --hints
+# 按文本/role 定位
+python3 scripts/navigator.py --find-text "登录" --tap
+# 任何屏幕尺寸/字号都稳定
+```
+
+### FAIL: 没 booted simulator 直接跑
+
+```bash
+python3 scripts/log_monitor.py --app com.example.app
+# Error: no booted device
+# 用户："我以为脚本会自动启动"
+```
+
+### PASS: 先 boot
+
+```bash
+python3 scripts/simctl_boot.py --name "iPhone 17 Pro" --wait-ready
+python3 scripts/log_monitor.py --device-udid <udid> --app com.example.app
+# 注意：log_monitor 用 --device-udid，其他用 --udid
+```
+
+### FAIL: 文档穷举参数
+
+```md
+## screen_mapper 完整参数
+--verbose / --hints / --json / --filter / --max-depth ...
+（30 个参数）
+→ 1 个月后参数变化，文档过时仍有人复制
+```
+
+### PASS: --help 是真值
+
+```md
+## screen_mapper
+常用：python3 scripts/screen_mapper.py --hints --json
+完整参数：python3 scripts/screen_mapper.py --help
+（脚本变更时帮助文本自动同步）
+```

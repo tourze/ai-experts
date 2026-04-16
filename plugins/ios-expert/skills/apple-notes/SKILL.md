@@ -56,7 +56,45 @@ memo notes --export
 
 ## 反模式
 
-- 假设 `memo notes --add "标题"` 这种快捷标题参数一定存在。
-- 在 Linux / CI 环境中直接尝试运行 `memo`。
-- 把带附件的笔记当成纯文本笔记编辑。
-- 不确认文件夹就执行删除或移动。
+### FAIL: 假设 CLI 参数
+
+```bash
+memo notes --add "周会纪要"  # 假设的语法
+# Error: unknown option
+# 实际：--add 只是开关，标题/内容走交互输入
+```
+
+### PASS: 先看 --help
+
+```bash
+memo notes --help
+memo notes --folder "Work" --add  # 触发交互式新建
+```
+
+### FAIL: Linux/CI 直接跑
+
+```bash
+# CI 上：
+memo notes --search "deploy"
+# command not found / AppleScript 失败
+```
+
+### PASS: 平台前置检查
+
+```bash
+[[ "$OSTYPE" == "darwin"* ]] || { echo "memo 仅 macOS"; exit 1; }
+memo --help &>/dev/null || { echo "请安装 memo"; exit 1; }
+```
+
+### FAIL: 不确认文件夹删除
+
+```bash
+memo notes --delete  # 默认目录可能是个人 "Notes" → 误删
+```
+
+### PASS: 显式 --folder
+
+```bash
+memo notes --folder "Work" --delete
+# 范围明确，删除前确认 ID
+```

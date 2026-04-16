@@ -53,7 +53,46 @@ bash scripts/collect_release_changes.sh v1.2.3 HEAD
 
 ## 反模式
 
-- 直接把 commit subject 改写成中文后提交给门店。
-- 把纯工程改动伪装成用户功能。
-- 一条文案覆盖多个无关改动，导致不可验证。
-- 没确认 git 范围就开始写更新说明。
+### FAIL: commit subject 直接翻译
+
+```
+git log v1.2.3..HEAD --oneline →
+- "refactor: extract NetworkManager"
+- "chore: bump SwiftLint to 0.55"
+- "fix: NPE in OrderViewModel"
+
+→ 门店文案：
+"重构 NetworkManager；升级 SwiftLint；修复 OrderViewModel 空指针"
+→ 用户："这是什么？"
+```
+
+### PASS: 按用户视角归类
+
+```
+1. 跑 scripts/collect_release_changes.sh v1.2.3 HEAD
+2. 过滤掉 refactor/chore/test/CI 提交
+3. 按"新增 / 优化 / 修复"重组：
+
+新增：
+- 支持订单批量导出为 PDF
+优化：
+- 启动速度提升约 30%
+修复：
+- 解决部分订单页空白显示问题
+```
+
+### FAIL: 工程改动伪装功能
+
+```
+git log → "迁移 SwiftUI 4.0"
+门店文案 → "全新视觉系统！"
+→ 用户：UI 没变，怎么"全新"了？审核也质疑虚假宣传
+```
+
+### PASS: 只写真用户可见的
+
+```
+SwiftUI 升级用户感知 = 0
+→ 不写在门店文案里
+→ 留给内部 release notes
+```

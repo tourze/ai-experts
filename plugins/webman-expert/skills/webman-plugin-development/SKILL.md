@@ -36,7 +36,61 @@ final class Install { public const WEBMAN_PLUGIN = true; }
 
 ## 反模式
 
-- `mkdir 0777` → 安全隐患。
-- 读 `config('app.xxx')` → 耦合应用配置。
-- `webman-framework` 在 `require` → 无法隔离测试。
-- `uninstall()` 留空 → 配置残留。
+### FAIL: mkdir 0777
+
+```php
+mkdir($targetDir, 0777, true);
+// 任何用户可写 → 攻击者可植入恶意配置
+```
+
+### PASS: 0755
+
+```php
+mkdir($targetDir, 0755, true);
+```
+
+### FAIL: 读应用配置
+
+```php
+$dbHost = config('app.db_host');  // 与宿主强耦合
+```
+
+### PASS: 插件命名空间
+
+```php
+$dbHost = config('plugin.acme.billing.db.host');
+// 命名空间隔离，可独立分发
+```
+
+### FAIL: uninstall 留空
+
+```php
+public static function uninstall(): void {
+    // TODO
+}
+// composer remove 后配置残留 + process.php 引用残留
+```
+
+### PASS: 完整清理
+
+```php
+public static function uninstall(): void {
+    foreach (self::$pathRelation as $src => $dst) {
+        $target = base_path() . '/' . $dst;
+        if (is_dir($target)) self::removeDir($target);
+    }
+}
+```
+
+### FAIL: framework 在 require
+
+```json
+{ "require": { "workerman/webman-framework": "^1.5" } }
+// 与宿主版本冲突
+```
+
+### PASS: require-dev
+
+```json
+{ "require-dev": { "workerman/webman-framework": "^1.5" } }
+```

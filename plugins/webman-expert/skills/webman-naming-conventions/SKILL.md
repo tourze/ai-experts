@@ -37,6 +37,60 @@ Webman 项目命名与目录约束。
 
 ## 反模式
 
-- 大小写混用 → 跨平台加载失败。见 [directory-lowercase](references/directory-lowercase.md)。
-- 接口无后缀 → 可读性差。见 [interface-naming](references/interface-naming.md)。
-- 命名空间漂移 → PSR-4 失败。见 [namespace-directory-mismatch](references/namespace-directory-mismatch.md)。
+### FAIL: 大小写混用
+
+```
+app/
+  Order/
+    Service/PlaceOrder.php
+  Customer/  ← 同级用大写
+```
+```
+macOS 不区分大小写 → 本地正常
+Linux 区分 → 部署后 ClassNotFound
+```
+
+### PASS: 全小写下划线
+
+```
+app/
+  order/
+    service/PlaceOrderService.php
+  customer/
+    service/UpdateCustomerService.php
+```
+
+### FAIL: 接口无后缀
+
+```php
+interface UserRepository { ... }   // 是接口还是实现？
+class UserRepositoryEloquent implements UserRepository { ... }
+// 业务代码 use UserRepository → 不知道这是接口还是类
+```
+
+### PASS: Interface 后缀
+
+```php
+interface UserRepositoryInterface { ... }
+class EloquentUserRepository implements UserRepositoryInterface { ... }
+// use UserRepositoryInterface → 一眼看出是抽象
+```
+
+### FAIL: 命名空间与目录漂移
+
+```
+文件路径: app/order/service/PlaceOrderService.php
+namespace App\Service;  ← 缺 Order
+```
+```
+PSR-4 加载失败 → "Class App\Service\PlaceOrderService not found"
+```
+
+### PASS: 严格映射
+
+```
+app/order/service/PlaceOrderService.php
+namespace App\Order\Service;
+// composer.json: "App\\": "app/"
+// 路径分段（首字母大写）= 命名空间分段
+```
