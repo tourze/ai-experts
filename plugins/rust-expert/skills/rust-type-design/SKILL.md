@@ -60,6 +60,35 @@ impl Document<Draft> {
 
 ## 反模式
 
-- 所有 trait 都用 `dyn`：白白放弃内联和类型信息。
-- 类型状态阶段 >10 个：类型爆炸，不如用枚举。
-- 忘记 object safety 约束，写了泛型方法后发现无法转 `dyn`。
+### FAIL: 默认 dyn 放弃零开销
+
+```rust
+fn process(h: Box<dyn Handler>) { h.run(); }
+// 每次走 vtable，失去内联
+```
+
+### PASS: 默认泛型
+
+```rust
+fn process<H: Handler>(h: H) { h.run(); }
+// 编译期单态化，零开销
+// 只有真正需要异构集合才改 Vec<Box<dyn Handler>>
+```
+
+### FAIL: trait 方法带泛型
+
+```rust
+trait Storage {
+    fn get<T: DeserializeOwned>(&self, key: &str) -> T;  // 无法 dyn
+}
+let s: Box<dyn Storage> = ...;  // 编译错误
+```
+
+### PASS: 保持 object-safe
+
+```rust
+trait Storage {
+    fn get(&self, key: &str) -> Vec<u8>;
+}
+let s: Box<dyn Storage> = ...;  // OK
+```

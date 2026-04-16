@@ -26,43 +26,18 @@ description: 当用户要为 Android 写单元测试、Hilt 集成测试、Robor
 
 ## 依赖配置（libs.versions.toml）
 
-```toml
-[libraries]
-junit4 = { module = "junit:junit", version = "4.13.2" }
-kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
-androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version = "1.1.5" }
-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version = "3.5.1" }
-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
-roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
-
-[plugins]
-roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
-```
+核心依赖：`junit4`、`kotlinx-coroutines-test`、`androidx-test-ext-junit`、`espresso-core`、`compose-ui-test`、`hilt-android-testing`、`roborazzi`。完整配置见 [references/dependencies.md](references/dependencies.md)。
 
 ## 单元测试模式
 
 ### ViewModel 测试
 
 ```kotlin
-@Test
-fun `加载新闻成功时更新 UI 状态`() = runTest {
-    // Arrange — 注入 TestDispatcher 控制时序
-    val testDispatcher = StandardTestDispatcher(testScheduler)
-    val fakeRepository = FakeNewsRepository(testNews)
-    val viewModel = NewsViewModel(
-        getLatestNewsUseCase = GetLatestNewsUseCase(fakeRepository),
-        ioDispatcher = testDispatcher
-    )
-
-    // Act
-    viewModel.loadNews()
-    advanceUntilIdle()
-
-    // Assert
-    val state = viewModel.uiState.value
-    assertTrue(state is NewsUiState.Success)
-    assertEquals(testNews, (state as NewsUiState.Success).news)
+@Test fun loadSuccess() = runTest {
+    val dispatcher = StandardTestDispatcher(testScheduler)
+    val vm = NewsViewModel(GetLatestNewsUseCase(FakeNewsRepository(testNews)), dispatcher)
+    vm.loadNews(); advanceUntilIdle()
+    assertTrue(vm.uiState.value is NewsUiState.Success)
 }
 ```
 
@@ -190,3 +165,42 @@ fun `点击新闻项导航到详情`() {
 - [ ] 关键页面有 Roborazzi 截图测试
 - [ ] CI 配置 `verifyRoborazziDebug` 任务
 - [ ] Compose 测试通过语义（文本、testTag）查找节点，不用坐标
+
+## 反模式
+
+### FAIL: Compose 测试用坐标
+
+```kotlin
+@Test fun clickButton() {
+    composeTestRule.onRoot().performClick(Offset(100f, 200f))  // 字号缩放就挂
+}
+```
+
+### PASS: 按语义查找
+
+```kotlin
+composeTestRule.onNodeWithText("提交").performClick()
+composeTestRule.onNodeWithTag("submit-btn").performClick()
+```
+
+### FAIL: ViewModel 测试用 delay 等待
+
+```kotlin
+@Test fun testLoad() = runTest {
+    vm.loadNews()
+    delay(1000)  // 猜测时间，不稳定
+    assertEquals(expected, vm.uiState.value)
+}
+```
+
+### PASS: advanceUntilIdle 确定性推进
+
+```kotlin
+@Test fun testLoad() = runTest {
+    val dispatcher = StandardTestDispatcher(testScheduler)
+    val vm = NewsViewModel(useCase, dispatcher)
+    vm.loadNews()
+    advanceUntilIdle()  // 确定性推进所有协程
+    assertEquals(expected, vm.uiState.value)
+}
+```

@@ -64,8 +64,39 @@ def create_order(order_id: str, customer_id: str) -> None:
 
 ## 反模式
 
-- 把日志当调试垃圾桶，什么都打。
-- 只打印自然语言句子，没有稳定字段。
-- 线上错误没有 request_id / job_id，根本无法串联上下文。
-- 失败路径只打 `str(error)`，没有堆栈和业务标签。
-- 为了“可观测”在热路径上塞入大量昂贵序列化。
+### FAIL: 自然语言 + 无字段
+
+```python
+logger.info(f"用户 {user.name} 成功下单，花了 {total} 块钱")
+# 无法按字段聚合，grep 只能匹配字面
+```
+
+### PASS: 结构化字段
+
+```python
+logger.info(
+    "event=order.created user_id=%s total=%.2f request_id=%s",
+    user.id, total, ctx.request_id,
+)
+```
+
+### FAIL: 失败只打 str(error)
+
+```python
+try:
+    pay(order)
+except Exception as e:
+    logger.error(f"失败了: {e}")  # 无堆栈、无上下文
+```
+
+### PASS: 堆栈 + 业务标签
+
+```python
+try:
+    pay(order)
+except PaymentError as e:
+    logger.error(
+        "event=payment.failed order_id=%s code=%s",
+        order.id, e.code, exc_info=True,
+    )
+```

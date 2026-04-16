@@ -67,8 +67,38 @@ class WelcomeService:
 
 ## 反模式
 
-- 看到两个相似函数就立刻上抽象框架。
-- 服务层直接拼 SQL，仓储层又偷偷写业务规则。
-- 用继承叠出一串基类，只为复用几行代码。
-- 构造函数参数越来越多，却不承认这是职责失控。
-- 用“灵活性”当借口，把边界和依赖方向做成一团。
+### FAIL: 继承叠基类复用几行
+
+```python
+class BaseRepo:
+    def _log(self, msg): print(msg)
+class UserRepo(BaseRepo): ...
+class OrderRepo(BaseRepo): ...
+# 为了共享 _log 一个方法，三个仓储全部继承
+```
+
+### PASS: 组合注入
+
+```python
+class Logger(Protocol):
+    def log(self, msg: str) -> None: ...
+class UserRepo:
+    def __init__(self, logger: Logger) -> None: self._logger = logger
+```
+
+### FAIL: 构造函数参数爆炸
+
+```python
+class OrderService:
+    def __init__(self, user_repo, product_repo, inventory_repo, payment_repo,
+                 email, sms, analytics, audit, tax, shipping, discount): ...
+# 11 个依赖 → 职责失控
+```
+
+### PASS: 按领域拆分
+
+```python
+class OrderPricing: ...       # 定价
+class OrderFulfillment: ...   # 履约
+class OrderNotification: ...  # 通知
+```

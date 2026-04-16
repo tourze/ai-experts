@@ -80,7 +80,44 @@ struct EditItemSheet: View {
 
 ## 反模式
 
-- 新页面一上来就塞一个“大而全” view model。
-- `sheet(isPresented:)` 承担选择对象语义，内部再 `if let` 解包。
-- 不看现有 reference，就重新发明一套导航和弹层模式。
-- 在项目里留下“占位 reference 路径”却不真正落文件。
+### FAIL: sheet(isPresented:) + if let 解包
+
+```swift
+@State private var showEdit = false
+@State private var selectedItem: Item?
+
+Button(“Edit”) { selectedItem = item; showEdit = true }
+.sheet(isPresented: $showEdit) {
+    if let item = selectedItem { EditSheet(item: item) }
+    else { EmptyView() }
+}
+```
+
+### PASS: sheet(item:) 绑定数据
+
+```swift
+@State private var selectedItem: Item?
+Button(“Edit”) { selectedItem = item }
+.sheet(item: $selectedItem) { item in EditSheet(item: item) }
+```
+
+### FAIL: 小页面也造 view model
+
+```swift
+struct SettingsView: View {
+    @State private var viewModel = SettingsViewModel()
+    var body: some View {
+        Toggle(“Dark Mode”, isOn: $viewModel.isDarkMode)
+        // VM 里就两个布尔，毫无必要
+    }
+}
+```
+
+### PASS: 状态就近持有
+
+```swift
+struct SettingsView: View {
+    @AppStorage(“darkMode”) private var isDarkMode = false
+    var body: some View { Toggle(“Dark Mode”, isOn: $isDarkMode) }
+}
+```
