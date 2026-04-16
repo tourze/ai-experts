@@ -36,7 +36,69 @@ description: "当用户要用 Kotlin 实现 React Native Android 原生模块或
 
 ## 反模式
 
-- `className` 填短名，注册后找不到。
-- `getModule()` 中做网络操作，卡住 JS。
-- 未取消协程 scope，模块销毁后仍回调。
-- `WritableNativeMap` 跨线程传递触发断言。
+### FAIL: className 填短名
+
+```kotlin
+ReactModuleInfo(
+    "MyModule", "MyModule",  // ← 短名
+    false, false, false, true
+)
+// 运行时：TurboModuleRegistry.getEnforcing → "MyModule not found"
+```
+
+### PASS: 完整限定类名
+
+```kotlin
+ReactModuleInfo(
+    "MyModule",
+    "com.myapp.modules.MyModuleImpl",  // ← FQCN
+    false, false, false, true
+)
+```
+
+### FAIL: getModule 做 I/O
+
+```kotlin
+override fun getModule(name: String, ctx: ReactApplicationContext): NativeModule? {
+    val config = httpClient.fetch("/config")  // 网络调用
+    return MyModuleImpl(ctx, config)
+}
+// 首次调用模块 → JS 线程阻塞数百 ms
+```
+
+### PASS: 懒加载 + 后台线程
+
+```kotlin
+override fun getModule(name: String, ctx: ReactApplicationContext): NativeModule? {
+    return MyModuleImpl(ctx)  // 仅构造，不做 I/O
+}
+
+// MyModuleImpl 内部
+@ReactMethod
+fun loadConfig(promise: Promise) {
+    moduleScope.launch(Dispatchers.IO) {
+        val config = httpClient.fetch("/config")
+        promise.resolve(config)
+    }
+}
+```
+
+### FAIL: 协程未取消
+
+```kotlin
+private val scope = CoroutineScope(Dispatchers.Main)
+@ReactMethod fun longTask(promise: Promise) {
+    scope.launch { delay(10_000); promise.resolve(...) }
+}
+// 模块销毁后任务仍跑 → 调 promise → "Cannot send to disposed bridge"
+```
+
+### PASS: invalidate 取消
+
+```kotlin
+private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+override fun invalidate() {
+    scope.cancel()
+    super.invalidate()
+}
+```

@@ -60,8 +60,52 @@ npx source-map-explorer /tmp/main.jsbundle --no-border-checks
 
 ## 反模式
 
-- 没有任何测量数据，就盲目删依赖或拆包。
-- 只看 JS bundle 大小，忽略原生二进制和资源文件的体积。
-- 为了减包随意删 polyfill，却不验证 Hermes 能力覆盖。
-- 开启远程分包但不验证下载来源的可信性与完整性。
-- 用 barrel exports 重导出整个库，tree shaking 形同虚设。
+### FAIL: 没数据就改
+
+```bash
+"包好像变大了，删几个依赖看看"
+→ 删了 lodash → 业务崩
+→ 实际：lodash 占 12KB，真正大头是 moment 占 240KB
+```
+
+### PASS: source-map-explorer 定位
+
+```bash
+npx react-native bundle --dev false --minify true \
+  --bundle-output /tmp/main.jsbundle --sourcemap-output /tmp/main.jsbundle.map
+npx source-map-explorer /tmp/main.jsbundle
+# 输出每个依赖的精确占比，定位到真正瓶颈
+```
+
+### FAIL: 只看 JS bundle
+
+```
+JS bundle 5MB → 优化到 3MB
+APK 还是 80MB
+原因：原生依赖（OpenCV / TensorFlow）占 60MB，没人看
+```
+
+### PASS: 三层独立测量
+
+```bash
+# 1. JS bundle (source-map-explorer)
+# 2. APK 解压看 lib/ 目录原生 .so
+unzip -l app-release.apk | grep -E '\.so$' | sort -k1 -n
+# 3. assets/ 资源
+```
+
+### FAIL: barrel export 抹杀 tree shaking
+
+```js
+// utils/index.ts
+export * from './a';  // 导出整个 a.ts
+export * from './b';
+// 业务用 import { x } from 'utils' → bundle 拉入 a.ts + b.ts 全部
+```
+
+### PASS: 直接路径 import
+
+```js
+import { x } from 'utils/a';
+// bundle 仅含 a.ts，b.ts 自动 tree-shake
+```

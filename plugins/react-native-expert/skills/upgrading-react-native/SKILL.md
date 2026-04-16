@@ -66,8 +66,59 @@ xcodebuild -workspace "$APP_DIR/ios/App.xcworkspace" -scheme App -sdk iphonesimu
 
 ## 反模式
 
-- 直接把模板文件整份覆盖到现有原生工程。
-- 只升级 `react-native`，不升级 React、Expo 或测试栈。
-- Android 过了就合并，iOS 留着“后面再说”。
-- 遇到构建失败就加临时补丁，不追根到真实破坏性变更。
-- 不做业务回归，把“能编译”误当成“升级完成”。
+### FAIL: 整份覆盖模板
+
+```bash
+# 直接 cp 模板里的 ios/ android/ 文件
+cp -R rn-template-0.78/ios/. myapp/ios/
+cp -R rn-template-0.78/android/. myapp/android/
+# 历史的原生改造（推送 / 支付 / 自定义 Activity）全部丢失
+# 上线后发现关键功能消失
+```
+
+### PASS: 逐文件 diff 合并
+
+```bash
+curl -L -o /tmp/diff.diff \
+  "https://raw.githubusercontent.com/react-native-community/rn-diff-purge/diffs/diffs/0.76.9..0.78.2.diff"
+# 逐文件审阅
+grep "^diff --git" /tmp/diff.diff
+# 用 git apply --3way 或手动合并到现有原生工程
+git apply --3way --reject /tmp/diff.diff
+# 解决冲突时保留本地原生改造
+```
+
+### FAIL: 只升 react-native
+
+```bash
+npm install react-native@0.78
+# react/ react-test-renderer/ jest 仍是旧版
+# 测试报：useState is not a function
+# Expo SDK 不兼容新 RN 内部 API
+```
+
+### PASS: 配套同步
+
+```bash
+# 查 RN 版本对应的 React / Jest / Expo
+npm view react-native@0.78 peerDependencies
+# 一次性升级
+npm install react-native@0.78 react@18.3 react-test-renderer@18.3 jest@29
+# Expo 用户
+npx expo install --fix
+```
+
+### FAIL: 一端通过即合并
+
+```
+Android 构建过 → "iOS 后面再说"
+PR merge → 主分支构建失败 → 阻塞所有人
+```
+
+### PASS: 双端都过
+
+```bash
+./gradlew :app:assembleDebug
+xcodebuild -workspace ios/MyApp.xcworkspace -scheme MyApp build
+# 两个都过 + 真机冒烟 + Detox 跑过 → 才能合并
+```

@@ -36,7 +36,69 @@ description: "当用户要用 ObjC/Swift 实现 React Native iOS 原生模块或
 
 ## 反模式
 
-- 用 `.m` 写 `getTurboModule:`，C++ 语法报错。
-- 遗漏 `#ifdef`，旧架构编译找不到头文件。
-- `ResolveBlock` 被调两次，JS Promise 异常。
-- 遗漏 `install_modules_dependencies`，编译失败。
+### FAIL: .m 写 getTurboModule
+
+```objc
+// MyModule.m  ← 错误后缀
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:... {
+    // error: expected '(' before '<' token
+    // C++ 头文件无法在 .m 中编译
+}
+```
+
+### PASS: .mm 文件
+
+```objc
+// MyModule.mm  ← ObjC++
+#ifdef RCT_NEW_ARCH_ENABLED
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+    (const facebook::react::ObjCTurboModule::InitParams &)params {
+    return std::make_shared<facebook::react::NativeMyModuleSpecJSI>(params);
+}
+#endif
+```
+
+### FAIL: Promise 调两次
+
+```objc
+RCT_EXPORT_METHOD(load:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject) {
+    [api request:^(NSError *err, NSData *data) {
+        if (err) reject(@"err", err.description, err);
+        resolve(data);  // err 时也跑到这里 → 双调！
+    }];
+}
+// JS：UnhandledPromiseRejection: settled multiple times
+```
+
+### PASS: 互斥分支 + return
+
+```objc
+[api request:^(NSError *err, NSData *data) {
+    if (err) {
+        reject(@"err", err.description, err);
+        return;
+    }
+    resolve(data);
+}];
+```
+
+### FAIL: 漏 install_modules_dependencies
+
+```ruby
+# MyModule.podspec
+Pod::Spec.new do |s|
+  s.dependency "React-Core"
+  # 缺 install_modules_dependencies
+end
+# pod install → 编译时报 "ReactCommon/TurboModule not found"
+```
+
+### PASS: 完整 podspec
+
+```ruby
+Pod::Spec.new do |s|
+  s.dependency "React-Core"
+  install_modules_dependencies(s)  # 自动接 TurboModule + Codegen
+end
+```

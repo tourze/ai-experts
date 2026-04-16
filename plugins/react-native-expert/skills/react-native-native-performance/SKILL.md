@@ -60,8 +60,56 @@ useEffect(() => {
 
 ## 反模式
 
-- 升级后把性能回退归因于"React Native 就这样"，不做 profiler 与 bundle diff。
-- 不区分 JS 线程和原生线程的瓶颈，用错误的工具排查。
-- 在 debug 包里看见启动慢就直接下结论，不做 release 复测。
-- 为了减包随意删 polyfill，却不验证 Hermes 能力与原生 SDK 覆盖。
-- 忽略 Android 16KB 对齐要求，上架后被 Google Play 拒绝。
+### FAIL: debug 包结论
+
+```
+"启动 8 秒，太慢了"
+→ 实际 release 包启动 1.2 秒
+→ debug 包加载 dev bundle / 远程加载 / 大量调试基础设施
+```
+
+### PASS: release 真机测
+
+```bash
+# iOS
+xcodebuild -workspace ios/MyApp.xcworkspace -scheme MyApp -configuration Release
+# 安装真机后用 react-native-performance 标 TTI
+# Android
+./gradlew :app:assembleRelease
+adb install app-release.apk
+adb shell am start -W com.myapp/.MainActivity  # WaitTime = 启动毫秒
+```
+
+### FAIL: 用 JS 工具查原生卡
+
+```
+Perf Monitor JS FPS = 60，UI FPS = 20
+"还是 JS 慢，再优化 useMemo"
+→ 实际：原生 ScrollView 嵌套 4 层 + onScroll 同步打回 JS
+```
+
+### PASS: 区分线程
+
+```
+Perf Monitor 显示 JS 60 / UI 20 → 问题在原生层
+→ Xcode Time Profiler / Android Studio Profiler
+→ 找到 RCTScrollEvent 占主线程 80%
+→ 移除嵌套或改 onScroll passive
+```
+
+### FAIL: 忽略 Android 16KB 对齐
+
+```bash
+# 提交 Google Play
+# "Your app does not support 16 KB page sizes"
+# 上架被拒，紧急修依赖
+```
+
+### PASS: 上架前检查
+
+```bash
+# 检查所有 .so 是否 16KB 对齐
+zipalign -c -P 16 -v 4 app-release.apk
+# 不通过的依赖：升级或换包
+# 编译参数：android.bundle.enableUncompressedNativeLibs = false 时需 16KB ELF
+```

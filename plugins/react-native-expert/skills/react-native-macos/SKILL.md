@@ -77,8 +77,71 @@ xed -b macos
 
 ## 反模式
 
-- 把 macOS 当成“自动兼容的 iOS”，不重审交互与窗口模型。
-- 在业务组件里到处写 `Platform.OS === "macos"`，最后没人能维护。
-- 直接在原生模块里执行未校验命令或访问未授权路径。
-- 复用 iOS 手势和导航模式，却忽略键盘、鼠标和多窗口场景。
-- 升级 React Native 时只看 JS 依赖，不看 Xcode / CocoaPods / AppKit 兼容性。
+### FAIL: macOS 当大号 iPad
+
+```tsx
+// 直接复用 iOS 代码
+<TouchableOpacity onPress={...}>
+  <SwipeableRow>...</SwipeableRow>  // 桌面无 swipe
+</TouchableOpacity>
+// macOS 用户：
+// - 没有 hover 反馈
+// - 不能用键盘 Tab
+// - 右键不弹菜单
+// - 多窗口被禁用
+```
+
+### PASS: 桌面交互模型
+
+```tsx
+import { useHover } from "react-native-macos";
+const [hovered, ref] = useHover();
+<View ref={ref} style={hovered && styles.hoverBg}>
+  <Pressable onPress={...} accessibilityRole="button">
+    内容（支持 Tab / Enter / 右键菜单）
+  </Pressable>
+</View>
+```
+
+### FAIL: Platform.OS 散射
+
+```tsx
+function Sidebar() {
+  if (Platform.OS === "macos") return <MacSidebar />;
+  if (Platform.OS === "ios") return <IOSSidebar />;
+  ...  // 5 个组件每个都判 3 次
+}
+```
+
+### PASS: .macos.tsx 边界文件
+
+```
+Sidebar/
+  index.ts          → 平台无关接口
+  Sidebar.ios.tsx   → iOS 实现
+  Sidebar.macos.tsx → macOS 实现
+```
+```tsx
+// 业务组件
+import { Sidebar } from "./Sidebar";  // 0 平台判断
+```
+
+### FAIL: 升级只看 JS 依赖
+
+```bash
+npm update react-native
+# 跑通 → 提交
+# Xcode 构建 macOS：error: AppKit deprecated symbols
+# CocoaPods Podfile.lock 锁旧版本，pod 冲突
+```
+
+### PASS: 三栈同步
+
+```bash
+# 1. JS 依赖
+npm update react-native react-native-macos
+# 2. CocoaPods
+cd macos && pod install --repo-update
+# 3. Xcode build settings + AppKit API diff
+xcodebuild -workspace MyApp.xcworkspace -scheme MyApp-macOS build
+```

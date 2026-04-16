@@ -37,7 +37,62 @@ description: "当用户要实现 React Native JSI C++ 绑定或排查 JSI 相关
 
 ## 反模式
 
-- 后台线程直接访问 `jsi::Runtime`，竞态崩溃。
-- HostObject `get` 中做 I/O，冻结 UI。
-- 裸指针持有 C++ 对象，JS 访问时已析构。
-- 简单异步 RPC 也用 JSI，维护成本无收益。
+### FAIL: 后台线程访问 Runtime
+
+```cpp
+std::thread([&runtime]() {
+    auto result = runtime.global().getProperty(runtime, "x");
+    // jsi::Runtime 仅 JS 线程访问 → 数据竞态崩溃
+}).detach();
+```
+
+### PASS: CallInvoker 调度
+
+```cpp
+jsCallInvoker_->invokeAsync([&runtime, value]() {
+    runtime.global().setProperty(runtime, "x", value);
+});
+// 切回 JS 线程后再访问
+```
+
+### FAIL: HostObject get 做 I/O
+
+```cpp
+jsi::Value MyObj::get(jsi::Runtime& rt, const jsi::PropNameID& name) {
+    auto data = readFile("/large/file");  // 同步 I/O
+    return jsi::String::createFromUtf8(rt, data);
+}
+// JS 线程冻结，UI 60fps → 5fps
+```
+
+### PASS: 异步路径
+
+```cpp
+jsi::Value MyObj::get(jsi::Runtime& rt, const jsi::PropNameID& name) {
+    if (name == "loadAsync") {
+        return jsi::Function::createFromHostFunction(rt, name, 0, [](...) {
+            return Promise(...).then([](){ readFile(...); });  // 后台线程
+        });
+    }
+    return jsi::Value::undefined();
+}
+```
+
+### FAIL: 裸指针持有
+
+```cpp
+auto* obj = new MyObject();  // 裸指针
+runtime.global().setProperty(runtime, "obj",
+    jsi::Object::createFromHostObject(runtime,
+        std::shared_ptr<MyObject>(obj)));  // shared_ptr 会析构
+delete obj;  // double free
+```
+
+### PASS: 全程 shared_ptr
+
+```cpp
+auto obj = std::make_shared<MyObject>();
+runtime.global().setProperty(runtime, "obj",
+    jsi::Object::createFromHostObject(runtime, obj));
+// JS 引用结束自动析构，无裸指针
+```
