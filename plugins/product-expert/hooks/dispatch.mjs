@@ -18,6 +18,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const subdir = process.argv[2];
+const DEBUG = process.env.AI_EXPERTS_DEBUG === "1";
+const MAX_STDIN_BYTES = 1024 * 1024; // 1 MB
 
 if (!subdir) {
   console.error("Usage: node dispatch.mjs <subdir>");
@@ -46,15 +48,37 @@ for (const sig of ["SIGINT", "SIGTERM"]) {
 
 async function readPayload() {
   const chunks = [];
+  let totalBytes = 0;
+  let truncated = false;
+
   for await (const chunk of process.stdin) {
-    chunks.push(typeof chunk === "string" ? chunk : chunk.toString("utf-8"));
+    const str = typeof chunk === "string" ? chunk : chunk.toString("utf-8");
+    const byteLen = Buffer.byteLength(str, "utf-8");
+
+    if (totalBytes + byteLen > MAX_STDIN_BYTES) {
+      const remaining = MAX_STDIN_BYTES - totalBytes;
+      if (remaining > 0) chunks.push(str.slice(0, remaining));
+      truncated = true;
+      break;
+    }
+
+    chunks.push(str);
+    totalBytes += byteLen;
+  }
+
+  if (truncated && DEBUG) {
+    console.error(
+      `[dispatch][debug] stdin truncated at ${MAX_STDIN_BYTES} bytes`,
+    );
   }
 
   const raw = chunks.join("").trim();
   if (!raw) return {};
 
   try {
-    return JSON.parse(raw);
+    const payload = JSON.parse(raw);
+    if (truncated) payload._stdinTruncated = true;
+    return payload;
   } catch (err) {
     console.log(
       JSON.stringify({
@@ -76,12 +100,27 @@ const files = readdirSync(dir)
 const reports = [];
 const contexts = [];
 
+if (DEBUG) {
+  console.error(
+    `[dispatch][debug] subdir=${subdir} hooks=${files.length} files=[${files.join(",")}]`,
+  );
+}
+
 for (const file of files) {
+  const t0 = DEBUG ? performance.now() : 0;
   try {
     const mod = await import(pathToFileURL(join(dir, file)).href);
     if (typeof mod.run !== "function") continue;
 
     const result = await mod.run(payload);
+
+    if (DEBUG) {
+      const ms = (performance.now() - t0).toFixed(1);
+      console.error(
+        `[dispatch][debug] ${file} ${ms}ms → ${result?.decision ?? "skip"}`,
+      );
+    }
+
     if (!result) continue;
 
     // block 立即输出并终止
@@ -100,6 +139,10 @@ for (const file of files) {
       reports.push(result);
     }
   } catch (err) {
+    if (DEBUG) {
+      const ms = (performance.now() - t0).toFixed(1);
+      console.error(`[dispatch][debug] ${file} ${ms}ms → ERROR: ${err.message}`);
+    }
     // hook 异常不应崩溃整个 dispatch，降级为 report
     reports.push({
       decision: "report",
