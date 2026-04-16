@@ -42,7 +42,50 @@ gh run view 987654321 --log
 - 如果修复后还要处理 reviewer 评论，转到 [gh-address-comments](../gh-address-comments/SKILL.md)。
 
 ## 反模式
-- 不看日志就凭名字猜测失败原因。
-- 对外部 CI 系统做未授权尝试或臆测实现细节。
-- 还没获得用户确认就直接修改业务代码。
-- 只贴整段日志，不做失败摘要和可执行建议。
+
+### FAIL: 凭名字猜失败原因
+
+```
+"check 'lint' 挂了 → run prettier --write"
+→ 实际：lint 是 ESLint，规则更新后 50 处违规
+```
+
+### PASS: 先抓日志再下结论
+
+```bash
+gh run view 987654321 --log | grep -E "error|fail" | head -20
+```
+
+### FAIL: 直接改不确认
+
+```
+看到类型错误 → git commit -m "fix"
+→ 用户想先讨论根因，PR 又一次 force push
+```
+
+### PASS: 先聚焦修复计划
+
+```
+失败摘要：check 'typecheck' (run 12345)
+错误：src/api.ts:42 Property 'email' missing
+推测原因：上周改了 User schema
+方案 A：加 email 字段
+方案 B：用 Pick 排除
+请确认
+```
+
+### FAIL: 整段日志砸过去
+
+```
+"日志：[10000 行] 请看一下"
+→ 用户没法读
+```
+
+### PASS: 摘要 + 上下文片段
+
+```
+关键失败 (build/test:42-58):
+  TypeError: Cannot read property 'id' of undefined
+  at OrderService.process (src/order.ts:120)
+完整日志：<run URL>
+```

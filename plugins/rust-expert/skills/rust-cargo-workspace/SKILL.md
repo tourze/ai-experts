@@ -35,7 +35,50 @@ description: 当用户需要管理 Cargo workspace 时使用；涉及 [workspace
 
 ## 反模式
 
-- 各成员各写版本号：不一致且重复编译。
-- 不设 `resolver = "2"`：dev-deps feature 泄漏。
-- feature 做减法：启用反而丢功能。
-- `build.rs` 写 `src/`：只读环境直接失败。
+### FAIL: 各成员各写版本
+
+```toml
+# crates/api/Cargo.toml: serde = "1.0.190"
+# crates/worker/Cargo.toml: serde = "1.0.180"
+# 不一致 → 重复编译，链接膨胀
+```
+
+### PASS: workspace.dependencies
+
+```toml
+# 根 Cargo.toml
+[workspace.dependencies]
+serde = "1.0.190"
+# crates/api: serde = { workspace = true }
+```
+
+### FAIL: feature 做减法
+
+```toml
+default = ["std", "tls", "cli"]
+minimal = []  # 启用 minimal 反而丢功能
+```
+
+### PASS: feature additive
+
+```toml
+default = ["std"]
+tls = []   # 启用增加 TLS
+cli = []   # 启用增加 CLI
+# 只能加，不能减
+```
+
+### FAIL: build.rs 写 src/
+
+```rust
+std::fs::write("src/generated.rs", code).unwrap();
+// 只读 checkout / cargo install 失败
+```
+
+### PASS: 只写 OUT_DIR
+
+```rust
+let out = std::env::var("OUT_DIR").unwrap();
+std::fs::write(format!("{}/generated.rs", out), code).unwrap();
+// lib.rs: include!(concat!(env!("OUT_DIR"), "/generated.rs"));
+```

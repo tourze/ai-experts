@@ -58,8 +58,50 @@ def test_multiply(calc: Calculator, value: int, expected: int) -> None:
 
 ## 反模式
 
-- 只有 happy path，没有坏输入和异常断言。
-- 把所有东西都 mock 掉，最后只测到 mock 自己。
-- fixture 巨大且跨文件共享副作用，导致测试互相污染。
-- 断言写成 `assert result` 这类低信息量表达。
-- 为了追求覆盖率写一堆不表达业务价值的空洞测试。
+### FAIL: 全 mock 测到 mock 自己
+
+```python
+def test_create_order():
+    repo = Mock(); repo.save.return_value = Order(id="1")
+    svc = OrderService(repo, Mock())
+    assert svc.create({"item": "X"}).id == "1"  # 只验证 mock 返回值
+```
+
+### PASS: 隔离外部，真实业务
+
+```python
+def test_create_order(in_memory_db):
+    svc = OrderService(SqlOrderRepo(in_memory_db), FakeSender())
+    result = svc.create({"item": "X", "qty": 2})
+    assert result.total == 200  # 验证真实业务规则
+    assert in_memory_db.count("orders") == 1
+```
+
+### FAIL: 低信息量断言
+
+```python
+def test_calculate(): assert calculate(items)  # 只 truthy
+```
+
+### PASS: 具体断言
+
+```python
+def test_calculate_sums_active_items():
+    result = calculate([Item(10, active=True), Item(5, active=False)])
+    assert result.total == 10
+    assert result.skipped_count == 1
+```
+
+### FAIL: 只测 happy path
+
+```python
+def test_parse_valid(): assert parse("1") == 1
+```
+
+### PASS: 覆盖边界 + 错误
+
+```python
+@pytest.mark.parametrize("bad", ["", "abc", None, "1.5"])
+def test_parse_invalid_raises(bad):
+    with pytest.raises(ValueError): parse(bad)
+```
