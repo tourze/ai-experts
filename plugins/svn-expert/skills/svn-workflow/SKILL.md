@@ -80,42 +80,14 @@ svn status
 svn commit path/to/changed-file -m "feat(auth): 合并 OAuth 登录功能分支"
 ```
 
-### 模式 4：属性配置
+### 模式 4-5：属性、仓库维护、迁移
 
-```bash
-# 当前目录的忽略规则
-svn propset svn:ignore $'target\nnode_modules\n.idea\n' .
+详细命令见 [references/properties-and-admin.md](references/properties-and-admin.md)。要点：
 
-# 需要对子树继承时使用 svn:global-ignores（Subversion 1.8+）
-svn propset svn:global-ignores $'*.pyc\n*.class\n*.jar\n' .
-
-# 统一换行策略
-svn propset svn:eol-style native path/to/file.java
-
-# 外部依赖固定到指定路径 / 修订
-svn propset svn:externals $'libs/common https://svn.example.com/repos/common-lib/trunk\nlibs/utils -r 500 https://svn.example.com/repos/utils/tags/v1.0\n' .
-```
-
-### 模式 5：仓库维护与迁移
-
-```bash
-# 创建与热备份
-svnadmin create /path/to/repos
-svnadmin hotcopy /path/to/repos /path/to/backup
-
-# 导出 / 导入
-svnadmin dump /path/to/repos > full-dump.svn
-svnadmin load /path/to/new-repos < full-dump.svn
-
-# 工作副本异常恢复
-svn cleanup
-svn cleanup --remove-unversioned
-
-# SVN -> Git 迁移
-git svn clone https://svn.example.com/repos/project \
-  --trunk=trunk --branches=branches --tags=tags \
-  --authors-file=authors.txt project-git
-```
+- `svn:ignore`（仅当前目录）vs `svn:global-ignores`（子树继承，Subversion 1.8+）
+- `svnadmin hotcopy` / `dump` / `load` 做备份与迁移
+- `svn cleanup` 修复异常工作副本，1.9+ 支持 `--remove-unversioned`
+- `git svn clone --trunk= --branches= --tags= --authors-file=` 做 SVN→Git 迁移
 
 ## 检查清单
 
@@ -129,8 +101,53 @@ git svn clone https://svn.example.com/repos/project \
 
 ## 反模式
 
-- `svn add .`、`svn add --force`、`svn commit -m "fix"` 这类批量或模糊命令直接进入生产工作流。
-- 把 `svn mergeinfo` 默认输出当作“已合并修订列表”使用；1.8 起默认输出已经变了。
-- 在 1.8+ 仍机械使用旧式 reintegrate 参数，导致流程与当前客户端语义脱节。
-- 试图通过递归 `svn:ignore` 解决整棵子树忽略问题，却忘了它本身不具备继承语义。
-- 直接修改 `tags/`、在脏工作副本上合并、或在未 `svn update` 的情况下提交。
+### FAIL: svn add . + 模糊提交
+
+```bash
+svn add .
+svn commit -m “fix”
+# 把临时文件 / .DS_Store / 调试日志全部加进版本库
+# commit message 无信息量
+```
+
+### PASS: 显式路径 + 信息
+
+```bash
+svn status  # 先看
+svn add path/to/specific/file.java
+svn commit path/to/specific/file.java \
+  -m “fix(auth): refresh token 过期时调用错误 endpoint”
+```
+
+### FAIL: 直接改 tags/
+
+```bash
+cd tags/v2.1.0
+# 编辑文件 → svn commit
+# 标签变可写 → 失去发布快照价值
+```
+
+### PASS: 新建 hotfix tag
+
+```bash
+svn copy ^/branches/hotfix/v2.1.1 ^/tags/v2.1.1 \
+  -m “chore(release): v2.1.1 hotfix”
+# tags/ 始终只读，每个发布是独立快照
+```
+
+### FAIL: 脏工作副本合并
+
+```bash
+# 工作副本有未提交修改
+svn merge ^/branches/feature
+# 冲突无法分清是 merge 引入还是本地修改
+```
+
+### PASS: 干净副本 + update
+
+```bash
+svn status  # 必须为空
+svn update  # 拉最新
+svn merge ^/branches/feature
+svn commit ...
+```

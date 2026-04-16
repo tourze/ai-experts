@@ -82,7 +82,43 @@ export const getCurrentUser = cache(async () => {
 
 ## 反模式
 
-- Server Action 只靠 middleware 鉴权，直接调用时绕过检查。
-- 在服务端模块顶层用 `let currentUser = ...` 存请求数据，多请求共享导致数据串台。
-- 把完整数据库行对象作为 RSC props 传给客户端组件。
-- 父子 Server Components 各自独立 fetch 同一数据，未做去重。
+### FAIL: 模块顶层存请求状态
+
+```ts
+// services/user.ts
+let currentUser: User | null = null;  // 模块级
+
+export async function setCurrentUser(u) { currentUser = u; }
+export function getCurrentUser() { return currentUser; }
+// 请求 A 设了 alice → 请求 B 读到 alice
+// 多请求共享内存 → 数据串台
+```
+
+### PASS: 请求级 cache
+
+```ts
+import { cache } from 'react';
+
+export const getCurrentUser = cache(async () => {
+  const session = await getSession();  // 从 cookie/header 读
+  return session?.user;
+});
+// 同一请求内去重 / 跨请求隔离
+```
+
+### FAIL: 整 row 传给 client
+
+```tsx
+// Server
+const user = await db.user.findUnique(...);
+return <ClientCard user={user} />;
+// user 含 password_hash, internal_notes, ...
+// 全部序列化到客户端
+```
+
+### PASS: 仅必要字段
+
+```tsx
+const user = await db.user.findUnique(...);
+return <ClientCard user={{ id: user.id, name: user.name, avatar: user.avatar }} />;
+```

@@ -87,8 +87,55 @@ describe("cart", () => {
 
 ## 反模式
 
-- 通过 `setTimeout` 或手动 `done()` 掩盖异步竞态。
-- 为了让测试通过，把每个函数都 `jest.mock()` 掉，结果没有覆盖真实行为。
-- 把大对象直接做快照而不拆分断言，导致 diff 无法阅读。
-- 断言数量过多却不分场景，单个失败会隐藏真正原因。
-- 组件测试只查 class / id，导致重构样式时测试大量误报。
+### FAIL: setTimeout 等异步
+
+```js
+it('saves user', (done) => {
+  service.save(user);
+  setTimeout(() => {
+    expect(db.users).toHaveLength(1);
+    done();
+  }, 1000);  // 慢机不够 / 快机白等
+});
+```
+
+### PASS: await + resolves
+
+```js
+it('saves user', async () => {
+  await service.save(user);
+  expect(db.users).toHaveLength(1);
+});
+// 或：await expect(service.save(user)).resolves.toEqual({...});
+```
+
+### FAIL: 全 mock
+
+```js
+jest.mock('@/services/order');
+jest.mock('@/services/user');
+jest.mock('@/services/inventory');
+// 测试通过 / 实际业务从未运行 / 假阳性
+```
+
+### PASS: 仅 mock 边界
+
+```js
+jest.mock('@/lib/stripe');  // 仅外部 API
+// OrderService 和 UserService 用真实实现
+// 这样测试覆盖真实业务逻辑
+```
+
+### FAIL: 查 class
+
+```jsx
+expect(container.querySelector('.btn-primary.large')).toBeInTheDocument();
+// 重构 CSS class → 测试全挂
+```
+
+### PASS: 用户视角查询
+
+```jsx
+expect(screen.getByRole('button', { name: 'Submit' })).toBeInTheDocument();
+// 关注用户能看到/操作什么，不关心实现细节
+```

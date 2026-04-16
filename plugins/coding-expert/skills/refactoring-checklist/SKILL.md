@@ -53,8 +53,37 @@ description: "当用户要重构、重组或清理代码，需要确保安全性
 完整的 Red Flags 表和 Rationalizations 对照表见 [references/discipline-guard.md](./references/discipline-guard.md)。
 
 ## 反模式
-- 没测试就重构，改完不知道有没有破坏行为。
-- 重构变重写：本来说"整理一下"，最后推翻重来。
-- 大爆炸提交：一个提交改 50 个文件，出问题无法定位。
-- 重构搭车：顺手修 bug 加功能。
-- 不限范围：从一个重命名开始，一路改到数据库 schema。
+
+### FAIL: 重构搭车
+
+```bash
+git diff
+# 50% 重命名 + 30% 修 bug + 20% 加新功能
+git commit -m "refactor: 整理 + 修 bug"
+→ 出问题：无法 revert 重构而保留 bug 修复
+```
+
+### PASS: 三类独立提交
+
+```bash
+git commit -m "refactor: extract OrderService"  # 仅结构
+git commit -m "fix: race condition in payment"   # 仅修复
+git commit -m "feat: support multi-currency"     # 仅新功能
+→ 任一可独立 revert
+```
+
+### FAIL: 大爆炸提交
+
+```
+一个 commit 改 80 文件
+→ 上线后某个细节挂了
+→ 无法定位是哪一步引入
+```
+
+### PASS: 增量小步
+
+```
+每步 ≤ 5 文件 + 测试通过 + 提交
+→ 最多 20 个小提交，每个独立可验
+→ 出问题二分法快速定位
+```

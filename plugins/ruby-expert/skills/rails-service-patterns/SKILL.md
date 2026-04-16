@@ -75,8 +75,52 @@ bundle exec rake db:migrate
 
 ## 反模式
 
-- 把复杂业务流程塞进 `before_save` / `after_commit` 之类 callback，让副作用顺序不可预测。
-- controller 直接操作多个 model 并手写事务，导致协议层和业务层耦合。
-- service object 同时处理参数校验、持久化、通知、第三方 API 和序列化输出，变成上帝类。
-- 直接运行 `rake` / `rubocop` / `rspec` 而不走 `bundle exec`，结果使用了错误 gem 版本。
-- 留下 `binding.pry`、`debugger`、`puts` 等临时调试语句，让运行时行为依赖人工清理。
+### FAIL: callback 跑业务
+
+```ruby
+class Order < ApplicationRecord
+  after_commit :charge_payment, :send_email, :update_inventory, :notify_admin
+end
+# 4 个 callback 顺序依赖 / 测试难以隔离 / 一个挂全挂
+```
+
+### PASS: Service object 显式编排
+
+```ruby
+class CompleteOrder
+  def call(order)
+    Order.transaction do
+      PaymentService.new.charge(order)
+      InventoryService.new.deduct(order)
+    end
+    OrderMailer.confirmation(order).deliver_later  # 事务外异步
+    AdminNotifier.new.order_completed(order)
+  end
+end
+# 顺序明确 / 事务边界清楚 / 易测
+```
+
+### FAIL: Controller 操作多 model
+
+```ruby
+def create
+  ActiveRecord::Base.transaction do
+    @order = Order.create!(order_params)
+    @order.items.create!(...)
+    Inventory.deduct(@order)
+    AuditLog.create!(...)
+  end
+end
+# Controller 知道太多业务细节
+```
+
+### PASS: 委托 service
+
+```ruby
+def create
+  @order = CreateOrder.new.call(order_params)
+  render json: @order, status: :created
+rescue Order::InsufficientStock => e
+  render json: { error: e.message }, status: :unprocessable_entity
+end
+```

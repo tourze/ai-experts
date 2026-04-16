@@ -109,9 +109,30 @@ App({
 
 ## 反模式
 
-- 未确认项目栈就默认生成 CloudBase 代码、登录页或 Web SDK 鉴权流程。
-- 不看 `project.config.json` 就猜测页面根目录、构建根目录或上传入口。
-- 只创建 `.wxml` 或 `.js`，遗漏页面级 `.json` 和样式文件。
-- 在 Taro 或小程序运行时直接访问 `document`、`window`、`alert`、`confirm`。
-- 要求用户在仓库里硬编码 CloudBase Secret、环境密钥或上传私钥。
-- 把纯视觉设计、H5 页面、后端微服务问题强行归到本技能处理。
+### FAIL: 默认套 CloudBase / 用 DOM
+
+```js
+wx.cloud.callFunction('login')  // 项目可能没用 CloudBase
+window.alert("xxx")              // 小程序无 window
+```
+
+### PASS: 先看 project.config.json + 小程序 API
+
+```js
+// 确认 wx.cloud.init 才走 CloudBase
+wx.showModal({ title: "提示", content: "xxx" })
+```
+
+### FAIL: 缺页面四件套
+
+```
+仅创建 pages/profile/profile.js
+→ 缺 .wxml/.json/.wxss
+```
+
+### PASS: 四件套 + app.json 同步
+
+```
+profile.{js, wxml, wxss, json}
++ app.json pages 数组追加
+```

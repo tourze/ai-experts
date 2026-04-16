@@ -84,7 +84,55 @@ const sorted = items.toSorted((a, b) => a.value - b.value);
 
 ## 反模式
 
-- 在冷路径上做微优化，增加复杂度但用户无感知。
-- 用 Array.sort() 只为了取最大/最小值，一次循环就够。
-- 在循环内每次 new RegExp，重复编译正则。
-- DOM 操作读写交替，触发多次强制布局。
+### FAIL: sort 取 max
+
+```js
+const max = items.sort((a, b) => b.value - a.value)[0];
+// O(n log n) + 修改原数组
+```
+
+### PASS: 一次循环
+
+```js
+const max = items.reduce((m, x) => x.value > m.value ? x : m, items[0]);
+// O(n) + 不修改原数组
+```
+
+### FAIL: 循环内 new RegExp
+
+```js
+for (const item of items) {
+  if (new RegExp(`^${prefix}_`).test(item.name)) { ... }
+}
+// 每次循环重新编译正则
+```
+
+### PASS: 提升到外面
+
+```js
+const re = new RegExp(`^${prefix}_`);
+for (const item of items) {
+  if (re.test(item.name)) { ... }
+}
+// 编译一次，循环复用
+```
+
+### FAIL: DOM 读写交替
+
+```js
+items.forEach(item => {
+  const h = item.element.offsetHeight;  // 读（强制 layout）
+  item.element.style.top = `${h}px`;    // 写
+  // 下次循环又读 → 再次强制 layout
+});
+```
+
+### PASS: 先读后写
+
+```js
+const heights = items.map(i => i.element.offsetHeight);  // 批量读
+items.forEach((i, idx) => {
+  i.element.style.top = `${heights[idx]}px`;  // 批量写
+});
+// 一次 layout
+```
