@@ -12,5 +12,8 @@
     "phpstan",
     "composer"
   ],
+  "dependencies": [
+    "coding-expert"
+  ],
   "skills": "./skills/"
 }

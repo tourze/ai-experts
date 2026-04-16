@@ -35,9 +35,8 @@ DevOps 专家插件，覆盖 Docker/Helm/K8s、CI/CD 流水线、Nginx 配置、
 | PostToolUse Edit\|Write | `lint-terraform-fmt` | Terraform 格式检查 |
 | PostToolUse Edit\|Write | `lint-shellcheck` | Shell 脚本静态分析 |
 | PostToolUse Edit\|Write | `debug-statement-guard` | 调试断点与调试输出检测 |
-| PostToolUse Edit\|Write | `file-budget-guard` | Shell 脚本行数预算（300 行） |
 
-如需通用 BOM / UTF-8 编码检查，请叠加安装 [coding-expert](../coding-expert/README.md)。
+通用 BOM / UTF-8 编码检查和文件预算守卫统一由 [coding-expert](../coding-expert/README.md) 提供；若使用 `--plugin-dir` 单独加载本插件，请同时加载它。
 
 ## 安装
 

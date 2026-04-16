@@ -13,9 +13,9 @@ test("manifest 显式声明 author、skills 与 hooks，且路径都存在", () 
 
   assert.equal(manifest.name, "rust-expert");
   assert.equal(manifest.author?.name, "ai-experts");
+  assert.deepEqual(manifest.dependencies, ["coding-expert"]);
   assert.equal(manifest.skills, "./skills/");
   assert.equal("hooks" in manifest, false);
-  assert.equal("dependencies" in manifest, false);
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
   assert.ok(existsSync(hooksPath));

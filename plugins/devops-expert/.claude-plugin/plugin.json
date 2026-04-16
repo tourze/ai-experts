@@ -14,5 +14,8 @@
     "terraform",
     "github-actions"
   ],
+  "dependencies": [
+    "coding-expert"
+  ],
   "skills": "./skills/"
 }

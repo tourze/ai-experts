@@ -14,5 +14,8 @@
     "centos",
     "arch"
   ],
+  "dependencies": [
+    "coding-expert"
+  ],
   "skills": "./skills/"
 }

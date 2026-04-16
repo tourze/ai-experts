@@ -12,6 +12,7 @@ test("manifest 与 hooks 配置指向真实文件", () => {
   const hooks = JSON.parse(readFileSync(hooksPath, "utf-8"));
 
   assert.equal(manifest.name, "java-expert");
+  assert.deepEqual(manifest.dependencies, ["coding-expert"]);
   assert.equal(manifest.skills, "./skills/");
   assert.equal("hooks" in manifest, false);
 

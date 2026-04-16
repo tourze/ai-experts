@@ -14,5 +14,8 @@
     "test2",
     "prove"
   ],
+  "dependencies": [
+    "coding-expert"
+  ],
   "skills": "./skills/"
 }

@@ -14,6 +14,7 @@ test("manifest 显式声明 author、skills 与 hooks", () => {
   assert.equal(manifest.name, "linux-expert");
   assert.match(manifest.version, /^\d+\.\d+\.\d+$/);
   assert.equal(manifest.author?.name, "ai-experts");
+  assert.deepEqual(manifest.dependencies, ["coding-expert"]);
   assert.equal(manifest.skills, "./skills/");
   assert.equal("hooks" in manifest, false);
   assert.deepEqual(manifest.keywords, ["linux", "bash", "shell", "systemd", "debian", "centos", "arch"]);

@@ -15,5 +15,8 @@
     "simulator",
     "app-store"
   ],
+  "dependencies": [
+    "coding-expert"
+  ],
   "skills": "./skills/"
 }

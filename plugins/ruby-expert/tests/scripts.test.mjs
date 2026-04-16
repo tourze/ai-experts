@@ -11,7 +11,6 @@ const filesToCheck = [
   "hooks/dispatch.mjs",
   "hooks/post-tool-use/edit-write/_utils.mjs",
   "hooks/post-tool-use/edit-write/debug-statement-guard.mjs",
-  "hooks/post-tool-use/edit-write/file-budget-guard.mjs",
   "hooks/post-tool-use/edit-write/syntax-ruby.mjs",
   "tests/dispatch.test.mjs",
   "tests/hooks.test.mjs",

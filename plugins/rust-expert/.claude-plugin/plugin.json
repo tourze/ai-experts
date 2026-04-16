@@ -13,5 +13,8 @@
     "ownership",
     "clippy"
   ],
+  "dependencies": [
+    "coding-expert"
+  ],
   "skills": "./skills/"
 }

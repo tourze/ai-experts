@@ -12,5 +12,8 @@
     "channel",
     "gofmt"
   ],
+  "dependencies": [
+    "coding-expert"
+  ],
   "skills": "./skills/"
 }

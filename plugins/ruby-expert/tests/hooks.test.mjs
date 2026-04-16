@@ -5,7 +5,6 @@ import { tmpdir } from "node:os";
 import test from "node:test";
 
 import { run as runDebugGuard } from "../hooks/post-tool-use/edit-write/debug-statement-guard.mjs";
-import { run as runFileBudgetGuard } from "../hooks/post-tool-use/edit-write/file-budget-guard.mjs";
 import { run as runSyntaxRuby } from "../hooks/post-tool-use/edit-write/syntax-ruby.mjs";
 
 async function withTempDir(fn) {
@@ -89,15 +88,5 @@ test("debug-statement-guard 会跳过 _spec.rb 测试文件", async () => {
     }));
 
     assert.equal(result, null);
-  });
-});
-
-test("file-budget-guard 不会把末尾换行误算成额外一行", async () => {
-  await withTempDir(async (dir) => {
-    const filePath = join(dir, "budget.rb");
-    const content = `${Array.from({ length: 500 }, (_, i) => "value = " + i).join("\n")}\n`;
-    writeFileSync(filePath, content, "utf8");
-
-    assert.equal(await runFileBudgetGuard(payload(filePath)), null);
   });
 });

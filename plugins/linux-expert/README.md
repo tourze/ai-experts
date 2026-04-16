@@ -5,7 +5,7 @@ Linux 系统专家插件，覆盖 Shell 守卫、发行版问题排查、磁盘/
 ## 结构
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
-- `hooks/`：`hooks.json`、`dispatch.mjs` 与 5 个 `PostToolUse Edit|Write` 守卫脚本。
+- `hooks/`：`hooks.json`、`dispatch.mjs` 与 4 个 `PostToolUse Edit|Write` 守卫脚本。
 - `skills/`：8 个 Linux 专向技能文档，统一采用中文结构。
 - `tests/`：manifest、dispatch、hook 逻辑、SKILL 文档与示例校验。
 
@@ -36,9 +36,8 @@ Linux 系统专家插件，覆盖 Shell 守卫、发行版问题排查、磁盘/
 | PostToolUse Edit\|Write | `syntax-zsh` | Zsh 语法检查 |
 | PostToolUse Edit\|Write | `lint-shellcheck` | ShellCheck 静态分析 |
 | PostToolUse Edit\|Write | `debug-statement-guard` | set -x 等调试语句检测 |
-| PostToolUse Edit\|Write | `file-budget-guard` | Shell 脚本行数预算（300 行） |
 
-如需通用 BOM / UTF-8 编码检查，请叠加安装 [coding-expert](../coding-expert/README.md)。
+通用 BOM / UTF-8 编码检查和文件预算守卫统一由 [coding-expert](../coding-expert/README.md) 提供；若使用 `--plugin-dir` 单独加载本插件，请同时加载它。
 
 ## 安装
 

@@ -13,5 +13,8 @@
     "clang",
     "memory-safety"
   ],
+  "dependencies": [
+    "coding-expert"
+  ],
   "skills": "./skills/"
 }

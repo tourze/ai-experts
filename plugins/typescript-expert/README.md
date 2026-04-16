@@ -5,7 +5,7 @@ TypeScript 开发专家插件，提供显式 manifest 注册、`PostToolUse Edit
 ## 目录
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
-- `hooks/`：`hooks.json`、`dispatch.mjs` 与 4 个 `PostToolUse Edit|Write` 守卫。
+- `hooks/`：`hooks.json`、`dispatch.mjs` 与 3 个 `PostToolUse Edit|Write` 守卫。
 - `skills/`：3 份 TypeScript 主题技能文档，统一采用「适用场景 → 核心约束 → 代码模式 → 检查清单 → 反模式」结构。
 - `tests/`：校验 manifest、dispatch、脚本语法与技能文档结构/链接。
 
@@ -24,9 +24,8 @@ TypeScript 开发专家插件，提供显式 manifest 注册、`PostToolUse Edit
 | PostToolUse Edit\|Write | `syntax-typescript` | esbuild transformSync 语法验证 |
 | PostToolUse Edit\|Write | `lint-eslint` | 使用项目本地 `eslint` 包执行代码质量检查 |
 | PostToolUse Edit\|Write | `debug-statement-guard` | console.log / debugger 检测 |
-| PostToolUse Edit\|Write | `file-budget-guard` | TS 文件行数预算（500 行） |
 
-如需通用 BOM / UTF-8 编码检查，请叠加安装 [coding-expert](../coding-expert/README.md)。
+通用 BOM / UTF-8 编码检查和文件预算守卫统一由 [coding-expert](../coding-expert/README.md) 提供；若使用 `--plugin-dir` 单独加载本插件，请同时加载它。
 
 ## 协作插件
 

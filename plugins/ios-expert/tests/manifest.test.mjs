@@ -13,6 +13,7 @@ test("ios-expert manifest, hooks, agents, and core directories are valid", () =>
   const hooks = JSON.parse(readFileSync(hooksPath, "utf-8"));
 
   assert.equal(manifest.name, "ios-expert");
+  assert.deepEqual(manifest.dependencies, ["coding-expert"]);
   assert.equal(manifest.skills, "./skills/");
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
   assert.ok(existsSync(hooksPath));

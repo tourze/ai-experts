@@ -13,6 +13,7 @@ test("manifest 显式声明作者、skills 与 hooks", () => {
 
   assert.equal(manifest.name, "python-expert");
   assert.deepEqual(manifest.author, { name: "ai-experts" });
+  assert.deepEqual(manifest.dependencies, ["coding-expert"]);
   assert.equal(manifest.skills, "./skills/");
   assert.equal("hooks" in manifest, false);
 

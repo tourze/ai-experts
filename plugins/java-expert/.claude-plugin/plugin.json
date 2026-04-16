@@ -14,5 +14,8 @@
     "gradle",
     "graalvm"
   ],
+  "dependencies": [
+    "coding-expert"
+  ],
   "skills": "./skills/"
 }

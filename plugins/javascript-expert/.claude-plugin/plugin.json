@@ -13,5 +13,8 @@
     "node",
     "es6"
   ],
+  "dependencies": [
+    "coding-expert"
+  ],
   "skills": "./skills/"
 }

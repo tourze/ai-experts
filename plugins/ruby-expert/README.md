@@ -5,7 +5,7 @@ Ruby 开发专家插件，覆盖 Ruby / Rails / RSpec / Bundler / Rake 工作流
 ## 目录结构
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
-- `hooks/`：`hooks.json`、`dispatch.mjs` 与 3 个 `PostToolUse Edit|Write` 守卫脚本。
+- `hooks/`：`hooks.json`、`dispatch.mjs` 与 2 个 `PostToolUse Edit|Write` 守卫脚本。
 - `skills/`：Ruby 开发与 RSpec 测试技能文档。
 - `tests/`：manifest、dispatch、hook、脚本文档回归测试。
 
@@ -22,9 +22,8 @@ Ruby 开发专家插件，覆盖 Ruby / Rails / RSpec / Bundler / Rake 工作流
 |------|------|------|
 | PostToolUse Edit\|Write | `syntax-ruby` | 对 `.rb` / `.rake` / `.gemspec` / `Gemfile` / `Rakefile` 等执行 `ruby -c` |
 | PostToolUse Edit\|Write | `debug-statement-guard` | `binding.pry` / `binding.irb` / `byebug` / `debugger` / `puts` / `pp` 检测 |
-| PostToolUse Edit\|Write | `file-budget-guard` | Ruby 源文件与 `Rakefile` / `config.ru` 等命名文件的行数预算与棘轮治理 |
 
-如需通用 BOM / UTF-8 编码检查，请叠加安装 [coding-expert](../coding-expert/README.md)。
+通用 BOM / UTF-8 编码检查和文件预算守卫统一由 [coding-expert](../coding-expert/README.md) 提供；若使用 `--plugin-dir` 单独加载本插件，请同时加载它。
 
 ## 验证命令
 

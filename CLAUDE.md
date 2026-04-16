@@ -4,7 +4,7 @@
 Claude Code 插件集合，包含 54 个领域专家插件，每个插件提供 skills、hooks 和/或 agents。
 
 ## 核心架构约束
-- **插件必须自包含**：每个插件最终以独立 copy 方式分发，不能依赖共享目录或跨插件引用。dispatch.mjs、guard 等即使重复也必须各插件自带。
+- **插件源码不能跨插件 import**：每个插件仍以独立目录分发；通用守卫统一收敛在基座插件中，通过 manifest dependencies 复用，不再在各插件里复制同一份实现。
 - 插件结构：`.claude-plugin/plugin.json` + `hooks/` + `skills/` + `tests/` + `README.md`
 
 ## 插件层次结构
@@ -21,25 +21,38 @@ Claude Code 插件集合，包含 54 个领域专家插件，每个插件提供 
 
 3. **语言层** — python-expert, javascript-expert, typescript-expert, java-expert, go-expert, rust-expert, ruby-expert, php-expert, cpp-expert, ios-expert, perl-expert 等
    - 在基座层之上叠加语言特有的 syntax check、lint、debug-statement 检测
-   - 各自包含自己的 dispatch.mjs 和语言特有的 PostToolUse 守卫
+   - 各自包含自己的 dispatch.mjs 和语言特有的 PostToolUse 守卫；通用 `file-budget` 统一复用 `coding-expert`
 
 4. **框架/领域层** — react-expert, nextjs-expert, laravel-expert, nestjs-expert, vue-expert, devops-expert, frontend-expert, security-expert, product-expert, marketing-expert 等
    - 主要提供 skills，少数有领域特有的 hooks
-   - 框架插件通过 dependencies 声明依赖对应的语言插件（如 laravel→php, nestjs→typescript）
+   - 框架/领域插件按需通过 dependencies 声明依赖对应的语言插件或 `coding-expert`
    - 非代码领域插件（product/marketing/legal/finance 等）只提供 skills，不需要文件守卫
 
 ## 已声明的插件依赖
 - android-expert → java-expert
+- cpp-expert → coding-expert
+- devops-expert → coding-expert
 - frontend-expert → javascript-expert
+- go-expert → coding-expert
+- ios-expert → coding-expert
+- java-expert → coding-expert
+- javascript-expert → coding-expert
 - laravel-expert → php-expert
+- linux-expert → coding-expert
 - mysql-expert → database-expert
 - nestjs-expert → typescript-expert
 - nextjs-expert → typescript-expert, react-expert
+- perl-expert → coding-expert
 - pgsql-expert → database-expert
+- php-expert → coding-expert
+- python-expert → coding-expert
 - react-native-expert → react-expert
 - redis-expert → database-expert
+- ruby-expert → coding-expert
+- rust-expert → coding-expert
 - symfony-expert → php-expert
 - tauri-expert → rust-expert, typescript-expert
+- typescript-expert → coding-expert
 - vue-expert → javascript-expert
 - webman-expert → php-expert
 

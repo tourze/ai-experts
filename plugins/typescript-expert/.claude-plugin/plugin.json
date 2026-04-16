@@ -12,5 +12,8 @@
     "generics",
     "esbuild"
   ],
+  "dependencies": [
+    "coding-expert"
+  ],
   "skills": "./skills/"
 }

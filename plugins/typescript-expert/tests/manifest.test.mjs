@@ -7,15 +7,15 @@ const pluginRoot = resolve("plugins/typescript-expert");
 const manifestPath = resolve(pluginRoot, ".claude-plugin/plugin.json");
 const hooksPath = resolve(pluginRoot, "hooks/hooks.json");
 
-test("manifest 显式声明作者、skills、hooks，且不再使用无效 dependencies 对象", () => {
+test("manifest 显式声明作者、skills、hooks 与 coding-expert 依赖", () => {
   const manifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
   const hooks = JSON.parse(readFileSync(hooksPath, "utf-8"));
 
   assert.equal(manifest.name, "typescript-expert");
   assert.deepEqual(manifest.author, { name: "ai-experts" });
+  assert.deepEqual(manifest.dependencies, ["coding-expert"]);
   assert.equal(manifest.skills, "./skills/");
   assert.equal("hooks" in manifest, false);
-  assert.equal("dependencies" in manifest, false);
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
   assert.ok(existsSync(hooksPath));

@@ -5,7 +5,6 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 
 import { run as runDebugGuard } from "../hooks/post-tool-use/edit-write/debug-statement-guard.mjs";
-import { run as runFileBudgetGuard } from "../hooks/post-tool-use/edit-write/file-budget-guard.mjs";
 
 async function withTempDir(fn) {
   const dir = mkdtempSync(join(tmpdir(), "cpp-expert-"));
@@ -53,15 +52,5 @@ test("debug-statement-guard 跳过测试文件", async () => {
       ),
       null,
     );
-  });
-});
-
-test("file-budget-guard 不会把末尾换行误算成额外一行", async () => {
-  await withTempDir(async (dir) => {
-    const filePath = join(dir, "budget.hpp");
-    const content = `${Array.from({ length: 500 }, (_, i) => `int v${i};`).join("\n")}\n`;
-    writeFileSync(filePath, content, "utf8");
-
-    assert.equal(await runFileBudgetGuard(payload(filePath)), null);
   });
 });

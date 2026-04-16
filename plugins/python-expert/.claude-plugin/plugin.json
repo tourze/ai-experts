@@ -13,5 +13,8 @@
     "mypy",
     "uv"
   ],
+  "dependencies": [
+    "coding-expert"
+  ],
   "skills": "./skills/"
 }

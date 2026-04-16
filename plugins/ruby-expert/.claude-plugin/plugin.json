@@ -13,5 +13,8 @@
     "rake",
     "rubocop"
   ],
+  "dependencies": [
+    "coding-expert"
+  ],
   "skills": "./skills/"
 }

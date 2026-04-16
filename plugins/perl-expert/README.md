@@ -5,7 +5,7 @@ Perl 开发专家插件，覆盖现代 Perl 5.36+ 开发、Test2 测试工作流
 ## 目录结构
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
-- `hooks/`：`hooks.json`、`dispatch.mjs` 与 3 个 `PostToolUse Edit|Write` 守卫脚本。
+- `hooks/`：`hooks.json`、`dispatch.mjs` 与 2 个 `PostToolUse Edit|Write` 守卫脚本。
 - `skills/`：Perl 开发与 Test2 测试技能文档。
 - `tests/`：manifest、dispatch、脚本与文档回归测试。
 
@@ -22,9 +22,8 @@ Perl 开发专家插件，覆盖现代 Perl 5.36+ 开发、Test2 测试工作流
 |------|------|------|
 | PostToolUse Edit\|Write | `syntax-perl` | 对 `.pl` / `.pm` / `.t` / `.psgi` / `Makefile.PL` / `Build.PL` 执行 `perl -c` |
 | PostToolUse Edit\|Write | `debug-statement-guard` | `$DB::single` / `Data::Dumper` / `warn` / `print STDERR` / `Devel::*` 检测 |
-| PostToolUse Edit\|Write | `file-budget-guard` | Perl 源文件与 `Makefile.PL` / `Build.PL` 等的行数预算与棘轮治理 |
 
-如需通用 BOM / UTF-8 编码检查，请叠加安装 [coding-expert](../coding-expert/README.md)。
+通用 BOM / UTF-8 编码检查和文件预算守卫统一由 [coding-expert](../coding-expert/README.md) 提供；若使用 `--plugin-dir` 单独加载本插件，请同时加载它。
 
 ## 验证命令
 

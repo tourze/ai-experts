@@ -1,6 +1,6 @@
 # coding-expert
 
-通用编码守卫插件，提供语言无关的代码质量防护、危险命令拦截、会话上下文注入和桌面通知。
+通用编码守卫插件，提供语言无关的代码质量防护、统一的文件预算守卫、危险命令拦截、会话上下文注入和桌面通知。
 
 ## Hooks
 
@@ -10,6 +10,7 @@
 | PostToolUse Edit\|Write | `edit-loop-detector` | 无限编辑循环检测 |
 | PostToolUse Edit\|Write | `large-edit-chunk-guard` | 过大单次编辑拦截 |
 | PostToolUse Edit\|Write | `merge-conflict-guard` | 未解决合并冲突检测 |
+| PostToolUse Edit\|Write | `file-budget-guard` | 跨语言代码文件预算与历史超标文件棘轮治理 |
 | PostToolUse Edit\|Write | `markdown-budget-guard` | Markdown token 预算 |
 | PostToolUse Edit\|Write | `syntax-json` | JSON 语法检查 |
 | PostToolUse Edit\|Write | `syntax-xml` | XML 语法检查 |
@@ -29,7 +30,7 @@
 
 ## 设计原则
 
-本插件只收录**语言无关**的通用守卫。语言/框架特定的检查属于对应的 `*-expert` 插件；仓库中的 `encoding-guard` 也只在这里维护。
+本插件只收录**语言无关**的通用守卫。语言/框架特定的检查属于对应的 `*-expert` 插件；仓库中的 `encoding-guard` 与跨语言 `file-budget-guard` 也只在这里维护。
 当前插件仅包含 hooks，不包含 `skills/` 或 `agents/` 组件，因此没有 `SKILL.md` 需要重组。
 
 ## 安装
@@ -54,7 +55,7 @@ claude plugin uninstall coding-expert --scope project
 
 如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
 
-建议与语言专用插件配合使用。
+建议与语言专用插件配合使用；语言插件通过依赖本插件复用通用编码与文件预算守卫。
 
 ## 验证
 

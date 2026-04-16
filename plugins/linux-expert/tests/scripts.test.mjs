@@ -9,7 +9,6 @@ const scriptFiles = [
   "hooks/dispatch.mjs",
   "hooks/post-tool-use/edit-write/_utils.mjs",
   "hooks/post-tool-use/edit-write/debug-statement-guard.mjs",
-  "hooks/post-tool-use/edit-write/file-budget-guard.mjs",
   "hooks/post-tool-use/edit-write/lint-shellcheck.mjs",
   "hooks/post-tool-use/edit-write/syntax-bash.mjs",
   "hooks/post-tool-use/edit-write/syntax-zsh.mjs",

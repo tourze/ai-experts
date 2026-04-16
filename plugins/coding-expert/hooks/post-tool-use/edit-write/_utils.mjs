@@ -17,14 +17,28 @@ export function hasCommand(name) {
   }
 }
 
+export function getBaseName(filePath) {
+  return basename(filePath.replaceAll("\\", "/"));
+}
+
+export function getLowerBaseName(filePath) {
+  return getBaseName(filePath).toLowerCase();
+}
+
 /** 按扩展名匹配 */
 export function matchExt(filePath, exts) {
-  return exts.includes(extname(filePath).toLowerCase());
+  const ext = extname(getBaseName(filePath)).toLowerCase();
+  return exts instanceof Set ? exts.has(ext) : exts.includes(ext);
 }
 
 /** 按文件名匹配（如 "Dockerfile", "composer.json"） */
 export function matchName(filePath, names) {
-  return names.includes(basename(filePath));
+  const fileName = getBaseName(filePath);
+  const lowerFileName = fileName.toLowerCase();
+  if (names instanceof Set) {
+    return names.has(fileName) || names.has(lowerFileName);
+  }
+  return names.includes(fileName) || names.includes(lowerFileName);
 }
 
 /** 路径中是否包含指定目录段（如 "Entity"） */
@@ -44,4 +58,11 @@ export function findUp(startPath, fileNames) {
     if (parent === dir) return null;
     dir = parent;
   }
+}
+
+export function countLines(text) {
+  if (!text) return 0;
+  const lines = text.split(/\r?\n/u);
+  if (lines.at(-1) === "") lines.pop();
+  return lines.length;
 }
