@@ -68,11 +68,52 @@ export const buttonVariants = cva(
 
 ## 反模式
 
-- 看到一个视觉差异就加一个新 token。
-- 页面里到处出现 `px-[13px]`、`text-[17px]` 之类任意值。
-- 变体命名完全跟着某个页面走，无法跨场景复用。
-- 用过多 utility 堆出复杂结构，却没有任何组件抽象。
-- Tailwind v4 项目仍依赖过时的 v3 心智模型。
+### FAIL: 任意值横飞
+
+```tsx
+<div className="px-[13px] py-[7px] text-[15px] gap-[11px]">
+// 永远偏离 4/8 网格 → 视觉密度不一致 → 无法形成节奏
+```
+
+### PASS: 走 token
+
+```tsx
+<div className="px-3 py-2 text-sm gap-2">
+// 命中 spacing scale → 与系统其他组件天然对齐
+```
+
+### FAIL: 看到差异就加 token
+
+```css
+@theme {
+  --color-blue-510: #3a82f5;  /* 设计稿临时色 */
+  --color-blue-520: #3982f4;  /* 另一页临时色 */
+}
+/* token 表膨胀，没人敢删 */
+```
+
+### PASS: 先复用再扩展
+
+```
+新 token 准入：
+1. 至少 3 处使用
+2. 现有 token 都不能表达
+3. 命名进入语义层（--color-info），不是数字
+```
+
+### FAIL: utility 堆代替组件
+
+```tsx
+{users.map(u => <div className="flex items-center gap-3 p-4 rounded-lg border bg-surface hover:bg-muted">...</div>)}
+// 5 个页面各写一遍，改样式要改 5 处
+```
+
+### PASS: cva 抽组件
+
+```tsx
+const userCard = cva("flex items-center gap-3 p-4 rounded-lg border");
+<div className={userCard({ state: 'idle' })}>
+```
 
 ## 参考资料
 

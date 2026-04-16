@@ -68,11 +68,49 @@ type ButtonProps = {
 
 ## 反模式
 
-- 在组件里直接写 `#3b82f6`、`12px`、`box-shadow` 常量。
-- 把 `primary-500`、`danger-500` 同时当作品牌语义和业务语义。
-- 每个组件自己决定暗色模式逻辑，导致主题漂移。
-- 通过增加 `variant2`、`variant3` 逃避 API 设计。
-- 为单个页面临时加 token，最后令牌表膨胀失控。
+### FAIL: 组件里写硬编码值
+
+```tsx
+<button style={{ background: '#3b82f6', padding: '12px 16px' }}>
+// 改主题需要全局搜索替换 → 漏改 → 视觉漂移
+```
+
+### PASS: 组件只引 token
+
+```tsx
+<button className="bg-brand-primary px-4 py-3">
+// 改 --color-brand-primary → 全局自动跟随
+```
+
+### FAIL: 一层 token 当所有用途
+
+```css
+--color-primary-500: #3b82f6;  /* 既是品牌色也是按钮色也是链接色 */
+/* 想换按钮颜色但保留品牌色 → 无法解耦 */
+```
+
+### PASS: 三层 token
+
+```css
+/* 原始层 */ --blue-500: #3b82f6;
+/* 语义层 */ --color-brand: var(--blue-500);
+/* 组件层 */ --button-primary-bg: var(--color-brand);
+/* 任何一层都可独立替换 */
+```
+
+### FAIL: 组件内部判断主题
+
+```tsx
+const bg = isDark ? '#1f2937' : '#ffffff';
+// 50 个组件 50 套判断 → 新主题要改 50 处
+```
+
+### PASS: CSS 变量统一切换
+
+```css
+[data-theme='dark'] { --color-surface: #1f2937; }
+/* 组件只用 var(--color-surface)，主题切换零侵入 */
+```
 
 ## 跨会话持久化：BRAND + MASTER + Overrides
 

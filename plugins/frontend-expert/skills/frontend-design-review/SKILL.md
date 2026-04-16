@@ -53,11 +53,53 @@ acknowledgments: |
 
 ## 反模式
 
-- 每块区域都“看起来像主角”，导致无主次。
-- 只做默认态，忽略焦点态、禁用态、空态和错误态。
-- 拿随机灵感图硬套当前项目，风格与品牌完全脱节。
-- 用复杂动画掩盖信息组织问题。
-- 明明有设计系统却继续手写大量一次性样式。
+### FAIL: 全是主角
+
+```
+Hero + 6 张大卡片 + 渐变 banner + 浮动 CTA + 动画背景
+→ 用户视线无落点 → 不知道下一步该点哪里
+```
+
+### PASS: 主次分明
+
+```
+1 个主 CTA（实色按钮）
+2-3 个次操作（ghost / link）
+其余信息降级（小字、灰色、无背景）
+→ 三秒看出"该做什么"
+```
+
+### FAIL: 只做 default 态
+
+```tsx
+<button className="bg-brand">提交</button>
+// 没有 hover/focus/disabled/loading
+// 键盘用户看不到焦点 → a11y 失败
+```
+
+### PASS: 状态完整
+
+```tsx
+<button className="bg-brand hover:bg-brand-700
+  focus-visible:ring-2 disabled:opacity-50
+  data-[loading=true]:cursor-wait">
+```
+
+### FAIL: 动画掩盖信息
+
+```
+用户找不到操作 → "加个滑动动画引导一下"
+→ 实际：信息架构混乱，动画只是绷带
+```
+
+### PASS: 先修结构
+
+```
+1. 重排：核心信息上移
+2. 分组：相关项靠近
+3. 标签：动作动词清晰
+4. 都做完后才考虑动效
+```
 
 ## Absolute Bans（CSS 模式级硬禁令）
 

@@ -67,7 +67,48 @@ owner: DevOps Team
 - 如果规范来自故障复盘，是否补充 [gh-fix-ci](../gh-fix-ci/SKILL.md) 提取出的失败场景。
 
 ## 反模式
-- 把整个 workflow YAML 原样贴进规范，导致文档不可维护。
-- 漏掉 `permissions`、`secrets`、环境保护规则等关键约束。
-- 把 `run:` 里的命令逐行翻译成规范，导致规范与实现耦合。
-- 只写 happy path，不写失败分支和人工介入点。
+
+### FAIL: 复制粘贴 YAML
+
+```md
+## 实现
+\`\`\`yaml
+- name: Setup Node
+  uses: actions/setup-node@v4
+  with:
+    node-version: 20
+- run: npm ci
+- run: npm test
+\`\`\`
+→ 改 action 版本要同时改两处 → 规范变第二份代码
+```
+
+### PASS: 写意图不写实现
+
+```md
+## test job
+- 目的：在合并前验证单元测试通过
+- 触发：所有 PR
+- 依赖：lint job 通过
+- 失败行为：阻断 merge，通知 PR 作者
+- 不规定：用什么 Node 版本、用什么 action
+```
+
+### FAIL: 只写 happy path
+
+```md
+## release job
+- 构建制品
+- 推送到 registry
+→ 推送失败怎么办？谁回滚？制品过期吗？
+```
+
+### PASS: 包含失败与人工
+
+```md
+## release job
+- 成功路径：构建 → 推送 → 通知
+- 失败路径：保留构建日志 30 天，自动通知 #oncall
+- 回滚：手动 workflow_dispatch 触发 revert-release
+- 审批门：production environment 需 1 人 approve
+```
