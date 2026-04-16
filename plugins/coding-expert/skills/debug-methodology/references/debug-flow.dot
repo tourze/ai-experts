@@ -1,0 +1,19 @@
+// 六步调试流程决策图
+digraph debug_flow {
+    rankdir=TB; node [shape=box, style=filled, fontname="sans-serif"];
+    reproduce [label="1. 复现\n稳定复现，明确\n期望 vs 实际", fillcolor="#cce5ff"];
+    isolate   [label="2. 隔离\n二分法缩小到\n模块/函数/行", fillcolor="#cce5ff"];
+    hypothesize [label="3. 假设\n1-3 个可证伪假设\n按可能性排序", fillcolor="#fff3cd"];
+    verify    [label="4. 验证\n一次只测一个假设\n记录结果", fillcolor="#fff3cd"];
+    fix       [label="5. 修复\n针对根因最小修复\n临时补丁必须标注", fillcolor="#d4edda"];
+    regress   [label="6. 回归测试\n补测试 + 跑全套", fillcolor="#d4edda"];
+    fail3     [label="连续失败 ≥3 次？\n→ 架构问题，停下讨论", shape=diamond, fillcolor="#f8d7da"];
+
+    reproduce -> isolate -> hypothesize -> verify;
+    verify -> fix [label="假设证实"];
+    verify -> fail3 [label="假设推翻"];
+    fail3 -> hypothesize [label="< 3 次"];
+    fail3 -> stop [label="≥ 3 次", style=bold];
+    stop [label="STOP\n重新分析架构", fillcolor="#f8d7da"];
+    fix -> regress;
+}

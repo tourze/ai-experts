@@ -1,0 +1,16 @@
+// TDD 红绿重构循环
+digraph tdd_cycle {
+    rankdir=LR; node [shape=box, style=filled, fontname="sans-serif"];
+    red     [label="RED\n写失败测试\n确认失败原因正确", fillcolor="#ffcccc"];
+    green   [label="GREEN\n写最小实现\n刚好通过测试", fillcolor="#ccffcc"];
+    refactor [label="REFACTOR\n消除重复\n提升命名\n不改行为", fillcolor="#ccccff"];
+    check   [label="测试仍绿？", shape=diamond, fillcolor="#ffffcc"];
+
+    red -> green [label="测试失败 ✓"];
+    green -> check [label="测试通过 ✓"];
+    check -> refactor [label="是"];
+    check -> green [label="否，修实现", style=dashed];
+    refactor -> red [label="下一个行为"];
+
+    already_wrote [label="已经先写了代码？\n删掉，从 RED 重来", shape=note, fillcolor="#f8d7da"];
+}

@@ -1,0 +1,21 @@
+// 重构增量步骤循环
+digraph refactor_loop {
+    rankdir=TB; node [shape=box, style=filled, fontname="sans-serif"];
+    precheck [label="准入四项\n测试基线 | 范围界定\n目标明确 | 回滚方案", fillcolor="#cce5ff"];
+    change   [label="做一个小变更\n(只动结构，不改行为)", fillcolor="#fff3cd"];
+    test     [label="跑测试", fillcolor="#d4edda"];
+    pass     [label="通过？", shape=diamond, fillcolor="#ffffcc"];
+    commit   [label="提交\n(独立、可回滚)", fillcolor="#d4edda"];
+    done     [label="范围内还有？", shape=diamond, fillcolor="#ffffcc"];
+    finish   [label="完成\n覆盖率 ≥ 基线", fillcolor="#d4edda"];
+    rollback [label="回滚这一步\n检查原因", fillcolor="#f8d7da"];
+
+    precheck -> change;
+    change -> test -> pass;
+    pass -> commit [label="是"];
+    pass -> rollback [label="否"];
+    rollback -> change;
+    commit -> done;
+    done -> change [label="是"];
+    done -> finish [label="否"];
+}

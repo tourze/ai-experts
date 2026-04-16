@@ -72,7 +72,11 @@ git diff origin/main... -- path/to/file
 
 ## 纪律守卫
 
-**Iron Law：没有读取实际 diff 和跑验证命令，不允许声称”可以落地”。**
+### Iron Law
+
+```
+没有读取实际 DIFF 和跑验证命令，不允许声称”可以落地”
+```
 
 ### Red Flags — 出现以下念头时立即停下
 
@@ -83,7 +87,7 @@ git diff origin/main... -- path/to/file
 | “作者说没问题” | 你在做独立审查，不是在确认作者的判断。 |
 | “时间不够了，快速过一遍” | 草率审查比不审查更危险——给人虚假的安全感。 |
 
-完整的 Red Flags 表和 Rationalizations 对照表见 [references/discipline-guard.md](./references/discipline-guard.md)。
+**执行前必须读取** [references/discipline-guard.md](./references/discipline-guard.md)——包含完整 Red Flags 表和 Rationalizations 对照表。跳过 = 违反 Iron Law。
 
 ## 反模式
 
