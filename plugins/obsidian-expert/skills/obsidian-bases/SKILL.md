@@ -108,9 +108,38 @@ views:
 
 ## 反模式
 
-- 把 Bases 当成 Dataview 来写，继续塞 `from` / `source` / `where`。
-- 假设 `now() - file.ctime` 会返回带 `.days` 字段的对象。
-- 在 `order` 或 `properties` 里引用根本没定义过的 `formula.X`。
-- 用未转义的双引号包双引号字符串，导致 YAML 直接损坏。
-- 在高频查询里滥用 `file.backlinks`，却忽略其性能与刷新限制。
-- 没核实插件前提，就输出一份看似完整但不可用的 `map` 配置。
+### FAIL: Dataview 心智残留
+
+```yaml
+from: "Books"
+where: status != "done"
+views:
+  - type: table
+```
+→ Bases 没有 `from` / `where`；整个文件解析失败。
+
+### PASS: 用 filters
+
+```yaml
+filters:
+  and:
+    - file.hasTag("book")
+    - 'status != "done"'
+views:
+  - type: table
+```
+
+### FAIL: 日期当 Duration 对象
+
+```yaml
+formulas:
+  overdue_days: '(now() - file.ctime).days'
+```
+→ 减法返回毫秒数，没有 `.days` 字段。
+
+### PASS: 显式毫秒转换
+
+```yaml
+formulas:
+  overdue_days: '((now() - file.ctime) / 86400000).toFixed(0)'
+```

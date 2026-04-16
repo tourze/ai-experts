@@ -61,8 +61,35 @@ npx -y @microsoft/learn-cli doctor --format json
 
 ## 反模式
 
-- 直接凭训练记忆生成 Microsoft SDK 调用。
-- 混用不同 major version 的类名或包名，例如旧版存储 SDK 与新版 SDK。
-- 只看博客或论坛，不回到 Microsoft Learn 验证。
-- 把概念类问题强行走 `code-search`。
-- 把 CLI `fetch --section/--max-chars` 误写成 MCP 工具参数。
+### FAIL: 凭记忆写 SDK
+
+```csharp
+// 凭印象写：
+BlobClient.UploadAsync(stream, overwrite: true);
+// 实际新版签名：UploadAsync(Stream, BlobUploadOptions)
+// 编译报错
+```
+
+### PASS: 先查再写
+
+```text
+microsoft_code_sample_search(query: "BlobClient UploadAsync", language: "csharp")
+→ 基于官方示例复制签名
+```
+
+### FAIL: 混用新旧 SDK
+
+```csharp
+// v11 旧包
+using Microsoft.Azure.Storage.Blob;
+// v12 新包
+using Azure.Storage.Blobs;
+// 同一项目混用 → 两套概念 / 难以排查
+```
+
+### PASS: 锁定一个 major 版本
+
+```text
+microsoft_docs_search("Azure Storage SDK migration v11 to v12")
+// 明确迁移到 v12 → 移除 v11 引用
+```

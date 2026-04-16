@@ -77,8 +77,32 @@ obsidian eval code="app.vault.getFiles().length"
 
 ## 反模式
 
-- 把 `vault=` 放在子命令后面，例如 `obsidian daily vault=Notes`。
-- 把 `file=` 当成路径参数使用，或给 `path=` 传不完整路径。
-- 继续写 `silent` 这类官方 CLI 中不存在的 flag。
-- 没有目标文件时强行传 `file=`，忽略“默认作用于活动文件”的行为。
-- 用户只是要改 `.base` 结构，却还在 CLI 命令层兜圈子，不切到 [obsidian-bases](../obsidian-bases/SKILL.md)。
+### FAIL: vault= 位置错
+
+```bash
+obsidian daily vault=Notes
+# vault= 必须在最前
+# → 解析错误 / 使用默认 vault
+```
+
+### PASS: vault= 最前
+
+```bash
+obsidian vault=Notes daily
+obsidian vault=Notes read file=”Recipe”
+```
+
+### FAIL: file= vs path= 混用
+
+```bash
+obsidian read file=”Recipes/Pasta.md”
+# file= 走 wikilink 解析，不要带路径/后缀
+obsidian read path=Recipes  # path 需要完整相对路径
+```
+
+### PASS: 正确区分
+
+```bash
+obsidian read file=”Pasta”                     # wikilink 解析
+obsidian read path=”Recipes/Pasta.md”          # 完整路径
+```

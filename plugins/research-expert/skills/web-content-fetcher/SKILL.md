@@ -54,8 +54,35 @@ python3 "<skill_dir>/scripts/fetch.py" "https://example.com/article" --json
 
 ## 反模式
 
-- 同一个 URL 连续多次失败还继续重试。
-- 已知微信/知乎/掘金页面却坚持只跑 fast 模式。
-- 把脚本 stderr 当作页面正文。
-- 不做字符数约束，直接把超长正文灌进上下文。
-- 在没有 URL 的情况下误用本 skill。
+### FAIL: 无脑重试同 URL
+
+```bash
+python3 scripts/fetch.py "https://..." # 失败
+python3 scripts/fetch.py "https://..." # 又失败
+python3 scripts/fetch.py "https://..." # 还失败
+→ 上下文浪费 / 用户时间浪费
+```
+
+### PASS: 失败 2 次即停
+
+```bash
+python3 scripts/fetch.py "$url" || python3 scripts/fetch.py "$url" --stealth
+# 两次失败：
+# - 告诉用户 URL 暂不可抓
+# - 提出替代：人工复制 / 换备份 URL
+# 不继续重试
+```
+
+### FAIL: 已知站点不加 --stealth
+
+```bash
+python3 scripts/fetch.py "https://mp.weixin.qq.com/s/..."
+# 默认 fast 模式 → 微信公众号强反爬 → 拿到空页
+```
+
+### PASS: 域名路由
+
+```bash
+# mp.weixin.qq.com / zhuanlan.zhihu.com / juejin.cn
+python3 scripts/fetch.py "$url" --stealth
+```

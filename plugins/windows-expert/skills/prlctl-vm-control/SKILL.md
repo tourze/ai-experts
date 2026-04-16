@@ -52,8 +52,33 @@ python3 ./scripts/prlctl_helper.py snapshots "Win11"
 
 ## 反模式
 
-- 直接对模糊名称执行 `power`、`reset`、`snapshot-switch` 等高风险动作。
-- 把密码直接写进命令行，或使用 `--user` 却不提供 `--password-env`。
-- 未经验证就假定 `prlctl exec` 跑在桌面登录用户上下文。
-- 把 GUI 交互任务、长时间前台程序或需要人工确认的流程硬塞进一次 `exec` 命令里。
-- 手写复杂 `prlctl` 长命令而不复用 [辅助脚本](./scripts/prlctl_helper.py)，导致错误处理和参数校验失效。
+### FAIL: 模糊名称直接高风险
+
+```bash
+prlctl stop "Win"
+# 匹配多个 VM（Win10 / Win11 / WinServer）→ 关闭了不该关的
+```
+
+### PASS: resolve 再执行
+
+```bash
+python3 scripts/prlctl_helper.py resolve "Win11"
+# → 返回唯一 UUID
+python3 scripts/prlctl_helper.py status <UUID>
+python3 scripts/prlctl_helper.py power <UUID> stop --option=--acpi
+```
+
+### FAIL: 密码命令行明文
+
+```bash
+prlctl exec <uuid> --user=admin --password=SecretPass123 'whoami'
+# 密码在 history / ps aux 可见
+```
+
+### PASS: --password-env
+
+```bash
+export VM_PWD='SecretPass123'
+prlctl exec <uuid> --user=admin --password-env=VM_PWD 'whoami'
+# 或 --current-user 走桌面登录态
+```

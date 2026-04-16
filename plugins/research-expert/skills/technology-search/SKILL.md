@@ -52,8 +52,35 @@ bash "<skill_dir>/scripts/search-news.sh" "Kubernetes" --max-age 3 --limit 12
 
 ## 反模式
 
-- 把非技术新闻丢给这个 skill。
-- 假设存在仓库外的额外搜索脚本并把它当成必备依赖。
-- 只展示标题，不展示来源与发布时间。
-- 用户要求“最近”，结果却混入大量过旧内容。
-- 没有看 JSON 结构，就直接把 stderr 日志当答案。
+### FAIL: 只展标题
+
+```
+1. AI 新进展
+2. 谁在用 Electron
+3. OpenAI 发布了新东西
+→ 用户：什么时候的？哪个来源？值得看吗？
+```
+
+### PASS: 标题 + 来源 + 时间 + 热度
+
+```
+1. GPT-5 发布：API 支持 200k context（OpenAI Blog, 2026-04-15, 热度 92）
+2. Electron 32 发布（GitHub Release, 2026-04-14, 热度 45）
+→ 用户可自己判断优先级
+```
+
+### FAIL: “最近” 混旧内容
+
+```
+用户：”Kubernetes 最近有什么”
+你：返回列表含 2022 年文章
+→ 信号被噪声淹没
+```
+
+### PASS: --max-age + 排序
+
+```bash
+bash scripts/search-news.sh “Kubernetes” --max-age 7 --limit 10
+# 仅近 7 天
+# 按热度/时间排序
+```

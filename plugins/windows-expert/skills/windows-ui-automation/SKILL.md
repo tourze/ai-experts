@@ -100,8 +100,33 @@ def build_wait_schedule(policy: WaitPolicy) -> List[float]:
 
 ## 反模式
 
-- 直接对密码管理器、安全弹窗、系统管理工具发送点击或按键。
-- 未验证权限边界就把 `SendInput`、`PostMessage`、`SetForegroundWindow` 混用。
-- 将整条自动化链路写成“发现元素后立即执行”，没有等待策略、审计日志和失败分支。
-- 遇到 UIA 定位失败就直接降级为暴力坐标点击。
-- 把内核、驱动或系统提权问题误判成“多发几个热键就能解决”的 UI 自动化问题。
+### FAIL: 敏感窗口自动化
+
+```python
+send_keys(window=”1password.exe”, keys=”master_password”)
+# 密码管理器 / 安全弹窗 / UAC / mmc.exe 一律禁止
+```
+
+### PASS: 阻断名单 + 校验
+
+```python
+BLOCKED = {“1password.exe”, “keepass.exe”, “mmc.exe”, “regedit.exe”}
+if target.process_name.lower() in BLOCKED:
+    raise UIAutomationPolicyError(“禁止自动化敏感进程”)
+```
+
+### FAIL: UIA 失败降级到坐标
+
+```python
+try: click_element(auto_id=”submit”)
+except: click(x=187, y=642)  # 暴力坐标
+# 屏幕分辨率/DPI 变 → 点错
+```
+
+### PASS: 多种定位 + 失败报错
+
+```python
+# UIA 失败 → 尝试 AutomationId → Name → ControlType
+# 都失败 → 报错 + 截图 + 审计日志
+# 不回退到坐标
+```

@@ -60,8 +60,33 @@ npx -y @microsoft/learn-cli doctor --format json
 
 ## 反模式
 
-- 用 `"Azure"`、`".NET"` 这类宽词直接检索，导致结果噪声过大。
-- 查概念和配额时去翻代码示例，而不是先看文档。
-- 没有版本或平台上下文，就直接给出配置和限制结论。
-- 把 CLI `fetch --section` 误认为 MCP `microsoft_docs_fetch` 的参数。
-- 用户明明在修代码，却只给概念文档，不去核对 API 与示例。
+### FAIL: 宽词检索
+
+```text
+microsoft_docs_search(query: "Azure")
+→ 返回 200+ 无关条目
+```
+
+### PASS: 产品 + 任务 + 版本
+
+```text
+microsoft_docs_search(query: "Azure Functions Python v2 timer trigger")
+→ 返回精确匹配的 quickstart
+```
+
+### FAIL: 无上下文给结论
+
+```
+用户："Azure OpenAI 有配额限制吗？"
+你："有，每分钟 6 万 tokens"
+→ 用户："我用的是什么模型？哪个区域？"
+→ 答不上
+```
+
+### PASS: 补全上下文
+
+```
+先问/确认：模型 / region / SKU
+微软 docs_search("Azure OpenAI gpt-4o rate limits {region}")
+→ 给出该 region + 该模型的真实配额 + 原文链接
+```

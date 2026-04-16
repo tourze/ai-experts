@@ -47,8 +47,35 @@ rg -n "EPROCESS|ETHREAD|MMVAD|DRIVER_OBJECT|DEVICE_OBJECT|IRP" .
 
 ## 反模式
 
-- 在没有快照和回滚方案的真实主机上直接做驱动实验。
-- 只看最终崩溃栈，不去追第一个越权写入、无效回调或不该发生的 IOCTL。
-- 把 PatchGuard、DSE、HVCI、VBS 混成一个概念，导致修错层级。
-- 只搜 `EPROCESS` 或 `SSDT` 关键词，却不回到实际入口和调用链。
-- 对内核问题使用桌面自动化式修补，或者对 UIA 问题误判成内核故障。
+### FAIL: 真机无快照实验
+
+```
+"就改一行驱动代码试试"
+→ 蓝屏 / 无法启动 / 丢数据
+```
+
+### PASS: VM + 快照
+
+```bash
+# 先建 VM，快照 "clean-baseline"
+prlctl snapshot <uuid> --name clean-baseline
+# 实验中 → 若崩 → snapshot-switch 回滚
+# 任何驱动类改动都在 VM 中验证，绝不在真机
+```
+
+### FAIL: 四层概念混为一谈
+
+```
+"加 PatchGuard / DSE / HVCI / VBS bypass"
+→ 四种机制混着说 → 修错层
+```
+
+### PASS: 分层识别
+
+```
+DSE (Driver Signature Enforcement)：驱动签名
+HVCI (Hypervisor Code Integrity)：VBS 内存保护
+PatchGuard：内核补丁检测
+VBS (Virtualization-Based Security)：容器级隔离
+→ 先明确当前问题属于哪一层，再选方案
+```

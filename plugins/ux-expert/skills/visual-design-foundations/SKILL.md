@@ -83,8 +83,35 @@ rg -n "color|spacing|font|radius|shadow|icon" src styles tokens tailwind.config.
 
 ## 反模式
 
-- 颜色和字号全靠“看起来差不多”，没有离散尺度。
-- 同一页面混入多套字体、多种圆角和阴影语言。
-- 用品牌色堆满所有按钮、标签和提示，导致主次失真。
-- 把图标当成文字替代品，关键动作没有明确标签。
-- 规范只给审美描述，不给 token、范围和实现约束。
+### FAIL: 无离散尺度
+
+```css
+.card { padding: 13px; margin: 17px; font-size: 15px; }
+.list { padding: 11px; margin: 19px; font-size: 13px; }
+/* 没人记得尺度 / 每页都重新发明 */
+```
+
+### PASS: 尺度 token
+
+```css
+:root {
+  --space-1: 4px; --space-2: 8px; --space-3: 12px;
+  --space-4: 16px; --space-6: 24px; --space-8: 32px;
+}
+.card { padding: var(--space-4); }
+```
+
+### FAIL: 品牌色堆满
+
+```css
+button, .tag, .alert, .label { background: var(--brand); }
+/* 所有元素都是主色 → 没有视觉层级 → 用户不知道该点哪个 */
+```
+
+### PASS: 主次分明
+
+```
+primary CTA (60% 背景或强品牌色)
+secondary (outline / ghost)
+tag / label (neutral / semantic color，不抢主色)
+```

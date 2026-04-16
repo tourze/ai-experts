@@ -112,8 +112,42 @@ for chunk in chunks:
 
 ## 反模式
 
-- 不要把没有字幕的视频硬总结成“可能讲了什么”。
-- 不要把 `scripts/analyze_video.py` 产出的占位文本直接当最终答案发给用户。
-- 不要假设画面里的代码、图表、Demo 一定和字幕一致。
-- 不要承诺精确的说话人识别；绝大多数字幕源并不包含 speaker attribution。
-- 不要在搜视频、批量比选视频的场景误触发本技能；那是 [youtube-search](../youtube-search/SKILL.md) 的职责。
+### FAIL: 无字幕硬总结
+
+```
+用户给视频 URL → 脚本返回 “no captions available”
+你：”这个视频主要讲了 AI 的未来...”
+→ 完全编造
+```
+
+### PASS: 明确说明限制
+
+```
+“该视频没有字幕或字幕被限制访问。
+无法做文本级分析。
+建议：
+1. 人工听一遍后把要点贴给我
+2. 或换一个有字幕的同主题视频”
+```
+
+### FAIL: 脚手架占位当答案
+
+```md
+# 视频分析
+
+## 核心要点
+[TO BE ANALYZED]
+
+## 结论
+[TO BE ANALYZED]
+```
+→ 直接发给用户
+
+### PASS: 完整填充
+
+```bash
+# 先拿字幕
+uv run ... scripts/fetch_transcript.py “$url” --lang en
+# 基于 transcript 文本做实质分析
+# 输出中 [TO BE ANALYZED] 必须清空
+```

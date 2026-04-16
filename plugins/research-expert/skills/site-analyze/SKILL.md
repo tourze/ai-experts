@@ -59,8 +59,43 @@ bash "<skill_dir>/scripts/00_probe_env.sh" --force
 
 ## 反模式
 
-- 用绝对硬编码路径调用脚本。
-- 把私网地址当公网归属去查。
-- 看到 traceroute 中间 `* * *` 就断定链路异常。
-- 只看一个 DNS 结果就下“机房在某地”的结论。
-- 修改 `scripts/` 后忘记同步 `sub/` 里的同名脚本副本。
+### FAIL: 单 DNS 结果下结论
+
+```bash
+dig example.com +short
+# 返回 1.2.3.4
+# 查 IP 归属 → “AWS us-east-1”
+# 结论：”服务部署在美国东部”
+→ 实际：全球 GeoDNS，不同地区返回不同 IP
+```
+
+### PASS: 多源 + 多地区
+
+```bash
+dig @8.8.8.8 example.com +short      # Google DNS
+dig @1.1.1.1 example.com +short      # Cloudflare DNS
+dig @114.114.114.114 example.com +short  # 国内 DNS
+# 对每个 IP 做 whois + ASN 查询
+# 看到多个不同归属 → GeoDNS，按地区独立分析
+```
+
+### FAIL: traceroute * * * = 链路异常
+
+```
+traceroute example.com
+...
+ 5  * * *
+ 6  * * *
+ 7  example-router  120ms
+→ “链路有问题”
+→ 实际：中间跳点禁用 ICMP 回包，链路正常
+```
+
+### PASS: 关注首尾 + 延迟累积
+
+```
+首跳 (本地网关)：正常
+末跳 (目标)：延迟合理
+中间若干 * * * 但整体延迟正常 → 忽略
+如果末跳延迟暴增或丢包 → 才定性异常
+```
