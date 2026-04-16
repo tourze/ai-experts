@@ -13,3 +13,5 @@ skills/.system/
 !.env.example
 !.env.template
 !.env.sample
+
+.claude/agent-memory/
