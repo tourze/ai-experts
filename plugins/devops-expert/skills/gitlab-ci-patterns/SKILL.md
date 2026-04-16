@@ -78,7 +78,42 @@ deploy_production:
 - 是否记录失败后需要保留的日志、报告和测试产物。
 
 ## 反模式
-- 把全部任务塞进单个 job，失去并行和失败定位能力。
-- 对不同分支复用同一个缓存 key，造成脏缓存。
-- 在脚本里硬编码 registry 凭据或 kubeconfig。
-- 对生产环境使用自动部署且没有门禁。
+
+### FAIL: 单 job 塞所有步骤
+
+```yaml
+all:
+  script:
+    - npm ci && npm run lint && npm test && npm run build && kubectl apply -f k8s/
+  # 任何一步挂都显示同一个 job failed，无法定位
+```
+
+### PASS: 分 stage + needs 并行
+
+```yaml
+lint:   { stage: lint, script: [npm run lint] }
+test:   { stage: test, needs: [lint], script: [npm test] }
+build:  { stage: build, needs: [test], script: [npm run build],
+          artifacts: { paths: [dist/] } }
+deploy: { stage: deploy, needs: [build],
+          rules: [{ if: '$CI_COMMIT_BRANCH == "main"', when: manual }] }
+```
+
+### FAIL: 生产自动部署无门禁
+
+```yaml
+deploy_prod:
+  script: [kubectl apply -f k8s/]
+  only: [main]  # 任何 push 自动上线
+```
+
+### PASS: 手动门禁 + 环境
+
+```yaml
+deploy_prod:
+  environment: { name: production, url: https://app.example.com }
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+  script: [kubectl apply -f k8s/]
+```

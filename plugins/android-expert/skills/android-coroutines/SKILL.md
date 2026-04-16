@@ -22,17 +22,12 @@ description: 当用户要在 Android 上使用 Kotlin Coroutines、结构化并�
 * **必须**通过构造函数注入 `CoroutineDispatcher`，默认值可设为 `Dispatchers.IO`
 
 ```kotlin
-// ✅ 正确：Dispatcher 可注入、可替换
-class UserRepository(
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-) {
-    suspend fun getUser(): User = withContext(ioDispatcher) { /* ... */ }
+// ✅ 可注入、可替换
+class UserRepository(private val io: CoroutineDispatcher = Dispatchers.IO) {
+    suspend fun getUser() = withContext(io) { /* ... */ }
 }
-
-// ❌ 错误：硬编码 Dispatcher，测试时无法替换
-class UserRepository {
-    suspend fun getUser(): User = withContext(Dispatchers.IO) { /* ... */ }
-}
+// ❌ 硬编码 → 测试无法替换
+class UserRepository { suspend fun getUser() = withContext(Dispatchers.IO) { /* ... */ } }
 ```
 
 ### 2. Main-Safety
@@ -84,14 +79,9 @@ class NewsViewModel : ViewModel() {
 * `CoroutineExceptionHandler` 只对顶层 `launch` 有效，对 `async` 和子 Coroutine 无效
 
 ```kotlin
-// ✅ 安全的异常处理
-try {
-    val data = repository.fetchData()
-} catch (e: CancellationException) {
-    throw e // 必须重抛
-} catch (e: Exception) {
-    handleError(e)
-}
+try { repository.fetchData() }
+catch (e: CancellationException) { throw e } // 必须重抛
+catch (e: Exception) { handleError(e) }
 ```
 
 ### 8. 协作式取消
@@ -102,27 +92,21 @@ try {
 
 ```kotlin
 suspend fun processLargeList(items: List<Item>) = coroutineScope {
-    for (item in items) {
-        ensureActive() // 检查取消
-        process(item)
-    }
+    for (item in items) { ensureActive(); process(item) }
 }
 ```
 
 ### 9. 回调转换
 
-* 使用 `callbackFlow` 将回调 API 转为 Flow
-* `callbackFlow` 块末尾**必须**调用 `awaitClose` 注销监听器
+* 使用 `callbackFlow` 将回调 API 转为 Flow，块末尾**必须** `awaitClose` 注销监听
 
 ```kotlin
 fun locationUpdates(): Flow<Location> = callbackFlow {
-    val callback = object : LocationCallback() {
-        override fun onLocationResult(result: LocationResult) {
-            trySend(result.lastLocation)
-        }
+    val cb = object : LocationCallback() {
+        override fun onLocationResult(r: LocationResult) { trySend(r.lastLocation) }
     }
-    client.requestLocationUpdates(request, callback, Looper.getMainLooper())
-    awaitClose { client.removeLocationUpdates(callback) }
+    client.requestLocationUpdates(request, cb, Looper.getMainLooper())
+    awaitClose { client.removeLocationUpdates(cb) }
 }
 ```
 
@@ -132,14 +116,10 @@ fun locationUpdates(): Flow<Location> = callbackFlow {
 
 ```kotlin
 class NewsRepository(
-    private val remoteDataSource: NewsRemoteDataSource,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val remote: NewsRemoteDataSource,
+    private val io: CoroutineDispatcher = Dispatchers.IO
 ) {
-    // Flow 上游在 IO 线程执行
-    val newsUpdates: Flow<List<News>> = flow {
-        val news = remoteDataSource.fetchLatestNews()
-        emit(news)
-    }.flowOn(ioDispatcher)
+    val newsUpdates: Flow<List<News>> = flow { emit(remote.fetchLatestNews()) }.flowOn(io)
 }
 ```
 
@@ -147,37 +127,60 @@ class NewsRepository(
 
 ```kotlin
 suspend fun loadDashboardData() = coroutineScope {
-    val userDeferred = async { userRepo.getUser() }
-    val feedDeferred = async { feedRepo.getFeed() }
-
-    DashboardData(
-        user = userDeferred.await(),
-        feed = feedDeferred.await()
-    )
+    val user = async { userRepo.getUser() }
+    val feed = async { feedRepo.getFeed() }
+    DashboardData(user.await(), feed.await())
 }
 ```
 
 ### 测试
 
 ```kotlin
-@Test
-fun testViewModel() = runTest {
-    val testDispatcher = StandardTestDispatcher(testScheduler)
-    val viewModel = MyViewModel(testDispatcher)
-
-    viewModel.loadData()
-    advanceUntilIdle() // 推进所有 Coroutine
-
-    assertEquals(expectedState, viewModel.uiState.value)
+@Test fun testViewModel() = runTest {
+    val vm = MyViewModel(StandardTestDispatcher(testScheduler))
+    vm.loadData(); advanceUntilIdle()
+    assertEquals(expected, vm.uiState.value)
 }
 ```
 
 ## 反模式
 
-| 做法 | 问题 | 正确方式 |
+### FAIL: lifecycleScope 裸 collect
+
+```kotlin
+lifecycleScope.launch {
+    viewModel.uiState.collect { render(it) }
+    // App 进后台仍持续收集，浪费电量和网络
+}
+```
+
+### PASS: repeatOnLifecycle
+
+```kotlin
+viewLifecycleOwner.lifecycleScope.launch {
+    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewModel.uiState.collect { render(it) }
+    }
+}
+```
+
+### FAIL: catch 吞掉 CancellationException
+
+```kotlin
+try { repo.fetch() }
+catch (e: Exception) { handleError(e) } // 取消信号被当普通错误处理，破坏取消传播
+```
+
+### PASS: 重抛 CancellationException
+
+```kotlin
+try { repo.fetch() }
+catch (e: CancellationException) { throw e } // 必须重抛
+catch (e: Exception) { handleError(e) }
+```
+
+| 其他 | 问题 | 正确方式 |
 |------|------|----------|
-| `GlobalScope.launch` | 泄漏，无法取消 | 使用 `viewModelScope` 或注入的 `applicationScope` |
-| `lifecycleScope.launch { flow.collect {} }` | App 在后台仍持续收集 | `repeatOnLifecycle(STARTED)` |
-| `catch (e: Exception)` 不重抛 `CancellationException` | 破坏取消传播 | 单独 catch + rethrow |
-| 硬编码 `Dispatchers.IO` | 测试无法控制线程 | 构造函数注入 Dispatcher |
-| 暴露 `MutableStateFlow` | 外部可修改状态 | `.asStateFlow()` 转只读 |
+| `GlobalScope.launch` | 泄漏，无法取消 | `viewModelScope` 或注入 `applicationScope` |
+| 硬编码 `Dispatchers.IO` | 测试无法替换 | 构造函数注入 Dispatcher |
+| 暴露 `MutableStateFlow` | 外部可改 | `.asStateFlow()` |

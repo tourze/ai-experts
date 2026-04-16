@@ -56,7 +56,40 @@ flowchart TD
 
 ## 反模式
 
-- 同一份文档同时混用多套标题和图表风格。
-- 流程还没想清楚，就先画一张无法落地的大图。
-- 把 Mermaid 当截图替代品，导致内容不可维护。
-- 模板、正文、图表各写各的，最终结构失控。
+### FAIL: 一张图塞所有逻辑
+
+```mermaid
+flowchart TD
+  A[用户] --> B[注册] --> C[验证] --> D[登录] --> E[浏览]
+  E --> F[购物车] --> G[结算] --> H[支付] --> I[订单]
+  I --> J[发货] --> K[物流] --> L[签收] --> M[评价]
+```
+
+→ 15+ 节点一张图，读者无法聚焦任何环节。
+
+### PASS: 按主题拆成小图
+
+```mermaid
+flowchart LR
+  A[用户] --> B[注册] --> C[邮箱验证] --> D[首次登录]
+```
+
+```mermaid
+flowchart LR
+  A[浏览] --> B[加购物车] --> C[结算] --> D[支付]
+```
+
+### FAIL: 用截图代替源码
+
+```markdown
+![架构图](./arch.png)   <!-- 不可 diff、不可在线修改 -->
+```
+
+### PASS: 文本化 Mermaid
+
+```markdown
+~~~mermaid
+flowchart TD
+  Client --> Gateway --> Service --> DB
+~~~
+```

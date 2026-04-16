@@ -38,16 +38,11 @@ use tokio::{
 };
 
 async fn run_jobs(inputs: Vec<u64>, limit: usize) -> Vec<u64> {
-    let limit = Arc::new(Semaphore::new(limit));
+    let sem = Arc::new(Semaphore::new(limit));
     let mut set = JoinSet::new();
 
     for value in inputs {
-        let permit = limit
-            .clone()
-            .acquire_owned()
-            .await
-            .expect("semaphore closed");
-
+        let permit = sem.clone().acquire_owned().await.expect("closed");
         set.spawn(async move {
             let _permit = permit;
             sleep(Duration::from_millis(10)).await;
@@ -56,10 +51,7 @@ async fn run_jobs(inputs: Vec<u64>, limit: usize) -> Vec<u64> {
     }
 
     let mut output = Vec::new();
-    while let Some(result) = set.join_next().await {
-        output.push(result.expect("task panicked"));
-    }
-
+    while let Some(r) = set.join_next().await { output.push(r.expect("panic")); }
     output.sort_unstable();
     output
 }
@@ -116,9 +108,7 @@ struct MemoryRepo;
 
 #[async_trait]
 impl JobRepo for MemoryRepo {
-    async fn load(&self, id: u64) -> Result<String, RepoError> {
-        Ok(format!("job-{id}"))
-    }
+    async fn load(&self, id: u64) -> Result<String, RepoError> { Ok(format!("job-{id}")) }
 }
 
 async fn load_job<R: JobRepo + Sync>(repo: &R, id: u64) -> Result<String, RepoError> {
@@ -133,20 +123,12 @@ async fn load_job<R: JobRepo + Sync>(repo: &R, id: u64) -> Result<String, RepoEr
 ```rust
 use tokio::time::{sleep, timeout, Duration};
 
-#[derive(Debug, PartialEq, Eq)]
-enum JobError {
-    Timeout,
-}
+#[derive(Debug)] enum JobError { Timeout }
 
-async fn slow_job() -> u64 {
-    sleep(Duration::from_millis(50)).await;
-    42
-}
+async fn slow_job() -> u64 { sleep(Duration::from_millis(50)).await; 42 }
 
 async fn run_with_timeout() -> Result<u64, JobError> {
-    timeout(Duration::from_millis(20), slow_job())
-        .await
-        .map_err(|_| JobError::Timeout)
+    timeout(Duration::from_millis(20), slow_job()).await.map_err(|_| JobError::Timeout)
 }
 ```
 
@@ -162,9 +144,42 @@ async fn run_with_timeout() -> Result<u64, JobError> {
 
 ## 反模式
 
-- 在 async 代码里调用 `std::thread::sleep`、同步文件 IO 或长时间 CPU 计算：这会直接堵住 runtime worker。
-- 手里有引用和锁就去 `tokio::spawn`：通常会马上撞上 `'static` / `Send`，或者更糟的是绕过去后引入悬垂设计。
-- 无上限 `spawn`：问题不会立刻报错，但会在高压下以内存、排队延迟和取消失效的形式回来。
-- 任务只 spawn 不 join：出错时没有回收点，也不知道谁已经 panic 或提前退出。
-- 用共享可变状态代替消息边界：短期写起来快，长期最难调。
-- 内层 helper 自己决定超时和重试：最终会形成多个互相打架的时钟。
+### FAIL: async 里做阻塞
+
+```rust
+async fn process(path: &Path) -> io::Result<String> {
+    std::thread::sleep(Duration::from_secs(1));  // 堵 runtime worker
+    std::fs::read_to_string(path)                // 同步文件 IO
+}
+```
+
+### PASS: tokio 异步 API / spawn_blocking
+
+```rust
+async fn process(path: &Path) -> io::Result<String> {
+    tokio::time::sleep(Duration::from_secs(1)).await;
+    tokio::fs::read_to_string(path).await
+}
+// CPU 密集任务：
+let result = tokio::task::spawn_blocking(|| heavy_compute()).await?;
+```
+
+### FAIL: MutexGuard 跨 await
+
+```rust
+let mut guard = shared.lock().unwrap();
+guard.value += 1;
+fetch_from_network().await;  // 锁持有期间 await，可能死锁
+guard.apply();
+```
+
+### PASS: 缩小临界区
+
+```rust
+{
+    let mut guard = shared.lock().unwrap();
+    guard.value += 1;
+} // 锁在 await 前释放
+let data = fetch_from_network().await;
+shared.lock().unwrap().apply(data);
+```

@@ -76,7 +76,42 @@ private var results: some View { ResultsSection(items: items) }
 
 ## 反模式
 
-- 一边重构结构，一边顺手改业务逻辑和页面行为。
-- 用可选 view model + 运行时引导掩盖初始化时序问题。
-- 把每个 computed subview 都强行抽成新文件，导致上下文被切碎。
-- 把服务、状态和 UI 全塞进单个视图文件。
+### FAIL: 可选 VM + bootstrapIfNeeded
+
+```swift
+struct DetailView: View {
+    @State private var viewModel: DetailViewModel?
+    var body: some View {
+        Group { if let vm = viewModel { content(vm) } else { ProgressView() } }
+            .task { if viewModel == nil { viewModel = DetailViewModel(...) } }
+    }
+}
+```
+
+### PASS: init 注入 + 非可选
+
+```swift
+struct DetailView: View {
+    @State private var viewModel: DetailViewModel
+    init(itemID: UUID, service: Service) {
+        _viewModel = State(initialValue: DetailViewModel(itemID: itemID, service: service))
+    }
+    var body: some View { content }
+}
+```
+
+### FAIL: 重构顺手改行为
+
+```swift
+// "顺便优化一下"
+private var filters: some View {
+    FilterSection(options: options.filter { $0.isActive })  // 改了展示范围
+}
+```
+
+### PASS: 重构与变更分两个 commit
+
+```
+commit 1: refactor: extract filters/results into private views (行为不变)
+commit 2: feat: default filter to active options (显式变更)
+```

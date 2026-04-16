@@ -79,7 +79,37 @@ VStack(spacing: 12) {
 
 ## 反模式
 
-- 用 Web / Android 式导航模式硬套到 iOS。
-- 为了“高级感”把可点击区域压到 44pt 以下。
-- 大量使用自定义字体、固定字号或完全忽略 Dynamic Type。
-- 首屏立即弹权限，且没有前置解释。
+### FAIL: 固定字号忽略 Dynamic Type
+
+```swift
+Text(“标题”)
+    .font(.system(size: 20)) // 大字号用户看到的仍是 20pt，无障碍差评
+```
+
+### PASS: 语义字体
+
+```swift
+Text(“标题”)
+    .font(.title3) // 自动响应用户字号设置
+```
+
+### FAIL: 首屏立即弹权限
+
+```swift
+.onAppear { requestCameraPermission() } // 用户还没理解为什么要相机就直接拒绝
+```
+
+### PASS: 先解释再请求
+
+```swift
+VStack {
+    Text(“允许相机访问”)
+        .font(.title3.weight(.semibold))
+    Text(“仅在你主动拍照上传时请求。”)
+    Button(“继续”) { requestCameraPermission() }
+        .buttonStyle(.borderedProminent)
+}
+```
+
+- 用 Web / Android 导航模式硬套到 iOS。
+- 可点击区域压到 44pt 以下。

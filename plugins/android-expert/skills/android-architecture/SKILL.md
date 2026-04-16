@@ -16,32 +16,9 @@ description: 当用户要设计或重构 Android 架构、Clean Architecture、H
 
 依赖方向严格**单向向内**：UI → Domain → Data。禁止反向依赖。
 
-```
-┌─────────────────────────────────────────────────┐
-│  UI Layer (Presentation)                        │
-│  Activity / Fragment / Composable / ViewModel   │
-├─────────────────────────────────────────────────┤
-│  Domain Layer [可选但推荐]                       │
-│  UseCase / Domain Model（纯 Kotlin，零 Android）  │
-├─────────────────────────────────────────────────┤
-│  Data Layer                                     │
-│  Repository 实现 / DataSource / Retrofit / Room │
-└─────────────────────────────────────────────────┘
-```
-
-### UI 层
-
-* **职责**：展示数据、处理用户交互
-* **组件**：Activity、Fragment、Composable、ViewModel
-* ViewModel 通过 `StateFlow` 向 UI 暴露状态
-* **禁止**直接依赖 Data 层实现细节（只能通过 Domain 层的接口）
-
-### Domain 层
-
-* **职责**：封装可复用的业务规则
-* **组件**：UseCase（如 `GetLatestNewsUseCase`）、Domain Model（纯 Kotlin data class）
-* **必须是纯 Kotlin** — 不允许出现任何 `android.*` 导入
-* 依赖 Repository 接口，不依赖具体实现
+- **UI 层**：Activity / Fragment / Composable / ViewModel。ViewModel 通过 `StateFlow` 暴露状态；禁止直接依赖 Data 层实现。
+- **Domain 层**（可选但推荐）：UseCase / Domain Model。**必须纯 Kotlin**，无 `android.*` 导入；依赖 Repository 接口。
+- **Data 层**：Repository 实现 / DataSource / Retrofit / Room。Repository 通过接口暴露，`suspend` 函数必须 main-safe。
 
 ```kotlin
 // Domain 层 UseCase — 纯 Kotlin，无 Android 依赖
@@ -64,18 +41,13 @@ class GetLatestNewsUseCase(
 
 ```kotlin
 class NewsRepositoryImpl(
-    private val remoteDataSource: NewsRemoteDataSource,
-    private val localDataSource: NewsLocalDataSource,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val remote: NewsRemoteDataSource,
+    private val local: NewsLocalDataSource,
+    private val io: CoroutineDispatcher = Dispatchers.IO
 ) : NewsRepository {
-    override suspend fun getLatestNews(): List<News> = withContext(ioDispatcher) {
-        try {
-            val remote = remoteDataSource.fetchNews()
-            localDataSource.cacheNews(remote)
-            remote
-        } catch (e: IOException) {
-            localDataSource.getCachedNews()
-        }
+    override suspend fun getLatestNews() = withContext(io) {
+        runCatching { remote.fetchNews().also { local.cacheNews(it) } }
+            .getOrElse { local.getCachedNews() }
     }
 }
 ```
@@ -98,45 +70,28 @@ class NewsRepositoryImpl(
 * app 级单例用 `@InstallIn(SingletonComponent::class)` + `@Singleton`
 
 ```kotlin
-// 接口绑定 — 优先用 @Binds
-@Module
-@InstallIn(SingletonComponent::class)
+// 接口绑定用 @Binds（abstract class）
+@Module @InstallIn(SingletonComponent::class)
 abstract class DataModule {
-    @Binds
-    abstract fun bindNewsRepository(impl: NewsRepositoryImpl): NewsRepository
+    @Binds abstract fun bindNewsRepository(impl: NewsRepositoryImpl): NewsRepository
 }
 
-// 第三方实例化 — 必须用 @Provides
-@Module
-@InstallIn(SingletonComponent::class)
+// 第三方实例用 @Provides（object class）
+@Module @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    @Provides
-    @Singleton
-    fun provideRetrofit(): Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    @Provides @Singleton
+    fun provideRetrofit(): Retrofit = Retrofit.Builder().baseUrl(BASE_URL).build()
 }
 ```
 
 ## 多模块策略
 
-生产级应用推荐以下模块划分，加速增量编译并强制分离关注点：
+生产级推荐：`:app` → `:feature:*` → `:core:ui` / `:core:domain` / `:core:data` / `:core:model`。
 
-```
-:app                    主入口，串联各 feature
-:core:model             共享 Domain Model（纯 Kotlin）
-:core:data              Repository、DataSource、数据库、网络
-:core:domain            UseCase 与 Repository 接口
-:core:ui                共享 Composable、Theme、资源
-:feature:[name]         独立功能模块（自含 UI + ViewModel）
-                        依赖 :core:domain 和 :core:ui
-```
-
-**关键规则：**
-* Feature 模块之间**禁止**互相依赖，只允许依赖 `:core:*`
-* `:core:model` 和 `:core:domain` 是纯 Kotlin 模块，不包含 Android 依赖
-* 每个 Feature 模块独立提供自己的 Hilt Module
+关键规则：
+- Feature 之间**禁止互相依赖**，只依赖 `:core:*`
+- `:core:model` / `:core:domain` 是纯 Kotlin 模块，无 Android 依赖
+- 每个 Feature 独立提供自己的 Hilt Module
 
 ## 检查清单
 
@@ -147,3 +102,39 @@ object NetworkModule {
 - [ ] Hilt Module 中接口绑定用 `@Binds`，仅第三方实例用 `@Provides`
 - [ ] Feature 模块不互相依赖，只依赖 `:core:*`
 - [ ] 依赖方向单向向内，无循环依赖
+
+## 反模式
+
+### FAIL: Domain 层依赖 Android
+
+```kotlin
+// :core:domain/GetUserUseCase.kt
+import android.content.Context  // 污染 Domain 层
+class GetUserUseCase(private val context: Context) { ... }
+```
+
+### PASS: Domain 层纯 Kotlin
+
+```kotlin
+class GetUserUseCase(private val userRepository: UserRepository) {
+    suspend operator fun invoke(id: String): User = userRepository.getUser(id)
+}
+// 资源读取放到 Data 层实现，Domain 层只依赖接口
+```
+
+### FAIL: ViewModel 暴露可变状态
+
+```kotlin
+class NewsViewModel : ViewModel() {
+    val uiState = MutableStateFlow(NewsUiState())  // UI 可以直接改！
+}
+```
+
+### PASS: 只读 StateFlow
+
+```kotlin
+class NewsViewModel : ViewModel() {
+    private val _uiState = MutableStateFlow(NewsUiState())
+    val uiState: StateFlow<NewsUiState> = _uiState.asStateFlow()
+}
+```

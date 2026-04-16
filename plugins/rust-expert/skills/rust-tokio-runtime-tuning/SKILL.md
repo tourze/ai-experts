@@ -36,7 +36,38 @@ description: 当用户需要调优 Tokio 运行时配置时使用；涉及 Runti
 
 ## 反模式
 
-- 不测量就设 worker 为 1 或 128。
-- worker 上调同步 HTTP/文件锁：其他 task 饿死。
-- 全局 lazy_static Runtime 永不释放：阻止干净退出。
-- async 内调 `block_on`：直接 panic。
+### FAIL: async 内调 block_on
+
+```rust
+async fn handler() -> String {
+    let rt = Runtime::new().unwrap();
+    rt.block_on(other_async())  // panic: Cannot start runtime within runtime
+}
+```
+
+### PASS: 直接 await
+
+```rust
+async fn handler() -> String { other_async().await }
+// block_on 只用在 main 或同步桥接入口
+```
+
+### FAIL: worker 上做同步阻塞
+
+```rust
+#[tokio::main]
+async fn main() {
+    tokio::spawn(async {
+        std::fs::read_to_string("big.log").unwrap();  // 阻塞整个 worker
+    });
+}
+```
+
+### PASS: spawn_blocking 隔离
+
+```rust
+tokio::spawn(async {
+    tokio::task::spawn_blocking(|| std::fs::read_to_string("big.log"))
+        .await.unwrap()
+});
+```

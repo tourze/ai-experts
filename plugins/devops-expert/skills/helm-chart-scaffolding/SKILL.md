@@ -66,7 +66,47 @@ resources:
 - 如果 chart 暴露指标或 ServiceMonitor，参阅 [monitoring-observability](../monitoring-observability/SKILL.md)。
 
 ## 反模式
-- 把所有环境的差异直接写死在模板里。
-- 使用模板函数拼接敏感值并把明文提交进仓库。
-- 依赖版本不锁定，导致每次渲染结果漂移。
-- 跳过渲染校验，只凭肉眼检查 YAML。
+
+### FAIL: 模板里写死环境差异
+
+```yaml
+# templates/deployment.yaml
+{{- if eq .Values.env "prod" }}
+replicas: 10
+{{- else if eq .Values.env "staging" }}
+replicas: 3
+{{- end }}
+```
+
+### PASS: 差异下沉到 values
+
+```yaml
+# templates/deployment.yaml
+replicas: {{ .Values.replicaCount }}
+
+# values-prod.yaml:  replicaCount: 10
+# values-staging.yaml: replicaCount: 3
+```
+
+### FAIL: 明文 secret 进仓库
+
+```yaml
+database:
+  password: "prod-db-password-123"  # 明文提交
+```
+
+### PASS: 外部 Secret 引用
+
+```yaml
+# values.yaml
+database:
+  passwordSecretRef: { name: db-credentials, key: password }
+
+# templates/deployment.yaml
+env:
+  - name: DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: {{ .Values.database.passwordSecretRef.name }}
+        key: {{ .Values.database.passwordSecretRef.key }}
+```

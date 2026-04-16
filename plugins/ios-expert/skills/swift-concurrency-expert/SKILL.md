@@ -66,7 +66,43 @@ Task {
 
 ## 反模式
 
-- 一看到编译器报错就全局补 `@MainActor`。
-- 用 `@unchecked Sendable` 和 `nonisolated(unsafe)` 作为默认修法。
-- 把生命周期绑定工作塞进 `Task.detached`。
-- 不确认 UI / 非 UI 边界，就在多个 actor 之间来回切。
+### FAIL: 全局 @MainActor 压报错
+
+```swift
+@MainActor
+final class ImageProcessor {  // 图像处理本是后台工作
+    func process(_ image: UIImage) async -> UIImage { ... } // 被迫主线程跑 CPU 密集 → UI 卡顿
+}
+```
+
+### PASS: 按职责分隔离域
+
+```swift
+actor ImageProcessor {  // 后台工作用 actor
+    func process(_ image: UIImage) -> UIImage { ... }
+}
+@MainActor final class ImageViewModel {
+    let processor = ImageProcessor()
+    func load(_ image: UIImage) async {
+        let result = await processor.process(image)
+        self.displayImage = result  // 主线程更新 UI
+    }
+}
+```
+
+### FAIL: @unchecked Sendable 糊过
+
+```swift
+final class Cache: @unchecked Sendable {
+    var storage: [String: Data] = [:]  // 真实数据竞争
+}
+```
+
+### PASS: actor 保证隔离
+
+```swift
+actor Cache {
+    private var storage: [String: Data] = [:]
+    func get(_ key: String) -> Data? { storage[key] }
+}
+```
