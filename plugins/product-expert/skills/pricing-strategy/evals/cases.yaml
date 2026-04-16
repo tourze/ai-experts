@@ -1,0 +1,68 @@
+cases:
+  - id: saas_pricing_model_design
+    prompt: "Help me figure out pricing for our new SaaS product. It's a customer support platform for e-commerce stores. We're not sure whether to charge per agent, per ticket, or flat rate. Currently thinking $49-199/month range."
+    fixtures: []
+    rubric:
+      - "Checks for product-marketing-context.md"
+      - "Applies three pricing axes framework"
+      - "Evaluates multiple pricing metrics"
+      - "Discusses which metric aligns with value delivered"
+      - "Recommends good-better-best tier structure"
+      - "Addresses pricing psychology"
+      - "Provides specific pricing recommendation with rationale"
+    trigger_expected: true
+  - id: price_increase_strategy
+    prompt: "We want to raise our prices by 30%. We've been at $29/month for 2 years and we've added a lot of features. How do we do this without losing customers?"
+    fixtures: []
+    rubric:
+      - "Applies price increase strategies"
+      - "Recommends grandfathering or grace period approach"
+      - "Recommends tying increase to new value"
+      - "Provides communication strategy"
+      - "Addresses new vs existing customer timing"
+      - "Suggests annual billing as softening measure"
+      - "Notes some churn is expected"
+    trigger_expected: true
+  - id: pricing_research_methods
+    prompt: "how do we figure out what people will actually pay? we're launching a new product and have no idea what to charge."
+    fixtures: []
+    rubric:
+      - "Triggers on casual phrasing"
+      - "Applies Van Westendorp price sensitivity method"
+      - "Applies MaxDiff for feature importance"
+      - "Recommends competitive benchmarking"
+      - "Explains how to run each method"
+      - "Suggests practical alternatives (customer interviews, competitive analysis)"
+      - "Provides executable pricing research plan"
+    trigger_expected: true
+  - id: tier_structure_evaluation
+    prompt: "We have a Basic ($19), Pro ($49), and Enterprise (custom) plan. The Pro plan gets 70% of signups. Should we add a plan between Pro and Enterprise?"
+    fixtures: []
+    rubric:
+      - "Applies good-better-best tier structure"
+      - "Analyzes current tier performance"
+      - "Evaluates whether 4th tier addresses real gap"
+      - "Considers choice paralysis risk"
+      - "Applies pricing psychology (Hick's Law)"
+      - "Provides specific recommendation with rationale"
+    trigger_expected: true
+  - id: pricing_psychology_tactics
+    prompt: "What pricing psychology tactics should we use on our pricing page? We want the $79 plan to be the most popular."
+    fixtures: []
+    rubric:
+      - "Applies pricing psychology tactics"
+      - "Applies anchoring effect"
+      - "Applies decoy effect or visual emphasis"
+      - "Applies charm pricing or Rule of 100"
+      - "Provides specific pricing page recommendations"
+      - "Cross-references page-cro or marketing-psychology"
+    trigger_expected: true
+  - id: pricing_page_conversion_boundary
+    prompt: "Our pricing page conversion rate is only 1.5%. Can you review the page and suggest improvements?"
+    fixtures: []
+    rubric:
+      - "Recognizes this as pricing page CRO, not pricing strategy"
+      - "References or defers to page-cro skill"
+      - "Explains that pricing-strategy is about pricing decisions"
+      - "Does not attempt full page CRO audit"
+    trigger_expected: true

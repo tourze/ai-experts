@@ -1,0 +1,68 @@
+cases:
+  - id: b2b_content_strategy_from_scratch
+    prompt: "Help me build a content strategy for our B2B SaaS product. We sell expense management software to finance teams at companies with 50-500 employees. We currently have no blog and want to start from scratch."
+    fixtures: []
+    rubric:
+      - "Checks for product-marketing-context.md"
+      - "Establishes 3-5 content pillars"
+      - "Maps content by buyer stage (awareness through implementation)"
+      - "Includes keyword research by buyer stage"
+      - "Recommends mix of searchable and shareable content"
+      - "Uses prioritization scoring framework"
+      - "Provides publishing cadence or calendar"
+      - "Recommends appropriate starting content types"
+    trigger_expected: true
+  - id: content_audit_and_clustering
+    prompt: "We have 200+ blog posts but traffic has been flat for a year. Our content feels random — no clear strategy. How do we fix this?"
+    fixtures: []
+    rubric:
+      - "Diagnoses the 'random content' problem"
+      - "Recommends content audit for existing posts"
+      - "Introduces content pillars and topical clustering"
+      - "Identifies hub-and-spoke opportunities"
+      - "Recommends update, consolidate, or retire decisions"
+      - "Uses prioritization framework"
+      - "Addresses topical authority building"
+    trigger_expected: true
+  - id: developer_content_types
+    prompt: "what kind of content should we be creating? we're a developer tool (API testing platform) and our audience is backend developers and QA engineers"
+    fixtures: []
+    rubric:
+      - "Triggers on casual phrasing"
+      - "Recommends content types for developer audience"
+      - "Emphasizes technical depth and practical value"
+      - "Notes developers prefer substance over marketing"
+      - "Suggests content pillars for developer tool"
+      - "Uses ideation sources framework"
+      - "Mentions developer community channels"
+    trigger_expected: true
+  - id: content_prioritization_framework
+    prompt: "How should we prioritize which content to create first? We have a list of 50 blog post ideas but limited resources — one content marketer writing 2 posts per week."
+    fixtures: []
+    rubric:
+      - "Applies prioritization scoring framework with weights"
+      - "Explains each scoring dimension"
+      - "Recommends focusing on high-impact, lower-effort first"
+      - "Considers buyer stage distribution"
+      - "Provides practical workflow for limited resources"
+    trigger_expected: true
+  - id: content_cluster_design
+    prompt: "We want to build topical authority in 'employee engagement.' What does a content cluster look like for this topic?"
+    fixtures: []
+    rubric:
+      - "Applies hub-and-spoke content cluster model"
+      - "Designs a pillar page for the core topic"
+      - "Identifies 8-15 supporting spoke articles"
+      - "Maps internal linking between hub and spokes"
+      - "Addresses keyword research for the cluster"
+      - "Recommends content types for each piece"
+    trigger_expected: true
+  - id: content_creation_boundary
+    prompt: "Can you write a blog post about remote work best practices for our HR software blog?"
+    fixtures: []
+    rubric:
+      - "Recognizes this as content creation, not strategy"
+      - "Keeps focus on strategic framing instead of full drafting"
+      - "Does not attempt to write the full blog post"
+      - "May provide strategic context for the piece"
+    trigger_expected: true

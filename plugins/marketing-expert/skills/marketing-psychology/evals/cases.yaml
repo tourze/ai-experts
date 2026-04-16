@@ -1,0 +1,66 @@
+cases:
+  - id: pricing_page_psychology
+    prompt: "How can I use psychology to increase conversions on our pricing page? We sell a B2B SaaS tool with three tiers ($29, $79, $199/month)."
+    fixtures: []
+    rubric:
+      - "Checks for product-marketing-context.md"
+      - "Applies pricing psychology models (anchoring, charm pricing, Rule of 100)"
+      - "Applies Good-Better-Best framing"
+      - "Applies loss aversion to tier differentiation"
+      - "Applies social proof near pricing"
+      - "Provides specific recommendations for their price points"
+      - "References specific mental models by name"
+    trigger_expected: true
+  - id: ethical_scarcity_principle
+    prompt: "Explain the scarcity principle and how to use it ethically in SaaS marketing without being manipulative."
+    fixtures: []
+    rubric:
+      - "Explains scarcity principle clearly"
+      - "Provides legitimate SaaS applications"
+      - "Distinguishes ethical from manipulative use"
+      - "Provides specific examples"
+      - "References related mental models"
+      - "Addresses ethical considerations directly"
+    trigger_expected: true
+  - id: psychology_for_copywriting
+    prompt: "what psychological principles should I use to write better marketing copy?"
+    fixtures: []
+    rubric:
+      - "Triggers on casual phrasing"
+      - "Recommends copy-relevant mental models"
+      - "Explains each principle briefly"
+      - "Provides specific copywriting application per principle"
+      - "Organizes by where each applies in copy"
+      - "References multiple model categories"
+    trigger_expected: true
+  - id: onboarding_behavioral_models
+    prompt: "I'm designing an onboarding flow and want to use behavioral psychology to increase activation. What models should I apply?"
+    fixtures: []
+    rubric:
+      - "Applies Goal-Gradient Effect"
+      - "Applies Hick's Law"
+      - "Applies IKEA Effect or Endowment Effect"
+      - "Applies Zeigarnik Effect or commitment principles"
+      - "Explains how each applies to onboarding"
+      - "Provides actionable recommendations per model"
+    trigger_expected: true
+  - id: trial_vs_freemium_psychology
+    prompt: "What's the psychology behind why free trials work better than freemium for some products?"
+    fixtures: []
+    rubric:
+      - "Applies loss aversion to trial context"
+      - "Applies endowment effect"
+      - "Applies Zero-Price Effect"
+      - "Explains how models interact in trial vs freemium"
+      - "Notes when each approach works best"
+      - "Provides clear, educational explanation"
+    trigger_expected: true
+  - id: ab_test_design_boundary
+    prompt: "Help me run an A/B test on which psychological principle works better for our CTA — scarcity vs social proof."
+    fixtures: []
+    rubric:
+      - "Recognizes this as an A/B test setup task"
+      - "References or defers to cro-methodology"
+      - "May provide psychological context for hypothesis"
+      - "Does not attempt full test design using psychology patterns"
+    trigger_expected: true

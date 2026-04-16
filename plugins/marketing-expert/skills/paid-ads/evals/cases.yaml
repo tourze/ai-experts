@@ -1,0 +1,68 @@
+cases:
+  - id: b2b_saas_campaign_planning
+    prompt: "Help me plan a paid advertising strategy. We're a B2B SaaS tool for HR teams, selling at $99/month per seat. We have $15k/month to spend on ads and want to generate demo requests. Where should we advertise?"
+    fixtures: []
+    rubric:
+      - "Checks for product-marketing-context.md"
+      - "Applies platform selection guide"
+      - "Recommends platforms appropriate for B2B HR audience"
+      - "Recommends campaign structure with naming conventions"
+      - "Defines audience targeting per platform"
+      - "Sets budget allocation across platforms"
+      - "Defines success metrics"
+      - "Recommends starting structure and scaling plan"
+    trigger_expected: true
+  - id: campaign_metrics_evaluation
+    prompt: "Our Google Ads CPC is $12 and our cost per lead is $180. Is that good? We're getting about 80 leads/month from a $15k budget."
+    fixtures: []
+    rubric:
+      - "Evaluates metrics in context"
+      - "Compares CPL against LTV considerations"
+      - "Applies campaign optimization framework"
+      - "Recommends specific optimization levers"
+      - "Asks about downstream conversion rates"
+      - "Provides industry context for benchmarking"
+    trigger_expected: true
+  - id: retargeting_campaign_setup
+    prompt: "we want to run retargeting ads for people who visited our site but didn't convert. how should we set this up?"
+    fixtures: []
+    rubric:
+      - "Triggers on casual phrasing"
+      - "Applies funnel-based retargeting approach"
+      - "Recommends audience segments by intent level"
+      - "Recommends different messaging per segment"
+      - "Addresses frequency capping"
+      - "Recommends retargeting platforms"
+      - "Includes audience duration windows"
+    trigger_expected: true
+  - id: tiktok_platform_fit_evaluation
+    prompt: "Should we advertise on TikTok? We sell accounting software to small businesses. Our current ads are on Google and Meta."
+    fixtures: []
+    rubric:
+      - "Applies platform selection guide for TikTok"
+      - "Evaluates fit for accounting + small business audience"
+      - "Provides honest assessment of likely weaker fit"
+      - "Discusses when TikTok can work for B2B"
+      - "Suggests small test budget if proceeding"
+      - "Compares to their existing Google/Meta performance"
+    trigger_expected: true
+  - id: google_ads_campaign_structure
+    prompt: "How do we structure our Google Ads campaigns? We have 50+ keywords we want to target for our CRM product."
+    fixtures: []
+    rubric:
+      - "Applies campaign structure framework"
+      - "Organizes campaigns by theme/intent"
+      - "Recommends tight ad group structure"
+      - "Defines naming conventions"
+      - "Recommends match types strategy"
+      - "Includes negative keyword lists"
+      - "Provides sample campaign structure"
+    trigger_expected: true
+  - id: ad_creative_boundary
+    prompt: "Can you write some ad copy for our Facebook ads? We need headlines and descriptions for 5 different angles."
+    fixtures: []
+    rubric:
+      - "Recognizes this as ad creative generation"
+      - "References or defers to ad-creative skill"
+      - "Does not attempt bulk ad copy generation using campaign strategy patterns"
+    trigger_expected: true

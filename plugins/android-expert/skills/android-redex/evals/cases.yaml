@@ -1,0 +1,29 @@
+cases:
+  - id: gradle_redex_integration
+    prompt: "我有一个用 Gradle 构建的 Android 项目，APK 大概 35MB，想用 ReDex 做体积优化。项目用了 R8 但还是太大。帮我写一个完整的集成方案：从安装 ReDex 到配置 Gradle task 到 CI 里跑起来，macOS 开发环境。"
+    fixtures: []
+    rubric:
+      - "包含 brew install 安装依赖的步骤"
+      - "包含可用的 JSON 配置文件内容"
+      - "包含 Gradle task 定义"
+      - "提到签名参数"
+    trigger_expected: true
+  - id: redex_pass_selection
+    prompt: "我们的 Android 应用 APK 有 45MB，主要问题是方法数接近 64K 限制、大量未使用的调试信息、还有很多 enum 类。想用 ReDex 做极致的体积压缩，帮我设计一个针对性的 pass 组合，解释每个 pass 为什么选、顺序怎么排。"
+    fixtures: []
+    rubric:
+      - "针对方法数问题推荐了相关 pass"
+      - "针对调试信息推荐了 StripDebugInfoPass"
+      - "针对 enum 问题推荐了 OptimizeEnumsPass"
+      - "解释了 pass 执行顺序的原因"
+      - "提供完整可用的配置 JSON"
+    trigger_expected: true
+  - id: redex_crash_debugging
+    prompt: "上线后发现 ReDex 优化过的 APK 在部分机型上崩溃，logcat 显示 java.lang.ClassNotFoundException 和 java.lang.ClassCastException，怀疑是某些通过反射加载的接口被 ReDex 优化掉了。当前用的是默认 pass 配置。怎么定位是哪个 pass 导致的问题？怎么修？"
+    fixtures: []
+    rubric:
+      - "提到 --stop-pass 逐步定位方法"
+      - "识别出 SingleImplPass 或 RemoveUnreachablePass 是可能的问题源"
+      - "给出 ProGuard keep 规则作为修复方案"
+      - "提到 TRACE 环境变量用于调试"
+    trigger_expected: true
