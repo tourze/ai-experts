@@ -39,8 +39,66 @@ EVAL "if redis.call('GET', KEYS[1]) == ARGV[1] then return redis.call('DEL', KEY
 
 ## 反模式
 
-- `SETNX` + `EXPIRE` 两步操作，中间崩溃导致死锁。
-- 释放时直接 `DEL` 不校验 owner，删除其他进程的锁。
-- 锁超时过短，业务未完成锁已过期，导致并发冲突。
-- 单实例故障转移后信任锁仍有效，新主节点锁数据已丢失。
-- 获取失败无限重试不设上限，耗尽连接池。
+### FAIL: SETNX + EXPIRE 两步
+
+```python
+if client.setnx(lock_key, owner):
+    # 进程在这里崩溃 → 锁永远不过期 → 死锁
+    client.expire(lock_key, 30)
+    do_work()
+```
+
+### PASS: 单条原子命令
+
+```python
+acquired = client.set(lock_key, owner, nx=True, ex=30)
+if acquired:
+    do_work()
+# 即使下一行崩溃，30s 后自动释放
+```
+
+### FAIL: 释放不校验 owner
+
+```python
+# 进程 A 拿锁，慢任务超过 30s，锁已过期
+# 进程 B 拿到同一把锁
+# 进程 A 完成，执行：
+client.delete(lock_key)  # 删了 B 的锁！
+```
+
+### PASS: Lua 校验 + DEL
+
+```python
+RELEASE_SCRIPT = """
+if redis.call('GET', KEYS[1]) == ARGV[1] then
+    return redis.call('DEL', KEYS[1])
+end
+return 0
+"""
+client.eval(RELEASE_SCRIPT, 1, lock_key, owner)
+# 只有 owner 匹配才删除
+```
+
+### FAIL: 长任务无 watchdog
+
+```python
+client.set(lock_key, owner, nx=True, ex=10)
+process_large_file()  # 实际耗时 60s
+# 锁 10s 已过期 → 其他进程拿到同一把锁 → 并发处理同一文件
+```
+
+### PASS: watchdog 自动续期
+
+```python
+def watchdog():
+    while running:
+        time.sleep(3)
+        client.eval(RENEW_SCRIPT, 1, lock_key, owner, 10)
+
+threading.Thread(target=watchdog, daemon=True).start()
+try:
+    process_large_file()
+finally:
+    running = False
+    client.eval(RELEASE_SCRIPT, 1, lock_key, owner)
+```

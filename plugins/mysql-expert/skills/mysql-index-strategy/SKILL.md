@@ -48,8 +48,58 @@ ORDER BY created_at DESC LIMIT 20;
 
 ## 反模式
 
-- 为每个 WHERE 条件单独建索引而不使用复合索引：index_merge 效率远低于精准复合索引。
-- 复合索引列顺序按字母排列而非按查询模式排列：最左前缀未命中时索引完全无效。
-- 在 `VARCHAR(255)` 上建完整索引却不评估前缀索引：索引页膨胀，B+Tree 层级增加。
-- 盲目添加索引不删除旧索引：每次写操作都要维护所有索引的 B+Tree。
-- 用 `FORCE INDEX` 绕过优化器而不分析根因：数据分布变化后可能适得其反。
+### FAIL: 单列索引 + index_merge
+
+```sql
+CREATE INDEX idx_user ON orders (user_id);
+CREATE INDEX idx_status ON orders (status);
+CREATE INDEX idx_created ON orders (created_at);
+
+SELECT * FROM orders
+WHERE user_id = 12345 AND status = 1 AND created_at >= '2025-03-01';
+-- EXPLAIN: type=index_merge, Using intersect(idx_user,idx_status)
+-- 三个索引各扫一次再求交集，比单个复合索引慢 5-10 倍
+```
+
+### PASS: 精准复合索引
+
+```sql
+CREATE INDEX idx_user_status_created ON orders (user_id, status, created_at);
+-- 等值 → 等值 → 范围+排序，一次 ref 查找直接定位
+-- EXPLAIN: type=ref, key=idx_user_status_created, Extra=Using index condition
+```
+
+### FAIL: 范围列后排序列
+
+```sql
+CREATE INDEX idx_created_status ON orders (created_at, status);
+SELECT * FROM orders WHERE created_at >= '2025-03-01' ORDER BY status;
+-- 范围列后的 status 无法用于排序，出现 Using filesort
+```
+
+### PASS: 排序列前置或单独覆盖
+
+```sql
+-- 如果是高频查询，按业务调整索引顺序
+CREATE INDEX idx_status_created ON orders (status, created_at);
+SELECT * FROM orders WHERE status = 1 AND created_at >= '2025-03-01';
+-- 等值 status + 范围 created_at，符合最左前缀，无 filesort
+```
+
+### FAIL: 索引堆叠不清理
+
+```sql
+SHOW INDEX FROM users;
+-- idx_email, idx_email_status, idx_email_status_created（前两个被第三个完全覆盖）
+-- 写入要维护 3 个 B+Tree，性能下降但只有 idx_email_status_created 真正被用
+```
+
+### PASS: 定期 audit + 删冗余
+
+```sql
+-- 用 sys.schema_redundant_indexes 找冗余
+SELECT * FROM sys.schema_redundant_indexes WHERE table_name = 'users';
+-- 用 sys.schema_unused_indexes 找未使用
+DROP INDEX idx_email ON users;  -- 被 idx_email_status 覆盖
+DROP INDEX idx_email_status ON users;  -- 被 idx_email_status_created 覆盖
+```

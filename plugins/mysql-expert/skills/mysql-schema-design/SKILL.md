@@ -50,8 +50,58 @@ CREATE TABLE orders (
 
 ## 反模式
 
-- 所有字符串列统一 `VARCHAR(255)`：浪费索引前缀空间，内存临时表按最大长度分配。
-- 用 `FLOAT`/`DOUBLE` 存金额：`0.1 + 0.2 != 0.3`，财务对账出现分差。
-- UUID 存为 `CHAR(36)` 做主键：随机值导致聚簇索引页分裂，写入性能下降 3-5 倍。
-- 用 `ENUM` 管理状态：追加新值需 `ALTER TABLE`，内部排序违反直觉。
-- 建表不指定 `ENGINE` 和 `CHARSET`：依赖服务器默认值，跨环境迁移时产生隐式转换。
+### FAIL: FLOAT 存金额
+
+```sql
+CREATE TABLE orders (total_amount FLOAT);
+INSERT INTO orders VALUES (0.1), (0.2);
+SELECT SUM(total_amount) FROM orders;  -- 0.30000000447034836
+-- 财务对账每月差几分到几元，没人能解释
+```
+
+### PASS: DECIMAL 精确存储
+
+```sql
+CREATE TABLE orders (total_amount DECIMAL(12, 2) NOT NULL DEFAULT 0.00);
+INSERT INTO orders VALUES (0.10), (0.20);
+SELECT SUM(total_amount) FROM orders;  -- 0.30 精确
+```
+
+### FAIL: UUID 当聚簇主键
+
+```sql
+CREATE TABLE orders (
+    id CHAR(36) PRIMARY KEY,  -- 'a1b2c3d4-...'
+    ...
+);
+-- UUID 随机分布 → InnoDB B+Tree 频繁页分裂 → 写入性能比 BIGINT 慢 3-5 倍
+-- 索引体积也大 4 倍（CHAR(36) vs BIGINT 8 字节）
+```
+
+### PASS: BIGINT 自增主键 + UUID 业务列
+
+```sql
+CREATE TABLE orders (
+    id        BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    order_uuid CHAR(36) NOT NULL,
+    UNIQUE KEY uk_order_uuid (order_uuid)
+);
+-- 内部用 BIGINT 顺序主键，外部 API 暴露 UUID
+```
+
+### FAIL: 字符集裸写 utf8
+
+```sql
+CREATE TABLE posts (content VARCHAR(1000)) DEFAULT CHARSET=utf8;
+INSERT INTO posts VALUES ('表情符号 😀');  -- ERROR: Incorrect string value
+-- "utf8" 实际是 utf8mb3，最多 3 字节，不能存 emoji 和部分中日韩字符
+```
+
+### PASS: 显式 utf8mb4
+
+```sql
+CREATE TABLE posts (
+    content VARCHAR(1000)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+-- 完整 4 字节 UTF-8 支持，emoji/罕见字符正常存储
+```

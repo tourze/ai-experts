@@ -47,8 +47,58 @@ CREATE INDEX idx_attrs ON product USING gin (attributes jsonb_path_ops);
 
 ## 反模式
 
-- 为每列建单列 B-tree — 写放大严重且 planner 很少做 BitmapAnd，应按查询组合建复合索引
-- 在 JSONB 列上建 B-tree — 无法加速 `@>`/`?`，应用 GIN
-- 部分索引 WHERE 与查询不匹配 — planner 忽略该索引，白建
-- `INCLUDE` 放大列 — 索引膨胀反增 I/O
-- 凭直觉判断索引有效不跑 `EXPLAIN ANALYZE` — 必须用执行计划验证
+### FAIL: JSONB 上建 B-tree
+
+```sql
+CREATE INDEX idx_attrs ON product (attributes);  -- B-tree on JSONB
+SELECT * FROM product WHERE attributes @> '{"color":"red"}';
+-- planner 忽略此索引 → Seq Scan
+```
+
+### PASS: GIN + 匹配的 operator class
+
+```sql
+CREATE INDEX idx_attrs ON product USING gin (attributes jsonb_path_ops);
+EXPLAIN ANALYZE SELECT * FROM product WHERE attributes @> '{"color":"red"}';
+-- → Bitmap Index Scan on idx_attrs，毫秒级
+```
+
+### FAIL: 部分索引 WHERE 不匹配查询
+
+```sql
+CREATE INDEX idx_active ON purchase_order (created_at)
+    WHERE status = 'active';
+
+SELECT * FROM purchase_order
+    WHERE status NOT IN ('completed','cancelled')
+    ORDER BY created_at;
+-- planner 无法证明 status NOT IN (...) ⊆ status='active'，索引白建
+```
+
+### PASS: WHERE 严格一致
+
+```sql
+CREATE INDEX idx_open ON purchase_order (created_at)
+    WHERE status NOT IN ('completed','cancelled');
+SELECT ... WHERE status NOT IN ('completed','cancelled') ORDER BY created_at;
+-- 索引命中
+```
+
+### FAIL: 凭感觉建索引
+
+```sql
+CREATE INDEX idx_a ON t (col_a);
+CREATE INDEX idx_b ON t (col_b);
+CREATE INDEX idx_c ON t (col_c);
+-- "应该会快"，没跑 EXPLAIN
+-- 实际 planner 选 Seq Scan，因为表太小或选择性差
+```
+
+### PASS: EXPLAIN ANALYZE 验证
+
+```sql
+CREATE INDEX CONCURRENTLY idx_test ON t (col_a, col_b);
+EXPLAIN (ANALYZE, BUFFERS) SELECT ... WHERE col_a = $1 AND col_b = $2;
+-- 确认 Index Scan + buffers shared hit 而非 Seq Scan
+-- 1 周后看 pg_stat_user_indexes.idx_scan，无使用就 DROP
+```

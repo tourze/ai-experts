@@ -46,8 +46,61 @@ CREATE INDEX idx_product_attrs ON product USING gin (attributes jsonb_path_ops);
 
 ## 反模式
 
-- 用 `JSON` 代替 `JSONB` — 不支持索引、不支持相等比较
-- 高频过滤列放 JSONB 内不建表达式索引 — 每次全表扫描 + JSON 解析
-- 在 JSONB 上建 B-tree — 无法加速 `@>`/`?`，应用 GIN
-- 用 `->>` + `LIKE '%keyword%'` — 无法走 GIN，应考虑全文搜索或 trigram
-- 不对 JSONB 做 CHECK — 写入 null/数组/空文档导致下游崩溃
+### FAIL: 高频字段藏在 JSONB
+
+```sql
+CREATE TABLE product (id BIGINT, attrs JSONB);
+-- 价格是高频过滤
+SELECT * FROM product WHERE (attrs->>'price')::numeric > 100;
+-- 每行解析 JSON + 类型转换，全表扫描
+```
+
+### PASS: 提升为 generated column
+
+```sql
+CREATE TABLE product (
+    id    BIGINT,
+    attrs JSONB,
+    price NUMERIC(10,2) GENERATED ALWAYS AS ((attrs->>'price')::numeric) STORED
+);
+CREATE INDEX idx_price ON product (price);
+SELECT * FROM product WHERE price > 100;  -- 走索引，毫秒级
+```
+
+### FAIL: JSON 替代 JSONB
+
+```sql
+CREATE TABLE event (payload JSON);  -- 文本存储
+SELECT * FROM event WHERE payload @> '{"type":"login"}';
+-- ERROR: operator does not exist: json @> unknown
+-- 也无法建 GIN 索引
+```
+
+### PASS: 默认 JSONB
+
+```sql
+CREATE TABLE event (
+    payload JSONB NOT NULL CHECK (jsonb_typeof(payload) = 'object')
+);
+CREATE INDEX idx_payload ON event USING gin (payload jsonb_path_ops);
+```
+
+### FAIL: 没有 CHECK 约束
+
+```sql
+CREATE TABLE config (data JSONB);
+INSERT INTO config VALUES ('null'), ('[]'), ('"string"');
+-- 下游代码 data->'name' → null pointer / type error
+```
+
+### PASS: 顶层类型校验
+
+```sql
+CREATE TABLE config (
+    data JSONB NOT NULL
+        CHECK (jsonb_typeof(data) = 'object'
+               AND data ? 'name'
+               AND jsonb_typeof(data->'name') = 'string')
+);
+-- 写入合法 → 读取保证存在且为字符串
+```

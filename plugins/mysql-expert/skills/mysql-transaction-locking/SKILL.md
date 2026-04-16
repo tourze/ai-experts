@@ -52,8 +52,73 @@ COMMIT;
 
 ## 反模式
 
-- 在事务中执行远程 API 调用或等待用户输入：持有锁期间阻塞其他会话，导致锁等待链式传播。
-- `FOR UPDATE` 的 WHERE 未命中索引：InnoDB 锁定扫描的所有行，并发退化为串行。
-- 忽略死锁错误不重试：error 1213 后直接返回失败，而不是短暂退避后重试 1-3 次。
-- 所有场景都用 `FOR UPDATE` 不区分 `FOR SHARE`：读-读之间也互斥，不必要地降低并发度。
-- 在 REPEATABLE READ 下做大范围扫描加锁：间隙锁覆盖范围远超预期，大量 INSERT 被阻塞。
+### FAIL: 事务中调远程 API
+
+```python
+with db.transaction():
+    order = db.query("SELECT * FROM orders WHERE id = ? FOR UPDATE", id)
+    payment_result = stripe.charge(order.amount)  # 网络调用 2-30 秒
+    db.execute("UPDATE orders SET status = ? WHERE id = ?", payment_result, id)
+# 锁持有 30 秒 → 同 user 其他订单全部 lock wait timeout
+```
+
+### PASS: 短事务 + 状态机
+
+```python
+# Phase 1: 短事务标记 processing
+with db.transaction():
+    affected = db.execute(
+        "UPDATE orders SET status='processing' WHERE id=? AND status='pending'", id)
+    if affected == 0: return "already processing"
+
+# Phase 2: 锁外调用外部
+payment_result = stripe.charge(order.amount)
+
+# Phase 3: 短事务写结果
+with db.transaction():
+    db.execute("UPDATE orders SET status=? WHERE id=?", payment_result, id)
+```
+
+### FAIL: FOR UPDATE 未命中索引
+
+```sql
+-- order_no 未建索引
+START TRANSACTION;
+SELECT * FROM orders WHERE order_no = 'ORD-12345' FOR UPDATE;
+-- InnoDB 全表扫描并锁定每一行，并发 100 个不同 order_no 的请求全部串行
+```
+
+### PASS: 走索引 + 限定行
+
+```sql
+CREATE UNIQUE INDEX idx_order_no ON orders (order_no);
+START TRANSACTION;
+SELECT * FROM orders WHERE order_no = 'ORD-12345' FOR UPDATE;
+-- ref 查找精确锁定一行，不影响其他 order_no
+```
+
+### FAIL: 死锁直接报错
+
+```python
+try:
+    with db.transaction():
+        transfer(from_id, to_id, amount)
+except MySQLError as e:
+    if e.errno == 1213:
+        return {"error": "系统繁忙"}  # 用户必须手动重试
+```
+
+### PASS: 自动重试
+
+```python
+for attempt in range(3):
+    try:
+        with db.transaction():
+            transfer(from_id, to_id, amount)
+        return {"ok": True}
+    except MySQLError as e:
+        if e.errno == 1213 and attempt < 2:
+            time.sleep(0.05 * 2**attempt)  # 指数退避
+            continue
+        raise
+```

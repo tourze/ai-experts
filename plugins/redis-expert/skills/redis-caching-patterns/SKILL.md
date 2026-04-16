@@ -55,7 +55,70 @@ def get_user(user_id: int) -> dict:
 
 ## 反模式
 
-- 先删缓存再写 DB，高并发下旧数据被回填导致长期不一致。
-- 缓存未命中时所有请求同时回源（thundering herd），不加互斥。
-- 不存在的 key 不做缓存，恶意请求每次打穿到数据库。
-- 固定 TTL 不加抖动，大量键同一秒过期引发雪崩。
+### FAIL: 先删缓存再写 DB
+
+```python
+client.delete(key)            # 1. 删缓存
+db.update(...)                # 2. 写 DB
+# 时间窗内：另一请求 miss → 读旧 DB → 写回缓存 → 长期不一致
+```
+
+### PASS: 先写 DB 再删缓存
+
+```python
+db.update(...)                # 1. 写 DB
+client.delete(key)            # 2. 删缓存
+# 后续 miss 读到新值
+# 删失败 → 投递到补偿队列重试，不静默忽略
+```
+
+### FAIL: 击穿不加互斥
+
+```python
+def get(key):
+    val = client.get(key)
+    if val is None:
+        val = db.query(...)   # 1000 个并发请求同时打 DB
+        client.set(key, val, ex=3600)
+    return val
+```
+
+### PASS: SET NX 互斥刷新
+
+```python
+def get(key):
+    val = client.get(key)
+    if val is not None: return val
+    lock_key = f"lock:{key}"
+    if client.set(lock_key, "1", nx=True, ex=10):
+        try:
+            val = db.query(...)
+            client.set(key, val, ex=3600 + random.randint(-300, 300))
+        finally:
+            client.delete(lock_key)
+    else:
+        time.sleep(0.05)       # 短退避后再读缓存
+        return client.get(key)
+    return val
+```
+
+### FAIL: 不存在的 key 不缓存
+
+```python
+val = client.get(f"user:{user_id}")
+if val is None:
+    val = db.query("SELECT * FROM users WHERE id=?", user_id)
+    if val: client.set(...)
+    # 不存在则不缓存 → 攻击者刷不存在 ID → 每次打 DB
+```
+
+### PASS: 空值缓存（短 TTL）
+
+```python
+if val is None:
+    user = db.query(...)
+    if user:
+        client.set(key, json.dumps(user), ex=3600 + jitter)
+    else:
+        client.set(key, "__NULL__", ex=60)  # 短 TTL 防长期占位
+```

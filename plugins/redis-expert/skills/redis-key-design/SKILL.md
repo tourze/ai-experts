@@ -39,7 +39,54 @@ SET stats:api:hits:2024-01-15 0 EX 172800
 
 ## 反模式
 
-- 使用无前缀裸键名（如 `user:10042`），多服务共享时冲突。
-- 整个 JSON 对象序列化成超大 String，应拆分到 Hash 或按子对象分键。
-- 所有键用相同固定 TTL，大量键同时过期导致雪崩。
-- 生产环境 `KEYS pattern` 阻塞主线程，导致服务不可用。
+### FAIL: 无服务前缀
+
+```redis
+SET user:10042 ...
+SET order:50001 ...
+# 多业务共享 Redis → user-svc 和 audit-svc 都用 user:10042 → 冲突
+```
+
+### PASS: {service}:{type}:{id}
+
+```redis
+SET user-svc:profile:10042 ...
+SET audit-svc:user:10042 ...
+# 命名空间隔离，可按前缀做 SCAN/MEMORY USAGE 审计
+```
+
+### FAIL: 固定 TTL 雪崩
+
+```python
+for user in users:
+    client.set(f"user-svc:profile:{user.id}", json.dumps(user), ex=3600)
+# 大量键在同一秒批量写入 → 一小时后同一秒批量过期 → DB 瞬时压力 100x
+```
+
+### PASS: TTL 抖动
+
+```python
+for user in users:
+    ttl = 3600 + random.randint(-300, 300)  # ±5 分钟
+    client.set(f"user-svc:profile:{user.id}", json.dumps(user), ex=ttl)
+```
+
+### FAIL: 生产环境 KEYS *
+
+```python
+keys = client.keys("user-svc:*")  # 阻塞主线程数秒到数分钟
+for k in keys: client.delete(k)
+# 期间所有 Redis 命令排队 → 全站 timeout
+```
+
+### PASS: SCAN + 分批
+
+```python
+cursor = 0
+while True:
+    cursor, batch = client.scan(cursor, match="user-svc:*", count=100)
+    if batch:
+        client.delete(*batch)
+    if cursor == 0: break
+# 非阻塞，每次只扫 ~100 个键
+```

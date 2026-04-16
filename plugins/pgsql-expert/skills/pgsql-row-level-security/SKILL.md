@@ -45,8 +45,59 @@ CREATE POLICY tenant_isolation ON project
 
 ## 反模式
 
-- 启用 RLS 不设 `FORCE` — owner 身份连接时策略完全失效
-- 只写 `USING` 不写 `WITH CHECK` — INSERT/UPDATE 新行不受约束
-- 忘记 `SET LOCAL` 会话变量 — `current_setting()` 返回空值或上一请求残留值
-- 策略谓词含子查询 — 每行执行一次，大表性能灾难
-- 仅依赖 RLS 不做应用层校验 — 防御纵深原则要求多层保护
+### FAIL: 启用 RLS 但 owner 绕过
+
+```sql
+ALTER TABLE project ENABLE ROW LEVEL SECURITY;
+CREATE POLICY tenant_iso ON project
+    USING (tenant_id = current_setting('app.tenant_id')::BIGINT);
+-- 应用用 owner 角色连接 → RLS 完全不生效，所有租户数据可见
+```
+
+### PASS: 同时 FORCE
+
+```sql
+ALTER TABLE project ENABLE ROW LEVEL SECURITY;
+ALTER TABLE project FORCE ROW LEVEL SECURITY;  -- ← 关键
+-- owner 也必须遵守策略
+```
+
+### FAIL: 只 USING 不 WITH CHECK
+
+```sql
+CREATE POLICY tenant_read ON project FOR ALL
+    USING (tenant_id = current_setting('app.tenant_id')::BIGINT);
+
+-- tenant A 用户：
+INSERT INTO project (tenant_id, name) VALUES (999, 'evil');
+-- 写入成功！USING 只校验读，没校验写
+```
+
+### PASS: USING + WITH CHECK 双向
+
+```sql
+CREATE POLICY tenant_iso ON project FOR ALL
+    USING      (tenant_id = current_setting('app.tenant_id')::BIGINT)
+    WITH CHECK (tenant_id = current_setting('app.tenant_id')::BIGINT);
+-- 读和写都被锁定到当前租户
+```
+
+### FAIL: 忘记 SET LOCAL
+
+```python
+def get_projects(conn, tenant_id):
+    # 忘了 SET LOCAL
+    return conn.execute("SELECT * FROM project")
+# current_setting('app.tenant_id') 残留上一个请求的值 → 跨租户泄漏
+```
+
+### PASS: 中间件强制设置
+
+```python
+@app.middleware
+def set_tenant(request, call_next):
+    with conn.transaction():
+        conn.execute("SET LOCAL app.tenant_id = %s", [request.tenant_id])
+        return call_next(request)
+# 每事务开始强制设置，事务结束自动重置
+```
