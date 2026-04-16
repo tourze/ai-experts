@@ -76,13 +76,54 @@ description: 当用户要设计现代颜色系统、使用 OKLCH 色彩空间、
 
 ## 反模式
 
-- `#000` `#fff` `gray-500` 做主色阶——自然不存在，UI 显假。
-- Gray 文本放彩色背景——必 washed out。
-- 用 `invert()` 或简单替换变 dark mode。
-- 暗色背景用 `#000`——层级全丢，改 `oklch(0.12-0.18 ...)`。
-- Rainbow brand——accent 失去锚定。
-- 近白/近黑处堆 chroma 0.25——视觉灼伤。
-- 大面积 alpha 透明——contrast 不可预测、性能差。
+### FAIL: 纯黑当 dark bg
+
+```css
+.dark { --bg: #000; --surface: #111; --card: #222; }
+/* 三层之间区分度极低，层级丢失 */
+```
+
+### PASS: lightness 阶梯
+
+```css
+.dark {
+  --bg:      oklch(0.15 0.005 var(--brand-hue));
+  --surface: oklch(0.18 0.008 var(--brand-hue));
+  --card:    oklch(0.22 0.010 var(--brand-hue));
+}
+/* 层级清晰 + 微微暖偏 + 不刺眼 */
+```
+
+### FAIL: invert dark mode
+
+```css
+.dark { filter: invert(1); }
+/* 图片也被反 / 颜色错乱 / 品牌色变成补色 */
+```
+
+### PASS: 独立 dark token
+
+```css
+[data-theme="dark"] {
+  --color-brand: oklch(0.65 0.15 var(--brand-hue));  /* 暗模式品牌色单独调 */
+  --color-text: oklch(0.92 0.01 var(--brand-hue));
+}
+/* 每个 token 独立设计，不是反转 */
+```
+
+### FAIL: 极端亮度堆 chroma
+
+```css
+--accent-light: oklch(0.95 0.25 250);  /* 接近白 + 高饱和 */
+/* 视觉灼伤 / 打印失真 */
+```
+
+### PASS: 极端亮度降 chroma
+
+```css
+--accent-light: oklch(0.95 0.05 250);  /* 接近白 → chroma ≤ 0.05 */
+--accent-dark:  oklch(0.20 0.08 250);  /* 接近黑 → chroma ≤ 0.10 */
+```
 
 ## 参考资料
 

@@ -91,11 +91,25 @@ description: 当用户要选择字体搭配、为页面确定标题/正文字体
 
 ## 反模式
 
-- 一个页面混入 3 种以上字体，每个区块自行其是。
-- 用 Display 字体做正文，或用等宽字体做营销标题。
-- 只挑"好看"，不问语气是否和行业匹配（见 [industry-design-presets](../industry-design-presets/SKILL.md)）。
-- 为了节省体积用系统字体，导致品牌识别度崩塌（营销页要谨慎）。
-- 选了 8 档字重全导入，首屏 CSS 膨胀。
+### FAIL: 4+ 字体 / Display 当正文 / 全字重
+
+```css
+body { font-family: 'Playfair Display'; }  /* Display 当正文糊 */
+h1 { font-family: 'Bebas'; }
+.cta { font-family: 'Montserrat'; }   /* 4+ 字体冲突 */
+@import url("...wght@100;200;...;900");  /* 9 档共 200KB+ */
+```
+
+### PASS: 1 Display + 1 Text + 必要档位
+
+```css
+:root {
+  --font-display: 'Fraunces', serif;  /* h1-h2 */
+  --font-body: 'Inter', sans-serif;   /* 正文 */
+}
+@import url("...family=Inter:wght@400;500;600;700&display=swap");
+/* 4 档够用 / 或 variable font wght@400..700 */
+```
 
 ## Catalog 派 vs 反 Reflex 派
 

@@ -80,11 +80,40 @@ description: 当用户要为某个行业产品（SaaS、Fintech、Healthcare、E
 
 ## 反模式
 
-- "看着顺眼就用"——不查行业预设，结果 fintech 长得像游戏落地页。
-- 把某个行业的**视觉捷径**（比如 Gen-Z 的 Neubrutalism）套到 healthcare/banking。
-- 忽略 **AVOID 清单**，踩了明显的行业反模式（银行用 AI 紫粉、医疗用暗黑）。
-- 选一个 preset 就不再差异化，导致品牌跟同行长得一模一样。
-- 只做 desktop，忽略 preset 里的移动端适配建议。
+### FAIL: 跨行业套捷径
+
+```
+healthcare 应用使用 Gen-Z Neubrutalism：
+- 高饱和荧光色 + 粗框 + 倾斜
+→ 用户："这个看起来不专业，我不放心放医疗数据"
+```
+
+### PASS: 行业语义优先
+
+```
+healthcare：
+- 主色：医疗蓝 / 信任绿（低饱和）
+- 字体：Inter / Source Han Sans（清晰可读）
+- 风格：克制留白，不堆装饰
+→ 传递"安全、严谨、可信"
+```
+
+### FAIL: 100% 套预设
+
+```
+fintech 公司：完全照 Stripe 视觉
+→ 与 10 个同行视觉一模一样 → 品牌识别度 0
+```
+
+### PASS: 60% 预设 + 40% 差异化
+
+```
+基础（60%）：fintech 标准（深蓝 + sans + 留白）
+差异化（40%）：
+- 独特图形语言（如品牌专属插画风格）
+- 1 个标志性 motion pattern
+- 内容语气与同行明显区分
+```
 
 ## 参考资料
 

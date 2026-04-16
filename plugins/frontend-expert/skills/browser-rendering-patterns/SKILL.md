@@ -93,8 +93,41 @@ element.addEventListener('scroll', handler, { passive: true });
 
 ## 反模式
 
-- 用 `typeof window !== 'undefined'` 做条件渲染，导致 hydration 闪烁。
-- 给所有资源都加 preload，反而竞争带宽拖慢关键资源。
-- scroll 事件不加 passive，浏览器无法优化滚动性能。
-- 每个组件实例都注册自己的 window resize 监听器。
-- localStorage 存大对象且没有版本控制，格式变更后静默失败。
+### FAIL: typeof window 条件渲染
+
+```tsx
+function Time() {
+  if (typeof window !== 'undefined') {
+    return <span>{new Date().toLocaleString()}</span>;
+  }
+  return null;
+}
+// SSR: null → CSR: 时间 → hydration 闪烁
+```
+
+### PASS: useEffect 双阶段
+
+```tsx
+function Time() {
+  const [time, setTime] = useState<string>();
+  useEffect(() => setTime(new Date().toLocaleString()), []);
+  return <span>{time ?? <span className="placeholder"/>}</span>;
+}
+```
+
+### FAIL: 全部 preload
+
+```html
+<link rel="preload" href="/hero.webp" as="image">
+<link rel="preload" href="/logo.svg" as="image">
+<link rel="preload" href="/footer.png" as="image">
+<!-- 10+ 资源争抢带宽 → LCP 反而变慢 -->
+```
+
+### PASS: 仅 LCP 关键资源
+
+```html
+<link rel="preload" href="/hero.webp" as="image" fetchpriority="high">
+<!-- 其他图片懒加载 / DNS-prefetch 第三方域名 -->
+<link rel="preconnect" href="https://api.example.com">
+```
