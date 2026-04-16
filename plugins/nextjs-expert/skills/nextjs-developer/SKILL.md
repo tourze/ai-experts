@@ -174,25 +174,9 @@ export default async function ProductPage({ params }: PageProps) {
 }
 ```
 
-### 模式 4：Route Handler 保持边界清晰
+### 模式 4：Route Handler
 
-```tsx
-// app/api/products/[id]/route.ts
-import { NextResponse } from 'next/server'
-
-type RouteContext = {
-  params: Promise<{ id: string }>
-}
-
-export async function GET(_request: Request, { params }: RouteContext) {
-  const { id } = await params
-  const product = await fetch(`https://api.example.com/products/${id}`, {
-    cache: 'no-store',
-  }).then((response) => response.json())
-
-  return NextResponse.json(product)
-}
-```
+异步 `params: Promise<{ id: string }>` + `await params`，详见 [references/app-router.md](references/app-router.md)。
 
 ## 检查清单
 
@@ -207,9 +191,40 @@ export async function GET(_request: Request, { params }: RouteContext) {
 
 ## 反模式
 
-- 为了偷懒把整棵页面树都改成 Client Components。
-- 依赖隐式缓存，不写 `cache` / `revalidate` / `tags`，导致渲染语义不清晰。
-- 在 JSX 中直接硬写 `<title>` / `<meta>`，绕过 Metadata API。
-- 在动态路由中继续示范同步 `params` / `cookies()` / `headers()` 写法，却不声明版本前提。
-- Server Action 只做数据库写入，不做校验、权限检查或 `revalidatePath` / `revalidateTag`。
-- 部署前不跑 `next build`，或在 `next/image` 远程域名、环境变量、Node/Edge 运行时之间留未验证假设。
+### FAIL: 整棵树 'use client'
+
+```tsx
+// app/layout.tsx — 整个应用 CSR，RSC 优势归零
+'use client'
+export default function RootLayout({ children }) { ... }
+```
+
+### PASS: 'use client' 压到叶子
+
+```tsx
+// app/layout.tsx 仍是 Server Component
+// components/theme-toggle.tsx 才标 'use client'
+```
+
+### FAIL: Server Action 无校验
+
+```tsx
+'use server'
+export async function createPost(formData: FormData) {
+  await db.post.create({ data: { title: formData.get('title') } }); // 无鉴权 + 无 revalidate
+}
+```
+
+### PASS: 校验 + 鉴权 + revalidate
+
+```tsx
+'use server'
+export async function createPost(_prev, formData: FormData) {
+  const session = await auth(); if (!session) return { error: 'unauthorized' };
+  const parsed = PostSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { error: parsed.error.message };
+  await db.post.create({ data: { ...parsed.data, authorId: session.userId } });
+  revalidatePath('/posts');
+  return {};
+}
+```

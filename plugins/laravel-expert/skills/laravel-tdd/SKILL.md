@@ -79,8 +79,44 @@ final class NormalizeSlugTest extends TestCase
 
 ## 反模式
 
-- 先把功能写完，再“顺手补两个 happy path 测试”。
-- 一个测试同时断言多个行为，失败后完全不知道哪条约束坏了。
-- 真实调用外部 HTTP、队列、邮件、存储，导致测试不稳定。
-- 为了让测试通过而绕开授权、中间件或验证逻辑。
-- 只看覆盖率数字，不检查断言是否真正保护了业务约束。
+### FAIL: 真实调用外部服务
+
+```php
+it('sends welcome email', function () {
+    $user = User::factory()->create();
+    (new SendWelcome($user))->handle(); // 真的发了邮件给真实地址
+    expect(Mail::class)->toExist(); // 无意义断言
+});
+```
+
+### PASS: Fake + 断言副作用
+
+```php
+it('queues welcome email', function () {
+    Mail::fake();
+    $user = User::factory()->create();
+    (new SendWelcome($user))->handle();
+    Mail::assertQueued(Welcome::class, fn($mail) => $mail->hasTo($user->email));
+});
+```
+
+### FAIL: 一个测试断言多个行为
+
+```php
+it('works', function () {
+    $response = $this->post('/users', $data);
+    $response->assertCreated();
+    expect(User::count())->toBe(1);
+    Mail::assertSent(Welcome::class);
+    Queue::assertPushed(SyncUserJob::class);
+    // 失败了不知道哪条约束坏了
+});
+```
+
+### PASS: 一个测试一个行为
+
+```php
+it('returns 201 on create', fn() => $this->postJson('/users', $data)->assertCreated());
+it('persists the user', function () { ...; expect(User::count())->toBe(1); });
+it('queues sync job', function () { Queue::fake(); ...; Queue::assertPushed(SyncUserJob::class); });
+```

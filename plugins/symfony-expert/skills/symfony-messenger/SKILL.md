@@ -87,8 +87,38 @@ framework:
 
 ## 反模式
 
-- 把 Doctrine Entity 直接塞进消息体，依赖运行时懒加载或容器状态。
-- Handler 里先调外部 API，再无保护地重复执行，导致重试时产生重复副作用。
-- 队列失败后只会“再试一次看看”，却没有 failure transport 和死信处理路径。
-- 把慢任务留在同步请求里，只因为“异步要多配一点东西”。
-- 消息字段今天改名、明天改类型，却不考虑已在队列中的旧消息。
+### FAIL: Entity 塞进消息体
+
+```php
+final class SendOrderEmail {
+    public function __construct(public Order $order) {} // 序列化时懒加载爆炸
+}
+```
+
+### PASS: 只传 ID 和稳定字段
+
+```php
+final readonly class SendOrderEmail {
+    public function __construct(public int $orderId, public string $requestId) {}
+}
+// Handler 里用 orderId 从 Repository 重新加载
+```
+
+### FAIL: Handler 无幂等保护
+
+```php
+public function __invoke(ChargeCustomer $msg): void {
+    $this->stripe->charge($msg->amount); // 重试 = 重复扣款
+    $this->emailService->send($msg->email);
+}
+```
+
+### PASS: 去重键 + 幂等
+
+```php
+public function __invoke(ChargeCustomer $msg): void {
+    if ($this->dedup->alreadyHandled($msg->requestId)) return;
+    $this->stripe->charge($msg->amount, idempotency_key: $msg->requestId);
+    $this->dedup->markHandled($msg->requestId);
+}
+```

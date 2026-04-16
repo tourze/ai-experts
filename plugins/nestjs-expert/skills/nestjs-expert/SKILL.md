@@ -141,50 +141,9 @@ export class UsersService {
 }
 ```
 
-### 3. 测试至少覆盖“成功路径 + 失败路径”
+### 3. 测试至少覆盖"成功路径 + 失败路径"
 
-```typescript
-// users.service.spec.ts
-import { ConflictException } from "@nestjs/common";
-import { Test, TestingModule } from "@nestjs/testing";
-import { getRepositoryToken } from "@nestjs/typeorm";
-import { UsersService } from "./users.service";
-import { User } from "./entities/user.entity";
-
-const mockRepo = {
-  findOneBy: jest.fn(),
-  create: jest.fn(),
-  save: jest.fn(),
-};
-
-describe('UsersService', () => {
-  let service: UsersService;
-
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        UsersService,
-        { provide: getRepositoryToken(User), useValue: mockRepo }
-      ],
-    }).compile();
-
-    service = module.get(UsersService);
-    jest.clearAllMocks();
-  });
-
-  it("邮箱重复时抛出 ConflictException", async () => {
-    mockRepo.findOneBy.mockResolvedValue({ id: "1", email: "user@example.com" });
-
-    await expect(
-      service.create({
-        email: "user@example.com",
-        password: "Pass1234",
-        name: "Test User",
-      }),
-    ).rejects.toThrow(ConflictException);
-  });
-});
-```
+单测示例见 [references/testing-patterns.md](references/testing-patterns.md)：用 `Test.createTestingModule` 注入 mock Repository，分别断言创建成功与 `ConflictException` 抛出。
 
 ## 检查清单
 
@@ -197,8 +156,47 @@ describe('UsersService', () => {
 
 ## 反模式
 
-- 在 Controller 中直接操作 Repository、拼 SQL、写事务或堆业务分支。
-- 直接传递 `req.body`、`req.query`、`req.params` 到 Service，而不经过 DTO 和管道。
-- 滥用 `any`、`forwardRef()`、属性注入或全局可变单例掩盖模块设计问题。
-- 认证逻辑散落在控制器里，或者把密码、Token、堆栈信息直接返回给客户端。
-- 只写 happy path，不验证异常路径、权限边界、配置缺失与 DTO 校验失败。
+### FAIL: Controller 操作 Repository
+
+```typescript
+@Controller('users')
+export class UsersController {
+  constructor(@InjectRepository(User) private readonly repo: Repository<User>) {}
+
+  @Post()
+  async create(@Req() req) { // 直接读 req
+    const existing = await this.repo.findOneBy({ email: req.body.email });
+    if (existing) throw new ConflictException();
+    return this.repo.save(req.body); // 绕过 DTO + 验证
+  }
+}
+```
+
+### PASS: Controller 只做协议层
+
+```typescript
+@Controller('users')
+export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
+
+  @Post()
+  create(@Body() dto: CreateUserDto) { // DTO 自动校验
+    return this.usersService.create(dto);
+  }
+}
+```
+
+### FAIL: 返回整个 Entity
+
+```typescript
+return user; // 包含 passwordHash、internalNotes
+```
+
+### PASS: DTO/ResponseSerializer 隔离
+
+```typescript
+@UseInterceptors(ClassSerializerInterceptor)
+async findOne(@Param('id') id: string): Promise<UserResponseDto> {
+  return plainToInstance(UserResponseDto, await this.usersService.findOne(id));
+}
+```

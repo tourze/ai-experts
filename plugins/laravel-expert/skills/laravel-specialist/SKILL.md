@@ -101,8 +101,36 @@ final class PostController extends Controller
 
 ## 反模式
 
-- 在控制器里直接写复杂查询、事务和副作用编排。
-- 让前端直接消费模型数组，绕过 `JsonResource`。
-- 对外部副作用使用同步调用，导致请求链路阻塞或超时。
-- 依赖懒加载“碰运气”解决关系读取，直到线上出现 N+1。
-- 用 README 式说明代替真实实现约束，缺少可执行的代码模式和检查点。
+### FAIL: Controller 同步编排副作用
+
+```php
+public function store(Request $request) {
+    DB::transaction(function () use ($request) {
+        $user = User::create($request->all());
+        Mail::to($user)->send(new Welcome($user));  // 阻塞请求
+        Stripe::charge($user, $request->amount);    // 外部 HTTP 同步
+    });
+}
+```
+
+### PASS: Action + 异步
+
+```php
+public function store(StoreUserRequest $request, CreateUserAction $action) {
+    $user = $action->handle($request->validated());
+    SendWelcomeEmail::dispatch($user); // 异步
+    return UserResource::make($user);
+}
+```
+
+### FAIL: N+1 懒加载
+
+```php
+return PostResource::collection(Post::all()); // 每个 post 触发 author 查询
+```
+
+### PASS: 预加载
+
+```php
+return PostResource::collection(Post::with('author')->get());
+```

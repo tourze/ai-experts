@@ -82,8 +82,36 @@ Route::middleware('auth:sanctum')
 
 ## 反模式
 
-- 把验证、授权、事务、发送通知全部塞进单个控制器方法。
-- 依赖隐式全局状态或模型事件偷偷写入关键字段，导致 canonical source 不清晰。
-- 只做路由模型绑定，不做真正的授权校验。
-- 读路径和写路径共用一堆随手拼出来的查询，无法复用也无法测。
-- 缓存只加不失效，或者把缓存失效写在多个彼此不知情的地方。
+### FAIL: 嵌套路由只绑定不授权
+
+```php
+Route::get('/accounts/{account}/projects/{project}', function (Account $account, Project $project) {
+    return $project; // 只要知道 URL，任何人都能读任何账户的项目
+});
+```
+
+### PASS: scopeBindings + Policy
+
+```php
+Route::middleware('auth:sanctum')->scopeBindings()->group(function () {
+    Route::get('/accounts/{account}/projects/{project}', [ProjectController::class, 'show']);
+});
+// Controller
+public function show(Account $account, Project $project) {
+    $this->authorize('view', [$project, $account]); // 真正的访问控制
+    return ProjectResource::make($project);
+}
+```
+
+### FAIL: 缓存只加不失效
+
+```php
+$user = Cache::remember("user:$id", 3600, fn() => User::find($id));
+// 用户改了邮箱，但缓存还是旧值 1 小时
+```
+
+### PASS: 模型事件绑定失效
+
+```php
+User::updated(fn($user) => Cache::forget("user:{$user->id}"));
+```

@@ -56,8 +56,36 @@ php artisan horizon:status
 
 ## 反模式
 
-- 跳过静态分析，直接拿“测试通过”当发布凭证。
-- 只跑 `php artisan test`，完全不看 `composer audit` 和迁移副作用。
-- 在本地开发环境成功后，默认线上缓存、调度器和队列也会一样工作。
-- 把 `migrate --pretend` 当成数据库变更的全部审查手段。
-- 出现红灯时用“这次先发”掩盖环境、迁移或安全问题。
+### FAIL: 只跑测试就认为 OK
+
+```bash
+php artisan test  # 全绿
+# 没跑 phpstan、没看 composer audit、没看 migrate --pretend
+# 结果：线上类型错误、已知漏洞依赖、迁移锁表
+```
+
+### PASS: 全链路验证
+
+```bash
+vendor/bin/pint --test          # 格式
+vendor/bin/phpstan analyse      # 静态分析
+php artisan test                # 测试
+composer audit                  # 依赖漏洞
+php artisan migrate --pretend   # 迁移 SQL 审查
+```
+
+### FAIL: 本地成功 = 线上可行
+
+```
+本地 cache:clear 后跑通了 → 直接部署
+→ 生产闭包路由无法缓存导致 route:cache 报错
+```
+
+### PASS: 预发复现线上配置
+
+```bash
+APP_ENV=production php artisan config:cache
+APP_ENV=production php artisan route:cache  # 线上等价命令
+APP_ENV=production php artisan view:cache
+# 所有缓存命令跑通 → 才能进部署流程
+```

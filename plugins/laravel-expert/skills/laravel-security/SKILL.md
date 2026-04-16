@@ -73,8 +73,40 @@ RateLimiter::for('login', function (Request $request): array {
 
 ## 反模式
 
-- 只加 `auth` 中间件就以为完成了授权。
-- 直接 `Post::create($request->all())` 或接受客户端上传的派生字段。
-- 把上传文件放在公开目录，再指望前端不去猜测路径。
+### FAIL: 只认证不鉴权
+
+```php
+Route::middleware('auth:sanctum')->put('/posts/{post}', [PostController::class, 'update']);
+// 控制器里没 authorize() → 任何登录用户都能改别人的文章
+public function update(Request $request, Post $post) {
+    $post->update($request->all());
+}
+```
+
+### PASS: Policy + FormRequest
+
+```php
+public function update(UpdatePostRequest $request, Post $post) {
+    $this->authorize('update', $post); // 只有 owner/admin
+    $post->update($request->safe()->only(['title', 'body']));
+}
+```
+
+### FAIL: 批量赋值全开
+
+```php
+Post::create($request->all()); // 客户端传 is_admin、author_id 都能写入
+```
+
+### PASS: 显式白名单
+
+```php
+Post::create([
+    ...$request->safe()->only(['title', 'body']),
+    'author_id' => $request->user()->id, // 服务端强制赋值
+]);
+```
+
+- 把上传文件放在公开目录，再指望前端不猜路径。
 - 记录明文 token、密码、完整邮箱或卡号到日志。
-- 线上依赖 `APP_DEBUG=true` 或把密钥管理当成部署后再补的事情。
+- 线上依赖 `APP_DEBUG=true`。

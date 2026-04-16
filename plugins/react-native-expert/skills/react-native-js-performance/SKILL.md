@@ -84,8 +84,38 @@ function Row({ title }: { title: string }) {
 
 ## 反模式
 
-- 没有任何测量数据，就盲目上 memo、拆组件或换库。
-- 用 `ScrollView` 渲染成百上千条记录，再怪 React Native 慢。
-- 在 debug 包里看见掉帧就直接下结论，不做 release 复测。
-- 所有动画都走 JS 线程，手势交互与动画互相抢资源。
-- 状态全部塞进一个大 store，任何变更都触发整棵树重渲染。
+### FAIL: ScrollView 渲染长列表
+
+```tsx
+<ScrollView>
+  {items.map(i => <Row key={i.id} data={i} />)} // 1000 个 Row 全部挂载
+</ScrollView>
+```
+
+### PASS: 虚拟化列表
+
+```tsx
+<FlatList
+  data={items}
+  keyExtractor={i => i.id}
+  renderItem={({ item }) => <Row data={item} />}
+  initialNumToRender={12}
+  windowSize={5}
+  removeClippedSubviews
+/>
+```
+
+### FAIL: debug 构建下结论
+
+```bash
+# debug 包 fps 30，"React Native 太慢了"
+```
+
+→ debug 构建 JS 执行慢 10-20 倍，结论完全失真。
+
+### PASS: release 真机复测
+
+```bash
+npx react-native run-ios --configuration Release
+# 用 Perf Monitor 或 Flashlight 记录真实 FPS
+```

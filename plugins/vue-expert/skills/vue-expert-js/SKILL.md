@@ -139,8 +139,19 @@ export function useCounter(initial = 0, step = 1) {
 
 ## 反模式
 
-- 在 JavaScript Vue 项目里混入 `lang="ts"`、`.ts` 文件或 TypeScript 特有语法，导致构建链和认知边界混乱。
-- 只写 JSDoc 不写运行时校验，或者只写运行时校验不写 JSDoc，导致编辑器提示与真实行为脱节。
-- 为了“类型安全”把所有简单对象都抽成单独文件，制造过度抽象和跨目录跳转噪音。
-- 在 composable 中返回未经约束的巨大对象，让调用方不知道哪些字段稳定、哪些字段只是内部临时状态。
-- 使用 `require()`、CommonJS 导出或项目未采用的文件后缀，破坏 Vue 3 + Vite 的 ESM 一致性。
+### FAIL: JSDoc 与运行时脱节
+
+```js
+defineProps(['userId', 'age']); // 编辑器以为 age 是 number，运行时传 string 也不警告
+```
+
+### PASS: JSDoc + 运行时同时声明
+
+```js
+/** @type {{userId: string, age: number}} */
+defineProps({ userId: { type: String, required: true }, age: { type: Number, required: true } });
+```
+
+- composable 返回未约束的巨大对象，调用方不知道哪些字段稳定。
+- 为"类型安全"把简单对象抽成独立文件，制造跨目录跳转噪音。
+- 使用 `require()` 或 CommonJS 导出，破坏 Vite ESM 一致性。
