@@ -65,8 +65,44 @@ def profile_callable(fn: Callable[[], object]) -> None:
 
 ## 反模式
 
-- 一上来就加缓存、并发或 C 扩展，却没确认热点。
-- 拿一次运行结果当最终结论。
-- 把 I/O 问题错当成 CPU 问题处理。
-- 为了追求极限性能写出团队无法维护的技巧代码。
-- 优化后不补 benchmark，下一次改动又回退到原点。
+### FAIL: 没有 profile 就优化
+
+```python
+# "这个循环肯定是瓶颈，换成 numpy 吧"
+import numpy as np
+result = np.array([process(x) for x in data])  # process() 里有网络请求
+```
+
+→ 实际瓶颈是 `process()` 里的 HTTP 调用（I/O），换 numpy 不解决问题。
+
+### PASS: 先测量再优化
+
+```python
+import cProfile
+cProfile.run("main()", sort="cumtime")
+# 输出显示 93% 时间花在 requests.get() → I/O 瓶颈
+# 正确方向：asyncio + aiohttp 并发，而非换计算库
+```
+
+### FAIL: 单次运行下结论
+
+```python
+start = time.time()
+result = my_function(data)
+print(f"耗时: {time.time() - start:.3f}s")  # 0.042s，"够快了"
+```
+
+→ 一次运行受 GC、缓存预热、系统负载影响，不可作为基准。
+
+### PASS: 可复现的 benchmark
+
+```python
+import timeit
+elapsed = timeit.repeat(
+    "my_function(data)",
+    globals={"my_function": my_function, "data": data},
+    number=100,
+    repeat=5,
+)
+print(f"中位数: {sorted(elapsed)[2]/100*1000:.1f}ms (5 轮 × 100 次)")
+```
