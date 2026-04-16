@@ -4,6 +4,7 @@ import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 
+import { run as runDebugStatementGuard } from "../hooks/post-tool-use/edit-write/debug-statement-guard.mjs";
 import { run as runFileBudgetGuard } from "../hooks/post-tool-use/edit-write/file-budget-guard.mjs";
 
 async function withTempDir(fn) {
@@ -15,8 +16,13 @@ async function withTempDir(fn) {
   }
 }
 
-function payload(filePath) {
-  return { tool_input: { file_path: filePath } };
+function payload(filePath, extraToolInput = {}) {
+  return {
+    tool_input: {
+      file_path: filePath,
+      ...extraToolInput,
+    },
+  };
 }
 
 test("file-budget-guard 不会把末尾换行误算成额外一行", async () => {
@@ -69,5 +75,69 @@ test("file-budget-guard 会识别 Perl 命名文件预算", async () => {
     const result = await runFileBudgetGuard(payload(filePath));
     assert.equal(result?.decision, "block");
     assert.match(result?.reason ?? "", /预算: 300 行/);
+  });
+});
+
+test("debug-statement-guard 会报告新增的 System.out.println", async () => {
+  await withTempDir(async (dir) => {
+    const filePath = join(dir, "Demo.java");
+    const content = "class Demo {\n  void print() {\n    System.out.println(\"debug\");\n  }\n}\n";
+    writeFileSync(filePath, content, "utf8");
+
+    const result = await runDebugStatementGuard(
+      payload(filePath, {
+        old_string: "",
+        new_string: content,
+      }),
+    );
+
+    assert.equal(result?.decision, "report");
+    assert.match(result?.reason ?? "", /System\.out\.print/);
+  });
+});
+
+test("debug-statement-guard 会阻止新增的 breakpoint()", async () => {
+  await withTempDir(async (dir) => {
+    const filePath = join(dir, "worker.py");
+    const content = "def main():\n    breakpoint()\n";
+    writeFileSync(filePath, content, "utf8");
+
+    const result = await runDebugStatementGuard(
+      payload(filePath, {
+        old_string: "",
+        new_string: content,
+      }),
+    );
+
+    assert.equal(result?.decision, "block");
+    assert.match(result?.reason ?? "", /breakpoint\(\)/);
+  });
+});
+
+test("debug-statement-guard 会报告新增的 set -x", async () => {
+  await withTempDir(async (dir) => {
+    const filePath = join(dir, "trace.sh");
+    writeFileSync(filePath, "#!/usr/bin/env bash\nset -x\necho ok\n", "utf8");
+
+    const result = await runDebugStatementGuard(payload(filePath));
+    assert.equal(result?.decision, "report");
+    assert.match(result?.reason ?? "", /set -x/);
+  });
+});
+
+test("debug-statement-guard 会跳过测试文件中的调试输出", async () => {
+  await withTempDir(async (dir) => {
+    const filePath = join(dir, "demo.test.js");
+    const content = "test('demo', () => {\n  console.log('ok');\n});\n";
+    writeFileSync(filePath, content, "utf8");
+
+    const result = await runDebugStatementGuard(
+      payload(filePath, {
+        old_string: "",
+        new_string: content,
+      }),
+    );
+
+    assert.equal(result, null);
   });
 });

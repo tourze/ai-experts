@@ -5,7 +5,7 @@ iOS / Apple 平台专家插件，覆盖 Swift Concurrency、SwiftUI 性能与模
 ## 目录结构
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
-- `hooks/`：`hooks.json`、`dispatch.mjs` 和 2 个 PostToolUse 守卫。
+- `hooks/`：`hooks.json`、`dispatch.mjs` 和 1 个本地 PostToolUse 守卫。
 - `skills/`：13 个 iOS / Apple 平台技能与配套参考资料、脚本。
 - `agents/`：2 个 iOS 运行审计与模拟器冒烟测试代理。
 - `tests/`：manifest 最小回归测试。
@@ -33,9 +33,9 @@ iOS / Apple 平台专家插件，覆盖 Swift Concurrency、SwiftUI 性能与模
 | 事件 | Hook | 作用 |
 |------|------|------|
 | PostToolUse Edit\|Write | `lint-swift-concurrency` | Swift Concurrency 并发安全检查 |
-| PostToolUse Edit\|Write | `debug-statement-guard` | 调试语句残留检测 |
+| PostToolUse Edit\|Write | `debug-statement-guard`（由 `coding-expert` 提供） | 调试语句残留检测 |
 
-通用 BOM / UTF-8 编码检查和文件预算守卫统一由 [coding-expert](../coding-expert/README.md) 提供；若使用 `--plugin-dir` 单独加载本插件，请同时加载它。
+通用 BOM / UTF-8 编码检查、跨语言调试语句检测和文件预算守卫统一由 [coding-expert](../coding-expert/README.md) 提供；若使用 `--plugin-dir` 单独加载本插件，请同时加载它。
 
 ## Agents
 

@@ -4,7 +4,6 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 import test from "node:test";
 
-import { run as runDebugStatementGuard } from "../hooks/post-tool-use/edit-write/debug-statement-guard.mjs";
 import { run as runSyntaxJava } from "../hooks/post-tool-use/edit-write/syntax-java.mjs";
 
 async function withTempDir(fn) {
@@ -52,20 +51,5 @@ test("syntax-java 在 javac 不可用时会回退到本地语法检查", async (
       assert.equal(result?.decision, "block");
       assert.match(result?.reason ?? "", /未闭合的字符串字面量/);
     });
-  });
-});
-
-test("debug-statement-guard 会报告新增的 System.out.println", async () => {
-  await withTempDir(async (dir) => {
-    const filePath = join(dir, "Demo.java");
-    writeFileSync(filePath, "class Demo {\n  void print() {\n    System.out.println(\"debug\");\n  }\n}\n", "utf8");
-
-    const result = await runDebugStatementGuard(payload(filePath, {
-      old_string: "",
-      new_string: "class Demo {\n  void print() {\n    System.out.println(\"debug\");\n  }\n}\n",
-    }));
-
-    assert.equal(result?.decision, "report");
-    assert.match(result?.reason ?? "", /System\.out\.print/);
   });
 });

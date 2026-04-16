@@ -11,7 +11,7 @@ Claude Code 插件集合，包含 54 个领域专家插件，每个插件提供 
 插件按以下四层组织，上层依赖下层提供的 hooks 兜底，不重复实现已有守卫：
 
 1. **通用基座层** — coding-expert
-   - 提供所有文件类型通用的守卫：encoding、merge-conflict、file-budget、edit-loop、dangerous-command 等
+   - 提供所有文件类型通用的守卫：encoding、merge-conflict、debug-statement、file-budget、edit-loop、dangerous-command 等
    - 提供通用 UserPromptSubmit 引导：debug-methodology、over-engineering、investigation 等
    - 无语言/框架偏向，应最先安装
 
@@ -20,8 +20,8 @@ Claude Code 插件集合，包含 54 个领域专家插件，每个插件提供 
    - 与基座层和语言层正交，按需安装
 
 3. **语言层** — python-expert, javascript-expert, typescript-expert, java-expert, go-expert, rust-expert, ruby-expert, php-expert, cpp-expert, ios-expert, perl-expert 等
-   - 在基座层之上叠加语言特有的 syntax check、lint、debug-statement 检测
-   - 各自包含自己的 dispatch.mjs 和语言特有的 PostToolUse 守卫；通用 `file-budget` 统一复用 `coding-expert`
+   - 在基座层之上叠加语言特有的 syntax check、lint 与必要的特化守卫
+   - 各自包含自己的 dispatch.mjs 和语言特有的 PostToolUse 守卫；通用 `file-budget` 与跨语言 `debug-statement` 统一复用 `coding-expert`，特化版 debug-statement 仍保留在对应插件
 
 4. **框架/领域层** — react-expert, nextjs-expert, laravel-expert, nestjs-expert, vue-expert, devops-expert, frontend-expert, security-expert, product-expert, marketing-expert 等
    - 主要提供 skills，少数有领域特有的 hooks

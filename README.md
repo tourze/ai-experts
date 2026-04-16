@@ -118,7 +118,7 @@ claude plugin marketplace remove ai-experts
 
 ## 推荐使用方式
 
-- 需要通用代码守卫时，先装 [coding-expert](plugins/coding-expert/README.md)，文件预算守卫也统一由它提供，再叠加对应语言插件。
+- 需要通用代码守卫时，先装 [coding-expert](plugins/coding-expert/README.md)，跨语言调试语句检测和文件预算守卫也统一由它提供，再叠加对应语言插件。
 - 涉及提交、分支、staged diff、工作区纪律时，优先装 [git-expert](plugins/git-expert/README.md)。
 - 写技术文档、提案、Markdown/Mermaid、PDF/Office 文档时，优先装 [docs-expert](plugins/docs-expert/README.md)。
 - 做测试策略、预落地检查和 Web 测试时，优先装 [testing-expert](plugins/testing-expert/README.md)。
