@@ -7,7 +7,7 @@ const pluginRoot = resolve("plugins/webman-expert");
 const manifestPath = resolve(pluginRoot, ".claude-plugin/plugin.json");
 const hooksPath = resolve(pluginRoot, "hooks/hooks.json");
 
-test("manifest 与 hooks 配置指向真实文件，且不再使用非标准 dependencies 字段", () => {
+test("manifest 与 hooks 配置指向真实文件，且声明 Webman 所需依赖", () => {
   const manifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
   const hooks = JSON.parse(readFileSync(hooksPath, "utf-8"));
 
@@ -16,9 +16,11 @@ test("manifest 与 hooks 配置指向真实文件，且不再使用非标准 dep
   assert.equal(manifest.license, "MIT");
   assert.equal(manifest.skills, "./skills/");
   assert.equal("hooks" in manifest, false);
-  assert.equal("dependencies" in manifest, false);
+  assert.deepEqual(manifest.dependencies, ["php-expert"]);
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
   assert.ok(existsSync(hooksPath));
-  assert.deepEqual(hooks.hooks ?? {}, {});
+  assert.ok(existsSync(resolve(pluginRoot, "..", "php-expert", ".claude-plugin", "plugin.json")));
+  const sessionHooks = hooks.hooks?.SessionStart?.[0]?.hooks ?? [];
+  assert.equal(sessionHooks[0]?.command, "node ${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.mjs session-start");
 });

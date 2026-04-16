@@ -21,6 +21,8 @@ description: 当用户编写、审查或重构 PHP 测试时使用。覆盖 PHPU
 - Mock 只隔离外部协作者，不 Mock 被测系统内部实现。
 - 集成测试要明确边界、清理状态、避免环境耦合。
 
+## 代码模式
+
 代码示例见 [examples.md](references/examples.md)。
 
 ## 检查清单

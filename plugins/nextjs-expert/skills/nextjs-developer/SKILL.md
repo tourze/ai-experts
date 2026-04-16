@@ -1,6 +1,7 @@
 ---
 name: nextjs-developer
 description: 当用户提到 Next.js、App Router、Server Components、Server Actions、Route Handlers、generateMetadata、loading.tsx、error.tsx 或 Vercel 部署时使用。
+related-skills: react-server-components, react-server-optimization, typescript-magician, typescript-advanced-types
 ---
 
 # Next.js Developer

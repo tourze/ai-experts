@@ -19,7 +19,9 @@ description: 当用户要拆分 PHP 类职责、设计服务层与 Repository、
 - 依赖方向单向：Controller → Service → Repository → Entity。
 - 抽象要基于重复痛点，不要为"以后可能用到"提前造层。
 
-## 分层速查
+## 代码模式
+
+### 分层速查
 
 | 层 | 职责 | 禁止 |
 |----|------|------|

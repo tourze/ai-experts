@@ -7,7 +7,7 @@ const pluginRoot = resolve("plugins/tauri-expert");
 const manifestPath = resolve(pluginRoot, ".claude-plugin/plugin.json");
 const hooksPath = resolve(pluginRoot, "hooks/hooks.json");
 
-test("manifest 与 hooks 配置指向真实文件，且不再使用无效 dependencies 对象", () => {
+test("manifest 与 hooks 配置指向真实文件，且声明跨端依赖", () => {
   const manifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
   const hooks = JSON.parse(readFileSync(hooksPath, "utf-8"));
 
@@ -15,9 +15,12 @@ test("manifest 与 hooks 配置指向真实文件，且不再使用无效 depend
   assert.equal(manifest.skills, "./skills/");
   assert.equal("hooks" in manifest, false);
   assert.equal(manifest.license, "MIT");
-  assert.equal("dependencies" in manifest, false);
+  assert.deepEqual(manifest.dependencies, ["rust-expert", "typescript-expert"]);
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
   assert.ok(existsSync(hooksPath));
-  assert.deepEqual(hooks.hooks ?? {}, {});
+  assert.ok(existsSync(resolve(pluginRoot, "..", "rust-expert", ".claude-plugin", "plugin.json")));
+  assert.ok(existsSync(resolve(pluginRoot, "..", "typescript-expert", ".claude-plugin", "plugin.json")));
+  const sessionHooks = hooks.hooks?.SessionStart?.[0]?.hooks ?? [];
+  assert.equal(sessionHooks[0]?.command, "node ${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.mjs session-start");
 });

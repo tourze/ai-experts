@@ -18,5 +18,7 @@ test("manifest 显式声明 skills、hooks 与合法 dependencies", () => {
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
   assert.ok(existsSync(hooksPath));
-  assert.deepEqual(hooks.hooks ?? {}, {});
+  assert.ok(existsSync(resolve(pluginRoot, "..", "javascript-expert", ".claude-plugin", "plugin.json")));
+  const sessionHooks = hooks.hooks?.SessionStart?.[0]?.hooks ?? [];
+  assert.equal(sessionHooks[0]?.command, "node ${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.mjs session-start");
 });

@@ -102,13 +102,21 @@ def get_user(user_id: str) -> User:
 ### FAIL: 第三方异常直接暴露
 
 ```python
-except stripe.error.CardError as e:
-    return {"error": str(e)}  # 泄露 Stripe 内部错误格式
+def create_payment(charge_request: dict[str, object]) -> dict[str, str]:
+    try:
+        charge_card(charge_request)
+        return {"status": "ok"}
+    except stripe.error.CardError as e:
+        return {"error": str(e)}  # 泄露 Stripe 内部错误格式
 ```
 
 ### PASS: 映射到应用层错误
 
 ```python
-except stripe.error.CardError as e:
-    return {"error": "payment_failed", "message": "Card was declined"}
+def create_payment(charge_request: dict[str, object]) -> dict[str, str]:
+    try:
+        charge_card(charge_request)
+        return {"status": "ok"}
+    except stripe.error.CardError:
+        return {"error": "payment_failed", "message": "Card was declined"}
 ```

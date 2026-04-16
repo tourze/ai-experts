@@ -94,7 +94,7 @@ claude plugin marketplace remove ai-experts
 
 ## 插件总览
 
-当前 marketplace 收录 49 个插件，按领域大致分为以下几类。
+当前 marketplace 收录 54 个插件，按领域大致分为以下几类。
 
 ### 工程工作流
 
@@ -131,6 +131,7 @@ claude plugin marketplace remove ai-experts
 ```bash
 jq empty .claude-plugin/marketplace.json
 claude plugin validate .claude-plugin/marketplace.json
+node --test tests/marketplace-sync.test.mjs
 ```
 
 更新具体插件后，继续进入对应插件目录或直接运行其 README 中列出的验证命令。仓库根 README 只负责入口说明；插件行为、hooks 与依赖以各插件 README 为准。

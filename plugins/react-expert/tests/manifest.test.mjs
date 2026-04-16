@@ -18,5 +18,6 @@ test("manifest 与 hooks 配置指向真实文件，且不再使用非标准 dep
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
   assert.ok(existsSync(hooksPath));
-  assert.deepEqual(hooks.hooks ?? {}, {});
+  const sessionHooks = hooks.hooks?.SessionStart?.[0]?.hooks ?? [];
+  assert.equal(sessionHooks[0]?.command, "node ${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.mjs session-start");
 });

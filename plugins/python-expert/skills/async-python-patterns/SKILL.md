@@ -65,7 +65,7 @@ if __name__ == "__main__":
 
 ```python
 async def get_data():
-    response = requests.get(“https://api.example.com”)  # 阻塞整个事件循环！
+    response = requests.get("https://api.example.com")  # 阻塞整个事件循环！
     return response.json()
 ```
 
@@ -74,7 +74,7 @@ async def get_data():
 ```python
 async def get_data():
     async with aiohttp.ClientSession() as session:
-        async with session.get(“https://api.example.com”) as resp:
+        async with session.get("https://api.example.com") as resp:
             return await resp.json()
 ```
 

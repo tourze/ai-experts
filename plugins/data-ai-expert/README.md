@@ -1,18 +1,19 @@
 # data-ai-expert
 
-数据与 AI 专家插件，聚焦 13 个技能：结构化数据分析、统计推断、图表表达、数据叙事、Embedding/RAG/向量检索优化、Prompt 工程、LLM 评估，以及 Model-First 推理。
+数据与 AI 专家插件，聚焦 14 个技能：结构化数据分析、统计推断、图表表达、图表选型、数据叙事、Embedding/RAG/向量检索优化、Prompt 工程、LLM 评估，以及 Model-First 推理。
 
 ## 目录结构
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
-- `skills/`：13 个领域技能及其脚本、参考资料、评测样例
+- `skills/`：14 个领域技能及其脚本、参考资料、评测样例
 - `tests/`：manifest、dispatch、README/skill 结构一致性检查
 
 ## Skills
 
 | Skill | 用途 |
 |-------|------|
+| `chart-type-selection` | 为趋势、对比、构成、分布等问题选择合适图表类型 |
 | `data-analysis` | 本地 `.xlsx` / `.csv` 数据分析、SQL 查询、结果导出 |
 | `data-storytelling` | 将分析结论组织为对业务方友好的叙事结构 |
 | `data-visualization` | 选择合适图表并输出可靠的可视化代码模式 |

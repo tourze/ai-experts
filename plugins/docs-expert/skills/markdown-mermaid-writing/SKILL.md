@@ -82,7 +82,7 @@ flowchart LR
 ### FAIL: 用截图代替源码
 
 ```markdown
-![架构图](./arch.png)   <!-- 不可 diff、不可在线修改 -->
+![架构图](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAB)   <!-- 不可 diff、不可在线修改 -->
 ```
 
 ### PASS: 文本化 Mermaid

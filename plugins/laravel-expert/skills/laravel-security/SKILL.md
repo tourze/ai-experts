@@ -76,19 +76,35 @@ RateLimiter::for('login', function (Request $request): array {
 ### FAIL: 只认证不鉴权
 
 ```php
+<?php
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
 Route::middleware('auth:sanctum')->put('/posts/{post}', [PostController::class, 'update']);
-// 控制器里没 authorize() → 任何登录用户都能改别人的文章
-public function update(Request $request, Post $post) {
-    $post->update($request->all());
+
+final class PostController extends Controller
+{
+    // 控制器里没 authorize() → 任何登录用户都能改别人的文章
+    public function update(Request $request, Post $post): void
+    {
+        $post->update($request->all());
+    }
 }
 ```
 
 ### PASS: Policy + FormRequest
 
 ```php
-public function update(UpdatePostRequest $request, Post $post) {
-    $this->authorize('update', $post); // 只有 owner/admin
-    $post->update($request->safe()->only(['title', 'body']));
+<?php
+
+final class PostController extends Controller
+{
+    public function update(UpdatePostRequest $request, Post $post): void
+    {
+        $this->authorize('update', $post); // 只有 owner/admin
+        $post->update($request->safe()->only(['title', 'body']));
+    }
 }
 ```
 

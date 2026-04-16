@@ -104,33 +104,67 @@ final class PostController extends Controller
 ### FAIL: Controller 同步编排副作用
 
 ```php
-public function store(Request $request) {
-    DB::transaction(function () use ($request) {
-        $user = User::create($request->all());
-        Mail::to($user)->send(new Welcome($user));  // 阻塞请求
-        Stripe::charge($user, $request->amount);    // 外部 HTTP 同步
-    });
+<?php
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+final class UserController extends Controller
+{
+    public function store(Request $request): void
+    {
+        DB::transaction(function () use ($request) {
+            $user = User::create($request->all());
+            Mail::to($user)->send(new Welcome($user));  // 阻塞请求
+            Stripe::charge($user, $request->amount);    // 外部 HTTP 同步
+        });
+    }
 }
 ```
 
 ### PASS: Action + 异步
 
 ```php
-public function store(StoreUserRequest $request, CreateUserAction $action) {
-    $user = $action->handle($request->validated());
-    SendWelcomeEmail::dispatch($user); // 异步
-    return UserResource::make($user);
+<?php
+
+final class UserController extends Controller
+{
+    public function store(StoreUserRequest $request, CreateUserAction $action): UserResource
+    {
+        $user = $action->handle($request->validated());
+        SendWelcomeEmail::dispatch($user); // 异步
+
+        return UserResource::make($user);
+    }
 }
 ```
 
 ### FAIL: N+1 懒加载
 
 ```php
-return PostResource::collection(Post::all()); // 每个 post 触发 author 查询
+<?php
+
+use App\Http\Resources\PostResource;
+use App\Models\Post;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+
+function listPosts(): AnonymousResourceCollection
+{
+    return PostResource::collection(Post::all()); // 每个 post 触发 author 查询
+}
 ```
 
 ### PASS: 预加载
 
 ```php
-return PostResource::collection(Post::with('author')->get());
+<?php
+
+use App\Http\Resources\PostResource;
+use App\Models\Post;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+
+function listPosts(): AnonymousResourceCollection
+{
+    return PostResource::collection(Post::with('author')->get());
+}
 ```

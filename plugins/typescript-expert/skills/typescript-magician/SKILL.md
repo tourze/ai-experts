@@ -131,9 +131,17 @@ if (summarize({ status: "success", data: ["a", "b"] }) !== "2 items") {
 ### FAIL: 用断言掩盖合同不一致
 
 ```ts
+type User = { email: string };
+
+function fetchUser(): unknown {
+  return { id: 1, name: "Ada" };
+}
+
 // "报错了，as 一下就好"
 const user = fetchUser() as User; // fetchUser 返回 unknown
-user.email; // 运行时可能是 undefined
+if (typeof user.email !== "undefined") {
+  throw new Error("assertion drift");
+}
 ```
 
 → `as` 只骗过编译器，运行时该崩还崩。
@@ -141,18 +149,41 @@ user.email; // 运行时可能是 undefined
 ### PASS: 用类型守卫收口
 
 ```ts
+type User = { email: string };
+
+function fetchUser(): unknown {
+  return { email: "ada@example.com" };
+}
+
+function isUser(value: unknown): value is User {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "email" in value &&
+    typeof value.email === "string"
+  );
+}
+
 const raw = fetchUser(); // unknown
 if (!isUser(raw)) {
   throw new Error("invalid user shape");
 }
-raw.email; // 类型安全，编译器和运行时一致
+if (raw.email !== "ada@example.com") {
+  throw new Error("type guard drift");
+}
 ```
 
 ### FAIL: schema 漂移 → UI 端加可选链兜底
 
 ```ts
 // 后端改了字段名，前端不断加 ?. 掩盖
+const response:
+  | { data?: { user?: { profile?: { displayName?: string } } } }
+  | null = null;
 const name = response?.data?.user?.profile?.displayName ?? "Unknown";
+if (name !== "Unknown") {
+  throw new Error("optional chaining drift");
+}
 ```
 
 → 真正的问题在 API 合同漂移，加 `?.` 只是推迟崩溃。
@@ -161,5 +192,15 @@ const name = response?.data?.user?.profile?.displayName ?? "Unknown";
 
 ```ts
 // 更新 API schema → 重新生成类型 → 编译器自动暴露所有断点
+const response = {
+  data: {
+    user: {
+      displayName: "Ada",
+    },
+  },
+};
 const name = response.data.user.displayName; // 如果字段改了，tsc 立刻报错
+if (name !== "Ada") {
+  throw new Error("schema drift");
+}
 ```

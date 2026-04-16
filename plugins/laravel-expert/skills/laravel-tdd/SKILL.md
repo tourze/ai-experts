@@ -116,7 +116,18 @@ it('works', function () {
 ### PASS: 一个测试一个行为
 
 ```php
-it('returns 201 on create', fn() => $this->postJson('/users', $data)->assertCreated());
-it('persists the user', function () { ...; expect(User::count())->toBe(1); });
-it('queues sync job', function () { Queue::fake(); ...; Queue::assertPushed(SyncUserJob::class); });
+<?php
+
+it('returns 201 on create', fn() => $this->postJson('/users', ['name' => 'Ada'])->assertCreated());
+
+it('persists the user', function (): void {
+    $this->postJson('/users', ['name' => 'Ada'])->assertCreated();
+    expect(User::count())->toBe(1);
+});
+
+it('queues sync job', function (): void {
+    Queue::fake();
+    $this->postJson('/users', ['name' => 'Ada'])->assertCreated();
+    Queue::assertPushed(SyncUserJob::class);
+});
 ```

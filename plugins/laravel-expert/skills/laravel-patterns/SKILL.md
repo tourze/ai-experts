@@ -93,13 +93,24 @@ Route::get('/accounts/{account}/projects/{project}', function (Account $account,
 ### PASS: scopeBindings + Policy
 
 ```php
-Route::middleware('auth:sanctum')->scopeBindings()->group(function () {
+<?php
+
+use App\Http\Controllers\Controller;
+use App\Http\Resources\ProjectResource;
+use Illuminate\Support\Facades\Route;
+
+Route::middleware('auth:sanctum')->scopeBindings()->group(function (): void {
     Route::get('/accounts/{account}/projects/{project}', [ProjectController::class, 'show']);
 });
-// Controller
-public function show(Account $account, Project $project) {
-    $this->authorize('view', [$project, $account]); // 真正的访问控制
-    return ProjectResource::make($project);
+
+final class ProjectController extends Controller
+{
+    public function show(Account $account, Project $project): ProjectResource
+    {
+        $this->authorize('view', [$project, $account]); // 真正的访问控制
+
+        return ProjectResource::make($project);
+    }
 }
 ```
 
