@@ -74,18 +74,19 @@ type ButtonProps = {
 - 通过增加 `variant2`、`variant3` 逃避 API 设计。
 - 为单个页面临时加 token，最后令牌表膨胀失控。
 
-## 跨会话持久化：Master + Overrides
+## 跨会话持久化：BRAND + MASTER + Overrides
 
-在 AI 协作场景下，把设计系统落到仓库里的 Markdown 比留在聊天记录里更可靠。推荐结构：
+在 AI 协作场景下，把设计系统落到仓库里的 Markdown 比留在聊天记录里更可靠。推荐三层结构：
 
 ```
 design-system/
-├── MASTER.md          # 全局 token、风格、字体、反模式
+├── BRAND.md           # 品牌层：受众、语气、反参考（变化慢）
+├── MASTER.md          # 系统层：全局 token、字体、反模式（变化中）
 └── pages/
-    └── <name>.md      # 仅记录相对 MASTER 的**覆盖项**
+    └── <name>.md      # 页面层：相对 MASTER 的**覆盖项**（变化快）
 ```
 
-实现/审查具体页面时，先读 `MASTER.md`，再查 `pages/<页面 slug>.md`；存在则覆盖，不存在则按 MASTER 落地。详见 [references/master-overrides-pattern.md](references/master-overrides-pattern.md)。
+AI 实现/审查具体页面时，按 **BRAND → MASTER → pages/\<slug\>.md** 顺序拼上下文；pages 存在则覆盖 MASTER 同字段，任何决定都不能违反 BRAND 的反参考。详见 [references/master-overrides-pattern.md](references/master-overrides-pattern.md)。
 
 ## 参考资料
 
