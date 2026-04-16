@@ -115,7 +115,51 @@ git log origin/$DEFAULT_BRANCH --since="$SINCE" --name-only --format="" -- $PATH
 
 ## 反模式
 
-- 一边写“只读分析”，一边又默认去改 `.gitignore` 或生成文件。
-- 默认把主分支写死成 `main`，在 `master` 或企业仓库里直接失真。
-- 把作者统计写成“谁效率高/谁效率低”的人事评价。
-- 在 monorepo 场景忽略路径范围，导致回顾结果被无关目录污染。
+### FAIL: 只读但默认写文件
+
+```
+“我先生成快照供下次环比”
+→ 写 .engineering-retros/2026-04-16.json
+→ 用户：”我没让你写文件”
+→ 工作树脏 / 被误提交
+```
+
+### PASS: 显式开关
+
+```
+默认：纯输出报告，零文件写入
+仅当用户明确说”留快照”才写
+.engineering-retros/ 加进 .gitignore（但不要顺手改）
+```
+
+### FAIL: 写死 main
+
+```bash
+git log origin/main --since=”7 days ago”
+# 项目用 master / develop / trunk → 失败或为空
+```
+
+### PASS: 动态探测
+
+```bash
+DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
+[ -z “$DEFAULT_BRANCH” ] && { echo “无法探测默认分支”; exit 1; }
+git log “origin/$DEFAULT_BRANCH” --since=...
+```
+
+### FAIL: 作者统计当绩效
+
+```md
+“Alice 提交 50 次，Bob 仅 10 次 → Alice 更勤奋”
+→ Bob 在做架构重构 + code review
+→ 错误归因 → 团队矛盾
+```
+
+### PASS: 中性描述贡献分布
+
+```md
+## Contributors（按字母）
+- Alice：50 commits，主要在 services/api
+- Bob：10 commits + 35 PR reviews，主要在 architecture/
+观察：贡献形态不同，commit 数不能横比
+```

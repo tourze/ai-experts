@@ -86,7 +86,51 @@ python3 scripts/github_api.py <owner> <repo> tags
 
 ## 反模式
 
-- 用户还没确定仓库，就直接进入单仓库深挖。
-- 只看 README 和 star 数，不看 releases、issues、PR、tree 与最近提交。
-- 报告写成一堆无来源断言，无法回查。
-- 把社区情绪当成源码事实，把转载时间当成项目里程碑时间。
+### FAIL: 仓库未定就深挖
+
+```
+用户："帮我研究 RAG 框架"
+你：直接深挖 LangChain（凭印象选）
+→ 用户："我其实想看 LlamaIndex 和其他 5 个对比"
+→ 工作白做
+```
+
+### PASS: 先用 github-repo-search
+
+```
+用户没指定仓库 → 切到 github-repo-search
+→ 给 Top 5 候选 → 用户选定 → 才进入深挖
+```
+
+### FAIL: 只看 README + star
+
+```
+"该项目 30k star，README 写得清晰，强烈推荐"
+→ 漏看：最近 commit 6 个月前 / 100+ 未关 issue / 核心维护者已离开
+```
+
+### PASS: 多维度
+
+```
+基线必看：
+- summary（活跃度）
+- releases（节奏）
+- issues / PR（响应时效）
+- contributors（核心维护者是否还在）
+- tree（架构现状）
+star 仅作为参考，不做唯一指标
+```
+
+### FAIL: 转载时间当里程碑
+
+```
+报告："2024 年 9 月切换到新架构（来源：某博客）"
+→ 实际：博客是转载，原 release 是 2024 年 3 月
+→ 时间线整体偏移
+```
+
+### PASS: 优先 GitHub 时间戳
+
+```
+日期冲突时：release date > tag date > commit date > 转载文章
+```

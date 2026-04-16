@@ -43,7 +43,55 @@ description: 当用户要拆分 PHP 类职责、设计服务层与 Repository、
 
 ## 反模式
 
-- 控制器里直接写业务流程、发通知、操作数据库。
-- 用 `mixed` 和裸数组在层间传递数据。
-- 依赖静态 Facade / 全局函数，测试难以隔离。
-- 只有一种实现的接口却加工厂、策略、装饰器。
+### FAIL: 控制器吞业务
+
+```php
+public function store(Request $r) {
+    $u = User::create($r->all());  // 直接 DB
+    Mail::to($u)->send(new Welcome($u));  // 发邮件
+    Slack::notify("new user");  // 通知
+    Auditor::log('user.create', $u);  // 审计
+    return ['id' => $u->id];
+}
+// 200 行的 fat controller
+```
+
+### PASS: 薄控制器 + Service
+
+```php
+public function __construct(private CreateUserService $service) {}
+
+public function store(Request $r) {
+    $dto = CreateUserDto::fromRequest($r->validated());
+    $user = $this->service->execute($dto);
+    return UserResource::make($user);
+}
+// CreateUserService 内部组合 Repository + Mailer + Auditor
+```
+
+### FAIL: 静态 Facade
+
+```php
+class OrderService {
+    public function place(...) {
+        Cache::put(...);  // 静态 Facade
+        Mail::to(...);    // 测试时无法 mock
+    }
+}
+```
+
+### PASS: 构造注入
+
+```php
+class OrderService {
+    public function __construct(
+        private CacheRepository $cache,
+        private Mailer $mailer,
+    ) {}
+    public function place(...) {
+        $this->cache->put(...);
+        $this->mailer->to(...);
+    }
+}
+// 测试时注入 mock 即可
+```

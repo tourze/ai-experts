@@ -116,8 +116,45 @@ final class CsvImporter
 
 ## 反模式
 
-- 为每个 getter / setter / 构造参数机械复制一份签名说明。
-- 在 `@param` 里重复 `string $email 用户邮箱` 这类签名已表达的信息。
-- 把任意数组都标成 `list<T>`，导致调用方被错误约束。
-- 在类级文档里罗列方法名单、实现细节或历史变更记录。
-- 使用“Exception thrown when...”或“Class that...”这类无意义模板句。
+### FAIL: 重复签名
+
+```php
+/**
+ * @param string $email 邮箱
+ * @return User 用户
+ */
+public function findByEmail(string $email): User { ... }
+// 签名已说明，doc 是噪音
+```
+
+### PASS: 仅写签名外的事
+
+```php
+/**
+ * Throws when email format is invalid before DB lookup.
+ *
+ * @throws InvalidArgumentException Email failed RFC 5322 validation.
+ */
+public function findByEmail(string $email): User { ... }
+```
+
+### FAIL: 任意数组标 list
+
+```php
+/** @return list<User> */
+public function findActive(): array {
+    $result = [];
+    foreach ($users as $u) {
+        if ($u->active) $result[$u->id] = $u;  // 键是 id 不是 0,1,2
+    }
+    return $result;  // 实际是 array<int, User>
+}
+// 调用方 array_values($x) 才能用，PHPStan 报错
+```
+
+### PASS: 准确类型
+
+```php
+/** @return array<int, User> */  // 键是 user id
+// 或如果要返回 list：return array_values($result);
+```

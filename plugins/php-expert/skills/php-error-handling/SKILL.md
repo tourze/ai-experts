@@ -44,8 +44,47 @@ DomainException (abstract, extends RuntimeException)
 
 ## 反模式
 
-- `catch (\Exception $e) {}` 吞掉异常，不记录也不重抛。
-- 所有错误都塞进 `RuntimeException`，调用方无法区分。
-- API 响应直接 `$e->getMessage()`，泄露内部信息。
-- 每个方法都包一层 `try/catch`，把异常处理变成噪音。
-- 捕获异常后返回 `null` 或 `false`，让调用方猜失败原因。
+### FAIL: 吞异常返 false/null
+
+```php
+public function findUser(int $id) {
+    try {
+        return $this->repo->find($id);
+    } catch (\Exception $e) {
+        return null;  // 调用方："为什么 null？找不到？DB 挂了？"
+    }
+}
+```
+
+### PASS: 异常类型化
+
+```php
+public function findUser(int $id): User {
+    try {
+        return $this->repo->find($id);
+    } catch (RecordNotFound $e) {
+        throw new UserNotFoundException($id);  // 业务语义
+    }
+    // DBException 不 catch，让上游（中间件）统一处理
+}
+```
+
+### FAIL: 直接返回 getMessage
+
+```php
+} catch (\Exception $e) {
+    return ['error' => $e->getMessage()];
+    // 泄露 SQL: "SQLSTATE[42S02]: Base table 'users' doesn't exist"
+}
+```
+
+### PASS: 用户消息 vs 内部细节
+
+```php
+} catch (UserVisibleException $e) {
+    return ['error' => $e->getUserMessage()];  // "找不到该用户"
+} catch (\Exception $e) {
+    Log::error('order.create.fail', ['exception' => $e]);  // 内部记录
+    return ['error' => '系统繁忙，请稍后重试'];
+}
+```
