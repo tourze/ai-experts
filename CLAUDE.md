@@ -31,7 +31,7 @@ Claude Code 插件集合，包含 54 个领域专家插件，每个插件提供 
 ## 已声明的插件依赖
 - android-expert → java-expert
 - cpp-expert → coding-expert
-- devops-expert → coding-expert
+- devops-expert → coding-expert, linux-expert
 - frontend-expert → javascript-expert
 - go-expert → coding-expert
 - ios-expert → coding-expert
