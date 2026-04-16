@@ -118,8 +118,52 @@ export function Example() {
 
 ## 反模式
 
-- 单个组件同时负责数据获取、布局、交互和十几个视觉变体。
-- 用 `footerButtons={<... />}`、`headerContent={<... />}` 之类配置型 props 模拟插槽，却不暴露结构组件。
-- 不透传原生属性，导致 `aria-*`、`data-*`、`disabled`、`type` 等能力丢失。
-- 不做类名合并，调用方无法覆盖默认样式；或无节制叠加样式导致冲突难排查。
-- 为了复用而把完全不同语义的 UI 生硬塞进同一抽象。
+### FAIL: 配置型 props 替代插槽
+
+```tsx
+<Card
+  hasHeader headerTitle="Project"
+  headerActions={<Button>Edit</Button>}
+  hasFooter footerButtons={<><Button>Save</Button><Button>Cancel</Button></>}
+  compact bordered shadow="lg"
+/>
+// 8 个 props 仍无法表达"标题里再嵌一个图标"
+```
+
+### PASS: 结构组合
+
+```tsx
+<Card>
+  <CardHeader>
+    <h2>Project</h2>
+    <Button>Edit</Button>
+  </CardHeader>
+  <CardFooter>
+    <Button>Save</Button>
+    <Button variant="ghost">Cancel</Button>
+  </CardFooter>
+</Card>
+// 任何嵌套结构都能直接表达
+```
+
+### FAIL: 不透传原生属性
+
+```tsx
+function MyButton({ label, onClick }: { label: string; onClick: () => void }) {
+  return <button onClick={onClick}>{label}</button>;
+}
+// 调用方想加 aria-label / disabled / type="submit" → 全部丢失
+```
+
+### PASS: ...props 透传 + forwardRef
+
+```tsx
+const MyButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement>>(
+  ({ children, className, ...props }, ref) => (
+    <button ref={ref} className={cn("base-styles", className)} {...props}>
+      {children}
+    </button>
+  )
+);
+// 调用方完整继承 button 全部能力
+```

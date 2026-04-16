@@ -73,124 +73,10 @@ const greeting = await invoke<string>("greet", { name: "World" });
 console.log(greeting);
 ```
 
-### 模式 2：插件安装后核对注册与 capability，而不是盲信默认值
+### 模式 2-4
 
-```rust
-use tauri_plugin_shell::ShellExt;
-
-#[cfg_attr(mobile, tauri::mobile_entry_point)]
-pub fn run() {
-    tauri::Builder::default()
-        .plugin(tauri_plugin_shell::init())
-        .setup(|app| {
-            let _ = app.shell();
-            Ok(())
-        })
-        .run(tauri::generate_context!())
-        .expect("error while running tauri application");
-}
-```
-
-```json
-{
-  "$schema": "../gen/schemas/desktop-schema.json",
-  "identifier": "main-capability",
-  "windows": ["main"],
-  "permissions": [
-    "core:default",
-    "shell:default",
-    {
-      "identifier": "shell:allow-execute",
-      "allow": [
-        { "name": "git", "args": true }
-      ]
-    }
-  ]
-}
-```
-
-说明：
-- `cargo tauri add shell` 往往会帮你接上默认 permission，但像 `shell:allow-execute` 这种非默认权限和参数 scope 仍要手动补齐。
-- 多窗口应用不要把所有权限都塞进一个 capability；按窗口或功能拆分更安全。
-
-### 模式 3：用 `Channel<T>` 处理高频流式消息
-
-```rust
-use tauri::ipc::Channel;
-
-#[derive(Clone, serde::Serialize)]
-#[serde(tag = "event", content = "data")]
-enum DownloadEvent {
-    Progress { percent: u32 },
-    Complete { path: String },
-}
-
-#[tauri::command]
-async fn download(url: String, on_event: Channel<DownloadEvent>) -> Result<(), String> {
-    if url.trim().is_empty() {
-        return Err("url is required".into());
-    }
-
-    for percent in 0..=100 {
-        on_event
-            .send(DownloadEvent::Progress { percent })
-            .map_err(|error| error.to_string())?;
-    }
-
-    on_event
-        .send(DownloadEvent::Complete {
-            path: "/downloads/file".into(),
-        })
-        .map_err(|error| error.to_string())?;
-
-    Ok(())
-}
-```
-
-```typescript
-import { Channel, invoke } from "@tauri-apps/api/core";
-
-type DownloadEvent =
-  | { event: "Progress"; data: { percent: number } }
-  | { event: "Complete"; data: { path: string } };
-
-const channel = new Channel<DownloadEvent>();
-channel.onmessage = (message) => {
-  console.log(message.event, message.data);
-};
-
-await invoke("download", {
-  url: "https://example.com/file.zip",
-  onEvent: channel,
-});
-```
-
-### 模式 4：状态与窗口访问保持精确类型
-
-```rust
-use std::sync::Mutex;
-use tauri::{Manager, State};
-
-struct AppState {
-    counter: u32,
-}
-
-#[tauri::command]
-fn increment(state: State<'_, Mutex<AppState>>) -> u32 {
-    let mut app_state = state.lock().unwrap();
-    app_state.counter += 1;
-    app_state.counter
-}
-
-#[tauri::command]
-fn focus_main_window(app: tauri::AppHandle) -> Result<(), String> {
-    let window = app
-        .get_webview_window("main")
-        .ok_or_else(|| "main window not found".to_string())?;
-
-    window.set_focus().map_err(|error| error.to_string())
-}
-```
+- 插件 + capability 注册：见 [plugin-reference.md](references/plugin-reference.md) 和 [capabilities-reference.md](references/capabilities-reference.md)
+- `Channel<T>` 流式消息、`State<T>` 共享状态、窗口访问：见 [ipc-patterns.md](references/ipc-patterns.md) 和 [advanced-runtime-reference.md](references/advanced-runtime-reference.md)
 
 ## 检查清单
 
@@ -206,9 +92,100 @@ fn focus_main_window(app: tauri::AppHandle) -> Result<(), String> {
 
 ## 反模式
 
-- 把命令、状态和插件注册直接堆在 `main.rs`，导致移动端入口和桌面入口分叉。
-- 以为所有自定义命令都必须先写 capability，或者反过来完全忽略插件 / 核心 API 的 capability 约束。
-- 继续示范 v1 时代的导入路径或已经删除的窗口 API。
-- 在异步命令里使用 `&str`、`&Path` 等借用参数，等到编译报错再回头补救。
-- 插件安装后只看 `cargo tauri add` 是否执行成功，不核对 `lib.rs` 注册、默认 permission 和额外 scope。
-- 在桌面端验证通过后直接假设移动端也可用，没有检查平台支持矩阵、编译 target 和条件编译。
+### FAIL: 全部逻辑塞 main.rs
+
+```rust
+// src-tauri/src/main.rs
+fn main() {
+    tauri::Builder::default()
+        .plugin(tauri_plugin_shell::init())
+        .manage(AppState::default())
+        .invoke_handler(tauri::generate_handler![cmd1, cmd2, cmd3])
+        .run(tauri::generate_context!())
+        .expect("error");
+}
+// 移动端 entry_point 在 lib.rs，main.rs 不会被调用
+// → iOS/Android 上所有命令、插件、state 都不存在
+```
+
+### PASS: main 薄入口 + lib.rs::run()
+
+```rust
+// main.rs（仅桌面入口转发）
+fn main() { app_lib::run(); }
+
+// lib.rs（桌面 + 移动共用）
+#[cfg_attr(mobile, tauri::mobile_entry_point)]
+pub fn run() {
+    tauri::Builder::default()
+        .plugin(tauri_plugin_shell::init())
+        .manage(AppState::default())
+        .invoke_handler(tauri::generate_handler![cmd1, cmd2, cmd3])
+        .run(tauri::generate_context!())
+        .expect("error");
+}
+```
+
+### FAIL: 异步命令用借用参数
+
+```rust
+#[tauri::command]
+async fn process(content: &str) -> Result<String, String> {  // 编译错误
+    Ok(content.to_uppercase())
+}
+// error: lifetime may not live long enough
+// async fn 不能持有非 'static 借用
+```
+
+### PASS: 拥有所有权类型
+
+```rust
+#[tauri::command]
+async fn process(content: String) -> Result<String, String> {
+    Ok(content.to_uppercase())
+}
+// String 拥有所有权，可跨 await 边界
+```
+
+### FAIL: v1 时代 import
+
+```typescript
+import { invoke } from "@tauri-apps/api/tauri";  // ← v1 路径
+import { appWindow } from "@tauri-apps/api/window";  // ← v1 全局窗口
+```
+
+### PASS: v2 模块化路径
+
+```typescript
+import { invoke } from "@tauri-apps/api/core";       // v2
+import { getCurrentWindow } from "@tauri-apps/api/window";  // v2
+import { listen } from "@tauri-apps/api/event";
+```
+
+### FAIL: 桌面通过 = 移动通过
+
+```rust
+#[tauri::command]
+fn create_tray() -> Result<(), String> {
+    use tauri::tray::TrayIconBuilder;  // 移动端无系统托盘
+    TrayIconBuilder::new().build(...).map_err(|e| e.to_string())?;
+    Ok(())
+}
+```
+
+### PASS: 平台分支
+
+```rust
+#[tauri::command]
+#[cfg(desktop)]
+fn create_tray() -> Result<(), String> {
+    TrayIconBuilder::new().build(...).map_err(|e| e.to_string())?;
+    Ok(())
+}
+
+#[tauri::command]
+#[cfg(mobile)]
+fn create_tray() -> Result<(), String> {
+    Err("System tray not supported on mobile".into())
+}
+```

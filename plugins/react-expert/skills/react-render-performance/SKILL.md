@@ -90,8 +90,56 @@ export function PhaseLabel() {
 
 ## 反模式
 
-- `useStore()` / `useSelector((state) => state)` 直接吃整份状态。
-- 把 actor/store snapshot 订阅后塞进 `useState`，再从中取一小段渲染。
-- 在父组件顶层订阅 whole object，导致所有子组件被牵连刷新。
-- selector 每次都返回新对象或新数组，却没有比较函数。
-- 高频 Context value 每次 render 都新建，整个 Provider 子树无意义重跑。
+### FAIL: 吃整份 store
+
+```tsx
+function App() {
+  const state = useStore();  // 整个 store
+  return <Layout user={state.user} cart={state.cart} />;
+}
+// 任意字段变化 → App 及所有子组件重渲染
+```
+
+### PASS: 叶子节点订阅
+
+```tsx
+function UserAvatar() {
+  const avatar = useStore(s => s.user.avatar);
+  return <img src={avatar} />;
+}
+function CartCount() {
+  const count = useStore(s => s.cart.items.length);
+  return <span>{count}</span>;
+}
+// 各自只在自己关心的字段变化时重渲染
+```
+
+### FAIL: selector 返回新对象
+
+```tsx
+const { phase, step } = useSelector(s => ({ phase: s.session.phase, step: s.session.step }));
+// 每次 render 都是新对象 → 永远不相等 → 永远重渲染
+```
+
+### PASS: shallowEqual / 拆分
+
+```tsx
+const { phase, step } = useSelector(
+  s => ({ phase: s.session.phase, step: s.session.step }),
+  shallowEqual  // ← 关键
+);
+```
+
+### FAIL: Context value 不稳定
+
+```tsx
+<MyContext.Provider value={{ user, theme, toggle: () => setTheme(...) }}>
+// 父组件每次 render 都新建对象 → 所有 consumer 重跑
+```
+
+### PASS: useMemo 稳定 value
+
+```tsx
+const value = useMemo(() => ({ user, theme, toggle }), [user, theme, toggle]);
+<MyContext.Provider value={value}>
+```

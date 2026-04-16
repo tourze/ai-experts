@@ -85,8 +85,75 @@ final class Version20260414000000 extends \Doctrine\Migrations\AbstractMigration
 
 ## 反模式
 
-- 用 ORM 循环逐条更新百万级数据，却不做分批清理。
-- 在批处理循环里每处理一条就 `flush()` 一次，导致性能和锁竞争全面恶化。
-- 为了赶进度直接修改旧 migration，破坏环境一致性。
-- 明明是一条 SQL 就能完成的回填，却硬写成实体加载加 setter 循环。
-- 没有监控批处理的内存、耗时和影响范围，就直接在生产库运行。
+### FAIL: findAll + 每条 flush
+
+```php
+foreach ($em->getRepository(Product::class)->findAll() as $product) {
+    $product->setProcessedAt(new \DateTimeImmutable());
+    $em->flush();  // 100 万次 flush
+}
+// 内存爆 + UnitOfWork 越堆越大 + 数据库锁竞争
+```
+
+### PASS: toIterable + 分批 clear
+
+```php
+$batch = 200;
+$i = 0;
+foreach ($em->createQuery('SELECT p FROM App\Entity\Product p')->toIterable() as $product) {
+    $product->setProcessedAt(new \DateTimeImmutable());
+    if (++$i % $batch === 0) {
+        $em->flush();
+        $em->clear();  // 释放 UnitOfWork
+    }
+}
+$em->flush();
+$em->clear();
+```
+
+### FAIL: ORM 做大批量 UPDATE
+
+```php
+foreach ($em->getRepository(Order::class)->findExpired() as $order) {
+    $order->setStatus('archived');  // 100 万次 SELECT + 100 万次 UPDATE
+}
+$em->flush();
+```
+
+### PASS: DBAL 一条 SQL
+
+```php
+$rows = $conn->executeStatement(
+    'UPDATE orders SET status = :archived
+     WHERE expires_at < NOW() AND status = :active',
+    ['archived' => 'archived', 'active' => 'active']
+);
+// 一条 SQL，毫秒级完成
+```
+
+### FAIL: 改旧 migration
+
+```php
+// 已经在所有环境跑过的 migration
+final class Version20260101 extends AbstractMigration {
+    public function up(Schema $s): void {
+        $this->addSql('CREATE TABLE users (...)');
+        // ↓ 后来直接加进去 ↓
+        $this->addSql('ALTER TABLE users ADD COLUMN locale VARCHAR(10)');
+    }
+}
+// 新环境一次跑成功，老环境少了 ALTER → 数据库分叉
+```
+
+### PASS: 新建 migration
+
+```php
+final class Version20260415_AddUserLocale extends AbstractMigration {
+    public function up(Schema $s): void {
+        $this->addSql('ALTER TABLE users ADD COLUMN locale VARCHAR(10) NOT NULL DEFAULT \'en\'');
+    }
+    public function down(Schema $s): void {
+        $this->addSql('ALTER TABLE users DROP COLUMN locale');
+    }
+}
+```

@@ -106,8 +106,79 @@ export async function createPost(formData: FormData) {
 
 ## 反模式
 
-- 为了“统一”而把整个页面都标记成 `'use client'`。
-- 在 Server Component 里写 `useState`、`useEffect`、`onClick`。
-- 服务端明明能直连数据库，却还 `fetch("/api/...")` 绕一跳。
-- 把数据库实体、函数、日期对象树、敏感 token 直接传给客户端组件。
-- Server Action 里不做鉴权和校验，只把表单数据原样写库。
+### FAIL: 整页 'use client'
+
+```tsx
+"use client";  // 整页变 SPA
+export default function ProductsPage() {
+  const [data, setData] = useState();
+  useEffect(() => { fetch('/api/products').then(...) }, []);
+  return <ProductList data={data} />;
+}
+// 失去 SSR 优势 + 数据获取串行 + bundle 翻倍
+```
+
+### PASS: 服务端获取 + 局部交互
+
+```tsx
+// page.tsx (Server)
+export default async function ProductsPage() {
+  const products = await db.query("SELECT * FROM products");
+  return <ProductList products={products} />;
+}
+
+// FilterControls.tsx (Client)
+"use client";
+export function FilterControls({ onChange }) {
+  const [selected, setSelected] = useState();
+  // 仅交互部分需要 client
+}
+```
+
+### FAIL: 服务端绕 API route
+
+```tsx
+// app/users/page.tsx (Server)
+export default async function UsersPage() {
+  const res = await fetch("http://localhost:3000/api/users"); // 多一跳
+  const users = await res.json();
+  return <List users={users} />;
+}
+```
+
+### PASS: 直连数据库
+
+```tsx
+import { db } from "@/lib/db";
+export default async function UsersPage() {
+  const users = await db.user.findMany();  // 0 hop
+  return <List users={users} />;
+}
+```
+
+### FAIL: Server Action 无鉴权
+
+```tsx
+"use server";
+export async function deletePost(formData: FormData) {
+  const id = formData.get("id");
+  await db.post.delete({ where: { id } });  // 任何人都能删任意 post
+}
+```
+
+### PASS: 鉴权 + 校验 + 重验证
+
+```tsx
+"use server";
+export async function deletePost(formData: FormData) {
+  const session = await getSession();
+  if (!session) throw new Error("Unauthorized");
+
+  const id = z.string().uuid().parse(formData.get("id"));
+  const post = await db.post.findUnique({ where: { id } });
+  if (post.authorId !== session.userId) throw new Error("Forbidden");
+
+  await db.post.delete({ where: { id } });
+  revalidatePath("/posts");
+}
+```

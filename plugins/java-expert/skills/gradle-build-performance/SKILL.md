@@ -65,7 +65,52 @@ val versionProvider = providers
 
 ## 反模式
 
-- 只看总耗时，不看 Build Scan 时间线。
-- 一次性打开所有缓存、并行和 JVM 参数，然后无法归因收益。
-- 把 `build.gradle(.kts)` 里的重型逻辑继续留在配置期。
-- 用 `+` 或动态版本依赖，导致每次构建都重新解析。
+### FAIL: 一次开启所有优化
+
+```properties
+# gradle.properties — 一次性
+org.gradle.configuration-cache=true
+org.gradle.caching=true
+org.gradle.parallel=true
+org.gradle.workers.max=16
+org.gradle.jvmargs=-Xmx8g -XX:+UseG1GC ...
+```
+```
+build 时间从 2min 变 1min30s
+→ 哪个优化起作用？回退哪个安全？无法归因
+→ 某个 plugin 不兼容 configuration-cache，CI 间歇性失败
+```
+
+### PASS: 一次一个 + 测量
+
+```bash
+# 基线
+./gradlew assembleDebug --profile  # 报告 1: 2min00s
+# 改 1：开 build cache
+./gradlew assembleDebug --profile  # 报告 2: 1min45s（-15s）
+# 改 2：开 parallel
+./gradlew assembleDebug --profile  # 报告 3: 1min20s（-25s）
+# 改 3：开 configuration-cache
+./gradlew assembleDebug --profile  # 报告 4: 1min05s（-15s）
+# 每步可独立确认收益和兼容性
+```
+
+### FAIL: 配置期重型 I/O
+
+```kotlin
+// build.gradle.kts (配置期)
+val version = File("version.txt").readText()  // 每次配置都读
+val gitSha = "git rev-parse HEAD".runCommand()  // 每次都 fork 进程
+```
+
+### PASS: Provider 延迟到执行期
+
+```kotlin
+val versionProvider = providers.fileContents(
+    layout.projectDirectory.file("version.txt")
+).asText
+val gitProvider = providers.exec {
+    commandLine("git", "rev-parse", "HEAD")
+}.standardOutput.asText
+// 只在真正需要时才读取
+```

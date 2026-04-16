@@ -37,7 +37,57 @@ description: 当用户需要开发 Rust 过程宏时使用；涉及 derive macro
 
 ## 反模式
 
-- 宏内 `panic!`：用户只看到 "proc macro panicked"。
-- Span 全 `call_site()`：无法定位出错位置。
-- derive macro 修改 item：Rust 不允许。
-- 不测失败路径：用错时错误不可理解。
+### FAIL: 宏内 panic
+
+```rust
+#[proc_macro_derive(MyTrait)]
+pub fn derive(input: TokenStream) -> TokenStream {
+    let ast = syn::parse(input).unwrap();  // 解析失败 panic
+    if !is_struct(&ast) {
+        panic!("MyTrait only works on structs");
+    }
+    ...
+}
+// 编译错误：error: proc macro panicked
+//          help: message: MyTrait only works on structs
+// 用户看不到自己代码的问题位置
+```
+
+### PASS: compile_error! + Span
+
+```rust
+#[proc_macro_derive(MyTrait)]
+pub fn derive(input: TokenStream) -> TokenStream {
+    let ast = match syn::parse::<DeriveInput>(input) {
+        Ok(a) => a,
+        Err(e) => return e.to_compile_error().into(),
+    };
+    if !matches!(ast.data, syn::Data::Struct(_)) {
+        return syn::Error::new_spanned(&ast.ident, "MyTrait 只支持 struct")
+            .to_compile_error().into();
+    }
+    ...
+}
+// 编译错误指向用户代码的具体类型名
+```
+
+### FAIL: 全用 call_site() Span
+
+```rust
+quote_spanned! { Span::call_site() =>
+    impl Trait for #name { ... }
+}
+// 错误指向宏调用点，看不出是哪个字段有问题
+```
+
+### PASS: 字段级 Span
+
+```rust
+for field in fields {
+    let span = field.span();  // ← 字段自己的 span
+    quote_spanned! { span =>
+        validate_field::<#field_type>();
+    }
+}
+// 错误精确指向出问题的字段定义
+```

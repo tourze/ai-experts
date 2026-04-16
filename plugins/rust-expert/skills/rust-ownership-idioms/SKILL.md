@@ -46,7 +46,54 @@ description: 当需要决定 Rust 借用/所有权边界、选择 Box/Rc/Arc 智
 
 ## 反模式
 
-- 借用报错就 `.clone()`：通常是在掩盖 API 边界设计错误。
-- `unwrap()` 当控制流：把恢复策略推给线上。
-- 全局 `#[allow(clippy::...)]` 不写原因：把 lint 变成摆设。
-- 所有 trait 都做 `dyn Trait`：损失内联、类型信息和优化空间。
+### FAIL: 借用报错就 clone
+
+```rust
+fn process(items: &Vec<String>) {
+    let first = items[0].clone();  // 借用错误？clone！
+    let copy = items.clone();       // 又借用错误？再 clone！
+    do_stuff(copy);
+}
+// 热路径上每次调用复制整个 Vec → 性能崩
+```
+
+### PASS: 收紧 API 边界
+
+```rust
+fn process(items: &[String]) -> &str {  // 切片更通用
+    &items[0]  // 借用即可
+}
+// 调用方决定是否需要 clone
+```
+
+### FAIL: unwrap 当控制流
+
+```rust
+let user = db.find_user(id).unwrap();  // 找不到就 panic
+let token = req.header("auth").unwrap();  // 没 header 就 panic
+// 线上事故：404 变成 500，错误堆栈污染日志
+```
+
+### PASS: ? + 显式错误
+
+```rust
+let user = db.find_user(id)?
+    .ok_or(AppError::UserNotFound)?;
+let token = req.header("auth")
+    .ok_or(AppError::MissingAuth)?;
+// 错误流可控，可在中间层处理
+```
+
+### FAIL: 全部 dyn Trait
+
+```rust
+fn process(handler: Box<dyn Handler>) { ... }  // 任何 Handler 都 box
+// 失去内联、虚表跳转、堆分配
+```
+
+### PASS: 默认泛型
+
+```rust
+fn process<H: Handler>(handler: H) { ... }  // 静态分发
+// 仅在异构集合 / 插件边界 / 编译时间真正成问题时才用 dyn Trait
+```

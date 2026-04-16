@@ -86,7 +86,50 @@ public final class UserRuntimeHints implements RuntimeHintsRegistrar {
 
 ## 反模式
 
-- 还没看失败日志，就一股脑添加 `reflect-config.json`、`resource-config.json` 和 tracing agent 输出。
-- 用非常宽泛的初始化或反射配置掩盖问题，导致镜像膨胀且不可维护。
-- 把 JVM 运行期错误当作 Native Image 问题，或者反过来。
-- 没有基线对比，只说“原生镜像更快”，却不给启动时间和内存数据。
+### FAIL: 用宽泛配置掩盖问题
+
+```json
+{
+  "reflect-config.json": [
+    { "name": "java.lang.**", "allDeclaredMethods": true,
+      "allDeclaredConstructors": true, "allDeclaredFields": true },
+    { "name": "com.example.**", "allDeclaredMethods": true, ... }
+  ]
+}
+// 镜像从 50MB 膨胀到 250MB
+// 任何后续问题都被这个"通配符地毯"掩盖
+```
+
+### PASS: 精确到类
+
+```java
+// Spring Boot 3.x：用 RuntimeHints
+public final class UserRuntimeHints implements RuntimeHintsRegistrar {
+    @Override
+    public void registerHints(RuntimeHints hints, ClassLoader cl) {
+        hints.reflection().registerType(UserDto.class,
+            MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
+            MemberCategory.INVOKE_DECLARED_METHODS);
+        hints.reflection().registerType(OrderDto.class, ...);
+    }
+}
+// 只注册真正需要反射的类，体积可控
+```
+
+### FAIL: 不看日志就改配置
+
+```bash
+./mvnw -Pnative package  # 失败
+# 立即添加 5 个 reflect-config + 3 个 resource-config + tracing agent
+# 仍然失败
+# 实际：第一个错误是 Java 版本不对，跟反射无关
+```
+
+### PASS: 看第一条阻塞错误
+
+```bash
+./mvnw -Pnative package 2>&1 | tee build.log
+grep -i "error" build.log | head -5
+# 发现：Java 17 vs GraalVM 21 不兼容 → 升级 JDK
+# 重跑 → 第二个错误才是真正的反射问题
+```
