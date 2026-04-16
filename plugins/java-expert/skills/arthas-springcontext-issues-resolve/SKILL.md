@@ -62,7 +62,32 @@ vmtool --action getInstances \
 
 ## 反模式
 
-- 直接 `getBean()` 或执行有副作用的表达式，扰动线上状态。
-- 未区分父子容器，看到 `containsBean=false` 就认定 Bean 没注册。
-- 全量打印所有 BeanDefinitionNames，导致输出爆炸且证据不聚焦。
-- 不解释类加载器前提，直接给用户一个 `--classLoader` 哈希值让其盲试。
+### FAIL: getBean 触发初始化
+
+```bash
+vmtool ... --express 'instances[0].getBean("lazyInitBean")'
+# → 触发初始化，改变线上状态
+```
+
+### PASS: containsBean 只读检查
+
+```bash
+vmtool ... --express 'instances[0].containsBean("lazyInitBean")'
+# 返回 true/false，不触发初始化
+```
+
+### FAIL: 只看 containsBean 不看容器
+
+```
+containsBean("fooService") → false
+结论："Bean 没注册"
+→ 实际查的是父容器，Bean 在子容器里
+```
+
+### PASS: 先确认容器再查 Bean
+
+```bash
+vmtool --action getInstances --className AbstractApplicationContext -l 5  # 枚举容器
+vmtool ... --express 'instances[2].getDisplayName()'                       # 确认是哪个
+vmtool ... --express 'instances[2].containsBean("fooService")'             # 在正确容器查
+```

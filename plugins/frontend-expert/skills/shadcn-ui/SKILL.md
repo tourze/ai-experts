@@ -62,11 +62,34 @@ toast({ title: "Saved", description: "Changes applied." });
 
 ## 反模式
 
-- 把 shadcn 当成黑盒 npm 组件库使用。
-- 新增组件时绕过 `components.json`、别名或 `cn()` 约定。
-- Tailwind v4 项目还在强行照搬 v3 初始化方式。
-- 复制多个社区版本的组件源码混在一起。
-- 有设计系统却完全保留 shadcn 默认视觉语言。
+### FAIL: 手抄半套源码
+
+```tsx
+// 从 GitHub 复制 Button 源码，没装 class-variance-authority
+import { cva } from "class-variance-authority"; // 运行时报错
+```
+
+### PASS: CLI 安装
+
+```bash
+npx shadcn@latest add button
+# 自动装依赖 + 更新 components.json + 应用项目 token
+```
+
+### FAIL: 保留 shadcn 默认视觉
+
+```tsx
+// 项目已有品牌色，但组件全是默认 slate
+<Button className="bg-slate-900">
+```
+
+### PASS: 映射到项目 token
+
+```ts
+// tailwind.config.ts
+theme: { extend: { colors: { primary: "hsl(var(--brand))" } } }
+// globals.css:  :root { --brand: 221 83% 53%; }
+```
 
 ## 参考资料
 

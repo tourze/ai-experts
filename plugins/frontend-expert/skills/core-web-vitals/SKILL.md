@@ -65,11 +65,51 @@ async function updateDashboard(chunks) {
 
 ## 反模式
 
-- 只看 Lighthouse 分数，不看真实用户 75 分位数据。
-- 给 LCP 图片加 `loading="lazy"`。
-- 用骨架屏掩盖根因，让真实内容仍然晚到。
-- 在点击事件里同步做大计算、JSON 解析或批量 DOM 更新。
-- 依赖内容加载后“撑开布局”，导致 CLS 持续抖动。
+### FAIL: LCP 图片懒加载
+
+```html
+<img src=”/hero.webp” loading=”lazy” alt=”主视觉”>
+<!-- 浏览器发现晚 200-500ms，LCP 直接崩 -->
+```
+
+### PASS: 首屏图片高优先级
+
+```html
+<link rel=”preload” as=”image” href=”/hero.webp” fetchpriority=”high”>
+<img src=”/hero.webp” fetchpriority=”high” width=”1440” height=”900” alt=”主视觉”>
+```
+
+### FAIL: 点击事件同步大计算
+
+```js
+button.onclick = () => {
+  const result = heavyCalc(items);  // 主线程卡 800ms
+  updateUI(result);
+};
+```
+
+### PASS: 拆片 + 让出主线程
+
+```js
+button.onclick = async () => {
+  for (const chunk of chunks) {
+    processChunk(chunk);
+    await new Promise(r => requestAnimationFrame(r));
+  }
+};
+```
+
+### FAIL: 图片不声明尺寸
+
+```html
+<img src=”/ad.jpg”>  <!-- 加载完把下面内容顶开，CLS 飙升 -->
+```
+
+### PASS: aspect-ratio 预留空间
+
+```css
+.media { aspect-ratio: 16/9; width: 100%; }
+```
 
 ## 参考资料
 
