@@ -48,8 +48,73 @@ SHOW REPLICA STATUS\G
 
 ## 反模式
 
-- 使用 `binlog_format=STATEMENT`：`UUID()`、`NOW()`、`RAND()` 等导致主从数据不一致。
-- 不启用 GTID 依赖手动 binlog 位点：故障切换需人工计算偏移量，容易出错。
-- Replica 未设 `super_read_only=ON`：应用误连 Replica 写入导致 GTID 集合分叉。
-- 仅靠 `Seconds_Behind_Source` 判断延迟：IO 线程中断时显示 NULL，不反映真实延迟。
-- 故障切换时不检查 GTID 缺口直接提升 Replica：缺失事务不会自动补回，导致数据不一致。
+### FAIL: STATEMENT binlog 格式
+
+```ini
+binlog_format = STATEMENT
+```
+
+```sql
+-- Source 执行
+INSERT INTO orders (id, code) VALUES (NULL, UUID());
+-- Source 上 UUID = 'a1b2...'，Replica 上 UUID = 'c3d4...'
+-- 主从数据分叉，故障切换后丢失订单
+```
+
+### PASS: ROW 格式 + FULL image
+
+```ini
+binlog_format = ROW
+binlog_row_image = FULL
+```
+
+```sql
+INSERT INTO orders (id, code) VALUES (NULL, UUID());
+-- binlog 记录实际行数据，Replica 完全复制
+```
+
+### FAIL: Replica 未 super_read_only
+
+```ini
+read_only = ON
+# 缺 super_read_only
+```
+
+```sql
+-- 应用误连 Replica（DNS 切换 / 配置错误）
+GRANT REPLICATION_SLAVE_ADMIN TO 'app'@'%';
+-- 拥有 SUPER 权限的连接能绕过 read_only → 写入产生本地 GTID
+-- 与 Source 的 GTID 集合分叉，故障切换时数据不一致
+```
+
+### PASS: super_read_only
+
+```ini
+read_only = ON
+super_read_only = ON
+```
+
+```sql
+-- 任何连接（包括 SUPER）写入都被拒绝
+-- 唯一例外：复制线程
+```
+
+### FAIL: 只看 Seconds_Behind_Source
+
+```sql
+SHOW REPLICA STATUS\G
+-- Seconds_Behind_Source: 0 → "复制正常"
+-- 实际：IO 线程中断中，最近 1 小时没收到 Source 日志
+```
+
+### PASS: 心跳表 + 多指标
+
+```sql
+-- Source 每 1s 写心跳
+CREATE EVENT heartbeat ON SCHEDULE EVERY 1 SECOND
+DO REPLACE INTO repl_heartbeat (id, ts) VALUES (1, NOW(6));
+
+-- Replica 监控心跳延迟
+SELECT TIMESTAMPDIFF(MICROSECOND, ts, NOW(6))/1000 AS lag_ms FROM repl_heartbeat;
+-- 同时观察 IO_Running, SQL_Running, Last_IO_Error
+```

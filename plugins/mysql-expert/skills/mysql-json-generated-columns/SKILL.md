@@ -47,8 +47,62 @@ CREATE TABLE products (
 
 ## 反模式
 
-- 将所有属性都塞进 JSON 放弃范式化：JOIN、外键、唯一性校验全部失效。
-- 直接在 JSON 表达式上做 WHERE 不建生成列索引：只能全表扫描。
-- 认为 `JSON_SET` 是原地修改：partial update 仅减少 binlog 大小，行存储层仍重写整个文档。
-- 对 JSON 数组做 `JSON_CONTAINS` 而没有多值索引：每行做数组遍历，行数多时极慢。
-- 虚拟列和存储列不区分场景混用：过滤用 STORED 浪费磁盘，覆盖索引用 VIRTUAL 则无法命中。
+### FAIL: 直接 WHERE JSON 表达式
+
+```sql
+SELECT * FROM products WHERE attrs->>'$.color' = 'red';
+-- 每行解析 JSON，无索引可用，全表扫描
+```
+
+### PASS: 生成列 + 索引
+
+```sql
+ALTER TABLE products
+  ADD COLUMN attr_color VARCHAR(50) GENERATED ALWAYS AS (attrs->>'$.color') VIRTUAL,
+  ADD KEY idx_color (attr_color);
+SELECT * FROM products WHERE attr_color = 'red';
+-- EXPLAIN: ref type，命中索引
+```
+
+### FAIL: 全属性进 JSON 抛弃范式化
+
+```sql
+CREATE TABLE orders (
+  id BIGINT,
+  data JSON  -- {user_id, amount, status, ...}
+);
+-- 无法建 user_id 外键；amount 类型不可控；status 无 CHECK 约束
+-- 每次查一个字段要 JSON_EXTRACT
+```
+
+### PASS: 关系列为主 + JSON 为辅
+
+```sql
+CREATE TABLE orders (
+  id       BIGINT PRIMARY KEY,
+  user_id  BIGINT NOT NULL,
+  amount   DECIMAL(12,2) NOT NULL,
+  status   TINYINT NOT NULL,
+  metadata JSON NULL,  -- 稀疏的可变扩展字段
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+-- 核心字段享受约束和索引，扩展字段放 JSON
+```
+
+### FAIL: 所有生成列都 STORED
+
+```sql
+ALTER TABLE products
+  ADD COLUMN attr_weight DECIMAL(8,2) GENERATED ALWAYS AS (...) STORED,
+  ADD COLUMN attr_color VARCHAR(50) GENERATED ALWAYS AS (...) STORED;
+-- 磁盘翻倍，更新 JSON 时所有 STORED 列重写
+```
+
+### PASS: VIRTUAL vs STORED 按场景
+
+```sql
+-- 用于 WHERE 过滤（少量读计算无所谓）→ VIRTUAL
+attr_color VARCHAR(50) GENERATED ALWAYS AS (attrs->>'$.color') VIRTUAL
+-- 用于覆盖索引或 ORDER BY（读取频繁）→ STORED
+weight_kg DECIMAL(8,2) GENERATED ALWAYS AS (...) STORED
+```

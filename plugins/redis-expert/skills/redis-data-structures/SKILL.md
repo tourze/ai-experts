@@ -47,7 +47,61 @@ def get_top_n(n: int = 10) -> list[tuple[str, float]]:
 
 ## 反模式
 
-- 用 String 存整个 JSON，每次只需一个字段也要全量反序列化。
-- 用 List 做消息队列却不处理消费者崩溃后的消息丢失，应用 Stream。
-- 用 Set 做排行榜，Set 不支持排序，应用 ZSet。
-- LPUSH + LRANGE 不加 LTRIM，List 无限增长耗尽内存。
+### FAIL: String 存整个 JSON
+
+```python
+client.set("user:1", json.dumps({"name":"alice","age":30,"city":"SF",...}))
+# 只想要 name → 全量读取 + 反序列化
+val = json.loads(client.get("user:1"))
+name = val["name"]
+```
+
+### PASS: Hash 字段读写
+
+```python
+client.hset("user:1", mapping={"name":"alice","age":30,"city":"SF"})
+# 只取 name
+name = client.hget("user:1", "name")
+# 字段数 ≤ 128 时自动用 listpack，比 String JSON 更省内存
+```
+
+### FAIL: List 当消息队列
+
+```python
+# Producer
+client.lpush("queue:tasks", json.dumps(task))
+# Consumer
+task = client.brpop("queue:tasks")
+process(task)  # 处理中崩溃 → 任务永远丢失
+```
+
+### PASS: Stream + 消费者组
+
+```python
+# Producer
+client.xadd("stream:tasks", {"data": json.dumps(task)})
+# Consumer
+msgs = client.xreadgroup("workers", "worker-1", {"stream:tasks": ">"}, count=1)
+for stream, messages in msgs:
+    for msg_id, data in messages:
+        try:
+            process(data)
+            client.xack("stream:tasks", "workers", msg_id)
+        except Exception:
+            pass  # 未 ACK 的消息留在 PEL，可被其他 worker 重新处理
+```
+
+### FAIL: Set 做排行榜
+
+```python
+client.sadd("leaderboard", "user1", "user2")
+# Set 无序，无法 "Top 10"
+```
+
+### PASS: ZSet 按分数排序
+
+```python
+client.zadd("game:leaderboard:weekly", {"user1": 1500, "user2": 2300})
+# Top 10
+client.zrevrange("game:leaderboard:weekly", 0, 9, withscores=True)
+```

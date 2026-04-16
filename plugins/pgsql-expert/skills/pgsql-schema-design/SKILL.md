@@ -45,8 +45,55 @@ CREATE TABLE order_item (
 
 ## 反模式
 
-- 用 `serial` 代替 identity column — 旧式语法糖，无法 `ALTER COLUMN ... SET GENERATED`
-- 用 `timestamp` 代替 `TIMESTAMPTZ` — 多时区环境丢失上下文
-- 用 `varchar(255)` 代替 `TEXT` — 存储无差异，只增加迁移负担
-- 用 `float` 存储金额 — 浮点舍入导致对账偏差
-- 用 `"CamelCase"` 双引号标识符 — 跨工具不一致
+### FAIL: 裸 timestamp
+
+```sql
+CREATE TABLE events (created_at timestamp NOT NULL);
+INSERT INTO events VALUES ('2026-04-16 10:00:00');
+-- 服务器在 UTC：存 10:00:00 UTC
+-- 服务器迁到 PST：再存 10:00:00 → 实际是 18:00 UTC
+-- 历史数据时区上下文丢失，无法修复
+```
+
+### PASS: TIMESTAMPTZ
+
+```sql
+CREATE TABLE events (created_at TIMESTAMPTZ NOT NULL DEFAULT now());
+-- 始终以 UTC 存储 + 客户端按时区显示
+-- 跨时区部署、夏令时切换都安全
+```
+
+### FAIL: float 存金额
+
+```sql
+CREATE TABLE invoices (amount real);
+INSERT INTO invoices VALUES (0.1), (0.2);
+SELECT SUM(amount) FROM invoices;  -- 0.30000000447034836
+```
+
+### PASS: NUMERIC + CHECK
+
+```sql
+CREATE TABLE invoices (
+    amount NUMERIC(12,2) NOT NULL CHECK (amount >= 0)
+);
+SELECT SUM(amount) FROM invoices;  -- 0.30 精确
+```
+
+### FAIL: serial 旧式
+
+```sql
+CREATE TABLE t (id serial PRIMARY KEY);
+-- serial 是语法糖：自动建 sequence，但 sequence 所有权管理混乱
+-- DROP COLUMN 后 sequence 不会自动清理
+-- 无法 ALTER ... SET GENERATED
+```
+
+### PASS: identity column
+
+```sql
+CREATE TABLE t (id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY);
+-- SQL 标准
+-- 默认 ALWAYS 阻止应用插入显式 id
+-- 完全集成在列定义中，DROP/ALTER 行为可控
+```
