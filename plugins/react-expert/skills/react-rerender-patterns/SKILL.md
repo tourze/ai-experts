@@ -110,8 +110,31 @@ function SearchBox() {
 
 ## 反模式
 
-- 不测量就到处加 memo/useMemo/useCallback，增加复杂度但没有收益。
-- 用 useEffect 监听 state A 来 setState B，制造级联渲染。
-- 在渲染函数内部 `const Child = () => ...` 定义组件。
-- 用户点击逻辑放进 useEffect 而不是事件处理器。
-- 用 useState 存不需要触发渲染的值（计时器 ID、DOM 引用）。
+### FAIL: 不测量乱加 memo
+
+```tsx
+const Row = memo(({ item }) => <div>{item.name}</div>);
+const val = useMemo(() => a + b, [a, b]);  // 原始类型无意义
+// 代码变复杂，收益 0
+```
+
+### PASS: Profiler 驱动
+
+```
+React DevTools Profiler → Ranked 视图
+找真正 > 16ms 的组件 → 针对性 memo
+简单计算不 memo
+```
+
+### FAIL: effect 级联
+
+```tsx
+useEffect(() => { setCount(items.length); }, [items]);
+// 多一次渲染
+```
+
+### PASS: 渲染期直算
+
+```tsx
+const count = items.length;
+```

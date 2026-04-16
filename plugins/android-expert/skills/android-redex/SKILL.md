@@ -95,3 +95,42 @@ tasks.register<Exec>("redexRelease") {
 ```
 
 CI 流程：`assembleRelease` → `redex.py` → `zipalign` + `apksigner` 验证。
+
+## 反模式
+
+### FAIL: 不验证签名对齐
+
+```bash
+redex.py input.apk -o output.apk -c config.json --sign -s release.keystore
+# 直接上架 → Google Play 拒收
+# 缺 zipalign / apksigner verify 验证
+```
+
+### PASS: 完整 CI 链路
+
+```bash
+redex.py input.apk -o redex.apk -c config.json \
+  --sign -s release.keystore -a alias -p "$KS_PWD" \
+  --android-sdk-path "$ANDROID_HOME"
+zipalign -c -v -P 16 4 redex.apk
+apksigner verify --print-certs redex.apk
+# 所有步骤过了才上架
+```
+
+### FAIL: 激进 pass 组合
+
+```json
+{"passes": ["RenameClassesPassV2", "StripDebugInfoPass",
+ "ReflectionAnalysisPass", ...（20+）]}
+```
+→ 过度优化导致运行时崩溃 / 反射失效
+
+### PASS: 渐进启用
+
+```json
+{"passes": ["ReBindRefsPass", "FinalInlinePassV2",
+ "RemoveUnreachablePass", "RegAllocPass"]}
+# 先从保守集合开始
+# 每次加 1-2 个 pass + 跑完整测试套件
+# 发现崩才知道哪个 pass 有问题
+```
