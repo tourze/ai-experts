@@ -32,6 +32,47 @@ description: "当用户需要在合法授权前提下规划渗透测试全流程
 - 最终报告覆盖范围、限制、发现、复测结论。
 
 ## 反模式
-- 把工具输出直接当最终结论。
-- 范围不清就开始高风险测试。
-- 只给漏洞列表，不给影响链和修复优先级。
+
+### FAIL: 工具输出当结论
+
+```md
+## Findings
+- nuclei 报告 50 个 CVE
+- nikto 报告 30 个 issue
+- zap 报告 80 个警告
+→ 客户："这些都是真的吗？"
+→ 实际：60% 假阳性，工具不知业务上下文
+```
+
+### PASS: 工具 → 验证 → 影响
+
+```md
+## Finding 001: SQL Injection in /api/search
+- 工具发现：sqlmap 报告 time-based blind
+- 人工验证：构造 payload `' AND SLEEP(5)--` → 响应延迟 5.2s ✓
+- 影响：可读 users 表（含 password_hash）
+- 利用复杂度：低（无需认证）
+- 业务影响：高（10 万用户 PII 泄漏风险）
+- 优先级：P0
+```
+
+### FAIL: 范围不清就动手
+
+```
+"客户说测他们的系统"
+→ 直接扫描 *.client.com
+→ 命中第三方 SaaS 子域 → 触发对方 WAF
+→ 客户被通知"涉嫌攻击"
+```
+
+### PASS: 范围 + 授权先行
+
+```md
+## Engagement Scope
+- IN scope:  app.client.com, api.client.com (固定 IP: 1.2.3.4)
+- OUT scope: cdn.client.com (CloudFlare)、status.client.com (StatusPage)
+- 时间窗：2026-04-20 ~ 2026-04-27 工作日 09:00-18:00
+- 禁测：DDoS / 社工 / 物理 / 数据破坏
+- 紧急联系人：alice@client.com / +86-...
+- 书面授权：letter-of-authorization-2026-04.pdf
+```

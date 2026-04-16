@@ -30,6 +30,56 @@ tshark -r capture.pcap -Y 'ip.addr == 10.0.0.10 && tcp.port == 443' -V | sed -n 
 - 必要时导出字段表供后续协议分析。
 
 ## 反模式
-- 不加过滤直接在整包里肉眼翻。
-- 只截几张图，不保留可复核过滤表达式。
-- 没有时间线和端点就直接定性攻击行为。
+
+### FAIL: 无过滤肉眼翻
+
+```bash
+wireshark capture.pcap  # 50 万个包
+# 滚轮翻 2 小时，仍找不到关键
+```
+
+### PASS: 显示过滤收窄
+
+```bash
+# 只看可疑端点
+tshark -r capture.pcap -Y 'ip.addr == 1.2.3.4'
+# 只看 HTTP 错误
+tshark -r capture.pcap -Y 'http.response.code >= 400'
+# 只看 TLS 握手失败
+tshark -r capture.pcap -Y 'tls.alert_message'
+```
+
+### FAIL: 截图无过滤表达式
+
+```
+报告里：[wireshark 截图.png]
+→ 同事："这是怎么过滤出来的？"
+→ "我忘了" → 复核失败
+```
+
+### PASS: 留可复现命令
+
+```md
+## Finding 003: TLS 握手失败异常激增
+- PCAP: incident-2026-04-15.pcap (sha256: ...)
+- 过滤表达式: `tls.alert_message and ip.dst == 10.0.0.10`
+- 时间窗: 2026-04-15 14:23:00 ~ 14:25:00 UTC
+- 命中包数: 1247
+- 复核命令: `tshark -r incident-...pcap -Y '上面表达式' | wc -l`
+```
+
+### FAIL: 无端点定性
+
+```
+"流量里有大量 SYN 包 → SYN flood 攻击"
+→ 实际：客户端是健康检查，每秒 100 次连接是预期行为
+```
+
+### PASS: 端点 + 基线对比
+
+```
+1. 标注 source / destination IP + 业务身份
+2. 与正常时段基线对比（每秒 100 vs 10000 才异常）
+3. 看是否伴随响应失败 / 资源耗尽
+4. 综合判定才能定性
+```

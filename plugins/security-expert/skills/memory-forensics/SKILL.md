@@ -30,6 +30,56 @@ python3 vol.py -f mem.raw windows.netscan
 - 导出样本前说明证据完整性和命名规则。
 
 ## 反模式
-- 未确认镜像类型就直接跑特定插件。
-- 只看一个插件输出就下定论。
-- 在原始证据文件上直接修改或覆盖。
+
+### FAIL: 不确认镜像类型
+
+```bash
+python3 vol.py -f mem.raw windows.pslist
+# Error: No suitable address space mapping found
+# 因为镜像是 Linux 不是 Windows
+```
+
+### PASS: 先 windows.info / banners
+
+```bash
+# Windows
+python3 vol.py -f mem.raw windows.info
+# Linux
+python3 vol.py -f mem.raw banners.Banners
+# → 确认 OS / kernel / build → 选对插件 + symbol pack
+```
+
+### FAIL: 单插件下结论
+
+```bash
+python3 vol.py -f mem.raw windows.pslist
+# 看到 svchost.exe → "正常"
+# 实际：进程注入隐藏在 svchost 内
+```
+
+### PASS: 多插件交叉
+
+```bash
+windows.pslist        # 标准进程列表
+windows.psscan        # 池扫描（能发现隐藏）
+windows.pstree        # 父子关系
+windows.malfind       # 可疑内存区域
+windows.netscan       # 网络连接
+# 4 个插件交叉 → 才能可靠判定
+```
+
+### FAIL: 改原始证据
+
+```bash
+vim mem.raw  # 编辑后哈希变化
+# 法庭/审计完全不认这个证据
+```
+
+### PASS: 哈希 + 副本
+
+```bash
+sha256sum mem.raw > mem.raw.sha256
+cp mem.raw mem.raw.copy
+# 所有分析在 copy 上进行
+# 完成后再次校验原始 hash 不变
+```

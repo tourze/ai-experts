@@ -30,6 +30,38 @@ chipsec_util spi dump firmware.bin
 - 需要写操作时，明确提示风险和回退方案。
 
 ## 反模式
-- 在未知平台直接执行修改类模块。
-- 混淆“镜像结构异常”和“已确认恶意”。
-- 不保存原始 dump 就开始修改。
+
+### FAIL: 直接跑修改类模块
+
+```bash
+# 不确认平台直接：
+chipsec_main -m tools.uefi.uefi_keyvar_fuzz
+# 模块尝试写 NVRAM → 砖机 / 厂商保修失效
+```
+
+### PASS: 离线只读优先
+
+```bash
+# 1. 先 dump（已脱机或在隔离机器）
+chipsec_util spi dump firmware.bin
+# 2. 离线分析
+chipsec_main -i -m common.bios_wp -n
+# 3. 任何写操作都需要明确授权 + 备份 + 厂商工具支持
+```
+
+### FAIL: "异常"=恶意
+
+```
+"chipsec 发现 NVRAM 中有未识别变量"
+→ 报告为"疑似 rootkit"
+→ 实际：厂商 OEM 工具留的合法变量
+```
+
+### PASS: 区分异常与恶意
+
+```
+1. 与同型号干净基线对比
+2. 查厂商已知 NVRAM 变量列表
+3. 只有"已知恶意特征"或"主动操作系统的可疑代码"才升级
+4. 报告区分：异常 / 可疑 / 已确认恶意
+```

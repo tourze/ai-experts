@@ -30,6 +30,40 @@ rg -n 'TrustManager|HostnameVerifier|setJavaScriptEnabled' app-code/sources
 - 必要时用 smali 交叉验证。
 
 ## 反模式
-- 搜索到字符串就直接下结论。
-- 完全忽略混淆和内联导致的假阴性。
-- 只看 Java 结果，不回看 smali 或资源。
+
+### FAIL: 字符串命中即定罪
+
+```bash
+rg "API_KEY=.*" app-code/sources
+# 命中：String API_KEY = "sk_live_abc123";
+# 报告："硬编码生产 key"
+# 实际：变量在 BuildConfig.DEBUG 分支，发布版被 ProGuard 剥除
+```
+
+### PASS: 回看调用链
+
+```bash
+# 1. 找定义
+rg -n "API_KEY" app-code/sources/com/myapp/
+# 2. 看是否有条件包裹
+# 3. 检查 mappings.txt（ProGuard 输出）确认发布版是否保留
+# 4. 用 frida hook 验证运行时实际值
+```
+
+### FAIL: 忽略混淆
+
+```bash
+rg "doPayment" app-code/sources
+# 没找到 → "没有支付逻辑"
+# 实际：ProGuard 把 doPayment 改名为 a.a.b
+```
+
+### PASS: 多维定位
+
+```bash
+# 1. 反向：从 API endpoint 找代码
+rg "/api/v1/pay" app-code/sources
+# 2. 找入口：Manifest 中的 Activity / Service
+# 3. 找网络框架（OkHttp / Retrofit）的 interceptor
+# 4. 用 jadx 的 "Find usage" 跟踪可疑参数
+```

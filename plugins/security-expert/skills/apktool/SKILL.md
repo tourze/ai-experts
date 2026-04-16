@@ -30,6 +30,41 @@ apksigner verify --print-certs app-rebuilt.apk
 - 重打包后验证签名、安装和运行日志。
 
 ## 反模式
-- 只看反编译 Java，不看 Manifest 与资源。
-- 改了 smali 但不重签名就直接安装。
-- 把反编译失败当成 APK 损坏，而不是工具局限。
+
+### FAIL: 改 smali 不重签
+
+```bash
+apktool b app-decoded -o app-modified.apk
+adb install app-modified.apk
+# INSTALL_PARSE_FAILED_NO_CERTIFICATES
+# Android 拒绝未签名 APK
+```
+
+### PASS: 重签 + 验证
+
+```bash
+apktool b app-decoded -o app-modified.apk
+apksigner sign --ks debug.keystore --ks-pass pass:android app-modified.apk
+apksigner verify --print-certs app-modified.apk
+adb install app-modified.apk
+```
+
+### FAIL: 只看 Java 不看 Manifest
+
+```
+反编译 → grep "API_KEY" → 没找到 → "没有硬编码密钥"
+→ 实际：API_KEY 在 res/values/strings.xml 或 AndroidManifest meta-data
+→ 漏报关键泄漏
+```
+
+### PASS: 全面扫描
+
+```bash
+apktool d app.apk -o decoded
+# Java/smali
+rg "API_KEY|secret|token" decoded/smali
+# 资源
+rg -i "key|secret|token" decoded/res/values/
+# Manifest meta-data
+xmllint --xpath '//meta-data' decoded/AndroidManifest.xml
+```
