@@ -10,7 +10,9 @@ description: 当用户需要实现 React Native 样式、导航、手势或 Rean
 - 需要实现跨 iOS / Android 的 React Native 页面、组件和交互。
 - 需要落地 React Navigation、手势驱动交互、转场动画或复杂布局。
 - 需要处理响应式尺寸、平台差异、触控反馈与动效时序。
-- 如果重点是“性能排障”，优先看 [react-native-best-practices](../react-native-best-practices/SKILL.md)。
+- 如果重点是 JS 线程性能（掉帧、列表卡顿），优先看 [react-native-js-performance](../react-native-js-performance/SKILL.md)。
+- 如果重点是原生层性能（TTI、线程模型），优先看 [react-native-native-performance](../react-native-native-performance/SKILL.md)。
+- 如果重点是包体积优化，优先看 [react-native-bundle-size](../react-native-bundle-size/SKILL.md)。
 - 如果目标平台是 macOS，优先看 [react-native-macos](../react-native-macos/SKILL.md)。
 
 ## 核心约束
