@@ -81,8 +81,41 @@ public function edit(Post $post): \Symfony\Component\HttpFoundation\Response
 
 ## 反模式
 
-- 在 Controller 里手写一串角色判断，而不是沉淀到 Voter。
-- `voteOnAttribute()` 里顺手改数据库状态、发消息或做远程调用。
-- `supports()` 过宽，导致错误 subject 也进入授权逻辑，最后靠异常兜底。
-- 一个动作在模板、Controller、Service 各写一份判断，结果互相矛盾。
-- 用“返回 404 假装资源不存在”掩盖所有权限问题，却没有统一策略和测试。
+### FAIL: Controller 手写角色判断
+
+```php
+public function edit(Post $post): Response {
+    if (!$this->getUser() ||
+        ($post->getAuthor()?->getId() !== $this->getUser()->getId()
+         && !in_array('ROLE_ADMIN', $this->getUser()->getRoles()))) {
+        throw $this->createAccessDeniedException();
+    }
+}
+```
+
+### PASS: Voter 集中决策
+
+```php
+public function edit(Post $post): Response {
+    $this->denyAccessUnlessGranted(PostVoter::EDIT, $post);
+}
+```
+
+### FAIL: Voter 里产生副作用
+
+```php
+protected function voteOnAttribute(...): bool {
+    $this->auditLogger->log(...);  // 写库
+    $this->notifier->send(...);    // 发通知
+    return $subject->canEdit($user);
+}
+```
+
+### PASS: Voter 保持纯判断
+
+```php
+protected function voteOnAttribute(...): bool {
+    return $subject->getAuthor()?->getId() === $user->getId();
+}
+// 副作用交给 AccessDeniedHttpException 的 EventSubscriber 统一处理
+```

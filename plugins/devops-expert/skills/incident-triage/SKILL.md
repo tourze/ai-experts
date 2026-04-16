@@ -49,7 +49,34 @@ ss -tlnp
 - 如果重点是端点健康和依赖可用性，转到 [service-monitor](../service-monitor/SKILL.md)。
 
 ## 反模式
-- 一看到报错就直接重启服务。
-- 把症状当根因，只做表层补丁。
-- 同时修改多个变量，导致无法归因。
-- 不记录失败假设，反复走回头路。
+
+### FAIL: 看到报错就重启
+
+```bash
+systemctl restart api && systemctl restart nginx && systemctl restart redis
+# 暂时好了 → 1 小时后又挂 → 没人知道根因
+```
+
+### PASS: 先只读收集证据
+
+```bash
+systemctl status api
+journalctl -u api --since "30 min ago"
+df -h; free -m
+# 证据到手后再决定重启/扩容/回滚/代码修复
+```
+
+### FAIL: 同时改多个变量
+
+```
+"扩容 + 改配置 + 重启" → 好了 → 不知道哪个起作用
+→ 下次同样症状仍不知怎么办
+```
+
+### PASS: 逐个验证假设
+
+```
+假设 1：磁盘满 → df -h → 否
+假设 2：连接池耗尽 → netstat -an | grep ESTAB | wc -l → 是
+动作：只改连接池 → 验证恢复 → 归档根因
+```

@@ -33,8 +33,35 @@ description: 当用户要设计或审查 Symfony Bundle 的目录结构、DI Ext
 
 ## 反模式
 
-- Extension `load()` 里做数据库查询或 HTTP 调用。
-- 用 `exclude` 排除文件而非 `resource` 显式声明。
-- 依赖另一个 Bundle 但不声明。
-- 一个 CompilerPass 混合多种职责。
-- 所有服务标记 `public: true`。
+### FAIL: Extension 里做运行时调用
+
+```php
+public function load(array $configs, ContainerBuilder $container): void {
+    $data = (new Client())->get('https://api.example.com/config')->getBody();
+    // 容器编译期 HTTP，部署无网络就挂
+}
+```
+
+### PASS: Extension 只加载配置
+
+```php
+public function load(array $configs, ContainerBuilder $container): void {
+    $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+    $loader->load('services.yaml');
+}
+```
+
+### FAIL: 所有服务 public: true
+
+```yaml
+services:
+  _defaults: { public: true }  # 破坏自动装配，运行时查找慢
+```
+
+### PASS: 默认 private
+
+```yaml
+services:
+  _defaults: { autowire: true, autoconfigure: true, public: false }
+  App\: { resource: '../src/' }
+```

@@ -45,7 +45,33 @@ redis   | cache.example.com:6379  | DEGRADED  | timeout
 - 如果健康状态涉及系统性故障分诊，参阅 [incident-triage](../incident-triage/SKILL.md)。
 
 ## 反模式
-- 只检查端口监听，不检查真实业务端点。
-- 用无限超时探测，导致巡检本身卡死。
-- 在带认证的系统里随意打印请求头或令牌。
-- 对单个故障端点高频重试，放大雪崩。
+
+### FAIL: 只检查端口监听
+
+```bash
+nc -z app.example.com 443  # 端口开着 → "服务健康"
+# 实际：Nginx 转发正常，后端全 500
+```
+
+### PASS: 检查真实业务端点
+
+```bash
+curl -sS --max-time 10 https://app.example.com/health -w "%{http_code}\n"
+# /health 内部检查 DB、缓存、MQ，返回聚合状态
+```
+
+### FAIL: 无限超时 + 高频重试
+
+```bash
+while true; do curl https://failed-api/; sleep 1; done
+# 巡检自己卡死 + 对故障端点雪崩
+```
+
+### PASS: 限时 + 少量采样
+
+```bash
+for i in 1 2 3; do
+  curl -sS --max-time 5 https://api/health -w "%{http_code} %{time_total}\n"
+  sleep 2
+done
+```

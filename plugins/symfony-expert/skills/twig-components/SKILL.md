@@ -103,8 +103,38 @@ final class ProductSearch
 
 ## 反模式
 
-- 为了“组件化”把整页模板硬拆成巨大万能组件，结果 props 爆炸。
-- 静态展示块也上 LiveComponent，平白增加 AJAX 往返和状态序列化成本。
-- 在 Twig 模板里写复杂业务条件、数据库访问或权限分支。
-- 组件 API 今天传 `user`、明天传 `author`、后天再传 `owner`，没有稳定语义。
-- 组件内部偷偷依赖当前路由、全局变量或容器服务，导致迁移后立刻失效。
+### FAIL: 静态展示上 LiveComponent
+
+```php
+#[AsLiveComponent]
+final class Alert {
+    #[LiveProp] public string $type = 'info';
+    #[LiveProp] public string $message = '';
+}
+// 纯静态告警，平白增加 AJAX 往返 + 状态序列化
+```
+
+### PASS: 静态用 TwigComponent
+
+```php
+#[AsTwigComponent]
+final class Alert {
+    public string $type = 'info';
+    public string $message = '';
+}
+```
+
+### FAIL: 模板里写业务逻辑
+
+```twig
+{% set orders = db_query('SELECT * FROM orders WHERE user_id = ' ~ app.user.id) %}
+{% for order in orders %}...{% endfor %}
+```
+
+### PASS: 通过显式 props 输入
+
+```twig
+{# 组件只接收已准备好的数据 #}
+{% for order in orders %}<div>{{ order.title }}</div>{% endfor %}
+{# Controller 或 Component 类负责查询并传入 orders #}
+```

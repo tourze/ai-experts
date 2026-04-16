@@ -55,7 +55,47 @@ python3 scripts/optimize-prompt.py
 
 ## 反模式
 
-- 先堆很多话术，再临时补一个“请输出 JSON”。
-- 把 few-shot 当知识库，导致 prompt 变成长文档。
-- 不区分系统指令、开发约束、用户输入，所有内容混成一段。
-- 只靠“更礼貌”“更强势”的措辞来修复真实的数据或评测问题。
+### FAIL: 话术堆砌后临时补 JSON
+
+```
+你是专业且聪明的助手，请认真分析，逻辑严密...
+[3000 字指令]
+最后输出 JSON。
+```
+
+→ 模型 30% 概率输出 markdown + 偶尔 JSON。
+
+### PASS: Schema 优先 + 简洁指令
+
+```
+System: 你是分类器。只输出 JSON。
+User: 根据工单返回 {category: “billing”|”bug”|”feature”, priority: “low”|”med”|”high”, reason: string}
+Ticket: {content}
+```
+
+### FAIL: few-shot 当知识库
+
+```
+[20 个示例 × 500 字] → 上下文窗口爆炸，重点被稀释
+```
+
+### PASS: 少而精的覆盖
+
+```
+3-5 个示例：主路径 + 边界 + 易混淆反例
+```
+
+### FAIL: 措辞修复数据问题
+
+```
+“请你非常非常认真，绝对不要出错”
+→ 依然幻觉，只是多了客气话
+```
+
+### PASS: 结构化约束 + 评测
+
+```
+- 结构化输出 + JSON schema 校验
+- few-shot 覆盖失败样例
+- llm-evaluation 建立回归基线
+```
