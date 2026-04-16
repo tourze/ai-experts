@@ -1,15 +1,17 @@
-"""
-Validation modules for Word document processing.
-"""
+"""Compatibility wrappers for the shared Office validator modules."""
 
-from .base import BaseSchemaValidator
-from .docx import DOCXSchemaValidator
-from .pptx import PPTXSchemaValidator
-from .redlining import RedliningValidator
+from pathlib import Path
+import sys
 
-__all__ = [
-    "BaseSchemaValidator",
-    "DOCXSchemaValidator",
-    "PPTXSchemaValidator",
-    "RedliningValidator",
-]
+SKILLS_DIR = Path(__file__).resolve().parents[4]
+if str(SKILLS_DIR) not in sys.path:
+    sys.path.insert(0, str(SKILLS_DIR))
+
+from _office_runtime.validators import (  # noqa: E402
+    BaseSchemaValidator,
+    DOCXSchemaValidator,
+    PPTXSchemaValidator,
+    RedliningValidator,
+)
+
+__all__ = ["BaseSchemaValidator", "DOCXSchemaValidator", "PPTXSchemaValidator", "RedliningValidator"]
