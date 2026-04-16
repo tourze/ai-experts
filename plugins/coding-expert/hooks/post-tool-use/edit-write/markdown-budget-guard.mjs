@@ -50,7 +50,7 @@ function classify(filePath) {
     return { label: "references", budget: 2000 };
   }
   if (basename === "SKILL.md") {
-    return { label: "SKILL.md", budget: 1000 };
+    return { label: "SKILL.md", budget: 1500 };
   }
   if (basename === "CLAUDE.md") {
     return { label: "CLAUDE.md", budget: 3000 };

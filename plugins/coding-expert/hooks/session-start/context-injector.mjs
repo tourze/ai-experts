@@ -88,6 +88,10 @@ export async function run(payload) {
   const guidance = GUIDANCE_FILES.filter((f) => existsSync(join(repoRoot, f)));
 
   const lines = [
+    "<SUBAGENT-STOP>",
+    "如果你是被派遣执行特定任务的 subagent，跳过本段上下文，直接执行你的任务。",
+    "</SUBAGENT-STOP>",
+    "",
     "[Session Context] 起手上下文",
     "",
     "本段由 hooks/session-start/context-injector.mjs 在 SessionStart 时一次性",

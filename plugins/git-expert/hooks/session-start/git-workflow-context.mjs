@@ -31,6 +31,10 @@ export async function run(payload) {
   return {
     decision: "context",
     reason: [
+      "<SUBAGENT-STOP>",
+      "如果你是被派遣执行特定任务的 subagent，跳过本段上下文，直接执行你的任务。",
+      "</SUBAGENT-STOP>",
+      "",
       "📌 Git 工作流",
       "",
       "1. 默认按共享工作区处理。",

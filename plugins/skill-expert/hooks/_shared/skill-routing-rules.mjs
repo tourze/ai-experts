@@ -2,6 +2,10 @@ export const SKILL_ROUTE_HEADER = "📌 Skill 路由";
 export const NEXT_STEP_HEADER = "📌 下一步推荐";
 
 export const SESSION_START_ROUTING_CONTEXT = [
+  "<SUBAGENT-STOP>",
+  "如果你是被派遣执行特定任务的 subagent，跳过本段上下文，直接执行你的任务。",
+  "</SUBAGENT-STOP>",
+  "",
   "[Skill Routing] 路由声明要求",
   "",
   "收到用户的编码/分析/设计类请求后，在动手之前，先在内心完成以下 3 步自检。",
