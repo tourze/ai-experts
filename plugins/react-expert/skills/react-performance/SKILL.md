@@ -11,7 +11,8 @@ description: 当用户要分析或优化 React 渲染性能时使用。用户提
 - 需要决定 `memo`、`useMemo`、`useCallback`、虚拟列表、懒加载是否值得上。
 - 需要用 React DevTools Profiler、浏览器 Performance 面板或 bundle 分析找瓶颈。
 - 外部 store 订阅导致的重复渲染，优先联动 [react-render-performance](../react-render-performance/SKILL.md)。
-- Next.js / RSC / Server Actions 场景，优先联动 [react-server-components](../react-server-components/SKILL.md) 与 [vercel-react-best-practices](../vercel-react-best-practices/SKILL.md)。
+- Next.js / RSC / Server Actions 场景，优先联动 [react-server-components](../react-server-components/SKILL.md) 与 [react-server-optimization](../react-server-optimization/SKILL.md)。
+- 需要消除不必要重渲染时联动 [react-rerender-patterns](../react-rerender-patterns/SKILL.md)；消除请求瀑布时联动 [waterfall-elimination](../../../architecture-expert/skills/waterfall-elimination/SKILL.md)；bundle 层面联动 [bundle-optimization](../../../frontend-expert/skills/bundle-optimization/SKILL.md)。
 
 ## 核心约束
 

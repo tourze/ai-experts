@@ -6,13 +6,15 @@
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
-- `skills/`：15 个前端设计与实现 skill
+- `skills/`：17 个前端设计与实现 skill
 - `tests/`：manifest、dispatch、脚本回归测试
 
 ## Skills
 
 | Skill | 用途 |
 | --- | --- |
+| `browser-rendering-patterns` | Hydration、resource hints、content-visibility、事件监听优化 |
+| `bundle-optimization` | Bundle 体积治理：dynamic import、barrel imports、preload |
 | `core-web-vitals` | LCP / INP / CLS 优化 |
 | `design-system-patterns` | 设计令牌、主题系统与组件架构 |
 | `figma-implement-design` | Figma 设计稿转生产代码 |
