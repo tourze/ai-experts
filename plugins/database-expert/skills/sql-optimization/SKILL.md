@@ -68,8 +68,36 @@ LIMIT 20;
 
 ## 反模式
 
-- 不看执行计划，先凭感觉把查询重写成更复杂的版本。
-- 看到慢查询就叠索引，结果写放大、锁竞争和维护成本一起上升。
-- 继续使用大偏移分页，然后把响应变慢归因于“数据库不行”。
-- 相关子查询、`OR` 条件和函数过滤堆在热点路径里，却从不考虑访问路径。
-- 用报表 SQL 直接服务线上接口，让单次请求拖垮事务库缓存和连接池。
+### FAIL: 大偏移分页
+
+```sql
+SELECT * FROM orders ORDER BY created_at DESC LIMIT 20 OFFSET 100000;
+-- 扫描 100020 行丢弃 100000 行，越翻越慢
+```
+
+### PASS: 游标分页
+
+```sql
+SELECT * FROM orders
+WHERE (created_at, id) < (?, ?)
+ORDER BY created_at DESC, id DESC
+LIMIT 20;
+-- 始终只扫描 20 行，翻页性能恒定
+```
+
+### FAIL: 索引列上套函数
+
+```sql
+SELECT * FROM users WHERE YEAR(created_at) = 2024;
+-- 无法命中 created_at 索引
+```
+
+### PASS: 范围过滤
+
+```sql
+SELECT * FROM users WHERE created_at >= '2024-01-01' AND created_at < '2025-01-01';
+-- 命中索引，范围扫描
+```
+
+- 不看执行计划就凭感觉重写查询。
+- 看到慢查询就叠索引，不考虑写放大和锁竞争。

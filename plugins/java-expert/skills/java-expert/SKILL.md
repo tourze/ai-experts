@@ -87,8 +87,46 @@ interface UserRepository extends JpaRepository<UserEntity, Long> {
 
 ## 反模式
 
-- Controller 直接访问 Repository，导致业务逻辑分散在协议层。
-- 直接把 JPA Entity 作为 API 响应，暴露懒加载和字段漂移风险。
-- 用 `catch (Exception)` 吞掉真实错误，再返回模糊成功或通用失败。
-- 在实体或服务里遗留 `System.out.println`、`printStackTrace()` 之类调试输出。
-- 依赖默认事务或 Open Session in View 掩盖设计问题。
+### FAIL: Entity 直接当 API 响应
+
+```java
+@GetMapping("/{id}")
+UserEntity getUser(@PathVariable Long id) {
+    return userRepository.findById(id).orElseThrow();
+    // 暴露内部字段、懒加载代理、双向关联序列化炸裂
+}
+```
+
+### PASS: DTO 隔离
+
+```java
+@GetMapping("/{id}")
+UserDto getUser(@PathVariable Long id) {
+    UserEntity entity = userRepository.findById(id).orElseThrow();
+    return new UserDto(entity.getId(), entity.getName(), entity.getEmail());
+}
+```
+
+### FAIL: Controller 直接访问 Repository
+
+```java
+@PostMapping
+ResponseEntity<?> create(@RequestBody CreateUserRequest req) {
+    // 业务逻辑散落在 Controller
+    if (userRepository.findByEmail(req.email()).isPresent()) {
+        return ResponseEntity.badRequest().body("email exists");
+    }
+    userRepository.save(new UserEntity(req.name(), req.email()));
+    return ResponseEntity.ok().build();
+}
+```
+
+### PASS: 业务逻辑收归 Service
+
+```java
+@PostMapping
+ResponseEntity<UserDto> create(@Valid @RequestBody CreateUserRequest req) {
+    UserDto created = userService.create(req); // 校验+持久化在 Service
+    return ResponseEntity.status(201).body(created);
+}
+```

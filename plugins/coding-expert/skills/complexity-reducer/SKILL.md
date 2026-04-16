@@ -44,8 +44,51 @@ description: "当代码过于复杂、嵌套太深、函数太长或耦合严重
 - [ ] 没有引入新复杂度（如过度抽象）
 
 ## 反模式
-- 把"简化"做成大规模重写。
-- 为减少行数牺牲可读性（嵌套三元、过度链式调用）。
-- 为消除重复创建不自然的抽象。
-- 只移动复杂度不消除复杂度。
-- 忽略本质复杂度：为简化丢失正确性。
+
+### FAIL: 为减少行数牺牲可读性
+
+```javascript
+const r = d?.items?.filter(i => i.active && i.type !== 'draft')
+  .map(i => ({...i, total: i.qty * (i.price - (i.discount || 0))}))
+  .reduce((a, b) => ({...a, [b.id]: b}), {});
+```
+
+→ 一行做了过滤、计算、归并三件事，无法断点调试，出错无法定位。
+
+### PASS: 分步命名，每步可验证
+
+```javascript
+const activeItems = data.items.filter(item => item.active && item.type !== 'draft');
+const itemsWithTotal = activeItems.map(item => ({
+  ...item,
+  total: item.qty * (item.price - (item.discount ?? 0)),
+}));
+const itemsById = Object.fromEntries(itemsWithTotal.map(item => [item.id, item]));
+```
+
+### FAIL: 只移动复杂度不消除
+
+```python
+# 把 50 行 if-else 从 process() 搬到 _helper()
+def process(data):
+    return _helper(data)  # 复杂度原封不动
+
+def _helper(data):
+    # 还是 50 行 if-else...
+```
+
+### PASS: 用查找表消除分支
+
+```python
+HANDLERS = {
+    "credit": handle_credit,
+    "debit": handle_debit,
+    "refund": handle_refund,
+}
+
+def process(data):
+    handler = HANDLERS.get(data.type)
+    if not handler:
+        raise ValueError(f"unknown type: {data.type}")
+    return handler(data)
+```

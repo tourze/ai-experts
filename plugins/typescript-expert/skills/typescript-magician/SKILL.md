@@ -128,8 +128,38 @@ if (summarize({ status: "success", data: ["a", "b"] }) !== "2 items") {
 
 ## 反模式
 
-- 看到报错就先 `as Foo`，用断言掩盖真正的合同不一致。
-- 把 `unknown` 直接改成 `any`，失去所有收口能力。
-- 一个函数同时堆叠过多重载、条件类型和模板字面量，结果调用方比实现方更难读。
-- 不跑 typecheck，只靠编辑器局部提示猜测是否修好了。
-- 类型问题明明来自 schema/DTO 漂移，却在 UI 端不断追加可选链和空值兜底。
+### FAIL: 用断言掩盖合同不一致
+
+```ts
+// "报错了，as 一下就好"
+const user = fetchUser() as User; // fetchUser 返回 unknown
+user.email; // 运行时可能是 undefined
+```
+
+→ `as` 只骗过编译器，运行时该崩还崩。
+
+### PASS: 用类型守卫收口
+
+```ts
+const raw = fetchUser(); // unknown
+if (!isUser(raw)) {
+  throw new Error("invalid user shape");
+}
+raw.email; // 类型安全，编译器和运行时一致
+```
+
+### FAIL: schema 漂移 → UI 端加可选链兜底
+
+```ts
+// 后端改了字段名，前端不断加 ?. 掩盖
+const name = response?.data?.user?.profile?.displayName ?? "Unknown";
+```
+
+→ 真正的问题在 API 合同漂移，加 `?.` 只是推迟崩溃。
+
+### PASS: 修上游合同
+
+```ts
+// 更新 API schema → 重新生成类型 → 编译器自动暴露所有断点
+const name = response.data.user.displayName; // 如果字段改了，tsc 立刻报错
+```

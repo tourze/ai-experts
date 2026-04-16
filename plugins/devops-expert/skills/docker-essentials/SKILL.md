@@ -56,7 +56,33 @@ docker compose down
 - 如果要把容器纳入巡检，参阅 [service-monitor](../service-monitor/SKILL.md)。
 
 ## 反模式
-- 直接执行 `docker system prune -a` 清理未知环境。
-- 在未确认数据位置时删除匿名卷或共享卷。
-- 用 `docker exec` 临时改生产容器，把状态漂移当修复。
-- 只看容器是否在跑，不看日志、健康检查和退出码。
+
+### FAIL: 生产容器内临时修复
+
+```bash
+docker exec -it prod-api sh
+# 在容器里 vim 改配置、pip install 补依赖
+```
+
+→ 状态漂移：下次重启回到原始镜像，"修复"消失。
+
+### PASS: 改 Dockerfile 重新构建
+
+```bash
+# 修改 Dockerfile 或配置 → 构建新镜像 → 滚动更新
+docker build -t my-app:1.2.4 .
+docker compose up -d --no-deps api
+```
+
+### FAIL: 容器在跑就算健康
+
+```bash
+docker ps  # STATUS: Up 3 hours → "没问题"
+```
+
+### PASS: 检查日志和健康状态
+
+```bash
+docker inspect --format='{{.State.Health.Status}}' api  # unhealthy
+docker logs --tail 50 api  # 发现 OOM 后重启循环
+```

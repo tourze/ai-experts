@@ -164,143 +164,68 @@ func FetchStatusCodes(
 适用条件：
 任一子任务失败都应该终止整批流程，例如批量远程调用、聚合查询、预热任务。
 
-### 模式 3：fan-out / fan-in pipeline，明确谁负责关闭输出
-
-```go
-package concurrency
-
-import (
-	"context"
-	"sync"
-)
-
-func Generate(ctx context.Context, nums ...int) <-chan int {
-	out := make(chan int)
-	go func() {
-		defer close(out)
-		for _, n := range nums {
-			select {
-			case <-ctx.Done():
-				return
-			case out <- n:
-			}
-		}
-	}()
-	return out
-}
-
-func Square(ctx context.Context, in <-chan int) <-chan int {
-	out := make(chan int)
-	go func() {
-		defer close(out)
-		for n := range in {
-			select {
-			case <-ctx.Done():
-				return
-			case out <- n * n:
-			}
-		}
-	}()
-	return out
-}
-
-func Merge(ctx context.Context, inputs ...<-chan int) <-chan int {
-	out := make(chan int)
-	var wg sync.WaitGroup
-
-	for _, input := range inputs {
-		input := input
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			for n := range input {
-				select {
-				case <-ctx.Done():
-					return
-				case out <- n:
-				}
-			}
-		}()
-	}
-
-	go func() {
-		wg.Wait()
-		close(out)
-	}()
-
-	return out
-}
-```
-
-适用条件：
-多个阶段串联、每个阶段都可能扩缩容，且需要统一汇总结果。
-
-### 模式 4：优雅停机，先停入口再等存量 goroutine 退出
-
-```go
-package concurrency
-
-import (
-	"context"
-	"os"
-	"os/signal"
-	"sync"
-	"syscall"
-)
-
-type Server struct {
-	wg sync.WaitGroup
-}
-
-func (s *Server) Start(ctx context.Context, workerCount int) {
-	for i := 0; i < workerCount; i++ {
-		s.wg.Add(1)
-		go func() {
-			defer s.wg.Done()
-			<-ctx.Done()
-		}()
-	}
-}
-
-func (s *Server) Wait() {
-	s.wg.Wait()
-}
-
-func WaitForShutdown(parent context.Context, workerCount int) {
-	ctx, cancel := context.WithCancel(parent)
-	defer cancel()
-
-	server := &Server{}
-	server.Start(ctx, workerCount)
-
-	sigCh := make(chan os.Signal, 1)
-	signal.Notify(sigCh, syscall.SIGINT, syscall.SIGTERM)
-	defer signal.Stop(sigCh)
-
-	<-sigCh
-	cancel()
-	server.Wait()
-}
-```
-
-适用条件：
-长生命周期服务、消费任务的后台进程、需要在退出前释放连接或刷盘的程序。
+fan-out/fan-in pipeline 和优雅停机的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。
 
 ## 检查清单
 
-- 是否给每条 goroutine 链路提供了退出条件，而不是默认“跑到进程结束”？
-- 是否由发送方关闭 channel，且只关闭一次？
-- 是否把并发上限显式编码进实现，而不是依赖部署层面“机器够大”？
-- 是否在共享状态上声明了所有权：谁写、谁读、何时清理？
-- 是否对失败路径做了取消传播，而不是只处理 happy path？
-- 是否为关键并发路径准备了 `go test -race ./...`、超时测试、取消测试和慢消费者测试？
-- 是否在日志中记录了任务 ID、goroutine 入口/出口、取消原因和超时边界？
+- 每条 goroutine 链路是否有明确退出条件（`ctx.Done()`、channel 关闭）？
+- channel 是否由发送方关闭，且只关闭一次？
+- 并发上限是否显式编码（`errgroup.SetLimit` / semaphore）？
+- 共享状态是否声明了所有权：谁写、谁读、何时清理？
+- 是否跑了 `go test -race ./...`？
 
 ## 反模式
 
-- 为每个输入直接 `go func()`，没有限流、没有回收、没有背压。
-- 接收方关闭上游 channel，导致 panic 或双重关闭。
-- 用 `time.Sleep` 等待“应该差不多完成了”，而不是用确定性的同步原语。
-- 在多个 goroutine 里偷偷写共享 map / slice / error 变量，却没有锁或消息传递边界。
-- 默认使用 `sync.Map`，却没有证明读多写少；最终得到更难调试的热点锁争用。
+### FAIL: 无限制 goroutine + Sleep 同步
+
+```go
+for _, item := range items {
+    go func(it Item) {
+        process(it) // 无并发上限
+    }(item)
+}
+time.Sleep(5 * time.Second) // “应该差不多完成了”
+```
+
+→ 1 万个 item = 1 万个 goroutine，且 Sleep 不保证全部完成。
+
+### PASS: 有界 worker + WaitGroup
+
+```go
+g, ctx := errgroup.WithContext(ctx)
+g.SetLimit(10) // 最多 10 个并发
+for _, item := range items {
+    item := item
+    g.Go(func() error {
+        return process(ctx, item)
+    })
+}
+if err := g.Wait(); err != nil { // 确定性等待
+    return err
+}
+```
+
+### FAIL: 接收方关闭上游 channel
+
+```go
+func consumer(ch chan int) {
+    for v := range ch {
+        fmt.Println(v)
+    }
+    close(ch) // panic: 发送方还在写！
+}
+```
+
+### PASS: 发送方负责关闭
+
+```go
+func producer(ch chan int, items []int) {
+    defer close(ch) // 发送方关闭
+    for _, v := range items {
+        ch <- v
+    }
+}
+```
+
+- 在多个 goroutine 里偷偷写共享 map / slice，却没有锁或消息传递边界。
 - 收到 `ctx.Done()` 后继续向结果 channel 写数据，导致停机阶段阻塞或泄漏。

@@ -59,8 +59,36 @@ def recipient_of(value: UserPayload | object) -> str:
 
 ## 反模式
 
-- 把 `Any` 当默认值，最后等于没写类型。
-- 为了让类型检查通过而到处 `cast()`。
-- 用继承强行表达结构约束，本该是 `Protocol` 却写成基类。
-- 只写参数类型，不写返回值和容器元素类型。
-- 把类型系统当业务规则系统，结果既难读也不可靠。
+### FAIL: Any 当默认值
+
+```python
+def process(data: Any) -> Any:
+    return data["key"]  # 类型检查通过，但运行时 data 可能不是 dict
+```
+
+### PASS: 用具体类型表达约束
+
+```python
+from typing import TypedDict
+
+class Payload(TypedDict):
+    key: str
+
+def process(data: Payload) -> str:
+    return data["key"]  # 编译器知道 data 有 key 且是 str
+```
+
+### FAIL: 用继承代替 Protocol
+
+```python
+class Sendable(ABC):  # 强迫所有实现继承这个基类
+    @abstractmethod
+    def send(self, msg: str) -> None: ...
+```
+
+### PASS: 用 Protocol 做结构化约束
+
+```python
+class Sendable(Protocol):  # 任何有 send 方法的类都匹配
+    def send(self, msg: str) -> None: ...
+```

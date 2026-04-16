@@ -76,8 +76,39 @@ def to_error_response(error: AppError) -> ErrorResponse:
 
 ## 反模式
 
-- `except Exception: return None`。
-- 用错误码当正常分支控制流。
-- 直接把第三方 SDK 的异常原样暴露给最终用户。
-- 同一个模块里混用 `None`、布尔值、异常三套失败约定。
-- 只补成功路径测试，不补失败路径。
+### FAIL: 吞异常返回 None
+
+```python
+def get_user(user_id: str) -> User | None:
+    try:
+        return db.query(User, user_id)
+    except Exception:
+        return None  # 网络超时？权限不足？数据损坏？全变成"没找到"
+```
+
+### PASS: 按类型分别处理
+
+```python
+def get_user(user_id: str) -> User:
+    try:
+        return db.query(User, user_id)
+    except NotFoundError:
+        raise UserNotFoundError(user_id) from None
+    except DatabaseError as e:
+        logger.error("db error fetching user", extra={"user_id": user_id})
+        raise ServiceUnavailableError("database error") from e
+```
+
+### FAIL: 第三方异常直接暴露
+
+```python
+except stripe.error.CardError as e:
+    return {"error": str(e)}  # 泄露 Stripe 内部错误格式
+```
+
+### PASS: 映射到应用层错误
+
+```python
+except stripe.error.CardError as e:
+    return {"error": "payment_failed", "message": "Card was declined"}
+```

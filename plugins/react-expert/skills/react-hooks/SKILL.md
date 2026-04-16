@@ -120,9 +120,44 @@ export function PriceSummary({ items }: { items: { price: number }[] }) {
 
 ## 反模式
 
+### FAIL: 用 effect 复制派生 state
+
+```tsx
+function PriceDisplay({ items }: { items: Item[] }) {
+  const [total, setTotal] = useState(0);
+  useEffect(() => {
+    setTotal(items.reduce((sum, i) => sum + i.price, 0));
+  }, [items]); // 多余的 state + effect，每次多一轮渲染
+  return <span>{total}</span>;
+}
+```
+
+### PASS: 直接计算派生值
+
+```tsx
+function PriceDisplay({ items }: { items: Item[] }) {
+  const total = items.reduce((sum, i) => sum + i.price, 0);
+  return <span>{total}</span>;
+}
+```
+
+### FAIL: 删依赖压 ESLint
+
+```tsx
+useEffect(() => {
+  fetchData(userId); // userId 变了不会重新 fetch
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []); // 故意漏掉 userId
+```
+
+### PASS: 依赖数组表达真实读集
+
+```tsx
+useEffect(() => {
+  fetchData(userId);
+}, [userId]); // userId 变了自动重新 fetch
+```
+
 - 条件调用 Hook，或在普通工具函数里偷偷调用 Hook。
-- 用 effect 复制派生 state，例如“props 改了就 setState(derivedValue)”。
-- 为了压 ESLint，把真实依赖从数组里删掉，换来随机闭包 bug。
 - 默认到处加 `useMemo` / `useCallback`，却没有证明它能改善瓶颈。
 - 自定义 Hook 直接访问 `window`、`document`、`localStorage`，在 SSR 下崩溃。
-- 把表单库、RSC 边界、测试框架问题误当成 Hook 规则问题。表单/测试任务可联动 [javascript-typescript-jest](../../../javascript-expert/skills/javascript-typescript-jest/SKILL.md)。

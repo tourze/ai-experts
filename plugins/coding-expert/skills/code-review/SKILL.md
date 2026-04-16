@@ -47,7 +47,39 @@ description: "当用户要求审查代码质量、发现命名或职责问题、
 完整的 Red Flags 表和 Rationalizations 对照表见 [references/discipline-guard.md](./references/discipline-guard.md)。
 
 ## 反模式
-- 不读代码，凭函数名猜问题。
-- 把个人风格偏好当成质量问题。
-- 所有问题都标"关键"，失去分级意义。
-- 审查变重写：给整段替代代码而不是指出问题。
+
+### FAIL: 凭猜测给意见
+
+```
+审查结果：
+- getUser() 可能有 null 安全问题
+- 建议加错误处理
+- 代码看起来不太好维护
+```
+
+→ 没有文件位置、没有代码证据、"可能""看起来"不是发现。
+
+### PASS: 每条发现有位置和证据
+
+```
+审查结果：
+- [关键] src/services/user.ts:47 — getUser() 返回值未判空，
+  第 52 行直接访问 user.email 会在用户不存在时抛 TypeError。
+  建议：加 null check 或改为 getUserOrThrow()。
+```
+
+### FAIL: 审查变重写
+
+```
+你的 processOrder 写得不好，应该改成这样：
+function processOrder(order) { ... } // 给出 30 行替代代码
+```
+
+→ 审查者的职责是指出问题，不是替人写代码。
+
+### PASS: 指出问题 + 给方向
+
+```
+processOrder (src/order.ts:23) 混合了校验、计算和持久化三个职责。
+建议按阶段拆分：validate → calculate → persist，配合 complexity-reducer。
+```

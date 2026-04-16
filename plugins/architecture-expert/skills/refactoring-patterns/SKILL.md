@@ -29,7 +29,46 @@ description: "在需要使用命名化重构动作改善结构而不改变行为
 - 是否避免把多个重构意图塞进一次改动。
 
 ## 反模式
-- 不知道问题是什么就先抽方法。
-- 把重构和功能重做混在一起。
-- 一次改太多，无法回滚或归因。
-- 只追求代码短，不追求结构更清楚。
+
+### FAIL: 重构和功能变更混在一个 commit
+
+```
+commit abc1234: "重构 OrderService 并添加折扣逻辑"
+  - 抽取了 3 个方法
+  - 改了计算公式
+  - 加了新参数
+```
+
+→ 无法区分哪个改动导致回归，也无法安全回滚。
+
+### PASS: 先重构再变更，分 commit
+
+```
+commit abc1234: "refactor: extract calculateSubtotal from OrderService"
+  - 只抽方法，行为不变，测试全绿
+commit def5678: "feat: add discount calculation to OrderService"
+  - 在重构后的清晰结构上加新逻辑
+```
+
+### FAIL: 不知道问题就先抽方法
+
+```python
+# "这个函数太长了，先拆一下"
+def step_1(data): ...
+def step_2(data): ...
+def step_3(data): ...
+def process(data):
+    return step_3(step_2(step_1(data)))
+```
+
+→ 拆出的函数没有业务含义，只是机械分割，读者要跳转更多次。
+
+### PASS: 先识别异味再选手法
+
+```python
+# 异味：process() 中间有"解析→校验→转换"三个阶段混在一起
+# 手法：Extract Method，按阶段命名
+def parse_input(raw: str) -> ParsedOrder: ...
+def validate_order(order: ParsedOrder) -> ValidOrder: ...
+def transform_to_dto(order: ValidOrder) -> OrderDTO: ...
+```

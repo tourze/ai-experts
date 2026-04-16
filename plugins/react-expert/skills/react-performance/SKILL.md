@@ -97,9 +97,52 @@ export function ProfiledSection() {
 
 ## 反模式
 
-- 给几乎所有组件包 `memo`，最后增加复杂度却没有收益。
-- 在 render 里 `items.sort(...)`、`array.reverse()` 等原地修改输入数据。
-- 父组件每次都创建新对象、新数组、新函数，却指望子组件 `memo` 生效。
-- 在小型纯展示组件上过度使用 `useMemo` / `useCallback`。
-- 列表性能差却不做虚拟化，只靠“拆组件”“加 memo”硬撑。
-- 把测试慢、网络慢、服务端慢误判成 React 渲染慢。测试任务可联动 [javascript-typescript-jest](../../../javascript-expert/skills/javascript-typescript-jest/SKILL.md)。
+### FAIL: 父组件破坏 memo 生效条件
+
+```tsx
+function Parent() {
+  return (
+    <MemoizedChild
+      style={{ color: “red” }}           // 每次渲染新对象
+      onClick={() => handleClick()}       // 每次渲染新函数
+      items={data.filter(x => x.active)} // 每次渲染新数组
+    />
+  );
+  // memo 完全无效，因为每个 prop 引用都变了
+}
+```
+
+### PASS: 稳定 props 引用
+
+```tsx
+function Parent() {
+  const style = useMemo(() => ({ color: “red” }), []);
+  const onClick = useCallback(() => handleClick(), []);
+  const activeItems = useMemo(() => data.filter(x => x.active), [data]);
+  return <MemoizedChild style={style} onClick={onClick} items={activeItems} />;
+}
+```
+
+### FAIL: render 内原地修改数组
+
+```tsx
+function SortedList({ items }: { items: Item[] }) {
+  items.sort((a, b) => a.name.localeCompare(b.name)); // 修改了 props！
+  return <ul>{items.map(i => <li key={i.id}>{i.name}</li>)}</ul>;
+}
+```
+
+### PASS: 复制后排序
+
+```tsx
+function SortedList({ items }: { items: Item[] }) {
+  const sorted = useMemo(
+    () => [...items].sort((a, b) => a.name.localeCompare(b.name)),
+    [items],
+  );
+  return <ul>{sorted.map(i => <li key={i.id}>{i.name}</li>)}</ul>;
+}
+```
+
+- 列表性能差却不做虚拟化，只靠”拆组件””加 memo”硬撑。
+- 把测试慢、网络慢、服务端慢误判成 React 渲染慢。

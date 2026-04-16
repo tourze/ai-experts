@@ -62,8 +62,34 @@ WHERE u.id IS NULL;
 
 ## 反模式
 
-- 在应用代码里拼接 SQL 字符串，再指望“输入已经转义过一次”能兜底。
-- 用 `DISTINCT`、子查询嵌套或 ORM 黑盒来掩盖错误连接与重复行来源。
-- 写 `UPDATE table SET ...` 却忘了关键条件，只能靠事务回滚或运气补救。
-- 迁移脚本没有分批、没有回滚方案、没有只读副本兼容性评估，就直接上生产。
-- 只审单条查询时间，不审权限、数据正确性和异常恢复路径。
+### FAIL: 拼接 SQL 字符串
+
+```python
+query = f”SELECT * FROM users WHERE email = '{user_input}'”
+# user_input = “' OR 1=1 --” → SQL 注入
+```
+
+### PASS: 参数化查询
+
+```python
+cursor.execute(“SELECT * FROM users WHERE email = %s”, (user_input,))
+```
+
+### FAIL: DISTINCT 掩盖错误连接
+
+```sql
+SELECT DISTINCT u.* FROM users u, orders o WHERE u.id = o.user_id;
+-- 隐式笛卡尔积 + DISTINCT 掩盖重复行来源
+```
+
+### PASS: 显式连接 + 明确列
+
+```sql
+SELECT u.id, u.email
+FROM users u
+INNER JOIN orders o ON o.user_id = u.id;
+-- 如果仍有重复，问题在数据而非查询，需要排查
+```
+
+- 迁移脚本没有分批、回滚方案、只读副本兼容性评估就上生产。
+- 只审查询时间，不审权限、数据正确性和异常恢复路径。

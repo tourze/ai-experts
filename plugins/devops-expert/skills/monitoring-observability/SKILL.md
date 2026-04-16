@@ -57,7 +57,36 @@ groups:
 - 需要沿日志追根溯源时，参阅 [log-analyzer](../log-analyzer/SKILL.md)。
 
 ## 反模式
-- 一上来铺满告警，结果产生告警疲劳。
-- 只采系统指标，不采业务成功率或关键路径指标。
-- 日志字段无约定，导致跨服务无法关联。
-- 把高基数标签写进指标，最终拖垮 Prometheus 或账单。
+
+### FAIL: 高基数标签
+
+```yaml
+- name: http_requests_total
+  labels: [method, path, user_id]  # user_id 基数 = 用户数！
+```
+
+→ 100 万用户 × 10 个 path = 1000 万时间序列，Prometheus OOM。
+
+### PASS: 控制标签基数
+
+```yaml
+- name: http_requests_total
+  labels: [method, path, status_code]  # 基数 < 1000
+```
+
+→ user_id 放日志里用 trace_id 关联，不放指标标签。
+
+### FAIL: 只有系统指标
+
+```
+CPU 40%, Memory 60%, Disk 30% → "一切正常"
+# 但用户已经无法下单 15 分钟了
+```
+
+### PASS: 业务指标 + 系统指标
+
+```yaml
+- alert: OrderSuccessRateLow
+  expr: sum(rate(orders_completed[5m])) / sum(rate(orders_attempted[5m])) < 0.95
+  for: 3m
+```
