@@ -56,7 +56,30 @@ sudo bootctl status
 
 ## 反模式
 
-- 不要建议删除 `/var/lib/pacman/local` 或手工篡改 pacman 数据库。
-- 不要在未确认镜像和 keyring 状态前直接归因于“系统损坏”。
-- 不要把 `pacman -Sy <pkg>` 当作修复手段。
-- 不要忽略 AUR helper 的 stderr；先区分 `makepkg` 失败还是仓库依赖失效。
+### FAIL: pacman -Sy 单独刷新
+
+```bash
+sudo pacman -Sy openssl  # 仅刷新数据库 + 装单包
+# Arch partial upgrade → 系统不一致 → 各种动态库符号错位
+```
+
+### PASS: 必须 -Syu 完整升级
+
+```bash
+sudo pacman -Syu  # 同步数据库 + 全量升级
+# 永远不要 -Sy 而不 -Syu
+```
+
+### FAIL: 删 pacman 数据库
+
+```bash
+“无法解决依赖” → sudo rm -rf /var/lib/pacman/local
+→ 包数据库丢失 / 无法重建 / 系统崩
+```
+
+### PASS: 用 -Qikk 验证
+
+```bash
+sudo pacman -Qikk linux  # 检查文件完整性
+# 损坏才考虑重装单包：sudo pacman -S linux
+```

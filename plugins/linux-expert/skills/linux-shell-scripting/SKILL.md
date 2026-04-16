@@ -78,7 +78,59 @@ cat "$tmp_file"
 
 ## 反模式
 
-- 不要产出没有 `set -euo pipefail` 的“示例脚本”。
-- 不要用反引号、未引用变量、`for f in $(ls ...)` 这类不稳写法。
-- 不要默认执行破坏性命令；先提供 `--dry-run` 或预览。
-- 不要把日志写成 `set -x` 常驻模式，它会泄露参数与凭据。
+### FAIL: 缺 set 严格模式
+
+```bash
+#!/bin/bash
+cd /tmp/build  # 失败也继续
+rm -rf $output  # output 未定义 → rm -rf /
+```
+
+### PASS: 严格模式 + 引号
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+cd “/tmp/build” || exit 1
+rm -rf “${output:?output not set}”
+```
+
+### FAIL: for f in $(ls ...)
+
+```bash
+for f in $(ls *.txt); do
+  cat $f  # 文件名带空格 → 拆词错乱
+done
+```
+
+### PASS: glob + 引号
+
+```bash
+shopt -s nullglob
+for f in *.txt; do
+  cat “$f”
+done
+```
+
+### FAIL: 破坏命令无 dry-run
+
+```bash
+sync_users() {
+  rm -rf /home/$u  # 同步前没预览
+}
+```
+
+### PASS: --dry-run 默认
+
+```bash
+sync_users() {
+  local dry=”${DRY_RUN:-1}”
+  for u in “$@”; do
+    if [[ “$dry” == “1” ]]; then
+      echo “[dry-run] would remove /home/$u”
+    else
+      rm -rf “/home/$u”
+    fi
+  done
+}
+```

@@ -52,7 +52,35 @@ docker system df 2>/dev/null || true
 
 ## 反模式
 
-- 不要一上来执行 `rm -rf /tmp/*`、`docker system prune -a` 或清空下载目录。
-- 不要删除未知卷、数据库目录、`/var/lib` 下的业务数据。
-- 不要忽略 inode；`df -h` 正常不代表文件数没耗尽。
-- 不要在没有前后对比的情况下宣称“已经清理干净”。
+### FAIL: 一上来 prune
+
+```bash
+“磁盘满” → docker system prune -af --volumes
+→ 删了正在用的数据库 volume → 业务数据丢失
+```
+
+### PASS: 先量化再删
+
+```bash
+df -hT  # 整体状态
+sudo du -xhd1 /var | sort -h  # 哪个目录最大
+docker system df  # 镜像/容器/volume 各占多少
+# 列出候选 + 量化预估回收 → 用户确认 → 才删
+```
+
+### FAIL: 忽略 inode
+
+```bash
+df -h  # 显示 50% 用量 → “空间够”
+mkdir test  # No space left on device
+# 实际：inode 100% 用完
+```
+
+### PASS: 同时看块和 inode
+
+```bash
+df -hT   # 块空间
+df -ih   # inode 用量
+# 两个都 < 90% 才安全
+# 高 inode：通常是大量小文件（cache / mailspool / log）
+```

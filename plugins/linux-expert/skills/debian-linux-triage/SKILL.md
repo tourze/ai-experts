@@ -52,7 +52,34 @@ aa-status
 
 ## 反模式
 
-- 不要把 `rm -f /var/lib/dpkg/lock*` 当作首选修复。
-- 不要在未做 `dpkg --audit` 前直接运行大范围卸载或自动清理。
-- 不要跳过仓库签名验证去建议关闭 `apt-secure`。
-- 不要因为 AppArmor 告警就默认建议 `systemctl disable apparmor`。
+### FAIL: rm dpkg lock
+
+```bash
+"另一个 apt 进程在运行" → sudo rm -f /var/lib/dpkg/lock*
+→ 中断真正在运行的升级 → dpkg 数据库损坏 → 系统 broken
+```
+
+### PASS: 找到原因
+
+```bash
+ps aux | grep -E 'apt|dpkg|unattended-upgrade'
+# 等其结束 / 必要时 sudo systemctl stop unattended-upgrades.service
+sudo dpkg --configure -a  # 修复未配置完成的包
+sudo apt-get -f install   # 修依赖
+```
+
+### FAIL: 签名失败关 apt-secure
+
+```bash
+"InRelease 签名错" → APT::Get::AllowUnauthenticated "true"
+→ 中间人攻击窗口大开
+```
+
+### PASS: 验证时间 / 镜像 / 密钥
+
+```bash
+date  # 系统时间是否正常
+sudo apt-get update  # 看具体哪个 repo 失败
+# 重新导入密钥：sudo apt-key adv --recv-keys <KEY>
+# 或更新 keyring 包
+```

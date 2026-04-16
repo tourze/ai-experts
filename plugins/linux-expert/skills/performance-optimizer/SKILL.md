@@ -53,7 +53,42 @@ sudo journalctl -u "$service_name" -n 50 --no-pager
 
 ## 反模式
 
-- 不要没有指标就建议“加机器”或“重启试试”。
-- 不要默认清空 page cache、禁用 swap 或关掉安全服务。
-- 不要把磁盘满导致的卡顿当成纯 CPU 问题。
-- 不要只看 `%CPU`，忽略 run queue、IO wait 和 major faults。
+### FAIL: 无指标加机器
+
+```
+“系统慢” → “加 CPU 核 + 加内存”
+→ 钱花了 / 还是慢
+→ 真问题是某个进程 IO 等待 100%
+```
+
+### PASS: 先量化瓶颈
+
+```bash
+vmstat 1 5
+# us / sy = CPU
+# wa = IO wait（关键）
+# si / so = swap（持续 > 0 = 内存压力）
+ps -eo pid,cmd,%cpu,%mem --sort=-%cpu | head -10
+iostat -xz 1 3
+# 才决策：补 CPU / 补内存 / 修代码 / 修磁盘
+```
+
+### FAIL: 只看 %CPU
+
+```bash
+top → CPU 30% → “不高”
+→ 实际 IO wait 60% / load avg 50（4 核机器）
+→ 用户感觉极慢
+```
+
+### PASS: 多维度
+
+```bash
+uptime  # load avg
+- load < CPU 核数 = 健康
+- load = 2-3 倍 = 警告
+- load > 5 倍 = 危险
+
+iostat -xz 1 3  # %iowait
+# > 30% = IO 瓶颈，CPU 数字会骗人
+```

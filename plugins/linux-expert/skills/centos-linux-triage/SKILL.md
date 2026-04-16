@@ -52,7 +52,35 @@ sudo firewall-cmd --list-all
 
 ## 反模式
 
-- 不要把 `setenforce 0` 或 `systemctl stop firewalld` 当作默认修复。
-- 不要在未核对发行版代际时混用 EL7/EL8/EL9 命令。
-- 不要直接删除 `/var/lib/rpm`、`/var/cache/dnf` 之外的元数据目录。
-- 不要跳过 `journalctl`，只凭一条启动报错下结论。
+### FAIL: setenforce 0 当修复
+
+```bash
+"服务起不来" → sudo setenforce 0
+"看，好了！" → 问题"消失"
+→ 真问题：SELinux 拒绝访问某文件 → 修了表面，留下安全漏洞
+```
+
+### PASS: 取证 + 写策略
+
+```bash
+sudo ausearch -m AVC -ts recent  # 看具体拒绝
+# audit2allow -M mypolicy < ...  # 生成精确策略
+sudo semodule -i mypolicy.pp     # 仅放行需要的
+# 永远保持 SELinux enforcing
+```
+
+### FAIL: EL7/8/9 命令混用
+
+```
+CentOS 7 系统：
+sudo dnf install foo  # 7 没有 dnf，应该用 yum
+sudo systemctl stop firewalld  # 7 用 iptables
+```
+
+### PASS: 先确认代际
+
+```bash
+cat /etc/os-release  # 看 VERSION_ID
+# EL7 → yum / iptables
+# EL8/9 → dnf / firewalld / nftables
+```
