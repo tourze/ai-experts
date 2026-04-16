@@ -133,6 +133,43 @@ print(df[["scenario", "probability", "output"]])
 
 ## 反模式
 
-- 不要宣称本技能已提供 Monte Carlo、LBO 或并购协同建模脚本；仓库当前没有这些实现。
-- 不要在 `WACC <= terminal_growth` 时继续使用增长法终值。
-- 不要让场景分析在共享对象上连续累积状态而不回滚。
+### FAIL: WACC ≤ terminal_growth
+
+```python
+model.set_assumptions(..., terminal_growth=0.05)
+model.calculate_wacc(...)  # 得到 WACC = 0.04
+model.calculate_enterprise_value()
+# 终值公式 = CF / (WACC - g) → 分母为负
+# 估值无意义或抛异常
+```
+
+### PASS: 先验证再算
+
+```python
+if model.wacc <= model.terminal_growth:
+    raise ValueError(f"WACC {model.wacc} must > growth {model.terminal_growth}")
+# 或切到退出倍数法终值，而不是增长法
+```
+
+### FAIL: 场景分析不回滚
+
+```python
+for scenario, params in scenarios.items():
+    for var, val in params.items():
+        setattr(model, var, val)
+    results[scenario] = model.value()
+# base → bull → bear：bear 基于 bull 叠加，不是 base！
+```
+
+### PASS: reset_func 显式回滚
+
+```python
+base_state = {"growth": model.growth, "margin": model.margin}
+def reset():
+    for k, v in base_state.items(): setattr(model, k, v)
+
+for scenario, params in scenarios.items():
+    reset()  # 每轮先回基准
+    for var, val in params.items(): setattr(model, var, val)
+    results[scenario] = model.value()
+```

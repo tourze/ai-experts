@@ -68,8 +68,36 @@ browser-use close
 
 ## 反模式
 
-- 继续使用 `browser-use connect`、`browser-use config ...`、`cloud signup` 这类已和当前 CLI 不一致的旧命令。
-- 页面刚导航或局部刷新后仍复用旧 `state` 索引，导致点错元素或把值写进错误输入框。
-- 需要控制台 / 网络 / 性能证据时还硬用 CLI 交互，而不是切到 [chrome-devtools](../chrome-devtools/SKILL.md)。
-- 混用多个会话却忘记 `--session`，结果把动作打到 `default` 浏览器。
-- 把 `extract` 当成稳定能力，或在会话异常后只反复重试而不先 `close` 清理。
+### FAIL: 旧 state 复用
+
+```bash
+browser-use state    # 拿到索引
+browser-use click 5
+# 页面跳转
+browser-use click 5  # 仍用旧索引 → 点错位置
+```
+
+### PASS: 每次交互前 state
+
+```bash
+browser-use state    # 拿当前
+browser-use click 5
+browser-use state    # 重新获取（DOM 变了）
+browser-use input 3 "..."
+```
+
+### FAIL: 多会话漏 --session
+
+```bash
+browser-use --session scrape open https://a.com
+browser-use click 5  # 漏 --session → 打到 default 浏览器
+```
+
+### PASS: 每条都带 --session
+
+```bash
+browser-use --session scrape open https://a.com
+browser-use --session scrape state
+browser-use --session scrape click 5
+browser-use --session scrape close
+```

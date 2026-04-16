@@ -72,6 +72,46 @@ python3 scripts/forecast_builder.py assets/sample_financial_data.json --scenario
 
 ## 反模式
 
-- 不要在未整理 JSON 的情况下直接把 Excel 概念字段名硬塞给脚本。
-- 不要把 0 输出默认为业务结论，先排查输入结构是否错位。
-- 复杂场景切换到库脚本或 [creating-financial-models](../creating-financial-models/SKILL.md)。
+### FAIL: Excel 字段名硬塞
+
+```json
+{
+  "Net Revenue": 1000,
+  "Operating Expense": 800
+}
+```
+```bash
+python3 scripts/ratio_calculator.py ./input.json
+# Error: missing required field "revenue"
+# 脚本期望 snake_case 标准命名
+```
+
+### PASS: 先整理 JSON
+
+```json
+{
+  "income_statement": {
+    "revenue": 1000,
+    "operating_expense": 800,
+    ...
+  }
+}
+```
+
+### FAIL: 0 输出当结论
+
+```bash
+python3 scripts/ratio_calculator.py input.json
+# ROE: 0.0
+# 业务方："ROE 等于 0？这公司有问题！"
+→ 实际：输入 equity 字段错位到 balance_sheet 外
+→ 脚本跑了，但分母为 0
+```
+
+### PASS: 先核对输出合理性
+
+```
+ROE = 0 → 先看输入 equity 是否 > 0
+所有比率都 0 → 输入结构很可能错位
+参考 assets/ratio_analysis_sample.json 核对字段路径
+```

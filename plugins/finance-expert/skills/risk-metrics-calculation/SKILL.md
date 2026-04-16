@@ -121,7 +121,43 @@ print(
 
 ## 反模式
 
-- 不要把百分数 `5` 当成收益率 `0.05`。
-- 不要只报 VaR 而省略 CVaR、回撤或波动率。
-- 不要在窗口过短、样本极少时输出看似精确的风险结论。
-- 不要把企业估值敏感性分析误当成投资组合风险监控。
+### FAIL: 百分数当小数
+
+```python
+returns = pd.Series([1.2, -0.8, 2.1])  # 百分数
+volatility = returns.std() * np.sqrt(252)
+# 结果 1750% → 明显错
+```
+
+### PASS: 统一小数
+
+```python
+returns = pd.Series([0.012, -0.008, 0.021])
+# 或 raw_pct / 100
+```
+
+### FAIL: 只报 VaR
+
+```
+"VaR 95 = 2.1%"
+→ 缺 CVaR / 回撤 / 波动率 → 风险画像残缺
+```
+
+### PASS: 六指标齐全
+
+```
+volatility / var / cvar / max_drawdown / sharpe / sortino
+```
+
+### FAIL: 短窗口精确数
+
+```python
+# 仅 5 天数据 → 报 "VaR 99 = 3.2%"（无统计意义）
+```
+
+### PASS: 样本不足只给方向
+
+```python
+if len(returns) < 60:
+    print("样本少，仅给方向性判断")
+```

@@ -49,8 +49,38 @@ gdb -q -p 12345 -ex "thread apply all bt" -ex "detach" -ex "quit" > /tmp/hang-li
 
 ## 反模式
 
-- 只抓一次线程栈，就急着下结论说“是死锁”或“是 CPU 高”。
-- 看到报错栈最底部就打补丁，而不追到第一处异常等待、写入或同步点。
-- 抓错 PID，最后分析的是 launcher、watcher 或 shell，本体进程却没采到。
-- 明明是主线程阻塞，却只盯着 worker 线程，不做跨线程对照。
-- attach 失败后直接放弃，不记录权限限制、签名问题或调试器缺失。
+### FAIL: 单次采样下结论
+
+```bash
+lldb -p 12345 -o 'thread backtrace all'
+# 看到一个 mutex wait → “死锁”
+→ 实际可能是正常短时等待
+```
+
+### PASS: 多次采样对比
+
+```bash
+for i in 1 2 3 4 5; do
+  lldb -p 12345 -o 'thread backtrace all' -o 'detach' > /tmp/stack_$i.txt
+  sleep 0.5
+done
+diff /tmp/stack_1.txt /tmp/stack_5.txt
+# 5 次都停同一 mutex → 真死锁
+# 每次位置不同 → 只是高负载
+```
+
+### FAIL: 抓错 PID
+
+```bash
+ps -axo pid,comm | grep MyApp | head -1
+# 拿到 launcher 进程 → 分析”launcher 在等子进程”（正常）
+# 真卡死的主进程没抓到
+```
+
+### PASS: 定位真实主进程
+
+```bash
+ps -axo pid,ppid,comm | grep MyApp
+# 看进程树，定位 UI 主进程
+# macOS: Activity Monitor “Sample” 对比 PID
+```
