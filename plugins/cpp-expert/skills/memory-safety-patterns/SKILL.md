@@ -172,9 +172,32 @@ fn main() {
 
 ## 反模式
 
-- “先上 `shared_ptr`，以后再说。” 这通常是在把设计问题推迟成性能和生命周期问题。
-- 一个对象里同时出现裸指针 owner、手写 `delete` 和 `shared_ptr` 混搭。
-- C 函数里每个失败分支各自 `free` 一遍，最后演变成遗漏或 double free。
-- 只在 happy path 释放资源，把异常、早返回和部分初始化对象忘掉。
-- 用 `std::string` / `std::vector` 值传递表达只读借用，徒增复制和所有权歧义。
-- 为了“兼容旧代码”保留长期悬空的 observer pointer，不补生命周期约束。
+### FAIL: shared_ptr 当默认答案
+
+```cpp
+class Engine {
+    std::shared_ptr<Logger> logger_;  // 真需要共享？
+    std::shared_ptr<Config> config_;  // 谁释放说不清
+};
+```
+
+### PASS: 单 owner + observer
+
+```cpp
+class Engine {
+    std::unique_ptr<Logger> logger_;  // Engine 拥有
+    Config* config_;                   // 借用，由调用方管理
+};
+```
+
+### FAIL: 值传递表达只读借用
+
+```cpp
+int sum(std::vector<int> values);  // 拷贝整个 vector
+```
+
+### PASS: span 表达借用
+
+```cpp
+int sum(std::span<const int> values);  // 零拷贝，只读
+```

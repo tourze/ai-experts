@@ -35,9 +35,41 @@ description: 当用户编写、审查或重构 PHP 测试时使用。覆盖 PHPU
 
 ## 反模式
 
-- 一个测试同时验证多个行为，失败后无法定位根因。
-- 继续使用 `@test`、`@dataProvider` 旧式注解。
-- 复用共享可变状态，导致测试顺序依赖。
-- Mock 被测对象内部实现，使重构变成"改测试"。
-- 测试名只写 `test1`、`it_works`，看不出业务行为。
-- phpunit.xml 关闭严格模式，吞掉 risky / warning。
+### FAIL: 一测多行为
+
+```php
+#[Test]
+public function it_works(): void {
+    $order = $svc->create($data);
+    self::assertSame('paid', $order->status);
+    self::assertSame(99.0, $order->total);
+    self::assertCount(1, $order->items);
+    // 失败时不知道是哪条断言挂了
+}
+```
+
+### PASS: 一测一行为
+
+```php
+#[Test]
+public function create_persists_order_with_paid_status(): void { ... }
+
+#[Test]
+public function create_calculates_total_from_items(): void { ... }
+```
+
+### FAIL: Mock 被测对象内部
+
+```php
+$svc = $this->createPartialMock(OrderService::class, ['calculateTotal']);
+$svc->method('calculateTotal')->willReturn(99.0);
+// 重构 calculateTotal 后，测试一团糟
+```
+
+### PASS: 只 mock 外部边界
+
+```php
+$gateway = $this->createMock(PaymentGateway::class);
+$gateway->method('charge')->willReturn(true);
+$svc = new OrderService($gateway);  // 真实 Service，假 Gateway
+```

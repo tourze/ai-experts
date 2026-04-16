@@ -132,8 +132,35 @@ if (dto.status !== "active") {
 
 ## 反模式
 
-- 把 `as any` 当作项目级解决方案，而不是局部逃生舱口。
-- 前端/后端/数据库分别维护三套近似类型，靠人工记忆保持同步。
-- 只写静态类型不做运行时解析，直接相信 URL、表单、第三方 API 输入。
-- 用字符串路由、字符串事件名、字符串字段路径驱动关键流程。
-- 把类型安全理解成“多写几层 interface”，却不让编译器真正参与边界约束。
+### FAIL: 三套近似类型
+
+```ts
+// frontend: type User = { id: string; isActive: boolean }
+// backend:  interface UserDto { id: string; status: 'active' | 'inactive' }
+// db:       CREATE TABLE users (id uuid, is_active boolean)
+// 三处不一致 → bug 永远在边界出现
+```
+
+### PASS: 单一 schema 推导
+
+```ts
+export const UserSchema = z.object({
+  id: z.string().uuid(), name: z.string(), isActive: z.boolean()
+});
+export type User = z.infer<typeof UserSchema>;
+// 前后端共用 → 改一处全部跟随
+```
+
+### FAIL: 只静态不运行时
+
+```ts
+const data: UserDto = await fetch('/api/user').then(r => r.json());
+// 服务端改字段，前端类型系统不知道，运行时静默错位
+```
+
+### PASS: 边界处运行时校验
+
+```ts
+const data = UserSchema.parse(await fetch('/api/user').then(r => r.json()));
+// 不符合立即抛错，业务层拿到的永远合法
+```

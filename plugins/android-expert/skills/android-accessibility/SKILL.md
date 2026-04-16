@@ -101,43 +101,73 @@ Box(
 
 ### 5. 焦点与导航顺序
 
-* 焦点顺序遵循从上到下、从 Start 到 End 的逻辑顺序
-* 标题文本标记 `Modifier.semantics { heading() }`，支持 TalkBack 按标题跳转
-* 页面切换或 Dialog 关闭后，焦点移至逻辑目标位置
-* 全部功能可通过 TalkBack、Switch Access、外接键盘完成操作
+* 焦点顺序：从上到下、Start 到 End
+* 标题用 `Modifier.semantics { heading() }`，支持 TalkBack 按标题跳转
+* 页面切换或 Dialog 关闭后，焦点移至逻辑目标
+* 全部功能可通过 TalkBack、Switch Access、键盘操作
 
 ```kotlin
-// 标题标记
-Text(
-    text = "设置",
-    style = MaterialTheme.typography.headlineMedium,
-    modifier = Modifier.semantics { heading() }
-)
+Text("设置", modifier = Modifier.semantics { heading() })
 ```
 
 ### 6. 自定义 Canvas 视图
 
-* 使用 Canvas 绘制的交互区域对 TalkBack **完全不可见**
-* View 体系：必须实现 `ExploreByTouchHelper` 构建虚拟无障碍树
-* Compose：通过 `Modifier.semantics` 在 Canvas 上层叠加语义节点
+Canvas 绘制的交互区对 TalkBack 完全不可见。View 体系实现 `ExploreByTouchHelper`；Compose 通过 `Modifier.semantics` 叠加语义节点。
 
 ## 审计流程
 
-```
-1. 开启 TalkBack → 逐屏扫描 → 确认每个可交互元素都有播报
-2. Layout Inspector → 测量所有可点击元素尺寸 → 确认 ≥ 48dp
-3. Accessibility Scanner → 自动检测对比度和触摸目标问题
-4. 外接键盘 → Tab 遍历 → 确认所有功能可达
-5. 系统设置 200% 字体 → 确认无裁切和重叠
-6. 开启粗体文本 / 高对比度 → 确认界面正常显示
-```
+TalkBack 逐屏扫描 → Layout Inspector 测尺寸 → Accessibility Scanner 自动检测 → 外接键盘 Tab 遍历 → 200% 字体复测 → 粗体/高对比度复测。
 
 ## 反模式
 
-| 做法 | 问题 | 正确方式 |
-|------|------|----------|
-| 所有图片都设 `contentDescription` | 装饰性图片干扰播报 | 装饰性图片设 `null` |
-| `contentDescription = "icon"` | 无意义描述 | 描述动作或含义 |
-| 缩小按钮节省空间 | 触摸目标 < 48dp | 保持 48dp 触摸区域，视觉可以缩小 |
-| 仅用红色标记错误 | 色盲用户无法识别 | 颜色 + 图标 + 文字 |
-| Canvas 自绘 UI 无语义 | TalkBack 完全不可见 | 添加 ExploreByTouchHelper |
+### FAIL: 描述外观
+
+```kotlin
+Icon(Icons.Default.PlayArrow, contentDescription = "三角形图标")
+// TalkBack 播报"三角形图标" → 用户不知道点了会发生什么
+```
+
+### PASS: 描述动作
+
+```kotlin
+IconButton(onClick = { playMusic() }) {
+    Icon(Icons.Default.PlayArrow, contentDescription = "播放音乐")
+}
+```
+
+### FAIL: 缩小按钮节省空间
+
+```kotlin
+IconButton(onClick = onFavorite, modifier = Modifier.size(24.dp)) {
+    Icon(Icons.Default.Star, contentDescription = "收藏")
+}
+// 触摸区 24×24，老人/触屏精度差用户无法点中
+```
+
+### PASS: 视觉小但触摸区大
+
+```kotlin
+Box(
+    modifier = Modifier.sizeIn(minWidth = 48.dp, minHeight = 48.dp)
+        .clickable { onFavorite() },
+    contentAlignment = Alignment.Center,
+) {
+    Icon(Icons.Default.Star, contentDescription = "收藏",
+         modifier = Modifier.size(16.dp))
+}
+```
+
+### FAIL: 仅用颜色标错误
+
+```kotlin
+Text(field.value, color = if (field.hasError) Color.Red else Color.Black)
+// 色盲用户无法识别
+```
+
+### PASS: 颜色 + 图标 + 文字
+
+```kotlin
+if (field.hasError) Icon(Icons.Default.Error, contentDescription = null)
+Text(field.value, color = if (field.hasError) errorColor else textColor)
+if (field.hasError) Text("此字段必填", style = errorStyle)
+```

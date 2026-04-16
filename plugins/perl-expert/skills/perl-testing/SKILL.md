@@ -31,7 +31,44 @@ description: 当要为 Perl 代码编写或审查测试时使用。
 
 ## 反模式
 
-- 多个场景塞进一个 subtest，失败后无法定位回归。
-- mock 被测模块自身方法，让测试和实现一起变脆。
-- 测试文件超 300 行，说明被测模块职责过多。
-- 遗留 `Data::Dumper`、`warn` 调试输出。
+### FAIL: 多场景塞进一个 subtest
+
+```perl
+subtest 'user operations' => sub {
+    my $u = User->new(name => 'A');
+    is $u->name, 'A';
+    $u->set_age(30);
+    is $u->age, 30;
+    ok $u->save;
+    # 失败时不知是哪步
+};
+```
+
+### PASS: 一 subtest 一行为
+
+```perl
+subtest 'new() sets name' => sub {
+    is(User->new(name => 'A')->name, 'A');
+};
+subtest 'set_age() updates age' => sub {
+    my $u = User->new(name => 'A');
+    $u->set_age(30);
+    is($u->age, 30);
+};
+```
+
+### FAIL: mock 被测模块自身
+
+```perl
+my $mock = Test::MockModule->new('OrderService');
+$mock->mock(calculate_total => sub { 99 });
+# 重构 calculate_total 后测试一团糟
+```
+
+### PASS: 只 mock 外部边界
+
+```perl
+my $mock = Test::MockModule->new('LWP::UserAgent');
+$mock->mock(get => sub { ... });
+# 真实 OrderService，假外部 HTTP
+```

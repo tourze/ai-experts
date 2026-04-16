@@ -121,8 +121,47 @@ if (selectedPath !== "features.billing.enabled") {
 
 ## 反模式
 
-- 为了追求“高级”，把业务能看懂的对象类型重写成难以维护的类型体操。
-- 同一个工具类型同时承担校验、变换、文档三种职责，导致报错位置不可读。
-- 在公共 API 上暴露过多泛型参数，让调用方必须手工填类型才能使用。
-- 手工维护字符串联合类型，却不从真实对象或 schema 推导。
-- 没有示例和测试就发布复杂类型工具，等到下游报错时才猜测推导出了什么。
+### FAIL: 类型体操替代普通对象
+
+```ts
+type EventPayload<E extends string, T extends Record<string, unknown>> =
+  E extends keyof T ? T[E] extends infer P ? P extends object ? P : never : never : never;
+// 调用方不知道这能推出什么
+```
+
+### PASS: 直白对象映射
+
+```ts
+type Events = { userCreated: { id: string }; userArchived: { id: string; reason: string } };
+type EventPayload<E extends keyof Events> = Events[E];
+```
+
+### FAIL: 手工维护字符串联合
+
+```ts
+type FieldName = “userId” | “userName” | “userEmail” | “orderId”;
+// 加字段要同步两处
+```
+
+### PASS: 从对象推导
+
+```ts
+const user = { userId: '', userName: '' } as const;
+type FieldName = keyof typeof user;
+// 改对象自动同步
+```
+
+### FAIL: 公共 API 暴露过多泛型
+
+```ts
+function query<T extends Schema, K extends keyof T, V extends T[K], R = V>(
+  schema: T, key: K, value: V): Promise<R>
+// 调用：query<UserSchema, 'id', string, User>(...)
+```
+
+### PASS: 推导优先
+
+```ts
+function query<T extends Schema>(schema: T, key: keyof T, value: T[keyof T]): Promise<T[keyof T]>
+// 调用：query(userSchema, 'id', '123')  自动推导
+```

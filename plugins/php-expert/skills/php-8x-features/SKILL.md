@@ -126,8 +126,65 @@ function calculateShipping(int $weightGrams, string $zone): float
 
 ## 反模式
 
-- 在 PHP 8.1+ 项目中仍用 class 常量组代替枚举。
-- 用 `switch` 写 5+ 分支而不迁移到 `match`。
-- 数据传输对象不加 `readonly`，留下意外修改的风险。
-- 用 `mixed` 逃避类型声明，而不是定义 DTO 或联合类型。
-- 在生产代码里保留 `dd()`、`dump()`、`var_dump()` 或 `print_r()`。
+### FAIL: class 常量组代替枚举
+
+```php
+final class UserStatus {
+    public const ACTIVE = 'active';
+    public const SUSPENDED = 'suspended';
+}
+function setStatus(string $status): void { ... }
+setStatus('actve');  // 拼写错误，运行时才发现
+```
+
+### PASS: backed enum
+
+```php
+enum UserStatus: string {
+    case Active = 'active';
+    case Suspended = 'suspended';
+}
+function setStatus(UserStatus $status): void { ... }
+setStatus(UserStatus::Actve);  // 编译期报错
+```
+
+### FAIL: switch + 默认 break
+
+```php
+switch ($type) {
+    case 'A': return 1;
+    case 'B': return 2;
+    case 'C': return 3;
+    // 漏 'D' → 静默 fallthrough 到 default
+    default: return 0;
+}
+```
+
+### PASS: match 强制穷尽
+
+```php
+return match($type) {
+    'A' => 1, 'B' => 2, 'C' => 3,
+    // 漏 'D' → UnhandledMatchError 立刻暴露
+};
+```
+
+### FAIL: DTO 不加 readonly
+
+```php
+class OrderDto {
+    public int $id;
+    public float $amount;
+}
+$dto = new OrderDto();
+$dto->amount = -100;  // 任何地方都能改，业务规则失守
+```
+
+### PASS: readonly class
+
+```php
+final readonly class OrderDto {
+    public function __construct(public int $id, public float $amount) {}
+}
+$dto->amount = -100;  // 编译错误
+```

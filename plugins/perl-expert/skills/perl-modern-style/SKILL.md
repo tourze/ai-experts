@@ -33,8 +33,47 @@ description: 当需要按 Perl 5.36+ 现代约定编写模块时使用，覆盖 
 
 ## 反模式
 
-- 数百行逻辑塞进单个 `.pl`，无模块化。
-- 字符串拼接 SQL（`"WHERE id = $id"`）。
-- 手写 `bless` + getter/setter 而不用 Moo/Moose。
-- `eval { ... }; if ($@)` 但不防 `$@` 被覆盖。
-- 遗留 `Data::Dumper`、`warn`、`print STDERR` 调试语句。
+### FAIL: 字符串拼接 SQL
+
+```perl
+my $rows = $dbh->selectall_arrayref("SELECT * FROM users WHERE id = $id");
+# 用户输入 → SQL 注入
+```
+
+### PASS: 占位符
+
+```perl
+my $rows = $dbh->selectall_arrayref(
+    'SELECT * FROM users WHERE id = ?', {}, $id,
+);
+```
+
+### FAIL: eval + $@ 不保护
+
+```perl
+eval { do_something(); };
+if ($@) { warn "error: $@"; }   # $@ 可能被 DESTROY 覆盖
+```
+
+### PASS: Try::Tiny
+
+```perl
+use Try::Tiny;
+try { do_something(); }
+catch { warn "error: $_"; };
+```
+
+### FAIL: 手写 bless
+
+```perl
+sub new { my ($c, %a) = @_; bless { %a }, $c }
+sub name { $_[0]->{name} }   # 无类型约束
+```
+
+### PASS: Moo
+
+```perl
+use Moo;
+has name => (is => 'ro', required => 1);
+has age  => (is => 'ro', isa => sub { die unless $_[0] =~ /^\d+$/ });
+```
