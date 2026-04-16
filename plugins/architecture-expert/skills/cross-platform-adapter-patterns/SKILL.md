@@ -26,6 +26,45 @@ description: "在设计跨平台应用的平台抽象层、适配器接口、运
 - 依赖方向是否单向：`apps -> platform-* -> shared-core`。
 
 ## 反模式
-- 在共享包中直接 import 平台模块。
-- 业务逻辑里散落 `if (Platform.OS === 'ios')`。
-- 平台包互相依赖或所有平台代码挤在一个文件用 `switch` 选择。
+
+### FAIL: 共享包 import 平台
+
+```ts
+// packages/shared-core/src/storage.ts
+import { AsyncStorage } from 'react-native';  // ← 平台原语泄漏
+export function save(key, value) { AsyncStorage.setItem(...); }
+// 同一份 shared-core 无法在 web/electron 下编译
+```
+
+### PASS: 接口在共享 / 实现在平台
+
+```ts
+// packages/shared-core/src/storage.ts
+export interface Storage { get(k: string): Promise<string | null>; set(k, v): Promise<void>; }
+
+// platform-rn/src/storage.ts
+import { AsyncStorage } from 'react-native';
+export const rnStorage: Storage = { get: ..., set: ... };
+
+// platform-web/src/storage.ts
+export const webStorage: Storage = { get: k => Promise.resolve(localStorage.getItem(k)), set: ... };
+
+// apps/mobile/src/main.ts
+container.register('storage', rnStorage);
+```
+
+### FAIL: 平台包互相依赖
+
+```
+packages/platform-ios/utils.ts   import from '../platform-android/utils'
+packages/platform-android/utils.ts  import from '../platform-ios/utils'
+→ 循环依赖 / 编译崩
+```
+
+### PASS: 共享层兜底
+
+```
+平台包只能 import shared-core
+两个平台包都不能互相 import
+共用工具放 shared-core/utils
+```

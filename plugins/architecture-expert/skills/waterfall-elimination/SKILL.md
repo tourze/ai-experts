@@ -68,7 +68,40 @@ const [posts, followers] = await Promise.all([
 
 ## 反模式
 
-- 所有 fetch 逐行 await，把 3 次 200ms 请求变成 600ms 瀑布。
-- 在 Promise.all 里混入有依赖关系的调用，拿到 undefined 后才发现顺序错了。
-- 在 Suspense 边界外做数据获取，导致整个页面被阻塞。
-- 只因为"代码更好读"就保持串行，不评估延迟影响。
+### FAIL: 逐行 await 瀑布
+
+```ts
+const user = await fetchUser();        // 200ms
+const posts = await fetchPosts();      // 200ms
+const comments = await fetchComments();// 200ms
+// 总耗时 600ms，三个请求互相不依赖
+```
+
+### PASS: Promise.all 并行
+
+```ts
+const [user, posts, comments] = await Promise.all([
+  fetchUser(), fetchPosts(), fetchComments(),
+]);
+// 总耗时 200ms（max 而非 sum）
+```
+
+### FAIL: 在 Promise.all 混依赖
+
+```ts
+const [user, posts] = await Promise.all([
+  fetchUser(),
+  fetchPostsByUser(currentUser.id),  // currentUser 还没拿到
+]);
+```
+
+### PASS: 仅必要部分串行
+
+```ts
+const user = await fetchUser();  // 这一步必须先
+const [posts, followers] = await Promise.all([
+  fetchPostsByUser(user.id),
+  fetchFollowers(user.id),
+]);
+// 总耗时 = T(user) + max(T(posts), T(followers))
+```

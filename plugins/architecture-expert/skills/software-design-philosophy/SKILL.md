@@ -29,7 +29,56 @@ description: "在需要从复杂度、深模块、信息隐藏和战略式编程
 - 是否说明注释应该记录什么设计意图。
 
 ## 反模式
-- 用更多层和更多类伪装成“架构更好”。
-- 把配置参数塞给调用方，转嫁复杂度。
-- 接口很复杂，但实现并没有隐藏多少知识。
-- 用注释解释“代码已经说得很清楚”的东西。
+
+### FAIL: 浅模块伪装架构
+
+```ts
+// "解耦"
+class UserController {
+  constructor(private service: UserService) {}
+  getUser(id) { return this.service.getUser(id); }
+}
+class UserService {
+  constructor(private repo: UserRepo) {}
+  getUser(id) { return this.repo.findById(id); }
+}
+class UserRepo {
+  findById(id) { return db.users.find({id}); }
+}
+// 三层都只是转发，没有任何复杂度被隐藏
+```
+
+### PASS: 深模块
+
+```ts
+class OrderService {
+  // 简单接口
+  async place(req: PlaceOrderRequest): Promise<Order> {
+    // 内部隐藏：库存校验 / 价格计算 / 优惠 / 支付路由 / 通知 / 审计
+    // 调用方不需要关心任何细节
+  }
+}
+// 接口窄，内部复杂度高 → 真正降低系统总复杂度
+```
+
+### FAIL: 配置参数地狱
+
+```ts
+process(items, {
+  parallel: true, retries: 3, timeout: 5000,
+  cache: true, cacheKey: 'x', cacheTTL: 60,
+  logger: customLogger, errorHandler: ...,
+  // 18 个参数
+});
+// 调用方需要理解所有参数才能用
+// 复杂度从模块内转嫁到模块外 → 总复杂度增加
+```
+
+### PASS: 合理默认 + 进阶 API
+
+```ts
+process(items)                            // 90% 场景
+process(items, { parallel: true })        // 9% 场景
+processAdvanced(items, fullOpts)          // 1% 高级场景
+// 简单情况简单使用，复杂需求才暴露完整 API
+```

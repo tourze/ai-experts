@@ -38,7 +38,44 @@ description: "在需要为现有代码库生成可维护、可扩展的架构蓝
 - 是否指出文档与实现不一致之处。
 
 ## 反模式
-- 把“应该怎样设计”当成“当前已经如此实现”。
-- 只画组件图，不解释边界和依赖规则。
-- 遗漏部署、配置或数据流，导致蓝图无法指导维护。
-- 输出只有名词堆砌，没有行动建议。
+
+### FAIL: 画"应该"而非"是"
+
+```md
+## 架构
+- Domain 层（纯业务）
+- Application 层（编排）
+- Infrastructure 层（外部）
+→ 实际：Controller 直接调 Repository，"Domain 层"几乎是空的
+→ 新人按蓝图找不到对应代码
+```
+
+### PASS: 反映真实
+
+```md
+## 当前架构（含偏离）
+- 主模式：Layered（Controller → Service → Repo）
+- 偏离 1：UserController.export 直接 SQL（src/.../UserController.kt:120）
+  - 原因：性能优化，绕过 ORM
+  - 风险：测试覆盖低
+- 偏离 2：缺独立 Domain 层（业务规则散布在 Service）
+→ 既写真实又指出整改方向
+```
+
+### FAIL: 只画组件图
+
+```
+[一张方框图]
+→ "API → BFF → Service → DB"
+→ 缺：依赖方向、循环依赖、跨边界 import
+```
+
+### PASS: 边界 + 依赖规则
+
+```md
+## 依赖规则
+✓ apps/* 可依赖 packages/shared-core
+✓ packages/shared-core 可依赖 packages/utils
+✗ packages/shared-core 不得依赖 apps/*（用 ESLint import/no-restricted-paths 强制）
+违规：3 处（见 ARCH_VIOLATIONS.md）
+```

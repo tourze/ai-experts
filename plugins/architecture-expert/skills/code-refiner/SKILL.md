@@ -32,7 +32,43 @@ python3 scripts/complexity_report.py src --format markdown
 - 是否为高风险重构补了验证步骤或回归测试。
 
 ## 反模式
-- 把“简化”做成大规模重写。
-- 为了追求 DRY 牺牲可读性或调试性。
-- 复杂度高的根因没变，只是移动代码位置。
-- 忽略副作用、异常路径和状态边界。
+
+### FAIL: 简化变重写
+
+```
+"我把这个文件优化了一下"
+git diff: 800 行 → 200 行
+→ 删了 50 个 ifs，引入 visitor pattern + factory
+→ PR 评审 2 周 / 测试覆盖崩 / 行为意外变化
+```
+
+### PASS: 最小重构
+
+```
+"提取重复条件 → 命名变量"
+diff: -8 +4 行
+- if (user.status === 'A' && !user.deleted && user.role !== 'guest') { ... }
++ const isActiveMember = user.status === 'A' && !user.deleted && user.role !== 'guest';
++ if (isActiveMember) { ... }
+→ 一眼可读 + 行为完全不变
+```
+
+### FAIL: DRY 过头
+
+```ts
+// 原：3 处类似但不完全相同的循环
+// 重构：抽出 abstractProcessor<T>(items, fn, opts)
+→ 每个调用方要传 5 个参数 / 看不出在做什么
+→ 调试时要跳 4 层
+```
+
+### PASS: 容忍轻微重复
+
+```ts
+// 三处相似但语义不同
+function processOrders() { for (...) { ... } }
+function processInvoices() { for (...) { ... } }
+function processRefunds() { for (...) { ... } }
+// 各自直观 + 修改互不影响
+// "Three is better than premature abstraction"
+```

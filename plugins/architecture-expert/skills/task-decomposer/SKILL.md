@@ -29,7 +29,63 @@ description: "在需要把需求拆成带依赖关系和测试策略的结构化
 - 是否标记关键路径、并行项和高风险项。
 
 ## 反模式
-- 任务太粗，无法执行。
-- 任务太细，只剩机械动作。
-- 只拆编码任务，不拆验证和发布准备。
-- 没有依赖图，导致实际排期全靠猜。
+
+### FAIL: 太粗
+
+```
+- 实现支付功能（2 周）
+→ 团队不知道从哪开始 / 无法估时 / 无法 PR review
+```
+
+### PASS: 单 PR 粒度
+
+```
+Foundation
+- T1: 定义 PaymentRequest/Result DTO（0.5 天）
+- T2: 接入 Stripe SDK + dummy charge（1 天）
+Core
+- T3: 实现 charge() + 错误码映射（1 天）
+- T4: 实现 refund() + 退款规则（1 天）
+- T5: webhook 处理 + 幂等（1.5 天）
+Integration
+- T6: 接入 OrderService（1 天）
+- T7: E2E 测试（1 天）
+Polish
+- T8: 监控 + 告警（0.5 天）
+```
+
+### FAIL: 太细
+
+```
+- 创建文件 PaymentService.ts（5 分钟）
+- 加 import 语句（2 分钟）
+- 写 charge 函数签名（5 分钟）
+→ 50 个微任务 → 无人 review / 跟踪成本 > 实施成本
+```
+
+### PASS: 单元 = "可独立 demo"
+
+```
+"完成后能在哪个场景下 demo？"
+能 → 任务粒度合适
+不能（"我加了 import"）→ 与下一步合并
+```
+
+### FAIL: 只拆编码
+
+```
+T1: 实现 charge
+T2: 实现 refund
+T3: 实现 webhook
+→ 上线前一天："tests? monitoring? rollback?"
+```
+
+### PASS: 编码 + 验证 + 发布
+
+```
+T1-T5: 编码
+T6: 单元 + 集成测试
+T7: 灰度 1% → 10% → 100%
+T8: 监控告警 + runbook
+T9: 回滚演练
+```

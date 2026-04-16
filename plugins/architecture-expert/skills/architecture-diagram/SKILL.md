@@ -32,7 +32,57 @@ cp assets/template.html ./architecture-diagram.html
 - 是否确认输出文件无需任何外部资源即可打开。
 
 ## 反模式
-- 把关系复杂度推给用户，用一团线代替说明。
-- 节点只有名字，没有描述和职责。
-- 使用外链图片、外链字体或 CDN 脚本。
-- 为了好看强行省略真实连接或区域边界。
+
+### FAIL: 一团线
+
+```
+[20 个节点 × 80 条线交叉]
+→ 用户："谁连谁？哪条是实时哪条是异步？"
+```
+
+### PASS: 分层 + 语义颜色
+
+```html
+<svg>
+  <!-- 实时（蓝实线） -->
+  <line class="connection realtime" x1="..." y1="..." />
+  <!-- 异步事件（橙虚线） -->
+  <line class="connection event" x1="..." y1="..." />
+</svg>
+<legend>
+  实时 = 同步 RPC | 事件 = 异步消息 | 控制 = 配置变更
+</legend>
+```
+
+### FAIL: 节点只有名字
+
+```html
+<div class="node" data-node-id="node-1">UserService</div>
+<!-- 用户："这个 UserService 干什么的？谁调它？" -->
+```
+
+### PASS: 语义 ID + 描述
+
+```html
+<div class="node" data-node-id="user-svc">
+  <h4>User Service</h4>
+  <p>用户档案 / 认证 / 会话</p>
+  <small>API: /users/* | DB: users</small>
+</div>
+```
+
+### FAIL: 外链 CDN
+
+```html
+<link href="https://cdn.example.com/icons.css">
+<script src="https://cdn.example.com/d3.js"></script>
+<!-- CDN 失效 / 内网无法访问 → 图打不开 -->
+```
+
+### PASS: 完全内联
+
+```html
+<style>/* 所有 CSS */</style>
+<script>/* 所有 JS 内联 */</script>
+<!-- 单文件可邮件 / 内网 / 离线打开 -->
+```

@@ -29,7 +29,46 @@ description: "在需要基于 DDIA 思路设计数据系统时使用。"
 - 是否为批流一体或双写场景列出风险。
 
 ## 反模式
-- 只给数据库名字，不解释访问模式和一致性前提。
-- 把缓存、消息队列和主存储的职责混成一层。
-- 忽略复制延迟、热点分区和重平衡成本。
-- 把“以后再解决”当成可接受的数据风险。
+
+### FAIL: 只给名字
+
+```
+"用 Postgres + Redis"
+→ 客户："为什么不是 MySQL? 缓存策略是什么? 一致性怎么保证?"
+→ 答不上
+```
+
+### PASS: 访问模式驱动选型
+
+```md
+## 选 Postgres
+- 主查询：复杂 join + 事务（订单 + 库存 + 支付）
+- 写量：100 QPS（中等）
+- 一致性要求：strong (RC + FOR UPDATE)
+- 数据量：5 年内 < 500GB
+对比：MongoDB 缺事务 / Cassandra 无 join
+
+## 缓存职责（不是"数据库 v2"）
+- Redis 仅缓存 read-heavy & 容忍 stale 的数据
+- 不缓存订单状态（一致性要求）
+- TTL 5 min + 主动 invalidate on write
+```
+
+### FAIL: 忽略复制延迟
+
+```sql
+-- 写主库
+INSERT INTO orders ...
+-- 立即从只读副本读
+SELECT * FROM orders WHERE id = ?  -- 副本还没 replicate → 404
+→ 用户："我刚下的订单去哪了？"
+```
+
+### PASS: 显式应对 lag
+
+```
+方案 A: 写后立即读走主库（read-after-write consistency）
+方案 B: 客户端记录 last_write_lsn，副本 catch up 后才读
+方案 C: 接受最终一致 + UI 显示 "正在同步"
+→ 写文档，让前端知道每个 endpoint 的一致性保证
+```

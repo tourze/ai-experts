@@ -29,7 +29,52 @@ description: "在需要只读追踪接口、任务、事件或定时任务的调
 - 是否补齐异步链路、重试逻辑、监听器和延迟任务。
 
 ## 反模式
-- 一边追链路一边改代码。
-- 只追主干，不追异步副作用。
-- 没有 `file:line` 就下结论。
-- 把“未找到证据”写成“没有这个行为”。
+
+### FAIL: 边追边改
+
+```
+追到 OrderService.create → 顺手"优化"了一下命名
+→ 调用方全部失败 → 用户期待只读分析却被破坏现状
+```
+
+### PASS: 严格只读
+
+```
+全程 Read/Grep/Glob，不调用 Edit/Write
+要修改时，先输出完整链路报告 → 用户决策 → 才进入实施
+```
+
+### FAIL: 主干 only
+
+```
+"POST /orders 的链路：
+Controller → Service → Repository → DB"
+→ 漏掉：MQ 发"order.created"事件 → 5 个监听器 → 库存扣减、积分、邮件、推送、审计
+```
+
+### PASS: 全副作用
+
+```
+入口：POST /orders
+调用链：Controller → Service → Repo
+副作用：
+- WRITE: orders, order_items
+- MQ: order.created → [InventoryListener (-stock), AuditListener]
+- CACHE: del user:{id}:cart
+- EXTERNAL: stripe.charge()
+```
+
+### FAIL: 没证据下结论
+
+```
+"OrderService 应该有去重逻辑"
+→ 用户去看 → 没有 → 信任崩
+```
+
+### PASS: file:line 锚定
+
+```
+"OrderService.create 当前无去重 (src/order/service.go:42-78)
+风险：用户快速点击会创建重复订单
+建议：加 idempotency_key 参数"
+```
