@@ -1,6 +1,6 @@
 ---
 name: browser-use
-description: 当需要通过真实浏览器自动化验证网页或提取页面数据时使用。
+description: 当用户要用 browser-use 工具控制真实浏览器做端到端验证、抓取受 JS 渲染的页面或跑需要登录态的自动化流程时使用；英文触发词包括 browser-use / headless browser / DOM extraction / E2E click flow。
 allowed-tools: Bash(browser-use:*)
 ---
 

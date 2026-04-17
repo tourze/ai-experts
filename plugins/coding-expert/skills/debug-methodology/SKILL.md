@@ -1,6 +1,6 @@
 ---
 name: debug-methodology
-description: "当用户卡在 bug 上、遇到非预期行为或需要系统化调试思路时使用。"
+description: "当用户卡在 bug、出现 stack trace / 段错误 / 崩溃 / 间歇性失败 / 复现困难的 flaky 行为，或需要系统化调试思路（二分定位、假设驱动、最小复现）时使用；英文触发词包括 debug / stuck / crash / intermittent / flaky / can't reproduce。"
 ---
 
 # 系统化调试方法论
