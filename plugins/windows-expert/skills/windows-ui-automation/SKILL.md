@@ -103,22 +103,22 @@ def build_wait_schedule(policy: WaitPolicy) -> List[float]:
 ### FAIL: 敏感窗口自动化
 
 ```python
-send_keys(window=”1password.exe”, keys=”master_password”)
+send_keys(window="1password.exe", keys="master_password")
 # 密码管理器 / 安全弹窗 / UAC / mmc.exe 一律禁止
 ```
 
 ### PASS: 阻断名单 + 校验
 
 ```python
-BLOCKED = {“1password.exe”, “keepass.exe”, “mmc.exe”, “regedit.exe”}
+BLOCKED = {"1password.exe", "keepass.exe", "mmc.exe", "regedit.exe"}
 if target.process_name.lower() in BLOCKED:
-    raise UIAutomationPolicyError(“禁止自动化敏感进程”)
+    raise UIAutomationPolicyError("禁止自动化敏感进程")
 ```
 
 ### FAIL: UIA 失败降级到坐标
 
 ```python
-try: click_element(auto_id=”submit”)
+try: click_element(auto_id="submit")
 except: click(x=187, y=642)  # 暴力坐标
 # 屏幕分辨率/DPI 变 → 点错
 ```

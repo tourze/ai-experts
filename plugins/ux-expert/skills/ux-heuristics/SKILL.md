@@ -78,10 +78,10 @@ rg -n "loading|spinner|skeleton|toast|aria-live|breadcrumb|empty state|error" sr
 
 ```json
 {
-  “severity”: 4,
-  “heuristic”: “系统状态可见性”,
-  “evidence”: “提交订单后 4 秒无反馈，用户重复点击”,
-  “recommendation”: “加 loading 状态 + 按钮禁用 + 成功/失败 toast”
+  "severity": 4,
+  "heuristic": "系统状态可见性",
+  "evidence": "提交订单后 4 秒无反馈，用户重复点击",
+  "recommendation": "加 loading 状态 + 按钮禁用 + 成功/失败 toast"
 }
 ```
 

@@ -64,8 +64,8 @@ prlctl stop "Win"
 ```bash
 python3 scripts/prlctl_helper.py resolve "Win11"
 # → 返回唯一 UUID
-python3 scripts/prlctl_helper.py status <UUID>
-python3 scripts/prlctl_helper.py power <UUID> stop --option=--acpi
+python3 scripts/prlctl_helper.py status "8f14e45f-ea6d-4f3c-9c7b-1f6a3d4b5e6f"
+python3 scripts/prlctl_helper.py power "8f14e45f-ea6d-4f3c-9c7b-1f6a3d4b5e6f" stop --option=--acpi
 ```
 
 ### FAIL: 密码命令行明文

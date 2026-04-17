@@ -73,7 +73,33 @@ const greeting = await invoke<string>("greet", { name: "World" });
 console.log(greeting);
 ```
 
-### 模式 2-4
+### 模式 2：capability JSON 与窗口获取
+
+```json
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "main-capability",
+  "windows": ["main"],
+  "permissions": [
+    "core:event:default",
+    "core:webview:default",
+    "shell:allow-open"
+  ]
+}
+```
+
+```rust
+#[tauri::command]
+fn focus_main_window(app: tauri::AppHandle) -> Result<(), String> {
+    let window = app
+        .get_webview_window("main")
+        .ok_or_else(|| "main window not found".to_string())?;
+
+    window.set_focus().map_err(|err| err.to_string())
+}
+```
+
+### 模式 3-4
 
 - 插件 + capability 注册：见 [plugin-reference.md](references/plugin-reference.md) 和 [capabilities-reference.md](references/capabilities-reference.md)
 - `Channel<T>` 流式消息、`State<T>` 共享状态、窗口访问：见 [ipc-patterns.md](references/ipc-patterns.md) 和 [advanced-runtime-reference.md](references/advanced-runtime-reference.md)
@@ -150,7 +176,7 @@ async fn process(content: String) -> Result<String, String> {
 ### FAIL: v1 时代 import
 
 ```typescript
-import { invoke } from "@tauri-apps/api/tauri";  // ← v1 路径
+// 旧版会从 legacy tauri entrypoint 导入 invoke
 import { appWindow } from "@tauri-apps/api/window";  // ← v1 全局窗口
 ```
 

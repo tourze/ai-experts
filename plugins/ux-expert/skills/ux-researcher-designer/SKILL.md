@@ -106,11 +106,11 @@ Persona 输出里优先保留以下结构，方便团队复核：
 
 ```json
 {
-  “persona”: “Privacy-conscious Pro”,
-  “sample_size”: 32,
-  “interview_count”: 8,
-  “confidence_level”: “medium”,
-  “caveats”: [“北美样本为主 / 40+ 年龄段代表不足”]
+  "persona": "Privacy-conscious Pro",
+  "sample_size": 32,
+  "interview_count": 8,
+  "confidence_level": "medium",
+  "caveats": ["北美样本为主 / 40+ 年龄段代表不足"]
 }
 ```
 

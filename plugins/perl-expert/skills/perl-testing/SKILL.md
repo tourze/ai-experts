@@ -34,6 +34,8 @@ description: 当要为 Perl 代码编写或审查测试时使用。
 ### FAIL: 多场景塞进一个 subtest
 
 ```perl
+use Test::More;
+
 subtest 'user operations' => sub {
     my $u = User->new(name => 'A');
     is $u->name, 'A';
@@ -47,6 +49,8 @@ subtest 'user operations' => sub {
 ### PASS: 一 subtest 一行为
 
 ```perl
+use Test::More;
+
 subtest 'new() sets name' => sub {
     is(User->new(name => 'A')->name, 'A');
 };

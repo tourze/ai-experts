@@ -139,7 +139,7 @@ type EventPayload<E extends keyof Events> = Events[E];
 ### FAIL: 手工维护字符串联合
 
 ```ts
-type FieldName = “userId” | “userName” | “userEmail” | “orderId”;
+type FieldName = "userId" | "userName" | "userEmail" | "orderId";
 // 加字段要同步两处
 ```
 

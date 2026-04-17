@@ -50,11 +50,12 @@ wb.save('out.xlsx')
 ### PASS: 重算后保存
 
 ```python
+import subprocess
+
 ws['D5'] = 1500
 wb.save('out.xlsx')
-# 强制重算
-python3 scripts/recalc.py out.xlsx 60
-# 或在 Excel 打开自动 F9
+subprocess.run(['python3', 'scripts/recalc.py', 'out.xlsx', '60'], check=True)
+# 或在 Excel 中打开后自动 F9
 ```
 
 ### FAIL: 覆盖模板

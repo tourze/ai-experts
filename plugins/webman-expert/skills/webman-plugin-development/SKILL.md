@@ -65,8 +65,10 @@ $dbHost = config('plugin.acme.billing.db.host');
 ### FAIL: uninstall 留空
 
 ```php
-public static function uninstall(): void {
-    // TODO
+final class Install {
+    public static function uninstall(): void {
+        // 未实现清理逻辑，已发布配置与进程声明会残留
+    }
 }
 // composer remove 后配置残留 + process.php 引用残留
 ```
@@ -74,10 +76,16 @@ public static function uninstall(): void {
 ### PASS: 完整清理
 
 ```php
-public static function uninstall(): void {
-    foreach (self::$pathRelation as $src => $dst) {
-        $target = base_path() . '/' . $dst;
-        if (is_dir($target)) self::removeDir($target);
+final class Install {
+    private static array $pathRelation = [
+        'config/plugin/acme/billing/' => 'config/plugin/acme/billing/',
+    ];
+
+    public static function uninstall(): void {
+        foreach (self::$pathRelation as $src => $dst) {
+            $target = base_path() . '/' . $dst;
+            if (is_dir($target)) self::removeDir($target);
+        }
     }
 }
 ```

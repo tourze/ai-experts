@@ -77,22 +77,22 @@ def schedule_export(queue: QueueBackend, user_id: str) -> Job:
 ### FAIL: 请求里 await 长任务
 
 ```python
-@app.post(“/exports”)
+@app.post("/exports")
 async def create(req):
     file = await generate_report(req)  # 5 分钟
-    return {“url”: file.url}
+    return {"url": file.url}
 # 客户端超时，nginx 504
 ```
 
 ### PASS: 立即返回 job_id
 
 ```python
-@app.post(“/exports”)
+@app.post("/exports")
 async def create(req):
     job = enqueue(req.user_id)
-    return {“job_id”: job.id, “status”: “pending”}
+    return {"job_id": job.id, "status": "pending"}
 
-@app.get(“/exports/{job_id}”)
+@app.get("/exports/{job_id}")
 async def status(job_id): return get_job(job_id)
 ```
 
@@ -128,5 +128,5 @@ def send_email(to): ...
 def send_email(to):
     try: smtp.send(to)
     except SMTPRecipientRefused:
-        raise PermanentError(“invalid address”)  # 不重试，进死信
+        raise PermanentError("invalid address")  # 不重试，进死信
 ```

@@ -106,9 +106,9 @@ end
 def create
   ActiveRecord::Base.transaction do
     @order = Order.create!(order_params)
-    @order.items.create!(...)
+    @order.items.create!(sku: "starter-pack", quantity: 1, unit_price_cents: 1999)
     Inventory.deduct(@order)
-    AuditLog.create!(...)
+    AuditLog.create!(action: "order.created", target_type: "Order", target_id: @order.id)
   end
 end
 # Controller 知道太多业务细节

@@ -59,9 +59,12 @@ def is_text_pdf(path):
         return any(p.extract_text() for p in pdf.pages[:3])
 
 if is_text_pdf("doc.pdf"):
-    # 文本型：pdfplumber 直接抽
+    text_pages = extract_pages("doc.pdf")
+    print(text_pages[0]["text"])
 else:
-    # 扫描型：走 ocrmypdf / Tesseract → 再抽
+    ocr_pdf = run_ocr_pipeline("doc.pdf")
+    text_pages = extract_pages(ocr_pdf)
+    print(text_pages[0]["text"])
 ```
 
 ### FAIL: 丢页码信息

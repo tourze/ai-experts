@@ -85,7 +85,7 @@ table th { background-color: #f6f6f6; }
 ```md
 [源 MD]
 - 表格 12 列宽到溢出
-- 图片直接 ![](huge.png) 不指定尺寸
+- 图片未指定显示尺寸，导致导出时整页溢出
 
 [抱怨]
 "PDF 把表格切坏了 / 图占整页"
@@ -95,5 +95,5 @@ table th { background-color: #f6f6f6; }
 
 ```md
 - 表格拆成两个或加 `--margin 0.5in --landscape`
-- 图片：`![alt](huge.png){ width=80% }`
+- 图片：为 Markdown 图片补上 width 属性，例如 `image width=80%`
 ```

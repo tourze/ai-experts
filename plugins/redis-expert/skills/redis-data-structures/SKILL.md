@@ -50,7 +50,12 @@ def get_top_n(n: int = 10) -> list[tuple[str, float]]:
 ### FAIL: String 存整个 JSON
 
 ```python
-client.set("user:1", json.dumps({"name":"alice","age":30,"city":"SF",...}))
+client.set("user:1", json.dumps({
+    "name": "alice",
+    "age": 30,
+    "city": "SF",
+    "tier": "pro",
+}))
 # 只想要 name → 全量读取 + 反序列化
 val = json.loads(client.get("user:1"))
 name = val["name"]

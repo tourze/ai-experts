@@ -83,12 +83,21 @@ var score: int:
 
 ```gdscript
 var _score: int = 0
+var _current_health: int = 0
 var score: int:
     get: return _score
     set(value):
         if value == _score: return
         _score = value
         score_changed.emit(_score)
+
+var current_health: int:
+    get: return _current_health
+    set(value):
+        var clamped := clampi(value, 0, 100)
+        if clamped == _current_health: return
+        _current_health = clamped
+        health_changed.emit(_current_health)
 ```
 
 ### FAIL: _process 中 get_node + 新建数组

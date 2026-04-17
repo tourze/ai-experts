@@ -63,16 +63,30 @@ app/
 ### FAIL: 接口无后缀
 
 ```php
-interface UserRepository { ... }   // 是接口还是实现？
-class UserRepositoryEloquent implements UserRepository { ... }
+interface UserRepository {
+    public function find(int $id): array;
+}
+
+class UserRepositoryEloquent implements UserRepository {
+    public function find(int $id): array {
+        return ['id' => $id];
+    }
+}
 // 业务代码 use UserRepository → 不知道这是接口还是类
 ```
 
 ### PASS: Interface 后缀
 
 ```php
-interface UserRepositoryInterface { ... }
-class EloquentUserRepository implements UserRepositoryInterface { ... }
+interface UserRepositoryInterface {
+    public function find(int $id): array;
+}
+
+class EloquentUserRepository implements UserRepositoryInterface {
+    public function find(int $id): array {
+        return ['id' => $id];
+    }
+}
 // use UserRepositoryInterface → 一眼看出是抽象
 ```
 

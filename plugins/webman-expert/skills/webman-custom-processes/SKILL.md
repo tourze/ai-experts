@@ -43,7 +43,7 @@ return ['heartbeat' => ['handler' => App\Process\Heartbeat::class, 'count' => 1]
 ```php
 class Heartbeat {
     public function __construct() {
-        $this->db = new PDO(...);  // master fork 前已建立
+        $this->db = new PDO('mysql:host=127.0.0.1;dbname=app', 'app', 'secret');  // master fork 前已建立
         $this->redis = new Redis();
     }
     public function onWorkerStart() { /* ... */ }
@@ -57,7 +57,7 @@ class Heartbeat {
 class Heartbeat {
     private PDO $db;
     public function onWorkerStart() {
-        $this->db = new PDO(...);  // 每个 worker 独立连接
+        $this->db = new PDO('mysql:host=127.0.0.1;dbname=app', 'app', 'secret');  // 每个 worker 独立连接
         $this->redis = new Redis();
     }
 }
@@ -66,8 +66,10 @@ class Heartbeat {
 ### FAIL: Timer 不清理
 
 ```php
-public function onWorkerStart() {
-    Timer::add(5, fn() => $this->ping());  // 创建后不存 ID
+class Heartbeat {
+    public function onWorkerStart() {
+        Timer::add(5, fn() => $this->ping());  // 创建后不存 ID
+    }
 }
 // reload 时旧 timer 仍持有已销毁对象 → segfault
 ```
@@ -75,12 +77,16 @@ public function onWorkerStart() {
 ### PASS: 追踪 + onWorkerStop 清理
 
 ```php
-private int $timerId = 0;
-public function onWorkerStart() {
-    $this->timerId = Timer::add(5, fn() => $this->ping());
-}
-public function onWorkerStop() {
-    if ($this->timerId) Timer::del($this->timerId);
+class Heartbeat {
+    private int $timerId = 0;
+
+    public function onWorkerStart() {
+        $this->timerId = Timer::add(5, fn() => $this->ping());
+    }
+
+    public function onWorkerStop() {
+        if ($this->timerId) Timer::del($this->timerId);
+    }
 }
 ```
 
@@ -103,4 +109,3 @@ Timer::add(1, function() {
 });
 // 或拆成两个 Timer，各自 1 秒触发
 ```
-

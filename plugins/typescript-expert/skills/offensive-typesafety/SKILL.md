@@ -144,23 +144,82 @@ if (dto.status !== "active") {
 ### PASS: 单一 schema 推导
 
 ```ts
+type ZString = { kind: "string"; uuid: () => ZString };
+type ZBoolean = { kind: "boolean" };
+type ZObject<T extends Record<string, unknown>> = { kind: "object"; shape: T };
+
+const z = {
+  string(): ZString {
+    return { kind: "string", uuid() { return this; } };
+  },
+  boolean(): ZBoolean {
+    return { kind: "boolean" };
+  },
+  object<T extends Record<string, unknown>>(shape: T): ZObject<T> {
+    return { kind: "object", shape };
+  },
+};
+
+type InferSchema<T> = T extends ZObject<infer S>
+  ? {
+      [K in keyof S]:
+        S[K] extends ZString ? string :
+        S[K] extends ZBoolean ? boolean :
+        never;
+    }
+  : never;
+
 export const UserSchema = z.object({
-  id: z.string().uuid(), name: z.string(), isActive: z.boolean()
+  id: z.string().uuid(),
+  name: z.string(),
+  isActive: z.boolean(),
 });
-export type User = z.infer<typeof UserSchema>;
+
+export type User = InferSchema<typeof UserSchema>;
+
+const sampleUser: User = {
+  id: "550e8400-e29b-41d4-a716-446655440000",
+  name: "Ada",
+  isActive: true,
+};
+
+if (UserSchema.shape.id.kind !== "string" || !sampleUser.isActive) {
+  throw new Error("schema contract drift");
+}
 // 前后端共用 → 改一处全部跟随
 ```
 
 ### FAIL: 只静态不运行时
 
 ```ts
-const data: UserDto = await fetch('/api/user').then(r => r.json());
+const rawData = { id: "user-1", status: "active" };
+const data: UserDto = rawData as UserDto;
 // 服务端改字段，前端类型系统不知道，运行时静默错位
 ```
 
 ### PASS: 边界处运行时校验
 
 ```ts
-const data = UserSchema.parse(await fetch('/api/user').then(r => r.json()));
+type UserDto = {
+  id: string;
+  status: "active" | "inactive";
+};
+
+function parseUserDto(input: unknown): UserDto {
+  if (
+    typeof input === "object" &&
+    input !== null &&
+    typeof (input as { id?: unknown }).id === "string" &&
+    ((input as { status?: unknown }).status === "active" ||
+      (input as { status?: unknown }).status === "inactive")
+  ) {
+    return input as UserDto;
+  }
+
+  throw new Error("invalid user payload");
+}
+
+const rawData: unknown = { id: "user-1", status: "active" };
+const data = parseUserDto(rawData);
 // 不符合立即抛错，业务层拿到的永远合法
 ```
