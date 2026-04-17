@@ -83,9 +83,44 @@ const BUDGETS_BY_FILE_NAME = {
   "build.pl": 300,
 };
 
+const TEST_FILE_PATTERNS = [
+  /test\.php$/i,
+  /test\.ts$/i,
+  /test\.tsx$/i,
+  /test\.js$/i,
+  /test\.jsx$/i,
+  /test\.py$/i,
+  /test\.java$/i,
+  /test\.kt$/i,
+  /test\.go$/i,
+  /test\.rs$/i,
+  /test\.rb$/i,
+  /\.spec\.[jt]sx?$/i,
+  /_test\.go$/i,
+  /_test\.py$/i,
+  /_test\.rb$/i,
+  /\.test\.[cm]?[jt]s$/i,
+];
+
+const TEST_DIR_PATTERNS = [
+  /[/\\]tests?[/\\]/i,
+  /[/\\]__tests__[/\\]/i,
+  /[/\\]spec[/\\]/i,
+];
+
+function isTestFile(filePath) {
+  const baseName = getLowerBaseName(filePath);
+  if (TEST_FILE_PATTERNS.some((re) => re.test(baseName))) return true;
+  return TEST_DIR_PATTERNS.some((re) => re.test(filePath));
+}
+
+const TEST_FILE_BUDGET = 1200;
+
 function getBudget(filePath) {
   const baseName = getLowerBaseName(filePath);
-  return BUDGETS_BY_FILE_NAME[baseName] ?? BUDGETS_BY_EXTENSION[extname(baseName)] ?? null;
+  const baseBudget = BUDGETS_BY_FILE_NAME[baseName] ?? BUDGETS_BY_EXTENSION[extname(baseName)] ?? null;
+  if (baseBudget === null) return null;
+  return isTestFile(filePath) ? Math.max(baseBudget, TEST_FILE_BUDGET) : baseBudget;
 }
 
 function getHeadLineCount(filePath) {
