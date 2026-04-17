@@ -1,6 +1,6 @@
 ---
 name: godot-gdscript-patterns
-description: 当用户需要开发、重构或排障 Godot 4 GDScript 项目时使用。覆盖场景树组织、信号解耦、状态机、资源建模、对象池、组件化战斗逻辑与性能问题。
+description: 当用户开发、重构或排障 Godot 4 GDScript 项目时使用；英文触发词 Godot / GDScript / scene tree / signal / state machine。
 ---
 
 # godot-gdscript-patterns

@@ -1,6 +1,6 @@
 ---
 name: vue-expert-js
-description: 当用户需要用纯 JavaScript（非 TypeScript）编写 Vue 3 组件、composable 或 Pinia store 时使用。覆盖 Vite 项目配置与 JSDoc 类型约束。
+description: 当用户用纯 JavaScript（非 TypeScript）编写 Vue 3 组件、composable 或 Pinia store 时使用；英文触发词 Vue 3 / Pinia / composable / JSDoc / Vite。
 ---
 
 # Vue Expert（JavaScript）

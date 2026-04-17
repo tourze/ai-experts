@@ -1,6 +1,6 @@
 ---
 name: xhs-graphic-generator
-description: 当用户要生成小红书图文卡片时使用。
+description: 当用户生成小红书图文笔记、封面卡片或系列知识卡时使用；英文触发词 xiaohongshu / XHS / 小红书图文。
 ---
 
 # 小红书图文生成

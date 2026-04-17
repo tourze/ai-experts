@@ -1,6 +1,6 @@
 ---
 name: windows-kernel-security
-description: 当用户需要分析或审计 Windows 内核对象、驱动边界或安全机制时使用。覆盖 VBS/HVCI、PatchGuard、回调、IOCTL 路径与实验环境低层排查。
+description: 当用户分析或审计 Windows 内核对象、驱动边界或安全机制时使用；英文触发词 Windows kernel / PatchGuard / VBS / HVCI / IOCTL。
 ---
 
 # windows-kernel-security

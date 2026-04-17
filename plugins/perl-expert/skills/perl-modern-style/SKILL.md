@@ -1,6 +1,6 @@
 ---
 name: perl-modern-style
-description: 当需要按 Perl 5.36+ 现代约定编写模块时使用，覆盖 `use v5.36`、Moo/Moose 对象、DBI 占位符、`cpanfile` + `carton` 依赖、`croak`/`die` + `try/catch` 错误处理。
+description: 当用户用 Perl 5.36+ 现代约定编写模块、对象或依赖管理时使用；英文触发词 Perl / Moo / Moose / cpanfile / carton。
 ---
 
 # Perl 5.36+ 现代风格

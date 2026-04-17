@@ -1,6 +1,6 @@
 ---
 name: php-testing
-description: 当用户编写、审查或重构 PHP 测试时使用。覆盖 PHPUnit 和 Pest 的测试结构、数据提供者、属性、Mock、集成测试与 phpunit.xml 配置收敛。
+description: 当用户编写、审查或重构 PHP 测试时使用；英文触发词 PHPUnit / Pest / PHP testing / mock / phpunit.xml。
 ---
 
 # PHP 测试

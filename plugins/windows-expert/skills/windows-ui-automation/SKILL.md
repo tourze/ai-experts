@@ -1,6 +1,6 @@
 ---
 name: windows-ui-automation
-description: 当用户需要自动化 Windows 桌面操作、元素定位或输入仿真时使用。覆盖 UIA/Win32 API、权限分层、审计日志和实验环境中的自动化回归。
+description: 当用户自动化 Windows 桌面操作、元素定位或输入仿真时使用；英文触发词 UIA / Win32 API / Windows automation。
 ---
 
 # windows-ui-automation
