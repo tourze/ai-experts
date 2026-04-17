@@ -72,37 +72,19 @@ git log origin/$DEFAULT_BRANCH --since="$SINCE" --name-only --format="" -- $PATH
 .engineering-retros/<YYYY-MM-DD>.json
 ```
 
-推荐结构：
-
-```json
-{
-  "date": "YYYY-MM-DD",
-  "window": "7d",
-  "path_scope": null,
-  "branch": "main",
-  "timezone": "PST",
-  "metrics": {
-    "commits": 0,
-    "contributors": 0,
-    "files_changed": 0,
-    "lines_added": 0,
-    "lines_removed": 0,
-    "net_delta": 0,
-    "focus_score": 0.0
-  }
-}
-```
+推荐字段：顶层 `date / window / path_scope / branch / timezone`，嵌套 `metrics { commits, contributors, files_changed, lines_added, lines_removed, net_delta, focus_score }`。
 
 ### 6. 交付结构
 
 - `Metrics`：核心数字摘要。
 - `Time Patterns`：峰值日期、峰值时段、文本直方图、session 概览。
 - `Work Breakdown`：按 feature/fix/refactor/docs/test/chore 等分类。
+- `Thematic Clusters`：先按主题聚类再叙事（"支付重构"/"CI 提速" 等），每簇给主题名 + commit 数 + 2-3 个核心文件 + 一句话叙事。先聚类再罗列。
 - `Hotspots`：Top 文件与 hotspot 标记。
 - `Contributor Highlights`：按作者字母序列亮点。
 - `PR Summary`：可用时输出。
 - `Week-over-Week`：仅在已有上次快照时输出。
-- `Observations`：基于数据的 2-4 条观察，不臆测个人动机。
+- `Observations`：基于数据的 2-4 条观察，不臆测动机。每条必须附量化引用 `（N commits · files: a.py, b.py）`；无证据不写。
 
 ## 检查清单
 
@@ -130,21 +112,6 @@ git log origin/$DEFAULT_BRANCH --since="$SINCE" --name-only --format="" -- $PATH
 默认：纯输出报告，零文件写入
 仅当用户明确说”留快照”才写
 .engineering-retros/ 加进 .gitignore（但不要顺手改）
-```
-
-### FAIL: 写死 main
-
-```bash
-git log origin/main --since=”7 days ago”
-# 项目用 master / develop / trunk → 失败或为空
-```
-
-### PASS: 动态探测
-
-```bash
-DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
-[ -z “$DEFAULT_BRANCH” ] && { echo “无法探测默认分支”; exit 1; }
-git log “origin/$DEFAULT_BRANCH” --since=...
 ```
 
 ### FAIL: 作者统计当绩效
