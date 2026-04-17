@@ -10,6 +10,14 @@
 - `skills/creating-financial-models/`：依赖 `numpy`/`pandas` 的 DCF 与敏感性建模脚本
 - `skills/risk-metrics-calculation/`：风险指标方法论与经校验的代码模式
 
+## Skills
+
+| Skill | 用途 |
+|-------|------|
+| `creating-financial-models` | DCF 估值、敏感性分析、情景分析与盈亏平衡建模 |
+| `financial-analyst` | 财报比率、DCF、预算偏差与滚动预测分析 |
+| `risk-metrics-calculation` | VaR、CVaR、Sharpe、Sortino 与回撤等风险指标计算 |
+
 ## Python 依赖
 
 - `financial-analyst`：仅使用 Python 标准库

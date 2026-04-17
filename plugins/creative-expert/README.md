@@ -6,7 +6,7 @@
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
-- `skills/`：7 个创意与可视化技能包。
+- `skills/`：创意与可视化技能包。
 - `tests/`：`dispatch` 的最小回归测试。
 
 ## Skills
@@ -20,6 +20,7 @@
 | `baoyu-compress-image` | 图片压缩为 WebP/PNG |
 | `plantuml-ascii` | PlantUML ASCII 图表生成 |
 | `screenshot` | 桌面/系统截图 |
+| `ui-style-catalog` | UI 风格目录、CSS 特征与适用场景速查 |
 
 ## 验证命令
 

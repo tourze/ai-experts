@@ -56,3 +56,13 @@ claude plugin uninstall security-expert --scope project
 ```
 
 如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+
+## 验证命令
+
+```bash
+jq empty plugins/security-expert/.claude-plugin/plugin.json
+jq empty plugins/security-expert/hooks/hooks.json
+find plugins/security-expert/hooks -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
+find plugins/security-expert/skills -type f -name '*.py' -print0 | xargs -0 -n1 python3 -m py_compile
+node --test plugins/security-expert/tests/*.test.mjs
+```

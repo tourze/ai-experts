@@ -5,7 +5,7 @@ Claude Code 插件集合，包含 54 个领域专家插件，每个插件提供 
 
 ## 核心架构约束
 - **插件源码不能跨插件 import**：每个插件仍以独立目录分发；通用守卫统一收敛在基座插件中，通过 manifest dependencies 复用，不再在各插件里复制同一份实现。
-- 插件结构：`.claude-plugin/plugin.json` + `hooks/` + `skills/` + `tests/` + `README.md`
+- 插件结构：`.claude-plugin/plugin.json` + `README.md` + `skills/` + `tests/`，并可按需提供 `hooks/` 与 `agents/`
 
 ## 插件层次结构
 插件按以下四层组织，上层依赖下层提供的 hooks 兜底，不重复实现已有守卫：

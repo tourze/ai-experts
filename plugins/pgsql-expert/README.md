@@ -22,6 +22,13 @@ PostgreSQL 专家插件，覆盖模式设计、索引策略、声明式分区、
 claude plugin install pgsql-expert@ai-experts
 ```
 
+## 卸载
+
+```bash
+claude plugin uninstall pgsql-expert
+claude plugin uninstall pgsql-expert --scope project
+```
+
 ## 验证
 
 ```bash

@@ -36,3 +36,12 @@ claude plugin uninstall webman-expert --scope project
 ## 说明
 
 - 插件 manifest 已显式声明 `skills` 与 `hooks` 路径，不再使用非标准 `dependencies` 字段。
+
+## 验证命令
+
+```bash
+jq empty plugins/webman-expert/.claude-plugin/plugin.json
+jq empty plugins/webman-expert/hooks/hooks.json
+find plugins/webman-expert/hooks -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
+node --test plugins/webman-expert/tests/*.test.mjs
+```

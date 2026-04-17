@@ -26,6 +26,13 @@ DBMS 专属能力由子插件提供，按需安装：
 claude plugin install database-expert@ai-experts
 ```
 
+## 卸载
+
+```bash
+claude plugin uninstall database-expert
+claude plugin uninstall database-expert --scope project
+```
+
 ## 验证
 
 ```bash

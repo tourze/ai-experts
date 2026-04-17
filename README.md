@@ -1,6 +1,6 @@
 # ai-experts
 
-一个面向 Claude Code 的本地插件仓库与 marketplace，按领域提供 `*-expert` 插件集合。当前仓库已经在根目录声明了 Claude marketplace，插件源码集中放在 `plugins/` 下，每个插件自带自己的 manifest、README、skills、hooks 与最小回归测试。
+一个面向 Claude Code 的本地插件仓库与 marketplace，按领域提供 `*-expert` 插件集合。当前仓库已经在根目录声明了 Claude marketplace，插件源码集中放在 `plugins/` 下；每个插件都包含自己的 manifest、README、skills 与最小回归测试，并可按需提供 `hooks/` 与 `agents/`。
 
 ## 快速开始
 
@@ -89,7 +89,9 @@ claude plugin marketplace remove ai-experts
 
 - `.claude-plugin/marketplace.json`：仓库级 Claude plugin marketplace 清单。
 - `plugins/<plugin-name>/`：单个插件目录；每个插件都有自己的 `.claude-plugin/plugin.json`。
-- `plugins/<plugin-name>/README.md`：插件用途、skills、hooks 与验证方式。
+- `plugins/<plugin-name>/README.md`：插件用途、skills、安装/卸载方式，以及适用时的 hooks、agents 与验证命令。
+- `plugins/<plugin-name>/hooks/`：可选；插件级 hook 定义与分发入口。
+- `plugins/<plugin-name>/agents/`：可选；只读分析或专用执行 agent。
 - `memory/`：仓库本地 memory 与迁移中的规则草稿，不属于 marketplace 必需结构。
 
 ## 插件总览

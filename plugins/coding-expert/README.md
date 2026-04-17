@@ -2,6 +2,15 @@
 
 通用编码守卫插件，提供跨语言可复用的代码质量防护、调试语句检测、统一的文件预算守卫、危险命令拦截、会话上下文注入和桌面通知。
 
+## Skills
+
+| Skill | 用途 |
+|------|------|
+| `code-review` | 代码质量、命名、职责边界与错误处理审查 |
+| `complexity-reducer` | 降低嵌套、耦合和函数复杂度 |
+| `debug-methodology` | 系统化定位 bug 与异常行为 |
+| `refactoring-checklist` | 为重构提供增量、安全的检查清单 |
+
 ## Hooks
 
 | 事件 | Hook | 作用 |
@@ -31,8 +40,7 @@
 
 ## 设计原则
 
-本插件只收录**跨语言可复用**的通用守卫。语言/框架特定的检查属于对应的 `*-expert` 插件；仓库中的 `encoding-guard`、通用 `debug-statement-guard` 与跨语言 `file-budget-guard` 也只在这里维护。
-当前插件仅包含 hooks，不包含 `skills/` 或 `agents/` 组件，因此没有 `SKILL.md` 需要重组。
+本插件收录**跨语言可复用**的通用方法论 skill 与守卫。语言/框架特定的检查属于对应的 `*-expert` 插件；仓库中的 `encoding-guard`、通用 `debug-statement-guard` 与跨语言 `file-budget-guard` 也只在这里维护。
 
 ## 安装
 

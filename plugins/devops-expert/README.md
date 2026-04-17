@@ -59,3 +59,12 @@ claude plugin uninstall devops-expert --scope project
 ```
 
 如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+
+## 验证命令
+
+```bash
+jq empty plugins/devops-expert/.claude-plugin/plugin.json
+jq empty plugins/devops-expert/hooks/hooks.json
+find plugins/devops-expert/hooks -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
+node --test plugins/devops-expert/tests/*.test.mjs
+```
