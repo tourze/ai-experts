@@ -17,11 +17,13 @@
  */
 
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { readdirSync, readFileSync, statSync, existsSync } from "node:fs";
 import { resolve, join, basename, dirname } from "node:path";
 import test from "node:test";
 
 const pluginsRoot = resolve("plugins");
+const repoRoot = resolve(".");
 
 // Hook 事件类型中，只有这些会产生 block/report 决策
 const GUARD_EVENTS = ["pre-tool-use", "post-tool-use"];
@@ -30,9 +32,14 @@ const GUARD_EVENTS = ["pre-tool-use", "post-tool-use"];
 const SKIP_DIRS = new Set(["session-start", "user-prompt-submit", "notification", "stop"]);
 
 function getPluginRoots() {
-  return readdirSync(pluginsRoot)
-    .map((name) => resolve(pluginsRoot, name))
-    .filter((p) => statSync(p).isDirectory())
+  return execFileSync("git", ["ls-files", "plugins/*/.claude-plugin/plugin.json"], {
+    cwd: repoRoot,
+    encoding: "utf-8",
+  })
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => resolve(pluginsRoot, line.split("/")[1]))
     .sort();
 }
 

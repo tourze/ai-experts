@@ -42,6 +42,7 @@
 | `task-decomposer` | 将需求拆成带依赖与测试策略的任务板 |
 | `tech-debt` | 盘点代码健康状况并排序技术债 |
 | `waterfall-elimination` | 消除请求瀑布流并行化数据获取与 Suspense 边界 |
+| `persistent-planning` | 在多轮、跨 session 的复杂任务中，把计划、发现和进度持久化到仓库文件而不是 TodoWrite 时使用。 |
 
 ## 安装
 

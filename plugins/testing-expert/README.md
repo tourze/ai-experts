@@ -15,6 +15,7 @@
 | `webapp-testing` | Playwright Web 应用交互测试 |
 | `benchmark-runner` | 算法/模型/实现基准测试设计 |
 | `brutal-honesty-review` | 无糖衣代码/测试质量审查 |
+| `test-quality-review` | 当用户要审查已有测试代码的质量、诊断测试套件衰退风险或回答'这些测试写得怎么样'时使用。 |
 
 ## 结构
 
@@ -26,6 +27,12 @@ testing-expert/
 │   └── dispatch.mjs
 └── skills/
 ```
+
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `test-generator` | 基于现有源码生成测试：识别行为、推导用例并产出生产级测试文件 |
 
 ## 校验
 

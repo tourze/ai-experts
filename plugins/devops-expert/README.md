@@ -23,6 +23,12 @@ DevOps 专家插件，覆盖 Docker/Helm/K8s、CI/CD 流水线、Nginx 配置、
 | `log-analyzer` | 日志调查与错误追踪 |
 | `openapi-spec-generation` | OpenAPI 3.1 规范生成与维护 |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `infra-auditor` | 基础设施配置只读审计：Docker、CI/CD、Helm、Nginx、Terraform 与部署清单 |
+
 ## Hooks
 
 | 事件 | Hook | 作用 |

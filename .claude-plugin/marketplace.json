@@ -99,6 +99,12 @@
       "version": "0.2.1"
     },
     {
+      "name": "ios-expert",
+      "source": "./plugins/ios-expert",
+      "description": "iOS / Apple 平台专家插件：Swift Concurrency、SwiftUI 模式与性能、iOS/macOS HIG、App Store 审核发布与 Apple 工具自动化",
+      "version": "0.1.1"
+    },
+    {
       "name": "java-expert",
       "source": "./plugins/java-expert",
       "description": "Java 开发专家插件：Java / Spring Boot / JUnit / GraalVM 工作流与 Edit|Write 后守卫",
@@ -153,6 +159,12 @@
       "version": "0.1.1"
     },
     {
+      "name": "mysql-expert",
+      "source": "./plugins/mysql-expert",
+      "description": "MySQL 专家插件：表结构设计、索引策略、复制运维、事务与锁、JSON 与生成列",
+      "version": "0.1.0"
+    },
+    {
       "name": "nestjs-expert",
       "source": "./plugins/nestjs-expert",
       "description": "NestJS 专家插件：模块/控制器/服务/DTO/Guard/拦截器配置",
@@ -171,16 +183,22 @@
       "version": "0.1.1"
     },
     {
-      "name": "php-expert",
-      "source": "./plugins/php-expert",
-      "description": "PHP 开发专家插件：语法检查、PHPStan 静态分析、Composer 校验、编码与调试语句守卫、PHPUnit 测试最佳实践等",
-      "version": "0.1.1"
-    },
-    {
       "name": "perl-expert",
       "source": "./plugins/perl-expert",
       "description": "Perl 开发专家插件：语法检查、调试语句检测、编码与行数守卫，以及现代 Perl 开发与测试技能",
       "version": "0.1.0"
+    },
+    {
+      "name": "pgsql-expert",
+      "source": "./plugins/pgsql-expert",
+      "description": "PostgreSQL 专家插件：模式设计、索引策略、声明式分区、JSONB 模式与行级安全",
+      "version": "0.1.0"
+    },
+    {
+      "name": "php-expert",
+      "source": "./plugins/php-expert",
+      "description": "PHP 开发专家插件：语法检查、PHPStan 静态分析、Composer 校验、编码与调试语句守卫、PHPUnit 测试最佳实践等",
+      "version": "0.1.1"
     },
     {
       "name": "product-expert",
@@ -199,6 +217,18 @@
       "source": "./plugins/react-expert",
       "description": "React Web 专家插件：组件组合、Hooks 模式、渲染性能、Server Components、Vercel/Next.js 最佳实践",
       "version": "0.2.1"
+    },
+    {
+      "name": "react-native-expert",
+      "source": "./plugins/react-native-expert",
+      "description": "React Native 专家插件：性能优化、TurboModule、JSI 绑定、原生模块、Metro 配置、跨平台代码组织、Detox E2E 测试",
+      "version": "0.1.0"
+    },
+    {
+      "name": "redis-expert",
+      "source": "./plugins/redis-expert",
+      "description": "Redis 专家插件：键空间设计、缓存模式、分布式锁、数据结构选型与集群高可用",
+      "version": "0.1.0"
     },
     {
       "name": "research-expert",
@@ -221,7 +251,7 @@
     {
       "name": "security-expert",
       "source": "./plugins/security-expert",
-      "description": "安全攻防专家插件：威胁建模、渗透测试、逆向工程、漏洞分析、网络取证、STRIDE/攻击树方法论",
+      "description": "安全攻防专家插件：威胁建模、渗透测试、逆向工程（Frida/IDA/Unicorn/iOS/Android）、漏洞分析、网络取证、STRIDE/攻击树方法论",
       "version": "0.1.0"
     },
     {
@@ -241,12 +271,6 @@
       "source": "./plugins/svn-expert",
       "description": "SVN 版本控制专家插件：Subversion 工作流、分支合并策略、提交信息守卫、批量操作拦截",
       "version": "0.1.2"
-    },
-    {
-      "name": "ios-expert",
-      "source": "./plugins/ios-expert",
-      "description": "iOS / Apple 平台专家插件：Swift Concurrency、SwiftUI 模式与性能、iOS/macOS HIG、App Store 审核发布与 Apple 工具自动化",
-      "version": "0.1.1"
     },
     {
       "name": "symfony-expert",
@@ -307,30 +331,6 @@
       "source": "./plugins/youtube-expert",
       "description": "YouTube 专家插件：视频转录与概念分析、关键词搜索与元数据提取",
       "version": "0.1.2"
-    },
-    {
-      "name": "mysql-expert",
-      "source": "./plugins/mysql-expert",
-      "description": "MySQL 专家插件：表结构设计、索引策略、复制运维、事务与锁、JSON 与生成列",
-      "version": "0.1.0"
-    },
-    {
-      "name": "pgsql-expert",
-      "source": "./plugins/pgsql-expert",
-      "description": "PostgreSQL 专家插件：模式设计、索引策略、声明式分区、JSONB 模式与行级安全",
-      "version": "0.1.0"
-    },
-    {
-      "name": "react-native-expert",
-      "source": "./plugins/react-native-expert",
-      "description": "React Native 专家插件：性能优化、TurboModule、JSI 绑定、原生模块、Metro 配置、跨平台代码组织、Detox E2E 测试",
-      "version": "0.1.0"
-    },
-    {
-      "name": "redis-expert",
-      "source": "./plugins/redis-expert",
-      "description": "Redis 专家插件：键空间设计、缓存模式、分布式锁、数据结构选型与集群高可用",
-      "version": "0.1.0"
     }
   ]
 }

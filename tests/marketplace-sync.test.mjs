@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import test from "node:test";
@@ -9,10 +10,22 @@ const marketplacePath = resolve(repoRoot, ".claude-plugin", "marketplace.json");
 const readmePath = resolve(repoRoot, "README.md");
 const claudePath = resolve(repoRoot, "CLAUDE.md");
 
+function listTrackedPluginNames() {
+  return execFileSync("git", ["ls-files", "plugins/*/.claude-plugin/plugin.json"], {
+    cwd: repoRoot,
+    encoding: "utf-8",
+  })
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => line.split("/")[1])
+    .sort();
+}
+
 function collectPluginManifests() {
   const manifests = new Map();
 
-  for (const pluginName of readdirSync(pluginsRoot)) {
+  for (const pluginName of listTrackedPluginNames()) {
     const manifestPath = resolve(pluginsRoot, pluginName, ".claude-plugin", "plugin.json");
     try {
       const manifest = JSON.parse(readFileSync(manifestPath, "utf-8"));

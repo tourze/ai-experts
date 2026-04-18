@@ -131,8 +131,10 @@ claude plugin marketplace remove ai-experts
 更新 marketplace 后，至少执行：
 
 ```bash
+node scripts/sync-plugin-metadata.mjs --write
 jq empty .claude-plugin/marketplace.json
 claude plugin validate .claude-plugin/marketplace.json
+node --test tests/plugin-metadata-sync.test.mjs
 node --test tests/marketplace-sync.test.mjs
 ```
 

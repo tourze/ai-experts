@@ -34,6 +34,14 @@
 | `chipsec` | UEFI/BIOS 固件安全分析 |
 | `jadx` | Android APK 反编译（DEX → Java 源码） |
 | `apktool` | Android APK 解包与资源提取 |
+| `dex-dumper` | 当需要从运行中的 Android 应用内存中 dump DEX 文件以绕过加壳保护时使用。 |
+| `frida-dynamic-analysis` | 当需要用 Frida 做运行时 hook、trace、bypass 或动态分析时使用；涉及 Interceptor、Java.perform、ObjC.classes、内存扫描或自适应 bypass。 |
+| `idapython-scripting` | 当需要编写 IDAPython 脚本做函数遍历、交叉引用、字节搜索、Hex-Rays 反编译或 IDALib 批量分析时使用。 |
+| `ios-binary-analysis` | 当需要提取和分析 iOS IPA、Mach-O 二进制、dylib 或 framework，做类 dump 和调用链追踪时使用。 |
+| `ios-secret-scan` | 当需要扫描 iOS 应用中的硬编码凭据、云服务密钥、弱加密和安全配置问题时使用。 |
+| `struct-recovery` | 当需要从反编译代码中恢复数据结构定义、推断字段类型和布局时使用。 |
+| `symbol-recovery` | 当需要为 stripped 二进制中的函数恢复符号名、识别已知库函数或算法实现时使用。 |
+| `unicorn-emulation` | 当需要用 Unicorn 引擎模拟执行特定函数、绕过环境依赖或离线调试加密/解密算法时使用。 |
 
 ## 安装
 

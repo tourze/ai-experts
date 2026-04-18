@@ -12,7 +12,7 @@
 ## Skills
 
 | Skill | 用途 |
-| --- | --- |
+|-------|------|
 | `browser-rendering-patterns` | Hydration、resource hints、content-visibility、事件监听优化 |
 | `bundle-optimization` | Bundle 体积治理：dynamic import、barrel imports、preload |
 | `color-oklch-theory` | OKLCH 颜色系统、色阶设计与暗色模式策略 |
@@ -35,6 +35,12 @@
 | `ux-writing` | 按钮、错误、空态与引导微文案设计 |
 | `web-design-guidelines` | Web 平台规范与无障碍底线 |
 | `web-quality-audit` | 网站质量审计（性能 / a11y / SEO / best practices） |
+
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `ui-reviewer` | 前端界面与代码只读评审：可访问性、性能、响应式、组件结构与 UI 规范 |
 
 ## 安装
 

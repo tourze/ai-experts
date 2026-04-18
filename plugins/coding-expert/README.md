@@ -5,11 +5,17 @@
 ## Skills
 
 | Skill | 用途 |
-|------|------|
+|-------|------|
 | `code-review` | 代码质量、命名、职责边界与错误处理审查 |
 | `complexity-reducer` | 降低嵌套、耦合和函数复杂度 |
 | `debug-methodology` | 系统化定位 bug 与异常行为 |
 | `refactoring-checklist` | 为重构提供增量、安全的检查清单 |
+
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `code-reviewer` | 通用代码质量、命名、错误处理与结构风险的只读评审 |
 
 ## Hooks
 

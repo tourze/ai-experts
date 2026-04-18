@@ -1,14 +1,31 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { resolve } from "node:path";
 import test from "node:test";
 
 const pluginsRoot = resolve("plugins");
+const repoRoot = resolve(".");
+const trackedFiles = new Set(
+  execFileSync("git", ["ls-files"], {
+    cwd: repoRoot,
+    encoding: "utf-8",
+  })
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean),
+);
+
+function listTrackedPluginNames() {
+  return [...trackedFiles]
+    .filter((line) => line.startsWith("plugins/") && line.endsWith("/.claude-plugin/plugin.json"))
+    .map((line) => line.split("/")[1])
+    .sort();
+}
 
 function getPluginRoots() {
-  return readdirSync(pluginsRoot)
+  return listTrackedPluginNames()
     .map((name) => resolve(pluginsRoot, name))
-    .filter((pluginRoot) => statSync(pluginRoot).isDirectory())
     .sort();
 }
 
@@ -46,8 +63,30 @@ function getTopLevelSkillNames(pluginRoot) {
   return readdirSync(skillsRoot)
     .filter((name) => {
       const skillRoot = resolve(skillsRoot, name);
-      return statSync(skillRoot).isDirectory() && existsSync(resolve(skillRoot, "SKILL.md"));
+      if (!statSync(skillRoot).isDirectory()) {
+        return false;
+      }
+      const relativeSkillPath = `plugins/${pluginRoot.split("/").at(-1)}/skills/${name}/SKILL.md`;
+      return trackedFiles.has(relativeSkillPath) && existsSync(resolve(skillRoot, "SKILL.md"));
     })
+    .sort();
+}
+
+function getTopLevelAgentNames(pluginRoot) {
+  const agentsRoot = resolve(pluginRoot, "agents");
+  if (!existsSync(agentsRoot)) {
+    return [];
+  }
+
+  return readdirSync(agentsRoot)
+    .filter((name) => {
+      if (!name.endsWith(".md")) {
+        return false;
+      }
+      const relativeAgentPath = `plugins/${pluginRoot.split("/").at(-1)}/agents/${name}`;
+      return trackedFiles.has(relativeAgentPath);
+    })
+    .map((name) => name.replace(/\.md$/, ""))
     .sort();
 }
 
@@ -55,6 +94,12 @@ function getListedSkillNames(sectionBody) {
   return [...sectionBody.matchAll(/^\|\s*`([^`]+)`\s*\|/gm)]
     .map((match) => match[1])
     .filter((name) => name !== "Skill");
+}
+
+function getListedAgentNames(sectionBody) {
+  return [...sectionBody.matchAll(/^\|\s*`([^`]+)`\s*\|/gm)]
+    .map((match) => match[1])
+    .filter((name) => name !== "Agent");
 }
 
 function collectNestedSkillPluginJson() {
@@ -119,6 +164,37 @@ test("所有插件 README 的技能列表与顶级 skill 目录保持一致", ()
     assert.deepEqual(duplicateSkills, [], `${readmePath} 的技能列表存在重复项`);
     assert.deepEqual(actualSkills, expectedSkills, `${readmePath} 的技能列表与目录不一致`);
   }
+});
+
+test("所有带 agents 的插件 README 都包含同步的 Agents 索引", () => {
+  for (const pluginRoot of getPluginRoots()) {
+    const expectedAgents = getTopLevelAgentNames(pluginRoot);
+    if (expectedAgents.length === 0) {
+      continue;
+    }
+
+    const readmePath = resolve(pluginRoot, "README.md");
+    const sections = getReadmeSections(readFileSync(readmePath, "utf-8"));
+    const agentsSection = getRequiredSection(sections, ["Agents"], readmePath);
+    const listedAgents = getListedAgentNames(agentsSection);
+    const actualAgents = [...new Set(listedAgents)].sort();
+    const duplicateAgents = [...new Set(listedAgents.filter((name, index) => listedAgents.indexOf(name) !== index))];
+
+    assert.ok(actualAgents.length > 0, `${readmePath} 的 Agents 章节缺少 Markdown 表格`);
+    assert.deepEqual(duplicateAgents, [], `${readmePath} 的 Agents 列表存在重复项`);
+    assert.deepEqual(actualAgents, expectedAgents, `${readmePath} 的 Agents 列表与目录不一致`);
+  }
+});
+
+test("react-expert 的 Skills 附加说明不会被同步脚本覆盖", () => {
+  const readmePath = resolve(pluginsRoot, "react-expert", "README.md");
+  const readme = readFileSync(readmePath, "utf-8");
+
+  assert.match(
+    readme,
+    /React Native 相关 skill 已拆分至 \[react-native-expert\]/,
+    `${readmePath} 丢失了 Skills 章节后的附加说明`,
+  );
 });
 
 test("skills 目录下不再保留游离的 skill 级 plugin.json", () => {

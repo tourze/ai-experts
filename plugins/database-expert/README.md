@@ -14,6 +14,12 @@ DBMS 专属能力由子插件提供，按需安装：
 | `sql-code-review` | SQL 安全、正确性、可维护性审查 |
 | `sql-optimization` | SQL 调优、执行计划分析、分页与批处理优化 |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `schema-reviewer` | 数据库 schema、迁移、查询与索引策略的只读评审 |
+
 ## Hooks
 
 | 事件 | Hook | 作用 |
