@@ -1,6 +1,8 @@
 ---
 name: repo-analyzer
 description: 当用户要克隆或分析外部 GitHub 仓库、评估开源项目质量、生成仓库结构化报告或做技术选型调研时使用。
+context: fork
+agent: research-expert:deep-researcher
 ---
 
 # 仓库分析

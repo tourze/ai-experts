@@ -1,6 +1,8 @@
 ---
 name: wiki-researcher
 description: 当用户要深挖代码库中的某个主题、调用链、模块边界或设计模式时使用。
+context: fork
+agent: research-expert:deep-researcher
 ---
 
 # 代码库深挖

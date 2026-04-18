@@ -1,6 +1,8 @@
 ---
 name: performance-optimizer
 description: 当用户要定位 Linux 主机卡顿、高 CPU、高内存、高 IO 或负载暴涨时使用。
+context: fork
+agent: linux-expert:system-diagnostician
 ---
 
 # Linux 性能优化

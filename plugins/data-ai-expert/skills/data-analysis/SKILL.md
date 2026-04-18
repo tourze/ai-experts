@@ -1,6 +1,8 @@
 ---
 name: data-analysis
 description: 当用户上传或指定 .xlsx、.csv 等表格文件，需要分析数据并给出结论时使用。
+context: fork
+agent: data-ai-expert:data-analyst
 ---
 
 # data-analysis

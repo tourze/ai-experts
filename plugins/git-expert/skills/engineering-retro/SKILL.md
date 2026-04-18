@@ -1,6 +1,8 @@
 ---
 name: engineering-retro
 description: 当用户需要回顾最近一段时间的开发进度、提交量或热点文件时使用。
+context: fork
+agent: git-expert:git-historian
 metadata:
   version: 1.1.0
   category: review

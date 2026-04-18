@@ -1,6 +1,8 @@
 ---
 name: author-contributions
 description: 当用户要查看某个作者在分支上的实际贡献、做作者归属审计或回答”谁改了什么”时使用。
+context: fork
+agent: git-expert:git-historian
 ---
 
 # 作者贡献追踪

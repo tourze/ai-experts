@@ -1,6 +1,8 @@
 ---
 name: github-deep-research
 description: 当用户要深挖单个 GitHub 仓库、做演进时间线或分析架构与竞争格局时使用。
+context: fork
+agent: research-expert:deep-researcher
 ---
 
 # GitHub 深度研究
