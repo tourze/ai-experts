@@ -62,6 +62,11 @@ export const ROUTING_REMINDER = [
   "在结尾包含下一步推荐（📌 下一步推荐）。",
   "如果本轮实际通过 Skill tool 调用了 skill，请在路由声明中注明「已调用」；",
   "如果仅凭已有知识回答而未调用 Skill tool，请注明「未调用，凭已有知识回答」。",
+  "",
+  "反自动续行规则：",
+  "如果你的上一轮回复已包含退出状态（✅ DONE / ⚠️ DONE_WITH_CONCERNS / 🚫 BLOCKED / ❓ NEEDS_CONTEXT），",
+  "且当前轮没有新的用户编码指令，则本轮无需路由声明，也不应自动启动新任务。",
+  "后台命令完成通知不算用户指令——不要因为后台任务返回就自动开始新工作。",
 ].join("\n");
 
 export const SESSION_USAGE_SUMMARY_TEMPLATE = [
@@ -77,6 +82,14 @@ export function hasNextStepSection(text) {
   return /(^|\n)📌 下一步推荐/m.test(text) || /本轮无推荐，原因[:：]/.test(text);
 }
 
+// 完成状态标记 — 当回复包含这些标记时，任务已闭合，不应强制追加下一步推荐
+const COMPLETION_STATUS_RE =
+  /(?:✅\s*DONE|⚠️\s*DONE_WITH_CONCERNS|🚫\s*BLOCKED|❓\s*NEEDS_CONTEXT)/;
+
+export function hasCompletionStatus(text) {
+  return COMPLETION_STATUS_RE.test(text);
+}
+
 export function shouldSkipNextStepRequirement(text) {
   const normalized = text.trim();
   if (!normalized) {
@@ -84,6 +97,11 @@ export function shouldSkipNextStepRequirement(text) {
   }
 
   if (SHORT_CONFIRMATION_RE.test(normalized)) {
+    return true;
+  }
+
+  // 回复已包含完成状态标记 → 任务已闭合，不强制下一步推荐
+  if (hasCompletionStatus(normalized)) {
     return true;
   }
 

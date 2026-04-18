@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from "node:fs";
 import {
   NEXT_STEP_BLOCK_TEMPLATE,
   NEXT_STEP_RULES,
+  hasCompletionStatus,
   hasNextStepSection,
   shouldSkipNextStepRequirement,
   summarizeText,
@@ -120,6 +121,20 @@ export async function run(payload) {
 
   if (hasNextStepSection(finalText) || shouldSkipNextStepRequirement(finalText)) {
     return null;
+  }
+
+  // 如果 transcript 中已有完成状态标记（DONE/BLOCKED/NEEDS_CONTEXT），
+  // 且当前回复较短（< 500 字符），说明是完成后的跟进/确认，不强制下一步推荐。
+  // 这避免了后台命令完成后 AI 被迫继续工作的问题。
+  if (finalText.length < 500) {
+    const hasCompletionInTranscript = records.some((r) => {
+      if (r?.type !== "assistant" || r?.isSidechain === true) return false;
+      const text = extractTextContent(r.message?.content);
+      return hasCompletionStatus(text);
+    });
+    if (hasCompletionInTranscript) {
+      return null;
+    }
   }
 
   const summary = summarizeText(finalText);
