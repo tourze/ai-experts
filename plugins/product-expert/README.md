@@ -6,7 +6,7 @@
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
-- `skills/`：35 个产品与战略类技能，统一采用「适用场景 → 核心约束 → 代码模式 → 检查清单 → 反模式」结构。
+- `skills/`：45 个产品与战略类技能，统一采用「适用场景 → 核心约束 → 代码模式 → 检查清单 → 反模式」结构。
 - `tests/`：覆盖 manifest、dispatch、脚本行为与 `SKILL.md` 链接校验。
 
 ## Skills
@@ -48,6 +48,16 @@
 | `estimate-calibrator` | 三点估算校准（最佳/最可能/最差） |
 | `team-composition-analysis` | 团队结构/招聘/薪酬/股权设计 |
 | `process-optimization` | 业务流程分析与优化 |
+| `saas-metrics` | SaaS 财务指标速查（MRR/ARR/CAC/LTV/NRR） |
+| `plg-readiness` | PLG 成熟度评估与激活框架 |
+| `user-story-patterns` | 用户故事编写与 8 种拆分模式 |
+| `epic-decomposition` | Epic 分解的 9 种模式 |
+| `pestel-analysis` | PESTEL 宏观环境分析 |
+| `prfaq` | 亚马逊式新闻稿 + FAQ（Working Backwards） |
+| `ai-product-readiness` | AI 产品适用性评估（5 维模型） |
+| `pm-career-ladder` | PM 职级能力模型与晋升路径 |
+| `business-health-diagnostic` | 业务健康度诊断记分卡 |
+| `channel-economics` | 获客渠道经济性分析 |
 
 ## 安装
 

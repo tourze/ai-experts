@@ -8,6 +8,7 @@ description: 当用户需要编写用户故事、补齐验收标准、拆分 Epi
 ## 适用场景
 - 把需求拆成可交付的用户故事、Epic 和 Sprint 范围。
 - 需要结合 [references/user-story-templates.md](references/user-story-templates.md)、[references/sprint-planning-guide.md](references/sprint-planning-guide.md) 或模板资产落文档。
+- 故事拆分可配合 [user-story-patterns](../user-story-patterns/SKILL.md)（8 种拆分模式 + INVEST 检查），Epic 分解可配合 [epic-decomposition](../epic-decomposition/SKILL.md)（9 种分解模式 + Story Mapping）。
 - 需要运行脚本生成示例 Backlog 或 Sprint 计划时，可直接调用 `scripts/user_story_generator.py`。
 
 ## 核心约束
