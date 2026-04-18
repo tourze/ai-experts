@@ -1,7 +1,7 @@
 {
   "name": "security-expert",
   "version": "0.1.0",
-  "description": "安全攻防专家插件：威胁建模、渗透测试、逆向工程、漏洞分析、网络取证、STRIDE/攻击树方法论",
+  "description": "安全攻防专家插件：威胁建模、渗透测试、逆向工程（Frida/IDA/Unicorn/iOS/Android）、漏洞分析、网络取证、STRIDE/攻击树方法论",
   "author": {
     "name": "ai-experts maintainers"
   },
@@ -10,7 +10,12 @@
     "pentest",
     "threat-model",
     "reverse-engineering",
-    "forensics"
+    "forensics",
+    "frida",
+    "ida",
+    "unicorn",
+    "ios-re",
+    "android-re"
   ],
   "skills": "./skills/"
 }
