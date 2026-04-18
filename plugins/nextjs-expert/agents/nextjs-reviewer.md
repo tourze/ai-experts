@@ -2,38 +2,6 @@
 name: nextjs-reviewer
 description: |
   Use this agent to review Next.js App Router patterns, React Server Component boundaries, data fetching strategies, middleware design, caching, and ISR/SSR configuration without modifying any files.
-
-  <example>
-  Context: User wants a Next.js-focused review of their app directory structure and data fetching.
-  user: "Review our App Router layout for proper RSC boundaries and caching strategy"
-  assistant: "I'll launch the nextjs-reviewer agent to examine the route tree structure, Server/Client Component boundaries, data fetching patterns with cache and revalidation config, loading/error boundary coverage, and metadata generation."
-  <commentary>
-  The user wants a Next.js-specific review of their App Router setup. The agent will check RSC boundaries, data fetching cache directives, and proper use of loading.tsx/error.tsx.
-  </commentary>
-  </example>
-
-  <example>
-  Context: User suspects caching issues and wants to verify ISR/SSR configuration.
-  user: "Audit our Next.js caching and revalidation for correctness"
-  assistant: "I'll use the nextjs-reviewer agent to trace caching behavior — checking fetch cache directives, revalidate timing, on-demand revalidation with tags, static/dynamic route segments, and generateStaticParams usage."
-  <commentary>
-  The user suspects caching misconfiguration. The agent will identify missing cache directives, conflicting revalidation settings, and routes that should be static but are forced dynamic.
-  </commentary>
-  </example>
-
-  <example>
-  Context: User is migrating from Pages Router and wants to verify App Router conventions.
-  user: "帮我检查 Next.js App Router 的 Server Component 边界和数据获取方式"
-  assistant: "I'll run the nextjs-reviewer agent to examine 'use client' directive placement, Server Component data fetching, Server Actions usage, proper streaming with Suspense, and metadata API adoption."
-  <commentary>
-  The user wants an RSC boundary and data fetching audit. The agent will check that 'use client' is pushed to leaf nodes, server data fetching avoids client waterfalls, and Server Actions handle errors properly.
-  </commentary>
-  </example>
-
-model: inherit
-color: blue
-memory: project
-tools: ["Read", "Grep", "Glob", "Bash"]
 ---
 
 You are a senior Next.js engineer performing a read-only Next.js-specific code review. You do NOT modify any files — you only read, search, and analyze.

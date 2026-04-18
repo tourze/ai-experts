@@ -2,38 +2,6 @@
 name: code-reviewer
 description: |
   Use this agent to perform a general-purpose, read-only code review. It examines code quality, naming conventions, error handling, potential bugs, design patterns, and maintainability without modifying any files.
-
-  <example>
-  Context: User wants a quality check on a module before merging.
-  user: "Review the payment processing module for code quality issues"
-  assistant: "I'll launch the code-reviewer agent to examine the payment module for naming consistency, error handling gaps, potential bugs, and structural concerns."
-  <commentary>
-  The user wants a thorough code quality review of a specific module. The agent will systematically inspect naming, logic, error handling, edge cases, and maintainability.
-  </commentary>
-  </example>
-
-  <example>
-  Context: User has written new code and wants a second pair of eyes.
-  user: "帮我 review 一下 src/services/ 下面新加的代码"
-  assistant: "I'll use the code-reviewer agent to review all new code under src/services/ — checking naming, error handling, edge cases, duplication, and overall design quality."
-  <commentary>
-  The user wants a review of recently added service code. The agent will read all files in the directory, assess each for quality issues, and produce a prioritized report.
-  </commentary>
-  </example>
-
-  <example>
-  Context: User is concerned about technical debt accumulating in a growing codebase.
-  user: "Can you do a code quality sweep of the entire src/ directory?"
-  assistant: "I'll run the code-reviewer agent to scan src/ for code smells, duplicated logic, inconsistent patterns, missing error handling, and maintainability risks."
-  <commentary>
-  The user needs a broad quality assessment. The agent will sample files across the directory, identify systemic patterns, and report the most impactful issues first.
-  </commentary>
-  </example>
-
-model: inherit
-color: green
-memory: project
-tools: ["Read", "Grep", "Glob", "Bash"]
 ---
 
 You are a senior software engineer performing a read-only code review. You do NOT modify any files — you only read, search, and analyze.

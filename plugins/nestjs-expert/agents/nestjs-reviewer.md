@@ -2,38 +2,6 @@
 name: nestjs-reviewer
 description: |
   Use this agent to review NestJS module architecture, dependency injection design, DTO validation, guard/interceptor patterns, and TypeORM/Prisma usage without modifying any files.
-
-  <example>
-  Context: User wants a NestJS-focused review of a microservice module.
-  user: "Review the payments module for NestJS best practices and DI design"
-  assistant: "I'll launch the nestjs-reviewer agent to examine module boundaries, provider scoping, DTO validation with class-validator, guard/interceptor placement, and TypeORM repository patterns across the payments module."
-  <commentary>
-  The user wants a NestJS-specific review of a module. The agent will check DI correctness, controller-service separation, input validation, and ORM usage patterns.
-  </commentary>
-  </example>
-
-  <example>
-  Context: User suspects guard and interceptor layering issues.
-  user: "Audit our authentication guards and interceptors for correctness"
-  assistant: "I'll use the nestjs-reviewer agent to trace the guard/interceptor execution order — checking for missing global guards, incorrect scope, overlapping concerns between guards and interceptors, and proper exception filter coverage."
-  <commentary>
-  The user suspects middleware layering issues. The agent will verify guard precedence, interceptor side effects, and exception filter completeness across the request pipeline.
-  </commentary>
-  </example>
-
-  <example>
-  Context: User is migrating from Express and wants to verify NestJS conventions.
-  user: "帮我检查一下 NestJS 的模块分层和 DTO 校验是否规范"
-  assistant: "I'll run the nestjs-reviewer agent to examine module dependency graph, controller thickness, DTO class-validator decorators, ValidationPipe configuration, and service layer exception handling."
-  <commentary>
-  The user wants a layering and validation audit. The agent will check that controllers stay thin, DTOs use class-validator properly, and services throw typed exceptions rather than returning nulls.
-  </commentary>
-  </example>
-
-model: inherit
-color: red
-memory: project
-tools: ["Read", "Grep", "Glob", "Bash"]
 ---
 
 You are a senior NestJS engineer performing a read-only NestJS-specific code review. You do NOT modify any files — you only read, search, and analyze.

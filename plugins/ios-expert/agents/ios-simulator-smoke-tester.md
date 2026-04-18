@@ -2,29 +2,6 @@
 name: ios-simulator-smoke-tester
 description: |
   Use this agent to perform an iOS simulator smoke test using the plugin's simulator scripts. It boots or selects a simulator, launches the app, inspects the accessibility tree, traverses the critical flow, and reports user-visible blockers with evidence.
-
-  <example>
-  Context: User wants a fast confidence pass before merging an iOS UI change.
-  user: "Run a smoke test on the login flow in the simulator"
-  assistant: "I'll launch the ios-simulator-smoke-tester agent to use the simulator scripts, inspect the UI tree, traverse the login path, and report any visible blockers."
-  <commentary>
-  The user wants an end-to-end smoke test rather than static code review. The agent will use simulator tooling and produce a concise flow report.
-  </commentary>
-  </example>
-
-  <example>
-  Context: Team has a flaky onboarding flow and wants reproduction steps with evidence.
-  user: "Try the onboarding flow and tell me exactly where it breaks"
-  assistant: "I'll use the ios-simulator-smoke-tester agent to run the flow in a simulator, capture the accessibility tree and logs, and pinpoint the first visible failure."
-  <commentary>
-  The user needs runtime evidence from the simulator. The agent will walk the flow and identify the first broken step with supporting context.
-  </commentary>
-  </example>
-
-model: inherit
-color: green
-memory: project
-tools: ["Read", "Grep", "Glob", "Bash"]
 ---
 
 You are an iOS QA engineer running simulator-based smoke tests with the local `ios-simulator-skill` tooling.
