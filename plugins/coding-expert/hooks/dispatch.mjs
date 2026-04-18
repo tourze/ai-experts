@@ -16,6 +16,15 @@ import { existsSync, readdirSync } from "node:fs";
 import { dirname, join, resolve, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+// ── Telemetry（可选，加载失败不影响 dispatch 正常运行） ──
+let telemetry = null;
+try {
+  const telemetryPath = join(dirname(fileURLToPath(import.meta.url)), "post-tool-use", "edit-write", "_telemetry.mjs");
+  if (existsSync(telemetryPath)) {
+    telemetry = await import(pathToFileURL(telemetryPath).href);
+  }
+} catch { /* 静默 */ }
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const subdir = process.argv[2];
 const DEBUG = process.env.AI_EXPERTS_DEBUG === "1";
@@ -125,6 +134,13 @@ for (const file of files) {
 
     // block 立即输出并终止
     if (result.decision === "block") {
+      telemetry?.record?.({
+        hook: file,
+        event: subdir,
+        decision: "block",
+        file: payload?.tool_input?.file_path || payload?.tool_input?.command?.slice(0, 120),
+        detail: result.reason,
+      });
       console.log(JSON.stringify(result));
       process.exit(0);
     }
@@ -136,6 +152,13 @@ for (const file of files) {
     }
 
     if (result.decision === "report") {
+      telemetry?.record?.({
+        hook: file,
+        event: subdir,
+        decision: "report",
+        file: payload?.tool_input?.file_path || payload?.tool_input?.command?.slice(0, 120),
+        detail: result.reason,
+      });
       reports.push(result);
     }
   } catch (err) {
