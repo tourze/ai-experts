@@ -56,6 +56,36 @@ Claude Code 插件集合，包含 54 个领域专家插件，每个插件提供 
 - vue-expert → javascript-expert
 - webman-expert → php-expert
 
+## Agent 设计原则
+
+插件通过 `agents/` 目录提供子代理，与 `skills/` 形成互补关系：
+
+- **Skill = 知识**（inline context）：方法论、检查清单、模板、领域约定。触发后注入当前对话，不隔离上下文。
+- **Agent = 执行者**（isolated context）：在独立 context window 中运行，只返回摘要。适合产生大量中间输出的任务。
+
+### Agent 两种模式
+
+| | Reviewer Agent | Orchestration Agent |
+|--|---------------|---------------------|
+| tools | 只读：Read, Grep, Glob, Bash | 含 Write, WebSearch, WebFetch |
+| skills 字段 | 无（通过「关联 Skill」引用） | 预加载 8-11 个 skill 到上下文 |
+| 用途 | 代码/配置/文档审查 | 多框架综合分析，产出报告/PRD |
+| 文件修改 | 不修改任何文件 | 可写报告/文档 |
+
+### 何时需要 Agent
+
+- 任务会产生 > 5000 token 的中间结果（git log、仓库扫描、数据分析）
+- 需要限制工具集（只读审计、不能写文件）
+- 多个 skill 需要同时参与分析（编排型）
+
+### Skill → Agent 路由
+
+重 I/O 的 skill 通过 frontmatter `context: fork` + `agent: <agent-name>` 自动在子代理中执行，避免模型猜测执行方式。
+
+### 不需要 Agent 的插件
+
+纯知识/方法论插件（legal、finance、meeting 等）skill 数少且不产生重 I/O，保持 inline context 即可。
+
 ## 技术栈
 - Hook 实现：Node.js ESM (.mjs)
 - Hook 协议：stdin/stdout JSON，dispatch.mjs 动态发现子目录下的 .mjs 文件
