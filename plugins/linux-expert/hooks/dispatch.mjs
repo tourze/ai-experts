@@ -101,8 +101,10 @@ const reports = [];
 const contexts = [];
 
 if (DEBUG) {
+  const eventName = payload?.hook_event_name ?? "unknown";
+  const toolName = payload?.tool_name ?? "";
   console.error(
-    `[dispatch][debug] subdir=${subdir} hooks=${files.length} files=[${files.join(",")}]`,
+    `[dispatch][debug] event=${eventName}${toolName ? ` tool=${toolName}` : ""} subdir=${subdir} hooks=${files.length} files=[${files.join(",")}]`,
   );
 }
 
