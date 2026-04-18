@@ -104,12 +104,20 @@ Every H2 section is roughly the same length. ~300 words. Every one. That's a mac
 
 ## Category 4: Punctuation and Formatting Tells
 
-### Em-dash frequency 🟡
-One or two em-dashes per piece: fine. Three per page: suspicion. Five+: AI fingerprint.
+### Em-dash frequency 🔴 (AI 第一大标记)
+1-2 per piece: fine. 3+/page: suspicion. 5+: AI fingerprint.
 
-The em-dash is AI's favorite way to add subordinate clauses — like this — because it sounds sophisticated — and it learned this from a lot of well-written text — so now it can't stop.
+AI 在书籍和学术论文上训练，高频使用 em dash；真人写作很少用，因为 — 不是标准键盘按键。
 
-**Fix:** Replace most with periods. Break into shorter sentences.
+**替换规则：** 插入语用逗号，解释用冒号，补充信息用括号，仅在刻意强调时保留 em dash。每页超过 1 个就该修改。
+
+| 原文 | 改为 |
+|------|------|
+| X—which was surprising—showed | X, which was surprising, showed |
+| This approach—unlike Y—allows | This approach, unlike Y, allows |
+| Skills—both A and B—are | Skills (both A and B) are |
+
+**Fix:** 拆成短句，用句号/逗号/冒号替代。
 
 ### Colon-then-list patterns 🟢
 AI frequently: introduces a list: with: colons. Multiple times per section. Lists are useful. But if every section has a colon-introducing list, it's mechanical.

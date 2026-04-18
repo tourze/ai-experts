@@ -23,7 +23,7 @@ description: "在内容显得机器腔、套话重、节奏僵硬或缺乏品牌
 python3 scripts/humanizer_scorer.py draft.txt --json
 ```
 
-- 再用 [ai-tells-checklist](references/ai-tells-checklist.md) 和 [voice-techniques](references/voice-techniques.md) 做定向改写。
+- 再用 [ai-tells-checklist](references/ai-tells-checklist.md)、[ai-phrases-extended](references/ai-phrases-extended.md) 和 [voice-techniques](references/voice-techniques.md) 做定向改写。
 
 ## 检查清单
 - 是否标出了 AI 腔最重的词、句型、段落节奏问题。

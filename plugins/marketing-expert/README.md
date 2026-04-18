@@ -14,12 +14,14 @@
 | Skill | 用途 |
 |-------|------|
 | `ad-creative` | 广告创意批量生成与迭代 |
+| `aeo-geo` | 答案引擎优化（AEO）与生成引擎优化（GEO），让内容被 AI 搜索引用 |
 | `analytics-tracking` | GA4/GTM 埋点规划、审计与排障 |
 | `campaign-analytics` | 归因、漏斗和 ROI 分析 |
 | `competitive-ads-extractor` | 竞品广告素材与信息提炼 |
 | `competitor-alternatives` | 竞品对比页与替代页内容架构 |
 | `content-humanizer` | AI 文案人性化改写 |
-| `content-strategy` | 内容策略、选题与栏目规划 |
+| `content-repurpose` | 一篇内容多平台分发（LinkedIn/Medium/Reddit/Quora） |
+| `content-strategy` | 内容策略、选题、栏目规划与内容日历 |
 | `copy-editing` | 营销文案编辑与质量把关 |
 | `cro-methodology` | 落地页转化审计与实验设计 |
 | `domain-name-brainstormer` | 域名方向发散与筛选 |
@@ -33,8 +35,10 @@
 | `popup-cro` | 弹窗、模态框、通知条优化 |
 | `redesign-my-landingpage` | React/Vite/Tailwind 落地页实现 |
 | `referral-program` | 推荐、联盟与口碑增长机制 |
-| `seo` | 技术 SEO 与页面可见性优化 |
+| `seo` | 技术 SEO、E-E-A-T 审计、Programmatic SEO 与页面可见性优化 |
+| `seo-content-scoring` | SEO 内容 5 维度质量评分与发布门控 |
 | `site-architecture` | 网站信息架构与导航规划 |
+| `topic-cluster` | 主题聚类策略（pillar + supporting articles + 内链拓扑） |
 
 ## 安装
 

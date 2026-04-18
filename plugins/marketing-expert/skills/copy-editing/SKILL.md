@@ -24,9 +24,12 @@ python3 scripts/readability_scorer.py --file copy.txt --json
 ```
 
 - 高频替换表参考 [plain-english-alternatives](references/plain-english-alternatives.md)。
+- 参与度增强（hook 类型、APP 公式、mini-story、CTA 分布）参考 [engagement-techniques](references/engagement-techniques.md)。
 
 ## 检查清单
 - 标题是否明确承诺，正文是否支撑承诺。
+- 开头是否有 hook（不是通用定义），引言是否含 APP 要素。
+- 长文（2000+ 词）是否有 2-3 个迷你故事和 2-3 个分布式 CTA。
 - CTA 是否具体、低摩擦且与页面意图一致。
 - 是否删掉了空洞形容词、重复句、过长句和模糊主语。
 - 是否给出修改前后对照，方便用户判断取舍。
