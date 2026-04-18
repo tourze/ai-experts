@@ -67,7 +67,7 @@ bundle exec rake db:migrate
 ## 检查清单
 
 - controller 是否只处理协议转换和参数白名单，没有直接拼业务流程。
-- service object 是否有单一职责，名字表达动作而不是泛化成 `Util` / `Manager`。
+- service object 是否职责收敛：类名应为动词短语（`CreateUser`、`ChargePayment`），而非 `Util` / `Manager` / `Handler`；注入的依赖不超过 3 个 repository；`call` 方法只编排一条业务流程，不含 `if type == ...` 多路分支。
 - Active Record 查询是否显式处理 preload / includes，避免把 N+1 留到线上。
 - 事务、外部副作用、审计日志是否位于同一个明确的编排层，而不是散落在 callback。
 - 所有命令是否通过 `bundle exec` 运行，避免 Bundler 上下文失真。
