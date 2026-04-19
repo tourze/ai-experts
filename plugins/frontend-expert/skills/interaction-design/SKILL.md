@@ -53,13 +53,24 @@ function CardSkeleton() {
 }
 ```
 
+## 按压反馈与图标动画
+
+详见 [references/press-and-icon-patterns.md](references/press-and-icon-patterns.md)：
+
+- **Scale on press**：`scale(0.96)`，不低于 0.95。用 CSS transition 保证可中断。提供 `static` prop 禁用。
+- **图标交叉渐变**：有 Motion 用 `AnimatePresence`；无 Motion 保留双 icon 在 DOM，用 CSS transition 交叉渐变（`cubic-bezier(0.2, 0, 0, 1)`）。
+- **入场 split+stagger**：拆成语义块，~100ms 间隔，组合 opacity + blur + translateY。
+- **退场柔和**：小固定 `translateY(-12px)` 而非全高度，150ms，比入场短。
+
 ## 检查清单
 
-- [ ] 每个动效都能解释“它在告诉用户什么”。
+- [ ] 每个动效都能解释”它在告诉用户什么”。
 - [ ] hover、focus、active、disabled、loading 状态都完整。
 - [ ] 已验证低性能设备和降级动效偏好。
 - [ ] 过渡不会阻塞主要操作或影响可读性。
 - [ ] 动效速度、位移和透明度变化有一致的系统感。
+- [ ] 按钮按压用 `scale(0.96)`，不低于 0.95。
+- [ ] 图标动画用 opacity+scale+blur，不直接 toggle visibility。
 
 ## 反模式
 
@@ -104,5 +115,6 @@ function CardSkeleton() {
 - [lottie-animations](../lottie-animations/SKILL.md)
 - [modern-web-design](../modern-web-design/SKILL.md)
 - [references/microinteraction-patterns.md](references/microinteraction-patterns.md)
+- [references/press-and-icon-patterns.md](references/press-and-icon-patterns.md)
 - [references/scroll-animations.md](references/scroll-animations.md)
 - [references/animation-libraries.md](references/animation-libraries.md)
