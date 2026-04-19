@@ -1,0 +1,55 @@
+---
+name: scp-analysis
+description: 当用户要分析外部冲击对行业和企业的传导影响、评估政策/技术/市场变化的连锁效应时使用；英文触发词 SCP model、structure-conduct-performance、industry shock analysis、external impact、cascading effect。
+---
+
+# SCP 分析模型
+
+## 适用场景
+- 分析外部冲击（政策/技术/经济/社会变化）对企业的传导影响。
+- 与 [pestel-analysis](../../product-expert/skills/pestel-analysis/SKILL.md) 配合：PESTEL 扫描外部因素，SCP 分析传导路径。
+
+## 核心约束
+- 传导链条：外部冲击 -> 行业结构(Structure) -> 企业行为(Conduct) -> 经营绩效(Performance)。
+- **不能跳过中间环节**：冲击不是直接影响绩效，而是通过结构和行为间接影响。"AI 出现了 -> 我们要转型 AI"就是跳过了传导分析。
+- 同一冲击对不同行业、不同规模企业的传导路径可能完全不同——必须区分领先企业、中小企业和自身。
+- 行业结构变化往往是不可逆的，企业行为必须适应而非抵抗。
+
+## 不适用场景
+- 没有明确的外部冲击事件：SCP 从冲击出发，如果只是做常规行业分析用 [porters-five-forces](../../product-expert/skills/porters-five-forces/SKILL.md)。
+- 需要内部诊断：SCP 看外部传导，内部问题用 [mckinsey-7s](../../product-expert/skills/mckinsey-7s/SKILL.md)。
+
+## 检查清单
+- [ ] 传导链条完整：冲击 -> 结构 -> 行为 -> 绩效。
+- [ ] 没有跳过中间环节直接从冲击推绩效。
+- [ ] 区分了对不同类型企业的差异化影响。
+- [ ] 给出了基于传导分析的战略建议。
+
+## 反模式
+
+### FAIL: 冲击直推结论
+
+```
+"AI 出现了 -> 我们要转型 AI"
+-> 跳过了：AI 如何改变行业结构？竞争格局怎么变？
+-> 没有传导分析 = 跟风决策
+```
+
+### PASS: 完整传导分析
+
+```
+冲击：大模型 AI 快速普及
+Structure:
+- 进入壁垒降低（AI 工具使个人可提供咨询服务）
+- 替代品激增（AI 直接回答分析问题）
+- 竞争格局从寡头走向多极化
+Conduct:
+- 大厂加速自建 AI 工具
+- 中小公司选择细分行业深耕
+- 定价压力增大（日费下降）
+Performance:
+- 标准化分析业务利润率下降 30%
+- 高端战略业务仍有溢价（短期不受影响）
+- 人均产值可能提升（AI 提效）
+战略：聚焦 AI 无法替代的高端业务 + 用 AI 提升内部效率
+```

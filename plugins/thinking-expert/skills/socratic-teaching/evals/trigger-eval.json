@@ -1,0 +1,82 @@
+[
+  {
+    "query": "Socrates, help me understand why this middleware chain drops the request before reaching the controller",
+    "should_trigger": true
+  },
+  {
+    "query": "socratic mode — 我想搞懂这个 Redis 缓存失效策略是怎么回事",
+    "should_trigger": true
+  },
+  {
+    "query": "别直接告诉我答案，引导我自己看懂这段递归逻辑",
+    "should_trigger": true
+  },
+  {
+    "query": "i want to learn how this auth flow works on my own — just ask me questions and guide me through it, don't explain it to me directly",
+    "should_trigger": true
+  },
+  {
+    "query": "让我自己想，这个 useEffect 无限循环的原因是什么，你只负责问问题",
+    "should_trigger": true
+  },
+  {
+    "query": "socratic: walk me through understanding this Dockerfile layer caching, I want to figure it out myself",
+    "should_trigger": true
+  },
+  {
+    "query": "我在学这个新的代码库，能用苏格拉底式提问法帮我建立理解吗？从 src/core/engine.ts 开始",
+    "should_trigger": true
+  },
+  {
+    "query": "I'm reviewing this PR and want to practice finding issues myself — guide me with questions instead of pointing things out",
+    "should_trigger": true
+  },
+  {
+    "query": "can you use the socratic method to help me understand why we chose event sourcing over CRUD for this service?",
+    "should_trigger": true
+  },
+  {
+    "query": "引导我自己想明白这个数据库死锁是怎么产生的，不要直接给结论",
+    "should_trigger": true
+  },
+  {
+    "query": "我现在很乱，项目要 deadline 了但需求还没理清，帮我理一理思路",
+    "should_trigger": false
+  },
+  {
+    "query": "grill me on this migration plan — I need to know if it'll hold up under load",
+    "should_trigger": false
+  },
+  {
+    "query": "这个 API 响应超时了，帮我看一下日志找出 root cause",
+    "should_trigger": false
+  },
+  {
+    "query": "帮我写一个 Python 脚本把这些 CSV 文件合并成一个",
+    "should_trigger": false
+  },
+  {
+    "query": "review this PR and tell me what's wrong with the error handling",
+    "should_trigger": false
+  },
+  {
+    "query": "explain the difference between optimistic and pessimistic locking to me",
+    "should_trigger": false
+  },
+  {
+    "query": "帮我压力测试一下这个系统设计方案，看看有没有漏洞",
+    "should_trigger": false
+  },
+  {
+    "query": "从第一性原理重新想一下我们的定价模型，是不是默认了太多东西",
+    "should_trigger": false
+  },
+  {
+    "query": "help me debug this segfault in the native module, here's the stack trace",
+    "should_trigger": false
+  },
+  {
+    "query": "我需要你帮我排个优先级，手里有 8 个任务不知道先做哪个",
+    "should_trigger": false
+  }
+]
