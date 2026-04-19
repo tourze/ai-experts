@@ -4,9 +4,12 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
+import { readRecentTelemetryEntries } from "../hooks/_shared/audit-telemetry.mjs";
 import { run as runSkillRoutingContext } from "../hooks/session-start/skill-routing-context.mjs";
 import { run as runNextStepGate } from "../hooks/stop/next-step-gate.mjs";
+import { run as runSkillUsageAudit } from "../hooks/stop/skill-usage-audit.mjs";
 import { run as runSkillRoutingReminder } from "../hooks/user-prompt-submit/skill-routing-reminder.mjs";
+import { run as runTriggerTelemetryAdvisorReminder } from "../hooks/user-prompt-submit/trigger-telemetry-advisor-reminder.mjs";
 
 // ── UserPromptSubmit: skill-routing-reminder ──
 
@@ -29,6 +32,137 @@ test("skill-routing-reminder 对斜杠命令放行", async () => {
 
 test("skill-routing-reminder 对确认性回复放行", async () => {
   const result = await runSkillRoutingReminder({ prompt: "继续" });
+  assert.equal(result, null);
+});
+
+async function withTelemetryDir(fn) {
+  const dir = mkdtempSync(join(tmpdir(), "skill-expert-telemetry-"));
+  const previousDir = process.env.AI_EXPERTS_HOOK_TELEMETRY_DIR;
+  const previousWorkspace = process.env.AI_EXPERTS_HOOK_TELEMETRY_WORKSPACE;
+  process.env.AI_EXPERTS_HOOK_TELEMETRY_DIR = dir;
+  process.env.AI_EXPERTS_HOOK_TELEMETRY_WORKSPACE = join(dir, "workspace");
+
+  try {
+    return await fn({
+      dir,
+      payload: {
+        cwd: process.env.AI_EXPERTS_HOOK_TELEMETRY_WORKSPACE,
+        session_id: "test-session",
+      },
+    });
+  } finally {
+    if (previousDir === undefined) {
+      delete process.env.AI_EXPERTS_HOOK_TELEMETRY_DIR;
+    } else {
+      process.env.AI_EXPERTS_HOOK_TELEMETRY_DIR = previousDir;
+    }
+    if (previousWorkspace === undefined) {
+      delete process.env.AI_EXPERTS_HOOK_TELEMETRY_WORKSPACE;
+    } else {
+      process.env.AI_EXPERTS_HOOK_TELEMETRY_WORKSPACE = previousWorkspace;
+    }
+    rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+async function writeAuditedStopTurn(payload, assistantText) {
+  await withTranscript(
+    [
+      JSON.stringify({
+        type: "user",
+        promptId: "audit-turn",
+        message: { content: "请处理这个任务" },
+      }),
+      JSON.stringify({
+        type: "assistant",
+        promptId: "audit-turn",
+        message: {
+          content: [
+            {
+              type: "text",
+              text: assistantText,
+            },
+          ],
+        },
+      }),
+    ],
+    async (transcriptPath) => {
+      await runSkillUsageAudit({ ...payload, transcript_path: transcriptPath });
+    },
+  );
+}
+
+test("skill-usage-audit 自动记录当前轮 skill 路由使用情况", async () => {
+  await withTelemetryDir(async ({ payload }) => {
+    await writeAuditedStopTurn(
+      payload,
+      [
+        "📌 Skill 路由",
+        "- 命中：`skill-expert:skill-activation-analyzer`（诊断路由）",
+        "- 触发方式：上下文自动匹配，已调用",
+        "",
+        "分析完成。",
+        "",
+        "---",
+        "📌 下一步推荐",
+        "- `skill-expert:trigger-telemetry-advisor`：生成审计建议报告。",
+      ].join("\n"),
+    );
+
+    const entries = readRecentTelemetryEntries(payload);
+    const audit = entries.find((entry) => entry.audit_type === "skill_usage");
+    assert.equal(audit?.decision, "audit");
+    assert.deepEqual(audit?.skills_routed, ["skill-expert:skill-activation-analyzer"]);
+    assert.deepEqual(audit?.skills_used, ["skill-expert:skill-activation-analyzer"]);
+    assert.deepEqual(audit?.skills_recommended, ["skill-expert:trigger-telemetry-advisor"]);
+  });
+});
+
+test("trigger-telemetry-advisor-reminder 基于最近 skill 审计信号触发，不依赖用户输入内容", async () => {
+  await withTelemetryDir(async ({ payload }) => {
+    for (let index = 0; index < 3; index += 1) {
+      await writeAuditedStopTurn(
+        payload,
+        "我完成了这次改动，但没有输出 skill 路由声明。\n\n---\n📌 下一步推荐\n- 本轮无推荐，原因：当前任务已闭合。",
+      );
+    }
+
+    const result = await runTriggerTelemetryAdvisorReminder({
+      ...payload,
+      prompt: "继续推进这个任务",
+    });
+
+    assert.equal(result?.decision, "context");
+    assert.match(result?.reason ?? "", /最近的自动审计数据/);
+    assert.match(result?.reason ?? "", /缺少路由声明 3 次/);
+    assert.match(result?.reason ?? "", /skill-expert:trigger-telemetry-advisor/);
+  });
+});
+
+test("trigger-telemetry-advisor-reminder 没有足够自动审计数据时不触发", async () => {
+  await withTelemetryDir(async ({ payload }) => {
+    const result = await runTriggerTelemetryAdvisorReminder({
+      ...payload,
+      prompt: "根据当前目录的 decisions.jsonl telemetry 给我一份 hooks/skill 触发治理建议报告",
+    });
+
+    assert.equal(result, null);
+  });
+});
+
+test("trigger-telemetry-advisor-reminder 不抢普通 skill 创建请求", async () => {
+  const result = await runTriggerTelemetryAdvisorReminder({
+    prompt: "帮我创建一个新的 SwiftUI skill，说明什么时候触发",
+  });
+
+  assert.equal(result, null);
+});
+
+test("trigger-telemetry-advisor-reminder 不抢普通 git 统计请求", async () => {
+  const result = await runTriggerTelemetryAdvisorReminder({
+    prompt: "统计这个仓库最近一周每个作者改了什么",
+  });
+
   assert.equal(result, null);
 });
 

@@ -9,7 +9,7 @@
  * TN 用例的识别规则：测试名中包含 "TN" 且包含该 guard 的名称前缀。
  *
  * 排除项：
- *   - _ 前缀工具模块（如 _utils.mjs, _telemetry.mjs）
+ *   - _ 前缀工具模块或目录（如 _utils.mjs, _shared/）
  *   - session-start hooks（环境检测，不产生 block/report）
  *   - user-prompt-submit hooks（context 注入，不产生 block/report）
  *   - notification hooks
@@ -54,7 +54,7 @@ function findGuards(hooksDir) {
     if (!existsSync(dir)) return;
     for (const entry of readdirSync(dir, { withFileTypes: true })) {
       if (entry.isDirectory()) {
-        if (SKIP_DIRS.has(entry.name)) continue;
+        if (SKIP_DIRS.has(entry.name) || entry.name.startsWith("_")) continue;
         walk(join(dir, entry.name));
       } else if (
         entry.name.endsWith(".mjs") &&

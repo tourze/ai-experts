@@ -10,25 +10,167 @@
  *
  * 每个 hook 模块须导出：
  *   export async function run(payload) → { decision, reason } | null
+ *
+ * 遥测：
+ *   - 默认按工作区路径记录到 ~/.claude/hook-telemetry/workspaces/<hash>-<name>/decisions.jsonl
+ *   - 默认记录 skip，便于自动审计 hook 是否被调用；设置 AI_EXPERTS_HOOK_AUDIT=0 可关闭 skip 降噪
+ *   - 设置 AI_EXPERTS_HOOK_TELEMETRY=0 可完全关闭写入
  */
 
-import { existsSync, readdirSync } from "node:fs";
-import { dirname, join, resolve, sep } from "node:path";
+import { createHash } from "node:crypto";
+import { appendFileSync, existsSync, mkdirSync, readdirSync, renameSync, rmSync, statSync } from "node:fs";
+import { homedir } from "node:os";
+import { basename, dirname, join, resolve, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-// ── Telemetry（可选，加载失败不影响 dispatch 正常运行） ──
-let telemetry = null;
-try {
-  const telemetryPath = join(dirname(fileURLToPath(import.meta.url)), "post-tool-use", "edit-write", "_telemetry.mjs");
-  if (existsSync(telemetryPath)) {
-    telemetry = await import(pathToFileURL(telemetryPath).href);
-  }
-} catch { /* 静默 */ }
-
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const pluginName = basename(resolve(__dirname, ".."));
 const subdir = process.argv[2];
 const DEBUG = process.env.AI_EXPERTS_DEBUG === "1";
 const MAX_STDIN_BYTES = 1024 * 1024; // 1 MB
+const TELEMETRY_ENABLED = process.env.AI_EXPERTS_HOOK_TELEMETRY !== "0";
+const RECORD_SKIPS = process.env.AI_EXPERTS_HOOK_AUDIT !== "0";
+const TELEMETRY_ROOT = process.env.AI_EXPERTS_HOOK_TELEMETRY_DIR ||
+  join(homedir(), ".claude", "hook-telemetry");
+const TELEMETRY_MAX_BYTES = parsePositiveInt(
+  process.env.AI_EXPERTS_HOOK_TELEMETRY_MAX_BYTES,
+  5 * 1024 * 1024,
+);
+const TELEMETRY_MAX_FILES = parsePositiveInt(
+  process.env.AI_EXPERTS_HOOK_TELEMETRY_MAX_FILES,
+  5,
+);
+
+function parsePositiveInt(value, fallback) {
+  const parsed = Number.parseInt(value ?? "", 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+function summarizePayloadTarget(payload) {
+  const input = payload?.tool_input;
+  if (typeof input?.file_path === "string") {
+    return input.file_path;
+  }
+  if (typeof input?.command === "string") {
+    return input.command.replace(/\s+/g, " ").trim().slice(0, 120);
+  }
+  if (typeof payload?.prompt === "string") {
+    return `[prompt:${payload.prompt.length}]`;
+  }
+  if (typeof payload?.transcript_path === "string") {
+    return payload.transcript_path;
+  }
+  return null;
+}
+
+function workspacePathForTelemetry(payload) {
+  if (typeof process.env.AI_EXPERTS_HOOK_TELEMETRY_WORKSPACE === "string" &&
+      process.env.AI_EXPERTS_HOOK_TELEMETRY_WORKSPACE.trim()) {
+    return resolve(process.env.AI_EXPERTS_HOOK_TELEMETRY_WORKSPACE);
+  }
+  if (typeof payload?.cwd === "string" && payload.cwd.trim()) {
+    return resolve(payload.cwd);
+  }
+  const filePath = payload?.tool_input?.file_path;
+  if (typeof filePath === "string" && filePath.trim()) {
+    return resolve(dirname(filePath));
+  }
+  return resolve(process.cwd());
+}
+
+function telemetryBucketForWorkspace(workspacePath) {
+  const hash = createHash("sha256").update(workspacePath).digest("hex").slice(0, 12);
+  const rawName = basename(workspacePath) || "workspace";
+  const slug = rawName.replace(/[^A-Za-z0-9._-]+/g, "-").slice(0, 48) || "workspace";
+  return join(TELEMETRY_ROOT, "workspaces", `${hash}-${slug}`);
+}
+
+function telemetryFileForPayload(payload) {
+  const workspacePath = workspacePathForTelemetry(payload);
+  return {
+    workspacePath,
+    dir: telemetryBucketForWorkspace(workspacePath),
+    file: join(telemetryBucketForWorkspace(workspacePath), "decisions.jsonl"),
+  };
+}
+
+function rotateTelemetryFile(filePath) {
+  if (!existsSync(filePath)) {
+    return;
+  }
+
+  try {
+    if (statSync(filePath).size < TELEMETRY_MAX_BYTES) {
+      return;
+    }
+
+    const rotations = Math.max(0, TELEMETRY_MAX_FILES - 1);
+    if (rotations === 0) {
+      rmSync(filePath, { force: true });
+      return;
+    }
+
+    const oldest = `${filePath}.${rotations}`;
+    if (existsSync(oldest)) {
+      rmSync(oldest, { force: true });
+    }
+
+    for (let index = rotations; index >= 1; index -= 1) {
+      const source = index === 1 ? filePath : `${filePath}.${index - 1}`;
+      const target = `${filePath}.${index}`;
+      if (existsSync(source)) {
+        renameSync(source, target);
+      }
+    }
+  } catch {
+    // 轮转失败不应影响 hook 正常流程。
+  }
+}
+
+function recordHookTelemetry({
+  hook = "[dispatch]",
+  event = subdir || "unknown",
+  decision,
+  payload = null,
+  detail = null,
+  durationMs = null,
+}) {
+  if (!TELEMETRY_ENABLED) {
+    return;
+  }
+  if (decision === "skip" && !RECORD_SKIPS) {
+    return;
+  }
+
+  try {
+    const telemetry = telemetryFileForPayload(payload);
+    if (!existsSync(telemetry.dir)) {
+      mkdirSync(telemetry.dir, { recursive: true });
+    }
+    rotateTelemetryFile(telemetry.file);
+    appendFileSync(
+      telemetry.file,
+      JSON.stringify({
+        ts: Date.now(),
+        pid: process.pid,
+        session_id: payload?.session_id ?? null,
+        transcript_path: payload?.transcript_path ?? null,
+        workspace: telemetry.workspacePath,
+        plugin: pluginName,
+        hook,
+        event,
+        decision,
+        tool: payload?.tool_name ?? null,
+        file: summarizePayloadTarget(payload),
+        detail: detail ? String(detail).replace(/\s+/g, " ").trim().slice(0, 240) : null,
+        duration_ms: typeof durationMs === "number" ? Math.round(durationMs * 10) / 10 : null,
+      }) + "\n",
+      "utf-8",
+    );
+  } catch {
+    // 遥测失败不应影响 hook 正常流程。
+  }
+}
 
 if (!subdir) {
   console.error("Usage: node dispatch.mjs <subdir>");
@@ -39,12 +181,15 @@ if (!subdir) {
 const hooksRoot = resolve(__dirname);
 const dir = resolve(__dirname, subdir);
 if (dir !== hooksRoot && !dir.startsWith(`${hooksRoot}${sep}`)) {
-  console.log(
-    JSON.stringify({
-      decision: "report",
-      reason: `[dispatch] 非法 hook 子目录：${subdir}`,
-    }),
-  );
+  const result = {
+    decision: "report",
+    reason: `[dispatch] 非法 hook 子目录：${subdir}`,
+  };
+  recordHookTelemetry({
+    decision: "report",
+    detail: result.reason,
+  });
+  console.log(JSON.stringify(result));
   process.exit(0);
 }
 
@@ -89,12 +234,15 @@ async function readPayload() {
     if (truncated) payload._stdinTruncated = true;
     return payload;
   } catch (err) {
-    console.log(
-      JSON.stringify({
-        decision: "report",
-        reason: `[dispatch] stdin 不是合法 JSON：${err.message || err}`,
-      }),
-    );
+    const result = {
+      decision: "report",
+      reason: `[dispatch] stdin 不是合法 JSON：${err.message || err}`,
+    };
+    recordHookTelemetry({
+      decision: "report",
+      detail: result.reason,
+    });
+    console.log(JSON.stringify(result));
     process.exit(0);
   }
 }
@@ -118,30 +266,47 @@ if (DEBUG) {
 }
 
 for (const file of files) {
-  const t0 = DEBUG ? performance.now() : 0;
+  const t0 = performance.now();
   try {
     const mod = await import(pathToFileURL(join(dir, file)).href);
-    if (typeof mod.run !== "function") continue;
+    if (typeof mod.run !== "function") {
+      recordHookTelemetry({
+        hook: file,
+        decision: "skip",
+        payload,
+        detail: "module has no run(payload) export",
+        durationMs: performance.now() - t0,
+      });
+      continue;
+    }
 
     const result = await mod.run(payload);
+    const durationMs = performance.now() - t0;
 
     if (DEBUG) {
-      const ms = (performance.now() - t0).toFixed(1);
       console.error(
-        `[dispatch][debug] ${file} ${ms}ms → ${result?.decision ?? "skip"}`,
+        `[dispatch][debug] ${file} ${durationMs.toFixed(1)}ms → ${result?.decision ?? "skip"}`,
       );
     }
 
-    if (!result) continue;
+    if (!result) {
+      recordHookTelemetry({
+        hook: file,
+        decision: "skip",
+        payload,
+        durationMs,
+      });
+      continue;
+    }
 
     // block 立即输出并终止
     if (result.decision === "block") {
-      telemetry?.record?.({
+      recordHookTelemetry({
         hook: file,
-        event: subdir,
         decision: "block",
-        file: payload?.tool_input?.file_path || payload?.tool_input?.command?.slice(0, 120),
+        payload,
         detail: result.reason,
+        durationMs,
       });
       console.log(JSON.stringify(result));
       process.exit(0);
@@ -149,25 +314,39 @@ for (const file of files) {
 
     // context 用于 UserPromptSubmit 等事件向 Claude 注入 additionalContext
     if (result.decision === "context") {
+      recordHookTelemetry({
+        hook: file,
+        decision: "context",
+        payload,
+        detail: result.reason,
+        durationMs,
+      });
       contexts.push(result);
       continue;
     }
 
     if (result.decision === "report") {
-      telemetry?.record?.({
+      recordHookTelemetry({
         hook: file,
-        event: subdir,
         decision: "report",
-        file: payload?.tool_input?.file_path || payload?.tool_input?.command?.slice(0, 120),
+        payload,
         detail: result.reason,
+        durationMs,
       });
       reports.push(result);
     }
   } catch (err) {
+    const durationMs = performance.now() - t0;
     if (DEBUG) {
-      const ms = (performance.now() - t0).toFixed(1);
-      console.error(`[dispatch][debug] ${file} ${ms}ms → ERROR: ${err.message}`);
+      console.error(`[dispatch][debug] ${file} ${durationMs.toFixed(1)}ms → ERROR: ${err.message}`);
     }
+    recordHookTelemetry({
+      hook: file,
+      decision: "error",
+      payload,
+      detail: err.message || err,
+      durationMs,
+    });
     // hook 异常不应崩溃整个 dispatch，降级为 report
     reports.push({
       decision: "report",

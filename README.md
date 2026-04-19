@@ -80,9 +80,34 @@ node --test tests/marketplace-sync.test.mjs
 # Codex CLI 元数据同步
 node scripts/sync-codex-metadata.mjs --write
 node scripts/generate-codex-hooks.mjs --write
+node scripts/sync-hook-dispatch.mjs --check
 ```
 
 更新具体插件后，继续进入对应插件目录或直接运行其 README 中列出的验证命令。仓库根 README 只负责入口说明；插件行为、hooks 与依赖以各插件 README 为准。
+
+## 触发审计
+
+仓库提供两层审计入口：
+
+```bash
+# hooks + skills 总览：静态覆盖、运行时 hook 遥测、skill eval 覆盖
+node scripts/trigger-audit-report.mjs --days 30
+node scripts/trigger-audit-report.mjs --session latest --days 7
+
+# hook runtime 细节：按插件/hook 统计 block/report/context/error/skip/audit
+node scripts/hook-telemetry-report.mjs --days 30
+node scripts/hook-telemetry-report.mjs --all-workspaces --days 30
+node scripts/hook-telemetry-report.mjs --session latest --days 7
+
+# 需要降低日志噪音时，可关闭 skip 记录
+AI_EXPERTS_HOOK_AUDIT=0 <your claude-or-codex command>
+```
+
+Hook 运行时按工作区路径分桶写入 `~/.claude/hook-telemetry/workspaces/<hash>-<name>/decisions.jsonl`。默认自动记录 `block`、`report`、`context`、`error`、`skip` 和 skill 使用 `audit` 记录，并附带可用的 `session_id` / `transcript_path` 以支持 `--session latest` 分析；设置 `AI_EXPERTS_HOOK_AUDIT=0` 可关闭 `skip` 记录降噪。单桶默认最多保留 5 个文件、每个 5MB；可用 `AI_EXPERTS_HOOK_TELEMETRY_MAX_FILES` 和 `AI_EXPERTS_HOOK_TELEMETRY_MAX_BYTES` 调整。设置 `AI_EXPERTS_HOOK_TELEMETRY=0` 可关闭写入。
+
+Skill 的原生激活由 Claude Code / Codex 的路由层完成，不会向插件暴露权威 runtime event。因此 skill 触发审计由两部分组成：`skill-expert` 的 Stop hook 自动记录每轮路由声明、已调用/未调用和下一步推荐；静态回归仍以 `skills/*/evals/cases.yaml` 为基准。每个重要 skill 至少提供正向触发样例和反向不触发样例，`trigger-audit-report.mjs` 会列出缺 eval、缺反例、description 触发域重叠和最近运行时路由纪律问题。
+
+需要把 telemetry 统计转成可执行治理建议时，使用 `skill-expert:trigger-telemetry-advisor`。`skill-expert` 会基于最近自动审计到的 skill 路由/使用和 hook telemetry 信号，在合适时机通过 UserPromptSubmit 提醒使用该 skill，而不是依赖用户显式提到 telemetry 名称。
 
 ## 兼容性说明
 

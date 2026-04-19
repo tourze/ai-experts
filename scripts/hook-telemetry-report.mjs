@@ -1,197 +1,390 @@
 #!/usr/bin/env node
 /**
- * Hook 遥测分析报告
+ * Hook 遥测分析报告。
  *
- * 读取 ~/.claude/hook-telemetry/decisions.jsonl，输出：
- *   1. 各 guard 的 block/report 频次统计
- *   2. FP 可疑信号检测（同文件短时间内被反复 block → 可能是误拦）
- *   3. 阈值调优建议
+ * 默认读取当前工作区对应的
+ * ~/.claude/hook-telemetry/workspaces/<hash>-<name>/decisions.jsonl*，
+ * 输出各插件 hook 的 block/report/context/error/skip/audit 频次、热点文件/命令和可疑误拦信号。
  *
  * 用法：
  *   node scripts/hook-telemetry-report.mjs              # 默认最近 7 天
  *   node scripts/hook-telemetry-report.mjs --days 30    # 最近 30 天
+ *   node scripts/hook-telemetry-report.mjs --plugin git-expert
+ *   node scripts/hook-telemetry-report.mjs --all-workspaces
+ *   node scripts/hook-telemetry-report.mjs --session latest
  *   node scripts/hook-telemetry-report.mjs --purge 90   # 清理 90 天前的记录
  */
 
-import { existsSync, readFileSync, writeFileSync } from "fs";
-import { join } from "path";
-import { homedir } from "os";
+import { createHash } from "node:crypto";
+import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { basename, join, resolve } from "node:path";
+import { homedir } from "node:os";
 
-const TELEMETRY_FILE = join(homedir(), ".claude", "hook-telemetry", "decisions.jsonl");
+const TELEMETRY_ROOT = process.env.AI_EXPERTS_HOOK_TELEMETRY_DIR ||
+  join(homedir(), ".claude", "hook-telemetry");
+const EXPLICIT_TELEMETRY_FILE = process.env.AI_EXPERTS_HOOK_TELEMETRY_FILE || null;
+const DECISIONS = ["block", "report", "context", "error", "skip", "audit"];
 
-// ── 参数解析 ──────────────────────────────────────────────
-const args = process.argv.slice(2);
-let days = 7;
-let purge = null;
+function parseArgs(argv) {
+  const args = {
+    allWorkspaces: false,
+    days: 7,
+    purge: null,
+    plugin: null,
+    session: null,
+    telemetryFile: EXPLICIT_TELEMETRY_FILE,
+    workspace: process.env.AI_EXPERTS_HOOK_TELEMETRY_WORKSPACE || process.cwd(),
+  };
 
-for (let i = 0; i < args.length; i++) {
-  if (args[i] === "--days" && args[i + 1]) days = parseInt(args[i + 1], 10);
-  if (args[i] === "--purge" && args[i + 1]) purge = parseInt(args[i + 1], 10);
-}
-
-// ── 读取日志 ──────────────────────────────────────────────
-if (!existsSync(TELEMETRY_FILE)) {
-  console.log("📭 暂无遥测数据。");
-  console.log(`   日志位置：${TELEMETRY_FILE}`);
-  console.log("   安装 coding-expert 插件后，hook 决策会自动记录到此文件。");
-  process.exit(0);
-}
-
-const raw = readFileSync(TELEMETRY_FILE, "utf-8").trim();
-if (!raw) {
-  console.log("📭 遥测文件为空。");
-  process.exit(0);
-}
-
-const allEntries = raw.split("\n").map((line) => {
-  try { return JSON.parse(line); } catch { return null; }
-}).filter(Boolean);
-
-// ── 清理旧记录 ───────────────────────────────────────────
-if (purge) {
-  const cutoff = Date.now() - purge * 86400000;
-  const kept = allEntries.filter((e) => e.ts >= cutoff);
-  const removed = allEntries.length - kept.length;
-  writeFileSync(
-    TELEMETRY_FILE,
-    kept.map((e) => JSON.stringify(e)).join("\n") + (kept.length ? "\n" : ""),
-    "utf-8",
-  );
-  console.log(`🧹 已清理 ${removed} 条记录（${purge} 天前），保留 ${kept.length} 条。`);
-  process.exit(0);
-}
-
-// ── 过滤时间范围 ─────────────────────────────────────────
-const cutoff = Date.now() - days * 86400000;
-const entries = allEntries.filter((e) => e.ts >= cutoff);
-
-if (entries.length === 0) {
-  console.log(`📭 最近 ${days} 天没有遥测记录。共 ${allEntries.length} 条历史记录。`);
-  process.exit(0);
-}
-
-// ── 统计 ─────────────────────────────────────────────────
-const stats = {};
-for (const e of entries) {
-  if (!stats[e.hook]) stats[e.hook] = { block: 0, report: 0, files: new Map() };
-  const s = stats[e.hook];
-  if (e.decision === "block") s.block++;
-  if (e.decision === "report") s.report++;
-  // 追踪文件级别的命中频次
-  if (e.file) {
-    const count = s.files.get(e.file) || 0;
-    s.files.set(e.file, count + 1);
-  }
-}
-
-// ── FP 可疑检测 ──────────────────────────────────────────
-// 启发式：同一 guard 对同一文件 block ≥ 3 次 → 可能是误拦或阈值过严
-const fpSuspects = [];
-for (const [hook, s] of Object.entries(stats)) {
-  for (const [file, count] of s.files) {
-    if (count >= 3) {
-      fpSuspects.push({ hook, file, count });
+  for (let index = 0; index < argv.length; index += 1) {
+    const arg = argv[index];
+    if (arg === "--all-workspaces") {
+      args.allWorkspaces = true;
+      continue;
     }
-  }
-}
-
-// ── 阈值建议 ─────────────────────────────────────────────
-const suggestions = [];
-
-// file-budget-guard: 如果 block 率很高，可能阈值过严
-const fbg = stats["file-budget-guard.mjs"];
-if (fbg && fbg.block > 10) {
-  // 从 detail 中提取超出行数的分布
-  const overages = entries
-    .filter((e) => e.hook === "file-budget-guard.mjs" && e.decision === "block" && e.detail)
-    .map((e) => {
-      const m = e.detail.match(/当前: (\d+) 行 \| 预算: (\d+) 行/);
-      if (!m) return null;
-      return { current: parseInt(m[1], 10), budget: parseInt(m[2], 10) };
-    })
-    .filter(Boolean);
-
-  if (overages.length > 0) {
-    const within10pct = overages.filter((o) => o.current <= o.budget * 1.1).length;
-    const ratio = within10pct / overages.length;
-    if (ratio > 0.5) {
-      suggestions.push(
-        `file-budget-guard: ${Math.round(ratio * 100)}% 的 block 超出预算不到 10%，` +
-        `建议适当放宽相关扩展名的预算值`,
-      );
+    if (arg === "--days") {
+      args.days = Number.parseInt(argv[index + 1] ?? "", 10);
+      index += 1;
+      continue;
     }
+    if (arg === "--purge") {
+      args.purge = Number.parseInt(argv[index + 1] ?? "", 10);
+      index += 1;
+      continue;
+    }
+    if (arg === "--plugin") {
+      args.plugin = argv[index + 1] ?? "";
+      index += 1;
+      continue;
+    }
+    if (arg === "--session") {
+      args.session = argv[index + 1] ?? "";
+      index += 1;
+      continue;
+    }
+    if (arg === "--telemetry-file") {
+      args.telemetryFile = resolve(argv[index + 1] ?? "");
+      index += 1;
+      continue;
+    }
+    if (arg === "--workspace") {
+      args.workspace = resolve(argv[index + 1] ?? "");
+      index += 1;
+      continue;
+    }
+    throw new Error(`Unknown argument: ${arg}`);
   }
+
+  if (!Number.isFinite(args.days) || args.days <= 0) {
+    throw new Error("--days must be a positive integer");
+  }
+  if (args.purge !== null && (!Number.isFinite(args.purge) || args.purge <= 0)) {
+    throw new Error("--purge must be a positive integer");
+  }
+  if (args.session !== null && args.session.trim() === "") {
+    throw new Error("--session must be a non-empty session id, transcript path, or latest");
+  }
+  return args;
 }
 
-// edit-loop-detector: 如果 warn(report) 很多但 block 很少 → 阈值合理
-const eld = stats["edit-loop-detector.mjs"];
-if (eld && eld.report > 20 && eld.block < 3) {
-  suggestions.push(
-    `edit-loop-detector: report ${eld.report} 次但只 block ${eld.block} 次，` +
-    `说明警告有效，阈值合理`,
-  );
+function workspaceBucketDir(workspacePath) {
+  const resolved = resolve(workspacePath);
+  const hash = createHash("sha256").update(resolved).digest("hex").slice(0, 12);
+  const rawName = basename(resolved) || "workspace";
+  const slug = rawName.replace(/[^A-Za-z0-9._-]+/g, "-").slice(0, 48) || "workspace";
+  return join(TELEMETRY_ROOT, "workspaces", `${hash}-${slug}`);
 }
 
-// error-retry-guard: 如果 block 很多 → 可能需要扩大只读命令白名单
-const erg = stats["error-retry-guard.mjs"];
-if (erg && erg.block > 5) {
-  const repeatedCmds = entries
-    .filter((e) => e.hook === "error-retry-guard.mjs" && e.decision === "block" && e.file)
-    .map((e) => e.file.split(" ")[0]) // 取命令名
-    .reduce((acc, cmd) => { acc[cmd] = (acc[cmd] || 0) + 1; return acc; }, {});
+function telemetryFilesInDir(dir) {
+  if (!existsSync(dir) || !statSync(dir).isDirectory()) {
+    return [];
+  }
+  return readdirSync(dir)
+    .filter((name) => /^decisions\.jsonl(?:\.\d+)?$/.test(name))
+    .sort((left, right) => left.localeCompare(right, undefined, { numeric: true }))
+    .map((name) => join(dir, name));
+}
 
-  const topCmd = Object.entries(repeatedCmds).sort((a, b) => b[1] - a[1])[0];
-  if (topCmd) {
-    suggestions.push(
-      `error-retry-guard: 最常被拦截的命令前缀是 "${topCmd[0]}"（${topCmd[1]} 次），` +
-      `如果是合理的重复操作，考虑加入只读白名单`,
+function allWorkspaceTelemetryFiles() {
+  const workspacesRoot = join(TELEMETRY_ROOT, "workspaces");
+  if (!existsSync(workspacesRoot) || !statSync(workspacesRoot).isDirectory()) {
+    return [];
+  }
+  return readdirSync(workspacesRoot)
+    .map((name) => join(workspacesRoot, name))
+    .filter((dir) => existsSync(dir) && statSync(dir).isDirectory())
+    .flatMap((dir) => telemetryFilesInDir(dir));
+}
+
+function telemetrySources(args) {
+  if (args.telemetryFile) {
+    return {
+      description: args.telemetryFile,
+      files: existsSync(args.telemetryFile) ? [args.telemetryFile] : [],
+    };
+  }
+
+  if (args.allWorkspaces) {
+    const files = allWorkspaceTelemetryFiles();
+    const legacyFile = join(TELEMETRY_ROOT, "decisions.jsonl");
+    if (existsSync(legacyFile)) {
+      files.push(legacyFile);
+    }
+    return {
+      description: `${join(TELEMETRY_ROOT, "workspaces", "*/decisions.jsonl*")} (+ legacy if present)`,
+      files,
+    };
+  }
+
+  const dir = workspaceBucketDir(args.workspace);
+  const files = telemetryFilesInDir(dir);
+  const legacyFile = join(TELEMETRY_ROOT, "decisions.jsonl");
+  if (files.length === 0 && existsSync(legacyFile)) {
+    return {
+      description: `${dir}/decisions.jsonl* (fallback legacy: ${legacyFile})`,
+      files: [legacyFile],
+    };
+  }
+
+  return {
+    description: `${dir}/decisions.jsonl*`,
+    files,
+  };
+}
+
+function readEntries(files) {
+  if (files.length === 0) {
+    return null;
+  }
+
+  const entries = [];
+  for (const file of files) {
+    const raw = readFileSync(file, "utf-8").trim();
+    if (!raw) {
+      continue;
+    }
+    entries.push(
+      ...raw
+        .split("\n")
+        .map((line) => {
+          try {
+            return JSON.parse(line);
+          } catch {
+            return null;
+          }
+        })
+        .filter(Boolean),
     );
   }
+  return entries;
 }
 
-// ── 输出报告 ──────────────────────────────────────────────
-console.log(`\n${"═".repeat(60)}`);
-console.log(`  Hook Telemetry Report — 最近 ${days} 天（共 ${entries.length} 条记录）`);
-console.log(`${"═".repeat(60)}\n`);
+function emptyStats() {
+  return {
+    block: 0,
+    report: 0,
+    context: 0,
+    error: 0,
+    skip: 0,
+    audit: 0,
+    files: new Map(),
+    durations: [],
+  };
+}
 
-// 按 block 数降序排列
-const sorted = Object.entries(stats).sort((a, b) => b[1].block - a[1].block);
+function shortTarget(value) {
+  if (!value) {
+    return "-";
+  }
+  const base = String(value).split("/").pop();
+  return base.length > 32 ? `${base.slice(0, 29)}...` : base;
+}
 
-console.log("  Guard".padEnd(40) + "Block".padEnd(8) + "Report".padEnd(10) + "Hot Files");
-console.log("  " + "─".repeat(56));
+function average(values) {
+  if (values.length === 0) {
+    return "-";
+  }
+  const total = values.reduce((sum, value) => sum + value, 0);
+  return `${(total / values.length).toFixed(1)}ms`;
+}
 
-for (const [hook, s] of sorted) {
-  const total = s.block + s.report;
-  const hotFiles = [...s.files.entries()]
-    .filter(([, c]) => c >= 2)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 2)
-    .map(([f, c]) => `${f.split("/").pop()}(×${c})`)
-    .join(", ");
+function cell(value, width) {
+  const text = String(value);
+  if (text.length <= width) {
+    return text.padEnd(width);
+  }
+  if (width <= 3) {
+    return text.slice(0, width);
+  }
+  return `${text.slice(0, width - 3)}...`;
+}
+
+function sessionKey(entry) {
+  return entry.session_id || entry.transcript_path || null;
+}
+
+function applySessionFilter(entries, session) {
+  if (!session) {
+    return { entries, label: null };
+  }
+
+  if (session === "latest") {
+    const latest = [...entries]
+      .filter((entry) => sessionKey(entry))
+      .sort((left, right) => (right.ts ?? 0) - (left.ts ?? 0))[0];
+    const key = latest ? sessionKey(latest) : null;
+    return {
+      entries: key ? entries.filter((entry) => sessionKey(entry) === key) : [],
+      label: key || "latest (no session_id/transcript_path found)",
+    };
+  }
+
+  return {
+    entries: entries.filter((entry) => entry.session_id === session || entry.transcript_path === session),
+    label: session,
+  };
+}
+
+function printReport(entries, args, sourceDescription) {
+  const stats = new Map();
+  for (const entry of entries) {
+    const key = `${entry.plugin ?? "(unknown)"}/${entry.hook ?? "(unknown)"}`;
+    if (!stats.has(key)) {
+      stats.set(key, emptyStats());
+    }
+
+    const item = stats.get(key);
+    if (DECISIONS.includes(entry.decision)) {
+      item[entry.decision] += 1;
+    }
+    if (entry.file) {
+      item.files.set(entry.file, (item.files.get(entry.file) ?? 0) + 1);
+    }
+    if (typeof entry.duration_ms === "number") {
+      item.durations.push(entry.duration_ms);
+    }
+  }
+
+  const fpSuspects = [];
+  for (const [hook, item] of stats.entries()) {
+    for (const [file, count] of item.files) {
+      if (count >= 3 && item.block > 0) {
+        fpSuspects.push({ hook, file, count });
+      }
+    }
+  }
+
+  console.log(`\n${"=".repeat(72)}`);
+  console.log(`  Hook Telemetry Report - 最近 ${args.days} 天（${entries.length} 条记录）`);
+  if (args.session) {
+    console.log(`  Session: ${args.session}`);
+  }
+  console.log(`${"=".repeat(72)}\n`);
 
   console.log(
-    `  ${hook.replace(".mjs", "").padEnd(38)}${String(s.block).padEnd(8)}${String(s.report).padEnd(10)}${hotFiles || "-"}`,
+    "  Hook".padEnd(39) +
+    "Block".padEnd(8) +
+    "Report".padEnd(8) +
+    "Ctx".padEnd(6) +
+    "Err".padEnd(6) +
+    "Skip".padEnd(7) +
+    "Audit".padEnd(8) +
+    "Avg".padEnd(9) +
+    "Hot Target",
   );
-}
+  console.log(`  ${"-".repeat(68)}`);
 
-if (fpSuspects.length > 0) {
-  console.log(`\n${"─".repeat(60)}`);
-  console.log("  ⚠️  FP 可疑信号（同文件被同一 guard 命中 ≥ 3 次）\n");
-  for (const { hook, file, count } of fpSuspects.sort((a, b) => b.count - a.count).slice(0, 10)) {
-    const shortFile = file.length > 50 ? "..." + file.slice(-47) : file;
-    console.log(`  ${hook.replace(".mjs", "").padEnd(30)} ${shortFile} (×${count})`);
+  const sorted = [...stats.entries()].sort((a, b) =>
+    (b[1].block + b[1].report + b[1].error) - (a[1].block + a[1].report + a[1].error),
+  );
+
+  for (const [hook, item] of sorted) {
+    const hotTarget = [...item.files.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 1)
+      .map(([file, count]) => `${shortTarget(file)}(${count})`)
+      .join(", ") || "-";
+
+    console.log(
+      `  ${cell(hook, 36)} ` +
+      `${String(item.block).padEnd(8)}` +
+      `${String(item.report).padEnd(8)}` +
+      `${String(item.context).padEnd(6)}` +
+      `${String(item.error).padEnd(6)}` +
+      `${String(item.skip).padEnd(7)}` +
+      `${String(item.audit).padEnd(8)}` +
+      `${average(item.durations).padEnd(9)}` +
+      hotTarget,
+    );
   }
-}
 
-if (suggestions.length > 0) {
-  console.log(`\n${"─".repeat(60)}`);
-  console.log("  📊 阈值调优建议\n");
-  for (const s of suggestions) {
-    console.log(`  → ${s}`);
+  if (fpSuspects.length > 0) {
+    console.log(`\n${"-".repeat(72)}`);
+    console.log("  FP 可疑信号（同目标被同一 hook 命中 >= 3 次）\n");
+    for (const { hook, file, count } of fpSuspects.sort((a, b) => b.count - a.count).slice(0, 10)) {
+      console.log(`  ${hook.padEnd(36)} ${shortTarget(file)} (${count})`);
+    }
   }
+
+  console.log(`\n${"=".repeat(72)}`);
+  console.log(`  日志位置：${sourceDescription}`);
+  console.log("  skip 默认自动记录；降噪：AI_EXPERTS_HOOK_AUDIT=0");
+  console.log("  关闭遥测：AI_EXPERTS_HOOK_TELEMETRY=0");
+  console.log("  单桶上限：AI_EXPERTS_HOOK_TELEMETRY_MAX_BYTES / AI_EXPERTS_HOOK_TELEMETRY_MAX_FILES");
+  console.log(`  清理旧数据：node scripts/hook-telemetry-report.mjs --purge 90`);
+  console.log(`${"=".repeat(72)}\n`);
 }
 
-console.log(`\n${"═".repeat(60)}`);
-console.log(`  日志位置：${TELEMETRY_FILE}`);
-console.log(`  清理旧数据：node scripts/hook-telemetry-report.mjs --purge 90`);
-console.log(`${"═".repeat(60)}\n`);
+function main() {
+  const args = parseArgs(process.argv.slice(2));
+  const sources = telemetrySources(args);
+  const allEntries = readEntries(sources.files);
+
+  if (allEntries === null) {
+    console.log("暂无遥测数据。");
+    console.log(`日志位置：${sources.description}`);
+    return;
+  }
+
+  if (args.purge) {
+    const cutoff = Date.now() - args.purge * 86400000;
+    let removed = 0;
+    let keptCount = 0;
+    for (const file of sources.files) {
+      const entries = readEntries([file]) ?? [];
+      const kept = entries.filter((entry) => entry.ts >= cutoff);
+      removed += entries.length - kept.length;
+      keptCount += kept.length;
+      writeFileSync(
+        file,
+        kept.map((entry) => JSON.stringify(entry)).join("\n") + (kept.length ? "\n" : ""),
+        "utf-8",
+      );
+    }
+    console.log(`已清理 ${removed} 条记录（${args.purge} 天前），保留 ${keptCount} 条。`);
+    return;
+  }
+
+  const cutoff = Date.now() - args.days * 86400000;
+  const entries = allEntries
+    .filter((entry) => entry.ts >= cutoff)
+    .filter((entry) => !args.plugin || entry.plugin === args.plugin);
+  const sessionFiltered = applySessionFilter(entries, args.session);
+
+  if (sessionFiltered.entries.length === 0) {
+    console.log(`最近 ${args.days} 天没有遥测记录。共 ${allEntries.length} 条历史记录。`);
+    if (sessionFiltered.label) {
+      console.log(`Session：${sessionFiltered.label}`);
+    }
+    return;
+  }
+
+  printReport(sessionFiltered.entries, args, sources.description);
+}
+
+try {
+  main();
+} catch (error) {
+  console.error(error instanceof Error ? error.message : String(error));
+  process.exitCode = 1;
+}
