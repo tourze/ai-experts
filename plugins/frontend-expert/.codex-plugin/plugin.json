@@ -1,0 +1,21 @@
+{
+  "name": "frontend-expert",
+  "version": "0.1.1",
+  "description": "前端设计专家插件：Core Web Vitals、Design System、Tailwind CSS、响应式布局、交互设计、UI 重构",
+  "author": {
+    "name": "ai-experts"
+  },
+  "keywords": [
+    "frontend",
+    "css",
+    "tailwind",
+    "design-system",
+    "responsive",
+    "web-vitals"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Frontend Expert",
+    "shortDescription": "前端设计专家插件：Core Web Vitals、Design System、Tailwind CSS、响应式布局、交互设计、UI 重构"
+  }
+}

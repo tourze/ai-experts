@@ -1,0 +1,23 @@
+{
+  "name": "react-native-expert",
+  "version": "0.1.0",
+  "description": "React Native 专家插件：性能优化、TurboModule、JSI 绑定、原生模块、Metro 配置、跨平台代码组织、Detox E2E 测试",
+  "author": {
+    "name": "ai-experts"
+  },
+  "license": "MIT",
+  "keywords": [
+    "react-native",
+    "expo",
+    "turbomodule",
+    "jsi",
+    "metro",
+    "detox",
+    "hermes"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "React Native Expert",
+    "shortDescription": "React Native 专家插件：性能优化、TurboModule、JSI 绑定、原生模块、Metro 配置、跨平台代码组织、Detox E2E 测试"
+  }
+}

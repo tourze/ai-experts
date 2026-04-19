@@ -1,0 +1,21 @@
+{
+  "name": "legal-expert",
+  "version": "0.1.2",
+  "description": "法务合规专家插件：法律风险评估、劳动合同模板、GDPR 数据合规",
+  "author": {
+    "name": "ai-experts"
+  },
+  "license": "MIT",
+  "keywords": [
+    "legal",
+    "gdpr",
+    "compliance",
+    "contract",
+    "risk"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Legal Expert",
+    "shortDescription": "法务合规专家插件：法律风险评估、劳动合同模板、GDPR 数据合规"
+  }
+}

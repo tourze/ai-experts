@@ -1,0 +1,20 @@
+{
+  "name": "miniprogram-expert",
+  "version": "0.1.1",
+  "description": "小程序开发专家插件：微信小程序构建/调试/发布、WXML/WXSS/Taro 语法检查",
+  "author": {
+    "name": "ai-experts"
+  },
+  "keywords": [
+    "miniprogram",
+    "wechat",
+    "wxml",
+    "wxss",
+    "taro"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Miniprogram Expert",
+    "shortDescription": "小程序开发专家插件：微信小程序构建/调试/发布、WXML/WXSS/Taro 语法检查"
+  }
+}

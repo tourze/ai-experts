@@ -1,0 +1,21 @@
+{
+  "name": "thinking-expert",
+  "version": "0.2.1",
+  "description": "思维专家插件：思考陪跑、优先级判断、第一性原理、逆向推演、多视角审议与科研脑暴",
+  "author": {
+    "name": "ai-experts"
+  },
+  "keywords": [
+    "thinking",
+    "decision-making",
+    "first-principles",
+    "scenario-analysis",
+    "brainstorming",
+    "prioritization"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Thinking Expert",
+    "shortDescription": "思维专家插件：思考陪跑、优先级判断、第一性原理、逆向推演、多视角审议与科研脑暴"
+  }
+}

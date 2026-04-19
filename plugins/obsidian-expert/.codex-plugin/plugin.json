@@ -1,0 +1,21 @@
+{
+  "name": "obsidian-expert",
+  "version": "0.1.1",
+  "description": "Obsidian 专家插件：Bases 视图/过滤/公式管理、CLI 笔记读写搜索",
+  "author": {
+    "name": "ai-experts"
+  },
+  "keywords": [
+    "obsidian",
+    "notes",
+    "knowledge-base",
+    "markdown",
+    "bases",
+    "cli"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Obsidian Expert",
+    "shortDescription": "Obsidian 专家插件：Bases 视图/过滤/公式管理、CLI 笔记读写搜索"
+  }
+}

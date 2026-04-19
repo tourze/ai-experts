@@ -1,0 +1,21 @@
+{
+  "name": "react-expert",
+  "version": "0.2.1",
+  "description": "React Web 专家插件：组件组合、Hooks 模式、渲染性能、Server Components、Vercel/Next.js 最佳实践",
+  "author": {
+    "name": "ai-experts"
+  },
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "hooks",
+    "rsc",
+    "next",
+    "vercel"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "React Expert",
+    "shortDescription": "React Web 专家插件：组件组合、Hooks 模式、渲染性能、Server Components、Vercel/Next.js 最佳实践"
+  }
+}

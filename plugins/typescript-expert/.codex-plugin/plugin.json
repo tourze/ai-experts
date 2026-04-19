@@ -1,0 +1,20 @@
+{
+  "name": "typescript-expert",
+  "version": "0.1.1",
+  "description": "TypeScript 开发专家插件：esbuild 语法检查、ESLint 代码质量、高级类型系统、泛型与类型体操",
+  "author": {
+    "name": "ai-experts"
+  },
+  "keywords": [
+    "typescript",
+    "ts",
+    "eslint",
+    "generics",
+    "esbuild"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Typescript Expert",
+    "shortDescription": "TypeScript 开发专家插件：esbuild 语法检查、ESLint 代码质量、高级类型系统、泛型与类型体操"
+  }
+}

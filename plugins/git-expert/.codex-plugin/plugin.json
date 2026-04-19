@@ -1,0 +1,20 @@
+{
+  "name": "git-expert",
+  "version": "0.1.2",
+  "description": "Git 版本控制专家插件：分支命名规范、提交信息守卫、提交范围检查、批量暂存拦截、锁文件处理",
+  "author": {
+    "name": "ai-experts"
+  },
+  "keywords": [
+    "git",
+    "github",
+    "conventional-commits",
+    "branching",
+    "rebase"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Git Expert",
+    "shortDescription": "Git 版本控制专家插件：分支命名规范、提交信息守卫、提交范围检查、批量暂存拦截、锁文件处理"
+  }
+}

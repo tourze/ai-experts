@@ -1,97 +1,36 @@
 # ai-experts
 
-一个面向 Claude Code 的本地插件仓库与 marketplace，按领域提供 `*-expert` 插件集合。当前仓库已经在根目录声明了 Claude marketplace，插件源码集中放在 `plugins/` 下；每个插件都包含自己的 manifest、README、skills 与最小回归测试，并可按需提供 `hooks/` 与 `agents/`。
+一个同时兼容 **Claude Code** 和 **OpenAI Codex CLI** 的本地插件仓库与 marketplace，按领域提供 `*-expert` 插件集合。插件源码集中放在 `plugins/` 下；每个插件都包含自己的 manifest（`.claude-plugin/` + `.codex-plugin/` 双格式）、README、skills 与最小回归测试，并可按需提供 `hooks/` 与 `agents/`。
 
 ## 快速开始
 
-前提：本机已安装 `claude` CLI。
+前提：本机已安装 `claude` CLI 和/或 [Codex CLI](https://github.com/openai/codex)。
 
-1. 注册本地 marketplace
+### 一键安装
 
-```bash
-claude plugin marketplace add "$(pwd)" --scope user
-```
-
-如果只想在当前项目范围内声明 marketplace：
+脚本会自动检测已安装的 CLI 工具（Claude Code / Codex CLI），注册 marketplace 并启用全部插件：
 
 ```bash
-claude plugin marketplace add "$(pwd)" --scope project
+./scripts/install.sh
 ```
 
-2. 校验 marketplace 已被识别
+### 卸载 / 重装
 
 ```bash
-claude plugin marketplace list
-claude plugin validate .claude-plugin/marketplace.json
+./scripts/install.sh --uninstall   # 移除 marketplace 和全部插件
+./scripts/install.sh --reinstall   # 先卸载再重新安装
 ```
-
-3. 安装具体插件
-
-```bash
-claude plugin install docs-expert@ai-experts
-claude plugin install git-expert@ai-experts --scope project
-```
-
-如果要一次安装 marketplace 中的全部插件，Claude CLI 当前没有内置 `install-all` 子命令，可以直接使用：
-
-```bash
-claude plugin list --json | jq -r '.[] | select(.id | endswith("@ai-experts")) | select(.scope == "user") | .id | split("@")[0]' | while read -r plugin; do claude plugin uninstall "$plugin"; done
-jq -r '.plugins[].name + "@ai-experts"' .claude-plugin/marketplace.json | while read -r plugin; do claude plugin install "$plugin"; done
-```
-
-如果要全部按当前项目范围安装：
-
-```bash
-claude plugin list --json | jq -r '.[] | select(.id | endswith("@ai-experts")) | select(.scope == "project") | .id | split("@")[0]' | while read -r plugin; do claude plugin uninstall "$plugin" --scope project; done
-jq -r '.plugins[].name + "@ai-experts"' .claude-plugin/marketplace.json | while read -r plugin; do claude plugin install "$plugin" --scope project; done
-```
-
-4. 卸载插件或移除 marketplace
-
-卸载单个插件：
-
-```bash
-claude plugin uninstall docs-expert
-claude plugin uninstall git-expert --scope project
-```
-
-如果要一次卸载当前 marketplace 中的全部插件：
-
-```bash
-claude plugin list --json | jq -r '.[] | select(.id | endswith("@ai-experts")) | select(.scope == "user") | .id | split("@")[0]' | while read -r plugin; do claude plugin uninstall "$plugin"; done
-```
-
-如果要全部按当前项目范围卸载：
-
-```bash
-claude plugin list --json | jq -r '.[] | select(.id | endswith("@ai-experts")) | select(.scope == "project") | .id | split("@")[0]' | while read -r plugin; do claude plugin uninstall "$plugin" --scope project; done
-```
-
-如果只是想移除 marketplace 注册，而不是卸载已安装插件：
-
-```bash
-claude plugin marketplace remove ai-experts
-```
-
-注意：`claude plugin marketplace remove ai-experts` 只会移除 marketplace 配置，不会自动卸载已经安装到 `user` / `project` / `local` scope 的插件。
-
-5. 刷新插件状态
-
-在 Claude Code 中执行：
-
-```text
-/reload-plugins
-```
-
-或者直接重启 Claude Code 会话。无论安装还是卸载，执行一次刷新都更稳妥。
 
 ## 仓库结构
 
-- `.claude-plugin/marketplace.json`：仓库级 Claude plugin marketplace 清单。
-- `plugins/<plugin-name>/`：单个插件目录；每个插件都有自己的 `.claude-plugin/plugin.json`。
+- `.claude-plugin/marketplace.json`：仓库级 Claude Code marketplace 清单。
+- `.agents/plugins/marketplace.json`：仓库级 Codex CLI marketplace 清单（脚本生成，Codex 自动发现路径）。
+- `.codex/hooks.json`：Codex CLI 项目级聚合 hooks（脚本生成）。
+- `plugins/<plugin-name>/`：单个插件目录；每个插件同时包含 `.claude-plugin/plugin.json` 和 `.codex-plugin/plugin.json`。
 - `plugins/<plugin-name>/README.md`：插件用途、skills、安装/卸载方式，以及适用时的 hooks、agents 与验证命令。
-- `plugins/<plugin-name>/hooks/`：可选；插件级 hook 定义与分发入口。
-- `plugins/<plugin-name>/agents/`：可选；只读分析或专用执行 agent。
+- `plugins/<plugin-name>/hooks/`：可选；插件级 hook 定义与分发入口（Claude Code 直接使用；Codex CLI 通过根目录聚合文件使用）。
+- `plugins/<plugin-name>/agents/`：可选；只读分析或专用执行 agent（仅 Claude Code）。
+- `AGENTS.md`：Codex CLI 项目指令文件，从 `CLAUDE.md` 自动生成。
 - `memory/`：仓库本地 memory 与迁移中的规则草稿，不属于 marketplace 必需结构。
 
 ## 插件总览
@@ -131,16 +70,33 @@ claude plugin marketplace remove ai-experts
 更新 marketplace 后，至少执行：
 
 ```bash
+# Claude Code 元数据同步
 node scripts/sync-plugin-metadata.mjs --write
 jq empty .claude-plugin/marketplace.json
 claude plugin validate .claude-plugin/marketplace.json
 node --test tests/plugin-metadata-sync.test.mjs
 node --test tests/marketplace-sync.test.mjs
+
+# Codex CLI 元数据同步
+node scripts/sync-codex-metadata.mjs --write
+node scripts/generate-codex-hooks.mjs --write
 ```
 
 更新具体插件后，继续进入对应插件目录或直接运行其 README 中列出的验证命令。仓库根 README 只负责入口说明；插件行为、hooks 与依赖以各插件 README 为准。
+
+## 兼容性说明
+
+| 功能 | Claude Code | Codex CLI |
+|------|:-----------:|:---------:|
+| Skills (SKILL.md) | ✅ | ✅ |
+| Hooks | ✅ 插件内置 | ✅ 项目级聚合 |
+| Agents | ✅ | ❌ 不支持 |
+| Plugin Manifest | `.claude-plugin/` | `.codex-plugin/` |
+| 项目指令 | `CLAUDE.md` | `AGENTS.md`（自动生成） |
+| Marketplace | `.claude-plugin/marketplace.json` | `.agents/plugins/marketplace.json` |
 
 ## 参考文档
 
 - Claude Code plugin marketplaces: https://code.claude.com/docs/en/plugin-marketplaces
 - Claude Code discover/install plugins: https://code.claude.com/docs/en/discover-plugins
+- Codex CLI: https://github.com/openai/codex

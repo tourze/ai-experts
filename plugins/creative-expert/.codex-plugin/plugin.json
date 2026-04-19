@@ -1,0 +1,21 @@
+{
+  "name": "creative-expert",
+  "version": "0.2.1",
+  "description": "创意与可视化专家插件：视觉设计、概念转图片/视频、文章配图、图片压缩、ASCII 图表、截图",
+  "author": {
+    "name": "ai-experts"
+  },
+  "keywords": [
+    "design",
+    "image",
+    "video",
+    "manim",
+    "plantuml",
+    "screenshot"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Creative Expert",
+    "shortDescription": "创意与可视化专家插件：视觉设计、概念转图片/视频、文章配图、图片压缩、ASCII 图表、截图"
+  }
+}
