@@ -1,6 +1,6 @@
 ---
 name: repo-analyzer
-description: 当用户要克隆或分析外部 GitHub 仓库、评估开源项目质量、生成仓库结构化报告或做技术选型调研时使用。
+description: 当用户要克隆或分析外部 GitHub 仓库、评估开源项目质量、生成仓库结构化报告或做技术选型调研时使用。支持 --persist 将分析结果保存为可复用的 skill 文件。
 context: fork
 agent: research-expert:deep-researcher
 ---
@@ -13,6 +13,7 @@ agent: research-expert:deep-researcher
 - 评估开源项目是否值得采用：活跃度、架构、社区、许可证。
 - 如果只是深挖本地代码库的调用链，转到 [wiki-researcher](../wiki-researcher/SKILL.md)。
 - 如果要对比两个仓库或方案，转到 [comparative-analysis](../comparative-analysis/SKILL.md)。
+- 如果要深度精读并生成可复用的认知型 skill，转到 [deep-code-read](../deep-code-read/SKILL.md)。
 
 ## 核心约束
 
@@ -22,6 +23,7 @@ agent: research-expert:deep-researcher
 - 必须进入核心文件实际读代码，不能只凭文件名下结论。
 - 区分"文档声称的"和"代码实际做的"。
 - 按 [输出模板](references/output-template.md) 输出结构化报告。
+- 如果用户指定 `--persist <dir>` 或要求"保存为 skill"，除报告外，额外在 `<dir>/<repo-name>-report/` 生成 SKILL.md，将分析结果持久化为可复用的 skill 文件。格式见 [持久化模板](references/persist-template.md)。
 
 ## 代码模式
 
