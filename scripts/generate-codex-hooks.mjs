@@ -31,6 +31,13 @@ const EVENT_MAP = {
   Stop: "Stop",
 };
 
+// Codex CLI uses different tool names than Claude Code:
+//   Edit/Write → apply_patch, Bash → exec_command
+const CODEX_MATCHER_MAP = {
+  "Edit|Write": "apply_patch",
+  "Bash": "exec_command",
+};
+
 function parseArgs(argv) {
   const args = { check: false, write: false, user: false };
   for (const arg of argv) {
@@ -68,9 +75,15 @@ function transformCommand(command, pluginName, useAbsPath) {
   );
 }
 
+function transformMatcher(matcher, forCodex) {
+  if (!forCodex) return matcher;
+  return CODEX_MATCHER_MAP[matcher] ?? matcher;
+}
+
 function transformHookEntry(entry, pluginName, useAbsPath) {
   return {
     ...entry,
+    matcher: transformMatcher(entry.matcher, useAbsPath),
     hooks: entry.hooks.map((hook) => ({
       ...hook,
       command: hook.command ? transformCommand(hook.command, pluginName, useAbsPath) : hook.command,

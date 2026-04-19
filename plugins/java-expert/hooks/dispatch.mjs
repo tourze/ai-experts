@@ -249,6 +249,22 @@ async function readPayload() {
 
 const payload = await readPayload();
 
+// ── Codex payload 标准化 ──────────────────────────────
+// Codex CLI 的工具名和 payload 结构与 Claude Code 不同：
+//   apply_patch: tool_input 是 patch 字符串，需提取 file_path
+//   exec_command: tool_input.cmd 而非 tool_input.command
+// 此处标准化为 Claude Code 格式，使下游 hooks 无需区分。
+if (typeof payload?.tool_input === "string" && /\*\*\* Update File:/.test(payload.tool_input)) {
+  const match = payload.tool_input.match(/\*\*\* Update File:\s*(.+)/);
+  if (match) {
+    const patchText = payload.tool_input;
+    payload.tool_input = { file_path: match[1].trim() };
+    payload._codex_patch = patchText;
+  }
+} else if (payload?.tool_input && typeof payload.tool_input.cmd === "string" && !payload.tool_input.command) {
+  payload.tool_input.command = payload.tool_input.cmd;
+}
+
 // 发现并加载 hook 模块（跳过 _ 前缀的工具模块）
 const files = readdirSync(dir)
   .filter((f) => f.endsWith(".mjs") && !f.startsWith("_"))
