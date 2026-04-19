@@ -19,6 +19,12 @@
 | `laravel-tdd` | Pest/PHPUnit 测试驱动开发、HTTP/队列/Sanctum 测试模式 |
 | `laravel-verification` | 格式化、静态分析、测试、迁移与发布前验证流水线 |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `laravel-reviewer` | review Laravel application architecture, Eloquent usage, FormRequest validation, Policy/Gate authorization, migration safety, and queue design without modifying any files |
+
 ## 验证命令
 
 在仓库根目录执行：

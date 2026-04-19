@@ -16,7 +16,7 @@ description: "当需要用 GDB 调试运行中的进程而不阻塞 agent 时使
 - SIGINT 后至少等 1 秒再发下一条命令（否则命令被丢弃）。
 - 停止时先 kill 进程再删 pipe（顺序反了会产生孤儿进程）。
 
-## 工作原理
+## 代码模式
 
 ```
 Agent ──写命令──→ gdb_cmd_pipe (FIFO) ──→ GDB stdin
@@ -85,6 +85,13 @@ rm -f gdb_cmd_pipe .gdb_pid trace.log
 - **合并 tool call**：interrupt + query + resume 放在一个 Bash 调用中。
 - **sleep + tail 合并**：`sleep 2 && tail -n 50 trace.log` 一次调用。
 - 设置条件 trace 时先 inspect 当前值，避免条件值已过（单调递增的 counter）。
+
+## 检查清单
+- [ ] 目标环境是 Linux，且可用 `gdb` 或 `gdb-multiarch`。
+- [ ] FIFO、GDB pid 文件和 trace 日志路径不会覆盖已有工作文件。
+- [ ] trace 使用 `dprintf`，不使用会暂停进程的普通 `break`。
+- [ ] SIGINT 后等待至少 1 秒再发送 `delete`、`dprintf` 或 `continue`。
+- [ ] 停止会话时先终止后台进程，再删除 FIFO 和日志文件。
 
 ## 反模式
 

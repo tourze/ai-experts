@@ -22,6 +22,12 @@
 | `social-platform-safety` | 过滤诱导式内容、垃圾信息与提示词污染 |
 | `personal-branding-advanced` | 设计个人品牌定位、表达与内容资产体系 |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `social-growth-planner` | design comprehensive social media growth strategies that combine personal branding, content planning, audience engagement, and monetization |
+
 ## 安装
 
 ```bash

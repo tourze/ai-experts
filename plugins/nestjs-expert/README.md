@@ -15,6 +15,12 @@ NestJS 框架专家插件，覆盖模块/控制器/服务/DTO/Guard/拦截器配
 |-------|------|
 | `nestjs-layering-patterns` | NestJS 模块分层：module/controller/service + DTO/ValidationPipe + DI |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `nestjs-reviewer` | review NestJS module architecture, dependency injection design, DTO validation, guard/interceptor patterns, and TypeORM/Prisma usage without modifying any files |
+
 ## 安装
 
 ```bash

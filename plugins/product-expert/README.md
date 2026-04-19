@@ -59,6 +59,14 @@
 | `business-health-diagnostic` | 业务健康度诊断记分卡 |
 | `channel-economics` | 获客渠道经济性分析 |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `delivery-planner` | Compound delivery planning agent that preloads 9 requirements and execution frameworks for end-to-end product delivery planning |
+| `product-strategist` | Compound product strategy agent that preloads 8 competitive and positioning frameworks for multi-angle market analysis |
+| `startup-advisor` | Compound startup evaluation agent that preloads 10 business and fundraising frameworks for end-to-end startup assessment |
+
 ## 安装
 
 ```bash

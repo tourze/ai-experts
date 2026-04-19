@@ -15,6 +15,12 @@ Vue 框架专家插件，聚焦 Vue 3 JavaScript 项目：`<script setup>`、Com
 |-------|------|
 | `vue-expert-js` | Vue 3 JavaScript 组件、vanilla JS composables、JSDoc 类型标注、Vite 配置 |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `vue-reviewer` | review Vue 3 Composition API usage, reactive patterns, component design, Pinia store architecture, Vue Router configuration, and template optimization without modifying any files |
+
 ## 安装
 
 ```bash

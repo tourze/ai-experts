@@ -16,6 +16,12 @@ Ruby 开发专家插件，覆盖 Ruby / Rails / RSpec / Bundler / Rake 工作流
 | `rails-service-patterns` | Rails service/command object、Active Record 查询与事务、bundle exec 工作流 |
 | `rspec-testing` | RSpec service spec、request spec、时间控制与依赖隔离 |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `ruby-reviewer` | perform a Ruby-specific code review |
+
 ## Hooks
 
 | 事件 | Hook | 作用 |

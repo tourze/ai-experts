@@ -28,6 +28,12 @@ Linux 系统专家插件，覆盖 Shell 守卫、发行版问题排查、磁盘/
 - `zsh`：`syntax-zsh.mjs` 的语法检查依赖。
 - `shellcheck`：`lint-shellcheck.mjs` 可选依赖；未安装时自动降级为仅检查 `set -euo pipefail`。
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `system-diagnostician` | perform read-only system health checks on Linux hosts |
+
 ## Hooks
 
 | 事件 | Hook | 作用 |

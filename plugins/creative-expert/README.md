@@ -22,6 +22,12 @@
 | `screenshot` | 桌面/系统截图 |
 | `ui-style-catalog` | UI 风格目录、CSS 特征与适用场景速查 |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `visual-producer` | produce visual assets by combining multiple creative skills — from concept design through image/video generation to compression and delivery |
+
 ## 验证命令
 
 在插件目录执行：

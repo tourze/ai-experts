@@ -15,6 +15,12 @@ Next.js 框架专家插件，覆盖 App Router、Server Components、Server Acti
 |-------|------|
 | `nextjs-developer` | Next.js 14+ App Router / Server Components / Server Actions |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `nextjs-reviewer` | review Next.js App Router patterns, React Server Component boundaries, data fetching strategies, middleware design, caching, and ISR/SSR configuration without modifying any files |
+
 ## 安装
 
 ```bash

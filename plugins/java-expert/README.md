@@ -13,6 +13,12 @@ Java 开发专家插件，覆盖 Java 21 / Spring Boot 3.x 开发规范、JUnit 
 | `graalvm-native-image` | GraalVM Native Image 构建指南 |
 | `gradle-build-performance` | Android/Gradle 构建性能调试与优化 |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `java-reviewer` | perform a Java-specific code review |
+
 ## Hooks
 
 | 事件 | Hook | 作用 |

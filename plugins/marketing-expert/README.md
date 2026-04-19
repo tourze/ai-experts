@@ -40,6 +40,13 @@
 | `site-architecture` | 网站信息架构与导航规划 |
 | `topic-cluster` | 主题聚类策略（pillar + supporting articles + 内链拓扑） |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `content-producer` | create, optimize, and polish marketing content — from strategy through finished copy |
+| `growth-strategist` | build end-to-end growth strategies that combine acquisition channels, SEO, content planning, conversion optimization, and analytics into a unified growth plan |
+
 ## 安装
 
 ```bash

@@ -36,6 +36,19 @@ function extractRelativeLinks(markdown) {
     .filter((href) => !href.startsWith("#") && !/^[a-z]+:/i.test(href));
 }
 
+function getSectionBody(markdown, title) {
+  const heading = `## ${title}`;
+  const start = markdown.indexOf(heading);
+  assert.notEqual(start, -1, `${readmePath} 缺少 ${heading}`);
+
+  const bodyStart = start + heading.length;
+  const nextHeadingOffset = markdown.slice(bodyStart).search(/\n##\s+/);
+  if (nextHeadingOffset < 0) {
+    return markdown.slice(bodyStart);
+  }
+  return markdown.slice(bodyStart, bodyStart + nextHeadingOffset);
+}
+
 function extractCodeBlocks(markdown, language) {
   return [...markdown.matchAll(new RegExp(`\\\`\\\`\\\`${language}\\n([\\s\\S]*?)\\\`\\\`\\\``, "g"))]
     .map((match) => match[1]);
@@ -44,7 +57,7 @@ function extractCodeBlocks(markdown, language) {
 test("README 技能列表与实际 skill 目录一致", () => {
   const expected = getSkillDirs();
   const readme = readFileSync(readmePath, "utf-8");
-  const listed = readme
+  const listed = getSectionBody(readme, "Skills")
     .split("\n")
     .filter((line) => line.startsWith("| `"))
     .map((line) => line.match(/\| `([^`]+)` \|/)?.[1])

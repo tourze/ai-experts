@@ -23,6 +23,12 @@
 | `what-if-oracle` | 多分支 What-If 情景推演 |
 | `scientific-brainstorming` | 科学研究创意与探索 |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `strategic-thinker` | deep multi-perspective strategic thinking — combining first principles, inversion, scenario analysis, cross-industry analogies, and adversarial questioning to produce rigorous analysis on complex decisions |
+
 ## 校验
 
 ```bash

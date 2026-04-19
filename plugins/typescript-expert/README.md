@@ -17,6 +17,12 @@ TypeScript 开发专家插件，提供显式 manifest 注册、`PostToolUse Edit
 | `typescript-magician` | 复杂泛型设计、`any` 清理、类型守卫、编译错误定位与规则索引 |
 | `offensive-typesafety` | 把路由、输入、DTO 与数据库边界升级为编译器可验证合同 |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `typescript-reviewer` | perform a TypeScript-specific code review |
+
 ## Hooks
 
 | 事件 | Hook | 作用 |

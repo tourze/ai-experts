@@ -16,6 +16,12 @@ PostgreSQL 专家插件，覆盖模式设计、索引策略、声明式分区、
 | `pgsql-row-level-security` | RLS 策略、多租户隔离与角色管理 |
 | `pgsql-schema-design` | 表结构、原生类型、约束与命名规范 |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `pgsql-reviewer` | review PostgreSQL schema design, index types, RLS policies, partitioning strategies, and JSONB patterns |
+
 ## 安装
 
 ```bash

@@ -31,6 +31,12 @@
 | `proposal-review` | 提案方法论评审 |
 | `proposal-writer` | 商业提案撰写 |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `doc-reviewer` | review documentation for completeness, accuracy, structure, readability, and consistency |
+
 ## Hooks
 
 - `UserPromptSubmit`：当用户请求架构、链路、迁移、阶段计划、风险拆解或方案对比时，注入纯文本可视化与结构化表达规则，并主动引导使用 `pretty-mermaid` 产出成品图。

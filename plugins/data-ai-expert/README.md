@@ -28,6 +28,12 @@
 | `statistical-analysis` | 描述统计、异常检测、假设检验与解释边界 |
 | `vector-index-tuning` | HNSW/量化/召回-延迟-内存权衡调优 |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `data-analyst` | explore datasets, perform statistical analysis, generate visualizations, and evaluate model performance |
+
 ## 安装
 
 ```bash

@@ -16,6 +16,12 @@ Perl 开发专家插件，覆盖现代 Perl 5.36+ 开发、Test2 测试工作流
 | `perl-modern-style` | Perl 5.36+ 约定：use v5.36、Moo/Moose、DBI 占位符、carton 依赖、错误处理 |
 | `perl-testing` | Test2::V0 单元测试、prove 工作流、DBI mock 与外部依赖隔离 |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `perl-reviewer` | perform a Perl-specific code review |
+
 ## Hooks
 
 | 事件 | Hook | 作用 |

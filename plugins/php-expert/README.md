@@ -21,6 +21,12 @@ PHP 开发专家插件，覆盖 PHP 代码质量守卫、Composer/PHPStan/PHPUni
 | `php-doc` | PHPDoc 取舍、数组泛型、异常文档与注释收敛 |
 | `php-testing` | PHPUnit/Pest 测试结构、属性、数据提供者、Mock 与配置 |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `php-reviewer` | perform a PHP-specific code review |
+
 ## Hooks
 
 | 事件 | Hook | 作用 |
