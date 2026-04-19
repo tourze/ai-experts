@@ -1,23 +1,25 @@
 #!/usr/bin/env node
 // generate-codex-hooks.mjs
 //
-// Aggregate per-plugin hooks into a single project-level .codex/hooks.json
-// for Codex CLI compatibility (Codex does not support plugin-bundled hooks).
+// Aggregate per-plugin hooks into a single hooks.json for Codex CLI
+// compatibility (Codex does not load hooks from plugin directories).
 //
-// Transforms:
-//   - ${CLAUDE_PLUGIN_ROOT} -> ./plugins/<name>/hooks (relative path)
-//   - Notification event -> PermissionRequest (Codex equivalent)
-//   - All other event names stay the same
+// Two modes:
+//   Project-level (default): .codex/hooks.json with relative paths
+//   User-level (--user):     ~/.codex/hooks.json with absolute paths
 //
-// Usage: node scripts/generate-codex-hooks.mjs --write | --check
+// Usage:
+//   node scripts/generate-codex-hooks.mjs --write          # project-level
+//   node scripts/generate-codex-hooks.mjs --write --user   # user-level
+//   node scripts/generate-codex-hooks.mjs --check          # CI check
 
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { homedir } from "node:os";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const repoRoot = resolve(".");
-const outputPath = resolve(repoRoot, ".codex", "hooks.json");
 
 const EVENT_MAP = {
   SessionStart: "SessionStart",
@@ -30,10 +32,11 @@ const EVENT_MAP = {
 };
 
 function parseArgs(argv) {
-  const args = { check: false, write: false };
+  const args = { check: false, write: false, user: false };
   for (const arg of argv) {
     if (arg === "--check") args.check = true;
     else if (arg === "--write") args.write = true;
+    else if (arg === "--user") args.user = true;
     else throw new Error(`Unknown argument: ${arg}`);
   }
   if (args.check === args.write) {
@@ -57,24 +60,25 @@ function listPluginHookFiles() {
     .sort((a, b) => a.pluginName.localeCompare(b.pluginName));
 }
 
-function transformCommand(command, pluginName) {
+function transformCommand(command, pluginName, useAbsPath) {
+  const prefix = useAbsPath ? `${repoRoot}/plugins/${pluginName}` : `./plugins/${pluginName}`;
   return command.replace(
     /\$\{CLAUDE_PLUGIN_ROOT\}/g,
-    `./plugins/${pluginName}`,
+    prefix,
   );
 }
 
-function transformHookEntry(entry, pluginName) {
+function transformHookEntry(entry, pluginName, useAbsPath) {
   return {
     ...entry,
     hooks: entry.hooks.map((hook) => ({
       ...hook,
-      command: hook.command ? transformCommand(hook.command, pluginName) : hook.command,
+      command: hook.command ? transformCommand(hook.command, pluginName, useAbsPath) : hook.command,
     })),
   };
 }
 
-function buildAggregatedHooks() {
+function buildAggregatedHooks(useAbsPath = false) {
   const pluginHookFiles = listPluginHookFiles();
   const merged = {};
 
@@ -89,7 +93,7 @@ function buildAggregatedHooks() {
       if (!merged[codexEvent]) merged[codexEvent] = [];
 
       for (const entry of entries) {
-        merged[codexEvent].push(transformHookEntry(entry, pluginName));
+        merged[codexEvent].push(transformHookEntry(entry, pluginName, useAbsPath));
       }
     }
   }
@@ -98,7 +102,11 @@ function buildAggregatedHooks() {
 }
 
 function run(args) {
-  const expected = `${JSON.stringify(buildAggregatedHooks(), null, 2)}\n`;
+  const outputPath = args.user
+    ? resolve(homedir(), ".codex", "hooks.json")
+    : resolve(repoRoot, ".codex", "hooks.json");
+
+  const expected = `${JSON.stringify(buildAggregatedHooks(args.user), null, 2)}\n`;
   const actual = existsSync(outputPath) ? readFileSync(outputPath, "utf-8") : null;
 
   if (actual === expected) {
@@ -115,7 +123,7 @@ function run(args) {
   const dir = resolve(outputPath, "..");
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
   writeFileSync(outputPath, expected);
-  console.log(`updated ${outputPath.replace(`${repoRoot}/`, "")}`);
+  console.log(`updated ${outputPath}`);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

@@ -93,6 +93,9 @@ codex_install() {
   info "Codex CLI: enabling codex_hooks feature flag..."
   codex features enable codex_hooks 2>/dev/null || true
 
+  info "Codex CLI: generating user-level hooks.json..."
+  node "$REPO_ROOT/scripts/generate-codex-hooks.mjs" --write --user
+
   info "Codex CLI: registering marketplace..."
   codex marketplace add "$REPO_ROOT" 2>/dev/null || true
 
@@ -111,6 +114,9 @@ codex_install() {
 }
 
 codex_uninstall() {
+  info "Codex CLI: removing user-level hooks.json..."
+  rm -f "${CODEX_HOME:-$HOME/.codex}/hooks.json"
+
   info "Codex CLI: removing marketplace..."
   codex marketplace add "$REPO_ROOT" 2>/dev/null  # ensure it exists before removing
   # codex has no marketplace remove command via CLI in some versions, try both
