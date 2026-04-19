@@ -110,59 +110,14 @@ git diff -- <file>
 
 ### 提交命令格式
 
-单行提交：
 ```bash
+# 单行
 git commit -m "feat(auth): add OAuth2 login support for GitHub provider"
+# 多段（多个 -m）
+git commit -m "fix(parser): handle unclosed brackets" -m "详细说明" -m "Closes #142"
 ```
 
-带补充说明的提交（使用多个 `-m`）：
-```bash
-git commit -m "fix(parser): handle unclosed brackets in nested expressions" -m "The parser was silently dropping unclosed brackets, causing downstream type errors. Added bracket-balancing check before AST construction." -m "Closes #142"
-```
-
-**禁止使用 heredoc**（会被 git-commit-heredoc-guard 拦截）：
-```bash
-# 错误写法，不要使用
-git commit -m "$(cat <<'EOF'
-message
-EOF
-)"
-```
-
-### 提交信息撰写决策树
-
-1. 是全新能力？ → `feat`
-2. 是修复已有 bug？ → `fix`
-3. 行为不变，结构改善？ → `refactor`
-4. 只改了性能？ → `perf`
-5. 只改了测试？ → `test`
-6. 只改了文档？ → `docs`
-7. 只改了构建/CI？ → `build` 或 `ci`
-8. 以上都不是 → `chore`
-
-### 高质量提交信息示例
-
-```
-feat(git-expert): add commit workflow skill with staged-diff review
-
-Guides the user through a structured commit flow: status check,
-precise staging, diff review, and conventional commit message.
-Designed to pass all PreToolUse guards automatically.
-```
-
-```
-fix(hooks): prevent false positive in commit-scope-guard for single-package changes
-
-The guard was counting doc files toward dir-spread threshold,
-triggering warnings on single-module documentation updates.
-```
-
-```
-refactor(dispatch): extract shell argument parser into shared utility
-
-Consolidates duplicated arg-parsing logic from 4 guards into
-_shell-utils.mjs, reducing total LoC by ~120.
-```
+**禁止 heredoc**（会被守卫拦截）和 `git commit` 不带 `-m`。
 
 ---
 
@@ -188,6 +143,23 @@ git log --oneline -3
 | 业务 + 配置混合 | 同时存在 | 先配置后业务，分开提交 |
 
 如果确实是跨切面的合理变更（如全局 rename），可以忽略范围提醒，但需在提交信息中说明原因。
+
+---
+
+## 纪律守卫
+
+**Iron Law：没有审查 staged diff，不允许执行 commit。**
+
+### Red Flags — 出现以下念头时立即停下
+
+| 念头 | 现实 |
+|------|------|
+| "改动很小，不用看 diff" | 小改动也能混入调试代码、敏感信息。看。 |
+| "git add . 更方便" | 方便 = 不知道暂存了什么。逐文件添加。 |
+| "先提交再说，有问题 amend" | amend 不能撤回已推送的提交。一次做对。 |
+| "提交信息随便写个 fix" | "fix"不告诉任何人修了什么。6 个月后你自己也不知道。 |
+
+**执行前必须读取** [references/discipline-guard.md](./references/discipline-guard.md)——包含完整 Red Flags 表和 Rationalizations 对照表。
 
 ---
 
