@@ -166,16 +166,6 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ./plugins/react-native-expert/hooks/dispatch.mjs session-start",
-            "timeout": 10
-          }
-        ]
-      },
-      {
-        "matcher": ".*",
-        "hooks": [
-          {
-            "type": "command",
             "command": "node ./plugins/ruby-expert/hooks/dispatch.mjs session-start",
             "timeout": 10
           }

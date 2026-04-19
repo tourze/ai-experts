@@ -25,7 +25,16 @@ warn()  { printf '\033[1;33m[warn]\033[0m  %s\n' "$1"; }
 err()   { printf '\033[1;31m[error]\033[0m %s\n' "$1" >&2; }
 
 plugin_names() {
-  jq -r '.plugins[].name' "$1"
+  node -e '
+const { readFileSync } = require("node:fs");
+
+const manifest = JSON.parse(readFileSync(process.argv[1], "utf-8"));
+for (const plugin of manifest.plugins ?? []) {
+  if (typeof plugin.name === "string" && plugin.name.length > 0) {
+    console.log(plugin.name);
+  }
+}
+' "$1"
 }
 
 # ── Claude Code ──────────────────────────────────────────────
@@ -46,7 +55,28 @@ claude_install() {
 claude_uninstall() {
   info "Claude Code: uninstalling all plugins..."
   claude plugin list --json 2>/dev/null \
-    | jq -r ".[] | select(.id | endswith(\"@${MARKETPLACE_NAME}\")) | select(.scope == \"user\") | .id | split(\"@\")[0]" \
+    | node -e '
+const marketplaceName = process.argv[1];
+const suffix = `@${marketplaceName}`;
+let raw = "";
+
+process.stdin.setEncoding("utf-8");
+process.stdin.on("data", (chunk) => { raw += chunk; });
+process.stdin.on("end", () => {
+  let plugins;
+  try {
+    plugins = JSON.parse(raw || "[]");
+  } catch {
+    process.exit(0);
+  }
+
+  for (const plugin of Array.isArray(plugins) ? plugins : []) {
+    if (plugin?.scope !== "user") continue;
+    if (typeof plugin?.id !== "string" || !plugin.id.endsWith(suffix)) continue;
+    console.log(plugin.id.slice(0, -suffix.length));
+  }
+});
+' "$MARKETPLACE_NAME" \
     | while read -r name; do
         claude plugin uninstall "$name" 2>/dev/null || true
       done
