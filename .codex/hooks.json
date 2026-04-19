@@ -516,13 +516,25 @@
         ]
       }
     ],
-    "PermissionRequest": [
+    "Notification": [
       {
         "matcher": ".*",
         "hooks": [
           {
             "type": "command",
             "command": "node ./plugins/coding-expert/hooks/dispatch.mjs notification",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./plugins/coding-expert/hooks/dispatch.mjs pre-compact",
             "timeout": 10
           }
         ]

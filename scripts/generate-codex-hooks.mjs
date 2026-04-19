@@ -24,7 +24,8 @@ const EVENT_MAP = {
   PreToolUse: "PreToolUse",
   PostToolUse: "PostToolUse",
   UserPromptSubmit: "UserPromptSubmit",
-  Notification: "PermissionRequest",
+  Notification: "Notification",
+  PreCompact: "PreCompact",
   Stop: "Stop",
 };
 

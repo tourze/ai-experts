@@ -90,6 +90,9 @@ process.stdin.on("end", () => {
 # ── Codex CLI ────────────────────────────────────────────────
 
 codex_install() {
+  info "Codex CLI: enabling codex_hooks feature flag..."
+  codex features enable codex_hooks 2>/dev/null || true
+
   info "Codex CLI: registering marketplace..."
   codex marketplace add "$REPO_ROOT" 2>/dev/null || true
 
