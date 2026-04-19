@@ -18,6 +18,7 @@ import { run as runDangerousCommandGuard } from "../hooks/pre-tool-use/bash/dang
 import { run as runCatWriteGuard } from "../hooks/pre-tool-use/bash/cat-write-guard.mjs";
 import { run as runSedInplaceGuard } from "../hooks/pre-tool-use/bash/sed-inplace-guard.mjs";
 import { run as runErrorRetryGuard } from "../hooks/pre-tool-use/bash/error-retry-guard.mjs";
+import { run as runCompactionStrategy } from "../hooks/pre-compact/compaction-strategy.mjs";
 
 async function withTempDir(fn) {
   const dir = mkdtempSync(join(tmpdir(), "coding-expert-"));
@@ -742,4 +743,26 @@ test("error-retry-guard TN: 不同命令交替不应触发", async () => {
 
 test("error-retry-guard TN: 空命令不应触发", async () => {
   assert.equal(await runErrorRetryGuard(bashPayload("")), null);
+});
+
+// ════════════════════════════════════════════════════════════════
+//  compaction-strategy (PreCompact) — 正向 + 对抗测试
+// ════════════════════════════════════════════════════════════════
+
+test("compaction-strategy 会注入保留策略上下文", async () => {
+  const result = await runCompactionStrategy({});
+  assert.equal(result?.decision, "context");
+  assert.match(result?.reason ?? "", /压缩保留策略/);
+  assert.match(result?.reason ?? "", /必须保留/);
+  assert.match(result?.reason ?? "", /优先丢弃/);
+});
+
+test("compaction-strategy TN: 空 payload 也应正常返回（不崩溃）", async () => {
+  const result = await runCompactionStrategy(null);
+  assert.equal(result?.decision, "context");
+});
+
+test("compaction-strategy 返回内容包含压缩后自检指引", async () => {
+  const result = await runCompactionStrategy({});
+  assert.match(result?.reason ?? "", /压缩后自检/);
 });

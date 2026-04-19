@@ -58,6 +58,18 @@
         ]
       }
     ],
+    "PreCompact": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.mjs pre-compact",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
     "UserPromptSubmit": [
       {
         "matcher": ".*",
