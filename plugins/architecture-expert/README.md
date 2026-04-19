@@ -43,6 +43,9 @@
 | `tech-debt` | 盘点代码健康状况并排序技术债 |
 | `waterfall-elimination` | 消除请求瀑布流并行化数据获取与 Suspense 边界 |
 | `persistent-planning` | 在多轮、跨 session 的复杂任务中，把计划、发现和进度持久化到仓库文件而不是 TodoWrite 时使用。 |
+| `agent-tool-design` | 设计 AI Agent 工具接口：安全元数据、双描述、延迟加载、结果预算与 token 经济 |
+| `agent-permission-safety` | 设计 Agent 权限系统：三阶段管道、信任谱系、fail-closed、规则+AI 分类 |
+| `agent-orchestration` | 多 Agent 编排：system prompt 架构、fork/fresh 决策、状态管理、扩展点 |
 
 ## 安装
 
