@@ -10,7 +10,9 @@
     "design-patterns",
     "ddia",
     "refactoring",
-    "system-design"
+    "system-design",
+    "brainstorming",
+    "design-first"
   ],
   "skills": "./skills/",
   "interface": {

@@ -75,15 +75,14 @@ function transformCommand(command, pluginName, useAbsPath) {
   );
 }
 
-function transformMatcher(matcher, forCodex) {
-  if (!forCodex) return matcher;
+function transformMatcher(matcher) {
   return CODEX_MATCHER_MAP[matcher] ?? matcher;
 }
 
 function transformHookEntry(entry, pluginName, useAbsPath) {
   return {
     ...entry,
-    matcher: transformMatcher(entry.matcher, useAbsPath),
+    matcher: transformMatcher(entry.matcher),
     hooks: entry.hooks.map((hook) => ({
       ...hook,
       command: hook.command ? transformCommand(hook.command, pluginName, useAbsPath) : hook.command,
@@ -147,3 +146,5 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     process.exitCode = 1;
   }
 }
+
+export { buildAggregatedHooks };

@@ -14,7 +14,11 @@
     "code-review",
     "debug",
     "refactoring",
-    "complexity"
+    "complexity",
+    "verification",
+    "subagent",
+    "workflow",
+    "code-review-reception"
   ],
   "skills": "./skills/",
   "interface": {

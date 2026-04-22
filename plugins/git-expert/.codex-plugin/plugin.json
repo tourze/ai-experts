@@ -10,7 +10,10 @@
     "github",
     "conventional-commits",
     "branching",
-    "rebase"
+    "rebase",
+    "finishing-branch",
+    "merge",
+    "worktree"
   ],
   "skills": "./skills/",
   "interface": {
