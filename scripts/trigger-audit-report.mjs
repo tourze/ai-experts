@@ -137,30 +137,16 @@ function telemetrySources(args) {
   }
 
   if (args.allWorkspaces) {
-    const files = allWorkspaceTelemetryFiles();
-    const legacyFile = join(TELEMETRY_ROOT, "decisions.jsonl");
-    if (existsSync(legacyFile)) {
-      files.push(legacyFile);
-    }
     return {
-      description: `${join(TELEMETRY_ROOT, "workspaces", "*/decisions.jsonl*")} (+ legacy if present)`,
-      files,
+      description: `${join(TELEMETRY_ROOT, "workspaces", "*/decisions.jsonl*")}`,
+      files: allWorkspaceTelemetryFiles(),
     };
   }
 
   const dir = workspaceBucketDir(args.workspace);
-  const files = telemetryFilesInDir(dir);
-  const legacyFile = join(TELEMETRY_ROOT, "decisions.jsonl");
-  if (files.length === 0 && existsSync(legacyFile)) {
-    return {
-      description: `${dir}/decisions.jsonl* (fallback legacy: ${legacyFile})`,
-      files: [legacyFile],
-    };
-  }
-
   return {
     description: `${dir}/decisions.jsonl*`,
-    files,
+    files: telemetryFilesInDir(dir),
   };
 }
 
@@ -596,7 +582,6 @@ function readRuntimeTelemetry(sources, days, pluginNames, top, session) {
 
   const cutoff = Date.now() - days * 86400000;
   const wantedPlugins = new Set(pluginNames);
-  const includeLegacyUnknownPlugin = pluginNames.length > 1;
   const entries = sources.files
     .flatMap((filePath) =>
       readFileSync(filePath, "utf-8")
@@ -619,7 +604,7 @@ function readRuntimeTelemetry(sources, days, pluginNames, top, session) {
       if (skillAuditMentionsWantedPlugin(entry, wantedPlugins)) {
         return true;
       }
-      return !entry.plugin && includeLegacyUnknownPlugin;
+      return false;
     });
   const sessionFiltered = applySessionFilter(entries, session);
 

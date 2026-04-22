@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
-import { mkdtempSync, readdirSync, rmSync } from "node:fs";
+import { mkdtempSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import test from "node:test";
@@ -69,6 +69,73 @@ test("hook telemetry 按工作区分桶并执行大小滚动", () => {
       .filter((name) => name.startsWith("decisions.jsonl"));
     assert.ok(files.includes("decisions.jsonl"), "应保留当前 decisions.jsonl");
     assert.ok(files.length <= 2, "滚动后单桶日志文件数量应受上限约束");
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+});
+
+test("trigger 审计报告忽略 legacy 根文件遥测", () => {
+  const tempDir = mkdtempSync(join(tmpdir(), "ai-experts-legacy-telemetry-"));
+  writeFileSync(
+    join(tempDir, "decisions.jsonl"),
+    `${JSON.stringify({
+      ts: Date.now(),
+      plugin: "coding-expert",
+      hook: "legacy-hook",
+      decision: "report",
+    })}\n`,
+    "utf-8",
+  );
+
+  try {
+    const output = execFileSync(process.execPath, [
+      "scripts/trigger-audit-report.mjs",
+      "--json",
+      "--days",
+      "365",
+    ], {
+      encoding: "utf-8",
+      stdio: "pipe",
+      env: {
+        ...process.env,
+        AI_EXPERTS_HOOK_TELEMETRY_DIR: tempDir,
+      },
+    });
+    const report = JSON.parse(output);
+    assert.equal(report.runtime.exists, false, "应忽略 legacy 根文件并返回无可用遥测");
+    assert.equal(report.runtime.entries, 0);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+});
+
+test("hook telemetry 报告忽略 legacy 根文件遥测", () => {
+  const tempDir = mkdtempSync(join(tmpdir(), "ai-experts-legacy-telemetry-"));
+  writeFileSync(
+    join(tempDir, "decisions.jsonl"),
+    `${JSON.stringify({
+      ts: Date.now(),
+      plugin: "coding-expert",
+      hook: "legacy-hook",
+      decision: "report",
+    })}\n`,
+    "utf-8",
+  );
+
+  try {
+    const output = execFileSync(process.execPath, [
+      "scripts/hook-telemetry-report.mjs",
+      "--days",
+      "365",
+    ], {
+      encoding: "utf-8",
+      stdio: "pipe",
+      env: {
+        ...process.env,
+        AI_EXPERTS_HOOK_TELEMETRY_DIR: tempDir,
+      },
+    });
+    assert.match(output, /暂无遥测数据/);
   } finally {
     rmSync(tempDir, { recursive: true, force: true });
   }

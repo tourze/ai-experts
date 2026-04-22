@@ -125,30 +125,16 @@ function telemetrySources(args) {
   }
 
   if (args.allWorkspaces) {
-    const files = allWorkspaceTelemetryFiles();
-    const legacyFile = join(TELEMETRY_ROOT, "decisions.jsonl");
-    if (existsSync(legacyFile)) {
-      files.push(legacyFile);
-    }
     return {
-      description: `${join(TELEMETRY_ROOT, "workspaces", "*/decisions.jsonl*")} (+ legacy if present)`,
-      files,
+      description: `${join(TELEMETRY_ROOT, "workspaces", "*/decisions.jsonl*")}`,
+      files: allWorkspaceTelemetryFiles(),
     };
   }
 
   const dir = workspaceBucketDir(args.workspace);
-  const files = telemetryFilesInDir(dir);
-  const legacyFile = join(TELEMETRY_ROOT, "decisions.jsonl");
-  if (files.length === 0 && existsSync(legacyFile)) {
-    return {
-      description: `${dir}/decisions.jsonl* (fallback legacy: ${legacyFile})`,
-      files: [legacyFile],
-    };
-  }
-
   return {
     description: `${dir}/decisions.jsonl*`,
-    files,
+    files: telemetryFilesInDir(dir),
   };
 }
 
