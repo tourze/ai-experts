@@ -44,36 +44,7 @@ $entityManager->flush();
 $entityManager->clear();
 ```
 
-```php
-<?php
-
-final class BulkStatusUpdater
-{
-    public function __construct(
-        private readonly \Doctrine\DBAL\Connection $connection,
-    ) {}
-
-    public function archiveExpired(): int
-    {
-        return $this->connection->executeStatement(
-            'UPDATE orders SET status = :archived WHERE expires_at < NOW() AND status = :active',
-            ['archived' => 'archived', 'active' => 'active'],
-        );
-    }
-}
-```
-
-```php
-<?php
-
-final class Version20260414000000 extends \Doctrine\Migrations\AbstractMigration
-{
-    public function up(\Doctrine\DBAL\Schema\Schema $schema): void
-    {
-        $this->addSql('CREATE INDEX idx_orders_status_created_at ON orders (status, created_at)');
-    }
-}
-```
+DBAL 批量更新、Migration 模式的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。
 
 ## 检查清单
 
@@ -111,49 +82,4 @@ $em->flush();
 $em->clear();
 ```
 
-### FAIL: ORM 做大批量 UPDATE
-
-```php
-foreach ($em->getRepository(Order::class)->findExpired() as $order) {
-    $order->setStatus('archived');  // 100 万次 SELECT + 100 万次 UPDATE
-}
-$em->flush();
-```
-
-### PASS: DBAL 一条 SQL
-
-```php
-$rows = $conn->executeStatement(
-    'UPDATE orders SET status = :archived
-     WHERE expires_at < NOW() AND status = :active',
-    ['archived' => 'archived', 'active' => 'active']
-);
-// 一条 SQL，毫秒级完成
-```
-
-### FAIL: 改旧 migration
-
-```php
-// 已经在所有环境跑过的 migration
-final class Version20260101 extends AbstractMigration {
-    public function up(Schema $s): void {
-        $this->addSql('CREATE TABLE users (...)');
-        // ↓ 后来直接加进去 ↓
-        $this->addSql('ALTER TABLE users ADD COLUMN locale VARCHAR(10)');
-    }
-}
-// 新环境一次跑成功，老环境少了 ALTER → 数据库分叉
-```
-
-### PASS: 新建 migration
-
-```php
-final class Version20260415_AddUserLocale extends AbstractMigration {
-    public function up(Schema $s): void {
-        $this->addSql('ALTER TABLE users ADD COLUMN locale VARCHAR(10) NOT NULL DEFAULT \'en\'');
-    }
-    public function down(Schema $s): void {
-        $this->addSql('ALTER TABLE users DROP COLUMN locale');
-    }
-}
-```
+ORM 大批量 UPDATE、改旧 migration 等反模式的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。

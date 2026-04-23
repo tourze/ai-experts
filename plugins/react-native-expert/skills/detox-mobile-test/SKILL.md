@@ -22,38 +22,7 @@ description: 当用户要为 React Native 应用编写或排查 Detox E2E 测试
 
 ## 代码模式
 
-```json
-{
-  "testRunner": {
-    "args": {
-      "$0": "jest",
-      "config": "e2e/jest.config.js"
-    },
-    "jest": {
-      "setupTimeout": 120000
-    }
-  },
-  "devices": {
-    "simulator": {
-      "type": "ios.simulator",
-      "device": { "type": "iPhone 15" }
-    }
-  },
-  "apps": {
-    "ios.debug": {
-      "type": "ios.app",
-      "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/MyApp.app",
-      "build": "xcodebuild -workspace ios/MyApp.xcworkspace -scheme MyApp -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build"
-    }
-  },
-  "configurations": {
-    "ios.sim.debug": {
-      "device": "simulator",
-      "app": "ios.debug"
-    }
-  }
-}
-```
+`.detoxrc` 配置和 Jest 配置的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。
 
 ```javascript
 // e2e/login.test.js
@@ -72,20 +41,6 @@ describe("Login Flow", () => {
       .withTimeout(10000);
   });
 });
-```
-
-```javascript
-// e2e/jest.config.js
-module.exports = {
-  rootDir: "..",
-  testMatch: ["<rootDir>/e2e/**/*.test.js"],
-  maxWorkers: 1,
-  testTimeout: 120000,
-  globalSetup: "detox/runners/jest/globalSetup",
-  globalTeardown: "detox/runners/jest/globalTeardown",
-  reporters: ["detox/runners/jest/reporter"],
-  testEnvironment: "detox/runners/jest/testEnvironment",
-};
 ```
 
 ## 检查清单

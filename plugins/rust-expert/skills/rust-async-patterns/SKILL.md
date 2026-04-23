@@ -89,48 +89,7 @@ async fn worker(mut rx: mpsc::Receiver<u32>, stop: CancellationToken) -> Vec<u32
 }
 ```
 
-### 3. 在必须抽象的边界上使用 async trait
-
-依赖：`async-trait = "0.1"`
-
-```rust
-use async_trait::async_trait;
-
-#[derive(Debug)]
-struct RepoError;
-
-#[async_trait]
-trait JobRepo {
-    async fn load(&self, id: u64) -> Result<String, RepoError>;
-}
-
-struct MemoryRepo;
-
-#[async_trait]
-impl JobRepo for MemoryRepo {
-    async fn load(&self, id: u64) -> Result<String, RepoError> { Ok(format!("job-{id}")) }
-}
-
-async fn load_job<R: JobRepo + Sync>(repo: &R, id: u64) -> Result<String, RepoError> {
-    repo.load(id).await
-}
-```
-
-### 4. 把超时放在外层边界，而不是散落在内部实现里
-
-依赖：`tokio = { version = "1", features = ["time"] }`
-
-```rust
-use tokio::time::{sleep, timeout, Duration};
-
-#[derive(Debug)] enum JobError { Timeout }
-
-async fn slow_job() -> u64 { sleep(Duration::from_millis(50)).await; 42 }
-
-async fn run_with_timeout() -> Result<u64, JobError> {
-    timeout(Duration::from_millis(20), slow_job()).await.map_err(|_| JobError::Timeout)
-}
-```
+async trait 与超时边界的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。
 
 ## 检查清单
 
@@ -164,22 +123,4 @@ async fn process(path: &Path) -> io::Result<String> {
 let result = tokio::task::spawn_blocking(|| heavy_compute()).await?;
 ```
 
-### FAIL: MutexGuard 跨 await
-
-```rust
-let mut guard = shared.lock().unwrap();
-guard.value += 1;
-fetch_from_network().await;  // 锁持有期间 await，可能死锁
-guard.apply();
-```
-
-### PASS: 缩小临界区
-
-```rust
-{
-    let mut guard = shared.lock().unwrap();
-    guard.value += 1;
-} // 锁在 await 前释放
-let data = fetch_from_network().await;
-shared.lock().unwrap().apply(data);
-```
+MutexGuard 跨 await 的反模式与修正见 [references/advanced-patterns.md](references/advanced-patterns.md)。

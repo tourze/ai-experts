@@ -67,47 +67,7 @@ export function Counter({ initial = 0 }: { initial?: number }) {
 }
 ```
 
-```tsx
-import { useEffect, useState } from "react";
-
-export function useLocalStorageState<T>(key: string, initialValue: T) {
-  const [value, setValue] = useState<T>(() => {
-    if (typeof window === "undefined") {
-      return initialValue;
-    }
-
-    try {
-      const raw = window.localStorage.getItem(key);
-      return raw == null ? initialValue : (JSON.parse(raw) as T);
-    } catch {
-      return initialValue;
-    }
-  });
-
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    window.localStorage.setItem(key, JSON.stringify(value));
-  }, [key, value]);
-
-  return [value, setValue] as const;
-}
-```
-
-```tsx
-import { useMemo } from "react";
-
-export function PriceSummary({ items }: { items: { price: number }[] }) {
-  const total = useMemo(
-    () => items.reduce((sum, item) => sum + item.price, 0),
-    [items],
-  );
-
-  return <strong>{total}</strong>;
-}
-```
+自定义 Hook 与 useMemo 派生值的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。
 
 ## 检查清单
 

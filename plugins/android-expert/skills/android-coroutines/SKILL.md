@@ -110,77 +110,14 @@ fun locationUpdates(): Flow<Location> = callbackFlow {
 }
 ```
 
-## 代码模式
+代码模式与反模式详解的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。
 
-### Repository + Flow
+## 反模式速查
 
-```kotlin
-class NewsRepository(
-    private val remote: NewsRemoteDataSource,
-    private val io: CoroutineDispatcher = Dispatchers.IO
-) {
-    val newsUpdates: Flow<List<News>> = flow { emit(remote.fetchLatestNews()) }.flowOn(io)
-}
-```
-
-### 并行执行
-
-```kotlin
-suspend fun loadDashboardData() = coroutineScope {
-    val user = async { userRepo.getUser() }
-    val feed = async { feedRepo.getFeed() }
-    DashboardData(user.await(), feed.await())
-}
-```
-
-### 测试
-
-```kotlin
-@Test fun testViewModel() = runTest {
-    val vm = MyViewModel(StandardTestDispatcher(testScheduler))
-    vm.loadData(); advanceUntilIdle()
-    assertEquals(expected, vm.uiState.value)
-}
-```
-
-## 反模式
-
-### FAIL: lifecycleScope 裸 collect
-
-```kotlin
-lifecycleScope.launch {
-    viewModel.uiState.collect { render(it) }
-    // App 进后台仍持续收集，浪费电量和网络
-}
-```
-
-### PASS: repeatOnLifecycle
-
-```kotlin
-viewLifecycleOwner.lifecycleScope.launch {
-    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        viewModel.uiState.collect { render(it) }
-    }
-}
-```
-
-### FAIL: catch 吞掉 CancellationException
-
-```kotlin
-try { repo.fetch() }
-catch (e: Exception) { handleError(e) } // 取消信号被当普通错误处理，破坏取消传播
-```
-
-### PASS: 重抛 CancellationException
-
-```kotlin
-try { repo.fetch() }
-catch (e: CancellationException) { throw e } // 必须重抛
-catch (e: Exception) { handleError(e) }
-```
-
-| 其他 | 问题 | 正确方式 |
+| 反模式 | 问题 | 正确方式 |
 |------|------|----------|
+| `lifecycleScope.launch` 裸 collect | 后台仍持续收集 | `repeatOnLifecycle(STARTED)` |
+| `catch (e: Exception)` 吞掉取消 | 破坏取消传播 | 先 catch `CancellationException` 重抛 |
 | `GlobalScope.launch` | 泄漏，无法取消 | `viewModelScope` 或注入 `applicationScope` |
 | 硬编码 `Dispatchers.IO` | 测试无法替换 | 构造函数注入 Dispatcher |
 | 暴露 `MutableStateFlow` | 外部可改 | `.asStateFlow()` |
