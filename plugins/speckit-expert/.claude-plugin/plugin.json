@@ -1,0 +1,18 @@
+{
+  "name": "speckit-expert",
+  "version": "0.1.0",
+  "description": "Spec Kit 规范驱动开发专家插件：Constitution/Specify/Plan/Tasks/Implement 全链路 skills",
+  "author": {
+    "name": "ai-experts"
+  },
+  "license": "MIT",
+  "keywords": [
+    "spec-kit",
+    "speckit",
+    "spec-driven-development",
+    "requirements",
+    "planning",
+    "implementation"
+  ],
+  "skills": "./skills/"
+}
