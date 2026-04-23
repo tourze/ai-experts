@@ -7,7 +7,7 @@
  * 分级预算（按路径，只严管 AI 会加载的文件）：
  *   **\/SKILL.md              500 tokens   AI 核心提示，严控
  *   **\/references\/**\/*.md   2000 tokens  skill 辅助文档，可较长
- *   **\/CLAUDE.md             3000 tokens  项目/全局指令，更宽
+ *   记忆文件                  3000 tokens  项目/全局指令，更宽
  *   其他 *.md                 静默放行      避免误伤 README / changelog / 日志
  *
  * 选择“按路径分级”而不是“对所有 md 统一阈值”的原因：
@@ -35,6 +35,8 @@ import { existsSync, readFileSync, realpathSync } from "fs";
 import { dirname, relative } from "path";
 import { execFileSync } from "child_process";
 
+const MEMORY_FILE_BASENAMES = new Set(["MEMORY.md", "CLAUDE.md", "AGENTS.md"]);
+
 // ── 路径分级 ──────────────────────────────────────────────
 // 返回 { label, budget } 或 null（表示“不管”）。
 // label 仅用于给用户看的报错信息，budget 用于判定。
@@ -52,8 +54,8 @@ function classify(filePath) {
   if (basename === "SKILL.md") {
     return { label: "SKILL.md", budget: 1500 };
   }
-  if (basename === "CLAUDE.md") {
-    return { label: "CLAUDE.md", budget: 3000 };
+  if (MEMORY_FILE_BASENAMES.has(basename)) {
+    return { label: "记忆文件", budget: 3000 };
   }
   return null;
 }

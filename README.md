@@ -14,6 +14,10 @@
 ./scripts/install.sh
 ```
 
+安装时还会把仓库根目录的 [`MEMORY.md`](MEMORY.md) 链接到全局记忆文件：
+- Claude Code: `~/.claude/CLAUDE.md`
+- Codex CLI: `~/.codex/AGENTS.md`
+
 ### 卸载 / 重装
 
 ```bash
@@ -26,6 +30,7 @@
 - `.claude-plugin/marketplace.json`：仓库级 Claude Code marketplace 清单。
 - `.agents/plugins/marketplace.json`：仓库级 Codex CLI marketplace 清单（脚本生成，Codex 自动发现路径）。
 - `.codex/hooks.json`：Codex CLI 项目级聚合 hooks（脚本生成）。
+- `MEMORY.md`：Claude Code + Codex 共享的全局记忆单一事实源（安装脚本会创建全局链接）。
 - `plugins/<plugin-name>/`：单个插件目录；每个插件同时包含 `.claude-plugin/plugin.json` 和 `.codex-plugin/plugin.json`。
 - `plugins/<plugin-name>/README.md`：插件用途、skills、安装/卸载方式，以及适用时的 hooks、agents 与验证命令。
 - `plugins/<plugin-name>/hooks/`：可选；插件级 hook 定义与分发入口（Claude Code 直接使用；Codex CLI 通过根目录聚合文件使用）。

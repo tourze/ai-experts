@@ -2,7 +2,7 @@
 # ai-experts installer
 #
 # Detects installed CLI tools (Claude Code / Codex CLI) and sets up
-# marketplace + plugins for each one.
+# marketplace + plugins for each one. Also links shared global memory.
 #
 # Usage:
 #   ./scripts/install.sh              # install for all detected CLIs
@@ -12,8 +12,12 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-CODEX_CONFIG="${CODEX_HOME:-$HOME/.codex}/config.toml"
+CODEX_HOME_DIR="${CODEX_HOME:-$HOME/.codex}"
+CODEX_CONFIG="${CODEX_HOME_DIR}/config.toml"
 MARKETPLACE_NAME="ai-experts"
+MEMORY_SOURCE="$REPO_ROOT/MEMORY.md"
+CLAUDE_MEMORY_TARGET="${CLAUDE_MEMORY_TARGET:-$HOME/.claude/CLAUDE.md}"
+CODEX_MEMORY_TARGET="${CODEX_MEMORY_TARGET:-${CODEX_HOME_DIR}/AGENTS.md}"
 
 # ── helpers ──────────────────────────────────────────────────
 
@@ -37,6 +41,55 @@ for (const plugin of manifest.plugins ?? []) {
 ' "$1"
 }
 
+backup_existing_file() {
+  local target="$1"
+  local backup="${target}.bak.$(date +%Y%m%d%H%M%S)"
+  mv "$target" "$backup"
+  warn "Backed up existing memory file: $target -> $backup"
+}
+
+link_memory_file() {
+  local label="$1"
+  local target="$2"
+
+  if [ ! -f "$MEMORY_SOURCE" ]; then
+    err "Shared memory source not found: $MEMORY_SOURCE"
+    return 1
+  fi
+
+  if [ -d "$target" ] && [ ! -L "$target" ]; then
+    err "$label: memory target is a directory, cannot link: $target"
+    return 1
+  fi
+
+  mkdir -p "$(dirname "$target")"
+
+  if [ -e "$target" ] && [ "$target" -ef "$MEMORY_SOURCE" ]; then
+    ok "$label: shared memory already linked ($target)"
+    return 0
+  fi
+
+  if [ -e "$target" ] || [ -L "$target" ]; then
+    backup_existing_file "$target"
+  fi
+
+  ln -s "$MEMORY_SOURCE" "$target"
+  ok "$label: linked shared memory to $target"
+}
+
+unlink_memory_file() {
+  local label="$1"
+  local target="$2"
+
+  if [ -L "$target" ] && [ -e "$target" ] && [ "$target" -ef "$MEMORY_SOURCE" ]; then
+    rm -f "$target"
+    ok "$label: removed shared memory link ($target)"
+    return 0
+  fi
+
+  info "$label: leaving memory target unchanged ($target)"
+}
+
 # ── Claude Code ──────────────────────────────────────────────
 
 claude_install() {
@@ -48,6 +101,9 @@ claude_install() {
   plugin_names "$manifest" | while read -r name; do
     claude plugin install "${name}@${MARKETPLACE_NAME}" 2>/dev/null || true
   done
+
+  info "Claude Code: linking shared global memory..."
+  link_memory_file "Claude Code" "$CLAUDE_MEMORY_TARGET"
 
   ok "Claude Code: done. Run /reload-plugins in Claude Code to activate."
 }
@@ -84,6 +140,9 @@ process.stdin.on("end", () => {
   info "Claude Code: removing marketplace..."
   claude plugin marketplace remove "$MARKETPLACE_NAME" 2>/dev/null || true
 
+  info "Claude Code: removing shared global memory link..."
+  unlink_memory_file "Claude Code" "$CLAUDE_MEMORY_TARGET"
+
   ok "Claude Code: uninstalled."
 }
 
@@ -110,12 +169,15 @@ codex_install() {
     printf '\n[plugins."%s@%s"]\nenabled = true\n' "$name" "$MARKETPLACE_NAME" >> "$CODEX_CONFIG"
   done
 
+  info "Codex CLI: linking shared global memory..."
+  link_memory_file "Codex CLI" "$CODEX_MEMORY_TARGET"
+
   ok "Codex CLI: done. Restart codex to activate."
 }
 
 codex_uninstall() {
   info "Codex CLI: removing user-level hooks.json..."
-  rm -f "${CODEX_HOME:-$HOME/.codex}/hooks.json"
+  rm -f "${CODEX_HOME_DIR}/hooks.json"
 
   info "Codex CLI: removing marketplace..."
   codex marketplace add "$REPO_ROOT" 2>/dev/null  # ensure it exists before removing
@@ -123,6 +185,9 @@ codex_uninstall() {
   # The marketplace entry in config.toml is under [marketplaces.<name>]
   codex_remove_marketplace_entry
   codex_remove_plugin_entries
+
+  info "Codex CLI: removing shared global memory link..."
+  unlink_memory_file "Codex CLI" "$CODEX_MEMORY_TARGET"
 
   ok "Codex CLI: uninstalled."
 }

@@ -618,6 +618,16 @@ test("markdown-budget-guard 会阻止超预算的新 SKILL.md", async () => {
   });
 });
 
+test("markdown-budget-guard 会阻止超预算的新 MEMORY.md", async () => {
+  await withTempDir(async (dir) => {
+    const filePath = join(dir, "MEMORY.md");
+    writeFileSync(filePath, "# Memory\n\n" + "长期规则 ".repeat(4000), "utf8");
+    const result = await runMarkdownBudgetGuard(payload(filePath));
+    assert.equal(result?.decision, "block");
+    assert.match(result?.reason ?? "", /记忆文件/);
+  });
+});
+
 test("markdown-budget-guard TN: 普通 README.md 不受管控", async () => {
   await withTempDir(async (dir) => {
     const filePath = join(dir, "README.md");

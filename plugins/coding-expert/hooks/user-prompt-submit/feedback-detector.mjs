@@ -17,7 +17,7 @@
  *
  * 非目标:
  *   - 不做任何本仓库特定的维护动作(例如 auto memory 写盘、特定目录写入)
- *   - 不指定必须修改哪个文件;目标媒介(skill / CLAUDE.md / AGENT.md / hook)
+ *   - 不指定必须修改哪个文件;目标媒介(skill / 记忆文件 / hook)
  *     由 Claude 按反思结论决定,符合原 skill 的"一次只提一条精简改动"原则
  *   - 不跳过 Propose → Confirm → Apply 的确认环节;禁止擅自落盘
  *
@@ -128,7 +128,7 @@ export async function run(payload) {
       "3. Propose(只提议,不动手)",
       "   草拟**一条**精简改动,候选媒介(按场景任选其一):",
       "     • 更新某个 skill → 展示 diff",
-      "     • 在 CLAUDE.md 或 AGENT.md 中新增条目 → 展示新增内容",
+      "     • 在记忆文件中新增条目 → 展示新增内容",
       "     • 新增一个 hook / 规则 → 说明事件 × matcher × 判定逻辑",
       "     • 其他用户现有知识库形式",
       "   原则:",

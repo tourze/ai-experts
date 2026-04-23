@@ -32,7 +32,7 @@ const STRATEGY = `[Compaction Preservation Strategy] 压缩保留策略
    - 待确认的变更清单
 
 3. 项目关键约束
-   - CLAUDE.md 中的架构约束和工作流规则
+   - 记忆文件中的架构约束和工作流规则
    - 已发现的项目特定约定（命名、分层、错误处理风格）
    - 依赖关系和影响半径分析结果
 

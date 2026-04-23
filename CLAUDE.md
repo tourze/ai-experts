@@ -3,6 +3,11 @@
 ## 项目概述
 Claude Code 插件集合，包含 54 个领域专家插件，每个插件提供 skills、hooks 和/或 agents。
 
+## 术语约定（记忆文件）
+- `MEMORY.md`、`CLAUDE.md`、`AGENTS.md` 均属于“记忆文件”。
+- 在插件文案、hook 提示和 skill 指引里默认使用“记忆文件”统称，避免按平台文件名耦合表达。
+- 只有在需要给出具体路径或执行文件级操作时，才写具体文件名。
+
 ## 核心架构约束
 - **插件源码不能跨插件 import**：每个插件仍以独立目录分发；通用守卫统一收敛在基座插件中，通过 manifest dependencies 复用，不再在各插件里复制同一份实现。
 - 插件结构：`.claude-plugin/plugin.json` + `README.md` + `skills/` + `tests/`，并可按需提供 `hooks/` 与 `agents/`

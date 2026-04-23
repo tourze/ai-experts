@@ -3,15 +3,15 @@
  *
  * 行为:
  *   会话启动时(startup / resume / clear / compact)读取 cwd 的 git 状态 +
- *   本地 agent 指引文件存在性,通过 additionalContext 一次性注入 Claude,
- *   省去每次起手重复执行 `git status` / `ls CLAUDE.md` 的探测成本。
+ *   本地记忆文件存在性,通过 additionalContext 一次性注入 Claude,
+ *   省去每次起手重复执行 `git status` / `ls <记忆文件>` 的探测成本。
  *
  * 为什么要这么做:
  *   AI 编码会话审计显示 `git status` 近半年出现 271 次,几乎每次会话起手都
- *   要探测一遍仓库状态;会话里的第一个 Grep 也几乎总是搜项目根的
- *   CLAUDE.md / AGENTS.md。把这些「必跑的第一枪」前置到 SessionStart hook
+ *   要探测一遍仓库状态;会话里的第一个 Grep 也几乎总是搜项目根的记忆文件。
+ *   把这些「必跑的第一枪」前置到 SessionStart hook
  *   里一次性注入,减少重复工具调用,也给并行进程场景提供「动手前必须先看
- *   脏文件数」的提醒(对齐 AGENTS.md「并行进程协作约束」)。
+ *   脏文件数」的提醒(对齐记忆文件中的「并行进程协作约束」)。
  *
  * 与其他 hook 的关系:
  *   • 与 user-prompt-submit/* 是正交维度:本 hook 在会话启动时触发一次,
@@ -23,7 +23,7 @@
  *   - 不 block(SessionStart 没有 block 概念,只能注入 context)
  *   - 不执行任何写入操作
  *   - 不依赖任何项目特定约定;非 git 仓库 / cwd 缺失直接放行
- *   - 不解析 CLAUDE.md / AGENTS.md 内容,只报告存在性,让 Claude 自己读
+ *   - 不解析记忆文件内容,只报告存在性,让 Claude 自己读
  *   - 不打印 git diff 全文(可能很长),只给文件级摘要
  *
  * 失败策略:
@@ -47,8 +47,8 @@ const EXEC_TIMEOUT_MS = 2000;
 // 脏文件预览上限:超过则截断,避免 context 被一份巨大的 git status 淹没。
 const DIRTY_PREVIEW_LIMIT = 10;
 
-// 本地 agent 指引文件清单。这些文件存在时只报告存在性,不读内容。
-const GUIDANCE_FILES = ["CLAUDE.md", "AGENTS.md", ".cursorrules"];
+// 本地记忆文件清单。这些文件存在时只报告存在性,不读内容。
+const MEMORY_FILES = ["MEMORY.md", "CLAUDE.md", "AGENTS.md"];
 
 /**
  * 安全执行 git 命令。任何异常(非 git 仓库 / 权限问题 / 超时)统一返回空串。
@@ -85,7 +85,8 @@ export async function run(payload) {
   const dirtyLines = status ? status.split("\n").filter(Boolean) : [];
   const dirty = dirtyLines.length;
 
-  const guidance = GUIDANCE_FILES.filter((f) => existsSync(join(repoRoot, f)));
+  const memoryFiles = MEMORY_FILES.filter((f) => existsSync(join(repoRoot, f)));
+  const hasCursorRules = existsSync(join(repoRoot, ".cursorrules"));
 
   const lines = [
     "<SUBAGENT-STOP>",
@@ -95,22 +96,23 @@ export async function run(payload) {
     "[Session Context] 起手上下文",
     "",
     "本段由 hooks/session-start/context-injector.mjs 在 SessionStart 时一次性",
-    "注入,代替每次会话起手重复执行 `git status` / `ls CLAUDE.md` 的探测。",
+    "注入,代替每次会话起手重复执行 `git status` / `ls <记忆文件>` 的探测。",
     "",
     `  cwd:       ${cwd}`,
     `  仓库根:    ${repoRoot}`,
     `  分支:      ${branch}`,
     `  脏文件数:  ${dirty}`,
     `  最近提交:  ${lastCommit || "(none)"}`,
-    `  本地指引:  ${guidance.join(", ") || "(无)"}`,
+    `  记忆文件:  ${memoryFiles.length > 0 ? `已发现 ${memoryFiles.length} 个` : "(无)"}`,
+    `  本地规则:  ${hasCursorRules ? "已发现 .cursorrules" : "(无)"}`,
   ];
 
-  // CLAUDE.md 缺失时注入建议 — 审计显示缺少 CLAUDE.md 的项目每次会话需重复
-  // 说明项目背景 6+ 次,创建后可一劳永逸。
-  if (!guidance.includes("CLAUDE.md")) {
+  // 记忆文件缺失时注入建议 — 审计显示缺少记忆文件的项目每次会话需重复
+  // 说明项目背景,创建后可一劳永逸。
+  if (memoryFiles.length === 0) {
     lines.push(
       "",
-      "  💡 当前项目缺少 CLAUDE.md。建议在合适时机提醒用户创建,内容应包含:",
+      "  💡 当前项目缺少记忆文件。建议在合适时机提醒用户创建,内容应包含:",
       "     项目概述、技术栈、常用命令、Git 工作流、项目特定约束。",
       "     这能让后续会话自动获得项目上下文,避免重复说明。",
     );
@@ -123,7 +125,7 @@ export async function run(payload) {
 
     lines.push(
       "",
-      "  ⚠ 工作区有未提交改动。按 AGENTS.md「并行进程协作约束」,",
+      "  ⚠ 工作区有未提交改动。按记忆文件中的「并行进程协作约束」,",
       "    动手前必须先 `git diff` 确认这些改动是否为并行进程或其他任务产出,",
       "    禁止覆盖、回退、重排他人工作;无关 hunk 必须移出本次提交范围。",
       "",
