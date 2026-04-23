@@ -180,9 +180,8 @@ codex_uninstall() {
   rm -f "${CODEX_HOME_DIR}/hooks.json"
 
   info "Codex CLI: removing marketplace..."
-  codex marketplace add "$REPO_ROOT" 2>/dev/null  # ensure it exists before removing
-  # codex has no marketplace remove command via CLI in some versions, try both
-  # The marketplace entry in config.toml is under [marketplaces.<name>]
+  # codex has no stable marketplace remove command in all versions.
+  # Remove marketplace/plugins directly from config.toml.
   codex_remove_marketplace_entry
   codex_remove_plugin_entries
 

@@ -79,3 +79,41 @@ test("install.sh --uninstall removes managed Codex memory link", () => {
     rmSync(tmp, { recursive: true, force: true });
   }
 });
+
+test("install.sh --reinstall completes even if codex marketplace add fails", () => {
+  const tmp = mkdtempSync(join(tmpdir(), "ai-experts-reinstall-"));
+  const binDir = join(tmp, "bin");
+  const codexHome = join(tmp, "codex-home");
+
+  try {
+    mkdirSync(binDir);
+    mkdirSync(codexHome);
+    writeFileSync(join(codexHome, "config.toml"), "", "utf-8");
+    symlinkSync(join(tmp, "legacy-ai-infra-agents.md"), join(codexHome, "AGENTS.md"));
+
+    symlinkSync(process.execPath, join(binDir, "node"));
+    writeExecutable(
+      join(binDir, "codex"),
+      "#!/usr/bin/env bash\nif [ \"$1\" = \"marketplace\" ] && [ \"$2\" = \"add\" ]; then\n  exit 1\nfi\nexit 0\n",
+    );
+
+    const output = execFileSync("/bin/bash", ["scripts/install.sh", "--reinstall"], {
+      cwd: repoRoot,
+      env: {
+        ...process.env,
+        CODEX_HOME: codexHome,
+        PATH: `${binDir}:/usr/bin:/bin`,
+      },
+      encoding: "utf-8",
+      stdio: "pipe",
+    });
+
+    const codexMemoryTarget = join(codexHome, "AGENTS.md");
+    assert.match(output, /Codex CLI: uninstalled/);
+    assert.match(output, /Codex CLI: done/);
+    assert.equal(lstatSync(codexMemoryTarget).isSymbolicLink(), true);
+    assert.equal(readlinkSync(codexMemoryTarget), join(repoRoot, "MEMORY.md"));
+  } finally {
+    rmSync(tmp, { recursive: true, force: true });
+  }
+});
