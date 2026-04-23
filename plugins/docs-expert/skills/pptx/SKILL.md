@@ -10,6 +10,8 @@ description: 当用户要创建、读取、编辑或修复 .pptx 演示文稿时
 - 用户明确提到 `.pptx`、演示文稿、幻灯片、deck、pitch deck。
 - 需要读取文本、生成缩略图、增删页面、清理垃圾引用或 XML 级修复。
 - 需要将解包后的 PPTX 目录修改后再重新打包。
+- 需要将 AI 生成的 SVG 转换为原生可编辑 PPTX。
+- 如果用户要从零生成完整演示文稿，应使用 [ppt-generate](../ppt-generate/SKILL.md)。
 - 如果用户还没有版式方案，可先走 [ppt-visual](../ppt-visual/SKILL.md)。
 
 ## 核心约束
@@ -23,17 +25,23 @@ description: 当用户要创建、读取、编辑或修复 .pptx 演示文稿时
 
 配套说明文档：
 
-- [editing.md](editing.md)
-- [pptxgenjs.md](pptxgenjs.md)
-- [scripts/add_slide.py](scripts/add_slide.py)
-- [scripts/clean.py](scripts/clean.py)
+- [editing.md](editing.md) — 模板编辑工作流
+- [pptxgenjs.md](pptxgenjs.md) — PptxGenJS 编程生成
+- [references/svg-subset.md](references/svg-subset.md) — AI 生成 SVG 的子集规范
+- [references/chart-templates.md](references/chart-templates.md) — 12 种图表 SVG 模板
+- [references/quality-review.md](references/quality-review.md) — 质量评审清单
 
 ```bash
+# 编辑已有 PPTX
 python3 scripts/thumbnail.py slides.pptx slides-preview --cols 4
 python3 scripts/office/unpack.py slides.pptx unpacked
 python3 scripts/add_slide.py unpacked slide2.xml
 python3 scripts/clean.py unpacked
 python3 scripts/office/pack.py unpacked slides-fixed.pptx --validate true
+
+# SVG → PPTX 生成流程
+python3 scripts/svg_quality_checker.py svg_output/   # 校验 SVG 子集合规
+python3 scripts/svg_to_pptx.py svg_output/ output.pptx  # 转换为原生 DrawingML
 ```
 
 ## 检查清单
@@ -43,6 +51,8 @@ python3 scripts/office/pack.py unpacked slides-fixed.pptx --validate true
 - 清理未引用文件后是否重新校验并打开抽查。
 - 若需要快速总览，是否先生成缩略图再决定逐页修改。
 - 如需先确定视觉方向，是否已调用 [ppt-visual](../ppt-visual/SKILL.md)。
+- 如从 SVG 生成，是否先运行 svg_quality_checker.py 校验。
+- SVG 转换后是否打开 PPTX 抽查可编辑性。
 
 ## 反模式
 
