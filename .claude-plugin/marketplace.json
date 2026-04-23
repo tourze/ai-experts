@@ -267,6 +267,12 @@
       "version": "0.1.2"
     },
     {
+      "name": "speckit-expert",
+      "source": "./plugins/speckit-expert",
+      "description": "Spec Kit 规范驱动开发专家插件：Constitution/Specify/Plan/Tasks/Implement 全链路 skills",
+      "version": "0.1.0"
+    },
+    {
       "name": "svn-expert",
       "source": "./plugins/svn-expert",
       "description": "SVN 版本控制专家插件：Subversion 工作流、分支合并策略、提交信息守卫、批量操作拦截",

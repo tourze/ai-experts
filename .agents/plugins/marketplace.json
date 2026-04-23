@@ -346,6 +346,14 @@
       "description": "社交媒体运营专家插件：小红书图文/商业增长、抖音爆款文案、粉丝运营、私域引流、个人品牌"
     },
     {
+      "name": "speckit-expert",
+      "source": {
+        "source": "local",
+        "path": "./plugins/speckit-expert"
+      },
+      "description": "Spec Kit 规范驱动开发专家插件：Constitution/Specify/Plan/Tasks/Implement 全链路 skills"
+    },
+    {
       "name": "svn-expert",
       "source": {
         "source": "local",

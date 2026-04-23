@@ -3,7 +3,7 @@
 # AI Experts - Claude Code Plugin Collection
 
 ## 项目概述
-Claude Code 插件集合，包含 54 个领域专家插件，每个插件提供 skills、hooks 和/或 agents。
+Claude Code 插件集合，包含 55 个领域专家插件，每个插件提供 skills、hooks 和/或 agents。
 
 ## 术语约定（记忆文件）
 - `MEMORY.md`、`CLAUDE.md`、`AGENTS.md` 均属于“记忆文件”。
