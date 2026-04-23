@@ -36,15 +36,32 @@ test("清理陈旧的 .git/index.lock", async () => {
   }
 });
 
-test("遇到仍然新鲜的 .git/index.lock 时阻断", async () => {
+test("新鲜但无持有进程的 lock 自动清理（进程已崩溃场景）", async () => {
   const repo = createRepo();
   const lockPath = join(repo, ".git", "index.lock");
   writeFileSync(lockPath, "", "utf-8");
 
   try {
     const result = await run(payload('git commit -m "feat(repo): add sample"', repo));
+    assert.equal(result?.decision, "report");
+    assert.match(result?.reason ?? "", /已自动清理 stale 的 \.git\/index\.lock/);
+    assert.match(result?.reason ?? "", /未找到持有进程/);
+    assert.equal(existsSync(lockPath), false);
+  } finally {
+    rmSync(repo, { recursive: true, force: true });
+  }
+});
+
+test("lock 被当前进程持有时阻断", async () => {
+  const repo = createRepo();
+  const lockPath = join(repo, ".git", "index.lock");
+  // 写入当前进程 PID 模拟 git 正在运行
+  writeFileSync(lockPath, `${process.pid}\n`, "utf-8");
+
+  try {
+    const result = await run(payload('git commit -m "feat(repo): add sample"', repo));
     assert.equal(result?.decision, "block");
-    assert.match(result?.reason ?? "", /index\.lock 已被占用/);
+    assert.match(result?.reason ?? "", /已被占用/);
     assert.equal(existsSync(lockPath), true);
   } finally {
     rmSync(repo, { recursive: true, force: true });

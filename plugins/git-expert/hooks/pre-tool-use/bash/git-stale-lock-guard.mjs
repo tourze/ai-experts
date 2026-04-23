@@ -8,9 +8,8 @@
  * 触发：PreToolUse Bash，仅在检测到 git 写命令时检查。
  * 策略：
  *   - lock 不存在 → 跳过
- *   - lock 存在 + 持有进程已死 → 自动清理 + report
- *   - lock 存在 + 超过 5 分钟 → 自动清理 + report（进程可能已不在）
- *   - lock 存在 + 持有进程存活 + 未超时 → block（不破坏正在进行的操作）
+ *   - lock 存在 + 持有进程确认存活 → block（不破坏正在进行的操作）
+ *   - lock 存在 + 其他所有情况（进程已死 / PID 不可追溯）→ 自动清理 + report
  */
 
 import { existsSync, statSync, readFileSync, unlinkSync } from "fs";
@@ -109,10 +108,13 @@ export async function run(payload) {
 
   const holderPid = getHolderPid(lockPath, cwd);
   const holderAlive = holderPid ? isProcessAlive(holderPid) : false;
-  const isStale = lockAgeMs > STALE_THRESHOLD_MS || (holderPid && !holderAlive);
 
-  if (isStale) {
-    // 自动清理 stale lock
+  // 仅当能确认持有进程仍存活时才视为 active lock；
+  // 找不到持有者（holderPid === null）= 进程已退出或 PID 不可追溯，视为 stale。
+  const isActiveLock = holderPid && holderAlive;
+
+  if (!isActiveLock) {
+    // 自动清理：进程已死、PID 不可追溯、或锁超时
     try {
       unlinkSync(lockPath);
     } catch (err) {
@@ -122,18 +124,17 @@ export async function run(payload) {
       };
     }
 
-    const ageMin = Math.round(lockAgeMs / 60_000);
-    const pidInfo = holderPid ? `（原持有进程 PID ${holderPid} 已退出）` : "";
+    const ageSec = Math.round(lockAgeMs / 1000);
+    const pidInfo = holderPid ? `（原持有进程 PID ${holderPid} 已退出）` : "（未找到持有进程）";
     return {
       decision: "report",
-      reason: `[Git Lock] 已自动清理 stale 的 .git/index.lock（存在 ${ageMin} 分钟）${pidInfo}\n可能原因：之前的 git 操作被中断（Ctrl+C / 超时 / 进程崩溃）`,
+      reason: `[Git Lock] 已自动清理 stale 的 .git/index.lock（存在 ${ageSec}s）${pidInfo}`,
     };
   }
 
-  // lock 存在 + 持有进程存活 → 阻断，避免破坏并行操作
-  const pidInfo = holderPid ? `（持有进程 PID: ${holderPid}）` : "";
+  // lock 存在 + 持有进程确认存活 → 阻断，避免破坏并行操作
   return {
     decision: "block",
-    reason: `[Git Lock] .git/index.lock 已被占用${pidInfo}\n另一个 git 操作正在进行中，请等待其完成或确认后手动清理:\n  rm -- ${quoteShellArg(lockPath)}`,
+    reason: `[Git Lock] .git/index.lock 已被占用（持有进程 PID: ${holderPid}）\n另一个 git 操作正在进行中，请等待其完成或确认后手动清理:\n  rm -- ${quoteShellArg(lockPath)}`,
   };
 }
