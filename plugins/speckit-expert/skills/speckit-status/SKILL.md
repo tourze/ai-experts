@@ -16,7 +16,7 @@ depends-on: []
    - `spec.md` 是否存在
    - `plan.md` 是否存在
    - `tasks.md` 完成率（`[x] / [ ] / [/]`）
-   - `checklists` 完成率
+   - `<feature>/checklists/requirements.md` 完成率
 3. 标记阻塞项：
    - 待澄清标记
    - 缺关键文档

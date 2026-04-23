@@ -28,7 +28,7 @@ $ARGUMENTS
 3. 生成特性短名 `slug`（2-4 词，连字符）。
 4. 创建或复用目录：`.specify/features/<slug>/`。
    - 在该目录写入/更新 `spec.md`
-   - 在该目录写入 `checklists/requirements.md`
+   - 在该目录写入 `checklists/requirements.md`（完整路径：`.specify/features/<slug>/checklists/requirements.md`）
    - 写入 `.specify/feature.json` 指向该目录
 5. 模板来源优先级：
    - `.specify/templates/spec-template.md`

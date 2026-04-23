@@ -158,6 +158,9 @@ codex_install() {
   info "Codex CLI: registering marketplace..."
   codex marketplace add "$REPO_ROOT" 2>/dev/null || true
 
+  info "Codex CLI: syncing local marketplace plugins into cache..."
+  codex_sync_local_plugin_cache
+
   info "Codex CLI: enabling all plugins in config.toml..."
   local manifest="$REPO_ROOT/.agents/plugins/marketplace.json"
 
@@ -185,10 +188,66 @@ codex_uninstall() {
   codex_remove_marketplace_entry
   codex_remove_plugin_entries
 
+  info "Codex CLI: clearing ai-experts plugin cache..."
+  rm -rf "${CODEX_HOME_DIR}/plugins/cache/${MARKETPLACE_NAME}"
+
   info "Codex CLI: removing shared global memory link..."
   unlink_memory_file "Codex CLI" "$CODEX_MEMORY_TARGET"
 
   ok "Codex CLI: uninstalled."
+}
+
+codex_sync_local_plugin_cache() {
+  local manifest="$REPO_ROOT/.agents/plugins/marketplace.json"
+  local cache_root="${CODEX_HOME_DIR}/plugins/cache/${MARKETPLACE_NAME}"
+
+  mkdir -p "$cache_root"
+
+  node - <<'NODE' "$manifest" "$REPO_ROOT" "$cache_root"
+const fs = require("node:fs");
+const path = require("node:path");
+
+const manifestPath = process.argv[2];
+const repoRoot = process.argv[3];
+const cacheRoot = process.argv[4];
+
+function copyDir(src, dst) {
+  fs.mkdirSync(dst, { recursive: true });
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    if (entry.name === ".git") continue;
+    const srcPath = path.join(src, entry.name);
+    const dstPath = path.join(dst, entry.name);
+    if (entry.isDirectory()) {
+      copyDir(srcPath, dstPath);
+    } else {
+      fs.copyFileSync(srcPath, dstPath);
+    }
+  }
+}
+
+const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+for (const plugin of manifest.plugins ?? []) {
+  if (!plugin || typeof plugin.name !== "string") continue;
+
+  const source = plugin.source ?? {};
+  if (source.source !== "local" || typeof source.path !== "string") continue;
+
+  const pluginDir = path.resolve(repoRoot, source.path);
+  const codexManifestPath = path.join(pluginDir, ".codex-plugin", "plugin.json");
+  if (!fs.existsSync(codexManifestPath)) {
+    process.stderr.write(`[warn] Codex cache sync skipped (missing manifest): ${plugin.name} -> ${codexManifestPath}\n`);
+    continue;
+  }
+
+  const codexManifest = JSON.parse(fs.readFileSync(codexManifestPath, "utf8"));
+  const version = String(codexManifest.version || "0.0.0");
+  const pluginCacheRoot = path.join(cacheRoot, plugin.name);
+  const pluginVersionDir = path.join(pluginCacheRoot, version);
+
+  fs.rmSync(pluginCacheRoot, { recursive: true, force: true });
+  copyDir(pluginDir, pluginVersionDir);
+}
+NODE
 }
 
 codex_remove_plugin_entries() {

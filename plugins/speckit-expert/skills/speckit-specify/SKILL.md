@@ -36,7 +36,7 @@ $ARGUMENTS
 4. 使用模板生成/更新：`.specify/features/<slug>/spec.md`
    - 模板优先：`.specify/templates/spec-template.md`
    - 兜底：`plugins/speckit-expert/templates/spec-template.md`
-5. 同步创建/更新：`checklists/requirements.md`。
+5. 在 feature 目录内同步创建/更新：`.specify/features/<slug>/checklists/requirements.md`。
 6. 写入 `.specify/feature.json`，内容至少包含：
    - `feature_directory: ".specify/features/<slug>"`
 7. 输出：feature 目录、spec 路径、待澄清项。
