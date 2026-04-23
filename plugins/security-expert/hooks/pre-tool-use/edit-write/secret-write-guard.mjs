@@ -12,9 +12,9 @@ import { basename, normalize } from "node:path";
 
 // ── 白名单：这些路径不应触发拦截 ──
 const WHITELIST = [
-  /\/(?:test|tests|__tests__|__mocks__|fixtures|testdata|mock)\//i,
-  /\/(?:example|examples|sample|samples|template|templates)\//i,
-  /\/(?:docs?|documentation)\//i,
+  /(?:^|\/)(?:test|tests|__tests__|__mocks__|fixtures|testdata|mock)\//i,
+  /(?:^|\/)(?:example|examples|sample|samples|template|templates)\//i,
+  /(?:^|\/)(?:docs?|documentation)\//i,
   /\.(?:md|rst|adoc)$/i,               // 文档标记文件（不含 .txt —— 太宽泛）
   /\.env\.example$/i,                    // 模板文件
   /\.env\.template$/i,
@@ -24,7 +24,7 @@ const WHITELIST = [
 // ── Block 级：高置信度敏感文件 ──
 const BLOCK_PATTERNS = [
   // 环境变量文件（排除 .example/.template/.sample）
-  [/\/\.env(?:\.[^.]+)?$/i,             ".env 文件通常包含数据库密码、API 密钥等敏感信息"],
+  [/(?:^|\/)\.env(?:\.[^.]+)?$/i,       ".env 文件通常包含数据库密码、API 密钥等敏感信息"],
   // 私钥和证书
   [/\.pem$/i,                            ".pem 文件可能包含私钥或证书"],
   [/\.key$/i,                            ".key 文件可能包含私钥"],
@@ -34,18 +34,18 @@ const BLOCK_PATTERNS = [
   [/\.keystore$/i,                       ".keystore 文件包含密钥"],
   // SSH 密钥
   [/\bid_(?:rsa|ed25519|ecdsa|dsa)$/i,  "SSH 私钥文件"],
-  [/\/\.ssh\/.*$/,                       ".ssh/ 目录下的文件可能包含私钥或配置"],
+  [/(?:^|\/)\.ssh\/.*$/,                 ".ssh/ 目录下的文件可能包含私钥或配置"],
   // 常见凭据文件名
-  [/\/credentials\.json$/i,              "credentials.json 通常包含服务账号凭据"],
-  [/\/service[-_]?account[-_]?key/i,     "服务账号密钥文件"],
-  [/\/gcloud\/.*credentials/i,           "GCloud 凭据文件"],
-  [/\/\.aws\/credentials$/i,             "AWS 凭据文件"],
-  [/\/\.docker\/config\.json$/i,         "Docker 配置可能包含 registry 认证信息"],
-  [/\/\.npmrc$/i,                        ".npmrc 可能包含 npm registry token"],
-  [/\/\.pypirc$/i,                       ".pypirc 可能包含 PyPI 上传 token"],
-  [/\/\.netrc$/i,                        ".netrc 包含明文登录凭据"],
-  [/\/\.git-credentials$/i,              ".git-credentials 包含明文 Git 凭据"],
-  [/\/htpasswd$/i,                       "htpasswd 包含 HTTP 认证凭据"],
+  [/(?:^|\/)credentials\.json$/i,        "credentials.json 通常包含服务账号凭据"],
+  [/(?:^|\/)service[-_]?account[-_]?key/i, "服务账号密钥文件"],
+  [/(?:^|\/)gcloud\/.*credentials/i,     "GCloud 凭据文件"],
+  [/(?:^|\/)\.aws\/credentials$/i,       "AWS 凭据文件"],
+  [/(?:^|\/)\.docker\/config\.json$/i,   "Docker 配置可能包含 registry 认证信息"],
+  [/(?:^|\/)\.npmrc$/i,                  ".npmrc 可能包含 npm registry token"],
+  [/(?:^|\/)\.pypirc$/i,                 ".pypirc 可能包含 PyPI 上传 token"],
+  [/(?:^|\/)\.netrc$/i,                  ".netrc 包含明文登录凭据"],
+  [/(?:^|\/)\.git-credentials$/i,        ".git-credentials 包含明文 Git 凭据"],
+  [/(?:^|\/)htpasswd$/i,                 "htpasswd 包含 HTTP 认证凭据"],
 ];
 
 // ── Report 级：中置信度（文件名含敏感关键词）──

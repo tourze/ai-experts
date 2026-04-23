@@ -24,6 +24,11 @@ test("拦截写入 .env.local 文件", async () => {
   assert.equal(result?.decision, "block");
 });
 
+test("拦截写入相对路径 .env 文件", async () => {
+  const result = await run(payload(".env"));
+  assert.equal(result?.decision, "block");
+});
+
 // ── 白名单：.env 模板文件放行 ──
 
 test("放行 .env.example 文件", async () => {
@@ -177,6 +182,11 @@ test("报告写入含 api_key 的文件", async () => {
 
 test("放行 tests/ 目录下的 .env 文件", async () => {
   const result = await run(payload("/app/tests/.env"));
+  assert.equal(result, null);
+});
+
+test("放行相对 tests/ 目录下的 .env 文件", async () => {
+  const result = await run(payload("tests/.env"));
   assert.equal(result, null);
 });
 

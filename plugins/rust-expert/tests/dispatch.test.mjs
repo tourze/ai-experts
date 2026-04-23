@@ -117,3 +117,78 @@ test("dispatch 优先输出 block 并终止后续聚合", () => {
     assert.equal(output.reason, "stop-now");
   });
 });
+
+test("dispatch 会把 apply_patch Add File 标准化为 file_path", () => {
+  withTempDispatch((hooksRoot) => {
+    const hookDir = join(hooksRoot, "pre-tool-use", "edit-write");
+    mkdirSync(hookDir, { recursive: true });
+    writeFileSync(
+      join(hookDir, "path-report.mjs"),
+      "export async function run(payload) { return { decision: 'report', reason: `path=${payload?.tool_input?.file_path ?? 'none'}` }; }\n",
+      "utf-8",
+    );
+
+    const patch = [
+      "*** Begin Patch",
+      "*** Add File: src/new-file.ts",
+      "+export const ok = true;",
+      "*** End Patch",
+      "",
+    ].join("\n");
+
+    const result = spawnSync("node", [join(hooksRoot, "dispatch.mjs"), "pre-tool-use/edit-write"], {
+      cwd: pluginRoot,
+      input: JSON.stringify({ tool_name: "apply_patch", tool_input: patch }),
+      encoding: "utf-8",
+    });
+
+    assert.equal(result.status, 0);
+    const output = JSON.parse(result.stdout);
+    assert.equal(output.decision, "report");
+    assert.match(output.reason, /path=src\/new-file\.ts/);
+  });
+});
+
+test("dispatch 会对 apply_patch 多文件逐个执行 hooks", () => {
+  withTempDispatch((hooksRoot) => {
+    const hookDir = join(hooksRoot, "pre-tool-use", "edit-write");
+    mkdirSync(hookDir, { recursive: true });
+    writeFileSync(
+      join(hookDir, "multi-file-guard.mjs"),
+      [
+        "export async function run(payload) {",
+        "  const filePath = payload?.tool_input?.file_path ?? 'none';",
+        "  if (filePath.endsWith('.env')) {",
+        "    return { decision: 'block', reason: `blocked=${filePath}` };",
+        "  }",
+        "  return { decision: 'report', reason: `seen=${filePath}` };",
+        "}",
+        "",
+      ].join("\n"),
+      "utf-8",
+    );
+
+    const patch = [
+      "*** Begin Patch",
+      "*** Update File: src/app.ts",
+      "@@",
+      "-export const app = 1;",
+      "+export const app = 2;",
+      "*** Add File: .env",
+      "+OPENAI_API_KEY=sk-test",
+      "*** End Patch",
+      "",
+    ].join("\n");
+
+    const result = spawnSync("node", [join(hooksRoot, "dispatch.mjs"), "pre-tool-use/edit-write"], {
+      cwd: pluginRoot,
+      input: JSON.stringify({ tool_name: "apply_patch", tool_input: patch }),
+      encoding: "utf-8",
+    });
+
+    assert.equal(result.status, 0);
+    const output = JSON.parse(result.stdout);
+    assert.equal(output.decision, "block");
+    assert.match(output.reason, /blocked=\.env/);
+  });
+});
