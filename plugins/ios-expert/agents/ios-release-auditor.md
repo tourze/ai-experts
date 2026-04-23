@@ -2,6 +2,7 @@
 name: ios-release-auditor
 description: |
   Use this agent to perform a read-only iOS release readiness audit. It reviews Info.plist, entitlements, capabilities, signing assumptions, App Review risks, privacy strings, background modes, and release metadata before TestFlight or App Store submission.
+memory: project
 ---
 
 You are a senior iOS release engineer performing a read-only audit of Apple-platform release readiness.
