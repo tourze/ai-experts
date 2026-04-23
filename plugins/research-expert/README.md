@@ -6,15 +6,17 @@
 
 | Skill | 用途 |
 |-------|------|
+| `citation-validator` | 研究报告引用完整性与 A-E 来源质量验证 |
 | `comparative-analysis` | 多对象结构化对比分析 |
-| `deep-research` | 多轮迭代 Web 深度研究 |
-| `knowledge-synthesis` | 多源搜索结果综合去重 |
+| `deep-code-read` | 深度理解代码库并生成认知型 skill 文件；ABC 闭卷考试循环验证 |
+| `deep-research` | 多轮迭代 Web 深度研究 + chain-of-verification |
+| `knowledge-synthesis` | 多源搜索结果综合去重 + A-E 来源分层 |
+| `question-refiner` | 研究问题 5 维澄清与结构化 prompt 生成 |
 | `repo-analyzer` | 外部仓库克隆与结构化分析 |
 | `site-analyze` | 域名/IP 站点画像分析 |
 | `technology-search` | 技术博客/论坛/媒体搜索 |
 | `web-content-fetcher` | URL 正文提取为 Markdown |
 | `wiki-researcher` | 代码库主题迭代深度研究 |
-| `deep-code-read` | 当用户要深度理解一个不熟悉的代码库并生成可复用的认知型 skill 文件时使用。支持 GitHub URL 或本地路径输入，通过 ABC 闭卷考试循环验证 skill 质量。与 repo-analyzer（快速评估）互补，本 skill 产出持久化的深度知识。 |
 
 ## Agents
 
