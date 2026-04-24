@@ -10,6 +10,7 @@
 | `complexity-reducer` | 降低嵌套、耦合和函数复杂度 |
 | `debug-methodology` | 系统化定位 bug 与异常行为 |
 | `refactoring-checklist` | 为重构提供增量、安全的检查清单 |
+| `spec-driven-delivery` | 5 阶段需求驱动交付（Specify→Plan→Act→Review→Vault），10 分 spec 门禁 + journal + 3 次失败协议 |
 
 ## Agents
 
