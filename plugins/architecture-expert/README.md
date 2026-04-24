@@ -46,6 +46,7 @@
 | `agent-tool-design` | 设计 AI Agent 工具接口：安全元数据、双描述、延迟加载、结果预算与 token 经济 |
 | `agent-permission-safety` | 设计 Agent 权限系统：三阶段管道、信任谱系、fail-closed、规则+AI 分类 |
 | `agent-orchestration` | 多 Agent 编排：system prompt 架构、fork/fresh 决策、状态管理、扩展点 |
+| `brainstorming-before-coding` | 在任何创造性工作之前必须使用——创建功能、构建组件、添加新行为或修改架构。通过对话探索用户意图、需求和设计，在动手前达成共识。 |
 
 ## 安装
 
