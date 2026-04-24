@@ -11,15 +11,17 @@
 // Usage:
 //   node scripts/generate-codex-hooks.mjs --check          # validate generation only
 //   node scripts/generate-codex-hooks.mjs --check --user   # check user-level hooks.json
-//   node scripts/generate-codex-hooks.mjs --write --user   # write user-level hooks.json
+//   node scripts/generate-codex-hooks.mjs --write --user   # merge into user-level hooks.json
+//   node scripts/generate-codex-hooks.mjs --remove --user  # remove only ai-experts hooks
 
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
-import { resolve } from "node:path";
-import { pathToFileURL } from "node:url";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
-const repoRoot = resolve(".");
+const scriptDir = dirname(fileURLToPath(import.meta.url));
+const repoRoot = resolve(scriptDir, "..");
 
 const EVENT_MAP = {
   SessionStart: "SessionStart",
@@ -39,18 +41,23 @@ const CODEX_MATCHER_MAP = {
 };
 
 function parseArgs(argv) {
-  const args = { check: false, write: false, user: false };
+  const args = { check: false, write: false, remove: false, user: false };
   for (const arg of argv) {
     if (arg === "--check") args.check = true;
     else if (arg === "--write") args.write = true;
+    else if (arg === "--remove") args.remove = true;
     else if (arg === "--user") args.user = true;
     else throw new Error(`Unknown argument: ${arg}`);
   }
-  if (args.check === args.write) {
-    throw new Error("Use exactly one of --check or --write");
+  const actions = [args.check, args.write, args.remove].filter(Boolean).length;
+  if (actions !== 1) {
+    throw new Error("Use exactly one of --check, --write, or --remove");
   }
   if (args.write && !args.user) {
     throw new Error("Project-level .codex/hooks.json is intentionally unsupported; use --write --user.");
+  }
+  if (args.remove && !args.user) {
+    throw new Error("Removing project-level .codex/hooks.json is intentionally unsupported; use --remove --user.");
   }
   return args;
 }
@@ -120,8 +127,78 @@ function userHooksPath() {
   return resolve(process.env.CODEX_HOME ?? resolve(homedir(), ".codex"), "hooks.json");
 }
 
+function normalizeHookCommand(command) {
+  return typeof command === "string" ? command.replaceAll("\\", "/") : "";
+}
+
+function collectManagedCommands(config) {
+  const commands = new Set();
+  for (const entries of Object.values(config.hooks ?? {})) {
+    if (!Array.isArray(entries)) continue;
+    for (const entry of entries) {
+      for (const hook of entry.hooks ?? []) {
+        const command = normalizeHookCommand(hook.command);
+        if (command) commands.add(command);
+      }
+    }
+  }
+  return commands;
+}
+
+function stripManagedHooksFromEntry(entry, managedCommands) {
+  const hooks = (entry.hooks ?? []).filter((hook) => !managedCommands.has(normalizeHookCommand(hook.command)));
+  return hooks.length > 0 ? { ...entry, hooks } : null;
+}
+
+function removeManagedHooksConfig(existingConfig, managedConfig) {
+  const managedCommands = collectManagedCommands(managedConfig);
+  const nextConfig = { ...existingConfig, hooks: {} };
+  const existingHooks = existingConfig.hooks && typeof existingConfig.hooks === "object"
+    ? existingConfig.hooks
+    : {};
+
+  for (const [eventName, entries] of Object.entries(existingHooks)) {
+    if (!Array.isArray(entries)) {
+      nextConfig.hooks[eventName] = entries;
+      continue;
+    }
+
+    const preserved = entries
+      .map((entry) => stripManagedHooksFromEntry(entry, managedCommands))
+      .filter(Boolean);
+    if (preserved.length > 0) {
+      nextConfig.hooks[eventName] = preserved;
+    }
+  }
+
+  return nextConfig;
+}
+
+function mergeUserHooksConfig(existingConfig, managedConfig) {
+  const nextConfig = removeManagedHooksConfig(existingConfig, managedConfig);
+  for (const [eventName, entries] of Object.entries(managedConfig.hooks ?? {})) {
+    nextConfig.hooks[eventName] = [
+      ...(Array.isArray(nextConfig.hooks[eventName]) ? nextConfig.hooks[eventName] : []),
+      ...entries,
+    ];
+  }
+  return nextConfig;
+}
+
+function readUserHooksConfig(actual, outputPath) {
+  if (actual === null) {
+    return {};
+  }
+  try {
+    return JSON.parse(actual);
+  } catch {
+    throw new Error(`Existing Codex hooks file is not valid JSON: ${outputPath}`);
+  }
+}
+
 function run(args) {
-  const expected = `${JSON.stringify(buildAggregatedHooks(true), null, 2)}\n`;
+  const managedConfig = buildAggregatedHooks(true);
+  const expected = `${JSON.stringify(managedConfig, null, 2)}\n`;
 
   if (args.check && !args.user) {
     JSON.parse(expected);
@@ -131,8 +208,17 @@ function run(args) {
 
   const outputPath = userHooksPath();
   const actual = existsSync(outputPath) ? readFileSync(outputPath, "utf-8") : null;
+  if (args.remove && actual === null) {
+    console.log("generate-codex-hooks: OK");
+    return;
+  }
+  const actualConfig = readUserHooksConfig(actual, outputPath);
+  const targetConfig = args.remove
+    ? removeManagedHooksConfig(actualConfig, managedConfig)
+    : mergeUserHooksConfig(actualConfig, managedConfig);
+  const target = `${JSON.stringify(targetConfig, null, 2)}\n`;
 
-  if (actual === expected) {
+  if (actual === target) {
     console.log(args.write ? "generate-codex-hooks: already up to date" : "generate-codex-hooks: OK");
     return;
   }
@@ -145,8 +231,8 @@ function run(args) {
 
   const dir = resolve(outputPath, "..");
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-  writeFileSync(outputPath, expected);
-  console.log(`updated ${outputPath}`);
+  writeFileSync(outputPath, target);
+  console.log(args.remove ? `removed ai-experts hooks from ${outputPath}` : `updated ${outputPath}`);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
@@ -158,4 +244,4 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   }
 }
 
-export { buildAggregatedHooks };
+export { buildAggregatedHooks, mergeUserHooksConfig, removeManagedHooksConfig };

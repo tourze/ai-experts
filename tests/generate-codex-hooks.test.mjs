@@ -1,14 +1,23 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import test from "node:test";
 
 import { buildAggregatedHooks } from "../scripts/generate-codex-hooks.mjs";
 
+const repoRoot = resolve(".");
+
 function flattenHookEntries(config) {
   return Object.values(config.hooks ?? {}).flat();
+}
+
+function hookCommands(config) {
+  return flattenHookEntries(config)
+    .flatMap((entry) => entry.hooks ?? [])
+    .map((hook) => hook.command)
+    .filter((command) => typeof command === "string");
 }
 
 test("generate-codex-hooks 输出中不保留 Claude matcher", () => {
@@ -56,6 +65,22 @@ test("generate-codex-hooks 不写项目级 .codex/hooks.json", () => {
   assert.match(write.stderr, /Project-level \.codex\/hooks\.json is intentionally unsupported/);
 });
 
+test("generate-codex-hooks --check 不依赖调用者 cwd", () => {
+  const cwd = mkdtempSync(join(tmpdir(), "ai-experts-codex-hooks-cwd-"));
+
+  try {
+    const check = spawnSync(process.execPath, [join(repoRoot, "scripts/generate-codex-hooks.mjs"), "--check"], {
+      cwd,
+      encoding: "utf-8",
+    });
+
+    assert.equal(check.status, 0, check.stderr || check.stdout);
+    assert.match(check.stdout, /does not track \.codex\/hooks\.json/);
+  } finally {
+    rmSync(cwd, { recursive: true, force: true });
+  }
+});
+
 test("generate-codex-hooks --write --user 尊重 CODEX_HOME", () => {
   const codexHome = mkdtempSync(join(tmpdir(), "ai-experts-codex-hooks-"));
   const hooksPath = join(codexHome, "hooks.json");
@@ -72,6 +97,89 @@ test("generate-codex-hooks --write --user 尊重 CODEX_HOME", () => {
     assert.equal(write.status, 0);
     assert.equal(existsSync(hooksPath), true);
     assert.match(readFileSync(hooksPath, "utf-8"), /"hooks"/);
+  } finally {
+    rmSync(codexHome, { recursive: true, force: true });
+  }
+});
+
+test("generate-codex-hooks --write --user 保留非 ai-experts hooks", () => {
+  const codexHome = mkdtempSync(join(tmpdir(), "ai-experts-codex-hooks-merge-"));
+  const hooksPath = join(codexHome, "hooks.json");
+
+  try {
+    writeFileSync(
+      hooksPath,
+      `${JSON.stringify({
+        hooks: {
+          UserPromptSubmit: [
+            {
+              matcher: ".*",
+              hooks: [{ type: "command", command: "node /custom/hooks/dispatch.mjs user-prompt-submit" }],
+            },
+          ],
+        },
+      }, null, 2)}\n`,
+      "utf-8",
+    );
+
+    const write = spawnSync(process.execPath, ["scripts/generate-codex-hooks.mjs", "--write", "--user"], {
+      encoding: "utf-8",
+      env: {
+        ...process.env,
+        CODEX_HOME: codexHome,
+      },
+    });
+
+    assert.equal(write.status, 0, write.stderr || write.stdout);
+    const config = JSON.parse(readFileSync(hooksPath, "utf-8"));
+    const commands = hookCommands(config);
+    assert.ok(commands.includes("node /custom/hooks/dispatch.mjs user-prompt-submit"));
+    assert.ok(commands.some((command) => command.includes(`${repoRoot}/plugins/`)));
+  } finally {
+    rmSync(codexHome, { recursive: true, force: true });
+  }
+});
+
+test("generate-codex-hooks --remove --user 只移除 ai-experts hooks", () => {
+  const codexHome = mkdtempSync(join(tmpdir(), "ai-experts-codex-hooks-remove-"));
+  const hooksPath = join(codexHome, "hooks.json");
+
+  try {
+    writeFileSync(
+      hooksPath,
+      `${JSON.stringify({
+        hooks: {
+          PreToolUse: [
+            {
+              matcher: "exec_command",
+              hooks: [{ type: "command", command: "node /custom/hooks/dispatch.mjs pre-tool-use/bash" }],
+            },
+          ],
+        },
+      }, null, 2)}\n`,
+      "utf-8",
+    );
+
+    const write = spawnSync(process.execPath, ["scripts/generate-codex-hooks.mjs", "--write", "--user"], {
+      encoding: "utf-8",
+      env: {
+        ...process.env,
+        CODEX_HOME: codexHome,
+      },
+    });
+    assert.equal(write.status, 0, write.stderr || write.stdout);
+
+    const remove = spawnSync(process.execPath, ["scripts/generate-codex-hooks.mjs", "--remove", "--user"], {
+      encoding: "utf-8",
+      env: {
+        ...process.env,
+        CODEX_HOME: codexHome,
+      },
+    });
+    assert.equal(remove.status, 0, remove.stderr || remove.stdout);
+
+    const commands = hookCommands(JSON.parse(readFileSync(hooksPath, "utf-8")));
+    assert.deepEqual(commands, ["node /custom/hooks/dispatch.mjs pre-tool-use/bash"]);
   } finally {
     rmSync(codexHome, { recursive: true, force: true });
   }

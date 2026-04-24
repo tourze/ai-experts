@@ -183,8 +183,8 @@ codex_install() {
 }
 
 codex_uninstall() {
-  info "Codex CLI: removing user-level hooks.json..."
-  rm -f "${CODEX_HOME_DIR}/hooks.json"
+  info "Codex CLI: removing ai-experts user-level hooks..."
+  node "$REPO_ROOT/scripts/generate-codex-hooks.mjs" --remove --user
 
   info "Codex CLI: removing marketplace..."
   # codex has no stable marketplace remove command in all versions.

@@ -53,6 +53,101 @@ test("install.sh enables Codex plugins without jq", () => {
   }
 });
 
+test("install.sh works when called outside the repository root", () => {
+  const tmp = mkdtempSync(join(tmpdir(), "ai-experts-install-cwd-"));
+  const binDir = join(tmp, "bin");
+  const codexHome = join(tmp, "codex-home");
+  const outsideCwd = join(tmp, "outside");
+
+  try {
+    mkdirSync(binDir);
+    mkdirSync(codexHome);
+    mkdirSync(outsideCwd);
+    writeFileSync(join(codexHome, "config.toml"), "", "utf-8");
+
+    symlinkSync(process.execPath, join(binDir, "node"));
+    writeExecutable(join(binDir, "codex"), "#!/usr/bin/env bash\nexit 0\n");
+
+    const output = execFileSync("/bin/bash", [join(repoRoot, "scripts/install.sh"), "--install"], {
+      cwd: outsideCwd,
+      env: {
+        ...process.env,
+        CODEX_HOME: codexHome,
+        PATH: `${binDir}:/usr/bin:/bin`,
+      },
+      encoding: "utf-8",
+      stdio: "pipe",
+    });
+
+    assert.match(output, /Codex CLI: done/);
+    assert.match(readFileSync(join(codexHome, "hooks.json"), "utf-8"), /"exec_command"/);
+  } finally {
+    rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test("install.sh preserves unmanaged Codex hooks during install and uninstall", () => {
+  const tmp = mkdtempSync(join(tmpdir(), "ai-experts-install-hooks-"));
+  const binDir = join(tmp, "bin");
+  const codexHome = join(tmp, "codex-home");
+  const customCommand = "node /custom/hooks/dispatch.mjs user-prompt-submit";
+
+  try {
+    mkdirSync(binDir);
+    mkdirSync(codexHome);
+    writeFileSync(join(codexHome, "config.toml"), "", "utf-8");
+    writeFileSync(
+      join(codexHome, "hooks.json"),
+      `${JSON.stringify({
+        hooks: {
+          UserPromptSubmit: [
+            {
+              matcher: ".*",
+              hooks: [{ type: "command", command: customCommand }],
+            },
+          ],
+        },
+      }, null, 2)}\n`,
+      "utf-8",
+    );
+
+    symlinkSync(process.execPath, join(binDir, "node"));
+    writeExecutable(join(binDir, "codex"), "#!/usr/bin/env bash\nexit 0\n");
+
+    execFileSync("/bin/bash", ["scripts/install.sh", "--install"], {
+      cwd: repoRoot,
+      env: {
+        ...process.env,
+        CODEX_HOME: codexHome,
+        PATH: `${binDir}:/usr/bin:/bin`,
+      },
+      encoding: "utf-8",
+      stdio: "pipe",
+    });
+
+    const installedHooks = readFileSync(join(codexHome, "hooks.json"), "utf-8");
+    assert.match(installedHooks, new RegExp(customCommand.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+    assert.match(installedHooks, new RegExp(`${repoRoot.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/plugins/`));
+
+    execFileSync("/bin/bash", ["scripts/install.sh", "--uninstall"], {
+      cwd: repoRoot,
+      env: {
+        ...process.env,
+        CODEX_HOME: codexHome,
+        PATH: `${binDir}:/usr/bin:/bin`,
+      },
+      encoding: "utf-8",
+      stdio: "pipe",
+    });
+
+    const uninstalledHooks = readFileSync(join(codexHome, "hooks.json"), "utf-8");
+    assert.match(uninstalledHooks, new RegExp(customCommand.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+    assert.doesNotMatch(uninstalledHooks, new RegExp(`${repoRoot.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/plugins/`));
+  } finally {
+    rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
 test("install.sh --uninstall removes managed Codex memory link", () => {
   const tmp = mkdtempSync(join(tmpdir(), "ai-experts-uninstall-"));
   const binDir = join(tmp, "bin");
