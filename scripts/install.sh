@@ -90,6 +90,10 @@ unlink_memory_file() {
   info "$label: leaving memory target unchanged ($target)"
 }
 
+audit_skill_evals() {
+  node "$REPO_ROOT/scripts/audit-skill-evals.mjs"
+}
+
 # ── Claude Code ──────────────────────────────────────────────
 
 claude_install() {
@@ -296,19 +300,23 @@ case "$action" in
     has_cmd claude && claude_uninstall
     has_cmd codex  && codex_uninstall
     echo ""
+    if has_cmd claude || has_cmd codex; then
+      audit_skill_evals
+    fi
     has_cmd claude && claude_install
     has_cmd codex  && codex_install
     ;;
   install|--install|-i|"")
-    has_cmd claude && claude_install
-    has_cmd codex  && codex_install
-
     if ! has_cmd claude && ! has_cmd codex; then
       err "Neither 'claude' nor 'codex' CLI found. Install at least one:"
       err "  Claude Code: https://code.claude.com"
       err "  Codex CLI:   https://github.com/openai/codex"
       exit 1
     fi
+
+    audit_skill_evals
+    has_cmd claude && claude_install
+    has_cmd codex  && codex_install
     ;;
   *)
     echo "Usage: $0 [--install | --uninstall | --reinstall]"
