@@ -35,7 +35,6 @@
 - `plugins/<plugin-name>/hooks/`：可选；插件级 hook 定义与分发入口（Claude Code 直接使用；Codex CLI 由安装脚本聚合到用户级 `${CODEX_HOME:-~/.codex}/hooks.json`）。
 - `plugins/<plugin-name>/agents/`：可选；只读分析或专用执行 agent（仅 Claude Code）。
 - `AGENTS.md`：Codex CLI 项目指令文件，从 `CLAUDE.md` 自动生成。
-- `memory/`：仓库本地 memory 与迁移中的规则草稿，不属于 marketplace 必需结构。
 
 ## 插件总览
 
