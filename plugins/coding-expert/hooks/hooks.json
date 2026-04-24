@@ -34,18 +34,6 @@
         ]
       }
     ],
-    "Notification": [
-      {
-        "matcher": ".*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.mjs notification",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
     "SessionStart": [
       {
         "matcher": ".*",

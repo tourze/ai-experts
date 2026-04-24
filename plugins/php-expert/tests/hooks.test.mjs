@@ -40,6 +40,6 @@ test("dispatch 对非法 JSON 输出 report 而不是崩溃", () => {
 
   assert.equal(result.status, 0);
   const payload = JSON.parse(result.stdout);
-  assert.equal(payload.decision, "report");
-  assert.match(payload.reason, /stdin 不是合法 JSON/);
+  assert.equal(payload.decision, undefined);
+  assert.match(payload.systemMessage, /stdin 不是合法 JSON/);
 });
