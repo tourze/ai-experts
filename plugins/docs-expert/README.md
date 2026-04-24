@@ -30,6 +30,7 @@
 | `enterprise-proposal` | BCG/McKinsey 风格企业提案 |
 | `proposal-review` | 提案方法论评审 |
 | `proposal-writer` | 商业提案撰写 |
+| `ppt-generate` | 当用户要从零生成演示文稿、从文档/主题生成 PPT、或要求 AI 端到端制作幻灯片时使用。 |
 
 ## Agents
 
