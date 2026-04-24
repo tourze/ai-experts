@@ -65,8 +65,8 @@ test("dispatch 在非法 JSON stdin 下返回 report", () => {
 
     assert.equal(result.status, 0);
     const output = JSON.parse(result.stdout);
-    assert.equal(output.decision, "report");
-    assert.match(output.reason, /stdin 不是合法 JSON/);
+    assert.equal(output.decision, undefined);
+    assert.match(output.systemMessage, /stdin 不是合法 JSON/);
   });
 });
 
@@ -85,9 +85,8 @@ test("dispatch 聚合多个 report 输出", () => {
 
     assert.equal(result.status, 0);
     const output = JSON.parse(result.stdout);
-    assert.equal(output.decision, "report");
-    assert.match(output.reason, /report-a/);
-    assert.match(output.reason, /report-b/);
+    assert.match(output.systemMessage, /report-a/);
+    assert.match(output.systemMessage, /report-b/);
   });
 });
 

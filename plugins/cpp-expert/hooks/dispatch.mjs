@@ -41,6 +41,37 @@ const TELEMETRY_MAX_FILES = parsePositiveInt(
   5,
 );
 
+function hookEventNameFromSubdir(value) {
+  return String(value || "unknown")
+    .split("/")[0]
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join("");
+}
+
+const eventName = hookEventNameFromSubdir(subdir);
+
+function emitSystemMessage(message) {
+  console.log(JSON.stringify({ systemMessage: message }));
+}
+
+function emitContext(message) {
+  const contextEvents = new Set(["SessionStart", "UserPromptSubmit", "PostToolUse", "PostToolBatch"]);
+  if (!contextEvents.has(eventName)) {
+    emitSystemMessage(message);
+    return;
+  }
+
+  console.log(
+    JSON.stringify({
+      hookSpecificOutput: {
+        hookEventName: eventName,
+        additionalContext: message,
+      },
+    }),
+  );
+}
+
 function parsePositiveInt(value, fallback) {
   const parsed = Number.parseInt(value ?? "", 10);
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
@@ -240,15 +271,12 @@ if (!subdir) {
 const hooksRoot = resolve(__dirname);
 const dir = resolve(__dirname, subdir);
 if (dir !== hooksRoot && !dir.startsWith(`${hooksRoot}${sep}`)) {
-  const result = {
-    decision: "report",
-    reason: `[dispatch] 非法 hook 子目录：${subdir}`,
-  };
+  const reason = `[dispatch] 非法 hook 子目录：${subdir}`;
   recordHookTelemetry({
     decision: "report",
-    detail: result.reason,
+    detail: reason,
   });
-  console.log(JSON.stringify(result));
+  emitSystemMessage(reason);
   process.exit(0);
 }
 
@@ -293,15 +321,12 @@ async function readPayload() {
     if (truncated) payload._stdinTruncated = true;
     return payload;
   } catch (err) {
-    const result = {
-      decision: "report",
-      reason: `[dispatch] stdin 不是合法 JSON：${err.message || err}`,
-    };
+    const reason = `[dispatch] stdin 不是合法 JSON：${err.message || err}`;
     recordHookTelemetry({
       decision: "report",
-      detail: result.reason,
+      detail: reason,
     });
-    console.log(JSON.stringify(result));
+    emitSystemMessage(reason);
     process.exit(0);
   }
 }
@@ -441,37 +466,9 @@ for (const file of files) {
   }
 }
 
-// context 优先于 report。根据 subdir 首段推导 hookEventName,
-// 例如 user-prompt-submit → UserPromptSubmit, post-tool-use → PostToolUse。
-const eventName = subdir
-  .split("/")[0]
-  .split("-")
-  .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-  .join("");
-
 if (contexts.length > 0) {
-  console.log(
-    JSON.stringify({
-      hookSpecificOutput: {
-        hookEventName: eventName,
-        additionalContext: contexts.map((c) => c.reason).join("\n\n"),
-      },
-    }),
-  );
+  emitContext(contexts.map((c) => c.reason).join("\n\n"));
 } else if (reports.length > 0) {
   const combinedReason = reports.map((r) => r.reason).join("\n\n");
-  // SessionStart / PreCompact / Notification 的 JSON schema 不接受
-  // {decision: "report", reason}; 用 systemMessage 作为通用回退，
-  // 所有 hook 事件都支持该字段且语义贴合 "向用户报告"。
-  const REPORT_VIA_SYSTEM_MESSAGE = new Set(["SessionStart", "PreCompact", "Notification"]);
-  if (REPORT_VIA_SYSTEM_MESSAGE.has(eventName)) {
-    console.log(JSON.stringify({ systemMessage: combinedReason }));
-  } else {
-    console.log(
-      JSON.stringify({
-        decision: "report",
-        reason: combinedReason,
-      }),
-    );
-  }
+  emitSystemMessage(combinedReason);
 }

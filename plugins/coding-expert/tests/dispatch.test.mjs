@@ -55,8 +55,8 @@ test("dispatch 在非法 JSON stdin 下返回 report", () => {
 
   assert.equal(result.status, 0);
   const output = JSON.parse(result.stdout);
-  assert.equal(output.decision, "report");
-  assert.match(output.reason, /stdin 不是合法 JSON/);
+  assert.equal(output.decision, undefined);
+  assert.match(output.systemMessage, /stdin 不是合法 JSON/);
 });
 
 test("SessionStart + report 输出 systemMessage 而非 {decision: report}", () => {
@@ -85,7 +85,7 @@ test("SessionStart + report 输出 systemMessage 而非 {decision: report}", () 
   });
 });
 
-test("UserPromptSubmit + report 仍输出 {decision: report}（确保 A 不回归其他事件）", () => {
+test("UserPromptSubmit + report 输出 systemMessage", () => {
   withTempDispatch((hooksRoot) => {
     const hookDir = join(hooksRoot, "user-prompt-submit");
     mkdirSync(hookDir, { recursive: true });
@@ -104,8 +104,7 @@ test("UserPromptSubmit + report 仍输出 {decision: report}（确保 A 不回�
 
     assert.equal(result.status, 0);
     const output = JSON.parse(result.stdout);
-    assert.equal(output.decision, "report");
-    assert.equal(output.reason, "test-prompt-report");
-    assert.equal(output.systemMessage, undefined);
+    assert.equal(output.decision, undefined);
+    assert.equal(output.systemMessage, "test-prompt-report");
   });
 });

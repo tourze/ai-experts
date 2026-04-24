@@ -44,8 +44,8 @@ test("dispatch 对越界子目录返回 report", () => {
 
     assert.equal(result.status, 0);
     const output = JSON.parse(result.stdout);
-    assert.equal(output.decision, "report");
-    assert.match(output.reason, /非法 hook 子目录/);
+    assert.equal(output.decision, undefined);
+    assert.match(output.systemMessage, /非法 hook 子目录/);
   });
 });
 
@@ -80,8 +80,8 @@ test("dispatch 在非法 JSON stdin 下返回 report", () => {
 
     assert.equal(result.status, 0);
     const output = JSON.parse(result.stdout);
-    assert.equal(output.decision, "report");
-    assert.match(output.reason, /stdin 不是合法 JSON/);
+    assert.equal(output.decision, undefined);
+    assert.match(output.systemMessage, /stdin 不是合法 JSON/);
   });
 });
 
@@ -144,8 +144,8 @@ test("dispatch 会把 apply_patch Add File 标准化为 file_path", () => {
 
     assert.equal(result.status, 0);
     const output = JSON.parse(result.stdout);
-    assert.equal(output.decision, "report");
-    assert.match(output.reason, /path=src\/new-file\.ts/);
+    assert.equal(output.decision, undefined);
+    assert.match(output.systemMessage, /path=src\/new-file\.ts/);
   });
 });
 

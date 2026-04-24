@@ -44,8 +44,8 @@ test("dispatch 对越界子目录返回 report", () => {
 
     assert.equal(result.status, 0);
     const output = JSON.parse(result.stdout);
-    assert.equal(output.decision, "report");
-    assert.match(output.reason, /非法 hook 子目录/);
+    assert.equal(output.decision, undefined);
+    assert.match(output.systemMessage, /非法 hook 子目录/);
   });
 });
 
@@ -80,7 +80,7 @@ test("dispatch 在非法 JSON stdin 下返回 report", () => {
 
     assert.equal(result.status, 0);
     const output = JSON.parse(result.stdout);
-    assert.equal(output.decision, "report");
-    assert.match(output.reason, /stdin 不是合法 JSON/);
+    assert.equal(output.decision, undefined);
+    assert.match(output.systemMessage, /stdin 不是合法 JSON/);
   });
 });
