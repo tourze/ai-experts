@@ -1,10 +1,24 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { resolve } from "node:path";
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 
 const pluginRoot = resolve("plugins/coding-expert");
 const dispatchPath = resolve(pluginRoot, "hooks/dispatch.mjs");
+
+function withTempDispatch(fn) {
+  const root = mkdtempSync(join(tmpdir(), "coding-dispatch-"));
+  const hooksRoot = join(root, "hooks");
+  mkdirSync(hooksRoot, { recursive: true });
+  writeFileSync(join(hooksRoot, "dispatch.mjs"), readFileSync(dispatchPath, "utf-8"));
+  try {
+    return fn(hooksRoot);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+}
 
 test("dispatch 在空 stdin 下执行 user-prompt-submit 不崩溃", () => {
   const result = spawnSync("node", [dispatchPath, "user-prompt-submit"], {
@@ -43,4 +57,55 @@ test("dispatch 在非法 JSON stdin 下返回 report", () => {
   const output = JSON.parse(result.stdout);
   assert.equal(output.decision, "report");
   assert.match(output.reason, /stdin 不是合法 JSON/);
+});
+
+test("SessionStart + report 输出 systemMessage 而非 {decision: report}", () => {
+  // 回归：防止 SessionStart 场景再次触发 Claude Code schema 校验错误
+  // ("Hook JSON output validation failed — (root): Invalid input")。
+  withTempDispatch((hooksRoot) => {
+    const hookDir = join(hooksRoot, "session-start");
+    mkdirSync(hookDir, { recursive: true });
+    writeFileSync(
+      join(hookDir, "report-hook.mjs"),
+      'export async function run() { return { decision: "report", reason: "test-session-report" }; }\n',
+      "utf-8",
+    );
+
+    const result = spawnSync("node", [join(hooksRoot, "dispatch.mjs"), "session-start"], {
+      cwd: pluginRoot,
+      input: "",
+      encoding: "utf-8",
+      env: { ...process.env, AI_EXPERTS_HOOK_TELEMETRY: "0" },
+    });
+
+    assert.equal(result.status, 0);
+    const output = JSON.parse(result.stdout);
+    assert.equal(output.decision, undefined, "SessionStart 不应输出 decision 字段");
+    assert.equal(output.systemMessage, "test-session-report");
+  });
+});
+
+test("UserPromptSubmit + report 仍输出 {decision: report}（确保 A 不回归其他事件）", () => {
+  withTempDispatch((hooksRoot) => {
+    const hookDir = join(hooksRoot, "user-prompt-submit");
+    mkdirSync(hookDir, { recursive: true });
+    writeFileSync(
+      join(hookDir, "report-hook.mjs"),
+      'export async function run() { return { decision: "report", reason: "test-prompt-report" }; }\n',
+      "utf-8",
+    );
+
+    const result = spawnSync("node", [join(hooksRoot, "dispatch.mjs"), "user-prompt-submit"], {
+      cwd: pluginRoot,
+      input: JSON.stringify({ prompt: "hello" }),
+      encoding: "utf-8",
+      env: { ...process.env, AI_EXPERTS_HOOK_TELEMETRY: "0" },
+    });
+
+    assert.equal(result.status, 0);
+    const output = JSON.parse(result.stdout);
+    assert.equal(output.decision, "report");
+    assert.equal(output.reason, "test-prompt-report");
+    assert.equal(output.systemMessage, undefined);
+  });
 });

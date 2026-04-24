@@ -443,12 +443,13 @@ for (const file of files) {
 
 // context 优先于 report。根据 subdir 首段推导 hookEventName,
 // 例如 user-prompt-submit → UserPromptSubmit, post-tool-use → PostToolUse。
+const eventName = subdir
+  .split("/")[0]
+  .split("-")
+  .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+  .join("");
+
 if (contexts.length > 0) {
-  const eventName = subdir
-    .split("/")[0]
-    .split("-")
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join("");
   console.log(
     JSON.stringify({
       hookSpecificOutput: {
@@ -458,10 +459,19 @@ if (contexts.length > 0) {
     }),
   );
 } else if (reports.length > 0) {
-  console.log(
-    JSON.stringify({
-      decision: "report",
-      reason: reports.map((r) => r.reason).join("\n\n"),
-    }),
-  );
+  const combinedReason = reports.map((r) => r.reason).join("\n\n");
+  // SessionStart / PreCompact / Notification 的 JSON schema 不接受
+  // {decision: "report", reason}; 用 systemMessage 作为通用回退，
+  // 所有 hook 事件都支持该字段且语义贴合 "向用户报告"。
+  const REPORT_VIA_SYSTEM_MESSAGE = new Set(["SessionStart", "PreCompact", "Notification"]);
+  if (REPORT_VIA_SYSTEM_MESSAGE.has(eventName)) {
+    console.log(JSON.stringify({ systemMessage: combinedReason }));
+  } else {
+    console.log(
+      JSON.stringify({
+        decision: "report",
+        reason: combinedReason,
+      }),
+    );
+  }
 }
