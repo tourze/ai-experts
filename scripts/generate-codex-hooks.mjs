@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 // generate-codex-hooks.mjs
 //
-// Aggregate per-plugin hooks into a single hooks.json for Codex CLI
+// Aggregate per-plugin hooks into a user-level hooks.json for Codex CLI
 // compatibility (Codex does not load hooks from plugin directories).
 //
-// Two modes:
-//   Project-level (default): .codex/hooks.json with relative paths
-//   User-level (--user):     ~/.codex/hooks.json with absolute paths
+// Repository policy:
+//   This repository does not track or generate project-level .codex/hooks.json.
+//   The installer writes user-level ${CODEX_HOME:-~/.codex}/hooks.json with absolute paths.
 //
 // Usage:
-//   node scripts/generate-codex-hooks.mjs --write          # project-level
-//   node scripts/generate-codex-hooks.mjs --write --user   # user-level
-//   node scripts/generate-codex-hooks.mjs --check          # CI check
+//   node scripts/generate-codex-hooks.mjs --check          # validate generation only
+//   node scripts/generate-codex-hooks.mjs --check --user   # check user-level hooks.json
+//   node scripts/generate-codex-hooks.mjs --write --user   # write user-level hooks.json
 
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -48,6 +48,9 @@ function parseArgs(argv) {
   }
   if (args.check === args.write) {
     throw new Error("Use exactly one of --check or --write");
+  }
+  if (args.write && !args.user) {
+    throw new Error("Project-level .codex/hooks.json is intentionally unsupported; use --write --user.");
   }
   return args;
 }
@@ -90,7 +93,7 @@ function transformHookEntry(entry, pluginName, useAbsPath) {
   };
 }
 
-function buildAggregatedHooks(useAbsPath = false) {
+function buildAggregatedHooks(useAbsPath = true) {
   const pluginHookFiles = listPluginHookFiles();
   const merged = {};
 
@@ -113,12 +116,20 @@ function buildAggregatedHooks(useAbsPath = false) {
   return { hooks: merged };
 }
 
-function run(args) {
-  const outputPath = args.user
-    ? resolve(homedir(), ".codex", "hooks.json")
-    : resolve(repoRoot, ".codex", "hooks.json");
+function userHooksPath() {
+  return resolve(process.env.CODEX_HOME ?? resolve(homedir(), ".codex"), "hooks.json");
+}
 
-  const expected = `${JSON.stringify(buildAggregatedHooks(args.user), null, 2)}\n`;
+function run(args) {
+  const expected = `${JSON.stringify(buildAggregatedHooks(true), null, 2)}\n`;
+
+  if (args.check && !args.user) {
+    JSON.parse(expected);
+    console.log("generate-codex-hooks: OK (repository does not track .codex/hooks.json)");
+    return;
+  }
+
+  const outputPath = userHooksPath();
   const actual = existsSync(outputPath) ? readFileSync(outputPath, "utf-8") : null;
 
   if (actual === expected) {

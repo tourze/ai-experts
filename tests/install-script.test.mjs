@@ -38,9 +38,12 @@ test("install.sh enables Codex plugins without jq", () => {
     });
 
     const config = readFileSync(join(codexHome, "config.toml"), "utf-8");
+    const hooks = readFileSync(join(codexHome, "hooks.json"), "utf-8");
     const codexMemoryTarget = join(codexHome, "AGENTS.md");
     assert.match(output, /Codex CLI: done/);
     assert.match(config, /\[plugins\."react-native-expert@ai-experts"\]/);
+    assert.match(hooks, /"exec_command"/);
+    assert.match(hooks, new RegExp(`${repoRoot.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/plugins/`));
     assert.equal(lstatSync(codexMemoryTarget).isSymbolicLink(), true);
     assert.equal(readlinkSync(codexMemoryTarget), join(repoRoot, "MEMORY.md"));
   } finally {

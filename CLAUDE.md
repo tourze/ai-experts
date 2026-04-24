@@ -11,6 +11,7 @@ Claude Code 插件集合，包含 55 个领域专家插件，每个插件提供 
 ## 核心架构约束
 - **插件源码不能跨插件 import**：每个插件仍以独立目录分发；通用守卫统一收敛在基座插件中，通过 manifest dependencies 复用，不再在各插件里复制同一份实现。
 - 插件结构：`.claude-plugin/plugin.json` + `README.md` + `skills/` + `tests/`，并可按需提供 `hooks/` 与 `agents/`
+- **不生成仓库级 `.codex/hooks.json`**：本仓库只维护插件内 `hooks/hooks.json`；Codex CLI 的聚合 hooks 由安装脚本写入用户级 `${CODEX_HOME:-~/.codex}/hooks.json`。`scripts/generate-codex-hooks.mjs --check` 只验证可生成性，实际写入必须显式使用 `--write --user`。
 
 ## 插件层次结构
 插件按以下四层组织，上层依赖下层提供的 hooks 兜底，不重复实现已有守卫：
