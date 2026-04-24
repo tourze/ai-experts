@@ -10,11 +10,12 @@ tools: ['github/github-mcp-server/issue_write']
 
 ## 执行步骤
 
-1. 运行：`node .specify/scripts/check-prerequisites.mjs --json --require-tasks --include-tasks`
-2. 读取 `tasks.md` 并提取任务列表。
-3. 读取 `git remote.origin.url`。
-4. 仅当远端是 GitHub 且仓库匹配时创建 issue。
-5. 每个 issue 包含：
+1. 确保 `.specify/scripts/check-prerequisites.mjs` 存在；若缺失，先定位当前 `speckit-expert` 插件目录并执行：`node <plugin-dir>/scripts/bootstrap-specify.mjs`。
+2. 运行：`node .specify/scripts/check-prerequisites.mjs --json --require-tasks --include-tasks`
+3. 读取 `tasks.md` 并提取任务列表。
+4. 读取 `git remote.origin.url`。
+5. 仅当远端是 GitHub 且仓库匹配时创建 issue。
+6. 每个 issue 包含：
    - 任务编号与标题
    - 验收标准
    - 依赖关系

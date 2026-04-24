@@ -1,9 +1,6 @@
 ---
 name: speckit-validate
 description: 校验实现是否满足规格要求、验收标准与边界条件。
-version: 1.0.0
-depends-on:
-  - speckit-implement
 ---
 
 ## 角色

@@ -1,8 +1,6 @@
 ---
 name: speckit-checker
 description: 自动检测项目技术栈并运行静态检查，输出聚合报告。
-version: 1.0.0
-depends-on: []
 ---
 
 ## 用户输入

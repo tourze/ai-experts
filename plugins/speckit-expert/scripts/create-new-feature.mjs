@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { printHelpAndExit, printErrorAndExit } from './common.mjs';
+import { getRepoRoot, printHelpAndExit, printErrorAndExit } from './common.mjs';
 
 function slugFromText(text) {
   const normalized = text
@@ -71,7 +71,7 @@ function main() {
     slug = 'feature';
   }
 
-  const repoRoot = process.cwd();
+  const repoRoot = getRepoRoot();
   const featureDir = path.join(repoRoot, '.specify', 'features', slug);
   const specFile = path.join(featureDir, 'spec.md');
 

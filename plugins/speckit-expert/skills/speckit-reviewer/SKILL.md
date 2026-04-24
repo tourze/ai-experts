@@ -1,8 +1,6 @@
 ---
 name: speckit-reviewer
 description: 对代码变更做结构化审查并输出可执行修复建议。
-version: 1.0.0
-depends-on: []
 ---
 
 ## 角色

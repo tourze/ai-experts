@@ -114,6 +114,12 @@ export function specKitEffectiveBranchName(raw) {
   return raw;
 }
 
+export function isLegacyFeatureBranch(raw) {
+  const branch = specKitEffectiveBranchName(raw);
+  const malformedTimestamp = /^[0-9]{7}-[0-9]{6}-/.test(branch) || /^(?:[0-9]{7}|[0-9]{8})-[0-9]{6}$/.test(branch);
+  return (/^[0-9]{3,}-/.test(branch) && !malformedTimestamp) || /^[0-9]{8}-[0-9]{6}-/.test(branch);
+}
+
 export function checkFeatureBranch(raw, hasGitRepo, repoRoot = getRepoRoot()) {
   const featureJson = path.join(repoRoot, '.specify', 'feature.json');
   if (fs.existsSync(featureJson)) {
@@ -125,14 +131,9 @@ export function checkFeatureBranch(raw, hasGitRepo, repoRoot = getRepoRoot()) {
     return true;
   }
 
-  const branch = specKitEffectiveBranchName(raw);
-  const malformedTimestamp = /^[0-9]{7}-[0-9]{6}-/.test(branch) || /^(?:[0-9]{7}|[0-9]{8})-[0-9]{6}$/.test(branch);
-  const isSequential = /^[0-9]{3,}-/.test(branch) && !malformedTimestamp;
-  const isTimestamp = /^[0-9]{8}-[0-9]{6}-/.test(branch);
-
-  if (!isSequential && !isTimestamp) {
+  if (!isLegacyFeatureBranch(raw)) {
     process.stderr.write(`[specify] Warning: Current branch '${raw}' does not follow legacy feature naming.\n`);
-    process.stderr.write('[specify] Continuing because branch-less workflow is supported when feature.json is used.\n');
+    process.stderr.write('[specify] Continuing because an explicit current feature is configured.\n');
     return true;
   }
 
@@ -184,37 +185,66 @@ function normalizeFeatureDir(repoRoot, featureDir) {
   return path.join(repoRoot, featureDir);
 }
 
-export function getFeaturePaths() {
-  const repoRoot = getRepoRoot();
-  const currentBranch = getCurrentBranch(repoRoot);
-  const hasGitRepo = hasGit(repoRoot);
+function findSingleSpecifyFeatureDir(repoRoot) {
+  const featuresDir = path.join(repoRoot, '.specify', 'features');
+  if (!fs.existsSync(featuresDir) || !fs.statSync(featuresDir).isDirectory()) {
+    return '';
+  }
+
+  const entries = fs
+    .readdirSync(featuresDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name);
+
+  if (entries.length === 1) {
+    return path.join(featuresDir, entries[0]);
+  }
+
+  if (entries.length > 1) {
+    throw new Error('Multiple .specify/features entries found. Set .specify/feature.json or SPECIFY_FEATURE_DIRECTORY to select the current feature.');
+  }
+
+  return '';
+}
+
+function resolveCurrentFeatureDir(repoRoot, currentBranch) {
   const featureJsonPath = path.join(repoRoot, '.specify', 'feature.json');
 
-  let featureDir;
-
   if (process.env.SPECIFY_FEATURE_DIRECTORY) {
-    featureDir = normalizeFeatureDir(repoRoot, process.env.SPECIFY_FEATURE_DIRECTORY);
-  } else if (fs.existsSync(featureJsonPath)) {
-    let featureDirectory = '';
+    return normalizeFeatureDir(repoRoot, process.env.SPECIFY_FEATURE_DIRECTORY);
+  }
 
+  if (fs.existsSync(featureJsonPath)) {
     try {
       const raw = fs.readFileSync(featureJsonPath, 'utf8');
       const parsed = JSON.parse(raw);
-      if (typeof parsed.feature_directory === 'string') {
-        featureDirectory = parsed.feature_directory.trim();
+      if (typeof parsed.feature_directory === 'string' && parsed.feature_directory.trim()) {
+        return normalizeFeatureDir(repoRoot, parsed.feature_directory.trim());
       }
     } catch (error) {
       throw new Error(`Failed to parse .specify/feature.json: ${error.message}`);
     }
 
-    if (featureDirectory) {
-      featureDir = normalizeFeatureDir(repoRoot, featureDirectory);
-    } else {
-      featureDir = findFeatureDirByPrefix(repoRoot, currentBranch);
-    }
-  } else {
-    featureDir = findFeatureDirByPrefix(repoRoot, currentBranch);
+    throw new Error('.specify/feature.json must contain a non-empty feature_directory string.');
   }
+
+  if (isLegacyFeatureBranch(currentBranch)) {
+    return findFeatureDirByPrefix(repoRoot, currentBranch);
+  }
+
+  const singleFeatureDir = findSingleSpecifyFeatureDir(repoRoot);
+  if (singleFeatureDir) {
+    return singleFeatureDir;
+  }
+
+  throw new Error('No current Spec Kit feature is configured. Run speckit-specify/baseline to create .specify/feature.json, or set SPECIFY_FEATURE_DIRECTORY.');
+}
+
+export function getFeaturePaths() {
+  const repoRoot = getRepoRoot();
+  const currentBranch = getCurrentBranch(repoRoot);
+  const hasGitRepo = hasGit(repoRoot);
+  const featureDir = resolveCurrentFeatureDir(repoRoot, currentBranch);
 
   return {
     REPO_ROOT: repoRoot,

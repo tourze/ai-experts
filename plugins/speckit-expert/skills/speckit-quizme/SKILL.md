@@ -1,10 +1,6 @@
 ---
 name: speckit-quizme
 description: 用苏格拉底式追问挑战规格，暴露隐含假设和薄弱边界。
-handoffs:
-  - label: Clarify Spec Requirements
-    agent: speckit-clarify
-    prompt: Clarify specification requirements
 ---
 
 ## 角色

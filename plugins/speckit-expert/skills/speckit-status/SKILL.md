@@ -1,8 +1,6 @@
 ---
 name: speckit-status
 description: 生成特性进度看板，显示完成度与阻塞项。
-version: 1.0.0
-depends-on: []
 ---
 
 ## 角色

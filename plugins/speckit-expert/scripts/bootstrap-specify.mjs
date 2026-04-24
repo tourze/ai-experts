@@ -2,6 +2,8 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { getRepoRoot } from './common.mjs';
 
 function resolveAbsolute(targetPath) {
   if (!targetPath) {
@@ -23,14 +25,20 @@ function copyDirectoryContents(sourceDir, targetDir) {
       continue;
     }
 
+    if (path.resolve(sourcePath) === path.resolve(targetPath)) {
+      continue;
+    }
+
     fs.copyFileSync(sourcePath, targetPath);
   }
 }
 
 function main() {
-  const rootDir = process.cwd();
-  const pluginDir = resolveAbsolute(process.argv[2] ?? path.join(rootDir, 'plugins', 'speckit-expert'));
-  const targetDir = resolveAbsolute(process.argv[3] ?? path.join(rootDir, '.specify'));
+  const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+  const defaultPluginDir = path.resolve(scriptDir, '..');
+  const repoRoot = getRepoRoot();
+  const pluginDir = resolveAbsolute(process.argv[2] ?? defaultPluginDir);
+  const targetDir = resolveAbsolute(process.argv[3] ?? path.join(repoRoot, '.specify'));
 
   const scriptsDir = path.join(pluginDir, 'scripts');
   const templatesDir = path.join(pluginDir, 'templates');

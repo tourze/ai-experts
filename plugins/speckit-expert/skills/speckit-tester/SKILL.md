@@ -1,8 +1,6 @@
 ---
 name: speckit-tester
 description: 自动识别测试框架，执行测试并汇总覆盖率报告。
-version: 1.0.0
-depends-on: []
 ---
 
 ## 角色

@@ -1,10 +1,6 @@
 ---
 name: speckit-constitution
 description: 创建或更新项目宪章（Source of Law），并同步模板与流程约束。
-handoffs:
-  - label: Build Specification
-    agent: speckit-specify
-    prompt: Implement the feature specification based on the updated constitution. I want to build...
 ---
 
 ## 角色

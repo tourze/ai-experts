@@ -1,8 +1,6 @@
 ---
 name: speckit-diff
 description: 对比规格或计划文档的两个版本并输出结构化差异。
-version: 1.0.0
-depends-on: []
 ---
 
 ## 角色

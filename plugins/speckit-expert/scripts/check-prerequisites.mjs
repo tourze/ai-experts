@@ -88,7 +88,13 @@ function printDirStatus(dirPath, label) {
 
 function main() {
   const { jsonMode, requireTasks, includeTasks, pathsOnly } = parseArgs(process.argv.slice(2));
-  const paths = getFeaturePaths();
+  let paths;
+
+  try {
+    paths = getFeaturePaths();
+  } catch (error) {
+    printErrorAndExit(`ERROR: ${error.message}`);
+  }
 
   if (!checkFeatureBranch(paths.CURRENT_BRANCH, paths.HAS_GIT === 'true', paths.REPO_ROOT)) {
     process.exit(1);

@@ -30,7 +30,13 @@ function parseArgs(argv) {
 
 function main() {
   const { jsonMode } = parseArgs(process.argv.slice(2));
-  const paths = getFeaturePaths();
+  let paths;
+
+  try {
+    paths = getFeaturePaths();
+  } catch (error) {
+    printErrorAndExit(`Error: ${error.message}`);
+  }
 
   if (!checkFeatureBranch(paths.CURRENT_BRANCH, paths.HAS_GIT === 'true', paths.REPO_ROOT)) {
     process.exit(1);

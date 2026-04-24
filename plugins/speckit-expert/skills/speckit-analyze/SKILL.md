@@ -1,9 +1,6 @@
 ---
 name: speckit-analyze
 description: 在任务拆解完成后，对 spec.md、plan.md、tasks.md 做只读一致性分析。
-version: 1.0.0
-depends-on:
-  - speckit-tasks
 ---
 
 ## 用户输入
@@ -25,8 +22,9 @@ $ARGUMENTS
 ## 执行步骤
 
 1. 前置检查：确认 `.specify/scripts/check-prerequisites.mjs` 存在。
-   - 若不存在，提示先执行：
-     - `node plugins/speckit-expert/scripts/bootstrap-specify.mjs`
+   - 若不存在，先定位当前 `speckit-expert` 插件目录并执行：`node <plugin-dir>/scripts/bootstrap-specify.mjs`
+   - 在本仓库源码内可用：`node plugins/speckit-expert/scripts/bootstrap-specify.mjs`
+   - 不要改跑 bash 版脚本；本插件的 current feature 定位依赖 Node.js 脚本。
 2. 在仓库根目录运行：
    - `node .specify/scripts/check-prerequisites.mjs --json --require-tasks --include-tasks`
 3. 从返回结果解析 `FEATURE_DIR`，读取：

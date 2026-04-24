@@ -1,9 +1,6 @@
 ---
 name: speckit-implement
 description: 按 tasks.md 执行实现，强调零回归与可验证交付。
-version: 1.0.0
-depends-on:
-  - speckit-tasks
 ---
 
 ## 角色

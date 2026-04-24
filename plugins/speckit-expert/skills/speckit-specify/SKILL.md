@@ -1,14 +1,6 @@
 ---
 name: speckit-specify
 description: 根据自然语言需求生成或更新特性规格（默认当前分支，不新建分支）。
-handoffs:
-  - label: Build Technical Plan
-    agent: speckit-plan
-    prompt: Create a plan for the spec. I am building with...
-  - label: Clarify Spec Requirements
-    agent: speckit-clarify
-    prompt: Clarify specification requirements
-    send: true
 ---
 
 ## 用户输入
@@ -29,8 +21,9 @@ $ARGUMENTS
 
 ## 执行步骤
 
-1. 确保 `.specify` 资源存在：
-   - 若缺失，先执行：`node plugins/speckit-expert/scripts/bootstrap-specify.mjs`
+1. 确保 `.specify/scripts` 与 `.specify/templates` 存在：
+   - 若缺失，先定位当前 `speckit-expert` 插件目录并执行：`node <plugin-dir>/scripts/bootstrap-specify.mjs`
+   - 在本仓库源码内可用：`node plugins/speckit-expert/scripts/bootstrap-specify.mjs`
 2. 从需求生成 `slug`（2-4 词，连字符）。
 3. 在当前仓库创建或复用目录：`.specify/features/<slug>/`
 4. 使用模板生成/更新：`.specify/features/<slug>/spec.md`
