@@ -1,11 +1,11 @@
 # microsoft-expert
 
-面向 Microsoft 生态问题排查与代码落地的插件，覆盖 Microsoft Learn 官方文档检索、SDK API/示例校验，以及 `mslearn` CLI 回退链路自检。
+面向 Microsoft 生态问题排查与代码落地的插件，覆盖 Microsoft Learn 官方文档检索与 SDK API/示例校验。
 
 ## 目录结构
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
-- `hooks/`：`hooks.json`、`dispatch.mjs` 和 `session-start/learn-cli-check.mjs`。
+- `hooks/`：`hooks.json`（当前无注册 hook）与 `dispatch.mjs`（保留以备将来扩展）。
 - `skills/`：`microsoft-docs` 与 `microsoft-code-reference` 两个技能。
 
 ## Skills
@@ -24,10 +24,10 @@ claude plugin validate .
 jq empty .claude-plugin/plugin.json
 jq empty hooks/hooks.json
 node --check hooks/dispatch.mjs
-node --check hooks/session-start/learn-cli-check.mjs
-node hooks/dispatch.mjs session-start </dev/null
 npx -y @microsoft/learn-cli doctor --format json
 ```
+
+`learn-cli` 健康检查不再通过 SessionStart 自动执行（8s timeout + 非 MS 项目下必然失败，会触发 SessionStart schema 校验错误）。需要时手动跑最后一行命令即可。
 
 ## 安装
 
@@ -51,4 +51,4 @@ claude plugin uninstall microsoft-expert --scope project
 
 如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
 
-优先使用 Microsoft Learn MCP 工具；`mslearn` CLI 只作为回退链路。SessionStart hook 仅做健康检查并报告异常，不会阻塞插件使用。
+优先使用 Microsoft Learn MCP 工具；`mslearn` CLI 只作为回退链路，其健康检查改为按需手动执行。

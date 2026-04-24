@@ -7,7 +7,7 @@ const pluginRoot = resolve("plugins/microsoft-expert");
 const manifestPath = resolve(pluginRoot, ".claude-plugin/plugin.json");
 const hooksPath = resolve(pluginRoot, "hooks/hooks.json");
 
-test("manifest 与 hooks 配置指向真实文件", () => {
+test("manifest 与 hooks 配置结构正确", () => {
   const manifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
   const hooks = JSON.parse(readFileSync(hooksPath, "utf-8"));
 
@@ -18,6 +18,7 @@ test("manifest 与 hooks 配置指向真实文件", () => {
 
   assert.ok(existsSync(resolve(pluginRoot, manifest.skills)));
   assert.ok(existsSync(hooksPath));
-  const sessionHooks = hooks.hooks?.SessionStart?.[0]?.hooks ?? [];
-  assert.equal(sessionHooks[0]?.command, "node ${CLAUDE_PLUGIN_ROOT}/hooks/dispatch.mjs session-start");
+  // learn-cli 健康检查已从 SessionStart 移除（schema 违规 + 8s 噪音）；
+  // 改为按需手动 `npx -y @microsoft/learn-cli doctor`。
+  assert.deepEqual(hooks.hooks, {});
 });
