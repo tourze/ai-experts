@@ -55,7 +55,7 @@ function classify(filePath) {
     return { label: "SKILL.md", budget: 1500 };
   }
   if (MEMORY_FILE_BASENAMES.has(basename)) {
-    return { label: "记忆文件", budget: 3000 };
+    return { label: "记忆文件", budget: 10000 };
   }
   return null;
 }
@@ -126,7 +126,7 @@ export async function run(payload) {
         "",
         "新文件必须在预算内。建议：",
         "  • 把例子/长段落拆到 references/ 子目录",
-        "  • 删除装饰 emoji、冗余过渡句、模板 echo（\"This section covers...\"）",
+        '  • 删除装饰 emoji、冗余过渡句、模板 echo（"This section covers..."）',
         "  • SKILL.md 只保留决策树和规则，展开内容靠 references 引用",
       ].join("\n"),
     };
