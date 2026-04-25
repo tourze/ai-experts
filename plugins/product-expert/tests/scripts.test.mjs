@@ -15,15 +15,16 @@ function run(command, args, options = {}) {
   });
 }
 
-test("Python 脚本通过 py_compile", () => {
-  const result = run("python3", [
-    "-m",
-    "py_compile",
-    `${root}/skills/agile-product-owner/scripts/user_story_generator.py`,
-    `${root}/skills/competitive-teardown/scripts/competitive_matrix_builder.py`,
-  ]);
+test("Node 脚本通过语法检查", () => {
+  const scripts = [
+    `${root}/skills/agile-product-owner/scripts/user_story_generator.mjs`,
+    `${root}/skills/competitive-teardown/scripts/competitive_matrix_builder.mjs`,
+  ];
 
-  assert.equal(result.status, 0, result.stderr);
+  for (const script of scripts) {
+    const result = run("node", ["--check", script]);
+    assert.equal(result.status, 0, `${script}\n${result.stderr}`);
+  }
 });
 
 test("competitive_matrix_builder 的 gap 分析排除自身样本", () => {
@@ -44,8 +45,8 @@ test("competitive_matrix_builder 的 gap 分析排除自身样本", () => {
       "utf-8",
     );
 
-    const result = run("python3", [
-      `${root}/skills/competitive-teardown/scripts/competitive_matrix_builder.py`,
+    const result = run("node", [
+      `${root}/skills/competitive-teardown/scripts/competitive_matrix_builder.mjs`,
       inputPath,
       "--format",
       "json",
@@ -61,8 +62,8 @@ test("competitive_matrix_builder 的 gap 分析排除自身样本", () => {
 });
 
 test("user_story_generator 在无效 sprint capacity 下给出明确错误", () => {
-  const result = run("python3", [
-    `${root}/skills/agile-product-owner/scripts/user_story_generator.py`,
+  const result = run("node", [
+    `${root}/skills/agile-product-owner/scripts/user_story_generator.mjs`,
     "sprint",
     "0",
   ]);

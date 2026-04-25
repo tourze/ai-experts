@@ -113,8 +113,7 @@ claude plugin uninstall product-expert --scope project
 jq empty plugins/product-expert/.claude-plugin/plugin.json
 jq empty plugins/product-expert/hooks/hooks.json
 find plugins/product-expert/hooks plugins/product-expert/tests -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
-python3 -m py_compile \
-  plugins/product-expert/skills/agile-product-owner/scripts/user_story_generator.py \
-  plugins/product-expert/skills/competitive-teardown/scripts/competitive_matrix_builder.py
+node --check plugins/product-expert/skills/agile-product-owner/scripts/user_story_generator.mjs
+node --check plugins/product-expert/skills/competitive-teardown/scripts/competitive_matrix_builder.mjs
 node --test plugins/product-expert/tests/*.test.mjs
 ```

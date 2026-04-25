@@ -9,17 +9,17 @@ description: 当用户需要编写用户故事、补齐验收标准、拆分 Epi
 - 把需求拆成可交付的用户故事、Epic 和 Sprint 范围。
 - 需要结合 [references/user-story-templates.md](references/user-story-templates.md)、[references/sprint-planning-guide.md](references/sprint-planning-guide.md) 或模板资产落文档。
 - 故事拆分可配合 [user-story-patterns](../user-story-patterns/SKILL.md)（8 种拆分模式 + INVEST 检查），Epic 分解可配合 [epic-decomposition](../epic-decomposition/SKILL.md)（9 种分解模式 + Story Mapping）。
-- 需要运行脚本生成示例 Backlog 或 Sprint 计划时，可直接调用 `scripts/user_story_generator.py`。
+- 需要运行脚本生成示例 Backlog 或 Sprint 计划时，可直接调用 `scripts/user_story_generator.mjs`。
 
 ## 核心约束
 - 先确认业务目标、角色、成功标准，再拆故事；单条 Story 应能在一个 Sprint 内完成。
 - 验收标准必须覆盖成功路径、失败路径和边界条件，避免“优化一下”这类不可验证表述。
-- 运行脚本时只使用已验证命令：`python3 scripts/user_story_generator.py` 与 `python3 scripts/user_story_generator.py sprint 30`；Sprint 容量必须是正整数。
+- 运行脚本时只使用已验证命令：`node scripts/user_story_generator.mjs` 与 `node scripts/user_story_generator.mjs sprint 30`；Sprint 容量必须是正整数。
 
 ## 代码模式
 ```bash
-python3 scripts/user_story_generator.py
-python3 scripts/user_story_generator.py sprint 30
+node scripts/user_story_generator.mjs
+node scripts/user_story_generator.mjs sprint 30
 ```
 
 ```markdown
