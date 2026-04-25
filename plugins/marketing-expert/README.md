@@ -93,5 +93,6 @@ claude plugin validate plugins/marketing-expert
 jq empty plugins/marketing-expert/.claude-plugin/plugin.json
 jq empty plugins/marketing-expert/hooks/hooks.json
 node --check plugins/marketing-expert/hooks/dispatch.mjs
+node --check plugins/marketing-expert/skills/copy-editing/scripts/readability_scorer.mjs
 python3 -m py_compile $(find plugins/marketing-expert/skills -path '*/scripts/*.py' | sort)
 ```
