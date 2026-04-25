@@ -20,7 +20,7 @@ description: "在需要分析活动表现、归因模型、漏斗转化率和 RO
 - 归因分析：
 
 ```bash
-python3 scripts/attribution_analyzer.py assets/sample_campaign_data.json --format json
+node scripts/attribution_analyzer.mjs assets/sample_campaign_data.json --format json
 ```
 
 - ROI / ROAS 计算：

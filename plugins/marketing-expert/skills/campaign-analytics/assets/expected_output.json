@@ -2,7 +2,7 @@
   "_description": "Expected output from running the 3 scripts against sample_campaign_data.json with --format json",
 
   "attribution_analyzer": {
-    "_command": "python scripts/attribution_analyzer.py assets/sample_campaign_data.json --format json",
+    "_command": "node scripts/attribution_analyzer.mjs assets/sample_campaign_data.json --format json",
     "summary": {
       "total_journeys": 8,
       "converted_journeys": 6,

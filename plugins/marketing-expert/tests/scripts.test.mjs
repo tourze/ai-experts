@@ -20,6 +20,7 @@ test("Node 脚本通过语法检查", () => {
   const scripts = [
     `${pluginRoot}/skills/copy-editing/scripts/readability_scorer.mjs`,
     `${pluginRoot}/skills/competitor-alternatives/scripts/comparison_matrix_builder.mjs`,
+    `${campaignAnalyticsRoot}/scripts/attribution_analyzer.mjs`,
     `${campaignAnalyticsRoot}/scripts/funnel_analyzer.mjs`,
   ];
 
@@ -176,4 +177,52 @@ test("funnel_analyzer.mjs 输出稳定 JSON 漏斗分段结果", () => {
     paid: { count: 90, conversion_rate: 25.71 },
     email: { count: 50, conversion_rate: 25 },
   });
+});
+
+test("attribution_analyzer.mjs 输出稳定 JSON 归因结果", () => {
+  const samplePath = `${campaignAnalyticsRoot}/assets/sample_campaign_data.json`;
+  const result = run("node", [
+    `${campaignAnalyticsRoot}/scripts/attribution_analyzer.mjs`,
+    samplePath,
+    "--format",
+    "json",
+  ]);
+
+  assert.equal(result.status, 0, result.stderr);
+  const output = JSON.parse(result.stdout);
+  assert.deepEqual(output.summary, {
+    total_journeys: 8,
+    converted_journeys: 6,
+    conversion_rate: 75,
+    total_revenue: 3700,
+    channels_observed: [
+      "direct",
+      "display",
+      "email",
+      "organic_search",
+      "organic_social",
+      "paid_search",
+      "paid_social",
+      "referral",
+    ],
+  });
+  assert.equal(output.models["first-touch"].paid_social, 1200);
+  assert.equal(output.models["last-touch"].direct, 2000);
+  assert.equal(output.models.linear.email, 1003.33);
+  assert.equal(output.models["time-decay"].paid_search, 881.03);
+  assert.equal(output.models["position-based"].direct, 800);
+
+  const linearOnly = run("node", [
+    `${campaignAnalyticsRoot}/scripts/attribution_analyzer.mjs`,
+    samplePath,
+    "--model",
+    "linear",
+    "--format",
+    "json",
+  ]);
+
+  assert.equal(linearOnly.status, 0, linearOnly.stderr);
+  const linearOutput = JSON.parse(linearOnly.stdout);
+  assert.deepEqual(Object.keys(linearOutput.models), ["linear"]);
+  assert.equal(linearOutput.models.linear.organic_search, 666.67);
 });
