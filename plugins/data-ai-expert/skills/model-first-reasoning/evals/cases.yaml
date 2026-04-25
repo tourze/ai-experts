@@ -1,0 +1,30 @@
+cases:
+  - id: positive_state_machine_model
+    prompt: "Before coding, model this subscription lifecycle as states, transitions, invariants, and invalid transitions"
+    fixtures: []
+    rubric:
+      - "starts by defining the model"
+      - "captures states, constraints, and transitions before implementation"
+    trigger_expected: true
+
+  - id: positive_constraint_system
+    prompt: "Use a model-first approach to reason about seat allocation constraints and edge cases"
+    fixtures: []
+    rubric:
+      - "formalizes entities and constraints"
+      - "uses the model to reason about edge cases"
+    trigger_expected: true
+
+  - id: negative_spreadsheet_analysis
+    prompt: "Analyze this spreadsheet and summarize the top sales trends"
+    fixtures: []
+    rubric:
+      - "tabular analysis should route to data-analysis"
+    trigger_expected: false
+
+  - id: negative_prompt_optimization
+    prompt: "Optimize this prompt so the model follows the requested JSON schema"
+    fixtures: []
+    rubric:
+      - "prompt optimization should route to prompt-engineering-patterns or prompt-lab"
+    trigger_expected: false

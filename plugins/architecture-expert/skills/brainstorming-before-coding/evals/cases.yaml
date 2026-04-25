@@ -1,0 +1,34 @@
+cases:
+  - id: new_feature_design_discussion
+    prompt: "Before coding, help me think through adding a team invitation feature to this app."
+    fixtures: []
+    rubric:
+      - "explores project context before proposing implementation"
+      - "asks one focused clarification question at a time"
+      - "presents two or three feasible design options with tradeoffs"
+    trigger_expected: true
+
+  - id: component_behavior_design
+    prompt: "I want to add a new dashboard widget. Let's decide the behavior and constraints before touching files."
+    fixtures: []
+    rubric:
+      - "keeps the discussion at design and requirements level before implementation"
+      - "surfaces scope, user intent, edge cases, and acceptance criteria"
+      - "seeks approval before moving into coding"
+    trigger_expected: true
+
+  - id: negative_quick_typo_fix
+    prompt: "Fix this typo in the README heading."
+    fixtures: []
+    rubric:
+      - "does not force brainstorming for a trivial text correction"
+      - "simple local edits should not activate design dialogue"
+    trigger_expected: false
+
+  - id: negative_plan_review
+    prompt: "Review this implementation plan and tell me where it will fail."
+    fixtures: []
+    rubric:
+      - "does not activate brainstorming workflow"
+      - "pre-coding plan critique belongs to plan-review"
+    trigger_expected: false

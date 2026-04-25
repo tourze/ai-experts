@@ -1,0 +1,30 @@
+cases:
+  - id: positive_risk_metrics_calculation_primary
+    prompt: "我需要计算投资组合风险指标（VaR、CVaR、Sharpe、Sortino、回撤）时使用。英文触发词包括 portfolio risk、risk monitoring。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as risk-metrics-calculation territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_risk_metrics_calculation_realistic
+    prompt: "帮我处理这个场景：需要衡量收益波动、尾部风险、最大回撤和风险调整后收益。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_creating_financial_models
+    prompt: "这个需求应该交给 creating-financial-models：构建 DCF 估值模型、敏感性分析、情景分析或盈亏平衡分析时使用。英文触发词包括 valuation modeling、scenario planning。"
+    fixtures: []
+    rubric:
+      - "adjacent creating-financial-models requests should not trigger risk-metrics-calculation"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

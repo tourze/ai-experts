@@ -1,0 +1,30 @@
+cases:
+  - id: positive_rust_error_handling_primary
+    prompt: "我需要设计 Rust 错误类型、选择 thiserror 还是 anyhow、规范 Result 用法、消除 unwrap 或在 async 边界传播错误"
+    fixtures: []
+    rubric:
+      - "recognizes the request as rust-error-handling territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_rust_error_handling_realistic
+    prompt: "帮我处理这个场景：设计库或应用的错误类型层级。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_rust_async_patterns
+    prompt: "这个需求应该交给 rust-async-patterns：需要开发或排障 Tokio 异步代码时使用；涉及 tokio::spawn、JoinSet、channel、select! 或异步生命周期"
+    fixtures: []
+    rubric:
+      - "adjacent rust-async-patterns requests should not trigger rust-error-handling"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

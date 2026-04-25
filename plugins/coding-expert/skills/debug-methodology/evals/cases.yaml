@@ -1,0 +1,43 @@
+cases:
+  - id: stuck_on_bug
+    prompt: "I'm stuck on a bug: the checkout total is sometimes wrong but I can't find the pattern. Help me debug it systematically"
+    fixtures: []
+    rubric:
+      - "uses a systematic debugging workflow"
+      - "starts with reproduction and expected vs actual behavior"
+      - "forms evidence-based, falsifiable hypotheses"
+    trigger_expected: true
+
+  - id: flaky_test_failure
+    prompt: "This integration test fails maybe one out of ten runs in CI and I can't reproduce it locally"
+    fixtures: []
+    rubric:
+      - "treats the issue as flaky behavior requiring evidence collection"
+      - "isolates variables such as timing, data, order, and environment"
+      - "does not jump straight to a speculative fix"
+    trigger_expected: true
+
+  - id: crash_stack_trace
+    prompt: "The app crashes with this stack trace after login; can you help me find the root cause instead of patching symptoms?"
+    fixtures: []
+    rubric:
+      - "uses stack trace as evidence for root-cause investigation"
+      - "narrows scope before proposing changes"
+      - "requires regression coverage after the fix"
+    trigger_expected: true
+
+  - id: negative_known_fix_request
+    prompt: "Change the timeout from 5 seconds to 30 seconds in this config file"
+    fixtures: []
+    rubric:
+      - "does not activate debugging methodology"
+      - "the user gave a direct known edit, not a root-cause investigation"
+    trigger_expected: false
+
+  - id: negative_code_quality_review
+    prompt: "Review this module for naming, error handling, and maintainability issues"
+    fixtures: []
+    rubric:
+      - "does not activate debugging methodology"
+      - "general quality review belongs to code-review"
+    trigger_expected: false

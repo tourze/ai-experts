@@ -1,0 +1,30 @@
+cases:
+  - id: positive_user_guide_writing_primary
+    prompt: "我需要编写面向最终用户的使用指南、教程、上手手册、FAQ 或帮助中心内容时使用。该技能强调任务导向、截图规划和低门槛表达。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as user-guide-writing territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_user_guide_writing_realistic
+    prompt: "帮我处理这个场景：文档读者是终端用户、业务用户、客户支持对象，而不是研发同事。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_consulting_analysis
+    prompt: "这个需求应该交给 consulting-analysis：产出咨询级研究报告、市场分析、消费者洞察、品牌研究、财务分析、竞品情报或投融资尽调文档时使用。"
+    fixtures: []
+    rubric:
+      - "adjacent consulting-analysis requests should not trigger user-guide-writing"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

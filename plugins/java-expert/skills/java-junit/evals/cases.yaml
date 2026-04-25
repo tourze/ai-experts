@@ -1,0 +1,30 @@
+cases:
+  - id: positive_java_junit_primary
+    prompt: "我需要编写或审查 JUnit 5 测试、参数化测试或 Mockito 隔离"
+    fixtures: []
+    rubric:
+      - "recognizes the request as java-junit territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_java_junit_realistic
+    prompt: "帮我处理这个场景：为 Java / Spring 代码补 JUnit 5 单元测试或重构现有测试。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_arthas_cpu_high
+    prompt: "这个需求应该交给 arthas-cpu-high：当 JVM 或 Java 应用 CPU 飙高、负载异常"
+    fixtures: []
+    rubric:
+      - "adjacent arthas-cpu-high requests should not trigger java-junit"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

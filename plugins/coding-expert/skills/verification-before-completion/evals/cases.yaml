@@ -1,0 +1,43 @@
+cases:
+  - id: before_claiming_tests_pass
+    prompt: "Before you say this is done, run the relevant tests and make sure the output actually supports that claim"
+    fixtures: []
+    rubric:
+      - "requires fresh verification before any completion claim"
+      - "reads the command output and failure count"
+      - "does not rely on confidence or previous test runs"
+    trigger_expected: true
+
+  - id: verify_bug_fix
+    prompt: "You changed the code; prove the bug is fixed before telling me it works"
+    fixtures: []
+    rubric:
+      - "identifies evidence needed for the fix claim"
+      - "runs or requests a command that exercises the original symptom"
+      - "reports inability to verify instead of overstating success"
+    trigger_expected: true
+
+  - id: final_status_gate
+    prompt: "Do the final verification pass before marking this task complete"
+    fixtures: []
+    rubric:
+      - "treats completion as gated by current evidence"
+      - "matches verification commands to the claim being made"
+      - "summarizes results without inventing pass status"
+    trigger_expected: true
+
+  - id: negative_start_debugging
+    prompt: "The app crashes on login; help me find the root cause"
+    fixtures: []
+    rubric:
+      - "does not activate completion verification"
+      - "root-cause investigation belongs to debug-methodology"
+    trigger_expected: false
+
+  - id: negative_write_initial_tests
+    prompt: "Help me write the first unit tests for this new parser"
+    fixtures: []
+    rubric:
+      - "does not activate completion verification as primary"
+      - "test creation is separate from final evidence gating"
+    trigger_expected: false

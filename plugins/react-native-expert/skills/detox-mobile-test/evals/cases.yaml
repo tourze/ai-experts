@@ -1,0 +1,30 @@
+cases:
+  - id: positive_detox_mobile_test_primary
+    prompt: "我需要为 React Native 应用编写或排查 Detox E2E 测试时使用。用户提到 Detox、RN E2E、移动端自动化、CI 上的 E2E 不稳定"
+    fixtures: []
+    rubric:
+      - "recognizes the request as detox-mobile-test territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_detox_mobile_test_realistic
+    prompt: "帮我处理这个场景：React Native 项目需要覆盖登录、下单、支付、权限、深链等关键 E2E 流程。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_react_native_bundle_size
+    prompt: "这个需求应该交给 react-native-bundle-size：分析或优化 React Native 包体积时使用。用户提到 JS bundle 大、tree shaking、barrel exports、R8、Hermes bytecode、source-map-explorer、包体积膨胀、依赖瘦身"
+    fixtures: []
+    rubric:
+      - "adjacent react-native-bundle-size requests should not trigger detox-mobile-test"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

@@ -1,0 +1,30 @@
+cases:
+  - id: positive_docx_primary
+    prompt: "我需要创建、读取、编辑或修复 .docx Word 文档"
+    fixtures: []
+    rubric:
+      - "recognizes the request as docx territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_docx_realistic
+    prompt: "帮我处理这个场景：用户明确提到 Word、.docx、报告模板、合同、函件、备忘录等交付物。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_consulting_analysis
+    prompt: "这个需求应该交给 consulting-analysis：产出咨询级研究报告、市场分析、消费者洞察、品牌研究、财务分析、竞品情报或投融资尽调文档时使用。"
+    fixtures: []
+    rubric:
+      - "adjacent consulting-analysis requests should not trigger docx"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

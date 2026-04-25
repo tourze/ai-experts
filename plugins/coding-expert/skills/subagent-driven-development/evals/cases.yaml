@@ -1,0 +1,43 @@
+cases:
+  - id: execute_independent_tasks_with_subagents
+    prompt: "I have an implementation plan with five independent tasks. Use subagents to execute them in parallel and review each one"
+    fixtures: []
+    rubric:
+      - "activates subagent-driven execution for independent implementation tasks"
+      - "assigns isolated tasks with complete context"
+      - "requires separate specification and code-quality review"
+    trigger_expected: true
+
+  - id: delegate_parallel_implementation
+    prompt: "Split this plan across workers: one for auth, one for API, one for UI, then integrate the results"
+    fixtures: []
+    rubric:
+      - "recognizes explicit delegation to workers or subagents"
+      - "keeps write scopes separated"
+      - "plans integration and review after worker completion"
+    trigger_expected: true
+
+  - id: subagent_review_loop
+    prompt: "For each task, have a subagent implement it, then another pass should check spec compliance before code quality"
+    fixtures: []
+    rubric:
+      - "uses the two-stage review order"
+      - "does not trust subagent DONE status without independent review"
+      - "handles BLOCKED or NEEDS_CONTEXT states explicitly"
+    trigger_expected: true
+
+  - id: negative_regular_plan
+    prompt: "Give me a plan for implementing search filters, but don't start coding yet"
+    fixtures: []
+    rubric:
+      - "does not activate subagent-driven development"
+      - "planning without execution or delegation is outside this skill"
+    trigger_expected: false
+
+  - id: negative_single_tightly_coupled_fix
+    prompt: "Fix this one failing test in a single file"
+    fixtures: []
+    rubric:
+      - "does not activate subagent-driven development"
+      - "single tightly coupled fixes should stay local"
+    trigger_expected: false

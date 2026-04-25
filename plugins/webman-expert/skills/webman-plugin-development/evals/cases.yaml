@@ -1,0 +1,30 @@
+cases:
+  - id: positive_webman_plugin_development_primary
+    prompt: "我需要开发或审查 Webman 插件的 Install.php、config 发布、进程声明或 Bootstrap"
+    fixtures: []
+    rubric:
+      - "recognizes the request as webman-plugin-development territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_webman_plugin_development_realistic
+    prompt: "帮我处理这个场景：开发 Composer 分发的 webman 插件。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_webman_custom_processes
+    prompt: "这个需求应该交给 webman-custom-processes：声明或排查 Webman 自定义进程、Timer、Crontab 或 crash-restart"
+    fixtures: []
+    rubric:
+      - "adjacent webman-custom-processes requests should not trigger webman-plugin-development"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

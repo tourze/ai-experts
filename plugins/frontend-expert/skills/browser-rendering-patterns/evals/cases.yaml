@@ -1,0 +1,30 @@
+cases:
+  - id: positive_browser_rendering_patterns_primary
+    prompt: "我需要优化浏览器渲染性能、处理 hydration 问题、使用 resource hints 或改善客户端事件处理时使用。用户提到 hydration mismatch、content-visibility、preload、preconnect、passive event listener、script defer、SVG 优化"
+    fixtures: []
+    rubric:
+      - "recognizes the request as browser-rendering-patterns territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_browser_rendering_patterns_realistic
+    prompt: "帮我处理这个场景：需要解决 SSR hydration 不匹配导致的闪烁或警告。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_bundle_optimization
+    prompt: "这个需求应该交给 bundle-optimization：减小前端 bundle 体积、做代码分割、消除 barrel imports 或按用户意图预加载时使用。用户提到 bundle size、dynamic import、code splitting、tree shaking、barrel exports、首屏体积"
+    fixtures: []
+    rubric:
+      - "adjacent bundle-optimization requests should not trigger browser-rendering-patterns"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

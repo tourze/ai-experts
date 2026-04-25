@@ -1,0 +1,34 @@
+cases:
+  - id: improve_activation_flow
+    prompt: "Our users sign up but never reach the aha moment. Improve onboarding and activation."
+    fixtures: []
+    rubric:
+      - "diagnoses post-signup activation friction"
+      - "identifies aha moment and time-to-value path"
+      - "recommends in-app onboarding, checklist, empty state, or guided setup changes"
+    trigger_expected: true
+
+  - id: onboarding_empty_state
+    prompt: "Redesign the empty state and first-run checklist so new users complete setup."
+    fixtures: []
+    rubric:
+      - "focuses on first user experience after account creation"
+      - "reduces cognitive load and guides toward activation"
+      - "sets success metrics such as activation rate or time-to-value"
+    trigger_expected: true
+
+  - id: negative_signup_form_dropoff
+    prompt: "Users abandon the signup form before creating an account. Fix the form flow."
+    fixtures: []
+    rubric:
+      - "does not activate post-signup onboarding"
+      - "account creation flow belongs to signup-flow-cro"
+    trigger_expected: false
+
+  - id: negative_welcome_email_flow
+    prompt: "Write the welcome email series after someone creates an account."
+    fixtures: []
+    rubric:
+      - "does not activate in-app onboarding workflow"
+      - "lifecycle email content belongs to email-sequence"
+    trigger_expected: false

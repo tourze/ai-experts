@@ -1,0 +1,34 @@
+cases:
+  - id: landing_page_copy
+    prompt: "Write landing page copy for our B2B SaaS analytics product: hero, value prop, benefits, proof, and CTA."
+    fixtures: []
+    rubric:
+      - "creates marketing page copy rather than only editing tone"
+      - "includes value proposition, benefit framing, proof, and CTA"
+      - "keeps message aligned to buyer pains and product promise"
+    trigger_expected: true
+
+  - id: pricing_page_copy
+    prompt: "Rewrite our pricing page messaging so the three plans feel clearer and more compelling."
+    fixtures: []
+    rubric:
+      - "improves plan positioning and conversion copy"
+      - "uses clear differentiation and buyer-oriented benefit language"
+      - "does not drift into full pricing strategy unless needed"
+    trigger_expected: true
+
+  - id: negative_polish_existing_copy
+    prompt: "Proofread this existing paragraph and make it less wordy without changing the message."
+    fixtures: []
+    rubric:
+      - "does not activate new page copywriting workflow"
+      - "editing existing copy belongs to copy-editing"
+    trigger_expected: false
+
+  - id: negative_welcome_email_sequence
+    prompt: "Write a five-email welcome sequence for new trial users."
+    fixtures: []
+    rubric:
+      - "does not activate page copywriting workflow"
+      - "email journeys belong to email-sequence"
+    trigger_expected: false

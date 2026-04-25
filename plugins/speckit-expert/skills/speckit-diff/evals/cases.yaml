@@ -1,0 +1,34 @@
+cases:
+  - id: compare_spec_versions
+    prompt: "Compare the old and new spec.md versions and explain what changed semantically."
+    fixtures: []
+    rubric:
+      - "classifies additions, deletions, modifications, and moves"
+      - "evaluates impact on scope, cost, and tests"
+      - "focuses on semantic document differences"
+    trigger_expected: true
+
+  - id: plan_diff_impact
+    prompt: "Diff these two plan.md versions and tell me which implementation assumptions changed."
+    fixtures: []
+    rubric:
+      - "tracks changed technical decisions and constraints"
+      - "flags downstream task or test impact"
+      - "separates formatting-only changes from meaningful changes"
+    trigger_expected: true
+
+  - id: negative_code_diff_review
+    prompt: "Review this git diff for code defects."
+    fixtures: []
+    rubric:
+      - "does not activate Spec Kit document diff workflow"
+      - "code review belongs to speckit-reviewer"
+    trigger_expected: false
+
+  - id: negative_status
+    prompt: "Tell me what tasks are complete and blocked."
+    fixtures: []
+    rubric:
+      - "does not activate document diff workflow"
+      - "feature status belongs to speckit-status"
+    trigger_expected: false

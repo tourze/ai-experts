@@ -1,0 +1,30 @@
+cases:
+  - id: positive_php_testing_primary
+    prompt: "我需要编写、审查或重构 PHP 测试时使用；英文触发词 PHPUnit / Pest / PHP testing / mock / phpunit.xml。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as php-testing territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_php_testing_realistic
+    prompt: "帮我处理这个场景：编写新的 PHPUnit / Pest 测试类、测试方法和测试夹具。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_php_8x_features
+    prompt: "这个需求应该交给 php-8x-features：在 PHP 8.1-8.3+ 项目中使用 readonly class、backed enum、match、命名参数、构造器提升、交叉类型、DNF 类型、[\\Override] 等现代语法特性"
+    fixtures: []
+    rubric:
+      - "adjacent php-8x-features requests should not trigger php-testing"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

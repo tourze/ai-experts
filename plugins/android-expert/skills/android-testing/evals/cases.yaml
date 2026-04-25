@@ -1,0 +1,34 @@
+cases:
+  - id: compose_ui_tests
+    prompt: "Write Compose UI tests for a login screen with loading, success, and error states."
+    fixtures: []
+    rubric:
+      - "uses Android Compose testing patterns"
+      - "covers state assertions and user interactions"
+      - "includes reliable selectors or semantics"
+    trigger_expected: true
+
+  - id: hilt_integration_tests
+    prompt: "Set up Hilt integration tests for an Android repository that uses fake data sources."
+    fixtures: []
+    rubric:
+      - "uses Android/Hilt test setup"
+      - "replaces production dependencies with fakes"
+      - "addresses instrumentation or local test boundaries"
+    trigger_expected: true
+
+  - id: negative_accessibility_audit
+    prompt: "Audit this screen for TalkBack and touch target accessibility issues."
+    fixtures: []
+    rubric:
+      - "does not activate test authoring"
+      - "accessibility review belongs to android-accessibility"
+    trigger_expected: false
+
+  - id: negative_redex_integration
+    prompt: "Integrate ReDex into Gradle to shrink APK size."
+    fixtures: []
+    rubric:
+      - "does not activate Android testing workflow"
+      - "ReDex build optimization belongs to android-redex"
+    trigger_expected: false

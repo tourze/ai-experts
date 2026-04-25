@@ -1,0 +1,30 @@
+cases:
+  - id: positive_active_directory_attacks_primary
+    prompt: "我需要明确要求在已授权环境中进行 Active Directory 安全测试，或提到 Kerberoasting、DCSync、BloodHound、NTLM Relay、Golden Ticket 等主题"
+    fixtures: []
+    rubric:
+      - "recognizes the request as active-directory-attacks territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_active_directory_attacks_realistic
+    prompt: "帮我处理这个场景：已获得书面授权，需要对域控、域成员、信任关系和高权限路径做系统性评估。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_anti_reversing_techniques
+    prompt: "这个需求应该交给 anti-reversing-techniques：需要分析、识别或绕过反调试、反虚拟机、混淆与保护壳"
+    fixtures: []
+    rubric:
+      - "adjacent anti-reversing-techniques requests should not trigger active-directory-attacks"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

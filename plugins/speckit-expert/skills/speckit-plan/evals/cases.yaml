@@ -1,0 +1,34 @@
+cases:
+  - id: create_technical_plan
+    prompt: "Generate the Spec Kit technical plan from the current spec.md, including data model and API contracts."
+    fixtures: []
+    rubric:
+      - "uses the current feature spec as input"
+      - "captures technical context, constraints, and research outcomes"
+      - "creates or updates plan-related design artifacts"
+    trigger_expected: true
+
+  - id: plan_after_clarification
+    prompt: "The spec is clarified. Build the implementation plan and check it against the project constitution."
+    fixtures: []
+    rubric:
+      - "uses clarified requirements to drive design choices"
+      - "checks plan decisions against constitutional constraints"
+      - "identifies unresolved technical risks"
+    trigger_expected: true
+
+  - id: negative_create_spec
+    prompt: "Turn this natural language feature request into a spec.md."
+    fixtures: []
+    rubric:
+      - "does not activate planning workflow"
+      - "feature specification belongs to speckit-specify"
+    trigger_expected: false
+
+  - id: negative_execute_tasks
+    prompt: "Implement all tasks from tasks.md."
+    fixtures: []
+    rubric:
+      - "does not activate planning workflow"
+      - "implementation belongs to speckit-implement"
+    trigger_expected: false

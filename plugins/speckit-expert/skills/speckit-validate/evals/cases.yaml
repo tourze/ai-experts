@@ -1,0 +1,34 @@
+cases:
+  - id: validate_implementation_against_spec
+    prompt: "Validate whether the implementation satisfies spec.md, plan.md, tasks.md, and acceptance criteria."
+    fixtures: []
+    rubric:
+      - "builds a requirement-to-code-and-test matrix"
+      - "identifies missing, partial, or failing requirements"
+      - "returns PASS, PARTIAL, or FAIL based on evidence"
+    trigger_expected: true
+
+  - id: acceptance_gap_check
+    prompt: "Check the finished feature against every acceptance criterion and boundary condition."
+    fixtures: []
+    rubric:
+      - "maps acceptance criteria to implementation and tests"
+      - "flags boundary cases without proof"
+      - "separates implementation gaps from test gaps"
+    trigger_expected: true
+
+  - id: negative_run_tests_only
+    prompt: "Run the test suite and summarize failures."
+    fixtures: []
+    rubric:
+      - "does not activate full requirements validation"
+      - "test execution belongs to speckit-tester"
+    trigger_expected: false
+
+  - id: negative_status_board
+    prompt: "Show me a progress board for all Spec Kit features."
+    fixtures: []
+    rubric:
+      - "does not activate validation workflow"
+      - "feature status belongs to speckit-status"
+    trigger_expected: false

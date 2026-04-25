@@ -1,0 +1,30 @@
+cases:
+  - id: positive_ux_heuristics_primary
+    prompt: "我需要需要诊断界面可用性问题或做启发式评估时使用。适用于可用性审计、导航混乱、表单阻塞、信息架构复盘，以及”用户不知道下一步做什么”的场景。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as ux-heuristics territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_ux_heuristics_realistic
+    prompt: "帮我处理这个场景：用户反馈“找不到入口”“不知道系统在干什么”“提交后没反应”。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_ux_researcher_designer
+    prompt: "这个需求应该交给 ux-researcher-designer：需要做用户研究、需求验证、persona 构建或设计复盘时使用。适用于用户研究、需求验证、设计复盘，以及需要把访谈与行为数据收敛成可执行设计输入的场景。"
+    fixtures: []
+    rubric:
+      - "adjacent ux-researcher-designer requests should not trigger ux-heuristics"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

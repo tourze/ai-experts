@@ -1,0 +1,34 @@
+cases:
+  - id: ai_search_citation_audit
+    prompt: "Audit this article so ChatGPT and Perplexity are more likely to cite it as an answer source."
+    fixtures: []
+    rubric:
+      - "optimizes for AI answer engine extraction and citation"
+      - "recommends answer blocks, concise definitions, and source-worthy structure"
+      - "distinguishes AI citation readiness from traditional ranking work"
+    trigger_expected: true
+
+  - id: featured_snippet_answer_blocks
+    prompt: "Help us rewrite this guide to capture Featured Snippets and Gemini overview citations."
+    fixtures: []
+    rubric:
+      - "structures content into extractable question-answer blocks"
+      - "uses entity clarity and direct answer patterns"
+      - "includes citation and authority cues"
+    trigger_expected: true
+
+  - id: negative_technical_seo_crawl
+    prompt: "Fix crawl errors, canonical tags, and XML sitemap issues in Search Console."
+    fixtures: []
+    rubric:
+      - "does not activate AI answer engine optimization"
+      - "technical search visibility belongs to seo"
+    trigger_expected: false
+
+  - id: negative_content_calendar
+    prompt: "Create a six-month content calendar for our blog."
+    fixtures: []
+    rubric:
+      - "does not activate AEO/GEO workflow"
+      - "content planning belongs to content-strategy"
+    trigger_expected: false

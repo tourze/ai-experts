@@ -1,0 +1,30 @@
+cases:
+  - id: positive_windows_ui_automation_primary
+    prompt: "我需要自动化 Windows 桌面操作、元素定位或输入仿真时使用；英文触发词 UIA / Win32 API / Windows automation。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as windows-ui-automation territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_windows_ui_automation_realistic
+    prompt: "帮我处理这个场景：需要使用 UIA / Win32 API 做窗口发现、元素定位、按钮点击、键盘输入和状态读取。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_prlctl_vm_control
+    prompt: "这个需求应该交给 prlctl-vm-control：通过 prlctl 控制 Parallels Desktop 虚拟机、采集状态或执行客体命令时使用；英文触发词 prlctl / Parallels Desktop。"
+    fixtures: []
+    rubric:
+      - "adjacent prlctl-vm-control requests should not trigger windows-ui-automation"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

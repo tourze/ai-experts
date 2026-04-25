@@ -1,0 +1,34 @@
+cases:
+  - id: feature_status_board
+    prompt: "Show the status of all Spec Kit features, including completion and blockers."
+    fixtures: []
+    rubric:
+      - "scans feature directories for spec, plan, tasks, and checklist status"
+      - "identifies blockers and missing artifacts"
+      - "prioritizes what should be handled next"
+    trigger_expected: true
+
+  - id: current_feature_progress
+    prompt: "What is the current progress for this feature? I need a Spec Kit status board."
+    fixtures: []
+    rubric:
+      - "reports feature progress from existing Spec Kit files"
+      - "distinguishes completed, pending, and blocked work"
+      - "does not create new tasks or implement code"
+    trigger_expected: true
+
+  - id: negative_generate_tasks
+    prompt: "Generate a dependency-ordered tasks.md for the feature."
+    fixtures: []
+    rubric:
+      - "does not activate status workflow"
+      - "task creation belongs to speckit-tasks"
+    trigger_expected: false
+
+  - id: negative_validate_implementation
+    prompt: "Check whether the implementation satisfies all requirements."
+    fixtures: []
+    rubric:
+      - "does not activate status board workflow"
+      - "requirements satisfaction belongs to speckit-validate"
+    trigger_expected: false

@@ -1,0 +1,30 @@
+cases:
+  - id: positive_frida_dynamic_analysis_primary
+    prompt: "我需要用 Frida 做运行时 hook、trace、bypass 或动态分析时使用；涉及 Interceptor、Java.perform、ObjC.classes、内存扫描或自适应 bypass。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as frida-dynamic-analysis territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_frida_dynamic_analysis_realistic
+    prompt: "帮我处理这个场景：需要 hook 函数调用、修改参数/返回值或 trace 执行路径。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_active_directory_attacks
+    prompt: "这个需求应该交给 active-directory-attacks：明确要求在已授权环境中进行 Active Directory 安全测试，或提到 Kerberoasting、DCSync、BloodHound、NTLM Relay、Golden Ticket 等主题"
+    fixtures: []
+    rubric:
+      - "adjacent active-directory-attacks requests should not trigger frida-dynamic-analysis"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

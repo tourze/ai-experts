@@ -1,0 +1,30 @@
+cases:
+  - id: positive_python_visualization_code
+    prompt: "Generate Python code to plot revenue by cohort with clear labels and export the chart"
+    fixtures: []
+    rubric:
+      - "produces visualization code rather than only chart recommendations"
+      - "addresses labels, axes, and export"
+    trigger_expected: true
+
+  - id: positive_improve_existing_chart
+    prompt: "Improve this confusing bar chart so the comparison is clearer for executives"
+    fixtures: []
+    rubric:
+      - "adjusts visual encoding and chart presentation"
+      - "keeps the goal on graphical clarity"
+    trigger_expected: true
+
+  - id: negative_chart_type_only
+    prompt: "What chart should I use to compare market share across five competitors?"
+    fixtures: []
+    rubric:
+      - "pure chart selection should route to chart-type-selection"
+    trigger_expected: false
+
+  - id: negative_hypothesis_test
+    prompt: "Run a t-test and explain whether the two groups differ significantly"
+    fixtures: []
+    rubric:
+      - "hypothesis testing should route to statistical-analysis"
+    trigger_expected: false

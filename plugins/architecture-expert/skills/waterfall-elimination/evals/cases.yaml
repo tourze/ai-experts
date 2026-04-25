@@ -1,0 +1,34 @@
+cases:
+  - id: parallelize_independent_requests
+    prompt: "This route awaits user, teams, permissions, and notifications one by one. Eliminate the request waterfall where dependencies allow."
+    fixtures: []
+    rubric:
+      - "identifies independent async operations that can run in parallel"
+      - "keeps truly dependent operations sequential"
+      - "uses constructs such as Promise.all or framework-native parallel loading safely"
+    trigger_expected: true
+
+  - id: suspense_boundary_optimization
+    prompt: "Optimize this React page with Suspense so independent data fetching does not serialize and block rendering."
+    fixtures: []
+    rubric:
+      - "detects serialized data dependencies"
+      - "recommends Suspense boundaries or deferred loading where appropriate"
+      - "guards against putting dependent awaits into the same parallel group"
+    trigger_expected: true
+
+  - id: negative_database_waterfall_chart
+    prompt: "Explain the waterfall chart in this database monitoring dashboard."
+    fixtures: []
+    rubric:
+      - "does not activate async request waterfall workflow"
+      - "observability chart interpretation is outside this skill"
+    trigger_expected: false
+
+  - id: negative_rate_limit_design
+    prompt: "Design a distributed rate limiter for 100k RPS."
+    fixtures: []
+    rubric:
+      - "does not activate waterfall elimination"
+      - "distributed system design belongs to system-design"
+    trigger_expected: false

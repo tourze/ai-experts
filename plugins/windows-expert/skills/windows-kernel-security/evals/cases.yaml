@@ -1,0 +1,30 @@
+cases:
+  - id: positive_windows_kernel_security_primary
+    prompt: "我需要分析或审计 Windows 内核对象、驱动边界或安全机制时使用；英文触发词 Windows kernel / PatchGuard / VBS / HVCI / IOCTL。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as windows-kernel-security territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_windows_kernel_security_realistic
+    prompt: "帮我处理这个场景：需要分析 Windows 驱动、设备对象、IOCTL、回调注册和对象生命周期。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_prlctl_vm_control
+    prompt: "这个需求应该交给 prlctl-vm-control：通过 prlctl 控制 Parallels Desktop 虚拟机、采集状态或执行客体命令时使用；英文触发词 prlctl / Parallels Desktop。"
+    fixtures: []
+    rubric:
+      - "adjacent prlctl-vm-control requests should not trigger windows-kernel-security"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

@@ -1,0 +1,34 @@
+cases:
+  - id: execute_tasks_md
+    prompt: "Implement the current Spec Kit feature by working through tasks.md in dependency order."
+    fixtures: []
+    rubric:
+      - "reads tasks.md and follows dependency order"
+      - "performs impact analysis before each logical unit"
+      - "verifies each completed task with relevant checks"
+    trigger_expected: true
+
+  - id: implement_with_regression_control
+    prompt: "Start implementation from the generated task list and keep the delivery zero-regression."
+    fixtures: []
+    rubric:
+      - "uses tests or verification before and after edits"
+      - "updates task completion status as work progresses"
+      - "does not mix unrelated changes into the implementation"
+    trigger_expected: true
+
+  - id: negative_generate_tasks
+    prompt: "Create tasks.md from the spec and plan."
+    fixtures: []
+    rubric:
+      - "does not activate implementation workflow"
+      - "task generation belongs to speckit-tasks"
+    trigger_expected: false
+
+  - id: negative_plan_only
+    prompt: "Create a technical plan but do not modify code."
+    fixtures: []
+    rubric:
+      - "does not activate implementation workflow"
+      - "planning belongs to speckit-plan"
+    trigger_expected: false

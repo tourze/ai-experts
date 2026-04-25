@@ -1,0 +1,30 @@
+cases:
+  - id: positive_struct_recovery_primary
+    prompt: "我需要从反编译代码中恢复数据结构定义、推断字段类型和布局"
+    fixtures: []
+    rubric:
+      - "recognizes the request as struct-recovery territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_struct_recovery_realistic
+    prompt: "帮我处理这个场景：需要从 IDA/Ghidra 反编译输出中推断 stripped 结构体的字段布局。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_active_directory_attacks
+    prompt: "这个需求应该交给 active-directory-attacks：明确要求在已授权环境中进行 Active Directory 安全测试，或提到 Kerberoasting、DCSync、BloodHound、NTLM Relay、Golden Ticket 等主题"
+    fixtures: []
+    rubric:
+      - "adjacent active-directory-attacks requests should not trigger struct-recovery"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

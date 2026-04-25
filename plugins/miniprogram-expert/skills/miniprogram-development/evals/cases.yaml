@@ -1,0 +1,30 @@
+cases:
+  - id: positive_miniprogram_development_primary
+    prompt: "我需要提到微信小程序、小程序页面、组件、project.config.json、appid、真机预览、miniprogram-ci、CloudBase 或 wx.cloud"
+    fixtures: []
+    rubric:
+      - "recognizes the request as miniprogram-development territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_miniprogram_development_realistic
+    prompt: "帮我处理这个场景：需要创建、修改或排查微信小程序页面、组件、分包、路由和项目结构。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_unrelated
+    prompt: "请写一个通用 Python 排序函数并解释时间复杂度"
+    fixtures: []
+    rubric:
+      - "unrelated programming requests should not trigger miniprogram-development"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

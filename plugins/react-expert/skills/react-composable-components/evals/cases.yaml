@@ -1,0 +1,30 @@
+cases:
+  - id: positive_react_composable_components_primary
+    prompt: "我需要需要拆分臃肿 React 组件、设计 compound components 或规范 props 透传"
+    fixtures: []
+    rubric:
+      - "recognizes the request as react-composable-components territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_react_composable_components_realistic
+    prompt: "帮我处理这个场景：单个组件已经承担过多布局、状态和渲染分支，读写成本很高。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_react_hooks
+    prompt: "这个需求应该交给 react-hooks：需要设计自定义 Hook、修复依赖数组、处理 effect 清理或优化状态建模"
+    fixtures: []
+    rubric:
+      - "adjacent react-hooks requests should not trigger react-composable-components"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

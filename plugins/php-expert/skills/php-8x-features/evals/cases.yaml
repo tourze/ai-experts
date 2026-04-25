@@ -1,0 +1,30 @@
+cases:
+  - id: positive_php_8x_features_primary
+    prompt: "我需要在 PHP 8.1-8.3+ 项目中使用 readonly class、backed enum、match、命名参数、构造器提升、交叉类型、DNF 类型、[\\Override] 等现代语法特性"
+    fixtures: []
+    rubric:
+      - "recognizes the request as php-8x-features territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_php_8x_features_realistic
+    prompt: "帮我处理这个场景：新建 PHP 类、函数或模块，需要选择合适的 PHP 8.x 语言特性。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_php_async_patterns
+    prompt: "这个需求应该交给 php-async-patterns：在 PHP 中实现异步并发、使用 Swoole 协程/服务器、ReactPHP 事件循环、Amphp 或原生 Fibers"
+    fixtures: []
+    rubric:
+      - "adjacent php-async-patterns requests should not trigger php-8x-features"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

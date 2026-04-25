@@ -1,0 +1,30 @@
+cases:
+  - id: positive_linux_shell_scripting_primary
+    prompt: "我需要编写 Bash/Zsh 自动化、运维脚本、巡检脚本、备份脚本或命令行工具"
+    fixtures: []
+    rubric:
+      - "recognizes the request as linux-shell-scripting territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_linux_shell_scripting_realistic
+    prompt: "帮我处理这个场景：用户要写 Bash 自动化、巡检、备份、发布、清理、定时任务或包装 CLI。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_arch_linux_triage
+    prompt: "这个需求应该交给 arch-linux-triage：遇到 Arch Linux 的 pacman、systemd、滚动升级、AUR、内核或启动故障"
+    fixtures: []
+    rubric:
+      - "adjacent arch-linux-triage requests should not trigger linux-shell-scripting"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

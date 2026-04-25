@@ -1,0 +1,34 @@
+cases:
+  - id: module_boundary_review
+    prompt: "Analyze the module seams in this codebase. I suspect dependency direction is wrong and abstractions are leaking."
+    fixtures: []
+    rubric:
+      - "uses dependency evidence instead of judging by directory names"
+      - "identifies interface boundaries, dependency direction, and leakage points"
+      - "recommends boundary fixes matched to the actual coupling problem"
+    trigger_expected: true
+
+  - id: service_interface_leak
+    prompt: "Review the interface between billing and orders. Billing details seem to leak into order workflow code."
+    fixtures: []
+    rubric:
+      - "maps responsibilities on both sides of the boundary"
+      - "detects data, behavior, or temporal coupling across the interface"
+      - "proposes a narrower contract or ownership correction"
+    trigger_expected: true
+
+  - id: negative_general_tech_debt
+    prompt: "Prioritize the technical debt backlog for this quarter."
+    fixtures: []
+    rubric:
+      - "does not activate module seam analysis"
+      - "debt portfolio management belongs to tech-debt or managing-tech-debt"
+    trigger_expected: false
+
+  - id: negative_api_documentation
+    prompt: "Write frontend handoff docs for this backend endpoint."
+    fixtures: []
+    rubric:
+      - "does not activate seam analysis"
+      - "handoff documentation belongs to backend-to-frontend-handoff-docs"
+    trigger_expected: false

@@ -1,0 +1,30 @@
+cases:
+  - id: positive_nestjs_layering_patterns_primary
+    prompt: "我需要设计或审查 NestJS 模块分层（module/controller/service）、DTO + class-validator + ValidationPipe 输入边界、依赖注入、Guard/Interceptor/Pipe 装配或 Express 迁移"
+    fixtures: []
+    rubric:
+      - "recognizes the request as nestjs-layering-patterns territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_nestjs_layering_patterns_realistic
+    prompt: "帮我处理这个场景：需要创建、修改或排查 .module.ts、.controller.ts、.service.ts、dto/.dto.ts、Guard、Interceptor、Pipe、Filter。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_unrelated
+    prompt: "请写一个通用 Python 排序函数并解释时间复杂度"
+    fixtures: []
+    rubric:
+      - "unrelated programming requests should not trigger nestjs-layering-patterns"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

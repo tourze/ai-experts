@@ -1,0 +1,34 @@
+cases:
+  - id: prioritize_acquisition_channels
+    prompt: "Compare our acquisition channels and decide where to invest next quarter."
+    fixtures: []
+    rubric:
+      - "compares channels by ROI, scale, cost, and strategic fit"
+      - "identifies low-performing spend to cut"
+      - "recommends resource allocation with rationale"
+    trigger_expected: true
+
+  - id: rebalance_growth_resources
+    prompt: "We have SEO, paid ads, partnerships, outbound, and webinars. Which lead channels should we prioritize?"
+    fixtures: []
+    rubric:
+      - "evaluates channels using consistent criteria"
+      - "accounts for audience, sales cycle, and current performance"
+      - "produces a ranked channel plan"
+    trigger_expected: true
+
+  - id: negative_paid_campaign_structure
+    prompt: "Set up Google Ads campaigns and budget allocation."
+    fixtures: []
+    rubric:
+      - "does not activate cross-channel prioritization"
+      - "paid platform planning belongs to paid-ads"
+    trigger_expected: false
+
+  - id: negative_lead_list
+    prompt: "Find a list of target companies and contacts for outbound."
+    fixtures: []
+    rubric:
+      - "does not activate channel optimization"
+      - "lead sourcing belongs to lead-research-assistant"
+    trigger_expected: false

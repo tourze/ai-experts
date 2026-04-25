@@ -1,0 +1,34 @@
+cases:
+  - id: talkback_focus_audit
+    prompt: "Audit this Android screen for TalkBack issues, focus order, content descriptions, and touch targets."
+    fixtures: []
+    rubric:
+      - "checks TalkBack labels and reading order"
+      - "identifies focus management and semantic issues"
+      - "covers touch target size and accessibility affordances"
+    trigger_expected: true
+
+  - id: compose_accessibility_fix
+    prompt: "Fix accessibility in a Jetpack Compose form where screen readers skip error text and buttons are too small."
+    fixtures: []
+    rubric:
+      - "uses Android/Compose accessibility concepts"
+      - "addresses error announcement and semantic hierarchy"
+      - "recommends touch target and contrast fixes"
+    trigger_expected: true
+
+  - id: negative_material_ui_review
+    prompt: "Review this Android UI for Material Design 3 color, typography, and adaptive layout."
+    fixtures: []
+    rubric:
+      - "does not activate accessibility-specific workflow"
+      - "Material UI guidance belongs to android-design-guidelines"
+    trigger_expected: false
+
+  - id: negative_unit_tests
+    prompt: "Write Android unit and Compose UI tests for this screen."
+    fixtures: []
+    rubric:
+      - "does not activate accessibility audit"
+      - "test implementation belongs to android-testing"
+    trigger_expected: false

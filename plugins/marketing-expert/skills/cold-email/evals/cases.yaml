@@ -1,0 +1,34 @@
+cases:
+  - id: b2b_cold_outbound
+    prompt: "Write a cold email to VP Sales prospects for our pipeline analytics tool."
+    fixtures: []
+    rubric:
+      - "uses a concise outbound email structure"
+      - "personalizes around buyer pain or trigger"
+      - "includes a low-friction CTA"
+    trigger_expected: true
+
+  - id: cold_followup_sequence
+    prompt: "Create a cold outbound follow-up sequence for CFOs who did not reply."
+    fixtures: []
+    rubric:
+      - "creates follow-up messages with distinct angles"
+      - "avoids generic nurture-style lifecycle emails"
+      - "keeps asks specific and sales-oriented"
+    trigger_expected: true
+
+  - id: negative_lifecycle_email
+    prompt: "Create a welcome email series for new trial users."
+    fixtures: []
+    rubric:
+      - "does not activate cold email workflow"
+      - "lifecycle automation belongs to email-sequence"
+    trigger_expected: false
+
+  - id: negative_sales_deck
+    prompt: "Create a sales deck for enterprise prospects."
+    fixtures: []
+    rubric:
+      - "does not activate cold outbound copy"
+      - "sales collateral belongs to sales-enablement"
+    trigger_expected: false

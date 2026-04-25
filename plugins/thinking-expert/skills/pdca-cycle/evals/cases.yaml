@@ -1,0 +1,30 @@
+cases:
+  - id: positive_pdca_cycle_primary
+    prompt: "我需要做持续改进、质量管理、运营优化或需要闭环问题解决方法时使用；英文触发词 PDCA、Plan-Do-Check-Act、Deming cycle、continuous improvement、kaizen、quality management。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as pdca-cycle territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_pdca_cycle_realistic
+    prompt: "帮我处理这个场景：运营流程的持续改进（每轮解决一个问题，螺旋上升）。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_consciousness_council
+    prompt: "这个需求应该交给 consciousness-council：多视角思辨来审视高不确定性决策时使用。用户提到\"换几个专家视角看\"\"多角度想一遍\"\"开个议会\""
+    fixtures: []
+    rubric:
+      - "adjacent consciousness-council requests should not trigger pdca-cycle"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

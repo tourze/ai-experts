@@ -1,0 +1,30 @@
+cases:
+  - id: positive_microsoft_docs_primary
+    prompt: "我需要在用户需要理解 Microsoft 技术概念、教程、配置、限制、配额或最佳实践时使用；优先检索 Microsoft Learn 官方内容，而不是依赖过期记忆。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as microsoft-docs territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_microsoft_docs_realistic
+    prompt: "帮我处理这个场景：用户在问“怎么工作”“是什么”“有哪些限制”“怎么配置”“官方最佳实践是什么”。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_microsoft_code_reference
+    prompt: "这个需求应该交给 microsoft-code-reference：在编写、调试或评审 Microsoft SDK、.NET、Azure 客户端或 Microsoft API 代码"
+    fixtures: []
+    rubric:
+      - "adjacent microsoft-code-reference requests should not trigger microsoft-docs"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

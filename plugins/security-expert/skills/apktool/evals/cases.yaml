@@ -1,0 +1,30 @@
+cases:
+  - id: positive_apktool_primary
+    prompt: "我需要解包 APK、查看 AndroidManifest、资源文件或 smali，并对重打包链路做验证"
+    fixtures: []
+    rubric:
+      - "recognizes the request as apktool territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_apktool_realistic
+    prompt: "帮我处理这个场景：需要分析 Manifest、资源、签名配置、网络安全配置或 smali 入口。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_active_directory_attacks
+    prompt: "这个需求应该交给 active-directory-attacks：明确要求在已授权环境中进行 Active Directory 安全测试，或提到 Kerberoasting、DCSync、BloodHound、NTLM Relay、Golden Ticket 等主题"
+    fixtures: []
+    rubric:
+      - "adjacent active-directory-attacks requests should not trigger apktool"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

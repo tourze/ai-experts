@@ -1,0 +1,30 @@
+cases:
+  - id: positive_model_and_chunking_choice
+    prompt: "Choose an embedding model and chunking strategy for a multilingual documentation search system"
+    fixtures: []
+    rubric:
+      - "compares embedding model options"
+      - "addresses chunk size, overlap, and retrieval needs"
+    trigger_expected: true
+
+  - id: positive_semantic_retrieval_plan
+    prompt: "Design the embedding strategy for FAQ semantic search across 200K short articles"
+    fixtures: []
+    rubric:
+      - "plans embedding generation and document representation"
+      - "considers query/document length and domain fit"
+    trigger_expected: true
+
+  - id: negative_hnsw_parameter_tuning
+    prompt: "Tune HNSW M and efSearch to improve recall without increasing latency too much"
+    fixtures: []
+    rubric:
+      - "index parameter tuning should route to vector-index-tuning"
+    trigger_expected: false
+
+  - id: negative_rag_hallucination_audit
+    prompt: "Our RAG answers hallucinate facts even when retrieval finds relevant documents"
+    fixtures: []
+    rubric:
+      - "RAG quality auditing should route to rag-auditor"
+    trigger_expected: false

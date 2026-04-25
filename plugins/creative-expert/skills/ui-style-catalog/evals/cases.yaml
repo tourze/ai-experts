@@ -1,0 +1,30 @@
+cases:
+  - id: positive_glassmorphism_traits
+    prompt: "Explain Glassmorphism visual traits, CSS properties, prompt keywords, and when not to use it"
+    fixtures: []
+    rubric:
+      - "identifies the named UI style"
+      - "covers visual traits, CSS traits, prompt keywords, and anti-fit scenarios"
+    trigger_expected: true
+
+  - id: positive_saas_style_selection
+    prompt: "Choose between Bento, Aurora, and Neubrutalism for a B2B SaaS dashboard and give prompt keywords"
+    fixtures: []
+    rubric:
+      - "compares named UI styles for a product context"
+      - "includes fit and non-fit guidance"
+    trigger_expected: true
+
+  - id: negative_finished_poster
+    prompt: "Create a finished poster for a music festival"
+    fixtures: []
+    rubric:
+      - "finished static poster production should route to canvas-design"
+    trigger_expected: false
+
+  - id: negative_export_png_card
+    prompt: "Generate a PNG card showing these three product benefits"
+    fixtures: []
+    rubric:
+      - "static image export should route to concept-to-image"
+    trigger_expected: false

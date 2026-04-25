@@ -1,0 +1,43 @@
+cases:
+  - id: review_diff_quality
+    prompt: "Review this diff for code quality, naming, responsibilities, and error handling issues before I merge it"
+    fixtures: []
+    rubric:
+      - "activates general code quality review rather than implementation"
+      - "requires reading the actual diff or code before findings"
+      - "reports findings with concrete source, consequence, and remedy"
+    trigger_expected: true
+
+  - id: inspect_boundary_logic
+    prompt: "Can you look at this service file and find logic bugs or missing edge-case handling?"
+    fixtures: []
+    rubric:
+      - "focuses on logic and boundary risks in real code"
+      - "does not limit the review to lint or formatting"
+      - "prioritizes actionable defects over style preferences"
+    trigger_expected: true
+
+  - id: health_score_review
+    prompt: "Give this module a quality review and a health score; I want to know what would make it harder to maintain"
+    fixtures: []
+    rubric:
+      - "uses a structured code-review lens"
+      - "scores maintainability based on evidence from the code"
+      - "separates severe issues from suggestions"
+    trigger_expected: true
+
+  - id: negative_pre_landing_gate
+    prompt: "Run a pre-landing safety gate on my branch and tell me if it is CLEAR TO LAND or BLOCKED"
+    fixtures: []
+    rubric:
+      - "does not activate general code-review skill"
+      - "gate-oriented merge safety review belongs to pre-landing-review"
+    trigger_expected: false
+
+  - id: negative_write_unit_tests
+    prompt: "Write unit tests for the calculateDiscount function"
+    fixtures: []
+    rubric:
+      - "does not activate code-review workflow"
+      - "test generation is implementation work, not review"
+    trigger_expected: false

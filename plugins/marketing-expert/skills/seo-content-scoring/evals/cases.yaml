@@ -1,0 +1,34 @@
+cases:
+  - id: score_blog_post_seo_quality
+    prompt: "Score this blog post for SEO content quality and tell me if it is ready to publish."
+    fixtures: []
+    rubric:
+      - "uses a content quality scoring lens"
+      - "assesses search intent, keyword depth, structure, E-E-A-T, and usefulness"
+      - "returns prioritized content improvements"
+    trigger_expected: true
+
+  - id: publishing_standard_review
+    prompt: "Evaluate whether this article meets our SEO publishing standard for the target keyword."
+    fixtures: []
+    rubric:
+      - "checks content against target keyword and SERP intent"
+      - "identifies missing sections, evidence, and user questions"
+      - "separates content quality from technical site issues"
+    trigger_expected: true
+
+  - id: negative_technical_seo
+    prompt: "Audit our robots.txt, sitemap, canonical tags, and indexing problems."
+    fixtures: []
+    rubric:
+      - "does not activate content scoring"
+      - "technical search audit belongs to seo"
+    trigger_expected: false
+
+  - id: negative_ai_tone_edit
+    prompt: "Make this article sound less AI-generated and more human."
+    fixtures: []
+    rubric:
+      - "does not activate SEO scoring workflow"
+      - "tone humanization belongs to content-humanizer"
+    trigger_expected: false

@@ -1,0 +1,43 @@
+cases:
+  - id: create_new_skill
+    prompt: "我想把我们团队的上线检查流程做成一个 SKILL.md，帮我创建并设计测试用例"
+    fixtures: []
+    rubric:
+      - "captures skill intent, trigger conditions, and expected outputs"
+      - "drafts or updates SKILL.md using skill creation conventions"
+      - "plans realistic eval prompts for the new skill"
+    trigger_expected: true
+
+  - id: improve_existing_skill
+    prompt: "这个已有 skill 用起来太啰嗦，帮我迭代一下并跑一下 with-skill/baseline 对比"
+    fixtures: []
+    rubric:
+      - "treats the task as iterative skill improvement"
+      - "uses evaluation outputs and feedback to guide revisions"
+      - "preserves the skill's core purpose while improving guidance"
+    trigger_expected: true
+
+  - id: optimize_skill_description
+    prompt: "帮我为这个 skill 生成正反触发样例，然后优化 frontmatter description 的命中率"
+    fixtures: []
+    rubric:
+      - "creates trigger eval queries with positive and negative cases"
+      - "uses the description optimization loop or equivalent process"
+      - "avoids overfitting to a tiny set of exact prompts"
+    trigger_expected: true
+
+  - id: negative_score_only
+    prompt: "只给这个 SKILL.md 打分，按知识增量、反模式和实用性列出扣分点"
+    fixtures: []
+    rubric:
+      - "does not activate skill creation workflow"
+      - "scoring-only review belongs to skill-judge"
+    trigger_expected: false
+
+  - id: negative_find_external_skill
+    prompt: "有没有别人已经写好的 Kubernetes 部署 skill？帮我找一个安装"
+    fixtures: []
+    rubric:
+      - "does not activate custom skill creation"
+      - "external skill discovery belongs to find-skills"
+    trigger_expected: false

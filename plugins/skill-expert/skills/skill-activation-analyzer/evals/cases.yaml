@@ -1,0 +1,43 @@
+cases:
+  - id: missed_skill_trigger
+    prompt: "刚才我说要审查 PR，但 code-review skill 没触发，帮我分析为什么漏触发"
+    fixtures: []
+    rubric:
+      - "diagnoses missed skill activation behavior"
+      - "reconstructs user intent before matching descriptions"
+      - "identifies description gaps or routing-chain issues"
+    trigger_expected: true
+
+  - id: false_positive_trigger
+    prompt: "这个 marketing skill 最近总在普通文案润色时误触发，帮我定位触发词哪里太宽"
+    fixtures: []
+    rubric:
+      - "diagnoses false-positive skill activation"
+      - "compares intended user task against the skill description"
+      - "recommends description boundary changes rather than body edits"
+    trigger_expected: true
+
+  - id: skill_conflict_matrix
+    prompt: "检查一下 product-expert 里面几个增长类 skill 会不会互相抢请求"
+    fixtures: []
+    rubric:
+      - "treats the task as multi-skill trigger conflict analysis"
+      - "extracts or compares trigger domains within the same plugin"
+      - "prefers description differentiation over merging skills"
+    trigger_expected: true
+
+  - id: negative_description_style_only
+    prompt: "批量检查 description 里有没有写步骤、输出格式或者过长的问题"
+    fixtures: []
+    rubric:
+      - "does not activate runtime activation analyzer"
+      - "description text hygiene belongs to description-cso-audit"
+    trigger_expected: false
+
+  - id: negative_design_quality_score
+    prompt: "审查这个 SKILL.md 的知识增量和 progressive disclosure，给出质量评分"
+    fixtures: []
+    rubric:
+      - "does not activate trigger behavior analysis"
+      - "design quality scoring belongs to skill-judge"
+    trigger_expected: false

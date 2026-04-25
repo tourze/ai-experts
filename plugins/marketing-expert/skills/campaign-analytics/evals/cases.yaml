@@ -1,0 +1,34 @@
+cases:
+  - id: campaign_roi_review
+    prompt: "Analyze this campaign's ROI, ROAS, CPA, conversion rate, and channel attribution."
+    fixtures: []
+    rubric:
+      - "calculates or interprets performance metrics"
+      - "compares channels and funnel stages"
+      - "recommends budget or optimization actions from evidence"
+    trigger_expected: true
+
+  - id: channel_postmortem
+    prompt: "Our launch campaign underperformed. Diagnose which channel and funnel step caused the miss."
+    fixtures: []
+    rubric:
+      - "breaks performance down by channel and funnel stage"
+      - "distinguishes traffic quality from conversion problems"
+      - "produces a practical campaign postmortem"
+    trigger_expected: true
+
+  - id: negative_tracking_setup
+    prompt: "Set up GA4 events and GTM triggers for this campaign."
+    fixtures: []
+    rubric:
+      - "does not activate campaign performance analysis"
+      - "instrumentation belongs to analytics-tracking"
+    trigger_expected: false
+
+  - id: negative_paid_ads_plan
+    prompt: "Plan next month's ad budget across Google, Meta, and LinkedIn."
+    fixtures: []
+    rubric:
+      - "does not activate post-campaign analytics"
+      - "paid media planning belongs to paid-ads"
+    trigger_expected: false

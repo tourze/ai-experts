@@ -1,0 +1,43 @@
+cases:
+  - id: playwright_login_flow
+    prompt: "打开 http://localhost:3000，用 Playwright 验证登录表单流程并截图失败状态"
+    fixtures: []
+    rubric:
+      - "activates real-browser web app testing"
+      - "checks target reachability before interacting"
+      - "uses stable selectors and captures evidence on failure"
+    trigger_expected: true
+
+  - id: browser_console_logs
+    prompt: "帮我点一下这个页面，抓浏览器 console error 和网络失败，再告诉我哪里坏了"
+    fixtures: []
+    rubric:
+      - "uses browser automation or Playwright-style inspection"
+      - "collects console logs or runtime evidence"
+      - "does not treat the task as static code review"
+    trigger_expected: true
+
+  - id: responsive_screenshot_check
+    prompt: "用真实浏览器检查这个 Web 页面在手机宽度下布局有没有重叠，并保存截图"
+    fixtures: []
+    rubric:
+      - "runs or plans viewport-based browser verification"
+      - "uses screenshots as evidence"
+      - "checks visible UI state rather than only CSS source"
+    trigger_expected: true
+
+  - id: negative_test_plan_only
+    prompt: "这个登录页应该有哪些 E2E 测试场景？先列计划，不要打开浏览器"
+    fixtures: []
+    rubric:
+      - "does not activate browser execution workflow"
+      - "planning scenarios belongs to testing-strategy"
+    trigger_expected: false
+
+  - id: negative_static_code_review
+    prompt: "Review the React component code for accessibility and state management issues"
+    fixtures: []
+    rubric:
+      - "does not activate webapp-testing"
+      - "static code review is not real-browser interaction testing"
+    trigger_expected: false

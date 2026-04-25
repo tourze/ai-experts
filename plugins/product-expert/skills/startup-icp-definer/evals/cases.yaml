@@ -1,0 +1,30 @@
+cases:
+  - id: positive_startup_icp_definer_primary
+    prompt: "我需要定义理想客户画像、购买中心、目标行业或关键 persona 时使用；帮助把“谁最值得卖”说清楚。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as startup-icp-definer territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_startup_icp_definer_realistic
+    prompt: "帮我处理这个场景：B2B/B2B2C 早期定位、销售聚焦、市场切入和外呼名单筛选。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_3c_strategic_triangle
+    prompt: "这个需求应该交给 3c-strategic-triangle：从顾客、公司、竞争者三角度做战略分析、找差异化定位或评估竞争可持续性时使用；英文触发词 3C analysis、Ohmae 3C、customer-company-competitor、strategic triangle。"
+    fixtures: []
+    rubric:
+      - "adjacent 3c-strategic-triangle requests should not trigger startup-icp-definer"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

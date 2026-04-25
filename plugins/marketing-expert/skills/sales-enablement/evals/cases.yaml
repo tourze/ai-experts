@@ -1,0 +1,34 @@
+cases:
+  - id: enterprise_sales_deck
+    prompt: "Create a sales deck for enterprise buyers of our security platform."
+    fixtures: []
+    rubric:
+      - "creates buyer-facing sales collateral"
+      - "covers problem, impact, product fit, proof, objections, and next step"
+      - "uses language appropriate for sales conversations"
+    trigger_expected: true
+
+  - id: objection_handling_doc
+    prompt: "Build an objection-handling one-pager for our sales team."
+    fixtures: []
+    rubric:
+      - "identifies common objections and response frames"
+      - "arms sales with concise proof and talk tracks"
+      - "keeps output focused on enablement material"
+    trigger_expected: true
+
+  - id: negative_cold_email
+    prompt: "Write a first-touch cold email to a VP of Operations."
+    fixtures: []
+    rubric:
+      - "does not activate sales collateral workflow"
+      - "cold email belongs to cold-email"
+    trigger_expected: false
+
+  - id: negative_landing_page_copy
+    prompt: "Write landing page hero copy for our website."
+    fixtures: []
+    rubric:
+      - "does not activate sales enablement"
+      - "marketing page copy belongs to copywriting"
+    trigger_expected: false

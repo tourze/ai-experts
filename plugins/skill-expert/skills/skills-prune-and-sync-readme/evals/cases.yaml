@@ -1,0 +1,43 @@
+cases:
+  - id: audit_low_quality_skills
+    prompt: "扫描 skills 目录，找出重复、低质量或者相对链接失效的 skill，给我清理候选"
+    fixtures: []
+    rubric:
+      - "uses repository skill curation rather than general design scoring"
+      - "audits duplicates, low-quality candidates, conflicts, and broken links"
+      - "does not delete anything without an explicit user-approved list"
+    trigger_expected: true
+
+  - id: prune_confirmed_skills
+    prompt: "我确认删除 skill-a 和 skill-b，帮我按脚本 prune，然后同步 README 的 Skill 清单"
+    fixtures: []
+    rubric:
+      - "uses the prune workflow only after explicit names are provided"
+      - "runs or recommends curate_skills.py prune with an explicit list"
+      - "syncs README through the script instead of manual table edits"
+    trigger_expected: true
+
+  - id: sync_readme_skill_list
+    prompt: "新增和删除了一批 skill，帮我重新生成 README 里的 Skill 清单并检查是否同步"
+    fixtures: []
+    rubric:
+      - "uses the sync-readme workflow"
+      - "preserves existing summaries when possible"
+      - "validates with the check mode after writing"
+    trigger_expected: true
+
+  - id: negative_single_skill_creation
+    prompt: "帮我写一个新的 SKILL.md，用来指导代码审查"
+    fixtures: []
+    rubric:
+      - "does not activate pruning or README sync workflow"
+      - "new skill creation belongs to skill-creator"
+    trigger_expected: false
+
+  - id: negative_trigger_telemetry
+    prompt: "根据 decisions.jsonl 统计最近 skill 路由声明缺失和 hook 误拦情况"
+    fixtures: []
+    rubric:
+      - "does not activate prune/readme sync workflow"
+      - "telemetry governance belongs to trigger-telemetry-advisor"
+    trigger_expected: false

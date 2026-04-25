@@ -1,0 +1,30 @@
+cases:
+  - id: positive_system_diagnostics_primary
+    prompt: "我需要说 Linux 主机变慢、服务异常、需要健康检查或要先摸清系统现状"
+    fixtures: []
+    rubric:
+      - "recognizes the request as system-diagnostics territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_system_diagnostics_realistic
+    prompt: "帮我处理这个场景：用户要做健康检查、系统摸底、上线前巡检、故障前置采样或基础资源审计。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_arch_linux_triage
+    prompt: "这个需求应该交给 arch-linux-triage：遇到 Arch Linux 的 pacman、systemd、滚动升级、AUR、内核或启动故障"
+    fixtures: []
+    rubric:
+      - "adjacent arch-linux-triage requests should not trigger system-diagnostics"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

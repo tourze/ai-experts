@@ -1,0 +1,30 @@
+cases:
+  - id: positive_semantic_search_design
+    prompt: "Design a semantic search system with embeddings, cosine similarity, metadata filters, and reranking"
+    fixtures: []
+    rubric:
+      - "covers similarity search architecture"
+      - "addresses embeddings, filtering, and ranking"
+    trigger_expected: true
+
+  - id: positive_hybrid_search_pattern
+    prompt: "Implement hybrid keyword plus vector search for product catalog retrieval"
+    fixtures: []
+    rubric:
+      - "combines lexical and vector retrieval patterns"
+      - "discusses query flow and result ranking"
+    trigger_expected: true
+
+  - id: negative_embedding_model_choice
+    prompt: "Which embedding model and chunk size should I choose for legal documents?"
+    fixtures: []
+    rubric:
+      - "model and chunking strategy should route to embedding-strategies"
+    trigger_expected: false
+
+  - id: negative_index_performance_tuning
+    prompt: "Tune IVF and PQ parameters to reduce memory while preserving recall"
+    fixtures: []
+    rubric:
+      - "vector index performance tuning should route to vector-index-tuning"
+    trigger_expected: false

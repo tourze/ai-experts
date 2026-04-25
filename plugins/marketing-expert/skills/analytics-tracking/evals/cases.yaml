@@ -1,0 +1,34 @@
+cases:
+  - id: ga4_gtm_tracking_plan
+    prompt: "Create a GA4 and GTM event tracking plan for signup, checkout, and activation."
+    fixtures: []
+    rubric:
+      - "defines events, parameters, triggers, and destinations"
+      - "distinguishes conversion events from diagnostic events"
+      - "includes validation or QA steps for tracking accuracy"
+    trigger_expected: true
+
+  - id: debug_missing_conversions
+    prompt: "Our GA4 conversions stopped firing after a GTM change. Help audit the tracking setup."
+    fixtures: []
+    rubric:
+      - "troubleshoots tags, triggers, data layer, and event naming"
+      - "identifies likely tracking breakpoints"
+      - "recommends verification in GA4/GTM debug tools"
+    trigger_expected: true
+
+  - id: negative_campaign_roi
+    prompt: "Analyze this campaign's ROAS, CPA, and channel attribution."
+    fixtures: []
+    rubric:
+      - "does not activate tracking instrumentation"
+      - "campaign performance analysis belongs to campaign-analytics"
+    trigger_expected: false
+
+  - id: negative_page_copy
+    prompt: "Rewrite our homepage copy to improve conversions."
+    fixtures: []
+    rubric:
+      - "does not activate analytics tracking"
+      - "page copy belongs to copywriting"
+    trigger_expected: false

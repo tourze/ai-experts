@@ -70,3 +70,17 @@ cases:
       - "Notes popups need minimal fields due to context"
       - "Does not attempt detailed form redesign"
     trigger_expected: true
+  - id: negative_page_conversion_audit
+    prompt: "Audit our pricing page conversion rate and recommend section-level changes."
+    fixtures: []
+    rubric:
+      - "does not activate popup-specific workflow"
+      - "full page conversion work belongs to page-cro"
+    trigger_expected: false
+  - id: negative_email_capture_sequence
+    prompt: "Write a welcome email sequence for people who joined our newsletter."
+    fixtures: []
+    rubric:
+      - "does not activate popup optimization"
+      - "email sequence creation belongs to email-sequence"
+    trigger_expected: false

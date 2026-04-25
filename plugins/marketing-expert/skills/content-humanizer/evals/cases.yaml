@@ -1,0 +1,34 @@
+cases:
+  - id: remove_ai_tone
+    prompt: "This blog intro sounds AI-generated and generic. Make it more human and brand-specific."
+    fixtures: []
+    rubric:
+      - "reduces generic phrasing and repetitive cadence"
+      - "adds natural voice, specificity, and rhythm"
+      - "preserves core meaning"
+    trigger_expected: true
+
+  - id: humanize_brand_voice
+    prompt: "Rewrite this LinkedIn post so it sounds like a real founder wrote it, not a machine."
+    fixtures: []
+    rubric:
+      - "improves authenticity and voice"
+      - "removes inflated or template-like language"
+      - "keeps the platform context in mind"
+    trigger_expected: true
+
+  - id: negative_new_landing_copy
+    prompt: "Write a landing page from scratch for our analytics product."
+    fixtures: []
+    rubric:
+      - "does not activate humanization of existing content"
+      - "new page copy belongs to copywriting"
+    trigger_expected: false
+
+  - id: negative_seo_scoring
+    prompt: "Score this article for SEO quality and keyword coverage."
+    fixtures: []
+    rubric:
+      - "does not activate tone humanization"
+      - "SEO content scoring belongs to seo-content-scoring"
+    trigger_expected: false

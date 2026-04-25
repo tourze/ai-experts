@@ -1,0 +1,30 @@
+cases:
+  - id: positive_arch_linux_triage_primary
+    prompt: "我需要遇到 Arch Linux 的 pacman、systemd、滚动升级、AUR、内核或启动故障"
+    fixtures: []
+    rubric:
+      - "recognizes the request as arch-linux-triage territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_arch_linux_triage_realistic
+    prompt: "帮我处理这个场景：用户提到 pacman、mkinitcpio、systemd、AUR、滚动升级后故障、启动失败或驱动回退。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_centos_linux_triage
+    prompt: "这个需求应该交给 centos-linux-triage：遇到 CentOS、CentOS Stream 或 RHEL 兼容发行版上的 systemd、SELinux、firewalld、dnf/yum 或服务启动问题"
+    fixtures: []
+    rubric:
+      - "adjacent centos-linux-triage requests should not trigger arch-linux-triage"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

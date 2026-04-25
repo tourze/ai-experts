@@ -1,0 +1,43 @@
+cases:
+  - id: safe_refactor_plan
+    prompt: "I need to refactor this service into smaller modules without changing behavior. Help me set up a safe incremental plan"
+    fixtures: []
+    rubric:
+      - "treats the task as behavior-preserving refactoring"
+      - "requires baseline tests or characterization tests before edits"
+      - "defines scope, rollback, and small verification steps"
+    trigger_expected: true
+
+  - id: clean_messy_subsystem
+    prompt: "This area is messy and I want to clean it up, but I don't want to accidentally change behavior"
+    fixtures: []
+    rubric:
+      - "establishes refactoring scope and non-goals"
+      - "separates cleanup from bug fixes or features"
+      - "uses incremental changes with verification"
+    trigger_expected: true
+
+  - id: move_responsibilities
+    prompt: "We need to move validation logic out of the controller into a domain service; give me a refactoring checklist"
+    fixtures: []
+    rubric:
+      - "plans responsibility movement as a refactor"
+      - "checks affected callers and tests"
+      - "keeps each step independently reversible"
+    trigger_expected: true
+
+  - id: negative_specific_complexity_fix
+    prompt: "This one function has too many nested conditionals; simplify the function body"
+    fixtures: []
+    rubric:
+      - "does not activate broad refactoring checklist as primary"
+      - "local cognitive-complexity reduction belongs to complexity-reducer"
+    trigger_expected: false
+
+  - id: negative_new_feature_plan
+    prompt: "Plan and implement a new export-to-CSV feature from requirements to tests"
+    fixtures: []
+    rubric:
+      - "does not activate refactoring checklist"
+      - "feature delivery belongs to spec-driven-delivery or feature development"
+    trigger_expected: false

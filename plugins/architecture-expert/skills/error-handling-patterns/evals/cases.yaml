@@ -1,0 +1,34 @@
+cases:
+  - id: service_error_boundary
+    prompt: "Design error handling for a payment service with provider timeouts, validation errors, retries, and user-facing messages."
+    fixtures: []
+    rubric:
+      - "separates domain, infrastructure, and presentation error layers"
+      - "preserves context while preventing sensitive leakage"
+      - "defines retry boundaries, backoff, and idempotency preconditions"
+    trigger_expected: true
+
+  - id: result_type_strategy
+    prompt: "Should this TypeScript service use exceptions or Result objects? We need consistent propagation and partial degradation."
+    fixtures: []
+    rubric:
+      - "compares exception and Result-style tradeoffs"
+      - "defines where errors are caught, transformed, and surfaced"
+      - "handles local degradation without swallowing root causes"
+    trigger_expected: true
+
+  - id: negative_specific_stacktrace
+    prompt: "Debug this stack trace and fix the null pointer exception."
+    fixtures: []
+    rubric:
+      - "does not activate error-handling architecture pattern workflow"
+      - "specific bug repair is debugging or implementation work"
+    trigger_expected: false
+
+  - id: negative_logging_dashboard
+    prompt: "Create a Grafana dashboard for error rates."
+    fixtures: []
+    rubric:
+      - "does not activate error propagation design workflow"
+      - "observability dashboard setup is outside this skill"
+    trigger_expected: false

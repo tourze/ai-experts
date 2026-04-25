@@ -65,3 +65,17 @@ cases:
       - "Notes broader nurture design is outside this skill's main scope"
       - "Provides specific referral email copy or template"
     trigger_expected: true
+  - id: negative_cold_outbound_campaign
+    prompt: "Write a cold outbound email campaign to book demos with CFOs."
+    fixtures: []
+    rubric:
+      - "does not activate referral program workflow"
+      - "cold outbound email belongs to cold-email"
+    trigger_expected: false
+  - id: negative_customer_churn_recovery
+    prompt: "Design a cancellation save flow to prevent subscription churn."
+    fixtures: []
+    rubric:
+      - "does not activate referral program workflow"
+      - "churn reduction belongs to churn-prevention"
+    trigger_expected: false

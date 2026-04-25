@@ -1,0 +1,34 @@
+cases:
+  - id: material3_compose_review
+    prompt: "Review this Jetpack Compose screen for Material Design 3, dynamic color, typography, and spacing."
+    fixtures: []
+    rubric:
+      - "uses Android Material Design 3 guidance"
+      - "checks color, typography, spacing, and component selection"
+      - "addresses Compose UI implementation concerns"
+    trigger_expected: true
+
+  - id: adaptive_layout_guidance
+    prompt: "Design an Android adaptive layout for phone, foldable, and tablet screens."
+    fixtures: []
+    rubric:
+      - "addresses window size classes or adaptive layout patterns"
+      - "considers navigation and content hierarchy across form factors"
+      - "keeps Android platform conventions in mind"
+    trigger_expected: true
+
+  - id: negative_talkback_audit
+    prompt: "Check this screen for TalkBack labels, focus order, and touch target accessibility."
+    fixtures: []
+    rubric:
+      - "does not activate general design guideline workflow"
+      - "accessibility review belongs to android-accessibility"
+    trigger_expected: false
+
+  - id: negative_emulator_logs
+    prompt: "Start an emulator, install the APK, and inspect logcat."
+    fixtures: []
+    rubric:
+      - "does not activate UI design guidance"
+      - "emulator operations belong to android-emulator-skill"
+    trigger_expected: false

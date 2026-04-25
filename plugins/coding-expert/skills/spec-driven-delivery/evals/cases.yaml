@@ -1,0 +1,43 @@
+cases:
+  - id: end_to_end_feature_delivery
+    prompt: "I need to take this feature from vague requirements through implementation and verification without losing track"
+    fixtures: []
+    rubric:
+      - "activates a requirements-to-verifiable-delivery workflow"
+      - "requires clear scope, acceptance criteria, and risk before implementation"
+      - "connects planning, execution, review, and evidence"
+    trigger_expected: true
+
+  - id: multi_session_change
+    prompt: "This change will take several tool calls and maybe another session. I need a journaled process from spec to done"
+    fixtures: []
+    rubric:
+      - "uses an external journal or persistent delivery state"
+      - "prevents skipping from vague request to coding"
+      - "requires fresh verification before closing"
+    trigger_expected: true
+
+  - id: risky_but_planned_work
+    prompt: "Help me implement a billing workflow change, but first force us to pin down scope, acceptance criteria, risks, and validation"
+    fixtures: []
+    rubric:
+      - "recognizes higher-risk feature delivery"
+      - "requires explicit risk and acceptance handling before act phase"
+      - "does not proceed directly to code edits"
+    trigger_expected: true
+
+  - id: negative_small_direct_edit
+    prompt: "Change the button label from Save to Publish"
+    fixtures: []
+    rubric:
+      - "does not activate full spec-driven delivery"
+      - "a tiny direct edit does not need a multi-phase delivery workflow"
+    trigger_expected: false
+
+  - id: negative_code_review_only
+    prompt: "Review this diff for maintainability problems"
+    fixtures: []
+    rubric:
+      - "does not activate delivery workflow"
+      - "review-only tasks belong to code-review"
+    trigger_expected: false

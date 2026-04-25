@@ -1,0 +1,30 @@
+cases:
+  - id: positive_metric_trend_chart_choice
+    prompt: "We have monthly revenue, active users, and churn by segment. What chart types should go into the dashboard?"
+    fixtures: []
+    rubric:
+      - "selects chart types based on metric shape and comparison task"
+      - "explains why each chart fits the dashboard question"
+    trigger_expected: true
+
+  - id: positive_pie_chart_decision
+    prompt: "Should I use a pie chart for 18 acquisition channels, or is there a better chart?"
+    fixtures: []
+    rubric:
+      - "evaluates pie chart suitability"
+      - "recommends clearer alternatives for many categories"
+    trigger_expected: true
+
+  - id: negative_generate_python_plot
+    prompt: "Write Python code to render this chart with matplotlib and save it as PNG"
+    fixtures: []
+    rubric:
+      - "chart rendering code should route to data-visualization"
+    trigger_expected: false
+
+  - id: negative_ab_test_significance
+    prompt: "Is this A/B test result statistically significant at p < 0.05?"
+    fixtures: []
+    rubric:
+      - "statistical inference should route to statistical-analysis"
+    trigger_expected: false

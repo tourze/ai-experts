@@ -1,0 +1,34 @@
+cases:
+  - id: lifecycle_flow_collection
+    prompt: "Fix an Android Flow collection that leaks after the Fragment view is destroyed."
+    fixtures: []
+    rubric:
+      - "uses lifecycle-aware coroutine collection"
+      - "addresses Fragment view lifecycle versus Fragment lifecycle"
+      - "prevents leaks or duplicate collectors"
+    trigger_expected: true
+
+  - id: structured_concurrency_viewmodel
+    prompt: "Design coroutine error handling and structured concurrency for a ViewModel that loads multiple API calls."
+    fixtures: []
+    rubric:
+      - "uses structured concurrency and appropriate scopes"
+      - "handles cancellation and exception propagation"
+      - "distinguishes parallel and dependent async work"
+    trigger_expected: true
+
+  - id: negative_clean_architecture
+    prompt: "Split this app into data, domain, and presentation modules with Hilt."
+    fixtures: []
+    rubric:
+      - "does not activate coroutine-specific workflow"
+      - "module architecture belongs to android-architecture"
+    trigger_expected: false
+
+  - id: negative_compose_material
+    prompt: "Apply Material Design 3 components and dynamic color to this Compose screen."
+    fixtures: []
+    rubric:
+      - "does not activate coroutine workflow"
+      - "UI design guidance belongs to android-design-guidelines"
+    trigger_expected: false

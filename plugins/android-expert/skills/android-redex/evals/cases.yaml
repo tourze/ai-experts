@@ -27,3 +27,17 @@ cases:
       - "给出 ProGuard keep 规则作为修复方案"
       - "提到 TRACE 环境变量用于调试"
     trigger_expected: true
+  - id: negative_android_architecture
+    prompt: "帮我把这个 Android 项目重构成 Clean Architecture，多模块并接入 Hilt。"
+    fixtures: []
+    rubric:
+      - "不应触发 ReDex 优化流程"
+      - "架构和多模块重构属于 android-architecture"
+    trigger_expected: false
+  - id: negative_compose_testing
+    prompt: "为这个 Compose 登录页写 UI 测试，覆盖加载、错误和成功状态。"
+    fixtures: []
+    rubric:
+      - "不应触发 ReDex 优化流程"
+      - "Compose 测试属于 android-testing"
+    trigger_expected: false

@@ -1,0 +1,34 @@
+cases:
+  - id: new_feature_spec
+    prompt: "Create a Spec Kit spec for a team invitation feature with roles, expiration, and audit logging."
+    fixtures: []
+    rubric:
+      - "turns natural-language intent into feature requirements"
+      - "creates or updates the active feature spec under .specify/features"
+      - "records pending clarification items without creating a new branch by default"
+    trigger_expected: true
+
+  - id: update_existing_spec
+    prompt: "Update the current feature spec to add SSO login requirements and edge cases."
+    fixtures: []
+    rubric:
+      - "modifies the active spec rather than starting an unrelated workflow"
+      - "captures user stories, acceptance criteria, and edge cases"
+      - "keeps implementation details out of user-facing requirements unless necessary"
+    trigger_expected: true
+
+  - id: negative_from_existing_code
+    prompt: "Generate a baseline spec by reading the code for our existing billing module."
+    fixtures: []
+    rubric:
+      - "does not activate new-spec workflow"
+      - "reverse extraction from code belongs to speckit-baseline"
+    trigger_expected: false
+
+  - id: negative_generate_plan
+    prompt: "Create the technical plan from the current spec."
+    fixtures: []
+    rubric:
+      - "does not activate specification workflow"
+      - "technical planning belongs to speckit-plan"
+    trigger_expected: false

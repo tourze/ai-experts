@@ -1,0 +1,30 @@
+cases:
+  - id: positive_prlctl_vm_control_primary
+    prompt: "我需要通过 prlctl 控制 Parallels Desktop 虚拟机、采集状态或执行客体命令时使用；英文触发词 prlctl / Parallels Desktop。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as prlctl-vm-control territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_prlctl_vm_control_realistic
+    prompt: "帮我处理这个场景：需要在 macOS 宿主机上列出、定位、开关机、挂起、恢复或查看 Parallels Desktop 虚拟机详情。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_windows_kernel_security
+    prompt: "这个需求应该交给 windows-kernel-security：分析或审计 Windows 内核对象、驱动边界或安全机制时使用；英文触发词 Windows kernel / PatchGuard / VBS / HVCI / IOCTL。"
+    fixtures: []
+    rubric:
+      - "adjacent windows-kernel-security requests should not trigger prlctl-vm-control"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

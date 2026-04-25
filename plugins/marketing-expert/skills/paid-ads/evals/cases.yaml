@@ -66,3 +66,17 @@ cases:
       - "References or defers to ad-creative skill"
       - "Does not attempt bulk ad copy generation using campaign strategy patterns"
     trigger_expected: true
+  - id: negative_ad_copy_variations
+    prompt: "Write 20 Meta ad hooks and primary text variants for our campaign."
+    fixtures: []
+    rubric:
+      - "does not activate paid ads strategy workflow"
+      - "ad copy generation belongs to ad-creative"
+    trigger_expected: false
+  - id: negative_campaign_roi_analysis
+    prompt: "Analyze this completed campaign's ROI, ROAS, CPA, and channel attribution."
+    fixtures: []
+    rubric:
+      - "does not activate campaign planning workflow"
+      - "post-campaign performance analysis belongs to campaign-analytics"
+    trigger_expected: false

@@ -1,0 +1,30 @@
+cases:
+  - id: positive_network_troubleshooter_primary
+    prompt: "我需要遇到 Linux 网络不通、DNS 解析异常、端口连不上、连接超时、TLS 报错或链路抖动"
+    fixtures: []
+    rubric:
+      - "recognizes the request as network-troubleshooter territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_network_troubleshooter_realistic
+    prompt: "帮我处理这个场景：用户说“没网了”“解析失败”“端口不通”“连接超时”“curl 握手失败”“服务偶发断开”。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_arch_linux_triage
+    prompt: "这个需求应该交给 arch-linux-triage：遇到 Arch Linux 的 pacman、systemd、滚动升级、AUR、内核或启动故障"
+    fixtures: []
+    rubric:
+      - "adjacent arch-linux-triage requests should not trigger network-troubleshooter"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

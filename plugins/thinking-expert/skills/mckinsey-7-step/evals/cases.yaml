@@ -1,0 +1,30 @@
+cases:
+  - id: positive_mckinsey_7_step_primary
+    prompt: "我需要系统性解决复杂业务问题、用结构化方法从问题定义到方案输出、或做咨询式分析时使用；英文触发词 McKinsey 7 steps、problem solving framework、structured problem solving、hypothesis-driven、issue tree。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as mckinsey-7-step territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_mckinsey_7_step_realistic
+    prompt: "帮我处理这个场景：面对模糊的业务问题，需要结构化拆解到可执行方案。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_consciousness_council
+    prompt: "这个需求应该交给 consciousness-council：多视角思辨来审视高不确定性决策时使用。用户提到\"换几个专家视角看\"\"多角度想一遍\"\"开个议会\""
+    fixtures: []
+    rubric:
+      - "adjacent consciousness-council requests should not trigger mckinsey-7-step"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

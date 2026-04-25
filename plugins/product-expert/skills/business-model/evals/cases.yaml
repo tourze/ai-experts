@@ -1,0 +1,30 @@
+cases:
+  - id: positive_business_model_primary
+    prompt: "我需要需要创建、补全或复盘商业模式画布时使用；帮助梳理客户、价值、渠道、收入、成本与关键资源之间的联动关系。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as business-model territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_business_model_realistic
+    prompt: "帮我处理这个场景：新业务立项、现有业务诊断、融资前商业模式梳理。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_3c_strategic_triangle
+    prompt: "这个需求应该交给 3c-strategic-triangle：从顾客、公司、竞争者三角度做战略分析、找差异化定位或评估竞争可持续性时使用；英文触发词 3C analysis、Ohmae 3C、customer-company-competitor、strategic triangle。"
+    fixtures: []
+    rubric:
+      - "adjacent 3c-strategic-triangle requests should not trigger business-model"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

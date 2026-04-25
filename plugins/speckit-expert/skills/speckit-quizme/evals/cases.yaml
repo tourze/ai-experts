@@ -1,0 +1,34 @@
+cases:
+  - id: socratic_spec_challenge
+    prompt: "Quiz me on this Spec Kit feature and challenge the assumptions before we commit to the design."
+    fixtures: []
+    rubric:
+      - "asks scenario-based Socratic questions"
+      - "targets edge cases, non-functional needs, data lifecycle, and failure modes"
+      - "continues based on answers until requirements become actionable"
+    trigger_expected: true
+
+  - id: expose_hidden_assumptions
+    prompt: "Interrogate this spec. What hidden assumptions and weak boundaries should I answer?"
+    fixtures: []
+    rubric:
+      - "challenges implicit assumptions rather than just listing missing fields"
+      - "asks questions one at a time or in a small focused set"
+      - "moves conclusions back into requirements or edge cases when approved"
+    trigger_expected: true
+
+  - id: negative_clarify_formal
+    prompt: "Find five high-value clarification questions and update spec.md after I answer."
+    fixtures: []
+    rubric:
+      - "does not activate quiz workflow"
+      - "formal clarification belongs to speckit-clarify"
+    trigger_expected: false
+
+  - id: negative_analyze_docs
+    prompt: "Analyze whether spec.md, plan.md, and tasks.md contradict each other."
+    fixtures: []
+    rubric:
+      - "does not activate quiz workflow"
+      - "document consistency analysis belongs to speckit-analyze"
+    trigger_expected: false

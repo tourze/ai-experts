@@ -1,0 +1,34 @@
+cases:
+  - id: current_codebase_blueprint
+    prompt: "Generate an architecture blueprint for this existing Rails monolith so new engineers understand module boundaries and dependency rules."
+    fixtures: []
+    rubric:
+      - "documents the current architecture rather than an idealized target"
+      - "covers module boundaries, dependency rules, data flow, and extension points"
+      - "calls out known deviations or uncertain areas with evidence"
+    trigger_expected: true
+
+  - id: platform_blueprint
+    prompt: "Create a maintainable architecture blueprint for our plugin platform, including plugin boundaries, hook flow, data ownership, and governance points."
+    fixtures: []
+    rubric:
+      - "explains plugin/module responsibilities and ownership"
+      - "maps hook or event flow across major components"
+      - "identifies governance rules for future extensions"
+    trigger_expected: true
+
+  - id: negative_architecture_diagram
+    prompt: "Create a self-contained HTML architecture diagram for this system."
+    fixtures: []
+    rubric:
+      - "does not activate blueprint document workflow"
+      - "diagram generation belongs to architecture-diagram"
+    trigger_expected: false
+
+  - id: negative_architecture_review
+    prompt: "Score the architecture quality of this service and list risks."
+    fixtures: []
+    rubric:
+      - "does not activate blueprint generation workflow"
+      - "scored review belongs to architecture-reviewer"
+    trigger_expected: false

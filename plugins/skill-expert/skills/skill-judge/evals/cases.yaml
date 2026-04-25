@@ -1,0 +1,43 @@
+cases:
+  - id: score_skill_design_quality
+    prompt: "帮我审查这个 SKILL.md，按知识增量、反模式、渐进加载和实用性打分"
+    fixtures: []
+    rubric:
+      - "evaluates overall skill design quality"
+      - "uses evidence from SKILL.md structure and content"
+      - "scores dimensions such as knowledge delta and progressive disclosure"
+    trigger_expected: true
+
+  - id: audit_skill_package
+    prompt: "这个 skill package 质量怎么样？description、references、scripts 的组织是否符合规范？"
+    fixtures: []
+    rubric:
+      - "reviews a skill package against official-style specifications"
+      - "checks frontmatter, resource organization, and practical usability"
+      - "surfaces concrete findings rather than only style comments"
+    trigger_expected: true
+
+  - id: compare_two_skill_versions
+    prompt: "比较这两个版本的 SKILL.md，哪个更像专家写的，哪里浪费 token？"
+    fixtures: []
+    rubric:
+      - "focuses on expert knowledge delta and token economy"
+      - "identifies redundant or generic guidance"
+      - "supports a quality judgment with specific evidence"
+    trigger_expected: true
+
+  - id: negative_closed_book_coverage
+    prompt: "用源文档出题，让只看 skill 的模型闭卷回答，验证它是否覆盖了必要知识"
+    fixtures: []
+    rubric:
+      - "does not activate design scoring"
+      - "closed-book knowledge coverage verification belongs to skill-verifier"
+    trigger_expected: false
+
+  - id: negative_description_trigger_only
+    prompt: "只检查 description 是否太长、是否泄露工作流、是否容易误触发"
+    fixtures: []
+    rubric:
+      - "does not activate full skill design judging"
+      - "description-only hygiene belongs to description-cso-audit"
+    trigger_expected: false

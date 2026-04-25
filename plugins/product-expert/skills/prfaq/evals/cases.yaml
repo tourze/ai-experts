@@ -1,0 +1,30 @@
+cases:
+  - id: positive_prfaq_primary
+    prompt: "我需要用亚马逊式 Working Backwards 方法撰写新闻稿+FAQ 来验证产品想法、对齐团队认知或推动立项决策时使用；英文触发词 PRFAQ、press release、working backwards、Amazon PR/FAQ。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as prfaq territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_prfaq_realistic
+    prompt: "帮我处理这个场景：新产品/功能立项前，用\"从终点倒推\"的方式验证用户价值主张。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_3c_strategic_triangle
+    prompt: "这个需求应该交给 3c-strategic-triangle：从顾客、公司、竞争者三角度做战略分析、找差异化定位或评估竞争可持续性时使用；英文触发词 3C analysis、Ohmae 3C、customer-company-competitor、strategic triangle。"
+    fixtures: []
+    rubric:
+      - "adjacent 3c-strategic-triangle requests should not trigger prfaq"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

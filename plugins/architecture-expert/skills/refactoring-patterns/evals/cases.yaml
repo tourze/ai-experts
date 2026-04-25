@@ -1,0 +1,34 @@
+cases:
+  - id: named_refactoring_plan
+    prompt: "Identify the refactoring patterns to clean up this service without changing behavior: long method, repeated conditionals, and mixed responsibilities."
+    fixtures: []
+    rubric:
+      - "names specific refactoring moves such as Extract Method or Replace Conditional"
+      - "separates behavior-preserving refactoring from feature changes"
+      - "orders refactors to reduce risk and preserve testability"
+    trigger_expected: true
+
+  - id: separate_refactor_from_feature
+    prompt: "I need to add a feature, but the current class is tangled. Plan the refactor-first sequence before adding behavior."
+    fixtures: []
+    rubric:
+      - "identifies the code smell before choosing refactoring moves"
+      - "keeps refactor commits separate from behavior changes"
+      - "defines verification for behavior preservation"
+    trigger_expected: true
+
+  - id: negative_general_code_cleanup
+    prompt: "Simplify this function and make it more readable."
+    fixtures: []
+    rubric:
+      - "does not necessarily activate named refactoring-pattern workflow"
+      - "localized simplification belongs to code-refiner"
+    trigger_expected: false
+
+  - id: negative_architecture_review
+    prompt: "Review whether our architecture is scalable."
+    fixtures: []
+    rubric:
+      - "does not activate refactoring pattern workflow"
+      - "architecture scoring belongs to architecture-reviewer"
+    trigger_expected: false

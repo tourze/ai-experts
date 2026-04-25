@@ -1,0 +1,34 @@
+cases:
+  - id: pragmatic_design_calibration
+    prompt: "Use pragmatic engineering principles to evaluate whether this abstraction is overkill or a good tradeoff."
+    fixtures: []
+    rubric:
+      - "balances DRY, simplicity, reversibility, and delivery risk"
+      - "distinguishes real duplication from premature abstraction"
+      - "recommends the smallest change that preserves future options"
+    trigger_expected: true
+
+  - id: tracer_bullet_strategy
+    prompt: "We are unsure how to deliver this integration. Propose a tracer-bullet implementation path that proves the riskiest assumptions."
+    fixtures: []
+    rubric:
+      - "uses a thin end-to-end slice to validate risk"
+      - "keeps temporary scaffolding from becoming unmanaged production debt"
+      - "defines what evidence will decide the next step"
+    trigger_expected: true
+
+  - id: negative_system_design
+    prompt: "Design a distributed notification system with queues and delivery guarantees."
+    fixtures: []
+    rubric:
+      - "does not activate general pragmatic-programmer guidance"
+      - "system architecture design belongs to system-design"
+    trigger_expected: false
+
+  - id: negative_code_review
+    prompt: "Review this pull request for bugs."
+    fixtures: []
+    rubric:
+      - "does not activate pragmatic design calibration"
+      - "bug-oriented code review is outside this skill"
+    trigger_expected: false

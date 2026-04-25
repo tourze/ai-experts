@@ -1,0 +1,34 @@
+cases:
+  - id: student_class_assignment
+    prompt: "Design a hierarchical matching system to assign students to classes using hard constraints, preferences, and balance targets."
+    fixtures: []
+    rubric:
+      - "models hard constraints separately from soft optimization goals"
+      - "chooses an algorithm appropriate to matching and allocation constraints"
+      - "defines sample validation against historical or synthetic data"
+    trigger_expected: true
+
+  - id: job_candidate_matching
+    prompt: "Review our candidate-to-job matching algorithm. It ranks departments first, then teams, then roles, and fairness constraints keep failing."
+    fixtures: []
+    rubric:
+      - "analyzes hierarchy levels and constraint propagation"
+      - "identifies where fairness or capacity constraints can be violated"
+      - "proposes validation metrics and failure-case replay"
+    trigger_expected: true
+
+  - id: negative_recommendation_feed
+    prompt: "Improve the ranking algorithm for a news feed."
+    fixtures: []
+    rubric:
+      - "does not activate hierarchical matching workflow"
+      - "generic feed ranking lacks hierarchical allocation constraints"
+    trigger_expected: false
+
+  - id: negative_database_join
+    prompt: "Write a SQL query to match users with their orders."
+    fixtures: []
+    rubric:
+      - "does not activate matching system design workflow"
+      - "SQL joins are not assignment or allocation architecture"
+    trigger_expected: false

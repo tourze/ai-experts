@@ -1,0 +1,34 @@
+cases:
+  - id: find_target_accounts
+    prompt: "Find high-quality target companies for our HR SaaS ICP and explain the outreach angle."
+    fixtures: []
+    rubric:
+      - "uses ICP criteria to identify target account types"
+      - "screens for fit and buying signals"
+      - "suggests relevant contact angles"
+    trigger_expected: true
+
+  - id: build_account_list
+    prompt: "Build an initial list of companies that match our fintech compliance buyer profile."
+    fixtures: []
+    rubric:
+      - "frames search around company attributes and ICP"
+      - "prioritizes quality over broad volume"
+      - "captures why each account is a good fit"
+    trigger_expected: true
+
+  - id: negative_existing_list_enrichment
+    prompt: "I already have 50 companies. Find buyer contacts and signals for each."
+    fixtures: []
+    rubric:
+      - "does not activate initial account discovery"
+      - "deep enrichment of a known list belongs to leads-researcher"
+    trigger_expected: false
+
+  - id: negative_cold_email
+    prompt: "Write cold emails to these prospects."
+    fixtures: []
+    rubric:
+      - "does not activate lead research"
+      - "cold outbound copy belongs to cold-email"
+    trigger_expected: false

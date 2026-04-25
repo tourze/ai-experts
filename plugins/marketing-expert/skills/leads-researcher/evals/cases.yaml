@@ -1,0 +1,34 @@
+cases:
+  - id: enrich_existing_accounts
+    prompt: "Research these target companies and find buyer signals, decision makers, and outreach hooks."
+    fixtures: []
+    rubric:
+      - "works from an already defined target direction or account list"
+      - "finds company context, contacts, and buying triggers"
+      - "turns research into outreach-relevant notes"
+    trigger_expected: true
+
+  - id: deep_account_research
+    prompt: "Deep-dive Acme Corp before outbound: stakeholders, recent events, pains, and likely entry point."
+    fixtures: []
+    rubric:
+      - "performs account-specific research"
+      - "identifies likely personas and current triggers"
+      - "produces usable sales intelligence"
+    trigger_expected: true
+
+  - id: negative_icp_definition
+    prompt: "We do not know our ICP yet. Help define who we should target."
+    fixtures: []
+    rubric:
+      - "does not activate known-account research"
+      - "ICP definition belongs before leads-researcher"
+    trigger_expected: false
+
+  - id: negative_email_sequence
+    prompt: "Write a three-step outbound email sequence from these notes."
+    fixtures: []
+    rubric:
+      - "does not activate lead research"
+      - "email writing belongs to cold-email"
+    trigger_expected: false

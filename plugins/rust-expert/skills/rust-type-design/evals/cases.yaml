@@ -1,0 +1,30 @@
+cases:
+  - id: positive_rust_type_design_primary
+    prompt: "我需要在泛型与 trait object 之间做选择、设计静态/动态分发边界、或用类型状态模式把非法状态变成编译错误"
+    fixtures: []
+    rubric:
+      - "recognizes the request as rust-type-design territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_rust_type_design_realistic
+    prompt: "帮我处理这个场景：选择泛型（静态分发）还是 dyn Trait（动态分发）。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_rust_async_patterns
+    prompt: "这个需求应该交给 rust-async-patterns：需要开发或排障 Tokio 异步代码时使用；涉及 tokio::spawn、JoinSet、channel、select! 或异步生命周期"
+    fixtures: []
+    rubric:
+      - "adjacent rust-async-patterns requests should not trigger rust-type-design"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

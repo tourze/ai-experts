@@ -1,0 +1,30 @@
+cases:
+  - id: positive_weizhus_six_elements_primary
+    prompt: "我需要从中国商业环境视角分析商业模式、梳理定位到企业价值的因果逻辑链、或做商业模式创新设计时使用；英文触发词 Wei Zhu model、six elements、business model logic chain、Chinese business model。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as weizhus-six-elements territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_weizhus_six_elements_realistic
+    prompt: "帮我处理这个场景：中国市场商业模式设计和诊断（比 BMC 更强调因果逻辑）。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_3c_strategic_triangle
+    prompt: "这个需求应该交给 3c-strategic-triangle：从顾客、公司、竞争者三角度做战略分析、找差异化定位或评估竞争可持续性时使用；英文触发词 3C analysis、Ohmae 3C、customer-company-competitor、strategic triangle。"
+    fixtures: []
+    rubric:
+      - "adjacent 3c-strategic-triangle requests should not trigger weizhus-six-elements"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

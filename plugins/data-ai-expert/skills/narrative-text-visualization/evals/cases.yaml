@@ -1,0 +1,30 @@
+cases:
+  - id: positive_t8_funnel_narrative
+    prompt: "Use T8 Syntax to turn our funnel metrics into a structured narrative visualization"
+    fixtures: []
+    rubric:
+      - "uses T8 Syntax"
+      - "represents data insight as structured narrative text"
+    trigger_expected: true
+
+  - id: positive_t8_kpi_change
+    prompt: "Write a T8 narrative text visualization for KPI changes across acquisition, activation, and retention"
+    fixtures: []
+    rubric:
+      - "structures KPI changes as narrative text"
+      - "keeps the output in the T8-oriented format"
+    trigger_expected: true
+
+  - id: negative_python_chart
+    prompt: "Create a matplotlib line chart for monthly active users"
+    fixtures: []
+    rubric:
+      - "graphical Python charts should route to data-visualization"
+    trigger_expected: false
+
+  - id: negative_business_story_only
+    prompt: "Turn these findings into a CEO-ready business story"
+    fixtures: []
+    rubric:
+      - "business narrative without T8 should route to data-storytelling"
+    trigger_expected: false

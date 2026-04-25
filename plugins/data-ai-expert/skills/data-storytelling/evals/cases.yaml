@@ -1,0 +1,30 @@
+cases:
+  - id: positive_executive_narrative
+    prompt: "Turn these churn analysis findings into an executive narrative with the main business message"
+    fixtures: []
+    rubric:
+      - "frames analytical findings for a business audience"
+      - "connects evidence, implication, and recommendation"
+    trigger_expected: true
+
+  - id: positive_board_deck_storyline
+    prompt: "Create a board-deck storyline from our KPI changes: revenue up, activation down, support tickets rising"
+    fixtures: []
+    rubric:
+      - "organizes metrics into a clear storyline"
+      - "prioritizes the business tension and next decision"
+    trigger_expected: true
+
+  - id: negative_raw_csv_analysis
+    prompt: "Analyze this raw CSV and calculate cohort retention"
+    fixtures: []
+    rubric:
+      - "raw tabular analysis should route to data-analysis"
+    trigger_expected: false
+
+  - id: negative_t8_syntax_visual
+    prompt: "Use T8 Syntax to express this funnel insight as structured narrative text"
+    fixtures: []
+    rubric:
+      - "T8 Syntax narrative visualization should route to narrative-text-visualization"
+    trigger_expected: false

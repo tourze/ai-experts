@@ -1,0 +1,34 @@
+cases:
+  - id: customer_value_tiering
+    prompt: "Segment our customers into value tiers and design different service strategies for each."
+    fixtures: []
+    rubric:
+      - "uses customer value or profitability tiers"
+      - "distinguishes high-value, mid-value, and low-value segments"
+      - "recommends differential treatment by tier"
+    trigger_expected: true
+
+  - id: clv_structure_health
+    prompt: "Diagnose whether our customer base is healthy using a customer pyramid model."
+    fixtures: []
+    rubric:
+      - "assesses customer distribution by CLV or profitability"
+      - "identifies overdependence or low-value concentration"
+      - "suggests movement strategies between tiers"
+    trigger_expected: true
+
+  - id: negative_market_segmentation
+    prompt: "Define our target market and positioning statement."
+    fixtures: []
+    rubric:
+      - "does not activate customer value pyramid"
+      - "market segmentation belongs to stp-segmentation"
+    trigger_expected: false
+
+  - id: negative_churn_save_flow
+    prompt: "Design a cancellation save flow to reduce churn."
+    fixtures: []
+    rubric:
+      - "does not activate customer pyramid analysis"
+      - "churn workflows belong to churn-prevention"
+    trigger_expected: false

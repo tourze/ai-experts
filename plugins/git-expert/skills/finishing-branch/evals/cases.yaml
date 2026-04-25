@@ -1,0 +1,30 @@
+cases:
+  - id: positive_finishing_branch_primary
+    prompt: "我需要当实现完成、测试通过、需要决定如何集成工作时使用——引导完成开发分支的验证、选项展示和清理工作。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as finishing-branch territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_finishing_branch_realistic
+    prompt: "帮我处理这个场景：功能实现完毕，所有测试通过，需要决定下一步。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_author_contributions
+    prompt: "这个需求应该交给 author-contributions：查看某个作者在分支上的实际贡献、做作者归属审计或回答”谁改了什么”"
+    fixtures: []
+    rubric:
+      - "adjacent author-contributions requests should not trigger finishing-branch"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

@@ -1,0 +1,34 @@
+cases:
+  - id: landing_page_conversion_audit
+    prompt: "Audit our landing page conversion rate. Visitors click ads but don't sign up."
+    fixtures: []
+    rubric:
+      - "diagnoses page-level conversion issues"
+      - "reviews offer, CTA, trust proof, message match, and friction"
+      - "recommends page experiments or section changes"
+    trigger_expected: true
+
+  - id: pricing_page_cro
+    prompt: "Our pricing page gets traffic but very few trial starts. Improve conversion."
+    fixtures: []
+    rubric:
+      - "focuses on pricing page conversion levers"
+      - "addresses plan clarity, risk reversal, proof, objections, and CTA"
+      - "separates page changes from signup form or onboarding fixes"
+    trigger_expected: true
+
+  - id: negative_popup_offer
+    prompt: "Design an exit-intent popup to capture abandoning visitors."
+    fixtures: []
+    rubric:
+      - "does not activate full page CRO"
+      - "popup and modal optimization belongs to popup-cro"
+    trigger_expected: false
+
+  - id: negative_signup_form
+    prompt: "Shorten and optimize the signup form steps."
+    fixtures: []
+    rubric:
+      - "does not activate marketing page CRO"
+      - "registration flow optimization belongs to signup-flow-cro"
+    trigger_expected: false

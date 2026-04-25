@@ -1,0 +1,30 @@
+cases:
+  - id: positive_font_pairing_library_primary
+    prompt: "我需要选择字体搭配、为页面确定标题/正文字体组合、查询 Google Fonts 导入语句或需要按情绪/行业找字体对时使用。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as font-pairing-library territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_font_pairing_library_realistic
+    prompt: "帮我处理这个场景：为落地页、官网、后台、App 选定 标题 + 正文 字体对。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_browser_rendering_patterns
+    prompt: "这个需求应该交给 browser-rendering-patterns：优化浏览器渲染性能、处理 hydration 问题、使用 resource hints 或改善客户端事件处理时使用。用户提到 hydration mismatch、content-visibility、preload、preconnect、passive event listener、script defer、SVG 优化"
+    fixtures: []
+    rubric:
+      - "adjacent browser-rendering-patterns requests should not trigger font-pairing-library"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

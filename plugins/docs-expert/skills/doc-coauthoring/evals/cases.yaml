@@ -1,0 +1,30 @@
+cases:
+  - id: positive_doc_coauthoring_primary
+    prompt: "我需要协作撰写文档、方案、技术设计、决策记录或其他结构化材料"
+    fixtures: []
+    rubric:
+      - "recognizes the request as doc-coauthoring territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_doc_coauthoring_realistic
+    prompt: "帮我处理这个场景：用户手里有零散素材，需要共同整理成可读、可评审、可交付的文档。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_consulting_analysis
+    prompt: "这个需求应该交给 consulting-analysis：产出咨询级研究报告、市场分析、消费者洞察、品牌研究、财务分析、竞品情报或投融资尽调文档时使用。"
+    fixtures: []
+    rubric:
+      - "adjacent consulting-analysis requests should not trigger doc-coauthoring"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

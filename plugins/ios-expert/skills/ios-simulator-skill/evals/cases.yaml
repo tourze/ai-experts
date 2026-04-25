@@ -1,0 +1,30 @@
+cases:
+  - id: positive_ios_simulator_skill_primary
+    prompt: "我需要需要在 iOS 模拟器中构建、调试、截图或做自动化验证时使用。适用于自动化验证、SwiftUI / UIKit 调试和提审前回归。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as ios-simulator-skill territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_ios_simulator_skill_realistic
+    prompt: "帮我处理这个场景：需要在模拟器里构建、运行、排查 iOS 应用问题。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_app_store_changelog
+    prompt: "这个需求应该交给 app-store-changelog：写 App Store 发布说明、版本更新文案或门店更新摘要"
+    fixtures: []
+    rubric:
+      - "adjacent app-store-changelog requests should not trigger ios-simulator-skill"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

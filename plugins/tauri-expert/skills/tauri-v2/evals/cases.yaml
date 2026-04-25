@@ -1,0 +1,30 @@
+cases:
+  - id: positive_tauri_v2_primary
+    prompt: "我需要在构建 Tauri v2+ 跨平台桌面或移动应用时使用。当需求中出现 Tauri、src-tauri、tauri.conf.json、invoke、Channel IPC、cargo tauri add、capabilities、插件权限等关键词"
+    fixtures: []
+    rubric:
+      - "recognizes the request as tauri-v2 territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_tauri_v2_realistic
+    prompt: "帮我处理这个场景：需要搭建或调整 src-tauri/ 目录、tauri.conf.json、Cargo.toml、lib.rs / main.rs 分层时使用。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_tauri_build_packaging
+    prompt: "这个需求应该交给 tauri-build-packaging：在构建、签名、分发 Tauri 应用时使用：bundle 配置、平台目标、代码签名与公证、自动更新、sidecar 打包、CI/CD、体积优化。涉及 cargo tauri build、签名密钥、externalBin、CI 矩阵"
+    fixtures: []
+    rubric:
+      - "adjacent tauri-build-packaging requests should not trigger tauri-v2"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

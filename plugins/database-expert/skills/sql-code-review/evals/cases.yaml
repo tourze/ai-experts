@@ -1,0 +1,30 @@
+cases:
+  - id: positive_migration_safety_review
+    prompt: "Review this SQL migration that adds columns, backfills data, and drops an old index before release"
+    fixtures: []
+    rubric:
+      - "checks correctness, rollback risk, locking, and migration safety"
+      - "identifies operational risks beyond query speed"
+    trigger_expected: true
+
+  - id: positive_query_security_review
+    prompt: "Review this report SQL and stored procedure for SQL injection, privilege, and data exposure risks"
+    fixtures: []
+    rubric:
+      - "audits SQL security and access risks"
+      - "checks correctness of joins, filters, and stored procedure behavior"
+    trigger_expected: true
+
+  - id: negative_slow_query_tuning
+    prompt: "This SELECT is slow; analyze the EXPLAIN plan and suggest indexes"
+    fixtures: []
+    rubric:
+      - "execution plan tuning should route to sql-optimization"
+    trigger_expected: false
+
+  - id: negative_schema_modeling
+    prompt: "Design a normalized schema for orders, invoices, and payments"
+    fixtures: []
+    rubric:
+      - "schema design is outside SQL review and optimization workflows"
+    trigger_expected: false

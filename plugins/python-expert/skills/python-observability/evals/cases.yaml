@@ -1,0 +1,30 @@
+cases:
+  - id: positive_python_observability_primary
+    prompt: "我需要给 Python 服务补结构化日志、指标、trace、请求上下文和故障定位能力"
+    fixtures: []
+    rubric:
+      - "recognizes the request as python-observability territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_python_observability_realistic
+    prompt: "帮我处理这个场景：API、worker、定时任务需要补日志、指标和链路追踪。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_async_python_patterns
+    prompt: "这个需求应该交给 async-python-patterns：实现 asyncio、async/await、TaskGroup、timeout、cancellation、并发 I/O 或异步 API"
+    fixtures: []
+    rubric:
+      - "adjacent async-python-patterns requests should not trigger python-observability"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

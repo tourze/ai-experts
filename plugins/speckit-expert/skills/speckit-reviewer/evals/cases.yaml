@@ -1,0 +1,34 @@
+cases:
+  - id: structured_code_review
+    prompt: "Review this implementation against the Spec Kit tasks and flag defects, security risks, and missing tests."
+    fixtures: []
+    rubric:
+      - "reviews the code change against task and spec intent"
+      - "grades findings by severity"
+      - "requires each issue to include evidence and an actionable fix"
+    trigger_expected: true
+
+  - id: pre_merge_review
+    prompt: "Do a structured review before merge: correctness, regressions, security, maintainability, and test gaps."
+    fixtures: []
+    rubric:
+      - "uses explicit review dimensions"
+      - "prioritizes bugs and behavioral regressions"
+      - "separates confirmed findings from questions"
+    trigger_expected: true
+
+  - id: negative_architecture_plan
+    prompt: "Generate the implementation plan from spec.md."
+    fixtures: []
+    rubric:
+      - "does not activate code review workflow"
+      - "plan generation belongs to speckit-plan"
+    trigger_expected: false
+
+  - id: negative_run_tests
+    prompt: "Run the test suite and summarize coverage."
+    fixtures: []
+    rubric:
+      - "does not activate reviewer workflow"
+      - "test execution belongs to speckit-tester"
+    trigger_expected: false

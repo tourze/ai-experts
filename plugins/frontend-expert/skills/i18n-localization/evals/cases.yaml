@@ -1,0 +1,30 @@
+cases:
+  - id: positive_i18n_localization_primary
+    prompt: "我需要实现多语言、排查硬编码文案、管理翻译资源、设计 locale 结构或处理 RTL 与日期数字格式"
+    fixtures: []
+    rubric:
+      - "recognizes the request as i18n-localization territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_i18n_localization_realistic
+    prompt: "帮我处理这个场景：应用需要支持多语言、多地区或右到左布局。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_browser_rendering_patterns
+    prompt: "这个需求应该交给 browser-rendering-patterns：优化浏览器渲染性能、处理 hydration 问题、使用 resource hints 或改善客户端事件处理时使用。用户提到 hydration mismatch、content-visibility、preload、preconnect、passive event listener、script defer、SVG 优化"
+    fixtures: []
+    rubric:
+      - "adjacent browser-rendering-patterns requests should not trigger i18n-localization"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

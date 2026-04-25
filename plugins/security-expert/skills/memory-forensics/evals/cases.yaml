@@ -1,0 +1,30 @@
+cases:
+  - id: positive_memory_forensics_primary
+    prompt: "我需要分析 RAM 镜像中的进程、注入、网络连接、凭据痕迹或 rootkit 线索"
+    fixtures: []
+    rubric:
+      - "recognizes the request as memory-forensics territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_memory_forensics_realistic
+    prompt: "帮我处理这个场景：需要用 Volatility 等工具分析内存镜像的进程、模块、句柄、网络、注入和持久化痕迹。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_active_directory_attacks
+    prompt: "这个需求应该交给 active-directory-attacks：明确要求在已授权环境中进行 Active Directory 安全测试，或提到 Kerberoasting、DCSync、BloodHound、NTLM Relay、Golden Ticket 等主题"
+    fixtures: []
+    rubric:
+      - "adjacent active-directory-attacks requests should not trigger memory-forensics"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

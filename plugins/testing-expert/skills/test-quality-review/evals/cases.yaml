@@ -1,0 +1,43 @@
+cases:
+  - id: review_existing_tests
+    prompt: "Review these Jest tests and tell me whether they are actually good or just passing"
+    fixtures: []
+    rubric:
+      - "activates test quality review of existing test code"
+      - "requires reading the actual tests before judging"
+      - "identifies decay risks such as vague intent, brittleness, mock abuse, or coverage illusion"
+    trigger_expected: true
+
+  - id: diagnose_test_suite_decay
+    prompt: "Our test suite is getting flaky and hard to maintain. Can you review the tests and find structural quality problems?"
+    fixtures: []
+    rubric:
+      - "focuses on the quality and maintainability of an existing test suite"
+      - "uses concrete evidence from test code"
+      - "outputs actionable findings rather than generic coverage advice"
+    trigger_expected: true
+
+  - id: are_these_tests_good
+    prompt: "这些测试写得怎么样？我担心它们只是在验证 mock"
+    fixtures: []
+    rubric:
+      - "recognizes the user asks for test quality assessment"
+      - "checks whether mocks replace behavior verification"
+      - "distinguishes passing tests from valuable tests"
+    trigger_expected: true
+
+  - id: negative_what_to_test
+    prompt: "这个订单模块应该测哪些场景？按单测、集成、E2E 给计划"
+    fixtures: []
+    rubric:
+      - "does not activate existing test quality review"
+      - "planning what to test belongs to testing-strategy"
+    trigger_expected: false
+
+  - id: negative_write_tests
+    prompt: "帮我给这个函数写一组 pytest 参数化测试"
+    fixtures: []
+    rubric:
+      - "does not activate test quality review"
+      - "writing tests is separate from reviewing existing test quality"
+    trigger_expected: false

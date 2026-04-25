@@ -1,0 +1,30 @@
+cases:
+  - id: positive_network_console_debug
+    prompt: "Use Chrome DevTools to debug why this page is blank by checking console errors and failed network requests"
+    fixtures: []
+    rubric:
+      - "uses DevTools console and network inspection"
+      - "focuses on page debugging rather than generic browser automation"
+    trigger_expected: true
+
+  - id: positive_lighthouse_performance
+    prompt: "Run a Lighthouse audit and inspect LCP, CLS, and performance trace data for this page"
+    fixtures: []
+    rubric:
+      - "uses Chrome DevTools or Lighthouse workflow"
+      - "analyzes performance metrics and trace evidence"
+    trigger_expected: true
+
+  - id: negative_logged_in_click_flow
+    prompt: "Drive a logged-in checkout flow in a browser and verify each click works"
+    fixtures: []
+    rubric:
+      - "end-to-end browser flow control should route to browser-use"
+    trigger_expected: false
+
+  - id: negative_native_deadlock
+    prompt: "The macOS app is frozen; capture all-thread backtraces to find a deadlock"
+    fixtures: []
+    rubric:
+      - "native thread backtrace debugging should route to debug-lldb"
+    trigger_expected: false

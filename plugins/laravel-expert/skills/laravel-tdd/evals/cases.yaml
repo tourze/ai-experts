@@ -1,0 +1,30 @@
+cases:
+  - id: positive_laravel_tdd_primary
+    prompt: "我需要提到 Laravel 测试、Pest、PHPUnit、RefreshDatabase、Queue::fake 或 HTTP fake"
+    fixtures: []
+    rubric:
+      - "recognizes the request as laravel-tdd territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_laravel_tdd_realistic
+    prompt: "帮我处理这个场景：Laravel 新功能、Bug 修复、重构、授权规则或副作用链路需要先写测试再实现。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_laravel_layering_patterns
+    prompt: "这个需求应该交给 laravel-layering-patterns：实现 Laravel 10+ 的 Model/Migration、FormRequest 校验、JsonResource 序列化、Controller 瘦身、异步 Job 编排或 Livewire 组件"
+    fixtures: []
+    rubric:
+      - "adjacent laravel-layering-patterns requests should not trigger laravel-tdd"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

@@ -66,3 +66,17 @@ cases:
       - "Explains that pricing-strategy is about pricing decisions"
       - "Does not attempt full page CRO audit"
     trigger_expected: true
+  - id: negative_landing_page_cro
+    prompt: "Audit our pricing page layout, CTA placement, testimonials, and FAQ for conversion improvements."
+    fixtures: []
+    rubric:
+      - "does not activate pricing strategy workflow"
+      - "page layout and conversion audit belongs to CRO/page optimization"
+    trigger_expected: false
+  - id: negative_business_model_canvas
+    prompt: "Map our SaaS business model canvas and revenue streams."
+    fixtures: []
+    rubric:
+      - "does not activate pricing strategy by default"
+      - "business model mapping belongs to business-model"
+    trigger_expected: false

@@ -1,0 +1,30 @@
+cases:
+  - id: positive_php_design_patterns_primary
+    prompt: "我需要拆分 PHP 类职责、设计服务层与 Repository、构建 DTO/值对象、规范依赖注入或让控制器保持薄化"
+    fixtures: []
+    rubric:
+      - "recognizes the request as php-design-patterns territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_php_design_patterns_realistic
+    prompt: "帮我处理这个场景：新建 service、repository、DTO、值对象等核心组件时需要先定边界。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_php_8x_features
+    prompt: "这个需求应该交给 php-8x-features：在 PHP 8.1-8.3+ 项目中使用 readonly class、backed enum、match、命名参数、构造器提升、交叉类型、DNF 类型、[\\Override] 等现代语法特性"
+    fixtures: []
+    rubric:
+      - "adjacent php-8x-features requests should not trigger php-design-patterns"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

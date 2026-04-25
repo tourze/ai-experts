@@ -1,0 +1,30 @@
+cases:
+  - id: positive_arthas_springcontext_issues_resolve_primary
+    prompt: "我需要排查 Spring ApplicationContext、Bean 注册、条件装配或配置注入问题"
+    fixtures: []
+    rubric:
+      - "recognizes the request as arthas-springcontext-issues-resolve territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_arthas_springcontext_issues_resolve_realistic
+    prompt: "帮我处理这个场景：Bean 找不到、注入到错误实现、@Conditional / @Profile 判断异常。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_arthas_cpu_high
+    prompt: "这个需求应该交给 arthas-cpu-high：当 JVM 或 Java 应用 CPU 飙高、负载异常"
+    fixtures: []
+    rubric:
+      - "adjacent arthas-cpu-high requests should not trigger arthas-springcontext-issues-resolve"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

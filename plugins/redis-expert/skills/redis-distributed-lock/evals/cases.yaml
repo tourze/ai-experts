@@ -1,0 +1,30 @@
+cases:
+  - id: positive_redis_distributed_lock_primary
+    prompt: "我需要实现或排查 Redis 分布式锁时使用。适用于跨进程互斥与资源竞争控制。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as redis-distributed-lock territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_redis_distributed_lock_realistic
+    prompt: "帮我处理这个场景：跨进程互斥：订单支付、库存扣减、幂等提交。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_redis_caching_patterns
+    prompt: "这个需求应该交给 redis-caching-patterns：实现或排查 Redis 缓存旁路、写穿、缓存雪崩或穿透防护时使用。适用于数据库前缓存与热点保护。"
+    fixtures: []
+    rubric:
+      - "adjacent redis-caching-patterns requests should not trigger redis-distributed-lock"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

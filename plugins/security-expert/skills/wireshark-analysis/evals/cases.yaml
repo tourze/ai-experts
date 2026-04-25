@@ -1,0 +1,30 @@
+cases:
+  - id: positive_wireshark_analysis_primary
+    prompt: "我需要分析 PCAP、提取关键会话、定位异常连接、排查协议行为或重建时间线"
+    fixtures: []
+    rubric:
+      - "recognizes the request as wireshark-analysis territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_wireshark_analysis_realistic
+    prompt: "帮我处理这个场景：需要对抓包文件进行过滤、跟流、字段提取和异常定位。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_active_directory_attacks
+    prompt: "这个需求应该交给 active-directory-attacks：明确要求在已授权环境中进行 Active Directory 安全测试，或提到 Kerberoasting、DCSync、BloodHound、NTLM Relay、Golden Ticket 等主题"
+    fixtures: []
+    rubric:
+      - "adjacent active-directory-attacks requests should not trigger wireshark-analysis"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

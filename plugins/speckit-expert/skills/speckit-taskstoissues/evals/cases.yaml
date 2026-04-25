@@ -1,0 +1,34 @@
+cases:
+  - id: convert_tasks_to_github_issues
+    prompt: "Convert the current tasks.md into GitHub Issues for this repository."
+    fixtures: []
+    rubric:
+      - "requires existing tasks.md and repository remote context"
+      - "creates one issue plan per task with dependencies and acceptance criteria"
+      - "avoids creating issues when the remote is not a matching GitHub repository"
+    trigger_expected: true
+
+  - id: sync_tasks_with_issues
+    prompt: "Map these Spec Kit tasks to GitHub issues while preserving task IDs and dependencies."
+    fixtures: []
+    rubric:
+      - "preserves task identifiers and dependency relationships"
+      - "uses issue bodies that include source task, acceptance criteria, and verification"
+      - "guards against duplicate or wrong-repository issue creation"
+    trigger_expected: true
+
+  - id: negative_generate_tasks
+    prompt: "Generate tasks.md from plan.md."
+    fixtures: []
+    rubric:
+      - "does not activate issue conversion"
+      - "task generation belongs to speckit-tasks"
+    trigger_expected: false
+
+  - id: negative_status
+    prompt: "Show feature progress and blockers."
+    fixtures: []
+    rubric:
+      - "does not activate task-to-issue conversion"
+      - "status reporting belongs to speckit-status"
+    trigger_expected: false

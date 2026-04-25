@@ -1,0 +1,30 @@
+cases:
+  - id: positive_enterprise_proposal_primary
+    prompt: "我需要撰写企业级提案、客户方案、商务报价、服务说明、RFP 响应或带 ROI 论证的咨询式文档时使用。该技能强调高层摘要、证据支撑、商业论证和成交导向。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as enterprise-proposal territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_enterprise_proposal_realistic
+    prompt: "帮我处理这个场景：面向企业客户、采购方、管理层或投资委员会输出正式提案。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_consulting_analysis
+    prompt: "这个需求应该交给 consulting-analysis：产出咨询级研究报告、市场分析、消费者洞察、品牌研究、财务分析、竞品情报或投融资尽调文档时使用。"
+    fixtures: []
+    rubric:
+      - "adjacent consulting-analysis requests should not trigger enterprise-proposal"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

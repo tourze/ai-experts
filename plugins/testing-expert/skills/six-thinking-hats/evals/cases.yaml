@@ -1,0 +1,43 @@
+cases:
+  - id: test_strategy_multi_perspective
+    prompt: "我们对这个新支付功能怎么测意见不一致，用六顶思考帽帮团队梳理一下"
+    fixtures: []
+    rubric:
+      - "uses six distinct thinking hats for the testing discussion"
+      - "keeps facts, intuition, risks, positives, ideas, and action synthesis separate"
+      - "ends with blue-hat action items or decisions"
+    trigger_expected: true
+
+  - id: incident_retro_hats
+    prompt: "线上事故复盘后，帮我从多个视角看测试哪里失效了，不要只列风险"
+    fixtures: []
+    rubric:
+      - "applies the hats to defect or incident review"
+      - "balances facts, feelings, risk, advantages, alternatives, and next steps"
+      - "does not collapse the output into a normal risk list"
+    trigger_expected: true
+
+  - id: release_go_no_go_discussion
+    prompt: "团队对明天是否上线有分歧，用六顶帽子组织一次测试风险讨论"
+    fixtures: []
+    rubric:
+      - "frames release discussion through time-boxed perspectives"
+      - "surfaces disagreement without mixing opinion types"
+      - "converges on owners, priorities, or decision criteria"
+    trigger_expected: true
+
+  - id: negative_direct_test_plan
+    prompt: "给这个登录模块列一个测试计划，分单测、集成和 E2E"
+    fixtures: []
+    rubric:
+      - "does not activate six-thinking-hats"
+      - "direct layered test planning belongs to testing-strategy"
+    trigger_expected: false
+
+  - id: negative_specific_unit_test
+    prompt: "帮我写 calculateTax 的 Jest 单元测试"
+    fixtures: []
+    rubric:
+      - "does not activate multi-perspective discussion"
+      - "writing a specific test is implementation work"
+    trigger_expected: false

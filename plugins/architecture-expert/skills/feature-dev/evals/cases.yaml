@@ -1,0 +1,34 @@
+cases:
+  - id: multi_file_feature
+    prompt: "Implement a new PDF export feature across service, controller, queue job, and tests. We need a plan before touching files."
+    fixtures: []
+    rubric:
+      - "explores existing implementation patterns before changing code"
+      - "identifies touched files, dependencies, and verification commands"
+      - "offers implementation options when architecture choices exist"
+    trigger_expected: true
+
+  - id: architecture_sensitive_feature
+    prompt: "Add tenant-aware billing to our app; it will touch data model, API layer, background jobs, and authorization."
+    fixtures: []
+    rubric:
+      - "treats the change as cross-cutting rather than a single-file edit"
+      - "defines scope boundaries and migration or rollout risks"
+      - "plans tests across data, API, jobs, and auth"
+    trigger_expected: true
+
+  - id: negative_tiny_copy_change
+    prompt: "Change the button label from Save to Publish."
+    fixtures: []
+    rubric:
+      - "does not activate feature development workflow"
+      - "single text edits are too small for this skill"
+    trigger_expected: false
+
+  - id: negative_plan_review_only
+    prompt: "Review this plan for adding billing, but do not implement it."
+    fixtures: []
+    rubric:
+      - "does not activate implementation workflow"
+      - "plan critique belongs to plan-review"
+    trigger_expected: false

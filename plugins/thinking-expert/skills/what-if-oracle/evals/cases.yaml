@@ -1,0 +1,30 @@
+cases:
+  - id: positive_what_if_oracle_primary
+    prompt: "我需要对不确定决策做未来分支推演、情景分析或最好/最坏情况评估时使用。用户提到\"如果会怎样\"\"有哪些可能性\"\"最好最坏情景\""
+    fixtures: []
+    rubric:
+      - "recognizes the request as what-if-oracle territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_what_if_oracle_realistic
+    prompt: "帮我处理这个场景：用户说“如果……会怎样”“我们有哪些可能性”“帮我做最好/最坏情景分析”。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_consciousness_council
+    prompt: "这个需求应该交给 consciousness-council：多视角思辨来审视高不确定性决策时使用。用户提到\"换几个专家视角看\"\"多角度想一遍\"\"开个议会\""
+    fixtures: []
+    rubric:
+      - "adjacent consciousness-council requests should not trigger what-if-oracle"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

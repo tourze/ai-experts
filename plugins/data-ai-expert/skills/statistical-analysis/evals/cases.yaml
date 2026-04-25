@@ -1,0 +1,30 @@
+cases:
+  - id: positive_ab_test_inference
+    prompt: "Analyze this A/B test: conversions are 812/10000 vs 760/10000. Is the lift statistically significant?"
+    fixtures: []
+    rubric:
+      - "uses statistical inference for proportions"
+      - "explains significance, uncertainty, and practical effect size"
+    trigger_expected: true
+
+  - id: positive_regression_interpretation
+    prompt: "Interpret this regression output and tell me whether the treatment effect is reliable"
+    fixtures: []
+    rubric:
+      - "interprets coefficients, uncertainty, and model assumptions"
+      - "distinguishes correlation from causal claims"
+    trigger_expected: true
+
+  - id: negative_csv_business_summary
+    prompt: "Summarize sales trends in this CSV by region and product"
+    fixtures: []
+    rubric:
+      - "plain tabular summary should route to data-analysis"
+    trigger_expected: false
+
+  - id: negative_dashboard_chart_choice
+    prompt: "Which chart should show conversion rate by signup step?"
+    fixtures: []
+    rubric:
+      - "chart selection should route to chart-type-selection"
+    trigger_expected: false

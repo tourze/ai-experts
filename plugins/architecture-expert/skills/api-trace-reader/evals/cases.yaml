@@ -1,0 +1,34 @@
+cases:
+  - id: trace_checkout_endpoint
+    prompt: "Trace the /checkout API path end to end and tell me which controllers, services, jobs, and events it touches. Do not change code."
+    fixtures: []
+    rubric:
+      - "keeps the investigation read-only"
+      - "follows controller, service, job, event, and persistence calls"
+      - "anchors findings to file and line evidence"
+    trigger_expected: true
+
+  - id: cron_side_effect_trace
+    prompt: "Map what the nightly subscription renewal cron does, including side effects and external calls."
+    fixtures: []
+    rubric:
+      - "traces scheduled task entrypoints through downstream side effects"
+      - "identifies writes, notifications, external APIs, and queued work"
+      - "separates confirmed evidence from unknowns"
+    trigger_expected: true
+
+  - id: negative_fix_endpoint_bug
+    prompt: "Fix the bug where POST /checkout double-charges users."
+    fixtures: []
+    rubric:
+      - "does not activate read-only trace workflow"
+      - "bug fixing requires implementation, not just call-chain tracing"
+    trigger_expected: false
+
+  - id: negative_generate_openapi
+    prompt: "Generate an OpenAPI spec for our checkout endpoints."
+    fixtures: []
+    rubric:
+      - "does not activate API trace workflow"
+      - "API specification generation is not call-chain tracing"
+    trigger_expected: false

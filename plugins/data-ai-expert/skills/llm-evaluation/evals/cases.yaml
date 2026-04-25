@@ -1,0 +1,30 @@
+cases:
+  - id: positive_eval_suite_for_chatbot
+    prompt: "Design an evaluation suite for our support chatbot to compare GPT-4.1 and Claude Sonnet"
+    fixtures: []
+    rubric:
+      - "defines evaluation criteria and test cases"
+      - "compares model behavior with measurable outcomes"
+    trigger_expected: true
+
+  - id: positive_prompt_model_comparison
+    prompt: "Evaluate three prompt variants for answer accuracy, groundedness, and refusal quality"
+    fixtures: []
+    rubric:
+      - "builds an LLM evaluation rubric"
+      - "separates test data, metrics, and judging process"
+    trigger_expected: true
+
+  - id: negative_prompt_rewrite_only
+    prompt: "Rewrite this prompt to produce valid JSON output"
+    fixtures: []
+    rubric:
+      - "prompt design without evaluation should route to prompt-engineering-patterns"
+    trigger_expected: false
+
+  - id: negative_ab_test_p_value
+    prompt: "Calculate the p-value for this website A/B test"
+    fixtures: []
+    rubric:
+      - "statistical testing should route to statistical-analysis"
+    trigger_expected: false

@@ -1,0 +1,30 @@
+cases:
+  - id: positive_crossing_the_chasm_primary
+    prompt: "我需要讨论跨越鸿沟、海滩头市场、whole product 或技术产品从早期采用者走向主流市场时使用；帮助制定切入顺序与落地主张。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as crossing-the-chasm territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_crossing_the_chasm_realistic
+    prompt: "帮我处理这个场景：科技产品从早期采用者走向主流客户时，需要重构市场进入策略。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_3c_strategic_triangle
+    prompt: "这个需求应该交给 3c-strategic-triangle：从顾客、公司、竞争者三角度做战略分析、找差异化定位或评估竞争可持续性时使用；英文触发词 3C analysis、Ohmae 3C、customer-company-competitor、strategic triangle。"
+    fixtures: []
+    rubric:
+      - "adjacent 3c-strategic-triangle requests should not trigger crossing-the-chasm"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

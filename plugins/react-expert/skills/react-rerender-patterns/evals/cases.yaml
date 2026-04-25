@@ -1,0 +1,30 @@
+cases:
+  - id: positive_react_rerender_patterns_primary
+    prompt: "我需要减少 React 不必要重渲染、优化 memo/state/effect 模式或处理 hooks 性能问题时使用。用户提到重渲染、memo、useMemo、useCallback、derived state、startTransition、useDeferredValue、effect 依赖"
+    fixtures: []
+    rubric:
+      - "recognizes the request as react-rerender-patterns territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_react_rerender_patterns_realistic
+    prompt: "帮我处理这个场景：组件树存在不必要的重渲染，需要定位和消除。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_react_composable_components
+    prompt: "这个需求应该交给 react-composable-components：需要拆分臃肿 React 组件、设计 compound components 或规范 props 透传"
+    fixtures: []
+    rubric:
+      - "adjacent react-composable-components requests should not trigger react-rerender-patterns"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

@@ -1,0 +1,34 @@
+cases:
+  - id: lead_lifecycle_design
+    prompt: "Design our RevOps lead lifecycle from MQL to SQL, routing, ownership, and handoff to sales."
+    fixtures: []
+    rubric:
+      - "defines lifecycle stages and qualification criteria"
+      - "maps routing, ownership, SLA, and CRM fields"
+      - "aligns marketing and sales handoff"
+    trigger_expected: true
+
+  - id: lead_scoring_model
+    prompt: "Build a lead scoring model for our B2B SaaS funnel using firmographic and behavioral signals."
+    fixtures: []
+    rubric:
+      - "separates fit and intent scoring"
+      - "defines MQL/SQL thresholds and routing actions"
+      - "includes feedback loop from pipeline outcomes"
+    trigger_expected: true
+
+  - id: negative_cold_email_copy
+    prompt: "Write a cold email sequence to contact target accounts."
+    fixtures: []
+    rubric:
+      - "does not activate RevOps workflow"
+      - "cold outbound copy belongs to cold-email"
+    trigger_expected: false
+
+  - id: negative_sales_deck
+    prompt: "Create a sales deck for enterprise prospects."
+    fixtures: []
+    rubric:
+      - "does not activate revenue operations design"
+      - "sales collateral belongs to sales-enablement"
+    trigger_expected: false

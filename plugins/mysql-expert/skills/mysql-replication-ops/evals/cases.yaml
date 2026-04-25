@@ -1,0 +1,30 @@
+cases:
+  - id: positive_mysql_replication_ops_primary
+    prompt: "我需要配置或排查 MySQL 主从复制、GTID、半同步或故障切换时使用。适用于读写分离与高可用运维。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as mysql-replication-ops territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_mysql_replication_ops_realistic
+    prompt: "帮我处理这个场景：搭建或审查基于 GTID 的主从复制拓扑，配置异步或半同步复制。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_mysql_index_strategy
+    prompt: "这个需求应该交给 mysql-index-strategy：设计、审查或优化 MySQL 索引、复合索引顺序或解读 EXPLAIN 时使用；英文触发词 MySQL index / EXPLAIN / composite index / covering index。"
+    fixtures: []
+    rubric:
+      - "adjacent mysql-index-strategy requests should not trigger mysql-replication-ops"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

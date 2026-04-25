@@ -1,0 +1,34 @@
+cases:
+  - id: password_reset_handoff
+    prompt: "The backend password reset API is done. Write the handoff docs for frontend implementation with endpoints, DTOs, validation, and edge cases."
+    fixtures: []
+    rubric:
+      - "documents endpoint paths, methods, request and response DTOs"
+      - "captures validation rules, status codes, and business edge cases"
+      - "explains frontend integration expectations without only pasting Swagger"
+    trigger_expected: true
+
+  - id: order_api_frontend_handoff
+    prompt: "Prepare a frontend handoff for the new order creation API, including error states, retry behavior, and sample payloads."
+    fixtures: []
+    rubric:
+      - "includes business context and integration sequence"
+      - "covers non-happy paths such as validation failure, auth failure, and retry-safe errors"
+      - "provides sample payloads with field semantics"
+    trigger_expected: true
+
+  - id: negative_openapi_generation
+    prompt: "Generate an OpenAPI 3.1 spec for our order API."
+    fixtures: []
+    rubric:
+      - "does not activate frontend handoff workflow"
+      - "formal API spec generation is a different task"
+    trigger_expected: false
+
+  - id: negative_backend_architecture_review
+    prompt: "Review whether our backend API architecture is maintainable."
+    fixtures: []
+    rubric:
+      - "does not activate handoff document workflow"
+      - "architecture review belongs to architecture-reviewer"
+    trigger_expected: false

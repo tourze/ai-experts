@@ -1,0 +1,30 @@
+cases:
+  - id: positive_rust_testing_primary
+    prompt: "我需要编写或重构 Rust 测试时使用；涉及测试命名、单元/集成/文档测试、断言模式、cargo-insta snapshot 或测试组织"
+    fixtures: []
+    rubric:
+      - "recognizes the request as rust-testing territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_rust_testing_realistic
+    prompt: "帮我处理这个场景：编写新的单元测试、集成测试或文档测试。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_rust_async_patterns
+    prompt: "这个需求应该交给 rust-async-patterns：需要开发或排障 Tokio 异步代码时使用；涉及 tokio::spawn、JoinSet、channel、select! 或异步生命周期"
+    fixtures: []
+    rubric:
+      - "adjacent rust-async-patterns requests should not trigger rust-testing"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

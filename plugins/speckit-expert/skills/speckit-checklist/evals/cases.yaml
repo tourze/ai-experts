@@ -1,0 +1,34 @@
+cases:
+  - id: requirements_quality_checklist
+    prompt: "Generate a requirements quality checklist for the current Spec Kit feature."
+    fixtures: []
+    rubric:
+      - "creates yes/no checklist items for requirement quality"
+      - "targets the active feature context"
+      - "uses concrete domains such as security, performance, compatibility, or usability when relevant"
+    trigger_expected: true
+
+  - id: security_performance_checklist
+    prompt: "For this feature spec, create a checklist focused on security and performance requirement completeness."
+    fixtures: []
+    rubric:
+      - "extracts security and performance concerns from the prompt"
+      - "writes verifiable checklist items rather than open-ended advice"
+      - "keeps items tied to the current spec"
+    trigger_expected: true
+
+  - id: negative_task_list
+    prompt: "Create implementation tasks from this plan."
+    fixtures: []
+    rubric:
+      - "does not activate requirements checklist workflow"
+      - "implementation task creation belongs to speckit-tasks"
+    trigger_expected: false
+
+  - id: negative_static_checker
+    prompt: "Run ESLint and TypeScript checks."
+    fixtures: []
+    rubric:
+      - "does not activate checklist workflow"
+      - "tool checks belong to speckit-checker"
+    trigger_expected: false

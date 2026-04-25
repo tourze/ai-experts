@@ -1,0 +1,30 @@
+cases:
+  - id: positive_proposal_writer_primary
+    prompt: "我需要撰写商业提案、合作方案、销售报价说明或伙伴关系文档时使用。该技能强调问题定义、价值主张、实施计划和成交导向的文字表达。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as proposal-writer territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_proposal_writer_realistic
+    prompt: "帮我处理这个场景：用户需要从零开始写商业提案、项目方案、渠道合作或服务报价文档。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_consulting_analysis
+    prompt: "这个需求应该交给 consulting-analysis：产出咨询级研究报告、市场分析、消费者洞察、品牌研究、财务分析、竞品情报或投融资尽调文档时使用。"
+    fixtures: []
+    rubric:
+      - "adjacent consulting-analysis requests should not trigger proposal-writer"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

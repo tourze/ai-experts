@@ -1,0 +1,30 @@
+cases:
+  - id: positive_meeting_insights_analyzer_primary
+    prompt: "我需要分析会议转写中的沟通模式、发言占比或打断频率时使用；若只要摘要和行动项，改用 meeting-notes-and-actions。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as meeting-insights-analyzer territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_meeting_insights_analyzer_realistic
+    prompt: "帮我处理这个场景：用户希望复盘自己或团队在会议中的沟通方式，例如冲突回避、打断频率、引导风格、倾听质量或行动项清晰度。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_meeting_minutes
+    prompt: "这个需求应该交给 meeting-minutes：把内部会议转成正式结构化会议纪要时使用；若只要轻量摘要和行动项，改用 meeting-notes-and-actions。"
+    fixtures: []
+    rubric:
+      - "adjacent meeting-minutes requests should not trigger meeting-insights-analyzer"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

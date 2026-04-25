@@ -1,0 +1,30 @@
+cases:
+  - id: positive_apple_appstore_reviewer_primary
+    prompt: "我需要从 App Store 审核视角审查 iOS/macOS 应用、识别拒审风险或准备提审材料"
+    fixtures: []
+    rubric:
+      - "recognizes the request as apple-appstore-reviewer territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_apple_appstore_reviewer_realistic
+    prompt: "帮我处理这个场景：用户要求从 App Review 角度审计代码库、配置、权限或付费流程。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_app_store_changelog
+    prompt: "这个需求应该交给 app-store-changelog：写 App Store 发布说明、版本更新文案或门店更新摘要"
+    fixtures: []
+    rubric:
+      - "adjacent app-store-changelog requests should not trigger apple-appstore-reviewer"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

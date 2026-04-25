@@ -1,0 +1,30 @@
+cases:
+  - id: positive_csv_business_insights
+    prompt: "Analyze this CSV of orders and tell me the key revenue, retention, and product insights"
+    fixtures: []
+    rubric:
+      - "treats the request as tabular data analysis"
+      - "produces findings tied to the data rather than chart advice only"
+    trigger_expected: true
+
+  - id: positive_xlsx_eda
+    prompt: "Open this Excel workbook, profile missing values, find outliers, and summarize trends"
+    fixtures: []
+    rubric:
+      - "performs exploratory analysis on spreadsheet data"
+      - "checks data quality before drawing conclusions"
+    trigger_expected: true
+
+  - id: negative_chart_choice_only
+    prompt: "Which chart type should I use for conversion rate by traffic channel?"
+    fixtures: []
+    rubric:
+      - "chart selection without data analysis should route to chart-type-selection"
+    trigger_expected: false
+
+  - id: negative_rag_pipeline_audit
+    prompt: "Audit our RAG pipeline because retrieval returns irrelevant context"
+    fixtures: []
+    rubric:
+      - "RAG pipeline diagnosis should route to rag-auditor"
+    trigger_expected: false

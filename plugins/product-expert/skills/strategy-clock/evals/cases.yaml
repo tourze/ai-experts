@@ -1,0 +1,30 @@
+cases:
+  - id: positive_strategy_clock_primary
+    prompt: "我需要分析定价与差异化的组合策略、评估竞争定位或选择价格-价值平衡点时使用；英文触发词 strategy clock、Bowman's strategy clock、price-value strategy、competitive positioning map。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as strategy-clock territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_strategy_clock_realistic
+    prompt: "帮我处理这个场景：定价策略选择：在价格和感知价值之间找到最佳组合。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_3c_strategic_triangle
+    prompt: "这个需求应该交给 3c-strategic-triangle：从顾客、公司、竞争者三角度做战略分析、找差异化定位或评估竞争可持续性时使用；英文触发词 3C analysis、Ohmae 3C、customer-company-competitor、strategic triangle。"
+    fixtures: []
+    rubric:
+      - "adjacent 3c-strategic-triangle requests should not trigger strategy-clock"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

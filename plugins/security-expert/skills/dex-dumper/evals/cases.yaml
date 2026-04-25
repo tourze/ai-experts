@@ -1,0 +1,30 @@
+cases:
+  - id: positive_dex_dumper_primary
+    prompt: "我需要从运行中的 Android 应用内存中 dump DEX 文件以绕过加壳保护"
+    fixtures: []
+    rubric:
+      - "recognizes the request as dex-dumper territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_dex_dumper_realistic
+    prompt: "帮我处理这个场景：APK 使用了加固/加壳（360、梆梆、爱加密等），jadx 反编译后只看到壳代码。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_active_directory_attacks
+    prompt: "这个需求应该交给 active-directory-attacks：明确要求在已授权环境中进行 Active Directory 安全测试，或提到 Kerberoasting、DCSync、BloodHound、NTLM Relay、Golden Ticket 等主题"
+    fixtures: []
+    rubric:
+      - "adjacent active-directory-attacks requests should not trigger dex-dumper"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

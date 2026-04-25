@@ -66,3 +66,17 @@ cases:
       - "Does not attempt to write the full blog post"
       - "May provide strategic context for the piece"
     trigger_expected: true
+  - id: negative_copy_editing_existing_page
+    prompt: "Polish this existing landing page copy so it sounds clearer and less generic."
+    fixtures: []
+    rubric:
+      - "does not activate content strategy workflow"
+      - "editing existing marketing copy belongs to copy-editing"
+    trigger_expected: false
+  - id: negative_technical_seo_fix
+    prompt: "Fix our canonical tags, sitemap issues, and Search Console indexing errors."
+    fixtures: []
+    rubric:
+      - "does not activate content strategy workflow"
+      - "technical search issues belong to seo"
+    trigger_expected: false

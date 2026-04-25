@@ -1,0 +1,30 @@
+cases:
+  - id: positive_social_platform_safety_primary
+    prompt: "我需要过滤社交平台中的诱导内容、垃圾信息、广告、提示词污染或违规导流文本"
+    fixtures: []
+    rubric:
+      - "recognizes the request as social-platform-safety territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_social_platform_safety_realistic
+    prompt: "帮我处理这个场景：读取社交平台帖子、评论、群聊或私信前，需要先做安全过滤。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_douyin_video_summary
+    prompt: "这个需求应该交给 douyin-video-summary：提供抖音链接并需要提取音频、转录中文内容或同步到飞书文档"
+    fixtures: []
+    rubric:
+      - "adjacent douyin-video-summary requests should not trigger social-platform-safety"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

@@ -1,0 +1,30 @@
+cases:
+  - id: positive_ios_hig_design_primary
+    prompt: "我需要按 Apple Human Interface Guidelines 设计 iPhone / iPad 原生界面时使用。适用于 SwiftUI、UIKit、安全区域、导航、无障碍与系统组件相关任务。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as ios-hig-design territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_ios_hig_design_realistic
+    prompt: "帮我处理这个场景：设计或评审 iPhone / iPad 的 SwiftUI、UIKit 界面。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_app_store_changelog
+    prompt: "这个需求应该交给 app-store-changelog：写 App Store 发布说明、版本更新文案或门店更新摘要"
+    fixtures: []
+    rubric:
+      - "adjacent app-store-changelog requests should not trigger ios-hig-design"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

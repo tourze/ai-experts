@@ -1,0 +1,30 @@
+cases:
+  - id: positive_swiftui_performance_audit_primary
+    prompt: "我需要当 SwiftUI 界面出现卡顿、掉帧、高 CPU 或重渲染问题"
+    fixtures: []
+    rubric:
+      - "recognizes the request as swiftui-performance-audit territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_swiftui_performance_audit_realistic
+    prompt: "帮我处理这个场景：用户反馈列表滚动卡顿、动画掉帧、界面重绘过多、CPU / 内存异常。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_app_store_changelog
+    prompt: "这个需求应该交给 app-store-changelog：写 App Store 发布说明、版本更新文案或门店更新摘要"
+    fixtures: []
+    rubric:
+      - "adjacent app-store-changelog requests should not trigger swiftui-performance-audit"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

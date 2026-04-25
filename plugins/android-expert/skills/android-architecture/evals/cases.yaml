@@ -1,0 +1,34 @@
+cases:
+  - id: clean_architecture_refactor
+    prompt: "Refactor this Android app toward Clean Architecture with domain, data, and presentation layers."
+    fixtures: []
+    rubric:
+      - "defines Android module or layer boundaries"
+      - "separates domain, data, and presentation responsibilities"
+      - "addresses dependency direction and testability"
+    trigger_expected: true
+
+  - id: hilt_multimodule_design
+    prompt: "Design a multi-module Android architecture using Hilt for dependency injection."
+    fixtures: []
+    rubric:
+      - "uses Android multi-module architecture concepts"
+      - "places Hilt modules and scopes appropriately"
+      - "addresses build boundaries and feature module dependencies"
+    trigger_expected: true
+
+  - id: negative_coroutines_flow
+    prompt: "Fix this ViewModel Flow collection and coroutine cancellation bug."
+    fixtures: []
+    rubric:
+      - "does not activate broad architecture workflow"
+      - "Coroutine lifecycle issues belong to android-coroutines"
+    trigger_expected: false
+
+  - id: negative_redex_size
+    prompt: "Use ReDex to reduce APK size and optimize dex bytecode."
+    fixtures: []
+    rubric:
+      - "does not activate Android app architecture"
+      - "ReDex optimization belongs to android-redex"
+    trigger_expected: false

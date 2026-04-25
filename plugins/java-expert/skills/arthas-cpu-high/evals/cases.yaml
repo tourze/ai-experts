@@ -1,0 +1,30 @@
+cases:
+  - id: positive_arthas_cpu_high_primary
+    prompt: "我需要当 JVM 或 Java 应用 CPU 飙高、负载异常"
+    fixtures: []
+    rubric:
+      - "recognizes the request as arthas-cpu-high territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_arthas_cpu_high_realistic
+    prompt: "帮我处理这个场景：Java 进程 CPU 飙高、请求明显变慢、机器负载异常升高。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_arthas_springcontext_issues_resolve
+    prompt: "这个需求应该交给 arthas-springcontext-issues-resolve：排查 Spring ApplicationContext、Bean 注册、条件装配或配置注入问题"
+    fixtures: []
+    rubric:
+      - "adjacent arthas-springcontext-issues-resolve requests should not trigger arthas-cpu-high"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

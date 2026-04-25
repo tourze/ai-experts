@@ -1,0 +1,30 @@
+cases:
+  - id: positive_consciousness_council_primary
+    prompt: "我需要多视角思辨来审视高不确定性决策时使用。用户提到\"换几个专家视角看\"\"多角度想一遍\"\"开个议会\""
+    fixtures: []
+    rubric:
+      - "recognizes the request as consciousness-council territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_consciousness_council_realistic
+    prompt: "帮我处理这个场景：用户说“换几个专家视角看”“帮我多角度想一遍”“开个议会 / council”。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_cross_pollination_engine
+    prompt: "这个需求应该交给 cross-pollination-engine：借用其他行业的成熟机制来解决当前问题时使用。用户提到\"别的行业会怎么做\"\"能借鉴谁\"\"跳出行业想一想\""
+    fixtures: []
+    rubric:
+      - "adjacent cross-pollination-engine requests should not trigger consciousness-council"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

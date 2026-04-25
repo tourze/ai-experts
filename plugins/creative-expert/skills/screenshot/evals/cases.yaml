@@ -1,0 +1,30 @@
+cases:
+  - id: positive_window_capture
+    prompt: "Take a screenshot of the currently focused window and save it to a temporary file"
+    fixtures: []
+    rubric:
+      - "uses a system screenshot workflow"
+      - "captures the active window rather than generating a synthetic image"
+    trigger_expected: true
+
+  - id: positive_region_bug_report
+    prompt: "Capture a selected screen region for a bug report"
+    fixtures: []
+    rubric:
+      - "supports region-based screen capture"
+      - "produces an image artifact suitable for bug reporting"
+    trigger_expected: true
+
+  - id: negative_compress_existing_image
+    prompt: "Compress this screenshot to a smaller WebP file"
+    fixtures: []
+    rubric:
+      - "compressing an existing image should route to baoyu-compress-image"
+    trigger_expected: false
+
+  - id: negative_draw_diagram
+    prompt: "Draw an SVG diagram of the login flow"
+    fixtures: []
+    rubric:
+      - "diagram generation should route to concept-to-image or plantuml-ascii"
+    trigger_expected: false

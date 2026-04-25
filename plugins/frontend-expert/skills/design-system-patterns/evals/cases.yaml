@@ -1,0 +1,30 @@
+cases:
+  - id: positive_design_system_patterns_primary
+    prompt: "我需要需要搭建设计令牌、主题系统或组件架构时使用。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as design-system-patterns territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_design_system_patterns_realistic
+    prompt: "帮我处理这个场景：从零开始建立设计令牌、颜色体系、字号体系和组件 API。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_browser_rendering_patterns
+    prompt: "这个需求应该交给 browser-rendering-patterns：优化浏览器渲染性能、处理 hydration 问题、使用 resource hints 或改善客户端事件处理时使用。用户提到 hydration mismatch、content-visibility、preload、preconnect、passive event listener、script defer、SVG 优化"
+    fixtures: []
+    rubric:
+      - "adjacent browser-rendering-patterns requests should not trigger design-system-patterns"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

@@ -1,0 +1,43 @@
+cases:
+  - id: design_agent_verification_loop
+    prompt: "设计一个 agent 实现后必须 lint、typecheck、test 全过才能退出的自动验证循环"
+    fixtures: []
+    rubric:
+      - "defines a programmatic verification loop"
+      - "uses command exit codes or markers as exit criteria"
+      - "includes max iterations and failure reporting"
+    trigger_expected: true
+
+  - id: prevent_premature_completion
+    prompt: "我们的 agent 总是测试没跑完就说 done，帮我设计一个防止过早完成的验证门禁"
+    fixtures: []
+    rubric:
+      - "focuses on loop design and completion gating"
+      - "requires objective verification before exit"
+      - "does not rely on the agent's own success claim"
+    trigger_expected: true
+
+  - id: ci_in_the_loop
+    prompt: "我想做一个 CI-in-the-loop 修复流程：失败就读日志、最小修复、再跑，最多 5 轮"
+    fixtures: []
+    rubric:
+      - "recognizes iterative verification and repair workflow"
+      - "sets safe iteration and timeout bounds"
+      - "reports unresolved checks when the loop hits its cap"
+    trigger_expected: true
+
+  - id: negative_final_verification_now
+    prompt: "你改完了，运行当前相关测试后再告诉我是否完成"
+    fixtures: []
+    rubric:
+      - "does not activate verification-loop design"
+      - "single final verification belongs to completion verification behavior"
+    trigger_expected: false
+
+  - id: negative_tdd_workflow
+    prompt: "用 red-green-refactor 实现这个 parser"
+    fixtures: []
+    rubric:
+      - "does not activate general verification loop design"
+      - "TDD implementation belongs to test-driven-development"
+    trigger_expected: false

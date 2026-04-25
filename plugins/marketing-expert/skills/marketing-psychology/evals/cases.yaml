@@ -64,3 +64,17 @@ cases:
       - "May provide psychological context for hypothesis"
       - "Does not attempt full test design using psychology patterns"
     trigger_expected: true
+  - id: negative_general_page_cro
+    prompt: "Diagnose why our landing page conversion rate is low and propose page changes."
+    fixtures: []
+    rubric:
+      - "does not activate psychology explanation workflow"
+      - "page conversion diagnosis belongs to page-cro or cro-methodology"
+    trigger_expected: false
+  - id: negative_write_sales_deck
+    prompt: "Create a sales deck for our enterprise buyer."
+    fixtures: []
+    rubric:
+      - "does not activate marketing psychology workflow"
+      - "sales material creation belongs to sales-enablement"
+    trigger_expected: false

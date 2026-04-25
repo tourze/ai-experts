@@ -1,0 +1,30 @@
+cases:
+  - id: positive_site_analyze_traceroute_primary
+    prompt: "我需要当只需要分析 traceroute 路由路径、首个公网出口、跨境跳点或粘贴的 traceroute 文本"
+    fixtures: []
+    rubric:
+      - "recognizes the request as site-analyze/traceroute territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_site_analyze_traceroute_realistic
+    prompt: "帮我处理这个场景：用户想知道流量从哪里出境、在哪一跳跨运营商或跨国家。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_citation_validator
+    prompt: "这个需求应该交给 citation-validator：当研究报告、PRD 或对外发布内容需要验证事实声明的引用完整性、来源质量与可追溯性时使用。按 A-E 源质量分级逐条核对引用，检测未被支持的声明（幻觉），在发布或交付前做最后把关。常与 deep-research、knowledge-synthesis 连用。"
+    fixtures: []
+    rubric:
+      - "adjacent citation-validator requests should not trigger site-analyze/traceroute"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

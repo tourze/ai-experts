@@ -1,0 +1,30 @@
+cases:
+  - id: positive_ios_secret_scan_primary
+    prompt: "我需要扫描 iOS 应用中的硬编码凭据、云服务密钥、弱加密和安全配置问题"
+    fixtures: []
+    rubric:
+      - "recognizes the request as ios-secret-scan territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_ios_secret_scan_realistic
+    prompt: "帮我处理这个场景：需要在 IPA/Mach-O 中搜索硬编码 API key、云服务凭据和敏感字符串。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_active_directory_attacks
+    prompt: "这个需求应该交给 active-directory-attacks：明确要求在已授权环境中进行 Active Directory 安全测试，或提到 Kerberoasting、DCSync、BloodHound、NTLM Relay、Golden Ticket 等主题"
+    fixtures: []
+    rubric:
+      - "adjacent active-directory-attacks requests should not trigger ios-secret-scan"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

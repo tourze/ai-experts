@@ -66,3 +66,17 @@ cases:
       - "References or defers to paid-ads skill"
       - "Does not attempt full campaign strategy using creative generation patterns"
     trigger_expected: true
+  - id: negative_paid_media_budget_plan
+    prompt: "Plan the paid media budget allocation across Google, LinkedIn, Meta, and TikTok for next quarter."
+    fixtures: []
+    rubric:
+      - "does not activate ad creative workflow"
+      - "budget and platform allocation belongs to paid-ads"
+    trigger_expected: false
+  - id: negative_landing_page_copy
+    prompt: "Rewrite the landing page hero, subhead, and CTA for our SaaS product."
+    fixtures: []
+    rubric:
+      - "does not activate ad creative workflow"
+      - "marketing page copy belongs to copywriting"
+    trigger_expected: false

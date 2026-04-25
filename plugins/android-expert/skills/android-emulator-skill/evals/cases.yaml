@@ -1,0 +1,34 @@
+cases:
+  - id: launch_install_logcat
+    prompt: "Start an Android emulator, install this debug APK, and capture logcat after launch."
+    fixtures: []
+    rubric:
+      - "uses emulator lifecycle and adb operations"
+      - "installs or launches the app on the emulator"
+      - "captures or filters logcat for diagnosis"
+    trigger_expected: true
+
+  - id: ui_navigation_automation
+    prompt: "Use the Android emulator to navigate through the app and verify the login screen appears."
+    fixtures: []
+    rubric:
+      - "operates the emulator or device UI"
+      - "uses adb or automation commands where appropriate"
+      - "verifies visible app state after navigation"
+    trigger_expected: true
+
+  - id: negative_compose_test
+    prompt: "Write a Compose UI test for the login screen."
+    fixtures: []
+    rubric:
+      - "does not activate emulator operation workflow"
+      - "test authoring belongs to android-testing"
+    trigger_expected: false
+
+  - id: negative_architecture_design
+    prompt: "Design a multi-module Android app architecture with Hilt."
+    fixtures: []
+    rubric:
+      - "does not activate emulator management"
+      - "architecture design belongs to android-architecture"
+    trigger_expected: false

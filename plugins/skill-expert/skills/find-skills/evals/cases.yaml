@@ -1,0 +1,43 @@
+cases:
+  - id: find_skill_for_task
+    prompt: "有没有现成的 agent skill 可以帮我做 Figma 到 React 的实现？帮我找一个靠谱的"
+    fixtures: []
+    rubric:
+      - "searches or recommends existing external skills rather than drafting a new one"
+      - "checks source reputation and install signals before recommending"
+      - "includes installation guidance or where to learn more"
+    trigger_expected: true
+
+  - id: discover_install_skill
+    prompt: "我想给 Claude Code 加一个处理 Excel 的 skill，应该怎么找、怎么装？"
+    fixtures: []
+    rubric:
+      - "explains discovery through the skills ecosystem or Skills CLI"
+      - "evaluates candidate quality before suggesting installation"
+      - "provides a concrete install command when a candidate is selected"
+    trigger_expected: true
+
+  - id: can_you_do_specialized_task
+    prompt: "你能帮我生成专业的 PowerPoint 提案吗？如果需要 skill，帮我找一下"
+    fixtures: []
+    rubric:
+      - "recognizes the user wants capability discovery"
+      - "looks for relevant presentation or document-generation skills"
+      - "does not jump directly into producing the deck"
+    trigger_expected: true
+
+  - id: negative_create_custom_skill
+    prompt: "帮我写一个新的 SKILL.md，用来规范我们团队的发布流程"
+    fixtures: []
+    rubric:
+      - "does not activate external skill discovery"
+      - "custom skill creation belongs to skill-creator"
+    trigger_expected: false
+
+  - id: negative_direct_code_help
+    prompt: "帮我修这个 React useEffect 无限循环的 bug"
+    fixtures: []
+    rubric:
+      - "does not activate skill discovery"
+      - "the user asks for direct coding help, not finding a skill"
+    trigger_expected: false

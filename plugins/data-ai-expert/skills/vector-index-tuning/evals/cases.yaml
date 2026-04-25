@@ -1,0 +1,30 @@
+cases:
+  - id: positive_hnsw_recall_latency
+    prompt: "Tune HNSW M, efConstruction, and efSearch to improve recall while keeping p95 latency under 80 ms"
+    fixtures: []
+    rubric:
+      - "addresses HNSW tuning parameters"
+      - "balances recall, latency, and build cost"
+    trigger_expected: true
+
+  - id: positive_ivf_pq_memory
+    prompt: "Our FAISS IVF-PQ index uses too much memory. How should we tune nlist, nprobe, and quantization?"
+    fixtures: []
+    rubric:
+      - "discusses IVF/PQ parameter tradeoffs"
+      - "balances memory footprint with recall"
+    trigger_expected: true
+
+  - id: negative_semantic_search_architecture
+    prompt: "Design the overall semantic search flow with embeddings, filters, and reranking"
+    fixtures: []
+    rubric:
+      - "overall search architecture should route to similarity-search-patterns"
+    trigger_expected: false
+
+  - id: negative_embedding_strategy
+    prompt: "Choose an embedding model for multilingual document retrieval"
+    fixtures: []
+    rubric:
+      - "embedding model selection should route to embedding-strategies"
+    trigger_expected: false

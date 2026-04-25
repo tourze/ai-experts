@@ -1,0 +1,30 @@
+cases:
+  - id: positive_webman_naming_conventions_primary
+    prompt: "我需要统一或审查 Webman 项目的目录命名、接口后缀、Service 命名或命名空间"
+    fixtures: []
+    rubric:
+      - "recognizes the request as webman-naming-conventions territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_webman_naming_conventions_realistic
+    prompt: "帮我处理这个场景：统一目录命名、接口后缀、命名空间。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_webman_custom_processes
+    prompt: "这个需求应该交给 webman-custom-processes：声明或排查 Webman 自定义进程、Timer、Crontab 或 crash-restart"
+    fixtures: []
+    rubric:
+      - "adjacent webman-custom-processes requests should not trigger webman-naming-conventions"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

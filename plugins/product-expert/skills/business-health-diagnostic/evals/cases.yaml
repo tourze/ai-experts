@@ -1,0 +1,30 @@
+cases:
+  - id: positive_business_health_diagnostic_primary
+    prompt: "我需要快速诊断业务健康度、做季度业务复盘、或用记分卡方式发现增长/留存/效率问题时使用；英文触发词 business health、health check、scorecard、business diagnostic、quarterly review。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as business-health-diagnostic territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_business_health_diagnostic_realistic
+    prompt: "帮我处理这个场景：季度复盘、董事会汇报前快速评估业务整体健康度。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_3c_strategic_triangle
+    prompt: "这个需求应该交给 3c-strategic-triangle：从顾客、公司、竞争者三角度做战略分析、找差异化定位或评估竞争可持续性时使用；英文触发词 3C analysis、Ohmae 3C、customer-company-competitor、strategic triangle。"
+    fixtures: []
+    rubric:
+      - "adjacent 3c-strategic-triangle requests should not trigger business-health-diagnostic"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

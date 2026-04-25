@@ -1,0 +1,30 @@
+cases:
+  - id: positive_pgsql_index_strategy_primary
+    prompt: "我需要设计或审查 PostgreSQL B-tree、GIN、GiST、部分索引或表达式索引"
+    fixtures: []
+    rubric:
+      - "recognizes the request as pgsql-index-strategy territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_pgsql_index_strategy_realistic
+    prompt: "帮我处理这个场景：为新表或慢查询设计索引，需要在 B-tree、GIN、GiST 之间做选择"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_pgsql_jsonb_patterns
+    prompt: "这个需求应该交给 pgsql-jsonb-patterns：在 PostgreSQL 中使用 JSONB 存储、查询、索引或验证时使用。适用于稀疏属性和半结构化数据。"
+    fixtures: []
+    rubric:
+      - "adjacent pgsql-jsonb-patterns requests should not trigger pgsql-index-strategy"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

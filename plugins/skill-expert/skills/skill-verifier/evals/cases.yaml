@@ -1,0 +1,43 @@
+cases:
+  - id: verify_skill_coverage_from_source
+    prompt: "拿这个源码目录当 source，出题验证我写的 SKILL.md 是否足够支撑独立执行"
+    fixtures: []
+    rubric:
+      - "runs or proposes closed-book verification against source material"
+      - "separates examiner access to source from examinee access to the skill"
+      - "reports missing required facts as coverage gaps"
+    trigger_expected: true
+
+  - id: closed_book_exam_loop
+    prompt: "我想用出题-闭卷答-评判的方式验证这个 skill 有没有漏关键知识"
+    fixtures: []
+    rubric:
+      - "recognizes the ABC closed-book verification workflow"
+      - "generates questions from source materials, not from the skill"
+      - "judges answers against required facts"
+    trigger_expected: true
+
+  - id: rerun_after_skill_update
+    prompt: "我补了 skill 内容，重新跑一轮闭卷验证，看失败题是否都通过了"
+    fixtures: []
+    rubric:
+      - "treats the task as an iterative verification rerun"
+      - "focuses on previously failed coverage gaps"
+      - "limits claims to observed pass/fail evidence"
+    trigger_expected: true
+
+  - id: negative_design_score
+    prompt: "给这个 SKILL.md 按 120 分 rubric 做设计质量评分"
+    fixtures: []
+    rubric:
+      - "does not activate closed-book coverage verification"
+      - "design scoring belongs to skill-judge"
+    trigger_expected: false
+
+  - id: negative_create_skill
+    prompt: "帮我从零创建一个新的 database tuning skill"
+    fixtures: []
+    rubric:
+      - "does not activate verifier"
+      - "new skill creation belongs to skill-creator"
+    trigger_expected: false

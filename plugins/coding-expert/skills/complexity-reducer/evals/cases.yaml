@@ -1,0 +1,43 @@
+cases:
+  - id: simplify_nested_function
+    prompt: "This function has five nested if statements and is impossible to follow. Help me simplify it without changing behavior"
+    fixtures: []
+    rubric:
+      - "identifies nested control flow as the primary complexity source"
+      - "recommends behavior-preserving simplification"
+      - "prefers clarity over clever line-count reduction"
+    trigger_expected: true
+
+  - id: reduce_long_function_complexity
+    prompt: "Can you reduce the complexity of this 120-line order processing function? It works but nobody wants to touch it"
+    fixtures: []
+    rubric:
+      - "diagnoses long function and mixed responsibilities"
+      - "suggests incremental extraction or organization changes"
+      - "keeps behavior unchanged and calls for tests"
+    trigger_expected: true
+
+  - id: simplify_boolean_explosion
+    prompt: "This API takes four boolean flags and the condition matrix is getting out of hand. How should I simplify it?"
+    fixtures: []
+    rubric:
+      - "recognizes boolean parameter explosion"
+      - "suggests enum, options object, or split operations as appropriate"
+      - "addresses cognitive complexity rather than cosmetic style"
+    trigger_expected: true
+
+  - id: negative_general_refactor_plan
+    prompt: "I want to refactor this subsystem safely over several commits; help me set the checklist and guardrails"
+    fixtures: []
+    rubric:
+      - "does not activate complexity reducer as the primary skill"
+      - "safe multi-step refactoring workflow belongs to refactoring-checklist"
+    trigger_expected: false
+
+  - id: negative_performance_optimization
+    prompt: "This function is slow on large inputs; profile it and make it faster"
+    fixtures: []
+    rubric:
+      - "does not activate complexity reducer"
+      - "performance optimization is separate from cognitive complexity reduction"
+    trigger_expected: false

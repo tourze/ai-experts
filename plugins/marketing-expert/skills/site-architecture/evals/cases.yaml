@@ -64,3 +64,17 @@ cases:
       - "References or defers to seo skill"
       - "Explains site-architecture covers design, not technical SEO"
     trigger_expected: true
+  - id: negative_single_page_copy
+    prompt: "Rewrite our homepage hero and pricing page CTA copy."
+    fixtures: []
+    rubric:
+      - "does not activate site architecture workflow"
+      - "page copy belongs to copywriting"
+    trigger_expected: false
+  - id: negative_content_calendar
+    prompt: "Plan the next quarter's blog content calendar and content pillars."
+    fixtures: []
+    rubric:
+      - "does not activate site hierarchy workflow"
+      - "content calendar strategy belongs to content-strategy"
+    trigger_expected: false

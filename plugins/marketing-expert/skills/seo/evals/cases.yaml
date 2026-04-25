@@ -1,0 +1,34 @@
+cases:
+  - id: technical_seo_audit
+    prompt: "Audit our technical SEO: indexation, canonical tags, structured data, metadata, and Search Console errors."
+    fixtures: []
+    rubric:
+      - "focuses on technical search visibility"
+      - "covers crawlability, indexation, metadata, structured data, and Search Console issues"
+      - "prioritizes fixes by SEO impact"
+    trigger_expected: true
+
+  - id: metadata_schema_optimization
+    prompt: "Optimize our product pages' title tags, meta descriptions, schema markup, and internal links."
+    fixtures: []
+    rubric:
+      - "addresses metadata and structured data improvements"
+      - "considers search intent and internal linking"
+      - "keeps advice grounded in search visibility"
+    trigger_expected: true
+
+  - id: negative_ai_search_citation
+    prompt: "Optimize this article so ChatGPT and Perplexity cite it in answers."
+    fixtures: []
+    rubric:
+      - "does not activate traditional SEO workflow"
+      - "AI answer engine optimization belongs to aeo-geo"
+    trigger_expected: false
+
+  - id: negative_content_strategy
+    prompt: "Create a content pillar strategy and editorial calendar."
+    fixtures: []
+    rubric:
+      - "does not activate technical SEO"
+      - "content planning belongs to content-strategy"
+    trigger_expected: false

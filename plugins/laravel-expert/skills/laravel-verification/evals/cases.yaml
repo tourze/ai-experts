@@ -1,0 +1,30 @@
+cases:
+  - id: positive_laravel_verification_primary
+    prompt: "我需要提到 Laravel 自检、发版前检查、CI 流水线、composer audit、phpstan、pint 或 migrate --pretend"
+    fixtures: []
+    rubric:
+      - "recognizes the request as laravel-verification territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_laravel_verification_realistic
+    prompt: "帮我处理这个场景：提交 PR 前、重构后、依赖升级后、预发布前需要跑一套完整的 Laravel 验证。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_laravel_layering_patterns
+    prompt: "这个需求应该交给 laravel-layering-patterns：实现 Laravel 10+ 的 Model/Migration、FormRequest 校验、JsonResource 序列化、Controller 瘦身、异步 Job 编排或 Livewire 组件"
+    fixtures: []
+    rubric:
+      - "adjacent laravel-layering-patterns requests should not trigger laravel-verification"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

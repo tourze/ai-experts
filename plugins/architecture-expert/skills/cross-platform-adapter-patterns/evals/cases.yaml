@@ -1,0 +1,34 @@
+cases:
+  - id: shared_mobile_adapter_layer
+    prompt: "Design a cross-platform adapter layer so our shared React Native code can access iOS Keychain and Android Keystore without platform imports."
+    fixtures: []
+    rubric:
+      - "keeps shared interfaces separate from platform implementations"
+      - "defines runtime selection or injection of platform adapters"
+      - "prevents shared packages from importing platform-specific modules"
+    trigger_expected: true
+
+  - id: monorepo_platform_boundaries
+    prompt: "We need platform abstraction rules for a monorepo with web, iOS, Android, and shared domain packages."
+    fixtures: []
+    rubric:
+      - "defines package boundaries and allowed dependency directions"
+      - "identifies platform-specific implementations and shared fallbacks"
+      - "covers testing or contract checks for adapters"
+    trigger_expected: true
+
+  - id: negative_ui_responsive_design
+    prompt: "Make this CSS layout responsive across mobile and desktop."
+    fixtures: []
+    rubric:
+      - "does not activate cross-platform architecture workflow"
+      - "responsive styling is frontend layout work, not adapter design"
+    trigger_expected: false
+
+  - id: negative_platform_build_error
+    prompt: "Fix this Android Gradle build error in our mobile app."
+    fixtures: []
+    rubric:
+      - "does not activate adapter-pattern design workflow"
+      - "single-platform build troubleshooting is outside this skill"
+    trigger_expected: false

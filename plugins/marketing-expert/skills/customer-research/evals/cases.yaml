@@ -1,0 +1,34 @@
+cases:
+  - id: voc_analysis
+    prompt: "Analyze these customer interviews and extract pains, jobs-to-be-done, objections, and language."
+    fixtures: []
+    rubric:
+      - "synthesizes VOC and JTBD themes"
+      - "extracts customer language and objections"
+      - "turns research into marketing implications"
+    trigger_expected: true
+
+  - id: review_mining
+    prompt: "Mine competitor reviews to understand what users love, hate, and switch for."
+    fixtures: []
+    rubric:
+      - "identifies repeated themes in review data"
+      - "separates pain points, desired outcomes, and buying triggers"
+      - "produces usable insights for positioning or copy"
+    trigger_expected: true
+
+  - id: negative_write_copy
+    prompt: "Use these customer insights to write the landing page copy."
+    fixtures: []
+    rubric:
+      - "does not activate research synthesis as the main workflow"
+      - "copy creation belongs to copywriting"
+    trigger_expected: false
+
+  - id: negative_brand_health
+    prompt: "Measure brand awareness, consideration, and NPS."
+    fixtures: []
+    rubric:
+      - "does not activate customer research synthesis"
+      - "brand funnel diagnosis belongs to brand-health"
+    trigger_expected: false

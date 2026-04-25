@@ -1,0 +1,34 @@
+cases:
+  - id: baseline_existing_module
+    prompt: "Create an initial Spec Kit baseline from the existing billing module without creating a new branch."
+    fixtures: []
+    rubric:
+      - "derives requirements from existing code behavior"
+      - "creates or updates a feature directory under .specify/features"
+      - "keeps branch behavior current-branch based"
+    trigger_expected: true
+
+  - id: legacy_feature_reverse_spec
+    prompt: "Reverse-engineer a spec.md for this legacy checkout flow from the code we already have."
+    fixtures: []
+    rubric:
+      - "separates observed behavior from uncertain assumptions"
+      - "marks unclear behavior as clarification items"
+      - "turns implementation details into user-facing requirements"
+    trigger_expected: true
+
+  - id: negative_new_feature_spec
+    prompt: "Write a new spec for a feature we have not built yet: team invitations."
+    fixtures: []
+    rubric:
+      - "does not activate baseline-from-code workflow"
+      - "new natural-language feature specification belongs to speckit-specify"
+    trigger_expected: false
+
+  - id: negative_static_checks
+    prompt: "Run lint and typecheck for this repo."
+    fixtures: []
+    rubric:
+      - "does not activate baseline workflow"
+      - "static checks belong to speckit-checker"
+    trigger_expected: false

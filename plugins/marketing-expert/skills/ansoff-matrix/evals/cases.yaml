@@ -1,0 +1,34 @@
+cases:
+  - id: choose_growth_direction
+    prompt: "Use the Ansoff Matrix to decide whether we should grow by market penetration, new products, new markets, or diversification."
+    fixtures: []
+    rubric:
+      - "evaluates all four Ansoff growth options"
+      - "compares risk, required capabilities, and expected upside"
+      - "recommends a growth path with rationale"
+    trigger_expected: true
+
+  - id: saas_growth_strategy
+    prompt: "We have a mature SaaS product and need the next growth strategy. Apply Ansoff thinking."
+    fixtures: []
+    rubric:
+      - "frames current product-market position"
+      - "separates product development from market development"
+      - "identifies assumptions to validate before committing"
+    trigger_expected: true
+
+  - id: negative_marketing_mix
+    prompt: "Audit whether our price, channel, product, and promotion are aligned."
+    fixtures: []
+    rubric:
+      - "does not activate Ansoff growth matrix"
+      - "4P alignment belongs to marketing-mix-4p"
+    trigger_expected: false
+
+  - id: negative_stp
+    prompt: "Define our target segment and positioning statement."
+    fixtures: []
+    rubric:
+      - "does not activate Ansoff strategy"
+      - "segmentation and positioning belongs to stp-segmentation"
+    trigger_expected: false

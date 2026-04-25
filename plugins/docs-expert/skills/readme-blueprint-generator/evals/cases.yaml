@@ -1,0 +1,30 @@
+cases:
+  - id: positive_readme_blueprint_generator_primary
+    prompt: "我需要为仓库生成或重构 README.md 时使用。该技能会先梳理项目定位、技术栈、结构、开发流程和测试方式，再输出开发者可直接使用的 README 骨架。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as readme-blueprint-generator territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_readme_blueprint_generator_realistic
+    prompt: "帮我处理这个场景：仓库没有 README，或 README 已经过时、信息零散、无法指导开发者入门。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_consulting_analysis
+    prompt: "这个需求应该交给 consulting-analysis：产出咨询级研究报告、市场分析、消费者洞察、品牌研究、财务分析、竞品情报或投融资尽调文档时使用。"
+    fixtures: []
+    rubric:
+      - "adjacent consulting-analysis requests should not trigger readme-blueprint-generator"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

@@ -1,0 +1,34 @@
+cases:
+  - id: cro_experiment_framework
+    prompt: "Build a CRO experiment plan for our website based on hypotheses and A/B tests."
+    fixtures: []
+    rubric:
+      - "frames conversion problems as hypotheses"
+      - "prioritizes experiments by impact, confidence, and effort"
+      - "defines measurement and test design basics"
+    trigger_expected: true
+
+  - id: conversion_research_plan
+    prompt: "We don't know why conversion is low. Design a CRO research and experimentation process."
+    fixtures: []
+    rubric:
+      - "uses qualitative and quantitative research inputs"
+      - "creates an experiment backlog"
+      - "distinguishes methodology from implementing a specific page"
+    trigger_expected: true
+
+  - id: negative_popup_design
+    prompt: "Write copy and trigger rules for an exit-intent popup."
+    fixtures: []
+    rubric:
+      - "does not activate broad CRO methodology"
+      - "popup-specific optimization belongs to popup-cro"
+    trigger_expected: false
+
+  - id: negative_redesign_landing_page
+    prompt: "Rebuild this landing page in React and Tailwind."
+    fixtures: []
+    rubric:
+      - "does not activate CRO methodology"
+      - "landing page implementation belongs to redesign-my-landingpage"
+    trigger_expected: false

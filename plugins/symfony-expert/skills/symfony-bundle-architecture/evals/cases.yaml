@@ -1,0 +1,30 @@
+cases:
+  - id: positive_symfony_bundle_architecture_primary
+    prompt: "我需要设计或审查 Symfony Bundle 的目录结构、DI Extension、CompilerPass 或 Bundle 间依赖"
+    fixtures: []
+    rubric:
+      - "recognizes the request as symfony-bundle-architecture territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_symfony_bundle_architecture_realistic
+    prompt: "帮我处理这个场景：新建或审查 Bundle 的 Extension、services.yaml、CompilerPass 和依赖声明。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_doctrine_batch_processing
+    prompt: "这个需求应该交给 doctrine-batch-processing：实现或修复 Symfony / Doctrine 批处理、批量导入、数据回填或大数据量写入"
+    fixtures: []
+    rubric:
+      - "adjacent doctrine-batch-processing requests should not trigger symfony-bundle-architecture"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

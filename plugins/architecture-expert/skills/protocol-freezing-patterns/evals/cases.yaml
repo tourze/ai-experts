@@ -1,0 +1,34 @@
+cases:
+  - id: wire_protocol_versioning
+    prompt: "Design a version-freezing strategy for our mobile API wire format so old clients keep working during schema evolution."
+    fixtures: []
+    rubric:
+      - "defines compatibility guarantees and breaking-change rules"
+      - "uses additive fields, defaults, or version negotiation where appropriate"
+      - "plans deprecation phases and client rollout safety"
+    trigger_expected: true
+
+  - id: event_schema_evolution
+    prompt: "We need to evolve Kafka event schemas without breaking consumers. How should we freeze and version the protocol?"
+    fixtures: []
+    rubric:
+      - "addresses producer and consumer compatibility"
+      - "defines schema registry or contract validation expectations"
+      - "handles removals, required fields, defaults, and migration windows"
+    trigger_expected: true
+
+  - id: negative_internal_refactor
+    prompt: "Refactor this controller without changing behavior."
+    fixtures: []
+    rubric:
+      - "does not activate protocol evolution workflow"
+      - "internal refactoring without wire-format changes is out of scope"
+    trigger_expected: false
+
+  - id: negative_api_trace
+    prompt: "Trace which services are called by POST /orders."
+    fixtures: []
+    rubric:
+      - "does not activate protocol-freezing workflow"
+      - "call-chain tracing belongs to api-trace-reader"
+    trigger_expected: false

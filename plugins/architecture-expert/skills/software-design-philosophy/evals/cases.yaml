@@ -1,0 +1,34 @@
+cases:
+  - id: deep_module_review
+    prompt: "Evaluate this API design using complexity, deep modules, information hiding, and strategic programming principles."
+    fixtures: []
+    rubric:
+      - "assesses whether modules hide complexity behind simple interfaces"
+      - "identifies shallow modules, parameter explosion, or abstraction leakage"
+      - "recommends design changes that reduce cognitive load"
+    trigger_expected: true
+
+  - id: information_hiding_tradeoff
+    prompt: "Should this configuration-heavy service expose all knobs or hide policy behind defaults? Analyze it from software design philosophy."
+    fixtures: []
+    rubric:
+      - "compares flexibility against complexity cost"
+      - "applies information hiding and strategic programming principles"
+      - "suggests defaults or layered APIs where appropriate"
+    trigger_expected: true
+
+  - id: negative_specific_bug
+    prompt: "Fix the off-by-one bug in this loop."
+    fixtures: []
+    rubric:
+      - "does not activate design philosophy workflow"
+      - "specific bug fixes are outside this skill"
+    trigger_expected: false
+
+  - id: negative_system_architecture
+    prompt: "Design a distributed cache service with high availability."
+    fixtures: []
+    rubric:
+      - "does not activate design philosophy by default"
+      - "concrete distributed system design belongs to system-design or ddia-systems"
+    trigger_expected: false

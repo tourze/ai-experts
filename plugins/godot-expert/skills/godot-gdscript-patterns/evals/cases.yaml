@@ -1,0 +1,30 @@
+cases:
+  - id: positive_godot_gdscript_patterns_primary
+    prompt: "我需要开发、重构或排障 Godot 4 GDScript 项目时使用；英文触发词 Godot / GDScript / scene tree / signal / state machine。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as godot-gdscript-patterns territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_godot_gdscript_patterns_realistic
+    prompt: "帮我处理这个场景：需要搭建或重构 Godot 4 项目的场景树、状态流转、角色系统、UI 与战斗系统。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_unrelated
+    prompt: "请写一个通用 Python 排序函数并解释时间复杂度"
+    fixtures: []
+    rubric:
+      - "unrelated programming requests should not trigger godot-gdscript-patterns"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

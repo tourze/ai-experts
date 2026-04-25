@@ -1,0 +1,30 @@
+cases:
+  - id: positive_employment_contract_templates_primary
+    prompt: "我需要起草劳动合同、录用通知、保密协议或 HR 制度文本"
+    fixtures: []
+    rubric:
+      - "recognizes the request as employment-contract-templates territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_employment_contract_templates_realistic
+    prompt: "帮我处理这个场景：起草或重写 offer letter、劳动合同、员工手册、保密协议、远程办公附录等劳动用工文本。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_gdpr_data_handling
+    prompt: "这个需求应该交给 gdpr-data-handling：设计 GDPR 合规流程、同意管理、数据主体请求或 breach 响应"
+    fixtures: []
+    rubric:
+      - "adjacent gdpr-data-handling requests should not trigger employment-contract-templates"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

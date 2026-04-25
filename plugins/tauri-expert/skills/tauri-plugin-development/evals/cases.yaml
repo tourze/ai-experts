@@ -1,0 +1,30 @@
+cases:
+  - id: positive_tauri_plugin_development_primary
+    prompt: "我需要在创建自定义 Tauri v2 插件时使用：脚手架、生命周期钩子、桌面/移动拆分、插件状态、命令注册、JS API、权限定义。涉及 cargo tauri plugin new、TauriPlugin<R、Builder::new()、mobile.rs/desktop.rs"
+    fixtures: []
+    rubric:
+      - "recognizes the request as tauri-plugin-development territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_tauri_plugin_development_realistic
+    prompt: "帮我处理这个场景：创建插件脚手架并理解目录结构"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_tauri_build_packaging
+    prompt: "这个需求应该交给 tauri-build-packaging：在构建、签名、分发 Tauri 应用时使用：bundle 配置、平台目标、代码签名与公证、自动更新、sidecar 打包、CI/CD、体积优化。涉及 cargo tauri build、签名密钥、externalBin、CI 矩阵"
+    fixtures: []
+    rubric:
+      - "adjacent tauri-build-packaging requests should not trigger tauri-plugin-development"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

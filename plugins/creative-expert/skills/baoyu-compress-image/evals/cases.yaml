@@ -1,0 +1,30 @@
+cases:
+  - id: positive_batch_webp_compression
+    prompt: "Compress this folder of PNG screenshots into smaller WebP files and keep the originals"
+    fixtures: []
+    rubric:
+      - "uses an image compression workflow for batch files"
+      - "exports WebP derivatives without overwriting originals"
+    trigger_expected: true
+
+  - id: positive_single_image_target_size
+    prompt: "Optimize this JPEG so it is under 500 KB while preserving acceptable visual quality"
+    fixtures: []
+    rubric:
+      - "treats the request as image size optimization"
+      - "iterates compression settings toward a target file size"
+    trigger_expected: true
+
+  - id: negative_new_illustration
+    prompt: "Generate a new hero illustration for my blog post"
+    fixtures: []
+    rubric:
+      - "new image creation should route to concept-to-image or image generation"
+    trigger_expected: false
+
+  - id: negative_capture_screen
+    prompt: "Take a screenshot of the active window on my Mac"
+    fixtures: []
+    rubric:
+      - "screen capture should route to screenshot"
+    trigger_expected: false

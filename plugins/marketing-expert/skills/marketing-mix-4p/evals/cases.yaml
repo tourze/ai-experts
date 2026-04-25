@@ -1,0 +1,34 @@
+cases:
+  - id: four_p_audit
+    prompt: "Audit our product, price, place, and promotion alignment for a new market launch."
+    fixtures: []
+    rubric:
+      - "uses 4P or related marketing mix dimensions"
+      - "identifies mismatches between product, price, channel, and promotion"
+      - "recommends changes to improve mix coherence"
+    trigger_expected: true
+
+  - id: marketing_strategy_diagnosis
+    prompt: "Use the marketing mix to diagnose why our campaign is not translating into sales."
+    fixtures: []
+    rubric:
+      - "frames diagnosis across the full marketing mix"
+      - "does not reduce the issue to copy or ads alone"
+      - "connects mix problems to sales outcomes"
+    trigger_expected: true
+
+  - id: negative_growth_direction
+    prompt: "Use Ansoff Matrix to decide our next growth move."
+    fixtures: []
+    rubric:
+      - "does not activate marketing mix audit"
+      - "growth direction matrix belongs to ansoff-matrix"
+    trigger_expected: false
+
+  - id: negative_page_cro
+    prompt: "Improve conversion on this landing page."
+    fixtures: []
+    rubric:
+      - "does not activate full 4P audit"
+      - "page conversion belongs to page-cro"
+    trigger_expected: false

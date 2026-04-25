@@ -1,0 +1,30 @@
+cases:
+  - id: positive_scp_analysis_primary
+    prompt: "我需要分析外部冲击对行业和企业的传导影响、评估政策/技术/市场变化的连锁效应时使用；英文触发词 SCP model、structure-conduct-performance、industry shock analysis、external impact、cascading effect。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as scp-analysis territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_scp_analysis_realistic
+    prompt: "帮我处理这个场景：分析外部冲击（政策/技术/经济/社会变化）对企业的传导影响。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_consciousness_council
+    prompt: "这个需求应该交给 consciousness-council：多视角思辨来审视高不确定性决策时使用。用户提到\"换几个专家视角看\"\"多角度想一遍\"\"开个议会\""
+    fixtures: []
+    rubric:
+      - "adjacent consciousness-council requests should not trigger scp-analysis"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

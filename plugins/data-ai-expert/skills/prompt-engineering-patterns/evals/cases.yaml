@@ -1,0 +1,30 @@
+cases:
+  - id: positive_structured_output_prompt
+    prompt: "Design a prompt template that forces structured JSON output with schema validation and recovery instructions"
+    fixtures: []
+    rubric:
+      - "uses structured output prompt patterns"
+      - "includes constraints and error recovery guidance"
+    trigger_expected: true
+
+  - id: positive_few_shot_classification
+    prompt: "Create a few-shot prompt for classifying customer feedback into sentiment and topic labels"
+    fixtures: []
+    rubric:
+      - "uses few-shot examples"
+      - "defines labels, output format, and ambiguity handling"
+    trigger_expected: true
+
+  - id: negative_prompt_experiment_lab
+    prompt: "Set up a prompt A/B experiment with baseline, variants, test cases, and a scoring rubric"
+    fixtures: []
+    rubric:
+      - "systematic prompt experiments should route to prompt-lab"
+    trigger_expected: false
+
+  - id: negative_general_script
+    prompt: "Write a Python script that parses CSV files and prints totals"
+    fixtures: []
+    rubric:
+      - "general coding tasks are outside prompt engineering"
+    trigger_expected: false

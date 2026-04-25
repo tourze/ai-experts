@@ -1,0 +1,34 @@
+cases:
+  - id: brand_funnel_diagnosis
+    prompt: "Diagnose our brand health. Awareness is high, but consideration and recommendation are weak."
+    fixtures: []
+    rubric:
+      - "uses a brand funnel such as awareness, consideration, usage, loyalty, and advocacy"
+      - "identifies which stage is unhealthy"
+      - "recommends research or marketing actions by stage"
+    trigger_expected: true
+
+  - id: brand_perception_audit
+    prompt: "Audit brand perception and equity for our new fintech product."
+    fixtures: []
+    rubric:
+      - "evaluates brand awareness, associations, trust, and differentiation"
+      - "connects perception gaps to business impact"
+      - "suggests metrics or research methods"
+    trigger_expected: true
+
+  - id: negative_copywriting
+    prompt: "Write homepage copy that makes our brand sound more premium."
+    fixtures: []
+    rubric:
+      - "does not activate brand health diagnosis"
+      - "page copy creation belongs to copywriting"
+    trigger_expected: false
+
+  - id: negative_customer_research
+    prompt: "Analyze customer interview transcripts for jobs-to-be-done themes."
+    fixtures: []
+    rubric:
+      - "does not activate brand health workflow"
+      - "VOC and interview synthesis belongs to customer-research"
+    trigger_expected: false

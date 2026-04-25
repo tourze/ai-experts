@@ -1,0 +1,30 @@
+cases:
+  - id: positive_pgsql_row_level_security_primary
+    prompt: "我需要实现或审查 PostgreSQL 行级安全策略、多租户隔离或角色权限管理时使用。适用于共享表的数据边界控制。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as pgsql-row-level-security territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_pgsql_row_level_security_realistic
+    prompt: "帮我处理这个场景：多租户 SaaS 共享表存储，需要数据库层面强制租户隔离"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_pgsql_index_strategy
+    prompt: "这个需求应该交给 pgsql-index-strategy：设计或审查 PostgreSQL B-tree、GIN、GiST、部分索引或表达式索引"
+    fixtures: []
+    rubric:
+      - "adjacent pgsql-index-strategy requests should not trigger pgsql-row-level-security"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

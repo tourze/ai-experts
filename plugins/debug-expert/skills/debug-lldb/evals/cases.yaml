@@ -1,0 +1,30 @@
+cases:
+  - id: positive_mac_app_freeze
+    prompt: "The macOS app is frozen. Attach LLDB and capture all-thread backtraces to diagnose the hang"
+    fixtures: []
+    rubric:
+      - "uses LLDB or debugger thread backtraces"
+      - "looks for deadlock, blocking IPC, or main-thread stall patterns"
+    trigger_expected: true
+
+  - id: positive_high_cpu_sampling
+    prompt: "This native process has high CPU with no logs. Use debugger stack samples to identify the busy loop"
+    fixtures: []
+    rubric:
+      - "captures repeated thread stack samples"
+      - "analyzes hot loops or spin behavior"
+    trigger_expected: true
+
+  - id: negative_browser_blank_page
+    prompt: "Debug a blank web page by checking console errors and network requests in Chrome"
+    fixtures: []
+    rubric:
+      - "browser page debugging should route to chrome-devtools"
+    trigger_expected: false
+
+  - id: negative_gdb_nonblocking_trace
+    prompt: "Use GDB dprintf with a named pipe to trace a Linux process without stopping it"
+    fixtures: []
+    rubric:
+      - "GDB nonblocking trace workflows should route to gdb-nonblocking"
+    trigger_expected: false

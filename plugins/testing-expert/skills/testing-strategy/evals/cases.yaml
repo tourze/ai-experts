@@ -1,0 +1,43 @@
+cases:
+  - id: module_layered_test_plan
+    prompt: "这个订单模块应该怎么测？帮我按单测、集成和 E2E 分层列测试计划"
+    fixtures: []
+    rubric:
+      - "designs a practical layered test plan"
+      - "states why each item should be tested and at which layer"
+      - "covers happy paths, failure paths, boundaries, and security edges"
+    trigger_expected: true
+
+  - id: api_testing_plan
+    prompt: "我们新增了一组账号 API，不需要完整测试战略，只要告诉我该测什么、怎么分层"
+    fixtures: []
+    rubric:
+      - "uses lightweight testing plan guidance"
+      - "chooses unit, integration, and E2E boundaries based on cost and confidence"
+      - "avoids overbuilding a heavy organizational strategy"
+    trigger_expected: true
+
+  - id: existing_tests_gap_plan
+    prompt: "已有一些测试了，帮我看覆盖缺口并补一个可以转成任务的测试列表"
+    fixtures: []
+    rubric:
+      - "starts from existing coverage and identifies gaps"
+      - "outputs actionable test items"
+      - "does not review test code quality as the main task"
+    trigger_expected: true
+
+  - id: negative_enterprise_strategy
+    prompt: "我们是金融 App，QA 资源有限，帮我做风险驱动的生产级测试策略和质量门"
+    fixtures: []
+    rubric:
+      - "does not activate lightweight testing-strategy"
+      - "heavy production strategy belongs to test-strategy"
+    trigger_expected: false
+
+  - id: negative_playwright_execution
+    prompt: "打开本地页面，用 Playwright 点一下登录流程并截图"
+    fixtures: []
+    rubric:
+      - "does not activate planning-only testing strategy"
+      - "browser execution belongs to webapp-testing"
+    trigger_expected: false

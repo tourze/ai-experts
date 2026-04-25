@@ -1,0 +1,30 @@
+cases:
+  - id: positive_section_illustrations
+    prompt: "Add one explanatory illustration for each of the five sections in this long article"
+    fixtures: []
+    rubric:
+      - "plans illustrations from the article structure before generating prompts"
+      - "creates a batch illustration workflow instead of a single standalone image"
+    trigger_expected: true
+
+  - id: positive_longform_visual_outline
+    prompt: "Design a visual outline and image prompts for every major paragraph in my essay"
+    fixtures: []
+    rubric:
+      - "builds an outline tied to the essay sections"
+      - "produces multiple article-specific illustration prompts"
+    trigger_expected: true
+
+  - id: negative_single_static_infographic
+    prompt: "Create one PNG infographic showing our product pricing tiers"
+    fixtures: []
+    rubric:
+      - "single static visual exports should route to concept-to-image"
+    trigger_expected: false
+
+  - id: negative_explainer_animation
+    prompt: "Turn this article into a short animated explainer video"
+    fixtures: []
+    rubric:
+      - "animation and video work should route to concept-to-video"
+    trigger_expected: false

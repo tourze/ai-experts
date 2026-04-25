@@ -1,0 +1,34 @@
+cases:
+  - id: define_target_market
+    prompt: "Use STP to define our market segments, target segment, and positioning statement."
+    fixtures: []
+    rubric:
+      - "segments the market using meaningful criteria"
+      - "selects target segments with rationale"
+      - "creates a positioning direction or statement"
+    trigger_expected: true
+
+  - id: reposition_product
+    prompt: "We are selling to too many audiences. Help us choose who to target and how to position."
+    fixtures: []
+    rubric:
+      - "narrows target market rather than broadening by default"
+      - "connects positioning to segment needs"
+      - "explains tradeoffs of chosen target"
+    trigger_expected: true
+
+  - id: negative_customer_value_tiers
+    prompt: "Segment our existing customers by profitability and CLV tiers."
+    fixtures: []
+    rubric:
+      - "does not activate STP market segmentation"
+      - "customer value tiering belongs to customer-pyramid"
+    trigger_expected: false
+
+  - id: negative_competitor_page
+    prompt: "Write a competitor alternative page for a specific rival."
+    fixtures: []
+    rubric:
+      - "does not activate STP workflow"
+      - "competitor page writing belongs to competitor-alternatives"
+    trigger_expected: false

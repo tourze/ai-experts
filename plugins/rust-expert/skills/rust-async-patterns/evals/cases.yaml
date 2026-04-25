@@ -1,0 +1,30 @@
+cases:
+  - id: positive_rust_async_patterns_primary
+    prompt: "我需要需要开发或排障 Tokio 异步代码时使用；涉及 tokio::spawn、JoinSet、channel、select! 或异步生命周期"
+    fixtures: []
+    rubric:
+      - "recognizes the request as rust-async-patterns territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_rust_async_patterns_realistic
+    prompt: "帮我处理这个场景：构建基于 Tokio 的网络服务、worker、任务编排器或后台轮询器。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_rust_cargo_workspace
+    prompt: "这个需求应该交给 rust-cargo-workspace：需要管理 Cargo workspace 时使用；涉及 [workspace]、workspace.dependencies、feature flag 或 crate 拆分"
+    fixtures: []
+    rubric:
+      - "adjacent rust-cargo-workspace requests should not trigger rust-async-patterns"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

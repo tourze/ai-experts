@@ -1,0 +1,30 @@
+cases:
+  - id: positive_create_github_action_workflow_specificat_primary
+    prompt: "我需要需要把现有 GitHub Actions 工作流整理成实现无关、便于维护的规范文档"
+    fixtures: []
+    rubric:
+      - "recognizes the request as create-github-action-workflow-specification territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_create_github_action_workflow_specificat_realistic
+    prompt: "帮我处理这个场景：需要把已有 .github/workflows/.yml 提炼成规范文档。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_docker_essentials
+    prompt: "这个需求应该交给 docker-essentials：需要构建、运行、排障或清理 Docker 容器、镜像、网络和卷"
+    fixtures: []
+    rubric:
+      - "adjacent docker-essentials requests should not trigger create-github-action-workflow-specification"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

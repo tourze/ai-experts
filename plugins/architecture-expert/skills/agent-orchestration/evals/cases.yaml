@@ -1,0 +1,34 @@
+cases:
+  - id: design_multi_agent_runtime
+    prompt: "Design a multi-agent runtime with planner, coder, reviewer, and verifier agents. I need fork vs fresh context decisions and state isolation rules."
+    fixtures: []
+    rubric:
+      - "explicitly decides fork vs fresh for each agent type"
+      - "defines agent roles, message boundaries, and state ownership"
+      - "includes loop control such as max turns, cancellation, or background tracking"
+    trigger_expected: true
+
+  - id: system_prompt_architecture
+    prompt: "Help me restructure our agent system prompt architecture so reusable prompt sections can be cached and different agent types can override behavior safely."
+    fixtures: []
+    rubric:
+      - "separates prompt sections into modular responsibilities"
+      - "defines override points for different agent types"
+      - "identifies cache boundaries and invalidation risks"
+    trigger_expected: true
+
+  - id: negative_agent_permissions
+    prompt: "Design the permission model for an AI coding agent so destructive commands require approval and classifier failures deny access."
+    fixtures: []
+    rubric:
+      - "does not activate orchestration workflow"
+      - "permission policy design belongs to agent-permission-safety"
+    trigger_expected: false
+
+  - id: negative_tool_schema
+    prompt: "Design the schema for a file-search tool, including read-only metadata and token-budgeted results."
+    fixtures: []
+    rubric:
+      - "does not activate orchestration workflow"
+      - "tool interface design belongs to agent-tool-design"
+    trigger_expected: false

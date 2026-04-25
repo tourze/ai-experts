@@ -1,0 +1,34 @@
+cases:
+  - id: clarify_spec_ambiguities
+    prompt: "Find the most important ambiguities in the current spec.md and ask clarification questions before planning."
+    fixtures: []
+    rubric:
+      - "identifies only high-value ambiguities that change implementation"
+      - "limits questions to a small focused set"
+      - "updates or prepares updates to the spec after answers"
+    trigger_expected: true
+
+  - id: clarify_acceptance_boundaries
+    prompt: "The spec has vague acceptance criteria. Clarify the edge cases and user-visible behavior."
+    fixtures: []
+    rubric:
+      - "targets acceptance criteria, edge cases, and user behavior"
+      - "distinguishes missing information from already clear requirements"
+      - "records unanswered risks if the user declines clarification"
+    trigger_expected: true
+
+  - id: negative_challenge_questions
+    prompt: "Quiz me aggressively on this spec to expose hidden assumptions."
+    fixtures: []
+    rubric:
+      - "does not activate clarification workflow"
+      - "Socratic challenge belongs to speckit-quizme"
+    trigger_expected: false
+
+  - id: negative_create_plan
+    prompt: "Create the technical implementation plan from this spec."
+    fixtures: []
+    rubric:
+      - "does not activate clarify workflow"
+      - "technical planning belongs to speckit-plan"
+    trigger_expected: false

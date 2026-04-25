@@ -1,0 +1,30 @@
+cases:
+  - id: positive_async_python_patterns_primary
+    prompt: "我需要实现 asyncio、async/await、TaskGroup、timeout、cancellation、并发 I/O 或异步 API"
+    fixtures: []
+    rubric:
+      - "recognizes the request as async-python-patterns territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_async_python_patterns_realistic
+    prompt: "帮我处理这个场景：构建 FastAPI、aiohttp、WebSocket 或其他高并发异步接口。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_python_background_jobs
+    prompt: "这个需求应该交给 python-background-jobs：实现任务队列、worker、重试、幂等、死信队列或把长任务从请求链路中解耦"
+    fixtures: []
+    rubric:
+      - "adjacent python-background-jobs requests should not trigger async-python-patterns"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

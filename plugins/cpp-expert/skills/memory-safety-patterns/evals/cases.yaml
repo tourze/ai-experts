@@ -1,0 +1,30 @@
+cases:
+  - id: positive_raii_c_resource
+    prompt: "Review this C++ code that opens FILE* handles and refactor it to avoid leaks on exception paths"
+    fixtures: []
+    rubric:
+      - "uses RAII or smart-pointer ownership for C resources"
+      - "explains who owns and releases each resource"
+    trigger_expected: true
+
+  - id: positive_c_cleanup_path
+    prompt: "Fix this C function with malloc and socket setup so every error branch frees resources correctly"
+    fixtures: []
+    rubric:
+      - "audits allocation and release paths"
+      - "uses a unified cleanup strategy for C resource management"
+    trigger_expected: true
+
+  - id: negative_general_cpp_formatting
+    prompt: "Format this C++ file and rename variables to match our style guide"
+    fixtures: []
+    rubric:
+      - "style-only C++ edits are outside memory safety ownership guidance"
+    trigger_expected: false
+
+  - id: negative_rust_borrow_checker
+    prompt: "Explain this Rust borrow checker lifetime error"
+    fixtures: []
+    rubric:
+      - "Rust lifetime troubleshooting should route to Rust-specific skills, not C/C++ memory safety"
+    trigger_expected: false

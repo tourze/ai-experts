@@ -1,0 +1,30 @@
+cases:
+  - id: positive_private_domain_primary
+    prompt: "我需要把小红书粉丝导入微信、社群、邮件或其他可持续经营渠道，并设计私域承接链路"
+    fixtures: []
+    rubric:
+      - "recognizes the request as private-domain territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_private_domain_realistic
+    prompt: "帮我处理这个场景：用户希望把小红书粉丝沉淀到微信、社群、邮件或线下活动。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_douyin_video_summary
+    prompt: "这个需求应该交给 douyin-video-summary：提供抖音链接并需要提取音频、转录中文内容或同步到飞书文档"
+    fixtures: []
+    rubric:
+      - "adjacent douyin-video-summary requests should not trigger private-domain"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

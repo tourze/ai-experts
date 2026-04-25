@@ -1,0 +1,30 @@
+cases:
+  - id: positive_python_design_patterns_primary
+    prompt: "我需要拆分职责、设计服务层、减少耦合、在组合与继承之间做选择，或重构 Python 组件结构"
+    fixtures: []
+    rubric:
+      - "recognizes the request as python-design-patterns territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_python_design_patterns_realistic
+    prompt: "帮我处理这个场景：新建 service、repository、adapter 等核心组件时需要先定边界。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_async_python_patterns
+    prompt: "这个需求应该交给 async-python-patterns：实现 asyncio、async/await、TaskGroup、timeout、cancellation、并发 I/O 或异步 API"
+    fixtures: []
+    rubric:
+      - "adjacent async-python-patterns requests should not trigger python-design-patterns"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

@@ -1,0 +1,30 @@
+cases:
+  - id: positive_js_micro_optimization_primary
+    prompt: "我需要优化 JavaScript 热路径性能、减少不必要的迭代和查找、或改善 DOM 操作效率时使用。用户提到 JS 性能、热路径优化、Set/Map 查找、循环优化、DOM 批处理、requestIdleCallback"
+    fixtures: []
+    rubric:
+      - "recognizes the request as js-micro-optimization territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_js_micro_optimization_realistic
+    prompt: "帮我处理这个场景：热路径代码存在 O(n²) 查找、重复迭代或冗余计算。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_javascript_typescript_jest
+    prompt: "这个需求应该交给 javascript-typescript-jest：用 Jest 为 JavaScript 或 TypeScript 编写单元测试、mock 或异步测试"
+    fixtures: []
+    rubric:
+      - "adjacent javascript-typescript-jest requests should not trigger js-micro-optimization"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

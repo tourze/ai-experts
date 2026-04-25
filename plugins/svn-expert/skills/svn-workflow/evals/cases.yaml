@@ -1,0 +1,30 @@
+cases:
+  - id: positive_svn_workflow_primary
+    prompt: "我需要执行 SVN 日常操作、管理分支标签、处理合并冲突、配置属性、维护仓库或做 SVN 到 Git 迁移"
+    fixtures: []
+    rubric:
+      - "recognizes the request as svn-workflow territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_svn_workflow_realistic
+    prompt: "帮我处理这个场景：需要在 SVN 项目中执行 checkout、update、status、diff、commit 等日常操作。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_unrelated
+    prompt: "请写一个通用 Python 排序函数并解释时间复杂度"
+    fixtures: []
+    rubric:
+      - "unrelated programming requests should not trigger svn-workflow"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

@@ -1,0 +1,30 @@
+cases:
+  - id: positive_record_session_primary
+    prompt: "我需要记录本次开发会话的成果摘要、保存 session journal 或在结束工作前总结做了什么"
+    fixtures: []
+    rubric:
+      - "recognizes the request as record-session territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_record_session_realistic
+    prompt: "帮我处理这个场景：用户完成一段开发工作后，想把本次会话的成果结构化地记录下来。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_adjacent_author_contributions
+    prompt: "这个需求应该交给 author-contributions：查看某个作者在分支上的实际贡献、做作者归属审计或回答”谁改了什么”"
+    fixtures: []
+    rubric:
+      - "adjacent author-contributions requests should not trigger record-session"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false
