@@ -25,7 +25,7 @@ let katex;
 try {
   katex = require("katex");
 } catch (error) {
-  console.error("KaTeX is not installed. Run `bash scripts/setup.sh` or `npm install -g katex`.");
+  console.error("KaTeX is not installed. Run `node scripts/setup.mjs` or `npm install -g katex`.");
   process.exit(1);
 }
 

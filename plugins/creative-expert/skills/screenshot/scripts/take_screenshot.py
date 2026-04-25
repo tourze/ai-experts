@@ -15,9 +15,10 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 MAC_PERM_SCRIPT = SCRIPT_DIR / "macos_permissions.swift"
-MAC_PERM_HELPER = SCRIPT_DIR / "ensure_macos_permissions.sh"
+MAC_PERM_HELPER = SCRIPT_DIR / "ensure_macos_permissions.mjs"
 MAC_WINDOW_SCRIPT = SCRIPT_DIR / "macos_window_info.swift"
 MAC_DISPLAY_SCRIPT = SCRIPT_DIR / "macos_display_info.swift"
+WINDOWS_HELPER = SCRIPT_DIR / "take_screenshot_windows.mjs"
 TEST_MODE_ENV = "CODEX_SCREENSHOT_TEST_MODE"
 TEST_PLATFORM_ENV = "CODEX_SCREENSHOT_TEST_PLATFORM"
 TEST_WINDOWS_ENV = "CODEX_SCREENSHOT_TEST_WINDOWS"
@@ -234,7 +235,7 @@ def ensure_macos_permissions() -> None:
         )
     if macos_screen_capture_granted():
         return
-    subprocess.run(["bash", str(MAC_PERM_HELPER)], check=False)
+    subprocess.run(["node", str(MAC_PERM_HELPER)], check=False)
     if not macos_screen_capture_granted():
         raise SystemExit(
             "Screen Recording permission is required; enable it in System Settings and retry"
@@ -417,6 +418,31 @@ def capture_linux(args: argparse.Namespace, output: Path) -> None:
     raise SystemExit("no supported screenshot tool found (scrot, gnome-screenshot, or import)")
 
 
+def capture_windows(args: argparse.Namespace, output: Path) -> None:
+    cmd = [
+        "node",
+        str(WINDOWS_HELPER),
+        "--path",
+        str(output),
+        "--format",
+        args.format,
+    ]
+    if args.region:
+        cmd.extend(["--region", ",".join(str(value) for value in args.region)])
+    if args.active_window:
+        cmd.append("--active-window")
+    if args.window_id is not None:
+        cmd.extend(["--window-handle", str(args.window_id)])
+
+    try:
+        subprocess.run(cmd, check=True, capture_output=True, text=True)
+    except FileNotFoundError as exc:
+        raise SystemExit("node not found; install Node.js to capture screenshots on Windows") from exc
+    except subprocess.CalledProcessError as exc:
+        msg = (exc.stderr or exc.stdout or "Windows screenshot capture failed").strip()
+        raise SystemExit(msg) from exc
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -572,9 +598,7 @@ def main() -> None:
     elif system == "Linux":
         capture_linux(args, output)
     elif system == "Windows":
-        raise SystemExit(
-            "Windows support lives in scripts/take_screenshot.ps1; run it with PowerShell"
-        )
+        capture_windows(args, output)
     else:
         raise SystemExit(f"unsupported platform: {system}")
 

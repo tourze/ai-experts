@@ -24,7 +24,7 @@ description: 当用户要将 .md 文稿渲染成可打印 PDF 时使用，支持
 先运行依赖检查并参考 [README.md](README.md)：
 
 ```bash
-bash scripts/setup.sh
+node scripts/setup.mjs
 python3 scripts/md_to_pdf.py input.md output.pdf --format A4 --header-footer
 python3 scripts/md_to_pdf.py report.md report.pdf --margin 1in --css custom.css --landscape
 python3 scripts/md_to_pdf.py tests/test_document.md sample.pdf --no-mermaid
@@ -34,7 +34,7 @@ python3 scripts/md_to_pdf.py tests/test_document.md sample.pdf --no-mermaid
 
 - [README.md](README.md)
 - [tests/test_document.md](tests/test_document.md)
-- [scripts/setup.sh](scripts/setup.sh)
+- [scripts/setup.mjs](scripts/setup.mjs)
 
 ## 检查清单
 
@@ -57,7 +57,7 @@ python3 scripts/md_to_pdf.py report.md report.pdf
 ### PASS: setup → render
 
 ```bash
-bash scripts/setup.sh  # 检查 pandoc/mmdc/katex/playwright
+node scripts/setup.mjs  # 检查 pandoc/mmdc/katex/playwright
 # 全部通过 → render
 python3 scripts/md_to_pdf.py report.md report.pdf --format A4 --header-footer
 ```

@@ -6,7 +6,7 @@ A Claude skill that converts Markdown files to professionally styled PDF documen
 
 ```bash
 # 1. Check dependencies
-bash scripts/setup.sh
+node scripts/setup.mjs
 
 # 2. Convert
 python3 scripts/md_to_pdf.py input.md output.pdf
@@ -27,7 +27,7 @@ Copy the `md-to-pdf/` directory into your agent's skills folder:
 ├── scripts/
 │   ├── md_to_pdf.py
 │   ├── katex_render.mjs
-│   └── setup.sh
+│   └── setup.mjs
 └── tests/
     └── test_document.md
 ```
@@ -51,7 +51,7 @@ Each stage is independently skippable (`--no-mermaid`, `--no-math`) for speed wh
 | katex      | LaTeX → HTML  | `npm install -g katex`                                  |
 | playwright | HTML → PDF    | `pip install playwright && playwright install chromium` |
 
-Do not assume these tools are pre-installed. Run `bash scripts/setup.sh` before conversion and treat its output as the source of truth for the current machine.
+Do not assume these tools are pre-installed. Run `node scripts/setup.mjs` before conversion and treat its output as the source of truth for the current machine.
 
 ## Options
 
