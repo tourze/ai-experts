@@ -95,5 +95,6 @@ jq empty plugins/marketing-expert/hooks/hooks.json
 node --check plugins/marketing-expert/hooks/dispatch.mjs
 node --check plugins/marketing-expert/skills/copy-editing/scripts/readability_scorer.mjs
 node --check plugins/marketing-expert/skills/competitor-alternatives/scripts/comparison_matrix_builder.mjs
+node --check plugins/marketing-expert/skills/campaign-analytics/scripts/funnel_analyzer.mjs
 python3 -m py_compile $(find plugins/marketing-expert/skills -path '*/scripts/*.py' | sort)
 ```

@@ -6,6 +6,7 @@ import { join, resolve } from "node:path";
 import test from "node:test";
 
 const pluginRoot = resolve("plugins/marketing-expert");
+const campaignAnalyticsRoot = `${pluginRoot}/skills/campaign-analytics`;
 
 function run(command, args, options = {}) {
   return spawnSync(command, args, {
@@ -19,6 +20,7 @@ test("Node 脚本通过语法检查", () => {
   const scripts = [
     `${pluginRoot}/skills/copy-editing/scripts/readability_scorer.mjs`,
     `${pluginRoot}/skills/competitor-alternatives/scripts/comparison_matrix_builder.mjs`,
+    `${campaignAnalyticsRoot}/scripts/funnel_analyzer.mjs`,
   ];
 
   for (const script of scripts) {
@@ -125,4 +127,53 @@ test("comparison_matrix_builder.mjs 输出稳定 JSON 矩阵", () => {
   } finally {
     rmSync(tempDir, { recursive: true, force: true });
   }
+});
+
+test("funnel_analyzer.mjs 输出稳定 JSON 漏斗分段结果", () => {
+  const result = run("node", [
+    `${campaignAnalyticsRoot}/scripts/funnel_analyzer.mjs`,
+    `${campaignAnalyticsRoot}/assets/sample_campaign_data.json`,
+    "--format",
+    "json",
+  ]);
+
+  assert.equal(result.status, 0, result.stderr);
+  const output = JSON.parse(result.stdout);
+  assert.deepEqual(output.rankings, [
+    {
+      rank: 1,
+      segment: "organic",
+      overall_conversion_rate: 5.6,
+      total_entries: 5000,
+      total_conversions: 280,
+    },
+    {
+      rank: 2,
+      segment: "paid",
+      overall_conversion_rate: 3,
+      total_entries: 3000,
+      total_conversions: 90,
+    },
+    {
+      rank: 3,
+      segment: "email",
+      overall_conversion_rate: 2.5,
+      total_entries: 2000,
+      total_conversions: 50,
+    },
+  ]);
+  assert.deepEqual(output.segment_results.organic.bottleneck_absolute, {
+    transition: "Awareness -> Interest",
+    dropoff_count: 2200,
+  });
+  assert.deepEqual(output.segment_results.organic.bottleneck_relative, {
+    transition: "Intent -> Purchase",
+    dropoff_rate: 67.06,
+  });
+  assert.deepEqual(output.stage_comparison.at(-1), {
+    stage: "Purchase",
+    organic: { count: 280, conversion_rate: 32.94 },
+    paid: { count: 90, conversion_rate: 25.71 },
+    email: { count: 50, conversion_rate: 25 },
+  });
 });

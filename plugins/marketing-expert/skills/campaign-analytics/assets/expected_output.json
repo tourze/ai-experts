@@ -60,7 +60,7 @@
   },
 
   "funnel_analyzer": {
-    "_command": "python scripts/funnel_analyzer.py assets/sample_campaign_data.json --format json",
+    "_command": "node scripts/funnel_analyzer.mjs assets/sample_campaign_data.json --format json",
     "_note": "Uses segment comparison mode since 'segments' key is present in the data",
     "rankings": [
       {"rank": 1, "segment": "organic", "overall_conversion_rate": 5.6, "total_entries": 5000, "total_conversions": 280},

@@ -32,7 +32,7 @@ python3 scripts/campaign_roi_calculator.py assets/sample_campaign_data.json --fo
 - 漏斗瓶颈分析：
 
 ```bash
-python3 scripts/funnel_analyzer.py assets/sample_campaign_data.json --format json
+node scripts/funnel_analyzer.mjs assets/sample_campaign_data.json --format json
 ```
 
 - 结果解释时配合 [attribution-models-guide](references/attribution-models-guide.md)、[campaign-metrics-benchmarks](references/campaign-metrics-benchmarks.md) 和 [funnel-optimization-framework](references/funnel-optimization-framework.md)。
