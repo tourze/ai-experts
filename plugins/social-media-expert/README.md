@@ -59,6 +59,6 @@ node --check plugins/social-media-expert/hooks/dispatch.mjs
 bash -n plugins/social-media-expert/skills/douyin-video-summary/scripts/download_audio.sh
 bash -n plugins/social-media-expert/skills/douyin-video-summary/scripts/transcribe.sh
 bash -n plugins/social-media-expert/skills/xhs-graphic-generator/scripts/generate.sh
-python3 -m py_compile plugins/social-media-expert/skills/social-platform-safety/scripts/content_filter.py
+node --check plugins/social-media-expert/skills/social-platform-safety/scripts/content_filter.mjs
 node --test plugins/social-media-expert/tests/*.test.mjs
 ```

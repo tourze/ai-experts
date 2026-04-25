@@ -4,11 +4,11 @@ import { resolve } from "node:path";
 import test from "node:test";
 
 const scriptPath = resolve(
-  "plugins/social-media-expert/skills/social-platform-safety/scripts/content_filter.py",
+  "plugins/social-media-expert/skills/social-platform-safety/scripts/content_filter.mjs",
 );
 
 function run(args) {
-  return spawnSync("python3", [scriptPath, ...args], {
+  return spawnSync("node", [scriptPath, ...args], {
     cwd: resolve("."),
     encoding: "utf-8",
   });

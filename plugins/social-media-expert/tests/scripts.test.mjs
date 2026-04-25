@@ -25,11 +25,10 @@ test("Shell 脚本通过 bash -n", () => {
   }
 });
 
-test("Python 脚本通过 py_compile", () => {
-  const result = run("python3", [
-    "-m",
-    "py_compile",
-    `${root}/skills/social-platform-safety/scripts/content_filter.py`,
+test("Node 脚本通过语法检查", () => {
+  const result = run("node", [
+    "--check",
+    `${root}/skills/social-platform-safety/scripts/content_filter.mjs`,
   ]);
 
   assert.equal(result.status, 0, result.stderr);

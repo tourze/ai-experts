@@ -16,7 +16,7 @@
 
 ## 推荐处理流程
 
-1. 先用 [`scripts/content_filter.py`](../scripts/content_filter.py) 做机器过滤。
+1. 先用 [`scripts/content_filter.mjs`](../scripts/content_filter.mjs) 做机器过滤。
 2. 命中 `block` 时直接屏蔽；命中 `warn` 时人工复核。
 3. 复核通过后，再进入内容总结、选题提炼或运营分析阶段。
 

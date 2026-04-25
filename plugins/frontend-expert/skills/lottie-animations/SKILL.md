@@ -31,7 +31,7 @@ export function LoadingAnimation() {
 ```
 
 ```bash
-python3 ./scripts/optimize_lottie.py ./animation.json -o ./animation.optimized.json
+node ./scripts/optimize_lottie.mjs ./animation.json -o ./animation.optimized.json
 python3 ./scripts/generate_lottie_component.py --framework react --type interactive --name HeroAnimation
 ```
 
@@ -119,7 +119,7 @@ const Lottie = lazy(() => import('@lottiefiles/dotlottie-react'));
 - [interaction-design](../interaction-design/SKILL.md)
 - [modern-web-design](../modern-web-design/SKILL.md)
 - [scripts/generate_lottie_component.py](scripts/generate_lottie_component.py)
-- [scripts/optimize_lottie.py](scripts/optimize_lottie.py)
+- [scripts/optimize_lottie.mjs](scripts/optimize_lottie.mjs)
 - [references/performance_guide.md](references/performance_guide.md)
 - [references/api_reference.md](references/api_reference.md)
 - [references/after_effects_export.md](references/after_effects_export.md)

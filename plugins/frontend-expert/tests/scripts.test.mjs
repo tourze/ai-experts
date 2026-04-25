@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import test from "node:test";
@@ -10,12 +10,12 @@ const pluginRoot = resolve("plugins/frontend-expert");
 const nodeScripts = [
   "hooks/dispatch.mjs",
   "skills/icon-retrieval/scripts/search.js",
+  "skills/lottie-animations/scripts/optimize_lottie.mjs",
 ];
 
 const pythonScripts = [
   "skills/i18n-localization/scripts/i18n_checker.py",
   "skills/lottie-animations/scripts/generate_lottie_component.py",
-  "skills/lottie-animations/scripts/optimize_lottie.py",
   "skills/modern-web-design/scripts/design_audit.py",
   "skills/modern-web-design/scripts/pattern_generator.py",
 ];
@@ -77,6 +77,33 @@ test("generate_lottie_component.py 可生成 React interactive 模板", () => {
   assert.match(result.stdout, /import React, \{ useState \} from 'react';/);
   assert.match(result.stdout, /style=\{\{ height: 300, width: 280 \}\}/);
   assert.match(result.stdout, /dotLottieRefCallback=\{setDotLottie\}/);
+});
+
+test("optimize_lottie.mjs 压缩 JSON 并保留整数", () => {
+  const root = mkdtempSync(join(tmpdir(), "frontend-lottie-"));
+  const inputPath = join(root, "animation.json");
+  const outputPath = join(root, "animation.optimized.json");
+  writeFileSync(inputPath, JSON.stringify({ w: 120, layers: [{ ks: { x: 1.2345 } }] }, null, 2), "utf-8");
+
+  try {
+    const result = spawnSync("node", [
+      resolve(pluginRoot, "skills/lottie-animations/scripts/optimize_lottie.mjs"),
+      inputPath,
+      "--output",
+      outputPath,
+      "--precision",
+      "2",
+    ], {
+      encoding: "utf-8",
+    });
+
+    assert.equal(result.status, 0, result.stderr);
+    const output = JSON.parse(readFileSync(outputPath, "utf-8"));
+    assert.equal(output.w, 120);
+    assert.equal(output.layers[0].ks.x, 1.23);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test("analyze.sh 在目录模式下能输出有效 JSON 结果", () => {
