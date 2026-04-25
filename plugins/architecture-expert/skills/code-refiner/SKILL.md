@@ -17,12 +17,12 @@ description: "当用户要在保持行为不变前提下简化代码、降低复
 - 如果需要定量度量，使用内置复杂度脚本而不是主观感受。
 
 ## 代码模式
-- 先运行 `scripts/complexity_report.py <路径> --format markdown` 找出高复杂度函数。
+- 先运行 `scripts/complexity_report.mjs <路径> --format markdown` 找出高复杂度函数。
 - 语言细节按需读取 [Python 指南](references/python.md)、[Go 指南](references/go.md)、[TypeScript 指南](references/typescript.md)、[Rust 指南](references/rust.md)。
 - 输出推荐按“问题 → 最小重构动作 → 风险 → 验证方式”组织。
 
 ```bash
-python3 scripts/complexity_report.py src --format markdown
+node scripts/complexity_report.mjs src --format markdown
 ```
 
 ## 检查清单
