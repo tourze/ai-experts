@@ -109,6 +109,42 @@ test("trigger 审计报告忽略 legacy 根文件遥测", () => {
   }
 });
 
+test("trigger 审计报告识别 skill usage audit 只产生 skip 的数据质量问题", () => {
+  const tempDir = mkdtempSync(join(tmpdir(), "ai-experts-skill-audit-skip-"));
+  const telemetryFile = join(tempDir, "decisions.jsonl");
+  writeFileSync(
+    telemetryFile,
+    `${JSON.stringify({
+      ts: Date.now(),
+      plugin: "skill-expert",
+      hook: "skill-usage-audit.mjs",
+      decision: "skip",
+      event: "stop",
+    })}\n`,
+    "utf-8",
+  );
+
+  try {
+    const output = execFileSync(process.execPath, [
+      "scripts/trigger-audit-report.mjs",
+      "--json",
+      "--telemetry-file",
+      telemetryFile,
+      "--days",
+      "365",
+    ], {
+      encoding: "utf-8",
+      stdio: "pipe",
+    });
+    const report = JSON.parse(output);
+    assert.equal(report.runtime.skillRuntime.entries, 0);
+    assert.equal(report.runtime.skillRuntime.skillAuditSkips, 1);
+    assert.match(report.recommendations.join("\n"), /只产生 skip 记录/);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+});
+
 test("hook telemetry 报告忽略 legacy 根文件遥测", () => {
   const tempDir = mkdtempSync(join(tmpdir(), "ai-experts-legacy-telemetry-"));
   writeFileSync(

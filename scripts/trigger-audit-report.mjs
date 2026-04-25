@@ -524,6 +524,11 @@ function countValues(entries, fieldName) {
 
 function summarizeSkillRuntime(entries, top) {
   const audits = entries.filter((entry) => entry.audit_type === "skill_usage");
+  const skillAuditSkips = entries.filter((entry) =>
+    entry.plugin === "skill-expert" &&
+    entry.hook === "skill-usage-audit.mjs" &&
+    entry.decision === "skip"
+  );
   const missingRoute = audits.filter((entry) => entry.missing_route === true);
   const routedButNotUsed = audits.filter((entry) => entry.routed_but_not_used === true);
   const recommendationOnly = audits.filter((entry) =>
@@ -534,6 +539,7 @@ function summarizeSkillRuntime(entries, top) {
 
   return {
     entries: audits.length,
+    skillAuditSkips: skillAuditSkips.length,
     turnsWithMissingRoute: missingRoute.length,
     routedButNotUsedTurns: routedButNotUsed.length,
     recommendationOnlyTurns: recommendationOnly.length,
@@ -570,6 +576,7 @@ function readRuntimeTelemetry(sources, days, pluginNames, top, session) {
       errors: [],
       skillRuntime: {
         entries: 0,
+        skillAuditSkips: 0,
         turnsWithMissingRoute: 0,
         routedButNotUsedTurns: 0,
         recommendationOnlyTurns: 0,
@@ -684,7 +691,9 @@ function buildRecommendations(hooks, skills, runtime) {
   if (skills.conflicts.length > 0) {
     recommendations.push("P1: 优先处理同插件 description 触发域重叠，为相近 skill 增加排他指引。");
   }
-  if (runtime.skillRuntime.entries === 0) {
+  if (runtime.skillRuntime.entries === 0 && runtime.skillRuntime.skillAuditSkips > 0) {
+    recommendations.push("P1: skill-usage-audit 已运行但只产生 skip 记录；优先检查 Stop payload 的 transcript_path 和 transcript 解析格式。");
+  } else if (runtime.skillRuntime.entries === 0) {
     recommendations.push("P2: 最近时间窗没有 skill 使用审计记录；确认 skill-expert 的 Stop hook 已安装并运行。");
   }
   if (runtime.skillRuntime.turnsWithMissingRoute >= 2) {
@@ -748,6 +757,7 @@ function printText(report, top) {
 
   console.log("\nSkill Runtime Audit");
   console.log(`- audited turns: ${report.runtime.skillRuntime.entries}`);
+  console.log(`- skill audit skips: ${report.runtime.skillRuntime.skillAuditSkips}`);
   console.log(`- missing route declarations: ${report.runtime.skillRuntime.turnsWithMissingRoute}`);
   console.log(`- routed but not used: ${report.runtime.skillRuntime.routedButNotUsedTurns}`);
   console.log(`- recommendation-only turns: ${report.runtime.skillRuntime.recommendationOnlyTurns}`);

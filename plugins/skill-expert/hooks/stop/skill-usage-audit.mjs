@@ -52,6 +52,12 @@ function isToolResultUserRecord(record) {
   return content.some((item) => item && typeof item === "object" && "tool_use_id" in item);
 }
 
+function isCodexMessage(record, role) {
+  return record?.type === "response_item" &&
+    record.payload?.type === "message" &&
+    record.payload?.role === role;
+}
+
 function findCurrentPromptId(records) {
   for (let index = records.length - 1; index >= 0; index -= 1) {
     const record = records[index];
@@ -69,6 +75,15 @@ function findCurrentPromptId(records) {
   return null;
 }
 
+function findCurrentCodexUserIndex(records) {
+  for (let index = records.length - 1; index >= 0; index -= 1) {
+    if (isCodexMessage(records[index], "user")) {
+      return index;
+    }
+  }
+  return -1;
+}
+
 function extractTextContent(content) {
   if (typeof content === "string") {
     return content;
@@ -77,7 +92,7 @@ function extractTextContent(content) {
     return "";
   }
   return content
-    .filter((item) => item?.type === "text" && typeof item.text === "string")
+    .filter((item) => ["text", "input_text", "output_text"].includes(item?.type) && typeof item.text === "string")
     .map((item) => item.text)
     .join("\n");
 }
@@ -93,11 +108,31 @@ function getFinalAssistantText(records, promptId) {
       texts.push(text);
     }
   }
-  return texts.join("\n");
+  return texts.join("\n\n");
+}
+
+function getFinalCodexAssistantText(records, userIndex) {
+  const texts = [];
+  for (let index = userIndex + 1; index < records.length; index += 1) {
+    const record = records[index];
+    if (!isCodexMessage(record, "assistant")) {
+      continue;
+    }
+    const text = extractTextContent(record.payload?.content).trim();
+    if (text) {
+      texts.push(text);
+    }
+  }
+  return texts.join("\n\n");
 }
 
 function unique(values) {
   return [...new Set(values.filter(Boolean))].sort();
+}
+
+function without(values, excluded) {
+  const excludedSet = new Set(excluded);
+  return values.filter((value) => !excludedSet.has(value));
 }
 
 function extractSkillTokens(text) {
@@ -110,7 +145,7 @@ function extractSection(text, startRe) {
     return "";
   }
   const rest = text.slice(start);
-  const next = rest.slice(1).search(/\n(?:---|#{1,6}\s|📌\s+)/);
+  const next = rest.slice(1).search(/\n(?:\s*\n|---|#{1,6}\s|📌\s+)/);
   return next < 0 ? rest : rest.slice(0, next + 1);
 }
 
@@ -131,10 +166,10 @@ function summarizeSkillUsage(finalText) {
 
   const routed = extractLineSkills(routingSection, /命中|已命中/);
   const usedFromLines = extractLineSkills(routingSection, /已调用|实际加载|通过 Skill tool/);
-  const used = usedFromLines.length > 0 || !/已调用|实际加载|通过 Skill tool/.test(routingSection)
-    ? usedFromLines
-    : routed;
   const skipped = extractLineSkills(routingSection, /跳过|未调用/);
+  const used = usedFromLines.length > 0
+    ? usedFromLines
+    : without(routed, skipped);
   const recommended = extractSkillTokens(nextStepSection);
   const missingRoute = !hasRoutingDeclaration &&
     !shouldSkipNextStepRequirement(finalText) &&
@@ -148,7 +183,7 @@ function summarizeSkillUsage(finalText) {
     used,
     skipped,
     recommended,
-    routedButNotUsed: routed.length > 0 && used.length === 0,
+    routedButNotUsed: routed.length > 0 && used.length === 0 && skipped.length > 0,
   };
 }
 
@@ -168,11 +203,14 @@ export async function run(payload) {
   }
 
   const promptId = findCurrentPromptId(records);
-  if (!promptId) {
+  const codexUserIndex = promptId ? -1 : findCurrentCodexUserIndex(records);
+  if (!promptId && codexUserIndex < 0) {
     return null;
   }
 
-  const finalText = getFinalAssistantText(records, promptId);
+  const finalText = promptId
+    ? getFinalAssistantText(records, promptId)
+    : getFinalCodexAssistantText(records, codexUserIndex);
   if (!finalText) {
     return null;
   }
@@ -183,7 +221,8 @@ export async function run(payload) {
     event: "stop",
     decision: "audit",
     audit_type: "skill_usage",
-    prompt_id: promptId,
+    prompt_id: promptId ?? null,
+    transcript_format: promptId ? "claude" : "codex",
     has_routing_declaration: summary.hasRoutingDeclaration,
     no_skill_hit: summary.noSkillHit,
     missing_route: summary.missingRoute,

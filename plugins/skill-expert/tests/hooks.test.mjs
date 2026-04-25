@@ -118,6 +118,68 @@ test("skill-usage-audit 自动记录当前轮 skill 路由使用情况", async (
   });
 });
 
+test("skill-usage-audit 支持 Codex response_item transcript 格式", async () => {
+  await withTelemetryDir(async ({ payload }) => {
+    await withTranscript(
+      [
+        JSON.stringify({
+          type: "response_item",
+          payload: {
+            type: "message",
+            role: "user",
+            content: [{ type: "input_text", text: "继续做 telemetry 精修" }],
+          },
+        }),
+        JSON.stringify({
+          type: "response_item",
+          payload: {
+            type: "message",
+            role: "assistant",
+            phase: "commentary",
+            content: [
+              {
+                type: "output_text",
+                text: "📌 Skill 路由：命中 `skill-expert:trigger-telemetry-advisor`（分析 telemetry）和 `skill-expert:skill-activation-analyzer`（诊断触发行为）。",
+              },
+            ],
+          },
+        }),
+        JSON.stringify({
+          type: "response_item",
+          payload: {
+            type: "message",
+            role: "assistant",
+            phase: "final_answer",
+            content: [
+              {
+                type: "output_text",
+                text: "已完成分析。\n\n📌 下一步推荐\n- `skill-expert:trigger-telemetry-advisor`：继续复盘真实 telemetry。",
+              },
+            ],
+          },
+        }),
+      ],
+      async (transcriptPath) => {
+        await runSkillUsageAudit({ ...payload, transcript_path: transcriptPath });
+      },
+    );
+
+    const entries = readRecentTelemetryEntries(payload);
+    const audit = entries.find((entry) => entry.audit_type === "skill_usage");
+    assert.equal(audit?.decision, "audit");
+    assert.equal(audit?.transcript_format, "codex");
+    assert.deepEqual(audit?.skills_routed, [
+      "skill-expert:skill-activation-analyzer",
+      "skill-expert:trigger-telemetry-advisor",
+    ]);
+    assert.deepEqual(audit?.skills_used, [
+      "skill-expert:skill-activation-analyzer",
+      "skill-expert:trigger-telemetry-advisor",
+    ]);
+    assert.equal(audit?.routed_but_not_used, false);
+  });
+});
+
 test("trigger-telemetry-advisor-reminder 基于最近 skill 审计信号触发，不依赖用户输入内容", async () => {
   await withTelemetryDir(async ({ payload }) => {
     for (let index = 0; index < 3; index += 1) {

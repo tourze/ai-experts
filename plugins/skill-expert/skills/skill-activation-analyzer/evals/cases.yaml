@@ -26,6 +26,15 @@ cases:
       - "prefers description differentiation over merging skills"
     trigger_expected: true
 
+  - id: telemetry_false_positive_backlog
+    prompt: "基于真实 trigger telemetry，把高频误触发和漏触发样本转成 skill eval 反例与正例"
+    fixtures: []
+    rubric:
+      - "uses runtime trigger evidence to diagnose activation behavior"
+      - "separates false positives, false negatives, and skill conflicts"
+      - "recommends eval cases or description boundaries for the affected skills"
+    trigger_expected: true
+
   - id: negative_description_style_only
     prompt: "批量检查 description 里有没有写步骤、输出格式或者过长的问题"
     fixtures: []

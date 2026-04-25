@@ -26,6 +26,15 @@ cases:
       - "produces a backlog suitable for improving this repository"
     trigger_expected: true
 
+  - id: telemetry_driven_eval_refinement
+    prompt: "继续做 telemetry 精修：基于真实 trigger telemetry，优先人工精修高频误触发/漏触发的 skill eval，把 starter cases 升级成高信噪比回归集"
+    fixtures: []
+    rubric:
+      - "treats real trigger telemetry as the primary evidence source"
+      - "uses missing-route, routed-but-not-used, repeated trigger, or skip records to choose eval refinements"
+      - "turns telemetry-backed false positives or false negatives into concrete eval case changes"
+    trigger_expected: true
+
   - id: create_new_skill
     prompt: "帮我创建一个新的 SwiftUI skill，说明什么时候触发"
     fixtures: []
