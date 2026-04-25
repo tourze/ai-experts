@@ -7,7 +7,7 @@
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：架构、设计、重构、计划与债务治理技能。
-- `tests/`：脚本级回归测试，覆盖 `scan_codebase.sh` 与 `complexity_report.mjs`。
+- `tests/`：脚本级回归测试，覆盖 `scan_codebase.mjs` 与 `complexity_report.mjs`。
 
 ## Agents
 
@@ -75,7 +75,7 @@ claude plugin uninstall architecture-expert --scope project
 ```bash
 node --check hooks/dispatch.mjs
 node --check skills/code-refiner/scripts/complexity_report.mjs
-bash -n skills/architecture-reviewer/scripts/scan_codebase.sh
+node --check skills/architecture-reviewer/scripts/scan_codebase.mjs
 node --test tests/test_complexity_report.mjs
 python3 -m unittest tests/test_scan_codebase.py
 ```

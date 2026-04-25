@@ -15,7 +15,7 @@ description: 当用户要创建、重构或验证 Helm Chart 时使用。
 - 优先使用 `apiVersion: v2` 的 application chart。
 - `values.yaml` 按镜像、网络、资源、安全、依赖项分层，避免扁平大表。
 - Chart 中不要存放明文敏感值；机密优先交给外部 Secret 管理。
-- 交付前至少运行 `helm lint` 与 [scripts/validate-chart.sh](scripts/validate-chart.sh)。
+- 交付前至少运行 `helm lint` 与 [scripts/validate-chart.mjs](scripts/validate-chart.mjs)。
 
 ## 代码模式
 - 初始化与校验：
@@ -23,7 +23,7 @@ description: 当用户要创建、重构或验证 Helm Chart 时使用。
 ```bash
 helm create my-app
 helm lint my-app
-bash scripts/validate-chart.sh my-app
+node scripts/validate-chart.mjs my-app
 ```
 
 - `Chart.yaml` 最小骨架，可参考 [assets/Chart.yaml.template](assets/Chart.yaml.template)：

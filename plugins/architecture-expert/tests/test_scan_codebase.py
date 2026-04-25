@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / "skills" / "architecture-reviewer" / "scripts" / "scan_codebase.sh"
+SCRIPT = ROOT / "skills" / "architecture-reviewer" / "scripts" / "scan_codebase.mjs"
 
 
 class ScanCodebaseTests(unittest.TestCase):
@@ -38,7 +38,7 @@ class ScanCodebaseTests(unittest.TestCase):
                 stdout=subprocess.DEVNULL,
             )
 
-            return subprocess.check_output(["bash", str(SCRIPT), str(target)], text=True)
+            return subprocess.check_output(["node", str(SCRIPT), str(target)], text=True)
 
     def test_scan_detects_parent_git_repo_and_avoids_false_test_matches(self):
         output = self.run_in_repo()

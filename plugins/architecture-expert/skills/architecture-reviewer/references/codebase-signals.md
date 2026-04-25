@@ -14,7 +14,7 @@ patterns to grep for, and red flags to detect — language-agnostic.
 
 ## 1. Priority File Locations
 
-Locate and inspect these categories of files first. The scan_codebase.sh script will identify
+Locate and inspect these categories of files first. The scan_codebase.mjs script will identify
 most of these, but verify manually for anything missed.
 
 ### Infrastructure & Deployment
