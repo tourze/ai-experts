@@ -27,6 +27,7 @@ test("Node 脚本通过语法检查", () => {
     `${pluginRoot}/skills/copy-editing/scripts/readability_scorer.mjs`,
     `${pluginRoot}/skills/analytics-tracking/scripts/tracking_plan_generator.mjs`,
     `${pluginRoot}/skills/competitor-alternatives/scripts/comparison_matrix_builder.mjs`,
+    `${pluginRoot}/skills/content-humanizer/scripts/humanizer_scorer.mjs`,
     `${campaignAnalyticsRoot}/scripts/attribution_analyzer.mjs`,
     `${campaignAnalyticsRoot}/scripts/campaign_roi_calculator.mjs`,
     `${campaignAnalyticsRoot}/scripts/funnel_analyzer.mjs`,
@@ -297,4 +298,49 @@ test("tracking_plan_generator.mjs 输出稳定 JSON 埋点方案", () => {
   assert.equal(output.gtm_configuration.trigger_count, 15);
   assert.equal(output.consent_mode.mode, "advanced");
   assert.equal(output.ga4_custom_dimensions.user_scoped.length, 5);
+});
+
+test("humanizer_scorer.mjs 输出稳定 JSON 人性化评分", () => {
+  const tempDir = mkdtempSync(join(tmpdir(), "marketing-humanizer-"));
+  const inputPath = join(tempDir, "draft.txt");
+
+  try {
+    writeFileSync(
+      inputPath,
+      [
+        "It is crucial to leverage robust data-driven insights.",
+        "Furthermore, it is important to note that teams should be empowered to streamline workflows.",
+        "",
+        "We tested this for two weeks. It worked.",
+      ].join("\n"),
+      "utf-8",
+    );
+
+    const result = run("node", [
+      `${pluginRoot}/skills/content-humanizer/scripts/humanizer_scorer.mjs`,
+      inputPath,
+      "--json",
+    ]);
+
+    assert.equal(result.status, 0, result.stderr);
+    const output = parseJsonAfterReport(result.stdout);
+    assert.equal(output.humanity_score, 36);
+    assert.equal(output.label, "Robotic — significant rewrite needed");
+    assert.equal(output.sections.ai_vocabulary.score, 8);
+    assert.equal(output.sections.ai_vocabulary.ai_word_hits, 6);
+    assert.deepEqual(output.sections.ai_vocabulary.flagged_terms, [
+      "crucial",
+      "leverage",
+      "robust",
+      "furthermore",
+      "empower",
+      "streamline",
+    ]);
+    assert.equal(output.sections.sentence_variance.std_dev, 3.4);
+    assert.equal(output.sections.passive_voice.passive_pct, "50%");
+    assert.equal(output.sections.hedging.hedge_count, 2);
+    assert.equal(output.sections.paragraph_variety.note, "too few paragraphs to score");
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
 });

@@ -20,7 +20,7 @@ description: "在内容显得机器腔、套话重、节奏僵硬或缺乏品牌
 - 先跑诊断分数：
 
 ```bash
-python3 scripts/humanizer_scorer.py draft.txt --json
+node scripts/humanizer_scorer.mjs draft.txt --json
 ```
 
 - 再用 [ai-tells-checklist](references/ai-tells-checklist.md)、[ai-phrases-extended](references/ai-phrases-extended.md) 和 [voice-techniques](references/voice-techniques.md) 做定向改写。
