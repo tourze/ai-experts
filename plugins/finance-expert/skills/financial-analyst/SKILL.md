@@ -15,7 +15,7 @@ description: 当需要做财报比率分析、DCF 估值、预算偏差或滚动
 
 ## 核心约束
 
-- `scripts/` 下 4 个脚本都只依赖 Python 标准库。
+- `scripts/` 下 4 个 CLI 都只依赖本机运行时；`ratio_calculator.mjs` 使用 Node.js，其余脚本迁移前仍使用 Python 标准库。
 - 每个脚本同时接受两种输入：直接工具专用 JSON，或聚合样例 `assets/sample_financial_data.json` 中对应的子段。
 - 推荐优先使用专用样例文件：
   `assets/ratio_analysis_sample.json`、`assets/dcf_valuation_sample.json`、`assets/budget_variance_sample.json`、`assets/forecast_sample.json`。
@@ -27,8 +27,8 @@ description: 当需要做财报比率分析、DCF 估值、预算偏差或滚动
 ### 模式 1：财务比率分析
 
 ```bash
-python3 scripts/ratio_calculator.py assets/ratio_analysis_sample.json --format json
-python3 scripts/ratio_calculator.py assets/sample_financial_data.json --category profitability
+node scripts/ratio_calculator.mjs assets/ratio_analysis_sample.json --format json
+node scripts/ratio_calculator.mjs assets/sample_financial_data.json --category profitability
 ```
 
 ### 模式 2：DCF 估值
@@ -81,7 +81,7 @@ python3 scripts/forecast_builder.py assets/sample_financial_data.json --scenario
 }
 ```
 ```bash
-python3 scripts/ratio_calculator.py ./input.json
+node scripts/ratio_calculator.mjs ./input.json
 # Error: missing required field "revenue"
 # 脚本期望 snake_case 标准命名
 ```
@@ -101,7 +101,7 @@ python3 scripts/ratio_calculator.py ./input.json
 ### FAIL: 0 输出当结论
 
 ```bash
-python3 scripts/ratio_calculator.py input.json
+node scripts/ratio_calculator.mjs input.json
 # ROE: 0.0
 # 业务方："ROE 等于 0？这公司有问题！"
 → 实际：输入 equity 字段错位到 balance_sheet 外

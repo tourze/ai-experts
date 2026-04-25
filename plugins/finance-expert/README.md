@@ -6,7 +6,7 @@
 
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`dispatch.mjs` 与 `hooks.json`。
-- `skills/financial-analyst/`：4 个可直接运行的标准库 CLI 脚本与样例数据
+- `skills/financial-analyst/`：4 个可直接运行的 CLI 脚本与样例数据
 - `skills/creating-financial-models/`：依赖 `numpy`/`pandas` 的 DCF 与敏感性建模脚本
 - `skills/risk-metrics-calculation/`：风险指标方法论与经校验的代码模式
 
@@ -20,7 +20,7 @@
 
 ## Python 依赖
 
-- `financial-analyst`：仅使用 Python 标准库
+- `financial-analyst`：CLI 逐步迁移到 Node.js；尚未迁移的脚本仅使用 Python 标准库
 - `creating-financial-models`：需要 `numpy`、`pandas`
 - `risk-metrics-calculation`：示例代码使用 `numpy`、`pandas`
 
@@ -58,6 +58,7 @@ claude plugin uninstall finance-expert --scope project
 python3 -m json.tool plugins/finance-expert/.claude-plugin/plugin.json >/dev/null
 python3 -m json.tool plugins/finance-expert/hooks/hooks.json >/dev/null
 node --check plugins/finance-expert/hooks/dispatch.mjs
+node --check plugins/finance-expert/skills/financial-analyst/scripts/ratio_calculator.mjs
 node --test plugins/finance-expert/tests/*.test.mjs
 python3 -m unittest discover -s plugins/finance-expert/tests -p 'test_*.py'
 python3 -m py_compile $(find plugins/finance-expert -name '*.py' -print)

@@ -30,13 +30,6 @@ def load_module(module_name: str, path: Path):
 
 
 class FinancialScriptSmokeTests(unittest.TestCase):
-    def test_ratio_calculator_accepts_consolidated_sample(self) -> None:
-        output = run_cli(
-            FINANCIAL_ANALYST_ROOT / "scripts" / "ratio_calculator.py",
-            FINANCIAL_ANALYST_ROOT / "assets" / "sample_financial_data.json",
-        )
-        self.assertGreater(output["categories"]["profitability"]["roe"]["value"], 0)
-
     def test_dcf_valuation_accepts_consolidated_sample(self) -> None:
         output = run_cli(
             FINANCIAL_ANALYST_ROOT / "scripts" / "dcf_valuation.py",
