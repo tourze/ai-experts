@@ -1,6 +1,6 @@
 ---
 name: skill-verifier
-description: 当需要验证一个 skill 文件是否真正全面、能独立支撑任务执行时使用。通过 ABC 闭卷考试循环（出题→闭卷答→评判）客观检测 skill 的知识覆盖缺口。适用于 skill 创建后的质量验证、skill 审计、或判断已有 skill 是否需要补充。
+description: 当用户要用源材料出题并通过闭卷答题验证 SKILL.md 是否遗漏关键事实、能否独立支撑任务执行时使用。
 ---
 
 # Skill Verifier

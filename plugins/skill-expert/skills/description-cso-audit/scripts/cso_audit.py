@@ -154,14 +154,15 @@ def main():
     severity_order = {"critical": 0, "high": 1, "medium": 2, "low": 3}
     min_severity = severity_order.get(args.severity, 3)
 
-    all_skills = sorted(plugins_dir.glob("*/skills/*/SKILL.md"))
+    all_skills = sorted(plugins_dir.glob("*/skills/**/SKILL.md"))
     results = []
     pass_count = 0
     violation_counts = {k: 0 for k in VIOLATIONS}
 
     for path in all_skills:
-        plugin = path.parts[-4]
-        skill = path.parts[-2]
+        relative_parts = path.relative_to(plugins_dir).parts
+        plugin = relative_parts[0]
+        skill = "/".join(relative_parts[2:-1])
         rel = f"{plugin}/{skill}"
         name, desc = extract_description(path)
         hits = audit_description(desc)

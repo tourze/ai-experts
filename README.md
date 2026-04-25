@@ -97,6 +97,10 @@ node scripts/sync-hook-dispatch.mjs --check
 node scripts/trigger-audit-report.mjs --days 30
 node scripts/trigger-audit-report.mjs --session latest --days 7
 
+# skill 质量总览：结构、description、eval 覆盖、触发域重叠
+node scripts/skill-quality-report.mjs --json
+node scripts/skill-quality-report.mjs --plugin skill-expert
+
 # hook runtime 细节：按插件/hook 统计 block/report/context/error/skip/audit
 node scripts/hook-telemetry-report.mjs --days 30
 node scripts/hook-telemetry-report.mjs --all-workspaces --days 30
@@ -108,7 +112,7 @@ AI_EXPERTS_HOOK_AUDIT=0 <your claude-or-codex command>
 
 Hook 运行时按工作区路径分桶写入 `~/.claude/hook-telemetry/workspaces/<hash>-<name>/decisions.jsonl`。默认自动记录 `block`、`report`、`context`、`error`、`skip` 和 skill 使用 `audit` 记录，并附带可用的 `session_id` / `transcript_path` 以支持 `--session latest` 分析；设置 `AI_EXPERTS_HOOK_AUDIT=0` 可关闭 `skip` 记录降噪。单桶默认最多保留 5 个文件、每个 5MB；可用 `AI_EXPERTS_HOOK_TELEMETRY_MAX_FILES` 和 `AI_EXPERTS_HOOK_TELEMETRY_MAX_BYTES` 调整。设置 `AI_EXPERTS_HOOK_TELEMETRY=0` 可关闭写入。
 
-Skill 的原生激活由 Claude Code / Codex 的路由层完成，不会向插件暴露权威 runtime event。因此 skill 触发审计由两部分组成：`skill-expert` 的 Stop hook 自动记录每轮路由声明、已调用/未调用和下一步推荐；静态回归仍以 `skills/*/evals/cases.yaml` 为基准。每个重要 skill 至少提供正向触发样例和反向不触发样例，`trigger-audit-report.mjs` 会列出缺 eval、缺反例、description 触发域重叠和最近运行时路由纪律问题。
+Skill 的原生激活由 Claude Code / Codex 的路由层完成，不会向插件暴露权威 runtime event。因此 skill 触发审计由两部分组成：`skill-expert` 的 Stop hook 自动记录每轮路由声明、已调用/未调用和下一步推荐；静态回归仍以 `skills/*/evals/cases.yaml` 为基准。每个重要 skill 至少提供正向触发样例和反向不触发样例，`trigger-audit-report.mjs` 会列出缺 eval、缺反例、description 触发域重叠和最近运行时路由纪律问题；`skill-quality-report.mjs` 则聚合结构、description、eval 覆盖和触发域重叠，但不声称真实任务效果分。
 
 需要把 telemetry 统计转成可执行治理建议时，使用 `skill-expert:trigger-telemetry-advisor`。`skill-expert` 会基于最近自动审计到的 skill 路由/使用和 hook telemetry 信号，在合适时机通过 UserPromptSubmit 提醒使用该 skill，而不是依赖用户显式提到 telemetry 名称。
 

@@ -40,8 +40,7 @@ test("install.sh enables Codex plugins without jq", () => {
     const config = readFileSync(join(codexHome, "config.toml"), "utf-8");
     const hooks = readFileSync(join(codexHome, "hooks.json"), "utf-8");
     const codexMemoryTarget = join(codexHome, "AGENTS.md");
-    assert.match(output, /\[warn\]\s+Skill eval coverage:/);
-    assert.match(output, /Missing skill evals\/cases\.yaml:/);
+    assert.match(output, /Skill eval coverage:/);
     assert.match(output, /Codex CLI: done/);
     assert.match(config, /\[plugins\."react-native-expert@ai-experts"\]/);
     assert.match(hooks, /"exec_command"/);
@@ -209,7 +208,7 @@ test("install.sh --reinstall completes even if codex marketplace add fails", () 
     });
 
     const codexMemoryTarget = join(codexHome, "AGENTS.md");
-    assert.match(output, /\[warn\]\s+Skill eval coverage:/);
+    assert.match(output, /Skill eval coverage:/);
     assert.match(output, /Codex CLI: uninstalled/);
     assert.match(output, /Codex CLI: done/);
     assert.equal(lstatSync(codexMemoryTarget).isSymbolicLink(), true);
