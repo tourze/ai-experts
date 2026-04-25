@@ -30,14 +30,6 @@ def load_module(module_name: str, path: Path):
 
 
 class FinancialScriptSmokeTests(unittest.TestCase):
-    def test_budget_variance_accepts_consolidated_sample(self) -> None:
-        output = run_cli(
-            FINANCIAL_ANALYST_ROOT / "scripts" / "budget_variance_analyzer.py",
-            FINANCIAL_ANALYST_ROOT / "assets" / "sample_financial_data.json",
-        )
-        self.assertEqual(output["executive_summary"]["total_line_items"], 10)
-        self.assertGreater(output["executive_summary"]["material_variances_count"], 0)
-
     def test_forecast_builder_accepts_consolidated_sample(self) -> None:
         output = run_cli(
             FINANCIAL_ANALYST_ROOT / "scripts" / "forecast_builder.py",

@@ -7,6 +7,7 @@ const pluginRoot = resolve("plugins/finance-expert");
 const financialAnalystRoot = resolve(pluginRoot, "skills/financial-analyst");
 const ratioScript = resolve(financialAnalystRoot, "scripts/ratio_calculator.mjs");
 const dcfScript = resolve(financialAnalystRoot, "scripts/dcf_valuation.mjs");
+const budgetScript = resolve(financialAnalystRoot, "scripts/budget_variance_analyzer.mjs");
 const sampleData = resolve(financialAnalystRoot, "assets/sample_financial_data.json");
 
 function runRatio(args = []) {
@@ -27,8 +28,17 @@ function runDcf(args = []) {
   return JSON.parse(result.stdout);
 }
 
+function runBudget(args = []) {
+  const result = spawnSync("node", [budgetScript, sampleData, ...args], {
+    encoding: "utf-8",
+  });
+
+  assert.equal(result.status, 0, result.stderr);
+  return JSON.parse(result.stdout);
+}
+
 test("financial analyst Node CLI 通过语法检查", () => {
-  for (const script of [ratioScript, dcfScript]) {
+  for (const script of [ratioScript, dcfScript, budgetScript]) {
     const result = spawnSync("node", ["--check", script], {
       encoding: "utf-8",
     });
@@ -74,4 +84,25 @@ test("dcf_valuation.mjs 支持覆盖预测年数", () => {
   assert.equal(output.projected_fcf.length, 7);
   assert.equal(output.value_per_share.exit_multiple, 14.385616410356635);
   assert.equal(output.sensitivity_analysis.share_price_table[4][4], 9);
+});
+
+test("budget_variance_analyzer.mjs 接受聚合样例并输出稳定 JSON", () => {
+  const output = runBudget(["--format", "json"]);
+
+  assert.equal(output.executive_summary.total_line_items, 10);
+  assert.equal(output.executive_summary.material_variances_count, 9);
+  assert.equal(output.executive_summary.net_impact, -535000);
+  assert.equal(output.all_variances[0].budget_variance_amount, 500000);
+  assert.equal(output.all_variances[5].is_material, false);
+  assert.equal(output.department_summary.Sales.total_variance, 175000);
+  assert.equal(output.category_summary["Sales & Marketing"].variance_pct, 8.62);
+});
+
+test("budget_variance_analyzer.mjs 支持自定义重要性阈值", () => {
+  const output = runBudget(["--threshold-pct", "5", "--threshold-amt", "25000", "--format", "json"]);
+
+  assert.equal(output.executive_summary.material_variances_count, 10);
+  assert.equal(output.executive_summary.materiality_thresholds.percentage, 5);
+  assert.equal(output.executive_summary.materiality_thresholds.amount, 25000);
+  assert.equal(output.material_variances[5].name, "Software & Technology");
 });

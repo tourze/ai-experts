@@ -15,7 +15,7 @@ description: 当需要做财报比率分析、DCF 估值、预算偏差或滚动
 
 ## 核心约束
 
-- `scripts/` 下 4 个 CLI 都只依赖本机运行时；`ratio_calculator.mjs`、`dcf_valuation.mjs` 使用 Node.js，其余脚本迁移前仍使用 Python 标准库。
+- `scripts/` 下 4 个 CLI 都只依赖本机运行时；`ratio_calculator.mjs`、`dcf_valuation.mjs`、`budget_variance_analyzer.mjs` 使用 Node.js，其余脚本迁移前仍使用 Python 标准库。
 - 每个脚本同时接受两种输入：直接工具专用 JSON，或聚合样例 `assets/sample_financial_data.json` 中对应的子段。
 - 推荐优先使用专用样例文件：
   `assets/ratio_analysis_sample.json`、`assets/dcf_valuation_sample.json`、`assets/budget_variance_sample.json`、`assets/forecast_sample.json`。
@@ -41,8 +41,8 @@ node scripts/dcf_valuation.mjs assets/sample_financial_data.json --projection-ye
 ### 模式 3：预算差异分析
 
 ```bash
-python3 scripts/budget_variance_analyzer.py assets/budget_variance_sample.json --format json
-python3 scripts/budget_variance_analyzer.py assets/sample_financial_data.json --threshold-pct 5 --threshold-amt 25000
+node scripts/budget_variance_analyzer.mjs assets/budget_variance_sample.json --format json
+node scripts/budget_variance_analyzer.mjs assets/sample_financial_data.json --threshold-pct 5 --threshold-amt 25000
 ```
 
 ### 模式 4：滚动预测
