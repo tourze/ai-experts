@@ -4,9 +4,8 @@
  * HTTP utility functions for fetching web content
  */
 
-const https = require('https');
-const http = require('http');
-const { URL } = require('url');
+import http from "node:http";
+import https from "node:https";
 
 const DEFAULT_USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36';
 
@@ -134,7 +133,7 @@ async function fetchJson(urlStr, timeout = 10000) {
   return null;
 }
 
-module.exports = {
+export {
   fetchUrl,
   fetchJson,
   makeRequest

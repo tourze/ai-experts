@@ -6,11 +6,11 @@ import test from "node:test";
 
 const require = createRequire(import.meta.url);
 const pluginRoot = resolve("plugins/java-expert");
-const mainScript = resolve(pluginRoot, "skills/spring-boot-layering/scripts/main.cjs");
+const mainScript = resolve(pluginRoot, "skills/spring-boot-layering/scripts/main.mjs");
 const { preExecute } = require("../skills/spring-boot-layering/hooks/pre-execute.cjs");
 const { postExecute } = require("../skills/spring-boot-layering/hooks/post-execute.cjs");
 
-test("main.cjs --help 输出帮助信息", () => {
+test("main.mjs --help 输出帮助信息", () => {
   const result = spawnSync("node", [mainScript, "--help"], {
     cwd: resolve("."),
     encoding: "utf-8",
@@ -20,7 +20,7 @@ test("main.cjs --help 输出帮助信息", () => {
   assert.match(result.stdout, /用法：/);
 });
 
-test("main.cjs --list 输出技能入口", () => {
+test("main.mjs --list 输出技能入口", () => {
   const result = spawnSync("node", [mainScript, "--list"], {
     cwd: resolve("."),
     encoding: "utf-8",

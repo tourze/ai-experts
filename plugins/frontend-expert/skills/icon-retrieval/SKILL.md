@@ -24,7 +24,7 @@ dependency:
 ## 代码模式
 
 ```bash
-node ./scripts/search.js 'document upload' 5
+node ./scripts/search.mjs 'document upload' 5
 ```
 
 ```json
@@ -59,14 +59,14 @@ node ./scripts/search.js 'document upload' 5
 ### FAIL: 宽泛关键词
 
 ```bash
-node ./scripts/search.js 'icon' 5
+node ./scripts/search.mjs 'icon' 5
 # 返回 5 个完全不相关的图标：齿轮、相机、闹钟、心形、文件夹
 ```
 
 ### PASS: 业务语义词
 
 ```bash
-node ./scripts/search.js 'document upload cloud' 5
+node ./scripts/search.mjs 'document upload cloud' 5
 # 返回 5 个上传/云端相关的语义对齐图标，可直接对比
 ```
 
@@ -110,4 +110,4 @@ node ./scripts/search.js 'document upload cloud' 5
 
 - [design-system-patterns](../design-system-patterns/SKILL.md)
 - [figma-implement-design](../figma-implement-design/SKILL.md)
-- [scripts/search.js](scripts/search.js)
+- [scripts/search.mjs](scripts/search.mjs)

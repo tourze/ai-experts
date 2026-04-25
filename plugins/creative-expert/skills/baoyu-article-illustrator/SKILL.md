@@ -55,7 +55,7 @@ test -f "$HOME/.baoyu-skills/baoyu-article-illustrator/EXTEND.md" && echo "user"
 当 `outline.md` 与 `prompts/` 都准备好后，优先使用批量构建脚本：
 
 ```bash
-npx -y tsx scripts/build-batch.ts \
+node scripts/build-batch.mjs \
   --outline outline.md \
   --prompts prompts \
   --output batch.json \
@@ -96,7 +96,7 @@ npx -y tsx scripts/build-batch.ts \
 ```
 1. 写 outline.md（5 个插图位置 + 目的）
 2. 写 prompts/01-xxx.md（每张图独立提示词）
-3. build-batch.ts 生成 batch.json
+3. build-batch.mjs 生成 batch.json
 4. 一次提交 → 风格一致 / 可追溯
 ```
 

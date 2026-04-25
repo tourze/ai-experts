@@ -32,7 +32,7 @@ export function LoadingAnimation() {
 
 ```bash
 node ./scripts/optimize_lottie.mjs ./animation.json -o ./animation.optimized.json
-python3 ./scripts/generate_lottie_component.py --framework react --type interactive --name HeroAnimation
+node ./scripts/generate_lottie_component.mjs --framework react --type interactive --name HeroAnimation
 ```
 
 ```css
@@ -118,7 +118,7 @@ const Lottie = lazy(() => import('@lottiefiles/dotlottie-react'));
 
 - [interaction-design](../interaction-design/SKILL.md)
 - [modern-web-design](../modern-web-design/SKILL.md)
-- [scripts/generate_lottie_component.py](scripts/generate_lottie_component.py)
+- [scripts/generate_lottie_component.mjs](scripts/generate_lottie_component.mjs)
 - [scripts/optimize_lottie.mjs](scripts/optimize_lottie.mjs)
 - [references/performance_guide.md](references/performance_guide.md)
 - [references/api_reference.md](references/api_reference.md)

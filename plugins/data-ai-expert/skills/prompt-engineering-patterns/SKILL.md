@@ -10,7 +10,7 @@ description: 当用户要设计、优化、约束或排查 prompt，需要 struc
 - 需要给生产环境 LLM 设计稳健 prompt，而不是临时试几句。
 - 需要解决结构化输出、few-shot、角色设定、错误恢复、长上下文约束。
 - Prompt 已经能跑，但一致性、可控性、可维护性不够。
-- 相关资源：[assets/prompt-template-library.md](assets/prompt-template-library.md)、[assets/few-shot-examples.json](assets/few-shot-examples.json)、[scripts/optimize-prompt.py](scripts/optimize-prompt.py)。
+- 相关资源：[assets/prompt-template-library.md](assets/prompt-template-library.md)、[assets/few-shot-examples.json](assets/few-shot-examples.json)、[scripts/optimize-prompt.mjs](scripts/optimize-prompt.mjs)。
 - 相关 skill：[prompt-lab](../prompt-lab/SKILL.md)、[llm-evaluation](../llm-evaluation/SKILL.md)、[rag-auditor](../rag-auditor/SKILL.md)。
 
 ## 核心约束
@@ -42,7 +42,7 @@ User:
 ```
 
 ```bash
-python3 scripts/optimize-prompt.py
+node scripts/optimize-prompt.mjs
 ```
 
 ## 检查清单

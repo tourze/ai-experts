@@ -14,7 +14,7 @@ description: 当用户要压缩图片、转成 WebP 或导出更小的 PNG/JPEG 
 
 ## 核心约束
 
-- 单文件既可以用 `bun` 运行，也可以用 `npx -y tsx` 作为回退。
+- 使用 Node.js 直接运行 `scripts/main.mjs`。
 - `--output` 只支持单文件输入；目录批处理时禁止传自定义输出路径。
 - 默认 `--keep=false`，表示成功转码后删除原文件；只有显式加 `--keep` 才保留源文件。
 - 目录模式默认不递归；需要跨子目录时必须显式加 `--recursive`。
@@ -25,27 +25,25 @@ description: 当用户要压缩图片、转成 WebP 或导出更小的 PNG/JPEG 
 ### 1. 查看帮助
 
 ```bash
-bun scripts/main.ts --help
-# 或
-npx -y tsx scripts/main.ts --help
+node scripts/main.mjs --help
 ```
 
 ### 2. 单文件压缩
 
 ```bash
-npx -y tsx scripts/main.ts image.png --format webp --quality 80
+node scripts/main.mjs image.png --format webp --quality 80
 ```
 
 ### 3. 保留原图
 
 ```bash
-npx -y tsx scripts/main.ts image.png --format png --quality 75 --keep
+node scripts/main.mjs image.png --format png --quality 75 --keep
 ```
 
 ### 4. 目录批处理
 
 ```bash
-npx -y tsx scripts/main.ts ./imgs --recursive --quality 72 --json
+node scripts/main.mjs ./imgs --recursive --quality 72 --json
 ```
 
 输出字段与行为要点：
@@ -69,7 +67,7 @@ npx -y tsx scripts/main.ts ./imgs --recursive --quality 72 --json
 ### FAIL: 误删源文件
 
 ```bash
-npx -y tsx scripts/main.ts ./imgs --recursive --quality 70
+node scripts/main.mjs ./imgs --recursive --quality 70
 # 默认 --keep=false → 100 张原图被删
 # 用户：”我的原图呢？”
 ```
@@ -77,14 +75,14 @@ npx -y tsx scripts/main.ts ./imgs --recursive --quality 70
 ### PASS: --keep 显式
 
 ```bash
-npx -y tsx scripts/main.ts ./imgs --recursive --quality 70 --keep
+node scripts/main.mjs ./imgs --recursive --quality 70 --keep
 # 或：先备份 → cp -r ./imgs ./imgs.bak → 再压
 ```
 
 ### FAIL: 批处理传 --output
 
 ```bash
-npx -y tsx scripts/main.ts ./imgs --output ./out --recursive
+node scripts/main.mjs ./imgs --output ./out --recursive
 # Error: --output 仅支持单文件
 # 用户困惑
 ```
@@ -93,8 +91,8 @@ npx -y tsx scripts/main.ts ./imgs --output ./out --recursive
 
 ```bash
 # 单文件：可改名
-npx -y tsx scripts/main.ts photo.png --output thumbnail.webp --quality 70
+node scripts/main.mjs photo.png --output thumbnail.webp --quality 70
 
 # 批处理：原地改后缀
-npx -y tsx scripts/main.ts ./imgs --recursive --quality 70 --keep
+node scripts/main.mjs ./imgs --recursive --quality 70 --keep
 ```

@@ -130,7 +130,7 @@ function findDuplicateSources(article, allArticles) {
   return duplicates;
 }
 
-module.exports = {
+export {
   calculateHeatScore,
   findDuplicateSources,
   normalizeTitle

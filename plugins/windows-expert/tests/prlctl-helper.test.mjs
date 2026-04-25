@@ -6,10 +6,7 @@ import { tmpdir } from "node:os";
 import test from "node:test";
 
 const pluginRoot = resolve("plugins/windows-expert");
-const scriptPath = resolve(pluginRoot, "skills/prlctl-vm-control/scripts/prlctl_helper.py");
-const python3 = spawnSync("which", ["python3"], { encoding: "utf-8" }).stdout.trim();
-
-assert.ok(python3, "当前环境缺少 python3");
+const scriptPath = resolve(pluginRoot, "skills/prlctl-vm-control/scripts/prlctl_helper.mjs");
 
 function createPrlctlStub(root) {
   const stubPath = join(root, "prlctl");
@@ -67,7 +64,7 @@ function withStub(fn) {
 }
 
 function runHelper(args, env = {}) {
-  return spawnSync(python3, [scriptPath, ...args], {
+  return spawnSync(process.execPath, [scriptPath, ...args], {
     cwd: pluginRoot,
     encoding: "utf-8",
     env: {

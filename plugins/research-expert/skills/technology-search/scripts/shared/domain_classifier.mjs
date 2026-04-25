@@ -202,7 +202,7 @@ function getDomainDescription(domain) {
   return DOMAIN_DESCRIPTIONS[domain] || domain;
 }
 
-module.exports = {
+export {
   classifyKeyword,
   getSourcesForDomains,
   getDomainDescription,

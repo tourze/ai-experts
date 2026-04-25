@@ -9,8 +9,8 @@ if (args.includes('--help')) {
 spring-boot-layering 技能辅助脚本
 
 用法：
-  node main.cjs --list     列出当前技能入口
-  node main.cjs --help     显示帮助
+  node main.mjs --list     列出当前技能入口
+  node main.mjs --help     显示帮助
 
 说明：
   提供 spring-boot-layering 技能的最小自检入口，便于本地确认脚本可执行。

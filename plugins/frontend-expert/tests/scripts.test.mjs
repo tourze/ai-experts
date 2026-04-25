@@ -9,20 +9,17 @@ const pluginRoot = resolve("plugins/frontend-expert");
 
 const nodeScripts = [
   "hooks/dispatch.mjs",
-  "skills/icon-retrieval/scripts/search.js",
+  "skills/icon-retrieval/scripts/search.mjs",
+  "skills/i18n-localization/scripts/i18n_checker.mjs",
+  "skills/lottie-animations/scripts/generate_lottie_component.mjs",
   "skills/lottie-animations/scripts/optimize_lottie.mjs",
+  "skills/shadcn-ui/scripts/verify-setup.mjs",
+  "skills/web-quality-audit/scripts/analyze.mjs",
 ];
 
 const pythonScripts = [
-  "skills/i18n-localization/scripts/i18n_checker.py",
-  "skills/lottie-animations/scripts/generate_lottie_component.py",
   "skills/modern-web-design/scripts/design_audit.py",
   "skills/modern-web-design/scripts/pattern_generator.py",
-];
-
-const shellScripts = [
-  "skills/shadcn-ui/scripts/verify-setup.sh",
-  "skills/web-quality-audit/scripts/analyze.sh",
 ];
 
 test("所有 Node 脚本都能通过语法检查", () => {
@@ -52,17 +49,9 @@ test("所有 Python 脚本都能通过 py_compile", () => {
   }
 });
 
-test("所有 Shell 脚本都能通过 bash -n", () => {
-  const result = spawnSync("bash", ["-n", ...shellScripts.map((path) => resolve(pluginRoot, path))], {
-    encoding: "utf-8",
-  });
-
-  assert.equal(result.status, 0, result.stderr);
-});
-
-test("generate_lottie_component.py 可生成 React interactive 模板", () => {
-  const result = spawnSync("python3", [
-    resolve(pluginRoot, "skills/lottie-animations/scripts/generate_lottie_component.py"),
+test("generate_lottie_component.mjs 可生成 React interactive 模板", () => {
+  const result = spawnSync("node", [
+    resolve(pluginRoot, "skills/lottie-animations/scripts/generate_lottie_component.mjs"),
     "--framework", "react",
     "--type", "interactive",
     "--name", "DemoAnimation",
@@ -106,7 +95,28 @@ test("optimize_lottie.mjs 压缩 JSON 并保留整数", () => {
   }
 });
 
-test("analyze.sh 在目录模式下能输出有效 JSON 结果", () => {
+test("i18n_checker.mjs 能发现硬编码文案并返回失败码", () => {
+  const root = mkdtempSync(join(tmpdir(), "frontend-i18n-"));
+  mkdirSync(join(root, "src"), { recursive: true });
+  writeFileSync(join(root, "src", "App.jsx"), "export function App() { return <button>Submit Form</button>; }\n", "utf-8");
+
+  try {
+    const result = spawnSync("node", [
+      resolve(pluginRoot, "skills/i18n-localization/scripts/i18n_checker.mjs"),
+      root,
+    ], {
+      encoding: "utf-8",
+    });
+
+    assert.equal(result.status, 1);
+    assert.match(result.stdout, /files may have hardcoded strings/);
+    assert.match(result.stdout, /i18n CHECK: 1 issues found/);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("analyze.mjs 在目录模式下能输出有效 JSON 结果", () => {
   const root = mkdtempSync(join(tmpdir(), "frontend-audit-"));
   const htmlFile = join(root, "index.html");
   writeFileSync(
@@ -116,8 +126,8 @@ test("analyze.sh 在目录模式下能输出有效 JSON 结果", () => {
   );
 
   try {
-    const result = spawnSync("bash", [
-      resolve(pluginRoot, "skills/web-quality-audit/scripts/analyze.sh"),
+    const result = spawnSync("node", [
+      resolve(pluginRoot, "skills/web-quality-audit/scripts/analyze.mjs"),
       root,
     ], {
       encoding: "utf-8",
@@ -134,7 +144,7 @@ test("analyze.sh 在目录模式下能输出有效 JSON 结果", () => {
   }
 });
 
-test("verify-setup.sh 支持 Tailwind v4 CSS-first 项目", () => {
+test("verify-setup.mjs 支持 Tailwind v4 CSS-first 项目", () => {
   const root = mkdtempSync(join(tmpdir(), "frontend-shadcn-"));
   mkdirSync(join(root, "src", "lib"), { recursive: true });
   mkdirSync(join(root, "components"), { recursive: true });
@@ -148,8 +158,8 @@ test("verify-setup.sh 支持 Tailwind v4 CSS-first 项目", () => {
   writeFileSync(join(root, "package.json"), '{"dependencies":{"react":"19.0.0"},"devDependencies":{"tailwindcss":"4.0.0","class-variance-authority":"1.0.0","clsx":"2.0.0","tailwind-merge":"3.0.0"}}', "utf-8");
 
   try {
-    const result = spawnSync("bash", [
-      resolve(pluginRoot, "skills/shadcn-ui/scripts/verify-setup.sh"),
+    const result = spawnSync("node", [
+      resolve(pluginRoot, "skills/shadcn-ui/scripts/verify-setup.mjs"),
     ], {
       cwd: root,
       encoding: "utf-8",

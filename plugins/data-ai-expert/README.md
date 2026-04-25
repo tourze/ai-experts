@@ -62,9 +62,9 @@ claude plugin uninstall data-ai-expert --scope project
 python3 -m json.tool plugins/data-ai-expert/.claude-plugin/plugin.json >/dev/null
 python3 -m json.tool plugins/data-ai-expert/hooks/hooks.json >/dev/null
 node --check plugins/data-ai-expert/hooks/dispatch.mjs
+node --check plugins/data-ai-expert/skills/model-first-reasoning/scripts/validate-model.mjs
+node --check plugins/data-ai-expert/skills/prompt-engineering-patterns/scripts/optimize-prompt.mjs
 python3 -m py_compile \
-  plugins/data-ai-expert/skills/data-analysis/scripts/analyze.py \
-  plugins/data-ai-expert/skills/model-first-reasoning/scripts/validate-model.py \
-  plugins/data-ai-expert/skills/prompt-engineering-patterns/scripts/optimize-prompt.py
+  plugins/data-ai-expert/skills/data-analysis/scripts/analyze.py
 node --test plugins/data-ai-expert/tests/*.test.mjs
 ```

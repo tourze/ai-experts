@@ -390,9 +390,9 @@ def markdown_to_html(md_path: Path, title: str = "") -> str:
 
 def render_katex(html_path: Path, output_path: Path) -> dict:
     """Run server-side KaTeX rendering via Node.js script."""
-    katex_script = SCRIPT_DIR / "katex_render.js"
+    katex_script = SCRIPT_DIR / "katex_render.mjs"
     if not katex_script.exists():
-        print("  WARNING: katex_render.js not found, math will not be rendered", file=sys.stderr)
+        print("  WARNING: katex_render.mjs not found, math will not be rendered", file=sys.stderr)
         shutil.copy(str(html_path), str(output_path))
         return {"inline": 0, "display": 0, "errors": 0}
 

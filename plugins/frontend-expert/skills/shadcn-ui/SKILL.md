@@ -32,7 +32,7 @@ allowed-tools:
 ```bash
 npx shadcn@latest init
 npx shadcn@latest add button dialog form
-bash ./scripts/verify-setup.sh
+node ./scripts/verify-setup.mjs
 ```
 
 ```ts
@@ -97,7 +97,7 @@ theme: { extend: { colors: { primary: "hsl(var(--brand))" } } }
 - [tailwind-design-system](../tailwind-design-system/SKILL.md)
 - [frontend-design-review](../frontend-design-review/SKILL.md)
 - [README.md](README.md)
-- [scripts/verify-setup.sh](scripts/verify-setup.sh)
+- [scripts/verify-setup.mjs](scripts/verify-setup.mjs)
 - [resources/setup-guide.md](resources/setup-guide.md)
 - [resources/customization-guide.md](resources/customization-guide.md)
 - [resources/component-catalog.md](resources/component-catalog.md)

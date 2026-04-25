@@ -8,6 +8,7 @@ const financialAnalystRoot = resolve(pluginRoot, "skills/financial-analyst");
 const ratioScript = resolve(financialAnalystRoot, "scripts/ratio_calculator.mjs");
 const dcfScript = resolve(financialAnalystRoot, "scripts/dcf_valuation.mjs");
 const budgetScript = resolve(financialAnalystRoot, "scripts/budget_variance_analyzer.mjs");
+const forecastScript = resolve(financialAnalystRoot, "scripts/forecast_builder.mjs");
 const sampleData = resolve(financialAnalystRoot, "assets/sample_financial_data.json");
 
 function runRatio(args = []) {
@@ -37,14 +38,39 @@ function runBudget(args = []) {
   return JSON.parse(result.stdout);
 }
 
+function runForecast(args = []) {
+  const result = spawnSync("node", [forecastScript, sampleData, ...args], {
+    encoding: "utf-8",
+  });
+
+  assert.equal(result.status, 0, result.stderr);
+  return JSON.parse(result.stdout);
+}
+
 test("financial analyst Node CLI 通过语法检查", () => {
-  for (const script of [ratioScript, dcfScript, budgetScript]) {
+  for (const script of [ratioScript, dcfScript, budgetScript, forecastScript]) {
     const result = spawnSync("node", ["--check", script], {
       encoding: "utf-8",
     });
 
     assert.equal(result.status, 0, result.stderr);
   }
+});
+
+test("forecast_builder.mjs 接受聚合样例并输出稳定 JSON", () => {
+  const output = runForecast(["--format", "json"]);
+
+  assert.deepEqual(output.trend_analysis.trend, {
+    slope: 670238.1,
+    intercept: 9746428.57,
+    r_squared: 0.9666,
+    direction: "upward",
+  });
+  assert.equal(output.scenario_comparison.scenarios.base.total_revenue, 172121973.32);
+  assert.equal(output.scenario_comparison.scenarios.bull.total_operating_income, 31664847.09);
+  assert.equal(output.rolling_cash_flow.closing_balance, 2647500);
+  assert.equal(output.rolling_cash_flow.minimum_balance_week, 3);
+  assert.equal(output.rolling_cash_flow.cash_runway_weeks, 11);
 });
 
 test("ratio_calculator.mjs 接受聚合样例并输出稳定 JSON", () => {

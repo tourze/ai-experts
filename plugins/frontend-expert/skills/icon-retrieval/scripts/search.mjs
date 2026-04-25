@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
 async function searchIcons(query, topK = 5) {
   const params = new URLSearchParams({ text: query, topK: topK.toString() });
   const apiUrl = `https://www.weavefox.cn/api/open/v1/icon?${params}`;
@@ -39,8 +42,8 @@ async function main() {
   if (process.argv.length < 3) {
     const error = {
       error: 'Missing search query',
-      usage: 'node search.js \'<search_query>\' [topK]',
-      example: 'node search.js \'document\' 10',
+      usage: 'node search.mjs \'<search_query>\' [topK]',
+      example: 'node search.mjs \'document\' 10',
       note: 'topK defaults to 5 if not specified',
     };
     console.error(JSON.stringify(error, null, 2));
@@ -53,7 +56,7 @@ async function main() {
   if (!query) {
     const error = {
       error: 'Search query cannot be empty',
-      usage: 'node search.js \'<search_query>\' [topK]',
+      usage: 'node search.mjs \'<search_query>\' [topK]',
     };
     console.error(JSON.stringify(error, null, 2));
     process.exit(1);
@@ -62,7 +65,7 @@ async function main() {
   if (isNaN(topK) || topK < 1) {
     const error = {
       error: 'Invalid topK value',
-      usage: 'node search.js \'<search_query>\' [topK]',
+      usage: 'node search.mjs \'<search_query>\' [topK]',
       note: 'topK must be a positive integer',
     };
     console.error(JSON.stringify(error, null, 2));
@@ -89,9 +92,9 @@ async function main() {
   }
 }
 
-if (require.main === module) {
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   main();
 }
 
 // Export functions for testing
-module.exports = { searchIcons };
+export { searchIcons };

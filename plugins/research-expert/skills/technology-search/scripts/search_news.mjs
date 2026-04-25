@@ -6,15 +6,16 @@
  * Search across multiple tech news sources and rank by heat score
  */
 
-const fs = require('fs');
-const path = require('path');
-const { parseRssFeed } = require('./parsers/rss_parser');
-const { parseHackerNews } = require('./parsers/hn_parser');
-const { calculateHeatScore, findDuplicateSources } = require('./shared/heat_calculator');
-const { classifyKeyword, getSourcesForDomains } = require('./shared/domain_classifier');
-const { filterSourcesByNetwork } = require('./shared/network_detector');
+import { readFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { parseHackerNews } from "./parsers/hn_parser.mjs";
+import { parseRssFeed } from "./parsers/rss_parser.mjs";
+import { classifyKeyword, getSourcesForDomains } from "./shared/domain_classifier.mjs";
+import { calculateHeatScore, findDuplicateSources } from "./shared/heat_calculator.mjs";
+import { filterSourcesByNetwork } from "./shared/network_detector.mjs";
 
-const SCRIPT_DIR = __dirname;
+const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const CONCURRENCY = 10; // Max concurrent RSS fetches
 const FALLBACK_THRESHOLD = 3; // Minimum results before triggering fallback
 
@@ -22,8 +23,8 @@ function loadSources() {
   /**
    * Load news sources from references/sources.json
    */
-  const sourcesFile = path.join(SCRIPT_DIR, '..', 'references', 'sources.json');
-  const data = JSON.parse(fs.readFileSync(sourcesFile, 'utf-8'));
+  const sourcesFile = join(SCRIPT_DIR, '..', 'references', 'sources.json');
+  const data = JSON.parse(readFileSync(sourcesFile, 'utf-8'));
   return data.sources;
 }
 
@@ -310,7 +311,7 @@ async function main() {
   // Validate required arguments
   if (!options.keyword) {
     console.error('Error: Missing required argument <keyword>');
-    console.error('Usage: search_news.js <keyword> [options]');
+    console.error('Usage: search_news.mjs <keyword> [options]');
     console.error('\nOptions:');
     console.error('  --limit NUM              Max articles per source (default: 15)');
     console.error('  --max-per-source NUM     Max articles to display per source (default: 5)');
@@ -341,14 +342,14 @@ async function main() {
   }
 }
 
-if (require.main === module) {
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   main().catch(error => {
     console.error(`Fatal error: ${error.message}`);
     process.exit(1);
   });
 }
 
-module.exports = {
+export {
   searchNews,
   loadSources,
   balanceSources

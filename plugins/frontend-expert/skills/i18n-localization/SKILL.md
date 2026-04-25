@@ -22,7 +22,7 @@ date_added: "2026-02-27"
 - locale 文件按功能域拆分，不要把全部文案塞进一个大 JSON。
 - RTL 不是“文字反过来”这么简单，布局、图标方向、滚动与动画都要核查。
 - 国际化上线前必须验证回退语言和缺失翻译策略。
-- 需要静态检查时直接运行 `scripts/i18n_checker.py`。
+- 需要静态检查时直接运行 `scripts/i18n_checker.mjs`。
 
 ## 代码模式
 
@@ -44,7 +44,7 @@ export function WelcomeCard() {
 ```
 
 ```bash
-python3 ./scripts/i18n_checker.py /path/to/project
+node ./scripts/i18n_checker.mjs /path/to/project
 ```
 
 ## 检查清单
@@ -54,7 +54,7 @@ python3 ./scripts/i18n_checker.py /path/to/project
 - [ ] 缺失翻译时有明确回退语言。
 - [ ] 日期、时间、数字、货币都使用地区化 API。
 - [ ] RTL 页面已验证布局、图标方向和文本对齐。
-- [ ] 提交前已跑 `scripts/i18n_checker.py` 或等价 lint。
+- [ ] 提交前已跑 `scripts/i18n_checker.mjs` 或等价 lint。
 
 ## 反模式
 
@@ -105,4 +105,4 @@ python3 ./scripts/i18n_checker.py /path/to/project
 
 - [web-design-guidelines](../web-design-guidelines/SKILL.md)
 - [responsive-design](../responsive-design/SKILL.md)
-- [scripts/i18n_checker.py](scripts/i18n_checker.py)
+- [scripts/i18n_checker.mjs](scripts/i18n_checker.mjs)

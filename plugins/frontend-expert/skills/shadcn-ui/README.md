@@ -53,7 +53,7 @@ skills/shadcn-ui/
 │   ├── customization-guide.md — Theming patterns
 │   └── migration-guide.md     — Migration from other libraries
 └── scripts/              — Utility scripts
-    └── verify-setup.sh        — Validate project configuration
+    └── verify-setup.mjs       — Validate project configuration
 ```
 
 ## How It Works

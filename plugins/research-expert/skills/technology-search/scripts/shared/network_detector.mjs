@@ -8,10 +8,10 @@
  * 5 minutes to avoid repeated checks.
  */
 
-const fs = require('fs');
-const os = require('os');
-const path = require('path');
-const { fetchUrl } = require('./web_utils');
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { fetchUrl } from "./web_utils.mjs";
 
 const CACHE_ROOT = process.env.XDG_CACHE_HOME
   ? path.join(process.env.XDG_CACHE_HOME, 'research-expert')
@@ -170,7 +170,7 @@ function filterSourcesByNetwork(allSources, forceRegion = null) {
   });
 }
 
-module.exports = {
+export {
   checkGlobalAccess,
   filterSourcesByNetwork
 };

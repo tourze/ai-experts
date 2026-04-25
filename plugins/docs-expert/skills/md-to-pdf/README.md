@@ -26,7 +26,7 @@ Copy the `md-to-pdf/` directory into your agent's skills folder:
 ├── README.md
 ├── scripts/
 │   ├── md_to_pdf.py
-│   ├── katex_render.js
+│   ├── katex_render.mjs
 │   └── setup.sh
 └── tests/
     └── test_document.md

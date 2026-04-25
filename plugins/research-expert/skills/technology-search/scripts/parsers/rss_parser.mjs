@@ -8,7 +8,7 @@
  */
 
 // 使用预打包的 rss-parser（esbuild bundle），无需外部 node_modules
-const Parser = require('../vendor/rss-parser.bundle');
+import Parser from "../vendor/rss-parser.bundle.js";
 
 const parser = new Parser({
   timeout: 10000,
@@ -214,7 +214,7 @@ async function parseRssFeed(sourceConfig, keyword = null, limit = 10) {
   return articles;
 }
 
-module.exports = {
+export {
   parseRssFeed,
   tokenizeKeyword,
   matchKeyword

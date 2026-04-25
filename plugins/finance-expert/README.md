@@ -20,7 +20,7 @@
 
 ## Python 依赖
 
-- `financial-analyst`：CLI 逐步迁移到 Node.js；尚未迁移的脚本仅使用 Python 标准库
+- `financial-analyst`：CLI 使用 Node.js `.mjs`
 - `creating-financial-models`：需要 `numpy`、`pandas`
 - `risk-metrics-calculation`：示例代码使用 `numpy`、`pandas`
 
@@ -61,6 +61,7 @@ node --check plugins/finance-expert/hooks/dispatch.mjs
 node --check plugins/finance-expert/skills/financial-analyst/scripts/ratio_calculator.mjs
 node --check plugins/finance-expert/skills/financial-analyst/scripts/dcf_valuation.mjs
 node --check plugins/finance-expert/skills/financial-analyst/scripts/budget_variance_analyzer.mjs
+node --check plugins/finance-expert/skills/financial-analyst/scripts/forecast_builder.mjs
 node --test plugins/finance-expert/tests/*.test.mjs
 python3 -m unittest discover -s plugins/finance-expert/tests -p 'test_*.py'
 python3 -m py_compile $(find plugins/finance-expert -name '*.py' -print)

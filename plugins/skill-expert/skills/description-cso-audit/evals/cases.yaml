@@ -5,7 +5,7 @@ cases:
     rubric:
       - "activates description CSO audit rather than general skill design review"
       - "focuses on frontmatter description trigger quality and shortcut risk"
-      - "uses or recommends the cso_audit.py scanner"
+      - "uses or recommends the cso_audit.mjs scanner"
     trigger_expected: true
 
   - id: optimize_trigger_description

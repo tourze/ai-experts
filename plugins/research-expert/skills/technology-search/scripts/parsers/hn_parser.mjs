@@ -4,7 +4,7 @@
  * Hacker News API parser using Algolia search
  */
 
-const { fetchJson } = require('../shared/web_utils');
+import { fetchJson } from "../shared/web_utils.mjs";
 
 async function parseHackerNews(sourceConfig, keyword = null, limit = 10) {
   /**
@@ -80,6 +80,6 @@ async function parseHackerNews(sourceConfig, keyword = null, limit = 10) {
   return articles;
 }
 
-module.exports = {
+export {
   parseHackerNews
 };

@@ -2,27 +2,9 @@ import path from "node:path";
 import process from "node:process";
 import { readdir, readFile, stat, writeFile } from "node:fs/promises";
 
-type CliArgs = {
-  outlinePath: string | null;
-  promptsDir: string | null;
-  outputPath: string | null;
-  imagesDir: string | null;
-  provider: string;
-  model: string;
-  aspectRatio: string;
-  quality: string;
-  jobs: number | null;
-  help: boolean;
-};
-
-type OutlineEntry = {
-  index: number;
-  filename: string;
-};
-
-function printUsage(): void {
+function printUsage() {
   console.log(`Usage:
-  npx -y tsx scripts/build-batch.ts --outline outline.md --prompts prompts --output batch.json --images-dir attachments
+  node scripts/build-batch.mjs --outline outline.md --prompts prompts --output batch.json --images-dir attachments
 
 Options:
   --outline <path>     Path to outline.md
@@ -37,8 +19,8 @@ Options:
   -h, --help           Show help`);
 }
 
-function parseArgs(argv: string[]): CliArgs {
-  const args: CliArgs = {
+function parseArgs(argv) {
+  const args = {
     outlinePath: null,
     promptsDir: null,
     outputPath: null,
@@ -52,7 +34,7 @@ function parseArgs(argv: string[]): CliArgs {
   };
 
   for (let i = 0; i < argv.length; i++) {
-    const current = argv[i]!;
+    const current = argv[i];
     if (current === "--outline") args.outlinePath = argv[++i] ?? null;
     else if (current === "--prompts") args.promptsDir = argv[++i] ?? null;
     else if (current === "--output") args.outputPath = argv[++i] ?? null;
@@ -71,8 +53,8 @@ function parseArgs(argv: string[]): CliArgs {
   return args;
 }
 
-function parseOutline(content: string): OutlineEntry[] {
-  const entries: OutlineEntry[] = [];
+function parseOutline(content) {
+  const entries = [];
   const blocks = content.split(/^## Illustration\s+/m).slice(1);
 
   for (const block of blocks) {
@@ -80,22 +62,22 @@ function parseOutline(content: string): OutlineEntry[] {
     const filenameMatch = block.match(/\*\*Filename\*\*:\s*(.+)/);
     if (indexMatch && filenameMatch) {
       entries.push({
-        index: parseInt(indexMatch[1]!, 10),
-        filename: filenameMatch[1]!.trim(),
+        index: parseInt(indexMatch[1], 10),
+        filename: filenameMatch[1].trim(),
       });
     }
   }
   return entries;
 }
 
-async function findPromptFile(promptsDir: string, entry: OutlineEntry): Promise<string | null> {
+async function findPromptFile(promptsDir, entry) {
   const files = (await readdir(promptsDir)).sort();
   const prefix = String(entry.index).padStart(2, "0");
   const match = files.find((f) => f.startsWith(prefix) && f.endsWith(".md"));
   return match ? path.join(promptsDir, match) : null;
 }
 
-async function main(): Promise<void> {
+async function main() {
   const args = parseArgs(process.argv.slice(2));
   if (args.help) {
     printUsage();
@@ -139,7 +121,7 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const tasks: Array<Record<string, unknown>> = [];
+  const tasks = [];
   for (const entry of entries) {
     const promptFile = await findPromptFile(args.promptsDir, entry);
     if (!promptFile) {
@@ -164,7 +146,7 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const output: Record<string, unknown> = { tasks };
+  const output = { tasks };
   if (args.jobs) output.jobs = args.jobs;
 
   await writeFile(args.outputPath, JSON.stringify(output, null, 2) + "\n");

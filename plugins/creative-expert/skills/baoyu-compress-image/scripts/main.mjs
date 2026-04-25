@@ -1,33 +1,11 @@
-#!/usr/bin/env bun
-import { existsSync, statSync, readdirSync, unlinkSync, renameSync, mkdirSync } from "fs";
-import { basename, dirname, extname, join, resolve } from "path";
-import { spawn } from "child_process";
-
-type Compressor = "sips" | "cwebp" | "imagemagick" | "sharp";
-type Format = "webp" | "png" | "jpeg";
-
-interface Options {
-  input: string;
-  output?: string;
-  format: Format;
-  quality: number;
-  keep: boolean;
-  recursive: boolean;
-  json: boolean;
-}
-
-interface Result {
-  input: string;
-  output: string;
-  inputSize: number;
-  outputSize: number;
-  ratio: number;
-  compressor: Compressor;
-}
+#!/usr/bin/env node
+import { spawn } from "node:child_process";
+import { existsSync, mkdirSync, readdirSync, renameSync, statSync, unlinkSync } from "node:fs";
+import { basename, dirname, extname, join, resolve } from "node:path";
 
 const SUPPORTED_EXTS = [".png", ".jpg", ".jpeg", ".webp", ".gif", ".tiff"];
 
-async function commandExists(cmd: string): Promise<boolean> {
+async function commandExists(cmd) {
   const binary = process.platform === "win32" ? "where" : "which";
   try {
     const proc = spawn(binary, [cmd], { stdio: "pipe" });
@@ -40,7 +18,7 @@ async function commandExists(cmd: string): Promise<boolean> {
   }
 }
 
-async function detectCompressor(format: Format): Promise<Compressor> {
+async function detectCompressor(format) {
   if (format === "webp") {
     if (await commandExists("cwebp")) return "cwebp";
     if (await commandExists("magick") || await commandExists("convert")) return "imagemagick";
@@ -51,7 +29,7 @@ async function detectCompressor(format: Format): Promise<Compressor> {
   return "sharp";
 }
 
-function runCmd(cmd: string, args: string[]): Promise<{ code: number; stderr: string }> {
+function runCmd(cmd, args) {
   return new Promise((res) => {
     const proc = spawn(cmd, args, { stdio: ["ignore", "ignore", "pipe"] });
     let stderr = "";
@@ -61,20 +39,20 @@ function runCmd(cmd: string, args: string[]): Promise<{ code: number; stderr: st
   });
 }
 
-async function compressWithSips(input: string, output: string, format: Format, quality: number): Promise<void> {
+async function compressWithSips(input, output, format, quality) {
   const fmt = format === "jpeg" ? "jpeg" : format;
   const args = ["-s", "format", fmt, "-s", "formatOptions", String(quality), input, "--out", output];
   const { code, stderr } = await runCmd("sips", args);
   if (code !== 0) throw new Error(`sips failed: ${stderr}`);
 }
 
-async function compressWithCwebp(input: string, output: string, quality: number): Promise<void> {
+async function compressWithCwebp(input, output, quality) {
   const args = ["-q", String(quality), input, "-o", output];
   const { code, stderr } = await runCmd("cwebp", args);
   if (code !== 0) throw new Error(`cwebp failed: ${stderr}`);
 }
 
-async function compressWithImagemagick(input: string, output: string, quality: number): Promise<void> {
+async function compressWithImagemagick(input, output, quality) {
   const command = await commandExists("magick") ? "magick" : "convert";
   const args = command === "magick"
     ? [input, "-quality", String(quality), output]
@@ -83,14 +61,14 @@ async function compressWithImagemagick(input: string, output: string, quality: n
   if (code !== 0) throw new Error(`${command} failed: ${stderr}`);
 }
 
-function isModuleNotFoundError(error: unknown): boolean {
+function isModuleNotFoundError(error) {
   return typeof error === "object"
     && error !== null
     && "code" in error
-    && (error as { code?: string }).code === "ERR_MODULE_NOT_FOUND";
+    && error.code === "ERR_MODULE_NOT_FOUND";
 }
 
-async function compressWithSharp(input: string, output: string, format: Format, quality: number): Promise<void> {
+async function compressWithSharp(input, output, format, quality) {
   try {
     const sharp = (await import("sharp")).default;
     let pipeline = sharp(input);
@@ -106,13 +84,7 @@ async function compressWithSharp(input: string, output: string, format: Format, 
   }
 }
 
-async function compress(
-  compressor: Compressor,
-  input: string,
-  output: string,
-  format: Format,
-  quality: number
-): Promise<void> {
+async function compress(compressor, input, output, format, quality) {
   switch (compressor) {
     case "sips":
       await compressWithSips(input, output, format, quality);
@@ -133,7 +105,7 @@ async function compress(
   }
 }
 
-function getOutputPath(input: string, format: Format, keep: boolean, customOutput?: string): string {
+function getOutputPath(input, format, keep, customOutput) {
   if (customOutput) return resolve(customOutput);
   const dir = dirname(input);
   const base = basename(input, extname(input));
@@ -144,13 +116,13 @@ function getOutputPath(input: string, format: Format, keep: boolean, customOutpu
   return join(dir, `${base}${ext}`);
 }
 
-function formatSize(bytes: number): string {
+function formatSize(bytes) {
   if (bytes < 1024) return `${bytes}B`;
   if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)}KB`;
   return `${(bytes / (1024 * 1024)).toFixed(1)}MB`;
 }
 
-function getTempOutputPath(output: string): string {
+function getTempOutputPath(output) {
   const ext = extname(output);
   if (!ext) {
     return `${output}.tmp`;
@@ -159,11 +131,7 @@ function getTempOutputPath(output: string): string {
   return output.slice(0, -ext.length) + `.tmp${ext}`;
 }
 
-async function processFile(
-  compressor: Compressor,
-  input: string,
-  opts: Options
-): Promise<Result> {
+async function processFile(compressor, input, opts) {
   const absInput = resolve(input);
   const inputSize = statSync(absInput).size;
   const output = getOutputPath(absInput, opts.format, opts.keep, opts.output);
@@ -191,8 +159,8 @@ async function processFile(
   };
 }
 
-function collectFiles(dir: string, recursive: boolean): string[] {
-  const files: string[] = [];
+function collectFiles(dir, recursive) {
+  const files = [];
   const entries = readdirSync(dir, { withFileTypes: true });
   for (const entry of entries) {
     const full = join(dir, entry.name);
@@ -206,7 +174,7 @@ function collectFiles(dir: string, recursive: boolean): string[] {
 }
 
 function printHelp() {
-  console.log(`Usage: bun scripts/main.ts <input> [options]
+  console.log(`Usage: node scripts/main.mjs <input> [options]
 
 Options:
   -o, --output <path>   Output path
@@ -218,8 +186,8 @@ Options:
   -h, --help            Show help`);
 }
 
-function parseArgs(args: string[]): Options | null {
-  const opts: Options = {
+function parseArgs(args) {
+  const opts = {
     input: "",
     format: "webp",
     quality: 80,
@@ -238,7 +206,7 @@ function parseArgs(args: string[]): Options | null {
     } else if (arg === "-f" || arg === "--format") {
       const fmt = args[++i]?.toLowerCase();
       if (fmt === "webp" || fmt === "png" || fmt === "jpeg" || fmt === "jpg") {
-        opts.format = fmt === "jpg" ? "jpeg" : (fmt as Format);
+        opts.format = fmt === "jpg" ? "jpeg" : fmt;
       } else {
         console.error(`Invalid format: ${fmt}`);
         return null;
@@ -296,7 +264,7 @@ async function main() {
       process.exit(1);
     }
 
-    const results: Result[] = [];
+    const results = [];
     for (const file of files) {
       try {
         const r = await processFile(compressor, file, { ...opts, output: undefined });
@@ -306,7 +274,7 @@ async function main() {
           console.log(`${r.input} → ${r.output} (${formatSize(r.inputSize)} → ${formatSize(r.outputSize)}, ${reduction}% reduction)`);
         }
       } catch (e) {
-        if (!opts.json) console.error(`Error processing ${file}: ${(e as Error).message}`);
+        if (!opts.json) console.error(`Error processing ${file}: ${e.message}`);
       }
     }
 
@@ -346,7 +314,7 @@ async function main() {
         console.log(`${r.input} → ${r.output} (${formatSize(r.inputSize)} → ${formatSize(r.outputSize)}, ${reduction}% reduction)`);
       }
     } catch (e) {
-      console.error(`Error: ${(e as Error).message}`);
+      console.error(`Error: ${e.message}`);
       process.exit(1);
     }
   }

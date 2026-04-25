@@ -1,24 +1,10 @@
 import importlib.util
-import json
-import subprocess
-import sys
 import unittest
 from pathlib import Path
 
 
 PLUGIN_ROOT = Path(__file__).resolve().parents[1]
-FINANCIAL_ANALYST_ROOT = PLUGIN_ROOT / "skills" / "financial-analyst"
 CREATING_MODELS_ROOT = PLUGIN_ROOT / "skills" / "creating-financial-models"
-
-
-def run_cli(script: Path, input_file: Path) -> dict:
-    result = subprocess.run(
-        [sys.executable, str(script), str(input_file), "--format", "json"],
-        check=True,
-        capture_output=True,
-        text=True,
-    )
-    return json.loads(result.stdout)
 
 
 def load_module(module_name: str, path: Path):
@@ -27,19 +13,6 @@ def load_module(module_name: str, path: Path):
     assert spec.loader is not None
     spec.loader.exec_module(module)
     return module
-
-
-class FinancialScriptSmokeTests(unittest.TestCase):
-    def test_forecast_builder_accepts_consolidated_sample(self) -> None:
-        output = run_cli(
-            FINANCIAL_ANALYST_ROOT / "scripts" / "forecast_builder.py",
-            FINANCIAL_ANALYST_ROOT / "assets" / "sample_financial_data.json",
-        )
-        self.assertNotIn("error", output["trend_analysis"])
-        self.assertGreater(
-            output["scenario_comparison"]["scenarios"]["base"]["total_revenue"],
-            0,
-        )
 
 
 class CreatingFinancialModelsTests(unittest.TestCase):

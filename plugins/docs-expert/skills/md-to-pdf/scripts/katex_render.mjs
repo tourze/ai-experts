@@ -1,22 +1,31 @@
 #!/usr/bin/env node
 /**
- * katex_render.js — Server-side KaTeX rendering for HTML files.
+ * katex_render.mjs — Server-side KaTeX rendering for HTML files.
  *
  * Finds <span class="math inline">LATEX</span> and <span class="math display">LATEX</span>
  * elements produced by pandoc's --katex flag, and replaces them with KaTeX-rendered HTML.
  *
- * Usage: node katex_render.js <input.html> <output.html>
+ * Usage: node katex_render.mjs <input.html> <output.html>
  *
  * This produces HTML that displays math without any client-side JavaScript,
  * requiring only the KaTeX CSS + fonts for proper rendering.
  */
 
-const katex = require("katex");
-const fs = require("fs");
-const path = require("path");
+import fs from "node:fs";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
 
 if (process.argv.length < 4) {
-  console.error("Usage: node katex_render.js <input.html> <output.html>");
+  console.error("Usage: node katex_render.mjs <input.html> <output.html>");
+  process.exit(1);
+}
+
+let katex;
+try {
+  katex = require("katex");
+} catch (error) {
+  console.error("KaTeX is not installed. Run `bash scripts/setup.sh` or `npm install -g katex`.");
   process.exit(1);
 }
 

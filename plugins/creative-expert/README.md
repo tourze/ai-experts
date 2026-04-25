@@ -39,8 +39,8 @@ find hooks tests -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
 find skills -type f -name '*.py' -print0 | xargs -0 -n1 python3 -m py_compile
 find skills/screenshot/scripts -type f -name '*.swift' -print0 | xargs -0 -n1 swiftc -typecheck
 node --test tests/*.test.mjs
-npx -y tsx skills/baoyu-article-illustrator/scripts/build-batch.ts --help
-npx -y tsx skills/baoyu-compress-image/scripts/main.ts --help
+node skills/baoyu-article-illustrator/scripts/build-batch.mjs --help
+node skills/baoyu-compress-image/scripts/main.mjs --help
 python3 skills/concept-to-image/scripts/render_to_image.py --help
 python3 skills/concept-to-video/scripts/render_video.py --help
 python3 skills/concept-to-video/scripts/add_audio.py --help
