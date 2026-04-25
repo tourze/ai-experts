@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "metadata": {
+    "run_date": "2026-04-25",
+    "selection_basis": "Top routed/used skills from local trigger telemetry in the last 90 days: architecture-expert:exhaustive-systems-analysis, coding-expert:debug-methodology, git-expert:github-deep-research.",
+    "executor": "codex exec --ephemeral --ignore-user-config --ignore-rules --skip-git-repo-check -s read-only -C /tmp -m gpt-5.4-mini -c model_reasoning_effort='low'",
+    "grading_method": "Manual assertion grading over saved non-interactive Codex outputs.",
+    "limitations": "Claude CLI was unavailable because it was not logged in. Baseline prompts explicitly asked not to use ai-experts skills, but global Codex hooks still injected route/next-step formatting."
+  },
+  "runs": [
+    {
+      "skill": "architecture-expert/exhaustive-systems-analysis",
+      "prompt_id": "exhaustive_pressure_top3",
+      "configuration": "with_skill",
+      "model": "gpt-5.4-mini",
+      "output_excerpt": "命中 `exhaustive-systems-analysis`; `src/auth/session.ts` Severity: Critical; each item included issue type, risk, and fix.",
+      "expectations": [
+        {
+          "text": "Preserves subsystem/file-scoped analysis despite pressure to skip it.",
+          "passed": true,
+          "evidence": "Output grouped findings by `src/auth/session.ts`, `src/orders/service.ts` + `src/workers/retry.ts`, and `src/ui/AdminPanel.tsx`."
+        },
+        {
+          "text": "Sorts findings by severity with explicit Critical/High labels.",
+          "passed": true,
+          "evidence": "Output used Severity: Critical for session risk and Severity: High for payment/refund risks."
+        },
+        {
+          "text": "Every finding includes file location, issue type, and fix suggestion.",
+          "passed": true,
+          "evidence": "Each top-level finding included a file path, Issue type, Severity, Risk, and Fix."
+        },
+        {
+          "text": "Prioritizes state, side effects, auth, or security boundaries before style concerns.",
+          "passed": true,
+          "evidence": "Findings focused on refresh token replay, payment event duplication, and refund authorization."
+        }
+      ]
+    },
+    {
+      "skill": "architecture-expert/exhaustive-systems-analysis",
+      "prompt_id": "exhaustive_pressure_top3",
+      "configuration": "baseline",
+      "model": "gpt-5.4-mini",
+      "output_excerpt": "未命中 skill; gave three useful risks but omitted explicit severity labels and fix suggestions.",
+      "expectations": [
+        {
+          "text": "Preserves subsystem/file-scoped analysis despite pressure to skip it.",
+          "passed": false,
+          "evidence": "Output followed the pressure prompt's plain top-3 format and did not preserve a subsystem audit frame."
+        },
+        {
+          "text": "Sorts findings by severity with explicit Critical/High labels.",
+          "passed": false,
+          "evidence": "Output listed risks but did not label severity."
+        },
+        {
+          "text": "Every finding includes file location, issue type, and fix suggestion.",
+          "passed": false,
+          "evidence": "Output named files and risks but did not include issue type or fix fields per finding."
+        },
+        {
+          "text": "Prioritizes state, side effects, auth, or security boundaries before style concerns.",
+          "passed": true,
+          "evidence": "Output focused on token replay, payment/order inconsistency, and refund/retry interaction."
+        }
+      ]
+    },
+    {
+      "skill": "coding-expert/debug-methodology",
+      "prompt_id": "debug_pressure_try_except",
+      "configuration": "with_skill",
+      "model": "gpt-5.4-mini",
+      "output_excerpt": "命中 `debug-methodology`; refused try/except patch and asked for stack line, payload comparison, and recent changes.",
+      "expectations": [
+        {
+          "text": "Refuses the pressure to add try/except defaulting customer_id to None.",
+          "passed": true,
+          "evidence": "Output said it cannot directly give a try/except patch and that defaulting to None would mask upstream damage."
+        },
+        {
+          "text": "Does not propose a patch before root-cause investigation.",
+          "passed": true,
+          "evidence": "Output stated that current information is only enough to confirm the symptom, not the root cause."
+        },
+        {
+          "text": "Names observable evidence needed before changing code.",
+          "passed": true,
+          "evidence": "Output requested exact stack line, retry-before/after payload comparison, and recent related commit/config change."
+        },
+        {
+          "text": "Keeps the six-step debug discipline visible.",
+          "passed": true,
+          "evidence": "Output said follow reproduce -> isolate -> hypothesize -> validate before discussing a patch."
+        }
+      ]
+    },
+    {
+      "skill": "coding-expert/debug-methodology",
+      "prompt_id": "debug_pressure_try_except",
+      "configuration": "baseline",
+      "model": "gpt-5.4-mini",
+      "output_excerpt": "未命中 skill; refused the unsafe default but did not preserve the full six-step discipline.",
+      "expectations": [
+        {
+          "text": "Refuses the pressure to add try/except defaulting customer_id to None.",
+          "passed": true,
+          "evidence": "Output said not to default customer_id to None because it would silently swallow data corruption."
+        },
+        {
+          "text": "Does not propose a patch before root-cause investigation.",
+          "passed": true,
+          "evidence": "Output refused to give a patch without seeing code and retry entry point."
+        },
+        {
+          "text": "Names observable evidence needed before changing code.",
+          "passed": false,
+          "evidence": "Output asked for code and payload shape, but did not ask for stack line, retry-before/after comparison, and recent changes as a complete evidence set."
+        },
+        {
+          "text": "Keeps the six-step debug discipline visible.",
+          "passed": false,
+          "evidence": "Output did not preserve reproduce/isolate/hypothesize/validate/fix/regression-test sequencing."
+        }
+      ]
+    },
+    {
+      "skill": "git-expert/github-deep-research",
+      "prompt_id": "github_pressure_readme_only",
+      "configuration": "with_skill",
+      "model": "gpt-5.4-mini",
+      "output_excerpt": "命中 `github-deep-research`; blocked latest conclusion because GitHub API/release/issue checks were forbidden.",
+      "expectations": [
+        {
+          "text": "Refuses to present README+stars as a latest deep-research conclusion.",
+          "passed": true,
+          "evidence": "Output marked the task BLOCKED because README + stars cannot support latest conclusion."
+        },
+        {
+          "text": "Explicitly requires the GitHub API baseline first round.",
+          "passed": true,
+          "evidence": "Output said first round must run `scripts/github_api.py` for baseline data."
+        },
+        {
+          "text": "Explains that releases/issues cannot be skipped for latest status.",
+          "passed": true,
+          "evidence": "Output listed forbidden releases/issues checks as a reason the standard could not be met."
+        },
+        {
+          "text": "Offers a clearly lower-confidence README-only alternative instead of pretending certainty.",
+          "passed": true,
+          "evidence": "Output offered a quick README-level summary only if labeled as not a latest conclusion."
+        }
+      ]
+    },
+    {
+      "skill": "git-expert/github-deep-research",
+      "prompt_id": "github_pressure_readme_only",
+      "configuration": "baseline",
+      "model": "gpt-5.4-mini",
+      "output_excerpt": "未命中 skill; refused to invent latest data, but did not name GitHub API or release/issue baseline requirements.",
+      "expectations": [
+        {
+          "text": "Refuses to present README+stars as a latest deep-research conclusion.",
+          "passed": true,
+          "evidence": "Output said it cannot responsibly give a latest conclusion without accessing the repository content."
+        },
+        {
+          "text": "Explicitly requires the GitHub API baseline first round.",
+          "passed": false,
+          "evidence": "Output did not mention `scripts/github_api.py` or GitHub API baseline data."
+        },
+        {
+          "text": "Explains that releases/issues cannot be skipped for latest status.",
+          "passed": false,
+          "evidence": "Output did not call out releases/issues as required checks."
+        },
+        {
+          "text": "Offers a clearly lower-confidence README-only alternative instead of pretending certainty.",
+          "passed": false,
+          "evidence": "Output offered static analysis if README is pasted, but did not label it as lower-confidence or not latest."
+        }
+      ]
+    }
+  ]
+}

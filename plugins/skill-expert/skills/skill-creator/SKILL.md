@@ -53,6 +53,10 @@ Start by understanding the user's intent. The current conversation might already
 3. What's the expected output format?
 4. Should we set up test cases to verify the skill works? Decision rule: if the skill's output can be diff'd, parsed, or validated by a script (file transforms, data extraction, code generation, fixed workflow steps), default to **yes**. If the output is inherently subjective (writing style, creative direction, strategic advice), default to **no**. Present this default with reasoning and let the user override.
 
+### Source-Grounded Improvement
+
+When improving an existing skill, do a short source pass before editing: identify source material (official docs, code, telemetry, failed transcripts, user feedback), write one acceptance target ("agent should reliably do X and avoid Y"), separate sourced facts from inferences, and preserve the old skill as the eval baseline when the task can be tested. Do not add broad background just because it was in the source; keep only knowledge that changes agent behavior.
+
 ### Interview and Research
 
 Proactively ask questions about edge cases, input/output formats, example files, success criteria, and dependencies. Wait to write test prompts until you've got this part ironed out.
@@ -141,6 +145,8 @@ Try to explain to the model why things are important in lieu of heavy-handed mus
 ### Test Cases
 
 After writing the skill draft, come up with 2-3 realistic test prompts — the kind of thing a real user would actually say. Share them with the user: [you don't have to use this exact language] "Here are a few test cases I'd like to try. Do these look right, or do you want to add more?" Then run them.
+
+For pressure-sensitive skills, include at least one prompt that tries to make the agent skip the rule: time pressure, authority pressure, "just do the simple thing", or "we already agreed on this". Record the expected refusal or disciplined behavior in the eval metadata.
 
 Save test cases to `evals/evals.json`. Don't write assertions yet — just the prompts. You'll draft assertions in the next step while the runs are in progress.
 

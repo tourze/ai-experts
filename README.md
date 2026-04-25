@@ -68,6 +68,20 @@
 - 做测试策略、预落地检查和 Web 测试时，优先装 [testing-expert](plugins/testing-expert/README.md)。
 - 做产品、营销、内容或社媒工作时，直接看对应领域插件 README，而不是从 skills 目录盲找。
 
+## 内容质量治理
+
+本仓库的核心内容是插件 README、`SKILL.md`、参考资料、脚本和 eval。改这些内容时，不追求“写得更多”，优先追求可触发、可执行、可验证。
+
+维护 skill 内容时按下面顺序收敛：
+
+1. **先定来源**：列出本次改动依据的源材料，例如官方文档、源码、真实失败案例、telemetry、用户反馈。没有来源的经验判断要标注为推断。
+2. **再定验收**：明确这次改动要让 agent 多做什么、少做什么。能脚本验证就补脚本，不能脚本验证就补正反 eval 或压力场景。
+3. **只改可执行规则**：`SKILL.md` 放触发后必须立即执行的心智模型、流程和红线；大段背景、示例和素材放 `references/`、`scripts/` 或 `assets/`。
+4. **防合理化**：对容易被 agent 跳过的规则，用 Red Flags / Rationalizations 表写清“危险念头”和“现实后果”。
+5. **做对照验证**：重要 skill 变更优先用 [skill-creator](plugins/skill-expert/skills/skill-creator/SKILL.md) 跑 with-skill vs baseline；源材料很厚时，用 [skill-verifier](plugins/skill-expert/skills/skill-verifier/SKILL.md) 做闭卷覆盖验证。
+
+仓库级质量用 `node scripts/skill-quality-report.mjs --json` 看结构、description、eval 覆盖、触发域冲突和已落盘的 with-skill vs baseline 效果评测；尚未覆盖的真实效果仍要看 eval 输出、压力场景、telemetry 和人工复盘。
+
 ## 维护与验证
 
 更新 marketplace 后，至少执行：

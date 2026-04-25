@@ -11,6 +11,7 @@
  *   node scripts/skill-quality-report.mjs --json
  *   node scripts/skill-quality-report.mjs --plugin skill-expert --top 20
  *   node scripts/skill-quality-report.mjs --repo-root /path/to/repo
+ *   node scripts/skill-quality-report.mjs --effect-dir tests/fixtures/skill-effect-benchmarks
  */
 
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
@@ -18,6 +19,7 @@ import { basename, dirname, isAbsolute, join, relative, resolve } from "node:pat
 
 function parseArgs(argv) {
   const args = {
+    effectDir: null,
     json: false,
     plugin: null,
     repoRoot: resolve("."),
@@ -28,6 +30,11 @@ function parseArgs(argv) {
     const arg = argv[index];
     if (arg === "--json") {
       args.json = true;
+      continue;
+    }
+    if (arg === "--effect-dir") {
+      args.effectDir = argv[index + 1] ?? "";
+      index += 1;
       continue;
     }
     if (arg === "--plugin") {
@@ -50,6 +57,9 @@ function parseArgs(argv) {
 
   if (args.plugin !== null && args.plugin.trim() === "") {
     throw new Error("--plugin must be a non-empty plugin name");
+  }
+  if (args.effectDir !== null && args.effectDir.trim() === "") {
+    throw new Error("--effect-dir must be a non-empty path");
   }
   if (!Number.isFinite(args.top) || args.top <= 0) {
     throw new Error("--top must be a positive integer");
@@ -463,6 +473,104 @@ function collectTriggerAudit(skills, top) {
   };
 }
 
+function listJsonFiles(path) {
+  if (!isDirectory(path)) {
+    return [];
+  }
+  return readdirSync(path, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && entry.name.endsWith(".json"))
+    .map((entry) => join(path, entry.name))
+    .sort();
+}
+
+function expectationSummary(run) {
+  const expectations = Array.isArray(run.expectations) ? run.expectations : [];
+  const passed = expectations.filter((item) => item.passed === true).length;
+  const total = expectations.length;
+  return {
+    passed,
+    failed: total - passed,
+    total,
+    passRate: total ? passed / total : 0,
+  };
+}
+
+function collectEffectAudit(repoRoot, skills, effectDirArg, pluginFilter) {
+  const effectDir = resolve(repoRoot, effectDirArg ?? "tests/fixtures/skill-effect-benchmarks");
+  const files = listJsonFiles(effectDir);
+  const skillIds = new Set(skills.map((skill) => skill.id));
+  const runs = [];
+  const invalidRuns = [];
+  let excludedRuns = 0;
+
+  for (const file of files) {
+    const data = JSON.parse(readFileSync(file, "utf-8"));
+    for (const run of data.runs ?? []) {
+      if (!skillIds.has(run.skill)) {
+        if (!pluginFilter) {
+          invalidRuns.push({ file: formatPath(repoRoot, file), skill: run.skill, promptId: run.prompt_id ?? null });
+        }
+        excludedRuns += 1;
+        continue;
+      }
+      const summary = expectationSummary(run);
+      const item = {
+        ...run,
+        file: formatPath(repoRoot, file),
+        summary,
+      };
+      runs.push(item);
+    }
+  }
+
+  const withSkillRuns = runs.filter((run) => run.configuration === "with_skill");
+  const baselineRuns = runs.filter((run) => ["baseline", "without_skill", "old_skill"].includes(run.configuration));
+  const byPair = new Map();
+  for (const run of runs) {
+    const key = `${run.skill}#${run.prompt_id ?? "(unknown)"}`;
+    if (!byPair.has(key)) {
+      byPair.set(key, { skill: run.skill, promptId: run.prompt_id ?? null, withSkill: null, baseline: null });
+    }
+    const pair = byPair.get(key);
+    if (run.configuration === "with_skill") {
+      pair.withSkill = run.summary.passRate;
+    } else if (["baseline", "without_skill", "old_skill"].includes(run.configuration)) {
+      pair.baseline = run.summary.passRate;
+    }
+  }
+  const pairs = [...byPair.values()].filter((pair) => pair.withSkill !== null && pair.baseline !== null);
+  const withSkillPassRate = withSkillRuns.length
+    ? withSkillRuns.reduce((sum, run) => sum + run.summary.passRate, 0) / withSkillRuns.length
+    : 0;
+  const baselinePassRate = baselineRuns.length
+    ? baselineRuns.reduce((sum, run) => sum + run.summary.passRate, 0) / baselineRuns.length
+    : 0;
+  const assertionTotals = runs.reduce(
+    (totals, run) => ({
+      passed: totals.passed + run.summary.passed,
+      failed: totals.failed + run.summary.failed,
+      total: totals.total + run.summary.total,
+    }),
+    { passed: 0, failed: 0, total: 0 },
+  );
+
+  return {
+    exists: files.length > 0,
+    dir: formatPath(repoRoot, effectDir),
+    files: files.map((file) => formatPath(repoRoot, file)),
+    runs: runs.length,
+    runPairs: pairs.length,
+    skillsBenchmarked: [...new Set(pairs.map((pair) => pair.skill))].sort(),
+    withSkillPassRate: Number(withSkillPassRate.toFixed(4)),
+    baselinePassRate: Number(baselinePassRate.toFixed(4)),
+    deltaPassRate: Number((withSkillPassRate - baselinePassRate).toFixed(4)),
+    assertionTotals,
+    invalidRuns,
+    excludedRuns,
+    pairs,
+  };
+}
+
 function scoreRatio(numerator, denominator, points) {
   if (denominator === 0) {
     return points;
@@ -470,7 +578,7 @@ function scoreRatio(numerator, denominator, points) {
   return (numerator / denominator) * points;
 }
 
-function collectScores(skills, staticAudit, csoAudit, evalAudit, triggerAudit) {
+function collectScores(skills, staticAudit, csoAudit, evalAudit, triggerAudit, effectAudit) {
   const total = skills.length;
   const staticPenalty = Math.min(
     25,
@@ -488,8 +596,15 @@ function collectScores(skills, staticAudit, csoAudit, evalAudit, triggerAudit) {
     scoreRatio(csoAudit.passCount, total, 5) +
     Math.max(0, 5 - Math.min(5, triggerAudit.conflicts.length + triggerAudit.thinDescriptions.length * 0.25));
   const maintainability = Math.max(0, 5 - Math.min(5, staticAudit.over500Lines.length + staticAudit.brokenLinks.length * 0.5));
-  const availablePoints = 60;
-  const earnedPoints = staticQuality + triggerQuality + maintainability;
+  const effectQuality = effectAudit.runPairs > 0
+    ? Math.min(20, effectAudit.withSkillPassRate * 12 + Math.max(0, effectAudit.deltaPassRate) * 8)
+    : null;
+  const availablePoints = effectQuality === null ? 60 : 80;
+  const earnedPoints = staticQuality + triggerQuality + maintainability + (effectQuality ?? 0);
+  const unscoredDimensions = ["runtimeTelemetry: depends on installed hook telemetry for real sessions"];
+  if (effectQuality === null) {
+    unscoredDimensions.unshift("effectQuality: requires with-skill vs baseline task runs");
+  }
 
   return {
     availablePoints,
@@ -499,11 +614,9 @@ function collectScores(skills, staticAudit, csoAudit, evalAudit, triggerAudit) {
       staticQuality: Number(staticQuality.toFixed(1)),
       triggerQuality: Number(triggerQuality.toFixed(1)),
       maintainability: Number(maintainability.toFixed(1)),
+      ...(effectQuality === null ? {} : { effectQuality: Number(effectQuality.toFixed(1)) }),
     },
-    unscoredDimensions: [
-      "effectQuality: requires with-skill vs baseline task runs",
-      "runtimeTelemetry: depends on installed hook telemetry for real sessions",
-    ],
+    unscoredDimensions,
   };
 }
 
@@ -513,7 +626,7 @@ function countCsoBySeverity(csoAudit, severity) {
   ).length;
 }
 
-function buildRecommendations(skills, staticAudit, csoAudit, evalAudit, triggerAudit) {
+function buildRecommendations(skills, staticAudit, csoAudit, evalAudit, triggerAudit, effectAudit) {
   const recommendations = [];
 
   if (
@@ -542,10 +655,19 @@ function buildRecommendations(skills, staticAudit, csoAudit, evalAudit, triggerA
   if (triggerAudit.conflicts.length > 0) {
     recommendations.push(`P2: 复核 ${triggerAudit.conflicts.length} 组同插件触发词重叠，优先用 description 排他条件降低抢触发。`);
   }
+  if (effectAudit.invalidRuns.length > 0) {
+    recommendations.push(`P1: 修复 ${effectAudit.invalidRuns.length} 条 effect benchmark 中不存在的 skill id。`);
+  }
   if (staticAudit.over500Lines.length > 0) {
     recommendations.push(`P2: ${staticAudit.over500Lines.length} 个 SKILL.md 超 500 行，拆分到 references/ 以保持渐进加载。`);
   }
-  recommendations.push("P2: 对低分 skill 追加 with-skill vs baseline 效果评测；本报告暂不声称真实任务效果分。");
+  if (effectAudit.runPairs === 0) {
+    recommendations.push("P2: 对低分 skill 追加 with-skill vs baseline 效果评测；本报告暂不声称真实任务效果分。");
+  } else if (effectAudit.skillsBenchmarked.length < skills.length) {
+    recommendations.push(
+      `P2: 已有 ${effectAudit.skillsBenchmarked.length} 个 skill 的效果评测；继续扩展到下一批高频 skill，避免样本偏小。`,
+    );
+  }
 
   return recommendations;
 }
@@ -556,7 +678,8 @@ function buildReport(args) {
   const csoAudit = collectCsoAudit(skills);
   const evalAudit = collectEvalAudit(skills);
   const triggerAudit = collectTriggerAudit(skills, args.top);
-  const scores = collectScores(skills, staticAudit, csoAudit, evalAudit, triggerAudit);
+  const effectAudit = collectEffectAudit(args.repoRoot, skills, args.effectDir, args.plugin);
+  const scores = collectScores(skills, staticAudit, csoAudit, evalAudit, triggerAudit, effectAudit);
 
   return {
     scope: {
@@ -569,13 +692,16 @@ function buildReport(args) {
       automatedScore: scores.automatedScore,
       evalCoverage: skills.length ? Number(((evalAudit.withEvals / skills.length) * 100).toFixed(1)) : 100,
       csoPassRate: skills.length ? Number(((csoAudit.passCount / skills.length) * 100).toFixed(1)) : 100,
+      effectBenchmarkedSkills: effectAudit.skillsBenchmarked.length,
+      effectScore: scores.dimensions.effectQuality ?? null,
     },
     scores,
     static: staticAudit,
     cso: csoAudit,
     evals: evalAudit,
     trigger: triggerAudit,
-    recommendations: buildRecommendations(skills, staticAudit, csoAudit, evalAudit, triggerAudit),
+    effect: effectAudit,
+    recommendations: buildRecommendations(skills, staticAudit, csoAudit, evalAudit, triggerAudit, effectAudit),
   };
 }
 
@@ -595,6 +721,10 @@ function printHumanReport(report) {
   console.log(`- CSO violations: ${report.cso.violationCount}`);
   console.log(`- Broken relative links: ${report.static.brokenLinks.length}`);
   console.log(`- Trigger conflicts shown: ${report.trigger.conflicts.length}`);
+  console.log(`- Effect benchmarked skills: ${report.effect.skillsBenchmarked.length}`);
+  if (report.effect.runPairs > 0) {
+    console.log(`- Effect pass rate: with_skill=${Math.round(report.effect.withSkillPassRate * 100)}%, baseline=${Math.round(report.effect.baselinePassRate * 100)}%, delta=${Math.round(report.effect.deltaPassRate * 100)}pp`);
+  }
   console.log("");
   console.log("## Recommendations");
   for (const recommendation of report.recommendations) {
