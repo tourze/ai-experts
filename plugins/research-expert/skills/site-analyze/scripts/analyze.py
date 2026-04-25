@@ -9,7 +9,7 @@ analyze.py - 站点综合分析主入口
   Phase 3: 对 traceroute 每一跳查询 IP 归属
   Phase 4: 汇总输出站点画像
 """
-import sys, json, os, time
+import sys, json, os, time, subprocess
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import importlib.util
 
@@ -42,7 +42,7 @@ def check_env():
     env_file = MODERN_ENV_FILE if os.path.exists(MODERN_ENV_FILE) else LEGACY_ENV_FILE
     if not os.path.exists(env_file):
         print("[setup] First run: probing network environment...", file=sys.stderr)
-        os.system(f"bash {os.path.join(SCRIPT_DIR, '00_probe_env.sh')}")
+        subprocess.run(["node", os.path.join(SCRIPT_DIR, "00_probe_env.mjs")], check=False)
         env_file = LEGACY_ENV_FILE
     try:
         with open(env_file) as f:
