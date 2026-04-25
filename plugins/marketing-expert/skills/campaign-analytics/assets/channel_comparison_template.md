@@ -155,4 +155,4 @@ How each channel is valued under different attribution models:
 
 ---
 
-*Template from campaign-analytics skill. Populate with data from attribution_analyzer.mjs, funnel_analyzer.mjs, and campaign_roi_calculator.py.*
+*Template from campaign-analytics skill. Populate with data from attribution_analyzer.mjs, funnel_analyzer.mjs, and campaign_roi_calculator.mjs.*

@@ -21,6 +21,7 @@ test("Node 脚本通过语法检查", () => {
     `${pluginRoot}/skills/copy-editing/scripts/readability_scorer.mjs`,
     `${pluginRoot}/skills/competitor-alternatives/scripts/comparison_matrix_builder.mjs`,
     `${campaignAnalyticsRoot}/scripts/attribution_analyzer.mjs`,
+    `${campaignAnalyticsRoot}/scripts/campaign_roi_calculator.mjs`,
     `${campaignAnalyticsRoot}/scripts/funnel_analyzer.mjs`,
   ];
 
@@ -225,4 +226,46 @@ test("attribution_analyzer.mjs 输出稳定 JSON 归因结果", () => {
   const linearOutput = JSON.parse(linearOnly.stdout);
   assert.deepEqual(Object.keys(linearOutput.models), ["linear"]);
   assert.equal(linearOutput.models.linear.organic_search, 666.67);
+});
+
+test("campaign_roi_calculator.mjs 输出稳定 JSON ROI 指标", () => {
+  const result = run("node", [
+    `${campaignAnalyticsRoot}/scripts/campaign_roi_calculator.mjs`,
+    `${campaignAnalyticsRoot}/assets/sample_campaign_data.json`,
+    "--format",
+    "json",
+  ]);
+
+  assert.equal(result.status, 0, result.stderr);
+  const output = JSON.parse(result.stdout);
+  assert.equal(output.portfolio_summary.total_campaigns, 5);
+  assert.equal(output.portfolio_summary.total_spend, 34000);
+  assert.equal(output.portfolio_summary.total_revenue, 99000);
+  assert.equal(output.portfolio_summary.portfolio_roi_pct, 191.18);
+  assert.equal(output.portfolio_summary.blended_cpa, 161.9);
+  assert.deepEqual(output.portfolio_summary.underperforming_campaigns, [
+    "Spring Email Campaign",
+    "Facebook Awareness Q1",
+    "LinkedIn B2B Outreach",
+  ]);
+  assert.deepEqual(output.portfolio_summary.channel_summary.paid_social, {
+    spend: 14000,
+    revenue: 17000,
+    roi_pct: 21.43,
+    roas: 1.21,
+    leads: 250,
+    customers: 30,
+  });
+
+  const springEmail = output.campaigns.find((campaign) => campaign.name === "Spring Email Campaign");
+  assert.equal(springEmail.metrics.roas, 5);
+  assert.equal(springEmail.metrics.cpa, 111.11);
+  assert.deepEqual(springEmail.flags, [
+    "ROAS (5.00x) is below industry low (30.0x) for email",
+    "CPA ($111.11) exceeds industry high ($40.00) for email",
+  ]);
+
+  const linkedin = output.campaigns.find((campaign) => campaign.name === "LinkedIn B2B Outreach");
+  assert.equal(linkedin.metrics.profit, -1000);
+  assert.ok(linkedin.flags.includes("Campaign is unprofitable: $-1,000.00 net loss"));
 });

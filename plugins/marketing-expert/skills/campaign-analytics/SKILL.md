@@ -26,7 +26,7 @@ node scripts/attribution_analyzer.mjs assets/sample_campaign_data.json --format 
 - ROI / ROAS 计算：
 
 ```bash
-python3 scripts/campaign_roi_calculator.py assets/sample_campaign_data.json --format json
+node scripts/campaign_roi_calculator.mjs assets/sample_campaign_data.json --format json
 ```
 
 - 漏斗瓶颈分析：

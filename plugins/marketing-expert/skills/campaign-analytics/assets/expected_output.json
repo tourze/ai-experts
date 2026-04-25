@@ -76,7 +76,7 @@
   },
 
   "campaign_roi_calculator": {
-    "_command": "python scripts/campaign_roi_calculator.py assets/sample_campaign_data.json --format json",
+    "_command": "node scripts/campaign_roi_calculator.mjs assets/sample_campaign_data.json --format json",
     "portfolio_summary": {
       "total_campaigns": 5,
       "total_spend": 34000.0,
