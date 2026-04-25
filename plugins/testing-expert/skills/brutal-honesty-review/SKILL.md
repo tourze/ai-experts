@@ -20,8 +20,8 @@ description: 当需要不拐弯的技术批评时使用。适用于”狠狠 rev
 - 若无明确授权，不对新人首个 PR、低心理安全团队、公开场合使用。
 - 如果没有发现问题，要明确写“未发现明确缺陷”，并说明剩余风险。
 - 需要脚本辅助时可引用：
-  - [assess-code.sh](./scripts/assess-code.sh)
-  - [assess-tests.sh](./scripts/assess-tests.sh)
+  - [assess-code.mjs](./scripts/assess-code.mjs)
+  - [assess-tests.mjs](./scripts/assess-tests.mjs)
   - [output.json](./schemas/output.json)
 
 ## 代码模式

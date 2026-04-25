@@ -33,13 +33,13 @@ curl -sL -o /dev/null -w '%{url_effective}' 'https://v.douyin.com/xxxxx/' \
 用浏览器拿到音频直链后，下载音频：
 
 ```bash
-bash scripts/download_audio.sh "<audio_url>" ./audio.mp4
+node scripts/download_audio.mjs "<audio_url>" ./audio.mp4
 ```
 
 转录音频：
 
 ```bash
-bash scripts/transcribe.sh ./audio.mp4 ./output models/ggml-small.bin zh
+node scripts/transcribe.mjs ./audio.mp4 ./output models/ggml-small.bin zh
 ```
 
 标准摘要模板：
@@ -65,7 +65,7 @@ bash scripts/transcribe.sh ./audio.mp4 ./output models/ggml-small.bin zh
 
 - 已确认输入是抖音分享链接或视频直链。
 - 已说明“音频直链通常需要浏览器拦截”。
-- [`scripts/download_audio.sh`](scripts/download_audio.sh) 与 [`scripts/transcribe.sh`](scripts/transcribe.sh) 的参数顺序保持一致。
+- [`scripts/download_audio.mjs`](scripts/download_audio.mjs) 与 [`scripts/transcribe.mjs`](scripts/transcribe.mjs) 的参数顺序保持一致。
 - 转录前已确认 `ffmpeg`、`ffprobe`、`whisper-cli` 和模型文件可用。
 - 摘要中区分了“视频明确说了什么”和“基于内容的整理归纳”。
 - 需要飞书落库时，已对照 [飞书同步说明](references/feishu-sync.md)。
@@ -84,7 +84,7 @@ yt-dlp 'https://v.douyin.com/xxx/'
 ```bash
 # 1. 打开 v.douyin.com/xxx/ DevTools → Network → 筛 .mp4
 # 2. 复制音频请求 URL
-bash scripts/download_audio.sh “<audio_url>” ./audio.mp4
+node scripts/download_audio.mjs “<audio_url>” ./audio.mp4
 ```
 
 ### FAIL: 大段逐字稿

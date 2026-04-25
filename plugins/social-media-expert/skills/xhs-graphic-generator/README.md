@@ -15,7 +15,7 @@
 xhs-graphic-generator/
 ├── SKILL.md              # Agent Skill 主文件 - 定义工作流程
 ├── scripts/
-│   └── generate.sh       # 图片生成脚本 (调用 API)
+│   └── generate.mjs      # 图片生成脚本 (调用 API)
 ├── references/
 │   ├── prompt-guide.md   # Prompt 编写规范与示例
 │   ├── styles.md         # 视觉风格配色方案
@@ -36,7 +36,7 @@ cp .env.example .env
 ### 2. 使用脚本生成图片
 
 ```bash
-bash scripts/generate.sh "your prompt here" "3:4" "2K"
+node scripts/generate.mjs "your prompt here" "3:4" "2K"
 ```
 
 ## API 配置说明
@@ -51,7 +51,7 @@ bash scripts/generate.sh "your prompt here" "3:4" "2K"
 
 ### 使用其他 API 提供商
 
-如果你使用的是 **官方 API** 或 **OpenRouter** 等其他服务商，需要修改 `scripts/generate.sh` 中的以下部分：
+如果你使用的是 **官方 API** 或 **OpenRouter** 等其他服务商，需要修改 `scripts/generate.mjs` 中的以下部分：
 
 ```bash
 # 修改 API 端点

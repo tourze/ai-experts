@@ -52,6 +52,5 @@ claude plugin uninstall debug-expert --scope project
 python3 -m json.tool plugins/debug-expert/.claude-plugin/plugin.json >/dev/null
 python3 -m json.tool plugins/debug-expert/hooks/hooks.json >/dev/null
 find plugins/debug-expert -name '*.mjs' -print0 | xargs -0 -n1 node --check
-find plugins/debug-expert -name '*.sh' -print0 | xargs -0 -n1 bash -n
 node --test plugins/debug-expert/tests/*.test.mjs
 ```

@@ -56,9 +56,9 @@ claude plugin uninstall social-media-expert --scope project
 jq empty plugins/social-media-expert/.claude-plugin/plugin.json
 jq empty plugins/social-media-expert/hooks/hooks.json
 node --check plugins/social-media-expert/hooks/dispatch.mjs
-bash -n plugins/social-media-expert/skills/douyin-video-summary/scripts/download_audio.sh
-bash -n plugins/social-media-expert/skills/douyin-video-summary/scripts/transcribe.sh
-bash -n plugins/social-media-expert/skills/xhs-graphic-generator/scripts/generate.sh
+node --check plugins/social-media-expert/skills/douyin-video-summary/scripts/download_audio.mjs
+node --check plugins/social-media-expert/skills/douyin-video-summary/scripts/transcribe.mjs
+node --check plugins/social-media-expert/skills/xhs-graphic-generator/scripts/generate.mjs
 node --check plugins/social-media-expert/skills/social-platform-safety/scripts/content_filter.mjs
 node --test plugins/social-media-expert/tests/*.test.mjs
 ```

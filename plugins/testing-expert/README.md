@@ -39,8 +39,8 @@ testing-expert/
 
 ```bash
 node --check hooks/dispatch.mjs
-bash -n skills/brutal-honesty-review/scripts/assess-code.sh
-bash -n skills/brutal-honesty-review/scripts/assess-tests.sh
+node --check skills/brutal-honesty-review/scripts/assess-code.mjs
+node --check skills/brutal-honesty-review/scripts/assess-tests.mjs
 ```
 
 ## 安装
