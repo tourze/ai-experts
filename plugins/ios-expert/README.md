@@ -53,8 +53,8 @@ claude plugin validate .
 jq empty .claude-plugin/plugin.json
 jq empty hooks/hooks.json
 find hooks -name '*.mjs' -print0 | xargs -0 -n1 node --check
+find skills -path '*/scripts/*.mjs' -print0 | xargs -0 -n1 node --check
 find skills -path '*/scripts/*.py' -print0 | xargs -0 python3 -m py_compile
-find skills -path '*/scripts/*.sh' -print0 | xargs -0 -n1 bash -n
 node --test tests/*.test.mjs
 ```
 

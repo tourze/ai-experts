@@ -74,5 +74,4 @@ node --check plugins/docs-expert/hooks/dispatch.mjs
 node --test plugins/docs-expert/tests/*.test.mjs
 find plugins/docs-expert -type f -name '*.py' -print0 | xargs -0 python3 -m py_compile
 find plugins/docs-expert -type f \( -name '*.js' -o -name '*.mjs' \) | while read -r file; do node --check "$file"; done
-find plugins/docs-expert -type f -name '*.sh' | while read -r file; do bash -n "$file"; done
 ```
