@@ -16,9 +16,16 @@ function run(command, args, options = {}) {
   });
 }
 
+function parseJsonAfterReport(stdout) {
+  const start = stdout.indexOf("{\n");
+  assert.notEqual(start, -1, stdout);
+  return JSON.parse(stdout.slice(start));
+}
+
 test("Node 脚本通过语法检查", () => {
   const scripts = [
     `${pluginRoot}/skills/copy-editing/scripts/readability_scorer.mjs`,
+    `${pluginRoot}/skills/analytics-tracking/scripts/tracking_plan_generator.mjs`,
     `${pluginRoot}/skills/competitor-alternatives/scripts/comparison_matrix_builder.mjs`,
     `${campaignAnalyticsRoot}/scripts/attribution_analyzer.mjs`,
     `${campaignAnalyticsRoot}/scripts/campaign_roi_calculator.mjs`,
@@ -268,4 +275,26 @@ test("campaign_roi_calculator.mjs 输出稳定 JSON ROI 指标", () => {
   const linkedin = output.campaigns.find((campaign) => campaign.name === "LinkedIn B2B Outreach");
   assert.equal(linkedin.metrics.profit, -1000);
   assert.ok(linkedin.flags.includes("Campaign is unprofitable: $-1,000.00 net loss"));
+});
+
+test("tracking_plan_generator.mjs 输出稳定 JSON 埋点方案", () => {
+  const result = run("node", [
+    `${pluginRoot}/skills/analytics-tracking/scripts/tracking_plan_generator.mjs`,
+    "--json",
+  ]);
+
+  assert.equal(result.status, 0, result.stderr);
+  const output = parseJsonAfterReport(result.stdout);
+  assert.equal(output.event_taxonomy.length, 15);
+  assert.deepEqual([...output.conversion_events].sort(), [
+    "checkout_completed",
+    "demo_requested",
+    "signup_completed",
+    "trial_started",
+  ]);
+  assert.equal(output.gtm_configuration.tags.length, 20);
+  assert.equal(output.gtm_configuration.variable_count, 29);
+  assert.equal(output.gtm_configuration.trigger_count, 15);
+  assert.equal(output.consent_mode.mode, "advanced");
+  assert.equal(output.ga4_custom_dimensions.user_scoped.length, 5);
 });
