@@ -24,7 +24,7 @@ description: 当用户需要用 Simulator、xcrun simctl、设备启动、截图
 ### 环境与设备
 
 ```bash
-bash scripts/sim_health_check.sh
+node scripts/sim_health_check.mjs
 python3 scripts/sim_list.py --json
 python3 scripts/simulator_selector.py --list --json
 python3 scripts/simctl_create.py --list-devices --json
@@ -62,7 +62,7 @@ python3 scripts/simctl_shutdown.py --all
 
 ## 检查清单
 
-- 先跑 `bash scripts/sim_health_check.sh`，确认 `xcrun`、`simctl`、Python 环境可用。
+- 先跑 `node scripts/sim_health_check.mjs`，确认 `xcrun`、`simctl`、Python 环境可用。
 - 每次交互前先看 `scripts/screen_mapper.py` 或 `scripts/navigator.py --list`，不要盲点。
 - 需要日志时确认参数名：`scripts/log_monitor.py` 用 `--device-udid`，不是 `--udid`。
 - 需要脚本化输出时统一使用 `--json`；需要完整参数时直接跑 `python3 scripts/<tool>.py --help`。
