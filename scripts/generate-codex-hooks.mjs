@@ -131,6 +131,16 @@ function normalizeHookCommand(command) {
   return typeof command === "string" ? command.replaceAll("\\", "/") : "";
 }
 
+function isCurrentRepoManagedHookCommand(command, managedCommands) {
+  const normalized = normalizeHookCommand(command);
+  if (!normalized) return false;
+  if (managedCommands.has(normalized)) return true;
+
+  const normalizedRepoRoot = repoRoot.replaceAll("\\", "/");
+  return normalized.includes(`${normalizedRepoRoot}/plugins/`) &&
+    normalized.includes("/hooks/dispatch.mjs");
+}
+
 function collectManagedCommands(config) {
   const commands = new Set();
   for (const entries of Object.values(config.hooks ?? {})) {
@@ -146,7 +156,7 @@ function collectManagedCommands(config) {
 }
 
 function stripManagedHooksFromEntry(entry, managedCommands) {
-  const hooks = (entry.hooks ?? []).filter((hook) => !managedCommands.has(normalizeHookCommand(hook.command)));
+  const hooks = (entry.hooks ?? []).filter((hook) => !isCurrentRepoManagedHookCommand(hook.command, managedCommands));
   return hooks.length > 0 ? { ...entry, hooks } : null;
 }
 

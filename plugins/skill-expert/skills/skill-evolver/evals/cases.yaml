@@ -1,0 +1,43 @@
+cases:
+  - id: transfer_reference_skill_patterns
+    prompt: "把 last30days 这个 skill 喂给 bggg-creator-research，让它的数据抓取能力升级一下"
+    fixtures: []
+    rubric:
+      - "treats the task as source skill to target skill pattern migration"
+      - "compares target and reference capabilities before changing files"
+      - "requires evidence and incremental validation before writing"
+    trigger_expected: true
+
+  - id: compare_without_writing
+    prompt: "帮我对比 skill-A 和 skill-B，我只想知道 B 好在哪，不需要改动"
+    fixtures: []
+    rubric:
+      - "runs or plans an A/B comparison without modifying either skill"
+      - "extracts transferable patterns rather than copying text"
+      - "labels runtime evidence separately from static inference"
+    trigger_expected: true
+
+  - id: evolve_existing_skill_from_external_repo
+    prompt: "我 clone 了一个外部 skill 仓库，想吸收它的评测和模式库设计来完善我们自己的 skill-expert"
+    fixtures: []
+    rubric:
+      - "handles an external reference skill or skill repository as source B"
+      - "performs safety review before using external scripts"
+      - "maps improvements onto the local skill governance system"
+    trigger_expected: true
+
+  - id: negative_create_new_skill
+    prompt: "我想把团队的发布检查流程做成一个新的 SKILL.md，并帮我设计第一批测试用例"
+    fixtures: []
+    rubric:
+      - "does not activate two-skill evolution workflow"
+      - "new skill creation belongs to skill-creator"
+    trigger_expected: false
+
+  - id: negative_score_single_skill
+    prompt: "只帮我给这个 SKILL.md 打分，按知识增量、渐进加载和反模式列扣分点"
+    fixtures: []
+    rubric:
+      - "does not activate transfer or A/B migration workflow"
+      - "single-skill design scoring belongs to skill-judge"
+    trigger_expected: false

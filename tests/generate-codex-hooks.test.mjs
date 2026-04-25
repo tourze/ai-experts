@@ -140,6 +140,52 @@ test("generate-codex-hooks --write --user 保留非 ai-experts hooks", () => {
   }
 });
 
+test("generate-codex-hooks --write --user 清理当前仓库已废弃的 ai-experts hook", () => {
+  const codexHome = mkdtempSync(join(tmpdir(), "ai-experts-codex-hooks-stale-"));
+  const hooksPath = join(codexHome, "hooks.json");
+  const staleCommand = `node ${repoRoot}/plugins/retired-expert/hooks/dispatch.mjs stop`;
+  const otherRepoCommand = "node /tmp/other-ai-experts/plugins/demo/hooks/dispatch.mjs stop";
+  const customCommand = "node /custom/hooks/dispatch.mjs stop";
+
+  try {
+    writeFileSync(
+      hooksPath,
+      `${JSON.stringify({
+        hooks: {
+          Stop: [
+            {
+              matcher: ".*",
+              hooks: [
+                { type: "command", command: staleCommand },
+                { type: "command", command: otherRepoCommand },
+                { type: "command", command: customCommand },
+              ],
+            },
+          ],
+        },
+      }, null, 2)}\n`,
+      "utf-8",
+    );
+
+    const write = spawnSync(process.execPath, ["scripts/generate-codex-hooks.mjs", "--write", "--user"], {
+      encoding: "utf-8",
+      env: {
+        ...process.env,
+        CODEX_HOME: codexHome,
+      },
+    });
+
+    assert.equal(write.status, 0, write.stderr || write.stdout);
+    const commands = hookCommands(JSON.parse(readFileSync(hooksPath, "utf-8")));
+    assert.equal(commands.includes(staleCommand), false);
+    assert.ok(commands.includes(otherRepoCommand));
+    assert.ok(commands.includes(customCommand));
+    assert.ok(commands.some((command) => command.includes(`${repoRoot}/plugins/`)));
+  } finally {
+    rmSync(codexHome, { recursive: true, force: true });
+  }
+});
+
 test("generate-codex-hooks --remove --user 只移除 ai-experts hooks", () => {
   const codexHome = mkdtempSync(join(tmpdir(), "ai-experts-codex-hooks-remove-"));
   const hooksPath = join(codexHome, "hooks.json");
