@@ -59,6 +59,7 @@ python3 -m json.tool plugins/finance-expert/.claude-plugin/plugin.json >/dev/nul
 python3 -m json.tool plugins/finance-expert/hooks/hooks.json >/dev/null
 node --check plugins/finance-expert/hooks/dispatch.mjs
 node --check plugins/finance-expert/skills/financial-analyst/scripts/ratio_calculator.mjs
+node --check plugins/finance-expert/skills/financial-analyst/scripts/dcf_valuation.mjs
 node --test plugins/finance-expert/tests/*.test.mjs
 python3 -m unittest discover -s plugins/finance-expert/tests -p 'test_*.py'
 python3 -m py_compile $(find plugins/finance-expert -name '*.py' -print)
