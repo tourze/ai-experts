@@ -1,6 +1,6 @@
 ---
 name: agent-permission-safety
-description: "在设计 AI Agent 的权限系统、信任谱系、fail-closed 策略、三阶段检查管道或 bypass-immune 操作时使用。英文触发词 agent permission / trust spectrum / fail-closed / permission pipeline / agent safety。"
+description: "当用户要设计智能体权限系统、trust spectrum、fail-closed 策略、permission pipeline 或 bypass-immune 操作时使用。英文触发词 permission pipeline / trust spectrum / fail-closed / agent safety。"
 ---
 
 # Agent Permission & Safety

@@ -1,6 +1,6 @@
 ---
 name: prompt-lab
-description: 当用户要系统化诊断和优化 prompt 时使用。
+description: 当用户要对已有 prompt 做系统化诊断、设计 baseline/variants、编写测试集和评分 rubric、定位失败模式或做 prompt A/B 实验时使用。
 ---
 
 # prompt-lab

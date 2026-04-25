@@ -1,6 +1,6 @@
 ---
 name: aeo-geo
-description: "在需要让内容被 AI 搜索引擎（ChatGPT、Perplexity、Gemini）引用、优化 Featured Snippet 捕获、设计 AI 可提取的内容块或做 AI 引用审计时使用；若任务是传统搜索排名，配合 `seo`。"
+description: "当用户要优化 AI 搜索引用、ChatGPT/Perplexity/Gemini 可提取内容块、Featured Snippet 或 answer engine visibility 时使用；传统搜索排名不是本 skill 重点。"
 ---
 
 # 答案引擎与生成引擎优化（aeo-geo）

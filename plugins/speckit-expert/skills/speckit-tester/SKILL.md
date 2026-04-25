@@ -1,6 +1,6 @@
 ---
 name: speckit-tester
-description: 自动识别测试框架，执行测试并汇总覆盖率报告。
+description: 当用户要识别测试框架并运行 Jest、Vitest、Pytest、Go test、Cargo test 或覆盖率检查时使用。
 ---
 
 ## 角色

@@ -1,6 +1,6 @@
 ---
 name: agent-tool-design
-description: "在设计 AI Agent 的工具接口、安全元数据、延迟加载、结果预算或 token 经济策略时使用。英文触发词 agent tool design / tool interface / deferred loading / token budget / tool schema。"
+description: "当用户要设计工具接口、安全元数据、deferred loading、result budget 或 tool schema 时使用。英文触发词 tool interface / tool metadata / deferred loading / token budget。"
 ---
 
 # Agent Tool Design

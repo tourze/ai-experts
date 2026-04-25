@@ -1,6 +1,6 @@
 ---
 name: speckit-plan
-description: 基于规格生成技术实现计划（数据模型、接口契约、研究结论与落地步骤）。
+description: 当用户要从 spec.md 制定技术计划、数据模型、接口契约、research 或 quickstart 设计时使用。
 ---
 
 ## 角色

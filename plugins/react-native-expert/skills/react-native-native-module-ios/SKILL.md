@@ -1,6 +1,6 @@
 ---
 name: react-native-native-module-ios
-description: "当用户要用 ObjC/Swift 实现 React Native iOS 原生模块或 TurboModule 时使用。用户提到 iOS 原生模块、ObjC++ TurboModule、podspec、Swift 桥接时触发。"
+description: "当用户要用 Swift/ObjC 编写 iOS 侧能力、podspec、Swift 桥接、RCT_EXPORT、ObjC++ 适配或 Foundation 框架适配时使用。"
 ---
 
 # iOS 原生模块开发

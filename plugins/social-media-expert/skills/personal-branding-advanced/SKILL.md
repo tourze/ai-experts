@@ -1,6 +1,6 @@
 ---
 name: personal-branding-advanced
-description: 当用户要构建或完善个人品牌定位与内容人设时使用。
+description: 当用户要构建个人品牌定位、内容人设、差异化标签、长期栏目、信任资产或专家影响力路径时使用。
 ---
 
 # 高级个人品牌建设

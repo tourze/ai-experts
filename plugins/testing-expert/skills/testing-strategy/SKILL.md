@@ -1,6 +1,6 @@
 ---
 name: testing-strategy
-description: 当需要设计测试计划、确定测试分层或回答“这块应该怎么测”时使用。
+description: 当需要为模块、接口或功能设计轻量测试计划、测试分层、unit/integration/E2E 边界或回答“这块应该怎么测”时使用。
 ---
 
 # 测试计划设计

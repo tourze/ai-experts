@@ -1,6 +1,6 @@
 ---
 name: upgrading-react-native
-description: 当用户要升级 React Native 或 Expo SDK 版本时使用。用户提到升级 RN、升级 Expo、rn-diff-purge、Upgrade Helper、0.x 到 0.y 时触发。
+description: 当用户要升级 RN 或 Expo SDK、处理 rn-diff-purge、Upgrade Helper、依赖迁移、breaking changes 或版本跨度时使用。
 ---
 
 # 升级 React Native

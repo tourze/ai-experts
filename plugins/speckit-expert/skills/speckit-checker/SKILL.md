@@ -1,6 +1,6 @@
 ---
 name: speckit-checker
-description: 自动检测项目技术栈并运行静态检查，输出聚合报告。
+description: 当用户要检测项目技术栈并运行可用静态检查、lint、typecheck 或测试前质量门禁时使用。
 ---
 
 ## 用户输入

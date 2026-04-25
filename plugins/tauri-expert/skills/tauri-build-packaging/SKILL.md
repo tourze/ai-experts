@@ -1,6 +1,6 @@
 ---
 name: tauri-build-packaging
-description: "在构建、签名、分发 Tauri 应用时使用：bundle 配置、平台目标、代码签名与公证、自动更新、sidecar 打包、CI/CD、体积优化。涉及 cargo tauri build、签名密钥、externalBin、CI 矩阵时触发。"
+description: "当用户要打包桌面应用、bundle 配置、代码签名、公证、自动更新、sidecar、externalBin、CI 矩阵或体积优化时使用。"
 ---
 
 # Tauri v2 构建与分发

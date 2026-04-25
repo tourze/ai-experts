@@ -1,6 +1,6 @@
 ---
 name: seo
-description: "在需要提升搜索可见性、修复技术 SEO、优化元数据、结构化数据与索引策略时使用；若任务是站点结构规划，可配合 `site-architecture`；若要优化 AI 搜索引用，配合 `aeo-geo`。"
+description: "当用户要提升搜索可见性、修复技术 SEO、优化元数据、结构化数据、索引策略或 Search Console 问题时使用；AEO/GEO 另走 `aeo-geo`。"
 ---
 
 # 搜索引擎优化（seo）

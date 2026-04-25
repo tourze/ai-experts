@@ -1,6 +1,6 @@
 ---
 name: feature-dev
-description: "在实现跨多个文件或涉及架构取舍的功能时使用。"
+description: "当用户要实现跨多文件、跨模块或存在架构取舍的新功能时使用。英文触发词 feature development / multi-file change / implementation plan。"
 ---
 
 # feature-dev

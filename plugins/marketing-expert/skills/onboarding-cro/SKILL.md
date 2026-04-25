@@ -1,6 +1,6 @@
 ---
 name: onboarding-cro
-description: 当用户要优化注册后引导、用户激活、首次体验或缩短 time-to-value 时使用。触发词包括"激活率""aha moment""用户注册后不用""空态设计""引导清单"。若问题在注册流程本身，改用 `signup-flow-cro`；若是邮件引导序列，改用 `email-sequence`。
+description: 当用户要优化注册后引导、用户激活、首次体验、aha moment、空态设计、引导清单或 time-to-value 时使用；注册表单用 `signup-flow-cro`。
 ---
 
 # 注册后引导与用户激活优化（onboarding-cro）

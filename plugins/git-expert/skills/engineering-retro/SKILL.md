@@ -1,6 +1,6 @@
 ---
 name: engineering-retro
-description: 当用户需要回顾最近一段时间的开发进度、提交量或热点文件时使用。
+description: 当用户需要基于 git log 回顾近期开发进度、提交节奏、热点文件、协作模式或工程复盘指标时使用。
 context: fork
 agent: git-expert:git-historian
 metadata:

@@ -1,6 +1,6 @@
 ---
 name: react-native-bundle-size
-description: 当用户要分析或优化 React Native 包体积时使用。用户提到 JS bundle 大、tree shaking、barrel exports、R8、Hermes bytecode、source-map-explorer、包体积膨胀、依赖瘦身时触发。
+description: 当用户要分析包体积、bundle 膨胀、tree shaking、barrel exports、R8、Hermes bytecode、source-map 或依赖瘦身时使用。
 ---
 
 # React Native 包体积优化

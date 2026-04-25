@@ -1,6 +1,6 @@
 ---
 name: similarity-search-patterns
-description: 当用户要实现语义搜索或向量检索系统时使用。
+description: 当用户要实现 semantic search、向量检索、相似度匹配、hybrid search、metadata filters、reranking 或检索架构设计时使用。
 ---
 
 # similarity-search-patterns

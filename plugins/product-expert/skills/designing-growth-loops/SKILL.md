@@ -1,6 +1,6 @@
 ---
 name: designing-growth-loops
-description: 当用户要设计增长飞轮、推荐机制或产品驱动获客策略时使用。
+description: 当用户要设计增长飞轮、邀请推荐、内容供给循环、产品驱动获客、留存复利或 viral loop 机制时使用。
 ---
 
 # 设计增长飞轮

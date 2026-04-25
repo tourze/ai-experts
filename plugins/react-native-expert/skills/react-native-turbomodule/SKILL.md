@@ -1,6 +1,6 @@
 ---
 name: react-native-turbomodule
-description: "当用户要创建或迁移 React Native 0.76+ TurboModule 时使用。用户提到 TurboModule、TurboModuleRegistry、Codegen、codegenConfig 时触发。"
+description: "当用户要创建或迁移 New Architecture TurboModule、TurboModuleRegistry、codegenConfig、JSI spec 或 typed native spec 时使用。"
 ---
 
 # TurboModule 开发

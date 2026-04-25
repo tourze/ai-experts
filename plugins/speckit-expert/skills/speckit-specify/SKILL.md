@@ -1,6 +1,6 @@
 ---
 name: speckit-specify
-description: 根据自然语言需求生成或更新特性规格（默认当前分支，不新建分支）。
+description: 当用户要把自然语言需求转成 spec.md、更新特性规格、用户故事或验收标准时使用。
 ---
 
 ## 用户输入

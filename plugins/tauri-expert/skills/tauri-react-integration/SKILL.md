@@ -1,6 +1,6 @@
 ---
 name: tauri-react-integration
-description: "在 React + Tauri 集成时使用：invoke() TypeScript 封装、useInvoke/useTauriEvent Hook、Rust-React 状态同步、WebView 限制、React Router 深链接、IPC Error Boundary。涉及 @tauri-apps/api + React hooks、listen/unlisten 生命周期时触发。"
+description: "当用户要集成 React 前端、invoke 封装、useInvoke Hook、事件监听生命周期、Router 深链接、WebView 限制或错误边界时使用。"
 ---
 
 # Tauri v2 + React 集成

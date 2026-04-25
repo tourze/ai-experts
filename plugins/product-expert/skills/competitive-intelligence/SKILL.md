@@ -1,6 +1,6 @@
 ---
 name: competitive-intelligence
-description: 当用户要做竞品情报、战斗卡、近期动态跟踪或对比自身与竞品差异时使用。
+description: 当用户要做竞品情报、battlecard、竞品动态跟踪、功能差距、市场定位或销售对抗信息整理时使用。
 ---
 
 # 竞品情报

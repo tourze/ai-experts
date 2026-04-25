@@ -1,6 +1,6 @@
 ---
 name: speckit-constitution
-description: 创建或更新项目宪章（Source of Law），并同步模板与流程约束。
+description: 当用户要创建或更新项目宪章、Source of Law、原则版本或模板流程约束时使用。
 ---
 
 ## 角色

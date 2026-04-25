@@ -1,6 +1,6 @@
 ---
 name: swift-concurrency-expert
-description: 当用户需要审查或修复 Swift 6.2+ 并发问题时使用。适用于 actor 隔离、Sendable、安全迁移和 SwiftUI / UIKit 并发问题排查。
+description: 当用户需要审查或修复 Swift 6.2+ concurrency、actor isolation、Sendable、Task、MainActor 或数据竞争迁移时使用。
 ---
 
 # Swift 并发审查

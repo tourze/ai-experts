@@ -1,6 +1,6 @@
 ---
 name: code-refiner
-description: "在需要保持行为不变的前提下简化代码、降低复杂度或提升可读性时使用。"
+description: "当用户要在保持行为不变前提下简化代码、降低复杂度、清理嵌套、改进命名或提升可读性时使用。英文触发词 simplify code / reduce complexity / code cleanup。"
 ---
 
 # code-refiner

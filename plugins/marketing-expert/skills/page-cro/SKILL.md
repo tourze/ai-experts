@@ -1,6 +1,6 @@
 ---
 name: page-cro
-description: 当用户要优化任何营销页面的转化率时使用，包括首页、落地页、定价页、功能页和博客。用户说 CRO、转化率低、没人注册、跳出率太高时触发。若问题在注册流程本身，改用 `signup-flow-cro`；若在弹窗，改用 `popup-cro`；若需要整体 CRO 方法论，改用 `cro-methodology`。
+description: 当用户要诊断或提升营销页面转化率、CRO 漏斗、CTA、信任证据、跳出率或页面注册率时使用；注册流程用 `signup-flow-cro`，弹窗用 `popup-cro`。
 ---
 
 # 页面转化优化（page-cro）

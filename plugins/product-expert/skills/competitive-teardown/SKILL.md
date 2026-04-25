@@ -1,6 +1,6 @@
 ---
 name: competitive-teardown
-description: 当用户要做深度竞品拆解、定位分析或定价比较时使用。
+description: 当用户要深度拆解单个竞品的产品体验、功能结构、定价包装、定位叙事或增长路径时使用。
 ---
 
 # 竞品拆解

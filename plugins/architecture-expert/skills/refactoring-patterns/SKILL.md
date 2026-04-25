@@ -1,6 +1,6 @@
 ---
 name: refactoring-patterns
-description: "在需要使用命名化重构动作改善结构而不改变行为时使用。"
+description: "当用户要选择命名化重构手法、分离重构与功能变更、处理代码异味或保持行为不变改结构时使用。英文触发词 refactoring patterns / extract method / code smell。"
 ---
 
 # refactoring-patterns

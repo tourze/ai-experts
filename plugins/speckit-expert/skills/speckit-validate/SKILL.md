@@ -1,6 +1,6 @@
 ---
 name: speckit-validate
-description: 校验实现是否满足规格要求、验收标准与边界条件。
+description: 当用户要验证实现是否满足规格、计划、任务、验收标准或边界条件时使用。
 ---
 
 ## 角色

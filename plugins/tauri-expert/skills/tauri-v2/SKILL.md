@@ -1,6 +1,6 @@
 ---
 name: tauri-v2
-description: "在构建 Tauri v2+ 跨平台桌面或移动应用时使用。当需求中出现 Tauri、src-tauri、tauri.conf.json、invoke、Channel IPC、cargo tauri add、capabilities、插件权限等关键词时触发。"
+description: "当用户要搭建 Tauri v2 应用骨架、src-tauri、tauri.conf.json、capabilities、插件权限、命令注册或移动端支持时使用。"
 license: MIT
 version: "1.1.0"
 related-skills: rust-ownership-idioms, rust-async-patterns, typescript-magician, react-server-components

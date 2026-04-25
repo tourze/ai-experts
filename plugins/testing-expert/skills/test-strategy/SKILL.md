@@ -1,6 +1,6 @@
 ---
 name: test-strategy
-description: 当需要做生产级测试策略时使用。适用于”风险驱动测试””覆盖率怎么定””质量门怎么设””资源有限怎么分配测试投入”等请求。
+description: 当需要做生产级测试策略、风险驱动 testing strategy、quality gate、coverage target 或有限 QA 资源分配决策时使用。
 ---
 
 # 生产级测试策略

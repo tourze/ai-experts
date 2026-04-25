@@ -1,6 +1,6 @@
 ---
 name: sales-enablement
-description: 当用户要创建销售材料时使用，包括 pitch deck、one-pager、异议处理文档、demo script 或销售手册。触发词包括"sales deck""pitch deck""异议处理""demo script""销售材料"。若是竞品对比页，改用 `competitor-alternatives`；若是营销文案，改用 `copywriting`；若是冷邮件，改用 `cold-email`。
+description: 当用户要创建销售材料、sales deck、one-pager、异议处理、demo script、销售手册或买家 enablement 内容时使用；竞品页用 `competitor-alternatives`。
 ---
 
 # 销售赋能材料（sales-enablement）

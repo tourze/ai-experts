@@ -1,6 +1,6 @@
 ---
 name: speckit-clarify
-description: 识别当前规格中的关键歧义，最多提出 5 个高价值澄清问题并回写结论。
+description: 当用户要识别 spec.md 中的关键歧义、补齐验收边界或通过澄清问答更新规格时使用。
 ---
 
 ## 用户输入

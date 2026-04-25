@@ -1,6 +1,6 @@
 ---
 name: architecture-reviewer
-description: 在需要评审架构、文档或代码库的设计质量时使用。
+description: 当用户要评审架构设计、代码库结构、技术文档、扩展性、安全性或企业就绪度时使用。英文触发词 architecture review / design quality / enterprise readiness。
 ---
 
 # architecture-reviewer

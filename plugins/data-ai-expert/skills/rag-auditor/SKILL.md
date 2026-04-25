@@ -1,6 +1,6 @@
 ---
 name: rag-auditor
-description: 当用户要审计 RAG 管线质量或排查检索与生成链路故障时使用。
+description: 当用户要审计 RAG 管线、排查 retrieval failure、groundedness、hallucination、chunking、top-k 或生成答案不忠实时使用。
 ---
 
 # rag-auditor

@@ -1,6 +1,6 @@
 ---
 name: task-decomposer
-description: "在需要把需求拆成带依赖关系和测试策略的结构化任务板时使用。"
+description: "当用户要把复杂需求拆成任务板、依赖关系、关键路径、并行工作项、风险和测试策略时使用。英文触发词 task decomposition / work breakdown / dependency map。"
 ---
 
 # task-decomposer

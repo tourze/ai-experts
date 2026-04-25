@@ -1,6 +1,6 @@
 ---
 name: speckit-taskstoissues
-description: 将 tasks.md 转换为 GitHub Issues，并保持与仓库远端一致。
+description: 当用户要把 tasks.md 映射到 GitHub Issues、保留任务编号、依赖关系和验收条件时使用。
 tools: ['github/github-mcp-server/issue_write']
 ---
 

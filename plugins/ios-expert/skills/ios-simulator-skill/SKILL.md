@@ -1,6 +1,6 @@
 ---
 name: ios-simulator-skill
-description: 当用户需要在 iOS 模拟器中构建、调试、截图或做自动化验证时使用。适用于自动化验证、SwiftUI / UIKit 调试和提审前回归。
+description: 当用户需要用 Simulator、xcrun simctl、设备启动、截图、安装包、日志采集或提审前自动化回归时使用。
 ---
 
 # iOS 模拟器自动化

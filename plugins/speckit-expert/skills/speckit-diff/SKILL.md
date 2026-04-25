@@ -1,6 +1,6 @@
 ---
 name: speckit-diff
-description: 对比规格或计划文档的两个版本并输出结构化差异。
+description: 当用户要比较规格文档、计划文档或任务文档的版本差异、semantic diff、scope impact 或 test impact 时使用。
 ---
 
 ## 角色

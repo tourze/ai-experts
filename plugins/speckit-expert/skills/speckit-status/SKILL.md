@@ -1,6 +1,6 @@
 ---
 name: speckit-status
-description: 生成特性进度看板，显示完成度与阻塞项。
+description: 当用户要查看 Spec Kit 特性进度、完成度、阻塞项、缺失文件或下一步优先级时使用。
 ---
 
 ## 角色

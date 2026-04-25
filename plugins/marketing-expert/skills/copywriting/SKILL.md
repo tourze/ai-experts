@@ -1,6 +1,6 @@
 ---
 name: copywriting
-description: 当用户要撰写、改写或优化任何营销页面文案时使用，包括首页、落地页、定价页、功能页和产品页。若只是润色已有文案，改用 `copy-editing`；若重点是邮件文案，改用 `email-sequence`；若重点是弹窗文案，改用 `popup-cro`。
+description: 当用户要撰写营销页面文案、价值主张、产品叙事、CTA、hero copy 或落地页段落时使用；已有文案润色交给 `copy-editing`，邮件交给 `email-sequence`。
 ---
 
 # 营销页面文案（copywriting）

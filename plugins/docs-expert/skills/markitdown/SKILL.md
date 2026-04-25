@@ -1,6 +1,6 @@
 ---
 name: markitdown
-description: 当用户要把 PDF、DOCX、PPTX、XLSX、图片、HTML、音频或其他文件批量转换为 Markdown 时使用。支持普通转换、学术文献整理和带 AI 图片描述的增强转换。
+description: 当用户要用 MarkItDown 把 Office、图片、HTML、音频或其他源文件抽取成 .md 文本时使用，适合批量转换和 AI 图片描述增强。
 ---
 
 # MarkItDown

@@ -1,6 +1,6 @@
 ---
 name: speckit-baseline
-description: 从现有代码反向抽取需求并生成初始规格文档（不创建分支）。
+description: 当用户要从现有代码反向抽取需求、建立初始 spec.md 或启动 legacy feature baseline 时使用。
 ---
 
 ## 用户输入

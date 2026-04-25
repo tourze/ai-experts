@@ -1,6 +1,6 @@
 ---
 name: seo-content-scoring
-description: "在需要量化评估 SEO 内容质量、给文章打分或判断是否达到发布标准时使用；若任务是技术 SEO 审计，改用 `seo`；若是去 AI 腔，配合 `content-humanizer`。"
+description: "当用户要量化评估 SEO 内容质量、文章发布标准、关键词深度、E-E-A-T、内容打分或 SERP 意图匹配时使用；技术 SEO 用 `seo`。"
 ---
 
 # SEO 内容质量评分（seo-content-scoring）

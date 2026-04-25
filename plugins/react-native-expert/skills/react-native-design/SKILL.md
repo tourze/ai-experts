@@ -1,6 +1,6 @@
 ---
 name: react-native-design
-description: 当用户需要实现 React Native 样式、导航、手势或 Reanimated 动画时使用。
+description: 当用户需要实现 RN 样式、导航结构、手势交互、Reanimated 动画、跨端布局或移动端视觉组件时使用。
 ---
 
 # React Native 设计实现

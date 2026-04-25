@@ -1,6 +1,6 @@
 ---
 name: broken-authentication
-description: "当需要测试认证与会话管理的安全性时使用。"
+description: "当需要测试登录认证、会话管理、密码重置、MFA 绕过、token 失效、cookie 安全或账户接管风险时使用。"
 ---
 
 # 认证与会话缺陷测试

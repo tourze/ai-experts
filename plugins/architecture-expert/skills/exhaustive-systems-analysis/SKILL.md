@@ -1,6 +1,6 @@
 ---
 name: exhaustive-systems-analysis
-description: "在需要对系统做穷举式子系统拆解与问题审计时使用。"
+description: "当用户要对整个系统做穷举式子系统拆解、影响面审计、故障面分析或跨模块风险排序时使用。英文触发词 exhaustive system analysis / subsystem audit / failure modes。"
 ---
 
 # exhaustive-systems-analysis

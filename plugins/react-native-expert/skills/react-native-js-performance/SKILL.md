@@ -1,6 +1,6 @@
 ---
 name: react-native-js-performance
-description: 当用户要排查或优化 React Native JS 线程性能时使用。用户提到掉帧、FPS、列表卡顿、FlatList、FlashList、Reanimated、React Compiler、JS 内存泄漏、动画抖动、ScrollView 慢时触发。
+description: 当用户要排查 JS thread 性能、掉帧、FPS、FlatList、FlashList、React Compiler、内存泄漏、动画抖动或 ScrollView 慢时使用。
 ---
 
 # React Native JS 线程性能

@@ -1,6 +1,6 @@
 ---
 name: statistical-analysis
-description: 当用户要做统计分析或判断统计结论是否站得住时使用。
+description: 当用户要做统计推断、A/B test、hypothesis testing、p-value、confidence interval、regression 或判断统计结论是否可靠时使用。
 user-invocable: false
 ---
 

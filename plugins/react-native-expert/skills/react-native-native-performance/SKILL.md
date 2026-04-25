@@ -1,6 +1,6 @@
 ---
 name: react-native-native-performance
-description: 当用户要排查或优化 React Native 原生层性能时使用。用户提到 TTI、启动慢、原生线程、Xcode Instruments、Android Profiler、原生内存泄漏、TurboModules、View Flattening、16KB 对齐时触发。
+description: 当用户要排查平台层性能、TTI、启动慢、Xcode Instruments、Android Profiler、平台内存泄漏、View Flattening 或 16KB 对齐时使用。
 ---
 
 # React Native 原生层性能

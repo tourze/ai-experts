@@ -1,6 +1,6 @@
 ---
 name: pragmatic-programmer
-description: "在需要用务实工程原则校准设计、实现和协作方式时使用。"
+description: "当用户要用务实工程原则判断抽象是否过度、DRY/YAGNI 取舍、tracer bullet 路径或协作方式时使用。英文触发词 pragmatic programmer / tracer bullet / YAGNI。"
 ---
 
 # pragmatic-programmer

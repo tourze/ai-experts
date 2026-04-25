@@ -1,6 +1,6 @@
 ---
 name: symfony-ux
-description: 当用户要在 Symfony 项目中选择或组合 Stimulus、Turbo、TwigComponent、LiveComponent 等 UX 工具时使用。
+description: 当用户要在 Symfony 项目中选择 Stimulus、Turbo、UX 套件、前端交互方案、异步片段刷新或组件组合策略时使用。
 ---
 
 # Symfony UX

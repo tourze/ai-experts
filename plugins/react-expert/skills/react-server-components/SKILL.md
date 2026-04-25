@@ -1,6 +1,6 @@
 ---
 name: react-server-components
-description: 当用户需要使用 React Server Components、Server Actions 或流式渲染时使用。
+description: 当用户需要实现 RSC 架构、服务端组件边界、Server Actions、streaming 渲染、客户端组件拆分或表单提交时使用。
 ---
 
 # React Server Components

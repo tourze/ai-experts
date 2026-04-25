@@ -1,6 +1,6 @@
 ---
 name: react-server-optimization
-description: 当需要优化 React Server Components 的数据获取、缓存、序列化或 Server Actions 安全性时使用。用户提到 RSC 性能、Server Action 认证、React.cache、服务端瀑布、序列化开销 时触发。
+description: 当需要优化 RSC performance、数据瀑布、React.cache、序列化开销、action 鉴权、缓存失效或服务端延迟时使用。
 ---
 
 # React 服务端优化

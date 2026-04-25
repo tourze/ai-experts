@@ -1,6 +1,6 @@
 ---
 name: pptx
-description: 当用户要创建、读取、编辑或修复 .pptx 演示文稿时使用。
+description: 当用户要处理 PowerPoint .pptx，生成幻灯片、调整版式、替换素材、设置母版或修复演示文件时使用。
 ---
 
 # PPTX

@@ -1,6 +1,6 @@
 ---
 name: email-sequence
-description: 当用户要创建或优化邮件序列、滴灌营销、自动化邮件流或生命周期邮件时使用。触发词包括"邮件序列""drip campaign""欢迎邮件""nurture""re-engagement"。若是冷邮件/开发信，改用 `cold-email`；若是应用内引导，改用 `onboarding-cro`。
+description: 当用户要创建或优化生命周期邮件、滴灌营销、欢迎邮件、nurture、re-engagement 或自动化邮件流时使用；开发信用 `cold-email`，应用内引导用 `onboarding-cro`。
 ---
 
 # 邮件序列设计（email-sequence）

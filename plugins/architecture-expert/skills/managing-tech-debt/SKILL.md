@@ -1,6 +1,6 @@
 ---
 name: managing-tech-debt
-description: "在需要制定技术债治理策略、规划重构路线图、争取债务预算或协调遗留系统改造节奏时使用。"
+description: "当用户要制定技术债治理策略、重构路线图、债务预算、遗留系统改造节奏或领导层沟通方案时使用。英文触发词 tech debt governance / debt roadmap / remediation budget。"
 ---
 
 # managing-tech-debt

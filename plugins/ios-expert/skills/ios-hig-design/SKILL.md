@@ -1,6 +1,6 @@
 ---
 name: ios-hig-design
-description: 当用户要按 Apple Human Interface Guidelines 设计 iPhone / iPad 原生界面时使用。适用于 SwiftUI、UIKit、安全区域、导航、无障碍与系统组件相关任务。
+description: 当用户要按 iOS HIG 设计 iPhone/iPad 界面、导航结构、安全区域、系统组件、触控反馈或无障碍体验时使用。
 license: MIT
 metadata:
   author: wondelai

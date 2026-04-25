@@ -1,6 +1,6 @@
 ---
 name: docx
-description: 当用户要创建、读取、编辑或修复 .docx Word 文档时使用。
+description: 当用户要处理 Word .docx 文档，生成合同、读取段落、修改样式、填充表格或修复 OOXML 包时使用。
 ---
 
 # DOCX

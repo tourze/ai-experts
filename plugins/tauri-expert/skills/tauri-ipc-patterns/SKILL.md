@@ -1,6 +1,6 @@
 ---
 name: tauri-ipc-patterns
-description: "在需要高级 IPC 模式时使用：自定义错误类型、判别联合事件、Channel<T> 流、权限定义、多窗口路由、二进制传输、批量命令。涉及 serde tag/content、tauri::ipc::Request、permissions/*.toml、emit_to 时触发。"
+description: "当用户需要高级 IPC 模式、自定义错误、判别联合事件、Channel<T> 流、多窗口路由、二进制传输或批量命令时使用。"
 ---
 
 # Tauri v2 高级 IPC 模式

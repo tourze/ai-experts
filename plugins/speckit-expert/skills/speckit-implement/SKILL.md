@@ -1,6 +1,6 @@
 ---
 name: speckit-implement
-description: 按 tasks.md 执行实现，强调零回归与可验证交付。
+description: 当用户要依据 tasks.md 执行实现、逐项验证任务状态或控制规格驱动交付回归风险时使用。
 ---
 
 ## 角色

@@ -1,6 +1,6 @@
 ---
 name: speckit-analyze
-description: 在任务拆解完成后，对 spec.md、plan.md、tasks.md 做只读一致性分析。
+description: 当用户要在任务拆解后审计规格、计划、任务三件套的一致性、重复、冲突或遗漏风险时使用。
 ---
 
 ## 用户输入

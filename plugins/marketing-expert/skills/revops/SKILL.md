@@ -1,6 +1,6 @@
 ---
 name: revops
-description: 当用户要设计收入运营体系、线索生命周期、MQL/SQL 定义、线索评分、路由或营销-销售交接时使用。触发词包括"RevOps""线索评分""lead scoring""MQL""pipeline""CRM 自动化"。若是冷邮件，改用 `cold-email`；若是邮件序列，改用 `email-sequence`。
+description: 当用户要设计收入运营体系、线索生命周期、MQL/SQL、lead scoring、CRM 自动化、线索路由或营销销售交接时使用；开发信用 `cold-email`。
 ---
 
 # 收入运营体系（revops）

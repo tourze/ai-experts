@@ -1,6 +1,6 @@
 ---
 name: speckit-reviewer
-description: 对代码变更做结构化审查并输出可执行修复建议。
+description: 当用户要审查 Spec Kit 实现代码、变更 diff、缺陷风险、安全问题或测试缺口时使用。
 ---
 
 ## 角色

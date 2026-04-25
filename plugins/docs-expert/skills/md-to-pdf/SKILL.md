@@ -1,6 +1,6 @@
 ---
 name: md-to-pdf
-description: 当用户要把 Markdown 文档导出为 PDF 时使用，支持 Mermaid 图、KaTeX 数学公式、代码块、表格、自定义 CSS、页边距和页码。适合报告、论文、规范和展示材料的打印级输出。
+description: 当用户要将 .md 文稿渲染成可打印 PDF 时使用，支持 Mermaid、KaTeX、代码块、表格、自定义 CSS、页边距和页码。
 ---
 
 # Markdown 转 PDF

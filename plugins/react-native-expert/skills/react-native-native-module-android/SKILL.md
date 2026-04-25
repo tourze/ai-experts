@@ -1,6 +1,6 @@
 ---
 name: react-native-native-module-android
-description: "当用户要用 Kotlin 实现 React Native Android 原生模块或 TurboModule 时使用。用户提到 Android 原生模块、Kotlin TurboModule、Gradle codegen 时触发。"
+description: "当用户要用 Kotlin/Java 编写 Android 侧能力、Gradle codegen、Package 注册、JNI 绑定、系统服务调用或 Activity 生命周期问题时使用。"
 ---
 
 # Android 原生模块开发

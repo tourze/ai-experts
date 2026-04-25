@@ -1,6 +1,6 @@
 ---
 name: twig-components
-description: 当用户要抽取或实现 Symfony TwigComponent 或 LiveComponent 时使用。
+description: 当用户要抽取 Twig 视图片段、实现 TwigComponent、LiveComponent 状态、props、表单联动或模板复用时使用。
 ---
 
 # Twig Components

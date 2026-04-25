@@ -1,6 +1,6 @@
 ---
 name: sql-optimization
-description: 当用户要分析慢查询、解读执行计划、优化索引策略或改善分页与批处理性能时使用。
+description: 当用户要分析 slow query、EXPLAIN 执行计划、index tuning、join order、keyset pagination、bulk insert 或查询性能瓶颈时使用。
 ---
 
 # SQL Optimization

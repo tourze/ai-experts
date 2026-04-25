@@ -1,6 +1,6 @@
 ---
 name: speckit-checklist
-description: 针对当前特性生成“需求质量检查清单”，用于检验需求文档质量。
+description: 当用户要为当前特性建立需求质量 checklist、验收问题或安全性能兼容性检查项时使用。
 ---
 
 ## 角色

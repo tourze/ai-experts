@@ -1,6 +1,6 @@
 ---
 name: test-quality-review
-description: "当用户要审查已有测试代码的质量、诊断测试套件衰退风险或回答'这些测试写得怎么样'时使用。"
+description: "当用户要审查已有测试代码质量、诊断测试套件衰退风险、mock 滥用、脆弱测试、flaky test 或 coverage illusion 时使用。"
 ---
 
 # 测试质量审查
