@@ -109,47 +109,24 @@ audit_skill_evals() {
 }
 
 # ── 旧版残留清理（向后兼容） ─────────────────────────────────
+# 详细逻辑（CLI uninstall + marketplace remove + 物理 cache/data 删除 +
+# config.toml 段剥离）在 scripts/cleanup-legacy.mjs。无残留时静默退出。
 
 claude_legacy_cleanup() {
   has_cmd claude || return 0
-  info "Claude Code: 清理旧版 marketplace 残留（best-effort）..."
+  run_node cleanup-legacy.mjs --target=cc
+}
 
-  claude plugin list --json 2>/dev/null \
-    | node -e '
-const marketplaceName = process.argv[1];
-const suffix = `@${marketplaceName}`;
-let raw = "";
-process.stdin.setEncoding("utf-8");
-process.stdin.on("data", (c) => { raw += c; });
-process.stdin.on("end", () => {
-  let plugins;
-  try { plugins = JSON.parse(raw || "[]"); } catch { process.exit(0); }
-  for (const p of Array.isArray(plugins) ? plugins : []) {
-    if (p?.scope !== "user") continue;
-    if (typeof p?.id !== "string" || !p.id.endsWith(suffix)) continue;
-    console.log(p.id.slice(0, -suffix.length));
-  }
-});
-' "$MARKETPLACE_NAME" 2>/dev/null \
-    | while read -r name; do
-        [ -n "$name" ] || continue
-        if [ -n "$DRY_RUN" ]; then
-          info "  would: claude plugin uninstall $name"
-        else
-          claude plugin uninstall "$name" 2>/dev/null || true
-        fi
-      done
-
-  if [ -z "$DRY_RUN" ]; then
-    claude plugin marketplace remove "$MARKETPLACE_NAME" 2>/dev/null || true
-  else
-    info "  would: claude plugin marketplace remove $MARKETPLACE_NAME"
-  fi
+codex_legacy_cleanup() {
+  has_cmd codex || return 0
+  run_node cleanup-legacy.mjs --target=codex
 }
 
 # ── Claude Code ──────────────────────────────────────────────
 
 claude_install() {
+  claude_legacy_cleanup
+
   info "Claude Code: 同步 skills..."
   run_node sync-skills.mjs --target=cc
 
@@ -186,6 +163,8 @@ claude_uninstall() {
 # ── Codex CLI ────────────────────────────────────────────────
 
 codex_install() {
+  codex_legacy_cleanup
+
   info "Codex CLI: 启用 codex_hooks feature flag..."
   if has_cmd codex; then
     if [ -n "$DRY_RUN" ]; then
@@ -211,18 +190,13 @@ codex_uninstall() {
   info "Codex CLI: 解链 skills..."
   run_node sync-skills.mjs --target=codex --uninstall
 
-  info "Codex CLI: 移除统一 hooks 条目并清理旧 marketplace 段..."
+  info "Codex CLI: 移除统一 hooks 条目..."
   run_node sync-hooks.mjs --target=codex --uninstall
-
-  info "Codex CLI: 清理 ai-experts plugin cache..."
-  if [ -n "$DRY_RUN" ]; then
-    info "  would: rm -rf ${CODEX_HOME_DIR}/plugins/cache/${MARKETPLACE_NAME}"
-  else
-    rm -rf "${CODEX_HOME_DIR}/plugins/cache/${MARKETPLACE_NAME}"
-  fi
 
   info "Codex CLI: 移除共享记忆链接..."
   unlink_memory_file "Codex CLI" "$CODEX_MEMORY_TARGET"
+
+  codex_legacy_cleanup
 
   ok "Codex CLI: uninstalled."
 }
