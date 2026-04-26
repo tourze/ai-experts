@@ -11,7 +11,7 @@ Used by:
 - accessibility_audit.py - WCAG compliance checking
 - test_recorder.py - Test documentation
 - app_state_capture.py - State snapshots
-- gesture.py - Touch gesture operations
+- gesture.mjs - Touch gesture operations
 """
 
 import json
@@ -151,7 +151,7 @@ def get_screen_size(udid: str | None = None) -> tuple[int, int]:
     gesture calculations and coordinate normalization.
 
     Used by:
-    - gesture.py - Gesture positioning
+    - gesture.mjs - Gesture positioning
     - Potentially: screenshot positioning, screen-aware scaling
 
     Args:

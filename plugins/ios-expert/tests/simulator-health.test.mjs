@@ -37,6 +37,11 @@ test("simctl Node lifecycle scripts 通过语法检查", () => {
     "simctl_delete.mjs",
     "simctl_erase.mjs",
     "simctl_shutdown.mjs",
+    "clipboard.mjs",
+    "gesture.mjs",
+    "interaction_common.mjs",
+    "keyboard.mjs",
+    "log_monitor.mjs",
   ]) {
     const result = spawnSync(process.execPath, ["--check", resolve(scriptsDir, name)], { encoding: "utf8" });
     assert.equal(result.status, 0, `${name}: ${result.stderr}`);
@@ -50,6 +55,10 @@ test("simctl Node lifecycle scripts 输出帮助信息", () => {
     ["simctl_delete.mjs", /Delete iOS simulators/],
     ["simctl_erase.mjs", /Erase iOS simulators/],
     ["simctl_shutdown.mjs", /Shutdown iOS simulators/],
+    ["clipboard.mjs", /Copy text to iOS simulator clipboard/],
+    ["gesture.mjs", /Perform gestures on iOS simulator/],
+    ["keyboard.mjs", /Control keyboard and hardware buttons/],
+    ["log_monitor.mjs", /Monitor and analyze iOS simulator logs/],
   ]) {
     const result = spawnSync(process.execPath, [resolve(scriptsDir, name), "--help"], { encoding: "utf8" });
     assert.equal(result.status, 0, `${name}: ${result.stderr}`);
@@ -111,4 +120,40 @@ test("simctl Node helpers 保持解析和参数转换", async () => {
     json: false,
     help: false,
   });
+});
+
+test("iOS interaction Node helpers 保持命令构造和日志解析", async () => {
+  const interaction = await import(resolve(scriptsDir, "interaction_common.mjs"));
+  const clipboard = await import(resolve(scriptsDir, "clipboard.mjs"));
+  const gesture = await import(resolve(scriptsDir, "gesture.mjs"));
+  const keyboard = await import(resolve(scriptsDir, "keyboard.mjs"));
+  const logMonitor = await import(resolve(scriptsDir, "log_monitor.mjs"));
+
+  assert.deepEqual(interaction.buildIdbCommand("ui text", "UDID-1", "hello"), [
+    "idb",
+    "ui",
+    "text",
+    "hello",
+    "--udid",
+    "UDID-1",
+  ]);
+  assert.deepEqual(interaction.transformScreenshotCoords(10, 20, 100, 200, 390, 844), [39, 84]);
+  assert.deepEqual(interaction.parseCoordinatePair("12,34"), [12, 34]);
+
+  assert.deepEqual(clipboard.parseArgs(["--copy", "hello", "--test-name", "login"]), {
+    copy: "hello",
+    udid: null,
+    testName: "login",
+    expected: null,
+    help: false,
+  });
+  assert.deepEqual(gesture.buildSwipeCoordinates(390, 844, "left", 0.7), [312, 422, 195, 422]);
+  assert.equal(keyboard.resolveKeyCode("return"), 40);
+  assert.equal(keyboard.resolveKeyCode("42"), 42);
+  assert.equal(logMonitor.parseTimeDuration("5m"), 300);
+  assert.equal(logMonitor.classifyLogLine("2026-01-01 failed to open database"), "error");
+  assert.deepEqual(
+    logMonitor.buildLogCommand({ appBundleId: "com.example.MyApp", deviceUdid: "booted" }).slice(0, 8),
+    ["xcrun", "simctl", "spawn", "booted", "log", "stream", "--predicate", 'processImagePath CONTAINS "MyApp"'],
+  );
 });

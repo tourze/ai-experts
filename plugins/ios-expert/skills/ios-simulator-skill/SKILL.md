@@ -16,7 +16,7 @@ description: 当用户需要用 Simulator、xcrun simctl、设备启动、截图
 
 - 仅把 `scripts/` 目录下的可执行 Python / Shell 脚本当作入口；`scripts/common/` 与 `scripts/xcode/` 是内部模块，不直接执行。
 - 优先走无障碍树：先 `scripts/screen_mapper.py` / `scripts/navigator.py`，最后才用坐标。
-- 大多数脚本在未传 `--udid` 时会自动选择 booted simulator；`scripts/log_monitor.py` 例外，参数名是 `--device-udid`。
+- 大多数脚本在未传 `--udid` 时会自动选择 booted simulator；`scripts/log_monitor.mjs` 例外，参数名是 `--device-udid`。
 - `scripts/visual_diff.py` 与截图缩放能力依赖 `Pillow`；若缺失，需要先安装对应 Python 包。
 
 ## 代码模式
@@ -37,15 +37,15 @@ node scripts/simctl_create.mjs --list-runtimes --json
 python3 scripts/app_launcher.py --launch com.example.app
 python3 scripts/screen_mapper.py --hints
 python3 scripts/navigator.py --find-text "Login" --tap
-python3 scripts/keyboard.py --type "user@example.com"
-python3 scripts/gesture.py --scroll down --scroll-amount 3
+node scripts/keyboard.mjs --type "user@example.com"
+node scripts/gesture.mjs --scroll down --scroll-amount 3
 ```
 
 ### 调试与构建
 
 ```bash
 python3 scripts/app_state_capture.py --app-bundle-id com.example.app --size half
-python3 scripts/log_monitor.py --app com.example.app --duration 30s --json
+node scripts/log_monitor.mjs --app com.example.app --duration 30s --json
 python3 scripts/build_and_test.py --project MyApp.xcodeproj --test
 python3 scripts/build_and_test.py --list-xcresults --json
 ```
@@ -64,7 +64,7 @@ node scripts/simctl_shutdown.mjs --all
 
 - 先跑 `node scripts/sim_health_check.mjs`，确认 `xcrun`、`simctl`、Python 环境可用。
 - 每次交互前先看 `scripts/screen_mapper.py` 或 `scripts/navigator.py --list`，不要盲点。
-- 需要日志时确认参数名：`scripts/log_monitor.py` 用 `--device-udid`，不是 `--udid`。
+- 需要日志时确认参数名：`scripts/log_monitor.mjs` 用 `--device-udid`，不是 `--udid`。
 - 需要脚本化输出时统一使用 `--json`；需要完整参数时直接跑 `python3 scripts/<tool>.py --help`。
 - 交叉引用：性能瓶颈排查看 `swiftui-performance-audit`；审核流程复现看 `apple-appstore-reviewer`。
 
@@ -92,7 +92,7 @@ python3 scripts/navigator.py --find-text "登录" --tap
 ### FAIL: 没 booted simulator 直接跑
 
 ```bash
-python3 scripts/log_monitor.py --app com.example.app
+node scripts/log_monitor.mjs --app com.example.app
 # Error: no booted device
 # 用户："我以为脚本会自动启动"
 ```
@@ -101,7 +101,7 @@ python3 scripts/log_monitor.py --app com.example.app
 
 ```bash
 node scripts/simctl_boot.mjs --name "iPhone 17 Pro" --wait-ready
-python3 scripts/log_monitor.py --device-udid <udid> --app com.example.app
+node scripts/log_monitor.mjs --device-udid <udid> --app com.example.app
 # 注意：log_monitor 用 --device-udid，其他用 --udid
 ```
 

@@ -225,7 +225,7 @@ def main():
 
         print()
         print("Verify notification handling:")
-        print("1. Check app log output: python scripts/log_monitor.py --app " + args.bundle_id)
+        print("1. Check app log output: node scripts/log_monitor.mjs --app " + args.bundle_id)
         print(
             "2. Capture state: python scripts/app_state_capture.py --app-bundle-id "
             + args.bundle_id
