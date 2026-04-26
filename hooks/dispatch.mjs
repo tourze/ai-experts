@@ -88,6 +88,21 @@ function emitContext(message) {
   );
 }
 
+// 多个 hook 各自在自己的 reason 头部贴 <SUBAGENT-STOP>...</SUBAGENT-STOP>
+// 时，dispatcher 拼接后会出现重复段。这里按 wrapper 文本字面去重：
+// 保留每段 wrapper 的首次出现，剥离后续完全相同的复制。不同正文的 wrapper
+// 仍各自保留（保守策略）。最后折叠 3+ 连续空行，避免剥离后留下空隙。
+function dedupeSubagentStopBlocks(text) {
+  const re = /<SUBAGENT-STOP>[\s\S]*?<\/SUBAGENT-STOP>/g;
+  const seen = new Set();
+  const stripped = text.replace(re, (match) => {
+    if (seen.has(match)) return "";
+    seen.add(match);
+    return match;
+  });
+  return stripped.replace(/\n{3,}/g, "\n\n");
+}
+
 // ── Codex payload 标准化 ──────────────────────────────
 // Codex 的 apply_patch 把 patch 文本塞在 tool_input.command（或直接是字符串），
 // 并且 exec_command 用 tool_input.cmd 而非 .command。这里映射回 Claude Code 的形态，
@@ -463,7 +478,7 @@ for (const entry of hookEntries) {
 }
 
 if (contexts.length > 0) {
-  emitContext(contexts.map((c) => c.reason).join("\n\n"));
+  emitContext(dedupeSubagentStopBlocks(contexts.map((c) => c.reason).join("\n\n")));
 } else if (reports.length > 0) {
   emitSystemMessage(reports.map((r) => r.reason).join("\n\n"));
 }
