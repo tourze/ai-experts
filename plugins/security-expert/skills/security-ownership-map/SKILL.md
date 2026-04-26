@@ -14,7 +14,7 @@ description: "当用户明确希望基于 git 历史构建安全所有权、bus 
 - 只用于安全导向的所有权分析，不回答泛化的“谁维护这个仓库”问题。
 - 优先缩小时间窗；大仓库默认加 `--since` 或 `--until`。
 - 社区检测和 GraphML 输出需要 `networkx`；关闭这两项时核心导出可独立运行。
-- 脚本路径以当前 skill 目录为基准；查询脚本使用 `scripts/query_ownership.mjs`，构建与社区分析脚本暂仍使用 Python。
+- 脚本路径以当前 skill 目录为基准；查询与社区分析脚本使用 Node.js，构建脚本暂仍使用 Python。
 
 ## 代码模式
 ```bash
@@ -25,7 +25,7 @@ python3 scripts/run_ownership_map.py \
   --emit-commits
 
 node scripts/query_ownership.mjs --data-dir ownership-map-out summary --section bus_factor_hotspots
-python3 scripts/community_maintainers.py --data-dir ownership-map-out --file src/auth/session.go --top 5
+node scripts/community_maintainers.mjs --data-dir ownership-map-out --file src/auth/session.go --top 5
 ```
 
 ## 检查清单

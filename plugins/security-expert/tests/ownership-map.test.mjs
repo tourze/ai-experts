@@ -10,8 +10,14 @@ import {
   parseArgs,
   parseCsv,
 } from "../skills/security-ownership-map/scripts/query_ownership.mjs";
+import {
+  generateRows,
+  parseArgs as parseMaintainerArgs,
+  toCsv,
+} from "../skills/security-ownership-map/scripts/community_maintainers.mjs";
 
 const scriptPath = fileURLToPath(new URL("../skills/security-ownership-map/scripts/query_ownership.mjs", import.meta.url));
+const maintainerScriptPath = fileURLToPath(new URL("../skills/security-ownership-map/scripts/community_maintainers.mjs", import.meta.url));
 
 function createOwnershipData() {
   const dataDir = mkdtempSync(join(tmpdir(), "ownership-map-"));
@@ -64,6 +70,47 @@ function createOwnershipData() {
         top_maintainers: [{ person_id: "alice@example.com" }],
       },
     ]),
+  );
+  writeFileSync(
+    join(dataDir, "commits.jsonl"),
+    [
+      {
+        hash: "a1",
+        parents: ["p1"],
+        is_merge: false,
+        author_name: "Alice",
+        author_email: "alice@example.com",
+        author_date: "2026-01-01T10:00:00+00:00",
+        committer_name: "Alice",
+        committer_email: "alice@example.com",
+        committer_date: "2026-01-01T10:00:00+00:00",
+        files: ["src/auth/session.go"],
+      },
+      {
+        hash: "b1",
+        parents: ["p2"],
+        is_merge: false,
+        author_name: "Bob",
+        author_email: "bob@example.com",
+        author_date: "2026-01-02T10:00:00+00:00",
+        committer_name: "Bob",
+        committer_email: "bob@example.com",
+        committer_date: "2026-01-02T10:00:00+00:00",
+        files: ["src/ui/view.ts"],
+      },
+      {
+        hash: "a2",
+        parents: ["p3"],
+        is_merge: false,
+        author_name: "Alice",
+        author_email: "alice@example.com",
+        author_date: "2026-01-03T10:00:00+00:00",
+        committer_name: "Alice",
+        committer_email: "alice@example.com",
+        committer_date: "2026-01-03T10:00:00+00:00",
+        files: ["src/auth/session.go", "src/ui/view.ts"],
+      },
+    ].map((entry) => JSON.stringify(entry)).join("\n"),
   );
   return dataDir;
 }
@@ -122,4 +169,25 @@ test("query_ownership.mjs CLI filters files by tag", () => {
   const payload = JSON.parse(result.stdout);
   assert.equal(payload.length, 1);
   assert.equal(payload[0].file_id, "src/auth/session.go");
+});
+
+test("community_maintainers.mjs ranks maintainers from commits.jsonl", () => {
+  const dataDir = createOwnershipData();
+  const args = parseMaintainerArgs(["--data-dir", dataDir, "--community-id", "1", "--top", "2"]);
+  const rows = generateRows(args);
+  assert.equal(rows[0].period, "2026-01");
+  assert.equal(rows[0].email, "alice@example.com");
+  assert.equal(rows[0].community_touches, "2");
+  assert.equal(rows[1].email, "bob@example.com");
+  assert.match(toCsv(rows), /period,rank,name,email/);
+});
+
+test("community_maintainers.mjs CLI writes maintainer CSV", () => {
+  const dataDir = createOwnershipData();
+  const result = spawnSync(process.execPath, [maintainerScriptPath, "--data-dir", dataDir, "--file", "src/auth/session.go", "--top", "1"], {
+    encoding: "utf8",
+  });
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /period,rank,name,email/);
+  assert.match(result.stdout, /2026-01,1,Alice,alice@example.com/);
 });
