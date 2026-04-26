@@ -8,7 +8,7 @@
  */
 
 // 使用预打包的 rss-parser（esbuild bundle），无需外部 node_modules
-import Parser from "../vendor/rss-parser.bundle.js";
+import Parser from "../vendor/rss-parser.bundle.mjs";
 
 const parser = new Parser({
   timeout: 10000,
