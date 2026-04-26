@@ -53,7 +53,6 @@ claude plugin uninstall java-expert --scope project
 ## 验证
 
 ```bash
-jq empty plugins/java-expert/.claude-plugin/plugin.json
 jq empty plugins/java-expert/hooks/hooks.json
 find plugins/java-expert -type f \( -name '*.mjs' -o -name '*.cjs' \) -print0 | xargs -0 -I{} node --check "{}"
 node --test plugins/java-expert/tests/*.mjs

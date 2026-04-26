@@ -4,7 +4,6 @@
 
 ## 目录结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：5 个 Laravel 顶层技能，以及 `laravel-layering-patterns/references/` 下的专题参考。
 - `tests/`：manifest、dispatch 与文档结构测试。
@@ -31,7 +30,6 @@
 
 ```bash
 claude plugin validate plugins/laravel-expert
-jq empty plugins/laravel-expert/.claude-plugin/plugin.json
 jq empty plugins/laravel-expert/hooks/hooks.json
 node --check plugins/laravel-expert/hooks/dispatch.mjs
 node --test plugins/laravel-expert/tests/*.test.mjs

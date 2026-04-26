@@ -72,7 +72,6 @@ claude plugin uninstall security-expert --scope project
 ## 验证命令
 
 ```bash
-jq empty plugins/security-expert/.claude-plugin/plugin.json
 jq empty plugins/security-expert/hooks/hooks.json
 find plugins/security-expert/hooks -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
 find plugins/security-expert/skills -type f -name '*.py' -print0 | xargs -0 -n1 python3 -m py_compile

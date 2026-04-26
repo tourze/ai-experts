@@ -40,7 +40,6 @@ claude plugin uninstall webman-expert --scope project
 ## 验证命令
 
 ```bash
-jq empty plugins/webman-expert/.claude-plugin/plugin.json
 jq empty plugins/webman-expert/hooks/hooks.json
 find plugins/webman-expert/hooks -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
 node --test plugins/webman-expert/tests/*.test.mjs

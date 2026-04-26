@@ -4,7 +4,6 @@
 
 ## 目录结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json`、`dispatch.mjs` 和 WXML/WXSS/Taro 语法检查 hook。
 - `skills/`：`miniprogram-development` 技能与本地参考资料。
 - `tests/`：`dispatch` 容错回归测试与 hook 行为测试。
@@ -31,7 +30,6 @@
 
 ```bash
 claude plugin validate .
-jq empty .claude-plugin/plugin.json
 jq empty hooks/hooks.json
 find hooks -name '*.mjs' -print0 | xargs -0 -n1 node --check
 node --test tests/*.test.mjs

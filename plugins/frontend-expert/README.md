@@ -4,7 +4,6 @@
 
 ## 结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：前端设计与实现 skill
 - `tests/`：manifest、dispatch、脚本回归测试
@@ -67,7 +66,6 @@ claude plugin uninstall frontend-expert --scope project
 ## 验证
 
 ```bash
-jq empty plugins/frontend-expert/.claude-plugin/plugin.json
 jq empty plugins/frontend-expert/hooks/hooks.json
 node --check plugins/frontend-expert/hooks/dispatch.mjs
 node --test plugins/frontend-expert/tests/*.test.mjs

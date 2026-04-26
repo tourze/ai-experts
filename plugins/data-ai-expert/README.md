@@ -4,7 +4,6 @@
 
 ## 目录结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：14 个领域技能及其脚本、参考资料、评测样例
 - `tests/`：manifest、dispatch、README/skill 结构一致性检查
@@ -58,7 +57,6 @@ claude plugin uninstall data-ai-expert --scope project
 ## 校验
 
 ```bash
-python3 -m json.tool plugins/data-ai-expert/.claude-plugin/plugin.json >/dev/null
 python3 -m json.tool plugins/data-ai-expert/hooks/hooks.json >/dev/null
 node --check plugins/data-ai-expert/hooks/dispatch.mjs
 node --check plugins/data-ai-expert/skills/model-first-reasoning/scripts/validate-model.mjs

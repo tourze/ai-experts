@@ -4,7 +4,6 @@
 
 ## 目录结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：45 个产品与战略类技能，统一采用「适用场景 → 核心约束 → 代码模式 → 检查清单 → 反模式」结构。
 - `tests/`：覆盖 manifest、dispatch、脚本行为与 `SKILL.md` 链接校验。
@@ -107,7 +106,6 @@ claude plugin uninstall product-expert --scope project
 ## 验证命令
 
 ```bash
-jq empty plugins/product-expert/.claude-plugin/plugin.json
 jq empty plugins/product-expert/hooks/hooks.json
 find plugins/product-expert/hooks plugins/product-expert/tests -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
 node --check plugins/product-expert/skills/agile-product-owner/scripts/user_story_generator.mjs

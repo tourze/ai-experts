@@ -53,7 +53,6 @@ claude plugin uninstall symfony-expert --scope project
 ## 校验
 
 ```bash
-jq empty plugins/symfony-expert/.claude-plugin/plugin.json
 jq empty plugins/symfony-expert/hooks/hooks.json
 find plugins/symfony-expert/hooks -name '*.mjs' -print0 | xargs -0 -n1 node --check
 node --test plugins/symfony-expert/tests/*.test.mjs

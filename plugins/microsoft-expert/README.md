@@ -4,7 +4,6 @@
 
 ## 目录结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json`（当前无注册 hook）与 `dispatch.mjs`（保留以备将来扩展）。
 - `skills/`：`microsoft-docs` 与 `microsoft-code-reference` 两个技能。
 
@@ -21,7 +20,6 @@
 
 ```bash
 claude plugin validate .
-jq empty .claude-plugin/plugin.json
 jq empty hooks/hooks.json
 node --check hooks/dispatch.mjs
 npx -y @microsoft/learn-cli doctor --format json

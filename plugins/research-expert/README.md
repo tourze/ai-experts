@@ -26,7 +26,6 @@
 
 ## 结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `agents/`：自主研究 agent 定义
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`
 - `skills/`：研究类技能与配套脚本
@@ -40,7 +39,6 @@
 ## 验证
 
 ```bash
-jq empty plugins/research-expert/.claude-plugin/plugin.json
 jq empty plugins/research-expert/hooks/hooks.json
 node --check plugins/research-expert/hooks/dispatch.mjs
 node --test plugins/research-expert/tests/*.mjs

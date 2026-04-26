@@ -4,7 +4,6 @@ Vue 框架专家插件，聚焦 Vue 3 JavaScript 项目：`<script setup>`、Com
 
 ## 结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/vue-expert-js/`：主技能说明与 JSDoc / composable / 组件 / 状态管理 / 测试参考文档。
 - `tests/`：manifest、dispatch 与文档结构的最小回归测试。
@@ -47,7 +46,6 @@ claude plugin uninstall vue-expert --scope project
 
 ```bash
 claude plugin validate plugins/vue-expert
-jq empty plugins/vue-expert/.claude-plugin/plugin.json
 jq empty plugins/vue-expert/hooks/hooks.json
 node --check plugins/vue-expert/hooks/dispatch.mjs
 node --test plugins/vue-expert/tests/*.test.mjs

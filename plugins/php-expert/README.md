@@ -4,7 +4,6 @@ PHP 开发专家插件，覆盖 PHP 代码质量守卫、Composer/PHPStan/PHPUni
 
 ## 目录结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json`、`dispatch.mjs` 与 8 个运行时守卫脚本。
 - `skills/`：7 个技能目录及其参考资料。
 - `tests/`：manifest、dispatch、hook 与 SKILL 结构的最小回归测试。
@@ -47,7 +46,6 @@ PHP 开发专家插件，覆盖 PHP 代码质量守卫、Composer/PHPStan/PHPUni
 在插件目录执行：
 
 ```bash
-jq empty .claude-plugin/plugin.json
 jq empty hooks/hooks.json
 find hooks tests -type f \( -name '*.mjs' -o -name '*.js' \) -print0 | xargs -0 -n1 node --check
 node --test tests/*.test.mjs

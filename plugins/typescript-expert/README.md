@@ -4,7 +4,6 @@ TypeScript 开发专家插件，提供显式 manifest 注册、`PostToolUse Edit
 
 ## 目录
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json`、`dispatch.mjs` 与 2 个本地 `PostToolUse Edit|Write` 守卫。
 - `skills/`：3 份 TypeScript 主题技能文档，统一采用「适用场景 → 核心约束 → 代码模式 → 检查清单 → 反模式」结构。
 - `tests/`：校验 manifest、dispatch、脚本语法与技能文档结构/链接。
@@ -66,7 +65,6 @@ claude plugin uninstall typescript-expert --scope project
 ## 验证
 
 ```bash
-jq empty plugins/typescript-expert/.claude-plugin/plugin.json
 jq empty plugins/typescript-expert/hooks/hooks.json
 node --check plugins/typescript-expert/hooks/dispatch.mjs
 node --test plugins/typescript-expert/tests/*.test.mjs

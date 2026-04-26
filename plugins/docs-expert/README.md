@@ -4,7 +4,6 @@
 
 ## 结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json`、`dispatch.mjs` 与 `user-prompt-submit` 结构化表达 primer。
 - `skills/`：文档处理、提案撰写、Markdown/PDF 转换等技能目录。
 - `tests/`：manifest、dispatch、skill 文档和脚本语法的最小回归测试。
@@ -67,7 +66,6 @@ claude plugin uninstall docs-expert --scope project
 ## 验证
 
 ```bash
-python3 -m json.tool plugins/docs-expert/.claude-plugin/plugin.json >/dev/null
 python3 -m json.tool plugins/docs-expert/hooks/hooks.json >/dev/null
 node --check plugins/docs-expert/hooks/dispatch.mjs
 node --test plugins/docs-expert/tests/*.test.mjs

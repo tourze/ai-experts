@@ -4,7 +4,6 @@
 
 ## 目录结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：创意与可视化技能包。
 - `tests/`：`dispatch` 的最小回归测试。
@@ -33,7 +32,6 @@
 在插件目录执行：
 
 ```bash
-jq empty .claude-plugin/plugin.json
 jq empty hooks/hooks.json
 find hooks tests -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
 find skills -type f -name '*.py' -print0 | xargs -0 -n1 python3 -m py_compile

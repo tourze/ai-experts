@@ -4,7 +4,6 @@
 
 ## 目录结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：8 个社交媒体技能，均采用统一的中文结构。
 - `tests/`：覆盖 `dispatch`、脚本语法与 SKILL 链接校验。
@@ -53,7 +52,6 @@ claude plugin uninstall social-media-expert --scope project
 ## 验证命令
 
 ```bash
-jq empty plugins/social-media-expert/.claude-plugin/plugin.json
 jq empty plugins/social-media-expert/hooks/hooks.json
 node --check plugins/social-media-expert/hooks/dispatch.mjs
 node --check plugins/social-media-expert/skills/douyin-video-summary/scripts/download_audio.mjs

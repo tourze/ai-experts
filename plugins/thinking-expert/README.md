@@ -4,7 +4,6 @@
 
 ## 目录结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：15 个思维类技能，每个 `SKILL.md` 使用统一中文结构。
 - `tests/`：manifest、dispatch、脚本语法与文档结构校验。
@@ -38,7 +37,6 @@
 ## 校验
 
 ```bash
-jq empty plugins/thinking-expert/.claude-plugin/plugin.json
 jq empty plugins/thinking-expert/hooks/hooks.json
 node --check plugins/thinking-expert/hooks/dispatch.mjs
 node --test plugins/thinking-expert/tests/*.test.mjs

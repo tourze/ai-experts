@@ -4,7 +4,6 @@
 
 ## 结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：会议纪要、会议笔记整理、沟通洞察 3 个技能目录。
 - `tests/`：manifest、dispatch、hook、自检与 `SKILL.md` 结构回归测试。
@@ -45,7 +44,6 @@ claude plugin uninstall meeting-expert --scope project
 ## 验证
 
 ```bash
-python3 -m json.tool plugins/meeting-expert/.claude-plugin/plugin.json >/dev/null
 python3 -m json.tool plugins/meeting-expert/hooks/hooks.json >/dev/null
 find plugins/meeting-expert -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
 node --test plugins/meeting-expert/tests/*.test.mjs

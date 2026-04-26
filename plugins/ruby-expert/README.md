@@ -4,7 +4,6 @@ Ruby 开发专家插件，覆盖 Ruby / Rails / RSpec / Bundler / Rake 工作流
 
 ## 目录结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json`、`dispatch.mjs` 与 2 个 `PostToolUse Edit|Write` 守卫脚本。
 - `skills/`：Ruby 开发与 RSpec 测试技能文档。
 - `tests/`：manifest、dispatch、hook、脚本文档回归测试。
@@ -36,7 +35,6 @@ Ruby 开发专家插件，覆盖 Ruby / Rails / RSpec / Bundler / Rake 工作流
 在仓库根目录执行：
 
 ```bash
-python3 -m json.tool plugins/ruby-expert/.claude-plugin/plugin.json >/dev/null
 python3 -m json.tool plugins/ruby-expert/hooks/hooks.json >/dev/null
 find plugins/ruby-expert/hooks plugins/ruby-expert/tests -type f \( -name '*.mjs' -o -name '*.js' \) -print0 | xargs -0 -n1 node --check
 node --test plugins/ruby-expert/tests/*.test.mjs

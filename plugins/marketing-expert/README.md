@@ -4,7 +4,6 @@
 
 ## 结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/*/SKILL.md`：统一的中文技能说明，按「适用场景→核心约束→代码模式→检查清单→反模式」组织。
 - `skills/*/references`、`skills/*/scripts`、`skills/*/assets`：技能引用资料、可执行脚本和示例资产。
@@ -87,7 +86,6 @@ claude plugin uninstall marketing-expert --scope project
 
 ```bash
 claude plugin validate plugins/marketing-expert
-jq empty plugins/marketing-expert/.claude-plugin/plugin.json
 jq empty plugins/marketing-expert/hooks/hooks.json
 node --check plugins/marketing-expert/hooks/dispatch.mjs
 node --check plugins/marketing-expert/skills/analytics-tracking/scripts/tracking_plan_generator.mjs

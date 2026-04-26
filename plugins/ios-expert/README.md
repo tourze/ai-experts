@@ -4,7 +4,6 @@ iOS / Apple 平台专家插件，覆盖 Swift Concurrency、SwiftUI 性能与模
 
 ## 目录结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json`、`dispatch.mjs` 和 1 个本地 PostToolUse 守卫。
 - `skills/`：13 个 iOS / Apple 平台技能与配套参考资料、脚本。
 - `agents/`：2 个 iOS 运行审计与模拟器冒烟测试代理。
@@ -50,7 +49,6 @@ iOS / Apple 平台专家插件，覆盖 Swift Concurrency、SwiftUI 性能与模
 
 ```bash
 claude plugin validate .
-jq empty .claude-plugin/plugin.json
 jq empty hooks/hooks.json
 find hooks -name '*.mjs' -print0 | xargs -0 -n1 node --check
 find skills -path '*/scripts/*.mjs' -print0 | xargs -0 -n1 node --check

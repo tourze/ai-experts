@@ -4,7 +4,6 @@ Linux 系统专家插件，覆盖 Shell 守卫、发行版问题排查、磁盘/
 
 ## 结构
 
-- `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json`、`dispatch.mjs` 与 3 个本地 `PostToolUse Edit|Write` 守卫脚本。
 - `skills/`：8 个 Linux 专向技能文档，统一采用中文结构。
 - `tests/`：manifest、dispatch、hook 逻辑、SKILL 文档与示例校验。
@@ -70,7 +69,6 @@ claude plugin uninstall linux-expert --scope project
 ## 验证
 
 ```bash
-python3 -m json.tool plugins/linux-expert/.claude-plugin/plugin.json >/dev/null
 python3 -m json.tool plugins/linux-expert/hooks/hooks.json >/dev/null
 node --check plugins/linux-expert/hooks/dispatch.mjs
 for f in plugins/linux-expert/hooks/post-tool-use/edit-write/*.mjs; do

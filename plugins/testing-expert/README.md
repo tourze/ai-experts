@@ -21,7 +21,6 @@
 
 ```text
 testing-expert/
-├── .claude-plugin/plugin.json
 ├── hooks/
 │   ├── hooks.json
 │   └── dispatch.mjs
