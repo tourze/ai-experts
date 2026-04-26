@@ -186,7 +186,7 @@ flowchart TD
 
 ---
 
-**报告生成方式：** git-expert / github-deep-research
+**报告生成方式：** research-expert / repo-analyzer（深度模式）
 **报告日期：** {REPORT_DATE}
 **报告版本：** 1.0
 **状态：** 完成

@@ -2,9 +2,9 @@ import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { resolve } from "node:path";
 import test from "node:test";
-import { GitHubAPI } from "../skills/github-deep-research/scripts/github_api.mjs";
+import { GitHubAPI } from "../skills/repo-analyzer/scripts/github_api.mjs";
 
-const script = resolve("plugins/git-expert/skills/github-deep-research/scripts/github_api.mjs");
+const script = resolve("plugins/research-expert/skills/repo-analyzer/scripts/github_api.mjs");
 
 function mockFetch(routes) {
   return async (url) => {

@@ -43,7 +43,6 @@
 | `pitch-deck-reviewer` | VC 路演 Deck 审查（ABC 框架） |
 | `fundraise-advisor` | 融资策略与 Deck 准备 |
 | `funnel-architect` | 销售漏斗与价值阶梯设计 |
-| `pre-mortem-analyst` | 事前验尸法（假设已失败反推原因） |
 | `estimate-calibrator` | 三点估算校准（最佳/最可能/最差） |
 | `team-composition-analysis` | 团队结构/招聘/薪酬/股权设计 |
 | `process-optimization` | 业务流程分析与优化 |
@@ -63,7 +62,6 @@
 | `blm-model` | 当用户要做战略到执行的全链路诊断、分析业绩差距和机会差距的根因、或用华为/IBM 的战略规划方法论时使用；英文触发词 BLM、Business Leadership Model、strategy to execution、gap analysis、market insight to business design。 |
 | `business-framework-router` | 当用户描述业务场景、战略问题、市场挑战、竞争困境、组织问题或营销困境，但没有指定具体框架时使用；根据问题类型自动推荐 1-3 个最合适的分析框架并说明使用顺序。触发词包括：分析、诊断、战略、定位、竞争、市场、营销、商业模式、组织、增长策略。 |
 | `business-iron-triangle` | 当用户要从产品、核心业务职能、市场三维度审视业务定位一致性、或判断商业模式是否自洽时使用；英文触发词 business iron triangle、product-function-market、business definition、Abell's three dimensions。 |
-| `ge-matrix` | 当用户需要比 BCG 矩阵更精细的业务组合评估、用多指标加权打分做投资优先级排序时使用；英文触发词 GE matrix、McKinsey matrix、GE-McKinsey、nine-box matrix、industry attractiveness。 |
 | `greiner-growth-model` | 当用户要诊断企业成长阶段、预判组织危机、判断管理模式是否匹配发展阶段时使用；英文触发词 Greiner growth model、organizational growth stages、leadership crisis、autonomy crisis、growth phases。 |
 | `mckinsey-7s` | 当用户要做企业内部诊断、组织变革评估、战略执行对齐检查或找出管理短板时使用；英文触发词 McKinsey 7S、7S framework、organizational alignment、strategy-structure fit。 |
 | `org-canvas` | 当用户要系统性设计组织架构、检查组织设计与战略的匹配度、或做组织重组规划时使用；英文触发词 organization canvas、org design、organizational design canvas、structure-strategy alignment。 |
