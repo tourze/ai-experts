@@ -13,7 +13,7 @@ Add background music, voiceover, or sound effects to a rendered Manim video usin
 The simplest case: add a single audio file to a video.
 
 ```bash
-python3 scripts/add_audio.py scene_output.mp4 music.mp3 --output final.mp4
+node scripts/add_audio.mjs scene_output.mp4 music.mp3 --output final.mp4
 ```
 
 ## Background music with volume ducking
@@ -21,7 +21,7 @@ python3 scripts/add_audio.py scene_output.mp4 music.mp3 --output final.mp4
 Lower the music volume so it doesn't overpower narration.
 
 ```bash
-python3 scripts/add_audio.py scene_output.mp4 background.mp3 \
+node scripts/add_audio.mjs scene_output.mp4 background.mp3 \
     --output final.mp4 \
     --volume 0.25 \
     --fade-in 2 \
@@ -35,7 +35,7 @@ Voiceover must be pre-recorded and trimmed to match the animation timing before 
 
 ```bash
 # Trim voiceover to exactly match video length, then overlay
-python3 scripts/add_audio.py scene_output.mp4 voiceover.mp3 \
+node scripts/add_audio.mjs scene_output.mp4 voiceover.mp3 \
     --output final_with_voice.mp4 \
     --trim-to-video
 ```
@@ -68,7 +68,7 @@ ffmpeg -i video.mp4 -i voiceover.mp3 -i music.mp3 \
 
 - ffmpeg must be installed: `apt-get install -y ffmpeg` or `brew install ffmpeg`
 - Verify: `ffmpeg -version`
-- `scripts/add_audio.py` wraps ffmpeg with a simpler CLI interface for common use cases
+- `scripts/add_audio.mjs` wraps ffmpeg with a simpler CLI interface for common use cases
 - Use raw ffmpeg for multi-track mixing or advanced filter graphs
 
 ## Audio format notes

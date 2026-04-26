@@ -50,9 +50,9 @@ class SummaryScene(Scene):
 
 ```bash
 # Render each scene class separately
-python3 scripts/render_video.py scene.py IntroScene --quality low --format mp4
-python3 scripts/render_video.py scene.py AlgorithmScene --quality low --format mp4
-python3 scripts/render_video.py scene.py SummaryScene --quality low --format mp4
+node scripts/render_video.mjs scene.py IntroScene --quality low --format mp4
+node scripts/render_video.mjs scene.py AlgorithmScene --quality low --format mp4
+node scripts/render_video.mjs scene.py SummaryScene --quality low --format mp4
 ```
 
 ## Concatenating with ffmpeg

@@ -34,7 +34,7 @@ description: 当用户要把概念做成静态图、HTML 导出 PNG/SVG、做信
 ### 2. 导出 PNG
 
 ```bash
-python3 scripts/render_to_image.py output.html output.png \
+node scripts/render_to_image.mjs output.html output.png \
   --width 1200 \
   --height 630 \
   --scale 2 \
@@ -44,7 +44,7 @@ python3 scripts/render_to_image.py output.html output.png \
 ### 3. 导出 SVG
 
 ```bash
-python3 scripts/render_to_image.py output.html output.svg --selector ".canvas"
+node scripts/render_to_image.mjs output.html output.svg --selector ".canvas"
 ```
 
 参数约束：
@@ -102,7 +102,7 @@ python3 scripts/render_to_image.py output.html output.svg --selector ".canvas"
 </div>
 ```
 ```bash
-python3 scripts/render_to_image.py x.html out.svg
+node scripts/render_to_image.mjs x.html out.svg
 # 自动回退 PNG / 用户疑惑为什么不是 SVG
 ```
 

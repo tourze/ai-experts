@@ -62,10 +62,10 @@ ffmpeg -i voiceover.aiff voiceover.mp3
 # Use the elevenlabs Python SDK with chosen voice ID
 ```
 
-After generating the audio file, sync it with the video using `scripts/add_audio.py`:
+After generating the audio file, sync it with the video using `scripts/add_audio.mjs`:
 
 ```bash
-python3 scripts/add_audio.py scene_output.mp4 voiceover.mp3 \
+node scripts/add_audio.mjs scene_output.mp4 voiceover.mp3 \
     --output final_narrated.mp4 \
     --trim-to-video
 ```

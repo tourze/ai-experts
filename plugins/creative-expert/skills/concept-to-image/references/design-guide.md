@@ -185,7 +185,7 @@ Avoid all of these:
 
 ## Pre-export checklist
 
-Before running `render_to_image.py`:
+Before running `render_to_image.mjs`:
 
 - [ ] `.canvas` has explicit `width` and `height` in CSS
 - [ ] No external resource references (all inline)

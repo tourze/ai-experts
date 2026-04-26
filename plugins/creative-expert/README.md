@@ -41,9 +41,9 @@ find skills/screenshot/scripts -type f -name '*.swift' -print0 | xargs -0 -n1 sw
 node --test tests/*.test.mjs
 node skills/baoyu-article-illustrator/scripts/build-batch.mjs --help
 node skills/baoyu-compress-image/scripts/main.mjs --help
-python3 skills/concept-to-image/scripts/render_to_image.py --help
-python3 skills/concept-to-video/scripts/render_video.py --help
-python3 skills/concept-to-video/scripts/add_audio.py --help
+node skills/concept-to-image/scripts/render_to_image.mjs --help
+node skills/concept-to-video/scripts/render_video.mjs --help
+node skills/concept-to-video/scripts/add_audio.mjs --help
 node skills/screenshot/scripts/take_screenshot.mjs --help
 ```
 

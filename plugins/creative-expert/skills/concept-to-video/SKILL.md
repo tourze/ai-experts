@@ -35,19 +35,19 @@ description: 当用户要把概念做成动画、制作解释型视频或用 Man
 ### 2. 低清预览
 
 ```bash
-python3 scripts/render_video.py scene.py ConceptScene --quality low --format mp4
+node scripts/render_video.mjs scene.py ConceptScene --quality low --format mp4
 ```
 
 ### 3. 最终导出
 
 ```bash
-python3 scripts/render_video.py scene.py ConceptScene --quality high --format webm
+node scripts/render_video.mjs scene.py ConceptScene --quality high --format webm
 ```
 
 ### 4. 叠加音频
 
 ```bash
-python3 scripts/add_audio.py final.mp4 voiceover.mp3 \
+node scripts/add_audio.mjs final.mp4 voiceover.mp3 \
   --output final-with-audio.mp4 \
   --volume 1.0 \
   --fade-in 0.5 \
@@ -57,8 +57,8 @@ python3 scripts/add_audio.py final.mp4 voiceover.mp3 \
 
 当前脚本约束：
 
-- `scripts/render_video.py` 会校验 `--output` 后缀是否与 `--format` 一致。
-- `scripts/add_audio.py` 的淡出时间会按最终输出时长计算，不会再从 `0` 秒开始错误淡出。
+- `scripts/render_video.mjs` 会校验 `--output` 后缀是否与 `--format` 一致。
+- `scripts/add_audio.mjs` 的淡出时间会按最终输出时长计算，不会再从 `0` 秒开始错误淡出。
 
 ## 检查清单
 
@@ -73,7 +73,7 @@ python3 scripts/add_audio.py final.mp4 voiceover.mp3 \
 ### FAIL: 跳过 low 直接 high
 
 ```bash
-python3 scripts/render_video.py scene.py --quality high
+node scripts/render_video.mjs scene.py --quality high
 # 30 分钟渲染 → 发现节奏问题 → 重渲 30 分钟
 ```
 
@@ -81,7 +81,7 @@ python3 scripts/render_video.py scene.py --quality high
 
 ```bash
 # 1. low 预览（30 秒）
-python3 scripts/render_video.py scene.py --quality low
+node scripts/render_video.mjs scene.py --quality low
 # 2. 看效果，调节奏 / 元素位置
 # 3. 再 high 渲染（30 分钟一次过）
 ```
