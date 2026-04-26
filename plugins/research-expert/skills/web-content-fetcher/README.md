@@ -4,33 +4,31 @@
 
 ## 依赖
 
-```bash
-pip install -r requirements.txt
-```
+需要本地有可用 `node`。脚本只使用 Node.js 内置 API，不需要安装 Python 包。
 
 ## 调用方式
 
 ```bash
 # 默认 fast，内容过短时自动回退到 stealth
-python3 scripts/fetch.py "https://sspai.com/post/73145"
+node scripts/fetch.mjs "https://sspai.com/post/73145"
 
-# 微信公众号 / 知乎专栏 / 掘金建议直接强制 stealth
-python3 scripts/fetch.py "https://mp.weixin.qq.com/s/xxx" --stealth
+# 对请求头更敏感的站点可先强制 stealth
+node scripts/fetch.mjs "https://mp.weixin.qq.com/s/xxx" --stealth
 
 # 控制输出长度
-python3 scripts/fetch.py "https://example.com/article" 15000
+node scripts/fetch.mjs "https://example.com/article" 15000
 
 # 结构化 JSON 输出
-python3 scripts/fetch.py "https://example.com/article" --json
+node scripts/fetch.mjs "https://example.com/article" --json
 ```
 
 ## 路由建议
 
 | 域名 | 建议模式 | 说明 |
 |------|----------|------|
-| `mp.weixin.qq.com` | `--stealth` | JS 渲染 + 反爬 |
-| `zhuanlan.zhihu.com` | `--stealth` | JS 渲染 + 反爬 |
-| `juejin.cn` | `--stealth` | SPA 页面 |
+| `mp.weixin.qq.com` | `--stealth` | 使用浏览器式请求头；强 JS 页面需换浏览器方案 |
+| `zhuanlan.zhihu.com` | `--stealth` | 使用浏览器式请求头；强 JS 页面需换浏览器方案 |
+| `juejin.cn` | `--stealth` | SPA 页面可能需要浏览器方案 |
 | `sspai.com` | 默认 | 静态内容即可 |
 | `blog.csdn.net` | 默认 | 静态内容即可 |
 | 其他 | 默认 | 先 fast，必要时自动回退 |
