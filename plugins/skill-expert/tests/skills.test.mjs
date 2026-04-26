@@ -12,7 +12,7 @@ const expectedResources = [
   "skill-creator/references/schemas.md",
   "skill-creator/assets/eval_review.html",
   "skill-creator/eval-viewer/generate_review.py",
-  "skills-prune-and-sync-readme/scripts/curate_skills.py",
+  "skills-prune-and-sync-readme/scripts/curate_skills.mjs",
 ];
 
 function getSkillDirs() {

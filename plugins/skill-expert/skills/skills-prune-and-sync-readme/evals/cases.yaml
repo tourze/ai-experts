@@ -13,7 +13,7 @@ cases:
     fixtures: []
     rubric:
       - "uses the prune workflow only after explicit names are provided"
-      - "runs or recommends curate_skills.py prune with an explicit list"
+      - "runs or recommends curate_skills.mjs prune with an explicit list"
       - "syncs README through the script instead of manual table edits"
     trigger_expected: true
 
