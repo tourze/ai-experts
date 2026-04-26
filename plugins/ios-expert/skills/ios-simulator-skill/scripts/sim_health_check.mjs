@@ -28,7 +28,7 @@ This script checks for:
   - iOS Simulator availability
   - IDB (iOS Development Bridge) installation
   - Available simulator devices
-  - Python 3 installation (for scripts)
+  - Python 3 installation (for remaining build scripts)
 
 Exit codes:
   0 - All checks passed
@@ -218,19 +218,8 @@ if (xcrunPath) {
 }
 console.log("");
 
-console.log(`${BLUE}[8/8]${NC} Checking Python packages...`);
-if (pythonPath) {
-  if (run(pythonPath, ["-c", "import PIL"]).status === 0) {
-    checkPassed("Pillow (PIL) installed - visual diff available");
-  } else {
-    checkWarning("Pillow (PIL) not installed - visual diff won't work");
-    console.log("");
-    console.log("       Install missing packages:");
-    console.log("       pip3 install pillow");
-  }
-} else {
-  checkWarning("Cannot check Python packages (Python 3 not available)");
-}
+console.log(`${BLUE}[8/8]${NC} Checking visual diff support...`);
+checkPassed("Visual diff uses built-in Node.js PNG support (no Pillow required)");
 console.log("");
 
 console.log(`${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}`);

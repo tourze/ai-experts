@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync } from "node:fs";
+import { mkdtempSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import test from "node:test";
@@ -56,6 +56,7 @@ test("simctl Node lifecycle scripts 通过语法检查", () => {
     "screenshot_common.mjs",
     "app_state_capture.mjs",
     "test_recorder.mjs",
+    "visual_diff.mjs",
   ]) {
     const result = spawnSync(process.execPath, ["--check", resolve(scriptsDir, name)], { encoding: "utf8" });
     assert.equal(result.status, 0, `${name}: ${result.stderr}`);
@@ -84,6 +85,7 @@ test("simctl Node lifecycle scripts 输出帮助信息", () => {
     ["accessibility_audit.mjs", /Audit iOS simulator screen for accessibility issues/],
     ["app_state_capture.mjs", /Capture complete app state for debugging/],
     ["test_recorder.mjs", /Record test execution with screenshots and documentation/],
+    ["visual_diff.mjs", /Compare screenshots for visual differences/],
   ]) {
     const result = spawnSync(process.execPath, [resolve(scriptsDir, name), "--help"], { encoding: "utf8" });
     assert.equal(result.status, 0, `${name}: ${result.stderr}`);
@@ -165,6 +167,7 @@ test("iOS interaction Node helpers 保持命令构造和日志解析", async () 
   const simulatorSelector = await import(resolve(scriptsDir, "simulator_selector.mjs"));
   const statusBar = await import(resolve(scriptsDir, "status_bar.mjs"));
   const testRecorder = await import(resolve(scriptsDir, "test_recorder.mjs"));
+  const visualDiff = await import(resolve(scriptsDir, "visual_diff.mjs"));
   const tree = {
     type: "Window",
     AXUniqueId: "LoginViewController",
@@ -360,4 +363,27 @@ test("iOS interaction Node helpers 保持命令构造和日志解析", async () 
   });
   assert.match(recorder.outputDir, /login-flow-20260101-000000$/);
   assert.equal(typeof recorder.generate_report, "function");
+
+  const pngDir = mkdtempSync(join(tmpdir(), "visual-diff-"));
+  const baselinePath = join(pngDir, "baseline.png");
+  const currentPath = join(pngDir, "current.png");
+  visualDiff.writePng(baselinePath, {
+    width: 2,
+    height: 1,
+    data: Buffer.from([0, 0, 0, 255, 255, 255, 255, 255]),
+  });
+  visualDiff.writePng(currentPath, {
+    width: 2,
+    height: 1,
+    data: Buffer.from([255, 0, 0, 255, 255, 255, 255, 255]),
+  });
+  const differ = new visualDiff.VisualDiffer(0.01);
+  const diff = differ.compare(baselinePath, currentPath);
+  assert.equal(diff.different_pixels, 1);
+  assert.equal(diff.verdict, "FAIL");
+  visualDiff.writePng(join(pngDir, "side-by-side.png"), visualDiff.generateSideBySideData(
+    visualDiff.readPng(baselinePath),
+    visualDiff.readPng(currentPath),
+  ));
+  assert.ok(readFileSync(join(pngDir, "side-by-side.png")).subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])));
 });

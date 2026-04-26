@@ -17,7 +17,7 @@ description: 当用户需要用 Simulator、xcrun simctl、设备启动、截图
 - 仅把 `scripts/` 目录下的可执行 Node / Python / Shell 脚本当作入口；`scripts/common/` 与 `scripts/xcode/` 是内部模块，不直接执行。
 - 优先走无障碍树：先 `scripts/screen_mapper.mjs` / `scripts/navigator.mjs`，最后才用坐标。
 - 大多数脚本在未传 `--udid` 时会自动选择 booted simulator；`scripts/log_monitor.mjs` 例外，参数名是 `--device-udid`。
-- `scripts/visual_diff.py` 与截图缩放能力依赖 `Pillow`；若缺失，需要先安装对应 Python 包。
+- `scripts/visual_diff.mjs` 直接处理 PNG；截图缩放优先使用系统 `sips`，缺失时保留原图尺寸。
 
 ## 代码模式
 
