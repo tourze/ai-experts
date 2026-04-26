@@ -26,7 +26,7 @@ When using an existing presentation as a template:
 
    Match content type to layout style (e.g., key points → bullet slide, team info → multi-column, testimonials → quote slide).
 
-3. **Unpack**: `python scripts/office/unpack.py template.pptx unpacked/`
+3. **Unpack**: `node scripts/office/unpack.mjs template.pptx unpacked/`
 
 4. **Build presentation** (do this yourself, not with subagents):
    - Delete unwanted slides (remove from `<p:sldIdLst>`)
@@ -37,9 +37,9 @@ When using an existing presentation as a template:
 5. **Edit content**: Update text in each `slide{N}.xml`.
    **Use subagents here if available** — slides are separate XML files, so subagents can edit in parallel.
 
-6. **Clean**: `python scripts/clean.py unpacked/`
+6. **Clean**: `node scripts/clean.mjs unpacked/`
 
-7. **Pack**: `python scripts/office/pack.py unpacked/ output.pptx --original template.pptx`
+7. **Pack**: `node scripts/office/pack.mjs unpacked/ output.pptx --original template.pptx`
 
 ---
 
@@ -49,14 +49,14 @@ When using an existing presentation as a template:
 |--------|---------|
 | `unpack.py` | Extract and pretty-print PPTX |
 | `add_slide.mjs` | Duplicate slide or create from layout |
-| `clean.py` | Remove orphaned files |
+| `clean.mjs` | Remove orphaned files |
 | `pack.py` | Repack with validation |
 | `thumbnail.py` | Create visual grid of slides |
 
 ### unpack.py
 
 ```bash
-python scripts/office/unpack.py input.pptx unpacked/
+node scripts/office/unpack.mjs input.pptx unpacked/
 ```
 
 Extracts PPTX, pretty-prints XML, escapes smart quotes.
@@ -70,10 +70,10 @@ node scripts/add_slide.mjs unpacked/ slideLayout2.xml # From layout
 
 Prints `<p:sldId>` to add to `<p:sldIdLst>` at desired position.
 
-### clean.py
+### clean.mjs
 
 ```bash
-python scripts/clean.py unpacked/
+node scripts/clean.mjs unpacked/
 ```
 
 Removes slides not in `<p:sldIdLst>`, unreferenced media, orphaned rels.
@@ -81,7 +81,7 @@ Removes slides not in `<p:sldIdLst>`, unreferenced media, orphaned rels.
 ### pack.py
 
 ```bash
-python scripts/office/pack.py unpacked/ output.pptx --original input.pptx
+node scripts/office/pack.mjs unpacked/ output.pptx --original input.pptx
 ```
 
 Validates, repairs, condenses XML, re-encodes smart quotes.
@@ -104,7 +104,7 @@ Slide order is in `ppt/presentation.xml` → `<p:sldIdLst>`.
 
 **Reorder**: Rearrange `<p:sldId>` elements.
 
-**Delete**: Remove `<p:sldId>`, then run `clean.py`.
+**Delete**: Remove `<p:sldId>`, then run `clean.mjs`.
 
 **Add**: Use `add_slide.mjs`. Never manually copy slide files—the script handles notes references, Content_Types.xml, and relationship IDs that manual copying misses.
 

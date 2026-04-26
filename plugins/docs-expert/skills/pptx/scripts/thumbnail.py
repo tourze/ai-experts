@@ -23,7 +23,11 @@ import zipfile
 from pathlib import Path
 
 import defusedxml.minidom
-from office.soffice import get_soffice_env
+SKILLS_DIR = Path(__file__).resolve().parents[2]
+if str(SKILLS_DIR) not in sys.path:
+    sys.path.insert(0, str(SKILLS_DIR))
+
+from _office_runtime.soffice import get_soffice_env  # noqa: E402
 from PIL import Image, ImageDraw, ImageFont
 
 THUMBNAIL_WIDTH = 300

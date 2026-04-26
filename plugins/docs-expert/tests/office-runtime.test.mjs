@@ -6,21 +6,12 @@ import test from "node:test";
 const pluginRoot = resolve("plugins/docs-expert");
 const skills = ["docx", "pptx", "xlsx"];
 const officeFiles = [
-  "scripts/office/pack.py",
-  "scripts/office/unpack.py",
-  "scripts/office/validate.py",
-  "scripts/office/soffice.py",
-  "scripts/office/helpers/__init__.py",
-  "scripts/office/helpers/merge_runs.py",
-  "scripts/office/helpers/simplify_redlines.py",
-  "scripts/office/validators/__init__.py",
-  "scripts/office/validators/base.py",
-  "scripts/office/validators/docx.py",
-  "scripts/office/validators/pptx.py",
-  "scripts/office/validators/redlining.py",
+  "scripts/office/pack.mjs",
+  "scripts/office/unpack.mjs",
+  "scripts/office/validate.mjs",
 ];
 
-test("Office runtime wrappers point to shared implementation", () => {
+test("Office runtime Node wrappers point to shared implementation", () => {
   for (const skill of skills) {
     for (const relativeFile of officeFiles) {
       const file = resolve(pluginRoot, "skills", skill, relativeFile);
@@ -32,6 +23,7 @@ test("Office runtime wrappers point to shared implementation", () => {
 
 test("Shared Office runtime exists", () => {
   for (const relativeFile of [
+    "skills/_office_runtime/run_python_module.mjs",
     "skills/_office_runtime/pack.py",
     "skills/_office_runtime/unpack.py",
     "skills/_office_runtime/validate.py",
@@ -44,5 +36,26 @@ test("Shared Office runtime exists", () => {
     "skills/_office_runtime/validators/redlining.py",
   ]) {
     assert.equal(existsSync(resolve(pluginRoot, relativeFile)), true, relativeFile);
+  }
+});
+
+test("Legacy Office Python wrappers were removed from skill scripts", () => {
+  for (const skill of skills) {
+    for (const relativeFile of [
+      "scripts/office/pack.py",
+      "scripts/office/unpack.py",
+      "scripts/office/validate.py",
+      "scripts/office/soffice.py",
+      "scripts/office/helpers/__init__.py",
+      "scripts/office/helpers/merge_runs.py",
+      "scripts/office/helpers/simplify_redlines.py",
+      "scripts/office/validators/__init__.py",
+      "scripts/office/validators/base.py",
+      "scripts/office/validators/docx.py",
+      "scripts/office/validators/pptx.py",
+      "scripts/office/validators/redlining.py",
+    ]) {
+      assert.equal(existsSync(resolve(pluginRoot, "skills", skill, relativeFile)), false, relativeFile);
+    }
   }
 });

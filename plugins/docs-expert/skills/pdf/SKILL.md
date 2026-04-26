@@ -25,11 +25,11 @@ description: 当用户要读取、填写表单、批注、分析结构或转换 
 
 - [forms.md](forms.md)
 - [reference.md](reference.md)
-- [scripts/check_fillable_fields.py](scripts/check_fillable_fields.py)
+- [scripts/check_fillable_fields.mjs](scripts/check_fillable_fields.mjs)
 - [scripts/extract_form_field_info.py](scripts/extract_form_field_info.py)
 
 ```bash
-python3 scripts/check_fillable_fields.py form.pdf
+node scripts/check_fillable_fields.mjs form.pdf
 python3 scripts/extract_form_field_info.py form.pdf fields.json
 python3 scripts/fill_fillable_fields.py form.pdf fields.json filled.pdf
 python3 scripts/fill_pdf_form_with_annotations.py scanned.pdf fields.json annotated.pdf
@@ -55,7 +55,7 @@ filler.fill("form.pdf", {"name": "...", "address": "..."}, "out.pdf")
 ### PASS: extract → fill
 
 ```bash
-python3 scripts/check_fillable_fields.py form.pdf  # 是否可填表
+node scripts/check_fillable_fields.mjs form.pdf  # 是否可填表
 python3 scripts/extract_form_field_info.py form.pdf fields.json  # 拿到真实字段名
 # 编辑 fields.json
 python3 scripts/fill_fillable_fields.py form.pdf fields.json filled.pdf
@@ -72,7 +72,7 @@ filler.fill("scanned.pdf", values, "out.pdf")
 ### PASS: 走标注路径
 
 ```bash
-python3 scripts/check_fillable_fields.py scanned.pdf
+node scripts/check_fillable_fields.mjs scanned.pdf
 # → "no fillable fields detected, use annotation mode"
 python3 scripts/fill_pdf_form_with_annotations.py scanned.pdf coords.json out.pdf
 # coords.json 含每个字段的 page + x/y + 字号

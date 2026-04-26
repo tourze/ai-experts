@@ -10,7 +10,11 @@ import subprocess
 import sys
 from pathlib import Path
 
-from office.soffice import get_soffice_env
+SKILLS_DIR = Path(__file__).resolve().parents[2]
+if str(SKILLS_DIR) not in sys.path:
+    sys.path.insert(0, str(SKILLS_DIR))
+
+from _office_runtime.soffice import get_soffice_env  # noqa: E402
 
 from openpyxl import load_workbook
 

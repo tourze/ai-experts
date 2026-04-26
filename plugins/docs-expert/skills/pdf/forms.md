@@ -1,7 +1,7 @@
 **CRITICAL: You MUST complete these steps in order. Do not skip ahead to writing code.**
 
 If you need to fill out a PDF form, first check to see if the PDF has fillable form fields. Run this script from this file's directory:
- `python scripts/check_fillable_fields <file.pdf>`, and depending on the result go to either the "Fillable fields" or "Non-fillable fields" and follow those instructions.
+ `node scripts/check_fillable_fields.mjs <file.pdf>`, and depending on the result go to either the "Fillable fields" or "Non-fillable fields" and follow those instructions.
 
 # Fillable fields
 If the PDF has fillable form fields:
@@ -163,7 +163,7 @@ Create fields.json using `pdf_width` and `pdf_height` (signals PDF coordinates):
 ### A.4: Validate Bounding Boxes
 
 Before filling, check your bounding boxes for errors:
-`python scripts/check_bounding_boxes.py fields.json`
+`node scripts/check_bounding_boxes.mjs fields.json`
 
 This checks for intersecting bounding boxes and entry boxes that are too small for the font size. Fix any reported errors before filling.
 
@@ -247,7 +247,7 @@ Create fields.json using `image_width` and `image_height` (signals image coordin
 ### B.5: Validate Bounding Boxes
 
 Before filling, check your bounding boxes for errors:
-`python scripts/check_bounding_boxes.py fields.json`
+`node scripts/check_bounding_boxes.mjs fields.json`
 
 This checks for intersecting bounding boxes and entry boxes that are too small for the font size. Fix any reported errors before filling.
 
@@ -270,7 +270,7 @@ Use this when structure extraction works for most fields but misses some element
 ## Step 2: Validate Before Filling
 
 **Always validate bounding boxes before filling:**
-`python scripts/check_bounding_boxes.py fields.json`
+`node scripts/check_bounding_boxes.mjs fields.json`
 
 This checks for:
 - Intersecting bounding boxes (which would cause overlapping text)
