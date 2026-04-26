@@ -22,7 +22,7 @@ cases:
     fixtures: []
     rubric:
       - "does not activate STP market segmentation"
-      - "customer value tiering belongs to customer-pyramid"
+      - "customer value tiering belongs to customer-lifecycle"
     trigger_expected: false
 
   - id: negative_competitor_page

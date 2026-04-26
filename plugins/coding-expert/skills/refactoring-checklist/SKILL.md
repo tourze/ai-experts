@@ -1,6 +1,6 @@
 ---
 name: refactoring-checklist
-description: "当用户要重构、重组或清理代码，需要确保安全性和增量推进时使用。"
+description: "当用户要重构、重组或清理代码，需要从流程纪律保证安全性和增量推进时使用。本 skill 只管「流程门禁」（测试基线、范围界定、回滚方案），不教具体重构手法。"
 ---
 
 # 重构前安全检查清单
@@ -8,7 +8,11 @@ description: "当用户要重构、重组或清理代码，需要确保安全性
 ## 适用场景
 - 用户要对现有代码做结构调整、抽取、合并、移动职责。
 - 用户觉得代码"很乱"想整理但没想清楚具体做什么。
-- 交叉引用：降低复杂度配合 `complexity-reducer`；审查结果配合 `code-review`；具体重构手法参考 `refactoring-patterns`。
+- 本 skill 只回答「能不能开始 / 怎么安全推进 / 怎么回滚」。
+- 交叉引用：
+  - 具体「该用哪个重构手法」（Extract Method / 异味分类）→ `architecture-expert/refactoring-patterns`。
+  - 降低嵌套与函数复杂度的诊断 → `complexity-reducer`。
+  - 审查结论触发的重构 → `code-review`。
 
 ## 核心约束
 

@@ -7,7 +7,7 @@
 - `.claude-plugin/plugin.json`：插件清单，显式声明 `skills/`；标准 `hooks/hooks.json` 会由 Claude 自动加载。
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：架构、设计、重构、计划与债务治理技能。
-- `tests/`：脚本级回归测试，覆盖 `scan_codebase.mjs` 与 `complexity_report.mjs`。
+- `tests/`：脚本级回归测试，覆盖 `scan_codebase.mjs`。
 
 ## Agents
 
@@ -24,11 +24,9 @@
 | `architecture-diagram` | 生成自包含 HTML 架构图 |
 | `architecture-reviewer` | 评审架构、文档或代码库的设计质量 |
 | `backend-to-frontend-handoff-docs` | 为前后端协作输出接口交接文档 |
-| `code-refiner` | 在不改行为前提下简化代码和复杂度 |
 | `cross-platform-adapter-patterns` | 设计跨平台抽象层、适配器接口与运行时分支 |
 | `ddia-systems` | 用 DDIA 思路设计数据系统 |
 | `error-handling-patterns` | 设计异常传播、重试边界与错误分层 |
-| `exhaustive-systems-analysis` | 对系统做穷举式拆解与问题审计 |
 | `feature-dev` | 处理跨文件实现且涉及架构取舍的功能开发 |
 | `hierarchical-matching-systems` | 设计和评审层级匹配、实体解析与最优分配系统 |
 | `plan-review` | 在编码前审查实现计划、RFC 与风险假设 |
@@ -73,8 +71,6 @@ claude plugin uninstall architecture-expert --scope project
 
 ```bash
 node --check hooks/dispatch.mjs
-node --check skills/code-refiner/scripts/complexity_report.mjs
 node --check skills/architecture-reviewer/scripts/scan_codebase.mjs
-node --test tests/test_complexity_report.mjs
 python3 -m unittest tests/test_scan_codebase.py
 ```

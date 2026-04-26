@@ -8,7 +8,7 @@ description: "在设计、评审或排查层级匹配系统时使用，适用于
 ## 适用场景
 - 适合学生分班、岗位匹配、组织树映射、分层分类归并、记录链接等问题。
 - 适合把业务规则翻译成可执行约束、偏好和目标函数。
-- 交叉引用：更大范围的架构边界用 `system-design`；问题审计用 `exhaustive-systems-analysis`。
+- 交叉引用：更大范围的架构边界用 `system-design`；问题审计用 `architecture-reviewer`（启用 Exhaustive 模式）。
 
 ## 核心约束
 - 先判断问题类型：稳定匹配、最优分配、层级对齐还是实体解析。

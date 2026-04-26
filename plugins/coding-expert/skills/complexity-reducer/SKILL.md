@@ -1,6 +1,6 @@
 ---
 name: complexity-reducer
-description: "当代码过于复杂、嵌套太深、函数太长或耦合严重，用户要求简化时使用。"
+description: "当代码过于复杂、嵌套太深、函数太长、耦合严重，或用户要求简化代码、清理命名、降低复杂度时使用。英文触发词 simplify code / reduce complexity / code cleanup / refine code。"
 ---
 
 # 复杂度识别与简化
@@ -8,7 +8,8 @@ description: "当代码过于复杂、嵌套太深、函数太长或耦合严重
 ## 适用场景
 - 代码能跑但难以理解、修改和测试。
 - 函数超长、嵌套超深、参数超多、条件超复杂。
-- 交叉引用：结构调整配合 `refactoring-checklist`；审查结果配合 `code-review`；设计哲学参考 `software-design-philosophy`。
+- 上线前做可维护性整理，而不是功能性重写。
+- 交叉引用：重构流程纪律配合 `refactoring-checklist`；具体重构手法配合 `architecture-expert/refactoring-patterns`；审查结果配合 `code-review`；设计哲学参考 `software-design-philosophy`。
 
 ## 核心约束
 - 目标是降低认知复杂度，不是减少行数。
@@ -19,6 +20,13 @@ description: "当代码过于复杂、嵌套太深、函数太长或耦合严重
 
 ## 复杂度来源与对策
 每种来源的详细症状、对策和代码示例见 [references/patterns.md](./references/patterns.md)。
+按语言看具体重构示例：[Python 指南](references/python.md)、[Go 指南](references/go.md)、[TypeScript 指南](references/typescript.md)、[Rust 指南](references/rust.md)。
+
+需要定量度量时优先跑 `scripts/complexity_report.mjs <路径> --format markdown`，按"问题 → 最小重构动作 → 风险 → 验证方式"组织产出，而不是凭主观感受决定。
+
+```bash
+node scripts/complexity_report.mjs src --format markdown
+```
 
 | 来源 | 判定标准 | 首选对策 |
 |------|---------|---------|

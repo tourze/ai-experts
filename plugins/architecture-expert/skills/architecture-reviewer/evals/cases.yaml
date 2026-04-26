@@ -46,3 +46,21 @@ cases:
     rubric:
       - "does not activate architecture review workflow"
     trigger_expected: false
+
+  - id: exhaustive_subsystem_audit
+    prompt: "Do an exhaustive systems analysis of this repo. Break it into subsystems, list critical risks, and prioritize issues by impact."
+    fixtures: []
+    rubric:
+      - "activates Exhaustive mode and decomposes the system into subsystems before judging"
+      - "binds findings to evidence rather than broad opinion"
+      - "prioritizes by severity and operational impact"
+    trigger_expected: true
+
+  - id: incident_surface_area_analysis
+    prompt: "Analyze every subsystem touched by our checkout outages and identify where the failure modes live."
+    fixtures: []
+    rubric:
+      - "maps subsystem boundaries and interactions"
+      - "identifies failure modes across synchronous and asynchronous paths"
+      - "distinguishes critical risks from cosmetic issues"
+    trigger_expected: true

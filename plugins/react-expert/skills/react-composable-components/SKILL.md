@@ -10,7 +10,7 @@ description: 当用户需要拆分臃肿 React 组件、设计 compound componen
 - 单个组件已经承担过多布局、状态和渲染分支，读写成本很高。
 - 需要把业务页面抽成设计系统组件，且保留插槽、样式扩展和 `ref` 能力。
 - 同一组件开始出现成串布尔 props，如 `hasHeader`、`showFooter`、`compact`、`withActions`。
-- 如果问题的根因是“外部状态订阅导致整棵树频繁重渲染”，优先看 [react-render-performance](../react-render-performance/SKILL.md)。
+- 如果问题的根因是"外部状态订阅导致整棵树频繁重渲染"，优先看 [react-performance](../react-performance/SKILL.md)。
 
 ## 核心约束
 

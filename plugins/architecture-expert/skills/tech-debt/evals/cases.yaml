@@ -40,7 +40,7 @@ cases:
     fixtures: []
     rubric:
       - "does not activate debt inventory workflow"
-      - "localized refactoring belongs to code-refiner"
+      - "localized refactoring belongs to complexity-reducer"
     trigger_expected: false
 
   - id: negative_feature_tasks

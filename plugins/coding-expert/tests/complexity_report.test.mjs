@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import test from "node:test";
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
-const script = join(root, "skills", "code-refiner", "scripts", "complexity_report.mjs");
+const script = join(root, "skills", "complexity-reducer", "scripts", "complexity_report.mjs");
 
 function runReport(source) {
   const tempDir = mkdtempSync(join(tmpdir(), "architecture-complexity-"));

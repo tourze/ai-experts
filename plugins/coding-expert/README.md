@@ -7,7 +7,7 @@
 | Skill | 用途 |
 |-------|------|
 | `code-review` | 代码质量、命名、职责边界与错误处理审查 |
-| `complexity-reducer` | 降低嵌套、耦合和函数复杂度 |
+| `complexity-reducer` | 降低嵌套、耦合和函数复杂度，含 `complexity_report.mjs` 度量脚本与 Python/Go/TS/Rust 简化指南 |
 | `debug-methodology` | 系统化定位 bug 与异常行为 |
 | `refactoring-checklist` | 为重构提供增量、安全的检查清单 |
 | `spec-driven-delivery` | 5 阶段需求驱动交付（Specify→Plan→Act→Review→Vault），10 分 spec 门禁 + journal + 3 次失败协议 |
@@ -80,5 +80,6 @@ claude plugin uninstall coding-expert --scope project
 
 ```bash
 find hooks -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
+node --check skills/complexity-reducer/scripts/complexity_report.mjs
 node --test tests/*.test.mjs
 ```

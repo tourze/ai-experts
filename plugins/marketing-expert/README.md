@@ -50,9 +50,8 @@
 | `aida-funnel` | 当用户要设计客户认知-兴趣-欲望-行动的转化路径、分析营销漏斗各阶段效率、或优化从曝光到购买的全链路时使用；英文触发词 AIDA、AIDMA、awareness-interest-desire-action、marketing funnel stages、conversion funnel。 |
 | `ansoff-matrix` | 当用户要制定增长策略、评估市场渗透/产品开发/市场开发/多元化的风险收益、或回答"下一步往哪里增长"时使用；英文触发词 Ansoff matrix、growth strategy、market penetration、product development、market development、diversification。 |
 | `brand-health` | 当用户要做品牌健康度诊断、评估品牌认知-美誉-使用-购买-推荐漏斗、或判断品牌问题出在哪个环节时使用；英文触发词 brand health、brand awareness、brand equity、NPS、brand funnel、brand perception audit。 |
-| `customer-pyramid` | 当用户要做客户分层管理、设计差异化服务策略、优化客户生命周期价值或诊断客户结构健康度时使用；英文触发词 customer pyramid、customer segmentation by value、CLV tiering、platinum-gold-iron-lead、customer profitability。 |
+| `customer-lifecycle` | 当用户要做客户价值分层（CLV / 铂金-金-铁-铅）或按生命周期阶段（PLC / 客户 LC）制定差异化营销策略时使用；英文触发词 customer pyramid、CLV tiering、product lifecycle、PLC、lifecycle marketing。 |
 | `marketing-mix-4p` | 当用户要制定营销组合策略、审查产品/价格/渠道/促销的配合度、或用 4P/4C/4R 框架做营销诊断时使用；英文触发词 4P、4C、4R、marketing mix、product-price-place-promotion、marketing strategy audit。 |
-| `product-lifecycle` | 当用户要分析产品或客户的生命周期阶段、制定各阶段差异化营销策略、或规划生命周期管理体系时使用；英文触发词 product lifecycle、PLC、customer lifecycle、introduction-growth-maturity-decline、lifecycle marketing。 |
 | `stp-segmentation` | 当用户要做市场细分、选择目标市场、制定市场定位或回答"该卖给谁"时使用；英文触发词 STP、segmentation、targeting、positioning、market segmentation、target market、positioning statement。 |
 
 ## Agents

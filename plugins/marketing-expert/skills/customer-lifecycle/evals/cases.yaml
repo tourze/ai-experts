@@ -17,18 +17,44 @@ cases:
       - "suggests movement strategies between tiers"
     trigger_expected: true
 
+  - id: lifecycle_stage_strategy
+    prompt: "Analyze our product lifecycle stage and recommend marketing strategy for maturity."
+    fixtures: []
+    rubric:
+      - "identifies lifecycle stage such as introduction, growth, maturity, or decline"
+      - "matches marketing strategy to the stage"
+      - "distinguishes product lifecycle from customer lifecycle when relevant"
+    trigger_expected: true
+
+  - id: customer_lifecycle_campaigns
+    prompt: "Plan lifecycle marketing across trial, activation, expansion, renewal, and win-back."
+    fixtures: []
+    rubric:
+      - "maps stages across the customer lifecycle"
+      - "assigns goals and tactics per stage"
+      - "identifies transition metrics"
+    trigger_expected: true
+
   - id: negative_market_segmentation
     prompt: "Define our target market and positioning statement."
     fixtures: []
     rubric:
-      - "does not activate customer value pyramid"
+      - "does not activate customer-lifecycle"
       - "market segmentation belongs to stp-segmentation"
+    trigger_expected: false
+
+  - id: negative_email_sequence
+    prompt: "Write the exact onboarding and renewal emails."
+    fixtures: []
+    rubric:
+      - "does not activate customer-lifecycle strategy"
+      - "email copy belongs to email-sequence"
     trigger_expected: false
 
   - id: negative_churn_save_flow
     prompt: "Design a cancellation save flow to reduce churn."
     fixtures: []
     rubric:
-      - "does not activate customer pyramid analysis"
+      - "does not activate customer-lifecycle"
       - "churn workflows belong to churn-prevention"
     trigger_expected: false

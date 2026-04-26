@@ -22,7 +22,7 @@ cases:
     fixtures: []
     rubric:
       - "does not necessarily activate named refactoring-pattern workflow"
-      - "localized simplification belongs to code-refiner"
+      - "localized simplification belongs to complexity-reducer"
     trigger_expected: false
 
   - id: negative_architecture_review

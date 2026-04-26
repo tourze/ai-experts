@@ -17,6 +17,38 @@ cases:
       - "covers row height estimation and overscan configuration"
     trigger_expected: true
 
+  - id: rerender_patterns_memo
+    prompt: "我需要减少 React 不必要重渲染、优化 memo/state/effect 模式或处理 hooks 性能问题。提到重渲染、memo、useMemo、useCallback、derived state、startTransition、useDeferredValue、effect 依赖。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as react-performance rerender territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: rerender_patterns_realistic
+    prompt: "组件树存在不必要的重渲染，需要定位和消除。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: store_subscription_primary
+    prompt: "React 组件因外部 store 订阅导致无意义重渲染。提到 store 订阅、selector、whole object、re-render、XState、Zustand、Redux、Context。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as store-subscription performance territory"
+      - "suggests minimal-slice selectors, shallowEqual, or computed store"
+    trigger_expected: true
+
+  - id: store_subscription_realistic
+    prompt: "React 组件消费外部 store 后，几乎每次状态变化都会整片重渲染。"
+    fixtures: []
+    rubric:
+      - "matches the store-subscription scenario"
+      - "keeps the response focused on minimizing subscription scope"
+    trigger_expected: true
+
   - id: negative_react_routing
     prompt: "How do I set up nested routes with React Router v6?"
     fixtures: []
@@ -31,4 +63,11 @@ cases:
     rubric:
       - "does not activate react performance workflow"
       - "state library selection is an architecture decision, not performance optimization"
+    trigger_expected: false
+
+  - id: negative_adjacent_react_composable_components
+    prompt: "拆分臃肿 React 组件、设计 compound components 或规范 props 透传"
+    fixtures: []
+    rubric:
+      - "adjacent react-composable-components requests should not trigger react-performance"
     trigger_expected: false

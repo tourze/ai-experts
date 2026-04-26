@@ -8,7 +8,7 @@ description: "在需要只读追踪接口、任务、事件或定时任务的调
 ## 适用场景
 - 当用户问“这个接口都干了什么”“什么情况会触发”“帮我串一下调用链”时使用。
 - 适合定位数据库写入、缓存变更、消息投递、定时任务和事件监听的真实来源。
-- 交叉引用：若要做系统级问题盘点，配合 `exhaustive-systems-analysis`；若要审方案而不是追链路，改用 `plan-review`。
+- 交叉引用：若要做系统级问题盘点，配合 `architecture-reviewer`（Exhaustive 模式）；若要审方案而不是追链路，改用 `plan-review`。
 
 ## 核心约束
 - 只允许只读操作：`Read` / `Grep` / `Glob` / 只读 Bash。
