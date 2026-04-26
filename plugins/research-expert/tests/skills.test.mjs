@@ -50,10 +50,7 @@ function expectedSkillName(skillPath) {
   if (parts.length === 1) {
     return parts[0];
   }
-  if (parts.length === 3 && parts[1] === "sub") {
-    return `${parts[0]}/${parts[2]}`;
-  }
-  throw new Error(`无法从路径推导 skill 名称：${skillPath}`);
+  throw new Error(`不允许嵌套 SKILL.md：${skillPath}`);
 }
 
 function extractRelativeLinks(markdown) {

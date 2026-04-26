@@ -99,13 +99,6 @@ test("site-analyze env probe Node wrapper 通过语法检查", () => {
     "skills/site-analyze/scripts/04_whois.mjs",
     "skills/site-analyze/scripts/05_ping.mjs",
     "skills/site-analyze/scripts/06_robots.mjs",
-    "skills/site-analyze/sub/dig/01_dig.mjs",
-    "skills/site-analyze/sub/ip-info/02_ip_info.mjs",
-    "skills/site-analyze/sub/traceroute/02_ip_info.mjs",
-    "skills/site-analyze/sub/traceroute/03_traceroute.mjs",
-    "skills/site-analyze/sub/whois/04_whois.mjs",
-    "skills/site-analyze/sub/ping/05_ping.mjs",
-    "skills/site-analyze/sub/robots/06_robots.mjs",
   ]) {
     const result = spawnSync("node", [
       "--check",
