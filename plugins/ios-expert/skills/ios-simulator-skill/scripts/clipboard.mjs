@@ -71,7 +71,7 @@ export function main(argv = process.argv.slice(2)) {
   if (args.expected) console.log(`Expected: ${args.expected}`);
   console.log("");
   console.log("Next steps:");
-  console.log("1. Tap text field with: python3 scripts/navigator.py --find-type TextField --tap");
+  console.log("1. Tap text field with: node scripts/navigator.mjs --find-type TextField --tap");
   console.log("2. Paste with: node scripts/keyboard.mjs --key return");
   console.log("   Or use Cmd+V gesture with: node scripts/keyboard.mjs --key cmd+v");
   return 0;

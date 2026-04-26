@@ -42,9 +42,11 @@ test("simctl Node lifecycle scripts 通过语法检查", () => {
     "interaction_common.mjs",
     "keyboard.mjs",
     "log_monitor.mjs",
+    "navigator.mjs",
     "app_launcher.mjs",
     "privacy_manager.mjs",
     "push_notification.mjs",
+    "screen_mapper.mjs",
     "status_bar.mjs",
   ]) {
     const result = spawnSync(process.execPath, ["--check", resolve(scriptsDir, name)], { encoding: "utf8" });
@@ -63,9 +65,11 @@ test("simctl Node lifecycle scripts 输出帮助信息", () => {
     ["gesture.mjs", /Perform gestures on iOS simulator/],
     ["keyboard.mjs", /Control keyboard and hardware buttons/],
     ["log_monitor.mjs", /Monitor and analyze iOS simulator logs/],
+    ["navigator.mjs", /Navigate iOS apps using accessibility data/],
     ["app_launcher.mjs", /Control iOS app lifecycle/],
     ["privacy_manager.mjs", /Manage iOS app privacy and permissions/],
     ["push_notification.mjs", /Send simulated push notification/],
+    ["screen_mapper.mjs", /Map current screen UI elements/],
     ["status_bar.mjs", /Override iOS simulator status bar/],
   ]) {
     const result = spawnSync(process.execPath, [resolve(scriptsDir, name), "--help"], { encoding: "utf8" });
@@ -137,9 +141,34 @@ test("iOS interaction Node helpers 保持命令构造和日志解析", async () 
   const gesture = await import(resolve(scriptsDir, "gesture.mjs"));
   const keyboard = await import(resolve(scriptsDir, "keyboard.mjs"));
   const logMonitor = await import(resolve(scriptsDir, "log_monitor.mjs"));
+  const navigator = await import(resolve(scriptsDir, "navigator.mjs"));
   const privacy = await import(resolve(scriptsDir, "privacy_manager.mjs"));
   const push = await import(resolve(scriptsDir, "push_notification.mjs"));
+  const screenMapper = await import(resolve(scriptsDir, "screen_mapper.mjs"));
   const statusBar = await import(resolve(scriptsDir, "status_bar.mjs"));
+  const tree = {
+    type: "Window",
+    AXUniqueId: "LoginViewController",
+    enabled: true,
+    children: [
+      { type: "NavigationBar", AXLabel: "Sign In", enabled: true, children: [] },
+      {
+        type: "Button",
+        AXLabel: "Login",
+        enabled: true,
+        frame: { x: 10, y: 20, width: 100, height: 40 },
+        children: [],
+      },
+      {
+        type: "TextField",
+        AXLabel: "Email",
+        AXValue: "",
+        enabled: true,
+        frame: { x: 0, y: 80, width: 200, height: 40 },
+        children: [],
+      },
+    ],
+  };
 
   assert.deepEqual(interaction.buildIdbCommand("ui text", "UDID-1", "hello"), [
     "idb",
@@ -151,6 +180,7 @@ test("iOS interaction Node helpers 保持命令构造和日志解析", async () 
   ]);
   assert.deepEqual(interaction.transformScreenshotCoords(10, 20, 100, 200, 390, 844), [39, 84]);
   assert.deepEqual(interaction.parseCoordinatePair("12,34"), [12, 34]);
+  assert.deepEqual(interaction.flattenTree(tree).map((node) => node.type), ["Window", "NavigationBar", "Button", "TextField"]);
 
   assert.deepEqual(clipboard.parseArgs(["--copy", "hello", "--test-name", "login"]), {
     copy: "hello",
@@ -164,6 +194,11 @@ test("iOS interaction Node helpers 保持命令构造和日志解析", async () 
   assert.equal(keyboard.resolveKeyCode("42"), 42);
   assert.equal(logMonitor.parseTimeDuration("5m"), 300);
   assert.equal(logMonitor.classifyLogLine("2026-01-01 failed to open database"), "error");
+  const element = new navigator.Element(tree.children[1]);
+  assert.deepEqual(element.center, [60, 40]);
+  const nav = new navigator.Navigator("UDID");
+  nav.treeCache = tree;
+  assert.equal(nav.findElement({ text: "log" }).label, "Login");
   assert.deepEqual(
     logMonitor.buildLogCommand({ appBundleId: "com.example.MyApp", deviceUdid: "booted" }).slice(0, 8),
     ["xcrun", "simctl", "spawn", "booted", "log", "stream", "--predicate", 'processImagePath CONTAINS "MyApp"'],
@@ -203,5 +238,13 @@ test("iOS interaction Node helpers 保持命令构造和日志解析", async () 
     "discharging",
     "--batteryLevel",
     "50",
+  ]);
+  const analysis = new screenMapper.ScreenMapper("UDID").analyzeTree(tree);
+  assert.deepEqual(analysis.buttons, ["Login"]);
+  assert.equal(analysis.text_fields.length, 1);
+  assert.match(screenMapper.formatSummary(analysis), /Screen: LoginViewController/);
+  assert.deepEqual(screenMapper.getNavigationHints(analysis), [
+    "Login screen detected - find TextFields for credentials",
+    "1 empty text field(s) - may need input",
   ]);
 });

@@ -18,7 +18,7 @@ Responsibilities:
 - Stop at the first blocker and explain the exact failing step
 
 Rules:
-- Prefer semantic navigation (`screen_mapper.py`, `navigator.py`) over coordinate taps
+- Prefer semantic navigation (`screen_mapper.mjs`, `navigator.mjs`) over coordinate taps
 - Do not claim a flow passed if you skipped a step due to missing build, permissions, or navigation ambiguity
 - Distinguish environment/setup failures from app bugs
 - If the app is not installed, report the missing prerequisite clearly instead of improvising

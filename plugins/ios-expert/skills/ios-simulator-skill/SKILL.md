@@ -14,8 +14,8 @@ description: 当用户需要用 Simulator、xcrun simctl、设备启动、截图
 
 ## 核心约束
 
-- 仅把 `scripts/` 目录下的可执行 Python / Shell 脚本当作入口；`scripts/common/` 与 `scripts/xcode/` 是内部模块，不直接执行。
-- 优先走无障碍树：先 `scripts/screen_mapper.py` / `scripts/navigator.py`，最后才用坐标。
+- 仅把 `scripts/` 目录下的可执行 Node / Python / Shell 脚本当作入口；`scripts/common/` 与 `scripts/xcode/` 是内部模块，不直接执行。
+- 优先走无障碍树：先 `scripts/screen_mapper.mjs` / `scripts/navigator.mjs`，最后才用坐标。
 - 大多数脚本在未传 `--udid` 时会自动选择 booted simulator；`scripts/log_monitor.mjs` 例外，参数名是 `--device-udid`。
 - `scripts/visual_diff.py` 与截图缩放能力依赖 `Pillow`；若缺失，需要先安装对应 Python 包。
 
@@ -35,8 +35,8 @@ node scripts/simctl_create.mjs --list-runtimes --json
 
 ```bash
 node scripts/app_launcher.mjs --launch com.example.app
-python3 scripts/screen_mapper.py --hints
-python3 scripts/navigator.py --find-text "Login" --tap
+node scripts/screen_mapper.mjs --hints
+node scripts/navigator.mjs --find-text "Login" --tap
 node scripts/keyboard.mjs --type "user@example.com"
 node scripts/gesture.mjs --scroll down --scroll-amount 3
 ```
@@ -63,9 +63,9 @@ node scripts/simctl_shutdown.mjs --all
 ## 检查清单
 
 - 先跑 `node scripts/sim_health_check.mjs`，确认 `xcrun`、`simctl`、Python 环境可用。
-- 每次交互前先看 `scripts/screen_mapper.py` 或 `scripts/navigator.py --list`，不要盲点。
+- 每次交互前先看 `scripts/screen_mapper.mjs` 或 `scripts/navigator.mjs --list`，不要盲点。
 - 需要日志时确认参数名：`scripts/log_monitor.mjs` 用 `--device-udid`，不是 `--udid`。
-- 需要脚本化输出时统一使用 `--json`；需要完整参数时直接跑 `python3 scripts/<tool>.py --help`。
+- 需要脚本化输出时统一使用 `--json`；需要完整参数时直接跑对应脚本的 `--help`。
 - 交叉引用：性能瓶颈排查看 `swiftui-performance-audit`；审核流程复现看 `apple-appstore-reviewer`。
 
 ## 反模式
@@ -83,9 +83,9 @@ device.tap(187, 642)  # 写死坐标
 
 ```bash
 # 先看屏幕结构
-python3 scripts/screen_mapper.py --hints
+node scripts/screen_mapper.mjs --hints
 # 按文本/role 定位
-python3 scripts/navigator.py --find-text "登录" --tap
+node scripts/navigator.mjs --find-text "登录" --tap
 # 任何屏幕尺寸/字号都稳定
 ```
 
@@ -118,7 +118,7 @@ node scripts/log_monitor.mjs --device-udid <udid> --app com.example.app
 
 ```md
 ## screen_mapper
-常用：python3 scripts/screen_mapper.py --hints --json
-完整参数：python3 scripts/screen_mapper.py --help
+常用：node scripts/screen_mapper.mjs --hints --json
+完整参数：node scripts/screen_mapper.mjs --help
 （脚本变更时帮助文本自动同步）
 ```

@@ -56,6 +56,22 @@ export function getScreenSize(udid = null) {
   }
 }
 
+export function flattenTree(node, depth = 0, elements = []) {
+  if (!node || typeof node !== "object") return elements;
+  elements.push({ ...node, depth });
+  for (const child of node.children ?? []) {
+    flattenTree(child, depth + 1, elements);
+  }
+  return elements;
+}
+
+export function countElements(node) {
+  if (!node || typeof node !== "object") return 0;
+  let count = 1;
+  for (const child of node.children ?? []) count += countElements(child);
+  return count;
+}
+
 export function transformScreenshotCoords(x, y, screenshotWidth, screenshotHeight, deviceWidth, deviceHeight) {
   return [
     Math.trunc((x / screenshotWidth) * deviceWidth),

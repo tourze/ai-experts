@@ -10,7 +10,7 @@ Follows Jackson's Law - only extracts genuinely reused patterns.
 Used by:
 - app_launcher.mjs (8 call sites) - App lifecycle commands
 - Multiple scripts (15+ locations) - IDB command building
-- navigator.py and gesture.mjs - Coordinate transformation
+- navigator.mjs and gesture.mjs - Coordinate transformation
 - test_recorder.py, app_state_capture.py - Auto-UDID detection
 """
 
@@ -78,7 +78,7 @@ def build_idb_command(
     Handles device UDID consistently.
 
     Used by:
-    - navigator.py: ui tap, ui text, ui describe-all
+    - navigator.mjs: ui tap, ui text, ui describe-all
     - gesture.mjs: ui swipe, ui tap
     - keyboard.mjs: ui key, ui text, ui tap
     - And more: 15+ locations

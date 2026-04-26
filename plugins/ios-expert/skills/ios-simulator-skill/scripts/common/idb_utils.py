@@ -6,8 +6,8 @@ This module provides common IDB operations used across multiple scripts.
 Follows Jackson's Law - only shared code that's truly reused, not speculative.
 
 Used by:
-- navigator.py - Accessibility tree navigation
-- screen_mapper.py - UI element analysis
+- navigator.mjs - Accessibility tree navigation
+- screen_mapper.mjs - UI element analysis
 - accessibility_audit.py - WCAG compliance checking
 - test_recorder.py - Test documentation
 - app_state_capture.py - State snapshots
@@ -76,8 +76,8 @@ def flatten_tree(node: dict, depth: int = 0, elements: list[dict] | None = None)
     element includes its depth for context.
 
     Used by:
-    - navigator.py - Element finding
-    - screen_mapper.py - Element analysis
+    - navigator.mjs - Element finding
+    - screen_mapper.mjs - Element analysis
     - accessibility_audit.py - Audit scanning
 
     Args:
@@ -124,7 +124,7 @@ def count_elements(node: dict) -> int:
 
     Used by:
     - test_recorder.py - Element counting per step
-    - screen_mapper.py - Summary statistics
+    - screen_mapper.mjs - Summary statistics
 
     Args:
         node: Root node of tree
