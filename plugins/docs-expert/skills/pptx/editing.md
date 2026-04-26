@@ -30,7 +30,7 @@ When using an existing presentation as a template:
 
 4. **Build presentation** (do this yourself, not with subagents):
    - Delete unwanted slides (remove from `<p:sldIdLst>`)
-   - Duplicate slides you want to reuse (`add_slide.py`)
+   - Duplicate slides you want to reuse (`add_slide.mjs`)
    - Reorder slides in `<p:sldIdLst>`
    - **Complete all structural changes before step 5**
 
@@ -48,7 +48,7 @@ When using an existing presentation as a template:
 | Script | Purpose |
 |--------|---------|
 | `unpack.py` | Extract and pretty-print PPTX |
-| `add_slide.py` | Duplicate slide or create from layout |
+| `add_slide.mjs` | Duplicate slide or create from layout |
 | `clean.py` | Remove orphaned files |
 | `pack.py` | Repack with validation |
 | `thumbnail.py` | Create visual grid of slides |
@@ -61,11 +61,11 @@ python scripts/office/unpack.py input.pptx unpacked/
 
 Extracts PPTX, pretty-prints XML, escapes smart quotes.
 
-### add_slide.py
+### add_slide.mjs
 
 ```bash
-python scripts/add_slide.py unpacked/ slide2.xml      # Duplicate slide
-python scripts/add_slide.py unpacked/ slideLayout2.xml # From layout
+node scripts/add_slide.mjs unpacked/ slide2.xml       # Duplicate slide
+node scripts/add_slide.mjs unpacked/ slideLayout2.xml # From layout
 ```
 
 Prints `<p:sldId>` to add to `<p:sldIdLst>` at desired position.
@@ -106,7 +106,7 @@ Slide order is in `ppt/presentation.xml` → `<p:sldIdLst>`.
 
 **Delete**: Remove `<p:sldId>`, then run `clean.py`.
 
-**Add**: Use `add_slide.py`. Never manually copy slide files—the script handles notes references, Content_Types.xml, and relationship IDs that manual copying misses.
+**Add**: Use `add_slide.mjs`. Never manually copy slide files—the script handles notes references, Content_Types.xml, and relationship IDs that manual copying misses.
 
 ---
 
