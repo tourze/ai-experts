@@ -28,7 +28,7 @@ This script checks for:
   - iOS Simulator availability
   - IDB (iOS Development Bridge) installation
   - Available simulator devices
-  - Python 3 installation (for remaining build scripts)
+  - Node.js runtime support
 
 Exit codes:
   0 - All checks passed
@@ -157,16 +157,8 @@ if (idbPath) {
 }
 console.log("");
 
-console.log(`${BLUE}[5/8]${NC} Checking Python 3...`);
-const pythonPath = findExecutable("python3");
-if (pythonPath) {
-  const version = firstOutputLine(run(pythonPath, ["--version"])).replace(/^Python\s+/, "");
-  checkPassed(`Python 3 is installed (version ${version})`);
-} else {
-  checkFailed("Python 3 not found");
-  console.log("       Python 3 is required for testing scripts");
-  console.log("       Install: brew install python3");
-}
+console.log(`${BLUE}[5/8]${NC} Checking Node.js runtime...`);
+checkPassed(`Node.js is available (version ${process.versions.node})`);
 console.log("");
 
 function simulatorLines(args) {
@@ -219,7 +211,7 @@ if (xcrunPath) {
 console.log("");
 
 console.log(`${BLUE}[8/8]${NC} Checking visual diff support...`);
-checkPassed("Visual diff uses built-in Node.js PNG support (no Pillow required)");
+checkPassed("Visual diff uses built-in Node.js PNG support");
 console.log("");
 
 console.log(`${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}`);

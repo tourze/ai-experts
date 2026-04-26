@@ -14,7 +14,7 @@ description: 当用户需要用 Simulator、xcrun simctl、设备启动、截图
 
 ## 核心约束
 
-- 仅把 `scripts/` 目录下的可执行 Node / Python / Shell 脚本当作入口；`scripts/common/` 与 `scripts/xcode/` 是内部模块，不直接执行。
+- 仅把 `scripts/` 目录下的可执行 Node 脚本当作入口；`scripts/xcode/` 是内部模块，不直接执行。
 - 优先走无障碍树：先 `scripts/screen_mapper.mjs` / `scripts/navigator.mjs`，最后才用坐标。
 - 大多数脚本在未传 `--udid` 时会自动选择 booted simulator；`scripts/log_monitor.mjs` 例外，参数名是 `--device-udid`。
 - `scripts/visual_diff.mjs` 直接处理 PNG；截图缩放优先使用系统 `sips`，缺失时保留原图尺寸。
@@ -46,8 +46,8 @@ node scripts/gesture.mjs --scroll down --scroll-amount 3
 ```bash
 node scripts/app_state_capture.mjs --app-bundle-id com.example.app --size half
 node scripts/log_monitor.mjs --app com.example.app --duration 30s --json
-python3 scripts/build_and_test.py --project MyApp.xcodeproj --test
-python3 scripts/build_and_test.py --list-xcresults --json
+node scripts/build_and_test.mjs --project MyApp.xcodeproj --test
+node scripts/build_and_test.mjs --list-xcresults --json
 ```
 
 ### 设备状态与权限
@@ -62,7 +62,7 @@ node scripts/simctl_shutdown.mjs --all
 
 ## 检查清单
 
-- 先跑 `node scripts/sim_health_check.mjs`，确认 `xcrun`、`simctl`、Python 环境可用。
+- 先跑 `node scripts/sim_health_check.mjs`，确认 `xcrun`、`simctl`、Node.js 运行时可用。
 - 每次交互前先看 `scripts/screen_mapper.mjs` 或 `scripts/navigator.mjs --list`，不要盲点。
 - 需要日志时确认参数名：`scripts/log_monitor.mjs` 用 `--device-udid`，不是 `--udid`。
 - 需要脚本化输出时统一使用 `--json`；需要完整参数时直接跑对应脚本的 `--help`。
@@ -72,7 +72,7 @@ node scripts/simctl_shutdown.mjs --all
 
 ### FAIL: 用截图坐标导航
 
-```python
+```text
 # 截图后凭眼力定位"登录"按钮
 device.tap(187, 642)  # 写死坐标
 # iPhone 14 → iPhone 15 屏幕变 → 坐标偏移 → 点到别处

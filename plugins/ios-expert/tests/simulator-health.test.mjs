@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import test from "node:test";
@@ -57,6 +57,13 @@ test("simctl Node lifecycle scripts 通过语法检查", () => {
     "app_state_capture.mjs",
     "test_recorder.mjs",
     "visual_diff.mjs",
+    "build_and_test.mjs",
+    "xcode/cache.mjs",
+    "xcode/config.mjs",
+    "xcode/reporter.mjs",
+    "xcode/xcresult.mjs",
+    "xcode/builder.mjs",
+    "xcode/index.mjs",
   ]) {
     const result = spawnSync(process.execPath, ["--check", resolve(scriptsDir, name)], { encoding: "utf8" });
     assert.equal(result.status, 0, `${name}: ${result.stderr}`);
@@ -86,11 +93,87 @@ test("simctl Node lifecycle scripts 输出帮助信息", () => {
     ["app_state_capture.mjs", /Capture complete app state for debugging/],
     ["test_recorder.mjs", /Record test execution with screenshots and documentation/],
     ["visual_diff.mjs", /Compare screenshots for visual differences/],
+    ["build_and_test.mjs", /Build and test Xcode projects with progressive disclosure/],
   ]) {
     const result = spawnSync(process.execPath, [resolve(scriptsDir, name), "--help"], { encoding: "utf8" });
     assert.equal(result.status, 0, `${name}: ${result.stderr}`);
     assert.match(result.stdout, pattern);
   }
+});
+
+test("iOS Xcode Node helpers 保持参数、缓存和解析行为", async () => {
+  const buildScript = await import(resolve(scriptsDir, "build_and_test.mjs"));
+  const xcode = await import(resolve(scriptsDir, "xcode/index.mjs"));
+
+  assert.deepEqual(buildScript.parseArgs(["--project", "MyApp.xcodeproj", "--test", "--suite", "AppTests", "--json"]), {
+    project: "MyApp.xcodeproj",
+    workspace: null,
+    scheme: null,
+    configuration: "Debug",
+    simulator: null,
+    clean: false,
+    test: true,
+    suite: "AppTests",
+    getErrors: null,
+    getWarnings: null,
+    getLog: null,
+    getAll: null,
+    listXcresults: false,
+    verbose: false,
+    json: true,
+    help: false,
+  });
+  assert.throws(() => buildScript.parseArgs(["--project", "App.xcodeproj", "--workspace", "App.xcworkspace"]), /mutually exclusive/);
+
+  const cacheDir = mkdtempSync(join(tmpdir(), "xcresult-cache-"));
+  const sourceBundle = join(cacheDir, "source.xcresult");
+  mkdirSync(sourceBundle);
+  writeFileSync(join(sourceBundle, "data.txt"), "ok");
+
+  const cache = new xcode.XCResultCache(cacheDir);
+  assert.match(cache.generateId("test"), /^test-\d{8}-\d{6}$/);
+  assert.equal(cache.save(sourceBundle, "xcresult-test"), "xcresult-test");
+  assert.ok(existsSync(cache.getPath("xcresult-test")));
+  cache.saveStderr("xcresult-test", "warning: sample");
+  assert.equal(cache.getStderr("xcresult-test"), "warning: sample");
+  assert.equal(cache.list()[0].id, "xcresult-test");
+  assert.equal(cache.getSizeMb("missing"), 0);
+
+  const projectDir = mkdtempSync(join(tmpdir(), "xcode-config-"));
+  const config = xcode.Config.load(projectDir);
+  assert.equal(config.getPreferredSimulator(), null);
+  config.data.device.preferred_simulator = "iPhone 16 Pro";
+  config.save();
+  assert.equal(xcode.Config.load(projectDir).getPreferredSimulator(), "iPhone 16 Pro");
+
+  const parser = new xcode.XCResultParser(null, "/tmp/App.swift:3:4: error: Missing symbol\nxcodebuild: error: Unable to find a destination\n");
+  assert.equal(parser.countIssues()[0], 2);
+  assert.deepEqual(parser.getErrors().map((error) => error.type), ["compilation", "build"]);
+  assert.deepEqual(
+    parser.extractLocationFromUrl("file:///tmp/App.swift#StartingLineNumber=2&StartingColumnNumber=3"),
+    { file: "/tmp/App.swift", line: 3, column: 4 },
+  );
+
+  assert.match(
+    xcode.OutputFormatter.formatMinimal({
+      status: "SUCCESS",
+      errorCount: 0,
+      warningCount: 1,
+      xcresultId: "xcresult-test",
+    }),
+    /Build: SUCCESS \(0 errors, 1 warnings\) \[xcresult-test\]/,
+  );
+  assert.match(
+    xcode.OutputFormatter.formatErrors([
+      { message: "Missing symbol", location: { file: "file:///tmp/App.swift", line: 3 } },
+    ]),
+    /Location: \/tmp\/App.swift:line 3/,
+  );
+  assert.ok(xcode.OutputFormatter.generateHints([{ type: "build", message: "destination unavailable" }]).length > 0);
+
+  const runner = new xcode.BuildRunner({ projectPath: "/tmp/MyApp.xcodeproj", simulator: "iPhone 16 Pro" });
+  assert.equal(runner.getSimulatorDestination(), "platform=iOS Simulator,name=iPhone 16 Pro");
+  assert.equal(runner.extractSimulatorNameFromDestination("platform=iOS Simulator,name=iPhone 16 Pro"), "iPhone 16 Pro");
 });
 
 test("simctl Node helpers 保持解析和参数转换", async () => {
