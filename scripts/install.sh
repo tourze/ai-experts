@@ -1,19 +1,25 @@
 #!/usr/bin/env bash
-# ai-experts installer
+# ai-experts installer (post-marketplace).
 #
-# Detects installed CLI tools (Claude Code / Codex CLI) and sets up
-# marketplace + plugins for each one. Also links shared global memory.
+# 不再使用 Claude Code / Codex 的 marketplace + plugin install 体系，
+# 而是直接：
+#   - 把每个 plugins/<plugin>/skills/<id> 软链到 ~/.claude/skills/<id>
+#     与 ~/.codex/skills/<id>
+#   - 把每个 plugins/<plugin>/agents/<name>.md 软链到 ~/.claude/agents/<name>.md
+#   - 把统一 dispatcher 写进 ~/.claude/settings.json 与 ~/.codex/hooks.json
+#   - 在 ~/.codex/config.toml 启用 [features] codex_hooks = true
+#   - 把仓库 MEMORY.md 软链到各 CLI 的全局记忆文件
 #
-# Usage:
-#   ./scripts/install.sh              # install for all detected CLIs
-#   ./scripts/install.sh --uninstall  # remove everything
-#   ./scripts/install.sh --reinstall  # uninstall then install
+# 用法：
+#   ./scripts/install.sh              # 全部安装
+#   ./scripts/install.sh --uninstall  # 全部卸载
+#   ./scripts/install.sh --reinstall  # 卸载后再装
+#   ./scripts/install.sh --dry-run    # 仅打印，不改动
 
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 CODEX_HOME_DIR="${CODEX_HOME:-$HOME/.codex}"
-CODEX_CONFIG="${CODEX_HOME_DIR}/config.toml"
 MARKETPLACE_NAME="ai-experts"
 MEMORY_SOURCE="$REPO_ROOT/MEMORY.md"
 CLAUDE_MEMORY_TARGET="${CLAUDE_MEMORY_TARGET:-$HOME/.claude/CLAUDE.md}"
@@ -28,18 +34,9 @@ ok()    { printf '\033[1;32m[ok]\033[0m    %s\n' "$1"; }
 warn()  { printf '\033[1;33m[warn]\033[0m  %s\n' "$1"; }
 err()   { printf '\033[1;31m[error]\033[0m %s\n' "$1" >&2; }
 
-plugin_names() {
-  node -e '
-const { readFileSync } = require("node:fs");
+DRY_RUN=""
 
-const manifest = JSON.parse(readFileSync(process.argv[1], "utf-8"));
-for (const plugin of manifest.plugins ?? []) {
-  if (typeof plugin.name === "string" && plugin.name.length > 0) {
-    console.log(plugin.name);
-  }
-}
-' "$1"
-}
+# ── memory file 软链 ─────────────────────────────────────────
 
 backup_existing_file() {
   local target="$1"
@@ -62,90 +59,126 @@ link_memory_file() {
     return 1
   fi
 
-  mkdir -p "$(dirname "$target")"
-
   if [ -e "$target" ] && [ "$target" -ef "$MEMORY_SOURCE" ]; then
-    ok "$label: shared memory already linked ($target)"
+    ok "$label: memory already linked ($target)"
     return 0
   fi
 
+  if [ -n "$DRY_RUN" ]; then
+    info "$label: would link $target → $MEMORY_SOURCE"
+    return 0
+  fi
+
+  mkdir -p "$(dirname "$target")"
   if [ -e "$target" ] || [ -L "$target" ]; then
     backup_existing_file "$target"
   fi
-
   ln -s "$MEMORY_SOURCE" "$target"
-  ok "$label: linked shared memory to $target"
+  ok "$label: linked memory $target → $MEMORY_SOURCE"
 }
 
 unlink_memory_file() {
   local label="$1"
   local target="$2"
-
   if [ -L "$target" ] && [ -e "$target" ] && [ "$target" -ef "$MEMORY_SOURCE" ]; then
+    if [ -n "$DRY_RUN" ]; then
+      info "$label: would unlink $target"
+      return 0
+    fi
     rm -f "$target"
-    ok "$label: removed shared memory link ($target)"
+    ok "$label: removed memory link ($target)"
     return 0
   fi
-
   info "$label: leaving memory target unchanged ($target)"
 }
 
+# ── 子脚本调用 ───────────────────────────────────────────────
+
+run_node() {
+  local script="$1"; shift
+  local args=()
+  if [ -n "$DRY_RUN" ]; then args+=("--dry-run"); fi
+  args+=("$@")
+  node "$REPO_ROOT/scripts/$script" "${args[@]}"
+}
+
 audit_skill_evals() {
-  node "$REPO_ROOT/scripts/audit-skill-evals.mjs"
+  if [ -f "$REPO_ROOT/scripts/audit-skill-evals.mjs" ]; then
+    node "$REPO_ROOT/scripts/audit-skill-evals.mjs" || true
+  fi
 }
 
-# ── Claude Code ──────────────────────────────────────────────
+# ── 旧版残留清理（向后兼容） ─────────────────────────────────
 
-claude_install() {
-  info "Claude Code: registering marketplace..."
-  claude plugin marketplace add "$REPO_ROOT" --scope user 2>/dev/null || true
+claude_legacy_cleanup() {
+  has_cmd claude || return 0
+  info "Claude Code: 清理旧版 marketplace 残留（best-effort）..."
 
-  info "Claude Code: installing all plugins..."
-  local manifest="$REPO_ROOT/.claude-plugin/marketplace.json"
-  plugin_names "$manifest" | while read -r name; do
-    claude plugin install "${name}@${MARKETPLACE_NAME}" 2>/dev/null || true
-  done
-
-  info "Claude Code: linking shared global memory..."
-  link_memory_file "Claude Code" "$CLAUDE_MEMORY_TARGET"
-
-  ok "Claude Code: done. Run /reload-plugins in Claude Code to activate."
-}
-
-claude_uninstall() {
-  info "Claude Code: uninstalling all plugins..."
   claude plugin list --json 2>/dev/null \
     | node -e '
 const marketplaceName = process.argv[1];
 const suffix = `@${marketplaceName}`;
 let raw = "";
-
 process.stdin.setEncoding("utf-8");
-process.stdin.on("data", (chunk) => { raw += chunk; });
+process.stdin.on("data", (c) => { raw += c; });
 process.stdin.on("end", () => {
   let plugins;
-  try {
-    plugins = JSON.parse(raw || "[]");
-  } catch {
-    process.exit(0);
-  }
-
-  for (const plugin of Array.isArray(plugins) ? plugins : []) {
-    if (plugin?.scope !== "user") continue;
-    if (typeof plugin?.id !== "string" || !plugin.id.endsWith(suffix)) continue;
-    console.log(plugin.id.slice(0, -suffix.length));
+  try { plugins = JSON.parse(raw || "[]"); } catch { process.exit(0); }
+  for (const p of Array.isArray(plugins) ? plugins : []) {
+    if (p?.scope !== "user") continue;
+    if (typeof p?.id !== "string" || !p.id.endsWith(suffix)) continue;
+    console.log(p.id.slice(0, -suffix.length));
   }
 });
-' "$MARKETPLACE_NAME" \
+' "$MARKETPLACE_NAME" 2>/dev/null \
     | while read -r name; do
-        claude plugin uninstall "$name" 2>/dev/null || true
+        [ -n "$name" ] || continue
+        if [ -n "$DRY_RUN" ]; then
+          info "  would: claude plugin uninstall $name"
+        else
+          claude plugin uninstall "$name" 2>/dev/null || true
+        fi
       done
 
-  info "Claude Code: removing marketplace..."
-  claude plugin marketplace remove "$MARKETPLACE_NAME" 2>/dev/null || true
+  if [ -z "$DRY_RUN" ]; then
+    claude plugin marketplace remove "$MARKETPLACE_NAME" 2>/dev/null || true
+  else
+    info "  would: claude plugin marketplace remove $MARKETPLACE_NAME"
+  fi
+}
 
-  info "Claude Code: removing shared global memory link..."
+# ── Claude Code ──────────────────────────────────────────────
+
+claude_install() {
+  info "Claude Code: 同步 skills..."
+  run_node sync-skills.mjs --target=cc
+
+  info "Claude Code: 同步 agents..."
+  run_node sync-agents.mjs
+
+  info "Claude Code: 注册统一 hooks..."
+  run_node sync-hooks.mjs --target=cc
+
+  info "Claude Code: 链接共享记忆..."
+  link_memory_file "Claude Code" "$CLAUDE_MEMORY_TARGET"
+
+  ok "Claude Code: done."
+}
+
+claude_uninstall() {
+  info "Claude Code: 解链 skills..."
+  run_node sync-skills.mjs --target=cc --uninstall
+
+  info "Claude Code: 解链 agents..."
+  run_node sync-agents.mjs --uninstall
+
+  info "Claude Code: 移除统一 hooks 条目..."
+  run_node sync-hooks.mjs --target=cc --uninstall
+
+  info "Claude Code: 移除共享记忆链接..."
   unlink_memory_file "Claude Code" "$CLAUDE_MEMORY_TARGET"
+
+  claude_legacy_cleanup
 
   ok "Claude Code: uninstalled."
 }
@@ -153,173 +186,94 @@ process.stdin.on("end", () => {
 # ── Codex CLI ────────────────────────────────────────────────
 
 codex_install() {
-  info "Codex CLI: enabling codex_hooks feature flag..."
-  codex features enable codex_hooks 2>/dev/null || true
+  info "Codex CLI: 启用 codex_hooks feature flag..."
+  if has_cmd codex; then
+    if [ -n "$DRY_RUN" ]; then
+      info "  would: codex features enable codex_hooks"
+    else
+      codex features enable codex_hooks 2>/dev/null || true
+    fi
+  fi
 
-  info "Codex CLI: generating user-level hooks.json..."
-  node "$REPO_ROOT/scripts/generate-codex-hooks.mjs" --write --user
+  info "Codex CLI: 同步 skills..."
+  run_node sync-skills.mjs --target=codex
 
-  info "Codex CLI: registering marketplace..."
-  codex marketplace add "$REPO_ROOT" 2>/dev/null || true
+  info "Codex CLI: 注册统一 hooks..."
+  run_node sync-hooks.mjs --target=codex
 
-  info "Codex CLI: syncing local marketplace plugins into cache..."
-  codex_sync_local_plugin_cache
-
-  info "Codex CLI: enabling all plugins in config.toml..."
-  local manifest="$REPO_ROOT/.agents/plugins/marketplace.json"
-
-  # Remove any existing ai-experts plugin entries first to avoid duplicates
-  codex_remove_plugin_entries
-
-  # Append plugin entries
-  plugin_names "$manifest" | while read -r name; do
-    printf '\n[plugins."%s@%s"]\nenabled = true\n' "$name" "$MARKETPLACE_NAME" >> "$CODEX_CONFIG"
-  done
-
-  info "Codex CLI: linking shared global memory..."
+  info "Codex CLI: 链接共享记忆..."
   link_memory_file "Codex CLI" "$CODEX_MEMORY_TARGET"
 
-  ok "Codex CLI: done. Restart codex to activate."
+  ok "Codex CLI: done. 重启 codex 生效。"
 }
 
 codex_uninstall() {
-  info "Codex CLI: removing ai-experts user-level hooks..."
-  node "$REPO_ROOT/scripts/generate-codex-hooks.mjs" --remove --user
+  info "Codex CLI: 解链 skills..."
+  run_node sync-skills.mjs --target=codex --uninstall
 
-  info "Codex CLI: removing marketplace..."
-  # codex has no stable marketplace remove command in all versions.
-  # Remove marketplace/plugins directly from config.toml.
-  codex_remove_marketplace_entry
-  codex_remove_plugin_entries
+  info "Codex CLI: 移除统一 hooks 条目并清理旧 marketplace 段..."
+  run_node sync-hooks.mjs --target=codex --uninstall
 
-  info "Codex CLI: clearing ai-experts plugin cache..."
-  rm -rf "${CODEX_HOME_DIR}/plugins/cache/${MARKETPLACE_NAME}"
+  info "Codex CLI: 清理 ai-experts plugin cache..."
+  if [ -n "$DRY_RUN" ]; then
+    info "  would: rm -rf ${CODEX_HOME_DIR}/plugins/cache/${MARKETPLACE_NAME}"
+  else
+    rm -rf "${CODEX_HOME_DIR}/plugins/cache/${MARKETPLACE_NAME}"
+  fi
 
-  info "Codex CLI: removing shared global memory link..."
+  info "Codex CLI: 移除共享记忆链接..."
   unlink_memory_file "Codex CLI" "$CODEX_MEMORY_TARGET"
 
   ok "Codex CLI: uninstalled."
 }
 
-codex_sync_local_plugin_cache() {
-  local manifest="$REPO_ROOT/.agents/plugins/marketplace.json"
-  local cache_root="${CODEX_HOME_DIR}/plugins/cache/${MARKETPLACE_NAME}"
-
-  mkdir -p "$cache_root"
-
-  node - <<'NODE' "$manifest" "$REPO_ROOT" "$cache_root"
-const fs = require("node:fs");
-const path = require("node:path");
-
-const manifestPath = process.argv[2];
-const repoRoot = process.argv[3];
-const cacheRoot = process.argv[4];
-
-function copyDir(src, dst) {
-  fs.mkdirSync(dst, { recursive: true });
-  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
-    if (entry.name === ".git") continue;
-    const srcPath = path.join(src, entry.name);
-    const dstPath = path.join(dst, entry.name);
-    if (entry.isDirectory()) {
-      copyDir(srcPath, dstPath);
-    } else {
-      fs.copyFileSync(srcPath, dstPath);
-    }
-  }
-}
-
-const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
-for (const plugin of manifest.plugins ?? []) {
-  if (!plugin || typeof plugin.name !== "string") continue;
-
-  const source = plugin.source ?? {};
-  if (source.source !== "local" || typeof source.path !== "string") continue;
-
-  const pluginDir = path.resolve(repoRoot, source.path);
-  const codexManifestPath = path.join(pluginDir, ".codex-plugin", "plugin.json");
-  if (!fs.existsSync(codexManifestPath)) {
-    process.stderr.write(`[warn] Codex cache sync skipped (missing manifest): ${plugin.name} -> ${codexManifestPath}\n`);
-    continue;
-  }
-
-  const codexManifest = JSON.parse(fs.readFileSync(codexManifestPath, "utf8"));
-  const version = String(codexManifest.version || "0.0.0");
-  const pluginCacheRoot = path.join(cacheRoot, plugin.name);
-  const pluginVersionDir = path.join(pluginCacheRoot, version);
-
-  fs.rmSync(pluginCacheRoot, { recursive: true, force: true });
-  copyDir(pluginDir, pluginVersionDir);
-}
-NODE
-}
-
-codex_remove_plugin_entries() {
-  [ -f "$CODEX_CONFIG" ] || return 0
-
-  # Remove all [plugins."*@ai-experts"] sections from config.toml
-  # A section starts with [plugins."...@ai-experts"] and ends at the next section or EOF
-  local tmp
-  tmp="$(mktemp)"
-  awk '
-    /^\[plugins\."[^"]*@ai-experts"\]/ { skip=1; next }
-    /^\[/                               { skip=0 }
-    !skip                               { print }
-  ' "$CODEX_CONFIG" > "$tmp"
-
-  # Remove trailing blank lines that were left behind
-  sed -e :a -e '/^\n*$/{$d;N;ba' -e '}' "$tmp" > "$CODEX_CONFIG"
-  rm -f "$tmp"
-}
-
-codex_remove_marketplace_entry() {
-  [ -f "$CODEX_CONFIG" ] || return 0
-
-  local tmp
-  tmp="$(mktemp)"
-  awk '
-    /^\[marketplaces\.ai-experts\]/ { skip=1; next }
-    /^\[/                           { skip=0 }
-    !skip                           { print }
-  ' "$CODEX_CONFIG" > "$tmp"
-
-  sed -e :a -e '/^\n*$/{$d;N;ba' -e '}' "$tmp" > "$CODEX_CONFIG"
-  rm -f "$tmp"
-}
-
 # ── main ─────────────────────────────────────────────────────
 
-action="${1:-install}"
+ACTION="install"
+for arg in "$@"; do
+  case "$arg" in
+    --uninstall|-u)   ACTION="uninstall" ;;
+    --reinstall|-r)   ACTION="reinstall" ;;
+    install|--install|-i) ACTION="install" ;;
+    --dry-run)        DRY_RUN="1" ;;
+    -h|--help)
+      cat <<EOF
+Usage: $0 [--install | --uninstall | --reinstall] [--dry-run]
+EOF
+      exit 0
+      ;;
+    "") ;;
+    *)
+      err "Unknown argument: $arg"
+      exit 1
+      ;;
+  esac
+done
 
-case "$action" in
-  --uninstall|-u)
-    has_cmd claude && claude_uninstall
-    has_cmd codex  && codex_uninstall
+case "$ACTION" in
+  uninstall)
+    has_cmd claude && claude_uninstall || true
+    has_cmd codex  && codex_uninstall  || true
     ;;
-  --reinstall|-r)
-    has_cmd claude && claude_uninstall
-    has_cmd codex  && codex_uninstall
+  reinstall)
+    has_cmd claude && claude_uninstall || true
+    has_cmd codex  && codex_uninstall  || true
     echo ""
     if has_cmd claude || has_cmd codex; then
       audit_skill_evals
     fi
-    has_cmd claude && claude_install
-    has_cmd codex  && codex_install
+    has_cmd claude && claude_install || true
+    has_cmd codex  && codex_install  || true
     ;;
-  install|--install|-i|"")
+  install)
     if ! has_cmd claude && ! has_cmd codex; then
-      err "Neither 'claude' nor 'codex' CLI found. Install at least one:"
+      err "未检测到 'claude' 或 'codex' CLI。请至少安装其中一个："
       err "  Claude Code: https://code.claude.com"
       err "  Codex CLI:   https://github.com/openai/codex"
       exit 1
     fi
-
     audit_skill_evals
-    has_cmd claude && claude_install
-    has_cmd codex  && codex_install
-    ;;
-  *)
-    echo "Usage: $0 [--install | --uninstall | --reinstall]"
-    exit 1
+    has_cmd claude && claude_install || true
+    has_cmd codex  && codex_install  || true
     ;;
 esac
