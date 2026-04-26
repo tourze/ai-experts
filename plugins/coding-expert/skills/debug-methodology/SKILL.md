@@ -19,6 +19,7 @@ description: "当用户卡在 bug、stack trace、崩溃、间歇性失败或 fl
 - 同一时间只变更一个变量。
 - 修复必须针对根因，不是症状。
 - 假设 10 分钟未证实就换假设。
+- **假设源头要先验证再改代码**：当问题是「为什么 X 还会出现」「来源在哪」类时，找到一个看似合理的来源**不许直接写修复脚本**。先用一行最小复刻验证（`grep` / 临时 `mv` 隔离 / 用同款逻辑跑 `node -e` 模拟），复现或反证通过才动代码。多源信号下凭经验猜排序是反复方向错的最高频成因。
 
 ## 六步流程
 详细步骤见 [references/six-steps.md](./references/six-steps.md)，决策流程图见 [references/debug-flow.dot](./references/debug-flow.dot)。
@@ -49,6 +50,8 @@ description: "当用户卡在 bug、stack trace、崩溃、间歇性失败或 fl
 | "这个很简单，不用系统化" | 简单的 bug 也有根因。流程对简单 bug 更快。 |
 | "紧急，没时间走流程" | 系统化调试比乱猜快。瞎试 3 次浪费的时间 > 走流程。 |
 | "先加个 try-catch 顶一下" | 吞掉异常 = 藏住 bug，不是修好 bug。 |
+| "我猜来源是 X，先写脚本删 X 看看" | 没复现/反证就改 = 猜。猜错每次都要回滚 + 换方向，5 次方向错就是这样累积的。先用一行命令验证假设源头。 |
+| "Rust 源码我已经读过 plugin/X.rs 了" | 看到 `pub use foo::bar` 是 re-export，真正实现可能在另一个 crate (utils/);grep 到第一个匹配文件就停 = 读简化/过时版本。要追到真实定义。 |
 
 完整的 Red Flags 表和 Rationalizations 对照表见 [references/discipline-guard.md](./references/discipline-guard.md)。
 
