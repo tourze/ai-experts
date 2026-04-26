@@ -40,7 +40,7 @@ python3 scripts/clean.py unpacked
 python3 scripts/office/pack.py unpacked slides-fixed.pptx --validate true
 
 # SVG → PPTX 生成流程
-python3 scripts/svg_quality_checker.py svg_output/   # 校验 SVG 子集合规
+node scripts/svg_quality_checker.mjs svg_output/     # 校验 SVG 子集合规
 python3 scripts/svg_to_pptx.py svg_output/ output.pptx  # 转换为原生 DrawingML
 ```
 
@@ -51,7 +51,7 @@ python3 scripts/svg_to_pptx.py svg_output/ output.pptx  # 转换为原生 Drawin
 - 清理未引用文件后是否重新校验并打开抽查。
 - 若需要快速总览，是否先生成缩略图再决定逐页修改。
 - 如需先确定视觉方向，是否已调用 [ppt-visual](../ppt-visual/SKILL.md)。
-- 如从 SVG 生成，是否先运行 svg_quality_checker.py 校验。
+- 如从 SVG 生成，是否先运行 `svg_quality_checker.mjs` 校验。
 - SVG 转换后是否打开 PPTX 抽查可编辑性。
 
 ## 反模式
