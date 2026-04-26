@@ -35,7 +35,7 @@ python scripts/navigator.py --find-class EditText --enter-text "user@example.com
 | 脚本 | 用途 | 关键选项 |
 |------|------|----------|
 | `scripts/build_and_test.py` | Gradle 构建、安装、测试 | `--task`, `--clean`, `--json` |
-| `scripts/log_monitor.py` | 实时日志监控与过滤 | `--package`, `--tag`, `--priority`, `--duration`, `--json` |
+| `scripts/log_monitor.mjs` | 实时日志监控与过滤 | `--package`, `--tag`, `--priority`, `--grep` |
 
 ### 导航与交互
 
@@ -43,8 +43,8 @@ python scripts/navigator.py --find-class EditText --enter-text "user@example.com
 |------|------|----------|
 | `scripts/screen_mapper.py` | 分析当前屏幕 UI 层级 | `--verbose`, `--json` |
 | `scripts/navigator.py` | 语义化查找并操作元素 | `--find-text`, `--find-id`, `--tap`, `--enter-text`, `--json` |
-| `scripts/gesture.py` | 滑动、滚动等手势操作 | `--swipe`, `--scroll`, `--duration`, `--json` |
-| `scripts/keyboard.py` | 按键事件与硬件按钮 | `--key`, `--text`, `--json` |
+| `scripts/gesture.mjs` | 滑动、滚动等手势操作 | `--swipe`, `--scroll`, `--duration` |
+| `scripts/keyboard.mjs` | 按键事件与硬件按钮 | `--key`, `--text` |
 | `scripts/app_launcher.py` | 应用启动/停止/安装/卸载 | `--launch`, `--terminate`, `--install`, `--uninstall`, `--list`, `--json` |
 
 ### 模拟器管理

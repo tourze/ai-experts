@@ -6,6 +6,7 @@ import { tmpdir } from "node:os";
 import test from "node:test";
 
 const script = resolve("plugins/android-expert/skills/android-emulator-skill/scripts/emu_health_check.mjs");
+const scriptsDir = resolve("plugins/android-expert/skills/android-emulator-skill/scripts");
 
 test("emu_health_check.mjs 通过语法检查", () => {
   const result = spawnSync(process.execPath, ["--check", script], { encoding: "utf8" });
@@ -34,4 +35,46 @@ test("emu_health_check.mjs 缺少工具时返回失败", () => {
   } finally {
     rmSync(home, { recursive: true, force: true });
   }
+});
+
+test("Android emulator Node interaction scripts 通过语法检查", () => {
+  for (const name of ["common.mjs", "gesture.mjs", "keyboard.mjs", "log_monitor.mjs"]) {
+    const result = spawnSync(process.execPath, ["--check", resolve(scriptsDir, name)], { encoding: "utf8" });
+    assert.equal(result.status, 0, `${name}: ${result.stderr}`);
+  }
+});
+
+test("Android emulator Node interaction scripts 输出帮助信息", () => {
+  for (const [name, pattern] of [
+    ["gesture.mjs", /Perform gestures on Android/],
+    ["keyboard.mjs", /Android keyboard input/],
+    ["log_monitor.mjs", /Monitor Android logs/],
+  ]) {
+    const result = spawnSync(process.execPath, [resolve(scriptsDir, name), "--help"], { encoding: "utf8" });
+    assert.equal(result.status, 0, `${name}: ${result.stderr}`);
+    assert.match(result.stdout, pattern);
+  }
+});
+
+test("Android emulator Node helpers 保持 ADB 参数转换", async () => {
+  const common = await import(resolve(scriptsDir, "common.mjs"));
+  const gesture = await import(resolve(scriptsDir, "gesture.mjs"));
+  const keyboard = await import(resolve(scriptsDir, "keyboard.mjs"));
+  const logMonitor = await import(resolve(scriptsDir, "log_monitor.mjs"));
+
+  assert.deepEqual(
+    common.parseAdbDevices("List of devices attached\nemulator-5554\tdevice\nfoo\toffline\n"),
+    ["emulator-5554"],
+  );
+  assert.deepEqual(common.parseScreenSize("Physical size: 1080x2400\n"), [1080, 2400]);
+  assert.deepEqual(
+    gesture.buildSwipeCommand(1000, 2000, "up", 400),
+    ["shell", "input", "swipe", "500", "1800", "500", "200", "400"],
+  );
+  assert.equal(keyboard.resolveKeycode("enter"), 66);
+  assert.equal(keyboard.encodeAdbText("a b%"), "a%sb%%");
+  assert.deepEqual(
+    logMonitor.buildLogcatCommand({ priority: "E", tag: null }, "emulator-5554", "123"),
+    [common.ADB_PATH, "-s", "emulator-5554", "logcat", "-v", "color", "*:E", "--pid=123"],
+  );
 });
