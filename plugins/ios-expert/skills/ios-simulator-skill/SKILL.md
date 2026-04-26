@@ -27,8 +27,8 @@ description: 当用户需要用 Simulator、xcrun simctl、设备启动、截图
 node scripts/sim_health_check.mjs
 python3 scripts/sim_list.py --json
 python3 scripts/simulator_selector.py --list --json
-python3 scripts/simctl_create.py --list-devices --json
-python3 scripts/simctl_create.py --list-runtimes --json
+node scripts/simctl_create.mjs --list-devices --json
+node scripts/simctl_create.mjs --list-runtimes --json
 ```
 
 ### 启动 App 与交互
@@ -56,8 +56,8 @@ python3 scripts/build_and_test.py --list-xcresults --json
 python3 scripts/status_bar.py --preset testing
 python3 scripts/privacy_manager.py --grant camera --bundle-id com.example.app
 python3 scripts/push_notification.py --bundle-id com.example.app --title "Hello" --body "World"
-python3 scripts/simctl_boot.py --name "iPhone 17 Pro" --wait-ready
-python3 scripts/simctl_shutdown.py --all
+node scripts/simctl_boot.mjs --name "iPhone 17 Pro" --wait-ready
+node scripts/simctl_shutdown.mjs --all
 ```
 
 ## 检查清单
@@ -100,7 +100,7 @@ python3 scripts/log_monitor.py --app com.example.app
 ### PASS: 先 boot
 
 ```bash
-python3 scripts/simctl_boot.py --name "iPhone 17 Pro" --wait-ready
+node scripts/simctl_boot.mjs --name "iPhone 17 Pro" --wait-ready
 python3 scripts/log_monitor.py --device-udid <udid> --app com.example.app
 # 注意：log_monitor 用 --device-udid，其他用 --udid
 ```
