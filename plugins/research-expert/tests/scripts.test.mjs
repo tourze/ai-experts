@@ -53,7 +53,9 @@ test("site-analyze env probe Node wrapper 通过语法检查", () => {
   for (const script of [
     "skills/site-analyze/scripts/00_probe_env.mjs",
     "skills/site-analyze/scripts/04_whois.mjs",
+    "skills/site-analyze/scripts/05_ping.mjs",
     "skills/site-analyze/sub/whois/04_whois.mjs",
+    "skills/site-analyze/sub/ping/05_ping.mjs",
   ]) {
     const result = spawnSync("node", [
       "--check",
@@ -64,6 +66,23 @@ test("site-analyze env probe Node wrapper 通过语法检查", () => {
 
     assert.equal(result.status, 0, result.stderr);
   }
+});
+
+test("site-analyze ping parser 提取 ICMP 统计", async () => {
+  const mod = await import(resolve(pluginRoot, "skills/site-analyze/scripts/05_ping.mjs"));
+  const parsed = mod.parseIcmpOutput(`5 packets transmitted, 4 received, 20% packet loss, time 4004ms
+rtt min/avg/max/mdev = 10.123/20.456/30.789/1.234 ms
+`, "example.com", 5);
+
+  assert.equal(parsed.method, "icmp");
+  assert.equal(parsed.host, "example.com");
+  assert.equal(parsed.count, 5);
+  assert.equal(parsed.packet_loss_pct, 20);
+  assert.equal(parsed.received, 4);
+  assert.equal(parsed.rtt_min_ms, 10.123);
+  assert.equal(parsed.rtt_avg_ms, 20.456);
+  assert.equal(parsed.rtt_max_ms, 30.789);
+  assert.equal(parsed.rtt_mdev_ms, 1.234);
 });
 
 test("site-analyze env probe 复用已有缓存且不触发网络探测", () => {

@@ -35,6 +35,21 @@ def run_whois_node(target):
         return {"error": detail}
     return json.loads(result.stdout)
 
+def run_ping_node(target, count=5, ports=None):
+    cmd = ["node", os.path.join(SCRIPT_DIR, "05_ping.mjs"), target, "--count", str(count), "--json"]
+    for port in ports or []:
+        cmd.extend(["--tcp-port", str(port)])
+    result = subprocess.run(
+        cmd,
+        capture_output=True,
+        text=True,
+        timeout=40,
+    )
+    if result.returncode != 0:
+        detail = result.stderr.strip() or result.stdout.strip() or f"exit {result.returncode}"
+        return {"error": detail}
+    return json.loads(result.stdout)
+
 def _normalize_env(raw):
     if not isinstance(raw, dict):
         return {}
@@ -152,14 +167,13 @@ def run(target, as_json=False, no_traceroute=False, no_robots=False, ping_ports=
     if should_probe_path:
         print(f"\n[Phase 2] traceroute + ping...", file=sys.stderr)
         tr_mod   = load_mod("03_traceroute")
-        ping_mod = load_mod("05_ping")
 
         probe_ip = ips_to_probe[0]  # traceroute 取第一个 IP（避免时间过长）
         ports = ping_ports or [80, 443]
 
         with ThreadPoolExecutor(max_workers=2) as pool:
             f_tr   = pool.submit(tr_mod.run, probe_ip, 20, False)
-            f_ping = pool.submit(silent, ping_mod.run, probe_ip, 5, ports, False)
+            f_ping = pool.submit(run_ping_node, probe_ip, 5, ports)
 
             try:
                 tr_result = f_tr.result()
