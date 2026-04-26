@@ -19,26 +19,26 @@ agent: data-ai-expert:data-analyst
 - 先 `inspect`，再 `query` 或 `summary`；没看清表结构就直接写 SQL，命中率会很差。
 - 只处理显式给出的本地文件路径；不要假设上传目录，也不要猜测文件名。
 - 当前脚本直接支持 `.xlsx` 与 `.csv`；旧式 `.xls` 需要先转存为 `.xlsx`。
-- `scripts/analyze.py` 依赖 `duckdb`；分析 `.xlsx` 还依赖 `openpyxl`。缺依赖时先报错并给安装建议，不自动联网装包。
+- `scripts/analyze.mjs` 使用 Node.js 内置 API，不依赖 Python、DuckDB 或 OpenPyXL；`query` 支持常用单表 `SELECT`、`WHERE`、`GROUP BY`、聚合、`ORDER BY` 与 `LIMIT`，不承诺完整 DuckDB 方言。
 - 导出结果只支持 `.csv`、`.json`、`.md`。
 
 ## 代码模式
 
 ```bash
-python3 scripts/analyze.py \
+node scripts/analyze.mjs \
   --files /absolute/path/sales.xlsx \
   --action inspect
 ```
 
 ```bash
-python3 scripts/analyze.py \
+node scripts/analyze.mjs \
   --files /absolute/path/sales.csv /absolute/path/customers.csv \
   --action query \
   --sql 'SELECT region, SUM(amount) AS revenue FROM sales GROUP BY region ORDER BY revenue DESC'
 ```
 
 ```bash
-python3 scripts/analyze.py \
+node scripts/analyze.mjs \
   --files /absolute/path/sales.xlsx \
   --action query \
   --sql 'SELECT * FROM sales LIMIT 20' \
@@ -59,7 +59,7 @@ python3 scripts/analyze.py \
 
 ```bash
 # 用户说 "分析销售数据"
-python3 scripts/analyze.py --files sales.xlsx \
+node scripts/analyze.mjs --files sales.xlsx \
   --action query --sql "SELECT region, SUM(revenue) FROM sales GROUP BY region"
 # Error: column "revenue" does not exist
 # 实际列名是 "Revenue (USD)"，sheet 名也不是 "sales"
@@ -69,11 +69,11 @@ python3 scripts/analyze.py --files sales.xlsx \
 
 ```bash
 # Step 1: 先看结构
-python3 scripts/analyze.py --files sales.xlsx --action inspect
+node scripts/analyze.mjs --files sales.xlsx --action inspect
 # → 输出：sheet=Sales_2026, columns=[Region, "Revenue (USD)", ...]
 
 # Step 2: 用真实列名
-python3 scripts/analyze.py --files sales.xlsx --action query \
+node scripts/analyze.mjs --files sales.xlsx --action query \
   --sql 'SELECT Region, SUM("Revenue (USD)") FROM "Sales_2026" GROUP BY Region'
 ```
 
