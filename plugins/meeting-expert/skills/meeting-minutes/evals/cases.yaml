@@ -1,6 +1,6 @@
 cases:
   - id: positive_meeting_minutes_primary
-    prompt: "我需要把内部会议转成正式结构化会议纪要时使用；若只要轻量摘要和行动项，改用 meeting-notes-and-actions。"
+    prompt: "我需要把内部会议整理成正式结构化纪要、固定章节、出席情况、决策和行动项。"
     fixtures: []
     rubric:
       - "recognizes the request as meeting-minutes territory"
@@ -16,10 +16,17 @@ cases:
     trigger_expected: true
 
   - id: negative_adjacent_meeting_insights_analyzer
-    prompt: "这个需求应该交给 meeting-insights-analyzer：分析会议转写中的沟通模式、发言占比或打断频率时使用；若只要摘要和行动项，改用 meeting-notes-and-actions。"
+    prompt: "请基于三场会议转写分析我的发言占比、打断频率、引导风格和沟通风险。"
     fixtures: []
     rubric:
       - "adjacent meeting-insights-analyzer requests should not trigger meeting-minutes"
+    trigger_expected: false
+
+  - id: negative_adjacent_meeting_notes_and_actions
+    prompt: "请把这段 Zoom 转写快速整理成摘要、决策、风险和行动项，不需要正式纪要格式。"
+    fixtures: []
+    rubric:
+      - "lightweight meeting notes requests should not trigger meeting-minutes"
     trigger_expected: false
 
   - id: negative_general_unrelated_task

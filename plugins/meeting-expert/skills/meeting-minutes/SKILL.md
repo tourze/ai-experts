@@ -1,6 +1,6 @@
 ---
 name: meeting-minutes
-description: 当需要把内部会议转成正式结构化会议纪要时使用；若只要轻量摘要和行动项，改用 `meeting-notes-and-actions`。
+description: 当需要把内部会议整理成正式结构化纪要、固定章节、出席情况、决策和行动项时使用。
 ---
 
 # 会议纪要

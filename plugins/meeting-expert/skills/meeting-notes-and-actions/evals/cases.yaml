@@ -1,6 +1,6 @@
 cases:
   - id: positive_meeting_notes_and_actions_primary
-    prompt: "我需要把会议转写、电话纪要或零散笔记整理成摘要与行动项时使用；若要正式纪要格式，改用 meeting-minutes。"
+    prompt: "我需要把会议转写、电话记录或零散笔记整理成轻量摘要、决策、风险和行动项。"
     fixtures: []
     rubric:
       - "recognizes the request as meeting-notes-and-actions territory"
@@ -16,10 +16,17 @@ cases:
     trigger_expected: true
 
   - id: negative_adjacent_meeting_insights_analyzer
-    prompt: "这个需求应该交给 meeting-insights-analyzer：分析会议转写中的沟通模式、发言占比或打断频率时使用；若只要摘要和行动项，改用 meeting-notes-and-actions。"
+    prompt: "请基于会议转写分析沟通模式、发言占比、打断频率和冲突处理方式。"
     fixtures: []
     rubric:
       - "adjacent meeting-insights-analyzer requests should not trigger meeting-notes-and-actions"
+    trigger_expected: false
+
+  - id: negative_adjacent_meeting_minutes
+    prompt: "请按正式会议纪要格式整理，包含出席情况、议程、决策、行动项、风险和后续安排。"
+    fixtures: []
+    rubric:
+      - "formal meeting minutes requests should not trigger meeting-notes-and-actions"
     trigger_expected: false
 
   - id: negative_general_unrelated_task
