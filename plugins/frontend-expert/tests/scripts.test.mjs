@@ -13,12 +13,12 @@ const nodeScripts = [
   "skills/i18n-localization/scripts/i18n_checker.mjs",
   "skills/lottie-animations/scripts/generate_lottie_component.mjs",
   "skills/lottie-animations/scripts/optimize_lottie.mjs",
+  "skills/modern-web-design/scripts/design_audit.mjs",
   "skills/shadcn-ui/scripts/verify-setup.mjs",
   "skills/web-quality-audit/scripts/analyze.mjs",
 ];
 
 const pythonScripts = [
-  "skills/modern-web-design/scripts/design_audit.py",
   "skills/modern-web-design/scripts/pattern_generator.py",
 ];
 
@@ -111,6 +111,34 @@ test("i18n_checker.mjs 能发现硬编码文案并返回失败码", () => {
     assert.equal(result.status, 1);
     assert.match(result.stdout, /files may have hardcoded strings/);
     assert.match(result.stdout, /i18n CHECK: 1 issues found/);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("design_audit.mjs 能生成 HTML 审计报告", () => {
+  const root = mkdtempSync(join(tmpdir(), "frontend-design-audit-"));
+  const inputPath = join(root, "index.html");
+  const reportPath = join(root, "audit.txt");
+  writeFileSync(inputPath, "<html><head><title>x</title></head><body><img src=\"hero.png\"><h1>Hi</h1></body></html>\n", "utf-8");
+
+  try {
+    const result = spawnSync("node", [
+      resolve(pluginRoot, "skills/modern-web-design/scripts/design_audit.mjs"),
+      "--file",
+      inputPath,
+      "--report",
+      reportPath,
+    ], {
+      encoding: "utf-8",
+    });
+
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(result.stdout, /Audit complete/);
+    const report = readFileSync(reportPath, "utf-8");
+    assert.match(report, /Modern Web Design Audit Report/);
+    assert.match(report, /images without alt attributes/);
+    assert.match(report, /Missing viewport meta tag/);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
