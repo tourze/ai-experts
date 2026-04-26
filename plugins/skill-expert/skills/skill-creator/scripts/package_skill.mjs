@@ -2,6 +2,7 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, relative, resolve, sep } from "node:path";
 import { pathToFileURL } from "node:url";
+import { deflateRawSync } from "node:zlib";
 import { validateSkill } from "./quick_validate.mjs";
 
 const EXCLUDE_DIRS = new Set(["__pycache__", "node_modules"]);
@@ -83,6 +84,7 @@ export function writeZip(outputPath, entries) {
   for (const entry of entries) {
     const nameBuffer = Buffer.from(entry.name, "utf-8");
     const data = readFileSync(entry.path);
+    const compressed = deflateRawSync(data);
     const checksum = crc32(data);
     const { time, date } = dosDateTime(statSync(entry.path).mtime);
 
@@ -90,28 +92,28 @@ export function writeZip(outputPath, entries) {
       writeUInt32(0x04034b50),
       writeUInt16(20),
       writeUInt16(0x0800),
-      writeUInt16(0),
+      writeUInt16(8),
       writeUInt16(time),
       writeUInt16(date),
       writeUInt32(checksum),
-      writeUInt32(data.length),
+      writeUInt32(compressed.length),
       writeUInt32(data.length),
       writeUInt16(nameBuffer.length),
       writeUInt16(0),
       nameBuffer,
     ]);
 
-    chunks.push(localHeader, data);
+    chunks.push(localHeader, compressed);
     central.push(Buffer.concat([
       writeUInt32(0x02014b50),
       writeUInt16(20),
       writeUInt16(20),
       writeUInt16(0x0800),
-      writeUInt16(0),
+      writeUInt16(8),
       writeUInt16(time),
       writeUInt16(date),
       writeUInt32(checksum),
-      writeUInt32(data.length),
+      writeUInt32(compressed.length),
       writeUInt32(data.length),
       writeUInt16(nameBuffer.length),
       writeUInt16(0),
@@ -122,7 +124,7 @@ export function writeZip(outputPath, entries) {
       writeUInt32(offset),
       nameBuffer,
     ]));
-    offset += localHeader.length + data.length;
+    offset += localHeader.length + compressed.length;
   }
 
   const centralOffset = offset;
