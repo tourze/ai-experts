@@ -38,7 +38,17 @@ test("emu_health_check.mjs 缺少工具时返回失败", () => {
 });
 
 test("Android emulator Node interaction scripts 通过语法检查", () => {
-  for (const name of ["common.mjs", "gesture.mjs", "keyboard.mjs", "log_monitor.mjs"]) {
+  for (const name of [
+    "app_launcher.mjs",
+    "build_and_test.mjs",
+    "common.mjs",
+    "emulator_manage.mjs",
+    "gesture.mjs",
+    "keyboard.mjs",
+    "log_monitor.mjs",
+    "navigator.mjs",
+    "screen_mapper.mjs",
+  ]) {
     const result = spawnSync(process.execPath, ["--check", resolve(scriptsDir, name)], { encoding: "utf8" });
     assert.equal(result.status, 0, `${name}: ${result.stderr}`);
   }
@@ -46,9 +56,14 @@ test("Android emulator Node interaction scripts 通过语法检查", () => {
 
 test("Android emulator Node interaction scripts 输出帮助信息", () => {
   for (const [name, pattern] of [
+    ["app_launcher.mjs", /Control Android app lifecycle/],
+    ["build_and_test.mjs", /Build and test Android project/],
+    ["emulator_manage.mjs", /Manage Android emulators/],
     ["gesture.mjs", /Perform gestures on Android/],
     ["keyboard.mjs", /Android keyboard input/],
     ["log_monitor.mjs", /Monitor Android logs/],
+    ["navigator.mjs", /Navigate Android apps/],
+    ["screen_mapper.mjs", /Map Android UI elements/],
   ]) {
     const result = spawnSync(process.execPath, [resolve(scriptsDir, name), "--help"], { encoding: "utf8" });
     assert.equal(result.status, 0, `${name}: ${result.stderr}`);
@@ -58,9 +73,14 @@ test("Android emulator Node interaction scripts 输出帮助信息", () => {
 
 test("Android emulator Node helpers 保持 ADB 参数转换", async () => {
   const common = await import(resolve(scriptsDir, "common.mjs"));
+  const appLauncher = await import(resolve(scriptsDir, "app_launcher.mjs"));
+  const buildAndTest = await import(resolve(scriptsDir, "build_and_test.mjs"));
+  const emulatorManage = await import(resolve(scriptsDir, "emulator_manage.mjs"));
   const gesture = await import(resolve(scriptsDir, "gesture.mjs"));
   const keyboard = await import(resolve(scriptsDir, "keyboard.mjs"));
   const logMonitor = await import(resolve(scriptsDir, "log_monitor.mjs"));
+  const navigator = await import(resolve(scriptsDir, "navigator.mjs"));
+  const screenMapper = await import(resolve(scriptsDir, "screen_mapper.mjs"));
 
   assert.deepEqual(
     common.parseAdbDevices("List of devices attached\nemulator-5554\tdevice\nfoo\toffline\n"),
@@ -77,4 +97,33 @@ test("Android emulator Node helpers 保持 ADB 参数转换", async () => {
     logMonitor.buildLogcatCommand({ priority: "E", tag: null }, "emulator-5554", "123"),
     [common.ADB_PATH, "-s", "emulator-5554", "logcat", "-v", "color", "*:E", "--pid=123"],
   );
+  assert.deepEqual(appLauncher.parsePackages("package:com.example\npackage:com.android.settings\n"), [
+    "com.example",
+    "com.android.settings",
+  ]);
+  assert.equal(appLauncher.getAppStateFromPidResult({ status: 0, stdout: "123\n" }), "running");
+  assert.deepEqual(buildAndTest.buildGradleCommand("/tmp/gradlew", "assembleDebug", true, false), [
+    "/tmp/gradlew",
+    "clean",
+    "assembleDebug",
+    "-q",
+  ]);
+  assert.deepEqual(emulatorManage.parseAvdList("Pixel_8\n\nTablet\n"), ["Pixel_8", "Tablet"]);
+  assert.deepEqual(screenMapper.parseBounds("[1,2][11,22]"), {
+    x: 1,
+    y: 2,
+    width: 10,
+    height: 20,
+    center_x: 6,
+    center_y: 12,
+  });
+  const analysis = screenMapper.analyzeXml(`
+    <hierarchy>
+      <node class="android.widget.Button" text="Login" resource-id="login_button" content-desc="" clickable="true" enabled="true" bounds="[0,0][100,50]" />
+      <node class="android.widget.EditText" text="" resource-id="email" content-desc="Email" clickable="true" enabled="true" bounds="[0,60][200,100]" />
+    </hierarchy>
+  `);
+  assert.deepEqual(analysis.buttons, ["Login", "Email"]);
+  assert.equal(analysis.text_fields.length, 1);
+  assert.equal(navigator.findElementInAnalysis(analysis, { text: "log" })["resource-id"], "login_button");
 });

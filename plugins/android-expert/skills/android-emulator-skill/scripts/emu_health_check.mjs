@@ -30,7 +30,6 @@ This script checks for:
   - Emulator executable availability
   - Java Development Kit (JDK)
   - Connected Android devices/emulators
-  - Python 3 installation (for scripts)
 
 Exit codes:
   0 - All checks passed
@@ -130,7 +129,7 @@ console.log(`${BLUE}  Android Emulator Testing - Environment Health Check${NC}`)
 console.log(`${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}`);
 console.log("");
 
-console.log(`${BLUE}[1/6]${NC} Checking ANDROID_HOME...`);
+console.log(`${BLUE}[1/5]${NC} Checking ANDROID_HOME...`);
 let androidHome = process.env.ANDROID_HOME || "";
 if (androidHome) {
   checkPassed(`ANDROID_HOME is set to ${androidHome}`);
@@ -154,7 +153,7 @@ if (androidHome) {
 }
 console.log("");
 
-console.log(`${BLUE}[2/6]${NC} Checking ADB (Android Debug Bridge)...`);
+console.log(`${BLUE}[2/5]${NC} Checking ADB (Android Debug Bridge)...`);
 let adbPath = findExecutable("adb");
 if (adbPath) {
   const adbVersion = firstOutputLine(run(adbPath, ["--version"]));
@@ -176,7 +175,7 @@ if (adbPath) {
 }
 console.log("");
 
-console.log(`${BLUE}[3/6]${NC} Checking Android Emulator...`);
+console.log(`${BLUE}[3/5]${NC} Checking Android Emulator...`);
 let emulatorPath = findExecutable("emulator");
 if (emulatorPath) {
   const emulatorVersion = firstOutputLine(run(emulatorPath, ["-version"]));
@@ -197,7 +196,7 @@ if (emulatorPath) {
 }
 console.log("");
 
-console.log(`${BLUE}[4/6]${NC} Checking Java...`);
+console.log(`${BLUE}[4/5]${NC} Checking Java...`);
 const javaPath = findExecutable("java");
 if (javaPath) {
   checkPassed(`Java is installed (${firstOutputLine(run(javaPath, ["-version"]))})`);
@@ -207,17 +206,7 @@ if (javaPath) {
 }
 console.log("");
 
-console.log(`${BLUE}[5/6]${NC} Checking Python 3...`);
-const pythonPath = findExecutable("python3");
-if (pythonPath) {
-  checkPassed(`Python 3 is installed (${firstOutputLine(run(pythonPath, ["--version"]))})`);
-} else {
-  checkFailed("Python 3 not found");
-  console.log("       Required for skill scripts.");
-}
-console.log("");
-
-console.log(`${BLUE}[6/6]${NC} Checking connected devices...`);
+console.log(`${BLUE}[5/5]${NC} Checking connected devices...`);
 adbPath = findExecutable("adb");
 if (adbPath) {
   const adbDevices = run(adbPath, ["devices"]).stdout || "";
