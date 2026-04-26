@@ -86,3 +86,46 @@ test("description-cso-audit 递归扫描嵌套 skill 并保留完整相对路径
     rmSync(tmp, { recursive: true, force: true });
   }
 });
+
+test("skill-creator quick_validate.mjs 校验 frontmatter", () => {
+  const tmp = mkdtempSync(join(tmpdir(), "skill-creator-validate-"));
+  const skill = resolve(tmp, "demo-skill");
+  mkdirSync(skill, { recursive: true });
+  writeFileSync(resolve(skill, "SKILL.md"), "---\nname: demo-skill\ndescription: \"Use when validating demo skills.\"\n---\n", "utf-8");
+
+  try {
+    const script = resolve(pluginRoot, "skills/skill-creator/scripts/quick_validate.mjs");
+    const valid = execFileSync("node", [script, skill], { encoding: "utf-8", stdio: "pipe" });
+    assert.match(valid, /Skill is valid!/);
+
+    writeFileSync(resolve(skill, "SKILL.md"), "---\nname: Demo Skill\ndescription: bad\n---\n", "utf-8");
+    assert.throws(() => execFileSync("node", [script, skill], { stdio: "pipe" }));
+  } finally {
+    rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test("skill-creator package_skill.mjs 生成 .skill 并排除 root evals", () => {
+  const tmp = mkdtempSync(join(tmpdir(), "skill-creator-package-"));
+  const skill = resolve(tmp, "demo-skill");
+  const dist = resolve(tmp, "dist");
+  mkdirSync(resolve(skill, "evals"), { recursive: true });
+  mkdirSync(resolve(skill, "assets"), { recursive: true });
+  writeFileSync(resolve(skill, "SKILL.md"), "---\nname: demo-skill\ndescription: \"Use when packaging demo skills.\"\n---\n", "utf-8");
+  writeFileSync(resolve(skill, "evals", "cases.yaml"), "cases: []\n", "utf-8");
+  writeFileSync(resolve(skill, "assets", "sample.txt"), "sample\n", "utf-8");
+
+  try {
+    const script = resolve(pluginRoot, "skills/skill-creator/scripts/package_skill.mjs");
+    const output = execFileSync("node", [script, skill, dist], { encoding: "utf-8", stdio: "pipe" });
+    assert.match(output, /Successfully packaged skill/);
+    assert.match(output, /Added: demo-skill\/SKILL\.md/);
+    assert.match(output, /Skipped: demo-skill\/evals\/cases\.yaml/);
+
+    const archive = readFileSync(resolve(dist, "demo-skill.skill"));
+    assert.ok(archive.length > 0);
+    assert.equal(archive.readUInt32LE(0), 0x04034b50);
+  } finally {
+    rmSync(tmp, { recursive: true, force: true });
+  }
+});
