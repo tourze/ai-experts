@@ -15,6 +15,10 @@ import {
   parseArgs as parseMaintainerArgs,
   toCsv,
 } from "../skills/security-ownership-map/scripts/community_maintainers.mjs";
+import {
+  buildCommand,
+  parseArgs as parseRunnerArgs,
+} from "../skills/security-ownership-map/scripts/run_ownership_map.mjs";
 
 const scriptPath = fileURLToPath(new URL("../skills/security-ownership-map/scripts/query_ownership.mjs", import.meta.url));
 const maintainerScriptPath = fileURLToPath(new URL("../skills/security-ownership-map/scripts/community_maintainers.mjs", import.meta.url));
@@ -190,4 +194,28 @@ test("community_maintainers.mjs CLI writes maintainer CSV", () => {
   assert.equal(result.status, 0, result.stderr);
   assert.match(result.stdout, /period,rank,name,email/);
   assert.match(result.stdout, /2026-01,1,Alice,alice@example.com/);
+});
+
+test("run_ownership_map.mjs preserves build command arguments", () => {
+  const args = parseRunnerArgs([
+    "--repo", "/repo",
+    "--out", "out",
+    "--since", "12 months ago",
+    "--emit-commits",
+    "--no-communities",
+    "--author-exclude-regex", "bot",
+    "--cochange-exclude", "*.lock",
+  ]);
+  const command = buildCommand(args, "python-test");
+  assert.equal(command[0], "python-test");
+  assert.ok(command[1].endsWith("build_ownership_map.py"));
+  assert.deepEqual(command.slice(2, 8), ["--repo", "/repo", "--out", "out", "--identity", "author"]);
+  assert.ok(command.includes("--since"));
+  assert.ok(command.includes("12 months ago"));
+  assert.ok(command.includes("--emit-commits"));
+  assert.ok(command.includes("--no-communities"));
+  assert.ok(command.includes("--author-exclude-regex"));
+  assert.ok(command.includes("bot"));
+  assert.ok(command.includes("--cochange-exclude"));
+  assert.ok(command.includes("*.lock"));
 });

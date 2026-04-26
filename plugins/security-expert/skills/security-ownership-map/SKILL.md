@@ -14,11 +14,11 @@ description: "当用户明确希望基于 git 历史构建安全所有权、bus 
 - 只用于安全导向的所有权分析，不回答泛化的“谁维护这个仓库”问题。
 - 优先缩小时间窗；大仓库默认加 `--since` 或 `--until`。
 - 社区检测和 GraphML 输出需要 `networkx`；关闭这两项时核心导出可独立运行。
-- 脚本路径以当前 skill 目录为基准；查询与社区分析脚本使用 Node.js，构建脚本暂仍使用 Python。
+- 脚本路径以当前 skill 目录为基准；查询、社区分析与构建入口使用 Node.js，构建核心暂仍由 `build_ownership_map.py` 执行。
 
 ## 代码模式
 ```bash
-python3 scripts/run_ownership_map.py \
+node scripts/run_ownership_map.mjs \
   --repo /path/to/repo \
   --out ownership-map-out \
   --since '12 months ago' \
@@ -39,14 +39,14 @@ node scripts/community_maintainers.mjs --data-dir ownership-map-out --file src/a
 ### FAIL: 全量跑大仓库
 
 ```bash
-python3 scripts/run_ownership_map.py --repo /path/to/monorepo
+node scripts/run_ownership_map.mjs --repo /path/to/monorepo
 # 10 年历史 / 500k commits / 跑 4 小时 OOM
 ```
 
 ### PASS: 限定时间窗
 
 ```bash
-python3 scripts/run_ownership_map.py \
+node scripts/run_ownership_map.mjs \
   --repo /path/to/monorepo \
   --since '12 months ago' \
   --paths 'src/auth/**,src/payment/**'
