@@ -50,14 +50,20 @@ test("研究插件声明的 Python requirements 文件存在", () => {
 });
 
 test("site-analyze env probe Node wrapper 通过语法检查", () => {
-  const result = spawnSync("node", [
-    "--check",
-    resolve(pluginRoot, "skills/site-analyze/scripts/00_probe_env.mjs"),
-  ], {
-    encoding: "utf-8",
-  });
+  for (const script of [
+    "skills/site-analyze/scripts/00_probe_env.mjs",
+    "skills/site-analyze/scripts/04_whois.mjs",
+    "skills/site-analyze/sub/whois/04_whois.mjs",
+  ]) {
+    const result = spawnSync("node", [
+      "--check",
+      resolve(pluginRoot, script),
+    ], {
+      encoding: "utf-8",
+    });
 
-  assert.equal(result.status, 0, result.stderr);
+    assert.equal(result.status, 0, result.stderr);
+  }
 });
 
 test("site-analyze env probe 复用已有缓存且不触发网络探测", () => {
@@ -80,4 +86,26 @@ test("site-analyze env probe 复用已有缓存且不触发网络探测", () => 
   } finally {
     rmSync(home, { recursive: true, force: true });
   }
+});
+
+test("site-analyze whois parser 提取域名与 IP 字段", async () => {
+  const mod = await import(resolve(pluginRoot, "skills/site-analyze/scripts/04_whois.mjs"));
+  const parsed = mod.parseWhois(`Registrar: Example Registrar
+Creation Date: 2024-01-01T00:00:00Z
+Domain Status: clientTransferProhibited
+Domain Status: clientUpdateProhibited
+Name Server: NS1.EXAMPLE.COM
+Name Server: NS1.EXAMPLE.COM
+OrgName: Example Network
+CIDR: 203.0.113.0/24
+country: US
+`, "example.com");
+
+  assert.equal(parsed.target, "example.com");
+  assert.equal(parsed.registrar, "Example Registrar");
+  assert.deepEqual(parsed.status, ["clientTransferProhibited", "clientUpdateProhibited"]);
+  assert.deepEqual(parsed.name_servers, ["NS1.EXAMPLE.COM"]);
+  assert.equal(parsed.orgname, "Example Network");
+  assert.equal(parsed.cidr, "203.0.113.0/24");
+  assert.equal(parsed.country, "US");
 });

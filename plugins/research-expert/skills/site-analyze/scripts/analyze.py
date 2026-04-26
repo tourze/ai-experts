@@ -23,6 +23,18 @@ def load_mod(name):
     spec.loader.exec_module(mod)
     return mod
 
+def run_whois_node(target):
+    result = subprocess.run(
+        ["node", os.path.join(SCRIPT_DIR, "04_whois.mjs"), target, "--json"],
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
+    if result.returncode != 0:
+        detail = result.stderr.strip() or result.stdout.strip() or f"exit {result.returncode}"
+        return {"error": detail}
+    return json.loads(result.stdout)
+
 def _normalize_env(raw):
     if not isinstance(raw, dict):
         return {}
@@ -84,7 +96,6 @@ def run(target, as_json=False, no_traceroute=False, no_robots=False, ping_ports=
     # ── Phase 1: 并发 dig + whois + robots ──────────────────────────────
     print(f"\n[Phase 1] dig / whois / robots (并发)...", file=sys.stderr)
     dig_mod    = load_mod("01_dig")
-    whois_mod  = load_mod("04_whois")
     robots_mod = load_mod("06_robots")
     ip_mod     = load_mod("02_ip_info")
 
@@ -100,7 +111,7 @@ def run(target, as_json=False, no_traceroute=False, no_robots=False, ping_ports=
         futures = {}
         if not is_ip:
             futures["dig"] = pool.submit(silent, dig_mod.run, domain, False)
-        futures["whois"] = pool.submit(silent, whois_mod.run, domain, False)
+        futures["whois"] = pool.submit(run_whois_node, domain)
         if not no_robots and not is_ip:
             futures["robots"] = pool.submit(silent, robots_mod.run, domain, False)
 
