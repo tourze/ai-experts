@@ -232,7 +232,7 @@ Once all runs are done:
 
 2. **Aggregate into benchmark** — run the aggregation script from the skill-creator directory:
    ```bash
-   python -m scripts.aggregate_benchmark <workspace>/iteration-N --skill-name <name>
+   node scripts/aggregate_benchmark.mjs <workspace>/iteration-N --skill-name <name>
    ```
    This produces `benchmark.json` and `benchmark.md` with pass_rate, time, and tokens for each configuration, with mean ± stddev and the delta. If generating benchmark.json manually, see `references/schemas.md` for the exact schema the viewer expects.
 Put each with_skill version before its baseline counterpart.
@@ -385,7 +385,7 @@ Tell the user: "This will take some time — I'll run the optimization loop in t
 Save the eval set to the workspace, then run in the background:
 
 ```bash
-python -m scripts.run_loop \
+node scripts/run_loop.mjs \
   --eval-set <path-to-trigger-eval.json> \
   --skill-path <path-to-skill> \
   --model <model-id-powering-this-session> \
@@ -425,7 +425,7 @@ After packaging, direct the user to the resulting `.skill` file path so they can
 
 ## Claude.ai / Cowork Adaptations
 
-**Claude.ai**: No subagents → run test cases sequentially yourself. Skip baselines, blind comparison, and description optimization (`claude -p`). Present results inline. Packaging works anywhere with Python.
+**Claude.ai**: No subagents → run test cases sequentially yourself. Skip baselines, blind comparison, and description optimization (`claude -p`). Present results inline. Packaging works anywhere with Node.js.
 
 **Cowork**: Subagents work. Use `--static <output_path>` for eval viewer (no browser). Always generate eval viewer before self-evaluating. Feedback downloads as `feedback.json`.
 
