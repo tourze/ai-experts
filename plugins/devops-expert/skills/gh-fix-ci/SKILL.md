@@ -20,9 +20,9 @@ description: 当用户要求排查或修复 GitHub Actions PR 检查失败时使
 - 使用内置脚本抓取失败检查：
 
 ```bash
-python3 scripts/inspect_pr_checks.py --repo .
-python3 scripts/inspect_pr_checks.py --repo . --pr 123 --json
-python3 scripts/inspect_pr_checks.py --repo . --max-lines 200 --context 40
+node scripts/inspect_pr_checks.mjs --repo .
+node scripts/inspect_pr_checks.mjs --repo . --pr 123 --json
+node scripts/inspect_pr_checks.mjs --repo . --max-lines 200 --context 40
 ```
 
 - 手工兜底命令：
