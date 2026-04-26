@@ -21,7 +21,14 @@ test("dispatch 在空 stdin 下不崩溃", () => {
 });
 
 test("screenshot Node helpers 通过语法检查", () => {
-  for (const script of ["ensure_macos_permissions.mjs", "take_screenshot.mjs", "take_screenshot_windows.mjs"]) {
+  for (const script of [
+    "ensure_macos_permissions.mjs",
+    "macos_display_info.mjs",
+    "macos_permissions.mjs",
+    "macos_window_info.mjs",
+    "take_screenshot.mjs",
+    "take_screenshot_windows.mjs",
+  ]) {
     const result = spawnSync("node", ["--check", resolve(screenshotDir, script)], {
       encoding: "utf-8",
     });

@@ -6,10 +6,10 @@ import { basename, dirname, extname, join, parse, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
-const MAC_PERM_SCRIPT = join(SCRIPT_DIR, "macos_permissions.swift");
+const MAC_PERM_SCRIPT = join(SCRIPT_DIR, "macos_permissions.mjs");
 const MAC_PERM_HELPER = join(SCRIPT_DIR, "ensure_macos_permissions.mjs");
-const MAC_WINDOW_SCRIPT = join(SCRIPT_DIR, "macos_window_info.swift");
-const MAC_DISPLAY_SCRIPT = join(SCRIPT_DIR, "macos_display_info.swift");
+const MAC_WINDOW_SCRIPT = join(SCRIPT_DIR, "macos_window_info.mjs");
+const MAC_DISPLAY_SCRIPT = join(SCRIPT_DIR, "macos_display_info.mjs");
 const WINDOWS_HELPER = join(SCRIPT_DIR, "take_screenshot_windows.mjs");
 const TEST_MODE_ENV = "CODEX_SCREENSHOT_TEST_MODE";
 const TEST_PLATFORM_ENV = "CODEX_SCREENSHOT_TEST_PLATFORM";
@@ -205,30 +205,27 @@ export function runCommand(cmd) {
   }
 }
 
-export function swiftJson(script, extraArgs = []) {
-  const moduleCache = join(tmpdir(), "codex-swift-module-cache");
-  mkdirSync(moduleCache, { recursive: true });
-  const cmd = ["-module-cache-path", moduleCache, script, ...extraArgs];
-  const proc = runCapture("swift", cmd);
+export function helperJson(script, extraArgs = []) {
+  const proc = runCapture(process.execPath, [script, ...extraArgs]);
   if (proc.error?.code === "ENOENT") {
-    throw new Error("swift not found; install Xcode command line tools");
+    throw new Error("node not found; install Node.js");
   }
   if (proc.status !== 0) {
     const stderr = (proc.stderr ?? "").trim();
     if (stderr.includes("ModuleCache") && stderr.includes("Operation not permitted")) {
-      throw new Error("swift needs module-cache access; rerun with escalated permissions");
+      throw new Error("macOS native helper needs module-cache access; rerun with escalated permissions");
     }
-    throw new Error(stderr || (proc.stdout ?? "").trim() || "swift helper failed");
+    throw new Error(stderr || (proc.stdout ?? "").trim() || "macOS native helper failed");
   }
   try {
     return JSON.parse(proc.stdout);
   } catch {
-    throw new Error(`swift helper returned invalid JSON: ${proc.stdout.trim()}`);
+    throw new Error(`macOS native helper returned invalid JSON: ${proc.stdout.trim()}`);
   }
 }
 
 export function macosScreenCaptureGranted(request = false) {
-  const payload = swiftJson(MAC_PERM_SCRIPT, request ? ["--request"] : []);
+  const payload = helperJson(MAC_PERM_SCRIPT, request ? ["--request"] : []);
   return Boolean(payload.screenCapture);
 }
 
@@ -258,11 +255,11 @@ export function macosWindowPayload(args, frontmost, includeList) {
   if (args.app) flags.push("--app", args.app);
   if (args.windowName) flags.push("--window-name", args.windowName);
   if (includeList) flags.push("--list");
-  return swiftJson(MAC_WINDOW_SCRIPT, flags);
+  return helperJson(MAC_WINDOW_SCRIPT, flags);
 }
 
 export function macosDisplayIndexes() {
-  const payload = swiftJson(MAC_DISPLAY_SCRIPT);
+  const payload = helperJson(MAC_DISPLAY_SCRIPT);
   const displays = payload.displays ?? [];
   const indexes = displays
     .map((item) => Number.parseInt(String(item), 10))

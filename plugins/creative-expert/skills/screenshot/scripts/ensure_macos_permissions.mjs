@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-import fs from "node:fs";
-import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
@@ -24,43 +22,22 @@ if (process.platform !== "darwin") {
   process.exit(1);
 }
 
-function commandExists(command) {
-  const dirs = (process.env.PATH || "").split(path.delimiter).filter(Boolean);
-  for (const dir of dirs) {
-    const candidate = path.join(dir, command);
-    try {
-      fs.accessSync(candidate, fs.constants.X_OK);
-      return true;
-    } catch {
-      // Keep scanning PATH.
-    }
-  }
-  return false;
-}
-
-if (!commandExists("swift")) {
-  console.error("swift is required to check macOS screen capture permissions");
-  process.exit(1);
-}
-
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
-const permSwift = path.join(scriptDir, "macos_permissions.swift");
-const moduleCache = path.join(process.env.TMPDIR || os.tmpdir(), "codex-swift-module-cache");
-fs.mkdirSync(moduleCache, { recursive: true });
+const permHelper = path.join(scriptDir, "macos_permissions.mjs");
 
 function screenCaptureGranted(args = []) {
-  const result = spawnSync("swift", ["-module-cache-path", moduleCache, permSwift, ...args], {
+  const result = spawnSync(process.execPath, [permHelper, ...args], {
     encoding: "utf8",
   });
   if (result.status !== 0) {
-    process.stderr.write(result.stderr || result.stdout || "swift helper failed\n");
+    process.stderr.write(result.stderr || result.stdout || "macOS native helper failed\n");
     process.exit(result.status ?? 1);
   }
 
   try {
     return Boolean(JSON.parse(result.stdout).screenCapture);
   } catch {
-    console.error(`swift helper returned invalid JSON: ${result.stdout.trim()}`);
+    console.error(`macOS native helper returned invalid JSON: ${result.stdout.trim()}`);
     process.exit(1);
   }
 }
