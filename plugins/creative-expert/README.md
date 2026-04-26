@@ -44,7 +44,7 @@ node skills/baoyu-compress-image/scripts/main.mjs --help
 python3 skills/concept-to-image/scripts/render_to_image.py --help
 python3 skills/concept-to-video/scripts/render_video.py --help
 python3 skills/concept-to-video/scripts/add_audio.py --help
-python3 skills/screenshot/scripts/take_screenshot.py --help
+node skills/screenshot/scripts/take_screenshot.mjs --help
 ```
 
 ## 安装

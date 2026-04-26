@@ -18,7 +18,7 @@ test("dispatch 在空 stdin 下不崩溃", () => {
 });
 
 test("screenshot Node helpers 通过语法检查", () => {
-  for (const script of ["ensure_macos_permissions.mjs", "take_screenshot_windows.mjs"]) {
+  for (const script of ["ensure_macos_permissions.mjs", "take_screenshot.mjs", "take_screenshot_windows.mjs"]) {
     const result = spawnSync("node", ["--check", resolve(screenshotDir, script)], {
       encoding: "utf-8",
     });
@@ -28,6 +28,12 @@ test("screenshot Node helpers 通过语法检查", () => {
 });
 
 test("screenshot Node helpers 输出帮助信息", () => {
+  const main = spawnSync("node", [resolve(screenshotDir, "take_screenshot.mjs"), "--help"], {
+    encoding: "utf-8",
+  });
+  assert.equal(main.status, 0, main.stderr);
+  assert.match(main.stdout, /Cross-platform screenshot helper/);
+
   const mac = spawnSync("node", [resolve(screenshotDir, "ensure_macos_permissions.mjs"), "--help"], {
     encoding: "utf-8",
   });
@@ -41,9 +47,9 @@ test("screenshot Node helpers 输出帮助信息", () => {
   assert.match(windows.stdout, /Windows screenshot helper/);
 });
 
-test("take_screenshot.py Windows test mode 仍可生成截图", () => {
-  const result = spawnSync("python3", [
-    resolve(screenshotDir, "take_screenshot.py"),
+test("take_screenshot.mjs Windows test mode 仍可生成截图", () => {
+  const result = spawnSync("node", [
+    resolve(screenshotDir, "take_screenshot.mjs"),
     "--mode",
     "temp",
   ], {
@@ -58,6 +64,28 @@ test("take_screenshot.py Windows test mode 仍可生成截图", () => {
   assert.equal(result.status, 0, result.stderr);
   const output = result.stdout.trim();
   assert.ok(output.endsWith(".png"), output);
+  assert.ok(existsSync(output), output);
+  rmSync(output, { force: true });
+});
+
+test("take_screenshot.mjs test mode 为无扩展路径补 png 后缀", () => {
+  const outputBase = resolve("plugins/creative-expert/.tmp-screenshot-output");
+  const result = spawnSync("node", [
+    resolve(screenshotDir, "take_screenshot.mjs"),
+    "--path",
+    outputBase,
+  ], {
+    encoding: "utf-8",
+    env: {
+      ...process.env,
+      CODEX_SCREENSHOT_TEST_MODE: "1",
+      CODEX_SCREENSHOT_TEST_PLATFORM: "Windows",
+    },
+  });
+
+  assert.equal(result.status, 0, result.stderr);
+  const output = result.stdout.trim();
+  assert.equal(output, `${outputBase}.png`);
   assert.ok(existsSync(output), output);
   rmSync(output, { force: true });
 });
