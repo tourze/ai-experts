@@ -43,7 +43,7 @@ test("install.sh enables Codex plugins without jq", () => {
     assert.match(output, /Skill eval coverage:/);
     assert.match(output, /Codex CLI: done/);
     assert.match(config, /\[plugins\."react-native-expert@ai-experts"\]/);
-    assert.match(hooks, /"exec_command"/);
+    assert.match(hooks, /"Bash"/);
     assert.match(hooks, new RegExp(`${repoRoot.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/plugins/`));
     assert.equal(lstatSync(codexMemoryTarget).isSymbolicLink(), true);
     assert.equal(readlinkSync(codexMemoryTarget), join(repoRoot, "MEMORY.md"));
@@ -79,7 +79,7 @@ test("install.sh works when called outside the repository root", () => {
     });
 
     assert.match(output, /Codex CLI: done/);
-    assert.match(readFileSync(join(codexHome, "hooks.json"), "utf-8"), /"exec_command"/);
+    assert.match(readFileSync(join(codexHome, "hooks.json"), "utf-8"), /"Bash"/);
   } finally {
     rmSync(tmp, { recursive: true, force: true });
   }

@@ -26,18 +26,17 @@ const repoRoot = resolve(scriptDir, "..");
 const EVENT_MAP = {
   SessionStart: "SessionStart",
   PreToolUse: "PreToolUse",
+  PermissionRequest: "PermissionRequest",
   PostToolUse: "PostToolUse",
   UserPromptSubmit: "UserPromptSubmit",
-  Notification: "Notification",
-  PreCompact: "PreCompact",
   Stop: "Stop",
 };
 
-// Codex CLI uses different tool names than Claude Code:
-//   Edit/Write → apply_patch, Bash → exec_command
+// Codex supports apply_patch as the canonical file-edit matcher. Bash is already
+// the documented hook matcher name in Codex and must not be rewritten.
 const CODEX_MATCHER_MAP = {
   "Edit|Write": "apply_patch",
-  "Bash": "exec_command",
+  "Write|Edit": "apply_patch",
 };
 
 function parseArgs(argv) {

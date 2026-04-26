@@ -108,3 +108,42 @@ test("UserPromptSubmit + report 输出 systemMessage", () => {
     assert.equal(output.systemMessage, "test-prompt-report");
   });
 });
+
+test("Codex apply_patch tool_input.command 标准化为逐文件 payload", () => {
+  withTempDispatch((hooksRoot) => {
+    const hookDir = join(hooksRoot, "post-tool-use", "edit-write");
+    mkdirSync(hookDir, { recursive: true });
+    writeFileSync(
+      join(hookDir, "report-target.mjs"),
+      "export async function run(payload) { return { decision: 'report', reason: `${payload.tool_input.file_path}|${payload.tool_input.command.includes('Begin Patch')}` }; }\n",
+      "utf-8",
+    );
+
+    const patch = [
+      "*** Begin Patch",
+      "*** Add File: src/a.ts",
+      "+export const a = 1;",
+      "*** Update File: src/b.ts",
+      "@@",
+      "-old",
+      "+new",
+      "*** End Patch",
+    ].join("\n");
+
+    const result = spawnSync("node", [join(hooksRoot, "dispatch.mjs"), "post-tool-use/edit-write"], {
+      cwd: pluginRoot,
+      input: JSON.stringify({
+        hook_event_name: "PostToolUse",
+        tool_name: "apply_patch",
+        tool_input: { command: patch },
+      }),
+      encoding: "utf-8",
+      env: { ...process.env, AI_EXPERTS_HOOK_TELEMETRY: "0" },
+    });
+
+    assert.equal(result.status, 0);
+    const output = JSON.parse(result.stdout);
+    assert.match(output.systemMessage, /src\/a\.ts\|true/);
+    assert.match(output.systemMessage, /src\/b\.ts\|true/);
+  });
+});

@@ -105,6 +105,32 @@ function parseCodexPatchTargets(patchText) {
   return targets;
 }
 
+function looksLikeApplyPatch(text) {
+  return /^\s*\*\*\* Begin Patch/m.test(text) && /^\*\*\* End Patch/m.test(text);
+}
+
+function extractCodexPatchText(payload) {
+  const input = payload?.tool_input;
+  if (typeof input === "string") {
+    return looksLikeApplyPatch(input) ? input : null;
+  }
+
+  if (!input || typeof input !== "object") {
+    return null;
+  }
+
+  const command = typeof input.command === "string" ? input.command : null;
+  if (!command) {
+    return null;
+  }
+
+  if (payload?.tool_name === "apply_patch" || looksLikeApplyPatch(command)) {
+    return command;
+  }
+
+  return null;
+}
+
 function normalizeDispatchPayloads(rawPayload) {
   const payload = rawPayload && typeof rawPayload === "object" ? { ...rawPayload } : {};
 
@@ -118,11 +144,9 @@ function normalizeDispatchPayloads(rawPayload) {
     }
   }
 
-  if (typeof payload?.tool_input !== "string") {
-    return [payload];
-  }
+  const patchText = extractCodexPatchText(payload);
+  if (!patchText) return [payload];
 
-  const patchText = payload.tool_input;
   const patchTargets = parseCodexPatchTargets(patchText);
   if (patchTargets.length === 0) {
     return [payload];
@@ -130,7 +154,10 @@ function normalizeDispatchPayloads(rawPayload) {
 
   return patchTargets.map((filePath) => ({
     ...payload,
-    tool_input: { file_path: filePath },
+    tool_input: {
+      ...(payload.tool_input && typeof payload.tool_input === "object" ? payload.tool_input : { command: patchText }),
+      file_path: filePath,
+    },
     _codex_patch: patchText,
     _codex_patch_targets: patchTargets,
   }));
@@ -335,7 +362,7 @@ const rawPayload = await readPayload();
 
 // ── Codex payload 标准化 ──────────────────────────────
 // Codex CLI 的工具名和 payload 结构与 Claude Code 不同：
-//   apply_patch: tool_input 是 patch 字符串，可能包含多文件 Add/Update/Delete/Move
+//   apply_patch: tool_input.command 是 patch 文本，旧版本/测试中也可能直接是字符串
 //   exec_command: tool_input.cmd 而非 tool_input.command
 // 此处标准化为 Claude Code 格式，并在 apply_patch 多文件场景下逐文件运行 hooks。
 const payloads = normalizeDispatchPayloads(rawPayload);

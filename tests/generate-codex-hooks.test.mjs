@@ -20,16 +20,28 @@ function hookCommands(config) {
     .filter((command) => typeof command === "string");
 }
 
-test("generate-codex-hooks 输出中不保留 Claude matcher", () => {
+test("generate-codex-hooks 输出 Codex matcher 和事件白名单", () => {
   const aggregated = buildAggregatedHooks(true);
   const entries = flattenHookEntries(aggregated);
   const matchers = entries.map((entry) => entry.matcher);
+  const supportedEvents = new Set([
+    "SessionStart",
+    "PreToolUse",
+    "PermissionRequest",
+    "PostToolUse",
+    "UserPromptSubmit",
+    "Stop",
+  ]);
 
   assert.ok(matchers.length > 0, "应生成至少一条 hook 规则");
   assert.equal(matchers.includes("Edit|Write"), false, "Codex hooks 不能保留 Edit|Write matcher");
-  assert.equal(matchers.includes("Bash"), false, "Codex hooks 不能保留 Bash matcher");
+  assert.ok(matchers.includes("Bash"), "Codex hooks 应保留官方 Bash matcher");
   assert.ok(matchers.includes("apply_patch"), "应将 Edit|Write 转成 apply_patch");
-  assert.ok(matchers.includes("exec_command"), "应将 Bash 转成 exec_command");
+  assert.equal(matchers.includes("exec_command"), false, "不应将 Bash 转成 exec_command");
+
+  for (const eventName of Object.keys(aggregated.hooks ?? {})) {
+    assert.ok(supportedEvents.has(eventName), `Codex hooks 不应生成 unsupported event: ${eventName}`);
+  }
 });
 
 test("generate-codex-hooks 生成 user-level 绝对路径命令", () => {
