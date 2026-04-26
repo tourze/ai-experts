@@ -1,0 +1,38 @@
+cases:
+  - id: positive_manifest_exported_components
+    prompt: "帮我审计这个 APK 的 AndroidManifest，重点看 exported activity、service、receiver、provider 是否缺权限。"
+    fixtures: []
+    rubric:
+      - "recognizes AndroidManifest component attack surface review"
+      - "requires code/resource confirmation instead of reporting exported flags alone"
+    trigger_expected: true
+
+  - id: positive_manifest_network_security
+    prompt: "检查 decoded/AndroidManifest.xml 和 res/xml/network_security_config.xml 是否允许 cleartext 或 user CA。"
+    fixtures: []
+    rubric:
+      - "routes Network Security Config and manifest TLS settings to this skill"
+      - "distinguishes manifest reference from actual XML behavior"
+    trigger_expected: true
+
+  - id: positive_manifest_provider_fileprovider
+    prompt: "这个 AndroidManifest 里有 FileProvider 和 grantUriPermissions，帮我判断 provider paths 有没有外泄风险。"
+    fixtures: []
+    rubric:
+      - "focuses on Provider/FileProvider manifest and path XML"
+      - "checks read/write permissions and URI grant behavior"
+    trigger_expected: true
+
+  - id: negative_android_runtime_frida
+    prompt: "我已经定位到 OkHttp CertificatePinner，帮我写 Frida hook 绕过 SSL pinning。"
+    fixtures: []
+    rubric:
+      - "Frida hook implementation should route to frida-dynamic-analysis or android-frida-script-catalog"
+    trigger_expected: false
+
+  - id: negative_general_mobile_design
+    prompt: "帮我做一个 Android Material 3 设置页。"
+    fixtures: []
+    rubric:
+      - "Android UI design should not trigger manifest security audit"
+    trigger_expected: false

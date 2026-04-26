@@ -1,0 +1,39 @@
+cases:
+  - id: positive_android_apk_audit_primary
+    prompt: "请对这个 Android APK 做完整安全审计，覆盖 Manifest、JADX、smali、Frida 动态验证和 CVSS 报告。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as android-apk-audit territory"
+      - "uses a phased APK audit workflow instead of only invoking one point tool"
+      - "keeps findings tied to traced evidence, PoC, and validation status"
+    trigger_expected: true
+
+  - id: positive_android_apk_audit_decompiled_source
+    prompt: "我有 jadx 输出和 apktool 解包目录，需要分析 exported activity、deep link 和 WebView 是否可被利用。"
+    fixtures: []
+    rubric:
+      - "matches decompiled Android security audit input"
+      - "maps component entry points to source-to-sink validation"
+    trigger_expected: true
+
+  - id: positive_android_apk_audit_dynamic_confirmation
+    prompt: "这个 APK 有 SSL pinning 和 root 检测，帮我在授权测试环境里定位并验证绕过点。"
+    fixtures: []
+    rubric:
+      - "routes Android runtime validation through the APK audit workflow"
+      - "requires static hypothesis before Frida or ADB dynamic confirmation"
+    trigger_expected: true
+
+  - id: negative_android_app_feature_development
+    prompt: "帮我设计一个 Android Jetpack Compose 登录页和 MVVM 架构。"
+    fixtures: []
+    rubric:
+      - "Android product development should route to android-expert, not android-apk-audit"
+    trigger_expected: false
+
+  - id: negative_general_web_security
+    prompt: "帮我审计这个 Node.js Web API 的认证和越权问题。"
+    fixtures: []
+    rubric:
+      - "general web API security audit should not trigger android-apk-audit"
+    trigger_expected: false

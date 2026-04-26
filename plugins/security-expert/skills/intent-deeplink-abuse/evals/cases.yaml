@@ -1,0 +1,38 @@
+cases:
+  - id: positive_nested_intent_relay
+    prompt: "这个 exported ProxyActivity 从 getParcelableExtra 取 target_intent 后 startActivity，帮我判断 Intent injection 风险。"
+    fixtures: []
+    rubric:
+      - "recognizes nested intent relay and confused deputy risk"
+      - "requires reachability, attacker control, relay sink, and internal target evidence"
+    trigger_expected: true
+
+  - id: positive_deeplink_webview_abuse
+    prompt: "分析 myapp:// deep link 参数是否会进入 WebView loadUrl 或造成 open redirect。"
+    fixtures: []
+    rubric:
+      - "routes deep link parameter abuse to this skill"
+      - "connects URI parsing to WebView or redirect sinks"
+    trigger_expected: true
+
+  - id: positive_pendingintent_fileprovider
+    prompt: "检查这个 Android 应用的 mutable PendingIntent 和 FileProvider URI grant 是否能被第三方 app 滥用。"
+    fixtures: []
+    rubric:
+      - "covers PendingIntent mutability and FileProvider grant pivots"
+      - "asks for explicit component, flags, ClipData, and path evidence"
+    trigger_expected: true
+
+  - id: negative_manifest_only
+    prompt: "只帮我列出 AndroidManifest 里的 debuggable、allowBackup、cleartext 配置。"
+    fixtures: []
+    rubric:
+      - "pure manifest configuration review should route to android-manifest-security"
+    trigger_expected: false
+
+  - id: negative_ios_universal_links
+    prompt: "帮我检查 iOS Universal Links 的 apple-app-site-association 配置。"
+    fixtures: []
+    rubric:
+      - "iOS universal links are outside Android intent/deep link abuse"
+    trigger_expected: false

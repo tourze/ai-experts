@@ -42,6 +42,10 @@
 | `struct-recovery` | 当需要从反编译代码中恢复数据结构定义、推断字段类型和布局时使用。 |
 | `symbol-recovery` | 当需要为 stripped 二进制中的函数恢复符号名、识别已知库函数或算法实现时使用。 |
 | `unicorn-emulation` | 当需要用 Unicorn 引擎模拟执行特定函数、绕过环境依赖或离线调试加密/解密算法时使用。 |
+| `android-apk-audit` | 当需要对 Android APK 或已反编译 Android 应用做端到端安全审计、移动渗透测试、组件攻击面梳理、数据流追踪、动态验证或审计报告时使用。 |
+| `android-frida-script-catalog` | 当需要为 Android 动态分析选择、组合或编写 Frida 脚本目录时使用；覆盖 SSL pinning、root/RASP、IPC/deep link、WebView、网络、存储、Keystore、crypto、JNI/native、DEX dump 和脚本加载顺序。 |
+| `android-manifest-security` | 当需要审计 AndroidManifest.xml、exported 组件、权限、FileProvider、backup/debuggable、Network Security Config 或 Android 版本相关 manifest 安全配置时使用。 |
+| `intent-deeplink-abuse` | 当需要测试 Android Intent injection、nested intent relay、deep link abuse、App Link 验证、FileProvider URI grant、PendingIntent 可变性或 exported 组件 confused deputy 风险时使用。 |
 
 ## 安装
 
