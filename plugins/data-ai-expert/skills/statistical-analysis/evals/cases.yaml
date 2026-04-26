@@ -26,5 +26,5 @@ cases:
     prompt: "Which chart should show conversion rate by signup step?"
     fixtures: []
     rubric:
-      - "chart selection should route to chart-type-selection"
+      - "chart selection should route to data-visualization"
     trigger_expected: false

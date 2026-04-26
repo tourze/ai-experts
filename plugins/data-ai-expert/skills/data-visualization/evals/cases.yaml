@@ -19,8 +19,25 @@ cases:
     prompt: "What chart should I use to compare market share across five competitors?"
     fixtures: []
     rubric:
-      - "pure chart selection should route to chart-type-selection"
-    trigger_expected: false
+      - "selects an appropriate chart type"
+      - "explains why the chart fits the comparison task"
+    trigger_expected: true
+
+  - id: positive_metric_trend_chart_choice
+    prompt: "We have monthly revenue, active users, and churn by segment. What chart types should go into the dashboard?"
+    fixtures: []
+    rubric:
+      - "selects chart types based on metric shape and comparison task"
+      - "explains why each chart fits the dashboard question"
+    trigger_expected: true
+
+  - id: positive_pie_chart_decision
+    prompt: "Should I use a pie chart for 18 acquisition channels, or is there a better chart?"
+    fixtures: []
+    rubric:
+      - "evaluates pie chart suitability"
+      - "recommends clearer alternatives for many categories"
+    trigger_expected: true
 
   - id: negative_hypothesis_test
     prompt: "Run a t-test and explain whether the two groups differ significantly"

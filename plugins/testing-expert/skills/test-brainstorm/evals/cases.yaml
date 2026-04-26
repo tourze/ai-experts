@@ -31,7 +31,7 @@ cases:
     fixtures: []
     rubric:
       - "does not activate bug-family brainstorm"
-      - "broad strategy belongs to test-strategy"
+      - "broad strategy belongs to testing-strategy"
     trigger_expected: false
 
   - id: negative_tdd_new_feature

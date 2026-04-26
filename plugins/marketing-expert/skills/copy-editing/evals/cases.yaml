@@ -17,6 +17,24 @@ cases:
       - "does not overhaul strategy unnecessarily"
     trigger_expected: true
 
+  - id: remove_ai_tone
+    prompt: "This blog intro sounds AI-generated and generic. Make it more human and brand-specific."
+    fixtures: []
+    rubric:
+      - "reduces generic phrasing and repetitive cadence"
+      - "adds natural voice, specificity, and rhythm"
+      - "preserves core meaning"
+    trigger_expected: true
+
+  - id: humanize_brand_voice
+    prompt: "Rewrite this LinkedIn post so it sounds like a real founder wrote it, not a machine."
+    fixtures: []
+    rubric:
+      - "improves authenticity and voice"
+      - "removes inflated or template-like language"
+      - "keeps the platform context in mind"
+    trigger_expected: true
+
   - id: negative_new_page_copy
     prompt: "Write homepage copy from scratch for our new SaaS product."
     fixtures: []

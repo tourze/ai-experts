@@ -13,7 +13,6 @@
 
 | Skill | 用途 |
 |-------|------|
-| `chart-type-selection` | 为趋势、对比、构成、分布等问题选择合适图表类型 |
 | `data-analysis` | 本地 `.xlsx` / `.csv` 数据分析、SQL 查询、结果导出 |
 | `data-storytelling` | 将分析结论组织为对业务方友好的叙事结构 |
 | `data-visualization` | 选择合适图表并输出可靠的可视化代码模式 |

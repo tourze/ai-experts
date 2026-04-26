@@ -32,7 +32,6 @@
 | `scoping-cutting` | 项目范围界定与功能裁剪 |
 | `version-planner` | 渐进式版本规划（MVP 拆解） |
 | `product-design-critic` | 产品设计判断力（UI/UX/交互/任务驱动） |
-| `product-name` | 产品命名头脑风暴（5 个方案 + 理由） |
 | `product-naming` | 产品命名协作流程（灵魂挖掘→竞品验证） |
 | `startup-icp-definer` | 理想客户画像定义 |
 | `swot-analysis` | SWOT 分析 |

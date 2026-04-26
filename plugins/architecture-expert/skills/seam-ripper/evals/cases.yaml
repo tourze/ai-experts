@@ -22,7 +22,7 @@ cases:
     fixtures: []
     rubric:
       - "does not activate module seam analysis"
-      - "debt portfolio management belongs to tech-debt or managing-tech-debt"
+      - "debt portfolio management belongs to tech-debt"
     trigger_expected: false
 
   - id: negative_api_documentation

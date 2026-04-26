@@ -30,5 +30,5 @@ cases:
     fixtures: []
     rubric:
       - "does not activate SEO scoring workflow"
-      - "tone humanization belongs to content-humanizer"
+      - "tone humanization belongs to copy-editing"
     trigger_expected: false

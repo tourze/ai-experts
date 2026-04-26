@@ -31,7 +31,6 @@
 | `exhaustive-systems-analysis` | 对系统做穷举式拆解与问题审计 |
 | `feature-dev` | 处理跨文件实现且涉及架构取舍的功能开发 |
 | `hierarchical-matching-systems` | 设计和评审层级匹配、实体解析与最优分配系统 |
-| `managing-tech-debt` | 制定技术债治理策略与改造路线图 |
 | `plan-review` | 在编码前审查实现计划、RFC 与风险假设 |
 | `pragmatic-programmer` | 用务实工程原则校准设计与协作方式 |
 | `protocol-freezing-patterns` | 管理协议冻结、版本协商与向后兼容演进 |

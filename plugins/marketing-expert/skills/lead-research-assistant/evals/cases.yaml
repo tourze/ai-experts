@@ -21,9 +21,27 @@ cases:
     prompt: "I already have 50 companies. Find buyer contacts and signals for each."
     fixtures: []
     rubric:
-      - "does not activate initial account discovery"
-      - "deep enrichment of a known list belongs to leads-researcher"
-    trigger_expected: false
+      - "handles deep enrichment of a known account list"
+      - "finds buyer contacts and signals without fabricating private data"
+    trigger_expected: true
+
+  - id: enrich_existing_accounts
+    prompt: "Research these target companies and find buyer signals, decision makers, and outreach hooks."
+    fixtures: []
+    rubric:
+      - "works from an already defined target direction or account list"
+      - "finds company context, contacts, and buying triggers"
+      - "turns research into outreach-relevant notes"
+    trigger_expected: true
+
+  - id: deep_account_research
+    prompt: "Deep-dive Acme Corp before outbound: stakeholders, recent events, pains, and likely entry point."
+    fixtures: []
+    rubric:
+      - "performs account-specific research"
+      - "identifies likely personas and current triggers"
+      - "produces usable sales intelligence"
+    trigger_expected: true
 
   - id: negative_cold_email
     prompt: "Write cold emails to these prospects."

@@ -15,7 +15,7 @@
 | 0-29 | 未经任何人性化处理的原始 AI 输出 |
 
 **检查项：**
-- AI 标记词数量（参照 content-humanizer 的 ai-tells-checklist）
+- AI 标记词数量（参照 copy-editing 的 ai-tells-checklist）
 - Em dash 频率
 - 段落长度方差（方差过低 = 机械感）
 - 是否有观点性陈述（不只是中立叙述）

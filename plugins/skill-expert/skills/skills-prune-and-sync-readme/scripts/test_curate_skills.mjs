@@ -95,12 +95,35 @@ function main() {
     assert.equal(prune.status, 0, `prune failed:\nSTDOUT:\n${prune.stdout}\nSTDERR:\n${prune.stderr}`);
     assert.equal(fs.existsSync(path.join(skillsDir, "stub-skill")), false, "stub-skill should be deleted");
 
+    const pluginsDir = path.join(repoRoot, "plugins", "demo-expert", "skills");
+    writeSkill(
+      path.join(pluginsDir, "beta-skill"),
+      "name: beta-skill\ndescription: Beta workflow for plugin repository cleanup tasks.",
+      "# Beta Skill\n\n## Workflow\n- Audit plugin skills.\n- Keep evidence.\n",
+    );
+    writeSkill(
+      path.join(pluginsDir, "beta-skill-audit"),
+      "name: beta-skill-audit\ndescription: Beta workflow for plugin repository cleanup tasks and reporting.",
+      "# Beta Skill Audit\n\n## Workflow\n- Audit plugin skills.\n- Keep evidence.\n",
+    );
+
+    const pluginAudit = runCommand("audit", "--repo-root", repoRoot, "--format", "json");
+    assert.equal(pluginAudit.status, 0, `plugin audit failed:\nSTDOUT:\n${pluginAudit.stdout}\nSTDERR:\n${pluginAudit.stderr}`);
+
+    const pluginReport = JSON.parse(pluginAudit.stdout);
+    assertContainsPair(pluginReport.duplicate_candidates, "demo-expert/beta-skill", "demo-expert/beta-skill-audit");
+
+    const pluginPrune = runCommand("prune", "--repo-root", repoRoot, "--skills", "demo-expert/beta-skill-audit", "--yes");
+    assert.equal(pluginPrune.status, 0, `plugin prune failed:\nSTDOUT:\n${pluginPrune.stdout}\nSTDERR:\n${pluginPrune.stderr}`);
+    assert.equal(fs.existsSync(path.join(pluginsDir, "beta-skill-audit")), false, "plugin skill should be deleted");
+
     const sync = runCommand("sync-readme", "--repo-root", repoRoot, "--write");
     assert.equal(sync.status, 0, `sync-readme failed:\nSTDOUT:\n${sync.stdout}\nSTDERR:\n${sync.stderr}`);
 
     const readme = fs.readFileSync(readmePath, "utf8");
-    assert.match(readme, /### 公共 Skills（4）/);
+    assert.match(readme, /### 公共 Skills（5）/);
     assert.ok(readme.includes("| [alpha-skill](skills/alpha-skill/SKILL.md) | 旧摘要，应被保留。 |"));
+    assert.ok(readme.includes("| [beta-skill](plugins/demo-expert/skills/beta-skill/SKILL.md) |"));
     assert.equal(readme.includes("skills/skills-prune-and-sync-readme/SKILL.md"), false);
 
     const check = runCommand("sync-readme", "--repo-root", repoRoot, "--check");

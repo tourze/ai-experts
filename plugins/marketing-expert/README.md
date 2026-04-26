@@ -21,7 +21,6 @@
 | `cold-email` | B2B 冷邮件与跟进序列写作 |
 | `competitive-ads-extractor` | 竞品广告素材与信息提炼 |
 | `competitor-alternatives` | 竞品对比页与替代页内容架构 |
-| `content-humanizer` | AI 文案人性化改写 |
 | `content-repurpose` | 一篇内容多平台分发（LinkedIn/Medium/Reddit/Quora） |
 | `content-strategy` | 内容策略、选题、栏目规划与内容日历 |
 | `copy-editing` | 营销文案编辑与质量把关 |
@@ -33,7 +32,6 @@
 | `influence-psychology` | 说服原则在营销中的应用 |
 | `lead-channel-optimizer` | 获客渠道优先级与 ROI 评估 |
 | `lead-research-assistant` | ICP 对齐的目标客户发现 |
-| `leads-researcher` | 线索、公司与 buyer intent 调研 |
 | `made-to-stick` | SUCCESs 粘性表达框架 |
 | `marketing-psychology` | 行为科学与决策心理学应用 |
 | `onboarding-cro` | 注册后引导与用户激活优化 |
@@ -96,7 +94,7 @@ node --check plugins/marketing-expert/hooks/dispatch.mjs
 node --check plugins/marketing-expert/skills/analytics-tracking/scripts/tracking_plan_generator.mjs
 node --check plugins/marketing-expert/skills/copy-editing/scripts/readability_scorer.mjs
 node --check plugins/marketing-expert/skills/competitor-alternatives/scripts/comparison_matrix_builder.mjs
-node --check plugins/marketing-expert/skills/content-humanizer/scripts/humanizer_scorer.mjs
+node --check plugins/marketing-expert/skills/copy-editing/scripts/humanizer_scorer.mjs
 node --check plugins/marketing-expert/skills/campaign-analytics/scripts/attribution_analyzer.mjs
 node --check plugins/marketing-expert/skills/campaign-analytics/scripts/campaign_roi_calculator.mjs
 node --check plugins/marketing-expert/skills/campaign-analytics/scripts/funnel_analyzer.mjs

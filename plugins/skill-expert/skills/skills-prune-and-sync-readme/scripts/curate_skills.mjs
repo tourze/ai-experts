@@ -4,7 +4,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const ALLOWED_FRONTMATTER_KEYS = new Set(["name", "description"]);
+const ALLOWED_FRONTMATTER_KEYS = new Set("acknowledgments agent allowed-tools alwaysApply compatibility context date_added dependency description license metadata name related-skills risk source tools user-invocable user_invocable version".split(" "));
 const README_SECTION_START = "## Skill 清单";
 const README_SECTION_END = "## 数据来源";
 const STOP_WORDS = new Set([
@@ -195,18 +195,25 @@ function computeQuality(folder, frontmatter, frontmatterKeys, body, brokenLinks)
   return { qualityScore: Math.max(score, 0), issues };
 }
 
-function readSkill(skillDir) {
+function readSkill(skillDir, options = {}) {
   const skillFile = path.join(skillDir, "SKILL.md");
   if (!fs.existsSync(skillFile)) {
     return null;
   }
 
   const content = fs.readFileSync(skillFile, "utf8");
+  const plugin = options.plugin || null;
   const { data: frontmatter, keys: frontmatterKeys, body } = parseFrontmatter(content);
   const brokenLinks = findBrokenLinks(skillDir, body);
   const { qualityScore, issues } = computeQuality(path.basename(skillDir), frontmatter, frontmatterKeys, body, brokenLinks);
+  const link = plugin
+    ? `plugins/${plugin}/skills/${path.basename(skillDir)}/SKILL.md`
+    : `skills/${path.basename(skillDir)}/SKILL.md`;
+  const id = plugin ? `${plugin}/${path.basename(skillDir)}` : path.basename(skillDir);
 
   return {
+    id,
+    plugin,
     folder: path.basename(skillDir),
     skillDir,
     skillFile,
@@ -217,13 +224,13 @@ function readSkill(skillDir) {
     brokenLinks,
     issues,
     qualityScore,
-    link: `skills/${path.basename(skillDir)}/SKILL.md`,
+    link,
   };
 }
 
 function toSummary(record) {
   return {
-    skill: record.folder,
+    skill: record.id,
     name: record.name,
     path: record.link,
     quality_score: record.qualityScore,
@@ -231,19 +238,38 @@ function toSummary(record) {
   };
 }
 
-function iterPublicSkills(repoRoot) {
-  const skillsRoot = path.join(repoRoot, "skills");
-  if (!fs.existsSync(skillsRoot)) {
+function listPublicDirs(root) {
+  if (!fs.existsSync(root)) {
     return [];
   }
-
-  return fs.readdirSync(skillsRoot, { withFileTypes: true })
+  return fs.readdirSync(root, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name)
     .filter((name) => !name.startsWith(".") && name !== ".system")
-    .sort()
-    .map((name) => readSkill(path.join(skillsRoot, name)))
-    .filter(Boolean);
+    .sort();
+}
+
+function iterPublicSkills(repoRoot) {
+  const records = [];
+  const skillsRoot = path.join(repoRoot, "skills");
+  for (const name of listPublicDirs(skillsRoot)) {
+    const record = readSkill(path.join(skillsRoot, name));
+    if (record) {
+      records.push(record);
+    }
+  }
+
+  const pluginsRoot = path.join(repoRoot, "plugins");
+  for (const plugin of listPublicDirs(pluginsRoot)) {
+    const pluginSkillsRoot = path.join(pluginsRoot, plugin, "skills");
+    for (const name of listPublicDirs(pluginSkillsRoot)) {
+      const record = readSkill(path.join(pluginSkillsRoot, name), { plugin });
+      if (record) {
+        records.push(record);
+      }
+    }
+  }
+  return records.sort((left, right) => left.id.localeCompare(right.id));
 }
 
 function normalizeText(text) {
@@ -335,11 +361,11 @@ function detectDuplicates(records) {
       const drop = keep === left ? right : left;
       const confidence = descRatio >= 0.90 || sharedPrefix ? "high" : "medium";
       duplicates.push({
-        skills: [left.folder, right.folder],
+        skills: [left.id, right.id],
         confidence,
         reason: `name_ratio=${nameRatio.toFixed(2)}, desc_ratio=${descRatio.toFixed(2)}, name_overlap=${nameOverlap.toFixed(2)}, desc_overlap=${descOverlap.toFixed(2)}`,
-        keep: keep.folder,
-        drop: drop.folder,
+        keep: keep.id,
+        drop: drop.id,
       });
     }
   }
@@ -359,6 +385,10 @@ function detectConflicts(records) {
     const left = records[index];
     const leftPrefix = left.folder.split("-", 1)[0];
     for (const right of records.slice(index + 1)) {
+      if (left.plugin !== right.plugin) {
+        continue;
+      }
+
       const rightPrefix = right.folder.split("-", 1)[0];
       if (leftPrefix !== rightPrefix) {
         continue;
@@ -379,11 +409,11 @@ function detectConflicts(records) {
 
       const keep = chooseKeep(left, right);
       conflicts.push({
-        skills: [left.folder, right.folder],
+        skills: [left.id, right.id],
         family: leftPrefix,
         reason: "同一技能家族存在强约束/排他触发语，容易让调度结果互相覆盖",
-        keep: keep.folder,
-        drop: keep === left ? right.folder : left.folder,
+        keep: keep.id,
+        drop: keep === left ? right.id : left.id,
       });
     }
   }
@@ -445,38 +475,17 @@ function renderTextReport(report) {
     `冲突候选: ${report.conflict_candidates.length}`,
     "",
   ];
-
-  if (report.recommended_deletions.length > 0) {
-    lines.push("建议删除:");
-    for (const item of report.recommended_deletions) {
-      lines.push(`- ${item.skill}: ${item.reason} (${item.confidence})`);
-    }
-    lines.push("");
-  }
-
-  if (report.low_quality_candidates.length > 0) {
-    lines.push("低质量候选:");
-    for (const item of report.low_quality_candidates.slice(0, 20)) {
-      lines.push(`- ${item.skill} [${item.quality_score}]: ${item.issues.join("; ")}`);
-    }
-    lines.push("");
-  }
-
-  if (report.duplicate_candidates.length > 0) {
-    lines.push("重复候选:");
-    for (const item of report.duplicate_candidates.slice(0, 20)) {
-      lines.push(`- ${item.skills.join(" / ")}: keep=${item.keep} drop=${item.drop} (${item.reason})`);
-    }
-    lines.push("");
-  }
-
-  if (report.conflict_candidates.length > 0) {
-    lines.push("冲突候选:");
-    for (const item of report.conflict_candidates.slice(0, 20)) {
-      lines.push(`- ${item.skills.join(" / ")}: keep=${item.keep} drop=${item.drop} (${item.reason})`);
+  const sections = [
+    ["建议删除:", report.recommended_deletions, (item) => `- ${item.skill}: ${item.reason} (${item.confidence})`],
+    ["低质量候选:", report.low_quality_candidates.slice(0, 20), (item) => `- ${item.skill} [${item.quality_score}]: ${item.issues.join("; ")}`],
+    ["重复候选:", report.duplicate_candidates.slice(0, 20), (item) => `- ${item.skills.join(" / ")}: keep=${item.keep} drop=${item.drop} (${item.reason})`],
+    ["冲突候选:", report.conflict_candidates.slice(0, 20), (item) => `- ${item.skills.join(" / ")}: keep=${item.keep} drop=${item.drop} (${item.reason})`],
+  ];
+  for (const [title, items, render] of sections) {
+    if (items.length > 0) {
+      lines.push(title, ...items.map(render), "");
     }
   }
-
   return `${lines.join("\n").trimEnd()}\n`;
 }
 
@@ -559,6 +568,10 @@ function syncReadme(repoRoot, write, check) {
   const end = existingText.indexOf(README_SECTION_END);
 
   if (start === -1 || end === -1 || end <= start) {
+    if (records.some((record) => record.plugin)) {
+      console.log("README Skill 清单不存在；插件仓库请使用 scripts/sync-plugin-metadata.mjs");
+      return 0;
+    }
     throw new Error("README.md 中未找到可替换的 Skill 清单区块");
   }
 
@@ -566,10 +579,7 @@ function syncReadme(repoRoot, write, check) {
   const isCurrent = newText === existingText;
 
   if (check) {
-    if (isCurrent) {
-      console.log("README Skill 清单已是最新状态");
-      return 0;
-    }
+    if (isCurrent) { console.log("README Skill 清单已是最新状态"); return 0; }
     console.log("README Skill 清单不是最新状态");
     return 1;
   }
@@ -588,27 +598,42 @@ function removeDirRecursive(target) {
   fs.rmSync(target, { recursive: true, force: false });
 }
 
+function resolveSkillTarget(repoRoot, skill) {
+  const records = iterPublicSkills(repoRoot);
+  const clean = skill.replaceAll("\\", "/");
+  const normalized = clean
+    .replace(/^plugins\//, "")
+    .replace(/\/SKILL\.md$/, "")
+    .replace(/\/skills\//, "/");
+  const matches = records.filter((record) => (
+    record.id === normalized ||
+    record.folder === normalized ||
+    record.link.replace(/\/SKILL\.md$/, "") === clean
+  ));
+
+  if (matches.length === 0) {
+    throw new Error(`未找到 skill: ${skill}`);
+  }
+  if (matches.length > 1) {
+    throw new Error(`skill 名称不唯一，请使用 plugin/skill: ${skill}`);
+  }
+  return matches[0];
+}
+
 function pruneSkills(repoRoot, skills, yes) {
   if (!yes) {
     console.log("删除前必须显式传入 --yes");
     return 2;
   }
 
-  const skillsRoot = path.resolve(repoRoot, "skills");
   const deleted = [];
   for (const skill of skills) {
-    const skillPath = path.resolve(skillsRoot, skill);
-    if (!fs.existsSync(skillPath)) {
-      throw new Error(`未找到 skill: ${skill}`);
+    const record = resolveSkillTarget(repoRoot, skill);
+    if (path.basename(record.skillDir).startsWith(".") || path.basename(record.skillDir) === ".system") {
+      throw new Error(`拒绝删除内置或隐藏技能: ${path.basename(record.skillDir)}`);
     }
-    if (path.dirname(skillPath) !== skillsRoot) {
-      throw new Error(`拒绝删除 skills/ 目录外的路径: ${skillPath}`);
-    }
-    if (path.basename(skillPath).startsWith(".") || path.basename(skillPath) === ".system") {
-      throw new Error(`拒绝删除内置或隐藏技能: ${path.basename(skillPath)}`);
-    }
-    removeDirRecursive(skillPath);
-    deleted.push(path.basename(skillPath));
+    removeDirRecursive(record.skillDir);
+    deleted.push(record.id);
   }
 
   console.log(`已删除 skills: ${deleted.sort().join(", ")}`);
@@ -628,46 +653,26 @@ function parseArgs(argv) {
     return { help: true };
   }
 
-  const args = {
-    command,
-    repoRoot: process.cwd(),
-    format: "text",
-    skills: [],
-    yes: false,
-    write: false,
-    check: false,
-  };
-
+  const args = { command, repoRoot: process.cwd(), format: "text", skills: [], yes: false, write: false, check: false };
   while (argv.length > 0) {
     const arg = argv.shift();
-    if (arg === "--repo-root") {
-      args.repoRoot = path.resolve(argv.shift() || "");
-    } else if (arg === "--format") {
-      args.format = argv.shift() || "text";
-    } else if (arg === "--skills") {
+    if (arg === "--repo-root") args.repoRoot = path.resolve(argv.shift() || "");
+    else if (arg === "--format") args.format = argv.shift() || "text";
+    else if (arg === "--skills") {
       while (argv.length > 0 && !argv[0].startsWith("--")) {
         args.skills.push(argv.shift());
       }
-    } else if (arg === "--yes") {
-      args.yes = true;
-    } else if (arg === "--write") {
-      args.write = true;
-    } else if (arg === "--check") {
-      args.check = true;
-    } else {
-      throw new Error(`未知参数: ${arg}`);
-    }
+    } else if (arg === "--yes") args.yes = true;
+    else if (arg === "--write") args.write = true;
+    else if (arg === "--check") args.check = true;
+    else throw new Error(`未知参数: ${arg}`);
   }
-
   return args;
 }
 
 function main() {
   const args = parseArgs(process.argv.slice(2));
-  if (args.help) {
-    printHelp();
-    return 0;
-  }
+  if (args.help) { printHelp(); return 0; }
 
   const repoRoot = path.resolve(args.repoRoot);
   if (args.write && args.check) {
@@ -679,18 +684,13 @@ function main() {
       throw new Error("--format 必须是 text 或 json");
     }
     const report = buildReport(repoRoot);
-    if (args.format === "json") {
-      console.log(JSON.stringify(report, null, 2));
-    } else {
-      process.stdout.write(renderTextReport(report));
-    }
+    if (args.format === "json") console.log(JSON.stringify(report, null, 2));
+    else process.stdout.write(renderTextReport(report));
     return 0;
   }
 
   if (args.command === "prune") {
-    if (args.skills.length === 0) {
-      throw new Error("prune 需要 --skills");
-    }
+    if (args.skills.length === 0) throw new Error("prune 需要 --skills");
     return pruneSkills(repoRoot, args.skills, args.yes);
   }
 

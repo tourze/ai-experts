@@ -19,7 +19,7 @@ cases:
     prompt: "Which chart type should I use for conversion rate by traffic channel?"
     fixtures: []
     rubric:
-      - "chart selection without data analysis should route to chart-type-selection"
+      - "chart selection without data analysis should route to data-visualization"
     trigger_expected: false
 
   - id: negative_rag_pipeline_audit

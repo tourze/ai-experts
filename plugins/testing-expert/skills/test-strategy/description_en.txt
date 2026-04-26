@@ -1,1 +1,0 @@
-Production-grade test strategy skill with risk-based testing, coverage analysis, quality gates, and resource optimization

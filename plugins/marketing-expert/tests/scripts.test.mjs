@@ -27,7 +27,7 @@ test("Node 脚本通过语法检查", () => {
     `${pluginRoot}/skills/copy-editing/scripts/readability_scorer.mjs`,
     `${pluginRoot}/skills/analytics-tracking/scripts/tracking_plan_generator.mjs`,
     `${pluginRoot}/skills/competitor-alternatives/scripts/comparison_matrix_builder.mjs`,
-    `${pluginRoot}/skills/content-humanizer/scripts/humanizer_scorer.mjs`,
+    `${pluginRoot}/skills/copy-editing/scripts/humanizer_scorer.mjs`,
     `${campaignAnalyticsRoot}/scripts/attribution_analyzer.mjs`,
     `${campaignAnalyticsRoot}/scripts/campaign_roi_calculator.mjs`,
     `${campaignAnalyticsRoot}/scripts/funnel_analyzer.mjs`,
@@ -317,7 +317,7 @@ test("humanizer_scorer.mjs 输出稳定 JSON 人性化评分", () => {
     );
 
     const result = run("node", [
-      `${pluginRoot}/skills/content-humanizer/scripts/humanizer_scorer.mjs`,
+      `${pluginRoot}/skills/copy-editing/scripts/humanizer_scorer.mjs`,
       inputPath,
       "--json",
     ]);

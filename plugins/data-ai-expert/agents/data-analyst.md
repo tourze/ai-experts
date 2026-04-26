@@ -87,7 +87,6 @@ You MUST NOT run: `rm` (on user data), `curl`, `wget`, `pip install`, `apt insta
 - **data-analysis**: 表格数据分析的详细流程和方法论参考。
 - **statistical-analysis**: 统计分析方法、假设检验和结论判断的参考。
 - **data-visualization**: 图表类型选择和 Python 可视化代码生成的参考。
-- **chart-type-selection**: 根据数据特征选择合适图表类型的决策指南。
 - **data-storytelling**: 将分析结果面向业务方讲清楚的叙事方法论。
 
 **Quality Standards:**

@@ -7,7 +7,6 @@
 | Skill | 用途 |
 |-------|------|
 | `test-driven-development` | TDD 工作流（Red-Green-Refactor） |
-| `test-strategy` | 生产级测试策略（风险/覆盖率/质量门/资源权衡） |
 | `testing-strategy` | 常规测试计划设计与分层建议 |
 | `test-brainstorm` | Bug 发现后测试用例头脑风暴 |
 | `six-thinking-hats` | 六顶思考帽多维测试方法论 |

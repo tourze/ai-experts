@@ -54,4 +54,4 @@
 - Colors: `#1E293B` / ColorBrewer 色盲安全板 / bg `#F8FAFC`
 - Fonts: Inter / JetBrains Mono
 - Effects: Small multiples、精细 tooltip
-- AVOID: 3D 图、双 Y 轴（见 [chart-type-selection](../../../../data-ai-expert/skills/chart-type-selection/SKILL.md)）
+- AVOID: 3D 图、双 Y 轴（见 [data-visualization](../../../../data-ai-expert/skills/data-visualization/SKILL.md)）

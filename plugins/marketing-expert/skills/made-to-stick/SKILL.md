@@ -14,7 +14,7 @@ description: "在需要让信息更容易被理解、记住和传播时使用，
 - 先确定用户最终只需要记住的一句话，再考虑细节扩展。
 - SUCCESs 六项不是逐条打卡，而是围绕核心信息做取舍。
 - 把“可信”“具体”“情绪”建立在真实证据上，不能靠夸张修辞硬堆。
-- 若任务进入逐句编辑，配合 [copy-editing](../copy-editing/SKILL.md)；若要去除机器腔，配合 [content-humanizer](../content-humanizer/SKILL.md)。
+- 若任务进入逐句编辑或要去除机器腔，配合 [copy-editing](../copy-editing/SKILL.md)。
 
 ## 代码模式
 - 结构化改写模板：
