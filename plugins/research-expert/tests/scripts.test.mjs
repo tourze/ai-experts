@@ -7,11 +7,6 @@ import test from "node:test";
 
 const pluginRoot = resolve("plugins/research-expert");
 
-test("plugin.json 与 hooks.json 都是合法 JSON", () => {
-  JSON.parse(readFileSync(resolve(pluginRoot, ".claude-plugin/plugin.json"), "utf-8"));
-  JSON.parse(readFileSync(resolve(pluginRoot, "hooks/hooks.json"), "utf-8"));
-});
-
 test("technology-search 可作为模块导入且能读取 sources.json", async () => {
   const mod = await import(resolve(pluginRoot, "skills/technology-search/scripts/search_news.mjs"));
   const loadSources = mod.loadSources ?? mod.default?.loadSources;

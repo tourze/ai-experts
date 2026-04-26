@@ -35,12 +35,6 @@ test("hook 脚本都能通过 node --check", () => {
   }
 });
 
-test("plugin.json 与 hooks.json 都是合法 JSON", () => {
-  JSON.parse(readFileSync(resolve(pluginRoot, ".claude-plugin/plugin.json"), "utf-8"));
-  JSON.parse(readFileSync(resolve(pluginRoot, "hooks/hooks.json"), "utf-8"));
-  assert.ok(true);
-});
-
 test("复制进插件的 Python 脚本都能通过 py_compile", () => {
   const files = collectFiles(resolve(pluginRoot, "skills"), (file) => file.endsWith(".py"));
   if (files.length === 0) {

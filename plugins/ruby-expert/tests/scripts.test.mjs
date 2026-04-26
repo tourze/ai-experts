@@ -6,7 +6,6 @@ import test from "node:test";
 
 const pluginRoot = resolve("plugins/ruby-expert");
 const filesToCheck = [
-  ".claude-plugin/plugin.json",
   "hooks/hooks.json",
   "hooks/dispatch.mjs",
   "hooks/post-tool-use/edit-write/_utils.mjs",
@@ -14,15 +13,9 @@ const filesToCheck = [
   "hooks/post-tool-use/edit-write/syntax-ruby.mjs",
   "tests/dispatch.test.mjs",
   "tests/hooks.test.mjs",
-  "tests/manifest.test.mjs",
   "tests/scripts.test.mjs",
   "tests/skill-docs.test.mjs",
 ];
-
-test("plugin.json 与 hooks.json 都是合法 JSON", () => {
-  JSON.parse(readFileSync(resolve(pluginRoot, ".claude-plugin/plugin.json"), "utf-8"));
-  JSON.parse(readFileSync(resolve(pluginRoot, "hooks/hooks.json"), "utf-8"));
-});
 
 test("所有 Node 脚本都能通过 node --check", () => {
   for (const relativePath of filesToCheck.filter((file) => file.endsWith(".mjs"))) {

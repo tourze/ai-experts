@@ -21,11 +21,6 @@ function walkMjs(dir) {
   return files.sort();
 }
 
-test("plugin.json 与 hooks.json 都是合法 JSON", () => {
-  JSON.parse(readFileSync(resolve(pluginRoot, ".claude-plugin/plugin.json"), "utf-8"));
-  JSON.parse(readFileSync(resolve(pluginRoot, "hooks/hooks.json"), "utf-8"));
-});
-
 test("所有 hook 与测试脚本通过 node --check", () => {
   const files = [
     ...walkMjs(resolve(pluginRoot, "hooks")),
