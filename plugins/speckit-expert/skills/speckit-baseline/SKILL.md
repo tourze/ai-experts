@@ -21,7 +21,13 @@ $ARGUMENTS
 
 ## 执行步骤
 
-1. 确保 `.specify/scripts` 与 `.specify/templates` 存在；若缺失，先定位当前 `speckit-expert` 插件目录并执行：`node <plugin-dir>/scripts/bootstrap-specify.mjs`。
+1. 确保 `.specify/scripts` 与 `.specify/templates` 存在；若缺失，运行本 skill 自带的 bootstrap 脚本（跨 Claude Code / Codex 通用）：
+
+   ```bash
+   SPECKIT_HOME="$HOME/.claude/skills/speckit-baseline"
+   [ -d "$SPECKIT_HOME" ] || SPECKIT_HOME="$HOME/.codex/skills/speckit-baseline"
+   node "$SPECKIT_HOME/scripts/bootstrap-specify.mjs"
+   ```
 2. 解析目标范围：文件路径、目录或 glob。
    - 若用户未给范围，先提一个聚焦问题再继续。
 3. 扫描并读取目标代码，提取：
@@ -31,9 +37,7 @@ $ARGUMENTS
    - 在该目录写入/更新 `spec.md`
    - 在该目录写入 `checklists/requirements.md`（完整路径：`.specify/features/<slug>/checklists/requirements.md`）
    - 写入 `.specify/feature.json` 指向该目录
-6. 模板来源优先级：
-   - `.specify/templates/spec-template.md`
-   - `plugins/speckit-expert/templates/spec-template.md`
+6. 模板来源：`.specify/templates/spec-template.md`（由步骤 1 的 bootstrap 拷入）。
 7. 将技术细节抽象为需求表达：
    - 写“做什么/为什么”，避免“怎么实现”
 8. 对不确定行为最多保留 3 个 `[待澄清]` 标记。

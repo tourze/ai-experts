@@ -5,7 +5,7 @@ import { join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import test from "node:test";
 
-const pluginRoot = resolve("plugins/speckit-expert");
+const baselineSkill = resolve("plugins/speckit-expert/skills/speckit-baseline");
 const node = process.execPath;
 
 function makeTempProject(t) {
@@ -15,7 +15,7 @@ function makeTempProject(t) {
 }
 
 function bootstrapProject(cwd) {
-  return execFileSync(node, [resolve(pluginRoot, "scripts/bootstrap-specify.mjs")], {
+  return execFileSync(node, [resolve(baselineSkill, "scripts/bootstrap-specify.mjs")], {
     cwd,
     encoding: "utf8",
   });

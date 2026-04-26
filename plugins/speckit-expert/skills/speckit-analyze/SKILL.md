@@ -22,8 +22,7 @@ $ARGUMENTS
 ## 执行步骤
 
 1. 前置检查：确认 `.specify/scripts/check-prerequisites.mjs` 存在。
-   - 若不存在，先定位当前 `speckit-expert` 插件目录并执行：`node <plugin-dir>/scripts/bootstrap-specify.mjs`
-   - 在本仓库源码内可用：`node plugins/speckit-expert/scripts/bootstrap-specify.mjs`
+   - 若不存在，先调用 skill `speckit-baseline` 完成 `.specify/` 初始化（Claude Code: `/speckit-baseline`；Codex: `$speckit-baseline`），完成后回到本流程。
    - 不要改跑 bash 版脚本；本插件的 current feature 定位依赖 Node.js 脚本。
 2. 在仓库根目录运行：
    - `node .specify/scripts/check-prerequisites.mjs --json --require-tasks --include-tasks`

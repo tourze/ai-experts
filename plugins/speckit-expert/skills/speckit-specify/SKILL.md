@@ -21,14 +21,11 @@ $ARGUMENTS
 
 ## 执行步骤
 
-1. 确保 `.specify/scripts` 与 `.specify/templates` 存在：
-   - 若缺失，先定位当前 `speckit-expert` 插件目录并执行：`node <plugin-dir>/scripts/bootstrap-specify.mjs`
-   - 在本仓库源码内可用：`node plugins/speckit-expert/scripts/bootstrap-specify.mjs`
+1. 确保 `.specify/scripts` 与 `.specify/templates` 存在；若缺失，先调用 skill `speckit-baseline` 完成 `.specify/` 初始化（Claude Code: `/speckit-baseline`；Codex: `$speckit-baseline`），完成后回到本流程。
 2. 从需求生成 `slug`（2-4 词，连字符）。
 3. 在当前仓库创建或复用目录：`.specify/features/<slug>/`
 4. 使用模板生成/更新：`.specify/features/<slug>/spec.md`
-   - 模板优先：`.specify/templates/spec-template.md`
-   - 兜底：`plugins/speckit-expert/templates/spec-template.md`
+   - 模板来源：`.specify/templates/spec-template.md`（由步骤 1 的 bootstrap 拷入）。
 5. 在 feature 目录内同步创建/更新：`.specify/features/<slug>/checklists/requirements.md`。
 6. 写入 `.specify/feature.json`，内容至少包含：
    - `feature_directory: ".specify/features/<slug>"`

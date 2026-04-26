@@ -19,7 +19,7 @@ $ARGUMENTS
 
 ## 执行步骤
 
-1. 确保 `.specify/scripts/check-prerequisites.mjs` 存在；若缺失，先定位当前 `speckit-expert` 插件目录并执行：`node <plugin-dir>/scripts/bootstrap-specify.mjs`。
+1. 确保 `.specify/scripts/check-prerequisites.mjs` 存在；若缺失，先调用 skill `speckit-baseline` 完成 `.specify/` 初始化（Claude Code: `/speckit-baseline`；Codex: `$speckit-baseline`），完成后回到本流程。
 2. 运行：`node .specify/scripts/check-prerequisites.mjs --json --paths-only`
 3. 读取当前 `spec.md`，按以下维度打标：清晰/部分清晰/缺失。
    - 角色与目标
