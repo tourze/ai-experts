@@ -25,6 +25,14 @@ cases:
       - "task creation belongs to speckit-tasks"
     trigger_expected: false
 
+  - id: negative_code_review
+    prompt: "Review the implementation diff for correctness, security risks, regressions, and missing tests before merge."
+    fixtures: []
+    rubric:
+      - "does not activate status board workflow"
+      - "code review belongs to speckit-reviewer"
+    trigger_expected: false
+
   - id: negative_validate_implementation
     prompt: "Check whether the implementation satisfies all requirements."
     fixtures: []

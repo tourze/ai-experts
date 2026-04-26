@@ -25,6 +25,14 @@ cases:
       - "new natural-language feature specification belongs to speckit-specify"
     trigger_expected: false
 
+  - id: negative_clarify_existing_spec
+    prompt: "Read the current spec.md, identify the highest-impact ambiguities, and ask clarification questions before planning."
+    fixtures: []
+    rubric:
+      - "does not activate baseline-from-code workflow"
+      - "existing spec clarification belongs to speckit-clarify"
+    trigger_expected: false
+
   - id: negative_static_checks
     prompt: "Run lint and typecheck for this repo."
     fixtures: []

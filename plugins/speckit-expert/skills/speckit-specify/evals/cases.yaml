@@ -25,6 +25,14 @@ cases:
       - "reverse extraction from code belongs to speckit-baseline"
     trigger_expected: false
 
+  - id: negative_clarify_current_spec
+    prompt: "Find ambiguities in the current spec.md and ask the top clarification questions before planning."
+    fixtures: []
+    rubric:
+      - "does not activate new-spec workflow"
+      - "current spec clarification belongs to speckit-clarify"
+    trigger_expected: false
+
   - id: negative_generate_plan
     prompt: "Create the technical plan from the current spec."
     fixtures: []

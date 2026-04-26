@@ -25,6 +25,14 @@ cases:
       - "plan generation belongs to speckit-plan"
     trigger_expected: false
 
+  - id: negative_status_board
+    prompt: "Show a Spec Kit status board for all features, including completion, blockers, and missing files."
+    fixtures: []
+    rubric:
+      - "does not activate code review workflow"
+      - "feature progress reporting belongs to speckit-status"
+    trigger_expected: false
+
   - id: negative_run_tests
     prompt: "Run the test suite and summarize coverage."
     fixtures: []

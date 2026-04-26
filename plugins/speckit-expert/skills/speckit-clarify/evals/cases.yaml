@@ -25,6 +25,14 @@ cases:
       - "Socratic challenge belongs to speckit-quizme"
     trigger_expected: false
 
+  - id: negative_new_feature_spec
+    prompt: "Create a Spec Kit spec for a new team invitation feature from this natural-language request."
+    fixtures: []
+    rubric:
+      - "does not activate clarification workflow"
+      - "new feature specification belongs to speckit-specify"
+    trigger_expected: false
+
   - id: negative_create_plan
     prompt: "Create the technical implementation plan from this spec."
     fixtures: []

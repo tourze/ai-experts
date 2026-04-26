@@ -25,6 +25,14 @@ cases:
       - "feature specification belongs to speckit-specify"
     trigger_expected: false
 
+  - id: negative_clarify_spec_first
+    prompt: "Before planning, find unresolved ambiguities in spec.md and ask the top clarification questions."
+    fixtures: []
+    rubric:
+      - "does not activate planning workflow"
+      - "pre-plan ambiguity resolution belongs to speckit-clarify"
+    trigger_expected: false
+
   - id: negative_execute_tasks
     prompt: "Implement all tasks from tasks.md."
     fixtures: []
