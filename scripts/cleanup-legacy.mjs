@@ -155,11 +155,17 @@ function listAiExpertsPluginNames() {
     .sort();
 }
 
+// 构造的正则用于在 prompt 文本里**任意位置**匹配 `$<plugin>:<skill>` 形式
+// 的旧 marketplace 调用片段（不锚定行首：用户的自然语言 prompt 经常把这种
+// 调用嵌在一句话中间，如 "请用 $product-expert:create-prd 来..."）。
+// 替换时用 JS 正则替换串 `$$` 写出一个字面 `$`，从而把 `$<plugin>:<skill>`
+// 改写为 `$<skill>` —— skill flat name 仍指向 ~/.codex/skills/<skill>，调用
+// 语义保持有效，只是脱掉旧的 plugin 命名空间前缀。
 function buildLegacyPromptRegex() {
   const names = listAiExpertsPluginNames();
   if (names.length === 0) return null;
   const escaped = names.map((n) => n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
-  return new RegExp(`^\\$(${escaped}):`);
+  return new RegExp(`\\$(${escaped}):`, "g");
 }
 
 function codexHistoryLegacyCount() {
@@ -172,7 +178,8 @@ function codexHistoryLegacyCount() {
     if (!line.trim()) continue;
     try {
       const entry = JSON.parse(line);
-      if (typeof entry?.text === "string" && re.test(entry.text)) count += 1;
+      const text = entry?.text;
+      if (typeof text === "string" && text.replace(re, "$$") !== text) count += 1;
     } catch {/* keep going */}
   }
   return count;
@@ -199,30 +206,36 @@ function cleanCodexHistory({ dryRun, verbose }) {
   }
   const re = buildLegacyPromptRegex();
   if (!re) {
-    if (verbose) info("plugins/ 为空，跳过 history 过滤");
+    if (verbose) info("plugins/ 为空，跳过 history 改写");
     return;
   }
   const before = readFileSync(histPath, "utf-8");
   const lines = before.split("\n");
   const out = [];
-  let removed = 0;
+  let touched = 0;
   for (const line of lines) {
     if (!line.trim()) { out.push(line); continue; }
     try {
       const entry = JSON.parse(line);
-      if (typeof entry?.text === "string" && re.test(entry.text)) {
-        removed += 1;
-        continue;
+      const original = entry?.text;
+      if (typeof original === "string") {
+        const rewritten = original.replace(re, "$$");
+        if (rewritten !== original) {
+          entry.text = rewritten;
+          out.push(JSON.stringify(entry));
+          touched += 1;
+          continue;
+        }
       }
     } catch {/* 不是合法 JSON 行，保留 */}
     out.push(line);
   }
-  if (removed === 0) {
-    if (verbose) info("history.jsonl 无 ai-experts namespaced 条目");
+  if (touched === 0) {
+    if (verbose) info("history.jsonl 无 ai-experts namespaced 引用");
     return;
   }
   if (dryRun) {
-    info(`would: 从 ${histPath} 删除 ${removed} 条 plugin-namespaced prompt`);
+    info(`would: 在 ${histPath} 中改写 ${touched} 条 prompt（剥离 plugin: 前缀）`);
     return;
   }
   if (codexIsRunning()) {
@@ -234,7 +247,7 @@ function cleanCodexHistory({ dryRun, verbose }) {
   const tmp = `${histPath}.cleanup.tmp`;
   writeFileSync(tmp, out.join("\n"), "utf-8");
   renameSync(tmp, histPath);
-  ok(`removed ${removed} legacy plugin-namespaced entries from ${histPath}`);
+  ok(`rewrote ${touched} entries (stripped plugin: prefix) in ${histPath}`);
 }
 
 function stripCodexLegacySections(content) {
