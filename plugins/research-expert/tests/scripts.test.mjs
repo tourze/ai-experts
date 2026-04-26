@@ -52,9 +52,11 @@ test("研究插件声明的 Python requirements 文件存在", () => {
 test("site-analyze env probe Node wrapper 通过语法检查", () => {
   for (const script of [
     "skills/site-analyze/scripts/00_probe_env.mjs",
+    "skills/site-analyze/scripts/01_dig.mjs",
     "skills/site-analyze/scripts/04_whois.mjs",
     "skills/site-analyze/scripts/05_ping.mjs",
     "skills/site-analyze/scripts/06_robots.mjs",
+    "skills/site-analyze/sub/dig/01_dig.mjs",
     "skills/site-analyze/sub/whois/04_whois.mjs",
     "skills/site-analyze/sub/ping/05_ping.mjs",
     "skills/site-analyze/sub/robots/06_robots.mjs",
@@ -68,6 +70,18 @@ test("site-analyze env probe Node wrapper 通过语法检查", () => {
 
     assert.equal(result.status, 0, result.stderr);
   }
+});
+
+test("site-analyze dig parser 提取 TTL 和记录值", async () => {
+  const mod = await import(resolve(pluginRoot, "skills/site-analyze/scripts/01_dig.mjs"));
+  const parsed = mod.parseDigAnswer(`example.com. 300 IN A 93.184.216.34
+example.com. 600 IN CNAME edge.example.net.
+`);
+
+  assert.deepEqual(parsed, [
+    { name: "example.com.", ttl: 300, type: "A", value: "93.184.216.34", via: "udp" },
+    { name: "example.com.", ttl: 600, type: "CNAME", value: "edge.example.net.", via: "udp" },
+  ]);
 });
 
 test("site-analyze ping parser 提取 ICMP 统计", async () => {

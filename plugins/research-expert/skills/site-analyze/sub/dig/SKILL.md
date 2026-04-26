@@ -13,7 +13,7 @@ description: 当只需要查看域名的国内外 DNS 解析差异、A/AAAA/CNAM
 
 ## 核心约束
 
-- 主脚本是 [`01_dig.py`](01_dig.py)。
+- 主脚本是 [`01_dig.mjs`](01_dig.mjs)。
 - 先走 `dig` 直查 UDP 53，全部为空时再回退到 DoH。
 - 结论要同时看 A/AAAA 记录、TTL 和各 DNS 服务器差异。
 - 只返回结构化事实，不要把“解析差异”直接等同于“真实源站位置”。
@@ -22,7 +22,7 @@ description: 当只需要查看域名的国内外 DNS 解析差异、A/AAAA/CNAM
 
 ```bash
 # <skill_dir> 为当前 SKILL.md 所在目录
-python3 "<skill_dir>/01_dig.py" example.com --json
+node "<skill_dir>/01_dig.mjs" example.com --json
 ```
 
 ## 检查清单

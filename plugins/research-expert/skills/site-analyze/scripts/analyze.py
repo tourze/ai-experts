@@ -35,6 +35,18 @@ def run_whois_node(target):
         return {"error": detail}
     return json.loads(result.stdout)
 
+def run_dig_node(target):
+    result = subprocess.run(
+        ["node", os.path.join(SCRIPT_DIR, "01_dig.mjs"), target, "--json"],
+        capture_output=True,
+        text=True,
+        timeout=25,
+    )
+    if result.returncode != 0:
+        detail = result.stderr.strip() or result.stdout.strip() or f"exit {result.returncode}"
+        return {"error": detail}
+    return json.loads(result.stdout)
+
 def run_ping_node(target, count=5, ports=None):
     cmd = ["node", os.path.join(SCRIPT_DIR, "05_ping.mjs"), target, "--count", str(count), "--json"]
     for port in ports or []:
@@ -122,7 +134,6 @@ def run(target, as_json=False, no_traceroute=False, no_robots=False, ping_ports=
 
     # ── Phase 1: 并发 dig + whois + robots ──────────────────────────────
     print(f"\n[Phase 1] dig / whois / robots (并发)...", file=sys.stderr)
-    dig_mod    = load_mod("01_dig")
     ip_mod     = load_mod("02_ip_info")
 
     import io, contextlib
@@ -136,7 +147,7 @@ def run(target, as_json=False, no_traceroute=False, no_robots=False, ping_ports=
     with ThreadPoolExecutor(max_workers=3) as pool:
         futures = {}
         if not is_ip:
-            futures["dig"] = pool.submit(silent, dig_mod.run, domain, False)
+            futures["dig"] = pool.submit(run_dig_node, domain)
         futures["whois"] = pool.submit(run_whois_node, domain)
         if not no_robots and not is_ip:
             futures["robots"] = pool.submit(run_robots_node, domain)
