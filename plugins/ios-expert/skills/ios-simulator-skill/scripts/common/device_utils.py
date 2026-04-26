@@ -8,7 +8,7 @@ Standardizes command building and device targeting to prevent errors.
 Follows Jackson's Law - only extracts genuinely reused patterns.
 
 Used by:
-- app_launcher.py (8 call sites) - App lifecycle commands
+- app_launcher.mjs (8 call sites) - App lifecycle commands
 - Multiple scripts (15+ locations) - IDB command building
 - navigator.py and gesture.mjs - Coordinate transformation
 - test_recorder.py, app_state_capture.py - Auto-UDID detection
@@ -31,7 +31,7 @@ def build_simctl_command(
     Automatically uses "booted" if no UDID provided.
 
     Used by:
-    - app_launcher.py: launch, terminate, install, uninstall, openurl, listapps, spawn
+    - app_launcher.mjs: launch, terminate, install, uninstall, openurl, listapps, spawn
     - Multiple scripts: generic simctl operations
 
     Args:

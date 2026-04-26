@@ -34,7 +34,7 @@ node scripts/simctl_create.mjs --list-runtimes --json
 ### 启动 App 与交互
 
 ```bash
-python3 scripts/app_launcher.py --launch com.example.app
+node scripts/app_launcher.mjs --launch com.example.app
 python3 scripts/screen_mapper.py --hints
 python3 scripts/navigator.py --find-text "Login" --tap
 node scripts/keyboard.mjs --type "user@example.com"
@@ -53,9 +53,9 @@ python3 scripts/build_and_test.py --list-xcresults --json
 ### 设备状态与权限
 
 ```bash
-python3 scripts/status_bar.py --preset testing
-python3 scripts/privacy_manager.py --grant camera --bundle-id com.example.app
-python3 scripts/push_notification.py --bundle-id com.example.app --title "Hello" --body "World"
+node scripts/status_bar.mjs --preset testing
+node scripts/privacy_manager.mjs --grant camera --bundle-id com.example.app
+node scripts/push_notification.mjs --bundle-id com.example.app --title "Hello" --body "World"
 node scripts/simctl_boot.mjs --name "iPhone 17 Pro" --wait-ready
 node scripts/simctl_shutdown.mjs --all
 ```

@@ -42,6 +42,10 @@ test("simctl Node lifecycle scripts 通过语法检查", () => {
     "interaction_common.mjs",
     "keyboard.mjs",
     "log_monitor.mjs",
+    "app_launcher.mjs",
+    "privacy_manager.mjs",
+    "push_notification.mjs",
+    "status_bar.mjs",
   ]) {
     const result = spawnSync(process.execPath, ["--check", resolve(scriptsDir, name)], { encoding: "utf8" });
     assert.equal(result.status, 0, `${name}: ${result.stderr}`);
@@ -59,6 +63,10 @@ test("simctl Node lifecycle scripts 输出帮助信息", () => {
     ["gesture.mjs", /Perform gestures on iOS simulator/],
     ["keyboard.mjs", /Control keyboard and hardware buttons/],
     ["log_monitor.mjs", /Monitor and analyze iOS simulator logs/],
+    ["app_launcher.mjs", /Control iOS app lifecycle/],
+    ["privacy_manager.mjs", /Manage iOS app privacy and permissions/],
+    ["push_notification.mjs", /Send simulated push notification/],
+    ["status_bar.mjs", /Override iOS simulator status bar/],
   ]) {
     const result = spawnSync(process.execPath, [resolve(scriptsDir, name), "--help"], { encoding: "utf8" });
     assert.equal(result.status, 0, `${name}: ${result.stderr}`);
@@ -123,11 +131,15 @@ test("simctl Node helpers 保持解析和参数转换", async () => {
 });
 
 test("iOS interaction Node helpers 保持命令构造和日志解析", async () => {
+  const appLauncher = await import(resolve(scriptsDir, "app_launcher.mjs"));
   const interaction = await import(resolve(scriptsDir, "interaction_common.mjs"));
   const clipboard = await import(resolve(scriptsDir, "clipboard.mjs"));
   const gesture = await import(resolve(scriptsDir, "gesture.mjs"));
   const keyboard = await import(resolve(scriptsDir, "keyboard.mjs"));
   const logMonitor = await import(resolve(scriptsDir, "log_monitor.mjs"));
+  const privacy = await import(resolve(scriptsDir, "privacy_manager.mjs"));
+  const push = await import(resolve(scriptsDir, "push_notification.mjs"));
+  const statusBar = await import(resolve(scriptsDir, "status_bar.mjs"));
 
   assert.deepEqual(interaction.buildIdbCommand("ui text", "UDID-1", "hello"), [
     "idb",
@@ -156,4 +168,40 @@ test("iOS interaction Node helpers 保持命令构造和日志解析", async () 
     logMonitor.buildLogCommand({ appBundleId: "com.example.MyApp", deviceUdid: "booted" }).slice(0, 8),
     ["xcrun", "simctl", "spawn", "booted", "log", "stream", "--predicate", 'processImagePath CONTAINS "MyApp"'],
   );
+  assert.equal(appLauncher.parseLaunchPid("com.example.app: 12345\n"), 12345);
+  assert.deepEqual(appLauncher.parseListAppsJson({ "com.example.app": { CFBundleName: "Example", CFBundleVersion: "1" } }), [
+    {
+      bundle_id: "com.example.app",
+      name: "Example",
+      path: "",
+      version: "1",
+      type: "User",
+    },
+  ]);
+  assert.match(
+    privacy.formatAudit("grant", "com.example.app", "camera", {
+      scenario: "login",
+      step: 2,
+      timestamp: "2026-01-01T00:00:00.000Z",
+    }),
+    /GRANT camera for com\.example\.app in login \(step 2\)/,
+  );
+  assert.deepEqual(push.normalizePayload({ alert: { title: "Hi" } }), { aps: { alert: { title: "Hi" } } });
+  assert.deepEqual(statusBar.buildStatusBarOverrideCommand("UDID-1", statusBar.PRESETS.testing), [
+    "xcrun",
+    "simctl",
+    "status_bar",
+    "UDID-1",
+    "override",
+    "--time",
+    "11:11",
+    "--dataNetwork",
+    "4g",
+    "--wifiMode",
+    "active",
+    "--batteryState",
+    "discharging",
+    "--batteryLevel",
+    "50",
+  ]);
 });
