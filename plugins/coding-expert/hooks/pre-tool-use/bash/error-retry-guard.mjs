@@ -5,8 +5,8 @@
  * 不诊断直接重试几乎总是浪费时间。
  *
  * 规则：
- *   连续 1 次相同重试 → report
- *   连续 ≥ 3 次相同重试 → block
+ *   连续 REPORT_THRESHOLD 次相同重试 → report
+ *   连续 ≥ BLOCK_THRESHOLD 次相同重试 → block
  *
  * 证据：历史日志中 115 次错误后立即重试，最极端 1 个会话连续重试 16 次。
  *
@@ -19,7 +19,7 @@
  *
  * 注意：此 hook 无法 100% 判断上次是否 error，它的触发条件是
  * "连续执行相同命令"——即使上次成功也会计数。这是有意的设计：
- * 同一命令连续执行 3 次以上本身就是反模式（应该有变化才重试）。
+ * 同一命令连续执行 REPORT_THRESHOLD 次以上本身就是反模式（应该有变化才重试）。
  */
 
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "fs";
@@ -28,8 +28,8 @@ import { tmpdir } from "os";
 
 const TRACKER_DIR = join(tmpdir(), ".claude-error-retry-tracker");
 const TRACKER_FILE = join(TRACKER_DIR, "last-cmd.json");
-const REPORT_THRESHOLD = 2;   // 连续相同命令 ≥ 2 次 report
-const BLOCK_THRESHOLD = 4;    // 连续相同命令 ≥ 4 次 block
+const REPORT_THRESHOLD = 3; // 连续相同命令 ≥ 3 次 report
+const BLOCK_THRESHOLD = 8; // 连续相同命令 ≥ 8 次 block
 const EXPIRY_MS = 10 * 60 * 1000; // 10 分钟过期
 
 /**
@@ -74,7 +74,11 @@ export async function run(payload) {
   if (!normalized) return null;
 
   // 忽略轻量级只读命令（这些命令重复执行是正常的）
-  if (/^\s*(ls|cat|head|tail|echo|git\s+(status|diff|log|show|ls-files)|pwd|which|wc|find|grep|rg)\b/.test(normalized)) {
+  if (
+    /^\s*(ls|cat|head|tail|echo|git\s+(status|diff|log|show|ls-files)|pwd|which|wc|find|grep|rg)\b/.test(
+      normalized,
+    )
+  ) {
     return null;
   }
 
