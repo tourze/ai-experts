@@ -25,8 +25,8 @@ description: 当用户需要用 Simulator、xcrun simctl、设备启动、截图
 
 ```bash
 node scripts/sim_health_check.mjs
-python3 scripts/sim_list.py --json
-python3 scripts/simulator_selector.py --list --json
+node scripts/sim_list.mjs --json
+node scripts/simulator_selector.mjs --list --json
 node scripts/simctl_create.mjs --list-devices --json
 node scripts/simctl_create.mjs --list-runtimes --json
 ```

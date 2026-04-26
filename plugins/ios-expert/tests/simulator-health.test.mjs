@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { resolve } from "node:path";
+import { mkdtempSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 import test from "node:test";
 
 const script = resolve("plugins/ios-expert/skills/ios-simulator-skill/scripts/sim_health_check.mjs");
@@ -48,6 +50,8 @@ test("simctl Node lifecycle scripts 通过语法检查", () => {
     "push_notification.mjs",
     "screen_mapper.mjs",
     "status_bar.mjs",
+    "sim_list.mjs",
+    "simulator_selector.mjs",
   ]) {
     const result = spawnSync(process.execPath, ["--check", resolve(scriptsDir, name)], { encoding: "utf8" });
     assert.equal(result.status, 0, `${name}: ${result.stderr}`);
@@ -71,6 +75,8 @@ test("simctl Node lifecycle scripts 输出帮助信息", () => {
     ["push_notification.mjs", /Send simulated push notification/],
     ["screen_mapper.mjs", /Map current screen UI elements/],
     ["status_bar.mjs", /Override iOS simulator status bar/],
+    ["sim_list.mjs", /List iOS simulators with progressive disclosure/],
+    ["simulator_selector.mjs", /Intelligent iOS simulator selector/],
   ]) {
     const result = spawnSync(process.execPath, [resolve(scriptsDir, name), "--help"], { encoding: "utf8" });
     assert.equal(result.status, 0, `${name}: ${result.stderr}`);
@@ -145,6 +151,8 @@ test("iOS interaction Node helpers 保持命令构造和日志解析", async () 
   const privacy = await import(resolve(scriptsDir, "privacy_manager.mjs"));
   const push = await import(resolve(scriptsDir, "push_notification.mjs"));
   const screenMapper = await import(resolve(scriptsDir, "screen_mapper.mjs"));
+  const simList = await import(resolve(scriptsDir, "sim_list.mjs"));
+  const simulatorSelector = await import(resolve(scriptsDir, "simulator_selector.mjs"));
   const statusBar = await import(resolve(scriptsDir, "status_bar.mjs"));
   const tree = {
     type: "Window",
@@ -247,4 +255,49 @@ test("iOS interaction Node helpers 保持命令构造和日志解析", async () 
     "Login screen detected - find TextFields for credentials",
     "1 empty text field(s) - may need input",
   ]);
+  const simulatorData = {
+    devices: {
+      "com.apple.CoreSimulator.SimRuntime.iOS-18-0": [
+        {
+          name: "iPhone 16 Pro",
+          udid: "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE",
+          state: "Booted",
+          isAvailable: true,
+        },
+        {
+          name: "iPad Air",
+          udid: "11111111-2222-3333-4444-555555555555",
+          state: "Shutdown",
+          isAvailable: true,
+        },
+      ],
+      "com.apple.CoreSimulator.SimRuntime.iOS-17-5": [
+        {
+          name: "iPhone 15",
+          udid: "22222222-3333-4444-5555-666666666666",
+          state: "Shutdown",
+          isAvailable: true,
+        },
+      ],
+    },
+  };
+  const cache = new simList.ProgressiveCache(join(mkdtempSync(join(tmpdir(), "sim-list-")), "cache"));
+  const lister = new simList.SimulatorLister(cache);
+  const devices = lister.parseDevices(simulatorData);
+  const summary = lister.getConciseSummary(devices);
+  assert.equal(summary.summary.total_devices, 3);
+  assert.equal(summary.summary.booted_devices, 1);
+  assert.deepEqual(lister.getFullList(summary.cache_id, { deviceType: "iPhone" }).map((device) => device.name), [
+    "iPhone 16 Pro",
+    "iPhone 15",
+  ]);
+  assert.match(simList.formatSummary(summary), /Simulator Summary \[simulator-/);
+
+  const selector = new simulatorSelector.SimulatorSelector({ lastUsedSimulator: "iPhone 15" });
+  selector.parseSimulators(simulatorData);
+  const suggestions = selector.getSuggestions(2);
+  assert.equal(suggestions[0].name, "iPhone 15");
+  assert.ok(suggestions[0].reasons.includes("Recently used"));
+  assert.equal(simulatorSelector.extractIosVersion("com.apple.CoreSimulator.SimRuntime.iOS-18-0"), "18.0");
+  assert.match(simulatorSelector.formatSuggestions(suggestions), /Available Simulators/);
 });
