@@ -14,12 +14,9 @@ const nodeScripts = [
   "skills/lottie-animations/scripts/generate_lottie_component.mjs",
   "skills/lottie-animations/scripts/optimize_lottie.mjs",
   "skills/modern-web-design/scripts/design_audit.mjs",
+  "skills/modern-web-design/scripts/pattern_generator.mjs",
   "skills/shadcn-ui/scripts/verify-setup.mjs",
   "skills/web-quality-audit/scripts/analyze.mjs",
-];
-
-const pythonScripts = [
-  "skills/modern-web-design/scripts/pattern_generator.py",
 ];
 
 test("所有 Node 脚本都能通过语法检查", () => {
@@ -29,23 +26,6 @@ test("所有 Node 脚本都能通过语法检查", () => {
     });
 
     assert.equal(result.status, 0, `${relativePath} 语法检查失败: ${result.stderr}`);
-  }
-});
-
-test("所有 Python 脚本都能通过 py_compile", () => {
-  const pycacheRoot = mkdtempSync(join(tmpdir(), "frontend-pycache-"));
-  const result = spawnSync("python3", ["-m", "py_compile", ...pythonScripts.map((path) => resolve(pluginRoot, path))], {
-    encoding: "utf-8",
-    env: {
-      ...process.env,
-      PYTHONPYCACHEPREFIX: pycacheRoot,
-    },
-  });
-
-  try {
-    assert.equal(result.status, 0, result.stderr);
-  } finally {
-    rmSync(pycacheRoot, { recursive: true, force: true });
   }
 });
 
@@ -66,6 +46,35 @@ test("generate_lottie_component.mjs 可生成 React interactive 模板", () => {
   assert.match(result.stdout, /import React, \{ useState \} from 'react';/);
   assert.match(result.stdout, /style=\{\{ height: 300, width: 280 \}\}/);
   assert.match(result.stdout, /dotLottieRefCallback=\{setDotLottie\}/);
+});
+
+test("pattern_generator.mjs 能列出并生成模板文件", () => {
+  const root = mkdtempSync(join(tmpdir(), "frontend-pattern-"));
+  const outputPath = join(root, "hero.html");
+
+  try {
+    const listResult = spawnSync("node", [
+      resolve(pluginRoot, "skills/modern-web-design/scripts/pattern_generator.mjs"),
+      "--list",
+    ], {
+      encoding: "utf-8",
+    });
+    assert.equal(listResult.status, 0, listResult.stderr);
+    assert.match(listResult.stdout, /hero\s+- Immersive Hero Section/);
+
+    const generateResult = spawnSync("node", [
+      resolve(pluginRoot, "skills/modern-web-design/scripts/pattern_generator.mjs"),
+      "--pattern", "hero",
+      "--output", outputPath,
+    ], {
+      encoding: "utf-8",
+    });
+    assert.equal(generateResult.status, 0, generateResult.stderr);
+    assert.match(generateResult.stdout, /Generated 'Immersive Hero Section' pattern/);
+    assert.match(readFileSync(outputPath, "utf-8"), /<section class="hero">/);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test("optimize_lottie.mjs 压缩 JSON 并保留整数", () => {

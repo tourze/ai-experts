@@ -47,7 +47,7 @@ description: 当用户需要规划或实现 2024-2025 风格的现代 Web 界面
 ```
 
 ```bash
-python3 ./scripts/pattern_generator.py --pattern hero
+node ./scripts/pattern_generator.mjs --pattern hero
 node ./scripts/design_audit.mjs --file ./index.html
 ```
 
@@ -107,7 +107,7 @@ node ./scripts/design_audit.mjs --file ./index.html
 - [responsive-design](../responsive-design/SKILL.md)
 - [web-design-guidelines](../web-design-guidelines/SKILL.md)
 - [scripts/design_audit.mjs](scripts/design_audit.mjs)
-- [scripts/pattern_generator.py](scripts/pattern_generator.py)
+- [scripts/pattern_generator.mjs](scripts/pattern_generator.mjs)
 - [references/design_trends_2024.md](references/design_trends_2024.md)
 - [references/interaction_patterns.md](references/interaction_patterns.md)
 - [references/performance_checklist.md](references/performance_checklist.md)
