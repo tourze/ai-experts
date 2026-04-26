@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 // Audit, prune, and sync repository skills metadata.
-
 import fs from "node:fs";
 import path from "node:path";
-
+import { buildSimilarityGroups } from "./similarity_groups.mjs";
 const ALLOWED_FRONTMATTER_KEYS = new Set("acknowledgments agent allowed-tools alwaysApply compatibility context date_added dependency description license metadata name related-skills risk source tools user-invocable user_invocable version".split(" "));
 const README_SECTION_START = "## Skill 清单";
 const README_SECTION_END = "## 数据来源";
@@ -434,7 +433,6 @@ function buildReport(repoRoot) {
   const conflicts = detectConflicts(records);
   const recommendedDeletions = [];
   const seenRecommendations = new Set();
-
   for (const item of lowQuality) {
     if (item.quality_score <= 55) {
       recommendedDeletions.push({
@@ -445,7 +443,6 @@ function buildReport(repoRoot) {
       seenRecommendations.add(item.skill);
     }
   }
-
   for (const duplicate of duplicates) {
     if (duplicate.confidence === "high" && !seenRecommendations.has(duplicate.drop)) {
       recommendedDeletions.push({
@@ -456,12 +453,12 @@ function buildReport(repoRoot) {
       seenRecommendations.add(duplicate.drop);
     }
   }
-
   return {
     repo_root: repoRoot,
     skill_count: records.length,
     low_quality_candidates: lowQuality,
     duplicate_candidates: duplicates,
+    similarity_groups: buildSimilarityGroups(records),
     conflict_candidates: conflicts,
     recommended_deletions: recommendedDeletions,
   };
@@ -472,6 +469,7 @@ function renderTextReport(report) {
     `skills 总数: ${report.skill_count}`,
     `低质量候选: ${report.low_quality_candidates.length}`,
     `重复候选: ${report.duplicate_candidates.length}`,
+    `相似分组: ${report.similarity_groups.length}`,
     `冲突候选: ${report.conflict_candidates.length}`,
     "",
   ];
@@ -479,6 +477,7 @@ function renderTextReport(report) {
     ["建议删除:", report.recommended_deletions, (item) => `- ${item.skill}: ${item.reason} (${item.confidence})`],
     ["低质量候选:", report.low_quality_candidates.slice(0, 20), (item) => `- ${item.skill} [${item.quality_score}]: ${item.issues.join("; ")}`],
     ["重复候选:", report.duplicate_candidates.slice(0, 20), (item) => `- ${item.skills.join(" / ")}: keep=${item.keep} drop=${item.drop} (${item.reason})`],
+    ["相似分组:", report.similarity_groups.slice(0, 20), (item) => `- ${item.group} (${item.scope}): ${item.skills.join(" / ")}; top=${item.pairs[0]?.reason || "n/a"}`],
     ["冲突候选:", report.conflict_candidates.slice(0, 20), (item) => `- ${item.skills.join(" / ")}: keep=${item.keep} drop=${item.drop} (${item.reason})`],
   ];
   for (const [title, items, render] of sections) {

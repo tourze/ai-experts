@@ -37,6 +37,7 @@ node scripts/curate_skills.mjs sync-readme --repo-root . --check
 
 - 低质量：缺少 `name`/`description`、正文明显过短、包含 `TODO`/`TBD`、相对链接失效、frontmatter 明显漂移。
 - 重复：名称与描述高度相似，且目标能力基本重叠。
+- 相似分组：同插件同家族或跨插件近似 skill，只作为人工审计入口，不直接删除。
 - 冲突：同一技能家族内存在 “MUST/ALWAYS/ONLY/必须/仅限” 一类强约束触发语，导致调度边界互相覆盖。
 
 ## 删除规则

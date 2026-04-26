@@ -33,6 +33,14 @@ function assertContainsPair(pairs, left, right) {
   throw new Error(`Expected pair not found: ${left}, ${right}`);
 }
 
+function assertContainsGroup(groups, ...skills) {
+  for (const group of groups) {
+    const names = new Set(group.skills || []);
+    if (skills.every((skill) => names.has(skill))) return;
+  }
+  throw new Error(`Expected group not found: ${skills.join(", ")}`);
+}
+
 function main() {
   assert.ok(fs.existsSync(scriptPath), `Missing script under test: ${scriptPath}`);
 
@@ -112,6 +120,7 @@ function main() {
 
     const pluginReport = JSON.parse(pluginAudit.stdout);
     assertContainsPair(pluginReport.duplicate_candidates, "demo-expert/beta-skill", "demo-expert/beta-skill-audit");
+    assertContainsGroup(pluginReport.similarity_groups, "demo-expert/beta-skill", "demo-expert/beta-skill-audit");
 
     const pluginPrune = runCommand("prune", "--repo-root", repoRoot, "--skills", "demo-expert/beta-skill-audit", "--yes");
     assert.equal(pluginPrune.status, 0, `plugin prune failed:\nSTDOUT:\n${pluginPrune.stdout}\nSTDERR:\n${pluginPrune.stderr}`);
