@@ -53,10 +53,15 @@ test("site-analyze env probe Node wrapper 通过语法检查", () => {
   for (const script of [
     "skills/site-analyze/scripts/00_probe_env.mjs",
     "skills/site-analyze/scripts/01_dig.mjs",
+    "skills/site-analyze/scripts/02_ip_info.mjs",
+    "skills/site-analyze/scripts/03_traceroute.mjs",
     "skills/site-analyze/scripts/04_whois.mjs",
     "skills/site-analyze/scripts/05_ping.mjs",
     "skills/site-analyze/scripts/06_robots.mjs",
     "skills/site-analyze/sub/dig/01_dig.mjs",
+    "skills/site-analyze/sub/ip-info/02_ip_info.mjs",
+    "skills/site-analyze/sub/traceroute/02_ip_info.mjs",
+    "skills/site-analyze/sub/traceroute/03_traceroute.mjs",
     "skills/site-analyze/sub/whois/04_whois.mjs",
     "skills/site-analyze/sub/ping/05_ping.mjs",
     "skills/site-analyze/sub/robots/06_robots.mjs",
@@ -82,6 +87,32 @@ example.com. 600 IN CNAME edge.example.net.
     { name: "example.com.", ttl: 300, type: "A", value: "93.184.216.34", via: "udp" },
     { name: "example.com.", ttl: 600, type: "CNAME", value: "edge.example.net.", via: "udp" },
   ]);
+});
+
+test("site-analyze ip-info 标记私网地址且不查询外部来源", async () => {
+  const mod = await import(resolve(pluginRoot, "skills/site-analyze/scripts/02_ip_info.mjs"));
+  const result = await mod.queryIps(["10.0.0.1", "192.168.1.2"]);
+
+  assert.equal(result["10.0.0.1"].private, true);
+  assert.equal(result["192.168.1.2"].private, true);
+  assert.equal(result["10.0.0.1"].note, "内网/私有地址");
+  assert.equal(mod.isPrivateIp("100.64.0.1"), false);
+  assert.equal(mod.isPrivateIp("192.0.0.9"), false);
+});
+
+test("site-analyze traceroute parser 保留 header 后的第一跳", async () => {
+  const mod = await import(resolve(pluginRoot, "skills/site-analyze/scripts/03_traceroute.mjs"));
+  const parsed = mod.parseTraceroute(`traceroute to x
+ 1  192.168.1.1  1.0 ms
+ 2  8.8.8.8  10.0 ms * 12.0 ms
+ 3  * * *
+`);
+
+  assert.equal(parsed.length, 3);
+  assert.equal(parsed[0].hop, 1);
+  assert.deepEqual(parsed[0].ips, ["192.168.1.1"]);
+  assert.equal(parsed[1].avg_ms, 11);
+  assert.equal(parsed[2].timeout, true);
 });
 
 test("site-analyze ping parser 提取 ICMP 统计", async () => {

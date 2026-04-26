@@ -13,7 +13,7 @@ description: 当只需要查询一个或多个 IP 的国家、城市、运营商
 
 ## 核心约束
 
-- 主脚本是 [`02_ip_info.py`](02_ip_info.py)。
+- 主脚本是 [`02_ip_info.mjs`](02_ip_info.mjs)。
 - 结果来自 ip-api 与 ipinfo 双源，优先用 ip-api，缺失字段再补 ipinfo。
 - 私网地址会直接标记为内网，不应继续对外查询。
 - 批量查询允许并发，但不能因为全是私网地址而崩溃。
@@ -21,9 +21,9 @@ description: 当只需要查询一个或多个 IP 的国家、城市、运营商
 ## 代码模式
 
 ```bash
-python3 "<skill_dir>/02_ip_info.py" 8.8.8.8 --json
-python3 "<skill_dir>/02_ip_info.py" 1.1.1.1 8.8.8.8 223.5.5.5 --json
-printf '10.0.0.1\n8.8.8.8\n' | python3 "<skill_dir>/02_ip_info.py" --stdin --json
+node "<skill_dir>/02_ip_info.mjs" 8.8.8.8 --json
+node "<skill_dir>/02_ip_info.mjs" 1.1.1.1 8.8.8.8 223.5.5.5 --json
+printf '10.0.0.1\n8.8.8.8\n' | node "<skill_dir>/02_ip_info.mjs" --stdin --json
 ```
 
 ## 检查清单

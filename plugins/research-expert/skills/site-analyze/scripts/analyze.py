@@ -10,18 +10,11 @@ analyze.py - 站点综合分析主入口
   Phase 4: 汇总输出站点画像
 """
 import sys, json, os, time, subprocess
-from concurrent.futures import ThreadPoolExecutor, as_completed
-import importlib.util
+from concurrent.futures import ThreadPoolExecutor
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 LEGACY_ENV_FILE = os.path.expanduser("~/.site-analyzer-env.json")
 MODERN_ENV_FILE = os.path.expanduser("~/.site-analyze/env.json")
-
-def load_mod(name):
-    spec = importlib.util.spec_from_file_location(name, os.path.join(SCRIPT_DIR, f"{name}.py"))
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
 
 def run_whois_node(target):
     result = subprocess.run(
@@ -56,6 +49,32 @@ def run_ping_node(target, count=5, ports=None):
         capture_output=True,
         text=True,
         timeout=40,
+    )
+    if result.returncode != 0:
+        detail = result.stderr.strip() or result.stdout.strip() or f"exit {result.returncode}"
+        return {"error": detail}
+    return json.loads(result.stdout)
+
+def run_ip_info_node(ips):
+    if not ips:
+        return {}
+    result = subprocess.run(
+        ["node", os.path.join(SCRIPT_DIR, "02_ip_info.mjs"), "--json", *ips],
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
+    if result.returncode != 0:
+        detail = result.stderr.strip() or result.stdout.strip() or f"exit {result.returncode}"
+        return {"error": detail}
+    return json.loads(result.stdout)
+
+def run_traceroute_node(target, max_hops=20):
+    result = subprocess.run(
+        ["node", os.path.join(SCRIPT_DIR, "03_traceroute.mjs"), target, "--max-hops", str(max_hops), "--json"],
+        capture_output=True,
+        text=True,
+        timeout=130,
     )
     if result.returncode != 0:
         detail = result.stderr.strip() or result.stdout.strip() or f"exit {result.returncode}"
@@ -134,15 +153,6 @@ def run(target, as_json=False, no_traceroute=False, no_robots=False, ping_ports=
 
     # ── Phase 1: 并发 dig + whois + robots ──────────────────────────────
     print(f"\n[Phase 1] dig / whois / robots (并发)...", file=sys.stderr)
-    ip_mod     = load_mod("02_ip_info")
-
-    import io, contextlib
-
-    def silent(fn, *args, **kwargs):
-        buf = io.StringIO()
-        with contextlib.redirect_stdout(buf):
-            result = fn(*args, **kwargs)
-        return result
 
     with ThreadPoolExecutor(max_workers=3) as pool:
         futures = {}
@@ -166,13 +176,13 @@ def run(target, as_json=False, no_traceroute=False, no_robots=False, ping_ports=
     if is_ip:
         ips_to_probe = [target]
         # 直接查归属
-        ip_info_map = silent(ip_mod.run, [target], False)
+        ip_info_map = run_ip_info_node([target])
         report["ip_info"] = ip_info_map
     else:
         dig_result = phase1.get("dig", {})
         ips_to_probe = dig_result.get("unique_ips", [])[:4]  # 最多取 4 个 IP
         if ips_to_probe:
-            ip_info_map = silent(ip_mod.run, ips_to_probe, False)
+            ip_info_map = run_ip_info_node(ips_to_probe)
             report["ip_info"] = ip_info_map
 
     print(f"  IPs to probe: {ips_to_probe}", file=sys.stderr)
@@ -188,13 +198,12 @@ def run(target, as_json=False, no_traceroute=False, no_robots=False, ping_ports=
 
     if should_probe_path:
         print(f"\n[Phase 2] traceroute + ping...", file=sys.stderr)
-        tr_mod   = load_mod("03_traceroute")
 
         probe_ip = ips_to_probe[0]  # traceroute 取第一个 IP（避免时间过长）
         ports = ping_ports or [80, 443]
 
         with ThreadPoolExecutor(max_workers=2) as pool:
-            f_tr   = pool.submit(tr_mod.run, probe_ip, 20, False)
+            f_tr   = pool.submit(run_traceroute_node, probe_ip, 20)
             f_ping = pool.submit(run_ping_node, probe_ip, 5, ports)
 
             try:
