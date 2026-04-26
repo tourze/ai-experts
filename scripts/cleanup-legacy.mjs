@@ -16,14 +16,16 @@
  */
 
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
-import { join } from "node:path";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const MARKETPLACE = "ai-experts";
 const HOME = homedir();
 const CLAUDE_HOME = join(HOME, ".claude");
 const CODEX_HOME = process.env.CODEX_HOME || join(HOME, ".codex");
+const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 function parseArgs(argv) {
   const args = { dryRun: false, verbose: false, targets: ["cc", "codex"] };
@@ -140,7 +142,99 @@ function codexHasLegacy() {
     const text = readFileSync(tomlPath, "utf-8");
     if (/^\[(marketplaces\.ai-experts|plugins\."[^"]*@ai-experts")/m.test(text)) return true;
   }
+  if (codexHistoryLegacyCount() > 0) return true;
   return false;
+}
+
+function listAiExpertsPluginNames() {
+  const dir = join(REPO_ROOT, "plugins");
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir, { withFileTypes: true })
+    .filter((e) => e.isDirectory() && !e.name.startsWith("."))
+    .map((e) => e.name)
+    .sort();
+}
+
+function buildLegacyPromptRegex() {
+  const names = listAiExpertsPluginNames();
+  if (names.length === 0) return null;
+  const escaped = names.map((n) => n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
+  return new RegExp(`^\\$(${escaped}):`);
+}
+
+function codexHistoryLegacyCount() {
+  const histPath = join(CODEX_HOME, "history.jsonl");
+  if (!existsSync(histPath)) return 0;
+  const re = buildLegacyPromptRegex();
+  if (!re) return 0;
+  let count = 0;
+  for (const line of readFileSync(histPath, "utf-8").split("\n")) {
+    if (!line.trim()) continue;
+    try {
+      const entry = JSON.parse(line);
+      if (typeof entry?.text === "string" && re.test(entry.text)) count += 1;
+    } catch {/* keep going */}
+  }
+  return count;
+}
+
+function codexIsRunning() {
+  try {
+    const out = execFileSync("pgrep", ["-x", "codex"], {
+      stdio: ["ignore", "pipe", "ignore"],
+      encoding: "utf-8",
+      timeout: 2_000,
+    });
+    return out.trim().length > 0;
+  } catch {
+    return false;
+  }
+}
+
+function cleanCodexHistory({ dryRun, verbose }) {
+  const histPath = join(CODEX_HOME, "history.jsonl");
+  if (!existsSync(histPath)) {
+    if (verbose) info("history.jsonl 不存在，跳过");
+    return;
+  }
+  const re = buildLegacyPromptRegex();
+  if (!re) {
+    if (verbose) info("plugins/ 为空，跳过 history 过滤");
+    return;
+  }
+  const before = readFileSync(histPath, "utf-8");
+  const lines = before.split("\n");
+  const out = [];
+  let removed = 0;
+  for (const line of lines) {
+    if (!line.trim()) { out.push(line); continue; }
+    try {
+      const entry = JSON.parse(line);
+      if (typeof entry?.text === "string" && re.test(entry.text)) {
+        removed += 1;
+        continue;
+      }
+    } catch {/* 不是合法 JSON 行，保留 */}
+    out.push(line);
+  }
+  if (removed === 0) {
+    if (verbose) info("history.jsonl 无 ai-experts namespaced 条目");
+    return;
+  }
+  if (dryRun) {
+    info(`would: 从 ${histPath} 删除 ${removed} 条 plugin-namespaced prompt`);
+    return;
+  }
+  if (codexIsRunning()) {
+    console.error(`  \x1b[31m[error]\x1b[0m Codex 进程在运行，拒绝 rewrite history.jsonl`);
+    console.error(`           请先退出所有 codex 会话再运行此清理`);
+    process.exitCode = 2;
+    return;
+  }
+  const tmp = `${histPath}.cleanup.tmp`;
+  writeFileSync(tmp, out.join("\n"), "utf-8");
+  renameSync(tmp, histPath);
+  ok(`removed ${removed} legacy plugin-namespaced entries from ${histPath}`);
 }
 
 function stripCodexLegacySections(content) {
@@ -181,6 +275,8 @@ function cleanupCodex({ dryRun, verbose }) {
       }
     }
   }
+
+  cleanCodexHistory({ dryRun, verbose });
 }
 
 // ── main ─────────────────────────────────────────────
