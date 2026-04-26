@@ -8,13 +8,13 @@ const pluginRoot = resolve("plugins/youtube-expert");
 
 const nodeScripts = [
   "hooks/dispatch.mjs",
+  "skills/youtube-search/scripts/search_youtube.mjs",
 ];
 
 const pythonScripts = [
   "skills/youtube-analysis/scripts/analyze_video.py",
   "skills/youtube-analysis/scripts/fetch_transcript.py",
   "skills/youtube-analysis/scripts/utils.py",
-  "skills/youtube-search/scripts/search_youtube.py",
 ];
 
 test("所有 Node 脚本都能通过语法检查", () => {

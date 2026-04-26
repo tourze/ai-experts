@@ -16,20 +16,19 @@ description: "当用户要按关键词搜索 YouTube 视频、找教程、找热
 - 默认使用 `yt-dlp ytsearch + --dump-single-json --flat-playlist`，字段是“尽力而为”。
 - 在 flat search 模式下，`upload_date`、`duration_string` 等字段可能为空；缺失时要明确说明，不要伪造。
 - 本技能不负责下载视频、不负责音视频转码，也不承诺绕过 YouTube 的反爬限制。
-- 插件内已经提供 `scripts/search_youtube.py`，优先用它，不要再依赖手写 `jq` 管道。
+- 插件内已经提供 `scripts/search_youtube.mjs`，优先用它，不要再依赖手写 `jq` 管道。
 - 用户已经给出明确视频链接且诉求是“总结内容”时，不要继续搜索，直接切到 [youtube-analysis](../youtube-analysis/SKILL.md)。
 
 ## 代码模式
 
 ### 文件入口
 
-- `scripts/search_youtube.py`：执行搜索、规范化字段、支持排序与近 N 天过滤。
+- `scripts/search_youtube.mjs`：执行搜索、规范化字段、支持排序与近 N 天过滤。
 
 ### 基础搜索
 
 ```bash
-uv run --with yt-dlp --no-project \
-  python scripts/search_youtube.py \
+node scripts/search_youtube.mjs \
   "claude code skills" \
   --count 5 \
   --format table
@@ -38,8 +37,7 @@ uv run --with yt-dlp --no-project \
 ### 输出 JSON
 
 ```bash
-uv run --with yt-dlp --no-project \
-  python scripts/search_youtube.py \
+node scripts/search_youtube.mjs \
   "claude code mcp servers" \
   --count 5 \
   --format json
@@ -48,8 +46,7 @@ uv run --with yt-dlp --no-project \
 ### 按观看量排序
 
 ```bash
-uv run --with yt-dlp --no-project \
-  python scripts/search_youtube.py \
+node scripts/search_youtube.mjs \
   "AI agents" \
   --count 10 \
   --sort views \
@@ -59,8 +56,7 @@ uv run --with yt-dlp --no-project \
 ### 过滤最近 N 天
 
 ```bash
-uv run --with yt-dlp --no-project \
-  python scripts/search_youtube.py \
+node scripts/search_youtube.mjs \
   "claude code tutorial" \
   --count 10 \
   --days 30 \
@@ -70,8 +66,7 @@ uv run --with yt-dlp --no-project \
 ### 只输出 URL，交给其他流程继续处理
 
 ```bash
-uv run --with yt-dlp --no-project \
-  python scripts/search_youtube.py \
+node scripts/search_youtube.mjs \
   "claude code hooks" \
   --count 5 \
   --format urls
@@ -102,7 +97,7 @@ uv run --with yt-dlp --no-project \
 
 ```
 用户：”下载这 10 个视频”
-你：跑 search_youtube.py 10 次
+你：跑 search_youtube.mjs 10 次
 → 本技能不做下载 / 不做音视频抓取
 ```
 
