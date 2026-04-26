@@ -45,10 +45,10 @@ Persona 输入建议使用对象数组，字段保持稳定且能追溯来源：
 ]
 ```
 
-基于真实数据运行 [persona_generator.py](scripts/persona_generator.py)：
+基于真实数据运行 [persona_generator.mjs](scripts/persona_generator.mjs)：
 
 ```bash
-python3 scripts/persona_generator.py \
+node scripts/persona_generator.mjs \
   --input ./users.json \
   --interviews ./interviews.json \
   --output-format json

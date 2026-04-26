@@ -37,6 +37,9 @@ function run(command, args) {
 
 test("Python 脚本通过 py_compile", () => {
   const files = listFiles((file) => file.endsWith(".py"));
+  if (files.length === 0) {
+    return;
+  }
   const result = run("python3", ["-m", "py_compile", ...files]);
   assert.equal(result.status, 0, result.stderr);
 });
@@ -49,20 +52,20 @@ test("Node 脚本通过 node --check", () => {
 });
 
 test("persona_generator 提供真实输入参数并拒绝无效参数", () => {
-  const script = resolve(pluginRoot, "skills/ux-researcher-designer/scripts/persona_generator.py");
-  const help = run("python3", [script, "--help"]);
+  const script = resolve(pluginRoot, "skills/ux-researcher-designer/scripts/persona_generator.mjs");
+  const help = run("node", [script, "--help"]);
   assert.equal(help.status, 0, help.stderr);
   assert.match(help.stdout, /--input/);
   assert.match(help.stdout, /--output-format/);
   assert.match(help.stdout, /--sample/);
 
-  const failure = run("python3", [script, "--output-format", "xml"]);
+  const failure = run("node", [script, "--output-format", "xml"]);
   assert.notEqual(failure.status, 0);
 });
 
 test("persona_generator 能消费真实 JSON 并输出结构化结果", () => {
   const root = mkdtempSync(join(tmpdir(), "ux-expert-persona-"));
-  const script = resolve(pluginRoot, "skills/ux-researcher-designer/scripts/persona_generator.py");
+  const script = resolve(pluginRoot, "skills/ux-researcher-designer/scripts/persona_generator.mjs");
   const usersPath = join(root, "users.json");
   const interviewsPath = join(root, "interviews.json");
 
@@ -99,7 +102,7 @@ test("persona_generator 能消费真实 JSON 并输出结构化结果", () => {
   ], null, 2));
 
   try {
-    const result = run("python3", [
+    const result = run("node", [
       script,
       "--input",
       usersPath,

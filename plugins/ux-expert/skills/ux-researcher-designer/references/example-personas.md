@@ -276,7 +276,7 @@ Stage 4: Task Completion
 
 ## JSON Output Format
 
-### persona_generator.py JSON Output
+### persona_generator.mjs JSON Output
 
 ```json
 {
@@ -374,7 +374,7 @@ Stage 4: Task Completion
 
 ```bash
 # Generate JSON for integration
-python3 scripts/persona_generator.py --input ./users.json --interviews ./interviews.json --output-format json > persona_power_user.json
+node scripts/persona_generator.mjs --input ./users.json --interviews ./interviews.json --output-format json > persona_power_user.json
 
 # Use with other tools
 cat persona_power_user.json | jq '.design_implications'
