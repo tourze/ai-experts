@@ -9,8 +9,8 @@ Used by:
 - navigator.mjs - Accessibility tree navigation
 - screen_mapper.mjs - UI element analysis
 - accessibility_audit.mjs - WCAG compliance checking
-- test_recorder.py - Test documentation
-- app_state_capture.py - State snapshots
+- test_recorder.mjs - Test documentation
+- app_state_capture.mjs - State snapshots
 - gesture.mjs - Touch gesture operations
 """
 
@@ -123,7 +123,7 @@ def count_elements(node: dict) -> int:
     Traverses entire tree counting all elements for reporting purposes.
 
     Used by:
-    - test_recorder.py - Element counting per step
+    - test_recorder.mjs - Element counting per step
     - screen_mapper.mjs - Summary statistics
 
     Args:

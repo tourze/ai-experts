@@ -44,7 +44,7 @@ node scripts/gesture.mjs --scroll down --scroll-amount 3
 ### 调试与构建
 
 ```bash
-python3 scripts/app_state_capture.py --app-bundle-id com.example.app --size half
+node scripts/app_state_capture.mjs --app-bundle-id com.example.app --size half
 node scripts/log_monitor.mjs --app com.example.app --duration 30s --json
 python3 scripts/build_and_test.py --project MyApp.xcodeproj --test
 python3 scripts/build_and_test.py --list-xcresults --json

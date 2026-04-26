@@ -11,7 +11,7 @@ Used by:
 - app_launcher.mjs (8 call sites) - App lifecycle commands
 - Multiple scripts (15+ locations) - IDB command building
 - navigator.mjs and gesture.mjs - Coordinate transformation
-- test_recorder.py, app_state_capture.py - Auto-UDID detection
+- test_recorder.mjs, app_state_capture.mjs - Auto-UDID detection
 """
 
 import json

@@ -53,6 +53,9 @@ test("simctl Node lifecycle scripts 通过语法检查", () => {
     "sim_list.mjs",
     "simulator_selector.mjs",
     "accessibility_audit.mjs",
+    "screenshot_common.mjs",
+    "app_state_capture.mjs",
+    "test_recorder.mjs",
   ]) {
     const result = spawnSync(process.execPath, ["--check", resolve(scriptsDir, name)], { encoding: "utf8" });
     assert.equal(result.status, 0, `${name}: ${result.stderr}`);
@@ -79,6 +82,8 @@ test("simctl Node lifecycle scripts 输出帮助信息", () => {
     ["sim_list.mjs", /List iOS simulators with progressive disclosure/],
     ["simulator_selector.mjs", /Intelligent iOS simulator selector/],
     ["accessibility_audit.mjs", /Audit iOS simulator screen for accessibility issues/],
+    ["app_state_capture.mjs", /Capture complete app state for debugging/],
+    ["test_recorder.mjs", /Record test execution with screenshots and documentation/],
   ]) {
     const result = spawnSync(process.execPath, [resolve(scriptsDir, name), "--help"], { encoding: "utf8" });
     assert.equal(result.status, 0, `${name}: ${result.stderr}`);
@@ -146,6 +151,7 @@ test("iOS interaction Node helpers 保持命令构造和日志解析", async () 
   const appLauncher = await import(resolve(scriptsDir, "app_launcher.mjs"));
   const interaction = await import(resolve(scriptsDir, "interaction_common.mjs"));
   const accessibilityAudit = await import(resolve(scriptsDir, "accessibility_audit.mjs"));
+  const appStateCapture = await import(resolve(scriptsDir, "app_state_capture.mjs"));
   const clipboard = await import(resolve(scriptsDir, "clipboard.mjs"));
   const gesture = await import(resolve(scriptsDir, "gesture.mjs"));
   const keyboard = await import(resolve(scriptsDir, "keyboard.mjs"));
@@ -154,9 +160,11 @@ test("iOS interaction Node helpers 保持命令构造和日志解析", async () 
   const privacy = await import(resolve(scriptsDir, "privacy_manager.mjs"));
   const push = await import(resolve(scriptsDir, "push_notification.mjs"));
   const screenMapper = await import(resolve(scriptsDir, "screen_mapper.mjs"));
+  const screenshot = await import(resolve(scriptsDir, "screenshot_common.mjs"));
   const simList = await import(resolve(scriptsDir, "sim_list.mjs"));
   const simulatorSelector = await import(resolve(scriptsDir, "simulator_selector.mjs"));
   const statusBar = await import(resolve(scriptsDir, "status_bar.mjs"));
+  const testRecorder = await import(resolve(scriptsDir, "test_recorder.mjs"));
   const tree = {
     type: "Window",
     AXUniqueId: "LoginViewController",
@@ -317,4 +325,39 @@ test("iOS interaction Node helpers 保持命令构造和日志解析", async () 
   const audit = auditor.audit(false);
   assert.equal(audit.summary.critical, 1);
   assert.equal(audit.top_issues[0].rule, "image_no_alt");
+
+  assert.equal(
+    screenshot.generateScreenshotName("MyApp", "Login", "Empty", "20251028-143052"),
+    "MyApp_Login_Empty_20251028-143052.png",
+  );
+  assert.deepEqual(screenshot.getSizePreset("quarter"), [0.25, 0.25]);
+  assert.match(
+    screenshot.formatScreenshotResult({ mode: "inline", width: 100, height: 200, base64_data: "abcd" }),
+    /Base64 length: 4 chars/,
+  );
+  assert.deepEqual(
+    appStateCapture.parseDeviceInfo("    iPhone 16 Pro (A1B2C3D4-E5F6-7890-ABCD-EF1234567890) (Booted)\n"),
+    { name: "iPhone 16 Pro", udid: "A1B2C3D4-E5F6-7890-ABCD-EF1234567890", state: "Booted" },
+  );
+  assert.deepEqual(appStateCapture.summarizeLogLines(["warning: slow", "ERROR failed"]), {
+    captured: true,
+    lines: 2,
+    warnings: 1,
+    errors: 1,
+  });
+  assert.match(appStateCapture.createSummaryMarkdown({ timestamp: "2026-01-01T00:00:00.000Z" }), /# App State Capture/);
+  assert.equal(testRecorder.safeTestName("Login Flow"), "login-flow");
+  assert.equal(
+    testRecorder.parseArgs(["--test-name", "Login Flow", "--output", "out", "--inline"]).testName,
+    "Login Flow",
+  );
+  const recorder = new testRecorder.TestRecorder({
+    testName: "Login Flow",
+    outputDir: mkdtempSync(join(tmpdir(), "recorder-")),
+    udid: "UDID",
+    now: () => new Date(2026, 0, 1, 0, 0, 0),
+    output: () => {},
+  });
+  assert.match(recorder.outputDir, /login-flow-20260101-000000$/);
+  assert.equal(typeof recorder.generate_report, "function");
 });

@@ -159,7 +159,7 @@ export function main(argv = process.argv.slice(2)) {
   console.log("");
   console.log("Verify notification handling:");
   console.log(`1. Check app log output: node scripts/log_monitor.mjs --app ${args.bundleId}`);
-  console.log(`2. Capture state: python3 scripts/app_state_capture.py --app-bundle-id ${args.bundleId}`);
+  console.log(`2. Capture state: node scripts/app_state_capture.mjs --app-bundle-id ${args.bundleId}`);
   return 0;
 }
 
