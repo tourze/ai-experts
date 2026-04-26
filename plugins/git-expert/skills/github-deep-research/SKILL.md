@@ -15,7 +15,7 @@ agent: research-expert:deep-researcher
 
 ## 核心约束
 
-- 第一轮必须先跑同目录 `scripts/github_api.py`，用仓库一手数据建立基线。
+- 第一轮必须先跑同目录 `scripts/github_api.mjs`，用仓库一手数据建立基线。
 - 外部结论必须内联引用，且要区分“源码/官方事实”和“社区观点/推断”。
 - 官方文档、仓库 README、release、issue、PR 的优先级高于新闻与社区二手文章。
 - 日期冲突时优先信 GitHub 时间戳，不要被转载文章误导。
@@ -26,11 +26,11 @@ agent: research-expert:deep-researcher
 ### 1. 先拿 GitHub 基线数据
 
 ```bash
-python3 scripts/github_api.py <owner> <repo> summary
-python3 scripts/github_api.py <owner> <repo> readme
-python3 scripts/github_api.py <owner> <repo> tree
-python3 scripts/github_api.py <owner> <repo> releases
-python3 scripts/github_api.py <owner> <repo> tags
+node scripts/github_api.mjs <owner> <repo> summary
+node scripts/github_api.mjs <owner> <repo> readme
+node scripts/github_api.mjs <owner> <repo> tree
+node scripts/github_api.mjs <owner> <repo> releases
+node scripts/github_api.mjs <owner> <repo> tags
 ```
 
 可用命令：
@@ -80,7 +80,7 @@ python3 scripts/github_api.py <owner> <repo> tags
 
 ## 检查清单
 
-- 是否先跑了 `scripts/github_api.py`，而不是直接上网搜二手资料。
+- 是否先跑了 `scripts/github_api.mjs`，而不是直接上网搜二手资料。
 - 是否把关键日期和版本号都回源到 release、tag、commit 或 PR。
 - 是否在“事实”“观点”“推断”之间做了清晰分层。
 - 是否每个外部结论后都有内联引用。

@@ -67,6 +67,6 @@ claude plugin uninstall git-expert --scope project
 
 ```bash
 find hooks -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
-python3 -m py_compile skills/github-deep-research/scripts/github_api.py
+node --check skills/github-deep-research/scripts/github_api.mjs
 node --test tests/*.test.mjs
 ```
