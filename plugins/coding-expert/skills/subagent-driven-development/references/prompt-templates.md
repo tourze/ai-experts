@@ -8,6 +8,12 @@
 **任务描述：**
 {TASK_FULL_TEXT}
 
+**执行边界：**
+- read_scope: {READ_SCOPE}
+- write_scope: {WRITE_SCOPE}
+- depends_on: {DEPENDS_ON}
+- acceptance_refs: {ACCEPTANCE_DETAILS}
+
 **项目上下文：**
 {PROJECT_CONTEXT}
 
@@ -16,7 +22,9 @@
 2. 遵循 TDD：先写失败测试，再写最小实现
 3. 每步都运行测试确认
 4. 完成后做自我审查
-5. 提交代码并报告状态
+5. 只读取 read_scope ∪ write_scope 内的上下文，只修改 write_scope 内的文件
+6. `write_scope: []` 表示只读任务，不能修改文件
+7. 提交代码并报告状态
 
 **报告格式：**
 状态：DONE / DONE_WITH_CONCERNS / NEEDS_CONTEXT / BLOCKED
@@ -33,6 +41,12 @@
 **原始任务要求：**
 {TASK_FULL_TEXT}
 
+**验收项：**
+{ACCEPTANCE_DETAILS}
+
+**允许修改范围：**
+{WRITE_SCOPE}
+
 **审查范围：**
 git diff {BASE_SHA}..{HEAD_SHA}
 
@@ -40,6 +54,7 @@ git diff {BASE_SHA}..{HEAD_SHA}
 1. 所有要求是否已实现？逐条对照。
 2. 是否有计划之外的额外添加？
 3. 实现是否偏离了计划的设计意图？
+4. 是否修改了 write_scope 之外的文件？
 
 **输出格式：**
 ✅ 规格合规 — 所有要求已满足，无额外添加

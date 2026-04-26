@@ -26,12 +26,45 @@ cases:
       - "handles BLOCKED or NEEDS_CONTEXT states explicitly"
     trigger_expected: true
 
+  - id: consume_execution_contract_waves
+    prompt: >
+      Execute this Execution Contract with workers: W1 has read-only exploration,
+      W2 has two independent implementation tasks with separate write_scope values,
+      and each task has acceptance_refs with evidence_type command. Run it wave by wave.
+    fixtures: []
+    rubric:
+      - "activates for explicit worker execution of an Execution Contract"
+      - "runs only the current wave and respects depends_on ordering"
+      - "checks read_scope/write_scope before parallel dispatch"
+      - "passes acceptance_refs details to each worker"
+      - "runs acceptance.command in the main session before marking tasks or waves complete"
+    trigger_expected: true
+
+  - id: overlapping_write_scope_requires_replan
+    prompt: >
+      Use subagents to execute this plan in parallel, but two tasks in W2 both write
+      src/auth/**. Start them together and review after.
+    fixtures: []
+    rubric:
+      - "activates because the user explicitly requests subagent execution"
+      - "does not dispatch overlapping write_scope tasks in parallel"
+      - "requires splitting waves or merging tasks before execution"
+    trigger_expected: true
+
   - id: negative_regular_plan
     prompt: "Give me a plan for implementing search filters, but don't start coding yet"
     fixtures: []
     rubric:
       - "does not activate subagent-driven development"
       - "planning without execution or delegation is outside this skill"
+    trigger_expected: false
+
+  - id: negative_contract_generation_only
+    prompt: "Create an execution contract with waves and write scopes, but do not execute it"
+    fixtures: []
+    rubric:
+      - "contract generation belongs to task-decomposer"
+      - "does not activate because the user explicitly forbids execution"
     trigger_expected: false
 
   - id: negative_single_tightly_coupled_fix

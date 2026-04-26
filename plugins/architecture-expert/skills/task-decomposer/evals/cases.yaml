@@ -21,11 +21,32 @@ cases:
       - "maps test strategy per phase or task group"
     trigger_expected: true
 
+  - id: execution_contract_for_subagents
+    prompt: >
+      Generate an execution contract for handing this migration to multiple subagents later,
+      with waves, read/write scopes, dependencies, and acceptance evidence.
+    fixtures: []
+    rubric:
+      - "outputs an Execution Contract with waves and task dependencies"
+      - "includes read_scope and write_scope for tasks"
+      - "prevents parallel tasks from overlapping write_scope"
+      - "binds implementation tasks to acceptance_refs with evidence"
+    trigger_expected: true
+
   - id: negative_time_estimate
     prompt: "How long will this feature take to build? Give me a time estimate for adding search."
     fixtures: []
     rubric:
       - "time estimation is estimate-calibrator territory, not task decomposition"
+    trigger_expected: false
+
+  - id: negative_execute_contract
+    prompt: "Execute this task contract with subagents now and review their code"
+    fixtures: []
+    rubric:
+      - "contract execution belongs to subagent-driven-development"
+      - "task-decomposer should not activate for hands-on worker dispatch"
+      - "execution verbs such as execute, dispatch, start, and run should be excluded from contract generation"
     trigger_expected: false
 
   - id: negative_code_review
