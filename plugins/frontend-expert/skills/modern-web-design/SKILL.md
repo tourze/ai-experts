@@ -10,6 +10,7 @@ description: 当用户需要规划或实现 2024-2025 风格的现代 Web 界面
 - 设计或重构品牌官网、产品页、营销页、活动页和高辨识度 Web App 界面。
 - 需要在“好看”和“快”之间做系统性平衡。
 - 需要明确视觉方向，而不是套用通用模板。
+- 用户明确提到 "premium"、"高级感"、"不要 AI 味" 或 "不要模板感" 时，先读取 [references/high-agency-protocol.md](references/high-agency-protocol.md)。
 - 需要构建一套现代网页的设计与实现判断框架。
 
 ## 核心约束
@@ -109,6 +110,7 @@ node ./scripts/design_audit.mjs --file ./index.html
 - [scripts/design_audit.mjs](scripts/design_audit.mjs)
 - [scripts/pattern_generator.mjs](scripts/pattern_generator.mjs)
 - [references/design_trends_2024.md](references/design_trends_2024.md)
+- [references/high-agency-protocol.md](references/high-agency-protocol.md)
 - [references/interaction_patterns.md](references/interaction_patterns.md)
 - [references/performance_checklist.md](references/performance_checklist.md)
 - [references/accessibility_guide.md](references/accessibility_guide.md)

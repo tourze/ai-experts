@@ -15,6 +15,14 @@ cases:
       - "keeps the response focused on the skill's domain boundary"
     trigger_expected: true
 
+  - id: positive_modern_web_design_high_agency
+    prompt: "这个产品官网太 AI 味了，帮我重设计成 premium、高辨识度、不要默认紫蓝渐变。"
+    fixtures: []
+    rubric:
+      - "recognizes premium anti-template frontend work as modern-web-design territory"
+      - "uses the high-agency protocol or equivalent visual direction constraints"
+    trigger_expected: true
+
   - id: negative_adjacent_browser_rendering_patterns
     prompt: "这个需求应该交给 browser-rendering-patterns：优化浏览器渲染性能、处理 hydration 问题、使用 resource hints 或改善客户端事件处理时使用。用户提到 hydration mismatch、content-visibility、preload、preconnect、passive event listener、script defer、SVG 优化"
     fixtures: []
