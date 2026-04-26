@@ -3,7 +3,7 @@ cases:
     prompt: "Analyze this YouTube video and give me the key concepts: https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     fixtures: []
     rubric:
-      - "extracts transcript via youtube-transcript-api"
+      - "extracts transcript via yt-dlp subtitles"
       - "produces structured concept analysis"
       - "includes multi-level summary (overview, detailed, key concepts)"
     trigger_expected: true
