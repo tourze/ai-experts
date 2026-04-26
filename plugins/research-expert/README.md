@@ -34,9 +34,8 @@
 
 ## 运行前提
 
-- `node`：用于 hook 分发与 `technology-search`
-- `python3`：用于 `site-analyze` 与 `web-content-fetcher`
-- `requests`：`site-analyze` Python 依赖，见 `skills/site-analyze/requirements.txt`
+- `node`：用于 hook 分发、`technology-search` 与 `site-analyze`
+- `python3`：用于 `web-content-fetcher`
 - `scrapling`、`html2text`：`web-content-fetcher` 依赖，见 `skills/web-content-fetcher/requirements.txt`
 - `dig`、`whois`、`traceroute`、`ping`：`site-analyze` 外部命令依赖
 

@@ -44,14 +44,16 @@ test("technology-search Node wrapper 保留缺少关键词的错误路径", () =
   assert.match(result.stderr, /search_news\.mjs <keyword>/);
 });
 
-test("研究插件声明的 Python requirements 文件存在", () => {
-  assert.ok(existsSync(resolve(pluginRoot, "skills/site-analyze/requirements.txt")));
+test("web-content-fetcher Python requirements 文件存在", () => {
   assert.ok(existsSync(resolve(pluginRoot, "skills/web-content-fetcher/requirements.txt")));
 });
 
 test("site-analyze env probe Node wrapper 通过语法检查", () => {
   for (const script of [
     "skills/site-analyze/scripts/00_probe_env.mjs",
+    "skills/site-analyze/scripts/analyze.mjs",
+    "skills/site-analyze/scripts/setup.mjs",
+    "skills/site-analyze/scripts/site-analyze.mjs",
     "skills/site-analyze/scripts/01_dig.mjs",
     "skills/site-analyze/scripts/02_ip_info.mjs",
     "skills/site-analyze/scripts/03_traceroute.mjs",
@@ -75,6 +77,27 @@ test("site-analyze env probe Node wrapper 通过语法检查", () => {
 
     assert.equal(result.status, 0, result.stderr);
   }
+});
+
+test("site-analyze orchestrator 保留环境与目标解析", async () => {
+  const mod = await import(resolve(pluginRoot, "skills/site-analyze/scripts/analyze.mjs"));
+
+  assert.deepEqual(mod.normalizeEnv({ exit_ip: { ip: "1.2.3.4", country: "US", city: "NYC", org: "AS1 Example" } }), {
+    my_ip: "1.2.3.4",
+    country: "US",
+    city: "NYC",
+    isp: "AS1 Example",
+  });
+  assert.equal(mod.resolveDomain("https://example.com/path?q=1"), "example.com");
+  assert.equal(mod.shouldProbePath(["10.0.0.1"], false), false);
+  assert.equal(mod.shouldProbePath(["8.8.8.8"], false), true);
+  assert.deepEqual(mod.parseArgs(["example.com", "--json", "--tcp-port", "8443"]), {
+    target: "example.com",
+    json: true,
+    noTraceroute: false,
+    noRobots: false,
+    pingPorts: [8443],
+  });
 });
 
 test("site-analyze dig parser 提取 TTL 和记录值", async () => {
