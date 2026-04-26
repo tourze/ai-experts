@@ -27,7 +27,7 @@
 安装第三方依赖：
 
 ```bash
-python3 -m pip install -r plugins/finance-expert/requirements.txt
+pip install numpy pandas
 ```
 
 ## 安装
