@@ -52,6 +52,7 @@ test("simctl Node lifecycle scripts 通过语法检查", () => {
     "status_bar.mjs",
     "sim_list.mjs",
     "simulator_selector.mjs",
+    "accessibility_audit.mjs",
   ]) {
     const result = spawnSync(process.execPath, ["--check", resolve(scriptsDir, name)], { encoding: "utf8" });
     assert.equal(result.status, 0, `${name}: ${result.stderr}`);
@@ -77,6 +78,7 @@ test("simctl Node lifecycle scripts 输出帮助信息", () => {
     ["status_bar.mjs", /Override iOS simulator status bar/],
     ["sim_list.mjs", /List iOS simulators with progressive disclosure/],
     ["simulator_selector.mjs", /Intelligent iOS simulator selector/],
+    ["accessibility_audit.mjs", /Audit iOS simulator screen for accessibility issues/],
   ]) {
     const result = spawnSync(process.execPath, [resolve(scriptsDir, name), "--help"], { encoding: "utf8" });
     assert.equal(result.status, 0, `${name}: ${result.stderr}`);
@@ -143,6 +145,7 @@ test("simctl Node helpers 保持解析和参数转换", async () => {
 test("iOS interaction Node helpers 保持命令构造和日志解析", async () => {
   const appLauncher = await import(resolve(scriptsDir, "app_launcher.mjs"));
   const interaction = await import(resolve(scriptsDir, "interaction_common.mjs"));
+  const accessibilityAudit = await import(resolve(scriptsDir, "accessibility_audit.mjs"));
   const clipboard = await import(resolve(scriptsDir, "clipboard.mjs"));
   const gesture = await import(resolve(scriptsDir, "gesture.mjs"));
   const keyboard = await import(resolve(scriptsDir, "keyboard.mjs"));
@@ -300,4 +303,18 @@ test("iOS interaction Node helpers 保持命令构造和日志解析", async () 
   assert.ok(suggestions[0].reasons.includes("Recently used"));
   assert.equal(simulatorSelector.extractIosVersion("com.apple.CoreSimulator.SimRuntime.iOS-18-0"), "18.0");
   assert.match(simulatorSelector.formatSuggestions(suggestions), /Available Simulators/);
+
+  const auditor = new accessibilityAudit.AccessibilityAuditor("UDID");
+  const issues = auditor.auditElement({ type: "Button", AXLabel: "", AXValue: "" });
+  assert.deepEqual(issues.map((issue) => issue.rule), ["missing_label", "empty_button"]);
+  assert.equal(auditor.auditElement({ type: "StaticText", traits: [] })[0].rule, "missing_traits");
+  auditor.getAccessibilityTree = () => ({
+    type: "Window",
+    AXUniqueId: "Root",
+    traits: ["window"],
+    children: [{ type: "Image", traits: ["image"], children: [] }],
+  });
+  const audit = auditor.audit(false);
+  assert.equal(audit.summary.critical, 1);
+  assert.equal(audit.top_issues[0].rule, "image_no_alt");
 });

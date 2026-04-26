@@ -251,4 +251,4 @@ console.log("");
 console.log("Next steps:");
 console.log("  1. Boot a simulator: open -a Simulator");
 console.log("  2. Launch your app: xcrun simctl launch booted <bundle-id>");
-console.log("  3. Run accessibility audit: python scripts/accessibility_audit.py");
+console.log("  3. Run accessibility audit: node scripts/accessibility_audit.mjs");

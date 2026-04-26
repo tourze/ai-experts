@@ -8,7 +8,7 @@ Follows Jackson's Law - only shared code that's truly reused, not speculative.
 Used by:
 - navigator.mjs - Accessibility tree navigation
 - screen_mapper.mjs - UI element analysis
-- accessibility_audit.py - WCAG compliance checking
+- accessibility_audit.mjs - WCAG compliance checking
 - test_recorder.py - Test documentation
 - app_state_capture.py - State snapshots
 - gesture.mjs - Touch gesture operations
@@ -78,7 +78,7 @@ def flatten_tree(node: dict, depth: int = 0, elements: list[dict] | None = None)
     Used by:
     - navigator.mjs - Element finding
     - screen_mapper.mjs - Element analysis
-    - accessibility_audit.py - Audit scanning
+    - accessibility_audit.mjs - Audit scanning
 
     Args:
         node: Root node of tree (typically from get_accessibility_tree)
