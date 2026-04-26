@@ -22,6 +22,20 @@ cases:
       - "adjacent pgsql-index-strategy requests should not trigger pgsql-schema-design"
     trigger_expected: false
 
+  - id: negative_adjacent_pgsql_partitioning
+    prompt: "请为 2 亿行时序事件表设计 PostgreSQL RANGE 分区、DEFAULT 分区和历史分区归档策略。"
+    fixtures: []
+    rubric:
+      - "partitioning and lifecycle requests should not trigger pgsql-schema-design"
+    trigger_expected: false
+
+  - id: negative_adjacent_pgsql_row_level_security
+    prompt: "请为共享多租户 project 表实现 RLS 策略，要求 FORCE RLS、USING、WITH CHECK 和 SET LOCAL tenant_id。"
+    fixtures: []
+    rubric:
+      - "row-level security policy requests should not trigger pgsql-schema-design"
+    trigger_expected: false
+
   - id: negative_general_unrelated_task
     prompt: "请帮我写一封简短的会议改期通知邮件"
     fixtures: []

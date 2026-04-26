@@ -22,6 +22,20 @@ cases:
       - "adjacent pgsql-index-strategy requests should not trigger pgsql-partitioning"
     trigger_expected: false
 
+  - id: negative_adjacent_pgsql_schema_design
+    prompt: "请审查 PostgreSQL 用户表的主键、TIMESTAMPTZ、NUMERIC 金额列、外键和 CHECK 约束。"
+    fixtures: []
+    rubric:
+      - "table schema design requests should not trigger pgsql-partitioning"
+    trigger_expected: false
+
+  - id: negative_adjacent_pgsql_row_level_security
+    prompt: "请为共享表开启 RLS，并设计 USING / WITH CHECK 策略来隔离租户数据。"
+    fixtures: []
+    rubric:
+      - "row-level security requests should not trigger pgsql-partitioning"
+    trigger_expected: false
+
   - id: negative_general_unrelated_task
     prompt: "请帮我写一封简短的会议改期通知邮件"
     fixtures: []

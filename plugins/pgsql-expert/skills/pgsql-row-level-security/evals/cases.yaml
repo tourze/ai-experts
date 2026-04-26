@@ -22,6 +22,20 @@ cases:
       - "adjacent pgsql-index-strategy requests should not trigger pgsql-row-level-security"
     trigger_expected: false
 
+  - id: negative_adjacent_pgsql_schema_design
+    prompt: "请设计 PostgreSQL 发票表结构，包含 identity 主键、NUMERIC 金额、TIMESTAMPTZ 时间列和外键。"
+    fixtures: []
+    rubric:
+      - "table schema design requests should not trigger pgsql-row-level-security"
+    trigger_expected: false
+
+  - id: negative_adjacent_pgsql_partitioning
+    prompt: "请把超大 event_log 表改成按月 RANGE 分区，并验证查询只扫描目标分区。"
+    fixtures: []
+    rubric:
+      - "partitioning requests should not trigger pgsql-row-level-security"
+    trigger_expected: false
+
   - id: negative_general_unrelated_task
     prompt: "请帮我写一封简短的会议改期通知邮件"
     fixtures: []
