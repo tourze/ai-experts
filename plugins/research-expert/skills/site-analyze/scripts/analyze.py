@@ -50,6 +50,18 @@ def run_ping_node(target, count=5, ports=None):
         return {"error": detail}
     return json.loads(result.stdout)
 
+def run_robots_node(target):
+    result = subprocess.run(
+        ["node", os.path.join(SCRIPT_DIR, "06_robots.mjs"), target, "--json"],
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
+    if result.returncode != 0:
+        detail = result.stderr.strip() or result.stdout.strip() or f"exit {result.returncode}"
+        return {"error": detail}
+    return json.loads(result.stdout)
+
 def _normalize_env(raw):
     if not isinstance(raw, dict):
         return {}
@@ -111,7 +123,6 @@ def run(target, as_json=False, no_traceroute=False, no_robots=False, ping_ports=
     # ── Phase 1: 并发 dig + whois + robots ──────────────────────────────
     print(f"\n[Phase 1] dig / whois / robots (并发)...", file=sys.stderr)
     dig_mod    = load_mod("01_dig")
-    robots_mod = load_mod("06_robots")
     ip_mod     = load_mod("02_ip_info")
 
     import io, contextlib
@@ -128,7 +139,7 @@ def run(target, as_json=False, no_traceroute=False, no_robots=False, ping_ports=
             futures["dig"] = pool.submit(silent, dig_mod.run, domain, False)
         futures["whois"] = pool.submit(run_whois_node, domain)
         if not no_robots and not is_ip:
-            futures["robots"] = pool.submit(silent, robots_mod.run, domain, False)
+            futures["robots"] = pool.submit(run_robots_node, domain)
 
         phase1 = {}
         for key, f in futures.items():

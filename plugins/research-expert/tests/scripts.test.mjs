@@ -54,8 +54,10 @@ test("site-analyze env probe Node wrapper 通过语法检查", () => {
     "skills/site-analyze/scripts/00_probe_env.mjs",
     "skills/site-analyze/scripts/04_whois.mjs",
     "skills/site-analyze/scripts/05_ping.mjs",
+    "skills/site-analyze/scripts/06_robots.mjs",
     "skills/site-analyze/sub/whois/04_whois.mjs",
     "skills/site-analyze/sub/ping/05_ping.mjs",
+    "skills/site-analyze/sub/robots/06_robots.mjs",
   ]) {
     const result = spawnSync("node", [
       "--check",
@@ -83,6 +85,30 @@ rtt min/avg/max/mdev = 10.123/20.456/30.789/1.234 ms
   assert.equal(parsed.rtt_avg_ms, 20.456);
   assert.equal(parsed.rtt_max_ms, 30.789);
   assert.equal(parsed.rtt_mdev_ms, 1.234);
+});
+
+test("site-analyze robots parser 保留连续 User-agent 规则组", async () => {
+  const mod = await import(resolve(pluginRoot, "skills/site-analyze/scripts/06_robots.mjs"));
+  const parsed = mod.parseRobotsTxt(`User-agent: *
+User-agent: googlebot
+Disallow: /private
+Allow: /private/public
+Crawl-delay: 2.5
+Sitemap: https://example.com/sitemap.xml
+
+User-agent: bingbot
+Disallow: /
+`);
+
+  assert.deepEqual(parsed.rules["*"].disallow, ["/private"]);
+  assert.deepEqual(parsed.rules.googlebot.allow, ["/private/public"]);
+  assert.equal(parsed.crawl_delay["*"], 2.5);
+  assert.equal(parsed.crawl_delay.googlebot, 2.5);
+  assert.equal(parsed.assessments["*"], "partial");
+  assert.equal(parsed.assessments.googlebot, "partial");
+  assert.equal(parsed.assessments.bingbot, "blocked");
+  assert.deepEqual(parsed.sitemaps, ["https://example.com/sitemap.xml"]);
+  assert.equal(parsed.total_agents, 3);
 });
 
 test("site-analyze env probe 复用已有缓存且不触发网络探测", () => {
