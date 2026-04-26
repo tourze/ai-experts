@@ -55,7 +55,7 @@ function printEvalStats(label, results, elapsed) {
   const precision = tp + fp > 0 ? tp / (tp + fp) : 1.0;
   const recall = tp + fn > 0 ? tp / (tp + fn) : 1.0;
   const accuracy = total > 0 ? (tp + tn) / total : 0.0;
-  console.error(`${label}: ${tp + tn}/${total} correct, precision=${Math.round(precision * 100)}% recall=${Math.round(recall * 100)}% accuracy=${Math.round(accuracy * 100)}% (${elapsed.toFixed(1)}s)`);
+  console.error(`${label}: ${tp + tn}/${total} 正确，precision=${Math.round(precision * 100)}% recall=${Math.round(recall * 100)}% accuracy=${Math.round(accuracy * 100)}%（${elapsed.toFixed(1)}s）`);
   for (const result of results) {
     const status = result.pass ? "PASS" : "FAIL";
     console.error(`  [${status}] rate=${result.triggers}/${result.runs} expected=${result.should_trigger}: ${result.query.slice(0, 60)}`);
@@ -92,7 +92,7 @@ export async function runLoop({
   const { name, description: originalDescription, content } = parseSkillMd(skillPath);
   let currentDescription = descriptionOverride ?? originalDescription;
   const { trainSet, testSet } = holdout > 0 ? splitEvalSet(evalSet, holdout) : { trainSet: evalSet, testSet: [] };
-  if (verbose && holdout > 0) console.error(`Split: ${trainSet.length} train, ${testSet.length} test (holdout=${holdout})`);
+  if (verbose && holdout > 0) console.error(`拆分：${trainSet.length} train，${testSet.length} test（holdout=${holdout}）`);
 
   const history = [];
   let exitReason = "unknown";
@@ -100,7 +100,7 @@ export async function runLoop({
   for (let iteration = 1; iteration <= maxIterations; iteration += 1) {
     if (verbose) {
       console.error(`\n${"=".repeat(60)}`);
-      console.error(`Iteration ${iteration}/${maxIterations}`);
+      console.error(`迭代 ${iteration}/${maxIterations}`);
       console.error(`Description: ${currentDescription}`);
       console.error("=".repeat(60));
     }
@@ -166,18 +166,18 @@ export async function runLoop({
     }
 
     if (trainSummary.failed === 0) {
-      exitReason = `all_passed (iteration ${iteration})`;
-      if (verbose) console.error(`\nAll train queries passed on iteration ${iteration}!`);
+      exitReason = `all_passed（iteration ${iteration}）`;
+      if (verbose) console.error(`\n第 ${iteration} 轮所有 train queries 均通过！`);
       break;
     }
 
     if (iteration === maxIterations) {
-      exitReason = `max_iterations (${maxIterations})`;
-      if (verbose) console.error(`\nMax iterations reached (${maxIterations}).`);
+      exitReason = `max_iterations（${maxIterations}）`;
+      if (verbose) console.error(`\n已达到最大迭代次数（${maxIterations}）。`);
       break;
     }
 
-    if (verbose) console.error("\nImproving description...");
+    if (verbose) console.error("\n正在改进 description...");
     const improveStarted = Date.now();
     const blindedHistory = history.map((item) => Object.fromEntries(Object.entries(item).filter(([key]) => !key.startsWith("test_"))));
     const newDescription = improveDescription({
@@ -190,7 +190,7 @@ export async function runLoop({
       logDir,
       iteration,
     });
-    if (verbose) console.error(`Proposed (${((Date.now() - improveStarted) / 1000).toFixed(1)}s): ${newDescription}`);
+    if (verbose) console.error(`候选结果（${((Date.now() - improveStarted) / 1000).toFixed(1)}s）：${newDescription}`);
     currentDescription = newDescription;
   }
 
@@ -199,8 +199,8 @@ export async function runLoop({
     : [...history].sort((left, right) => right.train_passed - left.train_passed)[0];
   const bestScore = testSet.length ? `${best.test_passed}/${best.test_total}` : `${best.train_passed}/${best.train_total}`;
   if (verbose) {
-    console.error(`\nExit reason: ${exitReason}`);
-    console.error(`Best score: ${bestScore} (iteration ${best.iteration})`);
+    console.error(`\n退出原因：${exitReason}`);
+    console.error(`最佳分数：${bestScore}（iteration ${best.iteration}）`);
   }
 
   return {
@@ -249,7 +249,7 @@ function parseArgs(argv) {
     else if (arg === "--results-dir") args.resultsDir = argv[++index];
   }
   if (!args.evalSet || !args.skillPath || !args.model) {
-    throw new Error("Usage: node run_loop.mjs --eval-set evals.json --skill-path skill-dir --model model [--max-iterations 5]");
+    throw new Error("用法：node run_loop.mjs --eval-set evals.json --skill-path skill-dir --model model [--max-iterations 5]");
   }
   return args;
 }
@@ -259,7 +259,7 @@ export async function main(argv = process.argv.slice(2)) {
     const args = parseArgs(argv);
     const evalSet = JSON.parse(readFileSync(args.evalSet, "utf8"));
     if (!existsSync(join(args.skillPath, "SKILL.md"))) {
-      console.error(`Error: No SKILL.md found at ${args.skillPath}`);
+      console.error(`错误：${args.skillPath} 中未找到 SKILL.md`);
       return 1;
     }
     const { name } = parseSkillMd(args.skillPath);
@@ -269,7 +269,7 @@ export async function main(argv = process.argv.slice(2)) {
       liveReportPath = args.report === "auto"
         ? join(tmpdir(), `skill_description_report_${name}_${timestamp}.html`)
         : args.report;
-      writeFileSync(liveReportPath, "<html><body><h1>Starting optimization loop...</h1><meta http-equiv='refresh' content='5'></body></html>", "utf8");
+      writeFileSync(liveReportPath, "<html lang='zh-CN'><body><h1>正在启动优化循环...</h1><meta http-equiv='refresh' content='5'></body></html>", "utf8");
       openFile(liveReportPath);
     }
 
@@ -301,10 +301,10 @@ export async function main(argv = process.argv.slice(2)) {
     if (liveReportPath) {
       const finalReport = generateHtml(output, false, name);
       writeFileSync(liveReportPath, finalReport, "utf8");
-      console.error(`\nReport: ${liveReportPath}`);
+      console.error(`\n报告：${liveReportPath}`);
       if (resultsDir) writeFileSync(join(resultsDir, "report.html"), finalReport, "utf8");
     }
-    if (resultsDir) console.error(`Results saved to: ${resultsDir}`);
+    if (resultsDir) console.error(`结果已保存到：${resultsDir}`);
     return 0;
   } catch (error) {
     console.error(error.message);

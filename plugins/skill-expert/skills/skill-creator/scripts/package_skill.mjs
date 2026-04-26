@@ -146,23 +146,23 @@ export function writeZip(outputPath, entries) {
 export function packageSkill(skillPath, outputDir = null) {
   const resolvedSkillPath = resolve(skillPath);
   if (!existsSync(resolvedSkillPath)) {
-    console.log(`❌ Error: Skill folder not found: ${resolvedSkillPath}`);
+    console.log(`❌ 错误：未找到 skill 目录：${resolvedSkillPath}`);
     return null;
   }
   if (!statSync(resolvedSkillPath).isDirectory()) {
-    console.log(`❌ Error: Path is not a directory: ${resolvedSkillPath}`);
+    console.log(`❌ 错误：路径不是目录：${resolvedSkillPath}`);
     return null;
   }
   if (!existsSync(join(resolvedSkillPath, "SKILL.md"))) {
-    console.log(`❌ Error: SKILL.md not found in ${resolvedSkillPath}`);
+    console.log(`❌ 错误：${resolvedSkillPath} 中未找到 SKILL.md`);
     return null;
   }
 
-  console.log("🔍 Validating skill...");
+  console.log("🔍 正在校验 skill...");
   const [valid, message] = validateSkill(resolvedSkillPath);
   if (!valid) {
-    console.log(`❌ Validation failed: ${message}`);
-    console.log("   Please fix the validation errors before packaging.");
+    console.log(`❌ 校验失败：${message}`);
+    console.log("   请先修复校验错误，再进行打包。");
     return null;
   }
   console.log(`✅ ${message}\n`);
@@ -176,25 +176,25 @@ export function packageSkill(skillPath, outputDir = null) {
     for (const filePath of collectFiles(resolvedSkillPath)) {
       const archiveName = toZipPath(relative(dirname(resolvedSkillPath), filePath));
       if (shouldExclude(archiveName)) {
-        console.log(`  Skipped: ${archiveName}`);
+        console.log(`  已跳过：${archiveName}`);
         continue;
       }
       entries.push({ path: filePath, name: archiveName });
-      console.log(`  Added: ${archiveName}`);
+      console.log(`  已添加：${archiveName}`);
     }
 
     writeZip(skillFilename, entries);
-    console.log(`\n✅ Successfully packaged skill to: ${skillFilename}`);
+    console.log(`\n✅ Skill 打包完成：${skillFilename}`);
     return skillFilename;
   } catch (error) {
-    console.log(`❌ Error creating .skill file: ${error.message}`);
+    console.log(`❌ 创建 .skill 文件失败：${error.message}`);
     return null;
   }
 }
 
 function printUsage() {
-  console.log("Usage: node package_skill.mjs <path/to/skill-folder> [output-directory]");
-  console.log("\nExample:");
+  console.log("用法：node package_skill.mjs <path/to/skill-folder> [output-directory]");
+  console.log("\n示例：");
   console.log("  node package_skill.mjs skills/public/my-skill");
   console.log("  node package_skill.mjs skills/public/my-skill ./dist");
 }
@@ -207,9 +207,9 @@ export function main(argv = process.argv.slice(2)) {
 
   const skillPath = argv[0];
   const outputDir = argv[1] ?? null;
-  console.log(`📦 Packaging skill: ${skillPath}`);
+  console.log(`📦 正在打包 skill：${skillPath}`);
   if (outputDir) {
-    console.log(`   Output directory: ${outputDir}`);
+    console.log(`   输出目录：${outputDir}`);
   }
   console.log();
 

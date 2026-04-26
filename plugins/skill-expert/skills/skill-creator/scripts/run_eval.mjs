@@ -68,7 +68,7 @@ export function runSingleQuery(query, skillName, skillDescription, timeout, proj
     const projectCommandsDir = join(projectRoot, ".claude", "commands");
     const commandFile = join(projectCommandsDir, `${cleanName}.md`);
     const indentedDescription = skillDescription.split("\n").join("\n  ");
-    const commandContent = `---\ndescription: |\n  ${indentedDescription}\n---\n\n# ${skillName}\n\nThis skill handles: ${skillDescription}\n`;
+    const commandContent = `---\ndescription: |\n  ${indentedDescription}\n---\n\n# ${skillName}\n\n此 skill 处理：${skillDescription}\n`;
 
     mkdirSync(projectCommandsDir, { recursive: true });
     writeFileSync(commandFile, commandContent, "utf8");
@@ -230,7 +230,7 @@ function parseArgs(argv) {
     else if (arg === "--verbose") args.verbose = true;
   }
   if (!args.evalSet || !args.skillPath) {
-    throw new Error("Usage: node run_eval.mjs --eval-set evals.json --skill-path skill-dir [--model model]");
+    throw new Error("用法：node run_eval.mjs --eval-set evals.json --skill-path skill-dir [--model model]");
   }
   return args;
 }
@@ -240,13 +240,13 @@ export async function main(argv = process.argv.slice(2)) {
     const args = parseArgs(argv);
     const evalSet = JSON.parse(readFileSync(args.evalSet, "utf8"));
     if (!existsSync(join(args.skillPath, "SKILL.md"))) {
-      console.error(`Error: No SKILL.md found at ${args.skillPath}`);
+      console.error(`错误：${args.skillPath} 中未找到 SKILL.md`);
       return 1;
     }
     const { name, description } = parseSkillMd(args.skillPath);
     const testedDescription = args.description ?? description;
     const projectRoot = findProjectRoot();
-    if (args.verbose) console.error(`Evaluating: ${testedDescription}`);
+    if (args.verbose) console.error(`正在评估：${testedDescription}`);
     const output = await runEval({
       evalSet,
       skillName: name,
@@ -260,7 +260,7 @@ export async function main(argv = process.argv.slice(2)) {
     });
     if (args.verbose) {
       const summary = output.summary;
-      console.error(`Results: ${summary.passed}/${summary.total} passed`);
+      console.error(`结果：${summary.passed}/${summary.total} 通过`);
       for (const result of output.results) {
         const status = result.pass ? "PASS" : "FAIL";
         console.error(`  [${status}] rate=${result.triggers}/${result.runs} expected=${result.should_trigger}: ${result.query.slice(0, 70)}`);

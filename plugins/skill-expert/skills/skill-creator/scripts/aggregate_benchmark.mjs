@@ -37,7 +37,7 @@ export function loadRunResults(benchmarkDir) {
   if (existsSync(runsDir)) searchDir = runsDir;
   else if (listDirs(benchmarkDir).some((path) => basename(path).startsWith("eval-"))) searchDir = benchmarkDir;
   else {
-    console.log(`No eval directories found in ${benchmarkDir} or ${runsDir}`);
+    console.log(`在 ${benchmarkDir} 或 ${runsDir} 中未找到 eval 目录`);
     return {};
   }
 
@@ -67,7 +67,7 @@ export function loadRunResults(benchmarkDir) {
         const runNumber = Number(basename(runDir).split("-")[1]);
         const gradingFile = join(runDir, "grading.json");
         if (!existsSync(gradingFile)) {
-          console.log(`Warning: grading.json not found in ${runDir}`);
+          console.log(`警告：${runDir} 中未找到 grading.json`);
           continue;
         }
 
@@ -75,7 +75,7 @@ export function loadRunResults(benchmarkDir) {
         try {
           grading = readJson(gradingFile);
         } catch (error) {
-          console.log(`Warning: Invalid JSON in ${gradingFile}: ${error.message}`);
+          console.log(`警告：${gradingFile} 中的 JSON 无效：${error.message}`);
           continue;
         }
 
@@ -110,7 +110,7 @@ export function loadRunResults(benchmarkDir) {
 
         for (const expectation of result.expectations) {
           if (!("text" in expectation) || !("passed" in expectation)) {
-            console.log(`Warning: expectation in ${gradingFile} missing required fields (text, passed, evidence): ${JSON.stringify(expectation)}`);
+            console.log(`警告：${gradingFile} 中的 expectation 缺少必要字段（text, passed, evidence）：${JSON.stringify(expectation)}`);
           }
         }
 
@@ -216,23 +216,23 @@ export function generateMarkdown(benchmark) {
   const bTokens = bSummary.tokens ?? {};
 
   const lines = [
-    `# Skill Benchmark: ${metadata.skill_name}`,
+    `# Skill Benchmark：${metadata.skill_name}`,
     "",
     `**Model**: ${metadata.executor_model}`,
-    `**Date**: ${metadata.timestamp}`,
-    `**Evals**: ${metadata.evals_run.join(", ")} (${metadata.runs_per_configuration} runs each per configuration)`,
+    `**日期**: ${metadata.timestamp}`,
+    `**Evals**: ${metadata.evals_run.join(", ")}（每种配置 ${metadata.runs_per_configuration} 次运行）`,
     "",
-    "## Summary",
+    "## 汇总",
     "",
-    `| Metric | ${label(configA)} | ${label(configB)} | Delta |`,
+    `| 指标 | ${label(configA)} | ${label(configB)} | Delta |`,
     "|--------|------------|---------------|-------|",
     `| Pass Rate | ${((aPass.mean ?? 0) * 100).toFixed(0)}% +/- ${((aPass.stddev ?? 0) * 100).toFixed(0)}% | ${((bPass.mean ?? 0) * 100).toFixed(0)}% +/- ${((bPass.stddev ?? 0) * 100).toFixed(0)}% | ${delta.pass_rate ?? "-"} |`,
-    `| Time | ${(aTime.mean ?? 0).toFixed(1)}s +/- ${(aTime.stddev ?? 0).toFixed(1)}s | ${(bTime.mean ?? 0).toFixed(1)}s +/- ${(bTime.stddev ?? 0).toFixed(1)}s | ${delta.time_seconds ?? "-"}s |`,
+    `| 耗时 | ${(aTime.mean ?? 0).toFixed(1)}s +/- ${(aTime.stddev ?? 0).toFixed(1)}s | ${(bTime.mean ?? 0).toFixed(1)}s +/- ${(bTime.stddev ?? 0).toFixed(1)}s | ${delta.time_seconds ?? "-"}s |`,
     `| Tokens | ${(aTokens.mean ?? 0).toFixed(0)} +/- ${(aTokens.stddev ?? 0).toFixed(0)} | ${(bTokens.mean ?? 0).toFixed(0)} +/- ${(bTokens.stddev ?? 0).toFixed(0)} | ${delta.tokens ?? "-"} |`,
   ];
 
   if (benchmark.notes?.length) {
-    lines.push("", "## Notes", "", ...benchmark.notes.map((note) => `- ${note}`));
+    lines.push("", "## 备注", "", ...benchmark.notes.map((note) => `- ${note}`));
   }
   return lines.join("\n");
 }
@@ -247,7 +247,7 @@ function parseArgs(argv) {
     else if (arg === "--output" || arg === "-o") args.output = argv[++index] ?? null;
     else positional.push(arg);
   }
-  if (!positional.length) throw new Error("Usage: node aggregate_benchmark.mjs <benchmark_dir> [--skill-name name] [--skill-path path] [--output benchmark.json]");
+  if (!positional.length) throw new Error("用法：node aggregate_benchmark.mjs <benchmark_dir> [--skill-name name] [--skill-path path] [--output benchmark.json]");
   return { ...args, benchmarkDir: positional[0] };
 }
 
@@ -256,23 +256,23 @@ export function main(argv = process.argv.slice(2)) {
     const args = parseArgs(argv);
     const benchmarkDir = resolve(args.benchmarkDir);
     if (!existsSync(benchmarkDir)) {
-      console.log(`Directory not found: ${benchmarkDir}`);
+      console.log(`未找到目录：${benchmarkDir}`);
       return 1;
     }
     const benchmark = generateBenchmark(benchmarkDir, args.skillName, args.skillPath);
     const outputJson = args.output ? resolve(args.output) : join(benchmarkDir, "benchmark.json");
     const outputMd = outputJson.replace(/\.json$/i, ".md");
     writeFileSync(outputJson, JSON.stringify(benchmark, null, 2), "utf8");
-    console.log(`Generated: ${outputJson}`);
+    console.log(`已生成：${outputJson}`);
     writeFileSync(outputMd, generateMarkdown(benchmark), "utf8");
-    console.log(`Generated: ${outputMd}`);
+    console.log(`已生成：${outputMd}`);
 
     const configs = Object.keys(benchmark.run_summary).filter((key) => key !== "delta");
-    console.log("\nSummary:");
+    console.log("\n汇总：");
     for (const config of configs) {
       const rate = benchmark.run_summary[config].pass_rate.mean;
       const label = config.replaceAll("_", " ").replace(/\b\w/g, (char) => char.toUpperCase());
-      console.log(`  ${label}: ${(rate * 100).toFixed(1)}% pass rate`);
+      console.log(`  ${label}: pass rate ${(rate * 100).toFixed(1)}%`);
     }
     console.log(`  Delta:         ${benchmark.run_summary.delta?.pass_rate ?? "-"}`);
     return 0;

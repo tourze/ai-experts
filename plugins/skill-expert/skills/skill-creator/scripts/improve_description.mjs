@@ -42,37 +42,37 @@ function buildPrompt({
     ? `Train: ${trainScore}, Test: ${testResults.summary.passed}/${testResults.summary.total}`
     : `Train: ${trainScore}`;
 
-  let prompt = `You are optimizing a skill description for a Claude Code skill called "${skillName}". A "skill" is sort of like a prompt, but with progressive disclosure -- there's a title and description that Claude sees when deciding whether to use the skill, and then if it does use the skill, it reads the .md file which has lots more details and potentially links to other resources in the skill folder like helper files and scripts and additional documentation or examples.
+  let prompt = `你正在优化一个 Claude Code skill 的 description。skill 名称是 "${skillName}"。skill 类似 prompt，但带有渐进披露机制：Claude 先看到 title 和 description，并据此决定是否使用该 skill；如果决定使用，再读取 .md 文件，其中包含更多细节，也可能链接到 skill 目录中的 helper files、scripts、补充文档或示例。
 
-The description appears in Claude's "available_skills" list. When a user sends a query, Claude decides whether to invoke the skill based solely on the title and on this description. Your goal is to write a description that triggers for relevant queries, and doesn't trigger for irrelevant ones.
+description 会出现在 Claude 的 "available_skills" 列表中。用户发送 query 时，Claude 只根据 title 和 description 判断是否调用 skill。你的目标是写出一个 description：相关 query 会触发，无关 query 不会触发。
 
-Here's the current description:
+当前 description：
 <current_description>
 "${currentDescription}"
 </current_description>
 
-Current scores (${scoresSummary}):
+当前分数（${scoresSummary}）：
 <scores_summary>
 `;
 
   if (failedTriggers.length) {
-    prompt += "FAILED TO TRIGGER (should have triggered but didn't):\n";
+    prompt += "未触发但应该触发：\n";
     for (const result of failedTriggers) {
-      prompt += `  - "${result.query}" (triggered ${result.triggers}/${result.runs} times)\n`;
+      prompt += `  - "${result.query}"（触发 ${result.triggers}/${result.runs} 次）\n`;
     }
     prompt += "\n";
   }
 
   if (falseTriggers.length) {
-    prompt += "FALSE TRIGGERS (triggered but shouldn't have):\n";
+    prompt += "误触发：\n";
     for (const result of falseTriggers) {
-      prompt += `  - "${result.query}" (triggered ${result.triggers}/${result.runs} times)\n`;
+      prompt += `  - "${result.query}"（触发 ${result.triggers}/${result.runs} 次）\n`;
     }
     prompt += "\n";
   }
 
   if (history.length) {
-    prompt += "PREVIOUS ATTEMPTS (do NOT repeat these -- try something structurally different):\n\n";
+    prompt += "之前尝试过的 description（不要重复这些写法，请尝试结构上不同的表达）：\n\n";
     for (const item of history) {
       const trainScoreText = `${item.train_passed ?? item.passed ?? 0}/${item.train_total ?? item.total ?? 0}`;
       const testScoreText = item.test_passed != null ? `, test=${item.test_passed}/${item.test_total}` : "";
@@ -80,7 +80,7 @@ Current scores (${scoresSummary}):
       prompt += `Description: "${item.description}"\n`;
       for (const result of item.results ?? []) {
         const status = result.pass ? "PASS" : "FAIL";
-        prompt += `  [${status}] "${String(result.query).slice(0, 80)}" (triggered ${result.triggers}/${result.runs})\n`;
+        prompt += `  [${status}] "${String(result.query).slice(0, 80)}"（触发 ${result.triggers}/${result.runs}）\n`;
       }
       if (item.note) prompt += `Note: ${item.note}\n`;
       prompt += "</attempt>\n\n";
@@ -89,20 +89,20 @@ Current scores (${scoresSummary}):
 
   prompt += `</scores_summary>
 
-Skill content (for context on what the skill does):
+Skill 内容（用于理解该 skill 做什么）：
 <skill_content>
 ${skillContent}
 </skill_content>
 
-Based on the failures, write a new and improved description that is more likely to trigger correctly. Avoid overfitting to the exact examples; generalize to broader user intents. The description should not be more than about 100-200 words and must stay under 1024 characters.
+根据失败情况，写一个更可能正确触发的新 description。不要过拟合这些精确例子，要泛化到更广的用户意图。description 建议控制在约 100-200 词以内，并且必须少于 1024 个字符。
 
-Tips:
-- Phrase it in the imperative: "Use this skill for..."
-- Focus on the user's intent, not implementation details.
-- Make it distinctive against nearby skills.
-- If repeated attempts fail, change structure or wording.
+建议：
+- 使用祈使句表达，例如 "Use this skill for..."
+- 聚焦用户意图，而不是实现细节
+- 与相邻 skill 区分清楚
+- 如果多次尝试失败，改变结构或措辞
 
-Please respond with only the new description text in <new_description> tags, nothing else.`;
+只返回包在 <new_description> 标签内的新 description 文本，不要输出其他内容。`;
 
   return prompt;
 }
@@ -131,7 +131,7 @@ export function improveDescription({
   };
 
   if (description.length > 1024) {
-    const shortenPrompt = `${prompt}\n\n---\n\nA previous attempt produced this description, which at ${description.length} characters is over the 1024-character hard limit:\n\n"${description}"\n\nRewrite it to be under 1024 characters while keeping the most important trigger words and intent coverage. Respond with only the new description in <new_description> tags.`;
+    const shortenPrompt = `${prompt}\n\n---\n\n上一次尝试生成的 description 有 ${description.length} 个字符，超过 1024 字符硬限制：\n\n"${description}"\n\n请在保留最重要触发词和意图覆盖的前提下，将它改写到 1024 字符以内。只返回包在 <new_description> 标签内的新 description。`;
     const shortenText = callClaude(shortenPrompt, model);
     const shortened = extractDescription(shortenText);
     transcript.rewrite_prompt = shortenPrompt;
@@ -160,7 +160,7 @@ function parseArgs(argv) {
     else if (arg === "--verbose") args.verbose = true;
   }
   if (!args.evalResults || !args.skillPath || !args.model) {
-    throw new Error("Usage: node improve_description.mjs --eval-results results.json --skill-path skill-dir --model model");
+    throw new Error("用法：node improve_description.mjs --eval-results results.json --skill-path skill-dir --model model");
   }
   return args;
 }
@@ -169,7 +169,7 @@ export function main(argv = process.argv.slice(2)) {
   try {
     const args = parseArgs(argv);
     if (!existsSync(join(args.skillPath, "SKILL.md"))) {
-      console.error(`Error: No SKILL.md found at ${args.skillPath}`);
+      console.error(`错误：${args.skillPath} 中未找到 SKILL.md`);
       return 1;
     }
     const evalResults = JSON.parse(readFileSync(args.evalResults, "utf8"));
@@ -177,8 +177,8 @@ export function main(argv = process.argv.slice(2)) {
     const { name, content } = parseSkillMd(args.skillPath);
     const currentDescription = evalResults.description;
     if (args.verbose) {
-      console.error(`Current: ${currentDescription}`);
-      console.error(`Score: ${evalResults.summary.passed}/${evalResults.summary.total}`);
+      console.error(`当前：${currentDescription}`);
+      console.error(`分数：${evalResults.summary.passed}/${evalResults.summary.total}`);
     }
     const newDescription = improveDescription({
       skillName: name,
@@ -188,7 +188,7 @@ export function main(argv = process.argv.slice(2)) {
       history,
       model: args.model,
     });
-    if (args.verbose) console.error(`Improved: ${newDescription}`);
+    if (args.verbose) console.error(`改进后：${newDescription}`);
     console.log(JSON.stringify({
       description: newDescription,
       history: history.concat([{

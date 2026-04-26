@@ -81,10 +81,10 @@ ${testQueries.map((query) => `                ${resultCell(testByQuery.get(query
   }).join("\n");
 
   return `<!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="utf-8">
-${autoRefresh ? '    <meta http-equiv="refresh" content="5">\n' : ""}    <title>${titlePrefix}Skill Description Optimization</title>
+${autoRefresh ? '    <meta http-equiv="refresh" content="5">\n' : ""}    <title>${titlePrefix}Skill Description 优化</title>
     <style>
         body { font-family: Georgia, serif; margin: 0 auto; padding: 20px; background: #faf9f5; color: #141413; }
         h1 { font-family: system-ui, sans-serif; }
@@ -112,19 +112,19 @@ ${autoRefresh ? '    <meta http-equiv="refresh" content="5">\n' : ""}    <title>
     </style>
 </head>
 <body>
-    <h1>${titlePrefix}Skill Description Optimization</h1>
-    <div class="explainer">This page shows each description iteration and whether each train/test query triggered correctly.</div>
+    <h1>${titlePrefix}Skill Description 优化</h1>
+    <div class="explainer">此页面展示每轮 description 迭代，以及每个 train/test query 是否正确触发。</div>
     <div class="summary">
-        <p><strong>Original:</strong> ${escapeHtml(data.original_description ?? "N/A")}</p>
-        <p><strong>Best:</strong> ${escapeHtml(data.best_description ?? "N/A")}</p>
-        <p><strong>Best Score:</strong> ${escapeHtml(data.best_score ?? "N/A")} ${data.best_test_score ? "(test)" : "(train)"}</p>
-        <p><strong>Iterations:</strong> ${escapeHtml(data.iterations_run ?? 0)} | <strong>Train:</strong> ${escapeHtml(data.train_size ?? "?")} | <strong>Test:</strong> ${escapeHtml(data.test_size ?? "?")}</p>
+        <p><strong>原始：</strong> ${escapeHtml(data.original_description ?? "N/A")}</p>
+        <p><strong>最佳：</strong> ${escapeHtml(data.best_description ?? "N/A")}</p>
+        <p><strong>最佳分数：</strong> ${escapeHtml(data.best_score ?? "N/A")} ${data.best_test_score ? "(test)" : "(train)"}</p>
+        <p><strong>迭代轮数：</strong> ${escapeHtml(data.iterations_run ?? 0)} | <strong>Train：</strong> ${escapeHtml(data.train_size ?? "?")} | <strong>Test：</strong> ${escapeHtml(data.test_size ?? "?")}</p>
     </div>
     <div class="table-container">
     <table>
         <thead>
             <tr>
-                <th>Iter</th>
+                <th>轮次</th>
                 <th>Train</th>
                 <th>Test</th>
                 <th class="query-col">Description</th>
@@ -151,7 +151,7 @@ function parseArgs(argv) {
     else if (arg === "--skill-name") args.skillName = argv[++index] ?? "";
     else positional.push(arg);
   }
-  if (!positional.length) throw new Error("Usage: node generate_report.mjs <results.json|- for stdin> [-o output.html] [--skill-name name]");
+  if (!positional.length) throw new Error("用法：node generate_report.mjs <results.json|- for stdin> [-o output.html] [--skill-name name]");
   return { ...args, input: positional[0] };
 }
 
@@ -164,7 +164,7 @@ export function main(argv = process.argv.slice(2), stdin = process.stdin) {
     const html = generateHtml(data, false, args.skillName);
     if (args.output) {
       writeFileSync(args.output, html, "utf8");
-      console.error(`Report written to ${args.output}`);
+      console.error(`报告已写入：${args.output}`);
     } else {
       console.log(html);
     }

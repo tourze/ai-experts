@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""Generate and serve a review page for eval results.
+"""为 eval 结果生成并提供 review 页面。
 
-Reads the workspace directory, discovers runs (directories with outputs/),
-embeds all output data into a self-contained HTML page, and serves it via
-a tiny HTTP server. Feedback auto-saves to feedback.json in the workspace.
+读取 workspace 目录，发现 runs（包含 outputs/ 的目录），将所有输出数据嵌入
+一个自包含 HTML 页面，并通过轻量 HTTP server 提供访问。反馈会自动保存到
+workspace 中的 feedback.json。
 
 Usage:
     python generate_review.py <workspace-path> [--port PORT] [--skill-name NAME]
     python generate_review.py <workspace-path> --previous-feedback /path/to/old/feedback.json
 
-No dependencies beyond the Python stdlib are required.
+仅依赖 Python stdlib。
 """
 
 import argparse
@@ -114,7 +114,7 @@ def build_run(root: Path, run_dir: Path) -> dict | None:
                     break
 
     if not prompt:
-        prompt = "(No prompt found)"
+        prompt = "（未找到 prompt）"
 
     run_id = str(run_dir.relative_to(root)).replace("/", "-").replace("\\", "-")
 
@@ -155,7 +155,7 @@ def embed_file(path: Path) -> dict:
         try:
             content = path.read_text(errors="replace")
         except OSError:
-            content = "(Error reading file)"
+            content = "（读取文件失败）"
         return {
             "name": path.name,
             "type": "text",
@@ -166,7 +166,7 @@ def embed_file(path: Path) -> dict:
             raw = path.read_bytes()
             b64 = base64.b64encode(raw).decode("ascii")
         except OSError:
-            return {"name": path.name, "type": "error", "content": "(Error reading file)"}
+            return {"name": path.name, "type": "error", "content": "（读取文件失败）"}
         return {
             "name": path.name,
             "type": "image",
@@ -178,7 +178,7 @@ def embed_file(path: Path) -> dict:
             raw = path.read_bytes()
             b64 = base64.b64encode(raw).decode("ascii")
         except OSError:
-            return {"name": path.name, "type": "error", "content": "(Error reading file)"}
+            return {"name": path.name, "type": "error", "content": "（读取文件失败）"}
         return {
             "name": path.name,
             "type": "pdf",
@@ -189,7 +189,7 @@ def embed_file(path: Path) -> dict:
             raw = path.read_bytes()
             b64 = base64.b64encode(raw).decode("ascii")
         except OSError:
-            return {"name": path.name, "type": "error", "content": "(Error reading file)"}
+            return {"name": path.name, "type": "error", "content": "（读取文件失败）"}
         return {
             "name": path.name,
             "type": "xlsx",
@@ -201,7 +201,7 @@ def embed_file(path: Path) -> dict:
             raw = path.read_bytes()
             b64 = base64.b64encode(raw).decode("ascii")
         except OSError:
-            return {"name": path.name, "type": "error", "content": "(Error reading file)"}
+            return {"name": path.name, "type": "error", "content": "（读取文件失败）"}
         return {
             "name": path.name,
             "type": "binary",
@@ -303,7 +303,7 @@ def _kill_port(port: int) -> None:
     except subprocess.TimeoutExpired:
         pass
     except FileNotFoundError:
-        print("Note: lsof not found, cannot check if port is in use", file=sys.stderr)
+        print("提示：未找到 lsof，无法检查端口是否被占用", file=sys.stderr)
 
 class ReviewHandler(BaseHTTPRequestHandler):
     """Serves the review HTML and handles feedback saves.
@@ -365,7 +365,7 @@ class ReviewHandler(BaseHTTPRequestHandler):
             try:
                 data = json.loads(body)
                 if not isinstance(data, dict) or "reviews" not in data:
-                    raise ValueError("Expected JSON object with 'reviews' key")
+                    raise ValueError("期望收到包含 'reviews' key 的 JSON object")
                 self.feedback_path.write_text(json.dumps(data, indent=2) + "\n")
                 resp = b'{"ok":true}'
                 self.send_response(200)
@@ -380,37 +380,37 @@ class ReviewHandler(BaseHTTPRequestHandler):
             self.send_error(404)
 
     def log_message(self, format: str, *args: object) -> None:
-        # Suppress request logging to keep terminal clean
+        # 抑制请求日志，保持终端输出干净
         pass
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Generate and serve eval review")
-    parser.add_argument("workspace", type=Path, help="Path to workspace directory")
-    parser.add_argument("--port", "-p", type=int, default=3117, help="Server port (default: 3117)")
-    parser.add_argument("--skill-name", "-n", type=str, default=None, help="Skill name for header")
+    parser = argparse.ArgumentParser(description="生成并提供 eval review 页面")
+    parser.add_argument("workspace", type=Path, help="workspace 目录路径")
+    parser.add_argument("--port", "-p", type=int, default=3117, help="server 端口（默认：3117）")
+    parser.add_argument("--skill-name", "-n", type=str, default=None, help="header 中显示的 skill 名称")
     parser.add_argument(
         "--previous-workspace", type=Path, default=None,
-        help="Path to previous iteration's workspace (shows old outputs and feedback as context)",
+        help="上一轮 workspace 路径（用于显示旧输出和旧反馈）",
     )
     parser.add_argument(
         "--benchmark", type=Path, default=None,
-        help="Path to benchmark.json to show in the Benchmark tab",
+        help="要在 Benchmark tab 中展示的 benchmark.json 路径",
     )
     parser.add_argument(
         "--static", "-s", type=Path, default=None,
-        help="Write standalone HTML to this path instead of starting a server",
+        help="写出独立 HTML 到该路径，而不是启动 server",
     )
     args = parser.parse_args()
 
     workspace = args.workspace.resolve()
     if not workspace.is_dir():
-        print(f"Error: {workspace} is not a directory", file=sys.stderr)
+        print(f"错误：{workspace} 不是目录", file=sys.stderr)
         sys.exit(1)
 
     runs = find_runs(workspace)
     if not runs:
-        print(f"No runs found in {workspace}", file=sys.stderr)
+        print(f"在 {workspace} 中未找到 runs", file=sys.stderr)
         sys.exit(1)
 
     skill_name = args.skill_name or workspace.name.replace("-workspace", "")
@@ -432,7 +432,7 @@ def main() -> None:
         html = generate_html(runs, skill_name, previous, benchmark)
         args.static.parent.mkdir(parents=True, exist_ok=True)
         args.static.write_text(html)
-        print(f"\n  Static viewer written to: {args.static}\n")
+        print(f"\n  静态 viewer 已写入：{args.static}\n")
         sys.exit(0)
 
     # Kill any existing process on the target port
@@ -453,17 +453,17 @@ def main() -> None:
     print(f"  Workspace: {workspace}")
     print(f"  Feedback:  {feedback_path}")
     if previous:
-        print(f"  Previous:  {args.previous_workspace} ({len(previous)} runs)")
+        print(f"  Previous:  {args.previous_workspace}（{len(previous)} 个 runs）")
     if benchmark_path:
         print(f"  Benchmark: {benchmark_path}")
-    print(f"\n  Press Ctrl+C to stop.\n")
+    print(f"\n  按 Ctrl+C 停止。\n")
 
     webbrowser.open(url)
 
     try:
         server.serve_forever()
     except KeyboardInterrupt:
-        print("\nStopped.")
+        print("\n已停止。")
         server.server_close()
 
 

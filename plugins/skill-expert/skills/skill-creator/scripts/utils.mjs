@@ -6,12 +6,12 @@ export function parseSkillMd(skillPath) {
   const lines = content.split("\n");
 
   if ((lines[0] || "").trim() !== "---") {
-    throw new Error("SKILL.md missing frontmatter (no opening ---)");
+    throw new Error("SKILL.md 缺少 frontmatter（没有开头 ---）");
   }
 
   const endIdx = lines.findIndex((line, index) => index > 0 && line.trim() === "---");
   if (endIdx === -1) {
-    throw new Error("SKILL.md missing frontmatter (no closing ---)");
+    throw new Error("SKILL.md 缺少 frontmatter（没有结尾 ---）");
   }
 
   let name = "";

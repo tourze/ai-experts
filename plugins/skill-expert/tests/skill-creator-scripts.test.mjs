@@ -57,7 +57,7 @@ test("aggregate_benchmark.mjs summarizes grading results", () => {
     assert.equal(benchmark.metadata.skill_name, "demo-skill");
     assert.equal(benchmark.runs[0].eval_id, 7);
     assert.equal(benchmark.run_summary.with_skill.pass_rate.mean, 0.75);
-    assert.match(generateMarkdown(benchmark), /Skill Benchmark: demo-skill/);
+    assert.match(generateMarkdown(benchmark), /Skill Benchmark：demo-skill/);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
@@ -68,7 +68,7 @@ test("aggregate_benchmark.mjs CLI writes benchmark files", () => {
   try {
     const script = resolve(pluginRoot, "skills/skill-creator/scripts/aggregate_benchmark.mjs");
     const output = execFileSync("node", [script, dir, "--skill-name", "demo-skill"], { encoding: "utf8" });
-    assert.match(output, /Generated:/);
+    assert.match(output, /已生成：/);
     assert.equal(JSON.parse(readFileSync(join(dir, "benchmark.json"), "utf8")).metadata.skill_name, "demo-skill");
     assert.match(readFileSync(join(dir, "benchmark.md"), "utf8"), /Pass Rate/);
   } finally {
@@ -91,7 +91,7 @@ test("generate_report.mjs renders train and test result tables", () => {
       test_results: [{ query: "write SQL", should_trigger: false, pass: true, triggers: 0, runs: 3 }],
     }],
   }, false, "demo");
-  assert.match(html, /demo - Skill Description Optimization/);
+  assert.match(html, /demo - Skill Description 优化/);
   assert.match(html, /make a skill/);
   assert.match(html, /write SQL/);
 });

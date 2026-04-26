@@ -49,7 +49,7 @@ export function parseFrontmatter(text) {
     }
     const match = line.match(/^([A-Za-z0-9_-]+):(?:\s*(.*))?$/);
     if (!match) {
-      throw new Error(`Unsupported YAML line: ${line}`);
+      throw new Error(`不支持的 YAML 行：${line}`);
     }
 
     const [, key, rawValue = ""] = match;
@@ -71,92 +71,92 @@ export function parseFrontmatter(text) {
 export function validateSkill(skillPath) {
   const skillMd = join(skillPath, "SKILL.md");
   if (!existsSync(skillMd)) {
-    return [false, "SKILL.md not found"];
+    return [false, "未找到 SKILL.md"];
   }
 
   const content = readFileSync(skillMd, "utf-8");
   if (!content.startsWith("---")) {
-    return [false, "No YAML frontmatter found"];
+    return [false, "未找到 YAML frontmatter"];
   }
 
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) {
-    return [false, "Invalid frontmatter format"];
+    return [false, "frontmatter 格式无效"];
   }
 
   let frontmatter;
   try {
     frontmatter = parseFrontmatter(match[1]);
   } catch (error) {
-    return [false, `Invalid YAML in frontmatter: ${error.message}`];
+    return [false, `frontmatter 中的 YAML 无效：${error.message}`];
   }
 
   if (!frontmatter || typeof frontmatter !== "object" || Array.isArray(frontmatter)) {
-    return [false, "Frontmatter must be a YAML dictionary"];
+    return [false, "Frontmatter 必须是 YAML dictionary"];
   }
 
   const unexpectedKeys = Object.keys(frontmatter).filter((key) => !ALLOWED_PROPERTIES.has(key)).sort();
   if (unexpectedKeys.length) {
     return [
       false,
-      `Unexpected key(s) in SKILL.md frontmatter: ${unexpectedKeys.join(", ")}. Allowed properties are: ${[...ALLOWED_PROPERTIES].sort().join(", ")}`,
+      `SKILL.md frontmatter 中存在不支持的 key：${unexpectedKeys.join(", ")}。允许的 properties：${[...ALLOWED_PROPERTIES].sort().join(", ")}`,
     ];
   }
 
   if (!Object.hasOwn(frontmatter, "name")) {
-    return [false, "Missing 'name' in frontmatter"];
+    return [false, "frontmatter 缺少 'name'"];
   }
   if (!Object.hasOwn(frontmatter, "description")) {
-    return [false, "Missing 'description' in frontmatter"];
+    return [false, "frontmatter 缺少 'description'"];
   }
 
   const name = frontmatter.name;
   if (typeof name !== "string") {
-    return [false, `Name must be a string, got ${typeof name}`];
+    return [false, `Name 必须是 string，实际为 ${typeof name}`];
   }
   const trimmedName = name.trim();
   if (trimmedName) {
     if (!/^[a-z0-9-]+$/.test(trimmedName)) {
-      return [false, `Name '${trimmedName}' should be kebab-case (lowercase letters, digits, and hyphens only)`];
+      return [false, `Name '${trimmedName}' 应为 kebab-case（只能包含小写字母、数字和连字符）`];
     }
     if (trimmedName.startsWith("-") || trimmedName.endsWith("-") || trimmedName.includes("--")) {
-      return [false, `Name '${trimmedName}' cannot start/end with hyphen or contain consecutive hyphens`];
+      return [false, `Name '${trimmedName}' 不能以连字符开头/结尾，也不能包含连续连字符`];
     }
     if (trimmedName.length > 64) {
-      return [false, `Name is too long (${trimmedName.length} characters). Maximum is 64 characters.`];
+      return [false, `Name 过长（${trimmedName.length} 个字符）。最大 64 个字符。`];
     }
   }
 
   const description = frontmatter.description;
   if (typeof description !== "string") {
-    return [false, `Description must be a string, got ${typeof description}`];
+    return [false, `Description 必须是 string，实际为 ${typeof description}`];
   }
   const trimmedDescription = description.trim();
   if (trimmedDescription) {
     if (trimmedDescription.includes("<") || trimmedDescription.includes(">")) {
-      return [false, "Description cannot contain angle brackets (< or >)"];
+      return [false, "Description 不能包含尖括号（< 或 >）"];
     }
     if (trimmedDescription.length > 1024) {
-      return [false, `Description is too long (${trimmedDescription.length} characters). Maximum is 1024 characters.`];
+      return [false, `Description 过长（${trimmedDescription.length} 个字符）。最大 1024 个字符。`];
     }
   }
 
   const compatibility = frontmatter.compatibility ?? "";
   if (compatibility) {
     if (typeof compatibility !== "string") {
-      return [false, `Compatibility must be a string, got ${typeof compatibility}`];
+      return [false, `Compatibility 必须是 string，实际为 ${typeof compatibility}`];
     }
     if (compatibility.length > 500) {
-      return [false, `Compatibility is too long (${compatibility.length} characters). Maximum is 500 characters.`];
+      return [false, `Compatibility 过长（${compatibility.length} 个字符）。最大 500 个字符。`];
     }
   }
 
-  return [true, "Skill is valid!"];
+  return [true, "Skill 校验通过！"];
 }
 
 export function main(argv = process.argv.slice(2)) {
   if (argv.length !== 1) {
-    console.log("Usage: node quick_validate.mjs <skill_directory>");
+    console.log("用法：node quick_validate.mjs <skill_directory>");
     return 1;
   }
 

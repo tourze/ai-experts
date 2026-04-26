@@ -100,7 +100,7 @@ test("skill-creator quick_validate.mjs 校验 frontmatter", () => {
   try {
     const script = resolve(pluginRoot, "skills/skill-creator/scripts/quick_validate.mjs");
     const valid = execFileSync("node", [script, skill], { encoding: "utf-8", stdio: "pipe" });
-    assert.match(valid, /Skill is valid!/);
+    assert.match(valid, /Skill 校验通过！/);
 
     writeFileSync(resolve(skill, "SKILL.md"), "---\nname: Demo Skill\ndescription: bad\n---\n", "utf-8");
     assert.throws(() => execFileSync("node", [script, skill], { stdio: "pipe" }));
@@ -122,9 +122,9 @@ test("skill-creator package_skill.mjs 生成 .skill 并排除 root evals", () =>
   try {
     const script = resolve(pluginRoot, "skills/skill-creator/scripts/package_skill.mjs");
     const output = execFileSync("node", [script, skill, dist], { encoding: "utf-8", stdio: "pipe" });
-    assert.match(output, /Successfully packaged skill/);
-    assert.match(output, /Added: demo-skill\/SKILL\.md/);
-    assert.match(output, /Skipped: demo-skill\/evals\/cases\.yaml/);
+    assert.match(output, /Skill 打包完成/);
+    assert.match(output, /已添加：demo-skill\/SKILL\.md/);
+    assert.match(output, /已跳过：demo-skill\/evals\/cases\.yaml/);
 
     const archive = readFileSync(resolve(dist, "demo-skill.skill"));
     assert.ok(archive.length > 0);
