@@ -15,6 +15,29 @@ cases:
       - "keeps the response focused on the skill's domain boundary"
     trigger_expected: true
 
+  - id: positive_ppt_generate_image_first_preview
+    prompt: "帮我做一个答辩 PPT，我只有主题和零散材料，先给我几套真实页面预览图看看，再决定风格和生成。"
+    fixtures: []
+    rubric:
+      - "recognizes image-first preview-led PPT generation as ppt-generate territory"
+      - "requires content grounding, style confirmation, and generation branch confirmation before final PPT delivery"
+    trigger_expected: true
+
+  - id: positive_ppt_generate_multicandidate_deck
+    prompt: "把这份产品介绍做成 deck，每页先出多张候选图，我挑完以后再封装成 PPTX。"
+    fixtures: []
+    rubric:
+      - "handles multi-candidate page generation as an end-to-end deck generation workflow"
+      - "does not route the request to raw PPTX file editing before the deck is planned"
+    trigger_expected: true
+
+  - id: negative_existing_pptx_file_editing
+    prompt: "请打开这个已有 .pptx，删除第 5 页，替换第 8 页图片，然后重新打包校验。"
+    fixtures: []
+    rubric:
+      - "existing PPTX file editing should trigger pptx rather than ppt-generate"
+    trigger_expected: false
+
   - id: negative_adjacent_consulting_analysis
     prompt: "这个需求应该交给 consulting-analysis：产出咨询级研究报告、市场分析、消费者洞察、品牌研究、财务分析、竞品情报或投融资尽调文档时使用。"
     fixtures: []
