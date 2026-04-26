@@ -13,8 +13,8 @@ description: "当用户明确希望基于 git 历史构建安全所有权、bus 
 ## 核心约束
 - 只用于安全导向的所有权分析，不回答泛化的“谁维护这个仓库”问题。
 - 优先缩小时间窗；大仓库默认加 `--since` 或 `--until`。
-- 社区检测和 GraphML 输出需要 `networkx`；关闭这两项时核心导出可独立运行。
-- 脚本路径以当前 skill 目录为基准；查询、社区分析与构建入口使用 Node.js，构建核心暂仍由 `build_ownership_map.py` 执行。
+- 社区检测和 GraphML 输出由 Node.js 脚本直接生成，无需 Python `networkx`。
+- 脚本路径以当前 skill 目录为基准；构建、查询与社区分析脚本都使用 Node.js。
 
 ## 代码模式
 ```bash

@@ -5,7 +5,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { spawnSync } from "node:child_process";
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
-const pythonBin = process.env.PYTHON || (process.platform === "win32" ? "python" : "python3");
+const nodeBin = process.execPath;
 
 function requireValue(argv, index, option) {
   const value = argv[index + 1];
@@ -73,10 +73,10 @@ export function parseArgs(argv = process.argv.slice(2)) {
   return args;
 }
 
-export function buildCommand(args, python = pythonBin) {
+export function buildCommand(args, node = nodeBin) {
   const command = [
-    python,
-    join(scriptDir, "build_ownership_map.py"),
+    node,
+    join(scriptDir, "build_ownership_map.mjs"),
     "--repo",
     args.repo,
     "--out",
@@ -116,19 +116,9 @@ export function buildCommand(args, python = pythonBin) {
   return command;
 }
 
-function hasNetworkx() {
-  const result = spawnSync(pythonBin, ["-c", "import networkx"], { stdio: "ignore" });
-  return result.status === 0;
-}
-
 export function main(argv = process.argv.slice(2)) {
   try {
     const args = parseArgs(argv);
-    const needsNetworkx = !args.noCommunities || args.graphml;
-    if (needsNetworkx && !hasNetworkx()) {
-      console.error("networkx is required for communities or GraphML output. Install with: pip install networkx");
-      return 2;
-    }
     const [command, ...commandArgs] = buildCommand(args);
     const result = spawnSync(command, commandArgs, { stdio: "inherit" });
     return result.status ?? 1;

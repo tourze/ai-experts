@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { mkdtempSync, writeFileSync } from "node:fs";
+import { execFileSync, spawnSync } from "node:child_process";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -22,6 +22,7 @@ import {
 
 const scriptPath = fileURLToPath(new URL("../skills/security-ownership-map/scripts/query_ownership.mjs", import.meta.url));
 const maintainerScriptPath = fileURLToPath(new URL("../skills/security-ownership-map/scripts/community_maintainers.mjs", import.meta.url));
+const buildScriptPath = fileURLToPath(new URL("../skills/security-ownership-map/scripts/build_ownership_map.mjs", import.meta.url));
 
 function createOwnershipData() {
   const dataDir = mkdtempSync(join(tmpdir(), "ownership-map-"));
@@ -208,7 +209,7 @@ test("run_ownership_map.mjs preserves build command arguments", () => {
   ]);
   const command = buildCommand(args, "python-test");
   assert.equal(command[0], "python-test");
-  assert.ok(command[1].endsWith("build_ownership_map.py"));
+  assert.ok(command[1].endsWith("build_ownership_map.mjs"));
   assert.deepEqual(command.slice(2, 8), ["--repo", "/repo", "--out", "out", "--identity", "author"]);
   assert.ok(command.includes("--since"));
   assert.ok(command.includes("12 months ago"));
@@ -218,4 +219,68 @@ test("run_ownership_map.mjs preserves build command arguments", () => {
   assert.ok(command.includes("bot"));
   assert.ok(command.includes("--cochange-exclude"));
   assert.ok(command.includes("*.lock"));
+});
+
+test("build_ownership_map.mjs builds ownership artifacts from git history", () => {
+  const repo = mkdtempSync(join(tmpdir(), "ownership-repo-"));
+  const outDir = join(repo, "ownership-out");
+  mkdirSync(join(repo, "src", "auth"), { recursive: true });
+  mkdirSync(join(repo, "src", "ui"), { recursive: true });
+  execFileSync("git", ["init"], { cwd: repo, stdio: "pipe" });
+  execFileSync("git", ["config", "user.name", "Tester"], { cwd: repo, stdio: "pipe" });
+  execFileSync("git", ["config", "user.email", "tester@example.com"], { cwd: repo, stdio: "pipe" });
+
+  writeFileSync(join(repo, "src", "auth", "session.go"), "package auth\n");
+  execFileSync("git", ["add", "."], { cwd: repo, stdio: "pipe" });
+  execFileSync("git", ["commit", "-m", "add auth"], {
+    cwd: repo,
+    env: {
+      ...process.env,
+      GIT_AUTHOR_NAME: "Alice",
+      GIT_AUTHOR_EMAIL: "alice@example.com",
+      GIT_AUTHOR_DATE: "2026-01-01T10:00:00+00:00",
+      GIT_COMMITTER_NAME: "Alice",
+      GIT_COMMITTER_EMAIL: "alice@example.com",
+      GIT_COMMITTER_DATE: "2026-01-01T10:00:00+00:00",
+    },
+    stdio: "pipe",
+  });
+
+  writeFileSync(join(repo, "src", "ui", "view.ts"), "export const view = 1;\n");
+  execFileSync("git", ["add", "."], { cwd: repo, stdio: "pipe" });
+  execFileSync("git", ["commit", "-m", "add ui"], {
+    cwd: repo,
+    env: {
+      ...process.env,
+      GIT_AUTHOR_NAME: "Bob",
+      GIT_AUTHOR_EMAIL: "bob@example.com",
+      GIT_AUTHOR_DATE: "2026-01-02T10:00:00+00:00",
+      GIT_COMMITTER_NAME: "Bob",
+      GIT_COMMITTER_EMAIL: "bob@example.com",
+      GIT_COMMITTER_DATE: "2026-01-02T10:00:00+00:00",
+    },
+    stdio: "pipe",
+  });
+
+  const result = spawnSync(process.execPath, [
+    buildScriptPath,
+    "--repo", repo,
+    "--out", outDir,
+    "--emit-commits",
+    "--cochange-min-count", "1",
+  ], { encoding: "utf8" });
+  assert.equal(result.status, 0, result.stderr);
+  assert.ok(existsSync(join(outDir, "people.csv")));
+  assert.ok(existsSync(join(outDir, "files.csv")));
+  assert.ok(existsSync(join(outDir, "edges.csv")));
+  assert.ok(existsSync(join(outDir, "summary.json")));
+  assert.ok(existsSync(join(outDir, "commits.jsonl")));
+
+  const filesCsv = readFileSync(join(outDir, "files.csv"), "utf8");
+  assert.match(filesCsv, /src\/auth\/session\.go/);
+  assert.match(filesCsv, /auth/);
+  const summary = JSON.parse(readFileSync(join(outDir, "summary.json"), "utf8"));
+  assert.equal(summary.stats.people, 2);
+  assert.equal(summary.stats.files, 2);
+  assert.ok(summary.bus_factor_hotspots.some((entry) => entry.path === "src/auth/session.go"));
 });
