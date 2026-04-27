@@ -10,3 +10,4 @@
 | 不读现有 MEMORY.md 就建议「新增」 | 大概率写出重复条目 |
 | 只夸不批 | 复盘的价值在于发现待改进点，全是赞美等于零信息 |
 | 一次给跨多个领域的混合建议 | 用户决策成本太高，反而都不会落地 |
+| 把 hook dispatch 抛错 / SKILL 脚本调用失败当复盘内容 | 那是 runtime 故障，应交 `trigger-telemetry-advisor`（基于 telemetry 归因）或 `bug-investigator`（追根因）；复盘只关心「发生了几次、是否反映治理缺口」 |

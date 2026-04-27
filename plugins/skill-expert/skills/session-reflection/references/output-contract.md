@@ -37,6 +37,7 @@
 - 噪声 hook：哪个 hook 注入了无用上下文 → 缩窄触发条件
 - 缺失 hook：哪类失误 hook 应该提前拦住 → 给出 hook 草案（事件 / 匹配条件）
 - gate 误判：哪类回复被错误阻断 / 放行 → 给出修正逻辑
+- runtime 故障不在本节：dispatch error / SKILL 脚本调用失败 → 引用 `trigger-telemetry-advisor` 的归因结论，再判断是否补 hook 设计建议
 
 ## 4. 不沉淀清单（明示放弃）
 
