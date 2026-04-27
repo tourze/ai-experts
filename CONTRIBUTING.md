@@ -6,7 +6,7 @@
 
 - Node.js 20 或更高版本
 - 不需要 `npm install`：仓库未声明任何运行时依赖，`package.json` 仅提供脚本入口与版本约束
-- 本仓库通过 `scripts/install.sh` 把每个 `plugins/<plugin>/` 软链到 `~/.claude` 与 `~/.codex`，**不走** Claude Code / Codex 的 marketplace 安装链路
+- 本仓库通过 `scripts/install.mjs` 把每个 `plugins/<plugin>/` 软链到 `~/.claude` 与 `~/.codex`，**不走** Claude Code / Codex 的 marketplace 安装链路
 
 ## 本地校验
 

@@ -123,7 +123,7 @@ SessionStart, PreToolUse, PostToolUse, UserPromptSubmit, Notification, Stop
 脚本会自动检测已安装的 CLI 工具（Claude Code / Codex CLI），symlink 全部 skills/agents 并把根 dispatcher 注入用户级 hooks 配置：
 
 ```bash
-./scripts/install.sh
+node scripts/install.mjs
 ```
 
 安装时还会把仓库根目录的 [`MEMORY.md`](MEMORY.md) 链接到全局记忆文件：
@@ -133,9 +133,9 @@ SessionStart, PreToolUse, PostToolUse, UserPromptSubmit, Notification, Stop
 ### 卸载 / 重装
 
 ```bash
-./scripts/install.sh --uninstall   # 解链全部 skills/agents、移除注入的 hooks 条目
-./scripts/install.sh --reinstall   # 先卸载再重新安装
-./scripts/install.sh --dry-run     # 仅打印计划动作，不改动磁盘
+node scripts/install.mjs --uninstall   # 解链全部 skills/agents、移除注入的 hooks 条目
+node scripts/install.mjs --reinstall   # 先卸载再重新安装
+node scripts/install.mjs --dry-run     # 仅打印计划动作，不改动磁盘
 ```
 
 ## 仓库结构
@@ -148,7 +148,7 @@ SessionStart, PreToolUse, PostToolUse, UserPromptSubmit, Notification, Stop
 - `plugins/<plugin-name>/hooks/`：可选；插件内 hook 模块。统一 dispatcher 在每个事件下扫描所有 plugin 的 `hooks/<event>/*.mjs` 并依次执行。
 - `plugins/<plugin-name>/agents/`：可选；只读分析或专用执行 agent（仅 Claude Code）。
 - `scripts/`：安装脚本与质量审计脚本（sync-skills、sync-hooks、sync-agents、skill-quality-report、trigger-audit-report、audit-skill-evals 等）。
-- `tests/`：仓库级回归测试（install.sh、生成器、报告器、跨插件一致性）。
+- `tests/`：仓库级回归测试（install.mjs、生成器、报告器、跨插件一致性）。
 
 ## 插件总览
 
@@ -198,7 +198,7 @@ SessionStart, PreToolUse, PostToolUse, UserPromptSubmit, Notification, Stop
 
 ## 维护与验证
 
-安装/重装：`./scripts/install.sh --reinstall`（解链 → 清理旧 marketplace 残留 → 重新 symlink skills/agents + 写入统一 hooks）。
+安装/重装：`node scripts/install.mjs --reinstall`（解链 → 清理旧 marketplace 残留 → 重新 symlink skills/agents + 写入统一 hooks）。
 
 跑回归测试：
 
@@ -209,7 +209,7 @@ node --test plugins/<plugin>/tests/*.test.mjs
 # 全部插件
 find plugins -name '*.test.mjs' -print0 | xargs -0 node --test
 
-# 仓库级测试（install.sh、生成器、报告器、跨插件一致性）
+# 仓库级测试（install.mjs、生成器、报告器、跨插件一致性）
 node --test tests/*.test.mjs
 ```
 

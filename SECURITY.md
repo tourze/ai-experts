@@ -2,7 +2,7 @@
 
 ## 支持版本
 
-`ai-experts` 没有发版周期，安全修复直接在 `master` 上做。建议用户保持本地仓库与 upstream 同步并重跑 `scripts/install.sh`。
+`ai-experts` 没有发版周期，安全修复直接在 `master` 上做。建议用户保持本地仓库与 upstream 同步并重跑 `scripts/install.mjs`。
 
 ## 报告漏洞
 
@@ -27,7 +27,7 @@
 需要重点关注的攻击面：
 
 - **hooks/dispatch.mjs 与各插件 dispatch.mjs**：会动态执行 `plugins/<plugin>/hooks/<event>/*.mjs`，禁止从这些 hook 里执行未经验证的外部输入
-- **install.sh**：会 `symlink` 到 `~/.claude` 与 `~/.codex`，并写入 `settings.json` / `hooks.json`；改动需保证 `--dry-run` 始终不接触磁盘
+- **install.mjs**：会 `symlink` 到 `~/.claude` 与 `~/.codex`，并写入 `settings.json` / `hooks.json`；改动需保证 `--dry-run` 始终不接触磁盘
 - **MEMORY.md**：被软链到用户级记忆文件，会注入到所有 CLI 会话，须避免写入特权指令或绕过权限的提示
 
 ## 范围

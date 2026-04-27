@@ -8,7 +8,7 @@
 - 涉及插件：
 - 是否新增 / 修改 / 删除 skill：
 - 是否触及 hooks（含 dispatch）：
-- 是否影响 `install.sh` / sync 脚本：
+- 是否影响 `install.mjs` / sync 脚本：
 
 ## 必跑清单
 

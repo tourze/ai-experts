@@ -41,7 +41,7 @@ body:
         - Claude Code / Codex CLI 版本
         - Node.js 版本（`node --version`）
         - 操作系统
-        - 通过 `scripts/install.sh` 还是其它方式安装
+        - 通过 `scripts/install.mjs` 还是其它方式安装
       placeholder: |
         - Claude Code: 2.x.x
         - Node: v20.x.x

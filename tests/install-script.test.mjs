@@ -6,13 +6,14 @@ import { join, resolve } from "node:path";
 import test from "node:test";
 
 const repoRoot = resolve(".");
+const installScript = join(repoRoot, "scripts/install.mjs");
 
 function writeExecutable(path, content) {
   writeFileSync(path, content, "utf-8");
   chmodSync(path, 0o755);
 }
 
-test("install.sh enables Codex plugins without jq", () => {
+test("install.mjs enables Codex plugins without jq", () => {
   const tmp = mkdtempSync(join(tmpdir(), "ai-experts-install-"));
   const binDir = join(tmp, "bin");
   const codexHome = join(tmp, "codex-home");
@@ -26,7 +27,7 @@ test("install.sh enables Codex plugins without jq", () => {
     writeExecutable(join(binDir, "codex"), "#!/usr/bin/env bash\nexit 0\n");
     writeExecutable(join(binDir, "jq"), "#!/usr/bin/env bash\nexit 127\n");
 
-    const output = execFileSync("/bin/bash", ["scripts/install.sh", "--install"], {
+    const output = execFileSync(process.execPath, [installScript, "--install"], {
       cwd: repoRoot,
       env: {
         ...process.env,
@@ -52,7 +53,7 @@ test("install.sh enables Codex plugins without jq", () => {
   }
 });
 
-test("install.sh works when called outside the repository root", () => {
+test("install.mjs works when called outside the repository root", () => {
   const tmp = mkdtempSync(join(tmpdir(), "ai-experts-install-cwd-"));
   const binDir = join(tmp, "bin");
   const codexHome = join(tmp, "codex-home");
@@ -67,7 +68,7 @@ test("install.sh works when called outside the repository root", () => {
     symlinkSync(process.execPath, join(binDir, "node"));
     writeExecutable(join(binDir, "codex"), "#!/usr/bin/env bash\nexit 0\n");
 
-    const output = execFileSync("/bin/bash", [join(repoRoot, "scripts/install.sh"), "--install"], {
+    const output = execFileSync(process.execPath, [installScript, "--install"], {
       cwd: outsideCwd,
       env: {
         ...process.env,
@@ -85,7 +86,7 @@ test("install.sh works when called outside the repository root", () => {
   }
 });
 
-test("install.sh preserves unmanaged Codex hooks during install and uninstall", () => {
+test("install.mjs preserves unmanaged Codex hooks during install and uninstall", () => {
   const tmp = mkdtempSync(join(tmpdir(), "ai-experts-install-hooks-"));
   const binDir = join(tmp, "bin");
   const codexHome = join(tmp, "codex-home");
@@ -113,7 +114,7 @@ test("install.sh preserves unmanaged Codex hooks during install and uninstall", 
     symlinkSync(process.execPath, join(binDir, "node"));
     writeExecutable(join(binDir, "codex"), "#!/usr/bin/env bash\nexit 0\n");
 
-    execFileSync("/bin/bash", ["scripts/install.sh", "--install"], {
+    execFileSync(process.execPath, [installScript, "--install"], {
       cwd: repoRoot,
       env: {
         ...process.env,
@@ -128,7 +129,7 @@ test("install.sh preserves unmanaged Codex hooks during install and uninstall", 
     assert.match(installedHooks, new RegExp(customCommand.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
     assert.match(installedHooks, new RegExp(`${repoRoot.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/hooks/dispatch\\.mjs`));
 
-    execFileSync("/bin/bash", ["scripts/install.sh", "--uninstall"], {
+    execFileSync(process.execPath, [installScript, "--uninstall"], {
       cwd: repoRoot,
       env: {
         ...process.env,
@@ -147,7 +148,7 @@ test("install.sh preserves unmanaged Codex hooks during install and uninstall", 
   }
 });
 
-test("install.sh --uninstall removes managed Codex memory link", () => {
+test("install.mjs --uninstall removes managed Codex memory link", () => {
   const tmp = mkdtempSync(join(tmpdir(), "ai-experts-uninstall-"));
   const binDir = join(tmp, "bin");
   const codexHome = join(tmp, "codex-home");
@@ -162,7 +163,7 @@ test("install.sh --uninstall removes managed Codex memory link", () => {
     symlinkSync(process.execPath, join(binDir, "node"));
     writeExecutable(join(binDir, "codex"), "#!/usr/bin/env bash\nexit 0\n");
 
-    execFileSync("/bin/bash", ["scripts/install.sh", "--uninstall"], {
+    execFileSync(process.execPath, [installScript, "--uninstall"], {
       cwd: repoRoot,
       env: {
         ...process.env,
@@ -179,7 +180,7 @@ test("install.sh --uninstall removes managed Codex memory link", () => {
   }
 });
 
-test("install.sh --reinstall completes even if codex marketplace add fails", () => {
+test("install.mjs --reinstall completes even if codex marketplace add fails", () => {
   const tmp = mkdtempSync(join(tmpdir(), "ai-experts-reinstall-"));
   const binDir = join(tmp, "bin");
   const codexHome = join(tmp, "codex-home");
@@ -196,7 +197,7 @@ test("install.sh --reinstall completes even if codex marketplace add fails", () 
       "#!/usr/bin/env bash\nif [ \"$1\" = \"marketplace\" ] && [ \"$2\" = \"add\" ]; then\n  exit 1\nfi\nexit 0\n",
     );
 
-    const output = execFileSync("/bin/bash", ["scripts/install.sh", "--reinstall"], {
+    const output = execFileSync(process.execPath, [installScript, "--reinstall"], {
       cwd: repoRoot,
       env: {
         ...process.env,

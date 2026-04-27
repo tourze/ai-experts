@@ -298,7 +298,8 @@ function syncCodexConfigToml({ dryRun }) {
 }
 
 // ── 旧版残留清理（卸载时）──────────────────────────
-// 历史上的 install.sh 可能在 ~/.codex/config.toml 写过
+// 历史上的安装脚本（旧 install.sh，现已替换为 install.mjs）可能在
+// ~/.codex/config.toml 写过：
 //   [marketplaces.ai-experts]
 //   [plugins."<name>@ai-experts"]
 // 卸载阶段顺手清掉。
