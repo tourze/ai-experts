@@ -1,0 +1,34 @@
+cases:
+  - id: configure_golangci_lint
+    prompt: "Go 项目想引入 golangci-lint，帮我写一份覆盖常用 linter 的 .golangci.yml 配置"
+    fixtures: []
+    rubric:
+      - "触发 go-lint"
+      - "包含 errcheck、govet、staticcheck 等核心 linter"
+      - "给出 .golangci.yml 配置示例"
+    trigger_expected: true
+
+  - id: suppress_false_positive
+    prompt: "golangci-lint 报了 G101 硬编码凭据误报，这里只是示例占位符，怎么精准抑制这条告警"
+    fixtures: []
+    rubric:
+      - "触发 go-lint"
+      - "建议用 //nolint:gosec 并附带原因"
+      - "不建议全局禁用 gosec"
+    trigger_expected: true
+
+  - id: negative_testing_pattern
+    prompt: "Go 的 table-driven test 怎么写？需要覆盖正常和异常分支"
+    fixtures: []
+    rubric:
+      - "不触发 go-lint"
+      - "该任务属于 go-testing-patterns"
+    trigger_expected: false
+
+  - id: negative_error_handling
+    prompt: "Go 函数返回 error 时，调用方应该怎么包装和传播错误？"
+    fixtures: []
+    rubric:
+      - "不触发 go-lint"
+      - "该任务属于 go-error-handling"
+    trigger_expected: false

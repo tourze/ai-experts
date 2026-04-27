@@ -102,3 +102,18 @@ req, _ := http.NewRequest(http.MethodGet, url, nil)
 ```go
 req, _ := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 ```
+
+## 常见错误
+
+| 错误 | 修复 |
+|------|------|
+| context 存进 struct | 只作函数第一个参数传递 |
+| `WithTimeout` 后不 `cancel()` | 必须 `defer cancel()` 释放资源 |
+| 库函数里用 `context.Background()` | 库接收调用方传入的 context |
+| 阻塞操作不监听 `ctx.Done()` | channel/HTTP/DB 必须用 context-aware API |
+| `context.Value` 放业务配置 | 只放 request-scoped 元数据（trace id 等） |
+| 下游随意放大 deadline | 超时预算在入口/边界设置 |
+
+## 深度参考
+
+- [cancellation.md](references/cancellation.md) — 取消传播模式、select + ctx.Done

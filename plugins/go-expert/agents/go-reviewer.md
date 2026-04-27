@@ -60,7 +60,7 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 - `go-safety`
 - `go-error-handling`
 - `go-code-style`
-- `go-performance-benchmarking`
+- `go-performance`
 
 ## 质量标准
 

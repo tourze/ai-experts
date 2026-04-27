@@ -1,0 +1,36 @@
+cases:
+  - id: sql_injection_prevention
+    prompt: "这段 Go 代码用 fmt.Sprintf 拼 SQL 查询用户，帮我改成安全的方式"
+    fixtures: []
+    rubric:
+      - "触发 go-database"
+      - "指出字符串拼接 SQL 的注入风险"
+      - "建议改用参数化查询（? 占位符）"
+      - "使用 QueryRowContext / ExecContext"
+    trigger_expected: true
+
+  - id: transaction_pattern_review
+    prompt: "审查这个 Go 事务代码，Begin 之后直接做操作然后 Commit，没有 Rollback，会不会有问题？"
+    fixtures: []
+    rubric:
+      - "触发 go-database"
+      - "指出缺少 defer tx.Rollback()"
+      - "说明 Rollback 在 Commit 后为 no-op 的机制"
+      - "建议使用 BeginTx(ctx, nil) 传入 context"
+    trigger_expected: true
+
+  - id: negative_channel_pattern
+    prompt: "Go 里 fan-out 多个 goroutine 处理任务，结果怎么收集？"
+    fixtures: []
+    rubric:
+      - "不触发 go-database"
+      - "该任务属于 go-concurrency-patterns"
+    trigger_expected: false
+
+  - id: negative_error_wrapping
+    prompt: "Go 项目里错误应该怎么包装，才能保留原始错误信息又方便上层判断？"
+    fixtures: []
+    rubric:
+      - "不触发 go-database"
+      - "该任务属于 go-error-handling"
+    trigger_expected: false

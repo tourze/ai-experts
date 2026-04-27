@@ -30,6 +30,6 @@ cases:
     fixtures: []
     rubric:
       - "不触发 go-safety"
-      - "benchmark 方法论属于 go-performance-benchmarking"
+      - "benchmark 方法论属于 go-performance"
     trigger_expected: false
 

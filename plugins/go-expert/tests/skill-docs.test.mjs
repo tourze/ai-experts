@@ -8,13 +8,25 @@ import { assertBasicSkillDocQuality, getSkillFiles } from "../../../tests/skill-
 const pluginRoot = resolve("plugins/go-expert");
 const skillFiles = getSkillFiles(pluginRoot);
 const expectedSkillNames = [
+  "go-cli",
   "go-code-style",
   "go-concurrency-patterns",
   "go-context-lifecycle",
+  "go-data-structures",
+  "go-database",
+  "go-design-patterns",
   "go-error-handling",
-  "go-performance-benchmarking",
+  "go-grpc",
+  "go-lint",
+  "go-naming",
+  "go-observability",
+  "go-performance",
+  "go-project-layout",
   "go-safety",
+  "go-security",
+  "go-structs-interfaces",
   "go-testing-patterns",
+  "go-troubleshooting",
 ];
 
 function readSkill(name) {
@@ -64,6 +76,6 @@ test("Go P0 技能文档覆盖风格、错误、安全、context、测试和性�
   assert.match(readSkill("go-testing-patterns"), /table-driven tests/);
   assert.match(readSkill("go-testing-patterns"), /go test -race/);
 
-  assert.match(readSkill("go-performance-benchmarking"), /benchstat/);
-  assert.match(readSkill("go-performance-benchmarking"), /pprof/);
+  assert.match(readSkill("go-performance"), /benchstat/);
+  assert.match(readSkill("go-performance"), /pprof/);
 });

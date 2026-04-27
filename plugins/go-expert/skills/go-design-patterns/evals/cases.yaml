@@ -1,0 +1,34 @@
+cases:
+  - id: functional_options_constructor
+    prompt: "Design a Go Server struct with configurable port, logger, and timeout using functional options pattern"
+    fixtures: []
+    rubric:
+      - "defines type Option func(*Server) and WithXxx() option functions"
+      - "constructor returns *Server with sensible defaults and validation error"
+      - "explains why functional options are preferred over config struct in public API"
+    trigger_expected: true
+
+  - id: graceful_shutdown_retry
+    prompt: "My Go HTTP service needs graceful shutdown on SIGTERM, and retries with backoff for downstream calls that should respect context cancellation"
+    fixtures: []
+    rubric:
+      - "implements signal.Notify → Shutdown → drain with timeout"
+      - "retry loop checks ctx.Err() before each attempt"
+      - "uses exponential or linear backoff, not fixed short sleep"
+    trigger_expected: true
+
+  - id: negative_go_syntax_question
+    prompt: "How do I use switch statement with multiple cases in Go?"
+    fixtures: []
+    rubric:
+      - "does not activate go-design-patterns workflow"
+      - "basic syntax question, not an architectural pattern"
+    trigger_expected: false
+
+  - id: negative_go_json_parsing
+    prompt: "Parse a JSON response from an API into a Go struct using encoding/json"
+    fixtures: []
+    rubric:
+      - "does not activate go-design-patterns workflow"
+      - "JSON parsing is a standard library usage task, not a design pattern"
+    trigger_expected: false

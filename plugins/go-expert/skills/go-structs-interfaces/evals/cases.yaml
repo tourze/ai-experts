@@ -1,0 +1,34 @@
+cases:
+  - id: interface_consumer_side
+    prompt: "我的 service 包对外暴露一个大接口 UserService 包含 10 个方法，调用方只需要其中 2 个，怎么改？"
+    fixtures: []
+    rubric:
+      - "触发 go-structs-interfaces"
+      - "建议在消费方定义小接口，只包含需要的方法"
+      - "提及接口归属原则：消费方定义而非提供方"
+    trigger_expected: true
+
+  - id: zero_value_and_receiver
+    prompt: "设计一个 RateLimiter 结构体，希望 var rl RateLimiter 就能直接用，receiver 怎么选？"
+    fixtures: []
+    rubric:
+      - "触发 go-structs-interfaces"
+      - "设计零值可用的结构体"
+      - "讨论 pointer receiver 一致性"
+    trigger_expected: true
+
+  - id: negative_error_handling
+    prompt: "Go 里 fmt.Errorf 应该用 %w 还是 %v？"
+    fixtures: []
+    rubric:
+      - "不触发 go-structs-interfaces"
+      - "属于 go-error-handling"
+    trigger_expected: false
+
+  - id: negative_concurrency
+    prompt: "Go 里怎么控制 goroutine 的并发数量？用 semaphore 还是 worker pool？"
+    fixtures: []
+    rubric:
+      - "不触发 go-structs-interfaces"
+      - "属于 go-concurrency-patterns"
+    trigger_expected: false

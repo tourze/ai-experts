@@ -1,0 +1,34 @@
+cases:
+  - id: cobra_subcommand_setup
+    prompt: "用 Cobra 给 Go CLI 加一个 serve 子命令，需要 --port flag 并绑定 Viper 配置"
+    fixtures: []
+    rubric:
+      - "触发 go-cli"
+      - "建议 rootCmd.AddCommand + PersistentFlags/LocalFlags"
+      - "通过 viper.BindPFlag 桥接配置"
+    trigger_expected: true
+
+  - id: graceful_shutdown_signal
+    prompt: "Go 服务进程收到 SIGTERM 后需要优雅关闭连接池和 HTTP server，怎么做"
+    fixtures: []
+    rubric:
+      - "触发 go-cli"
+      - "使用 signal.NotifyContext 捕获信号"
+      - "通过 context 取消传播到组件"
+    trigger_expected: true
+
+  - id: negative_http_handler_error
+    prompt: "Go HTTP handler 里返回 500 状态码，错误信息要不要用 fmt.Errorf %w 包装"
+    fixtures: []
+    rubric:
+      - "不触发 go-cli"
+      - "错误包装属于 go-error-handling 范畴"
+    trigger_expected: false
+
+  - id: negative_concurrent_worker_pool
+    prompt: "Go 里怎么用 errgroup 做有界并发 worker pool"
+    fixtures: []
+    rubric:
+      - "不触发 go-cli"
+      - "并发模式属于 go-concurrency-patterns 范畴"
+    trigger_expected: false

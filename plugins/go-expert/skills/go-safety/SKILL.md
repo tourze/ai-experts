@@ -116,3 +116,19 @@ for _, path := range paths {
 	}
 }
 ```
+
+## 常见错误
+
+| 错误 | 修复 |
+|------|------|
+| nil map 写入 | `make(map[K]V)` 显式初始化 |
+| 循环里 `defer` | 提取到 helper 函数，每次迭代独立释放 |
+| 未检查类型断言 | `value, ok := x.(T)` |
+| 返回内部 slice/map 引用 | defensive copy |
+| 成功路径返回 nil slice/map | 返回 `[]T{}` / `map[K]V{}` |
+| 并发读写 map | 加锁、channel 或 `sync.Map` |
+
+## 深度参考
+
+- [nil-safety.md](references/nil-safety.md) — interface nil trap、typed nil
+- [slice-map-safety.md](references/slice-map-safety.md) — append aliasing、slices.Clone

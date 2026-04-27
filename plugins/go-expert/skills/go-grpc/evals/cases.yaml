@@ -1,0 +1,34 @@
+cases:
+  - id: grpc_error_status
+    prompt: "Go gRPC 服务端方法里返回 error 应该怎么包装，让客户端能区分 NotFound 和 Internal？"
+    fixtures: []
+    rubric:
+      - "触发 go-grpc"
+      - "建议使用 status.Errorf(codes.XXX, ...)"
+      - "提到 codes.NotFound / codes.Internal 等标准码"
+    trigger_expected: true
+
+  - id: grpc_interceptor_chain
+    prompt: "Go gRPC 服务端需要加 logging 和 auth 两个拦截器，怎么组合？"
+    fixtures: []
+    rubric:
+      - "触发 go-grpc"
+      - "建议 grpc.ChainUnaryInterceptor"
+      - "提到 unary 和 stream 分别处理"
+    trigger_expected: true
+
+  - id: negative_http_handler
+    prompt: "Go net/http 的 Handler 怎么做中间件链？"
+    fixtures: []
+    rubric:
+      - "不触发 go-grpc"
+      - "这是 HTTP 中间件，不是 gRPC 拦截器"
+    trigger_expected: false
+
+  - id: negative_json_api
+    prompt: "Go REST API 用什么框架好，gin 还是 chi？"
+    fixtures: []
+    rubric:
+      - "不触发 go-grpc"
+      - "REST 框架选型与 gRPC/protobuf 无关"
+    trigger_expected: false
