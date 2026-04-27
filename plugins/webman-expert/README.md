@@ -11,27 +11,9 @@ Webman 框架专家插件，覆盖命名规范、自定义进程、WebSocket 和
 | `webman-websocket-patterns` | WebSocket 服务端/客户端、连接生命周期、心跳、频道广播与指数退避重连 |
 | `webman-plugin-development` | 插件打包、Install.php、config 发布路径、Bootstrap 与插件进程声明 |
 
-## 安装
+## 安装 / 卸载
 
-```bash
-claude --plugin-dir /path/to/plugins/webman-expert
-```
-
-如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
-
-```bash
-claude plugin install webman-expert@ai-experts
-claude plugin install webman-expert@ai-experts --scope project
-```
-
-## 卸载
-
-```bash
-claude plugin uninstall webman-expert
-claude plugin uninstall webman-expert --scope project
-```
-
-如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+由仓库根目录的 `./scripts/install.sh` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
 ## 说明
 

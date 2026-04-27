@@ -7,7 +7,6 @@ import test from "node:test";
 const pluginRoot = resolve("plugins/youtube-expert");
 
 const nodeScripts = [
-  "hooks/dispatch.mjs",
   "skills/youtube-analysis/scripts/analyze_video.mjs",
   "skills/youtube-analysis/scripts/fetch_transcript.mjs",
   "skills/youtube-analysis/scripts/utils.mjs",

@@ -6,8 +6,6 @@ import test from "node:test";
 
 const pluginRoot = resolve("plugins/meeting-expert");
 const scriptFiles = [
-  "hooks/dispatch.mjs",
-  "tests/dispatch.test.mjs",
   "tests/skills.test.mjs",
   "tests/scripts.test.mjs",
 ].map((file) => resolve(pluginRoot, file));

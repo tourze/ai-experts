@@ -1,17 +1,13 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import test from "node:test";
 
 const pluginRoot = resolve("plugins/perl-expert");
 const filesToCheck = [
-  "hooks/hooks.json",
-  "hooks/dispatch.mjs",
   "hooks/post-tool-use/edit-write/_utils.mjs",
   "hooks/post-tool-use/edit-write/debug-statement-guard.mjs",
   "hooks/post-tool-use/edit-write/syntax-perl.mjs",
-  "tests/dispatch.test.mjs",
   "tests/scripts.test.mjs",
   "tests/skill-docs.test.mjs",
 ];

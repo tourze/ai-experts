@@ -28,7 +28,7 @@ Perl 开发专家插件，覆盖现代 Perl 5.36+ 开发、Test2 测试工作流
 | PostToolUse Edit\|Write | `syntax-perl` | 对 `.pl` / `.pm` / `.t` / `.psgi` / `Makefile.PL` / `Build.PL` 执行 `perl -c` |
 | PostToolUse Edit\|Write | `debug-statement-guard` | `$DB::single` / `Data::Dumper` / `warn` / `print STDERR` / `Devel::*` 检测 |
 
-通用 BOM / UTF-8 编码检查和文件预算守卫统一由 [coding-expert](../coding-expert/README.md) 提供；若使用 `--plugin-dir` 单独加载本插件，请同时加载它。
+通用 BOM / UTF-8 编码检查和文件预算守卫统一由 [coding-expert](../coding-expert/README.md) 提供。
 
 ## 验证命令
 
@@ -42,26 +42,7 @@ node plugins/perl-expert/hooks/dispatch.mjs post-tool-use/edit-write </dev/null
 printf '{not-json' | node plugins/perl-expert/hooks/dispatch.mjs post-tool-use/edit-write
 ```
 
-## 安装
+## 安装 / 卸载
 
-```bash
-claude --plugin-dir /path/to/plugins/perl-expert
-```
+由仓库根目录的 `./scripts/install.sh` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
-如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
-
-```bash
-claude plugin install perl-expert@ai-experts
-claude plugin install perl-expert@ai-experts --scope project
-```
-
-## 卸载
-
-```bash
-claude plugin uninstall perl-expert
-claude plugin uninstall perl-expert --scope project
-```
-
-如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
-
-运行时依赖：`node` 必需；`perl` 用于 `syntax-perl`。若本机缺少 Perl 解释器，语法守卫会跳过，其他守卫仍可继续工作。

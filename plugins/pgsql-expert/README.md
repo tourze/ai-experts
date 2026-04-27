@@ -22,18 +22,9 @@ PostgreSQL 专家插件，覆盖模式设计、索引策略、声明式分区、
 |-------|------|
 | `pgsql-reviewer` | review PostgreSQL schema design, index types, RLS policies, partitioning strategies, and JSONB patterns |
 
-## 安装
+## 安装 / 卸载
 
-```bash
-claude plugin install pgsql-expert@ai-experts
-```
-
-## 卸载
-
-```bash
-claude plugin uninstall pgsql-expert
-claude plugin uninstall pgsql-expert --scope project
-```
+由仓库根目录的 `./scripts/install.sh` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
 ## 验证
 

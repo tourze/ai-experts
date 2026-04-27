@@ -20,27 +20,9 @@ Next.js 框架专家插件，覆盖 App Router、Server Components、Server Acti
 |-------|------|
 | `nextjs-reviewer` | review Next.js App Router patterns, React Server Component boundaries, data fetching strategies, middleware design, caching, and ISR/SSR configuration without modifying any files |
 
-## 安装
+## 安装 / 卸载
 
-```bash
-claude --plugin-dir /path/to/plugins/nextjs-expert
-```
-
-如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
-
-```bash
-claude plugin install nextjs-expert@ai-experts
-claude plugin install nextjs-expert@ai-experts --scope project
-```
-
-## 卸载
-
-```bash
-claude plugin uninstall nextjs-expert
-claude plugin uninstall nextjs-expert --scope project
-```
-
-如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+由仓库根目录的 `./scripts/install.sh` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
 ## 验证
 

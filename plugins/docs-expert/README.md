@@ -41,27 +41,9 @@
 - `UserPromptSubmit`：当用户请求架构、链路、迁移、阶段计划、风险拆解或方案对比时，注入纯文本可视化与结构化表达规则，并主动引导使用 `pretty-mermaid` 产出成品图。
 - 设计原则：全部 `report` / `context`、不 `block`，保证插件加载路径保持 fail-open。
 
-## 安装
+## 安装 / 卸载
 
-```bash
-claude --plugin-dir /path/to/plugins/docs-expert
-```
-
-如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
-
-```bash
-claude plugin install docs-expert@ai-experts
-claude plugin install docs-expert@ai-experts --scope project
-```
-
-## 卸载
-
-```bash
-claude plugin uninstall docs-expert
-claude plugin uninstall docs-expert --scope project
-```
-
-如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+由仓库根目录的 `./scripts/install.sh` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
 ## 验证
 

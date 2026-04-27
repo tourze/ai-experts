@@ -26,18 +26,9 @@ DBMS 专属能力由子插件提供，按需安装：
 |------|------|------|
 | PreToolUse Bash | `dangerous-sql-guard` | 拦截 `DROP DATABASE/TABLE/SCHEMA` 和 `TRUNCATE TABLE` |
 
-## 安装
+## 安装 / 卸载
 
-```bash
-claude plugin install database-expert@ai-experts
-```
-
-## 卸载
-
-```bash
-claude plugin uninstall database-expert
-claude plugin uninstall database-expert --scope project
-```
+由仓库根目录的 `./scripts/install.sh` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
 ## 验证
 

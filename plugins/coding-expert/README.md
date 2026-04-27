@@ -51,29 +51,9 @@
 
 本插件收录**跨语言可复用**的通用方法论 skill 与守卫。语言/框架特定的检查属于对应的 `*-expert` 插件；仓库中的 `encoding-guard`、通用 `debug-statement-guard` 与跨语言 `file-budget-guard` 也只在这里维护。
 
-## 安装
+## 安装 / 卸载
 
-```bash
-claude --plugin-dir /path/to/plugins/coding-expert
-```
-
-如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
-
-```bash
-claude plugin install coding-expert@ai-experts
-claude plugin install coding-expert@ai-experts --scope project
-```
-
-## 卸载
-
-```bash
-claude plugin uninstall coding-expert
-claude plugin uninstall coding-expert --scope project
-```
-
-如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
-
-建议与语言专用插件配合使用；语言插件通过依赖本插件复用通用编码与文件预算守卫。
+由仓库根目录的 `./scripts/install.sh` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
 ## 验证
 

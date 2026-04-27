@@ -6,7 +6,6 @@ import test from "node:test";
 
 const pluginRoot = resolve("plugins/symfony-expert");
 const hookFiles = [
-  "hooks/dispatch.mjs",
   "hooks/post-tool-use/edit-write/_utils.mjs",
   "hooks/post-tool-use/edit-write/syntax-doctrine-entity.mjs",
   "hooks/post-tool-use/edit-write/syntax-twig.mjs",

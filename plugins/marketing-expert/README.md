@@ -60,27 +60,9 @@
 | `content-producer` | 端到端营销内容创作、优化与改写，从策略到成稿 |
 | `acquisition-strategist` | 端到端获客与转化策略，整合渠道、SEO、内容、CRO、付费、推荐与 analytics 输出可执行获客蓝图（注意：此 agent 原名 `growth-strategist`，与 product-expert 的 `growth-stage-strategist` 区分） |
 
-## 安装
+## 安装 / 卸载
 
-```bash
-claude --plugin-dir /path/to/plugins/marketing-expert
-```
-
-如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
-
-```bash
-claude plugin install marketing-expert@ai-experts
-claude plugin install marketing-expert@ai-experts --scope project
-```
-
-## 卸载
-
-```bash
-claude plugin uninstall marketing-expert
-claude plugin uninstall marketing-expert --scope project
-```
-
-如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+由仓库根目录的 `./scripts/install.sh` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
 ## 验证
 

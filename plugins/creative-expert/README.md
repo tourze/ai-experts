@@ -45,24 +45,7 @@ node skills/concept-to-video/scripts/add_audio.mjs --help
 node skills/screenshot/scripts/take_screenshot.mjs --help
 ```
 
-## 安装
+## 安装 / 卸载
 
-```bash
-claude --plugin-dir /path/to/plugins/creative-expert
-```
+由仓库根目录的 `./scripts/install.sh` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
-如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
-
-```bash
-claude plugin install creative-expert@ai-experts
-claude plugin install creative-expert@ai-experts --scope project
-```
-
-## 卸载
-
-```bash
-claude plugin uninstall creative-expert
-claude plugin uninstall creative-expert --scope project
-```
-
-如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。

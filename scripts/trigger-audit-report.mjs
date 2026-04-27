@@ -202,14 +202,13 @@ function parseFrontmatter(markdown) {
 }
 
 function listPlugins(trackedFiles, pluginFilter) {
-  const plugins = trackedFiles
-    .filter((file) => file.startsWith("plugins/") && file.endsWith("/.claude-plugin/plugin.json"))
-    .map((file) => file.split("/")[1])
-    .sort();
+  const plugins = [...new Set(
+    trackedFiles
+      .filter((file) => file.startsWith("plugins/") && file.split("/").length >= 3)
+      .map((file) => file.split("/")[1]),
+  )].sort();
 
-  if (!pluginFilter) {
-    return plugins;
-  }
+  if (!pluginFilter) return plugins;
   if (!plugins.includes(pluginFilter)) {
     throw new Error(`Unknown plugin: ${pluginFilter}`);
   }
@@ -230,84 +229,17 @@ function collectHookModules(trackedFiles, pluginName) {
     .sort((a, b) => a.path.localeCompare(b.path));
 }
 
-function collectHookRegistrations(pluginName) {
-  const hooksJsonPath = resolve(pluginsRoot, pluginName, "hooks", "hooks.json");
-  if (!existsSync(hooksJsonPath)) {
-    return [];
-  }
-
-  const config = readJson(hooksJsonPath);
-  const registrations = [];
-  for (const [event, entries] of Object.entries(config.hooks ?? {})) {
-    for (const entry of entries ?? []) {
-      for (const hook of entry.hooks ?? []) {
-        const command = hook.command ?? "";
-        const subdirMatch = command.match(/dispatch\.mjs\s+([^"'\s]+)/);
-        registrations.push({
-          event,
-          matcher: entry.matcher ?? ".*",
-          subdir: subdirMatch?.[1] ?? null,
-          timeout: hook.timeout ?? null,
-          command,
-        });
-      }
-    }
-  }
-  return registrations;
-}
-
 function collectHookAudit(trackedFiles, pluginNames) {
-  const pluginReports = [];
-  let dispatchFiles = 0;
-  let telemetryReady = 0;
-  let registeredHooks = 0;
+  // 根 dispatcher 自动扫描每个 plugin 的 hooks/<event>/*.mjs，无需逐插件
+  // 维护 dispatch.mjs 或 hooks.json。本函数只做模块清点，留给后续指标使用。
+  const plugins = [];
   let hookModules = 0;
-
   for (const pluginName of pluginNames) {
-    const dispatchPath = resolve(pluginsRoot, pluginName, "hooks", "dispatch.mjs");
-    const hasDispatch = existsSync(dispatchPath);
-    const dispatchText = hasDispatch ? readFileSync(dispatchPath, "utf-8") : "";
-    const registrations = collectHookRegistrations(pluginName);
     const modules = collectHookModules(trackedFiles, pluginName);
-    const registeredSubdirs = new Set(registrations.map((item) => item.subdir).filter(Boolean));
-    const moduleSubdirs = new Set(modules.map((item) => item.subdir));
-
-    const unregisteredModules = modules
-      .filter((item) => !registeredSubdirs.has(item.subdir))
-      .map((item) => item.path);
-    const emptyRegistrations = [...registeredSubdirs]
-      .filter((subdir) => !moduleSubdirs.has(subdir))
-      .map((subdir) => `${pluginName}/hooks/${subdir}`);
-
-    if (hasDispatch) {
-      dispatchFiles += 1;
-    }
-    if (dispatchText.includes("recordHookTelemetry(")) {
-      telemetryReady += 1;
-    }
-    registeredHooks += registrations.length;
     hookModules += modules.length;
-
-    pluginReports.push({
-      plugin: pluginName,
-      hasDispatch,
-      telemetryReady: dispatchText.includes("recordHookTelemetry("),
-      registrations: registrations.length,
-      modules: modules.length,
-      unregisteredModules,
-      emptyRegistrations,
-    });
+    plugins.push({ plugin: pluginName, modules: modules.length });
   }
-
-  return {
-    dispatchFiles,
-    telemetryReady,
-    registeredHooks,
-    hookModules,
-    plugins: pluginReports,
-    unregisteredModules: pluginReports.flatMap((item) => item.unregisteredModules),
-    emptyRegistrations: pluginReports.flatMap((item) => item.emptyRegistrations),
-  };
+  return { hookModules, plugins };
 }
 
 function parseEvalCases(filePath) {
@@ -721,18 +653,7 @@ function printText(report, top) {
   }
 
   console.log("\nHook Static Coverage");
-  console.log(`- dispatch telemetry ready: ${report.hooks.telemetryReady}/${report.hooks.dispatchFiles}`);
-  console.log(`- hook registrations: ${report.hooks.registeredHooks}`);
   console.log(`- hook modules: ${report.hooks.hookModules}`);
-  console.log(`- unregistered hook modules: ${report.hooks.unregisteredModules.length}`);
-  console.log(`- registered empty hook dirs: ${report.hooks.emptyRegistrations.length}`);
-
-  if (report.hooks.unregisteredModules.length > 0) {
-    console.log("\nTop Unregistered Hook Modules");
-    for (const item of report.hooks.unregisteredModules.slice(0, top)) {
-      console.log(`- ${item}`);
-    }
-  }
 
   console.log("\nHook Runtime Telemetry");
   if (!report.runtime.exists) {

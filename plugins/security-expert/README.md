@@ -47,27 +47,9 @@
 | `android-manifest-security` | 当需要审计 AndroidManifest.xml、exported 组件、权限、FileProvider、backup/debuggable、Network Security Config 或 Android 版本相关 manifest 安全配置时使用。 |
 | `intent-deeplink-abuse` | 当需要测试 Android Intent injection、nested intent relay、deep link abuse、App Link 验证、FileProvider URI grant、PendingIntent 可变性或 exported 组件 confused deputy 风险时使用。 |
 
-## 安装
+## 安装 / 卸载
 
-```bash
-claude --plugin-dir /path/to/plugins/security-expert
-```
-
-如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
-
-```bash
-claude plugin install security-expert@ai-experts
-claude plugin install security-expert@ai-experts --scope project
-```
-
-## 卸载
-
-```bash
-claude plugin uninstall security-expert
-claude plugin uninstall security-expert --scope project
-```
-
-如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+由仓库根目录的 `./scripts/install.sh` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
 ## 验证命令
 

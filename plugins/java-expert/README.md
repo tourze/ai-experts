@@ -26,29 +26,11 @@ Java 开发专家插件，覆盖 Java 21 / Spring Boot 3.x 开发规范、JUnit 
 | PostToolUse Edit\|Write | `syntax-java` | javac 语法检查（回退括号配对检测） |
 | PostToolUse Edit\|Write | `debug-statement-guard`（由 `coding-expert` 提供） | System.out.print / printStackTrace 检测 |
 
-通用 BOM / UTF-8 编码检查、跨语言调试语句检测和文件预算守卫统一由 [coding-expert](../coding-expert/README.md) 提供；若使用 `--plugin-dir` 单独加载本插件，请同时加载它。
+通用 BOM / UTF-8 编码检查、跨语言调试语句检测和文件预算守卫统一由 [coding-expert](../coding-expert/README.md) 提供。
 
-## 安装
+## 安装 / 卸载
 
-```bash
-claude --plugin-dir /path/to/plugins/java-expert
-```
-
-如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
-
-```bash
-claude plugin install java-expert@ai-experts
-claude plugin install java-expert@ai-experts --scope project
-```
-
-## 卸载
-
-```bash
-claude plugin uninstall java-expert
-claude plugin uninstall java-expert --scope project
-```
-
-如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+由仓库根目录的 `./scripts/install.sh` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
 ## 验证
 

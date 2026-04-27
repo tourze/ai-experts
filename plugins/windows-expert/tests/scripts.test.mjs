@@ -6,7 +6,6 @@ import test from "node:test";
 
 const pluginRoot = resolve("plugins/windows-expert");
 const nodeScripts = [
-  "hooks/dispatch.mjs",
   "skills/prlctl-vm-control/scripts/prlctl_helper.mjs",
 ];
 

@@ -44,27 +44,9 @@
 | `agent-orchestration` | 多 Agent 编排：system prompt 架构、fork/fresh 决策、状态管理、扩展点 |
 | `brainstorming-before-coding` | 在任何创造性工作之前必须使用——创建功能、构建组件、添加新行为或修改架构。通过对话探索用户意图、需求和设计，在动手前达成共识。 |
 
-## 安装
+## 安装 / 卸载
 
-```bash
-claude --plugin-dir /path/to/plugins/architecture-expert
-```
-
-如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
-
-```bash
-claude plugin install architecture-expert@ai-experts
-claude plugin install architecture-expert@ai-experts --scope project
-```
-
-## 卸载
-
-```bash
-claude plugin uninstall architecture-expert
-claude plugin uninstall architecture-expert --scope project
-```
-
-如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+由仓库根目录的 `./scripts/install.sh` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
 ## 验证命令
 

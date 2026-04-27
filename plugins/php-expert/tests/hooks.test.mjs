@@ -1,6 +1,4 @@
 import assert from "node:assert/strict";
-import { resolve } from "node:path";
-import { spawnSync } from "node:child_process";
 import test from "node:test";
 
 import { run as runTestOutputTruncationGuard } from "../hooks/pre-tool-use/bash/test-output-truncation-guard.mjs";
@@ -20,26 +18,3 @@ test("test-output-truncation-guard 允许 tail -1 摘要", async () => {
   assert.equal(result, null);
 });
 
-test("dispatch 对空 stdin fail-open", () => {
-  const result = spawnSync("node", ["hooks/dispatch.mjs", "post-tool-use/edit-write"], {
-    cwd: resolve("plugins/php-expert"),
-    encoding: "utf-8",
-    input: "",
-  });
-
-  assert.equal(result.status, 0);
-  assert.equal(result.stdout.trim(), "");
-});
-
-test("dispatch 对非法 JSON 输出 report 而不是崩溃", () => {
-  const result = spawnSync("node", ["hooks/dispatch.mjs", "post-tool-use/edit-write"], {
-    cwd: resolve("plugins/php-expert"),
-    encoding: "utf-8",
-    input: "{not-json",
-  });
-
-  assert.equal(result.status, 0);
-  const payload = JSON.parse(result.stdout);
-  assert.equal(payload.decision, undefined);
-  assert.match(payload.systemMessage, /stdin 不是合法 JSON/);
-});

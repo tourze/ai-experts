@@ -27,26 +27,7 @@ npx -y @microsoft/learn-cli doctor --format json
 
 `learn-cli` 健康检查不再通过 SessionStart 自动执行（8s timeout + 非 MS 项目下必然失败，会触发 SessionStart schema 校验错误）。需要时手动跑最后一行命令即可。
 
-## 安装
+## 安装 / 卸载
 
-```bash
-claude --plugin-dir /path/to/plugins/microsoft-expert
-```
+由仓库根目录的 `./scripts/install.sh` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
-如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
-
-```bash
-claude plugin install microsoft-expert@ai-experts
-claude plugin install microsoft-expert@ai-experts --scope project
-```
-
-## 卸载
-
-```bash
-claude plugin uninstall microsoft-expert
-claude plugin uninstall microsoft-expert --scope project
-```
-
-如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
-
-优先使用 Microsoft Learn MCP 工具；`mslearn` CLI 只作为回退链路，其健康检查改为按需手动执行。

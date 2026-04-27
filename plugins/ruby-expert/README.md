@@ -28,7 +28,7 @@ Ruby 开发专家插件，覆盖 Ruby / Rails / RSpec / Bundler / Rake 工作流
 | PostToolUse Edit\|Write | `syntax-ruby` | 对 `.rb` / `.rake` / `.gemspec` / `Gemfile` / `Rakefile` 等执行 `ruby -c` |
 | PostToolUse Edit\|Write | `debug-statement-guard` | `binding.pry` / `binding.irb` / `byebug` / `debugger` / `puts` / `pp` 检测 |
 
-通用 BOM / UTF-8 编码检查和文件预算守卫统一由 [coding-expert](../coding-expert/README.md) 提供；若使用 `--plugin-dir` 单独加载本插件，请同时加载它。
+通用 BOM / UTF-8 编码检查和文件预算守卫统一由 [coding-expert](../coding-expert/README.md) 提供。
 
 ## 验证命令
 
@@ -42,26 +42,7 @@ node plugins/ruby-expert/hooks/dispatch.mjs post-tool-use/edit-write </dev/null
 printf '{not-json' | node plugins/ruby-expert/hooks/dispatch.mjs post-tool-use/edit-write
 ```
 
-## 安装
+## 安装 / 卸载
 
-```bash
-claude --plugin-dir /path/to/plugins/ruby-expert
-```
+由仓库根目录的 `./scripts/install.sh` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
-如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
-
-```bash
-claude plugin install ruby-expert@ai-experts
-claude plugin install ruby-expert@ai-experts --scope project
-```
-
-## 卸载
-
-```bash
-claude plugin uninstall ruby-expert
-claude plugin uninstall ruby-expert --scope project
-```
-
-如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
-
-运行时依赖：`node` 必需；`ruby` 用于 `syntax-ruby`。若本机缺少 Ruby 解释器，语法守卫会跳过，其他守卫仍可继续工作。

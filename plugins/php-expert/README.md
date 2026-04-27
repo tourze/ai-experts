@@ -39,7 +39,7 @@ PHP 开发专家插件，覆盖 PHP 代码质量守卫、Composer/PHPStan/PHPUni
 | PreToolUse Bash | `test-output-truncation-guard` | 测试输出被 `tail/head` 截断时提醒 |
 | Stop | `verification-gate` | 完成声明必须伴随测试或静态分析证据 |
 
-通用 BOM / UTF-8 编码检查和文件预算守卫统一由 [coding-expert](../coding-expert/README.md) 提供；若使用 `--plugin-dir` 单独加载本插件，请同时加载它。
+通用 BOM / UTF-8 编码检查和文件预算守卫统一由 [coding-expert](../coding-expert/README.md) 提供。
 
 ## 验证命令
 
@@ -53,26 +53,7 @@ node hooks/dispatch.mjs post-tool-use/edit-write </dev/null
 printf '{not-json' | node hooks/dispatch.mjs post-tool-use/edit-write
 ```
 
-## 安装
+## 安装 / 卸载
 
-```bash
-claude --plugin-dir /path/to/plugins/php-expert
-```
+由仓库根目录的 `./scripts/install.sh` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
-如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
-
-```bash
-claude plugin install php-expert@ai-experts
-claude plugin install php-expert@ai-experts --scope project
-```
-
-## 卸载
-
-```bash
-claude plugin uninstall php-expert
-claude plugin uninstall php-expert --scope project
-```
-
-如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
-
-运行时依赖：`node` 必需；`php`、`composer`、`vendor/bin/phpstan` 按需启用。缺少对应工具时，相关 hook 会自动降级为静默跳过或仅保留本地检查。

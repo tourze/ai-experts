@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { readdirSync, readFileSync } from "node:fs";
+import { readdirSync } from "node:fs";
 import { resolve } from "node:path";
 
 const pluginRoot = resolve("plugins/coding-expert");
@@ -31,7 +31,3 @@ test("hook 脚本都能通过 node --check", () => {
   }
 });
 
-test("hooks.json 是合法 JSON", () => {
-  JSON.parse(readFileSync(resolve(pluginRoot, "hooks/hooks.json"), "utf-8"));
-  assert.ok(true);
-});

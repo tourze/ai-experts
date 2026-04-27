@@ -5,15 +5,6 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import test from "node:test";
 
-test("hook dispatch 模板保持同步", () => {
-  assert.doesNotThrow(() => {
-    execFileSync(process.execPath, ["scripts/sync-hook-dispatch.mjs", "--check"], {
-      encoding: "utf-8",
-      stdio: "pipe",
-    });
-  });
-});
-
 test("trigger 审计报告能生成 hooks 与 skill 覆盖数据", () => {
   const output = execFileSync(process.execPath, [
     "scripts/trigger-audit-report.mjs",
@@ -28,12 +19,7 @@ test("trigger 审计报告能生成 hooks 与 skill 覆盖数据", () => {
   });
   const report = JSON.parse(output);
 
-  assert.ok(report.hooks.dispatchFiles > 0, "应发现插件 dispatch 文件");
-  assert.equal(
-    report.hooks.telemetryReady,
-    report.hooks.dispatchFiles,
-    "所有 dispatch 都应包含遥测逻辑",
-  );
+  assert.ok(report.hooks.hookModules > 0, "应发现 hook 模块");
   assert.ok(report.skills.total > 100, "应发现全仓 skill");
   assert.ok(report.skills.withEvals > 0, "应发现已有 skill 触发 eval");
   assert.ok(report.skills.evalCaseTotals.positive > 0, "应统计正向触发样例");
@@ -42,7 +28,7 @@ test("trigger 审计报告能生成 hooks 与 skill 覆盖数据", () => {
 
 test("hook telemetry 按工作区分桶并执行大小滚动", () => {
   const tempDir = mkdtempSync(join(tmpdir(), "ai-experts-hook-telemetry-"));
-  const dispatchPath = resolve("plugins/skill-expert/hooks/dispatch.mjs");
+  const dispatchPath = resolve("hooks/dispatch.mjs");
   const env = {
     ...process.env,
     AI_EXPERTS_HOOK_TELEMETRY_DIR: tempDir,

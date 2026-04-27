@@ -34,7 +34,7 @@ iOS / Apple 平台专家插件，覆盖 Swift Concurrency、SwiftUI 性能与模
 | PostToolUse Edit\|Write | `lint-swift-concurrency` | Swift Concurrency 并发安全检查 |
 | PostToolUse Edit\|Write | `debug-statement-guard`（由 `coding-expert` 提供） | 调试语句残留检测 |
 
-通用 BOM / UTF-8 编码检查、跨语言调试语句检测和文件预算守卫统一由 [coding-expert](../coding-expert/README.md) 提供；若使用 `--plugin-dir` 单独加载本插件，请同时加载它。
+通用 BOM / UTF-8 编码检查、跨语言调试语句检测和文件预算守卫统一由 [coding-expert](../coding-expert/README.md) 提供。
 
 ## Agents
 
@@ -56,24 +56,7 @@ find skills -path '*/scripts/*.py' -print0 | xargs -0 python3 -m py_compile
 node --test tests/*.test.mjs
 ```
 
-## 安装
+## 安装 / 卸载
 
-```bash
-claude --plugin-dir /path/to/plugins/ios-expert
-```
+由仓库根目录的 `./scripts/install.sh` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
-如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
-
-```bash
-claude plugin install ios-expert@ai-experts
-claude plugin install ios-expert@ai-experts --scope project
-```
-
-## 卸载
-
-```bash
-claude plugin uninstall ios-expert
-claude plugin uninstall ios-expert --scope project
-```
-
-如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。

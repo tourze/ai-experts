@@ -26,19 +26,9 @@ React Native 相关 skill 已拆分至 [react-native-expert](../react-native-exp
 |------|------|------|
 | SessionStart | `env-detector` | 探测 React 版本、渲染目标与状态管理库 |
 
-## 安装
+## 安装 / 卸载
 
-```bash
-claude plugin install react-expert@ai-experts
-claude plugin install react-expert@ai-experts --scope project
-```
-
-## 卸载
-
-```bash
-claude plugin uninstall react-expert
-claude plugin uninstall react-expert --scope project
-```
+由仓库根目录的 `./scripts/install.sh` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
 ## 结构
 

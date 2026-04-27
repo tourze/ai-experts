@@ -8,7 +8,6 @@ import test from "node:test";
 const pluginRoot = resolve("plugins/frontend-expert");
 
 const nodeScripts = [
-  "hooks/dispatch.mjs",
   "skills/icon-retrieval/scripts/search.mjs",
   "skills/i18n-localization/scripts/i18n_checker.mjs",
   "skills/lottie-animations/scripts/generate_lottie_component.mjs",

@@ -59,27 +59,9 @@ node plugins/speckit-expert/skills/speckit-baseline/scripts/bootstrap-specify.mj
 - 社区参考：`https://github.com/dceoy/speckit-agent-skills`
 - 官方参考：`https://github.com/github/spec-kit`
 
-## 安装
+## 安装 / 卸载
 
-```bash
-claude --plugin-dir /path/to/plugins/speckit-expert
-```
-
-如果要通过本仓库根目录注册的 `ai-experts` marketplace 持久安装：
-
-```bash
-claude plugin install speckit-expert@ai-experts
-claude plugin install speckit-expert@ai-experts --scope project
-```
-
-## 卸载
-
-```bash
-claude plugin uninstall speckit-expert
-claude plugin uninstall speckit-expert --scope project
-```
-
-如果只是通过 `claude --plugin-dir ...` 临时加载，则不需要执行卸载；结束当前会话或下次启动时去掉 `--plugin-dir` 即可。
+由仓库根目录的 `./scripts/install.sh` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
 ## 验证
 

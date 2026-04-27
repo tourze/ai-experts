@@ -42,9 +42,9 @@ test("install.sh enables Codex plugins without jq", () => {
     const codexMemoryTarget = join(codexHome, "AGENTS.md");
     assert.match(output, /Skill eval coverage:/);
     assert.match(output, /Codex CLI: done/);
-    assert.match(config, /\[plugins\."react-native-expert@ai-experts"\]/);
+    assert.match(config, /codex_hooks\s*=\s*true/);
     assert.match(hooks, /"Bash"/);
-    assert.match(hooks, new RegExp(`${repoRoot.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/plugins/`));
+    assert.match(hooks, new RegExp(`${repoRoot.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/hooks/dispatch\\.mjs`));
     assert.equal(lstatSync(codexMemoryTarget).isSymbolicLink(), true);
     assert.equal(readlinkSync(codexMemoryTarget), join(repoRoot, "MEMORY.md"));
   } finally {
@@ -126,7 +126,7 @@ test("install.sh preserves unmanaged Codex hooks during install and uninstall", 
 
     const installedHooks = readFileSync(join(codexHome, "hooks.json"), "utf-8");
     assert.match(installedHooks, new RegExp(customCommand.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
-    assert.match(installedHooks, new RegExp(`${repoRoot.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/plugins/`));
+    assert.match(installedHooks, new RegExp(`${repoRoot.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/hooks/dispatch\\.mjs`));
 
     execFileSync("/bin/bash", ["scripts/install.sh", "--uninstall"], {
       cwd: repoRoot,
@@ -141,7 +141,7 @@ test("install.sh preserves unmanaged Codex hooks during install and uninstall", 
 
     const uninstalledHooks = readFileSync(join(codexHome, "hooks.json"), "utf-8");
     assert.match(uninstalledHooks, new RegExp(customCommand.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
-    assert.doesNotMatch(uninstalledHooks, new RegExp(`${repoRoot.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/plugins/`));
+    assert.doesNotMatch(uninstalledHooks, new RegExp(`${repoRoot.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/hooks/dispatch\\.mjs`));
   } finally {
     rmSync(tmp, { recursive: true, force: true });
   }
