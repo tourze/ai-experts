@@ -1,0 +1,56 @@
+name: Bug 报告
+description: 报告一个可复现的 bug
+title: "[bug] "
+labels:
+  - bug
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 问题摘要
+      description: 期望发生什么？实际发生了什么？
+    validations:
+      required: true
+
+  - type: input
+    id: plugin
+    attributes:
+      label: 涉及的插件 / skill / hook
+      description: 例如 `coding-expert/verification-before-completion` 或 `react-expert/react-hooks`
+      placeholder: plugin-name/skill-or-hook-name
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 仅贴公开 / 脱敏的样本
+      placeholder: |
+        1. 跑 ...
+        2. 触发 ...
+        3. 观察到 ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 运行环境
+      description: |
+        - Claude Code / Codex CLI 版本
+        - Node.js 版本（`node --version`）
+        - 操作系统
+        - 通过 `scripts/install.sh` 还是其它方式安装
+      placeholder: |
+        - Claude Code: 2.x.x
+        - Node: v20.x.x
+        - macOS 14 / Ubuntu 22.04
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: 附加信息
+      description: 日志、截图、相关 Issue 链接

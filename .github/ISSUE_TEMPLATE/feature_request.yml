@@ -1,0 +1,49 @@
+name: 特性建议
+description: 提议新增 skill / hook / agent 或现有插件的行为改动
+title: "[feature] "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 用户问题
+      description: 这个建议要解决什么具体问题？谁会受益？
+    validations:
+      required: true
+
+  - type: textarea
+    id: gap
+    attributes:
+      label: 现有 workflow 为什么不够
+      description: 现有 skill / hook / agent 是怎么处理这个场景的？哪里不够？
+    validations:
+      required: true
+
+  - type: dropdown
+    id: shape
+    attributes:
+      label: 形态
+      description: 你倾向于哪种实现形态？
+      options:
+        - 在已有插件里新增 skill
+        - 在已有插件里新增 / 调整 hook
+        - 新建插件
+        - 修改 install / sync 脚本
+        - 其它（在下方说明）
+    validations:
+      required: true
+
+  - type: textarea
+    id: minimal-change
+    attributes:
+      label: 最小可行变化
+      description: 不要描述完整愿景；写出第一个版本最少要包含什么、不包含什么
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 已考虑过的替代方案
+      description: 为什么没选这些？
