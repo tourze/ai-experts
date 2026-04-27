@@ -4,7 +4,6 @@
 
 ## 目录结构
 
-- `hooks/`：`hooks.json`（当前无注册 hook）与 `dispatch.mjs`（保留以备将来扩展）。
 - `skills/`：`microsoft-docs` 与 `microsoft-code-reference` 两个技能。
 
 ## Skills
@@ -19,9 +18,6 @@
 在插件目录执行：
 
 ```bash
-claude plugin validate .
-jq empty hooks/hooks.json
-node --check hooks/dispatch.mjs
 npx -y @microsoft/learn-cli doctor --format json
 ```
 

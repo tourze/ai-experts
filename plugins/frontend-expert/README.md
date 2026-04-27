@@ -4,9 +4,9 @@
 
 ## 结构
 
-- `hooks/`：`hooks.json` 与 `dispatch.mjs`。
+- `hooks/`：1 个 SessionStart 环境探测守卫。
 - `skills/`：前端设计与实现 skill
-- `tests/`：manifest、dispatch、脚本回归测试
+- `tests/`：脚本回归测试
 
 ## Skills
 
@@ -48,7 +48,5 @@
 ## 验证
 
 ```bash
-jq empty plugins/frontend-expert/hooks/hooks.json
-node --check plugins/frontend-expert/hooks/dispatch.mjs
 node --test plugins/frontend-expert/tests/*.test.mjs
 ```

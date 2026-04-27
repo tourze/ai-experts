@@ -4,9 +4,8 @@
 
 ## 结构
 
-- `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：4 个技能目录，分别面向桌面卡死分析、Chrome DevTools 调试、GDB 非阻塞 trace 和 `browser-use` CLI 自动化。
-- `tests/`：manifest、dispatch、hook、自述文档与脚本语法的最小回归测试。
+- `tests/`：自述文档与脚本语法的最小回归测试。
 
 ## Skills
 
@@ -30,7 +29,6 @@
 ## 验证
 
 ```bash
-python3 -m json.tool plugins/debug-expert/hooks/hooks.json >/dev/null
 find plugins/debug-expert -name '*.mjs' -print0 | xargs -0 -n1 node --check
 node --test plugins/debug-expert/tests/*.test.mjs
 ```

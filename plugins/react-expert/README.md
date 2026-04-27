@@ -32,14 +32,13 @@ React Native 相关 skill 已拆分至 [react-native-expert](../react-native-exp
 
 ## 结构
 
-- `hooks/hooks.json`：SessionStart 环境探测
+- `hooks/`：1 个 SessionStart 环境探测守卫
 - `agents/react-reviewer.md`：React 评审 agent
 - `skills/*/SKILL.md`：中文 skill 入口
-- `tests/`：manifest、dispatch 与 skill 文档一致性校验
+- `tests/`：skill 文档一致性校验
 
 ## 校验
 
 ```bash
-node --check plugins/react-expert/hooks/dispatch.mjs
 node --test plugins/react-expert/tests/*.test.mjs
 ```

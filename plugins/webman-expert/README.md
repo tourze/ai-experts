@@ -15,14 +15,9 @@ Webman 框架专家插件，覆盖命名规范、自定义进程、WebSocket 和
 
 由仓库根目录的 `node scripts/install.mjs` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
-## 说明
-
-- 插件 manifest 已显式声明 `skills` 与 `hooks` 路径，不再使用非标准 `dependencies` 字段。
-
 ## 验证命令
 
 ```bash
-jq empty plugins/webman-expert/hooks/hooks.json
 find plugins/webman-expert/hooks -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
 node --test plugins/webman-expert/tests/*.test.mjs
 ```

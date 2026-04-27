@@ -4,9 +4,9 @@ Perl 开发专家插件，覆盖现代 Perl 5.36+ 开发、Test2 测试工作流
 
 ## 目录结构
 
-- `hooks/`：`hooks.json`、`dispatch.mjs` 与 2 个 `PostToolUse Edit|Write` 守卫脚本。
+- `hooks/`：3 个 `PostToolUse Edit|Write` 守卫脚本。
 - `skills/`：Perl 开发与 Test2 测试技能文档。
-- `tests/`：manifest、dispatch、脚本与文档回归测试。
+- `tests/`：脚本与文档回归测试。
 
 ## Skills
 
@@ -35,11 +35,8 @@ Perl 开发专家插件，覆盖现代 Perl 5.36+ 开发、Test2 测试工作流
 在仓库根目录执行：
 
 ```bash
-python3 -m json.tool plugins/perl-expert/hooks/hooks.json >/dev/null
 find plugins/perl-expert/hooks plugins/perl-expert/tests -type f \( -name '*.mjs' -o -name '*.js' \) -print0 | xargs -0 -n1 node --check
 node --test plugins/perl-expert/tests/*.test.mjs
-node plugins/perl-expert/hooks/dispatch.mjs post-tool-use/edit-write </dev/null
-printf '{not-json' | node plugins/perl-expert/hooks/dispatch.mjs post-tool-use/edit-write
 ```
 
 ## 安装 / 卸载

@@ -4,9 +4,9 @@ NestJS 框架专家插件，覆盖模块/控制器/服务/DTO/Guard/拦截器配
 
 ## 结构
 
-- `hooks/`：`hooks.json` 与 `dispatch.mjs`。
+- `hooks/`：1 个 PostToolUse Edit\|Write 守卫。
 - `skills/nestjs-layering-patterns/`：主技能说明与 NestJS 参考资料。
-- `tests/`：manifest、dispatch 与依赖检查的最小回归测试。
+- `tests/`：依赖检查与最小回归测试。
 
 ## Skills
 
@@ -27,7 +27,5 @@ NestJS 框架专家插件，覆盖模块/控制器/服务/DTO/Guard/拦截器配
 ## 验证
 
 ```bash
-jq empty plugins/nestjs-expert/hooks/hooks.json
-node --check plugins/nestjs-expert/hooks/dispatch.mjs
 node --test plugins/nestjs-expert/tests/*.test.mjs
 ```

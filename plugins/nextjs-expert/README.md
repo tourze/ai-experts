@@ -4,9 +4,9 @@ Next.js 框架专家插件，覆盖 App Router、Server Components、Server Acti
 
 ## 结构
 
-- `hooks/`：`hooks.json` 与 `dispatch.mjs`。
+- `hooks/`：1 个 PostToolUse Edit\|Write 守卫。
 - `skills/nextjs-developer/`：主技能说明与 App Router / 数据获取 / Server Actions / 部署参考资料。
-- `tests/`：manifest、dispatch 与文档结构的最小回归测试。
+- `tests/`：文档结构与最小回归测试。
 
 ## Skills
 
@@ -27,8 +27,5 @@ Next.js 框架专家插件，覆盖 App Router、Server Components、Server Acti
 ## 验证
 
 ```bash
-claude plugin validate plugins/nextjs-expert
-jq empty plugins/nextjs-expert/hooks/hooks.json
-node --check plugins/nextjs-expert/hooks/dispatch.mjs
 node --test plugins/nextjs-expert/tests/*.test.mjs
 ```

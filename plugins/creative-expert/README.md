@@ -4,9 +4,8 @@
 
 ## 目录结构
 
-- `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：创意与可视化技能包。
-- `tests/`：`dispatch` 的最小回归测试。
+- `tests/`：最小回归测试。
 
 ## Skills
 
@@ -32,8 +31,7 @@
 在插件目录执行：
 
 ```bash
-jq empty hooks/hooks.json
-find hooks tests -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
+find tests -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
 find skills -type f -name '*.py' -print0 | xargs -0 -n1 python3 -m py_compile
 find skills/screenshot/scripts -type f -name '*.swift' -print0 | xargs -0 -n1 swiftc -typecheck
 node --test tests/*.test.mjs

@@ -1,12 +1,11 @@
 # social-media-expert
 
-社交媒体运营专家插件，覆盖小红书图文、小红书商业增长、抖音内容分析、粉丝运营、私域引流与个人品牌建设。当前版本补齐了插件级 hook 入口、脚本语法校验和 SKILL 文档统一规范。
+社交媒体运营专家插件，覆盖小红书图文、小红书商业增长、抖音内容分析、粉丝运营、私域引流与个人品牌建设。当前版本补齐了脚本语法校验和 SKILL 文档统一规范。
 
 ## 目录结构
 
-- `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：8 个社交媒体技能，均采用统一的中文结构。
-- `tests/`：覆盖 `dispatch`、脚本语法与 SKILL 链接校验。
+- `tests/`：覆盖脚本语法与 SKILL 链接校验。
 
 ## Skills
 
@@ -34,8 +33,6 @@
 ## 验证命令
 
 ```bash
-jq empty plugins/social-media-expert/hooks/hooks.json
-node --check plugins/social-media-expert/hooks/dispatch.mjs
 node --check plugins/social-media-expert/skills/douyin-video-summary/scripts/download_audio.mjs
 node --check plugins/social-media-expert/skills/douyin-video-summary/scripts/transcribe.mjs
 node --check plugins/social-media-expert/skills/xhs-graphic-generator/scripts/generate.mjs

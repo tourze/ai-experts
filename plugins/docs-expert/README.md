@@ -4,9 +4,9 @@
 
 ## 结构
 
-- `hooks/`：`hooks.json`、`dispatch.mjs` 与 `user-prompt-submit` 结构化表达 primer。
+- `hooks/`：1 个 UserPromptSubmit 结构化表达 primer。
 - `skills/`：文档处理、提案撰写、Markdown/PDF 转换等技能目录。
-- `tests/`：manifest、dispatch、skill 文档和脚本语法的最小回归测试。
+- `tests/`：skill 文档和脚本语法的最小回归测试。
 
 ## Skills
 
@@ -48,8 +48,6 @@
 ## 验证
 
 ```bash
-python3 -m json.tool plugins/docs-expert/hooks/hooks.json >/dev/null
-node --check plugins/docs-expert/hooks/dispatch.mjs
 node --test plugins/docs-expert/tests/*.test.mjs
 find plugins/docs-expert -type f -name '*.py' -print0 | xargs -0 python3 -m py_compile
 find plugins/docs-expert -type f \( -name '*.js' -o -name '*.mjs' \) | while read -r file; do node --check "$file"; done

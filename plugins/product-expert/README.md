@@ -1,13 +1,12 @@
 # product-expert
 
-产品管理专家插件，覆盖 PRD 撰写、商业模型、竞品分析、用户旅程、定价策略和敏捷迭代。当前版本已补齐插件级 hook、自检入口、脚本回归测试，以及统一的中文 `SKILL.md` 结构。
+产品管理专家插件，覆盖 PRD 撰写、商业模型、竞品分析、用户旅程、定价策略和敏捷迭代。当前版本已补齐自检入口、脚本回归测试，以及统一的中文 `SKILL.md` 结构。
 
 ## 目录结构
 
-- `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：59 个产品与战略类技能，统一采用「适用场景 → 核心约束 → 代码模式 → 检查清单 → 反模式」结构。
 - `agents/`：8 个窄向 agent，按问题域预加载相关 skill 输出综合分析。
-- `tests/`：覆盖 manifest、dispatch、脚本行为与 `SKILL.md` 链接校验。
+- `tests/`：覆盖脚本行为与 `SKILL.md` 链接校验。
 
 ## Skills
 
@@ -95,8 +94,7 @@
 ## 验证命令
 
 ```bash
-jq empty plugins/product-expert/hooks/hooks.json
-find plugins/product-expert/hooks plugins/product-expert/tests -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
+find plugins/product-expert/tests -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
 node --check plugins/product-expert/skills/agile-product-owner/scripts/user_story_generator.mjs
 node --check plugins/product-expert/skills/competitive-teardown/scripts/competitive_matrix_builder.mjs
 node --test plugins/product-expert/tests/*.test.mjs

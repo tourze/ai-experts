@@ -2,7 +2,7 @@
 
 DevOps 专家插件，覆盖 Docker/Helm/K8s、CI/CD 流水线、Nginx 配置、监控告警和事件响应。
 
-- `hooks/dispatch.mjs`：统一分发 DevOps 专有的 `PostToolUse Edit|Write` 校验器。
+- `hooks/`：8 个 DevOps 专有的 `PostToolUse Edit|Write` 校验器。
 - `skills/*/SKILL.md`：全部采用中文统一结构，便于按场景快速触发。
 
 ## Skills
@@ -50,7 +50,6 @@ Shell 语法检查与 ShellCheck 统一由 [linux-expert](../linux-expert/README
 ## 验证命令
 
 ```bash
-jq empty plugins/devops-expert/hooks/hooks.json
 find plugins/devops-expert/hooks -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
 node --test plugins/devops-expert/tests/*.test.mjs
 ```

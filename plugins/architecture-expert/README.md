@@ -1,10 +1,9 @@
 # architecture-expert
 
-面向架构设计、评审、重构和技术债治理的插件，提供一组架构分析技能、插件级 hook 入口和回归测试。
+面向架构设计、评审、重构和技术债治理的插件，提供一组架构分析技能与回归测试。
 
 ## 目录结构
 
-- `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：架构、设计、重构、计划与债务治理技能。
 - `tests/`：脚本级回归测试，覆盖 `scan_codebase.mjs`。
 
@@ -51,7 +50,6 @@
 ## 验证命令
 
 ```bash
-node --check hooks/dispatch.mjs
 node --check skills/architecture-reviewer/scripts/scan_codebase.mjs
 python3 -m unittest tests/test_scan_codebase.py
 ```

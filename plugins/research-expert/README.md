@@ -27,9 +27,8 @@
 ## 结构
 
 - `agents/`：自主研究 agent 定义
-- `hooks/`：`hooks.json` 与 `dispatch.mjs`
 - `skills/`：研究类技能与配套脚本
-- `tests/`：manifest、hooks、skills 结构自检
+- `tests/`：skills 结构自检
 
 ## 运行前提
 
@@ -39,8 +38,6 @@
 ## 验证
 
 ```bash
-jq empty plugins/research-expert/hooks/hooks.json
-node --check plugins/research-expert/hooks/dispatch.mjs
 node --test plugins/research-expert/tests/*.mjs
 ```
 

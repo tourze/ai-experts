@@ -4,9 +4,9 @@
 
 ## 目录结构
 
-- `hooks/`：`hooks.json`、`dispatch.mjs` 和 WXML/WXSS/Taro 语法检查 hook。
+- `hooks/`：4 个 PostToolUse Edit\|Write 守卫（WXML / WXSS / Taro DOM 语法检查）。
 - `skills/`：`miniprogram-development` 技能与本地参考资料。
-- `tests/`：`dispatch` 容错回归测试与 hook 行为测试。
+- `tests/`：hook 行为与回归测试。
 
 ## Skills
 
@@ -29,8 +29,6 @@
 在插件目录执行：
 
 ```bash
-claude plugin validate .
-jq empty hooks/hooks.json
 find hooks -name '*.mjs' -print0 | xargs -0 -n1 node --check
 node --test tests/*.test.mjs
 ```

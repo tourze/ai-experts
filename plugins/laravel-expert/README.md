@@ -4,9 +4,9 @@
 
 ## 目录结构
 
-- `hooks/`：`hooks.json` 与 `dispatch.mjs`。
+- `hooks/`：1 个 PostToolUse Edit\|Write 守卫。
 - `skills/`：5 个 Laravel 顶层技能，以及 `laravel-layering-patterns/references/` 下的专题参考。
-- `tests/`：manifest、dispatch 与文档结构测试。
+- `tests/`：文档结构与脚本回归测试。
 
 ## Skills
 
@@ -29,9 +29,6 @@
 在仓库根目录执行：
 
 ```bash
-claude plugin validate plugins/laravel-expert
-jq empty plugins/laravel-expert/hooks/hooks.json
-node --check plugins/laravel-expert/hooks/dispatch.mjs
 node --test plugins/laravel-expert/tests/*.test.mjs
 ```
 

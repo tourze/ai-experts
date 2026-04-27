@@ -4,9 +4,9 @@ Vue 框架专家插件，聚焦 Vue 3 JavaScript 项目：`<script setup>`、Com
 
 ## 结构
 
-- `hooks/`：`hooks.json` 与 `dispatch.mjs`。
+- `hooks/`：1 个 PostToolUse Edit\|Write 守卫。
 - `skills/vue-expert-js/`：主技能说明与 JSDoc / composable / 组件 / 状态管理 / 测试参考文档。
-- `tests/`：manifest、dispatch 与文档结构的最小回归测试。
+- `tests/`：文档结构与最小回归测试。
 
 ## Skills
 
@@ -27,8 +27,5 @@ Vue 框架专家插件，聚焦 Vue 3 JavaScript 项目：`<script setup>`、Com
 ## 验证
 
 ```bash
-claude plugin validate plugins/vue-expert
-jq empty plugins/vue-expert/hooks/hooks.json
-node --check plugins/vue-expert/hooks/dispatch.mjs
 node --test plugins/vue-expert/tests/*.test.mjs
 ```

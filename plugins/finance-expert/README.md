@@ -4,7 +4,6 @@
 
 ## 目录
 
-- `hooks/`：`dispatch.mjs` 与 `hooks.json`。
 - `skills/financial-analyst/`：4 个可直接运行的 CLI 脚本与样例数据
 - `skills/creating-financial-models/`：依赖 `numpy`/`pandas` 的 DCF 与敏感性建模脚本
 - `skills/risk-metrics-calculation/`：风险指标方法论与经校验的代码模式
@@ -36,8 +35,6 @@ pip install numpy pandas
 ## 验证命令
 
 ```bash
-python3 -m json.tool plugins/finance-expert/hooks/hooks.json >/dev/null
-node --check plugins/finance-expert/hooks/dispatch.mjs
 node --check plugins/finance-expert/skills/financial-analyst/scripts/ratio_calculator.mjs
 node --check plugins/finance-expert/skills/financial-analyst/scripts/dcf_valuation.mjs
 node --check plugins/finance-expert/skills/financial-analyst/scripts/budget_variance_analyzer.mjs

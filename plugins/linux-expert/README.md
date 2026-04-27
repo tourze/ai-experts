@@ -4,9 +4,9 @@ Linux 系统专家插件，覆盖 Shell 守卫、发行版问题排查、磁盘/
 
 ## 结构
 
-- `hooks/`：`hooks.json`、`dispatch.mjs` 与 3 个本地 `PostToolUse Edit|Write` 守卫脚本。
+- `hooks/`：4 个本地 `PostToolUse Edit|Write` 守卫脚本。
 - `skills/`：8 个 Linux 专向技能文档，统一采用中文结构。
-- `tests/`：manifest、dispatch、hook 逻辑、SKILL 文档与示例校验。
+- `tests/`：hook 逻辑、SKILL 文档与示例校验。
 
 ## Skills
 
@@ -51,8 +51,6 @@ Linux 系统专家插件，覆盖 Shell 守卫、发行版问题排查、磁盘/
 ## 验证
 
 ```bash
-python3 -m json.tool plugins/linux-expert/hooks/hooks.json >/dev/null
-node --check plugins/linux-expert/hooks/dispatch.mjs
 for f in plugins/linux-expert/hooks/post-tool-use/edit-write/*.mjs; do
  node --check "$f"
 done

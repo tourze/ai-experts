@@ -4,9 +4,8 @@
 
 ## 目录结构
 
-- `hooks/`：`hooks.json` 与 `dispatch.mjs`。
 - `skills/`：15 个思维类技能，每个 `SKILL.md` 使用统一中文结构。
-- `tests/`：manifest、dispatch、脚本语法与文档结构校验。
+- `tests/`：脚本语法与文档结构校验。
 
 ## Skills
 
@@ -37,8 +36,6 @@
 ## 校验
 
 ```bash
-jq empty plugins/thinking-expert/hooks/hooks.json
-node --check plugins/thinking-expert/hooks/dispatch.mjs
 node --test plugins/thinking-expert/tests/*.test.mjs
 ```
 

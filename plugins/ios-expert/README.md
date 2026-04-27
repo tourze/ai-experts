@@ -4,10 +4,10 @@ iOS / Apple 平台专家插件，覆盖 Swift Concurrency、SwiftUI 性能与模
 
 ## 目录结构
 
-- `hooks/`：`hooks.json`、`dispatch.mjs` 和 1 个本地 PostToolUse 守卫。
+- `hooks/`：3 个本地 PostToolUse 守卫。
 - `skills/`：13 个 iOS / Apple 平台技能与配套参考资料、脚本。
 - `agents/`：2 个 iOS 运行审计与模拟器冒烟测试代理。
-- `tests/`：manifest 最小回归测试。
+- `tests/`：最小回归测试。
 
 ## Skills
 
@@ -48,8 +48,6 @@ iOS / Apple 平台专家插件，覆盖 Swift Concurrency、SwiftUI 性能与模
 在插件目录执行：
 
 ```bash
-claude plugin validate .
-jq empty hooks/hooks.json
 find hooks -name '*.mjs' -print0 | xargs -0 -n1 node --check
 find skills -path '*/scripts/*.mjs' -print0 | xargs -0 -n1 node --check
 find skills -path '*/scripts/*.py' -print0 | xargs -0 python3 -m py_compile
