@@ -37,6 +37,23 @@ npm run audit:hooks
 5. 跑本地校验
 6. 提 PR，按 `.github/PULL_REQUEST_TEMPLATE.md` 填写
 
+## 新增 / 修改 hook 的安全审查清单
+
+`hooks/dispatch.mjs` 在每次 Claude / Codex 触发对应事件时调用本仓库的 `.mjs` 文件，
+等价于授予用户级本地代码执行能力。**合入新 hook = 增加 RCE 入口**，PR reviewer
+必须显式确认下列每一项：
+
+- [ ] 不发起任何外网请求（无 `fetch` / `http` / `https` / `net.connect` / `dns.lookup` / 子进程调用 `curl` `wget`）
+- [ ] 不 `eval` / `Function()` 字符串，不 `import()` 用户输入拼出的路径
+- [ ] 不写仓库目录与 `~/.claude` / `~/.codex` 之外的位置（telemetry / cache 必须用既有 `~/.claude/hook-telemetry/` 目录）
+- [ ] 不读取敏感目录（`~/.ssh` / `~/.aws` / `~/.gnupg` / `~/.config/gh` / `/etc/shadow` 等）
+- [ ] 不把 `tool_input.command` / `tool_input.file_path` 等 payload 直接拼接到 shell 字符串；调用外部命令必须用 `execFileSync` + 数组参数
+- [ ] 任何 `execFileSync` / `execSync` 调用都设置了 `timeout`（建议 ≤ 5s 用于诊断 hook，≤ 10s 用于 syntax check）
+- [ ] 所有用户级文件写入使用原子写（同目录 tmp + rename），参考 `scripts/sync-hooks.mjs:31-40`
+- [ ] 异常路径不会阻塞 dispatcher：`run()` 抛错由 dispatcher 兜底，但 hook 内部不应主动 `process.exit()`（除非该值为 dispatcher 协议返回值）
+- [ ] 配套 `tests/hooks.test.mjs` 同时覆盖 TP（应 block / report）与 TN（不应误拦），由 `tests/hook-adversarial-conformance.test.mjs` 强制
+- [ ] 若新 hook 与基座 `coding-expert` 同名，需在 PR 描述给出语义差异理由；`tests/dependency-graph.test.mjs` 会拦截未声明的复刻
+
 ## 范围约束（Scope Guidelines）
 
 本仓库目标是**多个领域专家插件的可组合集合**。可被接受的改动：

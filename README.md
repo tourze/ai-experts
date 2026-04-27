@@ -14,8 +14,8 @@
 
 ## 核心架构约束
 
-- **插件源码不能跨插件 import**：每个插件仍以独立目录分发；通用守卫统一收敛在基座插件中，通过 manifest dependencies 复用，不再在各插件里复制同一份实现。
-- 插件结构：`README.md` + `skills/` + `tests/`，并可按需提供 `hooks/` 与 `agents/`（marketplace 体系已废弃，不再使用 `.claude-plugin/`/`.codex-plugin/` manifest）。
+- **插件源码不能跨插件 import**：每个插件仍以独立目录分发；通用守卫统一收敛在基座插件中，通过 README "已声明的插件依赖" 段落 + `tests/dependency-graph.test.mjs` 强校验复用关系（marketplace manifest 体系已废弃，dependency-graph 测试同时禁止已声明依赖 `coding-expert` 的插件复刻基座 guard，仅 `debug-statement-guard.mjs` 因语言特化版需求保留例外）。
+- 插件结构：`README.md` + `skills/`，并可按需提供 `hooks/` / `agents/` / `tests/`（marketplace 体系已废弃，不再使用 `.claude-plugin/`/`.codex-plugin/` manifest）。
 - **不生成仓库级 `.codex/hooks.json`**：Codex CLI 的统一 hooks 由 `scripts/sync-hooks.mjs` 写入用户级 `${CODEX_HOME:-~/.codex}/hooks.json`，每条命令指向根级 `hooks/dispatch.mjs` 跨插件分发。
 
 ## 插件层次结构
@@ -31,13 +31,14 @@
    - 跨语言的工作流守卫（git 纪律、测试策略、文档处理）
    - 与基座层和语言层正交，按需安装
 
-3. **语言层** — python-expert, javascript-expert, typescript-expert, java-expert, go-expert, rust-expert, ruby-expert, php-expert, cpp-expert, ios-expert, perl-expert 等
+3. **语言层** — python-expert, javascript-expert, typescript-expert, java-expert, go-expert, rust-expert, ruby-expert, php-expert, cpp-expert, perl-expert，以及以语言为入口的客户端 surface（android-expert / ios-expert）
    - 在基座层之上叠加语言特有的 syntax check、lint 与必要的特化守卫
-   - 各自包含自己的 dispatch.mjs 和语言特有的 PostToolUse 守卫；通用 `file-budget` 与跨语言 `debug-statement` 统一复用 `coding-expert`，特化版 debug-statement 仍保留在对应插件
+   - 仅根 `hooks/dispatch.mjs` 一个 dispatcher，本层 hooks 通过 `hooks/<event>/<sub>/*.mjs` 被根 dispatcher 自动发现，无需自带 dispatch
+   - 通用 `file-budget` 与跨语言 `debug-statement` 统一复用 `coding-expert`，仅 `debug-statement-guard.mjs` 因语言语义差异保留各自特化版
 
 4. **框架/领域层** — react-expert, nextjs-expert, laravel-expert, nestjs-expert, vue-expert, devops-expert, frontend-expert, security-expert, product-expert, marketing-expert 等
    - 主要提供 skills，少数有领域特有的 hooks
-   - 框架/领域插件按需通过 dependencies 声明依赖对应的语言插件或 `coding-expert`
+   - 框架/领域插件按需通过 README "已声明的插件依赖" 段声明依赖对应的语言插件或 `coding-expert`
    - 非代码领域插件（product/marketing/legal/finance 等）只提供 skills，不需要文件守卫
 
 ## 已声明的插件依赖
@@ -103,7 +104,7 @@
 
 - Hook 实现：Node.js ESM (.mjs)
 - Hook 协议：stdin/stdout JSON，dispatch.mjs 动态发现子目录下的 .mjs 文件
-- 测试：每个插件含 tests/ 目录
+- 测试：建议每个插件提供 tests/ 目录；纯 skills 插件可缺省，由仓库级 `tests/` 兜底回归（参考 `CONTRIBUTING.md`）
 
 ## Hook 事件类型
 
@@ -111,7 +112,7 @@ SessionStart, PreToolUse, PostToolUse, UserPromptSubmit, Notification, Stop
 
 ## Git 工作流
 
-- 主分支：main
+- 主分支：master
 - 提交风格：conventional commits（feat/fix/refactor/chore）
 
 ## 快速开始

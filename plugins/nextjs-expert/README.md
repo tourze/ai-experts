@@ -4,9 +4,15 @@ Next.js 框架专家插件，覆盖 App Router、Server Components、Server Acti
 
 ## 结构
 
-- `hooks/`：1 个 PostToolUse Edit\|Write 守卫。
+- `hooks/session-start/env-detector.mjs`：1 个 SessionStart 环境检测，识别 App Router / pages 路由布局并注入提示。
 - `skills/nextjs-developer/`：主技能说明与 App Router / 数据获取 / Server Actions / 部署参考资料。
 - `tests/`：文档结构与最小回归测试。
+
+## Hooks
+
+| Hook | 类型 | 用途 |
+|------|------|------|
+| `session-start/env-detector.mjs` | SessionStart | 探测 Next.js 项目结构并注入路由模式上下文 |
 
 ## Skills
 
