@@ -52,6 +52,7 @@ node plugins/speckit-expert/skills/speckit-baseline/scripts/bootstrap-specify.mj
 | `speckit-taskstoissues` | 将任务清单映射为 GitHub Issues |
 | `speckit-tester` | 执行测试并汇总覆盖率与结果 |
 | `speckit-validate` | 校验实现结果与规格要求是否一致 |
+| `spec-driven-delivery` | 5 阶段需求驱动交付（Specify→Plan→Act→Review→Vault）外层纪律：10 分 spec 门禁 + `.sparv/journal.md` + 3 次失败协议 + EHRB 高风险显式确认；包裹 speckit 子流程使用 |
 
 ## 参考来源
 

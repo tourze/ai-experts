@@ -39,5 +39,5 @@ cases:
     fixtures: []
     rubric:
       - "does not activate refactoring checklist"
-      - "feature delivery belongs to spec-driven-delivery or feature development"
+      - "feature delivery belongs to speckit-expert:spec-driven-delivery or feature development"
     trigger_expected: false

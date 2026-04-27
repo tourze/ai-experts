@@ -10,7 +10,6 @@
 | `complexity-reducer` | 降低嵌套、耦合和函数复杂度，含 `complexity_report.mjs` 度量脚本与 Python/Go/TS/Rust 简化指南 |
 | `debug-methodology` | 系统化定位 bug 与异常行为 |
 | `refactoring-checklist` | 为重构提供增量、安全的检查清单 |
-| `spec-driven-delivery` | 5 阶段需求驱动交付（Specify→Plan→Act→Review→Vault），10 分 spec 门禁 + journal + 3 次失败协议 |
 | `receiving-code-review` | 当收到代码审查反馈、需要在实施建议之前进行技术评估时使用——特别是反馈不明确或技术上存疑时；要求技术严谨和独立验证，而非表演式同意或盲目实施。 |
 | `subagent-driven-development` | 当有实现计划需要在当前会话中执行、且各任务相对独立时使用——通过每个任务派遣独立子代理实现，配合双阶段审查（规格合规 + 代码质量），确保高质量快速迭代。 |
 | `verification-before-completion` | 当即将声称工作完成、修复生效或测试通过时使用——要求在做出任何完成声明前先运行验证命令并确认输出；证据先于断言，永远如此。 |
