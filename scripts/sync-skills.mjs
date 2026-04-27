@@ -14,7 +14,7 @@
  * 校验：若发现重名，立即报错并列出冲突源，要求人工处理。
  */
 
-import { existsSync, lstatSync, mkdirSync, readdirSync, renameSync, rmSync, symlinkSync, realpathSync } from "node:fs";
+import { existsSync, lstatSync, mkdirSync, readdirSync, readlinkSync, renameSync, rmSync, symlinkSync, realpathSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -149,6 +149,44 @@ function unlinkOne({ source, target, label, dryRun }) {
   return { action: "unlinked" };
 }
 
+// 反向扫描：清理「指向本仓库 plugins/ 但源已不存在」的 dangling symlink。
+// 用于覆盖 skill 被删除或 id 被重命名后，旧 symlink 残留的场景。
+// 范围严格收敛：只动指向 <repoRoot>/plugins/ 之内的 symlink，不碰其他来源。
+function pruneDanglingLinks({ root, label, dryRun }) {
+  if (!existsSync(root)) return { removed: 0, would: 0 };
+  let entries;
+  try {
+    entries = readdirSync(root, { withFileTypes: true });
+  } catch {
+    return { removed: 0, would: 0 };
+  }
+  const pluginsPrefix = pluginsRoot.endsWith("/") ? pluginsRoot : pluginsRoot + "/";
+  let removed = 0;
+  let would = 0;
+  for (const entry of entries) {
+    if (!entry.isSymbolicLink()) continue;
+    const linkPath = join(root, entry.name);
+    let linkTarget;
+    try {
+      linkTarget = readlinkSync(linkPath);
+    } catch {
+      continue;
+    }
+    const absTarget = resolve(root, linkTarget);
+    if (absTarget !== pluginsRoot && !absTarget.startsWith(pluginsPrefix)) continue;
+    if (existsSync(absTarget)) continue;
+    if (dryRun) {
+      console.log(`[prune] ${label}: would remove dangling ${linkPath} → ${linkTarget}`);
+      would += 1;
+      continue;
+    }
+    rmSync(linkPath, { force: true });
+    console.log(`[prune] ${label}: removed dangling ${linkPath} → ${linkTarget}`);
+    removed += 1;
+  }
+  return { removed, would };
+}
+
 function describe({ skill, target, mode, result, label }) {
   const tag = mode === "uninstall" ? "[unlink]" : "[link]";
   const path = `${target}/${skill.id}`;
@@ -191,7 +229,7 @@ function main() {
     return;
   }
 
-  const summary = { linked: 0, unlinked: 0, skipped: 0, would: 0 };
+  const summary = { linked: 0, unlinked: 0, skipped: 0, would: 0, pruned: 0 };
 
   for (const targetKey of args.targets) {
     const targetRoot = TARGETS[targetKey];
@@ -214,11 +252,15 @@ function main() {
         console.log(describe({ skill, target: targetRoot, mode: args.uninstall ? "uninstall" : "install", result, label }));
       }
     }
+
+    const prune = pruneDanglingLinks({ root: targetRoot, label, dryRun: args.dryRun });
+    summary.pruned += prune.removed;
+    summary.would += prune.would;
   }
 
   const head = args.uninstall ? "sync-skills (uninstall)" : "sync-skills";
   console.log(
-    `${head}: linked=${summary.linked} unlinked=${summary.unlinked} skipped=${summary.skipped}` +
+    `${head}: linked=${summary.linked} unlinked=${summary.unlinked} skipped=${summary.skipped} pruned=${summary.pruned}` +
       (args.dryRun ? ` would=${summary.would}` : ""),
   );
 }
