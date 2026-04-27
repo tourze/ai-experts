@@ -12,7 +12,7 @@ description: 当用户需要设计自定义 Hook、修复依赖数组、处理 e
 - 遇到 effect 重复执行、闭包拿到旧值、依赖数组写不对、清理逻辑遗漏等问题。
 - 如果问题已经扩展成"渲染性能、外部 store 订阅或 memo 治理"，统一看 [react-performance](../react-performance/SKILL.md)。
 - 如果任务在 Next.js App Router / RSC 边界上，优先联动 [react-server-components](../react-server-components/SKILL.md)。
-- 类型体操很重时，联动 [typescript-magician](../../../typescript-expert/skills/typescript-magician/SKILL.md)。
+- 类型体操很重时，联动 `typescript-magician`。
 
 ## 核心约束
 

@@ -13,8 +13,8 @@ description: 当用户要分析或优化 React 渲染性能、消除不必要重
 - 用 React DevTools Profiler、浏览器 Performance、bundle 分析工具找瓶颈。
 
 ## 交叉引用
-- 请求瀑布：[architecture-expert/waterfall-elimination](../../../architecture-expert/skills/waterfall-elimination/SKILL.md)。
-- Bundle 体积：[frontend-expert/bundle-optimization](../../../frontend-expert/skills/bundle-optimization/SKILL.md)。
+- 请求瀑布：`waterfall-elimination`。
+- Bundle 体积：`bundle-optimization`。
 - Server 组件：[react-server-components](../react-server-components/SKILL.md) / [react-server-optimization](../react-server-optimization/SKILL.md)。
 - 组件拆分：[react-composable-components](../react-composable-components/SKILL.md)。
 - Hook 设计：[react-hooks](../react-hooks/SKILL.md)。

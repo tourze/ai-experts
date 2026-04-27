@@ -10,7 +10,7 @@ description: 当用户要为某个行业产品（SaaS、Fintech、Healthcare、E
 - 产品类型明确（fintech / healthcare / portfolio / gaming / spa 等），要快速锁定视觉方向。
 - 需要同时决定 风格 + 配色 + 字体对 + 关键效果 + 反模式。
 - 不知道某个行业"不该做什么"（比如 banking 忌 AI 紫粉渐变）。
-- 要和 [ui-style-catalog](../../../creative-expert/skills/ui-style-catalog/SKILL.md)、[font-pairing-library](../font-pairing-library/SKILL.md)、[design-system-patterns](../design-system-patterns/SKILL.md) 联动。
+- 要和 `ui-style-catalog`、[font-pairing-library](../font-pairing-library/SKILL.md)、[design-system-patterns](../design-system-patterns/SKILL.md) 联动。
 - 详细预设查 [references/presets-catalog.md](references/presets-catalog.md)。
 
 ## 核心约束
@@ -18,7 +18,7 @@ description: 当用户要为某个行业产品（SaaS、Fintech、Healthcare、E
 - 预设是**起点不是终点**：先照表落 60%，剩余 40% 由品牌差异化决定。
 - 行业语义先于视觉美感：banking 的首要情绪是"值得托付"，不是"酷"。
 - 每个行业都有反模式——选之前先看"AVOID 清单"。
-- 风格要和 [ui-style-catalog](../../../creative-expert/skills/ui-style-catalog/SKILL.md) 的 keywords 对齐，配色要和 [design-system-patterns](../design-system-patterns/SKILL.md) 的 token 对齐。
+- 风格要和 `ui-style-catalog` 的 keywords 对齐，配色要和 [design-system-patterns](../design-system-patterns/SKILL.md) 的 token 对齐。
 - 不机械套用：如果产品是 "B2B SaaS + Gen-Z 氛围"，按"主行业 + 次行业氛围"叠加，不用单 preset。
 
 ## 实施步骤
@@ -33,7 +33,7 @@ description: 当用户要为某个行业产品（SaaS、Fintech、Healthcare、E
 
 ### 步骤 3：接到设计系统
 
-把"主色组"接入 [design-system-patterns](../design-system-patterns/SKILL.md) 的 semantic token；字体对接 [font-pairing-library](../font-pairing-library/SKILL.md)；风格实现细节查 [ui-style-catalog](../../../creative-expert/skills/ui-style-catalog/SKILL.md)。
+把"主色组"接入 [design-system-patterns](../design-system-patterns/SKILL.md) 的 semantic token；字体对接 [font-pairing-library](../font-pairing-library/SKILL.md)；风格实现细节查 `ui-style-catalog`。
 
 ## 代码模式
 
@@ -76,7 +76,7 @@ description: 当用户要为某个行业产品（SaaS、Fintech、Healthcare、E
 - [ ] 已检查 preset 的 **AVOID** 清单，没踩反模式。
 - [ ] 配色接入了设计系统 semantic token，不是组件里硬写。
 - [ ] 字体按 [font-pairing-library](../font-pairing-library/SKILL.md) 导入，不是每处自己写 `font-family`。
-- [ ] 风格实现对照 [ui-style-catalog](../../../creative-expert/skills/ui-style-catalog/SKILL.md) 的 CSS 特征清单。
+- [ ] 风格实现对照 `ui-style-catalog` 的 CSS 特征清单。
 
 ## 反模式
 
@@ -118,6 +118,6 @@ fintech 公司：完全照 Stripe 视觉
 ## 参考资料
 
 - [references/presets-catalog.md](references/presets-catalog.md) — 索引（指向下列分类文件）
-- [ui-style-catalog](../../../creative-expert/skills/ui-style-catalog/SKILL.md)
+- `ui-style-catalog`
 - [font-pairing-library](../font-pairing-library/SKILL.md)
 - [design-system-patterns](../design-system-patterns/SKILL.md)

@@ -10,9 +10,9 @@ description: 当用户需要实现 RSC 架构、服务端组件边界、Server A
 - 项目使用 Next.js App Router，需要在服务端组件与客户端组件之间划边界。
 - 需要把数据获取、鉴权、缓存、重验证或变更动作放回服务端。
 - 需要利用 `Suspense`、流式渲染和并行数据获取减少 waterfalls。
-- 更完整的 Next.js 框架层约束可联动 [nextjs-developer](../../../nextjs-expert/skills/nextjs-developer/SKILL.md)。
+- 更完整的 Next.js 框架层约束可联动 `nextjs-developer`。
 - 服务端数据获取、缓存、Server Actions 安全性可联动 [react-server-optimization](../react-server-optimization/SKILL.md)。
-- 消除请求瀑布流可联动 [waterfall-elimination](../../../architecture-expert/skills/waterfall-elimination/SKILL.md)。
+- 消除请求瀑布流可联动 `waterfall-elimination`。
 
 ## 核心约束
 

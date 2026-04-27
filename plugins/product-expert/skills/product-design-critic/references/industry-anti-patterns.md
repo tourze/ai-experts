@@ -98,7 +98,7 @@
 
 ## 使用方式
 
-评审前先扫一遍对应行业条目，再走 [product-design-critic](../SKILL.md) 的标准流程。如果行业在 [industry-design-presets](../../../../frontend-expert/skills/industry-design-presets/SKILL.md) 有 preset，两份对照查。
+评审前先扫一遍对应行业条目，再走 [product-design-critic](../SKILL.md) 的标准流程。如果行业在 `industry-design-presets` 有 preset，两份对照查。
 
 ## 致谢
 

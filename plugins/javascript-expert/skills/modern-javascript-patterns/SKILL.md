@@ -9,9 +9,9 @@ description: 当需要用现代 ES6+ 特性重构旧代码或编写可维护 Jav
 
 - 需要把旧式回调、共享可变状态或冗长工具函数重构为现代 ES6+ 写法。
 - 需要在业务代码和测试代码之间复用一致的数据变换模式时，联动 [javascript-typescript-jest](../javascript-typescript-jest/SKILL.md)。
-- 涉及复杂状态或 Hook 边界时，优先确认 [react-hooks](../../../react-expert/skills/react-hooks/SKILL.md) 的约束。
+- 涉及复杂状态或 Hook 边界时，优先确认 `react-hooks` 的约束。
 - 需要更完整的函数式、模块化与高级语法补充材料时，再展开 [advanced-patterns.md](references/advanced-patterns.md)。
-- 涉及复杂类型推导、API 合同收敛或 `any` 清理时，转到 [typescript-magician](../../../typescript-expert/skills/typescript-magician/SKILL.md)。
+- 涉及复杂类型推导、API 合同收敛或 `any` 清理时，转到 `typescript-magician`。
 
 ## 核心约束
 
