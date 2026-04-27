@@ -1,0 +1,35 @@
+cases:
+  - id: style_early_return
+    prompt: "帮我重构一个 Go 函数，里面有很多 if/else 嵌套和校验逻辑"
+    fixtures: []
+    rubric:
+      - "触发 go-code-style"
+      - "建议用早返回压平边界条件"
+      - "保留可验证命令，例如 gofmt 或 go test"
+    trigger_expected: true
+
+  - id: style_many_params
+    prompt: "这个 Go 函数有 10 个参数，怎么让 API 更好维护？"
+    fixtures: []
+    rubric:
+      - "触发 go-code-style"
+      - "建议用领域对象或配置结构体收敛参数"
+      - "说明 context.Context 参数顺序"
+    trigger_expected: true
+
+  - id: negative_go_race
+    prompt: "Go 服务有 goroutine 泄漏，channel receive 一直阻塞"
+    fixtures: []
+    rubric:
+      - "不触发 go-code-style"
+      - "该任务属于 go-concurrency-patterns"
+    trigger_expected: false
+
+  - id: negative_go_mod
+    prompt: "帮我解释 go.mod 的 replace 和 require 有什么区别"
+    fixtures: []
+    rubric:
+      - "不触发 go-code-style"
+      - "依赖管理不是代码风格任务"
+    trigger_expected: false
+

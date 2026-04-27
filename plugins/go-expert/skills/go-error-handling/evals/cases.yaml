@@ -1,0 +1,35 @@
+cases:
+  - id: wrap_errors
+    prompt: "审查这段 Go 代码的 error 处理，看看有没有吞掉根因或不好定位的问题"
+    fixtures: []
+    rubric:
+      - "触发 go-error-handling"
+      - "检查是否用 %w 包装错误"
+      - "区分错误文本和错误合同"
+    trigger_expected: true
+
+  - id: sentinel_error_design
+    prompt: "Go 库里应该怎么设计 ErrNotFound，调用方需要能判断并返回 404"
+    fixtures: []
+    rubric:
+      - "触发 go-error-handling"
+      - "建议 sentinel error 或自定义错误类型"
+      - "使用 errors.Is 或 errors.As"
+    trigger_expected: true
+
+  - id: negative_parallel_tests
+    prompt: "Go table-driven tests 里什么时候应该加 t.Parallel？"
+    fixtures: []
+    rubric:
+      - "不触发 go-error-handling"
+      - "该任务属于 go-testing-patterns"
+    trigger_expected: false
+
+  - id: negative_project_layout
+    prompt: "Go 项目应该把 main.go 放在 cmd 还是根目录？"
+    fixtures: []
+    rubric:
+      - "不触发 go-error-handling"
+      - "项目布局不是 error 语义任务"
+    trigger_expected: false
+

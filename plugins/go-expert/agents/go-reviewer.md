@@ -18,6 +18,8 @@ tools: Read, Glob, Grep, Bash
 - 错误包装、sentinel error、errors.Is/As 和丢弃错误。
 - consumer side interface、小接口、包布局和循环 import。
 - Mutex/RWMutex、sync.Map、time.Sleep 同步和 table-driven tests。
+- nil map / nil slice、defer in loop、资源关闭、HTTP body 和数据竞争。
+- benchmark / pprof 证据链：没有基线不接受性能优化结论。
 
 ## Bash 使用边界
 
@@ -53,6 +55,12 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 ## 关联 Skill
 
 - `go-concurrency-patterns`
+- `go-context-lifecycle`
+- `go-testing-patterns`
+- `go-safety`
+- `go-error-handling`
+- `go-code-style`
+- `go-performance-benchmarking`
 
 ## 质量标准
 

@@ -1,0 +1,35 @@
+cases:
+  - id: context_propagation
+    prompt: "Go HTTP handler 调 service 再查数据库，请帮我设计 context 超时和取消传播"
+    fixtures: []
+    rubric:
+      - "触发 go-context-lifecycle"
+      - "context.Context 作为第一个参数传递"
+      - "数据库调用使用 QueryContext 或同类 API"
+    trigger_expected: true
+
+  - id: context_goroutine_cancel
+    prompt: "请求取消后 goroutine 还在往 channel 写，Go 代码应该怎么改？"
+    fixtures: []
+    rubric:
+      - "触发 go-context-lifecycle"
+      - "阻塞 send/receive 监听 ctx.Done"
+      - "说明取消链和 goroutine 生命周期"
+    trigger_expected: true
+
+  - id: negative_style
+    prompt: "Go 函数参数太多，怎么重构签名？"
+    fixtures: []
+    rubric:
+      - "不触发 go-context-lifecycle"
+      - "参数设计主要属于 go-code-style"
+    trigger_expected: false
+
+  - id: negative_dependency
+    prompt: "Go 依赖升级后 go.sum 有冲突，怎么处理？"
+    fixtures: []
+    rubric:
+      - "不触发 go-context-lifecycle"
+      - "依赖管理不是 context 生命周期任务"
+    trigger_expected: false
+

@@ -1,0 +1,35 @@
+cases:
+  - id: table_driven_tests
+    prompt: "给 Go 函数写 table-driven tests，要求覆盖边界和错误分支"
+    fixtures: []
+    rubric:
+      - "触发 go-testing-patterns"
+      - "每个 case 有 name 并使用 t.Run"
+      - "覆盖边界和错误分支"
+    trigger_expected: true
+
+  - id: integration_build_tags
+    prompt: "Go repository 测试需要真实 PostgreSQL，怎么避免普通 go test ./... 跑集成测试？"
+    fixtures: []
+    rubric:
+      - "触发 go-testing-patterns"
+      - "建议使用 //go:build integration"
+      - "给出 go test -tags=integration ./... 验证命令"
+    trigger_expected: true
+
+  - id: negative_context
+    prompt: "Go HTTP client 请求应该如何把 context cancellation 传下去？"
+    fixtures: []
+    rubric:
+      - "不触发 go-testing-patterns"
+      - "context 传播属于 go-context-lifecycle"
+    trigger_expected: false
+
+  - id: negative_code_style
+    prompt: "Go 代码里深层 if/else 怎么改成更易读？"
+    fixtures: []
+    rubric:
+      - "不触发 go-testing-patterns"
+      - "可读性重构属于 go-code-style"
+    trigger_expected: false
+

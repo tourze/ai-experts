@@ -1,0 +1,35 @@
+cases:
+  - id: nil_map_panic
+    prompt: "这段 Go 代码偶尔 panic: assignment to entry in nil map，帮我修根因"
+    fixtures: []
+    rubric:
+      - "触发 go-safety"
+      - "指出 map 写入前必须初始化"
+      - "给出回归验证方式"
+    trigger_expected: true
+
+  - id: defer_in_loop
+    prompt: "Go 代码在循环里打开很多文件并 defer Close，线上出现 too many open files"
+    fixtures: []
+    rubric:
+      - "触发 go-safety"
+      - "指出循环 defer 会推迟资源释放"
+      - "建议用 helper 或显式 close 收束资源生命周期"
+    trigger_expected: true
+
+  - id: negative_error_contract
+    prompt: "Go 里 ErrNotFound 应该用 errors.Is 还是比较字符串？"
+    fixtures: []
+    rubric:
+      - "不触发 go-safety"
+      - "该任务属于 go-error-handling"
+    trigger_expected: false
+
+  - id: negative_benchmark
+    prompt: "帮我写 Go benchmark 并用 benchstat 比较两个实现"
+    fixtures: []
+    rubric:
+      - "不触发 go-safety"
+      - "benchmark 方法论属于 go-performance-benchmarking"
+    trigger_expected: false
+

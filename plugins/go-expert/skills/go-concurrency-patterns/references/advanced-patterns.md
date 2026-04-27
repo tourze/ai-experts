@@ -1,18 +1,90 @@
 # Advanced Go Concurrency Patterns
 
-补充 `go-concurrency-patterns` 主文档中省略的两类常见模式：fan-out/fan-in pipeline 与优雅停机。
+补充 `go-concurrency-patterns` 主文档中省略的完整 worker pool、fan-out/fan-in pipeline 与优雅停机。
+
+## 模式 1：完整 worker pool
+
+```go
+package concurrency
+
+import (
+	"context"
+	"sync"
+)
+
+type Job struct{ ID int }
+type Result struct {
+	ID  int
+	Err error
+}
+
+func RunWorkerPool(ctx context.Context, workerCount int, jobs []Job, fn func(context.Context, Job) error) []Result {
+	if workerCount <= 0 {
+		workerCount = 1
+	}
+
+	jobCh := make(chan Job)
+	resultCh := make(chan Result, len(jobs))
+
+	var wg sync.WaitGroup
+	for i := 0; i < workerCount; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for {
+				select {
+				case <-ctx.Done():
+					return
+				case job, ok := <-jobCh:
+					if !ok {
+						return
+					}
+					resultCh <- Result{ID: job.ID, Err: fn(ctx, job)}
+				}
+			}
+		}()
+	}
+
+	go func() {
+		defer close(jobCh)
+		for _, job := range jobs {
+			select {
+			case <-ctx.Done():
+				return
+			case jobCh <- job:
+			}
+		}
+	}()
+
+	go func() {
+		wg.Wait()
+		close(resultCh)
+	}()
+
+	results := make([]Result, 0, len(jobs))
+	for result := range resultCh {
+		results = append(results, result)
+	}
+	return results
+}
+```
 
 ## 模式 3：fan-out / fan-in pipeline
 
 ```go
 package concurrency
 
-import "context"
+import (
+	"context"
+	"sync"
+)
 
 func FanOutFanIn(ctx context.Context, input <-chan int, workerCount int) <-chan int {
 	output := make(chan int)
+	var wg sync.WaitGroup
 
 	worker := func() {
+		defer wg.Done()
 		for {
 			select {
 			case <-ctx.Done():
@@ -31,8 +103,14 @@ func FanOutFanIn(ctx context.Context, input <-chan int, workerCount int) <-chan 
 	}
 
 	for i := 0; i < workerCount; i++ {
+		wg.Add(1)
 		go worker()
 	}
+
+	go func() {
+		wg.Wait()
+		close(output)
+	}()
 
 	return output
 }
@@ -42,7 +120,8 @@ func FanOutFanIn(ctx context.Context, input <-chan int, workerCount int) <-chan 
 
 - 输入 channel 的关闭权仍归生产者。
 - 所有 worker 都监听 `ctx.Done()`，避免上游取消后继续阻塞。
-- fan-in 结果如果需要 `close(output)`，必须在外层再加 `WaitGroup` 统一收尾。
+- fan-in 结果由 `WaitGroup` 统一收尾后关闭，调用方可以 `range output` 确定性等待。
+- 如果 worker 需要返回错误，优先改为 `errgroup.WithContext`，不要通过日志吞掉。
 
 ## 模式 4：优雅停机
 
