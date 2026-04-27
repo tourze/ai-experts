@@ -34,8 +34,10 @@ function findProjectRoot(testPath) {
     }
 
     const parent = dirname(current);
+    // 找不到 marker 时返回 null，让调用方明确报告"无 package.json"，
+    // 而不是回退到 process.cwd() 误用外层项目根（会让 testDir 借用宿主仓库的 package.json）
     if (parent === current) {
-      return process.cwd();
+      return null;
     }
     current = parent;
   }
@@ -77,9 +79,15 @@ function extractFirstPercent(text) {
   return match ? Number(match[1]) : null;
 }
 
-function assessCoverage(projectRoot) {
+function assessCoverage(projectRoot, testDir) {
   console.log("📊 COVERAGE CHECK");
   console.log("----------------");
+
+  if (!projectRoot) {
+    console.log(color(YELLOW, `⚠️  No package.json found near ${testDir}`));
+    console.log("   → Skipping coverage check.");
+    return;
+  }
 
   const packagePath = resolve(projectRoot, "package.json");
   if (!existsSync(packagePath) || !readFileSync(packagePath, "utf8").includes('"test:coverage"')) {
@@ -151,7 +159,7 @@ function assessSpeed(projectRoot, testDir) {
   console.log("-------------");
   console.log("Running tests...");
 
-  if (!existsSync(resolve(projectRoot, "package.json"))) {
+  if (!projectRoot || !existsSync(resolve(projectRoot, "package.json"))) {
     console.log(color(YELLOW, `⚠️  No package.json found near ${testDir}`));
     console.log("   → Skipping speed check.");
     return;
@@ -188,7 +196,7 @@ function assessStability(projectRoot, testDir, testSource) {
   }
 
   console.log("Running tests 3x to detect flakes...");
-  if (!existsSync(resolve(projectRoot, "package.json"))) {
+  if (!projectRoot || !existsSync(resolve(projectRoot, "package.json"))) {
     console.log(color(YELLOW, `⚠️  No package.json found near ${testDir}`));
     console.log("   → Skipping flake check.");
     return;
@@ -248,7 +256,7 @@ function main() {
   const projectRoot = findProjectRoot(testPath);
   const testSource = readAll(testPath);
 
-  assessCoverage(projectRoot);
+  assessCoverage(projectRoot, testDir);
   assessEdgeCases(testSource);
   assessClarity(testSource);
   assessSpeed(projectRoot, testDir);

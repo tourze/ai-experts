@@ -930,11 +930,9 @@ test("syntax-xml TN: 非 XML 文件不应检查", async () => {
 test("error-retry-guard 会报告连续执行相同命令", async () => {
   // 先重置状态：执行一个不同的命令
   await runErrorRetryGuard(bashPayload("echo reset-state-" + Date.now()));
-  // 第一次
-  await runErrorRetryGuard(bashPayload("npm run unique-build-" + Date.now()));
-  // 第二次相同 → report（streak=2 ≥ REPORT_THRESHOLD）
-  // 由于我们使用固定命令，需要确保上面的命令已记录
+  // fixedCmd 连续三次：streak 1 → 2 → 3，第三次达到 REPORT_THRESHOLD=3 触发 report
   const fixedCmd = "npm run error-retry-tp-test-" + Date.now();
+  await runErrorRetryGuard(bashPayload(fixedCmd));
   await runErrorRetryGuard(bashPayload(fixedCmd));
   const result = await runErrorRetryGuard(bashPayload(fixedCmd));
   assert.equal(result?.decision, "report");
