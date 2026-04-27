@@ -16,9 +16,13 @@ const trackedFiles = new Set(
     .filter(Boolean),
 );
 
+// plugin 目录的存在标记从 .claude-plugin/plugin.json（marketplace 时代）改为
+// README.md。仓库已弃用 plugin.json，原过滤条件命中 0 文件，导致下方所有
+// for-of 循环零次通过、断言形同虚设。每个插件强制有 README.md（plugin-readme
+// -conformance 自身就是验证此前提的测试），用它兜底安全。
 function listTrackedPluginNames() {
   return [...trackedFiles]
-    .filter((line) => line.startsWith("plugins/") && line.endsWith("/.claude-plugin/plugin.json"))
+    .filter((line) => line.startsWith("plugins/") && /^plugins\/[^/]+\/README\.md$/.test(line))
     .map((line) => line.split("/")[1])
     .sort();
 }
@@ -132,16 +136,22 @@ function collectNestedSkillPluginJson() {
 }
 
 test("所有插件 README 都包含安装、卸载和验证入口", () => {
+  // 仓库统一安装入口已切换为根级 `node scripts/install.mjs`，每个插件 README
+  // 不再重复 install/uninstall 命令块，改为合并段「安装 / 卸载」加一行指向
+  // 根脚本的描述。这里检查两件事：(a) 该段存在；(b) 段内确实指向统一入口，
+  // 而不是误删后留下空段或又写回 marketplace 时代的 `claude plugin install`。
   for (const pluginRoot of getPluginRoots()) {
     const readmePath = resolve(pluginRoot, "README.md");
     const sections = getReadmeSections(readFileSync(readmePath, "utf-8"));
 
-    const installSection = getRequiredSection(sections, ["安装"], readmePath);
-    const uninstallSection = getRequiredSection(sections, ["卸载"], readmePath);
+    const installSection = getRequiredSection(sections, ["安装 / 卸载", "安装", "卸载"], readmePath);
     const verifySection = getRequiredSection(sections, ["验证命令", "验证", "校验"], readmePath);
 
-    assert.match(installSection, /```[\s\S]*?```/, `${readmePath} 的安装章节缺少命令块`);
-    assert.match(uninstallSection, /```[\s\S]*?```/, `${readmePath} 的卸载章节缺少命令块`);
+    assert.match(
+      installSection,
+      /scripts\/install\.mjs/,
+      `${readmePath} 的安装 / 卸载章节未指向 scripts/install.mjs 统一入口`,
+    );
     assert.match(verifySection, /```[\s\S]*?```/, `${readmePath} 的验证章节缺少命令块`);
   }
 });
