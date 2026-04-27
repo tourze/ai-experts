@@ -11,6 +11,7 @@
 
 | Skill | 用途 |
 |-------|------|
+| `algo-visualization` | 数据结构/算法的可交互单文件 HTML 教学页 |
 | `canvas-design` | 视觉艺术设计（PNG/PDF 输出） |
 | `concept-to-image` | 概念转静态 HTML 视觉稿再导出图片 |
 | `concept-to-video` | 概念转 Manim 动画解释视频 |

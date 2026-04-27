@@ -1,0 +1,64 @@
+cases:
+  - id: quicksort_step_animation
+    prompt: "做一个快速排序的逐步动画，每一步要能看清当前比较和交换的元素"
+    fixtures: []
+    rubric:
+      - "产出单文件 HTML，CSS/JS 内联，可直接打开"
+      - "包含数组逐步动画（每步只做一次比较或交换）"
+      - "嵌入 assets/base.css 与 assets/boilerplate.js 模板 C 或 A"
+    trigger_expected: true
+
+  - id: heap_teaching_page
+    prompt: "把这份大顶堆讲解 PDF 转成一个网页教学页"
+    fixtures: []
+    rubric:
+      - "顺着 PDF 原文页面顺序梳理章节，不重新组织"
+      - "每个概念配 SVG，整页静态 SVG 数 ≥ 交互动画数"
+      - "callout 框（.info/.warn/.ok）整页 ≤ 4 个"
+    trigger_expected: true
+
+  - id: code_walkthrough_recursion
+    prompt: "可视化这段递归求阶乘代码的执行过程，要能看到调用栈"
+    fixtures: []
+    rubric:
+      - "采用代码 + 可视化双面板布局（HTML 结构 1）"
+      - "每个 step 包含 line 字段，标注当前执行行"
+      - "render 末尾调用 hlLines 高亮当前代码行"
+    trigger_expected: true
+
+  - id: bfs_dfs_compare
+    prompt: "做一个网页对比 BFS 和 DFS 的遍历顺序差异"
+    fixtures: []
+    rubric:
+      - "使用 .compare 并排展示两个概念"
+      - "每个算法配独立的 SVG 图示或动画"
+      - "差异点用 <p> + <b> 在正文说明，不堆 callout"
+    trigger_expected: true
+
+  - id: negative_export_static_png
+    prompt: "把这张二叉树架构图导出成 PNG 给我"
+    fixtures: []
+    rubric:
+      - "纯静态图片导出场景应路由到 concept-to-image，不属于本 skill 的交互式 HTML 范围"
+    trigger_expected: false
+
+  - id: negative_revenue_chart
+    prompt: "用 matplotlib 画一下 2026 年各季度收入趋势"
+    fixtures: []
+    rubric:
+      - "业务数据图表场景应路由到 data-visualization，不属于数据结构/算法可视化范围"
+    trigger_expected: false
+
+  - id: negative_login_sequence_diagram
+    prompt: "画一个用户登录流程的时序图"
+    fixtures: []
+    rubric:
+      - "流程图/时序图应路由到 markdown-mermaid-writing，不需要单文件交互动画"
+    trigger_expected: false
+
+  - id: negative_manim_explainer_video
+    prompt: "用 Manim 做一个 5 分钟的傅里叶变换解释视频"
+    fixtures: []
+    rubric:
+      - "Manim 视频解释场景应路由到 concept-to-video，本 skill 仅产出 HTML 教学页"
+    trigger_expected: false
