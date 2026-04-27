@@ -17,10 +17,27 @@
  *   - settings.json / config.toml 的非 hooks 字段保持原样。
  */
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, renameSync, unlinkSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+
+// atomicWriteFile —— 写用户级 settings.json / hooks.json / config.toml 的唯一入口。
+// 设计决策：先写同目录 tmp 再 rename。POSIX rename(2) 在同一文件系统上是原子的，
+// 进程被 SIGKILL / 断电时 target 要么是写前内容、要么是写后内容，不会出现半空 JSON
+// 让 Claude Code / Codex 启动时整份配置丢失。tmp 文件名带 PID 与时间戳，避免并发
+// install 互相覆盖；同目录确保与 target 同 fs（跨 fs rename 会失败）。
+// 调用方责任：父目录已 mkdirSync。
+function atomicWriteFile(target, content) {
+  const tmp = `${target}.tmp.${process.pid}.${Date.now()}`;
+  writeFileSync(tmp, content, "utf-8");
+  try {
+    renameSync(tmp, target);
+  } catch (err) {
+    try { unlinkSync(tmp); } catch { /* tmp 可能在 rename 失败前就被外部清理 */ }
+    throw err;
+  }
+}
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(scriptDir, "..");
@@ -181,7 +198,7 @@ function syncClaude({ uninstall, dryRun }) {
     return;
   }
   mkdirSync(dirname(CLAUDE_SETTINGS), { recursive: true });
-  writeFileSync(CLAUDE_SETTINGS, target, "utf-8");
+  atomicWriteFile(CLAUDE_SETTINGS, target);
   console.log(`sync-hooks claude: ${uninstall ? "removed managed hooks" : "wrote"} ${CLAUDE_SETTINGS}`);
 }
 
@@ -226,7 +243,7 @@ function syncCodexHooksJson({ uninstall, dryRun }) {
     return;
   }
   mkdirSync(dirname(CODEX_HOOKS_JSON), { recursive: true });
-  writeFileSync(CODEX_HOOKS_JSON, target, "utf-8");
+  atomicWriteFile(CODEX_HOOKS_JSON, target);
   console.log(`sync-hooks codex: ${uninstall ? "removed managed hooks" : "wrote"} ${CODEX_HOOKS_JSON}`);
 }
 
@@ -293,7 +310,7 @@ function syncCodexConfigToml({ dryRun }) {
     return;
   }
   mkdirSync(dirname(CODEX_CONFIG_TOML), { recursive: true });
-  writeFileSync(CODEX_CONFIG_TOML, content, "utf-8");
+  atomicWriteFile(CODEX_CONFIG_TOML, content);
   console.log(`sync-hooks codex: updated ${CODEX_CONFIG_TOML} (${action})`);
 }
 
@@ -326,7 +343,7 @@ function stripCodexLegacySections({ dryRun }) {
     console.log(`sync-hooks codex: would strip legacy marketplace/plugin entries`);
     return;
   }
-  writeFileSync(CODEX_CONFIG_TOML, collapsed, "utf-8");
+  atomicWriteFile(CODEX_CONFIG_TOML, collapsed);
   console.log(`sync-hooks codex: stripped legacy marketplace/plugin entries from ${CODEX_CONFIG_TOML}`);
 }
 

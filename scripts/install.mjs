@@ -246,9 +246,17 @@ function codexUninstall() {
 
 // ── main ─────────────────────────────────────────────────────
 
-function safeStep(fn) {
-  // 单端失败不影响另一端：claude 链路出错不阻塞 codex 链路，反之亦然
-  try { fn(); } catch { /* swallow */ }
+// safeStep —— 单端失败不阻塞另一端（claude 出错不挡 codex，反之亦然），
+// 但失败必须可见：以前的版本静默 swallow，导致 reinstall 在 install 阶段失败时
+// 仍打印 "[ok] done." 且退出码 0，用户拿到假绿色。现在收集错误，main 末尾汇总
+// 并把退出码设为 1。两端各跑一次的语义保持不变。
+const collectedErrors = [];
+function safeStep(label, fn) {
+  try { fn(); }
+  catch (e) {
+    collectedErrors.push({ label, error: e });
+    err(`${label}: ${e.message}`);
+  }
 }
 
 function printHelp() {
@@ -291,16 +299,16 @@ function main() {
 
   switch (action) {
     case "uninstall":
-      if (hasCmd("claude")) safeStep(claudeUninstall);
-      if (hasCmd("codex")) safeStep(codexUninstall);
+      if (hasCmd("claude")) safeStep("Claude Code 卸载", claudeUninstall);
+      if (hasCmd("codex")) safeStep("Codex CLI 卸载", codexUninstall);
       break;
     case "reinstall":
-      if (hasCmd("claude")) safeStep(claudeUninstall);
-      if (hasCmd("codex")) safeStep(codexUninstall);
+      if (hasCmd("claude")) safeStep("Claude Code 卸载", claudeUninstall);
+      if (hasCmd("codex")) safeStep("Codex CLI 卸载", codexUninstall);
       console.log("");
       if (hasCmd("claude") || hasCmd("codex")) auditSkillEvals();
-      if (hasCmd("claude")) safeStep(claudeInstall);
-      if (hasCmd("codex")) safeStep(codexInstall);
+      if (hasCmd("claude")) safeStep("Claude Code 安装", claudeInstall);
+      if (hasCmd("codex")) safeStep("Codex CLI 安装", codexInstall);
       break;
     case "install":
       if (!hasCmd("claude") && !hasCmd("codex")) {
@@ -310,9 +318,15 @@ function main() {
         process.exit(1);
       }
       auditSkillEvals();
-      if (hasCmd("claude")) safeStep(claudeInstall);
-      if (hasCmd("codex")) safeStep(codexInstall);
+      if (hasCmd("claude")) safeStep("Claude Code 安装", claudeInstall);
+      if (hasCmd("codex")) safeStep("Codex CLI 安装", codexInstall);
       break;
+  }
+
+  if (collectedErrors.length > 0) {
+    err(`安装过程出现 ${collectedErrors.length} 个失败步骤：`);
+    for (const { label } of collectedErrors) err(`  - ${label}`);
+    process.exitCode = 1;
   }
 }
 
