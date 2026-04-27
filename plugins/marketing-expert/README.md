@@ -57,8 +57,8 @@
 
 | Agent | 用途 |
 |-------|------|
-| `content-producer` | create, optimize, and polish marketing content — from strategy through finished copy |
-| `growth-strategist` | build end-to-end growth strategies that combine acquisition channels, SEO, content planning, conversion optimization, and analytics into a unified growth plan |
+| `content-producer` | 端到端营销内容创作、优化与改写，从策略到成稿 |
+| `acquisition-strategist` | 端到端获客与转化策略，整合渠道、SEO、内容、CRO、付费、推荐与 analytics 输出可执行获客蓝图（注意：此 agent 原名 `growth-strategist`，与 product-expert 的 `growth-stage-strategist` 区分） |
 
 ## 安装
 

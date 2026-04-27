@@ -5,7 +5,8 @@
 ## 目录结构
 
 - `hooks/`：`hooks.json` 与 `dispatch.mjs`。
-- `skills/`：45 个产品与战略类技能，统一采用「适用场景 → 核心约束 → 代码模式 → 检查清单 → 反模式」结构。
+- `skills/`：59 个产品与战略类技能，统一采用「适用场景 → 核心约束 → 代码模式 → 检查清单 → 反模式」结构。
+- `agents/`：8 个窄向 agent，按问题域预加载相关 skill 输出综合分析。
 - `tests/`：覆盖 manifest、dispatch、脚本行为与 `SKILL.md` 链接校验。
 
 ## Skills
@@ -59,7 +60,6 @@
 | `balanced-scorecard` | 当用户要设计绩效评估体系、战略执行监控、KPI 体系搭建或从财务/客户/流程/学习四维度评价企业时使用；英文触发词 balanced scorecard、BSC、KPI framework、strategy map、four perspectives。 |
 | `bcg-matrix` | 当用户要做产品组合分析、业务优先级排序、资源分配决策或投资组合管理时使用；英文触发词 BCG matrix、growth-share matrix、portfolio analysis、star/cash cow/dog/question mark。 |
 | `blm-model` | 当用户要做战略到执行的全链路诊断、分析业绩差距和机会差距的根因、或用华为/IBM 的战略规划方法论时使用；英文触发词 BLM、Business Leadership Model、strategy to execution、gap analysis、market insight to business design。 |
-| `business-framework-router` | 当用户描述业务场景、战略问题、市场挑战、竞争困境、组织问题或营销困境，但没有指定具体框架时使用；根据问题类型自动推荐 1-3 个最合适的分析框架并说明使用顺序。触发词包括：分析、诊断、战略、定位、竞争、市场、营销、商业模式、组织、增长策略。 |
 | `business-iron-triangle` | 当用户要从产品、核心业务职能、市场三维度审视业务定位一致性、或判断商业模式是否自洽时使用；英文触发词 business iron triangle、product-function-market、business definition、Abell's three dimensions。 |
 | `greiner-growth-model` | 当用户要诊断企业成长阶段、预判组织危机、判断管理模式是否匹配发展阶段时使用；英文触发词 Greiner growth model、organizational growth stages、leadership crisis、autonomy crisis、growth phases。 |
 | `mckinsey-7s` | 当用户要做企业内部诊断、组织变革评估、战略执行对齐检查或找出管理短板时使用；英文触发词 McKinsey 7S、7S framework、organizational alignment、strategy-structure fit。 |
@@ -75,11 +75,18 @@
 
 ## Agents
 
-| Agent | 用途 |
-|-------|------|
-| `delivery-planner` | Compound delivery planning agent that preloads 9 requirements and execution frameworks for end-to-end product delivery planning |
-| `product-strategist` | Compound product strategy agent that preloads 8 competitive and positioning frameworks for multi-angle market analysis |
-| `startup-advisor` | Compound startup evaluation agent that preloads 10 business and fundraising frameworks for end-to-end startup assessment |
+按业务问题域拆分的窄向 agent，每个预加载相关框架 skill 在隔离上下文中输出综合分析报告。
+
+| Agent | 适用场景 | 预加载 skill |
+|-------|----------|--------------|
+| `competitive-strategist` | 竞争结构、差异化定位与价格-价值策略综合分析 | porters-five-forces, 3c-strategic-triangle, competitive-teardown, blue-ocean-strategy, strategy-clock, pricing-strategy, obviously-awesome, crossing-the-chasm |
+| `macro-environment-analyst` | 宏观环境扫描、外部冲击传导与技术趋势评估 | pestel-analysis, swot-analysis, tech-maturity-curve, evaluating-new-technology, scp-analysis（thinking-expert） |
+| `org-diagnostician` | 组织能力、执行落地、人才结构与绩效体系诊断 | mckinsey-7s, value-chain-analysis, raci-matrix, talent-management, team-composition-analysis, greiner-growth-model, org-canvas, balanced-scorecard, blm-model |
+| `growth-stage-strategist` | 增长阶段判断、增长方向选择与增长飞轮设计 | s-curve-growth, designing-growth-loops, plg-readiness, business-iron-triangle, channel-economics, ansoff-matrix（marketing-expert） |
+| `business-model-architect` | 商业模式设计、市场规模估算与单位经济校验 | business-model, weizhus-six-elements, saas-metrics, market-sizing-analysis, business-iron-triangle |
+| `problem-decomposer` | 复杂问题拆解、根因诊断、决策推进与改进闭环 | systems-thinking, scoping-cutting, planning-under-uncertainty, running-decision-processes, process-optimization, mckinsey-7-step / fishbone-diagram / five-w-two-h / pdca-cycle（thinking-expert） |
+| `delivery-planner` | 端到端产品交付规划，预加载 9 个需求与执行框架 | 见 agent 文件 |
+| `startup-advisor` | 端到端创业评估，预加载 10 个商业与融资框架 | 见 agent 文件 |
 
 ## 安装
 
