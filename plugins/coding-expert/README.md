@@ -29,6 +29,7 @@
 | PostToolUse Edit\|Write | `large-edit-chunk-guard` | 过大单次编辑拦截 |
 | PostToolUse Edit\|Write | `merge-conflict-guard` | 未解决合并冲突检测 |
 | PostToolUse Edit\|Write | `debug-statement-guard` | 跨语言调试断点与调试输出检测 |
+| PostToolUse Edit\|Write | `suppression-guard` | 拦截无理由的 ESLint disable / @ts-ignore 等抑制注释（带 `-- 原因：xxx` 放行） |
 | PostToolUse Edit\|Write | `file-budget-guard` | 跨语言代码文件预算与历史超标文件棘轮治理 |
 | PostToolUse Edit\|Write | `markdown-budget-guard` | Markdown token 预算 |
 | PostToolUse Edit\|Write | `syntax-json` | JSON 语法检查 |

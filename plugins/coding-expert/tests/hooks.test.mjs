@@ -5,6 +5,7 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 
 import { run as runDebugStatementGuard } from "../hooks/post-tool-use/edit-write/debug-statement-guard.mjs";
+import { run as runSuppressionGuard } from "../hooks/post-tool-use/edit-write/suppression-guard.mjs";
 import { run as runFileBudgetGuard } from "../hooks/post-tool-use/edit-write/file-budget-guard.mjs";
 import { run as runEditLoopDetector } from "../hooks/post-tool-use/edit-write/edit-loop-detector.mjs";
 import { run as runMergeConflictGuard } from "../hooks/post-tool-use/edit-write/merge-conflict-guard.mjs";
@@ -274,6 +275,212 @@ test("debug-statement-guard TN: 不认识的扩展名应跳过", async () => {
     const content = "debug = true\n";
     writeFileSync(filePath, content, "utf8");
     const result = await runDebugStatementGuard(payload(filePath));
+    assert.equal(result, null);
+  });
+});
+
+// ════════════════════════════════════════════════════════════════
+//  suppression-guard — 正向测试（block）
+// ════════════════════════════════════════════════════════════════
+
+test("suppression-guard 会阻止新增的 // eslint-disable-next-line（无理由）", async () => {
+  await withTempDir(async (dir) => {
+    const filePath = join(dir, "app.ts");
+    const content = "// eslint-disable-next-line no-console\nconsole.log('debug');\n";
+    writeFileSync(filePath, content, "utf8");
+    const result = await runSuppressionGuard(
+      payload(filePath, { old_string: "", new_string: content }),
+    );
+    assert.equal(result?.decision, "block");
+    assert.match(result?.reason ?? "", /eslint-disable/);
+  });
+});
+
+test("suppression-guard 会阻止行尾 // eslint-disable-line（无理由）", async () => {
+  await withTempDir(async (dir) => {
+    const filePath = join(dir, "app.js");
+    const content = "const x = anyValue; // eslint-disable-line no-explicit-any\n";
+    writeFileSync(filePath, content, "utf8");
+    const result = await runSuppressionGuard(
+      payload(filePath, { old_string: "", new_string: content }),
+    );
+    assert.equal(result?.decision, "block");
+  });
+});
+
+test("suppression-guard 会阻止块级 /* eslint-disable */（无理由）", async () => {
+  await withTempDir(async (dir) => {
+    const filePath = join(dir, "legacy.ts");
+    const content = "/* eslint-disable */\nexport const x = 1;\n";
+    writeFileSync(filePath, content, "utf8");
+    const result = await runSuppressionGuard(
+      payload(filePath, { old_string: "", new_string: content }),
+    );
+    assert.equal(result?.decision, "block");
+  });
+});
+
+test("suppression-guard 会阻止新增的 @ts-ignore（无理由）", async () => {
+  await withTempDir(async (dir) => {
+    const filePath = join(dir, "demo.ts");
+    const content = "// @ts-ignore\nconst x: string = 1 as any;\n";
+    writeFileSync(filePath, content, "utf8");
+    const result = await runSuppressionGuard(
+      payload(filePath, { old_string: "", new_string: content }),
+    );
+    assert.equal(result?.decision, "block");
+    assert.match(result?.reason ?? "", /@ts-ignore/);
+  });
+});
+
+test("suppression-guard 会阻止新增的 @ts-expect-error（无理由）", async () => {
+  await withTempDir(async (dir) => {
+    const filePath = join(dir, "demo.ts");
+    const content = "// @ts-expect-error\nconst x: string = 1 as any;\n";
+    writeFileSync(filePath, content, "utf8");
+    const result = await runSuppressionGuard(
+      payload(filePath, { old_string: "", new_string: content }),
+    );
+    assert.equal(result?.decision, "block");
+  });
+});
+
+test("suppression-guard 会阻止新增的 @ts-nocheck（无理由）", async () => {
+  await withTempDir(async (dir) => {
+    const filePath = join(dir, "wholefile.ts");
+    const content = "// @ts-nocheck\nexport const broken: number = 'str';\n";
+    writeFileSync(filePath, content, "utf8");
+    const result = await runSuppressionGuard(
+      payload(filePath, { old_string: "", new_string: content }),
+    );
+    assert.equal(result?.decision, "block");
+    assert.match(result?.reason ?? "", /@ts-nocheck/);
+  });
+});
+
+// ════════════════════════════════════════════════════════════════
+//  suppression-guard — 放行测试（带 justification）
+// ════════════════════════════════════════════════════════════════
+
+test("suppression-guard 放行带 -- 原因 的 eslint-disable-next-line", async () => {
+  await withTempDir(async (dir) => {
+    const filePath = join(dir, "cli.ts");
+    const content = "// eslint-disable-next-line no-console -- CLI 入口需直接打印\nconsole.log('hi');\n";
+    writeFileSync(filePath, content, "utf8");
+    const result = await runSuppressionGuard(
+      payload(filePath, { old_string: "", new_string: content }),
+    );
+    assert.equal(result, null);
+  });
+});
+
+test("suppression-guard 放行带冒号说明的 @ts-expect-error", async () => {
+  await withTempDir(async (dir) => {
+    const filePath = join(dir, "compat.ts");
+    const content = "// @ts-expect-error: 上游类型未导出，跟踪 issue #123\nconst x: string = 1 as any;\n";
+    writeFileSync(filePath, content, "utf8");
+    const result = await runSuppressionGuard(
+      payload(filePath, { old_string: "", new_string: content }),
+    );
+    assert.equal(result, null);
+  });
+});
+
+test("suppression-guard 放行带全角冒号说明的 @ts-ignore", async () => {
+  await withTempDir(async (dir) => {
+    const filePath = join(dir, "compat.ts");
+    const content = "// @ts-ignore：第三方库 d.ts 缺失\nimport foo from 'legacy-pkg';\n";
+    writeFileSync(filePath, content, "utf8");
+    const result = await runSuppressionGuard(
+      payload(filePath, { old_string: "", new_string: content }),
+    );
+    assert.equal(result, null);
+  });
+});
+
+// ════════════════════════════════════════════════════════════════
+//  suppression-guard — 对抗测试（must-pass / TN）
+// ════════════════════════════════════════════════════════════════
+
+test("suppression-guard TN: 测试文件中的 disable 应跳过", async () => {
+  await withTempDir(async (dir) => {
+    const filePath = join(dir, "feature.test.ts");
+    const content = "// eslint-disable-next-line no-console\nconsole.log('test setup');\n";
+    writeFileSync(filePath, content, "utf8");
+    const result = await runSuppressionGuard(
+      payload(filePath, { old_string: "", new_string: content }),
+    );
+    assert.equal(result, null);
+  });
+});
+
+test("suppression-guard TN: tests/ 目录下的 disable 应跳过", async () => {
+  await withTempDir(async (dir) => {
+    const testsDir = join(dir, "tests");
+    mkdirSync(testsDir, { recursive: true });
+    const filePath = join(testsDir, "fixture.ts");
+    const content = "// @ts-ignore\nconst x: string = 1 as any;\n";
+    writeFileSync(filePath, content, "utf8");
+    const result = await runSuppressionGuard(
+      payload(filePath, { old_string: "", new_string: content }),
+    );
+    assert.equal(result, null);
+  });
+});
+
+test("suppression-guard TN: 非 JS/TS 扩展名应跳过", async () => {
+  await withTempDir(async (dir) => {
+    const filePath = join(dir, "notes.md");
+    const content = "我在文档里写到 `// @ts-ignore` 这个用法\n";
+    writeFileSync(filePath, content, "utf8");
+    const result = await runSuppressionGuard(
+      payload(filePath, { old_string: "", new_string: content }),
+    );
+    assert.equal(result, null);
+  });
+});
+
+test("suppression-guard TN: 已存在的 disable 未新增不应触发", async () => {
+  await withTempDir(async (dir) => {
+    const filePath = join(dir, "legacy.ts");
+    const existing = "// eslint-disable-next-line no-console\nconsole.log('hi');\n";
+    writeFileSync(filePath, existing, "utf8");
+    // old_string 和 new_string 完全相同 → 净新增 = 0
+    const result = await runSuppressionGuard(
+      payload(filePath, { old_string: existing, new_string: existing }),
+    );
+    assert.equal(result, null);
+  });
+});
+
+test("suppression-guard TN: hook 文件本身应跳过", async () => {
+  await withTempDir(async (dir) => {
+    const hooksDir = join(dir, "hooks", "post-tool-use");
+    mkdirSync(hooksDir, { recursive: true });
+    const filePath = join(hooksDir, "my-guard.js");
+    const content = "// @ts-ignore\nconst payload = arg;\n";
+    writeFileSync(filePath, content, "utf8");
+    const result = await runSuppressionGuard(
+      payload(filePath, { old_string: "", new_string: content }),
+    );
+    assert.equal(result, null);
+  });
+});
+
+test("suppression-guard TN: Vue 单文件组件中的合规 disable 应放行", async () => {
+  await withTempDir(async (dir) => {
+    const filePath = join(dir, "App.vue");
+    const content = [
+      "<script setup lang='ts'>",
+      "// eslint-disable-next-line @typescript-eslint/no-explicit-any -- 第三方库回调签名",
+      "const handler = (e: any) => e;",
+      "</script>",
+      "",
+    ].join("\n");
+    writeFileSync(filePath, content, "utf8");
+    const result = await runSuppressionGuard(
+      payload(filePath, { old_string: "", new_string: content }),
+    );
     assert.equal(result, null);
   });
 });
