@@ -1,0 +1,23 @@
+{
+  "name": "ai-experts",
+  "private": true,
+  "type": "module",
+  "description": "Claude Code 插件集合（55 个领域专家），通过本地 install.sh 软链到 ~/.claude 与 ~/.codex；本 package.json 仅作为开发态元数据，不发 npm。",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "audit:skills": "node scripts/skill-quality-report.mjs",
+    "audit:triggers": "node scripts/trigger-audit-report.mjs",
+    "audit:hooks": "node scripts/hook-telemetry-report.mjs",
+    "audit:evals": "node scripts/audit-skill-evals.mjs",
+    "install:dry": "bash scripts/install.sh --dry-run",
+    "install:local": "bash scripts/install.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tourze/ai-experts.git"
+  },
+  "license": "MIT"
+}
