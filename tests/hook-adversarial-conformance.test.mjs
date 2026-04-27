@@ -31,8 +31,12 @@ const GUARD_EVENTS = ["pre-tool-use", "post-tool-use"];
 // 不需要对抗测试的目录
 const SKIP_DIRS = new Set(["session-start", "user-prompt-submit", "notification", "stop"]);
 
+// plugin 目录的存在标记从 .claude-plugin/plugin.json（marketplace 时代）改为
+// README.md。原过滤条件命中 0 文件后整个 for-of 循环零次执行，所有 TP/TN 检查
+// 形同虚设。每个插件强制有 README.md（plugin-readme-conformance.test.mjs 自身
+// 即验证此前提），用它兜底安全。
 function getPluginRoots() {
-  return execFileSync("git", ["ls-files", "plugins/*/.claude-plugin/plugin.json"], {
+  return execFileSync("git", ["ls-files", "plugins/*/README.md"], {
     cwd: repoRoot,
     encoding: "utf-8",
   })
@@ -42,6 +46,17 @@ function getPluginRoots() {
     .map((line) => resolve(pluginsRoot, line.split("/")[1]))
     .sort();
 }
+
+const pluginRoots = getPluginRoots();
+
+// 防漂移哨兵：如果 README.md pattern 再次失效（例如插件结构调整），让本测试
+// 立刻红，而不是悄悄空跑。
+test("hook-adversarial-conformance 能枚举到至少 1 个插件根（防再次空跑）", () => {
+  assert.ok(
+    pluginRoots.length > 0,
+    "未能从 git 跟踪的 plugins/*/README.md 解析到任何插件，请检查 getPluginRoots()",
+  );
+});
 
 /**
  * 递归查找某个 hooks/ 子目录下的所有 guard 文件。
@@ -85,7 +100,7 @@ function extractTestNames(testFilePath) {
 
 // ── 主测试 ───────────────────────────────────────────────
 
-for (const pluginRoot of getPluginRoots()) {
+for (const pluginRoot of pluginRoots) {
   const pluginName = basename(pluginRoot);
   const hooksDir = join(pluginRoot, "hooks");
   if (!existsSync(hooksDir)) continue;
