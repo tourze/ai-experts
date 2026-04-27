@@ -599,12 +599,11 @@ function buildReport(args) {
   };
 }
 
-function buildRecommendations(hooks, skills, runtime) {
+// _hooks 标记：collectHookAudit 重构后该参数暂未参与推荐逻辑（原 telemetryReady /
+// dispatchFiles 字段已不存在），保留形参以维持 (hooks, skills, runtime) 三段式约定。
+function buildRecommendations(_hooks, skills, runtime) {
   const recommendations = [];
   const sessionFilterMissingFields = runtime.session && runtime.session.includes("no session_id/transcript_path");
-  if (hooks.telemetryReady < hooks.dispatchFiles) {
-    recommendations.push("P0: 统一所有 hooks/dispatch.mjs 的遥测模板，否则只能审计部分插件的 hook 运行情况。");
-  }
   if (sessionFilterMissingFields) {
     recommendations.push("P1: 当前日志缺少 session_id/transcript_path；旧日志只能按工作区和时间窗分析，新的 dispatch 模板会记录会话字段。");
   }
