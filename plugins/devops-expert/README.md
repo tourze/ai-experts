@@ -27,6 +27,8 @@ DevOps 专家插件，覆盖 Docker/Helm/K8s、CI/CD 流水线、Nginx 配置、
 | Agent | 用途 |
 |-------|------|
 | `infra-auditor` | 基础设施配置只读审计：Docker、CI/CD、Helm、Nginx、Terraform 与部署清单 |
+| `incident-responder` | 线上事故应急响应：时间线还原、根因定位、止血与修复路线规划，只读 |
+| `ci-pipeline-fixer` | GitHub Actions / GitLab CI 失败排查、流水线规格生成、PR 评论处理，可写 .github/.gitlab-ci |
 
 ## Hooks
 

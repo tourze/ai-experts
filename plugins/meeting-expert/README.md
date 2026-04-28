@@ -15,6 +15,12 @@
 | `meeting-minutes` | 正式会议纪要生成（元信息、决策、行动项、风险） |
 | `meeting-notes-and-actions` | 粗糙会议笔记转摘要、决策、风险与行动项 |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `meeting-synthesizer` | 把转写 / 笔记整理成纪要 + 行动项 + 沟通行为洞察，可写盘 |
+
 ## 安装 / 卸载
 
 由仓库根目录的 `node scripts/install.mjs` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。

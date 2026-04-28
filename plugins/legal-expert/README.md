@@ -10,6 +10,12 @@
 | `employment-contract-templates` | 劳动合同 / Offer / HR 政策模板 |
 | `gdpr-data-handling` | GDPR 合规数据处理（同意管理 / 数据主体权利） |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `legal-compliance-reviewer` | 合同 / 隐私政策 / 数据处理 / 劳动协议的只读法律合规初审，结论需律师确认 |
+
 ## 安装 / 卸载
 
 由仓库根目录的 `node scripts/install.mjs` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。

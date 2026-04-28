@@ -35,6 +35,7 @@
 | Agent | 用途 |
 |-------|------|
 | `doc-reviewer` | review documentation for completeness, accuracy, structure, readability, and consistency |
+| `document-producer` | 多格式文档产出（PPT/Word/Excel/PDF/Markdown）与互转编排，可写盘 |
 
 ## Hooks
 

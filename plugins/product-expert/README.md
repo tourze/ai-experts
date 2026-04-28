@@ -86,6 +86,8 @@
 | `problem-decomposer` | 复杂问题拆解、根因诊断、决策推进与改进闭环 | systems-thinking, scoping-cutting, planning-under-uncertainty, running-decision-processes, process-optimization, mckinsey-7-step / fishbone-diagram / five-w-two-h / pdca-cycle（thinking-expert） |
 | `delivery-planner` | 端到端产品交付规划，预加载 9 个需求与执行框架 | 见 agent 文件 |
 | `startup-advisor` | 端到端创业评估，预加载 10 个商业与融资框架 | 见 agent 文件 |
+| `customer-research-lead` | 客户研究 / 用户访谈 / 问卷设计 / ICP 验证 / 旅程梳理，可写盘 | mom-test, customer-research（marketing-expert）, designing-surveys（marketing-expert）, customer-journey-map, idea-validator, startup-icp-definer |
+| `pm-delivery-coach` | 敏捷交付教练：user story / Epic 拆解 / 估算校准 / 版本规划 / PM 能力辅导 | agile-product-owner, user-story-patterns, epic-decomposition, estimate-calibrator, version-planner, pm-career-ladder |
 
 ## 安装 / 卸载
 

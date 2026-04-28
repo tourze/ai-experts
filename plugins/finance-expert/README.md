@@ -28,6 +28,12 @@
 pip install numpy pandas
 ```
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `financial-modeler` | 财务建模 / DCF 估值 / 敏感性分析 / SaaS 单位经济 / 风险指标，可写盘 |
+
 ## 安装 / 卸载
 
 由仓库根目录的 `node scripts/install.mjs` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。

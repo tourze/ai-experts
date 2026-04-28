@@ -19,6 +19,7 @@ DBMS 专属能力由子插件提供，按需安装：
 | Agent | 用途 |
 |-------|------|
 | `schema-reviewer` | 数据库 schema、迁移、查询与索引策略的只读评审 |
+| `db-migration-reviewer` | 数据库迁移脚本与复制 / 分区 / RLS 配置变更的只读审查，含在线 DDL 风险评估 |
 
 ## Hooks
 
