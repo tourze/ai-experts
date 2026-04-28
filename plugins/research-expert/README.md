@@ -13,6 +13,7 @@
 | `knowledge-synthesis` | 多源搜索结果综合去重 + A-E 来源分层 |
 | `question-refiner` | 研究问题 5 维澄清与结构化 prompt 生成 |
 | `repo-analyzer` | 外部仓库克隆与结构化分析 |
+| `research-note-wrap` | 调研/分析会话双步确认收尾，输出高密度 Markdown 结论笔记 |
 | `site-analyze` | 域名/IP 站点画像分析 |
 | `technology-search` | 技术博客/论坛/媒体搜索 |
 | `web-content-fetcher` | URL 正文提取为 Markdown |
