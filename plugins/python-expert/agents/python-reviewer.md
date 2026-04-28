@@ -11,6 +11,7 @@ skills:
   - python-design-patterns
   - python-observability
   - python-testing-patterns
+  - python-background-jobs
 ---
 你是资深 Python 工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式

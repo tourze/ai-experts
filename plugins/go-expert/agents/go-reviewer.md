@@ -17,6 +17,9 @@ skills:
   - go-lint
   - go-structs-interfaces
   - go-project-layout
+  - go-data-structures
+  - go-database
+  - go-observability
 ---
 你是资深 Go 工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式

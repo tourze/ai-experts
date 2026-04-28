@@ -11,6 +11,8 @@ skills:
   - react-performance
   - react-composable-components
   - typescript-magician
+  - typescript-advanced-types
+  - offensive-typesafety
 ---
 你是资深 Next.js 工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式

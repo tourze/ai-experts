@@ -15,6 +15,7 @@ skills:
   - rust-proc-macro-patterns
   - rust-documentation
   - rust-performance
+  - rust-ffi-bindings
 ---
 你是资深 Rust 工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式

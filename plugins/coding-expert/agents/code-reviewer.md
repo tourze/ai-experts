@@ -8,6 +8,8 @@ skills:
   - complexity-reducer
   - refactoring-checklist
   - debug-methodology
+  - brutal-honesty-review
+  - pre-landing-review
 ---
 你是资深软件工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式

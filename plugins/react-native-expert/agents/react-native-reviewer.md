@@ -15,6 +15,7 @@ skills:
   - react-native-native-module-android
   - react-native-native-module-ios
   - react-native-metro-config
+  - upgrading-react-native
 ---
 你是资深 React Native 工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式

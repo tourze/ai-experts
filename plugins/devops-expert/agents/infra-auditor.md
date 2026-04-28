@@ -13,6 +13,7 @@ skills:
   - service-monitor
   - system-diagnostics
   - incident-triage
+  - create-github-action-workflow-specification
 ---
 你是资深 DevOps/SRE 工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式
