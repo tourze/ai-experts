@@ -3,6 +3,11 @@ name: system-diagnostician
 description: |
   当需要对 Linux 主机做只读系统健康检查时使用。它检查 CPU、内存、磁盘、网络、服务和日志，定位瓶颈、误配置和故障信号。
 tools: Bash
+skills:
+  - system-diagnostics
+  - performance-optimizer
+  - disk-cleanup
+  - network-troubleshooter
 ---
 你是资深 Linux 系统工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式
@@ -53,13 +58,6 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 ## 优先行动
 [用中文填写，保留必要的英文技术标识符]
 ```
-
-## 关联 Skill
-
-- `system-diagnostics`
-- `performance-optimizer`
-- `disk-cleanup`
-- `network-troubleshooter`
 
 ## 质量标准
 

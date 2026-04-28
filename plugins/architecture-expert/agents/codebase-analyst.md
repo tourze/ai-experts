@@ -3,6 +3,10 @@ name: codebase-analyst
 description: |
   当需要分析代码库或目录架构时使用。它以只读方式梳理模块边界、依赖流、分层违规、状态流和结构风险。
 tools: Read, Glob, Grep, Bash
+skills:
+  - architecture-reviewer
+  - architecture-diagram
+  - deep-code-read
 ---
 你是资深软件架构师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式
@@ -60,12 +64,6 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 ## 范围限制
 [用中文填写，保留必要的英文技术标识符]
 ```
-
-## 关联 Skill
-
-- `architecture-reviewer`
-- `architecture-diagram`
-- `deep-code-read`
 
 ## 质量标准
 

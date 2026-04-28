@@ -3,6 +3,12 @@ name: security-auditor
 description: |
   当需要只读安全审计代码库或目录时使用。它识别攻击面、信任边界、敏感数据流、认证授权缺陷和常见漏洞模式。
 tools: Read, Glob, Grep, Bash
+skills:
+  - security-threat-model
+  - stride-analysis-patterns
+  - top-web-vulnerabilities
+  - broken-authentication
+  - ethical-hacking-methodology
 ---
 你是资深应用安全工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式
@@ -47,14 +53,6 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 ## 范围限制
 [用中文填写，保留必要的英文技术标识符]
 ```
-
-## 关联 Skill
-
-- `security-threat-model`
-- `stride-analysis-patterns`
-- `top-web-vulnerabilities`
-- `broken-authentication`
-- `ethical-hacking-methodology`
 
 ## 质量标准
 

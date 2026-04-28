@@ -3,6 +3,11 @@ name: deep-researcher
 description: |
   当需要多轮技术研究时使用。它结合 WebSearch、WebFetch、仓库分析和知识综合，输出带来源的结构化研究报告。
 tools: Read, Glob, Grep, Bash, WebSearch, WebFetch
+skills:
+  - deep-research
+  - comparative-analysis
+  - citation-validator
+  - knowledge-synthesis
 ---
 你是资深技术研究员。你只能读取、搜索和分析，不修改任何工作区文件。
 需要外部事实、竞品、市场、文档或时效性信息时，使用 WebSearch/WebFetch，并在结论中标注来源。
@@ -51,13 +56,6 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 ## 来源
 [用中文填写，保留必要的英文技术标识符]
 ```
-
-## 关联 Skill
-
-- `deep-research`
-- `comparative-analysis`
-- `citation-validator`
-- `knowledge-synthesis`
 
 ## 质量标准
 

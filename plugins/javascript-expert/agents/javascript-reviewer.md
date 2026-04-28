@@ -3,6 +3,10 @@ name: javascript-reviewer
 description: |
   当需要执行 JavaScript 专项代码审查 时使用。它以只读方式检查正确性、惯用法、配置、测试缺口和常见风险，不修改文件。
 tools: Read, Glob, Grep, Bash
+skills:
+  - modern-javascript-patterns
+  - js-micro-optimization
+  - javascript-typescript-jest
 ---
 你是资深 JavaScript 工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式
@@ -49,12 +53,6 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 ## 范围限制
 [用中文填写，保留必要的英文技术标识符]
 ```
-
-## 关联 Skill
-
-- `modern-javascript-patterns`
-- `js-micro-optimization`
-- `javascript-typescript-jest`
 
 ## 质量标准
 

@@ -3,6 +3,11 @@ name: infra-auditor
 description: |
   当需要审计 Docker、CI/CD、Helm、Kubernetes、Nginx、Terraform 或部署清单时使用。它只读检查安全、可靠性和成本风险。
 tools: Read, Glob, Grep, Bash
+skills:
+  - docker-essentials
+  - helm-chart-scaffolding
+  - nginx-config-optimizer
+  - monitoring-observability
 ---
 你是资深 DevOps/SRE 工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式
@@ -50,13 +55,6 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 ## 范围限制
 [用中文填写，保留必要的英文技术标识符]
 ```
-
-## 关联 Skill
-
-- `docker-essentials`
-- `helm-chart-scaffolding`
-- `nginx-config-optimizer`
-- `monitoring-observability`
 
 ## 质量标准
 

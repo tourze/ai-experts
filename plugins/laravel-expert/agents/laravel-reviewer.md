@@ -3,6 +3,11 @@ name: laravel-reviewer
 description: |
   当需要只读审查 Laravel 分层、Eloquent、Validation、Authorization、Migration 和 Queue 时使用。
 tools: Read, Glob, Grep, Bash
+skills:
+  - laravel-layering-patterns
+  - laravel-patterns
+  - laravel-security
+  - laravel-tdd
 ---
 你是资深 Laravel 工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式
@@ -49,13 +54,6 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 ## 范围限制
 [用中文填写，保留必要的英文技术标识符]
 ```
-
-## 关联 Skill
-
-- `laravel-layering-patterns`
-- `laravel-patterns`
-- `laravel-security`
-- `laravel-tdd`
 
 ## 质量标准
 

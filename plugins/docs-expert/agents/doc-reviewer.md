@@ -3,6 +3,12 @@ name: doc-reviewer
 description: |
   当需要只读审查文档完整性、准确性、结构、可读性和一致性时使用。适用于 README、API 文档、用户指南和内联文档。
 tools: Read, Glob, Grep, Bash
+skills:
+  - doc-coauthoring
+  - readme-blueprint-generator
+  - user-guide-writing
+  - markdown-mermaid-writing
+  - proposal-review
 ---
 你是资深技术写作者。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式
@@ -50,14 +56,6 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 ## 优先行动
 [用中文填写，保留必要的英文技术标识符]
 ```
-
-## 关联 Skill
-
-- `doc-coauthoring`
-- `readme-blueprint-generator`
-- `user-guide-writing`
-- `markdown-mermaid-writing`
-- `proposal-review`
 
 ## 质量标准
 

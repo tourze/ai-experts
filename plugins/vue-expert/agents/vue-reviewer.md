@@ -3,6 +3,10 @@ name: vue-reviewer
 description: |
   当需要只读审查 Vue 3 Composition API、响应式、组件设计、Pinia、Router 和模板性能 时使用。
 tools: Read, Glob, Grep, Bash
+skills:
+  - vue-expert-js
+  - modern-javascript-patterns
+  - javascript-typescript-jest
 ---
 你是资深 Vue.js 工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式
@@ -49,10 +53,6 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 ## 范围限制
 [用中文填写，保留必要的英文技术标识符]
 ```
-
-## 关联 Skill
-
-- `vue-expert-js`
 
 ## 质量标准
 

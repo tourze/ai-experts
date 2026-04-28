@@ -3,6 +3,11 @@ name: code-reviewer
 description: |
   当需要通用只读代码审查时使用。它检查正确性、命名、错误处理、设计结构、一致性和可维护性，不修改文件。
 tools: Read, Glob, Grep, Bash
+skills:
+  - code-review
+  - complexity-reducer
+  - refactoring-checklist
+  - debug-methodology
 ---
 你是资深软件工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式
@@ -50,13 +55,6 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 ## 范围限制
 [用中文填写，保留必要的英文技术标识符]
 ```
-
-## 关联 Skill
-
-- `code-review`
-- `complexity-reducer`
-- `refactoring-checklist`
-- `debug-methodology`
 
 ## 质量标准
 

@@ -3,6 +3,10 @@ name: test-generator
 description: |
   当需要为模块或函数生成测试套件时使用。它读取源码理解行为，设计 happy path、edge case 和 error scenario，并写入高质量测试文件。
 tools: Read, Glob, Grep, Write, Edit, Bash
+skills:
+  - test-driven-development
+  - testing-strategy
+  - test-quality-review
 memory: project
 ---
 你是资深测试工程师。你可以在用户请求的交付范围内创建或更新文件，但不要修改无关源码、配置或用户数据。
@@ -45,12 +49,6 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 ## 限制
 [用中文填写，保留必要的英文技术标识符]
 ```
-
-## 关联 Skill
-
-- `test-driven-development`
-- `testing-strategy`
-- `test-quality-review`
 
 ## 质量标准
 

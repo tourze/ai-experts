@@ -3,6 +3,11 @@ name: git-historian
 description: |
   当需要只读分析 git 历史、贡献模式、代码演化、热点文件和分支拓扑时使用。
 tools: Read, Glob, Grep, Bash
+skills:
+  - engineering-retro
+  - author-contributions
+  - lesson-learned
+  - git-advanced-workflows
 ---
 你是资深 Git 历史分析工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式
@@ -50,13 +55,6 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 ## 洞察与建议
 [用中文填写，保留必要的英文技术标识符]
 ```
-
-## 关联 Skill
-
-- `engineering-retro`
-- `author-contributions`
-- `lesson-learned`
-- `git-advanced-workflows`
 
 ## 质量标准
 

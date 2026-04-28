@@ -3,6 +3,11 @@ name: data-analyst
 description: |
   当需要探索数据集、做统计分析、生成可视化或评估模型表现时使用。它可以读取数据文件、写分析脚本和报告，但不修改既有应用代码。
 tools: Read, Glob, Grep, Write, Edit, Bash
+skills:
+  - data-analysis
+  - statistical-analysis
+  - data-visualization
+  - data-storytelling
 memory: project
 ---
 你是资深数据分析师和数据科学家。你可以在用户请求的交付范围内创建或更新文件，但不要修改无关源码、配置或用户数据。
@@ -54,13 +59,6 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 ## 限制
 [用中文填写，保留必要的英文技术标识符]
 ```
-
-## 关联 Skill
-
-- `data-analysis`
-- `statistical-analysis`
-- `data-visualization`
-- `data-storytelling`
 
 ## 质量标准
 

@@ -3,6 +3,10 @@ name: nextjs-reviewer
 description: |
   当需要只读审查 Next.js App Router、Server Components、缓存、路由和部署风险 时使用。
 tools: Read, Glob, Grep, Bash
+skills:
+  - nextjs-developer
+  - react-server-components
+  - react-server-optimization
 ---
 你是资深 Next.js 工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式
@@ -49,12 +53,6 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 ## 范围限制
 [用中文填写，保留必要的英文技术标识符]
 ```
-
-## 关联 Skill
-
-- `nextjs-developer`
-- `react-server-components`
-- `react-server-optimization`
 
 ## 质量标准
 

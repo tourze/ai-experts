@@ -3,6 +3,9 @@ name: schema-reviewer
 description: |
   当需要只读审查数据库 schema、迁移、查询或索引策略时使用。它定位正确性、性能、数据完整性和运维风险。
 tools: Read, Glob, Grep, Bash
+skills:
+  - sql-code-review
+  - sql-optimization
 ---
 你是资深数据库工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式
@@ -50,11 +53,6 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 ## 优先行动
 [用中文填写，保留必要的英文技术标识符]
 ```
-
-## 关联 Skill
-
-- `sql-code-review`
-- `sql-optimization`
 
 ## 质量标准
 

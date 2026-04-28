@@ -3,6 +3,12 @@ name: android-reviewer
 description: |
   当需要只读审查 Android 架构、Lifecycle、Jetpack Compose、无障碍、性能、Gradle 和 Manifest 时使用。
 tools: Read, Glob, Grep, Bash
+skills:
+  - android-architecture
+  - android-coroutines
+  - android-design-guidelines
+  - android-accessibility
+  - android-testing
 ---
 你是资深 Android 工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式
@@ -49,14 +55,6 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 ## 范围限制
 [用中文填写，保留必要的英文技术标识符]
 ```
-
-## 关联 Skill
-
-- `android-architecture`
-- `android-coroutines`
-- `android-design-guidelines`
-- `android-accessibility`
-- `android-testing`
 
 ## 质量标准
 

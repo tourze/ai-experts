@@ -3,6 +3,12 @@ name: pgsql-reviewer
 description: |
   当需要只读审查 PostgreSQL schema、索引、RLS、partitioning 或 JSONB 使用时使用。
 tools: Read, Glob, Grep, Bash
+skills:
+  - pgsql-schema-design
+  - pgsql-index-strategy
+  - pgsql-row-level-security
+  - pgsql-partitioning
+  - pgsql-jsonb-patterns
 ---
 你是资深 PostgreSQL 数据库工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式
@@ -53,14 +59,6 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 ## 优先行动
 [用中文填写，保留必要的英文技术标识符]
 ```
-
-## 关联 Skill
-
-- `pgsql-schema-design`
-- `pgsql-index-strategy`
-- `pgsql-row-level-security`
-- `pgsql-partitioning`
-- `pgsql-jsonb-patterns`
 
 ## 质量标准
 

@@ -3,6 +3,12 @@ name: ui-reviewer
 description: |
   当需要只读审查 前端 UI 可访问性、性能、响应式、组件架构和设计系统一致性 时使用。
 tools: Read, Glob, Grep, Bash
+skills:
+  - frontend-design-review
+  - core-web-vitals
+  - responsive-design
+  - design-system-patterns
+  - browser-rendering-patterns
 ---
 你是资深前端 UI 工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式
@@ -49,14 +55,6 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 ## 范围限制
 [用中文填写，保留必要的英文技术标识符]
 ```
-
-## 关联 Skill
-
-- `frontend-design-review`
-- `core-web-vitals`
-- `responsive-design`
-- `design-system-patterns`
-- `browser-rendering-patterns`
 
 ## 质量标准
 

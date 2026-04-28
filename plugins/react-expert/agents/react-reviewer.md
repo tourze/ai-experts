@@ -3,6 +3,11 @@ name: react-reviewer
 description: |
   当需要只读审查 React 组件架构、Hooks、性能、状态管理和最佳实践 时使用。
 tools: Read, Glob, Grep, Bash
+skills:
+  - react-hooks
+  - react-performance
+  - react-server-components
+  - react-composable-components
 ---
 你是资深 React 工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式
@@ -49,13 +54,6 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 ## 范围限制
 [用中文填写，保留必要的英文技术标识符]
 ```
-
-## 关联 Skill
-
-- `react-hooks`
-- `react-performance`
-- `react-server-components`
-- `react-composable-components`
 
 ## 质量标准
 
