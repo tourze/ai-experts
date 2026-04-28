@@ -1,6 +1,6 @@
 ---
 name: customer-lifecycle
-description: 当用户要做客户分层管理（CLV / platinum-gold-iron-lead），或要按生命周期阶段（导入-成长-成熟-衰退 / trial-activation-expansion-renewal-winback）制定差异化策略时使用；同时覆盖产品生命周期（PLC）的阶段性营销决策。英文触发词 customer pyramid、CLV tiering、product lifecycle、PLC、customer lifecycle、lifecycle marketing。
+description: 当用户要做客户分层管理、按生命周期阶段制定差异化营销动作，或评估产品生命周期阶段决策时使用。英文触发词 customer pyramid、CLV tiering、product lifecycle、PLC、lifecycle marketing。
 ---
 
 # 客户与产品生命周期

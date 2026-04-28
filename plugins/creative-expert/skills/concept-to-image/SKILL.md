@@ -1,6 +1,6 @@
 ---
 name: concept-to-image
-description: 当用户要把概念做成静态图、HTML 导出 PNG/SVG、做信息图或卡片时使用；如果要动画，改用 concept-to-video。
+description: 当用户要把概念做成单张静态图、信息图或封面卡片时使用；如果要交互式算法教学页改用 algo-visualization，要动画视频改用 concept-to-video。
 ---
 
 # 概念转图片

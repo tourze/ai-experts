@@ -1,6 +1,6 @@
 ---
 name: bcg-matrix
-description: 当用户要做产品组合分析、业务优先级排序、资源分配决策或投资组合管理时使用；包含 BCG 2x2 快速分类与 GE-McKinsey 九宫格多指标加权两种模式。英文触发词 BCG matrix、growth-share matrix、portfolio analysis、star/cash cow/dog/question mark、GE matrix、McKinsey matrix、nine-box matrix。
+description: 当用户要做产品组合分析、业务优先级排序、资源分配决策或投资组合管理时使用。英文触发词 BCG matrix、growth-share matrix、portfolio analysis、GE matrix、McKinsey matrix、nine-box matrix。
 ---
 
 # BCG 矩阵（波士顿矩阵 + GE-McKinsey 九宫格）

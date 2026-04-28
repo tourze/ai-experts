@@ -1,6 +1,6 @@
 ---
 name: react-performance
-description: 当用户要分析或优化 React 渲染性能、消除不必要重渲染、处理外部 store 订阅引发的整树刷新时使用。覆盖 memo / useMemo / useCallback / derived state / startTransition / useDeferredValue / virtualization / code splitting / bundle size / Profiler / store selector / shallowEqual / Context value 稳定性。
+description: 当用户要分析或优化 React 渲染性能、消除不必要重渲染、处理外部 store 订阅引发的整树刷新时使用。英文触发词 memo、useMemo、useCallback、startTransition、useDeferredValue、virtualization、Profiler、shallowEqual。
 ---
 
 # React 性能优化
