@@ -11,6 +11,12 @@ Webman 框架专家插件，覆盖命名规范、自定义进程、WebSocket 和
 | `webman-websocket-patterns` | WebSocket 服务端/客户端、连接生命周期、心跳、频道广播与指数退避重连 |
 | `webman-plugin-development` | 插件打包、Install.php、config 发布路径、Bootstrap 与插件进程声明 |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `webman-reviewer` | 只读审查 Webman 命名规范、自定义进程、WebSocket、插件机制以及 worker 长生命周期风险 |
+
 ## 安装 / 卸载
 
 由仓库根目录的 `node scripts/install.mjs` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
