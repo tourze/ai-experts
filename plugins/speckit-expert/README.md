@@ -54,6 +54,12 @@ node plugins/speckit-expert/skills/speckit-baseline/scripts/bootstrap-specify.mj
 | `speckit-validate` | 校验实现结果与规格要求是否一致 |
 | `spec-driven-delivery` | 5 阶段需求驱动交付（Specify→Plan→Act→Review→Vault）外层纪律：10 分 spec 门禁 + `.sparv/journal.md` + 3 次失败协议 + EHRB 高风险显式确认；包裹 speckit 子流程使用 |
 
+## Agents
+
+| Agent | 适用场景 | 预加载 skill |
+|-------|----------|--------------|
+| `speckit-driver` | 端到端编排 Spec Kit 交付：Specify→Clarify→Plan→Tasks→Implement→Validate→Status | 见 agent 文件，覆盖全部 18 个 speckit-* 与 spec-driven-delivery |
+
 ## 参考来源
 
 - 社区参考：`https://github.com/dceoy/speckit-agent-skills`
