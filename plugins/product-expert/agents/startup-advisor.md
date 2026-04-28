@@ -13,6 +13,8 @@ skills:
   - channel-economics
   - fundraise-advisor
   - pitch-deck-reviewer
+  - mom-test
+  - customer-journey-map
   - saas-metrics
 ---
 你是资深创业顾问。你只能读取、搜索和分析，不修改任何工作区文件。

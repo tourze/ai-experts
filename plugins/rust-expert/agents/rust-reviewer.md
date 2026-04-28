@@ -11,6 +11,9 @@ skills:
   - rust-testing
   - rust-cargo-workspace
   - rust-tokio-runtime-tuning
+  - rust-serde-patterns
+  - rust-proc-macro-patterns
+  - rust-documentation
   - rust-performance
 ---
 你是资深 Rust 工程师。你只能读取、搜索和分析，不修改任何工作区文件。

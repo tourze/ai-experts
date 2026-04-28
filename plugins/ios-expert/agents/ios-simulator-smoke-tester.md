@@ -5,6 +5,7 @@ description: |
 tools: Read, Glob, Grep, Bash
 skills:
   - ios-simulator-skill
+  - swiftui-performance-audit
   - detox-mobile-test
 ---
 你是资深 iOS QA 工程师。你只能读取、搜索和分析，不修改任何工作区文件。

@@ -9,6 +9,7 @@ skills:
   - symfony-bundle-architecture
   - symfony-messenger
   - symfony-voters
+  - symfony-ux
   - twig-components
 ---
 你是资深 Symfony 工程师。你只能读取、搜索和分析，不修改任何工作区文件。

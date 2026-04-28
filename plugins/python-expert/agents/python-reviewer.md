@@ -8,6 +8,8 @@ skills:
   - python-error-handling
   - async-python-patterns
   - python-performance-optimization
+  - python-design-patterns
+  - python-observability
   - python-testing-patterns
 ---
 你是资深 Python 工程师。你只能读取、搜索和分析，不修改任何工作区文件。

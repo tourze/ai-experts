@@ -9,6 +9,7 @@ skills:
   - react-server-optimization
   - react-hooks
   - react-performance
+  - react-composable-components
   - typescript-magician
 ---
 你是资深 Next.js 工程师。你只能读取、搜索和分析，不修改任何工作区文件。

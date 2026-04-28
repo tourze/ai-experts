@@ -7,6 +7,7 @@ skills:
   - debug-methodology
   - debug-lldb
   - chrome-devtools
+  - gdb-nonblocking
   - browser-use
 ---
 你是资深调试工程师。你只能读取、搜索和分析，不修改任何工作区文件。

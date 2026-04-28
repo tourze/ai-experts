@@ -11,6 +11,7 @@ skills:
   - channel-economics
   - ansoff-matrix
   - crossing-the-chasm
+  - saas-metrics
   - systems-thinking
 ---
 你是资深增长阶段策略顾问。你只能读取、搜索和分析，不修改任何工作区文件。

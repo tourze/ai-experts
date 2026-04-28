@@ -13,6 +13,8 @@ skills:
   - obviously-awesome
   - crossing-the-chasm
   - competitive-intelligence
+  - bcg-matrix
+  - space-matrix
   - swot-analysis
 ---
 你是资深竞争策略顾问。你只能读取、搜索和分析，不修改任何工作区文件。

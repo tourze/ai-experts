@@ -8,6 +8,8 @@ skills:
   - php-type-safety
   - php-error-handling
   - php-design-patterns
+  - php-async-patterns
+  - php-doc
   - php-testing
 ---
 你是资深 PHP 工程师。你只能读取、搜索和分析，不修改任何工作区文件。

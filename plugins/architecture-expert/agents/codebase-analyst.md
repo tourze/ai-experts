@@ -8,6 +8,8 @@ skills:
   - architecture-diagram
   - deep-code-read
   - seam-ripper
+  - api-trace-reader
+  - refactoring-patterns
   - tech-debt
 ---
 你是资深软件架构师。你只能读取、搜索和分析，不修改任何工作区文件。

@@ -12,6 +12,8 @@ skills:
   - detox-mobile-test
   - react-native-bundle-size
   - react-native-turbomodule
+  - react-native-native-module-android
+  - react-native-native-module-ios
   - react-native-metro-config
 ---
 你是资深 React Native 工程师。你只能读取、搜索和分析，不修改任何工作区文件。

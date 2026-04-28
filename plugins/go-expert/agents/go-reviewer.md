@@ -12,6 +12,10 @@ skills:
   - go-code-style
   - go-performance
   - go-security
+  - go-naming
+  - go-design-patterns
+  - go-lint
+  - go-structs-interfaces
   - go-project-layout
 ---
 你是资深 Go 工程师。你只能读取、搜索和分析，不修改任何工作区文件。

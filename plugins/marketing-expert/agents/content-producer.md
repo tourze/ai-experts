@@ -12,6 +12,8 @@ skills:
   - influence-psychology
   - made-to-stick
   - marketing-psychology
+  - email-sequence
+  - cold-email
   - copywriting
 ---
 你是资深内容制作人。你只能读取、搜索和分析，不修改任何工作区文件。

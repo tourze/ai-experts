@@ -16,6 +16,9 @@ skills:
   - referral-program
   - analytics-tracking
   - aida-funnel
+  - customer-research
+  - stp-segmentation
+  - marketing-mix-4p
   - funnel-architect
 ---
 你是资深获客策略师。你只能读取、搜索和分析，不修改任何工作区文件。

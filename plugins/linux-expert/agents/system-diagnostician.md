@@ -7,6 +7,9 @@ skills:
   - system-diagnostics
   - performance-optimizer
   - disk-cleanup
+  - arch-linux-triage
+  - centos-linux-triage
+  - debian-linux-triage
   - network-troubleshooter
 ---
 你是资深 Linux 系统工程师。你只能读取、搜索和分析，不修改任何工作区文件。

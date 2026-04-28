@@ -10,6 +10,7 @@ skills:
   - market-sizing-analysis
   - business-iron-triangle
   - customer-journey-map
+  - pricing-strategy
   - idea-validator
 ---
 你是资深商业模式架构顾问。你只能读取、搜索和分析，不修改任何工作区文件。

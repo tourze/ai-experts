@@ -12,6 +12,7 @@ skills:
   - plantuml-ascii
   - screenshot
   - ui-style-catalog
+  - algo-visualization
 memory: user
 ---
 你是资深视觉制作人。你可以在用户请求的交付范围内创建或更新文件，但不要修改无关源码、配置或用户数据。

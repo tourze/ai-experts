@@ -12,6 +12,7 @@ skills:
   - mckinsey-7-step
   - fishbone-diagram
   - five-w-two-h
+  - business-health-diagnostic
   - pdca-cycle
 ---
 你是资深问题拆解顾问。你只能读取、搜索和分析，不修改任何工作区文件。

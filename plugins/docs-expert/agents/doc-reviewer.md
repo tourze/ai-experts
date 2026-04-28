@@ -8,6 +8,7 @@ skills:
   - readme-blueprint-generator
   - user-guide-writing
   - markdown-mermaid-writing
+  - pretty-mermaid
   - proposal-review
 ---
 你是资深技术写作者。你只能读取、搜索和分析，不修改任何工作区文件。

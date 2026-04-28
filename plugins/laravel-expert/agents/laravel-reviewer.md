@@ -7,6 +7,7 @@ skills:
   - laravel-layering-patterns
   - laravel-patterns
   - laravel-security
+  - laravel-verification
   - laravel-tdd
 ---
 你是资深 Laravel 工程师。你只能读取、搜索和分析，不修改任何工作区文件。
