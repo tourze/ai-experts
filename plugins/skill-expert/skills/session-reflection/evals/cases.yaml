@@ -1,0 +1,43 @@
+cases:
+  - id: current_session_wrap
+    prompt: "总结会话，告诉我本轮完成了什么、哪些没验证、下一步怎么做"
+    fixtures: []
+    rubric:
+      - "除非用户另行要求，否则范围限定为当前会话"
+      - "按工作流或主题总结，不按时间流水账"
+      - "如实报告已完成、验证状态、风险、未完成项和下一步"
+    trigger_expected: true
+
+  - id: governance_reflection
+    prompt: "请用 session-reflection 复盘本轮会话，看看有哪些 MEMORY、工作流、Skill 或 Hooks 优化建议"
+    fixtures: []
+    rubric:
+      - "按 memory、workflow、skill、hook 分组输出长期资产建议"
+      - "建议新增前先对照现有 MEMORY 或 SKILL description 去重"
+      - "把不具备长期价值的观察放进不沉淀清单"
+    trigger_expected: true
+
+  - id: english_session_closeout
+    prompt: "wrap up this session and tell me whether it is ready to commit"
+    fixtures: []
+    rubric:
+      - "英文触发词也进入当前会话收尾模式"
+      - "给出 commit 建议但不自动提交"
+      - "没有 git 状态或验证证据时，不声称可提交"
+    trigger_expected: true
+
+  - id: negative_multi_project_daily
+    prompt: "帮我写今天所有项目和所有会话的日报"
+    fixtures: []
+    rubric:
+      - "不触发当前会话复盘"
+      - "改走日报或更大范围汇总流程"
+    trigger_expected: false
+
+  - id: negative_runtime_failure_triage
+    prompt: "dispatch.mjs 报错了，某个 SKILL 脚本也执行失败，帮我定位根因"
+    fixtures: []
+    rubric:
+      - "不把 runtime 故障定位当作 session reflection"
+      - "hook 或 skill runtime 故障应路由到 trigger-telemetry-advisor 或调试流程"
+    trigger_expected: false
