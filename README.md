@@ -46,7 +46,7 @@
 - android-expert → java-expert
 - cpp-expert → coding-expert
 - devops-expert → coding-expert, linux-expert
-- frontend-expert → javascript-expert
+- frontend-expert → javascript-expert, react-expert
 - go-expert → coding-expert
 - ios-expert → coding-expert
 - java-expert → coding-expert
