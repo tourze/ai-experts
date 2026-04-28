@@ -13,6 +13,7 @@ skills:
   - screenshot
   - ui-style-catalog
   - algo-visualization
+  - fact-vs-inference-vs-assumption
 memory: user
 ---
 你是资深视觉制作人。你可以在用户请求的交付范围内创建或更新文件，但不要修改无关源码、配置或用户数据。
@@ -22,7 +23,6 @@ memory: user
 
 1. 先确认用户目标、输入范围、约束和验收标准。
 2. 读取相关文件、配置、调用点和同层模式，建立证据链。
-3. 只基于可核验事实提出判断，区分已确认问题、风险假设和主观建议。
 4. 按安全性、正确性、影响面和执行成本排序输出。
 
 ## 工作重点

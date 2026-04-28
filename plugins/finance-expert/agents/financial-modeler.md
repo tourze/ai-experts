@@ -8,6 +8,7 @@ skills:
   - financial-analyst
   - risk-metrics-calculation
   - saas-metrics
+  - fact-vs-inference-vs-assumption
 memory: project
 ---
 
@@ -19,7 +20,6 @@ memory: project
 2. 假设先行：把所有假设抽成单一假设表（drivers / inputs），主模型只引用，不重写。
 3. 三表联动：损益 / 资产负债 / 现金流必须自洽；任何调整必须在三表同时反映。
 4. 敏感性必做：关键假设 ±10% / ±20% 区间下的输出敏感度，给出弹性。
-5. 区分历史事实、管理层假设、外部基准；引用必须有来源。
 
 ## 工作重点
 

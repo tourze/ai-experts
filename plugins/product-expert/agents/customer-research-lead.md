@@ -10,6 +10,7 @@ skills:
   - customer-journey-map
   - idea-validator
   - startup-icp-definer
+  - finding-evidence-binding
 memory: project
 ---
 
@@ -72,7 +73,6 @@ Bash 用于读取既有研究产物、git 历史、文件统计；WebSearch / We
 
 ## 质量标准
 
-- 每条洞察必须引用具体被访者编号、问卷题号或公开来源；不允许「我感觉客户想要」。
 - mom-test 红线：不允许出现「你会不会用」「你愿意付多少钱」类诱导性问题。
 - 定性 N≤5 时必须显式标注「不可推广」；不强行做统计推断。
 - 旅程地图必须导出 ≥3 个可行动机会点，否则不算完成。
