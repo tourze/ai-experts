@@ -2,7 +2,7 @@
 
 一个同时兼容 **Claude Code** 和 **OpenAI Codex CLI** 的本地插件仓库，按领域提供 `*-expert` 插件集合，包含 55 个领域专家插件，每个插件提供 skills、hooks 和/或 agents。安装脚本将 `plugins/<plugin>/skills/<skill>` 直接软链到 `~/.claude/skills/` 与 `~/.codex/skills/`，把 agents 链到 `~/.claude/agents/`，并把统一 hook dispatcher 注入两端的 settings/hooks 配置（不再依赖 marketplace plugin 安装）。每个插件包含自己的 README、skills 与最小回归测试，并可按需提供 `hooks/` 与 `agents/`。
 
-当前规模：55 个插件、496 个 skill、76 个 agent、120 个 hook 模块。
+当前规模：55 个插件、498 个 skill、76 个 agent、120 个 hook 模块。
 
 > 本文件同时承担三种角色 —— 仓库入口 README、Claude Code 项目指令 `CLAUDE.md`、Codex CLI 项目指令 `AGENTS.md`。仓库根的 `CLAUDE.md` 与 `AGENTS.md` 都是指向本文件的 symlink，维护一份即可，不再有"AGENTS.md 由 CLAUDE.md 手动同步"的双轨。
 
