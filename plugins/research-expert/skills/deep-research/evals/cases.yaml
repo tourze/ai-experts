@@ -32,3 +32,21 @@ cases:
       - "does not activate deep research workflow"
       - "a simple factual question does not require multi-round research"
     trigger_expected: false
+
+  - id: chinese_platform_wechat
+    prompt: "帮我搜一下微信公众号上关于新能源汽车的深度分析文章"
+    fixtures: []
+    rubric:
+      - "activates deep research workflow"
+      - "references the chinese-platform-routing reference for ecosystem ownership"
+      - "uses site:mp.weixin.qq.com qualifier or routes to Tencent-aligned source"
+    trigger_expected: true
+
+  - id: chinese_platform_local_life
+    prompt: "帮我找一下杭州西湖区评价靠谱的日料店，看看大众点评上的评论"
+    fixtures: []
+    rubric:
+      - "activates deep research workflow"
+      - "identifies Meituan / Dianping ecosystem as primary source"
+      - "applies site:dianping.com or equivalent routing"
+    trigger_expected: true
