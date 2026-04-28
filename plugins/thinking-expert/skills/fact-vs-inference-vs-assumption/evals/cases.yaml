@@ -1,0 +1,37 @@
+cases:
+  - id: positive_fact_vs_inference_vs_assumption_primary
+    prompt: "我在写事故复盘报告，需要把每段判断显式标成事实、推断或假设，避免把猜测写成结论。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as fact-vs-inference-vs-assumption territory"
+      - "applies explicit [事实]/[推断]/[假设] tagging instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_fact_vs_inference_vs_assumption_realistic
+    prompt: "帮我审视这份战略备忘录里哪些是观测、哪些是推论、哪些是假设；最弱环节决定结论置信度。"
+    fixtures: []
+    rubric:
+      - "matches the three-state-tagging use case described by the skill"
+      - "downgrades the overall conclusion to the weakest tier rather than giving a flat answer"
+    trigger_expected: true
+
+  - id: negative_adjacent_first_principles_decomposer
+    prompt: "我想用第一性原理把这个问题里的隐含假设拆到不可再压缩的事实层，然后从零重建方案。"
+    fixtures: []
+    rubric:
+      - "first-principles-decomposer is for assumption decomposition; not the writing-discipline skill"
+    trigger_expected: false
+
+  - id: negative_adjacent_finding_evidence_binding
+    prompt: "我要给每条审查发现绑定到具体的文件:行号、log 时间戳和触发条件，让读者能复现。"
+    fixtures: []
+    rubric:
+      - "binding findings to evidence locations belongs to finding-evidence-binding"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

@@ -1,0 +1,37 @@
+cases:
+  - id: positive_finding_evidence_binding_primary
+    prompt: "我在写代码审查报告，每条发现都需要绑定到具体文件:行号和证据片段，避免印象式断言。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as finding-evidence-binding territory"
+      - "applies the 定位 + 证据片段 + 触发条件 三件套 rule instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_finding_evidence_binding_realistic
+    prompt: "帮我把这份事故复盘报告里的『感觉是数据库慢』改写成可核验的发现，给出 metric / trace / 触发条件。"
+    fixtures: []
+    rubric:
+      - "matches the writing-discipline use case described by the skill"
+      - "keeps the response focused on evidence binding rather than debugging methodology"
+    trigger_expected: true
+
+  - id: negative_adjacent_citation_validator
+    prompt: "我要在 PRD 发布前核验所有引用的来源是否权威可信，按 A-E 等级评估外部引用质量。"
+    fixtures: []
+    rubric:
+      - "external citation validation belongs to citation-validator, not finding-evidence-binding"
+    trigger_expected: false
+
+  - id: negative_adjacent_debug_methodology
+    prompt: "我现在被一个间歇性崩溃卡住了，需要系统化的调试流程帮我定位根因。"
+    fixtures: []
+    rubric:
+      - "actively debugging belongs to debug-methodology, not the writing-discipline skill"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

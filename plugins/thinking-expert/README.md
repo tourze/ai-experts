@@ -4,7 +4,7 @@
 
 ## 目录结构
 
-- `skills/`：15 个思维类技能，每个 `SKILL.md` 使用统一中文结构。
+- `skills/`：17 个思维类技能，每个 `SKILL.md` 使用统一中文结构。
 - `tests/`：脚本语法与文档结构校验。
 
 ## Skills
@@ -26,6 +26,8 @@
 | `pdca-cycle` | 当用户要做持续改进、质量管理、运营优化或需要闭环问题解决方法时使用；英文触发词 PDCA、Plan-Do-Check-Act、Deming cycle、continuous improvement、kaizen、quality management。 |
 | `scp-analysis` | 当用户要分析外部冲击对行业和企业的传导影响、评估政策/技术/市场变化的连锁效应时使用；英文触发词 SCP model、structure-conduct-performance、industry shock analysis、external impact、cascading effect。 |
 | `socratic-teaching` | 当用户想通过被提问来理解代码、系统或概念时使用。用户提到"苏格拉底""Socrates""socratic""别直接告诉我答案""引导我""让我自己想"时触发。适用于学习新代码库、理解复杂系统、代码 review 教学、概念探索等场景。与 thinking-partner 的区别：thinking-partner 会在后期共创解法，本 skill 全程只问不答。 |
+| `finding-evidence-binding` | 当代码审查、安全审计、系统诊断或事故分析需要把每条发现绑定到可核验定位（文件:行 / log 时间戳 / commit / metric / trace_id）、消除"印象式"断言时使用。 |
+| `fact-vs-inference-vs-assumption` | 当审计报告、研究综合、事故复盘或战略分析需要把每段结论显式标注为事实 / 推断 / 假设，避免把猜测写成结论时使用。 |
 
 ## Agents
 
