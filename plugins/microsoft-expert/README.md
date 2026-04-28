@@ -13,6 +13,12 @@
 | `microsoft-code-reference` | 写代码、修 SDK 错误、核对 API/签名/官方示例 |
 | `microsoft-docs` | 查概念、教程、配置、配额、限制与最佳实践 |
 
+## Agents
+
+| Agent | 用途 |
+|-------|------|
+| `microsoft-stack-engineer` | 只读审查 .NET / Azure / Microsoft SDK 代码，校验 API 签名、官方文档 alignment、配额、retry 与异步模式 |
+
 ## 验证命令
 
 在插件目录执行：
