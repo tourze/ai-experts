@@ -9,6 +9,8 @@ skills:
   - android-design-guidelines
   - android-accessibility
   - android-testing
+  - gradle-build-performance
+  - android-redex
 ---
 你是资深 Android 工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式

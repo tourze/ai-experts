@@ -8,6 +8,8 @@ skills:
   - java-junit
   - gradle-build-performance
   - graalvm-native-image
+  - arthas-cpu-high
+  - arthas-springcontext-issues-resolve
 ---
 你是资深 Java 工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式

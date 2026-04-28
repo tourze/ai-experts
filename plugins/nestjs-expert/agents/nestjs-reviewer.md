@@ -6,6 +6,7 @@ tools: Read, Glob, Grep, Bash
 skills:
   - nestjs-layering-patterns
   - openapi-spec-generation
+  - typescript-magician
 ---
 你是资深 NestJS 工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式
