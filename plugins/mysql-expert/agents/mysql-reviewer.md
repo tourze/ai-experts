@@ -9,6 +9,7 @@ skills:
   - mysql-transaction-locking
   - mysql-json-generated-columns
   - mysql-replication-ops
+  - sql-optimization
 ---
 你是资深 MySQL 数据库工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式

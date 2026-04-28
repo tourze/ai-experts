@@ -10,6 +10,9 @@ skills:
   - react-native-native-performance
   - react-native-platform-fork
   - detox-mobile-test
+  - react-native-bundle-size
+  - react-native-turbomodule
+  - react-native-metro-config
 ---
 你是资深 React Native 工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式
