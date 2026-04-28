@@ -30,6 +30,7 @@
 | Agent | 用途 |
 |-------|------|
 | `data-analyst` | explore datasets, perform statistical analysis, generate visualizations, and evaluate model performance |
+| `ai-app-engineer` | LLM 应用设计 / 审查 / 优化：prompt 工程、检索增强、向量索引、embedding 选型与离线 eval |
 
 ## 安装 / 卸载
 

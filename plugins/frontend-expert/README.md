@@ -40,6 +40,8 @@
 | Agent | 用途 |
 |-------|------|
 | `ui-reviewer` | 前端界面与代码只读评审：可访问性、性能、响应式、组件结构与 UI 规范 |
+| `design-system-architect` | 搭建或重构设计令牌、主题与组件架构，融合 OKLCH 颜色、字体配对、Tailwind / shadcn-ui 与动效原则，可写盘 |
+| `web-perf-engineer` | Web 前端性能诊断：Core Web Vitals、bundle、浏览器渲染、JS 热路径、React 渲染与 Server Components 优化 |
 
 ## 安装 / 卸载
 

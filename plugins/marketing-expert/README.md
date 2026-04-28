@@ -58,6 +58,8 @@
 |-------|------|
 | `content-producer` | 端到端营销内容创作、优化与改写，从策略到成稿 |
 | `acquisition-strategist` | 端到端获客与转化策略，整合渠道、SEO、内容、CRO、付费、推荐与 analytics 输出可执行获客蓝图（注意：此 agent 原名 `growth-strategist`，与 product-expert 的 `growth-stage-strategist` 区分） |
+| `conversion-optimizer` | 网站 / 落地页 / 注册 / 订阅 / onboarding 的转化漏斗诊断与实验设计 |
+| `landing-page-optimizer` | 营销落地页重构与新建，融合文案、CTA、视觉、CRO、SEO 与广告承接，可写盘 |
 
 ## 安装 / 卸载
 
