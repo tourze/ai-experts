@@ -1,6 +1,6 @@
 # ai-experts
 
-一个同时兼容 **Claude Code** 和 **OpenAI Codex CLI** 的本地插件仓库，按领域提供 `*-expert` 插件集合，包含 55 个领域专家插件，每个插件提供 skills、hooks 和/或 agents。安装脚本将 `plugins/<plugin>/skills/<skill>` 直接软链到 `~/.claude/skills/` 与 `~/.codex/skills/`，把 agents 链到 `~/.claude/agents/`，并把统一 hook dispatcher 注入两端的 settings/hooks 配置（不再依赖 marketplace plugin 安装）。每个插件包含自己的 README、skills 与最小回归测试，并可按需提供 `hooks/` 与 `agents/`。
+一个同时兼容 **Claude Code** 和 **OpenAI Codex CLI** 的本地插件仓库，按领域提供 `*-expert` 插件集合，包含 55 个领域专家插件，每个插件提供 skills、hooks、agents 和/或 MCP 声明。安装脚本将 `plugins/<plugin>/skills/<skill>` 直接软链到 `~/.claude/skills/` 与 `~/.codex/skills/`，把 agents 链到 `~/.claude/agents/`，把插件 MCP 同步到两端用户级配置，并把统一 hook dispatcher 注入两端的 settings/hooks 配置（不再依赖 marketplace plugin 安装）。每个插件包含自己的 README、skills 与最小回归测试，并可按需提供 `hooks/`、`agents/` 与 `.mcp.json`。
 
 当前规模：55 个插件、498 个 skill、76 个 agent、120 个 hook 模块。
 
@@ -15,7 +15,7 @@
 ## 核心架构约束
 
 - **插件源码不能跨插件 import**：每个插件仍以独立目录分发；通用守卫统一收敛在基座插件中，通过 README "已声明的插件依赖" 段落 + `tests/dependency-graph.test.mjs` 强校验复用关系（marketplace manifest 体系已废弃，dependency-graph 测试同时禁止已声明依赖 `coding-expert` 的插件复刻基座 guard，仅 `debug-statement-guard.mjs` 因语言特化版需求保留例外）。
-- 插件结构：`README.md` + `skills/`，并可按需提供 `hooks/` / `agents/` / `tests/`（marketplace 体系已废弃，不再使用 `.claude-plugin/`/`.codex-plugin/` manifest）。
+- 插件结构：`README.md` + `skills/`，并可按需提供 `hooks/` / `agents/` / `tests/` / `.mcp.json`（marketplace 体系已废弃，不再使用 `.claude-plugin/`/`.codex-plugin/` manifest）。
 - **不生成仓库级 `.codex/hooks.json`**：Codex CLI 的统一 hooks 由 `scripts/sync-hooks.mjs` 写入用户级 `${CODEX_HOME:-~/.codex}/hooks.json`，每条命令指向根级 `hooks/dispatch.mjs` 跨插件分发。
 
 ## 插件层次结构
@@ -131,6 +131,24 @@ node scripts/install.mjs
 - Claude Code: `~/.claude/CLAUDE.md`
 - Codex CLI: `~/.codex/AGENTS.md`
 
+### 插件 MCP 自动配置
+
+安装脚本会扫描各插件目录下的 `.mcp.json`，并把其中声明的 MCP 服务同步到 Claude Code 与 Codex CLI。当前 `data-ai-expert` 声明了智谱 Z.AI 的视觉、搜索、网页读取和开源仓库读取 MCP；如需启用，先复制模板并填入本地 key：
+
+```bash
+cp .env.example .env.local
+# 编辑 .env.local，填写 Z_AI_API_KEY
+node scripts/install.mjs
+```
+
+`install` / `reinstall` 会读取 `.env.local` 的 `Z_AI_API_KEY`。存在 key 时，会为 Claude Code 与 Codex CLI 同步以下托管 MCP 服务：
+- `zai-mcp-server`：视觉理解，本地 stdio server，使用 `npx -y @z_ai/mcp-server`
+- `web-search-prime`：联网搜索，远程 HTTP MCP
+- `web-reader`：网页读取，远程 HTTP MCP
+- `zread`：开源仓库读取，远程 HTTP MCP
+
+未配置 `Z_AI_API_KEY` 时，安装脚本会移除依赖该变量的托管 MCP 条目，并保留用户自己配置的其他 MCP 服务。真实 `.env.local` 已被 `.gitignore` 忽略，不应提交。
+
 ### 卸载 / 重装
 
 ```bash
@@ -143,12 +161,13 @@ node scripts/install.mjs --dry-run     # 仅打印计划动作，不改动磁盘
 
 - `README.md`：仓库入口与项目指令；仓库根 `CLAUDE.md` 与 `AGENTS.md` 均为指向本文件的 symlink，维护一份即可。
 - `MEMORY.md`：Claude Code + Codex 共享的全局记忆单一事实源（安装脚本会创建全局链接）。
+- `.env.example`：智谱 MCP 本地环境变量模板；复制为 `.env.local` 后填入 `Z_AI_API_KEY`。
 - `hooks/dispatch.mjs`：根级统一 hook dispatcher，跨所有 plugin 聚合执行；由安装脚本注入到 `~/.claude/settings.json` 与 `~/.codex/hooks.json`。
-- `plugins/<plugin-name>/`：单个插件目录。安装走「逐 skill / 逐 agent symlink + 统一 hook dispatcher」，不依赖 marketplace manifest（`.codex-plugin/` 与 `.claude-plugin/` 均已移除，避免 codex 沿 symlink 真实路径推断 plugin namespace）。
+- `plugins/<plugin-name>/`：单个插件目录。安装走「逐 skill / 逐 agent symlink + 插件 MCP 同步 + 统一 hook dispatcher」，不依赖 marketplace manifest（`.codex-plugin/` 与 `.claude-plugin/` 均已移除，避免 codex 沿 symlink 真实路径推断 plugin namespace）。
 - `plugins/<plugin-name>/README.md`：插件用途、skills、验证命令。
 - `plugins/<plugin-name>/hooks/`：可选；插件内 hook 模块。统一 dispatcher 在每个事件下扫描所有 plugin 的 `hooks/<event>/*.mjs` 并依次执行。
 - `plugins/<plugin-name>/agents/`：可选；只读分析或专用执行 agent（仅 Claude Code）。
-- `scripts/`：安装脚本与质量审计脚本（sync-skills、sync-hooks、sync-agents、skill-quality-report、trigger-audit-report、audit-skill-evals 等）。
+- `scripts/`：安装脚本与质量审计脚本（sync-skills、sync-hooks、sync-agents、sync-mcp、skill-quality-report、trigger-audit-report、audit-skill-evals 等）。
 - `tests/`：仓库级回归测试（install.mjs、生成器、报告器、跨插件一致性）。
 
 ## 插件总览

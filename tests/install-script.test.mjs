@@ -7,10 +7,22 @@ import test from "node:test";
 
 const repoRoot = resolve(".");
 const installScript = join(repoRoot, "scripts/install.mjs");
+const syncMcpScript = join(repoRoot, "scripts/sync-mcp.mjs");
 
 function writeExecutable(path, content) {
   writeFileSync(path, content, "utf-8");
   chmodSync(path, 0o755);
+}
+
+function isolatedEnv(overrides = {}) {
+  const env = { ...process.env };
+  delete env.Z_AI_API_KEY;
+  delete env.Z_AI_MODE;
+  return {
+    ...env,
+    AI_EXPERTS_ENV_FILE: join(tmpdir(), "ai-experts-test-missing.env"),
+    ...overrides,
+  };
 }
 
 test("install.mjs enables Codex plugins without jq", () => {
@@ -29,11 +41,10 @@ test("install.mjs enables Codex plugins without jq", () => {
 
     const output = execFileSync(process.execPath, [installScript, "--install"], {
       cwd: repoRoot,
-      env: {
-        ...process.env,
+      env: isolatedEnv({
         CODEX_HOME: codexHome,
         PATH: `${binDir}:/usr/bin:/bin`,
-      },
+      }),
       encoding: "utf-8",
       stdio: "pipe",
     });
@@ -70,11 +81,10 @@ test("install.mjs works when called outside the repository root", () => {
 
     const output = execFileSync(process.execPath, [installScript, "--install"], {
       cwd: outsideCwd,
-      env: {
-        ...process.env,
+      env: isolatedEnv({
         CODEX_HOME: codexHome,
         PATH: `${binDir}:/usr/bin:/bin`,
-      },
+      }),
       encoding: "utf-8",
       stdio: "pipe",
     });
@@ -116,11 +126,10 @@ test("install.mjs preserves unmanaged Codex hooks during install and uninstall",
 
     execFileSync(process.execPath, [installScript, "--install"], {
       cwd: repoRoot,
-      env: {
-        ...process.env,
+      env: isolatedEnv({
         CODEX_HOME: codexHome,
         PATH: `${binDir}:/usr/bin:/bin`,
-      },
+      }),
       encoding: "utf-8",
       stdio: "pipe",
     });
@@ -131,11 +140,10 @@ test("install.mjs preserves unmanaged Codex hooks during install and uninstall",
 
     execFileSync(process.execPath, [installScript, "--uninstall"], {
       cwd: repoRoot,
-      env: {
-        ...process.env,
+      env: isolatedEnv({
         CODEX_HOME: codexHome,
         PATH: `${binDir}:/usr/bin:/bin`,
-      },
+      }),
       encoding: "utf-8",
       stdio: "pipe",
     });
@@ -165,11 +173,10 @@ test("install.mjs --uninstall removes managed Codex memory link", () => {
 
     execFileSync(process.execPath, [installScript, "--uninstall"], {
       cwd: repoRoot,
-      env: {
-        ...process.env,
+      env: isolatedEnv({
         CODEX_HOME: codexHome,
         PATH: `${binDir}:/usr/bin:/bin`,
-      },
+      }),
       encoding: "utf-8",
       stdio: "pipe",
     });
@@ -210,17 +217,17 @@ test("install.mjs --dry-run 不创建任何用户级产物", () => {
 
     execFileSync(process.execPath, [installScript, "--install", "--dry-run"], {
       cwd: repoRoot,
-      env: {
-        ...process.env,
+      env: isolatedEnv({
         CODEX_HOME: codexHome,
         CODEX_TARGET: join(codexHome, "skills"),
         CLAUDE_SETTINGS_PATH: join(claudeHome, "settings.json"),
+        CLAUDE_MCP_CONFIG_PATH: join(claudeHome, ".claude.json"),
         CC_TARGET: join(claudeHome, "skills"),
         CC_AGENTS_TARGET: join(claudeHome, "agents"),
         CLAUDE_MEMORY_TARGET: join(claudeHome, "CLAUDE.md"),
         CODEX_MEMORY_TARGET: join(codexHome, "AGENTS.md"),
         PATH: `${binDir}:/usr/bin:/bin`,
-      },
+      }),
       encoding: "utf-8",
       stdio: "pipe",
     });
@@ -228,6 +235,7 @@ test("install.mjs --dry-run 不创建任何用户级产物", () => {
     // dry-run 必须 NOT 创建：settings.json / hooks.json / config.toml /
     // skills 目录条目 / memory symlink。
     assert.equal(existsSync(join(claudeHome, "settings.json")), false, "dry-run 不应创建 settings.json");
+    assert.equal(existsSync(join(claudeHome, ".claude.json")), false, "dry-run 不应创建 .claude.json MCP 配置");
     assert.equal(existsSync(join(claudeHome, "CLAUDE.md")), false, "dry-run 不应创建 CLAUDE.md memory link");
     assert.equal(existsSync(join(codexHome, "AGENTS.md")), false, "dry-run 不应创建 AGENTS.md memory link");
     assert.equal(existsSync(join(codexHome, "hooks.json")), false, "dry-run 不应创建 hooks.json");
@@ -263,19 +271,20 @@ test("install.mjs cc 端 install 走完整 sandbox（settings.json / agents / me
     );
 
     const settingsPath = join(claudeHome, "settings.json");
+    const claudeMcpConfigPath = join(claudeHome, ".claude.json");
     const memoryPath = join(claudeHome, "CLAUDE.md");
 
     const output = execFileSync(process.execPath, [installScript, "--install"], {
       cwd: repoRoot,
-      env: {
-        ...process.env,
+      env: isolatedEnv({
         CLAUDE_SETTINGS_PATH: settingsPath,
+        CLAUDE_MCP_CONFIG_PATH: claudeMcpConfigPath,
         CC_TARGET: join(claudeHome, "skills"),
         CC_AGENTS_TARGET: join(claudeHome, "agents"),
         CLAUDE_MEMORY_TARGET: memoryPath,
         // 故意不设 CODEX_*，让 codex 端走 hasCmd 跳过路径
         PATH: `${binDir}:/usr/bin:/bin`,
-      },
+      }),
       encoding: "utf-8",
       stdio: "pipe",
     });
@@ -321,6 +330,7 @@ test("install.mjs cc 端 install 保留 settings.json 的非托管字段与第�
     );
 
     const settingsPath = join(claudeHome, "settings.json");
+    const claudeMcpConfigPath = join(claudeHome, ".claude.json");
     writeFileSync(
       settingsPath,
       JSON.stringify({
@@ -336,14 +346,14 @@ test("install.mjs cc 端 install 保留 settings.json 的非托管字段与第�
 
     execFileSync(process.execPath, [installScript, "--install"], {
       cwd: repoRoot,
-      env: {
-        ...process.env,
+      env: isolatedEnv({
         CLAUDE_SETTINGS_PATH: settingsPath,
+        CLAUDE_MCP_CONFIG_PATH: claudeMcpConfigPath,
         CC_TARGET: join(claudeHome, "skills"),
         CC_AGENTS_TARGET: join(claudeHome, "agents"),
         CLAUDE_MEMORY_TARGET: join(claudeHome, "CLAUDE.md"),
         PATH: `${binDir}:/usr/bin:/bin`,
-      },
+      }),
       encoding: "utf-8",
       stdio: "pipe",
     });
@@ -392,18 +402,18 @@ test("install.mjs safeStep：单端失败不阻塞另一端，进程以 exitCode
 
     const r = spawnSync(process.execPath, [installScript, "--install"], {
       cwd: repoRoot,
-      env: {
-        ...process.env,
+      env: isolatedEnv({
         CODEX_HOME: codexHome,
         CODEX_TARGET: join(codexHome, "skills"),
         CLAUDE_SETTINGS_PATH: blockingDir, // 把 cc settings 路径占用为目录，
                                             // 触发 sync-hooks 在 atomicWriteFile rename 时
                                             // EISDIR 失败，从而验证 safeStep 错误隔离。
+        CLAUDE_MCP_CONFIG_PATH: join(claudeHome, ".claude.json"),
         CC_TARGET: join(claudeHome, "skills"),
         CC_AGENTS_TARGET: join(claudeHome, "agents"),
         CLAUDE_MEMORY_TARGET: join(claudeHome, "CLAUDE.md"),
         PATH: `${binDir}:/usr/bin:/bin`,
-      },
+      }),
       encoding: "utf-8",
     });
 
@@ -437,11 +447,10 @@ test("install.mjs --reinstall completes even if codex marketplace add fails", ()
 
     const output = execFileSync(process.execPath, [installScript, "--reinstall"], {
       cwd: repoRoot,
-      env: {
-        ...process.env,
+      env: isolatedEnv({
         CODEX_HOME: codexHome,
         PATH: `${binDir}:/usr/bin:/bin`,
-      },
+      }),
       encoding: "utf-8",
       stdio: "pipe",
     });
@@ -452,6 +461,233 @@ test("install.mjs --reinstall completes even if codex marketplace add fails", ()
     assert.match(output, /Codex CLI: done/);
     assert.equal(lstatSync(codexMemoryTarget).isSymbolicLink(), true);
     assert.equal(readlinkSync(codexMemoryTarget), join(repoRoot, "MEMORY.md"));
+  } finally {
+    rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test("install.mjs 从 .env.local 自动配置 Z.AI MCP", () => {
+  const tmp = mkdtempSync(join(tmpdir(), "ai-experts-zai-mcp-"));
+  const binDir = join(tmp, "bin");
+  const codexHome = join(tmp, "codex-home");
+  const claudeHome = join(tmp, "claude-home");
+  const envFile = join(tmp, ".env.local");
+
+  try {
+    mkdirSync(binDir);
+    mkdirSync(codexHome);
+    mkdirSync(claudeHome);
+    writeFileSync(join(codexHome, "config.toml"), "", "utf-8");
+    writeFileSync(envFile, "Z_AI_API_KEY=test-key\nZ_AI_MODE=ZHIPU\n", "utf-8");
+
+    symlinkSync(process.execPath, join(binDir, "node"));
+    writeExecutable(join(binDir, "codex"), "#!/usr/bin/env bash\nexit 0\n");
+    writeExecutable(
+      join(binDir, "claude"),
+      "#!/usr/bin/env bash\nif [ \"$1\" = \"plugin\" ] && [ \"$2\" = \"list\" ]; then echo '[]'; fi\nexit 0\n",
+    );
+
+    const claudeMcpConfigPath = join(claudeHome, ".claude.json");
+    const output = execFileSync(process.execPath, [installScript, "--install"], {
+      cwd: repoRoot,
+      env: isolatedEnv({
+        AI_EXPERTS_ENV_FILE: envFile,
+        CODEX_HOME: codexHome,
+        CODEX_TARGET: join(codexHome, "skills"),
+        CLAUDE_SETTINGS_PATH: join(claudeHome, "settings.json"),
+        CLAUDE_MCP_CONFIG_PATH: claudeMcpConfigPath,
+        CC_TARGET: join(claudeHome, "skills"),
+        CC_AGENTS_TARGET: join(claudeHome, "agents"),
+        CLAUDE_MEMORY_TARGET: join(claudeHome, "CLAUDE.md"),
+        CODEX_MEMORY_TARGET: join(codexHome, "AGENTS.md"),
+        PATH: `${binDir}:/usr/bin:/bin`,
+      }),
+      encoding: "utf-8",
+      stdio: "pipe",
+    });
+
+    assert.match(output, /同步插件 MCP/);
+
+    const claudeConfig = JSON.parse(readFileSync(claudeMcpConfigPath, "utf-8"));
+    assert.deepEqual(Object.keys(claudeConfig.mcpServers).sort(), [
+      "web-reader",
+      "web-search-prime",
+      "zai-mcp-server",
+      "zread",
+    ]);
+    assert.equal(claudeConfig.mcpServers["zai-mcp-server"].env.Z_AI_API_KEY, "test-key");
+    assert.equal(claudeConfig.mcpServers["zai-mcp-server"].env.Z_AI_MODE, "ZHIPU");
+    assert.equal(claudeConfig.mcpServers["web-search-prime"].headers.Authorization, "Bearer test-key");
+
+    const codexConfig = readFileSync(join(codexHome, "config.toml"), "utf-8");
+    assert.match(codexConfig, /\[mcp_servers\.zai-mcp-server\]/);
+    assert.match(codexConfig, /Z_AI_API_KEY = "test-key"/);
+    assert.match(codexConfig, /\[mcp_servers\.web-search-prime\]/);
+    assert.match(codexConfig, /http_headers = \{ Authorization = "Bearer test-key" \}/);
+    assert.match(codexConfig, /\[mcp_servers\.web-reader\]/);
+    assert.match(codexConfig, /\[mcp_servers\.zread\]/);
+  } finally {
+    rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test("install.mjs 未配置 Z_AI_API_KEY 时移除托管 Z.AI MCP 且保留用户 MCP", () => {
+  const tmp = mkdtempSync(join(tmpdir(), "ai-experts-zai-mcp-remove-"));
+  const binDir = join(tmp, "bin");
+  const codexHome = join(tmp, "codex-home");
+  const claudeHome = join(tmp, "claude-home");
+
+  try {
+    mkdirSync(binDir);
+    mkdirSync(codexHome);
+    mkdirSync(claudeHome);
+    writeFileSync(
+      join(codexHome, "config.toml"),
+      `model = "gpt-5.4"
+
+[mcp_servers.custom]
+url = "https://example.com/mcp"
+
+[mcp_servers.web-reader]
+url = "https://old.example/mcp"
+http_headers = { Authorization = "Bearer old" }
+`,
+      "utf-8",
+    );
+    const claudeMcpConfigPath = join(claudeHome, ".claude.json");
+    writeFileSync(
+      claudeMcpConfigPath,
+      JSON.stringify({
+        mcpServers: {
+          custom: { type: "http", url: "https://example.com/mcp" },
+          "web-reader": { type: "http", url: "https://old.example/mcp" },
+        },
+      }, null, 2) + "\n",
+      "utf-8",
+    );
+
+    symlinkSync(process.execPath, join(binDir, "node"));
+    writeExecutable(join(binDir, "codex"), "#!/usr/bin/env bash\nexit 0\n");
+    writeExecutable(
+      join(binDir, "claude"),
+      "#!/usr/bin/env bash\nif [ \"$1\" = \"plugin\" ] && [ \"$2\" = \"list\" ]; then echo '[]'; fi\nexit 0\n",
+    );
+
+    execFileSync(process.execPath, [installScript, "--install"], {
+      cwd: repoRoot,
+      env: isolatedEnv({
+        CODEX_HOME: codexHome,
+        CODEX_TARGET: join(codexHome, "skills"),
+        CLAUDE_SETTINGS_PATH: join(claudeHome, "settings.json"),
+        CLAUDE_MCP_CONFIG_PATH: claudeMcpConfigPath,
+        CC_TARGET: join(claudeHome, "skills"),
+        CC_AGENTS_TARGET: join(claudeHome, "agents"),
+        CLAUDE_MEMORY_TARGET: join(claudeHome, "CLAUDE.md"),
+        CODEX_MEMORY_TARGET: join(codexHome, "AGENTS.md"),
+        PATH: `${binDir}:/usr/bin:/bin`,
+      }),
+      encoding: "utf-8",
+      stdio: "pipe",
+    });
+
+    const claudeConfig = JSON.parse(readFileSync(claudeMcpConfigPath, "utf-8"));
+    assert.deepEqual(claudeConfig.mcpServers, {
+      custom: { type: "http", url: "https://example.com/mcp" },
+    });
+
+    const codexConfig = readFileSync(join(codexHome, "config.toml"), "utf-8");
+    assert.match(codexConfig, /\[mcp_servers\.custom\]/);
+    assert.doesNotMatch(codexConfig, /\[mcp_servers\.web-reader\]/);
+    assert.doesNotMatch(codexConfig, /old\.example/);
+  } finally {
+    rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test("sync-mcp 缺少环境变量时按 server 跳过，不阻断其他 MCP", () => {
+  const tmp = mkdtempSync(join(tmpdir(), "ai-experts-sync-mcp-skip-"));
+  const pluginsRoot = join(tmp, "plugins");
+  const pluginRoot = join(pluginsRoot, "demo-expert");
+  const codexHome = join(tmp, "codex-home");
+  const claudeMcpConfigPath = join(tmp, ".claude.json");
+
+  try {
+    mkdirSync(pluginRoot, { recursive: true });
+    mkdirSync(codexHome);
+    writeFileSync(
+      join(pluginRoot, ".mcp.json"),
+      JSON.stringify({
+        mcpServers: {
+          "configured-mcp": {
+            type: "http",
+            url: "https://example.com/${MCP_PATH:-mcp}",
+            headers: {
+              Authorization: "Bearer ${PRESENT_KEY}",
+            },
+          },
+          "missing-mcp": {
+            type: "http",
+            url: "https://missing.example/mcp",
+            headers: {
+              Authorization: "Bearer ${MISSING_KEY}",
+            },
+          },
+        },
+      }, null, 2) + "\n",
+      "utf-8",
+    );
+    writeFileSync(
+      claudeMcpConfigPath,
+      JSON.stringify({
+        mcpServers: {
+          custom: { type: "http", url: "https://custom.example/mcp" },
+          "missing-mcp": { type: "http", url: "https://old.example/mcp" },
+        },
+      }, null, 2) + "\n",
+      "utf-8",
+    );
+    writeFileSync(
+      join(codexHome, "config.toml"),
+      `model = "gpt-5.4"
+
+[mcp_servers.custom]
+url = "https://custom.example/mcp"
+
+[mcp_servers.missing-mcp]
+url = "https://old.example/mcp"
+`,
+      "utf-8",
+    );
+
+    const output = execFileSync(process.execPath, [syncMcpScript, "--target=all"], {
+      cwd: repoRoot,
+      env: isolatedEnv({
+        AI_EXPERTS_PLUGINS_DIR: pluginsRoot,
+        CLAUDE_MCP_CONFIG_PATH: claudeMcpConfigPath,
+        CODEX_HOME: codexHome,
+        PRESENT_KEY: "present-key",
+        MISSING_KEY: "",
+      }),
+      encoding: "utf-8",
+      stdio: "pipe",
+    });
+
+    assert.match(output, /synced 1\/2 plugin MCP servers/);
+    assert.match(output, /skipped 1: missing-mcp\(MISSING_KEY\)/);
+
+    const claudeConfig = JSON.parse(readFileSync(claudeMcpConfigPath, "utf-8"));
+    assert.ok(claudeConfig.mcpServers["configured-mcp"], "可配置 MCP 应写入 Claude 配置");
+    assert.equal(claudeConfig.mcpServers["configured-mcp"].headers.Authorization, "Bearer present-key");
+    assert.equal(claudeConfig.mcpServers["configured-mcp"].url, "https://example.com/mcp");
+    assert.ok(claudeConfig.mcpServers.custom, "用户 MCP 应保留");
+    assert.equal(claudeConfig.mcpServers["missing-mcp"], undefined, "缺少 env 的托管 MCP 应被跳过/移除");
+
+    const codexConfig = readFileSync(join(codexHome, "config.toml"), "utf-8");
+    assert.match(codexConfig, /\[mcp_servers\.configured-mcp\]/);
+    assert.match(codexConfig, /Authorization = "Bearer present-key"/);
+    assert.match(codexConfig, /\[mcp_servers\.custom\]/);
+    assert.doesNotMatch(codexConfig, /\[mcp_servers\.missing-mcp\]/);
+    assert.doesNotMatch(codexConfig, /old\.example/);
   } finally {
     rmSync(tmp, { recursive: true, force: true });
   }

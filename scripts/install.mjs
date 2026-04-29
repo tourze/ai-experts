@@ -10,6 +10,7 @@
  *   - 把统一 dispatcher 写进 ~/.claude/settings.json 与 ~/.codex/hooks.json
  *   - 在 ~/.codex/config.toml 启用 [features] codex_hooks = true
  *   - 把仓库 MEMORY.md 软链到各 CLI 的全局记忆文件
+ *   - 同步插件目录下 .mcp.json 声明的 MCP；缺少必需 env 时移除对应托管条目
  *
  * 用法：
  *   node scripts/install.mjs              # 全部安装
@@ -178,6 +179,9 @@ function claudeInstall() {
   info("Claude Code: 注册统一 hooks...");
   runNode("sync-hooks.mjs", ["--target=cc"]);
 
+  info("Claude Code: 同步插件 MCP...");
+  runNode("sync-mcp.mjs", ["--target=cc"]);
+
   info("Claude Code: 链接共享记忆...");
   linkMemoryFile("Claude Code", CLAUDE_MEMORY_TARGET);
 
@@ -193,6 +197,9 @@ function claudeUninstall() {
 
   info("Claude Code: 移除统一 hooks 条目...");
   runNode("sync-hooks.mjs", ["--target=cc", "--uninstall"]);
+
+  info("Claude Code: 移除插件 MCP...");
+  runNode("sync-mcp.mjs", ["--target=cc", "--uninstall"]);
 
   info("Claude Code: 移除共享记忆链接...");
   unlinkMemoryFile("Claude Code", CLAUDE_MEMORY_TARGET);
@@ -223,6 +230,9 @@ function codexInstall() {
   info("Codex CLI: 注册统一 hooks...");
   runNode("sync-hooks.mjs", ["--target=codex"]);
 
+  info("Codex CLI: 同步插件 MCP...");
+  runNode("sync-mcp.mjs", ["--target=codex"]);
+
   info("Codex CLI: 链接共享记忆...");
   linkMemoryFile("Codex CLI", CODEX_MEMORY_TARGET);
 
@@ -235,6 +245,9 @@ function codexUninstall() {
 
   info("Codex CLI: 移除统一 hooks 条目...");
   runNode("sync-hooks.mjs", ["--target=codex", "--uninstall"]);
+
+  info("Codex CLI: 移除插件 MCP...");
+  runNode("sync-mcp.mjs", ["--target=codex", "--uninstall"]);
 
   info("Codex CLI: 移除共享记忆链接...");
   unlinkMemoryFile("Codex CLI", CODEX_MEMORY_TARGET);

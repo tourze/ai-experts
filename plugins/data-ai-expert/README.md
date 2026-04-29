@@ -6,6 +6,7 @@
 
 - `skills/`：14 个领域技能及其脚本、参考资料、评测样例
 - `tests/`：README/skill 结构一致性检查
+- `.mcp.json`：智谱 Z.AI MCP 声明，由仓库根安装脚本统一同步
 
 ## Skills
 
@@ -35,6 +36,8 @@
 ## 安装 / 卸载
 
 由仓库根目录的 `node scripts/install.mjs` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
+
+安装脚本会读取仓库根 `.env.local`。配置 `Z_AI_API_KEY` 后，会同步本插件 `.mcp.json` 中声明的 `zai-mcp-server`、`web-search-prime`、`web-reader` 与 `zread`；未配置时会移除这些托管 MCP 条目并保留用户自定义 MCP。
 
 ## 校验
 
