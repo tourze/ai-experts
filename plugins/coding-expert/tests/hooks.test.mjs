@@ -784,6 +784,26 @@ test("edit-loop-detector 会在达到警告阈值后报告", async () => {
   });
 });
 
+test("edit-loop-detector 会在达到阻断阈值后给出具体审计和 skill 指导", async () => {
+  await withTempDir(async (dir) => {
+    const filePath = join(dir, `blocked-loop-${Date.now()}.js`);
+    writeFileSync(filePath, "const x = 1;\n", "utf8");
+
+    let result = null;
+    for (let i = 0; i < 10; i++) {
+      result = await runEditLoopDetector(payload(filePath));
+    }
+
+    assert.equal(result?.decision, "block");
+    assert.match(result?.reason ?? "", /至少 10 分钟/);
+    assert.match(result?.reason ?? "", /审计\/思考\/反思/);
+    assert.match(result?.reason ?? "", /debug-methodology/);
+    assert.match(result?.reason ?? "", /feature-dev/);
+    assert.match(result?.reason ?? "", /test-driven-development/);
+    assert.match(result?.reason ?? "", /session-reflection/);
+  });
+});
+
 test("edit-loop-detector TN: 首次编辑不应触发", async () => {
   await withTempDir(async (dir) => {
     const filePath = join(dir, `first-edit-${Date.now()}.ts`);
