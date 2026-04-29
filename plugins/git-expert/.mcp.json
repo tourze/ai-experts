@@ -2,7 +2,18 @@
   "mcpServers": {
     "github": {
       "type": "http",
-      "url": "https://api.githubcopilot.com/mcp/"
+      "url": "https://api.githubcopilot.com/mcp/",
+      "requiredEnv": [
+        "CODEX_GITHUB_PERSONAL_ACCESS_TOKEN"
+      ],
+      "claude": {
+        "headers": {
+          "Authorization": "Bearer ${CODEX_GITHUB_PERSONAL_ACCESS_TOKEN}"
+        }
+      },
+      "codex": {
+        "bearer_token_env_var": "CODEX_GITHUB_PERSONAL_ACCESS_TOKEN"
+      }
     }
   }
 }

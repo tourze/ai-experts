@@ -15,6 +15,9 @@
     "web-search-prime": {
       "type": "http",
       "url": "https://open.bigmodel.cn/api/mcp/web_search_prime/mcp",
+      "targets": [
+        "cc"
+      ],
       "headers": {
         "Authorization": "Bearer ${Z_AI_API_KEY}"
       }
@@ -22,6 +25,9 @@
     "web-reader": {
       "type": "http",
       "url": "https://open.bigmodel.cn/api/mcp/web_reader/mcp",
+      "targets": [
+        "cc"
+      ],
       "headers": {
         "Authorization": "Bearer ${Z_AI_API_KEY}"
       }
@@ -29,6 +35,9 @@
     "zread": {
       "type": "http",
       "url": "https://open.bigmodel.cn/api/mcp/zread/mcp",
+      "targets": [
+        "cc"
+      ],
       "headers": {
         "Authorization": "Bearer ${Z_AI_API_KEY}"
       }

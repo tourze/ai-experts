@@ -20,6 +20,9 @@ const PLUGINS_DIR = process.env.AI_EXPERTS_PLUGINS_DIR || join(REPO_ROOT, "plugi
 const CLAUDE_MCP_CONFIG_PATH = process.env.CLAUDE_MCP_CONFIG_PATH || join(homedir(), ".claude.json");
 const CODEX_HOME = process.env.CODEX_HOME || join(homedir(), ".codex");
 const CODEX_CONFIG_TOML = process.env.CODEX_CONFIG_TOML_PATH || join(CODEX_HOME, "config.toml");
+const MANIFEST_META_KEYS = new Set(["targets", "requiredEnv", "claude", "codex"]);
+// 已发布过的托管 MCP 即使移出插件 manifest，也要继续识别一段时间，确保 install 能清理旧配置。
+const RETIRED_MANAGED_MCP_IDS = new Set(["markitdown"]);
 
 function atomicWriteFile(target, content) {
   const tmp = `${target}.tmp.${process.pid}.${Date.now()}`;
@@ -181,11 +184,65 @@ function expandValue(value, env, missing) {
   return value;
 }
 
-function renderDeclarations(declarations, env) {
+function normalizeManifestTarget(target) {
+  if (target === "cc" || target === "claude") return "cc";
+  if (target === "codex") return "codex";
+  throw new Error(`未知 MCP target：${target}`);
+}
+
+function manifestTargets(server) {
+  if (server.targets === undefined) return new Set(["cc", "codex"]);
+  if (!Array.isArray(server.targets) || server.targets.length === 0) {
+    throw new Error("MCP server.targets 必须是非空数组");
+  }
+  return new Set(server.targets.map((target) => normalizeManifestTarget(target)));
+}
+
+function manifestRequiredEnv(server) {
+  if (server.requiredEnv === undefined) return [];
+  if (!Array.isArray(server.requiredEnv)) {
+    throw new Error("MCP server.requiredEnv 必须是字符串数组");
+  }
+  return server.requiredEnv.map((name) => {
+    if (typeof name !== "string" || !name.trim()) {
+      throw new Error("MCP server.requiredEnv 必须是非空字符串数组");
+    }
+    return name;
+  });
+}
+
+function serverWithoutManifestMeta(server) {
+  return Object.fromEntries(Object.entries(server).filter(([key]) => !MANIFEST_META_KEYS.has(key)));
+}
+
+function targetOverride(server, target) {
+  const key = target === "cc" ? "claude" : "codex";
+  const override = server[key];
+  if (override === undefined) return {};
+  if (!override || typeof override !== "object" || Array.isArray(override)) {
+    throw new Error(`MCP server.${key} 必须是对象`);
+  }
+  return override;
+}
+
+function isMissingEnv(env, name) {
+  return env[name] === undefined || String(env[name]).trim() === "";
+}
+
+function renderDeclarations(declarations, env, target) {
   return declarations.map(({ id, source, server }) => {
+    if (!manifestTargets(server).has(target)) {
+      return { id, source, server: null, configured: false, missing: [], skippedByTarget: true };
+    }
+
     const missing = new Set();
-    const rendered = expandValue(server, env, missing);
-    return { id, source, server: rendered, configured: missing.size === 0, missing: [...missing].sort() };
+    for (const name of manifestRequiredEnv(server)) {
+      if (isMissingEnv(env, name)) missing.add(name);
+    }
+
+    const rawServer = { ...serverWithoutManifestMeta(server), ...targetOverride(server, target) };
+    const rendered = expandValue(rawServer, env, missing);
+    return { id, source, server: rendered, configured: missing.size === 0, missing: [...missing].sort(), skippedByTarget: false };
   });
 }
 
@@ -211,8 +268,9 @@ function readJsonConfig(path) {
 
 function syncClaude({ rendered, uninstall, dryRun }) {
   const { raw, data } = readJsonConfig(CLAUDE_MCP_CONFIG_PATH);
-  const managedIds = new Set(rendered.map(({ id }) => id));
-  const configuredServers = rendered.filter((entry) => entry.configured && !uninstall);
+  const managedIds = new Set([...rendered.map(({ id }) => id), ...RETIRED_MANAGED_MCP_IDS]);
+  const targetRendered = rendered.filter((entry) => !entry.skippedByTarget);
+  const configuredServers = targetRendered.filter((entry) => entry.configured && !uninstall);
   const existingServers = data.mcpServers && typeof data.mcpServers === "object" && !Array.isArray(data.mcpServers)
     ? data.mcpServers
     : {};
@@ -245,13 +303,13 @@ function syncClaude({ rendered, uninstall, dryRun }) {
     return;
   }
   if (dryRun) {
-    console.log(`sync-mcp claude: would sync ${configuredServers.length}/${rendered.length} plugin MCP servers in ${CLAUDE_MCP_CONFIG_PATH}${skippedSummary(rendered, uninstall)}`);
+    console.log(`sync-mcp claude: would sync ${configuredServers.length}/${targetRendered.length} plugin MCP servers in ${CLAUDE_MCP_CONFIG_PATH}${skippedSummary(targetRendered, uninstall)}`);
     return;
   }
 
   mkdirSync(dirname(CLAUDE_MCP_CONFIG_PATH), { recursive: true });
   atomicWriteFile(CLAUDE_MCP_CONFIG_PATH, target);
-  console.log(`sync-mcp claude: synced ${configuredServers.length}/${rendered.length} plugin MCP servers (${CLAUDE_MCP_CONFIG_PATH})${skippedSummary(rendered, uninstall)}`);
+  console.log(`sync-mcp claude: synced ${configuredServers.length}/${targetRendered.length} plugin MCP servers (${CLAUDE_MCP_CONFIG_PATH})${skippedSummary(targetRendered, uninstall)}`);
 }
 
 function tomlString(value) {
@@ -340,6 +398,7 @@ function codexServerToToml(id, server) {
   if (server.url) lines.push(`url = ${tomlString(server.url)}`);
   if (server.headers) lines.push(`http_headers = ${tomlValue(server.headers)}`);
   if (server.bearer_token_env_var) lines.push(`bearer_token_env_var = ${tomlString(server.bearer_token_env_var)}`);
+  if (server.startup_timeout_sec !== undefined) lines.push(`startup_timeout_sec = ${tomlValue(server.startup_timeout_sec)}`);
   if (server.enabled !== undefined) lines.push(`enabled = ${tomlValue(server.enabled)}`);
 
   const blocks = [lines.join("\n")];
@@ -358,8 +417,9 @@ function buildCodexMcpToml(entries) {
 
 function syncCodex({ rendered, uninstall, dryRun }) {
   const raw = existsSync(CODEX_CONFIG_TOML) ? readFileSync(CODEX_CONFIG_TOML, "utf-8") : "";
-  const managedIds = new Set(rendered.map(({ id }) => id));
-  const configuredServers = rendered.filter((entry) => entry.configured && !uninstall);
+  const managedIds = new Set([...rendered.map(({ id }) => id), ...RETIRED_MANAGED_MCP_IDS]);
+  const targetRendered = rendered.filter((entry) => !entry.skippedByTarget);
+  const configuredServers = targetRendered.filter((entry) => entry.configured && !uninstall);
   const hasManaged = hasManagedCodexServers(raw, managedIds);
 
   if (configuredServers.length === 0 && !raw) {
@@ -380,13 +440,13 @@ function syncCodex({ rendered, uninstall, dryRun }) {
     return;
   }
   if (dryRun) {
-    console.log(`sync-mcp codex: would sync ${configuredServers.length}/${rendered.length} plugin MCP servers in ${CODEX_CONFIG_TOML}${skippedSummary(rendered, uninstall)}`);
+    console.log(`sync-mcp codex: would sync ${configuredServers.length}/${targetRendered.length} plugin MCP servers in ${CODEX_CONFIG_TOML}${skippedSummary(targetRendered, uninstall)}`);
     return;
   }
 
   mkdirSync(dirname(CODEX_CONFIG_TOML), { recursive: true });
   atomicWriteFile(CODEX_CONFIG_TOML, target);
-  console.log(`sync-mcp codex: synced ${configuredServers.length}/${rendered.length} plugin MCP servers (${CODEX_CONFIG_TOML})${skippedSummary(rendered, uninstall)}`);
+  console.log(`sync-mcp codex: synced ${configuredServers.length}/${targetRendered.length} plugin MCP servers (${CODEX_CONFIG_TOML})${skippedSummary(targetRendered, uninstall)}`);
 }
 
 function main() {
@@ -404,8 +464,9 @@ function main() {
   }
 
   const declarations = parseMcpManifests();
-  const rendered = renderDeclarations(declarations, loadEnv());
+  const env = loadEnv();
   for (const target of args.targets) {
+    const rendered = renderDeclarations(declarations, env, target);
     if (target === "cc") syncClaude({ rendered, uninstall: args.uninstall, dryRun: args.dryRun });
     else if (target === "codex") syncCodex({ rendered, uninstall: args.uninstall, dryRun: args.dryRun });
   }

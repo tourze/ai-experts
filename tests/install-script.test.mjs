@@ -511,8 +511,6 @@ test("install.mjs 从 .env.local 自动配置 Z.AI MCP", () => {
     const claudeConfig = JSON.parse(readFileSync(claudeMcpConfigPath, "utf-8"));
     assert.deepEqual(Object.keys(claudeConfig.mcpServers).sort(), [
       "chrome-devtools",
-      "github",
-      "markitdown",
       "playwright",
       "sequential-thinking",
       "web-reader",
@@ -523,30 +521,25 @@ test("install.mjs 从 .env.local 自动配置 Z.AI MCP", () => {
     assert.equal(claudeConfig.mcpServers["zai-mcp-server"].env.Z_AI_API_KEY, "test-key");
     assert.equal(claudeConfig.mcpServers["zai-mcp-server"].env.Z_AI_MODE, "ZHIPU");
     assert.equal(claudeConfig.mcpServers["web-search-prime"].headers.Authorization, "Bearer test-key");
-    assert.equal(claudeConfig.mcpServers.github.url, "https://api.githubcopilot.com/mcp/");
-    assert.deepEqual(claudeConfig.mcpServers.markitdown.args, ["markitdown-mcp"]);
-    assert.deepEqual(claudeConfig.mcpServers.playwright.args, ["@playwright/mcp@latest"]);
+    assert.deepEqual(claudeConfig.mcpServers.playwright.args, ["-y", "@playwright/mcp@latest"]);
     assert.deepEqual(claudeConfig.mcpServers["chrome-devtools"].args, ["-y", "chrome-devtools-mcp@latest"]);
     assert.deepEqual(claudeConfig.mcpServers["sequential-thinking"].args, ["-y", "@modelcontextprotocol/server-sequential-thinking"]);
 
     const codexConfig = readFileSync(join(codexHome, "config.toml"), "utf-8");
     assert.match(codexConfig, /\[mcp_servers\.zai-mcp-server\]/);
     assert.match(codexConfig, /Z_AI_API_KEY = "test-key"/);
-    assert.match(codexConfig, /\[mcp_servers\.web-search-prime\]/);
-    assert.match(codexConfig, /http_headers = \{ Authorization = "Bearer test-key" \}/);
-    assert.match(codexConfig, /\[mcp_servers\.web-reader\]/);
-    assert.match(codexConfig, /\[mcp_servers\.zread\]/);
-    assert.match(codexConfig, /\[mcp_servers\.github\]/);
-    assert.match(codexConfig, /url = "https:\/\/api\.githubcopilot\.com\/mcp\/"/);
-    assert.match(codexConfig, /\[mcp_servers\.markitdown\]/);
-    assert.match(codexConfig, /command = "uvx"/);
-    assert.match(codexConfig, /args = \["markitdown-mcp"\]/);
+    assert.doesNotMatch(codexConfig, /\[mcp_servers\.web-search-prime\]/);
+    assert.doesNotMatch(codexConfig, /\[mcp_servers\.web-reader\]/);
+    assert.doesNotMatch(codexConfig, /\[mcp_servers\.zread\]/);
+    assert.doesNotMatch(codexConfig, /\[mcp_servers\.github\]/);
+    assert.doesNotMatch(codexConfig, /\[mcp_servers\.markitdown\]/);
     assert.match(codexConfig, /\[mcp_servers\.playwright\]/);
-    assert.match(codexConfig, /@playwright\/mcp@latest/);
+    assert.match(codexConfig, /args = \["-y", "@playwright\/mcp@latest"\]/);
     assert.match(codexConfig, /\[mcp_servers\.chrome-devtools\]/);
     assert.match(codexConfig, /chrome-devtools-mcp@latest/);
     assert.match(codexConfig, /\[mcp_servers\.sequential-thinking\]/);
     assert.match(codexConfig, /@modelcontextprotocol\/server-sequential-thinking/);
+    assert.match(codexConfig, /startup_timeout_sec = 60/);
   } finally {
     rmSync(tmp, { recursive: true, force: true });
   }
@@ -572,6 +565,10 @@ url = "https://example.com/mcp"
 [mcp_servers.web-reader]
 url = "https://old.example/mcp"
 http_headers = { Authorization = "Bearer old" }
+
+[mcp_servers.markitdown]
+command = "uvx"
+args = ["markitdown-mcp"]
 `,
       "utf-8",
     );
@@ -581,6 +578,7 @@ http_headers = { Authorization = "Bearer old" }
       JSON.stringify({
         mcpServers: {
           custom: { type: "http", url: "https://example.com/mcp" },
+          markitdown: { type: "stdio", command: "uvx", args: ["markitdown-mcp"] },
           "web-reader": { type: "http", url: "https://old.example/mcp" },
         },
       }, null, 2) + "\n",
@@ -614,9 +612,9 @@ http_headers = { Authorization = "Bearer old" }
     const claudeConfig = JSON.parse(readFileSync(claudeMcpConfigPath, "utf-8"));
     assert.equal(claudeConfig.mcpServers.custom.url, "https://example.com/mcp");
     assert.deepEqual(claudeConfig.mcpServers["chrome-devtools"].args, ["-y", "chrome-devtools-mcp@latest"]);
-    assert.equal(claudeConfig.mcpServers.github.url, "https://api.githubcopilot.com/mcp/");
-    assert.deepEqual(claudeConfig.mcpServers.markitdown.args, ["markitdown-mcp"]);
-    assert.deepEqual(claudeConfig.mcpServers.playwright.args, ["@playwright/mcp@latest"]);
+    assert.equal(claudeConfig.mcpServers.github, undefined);
+    assert.equal(claudeConfig.mcpServers.markitdown, undefined);
+    assert.deepEqual(claudeConfig.mcpServers.playwright.args, ["-y", "@playwright/mcp@latest"]);
     assert.deepEqual(claudeConfig.mcpServers["sequential-thinking"].args, ["-y", "@modelcontextprotocol/server-sequential-thinking"]);
     assert.equal(claudeConfig.mcpServers["web-reader"], undefined);
     assert.equal(claudeConfig.mcpServers["web-search-prime"], undefined);
@@ -626,8 +624,8 @@ http_headers = { Authorization = "Bearer old" }
     const codexConfig = readFileSync(join(codexHome, "config.toml"), "utf-8");
     assert.match(codexConfig, /\[mcp_servers\.custom\]/);
     assert.match(codexConfig, /\[mcp_servers\.chrome-devtools\]/);
-    assert.match(codexConfig, /\[mcp_servers\.github\]/);
-    assert.match(codexConfig, /\[mcp_servers\.markitdown\]/);
+    assert.doesNotMatch(codexConfig, /\[mcp_servers\.github\]/);
+    assert.doesNotMatch(codexConfig, /\[mcp_servers\.markitdown\]/);
     assert.match(codexConfig, /\[mcp_servers\.playwright\]/);
     assert.match(codexConfig, /\[mcp_servers\.sequential-thinking\]/);
     assert.doesNotMatch(codexConfig, /\[mcp_servers\.web-reader\]/);
@@ -635,6 +633,41 @@ http_headers = { Authorization = "Bearer old" }
     assert.doesNotMatch(codexConfig, /\[mcp_servers\.zai-mcp-server\]/);
     assert.doesNotMatch(codexConfig, /\[mcp_servers\.zread\]/);
     assert.doesNotMatch(codexConfig, /old\.example/);
+  } finally {
+    rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test("sync-mcp 配置 GitHub token 后同步 GitHub MCP", () => {
+  const tmp = mkdtempSync(join(tmpdir(), "ai-experts-github-mcp-"));
+  const codexHome = join(tmp, "codex-home");
+  const claudeMcpConfigPath = join(tmp, ".claude.json");
+  const envFile = join(tmp, ".env.local");
+
+  try {
+    mkdirSync(codexHome);
+    writeFileSync(join(codexHome, "config.toml"), "", "utf-8");
+    writeFileSync(envFile, "CODEX_GITHUB_PERSONAL_ACCESS_TOKEN=github-token\n", "utf-8");
+
+    execFileSync(process.execPath, [syncMcpScript, "--target=all"], {
+      cwd: repoRoot,
+      env: isolatedEnv({
+        AI_EXPERTS_ENV_FILE: envFile,
+        CLAUDE_MCP_CONFIG_PATH: claudeMcpConfigPath,
+        CODEX_HOME: codexHome,
+      }),
+      encoding: "utf-8",
+      stdio: "pipe",
+    });
+
+    const claudeConfig = JSON.parse(readFileSync(claudeMcpConfigPath, "utf-8"));
+    assert.equal(claudeConfig.mcpServers.github.url, "https://api.githubcopilot.com/mcp/");
+    assert.equal(claudeConfig.mcpServers.github.headers.Authorization, "Bearer github-token");
+
+    const codexConfig = readFileSync(join(codexHome, "config.toml"), "utf-8");
+    assert.match(codexConfig, /\[mcp_servers\.github\]/);
+    assert.match(codexConfig, /bearer_token_env_var = "CODEX_GITHUB_PERSONAL_ACCESS_TOKEN"/);
+    assert.doesNotMatch(codexConfig, /github-token/);
   } finally {
     rmSync(tmp, { recursive: true, force: true });
   }
