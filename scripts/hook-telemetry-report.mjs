@@ -4,7 +4,7 @@
  *
  * 默认读取当前工作区对应的
  * ~/.claude/hook-telemetry/workspaces/<hash>-<name>/decisions.jsonl*，
- * 输出各插件 hook 的 block/report/context/error/skip/audit 频次、热点文件/命令和可疑误拦信号。
+ * 输出各插件 hook 的 block/report/context/error/skip/audit 频次、可行动热点目标和可疑误拦信号。
  *
  * 用法：
  *   node scripts/hook-telemetry-report.mjs              # 默认最近 7 天
@@ -15,15 +15,12 @@
  *   node scripts/hook-telemetry-report.mjs --purge 90   # 清理 90 天前的记录
  */
 
-import { createHash } from "node:crypto";
-import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
-import { basename, join, resolve } from "node:path";
-import { homedir } from "node:os";
+import { readFileSync, writeFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { applySessionFilter, EXPLICIT_TELEMETRY_FILE, telemetrySources } from "./hook-telemetry-utils.mjs";
 
-const TELEMETRY_ROOT = process.env.AI_EXPERTS_HOOK_TELEMETRY_DIR ||
-  join(homedir(), ".claude", "hook-telemetry");
-const EXPLICIT_TELEMETRY_FILE = process.env.AI_EXPERTS_HOOK_TELEMETRY_FILE || null;
 const DECISIONS = ["block", "report", "context", "error", "skip", "audit"];
+const ACTIVE_DECISIONS = new Set(["block", "report", "context", "error"]);
 
 function parseArgs(argv) {
   const args = {
@@ -87,57 +84,6 @@ function parseArgs(argv) {
   return args;
 }
 
-function workspaceBucketDir(workspacePath) {
-  const resolved = resolve(workspacePath);
-  const hash = createHash("sha256").update(resolved).digest("hex").slice(0, 12);
-  const rawName = basename(resolved) || "workspace";
-  const slug = rawName.replace(/[^A-Za-z0-9._-]+/g, "-").slice(0, 48) || "workspace";
-  return join(TELEMETRY_ROOT, "workspaces", `${hash}-${slug}`);
-}
-
-function telemetryFilesInDir(dir) {
-  if (!existsSync(dir) || !statSync(dir).isDirectory()) {
-    return [];
-  }
-  return readdirSync(dir)
-    .filter((name) => /^decisions\.jsonl(?:\.\d+)?$/.test(name))
-    .sort((left, right) => left.localeCompare(right, undefined, { numeric: true }))
-    .map((name) => join(dir, name));
-}
-
-function allWorkspaceTelemetryFiles() {
-  const workspacesRoot = join(TELEMETRY_ROOT, "workspaces");
-  if (!existsSync(workspacesRoot) || !statSync(workspacesRoot).isDirectory()) {
-    return [];
-  }
-  return readdirSync(workspacesRoot)
-    .map((name) => join(workspacesRoot, name))
-    .filter((dir) => existsSync(dir) && statSync(dir).isDirectory())
-    .flatMap((dir) => telemetryFilesInDir(dir));
-}
-
-function telemetrySources(args) {
-  if (args.telemetryFile) {
-    return {
-      description: args.telemetryFile,
-      files: existsSync(args.telemetryFile) ? [args.telemetryFile] : [],
-    };
-  }
-
-  if (args.allWorkspaces) {
-    return {
-      description: `${join(TELEMETRY_ROOT, "workspaces", "*/decisions.jsonl*")}`,
-      files: allWorkspaceTelemetryFiles(),
-    };
-  }
-
-  const dir = workspaceBucketDir(args.workspace);
-  return {
-    description: `${dir}/decisions.jsonl*`,
-    files: telemetryFilesInDir(dir),
-  };
-}
-
 function readEntries(files) {
   if (files.length === 0) {
     return null;
@@ -174,8 +120,13 @@ function emptyStats() {
     skip: 0,
     audit: 0,
     files: new Map(),
+    activeFiles: new Map(),
     durations: [],
   };
+}
+
+function activeCount(item) {
+  return item.block + item.report + item.context + item.error;
 }
 
 function shortTarget(value) {
@@ -205,32 +156,6 @@ function cell(value, width) {
   return `${text.slice(0, width - 3)}...`;
 }
 
-function sessionKey(entry) {
-  return entry.session_id || entry.transcript_path || null;
-}
-
-function applySessionFilter(entries, session) {
-  if (!session) {
-    return { entries, label: null };
-  }
-
-  if (session === "latest") {
-    const latest = [...entries]
-      .filter((entry) => sessionKey(entry))
-      .sort((left, right) => (right.ts ?? 0) - (left.ts ?? 0))[0];
-    const key = latest ? sessionKey(latest) : null;
-    return {
-      entries: key ? entries.filter((entry) => sessionKey(entry) === key) : [],
-      label: key || "latest (no session_id/transcript_path found)",
-    };
-  }
-
-  return {
-    entries: entries.filter((entry) => entry.session_id === session || entry.transcript_path === session),
-    label: session,
-  };
-}
-
 function printReport(entries, args, sourceDescription) {
   const stats = new Map();
   for (const entry of entries) {
@@ -245,6 +170,9 @@ function printReport(entries, args, sourceDescription) {
     }
     if (entry.file) {
       item.files.set(entry.file, (item.files.get(entry.file) ?? 0) + 1);
+      if (ACTIVE_DECISIONS.has(entry.decision)) {
+        item.activeFiles.set(entry.file, (item.activeFiles.get(entry.file) ?? 0) + 1);
+      }
     }
     if (typeof entry.duration_ms === "number") {
       item.durations.push(entry.duration_ms);
@@ -253,8 +181,8 @@ function printReport(entries, args, sourceDescription) {
 
   const fpSuspects = [];
   for (const [hook, item] of stats.entries()) {
-    for (const [file, count] of item.files) {
-      if (count >= 3 && item.block > 0) {
+    for (const [file, count] of item.activeFiles) {
+      if (count >= 3) {
         fpSuspects.push({ hook, file, count });
       }
     }
@@ -276,16 +204,16 @@ function printReport(entries, args, sourceDescription) {
     "Skip".padEnd(7) +
     "Audit".padEnd(8) +
     "Avg".padEnd(9) +
-    "Hot Target",
+    "Active Target",
   );
   console.log(`  ${"-".repeat(68)}`);
 
   const sorted = [...stats.entries()].sort((a, b) =>
-    (b[1].block + b[1].report + b[1].error) - (a[1].block + a[1].report + a[1].error),
+    activeCount(b[1]) - activeCount(a[1]) || b[1].skip - a[1].skip,
   );
 
   for (const [hook, item] of sorted) {
-    const hotTarget = [...item.files.entries()]
+    const hotTarget = [...item.activeFiles.entries()]
       .sort((a, b) => b[1] - a[1])
       .slice(0, 1)
       .map(([file, count]) => `${shortTarget(file)}(${count})`)
@@ -306,7 +234,7 @@ function printReport(entries, args, sourceDescription) {
 
   if (fpSuspects.length > 0) {
     console.log(`\n${"-".repeat(72)}`);
-    console.log("  FP 可疑信号（同目标被同一 hook 命中 >= 3 次）\n");
+    console.log("  FP/噪音可疑信号（同目标被同一 hook 主动命中 >= 3 次）\n");
     for (const { hook, file, count } of fpSuspects.sort((a, b) => b.count - a.count).slice(0, 10)) {
       console.log(`  ${hook.padEnd(36)} ${shortTarget(file)} (${count})`);
     }

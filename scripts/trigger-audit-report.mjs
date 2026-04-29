@@ -19,18 +19,15 @@
  *   node scripts/trigger-audit-report.mjs --json
  */
 
-import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
-import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { homedir } from "node:os";
-import { basename, dirname, join, relative, resolve } from "node:path";
+import { existsSync, readFileSync } from "node:fs";
+import { basename, dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
+import { applySessionFilter, EXPLICIT_TELEMETRY_FILE, telemetrySources } from "./hook-telemetry-utils.mjs";
 
 const repoRoot = resolve(".");
 const pluginsRoot = resolve(repoRoot, "plugins");
-const TELEMETRY_ROOT = process.env.AI_EXPERTS_HOOK_TELEMETRY_DIR ||
-  resolve(homedir(), ".claude", "hook-telemetry");
-const EXPLICIT_TELEMETRY_FILE = process.env.AI_EXPERTS_HOOK_TELEMETRY_FILE || null;
+const ACTIVE_DECISIONS = new Set(["block", "report", "context", "error"]);
 
 function parseArgs(argv) {
   const args = {
@@ -97,57 +94,6 @@ function parseArgs(argv) {
     throw new Error("--session must be a non-empty session id, transcript path, or latest");
   }
   return args;
-}
-
-function workspaceBucketDir(workspacePath) {
-  const resolved = resolve(workspacePath);
-  const hash = createHash("sha256").update(resolved).digest("hex").slice(0, 12);
-  const rawName = basename(resolved) || "workspace";
-  const slug = rawName.replace(/[^A-Za-z0-9._-]+/g, "-").slice(0, 48) || "workspace";
-  return join(TELEMETRY_ROOT, "workspaces", `${hash}-${slug}`);
-}
-
-function telemetryFilesInDir(dir) {
-  if (!existsSync(dir) || !statSync(dir).isDirectory()) {
-    return [];
-  }
-  return readdirSync(dir)
-    .filter((name) => /^decisions\.jsonl(?:\.\d+)?$/.test(name))
-    .sort((left, right) => left.localeCompare(right, undefined, { numeric: true }))
-    .map((name) => join(dir, name));
-}
-
-function allWorkspaceTelemetryFiles() {
-  const workspacesRoot = join(TELEMETRY_ROOT, "workspaces");
-  if (!existsSync(workspacesRoot) || !statSync(workspacesRoot).isDirectory()) {
-    return [];
-  }
-  return readdirSync(workspacesRoot)
-    .map((name) => join(workspacesRoot, name))
-    .filter((dir) => existsSync(dir) && statSync(dir).isDirectory())
-    .flatMap((dir) => telemetryFilesInDir(dir));
-}
-
-function telemetrySources(args) {
-  if (args.telemetryFile) {
-    return {
-      description: args.telemetryFile,
-      files: existsSync(args.telemetryFile) ? [args.telemetryFile] : [],
-    };
-  }
-
-  if (args.allWorkspaces) {
-    return {
-      description: `${join(TELEMETRY_ROOT, "workspaces", "*/decisions.jsonl*")}`,
-      files: allWorkspaceTelemetryFiles(),
-    };
-  }
-
-  const dir = workspaceBucketDir(args.workspace);
-  return {
-    description: `${dir}/decisions.jsonl*`,
-    files: telemetryFilesInDir(dir),
-  };
 }
 
 function listTrackedFiles() {
@@ -415,32 +361,6 @@ function findSkillConflicts(skills) {
   return conflicts.sort((a, b) => b.score - a.score || a.left.name.localeCompare(b.left.name));
 }
 
-function sessionKey(entry) {
-  return entry.session_id || entry.transcript_path || null;
-}
-
-function applySessionFilter(entries, session) {
-  if (!session) {
-    return { entries, label: null };
-  }
-
-  if (session === "latest") {
-    const latest = [...entries]
-      .filter((entry) => sessionKey(entry))
-      .sort((left, right) => (right.ts ?? 0) - (left.ts ?? 0))[0];
-    const key = latest ? sessionKey(latest) : null;
-    return {
-      entries: key ? entries.filter((entry) => sessionKey(entry) === key) : [],
-      label: key || "latest (no session_id/transcript_path found)",
-    };
-  }
-
-  return {
-    entries: entries.filter((entry) => entry.session_id === session || entry.transcript_path === session),
-    label: session,
-  };
-}
-
 function countValues(entries, fieldName) {
   const counts = new Map();
   for (const entry of entries) {
@@ -505,6 +425,7 @@ function readRuntimeTelemetry(sources, days, pluginNames, top, session) {
       entries: 0,
       byDecision: {},
       hotHooks: [],
+      highSkipHooks: [],
       errors: [],
       skillRuntime: {
         entries: 0,
@@ -548,12 +469,17 @@ function readRuntimeTelemetry(sources, days, pluginNames, top, session) {
   const sessionFiltered = applySessionFilter(entries, session);
 
   const byDecision = {};
-  const hookCounts = new Map();
+  const activeHookCounts = new Map();
+  const skipHookCounts = new Map();
   const errors = [];
   for (const entry of sessionFiltered.entries) {
     byDecision[entry.decision] = (byDecision[entry.decision] ?? 0) + 1;
     const key = `${entry.plugin ?? "(unknown)"}/${entry.hook ?? "(unknown)"}`;
-    hookCounts.set(key, (hookCounts.get(key) ?? 0) + 1);
+    if (ACTIVE_DECISIONS.has(entry.decision)) {
+      activeHookCounts.set(key, (activeHookCounts.get(key) ?? 0) + 1);
+    } else if (entry.decision === "skip") {
+      skipHookCounts.set(key, (skipHookCounts.get(key) ?? 0) + 1);
+    }
     if (entry.decision === "error") {
       errors.push({
         hook: key,
@@ -569,7 +495,11 @@ function readRuntimeTelemetry(sources, days, pluginNames, top, session) {
     session: sessionFiltered.label,
     entries: sessionFiltered.entries.length,
     byDecision,
-    hotHooks: [...hookCounts.entries()]
+    hotHooks: [...activeHookCounts.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, top)
+      .map(([hook, count]) => ({ hook, count })),
+    highSkipHooks: [...skipHookCounts.entries()]
       .sort((a, b) => b[1] - a[1])
       .slice(0, top)
       .map(([hook, count]) => ({ hook, count })),
@@ -661,8 +591,14 @@ function printText(report, top) {
     console.log(`- entries: ${report.runtime.entries}`);
     console.log(`- decisions: ${Object.entries(report.runtime.byDecision).map(([k, v]) => `${k}=${v}`).join(", ") || "-"}`);
     if (report.runtime.hotHooks.length > 0) {
-      console.log("- hot hooks:");
+      console.log("- active hot hooks:");
       for (const item of report.runtime.hotHooks) {
+        console.log(`  - ${item.hook}: ${item.count}`);
+      }
+    }
+    if (report.runtime.highSkipHooks?.length > 0) {
+      console.log("- high skip-volume hooks (coverage/cost only):");
+      for (const item of report.runtime.highSkipHooks.slice(0, top)) {
         console.log(`  - ${item.hook}: ${item.count}`);
       }
     }

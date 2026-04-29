@@ -131,6 +131,47 @@ test("trigger 审计报告识别 skill usage audit 只产生 skip 的数据质�
   }
 });
 
+test("trigger 审计报告区分主动热点和 skip 覆盖热点", () => {
+  const tempDir = mkdtempSync(join(tmpdir(), "ai-experts-active-telemetry-"));
+  const telemetryFile = join(tempDir, "decisions.jsonl");
+  const now = Date.now();
+  const lines = [
+    ...Array.from({ length: 4 }, () => ({
+      ts: now,
+      plugin: "coding-expert",
+      hook: "skip-heavy.mjs",
+      decision: "skip",
+    })),
+    { ts: now, plugin: "coding-expert", hook: "active-hook.mjs", decision: "report" },
+    { ts: now, plugin: "coding-expert", hook: "active-hook.mjs", decision: "report" },
+    { ts: now, plugin: "coding-expert", hook: "active-hook.mjs", decision: "block" },
+  ];
+  writeFileSync(telemetryFile, `${lines.map((entry) => JSON.stringify(entry)).join("\n")}\n`, "utf-8");
+
+  try {
+    const output = execFileSync(process.execPath, [
+      "scripts/trigger-audit-report.mjs",
+      "--json",
+      "--telemetry-file",
+      telemetryFile,
+      "--days",
+      "365",
+      "--top",
+      "3",
+    ], {
+      encoding: "utf-8",
+      stdio: "pipe",
+    });
+    const report = JSON.parse(output);
+
+    assert.deepEqual(report.runtime.hotHooks, [{ hook: "coding-expert/active-hook.mjs", count: 3 }]);
+    assert.deepEqual(report.runtime.highSkipHooks[0], { hook: "coding-expert/skip-heavy.mjs", count: 4 });
+    assert.equal(report.runtime.byDecision.skip, 4);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+});
+
 test("hook telemetry 报告忽略 legacy 根文件遥测", () => {
   const tempDir = mkdtempSync(join(tmpdir(), "ai-experts-legacy-telemetry-"));
   writeFileSync(
@@ -158,6 +199,43 @@ test("hook telemetry 报告忽略 legacy 根文件遥测", () => {
       },
     });
     assert.match(output, /暂无遥测数据/);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+});
+
+test("hook telemetry 报告的 FP 信号忽略 skip 重复", () => {
+  const tempDir = mkdtempSync(join(tmpdir(), "ai-experts-hook-fp-skip-"));
+  const telemetryFile = join(tempDir, "decisions.jsonl");
+  const now = Date.now();
+  const target = "git status --short";
+  const lines = [
+    { ts: now, plugin: "coding-expert", hook: "cat-write-guard.mjs", decision: "block", file: target },
+    ...Array.from({ length: 5 }, () => ({
+      ts: now,
+      plugin: "coding-expert",
+      hook: "cat-write-guard.mjs",
+      decision: "skip",
+      file: target,
+    })),
+  ];
+  writeFileSync(telemetryFile, `${lines.map((entry) => JSON.stringify(entry)).join("\n")}\n`, "utf-8");
+
+  try {
+    const output = execFileSync(process.execPath, [
+      "scripts/hook-telemetry-report.mjs",
+      "--telemetry-file",
+      telemetryFile,
+      "--days",
+      "365",
+    ], {
+      encoding: "utf-8",
+      stdio: "pipe",
+    });
+
+    assert.match(output, /Active Target/);
+    assert.match(output, /git status --short\(1\)/);
+    assert.doesNotMatch(output, /FP\/噪音可疑信号/);
   } finally {
     rmSync(tempDir, { recursive: true, force: true });
   }

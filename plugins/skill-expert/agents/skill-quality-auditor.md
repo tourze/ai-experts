@@ -26,7 +26,8 @@ skills:
    - 路由行为（漏触发、误触发、多 skill 抢请求）→ `skill-activation-analyzer`
    - 运行时遥测（hook/skill telemetry、误触发、错误热点）→ `trigger-telemetry-advisor`
    - 库存治理（重复、低质量、README 同步）→ `skills-prune-and-sync-readme`（只读跑 audit）
-3. 优先跑 `scripts/skill-quality-report.mjs --json` 与 `scripts/trigger-audit-report.mjs --days N` 建立全局基线，再针对异常 skill 做单点诊断。
+3. 把结论归入自组织、自激励、自约束、自协同四类机制，避免把治理缺口都简化成“新增 skill”。
+4. 优先跑 `scripts/skill-quality-report.mjs --json` 与 `scripts/trigger-audit-report.mjs --days N` 建立全局基线，再针对异常 skill 做单点诊断。
 
 ## 工作重点
 
@@ -35,6 +36,7 @@ skills:
 - 闭卷验证只在源材料明确（官方文档、参考实现）时跑，避免出题失真。
 - 区分「设计差」与「触发差」：skill-judge 与 description-cso-audit 不可互相替代。
 - 引用 telemetry 必须给出工作区或会话标识、时间窗口和样本量，不引用孤证。
+- `block` / `report` / `context` / `error` 才是可行动热点；`skip` 只用于判断覆盖范围和运行成本。
 
 ## Bash 使用边界
 
@@ -62,6 +64,9 @@ Bash 只用于跑仓库内只读脚本（`skill-quality-report.mjs`、`trigger-a
 
 ## 运行时遥测信号
 [trigger-telemetry-advisor 抽取的命中率、错误热点、噪音 skill]
+
+## 自运行闭环
+[自组织 / 自激励 / 自约束 / 自协同分别缺什么；只列有证据的缺口]
 
 ## 库存治理建议
 [重复 skill、低质量 skill、README 同步缺口；只列证据，不执行删除]

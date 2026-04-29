@@ -233,7 +233,20 @@ node scripts/install.mjs --dry-run     # 仅打印计划动作，不改动磁盘
 4. **防合理化**：对容易被 agent 跳过的规则，用 Red Flags / Rationalizations 表写清"危险念头"和"现实后果"。
 5. **做对照验证**：重要 skill 变更优先用 [skill-creator](plugins/skill-expert/skills/skill-creator/SKILL.md) 跑 with-skill vs baseline；源材料很厚时，用 [skill-verifier](plugins/skill-expert/skills/skill-verifier/SKILL.md) 做闭卷覆盖验证。
 
-仓库级质量用 `node scripts/skill-quality-report.mjs --json` 看结构、description、eval 覆盖、触发域冲突和已落盘的 with-skill vs baseline 效果评测；尚未覆盖的真实效果仍要看 eval 输出、压力场景、telemetry 和人工复盘。当前自动化分约 94.9 / 100，eval 覆盖 99.8%，CSO（description 触发域审计）通过 99.2%。
+仓库级质量用 `node scripts/skill-quality-report.mjs --json` 看结构、description、eval 覆盖、触发域冲突和已落盘的 with-skill vs baseline 效果评测；尚未覆盖的真实效果仍要看 eval 输出、压力场景、telemetry 和人工复盘。当前自动化分约 95 / 100，eval 覆盖 100%，CSO（description 触发域审计）通过 100%。
+
+### 自运行治理模型
+
+维护 skill / agent / hooks 时，优先判断缺口属于哪一类机制，不要把所有问题都归结为“再写一个 skill”：
+
+| 机制 | 本仓库落点 | 优先信号 |
+|------|------------|----------|
+| 自组织 | 插件目录、已声明依赖、README、`evals/cases.yaml` | 新内容能否独立安装、独立触发、独立验证 |
+| 自激励 | `skill-quality-report.mjs`、with-skill vs baseline、运行时 telemetry | 高频使用 skill 是否有真实效果评测；报告是否把下一步修复对象排清楚 |
+| 自约束 | PreToolUse / PostToolUse / Stop hooks、仓库级 tests | 安全和正确性问题是否在责任层 fail-fast；hook 是否误拦或噪音过高 |
+| 自协同 | 根 `hooks/dispatch.mjs`、跨插件依赖、编排型 agents | 通用守卫是否收敛到基座；agent 是否复用既有 skill 而不是复制流程 |
+
+触发审计中，`block` / `report` / `context` / `error` 是可行动热点；`skip` 只表示覆盖范围和运行成本。治理顺序先处理错误与误拦，再处理高频噪音，最后扩展效果评测样本。
 
 ## 维护与验证
 
