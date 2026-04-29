@@ -202,6 +202,25 @@ node scripts/install.mjs --dry-run     # 仅打印计划动作，不改动磁盘
 - 做测试策略、预落地检查和 Web 测试时，优先装 [testing-expert](plugins/testing-expert/README.md)。
 - 做产品、营销、内容或社媒工作时，直接看对应领域插件 README，而不是从 skills 目录盲找。
 
+### 高频工程闭环
+
+日常工程任务优先按下面闭环推进；不必每次从第一步开始，按当前任务阶段切入即可。
+
+```
+压实意图 → 固化需求 → 拆解任务 → 实现落地 → 调试修复 → 测试验证 → 落地审查 → 会话复盘
+```
+
+| 阶段 | 首选 skill | 何时使用 |
+|------|------------|----------|
+| 压实意图 | [`grill-me`](plugins/thinking-expert/skills/grill-me/SKILL.md) | 方案、设计或需求仍有关键假设未确认时，一次一问压实决策树 |
+| 固化需求 | [`create-prd`](plugins/product-expert/skills/create-prd/SKILL.md) | 需要把上下文整理成可评审、可拆任务、可验收的 PRD 时 |
+| 拆解任务 | [`task-decomposer`](plugins/architecture-expert/skills/task-decomposer/SKILL.md) | 需要任务板、依赖关系、关键路径、并行边界或 Execution Contract 时 |
+| 实现落地 | [`feature-dev`](plugins/architecture-expert/skills/feature-dev/SKILL.md) | 跨文件、跨模块或存在架构取舍的新功能实现 |
+| 调试修复 | [`debug-methodology`](plugins/coding-expert/skills/debug-methodology/SKILL.md) | 遇到 bug、崩溃、flaky、性能回退或无法复现的问题 |
+| 测试验证 | [`test-driven-development`](plugins/testing-expert/skills/test-driven-development/SKILL.md) / [`testing-strategy`](plugins/testing-expert/skills/testing-strategy/SKILL.md) | 需要红绿重构、补回归测试或设计风险驱动测试计划时 |
+| 落地审查 | [`pre-landing-review`](plugins/testing-expert/skills/pre-landing-review/SKILL.md) | 合并或上线前判断 diff 是否存在阻断级风险 |
+| 会话复盘 | [`session-reflection`](plugins/skill-expert/skills/session-reflection/SKILL.md) | 任务闭合后总结完成情况、未验证项、风险和可沉淀的治理建议 |
+
 ## 内容质量治理
 
 本仓库的核心内容是插件 README、`SKILL.md`、参考资料、脚本和 eval。改这些内容时，不追求"写得更多"，优先追求可触发、可执行、可验证。
