@@ -120,10 +120,10 @@ test("file-budget-guard TN: 无扩展名文件不纳管", async () => {
   });
 });
 
-test("file-budget-guard TN: 测试文件享有 1200 行上限", async () => {
+test("file-budget-guard TN: 测试文件豁免行数预算", async () => {
   await withTempDir(async (dir) => {
     const filePath = join(dir, "feature.test.js");
-    writeFileSync(filePath, "test('ok', () => {});\n".repeat(1200), "utf8");
+    writeFileSync(filePath, "test('ok', () => {});\n".repeat(2000), "utf8");
     assert.equal(await runFileBudgetGuard(payload(filePath)), null);
   });
 });
@@ -136,12 +136,12 @@ test("file-budget-guard TN: .md 文件不受行数预算约束", async () => {
   });
 });
 
-test("file-budget-guard TN: tests/ 目录下的文件享有测试预算", async () => {
+test("file-budget-guard TN: tests/ 目录下的文件豁免行数预算", async () => {
   await withTempDir(async (dir) => {
     const testsDir = join(dir, "tests");
     mkdirSync(testsDir, { recursive: true });
     const filePath = join(testsDir, "big.py");
-    writeFileSync(filePath, "assert True\n".repeat(1200), "utf8");
+    writeFileSync(filePath, "assert True\n".repeat(2000), "utf8");
     assert.equal(await runFileBudgetGuard(payload(filePath)), null);
   });
 });

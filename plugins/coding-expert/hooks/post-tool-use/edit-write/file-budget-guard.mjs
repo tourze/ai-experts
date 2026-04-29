@@ -5,6 +5,7 @@
  *   正常文件 → 超出预算时 block
  *   超标文件 → 冻结在 git HEAD 行数，只许缩小不许膨胀
  *   新文件   → 必须在预算内
+ *   测试文件 → 不纳入行数预算
  *
  * 统一收敛原先散落在语言插件中的 file-budget-guard。
  */
@@ -114,13 +115,10 @@ function isTestFile(filePath) {
   return TEST_DIR_PATTERNS.some((re) => re.test(filePath));
 }
 
-const TEST_FILE_BUDGET = 1200;
-
 function getBudget(filePath) {
+  if (isTestFile(filePath)) return null;
   const baseName = getLowerBaseName(filePath);
-  const baseBudget = BUDGETS_BY_FILE_NAME[baseName] ?? BUDGETS_BY_EXTENSION[extname(baseName)] ?? null;
-  if (baseBudget === null) return null;
-  return isTestFile(filePath) ? Math.max(baseBudget, TEST_FILE_BUDGET) : baseBudget;
+  return BUDGETS_BY_FILE_NAME[baseName] ?? BUDGETS_BY_EXTENSION[extname(baseName)] ?? null;
 }
 
 function getHeadLineCount(filePath) {
