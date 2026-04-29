@@ -55,7 +55,7 @@ function classify(filePath) {
     return { label: "SKILL.md", budget: 1500 };
   }
   if (MEMORY_FILE_BASENAMES.has(basename)) {
-    return { label: "记忆文件", budget: 10000 };
+    return { label: "记忆文件", budget: 20000 };
   }
   return null;
 }
