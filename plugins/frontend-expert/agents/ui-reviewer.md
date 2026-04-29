@@ -14,6 +14,7 @@ skills:
   - bundle-optimization
   - web-quality-audit
   - ux-heuristics
+  - visual-brief-concretizer
   - ux-writing
   - interaction-design
   - fact-vs-inference-vs-assumption

@@ -1,0 +1,30 @@
+cases:
+  - id: positive_visual_brief_concretizer_primary
+    prompt: "客户一直说首页不够大气，但又说不清楚。我需要把“大气”拆成可执行的视觉 brief 和避坑清单。"
+    fixtures: []
+    rubric:
+      - "recognizes abstract visual language as visual-brief-concretizer territory"
+      - "translates the adjective into brand intent, visual signals, and anti-patterns"
+    trigger_expected: true
+
+  - id: positive_visual_brief_concretizer_realistic
+    prompt: "帮我把这个 SaaS 官网改得更高级、更专业，不要只是说多留白，给我可以交给设计师的方向。"
+    fixtures: []
+    rubric:
+      - "keeps the task focused on concretizing vague visual intent"
+      - "asks or states assumptions about audience, carrier, brand intent, and evidence"
+    trigger_expected: true
+
+  - id: negative_visual_design_foundations_tokens
+    prompt: "这个需求应该交给 visual-design-foundations：需要为新项目建立字体、颜色、间距、圆角、阴影等基础 token。"
+    fixtures: []
+    rubric:
+      - "token system construction should not trigger visual-brief-concretizer"
+    trigger_expected: false
+
+  - id: negative_ux_heuristics_usability
+    prompt: "这个需求应该交给 ux-heuristics：用户找不到入口，提交后没反应，需要做可用性启发式评估。"
+    fixtures: []
+    rubric:
+      - "usability diagnosis should not trigger visual-brief-concretizer"
+    trigger_expected: false

@@ -5,7 +5,7 @@
 ## 目录结构
 
 - `skills/`：59 个产品与战略类技能，统一采用「适用场景 → 核心约束 → 代码模式 → 检查清单 → 反模式」结构。
-- `agents/`：8 个窄向 agent，按问题域预加载相关 skill 输出综合分析。
+- `agents/`：11 个窄向 agent，按问题域预加载相关 skill 输出综合分析。
 - `tests/`：覆盖脚本行为与 `SKILL.md` 链接校验。
 
 ## Skills
@@ -78,6 +78,7 @@
 
 | Agent | 适用场景 | 预加载 skill |
 |-------|----------|--------------|
+| `business-analyst` | 开放式商业问题分析，串联问题界定、假设树、数据验证、模型选择与行动建议 | mckinsey-7-step, five-w-two-h, fact-vs-inference-vs-assumption, finding-evidence-binding, pestel-analysis, porters-five-forces, 3c-strategic-triangle, business-model, business-health-diagnostic, marketing-mix-4p, customer-research, data-analysis |
 | `competitive-strategist` | 竞争结构、差异化定位与价格-价值策略综合分析 | porters-five-forces, 3c-strategic-triangle, competitive-teardown, blue-ocean-strategy, strategy-clock, pricing-strategy, obviously-awesome, crossing-the-chasm |
 | `macro-environment-analyst` | 宏观环境扫描、外部冲击传导与技术趋势评估 | pestel-analysis, swot-analysis, tech-maturity-curve, evaluating-new-technology, scp-analysis（thinking-expert） |
 | `org-diagnostician` | 组织能力、执行落地、人才结构与绩效体系诊断 | mckinsey-7s, value-chain-analysis, raci-matrix, talent-management, team-composition-analysis, greiner-growth-model, org-canvas, balanced-scorecard, blm-model |
