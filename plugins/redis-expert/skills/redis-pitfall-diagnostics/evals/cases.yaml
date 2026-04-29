@@ -1,0 +1,30 @@
+cases:
+  - id: positive_redis_pitfall_diagnostics_primary
+    prompt: "Redis 线上偶发卡顿，SLOWLOG 里有 DEL、SETBIT、RANDOMKEY，还出现过 key 设置过期时间后变成不过期，帮我系统排查这些坑。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as redis-pitfall-diagnostics territory"
+      - "maps symptoms to command semantics, persistence, replication, version and config evidence"
+    trigger_expected: true
+
+  - id: positive_redis_pitfall_diagnostics_replica
+    prompt: "同一个 Redis key 主库查不到，从库还能查到；最近还做过主从切换，怎么按根因排查？"
+    fixtures: []
+    rubric:
+      - "treats master/replica inconsistency and failover as pitfall diagnostics"
+      - "requires version, role, TTL, clock skew and maxmemory evidence before conclusion"
+    trigger_expected: true
+
+  - id: negative_adjacent_redis_key_design
+    prompt: "帮我设计 Redis 键命名规范、命名空间和 TTL 抖动策略。"
+    fixtures: []
+    rubric:
+      - "adjacent redis-key-design requests should not trigger redis-pitfall-diagnostics"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

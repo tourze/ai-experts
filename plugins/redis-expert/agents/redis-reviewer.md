@@ -9,6 +9,7 @@ skills:
   - redis-caching-patterns
   - redis-distributed-lock
   - redis-cluster-ha
+  - redis-pitfall-diagnostics
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding
 ---
@@ -26,6 +27,7 @@ skills:
 - cache-aside、write-through、write-behind、失效策略和一致性风险。
 - big key、hot key、序列化膨胀、内存淘汰和 maxmemory-policy。
 - 分布式锁、Lua 脚本、Sentinel/Cluster、RDB/AOF 和故障转移准备。
+- 诡异行为排查：TTL 丢失、命令阻塞、OOM、AOF/RDB rewrite、主从不一致和复制风暴。
 
 ## Bash 使用边界
 
@@ -52,6 +54,9 @@ Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agen
 [用中文填写，保留必要的英文技术标识符]
 
 ## 内存风险分析
+[用中文填写，保留必要的英文技术标识符]
+
+## 坑位排障假设
 [用中文填写，保留必要的英文技术标识符]
 
 ## 缓存模式审查

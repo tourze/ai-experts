@@ -4,6 +4,7 @@ import { spawnSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import test from "node:test";
+import { run as runRedisCliRiskGuard } from "../hooks/pre-tool-use/bash/redis-cli-risk-guard.mjs";
 
 const pluginRoot = resolve("plugins/redis-expert");
 const skillsRoot = resolve(pluginRoot, "skills");
@@ -123,4 +124,57 @@ test("Redis skill 中的 Python 示例可通过 py_compile", () => {
       rmSync(tempDir, { recursive: true, force: true });
     }
   }
+});
+
+function bashPayload(command) {
+  return { tool_input: { command } };
+}
+
+test("redis-cli-risk-guard 拦截高风险遍历和清库命令", async () => {
+  const keysResult = await runRedisCliRiskGuard(
+    bashPayload("redis-cli -h cache.local -p 6379 KEYS '*'"),
+  );
+  assert.equal(keysResult?.decision, "block");
+  assert.match(keysResult.reason, /KEYS/);
+
+  const monitorResult = await runRedisCliRiskGuard(
+    bashPayload("redis-cli --raw monitor"),
+  );
+  assert.equal(monitorResult?.decision, "block");
+  assert.match(monitorResult.reason, /MONITOR/);
+
+  const flushResult = await runRedisCliRiskGuard(
+    bashPayload("redis-cli -n 1 FLUSHDB"),
+  );
+  assert.equal(flushResult?.decision, "block");
+  assert.match(flushResult.reason, /FLUSHDB/);
+
+  const clusterCallResult = await runRedisCliRiskGuard(
+    bashPayload("redis-cli --cluster call 127.0.0.1:7000 FLUSHALL"),
+  );
+  assert.equal(clusterCallResult?.decision, "block");
+  assert.match(clusterCallResult.reason, /FLUSHALL/);
+});
+
+test("redis-cli-risk-guard 对可疑但非破坏命令只提示", async () => {
+  const delResult = await runRedisCliRiskGuard(bashPayload("redis-cli DEL big:set"));
+  assert.equal(delResult?.decision, "report");
+  assert.match(delResult.reason, /UNLINK/);
+
+  const setbitResult = await runRedisCliRiskGuard(
+    bashPayload("redis-cli -c -n 1 SETBIT bitmap:uv 4294967295 1"),
+  );
+  assert.equal(setbitResult?.decision, "report");
+  assert.match(setbitResult.reason, /SETBIT/);
+});
+
+test("redis-cli-risk-guard 跳过安全扫描和非 redis-cli 命令", async () => {
+  assert.equal(
+    await runRedisCliRiskGuard(bashPayload("redis-cli --scan --pattern 'user:*'")),
+    null,
+  );
+  assert.equal(await runRedisCliRiskGuard(bashPayload("redis-cli GET KEYS")), null);
+  assert.equal(await runRedisCliRiskGuard(bashPayload("rg 'redis-cli KEYS' docs/")), null);
+  assert.equal(await runRedisCliRiskGuard(bashPayload("rg redis-cli KEYS docs/")), null);
+  assert.equal(await runRedisCliRiskGuard(bashPayload("echo redis-cli KEYS '*'")), null);
 });
