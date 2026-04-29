@@ -1,0 +1,34 @@
+cases:
+  - id: positive_h5_anti_bot_design
+    prompt: "我们的 H5 领券页面被脚本刷量，想做前端 JS 动态化、参数签名和服务端验签方案，怎么设计？"
+    fixtures: []
+    rubric:
+      - "recognizes H5 anti-bot and frontend dynamic code protection as the target domain"
+      - "covers dynamic challenge/signature, cache policy, server-side validation, replay handling, and monitoring"
+      - "does not present client-side obfuscation as absolute security"
+    trigger_expected: true
+
+  - id: positive_frontend_crypto_audit
+    prompt: "审计一下我们 Web 登录页的客户端加密和 JavaScript 混淆，看看是不是能防止爬虫直接构造请求。"
+    fixtures: []
+    rubric:
+      - "matches frontend code protection, request forgery, and anti-crawler audit"
+      - "distinguishes compression, obfuscation, reversible transforms, and server-side controls"
+      - "requires evidence from traffic, cache headers, replay behavior, and validation boundaries"
+    trigger_expected: true
+
+  - id: negative_binary_reverse_engineering
+    prompt: "这个 Windows 样本有反调试和控制流平坦化，帮我分析怎么绕过保护壳。"
+    fixtures: []
+    rubric:
+      - "does not trigger frontend dynamic code protection"
+      - "binary reversing and packer bypass should route to anti-reversing-techniques or binary-analysis-patterns"
+    trigger_expected: false
+
+  - id: negative_frontend_performance_only
+    prompt: "帮我优化 React 首屏性能和 bundle 体积，重点看代码分割、图片懒加载和 Core Web Vitals。"
+    fixtures: []
+    rubric:
+      - "does not trigger for ordinary frontend performance optimization"
+      - "performance and bundle work should route to frontend performance skills unless anti-bot/code protection is mentioned"
+    trigger_expected: false

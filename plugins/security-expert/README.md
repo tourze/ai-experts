@@ -8,7 +8,7 @@
 
 | Agent | 适用场景 | 预加载 skill |
 |-------|----------|--------------|
-| `security-auditor` | 应用层只读漏洞审计：OWASP top 10、认证授权、敏感数据流、API 输入校验 | top-web-vulnerabilities, broken-authentication, file-path-traversal, api-fuzzing-bug-bounty |
+| `security-auditor` | 应用层只读漏洞审计：OWASP top 10、认证授权、敏感数据流、API 输入校验、前端防刷保护 | top-web-vulnerabilities, broken-authentication, file-path-traversal, api-fuzzing-bug-bounty, frontend-dynamic-code-protection |
 | `mobile-security-auditor` | Android APK / iOS IPA 客户端安全：manifest、组件暴露、硬编码 secret、deeplink、反逆向态势 | android-apk-audit, android-manifest-security, android-frida-script-catalog, intent-deeplink-abuse, apktool, jadx, dex-dumper, ios-binary-analysis, ios-secret-scan, anti-reversing-techniques |
 | `pentest-operator` | 在已授权工程中执行主机发现、漏洞利用验证、提权与后渗透 | ethical-hacking-methodology, nmap, linux-privilege-escalation, active-directory-attacks, broken-authentication, file-path-traversal, api-fuzzing-bug-bounty, intent-deeplink-abuse, top-web-vulnerabilities |
 | `reverse-engineer` | 二进制 / APK / IPA / 固件 / 内存 / 协议的静态反汇编、反编译、动态 hook、符号与结构恢复 | binary-analysis-patterns, apktool, jadx, dex-dumper, idapython-scripting, frida-dynamic-analysis, android-frida-script-catalog, unicorn-emulation, symbol-recovery, struct-recovery, anti-reversing-techniques, ios-binary-analysis, chipsec, protocol-reverse-engineering, wireshark-analysis, memory-forensics |
@@ -28,6 +28,7 @@
 | `broken-authentication` | 认证/授权漏洞测试 |
 | `file-path-traversal` | 目录遍历漏洞测试 |
 | `api-fuzzing-bug-bounty` | API 安全模糊测试 |
+| `frontend-dynamic-code-protection` | H5/Web 前端防刷量、反爬虫、请求参数保护与动态化代码保护 |
 | `ethical-hacking-methodology` | 渗透测试全流程方法论 |
 | `active-directory-attacks` | Active Directory 攻击技术 |
 | `linux-privilege-escalation` | Linux 提权技术 |

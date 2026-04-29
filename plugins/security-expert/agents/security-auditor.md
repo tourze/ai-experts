@@ -1,13 +1,14 @@
 ---
 name: security-auditor
 description: |
-  当需要对应用层代码做只读漏洞审计，识别 OWASP top 10 模式、认证与会话缺陷、敏感数据流、文件路径风险或 API 输入校验缺口时使用。
+  当需要对应用层代码做只读漏洞审计，识别 OWASP top 10 模式、认证与会话缺陷、敏感数据流、文件路径风险、API 输入校验缺口或前端防刷保护缺口时使用。
 tools: Read, Glob, Grep, Bash
 skills:
   - top-web-vulnerabilities
   - broken-authentication
   - file-path-traversal
   - api-fuzzing-bug-bounty
+  - frontend-dynamic-code-protection
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding
 ---
@@ -24,6 +25,7 @@ skills:
 - token、credential、PII、secret 的采集、存储、传输和日志路径。
 - 认证、会话、MFA、JWT、权限检查和对象级访问控制。
 - SQLi、XSS、path traversal、SSRF、command injection、IDOR、mass assignment。
+- H5/Web 防刷、请求参数保护、客户端加密、JS 混淆、动态 challenge 和重放控制。
 - secret 管理、CORS/CSP/HTTPS/cookie flag 和依赖风险。
 
 ## Bash 使用边界
