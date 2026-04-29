@@ -1,0 +1,30 @@
+cases:
+  - id: positive_php_generators_memory_primary
+    prompt: "我需要在 PHP 中用 yield / Generator 优化大数组内存占用，顺便解释它和 return 的区别"
+    fixtures: []
+    rubric:
+      - "recognizes the request as php-generators-memory territory"
+      - "keeps the answer focused on streaming iteration, memory behavior, and Generator semantics"
+    trigger_expected: true
+
+  - id: positive_php_generators_memory_realistic
+    prompt: "CSV 导入时现在 file() 一次性读完整文件导致 memory_limit，帮我改成逐行处理并确保提前中断也释放句柄"
+    fixtures: []
+    rubric:
+      - "matches large-file streaming and cleanup concerns described by the skill"
+      - "uses try/finally or equivalent resource cleanup rather than only replacing array with yield"
+    trigger_expected: true
+
+  - id: negative_adjacent_php_testing_data_provider
+    prompt: "这个需求应该交给 php-testing：帮 PHPUnit data provider 用 yield 写几组测试数据"
+    fixtures: []
+    rubric:
+      - "adjacent PHPUnit data-provider yield requests should not trigger php-generators-memory"
+    trigger_expected: false
+
+  - id: negative_adjacent_php_async_patterns
+    prompt: "这个需求应该交给 php-async-patterns：在 PHP 中使用 Swoole 协程或 ReactPHP 事件循环处理并发 IO"
+    fixtures: []
+    rubric:
+      - "async concurrency requests should not trigger php-generators-memory"
+    trigger_expected: false

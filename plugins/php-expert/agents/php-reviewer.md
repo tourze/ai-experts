@@ -7,6 +7,7 @@ skills:
   - php-8x-features
   - php-type-safety
   - php-error-handling
+  - php-generators-memory
   - php-design-patterns
   - php-async-patterns
   - php-doc
@@ -24,6 +25,7 @@ skills:
 ## 工作重点
 
 - PHP 8+ 类型系统、strict types、readonly、enum 和属性。
+- `yield` / `Generator` 流式处理、大数组和大文件内存风险。
 - 异常层级、返回值约定、空值边界和日志。
 - 输入验证、SQL 注入、XSS、CSRF、反序列化和文件上传。
 - Composer、PHPUnit、mock、N+1、缓存和 IO 热点。
