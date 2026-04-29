@@ -7,6 +7,7 @@
 - `hooks/`：1 个 UserPromptSubmit 结构化表达 primer。
 - `skills/`：文档处理、提案撰写、Markdown/PDF 转换等技能目录。
 - `tests/`：skill 文档和脚本语法的最小回归测试。
+- `.mcp.json`：MarkItDown MCP 声明，由仓库根安装脚本统一同步。
 
 ## Skills
 

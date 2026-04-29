@@ -510,6 +510,9 @@ test("install.mjs 从 .env.local 自动配置 Z.AI MCP", () => {
 
     const claudeConfig = JSON.parse(readFileSync(claudeMcpConfigPath, "utf-8"));
     assert.deepEqual(Object.keys(claudeConfig.mcpServers).sort(), [
+      "github",
+      "markitdown",
+      "sequential-thinking",
       "web-reader",
       "web-search-prime",
       "zai-mcp-server",
@@ -518,6 +521,9 @@ test("install.mjs 从 .env.local 自动配置 Z.AI MCP", () => {
     assert.equal(claudeConfig.mcpServers["zai-mcp-server"].env.Z_AI_API_KEY, "test-key");
     assert.equal(claudeConfig.mcpServers["zai-mcp-server"].env.Z_AI_MODE, "ZHIPU");
     assert.equal(claudeConfig.mcpServers["web-search-prime"].headers.Authorization, "Bearer test-key");
+    assert.equal(claudeConfig.mcpServers.github.url, "https://api.githubcopilot.com/mcp/");
+    assert.deepEqual(claudeConfig.mcpServers.markitdown.args, ["markitdown-mcp"]);
+    assert.deepEqual(claudeConfig.mcpServers["sequential-thinking"].args, ["-y", "@modelcontextprotocol/server-sequential-thinking"]);
 
     const codexConfig = readFileSync(join(codexHome, "config.toml"), "utf-8");
     assert.match(codexConfig, /\[mcp_servers\.zai-mcp-server\]/);
@@ -526,6 +532,13 @@ test("install.mjs 从 .env.local 自动配置 Z.AI MCP", () => {
     assert.match(codexConfig, /http_headers = \{ Authorization = "Bearer test-key" \}/);
     assert.match(codexConfig, /\[mcp_servers\.web-reader\]/);
     assert.match(codexConfig, /\[mcp_servers\.zread\]/);
+    assert.match(codexConfig, /\[mcp_servers\.github\]/);
+    assert.match(codexConfig, /url = "https:\/\/api\.githubcopilot\.com\/mcp\/"/);
+    assert.match(codexConfig, /\[mcp_servers\.markitdown\]/);
+    assert.match(codexConfig, /command = "uvx"/);
+    assert.match(codexConfig, /args = \["markitdown-mcp"\]/);
+    assert.match(codexConfig, /\[mcp_servers\.sequential-thinking\]/);
+    assert.match(codexConfig, /@modelcontextprotocol\/server-sequential-thinking/);
   } finally {
     rmSync(tmp, { recursive: true, force: true });
   }
@@ -591,13 +604,24 @@ http_headers = { Authorization = "Bearer old" }
     });
 
     const claudeConfig = JSON.parse(readFileSync(claudeMcpConfigPath, "utf-8"));
-    assert.deepEqual(claudeConfig.mcpServers, {
-      custom: { type: "http", url: "https://example.com/mcp" },
-    });
+    assert.equal(claudeConfig.mcpServers.custom.url, "https://example.com/mcp");
+    assert.equal(claudeConfig.mcpServers.github.url, "https://api.githubcopilot.com/mcp/");
+    assert.deepEqual(claudeConfig.mcpServers.markitdown.args, ["markitdown-mcp"]);
+    assert.deepEqual(claudeConfig.mcpServers["sequential-thinking"].args, ["-y", "@modelcontextprotocol/server-sequential-thinking"]);
+    assert.equal(claudeConfig.mcpServers["web-reader"], undefined);
+    assert.equal(claudeConfig.mcpServers["web-search-prime"], undefined);
+    assert.equal(claudeConfig.mcpServers["zai-mcp-server"], undefined);
+    assert.equal(claudeConfig.mcpServers.zread, undefined);
 
     const codexConfig = readFileSync(join(codexHome, "config.toml"), "utf-8");
     assert.match(codexConfig, /\[mcp_servers\.custom\]/);
+    assert.match(codexConfig, /\[mcp_servers\.github\]/);
+    assert.match(codexConfig, /\[mcp_servers\.markitdown\]/);
+    assert.match(codexConfig, /\[mcp_servers\.sequential-thinking\]/);
     assert.doesNotMatch(codexConfig, /\[mcp_servers\.web-reader\]/);
+    assert.doesNotMatch(codexConfig, /\[mcp_servers\.web-search-prime\]/);
+    assert.doesNotMatch(codexConfig, /\[mcp_servers\.zai-mcp-server\]/);
+    assert.doesNotMatch(codexConfig, /\[mcp_servers\.zread\]/);
     assert.doesNotMatch(codexConfig, /old\.example/);
   } finally {
     rmSync(tmp, { recursive: true, force: true });

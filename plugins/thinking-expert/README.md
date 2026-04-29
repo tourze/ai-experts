@@ -6,6 +6,7 @@
 
 - `skills/`：17 个思维类技能，每个 `SKILL.md` 使用统一中文结构。
 - `tests/`：脚本语法与文档结构校验。
+- `.mcp.json`：Sequential Thinking MCP 声明，由仓库根安装脚本统一同步。
 
 ## Skills
 
@@ -44,4 +45,3 @@ node --test plugins/thinking-expert/tests/*.test.mjs
 ## 安装 / 卸载
 
 由仓库根目录的 `node scripts/install.mjs` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
-
