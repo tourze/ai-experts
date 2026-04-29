@@ -1,0 +1,54 @@
+cases:
+  - id: product_launch_marketing_plan
+    prompt: "We have a new AI note-taking app launching next month. Turn the brief into a full market promotion plan with positioning, phases, channels, and launch activities."
+    fixtures: []
+    rubric:
+      - "starts from brief clarification before planning channels"
+      - "connects product, competitor, and user insights to positioning"
+      - "creates phased strategy with target audience, events, channels, and metrics"
+      - "turns strategy into concrete activities with owners or dependencies"
+    trigger_expected: true
+
+  - id: game_campaign_strategy
+    prompt: "帮一款二次元手游写完整推广策划案：需要产品卖点梳理、用户洞察、传播主题、阶段节奏和具体市场活动。"
+    fixtures: []
+    rubric:
+      - "uses product and user insight before slogan or creative ideas"
+      - "separates positioning, stage strategy, and activity execution"
+      - "includes measurable goals for each stage"
+      - "does not reduce the plan to a channel checklist"
+    trigger_expected: true
+
+  - id: integrated_marketing_from_brief
+    prompt: "把这个产品 Brief 整理成整合营销方案，包括目标人群、竞品区隔、核心传播策略、活动排期和验收指标。"
+    fixtures: []
+    rubric:
+      - "extracts known facts, assumptions, and missing brief fields"
+      - "uses competitor differentiation and audience insight"
+      - "builds a coherent launch or promotion roadmap"
+      - "defines activity-level metrics and risks"
+    trigger_expected: true
+
+  - id: negative_stp_only
+    prompt: "Use STP to segment the market and choose our positioning statement."
+    fixtures: []
+    rubric:
+      - "does not activate the full marketing plan workflow"
+      - "STP-only work belongs to stp-segmentation"
+    trigger_expected: false
+
+  - id: negative_paid_ads_budget
+    prompt: "Plan paid media budget allocation across Google, LinkedIn, Meta, and TikTok for next quarter."
+    fixtures: []
+    rubric:
+      - "does not activate market plan workflow"
+      - "budget and ad account planning belongs to paid-ads"
+    trigger_expected: false
+
+  - id: negative_campaign_roi
+    prompt: "Analyze the campaign ROI, attribution model, funnel conversion, and which channel performed best."
+    fixtures: []
+    rubric:
+      - "does not activate market plan workflow"
+      - "post-campaign measurement belongs to campaign-analytics"
+    trigger_expected: false

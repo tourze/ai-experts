@@ -31,6 +31,7 @@
 | `lead-channel-optimizer` | 获客渠道优先级与 ROI 评估 |
 | `lead-research-assistant` | ICP 对齐的目标客户发现 |
 | `made-to-stick` | SUCCESs 粘性表达框架 |
+| `marketing-plan` | 市场方案、推广策划案、上市传播计划与阶段活动落地 |
 | `marketing-psychology` | 行为科学与决策心理学应用 |
 | `onboarding-cro` | 注册后引导与用户激活优化 |
 | `page-cro` | 页面级转化率优化（CRO 分析框架） |
