@@ -22,7 +22,7 @@ const CODEX_HOME = process.env.CODEX_HOME || join(homedir(), ".codex");
 const CODEX_CONFIG_TOML = process.env.CODEX_CONFIG_TOML_PATH || join(CODEX_HOME, "config.toml");
 const MANIFEST_META_KEYS = new Set(["targets", "requiredEnv", "claude", "codex"]);
 // 已发布过的托管 MCP 即使移出插件 manifest，也要继续识别一段时间，确保 install 能清理旧配置。
-const RETIRED_MANAGED_MCP_IDS = new Set(["markitdown"]);
+const RETIRED_MANAGED_MCP_IDS = new Set(["markitdown", "playwright", "sequential-thinking"]);
 
 function atomicWriteFile(target, content) {
   const tmp = `${target}.tmp.${process.pid}.${Date.now()}`;

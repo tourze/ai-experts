@@ -37,7 +37,7 @@
 
 由仓库根目录的 `node scripts/install.mjs` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
-安装脚本会读取仓库根 `.env.local`。配置 `Z_AI_API_KEY` 后，Claude Code 会同步本插件 `.mcp.json` 中声明的 `zai-mcp-server`、`web-search-prime`、`web-reader` 与 `zread`；Codex CLI 只同步当前可稳定启动的 `zai-mcp-server`，避免不兼容的远程 HTTP MCP 阻塞启动。未配置时会移除这些托管 MCP 条目并保留用户自定义 MCP。
+安装脚本会读取仓库根 `.env.local`。配置 `Z_AI_API_KEY` 后，会同步本插件 `.mcp.json` 中声明的 `zai-mcp-server`、`web-search-prime`、`web-reader` 与 `zread`；Claude Code 直连远程 HTTP MCP，Codex CLI 通过 `uvx mcp-proxy` 兼容访问远程 HTTP MCP。未配置时会移除这些托管 MCP 条目并保留用户自定义 MCP。
 
 ## 校验
 

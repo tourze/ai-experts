@@ -1,16 +1,5 @@
 {
   "mcpServers": {
-    "playwright": {
-      "type": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "@playwright/mcp@latest"
-      ],
-      "codex": {
-        "startup_timeout_sec": 60
-      }
-    },
     "chrome-devtools": {
       "type": "stdio",
       "command": "npx",

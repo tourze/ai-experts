@@ -13,33 +13,75 @@
       }
     },
     "web-search-prime": {
-      "type": "http",
-      "url": "https://open.bigmodel.cn/api/mcp/web_search_prime/mcp",
-      "targets": [
-        "cc"
+      "requiredEnv": [
+        "Z_AI_API_KEY"
       ],
-      "headers": {
-        "Authorization": "Bearer ${Z_AI_API_KEY}"
+      "claude": {
+        "type": "http",
+        "url": "https://open.bigmodel.cn/api/mcp/web_search_prime/mcp",
+        "headers": {
+          "Authorization": "Bearer ${Z_AI_API_KEY}"
+        }
+      },
+      "codex": {
+        "command": "uvx",
+        "args": [
+          "mcp-proxy",
+          "--transport",
+          "streamablehttp",
+          "https://open.bigmodel.cn/api/mcp/web_search_prime/mcp"
+        ],
+        "env": {
+          "API_ACCESS_TOKEN": "${Z_AI_API_KEY}"
+        }
       }
     },
     "web-reader": {
-      "type": "http",
-      "url": "https://open.bigmodel.cn/api/mcp/web_reader/mcp",
-      "targets": [
-        "cc"
+      "requiredEnv": [
+        "Z_AI_API_KEY"
       ],
-      "headers": {
-        "Authorization": "Bearer ${Z_AI_API_KEY}"
+      "claude": {
+        "type": "http",
+        "url": "https://open.bigmodel.cn/api/mcp/web_reader/mcp",
+        "headers": {
+          "Authorization": "Bearer ${Z_AI_API_KEY}"
+        }
+      },
+      "codex": {
+        "command": "uvx",
+        "args": [
+          "mcp-proxy",
+          "--transport",
+          "streamablehttp",
+          "https://open.bigmodel.cn/api/mcp/web_reader/mcp"
+        ],
+        "env": {
+          "API_ACCESS_TOKEN": "${Z_AI_API_KEY}"
+        }
       }
     },
     "zread": {
-      "type": "http",
-      "url": "https://open.bigmodel.cn/api/mcp/zread/mcp",
-      "targets": [
-        "cc"
+      "requiredEnv": [
+        "Z_AI_API_KEY"
       ],
-      "headers": {
-        "Authorization": "Bearer ${Z_AI_API_KEY}"
+      "claude": {
+        "type": "http",
+        "url": "https://open.bigmodel.cn/api/mcp/zread/mcp",
+        "headers": {
+          "Authorization": "Bearer ${Z_AI_API_KEY}"
+        }
+      },
+      "codex": {
+        "command": "uvx",
+        "args": [
+          "mcp-proxy",
+          "--transport",
+          "streamablehttp",
+          "https://open.bigmodel.cn/api/mcp/zread/mcp"
+        ],
+        "env": {
+          "API_ACCESS_TOKEN": "${Z_AI_API_KEY}"
+        }
       }
     }
   }

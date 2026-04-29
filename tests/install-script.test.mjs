@@ -511,8 +511,6 @@ test("install.mjs 从 .env.local 自动配置 Z.AI MCP", () => {
     const claudeConfig = JSON.parse(readFileSync(claudeMcpConfigPath, "utf-8"));
     assert.deepEqual(Object.keys(claudeConfig.mcpServers).sort(), [
       "chrome-devtools",
-      "playwright",
-      "sequential-thinking",
       "web-reader",
       "web-search-prime",
       "zai-mcp-server",
@@ -520,25 +518,39 @@ test("install.mjs 从 .env.local 自动配置 Z.AI MCP", () => {
     ]);
     assert.equal(claudeConfig.mcpServers["zai-mcp-server"].env.Z_AI_API_KEY, "test-key");
     assert.equal(claudeConfig.mcpServers["zai-mcp-server"].env.Z_AI_MODE, "ZHIPU");
+    assert.equal(claudeConfig.mcpServers["web-search-prime"].type, "http");
+    assert.equal(claudeConfig.mcpServers["web-search-prime"].url, "https://open.bigmodel.cn/api/mcp/web_search_prime/mcp");
     assert.equal(claudeConfig.mcpServers["web-search-prime"].headers.Authorization, "Bearer test-key");
-    assert.deepEqual(claudeConfig.mcpServers.playwright.args, ["-y", "@playwright/mcp@latest"]);
+    assert.equal(claudeConfig.mcpServers["web-reader"].type, "http");
+    assert.equal(claudeConfig.mcpServers["web-reader"].headers.Authorization, "Bearer test-key");
+    assert.equal(claudeConfig.mcpServers.zread.type, "http");
+    assert.equal(claudeConfig.mcpServers.zread.headers.Authorization, "Bearer test-key");
+    assert.equal(claudeConfig.mcpServers.playwright, undefined);
     assert.deepEqual(claudeConfig.mcpServers["chrome-devtools"].args, ["-y", "chrome-devtools-mcp@latest"]);
-    assert.deepEqual(claudeConfig.mcpServers["sequential-thinking"].args, ["-y", "@modelcontextprotocol/server-sequential-thinking"]);
 
     const codexConfig = readFileSync(join(codexHome, "config.toml"), "utf-8");
     assert.match(codexConfig, /\[mcp_servers\.zai-mcp-server\]/);
     assert.match(codexConfig, /Z_AI_API_KEY = "test-key"/);
-    assert.doesNotMatch(codexConfig, /\[mcp_servers\.web-search-prime\]/);
-    assert.doesNotMatch(codexConfig, /\[mcp_servers\.web-reader\]/);
-    assert.doesNotMatch(codexConfig, /\[mcp_servers\.zread\]/);
+    assert.match(codexConfig, /\[mcp_servers\.web-search-prime\]/);
+    assert.match(codexConfig, /https:\/\/open\.bigmodel\.cn\/api\/mcp\/web_search_prime\/mcp/);
+    assert.match(codexConfig, /\[mcp_servers\.web-search-prime\.env\]/);
+    assert.match(codexConfig, /\[mcp_servers\.web-reader\]/);
+    assert.match(codexConfig, /https:\/\/open\.bigmodel\.cn\/api\/mcp\/web_reader\/mcp/);
+    assert.match(codexConfig, /\[mcp_servers\.web-reader\.env\]/);
+    assert.match(codexConfig, /\[mcp_servers\.zread\]/);
+    assert.match(codexConfig, /https:\/\/open\.bigmodel\.cn\/api\/mcp\/zread\/mcp/);
+    assert.match(codexConfig, /\[mcp_servers\.zread\.env\]/);
+    assert.match(codexConfig, /command = "uvx"/);
+    assert.match(codexConfig, /mcp-proxy/);
+    assert.match(codexConfig, /API_ACCESS_TOKEN = "test-key"/);
     assert.doesNotMatch(codexConfig, /\[mcp_servers\.github\]/);
     assert.doesNotMatch(codexConfig, /\[mcp_servers\.markitdown\]/);
-    assert.match(codexConfig, /\[mcp_servers\.playwright\]/);
-    assert.match(codexConfig, /args = \["-y", "@playwright\/mcp@latest"\]/);
+    assert.doesNotMatch(codexConfig, /\[mcp_servers\.playwright\]/);
+    assert.doesNotMatch(codexConfig, /@playwright\/mcp@latest/);
     assert.match(codexConfig, /\[mcp_servers\.chrome-devtools\]/);
     assert.match(codexConfig, /chrome-devtools-mcp@latest/);
-    assert.match(codexConfig, /\[mcp_servers\.sequential-thinking\]/);
-    assert.match(codexConfig, /@modelcontextprotocol\/server-sequential-thinking/);
+    assert.doesNotMatch(codexConfig, /\[mcp_servers\.sequential-thinking\]/);
+    assert.doesNotMatch(codexConfig, /@modelcontextprotocol\/server-sequential-thinking/);
     assert.match(codexConfig, /startup_timeout_sec = 60/);
   } finally {
     rmSync(tmp, { recursive: true, force: true });
@@ -569,6 +581,14 @@ http_headers = { Authorization = "Bearer old" }
 [mcp_servers.markitdown]
 command = "uvx"
 args = ["markitdown-mcp"]
+
+[mcp_servers.playwright]
+command = "npx"
+args = ["-y", "@playwright/mcp@latest"]
+
+[mcp_servers.sequential-thinking]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-sequential-thinking"]
 `,
       "utf-8",
     );
@@ -579,6 +599,8 @@ args = ["markitdown-mcp"]
         mcpServers: {
           custom: { type: "http", url: "https://example.com/mcp" },
           markitdown: { type: "stdio", command: "uvx", args: ["markitdown-mcp"] },
+          playwright: { type: "stdio", command: "npx", args: ["-y", "@playwright/mcp@latest"] },
+          "sequential-thinking": { type: "stdio", command: "npx", args: ["-y", "@modelcontextprotocol/server-sequential-thinking"] },
           "web-reader": { type: "http", url: "https://old.example/mcp" },
         },
       }, null, 2) + "\n",
@@ -614,8 +636,8 @@ args = ["markitdown-mcp"]
     assert.deepEqual(claudeConfig.mcpServers["chrome-devtools"].args, ["-y", "chrome-devtools-mcp@latest"]);
     assert.equal(claudeConfig.mcpServers.github, undefined);
     assert.equal(claudeConfig.mcpServers.markitdown, undefined);
-    assert.deepEqual(claudeConfig.mcpServers.playwright.args, ["-y", "@playwright/mcp@latest"]);
-    assert.deepEqual(claudeConfig.mcpServers["sequential-thinking"].args, ["-y", "@modelcontextprotocol/server-sequential-thinking"]);
+    assert.equal(claudeConfig.mcpServers.playwright, undefined);
+    assert.equal(claudeConfig.mcpServers["sequential-thinking"], undefined);
     assert.equal(claudeConfig.mcpServers["web-reader"], undefined);
     assert.equal(claudeConfig.mcpServers["web-search-prime"], undefined);
     assert.equal(claudeConfig.mcpServers["zai-mcp-server"], undefined);
@@ -626,8 +648,8 @@ args = ["markitdown-mcp"]
     assert.match(codexConfig, /\[mcp_servers\.chrome-devtools\]/);
     assert.doesNotMatch(codexConfig, /\[mcp_servers\.github\]/);
     assert.doesNotMatch(codexConfig, /\[mcp_servers\.markitdown\]/);
-    assert.match(codexConfig, /\[mcp_servers\.playwright\]/);
-    assert.match(codexConfig, /\[mcp_servers\.sequential-thinking\]/);
+    assert.doesNotMatch(codexConfig, /\[mcp_servers\.playwright\]/);
+    assert.doesNotMatch(codexConfig, /\[mcp_servers\.sequential-thinking\]/);
     assert.doesNotMatch(codexConfig, /\[mcp_servers\.web-reader\]/);
     assert.doesNotMatch(codexConfig, /\[mcp_servers\.web-search-prime\]/);
     assert.doesNotMatch(codexConfig, /\[mcp_servers\.zai-mcp-server\]/);

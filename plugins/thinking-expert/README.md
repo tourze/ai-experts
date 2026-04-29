@@ -6,7 +6,6 @@
 
 - `skills/`：17 个思维类技能，每个 `SKILL.md` 使用统一中文结构。
 - `tests/`：脚本语法与文档结构校验。
-- `.mcp.json`：Sequential Thinking MCP 声明，由仓库根安装脚本统一同步。
 
 ## Skills
 
