@@ -1,6 +1,6 @@
 cases:
   - id: positive_mysql_transaction_locking_primary
-    prompt: "我需要诊断或优化 MySQL InnoDB 事务隔离、行锁、间隙锁或死锁时使用。适用于并发冲突排查。"
+    prompt: "我需要诊断或优化 MySQL InnoDB 事务隔离、行锁、间隙锁、插入意向锁、自增锁或死锁时使用。适用于并发冲突排查。"
     fixtures: []
     rubric:
       - "recognizes the request as mysql-transaction-locking territory"
@@ -13,6 +13,22 @@ cases:
     rubric:
       - "matches a concrete use case described by the skill"
       - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: positive_mysql_insert_intention_lock
+    prompt: "MySQL 里看到 lock_mode X locks gap before rec insert intention waiting，这是什么锁，为什么两个 INSERT 有时互不阻塞？"
+    fixtures: []
+    rubric:
+      - "recognizes insert intention locks and gap-lock diagnostics as mysql-transaction-locking territory"
+      - "explains the lock using InnoDB lock taxonomy instead of generic SQL performance advice"
+    trigger_expected: true
+
+  - id: positive_mysql_autoinc_lock_mode
+    prompt: "MySQL 8.0 的 innodb_autoinc_lock_mode 默认值是多少？AUTO-INC 锁和 statement-based replication 有什么关系？"
+    fixtures: []
+    rubric:
+      - "recognizes AUTO-INC lock mode as part of MySQL transaction and locking behavior"
+      - "mentions version-specific defaults and replication safety boundaries"
     trigger_expected: true
 
   - id: negative_adjacent_mysql_index_strategy
