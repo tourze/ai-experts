@@ -7,7 +7,7 @@
  * 分级预算（按路径，只严管 AI 会加载的文件）：
  *   **\/SKILL.md              500 tokens   AI 核心提示，严控
  *   **\/references\/**\/*.md   2000 tokens  skill 辅助文档，可较长
- *   记忆文件                  3000 tokens  项目/全局指令，更宽
+ *   记忆文件                  20000 tokens 项目/全局指令，更宽
  *   其他 *.md                 静默放行      避免误伤 README / changelog / 日志
  *
  * 选择“按路径分级”而不是“对所有 md 统一阈值”的原因：

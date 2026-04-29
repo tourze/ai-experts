@@ -848,7 +848,8 @@ test("markdown-budget-guard 会阻止超预算的新 SKILL.md", async () => {
 test("markdown-budget-guard 会阻止超预算的新 MEMORY.md", async () => {
   await withTempDir(async (dir) => {
     const filePath = join(dir, "MEMORY.md");
-    writeFileSync(filePath, "# Memory\n\n" + "长期规则 ".repeat(4000), "utf8");
+    // MEMORY.md 预算为 20000 tokens，样本必须明确超过当前预算。
+    writeFileSync(filePath, "# Memory\n\n" + "长期规则 ".repeat(5000), "utf8");
     const result = await runMarkdownBudgetGuard(payload(filePath));
     assert.equal(result?.decision, "block");
     assert.match(result?.reason ?? "", /记忆文件/);
