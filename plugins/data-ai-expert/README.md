@@ -4,7 +4,7 @@
 
 ## 目录结构
 
-- `skills/`：14 个领域技能及其脚本、参考资料、评测样例
+- `skills/`：14 个领域技能及其参考资料、评测样例
 - `tests/`：README/skill 结构一致性检查
 - `.mcp.json`：智谱 Z.AI MCP 声明，由仓库根安装脚本统一同步
 
@@ -42,8 +42,5 @@
 ## 校验
 
 ```bash
-node --check plugins/data-ai-expert/skills/model-first-reasoning/scripts/validate-model.mjs
-node --check plugins/data-ai-expert/skills/prompt-engineering-patterns/scripts/optimize-prompt.mjs
-node --check plugins/data-ai-expert/skills/data-analysis/scripts/analyze.mjs
 node --test plugins/data-ai-expert/tests/*.test.mjs
 ```

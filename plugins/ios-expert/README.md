@@ -5,7 +5,7 @@ iOS / Apple 平台专家能力，覆盖 Swift Concurrency、SwiftUI 性能与模
 ## 目录结构
 
 - `hooks/`：3 个本地 PostToolUse 守卫。
-- `skills/`：13 个 iOS / Apple 平台技能与配套参考资料、脚本。
+- `skills/`：13 个 iOS / Apple 平台技能与配套参考资料。
 - `agents/`：2 个 iOS 运行审计与模拟器冒烟测试代理。
 - `tests/`：最小回归测试。
 
@@ -18,7 +18,7 @@ iOS / Apple 平台专家能力，覆盖 Swift Concurrency、SwiftUI 性能与模
 | `swiftui-ui-patterns` | SwiftUI 视图与组件最佳实践 |
 | `swiftui-view-refactor` | SwiftUI 视图重构与依赖注入 |
 | `ios-hig-design` | Apple Human Interface Guidelines（iOS） |
-| `ios-simulator-skill` | iOS 模拟器自动化脚本 |
+| `ios-simulator-skill` | iOS 模拟器自动化流程 |
 | `apple-appstore-reviewer` | App Store 审核规则检查 |
 | `app-store-changelog` | App Store 发布说明生成 |
 | `liquid-glass-design` | iOS 26 液态玻璃设计系统 |
@@ -41,7 +41,7 @@ iOS / Apple 平台专家能力，覆盖 Swift Concurrency、SwiftUI 性能与模
 | Agent | 用途 |
 |-------|------|
 | `ios-release-auditor` | 只读审计 Info.plist、entitlements、能力开关与 App Review 风险 |
-| `ios-simulator-smoke-tester` | 使用本目录模拟器脚本执行关键流程冒烟测试 |
+| `ios-simulator-smoke-tester` | 执行 iOS 模拟器关键流程冒烟测试 |
 | `swiftui-engineer` | SwiftUI 视图 / 导航 / 列表性能 / Swift Concurrency 工程审查与重构建议，含 HIG / Liquid Glass / macOS HIG 合规检查 |
 
 ## 验证命令
@@ -50,12 +50,9 @@ iOS / Apple 平台专家能力，覆盖 Swift Concurrency、SwiftUI 性能与模
 
 ```bash
 find hooks -name '*.mjs' -print0 | xargs -0 -n1 node --check
-find skills -path '*/scripts/*.mjs' -print0 | xargs -0 -n1 node --check
-find skills -path '*/scripts/*.py' -print0 | xargs -0 python3 -m py_compile
 node --test tests/*.test.mjs
 ```
 
 ## 安装 / 卸载
 
 由仓库根目录的 `node scripts/install.mjs` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
-

@@ -5,7 +5,7 @@
 ## 结构
 
 - `skills/*/SKILL.md`：统一的中文技能说明，按「适用场景→核心约束→代码模式→检查清单→反模式」组织。
-- `skills/*/references`、`skills/*/scripts`、`skills/*/assets`：技能引用资料、可执行脚本和示例资产。
+- `skills/*/references`、`skills/*/assets`：技能引用资料和示例资产。
 
 ## Skills
 
@@ -70,11 +70,5 @@
 ## 验证
 
 ```bash
-node --check plugins/marketing-expert/skills/analytics-tracking/scripts/tracking_plan_generator.mjs
-node --check plugins/marketing-expert/skills/copy-editing/scripts/readability_scorer.mjs
-node --check plugins/marketing-expert/skills/competitor-alternatives/scripts/comparison_matrix_builder.mjs
-node --check plugins/marketing-expert/skills/copy-editing/scripts/humanizer_scorer.mjs
-node --check plugins/marketing-expert/skills/campaign-analytics/scripts/attribution_analyzer.mjs
-node --check plugins/marketing-expert/skills/campaign-analytics/scripts/campaign_roi_calculator.mjs
-node --check plugins/marketing-expert/skills/campaign-analytics/scripts/funnel_analyzer.mjs
+node --test plugins/marketing-expert/tests/*.test.mjs
 ```

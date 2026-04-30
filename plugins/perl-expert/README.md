@@ -6,7 +6,7 @@ Perl 开发专家能力，覆盖现代 Perl 5.36+ 开发、Test2 测试工作流
 
 - `hooks/`：3 个 `PostToolUse Edit|Write` 守卫脚本。
 - `skills/`：Perl 开发与 Test2 测试技能文档。
-- `tests/`：脚本与文档回归测试。
+- `tests/`：工具与文档回归测试。
 
 ## Skills
 
@@ -42,4 +42,3 @@ node --test plugins/perl-expert/tests/*.test.mjs
 ## 安装 / 卸载
 
 由仓库根目录的 `node scripts/install.mjs` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
-

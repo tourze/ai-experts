@@ -1,11 +1,11 @@
 # social-media-expert
 
-社交媒体运营专家能力，覆盖小红书图文、小红书商业增长、抖音内容分析、粉丝运营、私域引流与个人品牌建设。当前版本补齐了脚本语法校验和 SKILL 文档统一规范。
+社交媒体运营专家能力，覆盖小红书图文、小红书商业增长、抖音内容分析、粉丝运营、私域引流与个人品牌建设。当前版本补齐了回归测试和 SKILL 文档统一规范。
 
 ## 目录结构
 
 - `skills/`：8 个社交媒体技能，均采用统一的中文结构。
-- `tests/`：覆盖脚本语法与 SKILL 链接校验。
+- `tests/`：覆盖工具语法与 SKILL 链接校验。
 
 ## Skills
 
@@ -33,9 +33,5 @@
 ## 验证命令
 
 ```bash
-node --check plugins/social-media-expert/skills/douyin-video-summary/scripts/download_audio.mjs
-node --check plugins/social-media-expert/skills/douyin-video-summary/scripts/transcribe.mjs
-node --check plugins/social-media-expert/skills/xhs-graphic-generator/scripts/generate.mjs
-node --check plugins/social-media-expert/skills/social-platform-safety/scripts/content_filter.mjs
 node --test plugins/social-media-expert/tests/*.test.mjs
 ```

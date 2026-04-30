@@ -5,7 +5,7 @@
 ## 结构
 
 - `skills/`：4 个技能目录，分别面向桌面卡死分析、Chrome DevTools 调试、GDB 非阻塞 trace 和 `browser-use` CLI 自动化。
-- `tests/`：自述文档与脚本语法的最小回归测试。
+- `tests/`：自述文档与工具语法的最小回归测试。
 - `.mcp.json`：Chrome DevTools MCP 声明，由仓库根安装脚本统一同步。
 
 ## Skills

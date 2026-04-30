@@ -6,7 +6,7 @@ Ruby 开发专家能力，覆盖 Ruby / Rails / RSpec / Bundler / Rake 工作流
 
 - `hooks/`：4 个 `PostToolUse Edit|Write` 守卫脚本。
 - `skills/`：Ruby 开发与 RSpec 测试技能文档。
-- `tests/`：hook、脚本文档回归测试。
+- `tests/`：hook 与文档回归测试。
 
 ## Skills
 
@@ -42,4 +42,3 @@ node --test plugins/ruby-expert/tests/*.test.mjs
 ## 安装 / 卸载
 
 由仓库根目录的 `node scripts/install.mjs` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
-

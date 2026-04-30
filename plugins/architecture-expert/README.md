@@ -5,7 +5,7 @@
 ## 目录结构
 
 - `skills/`：架构、设计、重构、计划与债务治理技能。
-- `tests/`：脚本级回归测试，覆盖 `scan_codebase.mjs`。
+- `tests/`：架构分析回归测试。
 
 ## Agents
 
@@ -52,6 +52,5 @@
 ## 验证命令
 
 ```bash
-node --check skills/architecture-reviewer/scripts/scan_codebase.mjs
 python3 -m unittest tests/test_scan_codebase.py
 ```

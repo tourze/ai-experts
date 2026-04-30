@@ -7,7 +7,7 @@
 | Skill | 用途 |
 |-------|------|
 | `code-review` | 代码质量、命名、职责边界与错误处理审查 |
-| `complexity-reducer` | 降低嵌套、耦合和函数复杂度，含 `complexity_report.mjs` 度量脚本与 Python/Go/TS/Rust 简化指南 |
+| `complexity-reducer` | 降低嵌套、耦合和函数复杂度，含复杂度度量能力与 Python/Go/TS/Rust 简化指南 |
 | `debug-methodology` | 系统化定位 bug 与异常行为 |
 | `refactoring-checklist` | 为重构提供增量、安全的检查清单 |
 | `receiving-code-review` | 当收到代码审查反馈、需要在实施建议之前进行技术评估时使用——特别是反馈不明确或技术上存疑时；要求技术严谨和独立验证，而非表演式同意或盲目实施。 |
@@ -60,6 +60,5 @@
 
 ```bash
 find hooks -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
-node --check skills/complexity-reducer/scripts/complexity_report.mjs
 node --test tests/*.test.mjs
 ```

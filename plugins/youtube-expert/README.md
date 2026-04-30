@@ -5,8 +5,8 @@ YouTube 专家能力，覆盖“视频发现”与“单视频分析”两条链
 ## 结构
 
 - `skills/youtube-analysis/`：字幕抓取、Markdown 脚手架、分析模式参考
-- `skills/youtube-search/`：YouTube 搜索封装脚本与搜索 skill 文档
-- `tests/`：脚本语法与 Node 运行时回归测试
+- `skills/youtube-search/`：YouTube 搜索封装能力与搜索 skill 文档
+- `tests/`：工具语法与 Node 运行时回归测试
 
 ## Skills
 

@@ -6,7 +6,7 @@
 
 - `hooks/`：1 个 PostToolUse Edit\|Write 守卫。
 - `skills/`：5 个 Laravel 顶层技能，以及 `laravel-layering-patterns/references/` 下的专题参考。
-- `tests/`：文档结构与脚本回归测试。
+- `tests/`：文档结构与回归测试。
 
 ## Skills
 
@@ -35,4 +35,3 @@ node --test plugins/laravel-expert/tests/*.test.mjs
 ## 安装 / 卸载
 
 由仓库根目录的 `node scripts/install.mjs` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
-

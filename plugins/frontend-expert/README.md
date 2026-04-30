@@ -6,7 +6,7 @@
 
 - `hooks/`：1 个 SessionStart 环境探测守卫。
 - `skills/`：前端设计与实现 skill
-- `tests/`：脚本回归测试
+- `tests/`：回归测试
 
 ## Skills
 

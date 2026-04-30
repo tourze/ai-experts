@@ -34,17 +34,9 @@
 ```bash
 find tests -type f -name '*.mjs' -print0 | xargs -0 -n1 node --check
 find skills -type f -name '*.py' -print0 | xargs -0 -n1 python3 -m py_compile
-find skills/screenshot/scripts -type f -name '*.swift' -print0 | xargs -0 -n1 swiftc -typecheck
 node --test tests/*.test.mjs
-node skills/baoyu-article-illustrator/scripts/build-batch.mjs --help
-node skills/baoyu-compress-image/scripts/main.mjs --help
-node skills/concept-to-image/scripts/render_to_image.mjs --help
-node skills/concept-to-video/scripts/render_video.mjs --help
-node skills/concept-to-video/scripts/add_audio.mjs --help
-node skills/screenshot/scripts/take_screenshot.mjs --help
 ```
 
 ## 安装 / 卸载
 
 由仓库根目录的 `node scripts/install.mjs` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
-

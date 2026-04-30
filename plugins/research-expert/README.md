@@ -28,7 +28,7 @@
 ## 结构
 
 - `agents/`：自主研究 agent 定义
-- `skills/`：研究类技能与配套脚本
+- `skills/`：研究类技能与配套资料
 - `tests/`：skills 结构自检
 
 ## 运行前提
@@ -45,4 +45,3 @@ node --test plugins/research-expert/tests/*.mjs
 ## 安装 / 卸载
 
 由仓库根目录的 `node scripts/install.mjs` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
-

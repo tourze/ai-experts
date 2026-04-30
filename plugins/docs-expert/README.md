@@ -6,7 +6,7 @@
 
 - `hooks/`：1 个 UserPromptSubmit 结构化表达 primer。
 - `skills/`：文档处理、提案撰写、Markdown/PDF 转换等技能目录。
-- `tests/`：skill 文档和脚本语法的最小回归测试。
+- `tests/`：skill 文档和工具语法的最小回归测试。
 
 ## Skills
 

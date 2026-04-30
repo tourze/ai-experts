@@ -1,12 +1,12 @@
 # typescript-expert
 
-TypeScript 开发专家能力，提供 `PostToolUse Edit|Write` 守卫、统一结构的技能文档，以及针对脚本/文档的本地测试。
+TypeScript 开发专家能力，提供 `PostToolUse Edit|Write` 守卫、统一结构的技能文档，以及针对工具/文档的本地测试。
 
 ## 目录
 
 - `hooks/`：4 个本地 `PostToolUse Edit|Write` 守卫。
 - `skills/`：3 份 TypeScript 主题技能文档，统一采用「适用场景 → 核心约束 → 代码模式 → 检查清单 → 反模式」结构。
-- `tests/`：脚本语法与技能文档结构/链接校验。
+- `tests/`：工具语法与技能文档结构/链接校验。
 
 ## Skills
 

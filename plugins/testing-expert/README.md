@@ -27,11 +27,9 @@
 ## 校验
 
 ```bash
-node --check skills/brutal-honesty-review/scripts/assess-code.mjs
-node --check skills/brutal-honesty-review/scripts/assess-tests.mjs
+node --test tests/*.test.mjs
 ```
 
 ## 安装 / 卸载
 
 由仓库根目录的 `node scripts/install.mjs` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
-
