@@ -149,6 +149,21 @@ const SELF_DESCRIPTION_PLUGIN_TERMS = [
   "插件加载路径",
 ];
 
+const SKILL_SCRIPT_DISCLOSURE_PATTERNS = [
+  {
+    label: "仓库内 skill scripts 路径",
+    regex: /plugins\/[^/\s`]+\/skills\/[^/\s`]+\/scripts\/[^\s`)]+/,
+  },
+  {
+    label: "插件内 skill scripts 路径",
+    regex: /(?:^|[\s"`'(])skills\/[^/\s`]+\/scripts\/[^\s`)]+/,
+  },
+  {
+    label: "已安装 skill scripts 路径",
+    regex: /\$[A-Z_]+\/scripts\/[^\s`)]+/,
+  },
+];
+
 test("非 skill-expert README 不使用本仓库插件自描述", () => {
   for (const pluginRoot of getPluginRoots()) {
     if (pluginRoot.endsWith("/skill-expert")) {
@@ -186,6 +201,25 @@ test("所有插件 README 都包含安装、卸载和验证入口", () => {
     );
     assert.match(verifySection, /```[\s\S]*?```/, `${readmePath} 的验证章节缺少命令块`);
   }
+});
+
+test("插件 README 不直接披露 skill 内部 scripts 调用方式", () => {
+  const violations = [];
+
+  for (const pluginRoot of getPluginRoots()) {
+    const readmePath = resolve(pluginRoot, "README.md");
+    const lines = readFileSync(readmePath, "utf-8").split("\n");
+
+    lines.forEach((line, index) => {
+      for (const pattern of SKILL_SCRIPT_DISCLOSURE_PATTERNS) {
+        if (pattern.regex.test(line)) {
+          violations.push(`${readmePath}:${index + 1}: ${pattern.label}: ${line.trim()}`);
+        }
+      }
+    });
+  }
+
+  assert.deepEqual(violations, []);
 });
 
 test("所有插件 README 的技能列表与顶级 skill 目录保持一致", () => {
