@@ -3,6 +3,7 @@
 import { accessSync, constants } from "node:fs";
 import { delimiter, join } from "node:path";
 import { spawnSync } from "node:child_process";
+import { downloadFile, parseFileTransferArgs, uploadFile } from "./file_transfer.mjs";
 import { buildPowerShellCommand, decodeBytes, parsePowerShellEnvelope } from "./powershell_output.mjs";
 
 class PrlctlError extends Error {}
@@ -183,6 +184,63 @@ function buildGuestCommand(shellName, commandParts) {
   throw new PrlctlError(`不支持的 shell 类型: ${shellName}`);
 }
 
+function validateGuestLoginOptions(options) {
+  if (options.currentUser && options.user) {
+    throw new PrlctlError("`--current-user` 与 `--user` 不能同时使用。");
+  }
+  if (options.passwordEnv && !options.user) {
+    throw new PrlctlError("`--password-env` 只能与 `--user` 一起使用。");
+  }
+  if (options.user && !options.passwordEnv) {
+    throw new PrlctlError("使用 `--user` 时必须同时传入 `--password-env`，避免交互式密码提示。");
+  }
+}
+
+function appendGuestLoginArgs(prlctlArgs, options) {
+  if (options.currentUser) prlctlArgs.push("--current-user");
+  if (options.user) prlctlArgs.push("--user", options.user);
+  if (options.passwordEnv) {
+    const password = process.env[options.passwordEnv];
+    if (password === undefined) throw new PrlctlError(`环境变量不存在: ${options.passwordEnv}`);
+    prlctlArgs.push("--password", password);
+  }
+  if (options.resolvePaths) prlctlArgs.push("--resolve-paths");
+  if (options.advancedTerminal) prlctlArgs.push("--use-advanced-terminal");
+}
+
+function runGuestCommand(vm, options, commandParts, { check = false } = {}) {
+  const prlctlArgs = ["exec", vm.uuid];
+  appendGuestLoginArgs(prlctlArgs, options);
+  prlctlArgs.push(...buildGuestCommand(options.shell, Array.isArray(commandParts) ? commandParts : [commandParts]));
+
+  const result = runPrlctl(prlctlArgs, { check: false });
+  let completed = result;
+  if (options.shell === "powershell") {
+    const decoded = parsePowerShellEnvelope(result);
+    if (decoded?.error) throw new PrlctlError(decoded.error);
+    if (decoded) completed = decoded;
+  }
+  if (check && completed.returncode !== 0) {
+    throw new PrlctlError(formatFailure(completed.args, completed));
+  }
+  return completed;
+}
+
+function runGuestRawCommand(vm, options, commandParts, { check = false } = {}) {
+  const parts = Array.isArray(commandParts) ? commandParts : [commandParts];
+  if (parts.length === 0) throw new PrlctlError("缺少客体命令。");
+
+  const prlctlArgs = ["exec", vm.uuid];
+  appendGuestLoginArgs(prlctlArgs, options);
+  prlctlArgs.push(...parts);
+
+  const completed = runPrlctl(prlctlArgs, { check: false });
+  if (check && completed.returncode !== 0) {
+    throw new PrlctlError(formatFailure(completed.args, completed));
+  }
+  return completed;
+}
+
 function emitCommandResult(result) {
   if (result.stdout) {
     process.stdout.write(result.stdout);
@@ -315,41 +373,34 @@ function commandInfo(args) {
 
 function commandExec(args) {
   const options = parseExec(args);
-  if (options.currentUser && options.user) {
-    throw new PrlctlError("`--current-user` 与 `--user` 不能同时使用。");
-  }
-  if (options.passwordEnv && !options.user) {
-    throw new PrlctlError("`--password-env` 只能与 `--user` 一起使用。");
-  }
-  if (options.user && !options.passwordEnv) {
-    throw new PrlctlError("使用 `--user` 时必须同时传入 `--password-env`，避免交互式密码提示。");
-  }
+  validateGuestLoginOptions(options);
 
   const vm = resolveVm(options.selector);
-  const prlctlArgs = ["exec", vm.uuid];
-  if (options.currentUser) prlctlArgs.push("--current-user");
-  if (options.user) prlctlArgs.push("--user", options.user);
-  if (options.passwordEnv) {
-    const password = process.env[options.passwordEnv];
-    if (password === undefined) throw new PrlctlError(`环境变量不存在: ${options.passwordEnv}`);
-    prlctlArgs.push("--password", password);
-  }
-  if (options.resolvePaths) prlctlArgs.push("--resolve-paths");
-  if (options.advancedTerminal) prlctlArgs.push("--use-advanced-terminal");
-  prlctlArgs.push(...buildGuestCommand(options.shell, options.command));
-
   if (options.dryRun) {
+    const prlctlArgs = ["exec", vm.uuid];
+    appendGuestLoginArgs(prlctlArgs, options);
+    prlctlArgs.push(...buildGuestCommand(options.shell, options.command));
     printJson({ vm, command: ["prlctl", ...prlctlArgs] });
     return 0;
   }
 
-  const result = runPrlctl(prlctlArgs, { check: false });
-  if (options.shell === "powershell") {
-    const decoded = parsePowerShellEnvelope(result);
-    if (decoded?.error) throw new PrlctlError(decoded.error);
-    if (decoded) return emitCommandResult(decoded);
-  }
-  return emitCommandResult(result);
+  return emitCommandResult(runGuestCommand(vm, options, options.command, { check: false }));
+}
+
+function commandUpload(args) {
+  const options = parseFileTransferArgs(args, "upload", PrlctlError);
+  validateGuestLoginOptions(options);
+  const vm = resolveVm(options.selector);
+  printJson(uploadFile(vm, options, { runGuestCommand, runGuestRawCommand }, PrlctlError));
+  return 0;
+}
+
+function commandDownload(args) {
+  const options = parseFileTransferArgs(args, "download", PrlctlError);
+  validateGuestLoginOptions(options);
+  const vm = resolveVm(options.selector);
+  printJson(downloadFile(vm, options, { runGuestCommand, runGuestRawCommand }, PrlctlError));
+  return 0;
 }
 
 function commandPower(args) {
@@ -382,6 +433,8 @@ function printUsage() {
   node prlctl_helper.mjs status <selector> [--json]
   node prlctl_helper.mjs info <selector>
   node prlctl_helper.mjs exec <selector> [options] -- <command>
+  node prlctl_helper.mjs upload <selector> [options] -- <local-path> <guest-path>
+  node prlctl_helper.mjs download <selector> [options] -- <guest-path> <local-path>
   node prlctl_helper.mjs power <selector> <action> [--option VALUE] [--dry-run]
   node prlctl_helper.mjs snapshots <selector>`);
 }
@@ -404,6 +457,10 @@ function main(argv) {
       return commandInfo(args);
     case "exec":
       return commandExec(args);
+    case "upload":
+      return commandUpload(args);
+    case "download":
+      return commandDownload(args);
     case "power":
       return commandPower(args);
     case "snapshots":

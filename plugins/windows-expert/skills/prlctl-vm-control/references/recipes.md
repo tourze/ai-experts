@@ -31,6 +31,10 @@
   - `node scripts/prlctl_helper.mjs exec '<vm-selector>' --shell powershell -- 'Get-Service | Where-Object Status -eq "Running" | Select-Object -First 20 Name,DisplayName,Status'`
 - 执行 `cmd.exe` 命令：
   - `node scripts/prlctl_helper.mjs exec '<vm-selector>' --shell cmd -- 'dir C:\\'`
+- 上传文件到桌面登录用户上下文：
+  - `node scripts/prlctl_helper.mjs upload '<vm-selector>' --current-user --shell powershell -- ./local.txt 'C:\Users\air\Desktop\local.txt'`
+- 从客体下载文件：
+  - `node scripts/prlctl_helper.mjs download '<vm-selector>' --current-user --shell powershell -- 'C:\Users\air\Desktop\result.zip' ./result.zip`
 
 ### 用户上下文选择
 
@@ -53,6 +57,10 @@
   - `node scripts/prlctl_helper.mjs exec '<vm-selector>' --shell bash -- 'ip addr'`
 - 查看 systemd 服务：
   - `node scripts/prlctl_helper.mjs exec '<vm-selector>' --shell bash -- 'systemctl --type=service --state=running --no-pager | head -n 30'`
+- 上传文件：
+  - `node scripts/prlctl_helper.mjs upload '<vm-selector>' --shell bash -- ./local.txt /tmp/local.txt`
+- 下载文件：
+  - `node scripts/prlctl_helper.mjs download '<vm-selector>' --shell bash -- /tmp/result.tar.gz ./result.tar.gz`
 
 ## 风险动作前检查
 
