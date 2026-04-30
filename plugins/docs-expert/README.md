@@ -29,6 +29,7 @@
 | `proposal-review` | 提案方法论评审 |
 | `proposal-writer` | 商业提案撰写 |
 | `ppt-generate` | 当用户要从零生成演示文稿、从文档/主题生成 PPT、或要求 AI 端到端制作幻灯片时使用。 |
+| `tutorial-builder` | 来源支撑的完整教程、学习包、章节视觉与 DOCX/PDF/HTML 导出规划 |
 
 ## Agents
 

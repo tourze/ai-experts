@@ -1,0 +1,32 @@
+cases:
+  - id: positive_tutorial_builder_primary
+    prompt: "我有一组论文、GitHub 仓库和笔记，想做成适合初学者的完整教程，带章节图、练习、来源附录，并导出 DOCX/PDF/HTML。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as tutorial-builder territory"
+      - "uses user material as the tutorial spine before adding external research"
+      - "plans chapter visuals, exercises, source appendix, and export formats"
+    trigger_expected: true
+
+  - id: positive_thin_topic_authority_research
+    prompt: "帮我写一份从零学习向量数据库的长教程，要有权威来源、章节大纲、可视化解释和 PDF 交付。"
+    fixtures: []
+    rubric:
+      - "treats a thin topic as requiring authority-first research"
+      - "builds a beginner learning path rather than a short answer"
+      - "routes PDF delivery through a markdown-first export plan"
+    trigger_expected: true
+
+  - id: negative_adjacent_user_guide_writing
+    prompt: "这个需求应该交给 user-guide-writing：给终端用户写产品操作手册、FAQ、上手指南，说明怎么登录、创建项目和导出报表。"
+    fixtures: []
+    rubric:
+      - "product operation manuals should not trigger tutorial-builder"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

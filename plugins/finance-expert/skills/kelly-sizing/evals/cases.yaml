@@ -1,0 +1,41 @@
+cases:
+  - id: positive_kelly_sizing_primary
+    prompt: "我有 10 万预算，想用 Kelly Criterion 判断这个投资机会该投多少，胜率大概 58%，赔率和最大亏损都能估。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as kelly-sizing territory"
+      - "shows full Kelly and conservative fractional Kelly rather than only a raw formula"
+      - "checks capital base, downside, confidence, caps, and no-allocation conditions"
+    trigger_expected: true
+
+  - id: positive_multi_opportunity_resource_allocation
+    prompt: "三个营销实验都可能赚钱，但它们可能受同一批流量影响。帮我按 Kelly 思路分配预算，并考虑相关性 haircut。"
+    fixtures: []
+    rubric:
+      - "handles multiple opportunities against one resource pool"
+      - "applies dependence haircut when correlation is unknown or shared"
+      - "keeps total exposure cap and reserve logic visible"
+    trigger_expected: true
+
+  - id: positive_partial_loss_binary_sizing
+    prompt: "我有 20 万资金，一个交易机会胜率估 55%，赢时赚 18%，止损最多亏 6%。用 Kelly 算建议仓位，但不要直接上 full Kelly。"
+    fixtures: []
+    rubric:
+      - "recognizes capped downside as partial-loss binary sizing"
+      - "uses win multiple b and loss multiple a instead of assuming full-stake loss"
+      - "applies fractional Kelly, caps, and no-allocation checks before action"
+    trigger_expected: true
+
+  - id: negative_adjacent_risk_metrics
+    prompt: "这个需求应该交给 risk-metrics-calculation：计算投资组合 VaR、CVaR、Sharpe、Sortino 和最大回撤。"
+    fixtures: []
+    rubric:
+      - "portfolio risk monitoring without sizing a specific opportunity should not trigger kelly-sizing"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

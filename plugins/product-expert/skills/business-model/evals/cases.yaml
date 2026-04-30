@@ -1,18 +1,38 @@
 cases:
   - id: positive_business_model_primary
-    prompt: "我需要需要创建、补全或复盘商业模式画布时使用；帮助梳理客户、价值、渠道、收入、成本与关键资源之间的联动关系。"
+    prompt: "帮我把一个 AI 客服新想法设计成 3-5 个商业模式选项，比较低摩擦、高毛利和高壁垒路径，并写清收入公式和验证计划。"
     fixtures: []
     rubric:
       - "recognizes the request as business-model territory"
-      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+      - "selects idea_to_model branch"
+      - "includes evidence tiers, market environment, formula ranges, and validation plan"
     trigger_expected: true
 
   - id: positive_business_model_realistic
-    prompt: "帮我处理这个场景：新业务立项、现有业务诊断、融资前商业模式梳理。"
+    prompt: "诊断这个 SaaS 网站的商业模式：当前怎么收费、还有哪些变现层，直接竞品和跨行业 analog 各给一批，并评估 AI credits 的机会。"
     fixtures: []
     rubric:
-      - "matches a concrete use case described by the skill"
-      - "keeps the response focused on the skill's domain boundary"
+      - "selects model_diagnosis branch"
+      - "distinguishes facts, estimates, hypotheses, and recommendations"
+      - "covers direct competitors, cross-industry analogs, AI leverage, and upgrade recommendations"
+    trigger_expected: true
+
+  - id: positive_company_case_study
+    prompt: "研究 HubSpot 的商业模式，拆解利润池、环境优势、可迁移模式和哪些经验不适合直接复制。"
+    fixtures: []
+    rubric:
+      - "selects company_case_study branch"
+      - "separates transferable patterns from environment-dependent advantages"
+      - "uses official or high-tier evidence for major claims when available"
+    trigger_expected: true
+
+  - id: positive_business_model_report_contract
+    prompt: "请用 JSON 和 HTML 报告契约输出一家 AI 写作 SaaS 的商业模式诊断，字段要能给前端渲染。"
+    fixtures: []
+    rubric:
+      - "selects model_diagnosis branch"
+      - "includes the shared JSON fields and branch-specific fields from the report contract"
+      - "keeps HTML modules in the documented order, including evidence map, competitors, analogs, AI fit, risk, and appendix"
     trigger_expected: true
 
   - id: negative_adjacent_3c_strategic_triangle
