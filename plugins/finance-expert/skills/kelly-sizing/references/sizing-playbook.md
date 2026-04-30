@@ -1,5 +1,7 @@
 # Kelly Sizing Playbook
 
+本文件是 kelly-sizing `SKILL.md` 的拆分内容，包含 `scripts/kelly_sizer.mjs` 的输入格式与计算约束。
+
 ## Brief 字段
 
 ```json
@@ -15,6 +17,12 @@
   "opportunities": [],
   "confidence_level": "high | medium | low | very_low"
 }
+```
+
+`scripts/kelly_sizer.mjs` 接受直接 brief，也接受包在 `kelly_sizing` 下的聚合输入：
+
+```bash
+node scripts/kelly_sizer.mjs input.json --section all --format json
 ```
 
 ## 三种路径
@@ -34,6 +42,26 @@ q = 1 - p
 
 当 `a = 1` 时，公式退化为常见 full-stake loss Kelly：`f* = (b * p - q) / b`。
 
+CLI 输入：
+
+```json
+{
+  "capital_base": 100000,
+  "confidence_level": "medium",
+  "constraints": {
+    "total_exposure_cap": 0.25,
+    "single_opportunity_cap": 0.10,
+    "min_cash_reserve_ratio": 0.50
+  },
+  "binary": {
+    "name": "Paid acquisition test",
+    "win_probability": 0.58,
+    "win_return_multiple": 1.2,
+    "loss_multiple": 1
+  }
+}
+```
+
 ## 情景机会
 
 ```text
@@ -42,6 +70,57 @@ subject to 1 + f * r_i > 0
 ```
 
 `r_i` 是每投入 1 单位在情景 `i` 下的净收益倍数。
+
+CLI 输入：
+
+```json
+{
+  "capital_base": 100000,
+  "scenario": {
+    "name": "New product launch",
+    "confidence_level": "medium",
+    "scenarios": [
+      { "name": "downside", "probability": 0.30, "return_multiple": -0.40 },
+      { "name": "base", "probability": 0.50, "return_multiple": 0.35 },
+      { "name": "upside", "probability": 0.20, "return_multiple": 1.20 }
+    ]
+  }
+}
+```
+
+情景概率必须加总为 `1`；`return_multiple < -1` 视为超出单次投入亏损边界，脚本会拒绝。
+
+## 多机会分配输入
+
+```json
+{
+  "capital_base": 100000,
+  "confidence_level": "medium",
+  "constraints": {
+    "total_exposure_cap": 0.25,
+    "single_opportunity_cap": 0.10
+  },
+  "multi": {
+    "dependence": "unknown",
+    "opportunities": [
+      {
+        "name": "Channel A",
+        "win_probability": 0.58,
+        "win_return_multiple": 1.2,
+        "loss_multiple": 1
+      },
+      {
+        "name": "Channel B",
+        "win_probability": 0.62,
+        "win_return_multiple": 0.8,
+        "loss_multiple": 1
+      }
+    ]
+  }
+}
+```
+
+多机会路径会按 `standalone full Kelly -> fractional Kelly -> dependence haircut -> single cap -> total exposure scaling` 处理。未知相关性默认 `unknown = 0.50`，并在输出 `warnings` 中标记。
 
 ## 默认折扣
 

@@ -336,6 +336,7 @@ node --test tests/install-script.test.mjs tests/cleanup-legacy.test.mjs
 3. **只改可执行规则**：`SKILL.md` 放触发后必须立即执行的心智模型、流程和红线；大段背景、示例和素材放 `references/`、`scripts/` 或 `assets/`。
 4. **防合理化**：对容易被 agent 跳过的规则，用 Red Flags / Rationalizations 表写清"危险念头"和"现实后果"。
 5. **做对照验证**：重要 skill 变更优先用 [skill-creator](plugins/skill-expert/skills/skill-creator/SKILL.md) 跑 with-skill vs baseline；源材料很厚时，用 [skill-verifier](plugins/skill-expert/skills/skill-verifier/SKILL.md) 做闭卷覆盖验证。
+6. **逐层披露脚本**：插件 README 不直接暴露 `skills/<skill>/scripts/*` 的调用命令；脚本用法只写在对应 `SKILL.md` 或 `references/` 中。README 只保留 skill 级入口、依赖说明和插件级验证命令，避免绕过 skill 直接使用脚本。
 
 仓库级质量用 `node scripts/skill-quality-report.mjs --json` 看结构、description、eval 覆盖、触发域冲突和已落盘的 with-skill vs baseline 效果评测；尚未覆盖的真实效果仍要看 eval 输出、压力场景、telemetry 和人工复盘。当前自动化分约 95 / 100，eval 覆盖 100%，CSO（description 触发域审计）通过 100%。
 
@@ -369,7 +370,7 @@ find plugins -name '*.test.mjs' -print0 | xargs -0 node --test
 node --test tests/*.test.mjs
 ```
 
-更新具体插件后，继续进入对应插件目录或直接运行其 README 中列出的验证命令。仓库根 README 只负责入口说明；插件行为、hooks 与依赖以各插件 README 为准。
+更新具体插件后，优先运行插件级测试或仓库级测试。仓库根 README 只负责入口说明；插件行为、hooks 与依赖以各插件 README 为准；单个 skill 的脚本调用方式只在对应 `SKILL.md` / `references/` 内披露。
 
 ## 触发审计
 

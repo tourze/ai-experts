@@ -4,10 +4,10 @@
 
 ## 目录
 
-- `skills/financial-analyst/`：4 个可直接运行的 CLI 脚本与样例数据
-- `skills/creating-financial-models/`：依赖 `numpy`/`pandas` 的 DCF 与敏感性建模脚本
-- `skills/kelly-sizing/`：Kelly Criterion 仓位、预算和资源分配方法
-- `skills/risk-metrics-calculation/`：风险指标 Node CLI、样例数据与经校验的代码模式
+- `skills/financial-analyst/`：财报比率、DCF、预算偏差与滚动预测分析工作流
+- `skills/creating-financial-models/`：DCF 与敏感性建模工作流，依赖 `numpy`/`pandas`
+- `skills/kelly-sizing/`：Kelly Criterion 仓位、预算和资源分配 sizing
+- `skills/risk-metrics-calculation/`：VaR、CVaR、Sharpe、Sortino 与回撤等风险指标计算
 
 ## Skills
 
@@ -18,12 +18,12 @@
 | `kelly-sizing` | Kelly Criterion / 凯利公式下的投注、投资和资源池分配 sizing |
 | `risk-metrics-calculation` | VaR、CVaR、Sharpe、Sortino 与回撤等风险指标计算 |
 
-## Python 依赖
+## 运行时与依赖
 
-- `financial-analyst`：CLI 使用 Node.js `.mjs`
+- `financial-analyst`：需要 Node.js
 - `creating-financial-models`：需要 `numpy`、`pandas`
-- `kelly-sizing`：方法型 skill，无额外脚本依赖
-- `risk-metrics-calculation`：CLI 使用 Node.js `.mjs`
+- `kelly-sizing`：需要 Node.js
+- `risk-metrics-calculation`：需要 Node.js
 
 安装第三方依赖：
 
@@ -44,13 +44,9 @@ pip install numpy pandas
 ## 验证命令
 
 ```bash
-node --check plugins/finance-expert/skills/financial-analyst/scripts/ratio_calculator.mjs
-node --check plugins/finance-expert/skills/financial-analyst/scripts/ratio_input_validation.mjs
-node --check plugins/finance-expert/skills/financial-analyst/scripts/dcf_valuation.mjs
-node --check plugins/finance-expert/skills/financial-analyst/scripts/budget_variance_analyzer.mjs
-node --check plugins/finance-expert/skills/financial-analyst/scripts/forecast_builder.mjs
-node --check plugins/finance-expert/skills/risk-metrics-calculation/scripts/risk_metrics_calculator.mjs
 node --test plugins/finance-expert/tests/*.test.mjs
 python3 -m unittest discover -s plugins/finance-expert/tests -p 'test_*.py'
 python3 -m py_compile $(find plugins/finance-expert -name '*.py' -print)
 ```
+
+具体操作方式只在对应 `SKILL.md` / `references/` 中披露。

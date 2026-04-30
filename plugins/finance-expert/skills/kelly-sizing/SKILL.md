@@ -14,6 +14,9 @@ description: 当用户要用 Kelly Criterion / 凯利公式决定投注、投资
 
 ## 核心约束
 
+- `scripts/kelly_sizer.mjs` 使用 Node.js `.mjs` 实现，只依赖本机 Node 运行时。
+- CLI 支持二元机会、情景机会和多机会分配，可读取直接 JSON 或聚合字段 `kelly_sizing`。
+- `capital_base`、胜率/情景概率、收益倍数、亏损倍数和约束必须显式建模；缺字段时先补输入，不要凭感觉给仓位。
 - 默认使用 `fractional Kelly`，不要把 full Kelly 当成可直接执行的仓位。
 - 每个关键数字必须标注 `observed`、`estimated` 或 `assumed`。
 - 多机会分配时，未知相关性按 `unknown = 0.50` haircut 处理，不假装独立。
@@ -24,10 +27,45 @@ description: 当用户要用 Kelly Criterion / 凯利公式决定投注、投资
 
 1. 先把自然语言整理成 brief，字段见 [sizing playbook](references/sizing-playbook.md)。
 2. 判断路径：`binary-bet`、`scenario-sizing` 或 `multi-opportunity-allocation`。
-3. 计算 full Kelly；二元机会必须先确认赢时收益倍数 `b` 和输时损失倍数 `a`，再应用 fractional Kelly、相关性 haircut、单机会 cap 和总暴露 cap。
-4. 输出 action first：先给 `no allocation / observe / tiny test / small / medium / large`，再给公式。
+3. 有结构化输入时优先运行 `scripts/kelly_sizer.mjs`；没有完整输入时先列缺口，不要手算替代校验。
+4. 计算 full Kelly；二元机会必须先确认赢时收益倍数 `b` 和输时损失倍数 `a`，再应用 fractional Kelly、相关性 haircut、单机会 cap 和总暴露 cap。
+5. 输出 action first：先给 `no allocation / observe / tiny test / small / medium / large`，再给公式。
 
 ## 代码模式
+
+### 模式 1：完整样例
+
+```bash
+node scripts/kelly_sizer.mjs assets/kelly_sizing_sample.json --format json
+```
+
+### 模式 2：只输出多机会分配
+
+```bash
+node scripts/kelly_sizer.mjs assets/kelly_sizing_sample.json --section multi --format json
+```
+
+### 模式 3：直接二元机会输入
+
+```json
+{
+  "capital_base": 100000,
+  "confidence_level": "medium",
+  "constraints": {
+    "total_exposure_cap": 0.25,
+    "single_opportunity_cap": 0.10
+  },
+  "binary": {
+    "win_probability": 0.58,
+    "win_return_multiple": 1.2,
+    "loss_multiple": 1
+  }
+}
+```
+
+情景机会与多机会输入格式见 [references/sizing-playbook.md](references/sizing-playbook.md)。
+
+## 公式复核
 
 ```text
 binary:
