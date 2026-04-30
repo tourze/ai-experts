@@ -18,8 +18,8 @@ const pluginRoot = resolve("plugins/devops-expert");
 const nodeScripts = [
   "skills/gh-address-comments/scripts/fetch_comments.mjs",
   "skills/gh-fix-ci/scripts/inspect_pr_checks.mjs",
-  "skills/remote-ops/scripts/install-sshpass.mjs",
-  "skills/remote-ops/scripts/ssh-exec.mjs",
+  "skills/remote-ssh-command/scripts/install-sshpass.mjs",
+  "skills/remote-ssh-command/scripts/ssh-exec.mjs",
 ];
 
 test("DevOps Node scripts pass syntax checks", () => {
@@ -74,7 +74,7 @@ bucket
 });
 
 test("ssh-exec.mjs parses password config and builds sshpass invocation", async () => {
-  const mod = await import(resolve(pluginRoot, "skills/remote-ops/scripts/ssh-exec.mjs"));
+  const mod = await import(resolve(pluginRoot, "skills/remote-ssh-command/scripts/ssh-exec.mjs"));
   const config = mod.parseHostConfig({
     host: "1.2.3.4",
     user: "root",
@@ -105,8 +105,8 @@ test("ssh-exec.mjs parses password config and builds sshpass invocation", async 
 });
 
 test("ssh-exec.mjs enforces ~/.host config path and writes JSONL history", async () => {
-  const mod = await import(resolve(pluginRoot, "skills/remote-ops/scripts/ssh-exec.mjs"));
-  const home = mkdtempSync(join(tmpdir(), "remote-ops-home-"));
+  const mod = await import(resolve(pluginRoot, "skills/remote-ssh-command/scripts/ssh-exec.mjs"));
+  const home = mkdtempSync(join(tmpdir(), "remote-ssh-command-home-"));
 
   try {
     const hostDir = join(home, ".host");
@@ -146,7 +146,7 @@ test("ssh-exec.mjs enforces ~/.host config path and writes JSONL history", async
 });
 
 test("install-sshpass.mjs resolves platform install plans", async () => {
-  const mod = await import(resolve(pluginRoot, "skills/remote-ops/scripts/install-sshpass.mjs"));
+  const mod = await import(resolve(pluginRoot, "skills/remote-ssh-command/scripts/install-sshpass.mjs"));
   const checker = (commands) => (command) => commands.has(command);
 
   assert.deepEqual(

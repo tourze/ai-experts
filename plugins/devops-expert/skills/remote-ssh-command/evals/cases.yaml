@@ -3,7 +3,7 @@ cases:
     prompt: "帮我通过 SSH 到 1.2.3.4 执行 systemctl status nginx，并记录执行历史。"
     fixtures: []
     rubric:
-      - "recognizes the request as remote-ops territory"
+      - "recognizes the request as remote-ssh-command territory"
       - "uses the JSON host config plus stdin command execution workflow"
     trigger_expected: true
 
@@ -19,7 +19,7 @@ cases:
     prompt: "这个需求应该交给 service-monitor：确认 HTTP 健康检查端点是否响应。"
     fixtures: []
     rubric:
-      - "adjacent service-monitor requests should not trigger remote-ops"
+      - "adjacent service-monitor requests should not trigger remote-ssh-command"
     trigger_expected: false
 
   - id: negative_general_unrelated_task
