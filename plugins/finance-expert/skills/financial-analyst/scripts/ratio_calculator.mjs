@@ -12,6 +12,7 @@
  */
 
 import { readFileSync } from "node:fs";
+import { validateRatioInput } from "./ratio_input_validation.mjs";
 
 const BENCHMARKS = {
   roe: [0.08, 0.15, 0.25],
@@ -444,7 +445,16 @@ function main() {
     throw error;
   }
 
-  const calculator = new FinancialRatioCalculator(normalizeInputData(data));
+  const normalized = normalizeInputData(data);
+  try {
+    validateRatioInput(normalized, args.category);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    process.exitCode = 1;
+    return;
+  }
+
+  const calculator = new FinancialRatioCalculator(normalized);
 
   if (args.category) {
     const methodMap = {

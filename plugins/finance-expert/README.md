@@ -45,6 +45,7 @@ pip install numpy pandas
 
 ```bash
 node --check plugins/finance-expert/skills/financial-analyst/scripts/ratio_calculator.mjs
+node --check plugins/finance-expert/skills/financial-analyst/scripts/ratio_input_validation.mjs
 node --check plugins/finance-expert/skills/financial-analyst/scripts/dcf_valuation.mjs
 node --check plugins/finance-expert/skills/financial-analyst/scripts/budget_variance_analyzer.mjs
 node --check plugins/finance-expert/skills/financial-analyst/scripts/forecast_builder.mjs

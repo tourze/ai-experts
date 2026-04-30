@@ -82,8 +82,8 @@ node scripts/forecast_builder.mjs assets/sample_financial_data.json --scenarios 
 ```
 ```bash
 node scripts/ratio_calculator.mjs ./input.json
-# Error: missing required field "revenue"
-# 脚本期望 snake_case 标准命名
+# Error: missing required fields "income_statement.revenue", ...
+# 脚本期望按 section 分组的 snake_case 标准命名
 ```
 
 ### PASS: 先整理 JSON
@@ -92,7 +92,14 @@ node scripts/ratio_calculator.mjs ./input.json
 {
   "income_statement": {
     "revenue": 1000,
-    "operating_expense": 800,
+    "cost_of_goods_sold": 500,
+    "operating_income": 200,
+    "net_income": 120,
+    ...
+  },
+  "balance_sheet": {
+    "total_equity": 600,
+    "total_assets": 1200,
     ...
   }
 }
@@ -104,14 +111,15 @@ node scripts/ratio_calculator.mjs ./input.json
 node scripts/ratio_calculator.mjs input.json
 # ROE: 0.0
 # 业务方："ROE 等于 0？这公司有问题！"
-→ 实际：输入 equity 字段错位到 balance_sheet 外
-→ 脚本跑了，但分母为 0
+→ 实际：`balance_sheet.total_equity` 字段存在但值为 0
+→ 脚本可计算输入结构，但分母无业务含义
 ```
 
 ### PASS: 先核对输出合理性
 
 ```
 ROE = 0 → 先看输入 equity 是否 > 0
-所有比率都 0 → 输入结构很可能错位
+缺失必填字段 → 脚本直接报错，先修 JSON 路径
+所有比率都 0 → 字段存在但关键值可能为 0
 参考 assets/ratio_analysis_sample.json 核对字段路径
 ```

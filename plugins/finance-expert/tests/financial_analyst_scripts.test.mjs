@@ -1,11 +1,14 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { resolve } from "node:path";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 import test from "node:test";
 
 const pluginRoot = resolve("plugins/finance-expert");
 const financialAnalystRoot = resolve(pluginRoot, "skills/financial-analyst");
 const ratioScript = resolve(financialAnalystRoot, "scripts/ratio_calculator.mjs");
+const ratioValidationScript = resolve(financialAnalystRoot, "scripts/ratio_input_validation.mjs");
 const dcfScript = resolve(financialAnalystRoot, "scripts/dcf_valuation.mjs");
 const budgetScript = resolve(financialAnalystRoot, "scripts/budget_variance_analyzer.mjs");
 const forecastScript = resolve(financialAnalystRoot, "scripts/forecast_builder.mjs");
@@ -47,8 +50,22 @@ function runForecast(args = []) {
   return JSON.parse(result.stdout);
 }
 
+function runScriptWithPayload(script, payload, args = []) {
+  const dir = mkdtempSync(join(tmpdir(), "financial-analyst-"));
+  const inputFile = join(dir, "input.json");
+
+  try {
+    writeFileSync(inputFile, JSON.stringify(payload), "utf-8");
+    return spawnSync("node", [script, inputFile, ...args], {
+      encoding: "utf-8",
+    });
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+}
+
 test("financial analyst Node CLI 通过语法检查", () => {
-  for (const script of [ratioScript, dcfScript, budgetScript, forecastScript]) {
+  for (const script of [ratioScript, ratioValidationScript, dcfScript, budgetScript, forecastScript]) {
     const result = spawnSync("node", ["--check", script], {
       encoding: "utf-8",
     });
@@ -89,6 +106,35 @@ test("ratio_calculator.mjs 支持单分类输出", () => {
 
   assert.equal(output.category, "profitability");
   assert.deepEqual(Object.keys(output.ratios), ["roe", "roa", "gross_margin", "operating_margin", "net_margin"]);
+});
+
+test("ratio_calculator.mjs 拒绝缺失必填字段", () => {
+  const result = runScriptWithPayload(ratioScript, { "Net Revenue": 1000 }, ["--category", "profitability", "--format", "json"]);
+
+  assert.equal(result.status, 1);
+  assert.equal(result.stdout, "");
+  assert.match(result.stderr, /missing required fields/);
+  assert.match(result.stderr, /income_statement\.revenue/);
+  assert.match(result.stderr, /balance_sheet\.total_equity/);
+});
+
+test("ratio_calculator.mjs 拒绝非数值必填字段", () => {
+  const result = runScriptWithPayload(ratioScript, {
+    income_statement: {
+      revenue: "1000",
+      cost_of_goods_sold: 500,
+      operating_income: 100,
+      net_income: 80,
+    },
+    balance_sheet: {
+      total_equity: 400,
+      total_assets: 1000,
+    },
+  }, ["--category", "profitability", "--format", "json"]);
+
+  assert.equal(result.status, 1);
+  assert.equal(result.stdout, "");
+  assert.match(result.stderr, /required field "income_statement\.revenue" must be finite number/);
 });
 
 test("dcf_valuation.mjs 接受聚合样例并输出稳定 JSON", () => {
