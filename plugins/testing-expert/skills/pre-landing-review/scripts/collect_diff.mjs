@@ -3,7 +3,8 @@
 // 保守式脚本化目标：把 SKILL.md 中重复出现的 git diff 命令收敛到一处，
 // 让审查者直接拿 JSON，不用每次粘贴命令。判断仍由模型完成。
 import { execFileSync } from "node:child_process";
-import { pathToFileURL } from "node:url";
+import { realpathSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
 function gitOut(args, { cwd } = {}) {
   return execFileSync("git", args, { cwd, encoding: "utf-8" }).trimEnd();
@@ -50,7 +51,11 @@ function parseArgs(argv) {
   return args;
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+function isMain() {
+  return process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url);
+}
+
+if (isMain()) {
   const args = parseArgs(process.argv.slice(2));
   try {
     const result = collectDiff(args);

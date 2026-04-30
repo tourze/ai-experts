@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-import { pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import { resolveSerial, runAdbCommand } from "./common.mjs";
 import { encodeAdbText } from "./keyboard.mjs";
 import { ScreenMapper } from "./screen_mapper.mjs";
+import { realpathSync } from "node:fs";
 
 export class Navigator {
   constructor(serial = null) {
@@ -190,7 +191,7 @@ export async function main(argv = process.argv.slice(2), sleep = (ms) => new Pro
   return 0;
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
     process.exitCode = await main();
   } catch (error) {

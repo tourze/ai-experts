@@ -20,9 +20,9 @@
  */
 
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, realpathSync } from "node:fs";
 import { basename, dirname, resolve } from "node:path";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import { applySessionFilter, EXPLICIT_TELEMETRY_FILE, telemetrySources } from "./hook-telemetry-utils.mjs";
 
 const repoRoot = resolve(".");
@@ -647,7 +647,7 @@ function printText(report, top) {
   console.log("");
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
     const args = parseArgs(process.argv.slice(2));
     const report = buildReport(args);

@@ -6,9 +6,9 @@
 // 这是经过深思的设计：避免 LLM-as-judge 的自回归噪声，跑 prompt 自动化、
 // grade 仍可信。grade 完后 skill-quality-report.mjs 自动识别并计 effect 分。
 import { execFileSync } from "node:child_process";
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync, realpathSync } from "node:fs";
 import { dirname, resolve } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, "..");
@@ -152,7 +152,7 @@ function defaultPaths(repoRoot, skillId) {
   return { cases, out };
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const args = parseArgs(process.argv.slice(2));
   if (args.help || !args.skill) {
     process.stdout.write(

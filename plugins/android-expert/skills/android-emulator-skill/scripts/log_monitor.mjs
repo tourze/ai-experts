@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import { spawn } from "node:child_process";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import { ADB_PATH, resolveSerial, runAdbCommand } from "./common.mjs";
+import { realpathSync } from "node:fs";
 
 export function buildLogcatCommand(args, serial, pid = null) {
   let command = ["logcat", "-v", "color", `*:${args.priority}`];
@@ -130,7 +131,7 @@ export function main(argv = process.argv.slice(2)) {
   return 0;
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
     const result = main();
     if (result !== 0) process.exitCode = result;

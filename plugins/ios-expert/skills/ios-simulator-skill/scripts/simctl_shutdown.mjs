@@ -1,6 +1,7 @@
 #!/usr/bin/env node
-import { pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import { jsonLine, listSimulators, resolveDeviceIdentifier, runXcrunSimctl, sleep } from "./simctl_common.mjs";
+import { realpathSync } from "node:fs";
 
 export class SimulatorShutdown {
   constructor(udid = null) {
@@ -145,7 +146,7 @@ export async function main(argv = process.argv.slice(2)) {
   return success ? 0 : 1;
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
     process.exitCode = await main();
   } catch (error) {

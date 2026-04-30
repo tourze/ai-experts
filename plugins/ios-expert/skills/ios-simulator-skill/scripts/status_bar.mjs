@@ -1,6 +1,7 @@
 #!/usr/bin/env node
-import { pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import { resolveUdid, runCommand } from "./interaction_common.mjs";
+import { realpathSync } from "node:fs";
 
 export const PRESETS = {
   clean: {
@@ -149,7 +150,7 @@ export function main(argv = process.argv.slice(2)) {
   return 0;
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
     process.exitCode = main();
   } catch (error) {

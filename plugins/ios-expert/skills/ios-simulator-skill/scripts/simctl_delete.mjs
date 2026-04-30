@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import { readFileSync } from "node:fs";
-import { pathToFileURL } from "node:url";
+import { readFileSync, realpathSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { jsonLine, listSimulators, resolveDeviceIdentifier, runXcrunSimctl } from "./simctl_common.mjs";
 
 export class SimulatorDeleter {
@@ -156,7 +156,7 @@ export function main(argv = process.argv.slice(2)) {
   return success ? 0 : 1;
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
     process.exitCode = main();
   } catch (error) {

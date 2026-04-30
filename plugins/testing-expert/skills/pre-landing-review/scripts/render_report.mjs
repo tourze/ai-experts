@@ -10,8 +10,8 @@
 //   "informational": [{ "id": "I1", "file": "...", "line": null, "issue": "...", "note": "..." }],
 //   "release_conditions": ["..."]
 // }
-import { readFileSync } from "node:fs";
-import { pathToFileURL } from "node:url";
+import { readFileSync, realpathSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
 const DEFAULT_OPTIONS = ["立即修复", "确认风险", "误报"];
 
@@ -88,7 +88,11 @@ async function readInput(source) {
   return data;
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+function isMain() {
+  return process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url);
+}
+
+if (isMain()) {
   const args = parseArgs(process.argv.slice(2));
   if (args.help) {
     process.stdout.write("usage: render_report.mjs [--input findings.json|-]\n");

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync, realpathSync } from "node:fs";
 import { join } from "node:path";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import { countElements, getAccessibilityTree, resolveUdid } from "./interaction_common.mjs";
 import { captureScreenshot } from "./screenshot_common.mjs";
 
@@ -245,7 +245,7 @@ function formatDisplayDate(date) {
   )}:${pad(date.getSeconds())}`;
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
     process.exitCode = main();
   } catch (error) {

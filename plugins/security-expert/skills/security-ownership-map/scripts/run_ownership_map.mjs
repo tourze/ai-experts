@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
 import { dirname, join } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
+import { realpathSync } from "node:fs";
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const nodeBin = process.execPath;
@@ -128,6 +129,6 @@ export function main(argv = process.argv.slice(2)) {
   }
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
   process.exitCode = main();
 }

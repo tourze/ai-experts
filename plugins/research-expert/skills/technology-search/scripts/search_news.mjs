@@ -6,7 +6,7 @@
  * Search across multiple tech news sources and rank by heat score
  */
 
-import { readFileSync } from "node:fs";
+import { readFileSync, realpathSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseHackerNews } from "./parsers/hn_parser.mjs";
@@ -342,7 +342,7 @@ async function main() {
   }
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
   main().catch(error => {
     console.error(`Fatal error: ${error.message}`);
     process.exit(1);

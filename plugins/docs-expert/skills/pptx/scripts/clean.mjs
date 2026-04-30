@@ -1,16 +1,8 @@
 #!/usr/bin/env node
 
-import {
-  existsSync,
-  lstatSync,
-  readdirSync,
-  readFileSync,
-  rmdirSync,
-  rmSync,
-  writeFileSync,
-} from "node:fs";
+import { existsSync, lstatSync, readdirSync, readFileSync, rmdirSync, rmSync, writeFileSync, realpathSync } from "node:fs";
 import { basename, dirname, join, relative, resolve } from "node:path";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 
 const RESOURCE_DIRS = ["media", "embeddings", "charts", "diagrams", "tags", "drawings", "ink"];
 const RESOURCE_RELS_DIRS = ["charts", "diagrams", "drawings"];
@@ -360,7 +352,7 @@ async function main(argv = process.argv.slice(2)) {
   return 0;
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
   main().then(
     (status) => {
       process.exitCode = status;

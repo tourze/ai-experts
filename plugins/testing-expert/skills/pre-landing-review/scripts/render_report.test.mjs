@@ -1,6 +1,13 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
+import { mkdtempSync, symlinkSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { renderReport } from "./render_report.mjs";
+
+const scriptDir = dirname(fileURLToPath(import.meta.url));
 
 describe("renderReport", () => {
   it("阻断项段含文件:行号、问题、风险、用户三选一（默认）", () => {
@@ -58,5 +65,47 @@ describe("renderReport", () => {
 
   it("非对象输入抛错", () => {
     assert.throws(() => renderReport(null), /must be an object/);
+  });
+});
+
+describe("CLI entrypoints", () => {
+  it("render_report.mjs 通过 symlink 执行时输出报告", () => {
+    const dir = mkdtempSync(join(tmpdir(), "pre-landing-render-"));
+    const inputPath = join(dir, "findings.json");
+    const linkPath = join(dir, "render_report.mjs");
+    writeFileSync(inputPath, JSON.stringify({ verdict: "BLOCKED", blocking: [], informational: [] }));
+    symlinkSync(join(scriptDir, "render_report.mjs"), linkPath);
+
+    const output = execFileSync(process.execPath, [linkPath, "--input", inputPath], { encoding: "utf-8" });
+
+    assert.match(output, /## 阻断项/);
+    assert.match(output, /结论：BLOCKED/);
+  });
+
+  it("collect_diff.mjs 通过 symlink 执行时输出 diff JSON", () => {
+    const dir = mkdtempSync(join(tmpdir(), "pre-landing-collect-"));
+    const repoDir = join(dir, "repo");
+    const linkPath = join(dir, "collect_diff.mjs");
+    symlinkSync(join(scriptDir, "collect_diff.mjs"), linkPath);
+
+    execFileSync("git", ["init", repoDir], { encoding: "utf-8" });
+    writeFileSync(join(repoDir, "a.txt"), "old\n");
+    execFileSync("git", ["add", "a.txt"], { cwd: repoDir, encoding: "utf-8" });
+    execFileSync("git", ["-c", "user.name=Test", "-c", "user.email=test@example.com", "commit", "-m", "init"], {
+      cwd: repoDir,
+      encoding: "utf-8",
+    });
+    writeFileSync(join(repoDir, "a.txt"), "new\n");
+    execFileSync("git", ["add", "a.txt"], { cwd: repoDir, encoding: "utf-8" });
+    execFileSync("git", ["-c", "user.name=Test", "-c", "user.email=test@example.com", "commit", "-m", "change"], {
+      cwd: repoDir,
+      encoding: "utf-8",
+    });
+
+    const output = execFileSync(process.execPath, [linkPath, "--base", "HEAD~1", "--cwd", repoDir], { encoding: "utf-8" });
+    const result = JSON.parse(output);
+
+    assert.equal(result.range, "HEAD~1...");
+    assert.deepEqual(result.files, ["a.txt"]);
   });
 });

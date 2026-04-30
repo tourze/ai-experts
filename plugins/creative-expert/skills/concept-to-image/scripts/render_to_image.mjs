@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-import { mkdirSync, existsSync, statSync, writeFileSync } from "node:fs";
+import { mkdirSync, existsSync, statSync, writeFileSync, realpathSync } from "node:fs";
 import { dirname, extname, resolve } from "node:path";
-import { pathToFileURL } from "node:url";
+import { pathToFileURL, fileURLToPath } from "node:url";
 
 const BROWSER_ARGS = [
   "--no-sandbox",
@@ -209,7 +209,7 @@ export async function main(argv = process.argv.slice(2)) {
   return 0;
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
   main().then((code) => {
     process.exitCode = code;
   }).catch((error) => {
