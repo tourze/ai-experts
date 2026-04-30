@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import { accessSync, constants, existsSync } from "node:fs";
+import { accessSync, constants } from "node:fs";
 import { delimiter, join } from "node:path";
 import { spawnSync } from "node:child_process";
-import { TextDecoder } from "node:util";
+import { buildPowerShellCommand, decodeBytes, parsePowerShellEnvelope } from "./powershell_output.mjs";
 
 class PrlctlError extends Error {}
 
@@ -28,32 +28,6 @@ function commandExists(command) {
     }
   }
   return false;
-}
-
-function decodeBytes(buffer) {
-  if (!buffer || buffer.length === 0) return "";
-  const encodings = [
-    "utf-8",
-    process.stdout.encoding,
-    process.stderr.encoding,
-    process.env.PYTHONIOENCODING?.split(":")[0],
-    "gb18030",
-    "windows-1252",
-  ].filter(Boolean);
-  const seen = new Set();
-
-  for (const encoding of encodings) {
-    const normalized = String(encoding).toLowerCase();
-    if (seen.has(normalized)) continue;
-    seen.add(normalized);
-    try {
-      return new TextDecoder(normalized, { fatal: true }).decode(buffer);
-    } catch {
-      // Try the next decoder.
-    }
-  }
-
-  return buffer.toString("utf8");
 }
 
 function runProcess(command, args, { check = true } = {}) {
@@ -201,7 +175,7 @@ function buildGuestCommand(shellName, commandParts) {
   if (!joined) throw new PrlctlError("客体命令不能为空。");
 
   if (shellName === "powershell") {
-    return ["powershell.exe", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", joined];
+    return buildPowerShellCommand(joined);
   }
   if (shellName === "cmd") return ["cmd.exe", "/d", "/s", "/c", joined];
   if (shellName === "bash") return ["bash", "-lc", joined];
@@ -369,7 +343,13 @@ function commandExec(args) {
     return 0;
   }
 
-  return emitCommandResult(runPrlctl(prlctlArgs, { check: false }));
+  const result = runPrlctl(prlctlArgs, { check: false });
+  if (options.shell === "powershell") {
+    const decoded = parsePowerShellEnvelope(result);
+    if (decoded?.error) throw new PrlctlError(decoded.error);
+    if (decoded) return emitCommandResult(decoded);
+  }
+  return emitCommandResult(result);
 }
 
 function commandPower(args) {

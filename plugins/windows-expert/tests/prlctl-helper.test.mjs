@@ -32,6 +32,16 @@ if [ "$command_name" = "snapshot-list" ]; then
 fi
 
 if [ "$command_name" = "exec" ]; then
+  if [ -n "\${PRLCTL_EXEC_STDOUT_B64:-}" ] || [ -n "\${PRLCTL_EXEC_STDERR_B64:-}" ]; then
+    printf '%s\\n' "__PRLCTL_HELPER_STDOUT_B64_BEGIN__"
+    printf '%s\\n' "\${PRLCTL_EXEC_STDOUT_B64:-}"
+    printf '%s\\n' "__PRLCTL_HELPER_STDOUT_B64_END__"
+    printf '%s\\n' "__PRLCTL_HELPER_STDERR_B64_BEGIN__"
+    printf '%s\\n' "\${PRLCTL_EXEC_STDERR_B64:-}"
+    printf '%s\\n' "__PRLCTL_HELPER_STDERR_B64_END__"
+    printf '%s\\n' "__PRLCTL_HELPER_EXIT__:\${PRLCTL_EXEC_HELPER_EXIT:-0}"
+    exit "\${PRLCTL_EXEC_PROCESS_EXIT:-0}"
+  fi
   shift
   printf '%s\\n' "$*"
   exit "\${PRLCTL_EXEC_EXIT:-0}"
@@ -72,6 +82,10 @@ function runHelper(args, env = {}) {
       ...env,
     },
   });
+}
+
+function b64(value) {
+  return Buffer.from(value, "utf-8").toString("base64");
 }
 
 const vmList = JSON.stringify([
@@ -140,7 +154,38 @@ test("exec --dry-run 会展开 shell 包装命令", () => {
     assert.equal(result.status, 0, result.stderr);
     const payload = JSON.parse(result.stdout);
     assert.equal(payload.vm.name, "Win11 Lab");
-    assert.deepEqual(payload.command.slice(-2), ["-Command", "whoami"]);
+    assert.equal(payload.command.at(-2), "-Command");
+    assert.match(payload.command.at(-1), /__PRLCTL_HELPER_STDOUT_B64_BEGIN__/);
+    assert.doesNotMatch(payload.command.at(-1), /whoami/);
+  });
+});
+
+test("exec --shell powershell 会解码 PowerShell envelope 中的中文输出", () => {
+  withStub((stubRoot) => {
+    const result = runHelper(["exec", "Win11 Lab", "--shell", "powershell", "--", "Write-Output 'ignored'"], {
+      PATH: `${stubRoot}:${process.env.PATH}`,
+      PRLCTL_LIST_JSON: vmList,
+      PRLCTL_EXEC_STDOUT_B64: b64("QQ浏览器\n360极速浏览器\n"),
+    });
+
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(result.stdout, "QQ浏览器\n360极速浏览器\n");
+  });
+});
+
+test("exec --shell powershell 会保留 envelope 的 stderr 与退出码", () => {
+  withStub((stubRoot) => {
+    const result = runHelper(["exec", "Win11 Lab", "--shell", "powershell", "--", "exit 7"], {
+      PATH: `${stubRoot}:${process.env.PATH}`,
+      PRLCTL_LIST_JSON: vmList,
+      PRLCTL_EXEC_STDOUT_B64: b64("ok\n"),
+      PRLCTL_EXEC_STDERR_B64: b64("错误\n"),
+      PRLCTL_EXEC_HELPER_EXIT: "7",
+    });
+
+    assert.equal(result.status, 7);
+    assert.equal(result.stdout, "ok\n");
+    assert.equal(result.stderr, "错误\n");
   });
 });
 

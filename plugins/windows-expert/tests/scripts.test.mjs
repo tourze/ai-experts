@@ -7,6 +7,7 @@ import test from "node:test";
 const pluginRoot = resolve("plugins/windows-expert");
 const nodeScripts = [
   "skills/prlctl-vm-control/scripts/prlctl_helper.mjs",
+  "skills/prlctl-vm-control/scripts/powershell_output.mjs",
 ];
 
 test("所有 Node 脚本都能通过语法检查", () => {
