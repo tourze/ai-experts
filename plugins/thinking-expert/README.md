@@ -4,7 +4,7 @@
 
 ## 目录结构
 
-- `skills/`：17 个思维类技能，每个 `SKILL.md` 使用统一中文结构。
+- `skills/`：18 个思维类技能，每个 `SKILL.md` 使用统一中文结构。
 - `tests/`：脚本语法与文档结构校验。
 
 ## Skills
@@ -13,6 +13,7 @@
 |-------|------|
 | `thinking-partner` | 思考拍档（从混沌中理清局面） |
 | `priority-judge` | 优先级判断（待办排序与行动决策） |
+| `bayesian-decision` | 高不确定决策的先验、证据更新、行动阈值与敏感性分析 |
 | `grill-me` | 追问到底（计划/设计的压力测试） |
 | `consciousness-council` | 多视角 Mind Council 审议 |
 | `first-principles-decomposer` | 第一性原理分解与重建 |
