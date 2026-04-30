@@ -1,6 +1,6 @@
 ---
 name: skill-judge
-description: Use when reviewing, auditing, or scoring the design quality of SKILL.md files and skill packages against official specifications.
+description: 当用户要审查、评分或改进 SKILL.md 与 skill 包设计质量时使用。
 ---
 
 # Skill Judge

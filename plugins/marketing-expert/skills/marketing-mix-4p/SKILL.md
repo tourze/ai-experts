@@ -1,6 +1,6 @@
 ---
 name: marketing-mix-4p
-description: 当用户要制定营销组合策略、审查产品/价格/渠道/促销的配合度、或用 4P/4C/4R 框架做营销诊断时使用；英文触发词 4P、4C、4R、marketing mix、product-price-place-promotion、marketing strategy audit。
+description: 当用户要用 4P/4C/4R 制定营销组合策略或审查产品、价格、渠道、促销配合度时使用。
 ---
 
 # 4P/4C/4R 营销组合

@@ -1,6 +1,6 @@
 ---
 name: mckinsey-7-step
-description: 当用户要系统性解决复杂业务问题、用结构化方法从问题定义到方案输出、或做咨询式分析时使用；英文触发词 McKinsey 7 steps、problem solving framework、structured problem solving、hypothesis-driven、issue tree。
+description: 当用户要系统性解决复杂业务问题、做咨询式分析或结构化拆解方案时使用。
 ---
 
 # 麦肯锡七步成诗法

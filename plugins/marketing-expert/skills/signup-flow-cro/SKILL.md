@@ -1,6 +1,6 @@
 ---
 name: signup-flow-cro
-description: 当用户要优化注册流程、账号创建或试用激活时使用。触发词包括注册转化、注册流失、没人注册完、表单太长。若问题在注册后的引导，改用 `onboarding-cro`；若是非注册类表单，改用 `form-cro`；若是落地页整体转化，改用 `page-cro`。
+description: 当用户要优化注册流程、账号创建、注册转化或试用激活时使用。
 ---
 
 # 注册流程转化优化（signup-flow-cro）

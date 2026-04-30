@@ -1,6 +1,6 @@
 ---
 name: debug-methodology
-description: "当用户卡在 bug、stack trace、崩溃、间歇性失败或 flaky 行为，需要系统化调试时使用。英文触发词 debug / stuck / crash / flaky / can't reproduce。"
+description: "当用户卡在 bug、stack trace、崩溃、间歇性失败或 flaky 行为，需要系统化调试时使用。"
 ---
 
 # 系统化调试方法论

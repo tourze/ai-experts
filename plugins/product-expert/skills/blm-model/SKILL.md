@@ -1,6 +1,6 @@
 ---
 name: blm-model
-description: 当用户要做战略到执行的全链路诊断、分析业绩差距和机会差距的根因、或用华为/IBM 的战略规划方法论时使用；英文触发词 BLM、Business Leadership Model、strategy to execution、gap analysis、market insight to business design。
+description: 当用户要用 BLM 做战略到执行诊断、分析业绩差距或机会差距根因时使用。
 ---
 
 # BLM 业务领先模型

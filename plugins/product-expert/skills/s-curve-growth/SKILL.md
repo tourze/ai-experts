@@ -1,6 +1,6 @@
 ---
 name: s-curve-growth
-description: 当用户要分析产品或市场的生命阶段、判断增长拐点、规划第二曲线或评估市场饱和度时使用；英文触发词 S-curve、growth curve、second curve、inflection point、market saturation、growth plateau。
+description: 当用户要分析 S 曲线、产品/市场生命阶段、增长拐点、第二曲线或市场饱和度时使用。
 ---
 
 # S 形增长曲线

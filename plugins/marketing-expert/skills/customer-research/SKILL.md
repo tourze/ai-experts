@@ -1,6 +1,6 @@
 ---
 name: customer-research
-description: "当用户要做客户研究、VOC 分析、用户访谈提炼、评论挖掘或构建 persona 时使用。触发词包括\"客户研究\"\"用户画像\"\"JTBD\"\"评论分析\"\"竞品用户反馈\"。若是用研究结论写文案，改用 `copywriting`；若是优化页面，改用 `page-cro`。"
+description: "当用户要做客户研究、VOC 分析、用户访谈提炼、评论挖掘或构建 persona 时使用。"
 ---
 
 # 客户研究（customer-research）

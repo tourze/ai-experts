@@ -1,6 +1,6 @@
 ---
 name: obsidian-bases
-description: 当用户要新建、修复或重构 Obsidian Bases 的 `.base` 文件时使用。触发词包括 Bases、.base、table view、cards、list、map、filter、formula、summary。
+description: 当用户要新建、修复或重构 Obsidian Bases 的 `.base` 文件时使用。
 ---
 
 # Obsidian Bases

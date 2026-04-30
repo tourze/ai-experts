@@ -1,6 +1,6 @@
 ---
 name: greiner-growth-model
-description: 当用户要诊断企业成长阶段、预判组织危机、判断管理模式是否匹配发展阶段时使用；英文触发词 Greiner growth model、organizational growth stages、leadership crisis、autonomy crisis、growth phases。
+description: 当用户要诊断企业成长阶段、预判组织危机或判断管理模式匹配度时使用。
 ---
 
 # Greiner 组织成长模型

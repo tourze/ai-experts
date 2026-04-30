@@ -1,6 +1,6 @@
 ---
 name: algo-visualization
-description: 当用户要把数据结构或算法做成可交互的单文件教学页（多步动画 + 代码联动）时使用，如演示快排、堆动画、BFS/DFS 对比、PDF 转讲解页、代码逐步执行；如果只要单张静态图改用 concept-to-image，要 Manim 动画视频改用 concept-to-video，时序流程改用 markdown-mermaid-writing，业务数据图表改用 data-visualization。
+description: 当用户要把数据结构、算法或代码执行过程做成交互式教学可视化页面时使用。
 ---
 
 # 交互式算法可视化教学页

@@ -1,6 +1,6 @@
 ---
 name: color-oklch-theory
-description: 当用户要设计现代颜色系统、使用 OKLCH 色彩空间、做 tinted neutrals、处理暗色模式、应用 60-30-10 视觉权重规则或判断配色是否可访问时使用。适合"OKLCH 怎么用""如何选主色阶""暗色模式不是反转""纯黑纯白能不能用"等场景。
+description: 当用户要设计 OKLCH 颜色系统、tinted neutrals、暗色模式、视觉权重或可访问配色时使用。
 ---
 
 # OKLCH 颜色理论

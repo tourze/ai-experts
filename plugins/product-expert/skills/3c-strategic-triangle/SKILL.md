@@ -1,6 +1,6 @@
 ---
 name: 3c-strategic-triangle
-description: 当用户要从顾客、公司、竞争者三角度做战略分析、找差异化定位或评估竞争可持续性时使用；英文触发词 3C analysis、Ohmae 3C、customer-company-competitor、strategic triangle。
+description: 当用户要用 3C 分析顾客、公司、竞争者，寻找差异化定位或评估竞争可持续性时使用。
 ---
 
 # 3C 战略三角

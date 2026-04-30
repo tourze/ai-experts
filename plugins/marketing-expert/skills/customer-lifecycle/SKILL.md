@@ -1,6 +1,6 @@
 ---
 name: customer-lifecycle
-description: 当用户要做客户分层管理、按生命周期阶段制定差异化营销动作，或评估产品生命周期阶段决策时使用。英文触发词 customer pyramid、CLV tiering、product lifecycle、PLC、lifecycle marketing。
+description: 当用户要做客户分层管理、CLV 分层、生命周期营销或产品生命周期阶段决策时使用。
 ---
 
 # 客户与产品生命周期

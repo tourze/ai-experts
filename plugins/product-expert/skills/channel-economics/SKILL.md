@@ -1,6 +1,6 @@
 ---
 name: channel-economics
-description: 当用户要评估获客渠道的经济性、比较渠道 ROI、决定渠道投入优先级或诊断渠道效率下降时使用；英文触发词 channel economics、acquisition channel、CAC by channel、channel ROI、customer acquisition。
+description: 当用户要评估获客渠道经济性、比较 CAC/ROI 或决定渠道投入优先级时使用。
 ---
 
 # 获客渠道经济性分析

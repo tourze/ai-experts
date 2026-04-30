@@ -1,6 +1,6 @@
 ---
 name: prfaq
-description: 当用户要用亚马逊式 Working Backwards 方法撰写新闻稿+FAQ 来验证产品想法、对齐团队认知或推动立项决策时使用；英文触发词 PRFAQ、press release、working backwards、Amazon PR/FAQ。
+description: 当用户要用 PRFAQ 或 Working Backwards 验证产品想法、对齐团队认知或推动立项时使用。
 ---
 
 # PRFAQ（新闻稿 + FAQ）

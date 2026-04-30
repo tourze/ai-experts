@@ -1,6 +1,6 @@
 ---
 name: subagent-driven-development
-description: "当有实现计划或 Execution Contract 需要在当前会话中执行、且用户明确要求子代理/worker/多 agent/并行实现时使用——按 wave 与 write_scope 派遣独立子代理，配合双阶段审查（规格合规 + 代码质量）完成实现。"
+description: "当用户明确要求子代理/worker/多 agent/并行实现，并需要按计划派遣与审查时使用。"
 ---
 
 # 子代理驱动开发

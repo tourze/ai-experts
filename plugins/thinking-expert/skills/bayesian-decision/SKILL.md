@@ -1,6 +1,6 @@
 ---
 name: bayesian-decision
-description: 当用户要在高不确定条件下做证据到行动的决策分析时使用；把模糊选择转成 intake、prior、evidence、posterior、action threshold、sensitivity 和 report。用户提到贝叶斯决策、先验/后验、证据更新、行动阈值、expected value、敏感性分析时触发；不用于贝叶斯教学、作业或最终医疗/法律/投资建议。
+description: 当用户要在高不确定条件下，把证据、风险和行动阈值转成决策判断时使用。
 ---
 
 # 贝叶斯决策分析

@@ -1,6 +1,6 @@
 ---
 name: prlctl-vm-control
-description: 当用户通过 prlctl 控制 Parallels Desktop 虚拟机、采集状态或执行客体命令时使用；英文触发词 prlctl / Parallels Desktop。
+description: 当用户通过 prlctl 控制 Parallels Desktop 虚拟机、采集状态或执行客体命令时使用。
 ---
 
 # prlctl-vm-control

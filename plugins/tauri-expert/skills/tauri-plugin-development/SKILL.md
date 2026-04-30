@@ -1,6 +1,6 @@
 ---
 name: tauri-plugin-development
-description: "在创建自定义 Tauri v2 插件时使用：脚手架、生命周期钩子、桌面/移动拆分、插件状态、命令注册、JS API、权限定义。涉及 cargo tauri plugin new、TauriPlugin<R>、Builder::new()、mobile.rs/desktop.rs 时触发。"
+description: "在创建自定义 Tauri v2 插件、处理生命周期钩子、桌面/移动拆分、插件状态、命令注册、JS API 或权限定义时使用。"
 ---
 
 # Tauri v2 插件开发

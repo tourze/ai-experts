@@ -1,6 +1,6 @@
 ---
 name: business-health-diagnostic
-description: 当用户要快速诊断业务健康度、做季度业务复盘、或用记分卡方式发现增长/留存/效率问题时使用；英文触发词 business health、health check、scorecard、business diagnostic、quarterly review。
+description: 当用户要诊断业务健康度、做季度复盘或用记分卡发现增长/留存/效率问题时使用。
 ---
 
 # 业务健康度诊断

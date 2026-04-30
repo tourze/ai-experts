@@ -1,6 +1,6 @@
 ---
 name: org-canvas
-description: 当用户要系统性设计组织架构、检查组织设计与战略的匹配度、或做组织重组规划时使用；英文触发词 organization canvas、org design、organizational design canvas、structure-strategy alignment。
+description: 当用户要用组织画布设计组织架构、检查战略匹配度或规划组织重组时使用。
 ---
 
 # 组织模式画布

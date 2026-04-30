@@ -1,6 +1,6 @@
 ---
 name: mckinsey-7s
-description: 当用户要做企业内部诊断、组织变革评估、战略执行对齐检查或找出管理短板时使用；英文触发词 McKinsey 7S、7S framework、organizational alignment、strategy-structure fit。
+description: 当用户要用麦肯锡 7S 做企业内部诊断、组织变革评估或战略执行对齐检查时使用。
 ---
 
 # 麦肯锡 7S 模型

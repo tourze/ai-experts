@@ -1,6 +1,6 @@
 ---
 name: epic-decomposition
-description: 当用户要把大 Epic 拆成可交付的用户故事、选择分解策略或评估 Epic 拆分质量时使用；英文触发词 epic breakdown、epic decomposition、epic splitting、story mapping。
+description: 当用户要把大 Epic 拆成可交付用户故事、选择分解策略或评估拆分质量时使用。
 ---
 
 # Epic 分解

@@ -1,6 +1,6 @@
 ---
 name: architecture-blueprint-generator
-description: "当用户要为现有代码库生成架构蓝图、模块边界、依赖规则、数据流或扩展点治理文档时使用。英文触发词 architecture blueprint / module boundaries / dependency rules。"
+description: "当用户要为现有代码库生成架构蓝图、模块边界、依赖规则、数据流或扩展点治理文档时使用。"
 ---
 
 # architecture-blueprint-generator

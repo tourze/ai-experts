@@ -1,6 +1,6 @@
 ---
 name: prompt-engineering-patterns
-description: 当用户要设计、优化、约束或排查 prompt，需要 structured output、few-shot、system prompt、error recovery、prompt template 等模式时使用。英文触发词包括 prompt engineering、prompt template、structured output、few-shot、chain-of-thought。
+description: 当用户要设计、优化、约束或排查生产 prompt、结构化输出或 few-shot 示例时使用。
 ---
 
 # prompt-engineering-patterns

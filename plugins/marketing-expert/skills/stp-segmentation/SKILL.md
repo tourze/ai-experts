@@ -1,6 +1,6 @@
 ---
 name: stp-segmentation
-description: 当用户要做市场细分、选择目标市场、制定市场定位或回答"该卖给谁"时使用；英文触发词 STP、segmentation、targeting、positioning、market segmentation、target market、positioning statement。
+description: 当用户要做 STP 市场细分、选择目标市场、制定市场定位或回答"该卖给谁"时使用。
 ---
 
 # STP 市场细分-目标-定位

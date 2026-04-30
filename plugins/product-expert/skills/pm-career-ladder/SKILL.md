@@ -1,6 +1,6 @@
 ---
 name: pm-career-ladder
-description: 当用户要评估 PM 职级能力、规划晋升路径、准备晋升材料或设计 PM 团队能力模型时使用；英文触发词 PM career、product manager level、career ladder、director readiness、VP readiness、CPO。
+description: 当用户要评估 PM 职级能力、规划晋升路径、准备晋升材料或设计 PM 团队能力模型时使用。
 ---
 
 # PM 职级能力模型

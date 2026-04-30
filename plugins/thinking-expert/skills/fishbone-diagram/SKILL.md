@@ -1,6 +1,6 @@
 ---
 name: fishbone-diagram
-description: 当用户要做根因分析、系统性罗列问题的所有可能原因、或用因果分析法排查复杂问题时使用；英文触发词 fishbone diagram、Ishikawa diagram、cause and effect、root cause analysis、5 Whys、herringbone。
+description: 当用户要用鱼骨图、Ishikawa 或 5 Whys 做根因分析和因果排查时使用。
 ---
 
 # 鱼骨图（因果分析图）

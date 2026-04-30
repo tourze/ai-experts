@@ -1,6 +1,6 @@
 ---
 name: agent-tool-design
-description: "当用户要设计工具接口、安全元数据、deferred loading、result budget 或 tool schema 时使用。英文触发词 tool interface / tool metadata / deferred loading / token budget。"
+description: "当用户要设计工具接口、安全元数据、deferred loading、result budget 或 tool schema 时使用。"
 ---
 
 # Agent Tool Design

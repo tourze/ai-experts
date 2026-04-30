@@ -1,6 +1,6 @@
 ---
 name: task-decomposer
-description: "当用户要把复杂需求拆成任务板、依赖关系、关键路径、并行工作项、执行合同草案、风险和测试策略时使用。英文触发词 task decomposition / work breakdown / dependency map / execution contract generation。"
+description: "当用户要把复杂需求拆成任务板、依赖关系、关键路径或并行工作项时使用。"
 ---
 
 # task-decomposer

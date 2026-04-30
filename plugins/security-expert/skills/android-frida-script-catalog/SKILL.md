@@ -1,6 +1,6 @@
 ---
 name: android-frida-script-catalog
-description: "当需要为 Android 动态分析选择或组合 Frida 脚本族、安排加载顺序、规划 pinning/root/RASP、IPC/WebView/网络/存储、Keystore/crypto、JNI/native 或运行时 dump 验证时使用。"
+description: "当需要为 Android 动态分析选择或组合 Frida 脚本，处理 pinning、root/RASP、IPC/WebView、网络、存储或 native 验证时使用。"
 ---
 
 # Android Frida 脚本目录

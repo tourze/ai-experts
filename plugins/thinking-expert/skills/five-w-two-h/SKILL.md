@@ -1,6 +1,6 @@
 ---
 name: five-w-two-h
-description: 当用户要做全面的问题分析、工作计划制定、需求澄清或确保方案没有遗漏时使用；英文触发词 5W2H、why-what-who-when-where-how、comprehensive analysis、requirement gathering、action plan template。
+description: 当用户要用 5W2H 做全面问题分析、计划制定、需求澄清或查漏补缺时使用。
 ---
 
 # 5W2H 分析法

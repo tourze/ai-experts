@@ -1,6 +1,6 @@
 ---
 name: intent-deeplink-abuse
-description: "当需要测试 Android Intent injection、nested intent relay、deep link/App Link 参数滥用、URI grant、mutable PendingIntent 或 confused deputy 利用链时使用。"
+description: "当需要测试 Android Intent injection、deep link/App Link 参数滥用、URI grant、mutable PendingIntent 或 confused deputy 利用链时使用。"
 ---
 
 # Intent 与 Deep Link 滥用

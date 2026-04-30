@@ -1,6 +1,6 @@
 ---
 name: ansoff-matrix
-description: 当用户要制定增长策略、评估市场渗透/产品开发/市场开发/多元化的风险收益、或回答"下一步往哪里增长"时使用；英文触发词 Ansoff matrix、growth strategy、market penetration、product development、market development、diversification。
+description: 当用户要制定增长策略，评估市场渗透、产品开发、市场开发或多元化方向时使用。
 ---
 
 # 安索夫矩阵

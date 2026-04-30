@@ -1,6 +1,6 @@
 ---
 name: backend-to-frontend-handoff-docs
-description: "当后端接口完成后用户要为前端生成 API 交接材料、DTO 语义、状态码、校验规则或边界场景说明时使用。英文触发词 frontend handoff / API handoff / DTO contract。"
+description: "当后端接口完成后用户要为前端生成 API 交接材料、DTO 语义、状态码、校验规则或边界场景说明时使用。"
 ---
 
 # backend-to-frontend-handoff-docs

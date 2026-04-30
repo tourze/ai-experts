@@ -1,6 +1,6 @@
 ---
 name: plg-readiness
-description: 当用户要评估产品是否适合 PLG、设计自助增长飞轮、衡量激活指标或计算病毒系数时使用；英文触发词 PLG、product-led growth、activation、K-factor、viral loop、freemium conversion。
+description: 当用户要评估产品是否适合 PLG、设计自助增长飞轮、衡量激活或病毒系数时使用。
 ---
 
 # PLG 成熟度评估

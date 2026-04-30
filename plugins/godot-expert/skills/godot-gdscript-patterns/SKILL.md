@@ -1,6 +1,6 @@
 ---
 name: godot-gdscript-patterns
-description: 当用户开发、重构或排障 Godot 4 GDScript 项目时使用；英文触发词 Godot / GDScript / scene tree / signal / state machine。
+description: 当用户开发、重构或排障 Godot 4/GDScript 项目、scene tree、signal 或状态机问题时使用。
 ---
 
 # godot-gdscript-patterns

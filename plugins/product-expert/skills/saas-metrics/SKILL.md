@@ -1,6 +1,6 @@
 ---
 name: saas-metrics
-description: 当用户要查 SaaS 财务指标公式、行业基准、单位经济学或订阅业务健康度指标时使用；英文触发词 MRR、ARR、CAC、LTV、NRR、churn、unit economics。
+description: 当用户要查 SaaS 财务指标、MRR/ARR/CAC/LTV/NRR、流失或单位经济学时使用。
 ---
 
 # SaaS 财务指标速查

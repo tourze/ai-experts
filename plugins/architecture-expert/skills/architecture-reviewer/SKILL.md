@@ -1,6 +1,6 @@
 ---
 name: architecture-reviewer
-description: 当用户要评审架构设计、代码库结构、技术文档、扩展性、安全性或企业就绪度时使用，也包含穷举式子系统拆解、影响面审计和故障面分析。英文触发词 architecture review / design quality / enterprise readiness / exhaustive system analysis / subsystem audit / failure modes。
+description: 当用户要评审架构设计、代码库结构、技术文档或企业就绪风险时使用。
 ---
 
 # architecture-reviewer

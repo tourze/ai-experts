@@ -1,6 +1,6 @@
 ---
 name: socratic-teaching
-description: 当用户想通过被提问来理解代码、系统或概念时使用。用户提到"苏格拉底""Socrates""socratic""别直接告诉我答案""引导我""让我自己想"时触发。适用于学习新代码库、理解复杂系统、代码 review 教学、概念探索等场景。与 thinking-partner 的区别：thinking-partner 会在后期共创解法，本 skill 全程只问不答。
+description: 当用户想通过苏格拉底式提问理解代码、系统或概念，且明确不想直接要答案时使用。
 ---
 
 # 苏格拉底式教学

@@ -1,6 +1,6 @@
 ---
 name: risk-metrics-calculation
-description: 当需要计算投资组合风险指标（VaR、CVaR、Sharpe、Sortino、回撤）时使用。英文触发词包括 portfolio risk、risk monitoring。
+description: 当需要计算投资组合风险指标（VaR、CVaR、Sharpe、Sortino、回撤）时使用。
 ---
 
 # 风险指标技能

@@ -1,6 +1,6 @@
 ---
 name: user-story-patterns
-description: 当用户要编写高质量用户故事、按 INVEST 原则检查故事质量、或用 8 种模式拆分过大故事时使用；英文触发词 user story、story splitting、INVEST、acceptance criteria、Gherkin。
+description: 当用户要编写用户故事、按 INVEST 检查故事质量或拆分过大故事时使用。
 ---
 
 # 用户故事编写与拆分

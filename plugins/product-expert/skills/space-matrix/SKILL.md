@@ -1,6 +1,6 @@
 ---
 name: space-matrix
-description: 当用户要做战略态势评估、判断企业该进攻/防守/竞争/保守、或需要四维度（财务/竞争/环境/产业）综合定位时使用；英文触发词 SPACE matrix、strategic position、aggressive/competitive/conservative/defensive posture。
+description: 当用户要做 SPACE 战略态势评估，判断企业进攻、防守、竞争或保守策略时使用。
 ---
 
 # SPACE 矩阵

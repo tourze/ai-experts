@@ -1,6 +1,6 @@
 ---
 name: cold-email
-description: 当用户要写 B2B 冷邮件、开发信或跟进序列时使用。触发词包括"cold email""开发信""outbound""没人回复我的邮件"。若是生命周期/自动化邮件，改用 `email-sequence`；若是销售材料，改用 `sales-enablement`。
+description: 当用户要写 B2B 冷邮件、开发信、outbound 邮件或跟进序列时使用。
 ---
 
 # B2B 冷邮件（cold-email）

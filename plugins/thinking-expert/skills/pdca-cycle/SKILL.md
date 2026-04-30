@@ -1,6 +1,6 @@
 ---
 name: pdca-cycle
-description: 当用户要做持续改进、质量管理、运营优化或需要闭环问题解决方法时使用；英文触发词 PDCA、Plan-Do-Check-Act、Deming cycle、continuous improvement、kaizen、quality management。
+description: 当用户要用 PDCA 做持续改进、质量管理、运营优化或闭环问题解决时使用。
 ---
 
 # PDCA 循环

@@ -1,6 +1,6 @@
 ---
 name: citation-validator
-description: 当研究报告、PRD 或对外发布内容需要验证事实声明的引用完整性、来源质量与可追溯性时使用。按 A-E 源质量分级逐条核对引用，检测未被支持的声明（幻觉），在发布或交付前做最后把关。常与 deep-research、knowledge-synthesis 连用。
+description: 当研究报告、PRD 或对外内容需要验证事实引用完整性、来源质量与可追溯性时使用。
 ---
 
 # Citation Validator

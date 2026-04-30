@@ -1,6 +1,6 @@
 ---
 name: raci-matrix
-description: 当用户要明确项目角色分工、解决职责模糊或推诿、设计审批流程或做组织变革中的责任分配时使用；英文触发词 RACI、RASCI、responsibility matrix、accountability、role clarity。
+description: 当用户要用 RACI/RASCI 明确角色分工、职责归属、审批流程或责任矩阵时使用。
 ---
 
 # RACI 责任矩阵

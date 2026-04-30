@@ -1,6 +1,6 @@
 ---
 name: churn-prevention
-description: "当用户要降低流失率、设计取消流程、配置挽留策略或做支付失败恢复时使用。触发词包括\"churn\"\"流失\"\"取消流程\"\"挽留\"\"dunning\"\"支付失败\"。若是取消后的 win-back 邮件，改用 `email-sequence`；若是应用内付费墙，改用 `paywall-upgrade-cro`（product-expert）。"
+description: "当用户要降低用户流失、优化取消流程、设计挽留策略或处理支付失败恢复时使用。"
 ---
 
 # 流失预防与挽留（churn-prevention）

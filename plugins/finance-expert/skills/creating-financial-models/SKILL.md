@@ -1,6 +1,6 @@
 ---
 name: creating-financial-models
-description: 当需要构建 DCF 估值模型、敏感性分析、情景分析或盈亏平衡分析时使用。英文触发词包括 valuation modeling、scenario planning。
+description: 当需要构建 DCF 估值模型、敏感性分析、情景分析或盈亏平衡分析时使用。
 ---
 
 # 财务建模技能

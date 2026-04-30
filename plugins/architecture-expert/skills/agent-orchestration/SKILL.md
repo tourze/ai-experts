@@ -1,6 +1,6 @@
 ---
 name: agent-orchestration
-description: "在设计多 Agent 编排、system prompt 架构、Agent 状态管理、fork/fresh 决策或 Agent 扩展点时使用。英文触发词 multi-agent / agent orchestration / system prompt architecture / fork vs fresh / agent state / agent extensibility。"
+description: "当用户要设计多 Agent 编排、system prompt 架构、状态管理或 Agent 扩展点时使用。"
 ---
 
 # Agent Orchestration

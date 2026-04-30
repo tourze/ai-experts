@@ -1,6 +1,6 @@
 ---
 name: trigger-telemetry-advisor
-description: 当需要根据当前会话或当前工作区的 hook/skill telemetry、decisions.jsonl、触发审计数据生成改进建议报告时使用；用户提到 hook 报错、dispatch error、SKILL 脚本调用失败等 runtime 故障时也用本 skill；适合分析 hooks/skill 的误触发、漏触发、热点、错误、噪音和后续治理 backlog。
+description: 当用户要分析 hook/skill telemetry、触发审计、dispatch 错误或 SKILL 脚本运行故障时使用。
 ---
 
 # Trigger Telemetry Advisor

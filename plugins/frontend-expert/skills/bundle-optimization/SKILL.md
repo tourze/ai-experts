@@ -1,6 +1,6 @@
 ---
 name: bundle-optimization
-description: 当需要减小前端 bundle 体积、做代码分割、消除 barrel imports 或按用户意图预加载时使用。用户提到 bundle size、dynamic import、code splitting、tree shaking、barrel exports、首屏体积 时触发。
+description: 当需要减小前端 bundle、做代码分割、消除 barrel imports、tree shaking 或按用户意图预加载时使用。
 ---
 
 # Bundle 体积优化

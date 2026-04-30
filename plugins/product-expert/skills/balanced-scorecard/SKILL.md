@@ -1,6 +1,6 @@
 ---
 name: balanced-scorecard
-description: 当用户要设计绩效评估体系、战略执行监控、KPI 体系搭建或从财务/客户/流程/学习四维度评价企业时使用；英文触发词 balanced scorecard、BSC、KPI framework、strategy map、four perspectives。
+description: 当用户要设计平衡计分卡、绩效评估体系、战略地图或 KPI 体系时使用。
 ---
 
 # 平衡计分卡（BSC）

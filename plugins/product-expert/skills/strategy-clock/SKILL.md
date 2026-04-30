@@ -1,6 +1,6 @@
 ---
 name: strategy-clock
-description: 当用户要分析定价与差异化的组合策略、评估竞争定位或选择价格-价值平衡点时使用；英文触发词 strategy clock、Bowman's strategy clock、price-value strategy、competitive positioning map。
+description: 当用户要用战略钟分析定价、差异化、竞争定位或价格-价值平衡点时使用。
 ---
 
 # 战略钟模型

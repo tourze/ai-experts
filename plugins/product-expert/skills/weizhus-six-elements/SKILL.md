@@ -1,6 +1,6 @@
 ---
 name: weizhus-six-elements
-description: 当用户要从中国商业环境视角分析商业模式、梳理定位到企业价值的因果逻辑链、或做商业模式创新设计时使用；英文触发词 Wei Zhu model、six elements、business model logic chain、Chinese business model。
+description: 当用户要用魏朱六要素分析中国商业模式、因果逻辑链或商业模式创新时使用。
 ---
 
 # 魏朱六要素商业模式

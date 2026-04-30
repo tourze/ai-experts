@@ -1,6 +1,6 @@
 ---
 name: business-iron-triangle
-description: 当用户要从产品、核心业务职能、市场三维度审视业务定位一致性、或判断商业模式是否自洽时使用；英文触发词 business iron triangle、product-function-market、business definition、Abell's three dimensions。
+description: 当用户要从产品、业务职能、市场三维度审视业务定位一致性时使用。
 ---
 
 # 业务铁三角

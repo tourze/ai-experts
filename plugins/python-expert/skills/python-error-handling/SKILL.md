@@ -1,6 +1,6 @@
 ---
 name: python-error-handling
-description: 当用户要设计 Python 异常层级、处理 TypeError / ValueError / KeyError / AttributeError / IndexError 等内置异常、做输入校验边界、批处理部分失败治理或规范 try/except 纪律时使用。
+description: 当用户要设计 Python 异常层级、输入校验、部分失败治理或规范 try/except 纪律时使用。
 ---
 
 # Python 错误处理

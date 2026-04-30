@@ -1,6 +1,6 @@
 ---
 name: deep-code-read
-description: 当用户要深度理解一个不熟悉的代码库并生成可复用的认知型 skill 文件时使用。支持 GitHub URL 或本地路径输入，通过 ABC 闭卷考试循环验证 skill 质量。与 repo-analyzer（快速评估）互补，本 skill 产出持久化的深度知识。
+description: 当用户要深度理解不熟悉代码库，并生成可复用的认知型 skill 文件时使用。
 ---
 
 # Deep Code Reader

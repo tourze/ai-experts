@@ -1,6 +1,6 @@
 ---
 name: session-reflection
-description: 当用户要复盘或收尾当前会话、总结已完成/未完成/验证/风险，或把经验沉淀到 MEMORY/工作流/Skill/Hooks 治理建议时使用；触发词：复盘本轮、总结会话、会话收尾、session reflection、wrap up this session。subagent 不使用。
+description: 当用户要复盘或收尾当前会话，沉淀完成项、验证、风险或治理建议时使用。
 ---
 
 # Session Reflection

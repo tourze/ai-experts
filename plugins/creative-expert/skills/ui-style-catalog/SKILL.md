@@ -1,6 +1,6 @@
 ---
 name: ui-style-catalog
-description: 当用户要按 UI 风格名称（Glassmorphism、Neubrutalism、Bento、Aurora、Claymorphism、Brutalism、Cyberpunk、Skeuomorphism 等）查询其视觉特征、CSS 特征、AI 生成 prompt 关键词、适用场景与反适用场景时使用。适合"这是什么风格""做成 Bento 风格""Glassmorphism 要怎么写 CSS"等场景。
+description: 当用户要按 UI 风格名称查询视觉特征、CSS 落地、AI prompt 关键词或适用边界时使用。
 ---
 
 # UI 风格目录

@@ -1,6 +1,6 @@
 ---
 name: question-refiner
-description: 当用户提出研究问题但范围、输出形式、时效或信任等级不清晰时使用。通过 5 维澄清把"研究一下 X"这种模糊需求转成结构化研究 prompt，避免带着歧义开始搜索导致返工。是 deep-research / deep-researcher agent 启动前的上游步骤。
+description: 当用户提出研究问题但范围、输出形式、时效或信任等级不清晰，需要先澄清成结构化研究 prompt 时使用。
 ---
 
 # Question Refiner

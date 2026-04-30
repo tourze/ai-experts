@@ -1,6 +1,6 @@
 ---
 name: tech-maturity-curve
-description: 当用户要评估新技术的成熟度、判断技术投资时机、避免追风口或识别技术泡沫时使用；英文触发词 Gartner hype cycle、technology maturity curve、hype cycle、technology adoption、trough of disillusionment。
+description: 当用户要评估新技术成熟度、判断技术投资时机或识别技术泡沫时使用。
 ---
 
 # 技术成熟度曲线（Gartner Hype Cycle）

@@ -1,6 +1,6 @@
 ---
 name: pestel-analysis
-description: 当用户要做宏观环境分析、评估外部因素对产品或业务的影响、或为战略规划提供环境扫描时使用；英文触发词 PESTEL、PEST、macro environment、external analysis、regulatory landscape。
+description: 当用户要用 PESTEL/PEST 做宏观环境分析、外部因素评估或战略环境扫描时使用。
 ---
 
 # PESTEL 宏观环境分析

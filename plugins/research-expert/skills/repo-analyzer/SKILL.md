@@ -1,6 +1,6 @@
 ---
 name: repo-analyzer
-description: 当用户要克隆或分析外部 GitHub 仓库、评估开源项目质量、生成仓库结构化报告、做技术选型调研、还原项目演进时间线或对比竞争格局时使用。支持本地浅克隆和 GitHub API 两种模式，支持 --persist 将分析结果保存为可复用的 skill 文件。
+description: 当用户要分析外部 GitHub 仓库、评估开源项目质量、生成结构化报告或还原项目演进时使用。
 context: fork
 agent: research-expert:deep-researcher
 ---

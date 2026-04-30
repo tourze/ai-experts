@@ -1,6 +1,6 @@
 ---
 name: obsidian-cli
-description: 当用户要通过命令行读写笔记、搜索 vault、操作 daily notes、tasks、properties、tags、backlinks 或调试 Obsidian 插件时使用。触发词包括 Obsidian CLI、vault、daily、property:set、tasks、tags、backlinks、plugin:reload、dev:screenshot、dev:dom。
+description: 当用户要通过 Obsidian CLI 读写笔记、搜索 vault、操作 daily/tasks/properties 或调试插件时使用。
 ---
 
 # Obsidian CLI

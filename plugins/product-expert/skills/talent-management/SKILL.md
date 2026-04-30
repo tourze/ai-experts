@@ -1,6 +1,6 @@
 ---
 name: talent-management
-description: 当用户要做人才盘点、设计招聘/培训/绩效/薪酬体系、诊断人才流失问题或规划人才梯队时使用；英文触发词 talent management、hire-develop-deploy-retain、talent pipeline、HR strategy、people management cycle。
+description: 当用户要做人才盘点、招聘培训绩效体系设计、人才流失诊断或梯队规划时使用。
 ---
 
 # 人才选育用留

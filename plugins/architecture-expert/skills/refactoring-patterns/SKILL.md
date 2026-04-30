@@ -1,6 +1,6 @@
 ---
 name: refactoring-patterns
-description: "当用户要选择命名化重构手法、分离重构与功能变更、处理代码异味或保持行为不变改结构时使用。本 skill 是「手法库」（Extract Method、异味分类、动作序列），不管流程纪律。英文触发词 refactoring patterns / extract method / code smell。"
+description: "当用户要选择命名化重构手法、处理代码异味或在不改行为下改结构时使用。"
 ---
 
 # refactoring-patterns

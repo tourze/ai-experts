@@ -1,6 +1,6 @@
 ---
 name: browser-rendering-patterns
-description: 当需要优化浏览器渲染性能、处理 hydration 问题、使用 resource hints 或改善客户端事件处理时使用。用户提到 hydration mismatch、content-visibility、preload、preconnect、passive event listener、script defer、SVG 优化 时触发。
+description: 当用户要解决 hydration、浏览器渲染性能、resource hints 或客户端事件处理问题时使用。
 ---
 
 # 浏览器渲染模式

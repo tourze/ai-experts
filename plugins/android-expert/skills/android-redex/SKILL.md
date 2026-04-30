@@ -1,6 +1,6 @@
 ---
 name: android-redex
-description: 当用户要用 ReDex 优化 Android APK 体积或性能、配置 ReDex pass、集成 ReDex 到构建流程、排查 ReDex 优化问题时使用。英文触发词包括 ReDex、redex.py、dex optimization、APK size reduction、bytecode optimization。
+description: 当用户要用 ReDex 优化 Android APK 体积/性能、配置 pass 或排查优化问题时使用。
 ---
 
 # ReDex — Android 字节码优化

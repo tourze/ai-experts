@@ -1,6 +1,6 @@
 ---
 name: mysql-index-strategy
-description: "当用户要设计、审查或优化 MySQL 索引、复合索引顺序或解读 EXPLAIN 时使用；英文触发词 MySQL index / EXPLAIN / composite index / covering index。"
+description: "当用户要设计、审查或优化 MySQL 索引、复合索引顺序或解读 EXPLAIN 时使用。"
 ---
 
 # MySQL Index Strategy

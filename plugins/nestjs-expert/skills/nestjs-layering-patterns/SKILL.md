@@ -1,6 +1,6 @@
 ---
 name: nestjs-layering-patterns
-description: 当需要设计或审查 NestJS 模块分层（module/controller/service）、DTO + `class-validator` + `ValidationPipe` 输入边界、依赖注入、Guard/Interceptor/Pipe 装配或 Express 迁移时使用。
+description: 当需要设计或审查 NestJS 模块分层、DTO/ValidationPipe 输入边界、依赖注入或 Guard/Interceptor/Pipe 装配时使用。
 version: "1.2.0"
 alwaysApply: false
 ---

@@ -1,6 +1,6 @@
 ---
 name: financial-analyst
-description: 当需要做财报比率分析、DCF 估值、预算偏差或滚动预测时使用。英文触发词包括 cash flow analysis、budget variance、financial projections。
+description: 当需要做财报比率分析、DCF 估值、预算偏差或滚动预测时使用。
 ---
 
 # 财务分析师技能

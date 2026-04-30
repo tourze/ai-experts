@@ -1,6 +1,6 @@
 ---
 name: windows-kernel-security
-description: 当用户分析或审计 Windows 内核对象、驱动边界或安全机制时使用；英文触发词 Windows kernel / PatchGuard / VBS / HVCI / IOCTL。
+description: 当用户分析或审计 Windows 内核对象、驱动边界、PatchGuard、VBS、HVCI 或 IOCTL 时使用。
 ---
 
 # windows-kernel-security

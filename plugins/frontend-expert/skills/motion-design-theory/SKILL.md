@@ -1,6 +1,6 @@
 ---
 name: motion-design-theory
-description: 当用户要设计 UI 动效、选 easing 曲线、定 duration、处理 reduced-motion 或判断"该不该加动画"时使用。适合"动画节奏怎么定""用哪条 cubic-bezier""什么时候不该动画""为什么 bounce 过时了"等场景。
+description: 当用户要设计 UI 动效、选择 easing/duration、处理 reduced-motion 或判断是否该加动画时使用。
 ---
 
 # UI 运动设计理论

@@ -1,6 +1,6 @@
 ---
 name: brand-health
-description: 当用户要做品牌健康度诊断、评估品牌认知-美誉-使用-购买-推荐漏斗、或判断品牌问题出在哪个环节时使用；英文触发词 brand health、brand awareness、brand equity、NPS、brand funnel、brand perception audit。
+description: 当用户要诊断品牌健康度、评估品牌漏斗或判断品牌问题环节时使用。
 ---
 
 # 品牌健康度诊断

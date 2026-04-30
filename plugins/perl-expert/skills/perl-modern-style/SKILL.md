@@ -1,6 +1,6 @@
 ---
 name: perl-modern-style
-description: 当用户用 Perl 5.36+ 现代约定编写模块、对象或依赖管理时使用；英文触发词 Perl / Moo / Moose / cpanfile / carton。
+description: 当用户用 Perl 5.36+、Moo/Moose、cpanfile 或 carton 编写模块和管理依赖时使用。
 ---
 
 # Perl 5.36+ 现代风格

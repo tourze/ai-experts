@@ -1,6 +1,6 @@
 ---
 name: vector-index-tuning
-description: 当用户要调优 HNSW、IVF、PQ、量化、召回-延迟-内存权衡，或排查向量索引性能问题时使用。英文触发词包括 vector index tuning、HNSW、quantization、recall、latency、memory。
+description: 当用户要调优 HNSW、IVF、PQ、量化、召回-延迟-内存权衡，或排查向量索引性能问题时使用。
 ---
 
 # vector-index-tuning

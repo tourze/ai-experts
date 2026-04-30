@@ -1,6 +1,6 @@
 ---
 name: complexity-reducer
-description: "当代码过于复杂、嵌套太深、函数太长、耦合严重，或用户要求简化代码、清理命名、降低复杂度时使用。英文触发词 simplify code / reduce complexity / code cleanup / refine code。"
+description: "当代码过于复杂、嵌套太深、函数太长、耦合严重，或用户要求简化代码、清理命名、降低复杂度时使用。"
 ---
 
 # 复杂度识别与简化

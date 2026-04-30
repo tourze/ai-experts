@@ -1,6 +1,6 @@
 ---
 name: brainstorming-before-coding
-description: "当用户要在创建功能、构建组件、添加新行为或修改架构前做设计澄清和方案选择时使用。英文触发词 brainstorm before coding / design before implementation。"
+description: "当用户要在创建功能、构建组件、添加新行为或修改架构前做设计澄清和方案选择时使用。"
 ---
 
 # 编码前头脑风暴

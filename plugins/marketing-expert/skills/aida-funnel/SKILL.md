@@ -1,6 +1,6 @@
 ---
 name: aida-funnel
-description: 当用户要设计客户认知-兴趣-欲望-行动的转化路径、分析营销漏斗各阶段效率、或优化从曝光到购买的全链路时使用；英文触发词 AIDA、AIDMA、awareness-interest-desire-action、marketing funnel stages、conversion funnel。
+description: 当用户要设计 AIDA 转化路径、分析营销漏斗效率或优化曝光到购买链路时使用。
 ---
 
 # AIDA/AIDMA 营销漏斗

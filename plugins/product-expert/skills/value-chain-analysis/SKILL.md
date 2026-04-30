@@ -1,6 +1,6 @@
 ---
 name: value-chain-analysis
-description: 当用户要分析企业竞争优势来源、识别价值创造环节、优化运营效率或决定外包/自建时使用；英文触发词 value chain、Porter value chain、primary activities、support activities、competitive advantage source。
+description: 当用户要分析企业竞争优势来源、识别价值创造环节或判断外包/自建时使用。
 ---
 
 # 价值链分析

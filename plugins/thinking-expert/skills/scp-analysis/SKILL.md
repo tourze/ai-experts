@@ -1,6 +1,6 @@
 ---
 name: scp-analysis
-description: 当用户要分析外部冲击对行业和企业的传导影响、评估政策/技术/市场变化的连锁效应时使用；英文触发词 SCP model、structure-conduct-performance、industry shock analysis、external impact、cascading effect。
+description: 当用户要分析外部冲击对行业和企业的传导影响或连锁效应时使用。
 ---
 
 # SCP 分析模型

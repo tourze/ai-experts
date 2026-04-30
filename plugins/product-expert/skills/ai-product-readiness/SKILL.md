@@ -1,6 +1,6 @@
 ---
 name: ai-product-readiness
-description: 当用户要评估产品是否适合引入 AI、判断 AI 功能的成熟度、设计 AI 产品验证方案或评估 AI 团队能力时使用；英文触发词 AI readiness、AI product、LLM integration、AI feasibility、AI-shaped。
+description: 当用户要评估产品是否适合引入 AI、判断 AI 功能成熟度或设计 AI 产品验证方案时使用。
 ---
 
 # AI 产品适用性评估

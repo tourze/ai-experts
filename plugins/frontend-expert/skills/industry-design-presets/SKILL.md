@@ -1,6 +1,6 @@
 ---
 name: industry-design-presets
-description: 当用户要为某个行业产品（SaaS、Fintech、Healthcare、E-commerce、Portfolio、Gen-Z、Gaming 等）挑选设计方向、风格、配色、字体组合，或判断某个行业不该用哪些视觉语言时使用。适合"我在做一个 X 产品，该用什么视觉""fintech 用什么色""healthcare 配色"等场景。
+description: 当用户要为特定行业产品选择视觉方向、配色、字体、风格或反模式时使用。
 ---
 
 # 行业设计预设

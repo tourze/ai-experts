@@ -1,6 +1,6 @@
 ---
 name: spec-driven-delivery
-description: "当需要把一个改动从需求到可验证交付串起一条明确流程（Specify→Plan→Act→Review→Vault）时使用——用 10 分 spec 门禁、外部 journal 持续记录、3 次失败停下问人、以及高风险显式确认来防止过早进入实现和半途跑偏。"
+description: "当需要把需求、计划、实现、审查和沉淀串成可验证交付流程，避免过早实现或跑偏时使用。"
 ---
 
 # 需求驱动的可验证交付（SPARV）
