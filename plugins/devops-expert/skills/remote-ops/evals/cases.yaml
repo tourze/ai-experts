@@ -1,0 +1,30 @@
+cases:
+  - id: positive_remote_ops_primary
+    prompt: "帮我通过 SSH 到 1.2.3.4 执行 systemctl status nginx，并记录执行历史。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as remote-ops territory"
+      - "uses the JSON host config plus stdin command execution workflow"
+    trigger_expected: true
+
+  - id: positive_remote_ops_config
+    prompt: "用户给了远端主机、用户名和密码，需要保存成 ~/.host/1.2.3.4.json 后复用。"
+    fixtures: []
+    rubric:
+      - "matches SSH host credential setup for remote operations"
+      - "keeps the response focused on the configured ~/.host JSON contract"
+    trigger_expected: true
+
+  - id: negative_adjacent_service_monitor
+    prompt: "这个需求应该交给 service-monitor：确认 HTTP 健康检查端点是否响应。"
+    fixtures: []
+    rubric:
+      - "adjacent service-monitor requests should not trigger remote-ops"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

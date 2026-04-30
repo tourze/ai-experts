@@ -18,6 +18,7 @@ DevOps 专家能力，覆盖 Docker/Helm/K8s、CI/CD 流水线、Nginx 配置、
 | `monitoring-observability` | 监控、日志与可观测性体系搭建 |
 | `nginx-config-optimizer` | Nginx 配置性能/安全/缓存优化 |
 | `service-monitor` | 服务健康检查与端点监控 |
+| `remote-ops` | 通过 SSH 在远端机器执行日常运维命令并记录审计历史 |
 | `incident-triage` | 线上事件分级响应与排查 |
 | `log-analyzer` | 日志调查与错误追踪 |
 | `openapi-spec-generation` | OpenAPI 3.1 规范生成与维护 |
