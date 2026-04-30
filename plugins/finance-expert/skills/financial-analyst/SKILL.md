@@ -20,7 +20,7 @@ description: 当需要做财报比率分析、DCF 估值、预算偏差或滚动
 - 推荐优先使用专用样例文件：
   `assets/ratio_analysis_sample.json`、`assets/dcf_valuation_sample.json`、`assets/budget_variance_sample.json`、`assets/forecast_sample.json`。
 - 本技能不负责 Excel、CSV、数据库抽取；先把数据整理成 JSON 再调用脚本。
-- CLI 输出面向单次分析；若需要复用模型逻辑或批量场景分析，应该转用本插件中的 Python 库脚本。
+- CLI 输出面向单次分析；若需要复用模型逻辑或批量场景分析，应该转用本目录中的 Python 库脚本。
 
 ## 代码模式
 

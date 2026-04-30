@@ -1,6 +1,6 @@
 # nestjs-expert
 
-NestJS 框架专家插件，覆盖模块/控制器/服务/DTO/Guard/拦截器配置。
+NestJS 框架专家能力，覆盖模块/控制器/服务/DTO/Guard/拦截器配置。
 
 ## 结构
 

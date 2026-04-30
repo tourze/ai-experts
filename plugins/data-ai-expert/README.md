@@ -1,6 +1,6 @@
 # data-ai-expert
 
-数据与 AI 专家插件，聚焦 14 个技能：结构化数据分析、统计推断、图表表达、图表选型、数据叙事、Embedding/RAG/向量检索优化、Prompt 工程、LLM 评估，以及 Model-First 推理。
+数据与 AI 专家能力，聚焦 14 个技能：结构化数据分析、统计推断、图表表达、图表选型、数据叙事、Embedding/RAG/向量检索优化、Prompt 工程、LLM 评估，以及 Model-First 推理。
 
 ## 目录结构
 
@@ -37,7 +37,7 @@
 
 由仓库根目录的 `node scripts/install.mjs` 统一管理（symlink skills/agents + 注入用户级 hooks）。详见仓库 README 的「快速开始」段。
 
-安装脚本会读取仓库根 `.env.local`。配置 `Z_AI_API_KEY` 后，会同步本插件 `.mcp.json` 中声明的 `zai-mcp-server`、`web-search-prime`、`web-reader` 与 `zread`；Claude Code 直连远程 HTTP MCP，Codex CLI 通过 `uvx mcp-proxy` 兼容访问远程 HTTP MCP。未配置时会移除这些托管 MCP 条目并保留用户自定义 MCP。
+安装脚本会读取仓库根 `.env.local`。配置 `Z_AI_API_KEY` 后，会同步本目录 `.mcp.json` 中声明的 `zai-mcp-server`、`web-search-prime`、`web-reader` 与 `zread`；Claude Code 直连远程 HTTP MCP，Codex CLI 通过 `uvx mcp-proxy` 兼容访问远程 HTTP MCP。未配置时会移除这些托管 MCP 条目并保留用户自定义 MCP。
 
 ## 校验
 

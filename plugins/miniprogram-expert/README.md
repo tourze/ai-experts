@@ -1,6 +1,6 @@
 # miniprogram-expert
 
-面向微信小程序开发、调试、预览和发布流程的插件，覆盖 1 个技能、3 个 PostToolUse hook 和 2 组回归测试。
+面向微信小程序开发、调试、预览和发布流程的专家能力，覆盖 1 个技能、3 个 PostToolUse hook 和 2 组回归测试。
 
 ## 目录结构
 
@@ -26,7 +26,7 @@
 
 ## 验证命令
 
-在插件目录执行：
+在当前目录执行：
 
 ```bash
 find hooks -name '*.mjs' -print0 | xargs -0 -n1 node --check

@@ -1,6 +1,6 @@
 # microsoft-expert
 
-面向 Microsoft 生态问题排查与代码落地的插件，覆盖 Microsoft Learn 官方文档检索与 SDK API/示例校验。
+面向 Microsoft 生态问题排查与代码落地的专家能力，覆盖 Microsoft Learn 官方文档检索与 SDK API/示例校验。
 
 ## 目录结构
 
@@ -21,7 +21,7 @@
 
 ## 验证命令
 
-在插件目录执行：
+在当前目录执行：
 
 ```bash
 npx -y @microsoft/learn-cli doctor --format json

@@ -1,6 +1,6 @@
 # webman-expert
 
-Webman 框架专家插件，覆盖命名规范、自定义进程、WebSocket 和插件开发。
+Webman 框架专家能力，覆盖命名规范、自定义进程、WebSocket 和插件开发。
 
 ## Skills
 

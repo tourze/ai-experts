@@ -1,6 +1,6 @@
 # nextjs-expert
 
-Next.js 框架专家插件，覆盖 App Router、Server Components、Server Actions 和 Vercel 部署。
+Next.js 框架专家能力，覆盖 App Router、Server Components、Server Actions 和 Vercel 部署。
 
 ## 结构
 

@@ -1,6 +1,6 @@
 # perl-expert
 
-Perl 开发专家插件，覆盖现代 Perl 5.36+ 开发、Test2 测试工作流，以及 `Edit|Write` 后的语法、调试语句和文件预算守卫。
+Perl 开发专家能力，覆盖现代 Perl 5.36+ 开发、Test2 测试工作流，以及 `Edit|Write` 后的语法、调试语句和文件预算守卫。
 
 ## 目录结构
 

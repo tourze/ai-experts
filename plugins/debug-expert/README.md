@@ -1,6 +1,6 @@
 # debug-expert
 
-调试专家插件，覆盖 LLDB/GDB 线程回溯、Chrome DevTools 页面调试与性能剖析，以及 `browser-use` 浏览器自动化。
+调试专家能力，覆盖 LLDB/GDB 线程回溯、Chrome DevTools 页面调试与性能剖析，以及 `browser-use` 浏览器自动化。
 
 ## 结构
 

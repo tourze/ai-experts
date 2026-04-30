@@ -1,6 +1,6 @@
 /**
  * 保护路径 hook（PreToolUse — Edit|Write）
- * ── symfony-expert 插件版本 ──
+ * ── symfony-expert 专用版本 ──
  *
  * 从中央 hooks/pre-tool-use/edit-write/protected-paths.mjs 提取，
  * PROTECTED_PATTERNS 仅保留 Symfony 项目相关的保护规则。

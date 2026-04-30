@@ -156,7 +156,7 @@ export async function run(payload) {
   if (workspaceScopes.size >= 2) {
     issues.push(
       `变更同时触及多个包/项目目录（${[...workspaceScopes].sort().join("、")}），` +
-        "建议按包拆分提交：一次只处理一个插件/包/应用目录"
+        "建议按包拆分提交：一次只处理一个 expert/包/应用目录"
     );
   }
 

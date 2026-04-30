@@ -1,6 +1,6 @@
 # devops-expert
 
-DevOps 专家插件，覆盖 Docker/Helm/K8s、CI/CD 流水线、Nginx 配置、监控告警和事件响应。
+DevOps 专家能力，覆盖 Docker/Helm/K8s、CI/CD 流水线、Nginx 配置、监控告警和事件响应。
 
 - `hooks/`：8 个 DevOps 专有的 `PostToolUse Edit|Write` 校验器。
 - `skills/*/SKILL.md`：全部采用中文统一结构，便于按场景快速触发。

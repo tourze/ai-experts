@@ -1,6 +1,6 @@
 # frontend-expert
 
-前端专家插件，覆盖性能、设计系统、响应式、交互设计、Figma 落地、shadcn/ui 接入与 Web 质量审计。
+前端专家能力，覆盖性能、设计系统、响应式、交互设计、Figma 落地、shadcn/ui 接入与 Web 质量审计。
 
 ## 结构
 

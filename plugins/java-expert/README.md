@@ -1,6 +1,6 @@
 # java-expert
 
-Java 开发专家插件，覆盖 Java 21 / Spring Boot 3.x 开发规范、JUnit 5 测试、Arthas 排障、GraalVM Native Image 与 Gradle 构建优化，并在 `Edit|Write` 后执行 Java 相关守卫。
+Java 开发专家能力，覆盖 Java 21 / Spring Boot 3.x 开发规范、JUnit 5 测试、Arthas 排障、GraalVM Native Image 与 Gradle 构建优化，并在 `Edit|Write` 后执行 Java 相关守卫。
 
 ## Skills
 

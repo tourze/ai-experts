@@ -1,7 +1,7 @@
 /**
  * 文件编码检查 hook（PostToolUse — Edit|Write）
  *
- * coding-expert 插件版本 — 完整扩展名覆盖，语言无关。
+ * coding-expert 专用版本 — 完整扩展名覆盖，语言无关。
  * 检测 BOM 头和非 UTF-8 字节序列，提醒开发者注意编码问题。
  * 不阻塞（decision: "report"），仅作为提醒。
  */

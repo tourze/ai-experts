@@ -7,7 +7,7 @@
  *   新文件   → 必须在预算内
  *   测试文件 → 不纳入行数预算
  *
- * 统一收敛原先散落在语言插件中的 file-budget-guard。
+ * 统一收敛原先散落在语言能力目录中的 file-budget-guard。
  */
 
 import { execFileSync } from "child_process";

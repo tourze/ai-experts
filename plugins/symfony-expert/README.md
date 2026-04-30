@@ -1,6 +1,6 @@
 # symfony-expert
 
-Symfony 框架专家插件，覆盖 Doctrine ORM、Twig 模板、Messenger 异步消息、Voters 授权和 UX 前端栈。
+Symfony 框架专家能力，覆盖 Doctrine ORM、Twig 模板、Messenger 异步消息、Voters 授权和 UX 前端栈。
 
 ## Skills
 

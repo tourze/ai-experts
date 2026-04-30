@@ -1,6 +1,6 @@
 # android-expert
 
-Android 开发专家插件，覆盖架构模式、Kotlin Coroutines、无障碍访问、Material Design 3、模拟器自动化和测试策略。
+Android 开发专家能力，覆盖架构模式、Kotlin Coroutines、无障碍访问、Material Design 3、模拟器自动化和测试策略。
 
 ## 结构
 

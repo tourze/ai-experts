@@ -44,7 +44,7 @@ function main() {
   const templatesDir = path.join(pluginDir, 'templates');
 
   if (!fs.existsSync(scriptsDir) || !fs.statSync(scriptsDir).isDirectory() || !fs.existsSync(templatesDir) || !fs.statSync(templatesDir).isDirectory()) {
-    process.stderr.write(`[error] 插件资源缺失：${scriptsDir} 或 ${templatesDir} 不存在\n`);
+    process.stderr.write(`[error] Spec Kit 资源缺失：${scriptsDir} 或 ${templatesDir} 不存在\n`);
     process.exit(1);
   }
 

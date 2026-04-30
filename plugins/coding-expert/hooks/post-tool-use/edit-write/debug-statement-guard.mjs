@@ -1,8 +1,8 @@
 /**
  * 调试语句残留检测 hook（PostToolUse — Edit|Write）
  *
- * 统一收敛原先散落在语言/基础设施插件中的通用版 debug-statement-guard，
- * 通过 coding-expert 依赖向上层插件复用。
+ * 统一收敛原先散落在语言/基础设施能力目录中的通用版 debug-statement-guard，
+ * 通过 coding-expert 依赖向上层能力目录复用。
  *
  * 检测策略：diff-based，只检查新增代码，不对已有调试语句告警。
  *

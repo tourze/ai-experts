@@ -1,6 +1,6 @@
 # react-expert
 
-React Web 专家插件，覆盖组件组合、Hooks 模式、渲染性能优化、重渲染治理、Server Components 与服务端优化模式。
+React Web 专家能力，覆盖组件组合、Hooks 模式、渲染性能优化、重渲染治理、Server Components 与服务端优化模式。
 
 ## Skills
 

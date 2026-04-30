@@ -27,7 +27,7 @@ test("权限文档不再把 capability 规则描述为全局绝对前提", () =>
   assert.match(pluginContent, /default permission is often added automatically/i);
 });
 
-test("插件 README 暴露校验入口，方便后续自查", () => {
+test("Tauri README 暴露校验入口，方便后续自查", () => {
   const content = readFileSync(pluginReadme, "utf-8");
-  assert.match(content, /claude plugin validate plugins\/tauri-expert/);
+  assert.match(content, /node --test plugins\/tauri-expert\/tests\/\*\.test\.mjs/);
 });

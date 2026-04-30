@@ -1,6 +1,6 @@
 # ios-expert
 
-iOS / Apple 平台专家插件，覆盖 Swift Concurrency、SwiftUI 性能与模式、iOS/macOS HIG、App Store 审核与发布，以及 Apple 工具自动化。
+iOS / Apple 平台专家能力，覆盖 Swift Concurrency、SwiftUI 性能与模式、iOS/macOS HIG、App Store 审核与发布，以及 Apple 工具自动化。
 
 ## 目录结构
 
@@ -41,12 +41,12 @@ iOS / Apple 平台专家插件，覆盖 Swift Concurrency、SwiftUI 性能与模
 | Agent | 用途 |
 |-------|------|
 | `ios-release-auditor` | 只读审计 Info.plist、entitlements、能力开关与 App Review 风险 |
-| `ios-simulator-smoke-tester` | 使用本插件模拟器脚本执行关键流程冒烟测试 |
+| `ios-simulator-smoke-tester` | 使用本目录模拟器脚本执行关键流程冒烟测试 |
 | `swiftui-engineer` | SwiftUI 视图 / 导航 / 列表性能 / Swift Concurrency 工程审查与重构建议，含 HIG / Liquid Glass / macOS HIG 合规检查 |
 
 ## 验证命令
 
-在插件目录执行：
+在当前目录执行：
 
 ```bash
 find hooks -name '*.mjs' -print0 | xargs -0 -n1 node --check

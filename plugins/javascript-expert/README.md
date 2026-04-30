@@ -1,6 +1,6 @@
 # javascript-expert
 
-JavaScript 开发专家插件，提供语法检查、ESLint 代码质量守护、调试语句检测、文件预算守卫，以及现代 ES6+ / Jest 实战技能。
+JavaScript 开发专家能力，提供语法检查、ESLint 代码质量守护、调试语句检测、文件预算守卫，以及现代 ES6+ / Jest 实战技能。
 
 ## 结构
 

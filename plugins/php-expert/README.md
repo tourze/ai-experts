@@ -1,6 +1,6 @@
 # php-expert
 
-PHP 开发专家插件，覆盖 PHP 代码质量守卫、Composer/PHPStan/PHPUnit 工作流，以及 8 个面向语言特性、设计模式、错误处理、类型安全、异步、生成器内存优化、文档和测试的技能。
+PHP 开发专家能力，覆盖 PHP 代码质量守卫、Composer/PHPStan/PHPUnit 工作流，以及 8 个面向语言特性、设计模式、错误处理、类型安全、异步、生成器内存优化、文档和测试的技能。
 
 ## 目录结构
 
@@ -44,7 +44,7 @@ PHP 开发专家插件，覆盖 PHP 代码质量守卫、Composer/PHPStan/PHPUni
 
 ## 验证命令
 
-在插件目录执行：
+在当前目录执行：
 
 ```bash
 find hooks tests -type f \( -name '*.mjs' -o -name '*.js' \) -print0 | xargs -0 -n1 node --check

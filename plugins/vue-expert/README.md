@@ -1,6 +1,6 @@
 # vue-expert
 
-Vue 框架专家插件，聚焦 Vue 3 JavaScript 项目：`<script setup>`、Composition API、JSDoc 类型标注、Pinia 与 Vite 配置。
+Vue 框架专家能力，聚焦 Vue 3 JavaScript 项目：`<script setup>`、Composition API、JSDoc 类型标注、Pinia 与 Vite 配置。
 
 ## 结构
 

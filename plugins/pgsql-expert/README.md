@@ -1,6 +1,6 @@
 # pgsql-expert
 
-PostgreSQL 专家插件，覆盖模式设计、索引策略、声明式分区、JSONB 模式与行级安全。
+PostgreSQL 专家能力，覆盖模式设计、索引策略、声明式分区、JSONB 模式与行级安全。
 
 ## 依赖
 

@@ -1,6 +1,6 @@
 # windows-expert
 
-Windows 专家插件，覆盖带安全边界的桌面自动化、Windows 内核分析，以及通过 Parallels Desktop 控制 Windows / Linux 客体。
+Windows 专家能力，覆盖带安全边界的桌面自动化、Windows 内核分析，以及通过 Parallels Desktop 控制 Windows / Linux 客体。
 
 ## 结构
 

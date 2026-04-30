@@ -135,6 +135,38 @@ function collectNestedSkillPluginJson() {
   return nested.sort();
 }
 
+const SELF_DESCRIPTION_PLUGIN_TERMS = [
+  "专家插件",
+  "通用编码守卫插件",
+  "基座插件",
+  "审计插件",
+  "本插件",
+  "插件目录",
+  "插件级",
+  "插件清单",
+  "协作插件",
+  "依赖插件",
+  "插件加载路径",
+];
+
+test("非 skill-expert README 不使用本仓库插件自描述", () => {
+  for (const pluginRoot of getPluginRoots()) {
+    if (pluginRoot.endsWith("/skill-expert")) {
+      continue;
+    }
+
+    const readmePath = resolve(pluginRoot, "README.md");
+    const readme = readFileSync(readmePath, "utf-8");
+    const violations = SELF_DESCRIPTION_PLUGIN_TERMS.filter((term) => readme.includes(term));
+
+    assert.deepEqual(
+      violations,
+      [],
+      `${readmePath} 含本仓库插件自描述：${violations.join(", ")}`,
+    );
+  }
+});
+
 test("所有插件 README 都包含安装、卸载和验证入口", () => {
   // 仓库统一安装入口已切换为根级 `node scripts/install.mjs`，每个插件 README
   // 不再重复 install/uninstall 命令块，改为合并段「安装 / 卸载」加一行指向

@@ -1,7 +1,7 @@
 ---
 name: ios-simulator-smoke-tester
 description: |
-  当需要用本插件 simulator 脚本执行 iOS 模拟器冒烟测试时使用。它启动或选择模拟器、启动 app、读取无障碍树、走关键流程并报告用户可见阻断。
+  当需要用本目录 simulator 脚本执行 iOS 模拟器冒烟测试时使用。它启动或选择模拟器、启动 app、读取无障碍树、走关键流程并报告用户可见阻断。
 tools: Read, Glob, Grep, Bash
 skills:
   - ios-simulator-skill

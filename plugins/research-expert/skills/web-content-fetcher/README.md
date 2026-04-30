@@ -1,6 +1,6 @@
 # Web Content Fetcher
 
-当前插件内的网页正文提取工具，负责把单个 URL 转成干净 Markdown。
+当前目录内的网页正文提取工具，负责把单个 URL 转成干净 Markdown。
 
 ## 依赖
 
@@ -40,5 +40,5 @@ node scripts/fetch.mjs "https://example.com/article" --json
 
 ## 说明
 
-- 本 README 只描述插件内脚本的本地用法。
+- 本 README 只描述目录内脚本的本地用法。
 - 更完整的 agent 调用规范见 [`SKILL.md`](SKILL.md)。
