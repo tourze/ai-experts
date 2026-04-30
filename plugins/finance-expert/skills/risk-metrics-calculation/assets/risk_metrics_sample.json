@@ -1,0 +1,32 @@
+{
+  "_description": "Risk metrics sample covering single-asset, portfolio, and rolling risk analysis. Returns use decimal notation, so 0.012 means 1.2%.",
+  "risk_metrics": {
+    "single_asset": {
+      "returns": [0.012, -0.008, 0.004, -0.021, 0.015, 0.006, -0.003, 0.011, -0.014, 0.009],
+      "annualization_factor": 252,
+      "risk_free_rate": 0.02,
+      "confidence_level": 0.95
+    },
+    "portfolio": {
+      "returns": {
+        "equity": [0.012, -0.008, 0.004, -0.021, 0.015, 0.006, -0.003, 0.011, -0.014, 0.009],
+        "bond": [0.002, 0.001, -0.001, 0.003, 0.002, 0.001, 0, 0.002, -0.001, 0.001],
+        "gold": [0.004, 0.006, -0.002, 0.007, -0.001, 0.003, 0.005, -0.004, 0.006, 0.002]
+      },
+      "weights": {
+        "equity": 0.6,
+        "bond": 0.25,
+        "gold": 0.15
+      },
+      "annualization_factor": 252,
+      "risk_free_rate": 0.02,
+      "confidence_level": 0.95
+    },
+    "rolling": {
+      "returns": [0.012, -0.008, 0.004, -0.021, 0.015, 0.006, -0.003, 0.011, -0.014, 0.009],
+      "window": 5,
+      "annualization_factor": 252,
+      "confidence_level": 0.95
+    }
+  }
+}

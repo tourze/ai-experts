@@ -7,7 +7,7 @@
 - `skills/financial-analyst/`：4 个可直接运行的 CLI 脚本与样例数据
 - `skills/creating-financial-models/`：依赖 `numpy`/`pandas` 的 DCF 与敏感性建模脚本
 - `skills/kelly-sizing/`：Kelly Criterion 仓位、预算和资源分配方法
-- `skills/risk-metrics-calculation/`：风险指标方法论与经校验的代码模式
+- `skills/risk-metrics-calculation/`：风险指标 Node CLI、样例数据与经校验的代码模式
 
 ## Skills
 
@@ -23,7 +23,7 @@
 - `financial-analyst`：CLI 使用 Node.js `.mjs`
 - `creating-financial-models`：需要 `numpy`、`pandas`
 - `kelly-sizing`：方法型 skill，无额外脚本依赖
-- `risk-metrics-calculation`：示例代码使用 `numpy`、`pandas`
+- `risk-metrics-calculation`：CLI 使用 Node.js `.mjs`
 
 安装第三方依赖：
 
@@ -49,6 +49,7 @@ node --check plugins/finance-expert/skills/financial-analyst/scripts/ratio_input
 node --check plugins/finance-expert/skills/financial-analyst/scripts/dcf_valuation.mjs
 node --check plugins/finance-expert/skills/financial-analyst/scripts/budget_variance_analyzer.mjs
 node --check plugins/finance-expert/skills/financial-analyst/scripts/forecast_builder.mjs
+node --check plugins/finance-expert/skills/risk-metrics-calculation/scripts/risk_metrics_calculator.mjs
 node --test plugins/finance-expert/tests/*.test.mjs
 python3 -m unittest discover -s plugins/finance-expert/tests -p 'test_*.py'
 python3 -m py_compile $(find plugins/finance-expert -name '*.py' -print)
