@@ -108,7 +108,7 @@
 
 ## Hook 事件类型
 
-SessionStart, PreToolUse, PostToolUse, UserPromptSubmit, Notification, Stop
+SessionStart, PreToolUse, PostToolUse, UserPromptSubmit, Notification, Stop, PreCompact
 
 ## Git 工作流
 
@@ -131,23 +131,75 @@ node scripts/install.mjs
 - Claude Code: `~/.claude/CLAUDE.md`
 - Codex CLI: `~/.codex/AGENTS.md`
 
+## 能力组合工作流
+
+本仓库不是单纯的 skills 集合，而是把 `memory`、`skills`、`hooks`、`MCP` 和 `telemetry` 组合成一套本地执行闭环。安装脚本只负责把这些能力注册到 Claude Code / Codex CLI；真正的协同发生在每一轮会话运行时。
+
+```
+记忆文件
+   ├─ 仓库入口 README.md ← CLAUDE.md / AGENTS.md symlink
+   └─ 全局 MEMORY.md    ← ~/.claude/CLAUDE.md / ~/.codex/AGENTS.md symlink
+        ↓ (会话启动：SessionStart hooks 注入仓库状态与路由规则)
+用户 prompt
+        ↓ (UserPromptSubmit hooks 补充路由提醒、治理提醒)
+Skill 路由
+   ├─ CLI 根据 SKILL.md frontmatter description 注入匹配 skill
+   └─ 模型按路由声明选择是否使用 skill
+        ↓
+工具执行
+   ├─ PreToolUse hooks：危险命令、编辑边界、语言/框架守卫
+   ├─ MCP tools：搜索、网页读取、浏览器、GitHub、视觉等外部能力
+   └─ PostToolUse hooks：结果检查、语法/测试提示、遥测记录
+        ↓
+最终回复
+   └─ Stop hooks：检查下一步推荐、记录 skill 使用审计
+```
+
+### 组件职责
+
+| 组件 | 落点 | 运行时职责 |
+|------|------|------------|
+| 记忆文件 | `README.md`、`MEMORY.md`、`CLAUDE.md`、`AGENTS.md` | 提供长期规则、项目约束、中文输出规范和协作纪律；SessionStart hook 只报告存在性和仓库状态，不复制全文。 |
+| Skills | `plugins/<plugin>/skills/<skill>/SKILL.md` | 提供任务方法论和检查清单，由 CLI 路由层按 description 注入当前上下文；适合“怎么做”的知识。 |
+| Hooks | `plugins/<plugin>/hooks/<subdir>/*.mjs` | 在会话事件和工具事件上补上下文、阻断高风险操作、做结果检查；统一由根 `hooks/dispatch.mjs` 聚合执行。 |
+| MCP | `plugins/<plugin>/.mcp.json` | 声明外部工具服务，安装时同步到 CLI 用户配置；适合“需要访问外部系统”的能力。 |
+| Agents | `plugins/<plugin>/agents/*.md` | Claude Code 侧的隔离执行者，适合只读审计或多 skill 编排；Codex CLI 当前不安装。 |
+| Telemetry | `~/.claude/hook-telemetry/workspaces/.../decisions.jsonl` | 记录 hook 决策和 skill 使用审计，支撑 `trigger-audit-report.mjs`、`hook-telemetry-report.mjs` 等治理脚本。 |
+
+### Hooks 与 Skills 的配合
+
+Skill 解决“模型应该按什么方法做事”，hook 解决“运行时必须提醒、阻断或记录什么”。例如：
+- `skill-expert` 的 `UserPromptSubmit` hook 每轮提醒先做 skill 路由声明，避免长上下文压缩后丢失路由纪律。
+- `skill-expert` 的 `Stop` hook 检查最终回复是否包含下一步推荐，并把本轮 skill 命中/使用情况写入 telemetry。
+- `coding-expert` 的 `SessionStart` hook 注入 cwd、仓库根、分支、脏文件数和记忆文件存在性，减少每轮重复探测。
+- 各语言/领域插件的 `PreToolUse` / `PostToolUse` hook 负责危险命令、编辑边界、语法检查或框架特定守卫。
+
+### MCP 与 Skills 的配合
+
+MCP 不负责触发任务方法论；它只是把外部能力变成工具。是否该用搜索、网页读取、浏览器、GitHub 或视觉工具，通常由用户请求、当前 skill 的流程和模型判断共同决定。安装时，`sync-mcp.mjs` 会读取插件 `.mcp.json`，展开 `.env` / `.env.local` / 进程环境变量，缺少密钥的 server 会被跳过或移除，用户自有 MCP 配置会保留。
+
 ### 插件 MCP 自动配置
 
-安装脚本会扫描各插件目录下的 `.mcp.json`，并把其中声明的 MCP 服务同步到 Claude Code 与 Codex CLI。当前 `data-ai-expert` 声明了智谱 Z.AI 的视觉、搜索、网页读取和开源仓库读取 MCP；如需启用，先复制模板并填入本地 key：
+安装脚本会扫描各插件目录下的 `.mcp.json`，并把其中声明的 MCP 服务同步到 Claude Code 与 Codex CLI。当前仓库声明了三类托管 MCP：
+- `data-ai-expert`：智谱 Z.AI 视觉、搜索、网页读取和开源仓库读取 MCP，需要 `Z_AI_API_KEY`。
+- `debug-expert`：`chrome-devtools` MCP，无需本仓库环境变量，运行时通过 `npx -y chrome-devtools-mcp@latest` 启动。
+- `git-expert`：GitHub Copilot MCP，需要 `CODEX_GITHUB_PERSONAL_ACCESS_TOKEN`。
+
+如需启用需要密钥的 MCP，先复制模板并填入本地 key：
 
 ```bash
 cp .env.example .env.local
-# 编辑 .env.local，填写 Z_AI_API_KEY
+# 编辑 .env.local，填写 Z_AI_API_KEY 和/或 CODEX_GITHUB_PERSONAL_ACCESS_TOKEN
 node scripts/install.mjs
 ```
 
-`install` / `reinstall` 会读取 `.env.local` 的 `Z_AI_API_KEY`。存在 key 时，会为 Claude Code 与 Codex CLI 同步以下托管 MCP 服务：
+`install` / `reinstall` 会读取 `.env`、`.env.local` 与当前进程环境变量；进程环境变量优先级最高。存在 `Z_AI_API_KEY` 时，会为 Claude Code 与 Codex CLI 同步以下托管 MCP 服务：
 - `zai-mcp-server`：视觉理解，本地 stdio server，使用 `npx -y @z_ai/mcp-server`
 - `web-search-prime`：联网搜索，远程 HTTP MCP
 - `web-reader`：网页读取，远程 HTTP MCP
 - `zread`：开源仓库读取，远程 HTTP MCP
 
-未配置 `Z_AI_API_KEY` 时，安装脚本会移除依赖该变量的托管 MCP 条目，并保留用户自己配置的其他 MCP 服务。真实 `.env.local` 已被 `.gitignore` 忽略，不应提交。
+存在 `CODEX_GITHUB_PERSONAL_ACCESS_TOKEN` 时，会同步 `github` MCP。缺少某个 MCP 所需环境变量时，安装脚本只跳过或移除对应托管条目，不阻断其他 MCP，也会保留用户自己配置的非托管 MCP 服务。真实 `.env.local` 已被 `.gitignore` 忽略，不应提交。
 
 ### 卸载 / 重装
 
@@ -157,15 +209,34 @@ node scripts/install.mjs --reinstall   # 先卸载再重新安装
 node scripts/install.mjs --dry-run     # 仅打印计划动作，不改动磁盘
 ```
 
+## 安装同步细节
+
+`scripts/install.mjs` 是唯一安装入口，负责识别本机是否安装 `claude` / `codex`，再按端分别编排同步动作。`install` 要求至少检测到一个 CLI；`uninstall` 与 `reinstall` 只处理已检测到的端。`reinstall` 的顺序是先卸载两端，再执行 skill eval 覆盖审计，最后重新安装两端。
+
+安装同步保持幂等，并尽量不碰用户自有配置：
+- `sync-skills.mjs` / `sync-agents.mjs` 只处理本仓库托管的 symlink，遇到用户实体文件会备份，删除或重命名后的孤儿 symlink 会被清理。
+- `sync-hooks.mjs` 只移除命令中包含当前仓库 `hooks/dispatch.mjs` 的托管 hook，用户自定义 hooks 保留。
+- `sync-mcp.mjs` 只管理插件 `.mcp.json` 声明的 server id 和已退休托管 id，用户自有 MCP 配置保留。
+- `install.mjs` 的 `safeStep` 会隔离 Claude / Codex 单端失败：一端失败不会阻断另一端继续执行，但最终会汇总失败步骤并返回非零退出码。
+- `--dry-run` 会把参数传给子脚本，只打印计划动作，不应创建用户级 settings、hooks、MCP 配置、记忆文件或 symlink。
+
+修改安装、卸载、hooks、MCP 或旧版清理逻辑时，优先跑下面的定向回归：
+
+```bash
+node --test tests/install-script.test.mjs tests/cleanup-legacy.test.mjs
+```
+
+这组测试覆盖：Codex 无 `jq` 安装、跨 cwd 调用、保留用户 hooks、dry-run 不落盘、Claude sandbox 安装、单端失败汇总、reinstall 兼容旧 marketplace、按环境变量同步/移除 MCP、旧历史 prompt 改写与 Codex 运行中拒绝改写。
+
 ## 仓库结构
 
 - `README.md`：仓库入口与项目指令；仓库根 `CLAUDE.md` 与 `AGENTS.md` 均为指向本文件的 symlink，维护一份即可。
 - `MEMORY.md`：Claude Code + Codex 共享的全局记忆单一事实源（安装脚本会创建全局链接）。
-- `.env.example`：智谱 MCP 本地环境变量模板；复制为 `.env.local` 后填入 `Z_AI_API_KEY`。
+- `.env.example`：插件 MCP 本地环境变量模板；复制为 `.env.local` 后填入 `Z_AI_API_KEY` 和/或 `CODEX_GITHUB_PERSONAL_ACCESS_TOKEN`。
 - `hooks/dispatch.mjs`：根级统一 hook dispatcher，跨所有 plugin 聚合执行；由安装脚本注入到 `~/.claude/settings.json` 与 `~/.codex/hooks.json`。
 - `plugins/<plugin-name>/`：单个插件目录。安装走「逐 skill / 逐 agent symlink + 插件 MCP 同步 + 统一 hook dispatcher」，不依赖 marketplace manifest（`.codex-plugin/` 与 `.claude-plugin/` 均已移除，避免 codex 沿 symlink 真实路径推断 plugin namespace）。
 - `plugins/<plugin-name>/README.md`：插件用途、skills、验证命令。
-- `plugins/<plugin-name>/hooks/`：可选；插件内 hook 模块。统一 dispatcher 在每个事件下扫描所有 plugin 的 `hooks/<event>/*.mjs` 并依次执行。
+- `plugins/<plugin-name>/hooks/`：可选；插件内 hook 模块。统一 dispatcher 按事件子目录扫描所有 plugin 的 `hooks/<subdir>/*.mjs` 并依次执行。
 - `plugins/<plugin-name>/agents/`：可选；只读分析或专用执行 agent（仅 Claude Code）。
 - `scripts/`：安装脚本与质量审计脚本（sync-skills、sync-hooks、sync-agents、sync-mcp、skill-quality-report、trigger-audit-report、audit-skill-evals 等）。
 - `tests/`：仓库级回归测试（install.mjs、生成器、报告器、跨插件一致性）。
