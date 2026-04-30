@@ -23,17 +23,16 @@ description: 当用户给出具体 URL，需要抓取网页正文并转成 Markd
 ## 代码模式
 
 ```bash
-# <skill_dir> 为当前 SKILL.md 所在目录
-node "<skill_dir>/scripts/fetch.mjs" "https://sspai.com/post/73145"
+node scripts/fetch.mjs "https://sspai.com/post/73145"
 
 # 对请求头更敏感的站点可先强制 stealth
-node "<skill_dir>/scripts/fetch.mjs" "https://mp.weixin.qq.com/s/xxx" --stealth
+node scripts/fetch.mjs "https://mp.weixin.qq.com/s/xxx" --stealth
 
 # 限制最大输出字符数
-node "<skill_dir>/scripts/fetch.mjs" "https://example.com/article" 15000
+node scripts/fetch.mjs "https://example.com/article" 15000
 
 # JSON 输出（包含 mode、selector、content_length）
-node "<skill_dir>/scripts/fetch.mjs" "https://example.com/article" --json
+node scripts/fetch.mjs "https://example.com/article" --json
 ```
 
 ```text

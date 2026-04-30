@@ -156,7 +156,7 @@ export function validateSkill(skillPath) {
 
 export function main(argv = process.argv.slice(2)) {
   if (argv.length !== 1) {
-    console.log("用法：node quick_validate.mjs <skill_directory>");
+    console.log("用法：node quick_validate.mjs <skill_path>");
     return 1;
   }
 
