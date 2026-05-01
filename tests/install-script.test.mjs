@@ -29,6 +29,7 @@ test("install.mjs enables Codex plugins without jq", () => {
   const tmp = mkdtempSync(join(tmpdir(), "ai-experts-install-"));
   const binDir = join(tmp, "bin");
   const codexHome = join(tmp, "codex-home");
+  const codexCallLog = join(tmp, "codex-calls.log");
 
   try {
     mkdirSync(binDir);
@@ -36,13 +37,17 @@ test("install.mjs enables Codex plugins without jq", () => {
     writeFileSync(join(codexHome, "config.toml"), "", "utf-8");
 
     symlinkSync(process.execPath, join(binDir, "node"));
-    writeExecutable(join(binDir, "codex"), "#!/usr/bin/env bash\nexit 0\n");
+    writeExecutable(
+      join(binDir, "codex"),
+      "#!/usr/bin/env bash\nprintf '%s\\n' \"$*\" >> \"$CODEX_CALL_LOG\"\nexit 0\n",
+    );
     writeExecutable(join(binDir, "jq"), "#!/usr/bin/env bash\nexit 127\n");
 
     const output = execFileSync(process.execPath, [installScript, "--install"], {
       cwd: repoRoot,
       env: isolatedEnv({
         CODEX_HOME: codexHome,
+        CODEX_CALL_LOG: codexCallLog,
         PATH: `${binDir}:/usr/bin:/bin`,
       }),
       encoding: "utf-8",
@@ -50,10 +55,13 @@ test("install.mjs enables Codex plugins without jq", () => {
     });
 
     const config = readFileSync(join(codexHome, "config.toml"), "utf-8");
+    const codexCalls = readFileSync(codexCallLog, "utf-8");
     const hooks = readFileSync(join(codexHome, "hooks.json"), "utf-8");
     const codexMemoryTarget = join(codexHome, "AGENTS.md");
     assert.match(output, /Skill eval coverage:/);
     assert.match(output, /Codex CLI: done/);
+    assert.match(codexCalls, /^features enable codex_hooks$/m);
+    assert.match(codexCalls, /^features enable goals$/m);
     assert.match(config, /codex_hooks\s*=\s*true/);
     assert.match(hooks, /"Bash"/);
     assert.match(hooks, new RegExp(`${repoRoot.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/hooks/dispatch\\.mjs`));

@@ -8,7 +8,7 @@
  *     与 ~/.codex/skills/<id>
  *   - 把每个 plugins/<plugin>/agents/<name>.md 软链到 ~/.claude/agents/<name>.md
  *   - 把统一 dispatcher 写进 ~/.claude/settings.json 与 ~/.codex/hooks.json
- *   - 在 ~/.codex/config.toml 启用 [features] codex_hooks = true
+ *   - 启用 Codex CLI 所需 feature flags（codex_hooks / goals）
  *   - 把仓库 MEMORY.md 软链到各 CLI 的全局记忆文件
  *   - 同步插件目录下 .mcp.json 声明的 MCP；缺少必需 env 时移除对应托管条目
  *
@@ -39,6 +39,7 @@ const CODEX_HOME_DIR = process.env.CODEX_HOME || join(homedir(), ".codex");
 const MEMORY_SOURCE = join(REPO_ROOT, "MEMORY.md");
 const CLAUDE_MEMORY_TARGET = process.env.CLAUDE_MEMORY_TARGET || join(homedir(), ".claude", "CLAUDE.md");
 const CODEX_MEMORY_TARGET = process.env.CODEX_MEMORY_TARGET || join(CODEX_HOME_DIR, "AGENTS.md");
+const CODEX_FEATURE_FLAGS = ["codex_hooks", "goals"];
 
 let DRY_RUN = false;
 
@@ -214,13 +215,15 @@ function claudeUninstall() {
 function codexInstall() {
   codexLegacyCleanup();
 
-  info("Codex CLI: 启用 codex_hooks feature flag...");
+  info(`Codex CLI: 启用 feature flags (${CODEX_FEATURE_FLAGS.join(", ")})...`);
   if (hasCmd("codex")) {
-    if (DRY_RUN) {
-      info("  would: codex features enable codex_hooks");
-    } else {
-      // 老版本 codex 没有 features 子命令，失败也不阻塞流程。
-      spawnSync("codex", ["features", "enable", "codex_hooks"], { stdio: "ignore" });
+    for (const feature of CODEX_FEATURE_FLAGS) {
+      if (DRY_RUN) {
+        info(`  would: codex features enable ${feature}`);
+      } else {
+        // 老版本 codex 没有 features 子命令，失败也不阻塞流程。
+        spawnSync("codex", ["features", "enable", feature], { stdio: "ignore" });
+      }
     }
   }
 
