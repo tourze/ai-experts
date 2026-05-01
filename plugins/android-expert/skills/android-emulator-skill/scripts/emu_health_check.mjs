@@ -15,9 +15,9 @@ let checksPassed = 0;
 let checksFailed = 0;
 
 function showHelp() {
-  console.log(`Android Emulator Testing - Environment Health Check
+  console.log(`Android Device/Emulator Testing - Environment Health Check
 
-Verifies that your environment is properly configured for Android emulator testing.
+Verifies that your environment is properly configured for Android device or emulator testing.
 
 Usage: node scripts/emu_health_check.mjs [options]
 
@@ -27,7 +27,7 @@ Options:
 This script checks for:
   - Android SDK availability (ANDROID_HOME)
   - ADB (Android Debug Bridge) installation
-  - Emulator executable availability
+  - Emulator executable availability for AVD workflows
   - Java Development Kit (JDK)
   - Connected Android devices/emulators
 
@@ -125,7 +125,7 @@ function addToPath(dir) {
 }
 
 console.log(`${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}`);
-console.log(`${BLUE}  Android Emulator Testing - Environment Health Check${NC}`);
+console.log(`${BLUE}  Android Device/Emulator Testing - Environment Health Check${NC}`);
 console.log(`${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}`);
 console.log("");
 
@@ -187,12 +187,12 @@ if (emulatorPath) {
     checkWarning("Emulator found in SDK but not in PATH. Adding it temporarily.");
     checkPassed("Emulator is installed");
   } else {
-    checkFailed("Emulator command not found");
-    console.log("       Ensure emulator is in your PATH.");
+    checkWarning("Emulator command not found");
+    console.log("       Required only when booting or managing AVDs.");
   }
 } else {
-  checkFailed("Emulator command not found");
-  console.log("       Ensure emulator is in your PATH.");
+  checkWarning("Emulator command not found");
+  console.log("       Required only when booting or managing AVDs.");
 }
 console.log("");
 
@@ -220,7 +220,7 @@ if (adbPath) {
     }
   } else {
     checkWarning("No devices connected or emulators booted");
-    console.log("       Boot an emulator to begin testing.");
+    console.log("       Connect a device or boot an emulator to begin testing.");
     console.log("       Use 'emulator -list-avds' to see available AVDs.");
   }
 } else {
@@ -241,4 +241,4 @@ if (checksFailed > 0) {
 }
 
 console.log("");
-console.log(`${GREEN}✓ Environment is ready for Android emulator testing${NC}`);
+console.log(`${GREEN}✓ Environment is ready for Android device/emulator testing${NC}`);

@@ -1,18 +1,18 @@
 cases:
   - id: launch_install_logcat
-    prompt: "Start an Android emulator, install this debug APK, and capture logcat after launch."
+    prompt: "Start an Android emulator or use the connected Android device, install this debug APK, and capture logcat after launch."
     fixtures: []
     rubric:
-      - "uses emulator lifecycle and adb operations"
-      - "installs or launches the app on the emulator"
+      - "uses Android device/emulator lifecycle and adb operations"
+      - "installs or launches the app on the selected Android target"
       - "captures or filters logcat for diagnosis"
     trigger_expected: true
 
   - id: ui_navigation_automation
-    prompt: "Use the Android emulator to navigate through the app and verify the login screen appears."
+    prompt: "Use the connected Android phone to navigate through the app and verify the login screen appears."
     fixtures: []
     rubric:
-      - "operates the emulator or device UI"
+      - "operates the Android device or emulator UI"
       - "uses adb or automation commands where appropriate"
       - "verifies visible app state after navigation"
     trigger_expected: true

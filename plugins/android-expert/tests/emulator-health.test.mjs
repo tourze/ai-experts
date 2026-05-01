@@ -16,7 +16,7 @@ test("emu_health_check.mjs 通过语法检查", () => {
 test("emu_health_check.mjs 输出帮助信息", () => {
   const result = spawnSync(process.execPath, [script, "--help"], { encoding: "utf8" });
   assert.equal(result.status, 0, result.stderr);
-  assert.match(result.stdout, /Android Emulator Testing - Environment Health Check/);
+  assert.match(result.stdout, /Android Device\/Emulator Testing - Environment Health Check/);
   assert.match(result.stdout, /Usage: node scripts\/emu_health_check\.mjs/);
 });
 
@@ -42,6 +42,7 @@ test("Android emulator Node interaction scripts 通过语法检查", () => {
     "app_launcher.mjs",
     "build_and_test.mjs",
     "common.mjs",
+    "diagnose_app.mjs",
     "emulator_manage.mjs",
     "gesture.mjs",
     "keyboard.mjs",
@@ -58,6 +59,7 @@ test("Android emulator Node interaction scripts 输出帮助信息", () => {
   for (const [name, pattern] of [
     ["app_launcher.mjs", /Control Android app lifecycle/],
     ["build_and_test.mjs", /Build and test Android project/],
+    ["diagnose_app.mjs", /Capture an Android app diagnosis bundle/],
     ["emulator_manage.mjs", /Manage Android emulators/],
     ["gesture.mjs", /Perform gestures on Android/],
     ["keyboard.mjs", /Android keyboard input/],
@@ -75,6 +77,7 @@ test("Android emulator Node helpers 保持 ADB 参数转换", async () => {
   const common = await import(resolve(scriptsDir, "common.mjs"));
   const appLauncher = await import(resolve(scriptsDir, "app_launcher.mjs"));
   const buildAndTest = await import(resolve(scriptsDir, "build_and_test.mjs"));
+  const diagnoseApp = await import(resolve(scriptsDir, "diagnose_app.mjs"));
   const emulatorManage = await import(resolve(scriptsDir, "emulator_manage.mjs"));
   const gesture = await import(resolve(scriptsDir, "gesture.mjs"));
   const keyboard = await import(resolve(scriptsDir, "keyboard.mjs"));
@@ -108,6 +111,53 @@ test("Android emulator Node helpers 保持 ADB 参数转换", async () => {
     "assembleDebug",
     "-q",
   ]);
+  assert.deepEqual(diagnoseApp.parseArgs(["--package", "com.example", "--force-stop", "--grep", "AndroidRuntime"]), {
+    packageName: "com.example",
+    activity: null,
+    out: null,
+    grep: "AndroidRuntime",
+    tail: 500,
+    waitMs: 3000,
+    forceStop: true,
+    clearLogcat: true,
+    launch: true,
+    serial: null,
+    help: false,
+  });
+  assert.deepEqual(diagnoseApp.buildLaunchCommand("com.example", ".MainActivity"), [
+    "shell",
+    "am",
+    "start",
+    "-n",
+    "com.example/.MainActivity",
+  ]);
+  assert.deepEqual(diagnoseApp.buildLaunchCommand("com.example"), [
+    "shell",
+    "monkey",
+    "-p",
+    "com.example",
+    "-c",
+    "android.intent.category.LAUNCHER",
+    "1",
+  ]);
+  assert.deepEqual(diagnoseApp.buildLogcatDumpCommand({ tail: 100, pid: "123" }), [
+    "logcat",
+    "-d",
+    "-v",
+    "time",
+    "-t",
+    "100",
+    "--pid=123",
+  ]);
+  assert.deepEqual(diagnoseApp.buildAdbInvocation(["logcat", "-c"], "emulator-5554"), [
+    common.ADB_PATH,
+    "-s",
+    "emulator-5554",
+    "logcat",
+    "-c",
+  ]);
+  assert.equal(diagnoseApp.filterLines("one\nAndroidRuntime crash\ntwo\n", "AndroidRuntime"), "AndroidRuntime crash");
+  assert.equal(diagnoseApp.sanitizeFilePart("com.example/app"), "com.example_app");
   assert.deepEqual(emulatorManage.parseAvdList("Pixel_8\n\nTablet\n"), ["Pixel_8", "Tablet"]);
   assert.deepEqual(screenMapper.parseBounds("[1,2][11,22]"), {
     x: 1,
