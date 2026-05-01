@@ -4,6 +4,7 @@ import {
   parseCasesYaml,
   rubricToExpectations,
   buildRunRecord,
+  buildContentEffectPrompt,
   runBenchmark,
 } from "../scripts/run-skill-effect-benchmark.mjs";
 
@@ -67,13 +68,38 @@ describe("buildRunRecord", () => {
     assert.equal(record.expectations.length, 1);
     assert.equal(record.expectations[0].passed, null);
   });
+
+  it("output_excerpt 会截断超长 executor 输出", () => {
+    const record = buildRunRecord({
+      skillId: "testing-expert/pre-landing-review",
+      caseEntry: { id: "long_output", rubric: [] },
+      configuration: "baseline",
+      model: "gpt-test",
+      output: "x".repeat(12_010),
+    });
+    assert.equal(record.output_excerpt.length < 12_100, true);
+    assert.match(record.output_excerpt, /truncated 10 chars/);
+  });
+});
+
+describe("buildContentEffectPrompt", () => {
+  it("把 SKILL.md 显式注入 with_skill prompt", () => {
+    const prompt = buildContentEffectPrompt({
+      skillId: "demo-expert/demo-skill",
+      skillMarkdown: "---\nname: demo-skill\n---\n# demo",
+      userPrompt: "请审查这个方案",
+    });
+    assert.match(prompt, /<skill id="demo-expert\/demo-skill">/);
+    assert.match(prompt, /name: demo-skill/);
+    assert.match(prompt, /用户任务：\n请审查这个方案/);
+  });
 });
 
 describe("runBenchmark", () => {
   it("用 stub executor 跑 with_skill+baseline，每个 trigger_expected 用例两次", async () => {
     const calls = [];
-    const stubExecutor = ({ prompt, configuration, model }) => {
-      calls.push({ prompt, configuration, model });
+    const stubExecutor = ({ prompt, configuration, model, provider, comparison, loadUserConfig }) => {
+      calls.push({ prompt, configuration, model, provider, comparison, loadUserConfig });
       return `${configuration}: ${prompt}`;
     };
     const cases = [
@@ -91,6 +117,45 @@ describe("runBenchmark", () => {
     const configurations = runs.map((r) => r.configuration).sort();
     assert.deepEqual(configurations, ["baseline", "baseline", "with_skill", "with_skill"]);
     assert.ok(runs.every((r) => r.skill === "demo-expert/demo-skill"));
+    assert.ok(calls.filter((call) => call.configuration === "with_skill").every((call) => call.loadUserConfig === true));
+    assert.ok(calls.filter((call) => call.configuration === "baseline").every((call) => call.loadUserConfig === false));
+  });
+
+  it("content comparison 对 with_skill 显式注入 skill，且两组都不加载用户配置", async () => {
+    const calls = [];
+    const cases = [{ id: "c1", prompt: "p1", rubric: ["r1"], trigger_expected: true }];
+    const runs = await runBenchmark({
+      skillId: "demo-expert/demo-skill",
+      cases,
+      provider: "claude",
+      comparison: "content",
+      skillMarkdown: "# demo skill",
+      executor(args) {
+        calls.push(args);
+        return args.prompt;
+      },
+    });
+    assert.equal(runs.length, 2);
+    const withSkill = calls.find((call) => call.configuration === "with_skill");
+    const baseline = calls.find((call) => call.configuration === "baseline");
+    assert.match(withSkill.prompt, /# demo skill/);
+    assert.equal(baseline.prompt, "p1");
+    assert.equal(withSkill.loadUserConfig, false);
+    assert.equal(baseline.loadUserConfig, false);
+    assert.ok(runs.every((run) => run.provider === "claude"));
+    assert.ok(runs.every((run) => run.comparison === "content"));
+  });
+
+  it("content comparison 缺少 skillMarkdown 时失败", async () => {
+    await assert.rejects(
+      () => runBenchmark({
+        skillId: "demo-expert/demo-skill",
+        cases: [{ id: "c1", prompt: "p1", rubric: ["r1"], trigger_expected: true }],
+        comparison: "content",
+        executor: () => "unused",
+      }),
+      /skillMarkdown is required/,
+    );
   });
 
   it("跳过 trigger_expected: false 的反向用例（只用于路由审计，不衡量效果）", async () => {

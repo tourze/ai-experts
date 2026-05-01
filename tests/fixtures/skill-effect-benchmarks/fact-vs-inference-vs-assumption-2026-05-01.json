@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "metadata": {
+    "run_date": "2026-05-01",
+    "skill": "thinking-expert/fact-vs-inference-vs-assumption",
+    "provider": "codex",
+    "comparison": "content",
+    "cases_source": "plugins/thinking-expert/skills/fact-vs-inference-vs-assumption/evals/cases.yaml",
+    "executor": "codex content benchmark",
+    "grading_method": "Manual assertion grading by Codex on 2026-05-01; includes an implicit incident case designed to measure lift beyond explicit label prompts."
+  },
+  "runs": [
+    {
+      "skill": "thinking-expert/fact-vs-inference-vs-assumption",
+      "prompt_id": "positive_fact_vs_inference_vs_assumption_primary",
+      "configuration": "with_skill",
+      "model": "gpt-5.4-mini",
+      "output_excerpt": "[事实] 你的目标是把事故复盘里的每段判断分成三类，并且让读者一眼看出哪些是观测、哪些是推理、哪些是待验证的猜想。\n\n[推断] 最稳妥的写法不是“先写一段再统一声明”，而是把三态标注直接放进每个判断句前面，这样可以避免结论和证据混写。\n\n[事实] 这个 skill 的核心要求是：每段结论都要显式前缀标注为 `[事实]` / `[推断]` / `[假设]`，其中 `[事实]` 要带可核验定位，`[推断]` 要写明依据，`[假设]` 要写“待验证”或给出能推翻它的反例。\n\n[推断] 你在事故复盘里可以直接按下面这个结构写，基本就不会把猜测写成结论。\n\n```text\n## 关键判断\n\n[事实] 14:32 开始错误率从 0.2% 升至 8.7% —— 定位：监控图表 / 告警记录 / 日志行号\n[事实] 同时段新增发布版本为 v2.8.1 —— 定位：发布流水线记录\n[推断] 错误率上升与 v2.8.1 发布存在时间相关性 —— 推断依据：异常开始时间与发布完成时间重合\n[假设] v2.8.1 中某个变更触发了异常 —— 待验证：回滚后错误率是否恢复；若不恢复，则该假设不成立\n\n## 综合结论\n\n[推断] 本次事故更可能由最新发布引发，当前证据不足以把根因直接定为某一行代码，置信度受“缺少回滚/对照实验”限制。\n```\n\n[推断] 写作时你可以用下面这套判断规则来分段：\n\n1. `[事实]` 只写“看得到、查得到、能复现”的内容。\n2. `[推断]` 写“由事实推出的合理判断”，但不要写成确定结论。\n3. `[假设]` 写“为了补齐逻辑空缺而提出的可能解释”，并附最小验证方法。\n4. 一条结论链只要中间有一个环节没被直接验证，最终结论就不能高于最弱那一环。\n\n[假设] 如果你发现某段内容暂时分不清该标什么，先默认降级为 `[假设]`，直到找到直接证据。反例是：如果已经有日志、截图、指标或工单能直接证明，就应升级为 `[事实]`。\n\n[事实] 你可以直接在复盘正文里用这个句式模板：\n- `[事实]` + 观测内容 + `—— 定位：...`\n- `[推断]` + 结论 + `—— 推断依据：...`\n- `[假设]` + 命题 + `—— 待验证：...`\n\n[推断] 如果你愿意，我下一步可以直接帮你把你的事故复盘草稿改写成这种三态标注格式。",
+      "expectations": [
+        {
+          "text": "recognizes the request as fact-vs-inference-vs-assumption territory",
+          "passed": true,
+          "evidence": "输出开头直接说明目标是把事故复盘判断分成三类，并围绕三态标注展开。"
+        },
+        {
+          "text": "applies explicit [事实]/[推断]/[假设] tagging instead of giving a generic answer",
+          "passed": true,
+          "evidence": "输出多处使用 [事实]/[推断]/[假设]，并给出事故复盘模板。"
+        }
+      ],
+      "provider": "codex",
+      "comparison": "content"
+    },
+    {
+      "skill": "thinking-expert/fact-vs-inference-vs-assumption",
+      "prompt_id": "positive_fact_vs_inference_vs_assumption_primary",
+      "configuration": "baseline",
+      "model": "gpt-5.4-mini",
+      "output_excerpt": "可以用一个固定标注法，把每段判断都显式归类，避免混写。\n\n**推荐写法**\n- `事实`：可直接验证、可追溯到日志、监控、工单、时间线的内容\n- `推断`：基于事实得出的解释，但不是直接证据\n- `假设`：尚未验证、用于暂时解释或指导排查的判断\n\n**段落模板**\n```text\n[事实] 2026-05-01 10:32:14，服务 A 的错误率从 0.2% 升至 8.7%，同时出现大量 502。\n[事实] 监控显示上游 B 的响应时间在同一时段明显升高。\n[推断] 这表明故障更可能起源于上游 B 的性能退化，而非服务 A 自身逻辑错误。\n[假设] 如果 B 的连接池耗尽，那么 A 的 502 可能是由重试放大引发的。\n```\n\n**更稳妥的段首写法**\n- `已确认：...`\n- `从现有证据看：...`\n- `目前假设：...`\n- `尚未证实：...`\n\n**建议的表达规则**\n- 事实只写“发生了什么”，不要夹带原因判断\n- 推断必须带依据，例如“基于 X、Y 现象”\n- 假设要明确可验证条件，例如“如果 A 为真，则应观察到 B”\n- 不要用“显然、肯定、一定、说明就是”这类把推断写成结论的词\n\n**可直接套用的段落格式**\n```text\n[事实] ...\n[事实] ...\n[推断] ...\n[假设] ...\n[待验证] 下一步通过 ... 来验证该假设。\n```\n\n**一个实用原则**\n- 每段只允许一种标签\n- 如果一段里同时有事实和判断，拆成两段\n- 结论部分最好写成“当前结论”或“阶段性结论”，并注明依据范围\n\n如果你愿意，我可以直接帮你把一段事故复盘文字改成“事实 / 推断 / 假设”标注版。",
+      "expectations": [
+        {
+          "text": "recognizes the request as fact-vs-inference-vs-assumption territory",
+          "passed": true,
+          "evidence": "baseline 也识别为显式归类任务，定义了事实、推断、假设。"
+        },
+        {
+          "text": "applies explicit [事实]/[推断]/[假设] tagging instead of giving a generic answer",
+          "passed": true,
+          "evidence": "baseline 使用 [事实]/[推断]/[假设] 示例和段落模板。"
+        }
+      ],
+      "provider": "codex",
+      "comparison": "content"
+    },
+    {
+      "skill": "thinking-expert/fact-vs-inference-vs-assumption",
+      "prompt_id": "positive_fact_vs_inference_vs_assumption_realistic",
+      "configuration": "with_skill",
+      "model": "gpt-5.4-mini",
+      "output_excerpt": "[事实] `/tmp/report.md` 目前是空文件，大小为 `0` 字节。定位：`/tmp/report.md`\n[事实] 我在当前 `/tmp` 里没有找到一份可直接对应“这份战略备忘录”的正文文本。定位：`/tmp/report.md`、`/tmp/agent-audit.txt`、`/tmp/node_selection_report.md`\n[推断] 现在还不能对备忘录内容做“观测 / 推论 / 假设”三态拆分，因为缺少可审阅的原文。推断依据：没有正文就无法逐段判断每句话的证据状态。\n[假设] 备忘录可能在别的路径，或者还没贴进来。待验证：请把正文粘贴出来，或直接给我文件路径，我会按段落标成 `[事实] / [推断] / [假设]`，并把综合结论的置信度压到最弱环节。\n\n如果你愿意，我可以在你贴出正文后直接开始逐段审视。",
+      "expectations": [
+        {
+          "text": "matches the three-state-tagging use case described by the skill",
+          "passed": true,
+          "evidence": "输出使用 [事实]/[推断]/[假设] 说明缺少正文时无法三态拆分。"
+        },
+        {
+          "text": "downgrades the overall conclusion to the weakest tier rather than giving a flat answer",
+          "passed": true,
+          "evidence": "输出没有编造战略备忘录结论，而是把置信度约束到缺少正文这一最弱环节。"
+        }
+      ],
+      "provider": "codex",
+      "comparison": "content"
+    },
+    {
+      "skill": "thinking-expert/fact-vs-inference-vs-assumption",
+      "prompt_id": "positive_fact_vs_inference_vs_assumption_realistic",
+      "configuration": "baseline",
+      "model": "gpt-5.4-mini",
+      "output_excerpt": "我现在还没拿到那份战略备忘录的正文，没法对具体段落逐条判定。\n\n目前我在 `/tmp` 里只看到一条极短的备注：[`/tmp/claude/response.md`](/tmp/claude/response.md) 只有“写一个 UIA 树遍历脚本，上传到 VM 后逐个浏览器实测。”，不构成可分析的战略备忘录。\n\n把备忘录正文贴上来，或直接给我文件路径。我会按这个格式输出：\n\n- `[事实]` 直接可观测、可核验的陈述\n- `[推断]` 由事实链推出来的判断\n- `[假设]` 需要补证、最小验证才能成立的命题\n- 综合结论按最弱环节降级，置信度以最弱证据为上限\n\n如果你愿意，我也可以按“逐段标注 + 最弱环节总结”的方式直接给你改写成可发给管理层的版本。",
+      "expectations": [
+        {
+          "text": "matches the three-state-tagging use case described by the skill",
+          "passed": true,
+          "evidence": "baseline 也说明需要正文，并给出 [事实]/[推断]/[假设] 的处理格式。"
+        },
+        {
+          "text": "downgrades the overall conclusion to the weakest tier rather than giving a flat answer",
+          "passed": true,
+          "evidence": "baseline 明确综合结论按最弱环节降级，置信度以最弱证据为上限。"
+        }
+      ],
+      "provider": "codex",
+      "comparison": "content"
+    },
+    {
+      "skill": "thinking-expert/fact-vs-inference-vs-assumption",
+      "prompt_id": "positive_fact_vs_inference_vs_assumption_implicit_incident",
+      "configuration": "with_skill",
+      "model": "gpt-5.4-mini",
+      "output_excerpt": "**关键判断**\n\n[事实] 10:02 发布了支付服务配置变更；10:07 5xx 从 0.3% 升至 9.8%；10:08 告警触发；10:16 回滚后错误率下降到 0.6%。——定位：事故时间线、发布记录、告警记录、回滚后指标  \n[事实] 日志里能看到的是连接超时和重试耗尽；没有看到数据库 CPU、网络丢包或连接池指标异常。——定位：运行日志与现有监控数据  \n[推断] 这次故障与 10:02 的配置变更高度相关，因为错误率在变更后短时间内明显上升，并且在回滚后下降。——推断依据：时间顺序紧密，且回滚后指标改善  \n[推断] 目前只能判断问题更像是“连接/下游可用性相关”的故障，而不能直接下结论为“连接池耗尽”。——推断依据：现有证据只支持超时和重试失败，没有连接池、数据库 CPU、网络丢包异常等直接支撑  \n[假设] 配置变更可能通过增加连接压力或改变超时/重试行为，间接触发了连接池耗尽。——待验证：补查变更前后连接池利用率、连接建立耗时、下游依赖成功率、重试次数和超时分布；如果这些指标没有异常，则该假设不成立  \n[假设] 也存在“故障由配置变更触发，但根因并非连接池耗尽，而是下游服务抖动、超时配置不合理或其他未观测因素”的可能。——待验证：对比下游服务日志、网络链路指标和相同配置在灰度环境中的表现\n\n**管理层结论**\n\n[推断] 可以把这次事故判断为“支付服务配置变更后引发的支付故障，且回滚后出现恢复”，但“配置变更导致连接池耗尽”目前仍是**待验证假设**，不应写成已证实根因。置信度受限于缺少连接池和下游链路的直接证据。",
+      "expectations": [
+        {
+          "text": "uses explicit [事实]/[推断]/[假设] tags even though the prompt does not name the skill labels",
+          "passed": true,
+          "evidence": "输出在用户未点名三态标签时仍用 [事实]/[推断]/[假设] 标注每条判断。"
+        },
+        {
+          "text": "downgrades the connection-pool root cause to an assumption or weaker conclusion because metrics are missing",
+          "passed": true,
+          "evidence": "输出把“配置变更导致连接池耗尽”标为待验证假设，并说明不应写成已证实根因。"
+        },
+        {
+          "text": "gives a falsifiable validation step for the missing connection-pool claim",
+          "passed": true,
+          "evidence": "输出要求补查连接池利用率等指标，并给出“如果这些指标没有异常，则该假设不成立”的反证条件。"
+        }
+      ],
+      "provider": "codex",
+      "comparison": "content"
+    },
+    {
+      "skill": "thinking-expert/fact-vs-inference-vs-assumption",
+      "prompt_id": "positive_fact_vs_inference_vs_assumption_implicit_incident",
+      "configuration": "baseline",
+      "model": "gpt-5.4-mini",
+      "output_excerpt": "可改成下面这种管理层可读、但证据边界清晰的表述：\n\n**根因判断（建议稿）**  \n10:02 发布支付服务配置后，10:07 系统 5xx 错误率由 0.3% 升至 9.8%，10:08 告警触发；10:16 回滚后，错误率降至 0.6%。当前直接证据表明，故障与这次配置变更在时间上高度相关，且回滚后迅速恢复，说明问题大概率由该变更引入。日志中可见的是连接超时和重试耗尽，但目前没有数据库 CPU、网络丢包或连接池指标的直接支持，因此“配置变更导致连接池耗尽”只能作为推断，不能写成已被证实的结论。  \n在最小验证完成前，建议将根因暂定为“配置变更触发了支付链路异常，具体机制疑似连接资源耗尽或相关依赖超时”，并补充核查连接池、下游超时、实例指标和变更内容，以确认最终机理。\n\n如果你要，我也可以把它再压缩成更像“事故复盘结论”或更像“给 CTO/VP 的一段话”。",
+      "expectations": [
+        {
+          "text": "uses explicit [事实]/[推断]/[假设] tags even though the prompt does not name the skill labels",
+          "passed": false,
+          "evidence": "baseline 使用普通段落，没有显式 [事实]/[推断]/[假设] 标签。"
+        },
+        {
+          "text": "downgrades the connection-pool root cause to an assumption or weaker conclusion because metrics are missing",
+          "passed": true,
+          "evidence": "baseline 写明“连接池耗尽”只能作为推断，不能写成已证实结论。"
+        },
+        {
+          "text": "gives a falsifiable validation step for the missing connection-pool claim",
+          "passed": false,
+          "evidence": "baseline 只说补充核查连接池、下游超时等指标，没有给出可推翻该归因的具体反证条件。"
+        }
+      ],
+      "provider": "codex",
+      "comparison": "content"
+    }
+  ]
+}
