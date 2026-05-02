@@ -1,0 +1,47 @@
+cases:
+  - id: positive_react_native_platform_fork_primary
+    prompt: "我需要组织 React Native 跨平台代码或配置平台分叉时使用。用户提到平台分叉、跨端代码、.native.ts、.tauri.ts、Platform.select"
+    fixtures: []
+    rubric:
+      - "recognizes the request as react-native-platform-fork territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_react_native_platform_fork_realistic
+    prompt: "帮我处理这个场景：需要为 iOS/Android/Web/Tauri 提供不同实现时。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: positive_react_native_macos_primary
+    prompt: "我需要需要用 react-native-macos 构建桌面应用或从 iOS 移植到 macOS"
+    fixtures: []
+    rubric:
+      - "recognizes the request as react-native-macos territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_react_native_macos_realistic
+    prompt: "帮我处理这个场景：要用 react-native-macos 构建真正的 macOS 桌面应用。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: negative_adjacent_detox_mobile_test
+    prompt: "这个需求应该交给 detox-mobile-test：为 React Native 应用编写或排查 Detox E2E 测试时使用。用户提到 Detox、RN E2E、移动端自动化、CI 上的 E2E 不稳定"
+    fixtures: []
+    rubric:
+      - "adjacent detox-mobile-test requests should not trigger react-native-platform-fork"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false
