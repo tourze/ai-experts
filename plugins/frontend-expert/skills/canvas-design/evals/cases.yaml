@@ -1,0 +1,83 @@
+cases:
+  - id: positive_editorial_poster
+    prompt: "Create a finished editorial poster for a developer conference keynote"
+    fixtures: []
+    rubric:
+      - "treats the output as a high-fidelity single-page visual work"
+      - "starts from a design philosophy before producing the poster"
+    trigger_expected: true
+
+  - id: positive_album_cover
+    prompt: "Design an album cover with strong typography, composition, and export-ready artwork"
+    fixtures: []
+    rubric:
+      - "produces a polished cover-style static canvas"
+      - "uses typography and composition as primary design concerns"
+    trigger_expected: true
+
+  - id: architecture_diagram_png
+    prompt: "Create a PNG image of a system architecture diagram showing three microservices"
+    fixtures: []
+    rubric:
+      - "produces HTML/CSS/SVG visual representation of the architecture"
+      - "exports as PNG file"
+      - "design is self-contained without external dependencies"
+    trigger_expected: true
+
+  - id: comparison_chart_svg
+    prompt: "Export this concept as an SVG: a comparison chart of React vs Vue vs Angular"
+    fixtures: []
+    rubric:
+      - "outputs SVG file format"
+      - "uses HTML/CSS rendering to produce the visual"
+    trigger_expected: true
+
+
+  - id: binary_search_animation
+    prompt: "Create a video animation showing how a binary search algorithm works step by step"
+    fixtures: []
+    rubric:
+      - "uses Manim Python library for animation"
+      - "produces MP4 or GIF output"
+      - "animates the algorithm steps showing search progression"
+    trigger_expected: true
+
+  - id: data_pipeline_flow
+    prompt: "Animate a data pipeline flowing from ingestion to processing to storage"
+    fixtures: []
+    rubric:
+      - "creates a Manim scene with appropriate classes"
+      - "shows temporal flow between pipeline stages"
+    trigger_expected: true
+
+
+  - id: positive_section_illustrations
+    prompt: "Add one explanatory illustration for each of the five sections in this long article"
+    fixtures: []
+    rubric:
+      - "plans illustrations from the article structure before generating prompts"
+      - "creates a batch illustration workflow instead of a single standalone image"
+    trigger_expected: true
+
+  - id: positive_longform_visual_outline
+    prompt: "Design a visual outline and image prompts for every major paragraph in my essay"
+    fixtures: []
+    rubric:
+      - "builds an outline tied to the essay sections"
+      - "produces multiple article-specific illustration prompts"
+    trigger_expected: true
+
+
+  - id: negative_style_lookup
+    prompt: "What are the CSS traits and prompt keywords for Glassmorphism and Bento UI?"
+    fixtures: []
+    rubric:
+      - "UI style lookup should route to ui-style-catalog"
+    trigger_expected: false
+
+  - id: negative_article_batch_illustrations
+    prompt: "Create illustrations for every section of this long article"
+    fixtures: []
+    rubric:
+      - "article-wide illustration planning should route to baoyu-article-illustrator"
+    trigger_expected: false
