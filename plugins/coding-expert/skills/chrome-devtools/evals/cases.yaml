@@ -15,6 +15,23 @@ cases:
       - "analyzes performance metrics and trace evidence"
     trigger_expected: true
 
+  - id: positive_logged_in_e2e_flow
+    prompt: "Use browser-use to open our staging app with my existing Chrome login and verify the checkout click flow"
+    fixtures: []
+    rubric:
+      - "uses browser-use or a real browser automation flow"
+      - "handles logged-in interactive page behavior"
+    trigger_expected: true
+
+  - id: positive_js_rendered_extraction
+    prompt: "Extract the rendered DOM text from this JavaScript-heavy page using a headless browser"
+    fixtures: []
+    rubric:
+      - "recognizes the need for browser-rendered extraction"
+      - "uses browser automation rather than static HTTP fetching"
+    trigger_expected: true
+
+
   - id: negative_logged_in_click_flow
     prompt: "Drive a logged-in checkout flow in a browser and verify each click works"
     fixtures: []

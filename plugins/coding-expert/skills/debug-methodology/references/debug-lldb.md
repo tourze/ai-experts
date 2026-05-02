@@ -1,8 +1,3 @@
----
-name: debug-lldb
-description: 当应用卡死、出现死锁、UI 冻结、IPC 阻塞或高 CPU 忙循环时使用。通过 LLDB/GDB 捕获线程回溯并定位根因。
----
-
 # Debug LLDB
 
 ## 适用场景

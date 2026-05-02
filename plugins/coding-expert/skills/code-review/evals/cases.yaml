@@ -26,6 +26,34 @@ cases:
       - "separates severe issues from suggestions"
     trigger_expected: true
 
+  - id: evaluate_review_feedback
+    prompt: "A reviewer left six comments on my PR. Help me decide which ones are technically valid before I implement them"
+    fixtures: []
+    rubric:
+      - "treats review feedback as something to verify before implementing"
+      - "separates clear fixes from unclear or questionable suggestions"
+      - "pushes back with technical evidence when appropriate"
+    trigger_expected: true
+
+  - id: ambiguous_review_comments
+    prompt: "The reviewer said 'make this more robust' and 'clean this up'. I don't want to guess what they mean"
+    fixtures: []
+    rubric:
+      - "recognizes ambiguous feedback and asks for clarification before edits"
+      - "does not implement partially understood requests"
+      - "keeps technical correctness above performative agreement"
+    trigger_expected: true
+
+  - id: bot_review_suggestion
+    prompt: "CI bot suggested adding a fallback path, but I'm worried it hides the real bug. Can you evaluate that review?"
+    fixtures: []
+    rubric:
+      - "validates automated review feedback against the code and failure mode"
+      - "identifies whether the suggestion masks symptoms"
+      - "recommends implementation only after technical confirmation"
+    trigger_expected: true
+
+
   - id: negative_pre_landing_gate
     prompt: "Run a pre-landing safety gate on my branch and tell me if it is CLEAR TO LAND or BLOCKED"
     fixtures: []

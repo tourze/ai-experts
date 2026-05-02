@@ -26,6 +26,40 @@ cases:
       - "requires regression coverage after the fix"
     trigger_expected: true
 
+  - id: positive_mac_app_freeze
+    prompt: "The macOS app is frozen. Attach LLDB and capture all-thread backtraces to diagnose the hang"
+    fixtures: []
+    rubric:
+      - "uses LLDB or debugger thread backtraces"
+      - "looks for deadlock, blocking IPC, or main-thread stall patterns"
+    trigger_expected: true
+
+  - id: positive_high_cpu_sampling
+    prompt: "This native process has high CPU with no logs. Use debugger stack samples to identify the busy loop"
+    fixtures: []
+    rubric:
+      - "captures repeated thread stack samples"
+      - "analyzes hot loops or spin behavior"
+    trigger_expected: true
+
+
+  - id: positive_named_pipe_trace
+    prompt: "Set up GDB dprintf with a named pipe so I can trace this running Linux process without blocking the agent"
+    fixtures: []
+    rubric:
+      - "uses GDB dprintf or equivalent nonblocking trace"
+      - "keeps the debugged process and agent interaction nonblocking"
+    trigger_expected: true
+
+  - id: positive_conditional_long_running_trace
+    prompt: "Attach GDB to a long-running service and collect conditional trace output without pausing on breakpoints"
+    fixtures: []
+    rubric:
+      - "uses non-stopping tracepoints or dprintf-style instrumentation"
+      - "avoids interactive breakpoint blocking"
+    trigger_expected: true
+
+
   - id: negative_known_fix_request
     prompt: "Change the timeout from 5 seconds to 30 seconds in this config file"
     fixtures: []

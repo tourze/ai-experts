@@ -1,8 +1,3 @@
----
-name: gdb-nonblocking
-description: "当需要用 GDB 调试运行中的进程而不阻塞 agent 时使用；通过 named pipe + dprintf 实现非阻塞 trace。"
----
-
 # GDB 非阻塞调试
 
 ## 适用场景

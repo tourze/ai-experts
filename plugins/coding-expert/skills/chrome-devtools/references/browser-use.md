@@ -1,9 +1,3 @@
----
-name: browser-use
-description: 当用户要用 browser-use 控制真实浏览器做端到端验证、JS 页面抓取或登录态自动化时使用。
-allowed-tools: Bash(browser-use:*)
----
-
 # Browser Use
 
 ## 适用场景
