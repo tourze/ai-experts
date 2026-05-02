@@ -1,0 +1,112 @@
+cases:
+  - id: positive_web_content_fetcher_primary
+    prompt: "我需要给出具体 URL，需要抓取网页正文并转成 Markdown 时使用。适用于博客、文档、新闻页和微信公众号等页面的正文提取与内容准备。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as web-content-fetcher territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_web_content_fetcher_realistic
+    prompt: "帮我处理这个场景：用户直接给出 URL，让你“读一下 / 抓一下 / 提取正文 / 总结这篇文章”。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: positive_site_analyze_primary
+    prompt: "我需要分析域名或 IP 的 DNS、IP 归属、路由路径、延迟、WHOIS 或 robots 策略"
+    fixtures: []
+    rubric:
+      - "recognizes the request as site-analyze territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_site_analyze_realistic
+    prompt: "帮我处理这个场景：用户要查某个域名或 IP 部署在哪、属于哪个 ISP、是否用了 CDN/GeoDNS、网络质量如何。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: positive_site_analyze_dns_dimension
+    prompt: "帮我看 example.com 国内外 DNS 解析是否不一致，有没有 GeoDNS 或 CDN 迹象"
+    fixtures: []
+    rubric:
+      - "recognizes single-dimension DNS analysis as site-analyze territory"
+      - "uses the dig workflow or DNS-specific criteria"
+    trigger_expected: true
+
+  - id: positive_site_analyze_ip_info_dimension
+    prompt: "查一下 8.8.8.8 和 1.1.1.1 的国家、城市、ASN 和运营商"
+    fixtures: []
+    rubric:
+      - "recognizes IP ownership lookup as site-analyze territory"
+      - "uses IP attribution criteria instead of generic web search"
+    trigger_expected: true
+
+  - id: positive_site_analyze_traceroute_dimension
+    prompt: "我贴一段 traceroute，帮我判断首个公网出口和跨境跳点"
+    fixtures: []
+    rubric:
+      - "recognizes traceroute interpretation as site-analyze territory"
+      - "uses route-hop analysis criteria"
+    trigger_expected: true
+
+  - id: positive_site_analyze_whois_dimension
+    prompt: "查 example.com 的 WHOIS，注册商、创建时间、到期时间和 name server"
+    fixtures: []
+    rubric:
+      - "recognizes WHOIS lookup as site-analyze territory"
+      - "distinguishes registration data from DNS or route data"
+    trigger_expected: true
+
+  - id: positive_site_analyze_ping_dimension
+    prompt: "测 example.com 的 ICMP/TCP 延迟、丢包和 443 端口连通性"
+    fixtures: []
+    rubric:
+      - "recognizes latency and port probing as site-analyze territory"
+      - "considers both ICMP and TCP results"
+    trigger_expected: true
+
+  - id: positive_site_analyze_robots_dimension
+    prompt: "抓一下 example.com robots.txt，判断 Googlebot 和 Baiduspider 能不能访问"
+    fixtures: []
+    rubric:
+      - "recognizes robots.txt analysis as site-analyze territory"
+      - "uses crawler policy criteria instead of generic page fetching"
+    trigger_expected: true
+
+
+  - id: positive_question_refiner_primary
+    prompt: "我需要提出研究问题但范围、输出形式、时效或信任等级不清晰时使用。通过 5 维澄清把\"研究一下 X\"这种模糊需求转成结构化研究 prompt，避免带着歧义开始搜索导致返工。是 deep-research / deep-researcher agent 启动前的上游步骤。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as question-refiner territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_question_refiner_realistic
+    prompt: "帮我处理这个场景：用户说\"研究一下 X\" / \"帮我比较 A 和 B\" / \"调研下行业现状\"，但没讲输出形式、地域、时间窗口、受众。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: negative_adjacent_citation_validator
+    prompt: "这个需求应该交给 citation-validator：当研究报告、PRD 或对外发布内容需要验证事实声明的引用完整性、来源质量与可追溯性时使用。按 A-E 源质量分级逐条核对引用，检测未被支持的声明（幻觉），在发布或交付前做最后把关。常与 deep-research、knowledge-synthesis 连用。"
+    fixtures: []
+    rubric:
+      - "adjacent citation-validator requests should not trigger web-content-fetcher"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

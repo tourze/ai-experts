@@ -1,0 +1,65 @@
+cases:
+  - id: positive_research_note_primary
+    prompt: "刚才我们对比了几种向量索引方案，麻烦帮我输出一份调研纪要"
+    fixtures: []
+    rubric:
+      - "进入 research-note-wrap 双步确认流程而非直接落盘"
+      - "先草拟问题对比表并请求用户确认主要问题"
+    trigger_expected: true
+
+  - id: positive_research_note_conclusion_request
+    prompt: "把刚刚分析的几个 issue 总结一下输出结论笔记"
+    fixtures: []
+    rubric:
+      - "识别为调研结论笔记场景"
+      - "默认范围限定在当前会话，不自动扩到当天其它会话"
+    trigger_expected: true
+
+  - id: positive_research_note_followup_append
+    prompt: "再补充分析一下方案 C 的成本，并写到刚才的笔记里"
+    fixtures: []
+    rubric:
+      - "默认追加到现有笔记的『追加专题』段，而不是新建文件"
+      - "仍然走问题/结论双步确认"
+    trigger_expected: true
+
+  - id: positive_citation_validator_primary
+    prompt: "我需要当研究报告、PRD 或对外发布内容需要验证事实声明的引用完整性、来源质量与可追溯性时使用。按 A-E 源质量分级逐条核对引用，检测未被支持的声明（幻觉），在发布或交付前做最后把关。常与 deep-research、knowledge-synthesis 连用。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as citation-validator territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_citation_validator_realistic
+    prompt: "帮我处理这个场景：研究报告、PRD、白皮书、对外发布内容交付前做\"每个事实都有出处\"的最后把关。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: negative_record_session_coding_journal
+    prompt: "我刚提交了几个 commit，把这次会话做了什么记成 session journal 存到记忆里"
+    fixtures: []
+    rubric:
+      - "应该交给 record-session：当用户要记录本次开发会话的成果摘要、保存 session journal 或在结束工作前总结做了什么时使用"
+      - "git 证据驱动的 coding session 收尾不应触发 research-note-wrap"
+    trigger_expected: false
+
+  - id: negative_meeting_notes_external_transcript
+    prompt: "这是刚才飞书会议的转写文本，帮我整理出决策、风险和行动项"
+    fixtures: []
+    rubric:
+      - "外部会议/电话转写输入应该交给 meeting-notes-and-actions"
+      - "research-note-wrap 不处理外部转写文本"
+    trigger_expected: false
+
+  - id: negative_session_reflection_collaboration_retro
+    prompt: "复盘一下本轮咱们的合作过程，把可以沉淀的工作流和记忆建议整理出来"
+    fixtures: []
+    rubric:
+      - "本轮合作复盘应交给 session-reflection"
+      - "不属于调研结论笔记场景"
+    trigger_expected: false

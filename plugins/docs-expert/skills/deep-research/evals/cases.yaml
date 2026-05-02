@@ -1,0 +1,86 @@
+cases:
+  - id: technology_comparison
+    prompt: "Research the current state of WebAssembly vs JavaScript for compute-heavy browser applications"
+    fixtures: []
+    rubric:
+      - "performs multi-round web searches for up-to-date information"
+      - "cross-references multiple sources for accuracy"
+      - "produces a structured comparison with citations and evidence"
+    trigger_expected: true
+
+  - id: industry_trend_research
+    prompt: "What are the latest developments in edge computing for AI inference in 2025?"
+    fixtures: []
+    rubric:
+      - "searches for recent publications, announcements, and benchmarks"
+      - "synthesizes findings from multiple credible sources"
+      - "distinguishes established facts from emerging trends"
+    trigger_expected: true
+
+  - id: positive_knowledge_synthesis_primary
+    prompt: "我需要当已经拿到多批搜索结果、网页正文或多来源证据，需要去重、归并、按可信度排序并生成可追溯结论"
+    fixtures: []
+    rubric:
+      - "recognizes the request as knowledge-synthesis territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_knowledge_synthesis_realistic
+    prompt: "帮我处理这个场景：已经完成检索，但结果分散在多个来源，需要整理成一个可读答案。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_technology_search_primary
+    prompt: "我需要搜索技术博客、开发者社区、官方博客与科技媒体的最新资讯时使用，适用于编程语言、框架、AI、硬件、DevOps、安全、操作系统等技术主题。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as technology-search territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_technology_search_realistic
+    prompt: "帮我处理这个场景：用户要查“某项技术最近有什么新动态”“这个框架最近发布了什么”“某个 AI / 硬件话题现在有哪些报道”。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: negative_codebase_analysis
+    prompt: "Analyze the dependency graph of our monorepo and find circular imports"
+    fixtures: []
+    rubric:
+      - "does not activate deep research workflow"
+      - "codebase analysis is an internal code task, not external web research"
+    trigger_expected: false
+
+  - id: negative_simple_question
+    prompt: "What is the default port for PostgreSQL?"
+    fixtures: []
+    rubric:
+      - "does not activate deep research workflow"
+      - "a simple factual question does not require multi-round research"
+    trigger_expected: false
+
+  - id: chinese_platform_wechat
+    prompt: "帮我搜一下微信公众号上关于新能源汽车的深度分析文章"
+    fixtures: []
+    rubric:
+      - "activates deep research workflow"
+      - "references the chinese-platform-routing reference for ecosystem ownership"
+      - "uses site:mp.weixin.qq.com qualifier or routes to Tencent-aligned source"
+    trigger_expected: true
+
+  - id: chinese_platform_local_life
+    prompt: "帮我找一下杭州西湖区评价靠谱的日料店，看看大众点评上的评论"
+    fixtures: []
+    rubric:
+      - "activates deep research workflow"
+      - "identifies Meituan / Dianping ecosystem as primary source"
+      - "applies site:dianping.com or equivalent routing"
+    trigger_expected: true

@@ -15,6 +15,23 @@ cases:
       - "keeps the response focused on the skill's domain boundary"
     trigger_expected: true
 
+  - id: positive_obsidian_cli_primary
+    prompt: "我需要通过命令行读写笔记、搜索 vault、操作 daily notes、tasks、properties、tags、backlinks 或调试 Obsidian 插件时使用。触发词包括 Obsidian CLI、vault、daily、property:set、tasks、tags、backlinks、plugin:reload、dev:screenshot、dev:dom。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as obsidian-cli territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_obsidian_cli_realistic
+    prompt: "帮我处理这个场景：用户要用 obsidian 命令读写、搜索或批量处理 Vault 中的笔记。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
   - id: negative_adjacent_obsidian_cli
     prompt: "这个需求应该交给 obsidian-cli：通过命令行读写笔记、搜索 vault、操作 daily notes、tasks、properties、tags、backlinks 或调试 Obsidian 插件时使用。触发词包括 Obsidian CLI、vault、daily、property:set、tasks、tags、backlinks、plugin:reload、dev:screenshot、dev:dom。"
     fixtures: []
