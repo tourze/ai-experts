@@ -2,62 +2,36 @@ import { homedir } from "os";
 import { resolve } from "path";
 
 const COMMAND_SEPARATORS = new Set(["&&", "||", ";", "|"]);
-const SVN_GLOBAL_OPTIONS_WITH_VALUE = new Set([
-  "--config-dir",
-  "--config-option",
-  "--password",
-  "--username",
-]);
 
-function resolvePathToken(pathToken, baseCwd) {
-  if (!pathToken) return baseCwd;
-  if (pathToken === "~") return homedir();
-  if (pathToken.startsWith("~/")) return resolve(homedir(), pathToken.slice(2));
-  return resolve(baseCwd, pathToken);
-}
+const GIT_GLOBAL_OPTIONS_WITH_VALUE = new Set(["-C", "--git-dir", "--work-tree", "-c", "--config-env"]);
 
-function normalizeSubcommands(subcommands) {
-  const input = Array.isArray(subcommands) ? subcommands : [subcommands];
-  const aliases = new Map();
+// ── Git ──
 
-  for (const subcommand of input) {
-    if (subcommand === "commit") {
-      aliases.set("commit", "commit");
-      aliases.set("ci", "commit");
-      continue;
-    }
-    aliases.set(subcommand, subcommand);
-  }
-
-  return aliases;
-}
-
-function collectSvnInvocations(tokens, aliases) {
+function collectGitInvocations(tokens, subcommand) {
   const invocations = [];
 
   for (let i = 0; i < tokens.length; i += 1) {
-    if (tokens[i] !== "svn") continue;
+    if (tokens[i] !== "git") continue;
 
     let j = i + 1;
     while (j < tokens.length && !COMMAND_SEPARATORS.has(tokens[j])) {
       const token = tokens[j];
-      const canonical = aliases.get(token);
 
-      if (canonical) {
+      if (token === subcommand) {
         const args = [];
         for (let k = j + 1; k < tokens.length && !COMMAND_SEPARATORS.has(tokens[k]); k += 1) {
           args.push(tokens[k]);
         }
-        invocations.push({ subcommand: canonical, args });
+        invocations.push(args);
         break;
       }
 
-      if (SVN_GLOBAL_OPTIONS_WITH_VALUE.has(token) && tokens[j + 1]) {
+      if (GIT_GLOBAL_OPTIONS_WITH_VALUE.has(token) && tokens[j + 1]) {
         j += 2;
         continue;
       }
 
-      if (token.startsWith("--config-dir=") || token.startsWith("--config-option=")) {
+      if (token.startsWith("--git-dir=") || token.startsWith("--work-tree=")) {
         j += 1;
         continue;
       }
@@ -72,6 +46,28 @@ function collectSvnInvocations(tokens, aliases) {
   }
 
   return invocations;
+}
+
+export function findGitSubcommandInvocations(command, subcommand) {
+  return collectGitInvocations(tokenizeShell(command), subcommand);
+}
+
+export function hasShortFlag(token, flag) {
+  if (!token.startsWith("-") || token.startsWith("--")) return false;
+  return token.slice(1).includes(flag);
+}
+
+export function quoteShellArg(arg) {
+  return `'${arg.replace(/'/g, "'\\''")}'`;
+}
+
+// ── 通用 ──
+
+function resolvePathToken(pathToken, baseCwd) {
+  if (!pathToken) return baseCwd;
+  if (pathToken === "~") return homedir();
+  if (pathToken.startsWith("~/")) return resolve(homedir(), pathToken.slice(2));
+  return resolve(baseCwd, pathToken);
 }
 
 export function tokenizeShell(command) {
@@ -150,11 +146,6 @@ export function tokenizeShell(command) {
 
   pushCurrent();
   return tokens;
-}
-
-export function findSvnSubcommandInvocations(command, subcommands) {
-  const aliases = normalizeSubcommands(subcommands);
-  return collectSvnInvocations(tokenizeShell(command), aliases).map((item) => item.args);
 }
 
 export function extractCommandCwd(command, fallbackCwd = process.cwd()) {
