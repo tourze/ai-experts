@@ -1,0 +1,48 @@
+cases:
+  - id: positive_data_structures
+    prompt: "我需要为排行榜功能选 Redis 数据结构，考虑 ZSet 还是 Sorted Set"
+    fixtures: []
+    rubric:
+      - "recognizes as redis-data-modeling territory"
+      - "covers ZSet score precision and alternatives"
+      - "evaluates access patterns before structure selection"
+    trigger_expected: true
+
+  - id: positive_key_design
+    prompt: "多服务共享 Redis 实例，帮我设计统一的键命名规范"
+    fixtures: []
+    rubric:
+      - "applies {service}:{object_type}:{id} naming convention"
+      - "covers TTL strategy with jitter"
+      - "mentions SCAN instead of KEYS"
+    trigger_expected: true
+
+  - id: positive_distributed_lock
+    prompt: "跨进程互斥：订单支付需要分布式锁防重复扣款"
+    fixtures: []
+    rubric:
+      - "uses SET key value NX EX single atomic command"
+      - "covers Lua script for safe release with owner check"
+      - "mentions lock timeout and watchdog considerations"
+    trigger_expected: true
+
+  - id: negative_caching_patterns
+    prompt: "实现 cache-aside 缓存策略，防止缓存击穿"
+    fixtures: []
+    rubric:
+      - "caching patterns should trigger redis-caching-patterns, not redis-data-modeling"
+    trigger_expected: false
+
+  - id: negative_cluster_ha
+    prompt: "配置 Redis Sentinel 高可用，3 个节点"
+    fixtures: []
+    rubric:
+      - "cluster/HA should trigger redis-cluster-ha, not redis-data-modeling"
+    trigger_expected: false
+
+  - id: negative_general
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing is outside this skill"
+    trigger_expected: false

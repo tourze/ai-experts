@@ -1,0 +1,41 @@
+cases:
+  - id: positive_sql_review
+    prompt: "审查这条 UPDATE 语句的安全性，有没有注入或误更新风险"
+    fixtures: []
+    rubric:
+      - "checks for SQL injection and parameterization"
+      - "evaluates WHERE clause scope and transaction boundary"
+      - "assesses migration lock and rollback path"
+    trigger_expected: true
+
+  - id: positive_slow_query
+    prompt: "This query takes 12 seconds on a table with 5 million rows, here's the EXPLAIN output"
+    fixtures: []
+    rubric:
+      - "analyzes the execution plan for full table scans or missing indexes"
+      - "suggests specific index creation with column order rationale"
+      - "provides rewritten query if structural changes improve performance"
+    trigger_expected: true
+
+  - id: positive_pagination
+    prompt: "Our OFFSET/LIMIT pagination is getting slower as users go deeper, how do I fix this?"
+    fixtures: []
+    rubric:
+      - "explains why OFFSET scanning is O(n)"
+      - "proposes keyset/cursor pagination"
+      - "covers index coverage for the cursor column"
+    trigger_expected: true
+
+  - id: negative_schema_design
+    prompt: "Help me design the database schema for a multi-tenant SaaS application"
+    fixtures: []
+    rubric:
+      - "schema design should trigger db-schema-design, not sql-review-optimization"
+    trigger_expected: false
+
+  - id: negative_general
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing is outside this skill"
+    trigger_expected: false

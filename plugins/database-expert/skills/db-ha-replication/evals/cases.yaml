@@ -1,0 +1,32 @@
+cases:
+  - id: positive_ha_replication
+    prompt: "我需要配置 MySQL 主从复制，使用 GTID 和半同步模式"
+    fixtures: []
+    rubric:
+      - "recognizes as db-ha-replication territory"
+      - "covers GTID configuration and enforce_gtid_consistency"
+      - "mentions ROW binlog format and semi-sync replication"
+    trigger_expected: true
+
+  - id: positive_failover
+    prompt: "计划做一次 MySQL 故障切换，需要确认哪些前置条件"
+    fixtures: []
+    rubric:
+      - "covers GTID set consistency check before promotion"
+      - "mentions replication delay monitoring"
+      - "covers semi-sync replica confirmation"
+    trigger_expected: true
+
+  - id: negative_index_strategy
+    prompt: "帮我分析 MySQL EXPLAIN 输出中的 Using filesort"
+    fixtures: []
+    rubric:
+      - "index strategy should trigger db-index-strategy, not db-ha-replication"
+    trigger_expected: false
+
+  - id: negative_general
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing is outside this skill"
+    trigger_expected: false

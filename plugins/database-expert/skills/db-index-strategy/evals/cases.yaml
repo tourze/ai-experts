@@ -1,0 +1,47 @@
+cases:
+  - id: positive_mysql_index
+    prompt: "帮我设计 MySQL 复合索引，这个查询按 user_id 等值过滤、status 排序、created_at 范围"
+    fixtures: []
+    rubric:
+      - "recognizes as db-index-strategy territory"
+      - "applies equal→range→sort column ordering"
+      - "covers covering index and EXPLAIN verification"
+    trigger_expected: true
+
+  - id: positive_pgsql_index
+    prompt: "我需要为 PostgreSQL JSONB 列选 GIN 索引还是 B-tree 索引"
+    fixtures: []
+    rubric:
+      - "recognizes as db-index-strategy territory"
+      - "distinguishes GIN operator classes (jsonb_ops vs jsonb_path_ops)"
+      - "mentions EXPLAIN ANALYZE verification"
+    trigger_expected: true
+
+  - id: positive_partial_index
+    prompt: "这个查询只查 active 状态的订单，想建一个部分索引减少体积"
+    fixtures: []
+    rubric:
+      - "covers PostgreSQL partial index WHERE clause matching"
+      - "mentions planner requirements"
+    trigger_expected: true
+
+  - id: negative_schema_design
+    prompt: "请设计 PostgreSQL 订单表结构，选择主键、金额类型、时间列和 snake_case 命名。"
+    fixtures: []
+    rubric:
+      - "table schema design should trigger db-schema-design, not db-index-strategy"
+    trigger_expected: false
+
+  - id: negative_sql_review
+    prompt: "审查这条 SQL 的安全性，有没有注入风险"
+    fixtures: []
+    rubric:
+      - "SQL review should trigger sql-review-optimization, not db-index-strategy"
+    trigger_expected: false
+
+  - id: negative_general
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing is outside this skill"
+    trigger_expected: false

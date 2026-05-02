@@ -1,0 +1,41 @@
+cases:
+  - id: positive_mysql_schema
+    prompt: "帮我设计 MySQL 订单表，要包含用户 ID、金额、状态、时间戳列"
+    fixtures: []
+    rubric:
+      - "recognizes as db-schema-design territory"
+      - "applies BIGINT UNSIGNED AUTO_INCREMENT primary key"
+      - "uses DECIMAL for amounts, utf8mb4 charset"
+    trigger_expected: true
+
+  - id: positive_pgsql_schema
+    prompt: "设计 PostgreSQL 用户表的列类型和约束，包含 created_at 和 profile JSONB"
+    fixtures: []
+    rubric:
+      - "uses BIGINT GENERATED ALWAYS AS IDENTITY"
+      - "uses TIMESTAMPTZ for time columns"
+      - "adds CHECK constraint on JSONB column"
+    trigger_expected: true
+
+  - id: positive_json_modeling
+    prompt: "商品表有很多可变的扩展属性，应该用 JSON 列还是范式化？"
+    fixtures: []
+    rubric:
+      - "evaluates JSON vs normalized trade-offs"
+      - "covers generated columns for high-frequency filter fields"
+      - "mentions GIN or multi-value index options"
+    trigger_expected: true
+
+  - id: negative_index_design
+    prompt: "帮我分析这个复合索引要不要加覆盖列"
+    fixtures: []
+    rubric:
+      - "index design should trigger db-index-strategy, not db-schema-design"
+    trigger_expected: false
+
+  - id: negative_general
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing is outside this skill"
+    trigger_expected: false
