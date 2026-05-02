@@ -17,6 +17,25 @@ cases:
       - "explains tradeoffs of chosen target"
     trigger_expected: true
 
+  - id: alternative_page
+    prompt: "Write a 'HubSpot alternative' page for our CRM product."
+    fixtures: []
+    rubric:
+      - "positions the product as an alternative to a named competitor"
+      - "balances SEO capture with sales proof"
+      - "handles comparison claims carefully"
+    trigger_expected: true
+
+  - id: versus_page
+    prompt: "Create an A vs B comparison page for our project management app versus Asana."
+    fixtures: []
+    rubric:
+      - "structures competitor comparison by buyer criteria"
+      - "includes switching, migration, and differentiation angles"
+      - "keeps claims specific and supportable"
+    trigger_expected: true
+
+
   - id: negative_customer_value_tiers
     prompt: "Segment our existing customers by profitability and CLV tiers."
     fixtures: []

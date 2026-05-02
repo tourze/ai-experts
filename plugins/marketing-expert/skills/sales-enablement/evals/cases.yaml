@@ -17,6 +17,25 @@ cases:
       - "keeps output focused on enablement material"
     trigger_expected: true
 
+  - id: b2b_cold_outbound
+    prompt: "Write a cold email to VP Sales prospects for our pipeline analytics tool."
+    fixtures: []
+    rubric:
+      - "uses a concise outbound email structure"
+      - "personalizes around buyer pain or trigger"
+      - "includes a low-friction CTA"
+    trigger_expected: true
+
+  - id: cold_followup_sequence
+    prompt: "Create a cold outbound follow-up sequence for CFOs who did not reply."
+    fixtures: []
+    rubric:
+      - "creates follow-up messages with distinct angles"
+      - "avoids generic nurture-style lifecycle emails"
+      - "keeps asks specific and sales-oriented"
+    trigger_expected: true
+
+
   - id: negative_cold_email
     prompt: "Write a first-touch cold email to a VP of Operations."
     fixtures: []
