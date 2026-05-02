@@ -66,6 +66,63 @@ cases:
       - "Does not attempt to write the full blog post"
       - "May provide strategic context for the piece"
     trigger_expected: true
+  - id: repurpose_blog_multi_platform
+    prompt: "Turn this blog post into LinkedIn, Reddit, newsletter, and short video content."
+    fixtures: []
+    rubric:
+      - "adapts one source asset into multiple platform-native formats"
+      - "changes framing and length per platform"
+      - "preserves core message while avoiding copy-paste reuse"
+    trigger_expected: true
+
+  - id: maximize_distribution
+    prompt: "We published a webinar. Repurpose it into a month of content for different channels."
+    fixtures: []
+    rubric:
+      - "extracts reusable ideas from the source"
+      - "creates channel-specific derivatives"
+      - "plans sequencing or distribution cadence"
+    trigger_expected: true
+
+
+  - id: build_topic_cluster
+    prompt: "Design a topic cluster around employee engagement with a pillar page and supporting articles."
+    fixtures: []
+    rubric:
+      - "creates pillar and supporting content structure"
+      - "maps internal links between hub and spokes"
+      - "addresses topical authority and keyword coverage"
+    trigger_expected: true
+
+  - id: keyword_cannibalization_cluster
+    prompt: "Our HR blog has keyword cannibalization. Reorganize it into topic clusters."
+    fixtures: []
+    rubric:
+      - "detects overlapping topics and search intent"
+      - "groups pages into clusters"
+      - "recommends consolidation and internal linking"
+    trigger_expected: true
+
+
+  - id: score_blog_post_seo_quality
+    prompt: "Score this blog post for SEO content quality and tell me if it is ready to publish."
+    fixtures: []
+    rubric:
+      - "uses a content quality scoring lens"
+      - "assesses search intent, keyword depth, structure, E-E-A-T, and usefulness"
+      - "returns prioritized content improvements"
+    trigger_expected: true
+
+  - id: publishing_standard_review
+    prompt: "Evaluate whether this article meets our SEO publishing standard for the target keyword."
+    fixtures: []
+    rubric:
+      - "checks content against target keyword and SERP intent"
+      - "identifies missing sections, evidence, and user questions"
+      - "separates content quality from technical site issues"
+    trigger_expected: true
+
+
   - id: negative_copy_editing_existing_page
     prompt: "Polish this existing landing page copy so it sounds clearer and less generic."
     fixtures: []

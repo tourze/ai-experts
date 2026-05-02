@@ -107,9 +107,9 @@ Hero + 6 张大卡片 + 渐变 banner + 浮动 CTA + 动画背景
 
 ## 参考资料
 
-- [refactoring-ui](../refactoring-ui/SKILL.md)
+- [refactoring-ui](../modern-web-design/SKILL.md)
 - [responsive-design](../responsive-design/SKILL.md)
-- [web-design-guidelines](../web-design-guidelines/SKILL.md)
+- [web-design-guidelines](../modern-web-design/SKILL.md)
 - [references/absolute-bans.md](references/absolute-bans.md) — 10 条 CSS 模式级硬禁令
 - [references/review-output-format.md](references/review-output-format.md)
 - [references/review-type-modifiers.md](references/review-type-modifiers.md)

@@ -15,6 +15,42 @@ cases:
       - "keeps the response focused on the skill's domain boundary"
     trigger_expected: true
 
+  - id: teardown_competitor
+    prompt: "Do a competitive teardown of Linear vs Jira for engineering project management"
+    fixtures: []
+    rubric:
+      - "evaluates both products across consistent dimensions (UX, features, pricing, integrations)"
+      - "produces a scoring matrix with evidence-backed ratings"
+      - "identifies differentiation opportunities and gap analysis"
+    trigger_expected: true
+
+  - id: quarterly_competitive_review
+    prompt: "Analyze our top 3 competitors' recent product launches and pricing changes"
+    fixtures: []
+    rubric:
+      - "structures analysis by competitor with recent changes timeline"
+      - "identifies positioning shifts and strategic implications"
+      - "produces actionable recommendations for our product roadmap"
+    trigger_expected: true
+
+
+  - id: positive_obviously_awesome_primary
+    prompt: "我需要做产品定位、明确竞争替代品、梳理独特属性或定义市场类别时使用；帮助找到最"
+    fixtures: []
+    rubric:
+      - "recognizes the request as obviously-awesome territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_obviously_awesome_realistic
+    prompt: "帮我处理这个场景：新品定位、品类重构、对外叙事重写、销售话术统一。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
   - id: negative_adjacent_3c_strategic_triangle
     prompt: "这个需求应该交给 3c-strategic-triangle：从顾客、公司、竞争者三角度做战略分析、找差异化定位或评估竞争可持续性时使用；英文触发词 3C analysis、Ohmae 3C、customer-company-competitor、strategic triangle。"
     fixtures: []

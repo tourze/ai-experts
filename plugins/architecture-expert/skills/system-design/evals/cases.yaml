@@ -17,6 +17,25 @@ cases:
       - "covers edge cases: race conditions, clock skew, burst handling"
     trigger_expected: true
 
+  - id: data_store_selection
+    prompt: "Use DDIA-style reasoning to choose storage for a product analytics system with high write volume, ad hoc queries, and late-arriving events."
+    fixtures: []
+    rubric:
+      - "starts from access patterns, write/read workload, and consistency needs"
+      - "compares storage tradeoffs instead of naming a database by preference"
+      - "addresses replication, partitioning, and reprocessing concerns"
+    trigger_expected: true
+
+  - id: replication_lag_design
+    prompt: "Design how our app should handle read replica lag after user profile updates."
+    fixtures: []
+    rubric:
+      - "makes consistency guarantees explicit"
+      - "proposes read-your-writes or primary-read exceptions where needed"
+      - "explains tradeoffs between latency, availability, and freshness"
+    trigger_expected: true
+
+
   - id: negative_fix_specific_bug
     prompt: "Fix the null pointer exception on line 145 of UserService.java"
     fixtures: []

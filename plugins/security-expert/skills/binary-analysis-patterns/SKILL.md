@@ -1,13 +1,13 @@
 ---
 name: binary-analysis-patterns
-description: "当需要对可执行文件、库或固件组件做静态反汇编、反编译和模式识别时使用。"
+description: "当需要对可执行文件、库或固件组件做静态反汇编、反编译、符号恢复、结构恢复和反逆向技术分析时使用。"
 ---
 
 # 二进制分析模式
 
 ## 适用场景
 - 需要理解入口点、导入表、字符串、控制流和数据结构。
-- 需要和 [anti-reversing-techniques](../anti-reversing-techniques/SKILL.md) 联动分析保护逻辑。
+- 需要和 [anti-reversing-techniques](references/anti-reversing-techniques.md) 联动分析保护逻辑。
 - 协议编解码或加密路径不清晰时，可切到 [protocol-reverse-engineering](../protocol-reverse-engineering/SKILL.md)。
 
 ## 核心约束

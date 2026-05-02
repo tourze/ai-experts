@@ -15,6 +15,40 @@ cases:
       - "keeps the response focused on the skill's domain boundary"
     trigger_expected: true
 
+  - id: positive_space_matrix_primary
+    prompt: "我需要做战略态势评估、判断企业该进攻/防守/竞争/保守、或需要四维度（财务/竞争/环境/产业）综合定位时使用；英文触发词 SPACE matrix、strategic position、aggressive/competitive/conservative/defensive posture。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as space-matrix territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_space_matrix_realistic
+    prompt: "帮我处理这个场景：战略方向选择：判断当前该进攻还是防守。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_blue_ocean_strategy_primary
+    prompt: "我需要讨论蓝海战略、价值创新、策略画布、ERRC 或非顾客时使用；帮助团队跳出存量竞争，设计新价值曲线与市场切入方式。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as blue-ocean-strategy territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_blue_ocean_strategy_realistic
+    prompt: "帮我处理这个场景：需要重新定义竞争边界，而不是继续在现有红海里卷价格和功能。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
   - id: negative_adjacent_3c_strategic_triangle
     prompt: "这个需求应该交给 3c-strategic-triangle：从顾客、公司、竞争者三角度做战略分析、找差异化定位或评估竞争可持续性时使用；英文触发词 3C analysis、Ohmae 3C、customer-company-competitor、strategic triangle。"
     fixtures: []

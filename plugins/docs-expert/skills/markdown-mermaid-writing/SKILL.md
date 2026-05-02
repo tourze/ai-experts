@@ -10,7 +10,7 @@ description: 当用户要用 Markdown 和 Mermaid 产出报告、技术文档、
 - 需要用纯文本格式维护文档，并希望图表可审阅、可 diff、可版本管理。
 - 用户要写技术方案、研究报告、状态汇报、PR 描述、决策记录或展示稿。
 - 文档中需要流程图、时序图、状态图、甘特图、ER 图等 Mermaid 图示。
-- 若不仅要源码，还要主题化 SVG 或终端 ASCII 成品图，继续使用 [pretty-mermaid](../pretty-mermaid/SKILL.md)。
+- 若不仅要源码，还要主题化 SVG 或终端 ASCII 成品图，继续使用 [pretty-mermaid](references/pretty-mermaid.md)。
 - 若最终要导出 PDF，可继续使用 [md-to-pdf](../md-to-pdf/SKILL.md)。
 
 ## 核心约束

@@ -15,6 +15,40 @@ cases:
       - "keeps the response focused on the skill's domain boundary"
     trigger_expected: true
 
+  - id: positive_team_composition_analysis_primary
+    prompt: "我需要规划早期团队结构、招聘顺序、薪酬带、股权分配或阶段性 headcount 时使用；帮助让组织配置与融资阶段和业务目标匹配。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as team-composition-analysis territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_team_composition_analysis_realistic
+    prompt: "帮我处理这个场景：pre-seed 到 Series A 阶段的团队设计、关键岗位招聘与预算规划。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_talent_management_primary
+    prompt: "我需要做人才盘点、设计招聘/培训/绩效/薪酬体系、诊断人才流失问题或规划人才梯队时使用；英文触发词 talent management、hire-develop-deploy-retain、talent pipeline、HR strategy、people management cycle。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as talent-management territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_talent_management_realistic
+    prompt: "帮我处理这个场景：快速扩张期的人才策略规划。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
   - id: negative_adjacent_3c_strategic_triangle
     prompt: "这个需求应该交给 3c-strategic-triangle：从顾客、公司、竞争者三角度做战略分析、找差异化定位或评估竞争可持续性时使用；英文触发词 3C analysis、Ohmae 3C、customer-company-competitor、strategic triangle。"
     fixtures: []

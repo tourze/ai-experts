@@ -24,6 +24,107 @@ cases:
       - "requires static hypothesis before Frida or ADB dynamic confirmation"
     trigger_expected: true
 
+  - id: positive_frida_catalog_ssl_root
+    prompt: "这个 APK 同时有 SSL pinning 和 root 检测，我该怎么选择 Frida 脚本和加载顺序？"
+    fixtures: []
+    rubric:
+      - "recognizes Android Frida script selection and chaining"
+      - "uses bypass first, observe second, deep-dive third ordering"
+    trigger_expected: true
+
+  - id: positive_frida_catalog_ipc_webview
+    prompt: "我想用 Frida 观察 deep link、Intent extras 和 WebView loadUrl 参数，应该选哪些脚本族？"
+    fixtures: []
+    rubric:
+      - "routes IPC/deep-link/WebView monitoring script selection to this skill"
+      - "prefers observe-first scripts before active manipulation"
+    trigger_expected: true
+
+  - id: positive_frida_catalog_native_dex
+    prompt: "加壳 Android 应用需要先 dump DEX，再 trace JNI/native root check，帮我规划 Frida 脚本目录。"
+    fixtures: []
+    rubric:
+      - "covers dexdump, packer, JNI, and native hook script families"
+      - "requires script existence and evidence capture"
+    trigger_expected: true
+
+
+  - id: positive_dex_dumper_primary
+    prompt: "我需要从运行中的 Android 应用内存中 dump DEX 文件以绕过加壳保护"
+    fixtures: []
+    rubric:
+      - "recognizes the request as dex-dumper territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_dex_dumper_realistic
+    prompt: "帮我处理这个场景：APK 使用了加固/加壳（360、梆梆、爱加密等），jadx 反编译后只看到壳代码。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_jadx_primary
+    prompt: "我需要把 Android APK 或 DEX 反编译为可读 Java/Kotlin 代码，并搜索敏感逻辑"
+    fixtures: []
+    rubric:
+      - "recognizes the request as jadx territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_jadx_realistic
+    prompt: "帮我处理这个场景：需要快速查看移动端业务逻辑、硬编码密钥、接口调用和反调试逻辑。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_apktool_primary
+    prompt: "我需要解包 APK、查看 AndroidManifest、资源文件或 smali，并对重打包链路做验证"
+    fixtures: []
+    rubric:
+      - "recognizes the request as apktool territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_apktool_realistic
+    prompt: "帮我处理这个场景：需要分析 Manifest、资源、签名配置、网络安全配置或 smali 入口。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_manifest_exported_components
+    prompt: "帮我审计这个 APK 的 AndroidManifest，重点看 exported activity、service、receiver、provider 是否缺权限。"
+    fixtures: []
+    rubric:
+      - "recognizes AndroidManifest component attack surface review"
+      - "requires code/resource confirmation instead of reporting exported flags alone"
+    trigger_expected: true
+
+  - id: positive_manifest_network_security
+    prompt: "检查 decoded/AndroidManifest.xml 和 res/xml/network_security_config.xml 是否允许 cleartext 或 user CA。"
+    fixtures: []
+    rubric:
+      - "routes Network Security Config and manifest TLS settings to this skill"
+      - "distinguishes manifest reference from actual XML behavior"
+    trigger_expected: true
+
+  - id: positive_manifest_provider_fileprovider
+    prompt: "这个 AndroidManifest 里有 FileProvider 和 grantUriPermissions，帮我判断 provider paths 有没有外泄风险。"
+    fixtures: []
+    rubric:
+      - "focuses on Provider/FileProvider manifest and path XML"
+      - "checks read/write permissions and URI grant behavior"
+    trigger_expected: true
+
+
   - id: negative_android_app_feature_development
     prompt: "帮我设计一个 Android Jetpack Compose 登录页和 MVVM 架构。"
     fixtures: []

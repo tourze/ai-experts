@@ -17,6 +17,23 @@ cases:
       - "optionally includes Mermaid diagrams for data flow or decision tree"
     trigger_expected: true
 
+  - id: positive_pretty_mermaid_primary
+    prompt: "我需要把 Mermaid 图表渲染成更美观的 SVG 或 ASCII 输出，或明确要求“画图”“美化 Mermaid”“渲染 Mermaid”“批量导出 Mermaid 图”时使用。该技能补足 Mermaid 从源码到成品图的渲染链路。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as pretty-mermaid territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_pretty_mermaid_realistic
+    prompt: "帮我处理这个场景：用户已经有 Mermaid 源码，需要渲染成 SVG 成品图或终端可读的 ASCII 图。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
   - id: negative_pdf_generation
     prompt: "Convert this Markdown file to a styled PDF with custom fonts"
     fixtures: []

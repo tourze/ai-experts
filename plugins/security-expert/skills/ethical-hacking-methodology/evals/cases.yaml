@@ -15,6 +15,152 @@ cases:
       - "keeps the response focused on the skill's domain boundary"
     trigger_expected: true
 
+  - id: positive_nmap_primary
+    prompt: "我需要对授权目标做主机发现、端口枚举、服务识别与基础网络画像"
+    fixtures: []
+    rubric:
+      - "recognizes the request as nmap territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_nmap_realistic
+    prompt: "帮我处理这个场景：需要建立资产清单、开放端口和服务版本基线。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_linux_privilege_escalation_primary
+    prompt: "我需要在已授权 Linux 环境中获得低权限 shell，需要枚举并验证提权路径"
+    fixtures: []
+    rubric:
+      - "recognizes the request as linux-privilege-escalation territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_linux_privilege_escalation_realistic
+    prompt: "帮我处理这个场景：需要从普通用户态分析 sudo、SUID、capabilities、计划任务、服务配置和内核暴露面。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_active_directory_attacks_primary
+    prompt: "我需要明确要求在已授权环境中进行 Active Directory 安全测试，或提到 Kerberoasting、DCSync、BloodHound、NTLM Relay、Golden Ticket 等主题"
+    fixtures: []
+    rubric:
+      - "recognizes the request as active-directory-attacks territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_active_directory_attacks_realistic
+    prompt: "帮我处理这个场景：已获得书面授权，需要对域控、域成员、信任关系和高权限路径做系统性评估。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_file_path_traversal_primary
+    prompt: "我需要测试目录遍历、LFI、任意文件读取或路径规范化缺陷"
+    fixtures: []
+    rubric:
+      - "recognizes the request as file-path-traversal territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_file_path_traversal_realistic
+    prompt: "帮我处理这个场景：需要验证下载、导出、模板、图片、日志或调试接口是否可越界读文件。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_broken_authentication_primary
+    prompt: "我需要测试认证与会话管理的安全性"
+    fixtures: []
+    rubric:
+      - "recognizes the request as broken-authentication territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_broken_authentication_realistic
+    prompt: "帮我处理这个场景：需要验证登录、注册、找回密码、MFA、session、JWT 等认证链路。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_nested_intent_relay
+    prompt: "这个 exported ProxyActivity 从 getParcelableExtra 取 target_intent 后 startActivity，帮我判断 Intent injection 风险。"
+    fixtures: []
+    rubric:
+      - "recognizes nested intent relay and confused deputy risk"
+      - "requires reachability, attacker control, relay sink, and internal target evidence"
+    trigger_expected: true
+
+  - id: positive_deeplink_webview_abuse
+    prompt: "分析 myapp:// deep link 参数是否会进入 WebView loadUrl 或造成 open redirect。"
+    fixtures: []
+    rubric:
+      - "routes deep link parameter abuse to this skill"
+      - "connects URI parsing to WebView or redirect sinks"
+    trigger_expected: true
+
+  - id: positive_pendingintent_fileprovider
+    prompt: "检查这个 Android 应用的 mutable PendingIntent 和 FileProvider URI grant 是否能被第三方 app 滥用。"
+    fixtures: []
+    rubric:
+      - "covers PendingIntent mutability and FileProvider grant pivots"
+      - "asks for explicit component, flags, ClipData, and path evidence"
+    trigger_expected: true
+
+
+  - id: positive_api_fuzzing_bug_bounty_primary
+    prompt: "我需要对 REST、GraphQL 或移动端 API 做授权的安全测试、IDOR 检查、字段越权或参数篡改"
+    fixtures: []
+    rubric:
+      - "recognizes the request as api-fuzzing-bug-bounty territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_api_fuzzing_bug_bounty_realistic
+    prompt: "帮我处理这个场景：需要对 REST 或 GraphQL 接口做字段探测、越权测试、批量枚举和错误处理验证。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: identify_xss_risk
+    prompt: "Is this code vulnerable to XSS? We're rendering user input with dangerouslySetInnerHTML"
+    fixtures: []
+    rubric:
+      - "identifies the XSS vulnerability in unsanitized user input rendering"
+      - "explains the attack vector and potential impact"
+      - "provides remediation: sanitization library, CSP headers, or safe alternatives"
+    trigger_expected: true
+
+  - id: classify_web_vulns
+    prompt: "What are the most critical web security vulnerabilities I should check for in our e-commerce app?"
+    fixtures: []
+    rubric:
+      - "covers OWASP Top 10 categories relevant to e-commerce"
+      - "explains each vulnerability type with root cause and fix direction"
+      - "prioritizes by impact: injection, broken auth, SSRF, insecure deserialization"
+    trigger_expected: true
+
+
   - id: negative_adjacent_active_directory_attacks
     prompt: "这个需求应该交给 active-directory-attacks：明确要求在已授权环境中进行 Active Directory 安全测试，或提到 Kerberoasting、DCSync、BloodHound、NTLM Relay、Golden Ticket 等主题"
     fixtures: []

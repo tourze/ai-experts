@@ -17,6 +17,25 @@ cases:
       - "recommends verification in GA4/GTM debug tools"
     trigger_expected: true
 
+  - id: campaign_roi_review
+    prompt: "Analyze this campaign's ROI, ROAS, CPA, conversion rate, and channel attribution."
+    fixtures: []
+    rubric:
+      - "calculates or interprets performance metrics"
+      - "compares channels and funnel stages"
+      - "recommends budget or optimization actions from evidence"
+    trigger_expected: true
+
+  - id: channel_postmortem
+    prompt: "Our launch campaign underperformed. Diagnose which channel and funnel step caused the miss."
+    fixtures: []
+    rubric:
+      - "breaks performance down by channel and funnel stage"
+      - "distinguishes traffic quality from conversion problems"
+      - "produces a practical campaign postmortem"
+    trigger_expected: true
+
+
   - id: negative_campaign_roi
     prompt: "Analyze this campaign's ROAS, CPA, and channel attribution."
     fixtures: []

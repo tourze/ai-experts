@@ -15,6 +15,25 @@ cases:
       - "keeps the response focused on the skill's domain boundary"
     trigger_expected: true
 
+  - id: positive_bayesian_decision_primary
+    prompt: "我们要不要投入 2 个工程师做 AI 功能 MVP？请用先验、证据更新、行动阈值和敏感性分析给一个证据到行动的决策报告。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as bayesian-decision territory"
+      - "uses intake -> evidence -> update -> action -> sensitivity -> report rather than a generic recommendation"
+      - "includes prior hygiene and next information that could change the decision"
+    trigger_expected: true
+
+  - id: positive_uncertain_market_entry
+    prompt: "我们在三个海外市场里只能先选一个，已有证据质量参差不齐。帮我做一个带 prior、posterior、expected value 和 what would flip 的决策分析。"
+    fixtures: []
+    rubric:
+      - "handles uncertain strategic choice with evidence grading and action mapping"
+      - "does not stop at probability; compares actions and flip conditions"
+      - "checks sensitivity and evidence weakness before recommending a market"
+    trigger_expected: true
+
+
   - id: negative_adjacent_consciousness_council
     prompt: "这个需求应该交给 consciousness-council：多视角思辨来审视高不确定性决策时使用。用户提到\"换几个专家视角看\"\"多角度想一遍\"\"开个议会\""
     fixtures: []

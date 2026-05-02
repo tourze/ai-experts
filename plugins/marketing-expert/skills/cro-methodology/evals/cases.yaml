@@ -17,6 +17,154 @@ cases:
       - "distinguishes methodology from implementing a specific page"
     trigger_expected: true
 
+  - id: landing_page_conversion_audit
+    prompt: "Audit our landing page conversion rate. Visitors click ads but don't sign up."
+    fixtures: []
+    rubric:
+      - "diagnoses page-level conversion issues"
+      - "reviews offer, CTA, trust proof, message match, and friction"
+      - "recommends page experiments or section changes"
+    trigger_expected: true
+
+  - id: pricing_page_cro
+    prompt: "Our pricing page gets traffic but very few trial starts. Improve conversion."
+    fixtures: []
+    rubric:
+      - "focuses on pricing page conversion levers"
+      - "addresses plan clarity, risk reversal, proof, objections, and CTA"
+      - "separates page changes from signup form or onboarding fixes"
+    trigger_expected: true
+
+
+  - id: exit_intent_popup_design
+    prompt: "Help me create an exit-intent popup for our SaaS landing page. We want to capture emails from visitors who are about to leave without signing up. Our product is a social media scheduling tool."
+    fixtures: []
+    rubric:
+      - "Checks for product-marketing-context.md"
+      - "Identifies as exit-intent popup type"
+      - "Includes compelling headline"
+      - "Includes lead magnet or incentive"
+      - "Minimal form fields (email only)"
+      - "Applies copy formulas from the skill"
+      - "Addresses trigger configuration"
+      - "Recommends frequency rules"
+      - "Includes conversion benchmarks"
+    trigger_expected: true
+  - id: discount_popup_trigger_strategy
+    prompt: "We want to offer a 10% discount to first-time visitors via a popup. When should we show it and what should it say?"
+    fixtures: []
+    rubric:
+      - "Identifies as discount popup type"
+      - "Recommends against immediate page load trigger"
+      - "Suggests better trigger alternatives (time, scroll, exit)"
+      - "Applies copy formula for discount popups"
+      - "Includes urgency element"
+      - "Addresses frequency capping"
+      - "Addresses compliance considerations"
+    trigger_expected: true
+  - id: popup_annoyance_balance
+    prompt: "our popups are annoying everyone. we keep getting complaints but we also get a lot of email signups from them. how do we balance this?"
+    fixtures: []
+    rubric:
+      - "Triggers on casual phrasing"
+      - "Applies frequency and rules guidance"
+      - "Addresses balance between conversions and UX"
+      - "Recommends frequency capping"
+      - "Suggests excluding existing subscribers"
+      - "Recommends less intrusive alternatives"
+      - "Suggests A/B testing to optimize"
+    trigger_expected: true
+  - id: blog_popup_types
+    prompt: "What types of popups should we use on our blog? We publish content about email marketing and want to grow our email list."
+    fixtures: []
+    rubric:
+      - "Recommends blog-appropriate popup types"
+      - "Includes scroll-triggered and exit-intent"
+      - "Suggests less intrusive formats (slide-in)"
+      - "Recommends relevant lead magnets"
+      - "Addresses popup placement on blog pages"
+      - "Recommends behavior-based triggers for blog"
+      - "Applies copy formulas"
+    trigger_expected: true
+  - id: announcement_banner_design
+    prompt: "Design an announcement banner for our new feature launch. We want it to show at the top of the site for 2 weeks."
+    fixtures: []
+    rubric:
+      - "Identifies as announcement banner type"
+      - "Provides short, clear headline"
+      - "Includes brief benefit description and CTA"
+      - "Includes dismiss option"
+      - "Addresses banner positioning"
+      - "Recommends audience targeting"
+      - "Provides copy recommendations"
+    trigger_expected: true
+  - id: popup_form_field_optimization
+    prompt: "We need to optimize the lead capture form inside our popup. It currently asks for name, email, company, and phone number. Too many fields?"
+    fixtures: []
+    rubric:
+      - "Recognizes overlap with form optimization"
+      - "Keeps advice focused on popup-specific field friction"
+      - "Notes popups need minimal fields due to context"
+      - "Does not attempt detailed form redesign"
+    trigger_expected: true
+
+  - id: signup_dropoff_diagnosis
+    prompt: "Users abandon our signup flow before creating an account. Diagnose and improve it."
+    fixtures: []
+    rubric:
+      - "focuses on account creation and registration steps"
+      - "identifies form, trust, friction, and sequencing issues"
+      - "recommends signup-specific experiments"
+    trigger_expected: true
+
+  - id: trial_registration_optimization
+    prompt: "Optimize our free trial signup form. It asks for six fields and completion is low."
+    fixtures: []
+    rubric:
+      - "targets signup form friction"
+      - "recommends field reduction, sequencing, trust, or progressive profiling"
+      - "sets signup completion metrics"
+    trigger_expected: true
+
+
+  - id: improve_activation_flow
+    prompt: "Our users sign up but never reach the aha moment. Improve onboarding and activation."
+    fixtures: []
+    rubric:
+      - "diagnoses post-signup activation friction"
+      - "identifies aha moment and time-to-value path"
+      - "recommends in-app onboarding, checklist, empty state, or guided setup changes"
+    trigger_expected: true
+
+  - id: onboarding_empty_state
+    prompt: "Redesign the empty state and first-run checklist so new users complete setup."
+    fixtures: []
+    rubric:
+      - "focuses on first user experience after account creation"
+      - "reduces cognitive load and guides toward activation"
+      - "sets success metrics such as activation rate or time-to-value"
+    trigger_expected: true
+
+
+  - id: map_conversion_funnel
+    prompt: "Map our customer journey into AIDA stages and identify where prospects drop from awareness to purchase."
+    fixtures: []
+    rubric:
+      - "uses awareness, interest, desire, and action as distinct stages"
+      - "diagnoses conversion gaps by stage"
+      - "recommends stage-specific marketing actions"
+    trigger_expected: true
+
+  - id: optimize_launch_funnel
+    prompt: "Design an awareness-to-action funnel for launching our productivity app."
+    fixtures: []
+    rubric:
+      - "builds a full-funnel path from initial attention to conversion"
+      - "matches messages and channels to each AIDA stage"
+      - "defines metrics for stage progression"
+    trigger_expected: true
+
+
   - id: negative_popup_design
     prompt: "Write copy and trigger rules for an exit-intent popup."
     fixtures: []

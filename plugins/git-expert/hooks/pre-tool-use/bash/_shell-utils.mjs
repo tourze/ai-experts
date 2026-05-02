@@ -2,14 +2,11 @@ import { homedir } from "os";
 import { resolve } from "path";
 
 const COMMAND_SEPARATORS = new Set(["&&", "||", ";", "|"]);
-const GIT_GLOBAL_OPTIONS_WITH_VALUE = new Set([
-  "-C",
-  "-c",
-  "--git-dir",
-  "--work-tree",
-  "--namespace",
-  "--exec-path",
-  "--config-env",
+const SVN_GLOBAL_OPTIONS_WITH_VALUE = new Set([
+  "--config-dir",
+  "--config-option",
+  "--password",
+  "--username",
 ]);
 
 function resolvePathToken(pathToken, baseCwd) {
@@ -19,41 +16,52 @@ function resolvePathToken(pathToken, baseCwd) {
   return resolve(baseCwd, pathToken);
 }
 
-function collectGitInvocations(tokens, subcommand) {
+function normalizeSubcommands(subcommands) {
+  const input = Array.isArray(subcommands) ? subcommands : [subcommands];
+  const aliases = new Map();
+
+  for (const subcommand of input) {
+    if (subcommand === "commit") {
+      aliases.set("commit", "commit");
+      aliases.set("ci", "commit");
+      continue;
+    }
+    aliases.set(subcommand, subcommand);
+  }
+
+  return aliases;
+}
+
+function collectSvnInvocations(tokens, aliases) {
   const invocations = [];
 
   for (let i = 0; i < tokens.length; i += 1) {
-    if (tokens[i] !== "git") continue;
+    if (tokens[i] !== "svn") continue;
 
     let j = i + 1;
     while (j < tokens.length && !COMMAND_SEPARATORS.has(tokens[j])) {
       const token = tokens[j];
+      const canonical = aliases.get(token);
 
-      if (subcommand && token === subcommand) {
+      if (canonical) {
         const args = [];
         for (let k = j + 1; k < tokens.length && !COMMAND_SEPARATORS.has(tokens[k]); k += 1) {
           args.push(tokens[k]);
         }
-        invocations.push(args);
+        invocations.push({ subcommand: canonical, args });
         break;
       }
 
-      if (token === "-C" && tokens[j + 1]) {
+      if (SVN_GLOBAL_OPTIONS_WITH_VALUE.has(token) && tokens[j + 1]) {
         j += 2;
         continue;
       }
-      if (token.startsWith("-C") && token.length > 2) {
+
+      if (token.startsWith("--config-dir=") || token.startsWith("--config-option=")) {
         j += 1;
         continue;
       }
-      if (GIT_GLOBAL_OPTIONS_WITH_VALUE.has(token)) {
-        j += 2;
-        continue;
-      }
-      if (token.startsWith("--config-env=")) {
-        j += 1;
-        continue;
-      }
+
       if (token.startsWith("-")) {
         j += 1;
         continue;
@@ -144,8 +152,9 @@ export function tokenizeShell(command) {
   return tokens;
 }
 
-export function findGitSubcommandInvocations(command, subcommand) {
-  return collectGitInvocations(tokenizeShell(command), subcommand);
+export function findSvnSubcommandInvocations(command, subcommands) {
+  const aliases = normalizeSubcommands(subcommands);
+  return collectSvnInvocations(tokenizeShell(command), aliases).map((item) => item.args);
 }
 
 export function extractCommandCwd(command, fallbackCwd = process.cwd()) {
@@ -157,37 +166,8 @@ export function extractCommandCwd(command, fallbackCwd = process.cwd()) {
       cwd = resolvePathToken(tokens[i + 1], cwd);
       break;
     }
-    if (tokens[i] === "git") break;
-  }
-
-  for (let i = 0; i < tokens.length; i += 1) {
-    if (tokens[i] !== "git") continue;
-
-    for (let j = i + 1; j < tokens.length && !COMMAND_SEPARATORS.has(tokens[j]); j += 1) {
-      const token = tokens[j];
-
-      if (token === "-C" && tokens[j + 1]) {
-        return resolvePathToken(tokens[j + 1], cwd);
-      }
-      if (token.startsWith("-C") && token.length > 2) {
-        return resolvePathToken(token.slice(2), cwd);
-      }
-      if (!token.startsWith("-")) {
-        break;
-      }
-      if (GIT_GLOBAL_OPTIONS_WITH_VALUE.has(token)) {
-        j += 1;
-      }
-    }
+    if (tokens[i] === "svn") break;
   }
 
   return cwd;
-}
-
-export function hasShortFlag(token, flag) {
-  return /^-[^-]/.test(token) && token.includes(flag);
-}
-
-export function quoteShellArg(value) {
-  return `'${String(value).replace(/'/g, `'\\''`)}'`;
 }

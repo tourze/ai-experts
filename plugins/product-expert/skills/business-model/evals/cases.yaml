@@ -35,6 +35,38 @@ cases:
       - "keeps HTML modules in the documented order, including evidence map, competitors, analogs, AI fit, risk, and appendix"
     trigger_expected: true
 
+  - id: positive_weizhu_primary
+    prompt: "我需要从中国商业环境视角分析商业模式、梳理定位到企业价值的因果逻辑链、或做商业模式创新设计时使用；英文触发词 Wei Zhu model、six elements、business model logic chain、Chinese business model。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as business-model territory (weizhu sub-model)"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_weizhu_realistic
+    prompt: "帮我处理这个场景：中国市场商业模式设计和诊断（比 BMC 更强调因果逻辑）。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: positive_iron_triangle_primary
+    prompt: "我需要从产品、核心业务职能、市场三维度审视业务定位一致性、或判断商业模式是否自洽时使用；英文触发词 business iron triangle、product-function-market、business definition、Abell's three dimensions。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as business-model territory (iron-triangle sub-model)"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_iron_triangle_realistic
+    prompt: "帮我处理这个场景：快速检验业务定位是否自洽：产品、职能和市场三者是否相互支撑。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
   - id: negative_adjacent_3c_strategic_triangle
     prompt: "这个需求应该交给 3c-strategic-triangle：从顾客、公司、竞争者三角度做战略分析、找差异化定位或评估竞争可持续性时使用；英文触发词 3C analysis、Ohmae 3C、customer-company-competitor、strategic triangle。"
     fixtures: []

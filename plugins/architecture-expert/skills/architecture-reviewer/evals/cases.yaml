@@ -64,3 +64,38 @@ cases:
       - "identifies failure modes across synchronous and asynchronous paths"
       - "distinguishes critical risks from cosmetic issues"
     trigger_expected: true
+
+  - id: current_codebase_blueprint
+    prompt: "Generate an architecture blueprint for this existing Rails monolith so new engineers understand module boundaries and dependency rules."
+    fixtures: []
+    rubric:
+      - "documents the current architecture rather than an idealized target"
+      - "covers module boundaries, dependency rules, data flow, and extension points"
+      - "calls out known deviations or uncertain areas with evidence"
+    trigger_expected: true
+
+  - id: platform_blueprint
+    prompt: "Create a maintainable architecture blueprint for our plugin platform, including plugin boundaries, hook flow, data ownership, and governance points."
+    fixtures: []
+    rubric:
+      - "explains plugin/module responsibilities and ownership"
+      - "maps hook or event flow across major components"
+      - "identifies governance rules for future extensions"
+    trigger_expected: true
+
+  - id: microservices_architecture_diagram
+    prompt: "Create an architecture diagram for our microservices: API Gateway, User Service, Order Service, PostgreSQL, Redis"
+    fixtures: []
+    rubric:
+      - "Output produces a self-contained HTML file"
+      - "Output uses SVG or CSS Grid for layout"
+      - "Output includes connection lines or arrows between components"
+    trigger_expected: true
+
+  - id: aws_deployment_diagram
+    prompt: "Draw a deployment diagram showing our AWS infrastructure"
+    fixtures: []
+    rubric:
+      - "Output shows containment hierarchy (e.g., VPC > Subnet > Instance)"
+      - "Output uses color-coded legends to distinguish component types"
+    trigger_expected: true

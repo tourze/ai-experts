@@ -9,7 +9,7 @@ description: "当需要提取和分析 iOS IPA、Mach-O 二进制、dylib 或 fr
 - 需要从 IPA 中提取 Mach-O 并用 ipsw class-dump 获取类/方法声明。
 - 需要追踪 ViewController → ViewModel → Service → API 的调用链。
 - 需要与 [frida-dynamic-analysis](../frida-dynamic-analysis/SKILL.md) 配合做运行时验证。
-- 需要与 [anti-reversing-techniques](../anti-reversing-techniques/SKILL.md) 联动分析保护逻辑。
+- 需要与 [anti-reversing-techniques](../binary-analysis-patterns/SKILL.md) 联动分析保护逻辑。
 
 ## 核心约束
 - 先用 ipsw class-dump（不是旧版 class-dump），它支持 Swift 和现代 ARM64e。

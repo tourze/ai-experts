@@ -59,7 +59,7 @@ node ./scripts/design_audit.mjs --file ./index.html
 - [ ] 首屏优先级明确，核心 CTA 和核心叙事一眼可见。
 - [ ] 视觉亮点不会牺牲可读性、可达性和响应速度。
 - [ ] 动效数量克制，且有降级策略。
-- [ ] 已通过 [core-web-vitals](../core-web-vitals/SKILL.md) 和 [web-design-guidelines](../web-design-guidelines/SKILL.md) 复核。
+- [ ] 已通过 [core-web-vitals](../core-web-vitals/SKILL.md) 和 [web-design-guidelines](references/web-design-guidelines.md) 复核。
 
 ## 反模式
 
@@ -106,7 +106,7 @@ node ./scripts/design_audit.mjs --file ./index.html
 - [core-web-vitals](../core-web-vitals/SKILL.md)
 - [interaction-design](../interaction-design/SKILL.md)
 - [responsive-design](../responsive-design/SKILL.md)
-- [web-design-guidelines](../web-design-guidelines/SKILL.md)
+- [web-design-guidelines](references/web-design-guidelines.md)
 - [scripts/design_audit.mjs](scripts/design_audit.mjs)
 - [scripts/pattern_generator.mjs](scripts/pattern_generator.mjs)
 - [references/design_trends_2024.md](references/design_trends_2024.md)

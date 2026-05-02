@@ -1,0 +1,64 @@
+cases:
+  - id: positive_legal_risk_assessment_primary
+    prompt: "我需要评估合同、合规、劳动或争议事项的法律风险"
+    fixtures: []
+    rubric:
+      - "recognizes the request as legal-risk-assessment territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_legal_risk_assessment_realistic
+    prompt: "帮我处理这个场景：评估合同偏离标准条款、监管变化、数据事件、劳动争议、知识产权争议、董事会敏感事项的法律暴露。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: positive_gdpr_data_handling_primary
+    prompt: "我需要设计 GDPR 合规流程、同意管理、数据主体请求或 breach 响应"
+    fixtures: []
+    rubric:
+      - "recognizes the request as gdpr-data-handling territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_gdpr_data_handling_realistic
+    prompt: "帮我处理这个场景：设计或审查会处理欧盟个人数据的产品、后台服务、营销流程、客服流程、员工数据系统。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_employment_contract_templates_primary
+    prompt: "我需要起草劳动合同、录用通知、保密协议或 HR 制度文本"
+    fixtures: []
+    rubric:
+      - "recognizes the request as employment-contract-templates territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_employment_contract_templates_realistic
+    prompt: "帮我处理这个场景：起草或重写 offer letter、劳动合同、员工手册、保密协议、远程办公附录等劳动用工文本。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: negative_adjacent_employment_contract_templates
+    prompt: "这个需求应该交给 employment-contract-templates：起草劳动合同、录用通知、保密协议或 HR 制度文本"
+    fixtures: []
+    rubric:
+      - "adjacent employment-contract-templates requests should not trigger legal-risk-assessment"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

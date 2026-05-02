@@ -31,6 +31,40 @@ cases:
       - "does not route the request to raw PPTX file editing before the deck is planned"
     trigger_expected: true
 
+  - id: positive_pptx_primary
+    prompt: "我需要创建、读取、编辑或修复 .pptx 演示文稿"
+    fixtures: []
+    rubric:
+      - "recognizes the request as pptx territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_pptx_realistic
+    prompt: "帮我处理这个场景：用户明确提到 .pptx、演示文稿、幻灯片、deck、pitch deck。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_ppt_visual_primary
+    prompt: "我需要设计演示文稿的版式、视觉方向、信息层级、配色或单页结构时使用。该技能输出设计说明和页面规范，不直接替代 PPTX 文件加工链路。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as ppt-visual territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_ppt_visual_realistic
+    prompt: "帮我处理这个场景：用户已经有内容，希望把它整理成有说服力的演示结构和视觉规格。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
   - id: negative_existing_pptx_file_editing
     prompt: "请打开这个已有 .pptx，删除第 5 页，替换第 8 页图片，然后重新打包校验。"
     fixtures: []

@@ -1,13 +1,13 @@
 ---
 name: competitive-intelligence
-description: 当用户要做竞品情报、battlecard、竞品动态跟踪、功能差距、市场定位或销售对抗信息整理时使用。
+description: 当用户要做竞品情报、battlecard、功能差距分析、市场定位、竞品深度拆解，或用 obviously awesome 定位方法判断产品替代品时使用。
 ---
 
 # 竞品情报
 
 ## 适用场景
 - 销售场景需要 battlecard、产品场景需要竞品动态、管理层需要阶段性情报摘要。
-- 需要先做广度扫描，再决定是否进入 [competitive-teardown](../competitive-teardown/SKILL.md) 的深度拆解。
+- 需要先做广度扫描，再决定是否进入[竞品深度拆解](references/competitive-teardown.md)。
 
 ## 核心约束
 - 先明确比较目的：赢单、路线图决策、定位更新或市场监控；不同目的的证据粒度不同。

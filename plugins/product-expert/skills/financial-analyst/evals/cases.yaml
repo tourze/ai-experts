@@ -1,0 +1,109 @@
+cases:
+  - id: positive_financial_analyst_primary
+    prompt: "我需要做财报比率分析、DCF 估值、预算偏差或滚动预测时使用。英文触发词包括 cash flow analysis、budget variance、financial projections。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as financial-analyst territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_financial_analyst_realistic
+    prompt: "帮我处理这个场景：需要快速完成财报比率分析、预算偏差归因、滚动预测或基础 DCF 估值。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: positive_creating_financial_models_primary
+    prompt: "我需要构建 DCF 估值模型、敏感性分析、情景分析或盈亏平衡分析时使用。英文触发词包括 valuation modeling、scenario planning。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as creating-financial-models territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_creating_financial_models_realistic
+    prompt: "帮我处理这个场景：需要把估值逻辑封装成可复用 Python 模型，而不只是执行一次性 CLI 分析。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_kelly_sizing_primary
+    prompt: "我有 10 万预算，想用 Kelly Criterion 判断这个投资机会该投多少，胜率大概 58%，赔率和最大亏损都能估。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as kelly-sizing territory"
+      - "shows full Kelly and conservative fractional Kelly rather than only a raw formula"
+      - "checks capital base, downside, confidence, caps, and no-allocation conditions"
+    trigger_expected: true
+
+  - id: positive_multi_opportunity_resource_allocation
+    prompt: "三个营销实验都可能赚钱，但它们可能受同一批流量影响。帮我按 Kelly 思路分配预算，并考虑相关性 haircut。"
+    fixtures: []
+    rubric:
+      - "handles multiple opportunities against one resource pool"
+      - "applies dependence haircut when correlation is unknown or shared"
+      - "keeps total exposure cap and reserve logic visible"
+    trigger_expected: true
+
+  - id: positive_partial_loss_binary_sizing
+    prompt: "我有 20 万资金，一个交易机会胜率估 55%，赢时赚 18%，止损最多亏 6%。用 Kelly 算建议仓位，但不要直接上 full Kelly。"
+    fixtures: []
+    rubric:
+      - "recognizes capped downside as partial-loss binary sizing"
+      - "uses win multiple b and loss multiple a instead of assuming full-stake loss"
+      - "applies fractional Kelly, caps, and no-allocation checks before action"
+    trigger_expected: true
+
+
+  - id: positive_risk_metrics_calculation_primary
+    prompt: "我需要计算投资组合风险指标（VaR、CVaR、Sharpe、Sortino、回撤）时使用。英文触发词包括 portfolio risk、risk monitoring。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as risk-metrics-calculation territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_risk_metrics_calculation_realistic
+    prompt: "帮我处理这个场景：需要衡量收益波动、尾部风险、最大回撤和风险调整后收益。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_saas_metrics_primary
+    prompt: "我需要查 SaaS 财务指标公式、行业基准、单位经济学或订阅业务健康度指标时使用；英文触发词 MRR、ARR、CAC、LTV、NRR、churn、unit economics。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as saas-metrics territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_saas_metrics_realistic
+    prompt: "帮我处理这个场景：准备融资材料、董事会汇报或季度复盘，需要快速查 SaaS 指标定义和公式。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: negative_adjacent_creating_financial_models
+    prompt: "这个需求应该交给 creating-financial-models：构建 DCF 估值模型、敏感性分析、情景分析或盈亏平衡分析时使用。英文触发词包括 valuation modeling、scenario planning。"
+    fixtures: []
+    rubric:
+      - "adjacent creating-financial-models requests should not trigger financial-analyst"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

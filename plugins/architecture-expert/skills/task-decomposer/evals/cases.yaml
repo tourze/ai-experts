@@ -33,6 +33,25 @@ cases:
       - "binds implementation tasks to acceptance_refs with evidence"
     trigger_expected: true
 
+  - id: long_running_repo_task
+    prompt: "This migration will span multiple sessions. Set up persistent planning files so another agent can resume safely later."
+    fixtures: []
+    rubric:
+      - "uses repository files for context, plan, progress, and decisions"
+      - "records unknowns, decision boundaries, and current phase"
+      - "defines completion gates tied to verifiable evidence"
+    trigger_expected: true
+
+  - id: resume_after_context_loss
+    prompt: "We may lose context during this multi-day refactor. Create a durable planning structure and explain how to resume."
+    fixtures: []
+    rubric:
+      - "captures task intent and desired outcome in persistent context"
+      - "records progress entries and active tasks for recovery"
+      - "defines a reboot checklist for future sessions"
+    trigger_expected: true
+
+
   - id: negative_time_estimate
     prompt: "How long will this feature take to build? Give me a time estimate for adding search."
     fixtures: []

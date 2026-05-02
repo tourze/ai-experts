@@ -12,7 +12,7 @@ description: 当 Go 代码涉及接口设计、结构体组合、embedding、泛
 - Receiver 选择：pointer vs value、一致性、noCopy 模式。
 - 类型断言、type switch、compile-time interface check。
 
-涉及 nil interface trap 时配合 [go-safety](../go-safety/SKILL.md)；涉及接口/类型命名时配合 [go-naming](../go-naming/SKILL.md)。
+涉及 nil interface trap 时配合 [go-safety](../go-error-handling/SKILL.md)；涉及接口/类型命名时配合 [go-naming](../go-code-style/SKILL.md)。
 
 ## 核心约束
 

@@ -10,7 +10,7 @@ description: 当 Go 代码需要性能优化、benchmark、pprof、benchstat 或
 - 优化热路径延迟、吞吐、内存分配、GC 压力或连接池。
 - 写 Go benchmark、用 `benchstat` 比较实现、解释 pprof 输出。
 - 审查"性能优化"是否有基线、统计显著性和回归测试。
-- 并发瓶颈配合 [go-concurrency-patterns](../go-concurrency-patterns/SKILL.md)；资源安全配合 [go-safety](../go-safety/SKILL.md)。
+- 并发瓶颈配合 [go-concurrency-patterns](../go-concurrency-patterns/SKILL.md)；资源安全配合 [go-safety](../go-error-handling/SKILL.md)。
 - 持续监控 → go-observability；排查"为什么慢" → go-troubleshooting。
 
 ## 核心约束

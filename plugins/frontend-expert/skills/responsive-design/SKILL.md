@@ -95,7 +95,7 @@ return <DesktopLayout />;
 ## 参考资料
 
 - [core-web-vitals](../core-web-vitals/SKILL.md)
-- [web-design-guidelines](../web-design-guidelines/SKILL.md)
+- [web-design-guidelines](../modern-web-design/SKILL.md)
 - [references/container-queries.md](references/container-queries.md)
 - [references/fluid-layouts.md](references/fluid-layouts.md)
 - [references/breakpoint-strategies.md](references/breakpoint-strategies.md)

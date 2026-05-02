@@ -15,6 +15,73 @@ cases:
       - "keeps the response focused on the skill's domain boundary"
     trigger_expected: true
 
+  - id: positive_product_naming_primary
+    prompt: "我需要用结构化流程给产品、项目或模块命名"
+    fixtures: []
+    rubric:
+      - "recognizes the request as product-naming territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_product_naming_realistic
+    prompt: "帮我处理这个场景：重要产品/品牌命名，需要从定位、用户心智和竞品环境共同推导名字。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: positive_product_name_primary
+    prompt: "我需要快速产出 5 个产品命名候选并附上理由。"
+    fixtures: []
+    rubric:
+      - "recognizes quick product naming as product-naming territory"
+      - "returns candidates with rationale and risks"
+    trigger_expected: true
+
+  - id: positive_product_name_realistic
+    prompt: "帮我处理这个场景：需要快速拿到一组可讨论的名字，用于功能、产品或品牌初筛。"
+    fixtures: []
+    rubric:
+      - "matches quick naming ideation"
+      - "keeps candidates tied to audience, positioning, and constraints"
+    trigger_expected: true
+
+
+  - id: positive_idea_validator_primary
+    prompt: "我需要验证创业想法、评估问题价值、判断问题-方案匹配和市场可行性时使用；帮助决定这个想法值不值得继续投入。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as idea-validator territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_idea_validator_realistic
+    prompt: "帮我处理这个场景：创业点子初筛、需求洞察验证、方案价值判断、立项前风险筛查。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_pitch_deck_reviewer_primary
+    prompt: "我需要审查 VC 路演 Deck、重构融资叙事、检查单页逻辑或判断投资人信服度"
+    fixtures: []
+    rubric:
+      - "recognizes the request as pitch-deck-reviewer territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_pitch_deck_reviewer_realistic
+    prompt: "帮我处理这个场景：融资前审稿、路演彩排、单页重写、叙事主线梳理。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
   - id: negative_adjacent_3c_strategic_triangle
     prompt: "这个需求应该交给 3c-strategic-triangle：从顾客、公司、竞争者三角度做战略分析、找差异化定位或评估竞争可持续性时使用；英文触发词 3C analysis、Ohmae 3C、customer-company-competitor、strategic triangle。"
     fixtures: []

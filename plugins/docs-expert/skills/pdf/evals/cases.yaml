@@ -17,6 +17,23 @@ cases:
       - "handles multi-page documents and varied layouts"
     trigger_expected: true
 
+  - id: positive_pdf_extraction_primary
+    prompt: "我需要从 PDF 中抽取文本、表格、页级结构或元数据时使用；不负责表单填写或版式回写。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as pdf-extraction territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_pdf_extraction_realistic
+    prompt: "帮我处理这个场景：用户要从 PDF 中提取正文、表格、页码、元数据或局部区域内容。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
   - id: negative_create_document
     prompt: "Write a technical design document for our new authentication system"
     fixtures: []

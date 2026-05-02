@@ -1,14 +1,14 @@
 ---
 name: security-threat-model
-description: "当用户明确要求对代码仓库或目录做 AppSec 威胁建模时使用。"
+description: "当用户要求对代码仓库做 STRIDE 分析、攻击树构建、威胁缓解映射或安全需求提取的 AppSec 威胁建模时使用。"
 ---
 
 # 仓库级威胁建模
 
 ## 适用场景
 - 需要基于仓库证据输出针对性的威胁模型，而不是通用模板。
-- 需要与 [stride-analysis-patterns](../stride-analysis-patterns/SKILL.md) 联动做系统性枚举。
-- 产出威胁后，继续用 [threat-mitigation-mapping](../threat-mitigation-mapping/SKILL.md) 和 [security-requirement-extraction](../security-requirement-extraction/SKILL.md) 落地。
+- 需要与 [stride-analysis-patterns](references/stride-analysis-patterns.md) 联动做系统性枚举。
+- 产出威胁后，继续用 [threat-mitigation-mapping](references/threat-mitigation-mapping.md) 和 [security-requirement-extraction](references/security-requirement-extraction.md) 落地。
 
 ## 核心约束
 - 所有组件、边界和控制都必须有仓库证据或明确假设来源。

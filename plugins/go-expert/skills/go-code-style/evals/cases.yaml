@@ -17,6 +17,44 @@ cases:
       - "说明 context.Context 参数顺序"
     trigger_expected: true
 
+  - id: naming_constructor
+    prompt: "Go 里一个包有两种类型 Server 和 Proxy，构造器怎么命名？"
+    fixtures: []
+    rubric:
+      - "触发 go-naming"
+      - "建议单类型用 New，多类型用 NewServer / NewProxy"
+      - "提及避免与包名重复"
+    trigger_expected: true
+
+  - id: naming_acronym
+    prompt: "Go 结构体字段应该叫 Url 还是 URL？json tag 用什么大小写？"
+    fixtures: []
+    rubric:
+      - "触发 go-naming"
+      - "缩写全大写或全小写，不混用"
+      - "导出字段 URL，json tag 用 url"
+    trigger_expected: true
+
+
+  - id: new_project_layout
+    prompt: "新建一个 Go 微服务项目，不知道目录该怎么组织，有哪些建议？"
+    fixtures: []
+    rubric:
+      - "触发 go-project-layout"
+      - "提到 cmd/, internal/, pkg/ 等目录用途"
+      - "强调不要创建 utils/helpers 包"
+    trigger_expected: true
+
+  - id: workspace_setup
+    prompt: "Go monorepo 里多个模块怎么用 go.work 管理？go.mod 之间怎么引用？"
+    fixtures: []
+    rubric:
+      - "触发 go-project-layout"
+      - "提到 go.work 和 use 指令"
+      - "说明各模块独立版本发布"
+    trigger_expected: true
+
+
   - id: negative_go_race
     prompt: "Go 服务有 goroutine 泄漏，channel receive 一直阻塞"
     fixtures: []

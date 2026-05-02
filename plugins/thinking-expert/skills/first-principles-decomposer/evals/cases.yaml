@@ -17,6 +17,23 @@ cases:
       - "constructs a solution grounded in fundamental requirements, not convention"
     trigger_expected: true
 
+  - id: positive_inversion_strategist_primary
+    prompt: "我需要用逆向思维从”怎样才能确保失败”出发来识别风险和规避路径时使用。用户提到”反过来想””怎么一定会失败””要避免什么坑”"
+    fixtures: []
+    rubric:
+      - "recognizes the request as inversion-strategist territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_inversion_strategist_realistic
+    prompt: "帮我处理这个场景：用户说“反过来想”“怎么一定会失败”“我们要避免什么坑”。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
   - id: negative_step_by_step_guide
     prompt: "Give me a step-by-step guide to set up CI/CD with GitHub Actions"
     fixtures: []

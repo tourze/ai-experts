@@ -17,6 +17,44 @@ cases:
       - "identifies cache boundaries and invalidation risks"
     trigger_expected: true
 
+  - id: fail_closed_permission_pipeline
+    prompt: "Design an AI agent permission pipeline where uncertain operations default to ask or deny, not allow."
+    fixtures: []
+    rubric:
+      - "uses fail-closed semantics for uncertainty and classifier errors"
+      - "separates rule-based checks, contextual policy, and optional classifier stages"
+      - "defines auditable decision records for allowed, asked, and denied operations"
+    trigger_expected: true
+
+  - id: trust_spectrum_for_tools
+    prompt: "We need a trust spectrum for autonomous agent actions: read-only shell commands, file edits, network calls, and destructive database commands."
+    fixtures: []
+    rubric:
+      - "classifies operations by risk and trust level"
+      - "maps each class to allow, ask, or deny behavior"
+      - "handles bypass-immune actions and high-risk overrides"
+    trigger_expected: true
+
+
+  - id: design_tool_contract
+    prompt: "Design an agent tool interface for reading files that declares is_read_only, is_destructive, output limits, and schema validation."
+    fixtures: []
+    rubric:
+      - "puts safety and concurrency metadata on the tool specification"
+      - "defines input and output schemas with validation behavior"
+      - "sets result-size budgets and truncation or paging behavior"
+    trigger_expected: true
+
+  - id: deferred_tool_loading
+    prompt: "Our agent has 40 tools and context is bloated. Design a deferred-loading tool discovery strategy with core tools always visible."
+    fixtures: []
+    rubric:
+      - "separates core tools from discoverable tools"
+      - "defines lookup metadata for delayed loading"
+      - "addresses token cost, latency, and tool-selection accuracy"
+    trigger_expected: true
+
+
   - id: negative_agent_permissions
     prompt: "Design the permission model for an AI coding agent so destructive commands require approval and classifier failures deny access."
     fixtures: []

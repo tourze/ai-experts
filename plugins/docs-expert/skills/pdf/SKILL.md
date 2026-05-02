@@ -10,7 +10,7 @@ description: 当用户要读取、填写表单、批注、分析结构或转换 
 - 用户要处理 `.pdf` 文件本身，而不是只抽文本。
 - 需要判断 PDF 是否可填写、提取字段信息、按 JSON 回填、或通过注释方式写入内容。
 - 需要把 PDF 渲染成图片，或根据坐标/框选信息做人工校验。
-- 纯抽取场景优先看 [pdf-extraction](../pdf-extraction/SKILL.md)。
+- 纯抽取场景优先看 [pdf-extraction](references/pdf-extraction.md)。
 
 ## 核心约束
 
@@ -41,7 +41,7 @@ python3 scripts/fill_pdf_form_with_annotations.py scanned.pdf fields.json annota
 - 是否先提取字段信息，再让用户或上游流程生成字段值 JSON。
 - 对复选框、单选组、下拉框是否检查了合法取值，而不是直接塞文本。
 - 若走视觉型写入，是否结合标注图或页面截图做了位置核验。
-- 只需抽取文本/表格时，是否切换到 [pdf-extraction](../pdf-extraction/SKILL.md)。
+- 只需抽取文本/表格时，是否切换到 [pdf-extraction](references/pdf-extraction.md)。
 
 ## 反模式
 

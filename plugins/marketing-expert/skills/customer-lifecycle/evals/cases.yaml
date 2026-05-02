@@ -35,6 +35,111 @@ cases:
       - "identifies transition metrics"
     trigger_expected: true
 
+  - id: cancellation_save_flow
+    prompt: "Design a cancellation flow that reduces churn without annoying users."
+    fixtures: []
+    rubric:
+      - "diagnoses churn reasons and cancellation intent"
+      - "proposes ethical save offers or downgrade paths"
+      - "defines metrics such as save rate and post-save retention"
+    trigger_expected: true
+
+  - id: failed_payment_recovery
+    prompt: "Our SaaS churn is driven by failed payments. Build a dunning and recovery strategy."
+    fixtures: []
+    rubric:
+      - "addresses payment retry timing, messaging, and grace periods"
+      - "segments failed-payment users from voluntary churn"
+      - "defines recovery metrics and escalation logic"
+    trigger_expected: true
+
+
+  - id: referral_program_design
+    prompt: "Help me design a referral program for our SaaS product. We're a $49/month project management tool with about 1,000 customers. We want to encourage word-of-mouth growth."
+    fixtures: []
+    rubric:
+      - "Checks for product-marketing-context.md"
+      - "Distinguishes referral from affiliate"
+      - "Designs the referral loop (trigger, share, convert, reward)"
+      - "Recommends double-sided incentive structure"
+      - "Suggests specific incentives for the price point"
+      - "Includes launch checklist"
+      - "Recommends tool integrations"
+    trigger_expected: true
+  - id: referral_participation_optimization
+    prompt: "We have a referral program but only 5% of customers have ever referred someone. How do we increase participation?"
+    fixtures: []
+    rubric:
+      - "Applies program optimization guidance"
+      - "Diagnoses potential causes of low participation"
+      - "Checks awareness, timing, incentive, and friction"
+      - "Recommends optimization tactics"
+      - "Suggests timing referral asks at satisfaction moments"
+      - "Provides experiment ideas"
+    trigger_expected: true
+  - id: referral_vs_affiliate_decision
+    prompt: "should we do referral or affiliate? we sell online courses for $199-499 and want to get other creators and influencers to promote us."
+    fixtures: []
+    rubric:
+      - "Triggers on casual phrasing"
+      - "Clearly distinguishes referral from affiliate"
+      - "Recommends affiliate for this use case"
+      - "Provides commission structure guidance for courses"
+      - "Addresses cookie duration and payout terms"
+      - "Recommends appropriate affiliate platforms"
+    trigger_expected: true
+  - id: referral_incentive_redesign
+    prompt: "What incentive structure works best? We've been offering $10 off for referrers but it's not working. Our product is $29/month."
+    fixtures: []
+    rubric:
+      - "Evaluates current incentive structure"
+      - "Identifies as single-sided and recommends double-sided"
+      - "Discusses multiple incentive types"
+      - "Applies tiered incentive concept"
+      - "Provides specific alternatives to test"
+      - "Notes incentive may not be the only issue"
+    trigger_expected: true
+  - id: referral_program_metrics
+    prompt: "How do we measure the success of our referral program? What metrics should we track?"
+    fixtures: []
+    rubric:
+      - "Applies measuring success framework"
+      - "Defines participation rate, share rate, conversion rate"
+      - "Includes viral coefficient / k-factor"
+      - "Compares referral CAC to other channels"
+      - "Compares referred customer LTV to organic"
+      - "Recommends tracking approach"
+      - "Provides benchmark ranges"
+    trigger_expected: true
+  - id: referral_email_template_boundary
+    prompt: "Can you write the referral invitation emails? I need the email that goes out when someone shares their referral link."
+    fixtures: []
+    rubric:
+      - "Applies referral email section from the skill"
+      - "Provides referral invitation email guidance"
+      - "Notes broader nurture design is outside this skill's main scope"
+      - "Provides specific referral email copy or template"
+    trigger_expected: true
+
+  - id: trial_welcome_sequence
+    prompt: "Create a five-email welcome sequence for new SaaS trial users to drive activation."
+    fixtures: []
+    rubric:
+      - "maps emails to lifecycle and activation goals"
+      - "sets timing, purpose, subject, body angle, and CTA per email"
+      - "distinguishes lifecycle nurturing from cold outbound"
+    trigger_expected: true
+
+  - id: re_engagement_drip
+    prompt: "Design a re-engagement email flow for inactive users who stopped using the product after signup."
+    fixtures: []
+    rubric:
+      - "segments inactive users by behavior or lifecycle stage"
+      - "uses appropriate reactivation messages and timing"
+      - "includes measurement or experiment ideas"
+    trigger_expected: true
+
+
   - id: negative_market_segmentation
     prompt: "Define our target market and positioning statement."
     fixtures: []

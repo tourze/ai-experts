@@ -15,6 +15,57 @@ cases:
       - "keeps the response focused on the skill's domain boundary"
     trigger_expected: true
 
+  - id: positive_balanced_scorecard_primary
+    prompt: "我需要设计绩效评估体系、战略执行监控、KPI 体系搭建或从财务/客户/流程/学习四维度评价企业时使用；英文触发词 balanced scorecard、BSC、KPI framework、strategy map、four perspectives。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as balanced-scorecard territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_balanced_scorecard_realistic
+    prompt: "帮我处理这个场景：年度战略目标分解为可衡量的 KPI 体系。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_mckinsey_7s_primary
+    prompt: "我需要做企业内部诊断、组织变革评估、战略执行对齐检查或找出管理短板时使用；英文触发词 McKinsey 7S、7S framework、organizational alignment、strategy-structure fit。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as mckinsey-7s territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_mckinsey_7s_realistic
+    prompt: "帮我处理这个场景：战略变革前的内部能力评估、并购后组织整合诊断。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_blm_model_primary
+    prompt: "我需要做战略到执行的全链路诊断、分析业绩差距和机会差距的根因、或用华为/IBM 的战略规划方法论时使用；英文触发词 BLM、Business Leadership Model、strategy to execution、gap analysis、market insight to business design。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as blm-model territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_blm_model_realistic
+    prompt: "帮我处理这个场景：年度战略规划：从差距出发，倒推战略和执行问题。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
   - id: negative_adjacent_3c_strategic_triangle
     prompt: "这个需求应该交给 3c-strategic-triangle：从顾客、公司、竞争者三角度做战略分析、找差异化定位或评估竞争可持续性时使用；英文触发词 3C analysis、Ohmae 3C、customer-company-competitor、strategic triangle。"
     fixtures: []

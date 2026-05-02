@@ -1,6 +1,6 @@
 # docs-expert
 
-文档专家能力，覆盖 Word/PPT/Excel/PDF 读写转换、Markdown/Mermaid 写作、Mermaid 成品图渲染、结构化表达和 README 生成。
+文档与知识管理专家能力，覆盖 Word/PPT/Excel/PDF 读写转换、Markdown/Mermaid 写作、Mermaid 成品图渲染、结构化表达、README 生成，以及 Obsidian 笔记 Bases 与 CLI 工作流。
 
 ## 结构
 
@@ -30,6 +30,8 @@
 | `proposal-writer` | 商业提案撰写 |
 | `ppt-generate` | 当用户要从零生成演示文稿、从文档/主题生成 PPT、或要求 AI 端到端制作幻灯片时使用。 |
 | `tutorial-builder` | 来源支撑的完整教程、学习包、章节视觉与 DOCX/PDF/HTML 导出规划 |
+| `obsidian-bases` | Obsidian Bases `.base` 文件、视图、过滤、公式、摘要与嵌入模式 |
+| `obsidian-cli` | Obsidian CLI 笔记读写、Vault 操作、daily/tasks/properties/tags/backlinks 与开发命令 |
 
 ## Agents
 

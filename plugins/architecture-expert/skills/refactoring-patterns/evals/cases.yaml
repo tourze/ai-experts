@@ -17,6 +17,25 @@ cases:
       - "defines verification for behavior preservation"
     trigger_expected: true
 
+  - id: module_boundary_review
+    prompt: "Analyze the module seams in this codebase. I suspect dependency direction is wrong and abstractions are leaking."
+    fixtures: []
+    rubric:
+      - "uses dependency evidence instead of judging by directory names"
+      - "identifies interface boundaries, dependency direction, and leakage points"
+      - "recommends boundary fixes matched to the actual coupling problem"
+    trigger_expected: true
+
+  - id: service_interface_leak
+    prompt: "Review the interface between billing and orders. Billing details seem to leak into order workflow code."
+    fixtures: []
+    rubric:
+      - "maps responsibilities on both sides of the boundary"
+      - "detects data, behavior, or temporal coupling across the interface"
+      - "proposes a narrower contract or ownership correction"
+    trigger_expected: true
+
+
   - id: negative_general_code_cleanup
     prompt: "Simplify this function and make it more readable."
     fixtures: []

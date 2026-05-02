@@ -17,6 +17,25 @@ cases:
       - "covers errgroup for structured goroutine lifecycle management"
     trigger_expected: true
 
+  - id: context_propagation
+    prompt: "Go HTTP handler 调 service 再查数据库，请帮我设计 context 超时和取消传播"
+    fixtures: []
+    rubric:
+      - "触发 go-context-lifecycle"
+      - "context.Context 作为第一个参数传递"
+      - "数据库调用使用 QueryContext 或同类 API"
+    trigger_expected: true
+
+  - id: context_goroutine_cancel
+    prompt: "请求取消后 goroutine 还在往 channel 写，Go 代码应该怎么改？"
+    fixtures: []
+    rubric:
+      - "触发 go-context-lifecycle"
+      - "阻塞 send/receive 监听 ctx.Done"
+      - "说明取消链和 goroutine 生命周期"
+    trigger_expected: true
+
+
   - id: negative_go_http_handler
     prompt: "Write an HTTP handler in Go that returns JSON with proper status codes"
     fixtures: []

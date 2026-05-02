@@ -1,6 +1,6 @@
 ---
 name: create-prd
-description: 当用户需要撰写或重构 PRD、功能规格说明或需求文档时使用。
+description: 当用户需要撰写或重构 PRD、功能规格说明或需求文档、做 Epic 分解、按 INVEST 编写用户故事或 MVP 范围取舍时使用。
 ---
 
 # 编写 PRD
@@ -9,6 +9,7 @@ description: 当用户需要撰写或重构 PRD、功能规格说明或需求文
 - 新功能立项、需求收敛、跨团队对齐、进入开发前的规格固化。
 - 需要把 discovery 结论转成可执行需求时，可配合 [version-planner](../version-planner/SKILL.md) 和 [agile-product-owner](../agile-product-owner/SKILL.md)。
 - 如果还在验证阶段，先用 [prfaq](../prfaq/SKILL.md) 定"为什么做"，再用 PRD 定"怎么做"。
+- PRD 拆解执行：Epic 分解策略见 [references/epic-decomposition.md](references/epic-decomposition.md)，用户故事编写见 [references/user-story-patterns.md](references/user-story-patterns.md)，MVP 范围取舍见 [references/scoping-cutting.md](references/scoping-cutting.md)。
 
 ## 核心约束
 - 先写问题、目标和用户，再写方案；没有成功指标的 PRD 不完整。

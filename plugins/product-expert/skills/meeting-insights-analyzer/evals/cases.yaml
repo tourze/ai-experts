@@ -1,0 +1,71 @@
+cases:
+  - id: positive_meeting_insights_analyzer_primary
+    prompt: "我需要基于会议转写做沟通行为复盘、发言占比、打断频率、引导风格或跨会议趋势分析。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as meeting-insights-analyzer territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_meeting_insights_analyzer_realistic
+    prompt: "帮我处理这个场景：用户希望复盘自己或团队在会议中的沟通方式，例如冲突回避、打断频率、引导风格、倾听质量或行动项清晰度。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: positive_meeting_minutes_primary
+    prompt: "我需要把内部会议整理成正式结构化纪要、固定章节、出席情况、决策和行动项。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as meeting-minutes territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_meeting_minutes_realistic
+    prompt: "帮我处理这个场景：内部周会、站会、设计评审、排障复盘、计划会等 60 分钟以内会议，需要一份正式、可流转的纪要。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_meeting_notes_and_actions_primary
+    prompt: "我需要把会议转写、电话记录或零散笔记整理成轻量摘要、决策、风险和行动项。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as meeting-notes-and-actions territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_meeting_notes_and_actions_realistic
+    prompt: "帮我处理这个场景：用户贴来 Zoom、Meet、Teams、飞书会议或电话沟通的转写文本，希望快速提炼重点。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: negative_adjacent_meeting_minutes
+    prompt: "请把内部周会整理成正式会议纪要，包含元信息、出席情况、议程、决策、行动项和风险。"
+    fixtures: []
+    rubric:
+      - "adjacent meeting-minutes requests should not trigger meeting-insights-analyzer"
+    trigger_expected: false
+
+  - id: negative_adjacent_meeting_notes_and_actions
+    prompt: "请把这段会议转写快速整理成摘要、决策、开放问题和行动项，不需要分析发言习惯。"
+    fixtures: []
+    rubric:
+      - "lightweight meeting notes requests should not trigger meeting-insights-analyzer"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

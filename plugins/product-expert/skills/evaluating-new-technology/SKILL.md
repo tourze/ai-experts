@@ -1,6 +1,6 @@
 ---
 name: evaluating-new-technology
-description: 当用户要评估新技术、做 build vs buy、筛选 AI/软件供应商或判断技术成熟度时使用；帮助平衡收益、成本、风险和组织适配性。
+description: 当用户要评估新技术、做 build vs buy、筛选 AI/软件供应商、判断技术成熟度，或评估产品 AI 功能就绪度时使用。
 ---
 
 # 评估新技术

@@ -2,7 +2,7 @@
 
 一个同时兼容 **Claude Code** 和 **OpenAI Codex CLI** 的本地插件仓库，按领域提供 `*-expert` 插件集合，包含 55 个领域专家插件，每个插件提供 skills、hooks、agents 和/或 MCP 声明。安装脚本将 `plugins/<plugin>/skills/<skill>` 直接软链到 `~/.claude/skills/` 与 `~/.codex/skills/`，把 agents 链到 `~/.claude/agents/`，把插件 MCP 同步到两端用户级配置，并把统一 hook dispatcher 注入两端的 settings/hooks 配置（不再依赖 marketplace plugin 安装）。每个插件包含自己的 README、skills 与最小回归测试，并可按需提供 `hooks/`、`agents/` 与 `.mcp.json`。
 
-当前规模：55 个插件、502 个 skill、76 个 agent、120 个 hook 模块。
+当前规模：37 个插件、399 个 skill、63 个 agent 文件、103 个 hook 模块。
 
 > 本文件同时承担三种角色 —— 仓库入口 README、Claude Code 项目指令 `CLAUDE.md`、Codex CLI 项目指令 `AGENTS.md`。仓库根的 `CLAUDE.md` 与 `AGENTS.md` 都是指向本文件的 symlink，维护一份即可，不再有"AGENTS.md 由 CLAUDE.md 手动同步"的双轨。
 
@@ -31,12 +31,12 @@
    - 跨语言的工作流守卫（git 纪律、测试策略、文档处理）
    - 与基座层和语言层正交，按需安装
 
-3. **语言层** — python-expert, javascript-expert, typescript-expert, java-expert, go-expert, rust-expert, ruby-expert, php-expert, cpp-expert, perl-expert，以及以语言为入口的客户端 surface（android-expert / ios-expert）
+3. **语言层** — python-expert, javascript-expert, typescript-expert, java-expert, go-expert, rust-expert, ruby-expert, php-expert, perl-expert，以及以语言为入口的客户端 surface（android-expert / ios-expert）
    - 在基座层之上叠加语言特有的 syntax check、lint 与必要的特化守卫
    - 仅根 `hooks/dispatch.mjs` 一个 dispatcher，本层 hooks 通过 `hooks/<event>/<sub>/*.mjs` 被根 dispatcher 自动发现，无需自带 dispatch
    - 通用 `file-budget` 与跨语言 `debug-statement` 统一复用 `coding-expert`，仅 `debug-statement-guard.mjs` 因语言语义差异保留各自特化版
 
-4. **框架/领域层** — react-expert, nextjs-expert, laravel-expert, nestjs-expert, vue-expert, devops-expert, frontend-expert, security-expert, product-expert, marketing-expert 等
+4. **框架/领域层** — react-expert, devops-expert, frontend-expert, security-expert, product-expert, marketing-expert 等
    - 主要提供 skills，少数有领域特有的 hooks
    - 框架/领域插件按需通过 README "已声明的插件依赖" 段声明依赖对应的语言插件或 `coding-expert`
    - 非代码领域插件（product/marketing/legal/finance 等）只提供 skills，不需要文件守卫
@@ -44,31 +44,21 @@
 ## 已声明的插件依赖
 
 - android-expert → java-expert
-- cpp-expert → coding-expert
 - devops-expert → coding-expert, linux-expert
 - frontend-expert → javascript-expert, react-expert
 - go-expert → coding-expert
 - ios-expert → coding-expert
 - java-expert → coding-expert
 - javascript-expert → coding-expert
-- laravel-expert → php-expert
 - linux-expert → coding-expert
-- mysql-expert → database-expert
-- nestjs-expert → typescript-expert
-- nextjs-expert → typescript-expert, react-expert
 - perl-expert → coding-expert
-- pgsql-expert → database-expert
 - php-expert → coding-expert
 - python-expert → coding-expert
 - react-native-expert → react-expert
-- redis-expert → database-expert
 - ruby-expert → coding-expert
 - rust-expert → coding-expert
-- symfony-expert → php-expert
 - tauri-expert → rust-expert, typescript-expert
 - typescript-expert → coding-expert
-- vue-expert → javascript-expert
-- webman-expert → php-expert
 
 ## Agent 设计原则
 
@@ -280,23 +270,23 @@ node --test tests/install-script.test.mjs tests/cleanup-legacy.test.mjs
 
 ### 工程工作流
 
-[architecture-expert](plugins/architecture-expert/README.md), [coding-expert](plugins/coding-expert/README.md), [debug-expert](plugins/debug-expert/README.md), [docs-expert](plugins/docs-expert/README.md), [git-expert](plugins/git-expert/README.md), [research-expert](plugins/research-expert/README.md), [skill-expert](plugins/skill-expert/README.md), [speckit-expert](plugins/speckit-expert/README.md), [svn-expert](plugins/svn-expert/README.md), [testing-expert](plugins/testing-expert/README.md), [thinking-expert](plugins/thinking-expert/README.md)
+[architecture-expert](plugins/architecture-expert/README.md), [coding-expert](plugins/coding-expert/README.md), [debug-expert](plugins/debug-expert/README.md), [docs-expert](plugins/docs-expert/README.md), [git-expert](plugins/git-expert/README.md), [research-expert](plugins/research-expert/README.md), [skill-expert](plugins/skill-expert/README.md), [speckit-expert](plugins/speckit-expert/README.md), [testing-expert](plugins/testing-expert/README.md), [thinking-expert](plugins/thinking-expert/README.md)
 
 ### 前端、客户端与体验
 
-[android-expert](plugins/android-expert/README.md), [creative-expert](plugins/creative-expert/README.md), [frontend-expert](plugins/frontend-expert/README.md), [godot-expert](plugins/godot-expert/README.md), [ios-expert](plugins/ios-expert/README.md), [miniprogram-expert](plugins/miniprogram-expert/README.md), [nextjs-expert](plugins/nextjs-expert/README.md), [react-expert](plugins/react-expert/README.md), [react-native-expert](plugins/react-native-expert/README.md), [tauri-expert](plugins/tauri-expert/README.md), [ux-expert](plugins/ux-expert/README.md), [vue-expert](plugins/vue-expert/README.md), [youtube-expert](plugins/youtube-expert/README.md)
+[android-expert](plugins/android-expert/README.md), [creative-expert](plugins/creative-expert/README.md), [frontend-expert](plugins/frontend-expert/README.md), [ios-expert](plugins/ios-expert/README.md), [react-expert](plugins/react-expert/README.md), [react-native-expert](plugins/react-native-expert/README.md), [tauri-expert](plugins/tauri-expert/README.md)
 
 ### 语言与后端框架
 
-[cpp-expert](plugins/cpp-expert/README.md), [go-expert](plugins/go-expert/README.md), [java-expert](plugins/java-expert/README.md), [javascript-expert](plugins/javascript-expert/README.md), [laravel-expert](plugins/laravel-expert/README.md), [nestjs-expert](plugins/nestjs-expert/README.md), [perl-expert](plugins/perl-expert/README.md), [php-expert](plugins/php-expert/README.md), [python-expert](plugins/python-expert/README.md), [ruby-expert](plugins/ruby-expert/README.md), [rust-expert](plugins/rust-expert/README.md), [symfony-expert](plugins/symfony-expert/README.md), [typescript-expert](plugins/typescript-expert/README.md), [webman-expert](plugins/webman-expert/README.md)
+[go-expert](plugins/go-expert/README.md), [java-expert](plugins/java-expert/README.md), [javascript-expert](plugins/javascript-expert/README.md), [perl-expert](plugins/perl-expert/README.md), [php-expert](plugins/php-expert/README.md), [python-expert](plugins/python-expert/README.md), [ruby-expert](plugins/ruby-expert/README.md), [rust-expert](plugins/rust-expert/README.md), [typescript-expert](plugins/typescript-expert/README.md)
 
 ### 基础设施、数据与安全
 
-[data-ai-expert](plugins/data-ai-expert/README.md), [database-expert](plugins/database-expert/README.md), [devops-expert](plugins/devops-expert/README.md), [linux-expert](plugins/linux-expert/README.md), [microsoft-expert](plugins/microsoft-expert/README.md), [mysql-expert](plugins/mysql-expert/README.md), [pgsql-expert](plugins/pgsql-expert/README.md), [redis-expert](plugins/redis-expert/README.md), [security-expert](plugins/security-expert/README.md), [windows-expert](plugins/windows-expert/README.md)
+[data-ai-expert](plugins/data-ai-expert/README.md), [devops-expert](plugins/devops-expert/README.md), [linux-expert](plugins/linux-expert/README.md), [mysql-expert](plugins/mysql-expert/README.md), [pgsql-expert](plugins/pgsql-expert/README.md), [redis-expert](plugins/redis-expert/README.md), [security-expert](plugins/security-expert/README.md), [windows-expert](plugins/windows-expert/README.md)
 
 ### 产品、业务与内容
 
-[finance-expert](plugins/finance-expert/README.md), [legal-expert](plugins/legal-expert/README.md), [marketing-expert](plugins/marketing-expert/README.md), [meeting-expert](plugins/meeting-expert/README.md), [obsidian-expert](plugins/obsidian-expert/README.md), [product-expert](plugins/product-expert/README.md), [social-media-expert](plugins/social-media-expert/README.md)
+[marketing-expert](plugins/marketing-expert/README.md), [product-expert](plugins/product-expert/README.md), [social-media-expert](plugins/social-media-expert/README.md)
 
 ## 推荐使用方式
 

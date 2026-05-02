@@ -15,6 +15,57 @@ cases:
       - "keeps the response focused on the skill's domain boundary"
     trigger_expected: true
 
+  - id: positive_symbol_recovery_primary
+    prompt: "我需要为 stripped 二进制中的函数恢复符号名、识别已知库函数或算法实现"
+    fixtures: []
+    rubric:
+      - "recognizes the request as symbol-recovery territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_symbol_recovery_realistic
+    prompt: "帮我处理这个场景：二进制被 strip，所有函数名是 subXXXXX，需要恢复语义命名。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_struct_recovery_primary
+    prompt: "我需要从反编译代码中恢复数据结构定义、推断字段类型和布局"
+    fixtures: []
+    rubric:
+      - "recognizes the request as struct-recovery territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_struct_recovery_realistic
+    prompt: "帮我处理这个场景：需要从 IDA/Ghidra 反编译输出中推断 stripped 结构体的字段布局。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_anti_reversing_techniques_primary
+    prompt: "我需要需要分析、识别或绕过反调试、反虚拟机、混淆与保护壳"
+    fixtures: []
+    rubric:
+      - "recognizes the request as anti-reversing-techniques territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_anti_reversing_techniques_realistic
+    prompt: "帮我处理这个场景：需要识别样本中的反调试、反虚拟机、完整性校验或控制流混淆。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
   - id: negative_adjacent_active_directory_attacks
     prompt: "这个需求应该交给 active-directory-attacks：明确要求在已授权环境中进行 Active Directory 安全测试，或提到 Kerberoasting、DCSync、BloodHound、NTLM Relay、Golden Ticket 等主题"
     fixtures: []

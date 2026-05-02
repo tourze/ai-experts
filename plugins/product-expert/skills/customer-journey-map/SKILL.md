@@ -1,13 +1,13 @@
 ---
 name: customer-journey-map
-description: 当用户需要绘制用户旅程地图、触点链路、情绪曲线、体验断点、服务蓝图或端到端流程机会点时使用。
+description: 当用户需要绘制用户旅程地图、触点链路、情绪曲线，做 Mom Test 客户访谈验证需求，或设计 NPS/PMF 调研问卷时使用。
 ---
 
 # 用户旅程地图
 
 ## 适用场景
 - 需要分析从认知到留存的完整体验链路，定位关键阻塞点。
-- 需要把访谈、问卷或支持工单转为旅程结构时，可配合 [mom-test](../mom-test/SKILL.md) 与 [designing-surveys](../designing-surveys/SKILL.md)。
+- 需要把访谈、问卷或支持工单转为旅程结构时，可配合 [Mom Test 访谈](references/mom-test.md) 与 [问卷设计](references/designing-surveys.md)。
 
 ## 核心约束
 - 旅程必须绑定具体 persona 与目标任务，不能写成“所有用户的通用流程”。

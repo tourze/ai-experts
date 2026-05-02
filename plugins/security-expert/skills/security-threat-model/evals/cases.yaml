@@ -17,6 +17,74 @@ cases:
       - "covers data flow threats across service boundaries"
     trigger_expected: true
 
+  - id: positive_attack_tree_construction_primary
+    prompt: "我需要把攻击目标、前置条件和路径分层可视化，输出可讨论的攻击树"
+    fixtures: []
+    rubric:
+      - "recognizes the request as attack-tree-construction territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_attack_tree_construction_realistic
+    prompt: "帮我处理这个场景：需要把“攻击者如何达成目标”拆成 AND/OR 路径。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_stride_analysis_patterns_primary
+    prompt: "我需要用 STRIDE 框架系统性识别欺骗、篡改、抵赖、信息泄露、拒绝服务和提权风险"
+    fixtures: []
+    rubric:
+      - "recognizes the request as stride-analysis-patterns territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_stride_analysis_patterns_realistic
+    prompt: "帮我处理这个场景：需要对系统、模块或数据流做结构化威胁枚举。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_threat_mitigation_mapping_primary
+    prompt: "我需要当已识别威胁需要映射到具体安全控制与优先级"
+    fixtures: []
+    rubric:
+      - "recognizes the request as threat-mitigation-mapping territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_threat_mitigation_mapping_realistic
+    prompt: "帮我处理这个场景：已经有威胁列表，需要把风险转成具体控制和实施顺序。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
+  - id: positive_security_requirement_extraction_primary
+    prompt: "我需要当威胁模型、攻击路径或合规要求已明确，需要落地为安全需求"
+    fixtures: []
+    rubric:
+      - "recognizes the request as security-requirement-extraction territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_security_requirement_extraction_realistic
+    prompt: "帮我处理这个场景：已经有威胁、控制缺口或合规约束，需要整理为需求、验收标准和测试点。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+
   - id: negative_code_review
     prompt: "Review this Python function for code quality and best practices"
     fixtures: []

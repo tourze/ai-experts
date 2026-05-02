@@ -17,6 +17,25 @@ cases:
       - "使用 errors.Is 或 errors.As"
     trigger_expected: true
 
+  - id: nil_map_panic
+    prompt: "这段 Go 代码偶尔 panic: assignment to entry in nil map，帮我修根因"
+    fixtures: []
+    rubric:
+      - "触发 go-safety"
+      - "指出 map 写入前必须初始化"
+      - "给出回归验证方式"
+    trigger_expected: true
+
+  - id: defer_in_loop
+    prompt: "Go 代码在循环里打开很多文件并 defer Close，线上出现 too many open files"
+    fixtures: []
+    rubric:
+      - "触发 go-safety"
+      - "指出循环 defer 会推迟资源释放"
+      - "建议用 helper 或显式 close 收束资源生命周期"
+    trigger_expected: true
+
+
   - id: negative_parallel_tests
     prompt: "Go table-driven tests 里什么时候应该加 t.Parallel？"
     fixtures: []

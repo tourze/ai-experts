@@ -124,7 +124,7 @@ npx impeccable detect --json --fast . # 大项目快速模式
 ## 参考资料
 
 - [core-web-vitals](../core-web-vitals/SKILL.md)
-- [web-design-guidelines](../web-design-guidelines/SKILL.md)
+- [web-design-guidelines](../modern-web-design/SKILL.md)
 - [frontend-design-review](../frontend-design-review/SKILL.md)
 - [frontend-design-review/references/absolute-bans.md](../frontend-design-review/references/absolute-bans.md) — AI 指纹 CSS 模式禁令
 - [scripts/analyze.mjs](scripts/analyze.mjs)

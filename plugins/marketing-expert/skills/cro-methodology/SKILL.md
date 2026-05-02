@@ -1,6 +1,6 @@
 ---
 name: cro-methodology
-description: "在需要审计网站或落地页转化问题、梳理实验假设和设计 A/B 测试时使用；若任务已明确是弹窗优化或页面实现，分别配合 `popup-cro` 与 `redesign-my-landingpage`。"
+description: 在需要审计网站或落地页转化问题、梳理实验假设和设计 A/B 测试，或优化弹窗、注册流程、新手引导、AIDA 漏斗转化时使用。
 ---
 
 # 转化优化方法（cro-methodology）
@@ -14,7 +14,7 @@ description: "在需要审计网站或落地页转化问题、梳理实验假设
 - 先定义页面目标和关键路径，再审计视觉、文案和证据层。
 - 每个实验必须写清假设、影响机制、成功指标和失败回滚条件。
 - 优化建议应以证据链为主，参考 [RESEARCH](references/RESEARCH.md)、[PERSUASION](references/PERSUASION.md)、[OBJECTIONS](references/OBJECTIONS.md)。
-- 若实验对象是弹窗，转到 [popup-cro](../popup-cro/SKILL.md)；若需要产出实现代码，转到 [redesign-my-landingpage](../redesign-my-landingpage/SKILL.md)。
+- 若实验对象是弹窗，转到 [popup-cro](references/popup-cro.md)；若需要产出实现代码，转到 [redesign-my-landingpage](../redesign-my-landingpage/SKILL.md)。
 
 ## 代码模式
 - 推荐输出模板：
