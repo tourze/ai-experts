@@ -1,96 +1,96 @@
-# Advanced Council Configurations
+# 高级议会配置
 
-Reference guide for specialized Council configurations beyond the defaults.
+超出默认配置的专项议会参考指南。
 
-## Domain-Specific Councils
+## 领域专项议会
 
-### Startup Decisions
-**Members:** Strategist, Pragmatist, Contrarian, Futurist, Empiricist
-**Why this mix:** Startups need vision (Futurist) grounded in reality (Pragmatist), challenged by skepticism (Contrarian), backed by data (Empiricist), with competitive awareness (Strategist).
-**Key tension to watch:** Futurist vs. Pragmatist — ambition vs. execution capacity.
+### 创业决策
+**成员：** 战略家、务实派、唱反调者、未来派、实证派
+**为什么这样搭配：** 创业需要愿景（未来派）扎根现实（务实派），经受质疑（唱反调者），数据支撑（实证派），具备竞争意识（战略家）。
+**需要关注的核心张力：** 未来派 vs 务实派 — 野心 vs 执行能力。
 
-### Technical Architecture
-**Members:** Architect, Minimalist, Empiricist, Outsider, Pragmatist
-**Why this mix:** Architecture needs structure (Architect) that's not over-engineered (Minimalist), validated by evidence (Empiricist), challenged by fresh eyes (Outsider), and actually buildable (Pragmatist).
-**Key tension to watch:** Architect vs. Minimalist — elegance vs. simplicity.
+### 技术架构
+**成员：** 架构师、极简派、实证派、局外人、务实派
+**为什么这样搭配：** 架构需要结构（架构师）但不至于过度设计（极简派），经过证据验证（实证派），接受新视角挑战（局外人），且实际可落地（务实派）。
+**需要关注的核心张力：** 架构师 vs 极简派 — 优雅 vs 简洁。
 
-### Hiring / People Decisions
-**Members:** Empath, Strategist, Pragmatist, Ethicist, Historian
-**Why this mix:** People decisions need emotional intelligence (Empath), strategic fit (Strategist), practical constraints (Pragmatist), fairness (Ethicist), and pattern recognition (Historian).
-**Key tension to watch:** Empath vs. Strategist — caring for the person vs. optimizing for the team.
+### 招聘/人事决策
+**成员：** 共情者、战略家、务实派、伦理派、历史派
+**为什么这样搭配：** 人事决策需要情商（共情者）、战略匹配（战略家）、现实约束（务实派）、公平性（伦理派）和模式识别（历史派）。
+**需要关注的核心张力：** 共情者 vs 战略家 — 关心个人 vs 优化团队。
 
-### Creative Direction
-**Members:** Creator, Outsider, Historian, Empiricist, Minimalist
-**Why this mix:** Creativity needs divergent thinking (Creator), fresh perspective (Outsider), awareness of what's been done (Historian), audience validation (Empiricist), and restraint (Minimalist).
-**Key tension to watch:** Creator vs. Historian — novelty vs. proven patterns.
+### 创意方向
+**成员：** 创造者、局外人、历史派、实证派、极简派
+**为什么这样搭配：** 创意需要发散思维（创造者）、新鲜视角（局外人）、对既有做法的了解（历史派）、受众验证（实证派）和克制（极简派）。
+**需要关注的核心张力：** 创造者 vs 历史派 — 新颖 vs 已被验证的模式。
 
-### Crisis Management
-**Members:** Pragmatist, Strategist, Empath, Contrarian, Architect
-**Why this mix:** Crisis needs immediate action (Pragmatist), long-term thinking (Strategist), human awareness (Empath), challenge to groupthink (Contrarian), and systemic fix (Architect).
-**Key tension to watch:** Pragmatist vs. Architect — quick fix vs. root cause.
+### 危机管理
+**成员：** 务实派、战略家、共情者、唱反调者、架构师
+**为什么这样搭配：** 危机需要立即行动（务实派）、长期思考（战略家）、人文关怀（共情者）、挑战集体盲思（唱反调者）和系统性修复（架构师）。
+**需要关注的核心张力：** 务实派 vs 架构师 — 快速止血 vs 根因修复。
 
-### Ethical Dilemmas
-**Members:** Ethicist, Contrarian, Empath, Historian, Futurist, Empiricist
-**Why this mix (6 members):** Ethical questions deserve more voices. Values framework (Ethicist), challenge to moral certainty (Contrarian), human impact (Empath), precedent (Historian), long-term consequences (Futurist), and evidence (Empiricist).
-**Key tension to watch:** Ethicist vs. Pragmatist (if added) — doing right vs. doing what's possible.
+### 伦理困境
+**成员：** 伦理派、唱反调者、共情者、历史派、未来派、实证派
+**为什么这样搭配（6 位成员）：** 伦理问题值得更多声音。价值框架（伦理派）、对道德确定性的挑战（唱反调者）、人的影响（共情者）、先例（历史派）、长期后果（未来派）和证据（实证派）。
+**需要关注的核心张力：** 伦理派 vs 务实派（如果加入）— 做对的事 vs 做可行的事。
 
-### Investment / Financial Decisions
-**Members:** Empiricist, Strategist, Contrarian, Futurist, Pragmatist
-**Why this mix:** Money decisions need data (Empiricist), game theory (Strategist), skepticism of hype (Contrarian), trend awareness (Futurist), and execution reality (Pragmatist).
-**Key tension to watch:** Futurist vs. Empiricist — future potential vs. present evidence.
+### 投资/财务决策
+**成员：** 实证派、战略家、唱反调者、未来派、务实派
+**为什么这样搭配：** 资金决策需要数据（实证派）、博弈思维（战略家）、对炒作的怀疑（唱反调者）、趋势判断（未来派）和执行现实（务实派）。
+**需要关注的核心张力：** 未来派 vs 实证派 — 未来潜力 vs 当前证据。
 
-## Custom Archetype Creation
+## 自定义角色创建
 
-Users can define custom archetypes for domain-specific councils. When a user defines a custom member, capture:
+用户可以为领域专项议会定义自定义角色。定义自定义成员时，捕获以下信息：
 
-1. **Name:** What this archetype is called
-2. **Lens:** The primary frame through which they see everything
-3. **Signature question:** The one question they always ask
-4. **Blind spot:** What they consistently miss
-5. **Disagrees with:** Which other archetype they most often clash with
+1. **名称：** 该角色的称谓
+2. **视角：** 他们看待一切的主要框架
+3. **标志性提问：** 他们总会问的那个问题
+4. **盲区：** 他们一贯遗漏的东西
+5. **最常冲突的角色：** 他们最常与哪个其他角色发生冲突
 
-**Example custom archetype:**
+**自定义角色示例：**
 ```
-Name: The Regulator
-Lens: Compliance and risk management
-Signature question: "What could go wrong legally?"
-Blind spot: Can kill innovation with caution
-Disagrees with: Creator, Futurist
+名称：监管者
+视角：合规与风险管理
+标志性提问："法律上可能出什么问题？"
+盲区：可能因过度谨慎扼杀创新
+最常冲突的角色：创造者、未来派
 ```
 
-## Scoring the Deliberation
+## 审议质量评分
 
-After synthesis, the Council can optionally score the deliberation quality:
+综合之后，议会可以选择对审议质量进行评分：
 
-| Metric | Scale | What It Measures |
-|--------|-------|-----------------|
-| Diversity Score | 1-5 | How different were the perspectives? (1 = everyone agreed, 5 = genuine disagreement) |
-| Tension Quality | 1-5 | How productive was the central disagreement? (1 = trivial, 5 = illuminating) |
-| Blind Spot Discovery | 1-5 | Did the synthesis reveal something no individual member saw? |
-| Actionability | 1-5 | How concrete and useful is the recommended path? |
-| Overall CQS | 1-5 | Council Quality Score — weighted average |
+| 指标 | 量程 | 衡量什么 |
+|------|------|---------|
+| 多样性分 | 1-5 | 视角差异有多大？（1 = 所有人都同意，5 = 真正的分歧） |
+| 张力质量 | 1-5 | 核心分歧的产出价值有多高？（1 = 琐碎，5 = 富有启发性） |
+| 盲区发现 | 1-5 | 综合是否揭示了任何一个成员都未曾看到的盲区？ |
+| 可行动性 | 1-5 | 建议路径有多具体和有用？ |
+| 整体 CQS | 1-5 | 议会质量分 — 加权平均 |
 
-**CQS Formula:** (Diversity × 0.25) + (Tension × 0.30) + (Blind Spot × 0.25) + (Actionability × 0.20)
+**CQS 公式：**（多样性 × 0.25）+（张力 × 0.30）+（盲区 × 0.25）+（可行动性 × 0.20）
 
-A good deliberation scores 3.5+ overall. Below 3.0, consider re-running with different members or a reframed question.
+好的审议得分在 3.5 以上。低于 3.0，考虑换一批成员或重新框定问题后重来一次。
 
-## Multi-Round Deliberation
+## 多轮审议
 
-For complex questions, enable "Rounds Mode":
+对复杂问题，启用"轮次模式"：
 
-**Round 1:** Initial positions (standard deliberation)
-**Round 2:** Each member responds to the member they most disagree with
-**Round 3:** Revised positions after hearing counterarguments
-**Final Synthesis:** Incorporates all rounds
+**第 1 轮：** 初始立场（标准审议）
+**第 2 轮：** 每位成员回应自己最不认同的那位成员
+**第 3 轮：** 听取反方意见后的修正立场
+**最终综合：** 融合所有轮次
 
-Multi-round deliberation produces deeper insight but takes longer. Use for high-stakes decisions where the extra depth is worth it.
+多轮审议产出更深洞察，但耗时更长。用于高风险决策，值得投入额外深度。
 
-## Silent Council Mode
+## 静默议会模式
 
-Sometimes the user doesn't need the full deliberation output — they just need the synthesis. In "Silent Council" mode:
+有时用户不需要完整审议输出 — 只需要综合结论。在"静默议会"模式下：
 
-1. Run the full deliberation internally
-2. Only output the Synthesis section
-3. Offer to "show the full deliberation" if the user wants the reasoning
+1. 内部运行完整审议
+2. 只输出综合部分
+3. 如果用户想看推理过程，提示"可展示完整审议记录"
 
-This is faster and less overwhelming for quick decisions.
+这更快，对快速决策不会造成信息过载。

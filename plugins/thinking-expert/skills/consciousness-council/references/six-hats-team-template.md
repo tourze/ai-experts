@@ -1,336 +1,233 @@
-# Team Six Hats Session
-Date: YYYY-MM-DD
-Facilitator: [Name]
-Participants: [List names]
-Topic: [Testing challenge or decision]
-Duration: 90 minutes
+# 团队六帽会议
+
+日期：YYYY-MM-DD
+引导者：[姓名]
+参与人：[列出]
+议题：[测试挑战或决策]
+时长：90 分钟
 
 ---
 
-## Pre-Session Checklist (10 minutes before)
-- [ ] Define focus clearly and share with team
-- [ ] Gather relevant data (White Hat prep)
-- [ ] Set up timer (5-15 min per hat)
-- [ ] Brief new participants on Six Hats rules
-- [ ] Prepare whiteboard/Miro board
-- [ ] Assign note-taker
+## 会前检查清单（提前 10 分钟）
+- [ ] 明确界定焦点并共享给团队
+- [ ] 收集相关数据（白帽准备）
+- [ ] 设置计时器（每帽 5-15 分钟）
+- [ ] 向新参与者简要说明六帽规则
+- [ ] 准备白板/Miro 画板
+- [ ] 指定记录人
 
 ---
 
-## Rules Reminder
-1. **Wear one hat at a time** - No mixing perspectives
-2. **All ideas are valid** - No criticism during Green Hat
-3. **Red Hat needs no justification** - Trust intuition
-4. **Time is strict** - Move on when timer rings
-5. **Blue Hat leads** - Facilitator guides process
-6. **Everyone participates** - Round-robin sharing
+## 规则提醒
+
+1. **一次只戴一顶帽子** — 不混合视角
+2. **所有想法都有效** — 绿帽阶段不批评
+3. **红帽无需理由** — 相信直觉
+4. **严格守时** — 计时器响即进入下一阶段
+5. **蓝帽主导** — 引导者掌控流程
+6. **人人参与** — 轮流发言
 
 ---
 
-## Session Agenda (60 minutes)
+## 会议议程（60 分钟）
 
-### 🔵 Blue Hat - Opening (5 minutes)
-**Facilitator**: Explain the challenge and desired outcome
+### 🔵 蓝帽 — 开场（5 分钟）
 
-**Today's Focus**:
+**引导者**：说明挑战和期望结果
 
-**Success Criteria**:
+**今日焦点**：
 
-**Time Allocation**:
-- White Hat: 10 min
-- Red Hat: 5 min
-- Black Hat: 12 min
-- Yellow Hat: 8 min
-- Green Hat: 15 min
-- Blue Hat: 10 min
+**成功标准**：
+
+**时间分配**：
+- 白帽：10 分钟 | 红帽：5 分钟 | 黑帽：12 分钟
+- 黄帽：8 分钟 | 绿帽：15 分钟 | 蓝帽：10 分钟
 
 ---
 
-### 🤍 White Hat - Facts & Data (10 minutes)
-**Format**: Round-robin, each person shares one fact until exhausted
+### 🤍 白帽 — 事实与数据（10 分钟）
 
-**Facilitator Notes**:
-- Keep opinions out ("I think" → stop them)
-- Ask for sources ("Where's that data from?")
-- Document everything
+**形式**：轮流发言，每人每次分享一条事实，直到穷尽
 
-**Facts Collected**:
-| Fact | Source | Date |
-|------|--------|------|
-|      |        |      |
-|      |        |      |
-|      |        |      |
+**引导者注意**：阻止"我认为"类观点混入；追问数据来源；记录所有内容。
 
-**Data Summary**:
-- Test coverage:
-- Defect rate:
-- Team capacity:
-- Timeline:
+**收集到的事实**：
 
-**Missing Data** (to collect later):
--
+| 事实 | 来源 | 日期 |
+|------|------|------|
+|      |      |      |
+
+**数据摘要**：测试覆盖率 / 缺陷率 / 团队产能 / 时间线
+
+**缺失数据**（待后续收集）：
 
 ---
 
-### ❤️ Red Hat - Feelings & Intuition (5 minutes)
-**Format**: 2 min silent reflection, 3 min sharing
+### ❤️ 红帽 — 感受与直觉（5 分钟）
 
-**Facilitator Notes**:
-- Make it safe to share
-- No justification required
-- No judgment or debate
-- Capture exact words
+**形式**：2 分钟静默反思，3 分钟分享
 
-**Individual Feelings**:
-| Person | Confident About | Anxious About | Gut Instinct |
-|--------|----------------|---------------|--------------|
-|        |                |               |              |
-|        |                |               |              |
+**引导者注意**：营造安全氛围；不要求理由、不评判、不辩论；原话记录。
 
-**Team Sentiment Summary**:
-- Overall confidence level: 1-10:
-- Common anxieties:
-- Shared intuitions:
-- Red flags from instinct:
+**个人感受**：
+
+| 姓名 | 有信心的事 | 焦虑的事 | 直觉判断 |
+|------|-----------|---------|---------|
+|      |           |         |         |
+
+**团队情绪摘要**：
+- 整体信心（1-10）：
+- 共同焦虑：
+- 共同直觉：
+- 直觉中的红色信号：
 
 ---
 
-### 🖤 Black Hat - Risks & Critical Analysis (12 minutes)
-**Format**: Brainstorm risks on whiteboard, then categorize
+### 🖤 黑帽 — 风险与批判分析（12 分钟）
 
-**Facilitator Notes**:
-- Encourage pessimism (this is the time!)
-- Ask "What else could go wrong?"
-- Challenge all assumptions
-- Group similar risks
+**形式**：白板脑暴风险，然后归类
 
-**Risks Identified**:
+**引导者注意**：鼓励悲观（允许悲观的时间）；追问"还有哪些可能出错？"；挑战所有假设；归类相似风险。
 
-#### High-Risk (Could cause production outage/data loss)
-1.
-2.
-3.
+**已识别风险**：
 
-#### Medium-Risk (Could impact users significantly)
-1.
-2.
-3.
+**高风险**（可能导致生产事故/数据丢失）：
+1.  2.  3.
 
-#### Low-Risk (Minor issues)
-1.
-2.
+**中风险**（显著影响用户）：
+1.  2.  3.
 
-**Coverage Gaps**:
--
+**低风险**（小问题）：
+1.  2.
 
-**Challenged Assumptions**:
-- We assume: ___________. But what if: ___________?
-- We assume: ___________. But what if: ___________?
+**覆盖缺口**：
 
-**"What Could Go Wrong" Scenarios**:
-- If [X] fails, then:
-- If we get [Y] traffic, then:
-- If [Z] edge case occurs, then:
+**被挑战的假设**：
+- 我们假设：___。但如果：___？
+
+**"可能出错"场景**：
+- 如果 [X] 失败，则：
+- 如果遇到 [Y] 流量，则：
+- 如果 [Z] 边界情况发生，则：
 
 ---
 
-### 💛 Yellow Hat - Benefits & Opportunities (8 minutes)
-**Format**: Positive brainstorm, build on each other's ideas
+### 💛 黄帽 — 收益与机会（8 分钟）
 
-**Facilitator Notes**:
-- Balance the Black Hat pessimism
-- Ask "What's working well?"
-- Identify quick wins
-- Find opportunities in challenges
+**形式**：积极脑暴，在彼此想法上叠加
 
-**Strengths**:
-- Testing capabilities:
-- Team skills:
-- Infrastructure:
-- Stakeholder support:
+**引导者注意**：平衡黑帽悲观；追问"哪些地方做得好？"；识别快赢；在挑战中发现机会。
 
-**Opportunities**:
-- Can leverage:
-- Could reuse:
-- Quick wins:
-- Strategic advantages:
+**优势**：测试能力 / 团队技能 / 基础设施 / 利益相关者支持
 
-**Value Provided**:
-- Our testing prevents:
-- We excel at:
-- ROI of testing:
+**机会**：可借力 / 可复用 / 快赢项 / 战略优势
+
+**提供的价值**：我们的测试防止了 / 我们擅长 / 测试的 ROI
 
 ---
 
-### 💚 Green Hat - Creative Ideas (15 minutes)
-**Format**: Rapid-fire ideation, no filtering, build on ideas
+### 💚 绿帽 — 创意想法（15 分钟）
 
-**Facilitator Notes**:
-- Quantity over quality
-- No idea too crazy
-- Encourage wild combinations
-- Build on others' ideas ("Yes, and...")
+**形式**：快速发散，不筛选，在想法上叠加
 
-**Idea Generation**:
-1.
-2.
-3.
-4.
-5.
-6.
-7.
-8.
-9.
-10.
+**引导者注意**：数量优于质量；没有太疯狂的想法；鼓励大胆组合；"是的，而且……"
 
-**Crazy Ideas** (that might actually work):
--
--
--
+**想法生成**：
+1.  2.  3.  4.  5.  6.  7.  8.  9.  10.
 
-**Alternative Approaches**:
-- Instead of [current], we could:
-- What if we completely:
-- Opposite approach:
+**疯狂想法**（可能真的有效）：
 
-**Emerging Techniques to Explore**:
--
+**替代方案**：
+- 不再 [当前做法]，我们可以：
+- 如果彻底反过来：
 
-**Innovation Backlog** (for later):
--
+**值得探索的新兴技术**：
+
+**创新待办**（后续跟进）：
 
 ---
 
-### 🔵 Blue Hat - Process & Action Plan (10 minutes)
-**Format**: Facilitator synthesizes, team validates
+### 🔵 蓝帽 — 流程与行动计划（10 分钟）
 
-**Facilitator Notes**:
-- Summarize key insights from each hat
-- Identify patterns and conflicts
-- Prioritize actions
-- Assign owners and deadlines
-- Get commitment
+**形式**：引导者综合，团队确认
 
-**Key Insights Summary**:
+**引导者注意**：总结每帽关键洞察；识别模式与冲突；排行动优先级；指定负责人与截止日期；获取承诺。
 
-| Hat | Top Insight |
-|-----|-------------|
-| 🤍 White | |
-| ❤️ Red | |
-| 🖤 Black | |
-| 💛 Yellow | |
-| 💚 Green | |
+**关键洞察摘要**：
 
-**Patterns Identified**:
-- Red Hat feelings align with Black Hat risks:
-- Green Hat idea addresses Black Hat risk:
-- White Hat gaps need:
+| 帽 | 核心洞察 |
+|----|---------|
+| 🤍 白 | |
+| ❤️ 红 | |
+| 🖤 黑 | |
+| 💛 黄 | |
+| 💚 绿 | |
 
-**Action Plan**:
+**识别到的模式**：
+- 红帽感受与黑帽风险一致处：
+- 绿帽想法解决黑帽风险处：
+- 白帽缺口需要：
 
-| Priority | Action | Owner | Deadline | Success Criteria |
-|----------|--------|-------|----------|-----------------|
+**行动计划**：
+
+| 优先级 | 行动 | 负责人 | 截止日期 | 成功标准 |
+|--------|------|--------|----------|---------|
 | P0 | | | | |
-| P0 | | | | |
-| P1 | | | | |
 | P1 | | | | |
 | P2 | | | | |
 
-**Immediate Next Steps** (This Week):
-1. [ ]
-2. [ ]
-3. [ ]
+**本周立即行动**：
+1. [ ]  2. [ ]  3. [ ]
 
-**Decision Required**:
-- Decision:
-- Decide by:
-- Criteria:
-- Decider:
+**待决策项**：决策内容 / 截止日期 / 标准 / 决策人
 
-**Follow-Up**:
-- Next Six Hats session:
-- Progress review:
-- Stakeholder communication:
+**后续跟进**：下次六帽会议 / 进度回顾 / 利益相关者沟通
 
 ---
 
-## Post-Session (20 minutes)
+## 会后（20 分钟）
 
-### Documentation
-- [ ] Clean up notes
-- [ ] Share summary with team
-- [ ] Add actions to backlog/Jira
-- [ ] Update test strategy doc
-- [ ] Schedule follow-ups
+### 文档
+- [ ] 整理笔记
+- [ ] 与团队共享摘要
+- [ ] 行动项添加到 backlog/Jira
+- [ ] 更新测试策略文档
+- [ ] 安排后续跟进
 
-### Retrospective on the Session
+### 会议复盘
 
-**What Worked Well**:
--
+**做得好的地方**：
 
-**What to Improve**:
--
+**待改进的地方**：
 
-**Facilitator Observations**:
-- Hat that generated most value:
-- Hat that was rushed:
-- Team engagement level:
-- Next session changes:
+**引导者观察**：
+- 产出最高的帽子：
+- 时间偏紧的帽子：
+- 团队参与度：
+- 下次调整：
 
-### Sharing
+### 分发与归档
 
-**Send to** (within 24 hours):
-- Team: [Summary + Actions]
-- Stakeholders: [Key decisions]
-- Management: [High-level outcomes]
+**24 小时内发送**：团队[摘要+行动] / 利益相关者[关键决策] / 管理层[高层结果]
 
-**Archive**:
-- [ ] Save to shared drive
-- [ ] Tag with project/sprint
-- [ ] Link from test strategy
+**归档**：[ ] 存共享盘 [ ] 标项目/迭代标签 [ ] 链接到测试策略
 
 ---
 
-## Appendix: Hat Prompts (If Team Gets Stuck)
+## 附录：帽子话术提示（团队卡住时使用）
 
-**White Hat Stuck?**
-- What test metrics do we track?
-- How many tests do we have?
-- What's our defect rate?
-- What data are we missing?
+**白帽**：我们跟踪了哪些测试指标？有多少测试？缺陷率？缺少哪些数据？
 
-**Red Hat Stuck?**
-- Rate confidence 1-10: Why that number?
-- If you had to ship today, would you?
-- Where do you feel uneasy?
-- Trust your gut: What's wrong?
+**红帽**：信心打分 1-10，为什么是这个数？今天必须上线你愿意吗？哪里让你不安？
 
-**Black Hat Stuck?**
-- What keeps you up at night?
-- What could cause a production incident?
-- What are we NOT testing?
-- Play devil's advocate: Why will this fail?
+**黑帽**：什么让你夜不能寐？什么可能导致生产事故？我们没在测什么？为什么这会失败？
 
-**Yellow Hat Stuck?**
-- What are we proud of?
-- What would we do again?
-- What's our competitive advantage?
-- What quick wins exist?
+**黄帽**：我们为哪些成果自豪？哪些做法会再做一次？竞争优势？快赢机会？
 
-**Green Hat Stuck?**
-- What would [competitor] do?
-- What if we had unlimited budget?
-- What's the opposite of our approach?
-- What emerging tech could we use?
+**绿帽**：[竞争对手] 会怎么做？预算无限呢？完全相反的做法？可用哪些新兴技术？
 
-**Blue Hat Stuck?**
-- What's the next step?
-- How do we prioritize?
-- What's our strategy?
-- How do we measure success?
+**蓝帽**：下一步？如何排优先级？策略是什么？如何衡量成功？
 
 ---
 
-**Template Version**: 1.0
-**Last Updated**: 2025-11-13
-**License**: MIT
+**模板版本**：1.1 | **最后更新**：2026-05-04 | **许可**：MIT

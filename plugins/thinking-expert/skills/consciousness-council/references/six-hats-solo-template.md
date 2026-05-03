@@ -1,167 +1,174 @@
-# Six Hats Analysis: [Your Testing Topic]
-Date: YYYY-MM-DD
-Facilitator: [Your Name]
-Focus: [Specific testing question or challenge]
+# 六帽分析：[你的测试主题]
+
+日期：YYYY-MM-DD
+引导者：[你的名字]
+焦点：[具体的测试问题或挑战]
 
 ---
 
-## 🤍 White Hat - Facts & Data (5 minutes)
-**Objective**: List only objective information. No opinions or interpretations.
+## 🤍 白帽 — 事实与数据（5 分钟）
 
-### Test Metrics
-- Current coverage:
-- Number of tests:
-- Pass rate:
-- Execution time:
+**目标**：只列客观信息。不含观点或解读。
 
-### Environment & Resources
-- Test environments:
-- Tools available:
-- Team capacity:
+### 测试指标
+- 当前覆盖率：
+- 测试数量：
+- 通过率：
+- 执行时长：
 
-### Known Data
-- Recent defects:
-- Performance benchmarks:
-- Historical trends:
+### 环境与资源
+- 测试环境：
+- 可用工具：
+- 团队产能：
 
----
-
-## ❤️ Red Hat - Feelings & Intuition (3 minutes)
-**Objective**: Capture gut instincts and emotions. No justification needed.
-
-### My Feelings About Quality
-- I feel confident about:
-- I feel anxious about:
-- I'm frustrated by:
-
-### Gut Instincts
-- Something feels off about:
-- My intuition says:
-- If I had to ship today, I'd feel:
-
-### Team Sentiment
-- The team seems:
-- Energy level around testing:
+### 已知数据
+- 近期缺陷：
+- 性能基准：
+- 历史趋势：
 
 ---
 
-## 🖤 Black Hat - Risks & Problems (7 minutes)
-**Objective**: Critical judgment. What could go wrong?
+## ❤️ 红帽 — 感受与直觉（3 分钟）
 
-### High-Risk Areas
+**目标**：捕捉直觉和情绪。无需理由。
+
+### 我对质量的感受
+- 我对以下有信心：
+- 我对以下焦虑：
+- 我对以下感到沮丧：
+
+### 直觉判断
+- 感觉哪里不太对：
+- 我的直觉说：
+- 如果今天必须上线，我会觉得：
+
+### 团队情绪
+- 团队看起来：
+- 测试方面的能量水平：
+
+---
+
+## 🖤 黑帽 — 风险与问题（7 分钟）
+
+**目标**：批判性判断。哪些可能出错？
+
+### 高风险领域
 1.
 2.
 3.
 
-### Coverage Gaps
-- Not testing:
-- Missing edge cases:
-- Integration points:
+### 覆盖缺口
+- 未在测试的：
+- 缺失的边界情况：
+- 集成点：
 
-### Assumptions to Challenge
-- We assume:
-- This might be wrong because:
+### 需要挑战的假设
+- 我们假设：
+- 这可能不对，因为：
 
-### Potential Failures
-- In production, this could fail if:
-- Security vulnerabilities:
-- Performance bottlenecks:
-
----
-
-## 💛 Yellow Hat - Benefits & Opportunities (5 minutes)
-**Objective**: Positive thinking. What's working? What can we leverage?
-
-### Current Strengths
-- Testing assets we have:
-- Team capabilities:
-- Tools and infrastructure:
-
-### Opportunities
-- We could leverage:
-- Quick wins available:
-- Reusable components:
-
-### Value Being Provided
-- Our testing prevents:
-- We're good at:
-- Competitive advantages:
+### 潜在故障
+- 在生产环境中，这可能失败，如果：
+- 安全漏洞：
+- 性能瓶颈：
 
 ---
 
-## 💚 Green Hat - Creative Ideas (7 minutes)
-**Objective**: New ideas and alternatives. No idea too crazy!
+## 💛 黄帽 — 收益与机会（5 分钟）
 
-### Alternative Approaches
+**目标**：积极思考。哪些在起作用？我们可以借力什么？
+
+### 当前优势
+- 已有的测试资产：
+- 团队能力：
+- 工具和基础设施：
+
+### 机会
+- 我们可以借力：
+- 可用的快赢项：
+- 可复用组件：
+
+### 正在提供的价值
+- 我们的测试防止了：
+- 我们擅长：
+- 竞争优势：
+
+---
+
+## 💚 绿帽 — 创意想法（7 分钟）
+
+**目标**：新想法和替代方案。没有太疯狂的想法！
+
+### 替代方案
 1.
 2.
 3.
 
-### Innovative Testing Ideas
-- What if we:
-- We could try:
-- Emerging techniques to explore:
+### 创新测试想法
+- 如果我们：
+- 我们可以尝试：
+- 值得探索的新兴技术：
 
-### Crazy Ideas (That Might Work)
+### 疯狂想法（可能真的有效）
 -
 -
 -
 
-### Tools/Techniques to Investigate
--
-
----
-
-## 🔵 Blue Hat - Process & Action Plan (5 minutes)
-**Objective**: Organize findings into structured plan.
-
-### Summary of Key Insights
-- Most critical finding:
-- Biggest opportunity:
-- Top creative idea:
-
-### Prioritized Actions
-1. **Immediate** (This Week):
-   - [ ]
-   - [ ]
-
-2. **Short-Term** (2-4 Weeks):
-   - [ ]
-   - [ ]
-
-3. **Long-Term** (Quarter):
-   - [ ]
-   - [ ]
-
-### Next Steps
-- First action:
-- Owner:
-- Deadline:
-- Success criteria:
-
-### Decision Points
-- Go/No-Go decision:
-- Required before proceeding:
-
----
-
-## Final Synthesis
-
-### What Did I Learn?
--
-
-### Key Decisions Made
--
-
-### Follow-Up Required
--
-
-### Share With
+### 值得调研的工具/技术
 -
 
 ---
 
-**Session Duration**: ___ minutes
-**Most Valuable Hat**:
-**Would Use Again**: Yes / No
-**Notes**:
+## 🔵 蓝帽 — 流程与行动计划（5 分钟）
+
+**目标**：将发现组织为结构化计划。
+
+### 关键洞察摘要
+- 最关键发现：
+- 最大机会：
+- 最佳创意：
+
+### 按优先级排列的行动
+1. **立即**（本周）：
+   - [ ]
+   - [ ]
+
+2. **短期**（2-4 周）：
+   - [ ]
+   - [ ]
+
+3. **长期**（本季度）：
+   - [ ]
+   - [ ]
+
+### 下一步
+- 第一步行动：
+- 负责人：
+- 截止日期：
+- 成功标准：
+
+### 决策点
+- 通过/否决决定：
+- 推进前必须满足的条件：
+
+---
+
+## 最终综合
+
+### 我学到了什么？
+-
+
+### 做出的关键决定
+-
+
+### 需要跟进的事项
+-
+
+### 分享给谁
+-
+
+---
+
+**会议时长**：___ 分钟
+**最有价值的帽子**：
+**下次还会使用**：是 / 否
+**备注**：
