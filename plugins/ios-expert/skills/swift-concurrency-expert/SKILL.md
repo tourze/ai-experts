@@ -62,7 +62,7 @@ Task {
 - 判断该代码属于 UI、共享状态还是纯后台工作，然后再选 `@MainActor` / `actor` / 普通 async。
 - 查找 `Task.detached`、`@unchecked Sendable`、`nonisolated(unsafe)` 这类高风险逃逸点。
 - 如果是 SwiftUI 视图抖动或卡顿伴随并发问题，联动 `swiftui-performance-audit` 一起看。
-- 交叉引用：性能与重渲染问题看 `swiftui-performance-audit`；视图层重构看 `swiftui-view-refactor`。
+- 交叉引用：性能与重渲染问题看 `swiftui-performance-audit`；视图结构整理看 `swiftui-ui-patterns`。
 
 ## 反模式
 

@@ -5,7 +5,6 @@ description: |
 tools: Read, Glob, Grep, Bash
 skills:
   - swiftui-ui-patterns
-  - swiftui-view-refactor
   - swiftui-performance-audit
   - swift-concurrency-expert
   - ios-hig-design

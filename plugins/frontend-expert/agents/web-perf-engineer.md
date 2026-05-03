@@ -6,12 +6,10 @@ tools: Read, Glob, Grep, Bash
 skills:
   - web-performance-diagnosis
   - core-web-vitals
-  - browser-rendering-patterns
   - bundle-optimization
-  - web-quality-audit
-  - js-micro-optimization
+  - modern-javascript-patterns
   - react-performance
-  - react-server-optimization
+  - react-server-components
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding
 ---

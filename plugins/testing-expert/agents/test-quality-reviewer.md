@@ -7,7 +7,6 @@ skills:
   - test-quality-review
   - code-review
   - pre-landing-review
-  - test-brainstorm
   - consciousness-council
   - testing-strategy
   - finding-evidence-binding

@@ -5,7 +5,7 @@ iOS / Apple 平台专家能力，覆盖 Swift Concurrency、SwiftUI 性能与模
 ## 目录结构
 
 - `hooks/`：3 个本地 PostToolUse 守卫。
-- `skills/`：13 个 iOS / Apple 平台技能与配套参考资料。
+- `skills/`：11 个 iOS / Apple 平台技能与配套参考资料。
 - `agents/`：2 个 iOS 运行审计与模拟器冒烟测试代理。
 - `tests/`：最小回归测试。
 
@@ -15,14 +15,12 @@ iOS / Apple 平台专家能力，覆盖 Swift Concurrency、SwiftUI 性能与模
 |-------|------|
 | `swift-concurrency-expert` | Swift 6.2+ 并发审查与修复 |
 | `swiftui-performance-audit` | SwiftUI 运行时性能审计 |
-| `swiftui-ui-patterns` | SwiftUI 视图与组件最佳实践 |
-| `swiftui-view-refactor` | SwiftUI 视图重构与依赖注入 |
+| `swiftui-ui-patterns` | SwiftUI 视图与组件最佳实践、视图重构与依赖注入 |
 | `ios-hig-design` | Apple Human Interface Guidelines（iOS） |
 | `ios-simulator-skill` | iOS 模拟器自动化流程 |
 | `apple-appstore-reviewer` | App Store 审核规则检查 |
-| `app-store-changelog` | App Store 发布说明生成 |
 | `liquid-glass-design` | iOS 26 液态玻璃设计系统 |
-| `app-store-optimization` | App Store ASO 优化与排名追踪 |
+| `app-store-optimization` | App Store ASO 优化与排名追踪（含更新文案） |
 | `macos-design-guidelines` | Apple Human Interface Guidelines（macOS） |
 | `apple-notes` | Apple Notes 管理（memo CLI） |
 | `apple-reminders` | Apple Reminders 管理（remindctl CLI） |

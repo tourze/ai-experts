@@ -8,7 +8,7 @@ skills:
   - protocol-freezing-patterns
   - cross-platform-adapter-patterns
   - hierarchical-matching-systems
-  - waterfall-elimination
+  - web-performance-diagnosis
   - task-decomposer
   - backend-to-frontend-handoff-docs
   - agent-orchestration

@@ -15,12 +15,13 @@ cases:
       - "keeps the response focused on the skill's domain boundary"
     trigger_expected: true
 
-  - id: negative_adjacent_app_store_changelog
-    prompt: "这个需求应该交给 app-store-changelog：写 App Store 发布说明、版本更新文案或门店更新摘要"
+  - id: positive_changelog_merged
+    prompt: "帮我写这次 App Store 更新的发布说明和版本更新文案"
     fixtures: []
     rubric:
-      - "adjacent app-store-changelog requests should not trigger app-store-optimization"
-    trigger_expected: false
+      - "recognizes changelog/release notes as part of app-store-optimization"
+      - "uses the changelog workflow from references"
+    trigger_expected: true
 
   - id: negative_general_unrelated_task
     prompt: "请帮我写一封简短的会议改期通知邮件"

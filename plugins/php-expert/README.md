@@ -1,11 +1,11 @@
 # php-expert
 
-PHP 开发专家能力，覆盖 PHP 代码质量守卫、Composer/PHPStan/PHPUnit 工作流，以及 8 个面向语言特性、设计模式、错误处理、类型安全、异步、生成器内存优化、文档和测试的技能。
+PHP 开发专家能力，覆盖 PHP 代码质量守卫、Composer/PHPStan/PHPUnit 工作流，以及 7 个面向语言特性、设计模式、错误处理、类型安全、异步、生成器内存优化和测试的技能。
 
 ## 目录结构
 
 - `hooks/`：9 个运行时守卫脚本。
-- `skills/`：8 个技能目录及其参考资料。
+- `skills/`：7 个技能目录及其参考资料。
 - `tests/`：hook 与 SKILL 结构的最小回归测试。
 
 ## Skills
@@ -16,9 +16,8 @@ PHP 开发专家能力，覆盖 PHP 代码质量守卫、Composer/PHPStan/PHPUni
 | `php-design-patterns` | 服务层、Repository、DTO、值对象、DI 纪律、控制器薄化 |
 | `php-error-handling` | 异常分层、输入校验边界、错误映射、批量部分失败 |
 | `php-generators-memory` | `yield` / `Generator` 流式处理、大数组和大文件内存优化 |
-| `php-type-safety` | PHPStan/Psalm 配置、array shapes、泛型、条件返回类型 |
+| `php-type-safety` | PHPStan/Psalm 配置、array shapes、泛型、条件返回类型、PHPDoc 规范 |
 | `php-async-patterns` | Swoole、ReactPHP、Amphp、原生 Fibers |
-| `php-doc` | PHPDoc 取舍、数组泛型、异常文档与注释收敛 |
 | `php-testing` | PHPUnit/Pest 测试结构、属性、数据提供者、Mock 与配置 |
 
 ## Agents

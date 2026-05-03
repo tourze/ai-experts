@@ -4,7 +4,7 @@ description: |
   当代码实现完成、需要把一次工作会话从"代码完成"推到"可交付状态"时使用。它按"自检验证 → 分支收尾 → 提交 → 会话记录 → 复盘 → 评审响应"序列编排，可写入 commit、session journal 与复盘 note，但不修改业务源码。
 tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
-  - verification-before-completion
+  - complexity-reducer
   - finishing-branch
   - commit
   - session-finalization-workflow

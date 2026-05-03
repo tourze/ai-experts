@@ -19,7 +19,7 @@ description: 当用户需要修复或优化 Core Web Vitals（LCP、INP、CLS）
 - LCP 元素必须尽早被浏览器发现；不要把它藏在懒加载、轮播或客户端二次渲染之后。
 - INP 问题优先查主线程长任务、同步计算、重排重绘和阻塞事件处理。
 - CLS 只能靠稳定布局解决，不能靠“加载更快”掩盖。
-- 遇到整站性问题时，联动 [web-quality-audit](../web-quality-audit/SKILL.md) 与 [responsive-design](../responsive-design/SKILL.md) 一起审。
+- 遇到整站性问题时，联动 [web-performance-diagnosis](../web-performance-diagnosis/SKILL.md) 与 [responsive-design](../responsive-design/SKILL.md) 一起审。
 
 ## 代码模式
 
@@ -113,7 +113,7 @@ button.onclick = async () => {
 
 ## 参考资料
 
-- [web-quality-audit](../web-quality-audit/SKILL.md)
+- [web-performance-diagnosis](../web-performance-diagnosis/SKILL.md)
 - [responsive-design](../responsive-design/SKILL.md)
 - [LCP 参考](https://web.dev/articles/lcp)
 - [INP 参考](https://web.dev/articles/inp)

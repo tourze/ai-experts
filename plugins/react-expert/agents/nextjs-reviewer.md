@@ -6,7 +6,6 @@ tools: Read, Glob, Grep, Bash
 skills:
   - nextjs-developer
   - react-server-components
-  - react-server-optimization
   - react-hooks
   - react-performance
   - react-composable-components

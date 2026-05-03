@@ -1,6 +1,6 @@
 ---
 name: modern-javascript-patterns
-description: 当需要用现代 ES6+ 特性重构旧代码或编写可维护 JavaScript 时使用。
+description: 当需要用现代 ES6+ 特性重构旧代码、编写可维护 JavaScript 或优化 JS 热路径性能时使用。用户提到微优化、Set/Map 查找、循环优化、DOM 批处理、requestIdleCallback 时触发。
 ---
 
 # 现代 JavaScript 模式
@@ -11,6 +11,7 @@ description: 当需要用现代 ES6+ 特性重构旧代码或编写可维护 Jav
 - 需要在业务代码和测试代码之间复用一致的数据变换模式时，联动 [javascript-typescript-jest](../javascript-typescript-jest/SKILL.md)。
 - 涉及复杂状态或 Hook 边界时，优先确认 `react-hooks` 的约束。
 - 需要更完整的函数式、模块化与高级语法补充材料时，再展开 [advanced-patterns.md](references/advanced-patterns.md)。
+- 需要热路径微优化（Set/Map 查找、迭代合并、DOM 批处理、requestIdleCallback）时，展开 [micro-optimization.md](references/micro-optimization.md)。
 - 涉及复杂类型推导、API 合同收敛或 `any` 清理时，转到 `typescript-magician`。
 
 ## 核心约束
@@ -20,6 +21,7 @@ description: 当需要用现代 ES6+ 特性重构旧代码或编写可维护 Jav
 - Promise 链最多一层；超过一层时改写为命名函数加 `async/await`。
 - 模块边界只导出稳定 API，不暴露中间辅助函数与临时状态。
 - 只有在团队已有约定或性能证据明确时才引入函数式管道、生成器等高级抽象。
+- 微优化只在热路径上有意义 — 先 Profiler 确认瓶颈，不牺牲可读性，DOM 批处理先读后写。
 
 ## 代码模式
 

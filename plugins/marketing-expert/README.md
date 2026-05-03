@@ -20,12 +20,11 @@
 | `competitive-ads-extractor` | 竞品广告素材与信息提炼 |
 | `competitor-alternatives` | 竞品对比页与替代页内容架构 |
 | `content-repurpose` | 一篇内容多平台分发（LinkedIn/Medium/Reddit/Quora） |
-| `content-strategy` | 内容策略、选题、栏目规划与内容日历 |
+| `content-strategy` | 内容策略、选题、栏目规划、内容日历，含域名方向发散 |
 | `copy-editing` | 营销文案编辑与质量把关 |
-| `copywriting` | 营销页面文案写作（首页、落地页、定价页、功能页） |
+| `copywriting` | 营销页面文案写作（首页、落地页、定价页、功能页），含社交平台内容安全过滤 |
 | `cro-methodology` | 落地页转化审计与实验设计 |
 | `customer-research` | 客户研究：VOC 分析、评论挖掘、Persona 构建 |
-| `domain-name-brainstormer` | 域名方向发散与筛选 |
 | `email-sequence` | 邮件序列设计：欢迎、nurture、re-engagement、onboarding |
 | `influence-psychology` | 说服原则在营销中的应用 |
 | `lead-channel-optimizer` | 获客渠道优先级与 ROI 评估 |

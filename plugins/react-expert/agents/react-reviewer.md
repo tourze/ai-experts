@@ -8,7 +8,6 @@ skills:
   - react-performance
   - react-server-components
   - react-composable-components
-  - react-server-optimization
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding
 ---

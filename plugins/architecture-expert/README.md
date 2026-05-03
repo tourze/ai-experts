@@ -35,7 +35,6 @@
 | `system-design` | 设计系统、服务、存储、接口与边界 |
 | `task-decomposer` | 将需求拆成带依赖与测试策略的任务板 |
 | `tech-debt` | 盘点代码健康状况并排序技术债 |
-| `waterfall-elimination` | 消除请求瀑布流并行化数据获取与 Suspense 边界 |
 | `agent-orchestration` | 多 Agent 编排：system prompt 架构、fork/fresh 决策、状态管理、扩展点 |
 | `brainstorming-before-coding` | 在任何创造性工作之前必须使用——创建功能、构建组件、添加新行为或修改架构。通过对话探索用户意图、需求和设计，在动手前达成共识。 |
 | `codebase-architecture-analysis` | 系统化分析代码库模块边界、依赖图、分层违规与结构健康度，产出量化的优先改进路线图 |

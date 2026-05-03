@@ -1,4 +1,5 @@
 cases:
+  # --- 原始 web-performance-diagnosis cases ---
   - id: diagnose_slow_page
     prompt: "首页 LCP 5 秒，帮我从网络、渲染、运行时三层系统诊断性能瓶颈"
     fixtures: []
@@ -22,4 +23,81 @@ cases:
     rubric:
       - "does not activate web performance diagnosis"
       - "single image optimization is not a performance diagnosis task"
+    trigger_expected: false
+
+  # --- 合并自 web-quality-audit ---
+  - id: web_quality_audit_primary
+    prompt: "我需要审计网站质量、跑 Lighthouse、检查页面问题或优化网站体验"
+    fixtures: []
+    rubric:
+      - "recognizes the request as quality audit territory"
+      - "covers performance / a11y / SEO / best practices dimensions"
+    trigger_expected: true
+
+  - id: web_quality_audit_realistic
+    prompt: "帮我处理这个场景：需要对站点或页面做全面质量体检。"
+    fixtures: []
+    rubric:
+      - "matches quality audit use case"
+      - "issues sorted by severity (P0/P1/P2)"
+    trigger_expected: true
+
+  # --- 合并自 waterfall-elimination ---
+  - id: parallelize_independent_requests
+    prompt: "This route awaits user, teams, permissions, and notifications one by one. Eliminate the request waterfall where dependencies allow."
+    fixtures: []
+    rubric:
+      - "identifies independent async operations that can run in parallel"
+      - "keeps truly dependent operations sequential"
+      - "uses Promise.all or framework-native parallel loading safely"
+    trigger_expected: true
+
+  - id: suspense_boundary_optimization
+    prompt: "Optimize this React page with Suspense so independent data fetching does not serialize and block rendering."
+    fixtures: []
+    rubric:
+      - "detects serialized data dependencies"
+      - "recommends Suspense boundaries or deferred loading"
+      - "guards against putting dependent awaits into the same parallel group"
+    trigger_expected: true
+
+  # --- 合并自 web-performance-diagnosis ---
+  - id: browser_rendering_hydration
+    prompt: "SSR hydration 不匹配导致闪烁，帮我修复"
+    fixtures: []
+    rubric:
+      - "recognizes hydration mismatch issue"
+      - "recommends dual-phase rendering or suppressHydrationWarning"
+    trigger_expected: true
+
+  - id: browser_rendering_resource_hints
+    prompt: "帮我用 preload / preconnect 加速关键资源加载"
+    fixtures: []
+    rubric:
+      - "recommends resource hints for critical resources only"
+      - "avoids over-preloading"
+    trigger_expected: true
+
+  # --- 反向 cases（合并自三个 skill） ---
+  - id: negative_database_waterfall_chart
+    prompt: "Explain the waterfall chart in this database monitoring dashboard."
+    fixtures: []
+    rubric:
+      - "does not activate async request waterfall workflow"
+      - "observability chart interpretation is outside this skill"
+    trigger_expected: false
+
+  - id: negative_rate_limit_design
+    prompt: "Design a distributed rate limiter for 100k RPS."
+    fixtures: []
+    rubric:
+      - "does not activate waterfall elimination"
+      - "distributed system design belongs to system-design"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
     trigger_expected: false

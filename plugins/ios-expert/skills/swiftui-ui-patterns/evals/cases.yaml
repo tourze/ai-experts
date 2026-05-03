@@ -17,6 +17,22 @@ cases:
       - "demonstrates preview-driven development with multiple configurations"
     trigger_expected: true
 
+  - id: positive_view_refactor_structure
+    prompt: "我需要清理 SwiftUI 视图结构、拆分大视图或收敛依赖注入与 Observation 用法"
+    fixtures: []
+    rubric:
+      - "recognizes the request as swiftui-ui-patterns view refactoring territory"
+      - "references member ordering, body extraction or init injection patterns"
+    trigger_expected: true
+
+  - id: positive_view_refactor_mv_patterns
+    prompt: "帮我处理：需要整理 SwiftUI 文件顺序、依赖注入方式和 @Observable 使用方式。"
+    fixtures: []
+    rubric:
+      - "matches a concrete view refactoring use case"
+      - "suggests reading references/view-refactoring.md or references/mv-patterns.md"
+    trigger_expected: true
+
   - id: negative_core_data_migration
     prompt: "How do I handle Core Data lightweight migration when adding a new entity attribute?"
     fixtures: []
@@ -31,4 +47,11 @@ cases:
     rubric:
       - "does not activate swiftui ui patterns workflow"
       - "build performance is a tooling concern, not SwiftUI view patterns"
+    trigger_expected: false
+
+  - id: negative_adjacent_app_store_changelog
+    prompt: "这个需求应该交给 app-store-optimization：写 App Store 发布说明、版本更新文案或门店更新摘要"
+    fixtures: []
+    rubric:
+      - "adjacent app-store-optimization requests should not trigger swiftui-ui-patterns"
     trigger_expected: false

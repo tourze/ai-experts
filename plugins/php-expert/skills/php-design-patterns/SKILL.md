@@ -39,7 +39,7 @@ description: 当用户要拆分 PHP 类职责、设计服务层与 Repository、
 - 服务通过构造函数注入依赖，没有 `new` 外部依赖。
 - 数据传输用 readonly DTO，不用裸数组跨层传递。
 - 业务概念（金额、邮箱）考虑封装为值对象。
-- 联动：[php-8x-features](../php-8x-features/SKILL.md) · [php-error-handling](../php-error-handling/SKILL.md) · [php-doc](../php-doc/SKILL.md)
+- 联动：[php-8x-features](../php-8x-features/SKILL.md) · [php-error-handling](../php-error-handling/SKILL.md) · [php-type-safety](../php-type-safety/SKILL.md)
 
 ## 反模式
 

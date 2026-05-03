@@ -16,7 +16,7 @@ body:
     id: plugin
     attributes:
       label: 涉及的插件 / skill / hook
-      description: 例如 `coding-expert/verification-before-completion` 或 `react-expert/react-hooks`
+      description: 例如 `coding-expert/complexity-reducer` 或 `react-expert/react-hooks`
       placeholder: plugin-name/skill-or-hook-name
     validations:
       required: true

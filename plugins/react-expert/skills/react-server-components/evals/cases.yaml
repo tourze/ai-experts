@@ -28,3 +28,19 @@ cases:
     rubric:
       - "general writing or administrative requests are outside this skill"
     trigger_expected: false
+
+  - id: positive_rsc_optimization_primary
+    prompt: "我需要优化 React Server Components 的数据获取、缓存、序列化或 Server Actions 安全性。用户提到 RSC 性能、Server Action 认证、React.cache、服务端瀑布、序列化开销"
+    fixtures: []
+    rubric:
+      - "recognizes the request as react-server-components territory (covers RSC optimization)"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_rsc_optimization_realistic
+    prompt: "帮我处理这个场景：Server Components 存在串行数据获取，需要并行化。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true

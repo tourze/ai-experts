@@ -15,7 +15,7 @@ const nodeScripts = [
   "skills/modern-web-design/scripts/design_audit.mjs",
   "skills/modern-web-design/scripts/pattern_generator.mjs",
   "skills/shadcn-ui/scripts/verify-setup.mjs",
-  "skills/web-quality-audit/scripts/analyze.mjs",
+  "skills/web-performance-diagnosis/scripts/analyze.mjs",
 ];
 
 test("所有 Node 脚本都能通过语法检查", () => {
@@ -163,7 +163,7 @@ test("analyze.mjs 在目录模式下能输出有效 JSON 结果", () => {
 
   try {
     const result = spawnSync("node", [
-      resolve(pluginRoot, "skills/web-quality-audit/scripts/analyze.mjs"),
+      resolve(pluginRoot, "skills/web-performance-diagnosis/scripts/analyze.mjs"),
       root,
     ], {
       encoding: "utf-8",

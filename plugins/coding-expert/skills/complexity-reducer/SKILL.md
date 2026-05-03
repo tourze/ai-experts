@@ -9,7 +9,7 @@ description: "当代码过于复杂、嵌套太深、函数太长、耦合严重
 - 代码能跑但难以理解、修改和测试。
 - 函数超长、嵌套超深、参数超多、条件超复杂。
 - 上线前做可维护性整理，而不是功能性重写。
-- 交叉引用：重构流程纪律配合 `refactoring-checklist`；具体重构手法配合 `architecture-expert/refactoring-patterns`；审查结果配合 `code-review`；设计哲学参考 `software-design-philosophy`。
+- 交叉引用：重构流程纪律配合 `refactoring-checklist`；具体重构手法配合 `architecture-expert/refactoring-patterns`；审查结果配合 `code-review`；设计哲学参考 `software-design-philosophy`；完成前验证检查清单见 [references/verification-checklist.md](./references/verification-checklist.md)。
 
 ## 核心约束
 - 目标是降低认知复杂度，不是减少行数。

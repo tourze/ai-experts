@@ -99,3 +99,41 @@ export async function deletePost(formData: FormData) {
   revalidatePath("/posts");
 }
 ```
+
+### FAIL: 模块顶层存请求状态
+
+```ts
+// services/user.ts
+let currentUser: User | null = null;  // 模块级
+
+export async function setCurrentUser(u) { currentUser = u; }
+export function getCurrentUser() { return currentUser; }
+// 请求 A 设了 alice → 请求 B 读到 alice → 跨请求污染
+```
+
+### PASS: 请求级 cache
+
+```ts
+import { cache } from 'react';
+
+export const getCurrentUser = cache(async () => {
+  const session = await getSession();  // 从 cookie/header 读
+  return session?.user;
+});
+// 同一请求内去重 / 跨请求隔离
+```
+
+### FAIL: 整 row 传给 client
+
+```tsx
+const user = await db.user.findUnique(...);
+return <ClientCard user={user} />;
+// user 含 password_hash, internal_notes, ... 全部序列化到客户端
+```
+
+### PASS: 仅必要字段
+
+```tsx
+const user = await db.user.findUnique(...);
+return <ClientCard user={{ id: user.id, name: user.name, avatar: user.avatar }} />;
+```

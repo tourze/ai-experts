@@ -71,10 +71,7 @@ description: 当用户要从零生成演示文稿、从文档/主题生成 PPT�
 
 ## 代码模式
 
-```bash
-node ../pptx/scripts/svg_quality_checker.mjs svg_output/
-python3 ../pptx/scripts/svg_to_pptx.py svg_output/ output.pptx
-```
+SVG 质量校验与 PPTX 封装参考 [references/pptx.md](references/pptx.md) 中的 `python-pptx` 流程，按页生成后逐页校验内联属性合规性（禁用 `<mask>`/`<style>`/`<foreignObject>`/`<filter>`/CSS class）。
 
 ## 检查清单
 

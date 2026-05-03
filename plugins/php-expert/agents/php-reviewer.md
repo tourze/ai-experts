@@ -10,7 +10,6 @@ skills:
   - php-generators-memory
   - php-design-patterns
   - php-async-patterns
-  - php-doc
   - php-testing
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding

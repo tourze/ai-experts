@@ -16,10 +16,10 @@ cases:
     trigger_expected: true
 
   - id: negative_adjacent_app_store_changelog
-    prompt: "这个需求应该交给 app-store-changelog：写 App Store 发布说明、版本更新文案或门店更新摘要"
+    prompt: "这个需求应该交给 app-store-optimization：写 App Store 发布说明、版本更新文案或门店更新摘要"
     fixtures: []
     rubric:
-      - "adjacent app-store-changelog requests should not trigger apple-notes"
+      - "adjacent app-store-optimization requests should not trigger apple-notes"
     trigger_expected: false
 
   - id: negative_general_unrelated_task

@@ -4,7 +4,6 @@ description: |
   当 iOS/Android 应用准备提审或发版时使用——检查二进制安全、审核指南合规、ASO 优化和更新文案。只读分析，产出发布就绪报告。
 tools: Read, Glob, Grep, Bash
 skills:
-  - app-store-changelog
   - app-store-optimization
   - apple-appstore-reviewer
   - fact-vs-inference-vs-assumption

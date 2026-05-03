@@ -59,7 +59,7 @@ Lead magnet 话术模板：
 - 公开内容、评论区和私信的话术一致，没有踩平台边界。
 - 需要长期维护关系时，已和 [fan-operations](../fan-operations/SKILL.md) 对齐。
 - 需要把私域导流纳入整体增长漏斗时，已和 [xiaohongshu-commercial-growth](../xiaohongshu-commercial-growth/SKILL.md) 对齐。
-- 涉及敏感私信或站外链接时，已先经过 [social-platform-safety](../social-platform-safety/SKILL.md) 的过滤判断。
+- 涉及敏感私信或站外链接时，已先经过 [copywriting](../copywriting/SKILL.md) 中的社交平台内容安全过滤流程。
 
 ## 反模式
 

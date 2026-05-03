@@ -16,10 +16,10 @@ cases:
     trigger_expected: true
 
   - id: negative_adjacent_browser_rendering_patterns
-    prompt: "这个需求应该交给 browser-rendering-patterns：优化浏览器渲染性能、处理 hydration 问题、使用 resource hints 或改善客户端事件处理时使用。用户提到 hydration mismatch、content-visibility、preload、preconnect、passive event listener、script defer、SVG 优化"
+    prompt: "这个需求应该交给 web-performance-diagnosis：优化浏览器渲染性能、处理 hydration 问题、使用 resource hints 或改善客户端事件处理时使用。用户提到 hydration mismatch、content-visibility、preload、preconnect、passive event listener、script defer、SVG 优化"
     fixtures: []
     rubric:
-      - "adjacent browser-rendering-patterns requests should not trigger figma-implement-design"
+      - "adjacent web-performance-diagnosis requests should not trigger figma-implement-design"
     trigger_expected: false
 
   - id: negative_general_unrelated_task

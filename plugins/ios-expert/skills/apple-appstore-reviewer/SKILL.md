@@ -52,7 +52,7 @@ P2 | 体验与说明     | 发现 | 为什么会引发追问 | 证据 | 建议 |
 - 重点排查：权限描述缺失、恢复购买缺失、第三方登录未覆盖 Sign in with Apple、外部支付引导、空白页 / 死路。
 - 输出必须按优先级排序，并附上可执行的验证步骤。
 - 如果需要真实走一遍审核路径，可配合 `ios-simulator-skill` 复现 UI 流程。
-- 交叉引用：界面合规与平台习惯看 `ios-hig-design`；门店更新文案看 `app-store-changelog`。
+- 交叉引用：界面合规与平台习惯看 `ios-hig-design`；门店更新文案看 `app-store-optimization`。
 
 ## 反模式
 

@@ -1,6 +1,6 @@
 ---
 name: app-store-optimization
-description: 当用户要做 App Store 或 Google Play 的 ASO 优化时使用。
+description: 当用户要做 App Store / Google Play 的 ASO 优化、生成发布说明、版本更新文案或门店更新摘要时使用。
 risk: unknown
 source: community
 date_added: "2026-02-27"
@@ -14,6 +14,8 @@ date_added: "2026-02-27"
 - 需要分析竞品、评论趋势、评分结构和增长优先级。
 - 需要设计素材或元数据 A/B 测试方案。
 - 需要规划多语言本地化、发版节奏和上线检查清单。
+- 需要从最近一个 tag 到当前版本提炼 App Store「新内容」文案。
+- 需要把技术提交整理成用户能看懂的发布摘要。
 
 ## 核心约束
 
@@ -21,6 +23,7 @@ date_added: "2026-02-27"
 - 搜索量、竞争度、转化率等输入必须来自用户或可信数据源；不要伪造市场数据。
 - Apple 与 Google 的字段限制不同，所有输出都必须带字符数校验。
 - 本地化不是逐词翻译，必须同时考虑市场、文化语义和搜索行为。
+- 更新文案规则：先确认真实改动范围再写，只保留用户可感知改动，每条必须可追溯到真实提交；详见 `references/changelog-guide.md`。
 
 ## 代码模式
 
@@ -84,13 +87,21 @@ print(locales["recommended_markets"][:2])
 PY
 ```
 
+### 生成更新文案
+
+```bash
+node scripts/collect_release_changes.mjs [from..to]
+```
+
+按"新增 / 优化 / 修复"归类，过滤掉 refactor/chore/CI 提交；详见 `references/changelog-guide.md`。
+
 ## 检查清单
 
 - 元数据优化优先用 `metadata_optimizer.py`，并校验 Apple / Google 字符上限。
 - 关键词分析优先用 `keyword_analyzer.py`，竞品对标优先用 `competitor_analyzer.py`。
 - 评论洞察用 `review_analyzer.py`，不要把低星评论直接等同于真实需求。
 - 发版准备使用 `launch_checklist.py`，测试规划使用 `ab_test_planner.py`。
-- 交叉引用：需要实际门店更新文案时切到 `app-store-changelog`；需要审核合规视角时切到 `apple-appstore-reviewer`。
+- 交叉引用：需要审核合规视角时切到 `apple-appstore-reviewer`。
 
 ## 反模式
 

@@ -16,10 +16,10 @@ cases:
     trigger_expected: true
 
   - id: negative_adjacent_js_micro_optimization
-    prompt: "这个需求应该交给 js-micro-optimization：优化 JavaScript 热路径性能、减少不必要的迭代和查找、或改善 DOM 操作效率时使用。用户提到 JS 性能、热路径优化、Set/Map 查找、循环优化、DOM 批处理、requestIdleCallback"
+    prompt: "这个需求应该交给 modern-javascript-patterns：优化 JavaScript 热路径性能、减少不必要的迭代和查找、或改善 DOM 操作效率时使用。用户提到 JS 性能、热路径优化、Set/Map 查找、循环优化、DOM 批处理、requestIdleCallback"
     fixtures: []
     rubric:
-      - "adjacent js-micro-optimization requests should not trigger javascript-typescript-jest"
+      - "adjacent modern-javascript-patterns micro-optimization requests should not trigger javascript-typescript-jest"
     trigger_expected: false
 
   - id: negative_general_unrelated_task

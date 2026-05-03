@@ -12,7 +12,6 @@
 
 | Skill | 用途 |
 |-------|------|
-| `browser-rendering-patterns` | Hydration、resource hints、content-visibility、事件监听优化 |
 | `bundle-optimization` | Bundle 体积治理：dynamic import、barrel imports、preload |
 | `color-oklch-theory` | OKLCH 颜色系统、色阶设计与暗色模式策略 |
 | `core-web-vitals` | LCP / INP / CLS 优化 |
@@ -33,8 +32,7 @@
 | `tailwind-design-system` | Tailwind CSS v4 设计系统 |
 | `ux-writing` | 按钮、错误、空态与引导微文案设计 |
 | `web-design-guidelines` | Web 平台规范与无障碍底线 |
-| `web-performance-diagnosis` | 三段式跨层性能诊断（网络→渲染→运行时），性能预算驱动优先级排序，区分 lab 与 RUM 数据口径 |
-| `web-quality-audit` | 网站质量审计（性能 / a11y / SEO / best practices） |
+| `web-performance-diagnosis` | 三段式跨层性能诊断（网络→渲染→运行时）、质量审计、瀑布流消除、浏览器渲染模式，区分 lab 与 RUM 数据口径 |
 
 ## Agents
 

@@ -5,7 +5,7 @@ description: |
 tools: Read, Glob, Grep, Bash
 skills:
   - modern-javascript-patterns
-  - js-micro-optimization
+  - modern-javascript-patterns
   - javascript-typescript-jest
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding

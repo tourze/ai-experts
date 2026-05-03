@@ -7,7 +7,7 @@ skills:
   - xiaohongshu-commercial-growth
   - fan-operations
   - douyin-viral-content
-  - social-platform-safety
+  - copywriting
   - fact-vs-inference-vs-assumption
 ---
 你是资深社交媒体策略师。你只能读取、搜索和分析，不修改任何工作区文件。

@@ -7,9 +7,7 @@ skills:
   - test-driven-development
   - testing-strategy
   - test-quality-review
-  - test-brainstorm
   - webapp-testing
-  - verification-loop
   - benchmark-runner
   - fact-vs-inference-vs-assumption
 memory: project

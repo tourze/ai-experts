@@ -63,7 +63,7 @@ struct FavoriteRow: View {
 - 检查 `body`、计算属性和 `task` 中是否混入格式化、图片解码、数据库或网络副作用。
 - 如果代码审查不足以定案，明确要求用户提供 SwiftUI template + Time Profiler trace。
 - 修复后要求按同一交互路径复测，比较前后 CPU、掉帧和内存峰值。
-- 交叉引用：并发边界问题看 `swift-concurrency-expert`；视图结构整理看 `swiftui-view-refactor`。
+- 交叉引用：并发边界问题看 `swift-concurrency-expert`；视图结构整理看 `swiftui-ui-patterns`。
 
 ## 反模式
 

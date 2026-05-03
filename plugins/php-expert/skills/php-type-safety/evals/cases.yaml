@@ -15,6 +15,22 @@ cases:
       - "keeps the response focused on the skill's domain boundary"
     trigger_expected: true
 
+  - id: positive_phpdoc_primary
+    prompt: "帮我补写或重构 PHPDoc，为方法、属性、异常、数组泛型补充签名之外的关键信息"
+    fixtures: []
+    rubric:
+      - "recognizes the request as php-type-safety territory (PHPDoc aspect)"
+      - "uses the skill-specific workflow instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_phpdoc_realistic
+    prompt: "帮我整理这个类的注释，把冗余 PHPDoc 删掉，补上异常和数组结构说明"
+    fixtures: []
+    rubric:
+      - "matches a concrete PHPDoc use case described by the skill"
+      - "keeps the response focused on PHPDoc conventions within the skill boundary"
+    trigger_expected: true
+
   - id: negative_adjacent_php_8x_features
     prompt: "这个需求应该交给 php-8x-features：在 PHP 8.1-8.3+ 项目中使用 readonly class、backed enum、match、命名参数、构造器提升、交叉类型、DNF 类型、[\\Override] 等现代语法特性"
     fixtures: []
