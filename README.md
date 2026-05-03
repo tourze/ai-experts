@@ -31,7 +31,7 @@
    - 跨语言的工作流守卫（git 纪律、测试策略、文档处理）
    - 与基座层和语言层正交，按需安装
 
-3. **语言层** — python-expert, javascript-expert, typescript-expert, java-expert, go-expert, rust-expert, ruby-expert, php-expert，以及以语言为入口的客户端 surface（android-expert / ios-expert）
+3. **语言层** — python-expert, javascript-expert, typescript-expert, java-expert, go-expert, rust-expert, php-expert，以及以语言为入口的客户端 surface（android-expert / ios-expert）
    - 在基座层之上叠加语言特有的 syntax check、lint 与必要的特化守卫
    - 仅根 `hooks/dispatch.mjs` 一个 dispatcher，本层 hooks 通过 `hooks/<event>/<sub>/*.mjs` 被根 dispatcher 自动发现，无需自带 dispatch
    - 通用 `file-budget` 与跨语言 `debug-statement` 统一复用 `coding-expert`，仅 `debug-statement-guard.mjs` 因语言语义差异保留各自特化版
@@ -54,7 +54,6 @@
 - php-expert → coding-expert
 - python-expert → coding-expert
 
-- ruby-expert → coding-expert
 - rust-expert → coding-expert
 - tauri-expert → rust-expert, typescript-expert
 - typescript-expert → coding-expert
@@ -277,7 +276,7 @@ node --test tests/install-script.test.mjs tests/cleanup-legacy.test.mjs
 
 ### 语言与后端框架
 
-[go-expert](plugins/go-expert/README.md), [java-expert](plugins/java-expert/README.md), [javascript-expert](plugins/javascript-expert/README.md), [php-expert](plugins/php-expert/README.md), [python-expert](plugins/python-expert/README.md), [ruby-expert](plugins/ruby-expert/README.md), [rust-expert](plugins/rust-expert/README.md), [typescript-expert](plugins/typescript-expert/README.md)
+[go-expert](plugins/go-expert/README.md), [java-expert](plugins/java-expert/README.md), [javascript-expert](plugins/javascript-expert/README.md), [php-expert](plugins/php-expert/README.md), [python-expert](plugins/python-expert/README.md), [rust-expert](plugins/rust-expert/README.md), [typescript-expert](plugins/typescript-expert/README.md)
 
 ### 基础设施、数据与安全
 
