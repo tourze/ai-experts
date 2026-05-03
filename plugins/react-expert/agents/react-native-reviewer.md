@@ -5,17 +5,11 @@ description: |
 tools: Read, Glob, Grep, Bash
 skills:
   - react-native-design
-  - react-native-jsi-bridge
   - react-native-js-performance
-  - react-native-native-performance
   - react-native-platform-fork
   - detox-mobile-test
-  - react-native-bundle-size
   - react-native-turbomodule
-  - react-native-native-module-android
-  - react-native-native-module-ios
   - react-native-metro-config
-  - upgrading-react-native
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding
 ---

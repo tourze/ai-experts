@@ -40,8 +40,8 @@ iOS / Apple 平台专家能力，覆盖 Swift Concurrency、SwiftUI 性能与模
 
 | Agent | 用途 |
 |-------|------|
-| `ios-release-auditor` | 只读审计 Info.plist、entitlements、能力开关与 App Review 风险 |
 | `ios-simulator-smoke-tester` | 执行 iOS 模拟器关键流程冒烟测试 |
+| `mobile-release-reviewer` | 当 iOS/Android 应用准备提审或发版时使用——检查二进制安全、审核指南合规、ASO 优化和更新文案。只读分析，产出发布就绪报告。 |
 | `swiftui-engineer` | SwiftUI 视图 / 导航 / 列表性能 / Swift Concurrency 工程审查与重构建议，含 HIG / Liquid Glass / macOS HIG 合规检查 |
 
 ## 验证命令

@@ -5,16 +5,10 @@ description: |
 tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
   - ppt-generate
-  - ppt-visual
-  - pptx
-  - docx
-  - xlsx
   - pdf
-  - pdf-extraction
   - markitdown
   - md-to-pdf
   - markdown-mermaid-writing
-  - pretty-mermaid
 memory: project
 ---
 

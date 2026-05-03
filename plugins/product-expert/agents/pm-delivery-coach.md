@@ -5,11 +5,7 @@ description: |
 tools: Read, Glob, Grep, Write, Edit
 skills:
   - agile-product-owner
-  - user-story-patterns
-  - epic-decomposition
   - estimate-calibrator
-  - version-planner
-  - pm-career-ladder
 memory: project
 ---
 

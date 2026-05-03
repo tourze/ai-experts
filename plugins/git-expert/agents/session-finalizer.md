@@ -9,8 +9,6 @@ skills:
   - commit
   - record-session
   - session-reflection
-  - receiving-code-review
-  - persistent-planning
   - subagent-driven-development
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding

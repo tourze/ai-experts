@@ -5,18 +5,14 @@ description: |
 tools: Read, Glob, Grep, Bash
 skills:
   - go-concurrency-patterns
-  - go-context-lifecycle
   - go-testing-patterns
-  - go-safety
   - go-error-handling
   - go-code-style
   - go-performance
   - go-security
-  - go-naming
   - go-design-patterns
   - go-lint
   - go-structs-interfaces
-  - go-project-layout
   - go-data-structures
   - go-database
   - go-observability

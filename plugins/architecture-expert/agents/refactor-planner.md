@@ -6,7 +6,6 @@ tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
   - refactoring-patterns
   - complexity-reducer
-  - seam-ripper
   - tech-debt
   - error-handling-patterns
   - software-design-philosophy

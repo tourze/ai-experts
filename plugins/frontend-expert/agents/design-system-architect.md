@@ -5,14 +5,8 @@ description: |
 tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
   - design-system-patterns
-  - color-oklch-theory
-  - font-pairing-library
-  - tailwind-design-system
   - shadcn-ui
   - industry-design-presets
-  - motion-design-theory
-  - refactoring-ui
-  - visual-design-foundations
   - interaction-design
 memory: project
 ---

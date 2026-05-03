@@ -4,19 +4,13 @@ description: |
   当创业项目需要从想法验证、ICP、市场规模、商业模式、定价、渠道到融资准备做整体评估时使用。它预加载 10 个商业和融资框架。
 tools: Read, Glob, Grep, WebSearch, WebFetch
 skills:
-  - idea-validator
   - startup-icp-definer
   - market-sizing-analysis
   - business-model
   - business-health-diagnostic
   - pricing-strategy
-  - channel-economics
   - fundraise-advisor
-  - pitch-deck-reviewer
-  - mom-test
   - customer-journey-map
-  - saas-metrics
-  - team-composition-analysis
   - planning-under-uncertainty
   - fact-vs-inference-vs-assumption
 ---

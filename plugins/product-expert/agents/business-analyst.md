@@ -5,15 +5,12 @@ description: |
 tools: Read, Glob, Grep, Write, Edit, WebSearch, WebFetch
 skills:
   - mckinsey-7-step
-  - five-w-two-h
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding
   - pestel-analysis
   - porters-five-forces
-  - 3c-strategic-triangle
   - business-model
   - business-health-diagnostic
-  - marketing-mix-4p
   - customer-research
   - data-analysis
 memory: project

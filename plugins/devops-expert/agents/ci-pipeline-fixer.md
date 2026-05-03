@@ -5,8 +5,6 @@ description: |
 tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
   - gh-fix-ci
-  - gh-address-comments
-  - create-github-action-workflow-specification
   - gitlab-ci-patterns
   - finding-evidence-binding
 memory: project

@@ -5,14 +5,12 @@ description: |
 tools: Read, Glob, Grep
 skills:
   - first-principles-decomposer
-  - inversion-strategist
   - what-if-oracle
   - cross-pollination-engine
   - consciousness-council
   - grill-me
   - priority-judge
   - scientific-brainstorming
-  - socratic-teaching
   - thinking-partner
   - fact-vs-inference-vs-assumption
 ---

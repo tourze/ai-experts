@@ -8,8 +8,6 @@ skills:
   - readme-blueprint-generator
   - user-guide-writing
   - markdown-mermaid-writing
-  - pretty-mermaid
-  - proposal-review
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding
 ---

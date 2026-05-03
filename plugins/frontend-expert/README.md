@@ -39,7 +39,8 @@
 
 | Agent | 用途 |
 |-------|------|
-| `ui-reviewer` | 前端界面与代码只读评审：可访问性、性能、响应式、组件结构与 UI 规范 |
+| `visual-producer` | 视觉资产制作：从概念到图像/视频生成、图表到压缩交付的完整视觉流水线 |
+| `ux-reviewer` | 当需要审查界面可用性、交互设计质量、信息架构、微文案或设计还原度时使用——覆盖启发式评估、用户研究方法、设计系统一致性、响应式和国际化。只读分析，产出 UX 审查报告。 |
 | `design-system-architect` | 搭建或重构设计令牌、主题与组件架构，融合 OKLCH 颜色、字体配对、Tailwind / shadcn-ui 与动效原则，可写盘 |
 | `web-perf-engineer` | Web 前端性能诊断：Core Web Vitals、bundle、浏览器渲染、JS 热路径、React 渲染与 Server Components 优化 |
 

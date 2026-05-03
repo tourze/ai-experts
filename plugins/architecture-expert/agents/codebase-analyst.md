@@ -5,13 +5,10 @@ description: |
 tools: Read, Glob, Grep, Bash
 skills:
   - architecture-reviewer
-  - architecture-diagram
   - deep-code-read
-  - seam-ripper
   - api-trace-reader
   - refactoring-patterns
   - tech-debt
-  - architecture-blueprint-generator
   - software-design-philosophy
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding

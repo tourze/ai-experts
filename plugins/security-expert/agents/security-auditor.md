@@ -4,10 +4,6 @@ description: |
   当需要对应用层代码做只读漏洞审计，识别 OWASP top 10 模式、认证与会话缺陷、敏感数据流、文件路径风险、API 输入校验缺口或前端防刷保护缺口时使用。
 tools: Read, Glob, Grep, Bash
 skills:
-  - top-web-vulnerabilities
-  - broken-authentication
-  - file-path-traversal
-  - api-fuzzing-bug-bounty
   - frontend-dynamic-code-protection
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding

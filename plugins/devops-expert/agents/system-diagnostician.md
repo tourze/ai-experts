@@ -5,11 +5,7 @@ description: |
 tools: Bash
 skills:
   - system-diagnostics
-  - performance-optimizer
-  - disk-cleanup
   - arch-linux-triage
-  - centos-linux-triage
-  - debian-linux-triage
   - network-troubleshooter
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding

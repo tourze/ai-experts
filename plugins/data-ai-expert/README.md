@@ -16,6 +16,7 @@
 | `data-storytelling` | 将分析结论组织为对业务方友好的叙事结构 |
 | `data-visualization` | 选择合适图表并输出可靠的可视化代码模式 |
 | `embedding-strategies` | Embedding 模型、切块与质量评估策略 |
+| `llm-app-design-pipeline` | 当需要设计或优化基于 LLM 的应用时使用；提供从应用形态确认、逐段优化到 eval 验证的完整设计 pipeline。 |
 | `llm-evaluation` | LLM 应用评估、回归对比与指标设计 |
 | `model-first-reasoning` | 先建模后实现的形式化推理流程 |
 | `narrative-text-visualization` | 使用 T8 语法输出结构化叙事文本可视化 |

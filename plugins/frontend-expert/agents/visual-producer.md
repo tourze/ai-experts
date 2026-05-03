@@ -5,11 +5,7 @@ description: |
 tools: Read, Glob, Grep, Write, Edit, Bash, WebSearch, WebFetch
 skills:
   - canvas-design
-  - concept-to-image
-  - concept-to-video
-  - baoyu-article-illustrator
   - baoyu-compress-image
-  - plantuml-ascii
   - screenshot
   - ui-style-catalog
   - algo-visualization

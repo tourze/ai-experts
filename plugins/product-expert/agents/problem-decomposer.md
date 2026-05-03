@@ -5,13 +5,11 @@ description: |
 tools: Read, Glob, Grep, WebSearch, WebFetch
 skills:
   - systems-thinking
-  - scoping-cutting
   - planning-under-uncertainty
   - running-decision-processes
   - process-optimization
   - mckinsey-7-step
   - fishbone-diagram
-  - five-w-two-h
   - business-health-diagnostic
   - pdca-cycle
   - first-principles-decomposer

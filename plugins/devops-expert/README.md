@@ -9,25 +9,25 @@ DevOps 专家能力，覆盖 Docker/Helm/K8s、CI/CD 流水线、Nginx 配置、
 
 | Skill | 用途 |
 |-------|------|
+| `arch-linux-triage` | Arch Linux 的 pacman、systemd、滚动升级、AUR、内核或启动故障排查 |
 | `docker-essentials` | Docker 容器管理与镜像操作 |
-| `helm-chart-scaffolding` | Helm Chart 设计与 K8s 部署 |
-| `gitlab-ci-patterns` | GitLab CI/CD 多阶段流水线 |
-| `create-github-action-workflow-specification` | GitHub Actions 工作流规范生成 |
 | `gh-fix-ci` | GitHub Actions 检查失败定位与修复 |
-| `gh-address-comments` | GitHub PR 评论归类与处理 |
-| `monitoring-observability` | 监控、日志与可观测性体系搭建 |
-| `nginx-config-optimizer` | Nginx 配置性能/安全/缓存优化 |
-| `service-monitor` | 服务健康检查与端点监控 |
-| `remote-ssh-command` | 通过 SSH 在远端机器执行命令并记录审计历史 |
+| `gitlab-ci-patterns` | GitLab CI/CD 多阶段流水线 |
+| `helm-chart-scaffolding` | Helm Chart 设计与 K8s 部署 |
 | `incident-triage` | 线上事件分级响应与排查 |
+| `linux-shell-scripting` | Bash/Zsh 自动化、运维脚本与命令行工具 |
 | `log-analyzer` | 日志调查与错误追踪 |
+| `monitoring-observability` | 监控、日志与可观测性体系搭建 |
+| `network-troubleshooter` | Linux 网络不通、DNS、端口、TLS 与链路排障 |
 | `openapi-spec-generation` | OpenAPI 3.1 规范生成与维护 |
+| `remote-ssh-command` | 通过 SSH 在远端机器执行命令并记录审计历史 |
+| `system-diagnostics` | Linux 主机健康检查、瓶颈与误配置定位 |
 
 ## Agents
 
 | Agent | 用途 |
 |-------|------|
-| `infra-auditor` | 基础设施配置只读审计：Docker、CI/CD、Helm、Nginx、Terraform 与部署清单 |
+| `system-diagnostician` | Linux 主机只读健康检查：CPU、内存、磁盘、网络、服务和日志，定位瓶颈与误配置 |
 | `incident-responder` | 线上事故应急响应：时间线还原、根因定位、止血与修复路线规划，只读 |
 | `ci-pipeline-fixer` | GitHub Actions / GitLab CI 失败排查、流水线规格生成、PR 评论处理，可写 .github/.gitlab-ci |
 

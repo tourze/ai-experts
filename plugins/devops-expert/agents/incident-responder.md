@@ -7,7 +7,6 @@ skills:
   - incident-triage
   - log-analyzer
   - monitoring-observability
-  - service-monitor
   - system-diagnostics
   - network-troubleshooter
   - fact-vs-inference-vs-assumption

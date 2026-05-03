@@ -5,15 +5,9 @@ description: |
 tools: Read, Glob, Grep, WebSearch, WebFetch
 skills:
   - cro-methodology
-  - page-cro
-  - signup-flow-cro
-  - popup-cro
-  - onboarding-cro
-  - churn-prevention
   - redesign-my-landingpage
   - funnel-architect
   - analytics-tracking
-  - campaign-analytics
   - fact-vs-inference-vs-assumption
 ---
 

@@ -5,10 +5,6 @@ description: |
 tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
   - security-threat-model
-  - stride-analysis-patterns
-  - attack-tree-construction
-  - threat-mitigation-mapping
-  - security-requirement-extraction
   - security-ownership-map
 memory: project
 ---

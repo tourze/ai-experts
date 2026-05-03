@@ -5,16 +5,9 @@ description: |
 tools: Read, Glob, Grep, WebSearch, WebFetch
 skills:
   - porters-five-forces
-  - 3c-strategic-triangle
-  - competitive-teardown
-  - blue-ocean-strategy
-  - strategy-clock
   - pricing-strategy
-  - obviously-awesome
-  - crossing-the-chasm
   - competitive-intelligence
   - bcg-matrix
-  - space-matrix
   - swot-analysis
   - stp-segmentation
   - fact-vs-inference-vs-assumption

@@ -6,19 +6,12 @@ tools: Read, Glob, Grep, WebSearch, WebFetch
 skills:
   - content-strategy
   - seo
-  - site-architecture
-  - topic-cluster
-  - aeo-geo
   - lead-channel-optimizer
   - cro-methodology
   - paid-ads
-  - campaign-analytics
-  - referral-program
   - analytics-tracking
-  - aida-funnel
   - customer-research
   - stp-segmentation
-  - marketing-mix-4p
   - funnel-architect
   - revops
   - lead-research-assistant

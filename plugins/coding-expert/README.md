@@ -6,11 +6,12 @@
 
 | Skill | 用途 |
 |-------|------|
+| `chrome-devtools` | 用 Chrome DevTools 做页面调试、网络排障、性能分析或 Lighthouse 审计 |
 | `code-review` | 代码质量、命名、职责边界与错误处理审查 |
 | `complexity-reducer` | 降低嵌套、耦合和函数复杂度，含复杂度度量能力与 Python/Go/TS/Rust 简化指南 |
 | `debug-methodology` | 系统化定位 bug 与异常行为 |
 | `refactoring-checklist` | 为重构提供增量、安全的检查清单 |
-| `receiving-code-review` | 当收到代码审查反馈、需要在实施建议之前进行技术评估时使用——特别是反馈不明确或技术上存疑时；要求技术严谨和独立验证，而非表演式同意或盲目实施。 |
+| `memory-safety-patterns` | C/C++ 资源所有权、智能指针与内存安全模式 |
 | `subagent-driven-development` | 当有实现计划需要在当前会话中执行、且各任务相对独立时使用——通过每个任务派遣独立子代理实现，配合双阶段审查（规格合规 + 代码质量），确保高质量快速迭代。 |
 | `verification-before-completion` | 当即将声称工作完成、修复生效或测试通过时使用——要求在做出任何完成声明前先运行验证命令并确认输出；证据先于断言，永远如此。 |
 
@@ -18,7 +19,9 @@
 
 | Agent | 用途 |
 |-------|------|
+| `bug-investigator` | 只读追踪 bug 执行路径、提出可证伪假设并定位根因 |
 | `code-reviewer` | 通用代码质量、命名、错误处理与结构风险的只读评审 |
+| `cpp-reviewer` | C/C++ 专项只读审查，覆盖 RAII、内存安全与惯用法 |
 
 ## Hooks
 
