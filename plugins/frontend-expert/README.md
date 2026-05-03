@@ -33,6 +33,7 @@
 | `tailwind-design-system` | Tailwind CSS v4 设计系统 |
 | `ux-writing` | 按钮、错误、空态与引导微文案设计 |
 | `web-design-guidelines` | Web 平台规范与无障碍底线 |
+| `web-performance-diagnosis` | 三段式跨层性能诊断（网络→渲染→运行时），性能预算驱动优先级排序，区分 lab 与 RUM 数据口径 |
 | `web-quality-audit` | 网站质量审计（性能 / a11y / SEO / best practices） |
 
 ## Agents

@@ -21,6 +21,7 @@ DevOps 专家能力，覆盖 Docker/Helm/K8s、CI/CD 流水线、Nginx 配置、
 | `network-troubleshooter` | Linux 网络不通、DNS、端口、TLS 与链路排障 |
 | `openapi-spec-generation` | OpenAPI 3.1 规范生成与维护 |
 | `remote-ssh-command` | 通过 SSH 在远端机器执行命令并记录审计历史 |
+| `incident-command` | 事故指挥方法论：时间线构建、根因与触发因素分离、止血优先决策、分级修复路线与观测补齐 |
 | `system-diagnostics` | Linux 主机健康检查、瓶颈与误配置定位 |
 
 ## Agents
@@ -30,6 +31,7 @@ DevOps 专家能力，覆盖 Docker/Helm/K8s、CI/CD 流水线、Nginx 配置、
 | `system-diagnostician` | Linux 主机只读健康检查：CPU、内存、磁盘、网络、服务和日志，定位瓶颈与误配置 |
 | `incident-responder` | 线上事故应急响应：时间线还原、根因定位、止血与修复路线规划，只读 |
 | `ci-pipeline-fixer` | GitHub Actions / GitLab CI 失败排查、流水线规格生成、PR 评论处理，可写 .github/.gitlab-ci |
+| `observability-engineer` | 端到端可观测性建设：指标/日志/告警/健康检查设计、Python/Go 语言落地、日志分析与事故分级，可写观测方案与落地脚本 |
 
 ## Hooks
 
