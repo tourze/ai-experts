@@ -273,7 +273,7 @@ node --test tests/install-script.test.mjs tests/cleanup-legacy.test.mjs
 
 ### 前端、客户端与体验
 
-[android-expert](plugins/android-expert/README.md), [frontend-expert](plugins/frontend-expert/README.md), [game-dev-expert](plugins/game-dev-expert/README.md), [ios-expert](plugins/ios-expert/README.md), [react-expert](plugins/react-native-expert/README.md), [tauri-expert](plugins/tauri-expert/README.md)
+[android-expert](plugins/android-expert/README.md), [frontend-expert](plugins/frontend-expert/README.md), [ios-expert](plugins/ios-expert/README.md), [react-expert](plugins/react-native-expert/README.md), [tauri-expert](plugins/tauri-expert/README.md)
 
 ### 语言与后端框架
 
