@@ -4,7 +4,6 @@ description: |
   当需要只读审查 Laravel 分层、Eloquent、Validation、Authorization、Migration 和 Queue 时使用。
 tools: Read, Glob, Grep, Bash
 skills:
-  - laravel-layering-patterns
   - laravel-patterns
   - laravel-security
   - laravel-verification

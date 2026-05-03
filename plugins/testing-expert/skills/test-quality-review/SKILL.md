@@ -9,7 +9,7 @@ description: "当用户要审查已有测试代码质量、诊断测试套件衰
 - 用户提交测试代码或指向测试文件，要求诊断测试质量问题。
 - 关注"测试写得好不好"，不是"该测什么"（那用 `testing-strategy`）。
 - 关注已有测试的结构性问题，不是"怎么补测"（那用 `test-brainstorm`）。
-- 交叉引用：高压审查配合 `brutal-honesty-review`；合并门禁配合 `pre-landing-review`。
+- 交叉引用：高压审查使用 `code-review` 高压模式；合并门禁配合 `pre-landing-review`。
 
 ## 核心约束
 

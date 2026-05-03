@@ -15,7 +15,7 @@ description: 当需要把一个 skill 的优势迁移到另一个 skill、对比
 | 创建新 skill、改一个没有参考源的 skill、跑 with-skill/baseline 迭代 | [skill-creator](../skill-creator/SKILL.md) |
 | 给单个 skill/package 打设计分 | [skill-judge](../skill-judge/SKILL.md) |
 | 用源材料闭卷验证 skill 知识覆盖 | [skill-verifier](../skill-verifier/SKILL.md) |
-| 只优化 frontmatter description 触发质量 | [description-cso-audit](../description-cso-audit/SKILL.md) |
+| 只优化 frontmatter description 触发质量 | [skill-activation-analyzer](../skill-activation-analyzer/SKILL.md) |
 
 ## 核心原则
 

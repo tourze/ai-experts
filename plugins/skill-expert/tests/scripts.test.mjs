@@ -45,7 +45,7 @@ test("复制进插件的 Python 脚本都能通过 py_compile", () => {
   assert.ok(true);
 });
 
-test("description-cso-audit 递归扫描嵌套 skill 并保留完整相对路径", () => {
+test("cso_audit 递归扫描嵌套 skill 并保留完整相对路径", () => {
   const tmp = mkdtempSync(join(tmpdir(), "ai-experts-cso-audit-"));
 
   try {
@@ -65,7 +65,7 @@ test("description-cso-audit 递归扫描嵌套 skill 并保留完整相对路径
     );
 
     const output = execFileSync("node", [
-      resolve(pluginRoot, "skills/description-cso-audit/scripts/cso_audit.mjs"),
+      resolve(pluginRoot, "skills/skill-activation-analyzer/scripts/cso_audit.mjs"),
       "--plugins-dir",
       resolve(tmp, "plugins"),
       "--json",

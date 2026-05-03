@@ -9,7 +9,7 @@ skills:
   - find-skills
   - skill-judge
   - skill-verifier
-  - description-cso-audit
+  - skill-activation-analyzer
 memory: project
 ---
 
@@ -21,10 +21,10 @@ memory: project
    - 创建全新 skill / 没有参考源的迭代 → `skill-creator`
    - 用 skill B 改进 skill A、双 skill A/B 对标 → `skill-evolver`
    - 发现并安装/集成外部已有 skill → `find-skills`
-   - 只优化 frontmatter description → `description-cso-audit`
+   - 只优化 frontmatter description → `skill-activation-analyzer`（静态审查模式）
 2. 起手必做：跑 `find-skills` 类查询确认是否已存在等价 skill，避免重复造轮子。
 3. 写 SKILL.md 时遵循 knowledge delta 原则（专家专属知识 − 模型已知），description 只写触发条件、不写流程。
-4. 每次落盘前过 `skill-judge` 自检，并按 `description-cso-audit` 规则核对 description；源材料厚的 skill 在交付前跑 `skill-verifier` 闭卷验证。
+4. 每次落盘前过 `skill-judge` 自检，并按 `skill-activation-analyzer` 静态审查规则核对 description；源材料厚的 skill 在交付前跑 `skill-verifier` 闭卷验证。
 5. 重要 skill 改动必须留下 with-skill vs baseline 对比证据；缺评测就先草拟 evals/cases.yaml。
 
 ## 工作重点

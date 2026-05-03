@@ -6,7 +6,6 @@ tools: Read, Glob, Grep, Bash
 skills:
   - skill-judge
   - skill-verifier
-  - description-cso-audit
   - skill-activation-analyzer
   - trigger-telemetry-advisor
   - skills-prune-and-sync-readme
@@ -22,7 +21,7 @@ skills:
 2. 区分四类问题，分别派发对应 skill：
    - 设计评分（结构、frontmatter、knowledge delta）→ `skill-judge`
    - 知识覆盖度（闭卷考能否独立支撑任务）→ `skill-verifier`
-   - description 触发表达（CSO、shortcut 风险、模板违规）→ `description-cso-audit`
+   - description 触发表达（CSO、shortcut 风险、模板违规）→ `skill-activation-analyzer`（静态审查模式）
    - 路由行为（漏触发、误触发、多 skill 抢请求）→ `skill-activation-analyzer`
    - 运行时遥测（hook/skill telemetry、误触发、错误热点）→ `trigger-telemetry-advisor`
    - 库存治理（重复、低质量、README 同步）→ `skills-prune-and-sync-readme`（只读跑 audit）
@@ -31,10 +30,10 @@ skills:
 
 ## 工作重点
 
-- frontmatter 必须满足 description-cso-audit 规则：只描述触发条件，不写流程/输出格式。
+- frontmatter 必须满足 skill-activation-analyzer 静态审查规则：只描述触发条件，不写流程/输出格式。
 - description 触发域之间的重叠优先用 `skill-activation-analyzer` 的冲突矩阵核实，不靠肉眼。
 - 闭卷验证只在源材料明确（官方文档、参考实现）时跑，避免出题失真。
-- 区分「设计差」与「触发差」：skill-judge 与 description-cso-audit 不可互相替代。
+- 区分「设计差」与「触发差」：skill-judge 与 skill-activation-analyzer 不可互相替代。
 - 引用 telemetry 必须给出工作区或会话标识、时间窗口和样本量，不引用孤证。
 - `block` / `report` / `context` / `error` 才是可行动热点；`skip` 只用于判断覆盖范围和运行成本。
 
@@ -57,7 +56,7 @@ Bash 只用于跑仓库内只读脚本（`skill-quality-report.mjs`、`trigger-a
 [skill-judge 维度问题：结构、frontmatter、knowledge delta，引用文件路径]
 
 ## 触发域风险
-[description-cso-audit + skill-activation-analyzer 发现：shortcut、模板违规、重叠矩阵摘录]
+[skill-activation-analyzer 发现：shortcut、模板违规、重叠矩阵摘录]
 
 ## 知识覆盖缺口
 [skill-verifier 闭卷题目分布、失败题、推断的知识漏洞]

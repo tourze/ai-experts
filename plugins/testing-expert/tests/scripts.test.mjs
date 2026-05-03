@@ -5,11 +5,11 @@ import { join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import test from "node:test";
 
-const pluginRoot = resolve("plugins/testing-expert");
-const assessCodeScript = resolve(pluginRoot, "skills/brutal-honesty-review/scripts/assess-code.mjs");
-const assessTestsScript = resolve(pluginRoot, "skills/brutal-honesty-review/scripts/assess-tests.mjs");
+const pluginRoot = resolve("plugins/coding-expert");
+const assessCodeScript = resolve(pluginRoot, "skills/code-review/scripts/assess-code.mjs");
+const assessTestsScript = resolve(pluginRoot, "skills/code-review/scripts/assess-tests.mjs");
 
-test("brutal-honesty Node scripts 通过语法检查", () => {
+test("code-review assess scripts 通过语法检查", () => {
   for (const script of [assessCodeScript, assessTestsScript]) {
     const result = spawnSync(process.execPath, ["--check", script], {
       encoding: "utf-8",

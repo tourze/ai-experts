@@ -8,7 +8,6 @@ skills:
   - complexity-reducer
   - refactoring-checklist
   - debug-methodology
-  - brutal-honesty-review
   - pre-landing-review
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding

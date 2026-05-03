@@ -1,128 +1,105 @@
 ---
 name: laravel-patterns
-description: 当用户提到 Laravel 分层、Service/Action 边界、scopeBindings、多租户路由、N+1 或 API 资源设计时使用。
+description: 当用户需要 Laravel 分层架构、Service/Action 边界、scopeBindings、多租户路由、N+1 预防或 API 资源设计时使用。覆盖从架构组织到具体实现（Model/Migration/FormRequest/JsonResource/Job/Livewire）的全谱模式。
 ---
 
 # Laravel 开发模式
 
+原 `laravel-layering-patterns` 已合并入本 skill，架构与实现两层统一。
+
 ## 适用场景
 
-- 设计或重构控制器、动作、服务、查询对象和 API 资源边界。
-- 需要在父子资源路由、多租户隔离、事务和缓存之间建立稳定约束。
-- 需要把“能跑”的实现提升为“可维护”的 Laravel 代码组织方式。
-- 具体落地实现看 [laravel-layering-patterns](../laravel-layering-patterns/SKILL.md)，安全边界看 [laravel-security](../laravel-security/SKILL.md)，测试回归看 [laravel-tdd](../laravel-tdd/SKILL.md)。
+- 设计或重构控制器、Action、Service、Query Object、API 资源和队列作业边界。
+- 需要从需求直接落到 Artisan 命令、Eloquent 关系、FormRequest、JsonResource 或 Livewire 组件。
+- 深入专题按需加载：`references/eloquent.md`、`routing.md`、`queues.md`、`livewire.md`、`testing.md`。
+- 架构边界/安全/测试/发布检查切换到 `laravel-security`、`laravel-tdd`、`laravel-verification`。
 
 ## 核心约束
 
-- 控制器只负责授权、输入整形、调用动作或服务、返回资源；业务规则不落在控制器或 Blade 中。
-- 嵌套路由默认使用 `scopeBindings()`；路由绑定提升可预测性，但不能代替策略或 `authorize()`。
-- 多表写操作默认放在事务中；缓存命中必须成对设计失效策略。
-- 复杂筛选使用 Eloquent 作用域、查询对象或专用 action，避免把 SQL 拼接散落在多个入口。
-- API 响应统一走 `JsonResource` / `ResourceCollection`，不要混用随意结构。
+- 目标默认 Laravel 10+ / PHP 8.2+，使用严格类型、枚举、只读依赖和返回类型。
+- 控制器只做授权、参数接收和响应封装；校验 → `FormRequest`，序列化 → `JsonResource`，业务逻辑 → Action/Service。
+- 嵌套路由使用 `scopeBindings()`；路由绑定提升可预测性，但不能代替策略或 `authorize()`。
+- 关系查询默认 `with()` / `load()`，不要把 N+1 留给调用方。
+- 多表写操作放事务中；缓存命中必须成对设计失效策略（推荐模型事件绑定）。
+- 耗时副作用默认入队，失败路径必须可观察。
+- API 响应统一走 `JsonResource` / `ResourceCollection`，包含 `data`、`meta`、`error` 约定字段。
+- 配置与密钥留在 `config/*` 和环境变量，禁止硬编码环境差异。
 
 ## 代码模式
 
+**控制器 + Action + FormRequest：**
 ```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Http\Controllers\Api;
-
-use App\Actions\Projects\CreateProjectAction;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreProjectRequest;
-use App\Http\Resources\ProjectResource;
-use App\Models\Project;
-use Illuminate\Http\JsonResponse;
-
-final class ProjectController extends Controller
+final class PostController extends Controller
 {
-    public function __construct(private readonly CreateProjectAction $createProject) {}
-
-    public function store(StoreProjectRequest $request): JsonResponse
+    public function __construct(private readonly CreatePostAction $createPost) {}
+    public function store(StorePostRequest $request): JsonResponse
     {
-        $this->authorize('create', Project::class);
-
-        $project = $this->createProject->handle(
-            actor: $request->user(),
-            name: (string) $request->validated('name'),
-        );
-
-        return response()->json([
-            'data' => ProjectResource::make($project),
-            'meta' => null,
-            'error' => null,
-        ], 201);
+        $this->authorize('create', Post::class);
+        $post = $this->createPost->handle(actor: $request->user(), ...$request->safe()->only(['title', 'body']));
+        return response()->json(['data' => PostResource::make($post->load('author'))], 201);
     }
 }
 ```
 
+**Model 规范（casts/enum/scope/relation）：**
 ```php
-<?php
+final class Post extends Model
+{
+    use HasFactory;
+    protected $fillable = ['title', 'body', 'status', 'author_id'];
+    protected $casts = ['status' => PostStatus::class, 'published_at' => 'immutable_datetime'];
+    public function author(): BelongsTo { return $this->belongsTo(User::class, 'author_id'); }
+    public function scopePublished(Builder $query): Builder { return $query->where('status', PostStatus::Published); }
+}
+```
 
-use App\Http\Controllers\Api\AccountProjectController;
-use Illuminate\Support\Facades\Route;
-
-Route::middleware('auth:sanctum')
-    ->scopeBindings()
-    ->group(function (): void {
-        Route::get('/accounts/{account}/projects/{project}', [AccountProjectController::class, 'show'])
-            ->name('accounts.projects.show');
-    });
+**scopeBindings + Policy：**
+```php
+Route::middleware('auth:sanctum')->scopeBindings()->group(function (): void {
+    Route::get('/accounts/{account}/projects/{project}', [ProjectController::class, 'show']);
+});
+// 控制器内：$this->authorize('view', [$project, $account]);
 ```
 
 ## 检查清单
 
-- 每个 HTTP 入口都能回答“控制器负责什么、动作负责什么、模型负责什么”。
-- 嵌套资源是否启用了 `scopeBindings()`，并且策略依旧覆盖真正的访问控制。
-- 所有多写操作是否包进事务，失败后是否留下半成功状态。
-- 缓存键、缓存标签和失效时机是否跟模型生命周期绑定，而不是靠人工记忆。
-- API 返回是否统一包含 `data`、`meta`、`error` 等约定字段，避免客户端分支爆炸。
+- 每个 HTTP 入口能回答：控制器/FormRequest/Action/Resource 各负责什么。
+- 嵌套资源启用 `scopeBindings()` 且 Policy 覆盖真正访问控制。
+- 模型变更同步检查 `$fillable`、`$casts`、关系、策略和资源输出。
+- 多表写操作在事务中，缓存失效绑定模型生命周期。
+- N+1 已排查：列表/详情/嵌套资源都用了 `with()` 或 `load()`。
+- 引入后台任务时同步检查幂等、重试、失败日志和 queue 配置。
 
 ## 反模式
 
-### FAIL: 嵌套路由只绑定不授权
-
+### FAIL: 控制器同步编排副作用
 ```php
-Route::get('/accounts/{account}/projects/{project}', function (Account $account, Project $project) {
-    return $project; // 只要知道 URL，任何人都能读任何账户的项目
+DB::transaction(function () use ($request) {
+    $user = User::create($request->all());
+    Mail::to($user)->send(new Welcome($user));  // 阻塞请求
+    Stripe::charge($user, $request->amount);    // 外部 HTTP 同步
 });
 ```
 
-### PASS: scopeBindings + Policy
-
+### PASS: Action + Job 异步
 ```php
-<?php
-
-use App\Http\Controllers\Controller;
-use App\Http\Resources\ProjectResource;
-use Illuminate\Support\Facades\Route;
-
-Route::middleware('auth:sanctum')->scopeBindings()->group(function (): void {
-    Route::get('/accounts/{account}/projects/{project}', [ProjectController::class, 'show']);
-});
-
-final class ProjectController extends Controller
+final class UserController extends Controller
 {
-    public function show(Account $account, Project $project): ProjectResource
+    public function store(StoreUserRequest $request, CreateUserAction $action): UserResource
     {
-        $this->authorize('view', [$project, $account]); // 真正的访问控制
-
-        return ProjectResource::make($project);
+        $user = $action->handle($request->validated());
+        SendWelcomeEmail::dispatch($user);
+        return UserResource::make($user);
     }
 }
 ```
 
-### FAIL: 缓存只加不失效
-
+### FAIL: N+1 懒加载
 ```php
-$user = Cache::remember("user:$id", 3600, fn() => User::find($id));
-// 用户改了邮箱，但缓存还是旧值 1 小时
+PostResource::collection(Post::all()); // 每个 post 触发 author 查询
 ```
 
-### PASS: 模型事件绑定失效
-
+### FAIL: 缓存只加不失效
 ```php
-User::updated(fn($user) => Cache::forget("user:{$user->id}"));
+$u = Cache::remember("user:$id", 3600, fn() => User::find($id)); // 无失效策略
 ```

@@ -6,7 +6,6 @@ tools: Read, Glob, Grep, Bash
 skills:
   - engineering-retro
   - author-contributions
-  - lesson-learned
   - git-advanced-workflows
   - fact-vs-inference-vs-assumption
 ---

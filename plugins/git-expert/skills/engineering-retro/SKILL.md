@@ -1,6 +1,6 @@
 ---
 name: engineering-retro
-description: 当用户需要基于 git log 回顾近期开发进度、提交节奏、热点文件、协作模式或工程复盘指标时使用。
+description: 当用户需要基于 git log 回顾近期开发进度、提交节奏、热点文件、协作模式或工程复盘指标时使用。也用于从代码变更提炼工程经验。
 context: fork
 agent: git-expert:git-historian
 metadata:
@@ -96,6 +96,10 @@ git log origin/$DEFAULT_BRANCH --since="$SINCE" --name-only --format="" -- $PATH
 - PR 统计是否在 GitHub/`gh` 不可用时优雅跳过。
 - 若用户没要求落盘，是否保持纯只读输出。
 - 若需要环比，是否明确说明使用了本次或历史快照。
+
+## 经验提炼
+
+从代码变更提炼工程教训：见 [references/lesson-learned.md](./references/lesson-learned.md)。
 
 ## 反模式
 

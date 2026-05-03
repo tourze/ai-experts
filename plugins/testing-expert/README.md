@@ -9,11 +9,9 @@
 | `test-driven-development` | TDD 工作流（Red-Green-Refactor） |
 | `testing-strategy` | 常规测试计划设计与分层建议 |
 | `test-brainstorm` | Bug 发现后测试用例头脑风暴 |
-| `six-thinking-hats` | 六顶思考帽多维测试方法论 |
 | `pre-landing-review` | 代码变更落地前安全审计 |
 | `webapp-testing` | Playwright Web 应用交互测试 |
 | `benchmark-runner` | 算法/模型/实现基准测试设计 |
-| `brutal-honesty-review` | 无糖衣代码/测试质量审查 |
 | `test-quality-review` | 当用户要审查已有测试代码的质量、诊断测试套件衰退风险或回答'这些测试写得怎么样'时使用。 |
 | `verification-loop` | 当需要设计自动化验证循环、确保 agent 在所有检查通过后才能退出、或防止 agent 过早声称完成时使用。 |
 

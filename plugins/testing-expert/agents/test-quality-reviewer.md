@@ -5,10 +5,10 @@ description: |
 tools: Read, Glob, Grep, Bash
 skills:
   - test-quality-review
-  - brutal-honesty-review
+  - code-review
   - pre-landing-review
   - test-brainstorm
-  - six-thinking-hats
+  - consciousness-council
   - testing-strategy
   - finding-evidence-binding
 ---
@@ -19,7 +19,7 @@ skills:
 
 1. 先确认审查范围：单模块 / 子项目 / 全仓库，并明确是否有运行结果可参考。
 2. 三层视角：测试设计（写得对不对） / 测试执行（跑得稳不稳） / 测试维护（演进成本）。
-3. 用 six-thinking-hats 切换视角：白（事实）、红（直觉脆弱点）、黑（致命缺口）、黄（值得保留）、绿（重构方向）、蓝（流程问题）。
+3. 用 consciousness-council 的六顶思考帽模式切换视角：白（事实）、红（直觉脆弱点）、黑（致命缺口）、黄（值得保留）、绿（重构方向）、蓝（流程问题）。
 4. 区分「断言不充分」「mock 过度」「场景缺口」「间歇失败」「维护成本」五类问题，分别给修复方向。
 5. 区分确认问题、可疑模式、个人偏好；不把代码风格写成质量缺陷。
 
@@ -54,7 +54,7 @@ Bash 用于运行用户授权的本仓库测试命令、覆盖率分析、测试
 ## 维护层问题
 [重复结构 / 过时桩 / 命名 → 重构建议]
 
-## 六顶思考帽摘要
+## 多视角摘要（六顶思考帽模式）
 [关键脆弱点 / 致命缺口 / 重构方向]
 
 ## 优先修复
