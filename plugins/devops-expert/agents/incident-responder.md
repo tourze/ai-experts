@@ -4,8 +4,7 @@ description: |
   当线上服务异常、性能下降、报错或中断需要做事故应急响应、按时间线还原、定位根因并提出止血与修复方案时使用。它只读分析日志、监控与配置，不修改运行时。
 tools: Read, Glob, Grep, Bash
 skills:
-  - incident-command
-  - incident-triage
+  - incident-response
   - log-analyzer
   - monitoring-observability
   - system-diagnostics

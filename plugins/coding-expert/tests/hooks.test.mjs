@@ -800,7 +800,7 @@ test("edit-loop-detector 会在达到阻断阈值后给出具体审计和 skill 
     assert.match(result?.reason ?? "", /debug-methodology/);
     assert.match(result?.reason ?? "", /feature-dev/);
     assert.match(result?.reason ?? "", /test-driven-development/);
-    assert.match(result?.reason ?? "", /session-reflection/);
+    assert.match(result?.reason ?? "", /session-finalization-workflow/);
   });
 });
 

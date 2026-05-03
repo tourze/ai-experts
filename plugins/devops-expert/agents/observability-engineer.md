@@ -8,7 +8,7 @@ skills:
   - python-observability
   - go-observability
   - log-analyzer
-  - incident-triage
+  - incident-response
   - system-diagnostics
 memory: project
 ---

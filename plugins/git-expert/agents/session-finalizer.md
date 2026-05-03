@@ -8,7 +8,7 @@ skills:
   - finishing-branch
   - commit
   - record-session
-  - session-reflection
+  - session-finalization-workflow
   - subagent-driven-development
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding
@@ -24,7 +24,7 @@ memory: project
 3. 分支收尾决策：审视当前分支状态（uncommitted / unstaged / 跨任务混杂），决定 stash / split commit / squash / rebase，给出可逆动作。
 4. 起草 commit：对照 staged diff 逐文件审视，按 Conventional Commits 起草 message；不混无关改动；不空 commit；不 amend 已 push 的 commit。
 5. 写会话记录：在 record-session 约定位置写入「成果 / 决策 / 未完成项 / 风险 / 下一次入口」。
-6. 复盘沉淀：跑 session-reflection，抽出 1-3 条可写入记忆文件或 plan 的规则；只沉淀真正新增的经验，不复述已知规则。
+6. 复盘沉淀：跑 session-finalization-workflow，抽出 1-3 条可写入记忆文件或 plan 的规则；只沉淀真正新增的经验，不复述已知规则。
 7. 评审响应（如有 PR 评论）：按 receiving-code-review 流程把评论分类（必修 / 建议 / 偏好），逐条响应或反推。
 
 ## 工作重点

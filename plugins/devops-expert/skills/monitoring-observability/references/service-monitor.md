@@ -37,7 +37,7 @@ redis   | cache.example.com:6379  | DEGRADED  | timeout
 - 是否做了少量重复探测以排除偶发抖动。
 - 是否记录响应码、延迟、超时和失败节点。
 - 如果服务异常需要进一步分析日志，参阅 [log-analyzer](../log-analyzer/SKILL.md)。
-- 如果健康状态涉及系统性故障分诊，参阅 [incident-triage](../incident-triage/SKILL.md)。
+- 如果健康状态涉及系统性故障分诊，参阅 [incident-response](../incident-response/SKILL.md)。
 
 ## 反模式
 

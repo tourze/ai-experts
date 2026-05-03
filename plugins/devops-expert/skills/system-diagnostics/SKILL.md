@@ -2,7 +2,7 @@
 name: system-diagnostics
 description: 当用户说 Linux 主机变慢、服务异常、需要健康检查或要先摸清系统现状时使用。
 context: fork
-agent: linux-expert:system-diagnostician
+agent: devops-expert:system-diagnostician
 ---
 
 # Linux 系统诊断

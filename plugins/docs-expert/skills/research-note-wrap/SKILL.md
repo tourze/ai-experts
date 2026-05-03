@@ -13,7 +13,7 @@ description: 当用户要把当前调研或分析会话压成高密度 Markdown 
   - coding 改完写 session journal → `git-expert:record-session`
   - 已有多批检索结果做来源分层综合
   - 外部会议/电话转写 → `meeting-expert:meeting-notes-and-actions`
-  - 复盘本轮合作并沉淀经验 → `skill-expert:session-reflection`
+  - 复盘本轮合作并沉淀经验 → `git-expert:session-finalization-workflow`
 
 ## 核心约束
 

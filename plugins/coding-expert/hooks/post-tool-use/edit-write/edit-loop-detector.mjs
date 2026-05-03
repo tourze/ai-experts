@@ -96,7 +96,7 @@ export async function run(payload) {
         "     - bug / failing test / stack trace / flaky → `debug-methodology`",
         "     - 方案或边界不清、跨文件实现 → `feature-dev`（必要时先 `plan-review`）",
         "     - 修复需要补回归测试 → `test-driven-development` 或 `testing-strategy`",
-        "     - 已经被用户纠正或反复返工 → `session-reflection`",
+        "     - 已经被用户纠正或反复返工 → `session-finalization-workflow`",
         "  4. 形成一个最小改动计划后，再用小 Edit 或 Write 一次性落地",
         "",
         `如需重置计数，等待 ${Math.round(EXPIRY_MS / 60000)} 分钟后自动过期。`,

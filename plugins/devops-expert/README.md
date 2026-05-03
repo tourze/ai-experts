@@ -14,14 +14,13 @@ DevOps 专家能力，覆盖 Docker/Helm/K8s、CI/CD 流水线、Nginx 配置、
 | `gh-fix-ci` | GitHub Actions 检查失败定位与修复 |
 | `gitlab-ci-patterns` | GitLab CI/CD 多阶段流水线 |
 | `helm-chart-scaffolding` | Helm Chart 设计与 K8s 部署 |
-| `incident-triage` | 线上事件分级响应与排查 |
+| `incident-response` | 事故全生命周期：证据驱动分级诊断 → 时间线构建 → 根因定位 → 止血决策 → 修复路线 → 观测补齐 |
 | `linux-shell-scripting` | Bash/Zsh 自动化、运维脚本与命令行工具 |
 | `log-analyzer` | 日志调查与错误追踪 |
 | `monitoring-observability` | 监控、日志与可观测性体系搭建 |
 | `network-troubleshooter` | Linux 网络不通、DNS、端口、TLS 与链路排障 |
 | `openapi-spec-generation` | OpenAPI 3.1 规范生成与维护 |
 | `remote-ssh-command` | 通过 SSH 在远端机器执行命令并记录审计历史 |
-| `incident-command` | 事故指挥方法论：时间线构建、根因与触发因素分离、止血优先决策、分级修复路线与观测补齐 |
 | `system-diagnostics` | Linux 主机健康检查、瓶颈与误配置定位 |
 
 ## Agents

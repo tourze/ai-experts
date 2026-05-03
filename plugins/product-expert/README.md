@@ -4,8 +4,8 @@
 
 ## 目录结构
 
-- `skills/`：59 个产品与战略类技能，统一采用「适用场景 → 核心约束 → 代码模式 → 检查清单 → 反模式」结构。
-- `agents/`：11 个窄向 agent，按问题域预加载相关 skill 输出综合分析。
+- `skills/`：58 个产品与战略类技能，统一采用「适用场景 → 核心约束 → 代码模式 → 检查清单 → 反模式」结构。
+- `agents/`：6 个窄向 agent，按问题域预加载相关 skill 输出综合分析。
 - `tests/`：覆盖工具行为与 `SKILL.md` 链接校验。
 
 ## Skills
@@ -15,13 +15,12 @@
 | `create-prd` | 8 段式 PRD 文档撰写 |
 | `agile-product-owner` | 敏捷产品负责人（Backlog/Sprint） |
 | `business-model` | 商业模型画布（9 大模块） |
-| `competitive-intelligence` | 竞品研究与交互式战斗卡 |
+| `competitive-intelligence` | 竞品情报：单一竞品拆解到多框架交叉验证的全谱分析 |
 | `competitive-teardown` | 竞品产品拆解分析 |
 | `customer-journey-map` | 端到端用户旅程地图 |
 | `idea-validator` | 创业想法验证（Hexa 机会备忘录） |
 | `market-sizing-analysis` | TAM/SAM/SOM 市场规模估算 |
 | `mom-test` | 用户访谈方法论（妈妈测试） |
-| `multi-framework-competitive-analysis` | 当需要用多个竞争分析框架交叉验证竞争态势时使用；覆盖行业结构、差异化定位、价格-价值等多维度交叉印证方法论。 |
 | `obviously-awesome` | 产品定位方法论 |
 | `opportunity-solution-tree` | 机会解决方案树 |
 | `crossing-the-chasm` | 技术采用生命周期 |
@@ -82,14 +81,8 @@
 |-------|----------|--------------|
 | `business-analyst` | 开放式商业问题分析，串联问题界定、假设树、数据验证、模型选择与行动建议 | mckinsey-7-step, five-w-two-h, fact-vs-inference-vs-assumption, finding-evidence-binding, pestel-analysis, porters-five-forces, 3c-strategic-triangle, business-model, business-health-diagnostic, marketing-mix-4p, customer-research, data-analysis |
 | `competitive-strategist` | 竞争结构、差异化定位与价格-价值策略综合分析 | porters-five-forces, 3c-strategic-triangle, competitive-teardown, blue-ocean-strategy, strategy-clock, pricing-strategy, obviously-awesome, crossing-the-chasm |
-| `macro-environment-analyst` | 宏观环境扫描、外部冲击传导与技术趋势评估 | pestel-analysis, swot-analysis, tech-maturity-curve, evaluating-new-technology, scp-analysis（thinking-expert） |
-| `org-diagnostician` | 组织能力、执行落地、人才结构与绩效体系诊断 | mckinsey-7s, value-chain-analysis, raci-matrix, talent-management, team-composition-analysis, greiner-growth-model, org-canvas, balanced-scorecard, blm-model |
-| `growth-stage-strategist` | 增长阶段判断、增长方向选择与增长飞轮设计 | s-curve-growth, designing-growth-loops, plg-readiness, business-iron-triangle, channel-economics, ansoff-matrix（marketing-expert） |
-| `business-model-architect` | 商业模式设计、市场规模估算与单位经济校验 | business-model, weizhus-six-elements, saas-metrics, market-sizing-analysis, business-iron-triangle |
 | `problem-decomposer` | 复杂问题拆解、根因诊断、决策推进与改进闭环 | systems-thinking, scoping-cutting, planning-under-uncertainty, running-decision-processes, process-optimization, mckinsey-7-step / fishbone-diagram / five-w-two-h / pdca-cycle（thinking-expert） |
-| `delivery-planner` | 端到端产品交付规划，预加载 9 个需求与执行框架 | 见 agent 文件 |
 | `startup-advisor` | 端到端创业评估，预加载 10 个商业与融资框架 | 见 agent 文件 |
-| `customer-research-lead` | 客户研究 / 用户访谈 / 问卷设计 / ICP 验证 / 旅程梳理，可写盘 | mom-test, customer-research（marketing-expert）, designing-surveys（marketing-expert）, customer-journey-map, idea-validator, startup-icp-definer |
 | `pm-delivery-coach` | 敏捷交付教练：user story / Epic 拆解 / 估算校准 / 版本规划 / PM 能力辅导 | agile-product-owner, user-story-patterns, epic-decomposition, estimate-calibrator, version-planner, pm-career-ladder |
 | `product-discoverer` | 当需要做产品发现与验证时使用——覆盖机会识别、用户验证、PRD 撰写、增长飞轮设计、技术评估和组织对齐。可以在用户指定目录下创建产品文档。 | create-prd, opportunity-solution-tree, prfaq, designing-growth-loops, evaluating-new-technology, product-design-critic, org-canvas, raci-matrix, meeting-insights-analyzer, fact-vs-inference-vs-assumption |
 

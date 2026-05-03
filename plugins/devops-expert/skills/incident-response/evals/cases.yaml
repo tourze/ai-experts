@@ -1,0 +1,41 @@
+cases:
+  - id: incident_triage_primary
+    prompt: "线上服务挂了，帮我排查根因——先做分级诊断，生成假设，逐个验证"
+    fixtures: []
+    rubric:
+      - "uses evidence-driven triage: symptom → hypotheses → verification → root cause"
+      - "runs read-only diagnostic commands before suggesting any fix"
+      - "gives 2-3 ranked hypotheses, not single-point guessing"
+    trigger_expected: true
+
+  - id: incident_command_timeline
+    prompt: "线上服务挂了，帮我建立事故时间线、分离根因和触发因素，制定止血方案"
+    fixtures: []
+    rubric:
+      - "builds incident timeline with UTC ordering"
+      - "separates root cause from trigger"
+      - "provides reversible mitigation and graded fix plan"
+    trigger_expected: true
+
+  - id: incident_full_lifecycle
+    prompt: "服务突然 502，帮我从诊断到修复走完整流程"
+    fixtures: []
+    rubric:
+      - "covers full lifecycle: triage → timeline → root cause → mitigation → fix roadmap"
+      - "distinguishes Phase 1 diagnosis from Phase 2 command decisions"
+    trigger_expected: true
+
+  - id: negative_check_server_logs
+    prompt: "帮我查一下这个 Nginx 错误日志，看看为什么 502"
+    fixtures: []
+    rubric:
+      - "does not activate incident response"
+      - "isolated log checking belongs to log-analyzer"
+    trigger_expected: false
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

@@ -26,7 +26,7 @@ export const SESSION_START_ROUTING_CONTEXT = [
 ].join("\n");
 
 export const SESSION_REFLECTION_BULLET =
-  "- `session-reflection`：复盘本轮会话，给出全局记忆 / 可复用工作流 / Skill / Hooks 的优化建议。示例 prompt：`请用 /session-reflection 复盘本轮会话`（固定推荐，由用户决定是否执行）";
+  "- `session-finalization-workflow`：复盘本轮会话，给出全局记忆 / 可复用工作流 / Skill / Hooks 的优化建议。示例 prompt：`请用 /session-finalization-workflow 复盘本轮会话`（固定推荐，由用户决定是否执行）";
 
 export const NEXT_STEP_BLOCK_TEMPLATE = [
   "---",
@@ -40,7 +40,7 @@ export const NEXT_STEP_RULES = [
   "执行规则：",
   "- 推荐 1-3 个与当前任务直接相关的 skill，给出可直接复制执行的 prompt。",
   "- 若当前任务已闭合或无适用 skill，仍必须输出该区块，写明“本轮无推荐，原因：……”。",
-  "- 末尾必须固定追加 `session-reflection` 推荐，原文复制下面这条 bullet：",
+  "- 末尾必须固定追加 `session-finalization-workflow` 推荐，原文复制下面这条 bullet：",
   `  ${SESSION_REFLECTION_BULLET}`,
   "- 闲聊、确认性回复（如“好的”“已完成”）、纯提问等非任务响应可省略整段。",
   "- 禁止罗列式刷清单，禁止推荐与当前目标无关的 skill。",
@@ -54,7 +54,7 @@ export const ROUTING_REMINDER = [
   "",
   "回复开头包含路由声明（📌 Skill 路由 / 📌 本轮未命中 skill），",
   "回复结尾包含下一步推荐（📌 下一步推荐）；",
-  "下一步推荐区块末尾固定追加 `session-reflection` 推荐，",
+  "下一步推荐区块末尾固定追加 `session-finalization-workflow` 推荐，",
   "由用户决定是否复盘本轮会话。",
   "命中 skill 优先执行，不做菜单式推荐。",
   "",
