@@ -14,7 +14,7 @@ description: "在需要评审、重构或直接实现高转化落地页时使用
 - 先锁定单一主转化动作，页面其它元素都服务这个动作。
 - 上半屏解决“我为什么继续看”，下半屏解决“我为什么现在行动”。
 - 默认实现约束是 shadcn/ui + Tailwind + Iconify，避免引入额外视觉系统分叉。
-- 若任务主要是实验设计或诊断，不直接写代码时，配合 [cro-methodology](../cro-methodology/SKILL.md)；若重点是文案打磨，配合 [copy-editing](../copy-editing/SKILL.md)。
+- 若任务主要是实验设计或诊断，不直接写代码时，配合 [cro-methodology](../cro-methodology/SKILL.md)。
 
 ## 代码模式
 - 参考现成示例资产： [LandingPage.tsx](assets/vite-shadcn-iconify-landing/src/pages/LandingPage.tsx)。

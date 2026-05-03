@@ -1,0 +1,24 @@
+cases:
+  - id: cross_framework_competition
+    prompt: "用 Porter 五力、SWOT 和 BCG 矩阵一起分析我们的竞争位置，交叉验证结论"
+    fixtures: []
+    rubric:
+      - "uses multiple competitive analysis frameworks"
+      - "cross-validates findings across frameworks"
+    trigger_expected: true
+
+  - id: competitive_positioning_multi_angle
+    prompt: "我们进入新市场前，需要从行业结构、差异化和价格价值几个维度交叉验证竞争态势"
+    fixtures: []
+    rubric:
+      - "applies multiple frameworks for cross-validation"
+      - "covers multiple competitive dimensions"
+    trigger_expected: true
+
+  - id: negative_single_competitor_deep_dive
+    prompt: "拆解一下 Notion 这个产品，做个功能差距分析"
+    fixtures: []
+    rubric:
+      - "does not activate multi-framework analysis"
+      - "single competitor deep dive uses competitive-intelligence"
+    trigger_expected: false

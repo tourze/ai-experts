@@ -1,0 +1,25 @@
+cases:
+  - id: plan_large_refactor
+    prompt: "这个模块有 3000 行，耦合很严重，帮我制定一个重构计划，分步推进不要一次大改"
+    fixtures: []
+    rubric:
+      - "establishes baseline before changes"
+      - "identifies seams and incremental steps"
+      - "provides verification checkpoints per step"
+    trigger_expected: true
+
+  - id: tech_debt_roadmap
+    prompt: "我们代码库有循环依赖和 God class 问题，需要一个系统化的重构路线图"
+    fixtures: []
+    rubric:
+      - "analyzes structural issues before proposing changes"
+      - "plans incremental refactoring steps"
+    trigger_expected: true
+
+  - id: negative_single_rename
+    prompt: "把 getUserData 改名为 fetchUserData"
+    fixtures: []
+    rubric:
+      - "does not activate refactoring planning"
+      - "simple rename does not need a plan"
+    trigger_expected: false

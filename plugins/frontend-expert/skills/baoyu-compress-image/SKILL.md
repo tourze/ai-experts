@@ -10,7 +10,7 @@ description: 当用户要压缩图片、转成 WebP 或导出更小的 PNG/JPEG 
 - 单张图片需要压成更小的 `webp`、`png` 或 `jpeg`。
 - 一整个目录里的说明图、插图需要批量减重。
 - 文章配图生成后，需要在提交前统一压缩。
-- 如果目标是重新设计图片内容而不是压缩体积，改用 [concept-to-image](../concept-to-image/SKILL.md)。
+- 如果目标是重新设计图片内容而不是压缩体积，参考图片设计相关方法。
 
 ## 核心约束
 
@@ -60,7 +60,7 @@ node scripts/main.mjs ./imgs --recursive --quality 72 --json
 - `quality` 在 `0-100` 范围内。
 - 选择的输出格式与后缀一致：`webp`、`png`、`jpeg`。
 - 若未传 `--keep`，已确认源文件会在成功转码后删除。
-- 若需要链到文章配图流程，先跑 [baoyu-article-illustrator](../baoyu-article-illustrator/SKILL.md)，再做统一压缩。
+- 若需要链到文章配图流程，先做图片生成再做统一压缩。
 
 ## 反模式
 

@@ -1,0 +1,24 @@
+cases:
+  - id: evaluate_startup_idea
+    prompt: "我有一个创业想法，帮我快速评估可行性，覆盖 ICP、市场、定价和融资维度"
+    fixtures: []
+    rubric:
+      - "uses structured checklist across multiple dimensions"
+      - "covers ICP, market, pricing, and team"
+    trigger_expected: true
+
+  - id: quick_viability_check
+    prompt: "在投入开发前，帮我快速检查这个产品想法到底靠不靠谱"
+    fixtures: []
+    rubric:
+      - "provides structured viability assessment"
+      - "flags critical risks early"
+    trigger_expected: true
+
+  - id: negative_full_business_plan
+    prompt: "帮我写一份完整的商业计划书，包括 5 年财务预测和组织架构"
+    fixtures: []
+    rubric:
+      - "does not activate quick viability checklist"
+      - "full business plan requires deeper analysis tools"
+    trigger_expected: false

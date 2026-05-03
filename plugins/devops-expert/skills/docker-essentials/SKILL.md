@@ -52,8 +52,6 @@ docker compose down
 - 是否检查容器退出码、最近日志和健康检查状态。
 - 是否确认网络连通性、DNS 与环境变量注入方式。
 - 是否为镜像构建设置固定标签、构建参数和目标平台。
-- 如果容器后面挂了反向代理，参阅 [nginx-config-optimizer](../nginx-config-optimizer/SKILL.md)。
-- 如果要把容器纳入巡检，参阅 [service-monitor](../service-monitor/SKILL.md)。
 
 ## 反模式
 

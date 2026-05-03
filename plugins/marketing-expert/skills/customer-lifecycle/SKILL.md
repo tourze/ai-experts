@@ -10,7 +10,6 @@ description: 当用户要做客户分层管理、CLV 分层、生命周期营销
 - 客户生命周期：从观望-激活-扩展-续约-赢回，按阶段定营销动作。
 - 产品 PLC：判断产品所处阶段（导入/成长/成熟/衰退），匹配策略与投入。
 - 与 `s-curve-growth` 配合：S 曲线看动力学，本 skill 看运营策略。
-- 与 [churn-prevention](../churn-prevention/SKILL.md) 配合：本 skill 决定谁该留、谁该提价或放弃；churn-prevention 设计具体留存动作。
 
 ## 核心约束
 - 价值分层依据是**利润贡献（CLV）**，不是收入或频次。高收入低利润可能是铅层。

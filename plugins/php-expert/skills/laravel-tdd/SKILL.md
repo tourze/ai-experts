@@ -1,6 +1,6 @@
 ---
 name: laravel-tdd
-description: 当用户提到 Laravel 测试、Pest、PHPUnit、RefreshDatabase、Queue::fake 或 HTTP fake 时使用。
+description: 当用户提到 Laravel 测试、Pest、PHPUnit、RefreshDatabase、Queue::fake 或 HTTP fake 时使用。非 Laravel 的 PHP 项目改用 `php-testing`。
 ---
 
 # Laravel TDD 工作流

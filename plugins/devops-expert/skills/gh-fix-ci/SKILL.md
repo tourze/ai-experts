@@ -39,7 +39,6 @@ gh run view 987654321 --log
 - 是否提取 run id、job id、run URL 与最小失败片段。
 - 是否说明日志不可用、仍在运行或需要更高权限的情况。
 - 是否在改代码前给出一份聚焦修复计划。
-- 如果修复后还要处理 reviewer 评论，转到 [gh-address-comments](../gh-address-comments/SKILL.md)。
 
 ## 反模式
 

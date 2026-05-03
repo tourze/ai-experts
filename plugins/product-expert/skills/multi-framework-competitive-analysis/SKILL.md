@@ -1,6 +1,6 @@
 ---
 name: multi-framework-competitive-analysis
-description: 当需要用多个竞争分析框架交叉验证竞争态势时使用；覆盖行业结构、差异化定位、价格-价值等多维度交叉印证方法论。
+description: 当需要用多个竞争分析框架交叉验证竞争态势时使用。单一竞品拆解改用 `competitive-intelligence`。
 ---
 
 # 多框架竞争分析

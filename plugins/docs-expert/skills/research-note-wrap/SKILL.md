@@ -11,7 +11,7 @@ description: 当用户要把当前调研或分析会话压成高密度 Markdown 
 - 输入是「当前对话已经产出的判断与依据」，不是 git 提交、不是已有多源 retrieval、不是外部会议/电话转写。
 - 反场景路由：
   - coding 改完写 session journal → `git-expert:record-session`
-  - 已有多批检索结果做来源分层综合 → [`knowledge-synthesis`](../knowledge-synthesis/SKILL.md)
+  - 已有多批检索结果做来源分层综合
   - 外部会议/电话转写 → `meeting-expert:meeting-notes-and-actions`
   - 复盘本轮合作并沉淀经验 → `skill-expert:session-reflection`
 

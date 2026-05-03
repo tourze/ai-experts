@@ -46,7 +46,6 @@ ss -tlnp
 - 是否给出 2 到 3 个排序后的假设，而不是只盯单点猜测。
 - 是否明确根因、影响、临时缓解和长期预防。
 - 如果需要深挖日志，转到 [log-analyzer](../log-analyzer/SKILL.md)。
-- 如果重点是端点健康和依赖可用性，转到 [service-monitor](../service-monitor/SKILL.md)。
 
 ## 反模式
 

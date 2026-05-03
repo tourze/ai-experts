@@ -10,8 +10,8 @@ description: 当需要做财报比率分析、DCF 估值、预算偏差或滚动
 - 需要快速完成财报比率分析、预算偏差归因、滚动预测或基础 DCF 估值。
 - 需要直接运行现成脚本，而不是先搭建 Notebook、Pandas 管道或 Excel 模板。
 - 需要把公司经营分析与估值分析串起来时，先用本技能完成输入清洗与基础结论。
-- 若任务升级为更灵活的估值假设、双变量敏感性或盈亏平衡分析，转到 [creating-financial-models](../creating-financial-models/SKILL.md)。
-- 若问题转向投资组合 VaR、CVaR、Sharpe、回撤等市场风险指标，转到 [risk-metrics-calculation](../risk-metrics-calculation/SKILL.md)。
+- 若任务升级为更灵活的估值假设、双变量敏感性或盈亏平衡分析，参考财务建模相关方法。
+- 若问题转向投资组合 VaR、CVaR、Sharpe、回撤等市场风险指标，参考风险管理相关方法。
 
 ## 核心约束
 
@@ -68,7 +68,7 @@ node scripts/forecast_builder.mjs assets/sample_financial_data.json --scenarios 
 - 预算差异分析前是否确认 `line_items` 中包含 `type`、`actual`、`budget`。
 - 滚动预测前是否确认 `historical_periods`、`scenarios`、`cash_flow_inputs` 具备业务含义。
 - 输出为 0 或空列表时，先检查是否把聚合样例的根对象直接传给旧版脚本或错误字段。
-- 需要对结果做长期复用时，确认是否应升级到 [creating-financial-models](../creating-financial-models/SKILL.md)。
+- 需要对结果做长期复用时，确认模型是否满足长期复用要求。
 
 ## 反模式
 

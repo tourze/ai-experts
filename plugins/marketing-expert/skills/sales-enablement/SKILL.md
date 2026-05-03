@@ -1,6 +1,6 @@
 ---
 name: sales-enablement
-description: 当用户要创建销售材料、sales deck、one-pager、异议处理、demo script、销售手册或买家 enablement 内容时使用；竞品页用 `competitor-alternatives`。
+description: 当用户要创建销售材料、sales deck、one-pager、异议处理、demo script、销售手册或买家 enablement 内容时使用。
 ---
 
 # 销售赋能材料（sales-enablement）

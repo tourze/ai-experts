@@ -88,5 +88,5 @@ AI：
 - [`core-web-vitals`](../core-web-vitals/SKILL.md)：单项 CWV 指标的深度优化
 - [`browser-rendering-patterns`](../browser-rendering-patterns/SKILL.md)：hydration、resource hints、content-visibility
 - [`bundle-optimization`](../bundle-optimization/SKILL.md)：代码分割、tree shaking、依赖分析
-- [`react-performance`](../../react-expert/skills/react-performance/SKILL.md)：React 渲染优化专项
-- [`js-micro-optimization`](../../javascript-expert/skills/js-micro-optimization/SKILL.md)：JavaScript 热路径优化
+- [`react-performance`](../../../react-expert/skills/react-performance/SKILL.md)：React 渲染优化专项
+- [`js-micro-optimization`](../../../javascript-expert/skills/js-micro-optimization/SKILL.md)：JavaScript 热路径优化

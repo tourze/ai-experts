@@ -11,7 +11,6 @@ agent: linux-expert:system-diagnostician
 
 - 用户要做健康检查、系统摸底、上线前巡检、故障前置采样或基础资源审计。
 - 若后续需要网络分析，可切到 [network-troubleshooter](../network-troubleshooter/SKILL.md)。
-- 若后续要做空间释放或提速，可切到 [disk-cleanup](../disk-cleanup/SKILL.md) 或 [performance-optimizer](../performance-optimizer/SKILL.md)。
 
 ## 核心约束
 

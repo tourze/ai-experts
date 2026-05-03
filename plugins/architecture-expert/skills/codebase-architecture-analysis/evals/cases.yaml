@@ -1,0 +1,25 @@
+cases:
+  - id: analyze_module_boundaries
+    prompt: "分析这个代码库的模块边界和依赖流，找出分层违规和循环依赖"
+    fixtures: []
+    rubric:
+      - "maps module boundaries and dependencies"
+      - "identifies layering violations"
+      - "binds findings to specific files"
+    trigger_expected: true
+
+  - id: assess_structure_health
+    prompt: "接手一个新项目，帮我快速建立模块地图，评估结构健康度"
+    fixtures: []
+    rubric:
+      - "builds module map"
+      - "quantifies structural health"
+    trigger_expected: true
+
+  - id: negative_code_style_review
+    prompt: "检查这个文件的命名和缩进是否符合规范"
+    fixtures: []
+    rubric:
+      - "does not activate architecture analysis"
+      - "code style review is not architecture analysis"
+    trigger_expected: false

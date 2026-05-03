@@ -54,7 +54,7 @@ components:
 - 是否为每个 path operation 提供 `operationId`、参数和响应码。
 - 是否复用了共享 schema、参数和 response 组件。
 - 是否让示例、默认值和枚举值与 schema 保持一致。
-- 如果 API 生成流程嵌入 CI，参阅 [create-github-action-workflow-specification](../create-github-action-workflow-specification/SKILL.md)。
+- 如果 API 生成流程嵌入 CI，参阅 GitHub Actions 工作流配置相关文档。
 
 ## 反模式
 

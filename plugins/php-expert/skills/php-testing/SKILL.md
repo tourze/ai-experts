@@ -1,6 +1,6 @@
 ---
 name: php-testing
-description: 当用户编写、审查或重构 PHP 测试、PHPUnit/Pest 用例或测试配置时使用。
+description: 当用户编写、审查或重构 PHP 测试、PHPUnit/Pest 用例或测试配置时使用。Laravel 项目改用 `laravel-tdd`。
 ---
 
 # PHP 测试

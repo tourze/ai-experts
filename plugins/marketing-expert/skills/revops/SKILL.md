@@ -1,6 +1,6 @@
 ---
 name: revops
-description: 当用户要设计收入运营体系、线索生命周期、MQL/SQL、lead scoring、CRM 自动化、线索路由或营销销售交接时使用；开发信用 `cold-email`。
+description: 当用户要设计收入运营体系、线索生命周期、MQL/SQL、lead scoring、CRM 自动化、线索路由或营销销售交接时使用。
 ---
 
 # 收入运营体系（revops）

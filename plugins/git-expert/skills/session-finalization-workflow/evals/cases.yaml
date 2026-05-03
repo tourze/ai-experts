@@ -1,0 +1,24 @@
+cases:
+  - id: finish_feature_work
+    prompt: "功能实现完了，测试也过了，帮我把这个分支收尾提交"
+    fixtures: []
+    rubric:
+      - "follows verification → branch → commit → record → review workflow"
+      - "checks tests pass before committing"
+    trigger_expected: true
+
+  - id: ready_to_land
+    prompt: "代码写完了，现在需要把工作从完成推到可交付状态"
+    fixtures: []
+    rubric:
+      - "provides structured finalization workflow"
+      - "covers validation and branch cleanup"
+    trigger_expected: true
+
+  - id: negative_start_new_feature
+    prompt: "帮我新建一个 feature 分支开始开发用户认证功能"
+    fixtures: []
+    rubric:
+      - "does not activate session finalization"
+      - "this is starting new work, not finishing"
+    trigger_expected: false

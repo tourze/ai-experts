@@ -1,6 +1,6 @@
 ---
 name: db-schema-design
-description: "当用户要设计或审查数据库表结构、列类型、约束、字符集、JSON 列或半结构化数据建模时使用。覆盖 MySQL 与 PostgreSQL。"
+description: "当用户要设计或审查数据库表结构、列类型、约束、字符集、JSON 列或半结构化数据建模时使用。"
 ---
 
 # Database Schema Design

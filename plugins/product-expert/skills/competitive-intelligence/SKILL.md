@@ -1,6 +1,6 @@
 ---
 name: competitive-intelligence
-description: 当用户要做竞品情报、battlecard、功能差距分析、市场定位、竞品深度拆解，或用 obviously awesome 定位方法判断产品替代品时使用。
+description: 当用户要做竞品情报、battlecard、功能差距分析、市场定位、竞品深度拆解，或用 obviously awesome 定位方法判断产品替代品时使用。多框架交叉分析改用 `multi-framework-competitive-analysis`。
 ---
 
 # 竞品情报

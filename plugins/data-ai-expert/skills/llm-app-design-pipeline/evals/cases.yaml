@@ -1,0 +1,24 @@
+cases:
+  - id: design_rag_app
+    prompt: "我要做一个基于 RAG 的文档问答应用，帮我从应用形态到 prompt 设计做一个完整的方案"
+    fixtures: []
+    rubric:
+      - "clarifies application type before designing"
+      - "covers prompt design, retrieval, and evaluation"
+    trigger_expected: true
+
+  - id: optimize_llm_pipeline
+    prompt: "现有的 LLM 应用响应太慢，帮我从 pipeline 角度分析瓶颈并优化"
+    fixtures: []
+    rubric:
+      - "uses systematic pipeline analysis"
+      - "identifies stage-by-stage bottlenecks"
+    trigger_expected: true
+
+  - id: negative_general_prompt
+    prompt: "帮我把这个 prompt 写得更简洁"
+    fixtures: []
+    rubric:
+      - "does not activate full pipeline design"
+      - "simple prompt editing is not an LLM app design task"
+    trigger_expected: false

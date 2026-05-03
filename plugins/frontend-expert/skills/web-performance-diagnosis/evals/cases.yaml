@@ -1,0 +1,25 @@
+cases:
+  - id: diagnose_slow_page
+    prompt: "首页 LCP 5 秒，帮我从网络、渲染、运行时三层系统诊断性能瓶颈"
+    fixtures: []
+    rubric:
+      - "uses three-layer diagnosis: network → rendering → runtime"
+      - "establishes performance budget"
+      - "distinguishes lab vs RUM data"
+    trigger_expected: true
+
+  - id: performance_audit
+    prompt: "Web 应用越来越慢，帮我做一个完整的性能审计，找出最大瓶颈并排优先级"
+    fixtures: []
+    rubric:
+      - "systematic cross-layer analysis"
+      - "budget-driven priority sorting"
+    trigger_expected: true
+
+  - id: negative_single_metric_optimization
+    prompt: "这个图片太大了，帮我压缩一下"
+    fixtures: []
+    rubric:
+      - "does not activate web performance diagnosis"
+      - "single image optimization is not a performance diagnosis task"
+    trigger_expected: false

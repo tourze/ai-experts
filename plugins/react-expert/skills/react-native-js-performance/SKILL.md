@@ -12,8 +12,6 @@ description: 当用户要排查 JS thread 性能、掉帧、FPS、FlatList、Fla
 - 动画需要从 JS 线程迁移到 UI 线程（Reanimated worklet）。
 - React 渲染性能分析、React Compiler 接入评估。
 - JS 内存泄漏定位与修复。
-- 包体积问题优先联动 [react-native-bundle-size](../react-native-bundle-size/SKILL.md)。
-- 原生层性能问题优先联动 [react-native-native-performance](../react-native-native-performance/SKILL.md)。
 - 交互与视觉实现优先联动 [react-native-design](../react-native-design/SKILL.md)。
 
 ## 核心约束

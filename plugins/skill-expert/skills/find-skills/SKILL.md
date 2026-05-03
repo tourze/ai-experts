@@ -1,6 +1,6 @@
 ---
 name: find-skills
-description: 当用户要查找适合任务的 skill、询问如何做某类工作或是否存在相关 skill 时使用。
+description: 当用户要查找适合任务的 skill、询问如何做某类工作或是否存在相关 skill 时使用。已知 skill 名称直接调用时不需要。
 ---
 
 # Find Skills

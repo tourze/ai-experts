@@ -1,6 +1,6 @@
 ---
 name: feature-dev
-description: "当用户要实现跨多文件、跨模块或存在架构取舍的新功能时使用。"
+description: "当用户要实现跨多文件、跨模块或存在架构取舍的新功能时使用。单文件小改或纯 bug 修复不需要。"
 ---
 
 # feature-dev

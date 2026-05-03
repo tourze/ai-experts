@@ -1,0 +1,25 @@
+cases:
+  - id: incident_coordination
+    prompt: "线上服务挂了，帮我建立事故时间线、分离根因和触发因素，制定止血方案"
+    fixtures: []
+    rubric:
+      - "builds incident timeline"
+      - "separates root cause from trigger"
+      - "provides mitigation and fix plan"
+    trigger_expected: true
+
+  - id: incident_decision_process
+    prompt: "多个团队在事故中意见不一，需要一套决策协调方法论来推进修复"
+    fixtures: []
+    rubric:
+      - "provides incident command methodology"
+      - "focuses on decision and coordination"
+    trigger_expected: true
+
+  - id: negative_check_server_logs
+    prompt: "帮我查一下这个 Nginx 错误日志，看看为什么 502"
+    fixtures: []
+    rubric:
+      - "does not activate incident command"
+      - "log checking belongs to log-analyzer or incident-triage"
+    trigger_expected: false

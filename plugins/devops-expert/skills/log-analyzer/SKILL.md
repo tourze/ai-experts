@@ -43,7 +43,6 @@ jq 'select(.level == "error")' app.log | tail -20
 - 是否补充了上下文行，而不是单独摘一条孤立报错。
 - 是否识别出周期性、突发性或发布后回归模式。
 - 如果问题仍未聚焦，转到 [incident-triage](../incident-triage/SKILL.md)。
-- 如果要验证服务现状，转到 [service-monitor](../service-monitor/SKILL.md)。
 
 ## 反模式
 

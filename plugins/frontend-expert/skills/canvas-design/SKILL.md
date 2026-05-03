@@ -11,8 +11,8 @@ license: Complete terms in LICENSE.txt
 - 需要海报、封面、单页视觉稿、展览感静态作品。
 - 用户要的是“设计作品”而不是流程图、截图或动画。
 - 需要先写设计哲学，再把哲学表达成最终画面。
-- 如果目标是结构化信息图，改用 [concept-to-image](../concept-to-image/SKILL.md)。
-- 如果目标是动画或解释视频，改用 [concept-to-video](../concept-to-video/SKILL.md)。
+- 如果目标是结构化信息图，参考信息图设计方法。
+- 如果目标是动画或解释视频，参考视频生成工具。
 
 ## 核心约束
 
