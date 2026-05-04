@@ -1,19 +1,19 @@
 ---
 name: opaque-types
-description: Brand types and opaque types for type-safe identifiers
+description: 品牌类型与不透明类型，用于类型安全的标识符
 metadata:
   tags: opaque-types, brand-types, nominal-typing, type-safety
 ---
 
-# Opaque Types (Brand Types)
+# 不透明类型（品牌类型）
 
-## Overview
+## 概述
 
-Opaque types (also called brand types or nominal types) create distinct types from primitive types. They prevent mixing up values that have the same underlying type but different semantic meanings.
+不透明类型（也叫品牌类型或名义类型）从原始类型创建独立类型，防止混用底层类型相同但语义不同的值。
 
-## The Problem
+## 问题
 
-TypeScript uses structural typing, so these are interchangeable:
+TypeScript 使用结构化类型，所以以下类型可以互换：
 
 ```typescript
 type UserId = string;
@@ -25,13 +25,13 @@ function getPost(id: PostId): Post { /* ... */ }
 const userId: UserId = "user-123";
 const postId: PostId = "post-456";
 
-// BUG: Wrong ID type, but TypeScript allows it!
-getUser(postId); // No error - both are just strings
+// BUG：ID 类型错误，但 TypeScript 允许！
+getUser(postId); // 不报错 - 两者都只是 string
 ```
 
-## Creating Opaque Types
+## 创建不透明类型
 
-Add a phantom property to create nominal distinction:
+添加幽灵属性创建名义区分：
 
 ```typescript
 type Opaque<TValue, TBrand> = TValue & { __brand: TBrand };
@@ -42,7 +42,7 @@ type ValidEmail = Opaque<string, "ValidEmail">;
 type ValidAge = Opaque<number, "ValidAge">;
 ```
 
-Now these types are incompatible:
+现在这些类型互不兼容：
 
 ```typescript
 function getUser(id: UserId): User { /* ... */ }
@@ -51,74 +51,74 @@ function getPost(id: PostId): Post { /* ... */ }
 const userId = "user-123" as UserId;
 const postId = "post-456" as PostId;
 
-getUser(userId); // OK
-getUser(postId); // Error: Type 'PostId' is not assignable to type 'UserId'
+getUser(userId); // 正确
+getUser(postId); // 报错：类型 'PostId' 不可赋值给类型 'UserId'
 ```
 
-## Type Predicates for Validation
+## 用类型谓词进行验证
 
-Use type predicates to validate and narrow types:
+使用类型谓词验证并缩窄类型：
 
 ```typescript
 type ValidEmail = Opaque<string, "ValidEmail">;
 
-// Type predicate: "email is ValidEmail" narrows the type
+// 类型谓词："email is ValidEmail" 缩窄类型
 const isValidEmail = (email: string): email is ValidEmail => {
   return email.includes("@") && email.includes(".");
 };
 
-// Usage with type narrowing
+// 使用类型缩窄
 function processEmail(email: string): void {
   if (!isValidEmail(email)) {
     throw new Error("Invalid email");
   }
 
-  // email is now ValidEmail
-  sendEmail(email); // Type-safe!
+  // email 现在是 ValidEmail
+  sendEmail(email); // 类型安全！
 }
 
 function sendEmail(email: ValidEmail): void {
-  // We know the email has been validated
+  // 我们知道 email 已通过验证
 }
 ```
 
-## Assertion Functions
+## 断言函数
 
-Assertion functions throw on invalid input and narrow the type:
+断言函数在输入无效时抛出异常并缩窄类型：
 
 ```typescript
 type ValidEmail = Opaque<string, "ValidEmail">;
 
-// Assertion function - must be declared with function, not arrow
+// 断言函数 - 必须用 function 声明，不能用箭头函数
 function assertValidEmail(email: string): asserts email is ValidEmail {
   if (!email.includes("@") || !email.includes(".")) {
     throw new Error("Invalid email format");
   }
 }
 
-// Usage
+// 使用
 async function createUser(data: { email: string }): Promise<User> {
   assertValidEmail(data.email);
 
-  // data.email is now ValidEmail
+  // data.email 现在是 ValidEmail
   return await saveUser({
-    email: data.email, // Type-safe!
+    email: data.email, // 类型安全！
   });
 }
 ```
 
-## Important: Assertion Function Syntax
+## 重要：断言函数语法
 
-Assertion functions MUST be declared using the `function` keyword, not arrow functions:
+断言函数**必须**使用 `function` 关键字声明，不能用箭头函数：
 
 ```typescript
-// WRONG - arrow functions don't work with asserts
+// 错误 - 箭头函数不支持 asserts
 const assertValidEmail = (email: string): asserts email is ValidEmail => {
-  // Error: Assertions require every name in the call target to be
+  // 报错：Assertions require every name in the call target to be
   // declared with an explicit type annotation.
 };
 
-// CORRECT - use function declaration
+// 正确 - 使用 function 声明
 function assertValidEmail(email: string): asserts email is ValidEmail {
   if (!email.includes("@")) {
     throw new Error("Invalid email");
@@ -126,28 +126,28 @@ function assertValidEmail(email: string): asserts email is ValidEmail {
 }
 ```
 
-## Comparison: Type Predicates vs Assertion Functions
+## 对比：类型谓词 vs 断言函数
 
-| Aspect | Type Predicate | Assertion Function |
-|--------|----------------|-------------------|
-| Return | `boolean` | `void` (throws on failure) |
-| Usage | In `if` statements | Standalone call |
-| Error handling | Caller handles | Function throws |
-| Syntax | Arrow or function | Must be `function` |
+| 方面 | 类型谓词 | 断言函数 |
+|------|---------|---------|
+| 返回值 | `boolean` | `void`（失败时抛出） |
+| 使用方式 | 在 `if` 语句中 | 独立调用 |
+| 错误处理 | 调用方处理 | 函数内部抛出 |
+| 语法 | 箭头函数或 function | 必须用 `function` |
 
 ```typescript
-// Type predicate - returns boolean, caller handles failure
+// 类型谓词 - 返回 boolean，调用方处理失败
 if (!isValidEmail(email)) {
   return { error: "Invalid email" };
 }
 sendEmail(email);
 
-// Assertion function - throws, cleaner happy path
+// 断言函数 - 抛出异常，快乐路径更简洁
 assertValidEmail(email);
 sendEmail(email);
 ```
 
-## Complete Example: User Registration
+## 完整示例：用户注册
 
 ```typescript
 type Opaque<TValue, TBrand> = TValue & { __brand: TBrand };
@@ -156,7 +156,7 @@ type ValidEmail = Opaque<string, "ValidEmail">;
 type ValidPassword = Opaque<string, "ValidPassword">;
 type UserId = Opaque<string, "UserId">;
 
-// Validation functions
+// 验证函数
 function assertValidEmail(email: string): asserts email is ValidEmail {
   if (!email.includes("@") || email.length < 5) {
     throw new Error("Invalid email format");
@@ -169,22 +169,22 @@ function assertValidPassword(password: string): asserts password is ValidPasswor
   }
 }
 
-// Database functions require validated types
+// 数据库函数要求已验证的类型
 async function createUser(data: {
   email: ValidEmail;
   password: ValidPassword;
 }): Promise<{ id: UserId }> {
-  // We know email and password are validated
+  // 我们知道 email 和 password 已通过验证
   return { id: crypto.randomUUID() as UserId };
 }
 
-// API handler
+// API 处理
 async function handleRegistration(input: { email: string; password: string }) {
-  // Must validate before calling createUser
+  // 调用 createUser 前必须先验证
   assertValidEmail(input.email);
   assertValidPassword(input.password);
 
-  // Now we can safely call createUser
+  // 现在可以安全调用 createUser
   const user = await createUser({
     email: input.email,
     password: input.password,
@@ -194,14 +194,14 @@ async function handleRegistration(input: { email: string; password: string }) {
 }
 ```
 
-## Pattern: Factory Functions for Opaque Types
+## 模式：不透明类型的工厂函数
 
-For cases where you want to validate at creation time:
+在创建时进行验证：
 
 ```typescript
 type UserId = Opaque<string, "UserId">;
 
-// Factory function that validates and creates
+// 验证并创建的工厂函数
 function createUserId(id: string): UserId {
   if (!id.startsWith("user_")) {
     throw new Error("Invalid user ID format");
@@ -209,7 +209,7 @@ function createUserId(id: string): UserId {
   return id as UserId;
 }
 
-// Or with a type predicate for conditional creation
+// 或使用类型谓词进行条件创建
 function parseUserId(id: string): UserId | null {
   if (!id.startsWith("user_")) {
     return null;
@@ -218,35 +218,35 @@ function parseUserId(id: string): UserId | null {
 }
 ```
 
-## When to Use Opaque Types
+## 何时使用不透明类型
 
-- **IDs**: UserId, PostId, OrderId - prevent mixing different entity IDs
-- **Validated strings**: Email, URL, Phone - ensure validation has occurred
-- **Validated numbers**: Age, Price, Quantity - ensure range validation
-- **Security-sensitive**: HashedPassword, APIKey - prevent accidental exposure
+- **ID**：UserId、PostId、OrderId - 防止混用不同实体的 ID
+- **已验证字符串**：Email、URL、Phone - 确保已通过验证
+- **已验证数字**：Age、Price、Quantity - 确保范围验证
+- **安全敏感**：HashedPassword、APIKey - 防止意外暴露
 
-## Common Pitfalls
+## 常见陷阱
 
-### Direct Assignment Bypasses Type Safety
+### 直接赋值绕过类型安全
 
 ```typescript
-const email: ValidEmail = "invalid"; // Error at compile time
+const email: ValidEmail = "invalid"; // 编译时报错
 
-// But casting bypasses safety
-const email = "invalid" as ValidEmail; // No error, but potentially wrong!
+// 但类型断言可以绕过安全检查
+const email = "invalid" as ValidEmail; // 不报错，但可能是错误的！
 ```
 
-### Forgetting to Validate
+### 忘记验证
 
 ```typescript
 function processUser(userId: UserId): void {
   // ...
 }
 
-// BAD - casting without validation
+// 错误 - 未验证就断言
 processUser(request.body.id as UserId);
 
-// GOOD - validate first
+// 正确 - 先验证
 function assertUserId(id: string): asserts id is UserId {
   if (!id.startsWith("user_")) throw new Error("Invalid user ID");
 }
@@ -255,9 +255,9 @@ assertUserId(request.body.id);
 processUser(request.body.id);
 ```
 
-## Alternative: Unique Symbol Brand
+## 替代方案：unique symbol 品牌
 
-A more robust branding approach using unique symbols:
+使用 unique symbol 的更健壮品牌方案：
 
 ```typescript
 declare const brand: unique symbol;
@@ -267,6 +267,6 @@ type Brand<T, TBrand> = T & { [brand]: TBrand };
 type UserId = Brand<string, "UserId">;
 type PostId = Brand<string, "PostId">;
 
-// This is slightly more type-safe as __brand could theoretically
-// be a real property, but unique symbol cannot
+// 这稍微更类型安全，因为 __brand 理论上可能是真实属性，
+// 但 unique symbol 不会
 ```

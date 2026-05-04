@@ -1,19 +1,19 @@
 ---
 name: utility-types
-description: Built-in TypeScript utility types for type manipulation
+description: TypeScript 内置工具类型，用于类型变换
 metadata:
   tags: utility-types, parameters, returntype, awaited, omit, partial, record
 ---
 
-# TypeScript Utility Types
+# TypeScript 工具类型
 
-## Overview
+## 概述
 
-TypeScript provides built-in utility types that transform types in common ways. Mastering these utilities is essential for advanced TypeScript programming.
+TypeScript 提供了内置的工具类型，用于常见的类型变换。掌握这些工具是高级 TypeScript 编程的基础。
 
 ## Parameters<T>
 
-Extracts the parameter types of a function type as a tuple:
+将函数类型的参数类型提取为元组：
 
 ```typescript
 function fetchUser(id: string, opts?: { timeout?: number }): Promise<User> {
@@ -21,9 +21,9 @@ function fetchUser(id: string, opts?: { timeout?: number }): Promise<User> {
 }
 
 type FetchUserParams = Parameters<typeof fetchUser>;
-// Type: [id: string, opts?: { timeout?: number } | undefined]
+// 类型：[id: string, opts?: { timeout?: number } | undefined]
 
-// Use in wrapper functions
+// 用于包装函数
 const fetchUserWithLogging = async (
   ...args: Parameters<typeof fetchUser>
 ): Promise<User> => {
@@ -34,7 +34,7 @@ const fetchUserWithLogging = async (
 
 ## ReturnType<T>
 
-Extracts the return type of a function type:
+提取函数类型的返回值类型：
 
 ```typescript
 function createUser(name: string, email: string) {
@@ -47,12 +47,12 @@ function createUser(name: string, email: string) {
 }
 
 type User = ReturnType<typeof createUser>;
-// Type: { id: string; name: string; email: string; createdAt: Date }
+// 类型：{ id: string; name: string; email: string; createdAt: Date }
 ```
 
 ## Awaited<T>
 
-Unwraps the type inside a Promise (including nested Promises):
+解包 Promise 内部的类型（包括嵌套 Promise）：
 
 ```typescript
 type PromiseString = Promise<string>;
@@ -61,23 +61,23 @@ type NestedPromise = Promise<Promise<number>>;
 type Unwrapped1 = Awaited<PromiseString>; // string
 type Unwrapped2 = Awaited<NestedPromise>; // number
 
-// Combine with ReturnType for async functions
+// 与 ReturnType 结合用于异步函数
 async function fetchUser(id: string): Promise<User> {
   // ...
 }
 
 type FetchUserResult = Awaited<ReturnType<typeof fetchUser>>;
-// Type: User (not Promise<User>)
+// 类型：User（不是 Promise<User>）
 ```
 
-## Pattern: Wrapping External Library Functions
+## 模式：包装外部库函数
 
-When extending functions from external libraries that don't export their types:
+当扩展未导出类型的外部库函数时：
 
 ```typescript
 import { fetchUser } from "external-lib";
 
-// Extract and extend the return type
+// 提取并扩展返回类型
 type FetchUserReturn = Awaited<ReturnType<typeof fetchUser>>;
 
 export const fetchUserWithFullName = async (
@@ -93,7 +93,7 @@ export const fetchUserWithFullName = async (
 
 ## Record<Keys, Type>
 
-Creates an object type with specified keys and value type:
+创建具有指定键和值类型的对象类型：
 
 ```typescript
 type Role = "admin" | "user" | "guest";
@@ -105,7 +105,7 @@ const rolePermissions: Permissions = {
   guest: ["read"],
 };
 
-// Dynamic keys with constraint
+// 带约束的动态键
 function createLookup<K extends string, V>(
   keys: K[],
   getValue: (key: K) => V
@@ -120,7 +120,7 @@ function createLookup<K extends string, V>(
 
 ## Partial<T>
 
-Makes all properties optional:
+将所有属性变为可选：
 
 ```typescript
 interface User {
@@ -130,18 +130,18 @@ interface User {
 }
 
 type UpdateUserInput = Partial<User>;
-// Type: { id?: string; name?: string; email?: string }
+// 类型：{ id?: string; name?: string; email?: string }
 
 function updateUser(id: string, updates: Partial<User>): User {
   // ...
 }
 
-updateUser("123", { name: "New Name" }); // OK - only updating name
+updateUser("123", { name: "New Name" }); // 正确 - 仅更新 name
 ```
 
 ## Required<T>
 
-Makes all properties required (opposite of Partial):
+将所有属性变为必需（与 Partial 相反）：
 
 ```typescript
 interface Config {
@@ -151,12 +151,12 @@ interface Config {
 }
 
 type RequiredConfig = Required<Config>;
-// Type: { host: string; port: number; debug: boolean }
+// 类型：{ host: string; port: number; debug: boolean }
 ```
 
 ## Omit<T, Keys>
 
-Creates a type by omitting specified properties:
+通过省略指定属性创建新类型：
 
 ```typescript
 interface User {
@@ -167,15 +167,15 @@ interface User {
 }
 
 type PublicUser = Omit<User, "password">;
-// Type: { id: string; name: string; email: string }
+// 类型：{ id: string; name: string; email: string }
 
 type CreateUserInput = Omit<User, "id">;
-// Type: { name: string; email: string; password: string }
+// 类型：{ name: string; email: string; password: string }
 ```
 
 ## Pick<T, Keys>
 
-Creates a type by picking specified properties (opposite of Omit):
+通过选取指定属性创建新类型（与 Omit 相反）：
 
 ```typescript
 interface User {
@@ -187,39 +187,39 @@ interface User {
 }
 
 type UserCredentials = Pick<User, "email" | "password">;
-// Type: { email: string; password: string }
+// 类型：{ email: string; password: string }
 ```
 
-## Exclude<T, U> and Extract<T, U>
+## Exclude<T, U> 和 Extract<T, U>
 
-Work with union types:
+操作联合类型：
 
 ```typescript
 type AllColors = "red" | "green" | "blue" | "yellow";
 
 type PrimaryColors = Extract<AllColors, "red" | "blue">;
-// Type: "red" | "blue"
+// 类型："red" | "blue"
 
 type NonPrimaryColors = Exclude<AllColors, "red" | "blue">;
-// Type: "green" | "yellow"
+// 类型："green" | "yellow"
 ```
 
 ## NonNullable<T>
 
-Removes null and undefined from a type:
+从类型中移除 null 和 undefined：
 
 ```typescript
 type MaybeString = string | null | undefined;
 type DefiniteString = NonNullable<MaybeString>;
-// Type: string
+// 类型：string
 ```
 
-## Creating a Reusable Wrapper Type
+## 创建可复用的包装类型
 
-Combine utilities to create reusable type helpers:
+组合工具类型创建可复用的类型辅助：
 
 ```typescript
-// A type that wraps any async function, extending its return type
+// 包装任意异步函数，扩展其返回类型的类型
 type WrapFunction<
   TFunc extends (...args: any) => any,
   TAdditional = {}
@@ -227,7 +227,7 @@ type WrapFunction<
   ...args: Parameters<TFunc>
 ) => Promise<Awaited<ReturnType<TFunc>> & TAdditional>;
 
-// Usage
+// 使用示例
 import { fetchUser, fetchPost } from "external-lib";
 
 const fetchUserWithMeta: WrapFunction<
@@ -242,48 +242,48 @@ const fetchUserWithMeta: WrapFunction<
 };
 ```
 
-## When to Use Each Utility
+## 各工具类型的使用场景
 
-| Utility | Use Case |
+| 工具类型 | 使用场景 |
 |---------|----------|
-| `Parameters<T>` | Wrapping functions, creating function variants |
-| `ReturnType<T>` | Extracting return types when not explicitly exported |
-| `Awaited<T>` | Unwrapping Promise types |
-| `Record<K, V>` | Creating object types with dynamic keys |
-| `Partial<T>` | Update/patch operations |
-| `Required<T>` | Ensuring all config options are provided |
-| `Omit<T, K>` | Removing sensitive or internal fields |
-| `Pick<T, K>` | Creating focused subsets of types |
-| `Exclude<T, U>` | Filtering union types |
-| `Extract<T, U>` | Selecting from union types |
-| `NonNullable<T>` | Removing null/undefined after validation |
+| `Parameters<T>` | 包装函数、创建函数变体 |
+| `ReturnType<T>` | 未显式导出时提取返回类型 |
+| `Awaited<T>` | 解包 Promise 类型 |
+| `Record<K, V>` | 创建动态键的对象类型 |
+| `Partial<T>` | 更新/补丁操作 |
+| `Required<T>` | 确保所有配置项都已提供 |
+| `Omit<T, K>` | 移除敏感或内部字段 |
+| `Pick<T, K>` | 创建聚焦的类型子集 |
+| `Exclude<T, U>` | 过滤联合类型 |
+| `Extract<T, U>` | 从联合类型中选取 |
+| `NonNullable<T>` | 验证后移除 null/undefined |
 
-## Common Pitfalls
+## 常见陷阱
 
-### Using ReturnType on Async Functions
+### 在异步函数上使用 ReturnType
 
 ```typescript
 async function getData(): Promise<string[]> {
   return ["data"];
 }
 
-// This gives Promise<string[]>, not string[]
+// 这会得到 Promise<string[]>，不是 string[]
 type Wrong = ReturnType<typeof getData>; // Promise<string[]>
 
-// Use Awaited to unwrap
+// 使用 Awaited 解包
 type Right = Awaited<ReturnType<typeof getData>>; // string[]
 ```
 
-### Forgetting typeof for Runtime Functions
+### 忘记 typeof 用于运行时函数
 
 ```typescript
 function myFunc(x: number): string {
   return String(x);
 }
 
-// Wrong - myFunc is a value, not a type
-type Params = Parameters<myFunc>; // Error
+// 错误 - myFunc 是值，不是类型
+type Params = Parameters<myFunc>; // 报错
 
-// Correct - use typeof
+// 正确 - 使用 typeof
 type Params = Parameters<typeof myFunc>; // [x: number]
 ```

@@ -1,31 +1,31 @@
 ---
 name: builder-pattern
-description: Type-safe builder pattern with chainable methods
+description: 类型安全的建造者模式与链式调用
 metadata:
   tags: builder-pattern, fluent-api, chaining, generics-in-classes
 ---
 
-# Type-Safe Builder Pattern
+# 类型安全的建造者模式
 
-## Overview
+## 概述
 
-The builder pattern uses a chain of method calls to incrementally build up a data structure or configuration. With TypeScript, we can make this pattern fully type-safe, tracking accumulated state at the type level.
+建造者模式通过一系列链式方法调用逐步构建数据结构或配置。在 TypeScript 中，可以在类型层面追踪累积状态，使该模式完全类型安全。
 
-## Basic Concept
+## 基本概念
 
-Each method returns a new or modified builder with updated type information:
+每个方法返回一个带有更新类型信息的新建造者：
 
 ```typescript
 new DbSeeder()
   .addUser("matt", { name: "Matt" })
   .addPost("post1", { title: "Hello" })
   .transact();
-// Each step updates the type to include what was added
+// 每一步都更新类型以包含新增的内容
 ```
 
-## Implementation Pattern
+## 实现模式
 
-### Step 1: Define the Base Types
+### 第 1 步：定义基础类型
 
 ```typescript
 interface User {
@@ -39,21 +39,21 @@ interface Post {
   authorId: string;
 }
 
-// Shape that constrains our generic
+// 约束泛型的数据形状
 interface DbShape {
   users: Record<string, User>;
   posts: Record<string, Post>;
 }
 ```
 
-### Step 2: Create the Generic Builder
+### 第 2 步：创建泛型建造者
 
 ```typescript
 export class DbSeeder<TDatabase extends DbShape> {
   public users: DbShape["users"] = {};
   public posts: DbShape["posts"] = {};
 
-  // Each method returns DbSeeder with EXTENDED type information
+  // 每个方法返回扩展了类型信息的 DbSeeder
   addUser = <Id extends string>(
     id: Id,
     user: Omit<User, "id">,
@@ -70,9 +70,9 @@ export class DbSeeder<TDatabase extends DbShape> {
     return this;
   };
 
-  // Final method returns the built result with correct types
+  // 终端方法返回具有正确类型的构建结果
   transact = async () => {
-    // Actual database operations would go here
+    // 实际的数据库操作放在这里
     return {
       users: this.users as TDatabase["users"],
       posts: this.posts as TDatabase["posts"],
@@ -81,7 +81,7 @@ export class DbSeeder<TDatabase extends DbShape> {
 }
 ```
 
-### Step 3: Usage with Type Inference
+### 第 3 步：使用类型推断
 
 ```typescript
 const usage = async () => {
@@ -91,57 +91,57 @@ const usage = async () => {
     .addPost("post2", { authorId: "matt", title: "World" })
     .transact();
 
-  // result.users.matt is typed as User
-  // result.posts.post1 is typed as Post
-  // result.posts.post2 is typed as Post
+  // result.users.matt 类型为 User
+  // result.posts.post1 类型为 Post
+  // result.posts.post2 类型为 Post
 
-  console.log(result.users.matt.name); // Type-safe!
-  console.log(result.posts.post1.title); // Type-safe!
+  console.log(result.users.matt.name); // 类型安全！
+  console.log(result.posts.post1.title); // 类型安全！
 };
 ```
 
-## How the Types Build Up
+## 类型如何逐步累积
 
-Each method call extends the type:
+每次方法调用都扩展类型：
 
 ```typescript
 new DbSeeder()
-// Type: DbSeeder<{ users: {}; posts: {} }>
+// 类型：DbSeeder<{ users: {}; posts: {} }>
 
 .addUser("matt", { name: "Matt" })
-// Type: DbSeeder<{ users: Record<"matt", User>; posts: {} }>
+// 类型：DbSeeder<{ users: Record<"matt", User>; posts: {} }>
 
 .addPost("post1", { ... })
-// Type: DbSeeder<{ users: Record<"matt", User>; posts: Record<"post1", Post> }>
+// 类型：DbSeeder<{ users: Record<"matt", User>; posts: Record<"post1", Post> }>
 
 .addPost("post2", { ... })
-// Type: DbSeeder<{ users: Record<"matt", User>; posts: Record<"post1" | "post2", Post> }>
+// 类型：DbSeeder<{ users: Record<"matt", User>; posts: Record<"post1" | "post2", Post> }>
 ```
 
-## Key Techniques
+## 关键技巧
 
-### 1. Generic ID Capture
+### 1. 泛型 ID 捕获
 
-Capture literal types by using a generic with string constraint:
+通过使用带 string 约束的泛型捕获字面量类型：
 
 ```typescript
 addUser = <Id extends string>(
-  id: Id, // Id is inferred as literal type "matt", not string
+  id: Id, // Id 被推断为字面量类型 "matt"，而非 string
   user: Omit<User, "id">,
 ): DbSeeder<TDatabase & { users: TDatabase["users"] & Record<Id, User> }>
 ```
 
-### 2. Intersection for Type Accumulation
+### 2. 交叉类型实现类型累积
 
-Use `&` to add new type information while preserving existing:
+使用 `&` 添加新类型信息同时保留已有信息：
 
 ```typescript
 TDatabase & { users: TDatabase["users"] & Record<Id, User> }
 ```
 
-### 3. Cast in Terminal Methods
+### 3. 终端方法中的类型断言
 
-The runtime types don't match compile-time types, so cast in the final method:
+运行时类型与编译时类型不匹配，因此需要在最终方法中断言：
 
 ```typescript
 transact = async () => {
@@ -152,7 +152,7 @@ transact = async () => {
 };
 ```
 
-## Pattern: Query Builder
+## 模式：查询构建器
 
 ```typescript
 interface QueryState {
@@ -194,7 +194,7 @@ class QueryBuilder<TState extends QueryState> {
     return new QueryBuilder({ ...this.state, whereClause: clause });
   }
 
-  // Only allow build if table is set
+  // 仅在 table 已设置时允许 build
   build(this: QueryBuilder<TState & { table: string }>): string {
     const cols = this.state.columns.length
       ? this.state.columns.join(", ")
@@ -207,18 +207,18 @@ class QueryBuilder<TState extends QueryState> {
   }
 }
 
-// Usage
+// 使用
 const query = QueryBuilder.create()
   .from("users")
   .select("id", "name")
   .where("active = true")
   .build();
 
-// Error: Can't build without from()
-QueryBuilder.create().select("id").build(); // Type error!
+// 错误：没有 from() 不能调用 build
+QueryBuilder.create().select("id").build(); // 类型错误！
 ```
 
-## Pattern: Configuration Builder with Required Fields
+## 模式：带必填字段的配置构建器
 
 ```typescript
 interface ServerConfig {
@@ -249,7 +249,7 @@ class ConfigBuilder<TConfigured extends Partial<Record<keyof ServerConfig, true>
     return this as any;
   }
 
-  // Only allow build when required fields are set
+  // 仅当必填字段都已设置时才允许 build
   build(
     this: ConfigBuilder<{ host: true; port: true }>
   ): ServerConfig {
@@ -257,18 +257,18 @@ class ConfigBuilder<TConfigured extends Partial<Record<keyof ServerConfig, true>
   }
 }
 
-// Usage
+// 使用
 const config = new ConfigBuilder()
   .host("localhost")
   .port(3000)
   .ssl(true)
   .build();
 
-// Error: Missing required fields
-new ConfigBuilder().host("localhost").build(); // Type error!
+// 错误：缺少必填字段
+new ConfigBuilder().host("localhost").build(); // 类型错误！
 ```
 
-## Advanced: Default Values
+## 高级：默认值
 
 ```typescript
 export class DbSeeder<
@@ -283,46 +283,46 @@ export class DbSeeder<
   // ...
 }
 
-// Now every DbSeeder starts with defaultUser
+// 每个 DbSeeder 都自带 defaultUser
 const seeder = new DbSeeder();
-// seeder has users.defaultUser by default
+// seeder 默认拥有 users.defaultUser
 ```
 
-## When to Use Builder Pattern
+## 何时使用建造者模式
 
-- **Complex object construction**: Many optional/required fields
-- **Fluent APIs**: DSLs for queries, configurations, test data
-- **Validation at type level**: Ensure required steps are completed
-- **Incremental building**: Add pieces over time before finalizing
+- **复杂对象构建**：多个可选/必填字段
+- **流畅 API**：查询、配置、测试数据的 DSL
+- **类型层面的验证**：确保必经步骤已完成
+- **增量构建**：分步添加后最终确定
 
-## Common Pitfalls
+## 常见陷阱
 
-### Forgetting to Constrain the Generic
+### 忘记约束泛型
 
 ```typescript
-// BAD - TDatabase could be anything
+// 错误 - TDatabase 可以是任何类型
 class DbSeeder<TDatabase> {
-  // Error: Cannot access TDatabase["users"]
+  // 报错：无法访问 TDatabase["users"]
 }
 
-// GOOD - constrained to DbShape
+// 正确 - 约束为 DbShape
 class DbSeeder<TDatabase extends DbShape> {
-  // Can safely access TDatabase["users"] and TDatabase["posts"]
+  // 可以安全访问 TDatabase["users"] 和 TDatabase["posts"]
 }
 ```
 
-### Not Casting in Terminal Methods
+### 终端方法中未做类型断言
 
 ```typescript
-// BAD - type mismatch
+// 错误 - 类型不匹配
 transact = async () => {
   return {
-    users: this.users, // Type: Record<string, User>, not TDatabase["users"]
+    users: this.users, // 类型：Record<string, User>，不是 TDatabase["users"]
     posts: this.posts,
   };
 };
 
-// GOOD - cast to match accumulated type
+// 正确 - 断言为累积的类型
 transact = async () => {
   return {
     users: this.users as TDatabase["users"],
@@ -331,15 +331,15 @@ transact = async () => {
 };
 ```
 
-### Returning `this` Instead of New Type
+### 返回 `this` 而非新类型
 
 ```typescript
-// BAD - returns same type, loses type information
+// 错误 - 返回相同类型，丢失类型信息
 addUser(id: string, user: Omit<User, "id">): this {
   return this;
 }
 
-// GOOD - returns new generic instantiation
+// 正确 - 返回新的泛型实例化
 addUser<Id extends string>(
   id: Id,
   user: Omit<User, "id">,

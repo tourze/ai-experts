@@ -1,69 +1,69 @@
 ---
 name: type-narrowing
-description: Narrowing types through control flow analysis
+description: 通过控制流分析缩窄类型
 metadata:
   tags: narrowing, type-guards, control-flow, discriminated-unions
 ---
 
-# Type Narrowing
+# 类型缩窄
 
-## Overview
+## 概述
 
-Type narrowing is TypeScript's ability to refine types based on control flow analysis. When you check a type condition, TypeScript narrows the type within that code block.
+类型缩窄是 TypeScript 基于控制流分析细化类型的能力。当你在代码中检查类型条件时，TypeScript 会在该代码块内缩窄类型。
 
-## Built-in Narrowing
+## 内置缩窄
 
-### `typeof` Guards
+### `typeof` 守卫
 
 ```typescript
 function processValue(value: string | number) {
   if (typeof value === "string") {
-    // value is string here
+    // value 在这里是 string
     return value.toUpperCase();
   }
-  // value is number here
+  // value 在这里是 number
   return value.toFixed(2);
 }
 ```
 
-### `instanceof` Guards
+### `instanceof` 守卫
 
 ```typescript
 function logError(error: Error | string) {
   if (error instanceof Error) {
-    // error is Error here
+    // error 在这里是 Error
     console.log(error.stack);
   } else {
-    // error is string here
+    // error 在这里是 string
     console.log(error);
   }
 }
 ```
 
-### Truthiness Narrowing
+### 真值缩窄
 
 ```typescript
 function printName(name: string | null | undefined) {
   if (name) {
-    // name is string here (truthy)
+    // name 在这里是 string（真值）
     console.log(name.toUpperCase());
   }
 }
 ```
 
-### Equality Narrowing
+### 相等性缩窄
 
 ```typescript
 function example(x: string | number, y: string | boolean) {
   if (x === y) {
-    // Both are string here (only common type)
+    // 两者在这里都是 string（唯一公共类型）
     console.log(x.toUpperCase());
     console.log(y.toUpperCase());
   }
 }
 ```
 
-### `in` Operator
+### `in` 操作符
 
 ```typescript
 interface Fish {
@@ -76,18 +76,18 @@ interface Bird {
 
 function move(animal: Fish | Bird) {
   if ("swim" in animal) {
-    // animal is Fish here
+    // animal 在这里是 Fish
     animal.swim();
   } else {
-    // animal is Bird here
+    // animal 在这里是 Bird
     animal.fly();
   }
 }
 ```
 
-## Discriminated Unions
+## 可辨识联合
 
-Use a common property to discriminate between types:
+使用公共属性区分类型：
 
 ```typescript
 interface Circle {
@@ -112,21 +112,21 @@ type Shape = Circle | Rectangle | Triangle;
 function getArea(shape: Shape): number {
   switch (shape.kind) {
     case "circle":
-      // shape is Circle here
+      // shape 在这里是 Circle
       return Math.PI * shape.radius ** 2;
     case "rectangle":
-      // shape is Rectangle here
+      // shape 在这里是 Rectangle
       return shape.width * shape.height;
     case "triangle":
-      // shape is Triangle here
+      // shape 在这里是 Triangle
       return (shape.base * shape.height) / 2;
   }
 }
 ```
 
-### Exhaustiveness Checking
+### 穷尽性检查
 
-Use `never` to ensure all cases are handled:
+使用 `never` 确保所有情况都已处理：
 
 ```typescript
 function getArea(shape: Shape): number {
@@ -138,18 +138,18 @@ function getArea(shape: Shape): number {
     case "triangle":
       return (shape.base * shape.height) / 2;
     default:
-      // If a new shape is added, this will error
+      // 如果新增了 shape 类型，这里会报错
       const _exhaustiveCheck: never = shape;
       throw new Error(`Unhandled shape: ${_exhaustiveCheck}`);
   }
 }
 ```
 
-## Custom Type Guards
+## 自定义类型守卫
 
-### Type Predicates
+### 类型谓词
 
-Functions that return `value is Type`:
+返回 `value is Type` 的函数：
 
 ```typescript
 interface Fish {
@@ -166,16 +166,16 @@ function isFish(pet: Fish | Bird): pet is Fish {
 
 function move(pet: Fish | Bird) {
   if (isFish(pet)) {
-    // pet is Fish here
+    // pet 在这里是 Fish
     pet.swim();
   } else {
-    // pet is Bird here
+    // pet 在这里是 Bird
     pet.fly();
   }
 }
 ```
 
-### Generic Type Guards
+### 泛型类型守卫
 
 ```typescript
 function isNotNull<T>(value: T | null | undefined): value is T {
@@ -184,10 +184,10 @@ function isNotNull<T>(value: T | null | undefined): value is T {
 
 const values = [1, null, 2, undefined, 3];
 const filtered = values.filter(isNotNull);
-// filtered is number[]
+// filtered 是 number[]
 ```
 
-### Object Property Check
+### 对象属性检查
 
 ```typescript
 function hasProperty<T extends object, K extends string>(
@@ -200,14 +200,14 @@ function hasProperty<T extends object, K extends string>(
 const data: unknown = { name: "Alice" };
 
 if (typeof data === "object" && data !== null && hasProperty(data, "name")) {
-  // data.name is now accessible
+  // data.name 现在可以访问
   console.log(data.name);
 }
 ```
 
-## Assertion Functions
+## 断言函数
 
-Functions that throw on invalid input:
+输入无效时抛出异常的函数：
 
 ```typescript
 function assertIsString(value: unknown): asserts value is string {
@@ -218,12 +218,12 @@ function assertIsString(value: unknown): asserts value is string {
 
 function processInput(input: unknown) {
   assertIsString(input);
-  // input is string here
+  // input 在这里是 string
   console.log(input.toUpperCase());
 }
 ```
 
-### With Objects
+### 用于对象
 
 ```typescript
 interface User {
@@ -244,31 +244,31 @@ function assertIsUser(value: unknown): asserts value is User {
 
 function handleData(data: unknown) {
   assertIsUser(data);
-  // data is User here
+  // data 在这里是 User
   console.log(data.name);
 }
 ```
 
-### Important: Assertion Function Syntax
+### 重要：断言函数语法
 
-Must use `function` declaration, not arrow functions:
+必须使用 `function` 声明，不能用箭头函数：
 
 ```typescript
-// Error: Assertions require every name in the call target to be
+// 报错：Assertions require every name in the call target to be
 // declared with an explicit type annotation.
 const assertString = (value: unknown): asserts value is string => {
   if (typeof value !== "string") throw new Error("Not a string");
 };
 
-// Correct
+// 正确
 function assertString(value: unknown): asserts value is string {
   if (typeof value !== "string") throw new Error("Not a string");
 }
 ```
 
-## Narrowing with Opaque Types
+## 与不透明类型结合的缩窄
 
-Combine type predicates with opaque types for validated data:
+将类型谓词与不透明类型结合验证数据：
 
 ```typescript
 type ValidEmail = string & { __brand: "ValidEmail" };
@@ -278,19 +278,19 @@ function isValidEmail(email: string): email is ValidEmail {
 }
 
 function sendEmail(email: ValidEmail) {
-  // We know email has been validated
+  // 我们知道 email 已通过验证
 }
 
 function handleSubmit(email: string) {
   if (!isValidEmail(email)) {
     throw new Error("Invalid email");
   }
-  // email is ValidEmail here
+  // email 在这里是 ValidEmail
   sendEmail(email);
 }
 ```
 
-## Array Filtering with Type Guards
+## 用类型守卫过滤数组
 
 ```typescript
 type Item = { type: "a"; value: string } | { type: "b"; count: number };
@@ -300,16 +300,16 @@ const items: Item[] = [
   { type: "b", count: 42 },
 ];
 
-// Filter to specific type
+// 过滤为特定类型
 const typeAItems = items.filter(
   (item): item is { type: "a"; value: string } => item.type === "a"
 );
-// typeAItems is { type: "a"; value: string }[]
+// typeAItems 是 { type: "a"; value: string }[]
 ```
 
-## Control Flow Analysis Limitations
+## 控制流分析的限制
 
-TypeScript can't always track narrowing across function calls:
+TypeScript 不总能追踪跨函数调用的类型缩窄：
 
 ```typescript
 function isString(x: unknown): x is string {
@@ -320,18 +320,18 @@ function example(value: string | number) {
   const isStr = isString(value);
 
   if (isStr) {
-    // value is still string | number here!
-    // TypeScript doesn't narrow based on boolean variables
+    // value 在这里仍然是 string | number！
+    // TypeScript 不会基于布尔变量缩窄
   }
 
-  // Must check inline
+  // 必须内联检查
   if (isString(value)) {
-    // value is string here
+    // value 在这里是 string
   }
 }
 ```
 
-## Practical Example: API Response Handling
+## 实际示例：API 响应处理
 
 ```typescript
 interface SuccessResponse<T> {
@@ -361,69 +361,69 @@ async function handleUser() {
   const response = await fetchUser();
 
   if (isSuccess(response)) {
-    // response.data is User
+    // response.data 是 User
     console.log(response.data.name);
   } else {
-    // response.error is accessible
+    // response.error 可访问
     console.error(response.error.message);
   }
 }
 ```
 
-## When to Use Each Technique
+## 各技术适用场景
 
-| Technique | Use Case |
-|-----------|----------|
-| `typeof` | Primitive type checks |
-| `instanceof` | Class instance checks |
-| `in` operator | Property existence checks |
-| Discriminated unions | Multiple related types with common discriminant |
-| Type predicates | Custom narrowing logic |
-| Assertion functions | Validation with early error throwing |
+| 技术 | 使用场景 |
+|------|---------|
+| `typeof` | 原始类型检查 |
+| `instanceof` | 类实例检查 |
+| `in` 操作符 | 属性存在性检查 |
+| 可辨识联合 | 共有判别属性的多个关联类型 |
+| 类型谓词 | 自定义缩窄逻辑 |
+| 断言函数 | 验证并提前抛错 |
 
-## Common Pitfalls
+## 常见陷阱
 
-### Narrowing Doesn't Persist Across Callbacks
+### 缩窄不会跨回调持久
 
 ```typescript
 function example(value: string | null) {
   if (value !== null) {
-    // value is string here
+    // value 在这里是 string
 
     setTimeout(() => {
-      // value is string | null again!
-      // TypeScript is conservative about callbacks
+      // value 又变成 string | null！
+      // TypeScript 对回调持保守态度
     }, 0);
   }
 }
 ```
 
-### Type Guards Must Return Boolean
+### 类型守卫必须返回布尔值
 
 ```typescript
-// Wrong - doesn't narrow
+// 错误 - 不会缩窄
 function isFish(pet: Fish | Bird) {
-  return "swim" in pet; // Just returns boolean
+  return "swim" in pet; // 只是返回 boolean
 }
 
-// Correct - narrows the type
+// 正确 - 缩窄类型
 function isFish(pet: Fish | Bird): pet is Fish {
   return "swim" in pet;
 }
 ```
 
-### Be Careful with Complex Conditions
+### 复杂条件需谨慎
 
 ```typescript
 function example(value: { a?: string; b?: number }) {
-  // This doesn't narrow as expected
+  // 这不会按预期缩窄
   if (value.a || value.b) {
-    // Neither a nor b is guaranteed to exist
+    // a 和 b 都不能保证存在
   }
 
-  // Use specific checks
+  // 使用具体检查
   if (value.a !== undefined) {
-    // value.a is string here
+    // value.a 在这里是 string
   }
 }
 ```

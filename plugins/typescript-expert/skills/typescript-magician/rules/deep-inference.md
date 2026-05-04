@@ -1,17 +1,17 @@
 ---
 name: deep-inference
-description: Achieving deep type inference with F.Narrow and as const
+description: 使用 F.Narrow 和 as const 实现深层类型推断
 metadata:
   tags: inference, narrow, deep-inference, ts-toolbelt
 ---
 
-# Deep Type Inference
+# 深层类型推断
 
-## Overview
+## 概述
 
-By default, TypeScript widens types when inferring objects and arrays. For advanced type-safe APIs, you often need to preserve literal types deeply within nested structures. This document covers techniques for achieving deep inference.
+默认情况下，TypeScript 在推断对象和数组时会放宽类型。对于高级类型安全 API，通常需要在嵌套结构中深层保留字面量类型。本文档介绍实现深层推断的技术。
 
-## The Problem: Type Widening
+## 问题：类型放宽
 
 ```typescript
 const makeRouter = <TConfig>(config: TConfig) => {
@@ -25,20 +25,20 @@ const router = makeRouter({
   },
 });
 
-// TConfig is inferred as:
+// TConfig 被推断为：
 // {
 //   "/": {};
 //   "/search": {
-//     search: string[]; // NOT ["query", "page"]!
+//     search: string[]; // 不是 ["query", "page"]！
 //   };
 // }
 ```
 
-The literal tuple `["query", "page"]` is widened to `string[]`, losing type information.
+字面量元组 `["query", "page"]` 被放宽为 `string[]`，丢失了类型信息。
 
-## Solution 1: User-Provided `as const`
+## 方案 1：用户手动添加 `as const`
 
-Require users to add `as const`:
+要求用户添加 `as const`：
 
 ```typescript
 const router = makeRouter({
@@ -48,7 +48,7 @@ const router = makeRouter({
   },
 } as const);
 
-// Now TConfig preserves literals:
+// 现在 TConfig 保留了字面量：
 // {
 //   readonly "/": {};
 //   readonly "/search": {
@@ -57,14 +57,14 @@ const router = makeRouter({
 // }
 ```
 
-### Drawbacks
-- Users must remember to add `as const`
-- Types become readonly (may require type adjustments)
-- Easy to forget, leading to subtle bugs
+### 缺点
+- 用户必须记得添加 `as const`
+- 类型变为 readonly（可能需要类型调整）
+- 容易遗忘，导致隐蔽的 bug
 
-## Solution 2: F.Narrow from ts-toolbelt
+## 方案 2：ts-toolbelt 的 F.Narrow
 
-The `ts-toolbelt` library provides `F.Narrow` for automatic deep narrowing:
+`ts-toolbelt` 库提供 `F.Narrow` 用于自动深层缩窄：
 
 ```typescript
 import { F } from "ts-toolbelt";
@@ -82,26 +82,26 @@ const router = makeRouter({
   },
 });
 
-// TConfig is now:
+// TConfig 现在是：
 // {
 //   "/": {};
 //   "/search": {
-//     search: ["query", "page"]; // Literal tuple preserved!
+//     search: ["query", "page"]; // 字面量元组已保留！
 //   };
 // }
 ```
 
-### How F.Narrow Works
+### F.Narrow 的工作原理
 
-`F.Narrow` recursively narrows types to their literal forms:
-- Strings become literal string types
-- Numbers become literal number types
-- Arrays become tuples
-- Objects have their properties narrowed
+`F.Narrow` 递归地将类型缩窄为其字面量形式：
+- 字符串变为字面量字符串类型
+- 数字变为字面量数字类型
+- 数组变为元组
+- 对象的属性被缩窄
 
-## Solution 3: Custom Narrow Type
+## 方案 3：自定义 Narrow 类型
 
-If you can't use ts-toolbelt, implement a simpler version:
+如果无法使用 ts-toolbelt，可以简化实现：
 
 ```typescript
 type Narrow<T> = T extends Function
@@ -114,10 +114,10 @@ type Narrow<T> = T extends Function
   ? { [K in keyof T]: Narrow<T[K]> }
   : T;
 
-// Note: This is simplified and may not cover all edge cases
+// 注意：这是简化版，可能未覆盖所有边界情况
 ```
 
-## Practical Example: Type-Safe Router
+## 实际示例：类型安全路由器
 
 ```typescript
 import { F } from "ts-toolbelt";
@@ -139,7 +139,7 @@ const makeRouter = <TConfig extends BaseRouterConfig>(
         ? TupleToSearchParams<TConfig[TRoute]["search"]>
         : never
     ) => {
-      // Implementation
+      // 实现
     },
   };
 };
@@ -151,20 +151,20 @@ const router = makeRouter({
   },
 });
 
-// Fully type-safe!
+// 完全类型安全！
 router.goTo("/dashboard", {
   page: "1",
   perPage: "10",
-  sort: "name", // Must be one of the defined search params
+  sort: "name", // 必须是已定义的搜索参数之一
 });
 
-// Error: "invalid" is not a valid search param
+// 报错："invalid" 不是有效的搜索参数
 router.goTo("/dashboard", { invalid: "value" });
 ```
 
-## Solution 4: Const Type Parameter (TypeScript 5.0+)
+## 方案 4：const 类型参数（TypeScript 5.0+）
 
-TypeScript 5.0 introduced `const` type parameters:
+TypeScript 5.0 引入了 `const` 类型参数：
 
 ```typescript
 const makeRouter = <const TConfig extends BaseRouterConfig>(
@@ -173,7 +173,7 @@ const makeRouter = <const TConfig extends BaseRouterConfig>(
   return { config };
 };
 
-// TConfig is automatically narrowed like as const
+// TConfig 自动像 as const 一样缩窄
 const router = makeRouter({
   "/": {},
   "/search": {
@@ -182,15 +182,15 @@ const router = makeRouter({
 });
 ```
 
-### Benefits of `const` Type Parameters
-- No external library needed
-- Built into TypeScript
-- Clean syntax
-- Works with constraints
+### `const` 类型参数的优势
+- 无需外部库
+- TypeScript 内置
+- 语法简洁
+- 支持约束
 
-## When Deep Inference Matters
+## 深层推断的适用场景
 
-### Configuration Objects
+### 配置对象
 
 ```typescript
 const createTheme = <const TTheme extends Record<string, string>>(
@@ -202,10 +202,10 @@ const theme = createTheme({
   secondary: "#666666",
 });
 
-// theme.primary is "#0066cc", not string
+// theme.primary 是 "#0066cc"，不是 string
 ```
 
-### Route Definitions
+### 路由定义
 
 ```typescript
 const routes = defineRoutes({
@@ -214,10 +214,10 @@ const routes = defineRoutes({
   post: { path: "/posts/:postId" },
 });
 
-// Route names and paths are literal types
+// 路由名和路径都是字面量类型
 ```
 
-### Event Systems
+### 事件系统
 
 ```typescript
 const events = createEventMap({
@@ -225,21 +225,21 @@ const events = createEventMap({
   keydown: (key: string) => {},
 });
 
-// Event names are literal unions, handlers are properly typed
+// 事件名是字面量联合，处理函数有正确类型
 ```
 
-## Comparison of Techniques
+## 技术对比
 
-| Technique | Pros | Cons |
-|-----------|------|------|
-| `as const` | No dependencies | Manual, readonly types |
-| `F.Narrow` | Automatic, flexible | External dependency |
-| Custom Narrow | No dependencies, customizable | Complex, may miss edge cases |
-| `const` type param | Built-in, clean | TypeScript 5.0+ only |
+| 技术 | 优点 | 缺点 |
+|------|------|------|
+| `as const` | 无依赖 | 需手动添加，类型变 readonly |
+| `F.Narrow` | 自动、灵活 | 外部依赖 |
+| 自定义 Narrow | 无依赖、可定制 | 复杂，可能遗漏边界情况 |
+| `const` 类型参数 | 内置、语法简洁 | 需要 TypeScript 5.0+ |
 
-## Combining with Conditional Types
+## 与条件类型结合
 
-Deep inference enables powerful conditional type logic:
+深层推断支持强大的条件类型逻辑：
 
 ```typescript
 import { F } from "ts-toolbelt";
@@ -251,7 +251,7 @@ const makeApi = <const TConfig extends Record<string, { returns: string }>>(
     call: <TMethod extends keyof TConfig>(
       method: TMethod
     ): TConfig[TMethod]["returns"] => {
-      // Implementation
+      // 实现
       return "" as any;
     },
   };
@@ -262,59 +262,59 @@ const api = makeApi({
   getPost: { returns: "Post" },
 });
 
-const user = api.call("getUser"); // Type: "User"
-const post = api.call("getPost"); // Type: "Post"
+const user = api.call("getUser"); // 类型："User"
+const post = api.call("getPost"); // 类型："Post"
 ```
 
-## Common Pitfalls
+## 常见陷阱
 
-### Forgetting Constraints
+### 忘记添加约束
 
 ```typescript
-// Without constraint, F.Narrow has no base to work with
+// 没有约束时，F.Narrow 没有基础类型可以工作
 const bad = <TConfig>(config: F.Narrow<TConfig>) => config;
 
-// With constraint, inference works properly
+// 有约束时，推断才能正确工作
 const good = <TConfig extends Record<string, unknown>>(
   config: F.Narrow<TConfig>
 ) => config;
 ```
 
-### Readonly Arrays
+### 只读数组
 
-With `as const`, arrays become `readonly`:
+使用 `as const` 时，数组变为 `readonly`：
 
 ```typescript
 const config = {
   values: [1, 2, 3],
 } as const;
 
-// config.values is readonly [1, 2, 3]
-config.values.push(4); // Error: Property 'push' does not exist on type 'readonly [1, 2, 3]'
+// config.values 是 readonly [1, 2, 3]
+config.values.push(4); // 报错：类型 'readonly [1, 2, 3]' 上不存在属性 'push'
 ```
 
-### Deep Nesting Performance
+### 深层嵌套性能
 
-Very deeply nested types can slow down the compiler:
+极深层嵌套的类型可能拖慢编译器：
 
 ```typescript
-// May cause performance issues with extremely deep nesting
+// 极深层嵌套可能导致性能问题
 type DeepConfig = {
   level1: {
     level2: {
       level3: {
-        // ... many more levels
+        // ... 更多层级
       };
     };
   };
 };
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Use `const` type parameters** when possible (TS 5.0+)
-2. **Fall back to F.Narrow** for complex inference needs
-3. **Consider as const** for simple, user-provided configs
-4. **Add proper constraints** to guide inference
-5. **Test with complex examples** to ensure inference works
-6. **Document the inference behavior** for API consumers
+1. 尽可能使用 `const` 类型参数（TypeScript 5.0+）
+2. 复杂推断需求回退到 `F.Narrow`
+3. 简单的用户配置考虑用 `as const`
+4. 添加适当的约束引导推断
+5. 用复杂示例测试推断是否正确
+6. 为 API 使用者记录推断行为

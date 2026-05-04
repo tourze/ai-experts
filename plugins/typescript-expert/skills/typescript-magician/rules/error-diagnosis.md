@@ -1,204 +1,204 @@
 ---
 name: error-diagnosis
-description: Strategies for diagnosing and understanding TypeScript type errors
+description: 诊断和理解 TypeScript 类型错误的策略
 metadata:
   tags: errors, debugging, diagnosis, troubleshooting
 ---
 
-# Diagnosing TypeScript Errors
+# 诊断 TypeScript 错误
 
-## Overview
+## 概述
 
-TypeScript errors can be cryptic, especially with complex generic types. This guide provides strategies for understanding and resolving type errors effectively.
+TypeScript 的错误信息有时晦涩难懂，特别是涉及复杂泛型类型时。本指南提供了有效理解和解决类型错误的策略。
 
-## General Strategies
+## 通用策略
 
-### 1. Read Errors Bottom-Up
+### 1. 从下往上阅读错误
 
-TypeScript writes errors top-down, but the actual cause is usually at the bottom:
+TypeScript 从上往下输出错误，但真正的原因通常在底部：
 
 ```
 Type '{ name: string; }' is not assignable to type 'User'.
   Types of property 'email' are incompatible.
     Type 'undefined' is not assignable to type 'string'.
                                                 ^^^^^^
-                                              The actual issue!
+                                              实际问题在这里！
 ```
 
-### 2. Hover for Type Information
+### 2. 悬停查看类型信息
 
-Use IDE hover tooltips extensively:
+善用 IDE 的悬停提示：
 
 ```typescript
 const result = someFunction(arg);
-//    ^ Hover here to see the inferred type
+//    ^ 悬停这里查看推断的类型
 ```
 
-### 3. Use Go-to-Definition
+### 3. 使用跳转到定义
 
-Navigate to type definitions to understand what's expected:
+跳转到类型定义以了解期望的类型：
 
 ```typescript
 document.querySelector("body");
-//       ^ Go-to-definition to see overloads
+//       ^ 跳转到定义查看重载
 ```
 
-### 4. Create Test Types
+### 4. 创建测试类型
 
-Extract parts of complex types to understand them:
+提取复杂类型的各个部分来理解它们：
 
 ```typescript
-// Complex expression
+// 复杂表达式
 type Result = SomeComplexType<Input>[keyof Input][number];
 
-// Break it down
+// 分解查看
 type Step1 = SomeComplexType<Input>;
 type Step2 = Step1[keyof Input];
 type Step3 = Step2[number];
 ```
 
-## Common Error Patterns
+## 常见错误模式
 
 ### "Type 'X' is not assignable to type 'Y'"
 
-The most common error. Check:
-1. Are you missing properties?
-2. Are property types incompatible?
-3. Is there a literal vs widened type mismatch?
+最常见的错误。检查：
+1. 是否缺少属性？
+2. 属性类型是否不兼容？
+3. 是否存在字面量 vs 放宽类型的不匹配？
 
 ```typescript
-// Example: Literal type mismatch
-const status = "active"; // Type: string (widened)
+// 示例：字面量类型不匹配
+const status = "active"; // 类型：string（已放宽）
 function setStatus(s: "active" | "inactive") {}
-setStatus(status); // Error!
+setStatus(status); // 报错！
 
-// Fix: Use as const
-const status = "active" as const; // Type: "active"
-setStatus(status); // OK
+// 修复：使用 as const
+const status = "active" as const; // 类型："active"
+setStatus(status); // 正确
 ```
 
 ### "Property 'X' does not exist on type 'Y'"
 
-The type doesn't have the expected property:
+类型上不存在期望的属性：
 
 ```typescript
-// Check 1: Is the type correct?
+// 检查 1：类型是否正确？
 function process(data: unknown) {
-  data.name; // Error: 'name' doesn't exist on 'unknown'
+  data.name; // 报错：'name' 不存在于 'unknown'
 }
 
-// Fix: Add type guard
+// 修复：添加类型守卫
 function process(data: unknown) {
   if (typeof data === "object" && data !== null && "name" in data) {
-    data.name; // OK
+    data.name; // 正确
   }
 }
 ```
 
 ### "Type 'X' cannot be used to index type 'Y'"
 
-You're trying to access a property that might not exist:
+尝试访问可能不存在的属性：
 
 ```typescript
 function getValue<T>(obj: T, key: string) {
-  return obj[key]; // Error: string can't index T
+  return obj[key]; // 报错：string 不能索引 T
 }
 
-// Fix: Constrain the key
+// 修复：约束 key
 function getValue<T, K extends keyof T>(obj: T, key: K) {
-  return obj[key]; // OK
+  return obj[key]; // 正确
 }
 ```
 
 ### "Argument of type 'X' is not assignable to parameter of type 'Y'"
 
-Function argument type mismatch:
+函数参数类型不匹配：
 
 ```typescript
-// Often happens with narrower function signatures
+// 通常发生在更窄的函数签名上
 const items = ["a", "b", "c"] as const;
 items.includes(someString);
-// Error: 'string' not assignable to '"a" | "b" | "c"'
+// 报错：'string' 不可赋值给 '"a" | "b" | "c"'
 
-// Fix: Cast appropriately
+// 修复：适当断言
 (items as readonly string[]).includes(someString);
 ```
 
 ### "Type 'X' is not generic"
 
-Trying to pass type arguments to a non-generic type:
+试图向非泛型类型传递类型参数：
 
 ```typescript
 type NotGeneric = string;
-type Attempt = NotGeneric<number>; // Error!
+type Attempt = NotGeneric<number>; // 报错！
 
-// Check if you need to add a generic parameter
+// 检查是否需要添加泛型参数
 type IsGeneric<T> = T;
-type Works = IsGeneric<number>; // OK
+type Works = IsGeneric<number>; // 正确
 ```
 
-### Generic Constraint Errors
+### 泛型约束错误
 
 ```typescript
 function process<T>(items: Parameters<T>) {}
-// Error: 'T' does not satisfy constraint '(...args: any) => any'
+// 报错：'T' 不满足约束 '(...args: any) => any'
 
-// Fix: Add the constraint
+// 修复：添加约束
 function process<T extends (...args: any) => any>(items: Parameters<T>) {}
 ```
 
-## Debugging Techniques
+## 调试技巧
 
-### 1. Simplify the Code
+### 1. 简化代码
 
-Remove complexity until the error is clear:
+逐步移除复杂度直到错误清晰：
 
 ```typescript
-// Complex chain causing error
+// 引起错误的复杂链式调用
 const result = complexFunction()
   .map(transform)
   .filter(predicate)
   .reduce(accumulator);
 
-// Simplify to isolate
+// 简化以隔离问题
 const step1 = complexFunction();
-// Check: Is step1 what you expect?
+// 检查：step1 是你期望的吗？
 
 const step2 = step1.map(transform);
-// Check: Is step2 what you expect?
-// Continue until you find the issue
+// 检查：step2 是你期望的吗？
+// 继续直到找到问题
 ```
 
-### 2. Add Explicit Type Annotations
+### 2. 添加显式类型注解
 
-Force TypeScript to tell you what's wrong:
+强制 TypeScript 告诉你哪里出了问题：
 
 ```typescript
-// Before: Error somewhere in here
+// 之前：错误在某处
 const result = getData().process();
 
-// After: Explicit annotations reveal issues
-const data: ExpectedDataType = getData(); // Error if getData returns wrong type
-const result: ExpectedResultType = data.process(); // Error if process returns wrong type
+// 之后：显式注解揭示问题
+const data: ExpectedDataType = getData(); // 如果 getData 返回错误类型会报错
+const result: ExpectedResultType = data.process(); // 如果 process 返回错误类型会报错
 ```
 
-### 3. Use `// @ts-expect-error` to Confirm Understanding
+### 3. 使用 `// @ts-expect-error` 确认理解
 
 ```typescript
-// If you think this should error:
-// @ts-expect-error - string is not assignable to number
+// 如果你认为这里应该报错：
+// @ts-expect-error - string 不可赋值给 number
 const x: number = "hello";
 
-// If the @ts-expect-error is unused, TypeScript will tell you
-// meaning the code is actually valid
+// 如果 @ts-expect-error 未使用，TypeScript 会告诉你
+// 说明代码实际上是合法的
 ```
 
-### 4. Check Source Definitions
+### 4. 检查源定义
 
-For library types, check the actual definitions:
+对于库的类型，检查实际定义：
 
 ```typescript
-// In lib.dom.d.ts
+// 在 lib.dom.d.ts 中
 interface Document {
   querySelector<K extends keyof HTMLElementTagNameMap>(
     selectors: K
@@ -207,11 +207,11 @@ interface Document {
 }
 ```
 
-## Massive Error Messages
+## 超长错误信息
 
-### Strategy: Find the Core Issue
+### 策略：找到核心问题
 
-Long errors often have one core problem:
+长错误通常只有一个核心问题：
 
 ```
 Type '{ fullName: string; id: string; firstName: string; lastName: string; age: number; }'
@@ -222,55 +222,55 @@ Property 'agePlus10' is missing in type
 '{ fullName: string; id: string; firstName: string; lastName: string; age: number; }'
 but required in type '{ fullName: string; agePlus10: number; }'.
                                          ^^^^^^^^^
-                                        The actual issue!
+                                        实际问题在这里！
 ```
 
-### Strategy: Use Type Aliases
+### 策略：使用类型别名
 
-Create type aliases to understand the comparison:
+创建类型别名来理解比较：
 
 ```typescript
 type Actual = typeof problematicValue;
 type Expected = ExpectedType;
 
-// Now hover these to compare
+// 现在悬停查看这两个类型来对比
 ```
 
-## Investigating Library Types
+## 调查库的类型
 
-### Finding Type Definitions
+### 查找类型定义
 
-1. Go-to-definition on imports
-2. Check `node_modules/@types/[library]`
-3. Check `node_modules/[library]/dist/*.d.ts`
+1. 在 import 上跳转到定义
+2. 检查 `node_modules/@types/[library]`
+3. 检查 `node_modules/[library]/dist/*.d.ts`
 
-### Understanding Overloads
+### 理解重载
 
-Look for `(+N overload)` in tooltips:
+在提示中查看 `(+N overload)`：
 
 ```typescript
 document.addEventListener("click", handler);
-//       ^ Shows (+1 overload)
+//       ^ 显示 (+1 overload)
 
-// Go-to-definition to see all overloads
-// The first matching overload is used
+// 跳转到定义查看所有重载
+// 使用第一个匹配的重载
 ```
 
-## When Types Don't Match Reality
+## 类型与实际不符
 
-Sometimes library types are wrong or incomplete:
+有时库的类型是错误或不完整的：
 
-### Solution 1: Type Assertion
+### 方案 1：类型断言
 
 ```typescript
-// When you know better than TypeScript
+// 当你比 TypeScript 更了解时
 const element = document.getElementById("root") as HTMLDivElement;
 ```
 
-### Solution 2: Declaration Merging
+### 方案 2：声明合并
 
 ```typescript
-// Extend existing types
+// 扩展已有类型
 declare module "some-library" {
   interface SomeType {
     missingProperty: string;
@@ -278,15 +278,15 @@ declare module "some-library" {
 }
 ```
 
-### Solution 3: Report the Issue
+### 方案 3：报告问题
 
-- Check if it's a known issue on GitHub
-- File a bug report with reproduction
-- Contribute a fix if possible
+- 在 GitHub 上检查是否是已知问题
+- 提交带复现的 bug 报告
+- 可能的话提交修复
 
-## Prevention Strategies
+## 预防策略
 
-### 1. Enable Strict Mode
+### 1. 启用严格模式
 
 ```json
 {
@@ -296,44 +296,44 @@ declare module "some-library" {
 }
 ```
 
-### 2. Avoid `any`
+### 2. 避免使用 `any`
 
-Every `any` is a potential type hole:
+每个 `any` 都是潜在的类型漏洞：
 
 ```typescript
-// Instead of
+// 不要用
 const data: any = fetchData();
 
-// Use
+// 用 unknown
 const data: unknown = fetchData();
-// Then narrow with type guards
+// 然后用类型守卫缩窄
 ```
 
-### 3. Use Proper Generics
+### 3. 使用正确的泛型
 
 ```typescript
-// Instead of any in generics
+// 不要在泛型中使用 any
 function wrap<T = any>(value: T) {}
 
-// Constrain appropriately
+// 适当约束
 function wrap<T extends object>(value: T) {}
 ```
 
-### 4. Test Edge Cases
+### 4. 测试边界情况
 
 ```typescript
-// Think about what could be passed
+// 考虑可能传入的值
 function process(input: string | string[]) {
-  // What if input is empty string?
-  // What if input is empty array?
-  // What if input has special characters?
+  // 如果 input 是空字符串？
+  // 如果 input 是空数组？
+  // 如果 input 包含特殊字符？
 }
 ```
 
-## IDE Tips
+## IDE 技巧
 
-1. **Use TypeScript Version Selector**: Match your project's version
-2. **Enable Inlay Hints**: See inferred types inline
-3. **Use Quick Fix**: Often suggests the correct solution
-4. **Check Problems Panel**: See all errors at once
-5. **Use Rename Symbol**: Safely rename types across files
+1. **使用 TypeScript 版本选择器**：匹配项目版本
+2. **启用内联提示**：在行内查看推断类型
+3. **使用快速修复**：通常会建议正确的解决方案
+4. **查看问题面板**：一次查看所有错误
+5. **使用重命名符号**：安全地跨文件重命名类型

@@ -1,27 +1,27 @@
 ---
 name: infer-keyword
-description: Using infer to extract types within conditional types
+description: 在条件类型中使用 infer 提取类型
 metadata:
   tags: infer, conditional-types, type-extraction, pattern-matching
 ---
 
-# The `infer` Keyword
+# `infer` 关键字
 
-## Overview
+## 概述
 
-The `infer` keyword allows you to extract and capture type information within conditional types. It's like pattern matching for types - you define a pattern and capture parts of it.
+`infer` 关键字允许在条件类型中提取和捕获类型信息。它相当于类型层面的模式匹配——你定义一个模式并捕获其中的部分。
 
-## Basic Syntax
+## 基本语法
 
 ```typescript
 type ExtractType<T> = T extends SomePattern<infer U> ? U : never;
 //                                          ^^^^^^^^
-//                                     Captures this part into U
+//                                     将这部分捕获到 U 中
 ```
 
-## Simple Examples
+## 简单示例
 
-### Extract Array Element Type
+### 提取数组元素类型
 
 ```typescript
 type ArrayElement<T> = T extends (infer U)[] ? U : never;
@@ -29,10 +29,10 @@ type ArrayElement<T> = T extends (infer U)[] ? U : never;
 type Test1 = ArrayElement<string[]>; // string
 type Test2 = ArrayElement<number[]>; // number
 type Test3 = ArrayElement<(string | number)[]>; // string | number
-type Test4 = ArrayElement<string>; // never (not an array)
+type Test4 = ArrayElement<string>; // never（不是数组）
 ```
 
-### Extract Promise Value
+### 提取 Promise 值
 
 ```typescript
 type PromiseValue<T> = T extends Promise<infer U> ? U : never;
@@ -42,7 +42,7 @@ type Test2 = PromiseValue<Promise<number>>; // number
 type Test3 = PromiseValue<string>; // never
 ```
 
-### Extract Object Property Type
+### 提取对象属性类型
 
 ```typescript
 type GetData<T> = T extends { data: infer TData } ? TData : never;
@@ -52,23 +52,23 @@ type Test2 = GetData<{ data: number[] }>; // number[]
 type Test3 = GetData<{ other: string }>; // never
 ```
 
-## Template Literal Type Extraction
+## 模板字面量类型提取
 
-`infer` works powerfully with template literal types:
+`infer` 与模板字面量类型结合非常强大：
 
 ```typescript
-// Remove "maps:" prefix from string
+// 移除 "maps:" 前缀
 type RemoveMaps<T> = T extends `maps:${infer Rest}` ? Rest : T;
 
 type Test1 = RemoveMaps<"maps:longitude">; // "longitude"
 type Test2 = RemoveMaps<"maps:latitude">; // "latitude"
-type Test3 = RemoveMaps<"other">; // "other" (no match, returns T)
+type Test3 = RemoveMaps<"other">; // "other"（不匹配，返回 T）
 ```
 
-### Multiple Captures in Template Literals
+### 模板字面量中的多个捕获
 
 ```typescript
-// Parse route parameters
+// 解析路由参数
 type ParseRoute<T> = T extends `${infer Start}:${infer Param}/${infer Rest}`
   ? { start: Start; param: Param; rest: ParseRoute<Rest> }
   : T extends `${infer Start}:${infer Param}`
@@ -76,25 +76,25 @@ type ParseRoute<T> = T extends `${infer Start}:${infer Param}/${infer Rest}`
   : T;
 
 type Route = ParseRoute<"/users/:id/posts/:postId">;
-// Nested structure with extracted params
+// 提取的参数构成嵌套结构
 ```
 
-### Extract Before/After Patterns
+### 提取前/后模式
 
 ```typescript
-// Get everything before ":"
+// 获取 ":" 之前的所有内容
 type Before<T> = T extends `${infer Prefix}:${string}` ? Prefix : T;
 
-// Get everything after ":"
+// 获取 ":" 之后的所有内容
 type After<T> = T extends `${string}:${infer Suffix}` ? Suffix : T;
 
 type Test1 = Before<"prefix:suffix">; // "prefix"
 type Test2 = After<"prefix:suffix">; // "suffix"
 ```
 
-## Function Type Extraction
+## 函数类型提取
 
-### Extract Return Type
+### 提取返回类型
 
 ```typescript
 type MyReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
@@ -102,7 +102,7 @@ type MyReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
 type Test = MyReturnType<() => string>; // string
 ```
 
-### Extract Parameter Types
+### 提取参数类型
 
 ```typescript
 type MyParameters<T> = T extends (...args: infer P) => any ? P : never;
@@ -111,7 +111,7 @@ type Test = MyParameters<(a: string, b: number) => void>;
 // [a: string, b: number]
 ```
 
-### Extract First Parameter
+### 提取第一个参数
 
 ```typescript
 type FirstArg<T> = T extends (first: infer F, ...rest: any[]) => any
@@ -121,7 +121,7 @@ type FirstArg<T> = T extends (first: infer F, ...rest: any[]) => any
 type Test = FirstArg<(name: string, age: number) => void>; // string
 ```
 
-### Extract Constructor Parameters
+### 提取构造函数参数
 
 ```typescript
 type ConstructorParams<T> = T extends new (...args: infer P) => any
@@ -135,12 +135,12 @@ class User {
 type UserParams = ConstructorParams<typeof User>; // [string, number]
 ```
 
-## Multiple `infer` in One Condition
+## 一个条件中的多个 `infer`
 
-You can use multiple `infer` captures:
+可以在一个条件中使用多个 `infer` 捕获：
 
 ```typescript
-// Extract key-value from "key=value" string
+// 从 "key=value" 字符串提取键值
 type ParseKeyValue<T> = T extends `${infer Key}=${infer Value}`
   ? { key: Key; value: Value }
   : never;
@@ -149,12 +149,12 @@ type Test = ParseKeyValue<"name=John">;
 // { key: "name"; value: "John" }
 ```
 
-## Infer with Constraints
+## 带约束的 infer
 
-You can add constraints to inferred types:
+可以为推断类型添加约束：
 
 ```typescript
-// Only infer if it's a string
+// 仅在值为 string 时推断
 type ExtractString<T> = T extends { value: infer V extends string }
   ? V
   : never;
@@ -163,10 +163,10 @@ type Test1 = ExtractString<{ value: "hello" }>; // "hello"
 type Test2 = ExtractString<{ value: 123 }>; // never
 ```
 
-## Recursive Type Extraction
+## 递归类型提取
 
 ```typescript
-// Deeply unwrap nested promises
+// 深层解包嵌套 Promise
 type DeepAwaited<T> = T extends Promise<infer U>
   ? DeepAwaited<U>
   : T;
@@ -174,9 +174,9 @@ type DeepAwaited<T> = T extends Promise<infer U>
 type Test = DeepAwaited<Promise<Promise<Promise<string>>>>; // string
 ```
 
-## Practical Examples
+## 实际示例
 
-### Type-Safe Event Emitter
+### 类型安全的事件发射器
 
 ```typescript
 type EventHandler<T> = T extends (event: infer E) => void ? E : never;
@@ -189,7 +189,7 @@ interface Events {
 type ClickEvent = EventHandler<Events["click"]>; // MouseEvent
 ```
 
-### Extract Route Parameters
+### 提取路由参数
 
 ```typescript
 type ExtractParams<T extends string> =
@@ -203,10 +203,10 @@ type Params = ExtractParams<"/users/:userId/posts/:postId">;
 // "userId" | "postId"
 ```
 
-### Object Key Transformation
+### 对象键变换
 
 ```typescript
-// Remove "maps:" prefix from all object keys
+// 移除所有对象键的 "maps:" 前缀
 type RemoveMaps<T> = T extends `maps:${infer Rest}` ? Rest : T;
 
 type RemoveMapsPrefixFromObj<T> = {
@@ -223,7 +223,7 @@ type Cleaned = RemoveMapsPrefixFromObj<ApiData>;
 // { longitude: string; latitude: string; city: string }
 ```
 
-### Extract Generic Parameters
+### 提取泛型参数
 
 ```typescript
 type ExtractGeneric<T> = T extends Array<infer U>
@@ -239,12 +239,12 @@ type Test2 = ExtractGeneric<Map<string, number>>; // { key: string; value: numbe
 type Test3 = ExtractGeneric<Set<boolean>>; // boolean
 ```
 
-## Common Pitfalls
+## 常见陷阱
 
-### Infer Position Matters
+### infer 的位置很关键
 
 ```typescript
-// Captures the FIRST matching position
+// 捕获第一个匹配位置
 type First<T> = T extends [infer F, ...any[]] ? F : never;
 type Last<T> = T extends [...any[], infer L] ? L : never;
 
@@ -252,37 +252,37 @@ type TestFirst = First<[1, 2, 3]>; // 1
 type TestLast = Last<[1, 2, 3]>; // 3
 ```
 
-### Greedy Template Literal Matching
+### 模板字面量的贪婪匹配
 
 ```typescript
-// Greedy: captures as much as possible
+// 贪婪：尽可能多地捕获
 type GetPath<T> = T extends `${infer Path}.json` ? Path : never;
 
 type Test = GetPath<"folder/file.name.json">;
-// "folder/file.name" (not "folder/file")
+// "folder/file.name"（不是 "folder/file"）
 ```
 
-### Union Distribution with Infer
+### infer 的联合分发
 
 ```typescript
 type ExtractArray<T> = T extends (infer U)[] ? U : never;
 
-// Distributes over union
+// 在联合上分发
 type Test = ExtractArray<string[] | number[]>;
-// string | number (not (string | number)[])
+// string | number（不是 (string | number)[]）
 ```
 
-## When to Use `infer`
+## 何时使用 `infer`
 
-- **Type extraction**: Pull types out of complex structures
-- **String parsing**: Extract parts from template literal types
-- **Function analysis**: Get parameter/return types
-- **Pattern matching**: Match and capture type patterns
-- **Recursive types**: Extract types in recursive structures
+- **类型提取**：从复杂结构中提取类型
+- **字符串解析**：从模板字面量类型中提取部分
+- **函数分析**：获取参数/返回类型
+- **模式匹配**：匹配并捕获类型模式
+- **递归类型**：在递归结构中提取类型
 
-## Best Practices
+## 最佳实践
 
-1. **Provide fallback types**: Always handle the `false` branch
-2. **Be specific with patterns**: More specific patterns = better inference
-3. **Consider distribution**: Remember that union types distribute
-4. **Name captures meaningfully**: Use descriptive names like `TData`, `TKey`, `TValue`
+1. **提供后备类型**：始终处理 `false` 分支
+2. **模式要具体**：更具体的模式 = 更好的推断
+3. **注意分发行为**：记住联合类型会分发
+4. **有意义的命名**：使用描述性名称如 `TData`、`TKey`、`TValue`

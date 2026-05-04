@@ -1,17 +1,17 @@
 ---
 name: mapped-types
-description: Creating new types by transforming existing type properties
+description: 通过变换现有类型的属性创建新类型
 metadata:
   tags: mapped-types, key-remapping, property-modifiers, index-signatures
 ---
 
-# Mapped Types
+# 映射类型
 
-## Overview
+## 概述
 
-Mapped types allow you to create new types by transforming each property of an existing type. They iterate over keys and apply transformations to create new type structures.
+映射类型允许通过变换现有类型的每个属性来创建新类型。它们遍历键并应用变换，创建新的类型结构。
 
-## Basic Syntax
+## 基本语法
 
 ```typescript
 type MappedType<T> = {
@@ -19,9 +19,9 @@ type MappedType<T> = {
 };
 ```
 
-## Simple Examples
+## 简单示例
 
-### Make All Properties Optional
+### 将所有属性变为可选
 
 ```typescript
 type MyPartial<T> = {
@@ -38,15 +38,15 @@ type PartialUser = MyPartial<User>;
 // { id?: string; name?: string; email?: string }
 ```
 
-### Make All Properties Required
+### 将所有属性变为必需
 
 ```typescript
 type MyRequired<T> = {
-  [K in keyof T]-?: T[K]; // -? removes optional modifier
+  [K in keyof T]-?: T[K]; // -? 移除可选修饰符
 };
 ```
 
-### Make All Properties Readonly
+### 将所有属性变为只读
 
 ```typescript
 type MyReadonly<T> = {
@@ -54,27 +54,27 @@ type MyReadonly<T> = {
 };
 ```
 
-### Make All Properties Mutable
+### 将所有属性变为可变
 
 ```typescript
 type Mutable<T> = {
-  -readonly [K in keyof T]: T[K]; // -readonly removes readonly modifier
+  -readonly [K in keyof T]: T[K]; // -readonly 移除 readonly 修饰符
 };
 ```
 
-## Preserving Original Keys
+## 保留原始键
 
-When you just iterate over `keyof T`, you preserve the original keys:
+直接遍历 `keyof T` 时，保留原始键：
 
 ```typescript
 type Preserve<T> = {
-  [K in keyof T]: T[K]; // Same type, just recreated
+  [K in keyof T]: T[K]; // 相同类型，只是重建
 };
 ```
 
-## Key Remapping with `as`
+## 使用 `as` 进行键重映射
 
-Transform keys while mapping using the `as` clause:
+在映射时通过 `as` 子句变换键：
 
 ```typescript
 type RemapKeys<T> = {
@@ -82,7 +82,7 @@ type RemapKeys<T> = {
 };
 ```
 
-### Add Prefix to Keys
+### 为键添加前缀
 
 ```typescript
 type Prefixed<T, P extends string> = {
@@ -98,7 +98,7 @@ type PrefixedUser = Prefixed<User, "user_">;
 // { user_name: string; user_age: number }
 ```
 
-### Remove Keys by Remapping to `never`
+### 通过重映射为 `never` 移除键
 
 ```typescript
 type RemoveFields<T, K extends keyof T> = {
@@ -109,7 +109,7 @@ type UserWithoutEmail = RemoveFields<User, "email">;
 // { id: string; name: string }
 ```
 
-### Transform Keys
+### 变换键
 
 ```typescript
 type RemoveMapsPrefixFromObj<T> = {
@@ -127,12 +127,12 @@ type CleanData = RemoveMapsPrefixFromObj<ApiData>;
 // { longitude: string; latitude: string }
 ```
 
-## Filtering Keys
+## 过滤键
 
-Use conditional types in the `as` clause to filter:
+在 `as` 子句中使用条件类型进行过滤：
 
 ```typescript
-// Only keep string properties
+// 仅保留字符串属性
 type OnlyStrings<T> = {
   [K in keyof T as T[K] extends string ? K : never]: T[K];
 };
@@ -148,7 +148,7 @@ type StringProps = OnlyStrings<Mixed>;
 // { name: string; email: string }
 ```
 
-### Keep Only Required Properties
+### 仅保留必需属性
 
 ```typescript
 type RequiredKeys<T> = {
@@ -158,7 +158,7 @@ type RequiredKeys<T> = {
 type OnlyRequired<T> = Pick<T, RequiredKeys<T>>;
 ```
 
-### Keep Only Optional Properties
+### 仅保留可选属性
 
 ```typescript
 type OptionalKeys<T> = {
@@ -168,9 +168,9 @@ type OptionalKeys<T> = {
 type OnlyOptional<T> = Pick<T, OptionalKeys<T>>;
 ```
 
-## Transforming Property Types
+## 变换属性类型
 
-### Wrap All Properties in Promise
+### 将所有属性包装为 Promise
 
 ```typescript
 type Promisify<T> = {
@@ -186,7 +186,7 @@ type AsyncApi = Promisify<SyncApi>;
 // { getUser: Promise<() => User>; getPost: Promise<() => Post> }
 ```
 
-### Make All Properties Arrays
+### 将所有属性变为数组
 
 ```typescript
 type Arrayify<T> = {
@@ -202,7 +202,7 @@ type Multiple = Arrayify<Single>;
 // { name: string[]; count: number[] }
 ```
 
-### Nullable Properties
+### 可空属性
 
 ```typescript
 type Nullable<T> = {
@@ -210,9 +210,9 @@ type Nullable<T> = {
 };
 ```
 
-## Deep Mapped Types
+## 深层映射类型
 
-Apply transformations recursively:
+递归应用变换：
 
 ```typescript
 type DeepReadonly<T> = {
@@ -230,10 +230,10 @@ interface Nested {
 }
 
 type ReadonlyNested = DeepReadonly<Nested>;
-// All levels are readonly
+// 所有层级都是 readonly
 ```
 
-### Deep Partial
+### 深层 Partial
 
 ```typescript
 type DeepPartial<T> = {
@@ -241,9 +241,9 @@ type DeepPartial<T> = {
 };
 ```
 
-## Practical Examples
+## 实际示例
 
-### Getters and Setters
+### Getter 和 Setter
 
 ```typescript
 type Getters<T> = {
@@ -266,7 +266,7 @@ type PersonSetters = Setters<Person>;
 // { setName: (value: string) => void; setAge: (value: number) => void }
 ```
 
-### Event Handlers
+### 事件处理函数
 
 ```typescript
 type EventHandlers<T> = {
@@ -288,7 +288,7 @@ type StateHandlers = EventHandlers<State>;
 // }
 ```
 
-### Form Validation Errors
+### 表单验证错误
 
 ```typescript
 type ValidationErrors<T> = {
@@ -305,9 +305,9 @@ type RegistrationErrors = ValidationErrors<RegistrationForm>;
 // { email?: string[]; password?: string[]; confirmPassword?: string[] }
 ```
 
-## Combining Mapped Types
+## 组合映射类型
 
-### Pick with Transformation
+### 选取并变换
 
 ```typescript
 type PickAndTransform<T, K extends keyof T> = {
@@ -315,7 +315,7 @@ type PickAndTransform<T, K extends keyof T> = {
 };
 ```
 
-### Merge Two Types
+### 合并两个类型
 
 ```typescript
 type Merge<A, B> = {
@@ -327,10 +327,10 @@ type Merge<A, B> = {
 };
 ```
 
-## Index Signatures in Mapped Types
+## 映射类型中的索引签名
 
 ```typescript
-// Create index signature from union
+// 从联合类型创建索引签名
 type FromUnion<K extends string, V> = {
   [P in K]: V;
 };
@@ -339,60 +339,60 @@ type Dict = FromUnion<"a" | "b" | "c", number>;
 // { a: number; b: number; c: number }
 ```
 
-## Common Pitfalls
+## 常见陷阱
 
-### Forgetting String Key Check
+### 忘记字符串键检查
 
-Template literals require string keys:
+模板字面量需要字符串键：
 
 ```typescript
-// Error: Type 'K' is not assignable to type 'string'
+// 报错：类型 'K' 不可赋值给类型 'string'
 type Wrong<T> = {
   [K in keyof T as `prefix_${K}`]: T[K];
 };
 
-// Correct: Check K extends string
+// 正确：检查 K extends string
 type Correct<T> = {
   [K in keyof T as K extends string ? `prefix_${K}` : never]: T[K];
 };
 ```
 
-### Losing Modifiers
+### 丢失修饰符
 
-Remapping can lose optional/readonly modifiers:
+重映射可能丢失可选/只读修饰符：
 
 ```typescript
-// Original optional modifier lost
+// 原始可选修饰符丢失
 type Transform<T> = {
   [K in keyof T as `new_${string & K}`]: T[K];
 };
 
-// Preserve optional with conditional
+// 用条件类型保留可选
 type TransformPreserve<T> = {
   [K in keyof T as `new_${string & K}`]+?: T[K];
 };
 ```
 
-### Infinite Recursion
+### 无限递归
 
-Deep mapped types can cause issues:
+深层映射类型可能导致问题：
 
 ```typescript
-// Potential infinite recursion with circular types
+// 循环类型可能导致无限递归
 type DeepReadonly<T> = {
   readonly [K in keyof T]: DeepReadonly<T[K]>;
 };
 
-// Add base case for primitives
+// 为原始类型添加基础情况
 type DeepReadonlySafe<T> = T extends object
   ? { readonly [K in keyof T]: DeepReadonlySafe<T[K]> }
   : T;
 ```
 
-## When to Use Mapped Types
+## 何时使用映射类型
 
-- **Type transformations**: Change modifiers (optional, readonly)
-- **Key renaming**: Add prefixes, suffixes, or transform key names
-- **Property filtering**: Remove or keep certain properties
-- **Bulk operations**: Apply same transformation to all properties
-- **Type utilities**: Build reusable type transformers
+- **类型变换**：改变修饰符（可选、只读）
+- **键重命名**：添加前缀、后缀或变换键名
+- **属性过滤**：移除或保留特定属性
+- **批量操作**：对所有属性应用相同变换
+- **类型工具**：构建可复用的类型变换器

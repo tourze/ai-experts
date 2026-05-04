@@ -1,40 +1,40 @@
 ---
 name: generics-basics
-description: Fundamentals of generic types and functions in TypeScript
+description: TypeScript 泛型类型与函数基础
 metadata:
   tags: generics, type-parameters, constraints, inference
 ---
 
-# Generics Fundamentals
+# 泛型基础
 
-## Overview
+## 概述
 
-Generics allow you to create reusable components that work with multiple types while maintaining type safety. They're essential for building flexible, type-safe APIs.
+泛型允许创建适用于多种类型的可复用组件，同时保持类型安全。它们是构建灵活、类型安全 API 的基础。
 
-## Basic Generic Functions
+## 基本泛型函数
 
 ```typescript
-// Without generics - loses type information
+// 不用泛型 - 丢失类型信息
 function identity(value: any): any {
   return value;
 }
 
-// With generics - preserves type
+// 使用泛型 - 保留类型
 function identity<T>(value: T): T {
   return value;
 }
 
-const num = identity(42); // Type: number (inferred)
-const str = identity("hello"); // Type: string (inferred)
-const explicit = identity<boolean>(true); // Type: boolean (explicit)
+const num = identity(42); // 类型：number（推断）
+const str = identity("hello"); // 类型：string（推断）
+const explicit = identity<boolean>(true); // 类型：boolean（显式）
 ```
 
-## Inference Dependencies
+## 推断依赖
 
-When the type of one parameter depends on another, use generics:
+当一个参数的类型依赖另一个时，使用泛型：
 
 ```typescript
-// The return type depends on what keys exist in the config
+// 返回类型依赖 config 中存在哪些键
 const createComponent = <TConfig extends Record<string, string>>(
   config: TConfig,
 ) => {
@@ -43,107 +43,107 @@ const createComponent = <TConfig extends Record<string, string>>(
   };
 };
 
-// TConfig is inferred as { primary: string; secondary: string }
+// TConfig 被推断为 { primary: string; secondary: string }
 const getButtonClasses = createComponent({
   primary: "bg-blue-300",
   secondary: "bg-green-300",
 });
 
-// variant must be "primary" | "secondary"
-getButtonClasses("primary", "px-4"); // OK
-getButtonClasses("tertiary", "px-4"); // Error: "tertiary" not in keys
+// variant 必须是 "primary" | "secondary"
+getButtonClasses("primary", "px-4"); // 正确
+getButtonClasses("tertiary", "px-4"); // 报错："tertiary" 不在键中
 ```
 
-## Generic Constraints with `extends`
+## 使用 `extends` 的泛型约束
 
-Constrain generics to ensure they have required properties:
+约束泛型以确保具有必需的属性：
 
 ```typescript
-// Unconstrained - TFunc could be anything
+// 无约束 - TFunc 可以是任何类型
 type WrapFunction<TFunc> = (...args: any[]) => any;
 
-// Constrained - TFunc must be a function
+// 有约束 - TFunc 必须是函数
 type WrapFunction<TFunc extends (...args: any) => any> = (
   ...args: Parameters<TFunc>
 ) => ReturnType<TFunc>;
 ```
 
-### Why Constraints Matter
+### 为什么约束很重要
 
 ```typescript
-// Without constraint
+// 无约束
 function getLength<T>(item: T): number {
-  return item.length; // Error: Property 'length' does not exist on type 'T'
+  return item.length; // 报错：类型 'T' 上不存在属性 'length'
 }
 
-// With constraint
+// 有约束
 function getLength<T extends { length: number }>(item: T): number {
-  return item.length; // OK - we know T has length
+  return item.length; // 正确 - 我们知道 T 有 length
 }
 
 getLength("hello"); // 5
 getLength([1, 2, 3]); // 3
 getLength({ length: 10 }); // 10
-getLength(42); // Error: number doesn't have length
+getLength(42); // 报错：number 没有 length
 ```
 
-## Default Generic Parameters
+## 默认泛型参数
 
-Provide defaults for optional type parameters:
+为可选类型参数提供默认值：
 
 ```typescript
 type WrapFunction<
   TFunc extends (...args: any) => any,
-  TAdditional = {} // Default to empty object
+  TAdditional = {} // 默认为空对象
 > = (
   ...args: Parameters<TFunc>
 ) => Promise<Awaited<ReturnType<TFunc>> & TAdditional>;
 
-// Can use without TAdditional
+// 可以不传 TAdditional
 type BasicWrapper = WrapFunction<typeof fetchUser>;
 
-// Or with TAdditional
+// 或传入 TAdditional
 type ExtendedWrapper = WrapFunction<typeof fetchUser, { meta: string }>;
 ```
 
-## Generic Slot Inference
+## 泛型插槽推断
 
-TypeScript infers generic types from usage:
+TypeScript 根据使用方式推断泛型类型：
 
 ```typescript
-// Generic is inferred from the argument passed
+// 泛型从传入的参数推断
 const createComponent = <TConfig>(config: TConfig) => {
   return config;
 };
 
-// TConfig is inferred as { primary: string; secondary: string }
+// TConfig 被推断为 { primary: string; secondary: string }
 const component = createComponent({
   primary: "bg-blue-300",
   secondary: "bg-green-300",
 });
 ```
 
-### When Inference Doesn't Work
+### 推断失效的情况
 
-If you don't USE the generic in arguments, it defaults to unknown:
+如果泛型没有在参数中使用，它会默认为 unknown：
 
 ```typescript
-// BAD - TConfig isn't used in arguments, defaults to unknown
+// 错误 - TConfig 没有在参数中使用，默认为 unknown
 const createComponent = <TConfig>(config: Record<string, string>) => {
-  // TConfig is unknown here
+  // TConfig 在这里是 unknown
 };
 
-// GOOD - TConfig IS the argument type
+// 正确 - TConfig 就是参数类型
 const createComponent = <TConfig extends Record<string, string>>(
   config: TConfig,
 ) => {
-  // TConfig is inferred from what's passed
+  // TConfig 从传入值推断
 };
 ```
 
-## Multiple Generic Parameters
+## 多个泛型参数
 
-Use multiple parameters for related but distinct types:
+为相关但不同的类型使用多个参数：
 
 ```typescript
 function map<TInput, TOutput>(
@@ -153,14 +153,14 @@ function map<TInput, TOutput>(
   return items.map(transform);
 }
 
-// Both TInput and TOutput are inferred
+// TInput 和 TOutput 都被推断
 const numbers = map(["1", "2", "3"], (s) => parseInt(s));
-// TInput: string, TOutput: number, Result: number[]
+// TInput: string, TOutput: number, 结果: number[]
 ```
 
-## Pattern: `keyof` with Generics
+## 模式：`keyof` 与泛型
 
-Combine `keyof` with generics for type-safe property access:
+结合 `keyof` 与泛型实现类型安全的属性访问：
 
 ```typescript
 function getProperty<TObj, TKey extends keyof TObj>(
@@ -171,12 +171,12 @@ function getProperty<TObj, TKey extends keyof TObj>(
 }
 
 const user = { name: "Alice", age: 30 };
-const name = getProperty(user, "name"); // Type: string
-const age = getProperty(user, "age"); // Type: number
-const invalid = getProperty(user, "email"); // Error: "email" not in keyof
+const name = getProperty(user, "name"); // 类型：string
+const age = getProperty(user, "age"); // 类型：number
+const invalid = getProperty(user, "email"); // 报错："email" 不在 keyof 中
 ```
 
-## Generics in Classes
+## 类中的泛型
 
 ```typescript
 class Container<T> {
@@ -197,82 +197,82 @@ class Container<T> {
 
 const numContainer = new Container(42);
 const strContainer = numContainer.map((n) => n.toString());
-// strContainer is Container<string>
+// strContainer 是 Container<string>
 ```
 
-## Complete Example: Component Factory
+## 完整示例：组件工厂
 
 ```typescript
-// A factory that creates type-safe component class generators
+// 创建类型安全组件类生成器的工厂
 export const createComponent = <TConfig extends Record<string, string>>(
   config: TConfig,
 ) => {
-  // Return a function that requires valid variant keys
+  // 返回需要合法 variant 键的函数
   return (variant: keyof TConfig, ...otherClasses: string[]): string => {
     return config[variant] + " " + otherClasses.join(" ");
   };
 };
 
-// Usage
+// 使用
 const getButtonClasses = createComponent({
   primary: "bg-blue-500 text-white",
   secondary: "bg-gray-200 text-gray-800",
   danger: "bg-red-500 text-white",
 });
 
-// Type-safe: variant must be "primary" | "secondary" | "danger"
+// 类型安全：variant 必须是 "primary" | "secondary" | "danger"
 const classes = getButtonClasses("primary", "px-4", "py-2");
-// Result: "bg-blue-500 text-white px-4 py-2"
+// 结果："bg-blue-500 text-white px-4 py-2"
 
-// Type error on invalid variant
-getButtonClasses("invalid"); // Error!
+// 无效 variant 报类型错误
+getButtonClasses("invalid"); // 报错！
 ```
 
-## When to Use Generics
+## 何时使用泛型
 
-- **Type preservation**: When you need to preserve type information through a function
-- **Inference dependencies**: When one type depends on another
-- **Reusable components**: When building APIs that work with multiple types
-- **Constraints**: When you need to ensure types have certain properties
-- **Factory functions**: When creating functions that return typed results
+- **类型保留**：需要通过函数保留类型信息时
+- **推断依赖**：一个类型依赖另一个类型时
+- **可复用组件**：构建适用于多种类型的 API 时
+- **约束**：需要确保类型具有特定属性时
+- **工厂函数**：创建返回类型化结果的函数时
 
-## Common Pitfalls
+## 常见陷阱
 
-### Unnecessary Generics
+### 不必要的泛型
 
 ```typescript
-// BAD - generic provides no value
+// 错误 - 泛型没有提供价值
 function greet<T extends string>(name: T): string {
   return `Hello, ${name}`;
 }
 
-// GOOD - just use string
+// 正确 - 直接用 string
 function greet(name: string): string {
   return `Hello, ${name}`;
 }
 ```
 
-### Over-constraining
+### 过度约束
 
 ```typescript
-// BAD - overly specific constraint
+// 错误 - 约束过于具体
 function process<T extends { id: string; name: string; email: string }>(
   obj: T
 ): void {}
 
-// GOOD - only require what you actually use
+// 正确 - 只要求实际使用的属性
 function process<T extends { id: string }>(obj: T): void {}
 ```
 
-### Forgetting to Constrain
+### 忘记添加约束
 
 ```typescript
-// BAD - accessing property that might not exist
+// 错误 - 访问可能不存在的属性
 function getName<T>(obj: T): string {
-  return obj.name; // Error: Property 'name' does not exist
+  return obj.name; // 报错：属性 'name' 不存在
 }
 
-// GOOD - constrain to types that have name
+// 正确 - 约束为有 name 的类型
 function getName<T extends { name: string }>(obj: T): string {
   return obj.name;
 }
