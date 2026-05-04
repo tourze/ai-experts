@@ -326,6 +326,29 @@ node --test tests/install-script.test.mjs tests/cleanup-legacy.test.mjs
 4. **防合理化**：对容易被 agent 跳过的规则，用 Red Flags / Rationalizations 表写清"危险念头"和"现实后果"。
 5. **做对照验证**：重要 skill 变更优先用 [skill-creator](plugins/skill-expert/skills/skill-creator/SKILL.md) 跑 with-skill vs baseline；源材料很厚时，用 [skill-verifier](plugins/skill-expert/skills/skill-verifier/SKILL.md) 做闭卷覆盖验证。
 6. **逐层披露脚本**：插件 README 不直接暴露 `skills/<skill>/scripts/*` 的调用命令；脚本用法只写在对应 `SKILL.md` 或 `references/` 中。README 只保留 skill 级入口、依赖说明和插件级验证命令，避免绕过 skill 直接使用脚本。
+7. **引用验证必须区分类型**：SKILL.md 中出现的 `references/`、`scripts/` 路径不是都能按同一方式验证。用 `grep -oP '(?:references|scripts)/[\w.-]+' SKILL.md` 盲扫会误报目录引用、虚构示例、仓库根路径和运行时生成路径为"断裂"。验证前必须先分类：
+
+| 引用类型 | 上下文特征 | 验证方式 |
+|----------|-----------|----------|
+| 本地文件 | `references/file.md` 或 `scripts/file.mjs`，非 `node ` 前缀、非 `.specify/` 前缀 | 检查 `skills/<skill>/references/file.md` 是否存在 |
+| 仓库根脚本 | `node scripts/file.mjs` 前缀，skill 正文要求从仓库根执行 | 检查仓库根 `scripts/file.mjs`，不是 skill 本地 |
+| 运行时生成 | `.specify/scripts/`、`.claude/` 等前缀 | 不检查本地；由另一个 skill 或 install 流程在目标项目中创建 |
+| 教学/虚构示例 | 出现在代码块示例、FAIL/PASS 对比、反模式说明中 | 不检查；是虚构路径，不是真实引用 |
+| 目录引用 | 末尾带 `/`，或上下文说"是内部模块" | 检查目录是否存在，不是文件 |
+
+验证命令（仅检查本地文件引用，排除其他类型）：
+
+```bash
+# 检查真正缺失的本地引用/脚本文件
+find plugins -name 'SKILL.md' -path '*/skills/*' | while read f; do
+  dir=$(dirname "$f")
+  grep -oP '(?<!\.specify/)(?<!node )(?:references|scripts)/[\w.\-]+' "$f" 2>/dev/null | sort -u | while read r; do
+    [ ! -f "$dir/$r" ] && [ ! -d "$dir/$r" ] && echo "MISSING: $f → $r"
+  done
+done
+```
+
+用 agent 批量分析引用完整性时，prompt 必须明确要求先按上表分类再验证，禁止用纯正则匹配直接判定"断裂"。agent 输出的断裂数量必须经过人工抽查验证后才能报告。
 
 仓库级质量用 `node scripts/skill-quality-report.mjs --json` 看结构、description、eval 覆盖、触发域冲突和已落盘的 with-skill vs baseline 效果评测；尚未覆盖的真实效果仍要看 eval 输出、压力场景、telemetry 和人工复盘。当前自动化分约 95 / 100，eval 覆盖 100%，CSO（description 触发域审计）通过 100%。
 
