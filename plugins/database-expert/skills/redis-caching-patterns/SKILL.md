@@ -53,6 +53,8 @@ def get_user(user_id: int) -> dict:
 - TTL 是否有随机抖动。
 - 删缓存失败是否有补偿机制。
 
+更完整的 Python 与 Lua 代码示例见 [references/code-patterns.md](references/code-patterns.md)。
+
 ## 反模式
 
 ### FAIL: 先删缓存再写 DB

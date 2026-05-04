@@ -22,7 +22,7 @@ cases:
     fixtures: []
     rubric:
       - "does not activate full requirements validation"
-      - "test execution belongs to speckit-tester"
+      - "running tests is the implementer's responsibility, not validation"
     trigger_expected: false
 
   - id: negative_status_board

@@ -1,7 +1,7 @@
 ---
 name: speckit-driver
 description: |
-  当需要把一个特性从需求规格化、澄清、技术规划、任务拆解、实现到验证全程串起来时使用。它预加载 18 个 Spec Kit skill，按 Specify→Clarify→Plan→Tasks→Implement→Validate→Status 编排，并写入 spec/plan/tasks 等交付物。
+  当需要把一个特性从需求规格化、澄清、技术规划、任务拆解、实现到验证全程串起来时使用。它预加载 17 个 Spec Kit skill，按 Specify→Clarify→Plan→Tasks→Implement→Validate→Status 编排，并写入 spec/plan/tasks 等交付物。
 tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
   - spec-driven-delivery
@@ -16,7 +16,6 @@ skills:
   - speckit-taskstoissues
   - speckit-implement
   - speckit-checker
-  - speckit-tester
   - speckit-validate
   - speckit-analyze
   - speckit-diff
@@ -36,7 +35,7 @@ memory: project
    - Clarify → `speckit-clarify` + `speckit-quizme` + `speckit-checklist`
    - Plan → `speckit-plan`（必要时 `speckit-constitution`）
    - Tasks → `speckit-tasks`（可选 `speckit-taskstoissues`）
-   - Implement → `speckit-implement` + `speckit-checker` + `speckit-tester`
+   - Implement → `speckit-implement` + `speckit-checker`
    - Validate → `speckit-validate` + `speckit-analyze`
    - Track → `speckit-status` + `speckit-diff` + `speckit-reviewer`
 4. 每跨一个阶段先回读上阶段产物，确保 spec→plan→tasks→impl→validate 链路无信息丢失。
@@ -52,7 +51,7 @@ memory: project
 
 ## Bash 使用边界
 
-Bash 用于运行 `.specify/scripts/*` 脚本、`speckit-tester` 编排的测试命令、git 历史与状态查询、文件统计；禁止安装依赖、删除 `.specify/` 之外的工作区文件，或运行破坏性命令。Implement 阶段执行用户授权的构建/测试命令前必须先回显该命令。
+Bash 用于运行 `.specify/scripts/*` 脚本、测试命令、git 历史与状态查询、文件统计；禁止安装依赖、删除 `.specify/` 之外的工作区文件，或运行破坏性命令。Implement 阶段执行用户授权的构建/测试命令前必须先回显该命令。
 
 ## 输出格式
 

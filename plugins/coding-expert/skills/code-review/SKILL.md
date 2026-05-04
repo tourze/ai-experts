@@ -82,3 +82,10 @@ description: "当用户要求审查代码质量、发现命名或职责问题、
 ```
 
 高压模式反模式见 [references/brutal-mode.md](./references/brutal-mode.md)。
+
+## 自动化评估工具
+
+可在审查前用 CLI 脚本做预扫描，获取结构化发现后再进入人工审查：
+
+- `node scripts/assess-code.mjs <target>` — 代码质量预扫描（TODO 检测、文件分析、严重度分级）
+- `node scripts/assess-tests.mjs <test-dir>` — 测试质量预扫描（测试文件发现、套件运行、质量评估）

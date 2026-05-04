@@ -22,7 +22,7 @@ cases:
     fixtures: []
     rubric:
       - "does not activate static-check workflow"
-      - "test execution belongs to speckit-tester"
+      - "running tests is the implementer's responsibility, not static checking"
     trigger_expected: false
 
   - id: negative_validate_requirements

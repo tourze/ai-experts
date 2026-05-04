@@ -8,7 +8,7 @@ description: "当用户明确希望基于 git 历史构建安全所有权、bus 
 ## 适用场景
 - 需要找出敏感代码无人维护、单点维护者或高风险变更簇。
 - 需要把 git 历史与 [security-threat-model](../security-threat-model/SKILL.md) 的资产/边界分析关联起来。
-- 需要导出 CSV/JSON 给图数据库或可视化工具。
+- 需要导出 CSV/JSON 给图数据库或可视化工具。导入 Neo4j 的方法见 [references/neo4j-import.md](references/neo4j-import.md)。
 
 ## 核心约束
 - 只用于安全导向的所有权分析，不回答泛化的“谁维护这个仓库”问题。

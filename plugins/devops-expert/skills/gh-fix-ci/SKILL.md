@@ -88,3 +88,8 @@ gh run view 987654321 --log | grep -E "error|fail" | head -20
   at OrderService.process (src/order.ts:120)
 完整日志：<run URL>
 ```
+
+## 参考资料
+
+- [create-github-action-workflow-specification.md](references/create-github-action-workflow-specification.md) — 将工作流提炼为规范文档
+- [gh-address-comments.md](references/gh-address-comments.md) — 处理 PR 评论与工作流管理

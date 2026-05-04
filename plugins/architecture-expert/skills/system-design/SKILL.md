@@ -8,7 +8,7 @@ description: "在需要设计系统、服务、存储、接口和边界时使用
 ## 适用场景
 - 适合系统设计题、平台方案、服务拆分、API 设计、数据模型和可靠性策略。
 - 适合把业务目标转成组件、数据流、协议、状态和扩展路线。
-- 交叉引用：数据系统细节配合 `ddia-systems`；计划化落地配合 `task-decomposer`。
+- 交叉引用：数据系统细节配合 [references/ddia-systems.md](references/ddia-systems.md)；计划化落地配合 `task-decomposer`。
 
 ## 核心约束
 - 必须先问清功能需求、非功能需求和约束，再谈架构。

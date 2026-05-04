@@ -68,6 +68,13 @@ outputs/
 - 使用的字体、色彩、纹理和留白都服务于同一审美方向。
 - 导出的成品文件和哲学文件同时存在。
 
+## 自动化工具
+
+- `node scripts/baoyu-article-illustrator-build-batch.mjs` — 批量图像生成任务构建
+- `node scripts/concept-to-image-render_to_image.mjs` — HTML/CSS 概念稿渲染为 PNG（Playwright）
+- `node scripts/concept-to-video-render_video.mjs` — 帧序列渲染为视频（ffmpeg）
+- `node scripts/concept-to-video-add_audio.mjs` — 为视频添加音频轨道（ffmpeg）
+
 ## 反模式
 
 ### FAIL: 跳过哲学直接画

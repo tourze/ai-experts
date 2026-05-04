@@ -123,3 +123,4 @@ LCP 1.5s → 6s，移动端卡死。
 - [design_trends_2024.md](references/design_trends_2024.md)、[high-agency-protocol.md](references/high-agency-protocol.md)、[web-design-guidelines.md](references/web-design-guidelines.md)
 - [interaction_patterns.md](references/interaction_patterns.md)、[performance_checklist.md](references/performance_checklist.md)、[accessibility_guide.md](references/accessibility_guide.md)
 - [visual-design-foundations.md](references/visual-design-foundations.md)、[visual-brief-concretizer.md](references/visual-brief-concretizer.md)
+- 脚本：`node scripts/design_audit.mjs`、`node scripts/pattern_generator.mjs`

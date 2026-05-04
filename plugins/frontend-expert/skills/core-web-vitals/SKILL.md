@@ -118,3 +118,4 @@ button.onclick = async () => {
 - [LCP 参考](https://web.dev/articles/lcp)
 - [INP 参考](https://web.dev/articles/inp)
 - [CLS 参考](https://web.dev/articles/cls)
+- [LCP 深度优化指南](references/LCP.md)

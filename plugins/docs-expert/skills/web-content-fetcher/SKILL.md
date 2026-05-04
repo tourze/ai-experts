@@ -9,7 +9,7 @@ description: 当用户给出具体 URL，需要抓取网页正文并转成 Markd
 
 - 用户直接给出 URL，让你“读一下 / 抓一下 / 提取正文 / 总结这篇文章”。
 - 需要把页面内容转成 Markdown，再交给其他流程处理。
-- 常作为 [deep-research](../deep-research/SKILL.md) 的正文抓取阶段。
+- 常作为 [deep-research](../deep-research/SKILL.md) 的正文抓取阶段。在深度研究流水线中，可先用 [references/question-refiner.md](references/question-refiner.md) 完善问题后再抓取。
 - 如果只是做技术资讯聚合而不是抓单页正文，参考资讯聚合相关方法。
 
 ## 核心约束

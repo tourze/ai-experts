@@ -38,5 +38,5 @@ cases:
     fixtures: []
     rubric:
       - "does not activate reviewer workflow"
-      - "test execution belongs to speckit-tester"
+      - "running tests is the implementer's responsibility, not code review"
     trigger_expected: false
