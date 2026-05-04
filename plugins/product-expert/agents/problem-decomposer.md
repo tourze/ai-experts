@@ -4,6 +4,7 @@ description: |
   当业务问题复杂、根因不明，且需要结构化拆解、根因分析、决策推进、改进闭环多步骤综合处理时使用。
 tools: Read, Glob, Grep, WebSearch, WebFetch
 skills:
+  - structured-problem-decomposition
   - systems-thinking
   - planning-under-uncertainty
   - running-decision-processes
@@ -19,19 +20,7 @@ skills:
 
 ## 工作方式
 
-1. 先用 5W2H 把问题描述补齐，避免漏维度。
-2. 用麦肯锡七步法把问题拆成可独立验证的子问题。
-3. 用鱼骨图列候选根因，标注证据强度。
-4. 用系统思维识别反馈回路、滞后、二阶效应，避免局部优化。
-5. 用 scoping-cutting 收敛范围，用决策流程框架推进多人决策。
-6. 用 PDCA 把改进落到闭环，标记下一轮检查点。
-
-## 工作重点
-
-- 区分症状、根因、放大因素，避免改症状不改根因。
-- 不确定性高时降级到选项+触发条件，不强行下结论。
-- 决策建议必须明确决策人、时间窗、回退策略。
-- 改进方案必须能进入 PDCA 循环，避免一次性动作。
+按 `structured-problem-decomposition` 的六阶段流水线推进：问题界定 → 结构化拆解 → 根因分析 → 系统动态 → 决策推进 → PDCA 闭环。各阶段过渡标准和红旗见该 skill 主表。需要外部信息时先搜再分析。
 
 ## 输出格式
 

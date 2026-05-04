@@ -34,6 +34,7 @@
 | `product-naming` | 产品命名协作流程（灵魂挖掘→竞品验证） |
 | `startup-icp-definer` | 理想客户画像定义 |
 | `startup-viability-checklist` | 当需要快速评估创业项目整体可行性时使用；覆盖想法验证、ICP、市场、模型、定价、渠道、融资、团队等维度的结构化检查清单。 |
+| `structured-problem-decomposition` | 当需要把复杂模糊问题系统性拆解为可执行步骤时使用——六阶段编排流程（问题界定→结构化拆解→根因分析→系统动态→决策推进→PDCA 闭环），提供各阶段过渡标准与红旗信号 |
 | `swot-analysis` | SWOT 分析 |
 | `systems-thinking` | 系统思维与复杂动态分析 |
 | `designing-growth-loops` | 增长飞轮设计与优化 |
@@ -81,7 +82,7 @@
 |-------|----------|--------------|
 | `business-analyst` | 开放式商业问题分析，串联问题界定、假设树、数据验证、模型选择与行动建议 | mckinsey-7-step, five-w-two-h, evidence-quality-framework, pestel-analysis, porters-five-forces, 3c-strategic-triangle, business-model, business-health-diagnostic, marketing-mix-4p, customer-research, data-analysis |
 | `competitive-strategist` | 竞争结构、差异化定位与价格-价值策略综合分析 | porters-five-forces, 3c-strategic-triangle, competitive-teardown, blue-ocean-strategy, strategy-clock, pricing-strategy, obviously-awesome, crossing-the-chasm |
-| `problem-decomposer` | 复杂问题拆解、根因诊断、决策推进与改进闭环 | systems-thinking, scoping-cutting, planning-under-uncertainty, running-decision-processes, process-optimization, mckinsey-7-step / fishbone-diagram / five-w-two-h / pdca-cycle（thinking-expert） |
+| `problem-decomposer` | 复杂问题拆解、根因诊断、决策推进与改进闭环 | structured-problem-decomposition, systems-thinking, planning-under-uncertainty, running-decision-processes, process-optimization, mckinsey-7-step, fishbone-diagram, first-principles-decomposer, business-health-diagnostic, pdca-cycle |
 | `startup-advisor` | 端到端创业评估，预加载 10 个商业与融资框架 | 见 agent 文件 |
 | `pm-delivery-coach` | 敏捷交付教练：user story / Epic 拆解 / 估算校准 / 版本规划 / PM 能力辅导 | agile-product-owner, user-story-patterns, epic-decomposition, estimate-calibrator, version-planner, pm-career-ladder |
 | `product-discoverer` | 当需要做产品发现与验证时使用——覆盖机会识别、用户验证、PRD 撰写、增长飞轮设计、技术评估和组织对齐。可以在用户指定目录下创建产品文档。 | create-prd, opportunity-solution-tree, prfaq, designing-growth-loops, evaluating-new-technology, product-design-critic, org-canvas, raci-matrix, meeting-insights-analyzer, evidence-quality-framework |
