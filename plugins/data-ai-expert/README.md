@@ -1,6 +1,6 @@
 # data-ai-expert
 
-数据与 AI 专家能力，聚焦 14 个技能：结构化数据分析、统计推断、图表表达、图表选型、数据叙事、Embedding/RAG/向量检索优化、Prompt 工程、LLM 评估，以及 Model-First 推理。
+数据与 AI 专家能力，聚焦 12 个技能：结构化数据分析、统计推断、图表表达、图表选型、数据叙事、Embedding/RAG/向量检索优化、Prompt 工程、LLM 评估，以及 Model-First 推理。
 
 ## 目录结构
 
@@ -19,9 +19,7 @@
 | `llm-app-design-pipeline` | 当需要设计或优化基于 LLM 的应用时使用；提供从应用形态确认、逐段优化到 eval 验证的完整设计 pipeline。 |
 | `llm-evaluation` | LLM 应用评估、回归对比与指标设计 |
 | `model-first-reasoning` | 先建模后实现的形式化推理流程 |
-| `narrative-text-visualization` | 使用 T8 语法输出结构化叙事文本可视化 |
-| `prompt-engineering-patterns` | Prompt 模板、结构化输出、稳健约束模式 |
-| `prompt-lab` | Prompt 诊断、变体设计、评分标准与测试集构造 |
+| `prompt-engineering-patterns` | Prompt 模板、结构化输出、稳健约束、系统化诊断与变体实验 |
 | `rag-auditor` | RAG 检索链路与生成链路的系统审计 |
 | `similarity-search-patterns` | 语义检索与向量数据库实现模式 |
 | `statistical-analysis` | 描述统计、异常检测、假设检验与解释边界 |

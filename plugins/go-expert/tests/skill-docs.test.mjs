@@ -13,18 +13,14 @@ const expectedSkillNames = [
   "go-cli",
   "go-code-style",
   "go-concurrency-patterns",
-  "go-context-lifecycle",
   "go-data-structures",
   "go-database",
   "go-design-patterns",
   "go-error-handling",
   "go-grpc",
   "go-lint",
-  "go-naming",
   "go-observability",
   "go-performance",
-  "go-project-layout",
-  "go-safety",
   "go-security",
   "go-structs-interfaces",
   "go-testing-patterns",
@@ -58,8 +54,6 @@ test("Go 并发技能文档保留关键并发治理约束", () => {
   assert.match(content, /errgroup\.SetLimit/);
   assert.match(content, /go test -race \.\/\.\.\./);
   assert.match(content, /ctx\.Done\(\)/);
-  assert.match(content, /go-context-lifecycle/);
-  assert.match(content, /go-testing-patterns/);
 });
 
 test("Go P0 技能文档覆盖风格、错误、安全、context、测试和性能基线", () => {
@@ -68,12 +62,6 @@ test("Go P0 技能文档覆盖风格、错误、安全、context、测试和性�
 
   assert.match(readSkill("go-error-handling"), /errors\.Is/);
   assert.match(readSkill("go-error-handling"), /%w/);
-
-  assert.match(readSkill("go-safety"), /nil map/);
-  assert.match(readSkill("go-safety"), /defer/);
-
-  assert.match(readSkill("go-context-lifecycle"), /context\.Context/);
-  assert.match(readSkill("go-context-lifecycle"), /ctx\.Done/);
 
   assert.match(readSkill("go-testing-patterns"), /table-driven tests/);
   assert.match(readSkill("go-testing-patterns"), /go test -race/);

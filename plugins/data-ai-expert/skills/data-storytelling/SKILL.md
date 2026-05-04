@@ -11,6 +11,7 @@ description: 当用户要把数据分析结果转成业务叙事、executive nar
 - 需要把大量指标压缩成 headline、关键洞察、风险、建议、下一步动作。
 - 需要给周报、月报、复盘、董事会材料或项目结论页设计叙事顺序。
 - 相关 skill：[data-analysis](../data-analysis/SKILL.md)、[data-visualization](../data-visualization/SKILL.md)、[statistical-analysis](../statistical-analysis/SKILL.md)。
+- 需要使用 T8 内联标注语法为文本嵌入机读实体时，参考 [references/t8-syntax.md](references/t8-syntax.md)。
 
 ## 核心约束
 

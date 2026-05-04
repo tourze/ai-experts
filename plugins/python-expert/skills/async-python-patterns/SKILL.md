@@ -10,15 +10,15 @@ description: 当用户要实现 asyncio、async/await、TaskGroup、timeout、ca
 - 构建 FastAPI、aiohttp、WebSocket 或其他高并发异步接口。
 - 并发执行数据库、HTTP、文件等 I/O 操作。
 - 需要为异步代码补齐 timeout、cancellation、backpressure 和并发上限。
-- 任务需要持久化、重试和队列治理时，联动 [python-background-jobs](../python-background-jobs/SKILL.md)。
-- 需要给异步链路补日志、指标或 tracing 时，联动 [python-observability](../python-observability/SKILL.md)。
-- 需要为异步逻辑补 `pytest` 用例时，联动 [python-testing-patterns](../python-testing-patterns/SKILL.md)。
+
+通用并发原则（不阻塞异步上下文、限制并发、传播取消、不共享可变状态、超时所有外部调用、优雅停机）见 architecture-expert 的 concurrency-patterns skill。
+
+联动：[python-background-jobs](../python-background-jobs/SKILL.md) · [python-observability](../python-observability/SKILL.md) · [python-testing-patterns](../python-testing-patterns/SKILL.md)
 
 ## 核心约束
 
-- 同一条调用链保持“全同步”或“全异步”，不要混入偷偷阻塞的同步 I/O。
-- CPU 密集任务不能直接塞进事件循环；要么 `asyncio.to_thread()`，要么进程池。
-- 所有外部调用都要定义 timeout、取消策略和并发上限。
+- 同一条调用链保持"全同步"或"全异步"，不要混入偷偷阻塞的同步 I/O。
+- CPU 密集任务不能直接塞进事件循环；用 `asyncio.to_thread()` 或进程池。
 - 优先使用结构化并发（`asyncio.TaskGroup`）；只有明确接受脱管任务时才做 fire-and-forget。
 - 异步代码里不要出现 `time.sleep()`、同步 ORM 客户端或无界 `asyncio.gather()`。
 
@@ -45,19 +45,14 @@ async def fetch_all(items: Iterable[str]) -> list[str]:
             tasks.append(group.create_task(fetch_one(item, semaphore)))
 
     return [task.result() for task in tasks]
-
-
-if __name__ == "__main__":
-    print(asyncio.run(fetch_all(["a", "b", "c"])))
 ```
 
 ## 检查清单
 
-- 已明确哪些步骤是真异步 I/O，哪些步骤其实是 CPU 或同步阻塞。
+- 已明确哪些步骤是真异步 I/O，哪些是 CPU 或同步阻塞。
 - 每个外部依赖都具备 timeout、重试边界和错误传播策略。
-- 已限制并发度，而不是对不受控输入直接 `gather(*items)`。
+- 已限制并发度。
 - 任务生命周期可追踪，退出时没有悬空 task。
-- 测试覆盖了成功、超时、取消和部分失败场景。
 
 ## 反模式
 
@@ -81,7 +76,7 @@ async def get_data():
 ### FAIL: 无限并发
 
 ```python
-await asyncio.gather(*[fetch(url) for url in urls])  # 10000 个 URL = 10000 个并发连接
+await asyncio.gather(*[fetch(url) for url in urls])  # 10000 并发
 ```
 
 ### PASS: 信号量限流
@@ -91,8 +86,4 @@ sem = asyncio.Semaphore(10)
 async def limited_fetch(url):
     async with sem:
         return await fetch(url)
-await asyncio.gather(*[limited_fetch(url) for url in urls])
 ```
-
-- 用 `create_task()` 启动后台任务，却不保留引用也不收集异常。
-- 为了省事吞掉 `CancelledError`。

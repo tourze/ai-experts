@@ -8,7 +8,6 @@ skills:
   - statistical-analysis
   - data-visualization
   - data-storytelling
-  - narrative-text-visualization
   - llm-evaluation
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding

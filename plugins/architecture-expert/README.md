@@ -23,7 +23,9 @@
 | `architecture-reviewer` | 评审架构、文档或代码库的设计质量 |
 | `backend-to-frontend-handoff-docs` | 为前后端协作输出接口交接文档 |
 | `cross-platform-adapter-patterns` | 设计跨平台抽象层、适配器接口与运行时分支 |
-| `error-handling-patterns` | 设计异常传播、重试边界与错误分层 |
+| `software-architecture-patterns` | 语言无关的通用架构模式：分层、组合优于继承、构造注入、薄控制器 |
+| `concurrency-patterns` | 语言无关的通用并发原则：不阻塞、限制并发、传播取消、不共享可变状态、超时 |
+| `error-handling-patterns` | 语言无关的通用错误处理：三层模型、重试边界、部分失败、错误映射 |
 | `feature-dev` | 处理跨文件实现且涉及架构取舍的功能开发 |
 | `hierarchical-matching-systems` | 设计和评审层级匹配、实体解析与最优分配系统 |
 | `plan-review` | 在编码前审查实现计划、RFC 与风险假设 |

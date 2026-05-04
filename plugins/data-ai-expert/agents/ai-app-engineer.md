@@ -6,7 +6,6 @@ tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
   - llm-app-design-pipeline
   - prompt-engineering-patterns
-  - prompt-lab
   - llm-evaluation
   - model-first-reasoning
   - rag-auditor

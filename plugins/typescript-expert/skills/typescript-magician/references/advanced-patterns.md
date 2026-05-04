@@ -1,6 +1,27 @@
 # 高级类型代码模式
 
-本文件是 typescript-advanced-types SKILL.md 的拆分内容，包含映射类型、模板字面量类型与递归字段路径的完整代码。
+本文件是从 typescript-advanced-types 合并来的内容，包含条件类型、映射类型、模板字面量与递归字段路径的完整代码。
+
+## 用条件类型抽取异步返回值
+
+```ts
+type AsyncValue<T> = T extends Promise<infer Result> ? Result : T;
+
+async function fetchUser() {
+  return { id: 1, name: "Ada" };
+}
+
+type User = AsyncValue<ReturnType<typeof fetchUser>>;
+
+const sampleUser: User = {
+  id: 1,
+  name: "Ada",
+};
+
+if (sampleUser.id !== 1) {
+  throw new Error("conditional type drift");
+}
+```
 
 ## 用映射类型和模板字面量批量生成稳定 API
 

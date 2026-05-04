@@ -5,7 +5,6 @@ description: |
 tools: Read, Glob, Grep, Bash
 skills:
   - typescript-magician
-  - typescript-advanced-types
   - offensive-typesafety
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding

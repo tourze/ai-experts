@@ -6,9 +6,8 @@ tools: Read, Glob, Grep, Bash
 skills:
   - nestjs-layering-patterns
   - openapi-spec-generation
-  - typescript-advanced-types
-  - offensive-typesafety
   - typescript-magician
+  - offensive-typesafety
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding
 ---
