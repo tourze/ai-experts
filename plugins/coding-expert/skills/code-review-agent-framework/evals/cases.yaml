@@ -1,0 +1,50 @@
+cases:
+  - id: positive_agent_reviewer_loads_framework
+    prompt: "Review this Go service code for correctness and safety."
+    fixtures: []
+    rubric:
+      - "reviewer agent is expected to load code-review-agent-framework as its shared methodology"
+      - "review output follows the output format: Summary → Environment → Findings → Specialized Audit → Positive Observations → Priority Actions → Scope Limitations"
+      - "each finding is bound to file:line with severity level and evidence strength (fact/inference/assumption)"
+      - "findings are ordered by safety → correctness → impact → cost"
+    trigger_expected: true
+
+  - id: positive_evidence_binding_standard
+    prompt: "审查这个模块的安全性，不要给笼统意见，每条发现必须落到文件:行和具体代码片段。"
+    fixtures: []
+    rubric:
+      - "recognizes the evidence-binding standard from the framework"
+      - "each finding includes file:line, code fragment, severity, and evidence strength"
+    trigger_expected: true
+
+  - id: positive_bash_guard_boundary
+    prompt: "Run lint and typecheck on this codebase, then review the results."
+    fixtures: []
+    rubric:
+      - "Bash is only used for read-only exploration: lint, typecheck, test execution, git history"
+      - "does not install dependencies, delete files, modify config, or run destructive commands"
+    trigger_expected: true
+
+  - id: negative_direct_user_code_review
+    prompt: "帮我看一下这段代码有没有问题。"
+    fixtures: []
+    rubric:
+      - "code-review-agent-framework is not directly triggered by end-user code review requests"
+      - "end-user code review should use code-review skill instead"
+    trigger_expected: false
+
+  - id: negative_write_code_or_fix
+    prompt: "修复这个文件的所有 eslint 错误，然后提交。"
+    fixtures: []
+    rubric:
+      - "does not activate review framework"
+      - "implementation and commit are outside the framework's read-only review scope"
+    trigger_expected: false
+
+  - id: negative_install_dependency
+    prompt: "npm install 后跑测试，测试过了就把代码合并到 main。"
+    fixtures: []
+    rubric:
+      - "does not activate review framework"
+      - "Bash in the framework is read-only; npm install and git merge violate the boundary"
+    trigger_expected: false

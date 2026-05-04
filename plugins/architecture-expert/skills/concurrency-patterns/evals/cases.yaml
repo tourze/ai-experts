@@ -1,0 +1,61 @@
+cases:
+  - id: positive_concurrent_handler_design
+    prompt: "设计一个处理 1000 个并发请求的 HTTP 服务：每个请求需要调外部 API，我不想打垮下游，还需要能优雅停机。"
+    fixtures: []
+    rubric:
+      - "recognizes this as concurrency design territory"
+      - "recommends limiting concurrency with semaphore or bounded worker pool"
+      - "addresses graceful shutdown: stop accepting → drain in-flight → release resources"
+      - "mentions timeout for external calls"
+    trigger_expected: true
+
+  - id: positive_graceful_shutdown_design
+    prompt: "我们的 worker 服务收到 SIGTERM 后直接杀进程，导致正在处理的任务丢失。帮我设计正确的停机流程。"
+    fixtures: []
+    rubric:
+      - "designs graceful shutdown sequence"
+      - "covers: signal handling → stop accepting new work → drain in-flight tasks with timeout → cleanup"
+      - "mentions propagation of shutdown signal to subtasks"
+    trigger_expected: true
+
+  - id: positive_cancellation_propagation
+    prompt: "用户取消请求后，下游的数据库查询和第三方调用还在跑，怎么让它们也停掉？"
+    fixtures: []
+    rubric:
+      - "identifies as cancellation propagation problem"
+      - "recommends propagating cancellation context/token to all subtasks"
+      - "covers timeout as distinct from user-initiated cancellation"
+    trigger_expected: true
+
+  - id: positive_shared_state_review
+    prompt: "Review 这段并发代码：多个 goroutine 共用一个 map 做缓存，没有加锁。这有什么问题？怎么改？"
+    fixtures: []
+    rubric:
+      - "identifies shared mutable state as a concurrency risk"
+      - "recommends message passing or lock-based protection"
+      - "prefers message passing / channel over shared memory when applicable"
+    trigger_expected: true
+
+  - id: negative_specific_go_bug
+    prompt: "这段 Go 代码有 data race：go test -race 报 WARNING: DATA RACE at line 42。帮我修。"
+    fixtures: []
+    rubric:
+      - "does not activate language-agnostic concurrency-patterns"
+      - "specific Go race fix belongs to go-concurrency-patterns or debug-methodology"
+    trigger_expected: false
+
+  - id: negative_python_async_syntax
+    prompt: "Python asyncio 里 `await` 和 `return` 有什么区别？给我解释一下。"
+    fixtures: []
+    rubric:
+      - "does not activate concurrency design workflow"
+      - "basic language syntax question, not a design task"
+    trigger_expected: false
+
+  - id: negative_sql_transaction_isolation
+    prompt: "MySQL 事务隔离级别 READ COMMITTED 和 REPEATABLE READ 在并发下行为有什么不同？"
+    fixtures: []
+    rubric:
+      - "does not activate concurrency-patterns"
+      - "database transaction isolation is db-specific, not general concurrency design"
+    trigger_expected: false
