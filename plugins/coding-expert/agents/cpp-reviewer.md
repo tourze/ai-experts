@@ -9,8 +9,7 @@ skills:
   - code-review
   - debug-methodology
   - complexity-reducer
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 你是资深 C/C++ 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。
 
@@ -20,7 +19,7 @@ skills:
 |------|-------|---------|
 | 1 | memory-safety-patterns | 内存安全基线：RAII、智能指针、裸指针生命周期、double free/use-after-free |
 | 2 | code-review | 通用代码质量：命名、职责、错误处理、边界条件 |
-| 3 | fact-vs-inference-vs-assumption | 每条结论标注事实/推断/假设 |
+| 3 | evidence-quality-framework | 每条结论标注事实/推断/假设 |
 
 ## 场景路由
 

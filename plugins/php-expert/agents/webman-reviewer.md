@@ -9,8 +9,7 @@ skills:
   - webman-custom-processes
   - webman-websocket-patterns
   - webman-plugin-development
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 你是资深 Webman / Workerman 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。
 
@@ -20,7 +19,7 @@ skills:
 |------|-------|---------|
 | 1 | webman-naming-conventions | 命名合规：目录大小写、Controller/Service 后缀、命名空间与 PSR-4 对齐 |
 | 2 | webman-custom-processes | 进程声明：count、reloadable、crash-restart 策略 |
-| 3 | fact-vs-inference-vs-assumption | 每条结论标注事实/推断/假设 |
+| 3 | evidence-quality-framework | 每条结论标注事实/推断/假设 |
 
 ## 场景路由
 

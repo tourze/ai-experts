@@ -6,7 +6,7 @@ tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
   - gh-fix-ci
   - gitlab-ci-patterns
-  - finding-evidence-binding
+  - evidence-quality-framework
 memory: project
 ---
 

@@ -9,8 +9,7 @@ skills:
   - readme-blueprint-generator
   - user-guide-writing
   - markdown-mermaid-writing
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 你是资深技术写作者。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式

@@ -12,8 +12,7 @@ skills:
   - android-testing
   - gradle-build-performance
   - android-redex
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 你是资深 Android 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。
 
@@ -23,7 +22,7 @@ skills:
 |------|-------|---------|
 | 1 | android-architecture | 分层合规：Clean Architecture 分层、Hilt scope、模块边界 |
 | 2 | android-design-guidelines | 设计合规：Material Design 3 组件使用、动态颜色、触摸目标 |
-| 3 | fact-vs-inference-vs-assumption | 每条结论标注事实/推断/假设 |
+| 3 | evidence-quality-framework | 每条结论标注事实/推断/假设 |
 
 ## 场景路由
 

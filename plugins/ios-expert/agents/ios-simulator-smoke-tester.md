@@ -7,7 +7,7 @@ skills:
   - ios-simulator-skill
   - swiftui-performance-audit
   - detox-mobile-test
-  - fact-vs-inference-vs-assumption
+  - evidence-quality-framework
 ---
 你是资深 iOS QA 工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式

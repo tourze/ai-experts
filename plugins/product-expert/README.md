@@ -79,12 +79,12 @@
 
 | Agent | 适用场景 | 预加载 skill |
 |-------|----------|--------------|
-| `business-analyst` | 开放式商业问题分析，串联问题界定、假设树、数据验证、模型选择与行动建议 | mckinsey-7-step, five-w-two-h, fact-vs-inference-vs-assumption, finding-evidence-binding, pestel-analysis, porters-five-forces, 3c-strategic-triangle, business-model, business-health-diagnostic, marketing-mix-4p, customer-research, data-analysis |
+| `business-analyst` | 开放式商业问题分析，串联问题界定、假设树、数据验证、模型选择与行动建议 | mckinsey-7-step, five-w-two-h, evidence-quality-framework, pestel-analysis, porters-five-forces, 3c-strategic-triangle, business-model, business-health-diagnostic, marketing-mix-4p, customer-research, data-analysis |
 | `competitive-strategist` | 竞争结构、差异化定位与价格-价值策略综合分析 | porters-five-forces, 3c-strategic-triangle, competitive-teardown, blue-ocean-strategy, strategy-clock, pricing-strategy, obviously-awesome, crossing-the-chasm |
 | `problem-decomposer` | 复杂问题拆解、根因诊断、决策推进与改进闭环 | systems-thinking, scoping-cutting, planning-under-uncertainty, running-decision-processes, process-optimization, mckinsey-7-step / fishbone-diagram / five-w-two-h / pdca-cycle（thinking-expert） |
 | `startup-advisor` | 端到端创业评估，预加载 10 个商业与融资框架 | 见 agent 文件 |
 | `pm-delivery-coach` | 敏捷交付教练：user story / Epic 拆解 / 估算校准 / 版本规划 / PM 能力辅导 | agile-product-owner, user-story-patterns, epic-decomposition, estimate-calibrator, version-planner, pm-career-ladder |
-| `product-discoverer` | 当需要做产品发现与验证时使用——覆盖机会识别、用户验证、PRD 撰写、增长飞轮设计、技术评估和组织对齐。可以在用户指定目录下创建产品文档。 | create-prd, opportunity-solution-tree, prfaq, designing-growth-loops, evaluating-new-technology, product-design-critic, org-canvas, raci-matrix, meeting-insights-analyzer, fact-vs-inference-vs-assumption |
+| `product-discoverer` | 当需要做产品发现与验证时使用——覆盖机会识别、用户验证、PRD 撰写、增长飞轮设计、技术评估和组织对齐。可以在用户指定目录下创建产品文档。 | create-prd, opportunity-solution-tree, prfaq, designing-growth-loops, evaluating-new-technology, product-design-critic, org-canvas, raci-matrix, meeting-insights-analyzer, evidence-quality-framework |
 
 ## 安装 / 卸载
 

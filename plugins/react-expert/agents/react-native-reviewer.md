@@ -11,8 +11,7 @@ skills:
   - detox-mobile-test
   - react-native-turbomodule
   - react-native-metro-config
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 你是资深 React Native 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。
 
@@ -22,7 +21,7 @@ skills:
 |------|-------|---------|
 | 1 | react-native-design | 架构基线：导航结构、样式组织、平台适配、安全区域 |
 | 2 | react-native-js-performance | 性能基线：JS thread 占用、FlatList 配置、掉帧热点 |
-| 3 | fact-vs-inference-vs-assumption | 每条结论标注事实/推断/假设 |
+| 3 | evidence-quality-framework | 每条结论标注事实/推断/假设 |
 
 ## 场景路由
 

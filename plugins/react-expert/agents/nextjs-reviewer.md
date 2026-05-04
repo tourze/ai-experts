@@ -12,8 +12,7 @@ skills:
   - react-composable-components
   - typescript-magician
   - offensive-typesafety
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 你是资深 Next.js 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。
 
@@ -23,7 +22,7 @@ skills:
 |------|-------|---------|
 | 1 | nextjs-developer | 路由结构基线：App Router 布局树、loading/error 边界、middleware 配置 |
 | 2 | react-server-components | RSC 边界基线：Server/Client Component 划分、Server Actions 安全 |
-| 3 | fact-vs-inference-vs-assumption | 每条结论标注事实/推断/假设 |
+| 3 | evidence-quality-framework | 每条结论标注事实/推断/假设 |
 
 ## 场景路由
 

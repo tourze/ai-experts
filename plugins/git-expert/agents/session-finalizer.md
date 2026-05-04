@@ -9,8 +9,7 @@ skills:
   - commit
   - session-finalization-workflow
   - subagent-driven-development
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 memory: project
 ---
 

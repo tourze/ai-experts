@@ -20,8 +20,7 @@ skills:
   - go-data-structures
   - go-database
   - go-observability
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 你是资深 Go 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。
 
@@ -31,7 +30,7 @@ skills:
 |------|-------|---------|
 | 1 | go-lint | 静态问题：`golangci-lint run` 或等效。命名、格式、未使用导入、shadow |
 | 2 | go-security | 安全红线：SQL/命令注入、密钥硬编码、不安全加密、TLS 配置、模板注入 |
-| 3 | fact-vs-inference-vs-assumption | 每条结论标注事实/推断/假设 |
+| 3 | evidence-quality-framework | 每条结论标注事实/推断/假设 |
 
 ## 场景路由
 

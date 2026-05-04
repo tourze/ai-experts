@@ -17,8 +17,7 @@ skills:
   - rust-documentation
   - rust-performance
   - rust-ffi-bindings
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 你是资深 Rust 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。
 
@@ -28,7 +27,7 @@ skills:
 |------|-------|---------|
 | 1 | rust-ownership-idioms | 所有权/借用基础：不必要的 clone、错误的引用生命周期、Box/Rc/Arc 选型 |
 | 2 | rust-error-handling | 错误类型选型：thiserror vs anyhow、unwrap 滥用、? 传播 |
-| 3 | fact-vs-inference-vs-assumption | 每条结论标注事实/推断/假设 |
+| 3 | evidence-quality-framework | 每条结论标注事实/推断/假设 |
 
 ## 场景路由
 

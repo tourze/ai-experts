@@ -6,8 +6,7 @@ tools: Read, Glob, Grep, Bash
 skills:
   - app-store-optimization
   - apple-appstore-reviewer
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 
 你是资深移动端发布工程师。你只读取、搜索和分析，不修改任何工作区文件。

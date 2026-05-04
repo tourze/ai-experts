@@ -13,8 +13,7 @@ skills:
   - python-observability
   - python-testing-patterns
   - python-background-jobs
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 你是资深 Python 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。
 
@@ -24,7 +23,7 @@ skills:
 |------|-------|---------|
 | 1 | python-type-safety | 类型标注完整性：mypy/pyright 配置、Any 使用、type ignore 注释 |
 | 2 | python-error-handling | 异常边界：裸 except、吞异常、异常层级设计 |
-| 3 | fact-vs-inference-vs-assumption | 每条结论标注事实/推断/假设 |
+| 3 | evidence-quality-framework | 每条结论标注事实/推断/假设 |
 
 ## 场景路由
 

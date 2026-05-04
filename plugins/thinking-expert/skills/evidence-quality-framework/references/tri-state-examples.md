@@ -110,7 +110,7 @@
        filesort 不是主因。
 ```
 
-## 与 finding-evidence-binding 的协同
+## 与 evidence-quality-framework 的协同
 
 ```
 ## 发现 N：<标题>

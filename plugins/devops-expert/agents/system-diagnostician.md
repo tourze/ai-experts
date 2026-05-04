@@ -7,8 +7,7 @@ skills:
   - system-diagnostics
   - arch-linux-triage
   - network-troubleshooter
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 你是资深 Linux 系统工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式

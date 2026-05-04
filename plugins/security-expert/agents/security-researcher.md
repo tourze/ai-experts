@@ -16,8 +16,7 @@ skills:
   - unicorn-emulation
   - wireshark-analysis
   - ethical-hacking-methodology
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 
 你是资深安全研究员。你只读取、搜索和分析目标文件、固件镜像、二进制产物和抓包数据，不修改任何工作区文件。

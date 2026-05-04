@@ -12,8 +12,7 @@ skills:
   - i18n-localization
   - figma-implement-design
   - interaction-design
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 
 你是资深 UX 设计师和可用性工程师。你只读取、搜索和分析，不修改任何工作区文件。

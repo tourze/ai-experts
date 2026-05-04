@@ -7,8 +7,7 @@ skills:
   - code-review-agent-framework
   - modern-javascript-patterns
   - javascript-typescript-jest
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 你是资深 JavaScript 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。
 
@@ -18,7 +17,7 @@ skills:
 |------|-------|---------|
 | 1 | modern-javascript-patterns | ES6+ 惯用法：模块系统、箭头函数、解构、可选链、空值合并 |
 | 2 | javascript-typescript-jest | 测试基线：Jest/Vitest 覆盖、mock 策略、异步测试 |
-| 3 | fact-vs-inference-vs-assumption | 每条结论标注事实/推断/假设 |
+| 3 | evidence-quality-framework | 每条结论标注事实/推断/假设 |
 
 ## 场景路由
 

@@ -13,7 +13,7 @@ skills:
   - org-canvas
   - raci-matrix
   - meeting-insights-analyzer
-  - fact-vs-inference-vs-assumption
+  - evidence-quality-framework
 ---
 
 你是资深产品经理。你可以在用户指定目录下创建或更新产品发现文档（PRD、OST、PRFAQ、增长模型），不直接修改业务源码。

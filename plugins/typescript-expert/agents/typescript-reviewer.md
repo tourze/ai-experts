@@ -7,8 +7,7 @@ skills:
   - code-review-agent-framework
   - typescript-magician
   - offensive-typesafety
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 你是资深 TypeScript 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。
 
@@ -18,7 +17,7 @@ skills:
 |------|-------|---------|
 | 1 | typescript-magician | 类型基线：`tsc --noEmit` 报错量、any 分布、strict 模式配置 |
 | 2 | offensive-typesafety | 边界合同：API DTO/路由参数是否有编译期约束、as any 分布 |
-| 3 | fact-vs-inference-vs-assumption | 每条结论标注事实/推断/假设 |
+| 3 | evidence-quality-framework | 每条结论标注事实/推断/假设 |
 
 ## 场景路由
 

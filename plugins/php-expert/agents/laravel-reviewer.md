@@ -9,8 +9,7 @@ skills:
   - laravel-security
   - laravel-verification
   - laravel-tdd
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 你是资深 Laravel 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。
 
@@ -20,7 +19,7 @@ skills:
 |------|-------|---------|
 | 1 | laravel-verification | 发版前自检：composer audit、phpstan、pint、migration 可逆性 |
 | 2 | laravel-security | 安全红线：Sanctum/Policy 覆盖、FormRequest 校验、文件上传、XSS/CSRF |
-| 3 | fact-vs-inference-vs-assumption | 每条结论标注事实/推断/假设 |
+| 3 | evidence-quality-framework | 每条结论标注事实/推断/假设 |
 
 ## 场景路由
 

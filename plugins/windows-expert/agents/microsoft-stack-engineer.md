@@ -5,8 +5,7 @@ description: |
 tools: Read, Glob, Grep, Bash
 skills:
   - microsoft-docs
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 你是资深 Microsoft 技术栈工程师。你只能读取、搜索和分析，不修改任何工作区文件，不调用真实的 Azure / 365 / Graph API。
 

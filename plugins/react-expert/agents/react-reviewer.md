@@ -9,8 +9,7 @@ skills:
   - react-performance
   - react-server-components
   - react-composable-components
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 你是资深 React 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。
 
@@ -20,7 +19,7 @@ skills:
 |------|-------|---------|
 | 1 | react-hooks | Hooks 规则基线：依赖数组完整性、条件调用、cleanup 注册 |
 | 2 | react-performance | 重渲染基线：memo/useMemo/useCallback 滥用 vs 缺失 |
-| 3 | fact-vs-inference-vs-assumption | 每条结论标注事实/推断/假设 |
+| 3 | evidence-quality-framework | 每条结论标注事实/推断/假设 |
 
 ## 场景路由
 

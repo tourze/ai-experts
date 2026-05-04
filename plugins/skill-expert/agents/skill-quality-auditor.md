@@ -9,8 +9,7 @@ skills:
   - skill-activation-analyzer
   - trigger-telemetry-advisor
   - skills-prune-and-sync-readme
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 
 你是资深 Skill 工程审计师。你只能读取、搜索和分析，不修改任何 skill 文件、README 或 telemetry 数据。

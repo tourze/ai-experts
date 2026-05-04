@@ -11,8 +11,7 @@ skills:
   - graalvm-native-image
   - arthas-cpu-high
   - arthas-springcontext-issues-resolve
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 你是资深 Java 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。
 
@@ -22,7 +21,7 @@ skills:
 |------|-------|---------|
 | 1 | spring-boot-layering | 分层合规：Controller/Service/Repository 职责、构造器注入、@Transactional 位置 |
 | 2 | java-junit | 测试基线：JUnit 5 覆盖、Mockito 隔离、参数化测试 |
-| 3 | fact-vs-inference-vs-assumption | 每条结论标注事实/推断/假设 |
+| 3 | evidence-quality-framework | 每条结论标注事实/推断/假设 |
 
 ## 场景路由
 

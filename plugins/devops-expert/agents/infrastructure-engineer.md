@@ -8,8 +8,7 @@ skills:
   - helm-chart-scaffolding
   - linux-shell-scripting
   - remote-ssh-command
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 memory: project
 ---
 

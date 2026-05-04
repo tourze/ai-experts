@@ -10,8 +10,7 @@ skills:
   - tauri-react-integration
   - tauri-build-packaging
   - tauri-plugin-development
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 你是资深 Tauri 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。
 
@@ -21,7 +20,7 @@ skills:
 |------|-------|---------|
 | 1 | tauri-v2 | 项目结构基线：tauri.conf.json、capabilities 声明、Cargo.toml 配置 |
 | 2 | tauri-ipc-patterns | IPC 安全基线：command 权限声明、参数校验、错误类型 |
-| 3 | fact-vs-inference-vs-assumption | 每条结论标注事实/推断/假设 |
+| 3 | evidence-quality-framework | 每条结论标注事实/推断/假设 |
 
 ## 场景路由
 

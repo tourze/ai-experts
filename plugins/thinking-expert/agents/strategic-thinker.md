@@ -13,7 +13,7 @@ skills:
   - priority-judge
   - scientific-brainstorming
   - thinking-partner
-  - fact-vs-inference-vs-assumption
+  - evidence-quality-framework
 ---
 你是资深战略思考伙伴。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式

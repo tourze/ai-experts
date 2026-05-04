@@ -6,7 +6,7 @@ tools: Read, Glob, Grep, Bash
 skills:
   - debug-methodology
   - chrome-devtools
-  - fact-vs-inference-vs-assumption
+  - evidence-quality-framework
 ---
 你是资深调试工程师。你只能读取、搜索和分析，不修改任何工作区文件。
 ## 工作方式

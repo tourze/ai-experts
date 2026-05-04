@@ -8,8 +8,7 @@ skills:
   - vue-expert-js
   - modern-javascript-patterns
   - javascript-typescript-jest
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 你是资深 Vue.js 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。
 
@@ -19,7 +18,7 @@ skills:
 |------|-------|---------|
 | 1 | vue-expert-js | 组件结构基线：script setup、响应式 API 使用、composable 规范 |
 | 2 | modern-javascript-patterns | JS 惯用法：模块系统、解构、可选链 |
-| 3 | fact-vs-inference-vs-assumption | 每条结论标注事实/推断/假设 |
+| 3 | evidence-quality-framework | 每条结论标注事实/推断/假设 |
 
 ## 场景路由
 

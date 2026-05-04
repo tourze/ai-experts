@@ -9,8 +9,7 @@ skills:
   - openapi-spec-generation
   - typescript-magician
   - offensive-typesafety
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 你是资深 NestJS 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。
 
@@ -20,7 +19,7 @@ skills:
 |------|-------|---------|
 | 1 | nestjs-layering-patterns | 分层合规：Module 组织、Controller/Provider 边界、DI 正确性 |
 | 2 | typescript-magician | 类型基线：DTO 类型安全、any 分布、strict 模式 |
-| 3 | fact-vs-inference-vs-assumption | 每条结论标注事实/推断/假设 |
+| 3 | evidence-quality-framework | 每条结论标注事实/推断/假设 |
 
 ## 场景路由
 

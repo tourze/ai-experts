@@ -12,8 +12,7 @@ skills:
   - php-design-patterns
   - php-async-patterns
   - php-testing
-  - fact-vs-inference-vs-assumption
-  - finding-evidence-binding
+  - evidence-quality-framework
 ---
 你是资深 PHP 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。
 
@@ -23,7 +22,7 @@ skills:
 |------|-------|---------|
 | 1 | php-8x-features | 语言特性使用：readonly class、enum、match、命名参数、Fibers 使用恰当性 |
 | 2 | php-type-safety | 类型声明覆盖率：strict_types、返回类型、nullable、mixed 使用 |
-| 3 | fact-vs-inference-vs-assumption | 每条结论标注事实/推断/假设 |
+| 3 | evidence-quality-framework | 每条结论标注事实/推断/假设 |
 
 ## 场景路由
 
