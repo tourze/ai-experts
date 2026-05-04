@@ -1,43 +1,28 @@
-# Web Accessibility Guide (WCAG AAA Compliance)
+# Web 无障碍指南（WCAG AAA 合规）
 
-## Overview
+## 概述
 
-Comprehensive guide to web accessibility compliance following WCAG 2.1/2.2 Level AAA standards. This guide covers the most critical accessibility requirements for modern web design.
+遵循 WCAG 2.1/2.2 Level AAA 标准的 Web 无障碍合规全面指南。本文涵盖了现代 Web 设计中最关键的无障碍要求。
 
-**Target Standard**: WCAG 2.1 Level AAA (where practical) with Level AA as minimum baseline.
-
----
-
-## Table of Contents
-
-1. [Color & Contrast](#color--contrast)
-2. [Typography & Readability](#typography--readability)
-3. [Keyboard Navigation](#keyboard-navigation)
-4. [Screen Reader Support](#screen-reader-support)
-5. [Motion & Animation](#motion--animation)
-6. [Touch Targets & Mobile](#touch-targets--mobile)
-7. [Forms & Input](#forms--input)
-8. [Focus Management](#focus-management)
-9. [Semantic HTML](#semantic-html)
-10. [Testing & Auditing](#testing--auditing)
+**目标标准**：WCAG 2.1 Level AAA（在实际可行情况下），以 Level AA 为最低基线。
 
 ---
 
-## Color & Contrast
+## 颜色与对比度
 
-### WCAG Contrast Requirements
+### WCAG 对比度要求
 
-**Level AA (Minimum)**:
-- Normal text (< 18pt): 4.5:1 contrast ratio
-- Large text (≥ 18pt or 14pt bold): 3:1 contrast ratio
+**Level AA（最低要求）**：
+- 普通文本（< 18pt）：4.5:1 对比度
+- 大号文本（≥ 18pt 或 14pt 加粗）：3:1 对比度
 
-**Level AAA (Enhanced)**:
-- Normal text: **7:1 contrast ratio**
-- Large text: **4.5:1 contrast ratio**
+**Level AAA（增强要求）**：
+- 普通文本：**7:1 对比度**
+- 大号文本：**4.5:1 对比度**
 
-### Checking Contrast
+### 检查对比度
 
-**Manual Calculation**:
+**手动计算**：
 ```javascript
 function getLuminance(r, g, b) {
   const [rs, gs, bs] = [r, g, b].map(c => {
@@ -54,73 +39,59 @@ function getContrastRatio(rgb1, rgb2) {
   const darker = Math.min(l1, l2);
   return (lighter + 0.05) / (darker + 0.05);
 }
-
-// Example usage
-const textColor = [0, 0, 0]; // Black
-const bgColor = [255, 255, 255]; // White
-const ratio = getContrastRatio(textColor, bgColor);
-console.log(ratio); // 21:1 (AAA compliant)
 ```
 
-**Tools**:
-- WebAIM Contrast Checker: https://webaim.org/resources/contrastchecker/
-- Stark (Figma plugin)
-- Chrome DevTools Accessibility Panel
+**工具**：
+- WebAIM 对比度检查器：https://webaim.org/resources/contrastchecker/
+- Stark（Figma 插件）
+- Chrome DevTools 无障碍面板
 
-### Color System (AAA Compliant)
+### 颜色系统（AAA 合规）
 
-**Using OKLCH Color Space**:
+**使用 OKLCH 色彩空间**：
 ```css
 :root {
-  /* Text on white background (AAA compliant) */
   --color-text-primary: oklch(20% 0 0); /* #1a1a1a, 11.6:1 */
   --color-text-secondary: oklch(40% 0 0); /* #666666, 7.3:1 */
-
-  /* Backgrounds */
-  --color-bg-primary: oklch(98% 0 0); /* Near white */
-  --color-bg-secondary: oklch(95% 0 0); /* Light gray */
-
-  /* Accent colors (AAA on white) */
+  --color-bg-primary: oklch(98% 0 0);
+  --color-bg-secondary: oklch(95% 0 0);
   --color-accent-blue: oklch(45% 0.2 250); /* 7.1:1 */
   --color-accent-green: oklch(50% 0.15 140); /* 7.2:1 */
-
-  /* Interactive states */
-  --color-link: oklch(40% 0.2 250); /* Blue, 8.3:1 */
-  --color-link-hover: oklch(35% 0.25 250); /* Darker blue, 10.5:1 */
+  --color-link: oklch(40% 0.2 250); /* 8.3:1 */
+  --color-link-hover: oklch(35% 0.25 250); /* 10.5:1 */
 }
 ```
 
-### Color Blindness Considerations
+### 色盲考虑
 
-**Avoid**:
-- Red-green as only distinguisher (affects 8% of males)
-- Relying on color alone for meaning
+**应避免**：
+- 仅以红绿作为区分方式（影响 8% 的男性用户）
+- 仅依赖颜色传达信息
 
-**Best Practices**:
-- Use patterns, shapes, or icons alongside color
-- Test with color blindness simulators
-- Provide high-contrast mode
+**最佳实践**：
+- 在颜色之外配合图案、形状或图标
+- 使用色盲模拟器进行测试
+- 提供高对比度模式
 
-**Simulation Tools**:
-- Chrome DevTools: Rendering > Emulate vision deficiencies
-- Colorblindly (browser extension)
-- Stark (Figma)
+**模拟工具**：
+- Chrome DevTools：渲染 > 模拟视觉缺陷
+- Colorblindly（浏览器扩展）
+- Stark（Figma）
 
 ---
 
-## Typography & Readability
+## 排版与可读性
 
-### Font Size Requirements
+### 字体大小要求
 
-**WCAG Guidelines**:
-- Body text: Minimum 16px (1rem)
-- Small text: Minimum 14px (0.875rem)
-- Users must be able to zoom to 200% without loss of functionality
+**WCAG 指南**：
+- 正文字体：最小 16px（1rem）
+- 小号字体：最小 14px（0.875rem）
+- 用户必须能够放大到 200% 而不损失功能
 
-**Recommended Sizes**:
+**推荐字号**：
 ```css
 :root {
-  /* Fluid typography */
   --font-size-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
   --font-size-base: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
   --font-size-lg: clamp(1.25rem, 1.1rem + 0.75vw, 1.75rem);
@@ -129,124 +100,82 @@ console.log(ratio); // 21:1 (AAA compliant)
 
 body {
   font-size: var(--font-size-base);
-  line-height: 1.5; /* WCAG minimum for body text */
+  line-height: 1.5;
 }
 ```
 
-### Line Height & Spacing
+### 行高与间距
 
-**WCAG 1.4.12 (Level AAA)**:
-- Line height: Minimum 1.5× font size
-- Paragraph spacing: Minimum 2× font size
-- Letter spacing: Minimum 0.12× font size
-- Word spacing: Minimum 0.16× font size
+**WCAG 1.4.12（Level AAA）**：
+- 行高：最小为字体大小的 1.5 倍
+- 段落间距：最小为字体大小的 2 倍
+- 字符间距：最小为字体大小的 0.12 倍
+- 单词间距：最小为字体大小的 0.16 倍
 
-**Implementation**:
 ```css
 p {
   font-size: 1rem;
-  line-height: 1.6; /* 1.5× minimum */
-  margin-bottom: 2rem; /* 2× font size */
-  letter-spacing: 0.01em; /* Slight increase */
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  letter-spacing: 0.01em;
   word-spacing: 0.05em;
 }
 ```
 
-### Font Choices
+### 字体选择
 
-**Accessible Fonts**:
-- Sans-serif: Inter, Roboto, Open Sans, Atkinson Hyperlegible
-- Serif: Georgia, Merriweather, Lora
-- Avoid: Overly decorative, thin weights (< 300), all-caps for long text
+**无障碍友好字体**：
+- 无衬线：Inter、Roboto、Open Sans、Atkinson Hyperlegible
+- 衬线：Georgia、Merriweather、Lora
+- 避免：过度装饰、细字重（< 300）、长篇全大写
 
-**Dyslexia-Friendly**:
-- OpenDyslexic
-- Atkinson Hyperlegible
-- Comic Sans (surprisingly good for dyslexia)
+**阅读障碍友好**：
+- OpenDyslexic、Atkinson Hyperlegible、Comic Sans
 
 ---
 
-## Keyboard Navigation
+## 键盘导航
 
-### Requirements
+### 要求
 
-**All interactive elements must be**:
-- Focusable with Tab key
-- Activatable with Enter or Space
-- Dismissible with Escape (modals, dropdowns)
-- Navigable with arrow keys (where appropriate)
+**所有交互元素必须**：
+- 可通过 Tab 键聚焦
+- 可通过 Enter 或 Space 激活
+- 可通过 Escape 关闭（模态框、下拉菜单）
+- 可通过方向键导航（在适当情况下）
 
-### Tab Order
+### Tab 顺序
 
-**Logical Tab Order**:
 ```html
-<!-- Natural DOM order is best -->
+<!-- 自然的 DOM 顺序最佳 -->
 <button tabindex="0">First</button>
 <button tabindex="0">Second</button>
-<button tabindex="0">Third</button>
-
-<!-- Avoid tabindex > 0 (creates unpredictable order) -->
-<button tabindex="3">Third</button> <!-- BAD -->
-<button tabindex="1">First</button> <!-- BAD -->
+<!-- 避免使用 tabindex > 0 -->
 ```
 
-**Skip Links**:
+**跳过链接**：
 ```html
-<a href="#main-content" class="skip-link">
-  Skip to main content
-</a>
-
+<a href="#main-content" class="skip-link">Skip to main content</a>
 <nav>...</nav>
-
-<main id="main-content">
-  <!-- Main content -->
-</main>
+<main id="main-content"><!-- 主要内容 --></main>
 ```
 
 ```css
-.skip-link {
-  position: absolute;
-  top: -40px;
-  left: 0;
-  background: #000;
-  color: #fff;
-  padding: 8px;
-  text-decoration: none;
-  z-index: 100;
-}
-
-.skip-link:focus {
-  top: 0;
-}
+.skip-link { position: absolute; top: -40px; left: 0; background: #000; color: #fff; padding: 8px; z-index: 100; }
+.skip-link:focus { top: 0; }
 ```
 
-### Focus Indicators
+### 焦点指示器
 
-**WCAG 2.4.7 (Level AA)**:
-- Focus indicator must be visible
-- Minimum 2px thick
-- Sufficient contrast (3:1 against background)
+**WCAG 2.4.7（Level AA）**：焦点指示器必须可见，最小 2px 粗细，与背景对比度 3:1。
 
-**Modern Focus Styles**:
 ```css
-/* Remove default outline */
-*:focus {
-  outline: none;
-}
-
-/* Custom focus indicator */
 :focus-visible {
   outline: 3px solid var(--color-accent);
   outline-offset: 2px;
   border-radius: 4px;
 }
-
-/* Remove focus ring for mouse users */
-:focus:not(:focus-visible) {
-  outline: none;
-}
-
-/* Button focus */
+:focus:not(:focus-visible) { outline: none; }
 button:focus-visible {
   outline: 3px solid #3b82f6;
   outline-offset: 2px;
@@ -254,326 +183,165 @@ button:focus-visible {
 }
 ```
 
-### Keyboard Patterns
+### 键盘模式
 
-**Modal Dialogs**:
+**模态对话框焦点锁定**：
 ```javascript
 function trapFocus(element) {
-  const focusableElements = element.querySelectorAll(
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-  );
-  const firstFocusable = focusableElements[0];
-  const lastFocusable = focusableElements[focusableElements.length - 1];
-
+  const focusable = element.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+  const first = focusable[0], last = focusable[focusable.length - 1];
   element.addEventListener('keydown', (e) => {
     if (e.key === 'Tab') {
-      if (e.shiftKey && document.activeElement === firstFocusable) {
-        e.preventDefault();
-        lastFocusable.focus();
-      } else if (!e.shiftKey && document.activeElement === lastFocusable) {
-        e.preventDefault();
-        firstFocusable.focus();
-      }
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
-
-    if (e.key === 'Escape') {
-      closeModal();
-    }
+    if (e.key === 'Escape') closeModal();
   });
-
-  firstFocusable.focus();
+  first.focus();
 }
 ```
 
-**Dropdown Menus**:
+**下拉菜单方向键导航**：
 ```javascript
 function handleDropdownKeys(e) {
   const items = Array.from(dropdown.querySelectorAll('[role="menuitem"]'));
-  const currentIndex = items.indexOf(document.activeElement);
-
+  const idx = items.indexOf(document.activeElement);
   switch (e.key) {
-    case 'ArrowDown':
-      e.preventDefault();
-      const nextIndex = (currentIndex + 1) % items.length;
-      items[nextIndex].focus();
-      break;
-
-    case 'ArrowUp':
-      e.preventDefault();
-      const prevIndex = (currentIndex - 1 + items.length) % items.length;
-      items[prevIndex].focus();
-      break;
-
-    case 'Home':
-      e.preventDefault();
-      items[0].focus();
-      break;
-
-    case 'End':
-      e.preventDefault();
-      items[items.length - 1].focus();
-      break;
-
-    case 'Escape':
-      closeDropdown();
-      triggerButton.focus();
-      break;
+    case 'ArrowDown': e.preventDefault(); items[(idx + 1) % items.length].focus(); break;
+    case 'ArrowUp': e.preventDefault(); items[(idx - 1 + items.length) % items.length].focus(); break;
+    case 'Home': e.preventDefault(); items[0].focus(); break;
+    case 'End': e.preventDefault(); items[items.length - 1].focus(); break;
+    case 'Escape': closeDropdown(); triggerButton.focus(); break;
   }
 }
 ```
 
 ---
 
-## Screen Reader Support
+## 屏幕阅读器支持
 
-### ARIA Attributes
+### ARIA 属性
 
-**Essential ARIA**:
-
-**Landmarks**:
+**地标**：
 ```html
 <header role="banner">
-  <nav role="navigation" aria-label="Main">
-    <!-- Navigation -->
-  </nav>
+  <nav role="navigation" aria-label="Main"><!-- 导航 --></nav>
 </header>
-
-<main role="main">
-  <!-- Main content -->
-</main>
-
-<aside role="complementary" aria-label="Related articles">
-  <!-- Sidebar -->
-</aside>
-
-<footer role="contentinfo">
-  <!-- Footer -->
-</footer>
+<main role="main"><!-- 主要内容 --></main>
+<aside role="complementary" aria-label="Related articles"><!-- 侧边栏 --></aside>
+<footer role="contentinfo"><!-- 页脚 --></footer>
 ```
 
-**Buttons**:
+**按钮标签**：
 ```html
-<!-- Icon button needs label -->
-<button aria-label="Close menu">
-  <svg>...</svg>
-</button>
-
-<!-- Button with visible text -->
-<button>
-  <svg aria-hidden="true">...</svg>
-  Submit
-</button>
+<button aria-label="Close menu"><svg>...</svg></button>
+<button><svg aria-hidden="true">...</svg> Submit</button>
 ```
 
-**Live Regions**:
+**实时区域**：
 ```html
-<!-- Announce loading state -->
-<div role="status" aria-live="polite" aria-atomic="true">
-  Loading content...
-</div>
-
-<!-- Announce errors -->
-<div role="alert" aria-live="assertive">
-  Error: Form submission failed.
-</div>
+<div role="status" aria-live="polite" aria-atomic="true">Loading content...</div>
+<div role="alert" aria-live="assertive">Error: Form submission failed.</div>
 ```
 
-**Custom Components**:
+**自定义组件**：
 ```html
-<!-- Accordion -->
-<div class="accordion">
-  <h3>
-    <button
-      aria-expanded="false"
-      aria-controls="panel-1"
-      id="button-1"
-    >
-      Section 1
-    </button>
-  </h3>
-  <div
-    id="panel-1"
-    role="region"
-    aria-labelledby="button-1"
-    hidden
-  >
-    Content...
-  </div>
-</div>
+<!-- 手风琴 -->
+<h3><button aria-expanded="false" aria-controls="panel-1" id="button-1">Section 1</button></h3>
+<div id="panel-1" role="region" aria-labelledby="button-1" hidden>Content...</div>
 
-<!-- Tab panel -->
+<!-- 选项卡 -->
 <div role="tablist" aria-label="Content sections">
-  <button role="tab" aria-selected="true" aria-controls="panel-1">
-    Tab 1
-  </button>
-  <button role="tab" aria-selected="false" aria-controls="panel-2">
-    Tab 2
-  </button>
+  <button role="tab" aria-selected="true" aria-controls="panel-1">Tab 1</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-2">Tab 2</button>
 </div>
-<div role="tabpanel" id="panel-1" aria-labelledby="tab-1">
-  Panel content...
-</div>
+<div role="tabpanel" id="panel-1" aria-labelledby="tab-1">Panel content...</div>
 ```
 
-### Alt Text Guidelines
+### Alt 文本指南
 
-**Images**:
 ```html
-<!-- Informative image -->
-<img src="chart.png" alt="Bar chart showing 50% increase in sales">
-
-<!-- Decorative image -->
-<img src="decorative.png" alt="" role="presentation">
-
-<!-- Complex image -->
-<img src="infographic.png" alt="Sales data for Q4" longdesc="sales-data.html">
+<!-- 信息性图片 --> <img src="chart.png" alt="Bar chart showing 50% increase in sales">
+<!-- 装饰性图片 --> <img src="decorative.png" alt="" role="presentation">
+<!-- 复杂图片 --> <img src="infographic.png" alt="Sales data for Q4" longdesc="sales-data.html">
 ```
 
-**Best Practices**:
-- Describe the content/function, not "image of..."
-- Keep under 150 characters (screen readers pause)
-- Use empty alt (`alt=""`) for decorative images
-- Provide long descriptions for complex images
+**最佳实践**：
+- 描述内容/功能，而非"image of..."
+- 控制在 150 字符以内
+- 装饰性图片使用空 alt（`alt=""`）
+- 为复杂图片提供长描述
 
 ---
 
-## Motion & Animation
+## 动效与动画
 
-### Reduced Motion Preference
+### 减少动效偏好（WCAG 2.3.3 Level AAA）
 
-**WCAG 2.3.3 (Level AAA)**:
-Users must be able to disable non-essential motion.
+用户必须能够禁用非必要的动效。
 
-**Implementation**:
 ```css
-/* Default: animations enabled */
-.animated-element {
-  animation: slide-in 0.5s ease;
-}
-
-/* Respect user preference */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-
-  /* Keep essential animations but reduce */
-  .loading-spinner {
-    animation-duration: 1s; /* Slower */
-  }
+  .loading-spinner { animation-duration: 1s; }
 }
 ```
 
-**JavaScript Detection**:
 ```javascript
-const prefersReducedMotion = window.matchMedia(
-  '(prefers-reduced-motion: reduce)'
-).matches;
-
-if (prefersReducedMotion) {
-  // Disable or simplify animations
-  gsap.config({ nullTargetWarn: false, force3D: false });
-
-  // Skip scroll animations
-  ScrollTrigger.getAll().forEach(st => st.kill());
-}
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (prefersReducedMotion) { /* 禁用或简化动画 */ }
 ```
 
-### Animation Guidelines
-
-**Safe Animations**:
-- Fade in/out (opacity)
-- Slide short distances (< 50px)
-- Scale small amounts (0.95-1.05)
-- Avoid: flashing, rapid movement, parallax
-
-**Vestibular Disorders**:
-Avoid animations that can cause dizziness or nausea:
-- Large parallax effects
-- Continuous rotation
-- Zoom effects
-- Perspective transforms
+**安全动画**：淡入/淡出、短距离滑动（< 50px）、小幅缩放（0.95-1.05）
+**避免**：闪烁、快速移动、视差、持续旋转、透视变换
 
 ---
 
-## Touch Targets & Mobile
+## 触摸目标与移动端
 
-### WCAG 2.5.5 (Level AAA)
+### WCAG 2.5.5（Level AAA）
 
-**Target Size**: Minimum 44×44px (iOS) or 48×48px (Android)
+**目标大小**：最小 44×44px（iOS）或 48×48px（Android），目标之间最小 8px 间距。
 
-**Spacing**: Minimum 8px between targets
-
-**Implementation**:
 ```css
-button, a {
-  min-height: 44px;
-  min-width: 44px;
-  padding: 12px 24px;
-  /* Touch target includes padding */
-}
-
-/* Increase tap target without changing visual size */
-button::before {
-  content: '';
-  position: absolute;
-  inset: -8px; /* Extends tap target by 8px all sides */
-}
+button, a { min-height: 44px; min-width: 44px; padding: 12px 24px; }
+button::before { content: ''; position: absolute; inset: -8px; }
 ```
 
-### Mobile Considerations
-
-**Viewport**:
+**视口**：允许放大到 5 倍（WCAG 要求）
 ```html
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
 ```
-*Note*: Allow zoom up to 5× (WCAG requirement)
 
-**Touch Gestures**:
-- Avoid complex gestures (multi-finger, long-press)
-- Provide alternative interactions
-- Don't rely on hover states
+**触摸手势**：避免复杂手势（多指、长按），提供替代交互方式，不要依赖悬停状态。
 
 ---
 
-## Forms & Input
+## 表单与输入
 
-### Labels & Instructions
+### 标签与说明（WCAG 3.3.2 Level A）
 
-**WCAG 3.3.2 (Level A)**:
-Every input must have a visible label.
+每个输入必须有可见标签。
 
-**Implementation**:
 ```html
-<!-- Explicit label -->
 <label for="email">Email address</label>
 <input id="email" type="email" required aria-describedby="email-help">
 <small id="email-help">We'll never share your email.</small>
 
-<!-- Error state -->
-<input
-  id="email"
-  type="email"
-  aria-invalid="true"
-  aria-describedby="email-error"
->
-<div id="email-error" role="alert">
-  Please enter a valid email address.
-</div>
+<input id="email" type="email" aria-invalid="true" aria-describedby="email-error">
+<div id="email-error" role="alert">Please enter a valid email address.</div>
 ```
 
-### Form Validation
+### 无障碍验证
 
-**Accessible Validation**:
 ```javascript
 function validateEmail(input) {
   const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value);
-
   if (isValid) {
     input.setAttribute('aria-invalid', 'false');
     input.removeAttribute('aria-describedby');
@@ -584,352 +352,107 @@ function validateEmail(input) {
     showError(input, 'Please enter a valid email address.');
   }
 }
-
-function showError(input, message) {
-  const errorElement = document.getElementById(`${input.id}-error`) ||
-                       createErrorElement(input.id);
-  errorElement.textContent = message;
-  errorElement.setAttribute('role', 'alert'); // Announces to screen readers
-}
 ```
 
-### Required Fields
+### 必填字段
 
-**Indication**:
 ```html
-<label for="name">
-  Full name
-  <abbr title="required" aria-label="required">*</abbr>
-</label>
+<label for="name">Full name <abbr title="required" aria-label="required">*</abbr></label>
 <input id="name" type="text" required aria-required="true">
 ```
 
-**Visual + Programmatic**:
-- Visual indicator (asterisk, "required")
-- `required` attribute
-- `aria-required="true"`
+**视觉 + 程序化**：视觉指示器 + `required` 属性 + `aria-required="true"`
 
 ---
 
-## Focus Management
+## 焦点管理
 
-### Managing Focus States
-
-**After Modal Opens**:
 ```javascript
 function openModal() {
   modal.style.display = 'block';
   modal.setAttribute('aria-hidden', 'false');
-
-  // Focus first focusable element
-  const firstFocusable = modal.querySelector('button, [href], input');
-  firstFocusable.focus();
-
-  // Trap focus
+  const first = modal.querySelector('button, [href], input');
+  first.focus();
   trapFocus(modal);
 }
-```
-
-**After Modal Closes**:
-```javascript
 function closeModal() {
   modal.style.display = 'none';
   modal.setAttribute('aria-hidden', 'true');
-
-  // Return focus to trigger button
   triggerButton.focus();
 }
 ```
 
-### Focus Order
-
-**Best Practices**:
-- Follow visual order (top to bottom, left to right)
-- Group related elements
-- Use `tabindex="-1"` for programmatic focus only
-- Avoid `tabindex > 0` (creates unpredictable order)
+**最佳实践**：
+- 遵循视觉顺序（从上到下，从左到右）
+- 使用 `tabindex="-1"` 仅用于程序化焦点
+- 避免使用 `tabindex > 0`
 
 ---
 
-## Semantic HTML
+## 语义化 HTML
 
-### Heading Hierarchy
+### 标题层级（WCAG 1.3.1 Level A）
 
-**WCAG 1.3.1 (Level A)**:
-Use proper heading levels (h1-h6) without skipping.
+**正确**：h1 → h2 → h3（不跳级）
+**错误**：h1 → h3（跳过了 h2）
 
-**Correct**:
+### 地标区域
+
 ```html
-<h1>Page Title</h1>
-<h2>Section</h2>
-<h3>Subsection</h3>
-<h3>Another Subsection</h3>
-<h2>Another Section</h2>
-```
-
-**Incorrect**:
-```html
-<h1>Page Title</h1>
-<h3>Section</h3> <!-- Skipped h2 -->
-```
-
-### Landmark Regions
-
-**Essential Landmarks**:
-```html
-<header>
-  <nav aria-label="Main navigation">
-    <!-- Primary nav -->
-  </nav>
-</header>
-
+<header><nav aria-label="Main navigation"><!-- 导航 --></nav></header>
 <main>
-  <article>
-    <header>
-      <h1>Article Title</h1>
-    </header>
-    <!-- Article content -->
-  </article>
-
-  <aside aria-label="Related links">
-    <!-- Sidebar -->
-  </aside>
+  <article><!-- 文章 --></article>
+  <aside aria-label="Related links"><!-- 侧边栏 --></aside>
 </main>
-
-<footer>
-  <nav aria-label="Footer navigation">
-    <!-- Footer nav -->
-  </nav>
-</footer>
+<footer><nav aria-label="Footer navigation"><!-- 页脚导航 --></nav></footer>
 ```
 
-### Lists & Tables
+### 列表与表格
 
-**Lists**:
 ```html
-<!-- Use proper list elements -->
-<ul>
-  <li>Item 1</li>
-  <li>Item 2</li>
-</ul>
-
-<!-- Not divs styled as lists -->
-```
-
-**Tables**:
-```html
+<ul><li>Item 1</li><li>Item 2</li></ul>
 <table>
   <caption>Sales Data Q4 2024</caption>
-  <thead>
-    <tr>
-      <th scope="col">Month</th>
-      <th scope="col">Sales</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>October</td>
-      <td>$50,000</td>
-    </tr>
-  </tbody>
+  <thead><tr><th scope="col">Month</th><th scope="col">Sales</th></tr></thead>
+  <tbody><tr><td>October</td><td>$50,000</td></tr></tbody>
 </table>
 ```
 
 ---
 
-## Testing & Auditing
+## 测试与审计
 
-### Automated Testing Tools
+### 自动化测试工具
 
-**Browser Extensions**:
-- axe DevTools (Chrome/Firefox)
-- WAVE (Web Accessibility Evaluation Tool)
-- Lighthouse (Chrome DevTools)
-
-**Command Line**:
+- axe DevTools（Chrome/Firefox）、WAVE、Lighthouse（Chrome DevTools）
 ```bash
-# pa11y
-npm install -g pa11y
-pa11y https://example.com
-
-# axe-core CLI
-npm install -g @axe-core/cli
-axe https://example.com
+npm install -g pa11y && pa11y https://example.com
+npm install -g @axe-core/cli && axe https://example.com
 ```
 
-### Manual Testing Checklist
+### 手动测试清单
 
-**Keyboard Navigation**:
-- [ ] Tab through all interactive elements
-- [ ] Activate with Enter/Space
-- [ ] Close modals with Escape
-- [ ] Navigate dropdowns with arrow keys
+**键盘导航**：Tab 遍历所有交互元素 / Enter+Space 激活 / Escape 关闭 / 方向键导航
+**屏幕阅读器**：NVDA（Windows）、VoiceOver（Mac）、JAWS 测试
+**视觉**：放大到 200%、颜色对比度、焦点指示器、色盲模拟器
+**动效**：启用 `prefers-reduced-motion` 验证动画已禁用
 
-**Screen Reader Testing**:
-- [ ] Test with NVDA (Windows), VoiceOver (Mac), JAWS
-- [ ] Check heading structure
-- [ ] Verify alt text
-- [ ] Test form labels and errors
+### 屏幕阅读器快捷键
 
-**Visual Testing**:
-- [ ] Zoom to 200%
-- [ ] Test color contrast
-- [ ] Check focus indicators
-- [ ] Review with color blindness simulator
-
-**Motion Testing**:
-- [ ] Enable `prefers-reduced-motion`
-- [ ] Verify animations are disabled/reduced
-- [ ] Check for essential animations that remain
-
-### Screen Reader Testing Commands
-
-**NVDA (Windows)**:
-- Toggle: Caps Lock or Insert
-- Next heading: H
-- Next landmark: D
-- Read all: Caps Lock + Down Arrow
-
-**VoiceOver (Mac)**:
-- Toggle: Cmd + F5
-- Rotor: Ctrl + Option + U
-- Next heading: Ctrl + Option + Cmd + H
-
-**JAWS (Windows)**:
-- List headings: Insert + F6
-- List links: Insert + F7
-- Next heading: H
+**NVDA（Windows）**：Caps Lock 或 Insert 开关 / H 下一个标题 / D 下一个地标
+**VoiceOver（Mac）**：Cmd+F5 开关 / Ctrl+Option+U 转轮
+**JAWS（Windows）**：Insert+F6 列出标题 / Insert+F7 列出链接
 
 ---
 
-## Common Accessibility Patterns
+## WCAG 合规速查
 
-### Accessible Modal
-
-```jsx
-function AccessibleModal({ isOpen, onClose, children }) {
-  const modalRef = useRef(null);
-  const triggerRef = useRef(document.activeElement);
-
-  useEffect(() => {
-    if (isOpen) {
-      // Trap focus
-      trapFocus(modalRef.current);
-
-      // Focus first element
-      const firstFocusable = modalRef.current.querySelector('button, [href], input');
-      firstFocusable?.focus();
-
-      // Prevent body scroll
-      document.body.style.overflow = 'hidden';
-    } else {
-      // Return focus
-      triggerRef.current?.focus();
-      document.body.style.overflow = '';
-    }
-
-    // Listen for Escape key
-    const handleEscape = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
-    document.addEventListener('keydown', handleEscape);
-
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
-
-  return (
-    <div
-      className="modal-backdrop"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="modal-title"
-    >
-      <div
-        ref={modalRef}
-        className="modal"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 id="modal-title">Modal Title</h2>
-        {children}
-        <button onClick={onClose} aria-label="Close modal">
-          ×
-        </button>
-      </div>
-    </div>
-  );
-}
-```
-
-### Accessible Accordion
-
-```html
-<div class="accordion">
-  <h3>
-    <button
-      aria-expanded="false"
-      aria-controls="panel-1"
-      id="accordion-button-1"
-    >
-      <span class="accordion-title">Section 1</span>
-      <svg class="accordion-icon" aria-hidden="true">...</svg>
-    </button>
-  </h3>
-  <div
-    id="panel-1"
-    role="region"
-    aria-labelledby="accordion-button-1"
-    hidden
-  >
-    <p>Content for section 1...</p>
-  </div>
-</div>
-```
-
-```javascript
-function initAccordion() {
-  const buttons = document.querySelectorAll('.accordion button');
-
-  buttons.forEach(button => {
-    button.addEventListener('click', () => {
-      const expanded = button.getAttribute('aria-expanded') === 'true';
-      const panel = document.getElementById(button.getAttribute('aria-controls'));
-
-      button.setAttribute('aria-expanded', !expanded);
-      panel.hidden = expanded;
-    });
-  });
-}
-```
+| 级别 | 关键要求 |
+|------|----------|
+| A（必须有） | 文本替代方案、键盘可访问、颜色不唯一表意、表单标签、正确标题层级 |
+| AA（应有） | 4.5:1 对比度（普通文本）、3:1（大号）、缩放到 200%、焦点可见、多种导航方式 |
+| AAA（锦上添花） | 7:1 对比度（普通文本）、4.5:1（大号）、目标 44×44px、无时间限制 |
 
 ---
 
-## WCAG Quick Reference
-
-**Level A (Must Have)**:
-- Text alternatives (alt text)
-- Keyboard accessible
-- Color not only means of conveying info
-- Labeled form inputs
-- Proper heading hierarchy
-
-**Level AA (Should Have)**:
-- 4.5:1 contrast for normal text
-- 3:1 contrast for large text
-- Resize text to 200%
-- Focus visible
-- Multiple ways to find pages
-
-**Level AAA (Nice to Have)**:
-- 7:1 contrast for normal text
-- 4.5:1 contrast for large text
-- Target size 44×44px minimum
-- No timing restrictions
-- Help available
-
----
-
-*Last updated: 2024*
-*Based on WCAG 2.1 and WCAG 2.2 standards*
+*最后更新：2024 · 基于 WCAG 2.1 / 2.2 标准*

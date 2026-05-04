@@ -1,30 +1,26 @@
-# Web Design Trends 2024-2025
+# 2024-2025 年 Web 设计趋势
 
-## Overview
+## 概述
 
-This document catalogs the dominant web design trends, aesthetic movements, and interaction paradigms shaping modern web experiences in 2024-2025. Updated regularly based on industry analysis, award-winning sites, and emerging patterns.
+本文档总结 2024-2025 年塑造现代 Web 体验的主流设计趋势、美学运动和交互范式，基于行业分析、获奖网站和新兴模式定期更新。
 
-## Visual Design Trends
+## 视觉设计趋势
 
-### 1. Bold Minimalism
+### 1. 大胆极简主义
 
-**Definition**: Minimalist foundations enhanced with bold typography, intentional color, and confident white space.
+**定义**：以大胆排版、有意图色彩和充裕留白增强的极简风格。
 
-**Key Characteristics**:
-- Ultra-large typography (80px-200px+ headlines)
-- Limited color palettes (2-4 colors max)
-- Generous white space (breathing room)
-- High contrast (black/white, bold accent colors)
-- Geometric shapes and clean lines
-- Sans-serif dominance (Inter, Space Grotesk, Sora)
+**主要特征**：
+- 超大排版（80px-200px+ 标题）
+- 有限调色板（2-4 色）
+- 充裕留白
+- 高对比度（黑/白、大胆强调色）
+- 几何形状与干净线条
+- 无衬线字体主导（Inter、Space Grotesk、Sora）
 
-**Examples**:
-- Apple product pages
-- Linear.app
-- Stripe documentation
-- Vercel website
+**示例**：Apple 产品页、Linear.app、Stripe 文档、Vercel 网站
 
-**Implementation Tips**:
+**实现技巧**：
 ```css
 /* Fluid typography for bold headlines */
 h1 {
@@ -40,23 +36,23 @@ section {
 }
 ```
 
-**Why It Works**: Reduces cognitive load, focuses attention, loads fast, works across devices.
+**优势**：降低认知负荷，聚焦注意力，加载快速，跨设备适配。
 
 ---
 
-### 2. Kinetic Typography
+### 2. 动态排版
 
-**Definition**: Text that moves, transforms, and responds to user interaction.
+**定义**：可移动、变换并对用户交互做出响应的文字。
 
-**Patterns**:
+**模式**：
 
-**a) Variable Font Animations**:
-- Weight transitions (100 → 900)
-- Width morphing (condensed → expanded)
-- Slant/italic transformations
-- Multiple axes animating simultaneously
+**a) 可变字体动画**：
+- 字重过渡（100 → 900）
+- 宽度变形（紧缩 ↔ 扩展）
+- 倾斜/斜体变换
+- 多轴同时动画
 
-**Implementation**:
+**实现方式**：
 ```css
 @font-face {
   font-family: 'Inter';
@@ -74,26 +70,19 @@ h1:hover {
 }
 ```
 
-**b) Text Split & Stagger**:
-- Reveal by character, word, or line
-- Staggered entrance animations
-- 3D text transformations
+**b) 文字拆分与交错**：按字符/单词/行逐次呈现，交错入场，3D 文字变换
 
-**c) Scroll-Linked Text**:
-- Text color change on scroll
-- Weight increase/decrease
-- Size transformations
-- Parallax text layers
+**c) 滚动联动文字**：滚动变色、字重变化、尺寸变换、视差文字层
 
-**Related Skills**: `gsap-scrolltrigger` for text animations, `motion-framer` for React text effects
+**相关 Skill**：`gsap-scrolltrigger`（文字动画），`motion-framer`（React 文字效果）
 
 ---
 
-### 3. Glassmorphism 2.0
+### 3. 玻璃拟态 2.0
 
-**Evolution**: Refined frosted-glass aesthetic with better accessibility and performance.
+**演进**：改进的磨砂玻璃美学，兼顾可访问性和性能。
 
-**Modern Approach** (2024):
+**现代实现方式**：
 ```css
 .glass-card {
   /* More subtle, accessible backgrounds */
@@ -120,28 +109,19 @@ h1:hover {
 }
 ```
 
-**Accessibility Considerations**:
-- Ensure text has 4.5:1+ contrast on glass backgrounds
-- Test with screen readers (ensure content is readable)
-- Provide high-contrast mode alternative
+**可访问性**：确保文字对比度 ≥4.5:1；屏幕阅读器测试；提供高对比度模式
 
-**Performance**:
-- `backdrop-filter` can be expensive on mobile
-- Use sparingly (2-3 glass elements max per viewport)
-- Consider `will-change: backdrop-filter` during animations only
+**性能**：`backdrop-filter` 在移动端开销大；每视口 ≤3 个玻璃元素；仅在动画时用 `will-change`
 
 ---
 
-### 4. Gradient Mesh Backgrounds
+### 4. 渐变网格背景
 
-**Definition**: Complex, multi-color gradients with organic blob shapes.
+**定义**：具有有机斑点形状的复杂多色渐变。
 
-**Tools**:
-- CSS: `background: radial-gradient()` layering
-- SVG: Gradient mesh filters
-- Canvas/WebGL: Shader-based gradients (Vanta.js)
+**工具**：CSS `radial-gradient()` 分层、SVG 渐变网格滤镜、Canvas/WebGL 着色器渐变（Vanta.js）
 
-**Modern Gradient System**:
+**现代渐变系统**：
 ```css
 :root {
   /* Define gradient stops */
@@ -166,20 +146,17 @@ h1:hover {
 }
 ```
 
-**Animated Gradients** (WebGL approach with Vanta.js):
-- WAVES effect with custom colors
-- CELLS effect for organic feel
-- FOG for atmospheric backgrounds
+**动画渐变**（Vanta.js WebGL）：WAVES（自定义颜色）、CELLS（有机质感）、FOG（氛围背景）
 
-**Related Skills**: `lightweight-3d-effects` (Vanta.js backgrounds)
+**相关 Skill**：`lightweight-3d-effects`
 
 ---
 
-### 5. Neumorphism (Evolved)
+### 5. 新拟态（演进版）
 
-**Status**: Declining but still used for specific contexts (iOS apps, dashboards).
+**状态**：正在衰退，仍用于特定场景（iOS 应用、仪表板）。
 
-**Modern Implementation** (Improved contrast):
+**现代实现方式**（改进对比度）：
 ```css
 .neomorphic-card {
   background: #e0e5ec;
@@ -204,15 +181,15 @@ h1:hover {
 }
 ```
 
-**Why It's Declining**: Accessibility concerns (low contrast), limited color palette, heavy shadows impact performance.
+**衰退原因**：低对比度可访问性问题、调色板受限、厚重阴影影响性能。
 
 ---
 
-### 6. Dark Mode as Default
+### 6. 深色模式作为默认
 
-**Trend**: Many sites now default to dark mode with light mode as alternative.
+**趋势**：许多网站默认深色模式，浅色模式为备选。
 
-**Best Practices** (2024):
+**最佳实践**：
 ```css
 /* Use system preference as default */
 :root {
@@ -247,26 +224,17 @@ h1:hover {
 }
 ```
 
-**Color Adjustments for Dark Mode**:
-- Reduce saturation by 10-20%
-- Lower brightness for vibrant colors
-- Use warmer blacks (#0a0a0a, not pure #000)
-- Increase contrast for text (7:1+ ratio)
+**色彩调整**：饱和度降低 10-20%；鲜艳色彩降低亮度；使用暖黑色（非纯黑）；文字对比度 ≥7:1
 
 ---
 
-### 7. Asymmetric Layouts
+### 7. 非对称布局
 
-**Definition**: Breaking the grid for visual interest and hierarchy.
+**定义**：打破网格以营造视觉趣味和层次感。
 
-**Patterns**:
-- Split-screen layouts (60/40, 70/30)
-- Overlapping elements with z-index
-- Diagonal sections
-- Off-grid text positioning
-- Broken grid systems
+**模式**：分屏布局（60/40、70/30）、z-index 元素重叠、对角线分区、脱离网格定位、破格系统
 
-**CSS Grid Implementation**:
+**CSS Grid 实现**：
 ```css
 .asymmetric-grid {
   display: grid;
@@ -289,46 +257,27 @@ h1:hover {
 }
 ```
 
-**Examples**:
-- Awwwards winners (70%+ use asymmetry)
-- Design agency portfolios
-- Product launch pages
+**示例**：Awwwards 获奖作品（超 70% 使用非对称）、设计机构作品集、产品发布页
 
 ---
 
-## Interaction Trends
+## 交互趋势
 
-### 8. Micro-Interactions Everywhere
+### 8. 无处不在的微交互
 
-**Definition**: Small, delightful animations that provide feedback and enhance usability.
+**定义**：提供反馈并增强可用性的小而精致的动画。
 
-**Categories & Examples**:
+**分类**：
 
-**a) Button Interactions**:
-- Hover lift (transform: translateY(-2px))
-- Press down (scale: 0.98)
-- Ripple effect on click
-- Color shift transitions
+**a) 按钮交互**：悬停上浮（translateY(-2px)）、按下下沉（scale: 0.98）、点击涟漪、颜色过渡
 
-**b) Form Feedback**:
-- Input focus animations (border glow)
-- Success/error state transitions
-- Character count with progress ring
-- Password strength indicator
+**b) 表单反馈**：输入聚焦动画、成功/错误状态过渡、字符计数进度环、密码强度指示器
 
-**c) Loading States**:
-- Skeleton screens (better than spinners)
-- Progress indicators
-- Optimistic UI updates
-- Staggered content reveals
+**c) 加载状态**：骨架屏、进度指示器、乐观 UI 更新、交错内容呈现
 
-**d) Navigation**:
-- Hamburger to X transitions
-- Dropdown reveals with stagger
-- Active state indicators
-- Scroll progress bars
+**d) 导航**：汉堡到 X 的过渡、交错展开下拉、激活状态指示器、滚动进度条
 
-**Implementation** (Framer Motion):
+**Framer Motion 实现**：
 ```jsx
 const buttonVariants = {
   idle: { scale: 1, y: 0 },
@@ -347,17 +296,17 @@ const buttonVariants = {
 </motion.button>
 ```
 
-**Related Skills**: `motion-framer`, `react-spring-physics`, `animejs`
+**相关 Skill**：`motion-framer`、`react-spring-physics`、`animejs`
 
 ---
 
-### 9. Scroll-Driven Storytelling
+### 9. 滚动驱动的叙事
 
-**Definition**: Content reveals, transforms, and tells a story as the user scrolls.
+**定义**：用户滚动时，内容呈现、变换并讲述故事。
 
-**Techniques**:
+**技巧**：
 
-**a) Pinned Sections with Scrubbing**:
+**a) 固定区域 + 滑块同步**：
 ```javascript
 // Pin section while content scrubs through
 gsap.to(".content", {
@@ -373,37 +322,25 @@ gsap.to(".content", {
 });
 ```
 
-**b) Horizontal Scroll Galleries**:
-- Card-based portfolios
-- Timeline experiences
-- Product showcases
+**b) 横向滚动画廊**：卡片作品集、时间线、产品展示
 
-**c) Parallax Layers**:
-- Foreground, midground, background at different speeds
-- 3D depth illusion
-- Hero section parallax
+**c) 视差分层**：前/中/背景不同速度、3D 景深感、首屏视差
 
-**d) Progress Indicators**:
-- Reading progress bars
-- Section progress dots
-- Animated SVG paths
+**d) 进度指示器**：阅读进度条、分区进度点、动画 SVG 路径
 
-**Examples**:
-- Apple product pages (iPhone, MacBook)
-- Stripe's annual reports
-- Web agency showcases
+**示例**：Apple 产品页、Stripe 年报、Web 机构作品展示
 
-**Related Skills**: `gsap-scrolltrigger`, `locomotive-scroll`
+**相关 Skill**：`gsap-scrolltrigger`、`locomotive-scroll`
 
 ---
 
-### 10. Cursor Effects & Custom Cursors
+### 10. 光标效果与自定义光标
 
-**Trend**: Custom cursors that enhance interaction and provide visual delight.
+**趋势**：增强交互并提供视觉愉悦感的自定义光标。
 
-**Patterns**:
+**模式**：
 
-**a) Dot Follower**:
+**a) 点跟随**：
 ```javascript
 const cursor = { x: 0, y: 0 };
 const follower = { x: 0, y: 0 };
@@ -423,13 +360,9 @@ function updateCursor() {
 }
 ```
 
-**b) Contextual Cursors**:
-- "View" on images
-- "Drag" on sliders
-- "Play" on videos
-- Magnetic attraction to buttons
+**b) 情境化光标**：图片"查看"、滑块"拖动"、视频"播放"、按钮磁性吸附
 
-**c) Blend Mode Cursors**:
+**c) 混合模式光标**：
 ```css
 .cursor {
   mix-blend-mode: difference;
@@ -437,24 +370,17 @@ function updateCursor() {
 }
 ```
 
-**Accessibility**:
-- Hide on touch devices
-- Respect `prefers-reduced-motion`
-- Don't hide native cursor completely (layer on top)
+**可访问性**：触屏隐藏；遵循 `prefers-reduced-motion`；不隐藏原生光标（在其上层叠加）
 
 ---
 
-### 11. 3D Elements & WebGL
+### 11. 3D 元素与 WebGL
 
-**Status**: Increasingly mainstream with improved performance and tooling.
+**状态**：随性能与工具改进逐渐成为主流。
 
-**Use Cases**:
-- Hero backgrounds (Vanta.js waves, particles)
-- Product viewers (rotate, zoom, configure)
-- Data visualization (3D charts, globes)
-- Immersive experiences (games, virtual tours)
+**应用场景**：首屏背景（Vanta.js）、产品展示器（旋转/缩放/配置）、数据可视化（3D 图表/地球仪）、沉浸式体验（游戏/虚拟导览）
 
-**Performance-First Approach**:
+**性能优先方法**：
 ```javascript
 // Lazy load 3D content
 const observer = new IntersectionObserver((entries) => {
@@ -470,80 +396,56 @@ const observer = new IntersectionObserver((entries) => {
 observer.observe(document.querySelector('.3d-container'));
 ```
 
-**Lightweight 3D Options**:
-- Vanta.js for backgrounds (uses Three.js)
-- Zdog for flat-style 3D illustrations
-- Spline for designer-friendly 3D
+**轻量级 3D**：Vanta.js（Three.js 背景）、Zdog（平面风格 3D）、Spline（设计师友好）
 
-**Full 3D Engines**:
-- Three.js for custom scenes
-- React Three Fiber for React apps
-- Babylon.js for physics and VR
+**完整 3D 引擎**：Three.js、React Three Fiber（React）、Babylon.js（物理/VR）
 
-**Related Skills**: `threejs-webgl`, `react-three-fiber`, `lightweight-3d-effects`
+**相关 Skill**：`threejs-webgl`、`react-three-fiber`、`lightweight-3d-effects`
 
 ---
 
-### 12. Voice & Conversational UI
+### 12. 语音与对话式 UI
 
-**Emerging Trend**: Voice commands and conversational interfaces.
+**新兴趋势**：语音命令和对话式界面。
 
-**Patterns**:
-- Voice search integration
-- Chatbot interfaces (natural language)
-- Voice-controlled navigation
-- Audio feedback for interactions
+**模式**：语音搜索、聊天机器人（自然语言）、语音导航、交互音频反馈
 
-**Implementation Considerations**:
-- Web Speech API for voice input
-- Text-to-speech for feedback
-- Fallback to text input
-- Accessibility: don't require voice-only
+**实现**：Web Speech API 语音输入、TTS 反馈、文本后备、不要求仅语音
 
 ---
 
-## Technical Trends
+## 技术趋势
 
-### 13. Performance-First Design
+### 13. 性能优先设计
 
-**Core Web Vitals as Design Constraints**:
+**Core Web Vitals 作为设计约束**：
 
-**LCP (Largest Contentful Paint) < 2.5s**:
-- Optimize hero images (WebP/AVIF)
-- Inline critical CSS
-- Preload key resources
-- Avoid layout shifts
+**LCP（最大内容绘制）< 2.5s**：
+- 优化首屏图片（WebP/AVIF）
+- 内联关键 CSS，预加载关键资源
+- 避免布局偏移
 
-**FID (First Input Delay) < 100ms**:
-- Defer non-critical JavaScript
-- Split code bundles
-- Use passive event listeners
-- Minimize main thread work
+**FID（首次输入延迟）< 100ms**：
+- 延迟非关键 JavaScript
+- 拆分代码包，被动事件监听器
+- 最小化主线程工作
 
-**CLS (Cumulative Layout Shift) < 0.1**:
-- Reserve space for images (aspect-ratio)
-- Avoid inserting content above existing content
-- Use CSS transforms, not position changes
+**CLS（累积布局偏移）< 0.1**：
+- 图片预留空间（aspect-ratio）
+- 避免在现有内容上方插入内容
+- 用 CSS transform 而非位置改变
 
-**Design Implications**:
-- Avoid web fonts that cause FOIT/FOUT
-- Use system fonts for body text
-- Lazy load below-fold content
-- Progressive enhancement mindset
+**设计影响**：避免 FOIT/FOUT 的 Web 字体；正文用系统字体；懒加载首屏以下；渐进增强
 
 ---
 
-### 14. Component-Driven Design Systems
+### 14. 组件驱动的设计系统
 
-**Approach**: Design and build in reusable components.
+**方法**：以可复用组件进行设计和构建。
 
-**Tools**:
-- Figma with variants and auto-layout
-- Storybook for component documentation
-- Design tokens (JSON format)
-- Automated design-to-code (Figma plugins)
+**工具**：Figma（变体+自动布局）、Storybook（组件文档）、设计令牌（JSON）、Figma 插件（设计到代码）
 
-**Component Architecture**:
+**组件架构**：
 ```
 Design System/
 ├── Foundations/
@@ -562,84 +464,44 @@ Design System/
     └── Animation patterns
 ```
 
-**Related Skills**: `animated-component-libraries`
+**相关 Skill**：`animated-component-libraries`
 
 ---
 
-### 15. AI-Enhanced Design
+### 15. AI 增强设计
 
-**Applications**:
+**a) 内容生成**：AI 文案（人工编辑）、图片生成（Midjourney、DALL-E）、图标生成、设计变体
 
-**a) Content Generation**:
-- AI-written copy (with human editing)
-- Image generation (Midjourney, DALL-E)
-- Icon generation
-- Design variations
+**b) 个性化**：动态布局（用户行为）、AI 优化 A/B 测试、自适应配色、内容推荐
 
-**b) Personalization**:
-- Dynamic layouts based on user behavior
-- A/B testing with AI optimization
-- Adaptive color schemes
-- Content recommendations
+**c) 可访问性**：AI 生成替代文本、自动对比度调整、智能键盘导航、内容简化
 
-**c) Accessibility**:
-- AI-generated alt text
-- Automatic color contrast adjustments
-- Smart keyboard navigation
-- Content simplification
-
-**Implementation**:
-- Edge functions for fast personalization
-- Client-side ML models (TensorFlow.js)
-- Privacy-preserving personalization
+**实现**：边缘函数快速个性化、客户端 TensorFlow.js 模型、隐私保护
 
 ---
 
-### 16. Progressive Web Apps (PWAs)
+### 16. 渐进式 Web 应用（PWA）
 
-**Status**: Mainstream adoption, especially for mobile-first products.
+**状态**：已主流化，适用于移动优先产品。
 
-**Key Features**:
-- Offline functionality
-- Install to home screen
-- Push notifications
-- Background sync
-- Native-like performance
+**特性**：离线、添加到主屏幕、推送通知、后台同步、类原生性能
 
-**Design Considerations**:
-- Mobile-first responsive design
-- Touch-friendly interactions (44px+ targets)
-- Offline-first content strategy
-- Loading states for sync
-- Native-feeling animations
+**设计注意事项**：移动优先响应式、44px+ 触控目标、离线优先内容、同步加载状态、类原生动画
 
 ---
 
-## Color Trends
+## 色彩趋势
 
-### 17. Color Palette Trends (2024-2025)
+### 17. 调色板趋势（2024-2025）
 
-**Trending Color Schemes**:
+**流行配色方案**：
 
-**a) High Contrast Duotone**:
-- Black + bright accent (electric blue, hot pink, lime green)
-- Minimal, punchy, attention-grabbing
+- **高对比度双色**：黑 + 亮色强调（电光蓝/热粉/青柠绿），极简有力
+- **柔和大地色系**：赤陶土、鼠尾草绿、暖米色，自然宁静
+- **霓虹渐变**：明亮饱和渐变网格，赛博朋克美学
+- **单色 + 强调色**：单色不同明度 + 一种大胆强调色
 
-**b) Muted Earth Tones**:
-- Terracotta, sage green, warm beige
-- Natural, calming, sustainable aesthetic
-
-**c) Neon Gradients**:
-- Bright, saturated gradient meshes
-- Cyberpunk aesthetic
-- Gaming and tech brands
-
-**d) Monochromatic + Accent**:
-- Single hue with varying lightness
-- One bold accent color
-- Sophisticated, cohesive
-
-**Color Space Evolution**:
+**色彩空间演进**：
 ```css
 /* OKLCH for perceptual uniformity */
 :root {
@@ -655,26 +517,17 @@ Design System/
 
 ---
 
-## Typography Trends
+## 排版趋势
 
-### 18. Variable Fonts Mainstream
+### 18. 可变字体成为主流
 
-**Adoption**: Major sites now using variable fonts by default.
+**采用情况**：主流网站默认使用可变字体。
 
-**Popular Variable Fonts**:
-- Inter (UI text)
-- Space Grotesk (headlines)
-- Recursive (code & UI)
-- Fraunces (display serif)
-- Outfit (geometric sans)
+**热门可变字体**：Inter（UI）、Space Grotesk（标题）、Recursive（代码与 UI）、Fraunces（显示衬线）、Outfit（几何无衬线）
 
-**Advantages**:
-- Single file, multiple weights/styles
-- Animation possibilities
-- Fine-grained control (weight: 347)
-- Smaller file size than multiple weights
+**优势**：单文件多字重/样式、支持动画、精细控制（字重 347）、文件更小
 
-**Implementation**:
+**实现方式**：
 ```css
 @font-face {
   font-family: 'Inter';
@@ -691,11 +544,11 @@ h1 {
 
 ---
 
-### 19. Oversized Typography
+### 19. 超大排版
 
-**Trend**: Headlines at 100px-300px for desktop.
+**趋势**：桌面端标题 100px-300px。
 
-**Fluid Typography System**:
+**流式排版系统**：
 ```css
 :root {
   --font-size-base: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
@@ -712,28 +565,19 @@ h1 {
 }
 ```
 
-**Design Considerations**:
-- Tight line-height (0.9-1.0)
-- Negative letter-spacing (-0.02 to -0.04em)
-- Strong font weight (700-900)
-- Responsive scaling with clamp()
+**注意事项**：紧凑行高（0.9-1.0）、负字间距（-0.02 至 -0.04em）、大号字重（700-900）、clamp() 响应式缩放
 
 ---
 
-## Layout Trends
+## 布局趋势
 
-### 20. Broken Grid Layouts
+### 20. 破格布局
 
-**Definition**: Intentionally breaking traditional grid systems for visual interest.
+**定义**：有意打破传统网格系统以营造视觉趣味。
 
-**Techniques**:
-- Overlapping elements
-- Off-grid positioning
-- Diagonal layouts
-- Negative space as design element
-- Z-axis layering
+**技巧**：元素重叠、脱离网格定位、对角线布局、负空间设计、Z 轴分层
 
-**CSS Grid + Subgrid**:
+**CSS Grid + Subgrid**：
 ```css
 .parent-grid {
   display: grid;
@@ -751,149 +595,92 @@ h1 {
 
 ---
 
-### 21. Single-Page Experiences
+### 21. 单页体验
 
-**Trend**: Entire site on one scrollable page.
+**趋势**：整个站点在一个可滚动页面中完成。
 
-**Patterns**:
-- Section-based navigation (anchor links)
-- Full-screen sections
-- Scroll-driven reveals
-- Smooth scrolling between sections
+**模式**：区块导航（锚点）、全屏区块、滚动驱动呈现、区块间平滑滚动
 
-**Benefits**:
-- Cohesive narrative flow
-- No page load transitions
-- Mobile-friendly (swipe to scroll)
-- Performance (single bundle)
+**优势**：连贯叙事、无页面加载过渡、移动友好（滑滚）、单包性能好
 
-**Challenges**:
-- SEO (use meaningful sections with h2-h6)
-- Deep linking (use hash routing)
-- Back button behavior
-- Large bundle size
+**挑战**：SEO（用有意义的 h2-h6）、深层链接（hash 路由）、后退按钮、包体积
 
 ---
 
-## Emerging & Experimental
+## 新兴与实验性趋势
 
-### 22. AI-Generated Visuals
+### 22. AI 生成视觉内容
 
-**Tools**:
-- Midjourney for illustrations
-- DALL-E 3 for specific images
-- Stable Diffusion for customization
+**工具**：Midjourney（插画）、DALL-E 3（图片）、Stable Diffusion（定制）
 
-**Use Cases**:
-- Hero backgrounds
-- Blog post headers
-- Icon generation
-- Abstract patterns
+**应用**：首屏背景、博客头图、图标生成、抽象图案
 
-**Ethical Considerations**:
-- Disclose AI-generated content
-- Review for bias and appropriateness
-- Ensure licensing rights
-- Don't replace human designers for key visuals
+**伦理**：披露 AI 内容、审查偏见、确保版权、关键视觉不取代人类设计师
 
 ---
 
-### 23. Web3 Design Patterns
+### 23. Web3 设计模式
 
-**Characteristics**:
-- Wallet connection UIs
-- NFT galleries
-- Token-gated content
-- Blockchain transaction states
-- Decentralized identity
+**特性**：钱包连接 UI、NFT 画廊、代币门控内容、区块链交易状态、去中心化身份
 
-**Design Challenges**:
-- Explaining complex concepts simply
-- Transaction loading states (slow blockchains)
-- Error handling (failed transactions)
-- Gas fee transparency
+**设计挑战**：简化解释复杂概念、交易加载状态（慢区块链）、错误处理（交易失败）、Gas 费透明
 
 ---
 
-### 24. Spatial Computing & 3D Interfaces
+### 24. 空间计算与 3D 界面
 
-**Future Trend**: Preparing for AR/VR mainstream adoption.
+**未来趋势**：为 AR/VR 主流采用做准备。
 
-**Patterns**:
-- Depth-based layering
-- 3D navigation
-- Gesture controls
-- Spatial audio cues
+**模式**：深度分层、3D 导航、手势控制、空间音频
 
-**Implementation**: WebXR API, A-Frame, Babylon.js
+**实现**：WebXR API、A-Frame、Babylon.js
 
-**Related Skills**: `aframe-webxr`, `babylonjs-engine`
+**相关 Skill**：`aframe-webxr`、`babylonjs-engine`
 
 ---
 
-## Anti-Trends (What to Avoid)
+## 反趋势（应避免）
 
-### Declining Patterns:
-
-1. **Carousels**: Low engagement, poor accessibility
-2. **Auto-Playing Videos**: Annoying, data-hungry
-3. **Hamburger Menus Only**: Hide navigation
-4. **Stock Photos**: Generic, unauthentic
-5. **Neumorphism**: Accessibility issues
-6. **Long Scroll Animations**: Frustrating on mobile
-7. **Overuse of Parallax**: Motion sickness, poor performance
-8. **Chatbots as First Contact**: Often unhelpful, annoying
-9. **Cookie Banners That Block Content**: Poor UX
-10. **Infinite Scroll Without Pagination**: SEO and UX issues
-
----
-
-## Resources & Inspiration
-
-**Award Sites**:
-- Awwwards.com (daily winners)
-- CSS Design Awards
-- The FWA
-
-**Trend Reports**:
-- Webflow's Annual Design Report
-- Dribbble Year in Review
-- Behance Featured Projects
-
-**Design Systems**:
-- Material Design 3 (Google)
-- Fluent 2 (Microsoft)
-- Polaris (Shopify)
-- Carbon (IBM)
-
-**Tools**:
-- Figma (design)
-- Webflow (visual development)
-- Framer (design + code)
-- Spline (3D design)
+衰退模式：
+1. **轮播图**：参与度低，可访问性差
+2. **自动播放视频**：烦人，耗流量
+3. **仅汉堡菜单**：隐藏导航
+4. **库存照片**：千篇一律
+5. **新拟态**：可访问性问题
+6. **长滚动动画**：移动端体验差
+7. **过度视差**：晕动症，性能差
+8. **聊天机器人首发**：无帮助且烦人
+9. **遮挡内容的 Cookie 横幅**：用户体验差
+10. **无分页无限滚动**：SEO 和 UX 问题
 
 ---
 
-## Forecasts (2025+)
+## 资源与灵感
 
-**Emerging Trends to Watch**:
+**获奖网站**：Awwwards.com、CSS Design Awards、The FWA
 
-1. **AI-Personalized Experiences**: Every user sees a unique layout
-2. **Voice-First Interfaces**: Beyond chatbots to full voice navigation
-3. **Spatial Web**: 3D interfaces for AR/VR headsets
-4. **Sustainability Indicators**: Carbon footprint of web experiences
-5. **Ethical Design Standards**: Privacy, accessibility, inclusivity as default
-6. **Real-Time Collaboration**: Multiplayer web experiences
-7. **Generative Art**: Unique visuals for each visitor
-8. **Biometric Interfaces**: Face/voice recognition for auth and personalization
+**趋势报告**：Webflow 年度设计报告、Dribbble 年度回顾、Behance 精选
 
-**Technology Shifts**:
-- WebGPU mainstream adoption (faster 3D)
-- Container queries (component-based responsive design)
-- View Transitions API (smooth SPA transitions)
-- CSS Houdini (custom CSS magic)
+**设计系统**：Material Design 3（Google）、Fluent 2（Microsoft）、Polaris（Shopify）、Carbon（IBM）
+
+**工具**：Figma（设计）、Webflow（可视化开发）、Framer（设计+编码）、Spline（3D 设计）
 
 ---
 
-*Last updated: 2024*
-*Review quarterly for updates*
+## 趋势预测（2025+）
+
+**新兴趋势**：
+1. **AI 个性化体验**：每个用户看到独特布局
+2. **语音优先界面**：全语音导航
+3. **空间 Web**：AR/VR 头显 3D 界面
+4. **可持续性指标**：Web 碳足迹
+5. **道德设计标准**：隐私/可访问性/包容性为默认
+6. **实时协作**：多人 Web 体验
+7. **生成式艺术**：每访客独特视觉
+8. **生物识别界面**：面部/语音识别
+
+**技术变革**：WebGPU 主流化、容器查询（组件响应式）、View Transitions API（SPA 过渡）、CSS Houdini
+
+---
+
+*最后更新：2024 年 | 每季度审阅*

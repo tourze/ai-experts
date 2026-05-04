@@ -1,35 +1,20 @@
-# Micro-Interaction Patterns Catalog
+# 微交互模式目录
 
-## Overview
+## 概述
 
-Comprehensive catalog of micro-interactions for modern web interfaces. Each pattern includes implementation code, accessibility considerations, and performance notes.
+现代 Web 界面微交互综合目录。每种模式含实现代码、无障碍考量与性能说明。
 
-Micro-interactions are small, purposeful animations that provide feedback, guide users, and enhance perceived performance.
-
----
-
-## Table of Contents
-
-1. [Button Interactions](#button-interactions)
-2. [Form & Input Interactions](#form--input-interactions)
-3. [Loading States](#loading-states)
-4. [Navigation Interactions](#navigation-interactions)
-5. [Hover Effects](#hover-effects)
-6. [Toggle & Switch Interactions](#toggle--switch-interactions)
-7. [Card Interactions](#card-interactions)
-8. [Scroll Interactions](#scroll-interactions)
-9. [Modal & Dialog Interactions](#modal--dialog-interactions)
-10. [Toast & Notification Interactions](#toast--notification-interactions)
+微交互是小型有目的动画，用于反馈、引导与提升感知性能。
 
 ---
 
 ## Button Interactions
 
-### 1.1 Hover Lift
+### 1.1 悬停浮起
 
-**Effect**: Button lifts up slightly on hover, creating depth.
+**效果**: 按钮悬停时上移，产生层次感。
 
-**Implementation** (CSS):
+**实现** (CSS):
 ```css
 .button-lift {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -57,15 +42,15 @@ Micro-interactions are small, purposeful animations that provide feedback, guide
 </motion.button>
 ```
 
-**Accessibility**: Preserve for keyboard focus states.
+**无障碍**: 保留键盘焦点状态。
 
 ---
 
-### 1.2 Ripple Effect
+### 1.2 涟漪效果
 
-**Effect**: Material Design-style ripple on click.
+**效果**: Material Design 风格点击涟漪。
 
-**Implementation** (JavaScript):
+**实现** (JavaScript):
 ```javascript
 function createRipple(event) {
   const button = event.currentTarget;
@@ -113,15 +98,15 @@ document.querySelectorAll('.button-ripple').forEach(button => {
 }
 ```
 
-**Performance**: Use `will-change: transform` sparingly.
+**性能**: 谨慎使用 `will-change: transform`。
 
 ---
 
-### 1.3 Magnetic Button
+### 1.3 磁吸按钮
 
-**Effect**: Button magnetically attracts cursor on proximity.
+**效果**: 光标靠近时按钮磁吸跟进。
 
-**Implementation** (GSAP):
+**实现** (GSAP):
 ```javascript
 const button = document.querySelector('.magnetic-button');
 const magneticStrength = 0.3;
@@ -151,13 +136,13 @@ button.addEventListener('mouseleave', () => {
 });
 ```
 
-**Accessibility**: Disable on mobile/touch devices.
+**无障碍**: 移动端/触摸设备禁用。
 
 ---
 
-### 1.4 Loading Button State
+### 1.4 按钮加载状态
 
-**Effect**: Button morphs into loading spinner.
+**效果**: 按钮变为加载旋转器。
 
 **Framer Motion**:
 ```jsx
@@ -195,17 +180,17 @@ function LoadingButton() {
 }
 ```
 
-**Accessibility**: Announce loading state to screen readers.
+**无障碍**: 向屏幕阅读器播报加载状态。
 
 ---
 
 ## Form & Input Interactions
 
-### 2.1 Floating Label
+### 2.1 浮动标签
 
-**Effect**: Label floats up when input is focused or filled.
+**效果**: 输入框聚焦或已填时标签上浮。
 
-**Implementation**:
+**实现**:
 ```css
 .input-wrapper {
   position: relative;
@@ -260,9 +245,9 @@ function LoadingButton() {
 
 ---
 
-### 2.2 Input Validation Feedback
+### 2.2 输入验证反馈
 
-**Effect**: Instant feedback on validation state.
+**效果**: 实时显示验证状态。
 
 **React + Framer Motion**:
 ```jsx
@@ -316,15 +301,15 @@ function ValidatedInput({ label, validator }) {
 }
 ```
 
-**Accessibility**: Provide error messages, not just icons.
+**无障碍**: 提供错误文字，而非仅图标。
 
 ---
 
-### 2.3 Password Strength Indicator
+### 2.3 密码强度指示器
 
-**Effect**: Visual indicator of password strength.
+**效果**: 密码强度可视化。
 
-**Implementation**:
+**实现**:
 ```jsx
 function PasswordStrengthIndicator({ password }) {
   const strength = calculateStrength(password);
@@ -359,11 +344,11 @@ function calculateStrength(password) {
 
 ---
 
-### 2.4 Character Count with Progress
+### 2.4 字符计数进度条
 
-**Effect**: Shows remaining characters with visual indicator.
+**效果**: 可视化显示剩余字符。
 
-**Implementation**:
+**实现**:
 ```jsx
 function TextareaWithCount({ maxLength = 280 }) {
   const [text, setText] = useState('');
@@ -416,11 +401,11 @@ function TextareaWithCount({ maxLength = 280 }) {
 
 ## Loading States
 
-### 3.1 Skeleton Screen
+### 3.1 骨架屏
 
-**Effect**: Content placeholder that mimics layout.
+**效果**: 模拟页面布局的占位符。
 
-**Implementation**:
+**实现**:
 ```css
 .skeleton {
   background: linear-gradient(
@@ -456,7 +441,7 @@ function TextareaWithCount({ maxLength = 280 }) {
 }
 ```
 
-**React Component**:
+**React 组件**:
 ```jsx
 function SkeletonCard() {
   return (
@@ -472,9 +457,9 @@ function SkeletonCard() {
 
 ---
 
-### 3.2 Progress Bar
+### 3.2 进度条
 
-**Effect**: Linear progress indicator.
+**效果**: 线性进度指示器。
 
 **Framer Motion**:
 ```jsx
@@ -511,9 +496,9 @@ function ProgressBar({ progress }) {
 
 ---
 
-### 3.3 Spinner
+### 3.3 旋转加载器
 
-**Effect**: Rotating loading indicator.
+**效果**: 旋转加载指示器。
 
 **CSS**:
 ```css
@@ -531,7 +516,7 @@ function ProgressBar({ progress }) {
 }
 ```
 
-**Framer Motion (Advanced)**:
+**Framer Motion (高级)**:
 ```jsx
 function Spinner() {
   return (
@@ -559,9 +544,9 @@ function Spinner() {
 
 ## Navigation Interactions
 
-### 4.1 Hamburger Menu Animation
+### 4.1 汉堡菜单动画
 
-**Effect**: Hamburger transforms into X on click.
+**效果**: 汉堡图标点击变 X。
 
 **CSS**:
 ```css
@@ -603,9 +588,9 @@ function Spinner() {
 
 ---
 
-### 4.2 Dropdown Menu Reveal
+### 4.2 下拉菜单展开
 
-**Effect**: Dropdown slides down with stagger.
+**效果**: 下拉菜单交错滑入。
 
 **Framer Motion**:
 ```jsx
@@ -652,9 +637,9 @@ function DropdownMenu({ isOpen }) {
 
 ---
 
-### 4.3 Active Link Indicator
+### 4.3 活动链接指示器
 
-**Effect**: Animated underline follows active link.
+**效果**: 动画下划线跟随活动链接。
 
 **Framer Motion**:
 ```jsx
@@ -714,9 +699,9 @@ function TabNavigation() {
 
 ## Hover Effects
 
-### 5.1 Image Zoom on Hover
+### 5.1 图片悬停缩放
 
-**Effect**: Image scales up slightly on hover.
+**效果**: 悬停时图片轻微放大。
 
 **CSS**:
 ```css
@@ -738,9 +723,9 @@ function TabNavigation() {
 
 ---
 
-### 5.2 Tilt Effect
+### 5.2 倾斜效果
 
-**Effect**: Card tilts based on mouse position.
+**效果**: 卡片随鼠标位置倾斜。
 
 **Vanilla-Tilt**:
 ```javascript
@@ -752,7 +737,7 @@ VanillaTilt.init(document.querySelectorAll(".tilt-card"), {
 });
 ```
 
-**Manual Implementation**:
+**手动实现**:
 ```javascript
 const card = document.querySelector('.tilt-card');
 
@@ -777,9 +762,9 @@ card.addEventListener('mouseleave', () => {
 
 ---
 
-### 5.3 Reveal on Hover
+### 5.3 悬停揭示
 
-**Effect**: Content reveals on hover with slide/fade.
+**效果**: 悬停时内容滑动/淡入展现。
 
 **CSS**:
 ```css
@@ -810,9 +795,9 @@ card.addEventListener('mouseleave', () => {
 
 ## Toggle & Switch Interactions
 
-### 6.1 Toggle Switch
+### 6.1 开关组件
 
-**Effect**: Smooth toggle with spring animation.
+**效果**: 带弹性动画的平滑开关。
 
 **Framer Motion**:
 ```jsx
@@ -860,11 +845,11 @@ function ToggleSwitch({ enabled, setEnabled }) {
 
 ## Card Interactions
 
-### 7.1 Card Expand
+### 7.1 卡片展开
 
-**Effect**: Card expands to full screen on click.
+**效果**: 点击后展开为全屏。
 
-**Framer Motion with `layout`**:
+**Framer Motion + `layout`**:
 ```jsx
 function ExpandableCard() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -897,9 +882,9 @@ function ExpandableCard() {
 
 ## Scroll Interactions
 
-### 8.1 Fade In on Scroll
+### 8.1 滚动淡入
 
-**Effect**: Elements fade in as they enter viewport.
+**效果**: 元素进入视口时淡入。
 
 **Framer Motion + `useInView`**:
 ```jsx
@@ -922,11 +907,11 @@ function FadeInSection({ children }) {
 
 ---
 
-### 8.2 Scroll Progress Indicator
+### 8.2 滚动进度指示器
 
-**Effect**: Shows reading progress.
+**效果**: 显示阅读进度。
 
-**Implementation**:
+**实现**:
 ```jsx
 function ScrollProgress() {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -955,9 +940,9 @@ function ScrollProgress() {
 
 ## Modal & Dialog Interactions
 
-### 9.1 Modal Fade & Scale
+### 9.1 模态框淡入与缩放
 
-**Effect**: Modal fades in and scales up.
+**效果**: 模态框淡入并缩放出现。
 
 **Framer Motion**:
 ```jsx
@@ -990,15 +975,15 @@ function Modal({ isOpen, onClose, children }) {
 }
 ```
 
-**Accessibility**: Trap focus, close on Escape key, focus first element.
+**无障碍**: 锁定焦点，Escape 关闭，聚焦首元素。
 
 ---
 
 ## Toast & Notification Interactions
 
-### 10.1 Toast Notification
+### 10.1 通知提示
 
-**Effect**: Toast slides in from top/bottom with auto-dismiss.
+**效果**: 通知从顶部/底部滑入，自动消失。
 
 **Framer Motion**:
 ```jsx
@@ -1025,31 +1010,31 @@ function Toast({ message, type, onDismiss }) {
 
 ---
 
-## Accessibility Checklist
+## 无障碍检查清单
 
-For all micro-interactions:
+所有微交互需遵循：
 
-- [ ] **Respect `prefers-reduced-motion`**: Disable or simplify animations
-- [ ] **Keyboard accessible**: All interactions work without mouse
-- [ ] **Focus indicators**: Visible focus states
-- [ ] **Screen reader friendly**: Announce state changes with `aria-live`
-- [ ] **Touch targets**: Minimum 44x44px for mobile
-- [ ] **Escape key**: Close modals/overlays
-- [ ] **Loading states**: Indicate when actions are processing
-- [ ] **Error states**: Clear error messages, not just visual indicators
-
----
-
-## Performance Checklist
-
-- [ ] **GPU-accelerated properties**: Use `transform` and `opacity` only
-- [ ] **Avoid layout thrash**: Batch DOM reads/writes
-- [ ] **RequestAnimationFrame**: For JavaScript animations
-- [ ] **Will-change sparingly**: Only during active animations
-- [ ] **Debounce scroll/resize**: Avoid excessive repaints
-- [ ] **Lazy load**: Defer non-critical animations
-- [ ] **Test on low-end devices**: Ensure 60 FPS
+- [ ] **`prefers-reduced-motion`**：禁用或简化动画
+- [ ] **键盘可达**：所有交互无需鼠标
+- [ ] **焦点指示器**：可见焦点状态
+- [ ] **屏幕阅读器友好**：用 `aria-live` 播报状态变化
+- [ ] **触摸目标**：移动端最小 44x44px
+- [ ] **Escape 键**：关闭模态框/覆盖层
+- [ ] **加载状态**：指示操作处理中
+- [ ] **错误状态**：明确错误文字，而非仅视觉指示
 
 ---
 
-*This catalog is a living document. Patterns are updated based on modern web standards and user research.*
+## 性能检查清单
+
+- [ ] **GPU 加速属性**：仅用 `transform` 和 `opacity`
+- [ ] **避免布局抖动**：批量处理 DOM 读写
+- [ ] **RequestAnimationFrame**：用于 JS 动画
+- [ ] **慎用 Will-change**：仅在动画活跃期间
+- [ ] **防抖滚动/缩放**：避免过多重绘
+- [ ] **懒加载**：延迟非关键动画
+- [ ] **低端设备测试**：确保 60 FPS
+
+---
+
+*本目录为活文档。模式会根据现代 Web 标准与用户研究持续更新。*

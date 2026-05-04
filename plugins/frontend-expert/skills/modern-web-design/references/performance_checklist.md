@@ -1,31 +1,31 @@
-# Web Performance Optimization Checklist
+# Web 性能优化清单
 
-## Overview
+## 概览
 
-Comprehensive performance optimization guide targeting Core Web Vitals and 60 FPS experiences. This checklist covers measurement, optimization strategies, and modern best practices.
+面向 Core Web Vitals 和 60 FPS 体验的综合性能优化指南。本清单涵盖测量、优化策略和现代最佳实践。
 
-**Performance Budget Targets**:
-- Largest Contentful Paint (LCP): < 2.5s
-- First Input Delay (FID): < 100ms
-- Cumulative Layout Shift (CLS): < 0.1
-- Interaction to Next Paint (INP): < 200ms
-- Time to Interactive (TTI): < 3.8s
-- First Contentful Paint (FCP): < 1.8s
+**性能预算目标**：
+- Largest Contentful Paint (LCP)：< 2.5s
+- First Input Delay (FID)：< 100ms
+- Cumulative Layout Shift (CLS)：< 0.1
+- Interaction to Next Paint (INP)：< 200ms
+- Time to Interactive (TTI)：< 3.8s
+- First Contentful Paint (FCP)：< 1.8s
 
 ---
 
-## Table of Contents
+## 目录
 
 1. [Core Web Vitals](#core-web-vitals)
-2. [Animation Performance](#animation-performance)
-3. [Image Optimization](#image-optimization)
-4. [Font Loading](#font-loading)
-5. [JavaScript Optimization](#javascript-optimization)
-6. [CSS Optimization](#css-optimization)
-7. [3D & WebGL Optimization](#3d--webgl-optimization)
-8. [Loading Strategies](#loading-strategies)
-9. [Caching & CDN](#caching--cdn)
-10. [Monitoring & Measurement](#monitoring--measurement)
+2. [动画性能](#animation-performance)
+3. [图片优化](#image-optimization)
+4. [字体加载](#font-loading)
+5. [JavaScript 优化](#javascript-optimization)
+6. [CSS 优化](#css-optimization)
+7. [3D 与 WebGL 优化](#3d--webgl-optimization)
+8. [加载策略](#loading-strategies)
+9. [缓存与 CDN](#caching--cdn)
+10. [监控与测量](#monitoring--measurement)
 
 ---
 
@@ -33,20 +33,20 @@ Comprehensive performance optimization guide targeting Core Web Vitals and 60 FP
 
 ### Largest Contentful Paint (LCP)
 
-**Target**: < 2.5 seconds
+**目标**：< 2.5 秒
 
-**What it measures**: Time until largest content element is visible.
+**测量内容**：最大内容元素可见所需的时间。
 
-**Optimization Checklist**:
-- [ ] Optimize hero images (WebP/AVIF, < 100KB)
-- [ ] Preload critical resources (`<link rel="preload">`)
-- [ ] Eliminate render-blocking resources
-- [ ] Use CDN for static assets
-- [ ] Implement efficient server response time (< 200ms TTFB)
-- [ ] Remove unused CSS/JS
-- [ ] Enable compression (Brotli/gzip)
+**优化清单**：
+- [ ] 优化首屏图片（WebP/AVIF，< 100KB）
+- [ ] 预加载关键资源（`<link rel="preload">`）
+- [ ] 消除渲染阻塞资源
+- [ ] 对静态资源使用 CDN
+- [ ] 实现高效的服务端响应时间（TTFB < 200ms）
+- [ ] 移除未使用的 CSS/JS
+- [ ] 启用压缩（Brotli/gzip）
 
-**Implementation**:
+**实现**：
 ```html
 <!-- Preload critical resources -->
 <link rel="preload" as="image" href="hero.webp" type="image/webp">
@@ -60,7 +60,7 @@ Comprehensive performance optimization guide targeting Core Web Vitals and 60 FP
 </picture>
 ```
 
-**Debugging**:
+**调试**：
 ```javascript
 // Measure LCP
 new PerformanceObserver((list) => {
@@ -74,20 +74,20 @@ new PerformanceObserver((list) => {
 
 ### First Input Delay (FID) / Interaction to Next Paint (INP)
 
-**Target**: FID < 100ms, INP < 200ms
+**目标**：FID < 100ms, INP < 200ms
 
-**What it measures**: Responsiveness to user interactions.
+**测量内容**：用户交互的响应速度。
 
-**Optimization Checklist**:
-- [ ] Split long tasks (< 50ms each)
-- [ ] Defer non-critical JavaScript
-- [ ] Use web workers for heavy computation
-- [ ] Implement code splitting
-- [ ] Avoid long-running event handlers
-- [ ] Debounce scroll/resize listeners
-- [ ] Use passive event listeners
+**优化清单**：
+- [ ] 拆分长任务（每次 < 50ms）
+- [ ] 延迟加载非关键 JavaScript
+- [ ] 对重型计算使用 Web Worker
+- [ ] 实现代码拆分
+- [ ] 避免长时间运行的事件处理函数
+- [ ] 对滚动/调整大小事件监听器进行防抖
+- [ ] 使用被动事件监听器
 
-**Implementation**:
+**实现**：
 ```javascript
 // Split long tasks
 function yieldToMain() {
@@ -122,20 +122,20 @@ window.addEventListener('resize', debouncedResize);
 
 ### Cumulative Layout Shift (CLS)
 
-**Target**: < 0.1
+**目标**：< 0.1
 
-**What it measures**: Visual stability during page load.
+**测量内容**：页面加载过程中的视觉稳定性。
 
-**Optimization Checklist**:
-- [ ] Reserve space for images (use `aspect-ratio`)
-- [ ] Reserve space for ads and embeds
-- [ ] Avoid inserting content above existing content
-- [ ] Use CSS transforms instead of position changes
-- [ ] Set explicit dimensions for iframes
-- [ ] Avoid web fonts that cause FOUT/FOIT
-- [ ] Use `font-display: swap` or `font-display: optional`
+**优化清单**：
+- [ ] 为图片预留空间（使用 `aspect-ratio`）
+- [ ] 为广告和嵌入内容预留空间
+- [ ] 避免在现有内容上方插入内容
+- [ ] 使用 CSS transforms 代替位置变化
+- [ ] 为 iframe 设置显式尺寸
+- [ ] 避免使用会导致 FOUT/FOIT 的网页字体
+- [ ] 使用 `font-display: swap` 或 `font-display: optional`
 
-**Implementation**:
+**实现**：
 ```css
 /* Reserve space for images */
 img {
@@ -161,7 +161,7 @@ img {
 }
 ```
 
-**Debugging**:
+**调试**：
 ```javascript
 // Measure CLS
 let clsValue = 0;
@@ -177,24 +177,24 @@ new PerformanceObserver((list) => {
 
 ---
 
-## Animation Performance
+## 动画性能
 
-### 60 FPS Checklist
+### 60 FPS 清单
 
-**Target**: < 16.67ms per frame
+**目标**：每帧 < 16.67ms
 
-**GPU-Accelerated Properties (Use These)**:
-- `transform` (translate, scale, rotate)
+**GPU 加速属性（优先使用）**：
+- `transform`（translate、scale、rotate）
 - `opacity`
-- `filter` (some, like blur - be careful)
+- `filter`（部分属性如 blur 需谨慎使用）
 
-**Avoid Animating**:
-- `top`, `left`, `right`, `bottom`
-- `width`, `height`
-- `margin`, `padding`
+**避免动画化的属性**：
+- `top`、`left`、`right`、`bottom`
+- `width`、`height`
+- `margin`、`padding`
 - `border-width`
 
-**Implementation**:
+**实现**：
 ```css
 /* Good: GPU-accelerated */
 .animated {
@@ -216,9 +216,9 @@ new PerformanceObserver((list) => {
 }
 ```
 
-### Will-Change Optimization
+### Will-Change 优化
 
-**Use Sparingly**:
+**谨慎使用**：
 ```css
 /* Only during animation */
 .will-animate {
@@ -234,14 +234,13 @@ new PerformanceObserver((list) => {
 }
 ```
 
-**JavaScript Control**:
+**JavaScript 控制**：
 ```javascript
 element.addEventListener('mouseenter', () => {
   element.style.willChange = 'transform';
 });
 
 element.addEventListener('mouseleave', () => {
-  // Remove after animation completes
   element.addEventListener('transitionend', () => {
     element.style.willChange = 'auto';
   }, { once: true });
@@ -250,7 +249,7 @@ element.addEventListener('mouseleave', () => {
 
 ### RequestAnimationFrame
 
-**Always use for JavaScript animations**:
+**始终用于 JavaScript 动画**：
 ```javascript
 // Good
 function animate() {
@@ -265,39 +264,31 @@ setInterval(() => {
 }, 16); // Not synced with browser paint
 ```
 
-### Performance Monitoring
+### 性能监控
 
-**Chrome DevTools**:
+**Chrome DevTools**：
 ```javascript
-// Mark start of expensive operation
-performance.mark('animation-start');
-
-// ... do animation work ...
-
-// Mark end
-performance.mark('animation-end');
-
-// Measure duration
-performance.measure('animation-duration', 'animation-start', 'animation-end');
-
-// Get measurement
-const measure = performance.getEntriesByName('animation-duration')[0];
-console.log(`Animation took ${measure.duration}ms`);
+performance.mark('anim-start');
+// ... animation work ...
+performance.mark('anim-end');
+performance.measure('anim-duration', 'anim-start', 'anim-end');
+const m = performance.getEntriesByName('anim-duration')[0];
+console.log(`Animation took ${m.duration}ms`);
 ```
 
 ---
 
-## Image Optimization
+## 图片优化
 
-### Format Selection
+### 格式选择
 
-**Decision Tree**:
-1. **Photos**: AVIF > WebP > JPEG
-2. **Graphics/logos**: SVG > WebP > PNG
-3. **Animations**: WebP animated > GIF
-4. **Icons**: SVG or icon fonts
+**决策树**：
+1. **照片**：AVIF > WebP > JPEG
+2. **图形/Logo**：SVG > WebP > PNG
+3. **动图**：WebP 动图 > GIF
+4. **图标**：SVG 或图标字体
 
-**Implementation**:
+**实现**：
 ```html
 <picture>
   <!-- Modern browsers: AVIF (best compression) -->
@@ -311,16 +302,16 @@ console.log(`Animation took ${measure.duration}ms`);
 </picture>
 ```
 
-### Responsive Images
+### 响应式图片
 
-**Checklist**:
-- [ ] Use `srcset` for multiple resolutions
-- [ ] Define `sizes` attribute
-- [ ] Serve appropriately sized images (not full-res everywhere)
-- [ ] Use lazy loading for below-fold images
-- [ ] Set explicit dimensions to prevent CLS
+**清单**：
+- [ ] 使用 `srcset` 提供多分辨率
+- [ ] 定义 `sizes` 属性
+- [ ] 提供适当尺寸的图片（不在所有场景使用全分辨率）
+- [ ] 对首屏以下的图片使用懒加载
+- [ ] 设置显式尺寸以防止 CLS
 
-**Implementation**:
+**实现**：
 ```html
 <img
   src="image-800.jpg"
@@ -342,14 +333,14 @@ console.log(`Animation took ${measure.duration}ms`);
 >
 ```
 
-### Image Compression
+### 图片压缩
 
-**Tools**:
-- **CLI**: ImageMagick, Sharp (Node.js)
-- **GUI**: Squoosh (web), ImageOptim (Mac)
-- **Build tools**: imagemin, @squoosh/lib
+**工具**：
+- **CLI**：ImageMagick、Sharp（Node.js）
+- **GUI**：Squooh（Web）、ImageOptim（Mac）
+- **构建工具**：imagemin、@squoosh/lib
 
-**Example (Sharp)**:
+**示例（Sharp）**：
 ```javascript
 const sharp = require('sharp');
 
@@ -364,9 +355,9 @@ await sharp('input.jpg')
   .toFile('output.avif');
 ```
 
-### Lazy Loading
+### 懒加载
 
-**Native Lazy Loading**:
+**原生懒加载**：
 ```html
 <!-- Lazy load below-fold images -->
 <img src="image.jpg" loading="lazy" alt="Description">
@@ -375,7 +366,7 @@ await sharp('input.jpg')
 <img src="hero.jpg" loading="eager" fetchpriority="high" alt="Hero">
 ```
 
-**Intersection Observer (Advanced)**:
+**Intersection Observer（高级）**：
 ```javascript
 const imageObserver = new IntersectionObserver((entries, observer) => {
   entries.forEach(entry => {
@@ -395,16 +386,16 @@ document.querySelectorAll('img[data-src]').forEach(img => {
 
 ---
 
-## Font Loading
+## 字体加载
 
-### Font Display Strategy
+### Font-Display 策略
 
-**Options**:
-- `swap`: Show fallback, swap when loaded (FOUT - Flash of Unstyled Text)
-- `optional`: Use cached font if available, otherwise use fallback
-- `fallback`: Brief block, swap if fast, fallback if slow
+**选项**：
+- `swap`：立即显示后备字体，加载完成后替换（FOUT — 未样式文本闪烁）
+- `optional`：使用缓存字体（如果可用），否则使用后备字体
+- `fallback`：短暂阻塞，快速加载则替换，加载慢则使用后备字体
 
-**Recommended**:
+**推荐做法**：
 ```css
 @font-face {
   font-family: 'Inter';
@@ -414,11 +405,11 @@ document.querySelectorAll('img[data-src]').forEach(img => {
 }
 ```
 
-### Font Subsetting
+### 字体子集化
 
-**Reduce file size by including only needed characters**:
+**仅包含所需字符以减小文件体积**：
 
-**Tools**: `pyftsubset` (part of fonttools)
+**工具**：`pyftsubset`（fonttools 工具）
 
 ```bash
 # Include only Latin characters
@@ -426,10 +417,10 @@ pyftsubset input.ttf \
   --output-file=output.woff2 \
   --flavor=woff2 \
   --layout-features=* \
-  --unicodes=U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD
+  --unicodes=U+0000-00FF
 ```
 
-### Preload Critical Fonts
+### 预加载关键字体
 
 ```html
 <link
@@ -441,9 +432,9 @@ pyftsubset input.ttf \
 >
 ```
 
-### System Font Stack
+### 系统字体栈
 
-**Performance-first approach**:
+**性能优先方案**：
 ```css
 body {
   font-family:
@@ -460,11 +451,11 @@ body {
 
 ---
 
-## JavaScript Optimization
+## JavaScript 优化
 
-### Code Splitting
+### 代码拆分
 
-**Route-based splitting**:
+**基于路由的拆分**：
 ```javascript
 // React Router
 const Home = lazy(() => import('./pages/Home'));
@@ -480,7 +471,7 @@ const Gallery = lazy(() => import('./pages/Gallery'));
 </Suspense>
 ```
 
-**Component-based splitting**:
+**基于组件的拆分**：
 ```javascript
 // Load heavy components only when needed
 const HeavyChart = lazy(() => import('./components/HeavyChart'));
@@ -503,7 +494,7 @@ function Dashboard() {
 
 ### Tree Shaking
 
-**Ensure tree shaking works**:
+**确保 tree shaking 生效**：
 ```javascript
 // Good: Named imports
 import { map, filter } from 'lodash-es';
@@ -512,9 +503,9 @@ import { map, filter } from 'lodash-es';
 import _ from 'lodash';
 ```
 
-### Bundle Analysis
+### 打包体积分析
 
-**Webpack Bundle Analyzer**:
+**Webpack Bundle Analyzer**：
 ```bash
 npm install --save-dev webpack-bundle-analyzer
 
@@ -526,7 +517,7 @@ plugins: [
 ]
 ```
 
-**Vite**:
+**Vite**：
 ```bash
 npm install --save-dev rollup-plugin-visualizer
 
@@ -540,11 +531,11 @@ export default {
 
 ---
 
-## CSS Optimization
+## CSS 优化
 
-### Critical CSS
+### 关键 CSS
 
-**Inline above-the-fold CSS**:
+**内联首屏 CSS**：
 ```html
 <style>
   /* Critical CSS inlined */
@@ -557,13 +548,13 @@ export default {
 <noscript><link rel="stylesheet" href="styles.css"></noscript>
 ```
 
-**Tools**:
-- Critical (npm package)
-- Critters (Vite/Webpack plugin)
+**工具**：
+- Critical（npm 包）
+- Critters（Vite/Webpack 插件）
 
-### Remove Unused CSS
+### 移除未使用的 CSS
 
-**PurgeCSS**:
+**PurgeCSS**：
 ```javascript
 // postcss.config.js
 module.exports = {
@@ -578,7 +569,7 @@ module.exports = {
 
 ### CSS Containment
 
-**Improve rendering performance**:
+**提升渲染性能**：
 ```css
 .card {
   /* Isolate layout calculations */
@@ -593,17 +584,17 @@ module.exports = {
 
 ---
 
-## 3D & WebGL Optimization
+## 3D 与 WebGL 优化
 
-### Loading Strategy
+### 加载策略
 
-**Checklist**:
-- [ ] Show placeholder while loading
-- [ ] Load 3D content below fold lazily
-- [ ] Use low-poly models initially
-- [ ] Progressive enhancement with high-poly
+**清单**：
+- [ ] 加载时显示占位内容
+- [ ] 对首屏下方的 3D 内容进行懒加载
+- [ ] 初始使用低多边形模型
+- [ ] 逐步增强到高多边形模型
 
-**Implementation**:
+**实现**：
 ```javascript
 // Lazy load Three.js scene
 const observer = new IntersectionObserver((entries) => {
@@ -618,18 +609,18 @@ const observer = new IntersectionObserver((entries) => {
 observer.observe(document.querySelector('.3d-container'));
 ```
 
-### Runtime Performance
+### 运行时性能
 
-**Checklist**:
-- [ ] Implement object pooling (reuse objects)
-- [ ] Use LOD (Level of Detail)
-- [ ] Frustum culling (don't render off-screen objects)
-- [ ] Texture compression (Basis Universal, KTX2)
-- [ ] Reduce polygon count (< 100k for real-time)
-- [ ] Limit draw calls (< 100 per frame)
-- [ ] Use instancing for repeated geometry
+**清单**：
+- [ ] 实现对象池（复用对象）
+- [ ] 使用 LOD（细节层次）
+- [ ] 视锥体剔除（不渲染屏幕外对象）
+- [ ] 纹理压缩（Basis Universal、KTX2）
+- [ ] 减少多边形数量（实时渲染 < 100k）
+- [ ] 限制绘制调用（每帧 < 100 次）
+- [ ] 对重复几何体使用实例化
 
-**Three.js Example**:
+**Three.js 示例**：
 ```javascript
 // Object pooling
 const objectPool = [];
@@ -658,30 +649,30 @@ const mesh = new THREE.InstancedMesh(geometry, material, count);
 scene.add(mesh);
 ```
 
-### Texture Optimization
+### 纹理优化
 
-**Checklist**:
-- [ ] Use power-of-two dimensions (512, 1024, 2048)
-- [ ] Compress textures (Basis, KTX2)
-- [ ] Use texture atlases
-- [ ] Reduce texture resolution (don't use 4K everywhere)
-- [ ] Enable mipmaps
+**清单**：
+- [ ] 使用 2 的幂次尺寸（512、1024、2048）
+- [ ] 压缩纹理（Basis、KTX2）
+- [ ] 使用纹理图集
+- [ ] 降低纹理分辨率（不在所有场景使用 4K）
+- [ ] 启用 mipmap
 
 ---
 
-## Loading Strategies
+## 加载策略
 
-### Critical Rendering Path
+### 关键渲染路径
 
-**Optimize the order**:
+**优化顺序**：
 
-1. **HTML** (initial)
-2. **Critical CSS** (inlined)
-3. **Critical JavaScript** (defer rest)
-4. **Fonts** (preload, font-display: swap)
-5. **Images** (lazy load below-fold)
+1. **HTML**（初始）
+2. **关键 CSS**（内联）
+3. **关键 JavaScript**（延迟其余部分）
+4. **字体**（预加载，font-display: swap）
+5. **图片**（懒加载首屏以下内容）
 
-**Implementation**:
+**实现**：
 ```html
 <!DOCTYPE html>
 <html>
@@ -705,48 +696,48 @@ scene.add(mesh);
 </html>
 ```
 
-### Resource Hints
+### 资源提示
 
-**Preconnect** (DNS, TCP, TLS):
+**Preconnect（DNS、TCP、TLS）**：
 ```html
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://cdn.example.com">
 ```
 
-**DNS-Prefetch**:
+**DNS-Prefetch**：
 ```html
 <link rel="dns-prefetch" href="https://analytics.example.com">
 ```
 
-**Prefetch** (next page):
+**Prefetch（下一页）**：
 ```html
 <link rel="prefetch" href="/next-page.html">
 ```
 
 ---
 
-## Caching & CDN
+## 缓存与 CDN
 
-### HTTP Caching Headers
+### HTTP 缓存头
 
-**Static Assets** (immutable):
+**静态资源（不可变）**：
 ```
 Cache-Control: public, max-age=31536000, immutable
 ```
 
-**HTML** (revalidate):
+**HTML（需重新验证）**：
 ```
 Cache-Control: no-cache
 ```
 
-**API Responses**:
+**API 响应**：
 ```
 Cache-Control: public, max-age=3600, must-revalidate
 ```
 
-### Service Worker Caching
+### Service Worker 缓存
 
-**Workbox**:
+**Workbox**：
 ```javascript
 import { precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
@@ -770,11 +761,11 @@ registerRoute(
 
 ---
 
-## Monitoring & Measurement
+## 监控与测量
 
-### Real User Monitoring (RUM)
+### 真实用户监控（RUM）
 
-**Web Vitals**:
+**Web Vitals**：
 ```bash
 npm install web-vitals
 ```
@@ -797,9 +788,9 @@ getLCP(sendToAnalytics);
 getTTFB(sendToAnalytics);
 ```
 
-### Performance Budget
+### 性能预算
 
-**Lighthouse CI**:
+**Lighthouse CI**：
 ```json
 // lighthouserc.json
 {
@@ -821,47 +812,21 @@ getTTFB(sendToAnalytics);
 
 ### Chrome DevTools
 
-**Performance Panel**:
-1. Open DevTools (F12)
-2. Performance tab
-3. Click Record
-4. Interact with page
-5. Stop recording
-6. Analyze flame chart
+**Performance 面板**：
+1. 打开 DevTools（F12）
+2. 切换到 Performance 标签页
+3. 点击 Record 按钮
+4. 与页面交互
+5. 停止录制
+6. 分析火焰图
 
-**Look for**:
-- Long tasks (> 50ms)
-- Excessive layout thrashing
-- Forced synchronous layouts
-- Paint flashing
-
----
-
-## Quick Wins Checklist
-
-**Immediate Impact**:
-- [ ] Enable Brotli/gzip compression
-- [ ] Implement lazy loading for images
-- [ ] Add `width` and `height` to images (prevent CLS)
-- [ ] Use modern image formats (WebP/AVIF)
-- [ ] Preload critical resources
-- [ ] Defer non-critical JavaScript
-- [ ] Use CDN for static assets
-- [ ] Enable HTTP/2 or HTTP/3
-- [ ] Minify CSS and JavaScript
-- [ ] Remove unused CSS/JS
-
-**High Impact**:
-- [ ] Implement code splitting
-- [ ] Optimize images (< 100KB)
-- [ ] Use system fonts or preload web fonts
-- [ ] Inline critical CSS
-- [ ] Implement service worker caching
-- [ ] Optimize animation performance (use transforms)
-- [ ] Reduce JavaScript bundle size (< 200KB)
-- [ ] Set up performance monitoring
+**重点关注**：
+- 长任务（> 50ms）
+- 过多的布局抖动
+- 强制同步布局
+- 绘制闪烁
 
 ---
 
-*Last updated: 2024*
-*Benchmarks based on median 4G mobile connections*
+*最后更新：2024 年*
+*基准基于中位 4G 移动网络连接*
