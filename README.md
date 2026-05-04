@@ -17,6 +17,7 @@
 - **插件源码不能跨插件 import**：每个插件仍以独立目录分发；通用守卫统一收敛在基座插件中，通过 README "已声明的插件依赖" 段落 + `tests/dependency-graph.test.mjs` 强校验复用关系（marketplace manifest 体系已废弃，dependency-graph 测试同时禁止已声明依赖 `coding-expert` 的插件复刻基座 guard，仅 `debug-statement-guard.mjs` 因语言特化版需求保留例外）。
 - 插件结构：`README.md` + `skills/`，并可按需提供 `hooks/` / `agents/` / `tests/` / `.mcp.json`（marketplace 体系已废弃，不再使用 `.claude-plugin/`/`.codex-plugin/` manifest）。
 - **不生成仓库级 `.codex/hooks.json`**：Codex CLI 的统一 hooks 由 `scripts/sync-hooks.mjs` 写入用户级 `${CODEX_HOME:-~/.codex}/hooks.json`，每条命令指向根级 `hooks/dispatch.mjs` 跨插件分发。
+- **跨插件引用 skill 只用名称**：引用其他插件的 skill 时只写 skill 名称（如 `` `go-error-handling` ``），不带插件前缀（`go-expert:go-error-handling`），也不写跨插件文件路径（`../../go-expert/skills/go-error-handling/SKILL.md`）。skill 路由系统按名称解析，不依赖文件路径。同插件内引用保持相对路径。
 
 ## 插件层次结构
 

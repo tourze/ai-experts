@@ -2,7 +2,7 @@
 name: engineering-retro
 description: 当用户需要基于 git log 回顾近期开发进度、提交节奏、热点文件、协作模式或工程复盘指标时使用。也用于从代码变更提炼工程经验。
 context: fork
-agent: git-expert:git-historian
+agent: git-historian
 metadata:
   version: 1.1.0
   category: review

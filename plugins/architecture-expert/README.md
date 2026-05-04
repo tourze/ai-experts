@@ -23,7 +23,7 @@
 | `architecture-reviewer` | 评审架构、文档或代码库的设计质量 |
 | `backend-to-frontend-handoff-docs` | 为前后端协作输出接口交接文档 |
 | `cross-platform-adapter-patterns` | 设计跨平台抽象层、适配器接口与运行时分支 |
-| `software-architecture-patterns` | 语言无关的通用架构模式：分层、组合优于继承、构造注入、薄控制器 |
+| `software-design` | 语言无关的通用设计原则与架构模式：分层、组合优于继承、构造注入、薄控制器、复杂度管理、深模块、信息隐藏 |
 | `concurrency-patterns` | 语言无关的通用并发原则：不阻塞、限制并发、传播取消、不共享可变状态、超时 |
 | `error-handling-patterns` | 语言无关的通用错误处理：三层模型、重试边界、部分失败、错误映射 |
 | `feature-dev` | 处理跨文件实现且涉及架构取舍的功能开发 |
@@ -33,7 +33,6 @@
 | `protocol-freezing-patterns` | 管理协议冻结、版本协商与向后兼容演进 |
 | `refactor-planning-method` | 当需要为既有代码制定系统化重构计划时使用；提供基线建立、多视角问题验证、接缝识别和增量拆步的完整方法论。 |
 | `refactoring-patterns` | 用命名化重构动作改善结构且不改行为 |
-| `software-design-philosophy` | 从复杂度、深模块和信息隐藏角度评估设计 |
 | `system-design` | 设计系统、服务、存储、接口与边界 |
 | `task-decomposer` | 将需求拆成带依赖与测试策略的任务板 |
 | `tech-debt` | 盘点代码健康状况并排序技术债 |

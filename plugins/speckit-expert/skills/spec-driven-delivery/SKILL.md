@@ -22,7 +22,7 @@ description: "当需要把需求、计划、实现、审查和沉淀串成可验
 | 4 Review | `speckit-validate` 需求矩阵；`speckit-reviewer` 代码审查；`speckit-analyze` 一致性 |
 | 5 Vault | speckit 无对应物，由本 skill 的 `.sparv/kb.md` 兜住 |
 
-其他交叉引用：`architecture-expert:task-decomposer` / `feature-dev` / `persistent-planning`、`coding-expert:complexity-reducer`（含完成前验证检查清单）、`git-expert:finishing-branch`。
+其他交叉引用：`task-decomposer` / `feature-dev` / `persistent-planning`、`complexity-reducer`（含完成前验证检查清单）、`finishing-branch`。
 
 ## Iron Law
 

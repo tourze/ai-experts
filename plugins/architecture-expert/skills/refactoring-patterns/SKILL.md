@@ -9,7 +9,7 @@ description: "当用户要选择命名化重构手法、处理代码异味或在
 - 适合需要明确"该用哪个重构动作、按什么顺序做"的情况。
 - 适合在复杂函数、重复逻辑、条件分支和数据组织问题上做精准整改。
 - 本 skill 只回答「该选哪个手法、动作序列怎么排」；流程门禁（测试基线、范围界定、回滚）由 `coding-expert/refactoring-checklist` 负责。
-- 交叉引用：整体简化用 `complexity-reducer`；设计原则校验用 `software-design-philosophy`。
+- 交叉引用：整体简化用 `complexity-reducer`；设计原则校验用 `software-design`。
 
 ## 核心约束
 - 重构默认不改行为；若必须改行为，要明确拆成“重构”和“行为变更”两步。

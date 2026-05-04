@@ -8,7 +8,7 @@ skills:
   - baoyu-compress-image
   - icon-retrieval
   - screenshot
-  - ui-style-catalog
+  - modern-web-design
   - algo-visualization
   - fact-vs-inference-vs-assumption
 memory: user

@@ -8,7 +8,7 @@ description: "当用户要用务实工程原则判断抽象是否过度、DRY/YA
 ## 适用场景
 - 适合方案取舍、代码评审、流程纠偏和开发习惯校准。
 - 适合回答“现在该用多重抽象、该不该一次做大、如何降低不可逆决策”。
-- 交叉引用：代码层面的动作配合 `refactoring-patterns`；复杂度治理配合 `software-design-philosophy`。
+- 交叉引用：代码层面的动作配合 `refactoring-patterns`；复杂度治理配合 `software-design`。
 
 ## 核心约束
 - 原则是为了降低复杂度和反馈成本，不是为了凑口号。

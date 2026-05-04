@@ -68,6 +68,6 @@ node ./scripts/analyze.mjs ./public
 
 - [`core-web-vitals`](../core-web-vitals/SKILL.md)：单项 CWV 指标深度优化
 - [`bundle-optimization`](../bundle-optimization/SKILL.md)：代码分割、tree shaking
-- [`react-performance`](../../../react-expert/skills/react-performance/SKILL.md)：React 渲染优化
-- [`react-server-components`](../../../react-expert/skills/react-server-components/SKILL.md)：RSC 边界与 Server Actions
+- `react-performance`：React 渲染优化
+- `react-server-components`：RSC 边界与 Server Actions
 - [`frontend-design-review`](../frontend-design-review/SKILL.md)：前端界面与交互评审

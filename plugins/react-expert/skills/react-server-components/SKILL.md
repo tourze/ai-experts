@@ -15,7 +15,7 @@ description: 当用户需要实现 RSC 架构、服务端组件边界、Server A
 - RSC 边界传递了过多 props，导致序列化开销过大。
 - 需要在服务端做请求级去重（React.cache）或跨请求缓存（LRU）。
 - 更完整的 Next.js 框架层约束可联动 `nextjs-developer`。
-- 消除请求瀑布流可联动 [web-performance-diagnosis](../../frontend-expert/skills/web-performance-diagnosis/SKILL.md)。
+- 消除请求瀑布流可联动 `web-performance-diagnosis`。
 
 ## 核心约束
 

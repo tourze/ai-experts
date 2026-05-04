@@ -13,7 +13,7 @@ skills:
   - backend-to-frontend-handoff-docs
   - agent-orchestration
   - error-handling-patterns
-  - software-design-philosophy
+  - software-design
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding
 ---

@@ -11,7 +11,7 @@ description: 当用户要拆分 PHP 类职责、设计服务层与 Repository、
 - 现有类已经变成 God class，业务逻辑散落在控制器和模型里。
 - 需要把依赖注入从"到处 `new`"收敛为构造函数注入。
 
-通用架构原则（分层、组合优于继承、构造注入、薄控制器）见 architecture-expert 的 software-architecture-patterns skill。
+通用架构原则（分层、组合优于继承、构造注入、薄控制器）见 architecture-expert 的 software-design skill。
 
 ## 核心约束
 

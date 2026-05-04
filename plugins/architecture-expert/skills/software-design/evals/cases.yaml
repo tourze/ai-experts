@@ -1,0 +1,44 @@
+cases:
+  - id: positive_layering_di
+    prompt: "设计一个订单服务的分层架构：Controller 只做验证和编排，Service 管业务规则，Repository 管数据访问。依赖全部通过构造函数注入，不能出现静态 Facade。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as software-design territory"
+      - "applies layering: Controller → Service → Repository, unidirectional dependency"
+      - "uses constructor injection, avoids static singleton / service locator"
+      - "keeps controller thin: validate → authorize → call service → map response"
+    trigger_expected: true
+
+  - id: positive_deep_module_evaluation
+    prompt: "评审这个模块设计：UserController 调用 UserService，UserService 调用 UserRepo，每层都是单行转发，没有封装任何复杂度。这是好设计吗？"
+    fixtures: []
+    rubric:
+      - "recognizes the request as software-design territory"
+      - "identifies the shallow module anti-pattern"
+      - "explains deep module principle: strong functionality behind simple interface"
+      - "references complexity or information hiding concepts"
+    trigger_expected: true
+
+  - id: positive_composition_over_inheritance
+    prompt: "我有 BaseRepo 基类提供了 _log 方法，现在 UserRepo 和 OrderRepo 都继承它只为共享这一个方法。有什么更好的设计？"
+    fixtures: []
+    rubric:
+      - "recognizes composition is preferred over inheritance for code reuse"
+      - "recommends injecting a logger via constructor instead of inheriting"
+      - "explains the stable is-a requirement for inheritance"
+    trigger_expected: true
+
+  - id: negative_basic_syntax
+    prompt: "Python 里怎么定义一个类并初始化实例变量？"
+    fixtures: []
+    rubric:
+      - "does not activate software-design workflow"
+      - "basic syntax question, not a design or architecture decision"
+    trigger_expected: false
+
+  - id: negative_unrelated_task
+    prompt: "帮我写一封项目进度汇报邮件给领导"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
+    trigger_expected: false

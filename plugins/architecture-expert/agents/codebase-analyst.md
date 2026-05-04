@@ -10,7 +10,7 @@ skills:
   - api-trace-reader
   - refactoring-patterns
   - tech-debt
-  - software-design-philosophy
+  - software-design
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding
 ---

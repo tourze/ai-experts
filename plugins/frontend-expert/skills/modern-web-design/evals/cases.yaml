@@ -1,70 +1,51 @@
 cases:
-  - id: positive_modern_web_design_primary
-    prompt: "我需要需要规划或实现 2024-2025 风格的现代 Web 界面时使用。"
+  - id: positive_style_selection_css
+    prompt: "我要做一个 SaaS 落地页，想要 Glassmorphism 风格。帮我确认这个风格的关键 CSS 特征是什么，哪些场景不能用，然后给一个完整的 Hero 区域实现。"
     fixtures: []
     rubric:
       - "recognizes the request as modern-web-design territory"
-      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+      - "checks anti-applicability before implementing"
+      - "implements all key CSS features of Glassmorphism, not just backdrop-filter"
+      - "avoids AI-template look"
     trigger_expected: true
 
-  - id: positive_modern_web_design_realistic
-    prompt: "帮我处理这个场景：设计或重构品牌官网、产品页、营销页、活动页和高辨识度 Web App 界面。"
+  - id: positive_performance_aware_design
+    prompt: "设计一个品牌官网首页：需要高级感、叙事滚动，但不能影响 LCP 和移动端体验。给具体的方向定义和性能预算。"
     fixtures: []
     rubric:
-      - "matches a concrete use case described by the skill"
-      - "keeps the response focused on the skill's domain boundary"
+      - "gives a one-sentence visual direction definition"
+      - "sets explicit performance budget"
+      - "avoids heavy visuals without budget"
+      - "provides prefers-reduced-motion fallback"
     trigger_expected: true
 
-  - id: positive_modern_web_design_high_agency
-    prompt: "这个产品官网太 AI 味了，帮我重设计成 premium、高辨识度、不要默认紫蓝渐变。"
+  - id: positive_anti_ai_template
+    prompt: "用户说这个落地页 '看起来像 AI 生成的'，帮我诊断问题：系统字体堆、紫色到粉色渐变背景、均匀圆角卡片墙、空洞口号。给改进方案。"
     fixtures: []
     rubric:
-      - "recognizes premium anti-template frontend work as modern-web-design territory"
-      - "uses the high-agency protocol or equivalent visual direction constraints"
+      - "recognizes AI-template look symptoms"
+      - "recommends directional visuals instead of generic styling"
+      - "references high-agency-protocol or equivalent guidance"
     trigger_expected: true
 
-  - id: positive_web_design_guidelines_primary
-    prompt: "我需要当任务涉及语义 HTML、无障碍、WCAG、键盘访问、表单规范或 Web UI 审查"
+  - id: positive_style_catalog_lookup
+    prompt: "我要做一个 fintech 产品的前端，想要看起来可信赖、专业，但又不能太沉闷。帮我从风格目录里推荐合适的 UI 风格，并说明哪些风格绝对不能用在金融产品上。"
     fixtures: []
     rubric:
-      - "recognizes the request as web-design-guidelines territory"
-      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+      - "consults styles-catalog for candidate styles"
+      - "filters by anti-applicability for fintech/banking"
+      - "excludes Cyberpunk/Neubrutalism/Y2K for finance"
+      - "recommends concrete style with CSS feature checklist"
     trigger_expected: true
 
-  - id: positive_web_design_guidelines_realistic
-    prompt: "帮我处理这个场景：编写或审查 HTML/CSS/JS Web 界面。"
+  - id: negative_adjacent_interaction_design
+    prompt: "这个需求应该交给 interaction-design：为按钮 hover、卡片 reveal、表单 focus 和导航过渡设计微交互动效，包含 easing 曲线和 duration 档位。"
     fixtures: []
     rubric:
-      - "matches a concrete use case described by the skill"
-      - "keeps the response focused on the skill's domain boundary"
-    trigger_expected: true
-
-
-  - id: positive_refactoring_ui_primary
-    prompt: "我需要需要修复视觉层级、间距、颜色或深度问题时使用。"
-    fixtures: []
-    rubric:
-      - "recognizes the request as refactoring-ui territory"
-      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
-    trigger_expected: true
-
-  - id: positive_refactoring_ui_realistic
-    prompt: "帮我处理这个场景：页面“功能没问题，但看起来不专业”。"
-    fixtures: []
-    rubric:
-      - "matches a concrete use case described by the skill"
-      - "keeps the response focused on the skill's domain boundary"
-    trigger_expected: true
-
-
-  - id: negative_adjacent_browser_rendering_patterns
-    prompt: "这个需求应该交给 web-performance-diagnosis：优化浏览器渲染性能、处理 hydration 问题、使用 resource hints 或改善客户端事件处理时使用。用户提到 hydration mismatch、content-visibility、preload、preconnect、passive event listener、script defer、SVG 优化"
-    fixtures: []
-    rubric:
-      - "adjacent web-performance-diagnosis requests should not trigger modern-web-design"
+      - "adjacent interaction-design requests should not trigger modern-web-design"
     trigger_expected: false
 
-  - id: negative_general_unrelated_task
+  - id: negative_general_unrelated
     prompt: "请帮我写一封简短的会议改期通知邮件"
     fixtures: []
     rubric:
