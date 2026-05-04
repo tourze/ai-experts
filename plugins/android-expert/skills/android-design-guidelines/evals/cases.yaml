@@ -30,5 +30,5 @@ cases:
     fixtures: []
     rubric:
       - "does not activate UI design guidance"
-      - "emulator operations belong to android-emulator-skill"
+      - "emulator operations belong to android-device-automation"
     trigger_expected: false

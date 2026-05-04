@@ -5,8 +5,8 @@ import { join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import test from "node:test";
 
-const script = resolve("plugins/android-expert/skills/android-emulator-skill/scripts/emu_health_check.mjs");
-const scriptsDir = resolve("plugins/android-expert/skills/android-emulator-skill/scripts");
+const script = resolve("plugins/android-expert/skills/android-device-automation/scripts/emu_health_check.mjs");
+const scriptsDir = resolve("plugins/android-expert/skills/android-device-automation/scripts");
 
 test("emu_health_check.mjs 通过语法检查", () => {
   const result = spawnSync(process.execPath, ["--check", script], { encoding: "utf8" });
