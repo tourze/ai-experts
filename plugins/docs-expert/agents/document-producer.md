@@ -4,6 +4,9 @@ description: |
   当需要从结构化输入产出多格式文档（PPT、Word、Excel、PDF、Markdown），或在 Office 文件、PDF、图像之间互转时使用。它可以创建或更新文档文件，但不修改业务源码。
 tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
+  - consulting-analysis
+  - proposal-writer
+  - tutorial-builder
   - ppt-generate
   - pdf
   - markitdown

@@ -5,6 +5,7 @@ description: |
 tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
   - refactoring-patterns
+  - refactor-planning-method
   - complexity-reducer
   - tech-debt
   - error-handling-patterns

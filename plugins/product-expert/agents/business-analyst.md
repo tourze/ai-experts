@@ -4,6 +4,7 @@ description: |
   当需要把开放式商业问题转成结构化分析报告，且必须串联问题界定、假设树、数据验证、模型选择和行动建议时使用。
 tools: Read, Glob, Grep, Write, Edit, WebSearch, WebFetch
 skills:
+  - financial-analyst
   - mckinsey-7-step
   - fact-vs-inference-vs-assumption
   - finding-evidence-binding

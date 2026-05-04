@@ -4,6 +4,7 @@ description: |
   当需要只读审查文档完整性、准确性、结构、可读性和一致性时使用。适用于 README、API 文档、用户指南和内联文档。
 tools: Read, Glob, Grep, Bash
 skills:
+  - comparative-analysis
   - doc-coauthoring
   - readme-blueprint-generator
   - user-guide-writing

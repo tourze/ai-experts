@@ -4,6 +4,7 @@ description: |
   当需要搭建或重构 web 前端的设计系统、设计令牌、主题、组件架构与字体配色排版规范，融合 Tailwind / shadcn-ui / industry preset 与动效原则时使用。它可以写入设计令牌、主题文件与组件骨架。
 tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
+  - modern-web-design
   - design-system-patterns
   - shadcn-ui
   - industry-design-presets

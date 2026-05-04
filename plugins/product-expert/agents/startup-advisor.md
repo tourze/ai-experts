@@ -5,6 +5,7 @@ description: |
 tools: Read, Glob, Grep, WebSearch, WebFetch
 skills:
   - startup-icp-definer
+  - startup-viability-checklist
   - market-sizing-analysis
   - business-model
   - business-health-diagnostic

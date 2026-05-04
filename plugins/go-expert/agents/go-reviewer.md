@@ -4,6 +4,9 @@ description: |
   当需要执行 Go 专项代码审查 时使用。它以只读方式检查正确性、惯用法、配置、测试缺口和常见风险，不修改文件。
 tools: Read, Glob, Grep, Bash
 skills:
+  - go-cli
+  - go-grpc
+  - go-troubleshooting
   - go-concurrency-patterns
   - go-testing-patterns
   - go-error-handling

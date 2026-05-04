@@ -5,6 +5,7 @@ description: |
 tools: Read, Glob, Grep
 skills:
   - first-principles-decomposer
+  - scp-analysis
   - what-if-oracle
   - cross-pollination-engine
   - consciousness-council

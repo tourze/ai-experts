@@ -6,6 +6,7 @@ tools: Read, Glob, Grep, Write, Edit, Bash, WebSearch, WebFetch
 skills:
   - canvas-design
   - baoyu-compress-image
+  - icon-retrieval
   - screenshot
   - ui-style-catalog
   - algo-visualization

@@ -4,6 +4,8 @@ description: |
   当需要设计社交媒体增长策略时使用。它综合个人品牌、平台内容、粉丝运营、私域、变现和平台安全，输出行动计划。
 tools: Read, Glob, Grep, WebSearch, WebFetch
 skills:
+  - youtube-analysis
+  - youtube-search
   - xiaohongshu-commercial-growth
   - fan-operations
   - douyin-viral-content
