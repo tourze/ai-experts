@@ -14,7 +14,7 @@
  * 校验：若发现重名，立即报错并列出冲突源，要求人工处理。
  */
 
-import { existsSync, lstatSync, mkdirSync, readdirSync, readlinkSync, renameSync, rmSync, symlinkSync, realpathSync } from "node:fs";
+import { copyFileSync, existsSync, lstatSync, mkdirSync, readdirSync, readlinkSync, renameSync, rmSync, symlinkSync, realpathSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -76,6 +76,98 @@ function symlinkPointsTo(linkPath, targetPath) {
   } catch {
     return false;
   }
+}
+
+// ── Codex skill 部署（复制 SKILL.md + symlink 其余） ──────────
+// Codex CLI 解析目录 symlink 时会读取全部内容导致上下文爆表，
+// 所以 SKILL.md 用文件复制、其余资源保持 symlink。
+
+function isCodexSkillCurrent(source, target) {
+  if (!existsSync(target) || isSymlink(target)) return false;
+  try {
+    const sourceEntries = readdirSync(source, { withFileTypes: true })
+      .filter(e => !e.name.startsWith("."));
+    for (const entry of sourceEntries) {
+      const srcPath = join(source, entry.name);
+      const tgtPath = join(target, entry.name);
+      if (entry.name === "SKILL.md") {
+        if (!existsSync(tgtPath) || isSymlink(tgtPath)) return false;
+        if (lstatSync(srcPath).size !== lstatSync(tgtPath).size) return false;
+      } else {
+        if (!isSymlink(tgtPath) || !symlinkPointsTo(tgtPath, srcPath)) return false;
+      }
+    }
+    return true;
+  } catch { return false; }
+}
+
+function isOurCodexSkillDir(source, target) {
+  if (!existsSync(target) || isSymlink(target)) return false;
+  try {
+    const entries = readdirSync(target, { withFileTypes: true });
+    if (entries.length === 0) return false;
+    const skillMd = entries.find(e => e.name === "SKILL.md");
+    if (!skillMd || skillMd.isSymbolicLink()) return false;
+    const others = entries.filter(e => e.name !== "SKILL.md");
+    if (others.length === 0) return true;
+    const pluginsPrefix = pluginsRoot.endsWith("/") ? pluginsRoot : pluginsRoot + "/";
+    return others.every(e => {
+      if (!e.isSymbolicLink()) return false;
+      const linkTarget = readlinkSync(join(target, e.name));
+      const absTarget = resolve(target, linkTarget);
+      return absTarget === pluginsRoot || absTarget.startsWith(pluginsPrefix);
+    });
+  } catch { return false; }
+}
+
+function deployCodexSkill({ source, target, label, dryRun }) {
+  if (isCodexSkillCurrent(source, target)) {
+    return { action: "skip", reason: "already-deployed" };
+  }
+  if (pathExists(target)) {
+    if (isSymlink(target)) {
+      if (dryRun) return { action: "would-replace-symlink" };
+      rmSync(target, { force: true });
+    } else if (isOurCodexSkillDir(source, target)) {
+      if (dryRun) return { action: "would-redeploy" };
+      rmSync(target, { recursive: true, force: true });
+    } else {
+      const backup = `${target}.bak.${timestamp()}`;
+      if (dryRun) return { action: "would-backup", backup };
+      renameSync(target, backup);
+      console.log(`  [backup] ${label}: ${target} → ${backup}`);
+    }
+  }
+  if (dryRun) return { action: "would-deploy" };
+  mkdirSync(dirname(target), { recursive: true });
+  mkdirSync(target, { recursive: true });
+  for (const entry of readdirSync(source, { withFileTypes: true })) {
+    if (entry.name.startsWith(".")) continue;
+    const srcPath = join(source, entry.name);
+    const tgtPath = join(target, entry.name);
+    if (entry.name === "SKILL.md") {
+      copyFileSync(srcPath, tgtPath);
+    } else {
+      symlinkSync(srcPath, tgtPath, entry.isDirectory() ? "dir" : "file");
+    }
+  }
+  return { action: "deployed" };
+}
+
+function undeployCodexSkill({ source, target, dryRun }) {
+  if (!pathExists(target)) return { action: "skip", reason: "missing" };
+  if (isSymlink(target)) {
+    if (!symlinkPointsTo(target, source)) return { action: "skip", reason: "different-source" };
+    if (dryRun) return { action: "would-unlink" };
+    rmSync(target, { force: true });
+    return { action: "unlinked" };
+  }
+  if (isOurCodexSkillDir(source, target)) {
+    if (dryRun) return { action: "would-remove-dir" };
+    rmSync(target, { recursive: true, force: true });
+    return { action: "removed" };
+  }
+  return { action: "skip", reason: "not-managed" };
 }
 
 function listManagedSkills() {
@@ -187,20 +279,71 @@ function pruneDanglingLinks({ root, label, dryRun }) {
   return { removed, would };
 }
 
+// Codex 端的 dangling 清理：处理新式目录（非 symlink）中指向已移除源的条目。
+function pruneCodexDanglingSkills({ root, label, dryRun }) {
+  if (!existsSync(root)) return { removed: 0, would: 0 };
+  let entries;
+  try { entries = readdirSync(root, { withFileTypes: true }); } catch { return { removed: 0, would: 0 }; }
+  const pluginsPrefix = pluginsRoot.endsWith("/") ? pluginsRoot : pluginsRoot + "/";
+  let removed = 0;
+  let would = 0;
+  for (const entry of entries) {
+    const path = join(root, entry.name);
+    // 旧式顶层 symlink：复用 pruneDanglingLinks 逻辑
+    if (entry.isSymbolicLink()) {
+      let linkTarget;
+      try { linkTarget = readlinkSync(path); } catch { continue; }
+      const absTarget = resolve(root, linkTarget);
+      if (absTarget !== pluginsRoot && !absTarget.startsWith(pluginsPrefix)) continue;
+      if (existsSync(absTarget)) continue;
+      if (dryRun) { console.log(`[prune] ${label}: would remove dangling ${path}`); would += 1; continue; }
+      rmSync(path, { force: true });
+      console.log(`[prune] ${label}: removed dangling ${path}`);
+      removed += 1;
+      continue;
+    }
+    // 新式目录
+    if (!entry.isDirectory()) continue;
+    try {
+      const inner = readdirSync(path, { withFileTypes: true });
+      const symlinks = inner.filter(e => e.isSymbolicLink());
+      if (symlinks.length === 0) continue;
+      let hasDangling = false;
+      for (const sl of symlinks) {
+        const absTarget = resolve(path, readlinkSync(join(path, sl.name)));
+        if ((absTarget === pluginsRoot || absTarget.startsWith(pluginsPrefix)) && !existsSync(absTarget)) {
+          hasDangling = true; break;
+        }
+      }
+      if (!hasDangling) continue;
+      if (dryRun) { console.log(`[prune] ${label}: would remove dangling dir ${path}`); would += 1; continue; }
+      rmSync(path, { recursive: true, force: true });
+      console.log(`[prune] ${label}: removed dangling dir ${path}`);
+      removed += 1;
+    } catch { /* skip unreadable dirs */ }
+  }
+  return { removed, would };
+}
+
 function describe({ skill, target, mode, result, label }) {
   const tag = mode === "uninstall" ? "[unlink]" : "[link]";
   const path = `${target}/${skill.id}`;
   switch (result.action) {
     case "linked":
+    case "deployed":
       return `${tag} ${label}: ${path} → ${skill.plugin}/skills/${skill.id}`;
     case "unlinked":
+    case "removed":
       return `${tag} ${label}: removed ${path}`;
     case "skip":
       return `${tag} ${label}: skip ${path} (${result.reason})`;
     case "would-link":
-      return `${tag} ${label}: would link ${path}`;
+    case "would-deploy":
+    case "would-redeploy":
+      return `${tag} ${label}: would deploy ${path}`;
     case "would-unlink":
-      return `${tag} ${label}: would unlink ${path}`;
+    case "would-remove-dir":
+      return `${tag} ${label}: would remove ${path}`;
     case "would-replace-symlink":
       return `${tag} ${label}: would replace symlink ${path}`;
     case "would-backup":
@@ -239,12 +382,19 @@ function main() {
 
     for (const skill of skills) {
       const target = join(targetRoot, skill.id);
-      const result = args.uninstall
-        ? unlinkOne({ source: skill.source, target, label, dryRun: args.dryRun })
-        : linkOne({ source: skill.source, target, label, dryRun: args.dryRun });
+      let result;
+      if (args.uninstall) {
+        result = targetKey === "codex"
+          ? undeployCodexSkill({ source: skill.source, target, dryRun: args.dryRun })
+          : unlinkOne({ source: skill.source, target, label, dryRun: args.dryRun });
+      } else {
+        result = targetKey === "codex"
+          ? deployCodexSkill({ source: skill.source, target, label, dryRun: args.dryRun })
+          : linkOne({ source: skill.source, target, label, dryRun: args.dryRun });
+      }
 
-      if (result.action === "linked") summary.linked += 1;
-      else if (result.action === "unlinked") summary.unlinked += 1;
+      if (result.action === "linked" || result.action === "deployed") summary.linked += 1;
+      else if (result.action === "unlinked" || result.action === "removed") summary.unlinked += 1;
       else if (result.action === "skip") summary.skipped += 1;
       else if (result.action.startsWith("would-")) summary.would += 1;
 
@@ -253,7 +403,9 @@ function main() {
       }
     }
 
-    const prune = pruneDanglingLinks({ root: targetRoot, label, dryRun: args.dryRun });
+    const prune = targetKey === "codex"
+      ? pruneCodexDanglingSkills({ root: targetRoot, label, dryRun: args.dryRun })
+      : pruneDanglingLinks({ root: targetRoot, label, dryRun: args.dryRun });
     summary.pruned += prune.removed;
     summary.would += prune.would;
   }
