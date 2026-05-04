@@ -2,6 +2,7 @@
 name: trigger-telemetry-advisor
 description: 当用户要分析 hook/skill telemetry、触发审计、dispatch 错误或 SKILL 脚本运行故障时使用。
 ---
+> 脚本路径：以下命令从 `ai-experts` 仓库根目录执行，`scripts/` 指 `ai-experts/scripts/`。
 
 # Trigger Telemetry Advisor
 

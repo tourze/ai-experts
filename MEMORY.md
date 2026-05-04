@@ -276,3 +276,13 @@ JS 入口 (path/to/entry.tsx)
 
 - 简单一问一答 / 单文件改一行 / 只读 grep 报告 — 直接答即可，不要套模板。
 - 模板是骨架不是仪式 —— 段落与表格按内容存在性选用，没内容的段不要凑。
+
+## Skill 脚本引用约定
+
+SKILL.md 中 `node scripts/xxx.mjs` 的语义和解析规则：
+
+- `node scripts/xxx.mjs` 是 skill 本地脚本的调用指令，脚本位于 `skills/<skill-name>/scripts/` 目录下
+- 安装后 symlink 到 `~/.claude/skills/<name>/scripts/`（Claude Code）或 `~/.codex/skills/<name>/scripts/`（Codex），路径因安装端不同
+- Claude Code 的 Bash 从用户项目 CWD 执行，不从 skill 目录执行；Claude 根据上下文自行解析脚本路径
+- 少数 skill（如 trigger-telemetry-advisor）明确要求从仓库根执行，此时 SKILL.md 会显式标注"从 ai-experts 仓库根目录执行"
+- 不在 SKILL.md 中硬编码 `~/.claude/skills/` 或 `~/.codex/skills/` 等安装端特定路径
