@@ -8,11 +8,11 @@
 
 | Agent | 适用场景 | 预加载 skill |
 |-------|----------|--------------|
-| `security-auditor` | 应用层只读漏洞审计：OWASP top 10、认证授权、敏感数据流、API 输入校验、前端防刷保护 | top-web-vulnerabilities, broken-authentication, file-path-traversal, api-fuzzing-bug-bounty, frontend-dynamic-code-protection |
+| `security-auditor` | 应用层只读漏洞审计：OWASP top 10、认证授权、敏感数据流、API 输入校验、前端防刷保护 | code-review-agent-framework, security-threat-model, frontend-dynamic-code-protection, sql-review-optimization, evidence-quality-framework |
 | `mobile-security-auditor` | Android APK / iOS IPA 客户端安全：manifest、组件暴露、硬编码 secret、deeplink、反逆向态势 | android-apk-audit, android-manifest-security, android-frida-script-catalog, intent-deeplink-abuse, apktool, jadx, dex-dumper, ios-binary-analysis, ios-secret-scan, anti-reversing-techniques |
 | `pentest-operator` | 在已授权工程中执行主机发现、漏洞利用验证、提权与后渗透 | ethical-hacking-methodology, nmap, linux-privilege-escalation, active-directory-attacks, broken-authentication, file-path-traversal, api-fuzzing-bug-bounty, intent-deeplink-abuse, top-web-vulnerabilities |
 | `reverse-engineer` | 二进制 / APK / IPA / 固件 / 内存 / 协议的静态反汇编、反编译、动态 hook、符号与结构恢复 | binary-analysis-patterns, apktool, jadx, dex-dumper, idapython-scripting, frida-dynamic-analysis, android-frida-script-catalog, unicorn-emulation, symbol-recovery, struct-recovery, anti-reversing-techniques, ios-binary-analysis, chipsec, protocol-reverse-engineering, wireshark-analysis, memory-forensics |
-| `security-researcher` | 当需要对二进制、固件、移动应用或网络流量做深度安全研究时使用——覆盖静态反汇编、动态 hook、内存取证、协议逆向和模拟执行。只读分析，产出研究报告与漏洞证据。 | android-apk-audit, binary-analysis-patterns, chipsec, frida-dynamic-analysis, idapython-scripting, ios-binary-analysis, ios-secret-scan, memory-forensics, protocol-reverse-engineering, unicorn-emulation, wireshark-analysis, ethical-hacking-methodology, fact-vs-inference-vs-assumption, finding-evidence-binding |
+| `security-researcher` | 当需要对二进制、固件、移动应用或网络流量做深度安全研究时使用——覆盖静态反汇编、动态 hook、内存取证、协议逆向和模拟执行。只读分析，产出研究报告与漏洞证据。 | android-apk-audit, binary-analysis-patterns, chipsec, frida-dynamic-analysis, idapython-scripting, ios-binary-analysis, ios-secret-scan, memory-forensics, protocol-reverse-engineering, unicorn-emulation, wireshark-analysis, ethical-hacking-methodology, evidence-quality-framework |
 | `threat-modeler` | 系统设计或合规阶段建立威胁模型、生成攻击树、推导安全需求与缓解映射，支持写盘 docs/security/ | security-threat-model, stride-analysis-patterns, attack-tree-construction, threat-mitigation-mapping, security-requirement-extraction, security-ownership-map |
 
 ## Skills
