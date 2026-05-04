@@ -11,7 +11,7 @@ description: 当需要减小前端 bundle、做代码分割、消除 barrel impo
 - 需要对重型组件做动态导入 / 代码分割。
 - 项目使用 barrel exports（index.ts 重导出），导致 tree shaking 失效。
 - 需要基于用户行为意图预加载即将用到的模块。
-- 性能指标层面可联动 [core-web-vitals](../core-web-vitals/SKILL.md)。
+- 性能指标层面可联动 [web-performance-diagnosis](../web-performance-diagnosis/SKILL.md)。
 - 这套 skill 是规则索引；需要细节时直接打开对应 `rules/*.md` 文件。
 
 ## 核心约束

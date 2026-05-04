@@ -5,7 +5,6 @@ description: |
 tools: Read, Glob, Grep, Bash
 skills:
   - web-performance-diagnosis
-  - core-web-vitals
   - bundle-optimization
   - modern-javascript-patterns
   - react-performance

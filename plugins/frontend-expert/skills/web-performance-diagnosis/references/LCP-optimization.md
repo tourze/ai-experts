@@ -1,58 +1,58 @@
-# LCP optimization reference
+# LCP 优化参考
 
-## What is LCP?
+## 什么是 LCP？
 
-Largest Contentful Paint (LCP) measures when the largest content element in the viewport becomes visible. This is typically:
+Largest Contentful Paint（LCP）衡量视口中最大内容元素变为可见的时间点。典型元素包括：
 
-- An `<img>` element
-- An `<image>` element inside `<svg>`
-- A `<video>` element with poster image
-- An element with a background image via `url()`
-- A block-level element containing text nodes
+- `<img>` 元素
+- `<svg>` 内的 `<image>` 元素
+- 带有 poster 图片的 `<video>` 元素
+- 通过 `url()` 设置背景图片的元素
+- 包含文本节点的块级元素
 
-## LCP timeline
+## LCP 时间线
 
 ```
-[  Server Response  ][  Resource Load  ][  Render  ]
-       TTFB              Download         Paint
-       └─────────────────────────────────────┘
-                         LCP Time
+[  服务器响应  ][  资源加载  ][  渲染  ]
+       TTFB          下载         绘制
+       └─────────────────────────────────┘
+                      LCP 时间
 ```
 
-## Detailed optimizations
+## 详细优化策略
 
-### 1. Server response time (TTFB)
+### 1. 服务器响应时间（TTFB）
 
-Target: < 800ms
+目标：< 800ms
 
-**Causes:**
-- Slow server/database queries
-- No CDN/edge caching
-- Inefficient backend code
-- Cold starts (serverless)
+**常见原因：**
+- 服务器/数据库查询慢
+- 缺少 CDN / 边缘缓存
+- 后端代码效率低
+- 冷启动（Serverless 场景）
 
-**Solutions:**
+**解决方案：**
 ```javascript
-// Use edge functions for dynamic content
-// Vercel example
+// 对动态内容使用边缘函数
+// Vercel 示例
 export const config = { runtime: 'edge' };
 
-// Use stale-while-revalidate caching
-// Cache-Control header
+// 使用 stale-while-revalidate 缓存策略
+// Cache-Control 响应头
 res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
 ```
 
-### 2. Resource load time
+### 2. 资源加载时间
 
-**For images:**
+**图片优化：**
 ```html
-<!-- Preload LCP image -->
+<!-- 预加载 LCP 图片 -->
 <link rel="preload" as="image" href="/hero.webp" 
       imagesrcset="/hero-400.webp 400w, /hero-800.webp 800w"
       imagesizes="100vw"
       fetchpriority="high">
 
-<!-- Modern format with fallback -->
+<!-- 现代格式 + 降级回退 -->
 <picture>
   <source srcset="/hero.avif" type="image/avif">
   <source srcset="/hero.webp" type="image/webp">
@@ -61,52 +61,52 @@ res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
 </picture>
 ```
 
-**For text (web fonts):**
+**文本（Web 字体）：**
 ```css
 @font-face {
   font-family: 'Heading';
   src: url('/fonts/heading.woff2') format('woff2');
-  font-display: swap; /* Show fallback immediately */
+  font-display: swap; /* 立即显示降级字体 */
 }
 ```
 
-### 3. Render blocking resources
+### 3. 渲染阻塞资源
 
-**Critical CSS pattern:**
+**关键 CSS 模式：**
 ```html
 <head>
-  <!-- Inline critical CSS -->
+  <!-- 内联关键 CSS -->
   <style>
-    /* Only above-fold styles, < 14KB */
+    /* 仅首屏样式，控制在 14KB 以内 */
     .hero { /* ... */ }
     .nav { /* ... */ }
   </style>
   
-  <!-- Defer non-critical CSS -->
+  <!-- 延迟加载非关键 CSS -->
   <link rel="preload" href="/styles.css" as="style" 
         onload="this.onload=null;this.rel='stylesheet'">
 </head>
 ```
 
-**Defer JavaScript:**
+**延迟 JavaScript：**
 ```html
-<!-- ❌ Blocks parsing -->
+<!-- ❌ 阻塞 HTML 解析 -->
 <script src="/app.js"></script>
 
-<!-- ✅ Deferred (runs after HTML parsed) -->
+<!-- ✅ defer（HTML 解析完成后执行） -->
 <script defer src="/app.js"></script>
 
-<!-- ✅ Module (deferred by default) -->
+<!-- ✅ ES Module（默认 defer） -->
 <script type="module" src="/app.mjs"></script>
 ```
 
-### 4. Client-side rendering
+### 4. 客户端渲染问题
 
-**Problem:** Content not in initial HTML.
+**问题：** 首次 HTML 中不包含实际内容。
 
-**Solutions:**
+**解决方案：**
 
-**Server-side rendering (SSR):**
+**服务端渲染（SSR）：**
 ```javascript
 // Next.js
 export async function getServerSideProps() {
@@ -115,7 +115,7 @@ export async function getServerSideProps() {
 }
 ```
 
-**Static site generation (SSG):**
+**静态站点生成（SSG）：**
 ```javascript
 // Next.js
 export async function getStaticProps() {
@@ -124,7 +124,7 @@ export async function getStaticProps() {
 }
 ```
 
-**Streaming SSR:**
+**流式 SSR：**
 ```jsx
 // React 18+
 import { Suspense } from 'react';
@@ -138,13 +138,13 @@ function Page() {
 }
 ```
 
-## Framework-specific tips
+## 框架专项建议
 
 ### Next.js
 ```jsx
 import Image from 'next/image';
 
-// LCP image with priority
+// 为 LCP 图片设置 priority
 <Image 
   src="/hero.jpg"
   priority
@@ -178,10 +178,10 @@ import hero from '../assets/hero.jpg';
 />
 ```
 
-## Debugging LCP
+## 调试 LCP
 
 ```javascript
-// Identify LCP element
+// 识别 LCP 元素
 new PerformanceObserver((entryList) => {
   const entries = entryList.getEntries();
   const lastEntry = entries[entries.length - 1];
@@ -197,12 +197,12 @@ new PerformanceObserver((entryList) => {
 }).observe({ type: 'largest-contentful-paint', buffered: true });
 ```
 
-## Common issues
+## 常见问题速查
 
-| Issue | Impact | Fix |
-|-------|--------|-----|
-| No preload for LCP image | +500-1000ms | Add `<link rel="preload">` |
-| Large unoptimized image | +300-800ms | Compress, use WebP/AVIF |
-| Render-blocking CSS | +200-500ms | Inline critical CSS |
-| Slow TTFB | +300-2000ms | CDN, edge caching |
-| Client-rendered content | +500-2000ms | SSR/SSG |
+| 问题 | 影响 | 修复方式 |
+|------|------|----------|
+| 未预加载 LCP 图片 | +500–1000ms | 添加 `<link rel="preload">` |
+| 大图未优化 | +300–800ms | 压缩，使用 WebP/AVIF 格式 |
+| CSS 阻塞渲染 | +200–500ms | 内联关键 CSS |
+| TTFB 过慢 | +300–2000ms | 接入 CDN、边缘缓存 |
+| 内容纯客户端渲染 | +500–2000ms | 改用 SSR/SSG |

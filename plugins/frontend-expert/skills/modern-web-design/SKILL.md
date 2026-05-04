@@ -1,6 +1,6 @@
 ---
 name: modern-web-design
-description: 当用户需要规划或实现现代 Web 界面、按风格名称查询视觉特征与 CSS 落地、或选择行业视觉方向时使用。覆盖 2024-2025 设计趋势、60 种 UI 风格目录、品牌化落地页、性能优先界面与微交互。
+description: 当用户需要规划或实现现代 Web 界面、按风格名称查询视觉特征与 CSS 落地、或选择行业视觉方向时使用。覆盖 2024-2025 设计趋势、60 种 UI 风格目录、品牌化落地页与性能优先界面。
 ---
 
 # 现代 Web 设计
@@ -74,7 +74,7 @@ Glassmorphism 完整落地示例见 [references/styles-depth-glass.md](reference
 - [ ] 首屏优先级明确，核心 CTA 和核心叙事一眼可见。
 - [ ] 视觉亮点不会牺牲可读性、可达性和响应速度。
 - [ ] 动效数量克制，且有降级策略。
-- [ ] 已通过 [core-web-vitals](../core-web-vitals/SKILL.md) 复核。
+- [ ] 已通过 [性能诊断](../web-performance-diagnosis/SKILL.md) 复核。
 
 ## 反模式
 
@@ -118,8 +118,8 @@ LCP 1.5s → 6s，移动端卡死。
 
 ## 参考资料
 
-- [core-web-vitals](../core-web-vitals/SKILL.md)、[interaction-design](../interaction-design/SKILL.md)、[responsive-design](../responsive-design/SKILL.md)
-- [styles-catalog.md](references/styles-catalog.md) — 60 种 UI 风格，含 CSS 特征、反适用、AI prompt 关键词
+- [web-performance-diagnosis](../web-performance-diagnosis/SKILL.md)、[interaction-design](../interaction-design/SKILL.md)、[responsive-design](../responsive-design/SKILL.md)
+- [styles-catalog.md](references/styles-catalog.md) — 60 种 UI 风格与 CSS 落地特征
 - [design_trends_2024.md](references/design_trends_2024.md)、[high-agency-protocol.md](references/high-agency-protocol.md)、[web-design-guidelines.md](references/web-design-guidelines.md)
 - [interaction_patterns.md](references/interaction_patterns.md)、[performance_checklist.md](references/performance_checklist.md)、[accessibility_guide.md](references/accessibility_guide.md)
 - [visual-design-foundations.md](references/visual-design-foundations.md)、[visual-brief-concretizer.md](references/visual-brief-concretizer.md)

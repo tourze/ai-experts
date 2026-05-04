@@ -14,7 +14,6 @@
 |-------|------|
 | `bundle-optimization` | Bundle 体积治理：dynamic import、barrel imports、preload |
 | `color-oklch-theory` | OKLCH 颜色系统、色阶设计与暗色模式策略 |
-| `core-web-vitals` | LCP / INP / CLS 优化 |
 | `design-system-patterns` | 设计令牌、主题系统与组件架构 |
 | `figma-implement-design` | Figma 设计稿转生产代码 |
 | `font-pairing-library` | 标题/正文字体组合与字体风格选择 |
@@ -32,7 +31,7 @@
 | `tailwind-design-system` | Tailwind CSS v4 设计系统 |
 | `ux-writing` | 按钮、错误、空态与引导微文案设计 |
 | `web-design-guidelines` | Web 平台规范与无障碍底线 |
-| `web-performance-diagnosis` | 三段式跨层性能诊断（网络→渲染→运行时）、质量审计、瀑布流消除、浏览器渲染模式，区分 lab 与 RUM 数据口径 |
+| `web-performance-diagnosis` | 三段式跨层性能诊断（网络→渲染→运行时）、Core Web Vitals（LCP/INP/CLS）深度优化、质量审计、瀑布流消除、浏览器渲染模式，区分 lab 与 RUM 数据口径 |
 
 ## Agents
 
