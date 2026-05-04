@@ -1,178 +1,178 @@
-# Persuasive Copywriting for CRO
+# CRO 说服性文案写作
 
-Evidence-based copywriting principles. Write as much as it takes to communicate your entire sales message—but not one word more.
+基于证据的文案原则。写够传达完整销售信息的篇幅——但不多写一个字。
 
-## Headlines
+## 标题
 
-The headline's job: Get visitors to read the next line.
+标题的任务：让访客愿意读下一行。
 
-### Headline Formulas That Work
+### 有效标题公式
 
-**Problem-agitate-solve**:
-"Tired of [problem]? [Solution] lets you [benefit]."
+**问题-激化-解决**：
+"受够了 [问题]？[方案] 让你 [收益]。"
 
-**Specificity wins**:
-Bad: "Improve your conversion rate"
-Good: "How we increased conversions by 363%"
+**具体数字胜出**：
+差："提升你的转化率"
+好："我们如何将转化率提升了 363%"
 
-**News angle**:
-"[X] facts about [topic] you were never told"
+**新闻角度**：
+"关于 [话题] 你从未被告知的 [X] 个事实"
 
-**How-to**:
-"How to [achieve result] without [common pain]"
+**操作指南**：
+"如何在不 [常见痛点] 的情况下 [达成结果]"
 
-**Question**:
-"What's stopping your website from converting?"
+**提问式**：
+"什么在阻碍你的网站转化？"
 
-### Headline Testing Priority
+### 标题测试优先级
 
-1. Value proposition clarity
-2. Specific numbers/results
-3. Audience targeting
-4. Urgency/timeliness
-5. Emotional hook
+1. 价值主张清晰度
+2. 具体数字/结果
+3. 受众精准度
+4. 紧迫感/时效性
+5. 情感钩子
 
-## Body Copy Principles
+## 正文原则
 
-### Length
-Write as much as it takes to:
-- Communicate the complete sales message
-- Address all major objections
-- Provide sufficient proof
+### 篇幅
+写到足以：
+- 传达完整销售信息
+- 回应所有主要异议
+- 提供充分证明
 
-Long copy works when visitors are:
-- Unfamiliar with product category
-- Making a high-commitment decision
-- Comparing alternatives
+长文案在以下场景有效：
+- 访客不熟悉产品品类
+- 高承诺决策
+- 比较替代方案
 
-Short copy works when:
-- Brand is well-known
-- Product is simple/commoditized
-- Visitors are already convinced
+短文案在以下场景有效：
+- 品牌知名度高
+- 产品简单/同质化
+- 访客已被说服
 
-### Structure
+### 结构
 
-**Lead with benefits, not features**
-Feature: "256GB storage"
-Benefit: "Never delete another photo"
+**利益优先，不是功能优先**
+功能："256GB 存储"
+利益："再也不用删照片"
 
-**Use specific numbers**
-Weak: "Thousands of customers"
-Strong: "47,832 businesses trust us"
+**用具体数字**
+弱："数千客户"
+强："47,832 家企业信赖我们"
 
-**Write for scanners**
-- Subheadings that tell the story alone
-- Bold key phrases
-- Bullet points for multiple items
-- Short paragraphs (2-4 sentences)
+**为扫读而写**
+- 小标题单独就能讲完故事
+- 关键短语加粗
+- 多项内容用项目符号
+- 段落保持 2-4 句
 
-### Voice
+### 语气
 
-**Clarity over cleverness**
-No reader is too sophisticated for simple sentences.
+**清晰优于巧妙**
+没有读者会因为句子太简单而抱怨。
 
-**Active voice**
-Bad: "Your conversion rate will be improved"
-Good: "We'll improve your conversion rate"
+**主动语态**
+差："你的转化率将被提升"
+好："我们将提升你的转化率"
 
-**"You" focus**
-Count "you" vs. "we" in your copy. Visitors care about themselves.
+**聚焦"你"**
+数一数文案中"你"和"我们"的比例。访客只关心自己。
 
-**Circle adjectives and adverbs**
-Replace vague modifiers with specific facts:
-Bad: "incredibly fast delivery"
-Good: "delivery in 2 hours or less"
+**圈出形容词和副词**
+用具体事实替换模糊修饰：
+差："极速配送"
+好："2 小时内送达"
 
-## Proof Elements
+## 证明要素
 
-### Hierarchy of proof (strongest to weakest)
+### 证明层级（从强到弱）
 
-1. **Specific results with context**
-   "Increased revenue by $2.4M in 6 months"
+1. **带上下文的具体结果**
+   "6 个月内收入增加 240 万"
 
-2. **Named testimonials with photos**
-   Real people, real companies, specific outcomes
+2. **带照片的具名推荐**
+   真实人物、真实公司、具体成果
 
-3. **Case studies**
-   Problem → Solution → Results format
+3. **案例研究**
+   问题 → 方案 → 结果格式
 
-4. **Statistics and data**
-   Industry benchmarks, research findings
+4. **统计数据**
+   行业基准、研究发现
 
-5. **Logos and badges**
-   Client logos, media mentions, certifications
+5. **Logo 和徽章**
+   客户 Logo、媒体报道、认证
 
-6. **Generic testimonials**
-   Unnamed quotes (weakest form)
+6. **匿名推荐**
+   无署名引用（最弱）
 
-### Testimonial Best Practices
+### 推荐语最佳实践
 
-**Include specifics**:
-Bad: "Great product!"
-Good: "Increased our conversion rate from 2.1% to 4.7% in 3 weeks"
+**包含具体数据**：
+差："产品很棒！"
+好："3 周内转化率从 2.1% 提升到 4.7%"
 
-**Address objections**:
-Choose testimonials that counter specific fears
+**回应异议**：
+选择能反驳特定顾虑的推荐
 
-**Match the audience**:
-B2B visitors want testimonials from similar companies/roles
+**匹配受众**：
+B2B 访客想看同类公司/角色的推荐
 
-**Use photos**:
-Real photos > stock photos > no photos
+**使用照片**：
+真实照片 > 图库照片 > 无照片
 
-## Calls-to-Action
+## 行动号召
 
-### CTA Copy
+### CTA 文案
 
-**Benefit-oriented**:
-Bad: "Submit"
-Good: "Get my free report"
+**利益导向**：
+差："提交"
+好："获取我的免费报告"
 
-**Reduce perceived commitment**:
-"Start free trial" vs. "Sign up"
-"See pricing" vs. "Buy now"
+**降低感知承诺**：
+"免费试用" 优于 "注册"
+"查看定价" 优于 "立即购买"
 
-**Match button to promise**:
-If page promises "10 ways to improve X", CTA should be:
-"Show me the 10 ways" not "Learn more"
+**按钮呼应承诺**：
+如果页面承诺"10 种改善方法"，CTA 应该是：
+"给我看这 10 种方法" 而非 "了解更多"
 
-### CTA Placement
+### CTA 位置
 
-- Above the fold (for aware visitors)
-- After each major section
-- At moment of peak interest
-- Sticky/floating for long pages
+- 首屏以上（针对已有认知的访客）
+- 每个主要章节之后
+- 兴趣峰值时刻
+- 长页面用固定/浮动 CTA
 
-### CTA Testing Ideas
+### CTA 测试方向
 
-1. Benefit vs. action language
-2. Commitment level (free vs. buy)
-3. Urgency elements
-4. Size and color (test AFTER copy)
-5. Number of CTAs per page
+1. 利益导向 vs 动作导向语言
+2. 承诺程度（免费 vs 购买）
+3. 紧迫感元素
+4. 大小和颜色（在文案之后测）
+5. 每页 CTA 数量
 
-## Common Copywriting Mistakes
+## 常见文案错误
 
-1. **Features without benefits**
-   Always answer "So what?"
+1. **只列功能不给利益**
+   每条功能都要回答"那又怎样？"
 
-2. **Vague claims**
-   "Best in class" → "Rated #1 by [source]"
+2. **模糊声明**
+   "同类最佳" → "被 [来源] 评为第一"
 
-3. **Talking about yourself**
-   Reframe everything around the visitor
+3. **自说自话**
+   把一切围绕访客重新组织
 
-4. **Burying the lead**
-   Put most important information first
+4. **埋没重点**
+   把最重要信息放在最前面
 
-5. **Assuming knowledge**
-   Explain industry jargon
+5. **假设用户已知**
+   解释行业术语
 
-6. **Missing objections**
-   Address hesitations head-on
+6. **忽视异议**
+   正面回应犹豫
 
-7. **Weak proof**
-   Generic testimonials, no specifics
+7. **证明不足**
+   泛泛推荐，没有具体数据
 
-8. **Unclear next step**
-   Always make the action obvious
+8. **下一步不清晰**
+   让行动显而易见

@@ -1,158 +1,158 @@
-# Persuasion Assets & Psychological Triggers
+# 说服资产与心理触发
 
-Your website should be a "proof magnet." Identify, acquire, and display persuasive assets.
+你的网站应该是"证明磁铁"。识别、获取和展示说服性资产。
 
-## Persuasion Assets Audit
+## 说服资产审计
 
-### Credentials & Authority
-- [ ] Industry awards
-- [ ] Certifications
-- [ ] Media mentions (logo bar)
-- [ ] Speaking engagements
-- [ ] Published books/research
-- [ ] Years in business
-- [ ] Number of customers/users
-- [ ] Team credentials/bios
-- [ ] Patents or proprietary technology
+### 资质与权威
+- [ ] 行业奖项
+- [ ] 认证
+- [ ] 媒体报道（Logo 栏）
+- [ ] 演讲邀约
+- [ ] 出版物/研究
+- [ ] 经营年限
+- [ ] 客户/用户数
+- [ ] 团队资质/简介
+- [ ] 专利或专有技术
 
-### Social Proof
-- [ ] Customer testimonials (with photos, names, results)
-- [ ] Video testimonials
-- [ ] Case studies (problem → solution → results)
-- [ ] Client logos
-- [ ] User-generated content
-- [ ] Review aggregator scores (G2, Trustpilot, etc.)
-- [ ] Social media followers/engagement
-- [ ] Community size
+### 社会证明
+- [ ] 客户推荐（含照片、姓名、结果）
+- [ ] 视频推荐
+- [ ] 案例研究（问题 → 方案 → 结果）
+- [ ] 客户 Logo
+- [ ] 用户生成内容
+- [ ] 评测平台评分（G2、Trustpilot 等）
+- [ ] 社媒关注/互动
+- [ ] 社区规模
 
-### Risk Reversal
-- [ ] Money-back guarantee
-- [ ] Free trial
-- [ ] Free samples/demos
-- [ ] Satisfaction guarantee
-- [ ] Performance guarantee
-- [ ] Easy cancellation
-- [ ] No credit card required
+### 风险逆转
+- [ ] 退款保障
+- [ ] 免费试用
+- [ ] 免费样品/演示
+- [ ] 满意保障
+- [ ] 效果保障
+- [ ] 轻松取消
+- [ ] 无需信用卡
 
-### Data & Specificity
-- [ ] Specific results achieved
-- [ ] ROI calculations
-- [ ] Before/after comparisons
-- [ ] Time-to-value metrics
-- [ ] Industry benchmarks
-- [ ] Research/survey data
+### 数据与具体性
+- [ ] 达成的具体结果
+- [ ] ROI 计算
+- [ ] 前后对比
+- [ ] 价值实现时间指标
+- [ ] 行业基准
+- [ ] 研究/调研数据
 
-### Process & Methodology
-- [ ] Named methodology/system
-- [ ] Step-by-step process visualization
-- [ ] Behind-the-scenes transparency
-- [ ] Quality control standards
-- [ ] Security/privacy certifications
+### 流程与方法论
+- [ ] 命名方法论/体系
+- [ ] 分步流程可视化
+- [ ] 幕后透明度
+- [ ] 质控标准
+- [ ] 安全/隐私认证
 
-## Asset Acquisition Wishlist
+## 资产获取清单
 
-If you don't have an asset, plan to acquire it:
+缺少资产时，计划如何获取：
 
-| Missing Asset | How to Acquire | Priority |
-|---------------|----------------|----------|
-| Customer testimonials | Email recent buyers | High |
-| Case studies | Interview 3 success stories | High |
-| Industry awards | Apply to relevant awards | Medium |
-| Media mentions | PR outreach | Medium |
+| 缺失资产 | 获取方式 | 优先级 |
+|---------|---------|--------|
+| 客户推荐 | 邮件联系近期购买者 | 高 |
+| 案例研究 | 采访 3 个成功故事 | 高 |
+| 行业奖项 | 申请相关奖项 | 中 |
+| 媒体报道 | 公关外联 | 中 |
 
-## Psychological Triggers
+## 心理触发
 
-### Scarcity (Use Ethically)
-- Limited time offers (genuine deadlines)
-- Limited quantity
-- Exclusive access
-- Seasonal availability
+### 稀缺性（必须真实）
+- 限时优惠（真实截止日期）
+- 限量
+- 独家访问
+- 季节性
 
-**Warning**: Fake scarcity destroys trust. Only use real limitations.
+**警告**：虚假稀缺会摧毁信任。只用真实限制。
 
-### Social Proof
-- "Join 50,000+ marketers"
-- Real-time activity ("John from NYC just signed up")
-- Testimonials at decision points
-- Expert endorsements
+### 社会证明
+- "加入 50,000+ 营销人"
+- 实时活动（"纽约的 John 刚刚注册"）
+- 决策点放推荐
+- 专家背书
 
-### Authority
-- Expert positioning
-- Media logos
-- Certifications visible
-- Specific credentials
+### 权威
+- 专家定位
+- 媒体 Logo
+- 可见的认证
+- 具体资质
 
-### Reciprocity
-- Free valuable content upfront
-- Free tools/calculators
-- Generous trial periods
-- Helpful support
+### 互惠
+- 先提供有价值的免费内容
+- 免费工具/计算器
+- 慷慨的试用期
+- 有用的支持
 
-### Commitment/Consistency
-- Micro-commitments (email before credit card)
-- Progress indicators
-- "You're almost there" messaging
-- Previous choices displayed
+### 承诺/一致性
+- 微承诺（先要邮箱再要信用卡）
+- 进度指示器
+- "你快完成了"信息
+- 展示之前的选择
 
-### Loss Aversion
-- Cost of inaction
-- "What you're missing"
-- Comparison with competitors' customers
-- Before/after contrast
+### 损失厌恶
+- 不行动的成本
+- "你正在错过的"
+- 与竞品客户对比
+- 前后对比
 
-## The "Proof Sandwich"
+## "证明三明治"
 
-Structure for maximum persuasion:
+最大化说服力的结构：
 
-1. **Claim**: Make a bold, specific promise
-2. **Proof**: Immediately support with evidence
-3. **Reinforcement**: Add secondary proof
+1. **主张**：做出大胆、具体的承诺
+2. **证明**：立即用证据支撑
+3. **强化**：加入次要证明
 
-Example:
-"We increase conversion rates by an average of 47%" (claim)
-"Here's how we did it for Company X..." (proof)
-"And here's what their CEO says about working with us..." (reinforcement)
+示例：
+"我们将转化率平均提升 47%"（主张）
+"这是 X 公司的具体做法…"（证明）
+"这是他们 CEO 的评价…"（强化）
 
-## Placement Principles
+## 放置原则
 
-### Above the fold
-- Main value proposition
-- Primary social proof (logo bar, rating)
-- Clear CTA
+### 首屏
+- 主价值主张
+- 主要社会证明（Logo 栏、评分）
+- 清晰 CTA
 
-### Throughout the page
-- Testimonials at objection points
-- Data supporting each claim
-- Visual proof (screenshots, photos)
+### 页面各处
+- 异议点放推荐
+- 每条声明都有数据支撑
+- 视觉证明（截图、照片）
 
-### Decision points
-- Guarantees near payment
-- Trust badges near forms
-- Testimonials near CTAs
+### 决策点
+- 支付附近放保障
+- 表单旁放信任徽章
+- CTA 旁放推荐
 
-### Bottom of page
-- Comprehensive FAQ
-- Trust indicators
-- Alternative contact options
+### 页面底部
+- 完整 FAQ
+- 信任指标
+- 备选联系方式
 
-## Asset Display Best Practices
+## 资产展示最佳实践
 
-### Logo bars
-- 5-7 recognizable logos
-- Similar visual treatment
-- Relevant to target audience
+### Logo 栏
+- 5-7 个可识别 Logo
+- 统一视觉处理
+- 与目标受众相关
 
-### Testimonials
-- Photo + Name + Company + Title
-- Specific results > vague praise
-- Match testimonial to objection
+### 推荐语
+- 照片 + 姓名 + 公司 + 职位
+- 具体结果优于泛泛夸奖
+- 推荐语对应异议
 
-### Statistics
-- Round numbers seem less credible
-- "47,832 customers" > "About 50,000"
-- Source your data
+### 统计数据
+- 整数显得不够可信
+- "47,832 位客户" 优于 "约 50,000"
+- 标注数据来源
 
-### Guarantees
-- Make them prominent, not hidden
-- Explain what happens if claimed
-- Reduce perceived risk of claiming
+### 保障
+- 突出展示，不要隐藏
+- 说明申请保障后会发生什么
+- 降低申请保障的感知风险

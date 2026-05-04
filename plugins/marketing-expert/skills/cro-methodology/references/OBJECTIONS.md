@@ -1,135 +1,135 @@
-# Objection/Counter-Objection (O/CO) Framework
+# 异议/反异议（O/CO）框架
 
-The core CRE technique for increasing conversions. Don't guess objections—research them. Then systematically counter each one.
+CRO 的核心技术。不要猜异议——去调研它们，然后系统性反驳。
 
-## The O/CO Table
+## O/CO 表
 
-Create a two-column table:
+创建两列表：
 
-| Objection | Counter-Objection |
-|-----------|-------------------|
-| "It's too expensive" | ROI calculator, payment plans, comparison with alternatives |
-| "I don't trust this company" | Testimonials, awards, media mentions, guarantees |
-| "It won't work for my situation" | Case studies from similar customers, free trial |
+| 异议 | 反异议 |
+|------|--------|
+| "太贵了" | ROI 计算器、分期方案、竞品对比 |
+| "不信任这家公司" | 客户推荐、奖项、媒体报道、保障 |
+| "不适合我的情况" | 同类客户案例、免费试用 |
 
-## How to Discover Objections
+## 如何发现异议
 
-### Primary Sources (Direct from visitors)
+### 一手来源（直接来自访客）
 
-**Exit surveys** (Qualaroo, Hotjar, etc.)
-- "What's preventing you from signing up today?"
-- "What questions do you still have?"
-- "What would make this decision easier?"
+**退出调研**（Qualaroo、Hotjar 等）
+- "什么阻止了你今天注册？"
+- "你还有什么疑问？"
+- "什么能让这个决定更容易？"
 
-**Live chat logs**
-- Search for patterns in "but", "however", "worried about"
-- Note recurring hesitations
+**在线客服记录**
+- 搜索"但是""不过""担心"等关键词
+- 记录反复出现的犹豫
 
-**Support tickets**
-- Pre-purchase questions reveal objections
-- "Canned responses" are goldmines of tested counter-objections
+**客服工单**
+- 购前问题暴露异议
+- 客服的"标准回复"是经过验证的反异议宝库
 
-**Sales call recordings**
-- What objections do salespeople hear repeatedly?
-- What counter-arguments work?
+**销售通话录音**
+- 销售反复听到什么异议？
+- 哪些反驳话术有效？
 
-**"Refer a friend" messages**
-- How do customers describe you to friends?
-- What do they emphasize? What do they downplay?
+**"推荐给朋友"消息**
+- 客户怎么向朋友描述你？
+- 他们强调什么？淡化什么？
 
-### Secondary Sources
+### 二手来源
 
-**Reviews (yours and competitors')**
-- Negative reviews = unaddressed objections
-- Positive reviews = effective counter-objections
+**评价（自己和竞品的）**
+- 差评 = 未回应的异议
+- 好评 = 有效的反异议
 
-**Social media mentions**
-- Reddit, Twitter threads about your category
-- Forums where your audience discusses alternatives
+**社媒提及**
+- Reddit、Twitter 上关于你品类的讨论
+- 你的受众讨论替代方案的论坛
 
-**Competitor analysis**
-- What objections do competitors address?
-- What proof do they emphasize?
+**竞品分析**
+- 竞品回应了哪些异议？
+- 他们强调什么证据？
 
-## Types of Objections
+## 异议类型
 
-### Explicit objections
-Easy to address—visitors state them clearly:
-- "Too expensive"
-- "No free trial"
-- "Requires credit card"
+### 显性异议
+容易回应——访客明确说出了：
+- "太贵"
+- "没有免费试用"
+- "要绑信用卡"
 
-### Implicit objections
-Harder to identify—visitors won't admit them:
-- "I'm lazy and don't want to do the work"
-- "I'm not sure I'll follow through"
-- "This seems too good to be true"
+### 隐性异议
+难以识别——访客不会承认：
+- "我太懒了不想学"
+- "不确定我能坚持"
+- "好得不像真的"
 
-**Technique for implicit objections**: Use "CO Only" approach—address the objection without stating it.
+**隐性异议技巧**：用"只反异不点破"的方式处理。
 
-Bad: "Worried you're too lazy to learn a language?"
-Good: "Let the audio do the work for you."
+差："担心你太懒学不会？"
+好："让音频替你完成学习。"
 
-### The "Big 5" Universal Objections
+### 通用五大异议
 
-Most products face some version of:
+大多数产品都会遇到以下某种版本：
 
-1. **Trust**: "Why should I believe you?"
-2. **Price**: "Is it worth the money?"
-3. **Fit**: "Will it work for MY situation?"
-4. **Timing**: "Why should I act now?"
-5. **Effort**: "How hard will this be?"
+1. **信任**："凭什么信你？"
+2. **价格**："值不值这个钱？"
+3. **适配**："对我这种情况有用吗？"
+4. **时机**："为什么现在就行动？"
+5. **精力**："需要费多大力气？"
 
-## Counter-Objection Techniques
+## 反异议技巧
 
-### For Trust objections
-- Specific testimonials (with photos, names, results)
-- Media logos ("As seen in...")
-- Awards and certifications
-- Team credentials
-- Years in business, customers served
-- Money-back guarantee
+### 应对信任异议
+- 具体推荐（含照片、姓名、结果）
+- 媒体 Logo（"曾出现在…"）
+- 奖项和认证
+- 团队资质
+- 经营年限、服务客户数
+- 退款保障
 
-### For Price objections
-- ROI calculators
-- Cost comparison (vs. alternatives, vs. not solving problem)
-- Payment plans
-- Price anchoring (show higher-priced option first)
-- Emphasize value, not features
+### 应对价格异议
+- ROI 计算器
+- 成本对比（vs 竞品、vs 不解决问题）
+- 分期方案
+- 价格锚定（先展示更贵选项）
+- 强调价值而非功能
 
-### For Fit objections
-- Case studies from similar situations
-- Segmented landing pages
-- "Perfect for [specific audience]" messaging
-- FAQ addressing edge cases
-- Free trial or sample
+### 应对适配异议
+- 相似场景的案例研究
+- 分群落地页
+- "专为 [特定受众] 设计"的信息
+- FAQ 回应边缘情况
+- 免费试用或样品
 
-### For Timing objections
-- Limited-time offers (genuine scarcity only)
-- Cost of delay
-- Seasonal relevance
-- Urgency-building statistics
+### 应对时机异议
+- 限时优惠（仅用真实稀缺）
+- 延迟成本
+- 季节相关性
+- 紧迫感数据
 
-### For Effort objections
-- "Done for you" framing
-- Step-by-step breakdown
-- Time estimates ("Set up in 5 minutes")
-- Onboarding support
-- "System" or "process" language
+### 应对精力异议
+- "帮你搞定"的表述
+- 分步拆解
+- 时间预估（"5 分钟设置完成"）
+- 引导支持
+- "系统"或"流程"式语言
 
-## Placement Strategy
+## 放置策略
 
-Don't hide objections in FAQ. Address them:
+不要把异议藏在 FAQ 里。在以下位置回应：
 
-- **At point of friction**: Credit card objection → right below payment form
-- **In the flow**: As objections naturally arise during reading
-- **Above the fold**: For primary objections
-- **Multiple times**: Different formats (text, video, testimonial)
+- **摩擦点**：信用卡异议 → 支付表单正下方
+- **流程中**：阅读时异议自然产生的地方
+- **首屏**：针对主要异议
+- **多次出现**：不同形式（文字、视频、推荐）
 
-## O/CO Audit Questions
+## O/CO 审计问题
 
-1. What are our visitors' top 5 objections?
-2. Which are we NOT addressing on the page?
-3. Which are we addressing weakly (no proof)?
-4. Are counter-objections placed where objections arise?
-5. What counter-objections do competitors use that we don't?
+1. 访客的 Top 5 异议是什么？
+2. 页面上有哪些我们没回应？
+3. 哪些回应太弱（没有证据）？
+4. 反异议是否放在异议产生的地方？
+5. 竞品用了哪些反异议我们没用？

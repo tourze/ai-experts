@@ -1,330 +1,163 @@
-# CRO Testing Methodology
+# CRO 测试方法论
 
-Deep-dive into experiment design, statistical rigor, and test prioritization from the CRE Methodology.
+实验设计、统计严谨性与测试优先级指南。
 
-## The Philosophy of Bold Testing
+## 大胆测试的理念
 
-### Why "Meek Tweaks" Fail
+### 为什么"小修小补"会失败
 
-Most A/B tests fail because they're too small to detect. Button color changes, minor copy tweaks, and micro-optimizations suffer from:
+1. **样本量不足** — 小变化需海量流量才能检测
+2. **交互效应** — 微小变化被噪音淹没
+3. **机会成本** — 花 2% 提升的时间本可找到 200% 提升
 
-1. **Insufficient sample size** - Small changes require massive traffic to reach significance
-2. **Interaction effects** - Minor changes get lost in noise
-3. **Opportunity cost** - Time spent on 2% wins could find 200% wins
+**规则：测试能让转化翻倍的大改动，而不是可能移动 5% 的小调整。**
 
-**Rule: Test big changes that could double conversion, not small changes that might move it 5%.**
+### 10x 思维
 
-### The 10x Mindset
-
-Before any test, ask: "Could this 10x our results?" If not, is it worth testing?
-
-- **Worth testing:** Complete page redesign, new value proposition, fundamentally different offer
-- **Not worth testing:** Button color, font size, image swap
+- **值得测**：整页重设计、新价值主张、根本不同的报价
+- **不值得测**：按钮颜色、字号、图片替换
 
 ---
 
-## A/B Testing vs. Multivariate Testing
+## A/B 测试 vs 多变量测试
 
-### A/B Testing (Split Testing)
+| 维度 | A/B 测试 | 多变量测试（MVT） |
+|------|---------|------------------|
+| **适用** | 大概念、页面重设计 | 胜出页面的元素优化 |
+| **流量需求** | 低（2-4 变体拆分） | 高（组合数乘积级） |
+| **洞察** | 哪个版本整体胜出 | 哪些具体元素驱动结果 |
 
-Compare two (or more) complete versions against each other.
+### 流量需求
 
-| Aspect | Details |
-|--------|---------|
-| **Best for** | Testing big concepts, page redesigns, offers |
-| **Traffic needed** | Lower (split between 2-4 variants) |
-| **Insights** | Which version wins overall |
-| **Limitation** | Doesn't show which elements contributed |
-
-**When to use:**
-- You have a hypothesis about a major change
-- Traffic is limited
-- You're comparing conceptual approaches
-
-### Multivariate Testing (MVT)
-
-Test multiple elements simultaneously to find optimal combination.
-
-| Aspect | Details |
-|--------|---------|
-| **Best for** | Optimizing elements after winning concept proven |
-| **Traffic needed** | Much higher (combinations multiply) |
-| **Insights** | Which specific elements drive results |
-| **Limitation** | Requires significant traffic |
-
-**When to use:**
-- You have a winning page to optimize further
-- High traffic (100k+ monthly visitors)
-- Clear, isolated elements to test
-
-### Traffic Requirements
-
-**A/B Test:**
 ```
-Minimum sample per variant = 250-500 conversions
-For 2 variants with 5% conversion: 10,000-20,000 visitors needed
+A/B：每变体最少 250-500 次转化
+MVT：3 标题 × 3 图片 × 2 CTA = 18 组合，每组 250+ = 90,000+ 转化
 ```
 
-**Multivariate Test:**
-```
-Combinations = (Options for Element 1) × (Options for Element 2) × ...
-Example: 3 headlines × 3 images × 2 CTAs = 18 combinations
-Each combination needs 250+ conversions = 90,000+ conversions total
-```
-
-**Recommendation:** Start with A/B tests. Only move to MVT when you have:
-- Proven winning page concept
-- 100k+ monthly visitors
-- Mature testing program
+**建议**：从 A/B 开始，MVT 需月访 10 万+ 和成熟测试体系。
 
 ---
 
-## Statistical Significance
+## 统计显著性
 
-### What It Means
+**行业标准**：95% 置信度（p 值 < 0.05）
 
-Statistical significance tells you: "How likely is this result due to chance vs. a real effect?"
+### 常见错误
 
-**Industry standard:** 95% confidence (p-value < 0.05)
-- 95% confident the difference is real
-- 5% chance it's random noise
+**1. 频繁查看并提前停止**
+- 错误："3 天就 95% 置信度——上线！"
+- 正确：预定样本量和周期，不提前停止
 
-### Common Mistakes
+**2. 数据不足就下结论**
 
-**1. Peeking and stopping early**
+| 访客 | 转化 | 能下结论？ |
+|------|------|-----------|
+| 500 | 15 vs 20 | 不能 |
+| 5,000 | 150 vs 200 | 可能 |
+| 50,000 | 1,500 vs 2,000 | 能 |
 
-Checking results daily and stopping when you see a winner leads to false positives.
+**3. 忽视实际显著性** — 统计显著的 0.1% 提升不值得实施。
 
-- **Wrong:** "We're at 95% confidence after 3 days—ship it!"
-- **Right:** Pre-determine sample size and test duration; don't stop early
+**4. 多重比较** — 测 20 个变体，仅凭偶然就有一个"显著"。
 
-**2. Calling tests with insufficient data**
+### 样本量经验法则
 
-| Visitors | Conversions | Can you call it? |
-|----------|-------------|------------------|
-| 500 | 15 vs 20 | No |
-| 5,000 | 150 vs 200 | Possibly |
-| 50,000 | 1,500 vs 2,000 | Yes |
-
-**3. Ignoring practical significance**
-
-A statistically significant 0.1% lift isn't worth implementation complexity.
-
-**4. Multiple comparison problem**
-
-Testing 20 variants? One will show "significance" by chance alone.
-
-### Sample Size Calculation
-
-Before testing, calculate required sample size:
-
-**Inputs needed:**
-- Baseline conversion rate
-- Minimum detectable effect (MDE) you care about
-- Statistical power (typically 80%)
-- Significance level (typically 95%)
-
-**Rule of thumb:**
 ```
-For 5% baseline, 20% relative lift detection:
-~25,000 visitors per variant needed
-
-For 5% baseline, 50% relative lift detection:
-~4,000 visitors per variant needed
+5% 基线、检测 20% 相对提升 → 每变体约 25,000 访客
+5% 基线、检测 50% 相对提升 → 每变体约 4,000 访客
 ```
 
-**Key insight:** The smaller the effect you want to detect, the more traffic you need. This is why bold changes are better—they're detectable with less traffic.
+效果越小 → 流量越多 → 所以大胆改动更好。
 
-### Test Duration
+### 测试时长
 
-**Minimum test duration:**
-- At least 1 full business cycle (typically 1-2 weeks)
-- Include weekdays AND weekends
-- Account for seasonality
-
-**Why?**
-- Visitor behavior differs by day of week
-- Friday buyers differ from Monday researchers
-- Monthly cycles affect B2B especially
+至少一个完整业务周期（1-2 周），含工作日和周末，考虑季节性。
 
 ---
 
-## ICE Prioritization Framework
+## ICE 优先级框架
 
-Prioritize test ideas using ICE scores:
+### 评分维度
 
-### Impact (1-10)
-"If this wins, how big would the impact be?"
+| 维度 | 10 分 | 4-6 分 | 1-3 分 |
+|------|-------|--------|--------|
+| **影响力** | 可能翻倍转化 | 中等提升 10-30% | 小幅提升 <10% |
+| **信心度** | 研究验证已成功 | 合理假设 | 直觉未验证 |
+| **易实施** | 仅文字修改 | 需开发 | 大量技术工作 |
 
-| Score | Impact Level |
-|-------|--------------|
-| 10 | Could double conversion rate |
-| 7-9 | Major improvement (30-50%+) |
-| 4-6 | Moderate improvement (10-30%) |
-| 1-3 | Minor improvement (<10%) |
-
-### Confidence (1-10)
-"How confident are we this will work?"
-
-| Score | Confidence Level |
-|-------|------------------|
-| 10 | Proven in research, worked before |
-| 7-9 | Strong research supports it |
-| 4-6 | Reasonable hypothesis |
-| 1-3 | Gut feeling, unvalidated |
-
-### Ease (1-10)
-"How easy is this to implement and test?"
-
-| Score | Ease Level |
-|-------|------------|
-| 10 | Text change only |
-| 7-9 | Design change, no dev needed |
-| 4-6 | Requires development |
-| 1-3 | Major technical lift |
-
-### ICE Score Calculation
+### 加权公式
 
 ```
-ICE Score = (Impact + Confidence + Ease) / 3
+ICE = (影响力 × 2 + 信心度 × 1.5 + 易实施 × 1) / 4.5
 ```
 
-Or weighted:
-```
-ICE Score = (Impact × 2 + Confidence × 1.5 + Ease × 1) / 4.5
-```
+### 示例
 
-### Sample Prioritization
-
-| Test Idea | Impact | Confidence | Ease | Score |
-|-----------|--------|------------|------|-------|
-| New headline from customer research | 8 | 9 | 10 | 9.0 |
-| Add video testimonial | 7 | 7 | 6 | 6.7 |
-| Redesign checkout flow | 9 | 6 | 3 | 6.0 |
-| Change button color | 2 | 2 | 10 | 4.7 |
+| 测试想法 | 影响 | 信心 | 易实施 | 分数 |
+|---------|------|------|--------|------|
+| 基于调研的新标题 | 8 | 9 | 10 | 9.0 |
+| 加视频推荐 | 7 | 7 | 6 | 6.7 |
+| 重设计结算流程 | 9 | 6 | 3 | 6.0 |
+| 改按钮颜色 | 2 | 2 | 10 | 4.7 |
 
 ---
 
-## Test Documentation
+## 测试文档
 
-### Before the Test
+### 测试前记录
 
-Document:
-1. **Hypothesis:** "If we [change X], then [metric Y] will improve because [reason based on research]"
-2. **Primary metric:** One metric that determines winner
-3. **Secondary metrics:** Additional metrics to monitor
-4. **Guardrail metrics:** Metrics that shouldn't decrease
-5. **Sample size requirement**
-6. **Test duration**
-7. **Traffic allocation**
+1. **假设**："如果 [改 X]，[指标 Y] 会改善，因为 [调研原因]"
+2. **主指标** + **副指标** + **护栏指标**（不应下降的）
+3. 样本量、时长、流量分配
 
-### After the Test
+### 测试后记录
 
-Document:
-1. **Results:** Raw numbers, conversion rates, confidence interval
-2. **Statistical significance:** p-value, confidence level
-3. **Practical significance:** Is the lift worth implementing?
-4. **Learnings:** What does this teach us about our customers?
-5. **Next steps:** Ship winner, iterate, or abandon?
-
-### Learnings Database
-
-Every test should add to organizational knowledge:
-
-| Test | Hypothesis | Result | Learning | Applicable to |
-|------|------------|--------|----------|---------------|
-| Homepage headline A/B | Customer language converts better | Winner: +27% | Customers care about outcomes, not features | All landing pages |
-| Form length test | Shorter forms convert better | Loser: no diff | Our audience expects detailed forms | Lead gen pages |
+1. 原始数字、转化率、置信区间
+2. p 值、置信度
+3. 提升值得实施吗？
+4. 对客户意味着什么？
+5. 上线 / 迭代 / 放弃？
 
 ---
 
-## When Tests Fail
+## 测试失败时
 
-### Types of "Failure"
+| 类型 | 原因 |
+|------|------|
+| 无胜者 | 样本不足、效果太小、时长不够 |
+| 对照组胜出 | 新版更差、假设错误（仍是学习！） |
+| 技术问题 | 追踪失效、样本污染 |
 
-**1. No winner (inconclusive)**
-- Sample size too small
-- Effect size too small to detect
-- Test needed to run longer
+**应对**：记录学习 → 调查原因 → 试更大胆改动
 
-**2. Control wins**
-- New version is worse
-- Hypothesis was wrong
-- Still a learning!
-
-**3. Technical problems**
-- Tracking broke
-- Experience differed from plan
-- Sample contamination
-
-### What to Do
-
-1. **Document the learning** - "We learned customers prefer X"
-2. **Investigate why** - Go back to research
-3. **Don't give up on the page** - The opportunity exists, you just haven't found the solution
-4. **Try a bolder change** - Maybe the change wasn't big enough
-
-**Critical insight:** A failed test that teaches you something is more valuable than a winning test you don't understand.
+**关键洞察**：教会你东西的失败测试比你不理解的获胜测试更有价值。
 
 ---
 
-## CRO Team Dynamics
+## CRO 团队
 
-### Roles in a CRO Program
+### 角色
 
-| Role | Responsibility |
-|------|----------------|
-| **CRO Lead** | Strategy, prioritization, stakeholder management |
-| **Researcher** | User research, surveys, analytics analysis |
-| **Designer** | Wireframes, mockups, user flows |
-| **Developer** | Test implementation, technical QA |
-| **Analyst** | Results analysis, statistical rigor |
+| 角色 | 职责 |
+|------|------|
+| CRO 负责人 | 策略、优先级、干系人管理 |
+| 研究员 | 用户调研、问卷、数据分析 |
+| 设计师 | 线框图、原型、用户流程 |
+| 开发 | 测试实施、技术 QA |
 
-### Getting Stakeholder Buy-In
+### 干系人支持
 
-**Common objections:**
+| 异议 | 反驳 |
+|------|------|
+| "我们已经知道什么有效" | "测试会很快验证" |
+| "测试太耗时" | "上线错误的东西成本更高" |
+| "我们流量太低" | "那就测更大的改动" |
 
-| Objection | Counter |
-|-----------|---------|
-| "We already know what works" | "Then testing will confirm it quickly" |
-| "Testing takes too long" | "Shipping wrong things costs more" |
-| "Our traffic is too low" | "Then we test bigger changes" |
-| "The CEO wants X" | "Let's test to validate the idea" |
+### 测试速度
 
-**Building credibility:**
-1. Start with quick wins (high-traffic pages, obvious problems)
-2. Document and share learnings widely
-3. Quantify impact in revenue terms
-4. Build testing into the culture, not just a project
-
-### Test Velocity
-
-**Goal:** Increase valid tests per month over time.
-
-| Maturity | Tests/Month | Characteristics |
-|----------|-------------|-----------------|
-| Beginner | 1-2 | Manual processes, ad-hoc |
-| Developing | 4-6 | Established backlog, regular cadence |
-| Advanced | 10-20 | Parallel testing, mature process |
-| Expert | 20+ | Multiple simultaneous tests, automated |
-
----
-
-## Testing Platform Comparison
-
-| Platform | Best For | Limitations |
-|----------|----------|-------------|
-| Google Optimize | Beginners, free tier | Sunsetting, limited features |
-| VWO | Mid-market, visual editor | Can be slow, limited targeting |
-| Optimizely | Enterprise, complex tests | Expensive, learning curve |
-| LaunchDarkly | Dev-centric, feature flags | Not optimized for marketing |
-| Custom | Full control | Development cost |
-
-### Key Features to Look For
-
-- Visual editor for non-developers
-- Robust statistical engine
-- Segment targeting
-- Integrations (analytics, CDP, etc.)
-- Flicker prevention
-- Mutually exclusive experiments
+| 成熟度 | 测试/月 | 特征 |
+|--------|--------|------|
+| 初级 | 1-2 | 手动、临时 |
+| 发展中 | 4-6 | 规律节奏 |
+| 高级 | 10-20 | 并行测试 |
+| 专家 | 20+ | 多组并行、自动化 |

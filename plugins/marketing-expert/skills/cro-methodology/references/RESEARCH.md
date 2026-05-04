@@ -1,220 +1,212 @@
-# CRO Research Methods & Tools
+# CRO 调研方法与工具
 
-Don't guess why visitors don't convert. Use these methods to discover the truth.
+不要猜访客为什么不转化。用这些方法发现真相。
 
-## Research Framework
+## 调研框架
 
-### Quantitative (What is happening)
-- Analytics data
-- Heatmaps
-- Click tracking
-- Funnel analysis
-- A/B test results
+### 定量（发生了什么）
+- 分析数据
+- 热力图
+- 点击追踪
+- 漏斗分析
+- A/B 测试结果
 
-### Qualitative (Why it's happening)
-- User surveys
-- Customer interviews
-- Usability testing
-- Session recordings
-- Support analysis
+### 定性（为什么发生）
+- 用户调研
+- 客户访谈
+- 可用性测试
+- 会话录制
+- 客服分析
 
-**Both are essential.** Quantitative shows WHERE problems are. Qualitative shows WHY they exist.
+**两者都不可或缺。** 定量告诉你问题在哪，定性告诉你为什么。
 
-## Analytics Analysis
+## 数据分析
 
-### Key Reports
+### 关键报告
 
-**Funnel Visualization**
-- Where do visitors drop off?
-- Which steps have highest abandonment?
-- Do patterns differ by traffic source?
+**漏斗可视化**
+- 访客在哪里流失？
+- 哪步放弃率最高？
+- 不同流量来源有差异吗？
 
-**Landing Page Performance**
-- Bounce rate by page
-- Time on page
-- Exit rate vs. bounce rate
+**落地页表现**
+- 各页面跳出率
+- 页面停留时间
+- 退出率 vs 跳出率
 
-**Traffic Source Analysis**
-- Conversion rate by source
-- Behavior differences by channel
-- Quality vs. quantity of traffic
+**流量来源分析**
+- 各渠道转化率
+- 不同渠道行为差异
+- 流量质量 vs 数量
 
-**Device/Browser Analysis**
-- Mobile vs. desktop conversion
-- Browser-specific issues
-- Page speed by device
+**设备/浏览器分析**
+- 移动端 vs 桌面端转化
+- 浏览器特定问题
+- 各设备页面速度
 
-### Red Flag Metrics
+### 红旗指标
 
-- Bounce rate > 70% on key pages
-- Exit rate spikes at specific steps
-- Mobile conversion << desktop (check UX)
-- High traffic, low conversion pages
-- Long time on checkout pages (confusion)
+- 关键页面跳出率 > 70%
+- 特定步骤退出率飙升
+- 移动端转化远低于桌面端（检查 UX）
+- 高流量低转化页面
+- 结算页停留时间长（困惑信号）
 
-## User Surveys
+## 用户调研
 
-### On-Site Surveys (Hotjar, Qualaroo)
+### 站内调研（Hotjar、Qualaroo）
 
-**Exit intent surveys**:
-- "What stopped you from [action] today?"
-- "What's the one thing we could change to make you [action]?"
+**退出意图调研**：
+- "什么阻止了你今天 [行动]？"
+- "我们能改变哪一件事让你 [行动]？"
 
-**Post-purchase surveys**:
-- "What almost stopped you from buying?"
-- "What convinced you to choose us?"
-- "How would you describe [product] to a friend?"
+**购后调研**：
+- "购买前最大的犹豫是什么？"
+- "什么最终说服了你？"
+- "你会怎么向朋友描述这个产品？"
 
-**Browsing surveys** (trigger after X seconds):
-- "What brought you here today?"
-- "Is there anything you can't find?"
+### 邮件调研
 
-### Email Surveys
+**新客户（7 天内）**：
+- "购买前最大的犹豫？"
+- "什么最终说服了你？"
+- "一件可以改进的事？"
 
-**New customers (within 7 days)**:
-- "What was your biggest hesitation before buying?"
-- "What finally convinced you?"
-- "What's one thing we could improve?"
+**未转化用户（放弃购物车）**：
+- "我们注意到你没有完成订单，什么阻止了你？"
+- 只问一个问题以提高回复率
 
-**Non-converters (abandoned cart)**:
-- "We noticed you didn't complete your order. What stopped you?"
-- Keep it to ONE question for higher response rates
+### 调研最佳实践
 
-### Survey Best Practices
+1. 只问一个问题（最多 2-3 个）
+2. 发现阶段用开放式优于选择题
+3. 慎用时间触发
+4. 控制频率不扰民
+5. 长问卷给予激励
 
-1. Ask ONE question (max 2-3)
-2. Open-ended > multiple choice for discovery
-3. Time triggers thoughtfully
-4. Don't annoy—limit frequency
-5. Incentivize for longer surveys
+## 可用性测试
 
-## Usability Testing
+### DIY 测试（5-10 个用户就够了）
 
-### DIY Testing (5-10 users is enough)
+**测试任务**：
+1. 找到 [特定产品/信息]
+2. 完成 [主要操作]
+3. 理解 [价值主张]
+4. 比较 [选项/方案]
 
-**Tasks to test**:
-1. Find [specific product/information]
-2. Complete [primary action]
-3. Understand [value proposition]
-4. Compare [options/plans]
+**观察重点**：
+- 用户在哪里犹豫？
+- 他们说了什么？
+- 他们点击了什么但没得到预期结果？
+- 什么让他们沮丧？
 
-**What to observe**:
-- Where do users hesitate?
-- What do they say aloud?
-- What do they click expecting something different?
-- What frustrates them?
+### 5 秒测试
 
-### 5-Second Test
+展示页面 5 秒后问：
+- "这个页面是关于什么的？"
+- "你应该采取什么行动？"
+- "这是什么公司？"
 
-Show page for 5 seconds, then ask:
-- "What is this page about?"
-- "What action should you take?"
-- "What company is this?"
+测试价值主张清晰度和视觉层级。
 
-Tests clarity of value proposition and hierarchy.
+### 首次点击测试
 
-### First-Click Testing
+给用户一个任务，记录他们先点哪里：
+- 点的是对的元素吗？
+- 不同用户类型行为有差异吗？
 
-Give users a task, record where they click first:
-- Is it the right element?
-- Do different user types behave differently?
+## 会话录制（Hotjar、FullStory）
 
-## Session Recordings (Hotjar, FullStory)
+### 观察什么
 
-### What to Look For
+**愤怒点击**：快速连续点击 = 挫败
+**无效点击**：点击不可点击的元素
+**折返**：立刻返回
+**表单放弃**：哪个字段导致流失
+**滚动深度**：访客读到哪里？
 
-**Rage clicks**: Rapid clicking = frustration
-**Dead clicks**: Clicking non-clickable elements
-**U-turns**: Going back immediately
-**Form abandonment**: Which fields cause drop-off
-**Scroll depth**: How far do visitors read?
+### 优先级
 
-### Prioritization
+聚焦以下录制：
+- 高价值页面
+- 高流失点
+- 特定用户群（购买者 vs 未购买者）
 
-Focus on recordings from:
-- High-value pages
-- High drop-off points
-- Specific user segments (buyers vs. non-buyers)
+## 热力图
 
-## Heatmaps
+### 点击热力图
+- 什么被点击（什么没被）？
+- CTA 是否获得关注？
+- 不可点击的元素是否被点击？
 
-### Click Heatmaps
-- What gets clicked (and what doesn't)?
-- Are CTAs getting attention?
-- Are non-clickable elements being clicked?
+### 滚动热力图
+- 访客滚到哪里？
+- 多少人看到关键内容？
+- 在哪里停止阅读？
 
-### Scroll Heatmaps
-- How far do visitors scroll?
-- What percentage see key content?
-- Where do visitors stop reading?
+### 热力图洞察 → 行动
 
-### Move Heatmaps
-- Where does attention focus?
-- What gets ignored?
+| 发现 | 行动 |
+|------|------|
+| CTA 未被点击 | 测试位置、颜色、文案 |
+| 重要内容在首屏下方 | 上移或加锚点 |
+| 不可点击元素被点 | 让它可点击或移除 |
+| 用户很早停止滚动 | 改善首屏内容 |
 
-### Heatmap Insights → Actions
+## 竞品分析
 
-| Finding | Action |
-|---------|--------|
-| CTA not clicked | Test position, color, copy |
-| Important content below fold | Move up or add anchor |
-| Non-clickable element clicked | Make it clickable or remove |
-| Users stop scrolling early | Improve above-fold content |
+### 分析什么
 
-## Competitive Analysis
+- 价值主张
+- 定价/定位
+- 使用的社会证明
+- 回应的异议
+- 风险逆转
+- 引导流程
+- 邮件序列（注册体验！）
 
-### What to Analyze
+### 竞品 O/CO 挖掘
 
-- Value propositions
-- Pricing/positioning
-- Social proof used
-- Objections addressed
-- Risk reversal offers
-- Onboarding flows
-- Email sequences (sign up!)
+1. 读竞品评价（正面和负面）
+2. 记录客户提出的异议
+3. 记录竞品声称的优势
+4. 识别他们方法中的缺口
 
-### Competitive O/CO Mining
+## 客户访谈指南
 
-1. Read competitor reviews (positive and negative)
-2. Note objections customers raise
-3. Note what competitors claim as strengths
-4. Identify gaps in their approach
+### 访谈对象
 
-## Customer Interview Guide
+- 近期购买者（为什么买）
+- 近期未购买者（为什么没买）
+- 长期客户（什么留住他们）
+- 流失客户（为什么离开）
 
-### Who to Interview
+### 关键问题
 
-- Recent buyers (why they bought)
-- Recent non-buyers (why they didn't)
-- Long-term customers (what keeps them)
-- Churned customers (why they left)
+**购前**：
+- "什么触发你寻找解决方案？"
+- "你考虑了哪些替代方案？"
+- "什么差点阻止你购买？"
+- "什么最终说服你选择我们？"
 
-### Key Questions
+**购后**：
+- "你取得了什么成果？"
+- "什么比预期更难？"
+- "你会怎么向朋友评价我们？"
 
-**Pre-purchase**:
-- "What triggered you to look for a solution?"
-- "What alternatives did you consider?"
-- "What almost stopped you from buying?"
-- "What convinced you to choose us?"
+### 访谈技巧
 
-**Post-purchase**:
-- "What result have you achieved?"
-- "What's been harder than expected?"
-- "What would you tell a friend about us?"
+1. 让他们说（不要引导）
+2. 反复问"为什么"（5 Whys）
+3. 获取具体例子
+4. 录音获取原话（征得同意）
+5. 寻找跨访谈的共同模式
 
-### Interview Tips
+## 调研优先级
 
-1. Let them talk (don't lead)
-2. Ask "why" repeatedly (5 Whys)
-3. Get specific examples
-4. Record for quotes (with permission)
-5. Look for patterns across interviews
-
-## Research Prioritization
-
-1. Start with analytics (quick, free)
-2. Add on-site survey (1 question)
-3. Review existing support/chat logs
-4. Watch 10-20 session recordings
-5. Run 5 usability tests
-6. Deep-dive interviews (ongoing)
+1. 从分析数据开始（快速、免费）
+2. 加一个站内调研（1 个问题）
+3. 查看现有客服/聊天记录
+4. 看 10-20 段会话录制
+5. 跑 5 个可用性测试
+6. 深度访谈（持续进行）
