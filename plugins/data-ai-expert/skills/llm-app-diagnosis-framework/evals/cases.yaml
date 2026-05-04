@@ -1,0 +1,35 @@
+cases:
+  - id: diagnose_hallucination
+    prompt: "Our RAG app keeps making up citations that don't exist in the retrieved documents. Which layer should I fix this in and how?"
+    fixtures: []
+    rubric:
+      - "uses four-layer diagnosis framework (input/retrieval/reasoning/output)"
+      - "identifies output-side as primary layer for citation hallucination"
+      - "recommends citation alignment strategy and output parser hardening"
+    trigger_expected: true
+
+  - id: model_vs_prompt_first
+    prompt: "I'm building a legal document analyzer. Should I use a single prompt and let the model figure out the analysis steps, or should I design a multi-step chain?"
+    fixtures: []
+    rubric:
+      - "frames the decision as model-first vs prompt-first"
+      - "recommends testing model-first on 10 cases before committing"
+      - "notes legal domain needs audit trail, favoring prompt-first for traceability"
+    trigger_expected: true
+
+  - id: eval_first_loop
+    prompt: "We've been tweaking our prompt for 3 weeks but our accuracy hasn't improved. What are we doing wrong?"
+    fixtures: []
+    rubric:
+      - "identifies missing eval baseline as root cause"
+      - "prescribes eval-first approach: build eval cases before touching prompt"
+      - "recommends falsifiable change queue with per-change eval binding"
+    trigger_expected: true
+
+  - id: negative_slow_api
+    prompt: "Our API is slow, help me add caching."
+    fixtures: []
+    rubric:
+      - "does not activate LLM diagnosis framework"
+      - "API performance optimization is not an LLM application problem"
+    trigger_expected: false

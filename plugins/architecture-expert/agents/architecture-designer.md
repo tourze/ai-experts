@@ -5,6 +5,7 @@ description: |
 tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
   - system-design
+  - architecture-decision-records
   - protocol-freezing-patterns
   - cross-platform-adapter-patterns
   - hierarchical-matching-systems

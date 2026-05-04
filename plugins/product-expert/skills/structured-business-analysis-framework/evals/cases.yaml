@@ -1,0 +1,37 @@
+cases:
+  - id: revenue_decline
+    prompt: "Our Q3 revenue is down 15%, the CEO wants to know why and what to do. Help me structure this analysis."
+    fixtures: []
+    rubric:
+      - "starts with 5W2H problem framing to narrow scope"
+      - "builds MECE hypothesis tree covering market/competition/customer/product/channel"
+      - "labels each finding with evidence level (fact/inference/assumption)"
+      - "selects analysis models by problem type, not framework checklisting"
+    trigger_expected: true
+
+  - id: market_entry
+    prompt: "Should we enter the Southeast Asian market? Give me a structured analysis plan."
+    fixtures: []
+    rubric:
+      - "uses 5W2H to clarify which countries, what product, what timeline"
+      - "selects PESTEL for macro + Five Forces for industry attractiveness"
+      - "explains why other frameworks (BMC, 4P) are not the primary tools"
+      - "designs minimum verification plan for key assumptions"
+    trigger_expected: true
+
+  - id: evidence_layering
+    prompt: "The board presentation says 'market is growing 20% YoY' but I need to verify this claim before using it in our strategy."
+    fixtures: []
+    rubric:
+      - "classifies the growth claim as 'assumption' or 'to-be-confirmed'"
+      - "designs verification plan: data source, method, pass criteria, disconfirming signal"
+      - "distinguishes between internal data that can be checked now vs external data needing research"
+    trigger_expected: true
+
+  - id: negative_database_query
+    prompt: "Write a SQL query to find our top 10 customers by revenue."
+    fixtures: []
+    rubric:
+      - "does not activate business analysis framework"
+      - "SQL query writing is a data engineering task, not business analysis"
+    trigger_expected: false

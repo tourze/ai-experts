@@ -5,6 +5,7 @@ description: |
 tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
   - llm-app-design-pipeline
+  - llm-app-diagnosis-framework
   - prompt-engineering-patterns
   - llm-evaluation
   - model-first-reasoning

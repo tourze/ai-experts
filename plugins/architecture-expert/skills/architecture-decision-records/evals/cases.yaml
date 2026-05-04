@@ -1,0 +1,35 @@
+cases:
+  - id: write_adr
+    prompt: "We need to switch from PostgreSQL to MongoDB for our event log. Write an ADR to document this decision."
+    fixtures: []
+    rubric:
+      - "uses ADR format: Context → Decision → Consequences"
+      - "mentions rejected alternatives and why"
+      - "notes consequences including migration cost and operational risk"
+    trigger_expected: true
+
+  - id: service_boundary
+    prompt: "Our monolith is getting too big. Help me decide how to split it into services based on data ownership boundaries."
+    fixtures: []
+    rubric:
+      - "analyzes data ownership as primary split signal"
+      - "covers change cadence and elasticity requirements"
+      - "warns against splitting across strong consistency boundaries"
+    trigger_expected: true
+
+  - id: api_versioning
+    prompt: "We need to change the response format of our mobile API. How do I handle versioning and breaking changes safely?"
+    fixtures: []
+    rubric:
+      - "recommends transition period with old and new fields coexisting"
+      - "gives concrete deprecation timeline"
+      - "warns against direct field removal or type change"
+    trigger_expected: true
+
+  - id: negative_choose_database
+    prompt: "Should I use PostgreSQL or MySQL for my new project?"
+    fixtures: []
+    rubric:
+      - "does not activate ADR skill"
+      - "technology selection without architectural decision context belongs to db-schema-design"
+    trigger_expected: false

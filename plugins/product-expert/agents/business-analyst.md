@@ -6,6 +6,7 @@ tools: Read, Glob, Grep, Write, Edit, WebSearch, WebFetch
 skills:
   - financial-analyst
   - mckinsey-7-step
+  - structured-business-analysis-framework
   - evidence-quality-framework
   - pestel-analysis
   - porters-five-forces
