@@ -20,6 +20,7 @@
 | Skill | 用途 |
 |-------|------|
 | `api-trace-reader` | 只读追踪接口、任务、事件与定时任务调用链 |
+| `architecture-design-workflow` | 端到端架构设计三阶段工作流：需求澄清 → 方案设计（ADR + 假设管理） → 落地拆解 |
 | `architecture-reviewer` | 评审架构、文档或代码库的设计质量 |
 | `backend-to-frontend-handoff-docs` | 为前后端协作输出接口交接文档 |
 | `cross-platform-adapter-patterns` | 设计跨平台抽象层、适配器接口与运行时分支 |

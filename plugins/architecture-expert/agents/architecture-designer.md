@@ -4,6 +4,7 @@ description: |
   当需要从零设计系统架构、服务接口、数据流和部署拓扑时使用——覆盖需求澄清、高层方案、协议版本化、跨平台适配和任务拆解。可以在用户指定目录下创建架构设计文档。
 tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
+  - architecture-design-workflow
   - system-design
   - architecture-decision-records
   - protocol-freezing-patterns
