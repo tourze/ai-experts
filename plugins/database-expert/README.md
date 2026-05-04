@@ -22,8 +22,7 @@
 
 | Agent | 用途 |
 |-------|------|
-| `db-reviewer` | 只读审查 MySQL/PostgreSQL/Redis schema、索引、SQL、缓存模式与高可用配置 |
-| `db-lifecycle-engineer` | 端到端数据库全生命周期编排：schema 设计、索引策略、SQL 优化、高可用方案、分区、缓存与数据建模，可写设计文档与迁移方案 |
+| `db-lifecycle-engineer` | 端到端数据库全生命周期：工程师模式可写设计文档与迁移方案，审查模式只读审查 MySQL/PostgreSQL/Redis schema、索引、SQL、缓存模式与高可用配置 |
 
 ## Hooks
 
