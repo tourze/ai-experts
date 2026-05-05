@@ -1,10 +1,3 @@
-## 适用场景
-- 配置 bundle 段（图标、资源、sidecar、安装器）
-- macOS 公证、Windows Authenticode 签名
-- `tauri-plugin-updater` 自动更新
-- GitHub Actions 多平台 CI/CD
-- 产物体积优化
-
 ## 核心约束
 - 签名密钥绝不提交仓库；CI secrets 注入
 - macOS 需 Developer ID + Notarization

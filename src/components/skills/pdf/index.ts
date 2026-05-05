@@ -12,6 +12,12 @@ export const pdfSkill = defineSkill({
   id: "pdf",
   fullName: "PDF",
   description: "当用户要读取、填写表单、批注、分析结构或转换 PDF 文件时使用。",
+  useCases: [
+    "用户要处理 `.pdf` 文件本身，而不是只抽文本。",
+    "需要判断 PDF 是否可填写、提取字段信息、按 JSON 回填、或通过注释方式写入内容。",
+    "需要把 PDF 渲染成图片，或根据坐标/框选信息做人工校验。",
+    "纯抽取场景优先看 [pdf-extraction](references/pdf-extraction.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -97,13 +103,5 @@ export const pdfSkill = defineSkill({
       summary: "Reference material for pdf.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for pdf.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

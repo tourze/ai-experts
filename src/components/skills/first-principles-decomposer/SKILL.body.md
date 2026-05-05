@@ -1,11 +1,3 @@
-## 适用场景
-
-- 用户说“从第一性原理重想”“从头来过”“我们是不是默认了太多”。
-- 现有做法很复杂、很贵，或者“行业都这么做”的理由站不住。
-- 需要挑战既有框架、重新定义问题或重建方案。
-- 分解后可配合 [inversion-strategist](references/inversion-strategist.md) 反推失败路径。
-- 需要借别的行业做类比时，可接 [cross-pollination-engine](../cross-pollination-engine/SKILL.md)。
-
 ## 核心约束
 
 - 先用一句话定义问题，再开始拆，不要一边拆一边换题。

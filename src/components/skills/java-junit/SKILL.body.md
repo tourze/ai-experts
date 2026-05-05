@@ -1,12 +1,5 @@
 > 通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 [testing-patterns](testing-expert:testing-patterns)。本 skill 只覆盖 Java 特有语法与工具。
 
-## 适用场景
-
-- 为 Java / Spring 代码补 JUnit 5 单元测试或重构现有测试。
-- 需要参数化测试、异常断言、Mockito 隔离与测试命名规范。
-- 想区分单元测试、切片测试和 `@SpringBootTest` 的使用边界。
-- 如果测试对象本身来自服务层设计问题，可回看 [spring-boot-layering](../spring-boot-layering/SKILL.md)。
-
 ## 核心约束
 
 - 单元测试优先：能不用 Spring 容器就不用，避免用 `@SpringBootTest` 包住纯业务类。

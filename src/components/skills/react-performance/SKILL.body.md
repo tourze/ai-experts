@@ -1,10 +1,3 @@
-## 适用场景
-- 页面、组件树或交互卡顿，需要确认热点。
-- 决定是否上 memo / useMemo / useCallback / 虚拟列表 / 懒加载。
-- 组件因外部 store（XState / Redux / Zustand / Nanostores / Context）订阅导致整片重渲染。
-- 需要把 derived state 从 useEffect 迁回渲染期，或用 startTransition / useDeferredValue 处理非紧急更新。
-- 用 React DevTools Profiler、浏览器 Performance、bundle 分析工具找瓶颈。
-
 ## 交叉引用
 - 请求瀑布：`web-performance-diagnosis`。
 - Bundle 体积：`bundle-optimization`。

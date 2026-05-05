@@ -1,10 +1,3 @@
-## 适用场景
-
-- 需要在“效果、成本、维度、语言覆盖、领域适配”之间为 embedding 选型。
-- 需要定义 chunk size、chunk overlap、metadata 策略与 query/document 双塔约束。
-- 检索召回差，但还不能确认问题出在 embedding、切块还是索引层。
-- 相关 skill：[similarity-search-patterns](../similarity-search-patterns/SKILL.md)、[vector-index-tuning](../vector-index-tuning/SKILL.md)、[rag-auditor](../rag-auditor/SKILL.md)。
-
 ## 核心约束
 
 - 先定任务，再选模型：FAQ 检索、长文档问答、代码检索、多语种检索的最优解不一样。

@@ -12,6 +12,11 @@ export const analyticsTrackingSkill = defineSkill({
   id: "analytics-tracking",
   fullName: "埋点与追踪（analytics-tracking）",
   description: "在需要规划、审计或排查 GA4/GTM 埋点时使用。",
+  useCases: [
+    "从零搭建 GA4 / GTM 埋点方案。",
+    "审计现有事件是否漏记、重记、命名混乱或参数失真。",
+    "排查“Preview 里触发了，但 GA4 没收 / Ads 没认”的问题。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -65,13 +70,5 @@ export const analyticsTrackingSkill = defineSkill({
       summary: "Reference material for analytics-tracking.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for analytics-tracking.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

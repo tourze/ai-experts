@@ -1,10 +1,3 @@
-## 适用场景
-
-- 需要回答“这个 LLM 应用到底有没有变好”，而不是只看单次样例。
-- 需要比较不同模型、不同 prompt、不同 agent 流程的质量差异。
-- 需要建立离线样本集、评分 rubric、回归报警与上线门槛。
-- 相关 skill：[prompt-engineering-patterns](../prompt-engineering-patterns/SKILL.md)、[rag-auditor](../rag-auditor/SKILL.md)。
-
 ## 核心约束
 
 - 先定义任务成功标准，再谈指标；没有目标函数的 evaluation 没有意义。

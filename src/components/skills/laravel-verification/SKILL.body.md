@@ -1,10 +1,3 @@
-## 适用场景
-
-- 提交 PR 前、重构后、依赖升级后、预发布前需要跑一套完整的 Laravel 验证。
-- 需要把“本地能跑”提升为“格式、静态分析、测试、迁移和运行时配置都过关”。
-- 需要把验证命令落到 CI 或交接文档中。
-- 代码级实现和安全基线分别参考 [laravel-patterns](../laravel-patterns/SKILL.md) 与 [laravel-security](../laravel-security/SKILL.md)。
-
 ## 核心约束
 
 - 环境检查是第一关：PHP、Composer、Artisan、`.env` 与数据库连接不对时，后续命令没有意义。

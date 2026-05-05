@@ -10,6 +10,11 @@ export const reactNativeMetroConfigSkill = defineSkill({
   id: "react-native-metro-config",
   fullName: "Metro 配置",
   description: "当用户要配置或排查 React Native Metro 打包器时使用。用户提到 Metro 配置、watchFolders、inlineRequires、打包慢、自定义 resolver 时触发。",
+  useCases: [
+    "配置 Monorepo 下 Metro 的路径解析和包发现时。",
+    "添加自定义平台扩展名（.tauri.ts、.macos.ts）时。",
+    "排查热更新失效、模块找不到或 CI 打包 OOM 时。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -55,13 +60,5 @@ export const reactNativeMetroConfigSkill = defineSkill({
       summary: "Reference material for react-native-metro-config.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for react-native-metro-config.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

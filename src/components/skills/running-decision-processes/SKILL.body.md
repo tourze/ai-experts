@@ -1,9 +1,3 @@
-## 适用场景
-- 多方分歧、迟迟无法拍板、需要明确决策人和输入边界。
-- 需要补充经验参考时可阅读 [references/guest-insights.md](references/guest-insights.md)。
-- 做失败预演或事前验尸（pre-mortem）时，可配合 `inversion-strategist` 与 [planning-under-uncertainty](../planning-under-uncertainty/SKILL.md)。
-- 需要把争议证据转成先验、后验、行动阈值和敏感性报告时，配合 `what-if-oracle`。
-
 ## 核心约束
 - 先定义决策问题、影响范围、不可逆程度和 deadline，再设计流程。
 - 明确谁提供输入、谁决策、谁执行，避免“所有人都参与所以没人负责”。

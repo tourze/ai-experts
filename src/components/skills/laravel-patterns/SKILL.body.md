@@ -1,12 +1,5 @@
 原 `laravel-layering-patterns` 已合并入本 skill，架构与实现两层统一。
 
-## 适用场景
-
-- 设计或重构控制器、Action、Service、Query Object、API 资源和队列作业边界。
-- 需要从需求直接落到 Artisan 命令、Eloquent 关系、FormRequest、JsonResource 或 Livewire 组件。
-- 深入专题按需加载：`references/eloquent.md`、`routing.md`、`queues.md`、`livewire.md`、`testing.md`。
-- 架构边界/安全/测试/发布检查切换到 `laravel-security`、`laravel-tdd`、`laravel-verification`。
-
 ## 核心约束
 
 - 目标默认 Laravel 10+ / PHP 8.2+，使用严格类型、枚举、只读依赖和返回类型。

@@ -12,6 +12,13 @@ export const webPerformanceDiagnosisSkill = defineSkill({
   id: "web-performance-diagnosis",
   fullName: "Web 性能诊断",
   description: "当用户要系统诊断 Web 前端性能瓶颈、修复或优化 Core Web Vitals（LCP/INP/CLS）、建立性能预算、做跨层（网络→渲染→运行时）性能分析、审计网站质量、消除请求瀑布流或解决 hydration/浏览器渲染模式问题时使用。",
+  useCases: [
+    "性能回归排查、跨层瓶颈定位、性能预算建立",
+    "LCP/INP/CLS 单项指标深度优化与反模式修复",
+    "质量审计（性能 / a11y / SEO / best practices）",
+    "请求瀑布流消除、Suspense 边界优化",
+    "浏览器渲染模式（hydration / resource hints / content-visibility / 事件监听）",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -97,13 +104,5 @@ export const webPerformanceDiagnosisSkill = defineSkill({
       summary: "Reference material for web-performance-diagnosis.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for web-performance-diagnosis.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

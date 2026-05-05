@@ -10,6 +10,12 @@ export const seoSkill = defineSkill({
   id: "seo",
   fullName: "搜索引擎优化（seo）",
   description: "当用户要提升搜索可见性、修复技术 SEO、优化元数据、结构化数据、索引策略或 Search Console 问题时使用。",
+  useCases: [
+    "审计页面是否可抓取、可索引、可规范化。",
+    "优化标题、描述、canonical、robots、sitemap 和结构化数据。",
+    "评估内容 E-E-A-T 信号和页面级 SEO 质量。",
+    "为内容页、产品页或栏目页补齐搜索可见性基础。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -47,13 +53,5 @@ export const seoSkill = defineSkill({
       summary: "Reference material for seo.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for seo.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

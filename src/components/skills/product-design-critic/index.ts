@@ -10,6 +10,10 @@ export const productDesignCriticSkill = defineSkill({
   id: "product-design-critic",
   fullName: "产品设计批评",
   description: "当用户要批判性审视软件产品界面、交互流程、信息层级、信任感或治理暴露时使用（产品策略级设计审视）。像素级 UI 实现质量审查用 `frontend-design-review`；交互可用性启发式诊断用 `ux-heuristics`。",
+  useCases: [
+    "评审页面、工作流、卡片、配置面板、聊天体验或多角色治理界面。",
+    "需要结合用户路径和竞争上下文时，可配合 [customer-journey-map](../customer-journey-map/SKILL.md)、[obviously-awesome](../competitive-intelligence/SKILL.md) 与 [competitive-teardown](../competitive-intelligence/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -47,13 +51,5 @@ export const productDesignCriticSkill = defineSkill({
       summary: "Reference material for product-design-critic.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for product-design-critic.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

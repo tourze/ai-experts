@@ -1,10 +1,3 @@
-## 适用场景
-
-- 编写或审查测试时，需要确认结构、命名、隔离策略和 mock 边界是否正确。
-- 需要选择 fixture 策略、参数化方案或区分 mock/stub/fake 的适用场景。
-- 排查测试脆弱、过度 mock、顺序依赖或低信息量断言时做对照。
-- 各语言具体语法/工具见对应 skill：`go-testing-patterns`、`python-testing-patterns`、`rust-testing`、`java-junit`、`php-testing`、`javascript-typescript-jest`。
-
 ## 通用测试原则
 
 ### AAA 结构（Arrange / Act / Assert）

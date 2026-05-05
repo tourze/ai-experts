@@ -10,6 +10,12 @@ export const refactoringPatternsSkill = defineSkill({
   id: "refactoring-patterns",
   fullName: "refactoring-patterns",
   description: "当用户要选择命名化重构手法、处理代码异味或在不改行为下改结构时使用。纯格式整理或单次重命名不需要。",
+  useCases: [
+    "适合需要明确\"该用哪个重构动作、按什么顺序做\"的情况。",
+    "适合在复杂函数、重复逻辑、条件分支和数据组织问题上做精准整改。",
+    "本 skill 只回答「该选哪个手法、动作序列怎么排」；流程门禁（测试基线、范围界定、回滚）由 `coding-expert/refactoring-checklist` 负责。",
+    "交叉引用：整体简化用 `complexity-reducer`；设计原则校验用 `software-design`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -71,13 +77,5 @@ export const refactoringPatternsSkill = defineSkill({
       summary: "Reference material for refactoring-patterns.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for refactoring-patterns.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

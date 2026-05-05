@@ -1,9 +1,3 @@
-## 适用场景
-
-- 为 RN 0.76+ New Architecture 创建原生模块时。
-- 从旧 NativeModules 迁移到 TurboModule 时。
-- 需要定义 Spec、配置 Codegen 或排查类型不匹配崩溃时。
-
 ## 核心约束
 
 - Spec 导出 `interface Spec extends TurboModule`，类型必须精确。

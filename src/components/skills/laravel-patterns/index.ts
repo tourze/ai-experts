@@ -10,6 +10,12 @@ export const laravelPatternsSkill = defineSkill({
   id: "laravel-patterns",
   fullName: "Laravel 开发模式",
   description: "当用户需要处理 Laravel 分层架构、Service/Action 边界、Eloquent 模型、Migration、FormRequest、JsonResource、Job、Livewire、scopeBindings、多租户路由或 N+1 问题时使用。",
+  useCases: [
+    "设计或重构控制器、Action、Service、Query Object、API 资源和队列作业边界。",
+    "需要从需求直接落到 Artisan 命令、Eloquent 关系、FormRequest、JsonResource 或 Livewire 组件。",
+    "深入专题按需加载：`references/eloquent.md`、`routing.md`、`queues.md`、`livewire.md`、`testing.md`。",
+    "架构边界/安全/测试/发布检查切换到 `laravel-security`、`laravel-tdd`、`laravel-verification`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -55,13 +61,5 @@ export const laravelPatternsSkill = defineSkill({
       summary: "Reference material for laravel-patterns.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for laravel-patterns.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

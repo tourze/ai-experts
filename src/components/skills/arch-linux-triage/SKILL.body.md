@@ -1,9 +1,3 @@
-## 适用场景
-
-- 用户提到 `pacman`、`mkinitcpio`、`systemd`、AUR、滚动升级后故障、启动失败或驱动回退。
-- 需要先做基线采样时，先运行 [system-diagnostics](../system-diagnostics/SKILL.md)。
-- 涉及 DNS、链路或端口不可达时，联动 [network-troubleshooter](../network-troubleshooter/SKILL.md)。
-
 ## 核心约束
 
 - 严禁建议 `pacman -Sy` 单独刷新数据库；Arch 不允许 partial upgrade。

@@ -1,10 +1,3 @@
-## 适用场景
-
-- 代码正在构造大数组、一次性读取大文件、批量读取分页 API，导致内存上涨或触发 `memory_limit`。
-- 需要把生产者改成边生成边消费，例如 CSV 导入、日志扫描、导出流水线、分页接口聚合。
-- 需要解释 `yield`、`return`、`Generator`、`foreach`、`yield from` 和 `getReturn()` 的行为差异。
-- 需要判断某段代码应该返回 `array`、`iterable` 还是 `\Generator`。
-
 ## 核心约束
 
 - 只有调用方能顺序消费数据、且不需要随机访问或多次遍历时，才用 `yield` 替代数组。

@@ -1,11 +1,3 @@
-## 适用场景
-
-- 用户要新建、修复或重构 `.base` 文件。
-- 用户要定义 Bases 的 `filters`、`formulas`、`properties`、`summaries` 或 `views`。
-- 用户要做 table / list / cards / map 视图切换，或想把 Base 嵌入笔记。
-- 用户要把某个查询逻辑从 Dataview 风格思路改写成官方 Bases 语法。
-- 如果用户要通过命令行查询或操作 Base 条目，使用 Obsidian CLI 工具。
-
 ## 核心约束
 
 - `.base` 文件必须是合法 YAML。Bases 没有 Dataview / SQL 风格的 `from`、`source` 段，结果集完全由 `filters` 决定。

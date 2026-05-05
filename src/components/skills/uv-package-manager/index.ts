@@ -10,6 +10,14 @@ export const uvPackageManagerSkill = defineSkill({
   id: "uv-package-manager",
   fullName: "uv 包管理",
   description: "当用户要用 uv 初始化 Python 项目、管理依赖、虚拟环境、lockfile、workspace 或 CI 工作流时使用。",
+  useCases: [
+    "新建 Python 项目并统一依赖、解释器和虚拟环境管理方式。",
+    "现有项目要从 `pip` / `requirements.txt` 迁移到 `pyproject.toml` + `uv.lock`。",
+    "需要用 `uv run` 统一执行测试、类型检查和脚本。",
+    "更完整的 workspace、Docker、CI 和 lockfile 工作流见 [references/advanced-patterns.md](references/advanced-patterns.md)。",
+    "需要把测试工具链串起来时，联动 [python-testing-patterns](../python-testing-patterns/SKILL.md)。",
+    "需要把 mypy/pyright 等静态检查纳入开发流时，联动 [python-type-safety](../python-type-safety/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -23,13 +31,5 @@ export const uvPackageManagerSkill = defineSkill({
       summary: "Reference material for uv-package-manager.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for uv-package-manager.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

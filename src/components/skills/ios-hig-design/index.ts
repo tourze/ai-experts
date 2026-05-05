@@ -10,6 +10,11 @@ export const iosHigDesignSkill = defineSkill({
   id: "ios-hig-design",
   fullName: "iOS HIG 设计",
   description: "当用户要按 iOS HIG 设计 iPhone/iPad 界面、导航结构、安全区域、系统组件、触控反馈或无障碍体验时使用。",
+  useCases: [
+    "设计或评审 iPhone / iPad 的 SwiftUI、UIKit 界面。",
+    "用户提到安全区域、Dynamic Island、导航结构、Dynamic Type、SF Symbols 或 HIG 合规。",
+    "需要把“看起来像 iOS”落实到具体布局、组件和交互决策。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -103,13 +108,5 @@ export const iosHigDesignSkill = defineSkill({
       summary: "Reference material for ios-hig-design.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for ios-hig-design.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

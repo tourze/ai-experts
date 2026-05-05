@@ -1,8 +1,3 @@
-## 适用场景
-- 平台策略、组织协作、复杂业务链路、生态位博弈或长期副作用分析。
-- 需要经验参考时可阅读 [references/guest-insights.md](references/guest-insights.md)。
-- 涉及流程或不确定性时，可配合 [process-optimization](../process-optimization/SKILL.md) 与 [planning-under-uncertainty](../planning-under-uncertainty/SKILL.md)。
-
 ## 核心约束
 - 先识别系统边界、参与方、激励与流量，再讨论解决方案。
 - 重点看反馈回路、延迟、库存与流量，不要只看单点事件。

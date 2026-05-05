@@ -10,6 +10,10 @@ export const designingGrowthLoopsSkill = defineSkill({
   id: "designing-growth-loops",
   fullName: "设计增长飞轮",
   description: "当用户要设计增长飞轮、邀请推荐、内容供给循环、产品驱动获客、留存复利，或分析 S 曲线增长阶段、跨越鸿沟策略、PLG 产品自服务增长就绪度时使用。",
+  useCases: [
+    "产品已有一定留存基础，想把拉新、激活、留存和分享串成闭环。",
+    "需要结合 [references/guest-insights.md](references/guest-insights.md) 提炼常见增长模式或限制条件。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -47,13 +51,5 @@ export const designingGrowthLoopsSkill = defineSkill({
       summary: "Reference material for designing-growth-loops.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for designing-growth-loops.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

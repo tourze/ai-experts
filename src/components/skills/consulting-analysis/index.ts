@@ -2,7 +2,6 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
-  defineReference,
   defineSkill,
 } from "../../sdk";
 
@@ -10,18 +9,14 @@ export const consultingAnalysisSkill = defineSkill({
   id: "consulting-analysis",
   fullName: "咨询分析",
   description: "当用户要产出咨询级研究报告、市场分析、消费者洞察、品牌研究、财务分析、竞品情报或投融资尽调文档时使用。适合“先搭分析框架，再基于可靠数据写成报告”的任务。",
+  useCases: [
+    "需要先搭章节骨架、分析模型和数据需求，再生成正式报告。",
+    "输出物是咨询风格文档，而不是随手总结或聊天式回答。",
+    "题目涉及市场规模、行业格局、品牌表现、增长路径、尽调结论等结构化研究。",
+    "当研究结果还要继续转成提案时，可联动 [proposal-writer](../proposal-writer/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  references: [
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for consulting-analysis.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
-  ],
 });

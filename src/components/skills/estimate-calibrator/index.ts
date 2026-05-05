@@ -10,6 +10,11 @@ export const estimateCalibratorSkill = defineSkill({
   id: "estimate-calibrator",
   fullName: "估算校准",
   description: "当用户要做三点估算、工作量校准、PERT 区间或不确定性说明时使用；输出最佳/最可能/最差估算、未知项与置信度说明。",
+  useCases: [
+    "研发排期、路线图沟通、项目承诺、Story points 或任务规模评估。",
+    "需要参考 [references/estimation-methods.md](references/estimation-methods.md)、[references/sizing-heuristics.md](references/sizing-heuristics.md)、[references/unknown-categories.md](references/unknown-categories.md)。",
+    "需要验证案例格式时，可查看 [evals/cases.yaml](evals/cases.yaml)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -47,13 +52,5 @@ export const estimateCalibratorSkill = defineSkill({
       summary: "Reference material for estimate-calibrator.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for estimate-calibrator.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

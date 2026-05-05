@@ -1,12 +1,3 @@
-## 适用场景
-
-- API、worker、定时任务需要补日志、指标和链路追踪。
-- 线上问题只能“猜”，需要把请求上下文和耗时显式打出来。
-- 需要统一日志字段、trace ID、错误标签和关键业务指标。
-- 异步链路上下文透传时，联动 [async-python-patterns](../async-python-patterns/SKILL.md)。
-- 后台任务监控和重试治理时，联动 [python-background-jobs](../python-background-jobs/SKILL.md)。
-- 需要把失败路径覆盖进测试时，联动 [python-testing-patterns](../python-testing-patterns/SKILL.md)。
-
 ## 核心约束
 
 - 默认使用结构化日志，不依赖随手 `print()`。

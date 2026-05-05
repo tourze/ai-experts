@@ -1,10 +1,3 @@
-## 适用场景
-
-- 设计库或应用的错误类型层级。
-- 在 thiserror（库）和 anyhow（二进制入口）之间做选择。
-- 消除生产代码中的 `unwrap()` / `expect()`。
-- 在 async 边界正确传播和转换错误。
-
 通用错误处理原则（三层模型、重试边界、部分失败）见 architecture-expert 的 error-handling-patterns skill。
 
 ## Rust 特有约束

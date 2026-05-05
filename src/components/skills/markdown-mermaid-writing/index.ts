@@ -11,6 +11,13 @@ export const markdownMermaidWritingSkill = defineSkill({
   id: "markdown-mermaid-writing",
   fullName: "Markdown 与 Mermaid 写作",
   description: "当用户要用 Markdown 和 Mermaid 产出报告、技术文档、研究材料、决策记录或图表型说明时使用。该技能把文本化文档和文本化图示作为默认交付标准。",
+  useCases: [
+    "需要用纯文本格式维护文档，并希望图表可审阅、可 diff、可版本管理。",
+    "用户要写技术方案、研究报告、状态汇报、PR 描述、决策记录或展示稿。",
+    "文档中需要流程图、时序图、状态图、甘特图、ER 图等 Mermaid 图示。",
+    "若不仅要源码，还要主题化 SVG 或终端 ASCII 成品图，继续使用 [pretty-mermaid](references/pretty-mermaid.md)。",
+    "若最终要导出 PDF，可继续使用 [md-to-pdf](../md-to-pdf/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -48,14 +55,6 @@ export const markdownMermaidWritingSkill = defineSkill({
       summary: "Reference material for markdown-mermaid-writing.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for markdown-mermaid-writing.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
   assets: [
     defineAsset({

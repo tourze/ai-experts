@@ -1,11 +1,3 @@
-## 适用场景
-
-* 审计或修复 Compose / View 的无障碍问题
-* TalkBack 播报不正确、缺失或冗余
-* 触摸目标过小导致误触
-* 色彩对比度不达标
-* 键盘 / Switch Access 无法操作
-
 ## 核心约束
 
 ### 1. 内容描述（contentDescription）

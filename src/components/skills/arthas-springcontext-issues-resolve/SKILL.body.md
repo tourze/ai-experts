@@ -1,10 +1,3 @@
-## 适用场景
-
-- Bean 找不到、注入到错误实现、`@Conditional` / `@Profile` 判断异常。
-- 线上环境配置值与预期不一致，需要确认属性来源。
-- 怀疑选错了 `ApplicationContext`、父子容器或类加载器。
-- 如果核心症状是 CPU 飙高而不是 Bean / 配置问题，转到 [arthas-cpu-high](../arthas-cpu-high/SKILL.md)。
-
 ## 核心约束
 
 - 优先只读查询：先用 `containsBean`、`getBeanNamesForType`、`Environment`，不要直接 `getBean()` 触发初始化副作用。

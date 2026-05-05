@@ -1,10 +1,3 @@
-## 适用场景
-
-- 为公共 API 编写 `///` 文档。
-- 区分注释（`//` 解释 why）和文档（`///` 解释 what/how）。
-- 补齐 `# Safety`、`# Errors`、`# Panics`、`# Examples` 段落。
-- 配置 `#![warn(missing_docs)]` 或 `rustdoc` lint。
-
 ## 核心约束
 
 - 注释只解释"为什么"；代码应该自解释"是什么"。

@@ -1,12 +1,3 @@
-## 适用场景
-
-- 需要把表格结果转成 line/bar/scatter/heatmap 等图表。
-- 用户并不缺数据，缺的是“该画什么图”和“怎么画得清楚”。
-- 需要给图表加注释、颜色策略、数值标签、可访问性约束。
-- 需要审查现有 Dashboard，判断哪些图选错了类型。
-- 需要把"数据形状 → 图表类型"规则内化成选型矩阵。
-- 相关 skill：[data-analysis](../data-analysis/SKILL.md)、[statistical-analysis](../statistical-analysis/SKILL.md)、[data-storytelling](../data-storytelling/SKILL.md)。
-
 ## 核心约束
 
 - 先回答“图要表达什么关系”，再选图；不要先有图型偏好。

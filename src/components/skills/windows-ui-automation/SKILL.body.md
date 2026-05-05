@@ -1,11 +1,3 @@
-## 适用场景
-
-- 需要使用 UIA / Win32 API 做窗口发现、元素定位、按钮点击、键盘输入和状态读取。
-- 需要先定义权限分层、阻断名单、超时和审计字段，再实施自动化动作。
-- 需要在 Windows 客体里复现自动化脚本或安全边界时，可联动 [prlctl-vm-control](../prlctl-vm-control/SKILL.md)。
-- 需要更细的等待策略、审计字段和威胁场景时，继续读取 [进阶模式](./references/advanced-patterns.md)、[安全示例](./references/security-examples.md) 与 [威胁模型](./references/threat-model.md)。
-- 如果问题其实属于驱动、回调或内核对象，不要继续堆 UIA 逻辑，转到 [windows-kernel-security](../windows-kernel-security/SKILL.md)。
-
 ## 核心约束
 
 - 默认 `read-only`；只有在用户明确需要时才提升到可点击、可输入的交互级别。

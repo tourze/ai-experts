@@ -10,6 +10,13 @@ export const industryDesignPresetsSkill = defineSkill({
   id: "industry-design-presets",
   fullName: "行业设计预设",
   description: "当用户要为特定行业产品选择视觉方向、配色、字体、风格或反模式时使用。",
+  useCases: [
+    "产品类型明确（fintech / healthcare / portfolio / gaming / spa 等），要快速锁定视觉方向。",
+    "需要同时决定 风格 + 配色 + 字体对 + 关键效果 + 反模式。",
+    "不知道某个行业\"不该做什么\"（比如 banking 忌 AI 紫粉渐变）。",
+    "要和 `modern-web-design`、[font-pairing-library](references/font-pairing-library.md)、[design-system-patterns](../design-system-patterns/SKILL.md) 联动。",
+    "详细预设查 [references/presets-catalog.md](references/presets-catalog.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -111,13 +118,5 @@ export const industryDesignPresetsSkill = defineSkill({
       summary: "Reference material for industry-design-presets.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for industry-design-presets.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

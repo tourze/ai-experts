@@ -1,12 +1,3 @@
-## 适用场景
-
-- 请求慢、任务慢、CPU 高、内存涨，需要先找瓶颈再优化。
-- 需要比较不同算法、数据结构或缓存策略的收益。
-- 需要给数据库、I/O、批处理、异步并发做针对性优化。
-- 更复杂的 NumPy、并行和缓存策略见 [references/advanced-patterns.md](references/advanced-patterns.md)。
-- 异步 I/O 优化时，联动 [async-python-patterns](../async-python-patterns/SKILL.md)。
-- 结构层面的复杂度治理时，联动 [python-design-patterns](../python-design-patterns/SKILL.md)。
-
 ## 核心约束
 
 - 没有测量就不要优化；先 profile，再改代码。

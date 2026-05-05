@@ -10,6 +10,14 @@ export const vueExpertJsSkill = defineSkill({
   id: "vue-expert-js",
   fullName: "Vue Expert（JavaScript）",
   description: "当用户用 JavaScript 编写 Vue 3、Pinia、composable、JSDoc 或 Vite 相关代码时使用。",
+  useCases: [
+    "需要用纯 JavaScript 编写 Vue 3 组件、composable、Pinia store 或 Vite 配置。",
+    "项目明确不启用 TypeScript，但仍要求通过 `@typedef`、`@param`、`@returns`、`@type` 保持 API 自描述。",
+    "需要把 Vue 2 Options API 逐步迁移到 Vue 3 Composition API，并保持文件仍为 `.js` / `.mjs` / `.vue`。",
+    "需要为 Vue JavaScript 代码补 Vitest 测试时，联动 `javascript-typescript-jest`。",
+    "涉及更广义的 ES 模块、异步流程或数据变换时，联动 `modern-javascript-patterns`。",
+    "需要展开某一专题时，按需查阅：\n- [JSDoc 标注参考](references/jsdoc-typing.md)\n- [Composable 模式](references/composables-patterns.md)\n- [组件结构](references/component-architecture.md)\n- [状态管理](references/state-management.md)\n- [测试模式](references/testing-patterns.md)",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -55,13 +63,5 @@ export const vueExpertJsSkill = defineSkill({
       summary: "Reference material for vue-expert-js.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for vue-expert-js.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

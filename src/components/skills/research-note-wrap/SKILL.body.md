@@ -1,13 +1,3 @@
-## 适用场景
-
-- 调研、分析、技术选型、issue 排障会话末尾，把讨论沉淀成可复用的 Markdown 结论笔记。
-- 输入是「当前对话已经产出的判断与依据」，不是 git 提交、不是已有多源 retrieval、不是外部会议/电话转写。
-- 反场景路由：
-  - coding 改完写 session journal → `session-finalization-workflow`
-  - 已有多批检索结果做来源分层综合
-  - 外部会议/电话转写 → `meeting-notes-and-actions`
-  - 复盘本轮合作并沉淀经验 → `session-finalization-workflow`
-
 ## 核心约束
 
 - 中文优先；技术标识符保留英文原样。

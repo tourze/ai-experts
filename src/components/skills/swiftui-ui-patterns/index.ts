@@ -10,6 +10,13 @@ export const swiftuiUiPatternsSkill = defineSkill({
   id: "swiftui-ui-patterns",
   fullName: "SwiftUI UI 模式",
   description: "当用户需要构建、重构或拆分 SwiftUI 视图、导航、Tab 架构、组件模式或依赖注入时使用。适用于新建界面、整理视图结构、收敛 Observation 用法和查找可复用范式。",
+  useCases: [
+    "新建 SwiftUI 页面、Tab 架构、导航流或弹层流程。",
+    "需要从现有项目中找可复用的 SwiftUI 组件模式。",
+    "需要给某个界面选择合适的 `TabView`、`NavigationStack`、`sheet`、`searchable` 或 `form` 方案。",
+    "需要整理视图文件顺序、拆分臃肿 `body`、收敛依赖注入或 `@Observable` 使用方式。",
+    "需要把\"可选 view model + bootstrapIfNeeded\"改成可维护模式。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -239,13 +246,5 @@ export const swiftuiUiPatternsSkill = defineSkill({
       summary: "Reference material for swiftui-ui-patterns.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for swiftui-ui-patterns.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

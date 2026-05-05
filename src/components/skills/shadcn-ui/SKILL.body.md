@@ -1,10 +1,3 @@
-## 适用场景
-
-- 初始化或接管一个使用 shadcn/ui 的前端项目。
-- 需要添加 Button、Dialog、Form、Table 等组件。
-- 需要从 Radix / Base UI、Tailwind v3 / v4、Registry 迁移或排障。
-- 需要核对 `components.json`、别名、`cn()` 工具和全局样式是否完整。
-
 ## 核心约束
 
 - shadcn/ui 不是运行时组件库，而是把组件源码拷进你的仓库；后续维护责任在项目内。

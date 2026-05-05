@@ -1,11 +1,3 @@
-## 适用场景
-
-- 需要创建、修改或排查 `*.module.ts`、`*.controller.ts`、`*.service.ts`、`dto/*.dto.ts`、Guard、Interceptor、Pipe、Filter。
-- 需要设计 NestJS 模块边界、依赖注入关系、REST/GraphQL 接口、Swagger 文档、认证授权或配置加载。
-- 需要同时处理 `TypeORM`、`Prisma`、`Passport/JWT`、`ConfigModule`、`class-validator`、Jest 单测或 E2E 测试。
-- 需要把 Express/原生 Node.js API 重构为 NestJS 分层结构时，先读 [Express 迁移参考](references/migration-from-express.md)。
-- 需要补强类型建模、Jest 细节或 OpenAPI 合同生成时，可联动现有技能 `typescript-type-safety`、`javascript-typescript-jest`、`openapi-spec-generation`。
-
 ## 核心约束
 
 - 控制器只负责协议层：参数解析、鉴权装饰器、响应码与 Swagger 注解；业务规则放在 Service/Use Case。

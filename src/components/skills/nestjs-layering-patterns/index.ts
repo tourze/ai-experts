@@ -10,6 +10,13 @@ export const nestjsLayeringPatternsSkill = defineSkill({
   id: "nestjs-layering-patterns",
   fullName: "NestJS Layering Patterns",
   description: "当需要设计或审查 NestJS 模块分层、DTO/ValidationPipe 输入边界、依赖注入或 Guard/Interceptor/Pipe 装配时使用。",
+  useCases: [
+    "需要创建、修改或排查 `*.module.ts`、`*.controller.ts`、`*.service.ts`、`dto/*.dto.ts`、Guard、Interceptor、Pipe、Filter。",
+    "需要设计 NestJS 模块边界、依赖注入关系、REST/GraphQL 接口、Swagger 文档、认证授权或配置加载。",
+    "需要同时处理 `TypeORM`、`Prisma`、`Passport/JWT`、`ConfigModule`、`class-validator`、Jest 单测或 E2E 测试。",
+    "需要把 Express/原生 Node.js API 重构为 NestJS 分层结构时，先读 [Express 迁移参考](references/migration-from-express.md)。",
+    "需要补强类型建模、Jest 细节或 OpenAPI 合同生成时，可联动现有技能 `typescript-type-safety`、`javascript-typescript-jest`、`openapi-spec-generation`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -71,13 +78,5 @@ export const nestjsLayeringPatternsSkill = defineSkill({
       summary: "Reference material for nestjs-layering-patterns.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for nestjs-layering-patterns.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

@@ -1,9 +1,3 @@
-## 适用场景
-
-- 设计或评审 iPhone / iPad 的 SwiftUI、UIKit 界面。
-- 用户提到安全区域、Dynamic Island、导航结构、Dynamic Type、SF Symbols 或 HIG 合规。
-- 需要把“看起来像 iOS”落实到具体布局、组件和交互决策。
-
 ## 核心约束
 
 - 优先使用系统组件与系统导航，不要先造自定义容器。

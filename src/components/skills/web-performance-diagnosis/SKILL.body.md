@@ -1,13 +1,5 @@
 系统化诊断 Web 前端性能瓶颈：网络层 → 渲染层 → 运行时。同时覆盖 Core Web Vitals 深度优化、质量审计、请求瀑布流消除和浏览器渲染模式。
 
-## 适用场景
-
-- 性能回归排查、跨层瓶颈定位、性能预算建立
-- LCP/INP/CLS 单项指标深度优化与反模式修复
-- 质量审计（性能 / a11y / SEO / best practices）
-- 请求瀑布流消除、Suspense 边界优化
-- 浏览器渲染模式（hydration / resource hints / content-visibility / 事件监听）
-
 ## 核心约束
 
 - 先看观测数据再下钻代码；禁止不看数据直接猜瓶颈。

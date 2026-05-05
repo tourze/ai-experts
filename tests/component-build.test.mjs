@@ -32,6 +32,19 @@ function hasTopLevelHeadingOutsideCodeFence(source) {
   return false;
 }
 
+function countH2OutsideCodeFence(source, title) {
+  let count = 0;
+  let inFence = false;
+  for (const line of source.split(/\r?\n/)) {
+    if (/^\s*(?:```|~~~)/.test(line)) {
+      inFence = !inFence;
+    } else if (!inFence && line.trim() === `## ${title}`) {
+      count += 1;
+    }
+  }
+  return count;
+}
+
 function stripFrontmatter(source) {
   return source.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n+/, "");
 }
@@ -63,10 +76,6 @@ test("component build emits claude and codex component surfaces", () => {
     assert.doesNotMatch(tsSkill, /plugins\//);
     assert.equal(
       existsSync(join(tmp, "claude/skills/typescript-type-safety/references/advanced-patterns.md")),
-      true,
-    );
-    assert.equal(
-      existsSync(join(tmp, "claude/skills/typescript-type-safety/references/evals/cases.yaml")),
       true,
     );
 
@@ -178,12 +187,45 @@ test("component build emits claude and codex component surfaces", () => {
         false,
         `${bodyFile} should not contain an H1 heading; set fullName in index.ts instead`,
       );
+      assert.equal(
+        countH2OutsideCodeFence(source, "适用场景"),
+        0,
+        `${bodyFile} should not contain a useCases section; set useCases in index.ts instead`,
+      );
+    }
+
+    for (const skillSourceFile of collectFiles(join(repoRoot, "src/components/skills"), (file) => file.endsWith("index.ts"))) {
+      const source = readFileSync(skillSourceFile, "utf-8");
+      assert.match(source, /\n\s*useCases:\s*\[/, `${skillSourceFile} should define useCases`);
+      assert.doesNotMatch(
+        source,
+        /id:\s*"evals"|new URL\("\.\/evals(?:\/|")|target:\s*"references\/evals"|title:\s*"Eval Cases"/,
+        `${skillSourceFile} should not register evals as references`,
+      );
     }
 
     for (const platform of ["claude", "codex"]) {
+      const generatedEvalsReferences = collectFiles(join(tmp, platform, "skills"), (file) =>
+        file.includes(join("references", "evals"))
+      );
+      assert.equal(
+        generatedEvalsReferences.length,
+        0,
+        `${platform} output should not copy evals under references`,
+      );
       for (const skillFile of collectFiles(join(tmp, platform, "skills"), (file) => file.endsWith("SKILL.md"))) {
         const source = stripFrontmatter(readFileSync(skillFile, "utf-8")).trimStart();
         assert.match(source, /^#\s+\S/, `${skillFile} should render an H1 heading from fullName`);
+        assert.match(
+          source,
+          /^#\s+.+\r?\n\r?\n## 适用场景\r?\n/m,
+          `${skillFile} should render useCases immediately after the H1 heading`,
+        );
+        assert.equal(
+          countH2OutsideCodeFence(source, "适用场景"),
+          1,
+          `${skillFile} should render exactly one useCases section`,
+        );
       }
     }
   } finally {

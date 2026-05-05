@@ -1,12 +1,5 @@
 > 通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 [testing-patterns](testing-expert:testing-patterns)。本 skill 只覆盖 JavaScript/TypeScript 特有语法与工具。
 
-## 适用场景
-
-- 需要为 JavaScript / TypeScript 模块补单元测试或轻量集成测试。
-- 写测试前需要先把生产代码整理为更易测试的现代写法时，先参考 [modern-javascript-patterns](../modern-javascript-patterns/SKILL.md)。
-- 组件测试涉及 Hook 行为时，对照 `react-hooks`；涉及复杂类型推断时，对照 `typescript-magician`。
-- 已有 React Testing Library 栈时，沿用项目既有 `render` / `screen` / `userEvent` 封装，不要另起一套 helper。
-
 ## 核心约束
 
 - 异步测试必须显式 `await`、`return` 或使用 `resolves` / `rejects`；禁止依赖隐式完成。

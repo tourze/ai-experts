@@ -10,6 +10,9 @@ export const androidRedexSkill = defineSkill({
   id: "android-redex",
   fullName: "ReDex — Android 字节码优化",
   description: "当用户要用 ReDex 优化 Android APK 体积/性能、配置 pass 或排查优化问题时使用。",
+  useCases: [
+    "当用户要用 ReDex 优化 Android APK 体积/性能、配置 pass 或排查优化问题时使用。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -39,13 +42,5 @@ export const androidRedexSkill = defineSkill({
       summary: "Reference material for android-redex.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for android-redex.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

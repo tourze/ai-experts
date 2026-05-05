@@ -13,6 +13,11 @@ export const ghFixCiSkill = defineSkill({
   id: "gh-fix-ci",
   fullName: "GitHub Actions CI 排障",
   description: "当用户要求排查或修复 GitHub Actions PR 检查失败时使用；先用 gh 获取失败上下文，再在获批后实施修复。",
+  useCases: [
+    "当前分支或指定 PR 的 GitHub Actions 检查失败。",
+    "需要快速提取失败 job、运行链接和日志片段。",
+    "要区分 GitHub Actions 与外部检查提供方。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -50,14 +55,6 @@ export const ghFixCiSkill = defineSkill({
       summary: "Reference material for gh-fix-ci.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for gh-fix-ci.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
   assets: [
     defineAsset({

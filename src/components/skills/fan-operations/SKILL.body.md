@@ -1,11 +1,3 @@
-## 适用场景
-
-- 需要回复评论、私信或设计忠粉维护动作。
-- 想从“发完就走”变成“持续互动”，提高粉丝粘性和复访率。
-- 需要围绕粉丝互动反推选题、内容节奏或社群活动。
-- 需要把公域粉丝进一步沉淀到私域时，参考 [references/private-domain.md](references/private-domain.md)。
-- 需要统一品牌语气和人设时，参考 [references/personal-branding-advanced.md](references/personal-branding-advanced.md)。
-
 ## 核心约束
 
 - 先解决“回复是否及时”和“回复是否有信息量”，不要只追求高频复制粘贴。

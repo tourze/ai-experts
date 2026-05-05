@@ -10,6 +10,11 @@ export const reactNativeTurbomoduleSkill = defineSkill({
   id: "react-native-turbomodule",
   fullName: "TurboModule 开发",
   description: "当用户要创建或迁移 New Architecture TurboModule、TurboModuleRegistry、codegenConfig、JSI spec 或 typed native spec 时使用。",
+  useCases: [
+    "为 RN 0.76+ New Architecture 创建原生模块时。",
+    "从旧 NativeModules 迁移到 TurboModule 时。",
+    "需要定义 Spec、配置 Codegen 或排查类型不匹配崩溃时。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -159,13 +164,5 @@ export const reactNativeTurbomoduleSkill = defineSkill({
       summary: "Reference material for react-native-turbomodule.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for react-native-turbomodule.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

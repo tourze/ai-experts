@@ -10,6 +10,12 @@ export const createPrdSkill = defineSkill({
   id: "create-prd",
   fullName: "编写 PRD",
   description: "当用户需要撰写或重构 PRD、功能规格说明或需求文档、做 Epic 分解、按 INVEST 编写用户故事或 MVP 范围取舍时使用。",
+  useCases: [
+    "新功能立项、需求收敛、跨团队对齐、进入开发前的规格固化。",
+    "需要把 discovery 结论转成可执行需求时，可配合 [agile-product-owner](../agile-product-owner/SKILL.md)。",
+    "如果还在验证阶段，先用 [prfaq](../prfaq/SKILL.md) 定\"为什么做\"，再用 PRD 定\"怎么做\"。",
+    "PRD 拆解执行：Epic 分解策略见 [references/epic-decomposition.md](references/epic-decomposition.md)，用户故事编写见 [references/user-story-patterns.md](references/user-story-patterns.md)，MVP 范围取舍见 [references/scoping-cutting.md](references/scoping-cutting.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -71,13 +77,5 @@ export const createPrdSkill = defineSkill({
       summary: "Reference material for create-prd.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for create-prd.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

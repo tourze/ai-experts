@@ -1,12 +1,3 @@
-## 适用场景
-
-- 界面卡顿、滚动掉帧、动画抖动、输入延迟。
-- 大列表渲染慢，需要评估 FlatList / FlashList / 虚拟化策略。
-- 动画需要从 JS 线程迁移到 UI 线程（Reanimated worklet）。
-- React 渲染性能分析、React Compiler 接入评估。
-- JS 内存泄漏定位与修复。
-- 交互与视觉实现优先联动 [react-native-design](../react-native-design/SKILL.md)。
-
 ## 核心约束
 
 - 量化 = 帧耗时/FPS 数字，不是"感觉流畅了"。用 Perf Monitor 或 Flashlight 拿到数据再下结论。

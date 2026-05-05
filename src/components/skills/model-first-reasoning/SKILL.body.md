@@ -1,11 +1,3 @@
-## 适用场景
-
-- 功能复杂，直接编码容易引入隐含状态、漏掉约束或发明接口。
-- 任务包含显式状态转换、权限矩阵、调度规则、工作流编排、约束求解。
-- 用户要求先建模型、先写约束、先确认 requirement trace，再进入实现阶段。
-- 相关资源：[MODEL_TEMPLATE.json](MODEL_TEMPLATE.json)、[scripts/validate-model.mjs](scripts/validate-model.mjs)。
-- 相关 skill：[llm-evaluation](../llm-evaluation/SKILL.md)、[prompt-engineering-patterns](../prompt-engineering-patterns/SKILL.md)。
-
 ## 核心约束
 
 - Phase 1 只产出模型，不写实现代码。

@@ -1,11 +1,3 @@
-## 适用场景
-
-- key 设置了 TTL 后变成不过期，或大量 key 过期时间异常。
-- Redis 延迟抖动、单命令阻塞、`SLOWLOG` 出现 `DEL` / `KEYS` / `SETBIT` / `RANDOMKEY` / `MONITOR`。
-- RDB / AOF / rewrite / `fork` 期间 OOM、卡顿或数据丢失窗口不符合预期。
-- Sentinel / replica / Cluster 场景下主从数据不一致、故障切换后缓存雪崩、全量同步反复失败。
-- 需要把线上症状整理成可验证假设，而不是凭经验罗列 Redis 常识。
-
 ## 核心约束
 
 - 先收集证据再给结论：Redis 版本、角色、`INFO`、`CONFIG GET`、`SLOWLOG`、命令调用点、key 类型与元素数缺一不可。

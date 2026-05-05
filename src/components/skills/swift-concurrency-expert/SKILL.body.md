@@ -1,9 +1,3 @@
-## 适用场景
-
-- 修复 Swift 6.2+ 并发编译错误或数据竞争问题。
-- 判断代码应放在 `@MainActor`、`actor`、`nonisolated` 还是普通类型上。
-- 审查 `Sendable`、任务生命周期、结构化并发和 SwiftUI 并发用法。
-
 通用并发原则（不阻塞异步上下文、限制并发、传播取消、不共享可变状态、超时所有外部调用、优雅停机）见 architecture-expert 的 concurrency-patterns skill。
 
 ## Swift 特有约束

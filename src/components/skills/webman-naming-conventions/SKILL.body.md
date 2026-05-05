@@ -1,11 +1,5 @@
 Webman 项目命名与目录约束。
 
-## 适用场景
-
-- 统一目录命名、接口后缀、命名空间。
-- 审查 Service/Repository 命名。
-- 修复命名空间与目录不一致。
-
 ## 核心约束
 
 - 目录小写，多词下划线。见 [directory-lowercase](references/directory-lowercase.md)。

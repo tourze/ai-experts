@@ -1,10 +1,3 @@
-## 适用场景
-
-- 按钮标签（Submit / Save / Continue 还是具体动词）
-- 错误消息、空态、表单 helper、确认对话框
-- Onboarding 首次提示、敏感操作措辞（删除/支付/注销）
-- 与 `product-design-critic` 联动评审文案。
-
 ## 核心约束
 
 - **按钮动词化**：写按下之后发生什么。`Submit` → `Create account` / `Send invoice`。

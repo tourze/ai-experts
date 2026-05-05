@@ -10,6 +10,11 @@ export const webmanNamingConventionsSkill = defineSkill({
   id: "webman-naming-conventions",
   fullName: "Webman Naming Conventions",
   description: "当用户要统一或审查 Webman 项目的目录命名、接口后缀、Service 命名或命名空间时使用。",
+  useCases: [
+    "统一目录命名、接口后缀、命名空间。",
+    "审查 Service/Repository 命名。",
+    "修复命名空间与目录不一致。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -55,13 +60,5 @@ export const webmanNamingConventionsSkill = defineSkill({
       summary: "Reference material for webman-naming-conventions.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for webman-naming-conventions.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

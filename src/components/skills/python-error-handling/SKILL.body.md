@@ -1,9 +1,3 @@
-## 适用场景
-
-- API、CLI、任务 worker 需要稳定处理坏输入和外部依赖失败。
-- 需要建立统一异常层级、错误码和用户可见错误映射。
-- 批处理场景要区分"全部失败"和"部分失败"。
-
 通用错误处理原则（三层模型、重试边界、部分失败）见 architecture-expert 的 error-handling-patterns skill。
 
 联动：[python-type-safety](../python-type-safety/SKILL.md) · [python-observability](../python-observability/SKILL.md) · [python-testing-patterns](../python-testing-patterns/SKILL.md)

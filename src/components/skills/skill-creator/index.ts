@@ -13,6 +13,9 @@ export const skillCreatorSkill = defineSkill({
   id: "skill-creator",
   fullName: "Skill Creator",
   description: "当用户要创建新 skill、编辑或改进已有 skill、运行 eval、基准测试 skill 表现，或优化 skill 的 frontmatter description 触发效果时使用。",
+  useCases: [
+    "当用户要创建新 skill、编辑或改进已有 skill、运行 eval、基准测试 skill 表现，或优化 skill 的 frontmatter description 触发效果时使用。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -106,14 +109,6 @@ export const skillCreatorSkill = defineSkill({
       summary: "Reference material for skill-creator.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for skill-creator.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
   assets: [
     defineAsset({

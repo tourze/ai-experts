@@ -1,11 +1,3 @@
-## 适用场景
-
-- 你在 C/C++ 里申请或持有资源：`FILE*`、socket、锁、堆内存、线程句柄、`new` 出来的对象。
-- 你在改老代码，想把“谁负责释放”从口头约定变成编译期约束。
-- 你在排查泄漏、双重释放、悬空指针、异常路径资源遗失。
-- 你在设计 C API / C++ 封装边界，需要明确 owning pointer、observer pointer、borrowed view。
-- 你在评审代码，怀疑 `shared_ptr`、裸指针或 cleanup 路径已经失控。
-
 ## 核心约束
 
 - 一个资源只能有一个清晰 owner。`shared_ptr` 不是“想不清楚时的默认答案”。

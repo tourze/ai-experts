@@ -10,6 +10,13 @@ export const redisDataModelingSkill = defineSkill({
   id: "redis-data-modeling",
   fullName: "Redis Data Modeling",
   description: "当用户要为 Redis 设计数据模型、选择数据结构（String/Hash/List/Set/ZSet/Stream）、设计键命名规范或实现分布式锁时使用。",
+  useCases: [
+    "新功能数据建模，需在 String / Hash / List / Set / ZSet / Stream 间选型。",
+    "排行榜、计数器、消息队列、UV 统计等典型场景的结构选择和键设计。",
+    "多服务共享 Redis 实例，需要统一键命名规范、TTL 策略和生命周期管理。",
+    "跨进程互斥：订单支付、库存扣减、幂等提交、定时任务单实例执行。",
+    "缓存刷新互斥保护，联动 [redis-caching-patterns](../redis-caching-patterns/SKILL.md)；集群部署联动 [redis-cluster-ha](../redis-cluster-ha/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -47,13 +54,5 @@ export const redisDataModelingSkill = defineSkill({
       summary: "Reference material for redis-data-modeling.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for redis-data-modeling.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

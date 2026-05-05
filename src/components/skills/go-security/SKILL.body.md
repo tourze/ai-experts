@@ -1,11 +1,3 @@
-## 适用场景
-
-- 编写或审查涉及用户输入拼接到 SQL / shell 命令 / HTML 的代码。
-- 实现 token 生成、密码存储、密钥管理、TLS 配置。
-- 执行 `govulncheck` 或评估第三方依赖的安全风险。
-- 需要防止路径穿越、SSRF、XSS 等注入类攻击。
-- 运行时安全（nil、panic、数据竞争）使用 [go-safety](../go-error-handling/SKILL.md)；安全测试使用 [go-testing-patterns](../go-testing-patterns/SKILL.md)。
-
 ## 核心约束：安全思考模型
 
 对任何外部输入，回答三个问题：

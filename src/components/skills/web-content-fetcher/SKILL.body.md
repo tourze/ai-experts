@@ -1,10 +1,3 @@
-## 适用场景
-
-- 用户直接给出 URL，让你“读一下 / 抓一下 / 提取正文 / 总结这篇文章”。
-- 需要把页面内容转成 Markdown，再交给其他流程处理。
-- 常作为 [deep-research](../deep-research/SKILL.md) 的正文抓取阶段。在深度研究流水线中，可先用 [references/question-refiner.md](references/question-refiner.md) 完善问题后再抓取。
-- 如果只是做技术资讯聚合而不是抓单页正文，参考资讯聚合相关方法。
-
 ## 核心约束
 
 - 主脚本是 [`scripts/fetch.mjs`](scripts/fetch.mjs)，使用 Node.js 内置 `fetch`，不依赖 Python 包。

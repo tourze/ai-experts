@@ -1,12 +1,5 @@
 > 通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 [testing-patterns](testing-expert:testing-patterns)。本 skill 只覆盖 Rust 特有语法与工具。
 
-## 适用场景
-
-- 编写新的单元测试、集成测试或文档测试。
-- 重构测试：改善命名、减少重复、消除脆弱断言。
-- 引入或使用 cargo-insta 做 snapshot 测试。
-- 组织 `tests/` 目录、test crate 或 benchmark。
-
 ## 核心约束
 
 - 测试名表达输入、条件与预期结果，如 `parse_port_rejects_zero`。

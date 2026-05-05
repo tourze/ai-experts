@@ -1,10 +1,3 @@
-## 适用场景
-
-- 选择 slice vs array vs map vs container/* 等容器，或排查容量/性能问题。
-- 涉及 slice 增长策略、backing array 别名、map 扩容与不缩容特性。
-- 使用泛型容器、`unsafe.Pointer`、`weak.Pointer` 或编写自定义数据结构。
-- 别名/nil 陷阱配合 [go-safety](../go-error-handling/SKILL.md)；并发容器配合 [go-concurrency-patterns](../go-concurrency-patterns/SKILL.md)；内存布局优化配合 [go-performance](../go-performance/SKILL.md)。
-
 ## 核心约束
 
 | 约束 | 说明 |

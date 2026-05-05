@@ -10,6 +10,10 @@ export const systemDiagnosticsSkill = defineSkill({
   id: "system-diagnostics",
   fullName: "Linux 系统诊断",
   description: "当用户说 Linux 主机变慢、服务异常、需要健康检查或要先摸清系统现状时使用。",
+  useCases: [
+    "用户要做健康检查、系统摸底、上线前巡检、故障前置采样或基础资源审计。",
+    "若后续需要网络分析，可切到 [network-troubleshooter](../network-troubleshooter/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -31,13 +35,5 @@ export const systemDiagnosticsSkill = defineSkill({
       summary: "Reference material for system-diagnostics.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for system-diagnostics.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

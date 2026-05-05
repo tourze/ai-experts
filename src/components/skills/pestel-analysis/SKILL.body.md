@@ -1,9 +1,3 @@
-## 适用场景
-- 年度战略规划、新市场进入或重大投资决策前的宏观环境扫描。
-- 监管政策变化、技术趋势转折或经济周期变动时评估对业务的影响。
-- 与 [porters-five-forces](../porters-five-forces/SKILL.md) 配合做行业分析，与 [swot-analysis](../swot-analysis/SKILL.md) 配合把外部因素转化为机会和威胁。
-- 融资路演中需要展示对宏观环境的理解。
-
 ## 核心约束
 - 六个维度（Political, Economic, Social, Technological, Environmental, Legal）都要扫描，但只展开与业务**有直接因果关系**的因素。
 - 每个因素必须说明**影响方向**（利好/利空/不确定）、**影响时间窗**（短期/中期/长期）和**影响量级**（高/中/低）。

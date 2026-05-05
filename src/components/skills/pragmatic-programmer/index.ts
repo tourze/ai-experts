@@ -10,6 +10,11 @@ export const pragmaticProgrammerSkill = defineSkill({
   id: "pragmatic-programmer",
   fullName: "pragmatic-programmer",
   description: "当用户要用务实工程原则判断抽象是否过度、DRY/YAGNI 取舍、tracer bullet 路径或协作方式时使用。",
+  useCases: [
+    "适合方案取舍、代码评审、流程纠偏和开发习惯校准。",
+    "适合回答“现在该用多重抽象、该不该一次做大、如何降低不可逆决策”。",
+    "交叉引用：代码层面的动作配合 `refactoring-patterns`；复杂度治理配合 `software-design`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -63,13 +68,5 @@ export const pragmaticProgrammerSkill = defineSkill({
       summary: "Reference material for pragmatic-programmer.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for pragmatic-programmer.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

@@ -1,8 +1,3 @@
-## 适用场景
-- 当前分支或指定 PR 的 GitHub Actions 检查失败。
-- 需要快速提取失败 job、运行链接和日志片段。
-- 要区分 GitHub Actions 与外部检查提供方。
-
 ## 核心约束
 - 开始前必须确认 `gh auth status` 成功，并且仓库可访问。
 - 仅处理 GitHub Actions；Buildkite 等外部 provider 只报告 `detailsUrl`。

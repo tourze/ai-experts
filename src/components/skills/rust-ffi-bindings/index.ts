@@ -10,6 +10,11 @@ export const rustFfiBindingsSkill = defineSkill({
   id: "rust-ffi-bindings",
   fullName: "Rust FFI Bindings",
   description: "当用户需要通过 FFI 集成 Rust 与 C/C++ 或其他语言时使用；涉及 extern C、#[no_mangle]、CStr/CString 或 opaque pointer 时触发。",
+  useCases: [
+    "将 Rust 库暴露给 C/Swift/Kotlin/Python 调用。",
+    "设计跨 FFI 的字符串、错误码、回调或复杂类型方案。",
+    "排查 FFI 段错误、double-free 或 panic 跨边界 UB。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -23,13 +28,5 @@ export const rustFfiBindingsSkill = defineSkill({
       summary: "Reference material for rust-ffi-bindings.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for rust-ffi-bindings.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

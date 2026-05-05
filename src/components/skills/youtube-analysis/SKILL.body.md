@@ -1,9 +1,3 @@
-## 适用场景
-
-- 用户给出单个 `youtube.com` / `youtu.be` 链接，希望你总结内容、提炼概念、输出讲义或会议笔记。
-- 用户明确提到“字幕”“转录”“tech talk 拆解”“podcast 摘要”“把这条 YouTube 视频看一遍”。
-- 用户先通过 [youtube-search](../youtube-search/SKILL.md) 找到候选视频，再对其中一条做深度分析。
-
 ## 核心约束
 
 - 只基于字幕与元数据分析，不做画面、PPT、代码演示或肢体语言的臆测。

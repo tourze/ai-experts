@@ -12,7 +12,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { basename, dirname, join, relative, resolve } from "node:path";
+import { basename, dirname, isAbsolute, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import * as esbuild from "esbuild";
 
@@ -119,6 +119,11 @@ function displayPath(source) {
   const absolute = toAbsolutePath(source);
   const rel = relative(repoRoot, absolute);
   return rel.startsWith("..") ? absolute : rel;
+}
+
+function isSameOrInsidePath(candidate, parent) {
+  const rel = relative(parent, candidate);
+  return rel === "" || (!rel.startsWith("..") && !isAbsolute(rel));
 }
 
 function readComponentText(source) {
@@ -281,6 +286,36 @@ function renderReferenceMap(skill) {
   return `\n## Reference Map\n\n${rows.join("\n")}\n`;
 }
 
+function renderMarkdownBulletList(items) {
+  return items.map((item) => {
+    const lines = String(item).trim().split(/\r?\n/);
+    return lines.map((line, index) => index === 0 ? `- ${line}` : `  ${line}`).join("\n");
+  }).join("\n");
+}
+
+function renderUseCases(skill) {
+  if (!Array.isArray(skill.useCases) || skill.useCases.length === 0) {
+    throw new Error(`Skill ${skill.id} must define at least one useCase`);
+  }
+  for (const useCase of skill.useCases) {
+    if (typeof useCase !== "string" || useCase.trim() === "") {
+      throw new Error(`Skill ${skill.id} has an empty useCase`);
+    }
+  }
+  return `## 适用场景\n\n${renderMarkdownBulletList(skill.useCases)}\n`;
+}
+
+function hasH2Section(source, expectedTitle) {
+  let inFence = false;
+  for (const line of source.split(/\r?\n/)) {
+    const fence = /^\s*(?:```|~~~)/.test(line);
+    const heading = !inFence ? line.match(/^##\s+(.+?)\s*$/) : null;
+    if (heading && heading[1].trim() === expectedTitle) return true;
+    if (fence) inFence = !inFence;
+  }
+  return false;
+}
+
 function renderSkillMd(skill, platform) {
   if (typeof skill.fullName !== "string" || skill.fullName.trim() === "") {
     throw new Error(`Skill ${skill.id} must define a non-empty fullName`);
@@ -290,6 +325,7 @@ function renderSkillMd(skill, platform) {
     renderSkillFrontmatter(skill, platform),
     `# ${skill.fullName}`,
     "",
+    renderUseCases(skill),
     body,
     renderScriptRegistry(skill, platform),
     renderReferenceMap(skill),
@@ -768,8 +804,19 @@ function validateRegistry(registry) {
     if (!skill.description || skill.description.length < 20) {
       throw new Error(`Skill ${skill.id} has a weak description`);
     }
+    if (!Array.isArray(skill.useCases) || skill.useCases.length === 0) {
+      throw new Error(`Skill ${skill.id} must define at least one useCase`);
+    }
+    for (const useCase of skill.useCases) {
+      if (typeof useCase !== "string" || useCase.trim() === "") {
+        throw new Error(`Skill ${skill.id} has an empty useCase`);
+      }
+    }
     if (!existsSync(toAbsolutePath(skill.body))) {
       throw new Error(`Skill ${skill.id} body is missing: ${displayPath(skill.body)}`);
+    }
+    if (hasH2Section(readComponentText(skill.body), "适用场景")) {
+      throw new Error(`Skill ${skill.id} must move ## 适用场景 from SKILL.body.md to useCases`);
     }
     const skillSourceRoot = dirname(toAbsolutePath(skill.body));
     const seenScripts = new Set();
@@ -796,7 +843,17 @@ function validateRegistry(registry) {
       validateId(reference.id, `reference in ${skill.id}`);
       if (seenReferences.has(reference.id)) throw new Error(`Duplicate reference id in ${skill.id}: ${reference.id}`);
       seenReferences.add(reference.id);
-      if (!existsSync(toAbsolutePath(reference.source))) {
+      const referenceSource = toAbsolutePath(reference.source);
+      const referenceTarget = defaultReferenceTarget(reference);
+      if (
+        reference.id === "evals" ||
+        referenceTarget === "references/evals" ||
+        referenceTarget.startsWith("references/evals/") ||
+        isSameOrInsidePath(referenceSource, join(skillSourceRoot, "evals"))
+      ) {
+        throw new Error(`Skill ${skill.id} must not register evals/ as a reference`);
+      }
+      if (!existsSync(referenceSource)) {
         throw new Error(`Skill ${skill.id} reference is missing: ${displayPath(reference.source)}`);
       }
     }

@@ -10,6 +10,9 @@ export const consciousnessCouncilSkill = defineSkill({
   id: "consciousness-council",
   fullName: "多视角思辨议会",
   description: "当需要多视角思辨审视高不确定性决策、角色辩论、专家议会、风险分歧和取舍盲区时使用。支持角色议会模式和六顶思考帽模式。",
+  useCases: [
+    "当需要多视角思辨审视高不确定性决策、角色辩论、专家议会、风险分歧和取舍盲区时使用。支持角色议会模式和六顶思考帽模式。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -55,13 +58,5 @@ export const consciousnessCouncilSkill = defineSkill({
       summary: "Reference material for consciousness-council.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for consciousness-council.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

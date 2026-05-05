@@ -10,6 +10,12 @@ export const interactionDesignSkill = defineSkill({
   id: "interaction-design",
   fullName: "交互设计",
   description: "当用户需要设计微交互、动效、过渡或反馈状态时使用。适合”加点交互感””做 loading/skeleton””优化 hover/focus/transition””让界面更顺滑”等场景。",
+  useCases: [
+    "为按钮、卡片、表单、导航和反馈提示增加微交互。",
+    "设计页面切换、弹层展开、列表刷新等状态过渡。",
+    "为加载、提交、空态、成功态和失败态设计反馈。",
+    "需要把交互与性能、无障碍和品牌风格同时兼顾。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -55,13 +61,5 @@ export const interactionDesignSkill = defineSkill({
       summary: "Reference material for interaction-design.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for interaction-design.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

@@ -1,11 +1,3 @@
-## 适用场景
-
-- 多租户 SaaS 共享表存储，需要数据库层面强制租户隔离
-- 按角色（admin / manager / member）限制行级可见范围
-- 连接池共享连接，每次请求通过 `SET LOCAL` 设置会话变量驱动 RLS
-- 需要用 `SET ROLE` 测试策略的正确性
-- 租户列设计参见 [db-schema-design](../db-schema-design/SKILL.md)；索引策略参见 [sql-review-optimization](../sql-review-optimization/SKILL.md)
-
 ## 核心约束
 
 - 启用 RLS 后表 owner 默认绕过策略 — 必须加 `FORCE ROW LEVEL SECURITY`

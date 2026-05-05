@@ -10,6 +10,13 @@ export const tauriReactIntegrationSkill = defineSkill({
   id: "tauri-react-integration",
   fullName: "Tauri v2 + React 集成",
   description: "当用户要集成 React 前端、invoke 封装、useInvoke Hook、事件监听生命周期、Router 深链接、WebView 限制或错误边界时使用。",
+  useCases: [
+    "`invoke()` 封装为带 loading/error 的 Hook",
+    "Tauri 事件 listen/unlisten 生命周期管理",
+    "Rust-React 状态同步（事件驱动）",
+    "React Router + 深链接集成",
+    "IPC 失败错误边界",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -31,13 +38,5 @@ export const tauriReactIntegrationSkill = defineSkill({
       summary: "Reference material for tauri-react-integration.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for tauri-react-integration.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

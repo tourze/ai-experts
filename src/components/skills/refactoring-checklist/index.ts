@@ -10,6 +10,12 @@ export const refactoringChecklistSkill = defineSkill({
   id: "refactoring-checklist",
   fullName: "重构前安全检查清单",
   description: "当用户要重构、重组或清理代码，需要从流程纪律保证安全性和增量推进时使用。本 skill 只管「流程门禁」（测试基线、范围界定、回滚方案），不教具体重构手法。",
+  useCases: [
+    "用户要对现有代码做结构调整、抽取、合并、移动职责。",
+    "用户觉得代码\"很乱\"想整理但没想清楚具体做什么。",
+    "本 skill 只回答「能不能开始 / 怎么安全推进 / 怎么回滚」。",
+    "交叉引用：\n- 具体「该用哪个重构手法」（Extract Method / 异味分类）→ `architecture-expert/refactoring-patterns`。\n- 降低嵌套与函数复杂度的诊断 → `complexity-reducer`。\n- 审查结论触发的重构 → `code-review`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -47,13 +53,5 @@ export const refactoringChecklistSkill = defineSkill({
       summary: "Reference material for refactoring-checklist.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for refactoring-checklist.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

@@ -1,11 +1,3 @@
-## 适用场景
-
-- 优化热路径延迟、吞吐、内存分配、GC 压力或连接池。
-- 写 Go benchmark、用 `benchstat` 比较实现、解释 pprof 输出。
-- 审查"性能优化"是否有基线、统计显著性和回归测试。
-- 并发瓶颈配合 [go-concurrency-patterns](../go-concurrency-patterns/SKILL.md)；资源安全配合 [go-safety](../go-error-handling/SKILL.md)。
-- 持续监控 → go-observability；排查"为什么慢" → go-troubleshooting。
-
 ## 核心约束
 
 - 没有基线不优化；先定义目标指标，再写 benchmark 或采集 profile。

@@ -1,10 +1,3 @@
-## 适用场景
-
-- LLM 应用出现质量问题但不确定问题在哪一层
-- 需要判断用 model-first（让模型拆步骤）还是 prompt-first（人工设计 chain）
-- 需要建立"先补 eval → 再改 prompt/检索"的改进闭环
-- prompt 改了很多轮但没有系统衡量效果
-
 ## 核心原则
 
 **Eval-first**：没有 eval 不允许声称"更好"。先设计可复现的离线 eval case，再改 prompt 或检索参数。

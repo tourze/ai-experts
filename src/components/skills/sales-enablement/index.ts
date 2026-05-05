@@ -10,6 +10,11 @@ export const salesEnablementSkill = defineSkill({
   id: "sales-enablement",
   fullName: "销售赋能材料（sales-enablement）",
   description: "当用户要创建销售材料、sales deck、one-pager、异议处理、demo script、销售手册或买家 enablement 内容时使用。",
+  useCases: [
+    "制作 pitch deck、one-pager 或销售提案。",
+    "编写异议处理文档或 demo 脚本。",
+    "构建 ROI 计算器或买家画像卡。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -79,13 +84,5 @@ export const salesEnablementSkill = defineSkill({
       summary: "Reference material for sales-enablement.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for sales-enablement.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

@@ -1,12 +1,3 @@
-## 适用场景
-
-- 用户想知道模块、功能或接口如何分层测试（测什么、用什么层级、优先测哪些）。
-- 为 [webapp-testing](../webapp-testing/SKILL.md) 提供执行列表。
-- 缺陷后测试扩面（同根因 bug 家族补测），参考 [test-brainstorm](./references/test-brainstorm.md)。
-- 自动化验证循环（实现→验证→修复→再验证），参考 [verification-loop](./references/verification-loop.md)。
-- 需要为中大型项目制定风险驱动测试策略、质量门、覆盖率目标或 QA 资源分配方案。
-- 需要和 [pre-landing-review](../pre-landing-review/SKILL.md) 联动，把阻断项映射到补测策略。
-
 ## 核心约束
 
 - 每个测试项都要回答两个问题：

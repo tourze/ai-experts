@@ -2,7 +2,6 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
-  defineReference,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -12,6 +11,9 @@ export const speckitBaselineSkill = defineSkill({
   id: "speckit-baseline",
   fullName: "Speckit Baseline",
   description: "当用户要从现有代码反向抽取需求、建立初始 spec.md 或启动 legacy feature baseline 时使用。",
+  useCases: [
+    "当用户要从现有代码反向抽取需求、建立初始 spec.md 或启动 legacy feature baseline 时使用。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -62,16 +64,6 @@ export const speckitBaselineSkill = defineSkill({
       runtime: "node",
       bundle: false,
       description: "Script setup-plan.mjs.",
-    })
-  ],
-  references: [
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for speckit-baseline.",
-      loadWhen: "Read only when validating or improving this skill.",
     })
   ],
 });

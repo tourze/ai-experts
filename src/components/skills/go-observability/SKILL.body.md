@@ -1,10 +1,3 @@
-## 适用场景
-
-- 选型或实施日志（slog）、指标（Prometheus）、链路追踪（OpenTelemetry）、profiling、告警。
-- 需要在多条信号间做关联：日志带 trace ID、指标带 exemplar。
-- 从 `log.Printf` 迁移到结构化日志，或从零搭建可观测性体系。
-- 性能优化中的 pprof/profile → [go-performance](../go-performance/SKILL.md)；生产异常排查 → [go-troubleshooting](../go-troubleshooting/SKILL.md)。
-
 ## 五大信号
 
 | 信号 | 职责 | 典型工具 |

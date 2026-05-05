@@ -13,6 +13,15 @@ export const modernWebDesignSkill = defineSkill({
   id: "modern-web-design",
   fullName: "现代 Web 设计",
   description: "当用户需要规划或实现现代 Web 界面、查询视觉风格、选择行业视觉方向、设计品牌化落地页或改进 Web UI 视觉表现时使用。",
+  useCases: [
+    "设计或重构品牌官网、产品页、营销页、活动页和高辨识度 Web App 界面。",
+    "需要在\"好看\"和\"快\"之间做系统性平衡。",
+    "用户说\"做成 X 风格\"但不确定 X 具体长什么样、CSS 怎么写。",
+    "需要明确视觉方向，而不是套用通用模板。",
+    "用户提到 \"premium\"、\"高级感\"、\"不要 AI 味\" 时，先读取 [references/high-agency-protocol.md](references/high-agency-protocol.md)。",
+    "要给 AI 图像生成工具提供风格 prompt 关键词。",
+    "与 `industry-design-presets` 联动：preset 选风格，本 skill 落地。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -210,14 +219,6 @@ export const modernWebDesignSkill = defineSkill({
       summary: "Reference material for modern-web-design.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for modern-web-design.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
   assets: [
     defineAsset({

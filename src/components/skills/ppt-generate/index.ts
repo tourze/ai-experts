@@ -10,6 +10,13 @@ export const pptGenerateSkill = defineSkill({
   id: "ppt-generate",
   fullName: "PPT 端到端生成",
   description: "当用户要从零生成演示文稿、从文档/主题生成 PPT、或要求 AI 端到端制作幻灯片时使用。",
+  useCases: [
+    "用户给出主题/需求，要求生成完整演示文稿。",
+    "用户提供源文档（PDF/文本/URL），要求转化为 PPT。",
+    "用户说\"帮我做个 PPT\"、\"生成幻灯片\"、\"做个 deck\"。",
+    "用户要求先看多套真实页面预览、图像级视觉方向或 image-first 成稿，再确认整套 PPT。",
+    "区别：[ppt-visual](references/ppt-visual.md) 只输出设计说明；[pptx](references/pptx.md) 处理已有文件。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -55,13 +62,5 @@ export const pptGenerateSkill = defineSkill({
       summary: "Reference material for ppt-generate.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for ppt-generate.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

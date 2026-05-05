@@ -2,7 +2,6 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
-  defineReference,
   defineSkill,
 } from "../../sdk";
 
@@ -10,18 +9,16 @@ export const pythonObservabilitySkill = defineSkill({
   id: "python-observability",
   fullName: "Python 可观测性",
   description: "当用户要给 Python 服务补结构化日志、指标、trace、请求上下文和故障定位能力时使用。",
+  useCases: [
+    "API、worker、定时任务需要补日志、指标和链路追踪。",
+    "线上问题只能“猜”，需要把请求上下文和耗时显式打出来。",
+    "需要统一日志字段、trace ID、错误标签和关键业务指标。",
+    "异步链路上下文透传时，联动 [async-python-patterns](../async-python-patterns/SKILL.md)。",
+    "后台任务监控和重试治理时，联动 [python-background-jobs](../python-background-jobs/SKILL.md)。",
+    "需要把失败路径覆盖进测试时，联动 [python-testing-patterns](../python-testing-patterns/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  references: [
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for python-observability.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
-  ],
 });

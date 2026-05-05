@@ -10,6 +10,13 @@ export const xiaohongshuCommercialGrowthSkill = defineSkill({
   id: "xiaohongshu-commercial-growth",
   fullName: "小红书商业增长",
   description: "当用户要制定小红书商业增长、店铺转化、蒲公英投放、种草链路、私域承接或变现方案时使用。",
+  useCases: [
+    "账号还没跑通，需要先定定位、内容结构和增长目标。",
+    "品牌、商家、创始人 IP、知识博主或实体店要做小红书增长与变现。",
+    "需要把内容、搜索、店铺、直播、达人合作和私域承接串成闭环。",
+    "需要输出图文内容时，参考图文生成相关方法。",
+    "需要落评论区和粉丝维护动作时，联动 [fan-operations](../fan-operations/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -39,13 +46,5 @@ export const xiaohongshuCommercialGrowthSkill = defineSkill({
       summary: "Reference material for xiaohongshu-commercial-growth.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for xiaohongshu-commercial-growth.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

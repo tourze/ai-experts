@@ -1,8 +1,3 @@
-## 适用场景
-- SaaS 套餐设计、涨价、免费试用、价值度量或打包层级重构。
-- 需要参考 [references/research-methods.md](references/research-methods.md) 与 [references/tier-structure.md](references/tier-structure.md)。
-- 讨论商业模式或市场空间时，可配合 [business-model](../business-model/SKILL.md) 和 [market-sizing-analysis](../market-sizing-analysis/SKILL.md)。
-
 ## 核心约束
 - 先理解客户获得的价值、替代方案和购买流程，再决定价格。
 - 包装结构、价值度量和升级路径要一致，避免定价与产品体验互相打架。

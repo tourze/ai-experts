@@ -13,6 +13,11 @@ export const architectureReviewerSkill = defineSkill({
   id: "architecture-reviewer",
   fullName: "architecture-reviewer",
   description: "当用户要评审架构设计、代码库结构、技术文档或企业就绪风险时使用。",
+  useCases: [
+    "适合技术尽调、上线前审计、扩容评估、企业合规审查和架构争议仲裁。",
+    "支持代码库评审、文档评审和混合评审三种模式；深挖时启用 Exhaustive 模式做子系统级穷举审计。",
+    "交叉引用：需要画图时改用 `architecture-diagram`；模块接缝问题用 `seam-ripper`；调用链追踪用 `api-trace-reader`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -130,14 +135,6 @@ export const architectureReviewerSkill = defineSkill({
       summary: "Reference material for architecture-reviewer.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for architecture-reviewer.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
   assets: [
     defineAsset({

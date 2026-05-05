@@ -1,10 +1,3 @@
-## 适用场景
-
-- `clean build`、增量构建或 CI 构建明显变慢。
-- 需要判断瓶颈在配置阶段、任务执行阶段还是依赖解析阶段。
-- 想启用 Configuration Cache、Build Cache、并行构建或迁移 `kapt` 到 `ksp`。
-- Native Image 构建链路过慢时，可与 [graalvm-native-image](../graalvm-native-image/SKILL.md) 配合使用。
-
 ## 核心约束
 
 - 先测基线，再动配置：至少记录一次 clean build 和一次增量 build。

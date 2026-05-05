@@ -1,8 +1,3 @@
-## 适用场景
-- 需要用 Volatility 等工具分析内存镜像的进程、模块、句柄、网络、注入和持久化痕迹。
-- 需要与 [binary-analysis-patterns](../binary-analysis-patterns/SKILL.md) 联动定位可疑模块。
-- 面对反调试或壳层样本时，可结合 [anti-reversing-techniques](../binary-analysis-patterns/SKILL.md) 解释运行时差异。
-
 ## 核心约束
 - 保存原始镜像与哈希，所有分析基于副本进行。
 - 先做时间线、进程树和网络基线，再提取载荷。

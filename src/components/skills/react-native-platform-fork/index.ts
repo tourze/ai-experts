@@ -10,6 +10,11 @@ export const reactNativePlatformForkSkill = defineSkill({
   id: "react-native-platform-fork",
   fullName: "跨平台代码组织",
   description: "当用户要组织 React Native 跨平台代码或配置平台分叉时使用。用户提到平台分叉、跨端代码、.native.ts、.tauri.ts、Platform.select 时触发。",
+  useCases: [
+    "需要为 iOS/Android/Web/Tauri 提供不同实现时。",
+    "业务代码中 `Platform.OS` 判断散落各处需收敛时。",
+    "配置 Metro 解析自定义平台（Tauri、macOS）时。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -55,13 +60,5 @@ export const reactNativePlatformForkSkill = defineSkill({
       summary: "Reference material for react-native-platform-fork.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for react-native-platform-fork.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

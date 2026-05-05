@@ -1,12 +1,3 @@
-## 适用场景
-
-* 构建或评审 Android UI 代码（Jetpack Compose / XML）
-* 实现 Material You / 动态颜色
-* 设计导航、布局或组件架构
-* 审计无障碍或平台合规性
-
----
-
 ## 1. Material You 与主题 [CRITICAL]
 
 ### 1.1 动态颜色

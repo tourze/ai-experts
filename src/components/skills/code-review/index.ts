@@ -12,6 +12,11 @@ export const codeReviewSkill = defineSkill({
   id: "code-review",
   fullName: "代码审查",
   description: "当用户要求审查代码质量、发现命名或职责问题、检查错误处理和边界情况时使用。支持标准/高压两档强度——高压模式由 brutal-honesty-review 合并而来。",
+  useCases: [
+    "用户提交代码或文件，要求找出逻辑和设计层面的问题。",
+    "关注\"代码写得好不好\"，不是\"能不能上线\"（那用 `pre-landing-review`）。",
+    "交叉引用：降低复杂度配合 `complexity-reducer`；测试质量审查配合 `test-quality-review`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -81,13 +86,5 @@ export const codeReviewSkill = defineSkill({
       summary: "Reference material for code-review.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for code-review.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

@@ -1,11 +1,3 @@
-## 适用场景
-
-- 定义 `.proto` 文件或生成 Go gRPC 代码。
-- 实现服务端注册、客户端连接、拦截器链。
-- 处理流式 RPC（服务端流、客户端流、双向流）。
-- gRPC 错误码映射、TLS/mTLS 配置、keepalive 调优。
-- 与 [go-error-handling](../go-error-handling/SKILL.md) 配合处理跨层错误传播；与 [go-performance](../go-performance/SKILL.md) 配合优化序列化与连接复用。
-
 ## 核心约束
 
 - **Proto 组织**：一个 service 一个 proto 文件；package 用 `lowercase_snake`；`go_package` 必须显式声明。

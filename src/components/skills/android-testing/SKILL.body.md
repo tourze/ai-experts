@@ -1,10 +1,3 @@
-## 适用场景
-
-* 为 ViewModel / Repository / UseCase 编写单元测试
-* 配置 Hilt 集成测试环境
-* 搭建 Roborazzi 截图回归测试
-* 编写 Compose UI 测试
-
 ## 测试金字塔
 
 ```

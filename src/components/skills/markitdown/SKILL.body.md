@@ -1,10 +1,3 @@
-## 适用场景
-
-- 目标是把多种格式统一转成 Markdown，供总结、检索、二次写作或知识库沉淀。
-- 用户需要批量处理目录，而不是只转换单个文件。
-- 用户要处理学术论文或文献库，并生成目录索引、元数据清单。
-- 当用户只处理单个 Office 文件且最终仍要保留原格式时，优先使用 [docx](../doc-coauthoring/SKILL.md)、[pptx](../ppt-generate/SKILL.md) 或 [xlsx](../doc-coauthoring/SKILL.md)。
-
 ## 核心约束
 
 - 先确认输出真的是 Markdown；如果最终要的是原格式回写，不要误用。

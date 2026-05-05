@@ -1,8 +1,3 @@
-## 适用场景
-
-- 编写或审查返回 `error` 的 Go 函数、库 API、CLI 命令、HTTP handler 或后台任务。
-- 需要决定 sentinel error、自定义错误类型、`errors.Is` / `errors.As`、`errors.Join` 或 panic 边界。
-
 通用错误处理原则（三层模型、重试边界、部分失败）见 architecture-expert 的 error-handling-patterns skill。
 
 ## Go 特有约束

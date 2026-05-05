@@ -1,11 +1,3 @@
-## 适用场景
-
-- 需要在 Symfony 项目里实现大批量导入、批量更新、数据回填或历史数据迁移。
-- Doctrine ORM 在长循环中内存上涨、SQL 日志过多、`UnitOfWork` 膨胀或 `flush()` 过慢。
-- 需要判断某段批处理应该继续走 ORM，还是切到 DBAL / 原生 SQL。
-- 如果批处理由异步消息驱动，可联动 [symfony-messenger](../symfony-messenger/SKILL.md)；如果涉及权限边界，可联动 [symfony-voters](../symfony-voters/SKILL.md)。
-- 更细的示例和命令参考见 [reference.md](reference.md)。
-
 ## 核心约束
 
 - 默认假设数据量会增长：不要用 `findAll()`、不要把全量结果一次性放进内存。

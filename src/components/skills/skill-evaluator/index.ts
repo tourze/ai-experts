@@ -10,6 +10,9 @@ export const skillEvaluatorSkill = defineSkill({
   id: "skill-evaluator",
   fullName: "Skill Evaluator",
   description: "当用户要评估 skill 质量、审查 SKILL.md 设计结构或验证 skill 知识完备性时使用。仅优化 frontmatter description 触发质量用 `skill-activation-analyzer`。",
+  useCases: [
+    "当用户要评估 skill 质量、审查 SKILL.md 设计结构或验证 skill 知识完备性时使用。仅优化 frontmatter description 触发质量用 `skill-activation-analyzer`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -55,13 +58,5 @@ export const skillEvaluatorSkill = defineSkill({
       summary: "Reference material for skill-evaluator.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for skill-evaluator.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

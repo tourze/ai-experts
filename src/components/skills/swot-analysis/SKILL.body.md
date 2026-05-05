@@ -1,8 +1,3 @@
-## 适用场景
-- 产品/公司战略评估、年度复盘、竞品对比或进入新市场前的结构化判断。
-- 需要看行业结构或具体对手时，可配合 [porters-five-forces](../porters-five-forces/SKILL.md) 与 [competitive-teardown](../competitive-intelligence/SKILL.md)。
-- 补充分析框架：[references/blue-ocean-strategy.md](references/blue-ocean-strategy.md) — 蓝海战略（ERRC 网格、策略画布）；[references/space-matrix.md](references/space-matrix.md) — SPACE 矩阵（战略态势定位）。
-
 ## 核心约束
 - Strength/Weakness 写内部能力，Opportunity/Threat 写外部环境，别混淆。
 - SWOT 不是四格词云，每个点都要连接到战略动作。

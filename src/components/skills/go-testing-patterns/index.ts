@@ -10,6 +10,12 @@ export const goTestingPatternsSkill = defineSkill({
   id: "go-testing-patterns",
   fullName: "go-testing-patterns",
   description: "当 Go 代码需要测试设计、table-driven tests、mock、race、fuzz 或 flaky test 排查时使用。",
+  useCases: [
+    "为 Go 函数、HTTP handler、repository、worker、并发代码或 CLI 编写测试。",
+    "审查测试是否只测实现细节、是否缺错误分支、是否存在顺序依赖或真实时间等待。",
+    "排查 flaky test、goroutine 泄漏、race detector 失败或集成测试污染。",
+    "性能测试和 `benchstat` 对比配合 [go-performance](../go-performance/SKILL.md)；并发生命周期配合 [go-concurrency-patterns](../go-concurrency-patterns/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -39,13 +45,5 @@ export const goTestingPatternsSkill = defineSkill({
       summary: "Reference material for go-testing-patterns.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for go-testing-patterns.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

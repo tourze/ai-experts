@@ -10,6 +10,13 @@ export const agentOrchestrationSkill = defineSkill({
   id: "agent-orchestration",
   fullName: "Agent Orchestration",
   description: "当用户要设计多 Agent 编排、system prompt 架构、状态管理或 Agent 扩展点时使用。",
+  useCases: [
+    "设计多 Agent 系统：子 Agent 职责划分、fork vs fresh 决策、隔离策略。",
+    "构建 system prompt 架构：静态/动态分离、缓存边界、模块化段函数。",
+    "设计 Agent 状态管理：四种状态生命周期、层级配置、记忆提取。",
+    "规划 Agent 扩展点：协议（MCP）、事件（Hooks）、声明式（Skills）。",
+    "需要与 [agent-tool-design](references/agent-tool-design.md) 联动做工具加载策略。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -55,13 +62,5 @@ export const agentOrchestrationSkill = defineSkill({
       summary: "Reference material for agent-orchestration.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for agent-orchestration.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

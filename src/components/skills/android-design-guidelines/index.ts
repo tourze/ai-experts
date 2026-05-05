@@ -10,6 +10,12 @@ export const androidDesignGuidelinesSkill = defineSkill({
   id: "android-design-guidelines",
   fullName: "Android 平台设计规范 — Material Design 3",
   description: "当用户要构建或评审 Android UI、应用 Material Design 3 规范、动态颜色、Compose 组件或自适应布局时使用。",
+  useCases: [
+    "构建或评审 Android UI 代码（Jetpack Compose / XML）",
+    "实现 Material You / 动态颜色",
+    "设计导航、布局或组件架构",
+    "审计无障碍或平台合规性",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -23,13 +29,5 @@ export const androidDesignGuidelinesSkill = defineSkill({
       summary: "Reference material for android-design-guidelines.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for android-design-guidelines.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

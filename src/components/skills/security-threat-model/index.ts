@@ -10,6 +10,11 @@ export const securityThreatModelSkill = defineSkill({
   id: "security-threat-model",
   fullName: "仓库级威胁建模",
   description: "当用户要求对代码仓库做 STRIDE 分析、攻击树构建、威胁缓解映射或安全需求提取的 AppSec 威胁建模时使用。",
+  useCases: [
+    "需要基于仓库证据输出针对性的威胁模型，而不是通用模板。",
+    "需要与 [stride-analysis-patterns](references/stride-analysis-patterns.md) 联动做系统性枚举。",
+    "产出威胁后，继续用 [threat-mitigation-mapping](references/threat-mitigation-mapping.md) 和 [security-requirement-extraction](references/security-requirement-extraction.md) 落地。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -63,13 +68,5 @@ export const securityThreatModelSkill = defineSkill({
       summary: "Reference material for security-threat-model.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for security-threat-model.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

@@ -10,6 +10,10 @@ export const crossPlatformAdapterPatternsSkill = defineSkill({
   id: "cross-platform-adapter-patterns",
   fullName: "cross-platform-adapter-patterns",
   description: "在设计跨平台应用的平台抽象层、适配器接口、运行时分支和 monorepo 组织时使用。",
+  useCases: [
+    "需要让同一套业务逻辑运行在多个平台上，或设计共享包与平台包的边界。",
+    "交叉引用：边界分析配合 `seam-ripper`；架构蓝图配合 `architecture-blueprint-generator`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -47,13 +51,5 @@ export const crossPlatformAdapterPatternsSkill = defineSkill({
       summary: "Reference material for cross-platform-adapter-patterns.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for cross-platform-adapter-patterns.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

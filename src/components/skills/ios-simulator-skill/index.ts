@@ -2,7 +2,6 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
-  defineReference,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -12,6 +11,12 @@ export const iosSimulatorSkillSkill = defineSkill({
   id: "ios-simulator-skill",
   fullName: "iOS 模拟器自动化",
   description: "当用户需要用 Simulator、xcrun simctl、设备启动、截图、安装包、日志采集或提审前自动化回归时使用。",
+  useCases: [
+    "需要在模拟器里构建、运行、排查 iOS 应用问题。",
+    "需要通过无障碍树导航界面，而不是靠像素坐标硬点。",
+    "需要抓日志、截图、UI 树、权限状态、状态栏和推送来复现问题。",
+    "需要批量启动、关闭、擦除、创建或选择模拟器。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -278,16 +283,6 @@ export const iosSimulatorSkillSkill = defineSkill({
       runtime: "node",
       bundle: false,
       description: "Script xcode/xcresult.mjs.",
-    })
-  ],
-  references: [
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for ios-simulator-skill.",
-      loadWhen: "Read only when validating or improving this skill.",
     })
   ],
 });

@@ -1,9 +1,3 @@
-## 适用场景
-
-- 构建有上限的 worker pool、fan-out/fan-in pipeline、批量请求并发执行。
-- 需要把取消信号、超时和错误传播到整条 goroutine 链路。
-- 需要实现服务优雅停机，避免 goroutine 泄漏、悬挂 channel、僵尸任务。
-
 通用并发原则（不阻塞异步上下文、限制并发、传播取消、不共享可变状态、超时所有外部调用、优雅停机）见 architecture-expert 的 concurrency-patterns skill。
 
 ## Go 特有约束

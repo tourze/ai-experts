@@ -3,7 +3,6 @@ import {
   KnownTool,
   Platform,
   defineAsset,
-  defineReference,
   defineSkill,
 } from "../../sdk";
 
@@ -11,20 +10,16 @@ export const figmaImplementDesignSkill = defineSkill({
   id: "figma-implement-design",
   fullName: "Figma 设计实现",
   description: "当用户提供 Figma 链接、要求 1:1 还原界面、或需要根据设计稿实现组件或页面时使用。",
+  useCases: [
+    "用户给出 Figma 链接，希望实现单个组件、模块或整页。",
+    "需要依据 Figma Dev Mode 或 MCP 数据做像素级还原。",
+    "需要把 Figma 输出映射到现有设计系统、组件库和路由约定。",
+    "需要从设计稿提取图片、图标、布局、间距和状态变化。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  references: [
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for figma-implement-design.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
-  ],
   assets: [
     defineAsset({
       id: "figma-small",

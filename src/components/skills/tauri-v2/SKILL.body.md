@@ -1,21 +1,3 @@
-## 适用场景
-
-- 需要搭建或调整 `src-tauri/` 目录、`tauri.conf.json`、`Cargo.toml`、`lib.rs` / `main.rs` 分层时使用。
-- 需要实现前端 `invoke()` 调 Rust 命令、Rust 向前端发事件、或者用 `Channel<T>` 推送高频流式消息时使用。
-- 需要接入官方插件、确认 `cargo tauri add <plugin>` 后的注册步骤、capability 写法、权限范围和多窗口目标时使用。
-- 需要排查 “命令找不到”“权限拒绝”“桌面可用、移动端失效”“白屏”“签名/更新失败” 这类 Tauri 特有问题时使用。
-- 需要和其它技能联动时：
-  `rust-best-practices` 负责 Rust 代码风格与错误处理，
-  `rust-async-patterns` 负责异步并发与后台任务，
-  `typescript-magician` 负责前端类型边界，
-  `react-server-components` 负责 React 前端分层。
-- 需要展开专题时优先查这些参考文档：
-  [Capabilities](references/capabilities-reference.md)、
-  [IPC Patterns](references/ipc-patterns.md)、
-  [Plugin Reference](references/plugin-reference.md)、
-  [Updater & Distribution](references/updater-distribution-reference.md)、
-  [Advanced Runtime](references/advanced-runtime-reference.md)。
-
 ## 核心约束
 
 - `src-tauri/src/main.rs` 只保留薄入口；真正的构建器、命令注册、插件注册和状态注入都放在 `src-tauri/src/lib.rs::run()`。

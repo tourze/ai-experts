@@ -1,11 +1,3 @@
-## 适用场景
-
-- 时序数据按时间 RANGE 分区，实现高效裁剪和历史归档
-- 多租户系统按 tenant_id 做 LIST 分区，实现租户级隔离
-- 单表超 1 亿行或 100 GB，需要改善查询和 VACUUM 效率
-- 需要验证分区裁剪是否生效（`EXPLAIN` 只扫描目标分区）
-- 基础表结构参见 [db-schema-design](../db-schema-design/SKILL.md)；索引策略参见 [sql-review-optimization](../sql-review-optimization/SKILL.md)
-
 ## 核心约束
 
 - 分区键必须包含在主键和所有唯一约束中

@@ -1,8 +1,3 @@
-## 适用场景
-- 需要基于仓库证据输出针对性的威胁模型，而不是通用模板。
-- 需要与 [stride-analysis-patterns](references/stride-analysis-patterns.md) 联动做系统性枚举。
-- 产出威胁后，继续用 [threat-mitigation-mapping](references/threat-mitigation-mapping.md) 和 [security-requirement-extraction](references/security-requirement-extraction.md) 落地。
-
 ## 核心约束
 - 所有组件、边界和控制都必须有仓库证据或明确假设来源。
 - 区分运行时路径与 CI/构建/开发工具，避免把辅助脚本混进主系统边界。

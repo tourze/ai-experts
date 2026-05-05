@@ -89,6 +89,7 @@ export type SkillDefinition = {
   id: string;
   fullName: string;
   description: string;
+  useCases: readonly string[];
   invocation: InvocationPolicy;
   platforms: PlatformList;
   body: ComponentFile;

@@ -1,11 +1,3 @@
-## 适用场景
-
-- 新建 SwiftUI 页面、Tab 架构、导航流或弹层流程。
-- 需要从现有项目中找可复用的 SwiftUI 组件模式。
-- 需要给某个界面选择合适的 `TabView`、`NavigationStack`、`sheet`、`searchable` 或 `form` 方案。
-- 需要整理视图文件顺序、拆分臃肿 `body`、收敛依赖注入或 `@Observable` 使用方式。
-- 需要把"可选 view model + bootstrapIfNeeded"改成可维护模式。
-
 ## 核心约束
 
 - 优先使用 SwiftUI 原生状态模型：`@State`、`@Binding`、`@Observable`、`@Environment`。

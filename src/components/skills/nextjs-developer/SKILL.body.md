@@ -1,16 +1,3 @@
-## 适用场景
-
-- 需要在 `app/` 目录下设计路由树、`layout.tsx` / `template.tsx` / `loading.tsx` / `error.tsx` / `route.ts` 的职责划分时使用。
-- 需要决定某段 UI 应该保持 Server Component、下沉为 Client Component，还是拆成 Server + Client island 时使用。
-- 需要为数据获取、缓存、ISR、按路径/标签重验证、Server Actions、Metadata API、Middleware、Edge Runtime 或 Vercel 部署做实现选择时使用。
-- 复杂 RSC 边界和性能问题优先联动 `react-server-components`；需要类型体操或 DTO/泛型修复时联动 `typescript-magician`。
-- 需要展开细节时按主题加载参考资料：
-  [App Router](references/app-router.md)、
-  [Server Components](references/server-components.md)、
-  [Server Actions](references/server-actions.md)、
-  [Data Fetching](references/data-fetching.md)、
-  [Deployment](references/deployment.md)。
-
 ## 核心约束
 
 - 默认使用 App Router；除非明确维护遗留项目，否则不要把新实现落到 `pages/`。

@@ -13,6 +13,13 @@ export const financialAnalystSkill = defineSkill({
   id: "financial-analyst",
   fullName: "财务分析师技能",
   description: "当需要做财报比率分析、DCF 估值、预算偏差或滚动预测时使用。",
+  useCases: [
+    "需要快速完成财报比率分析、预算偏差归因、滚动预测或基础 DCF 估值。",
+    "需要直接运行现成脚本，而不是先搭建 Notebook、Pandas 管道或 Excel 模板。",
+    "需要把公司经营分析与估值分析串起来时，先用本技能完成输入清洗与基础结论。",
+    "若任务升级为更灵活的估值假设、双变量敏感性或盈亏平衡分析，参考财务建模相关方法。",
+    "若问题转向投资组合 VaR、CVaR、Sharpe、回撤等市场风险指标，参考风险管理相关方法。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -130,14 +137,6 @@ export const financialAnalystSkill = defineSkill({
       summary: "Reference material for financial-analyst.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for financial-analyst.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
   assets: [
     defineAsset({

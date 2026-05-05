@@ -10,6 +10,11 @@ export const goConcurrencyPatternsSkill = defineSkill({
   id: "go-concurrency-patterns",
   fullName: "Go 并发模式",
   description: "当 Go 代码涉及并发、goroutine 生命周期控制或竞态排查时使用。",
+  useCases: [
+    "构建有上限的 worker pool、fan-out/fan-in pipeline、批量请求并发执行。",
+    "需要把取消信号、超时和错误传播到整条 goroutine 链路。",
+    "需要实现服务优雅停机，避免 goroutine 泄漏、悬挂 channel、僵尸任务。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -47,13 +52,5 @@ export const goConcurrencyPatternsSkill = defineSkill({
       summary: "Reference material for go-concurrency-patterns.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for go-concurrency-patterns.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

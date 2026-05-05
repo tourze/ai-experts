@@ -13,6 +13,11 @@ export const copywritingSkill = defineSkill({
   id: "copywriting",
   fullName: "营销页面文案（copywriting）",
   description: "当用户要撰写营销页面文案、价值主张、产品叙事、CTA、hero copy 或落地页段落时使用。",
+  useCases: [
+    "从零撰写首页、落地页、定价页、功能页、关于页或产品页的完整文案。",
+    "改写已有页面文案，使其更清晰、更有说服力、转化率更高。",
+    "为 A/B 测试产出多个文案变体。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -106,14 +111,6 @@ export const copywritingSkill = defineSkill({
       summary: "Reference material for copywriting.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for copywriting.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
   assets: [
     defineAsset({

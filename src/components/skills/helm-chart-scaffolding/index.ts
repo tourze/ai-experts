@@ -13,6 +13,12 @@ export const helmChartScaffoldingSkill = defineSkill({
   id: "helm-chart-scaffolding",
   fullName: "Helm Chart 搭建",
   description: "当用户要创建、重构或验证 Helm Chart 时使用。",
+  useCases: [
+    "从零创建新的 Helm Chart。",
+    "把散落的 Kubernetes manifest 收敛到可复用 Chart。",
+    "需要为多环境部署整理 values 分层和依赖管理。",
+    "发布前做 `helm lint`、模板渲染与结构校验。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -42,14 +48,6 @@ export const helmChartScaffoldingSkill = defineSkill({
       summary: "Reference material for helm-chart-scaffolding.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for helm-chart-scaffolding.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
   assets: [
     defineAsset({

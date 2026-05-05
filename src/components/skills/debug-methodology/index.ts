@@ -11,6 +11,11 @@ export const debugMethodology = defineSkill({
   id: "debug-methodology",
   fullName: "系统化调试方法论",
   description: "当用户卡在 bug、stack trace、崩溃、间歇性失败或 flaky 行为，需要系统化调试时使用。",
+  useCases: [
+    "用户遇到 bug、异常行为、崩溃或性能问题。",
+    "用户已经试过一些修复但问题仍在，需要系统化排查。",
+    "交叉引用：修复后补测试配合 `test-driven-development`；修复涉及重构配合 `refactoring-checklist`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -72,14 +77,6 @@ export const debugMethodology = defineSkill({
       title: "LLDB Triage",
       summary: "LLDB 快速分诊流程。",
       loadWhen: "需要先分诊原生崩溃或堆栈异常再决定深入路径时读取。",
-    }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "debug-methodology 的触发与反触发用例。",
-      loadWhen: "只在验证或改进本 skill 时读取。",
     }),
   ],
 });

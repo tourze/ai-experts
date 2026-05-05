@@ -1,8 +1,3 @@
-## 适用场景
-- 复杂问题的根因分析：避免"头痛医头"。
-- 质量问题排查、故障诊断、流程改进。
-- 与 [mckinsey-7-step](../mckinsey-7-step/SKILL.md) 配合：七步法的第二步（分解问题）可以用鱼骨图。问题定义阶段的补充工具见 [references/five-w-two-h.md](references/five-w-two-h.md)。
-
 ## 核心约束
 - 主要类别（大骨）按场景选择：
   - 制造业：人/机/料/法/环（5M）

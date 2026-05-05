@@ -10,6 +10,10 @@ export const protocolFreezingPatternsSkill = defineSkill({
   id: "protocol-freezing-patterns",
   fullName: "protocol-freezing-patterns",
   description: "在需要管理协议版本冻结、线格式演进、向后兼容、版本协商和 breaking change 流程时使用。",
+  useCases: [
+    "需要冻结已部署协议字段或在不破坏旧客户端前提下演进消息结构。",
+    "交叉引用：系统级设计配合 `system-design`；错误处理配合 `error-handling-patterns`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -47,13 +51,5 @@ export const protocolFreezingPatternsSkill = defineSkill({
       summary: "Reference material for protocol-freezing-patterns.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for protocol-freezing-patterns.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

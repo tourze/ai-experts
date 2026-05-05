@@ -10,6 +10,12 @@ export const benchmarkRunnerSkill = defineSkill({
   id: "benchmark-runner",
   fullName: "基准测试设计",
   description: "当用户需要比较两个或多个实现的性能、做基准测试或评估延迟/吞吐/内存差异时使用。",
+  useCases: [
+    "用户要比较两个或多个候选方案的性能，而不是做泛泛的架构选型。",
+    "需要衡量延迟、吞吐、内存、准确率、成本、冷启动等指标。",
+    "需要产出可复现实验方案，或对已有结果做结构化解读。",
+    "需要结合 [testing-strategy](../testing-strategy/SKILL.md) 制定性能验证计划。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -47,13 +53,5 @@ export const benchmarkRunnerSkill = defineSkill({
       summary: "Reference material for benchmark-runner.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for benchmark-runner.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

@@ -10,6 +10,11 @@ export const contentStrategySkill = defineSkill({
   id: "content-strategy",
   fullName: "内容策略（content-strategy）",
   description: "当用户要制定内容策略、栏目规划、内容支柱、选题池、编辑节奏、内容多平台分发改编、主题集群设计，或 SEO 内容质量评分时使用。",
+  useCases: [
+    "从零规划内容方向、内容支柱和季度选题。",
+    "判断“该写什么”而不是“这篇怎么改”。",
+    "需要把品牌叙事、搜索流量和销售线索整合成一套发布计划。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -63,13 +68,5 @@ export const contentStrategySkill = defineSkill({
       summary: "Reference material for content-strategy.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for content-strategy.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

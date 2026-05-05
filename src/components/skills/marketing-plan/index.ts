@@ -10,6 +10,11 @@ export const marketingPlanSkill = defineSkill({
   id: "marketing-plan",
   fullName: "市场方案策划",
   description: "当用户要写市场方案、推广策划案、上市传播计划、整合营销方案，或把 Brief 转成阶段策略和落地活动时使用；若只做 STP、4P、投放预算或活动复盘，切到对应 skill。",
+  useCases: [
+    "从产品 Brief、老板口头需求或零散资料中整理完整市场推广方案。",
+    "为新品上市、版本发布、品牌节点、游戏/APP 推广、线下活动或整合营销输出阶段策略。",
+    "需要把产品卖点、竞品环境、用户洞察、传播定位、渠道节奏和具体活动串成一个可执行方案。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -39,13 +44,5 @@ export const marketingPlanSkill = defineSkill({
       summary: "Reference material for marketing-plan.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for marketing-plan.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

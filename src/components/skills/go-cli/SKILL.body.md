@@ -1,15 +1,3 @@
-## 适用场景
-
-- 使用 Cobra 构建 CLI 命令结构（root + subcommands）。
-- 需要配置分层：默认值 → 配置文件 → 环境变量 → flags。
-- 需要信号处理与优雅停机（os/signal + context）。
-- 定义退出码约定或注入版本信息（-ldflags）。
-- 生成 shell 自动补全（Bash / Zsh / Fish / PowerShell）。
-- 相关 skill：
-  并发停机编排配合 [go-concurrency-patterns](../go-concurrency-patterns/SKILL.md)；
-  错误语义设计配合 [go-error-handling](../go-error-handling/SKILL.md)；
-  项目布局配合 [go-project-layout](../go-code-style/SKILL.md)。
-
 ## 核心约束
 
 - 命令结构用 Cobra；配置管理用 Viper；两者通过 `viper.BindPFlag` 桥接，不要手写 flag 解析。

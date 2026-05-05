@@ -10,6 +10,14 @@ export const dbSchemaDesignSkill = defineSkill({
   id: "db-schema-design",
   fullName: "Database Schema Design",
   description: "当用户要设计或审查数据库表结构、列类型、约束、字符集、JSON 列或半结构化数据建模时使用。",
+  useCases: [
+    "新建或变更业务表，需要确定列类型、主键策略、字符集与约束。",
+    "审查 CREATE TABLE 语句的类型精度、约束完整性和默认值合理性。",
+    "表含稀疏或半结构化属性，需判断用 JSON/JSONB 列还是范式化。",
+    "对 JSON 内部字段建索引以支持查询过滤。",
+    "与索引设计联动，为索引打好列基础，联动 [sql-review-optimization](../sql-review-optimization/SKILL.md)（含深度索引策略）。",
+    "与 SQL 调优联动，表结构决定查询路径的上限，联动 [sql-review-optimization](../sql-review-optimization/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -71,13 +79,5 @@ export const dbSchemaDesignSkill = defineSkill({
       summary: "Reference material for db-schema-design.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for db-schema-design.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

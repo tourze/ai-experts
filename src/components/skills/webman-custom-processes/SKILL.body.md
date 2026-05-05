@@ -1,11 +1,5 @@
 自定义进程声明与运行时约束。
 
-## 适用场景
-
-- 声明后台 Worker、心跳、定时任务。
-- 排查进程阻塞、Timer 不触发。
-- 实现 crash-restart 或优雅停机。
-
 ## 核心约束
 
 - 初始化放 `onWorkerStart`，构造函数禁止副作用。见 [process-lifecycle](references/process-lifecycle.md)。

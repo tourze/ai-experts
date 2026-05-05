@@ -1,9 +1,3 @@
-## 适用场景
-
-- 新建 service、repository、adapter 等核心组件时需要先定边界。
-- 现有类已经变成 God object，职责缠绕、难测、难改。
-- 需要在继承、组合、协议、工具函数之间做取舍。
-
 通用架构原则（分层、组合优于继承、构造注入、薄控制器）见 architecture-expert 的 software-design skill。
 
 需要补齐类型约束时联动 [python-type-safety](../python-type-safety/SKILL.md)；补测试时联动 [python-testing-patterns](../python-testing-patterns/SKILL.md)；边界错误表达联动 [python-error-handling](../python-error-handling/SKILL.md)。

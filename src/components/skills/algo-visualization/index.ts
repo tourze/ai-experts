@@ -11,6 +11,13 @@ export const algoVisualizationSkill = defineSkill({
   id: "algo-visualization",
   fullName: "交互式算法可视化教学页",
   description: "当用户要把数据结构、算法或代码执行过程做成交互式教学可视化页面时使用。普通数据图表或流程图不适用。",
+  useCases: [
+    "PDF / 教材 → 知识点讲解页面（数据结构、算法）。",
+    "主题（\"演示快排\"、\"做个堆动画\"）→ 教学加可视化页面。",
+    "代码 / 算法 → 逐步执行动画，每步标注当前执行行。",
+    "概念对比（BST vs Heap、BFS vs DFS）→ 并排 SVG。",
+    "输出物：**单文件 HTML**，CSS/JS 内联，可直接打开。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -72,14 +79,6 @@ export const algoVisualizationSkill = defineSkill({
       summary: "Reference material for algo-visualization.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for algo-visualization.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
   assets: [
     defineAsset({

@@ -1,9 +1,3 @@
-## 适用场景
-
-- API 设计、后台任务、批处理、异步工作流和跨服务调用。
-- 需要统一错误语义、错误映射和兜底策略。
-- 各语言落地时加载对应语言 skill：`go-error-handling`、`python-error-handling`、`rust-error-handling`、`php-error-handling`。
-
 ## 核心约束
 
 ### 错误三层模型

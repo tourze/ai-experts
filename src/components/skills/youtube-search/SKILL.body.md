@@ -1,9 +1,3 @@
-## 适用场景
-
-- 用户要“搜一下 YouTube 上有哪些视频”“找教程”“列几个候选视频”“看看这个主题最近有什么视频”。
-- 用户需要标题、频道、观看量、URL 这类结构化结果，方便后续筛选。
-- 用户先做发现，再把选中的单条视频交给 [youtube-analysis](../youtube-analysis/SKILL.md) 深挖。
-
 ## 核心约束
 
 - 默认使用 `yt-dlp ytsearch + --dump-single-json --flat-playlist`，字段是“尽力而为”。

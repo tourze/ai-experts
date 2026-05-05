@@ -2,7 +2,6 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
-  defineReference,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -12,6 +11,12 @@ export const i18nLocalizationSkill = defineSkill({
   id: "i18n-localization",
   fullName: "国际化与本地化",
   description: "当需要实现多语言、排查硬编码文案、管理翻译资源、设计 locale 结构或处理 RTL 与日期数字格式时使用。",
+  useCases: [
+    "应用需要支持多语言、多地区或右到左布局。",
+    "需要从硬编码文案迁移到翻译键。",
+    "需要梳理 locale 目录、命名空间和翻译补全流程。",
+    "需要检查日期、货币、数字和复数规则是否按地区展示。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -30,16 +35,6 @@ export const i18nLocalizationSkill = defineSkill({
       runtime: "node",
       bundle: false,
       description: "Script i18n_checker.mjs.",
-    })
-  ],
-  references: [
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for i18n-localization.",
-      loadWhen: "Read only when validating or improving this skill.",
     })
   ],
 });

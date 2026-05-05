@@ -10,6 +10,14 @@ export const tauriV2Skill = defineSkill({
   id: "tauri-v2",
   fullName: "Tauri v2",
   description: "当用户要搭建 Tauri v2 应用骨架、src-tauri、tauri.conf.json、capabilities、插件权限、命令注册或移动端支持时使用。",
+  useCases: [
+    "需要搭建或调整 `src-tauri/` 目录、`tauri.conf.json`、`Cargo.toml`、`lib.rs` / `main.rs` 分层时使用。",
+    "需要实现前端 `invoke()` 调 Rust 命令、Rust 向前端发事件、或者用 `Channel<T>` 推送高频流式消息时使用。",
+    "需要接入官方插件、确认 `cargo tauri add <plugin>` 后的注册步骤、capability 写法、权限范围和多窗口目标时使用。",
+    "需要排查 “命令找不到”“权限拒绝”“桌面可用、移动端失效”“白屏”“签名/更新失败” 这类 Tauri 特有问题时使用。",
+    "需要和其它技能联动时：\n`rust-best-practices` 负责 Rust 代码风格与错误处理，\n`rust-async-patterns` 负责异步并发与后台任务，\n`typescript-magician` 负责前端类型边界，\n`react-server-components` 负责 React 前端分层。",
+    "需要展开专题时优先查这些参考文档：\n[Capabilities](references/capabilities-reference.md)、\n[IPC Patterns](references/ipc-patterns.md)、\n[Plugin Reference](references/plugin-reference.md)、\n[Updater & Distribution](references/updater-distribution-reference.md)、\n[Advanced Runtime](references/advanced-runtime-reference.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -63,13 +71,5 @@ export const tauriV2Skill = defineSkill({
       summary: "Reference material for tauri-v2.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for tauri-v2.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

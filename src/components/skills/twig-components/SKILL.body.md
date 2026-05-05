@@ -1,11 +1,3 @@
-## 适用场景
-
-- 需要在 Symfony 项目中抽取可复用的 TwigComponent 或交互式 LiveComponent。
-- 组件已经重复出现在多个 Twig 模板里，或模板逻辑复杂到难以维护。
-- 想在服务端渲染优先的前提下，为局部界面增加响应式交互。
-- 如果还在决定应该用 Stimulus、Turbo、TwigComponent 还是 LiveComponent，可先看 [symfony-ux](../symfony-ux/SKILL.md)。
-- 更细的组件示例见 [reference.md](reference.md)。
-
 ## 核心约束
 
 - 先判断组件类型：静态可复用 UI 用 TwigComponent，交互后需要服务端重渲染时再上 LiveComponent。

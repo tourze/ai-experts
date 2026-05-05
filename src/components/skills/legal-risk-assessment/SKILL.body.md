@@ -1,10 +1,3 @@
-## 适用场景
-
-- 评估合同偏离标准条款、监管变化、数据事件、劳动争议、知识产权争议、董事会敏感事项的法律暴露。
-- 为业务、法务、管理层提供统一的 `severity × likelihood` 口径，决定接受、缓释、升级或外部律师介入。
-- 事项涉及个人信息、跨境传输、监管申报时，参考 [references/gdpr-data-handling.md](references/gdpr-data-handling.md)。
-- 事项来源于招聘、用工、离职文件或 HR 政策时，参考 [references/employment-contract-templates.md](references/employment-contract-templates.md)。
-
 ## 核心约束
 
 - 这是内部评估框架，不替代法律意见；结论必须明确区分“已知事实”“假设”“风险判断”“缓释建议”，不能把猜测写成定论。

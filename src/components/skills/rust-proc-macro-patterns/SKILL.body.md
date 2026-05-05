@@ -1,10 +1,3 @@
-## 适用场景
-
-- 编写 derive macro 自动实现 trait。
-- 编写 attribute macro 注入日志、校验等代码。
-- 排查宏编译错误或 Span 定位不准。
-- 用 trybuild 编写编译通过/失败测试。
-
 ## 核心约束
 
 1. `[lib]` 设 `proc-macro = true`。

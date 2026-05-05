@@ -1,10 +1,3 @@
-## 适用场景
-
-- 仓库没有 README，或 README 已经过时、信息零散、无法指导开发者入门。
-- 用户希望自动扫描项目结构、`.github/copilot` 或 `copilot-instructions.md` 等资料来生成文档骨架。
-- 输出要兼顾“快速上手”和“架构导航”，而不是只列文件树。
-- 如需统一 Markdown 风格，可结合 [markdown-mermaid-writing](../markdown-mermaid-writing/SKILL.md)。
-
 ## 核心约束
 
 - 先理解项目是什么、给谁用、怎么跑，再写 README。

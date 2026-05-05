@@ -10,6 +10,12 @@ export const douyinViralContentSkill = defineSkill({
   id: "douyin-viral-content",
   fullName: "抖音爆款文案生成",
   description: "当用户要创作或优化抖音短视频选题、爆款标题、口播脚本、开头钩子、分镜节奏或带货文案时使用。",
+  useCases: [
+    "用户只有一句金句、一本书摘录或一段主题素材，需要产出可发布的抖音文案。",
+    "用户已经有历史文案样本，希望总结哪些表达更容易带来完播、互动和转发。",
+    "用户提供视频摘要或逐字稿，需要二次改写成更适合短视频的口播文本。",
+    "需要先提取视频内容时，使用本 skill 的视频摘要功能。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -63,13 +69,5 @@ export const douyinViralContentSkill = defineSkill({
       summary: "Reference material for douyin-viral-content.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for douyin-viral-content.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

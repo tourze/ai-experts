@@ -1,9 +1,3 @@
-## 适用场景
-- 创建插件脚手架并理解目录结构
-- 实现 setup/on_event/on_drop 生命周期钩子
-- 桌面/移动平台通过 trait 抽象统一接口
-- 插件状态管理、命令注册、权限定义
-
 ## 核心约束
 - 入口返回 `TauriPlugin<R>`，`Builder::new("name").build()`；名称不含前缀
 - 移动端拆 `mobile.rs` + `desktop.rs`，公共 trait 定义接口

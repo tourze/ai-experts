@@ -1,11 +1,5 @@
 Webman 插件的打包、安装和配置约定。
 
-## 适用场景
-
-- 开发 Composer 分发的 webman 插件。
-- 审查第三方插件结构。
-- 排查插件配置不生效、进程不启动。
-
 ## 核心约束
 
 - `Install.php` 声明 `WEBMAN_PLUGIN = true` 和 `$pathRelation`。见 [reference](reference.md)。

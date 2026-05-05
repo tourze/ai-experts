@@ -2,12 +2,6 @@
 
 灵感来源：[CiferaTeam/deep-code-reader](https://github.com/CiferaTeam/deep-code-reader)
 
-## 适用场景
-
-- 用户要深度理解陌生代码库，而不是只做快速仓库体检。
-- 用户希望把代码库知识沉淀成可复用 skill。
-- 用户能接受多轮闭卷验证，要求产出可被问答检验。
-
 ## 路由
 
 - 快速评估 → 直接进入本 skill 的快速扫描模式

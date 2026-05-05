@@ -10,6 +10,10 @@ export const webmanWebsocketPatternsSkill = defineSkill({
   id: "webman-websocket-patterns",
   fullName: "Webman Websocket Patterns",
   description: "当用户要在 Webman 中搭建或排查 WebSocket 服务端、心跳、频道广播或客户端重连时使用。",
+  useCases: [
+    "搭建 WebSocket 服务端或客户端。",
+    "管理连接生命周期、心跳、频道广播。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -47,13 +51,5 @@ export const webmanWebsocketPatternsSkill = defineSkill({
       summary: "Reference material for webman-websocket-patterns.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for webman-websocket-patterns.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

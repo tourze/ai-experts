@@ -10,6 +10,14 @@ export const sqlReviewOptimizationSkill = defineSkill({
   id: "sql-review-optimization",
   fullName: "SQL Review & Optimization",
   description: "当用户要审查 SQL 安全性、正确性与运维风险，或分析 slow query、EXPLAIN 执行计划、索引调优（含深度索引策略）、join order、分页策略时使用。",
+  useCases: [
+    "审查手写 SQL、迁移脚本、存储过程和 ORM 生成语句的安全性、正确性和可运维性。",
+    "排查 SQL 注入、权限过宽、误删误更新、联表错误、索引误用、迁移锁表风险。",
+    "排查慢查询、索引缺失、回表过多、排序退化、批处理低效、分页越来越慢等性能问题。",
+    "基于执行计划、行数估算、锁等待和数据分布决定优化方向。",
+    "深度索引设计：索引类型选择（B-tree / GIN / GiST / BRIN）、复合索引列顺序、EXPLAIN 解读与索引维护。",
+    "如果优化依赖具体数据库引擎特性，联动 [db-schema-design](../db-schema-design/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -71,13 +79,5 @@ export const sqlReviewOptimizationSkill = defineSkill({
       summary: "Reference material for sql-review-optimization.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for sql-review-optimization.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

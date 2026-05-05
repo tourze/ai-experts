@@ -1,9 +1,3 @@
-## 适用场景
-- 需要 hook 函数调用、修改参数/返回值或 trace 执行路径。
-- 需要绕过 root 检测、SSL pinning、RASP 等运行时保护。
-- 需要与 [jadx](../android-apk-audit/SKILL.md) 配合，先静态定位目标再动态验证。
-- 需要与 [anti-reversing-techniques](../binary-analysis-patterns/SKILL.md) 联动识别保护逻辑。
-
 ## 核心约束
 - 先静态分析定位 hook 点，不要盲写 hook 脚本。
 - 使用现代 API：`Process.getModuleByName()` + `mod.getExportByName()`，不用已废弃的 `Module.findBaseAddress()`。

@@ -12,6 +12,12 @@ export const complexityReducerSkill = defineSkill({
   id: "complexity-reducer",
   fullName: "复杂度识别与简化",
   description: "当代码过于复杂、嵌套太深、函数太长、耦合严重，或用户要求简化代码、清理命名、降低复杂度时使用。",
+  useCases: [
+    "代码能跑但难以理解、修改和测试。",
+    "函数超长、嵌套超深、参数超多、条件超复杂。",
+    "上线前做可维护性整理，而不是功能性重写。",
+    "交叉引用：重构流程纪律配合 `refactoring-checklist`；具体重构手法配合 `architecture-expert/refactoring-patterns`；审查结果配合 `code-review`；设计原则参考 `software-design`；完成前验证检查清单见 [references/verification-checklist.md](./references/verification-checklist.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -89,13 +95,5 @@ export const complexityReducerSkill = defineSkill({
       summary: "Reference material for complexity-reducer.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for complexity-reducer.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

@@ -10,6 +10,11 @@ export const croMethodologySkill = defineSkill({
   id: "cro-methodology",
   fullName: "转化优化方法（cro-methodology）",
   description: "在需要审计网站或落地页转化问题、梳理实验假设和设计 A/B 测试，或优化弹窗、注册流程、新手引导、AIDA 漏斗转化时使用。",
+  useCases: [
+    "页面有流量但转化弱，想知道阻塞点在哪。",
+    "需要把访客疑虑、证据缺口和实验优先级整理成可执行方案。",
+    "想为页面、表单、CTA 或价格信息设计 A/B 测试。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -103,13 +108,5 @@ export const croMethodologySkill = defineSkill({
       summary: "Reference material for cro-methodology.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for cro-methodology.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

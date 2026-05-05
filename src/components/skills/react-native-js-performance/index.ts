@@ -10,6 +10,14 @@ export const reactNativeJsPerformanceSkill = defineSkill({
   id: "react-native-js-performance",
   fullName: "React Native JS 线程性能",
   description: "当用户要排查 JS thread 性能、掉帧、FPS、FlatList、FlashList、React Compiler、内存泄漏、动画抖动或 ScrollView 慢时使用。",
+  useCases: [
+    "界面卡顿、滚动掉帧、动画抖动、输入延迟。",
+    "大列表渲染慢，需要评估 FlatList / FlashList / 虚拟化策略。",
+    "动画需要从 JS 线程迁移到 UI 线程（Reanimated worklet）。",
+    "React 渲染性能分析、React Compiler 接入评估。",
+    "JS 内存泄漏定位与修复。",
+    "交互与视觉实现优先联动 [react-native-design](../react-native-design/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -111,13 +119,5 @@ export const reactNativeJsPerformanceSkill = defineSkill({
       summary: "Reference material for react-native-js-performance.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for react-native-js-performance.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

@@ -11,6 +11,10 @@ export const typescriptTypeSafety = defineSkill({
   id: "typescript-type-safety",
   fullName: "TypeScript Type Safety",
   description: "需要定位 TS 编译错误、清理 any、设计泛型/类型守卫/条件类型，或搭建路由/API/数据库边界的类型合同时使用。",
+  useCases: [
+    "**类型系统设计与修复：** `tsc --noEmit` 出现类型错误、旧代码充满 `any`/弱类型字典、需要设计泛型/类型守卫/条件类型/映射类型/模板字面量类型。",
+    "**边界类型合同：** 新项目选型让路由/API/数据库共享合同、现有代码依赖字符串键/隐式约定/弱类型 DTO 需收口、要求\"拼错即编译失败\"、运行时校验与静态类型成对出现。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -48,14 +52,6 @@ export const typescriptTypeSafety = defineSkill({
       title: "TypeScript Rule Catalog",
       summary: "TypeScript 类型规则目录，按单个语言特性拆分。",
       loadWhen: "需要查询具体 TypeScript 类型特性的规则和反模式时读取对应文件。",
-    }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "typescript-type-safety 的触发与反触发用例。",
-      loadWhen: "只在验证或改进本 skill 时读取。",
     }),
   ],
 });

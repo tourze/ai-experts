@@ -10,6 +10,13 @@ export const uxHeuristicsSkill = defineSkill({
   id: "ux-heuristics",
   fullName: "UX Heuristics",
   description: "当用户需要诊断界面可用性问题或做启发式评估时使用（交互层：导航混乱、表单阻塞、信息架构复盘）。产品策略级设计审视用 `product-design-critic`；UI 实现质量审查用 `frontend-design-review`。",
+  useCases: [
+    "用户反馈“找不到入口”“不知道系统在干什么”“提交后没反应”。",
+    "需要在没有真实用户测试前，先做一轮低成本可用性体检。",
+    "要给页面、流程、组件输出可执行的严重级别与修复顺序。",
+    "发现问题已经超出视觉层，需结合 [ux-researcher-designer](../ux-researcher-designer/SKILL.md) 一起处理。",
+    "具体评估细则优先读取 [Nielsen 十原则](references/nielsen-heuristics.md)、[Krug 导航检查](references/krug-principles.md) 与 [审计模板](references/audit-template.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -71,13 +78,5 @@ export const uxHeuristicsSkill = defineSkill({
       summary: "Reference material for ux-heuristics.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for ux-heuristics.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

@@ -10,6 +10,11 @@ export const systemsThinkingSkill = defineSkill({
   id: "systems-thinking",
   fullName: "系统思维",
   description: "当用户要分析多方参与、激励错位、二阶效应或复杂系统动态时使用；帮助识别结构、反馈回路、杠杆点与系统性副作用。",
+  useCases: [
+    "平台策略、组织协作、复杂业务链路、生态位博弈或长期副作用分析。",
+    "需要经验参考时可阅读 [references/guest-insights.md](references/guest-insights.md)。",
+    "涉及流程或不确定性时，可配合 [process-optimization](../process-optimization/SKILL.md) 与 [planning-under-uncertainty](../planning-under-uncertainty/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -47,13 +52,5 @@ export const systemsThinkingSkill = defineSkill({
       summary: "Reference material for systems-thinking.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for systems-thinking.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

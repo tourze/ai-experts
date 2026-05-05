@@ -1,9 +1,3 @@
-## 适用场景
-
-- 构建基于 Tokio 的网络服务、worker、任务编排器或后台轮询器。
-- 排查 `future is not Send`、`spawn` 要求 `'static`、任务泄漏、取消不生效、超时缺失、锁跨 `await` 等问题。
-- 需要确定 channel、`JoinSet`、`Semaphore`、`CancellationToken`、`select!` 的使用边界时。
-
 通用并发原则（不阻塞异步上下文、限制并发、传播取消、不共享可变状态、超时所有外部调用、优雅停机）见 architecture-expert 的 concurrency-patterns skill。
 
 ## Rust 特有约束

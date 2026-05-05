@@ -2,7 +2,6 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
-  defineReference,
   defineSkill,
 } from "../../sdk";
 
@@ -10,18 +9,13 @@ export const memoryForensicsSkill = defineSkill({
   id: "memory-forensics",
   fullName: "内存取证",
   description: "当需要分析 RAM 镜像中的进程、注入、网络连接、凭据痕迹或 rootkit 线索时使用。",
+  useCases: [
+    "需要用 Volatility 等工具分析内存镜像的进程、模块、句柄、网络、注入和持久化痕迹。",
+    "需要与 [binary-analysis-patterns](../binary-analysis-patterns/SKILL.md) 联动定位可疑模块。",
+    "面对反调试或壳层样本时，可结合 [anti-reversing-techniques](../binary-analysis-patterns/SKILL.md) 解释运行时差异。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  references: [
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for memory-forensics.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
-  ],
 });

@@ -12,6 +12,9 @@ export const androidDeviceAutomationSkill = defineSkill({
   id: "android-device-automation",
   fullName: "Android 真机/模拟器自动化",
   description: "当用户要启动、操作或管理 Android 真机/模拟器、自动化构建部署、查看设备日志或做 UI 导航时使用。",
+  useCases: [
+    "当用户要启动、操作或管理 Android 真机/模拟器、自动化构建部署、查看设备日志或做 UI 导航时使用。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -121,13 +124,5 @@ export const androidDeviceAutomationSkill = defineSkill({
       summary: "Reference material for android-device-automation.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for android-device-automation.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

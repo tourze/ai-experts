@@ -1,10 +1,3 @@
-## 适用场景
-
-- 实现 API/数据库的异步调用、后台任务处理。
-- 修复线程/任务相关的内存泄漏。
-- 将回调/Listener 转换为 Coroutines。
-- 实现 ViewModel 的 UI 状态管理。
-
 通用并发原则（不阻塞异步上下文、限制并发、传播取消、不共享可变状态、超时所有外部调用、优雅停机）见 architecture-expert 的 concurrency-patterns skill。
 
 ## Kotlin/Android 特有约束

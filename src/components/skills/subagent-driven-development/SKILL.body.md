@@ -1,10 +1,3 @@
-## 适用场景
-
-- 有一份实现计划或 Execution Contract（来自 `task-decomposer`、`feature-dev`、`persistent-planning` 等），且用户明确要求子代理、worker、多 agent 或并行实现。
-- 需要消费 `task-decomposer` 输出的 `waves` / `read_scope` / `write_scope` / `acceptance`，并把计划推进到实际修改。
-- 需要在当前会话中连续执行多个任务而不污染主上下文。
-- 交叉引用：任务拆解用 `task-decomposer`；方案审查用 `plan-review`；完成后用 `finishing-branch`。
-
 ## 核心约束
 
 **违反字面规则 = 违反规则精神。不存在"灵活变通"。**

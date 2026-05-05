@@ -1,19 +1,5 @@
 面向 Vue 3 JavaScript 项目的实现技能。目标是在不引入 TypeScript 的前提下，仍然保持组件 API、composable 返回值、Pinia store 与测试代码具备清晰的 JSDoc 类型边界。
 
-## 适用场景
-
-- 需要用纯 JavaScript 编写 Vue 3 组件、composable、Pinia store 或 Vite 配置。
-- 项目明确不启用 TypeScript，但仍要求通过 `@typedef`、`@param`、`@returns`、`@type` 保持 API 自描述。
-- 需要把 Vue 2 Options API 逐步迁移到 Vue 3 Composition API，并保持文件仍为 `.js` / `.mjs` / `.vue`。
-- 需要为 Vue JavaScript 代码补 Vitest 测试时，联动 `javascript-typescript-jest`。
-- 涉及更广义的 ES 模块、异步流程或数据变换时，联动 `modern-javascript-patterns`。
-- 需要展开某一专题时，按需查阅：
-  - [JSDoc 标注参考](references/jsdoc-typing.md)
-  - [Composable 模式](references/composables-patterns.md)
-  - [组件结构](references/component-architecture.md)
-  - [状态管理](references/state-management.md)
-  - [测试模式](references/testing-patterns.md)
-
 ## 核心约束
 
 - 统一使用 Vue 3 Composition API 与 `<script setup>`；不要回退到 Options API 作为默认实现。

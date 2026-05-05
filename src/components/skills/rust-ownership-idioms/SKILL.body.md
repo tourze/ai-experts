@@ -1,10 +1,3 @@
-## 适用场景
-
-- 新写 Rust 模块、函数、trait 或类型时，需要先定借用/所有权边界。
-- 评审中判断 `.clone()`、`unwrap()`、`Box`、`Rc`、`Arc`、`dyn Trait` 是否合理。
-- 选择 `&T` vs `T` vs `Box<T>` vs `Rc<T>` vs `Arc<T>` 时需要决策依据。
-- 配置 Clippy lint 基线或处理 Clippy 警告时。
-
 ## 核心约束
 
 - 默认借用而非克隆。参数优先 `&str`、`&[T]`、`&Path`，除非调用方必须转移所有权。

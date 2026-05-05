@@ -1,10 +1,3 @@
-## 适用场景
-
-- Java 进程 CPU 飙高、请求明显变慢、机器负载异常升高。
-- 需要快速确认是计算热点、锁竞争、GC 压力还是日志/序列化开销。
-- 已能连到目标 JVM，并且允许使用 Arthas 做只读诊断。
-- 如果怀疑是 Spring Bean 装配或配置注入问题，转到 [arthas-springcontext-issues-resolve](../arthas-springcontext-issues-resolve/SKILL.md)。
-
 ## 核心约束
 
 - 先只读、后追踪：必须先拿到 `dashboard` 与 `thread` 证据，再决定是否使用 `trace` / `watch`。

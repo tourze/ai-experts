@@ -10,6 +10,15 @@ export const softwareDesignSkill = defineSkill({
   id: "software-design",
   fullName: "软件设计",
   description: "当需要拆分职责、设计服务层、减少耦合、在组合与继承之间做选择，或从复杂度、深模块、信息隐藏角度评价设计时使用。语言无关的通用设计原则与架构模式。",
+  useCases: [
+    "新建 service、repository、adapter 等核心组件时需要先定边界。",
+    "现有类变成 God object，职责缠绕、难测、难改。",
+    "需要在继承、组合、接口、工具函数之间做取舍。",
+    "需要规划依赖注入策略和分层方向。",
+    "需要从复杂度、深模块、信息隐藏角度评价现有设计。",
+    "各语言落地：`go-design-patterns`、`python-design-patterns`、`php-design-patterns`。",
+    "具体重构配合 `refactoring-patterns`；重构计划配合 `refactor-planning-method`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -71,13 +80,5 @@ export const softwareDesignSkill = defineSkill({
       summary: "Reference material for software-design.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for software-design.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

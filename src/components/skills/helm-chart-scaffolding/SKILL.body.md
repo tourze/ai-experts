@@ -1,9 +1,3 @@
-## 适用场景
-- 从零创建新的 Helm Chart。
-- 把散落的 Kubernetes manifest 收敛到可复用 Chart。
-- 需要为多环境部署整理 values 分层和依赖管理。
-- 发布前做 `helm lint`、模板渲染与结构校验。
-
 ## 核心约束
 - 优先使用 `apiVersion: v2` 的 application chart。
 - `values.yaml` 按镜像、网络、资源、安全、依赖项分层，避免扁平大表。

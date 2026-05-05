@@ -1,9 +1,3 @@
-## 适用场景
-- 需要在 IDA 中批量重命名、搜索字节模式、遍历函数或基本块。
-- 需要用 Hex-Rays 反编译器 API 读取或修改伪代码。
-- 需要用 IDALib (IDA 9.0+) 做无 GUI 的批量分析。
-- 需要与 [binary-analysis-patterns](../binary-analysis-patterns/SKILL.md) 配合做深入逆向。
-
 ## 核心约束
 - 区分调试态 API (`read_dbg_byte`) 和 IDB 态 API (`get_db_byte`)。
 - `idc.find_bytes()` 返回 `BADADDR` 时停止循环。

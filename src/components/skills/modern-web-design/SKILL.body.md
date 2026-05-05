@@ -1,13 +1,3 @@
-## 适用场景
-
-- 设计或重构品牌官网、产品页、营销页、活动页和高辨识度 Web App 界面。
-- 需要在"好看"和"快"之间做系统性平衡。
-- 用户说"做成 X 风格"但不确定 X 具体长什么样、CSS 怎么写。
-- 需要明确视觉方向，而不是套用通用模板。
-- 用户提到 "premium"、"高级感"、"不要 AI 味" 时，先读取 [references/high-agency-protocol.md](references/high-agency-protocol.md)。
-- 要给 AI 图像生成工具提供风格 prompt 关键词。
-- 与 `industry-design-presets` 联动：preset 选风格，本 skill 落地。
-
 ## 风格选择方法
 
 [references/styles-catalog.md](references/styles-catalog.md) 收录 60 种 UI 风格，每条含关键词、CSS 特征、适用/反适用、AI prompt 关键词、实现 checklist。

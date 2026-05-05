@@ -3,7 +3,6 @@ import {
   KnownTool,
   Platform,
   defineAsset,
-  defineReference,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -13,6 +12,12 @@ export const screenshotSkill = defineSkill({
   id: "screenshot",
   fullName: "系统截图",
   description: "当用户要截桌面、截窗口、截指定区域或做系统级截图时使用。",
+  useCases: [
+    "用户明确要求截取桌面、应用窗口、活动窗口或像素区域。",
+    "需要对桌面应用、原生窗口、系统弹窗做截图。",
+    "需要临时保存到系统默认目录或临时目录，供后续查看。",
+    "如果浏览器、Figma 或其他专用工具已经能直接截图，优先用专用工具，不要多绕一层系统截图。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -71,16 +76,6 @@ export const screenshotSkill = defineSkill({
       runtime: "node",
       bundle: false,
       description: "Script take_screenshot_windows.mjs.",
-    })
-  ],
-  references: [
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for screenshot.",
-      loadWhen: "Read only when validating or improving this skill.",
     })
   ],
   assets: [

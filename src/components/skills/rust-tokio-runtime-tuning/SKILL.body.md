@@ -1,10 +1,3 @@
-## 适用场景
-
-- 为服务/CLI/移动端选择合适的 runtime 配置。
-- 调整 worker 线程数、blocking 上限或栈大小。
-- 在同步代码中嵌入 async（`block_on` 桥接）。
-- 用 metrics / tokio-console 定位瓶颈。
-
 ## 核心约束
 
 1. `worker_threads` 先测量再设；默认 num_cpus 常过多。

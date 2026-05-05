@@ -1,12 +1,5 @@
 > 通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 [testing-patterns](testing-expert:testing-patterns)。本 skill 只覆盖 PHP 特有语法与工具。
 
-## 适用场景
-
-- 编写新的 PHPUnit / Pest 测试类、测试方法和测试夹具。
-- 审查或重构已有测试，降低脆弱断言、过度 Mock 和复制粘贴。
-- 统一 `#[Test]`、数据提供者、覆盖率边界与测试分组。
-- 调整 `phpunit.xml` 的严格模式、套件划分和覆盖率策略。
-
 ## 核心约束
 
 - 测试文件启用 `declare(strict_types=1)`，保持显式类型。

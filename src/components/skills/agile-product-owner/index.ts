@@ -13,6 +13,12 @@ export const agileProductOwnerSkill = defineSkill({
   id: "agile-product-owner",
   fullName: "敏捷产品负责人",
   description: "当用户需要编写用户故事、补齐验收标准、拆分 Epic、规划 Sprint 或排序 Backlog 时使用。",
+  useCases: [
+    "把需求拆成可交付的用户故事、Epic 和 Sprint 范围。",
+    "需要结合 [references/user-story-templates.md](references/user-story-templates.md)、[references/sprint-planning-guide.md](references/sprint-planning-guide.md) 或模板资产落文档。",
+    "故事拆分可配合 [user-story-patterns](../create-prd/SKILL.md)（8 种拆分模式 + INVEST 检查），Epic 分解可配合 [epic-decomposition](../create-prd/SKILL.md)（9 种分解模式 + Story Mapping）。",
+    "需要运行脚本生成示例 Backlog 或 Sprint 计划时，可直接调用 `scripts/user_story_generator.mjs`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -66,14 +72,6 @@ export const agileProductOwnerSkill = defineSkill({
       summary: "Reference material for agile-product-owner.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for agile-product-owner.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
   assets: [
     defineAsset({

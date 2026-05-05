@@ -1,9 +1,3 @@
-## 适用场景
-
-- 新建或审查 Entity 列映射、关联、索引、Repository 和 Migration。
-- 排查 N+1、懒加载异常、级联删除或 UnitOfWork 性能问题。
-- 批处理联动 [doctrine-batch-processing](../doctrine-batch-processing/SKILL.md)；Bundle 组织联动 [symfony-bundle-architecture](../symfony-bundle-architecture/SKILL.md)。完整示例见 [reference.md](reference.md)。
-
 ## 核心约束
 
 - 用 PHP 8 Attributes 映射，不用注解。

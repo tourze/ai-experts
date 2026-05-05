@@ -10,6 +10,11 @@ export const ethicalHackingMethodologySkill = defineSkill({
   id: "ethical-hacking-methodology",
   fullName: "授权渗透测试方法论",
   description: "当用户需要在合法授权范围内做 Nmap 侦察、Linux 提权、AD 攻击、路径遍历、认证绕过、deeplink 滥用、API Fuzzing 或常见 Web 漏洞渗透测试时使用。",
+  useCases: [
+    "需要从信息收集、验证、利用、横向移动到报告闭环组织测试。",
+    "需要把 [nmap](references/nmap.md) 的侦察结果和 [wireshark-analysis](../wireshark-analysis/SKILL.md) 的流量证据串起来。",
+    "需要建立统一的发现分级、证据留存和复测策略。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -79,13 +84,5 @@ export const ethicalHackingMethodologySkill = defineSkill({
       summary: "Reference material for ethical-hacking-methodology.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for ethical-hacking-methodology.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

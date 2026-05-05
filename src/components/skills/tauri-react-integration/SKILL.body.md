@@ -1,10 +1,3 @@
-## 适用场景
-- `invoke()` 封装为带 loading/error 的 Hook
-- Tauri 事件 listen/unlisten 生命周期管理
-- Rust-React 状态同步（事件驱动）
-- React Router + 深链接集成
-- IPC 失败错误边界
-
 ## 核心约束
 - WebView 无 Node.js API；系统访问必须 `invoke()`
 - CSP 显式允许脚本源；dev server 绑定 localhost

@@ -1,9 +1,3 @@
-## 适用场景
-
-- 构建 FastAPI、aiohttp、WebSocket 或其他高并发异步接口。
-- 并发执行数据库、HTTP、文件等 I/O 操作。
-- 需要为异步代码补齐 timeout、cancellation、backpressure 和并发上限。
-
 通用并发原则（不阻塞异步上下文、限制并发、传播取消、不共享可变状态、超时所有外部调用、优雅停机）见 architecture-expert 的 concurrency-patterns skill。
 
 联动：[python-background-jobs](../python-background-jobs/SKILL.md) · [python-observability](../python-observability/SKILL.md) · [python-testing-patterns](../python-testing-patterns/SKILL.md)

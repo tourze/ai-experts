@@ -1,12 +1,3 @@
-## 适用场景
-
-- 用户要找研究方向、跨学科连接、方法创新或潜在研究空白。
-- 适合课题早期、概念阶段、实验设计探索阶段。
-- 用户需要的是共创式发散，而不是教科书式讲解。
-- 如果要借其他行业或学科的成熟机制，可结合 [cross-pollination-engine](../cross-pollination-engine/SKILL.md)。
-- 如果要先拆掉既有假设，再重建研究问题，可结合 [first-principles-decomposer](../first-principles-decomposer/SKILL.md)。
-- 需要更结构化方法时，参考 [brainstorming_methods.md](references/brainstorming_methods.md)。
-
 ## 核心约束
 
 - 这是协作式对话，不是单向授课；用户至少应贡献一半以上信息和判断。

@@ -1,13 +1,3 @@
-## 适用场景
-
-- 配置或提升 PHPStan / Psalm 的检查级别。
-- 为数组补 `array{key: type}` 结构或 `@template` 泛型标注。
-- 用条件返回类型、`@phpstan-assert` 或 `assert()` 做类型收窄。
-- 消除代码中的 `mixed`、`@var` 强转和 `@phpstan-ignore` 压制。
-- 为现有 PHP 代码补写或收敛 `/** */` 文档块。
-- 审查 PHPDoc 是否重复签名，或遗漏数组结构、异常、业务约束等关键信息。
-- 在框架代码、DTO、值对象、仓库与服务层中统一文档风格。
-
 ## 核心约束
 
 - 目标是 PHPStan level 9 / Psalm level 1；新项目直接拉到最高。

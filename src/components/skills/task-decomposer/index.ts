@@ -10,6 +10,12 @@ export const taskDecomposerSkill = defineSkill({
   id: "task-decomposer",
   fullName: "task-decomposer",
   description: "当用户要把复杂需求拆成任务板、依赖关系、关键路径或并行工作项时使用。",
+  useCases: [
+    "适合复杂功能、跨团队协作、需要排关键路径和并行度的实现计划。",
+    "适合从模糊需求落到可执行任务，而不是只列几句待办。",
+    "交叉引用：先审计划质量用 `plan-review`；需要完整功能工作流用 `feature-dev`；需要把拆解结果持久化到文件用 `persistent-planning`。",
+    "当用户要为后续子代理/多 agent 执行准备计划或交接文本时，输出 Execution Contract，供 `subagent-driven-development` 消费。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -55,13 +61,5 @@ export const taskDecomposerSkill = defineSkill({
       summary: "Reference material for task-decomposer.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for task-decomposer.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

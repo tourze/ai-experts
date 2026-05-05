@@ -10,6 +10,10 @@ export const specDrivenDeliverySkill = defineSkill({
   id: "spec-driven-delivery",
   fullName: "需求驱动的可验证交付（SPARV）",
   description: "当需要把需求、计划、实现、审查和沉淀串成可验证交付流程，避免过早实现或跑偏时使用。",
+  useCases: [
+    "不是\"改一行\"的改动，需要把需求→实现→验证串起来一次走完。",
+    "跨多次工具调用、可能跨 session，担心中途遗忘决策或跳过验证。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -39,13 +43,5 @@ export const specDrivenDeliverySkill = defineSkill({
       summary: "Reference material for spec-driven-delivery.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for spec-driven-delivery.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

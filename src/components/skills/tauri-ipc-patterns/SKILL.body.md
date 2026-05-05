@@ -1,9 +1,3 @@
-## 适用场景
-- 自定义错误类型替代 `Result<T, String>`
-- 判别联合事件、多窗口精确路由
-- `Channel<T>` 高频推送、二进制零拷贝
-- 自定义命令权限定义、批量命令优化
-
 ## 核心约束
 - 错误类型必须 impl `serde::Serialize`，序列化为结构体非纯字符串
 - 事件枚举用 `#[serde(tag = "event", content = "data")]`

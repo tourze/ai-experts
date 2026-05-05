@@ -1,10 +1,3 @@
-## 适用场景
-
-- 设计或审查接口：大小、定义位置、方法集、与泛型的取舍。
-- 结构体组合：embedding vs 命名字段、零值可用、field tag。
-- Receiver 选择：pointer vs value、一致性、noCopy 模式。
-- 类型断言、type switch、compile-time interface check。
-
 涉及 nil interface trap 时配合 [go-safety](../go-error-handling/SKILL.md)；涉及接口/类型命名时配合 [go-naming](../go-code-style/SKILL.md)。
 
 ## 核心约束

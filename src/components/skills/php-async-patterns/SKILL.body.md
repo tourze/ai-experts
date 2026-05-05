@@ -1,9 +1,3 @@
-## 适用场景
-
-- 需要 PHP 长驻进程（HTTP 服务器、WebSocket、任务 worker）。
-- 需要并发发起多个 HTTP/数据库请求以降低总延迟。
-- 在 Swoole、ReactPHP、Amphp 和原生 Fiber 之间做技术选型。
-
 通用并发原则（不阻塞异步上下文、限制并发、传播取消、不共享可变状态、超时所有外部调用、优雅停机）见 architecture-expert 的 concurrency-patterns skill。
 
 ## 核心约束

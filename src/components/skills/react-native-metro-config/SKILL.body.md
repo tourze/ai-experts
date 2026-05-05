@@ -1,9 +1,3 @@
-## 适用场景
-
-- 配置 Monorepo 下 Metro 的路径解析和包发现时。
-- 添加自定义平台扩展名（.tauri.ts、.macos.ts）时。
-- 排查热更新失效、模块找不到或 CI 打包 OOM 时。
-
 ## 核心约束
 
 - `inlineRequires: true` 改变初始化顺序，须充分回归测试。

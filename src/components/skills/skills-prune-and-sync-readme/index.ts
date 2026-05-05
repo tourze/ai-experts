@@ -2,7 +2,6 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
-  defineReference,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -12,6 +11,9 @@ export const skillsPruneAndSyncReadmeSkill = defineSkill({
   id: "skills-prune-and-sync-readme",
   fullName: "Skills Prune And Sync Component Index",
   description: "当用户提到”清理 skills””删除重复/低质量 skill””治理 skill 冲突””更新 README 的 skill 列表”时使用。",
+  useCases: [
+    "当用户提到”清理 skills””删除重复/低质量 skill””治理 skill 冲突””更新 README 的 skill 列表”时使用。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -46,16 +48,6 @@ export const skillsPruneAndSyncReadmeSkill = defineSkill({
       runtime: "node",
       bundle: false,
       description: "Script test_curate_skills.mjs.",
-    })
-  ],
-  references: [
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for skills-prune-and-sync-readme.",
-      loadWhen: "Read only when validating or improving this skill.",
     })
   ],
 });

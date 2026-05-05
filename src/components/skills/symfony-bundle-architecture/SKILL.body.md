@@ -1,9 +1,3 @@
-## 适用场景
-
-- 新建或审查 Bundle 的 Extension、services.yaml、CompilerPass 和依赖声明。
-- Bundle 间依赖混乱、可选依赖缺失、Monorepo 多 Bundle 协作。
-- Entity 设计联动 [doctrine-entity-patterns](../doctrine-entity-patterns/SKILL.md)；代码示例和调试命令见 [reference.md](reference.md)。
-
 ## 核心约束
 
 - Bundle 类只做：声明依赖 + 注册 CompilerPass。

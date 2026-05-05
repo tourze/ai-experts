@@ -1,12 +1,5 @@
 把一次 eval 运行从“看起来完成了”转成可审计的通过/失败判定。适用于 skill benchmark、with-skill vs baseline、回归评测和任何带 transcript / outputs / expectations 的任务评估。
 
-## 适用场景
-
-- 已有 `transcript`、输出目录和 expectations，需要逐条判定 PASS / FAIL。
-- 需要验证输出文件的真实内容，而不是只相信 transcript 的自述。
-- 需要从输出中抽取额外 claims，发现 expectations 没覆盖的风险。
-- 需要判断 assertion 是否太弱、太表层或无法验证。
-
 ## 核心约束
 
 - 通过的举证责任在被评估输出一方；找不到证据就是 FAIL。

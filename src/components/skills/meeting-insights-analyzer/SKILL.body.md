@@ -1,11 +1,3 @@
-## 适用场景
-
-- 用户希望复盘自己或团队在会议中的沟通方式，例如冲突回避、打断频率、引导风格、倾听质量或行动项清晰度。
-- 适合分析单场高信息量会议，或跨多场会议做趋势对比。
-- 典型输入为带说话人标识和时间戳的转写文本，也可以是录音导出的字幕文件。
-- 如果用户只想提取摘要、决策和行动项，使用 [references/meeting-minutes.md](references/meeting-minutes.md)。
-- 如果用户要正式纪要文档，而不是行为反馈，使用 [references/meeting-notes-and-actions.md](references/meeting-notes-and-actions.md)。
-
 ## 核心约束
 
 - 任何行为判断都必须带证据：至少提供会议名称、时间点或原句片段，先给观察，再给解释。

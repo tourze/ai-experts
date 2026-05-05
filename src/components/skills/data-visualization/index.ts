@@ -10,6 +10,14 @@ export const dataVisualizationSkill = defineSkill({
   id: "data-visualization",
   fullName: "data-visualization",
   description: "当用户要选择图表类型、判断图表是否合适、生成 Python 可视化代码、调整图表表达方式或设计 Dashboard 图表时使用。",
+  useCases: [
+    "需要把表格结果转成 line/bar/scatter/heatmap 等图表。",
+    "用户并不缺数据，缺的是“该画什么图”和“怎么画得清楚”。",
+    "需要给图表加注释、颜色策略、数值标签、可访问性约束。",
+    "需要审查现有 Dashboard，判断哪些图选错了类型。",
+    "需要把\"数据形状 → 图表类型\"规则内化成选型矩阵。",
+    "相关 skill：[data-analysis](../data-analysis/SKILL.md)、[statistical-analysis](../statistical-analysis/SKILL.md)、[data-storytelling](../data-storytelling/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ModelOnly,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -23,13 +31,5 @@ export const dataVisualizationSkill = defineSkill({
       summary: "Reference material for data-visualization.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for data-visualization.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

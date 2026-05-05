@@ -1,9 +1,3 @@
-## 适用场景
-
-- 用户说“没网了”“解析失败”“端口不通”“连接超时”“curl 握手失败”“服务偶发断开”。
-- 需要先拿系统整体快照时，先运行 [system-diagnostics](../system-diagnostics/SKILL.md)。
-- 若怀疑性能退化由网络引起，系统层面排查参考 system-diagnostics。
-
 ## 核心约束
 
 - 必须按链路层 → IP → 路由 → DNS → 端口 → 应用 的顺序排查，不能跳层。

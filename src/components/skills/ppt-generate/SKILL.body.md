@@ -1,11 +1,3 @@
-## 适用场景
-
-- 用户给出主题/需求，要求生成完整演示文稿。
-- 用户提供源文档（PDF/文本/URL），要求转化为 PPT。
-- 用户说"帮我做个 PPT"、"生成幻灯片"、"做个 deck"。
-- 用户要求先看多套真实页面预览、图像级视觉方向或 image-first 成稿，再确认整套 PPT。
-- 区别：[ppt-visual](references/ppt-visual.md) 只输出设计说明；[pptx](references/pptx.md) 处理已有文件。
-
 ## 核心流程 — 6 阶段，4 个硬停点
 
 ```

@@ -1,15 +1,3 @@
-## 适用场景
-
-- 新建或重构 Java 21+ / Spring Boot 3.x 服务。
-- 审查 REST API、事务边界、JPA 映射、异常处理与可观测性。
-- 需要对接测试、原生镜像或构建优化时，联动：
-  [java-junit](../java-junit/SKILL.md)、
-  [graalvm-native-image](../graalvm-native-image/SKILL.md)、
-  [gradle-build-performance](../gradle-build-performance/SKILL.md)。
-- 诊断线上 JVM / Spring 运行时问题时，联动：
-  [arthas-cpu-high](../arthas-cpu-high/SKILL.md)、
-  [arthas-springcontext-issues-resolve](../arthas-springcontext-issues-resolve/SKILL.md)。
-
 ## 核心约束
 
 - 基线优先：默认使用 Java 21、Spring Boot 3.x、`jakarta.*` 命名空间。

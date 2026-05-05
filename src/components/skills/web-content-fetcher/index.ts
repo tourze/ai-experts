@@ -12,6 +12,12 @@ export const webContentFetcherSkill = defineSkill({
   id: "web-content-fetcher",
   fullName: "网页正文提取",
   description: "当用户给出具体 URL，需要抓取网页正文并转成 Markdown 时使用。适用于博客、文档、新闻页和微信公众号等页面的正文提取与内容准备。",
+  useCases: [
+    "用户直接给出 URL，让你“读一下 / 抓一下 / 提取正文 / 总结这篇文章”。",
+    "需要把页面内容转成 Markdown，再交给其他流程处理。",
+    "常作为 [deep-research](../deep-research/SKILL.md) 的正文抓取阶段。在深度研究流水线中，可先用 [references/question-refiner.md](references/question-refiner.md) 完善问题后再抓取。",
+    "如果只是做技术资讯聚合而不是抓单页正文，参考资讯聚合相关方法。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -41,13 +47,5 @@ export const webContentFetcherSkill = defineSkill({
       summary: "Reference material for web-content-fetcher.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for web-content-fetcher.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

@@ -1,9 +1,3 @@
-## 适用场景
-
-- 新建/重构 Rust monorepo，规划成员和共享依赖。
-- 设计 feature flag 跨 crate 传播策略。
-- 编写 `build.rs` 或规划 CI 缓存。
-
 ## 核心约束
 
 1. 共享依赖放 `[workspace.dependencies]`；成员用 `dep.workspace = true`。

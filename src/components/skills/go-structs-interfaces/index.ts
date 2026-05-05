@@ -10,6 +10,12 @@ export const goStructsInterfacesSkill = defineSkill({
   id: "go-structs-interfaces",
   fullName: "go-structs-interfaces",
   description: "当 Go 代码涉及接口设计、结构体组合、embedding、泛型 vs any、receiver 选择、零值可用或 type assertion 时使用。",
+  useCases: [
+    "设计或审查接口：大小、定义位置、方法集、与泛型的取舍。",
+    "结构体组合：embedding vs 命名字段、零值可用、field tag。",
+    "Receiver 选择：pointer vs value、一致性、noCopy 模式。",
+    "类型断言、type switch、compile-time interface check。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -23,13 +29,5 @@ export const goStructsInterfacesSkill = defineSkill({
       summary: "Reference material for go-structs-interfaces.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for go-structs-interfaces.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

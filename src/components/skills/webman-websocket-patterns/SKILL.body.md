@@ -1,10 +1,5 @@
 Workerman WebSocket 在 webman 自定义进程中的使用模式。
 
-## 适用场景
-
-- 搭建 WebSocket 服务端或客户端。
-- 管理连接生命周期、心跳、频道广播。
-
 ## 核心约束
 
 - 声明 `listen => 'websocket://...'`，设 `reloadable => false`。见 [websocket-server-setup](references/websocket-server-setup.md)。

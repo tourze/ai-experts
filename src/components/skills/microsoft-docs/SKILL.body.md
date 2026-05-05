@@ -1,10 +1,3 @@
-## 适用场景
-
-- 用户在问“怎么工作”“是什么”“有哪些限制”“怎么配置”“官方最佳实践是什么”。
-- 面向 Azure、.NET、Windows、Microsoft 365、Power Platform、Azure OpenAI 等 Microsoft 技术栈。
-- 适合查概念文档、Quickstart、Tutorial、Quota、Limit、Best practices 和配置手册。
-- 交叉引用：如果任务已经进入”写代码/修 SDK 调用/核对 API 签名”，查阅 `references/code-reference.md`。
-
 ## 核心约束
 
 - 查询必须带上产品名、任务意图和必要的版本或平台上下文；不要用过宽泛的关键词。

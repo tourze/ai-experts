@@ -10,6 +10,13 @@ export const nextjsDeveloperSkill = defineSkill({
   id: "nextjs-developer",
   fullName: "Next.js Developer",
   description: "当用户提到 Next.js、App Router、Server Components、Server Actions、Route Handlers 或 Vercel 部署时使用。",
+  useCases: [
+    "需要在 `app/` 目录下设计路由树、`layout.tsx` / `template.tsx` / `loading.tsx` / `error.tsx` / `route.ts` 的职责划分时使用。",
+    "需要决定某段 UI 应该保持 Server Component、下沉为 Client Component，还是拆成 Server + Client island 时使用。",
+    "需要为数据获取、缓存、ISR、按路径/标签重验证、Server Actions、Metadata API、Middleware、Edge Runtime 或 Vercel 部署做实现选择时使用。",
+    "复杂 RSC 边界和性能问题优先联动 `react-server-components`；需要类型体操或 DTO/泛型修复时联动 `typescript-magician`。",
+    "需要展开细节时按主题加载参考资料：\n[App Router](references/app-router.md)、\n[Server Components](references/server-components.md)、\n[Server Actions](references/server-actions.md)、\n[Data Fetching](references/data-fetching.md)、\n[Deployment](references/deployment.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -55,13 +62,5 @@ export const nextjsDeveloperSkill = defineSkill({
       summary: "Reference material for nextjs-developer.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for nextjs-developer.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

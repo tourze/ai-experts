@@ -1,11 +1,3 @@
-## 适用场景
-
-- 新功能数据建模，需在 String / Hash / List / Set / ZSet / Stream 间选型。
-- 排行榜、计数器、消息队列、UV 统计等典型场景的结构选择和键设计。
-- 多服务共享 Redis 实例，需要统一键命名规范、TTL 策略和生命周期管理。
-- 跨进程互斥：订单支付、库存扣减、幂等提交、定时任务单实例执行。
-- 缓存刷新互斥保护，联动 [redis-caching-patterns](../redis-caching-patterns/SKILL.md)；集群部署联动 [redis-cluster-ha](../redis-cluster-ha/SKILL.md)。
-
 ## 核心约束
 
 ### 数据结构选型

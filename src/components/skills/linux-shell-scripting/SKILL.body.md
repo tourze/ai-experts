@@ -1,9 +1,3 @@
-## 适用场景
-
-- 用户要写 Bash 自动化、巡检、备份、发布、清理、定时任务或包装 CLI。
-- 需要系统快照与诊断输出模板时，可参考 [system-diagnostics](../system-diagnostics/SKILL.md)。
-- 涉及网络探测或重试逻辑时，联动 [network-troubleshooter](../network-troubleshooter/SKILL.md)。
-
 ## 核心约束
 
 - 默认使用 `#!/usr/bin/env bash` 与 `set -euo pipefail`；仅在明确需要 POSIX `sh` 时降级。

@@ -1,11 +1,3 @@
-## 适用场景
-
-- 设计多 Agent 系统：子 Agent 职责划分、fork vs fresh 决策、隔离策略。
-- 构建 system prompt 架构：静态/动态分离、缓存边界、模块化段函数。
-- 设计 Agent 状态管理：四种状态生命周期、层级配置、记忆提取。
-- 规划 Agent 扩展点：协议（MCP）、事件（Hooks）、声明式（Skills）。
-- 需要与 [agent-tool-design](references/agent-tool-design.md) 联动做工具加载策略。
-
 ## 核心约束
 
 - **铁律：Fork vs Fresh 必须显式决策**——子 Agent 继承父上下文（fork）还是独立启动（fresh）不能隐含，必须按风险和隔离需求明确选择。

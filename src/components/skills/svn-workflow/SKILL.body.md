@@ -1,11 +1,3 @@
-## 适用场景
-
-- 需要在 SVN 项目中执行 `checkout`、`update`、`status`、`diff`、`commit` 等日常操作。
-- 需要设计或审查 `trunk / branches / tags` 布局、分支命名、标签创建和发布流程。
-- 需要处理 `svn merge`、`svn mergeinfo`、冲突解决、回滚修订与长期分支同步。
-- 需要配置 `svn:ignore`、`svn:global-ignores`、`svn:eol-style`、`svn:externals` 等属性。
-- 需要做仓库管理、热备份、dump/load 或 SVN→Git 迁移；迁移完成后的 Git 历史整理可衔接 `git-advanced-workflows`。
-
 ## 核心约束
 
 - 提交前先执行 `svn update`，确保基线最新，再处理冲突并复查 `svn diff`。

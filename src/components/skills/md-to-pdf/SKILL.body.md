@@ -1,10 +1,3 @@
-## 适用场景
-
-- 用户明确要求把 `.md` 渲染成 `.pdf`，而不是只生成 HTML 或截图。
-- 文档中包含 Mermaid、LaTeX 数学公式、代码块、表格或脚注。
-- 需要 A4、Letter、横向版式、页码、额外 CSS 等排版控制。
-- 若文档内容本身还没写好，先用 [markdown-mermaid-writing](../markdown-mermaid-writing/SKILL.md) 产出源文档。
-
 ## 核心约束
 
 - 先检查依赖，再开始渲染；不要等到最后一步才发现 `pandoc` 或 `mmdc` 缺失。

@@ -1,10 +1,3 @@
-## 适用场景
-
-- 需要把 JVM 应用编译成原生可执行文件，以降低冷启动和内存占用。
-- Native build 失败，报 `ClassNotFoundException`、反射、资源、代理或序列化相关错误。
-- 要为 Spring Boot、Quarkus、Micronaut 或纯 Java 项目补齐原生镜像配置。
-- 如果构建时间本身是主要问题，联动 [gradle-build-performance](../gradle-build-performance/SKILL.md)。
-
 ## 核心约束
 
 - 先识别环境，再改配置：必须先确认构建工具、框架、Java 版本和失败日志，再决定 Maven/Gradle 路线。

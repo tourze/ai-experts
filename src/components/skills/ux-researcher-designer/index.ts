@@ -13,6 +13,14 @@ export const uxResearcherDesignerSkill = defineSkill({
   id: "ux-researcher-designer",
   fullName: "UX Researcher Designer",
   description: "当用户需要做用户研究、需求验证、persona 构建或设计复盘时使用（设计视角：访谈→persona→设计输入）。市场/客户研究用 `customer-research`；旅程图触点可视化用 `customer-journey-map`。",
+  useCases: [
+    "要从访谈、问卷、埋点、客服记录中提炼 Persona，而不是凭感觉写角色卡。",
+    "要梳理端到端旅程，找出每一阶段的动作、触点、情绪和阻塞点。",
+    "要为新流程、新页面制定可用性测试计划和成功指标。",
+    "要把原始研究记录压成“发现 → 证据 → 建议”的交付物。",
+    "如果问题已经明确是界面启发式错误，先用 [ux-heuristics](../ux-heuristics/SKILL.md)。",
+    "工具、模板与方法细节分别在 [persona-methodology](references/persona-methodology.md)、[journey-mapping-guide](references/journey-mapping-guide.md)、[usability-testing-frameworks](references/usability-testing-frameworks.md)、[research-plan-template](assets/research_plan_template.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -66,14 +74,6 @@ export const uxResearcherDesignerSkill = defineSkill({
       summary: "Reference material for ux-researcher-designer.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for ux-researcher-designer.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
   assets: [
     defineAsset({

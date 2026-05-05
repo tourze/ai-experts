@@ -10,6 +10,14 @@ export const testingStrategySkill = defineSkill({
   id: "testing-strategy",
   fullName: "测试策略与计划设计",
   description: "当需要为模块、接口或功能设计测试计划，或制定风险驱动测试策略、质量门、coverage target 与 QA 资源分配时使用。",
+  useCases: [
+    "用户想知道模块、功能或接口如何分层测试（测什么、用什么层级、优先测哪些）。",
+    "为 [webapp-testing](../webapp-testing/SKILL.md) 提供执行列表。",
+    "缺陷后测试扩面（同根因 bug 家族补测），参考 [test-brainstorm](./references/test-brainstorm.md)。",
+    "自动化验证循环（实现→验证→修复→再验证），参考 [verification-loop](./references/verification-loop.md)。",
+    "需要为中大型项目制定风险驱动测试策略、质量门、覆盖率目标或 QA 资源分配方案。",
+    "需要和 [pre-landing-review](../pre-landing-review/SKILL.md) 联动，把阻断项映射到补测策略。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -39,13 +47,5 @@ export const testingStrategySkill = defineSkill({
       summary: "Reference material for testing-strategy.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for testing-strategy.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

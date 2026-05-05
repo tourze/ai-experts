@@ -1,8 +1,3 @@
-## 适用场景
-- 从零搭建 GA4 / GTM 埋点方案。
-- 审计现有事件是否漏记、重记、命名混乱或参数失真。
-- 排查“Preview 里触发了，但 GA4 没收 / Ads 没认”的问题。
-
 ## 核心约束
 - 事件命名必须稳定且可复用，优先遵循 [event-taxonomy-guide](references/event-taxonomy-guide.md)。
 - 先画业务漏斗和关键转化，再决定事件与参数，不要先埋再想用途。

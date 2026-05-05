@@ -1,11 +1,3 @@
-## 适用场景
-
-- 编写 SQL 查询、事务块、连接池配置或数据库 migration 脚本。
-- 选择扫描方式（`database/sql` 手动 Scan / sqlx / sqlc）或处理 NULLable 列。
-- 设计 Repository 接口、实现 batch insert、乐观锁、读写分离。
-- 排查连接泄漏、事务未提交/回滚、查询超时不生效等问题。
-- SQL 注入防护详见 [go-security](../go-security/SKILL.md)；查询取消传播详见 [go-context-lifecycle](../go-concurrency-patterns/SKILL.md)。
-
 ## 核心约束
 
 - 参数化查询：必须用 `?` 占位符，禁止字符串拼接 SQL。安全性细节见 go-security。

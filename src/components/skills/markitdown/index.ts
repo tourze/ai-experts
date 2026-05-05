@@ -13,6 +13,12 @@ export const markitdownSkill = defineSkill({
   id: "markitdown",
   fullName: "MarkItDown",
   description: "当用户要用 MarkItDown 把 Office、图片、HTML、音频或其他源文件抽取成 .md 文本时使用，适合批量转换和 AI 图片描述增强。",
+  useCases: [
+    "目标是把多种格式统一转成 Markdown，供总结、检索、二次写作或知识库沉淀。",
+    "用户需要批量处理目录，而不是只转换单个文件。",
+    "用户要处理学术论文或文献库，并生成目录索引、元数据清单。",
+    "当用户只处理单个 Office 文件且最终仍要保留原格式时，优先使用 [docx](../doc-coauthoring/SKILL.md)、[pptx](../ppt-generate/SKILL.md) 或 [xlsx](../doc-coauthoring/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -74,14 +80,6 @@ export const markitdownSkill = defineSkill({
       summary: "Reference material for markitdown.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for markitdown.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
   assets: [
     defineAsset({

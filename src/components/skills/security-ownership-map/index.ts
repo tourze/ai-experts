@@ -12,6 +12,11 @@ export const securityOwnershipMapSkill = defineSkill({
   id: "security-ownership-map",
   fullName: "安全所有权拓扑分析",
   description: "当用户明确希望基于 git 历史构建安全所有权、bus factor、敏感代码归属或 CODEOWNERS 风险画像时使用。",
+  useCases: [
+    "需要找出敏感代码无人维护、单点维护者或高风险变更簇。",
+    "需要把 git 历史与 [security-threat-model](../security-threat-model/SKILL.md) 的资产/边界分析关联起来。",
+    "需要导出 CSV/JSON 给图数据库或可视化工具。导入 Neo4j 的方法见 [references/neo4j-import.md](references/neo4j-import.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -65,13 +70,5 @@ export const securityOwnershipMapSkill = defineSkill({
       summary: "Reference material for security-ownership-map.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for security-ownership-map.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

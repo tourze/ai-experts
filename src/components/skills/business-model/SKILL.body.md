@@ -1,11 +1,3 @@
-## 适用场景
-
-- `idea_to_model`：新业务、新产品或变现想法，需要生成 `3-5` 个商业模式选项。
-- `model_diagnosis`：现有产品、网站或公司，需要诊断收入结构、变现缺口和升级机会。
-- `company_case_study`：成熟公司研究，需要拆解利润池、可迁移经验和环境依赖。
-- 只看竞争结构时转 [porters-five-forces](../porters-five-forces/SKILL.md)；只做定价打包时转 [pricing-strategy](../pricing-strategy/SKILL.md)。
-- 中国市场商业模式因果链推演用[魏朱六要素](references/weizhu-model.md)；快速定位一致性检查用[业务铁三角](references/iron-triangle.md)。
-
 ## 核心约束
 
 - 先建 `market_environment`，再套画布：目标市场、买方、渠道、监管、支付、交付约束都会改变商业模式。

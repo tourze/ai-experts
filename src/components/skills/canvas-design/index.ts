@@ -3,7 +3,6 @@ import {
   KnownTool,
   Platform,
   defineAsset,
-  defineReference,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -13,6 +12,13 @@ export const canvasDesignSkill = defineSkill({
   id: "canvas-design",
   fullName: "画布设计",
   description: "当用户要做海报、封面、艺术化静态画面、editorial poster、visual composition 或一页高完成度视觉作品时使用。",
+  useCases: [
+    "需要海报、封面、单页视觉稿、展览感静态作品。",
+    "用户要的是“设计作品”而不是流程图、截图或动画。",
+    "需要先写设计哲学，再把哲学表达成最终画面。",
+    "如果目标是结构化信息图，参考信息图设计方法。",
+    "如果目标是动画或解释视频，参考视频生成工具。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -55,16 +61,6 @@ export const canvasDesignSkill = defineSkill({
       runtime: "node",
       bundle: false,
       description: "Script concept-to-video-render_video.mjs.",
-    })
-  ],
-  references: [
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for canvas-design.",
-      loadWhen: "Read only when validating or improving this skill.",
     })
   ],
   assets: [

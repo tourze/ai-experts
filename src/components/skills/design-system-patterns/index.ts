@@ -10,6 +10,12 @@ export const designSystemPatternsSkill = defineSkill({
   id: "design-system-patterns",
   fullName: "设计系统模式",
   description: "当用户需要搭建设计令牌、主题系统或组件架构时使用。适合涉及”设计系统””design tokens””主题切换””组件库规范””多品牌主题”的场景。",
+  useCases: [
+    "从零开始建立设计令牌、颜色体系、字号体系和组件 API。",
+    "需要支持浅色/深色、多品牌或多租户主题。",
+    "希望把 Figma、代码和组件库约束成同一套命名体系。",
+    "需要审查项目里大量硬编码颜色、间距和阴影值。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -55,13 +61,5 @@ export const designSystemPatternsSkill = defineSkill({
       summary: "Reference material for design-system-patterns.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for design-system-patterns.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

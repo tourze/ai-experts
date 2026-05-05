@@ -10,6 +10,12 @@ export const graalvmNativeImageSkill = defineSkill({
   id: "graalvm-native-image",
   fullName: "GraalVM Native Image",
   description: "当需要构建或排障 GraalVM Native Image 时使用。",
+  useCases: [
+    "需要把 JVM 应用编译成原生可执行文件，以降低冷启动和内存占用。",
+    "Native build 失败，报 `ClassNotFoundException`、反射、资源、代理或序列化相关错误。",
+    "要为 Spring Boot、Quarkus、Micronaut 或纯 Java 项目补齐原生镜像配置。",
+    "如果构建时间本身是主要问题，联动 [gradle-build-performance](../gradle-build-performance/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -63,13 +69,5 @@ export const graalvmNativeImageSkill = defineSkill({
       summary: "Reference material for graalvm-native-image.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for graalvm-native-image.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

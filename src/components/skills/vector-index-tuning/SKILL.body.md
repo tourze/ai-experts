@@ -1,10 +1,3 @@
-## 适用场景
-
-- 检索结果“够准但太慢”，或“够快但召回掉得离谱”。
-- 需要选择 HNSW / IVF / PQ / DiskANN 一类索引或量化路线。
-- 需要围绕 `M`、`efConstruction`、`efSearch`、压缩率、内存占用做取舍。
-- 相关 skill：[similarity-search-patterns](../similarity-search-patterns/SKILL.md)、[embedding-strategies](../embedding-strategies/SKILL.md)、[rag-auditor](../rag-auditor/SKILL.md)。
-
 ## 核心约束
 
 - 优化目标要先排序：优先保延迟、保召回还是省内存。

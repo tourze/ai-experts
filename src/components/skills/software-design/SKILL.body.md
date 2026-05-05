@@ -1,13 +1,3 @@
-## 适用场景
-
-- 新建 service、repository、adapter 等核心组件时需要先定边界。
-- 现有类变成 God object，职责缠绕、难测、难改。
-- 需要在继承、组合、接口、工具函数之间做取舍。
-- 需要规划依赖注入策略和分层方向。
-- 需要从复杂度、深模块、信息隐藏角度评价现有设计。
-- 各语言落地：`go-design-patterns`、`python-design-patterns`、`php-design-patterns`。
-- 具体重构配合 `refactoring-patterns`；重构计划配合 `refactor-planning-method`。
-
 ## 设计原则
 
 以"是否降低整体复杂度"为最高标准，不追求局部优雅。

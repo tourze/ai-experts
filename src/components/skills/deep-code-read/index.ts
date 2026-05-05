@@ -10,6 +10,11 @@ export const deepCodeReadSkill = defineSkill({
   id: "deep-code-read",
   fullName: "Deep Code Reader",
   description: "当用户要深度理解不熟悉代码库，并生成可复用的认知型 skill 文件时使用。",
+  useCases: [
+    "用户要深度理解陌生代码库，而不是只做快速仓库体检。",
+    "用户希望把代码库知识沉淀成可复用 skill。",
+    "用户能接受多轮闭卷验证，要求产出可被问答检验。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -63,13 +68,5 @@ export const deepCodeReadSkill = defineSkill({
       summary: "Reference material for deep-code-read.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for deep-code-read.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

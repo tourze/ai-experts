@@ -1,12 +1,3 @@
-## 适用场景
-
-- 需要在 `useState`、`useReducer`、`useRef`、`useEffect` 之间做职责划分。
-- 要设计可复用的自定义 Hook，并稳定暴露返回值与错误语义。
-- 遇到 effect 重复执行、闭包拿到旧值、依赖数组写不对、清理逻辑遗漏等问题。
-- 如果问题已经扩展成"渲染性能、外部 store 订阅或 memo 治理"，统一看 [react-performance](../react-performance/SKILL.md)。
-- 如果任务在 Next.js App Router / RSC 边界上，优先联动 [react-server-components](../react-server-components/SKILL.md)。
-- 类型体操很重时，联动 `typescript-magician`。
-
 ## 核心约束
 
 - Hook 只能在 React 组件或自定义 Hook 顶层调用，不能放进条件、循环、普通函数。

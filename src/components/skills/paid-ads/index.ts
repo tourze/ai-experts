@@ -10,6 +10,11 @@ export const paidAdsSkill = defineSkill({
   id: "paid-ads",
   fullName: "付费投放（paid-ads）",
   description: "在需要规划、优化或扩展 Google Ads、Meta、LinkedIn、TikTok 等付费投放时使用。",
+  useCases: [
+    "从零搭建投放结构，或接手已有账户做诊断与优化。",
+    "需要判断平台选择、预算分配、出价方式和受众策略。",
+    "已有创意但不知道怎么挂到投放结构里验证。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -55,13 +60,5 @@ export const paidAdsSkill = defineSkill({
       summary: "Reference material for paid-ads.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for paid-ads.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

@@ -12,6 +12,9 @@ export const skillActivationAnalyzerSkill = defineSkill({
   id: "skill-activation-analyzer",
   fullName: "Skill Activation Analyzer",
   description: "当需要诊断 skill 触发是否正确、分析 skill 命中/漏触发/误触发原因、排查多 skill 冲突、评估 skill 路由健康度或批量审查 description 文本质量（原 description-cso-audit）时使用。",
+  useCases: [
+    "当需要诊断 skill 触发是否正确、分析 skill 命中/漏触发/误触发原因、排查多 skill 冲突、评估 skill 路由健康度或批量审查 description 文本质量（原 description-cso-audit）时使用。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
@@ -49,13 +52,5 @@ export const skillActivationAnalyzerSkill = defineSkill({
       summary: "Reference material for skill-activation-analyzer.",
       loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
-    defineReference({
-      id: "evals",
-      source: new URL("./evals/", import.meta.url),
-      target: "references/evals",
-      title: "Eval Cases",
-      summary: "Eval cases for skill-activation-analyzer.",
-      loadWhen: "Read only when validating or improving this skill.",
-    })
   ],
 });

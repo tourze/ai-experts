@@ -1,10 +1,3 @@
-## 适用场景
-
-- 编写或审查 Go 代码时，需要判断“能跑”和“好维护”之间的差距。
-- 需要处理长函数、深层嵌套、过长参数列表、导出面过大、命名字段缺失等可读性问题。
-- 需要把 AI 生成的 Go 代码改成更接近工程惯例的版本。
-- 需要命名或错误语义时配合 [go-error-handling](../go-error-handling/SKILL.md)；涉及 nil、slice、map 或资源安全时配合 [go-safety](../go-error-handling/SKILL.md)。
-
 ## 核心约束
 
 - 先跑 `gofmt` / `go test` / 项目既有 lint，再讨论主观风格；格式问题交给工具。

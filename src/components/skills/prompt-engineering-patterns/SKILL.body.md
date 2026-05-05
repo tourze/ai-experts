@@ -1,12 +1,3 @@
-## 适用场景
-
-- 需要给生产环境 LLM 设计稳健 prompt，而不是临时试几句。
-- 需要解决结构化输出、few-shot、角色设定、错误恢复、长上下文约束。
-- 需要跑完整的 prompt 诊断与优化流程：拆出目标、失败模式、候选变体、评分标准、测试集。
-- 相关资源：[assets/prompt-template-library.md](assets/prompt-template-library.md)、[assets/few-shot-examples.json](assets/few-shot-examples.json)、[scripts/optimize-prompt.mjs](scripts/optimize-prompt.mjs)。
-- 系统化诊断参考文件：[references/prompt-patterns.md](references/prompt-patterns.md)、[references/evaluation-metrics.md](references/evaluation-metrics.md)、[references/failure-modes.md](references/failure-modes.md)、[references/output-constraints.md](references/output-constraints.md)。
-- 相关 skill：[llm-evaluation](../llm-evaluation/SKILL.md)、[rag-auditor](../rag-auditor/SKILL.md)。
-
 ## 核心约束
 
 - 先明确输出契约，再写自然语言提示；没有 schema 的 prompt 很难稳定。

@@ -1,9 +1,3 @@
-## 适用场景
-
-- 将 Rust 库暴露给 C/Swift/Kotlin/Python 调用。
-- 设计跨 FFI 的字符串、错误码、回调或复杂类型方案。
-- 排查 FFI 段错误、double-free 或 panic 跨边界 UB。
-
 ## 核心约束
 
 1. FFI 函数必须 `#[no_mangle]` + `extern "C"`。

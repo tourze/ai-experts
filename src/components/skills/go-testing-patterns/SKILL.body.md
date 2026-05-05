@@ -1,12 +1,5 @@
 > 通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 [testing-patterns](testing-expert:testing-patterns)。本 skill 只覆盖 Go 特有语法与工具。
 
-## 适用场景
-
-- 为 Go 函数、HTTP handler、repository、worker、并发代码或 CLI 编写测试。
-- 审查测试是否只测实现细节、是否缺错误分支、是否存在顺序依赖或真实时间等待。
-- 排查 flaky test、goroutine 泄漏、race detector 失败或集成测试污染。
-- 性能测试和 `benchstat` 对比配合 [go-performance](../go-performance/SKILL.md)；并发生命周期配合 [go-concurrency-patterns](../go-concurrency-patterns/SKILL.md)。
-
 ## 核心约束
 
 - 公共 API 优先用外部包名 `package xxx_test`。

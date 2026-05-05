@@ -1,8 +1,3 @@
-## 适用场景
-- 创业立项、融资材料、年度规划或新市场机会评估。
-- 需要参考 [references/data-sources.md](references/data-sources.md) 与 [examples/saas-market-sizing.md](examples/saas-market-sizing.md)。
-- 与客户画像或融资故事联动时，可配合 [startup-icp-definer](../startup-icp-definer/SKILL.md) 和 [fundraise-advisor](../fundraise-advisor/SKILL.md)。
-
 ## 核心约束
 - 同时给出方法、假设和数据来源，不允许只报一个大数字。
 - TAM/SAM/SOM 要口径一致，避免一个按用户数、一个按收入口径混算。
