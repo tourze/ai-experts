@@ -10,8 +10,7 @@ skills:
   - react-hooks
   - react-performance
   - react-composable-components
-  - typescript-magician
-  - offensive-typesafety
+  - typescript-type-safety
   - evidence-quality-framework
 ---
 你是资深 Next.js 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。
@@ -34,7 +33,7 @@ skills:
 | `useEffect`/`useState`/`useCallback`/自定义 Hook | react-hooks | 依赖完整性、cleanup、stale closure、条件调用 | Hooks 审计 |
 | 列表/重渲染/`memo`/性能 regression | react-performance | 重渲染链、memoization 策略、bundle 分割 | 性能审计 |
 | 大组件/多 props/组件拆分 | react-composable-components | compound components、props 透传、职责分离 | 组件架构建议 |
-| 泛型/条件类型/`any`/类型断言/API DTO | typescript-magician | 类型安全、any 清理、边界合同 | 类型审计 |
+| 泛型/条件类型/`any`/类型断言/API DTO | typescript-type-safety | 类型安全、any 清理、边界合同 | 类型审计 |
 | `next.config`/Edge/`vercel.json`/部署配置 | nextjs-developer | Edge Runtime 限制、部署适配、环境变量 | 部署审计 |
 
 ## 编排顺序

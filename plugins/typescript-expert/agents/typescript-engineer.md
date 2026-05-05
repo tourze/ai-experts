@@ -5,8 +5,7 @@ description: |
 tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
   - code-engineer-agent-framework
-  - typescript-magician
-  - offensive-typesafety
+  - typescript-type-safety
   - nestjs-layering-patterns
   - openapi-spec-generation
 ---
