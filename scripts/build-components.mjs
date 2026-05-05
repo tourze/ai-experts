@@ -109,6 +109,44 @@ function rewriteCompiledJsImports(root) {
   }
 }
 
+function stripBundledSourcePathComments(file) {
+  const source = readFileSync(file, "utf-8");
+  const stripped = source.replace(
+    /^\/\/ .*?(?:[\\/]components[\\/].*|[\\/]hooks[\\/]\.dispatch-entry)\.(?:ts|mjs)\r?\n/gm,
+    "",
+  );
+  if (stripped !== source) {
+    writeFileSync(file, stripped, "utf-8");
+  }
+}
+
+function renderDiscoveredHooksIndex(componentsRoot) {
+  const hooksRoot = join(componentsRoot, "hooks");
+  const hookFiles = collectFiles(hooksRoot, (file) =>
+    file.endsWith(".ts") &&
+    basename(file) !== "index.ts" &&
+    !relative(hooksRoot, file).split("\\").join("/").startsWith("_shared/")
+  );
+  const imports = [];
+  const values = [];
+  for (const [index, file] of hookFiles.entries()) {
+    const source = readFileSync(file, "utf-8");
+    const exportName = source.match(/export\s+const\s+([A-Za-z0-9_$]+)\s*=\s*defineHook\s*\(/u)?.[1];
+    if (!exportName) continue;
+    const alias = `hook${index}`;
+    let specifier = relative(hooksRoot, file).split("\\").join("/").replace(/\.ts$/u, "");
+    if (!specifier.startsWith(".")) specifier = `./${specifier}`;
+    imports.push(`import { ${exportName} as ${alias} } from ${JSON.stringify(specifier)};`);
+    values.push(alias);
+  }
+  return [
+    ...imports,
+    "",
+    `export const componentHooks = [${values.join(", ")}];`,
+    "",
+  ].join("\n");
+}
+
 function toAbsolutePath(source) {
   if (source instanceof URL) return fileURLToPath(source);
   if (typeof source === "string") return resolve(repoRoot, source);
@@ -218,9 +256,10 @@ function materializeProfile(registry) {
 }
 
 async function compileRegistry() {
-  const tempDir = join(tmpdir(), `ai-experts-components-${process.pid}-${Date.now()}`);
+  const tempDir = join(tmpdir(), `ai-components-${process.pid}-${Date.now()}`);
   const tempComponentsRoot = join(tempDir, "components");
   cpSync(sourceRoot, tempComponentsRoot, { recursive: true, force: true });
+  writeText(join(tempComponentsRoot, "hooks", "index.ts"), renderDiscoveredHooksIndex(tempComponentsRoot));
 
   const entryPoints = collectFiles(tempComponentsRoot, (file) => file.endsWith(".ts"));
   await esbuild.build({
@@ -639,39 +678,63 @@ async function emitAgent(agent, platformRoot, platform) {
   }
 }
 
-async function compileHookModules(hooks, hooksRoot) {
-  const modulesRoot = join(hooksRoot, "modules");
-  ensureDir(modulesRoot);
-  const compiled = [];
-  for (const hook of hooks) {
-    const outfile = join(modulesRoot, `${hook.id}.mjs`);
+function relativeImportSpecifier(fromDir, targetPath) {
+  if (isAbsolute(targetPath)) return targetPath.split("\\").join("/");
+  const specifier = relative(fromDir, targetPath).split("\\").join("/");
+  return specifier.startsWith(".") ? specifier : `./${specifier}`;
+}
+
+async function compileHookModules(hooks, hooksRoot, platform) {
+  ensureDir(hooksRoot);
+  const compiled = hooks
+    .map((hook, index) => ({
+      id: hook.id,
+      event: hook.event,
+      matcher: renderHookMatcher(hook),
+      order: hook.order ?? 100,
+      payloadMode: hook.payloadMode ?? "normalized",
+      description: hook.description,
+      runnerName: `runHook${index}`,
+      entryPath: toAbsolutePath(hook.entry),
+    }))
+    .sort((a, b) => a.order - b.order || a.id.localeCompare(b.id));
+  const manifestHooks = compiled.map(({ runnerName, entryPath, ...hook }) => hook);
+  writeText(join(hooksRoot, "manifest.json"), JSON.stringify({ hooks: manifestHooks }, null, 2) + "\n");
+
+  const dispatcherEntry = join(hooksRoot, ".dispatch-entry.mjs");
+  const dispatcherOutfile = join(hooksRoot, "dispatch.mjs");
+  writeText(dispatcherEntry, renderDispatcher(compiled, platform, hooksRoot));
+  try {
     await esbuild.build({
-      entryPoints: [toAbsolutePath(hook.entry)],
-      outfile,
+      entryPoints: [dispatcherEntry],
+      outfile: dispatcherOutfile,
       bundle: true,
       platform: "node",
       format: "esm",
       target: "node20",
       logLevel: "silent",
     });
-    compiled.push({
-      id: hook.id,
-      event: hook.event,
-      matcher: renderHookMatcher(hook),
-      order: hook.order ?? 100,
-      payloadMode: hook.payloadMode ?? "normalized",
-      module: `./modules/${hook.id}.mjs`,
-      description: hook.description,
-    });
+    stripBundledSourcePathComments(dispatcherOutfile);
+  } finally {
+    rmSync(dispatcherEntry, { force: true });
   }
-  writeText(join(hooksRoot, "manifest.json"), JSON.stringify({ hooks: compiled }, null, 2) + "\n");
-  return compiled.sort((a, b) => a.order - b.order || a.id.localeCompare(b.id));
+  return manifestHooks;
 }
 
-function renderDispatcher(compiledHooks, platform) {
+function renderDispatcher(compiledHooks, platform, hooksRoot) {
+  const imports = compiledHooks.map((hook) =>
+    `import { run as ${hook.runnerName} } from ${JSON.stringify(relativeImportSpecifier(hooksRoot, hook.entryPath))};`
+  );
+  const runners = compiledHooks.map((hook) => `  [${JSON.stringify(hook.id)}, ${hook.runnerName}],`);
+  const runtimeHooks = compiledHooks.map(({ runnerName, entryPath, ...hook }) => hook);
   return `#!/usr/bin/env node
+${imports.join("\n")}
+
 const platform = ${JSON.stringify(platform)};
-const hooks = ${JSON.stringify(compiledHooks, null, 2)};
+const hooks = ${JSON.stringify(runtimeHooks, null, 2)};
+const hookRunners = new Map([
+${runners.join("\n")}
+]);
 
 function parseArgs(argv) {
   const args = {};
@@ -789,10 +852,10 @@ async function main() {
   const results = [];
 
   for (const hook of hooks.filter((item) => item.event === event)) {
-    const mod = await import(new URL(hook.module, import.meta.url));
-    if (typeof mod.run !== "function") continue;
+    const run = hookRunners.get(hook.id);
+    if (typeof run !== "function") continue;
     const hookPayload = hook.payloadMode === "claude-raw" ? toLegacyClaudePayload(payload) : payload;
-    const result = normalizeHookResult(await mod.run(hookPayload));
+    const result = normalizeHookResult(await run(hookPayload));
     if (result && result.kind !== "allow" && result.kind !== "audit") results.push(result);
   }
 
@@ -1052,8 +1115,7 @@ async function emitPlatform(profileSurface, outDir, platform) {
   writeText(join(root, instructionName), renderInstruction(profileSurface, platform));
 
   const platformHooks = profileSurface.hooks.filter((hook) => hook.platforms.includes(platform));
-  const compiledHooks = await compileHookModules(platformHooks, join(root, "hooks"));
-  writeText(join(root, "hooks", "dispatch.mjs"), renderDispatcher(compiledHooks, platform));
+  await compileHookModules(platformHooks, join(root, "hooks"), platform);
 
   if (platform === Platform.Claude) {
     writeText(join(root, "settings.json"), JSON.stringify(renderHookConfig(platformHooks, platform), null, 2) + "\n");
@@ -1115,8 +1177,8 @@ async function main() {
       codexSkills: collectFiles(join(outDir, "codex", "skills")).filter((file) => basename(file) === "SKILL.md").length,
       claudeAgents: collectFiles(join(outDir, "claude", "agents")).length,
       codexAgents: collectFiles(join(outDir, "codex", "agents")).length,
-      claudeHooks: collectFiles(join(outDir, "claude", "hooks/modules")).length,
-      codexHooks: collectFiles(join(outDir, "codex", "hooks/modules")).length,
+      claudeHooks: JSON.parse(readFileSync(join(outDir, "claude", "hooks", "manifest.json"), "utf-8")).hooks.length,
+      codexHooks: JSON.parse(readFileSync(join(outDir, "codex", "hooks", "manifest.json"), "utf-8")).hooks.length,
     };
     console.log(
       `component build: claude skills=${stats.claudeSkills} agents=${stats.claudeAgents} hooks=${stats.claudeHooks} ` +

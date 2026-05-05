@@ -1,6 +1,6 @@
 import { defineProfile } from "../sdk";
-import { componentRoutingReminder, generatedDistGuard } from "../hooks/index";
-import { componentAgents, componentHooks, componentSkills } from "../registry.generated";
+import { componentHooks } from "../hooks/index";
+import { componentAgents, componentSkills } from "../registry.generated";
 
 export const defaultProfile = defineProfile({
   id: "default",
@@ -8,9 +8,5 @@ export const defaultProfile = defineProfile({
   instructions: ["core-ai-experts"],
   skills: componentSkills.map((skill) => skill.id),
   agents: componentAgents.map((agent) => agent.id),
-  hooks: [
-    componentRoutingReminder.id,
-    generatedDistGuard.id,
-    ...componentHooks.map((hook) => hook.id),
-  ],
+  hooks: componentHooks.map((hook) => hook.id),
 });

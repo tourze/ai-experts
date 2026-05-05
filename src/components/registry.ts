@@ -1,6 +1,6 @@
-import { componentRoutingReminder, generatedDistGuard } from "./hooks/index";
+import { componentHooks } from "./hooks/index";
 import { coreInstruction } from "./instructions/core/index";
-import { componentAgents, componentHooks, componentSkills } from "./registry.generated";
+import { componentAgents, componentSkills } from "./registry.generated";
 import { defaultProfile } from "./profiles/default";
 
 export const registry = {
@@ -11,11 +11,7 @@ export const registry = {
   ],
   skills: componentSkills,
   agents: componentAgents,
-  hooks: [
-    componentRoutingReminder,
-    generatedDistGuard,
-    ...componentHooks,
-  ],
+  hooks: componentHooks,
   profiles: [
     defaultProfile,
   ],

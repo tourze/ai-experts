@@ -3,6 +3,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 import test from "node:test";
 
 const repoRoot = resolve(".");
@@ -193,7 +194,15 @@ test("component build emits claude and codex component surfaces", () => {
 
     const hookManifest = JSON.parse(readFileSync(join(tmp, "codex/hooks/manifest.json"), "utf-8"));
     assert.equal(hookManifest.hooks.some((hook) => hook.id === "component-routing-reminder"), true);
-    assert.equal(hookManifest.hooks.some((hook) => hook.id === "coding-expert-pre-tool-use-bash-dangerous-command-guard"), true);
+    assert.equal(hookManifest.hooks.some((hook) => hook.id === "dangerous-command-guard"), true);
+    assert.equal(existsSync(join(tmp, "claude/hooks/dispatch.mjs")), true);
+    assert.equal(existsSync(join(tmp, "codex/hooks/dispatch.mjs")), true);
+    assert.equal(existsSync(join(tmp, "claude/hooks/modules")), false);
+    assert.equal(existsSync(join(tmp, "codex/hooks/modules")), false);
+    assert.equal(hookManifest.hooks.some((hook) => "module" in hook), false);
+    assert.equal(hookManifest.hooks.some((hook) => /(?:expert|plugin)/.test(hook.id)), false);
+    assert.doesNotMatch(readFileSync(join(tmp, "claude/hooks/dispatch.mjs"), "utf-8"), /(?:expert|plugin)/);
+    assert.doesNotMatch(readFileSync(join(tmp, "codex/hooks/dispatch.mjs"), "utf-8"), /(?:expert|plugin)/);
 
     const reminderOutput = execFileSync(
       process.execPath,
@@ -228,8 +237,57 @@ test("component build emits claude and codex component surfaces", () => {
     );
     assert.match(agentSource, /typescriptTypeSafety\.id/);
     assert.doesNotMatch(agentSource, /id: "typescript-type-safety"/);
+    const generatedRegistrySource = readFileSync(
+      join(repoRoot, "src/components/registry.generated.ts"),
+      "utf-8",
+    );
+    assert.doesNotMatch(
+      generatedRegistrySource,
+      /from\s+"\.\/hooks\//,
+      "registry.generated.ts should not manually import hooks; build-components discovers hooks from src/components/hooks",
+    );
     const removedLayer = ["migr", "ated"].join("");
     assert.equal(existsSync(join(repoRoot, "src/components", removedLayer)), false);
+
+    const allowedHookRoots = new Set([
+      "_shared",
+      "post-tool-use",
+      "pre-compact",
+      "pre-tool-use",
+      "session-start",
+      "stop",
+      "user-prompt-submit",
+      "index.ts",
+    ]);
+    for (const hookSourceFile of collectFiles(join(repoRoot, "src/components/hooks"))) {
+      const relativeHookPath = hookSourceFile.slice(join(repoRoot, "src/components/hooks").length + 1);
+      assert.equal(
+        allowedHookRoots.has(relativeHookPath.split(/[\\/]/)[0]),
+        true,
+        `${hookSourceFile} should live directly under lifecycle hook directories`,
+      );
+      assert.equal(
+        relativeHookPath.split(/[\\/]/).includes("module"),
+        false,
+        `${hookSourceFile} should not use the old nested module directory`,
+      );
+      assert.doesNotMatch(
+        relativeHookPath,
+        /(?:expert|plugin)/,
+        `${hookSourceFile} should not keep expert/plugin naming in hook paths`,
+      );
+      if (hookSourceFile.endsWith(".ts")) {
+        const source = readFileSync(hookSourceFile, "utf-8");
+        const hookId = source.match(/\bid:\s*"([^"]+)"/)?.[1];
+        if (hookId) {
+          assert.doesNotMatch(
+            hookId,
+            /(?:expert|plugin)/,
+            `${hookSourceFile} should not keep expert/plugin naming in hook ids`,
+          );
+        }
+      }
+    }
 
     for (const sourceFile of collectFiles(join(repoRoot, "src/components"), (file) => file.endsWith(".ts"))) {
       const source = readFileSync(sourceFile, "utf-8");
@@ -396,5 +454,67 @@ test("component build emits claude and codex component surfaces", () => {
     }
   } finally {
     rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test("hook telemetry records stable component names and reminder cooldown", async () => {
+  const telemetryDir = mkdtempSync(join(tmpdir(), "ai-experts-hook-telemetry-"));
+  const workspaceDir = mkdtempSync(join(tmpdir(), "ai-experts-hook-workspace-"));
+  const previousTelemetryDir = process.env.AI_EXPERTS_HOOK_TELEMETRY_DIR;
+  const previousTelemetryWorkspace = process.env.AI_EXPERTS_HOOK_TELEMETRY_WORKSPACE;
+
+  process.env.AI_EXPERTS_HOOK_TELEMETRY_DIR = telemetryDir;
+  process.env.AI_EXPERTS_HOOK_TELEMETRY_WORKSPACE = workspaceDir;
+
+  try {
+    const cacheKey = `?test=${Date.now()}`;
+    const auditTelemetry = await import(
+      `${pathToFileURL(join(repoRoot, "src/components/hooks/_shared/audit-telemetry.mjs")).href}${cacheKey}`
+    );
+    const reminder = await import(
+      `${pathToFileURL(join(
+        repoRoot,
+        "src/components/hooks/user-prompt-submit/skill-trigger-telemetry-advisor-reminder.mjs",
+      )).href}${cacheKey}`
+    );
+    const payload = {
+      cwd: workspaceDir,
+      session_id: "test-session",
+      transcript_path: null,
+      prompt: "请继续审计这些 hook 并修复所有发现的问题",
+    };
+
+    for (let index = 0; index < 3; index += 1) {
+      auditTelemetry.recordAuditTelemetry(payload, {
+        hook: "skill-usage-audit.mjs",
+        event: "stop",
+        decision: "audit",
+        audit_type: "skill_usage",
+        missing_route: true,
+        routed_but_not_used: false,
+        skills_recommended: [],
+        skills_used: [],
+      });
+    }
+
+    const first = await reminder.run(payload);
+    assert.equal(first?.decision, "context");
+    assert.match(first.reason, /Trigger Telemetry Advisor Reminder/);
+
+    const second = await reminder.run(payload);
+    assert.equal(second, null);
+
+    const entries = auditTelemetry.readRecentTelemetryEntries(payload);
+    const reminderEntry = entries.find((entry) =>
+      entry.audit_type === "trigger_telemetry_advisor_reminder");
+    assert.equal(reminderEntry.component, "hooks");
+    assert.equal(entries.some((entry) => Object.hasOwn(entry, "plugin")), false);
+  } finally {
+    if (previousTelemetryDir === undefined) delete process.env.AI_EXPERTS_HOOK_TELEMETRY_DIR;
+    else process.env.AI_EXPERTS_HOOK_TELEMETRY_DIR = previousTelemetryDir;
+    if (previousTelemetryWorkspace === undefined) delete process.env.AI_EXPERTS_HOOK_TELEMETRY_WORKSPACE;
+    else process.env.AI_EXPERTS_HOOK_TELEMETRY_WORKSPACE = previousTelemetryWorkspace;
+    rmSync(telemetryDir, { recursive: true, force: true });
+    rmSync(workspaceDir, { recursive: true, force: true });
   }
 });
