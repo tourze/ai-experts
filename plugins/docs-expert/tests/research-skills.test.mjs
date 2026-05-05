@@ -3,7 +3,7 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, relative, resolve } from "node:path";
 import test from "node:test";
 
-const pluginRoot = resolve("plugins/research-expert");
+const pluginRoot = resolve("plugins/docs-expert");
 const skillsRoot = resolve(pluginRoot, "skills");
 const readmePath = resolve(pluginRoot, "README.md");
 const requiredSections = [
@@ -25,6 +25,7 @@ const forbiddenPatterns = [
 function getTopLevelSkillDirs() {
   return readdirSync(skillsRoot, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
+    .filter((entry) => existsSync(resolve(skillsRoot, entry.name, "SKILL.md")))
     .map((entry) => entry.name)
     .sort();
 }

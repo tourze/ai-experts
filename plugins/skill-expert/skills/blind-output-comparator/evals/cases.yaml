@@ -1,0 +1,17 @@
+cases:
+  - id: compare_two_outputs
+    prompt: "这里有 A 和 B 两个匿名输出，以及原始任务要求，请你盲评哪个更好。"
+    fixtures: []
+    rubric:
+      - "keeps A/B source blind and judges only output quality"
+      - "creates a task-specific rubric"
+      - "chooses A, B, or TIE with concrete reasoning"
+    trigger_expected: true
+
+  - id: negative_grade_expectations
+    prompt: "根据 transcript 和 outputs 逐条判断这些 expectations 是否通过。"
+    fixtures: []
+    rubric:
+      - "does not replace expectation grading with A/B comparison"
+      - "routes transcript/output expectation grading to skill-eval-grader"
+    trigger_expected: false

@@ -17,6 +17,7 @@
 | `data-visualization` | 选择合适图表并输出可靠的可视化代码模式 |
 | `embedding-strategies` | Embedding 模型、切块与质量评估策略 |
 | `llm-app-design-pipeline` | 当需要设计或优化基于 LLM 的应用时使用；提供从应用形态确认、逐段优化到 eval 验证的完整设计 pipeline。 |
+| `llm-app-diagnosis-framework` | 当需要系统化诊断 LLM 应用问题（幻觉/检索失配/指令对抗/token 超限/过度引用）、区分 model-first 与 prompt-first 适用边界、或建立 eval-first 改进闭环时使用。 |
 | `llm-evaluation` | LLM 应用评估、回归对比与指标设计 |
 | `model-first-reasoning` | 先建模后实现的形式化推理流程 |
 | `prompt-engineering-patterns` | Prompt 模板、结构化输出、稳健约束、系统化诊断与变体实验 |
@@ -29,8 +30,8 @@
 
 | Agent | 用途 |
 |-------|------|
-| `data-analyst` | explore datasets, perform statistical analysis, generate visualizations, and evaluate model performance |
 | `ai-app-engineer` | LLM 应用设计 / 审查 / 优化：prompt 工程、检索增强、向量索引、embedding 选型与离线 eval |
+| `data-analyst` | explore datasets, perform statistical analysis, generate visualizations, and evaluate model performance |
 
 ## 安装 / 卸载
 

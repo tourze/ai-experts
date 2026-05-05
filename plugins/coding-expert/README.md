@@ -9,10 +9,11 @@
 | `chrome-devtools` | 用 Chrome DevTools 做页面调试、网络排障、性能分析或 Lighthouse 审计 |
 | `code-engineer-agent-framework` | 可写 engineer agent 的共享执行骨架：实现门禁、写入边界、验证闭环与交付报告 |
 | `code-review` | 代码质量、命名、职责边界与错误处理审查 |
+| `code-review-agent-framework` | 只读 reviewer agent 的共享审查骨架：范围确认、证据链、风险排序与报告结构 |
 | `complexity-reducer` | 降低嵌套、耦合和函数复杂度，含复杂度度量、简化指南与完成前验证检查清单 |
 | `debug-methodology` | 系统化定位 bug 与异常行为 |
-| `refactoring-checklist` | 为重构提供增量、安全的检查清单 |
 | `memory-safety-patterns` | C/C++ 资源所有权、智能指针与内存安全模式 |
+| `refactoring-checklist` | 为重构提供增量、安全的检查清单 |
 | `subagent-driven-development` | 当有实现计划需要在当前会话中执行、且各任务相对独立时使用——通过每个任务派遣独立子代理实现，配合双阶段审查（规格合规 + 代码质量），确保高质量快速迭代。 |
 
 ## Agents

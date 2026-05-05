@@ -12,12 +12,12 @@
 
 | Skill | 用途 |
 |-------|------|
-| `commit` | 结构化提交流程（状态检查 → 精确暂存 → diff 审查 → Conventional Commit） |
-| `git-advanced-workflows` | 高级 Git 工作流（rebase、cherry-pick、bisect、worktree、reflog） |
-| `github-repo-search` | GitHub 开源项目搜索与筛选 |
 | `author-contributions` | Git 历史作者贡献文件追踪（跨 rename） |
+| `commit` | 结构化提交流程（状态检查 → 精确暂存 → diff 审查 → Conventional Commit） |
 | `engineering-retro` | Git 历史工程回顾（提交/PR/速度分析） |
 | `finishing-branch` | 当实现完成、测试通过、需要决定如何集成工作时使用——引导完成开发分支的验证、选项展示和清理工作。 |
+| `git-advanced-workflows` | 高级 Git 工作流（rebase、cherry-pick、bisect、worktree、reflog） |
+| `github-repo-search` | GitHub 开源项目搜索与筛选 |
 | `session-finalization-workflow` | 从"代码完成"推到"可交付状态"的完整 checklist，含会话记录（原 record-session）、深度复盘与治理资产沉淀 |
 | `svn-workflow` | SVN（Subversion）工作流：常用命令、分支/标签管理、属性设置与冲突解决 |
 

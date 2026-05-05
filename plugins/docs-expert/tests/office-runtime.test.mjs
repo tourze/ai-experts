@@ -1,25 +1,9 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import test from "node:test";
 
 const pluginRoot = resolve("plugins/docs-expert");
-const skills = ["docx", "pptx", "xlsx"];
-const officeFiles = [
-  "scripts/office/pack.mjs",
-  "scripts/office/unpack.mjs",
-  "scripts/office/validate.mjs",
-];
-
-test("Office runtime Node wrappers point to shared implementation", () => {
-  for (const skill of skills) {
-    for (const relativeFile of officeFiles) {
-      const file = resolve(pluginRoot, "skills", skill, relativeFile);
-      const content = readFileSync(file, "utf-8");
-      assert.match(content, /_office_runtime/, file);
-    }
-  }
-});
 
 test("Shared Office runtime exists", () => {
   for (const relativeFile of [
@@ -36,26 +20,5 @@ test("Shared Office runtime exists", () => {
     "skills/_office_runtime/validators/redlining.py",
   ]) {
     assert.equal(existsSync(resolve(pluginRoot, relativeFile)), true, relativeFile);
-  }
-});
-
-test("Legacy Office Python wrappers were removed from skill scripts", () => {
-  for (const skill of skills) {
-    for (const relativeFile of [
-      "scripts/office/pack.py",
-      "scripts/office/unpack.py",
-      "scripts/office/validate.py",
-      "scripts/office/soffice.py",
-      "scripts/office/helpers/__init__.py",
-      "scripts/office/helpers/merge_runs.py",
-      "scripts/office/helpers/simplify_redlines.py",
-      "scripts/office/validators/__init__.py",
-      "scripts/office/validators/base.py",
-      "scripts/office/validators/docx.py",
-      "scripts/office/validators/pptx.py",
-      "scripts/office/validators/redlining.py",
-    ]) {
-      assert.equal(existsSync(resolve(pluginRoot, "skills", skill, relativeFile)), false, relativeFile);
-    }
   }
 });

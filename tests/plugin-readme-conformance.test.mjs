@@ -7,10 +7,17 @@ import test from "node:test";
 const pluginsRoot = resolve("plugins");
 const repoRoot = resolve(".");
 const trackedFiles = new Set(
-  execFileSync("git", ["ls-files"], {
-    cwd: repoRoot,
-    encoding: "utf-8",
-  })
+  [
+    execFileSync("git", ["ls-files"], {
+      cwd: repoRoot,
+      encoding: "utf-8",
+    }),
+    execFileSync("git", ["ls-files", "--others", "--exclude-standard"], {
+      cwd: repoRoot,
+      encoding: "utf-8",
+    }),
+  ]
+    .join("\n")
     .split("\n")
     .map((line) => line.trim())
     .filter(Boolean),
@@ -268,9 +275,10 @@ test("react-expert 的 Skills 附加说明不会被同步脚本覆盖", () => {
 
   assert.match(
     readme,
-    /React Native 相关 skill 已拆分至 \[react-native-expert\]/,
+    /React Native 相关 skill 仍保留在本目录/,
     `${readmePath} 丢失了 Skills 章节后的附加说明`,
   );
+  assert.doesNotMatch(readme, /react-native-expert/, `${readmePath} 引用了不存在的 react-native-expert`);
 });
 
 test("skills 目录下不再保留游离的 skill 级 plugin.json", () => {

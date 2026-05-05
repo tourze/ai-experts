@@ -12,8 +12,8 @@ JavaScript 与 Vue 开发专家能力，提供语法检查、ESLint 代码质量
 
 | Skill | 用途 |
 |-------|------|
-| `modern-javascript-patterns` | 现代 ES6+ 特性与热路径微优化（Set/Map 查找、迭代合并、DOM 批处理） |
 | `javascript-typescript-jest` | Jest 测试最佳实践（含 mocking 策略、React Testing Library） |
+| `modern-javascript-patterns` | 现代 ES6+ 特性与热路径微优化（Set/Map 查找、迭代合并、DOM 批处理） |
 | `vue-expert-js` | Vue 3 Composition API、响应式、组件设计、Pinia、Router 和模板性能 |
 
 ## Agents

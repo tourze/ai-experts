@@ -1,0 +1,17 @@
+cases:
+  - id: analyze_benchmark_results
+    prompt: "我有 with-skill vs baseline 的 benchmark.json、comparison 和 transcript，帮我解释为什么输赢并给下一轮改进建议。"
+    fixtures: []
+    rubric:
+      - "reads benchmark, comparison, skill files, and transcripts before explaining causes"
+      - "distinguishes skill defects, execution defects, and eval assertion defects"
+      - "outputs prioritized actionable improvement suggestions"
+    trigger_expected: true
+
+  - id: negative_create_skill
+    prompt: "帮我创建一个新的 Kubernetes 排障 skill。"
+    fixtures: []
+    rubric:
+      - "does not use benchmark analysis for new skill creation"
+      - "routes new skill creation to skill-creator"
+    trigger_expected: false

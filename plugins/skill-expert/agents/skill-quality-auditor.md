@@ -6,6 +6,9 @@ tools: Read, Glob, Grep, Bash
 skills:
   - skill-evaluator
   - skill-activation-analyzer
+  - skill-eval-grader
+  - blind-output-comparator
+  - benchmark-result-analyzer
   - trigger-telemetry-advisor
   - skills-prune-and-sync-readme
   - evidence-quality-framework
@@ -21,6 +24,9 @@ skills:
    - 知识覆盖度（闭卷考能否独立支撑任务）→ `skill-evaluator` Mode B
    - description 触发表达（CSO、shortcut 风险、模板违规）→ `skill-activation-analyzer`（静态审查模式）
    - 路由行为（漏触发、误触发、多 skill 抢请求）→ `skill-activation-analyzer`
+   - 单次 eval 输出评分（transcript + outputs + expectations）→ `skill-eval-grader`
+   - A/B 输出盲评（隐藏来源，只看输出质量）→ `blind-output-comparator`
+   - benchmark 胜负归因与改进建议 → `benchmark-result-analyzer`
    - 运行时遥测（hook/skill telemetry、误触发、错误热点）→ `trigger-telemetry-advisor`
    - 库存治理（重复、低质量、README 同步）→ `skills-prune-and-sync-readme`（只读跑 audit）
 3. 把结论归入自组织、自激励、自约束、自协同四类机制，避免把治理缺口都简化成“新增 skill”。

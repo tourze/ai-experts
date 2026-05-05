@@ -1,0 +1,17 @@
+cases:
+  - id: grade_eval_run
+    prompt: "这里有一次 skill eval 的 transcript、outputs 和 expectations，帮我判断哪些 assertion 通过，哪些失败。"
+    fixtures: []
+    rubric:
+      - "reads both transcript and actual outputs before grading"
+      - "requires concrete evidence for each PASS or FAIL"
+      - "extracts additional claims and comments on weak assertions"
+    trigger_expected: true
+
+  - id: negative_blind_compare
+    prompt: "把 A 和 B 两个输出盲评一下，告诉我哪个更好。"
+    fixtures: []
+    rubric:
+      - "does not use grading workflow for A/B comparison"
+      - "routes blind A/B output comparison to blind-output-comparator"
+    trigger_expected: false

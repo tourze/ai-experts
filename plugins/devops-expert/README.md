@@ -27,10 +27,11 @@ DevOps 专家能力，覆盖 Docker/Helm/K8s、CI/CD 流水线、Nginx 配置、
 
 | Agent | 用途 |
 |-------|------|
-| `system-diagnostician` | Linux 主机只读健康检查：CPU、内存、磁盘、网络、服务和日志，定位瓶颈与误配置 |
-| `incident-responder` | 线上事故应急响应：时间线还原、根因定位、止血与修复路线规划，只读 |
 | `ci-pipeline-fixer` | GitHub Actions / GitLab CI 失败排查、流水线规格生成、PR 评论处理，可写 .github/.gitlab-ci |
+| `incident-responder` | 线上事故应急响应：时间线还原、根因定位、止血与修复路线规划，只读 |
+| `infrastructure-engineer` | 基础设施工程：Docker、Helm、Shell、远端命令与部署文档，可写 IaC / 运维草案 |
 | `observability-engineer` | 端到端可观测性建设：指标/日志/告警/健康检查设计、Python/Go 语言落地、日志分析与事故分级，可写观测方案与落地脚本 |
+| `system-diagnostician` | Linux 主机只读健康检查：CPU、内存、磁盘、网络、服务和日志，定位瓶颈与误配置 |
 
 ## Hooks
 

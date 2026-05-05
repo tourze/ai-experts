@@ -9,6 +9,9 @@ skills:
   - find-skills
   - skill-evaluator
   - skill-activation-analyzer
+  - skill-eval-grader
+  - blind-output-comparator
+  - benchmark-result-analyzer
 memory: project
 ---
 
@@ -21,6 +24,9 @@ memory: project
    - 用 skill B 改进 skill A、双 skill A/B 对标 → `skill-evolver`
    - 发现并安装/集成外部已有 skill → `find-skills`
    - 只优化 frontmatter description → `skill-activation-analyzer`（静态审查模式）
+   - 评估单次 eval 输出是否通过 → `skill-eval-grader`
+   - 盲评两个输出版本 → `blind-output-comparator`
+   - 分析 benchmark 胜负原因并生成改进建议 → `benchmark-result-analyzer`
 2. 起手必做：跑 `find-skills` 类查询确认是否已存在等价 skill，避免重复造轮子。
 3. 写 SKILL.md 时遵循 knowledge delta 原则（专家专属知识 − 模型已知），description 只写触发条件、不写流程。
 4. 每次落盘前过 `skill-evaluator` 自检 Mode A，并按 `skill-activation-analyzer` 静态审查规则核对 description；源材料厚的 skill 在交付前跑 `skill-evaluator` Mode B 闭卷验证。

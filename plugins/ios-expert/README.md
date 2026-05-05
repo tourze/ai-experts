@@ -13,17 +13,17 @@ iOS / Apple 平台专家能力，覆盖 Swift Concurrency、SwiftUI 性能与模
 
 | Skill | 用途 |
 |-------|------|
+| `app-store-optimization` | App Store ASO 优化与排名追踪（含更新文案） |
+| `apple-appstore-reviewer` | App Store 审核规则检查 |
+| `apple-notes` | Apple Notes 管理（memo CLI） |
+| `apple-reminders` | Apple Reminders 管理（remindctl CLI） |
+| `ios-hig-design` | Apple Human Interface Guidelines（iOS） |
+| `ios-simulator-skill` | iOS 模拟器自动化流程 |
+| `liquid-glass-design` | iOS 26 液态玻璃设计系统 |
+| `macos-design-guidelines` | Apple Human Interface Guidelines（macOS） |
 | `swift-concurrency-expert` | Swift 6.2+ 并发审查与修复 |
 | `swiftui-performance-audit` | SwiftUI 运行时性能审计 |
 | `swiftui-ui-patterns` | SwiftUI 视图与组件最佳实践、视图重构与依赖注入 |
-| `ios-hig-design` | Apple Human Interface Guidelines（iOS） |
-| `ios-simulator-skill` | iOS 模拟器自动化流程 |
-| `apple-appstore-reviewer` | App Store 审核规则检查 |
-| `liquid-glass-design` | iOS 26 液态玻璃设计系统 |
-| `app-store-optimization` | App Store ASO 优化与排名追踪（含更新文案） |
-| `macos-design-guidelines` | Apple Human Interface Guidelines（macOS） |
-| `apple-notes` | Apple Notes 管理（memo CLI） |
-| `apple-reminders` | Apple Reminders 管理（remindctl CLI） |
 
 ## Hooks
 
