@@ -66,8 +66,8 @@ export const javaJunitSkill = defineSkill({
       source: new URL("./references/advanced-patterns.md", import.meta.url),
       target: "references/advanced-patterns.md",
       title: "advanced-patterns.md",
-      summary: "Reference material for java-junit.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "JUnit 5 高级测试模式：参数化测试、嵌套测试、扩展模型与断言模式。",
+      loadWhen: "需要编写参数化测试、自定义扩展或复杂 JUnit 5 场景时读取。",
     }),
   ],
 });

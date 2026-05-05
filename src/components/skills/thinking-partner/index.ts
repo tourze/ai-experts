@@ -75,8 +75,8 @@ export const thinkingPartnerSkill = defineSkill({
       source: new URL("./references/socratic-teaching.md", import.meta.url),
       target: "references/socratic-teaching.md",
       title: "socratic-teaching.md",
-      summary: "Reference material for thinking-partner.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "苏格拉底式提问教学法指南，通过提问引导对方自己发现答案。",
+      loadWhen: "需要转向提问模式引导用户自己理清思路而非直接给答案时读取。",
     }),
   ],
 });

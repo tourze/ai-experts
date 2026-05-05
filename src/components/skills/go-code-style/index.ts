@@ -69,8 +69,8 @@ export const goCodeStyleSkill = defineSkill({
       source: new URL("./references/documentation.md", import.meta.url),
       target: "references/documentation.md",
       title: "documentation.md",
-      summary: "Reference material for go-code-style.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Go 代码风格规范：命名惯例、文件组织、注释要求与格式化规则。",
+      loadWhen: "需要判断 Go 代码风格是否遵循工程惯例时读取。",
     }),
   ],
 });

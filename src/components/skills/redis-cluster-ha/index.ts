@@ -66,8 +66,8 @@ export const redisClusterHaSkill = defineSkill({
       source: new URL("./references/code-patterns.md", import.meta.url),
       target: "references/code-patterns.md",
       title: "code-patterns.md",
-      summary: "Reference material for redis-cluster-ha.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Sentinel 节点部署、Cluster hashtag、持久化配置、maxmemory 预留与 SLOWLOG 监控脚本。",
+      loadWhen: "需要部署 Sentinel/Cluster、配置持久化或制定 maxmemory 淘汰策略时读取。",
     }),
   ],
 });

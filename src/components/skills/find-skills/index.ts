@@ -27,8 +27,8 @@ export const findSkillsSkill = defineSkill({
       source: new URL("./references/search-guide.md", import.meta.url),
       target: "references/search-guide.md",
       title: "search-guide.md",
-      summary: "Reference material for find-skills.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "技能搜索的使用指南，包括搜索策略、过滤条件和结果解读。",
+      loadWhen: "需要高效查找适合任务的 skill 或了解搜索功能使用方法时读取。",
     }),
   ],
 });

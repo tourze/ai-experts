@@ -63,8 +63,8 @@ export const uxWritingSkill = defineSkill({
       source: new URL("./references/copy-patterns.md", import.meta.url),
       target: "references/copy-patterns.md",
       title: "copy-patterns.md",
-      summary: "Reference material for ux-writing.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "UX 微文案模式集合，包括按钮、错误消息、空态、表单 helper 和确认对话框的写法规范。",
+      loadWhen: "需要参考具体文案范例来写或审按钮标签、错误提示或空态文案时读取。",
     }),
   ],
 });

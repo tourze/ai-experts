@@ -82,8 +82,8 @@ export const dataVisualizationSkill = defineSkill({
       source: new URL("./references/chart-decision-matrix.md", import.meta.url),
       target: "references/chart-decision-matrix.md",
       title: "chart-decision-matrix.md",
-      summary: "Reference material for data-visualization.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "数据形状到图表类型的选型矩阵，包括适用条件与禁忌条件。",
+      loadWhen: "需要选择图表类型或审查现有图表是否匹配数据关系时读取。",
     }),
   ],
 });

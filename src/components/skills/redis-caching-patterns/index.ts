@@ -64,8 +64,8 @@ export const redisCachingPatternsSkill = defineSkill({
       source: new URL("./references/code-patterns.md", import.meta.url),
       target: "references/code-patterns.md",
       title: "code-patterns.md",
-      summary: "Reference material for redis-caching-patterns.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "缓存旁路、互斥刷新、穿透防御与 TTL 抖动等模式的完整代码示例。",
+      loadWhen: "需要实现或审查具体缓存模式的代码实现时读取。",
     }),
   ],
 });

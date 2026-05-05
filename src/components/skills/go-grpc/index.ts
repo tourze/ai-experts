@@ -51,8 +51,8 @@ export const goGrpcSkill = defineSkill({
       source: new URL("./references/protoc-reference.md", import.meta.url),
       target: "references/protoc-reference.md",
       title: "protoc-reference.md",
-      summary: "Reference material for go-grpc.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "protoc 编译器用法、proto 文件组织、命名规则与生成代码选项。",
+      loadWhen: "需要编写 .proto 文件或配置 protoc 生成 Go gRPC 代码时读取。",
     }),
   ],
 });

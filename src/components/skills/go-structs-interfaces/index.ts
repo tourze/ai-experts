@@ -29,8 +29,8 @@ export const goStructsInterfacesSkill = defineSkill({
       source: new URL("./references/composition.md", import.meta.url),
       target: "references/composition.md",
       title: "composition.md",
-      summary: "Reference material for go-structs-interfaces.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Go 结构体组合模式：embedding 策略、方法提升与命名字段的选择原则。",
+      loadWhen: "需要设计或审查结构体组合、embedding 与零值可用性时读取。",
     }),
   ],
 });

@@ -35,8 +35,8 @@ export const goDesignPatternsSkill = defineSkill({
       source: new URL("./references/di.md", import.meta.url),
       target: "references/di.md",
       title: "di.md",
-      summary: "Reference material for go-design-patterns.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Go 依赖注入模式：构造函数注入、wire 工具与手动 DI 容器的最佳实践。",
+      loadWhen: "需要设计或重构 Go 项目的依赖注入方式时读取。",
     }),
   ],
 });

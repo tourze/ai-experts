@@ -107,8 +107,8 @@ export const prlctlVmControlSkill = defineSkill({
       source: new URL("./references/recipes.md", import.meta.url),
       target: "references/recipes.md",
       title: "recipes.md",
-      summary: "Reference material for prlctl-vm-control.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "prlctl 虚拟机控制的常用命令模板和操作配方。",
+      loadWhen: "需要快速查找 prlctl 常用命令或操作模板时读取。",
     }),
   ],
 });

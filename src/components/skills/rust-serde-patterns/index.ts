@@ -54,8 +54,8 @@ export const rustSerdePatternsSkill = defineSkill({
       source: new URL("./references/patterns.md", import.meta.url),
       target: "references/patterns.md",
       title: "patterns.md",
-      summary: "Reference material for rust-serde-patterns.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "enum 标签策略、字段演进兼容性、flatten 开销分析与自定义序列化器模式。",
+      loadWhen: "需要设计 serde 序列化方案、选择 enum 标签策略或编写自定义 Deserialize 时读取。",
     }),
   ],
 });

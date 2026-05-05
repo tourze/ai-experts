@@ -72,8 +72,8 @@ export const pythonTestingPatternsSkill = defineSkill({
       source: new URL("./references/advanced-patterns.md", import.meta.url),
       target: "references/advanced-patterns.md",
       title: "advanced-patterns.md",
-      summary: "Reference material for python-testing-patterns.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Python 测试高级模式，包括异步测试、monkeypatch、临时目录和 property-based 测试示例。",
+      loadWhen: "需要查阅 Python 异步测试、monkeypatch 或 property-based 测试等高级模式时读取。",
     }),
   ],
 });

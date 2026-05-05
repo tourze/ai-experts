@@ -78,8 +78,8 @@ export const helmChartScaffoldingSkill = defineSkill({
       source: new URL("./references/chart-structure.md", import.meta.url),
       target: "references/chart-structure.md",
       title: "chart-structure.md",
-      summary: "Reference material for helm-chart-scaffolding.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Helm Chart 目录结构、values 层级、模板最佳实践与 _helpers.tpl 模式。",
+      loadWhen: "需要创建或审查 Helm Chart 的结构与 values 分层设计时读取。",
     }),
   ],
   assets: [

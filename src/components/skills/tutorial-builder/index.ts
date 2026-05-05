@@ -97,8 +97,8 @@ export const tutorialBuilderSkill = defineSkill({
       source: new URL("./references/tutorial-package-contract.md", import.meta.url),
       target: "references/tutorial-package-contract.md",
       title: "tutorial-package-contract.md",
-      summary: "Reference material for tutorial-builder.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "教程交付物包的结构定义，包括大纲、正文、视觉、练习、来源附录和导出格式规划。",
+      loadWhen: "需要确定教程交付物的完整结构和各模块的内容要求时读取。",
     }),
   ],
 });

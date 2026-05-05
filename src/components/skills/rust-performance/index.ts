@@ -70,8 +70,8 @@ export const rustPerformanceSkill = defineSkill({
       source: new URL("./references/chapter_03.md", import.meta.url),
       target: "references/chapter_03.md",
       title: "chapter_03.md",
-      summary: "Reference material for rust-performance.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "cargo bench/criterion/flamegraph 的使用流程、分配策略优化与性能归因方法论。",
+      loadWhen: "需要建立 benchmark 基线、使用 flamegraph 定位热点或优化分配策略时读取。",
     }),
   ],
 });

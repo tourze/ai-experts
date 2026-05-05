@@ -50,8 +50,8 @@ export const skillEvolverSkill = defineSkill({
       source: new URL("./references/migration-protocol.md", import.meta.url),
       target: "references/migration-protocol.md",
       title: "migration-protocol.md",
-      summary: "Reference material for skill-evolver.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Skill 间优势迁移的标准化协议，包含对比分析、模式提炼和落地验证步骤。",
+      loadWhen: "需要将一个 skill 的优势模式迁移到另一个 skill 或做 skill A/B 对比时读取。",
     }),
   ],
 });

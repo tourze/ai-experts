@@ -72,8 +72,8 @@ export const pgsqlRowLevelSecuritySkill = defineSkill({
       source: new URL("./references/code-patterns.md", import.meta.url),
       target: "references/code-patterns.md",
       title: "code-patterns.md",
-      summary: "Reference material for pgsql-row-level-security.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "PostgreSQL 行级安全策略的代码模式示例，包括多租户隔离、角色权限和测试脚本。",
+      loadWhen: "需要参考具体的 RLS 策略实现代码或编写测试验证数据隔离时读取。",
     }),
   ],
 });

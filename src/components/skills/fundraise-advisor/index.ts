@@ -56,8 +56,8 @@ export const fundraiseAdvisorSkill = defineSkill({
       source: new URL("./references/full-guide.md", import.meta.url),
       target: "references/full-guide.md",
       title: "full-guide.md",
-      summary: "Reference material for fundraise-advisor.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Pre-seed 到 Seed 轮融资的完整流程指南，包括轮次策略、投资人沟通和节奏管理。",
+      loadWhen: "需要展开完整融资准备工作或了解各阶段具体执行方法时读取。",
     }),
   ],
 });

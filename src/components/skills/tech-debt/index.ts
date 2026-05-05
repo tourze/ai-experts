@@ -55,8 +55,8 @@ export const techDebtSkill = defineSkill({
       source: new URL("./references/guest-insights.md", import.meta.url),
       target: "references/guest-insights.md",
       title: "guest-insights.md",
-      summary: "Reference material for tech-debt.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "技术债治理的外部视角总结，包含案例分析、常见误区和治理经验。",
+      loadWhen: "需要参考外部案例来制定技术债治理策略或评估债务影响时读取。",
     }),
   ],
 });

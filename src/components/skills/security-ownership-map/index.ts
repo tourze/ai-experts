@@ -103,8 +103,8 @@ export const securityOwnershipMapSkill = defineSkill({
       source: new URL("./references/neo4j-import.md", import.meta.url),
       target: "references/neo4j-import.md",
       title: "neo4j-import.md",
-      summary: "Reference material for security-ownership-map.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "将安全所有权分析结果导入 Neo4j 图数据库的方法和步骤。",
+      loadWhen: "需要把所有权分析结果导入图数据库进行可视化分析时读取。",
     }),
   ],
 });

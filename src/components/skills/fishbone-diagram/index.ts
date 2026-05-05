@@ -68,8 +68,8 @@ export const fishboneDiagramSkill = defineSkill({
       source: new URL("./references/five-w-two-h.md", import.meta.url),
       target: "references/five-w-two-h.md",
       title: "five-w-two-h.md",
-      summary: "Reference material for fishbone-diagram.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "5W2H 问题定义方法，用于鱼骨图分析前的问题范围界定。",
+      loadWhen: "需要在鱼骨图分析前用结构化提问清晰界定问题范围时读取。",
     }),
   ],
 });

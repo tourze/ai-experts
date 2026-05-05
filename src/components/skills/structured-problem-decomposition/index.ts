@@ -30,8 +30,8 @@ export const structuredProblemDecompositionSkill = defineSkill({
       source: new URL("./references/six-phases.md", import.meta.url),
       target: "references/six-phases.md",
       title: "six-phases.md",
-      summary: "Reference material for structured-problem-decomposition.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "结构化问题拆解的六阶段流程详解，包含问题界定、拆解、根因分析、系统动态、决策推进和 PDCA 闭环。",
+      loadWhen: "需要了解六阶段编排流程的详细步骤和各阶段过渡标准时读取。",
     }),
   ],
 });

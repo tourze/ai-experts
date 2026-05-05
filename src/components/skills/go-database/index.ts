@@ -53,8 +53,8 @@ export const goDatabaseSkill = defineSkill({
       source: new URL("./references/transactions.md", import.meta.url),
       target: "references/transactions.md",
       title: "transactions.md",
-      summary: "Reference material for go-database.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Go 数据库事务模式：BeginTx、Rollback、Commit、嵌套事务与传播策略。",
+      loadWhen: "需要设计或审查 Go 数据库事务边界与回滚逻辑时读取。",
     }),
   ],
 });

@@ -49,8 +49,8 @@ export const androidTestingSkill = defineSkill({
       source: new URL("./references/dependencies.md", import.meta.url),
       target: "references/dependencies.md",
       title: "dependencies.md",
-      summary: "Reference material for android-testing.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Android 测试框架依赖配置：JUnit、Hilt、Roborazzi 与 Compose 测试库版本。",
+      loadWhen: "需要配置 Android 测试依赖或添加新测试框架时读取。",
     }),
   ],
 });

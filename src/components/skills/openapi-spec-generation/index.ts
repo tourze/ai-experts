@@ -49,8 +49,8 @@ export const openapiSpecGenerationSkill = defineSkill({
       source: new URL("./references/code-first-and-tooling.md", import.meta.url),
       target: "references/code-first-and-tooling.md",
       title: "code-first-and-tooling.md",
-      summary: "Reference material for openapi-spec-generation.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Code-First 方式生成 OpenAPI 规范的方案，及相关工具链的配置和用法。",
+      loadWhen: "需要从代码自动生成 OpenAPI 规范或选择适合的工具链时读取。",
     }),
   ],
 });

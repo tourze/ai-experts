@@ -64,36 +64,36 @@ export const benchmarkRunnerSkill = defineSkill({
       source: new URL("./references/environment-capture.md", import.meta.url),
       target: "references/environment-capture.md",
       title: "environment-capture.md",
-      summary: "Reference material for benchmark-runner.",
+      summary: "环境信息采集脚本与系统配置快照规范。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要记录基准测试环境或复现测试条件时读取。",
     }),
     defineReference({
       id: "metric-selection",
       source: new URL("./references/metric-selection.md", import.meta.url),
       target: "references/metric-selection.md",
       title: "metric-selection.md",
-      summary: "Reference material for benchmark-runner.",
+      summary: "性能指标选取指南：延迟、吞吐、资源利用率的权衡。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要确定测量哪些性能指标或对比不同指标的适用场景时读取。",
     }),
     defineReference({
       id: "statistical-rigor",
       source: new URL("./references/statistical-rigor.md", import.meta.url),
       target: "references/statistical-rigor.md",
       title: "statistical-rigor.md",
-      summary: "Reference material for benchmark-runner.",
+      summary: "统计严谨性要求：样本量计算、方差分析与显著性检验。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要确保基准测试结果具有统计意义时读取。",
     }),
     defineReference({
       id: "test-case-design",
       source: new URL("./references/test-case-design.md", import.meta.url),
       target: "references/test-case-design.md",
       title: "test-case-design.md",
-      summary: "Reference material for benchmark-runner.",
+      summary: "测试用例设计方法：覆盖正常路径、边界值与压力场景。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要设计基准测试用例或覆盖边界场景时读取。",
     }),
   ],
 });

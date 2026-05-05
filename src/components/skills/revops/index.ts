@@ -68,8 +68,8 @@ export const revopsSkill = defineSkill({
       source: new URL("./references/scoring-and-pipeline.md", import.meta.url),
       target: "references/scoring-and-pipeline.md",
       title: "scoring-and-pipeline.md",
-      summary: "Reference material for revops.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "线索评分模型、Pipeline 阶段标准定义与交接 SLA 模板。",
+      loadWhen: "需要设计 MQL/SQL 评分模型、定义 Pipeline 阶段或配置 CRM 交接规则时读取。",
     }),
   ],
 });

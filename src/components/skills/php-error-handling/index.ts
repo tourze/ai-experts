@@ -63,8 +63,8 @@ export const phpErrorHandlingSkill = defineSkill({
       source: new URL("./references/patterns.md", import.meta.url),
       target: "references/patterns.md",
       title: "patterns.md",
-      summary: "Reference material for php-error-handling.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "PHP 错误处理模式汇总，包括异常层级设计、输入校验、错误映射等。",
+      loadWhen: "需要查阅 PHP 异常层级设计或错误处理的具体实现模式时读取。",
     }),
   ],
 });

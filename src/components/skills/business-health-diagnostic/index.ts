@@ -59,27 +59,27 @@ export const businessHealthDiagnosticSkill = defineSkill({
       source: new URL("./references/balanced-scorecard.md", import.meta.url),
       target: "references/balanced-scorecard.md",
       title: "balanced-scorecard.md",
-      summary: "Reference material for business-health-diagnostic.",
+      summary: "平衡计分卡框架：财务、客户、流程、学习四维度诊断模板。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要从多维度结构化评估企业经营健康度时读取。",
     }),
     defineReference({
       id: "blm-model",
       source: new URL("./references/blm-model.md", import.meta.url),
       target: "references/blm-model.md",
       title: "blm-model.md",
-      summary: "Reference material for business-health-diagnostic.",
+      summary: "BLM 业务领先模型：战略、执行、领导力与价值观的差距分析。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要诊断战略与执行之间的差距或对标行业领先实践时读取。",
     }),
     defineReference({
       id: "mckinsey-7s",
       source: new URL("./references/mckinsey-7s.md", import.meta.url),
       target: "references/mckinsey-7s.md",
       title: "mckinsey-7s.md",
-      summary: "Reference material for business-health-diagnostic.",
+      summary: "麦肯锡 7S 模型：战略、结构、制度、风格、人员、技能、共同价值观的组织诊断框架。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要诊断组织内部一致性与变革阻力时读取。",
     }),
   ],
 });

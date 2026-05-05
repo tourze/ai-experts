@@ -45,8 +45,8 @@ export const liquidGlassDesignSkill = defineSkill({
       source: new URL("./references/advanced-patterns.md", import.meta.url),
       target: "references/advanced-patterns.md",
       title: "advanced-patterns.md",
-      summary: "Reference material for liquid-glass-design.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Liquid Glass 设计的高级模式、版本兼容性处理和性能优化策略。",
+      loadWhen: "需要实现复杂的玻璃材质效果、变形过渡或多元素融合场景时读取。",
     }),
   ],
 });

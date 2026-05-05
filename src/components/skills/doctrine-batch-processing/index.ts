@@ -64,8 +64,8 @@ export const doctrineBatchProcessingSkill = defineSkill({
       source: new URL("./references/advanced-patterns.md", import.meta.url),
       target: "references/advanced-patterns.md",
       title: "advanced-patterns.md",
-      summary: "Reference material for doctrine-batch-processing.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Doctrine ORM 批处理的高级模式，包括 UnitOfWork 控制、DBAL 切换和迁移策略。",
+      loadWhen: "需要处理大批量导入、内存优化或判断 ORM 与原生 SQL 的边界时读取。",
     }),
   ],
 });

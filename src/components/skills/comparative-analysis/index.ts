@@ -62,8 +62,8 @@ export const comparativeAnalysisSkill = defineSkill({
       source: new URL("./references/output-template.md", import.meta.url),
       target: "references/output-template.md",
       title: "output-template.md",
-      summary: "Reference material for comparative-analysis.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "对比分析报告标准输出模板：维度矩阵、证据列表与条件化建议格式。",
+      loadWhen: "需要按标准格式组织对比分析结论或输出报告时读取。",
     }),
   ],
 });

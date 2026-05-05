@@ -27,8 +27,8 @@ export const commitSkill = defineSkill({
       source: new URL("./references/discipline-guard.md", import.meta.url),
       target: "references/discipline-guard.md",
       title: "discipline-guard.md",
-      summary: "Reference material for commit.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Git 提交流程纪律守卫：提交前检查清单与常见纪律违规案例。",
+      loadWhen: "需要确保提交质量或检查是否有违规提交行为时读取。",
     }),
   ],
 });

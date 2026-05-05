@@ -78,8 +78,8 @@ export const webContentFetcherSkill = defineSkill({
       source: new URL("./references/question-refiner.md", import.meta.url),
       target: "references/question-refiner.md",
       title: "question-refiner.md",
-      summary: "Reference material for web-content-fetcher.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "抓取前的问题优化指南，帮助明确抓取目标、筛选域和设定内容范围。",
+      loadWhen: "需要在抓取网页前先精炼问题定义或筛选信息来源时读取。",
     }),
   ],
 });

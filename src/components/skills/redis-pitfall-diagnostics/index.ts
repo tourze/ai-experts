@@ -57,8 +57,8 @@ export const redisPitfallDiagnosticsSkill = defineSkill({
       source: new URL("./references/code-patterns.md", import.meta.url),
       target: "references/code-patterns.md",
       title: "code-patterns.md",
-      summary: "Reference material for redis-pitfall-diagnostics.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Redis 诡异行为排查的现场收集命令、关键 INFO 字段与根因面分类模板。",
+      loadWhen: "需要收集 Redis 异常现场证据、或按命令/内存/复制/配置四个根因面排查时读取。",
     }),
   ],
 });

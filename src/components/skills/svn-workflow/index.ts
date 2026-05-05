@@ -60,8 +60,8 @@ export const svnWorkflowSkill = defineSkill({
       source: new URL("./references/properties-and-admin.md", import.meta.url),
       target: "references/properties-and-admin.md",
       title: "properties-and-admin.md",
-      summary: "Reference material for svn-workflow.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "SVN 属性配置和仓库管理的详细指南，包含 svn:ignore、eol-style、externals 和仓库备份。",
+      loadWhen: "需要配置 SVN 属性或执行仓库管理操作时读取。",
     }),
   ],
 });

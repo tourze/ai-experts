@@ -39,8 +39,8 @@ export const rustAsyncPatternsSkill = defineSkill({
       source: new URL("./references/advanced-patterns.md", import.meta.url),
       target: "references/advanced-patterns.md",
       title: "advanced-patterns.md",
-      summary: "Reference material for rust-async-patterns.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "MutexGuard 跨 await、阻塞 async 与任务泄漏等常见陷阱的详细代码示例与修复方案。",
+      loadWhen: "需要排查 async 代码中的阻塞、死锁或 Send 编译错误时读取。",
     }),
   ],
 });

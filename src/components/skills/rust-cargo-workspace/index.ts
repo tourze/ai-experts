@@ -53,8 +53,8 @@ export const rustCargoWorkspaceSkill = defineSkill({
       source: new URL("./references/patterns.md", import.meta.url),
       target: "references/patterns.md",
       title: "patterns.md",
-      summary: "Reference material for rust-cargo-workspace.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Cargo workspace 依赖共享、feature additive、build.rs 约束与 CI 缓存的详细配置模式。",
+      loadWhen: "需要设计 workspace 结构、配置共享依赖或规划 CI 构建策略时读取。",
     }),
   ],
 });

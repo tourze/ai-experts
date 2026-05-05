@@ -71,8 +71,8 @@ export const phpDesignPatternsSkill = defineSkill({
       source: new URL("./references/patterns.md", import.meta.url),
       target: "references/patterns.md",
       title: "patterns.md",
-      summary: "Reference material for php-design-patterns.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "PHP 设计模式与分层架构的常见实现示例，包括 Service、Repository、DTO、值对象等。",
+      loadWhen: "需要查阅 PHP 分层架构或设计模式的具体代码示例时读取。",
     }),
   ],
 });

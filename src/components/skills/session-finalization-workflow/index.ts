@@ -27,8 +27,8 @@ export const sessionFinalizationWorkflowSkill = defineSkill({
       source: new URL("./references/session-record.md", import.meta.url),
       target: "references/session-record.md",
       title: "session-record.md",
-      summary: "Reference material for session-finalization-workflow.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "会话复盘与记录模板，包含决策记录、遗留事项和长期资产沉淀方法。",
+      loadWhen: "需要记录会话复盘内容或沉淀长期可复用资产时读取。",
     }),
   ],
 });

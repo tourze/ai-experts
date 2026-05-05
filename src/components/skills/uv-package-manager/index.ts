@@ -73,8 +73,8 @@ export const uvPackageManagerSkill = defineSkill({
       source: new URL("./references/advanced-patterns.md", import.meta.url),
       target: "references/advanced-patterns.md",
       title: "advanced-patterns.md",
-      summary: "Reference material for uv-package-manager.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "uv 包管理器的高级模式，包括 workspace 配置、Docker 集成、CI 工作流和锁文件策略。",
+      loadWhen: "需要搭建 monorepo workspace、配置 CI 缓存或设计 lockfile 管理策略时读取。",
     }),
   ],
 });

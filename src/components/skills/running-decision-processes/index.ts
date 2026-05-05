@@ -61,8 +61,8 @@ export const runningDecisionProcessesSkill = defineSkill({
       source: new URL("./references/guest-insights.md", import.meta.url),
       target: "references/guest-insights.md",
       title: "guest-insights.md",
-      summary: "Reference material for running-decision-processes.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "基于真实经验总结的常见决策陷阱与高效决策方法论参考。",
+      loadWhen: "需要经验参考来突破决策僵局或避免常见决策偏差时读取。",
     }),
   ],
 });

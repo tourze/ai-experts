@@ -71,8 +71,8 @@ export const reactHooksSkill = defineSkill({
       source: new URL("./references/advanced-patterns.md", import.meta.url),
       target: "references/advanced-patterns.md",
       title: "advanced-patterns.md",
-      summary: "Reference material for react-hooks.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "React Hooks 高级模式，包括自定义 Hook 设计、复杂 useReducer 状态机、Effect 清理和闭包处理。",
+      loadWhen: "需要查阅自定义 Hook 设计或复杂 Effect 处理等高级模式时读取。",
     }),
   ],
 });

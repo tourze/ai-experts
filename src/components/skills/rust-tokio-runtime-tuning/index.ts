@@ -50,8 +50,8 @@ export const rustTokioRuntimeTuningSkill = defineSkill({
       source: new URL("./references/patterns.md", import.meta.url),
       target: "references/patterns.md",
       title: "patterns.md",
-      summary: "Reference material for rust-tokio-runtime-tuning.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Runtime::builder 参数、worker/blocking 线程数调优与 tokio-console 观测配置。",
+      loadWhen: "需要调整 Tokio 运行时线程数、配置 block_on 桥接或使用 tokio-console 定位瓶颈时读取。",
     }),
   ],
 });

@@ -124,8 +124,8 @@ export const pdfSkill = defineSkill({
       source: new URL("./references/pdf-extraction.md", import.meta.url),
       target: "references/pdf-extraction.md",
       title: "pdf-extraction.md",
-      summary: "Reference material for pdf.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "PDF 纯文本提取的方案和工具对比，适用于只需抽取文字内容的场景。",
+      loadWhen: "只需从 PDF 中提取文本或表格内容，不需要处理表单填写或标注时读取。",
     }),
   ],
 });

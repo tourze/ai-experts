@@ -34,8 +34,8 @@ export const goLintSkill = defineSkill({
       source: new URL("./references/linter-reference.md", import.meta.url),
       target: "references/linter-reference.md",
       title: "linter-reference.md",
-      summary: "Reference material for go-lint.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "golangci-lint 配置项、常用 linter 规则说明与 //nolint 抑制指南。",
+      loadWhen: "需要配置 golangci-lint 或理解某条 linter 规则的含义时读取。",
     }),
   ],
 });

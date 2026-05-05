@@ -77,8 +77,8 @@ export const phpTestingSkill = defineSkill({
       source: new URL("./references/examples.md", import.meta.url),
       target: "references/examples.md",
       title: "examples.md",
-      summary: "Reference material for php-testing.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "PHP 测试用例编写示例，包括 PHPUnit/Pest 的 fixture、mock、参数化测试等模式。",
+      loadWhen: "需要查阅 PHP 测试的具体编写示例或模式时读取。",
     }),
   ],
 });

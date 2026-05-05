@@ -63,8 +63,8 @@ export const marketSizingAnalysisSkill = defineSkill({
       source: new URL("./references/data-sources.md", import.meta.url),
       target: "references/data-sources.md",
       title: "data-sources.md",
-      summary: "Reference material for market-sizing-analysis.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "市场规模估算的常用数据来源、行业报告渠道和可信度评估方法。",
+      loadWhen: "需要查找市场数据来源、确定数据口径或评估数据可信度时读取。",
     }),
   ],
 });

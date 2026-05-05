@@ -46,8 +46,8 @@ export const androidAccessibilitySkill = defineSkill({
       source: new URL("./references/advanced-patterns.md", import.meta.url),
       target: "references/advanced-patterns.md",
       title: "advanced-patterns.md",
-      summary: "Reference material for android-accessibility.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Android 无障碍高级模式：语义分组、自定义操作与 Canvas 视图适配。",
+      loadWhen: "需要处理自定义控件无障碍状态暴露或 Canvas 不可见问题时读取。",
     }),
   ],
 });

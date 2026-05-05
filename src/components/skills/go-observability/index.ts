@@ -50,8 +50,8 @@ export const goObservabilitySkill = defineSkill({
       source: new URL("./references/logging.md", import.meta.url),
       target: "references/logging.md",
       title: "logging.md",
-      summary: "Reference material for go-observability.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Go 结构化日志规范：slog 使用、日志级别纪律、采样与 PII 脱敏。",
+      loadWhen: "需要设计结构化日志策略或从 log.Printf 迁移到 slog 时读取。",
     }),
   ],
 });

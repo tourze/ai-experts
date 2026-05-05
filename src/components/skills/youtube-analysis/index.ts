@@ -94,8 +94,8 @@ export const youtubeAnalysisSkill = defineSkill({
       source: new URL("./references/analysis-patterns.md", import.meta.url),
       target: "references/analysis-patterns.md",
       title: "analysis-patterns.md",
-      summary: "Reference material for youtube-analysis.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "按视频类型（Tech Talk、tutorial、podcast、会议演讲等）调整分析重点和提炼模式的方法。",
+      loadWhen: "需要按视频类型调整提炼重点，或不确定当前视频应侧重哪些分析维度时读取。",
     }),
   ],
   assets: [

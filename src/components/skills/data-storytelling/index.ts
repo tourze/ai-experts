@@ -76,8 +76,8 @@ export const dataStorytellingSkill = defineSkill({
       source: new URL("./references/t8-syntax.md", import.meta.url),
       target: "references/t8-syntax.md",
       title: "t8-syntax.md",
-      summary: "Reference material for data-storytelling.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "T8 内联标注语法规则，用于在文本中嵌入机读实体标记。",
+      loadWhen: "需要为叙事文本添加机读实体标注以支持结构化分析时读取。",
     }),
   ],
 });

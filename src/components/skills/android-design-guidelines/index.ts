@@ -45,8 +45,8 @@ export const androidDesignGuidelinesSkill = defineSkill({
       source: new URL("./references/rules-4-to-10.md", import.meta.url),
       target: "references/rules-4-to-10.md",
       title: "rules-4-to-10.md",
-      summary: "Reference material for android-design-guidelines.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Android Material Design 3 第 4-10 条设计规范详解。",
+      loadWhen: "需要深入理解 Material You 设计规则或审计界面合规性时读取。",
     }),
   ],
 });

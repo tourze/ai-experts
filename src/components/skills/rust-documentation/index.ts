@@ -72,8 +72,8 @@ export const rustDocumentationSkill = defineSkill({
       source: new URL("./references/chapter_08.md", import.meta.url),
       target: "references/chapter_08.md",
       title: "chapter_08.md",
-      summary: "Reference material for rust-documentation.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "rustdoc 文档段落（Safety/Errors/Panics/Examples）的编写规范与公共 API 文档最佳实践。",
+      loadWhen: "需要编写或审查 Rust 公共 API 文档、补齐 # Safety/# Errors 段落时读取。",
     }),
   ],
 });

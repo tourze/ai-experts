@@ -48,8 +48,8 @@ export const systemDesignSkill = defineSkill({
       source: new URL("./references/ddia-systems.md", import.meta.url),
       target: "references/ddia-systems.md",
       title: "ddia-systems.md",
-      summary: "Reference material for system-design.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "《Designing Data-Intensive Applications》核心系统设计概念摘要，包含数据系统、存储引擎和分布式策略。",
+      loadWhen: "需要深入理解数据系统细节或参考 DDIA 中的设计模式时读取。",
     }),
   ],
 });

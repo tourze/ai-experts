@@ -53,8 +53,8 @@ export const rustFfiBindingsSkill = defineSkill({
       source: new URL("./references/patterns.md", import.meta.url),
       target: "references/patterns.md",
       title: "patterns.md",
-      summary: "Reference material for rust-ffi-bindings.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "extern C 函数设计、内存所有权约定、cbindgen/uniffi 绑定生成与段错误排查模式。",
+      loadWhen: "需要设计 FFI 接口、排查跨语言段错误或生成 C 头文件/绑定代码时读取。",
     }),
   ],
 });

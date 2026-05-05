@@ -59,8 +59,8 @@ export const goCliSkill = defineSkill({
       source: new URL("./references/cobra-patterns.md", import.meta.url),
       target: "references/cobra-patterns.md",
       title: "cobra-patterns.md",
-      summary: "Reference material for go-cli.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Cobra 命令结构、flag 绑定、PreRun/PostRun 钩子与子命令组织的模式。",
+      loadWhen: "需要设计或审查 Cobra CLI 的命令树与参数定义时读取。",
     }),
   ],
 });

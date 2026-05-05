@@ -69,8 +69,8 @@ export const pythonPerformanceOptimizationSkill = defineSkill({
       source: new URL("./references/advanced-patterns.md", import.meta.url),
       target: "references/advanced-patterns.md",
       title: "advanced-patterns.md",
-      summary: "Reference material for python-performance-optimization.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Python 性能优化高级模式，包括 NumPy、并行计算和复杂缓存策略。",
+      loadWhen: "需要查阅 NumPy 加速、并行计算或复杂缓存策略时读取。",
     }),
   ],
 });

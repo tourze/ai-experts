@@ -74,9 +74,9 @@ export const androidApkAuditSkill = defineSkill({
       ),
       target: "references/android-frida-script-catalog.md",
       title: "android-frida-script-catalog.md",
-      summary: "Reference material for android-apk-audit.",
+      summary: "Frida 脚本模板与常用 hook 代码片段。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要使用 Frida 进行动态分析或编写 hook 脚本时读取。",
     }),
     defineReference({
       id: "android-manifest-security",
@@ -86,36 +86,36 @@ export const androidApkAuditSkill = defineSkill({
       ),
       target: "references/android-manifest-security.md",
       title: "android-manifest-security.md",
-      summary: "Reference material for android-apk-audit.",
+      summary: "Android Manifest 权限、组件导出与安全配置审计要点。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要审计 AndroidManifest 安全配置或检查组件暴露面时读取。",
     }),
     defineReference({
       id: "apktool",
       source: new URL("./references/apktool.md", import.meta.url),
       target: "references/apktool.md",
       title: "apktool.md",
-      summary: "Reference material for android-apk-audit.",
+      summary: "Apktool 解包、重打包与资源反编译操作指南。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要反编译 APK 或修改资源文件时读取。",
     }),
     defineReference({
       id: "dex-dumper",
       source: new URL("./references/dex-dumper.md", import.meta.url),
       target: "references/dex-dumper.md",
       title: "dex-dumper.md",
-      summary: "Reference material for android-apk-audit.",
+      summary: "DEX 文件结构与脱壳工具使用指南。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要从内存中提取 DEX 或分析加壳保护时读取。",
     }),
     defineReference({
       id: "jadx",
       source: new URL("./references/jadx.md", import.meta.url),
       target: "references/jadx.md",
       title: "jadx.md",
-      summary: "Reference material for android-apk-audit.",
+      summary: "Jadx 反编译器使用技巧与反混淆策略。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要将 DEX/APK 反编译为可读 Java 源码时读取。",
     }),
   ],
 });

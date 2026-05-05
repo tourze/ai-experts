@@ -64,8 +64,8 @@ export const phpAsyncPatternsSkill = defineSkill({
       source: new URL("./references/patterns.md", import.meta.url),
       target: "references/patterns.md",
       title: "patterns.md",
-      summary: "Reference material for php-async-patterns.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "PHP 异步编程常用模式汇总，包括协程、Channel、定时器、并发控制等。",
+      loadWhen: "需要查阅 PHP 异步编程的具体代码模式或实现示例时读取。",
     }),
   ],
 });

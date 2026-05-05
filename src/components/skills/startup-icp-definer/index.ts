@@ -56,8 +56,8 @@ export const startupIcpDefinerSkill = defineSkill({
       source: new URL("./references/full-guide.md", import.meta.url),
       target: "references/full-guide.md",
       title: "full-guide.md",
-      summary: "Reference material for startup-icp-definer.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "理想客户画像（ICP）的完整定义方法，包含公司画像、买方角色和购买触发因素。",
+      loadWhen: "需要系统性地定义理想客户画像或审查现有 ICP 完整性时读取。",
     }),
   ],
 });

@@ -52,8 +52,8 @@ export const tauriPluginDevelopmentSkill = defineSkill({
       source: new URL("./references/plugin-dev-patterns.md", import.meta.url),
       target: "references/plugin-dev-patterns.md",
       title: "plugin-dev-patterns.md",
-      summary: "Reference material for tauri-plugin-development.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Tauri v2 插件开发完整指南，包括脚手架、生命周期钩子、平台拆分、状态管理和权限定义。",
+      loadWhen: "需要创建自定义插件、实现桌面/移动平台拆分或配置插件权限时读取。",
     }),
   ],
 });

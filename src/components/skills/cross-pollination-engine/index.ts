@@ -71,8 +71,8 @@ export const crossPollinationEngineSkill = defineSkill({
       source: new URL("./references/examples.md", import.meta.url),
       target: "references/examples.md",
       title: "examples.md",
-      summary: "Reference material for cross-pollination-engine.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "跨界迁移真实案例集：各行业模式借鉴的成功与失败经验。",
+      loadWhen: "需要参考跨界案例来启发新的灵感或验证迁移模式时读取。",
     }),
   ],
 });

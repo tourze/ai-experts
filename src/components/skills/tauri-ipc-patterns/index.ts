@@ -52,8 +52,8 @@ export const tauriIpcPatternsSkill = defineSkill({
       source: new URL("./references/ipc-advanced-patterns.md", import.meta.url),
       target: "references/ipc-advanced-patterns.md",
       title: "ipc-advanced-patterns.md",
-      summary: "Reference material for tauri-ipc-patterns.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Tauri v2 高级 IPC 模式，包括自定义错误、判别联合事件、Channel<T> 流、多窗口路由和二进制传输。",
+      loadWhen: "需要实现结构化错误、高频推送、多窗口事件路由或自定义命令权限时读取。",
     }),
   ],
 });

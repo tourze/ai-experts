@@ -52,8 +52,8 @@ export const subagentDrivenDevelopmentSkill = defineSkill({
       source: new URL("./references/prompt-templates.md", import.meta.url),
       target: "references/prompt-templates.md",
       title: "prompt-templates.md",
-      summary: "Reference material for subagent-driven-development.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "子代理提示词模板，包含任务派遣、范围约束和验收指令的标准化格式。",
+      loadWhen: "需要编写子代理任务派遣提示词或标准化子代理指令格式时读取。",
     }),
   ],
 });

@@ -58,8 +58,8 @@ export const tauriBuildPackagingSkill = defineSkill({
       source: new URL("./references/build-packaging-patterns.md", import.meta.url),
       target: "references/build-packaging-patterns.md",
       title: "build-packaging-patterns.md",
-      summary: "Reference material for tauri-build-packaging.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Tauri 桌面应用构建、bundle 配置、代码签名、公证和自动更新的完整流程与配置参考。",
+      loadWhen: "需要配置 macOS 公证、Windows 签名、updater 或 CI 多平台构建时读取。",
     }),
   ],
 });

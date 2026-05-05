@@ -67,8 +67,8 @@ export const proposalWriterSkill = defineSkill({
       source: new URL("./references/proposal-review.md", import.meta.url),
       target: "references/proposal-review.md",
       title: "proposal-review.md",
-      summary: "Reference material for proposal-writer.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "商业提案评审清单，覆盖结构完整性、价值主张和成交动作检查。",
+      loadWhen: "正式发送商业提案前需要做最终质量评审时读取。",
     }),
   ],
 });

@@ -71,8 +71,8 @@ export const scientificBrainstormingSkill = defineSkill({
       source: new URL("./references/brainstorming_methods.md", import.meta.url),
       target: "references/brainstorming_methods.md",
       title: "brainstorming_methods.md",
-      summary: "Reference material for scientific-brainstorming.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "科学脑暴的多种方法框架，包含跨尺度联想、反转假设、移除约束和技术迁移等技巧。",
+      loadWhen: "需要更结构化的脑暴方法或寻找发散阶段的具体技巧时读取。",
     }),
   ],
 });

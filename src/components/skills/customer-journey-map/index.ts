@@ -47,18 +47,18 @@ export const customerJourneyMapSkill = defineSkill({
       source: new URL("./references/designing-surveys.md", import.meta.url),
       target: "references/designing-surveys.md",
       title: "designing-surveys.md",
-      summary: "Reference material for customer-journey-map.",
+      summary: "用户调研问卷设计方法论：问题类型、量表选择与偏差控制。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要设计用户调研问卷或验证现有问卷设计质量时读取。",
     }),
     defineReference({
       id: "mom-test",
       source: new URL("./references/mom-test.md", import.meta.url),
       target: "references/mom-test.md",
       title: "mom-test.md",
-      summary: "Reference material for customer-journey-map.",
+      summary: "Mom Test 用户访谈法：避免虚假正面反馈、挖掘真实需求的提问技巧。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要开展客户访谈或验证需求假设时读取。",
     }),
   ],
 });

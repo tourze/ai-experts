@@ -48,8 +48,8 @@ export const planReviewSkill = defineSkill({
       source: new URL("./references/project-detection.md", import.meta.url),
       target: "references/project-detection.md",
       title: "project-detection.md",
-      summary: "Reference material for plan-review.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "项目检测方法指南，帮助在审查计划时识别项目类型、技术栈和潜在风险。",
+      loadWhen: "需要根据项目类型判断审查重点或识别项目特有风险时读取。",
     }),
   ],
 });

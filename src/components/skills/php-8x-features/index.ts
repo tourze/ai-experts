@@ -80,8 +80,8 @@ export const phpXFeaturesSkill = defineSkill({
       source: new URL("./references/advanced-types-and-attributes.md", import.meta.url),
       target: "references/advanced-types-and-attributes.md",
       title: "advanced-types-and-attributes.md",
-      summary: "Reference material for php-8x-features.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "PHP 8.x 高级类型系统与属性的详细说明，包括交叉类型、DNF 类型和内置属性。",
+      loadWhen: "需要了解交叉类型、DNF 类型或 `#[Override]` 等高级类型和属性特性时读取。",
     }),
   ],
 });

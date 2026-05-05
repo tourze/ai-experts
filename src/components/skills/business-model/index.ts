@@ -76,27 +76,27 @@ export const businessModelSkill = defineSkill({
       source: new URL("./references/iron-triangle.md", import.meta.url),
       target: "references/iron-triangle.md",
       title: "iron-triangle.md",
-      summary: "Reference material for business-model.",
+      summary: "商业模式铁三角：价值主张、盈利模式与运营能力的评估框架。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要评估商业模式三要素的匹配度或发现薄弱环节时读取。",
     }),
     defineReference({
       id: "report-contract",
       source: new URL("./references/report-contract.md", import.meta.url),
       target: "references/report-contract.md",
       title: "report-contract.md",
-      summary: "Reference material for business-model.",
+      summary: "商业模型分析报告的输出格式与章节约定。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要按标准格式输出商业模型分析报告时读取。",
     }),
     defineReference({
       id: "weizhu-model",
       source: new URL("./references/weizhu-model.md", import.meta.url),
       target: "references/weizhu-model.md",
       title: "weizhu-model.md",
-      summary: "Reference material for business-model.",
+      summary: "魏朱商业模式：定位、业务系统、盈利模式、关键资源、现金流与价值的六要素分析。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要以中国本土商业框架分析或重构商业模式时读取。",
     }),
   ],
 });

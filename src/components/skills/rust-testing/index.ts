@@ -72,8 +72,8 @@ export const rustTestingSkill = defineSkill({
       source: new URL("./references/chapter_05.md", import.meta.url),
       target: "references/chapter_05.md",
       title: "chapter_05.md",
-      summary: "Reference material for rust-testing.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "测试命名规范、文档测试、snapshot 测试（cargo-insta）与集成测试组织模式。",
+      loadWhen: "需要编写 Rust 测试、引入 snapshot 测试或重构脆弱的测试断言时读取。",
     }),
   ],
 });

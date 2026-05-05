@@ -56,8 +56,8 @@ export const memorySafetyPatternsSkill = defineSkill({
       source: new URL("./references/advanced-patterns.md", import.meta.url),
       target: "references/advanced-patterns.md",
       title: "advanced-patterns.md",
-      summary: "Reference material for memory-safety-patterns.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "C/C++ 内存安全的高级模式，包括 RAII 实践、智能指针选择、异常安全保证和所有权传递策略。",
+      loadWhen: "需要深入理解所有权语义、设计资源管理封装或评审复杂生命周期场景时读取。",
     }),
   ],
 });

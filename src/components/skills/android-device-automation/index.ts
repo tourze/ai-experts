@@ -136,8 +136,8 @@ export const androidDeviceAutomationSkill = defineSkill({
       source: new URL("./references/adb-runbook.md", import.meta.url),
       target: "references/adb-runbook.md",
       title: "adb-runbook.md",
-      summary: "Reference material for android-device-automation.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "ADB 命令速查手册：设备管理、应用操作、日志抓取与调试命令。",
+      loadWhen: "需要操作 Android 设备、抓取日志或执行 ADB 调试命令时读取。",
     }),
   ],
 });

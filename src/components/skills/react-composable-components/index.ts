@@ -62,8 +62,8 @@ export const reactComposableComponentsSkill = defineSkill({
       source: new URL("./references/advanced-patterns.md", import.meta.url),
       target: "references/advanced-patterns.md",
       title: "advanced-patterns.md",
-      summary: "Reference material for react-composable-components.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "React 可组合组件高级模式，包括 compound components、render props、插槽设计和 Context 作用域控制。",
+      loadWhen: "需要查阅 compound components、插槽设计或 Context 作用域控制等高级模式时读取。",
     }),
   ],
 });

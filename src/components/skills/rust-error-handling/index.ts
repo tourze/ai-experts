@@ -68,8 +68,8 @@ export const rustErrorHandlingSkill = defineSkill({
       source: new URL("./references/chapter_04.md", import.meta.url),
       target: "references/chapter_04.md",
       title: "chapter_04.md",
-      summary: "Reference material for rust-error-handling.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "thiserror 与 anyhow 的选择决策树、错误类型层级设计与常见反模式对照。",
+      loadWhen: "需要设计库或应用的错误类型、在 thiserror 和 anyhow 间决策或消除 unwrap 时读取。",
     }),
   ],
 });

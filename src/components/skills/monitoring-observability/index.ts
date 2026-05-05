@@ -60,8 +60,8 @@ export const monitoringObservabilitySkill = defineSkill({
       source: new URL("./references/service-monitor.md", import.meta.url),
       target: "references/service-monitor.md",
       title: "service-monitor.md",
-      summary: "Reference material for monitoring-observability.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "服务健康检查的探测配置方法，包括 curl、nc、pg_isready、redis-cli 等具体检测细节和告警阈值建议。",
+      loadWhen: "需要配置具体服务的健康检查探测命令或定义告警阈值时读取。",
     }),
   ],
 });

@@ -50,8 +50,8 @@ export const microsoftDocsSkill = defineSkill({
       source: new URL("./references/code-reference.md", import.meta.url),
       target: "references/code-reference.md",
       title: "code-reference.md",
-      summary: "Reference material for microsoft-docs.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Microsoft SDK 和 API 的代码示例参考，包含常见调用模式和参数配置。",
+      loadWhen: "需要具体的 SDK 调用代码、API 签名核对或查看实际使用示例时读取。",
     }),
   ],
 });

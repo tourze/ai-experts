@@ -56,8 +56,8 @@ export const detoxMobileTestSkill = defineSkill({
       source: new URL("./references/advanced-patterns.md", import.meta.url),
       target: "references/advanced-patterns.md",
       title: "advanced-patterns.md",
-      summary: "Reference material for detox-mobile-test.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Detox 移动端测试的高级模式，包括复杂选择器、自定义匹配器和性能测试方案。",
+      loadWhen: "需要处理复杂的 Detox 测试场景、排查 flaky 测试或实现高级等待策略时读取。",
     }),
   ],
 });

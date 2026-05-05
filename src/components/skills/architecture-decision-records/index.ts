@@ -92,9 +92,9 @@ export const architectureDecisionRecordsSkill = defineSkill({
       source: new URL("./references/contract-templates.md", import.meta.url),
       target: "references/contract-templates.md",
       title: "contract-templates.md",
-      summary: "Reference material for architecture-decision-records.",
+      summary: "ADR 模板、决策记录格式与 Y 语句编写规范。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要创建或审查架构决策记录时读取。",
     }),
   ],
 });

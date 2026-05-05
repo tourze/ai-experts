@@ -59,8 +59,8 @@ export const reactServerComponentsSkill = defineSkill({
       source: new URL("./references/advanced-patterns.md", import.meta.url),
       target: "references/advanced-patterns.md",
       title: "advanced-patterns.md",
-      summary: "Reference material for react-server-components.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "RSC 边界划分、序列化陷阱、Server Actions 鉴权、React.cache 去重与流式渲染等高级模式。",
+      loadWhen: "需要处理 RSC 边界拆分、序列化开销治理、Server Action 安全或数据获取合并时读取。",
     }),
   ],
 });

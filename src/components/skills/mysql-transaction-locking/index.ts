@@ -70,8 +70,8 @@ export const mysqlTransactionLockingSkill = defineSkill({
       source: new URL("./references/locking-patterns.md", import.meta.url),
       target: "references/locking-patterns.md",
       title: "locking-patterns.md",
-      summary: "Reference material for mysql-transaction-locking.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "MySQL InnoDB 锁模式的详细说明和各种锁定场景的模式分析。",
+      loadWhen: "需要理解 InnoDB 锁日志、分析死锁原因或选择正确的锁策略时读取。",
     }),
   ],
 });

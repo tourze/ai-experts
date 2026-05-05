@@ -57,8 +57,8 @@ export const planningUnderUncertaintySkill = defineSkill({
       source: new URL("./references/guest-insights.md", import.meta.url),
       target: "references/guest-insights.md",
       title: "guest-insights.md",
-      summary: "Reference material for planning-under-uncertainty.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Guest 洞察与经验参考，提供不确定性下规划的实际案例和决策经验。",
+      loadWhen: "需要补充不确定性规划的经验参考和实际案例时读取。",
     }),
   ],
 });

@@ -82,45 +82,45 @@ export const codeReviewSkill = defineSkill({
       source: new URL("./references/brutal-mode.md", import.meta.url),
       target: "references/brutal-mode.md",
       title: "brutal-mode.md",
-      summary: "Reference material for code-review.",
+      summary: "Code Review Brutal Mode 严格评审模式操作指南与检查清单。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要执行最高强度的代码评审或发现深层次设计问题时读取。",
     }),
     defineReference({
       id: "dimensions",
       source: new URL("./references/dimensions.md", import.meta.url),
       target: "references/dimensions.md",
       title: "dimensions.md",
-      summary: "Reference material for code-review.",
+      summary: "代码评审维度定义：正确性、安全性、性能、可维护性与可读性的评分标准。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要确定评审覆盖的维度或对各维度评分时读取。",
     }),
     defineReference({
       id: "discipline-guard",
       source: new URL("./references/discipline-guard.md", import.meta.url),
       target: "references/discipline-guard.md",
       title: "discipline-guard.md",
-      summary: "Reference material for code-review.",
+      summary: "评审纪律守卫：常见偷懒行为、跳步借口与纠正方法。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要确保评审过程不偷工减料或发现评审人跳步时读取。",
     }),
     defineReference({
       id: "health-score",
       source: new URL("./references/health-score.md", import.meta.url),
       target: "references/health-score.md",
       title: "health-score.md",
-      summary: "Reference material for code-review.",
+      summary: "代码健康度评分算法：从多维度到综合分数的计算逻辑。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要计算或解释代码健康度综合分数时读取。",
     }),
     defineReference({
       id: "receiving-code-review",
       source: new URL("./references/receiving-code-review.md", import.meta.url),
       target: "references/receiving-code-review.md",
       title: "receiving-code-review.md",
-      summary: "Reference material for code-review.",
+      summary: "接收代码评审时的行为准则：如何面对批评、避免防御心态。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "用户表现出对评审结果的抗拒或防御心态时读取。",
     }),
   ],
 });

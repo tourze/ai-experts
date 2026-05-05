@@ -51,8 +51,8 @@ export const rustProcMacroPatternsSkill = defineSkill({
       source: new URL("./references/patterns.md", import.meta.url),
       target: "references/patterns.md",
       title: "patterns.md",
-      summary: "Reference material for rust-proc-macro-patterns.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "syn/quote 使用模式、Span 错误定位、trybuild 测试与辅助 crate 拆分策略。",
+      loadWhen: "需要开发 derive/attribute 过程宏、排查宏编译错误或编写 trybuild 测试时读取。",
     }),
   ],
 });

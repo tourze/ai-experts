@@ -60,8 +60,8 @@ export const leadResearchAssistantSkill = defineSkill({
       source: new URL("./references/account-research-guide.md", import.meta.url),
       target: "references/account-research-guide.md",
       title: "account-research-guide.md",
-      summary: "Reference material for lead-research-assistant.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "客户账户调研的完整框架和操作步骤，涵盖公司背景、联系人策略和买家信号挖掘。",
+      loadWhen: "需要深入了解单个目标公司的背景、组织结构或寻找具体联系人时读取。",
     }),
   ],
 });

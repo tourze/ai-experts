@@ -55,9 +55,9 @@ export const competitiveIntelligenceSkill = defineSkill({
       source: new URL("./references/competitive-teardown.md", import.meta.url),
       target: "references/competitive-teardown.md",
       title: "competitive-teardown.md",
-      summary: "Reference material for competitive-intelligence.",
+      summary: "竞品拆解方法论：从功能、定价、用户体验到市场定位的系统分析框架。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要深入拆解单个竞品的产品策略时读取。",
     }),
     defineReference({
       id: "multi-framework-output-template",
@@ -67,18 +67,18 @@ export const competitiveIntelligenceSkill = defineSkill({
       ),
       target: "references/multi-framework-output-template.md",
       title: "multi-framework-output-template.md",
-      summary: "Reference material for competitive-intelligence.",
+      summary: "多框架融合输出模板：Porter/BCG/SWOT 等多框架交叉分析的输出格式。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要整合多种分析框架生成综合竞争情报报告时读取。",
     }),
     defineReference({
       id: "obviously-awesome",
       source: new URL("./references/obviously-awesome.md", import.meta.url),
       target: "references/obviously-awesome.md",
       title: "obviously-awesome.md",
-      summary: "Reference material for competitive-intelligence.",
+      summary: "Obviously Awesome 定位方法论：市场类别选择、竞争对比与差异化定位。",
       loadWhen:
-        "Read when the skill body points to this reference or the task needs the detailed material.",
+        "需要重新定位产品或确定目标市场类别时读取。",
     }),
   ],
 });

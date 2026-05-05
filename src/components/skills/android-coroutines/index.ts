@@ -34,8 +34,8 @@ export const androidCoroutinesSkill = defineSkill({
       source: new URL("./references/advanced-patterns.md", import.meta.url),
       target: "references/advanced-patterns.md",
       title: "advanced-patterns.md",
-      summary: "Reference material for android-coroutines.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "Android Coroutines 高级模式：自定义 Flow、Channel、协程异常处理与生命周期集成。",
+      loadWhen: "需要实现复杂协程编排或排查协程内存泄漏时读取。",
     }),
   ],
 });

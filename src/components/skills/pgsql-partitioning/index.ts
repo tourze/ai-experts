@@ -72,8 +72,8 @@ export const pgsqlPartitioningSkill = defineSkill({
       source: new URL("./references/code-patterns.md", import.meta.url),
       target: "references/code-patterns.md",
       title: "code-patterns.md",
-      summary: "Reference material for pgsql-partitioning.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      summary: "PostgreSQL 声明式分区的代码模式示例，包括 RANGE、LIST、HASH 分区和分区管理的完整实现。",
+      loadWhen: "需要参考具体分区实现代码、编写分区管理脚本或验证分区方案正确性时读取。",
     }),
   ],
 });
