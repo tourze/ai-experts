@@ -9,8 +9,8 @@
   "scripts": {
     "test": "npm run test:components",
     "test:components": "node --import tsx/esm --test tests/component-build.test.mjs",
-    "build:components": "node scripts/build-components.mjs",
-    "check:components": "node scripts/build-components.mjs --check"
+    "build:components": "tsx scripts/build-components.ts",
+    "check:components": "tsx scripts/build-components.ts --check"
   },
   "repository": {
     "type": "git",

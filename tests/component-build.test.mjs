@@ -133,9 +133,14 @@ function assertSingleDispatcherHookGroups(config, label) {
 test("component build emits claude and codex component surfaces", () => {
   const tmp = mkdtempSync(join(tmpdir(), "ai-experts-component-build-"));
   try {
+    const packageJson = JSON.parse(readFileSync(join(repoRoot, "package.json"), "utf-8"));
+    assert.equal(existsSync(join(repoRoot, "scripts/build-components.mjs")), false);
+    assert.match(packageJson.scripts["build:components"], /scripts\/build-components\.ts/);
+    assert.doesNotMatch(packageJson.scripts["build:components"], /build-components\.mjs/);
+
     execFileSync(
       process.execPath,
-      ["scripts/build-components.mjs", "--out-dir", tmp],
+      ["--import", "tsx/esm", "scripts/build-components.ts", "--out-dir", tmp],
       { cwd: repoRoot, encoding: "utf-8" },
     );
 

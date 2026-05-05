@@ -1,0 +1,279 @@
+import { rmSync } from "node:fs";
+import { isAbsolute, join, relative } from "node:path";
+import * as esbuild from "esbuild";
+import {
+  ensureDir,
+  Platform,
+  renderHookMatcher,
+  stripBundledSourcePathComments,
+  toAbsolutePath,
+  writeText,
+} from "./core.ts";
+
+function relativeImportSpecifier(fromDir, targetPath) {
+  if (isAbsolute(targetPath)) return targetPath.split("\\").join("/");
+  const specifier = relative(fromDir, targetPath).split("\\").join("/");
+  return specifier.startsWith(".") ? specifier : `./${specifier}`;
+}
+
+export async function compileHookModules(hooks, hooksRoot, platform) {
+  ensureDir(hooksRoot);
+  const compiled = hooks
+    .map((hook, index) => ({
+      id: hook.id,
+      event: hook.event,
+      matcher: renderHookMatcher(hook),
+      order: hook.order ?? 100,
+      payloadMode: hook.payloadMode ?? "normalized",
+      description: hook.description,
+      runnerName: `runHook${index}`,
+      entryPath: toAbsolutePath(hook.entry),
+    }))
+    .sort((a, b) => a.order - b.order || a.id.localeCompare(b.id));
+  const manifestHooks = compiled.map(({ runnerName, entryPath, ...hook }) => hook);
+  writeText(join(hooksRoot, "manifest.json"), JSON.stringify({ hooks: manifestHooks }, null, 2) + "\n");
+
+  const dispatcherEntry = join(hooksRoot, ".dispatch-entry.mjs");
+  const dispatcherOutfile = join(hooksRoot, "dispatch.mjs");
+  writeText(dispatcherEntry, renderDispatcher(compiled, platform, hooksRoot));
+  try {
+    await esbuild.build({
+      entryPoints: [dispatcherEntry],
+      outfile: dispatcherOutfile,
+      bundle: true,
+      platform: "node",
+      format: "esm",
+      target: "node20",
+      logLevel: "silent",
+    });
+    stripBundledSourcePathComments(dispatcherOutfile);
+  } finally {
+    rmSync(dispatcherEntry, { force: true });
+  }
+  return manifestHooks;
+}
+
+function renderDispatcher(compiledHooks, platform, hooksRoot) {
+  const imports = compiledHooks.map((hook) =>
+    `import { run as ${hook.runnerName} } from ${JSON.stringify(relativeImportSpecifier(hooksRoot, hook.entryPath))};`
+  );
+  const runners = compiledHooks.map((hook) => `  [${JSON.stringify(hook.id)}, ${hook.runnerName}],`);
+  const runtimeHooks = compiledHooks.map(({ runnerName, entryPath, ...hook }) => hook);
+  return `#!/usr/bin/env node
+${imports.join("\n")}
+
+const platform = ${JSON.stringify(platform)};
+const hooks = ${JSON.stringify(runtimeHooks, null, 2)};
+const hookRunners = new Map([
+${runners.join("\n")}
+]);
+
+function parseArgs(argv) {
+  const args = {};
+  for (let index = 0; index < argv.length; index += 1) {
+    if (argv[index] === "--event") args.event = argv[++index];
+    else if (argv[index] === "--platform") args.platform = argv[++index];
+  }
+  return args;
+}
+
+async function readStdin() {
+  const chunks = [];
+  for await (const chunk of process.stdin) chunks.push(chunk);
+  const text = Buffer.concat(chunks).toString("utf8").trim();
+  return text ? JSON.parse(text) : {};
+}
+
+function fileTargetsFromPatch(command) {
+  const targets = [];
+  const patterns = [
+    /^\\*\\*\\* (?:Update|Delete) File: (.+)$/gm,
+    /^\\*\\*\\* Add File: (.+)$/gm,
+    /^--- a\\/(.+)$/gm,
+    /^\\+\\+\\+ b\\/(.+)$/gm,
+  ];
+  for (const pattern of patterns) {
+    for (const match of command.matchAll(pattern)) targets.push(match[1].trim());
+  }
+  return [...new Set(targets.filter(Boolean))];
+}
+
+function normalize(raw, event) {
+  const toolInput = raw.tool_input ?? raw.toolInput ?? raw.tool?.input;
+  const toolName = raw.tool_name ?? raw.toolName ?? raw.tool?.name;
+  const command = typeof toolInput?.command === "string" ? toolInput.command : "";
+  const filePath = toolInput?.file_path ?? toolInput?.filePath ?? toolInput?.path;
+  const fileTargets = [];
+  if (typeof filePath === "string") fileTargets.push(filePath);
+  if (command) fileTargets.push(...fileTargetsFromPatch(command));
+  return {
+    platform,
+    event,
+    cwd: raw.cwd ?? process.cwd(),
+    sessionId: raw.session_id,
+    transcriptPath: raw.transcript_path ?? null,
+    permissionMode: raw.permission_mode,
+    turnId: raw.turn_id,
+    prompt: raw.prompt ?? raw.user_prompt ?? raw.message,
+    agent: { id: raw.agent_id, type: raw.agent_type },
+    tool: {
+      name: toolName,
+      input: toolInput,
+      response: raw.tool_response ?? raw.toolResponse ?? raw.toolResult ?? raw.tool?.response,
+      fileTargets: [...new Set(fileTargets)],
+    },
+    raw,
+  };
+}
+
+function toLegacyClaudePayload(payload) {
+  return {
+    ...payload.raw,
+    hook_event_name: payload.event,
+    cwd: payload.cwd,
+    session_id: payload.sessionId,
+    transcript_path: payload.transcriptPath,
+    permission_mode: payload.permissionMode,
+    prompt: payload.prompt,
+    tool_name: payload.tool?.name,
+    tool_input: payload.tool?.input,
+    tool_response: payload.tool?.response,
+  };
+}
+
+function normalizeHookResult(result) {
+  if (!result) return null;
+  if (result.kind) return result;
+  if (result.decision === "block") {
+    return { kind: "deny", message: result.reason || result.message || "Blocked by hook" };
+  }
+  const additionalContext = result.hookSpecificOutput?.additionalContext || result.additionalContext;
+  if (additionalContext) return { kind: "add-context", message: additionalContext };
+  if (result.decision === "context") {
+    return { kind: "add-context", message: result.reason || result.message || "" };
+  }
+  if (result.reason || result.message) return { kind: "report", message: result.reason || result.message };
+  return null;
+}
+
+function matcherMatchesTool(matcher, toolName) {
+  if (!matcher) return true;
+  if (typeof toolName !== "string" || toolName.length === 0) return false;
+  try {
+    return new RegExp("^(?:" + matcher + ")$").test(toolName);
+  } catch {
+    return matcher.split("|").includes(toolName);
+  }
+}
+
+function hookMatchesPayload(hook, payload) {
+  return matcherMatchesTool(hook.matcher, payload.tool?.name);
+}
+
+function mergeResults(results, event) {
+  const deny = results.find((result) => result.kind === "deny");
+  if (deny) return { decision: "block", reason: deny.message };
+  const report = results.find((result) => result.kind === "report");
+  const contexts = results
+    .filter((result) => result.kind === "add-context")
+    .map((result) => result.message);
+  if (report && (event === "PostToolUse" || event === "Stop")) {
+    const merged = contexts.length > 0 ? [report.message, ...contexts].join("\\n\\n") : report.message;
+    return {
+      decision: "block",
+      reason: report.message,
+      hookSpecificOutput: { hookEventName: event, additionalContext: merged },
+    };
+  }
+  if (report) contexts.push(report.message);
+  if (contexts.length > 0) {
+    return {
+      hookSpecificOutput: { hookEventName: event, additionalContext: contexts.join("\\n\\n") },
+    };
+  }
+  return null;
+}
+
+async function main() {
+  const args = parseArgs(process.argv.slice(2));
+  const event = args.event;
+  if (!event) throw new Error("Missing --event");
+  const raw = await readStdin();
+  const payload = normalize(raw, event);
+  const results = [];
+
+  for (const hook of hooks.filter((item) => item.event === event && hookMatchesPayload(item, payload))) {
+    const run = hookRunners.get(hook.id);
+    if (typeof run !== "function") continue;
+    const hookPayload = hook.payloadMode === "claude-raw" ? toLegacyClaudePayload(payload) : payload;
+    const result = normalizeHookResult(await run(hookPayload));
+    if (result && result.kind !== "allow" && result.kind !== "audit") results.push(result);
+  }
+
+  const output = mergeResults(results, event);
+  if (output) process.stdout.write(JSON.stringify(output, null, 2) + "\\n");
+}
+
+main().catch((error) => {
+  console.error(error.stack || error.message || String(error));
+  process.exit(1);
+});
+`;
+}
+
+export function renderHookConfig(hooks, platform) {
+  const hooksByEvent = {};
+  const commandHome = platform === Platform.Claude
+    ? '${AI_EXPERTS_CLAUDE_HOME:-$HOME/.claude}'
+    : '${AI_EXPERTS_CODEX_HOME:-$HOME/.codex}';
+  const groups = [];
+  const groupsByKey = new Map();
+  for (const hook of hooks) {
+    const matcher = renderHookMatcher(hook);
+    const command = `node "${commandHome}/hooks/dispatch.mjs" --platform ${platform} --event ${hook.event}`;
+    const key = `${hook.event}\0${matcher}`;
+    let group = groupsByKey.get(key);
+    if (!group) {
+      group = {
+        event: hook.event,
+        matcher,
+        command,
+        timeout: 10,
+        hookCount: 0,
+        statusMessages: new Set(),
+      };
+      groupsByKey.set(key, group);
+      groups.push(group);
+    }
+    group.timeout = Math.max(group.timeout, hook.timeoutSeconds ?? 10);
+    group.hookCount += 1;
+    if (hook.statusMessage) group.statusMessages.add(hook.statusMessage);
+  }
+
+  for (const group of groups) {
+    const commandHook = {
+      type: "command",
+      command: group.command,
+      timeout: group.timeout,
+    };
+    if (platform === Platform.Codex && group.hookCount === 1 && group.statusMessages.size === 1) {
+      commandHook.statusMessage = [...group.statusMessages][0];
+    }
+    const hookGroup = { hooks: [commandHook] };
+    if (group.matcher) hookGroup.matcher = group.matcher;
+    hooksByEvent[group.event] ??= [];
+    hooksByEvent[group.event].push(hookGroup);
+  }
+  return { hooks: hooksByEvent };
+}
+
+export function renderCodexConfig() {
+  return [
+    "[features]",
+    "codex_hooks = true",
+    "",
+    "[agents]",
+    "max_depth = 1",
+    "",
+  ].join("\n");
+}
