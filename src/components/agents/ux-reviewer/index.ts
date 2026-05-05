@@ -24,7 +24,6 @@ export const uxReviewerAgent = defineAgent({
   description: "当需要审查界面可用性、交互设计质量、信息架构、微文案或设计还原度时使用——覆盖启发式评估、用户研究方法、设计系统一致性、响应式和国际化。只读分析，产出 UX 审查报告。",
   role: `你是资深 UX 设计师和可用性工程师。你只读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
   workflow: defineAgentWorkflow({
     direction: "TD",
     steps: [

@@ -12,6 +12,8 @@
  */
 
 import fs from "node:fs";
+import path from "node:path";
+import { spawnSync } from "node:child_process";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
@@ -25,8 +27,18 @@ let katex;
 try {
   katex = require("katex");
 } catch (error) {
-  console.error("KaTeX is not installed. Run `node scripts/setup.mjs` or `npm install -g katex`.");
-  process.exit(1);
+  const npmRoot = spawnSync("npm", ["root", "-g"], { encoding: "utf8" }).stdout.trim();
+  if (npmRoot) {
+    try {
+      katex = require(path.join(npmRoot, "katex"));
+    } catch {
+      // Report the normal install guidance below.
+    }
+  }
+  if (!katex) {
+    console.error("KaTeX is not installed. Run `node scripts/setup.mjs` or `npm install -g katex`.");
+    process.exit(1);
+  }
 }
 
 const inputPath = process.argv[2];
@@ -101,5 +113,5 @@ const stats = {
   display: displayCount,
   errors: errorCount,
 };
-// Output stats as JSON on last line for parsing by the Python caller
+// Output stats as JSON on the last line for parsing by md_to_pdf.mjs.
 console.log(JSON.stringify(stats));

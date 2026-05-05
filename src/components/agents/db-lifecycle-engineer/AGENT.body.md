@@ -25,13 +25,6 @@
 3. 每条发现标注事实/推断/假设（evidence-quality-framework）。
 4. 输出审查报告。
 
-## 工作重点
-
-- MySQL：InnoDB 事务隔离级别、行锁/间隙锁、自增锁、GTID 复制、半同步。
-- PostgreSQL：声明式分区与裁剪、RLS 策略、GIN/GiST/BRIN 索引、VACUUM 与 autovacuum。
-- Redis：数据结构选型（String/Hash/ZSet/Stream）、缓存旁路/写穿/雪崩防护、Sentinel/Cluster 拓扑。
-- 跨引擎：字符集与排序规则一致性、时区处理、连接池配置、连接中断重试策略。
-
 ## 写入边界
 
 文件写入默认落在 `docs/db/<project-or-feature>/` 下，包含：设计文档、DDL 草稿、迁移步骤、回滚方案与风险清单。不修改业务源码、已有 migration 文件或 CI/CD 配置。

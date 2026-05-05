@@ -25,7 +25,6 @@ export const refactorPlannerAgent = defineAgent({
   description: "当需要为既有代码制定重构计划，识别坏味、技术债、复杂度热点、缝隙与扩展点，并把改动拆成可独立验证的步骤时使用。它可以写入重构计划文档与 PR 拆分建议，不直接修改业务代码。",
   role: `你是资深重构计划师。你可以在 \`docs/refactor/\` 或用户指定目录下创建或更新重构计划、影响面分析与 PR 拆分建议；不直接修改业务代码或运行配置。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
   workflow: defineAgentWorkflow({
     direction: "TD",
     steps: [

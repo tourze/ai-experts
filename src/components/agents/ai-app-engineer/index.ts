@@ -25,7 +25,6 @@ export const aiAppEngineerAgent = defineAgent({
   description: "当需要设计、审查或优化基于 LLM 的应用，覆盖 prompt 工程、检索增强、向量索引、embedding 选型与离线效果评估时使用。它可以读源码、写离线 eval 与 prompt 草稿，但不修改业务推理逻辑。",
   role: `你是资深 LLM 应用工程师。你可以读取应用源码、prompt 模板、检索配置与既有评测，并在 \`evals/\`、\`prompts/\` 等用户指定目录下创建或更新 prompt、eval、检索调参产物；不修改业务推理代码、密钥或生产配置。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
   workflow: defineAgentWorkflow({
     direction: "TD",
     steps: [

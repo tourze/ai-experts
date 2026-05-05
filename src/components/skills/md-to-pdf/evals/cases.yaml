@@ -3,7 +3,7 @@ cases:
     prompt: "Convert this markdown file to PDF: report.md"
     fixtures: []
     rubric:
-      - "invokes md_to_pdf.py or equivalent conversion pipeline"
+      - "invokes md_to_pdf.mjs or equivalent conversion pipeline"
       - "produces a .pdf output file"
       - "uses pandoc for markdown-to-HTML conversion"
       - "uses Playwright/Chromium for HTML-to-PDF"

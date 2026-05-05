@@ -3,6 +3,8 @@
 If you need to fill out a PDF form, first check to see if the PDF has fillable form fields. Run this script from this file's directory:
  `node scripts/check_fillable_fields.mjs <file.pdf>`, and depending on the result go to either the "Fillable fields" or "Non-fillable fields" and follow those instructions.
 
+Node-based image helpers require `@pdfme/converter` and `sharp` to be resolvable by Node.js; install them with `npm install -g @pdfme/converter sharp` if the scripts report missing modules.
+
 # Fillable fields
 If the PDF has fillable form fields:
 - Run this script from this file's directory: `python scripts/extract_form_field_info.py <input.pdf> <field_info.json>`. It will create a JSON file with a list of fields in this format:
@@ -51,7 +53,7 @@ If the PDF has fillable form fields:
 ]
 ```
 - Convert the PDF to PNGs (one image for each page) with this script (run from this file's directory):
-`python scripts/convert_pdf_to_images.py <file.pdf> <output_directory>`
+`node scripts/convert_pdf_to_images.mjs <file.pdf> <output_directory>`
 Then analyze the images to determine the purpose of each form field (make sure to convert the bounding box PDF coordinates to image coordinates).
 - Create a `field_values.json` file in this format with the values to be entered for each field:
 ```
@@ -175,7 +177,7 @@ Use this when the PDF is scanned/image-based and structure extraction found no u
 
 ### B.1: Convert PDF to Images
 
-`python scripts/convert_pdf_to_images.py <input.pdf> <images_dir/>`
+`node scripts/convert_pdf_to_images.mjs <input.pdf> <images_dir/>`
 
 ### B.2: Initial Field Identification
 
@@ -286,7 +288,7 @@ The fill script auto-detects the coordinate system and handles conversion:
 ## Step 4: Verify Output
 
 Convert the filled PDF to images and verify text placement:
-`python scripts/convert_pdf_to_images.py <output.pdf> <verify_images/>`
+`node scripts/convert_pdf_to_images.mjs <output.pdf> <verify_images/>`
 
 If text is mispositioned:
 - **Approach A**: Check that you're using PDF coordinates from form_structure.json with `pdf_width`/`pdf_height`

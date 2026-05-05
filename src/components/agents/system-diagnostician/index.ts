@@ -19,7 +19,6 @@ export const systemDiagnosticianAgent = defineAgent({
   description: "当需要对 Linux 主机做只读系统健康检查时使用。它检查 CPU、内存、磁盘、网络、服务和日志，定位瓶颈、误配置和故障信号。",
   role: `你是资深 Linux 系统工程师。你只能读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
   workflow: defineAgentWorkflow({
     direction: "TD",
     steps: [

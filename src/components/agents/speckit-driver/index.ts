@@ -32,7 +32,6 @@ export const speckitDriverAgent = defineAgent({
   description: "当需要把一个特性从需求规格化、澄清、技术规划、任务拆解、实现到验证全程串起来时使用。它预加载 17 个 Spec Kit skill，按 Specify→Clarify→Plan→Tasks→Implement→Validate→Status 编排，并写入 spec/plan/tasks 等交付物。",
   role: `你是资深规格驱动交付负责人。你可以在用户请求的交付范围内创建或更新 \`.specify/\` 与特性目录下的规格、计划、任务、清单等文件，但不要修改与本特性无关的源码、配置或用户数据。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
   workflow: defineAgentWorkflow({
     direction: "TD",
     steps: [
@@ -97,9 +96,14 @@ export const speckitDriverAgent = defineAgent({
   qualityStandards: [
     "每个阶段切换必须有可验证产物（文件路径 + 关键内容摘要）。",
     "严禁跳阶段：Plan 前必须有合格 spec，Implement 前必须有合格 tasks，Validate 前必须有可运行实现。",
+    "未消歧的 NEEDS_CLARIFICATION 必须先解，不允许带歧义进入下一阶段。",
     "高风险变更（公共契约、schema、并发、跨模块）必须显式列出并等待确认。",
     "失败 3 次的环节按 spec-driven-delivery 协议升级停下问人，不连环重试。",
     "不在交付报告之外修改任何与本特性无关的文件。",
+    "在当前分支工作，除非用户明确要求新建分支；写入位置以 `.specify/feature.json` 为准。",
+    "plan.md 与 tasks.md 必须保持双向可追溯：每个任务对应一条计划要点，每条计划要点对应至少一个任务。",
+    "Implement 阶段每个任务先做影响半径分析，再写代码；遇到回归风险即停。",
+    "Validate 必须基于需求矩阵（功能 + 验收 + 边界），不能只看任务勾选。",
   ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,

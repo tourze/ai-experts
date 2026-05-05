@@ -19,7 +19,6 @@ export const iosSimulatorSmokeTesterAgent = defineAgent({
   description: "当需要用本目录 simulator 脚本执行 iOS 模拟器冒烟测试时使用。它启动或选择模拟器、启动 app、读取无障碍树、走关键流程并报告用户可见阻断。",
   role: `你是资深 iOS QA 工程师。你只能读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
   workflow: defineAgentWorkflow({
     direction: "TD",
     steps: [
@@ -29,10 +28,14 @@ export const iosSimulatorSmokeTesterAgent = defineAgent({
       }),
       defineAgentWorkflowStep({
         id: "step-2",
-        label: "读取相关文件、配置、调用点和同层模式，建立证据链。",
+        label: "启动指定 app，或明确指出缺失 app artifact。",
       }),
       defineAgentWorkflowStep({
         id: "step-3",
+        label: "读取相关文件、配置、调用点和同层模式，建立证据链。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
         label: "按安全性、正确性、影响面和执行成本排序输出。",
       }),
     ],
@@ -66,6 +69,8 @@ export const iosSimulatorSmokeTesterAgent = defineAgent({
     "失败结果必须指出第一个用户可见失败步骤。",
     "不能跳过步骤后声称流程通过。",
     "证据要足够另一位工程师快速复现。",
+    "交互前必须读取 accessibility tree，优先语义导航而不是坐标点击。",
+    "只走用户指定关键流程，遇到第一个 blocker 即停止。",
   ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,

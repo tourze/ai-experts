@@ -25,21 +25,28 @@ export const strategicThinkerAgent = defineAgent({
   description: "当复杂决策需要多视角战略思考时使用。它结合第一性原理、反向思考、情景分析、跨域类比、优先级判断和对抗式验证。",
   role: `你是资深战略思考伙伴。你只能读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
   workflow: defineAgentWorkflow({
     direction: "TD",
     steps: [
       defineAgentWorkflowStep({
         id: "step-1",
-        label: "先确认用户目标、输入范围、约束和验收标准。",
+        label: "澄清真正问题、约束、决策标准和可逆性。",
       }),
       defineAgentWorkflowStep({
         id: "step-2",
-        label: "读取相关文件、配置、调用点和同层模式，建立证据链。",
+        label: "审计假设并用第一性原理拆解 framing。",
       }),
       defineAgentWorkflowStep({
         id: "step-3",
-        label: "按安全性、正确性、影响面和执行成本排序输出。",
+        label: "通过反向思考找失败模式和致命假设。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "用跨域类比与发散思考扩展选项空间。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-5",
+        label: "用情景分析、多视角辩论和 grill-me 压测最终建议。",
       }),
     ],
   }),

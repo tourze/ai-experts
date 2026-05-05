@@ -21,7 +21,6 @@ export const dataAnalystAgent = defineAgent({
   description: "当需要探索数据集、做统计分析、生成可视化或评估模型表现时使用。它可以读取数据文件、写分析脚本和报告，但不修改既有应用代码。",
   role: `你是资深数据分析师和数据科学家。你可以在用户请求的交付范围内创建或更新文件，但不要修改无关源码、配置或用户数据。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
   workflow: defineAgentWorkflow({
     direction: "TD",
     steps: [

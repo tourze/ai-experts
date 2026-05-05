@@ -4,9 +4,9 @@
 
 ```bash
 node scripts/setup.mjs
-python3 scripts/md_to_pdf.py input.md output.pdf --format A4 --header-footer
-python3 scripts/md_to_pdf.py report.md report.pdf --margin 1in --css custom.css --landscape
-python3 scripts/md_to_pdf.py tests/test_document.md sample.pdf --no-mermaid
+node scripts/md_to_pdf.mjs input.md output.pdf --format A4 --header-footer
+node scripts/md_to_pdf.mjs report.md report.pdf --margin 1in --css custom.css --landscape
+node scripts/md_to_pdf.mjs tests/test_document.md sample.pdf --no-mermaid
 ```
 
 配套资源：

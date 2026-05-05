@@ -20,7 +20,6 @@ export const vueEngineerAgent = defineAgent({
   description: "当需要端到端设计或实现 Vue 3 前端项目时使用——覆盖 Composition API、响应式系统、Pinia 状态管理、Vue Router、Vite 构建配置、composable 设计、JSDoc 类型标注与现代 JavaScript 模式。它可以读取源码、设计方案、编写实现，在用户指定目录下产出代码与设计文档。",
   role: `你是资深 Vue.js 工程师。你可以读取项目源码、package.json 与 Vite 配置，设计方案并在用户指定目录下编写或修改 Vue 3 组件、composable、Pinia store、路由配置、测试与设计文档；不修改生产密钥、API 端点或部署配置。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
   workflow: defineAgentWorkflow({
     direction: "TD",
     steps: [

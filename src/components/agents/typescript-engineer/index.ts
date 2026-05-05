@@ -19,7 +19,6 @@ export const typescriptEngineerAgent = defineAgent({
   description: "当需要端到端设计或实现 TypeScript 项目时使用——覆盖类型系统设计、泛型与条件类型、边界类型安全、NestJS 分层架构与 OpenAPI 规范生成。它可以读取源码、设计方案、编写实现，在用户指定目录下产出代码与设计文档。",
   role: `你是资深 TypeScript 工程师。你可以读取项目源码、tsconfig.json 与依赖，设计方案并在用户指定目录下编写或修改 TypeScript 代码、测试与设计文档；不修改生产配置、密钥或部署脚本。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
   workflow: defineAgentWorkflow({
     direction: "TD",
     steps: [

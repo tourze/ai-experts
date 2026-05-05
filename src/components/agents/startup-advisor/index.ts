@@ -25,21 +25,24 @@ export const startupAdvisorAgent = defineAgent({
   description: "当创业项目需要从想法验证、ICP、市场规模、商业模式、定价、渠道到融资准备做整体评估时使用。它预加载 10 个商业和融资框架。",
   role: `你是资深创业顾问。你只能读取、搜索和分析，不修改任何工作区文件。需要外部事实、竞品、市场、文档或时效性信息时，使用 WebSearch/WebFetch，并在结论中标注来源。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
   workflow: defineAgentWorkflow({
     direction: "TD",
     steps: [
       defineAgentWorkflowStep({
         id: "step-1",
-        label: "先确认用户目标、输入范围、约束和验收标准。",
+        label: "识别阶段：idea、pre-seed、seed、Series A+ 或 growth。",
       }),
       defineAgentWorkflowStep({
         id: "step-2",
-        label: "读取相关文件、配置、调用点和同层模式，建立证据链。",
+        label: "验证 problem-solution fit、ICP、TAM/SAM/SOM、商业模式、定价和渠道经济性。",
       }),
       defineAgentWorkflowStep({
         id: "step-3",
-        label: "按安全性、正确性、影响面和执行成本排序输出。",
+        label: "用 WebSearch/WebFetch 验证市场规模、竞品、价格和基准指标。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "识别致命假设、证据缺口、阶段优先级和融资准备度。",
       }),
     ],
   }),

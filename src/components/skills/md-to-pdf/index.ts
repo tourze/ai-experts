@@ -75,11 +75,11 @@ export const mdToPdfSkill = defineSkill({
     }),
     defineSkillScript({
       id: "md-to-pdf",
-      entry: new URL("./scripts/md_to_pdf.py", import.meta.url),
-      target: "scripts/md_to_pdf.py",
-      runtime: "python3",
+      entry: new URL("./scripts/md_to_pdf.ts", import.meta.url),
+      target: "scripts/md_to_pdf.mjs",
+      runtime: "node",
       bundle: false,
-      description: "Script md_to_pdf.py.",
+      description: "Script md_to_pdf.mjs.",
     }),
     defineSkillScript({
       id: "setup",

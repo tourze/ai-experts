@@ -22,7 +22,6 @@ export const socialGrowthPlannerAgent = defineAgent({
   description: "当需要设计社交媒体增长策略时使用。它综合个人品牌、平台内容、粉丝运营、私域、变现和平台安全，输出行动计划。",
   role: `你是资深社交媒体策略师。你只能读取、搜索和分析，不修改任何工作区文件。需要外部事实、竞品、市场、文档或时效性信息时，使用 WebSearch/WebFetch，并在结论中标注来源。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
   workflow: defineAgentWorkflow({
     direction: "TD",
     steps: [
@@ -79,6 +78,7 @@ export const socialGrowthPlannerAgent = defineAgent({
     "内容格式要给具体例子。",
     "变现建议要匹配粉丝量和阶段。",
     "所有内容建议都要检查平台安全风险。",
+    "按目标选择 3-5 个框架，不机械套用全部框架。",
   ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.WebSearch, KnownTool.WebFetch],
   sandbox: AgentSandbox.ReadOnly,

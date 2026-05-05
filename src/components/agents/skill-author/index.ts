@@ -23,7 +23,6 @@ export const skillAuthorAgent = defineAgent({
   description: "当需要创建新 skill、根据参考 skill 演化目标 skill、跑 with-skill vs baseline 基准测试、或发现并集成外部 skill 时使用。它可以写入新的 SKILL.md、references、scripts、evals 等交付物，但不修改无关代码。",
   role: `你是资深 Skill 作者。你可以在用户请求的交付范围内创建或更新 \`src/components/skills/<skill>/\` 下的 SKILL.md、references、scripts、assets、evals 与对应 README 索引项，但不要修改无关源码、配置或其他 skill。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
   workflow: defineAgentWorkflow({
     direction: "TD",
     steps: [
@@ -99,6 +98,9 @@ export const skillAuthorAgent = defineAgent({
     "任何写入组件索引的改动必须保持 skill 名字典序、无重复行。",
     "演化型修改保留 baseline 对照实证，不允许仅凭直觉宣称更好。",
     "不修改与本次 skill 无关的文件；安装脚本、hooks、其他 skill 一律保持原状。",
+    "单一职责：一个 skill 解决一类清晰可验证的任务，不要混入无关方法论。",
+    "知识深度优先于篇幅：能用 references/ 沉淀的厚资料不要堆进 SKILL.md。",
+    "脚手架资产（scripts/、references/、assets/、evals/）必须可独立运行，不依赖 ai-experts 仓库内部路径。",
   ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit, KnownTool.WebSearch, KnownTool.WebFetch],
   sandbox: AgentSandbox.WorkspaceWrite,

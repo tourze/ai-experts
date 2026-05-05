@@ -263,8 +263,8 @@ test("component build emits claude and codex component surfaces", () => {
     assert.match(typescriptEngineerAgent, /```mermaid\nflowchart TD/);
     assert.ok(
       typescriptEngineerAgent.indexOf("## 工作流") <
-        typescriptEngineerAgent.indexOf("## 工作重点"),
-      "generated agent workflow should stay before agent focus sections",
+        typescriptEngineerAgent.indexOf("## 质量标准"),
+      "generated agent workflow should stay before quality standards",
     );
     assert.ok(
       typescriptEngineerAgent.indexOf("## Bash 使用边界") <

@@ -9,10 +9,10 @@ A Claude skill that converts Markdown files to professionally styled PDF documen
 node scripts/setup.mjs
 
 # 2. Convert
-python3 scripts/md_to_pdf.py input.md output.pdf
+node scripts/md_to_pdf.mjs input.md output.pdf
 
 # 3. With options
-python3 scripts/md_to_pdf.py input.md output.pdf --format Letter --header-footer --landscape
+node scripts/md_to_pdf.mjs input.md output.pdf --format Letter --header-footer --landscape
 ```
 
 ## Installation as a Claude Skill
@@ -25,7 +25,7 @@ Copy the `md-to-pdf/` directory into your agent's skills folder:
 ├── LICENSE.txt
 ├── README.md
 ├── scripts/
-│   ├── md_to_pdf.py
+│   ├── md_to_pdf.mjs
 │   ├── katex_render.mjs
 │   └── setup.mjs
 └── tests/
@@ -49,7 +49,7 @@ Each stage is independently skippable (`--no-mermaid`, `--no-math`) for speed wh
 | pandoc     | MD → HTML     | `apt install pandoc`                                    |
 | mmdc       | Mermaid → SVG | `npm install -g @mermaid-js/mermaid-cli`                |
 | katex      | LaTeX → HTML  | `npm install -g katex`                                  |
-| playwright | HTML → PDF    | `pip install playwright && playwright install chromium` |
+| playwright | HTML → PDF    | `npm install -g playwright && playwright install chromium` |
 
 Do not assume these tools are pre-installed. Run `node scripts/setup.mjs` before conversion and treat its output as the source of truth for the current machine.
 
@@ -69,12 +69,12 @@ Do not assume these tools are pre-installed. Run `node scripts/setup.mjs` before
 
 **Custom CSS**: `--css custom.css` injects after defaults (your rules win).
 
-**Mermaid theming**: `MERMAID_CONFIG=/path/to/.mermaidrc python3 scripts/md_to_pdf.py ...`
+**Mermaid theming**: `MERMAID_CONFIG=/path/to/.mermaidrc node scripts/md_to_pdf.mjs ...`
 
 ## Testing
 
 ```bash
-python3 scripts/md_to_pdf.py tests/test_document.md test_output.pdf --header-footer
+node scripts/md_to_pdf.mjs tests/test_document.md test_output.pdf --header-footer
 ```
 
 The test document exercises all supported features: 4 Mermaid diagram types, inline + display math, tables, code blocks in 3 languages, footnotes, definition lists, blockquotes, and text formatting.

@@ -18,7 +18,6 @@ export const bugInvestigatorAgent = defineAgent({
   description: "当需要调查 bug、日志、stack trace 或回归原因时使用。它只读追踪执行路径、提出可证伪假设并定位根因。",
   role: `你是资深调试工程师。你只能读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
   workflow: defineAgentWorkflow({
     direction: "TD",
     steps: [

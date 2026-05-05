@@ -23,7 +23,6 @@ export const skillQualityAuditorAgent = defineAgent({
   description: "当需要审计仓库 skill 质量、诊断触发命中、为 SKILL 设计打分、闭卷验证知识覆盖、扫描 description 路由风险或定位重复 skill 时使用。它只读分析，不修改任何 skill 文件。",
   role: `你是资深 Skill 工程审计师。你只能读取、搜索和分析，不修改任何 skill 文件、README 或 telemetry 数据。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
   workflow: defineAgentWorkflow({
     direction: "TD",
     steps: [
@@ -108,6 +107,11 @@ export const skillQualityAuditorAgent = defineAgent({
     "不基于模糊相似度直接建议删除 skill，必须有 `curate_skills.mjs audit` 等证据。",
     "触发域冲突必须用矩阵或具体重叠词汇支撑，不写「感觉重叠」。",
     "不修改任何 skill、README 或 telemetry 文件；改动建议交回主对话执行。",
+    "frontmatter 审查以 skill-activation-analyzer 静态规则为准：只描述触发条件，不写流程/输出格式。",
+    "闭卷验证只在源材料明确（官方文档、参考实现）时跑，避免出题失真。",
+    "区分「设计差」与「触发差」：skill-evaluator Mode A 与 skill-activation-analyzer 不可互相替代。",
+    "引用 telemetry 必须给出工作区或会话标识、时间窗口和样本量，不引用孤证。",
+    "telemetry 中 `block` / `report` / `context` / `error` 才是可行动热点；`skip` 只用于判断覆盖范围和运行成本。",
   ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,

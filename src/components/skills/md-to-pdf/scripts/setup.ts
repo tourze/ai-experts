@@ -89,7 +89,29 @@ function installPandoc() {
 function nodeRequire(moduleName) {
   return run(process.execPath, [
     "-e",
-    `try{const m=require(${JSON.stringify(moduleName)}); console.log(m.version || 'loaded')}catch(e){process.exit(1)}`,
+    [
+      "const {createRequire}=require('node:module');",
+      "const {spawnSync}=require('node:child_process');",
+      "const path=require('node:path');",
+      "const req=createRequire(process.cwd() + '/noop.js');",
+      `const name=${JSON.stringify(moduleName)};`,
+      "function load(){try{return req(name)}catch(e){const root=spawnSync('npm',['root','-g'],{encoding:'utf8'}).stdout.trim(); if(root){return req(path.join(root,name));} throw e;}}",
+      "try{const m=load(); console.log(m.version || 'loaded')}catch(e){process.exit(1)}",
+    ].join(""),
+  ]);
+}
+
+function nodeResolve(request) {
+  return run(process.execPath, [
+    "-e",
+    [
+      "const {createRequire}=require('node:module');",
+      "const {spawnSync}=require('node:child_process');",
+      "const path=require('node:path');",
+      "const req=createRequire(process.cwd() + '/noop.js');",
+      `const request=${JSON.stringify(request)};`,
+      "try{console.log(req.resolve(request))}catch(e){const root=spawnSync('npm',['root','-g'],{encoding:'utf8'}).stdout.trim(); if(root){try{console.log(req.resolve(path.join(root,request))); process.exit(0)}catch(_){}} process.exit(1)}",
+    ].join(""),
   ]);
 }
 
@@ -211,26 +233,23 @@ if (katex.status === 0) {
   fail("katex not found (npm install -g katex)");
 }
 
-const python = findCommand("python3");
-if (python && run(python, ["-c", "from playwright.sync_api import sync_playwright"]).status === 0) {
-  const version = firstLine(run(python, ["-c", "import playwright; print(getattr(playwright, '__version__', 'unknown'))"]).stdout);
-  ok(`playwright (Python) ${version || "unknown"}`);
+const playwright = nodeRequire("playwright");
+if (playwright.status === 0) {
+  ok(`playwright (Node.js) ${firstLine(playwright.stdout) || "loaded"}`);
 } else if (install) {
   warn("playwright not found — installing...");
-  const pip = findCommand("pip3") || findCommand("pip");
   if (
-    pip &&
-    (run(pip, ["install", "playwright", "--break-system-packages"], { stdio: "inherit" }).status === 0 ||
-      run(pip, ["install", "playwright"], { stdio: "inherit" }).status === 0) &&
+    findCommand("npm") &&
+    run("npm", ["install", "-g", "playwright"], { stdio: "inherit" }).status === 0 &&
     findCommand("playwright") &&
     run("playwright", ["install", "chromium"], { stdio: "inherit" }).status === 0
   ) {
     ok("playwright installed");
   } else {
-    fail("playwright install failed (pip install playwright && playwright install chromium)");
+    fail("playwright install failed (npm install -g playwright && playwright install chromium)");
   }
 } else {
-  fail("playwright not found (pip install playwright && playwright install chromium)");
+  fail("playwright not found (npm install -g playwright && playwright install chromium)");
 }
 
 const chrome = findChrome();
@@ -240,10 +259,8 @@ if (chrome) {
   fail("No Chrome/Chromium binary found (playwright install chromium)");
 }
 
-const katexDir = run(process.execPath, [
-  "-e",
-  "try{console.log(require.resolve('katex').replace(/katex\\.js$/,''))}catch(e){}",
-]).stdout.trim();
+const katexPackage = nodeResolve("katex/package.json").stdout.trim();
+const katexDir = katexPackage ? path.join(path.dirname(katexPackage), "dist") : "";
 
 if (katexDir && fs.existsSync(path.join(katexDir, "katex.min.css")) && fs.statSync(path.join(katexDir, "fonts")).isDirectory()) {
   const fontCount = fs.readdirSync(path.join(katexDir, "fonts")).length;

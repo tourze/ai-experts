@@ -20,7 +20,6 @@ export const infrastructureEngineerAgent = defineAgent({
   description: "当需要设计或运维容器化基础设施——覆盖 Docker 容器/镜像/网络/卷、Helm Chart 搭建与验证、Linux Shell 自动化脚本、以及 SSH 远端运维命令执行时使用。它可以读取源码与配置，在用户指定目录下产出 Dockerfile、Compose 文件、Helm Chart、运维脚本与 SSH 主机配置，但不修改生产环境。",
   role: `你是资深基础设施工程师。你可以读取源码、配置与部署描述文件，在用户指定目录下创建或更新 Dockerfile、Compose 配置、Helm Chart、运维脚本和 SSH 主机配置文件；不修改生产环境、不改动真实集群状态、不操作凭据。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
   workflow: defineAgentWorkflow({
     direction: "TD",
     steps: [
@@ -75,6 +74,7 @@ scripts/
   }),
   bashBoundary: [
     "Bash 用于读取本仓库的 Dockerfile、Compose、Chart、脚本和 SSH 配置；运行 `docker --help`、`helm lint`、`helm template`、shellcheck 等只读或本地验证命令。禁止连接远端 Docker daemon、kubectl apply、helm install/upgrade、SSH 连接远端主机。",
+    "文件写入默认落在用户指定目录下，包含：Dockerfile、docker-compose.yml、Helm Chart 目录、运维脚本、`~/.host/<host>.json`（SSH 主机配置）。不修改生产部署描述文件、CI/CD 配置或 Kubernetes 集群资源。",
   ],
   qualityStandards: [
     "所有 Dockerfile 必须使用显式版本标签，禁止 `latest`。",

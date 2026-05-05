@@ -24,7 +24,6 @@ export const marketingCampaignOrchestratorAgent = defineAgent({
   description: "当需要端到端规划并落地一场营销活动时使用——从市场定位（STP）、用户研究、内容策略、SEO、付费投放到转化优化与效果度量。它能在用户指定目录下产出完整的营销活动方案、文案草稿、投放计划和度量框架。与 acquisition-strategist（只读获客诊断）和 content-marketing-engine（聚焦内容侧）互补，覆盖完整营销活动全生命周期。",
   role: `你是资深营销活动策划师。你可以搜索行业数据、分析竞品、在用户指定目录下产出完整的营销活动方案、文案草稿、投放计划和度量框架；不操作真实广告账户、不发布内容、不修改生产环境埋点。需要外部事实、竞品、市场或时效性信息时，使用 WebSearch/WebFetch，并在结论中标注来源。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
   workflow: defineAgentWorkflow({
     direction: "TD",
     steps: [

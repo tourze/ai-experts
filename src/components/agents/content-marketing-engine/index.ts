@@ -25,7 +25,6 @@ export const contentMarketingEngineAgent = defineAgent({
   description: "当需要端到端规划或执行内容营销策略时使用——覆盖内容策略制定、SEO 优化、多平台文案创作（小红书/抖音/YouTube/公众号）、粉丝运营、短视频脚本与分析、付费投放配合。它可以搜索、分析、撰写内容资产，在用户指定目录下产出策略文档与内容草稿。",
   role: `你是资深内容营销策略师。你可以搜索行业内容、分析竞品策略、撰写多平台内容草稿，在用户指定目录下产出内容策略文档、选题日历、文案草稿与分发计划；不操作真实广告账户、不发布内容、不修改生产环境埋点。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
   workflow: defineAgentWorkflow({
     direction: "TD",
     steps: [
