@@ -30,7 +30,7 @@ cases:
     prompt: "帮我分析这个复合索引要不要加覆盖列"
     fixtures: []
     rubric:
-      - "index design should trigger db-index-strategy, not db-schema-design"
+      - "index design should trigger sql-review-optimization, not db-schema-design"
     trigger_expected: false
 
   - id: negative_general

@@ -7,7 +7,6 @@
 | Skill | 用途 |
 |-------|------|
 | `db-ha-replication` | 主从复制、GTID、半同步与故障切换 |
-| `db-index-strategy` | （已合并到 sql-review-optimization）原跨引擎索引策略内容已整合至 sql-review-optimization |
 | `db-schema-design` | 表结构、列类型、约束、字符集、JSON/JSONB 与半结构化数据建模 |
 | `mysql-transaction-locking` | InnoDB 事务隔离、行锁、间隙锁与死锁诊断 |
 | `pgsql-partitioning` | 声明式分区、裁剪验证与生命周期管理 |

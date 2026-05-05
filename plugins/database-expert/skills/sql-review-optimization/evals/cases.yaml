@@ -39,3 +39,29 @@ cases:
     rubric:
       - "general writing is outside this skill"
     trigger_expected: false
+
+  - id: positive_mysql_index
+    prompt: "帮我设计 MySQL 复合索引，这个查询按 user_id 等值过滤、status 排序、created_at 范围"
+    fixtures: []
+    rubric:
+      - "recognizes as sql-review-optimization territory (includes index strategy)"
+      - "applies equal→range→sort column ordering"
+      - "covers covering index and EXPLAIN verification"
+    trigger_expected: true
+
+  - id: positive_pgsql_index
+    prompt: "我需要为 PostgreSQL JSONB 列选 GIN 索引还是 B-tree 索引"
+    fixtures: []
+    rubric:
+      - "recognizes as sql-review-optimization territory (includes index strategy)"
+      - "distinguishes GIN operator classes (jsonb_ops vs jsonb_path_ops)"
+      - "mentions EXPLAIN ANALYZE verification"
+    trigger_expected: true
+
+  - id: positive_partial_index
+    prompt: "这个查询只查 active 状态的订单，想建一个部分索引减少体积"
+    fixtures: []
+    rubric:
+      - "covers PostgreSQL partial index WHERE clause matching"
+      - "mentions planner requirements"
+    trigger_expected: true

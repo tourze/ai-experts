@@ -21,7 +21,7 @@ cases:
     prompt: "帮我分析 MySQL EXPLAIN 输出中的 Using filesort"
     fixtures: []
     rubric:
-      - "index strategy should trigger db-index-strategy, not db-ha-replication"
+      - "index strategy should trigger sql-review-optimization, not db-ha-replication"
     trigger_expected: false
 
   - id: negative_general

@@ -25,8 +25,8 @@
 
 ## 更多参考
 
-详细引擎专有模式见同层 [db-index-strategy/references/](../../db-index-strategy/references/) 下的：
-- [mysql-index-strategy.md](../../db-index-strategy/references/mysql-index-strategy.md)
-- [pgsql-index-strategy.md](../../db-index-strategy/references/pgsql-index-strategy.md)
-- [index-patterns.md](../../db-index-strategy/references/index-patterns.md)
-- [code-patterns.md](../../db-index-strategy/references/code-patterns.md)
+详细引擎专有模式见同层 [references/](.) 下的：
+- [mysql-index-strategy.md](mysql-index-strategy.md)
+- [pgsql-index-strategy.md](pgsql-index-strategy.md)
+- [index-patterns.md](index-patterns.md)
+- [code-patterns.md](code-patterns.md)
