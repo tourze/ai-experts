@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { rustOwnershipIdiomsSkill } from "../rust-ownership-idioms/index";
@@ -43,6 +44,16 @@ export const rustTypeDesignSkill = defineSkill({
       },
       reason: "联动：`rust-ownership-idioms` · `rust-performance`",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "默认 dyn 放弃零开销",
+      pass: "默认泛型",
+    }),
+    defineAntiPattern({
+      fail: "trait 方法带泛型",
+      pass: "保持 object-safe",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

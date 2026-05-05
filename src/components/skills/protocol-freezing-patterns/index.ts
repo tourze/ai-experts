@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -28,6 +29,20 @@ export const protocolFreezingPatternsSkill = defineSkill({
     "新增字段是否可选 + 默认值。",
     "废弃字段是否有四阶段计划。",
     "CI 是否运行历史 golden file 反序列化测试。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "偷改字段类型",
+      pass: "升版本 + 新字段",
+    }),
+    defineAntiPattern({
+      fail: "新增必填字段",
+      pass: "新增可选 + 默认",
+    }),
+    defineAntiPattern({
+      fail: "删字段直接移除",
+      pass: "四阶段",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -4,6 +4,7 @@ import {
   Platform,
   defineAsset,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -40,6 +41,16 @@ export const helmChartScaffoldingSkill = defineSkill({
       },
       reason: "如果 chart 暴露指标或 ServiceMonitor，参阅 `monitoring-observability`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "模板里写死环境差异",
+      pass: "差异下沉到 values",
+    }),
+    defineAntiPattern({
+      fail: "明文 secret 进仓库",
+      pass: "外部 Secret 引用",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

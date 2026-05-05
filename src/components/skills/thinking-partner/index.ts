@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { grillMeSkill } from "../grill-me/index";
@@ -49,6 +50,20 @@ export const thinkingPartnerSkill = defineSkill({
       },
       reason: "如果用户其实只是要给任务排先后，优先转到 `priority-judge`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "一上来就给答案",
+      pass: "先问后答",
+    }),
+    defineAntiPattern({
+      fail: "被质疑立刻退让",
+      pass: "有条件修正",
+    }),
+    defineAntiPattern({
+      fail: "意图错配",
+      pass: "先复述目标和决策点，再选择提问、反驳或共创模式。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

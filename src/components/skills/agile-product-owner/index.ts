@@ -4,6 +4,7 @@ import {
   Platform,
   defineAsset,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -46,6 +47,16 @@ export const agileProductOwnerSkill = defineSkill({
       label: "user-story-patterns",
       reason: "故事拆分可配合 `user-story-patterns`（8 种拆分模式 + INVEST 检查），Epic 分解可配合 `epic-decomposition`（9 种分解模式 + Story Mapping）。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "Epic 当 Story",
+      pass: "拆到 INVEST",
+    }),
+    defineAntiPattern({
+      fail: "无边界需求",
+      pass: "可测试 AC",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

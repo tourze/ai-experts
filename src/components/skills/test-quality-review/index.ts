@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -31,6 +32,12 @@ export const testQualityReviewSkill = defineSkill({
     "检查了各风险的\"不应标记\"规则，未误报",
     "计算并输出 Test Health Score",
     "未把测试风格偏好当成衰退风险",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "泛泛评论：没有 T1-T6 分类、没有代码证据、没有四要素。",
+      pass: "四要素 + 风险分类",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

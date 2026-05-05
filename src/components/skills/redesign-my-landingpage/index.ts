@@ -4,6 +4,7 @@ import {
   Platform,
   defineAsset,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { croMethodologySkill } from "../cro-methodology/index";
@@ -36,6 +37,16 @@ export const redesignMyLandingpageSkill = defineSkill({
       },
       reason: "若任务主要是实验设计或诊断，不直接写代码时，配合 `cro-methodology`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "shadcn 模板拼装",
+      pass: "业务驱动结构",
+    }),
+    defineAntiPattern({
+      fail: "抽象大词",
+      pass: "具体动词 + 数字",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

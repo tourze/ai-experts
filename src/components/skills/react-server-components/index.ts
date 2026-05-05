@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -41,6 +42,12 @@ export const reactServerComponentsSkill = defineSkill({
     "同一请求内的重复数据获取是否用 React.cache() 去重？",
     "嵌套 Server Components 的数据获取是否做了并行化？",
     "非阻塞操作（日志、分析）是否用 after() 延迟执行？",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "整页 'use client'",
+      pass: "服务端获取 + 局部交互：Server Action 认证、模块级状态污染、整 row 序列化、React.cache 去重等优化反模式见 [references/advanced-patterns.md](references/advanced-patterns.md)。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

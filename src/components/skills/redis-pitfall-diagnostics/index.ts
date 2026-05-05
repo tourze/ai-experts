@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -35,6 +36,16 @@ export const redisPitfallDiagnosticsSkill = defineSkill({
     "是否核对主从复制为异步语义，分布式锁或强一致数据是否误依赖 replica 已同步。",
     "是否核对主从时钟、`maxmemory` 配置一致性、`replica-ignore-maxmemory` 和是否允许 replica 写入。",
     "是否检查全量同步失败链路：RDB 大小、replica 加载耗时、复制缓冲区和 master 写入速率。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "根据单个现象直接给结论：问题：没有核对版本、命令类型、实例时钟、过期策略和 replica 配置，容易把正常语义或旧版本行为误判成复制故障。",
+      pass: "用可证伪假设排查",
+    }),
+    defineAntiPattern({
+      fail: "看到 O(1) 就认为线上安全：这些命令的官方复杂度或语义不能覆盖所有运行时代价：大 offset 会分配中间内存，`RANDOMKEY` 可能受过期 key 影响，`MONITOR` 会持续输出所有命令。",
+      pass: "先看运行时代价：先确认命令频率、慢查询、内存增长和客户端输出缓冲，再决定限流、替换命令或调整结构。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

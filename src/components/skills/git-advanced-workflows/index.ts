@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -29,6 +30,20 @@ export const gitAdvancedWorkflowsSkill = defineSkill({
     "强推时是否用了 `--force-with-lease`。",
     "用 bisect 前是否准备了稳定、可脚本化的复现方式。",
     "恢复误操作时是否先用 reflog 开恢复分支，而不是继续覆盖现场。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "共享分支裸 force push",
+      pass: "个人分支改 + --force-with-lease",
+    }),
+    defineAntiPattern({
+      fail: "整支 merge 取一个提交",
+      pass: "cherry-pick 精准搬运",
+    }),
+    defineAntiPattern({
+      fail: "无稳定复现跑 bisect",
+      pass: "可脚本化复现",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

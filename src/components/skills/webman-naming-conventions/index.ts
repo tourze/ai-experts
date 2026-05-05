@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -27,6 +28,20 @@ export const webmanNamingConventionsSkill = defineSkill({
     "接口用 `Interface` 后缀",
     "Service 命名表达动作",
     "命名空间与目录路径一致",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "大小写混用",
+      pass: "全小写下划线",
+    }),
+    defineAntiPattern({
+      fail: "接口无后缀",
+      pass: "Interface 后缀",
+    }),
+    defineAntiPattern({
+      fail: "命名空间与目录漂移",
+      pass: "严格映射",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

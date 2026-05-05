@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { phpXFeaturesSkill } from "../php-8x-features/index";
@@ -42,6 +43,16 @@ export const phpAsyncPatternsSkill = defineSkill({
       },
       reason: "联动：`php-8x-features` · `php-error-handling`",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "协程内 sleep()",
+      pass: "Coroutine::sleep",
+    }),
+    defineAntiPattern({
+      fail: "协程裸读写共享变量",
+      pass: "Channel 通信",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

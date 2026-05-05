@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -45,6 +46,20 @@ export const iconRetrievalSkill = defineSkill({
       },
       reason: "图标用于界面时，优先与 `design-system-patterns` 的尺寸、颜色和语义体系一致。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "宽泛关键词",
+      pass: "业务语义词",
+    }),
+    defineAntiPattern({
+      fail: "混线宽混风格",
+      pass: "锁定单一图标系",
+    }),
+    defineAntiPattern({
+      fail: "装饰图标无文字",
+      pass: "aria-label + 视觉图标",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

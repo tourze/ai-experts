@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { thinkingPartnerSkill } from "../thinking-partner/index";
@@ -47,6 +48,16 @@ export const priorityJudgeSkill = defineSkill({
       },
       reason: "如果用户连核心目标都说不清，先用 `thinking-partner` 把问题理顺。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "全部 P0",
+      pass: "只锁 1-2 个\"现在做\"",
+    }),
+    defineAntiPattern({
+      fail: "拍脑袋假精确",
+      pass: "粗粒度 + 留缓冲",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

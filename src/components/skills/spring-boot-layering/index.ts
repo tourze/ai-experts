@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { arthasCpuHighSkill } from "../arthas-cpu-high/index";
@@ -66,6 +67,16 @@ export const springBootLayeringSkill = defineSkill({
       },
       reason: "需要对接测试、原生镜像或构建优化时，联动：\\\\n`java-junit`、\\\\n`graalvm-native-image`、\\\\n`gradle-build-performance`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "Entity 直接当 API 响应",
+      pass: "DTO 隔离",
+    }),
+    defineAntiPattern({
+      fail: "Controller 直接访问 Repository",
+      pass: "业务逻辑收归 Service",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

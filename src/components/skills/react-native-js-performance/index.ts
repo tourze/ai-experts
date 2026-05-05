@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { reactNativeDesignSkill } from "../react-native-design/index";
@@ -39,6 +40,16 @@ export const reactNativeJsPerformanceSkill = defineSkill({
       },
       reason: "交互与视觉实现优先联动 `react-native-design`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "ScrollView 渲染长列表",
+      pass: "虚拟化列表",
+    }),
+    defineAntiPattern({
+      fail: "debug 构建下结论：debug 构建 JS 执行慢 10-20 倍，结论完全失真。",
+      pass: "release 真机复测",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

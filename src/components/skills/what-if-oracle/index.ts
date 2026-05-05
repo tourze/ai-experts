@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
@@ -51,6 +52,20 @@ export const whatIfOracleSkill = defineSkill({
       label: "inversion-strategist",
       reason: "如果要先从失败角度找脆弱点，可先用 `inversion-strategist`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "含糊问题",
+      pass: "单变量收紧",
+    }),
+    defineAntiPattern({
+      fail: "只有极端",
+      pass: "覆盖最可能",
+    }),
+    defineAntiPattern({
+      fail: "写成小说",
+      pass: "信号 + 动作",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

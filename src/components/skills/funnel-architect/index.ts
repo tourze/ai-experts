@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { customerJourneyMapSkill } from "../customer-journey-map/index";
@@ -40,6 +41,16 @@ export const funnelArchitectSkill = defineSkill({
       },
       reason: "需要补充用户旅程时可配合 `customer-journey-map`，讨论套餐结构时可配合 `pricing-strategy`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只改文案",
+      pass: "重做承接链路",
+    }),
+    defineAntiPattern({
+      fail: "没主报价直接 upsell",
+      pass: "一个主报价",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

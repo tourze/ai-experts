@@ -28,15 +28,3 @@ CREATE INDEX idx_user_status_created ON orders (user_id, status, created_at);
 CREATE INDEX idx_order_active ON purchase_order (status, created_at)
     INCLUDE (total_amount) WHERE status IN ('pending', 'confirmed');
 ```
-
-## 反模式
-
-- 不读执行计划就改 SQL 或加索引。
-- 用 DISTINCT 掩盖错误的 JOIN 条件。
-- 在 WHERE 的索引列上套函数导致索引失效。
-- 把报表查询直接跑在 OLTP 主库上。
-- SELECT * 并依赖列序号取数据。
-- 用应用程序循环逐行处理而不是集合操作。
-- 每个查询各建一个索引，导致索引膨胀和写入性能下降。
-- 在 TEXT/JSONB 大列上建普通索引而不是 GIN 或前缀索引。
-- PostgreSQL 上用 B-tree 替代 GIN 处理 `@>` 等运算符。

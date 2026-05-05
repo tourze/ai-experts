@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { rustErrorHandlingSkill } from "../rust-error-handling/index";
@@ -50,6 +51,16 @@ export const rustTestingSkill = defineSkill({
       },
       reason: "通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 `testing-patterns`。本 skill 只覆盖 Rust 特有语法与工具。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "测试名看不出行为：失败报 `test_it_works failed`，仍不知道测什么。",
+      pass: "描述输入+条件+预期",
+    }),
+    defineAntiPattern({
+      fail: "snapshot 自动 accept",
+      pass: "人工审查",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

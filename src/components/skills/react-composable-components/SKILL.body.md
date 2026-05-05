@@ -83,10 +83,3 @@ export function Example() {
   );
 }
 ```
-
-## 反模式
-
-- 用配置型 props（`hasHeader`、`headerActions`）替代 `children` 插槽 — 无法表达任意嵌套结构。
-- 不透传原生属性 — 调用方丢失 `aria-label`、`disabled`、`type` 等能力。
-
-反模式 FAIL/PASS 对比的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。

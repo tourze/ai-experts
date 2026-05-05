@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { doctrineBatchProcessingSkill } from "../doctrine-batch-processing/index";
@@ -45,6 +46,16 @@ export const symfonyVotersSkill = defineSkill({
       },
       reason: "如果授权后的动作会投递异步消息，可联动 `symfony-messenger`；如果授权绑定 ORM 资源加载，可联动 `doctrine-batch-processing`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "Controller 手写角色判断",
+      pass: "Voter 集中决策",
+    }),
+    defineAntiPattern({
+      fail: "Voter 里产生副作用",
+      pass: "Voter 保持纯判断",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

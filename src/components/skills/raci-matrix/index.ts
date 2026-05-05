@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { runningDecisionProcessesSkill } from "../running-decision-processes/index";
@@ -35,6 +36,12 @@ export const raciMatrixSkill = defineSkill({
       },
       reason: "与 `running-decision-processes` 配合：RACI 定角色，决策流程定方法。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "所有人都是 R",
+      pass: "职责明确",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

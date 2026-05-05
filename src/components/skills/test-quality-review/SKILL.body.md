@@ -22,27 +22,3 @@
 | "覆盖率高就够了" | 覆盖率衡量执行了什么，不衡量验证了什么。查 T5。 |
 | "测试多就是好" | 重复的测试不如没有。查 T3。 |
 | "mock 多没关系" | mock > 3 个/测试是信号，不是标准。查 T4。 |
-
-## 反模式
-
-### FAIL: 泛泛评论
-
-```
-测试写得还行，但可以更好。
-建议增加覆盖率，多测边界情况。
-```
-
-→ 没有 T1-T6 分类、没有代码证据、没有四要素。
-
-### PASS: 四要素 + 风险分类
-
-```
-**[T4] Mock 验证替代行为验证** — `tests/order.test.ts:42`
-- Symptom: 主断言是 expect(mockPayment.charge).toHaveBeenCalledWith(...)，
-  未验证订单状态是否变为 'paid'
-- Source: 测试验证的是 mock 调用而非业务结果——mock 正确不等于行为正确
-- Consequence: 重构 charge 调用方式（如从回调改 await）后测试断裂，
-  但真正的 bug（金额计算错误）不会被捕获
-- Remedy: 改为断言 order.status === 'paid' 和 order.chargeId 存在；
-  mock 仅保留外部支付网关边界
-```

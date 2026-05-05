@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { preLandingReviewSkill } from "../pre-landing-review/index";
@@ -54,6 +55,20 @@ export const testingStrategySkill = defineSkill({
       },
       reason: "为 `webapp-testing` 提供执行列表。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "不分层级的测试建议：getter/setter 和第三方框架行为也要测？成本失控。",
+      pass: "按风险分层：不区分单测、集成、E2E，导致成本失控。 把框架行为和样板代码当成重点测试对象。",
+    }),
+    defineAntiPattern({
+      fail: "一刀切覆盖率：支付链路和营销页获得同等投入，高风险模块被平均化覆盖。",
+      pass: "风险驱动的差异化投入",
+    }),
+    defineAntiPattern({
+      fail: "不可执行的质量门：无法在 CI 中自动判断通过/失败。",
+      pass: "可测量的质量门",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

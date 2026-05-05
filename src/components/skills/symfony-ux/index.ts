@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { symfonyMessengerSkill } from "../symfony-messenger/index";
@@ -43,6 +44,16 @@ export const symfonyUxSkill = defineSkill({
       },
       reason: "如果已经明确要抽取组件，可直接联动 `twig-components`；如果页面交互最终要进入异步任务，可联动 `symfony-messenger`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "纯展示用 LiveComponent",
+      pass: "纯展示用 TwigComponent",
+    }),
+    defineAntiPattern({
+      fail: "Turbo + Stimulus 抢同一块 DOM",
+      pass: "单一机制主导",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

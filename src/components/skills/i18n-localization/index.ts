@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -49,6 +50,20 @@ export const i18nLocalizationSkill = defineSkill({
       label: "web-design-guidelines",
       reason: "`web-design-guidelines`",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "字符串拼接造句",
+      pass: "句子级 + ICU plural",
+    }),
+    defineAntiPattern({
+      fail: "业务键是语言文案",
+      pass: "语义键",
+    }),
+    defineAntiPattern({
+      fail: "只翻默认页面",
+      pass: "全覆盖翻译矩阵",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

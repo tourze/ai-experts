@@ -4,6 +4,7 @@ import {
   Platform,
   defineAsset,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { mdToPdfSkill } from "../md-to-pdf/index";
@@ -38,6 +39,16 @@ export const markdownMermaidWritingSkill = defineSkill({
       },
       reason: "若最终要导出 PDF，可继续使用 `md-to-pdf`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "一张图塞所有逻辑：15+ 节点一张图，读者无法聚焦任何环节。",
+      pass: "按主题拆成小图",
+    }),
+    defineAntiPattern({
+      fail: "用截图代替源码",
+      pass: "文本化 Mermaid：flowchart TD Client --> Gateway --> Service --> DB",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

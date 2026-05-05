@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -31,6 +32,16 @@ export const baoyuCompressImageSkill = defineSkill({
     "选择的输出格式与后缀一致：`webp`、`png`、`jpeg`。",
     "若未传 `--keep`，已确认源文件会在成功转码后删除。",
     "若需要链到文章配图流程，先做图片生成再做统一压缩。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "误删源文件",
+      pass: "--keep 显式",
+    }),
+    defineAntiPattern({
+      fail: "批处理传 --output",
+      pass: "单/批分清",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { architectureReviewerSkill } from "../architecture-reviewer/index";
@@ -59,6 +60,12 @@ export const codebaseArchitectureAnalysisSkill = defineSkill({
       label: "`software-design`",
       reason: "``software-design``：设计原则与架构模式，从复杂度、深模块和信息隐藏角度评估设计",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "凭直觉画模块边界：不读取文件内容直接归类，模块边界全凭目录名猜测。没有文件级证据支撑。",
+      pass: "文件级证据驱动的模块地图：更多反模式与检查清单见 [references/anti-patterns.md](references/anti-patterns.md)。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

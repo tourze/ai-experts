@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -30,6 +31,20 @@ export const detoxMobileTestSkill = defineSkill({
     "每条用例是否可独立运行，不依赖前置状态？",
     "构建方式、模拟器/模拟机版本、Jest 配置是否已统一？",
     "失败时是否能通过截图、日志、录像快速定位问题？",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "by.text 当主选择器",
+      pass: "testID 优先",
+    }),
+    defineAntiPattern({
+      fail: "sleep 等异步",
+      pass: "waitFor 显式同步",
+    }),
+    defineAntiPattern({
+      fail: "测试间复用状态",
+      pass: "每测试独立",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

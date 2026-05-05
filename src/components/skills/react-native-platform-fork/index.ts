@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -28,6 +29,20 @@ export const reactNativePlatformForkSkill = defineSkill({
     "业务组件是否零 `Platform.OS` 判断？",
     "平台变体是否都从 `index.ts` 导出？",
     "自定义平台是否已配置 Metro resolver？",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "业务组件散射 Platform.OS",
+      pass: "边界文件 + index 导出",
+    }),
+    defineAntiPattern({
+      fail: "iOS/Android 一致也拆",
+      pass: "native 兜底",
+    }),
+    defineAntiPattern({
+      fail: "Platform.select 放大段逻辑",
+      pass: "Platform.select 只选值",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

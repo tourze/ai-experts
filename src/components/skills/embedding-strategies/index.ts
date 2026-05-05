@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { ragAuditorSkill } from "../rag-auditor/index";
@@ -47,6 +48,16 @@ export const embeddingStrategiesSkill = defineSkill({
       },
       reason: "相关 skill：`similarity-search-patterns`、`vector-index-tuning`、`rag-auditor`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "看榜单选模型",
+      pass: "自建评测集再选",
+    }),
+    defineAntiPattern({
+      fail: "只调 chunk size",
+      pass: "分层归因",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

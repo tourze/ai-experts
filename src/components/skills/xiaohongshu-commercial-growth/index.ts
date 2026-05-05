@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { fanOperationsSkill } from "../fan-operations/index";
@@ -39,6 +40,16 @@ export const xiaohongshuCommercialGrowthSkill = defineSkill({
       },
       reason: "需要落评论区和粉丝维护动作时，联动 `fan-operations`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "先投放后补承接",
+      pass: "先承接再开闸",
+    }),
+    defineAntiPattern({
+      fail: "通用方案套所有",
+      pass: "按业务定制",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

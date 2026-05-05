@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { webContentFetcherSkill } from "../web-content-fetcher/index";
@@ -41,6 +42,20 @@ export const deepResearchSkill = defineSkill({
       },
       reason: "如果用户已经给出具体 URL，先转到 `web-content-fetcher` 抓正文。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只搜一次就写结论",
+      pass: "多轮分角度检索",
+    }),
+    defineAntiPattern({
+      fail: "时效问题只搜年份",
+      pass: "带具体日期",
+    }),
+    defineAntiPattern({
+      fail: "只找支持论据",
+      pass: "主动找反例",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -27,6 +28,16 @@ export const androidTestingSkill = defineSkill({
     "关键页面有 Roborazzi 截图测试",
     "CI 配置 `verifyRoborazziDebug` 任务",
     "Compose 测试通过语义（文本、testTag）查找节点，不用坐标",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "Compose 测试用坐标",
+      pass: "按语义查找",
+    }),
+    defineAntiPattern({
+      fail: "ViewModel 测试用 delay 等待",
+      pass: "advanceUntilIdle 确定性推进",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

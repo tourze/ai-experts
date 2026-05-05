@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -28,6 +29,16 @@ export const githubRepoSearchSkill = defineSkill({
     "是否完成去重、硬过滤、噪音剔除和类型分类。",
     "是否每个推荐项都写清“是什么 + 为什么推荐”。",
     "是否在结论里明确下一步：继续缩小范围，还是转入深度分析深挖单仓库。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只按 stars 排",
+      pass: "综合排序",
+    }),
+    defineAntiPattern({
+      fail: "不分类型",
+      pass: "角色标签",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

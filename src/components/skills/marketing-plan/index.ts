@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { contentStrategySkill } from "../content-strategy/index";
@@ -51,6 +52,12 @@ export const marketingPlanSkill = defineSkill({
       },
       reason: "需要内容日历时，配合 `content-strategy`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "渠道清单冒充方案",
+      pass: "先定策略主轴再排期",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

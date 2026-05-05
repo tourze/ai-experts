@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -30,6 +31,32 @@ export const revopsSkill = defineSkill({
     "Pipeline 阶段有客观进入标准",
     "核心指标仪表盘三方可见",
     "季度数据健康审计",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只看数量不看质量 → MQL 注水，销售不信任",
+      pass: "用质量、转化率和销售接受率共同衡量线索。",
+    }),
+    defineAntiPattern({
+      fail: "交接无 SLA → 线索冷掉",
+      pass: "定义 MQL 到 SQL 交接 SLA、责任人和超时提醒。",
+    }),
+    defineAntiPattern({
+      fail: "评分不衰减 → 旧行为虚高",
+      pass: "评分加入时间衰减和负向行为。",
+    }),
+    defineAntiPattern({
+      fail: "先买工具再定流程 → 自动化放大坏流程",
+      pass: "先固化流程与口径，再用工具自动化。",
+    }),
+    defineAntiPattern({
+      fail: "影子 Pipeline → 口径不一致",
+      pass: "统一 Pipeline 阶段定义、字段和报表口径。",
+    }),
+    defineAntiPattern({
+      fail: "丢单不复盘 → 同因反复丢单",
+      pass: "建立丢单原因复盘和异议库更新节奏。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

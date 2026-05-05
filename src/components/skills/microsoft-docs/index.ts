@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -28,6 +29,16 @@ export const microsoftDocsSkill = defineSkill({
     "如果需要具体 SDK API 或示例，是否查阅了 `references/code-reference.md`。",
     "是否明确区分了 MCP 工具参数与 CLI 参数。",
     "使用 CLI 回退前，是否可用 `doctor` 快速确认链路健康。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "宽词检索",
+      pass: "产品 + 任务 + 版本",
+    }),
+    defineAntiPattern({
+      fail: "无上下文给结论",
+      pass: "补全上下文",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

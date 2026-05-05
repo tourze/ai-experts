@@ -4,6 +4,7 @@ import {
   Platform,
   defineAsset,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -50,6 +51,24 @@ export const promptEngineeringPatternsSkill = defineSkill({
       },
       reason: "相关 skill：`llm-evaluation`、`rag-auditor`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "话术堆砌后临时补 JSON",
+      pass: "Schema 优先 + 简洁指令",
+    }),
+    defineAntiPattern({
+      fail: "小问题大流程",
+      pass: "任务匹配深度（见上文\"按任务复杂度选粒度\"）",
+    }),
+    defineAntiPattern({
+      fail: "同时改三个变量",
+      pass: "一次一变量",
+    }),
+    defineAntiPattern({
+      fail: "模型上限误判为 prompt 问题",
+      pass: "先确认天花板",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

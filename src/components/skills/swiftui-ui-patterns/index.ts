@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -37,6 +38,16 @@ export const swiftuiUiPatternsSkill = defineSkill({
     "是否移除了不必要的可选 view model、`bootstrapIfNeeded` 和重复包装。",
     "根视图是否正确持有 `@Observable`，下游只接收必要输入。",
     "交叉引用：并发边界问题看 `swift-concurrency-expert`；性能与重渲染看 `swiftui-performance-audit`；平台设计规范看 `ios-hig-design` / `macos-design-guidelines`。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "sheet(isPresented:) + if let 解包",
+      pass: "sheet(item:) 绑定数据",
+    }),
+    defineAntiPattern({
+      fail: "小页面也造 view model",
+      pass: "状态就近持有",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

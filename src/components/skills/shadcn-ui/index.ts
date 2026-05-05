@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -54,6 +55,16 @@ export const shadcnUiSkill = defineSkill({
       },
       reason: "`design-system-patterns`",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "手抄半套源码",
+      pass: "CLI 安装",
+    }),
+    defineAntiPattern({
+      fail: "保留 shadcn 默认视觉",
+      pass: "映射到项目 token",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

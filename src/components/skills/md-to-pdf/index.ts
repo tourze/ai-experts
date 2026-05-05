@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -38,6 +39,20 @@ export const mdToPdfSkill = defineSkill({
       },
       reason: "若文档内容本身还没写好，先用 `markdown-mermaid-writing` 产出源文档。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "不检查依赖",
+      pass: "setup → render",
+    }),
+    defineAntiPattern({
+      fail: "重型 CSS 覆盖",
+      pass: "增量调整",
+    }),
+    defineAntiPattern({
+      fail: "怪渲染器不修源",
+      pass: "修源文件",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

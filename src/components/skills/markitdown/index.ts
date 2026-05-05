@@ -4,6 +4,7 @@ import {
   Platform,
   defineAsset,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -62,6 +63,20 @@ export const markitdownSkill = defineSkill({
       },
       reason: "后续若还要导出 PDF，可转给 `md-to-pdf`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "输出覆盖原件",
+      pass: "输出独立目录",
+    }),
+    defineAntiPattern({
+      fail: "不加扩展过滤",
+      pass: "显式扩展",
+    }),
+    defineAntiPattern({
+      fail: "转完不抽查",
+      pass: "关键页抽样",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

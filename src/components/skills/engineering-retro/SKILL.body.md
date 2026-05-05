@@ -62,39 +62,3 @@ git log origin/$DEFAULT_BRANCH --since="$SINCE" --name-only --format="" -- $PATH
 ## 经验提炼
 
 从代码变更提炼工程教训：见 [references/lesson-learned.md](./references/lesson-learned.md)。
-
-## 反模式
-
-### FAIL: 只读但默认写文件
-
-```
-“我先生成快照供下次环比”
-→ 写 .engineering-retros/2026-04-16.json
-→ 用户：”我没让你写文件”
-→ 工作树脏 / 被误提交
-```
-
-### PASS: 显式开关
-
-```
-默认：纯输出报告，零文件写入
-仅当用户明确说”留快照”才写
-.engineering-retros/ 加进 .gitignore（但不要顺手改）
-```
-
-### FAIL: 作者统计当绩效
-
-```md
-“Alice 提交 50 次，Bob 仅 10 次 → Alice 更勤奋”
-→ Bob 在做架构重构 + code review
-→ 错误归因 → 团队矛盾
-```
-
-### PASS: 中性描述贡献分布
-
-```md
-## Contributors（按字母）
-- Alice：50 commits，主要在 services/api
-- Bob：10 commits + 35 PR reviews，主要在 architecture/
-观察：贡献形态不同，commit 数不能横比
-```

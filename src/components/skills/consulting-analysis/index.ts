@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { proposalWriterSkill } from "../proposal-writer/index";
@@ -35,6 +36,16 @@ export const consultingAnalysisSkill = defineSkill({
       },
       reason: "当研究结果还要继续转成提案时，可联动 `proposal-writer`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "跳过框架直接写",
+      pass: "框架先行",
+    }),
+    defineAntiPattern({
+      fail: "二手循环引用",
+      pass: "一手 + 标 source",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

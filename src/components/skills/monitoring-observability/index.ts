@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { logAnalyzerSkill } from "../log-analyzer/index";
@@ -38,6 +39,16 @@ export const monitoringObservabilitySkill = defineSkill({
       },
       reason: "需要沿日志追根溯源时，参阅 `log-analyzer`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "高基数标签：100 万用户 × 10 个 path = 1000 万时间序列，Prometheus OOM。",
+      pass: "控制标签基数：user_id 放日志里用 trace_id 关联，不放指标标签。",
+    }),
+    defineAntiPattern({
+      fail: "只有系统指标",
+      pass: "业务指标 + 系统指标",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

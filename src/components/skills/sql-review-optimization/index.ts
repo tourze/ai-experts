@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { dbSchemaDesignSkill } from "../db-schema-design/index";
@@ -46,6 +47,44 @@ export const sqlReviewOptimizationSkill = defineSkill({
       },
       reason: "如果优化依赖具体数据库引擎特性，联动 `db-schema-design`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "不读执行计划就改 SQL 或加索引。",
+      pass: "先读 EXPLAIN/ANALYZE 和真实基数，再决定改 SQL 或索引。",
+    }),
+    defineAntiPattern({
+      fail: "用 DISTINCT 掩盖错误的 JOIN 条件。",
+      pass: "修正 JOIN 条件和数据基数，避免用 DISTINCT 掩盖重复。",
+    }),
+    defineAntiPattern({
+      fail: "在 WHERE 的索引列上套函数导致索引失效。",
+      pass: "把函数移到参数侧、增加表达式索引，或改写谓词。",
+    }),
+    defineAntiPattern({
+      fail: "把报表查询直接跑在 OLTP 主库上。",
+      pass: "把报表迁到只读副本、数仓或异步汇总表。",
+    }),
+    defineAntiPattern({
+      fail: "SELECT * 并依赖列序号取数据。",
+      pass: "显式列出需要字段，并按列名读取。",
+    }),
+    defineAntiPattern({
+      fail: "用应用程序循环逐行处理而不是集合操作。",
+      pass: "用 SQL 集合操作、批处理或窗口函数下推计算。",
+    }),
+    defineAntiPattern({
+      fail: "每个查询各建一个索引，导致索引膨胀和写入性能下降。",
+      pass: "按查询族设计复合索引，定期清理低价值索引。",
+    }),
+    defineAntiPattern({
+      fail: "在 TEXT/JSONB 大列上建普通索引而不是 GIN 或前缀索引。",
+      pass: "TEXT 用前缀/全文索引，JSONB 用 GIN 或表达式索引。",
+    }),
+    defineAntiPattern({
+      fail: "PostgreSQL 上用 B-tree 替代 GIN 处理 `@>` 等运算符。",
+      pass: "使用适合操作符的 GIN/jsonb_path_ops 索引。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

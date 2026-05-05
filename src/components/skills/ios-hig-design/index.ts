@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -31,6 +32,16 @@ export const iosHigDesignSkill = defineSkill({
     "[accessibility](references/accessibility.md)、[app-icons](references/app-icons.md)、[colors-depth](references/colors-depth.md)、[components](references/components.md)",
     "[gestures](references/gestures.md)、[keyboard-input](references/keyboard-input.md)、[navigation](references/navigation.md)、[privacy-permissions](references/privacy-permissions.md)",
     "[system-integration](references/system-integration.md)、[typography](references/typography.md)、[widgets-extensions](references/widgets-extensions.md)",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "固定字号忽略 Dynamic Type",
+      pass: "语义字体",
+    }),
+    defineAntiPattern({
+      fail: "首屏立即弹权限",
+      pass: "先解释再请求：用 Web / Android 导航模式硬套到 iOS。 可点击区域压到 44pt 以下。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

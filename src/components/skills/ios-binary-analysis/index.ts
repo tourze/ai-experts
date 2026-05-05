@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { binaryAnalysisPatternsSkill } from "../binary-analysis-patterns/index";
@@ -43,6 +44,12 @@ export const iosBinaryAnalysisSkill = defineSkill({
       },
       reason: "需要与 `frida-dynamic-analysis` 配合做运行时验证。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "用旧版 class-dump",
+      pass: "用 ipsw class-dump",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

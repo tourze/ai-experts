@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -26,6 +27,16 @@ export const systemDesignSkill = defineSkill({
     "是否画清组件边界、数据流和责任归属。",
     "是否说明缓存、队列、索引、容灾和监控策略。",
     "是否标记未来扩展点和需要重审的假设。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "不问需求直接微服务：没问 QPS、团队规模、一致性。10 人 100 QPS 不需要这套。",
+      pass: "先量化再给方案",
+    }),
+    defineAntiPattern({
+      fail: "只给图不说代价",
+      pass: "每个决策配代价",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

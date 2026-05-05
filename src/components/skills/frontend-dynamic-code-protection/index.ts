@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -26,6 +27,24 @@ export const frontendDynamicCodeProtectionSkill = defineSkill({
     "是否单独处理缓存、构建速度、灰度回滚和失败降级。",
     "是否有服务端风控、限流、权限校验和业务一致性校验兜底。",
     "是否覆盖重放、过期、并发、多标签页、弱网和低端设备。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "把 `terser` 压缩后的 bundle 当保护；浏览器格式化后参数构造仍可读。",
+      pass: "把保护点放在服务端挑战、签名和行为校验上，混淆只作为辅助手段。",
+    }),
+    defineAntiPattern({
+      fail: "在 JS 中写固定密钥、固定函数编号或固定规则阈值；攻击者提取一次即可长期复用。",
+      pass: "密钥和规则留在服务端，客户端只拿短期动态片段。",
+    }),
+    defineAntiPattern({
+      fail: "动态保护片段使用长期缓存；旧片段会导致正常用户验签失败，也会扩大重放窗口。",
+      pass: "动态保护片段设置短 TTL，并绑定版本、会话和服务端验证。",
+    }),
+    defineAntiPattern({
+      fail: "只加混淆不做服务端验签、重放限制、限流和业务一致性校验。",
+      pass: "组合服务端验签、重放限制、限流和业务一致性校验。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

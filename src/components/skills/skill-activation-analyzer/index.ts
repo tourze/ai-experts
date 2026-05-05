@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -18,6 +19,16 @@ export const skillActivationAnalyzerSkill = defineSkill({
   constraints: [
     "只在本 skill 的适用场景内使用；任务不匹配时先澄清或转向更合适的 skill。",
     "执行时遵循正文中的流程、红线、检查清单和必要参考资料，不用未经验证的假设替代证据。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "看 description 文本下结论",
+      pass: "还原意图再匹配",
+    }),
+    defineAntiPattern({
+      fail: "合并冲突 skill",
+      pass: "区分度优化",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

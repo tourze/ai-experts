@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { ethicalHackingMethodologySkill } from "../ethical-hacking-methodology/index";
@@ -42,6 +43,20 @@ export const wiresharkAnalysisSkill = defineSkill({
       label: "nmap",
       reason: "需要与 `nmap` 的端口画像交叉验证暴露服务。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "无过滤肉眼翻",
+      pass: "显示过滤收窄",
+    }),
+    defineAntiPattern({
+      fail: "截图无过滤表达式",
+      pass: "留可复现命令",
+    }),
+    defineAntiPattern({
+      fail: "无端点定性",
+      pass: "端点 + 基线对比",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

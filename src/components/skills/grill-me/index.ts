@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { thinkingPartnerSkill } from "../thinking-partner/index";
@@ -46,6 +47,16 @@ export const grillMeSkill = defineSkill({
       },
       reason: "如果用户连问题本身都还没说清，先用 `thinking-partner` 收敛。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "机关枪式提问",
+      pass: "一次一问",
+    }),
+    defineAntiPattern({
+      fail: "泛泛追问",
+      pass: "落到具体场景",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

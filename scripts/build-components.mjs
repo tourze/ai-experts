@@ -293,6 +293,10 @@ function renderMarkdownBulletList(items) {
   }).join("\n");
 }
 
+function renderMarkdownTableCell(value) {
+  return String(value).trim().replace(/\r?\n/g, "<br>").replaceAll("|", "\\|");
+}
+
 function validateTextList(skill, property, itemLabel) {
   const items = skill[property];
   if (!Array.isArray(items) || items.length === 0) {
@@ -327,6 +331,43 @@ function renderChecklist(skill) {
     const lines = String(item).trim().split(/\r?\n/);
     return lines.map((line, index) => index === 0 ? `- [ ] ${line}` : `  ${line}`).join("\n");
   }).join("\n")}\n`;
+}
+
+function validateAntiPatterns(skill) {
+  const antiPatterns = skill.antiPatterns;
+  if (antiPatterns === undefined) return [];
+  if (!Array.isArray(antiPatterns) || antiPatterns.length === 0) {
+    throw new Error(`Skill ${skill.id} antiPatterns must be a non-empty array when defined`);
+  }
+  for (const [index, antiPattern] of antiPatterns.entries()) {
+    if (!antiPattern || typeof antiPattern !== "object" || Array.isArray(antiPattern)) {
+      throw new Error(`Skill ${skill.id} antiPatterns[${index}] must be an object`);
+    }
+    const keys = Object.keys(antiPattern).sort();
+    if (keys.join(",") !== "fail,pass") {
+      throw new Error(`Skill ${skill.id} antiPatterns[${index}] must only define fail and pass`);
+    }
+    if (typeof antiPattern.fail !== "string" || antiPattern.fail.trim() === "") {
+      throw new Error(`Skill ${skill.id} antiPatterns[${index}].fail must be a non-empty string`);
+    }
+    if (typeof antiPattern.pass !== "string" || antiPattern.pass.trim() === "") {
+      throw new Error(`Skill ${skill.id} antiPatterns[${index}].pass must be a non-empty string`);
+    }
+  }
+  return antiPatterns;
+}
+
+function renderAntiPatterns(skill) {
+  const antiPatterns = validateAntiPatterns(skill);
+  if (antiPatterns.length === 0) return "";
+  const rows = [
+    "| 反模式 | 正确做法 |",
+    "|--------|----------|",
+    ...antiPatterns.map((antiPattern) =>
+      `| ${renderMarkdownTableCell(antiPattern.fail)} | ${renderMarkdownTableCell(antiPattern.pass)} |`
+    ),
+  ];
+  return `## 反模式\n\n${rows.join("\n")}\n`;
 }
 
 function renderRelatedSkills(skill) {
@@ -374,11 +415,14 @@ function insertSectionBeforeH2Matching(source, section, predicate) {
 }
 
 function renderBodyWithGeneratedSections(skill, body) {
-  return insertSectionBeforeH2Matching(
+  const bodyWithChecklist = insertSectionBeforeH2Matching(
     body,
     renderChecklist(skill),
     (title) => title === "反模式" || title === "反模式速查",
   );
+  const antiPatterns = renderAntiPatterns(skill);
+  if (!antiPatterns) return bodyWithChecklist;
+  return `${bodyWithChecklist.trimEnd()}\n\n${antiPatterns.trimEnd()}`;
 }
 
 function renderSkillMd(skill, platform) {
@@ -893,6 +937,10 @@ function validateRegistry(registry) {
     if (skill.checklist !== undefined) {
       validateTextList(skill, "checklist", "checklist item");
     }
+    if (hasH2SectionMatching(bodySource, (title) => title === "反模式")) {
+      throw new Error(`Skill ${skill.id} must move ## 反模式 from SKILL.body.md to antiPatterns`);
+    }
+    validateAntiPatterns(skill);
     if (/\]\(\.\.\/[^)]+\/SKILL\.md\)|\]\([a-z0-9-]+-expert:[a-z0-9-]+\)/u.test(bodySource)) {
       throw new Error(`Skill ${skill.id} must move explicit cross-skill links from SKILL.body.md to relatedSkills`);
     }

@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { networkTroubleshooterSkill } from "../network-troubleshooter/index";
@@ -36,6 +37,16 @@ export const systemDiagnosticsSkill = defineSkill({
       },
       reason: "若后续需要网络分析，可切到 `network-troubleshooter`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "诊断时偷偷改系统",
+      pass: "只读采样",
+    }),
+    defineAntiPattern({
+      fail: "只有命令清单无结论",
+      pass: "采样 + 结论 + 下一步",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -27,13 +27,3 @@
 | Repository | 数据访问、查询构建 | 业务规则 |
 | DTO | 跨层数据传输、输入归一化 | 行为逻辑 |
 | Value Object | 封装业务概念、自验证、不可变 | 可变状态 |
-
-## 反模式
-
-详细示例见 [references/anti-patterns.md](references/anti-patterns.md)。核心信号：
-
-- 浅模块：多层只转发不封装复杂度的类链。
-- 继承滥用：为共享几行工具方法而继承。
-- Fat Controller：控制器内直接写业务逻辑、发通知、记审计。
-- 静态定位器：静态 Facade/Service Locator 导致无法测试。
-- 配置地狱：18 个参数让调用方承担本应隐藏的复杂度。

@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -26,6 +27,16 @@ export const appleAppstoreReviewerSkill = defineSkill({
     "输出必须按优先级排序，并附上可执行的验证步骤。",
     "如果需要真实走一遍审核路径，可配合 `ios-simulator-skill` 复现 UI 流程。",
     "交叉引用：界面合规与平台习惯看 `ios-hig-design`；门店更新文案看 `app-store-optimization`。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "泛泛而谈",
+      pass: "证据驱动的风险表",
+    }),
+    defineAntiPattern({
+      fail: "第一轮直接 patch",
+      pass: "先审再修",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

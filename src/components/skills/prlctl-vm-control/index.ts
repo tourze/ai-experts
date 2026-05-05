@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -53,6 +54,16 @@ export const prlctlVmControlSkill = defineSkill({
       },
       reason: "需要在隔离环境里复现 Windows 桌面自动化问题时，可联动 `windows-ui-automation`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "模糊名称直接高风险",
+      pass: "resolve 再执行",
+    }),
+    defineAntiPattern({
+      fail: "密码命令行明文",
+      pass: "--password-env",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

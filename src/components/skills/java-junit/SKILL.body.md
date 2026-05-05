@@ -38,11 +38,3 @@ class UserServiceTest {
 ```
 
 assertAll 分组断言的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。
-
-## 反模式
-
-- **@SpringBootTest 测纯逻辑** — 纯业务类直接 `new`，不启动容器。
-- **Thread.sleep 等异步** — 用 Awaitility 显式等待替代固定睡眠。
-- **只验证 mock 调用** — 用 `ArgumentCaptor` 验证传入内容，不要只 `verify(repo).save(any())`。
-
-反模式 FAIL/PASS 对比代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。

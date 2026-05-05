@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { laravelTddSkill } from "../laravel-tdd/index";
@@ -44,6 +45,16 @@ export const laravelSecuritySkill = defineSkill({
       },
       reason: "需要实现层面的配套测试时参考 `laravel-tdd`；需要发布前全量自检时参考 `laravel-verification`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只认证不鉴权",
+      pass: "Policy + FormRequest",
+    }),
+    defineAntiPattern({
+      fail: "批量赋值全开",
+      pass: "显式白名单：把上传文件放在公开目录，再指望前端不猜路径。 记录明文 token、密码、完整邮箱或卡号到日志。 线上依赖 `APP_DEBUG=true`。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

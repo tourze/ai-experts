@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { incidentResponseSkill } from "../incident-response/index";
@@ -34,6 +35,20 @@ export const logAnalyzerSkill = defineSkill({
       },
       reason: "如果问题仍未聚焦，转到 `incident-response`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "贴原始日志让用户自己找",
+      pass: "提炼关键模式 + 时间线",
+    }),
+    defineAntiPattern({
+      fail: "全量扫大日志",
+      pass: "先窗口再关键词",
+    }),
+    defineAntiPattern({
+      fail: "分享日志保留敏感信息",
+      pass: "脱敏",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

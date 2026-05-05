@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -29,6 +30,16 @@ export const rustProcMacroPatternsSkill = defineSkill({
   checklist: [
     "`proc-macro = true` 已设？用 syn 2.x？",
     "错误路径返回 `compile_error!` 而非 panic？Span 指向有意义位置？",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "宏内 panic",
+      pass: "compile_error! + Span",
+    }),
+    defineAntiPattern({
+      fail: "全用 call_site() Span",
+      pass: "字段级 Span",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -102,37 +102,3 @@ export function AppStack() {
   );
 }
 ```
-
-## 反模式
-
-### FAIL: render 内构造 style
-
-```tsx
-<View style={{ padding: 16, backgroundColor: theme.bg }}>
-  {items.map(i => <Row key={i.id} style={{ marginTop: 8 }} />)} // 所有 Row 失去 memo
-</View>
-```
-
-### PASS: StyleSheet.create
-
-```tsx
-const styles = StyleSheet.create({ screen: { padding: 16 }, row: { marginTop: 8 } });
-<View style={styles.screen}>{items.map(i => <Row key={i.id} style={styles.row} />)}</View>
-```
-
-### FAIL: JS 线程做跟手动画
-
-```tsx
-const [x, setX] = useState(0);
-<PanResponder onMove={e => setX(e.nativeEvent.pageX)}> // 每帧穿桥 + JS 渲染
-  <Animated.View style={{ transform: [{ translateX: x }] }} />
-</PanResponder>
-```
-
-### PASS: Reanimated worklet (UI 线程)
-
-```tsx
-const x = useSharedValue(0);
-const gesture = Gesture.Pan().onUpdate(e => { x.value = e.translationX; });
-const style = useAnimatedStyle(() => ({ transform: [{ translateX: x.value }] }));
-```

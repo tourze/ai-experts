@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -25,6 +26,16 @@ export const asyncPythonPatternsSkill = defineSkill({
     "每个外部依赖都具备 timeout、重试边界和错误传播策略。",
     "已限制并发度。",
     "任务生命周期可追踪，退出时没有悬空 task。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "async 函数里调同步阻塞",
+      pass: "用异步客户端或 to_thread",
+    }),
+    defineAntiPattern({
+      fail: "无限并发",
+      pass: "信号量限流",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

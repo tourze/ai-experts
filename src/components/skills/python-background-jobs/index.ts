@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { asyncPythonPatternsSkill } from "../async-python-patterns/index";
@@ -53,6 +54,20 @@ export const pythonBackgroundJobsSkill = defineSkill({
       },
       reason: "任务编排涉及异步执行细节时，联动 `async-python-patterns`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "请求里 await 长任务",
+      pass: "立即返回 job_id",
+    }),
+    defineAntiPattern({
+      fail: "无业务幂等键",
+      pass: "idempotency_key",
+    }),
+    defineAntiPattern({
+      fail: "无限重试",
+      pass: "区分错误类型",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -33,37 +33,3 @@ Route::middleware('auth:sanctum')->scopeBindings()->group(function (): void {
 });
 // 控制器内：$this->authorize('view', [$project, $account]);
 ```
-
-## 反模式
-
-### FAIL: 控制器同步编排副作用
-```php
-DB::transaction(function () use ($request) {
-    $user = User::create($request->all());
-    Mail::to($user)->send(new Welcome($user));  // 阻塞请求
-    Stripe::charge($user, $request->amount);    // 外部 HTTP 同步
-});
-```
-
-### PASS: Action + Job 异步
-```php
-final class UserController extends Controller
-{
-    public function store(StoreUserRequest $request, CreateUserAction $action): UserResource
-    {
-        $user = $action->handle($request->validated());
-        SendWelcomeEmail::dispatch($user);
-        return UserResource::make($user);
-    }
-}
-```
-
-### FAIL: N+1 懒加载
-```php
-PostResource::collection(Post::all()); // 每个 post 触发 author 查询
-```
-
-### FAIL: 缓存只加不失效
-```php
-$u = Cache::remember("user:$id", 3600, fn() => User::find($id)); // 无失效策略
-```

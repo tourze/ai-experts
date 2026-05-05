@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -26,6 +27,20 @@ export const appleNotesSkill = defineSkill({
     "如果用户要批量自动化，先验证是否允许交互式操作。",
     "导出前提醒用户：导出目标默认在桌面。",
     "交叉引用：需要任务提醒时用 `apple-reminders`，不要把 Notes 当待办系统。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "假设 CLI 参数",
+      pass: "先看 --help",
+    }),
+    defineAntiPattern({
+      fail: "Linux/CI 直接跑",
+      pass: "平台前置检查",
+    }),
+    defineAntiPattern({
+      fail: "不确认文件夹删除",
+      pass: "显式 --folder",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

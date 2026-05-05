@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -29,6 +30,20 @@ export const competitiveIntelligenceSkill = defineSkill({
     "已给出销售、产品或市场的后续动作。",
     "高级档：至少 3 个框架交叉验证同一结论。",
     "高级档：标注了各结论的置信度和验证框架。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "截图堆砌",
+      pass: "输出竞品变化、对我方影响和推荐动作，而不是素材堆叠。",
+    }),
+    defineAntiPattern({
+      fail: "比 10 个竞品",
+      pass: "按 Direct/Adjacent/Watch 聚焦 2-3 个真实威胁。",
+    }),
+    defineAntiPattern({
+      fail: "堆框架但各说各话",
+      pass: "用互补框架交叉验证，最后只合成高置信度结论。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

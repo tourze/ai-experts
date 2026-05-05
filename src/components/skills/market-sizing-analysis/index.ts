@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { fundraiseAdvisorSkill } from "../fundraise-advisor/index";
@@ -41,6 +42,16 @@ export const marketSizingAnalysisSkill = defineSkill({
       },
       reason: "与客户画像或融资故事联动时，可配合 `startup-icp-definer` 和 `fundraise-advisor`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "全球总盘 = TAM",
+      pass: "top-down + bottom-up 交叉",
+    }),
+    defineAntiPattern({
+      fail: "漏定价/地域差",
+      pass: "显式假设",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { grillMeSkill } from "../grill-me/index";
@@ -43,6 +44,16 @@ export const consciousnessCouncilSkill = defineSkill({
       },
       reason: "如果重点是未来分支推演，优先配合 `what-if-oracle`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "角色全部点头",
+      pass: "制造实质张力",
+    }),
+    defineAntiPattern({
+      fail: "简单事实硬套议会",
+      pass: "议会有阈值",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

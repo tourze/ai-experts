@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { reactNativeJsPerformanceSkill } from "../react-native-js-performance/index";
@@ -40,6 +41,16 @@ export const reactNativeDesignSkill = defineSkill({
       },
       reason: "如果重点是 JS 线程性能（掉帧、列表卡顿），优先看 `react-native-js-performance`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "render 内构造 style",
+      pass: "StyleSheet.create",
+    }),
+    defineAntiPattern({
+      fail: "JS 线程做跟手动画",
+      pass: "Reanimated worklet (UI 线程)",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

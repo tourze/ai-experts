@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -33,6 +34,20 @@ export const laravelPatternsSkill = defineSkill({
     "多表写操作在事务中，缓存失效绑定模型生命周期。",
     "N+1 已排查：列表/详情/嵌套资源都用了 `with()` 或 `load()`。",
     "引入后台任务时同步检查幂等、重试、失败日志和 queue 配置。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "控制器同步编排副作用",
+      pass: "Action + Job 异步",
+    }),
+    defineAntiPattern({
+      fail: "N+1 懒加载",
+      pass: "用 eager loading 或 constrained eager loading，并验证查询数。",
+    }),
+    defineAntiPattern({
+      fail: "缓存只加不失效",
+      pass: "为缓存定义失效事件、TTL 和 key version。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -1,4 +1,4 @@
-import { InvocationPolicy, KnownTool, Platform, defineSkill } from "../../sdk";
+import { InvocationPolicy, KnownTool, Platform, defineSkill, defineAntiPattern } from "../../sdk";
 
 export const benchmarkResultAnalyzerSkill = defineSkill({
   id: "benchmark-result-analyzer",
@@ -25,6 +25,16 @@ export const benchmarkResultAnalyzerSkill = defineSkill({
     "已区分稳定模式和单次偶发异常。",
     "每条建议都写清 category、priority、suggestion 和 expected_impact。",
     "明确哪些问题属于 eval 本身，需要修 assertion 而不是修 skill。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "分数复述：这没有解释可迁移模式，也不能指导下一轮改动。",
+      pass: "因果链",
+    }),
+    defineAntiPattern({
+      fail: "把 eval 问题误判成 skill 问题：也可能是任务缺输入、assertion 无法验证或 benchmark harness 有问题。",
+      pass: "分清责任层",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

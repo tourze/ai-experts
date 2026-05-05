@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { phpXFeaturesSkill } from "../php-8x-features/index";
@@ -61,6 +62,20 @@ export const phpTypeSafetySkill = defineSkill({
       },
       reason: "联动：`php-8x-features` · `php-design-patterns` · `php-testing`",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "@var 强转",
+      pass: "assert 收窄",
+    }),
+    defineAntiPattern({
+      fail: "无理由 ignore",
+      pass: "标原因",
+    }),
+    defineAntiPattern({
+      fail: "裸 array 返回",
+      pass: "精确类型",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

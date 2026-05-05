@@ -46,8 +46,3 @@
 ## 代码模式
 
 SVG 质量校验与 PPTX 封装参考 [references/pptx.md](references/pptx.md) 中的 `python-pptx` 流程，按页生成后逐页校验内联属性合规性（禁用 `<mask>`/`<style>`/`<foreignObject>`/`<filter>`/CSS class）。
-
-## 反模式
-
-详细反模式与正确做法见 [references/anti-patterns.md](references/anti-patterns.md)。
-页面类型参考见 [references/page-types.md](references/page-types.md)。

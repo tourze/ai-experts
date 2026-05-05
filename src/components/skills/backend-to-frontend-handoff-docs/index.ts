@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -25,6 +26,16 @@ export const backendToFrontendHandoffDocsSkill = defineSkill({
     "是否明确鉴权、分页、排序、缓存、轮询或实时更新规则。",
     "是否写清错误码、字段约束和镜像到前端的校验逻辑。",
     "是否补充了联调测试场景和已知限制。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只贴 Swagger",
+      pass: "Endpoint + 业务语义",
+    }),
+    defineAntiPattern({
+      fail: "只 happy path",
+      pass: "全状态码 + 边界",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

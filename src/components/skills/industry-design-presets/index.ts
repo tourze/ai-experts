@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { designSystemPatternsSkill } from "../design-system-patterns/index";
@@ -32,6 +33,16 @@ export const industryDesignPresetsSkill = defineSkill({
       },
       reason: "要和 `modern-web-design`、font-pairing-library、`design-system-patterns` 联动。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "跨行业套捷径",
+      pass: "行业语义优先",
+    }),
+    defineAntiPattern({
+      fail: "100% 套预设",
+      pass: "60% 预设 + 40% 差异化",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

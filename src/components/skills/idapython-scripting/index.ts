@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { binaryAnalysisPatternsSkill } from "../binary-analysis-patterns/index";
@@ -35,6 +36,12 @@ export const idapythonScriptingSkill = defineSkill({
       },
       reason: "需要与 `binary-analysis-patterns` 配合做深入逆向。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "直接在反编译中搜字符串",
+      pass: "先用字符串交叉引用缩小范围",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

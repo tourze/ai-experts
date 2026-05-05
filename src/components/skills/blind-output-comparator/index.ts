@@ -1,4 +1,4 @@
-import { InvocationPolicy, KnownTool, Platform, defineSkill } from "../../sdk";
+import { InvocationPolicy, KnownTool, Platform, defineSkill, defineAntiPattern } from "../../sdk";
 
 export const blindOutputComparatorSkill = defineSkill({
   id: "blind-output-comparator",
@@ -24,6 +24,16 @@ export const blindOutputComparatorSkill = defineSkill({
     "Rubric 同时覆盖 correctness / completeness / accuracy 和 organization / formatting / usability。",
     "如有 expectations，已统计通过率，但没有用它替代整体判断。",
     "winner 为 `A`、`B` 或 `TIE`，且 reasoning 足以复核。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "按来源偏好选择：盲评阶段不允许使用来源信息。",
+      pass: "只按输出本身比较",
+    }),
+    defineAntiPattern({
+      fail: "固定 rubric 不看任务：代码修复、PDF 填表、研究报告需要完全不同的质量维度。",
+      pass: "任务专属 rubric",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

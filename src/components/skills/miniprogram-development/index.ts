@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -33,6 +34,16 @@ export const miniprogramDevelopmentSkill = defineSkill({
     "如果使用 Taro，是否误用了 `document`、`window`、`react-dom` 等 DOM-only API。",
     "如果使用 CloudBase，是否使用了 `wx.cloud` 客户端 API、云函数和 `OPENID` 正确边界。",
     "涉及调试、预览、上传时，是否明确了开发者工具链路、CI 链路以及 `appid`/私钥前置条件。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "默认套 CloudBase / 用 DOM",
+      pass: "先看 project.config.json + 小程序 API",
+    }),
+    defineAntiPattern({
+      fail: "缺页面四件套",
+      pass: "四件套 + app.json 同步",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

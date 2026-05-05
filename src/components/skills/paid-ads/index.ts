@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { redesignMyLandingpageSkill } from "../redesign-my-landingpage/index";
@@ -35,6 +36,20 @@ export const paidAdsSkill = defineSkill({
       },
       reason: "若着陆页承接弱，配合 `redesign-my-landingpage`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "一个 campaign 全堆",
+      pass: "按层级拆",
+    }),
+    defineAntiPattern({
+      fail: "只调出价不修创意",
+      pass: "漏斗逐层诊断",
+    }),
+    defineAntiPattern({
+      fail: "目标不清就讨论技巧",
+      pass: "先量化目标",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

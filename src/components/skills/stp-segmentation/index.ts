@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -26,6 +27,12 @@ export const stpSegmentationSkill = defineSkill({
     "细分维度至少用了 2 个。",
     "目标市场有明确选择标准和理由。",
     "定位主张是一句话，且有差异化依据。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "跳过 S 直接定位",
+      pass: "逐步收敛",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

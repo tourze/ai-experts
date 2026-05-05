@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -36,6 +37,16 @@ export const codeReviewSkill = defineSkill({
     "计算并输出 Health Score",
     "未混入 linter 能抓的风格问题",
     "高压模式：每条批评有证据 + 修复方向，未攻击作者人格",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "凭猜测：\"getUser() 可能有 null 安全问题 / 建议加错误处理\" → 没有文件位置、没有代码证据。",
+      pass: "四要素完整",
+    }),
+    defineAntiPattern({
+      fail: "审查变重写：给出 30 行替代代码 → 审查者的职责是指出问题，不是替人写代码。",
+      pass: "指出问题 + 给方向：高压模式反模式见 [references/brutal-mode.md](./references/brutal-mode.md)。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

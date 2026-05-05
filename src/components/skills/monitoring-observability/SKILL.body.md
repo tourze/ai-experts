@@ -29,38 +29,3 @@ groups:
   }
 }
 ```
-
-## 反模式
-
-### FAIL: 高基数标签
-
-```yaml
-- name: http_requests_total
-  labels: [method, path, user_id]  # user_id 基数 = 用户数！
-```
-
-→ 100 万用户 × 10 个 path = 1000 万时间序列，Prometheus OOM。
-
-### PASS: 控制标签基数
-
-```yaml
-- name: http_requests_total
-  labels: [method, path, status_code]  # 基数 < 1000
-```
-
-→ user_id 放日志里用 trace_id 关联，不放指标标签。
-
-### FAIL: 只有系统指标
-
-```
-CPU 40%, Memory 60%, Disk 30% → "一切正常"
-# 但用户已经无法下单 15 分钟了
-```
-
-### PASS: 业务指标 + 系统指标
-
-```yaml
-- alert: OrderSuccessRateLow
-  expr: sum(rate(orders_completed[5m])) / sum(rate(orders_attempted[5m])) < 0.95
-  for: 3m
-```

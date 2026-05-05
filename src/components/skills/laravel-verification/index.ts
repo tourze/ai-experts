@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { laravelPatternsSkill } from "../laravel-patterns/index";
@@ -44,6 +45,16 @@ export const laravelVerificationSkill = defineSkill({
       },
       reason: "代码级实现和安全基线分别参考 `laravel-patterns` 与 `laravel-security`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只跑测试就认为 OK",
+      pass: "全链路验证",
+    }),
+    defineAntiPattern({
+      fail: "本地成功 = 线上可行",
+      pass: "预发复现线上配置",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

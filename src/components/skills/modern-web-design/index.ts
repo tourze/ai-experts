@@ -4,6 +4,7 @@ import {
   Platform,
   defineAsset,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -70,6 +71,20 @@ export const modernWebDesignSkill = defineSkill({
       label: "性能诊断",
       reason: "已通过 `性能诊断` 复核。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "AI 套版感",
+      pass: "有方向的视觉",
+    }),
+    defineAntiPattern({
+      fail: "三风格混搭",
+      pass: "一页一风格：全局 Bento + 微 Glass 强调，不混入 Neumorphism / Brutalism / Cyberpunk。",
+    }),
+    defineAntiPattern({
+      fail: "重型视觉无预算：LCP 1.5s → 6s，移动端卡死。",
+      pass: "配性能预算：预算 LCP < 2.5s，JS < 300KB。hero 用渐变+静态图，滚动动效用 IntersectionObserver + CSS。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

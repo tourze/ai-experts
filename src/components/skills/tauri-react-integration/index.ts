@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -31,6 +32,20 @@ export const tauriReactIntegrationSkill = defineSkill({
     "`useInvoke` 处理 loading/error/success？",
     "`useTauriEvent` cleanup 调用 unlisten？",
     "Rust 变更后 `emit()` 通知前端？",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "listen 不 cleanup",
+      pass: "cleanup 调 unlisten",
+    }),
+    defineAntiPattern({
+      fail: "invoke 无 try/catch",
+      pass: "useInvoke Hook 封装",
+    }),
+    defineAntiPattern({
+      fail: "假设状态自动同步",
+      pass: "显式 emit + listen：详见 [references/](references/)。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

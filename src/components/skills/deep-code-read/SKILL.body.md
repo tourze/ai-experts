@@ -34,13 +34,3 @@
 ```bash
 deep-code-read ./target-repo ./skills-output
 ```
-
-## 反模式
-
-### FAIL: 快速扫描后直接写结论
-
-只看 README 和目录树就生成 skill，无法回答实现细节问题。
-
-### PASS: 闭卷验证驱动
-
-让出题者基于源码提问，让答题者只读 skill 作答，用失败问题反向补齐 skill。

@@ -46,27 +46,3 @@ async fn worker(mut rx: mpsc::Receiver<u32>, stop: CancellationToken) -> Vec<u32
 ```
 
 async trait 与超时边界的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。
-
-## 反模式
-
-### FAIL: async 里做阻塞
-
-```rust
-async fn process(path: &Path) -> io::Result<String> {
-    std::thread::sleep(Duration::from_secs(1));  // 堵 runtime worker
-    std::fs::read_to_string(path)
-}
-```
-
-### PASS: tokio 异步 API / spawn_blocking
-
-```rust
-async fn process(path: &Path) -> io::Result<String> {
-    tokio::time::sleep(Duration::from_secs(1)).await;
-    tokio::fs::read_to_string(path).await
-}
-// CPU 密集任务：
-let result = tokio::task::spawn_blocking(|| heavy_compute()).await?;
-```
-
-MutexGuard 跨 await 的反模式见 [references/advanced-patterns.md](references/advanced-patterns.md)。

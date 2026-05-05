@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { embeddingStrategiesSkill } from "../embedding-strategies/index";
@@ -47,6 +48,20 @@ export const vectorIndexTuningSkill = defineSkill({
       },
       reason: "相关 skill：`similarity-search-patterns`、`embedding-strategies`、`rag-auditor`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "单次查询拍板",
+      pass: "固定 benchmark",
+    }),
+    defineAntiPattern({
+      fail: "同时改三个参数",
+      pass: "单变量调参",
+    }),
+    defineAntiPattern({
+      fail: "用压缩掩盖向量质量差",
+      pass: "先排除上游问题",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

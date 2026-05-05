@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -34,6 +35,20 @@ export const leadResearchAssistantSkill = defineSkill({
     "是否区分事实、公开信号和推测结论。",
     "是否给出可执行的联系人顺序与切入点。",
     "是否说明信号的新鲜度和可信度。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "没 ICP 撒大网",
+      pass: "窄 ICP",
+    }),
+    defineAntiPattern({
+      fail: "只给公司名",
+      pass: "公司 + 触发 + 切入",
+    }),
+    defineAntiPattern({
+      fail: "只挖联系人",
+      pass: "角色 + 决策 map",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

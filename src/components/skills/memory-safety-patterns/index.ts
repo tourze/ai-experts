@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -34,6 +35,16 @@ export const memorySafetyPatternsSkill = defineSkill({
     "C 代码是否只有一个 cleanup 出口，并覆盖所有失败分支。",
     "析构函数是否保证不抛异常；移动后对象是否仍处于可析构状态。",
     "是否避免返回指向局部对象、临时缓冲区或失效容器元素的指针 / 引用。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "shared_ptr 当默认答案",
+      pass: "单 owner + observer",
+    }),
+    defineAntiPattern({
+      fail: "值传递表达只读借用",
+      pass: "span 表达借用",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

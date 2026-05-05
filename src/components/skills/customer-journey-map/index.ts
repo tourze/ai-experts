@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -25,6 +26,16 @@ export const customerJourneyMapSkill = defineSkill({
     "关键触点、情绪变化、流失点和机会点都有证据来源。",
     "已说明哪些问题值得优先解决，以及为什么。",
     "输出可以直接衔接需求、实验或服务改造。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "内部 SOP 当旅程",
+      pass: "用户视角",
+    }),
+    defineAntiPattern({
+      fail: "所有阶段都是问题",
+      pass: "量化 + 排序",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

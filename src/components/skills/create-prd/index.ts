@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { agileProductOwnerSkill } from "../agile-product-owner/index";
@@ -43,6 +44,16 @@ export const createPrdSkill = defineSkill({
       },
       reason: "需要把 discovery 结论转成可执行需求时，可配合 `agile-product-owner`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只有功能列表：没有问题陈述、没有目标、没有成功指标，读者不知道为什么要做、做到什么程度算完。",
+      pass: "问题驱动 + 可验证指标",
+    }),
+    defineAntiPattern({
+      fail: "“支持所有情况”",
+      pass: "显式边界",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

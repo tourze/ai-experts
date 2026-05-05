@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { planningUnderUncertaintySkill } from "../planning-under-uncertainty/index";
@@ -34,6 +35,16 @@ export const evaluatingNewTechnologySkill = defineSkill({
       },
       reason: "讨论长期不确定性时，可配合 `planning-under-uncertainty`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "跟风选型",
+      pass: "问题驱动 + 试点",
+    }),
+    defineAntiPattern({
+      fail: "只比价格",
+      pass: "TCO 三层",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

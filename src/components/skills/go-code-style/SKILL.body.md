@@ -46,53 +46,6 @@ if isAdmin || isOwner || isPublicMember {
 }
 ```
 
-## 反模式
-
-### FAIL: 按提示保留深层嵌套
-
-```go
-if order.ID != "" {
-	if len(order.Items) > 0 {
-		return process(order)
-	} else {
-		return Receipt{}, errors.New("empty items")
-	}
-}
-return Receipt{}, errors.New("empty id")
-```
-
-### PASS: 边界先返回
-
-```go
-if order.ID == "" {
-	return Receipt{}, errors.New("order: empty id")
-}
-if len(order.Items) == 0 {
-	return Receipt{}, errors.New("order: empty items")
-}
-return process(order)
-```
-
-### FAIL: 为了“可复用”导出内部细节
-
-```go
-type InternalTokenParser struct{}
-
-func BuildInternalTokenParser() *InternalTokenParser {
-	return &InternalTokenParser{}
-}
-```
-
-### PASS: 先保持内部可变
-
-```go
-type tokenParser struct{}
-
-func newTokenParser() *tokenParser {
-	return &tokenParser{}
-}
-```
-
 ## 常见错误
 
 | 错误 | 修复 |

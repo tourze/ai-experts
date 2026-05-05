@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { deepResearchSkill } from "../deep-research/index";
@@ -40,6 +41,16 @@ export const comparativeAnalysisSkill = defineSkill({
       },
       reason: "如果对比的外部概念需要先收集信息，先用 `deep-research`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "打勾无判断",
+      pass: "条件化建议",
+    }),
+    defineAntiPattern({
+      fail: "维度不统一",
+      pass: "维度矩阵",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

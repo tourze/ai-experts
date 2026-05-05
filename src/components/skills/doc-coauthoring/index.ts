@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { proposalWriterSkill } from "../proposal-writer/index";
@@ -49,6 +50,16 @@ export const docCoauthoringSkill = defineSkill({
       },
       reason: "交付后若还要延展成用户手册，可转给 `user-guide-writing`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "原料堆砌",
+      pass: "结构 → 缺口 → 章节",
+    }),
+    defineAntiPattern({
+      fail: "虚构背景",
+      pass: "显式标 [待确认]",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

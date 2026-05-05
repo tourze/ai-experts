@@ -47,28 +47,3 @@ for func in idautils.Functions():
 ida.close_database(save=False)
 open("out.json", "w").write(json.dumps(result, indent=2))
 ```
-
-## 反模式
-
-### FAIL: 直接在反编译中搜字符串
-
-```python
-for func in idautils.Functions():
-    dec = str(ida_hexrays.decompile(func))
-    if "password" in dec:  # 遍历几万个函数全部反编译
-        print(hex(func))
-# → 极慢，每个函数都调用 decompiler
-```
-
-### PASS: 先用字符串交叉引用缩小范围
-
-```python
-# 1. 找字符串地址
-str_ea = idc.get_name_ea(0, "aPassword")
-# 2. 找引用该字符串的函数
-for ref in idautils.XrefsTo(str_ea):
-    func = ida_funcs.get_func(ref.frm)
-    if func:
-        dec = ida_hexrays.decompile(func.start_ea)
-        print(str(dec))
-```

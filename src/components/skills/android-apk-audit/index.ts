@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { ethicalHackingMethodologySkill } from "../ethical-hacking-methodology/index";
@@ -49,6 +50,16 @@ export const androidApkAuditSkill = defineSkill({
       label: "intent-deeplink-abuse",
       reason: "Manifest 配置下钻使用 android-manifest-security；Intent/deep link 下钻使用 `intent-deeplink-abuse`；Frida 脚本选型使用 android-frida-script-catalog。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "字符串命中即报：问题：测试代码、第三方库、无效占位符和运行时未使用常量都会制造误报。",
+      pass: "命中后闭合证据链：回到定义、条件分支、调用点和网络层使用位置；无法证明运行时使用时标为需要动态确认。",
+    }),
+    defineAntiPattern({
+      fail: "盲跑通用 Frida 脚本：问题：脚本成功加载不等于 pinning 已绕过，也不能证明漏洞存在。",
+      pass: "静态定位后精准 hook：确认具体类、方法签名和调用路径后再写 hook，并用代理流量或日志证明行为变化。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

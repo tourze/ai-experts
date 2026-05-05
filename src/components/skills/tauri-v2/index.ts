@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -38,6 +39,24 @@ export const tauriV2Skill = defineSkill({
     "`State<T>` 的类型是否与 `.manage(...)` 注入保持完全一致，锁的粒度是否足够小？",
     "是否先核对目标插件或 API 的桌面 / Android / iOS 支持矩阵，再决定是否需要 `#[cfg(desktop)]` / `#[cfg(mobile)]`？",
     "交付前是否运行 `cargo tauri info`、目标平台构建命令，并检查 `beforeDevCommand` / `beforeBuildCommand`、签名和更新配置？",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "全部逻辑塞 main.rs",
+      pass: "main 薄入口 + lib.rs::run()",
+    }),
+    defineAntiPattern({
+      fail: "异步命令用借用参数",
+      pass: "拥有所有权类型",
+    }),
+    defineAntiPattern({
+      fail: "v1 时代 import",
+      pass: "v2 模块化路径",
+    }),
+    defineAntiPattern({
+      fail: "桌面通过 = 移动通过",
+      pass: "平台分支",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

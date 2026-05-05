@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { networkTroubleshooterSkill } from "../network-troubleshooter/index";
@@ -42,6 +43,16 @@ export const archLinuxTriageSkill = defineSkill({
       },
       reason: "涉及 DNS、链路或端口不可达时，联动 `network-troubleshooter`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "pacman -Sy 单独刷新",
+      pass: "必须 -Syu 完整升级",
+    }),
+    defineAntiPattern({
+      fail: "删 pacman 数据库",
+      pass: "用 -Qikk 验证",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

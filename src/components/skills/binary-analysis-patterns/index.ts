@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { protocolReverseEngineeringSkill } from "../protocol-reverse-engineering/index";
@@ -35,6 +36,16 @@ export const binaryAnalysisPatternsSkill = defineSkill({
       },
       reason: "协议编解码或加密路径不清晰时，可切到 `protocol-reverse-engineering`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只信伪代码",
+      pass: "关键分支回看汇编",
+    }),
+    defineAntiPattern({
+      fail: "编译器模板当业务",
+      pass: "先识别工具链",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { dataAnalysisSkill } from "../data-analysis/index";
@@ -54,6 +55,20 @@ export const statisticalAnalysisSkill = defineSkill({
       },
       reason: "相关 skill：`data-analysis`、`data-visualization`、`data-storytelling`、`llm-evaluation`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只看均值",
+      pass: "分布 + 分位数",
+    }),
+    defineAntiPattern({
+      fail: "显著 = 重要",
+      pass: "同时报效应量",
+    }),
+    defineAntiPattern({
+      fail: "相关 = 因果",
+      pass: "区分观测与因果",
+    }),
   ],
   invocation: InvocationPolicy.ModelOnly,
   platforms: [Platform.Claude, Platform.Codex],

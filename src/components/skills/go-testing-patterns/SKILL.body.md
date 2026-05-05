@@ -57,43 +57,6 @@ type Service struct {
 }
 ```
 
-## 反模式
-
-### FAIL: 测实现细节
-
-```go
-if cache.data["u1"] == nil {
-	t.Fatal("missing internal map entry")
-}
-```
-
-### PASS: 测可观察行为
-
-```go
-got, ok := cache.Get("u1")
-if !ok || got.ID != "u1" {
-	t.Fatal("missing cached user")
-}
-```
-
-### FAIL: 用 Sleep 等异步完成
-
-```go
-go worker.Run()
-time.Sleep(100 * time.Millisecond)
-```
-
-### PASS: 用同步信号
-
-```go
-done := make(chan struct{})
-go func() {
-	defer close(done)
-	worker.Run()
-}()
-<-done
-```
-
 ## 常见错误
 
 | 错误 | 修复 |

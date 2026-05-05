@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineAsset,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { designSystemPatternsSkill } from "../design-system-patterns/index";
@@ -54,6 +55,20 @@ export const figmaImplementDesignSkill = defineSkill({
       },
       reason: "`design-system-patterns`",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "复制 Figma 生成代码",
+      pass: "翻译到项目 token",
+    }),
+    defineAntiPattern({
+      fail: "凭截图猜布局",
+      pass: "先拿结构化数据",
+    }),
+    defineAntiPattern({
+      fail: "只做默认态",
+      pass: "状态全覆盖",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

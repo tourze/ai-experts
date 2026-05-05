@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -33,6 +34,12 @@ export const vueExpertJsSkill = defineSkill({
     "`.vue` / `.js` / `.mjs` 文件里是否仍残留 `lang=\"ts\"`、类型断言、接口、枚举等 TypeScript 语法。",
     "测试是否覆盖了组件事件、composable 返回值或 store action 的关键行为，而不是只验证实现细节。",
     "若引入外部参考技能，链接是否真实存在，且当前任务确实需要展开到更通用的 JavaScript 模式。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "JSDoc 与运行时脱节",
+      pass: "JSDoc + 运行时同时声明：composable 返回未约束的巨大对象，调用方不知道哪些字段稳定。 为\"类型安全\"把简单对象抽成独立文件，制造跨目录跳转噪音。 使用 `require()` 或 CommonJS 导出，破坏 Vite ESM 一致性。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

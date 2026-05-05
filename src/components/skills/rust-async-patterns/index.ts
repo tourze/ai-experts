@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -21,6 +22,12 @@ export const rustAsyncPatternsSkill = defineSkill({
     "锁的持有范围必须短于 `await`。需要跨异步边界共享状态时，优先消息传递。",
     "并发必须有上限：`JoinSet` 负责收尸，`Semaphore` 负责限流，channel 容量负责背压。",
     "诊断顺序固定：先确认任务是谁 spawn 的 → 看取消信号有没有传到 → 看是否有阻塞/锁跨 `await`。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "async 里做阻塞",
+      pass: "tokio 异步 API / spawn_blocking：MutexGuard 跨 await 的反模式见 [references/advanced-patterns.md](references/advanced-patterns.md)。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

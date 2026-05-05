@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -34,6 +35,24 @@ export const researchNoteWrapSkill = defineSkill({
     "引用的位点都给出了\"它做什么 / 为什么关键 / 如何支撑结论\"。",
     "文件名匹配 `YYYY-MM-DD-<topic>.md`。",
     "追加专题场景没有新建文件。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "单步落盘",
+      pass: "双步确认后落盘",
+    }),
+    defineAntiPattern({
+      fail: "流水账叙事",
+      pass: "表格承担密度",
+    }),
+    defineAntiPattern({
+      fail: "干甩 path:line",
+      pass: "三件事都到位",
+    }),
+    defineAntiPattern({
+      fail: "错触发",
+      pass: "转手到 meeting-notes-and-actions",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

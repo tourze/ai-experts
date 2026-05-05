@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -24,6 +25,16 @@ export const androidAccessibilitySkill = defineSkill({
     "**4. 语义分组与状态**\n* 相关元素用 `Modifier.semantics(mergeDescendants = true)` 合并为单个播报单元\n* 自定义控件通过 `stateDescription` 暴露状态（\"已选中\"、\"已展开\"）\n* 仅通过手势或长按触发的操作，必须同时提供 `customActions` 替代路径\n\n语义分组与状态的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。",
     "**5. 焦点与导航顺序**\n* 焦点顺序：从上到下、Start 到 End\n* 标题用 `Modifier.semantics { heading() }`，支持 TalkBack 按标题跳转\n* 页面切换或 Dialog 关闭后，焦点移至逻辑目标\n* 全部功能可通过 TalkBack、Switch Access、键盘操作\n\n```kotlin\nText(\"设置\", modifier = Modifier.semantics { heading() })\n```",
     "**6. 自定义 Canvas 视图**\nCanvas 绘制的交互区对 TalkBack 完全不可见。View 体系实现 `ExploreByTouchHelper`；Compose 通过 `Modifier.semantics` 叠加语义节点。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "描述外观",
+      pass: "描述动作",
+    }),
+    defineAntiPattern({
+      fail: "缩小按钮节省空间",
+      pass: "视觉小但触摸区大：更多反模式见 [references/advanced-patterns.md](references/advanced-patterns.md)。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

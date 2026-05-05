@@ -90,6 +90,11 @@ export type RelatedSkillDefinition = {
   reason: string;
 };
 
+export type AntiPatternDefinition = {
+  fail: string;
+  pass: string;
+};
+
 export type SkillDefinition = {
   kind: ComponentKind.Skill;
   id: string;
@@ -98,6 +103,7 @@ export type SkillDefinition = {
   useCases: readonly string[];
   constraints: readonly string[];
   checklist?: readonly string[];
+  antiPatterns?: readonly AntiPatternDefinition[];
   invocation: InvocationPolicy;
   platforms: PlatformList;
   body: ComponentFile;
@@ -248,6 +254,10 @@ export function defineSkillScriptRoot(
 }
 
 export function defineReference(definition: SkillReferenceDefinition): SkillReferenceDefinition {
+  return definition;
+}
+
+export function defineAntiPattern(definition: AntiPatternDefinition): AntiPatternDefinition {
   return definition;
 }
 

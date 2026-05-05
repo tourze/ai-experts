@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -28,6 +29,20 @@ export const reactNativeMetroConfigSkill = defineSkill({
     "`watchFolders` 是否覆盖所有 symlink 包？",
     "`react`/`react-native` 是否唯一解析到 app 版本？",
     "CI `maxWorkers` 是否已调低？",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "monorepo 漏 watchFolders",
+      pass: "显式 watchFolders",
+    }),
+    defineAntiPattern({
+      fail: "视频塞 sourceExts",
+      pass: "assetExts",
+    }),
+    defineAntiPattern({
+      fail: "CI 不限 maxWorkers",
+      pass: "按环境分",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

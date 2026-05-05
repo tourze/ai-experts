@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -29,6 +30,20 @@ export const iosSimulatorSkillSkill = defineSkill({
     "需要日志时确认参数名：`scripts/log_monitor.mjs` 用 `--device-udid`，不是 `--udid`。",
     "需要脚本化输出时统一使用 `--json`；需要完整参数时直接跑对应脚本的 `--help`。",
     "交叉引用：性能瓶颈排查看 `swiftui-performance-audit`；审核流程复现看 `apple-appstore-reviewer`。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "用截图坐标导航",
+      pass: "无障碍树语义查找",
+    }),
+    defineAntiPattern({
+      fail: "没 booted simulator 直接跑",
+      pass: "先 boot",
+    }),
+    defineAntiPattern({
+      fail: "文档穷举参数",
+      pass: "--help 是真值",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

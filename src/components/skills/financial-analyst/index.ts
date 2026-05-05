@@ -4,6 +4,7 @@ import {
   Platform,
   defineAsset,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -35,6 +36,16 @@ export const financialAnalystSkill = defineSkill({
     "滚动预测前是否确认 `historical_periods`、`scenarios`、`cash_flow_inputs` 具备业务含义。",
     "输出为 0 或空列表时，先检查是否把聚合样例的根对象直接传给旧版脚本或错误字段。",
     "需要对结果做长期复用时，确认模型是否满足长期复用要求。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "Excel 字段名硬塞",
+      pass: "先整理 JSON",
+    }),
+    defineAntiPattern({
+      fail: "0 输出当结论",
+      pass: "先核对输出合理性",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

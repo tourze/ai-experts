@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -26,6 +27,12 @@ export const deepCodeReadSkill = defineSkill({
     "已选择模块边界并完成逐模块精读。",
     "ABC 闭卷验证通过或记录了 3 轮失败原因。",
     "生成的 skill 能独立回答验收问题。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "快速扫描后直接写结论：只看 README 和目录树就生成 skill，无法回答实现细节问题。",
+      pass: "闭卷验证驱动：让出题者基于源码提问，让答题者只读 skill 作答，用失败问题反向补齐 skill。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

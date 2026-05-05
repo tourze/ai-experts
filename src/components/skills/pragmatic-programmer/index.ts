@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -26,6 +27,16 @@ export const pragmaticProgrammerSkill = defineSkill({
     "是否选择了最小可验证路径，而不是一次赌大。",
     "是否说明了原则对当前实现的具体影响。",
     "是否保留了后续演进空间。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "DRY 当过度抽象借口",
+      pass: "只 DRY 真重复",
+    }),
+    defineAntiPattern({
+      fail: "示踪弹 = 临时代码堆",
+      pass: "可演进的最小路径",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

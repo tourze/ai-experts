@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -24,6 +25,16 @@ export const pythonErrorHandlingSkill = defineSkill({
     "只捕获可恢复错误。",
     "错误信息不泄露内部实现细节。",
     "批处理保留了成功项、失败项和失败原因。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "吞异常返回 None",
+      pass: "按类型分别处理",
+    }),
+    defineAntiPattern({
+      fail: "第三方异常直接暴露",
+      pass: "映射到应用层错误",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

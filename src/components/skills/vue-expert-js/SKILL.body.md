@@ -95,22 +95,3 @@ export function useCounter(initial = 0, step = 1) {
 // 在其它文件里这样引用：
 // /** @type {import('./types/user.mjs').User} */
 ```
-
-## 反模式
-
-### FAIL: JSDoc 与运行时脱节
-
-```js
-defineProps(['userId', 'age']); // 编辑器以为 age 是 number，运行时传 string 也不警告
-```
-
-### PASS: JSDoc + 运行时同时声明
-
-```js
-/** @type {{userId: string, age: number}} */
-defineProps({ userId: { type: String, required: true }, age: { type: Number, required: true } });
-```
-
-- composable 返回未约束的巨大对象，调用方不知道哪些字段稳定。
-- 为"类型安全"把简单对象抽成独立文件，制造跨目录跳转噪音。
-- 使用 `require()` 或 CommonJS 导出，破坏 Vite ESM 一致性。

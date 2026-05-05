@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -25,6 +26,16 @@ export const featureDevSkill = defineSkill({
     "是否识别了相关文件、既有模式和相似实现。",
     "是否补齐了关键澄清问题和方案对比。",
     "是否在收尾阶段记录已知限制和后续改进项。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "陌生代码库直接开写",
+      pass: "先探索再实现",
+    }),
+    defineAntiPattern({
+      fail: "只给一个方案",
+      pass: "至少两个方案 + 权衡",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

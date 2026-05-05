@@ -55,10 +55,3 @@
 ## 综合结论
 [推断] <整体判断>，置信度受 <最弱环节> 约束。
 ```
-
-## 反模式
-
-完整对照参见 [references/anti-patterns.md](references/anti-patterns.md)。
-
-三态标注对照参见 [references/tri-state-examples.md](references/tri-state-examples.md)。
-证据绑定对照参见 [references/binding-examples.md](references/binding-examples.md)。

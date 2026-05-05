@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { phpXFeaturesSkill } from "../php-8x-features/index";
@@ -55,6 +56,16 @@ export const phpTestingSkill = defineSkill({
       },
       reason: "通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 `testing-patterns`。本 skill 只覆盖 PHP 特有语法与工具。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "一测多行为",
+      pass: "一测一行为",
+    }),
+    defineAntiPattern({
+      fail: "Mock 被测对象内部",
+      pass: "只 mock 外部边界",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

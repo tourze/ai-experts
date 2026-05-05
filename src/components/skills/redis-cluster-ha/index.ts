@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { redisDataModelingSkill } from "../redis-data-modeling/index";
@@ -40,6 +41,20 @@ export const redisClusterHaSkill = defineSkill({
       },
       reason: "分布式锁在集群下的考量参考 `redis-data-modeling`，键分布和锁模式见该 skill。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "maxmemory = 物理内存",
+      pass: "留 20-30% fork 余量",
+    }),
+    defineAntiPattern({
+      fail: "Sentinel 2 节点",
+      pass: "至少 3 节点",
+    }),
+    defineAntiPattern({
+      fail: "Cluster 跨 slot MGET",
+      pass: "hashtag 同 slot",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

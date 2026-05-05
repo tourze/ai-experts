@@ -4,6 +4,7 @@ import {
   Platform,
   defineAsset,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -40,6 +41,16 @@ export const youtubeAnalysisSkill = defineSkill({
       },
       reason: "用户先通过 `youtube-search` 找到候选视频，再对其中一条做深度分析。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "无字幕硬总结",
+      pass: "明确说明限制",
+    }),
+    defineAntiPattern({
+      fail: "脚手架占位当答案：直接发给用户",
+      pass: "完整填充",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -1,4 +1,4 @@
-import { InvocationPolicy, KnownTool, Platform, defineSkill } from "../../sdk";
+import { InvocationPolicy, KnownTool, Platform, defineSkill, defineAntiPattern } from "../../sdk";
 import { webPerformanceDiagnosisSkill } from "../web-performance-diagnosis/index";
 
 export const bundleOptimizationSkill = defineSkill({
@@ -35,6 +35,16 @@ export const bundleOptimizationSkill = defineSkill({
       },
       reason: "性能指标层面可联动 `web-performance-diagnosis`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "滥动态导入",
+      pass: "仅重型组件",
+    }),
+    defineAntiPattern({
+      fail: "只看 gzip 体积",
+      pass: "三个指标都看",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

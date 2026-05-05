@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { crossPollinationEngineSkill } from "../cross-pollination-engine/index";
@@ -41,6 +42,16 @@ export const firstPrinciplesDecomposerSkill = defineSkill({
       },
       reason: "需要借别的行业做类比时，可接 `cross-pollination-engine`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "行业标准当事实",
+      pass: "拆到不可再压缩的物理层",
+    }),
+    defineAntiPattern({
+      fail: "替代症状不解决根需求",
+      pass: "追问到底层需求",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

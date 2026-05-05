@@ -41,38 +41,3 @@ function pipe(value, ...steps) {
 const inputUser = { name: " Alice ", email: "ALICE@EXAMPLE.COM" };
 const result = pipe(inputUser, trimName, normalizeEmail, markActive);
 ```
-
-## 反模式
-
-### FAIL: 用 || 代替 ?? 误伤合法假值
-
-```javascript
-const count = options.count || 10; // count 为 0 时变成 10！
-const name = options.name || "default"; // name 为 "" 时变成 "default"！
-```
-
-### PASS: 用 ?? 只兜底 null/undefined
-
-```javascript
-const count = options.count ?? 10; // count 为 0 时保持 0
-const name = options.name ?? "default"; // name 为 "" 时保持 ""
-```
-
-### FAIL: map 里偷偷修改外部状态
-
-```javascript
-const seen = {};
-const unique = items.map(item => {
-  seen[item.id] = true; // 副作用！map 不该修改外部变量
-  return item;
-});
-```
-
-### PASS: 用合适的工具做去重
-
-```javascript
-const unique = [...new Map(items.map(item => [item.id, item])).values()];
-```
-
-- 把 `Promise.all` 用在互相依赖的异步步骤上。
-- 在 CommonJS / ESM 边界混用默认导出与具名导出而不做兼容说明。

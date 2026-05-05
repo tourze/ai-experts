@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { pythonDesignPatternsSkill } from "../python-design-patterns/index";
@@ -53,6 +54,16 @@ export const pythonTypeSafetySkill = defineSkill({
       },
       reason: "结构设计和边界拆分时，联动 `python-design-patterns`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "Any 当默认值",
+      pass: "用具体类型表达约束",
+    }),
+    defineAntiPattern({
+      fail: "用继承代替 Protocol",
+      pass: "用 Protocol 做结构化约束",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

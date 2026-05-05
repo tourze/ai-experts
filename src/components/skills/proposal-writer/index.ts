@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { consultingAnalysisSkill } from "../consulting-analysis/index";
@@ -41,6 +42,20 @@ export const proposalWriterSkill = defineSkill({
       },
       reason: "若前置研究还没完成，先用 `consulting-analysis` 补齐事实基础。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "公司宣传册",
+      pass: "客户问题驱动",
+    }),
+    defineAntiPattern({
+      fail: "形容词堆专业感",
+      pass: "动词 + 数字",
+    }),
+    defineAntiPattern({
+      fail: "一行总价",
+      pass: "报价拆解 + 版本（适合企业级 / RFP 场景）",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

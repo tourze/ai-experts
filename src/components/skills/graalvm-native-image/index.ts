@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { gradleBuildPerformanceSkill } from "../gradle-build-performance/index";
@@ -38,6 +39,16 @@ export const graalvmNativeImageSkill = defineSkill({
       },
       reason: "如果构建时间本身是主要问题，联动 `gradle-build-performance`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "用宽泛配置掩盖问题",
+      pass: "精确到类",
+    }),
+    defineAntiPattern({
+      fail: "不看日志就改配置",
+      pass: "看第一条阻塞错误",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

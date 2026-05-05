@@ -24,32 +24,6 @@
 
 完整 Red Flags 见 [references/discipline-guard.md](./references/discipline-guard.md)。
 
-## 反模式
-
-### FAIL: 凭猜测
-"getUser() 可能有 null 安全问题 / 建议加错误处理" → 没有文件位置、没有代码证据。
-
-### PASS: 四要素完整
-```
-**[错误处理] getUser 返回值未判空** — `src/services/user.ts:47`
-- Symptom: getUser() 可返回 null，但第 52 行直接访问 user.email
-- Source: 边界输入未处理——null 是 getUser 的合法返回值
-- Consequence: 用户不存在时抛 TypeError，请求 500
-- Remedy: 加 null check 或改为 getUserOrThrow()
-```
-
-### FAIL: 审查变重写
-给出 30 行替代代码 → 审查者的职责是指出问题，不是替人写代码。
-
-### PASS: 指出问题 + 给方向
-```
-**[函数设计] processOrder 混合三个职责** — `src/order.ts:23`
-- Symptom: 一个函数中混合了校验、计算和持久化
-- Remedy: 按阶段拆分：validate → calculate → persist
-```
-
-高压模式反模式见 [references/brutal-mode.md](./references/brutal-mode.md)。
-
 ## 自动化评估工具
 
 可在审查前用 CLI 脚本做预扫描，获取结构化发现后再进入人工审查：

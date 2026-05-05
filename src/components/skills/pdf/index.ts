@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -30,6 +31,16 @@ export const pdfSkill = defineSkill({
     "对复选框、单选组、下拉框是否检查了合法取值，而不是直接塞文本。",
     "若走视觉型写入，是否结合标注图或页面截图做了位置核验。",
     "只需抽取文本/表格时，是否切换到 [pdf-extraction](references/pdf-extraction.md)。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "不探测字段直接填",
+      pass: "extract → fill",
+    }),
+    defineAntiPattern({
+      fail: "视觉型当填写型",
+      pass: "走标注路径",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

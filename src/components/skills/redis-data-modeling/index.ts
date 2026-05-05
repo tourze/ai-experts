@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { redisCachingPatternsSkill } from "../redis-caching-patterns/index";
@@ -49,6 +50,28 @@ export const redisDataModelingSkill = defineSkill({
       },
       reason: "缓存刷新互斥保护，联动 `redis-caching-patterns`；集群部署联动 `redis-cluster-ha`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "`SETNX` + `EXPIRE` 两步获取锁（非原子，可能死锁）。",
+      pass: "使用带 NX/PX 的原子 SET，并用 token 校验释放。",
+    }),
+    defineAntiPattern({
+      fail: "`KEYS *` 在生产环境使用。",
+      pass: "使用 SCAN 分批遍历，生产路径避免全库阻塞命令。",
+    }),
+    defineAntiPattern({
+      fail: "所有键使用相同固定 TTL 导致缓存雪崩。",
+      pass: "加入 TTL jitter，并按业务热度分层设置过期策略。",
+    }),
+    defineAntiPattern({
+      fail: "用 List 做简易消息队列却不处理消费者崩溃后的消息丢失。",
+      pass: "使用 Stream/消费者组或可靠队列，并处理 ack/retry。",
+    }),
+    defineAntiPattern({
+      fail: "释放锁时不校验 owner，误删其他客户端的锁。",
+      pass: "释放锁时校验 owner token，用 Lua 保证检查与删除原子。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

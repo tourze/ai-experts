@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -27,6 +28,16 @@ export const authorContributionsSkill = defineSkill({
     "是否对 rename 做了传递闭包，而不是只查一跳。",
     "是否只输出最终会落地的文件，并补了 `git diff --stat` 统计。",
     "是否在结论里区分了 `DIRECT` 与 `VIA_RENAME`。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "模糊作者名",
+      pass: "精确身份",
+    }),
+    defineAntiPattern({
+      fail: "不核对最终落地",
+      pass: "与 merge diff 交集",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

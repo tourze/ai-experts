@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -28,6 +29,16 @@ export const chromeDevtoolsSkill = defineSkill({
     "是否把控制台、网络和页面脚本求值结果结合起来，而不是单看某一侧证据。",
     "是否在性能排障时先录 trace，再做 insight / memory / Lighthouse，而不是反过来。",
     "是否把一次分析得到的 `uid`、request 线索、trace 结论和复现步骤一起记录下来。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "截图 + 坐标点",
+      pass: "snapshot → uid",
+    }),
+    defineAntiPattern({
+      fail: "只看视觉猜",
+      pass: "三方证据",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

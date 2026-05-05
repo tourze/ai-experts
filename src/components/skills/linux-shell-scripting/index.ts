@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { networkTroubleshooterSkill } from "../network-troubleshooter/index";
@@ -42,6 +43,20 @@ export const linuxShellScriptingSkill = defineSkill({
       },
       reason: "需要系统快照与诊断输出模板时，可参考 `system-diagnostics`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "缺 set 严格模式",
+      pass: "严格模式 + 引号",
+    }),
+    defineAntiPattern({
+      fail: "for f in $(ls ...)",
+      pass: "glob + 引号",
+    }),
+    defineAntiPattern({
+      fail: "破坏命令无 dry-run",
+      pass: "--dry-run 默认",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { dbSchemaDesignSkill } from "../db-schema-design/index";
@@ -46,6 +47,20 @@ export const pgsqlRowLevelSecuritySkill = defineSkill({
       },
       reason: "租户列设计参见 `db-schema-design`；索引策略参见 `sql-review-optimization`",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "启用 RLS 但 owner 绕过",
+      pass: "同时 FORCE",
+    }),
+    defineAntiPattern({
+      fail: "只 USING 不 WITH CHECK",
+      pass: "USING + WITH CHECK 双向",
+    }),
+    defineAntiPattern({
+      fail: "忘记 SET LOCAL",
+      pass: "中间件强制设置",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

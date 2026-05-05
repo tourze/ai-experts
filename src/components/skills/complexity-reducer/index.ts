@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -31,6 +32,16 @@ export const complexityReducerSkill = defineSkill({
     "每次简化保持行为不变",
     "简化后更容易理解（不只是更短）",
     "没有引入新复杂度（如过度抽象）",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "为减少行数牺牲可读性：一行做了过滤、计算、归并三件事，无法断点调试，出错无法定位。",
+      pass: "分步命名，每步可验证",
+    }),
+    defineAntiPattern({
+      fail: "只移动复杂度不消除",
+      pass: "用查找表消除分支",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

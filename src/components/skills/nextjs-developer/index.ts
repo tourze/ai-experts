@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -36,6 +37,16 @@ export const nextjsDeveloperSkill = defineSkill({
     "是否对 Server Action 做了输入校验、鉴权/授权、重验证和失败返回约定？",
     "是否避免把服务端密钥暴露到 `NEXT_PUBLIC_*`？",
     "是否在部署说明里覆盖 `next build`、环境变量、图片域名、运行时选择与回滚入口？",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "整棵树 'use client'",
+      pass: "'use client' 压到叶子",
+    }),
+    defineAntiPattern({
+      fail: "Server Action 无校验",
+      pass: "校验 + 鉴权 + revalidate",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

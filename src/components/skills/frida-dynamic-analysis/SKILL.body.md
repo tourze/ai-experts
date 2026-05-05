@@ -58,26 +58,3 @@ Interceptor.attach(hook.implementation, {
 | SIGABRT | 原生反篡改 | 搜索 `abort()` 调用链 |
 | SecurityException | 签名校验 | hook `PackageManager.getPackageInfo` |
 | `System.exit` 在栈中 | RASP 框架 | hook `System.exit` 并打印调用栈 |
-
-## 反模式
-
-### FAIL: 通用脚本盲跑
-
-```javascript
-// 从网上复制的 "universal SSL pinning bypass"
-// → 对 OkHttp 4.x 的 CertificatePinner 无效
-// → 对自定义 TrustManager 无效
-```
-
-### PASS: 针对目标定制
-
-```javascript
-// 1. jadx 中搜索 CertificatePinner / X509TrustManager
-// 2. 确认具体类名和方法签名
-// 3. 针对该类写 hook
-var Pinner = Java.use("okhttp3.CertificatePinner");
-Pinner.check.overload("java.lang.String", "java.util.List")
-    .implementation = function (host, certs) {
-        console.log("Bypassed pinning for:", host);
-    };
-```

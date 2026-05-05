@@ -9,14 +9,3 @@
 ```
 
 跨会话场景第一版不做自动 transcript 检索；由用户提供具体会话或要点，frontmatter 标 `source: today-topic-synthesis`。
-
-## 反模式
-
-完整 FAIL/PASS 对照见 [反模式集](references/anti-patterns.md)。摘要：
-
-| 反模式 | 摘要 | 正确做法 |
-|---|---|---|
-| 单步落盘 | 没确认就写文件 | 双步确认后落盘 |
-| 流水账叙事 | 把对话过程照抄 | 表格承担密度 |
-| 干甩 path:line | 只丢路径不解释 | 三件事都到位 |
-| 错触发 | 把外部转写当输入 | 转手到 meeting-notes-and-actions |

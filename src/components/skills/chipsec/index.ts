@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { binaryAnalysisPatternsSkill } from "../binary-analysis-patterns/index";
@@ -34,6 +35,16 @@ export const chipsecSkill = defineSkill({
       },
       reason: "需要结合 `binary-analysis-patterns` 深挖 EFI 可执行模块。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "直接跑修改类模块",
+      pass: "离线只读优先",
+    }),
+    defineAntiPattern({
+      fail: "\"异常\"=恶意",
+      pass: "区分异常与恶意",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

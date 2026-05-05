@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { businessModelSkill } from "../business-model/index";
@@ -41,6 +42,20 @@ export const pricingStrategySkill = defineSkill({
       },
       reason: "讨论商业模式或市场空间时，可配合 `business-model` 和 `market-sizing-analysis`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "跟随竞品定价",
+      pass: "价值 + 差异化",
+    }),
+    defineAntiPattern({
+      fail: "免费版自杀",
+      pass: "免费有边界",
+    }),
+    defineAntiPattern({
+      fail: "套餐硬卡位",
+      pass: "价值度量分层",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

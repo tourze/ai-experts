@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
@@ -49,6 +50,16 @@ export const crossPollinationEngineSkill = defineSkill({
       },
       reason: "如果核心任务本身还没剥离清楚，先用 `first-principles-decomposer`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "同业互抄",
+      pass: "跨界远场",
+    }),
+    defineAntiPattern({
+      fail: "借表面不借机制",
+      pass: "提取原理",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

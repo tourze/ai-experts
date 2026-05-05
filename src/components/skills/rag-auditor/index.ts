@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { embeddingStrategiesSkill } from "../embedding-strategies/index";
@@ -56,6 +57,16 @@ export const ragAuditorSkill = defineSkill({
       },
       reason: "相关 skill：`embedding-strategies`、`similarity-search-patterns`、`vector-index-tuning`、`llm-evaluation`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "错答直接归因 hallucination",
+      pass: "先看检索证据再定性",
+    }),
+    defineAntiPattern({
+      fail: "指标分不清乱调",
+      pass: "分层单变量诊断",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

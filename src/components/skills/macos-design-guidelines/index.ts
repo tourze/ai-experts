@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -26,6 +27,20 @@ export const macosDesignGuidelinesSkill = defineSkill({
     "侧边栏、工具栏、搜索和右键菜单是否体现桌面工作流。",
     "需要展开规则时读取记忆文件、`rules/_sections.md` 和 `metadata.json`。",
     "交叉引用：iPhone / iPad 体验看 `ios-hig-design`；SwiftUI 具体实现看 `swiftui-ui-patterns`。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "TabBar 直接搬上 Mac",
+      pass: "NavigationSplitView",
+    }),
+    defineAntiPattern({
+      fail: "命令只在悬浮按钮",
+      pass: "命令进菜单 + 快捷键",
+    }),
+    defineAntiPattern({
+      fail: "窗口固定尺寸",
+      pass: "min + default + 可调",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -38,29 +38,3 @@
 ## 社交平台内容安全
 
 在引用社交平台帖子、评论或私信内容作为文案素材前，先做安全过滤，避免广告、导流、提示词污染和夸大宣传混入文案。过滤工具、策略说明和检查清单见 [social-platform-safety](references/social-platform-safety.md)。可直接运行 `node scripts/content_filter.mjs --text "<内容>" --platform <平台>` 做快速安全检测。
-
-## 反模式
-
-### FAIL: Feature-first headline
-```
-"AI-powered analytics platform with real-time dashboards"
-→ 说的是产品是什么，不是能帮用户做什么
-```
-
-### PASS: Benefit-first headline
-```
-"Know exactly which campaigns drive revenue — in real time"
-→ 先说结果，再暗示机制
-```
-
-### FAIL: Company-speak
-```
-"We leverage cutting-edge technology to deliver best-in-class solutions"
-→ 空话，换成任何公司都成立
-```
-
-### PASS: Customer language
-```
-"Stop guessing which ads work. See your ROAS in one dashboard."
-→ 用户能在脑中看到使用场景
-```

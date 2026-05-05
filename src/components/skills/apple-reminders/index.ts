@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -26,6 +27,20 @@ export const appleRemindersSkill = defineSkill({
     "需要脚本化输出时使用 `--json` 或 `--plain`。",
     "删除和列表变更属于破坏性动作，执行前要确认目标 ID 或列表名。",
     "交叉引用：更适合做长期记录的内容改用 `apple-notes`。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "误把过滤器当子命令",
+      pass: "show 是入口",
+    }),
+    defineAntiPattern({
+      fail: "跳过权限检查",
+      pass: "自动 status + authorize",
+    }),
+    defineAntiPattern({
+      fail: "不校验 ID 批量删",
+      pass: "先 show 再删",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

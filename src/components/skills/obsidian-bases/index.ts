@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -36,6 +37,16 @@ export const obsidianBasesSkill = defineSkill({
     "使用 `this.file.*` 时，是否确认了 Base 当前是在主区、嵌入块还是侧栏。",
     "需要反链语义时，是否优先考虑 `file.hasLink(this.file)` 而不是直接依赖 `file.backlinks`。",
     "使用 `map` 视图时，是否已明确说明需要安装 Maps 插件。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "Dataview 心智残留：Bases 没有 `from` / `where`；整个文件解析失败。",
+      pass: "用 filters",
+    }),
+    defineAntiPattern({
+      fail: "日期当 Duration 对象：减法返回毫秒数，没有 `.days` 字段。",
+      pass: "显式毫秒转换",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

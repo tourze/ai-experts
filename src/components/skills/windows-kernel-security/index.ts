@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { prlctlVmControlSkill } from "../prlctl-vm-control/index";
@@ -45,6 +46,16 @@ export const windowsKernelSecuritySkill = defineSkill({
       },
       reason: "需要先在虚拟机里建立快照和回滚路径时，配合 `prlctl-vm-control`；如果问题其实属于桌面自动化或输入注入边界，转到 `windows-ui-automation`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "真机无快照实验",
+      pass: "VM + 快照",
+    }),
+    defineAntiPattern({
+      fail: "四层概念混为一谈",
+      pass: "分层识别",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -50,6 +51,16 @@ export const dataAnalysisSkill = defineSkill({
       },
       reason: "相关 skill：`statistical-analysis`、`data-visualization`、`data-storytelling`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "不 inspect 直接 SQL",
+      pass: "inspect → query",
+    }),
+    defineAntiPattern({
+      fail: "没问题先聚合",
+      pass: "先确认问题",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

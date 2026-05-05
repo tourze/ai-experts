@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -30,6 +31,20 @@ export const concurrencyPatternsSkill = defineSkill({
     "跨并发边界是否避免了共享可变状态。",
     "每个并发任务是否有明确的退出路径。",
     "优雅停机是否覆盖了所有长生命周期任务。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "异步上下文里做同步阻塞",
+      pass: "异步 I/O + 大计算隔离",
+    }),
+    defineAntiPattern({
+      fail: "无界并发",
+      pass: "信号量限流",
+    }),
+    defineAntiPattern({
+      fail: "不设超时",
+      pass: "带超时",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -30,6 +31,16 @@ export const tauriIpcPatternsSkill = defineSkill({
     "错误是否序列化为结构化 JSON？",
     "事件枚举与前端 TS 类型一一对应？",
     "权限文件在 `permissions/` 并被 capability 引用？",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "String 错误",
+      pass: "结构化错误",
+    }),
+    defineAntiPattern({
+      fail: "emit 广播隐私数据",
+      pass: "emit_to 精确路由：详见 [references/](references/)。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

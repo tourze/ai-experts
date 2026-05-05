@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -29,6 +30,20 @@ export const techDebtSkill = defineSkill({
     "是否解释不修会带来的业务或工程后果。",
     "是否按统一评分规则排过序。",
     "是否给出分期治理建议、owner、衡量指标和退出条件。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "全 P0",
+      pass: "公式排序",
+    }),
+    defineAntiPattern({
+      fail: "只列不治理",
+      pass: "配置每迭代预算",
+    }),
+    defineAntiPattern({
+      fail: "喊重写",
+      pass: "分期治理",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

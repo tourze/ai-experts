@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineAsset,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { testingStrategySkill } from "../testing-strategy/index";
@@ -41,6 +42,20 @@ export const webappTestingSkill = defineSkill({
       },
       reason: "需要把 `testing-strategy` 里的 Web 场景落成实际浏览器检查。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "易碎选择器",
+      pass: "语义选择器",
+    }),
+    defineAntiPattern({
+      fail: "固定 sleep",
+      pass: "显式等待",
+    }),
+    defineAntiPattern({
+      fail: "失败无证据",
+      pass: "截图 + 日志",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

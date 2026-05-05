@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -32,6 +33,20 @@ export const tauriBuildPackagingSkill = defineSkill({
     "macOS 完整签名链？Windows 有证书？",
     "Updater pubkey 已填入？端点 HTTPS？",
     "Release profile 开启 LTO + strip？",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "私钥提交仓库",
+      pass: "CI secrets 注入",
+    }),
+    defineAntiPattern({
+      fail: "macOS 只签名不公证",
+      pass: "签名 + 公证 + 装订",
+    }),
+    defineAntiPattern({
+      fail: "Sidecar 不加 target triple",
+      pass: "命名按 target_triple：详见 [references/](references/)。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

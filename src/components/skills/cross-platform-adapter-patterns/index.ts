@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -26,6 +27,16 @@ export const crossPlatformAdapterPatternsSkill = defineSkill({
     "`shared-core` 是否零平台导入。",
     "适配器注册是否集中在 app 入口。",
     "依赖方向是否单向：`apps -> platform-* -> shared-core`。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "共享包 import 平台",
+      pass: "接口在共享 / 实现在平台",
+    }),
+    defineAntiPattern({
+      fail: "平台包互相依赖",
+      pass: "共享层兜底",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

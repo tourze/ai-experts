@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { binaryAnalysisPatternsSkill } from "../binary-analysis-patterns/index";
@@ -41,6 +42,16 @@ export const protocolReverseEngineeringSkill = defineSkill({
       },
       reason: "需要和 `wireshark-analysis` 配合做流量整理。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "单包推协议",
+      pass: "多样本对比",
+    }),
+    defineAntiPattern({
+      fail: "无方向推字段",
+      pass: "标注方向 + 时序",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { laravelPatternsSkill } from "../laravel-patterns/index";
@@ -44,6 +45,16 @@ export const laravelTddSkill = defineSkill({
       },
       reason: "发布前整体验证看 `laravel-verification`，实现边界约束看 `laravel-patterns`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "真实调用外部服务",
+      pass: "Fake + 断言副作用",
+    }),
+    defineAntiPattern({
+      fail: "一个测试断言多个行为",
+      pass: "一个测试一个行为",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

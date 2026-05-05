@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { planningUnderUncertaintySkill } from "../planning-under-uncertainty/index";
@@ -41,6 +42,16 @@ export const systemsThinkingSkill = defineSkill({
       },
       reason: "涉及流程或不确定性时，可配合 `process-optimization` 与 `planning-under-uncertainty`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只盯症状",
+      pass: "找结构",
+    }),
+    defineAntiPattern({
+      fail: "推变更不看副作用",
+      pass: "副作用清单",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

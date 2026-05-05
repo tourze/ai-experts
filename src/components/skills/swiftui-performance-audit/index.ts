@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -27,6 +28,16 @@ export const swiftuiPerformanceAuditSkill = defineSkill({
     "如果代码审查不足以定案，明确要求用户提供 SwiftUI template + Time Profiler trace。",
     "修复后要求按同一交互路径复测，比较前后 CPU、掉帧和内存峰值。",
     "交叉引用：并发边界问题看 `swift-concurrency-expert`；视图结构整理看 `swiftui-ui-patterns`。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "body 里做重活",
+      pass: "重计算移出 body",
+    }),
+    defineAntiPattern({
+      fail: ".id(UUID()) 让树每次重建",
+      pass: "稳定身份",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

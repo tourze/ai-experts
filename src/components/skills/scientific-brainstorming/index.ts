@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { crossPollinationEngineSkill } from "../cross-pollination-engine/index";
@@ -49,6 +50,16 @@ export const scientificBrainstormingSkill = defineSkill({
       },
       reason: "如果要借其他行业或学科的成熟机制，可结合 `cross-pollination-engine`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "单向授课",
+      pass: "协作发散",
+    }),
+    defineAntiPattern({
+      fail: "脑洞当结论",
+      pass: "创意 vs 可验证分开",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

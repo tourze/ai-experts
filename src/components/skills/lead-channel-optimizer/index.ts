@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { paidAdsSkill } from "../paid-ads/index";
@@ -34,6 +35,16 @@ export const leadChannelOptimizerSkill = defineSkill({
       },
       reason: "若需要重做广告结构，配合 `paid-ads`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只看 CPL",
+      pass: "CPL + 质量 + 闭环",
+    }),
+    defineAntiPattern({
+      fail: "“全都做”",
+      pass: "4 类动作",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

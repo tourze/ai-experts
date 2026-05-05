@@ -37,46 +37,6 @@
 
 Glassmorphism 完整落地示例见 [references/styles-depth-glass.md](references/styles-depth-glass.md)。
 
-## 反模式
-
-### FAIL: AI 套版感
-
-```tsx
-<div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-xl">
-  <h1>最好的 SaaS 解决方案</h1>
-</div>
-// 紫粉渐变 + 均匀圆角 + 空洞口号
-```
-
-### PASS: 有方向的视觉
-
-```tsx
-<section style={{ fontFamily: 'Fraunces, serif', backgroundColor: '#f7f3eb' }}>
-  <h1 className="text-[clamp(3rem,7vw,6rem)] leading-[0.92]">销售每周省 6 小时</h1>
-</section>
-```
-
-### FAIL: 三风格混搭
-
-```css
-.glass-card { backdrop-filter: blur(10px); }
-.neu-button { box-shadow: inset 5px 5px 10px #000; }
-.brutalist-section { border: 4px solid black; transform: rotate(-1deg); }
-/* 三种语言互相打架 */
-```
-
-### PASS: 一页一风格
-
-全局 Bento + 微 Glass 强调，不混入 Neumorphism / Brutalism / Cyberpunk。
-
-### FAIL: 重型视觉无预算
-
-LCP 1.5s → 6s，移动端卡死。
-
-### PASS: 配性能预算
-
-预算 LCP < 2.5s，JS < 300KB。hero 用渐变+静态图，滚动动效用 IntersectionObserver + CSS。
-
 ## 参考资料
 
 - [styles-catalog.md](references/styles-catalog.md) — 60 种 UI 风格与 CSS 落地特征

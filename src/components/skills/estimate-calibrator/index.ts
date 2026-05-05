@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -25,6 +26,16 @@ export const estimateCalibratorSkill = defineSkill({
     "已给出三点估算、风险来源和置信度说明。",
     "关键依赖、外部等待和返工概率已纳入。",
     "结果能支撑排期决策，而不是制造虚假确定性。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "含糊需求精确估",
+      pass: "拆 + 三点估算",
+    }),
+    defineAntiPattern({
+      fail: "只报乐观值",
+      pass: "显式区间 + 假设",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

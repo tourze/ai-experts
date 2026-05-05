@@ -26,24 +26,3 @@
 | ARM32 | `UC_ARCH_ARM` | SP | LR | R0-R3 | R0 | R7 + SVC #0 |
 | x86-64 | `UC_ARCH_X86` + `UC_MODE_64` | RSP | (栈) | RDI,RSI,RDX,RCX | RAX | RAX + syscall |
 | MIPS32 | `UC_ARCH_MIPS` | $sp | $ra | $a0-$a3 | $v0 | $v0 + syscall |
-
-## 反模式
-
-### FAIL: 解析完整 ELF 再映射所有段
-
-```python
-# 花大量时间解析 ELF，映射 .got / .plt / .dynamic
-# → 大部分段对目标函数无用，反而引入更多未解析依赖
-```
-
-### PASS: 裸加载 + 按需映射
-
-```python
-with open("libcrypto.so", "rb") as f:
-    code = f.read()
-uc.mem_map(BASE, align(len(code)))
-uc.mem_write(BASE, code)
-uc.mem_map(STACK, 0x10000)  # 栈
-uc.reg_write(UC_ARM64_REG_SP, STACK + 0x8000)
-# 只在 UC_HOOK_MEM_UNMAPPED 回调中按需补映射
-```

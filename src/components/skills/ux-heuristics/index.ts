@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { uxResearcherDesignerSkill } from "../ux-researcher-designer/index";
@@ -43,6 +44,20 @@ export const uxHeuristicsSkill = defineSkill({
       },
       reason: "发现问题已经超出视觉层，需结合 `ux-researcher-designer` 一起处理。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "“建议优化体验”",
+      pass: "具体任务失败点",
+    }),
+    defineAntiPattern({
+      fail: "“用户教育”掩盖",
+      pass: "改标签不教用户",
+    }),
+    defineAntiPattern({
+      fail: "二次确认代替撤销",
+      pass: "撤销 + 延迟",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

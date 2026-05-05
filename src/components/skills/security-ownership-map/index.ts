@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -37,6 +38,20 @@ export const securityOwnershipMapSkill = defineSkill({
       },
       reason: "需要把 git 历史与 `security-threat-model` 的资产/边界分析关联起来。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "全量跑大仓库",
+      pass: "限定时间窗",
+    }),
+    defineAntiPattern({
+      fail: "活跃度当安全结论",
+      pass: "敏感规则 + bus factor",
+    }),
+    defineAntiPattern({
+      fail: "把所有 commit author 当 owner",
+      pass: "加权 + 阈值",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

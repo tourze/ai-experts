@@ -267,6 +267,11 @@ test("component build emits claude and codex component surfaces", () => {
         0,
         `${bodyFile} should not contain a checklist section; set checklist in index.ts instead`,
       );
+      assert.equal(
+        countH2OutsideCodeFence(source, "反模式"),
+        0,
+        `${bodyFile} should not contain an anti-pattern section; set antiPatterns in index.ts instead`,
+      );
       assert.doesNotMatch(
         source,
         /\]\(\.\.\/[^)]+\/SKILL\.md\)|\]\([a-z0-9-]+-expert:[a-z0-9-]+\)/,
@@ -314,6 +319,19 @@ test("component build emits claude and codex component surfaces", () => {
           `${skillSourceFile} checklist items should not contain "[ ]"; the build adds checkbox markers automatically`,
         );
       }
+      const antiPatternsSource = extractPropertyArray(source, "antiPatterns");
+      if (antiPatternsSource) {
+        assert.match(
+          antiPatternsSource,
+          /defineAntiPattern\(\{\s*fail:\s*"[^"]+",\s*pass:\s*"[^"]+"/s,
+          `${skillSourceFile} should define antiPatterns with defineAntiPattern({ fail, pass })`,
+        );
+        assert.doesNotMatch(
+          antiPatternsSource,
+          /\b(?:title|failTitle|passTitle|reason|severity)\s*:/,
+          `${skillSourceFile} antiPatterns should only use fail and pass fields`,
+        );
+      }
     }
 
     for (const platform of ["claude", "codex"]) {
@@ -350,7 +368,7 @@ test("component build emits claude and codex component surfaces", () => {
             `${skillFile} should render relatedSkills as generated skill links`,
           );
         }
-        if (source.includes("## 检查清单")) {
+        if (countH2OutsideCodeFence(source, "检查清单") > 0) {
           assert.match(
             source,
             /^## 检查清单\r?\n\r?\n- \[ \] \S/m,
@@ -360,6 +378,18 @@ test("component build emits claude and codex component surfaces", () => {
             countH2OutsideCodeFence(source, "检查清单"),
             1,
             `${skillFile} should render exactly one checklist section`,
+          );
+        }
+        if (countH2OutsideCodeFence(source, "反模式") > 0) {
+          assert.match(
+            source,
+            /^## 反模式\r?\n\r?\n\| 反模式 \| 正确做法 \|\r?\n\|--------\|----------\|\r?\n\| .+ \| .+ \|/m,
+            `${skillFile} should render antiPatterns as a generated markdown table`,
+          );
+          assert.equal(
+            countH2OutsideCodeFence(source, "反模式"),
+            1,
+            `${skillFile} should render exactly one anti-pattern section`,
           );
         }
       }

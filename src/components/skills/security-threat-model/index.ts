@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -26,6 +27,16 @@ export const securityThreatModelSkill = defineSkill({
     "每条威胁是否绑定具体入口和受影响资产。",
     "优先级是否说明可能性、影响和现有控制。",
     "结论是否明确区分证据、推断和待确认项。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "没有证据直接套模板：没有引用任何仓库文件、路由或配置，纯靠假设堆砌。",
+      pass: "基于仓库证据逐条建模",
+    }),
+    defineAntiPattern({
+      fail: "不区分运行时与工具链：seed 脚本仅在开发环境运行，不是运行时攻击面。",
+      pass: "明确标注路径类型",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

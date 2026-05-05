@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { pythonTestingPatternsSkill } from "../python-testing-patterns/index";
@@ -47,6 +48,20 @@ export const uvPackageManagerSkill = defineSkill({
       },
       reason: "需要把测试工具链串起来时，联动 `python-testing-patterns`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "多个真源并存",
+      pass: "单一真源",
+    }),
+    defineAntiPattern({
+      fail: "本地 vs CI 不一致",
+      pass: "都走 uv run",
+    }),
+    defineAntiPattern({
+      fail: "锁文件不提交",
+      pass: "锁文件入仓 + frozen",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

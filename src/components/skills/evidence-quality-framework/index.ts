@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -23,6 +24,12 @@ export const evidenceQualityFrameworkSkill = defineSkill({
     "每条发现是否有文件:行 / timestamp / commit / metric 至少一种定位？",
     "证据片段是实际粘贴内容，触发条件可被独立复现？",
     "综合结论级别匹配最弱环节？是否避免了\"显然/大概率/毫无疑问\"等无锚措辞？",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "完整对照参见 [references/anti-patterns.md](references/anti-patterns.md)。 三态标注对照参见 [references/tri-state-examples.md](references/tri-state-examples.md)。 证据绑定对照参见 [references/binding-examples.md](references/binding-examples.md)。",
+      pass: "读取对应 reference 的反模式、三态标注和证据绑定示例后再评估。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

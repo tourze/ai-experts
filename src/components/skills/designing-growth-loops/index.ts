@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -24,6 +25,16 @@ export const designingGrowthLoopsSkill = defineSkill({
     "指标覆盖转化、留存、分享率和回流效率。",
     "已明确需要的产品、运营或激励支撑。",
     "飞轮假设可被实验验证，而不是纯口号。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "一次性活动当飞轮",
+      pass: "持续闭环",
+    }),
+    defineAntiPattern({
+      fail: "留存差就堆奖励",
+      pass: "先修核心价值",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

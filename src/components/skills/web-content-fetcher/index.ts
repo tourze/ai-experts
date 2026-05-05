@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -40,6 +41,16 @@ export const webContentFetcherSkill = defineSkill({
       },
       reason: "常作为 `deep-research` 的正文抓取阶段。在深度研究流水线中，可先用 references/question-refiner.md 完善问题后再抓取。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "无脑重试同 URL",
+      pass: "失败 2 次即停",
+    }),
+    defineAntiPattern({
+      fail: "请求头敏感站点不加 --stealth",
+      pass: "域名路由",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

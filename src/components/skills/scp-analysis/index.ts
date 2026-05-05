@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -24,6 +25,12 @@ export const scpAnalysisSkill = defineSkill({
     "没有跳过中间环节直接从冲击推绩效。",
     "区分了对不同类型企业的差异化影响。",
     "给出了基于传导分析的战略建议。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "冲击直推结论",
+      pass: "完整传导分析",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { phpDesignPatternsSkill } from "../php-design-patterns/index";
@@ -54,6 +55,20 @@ export const phpXFeaturesSkill = defineSkill({
       },
       reason: "需要设计服务层、DTO、Repository 时，联动查看 `php-design-patterns`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "class 常量组代替枚举",
+      pass: "backed enum",
+    }),
+    defineAntiPattern({
+      fail: "switch + 默认 break",
+      pass: "match 强制穷尽",
+    }),
+    defineAntiPattern({
+      fail: "DTO 不加 readonly",
+      pass: "readonly class",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -27,6 +28,16 @@ export const analyticsTrackingSkill = defineSkill({
     "是否说明每个事件的触发时机、去重规则和负责人。",
     "是否覆盖 Consent、DebugView、Preview、广告平台回传的验证路径。",
     "是否避免了同义事件并存，例如 `signup_complete` 与 `signup_completed`。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "全埋",
+      pass: "业务漏斗驱动",
+    }),
+    defineAntiPattern({
+      fail: "同义事件并存",
+      pass: "命名 taxonomy + 迁移",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

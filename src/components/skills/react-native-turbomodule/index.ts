@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -28,6 +29,20 @@ export const reactNativeTurbomoduleSkill = defineSkill({
     "Spec 类型是否精确，无 `any` / `Object`？",
     "Codegen 是否重跑以匹配最新 Spec？",
     "`ReactModuleInfo.className` 是否为完整限定类名？",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "Spec 用 any",
+      pass: "精确类型",
+    }),
+    defineAntiPattern({
+      fail: "Spec 改了不跑 Codegen",
+      pass: "Spec 改 → Codegen 重跑",
+    }),
+    defineAntiPattern({
+      fail: "getModule 阻塞",
+      pass: "懒加载",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

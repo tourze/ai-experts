@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -26,6 +27,16 @@ export const dockerEssentialsSkill = defineSkill({
     "是否检查容器退出码、最近日志和健康检查状态。",
     "是否确认网络连通性、DNS 与环境变量注入方式。",
     "是否为镜像构建设置固定标签、构建参数和目标平台。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "生产容器内临时修复：状态漂移：下次重启回到原始镜像，\"修复\"消失。",
+      pass: "改 Dockerfile 重新构建",
+    }),
+    defineAntiPattern({
+      fail: "容器在跑就算健康",
+      pass: "检查日志和健康状态",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

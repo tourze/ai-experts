@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { modernJavascriptPatternsSkill } from "../modern-javascript-patterns/index";
@@ -40,6 +41,20 @@ export const javascriptTypescriptJestSkill = defineSkill({
       },
       reason: "通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 `testing-patterns`。本 skill 只覆盖 JavaScript/TypeScript 特有语法与工具。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "setTimeout 等异步",
+      pass: "await + resolves",
+    }),
+    defineAntiPattern({
+      fail: "全 mock",
+      pass: "仅 mock 边界",
+    }),
+    defineAntiPattern({
+      fail: "查 class",
+      pass: "用户视角查询",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

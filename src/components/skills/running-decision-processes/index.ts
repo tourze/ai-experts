@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { planningUnderUncertaintySkill } from "../planning-under-uncertainty/index";
@@ -35,6 +36,20 @@ export const runningDecisionProcessesSkill = defineSkill({
       },
       reason: "做失败预演或事前验尸（pre-mortem）时，可配合 `inversion-strategist` 与 `planning-under-uncertainty`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "无限讨论",
+      pass: "DACI + deadline",
+    }),
+    defineAntiPattern({
+      fail: "只比谁声音大",
+      pass: "显式标准",
+    }),
+    defineAntiPattern({
+      fail: "不记决策依据",
+      pass: "Decision Log",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

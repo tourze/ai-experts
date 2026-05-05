@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -24,6 +25,16 @@ export const pythonDesignPatternsSkill = defineSkill({
     "I/O 能否被替身替换，从而让业务逻辑单测独立运行。",
     "抽象层是否真正减少了重复。",
     "模块之间是否只暴露最小接口。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "继承叠基类复用几行",
+      pass: "组合注入",
+    }),
+    defineAntiPattern({
+      fail: "构造函数参数爆炸",
+      pass: "按领域拆分",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

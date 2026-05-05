@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { arthasCpuHighSkill } from "../arthas-cpu-high/index";
@@ -36,6 +37,16 @@ export const arthasSpringcontextIssuesResolveSkill = defineSkill({
       },
       reason: "如果核心症状是 CPU 飙高而不是 Bean / 配置问题，转到 `arthas-cpu-high`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "getBean 触发初始化",
+      pass: "containsBean 只读检查",
+    }),
+    defineAntiPattern({
+      fail: "只看 containsBean 不看容器",
+      pass: "先确认容器再查 Bean",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

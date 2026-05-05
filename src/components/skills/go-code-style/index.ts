@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { goErrorHandlingSkill } from "../go-error-handling/index";
@@ -47,6 +48,16 @@ export const goCodeStyleSkill = defineSkill({
       },
       reason: "需要命名或错误语义时配合 `go-error-handling`；涉及 nil、slice、map 或资源安全时配合 `go-safety`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "按提示保留深层嵌套",
+      pass: "边界先返回",
+    }),
+    defineAntiPattern({
+      fail: "为了“可复用”导出内部细节",
+      pass: "先保持内部可变",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

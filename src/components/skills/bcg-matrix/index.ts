@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { designingGrowthLoopsSkill } from "../designing-growth-loops/index";
@@ -42,6 +43,16 @@ export const bcgMatrixSkill = defineSkill({
       label: "s-curve-growth",
       reason: "单产品公司：BCG/GE 都是多业务组合工具。用 `s-curve-growth` 判断生命阶段。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "所有业务都是明星",
+      pass: "敢砍敢投",
+    }),
+    defineAntiPattern({
+      fail: "GE 模式所有指标权重一样",
+      pass: "GE 模式行业化权重",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

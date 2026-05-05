@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -23,6 +24,24 @@ export const agentOrchestrationSkill = defineSkill({
     "每个 Agent 必须有 `max_turns` 限制，防止无限循环。",
     "状态按生命周期分四层（turn/session/persistent/project），禁止混用。",
     "扩展通过协议和事件，不通过继承或核心代码修改。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "**隐式 fork**：子 Agent 默认继承父上下文 → 风险操作污染父状态，无法回滚。",
+      pass: "显式选择 fork/fresh/worktree，并记录隔离理由。",
+    }),
+    defineAntiPattern({
+      fail: "**无 max_turns**：Agent 陷入循环时无熔断 → 无限消耗 token 和时间。",
+      pass: "为每个 Agent 设置 max_turns、超时和取消路径。",
+    }),
+    defineAntiPattern({
+      fail: "**阻塞等待子 Agent**：长任务阻塞主循环 → 用户体验差。应用后台执行 + 任务跟踪。",
+      pass: "后台执行长任务，提供任务状态、取消和结果持久化。",
+    }),
+    defineAntiPattern({
+      fail: "**单体 prompt 字符串**：不可缓存、不可测试、不可替换，每次改动都是手术。",
+      pass: "拆成静态/动态段并设置缓存边界，每段可独立测试。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

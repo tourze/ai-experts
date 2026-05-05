@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { portersFiveForcesSkill } from "../porters-five-forces/index";
@@ -42,6 +43,16 @@ export const pestelAnalysisSkill = defineSkill({
       },
       reason: "与 `porters-five-forces` 配合做行业分析，与 `swot-analysis` 配合把外部因素转化为机会和威胁。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "罗列新闻",
+      pass: "因素 → 影响 → 行动",
+    }),
+    defineAntiPattern({
+      fail: "只看利好不看利空",
+      pass: "双面分析",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

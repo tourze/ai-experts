@@ -4,6 +4,7 @@ import {
   Platform,
   defineAsset,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -30,6 +31,20 @@ export const ghFixCiSkill = defineSkill({
     "是否提取 run id、job id、run URL 与最小失败片段。",
     "是否说明日志不可用、仍在运行或需要更高权限的情况。",
     "是否在改代码前给出一份聚焦修复计划。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "凭名字猜失败原因",
+      pass: "先抓日志再下结论",
+    }),
+    defineAntiPattern({
+      fail: "直接改不确认",
+      pass: "先聚焦修复计划",
+    }),
+    defineAntiPattern({
+      fail: "整段日志砸过去",
+      pass: "摘要 + 上下文片段",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

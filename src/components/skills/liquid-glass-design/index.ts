@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -27,6 +28,12 @@ export const liquidGlassDesignSkill = defineSkill({
     "是否只在重要交互位使用 `interactive()`，而不是整页都带动态反馈。",
     "Widget 是否同时检查 full color 与 accented 模式。",
     "交叉引用：整体 iOS 界面规范看 `ios-hig-design`；SwiftUI 结构化实现看 `swiftui-ui-patterns`。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "不做版本判断",
+      pass: "availability 兜底：更多反模式见 [references/advanced-patterns.md](references/advanced-patterns.md)。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

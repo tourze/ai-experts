@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { symfonyMessengerSkill } from "../symfony-messenger/index";
@@ -46,6 +47,12 @@ export const doctrineBatchProcessingSkill = defineSkill({
       },
       reason: "如果批处理由异步消息驱动，可联动 `symfony-messenger`；如果涉及权限边界，可联动 `symfony-voters`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "findAll + 每条 flush",
+      pass: "toIterable + 分批 clear：ORM 大批量 UPDATE、改旧 migration 等反模式的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

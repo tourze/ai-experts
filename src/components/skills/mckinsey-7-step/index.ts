@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
@@ -51,6 +52,12 @@ export const mckinseyStepSkill = defineSkill({
       label: "five-w-two-h",
       reason: "问题已经清晰只需执行：七步法从问题定义开始，如果问题和方案都已明确，直接做 `five-w-two-h` 制定行动计划。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "没有假设的分析",
+      pass: "假设驱动",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

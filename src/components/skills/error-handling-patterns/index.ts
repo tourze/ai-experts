@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -24,6 +25,20 @@ export const errorHandlingPatternsSkill = defineSkill({
     "错误是否携带了诊断所需的上下文与关联 ID。",
     "是否对部分失败给出可解释的降级策略。",
     "用户可见消息是否不包含内部实现细节。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "吞异常 + 通用错误码",
+      pass: "分层捕获 + 保留上下文",
+    }),
+    defineAntiPattern({
+      fail: "第三方异常直接暴露",
+      pass: "映射到应用层错误",
+    }),
+    defineAntiPattern({
+      fail: "无条件重试",
+      pass: "有界重试 + 退避 + 幂等前提",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

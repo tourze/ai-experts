@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { rustAsyncPatternsSkill } from "../rust-async-patterns/index";
@@ -58,6 +59,20 @@ export const rustOwnershipIdiomsSkill = defineSkill({
       },
       reason: "联动：`rust-error-handling` · `rust-testing` · `rust-type-design` · `rust-async-patterns`",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "借用报错就 clone",
+      pass: "收紧 API 边界",
+    }),
+    defineAntiPattern({
+      fail: "unwrap 当控制流",
+      pass: "? + 显式错误",
+    }),
+    defineAntiPattern({
+      fail: "全部 dyn Trait",
+      pass: "默认泛型",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

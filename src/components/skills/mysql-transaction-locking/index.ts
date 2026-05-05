@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { sqlReviewOptimizationSkill } from "../sql-review-optimization/index";
@@ -44,6 +45,20 @@ export const mysqlTransactionLockingSkill = defineSkill({
       },
       reason: "需要理解索引对锁范围的影响，联动 `sql-review-optimization`（含深度索引策略）。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "事务中调远程 API",
+      pass: "短事务 + 状态机",
+    }),
+    defineAntiPattern({
+      fail: "FOR UPDATE 未命中索引",
+      pass: "走索引 + 限定行",
+    }),
+    defineAntiPattern({
+      fail: "死锁直接报错",
+      pass: "自动重试",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

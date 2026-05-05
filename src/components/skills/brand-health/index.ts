@@ -1,4 +1,4 @@
-import { InvocationPolicy, KnownTool, Platform, defineSkill } from "../../sdk";
+import { InvocationPolicy, KnownTool, Platform, defineSkill, defineAntiPattern } from "../../sdk";
 import { contentStrategySkill } from "../content-strategy/index";
 
 export const brandHealthSkill = defineSkill({
@@ -31,6 +31,12 @@ export const brandHealthSkill = defineSkill({
       },
       reason: "与 `content-strategy` 配合：品牌诊断找问题，内容策略做修复。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "认知度 = 品牌力",
+      pass: "漏斗诊断",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

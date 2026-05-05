@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { docCoauthoringSkill } from "../doc-coauthoring/index";
@@ -75,6 +76,16 @@ export const tutorialBuilderSkill = defineSkill({
       label: "docx",
       reason: "5. 以 Markdown 为源规划 DOCX/PDF/HTML 导出；具体转换分别衔接 `docx`、`md-to-pdf`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "链接摘要伪装成教程",
+      pass: "来源变成学习路径",
+    }),
+    defineAntiPattern({
+      fail: "三份导出三份内容",
+      pass: "Markdown 单一来源",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

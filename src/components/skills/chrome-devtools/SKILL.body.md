@@ -50,35 +50,3 @@
   }
 ]
 ```
-
-## 反模式
-
-### FAIL: 截图 + 坐标点
-
-```
-take_screenshot → 看图 → click(187, 624)
-→ DOM 变 / 字号变 / 坐标偏移 → 点错
-```
-
-### PASS: snapshot → uid
-
-```
-take_snapshot  # 拿到最新 uid 树
-click(uid=”abc123”)  # 基于语义定位
-```
-
-### FAIL: 只看视觉猜
-
-```
-“页面白屏 → 看截图 → 看起来是样式问题 → 改 CSS”
-→ 实际：API 500 / 控制台 TypeError
-```
-
-### PASS: 三方证据
-
-```
-list_console_messages   # 脚本错误
-list_network_requests   # 4xx/5xx
-evaluate_script         # DOM/全局状态
-→ 组合判断根因
-```

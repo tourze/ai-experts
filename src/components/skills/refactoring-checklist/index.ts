@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -29,6 +30,16 @@ export const refactoringChecklistSkill = defineSkill({
     "在干净分支上操作，每步提交",
     "重构提交不混入行为变更",
     "重构后覆盖率不低于基线",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "重构搭车",
+      pass: "三类独立提交",
+    }),
+    defineAntiPattern({
+      fail: "大爆炸提交",
+      pass: "增量小步",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

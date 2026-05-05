@@ -32,12 +32,3 @@ CREATE TABLE product (
 );
 CREATE INDEX idx_product_attrs ON product USING GIN (attrs jsonb_path_ops);
 ```
-
-## 反模式
-
-- MySQL 用 INT 做主键，低估了数据增长。
-- MySQL 用 utf8 字符集（实际是 utf8mb3）。
-- PostgreSQL 用 `varchar(n)` 而非通用 `TEXT`。
-- 金额用 FLOAT/DOUBLE 导致精度丢失。
-- 把大量高频过滤字段塞进 JSON 列而不提为独立列。
-- 用 JSON 而不是 JSONB（PostgreSQL）。

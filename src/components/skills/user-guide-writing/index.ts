@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { docCoauthoringSkill } from "../doc-coauthoring/index";
@@ -42,6 +43,16 @@ export const userGuideWritingSkill = defineSkill({
       },
       reason: "若还需要同步更新仓库说明，可结合 `readme-blueprint-generator`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "内部术语 + 无操作",
+      pass: "任务导向 + 可执行",
+    }),
+    defineAntiPattern({
+      fail: "省略前置条件",
+      pass: "前置条件前置",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

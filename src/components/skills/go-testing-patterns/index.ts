@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { goConcurrencyPatternsSkill } from "../go-concurrency-patterns/index";
@@ -53,6 +54,16 @@ export const goTestingPatternsSkill = defineSkill({
       },
       reason: "通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 `testing-patterns`。本 skill 只覆盖 Go 特有语法与工具。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "测实现细节",
+      pass: "测可观察行为",
+    }),
+    defineAntiPattern({
+      fail: "用 Sleep 等异步完成",
+      pass: "用同步信号",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

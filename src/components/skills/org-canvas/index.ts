@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { raciMatrixSkill } from "../raci-matrix/index";
@@ -37,6 +38,12 @@ export const orgCanvasSkill = defineSkill({
       },
       reason: "只需明确职责分工：不需要重新设计组织，只理清分工用 `raci-matrix`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "组织架构图当画布",
+      pass: "战略驱动的组织设计",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

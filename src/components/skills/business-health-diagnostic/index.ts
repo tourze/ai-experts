@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { processOptimizationSkill } from "../process-optimization/index";
@@ -37,6 +38,16 @@ export const businessHealthDiagnosticSkill = defineSkill({
       },
       reason: "与 `process-optimization` 配合优化发现的瓶颈。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只看收入",
+      pass: "四象限全扫",
+    }),
+    defineAntiPattern({
+      fail: "列 20 个待改善项",
+      pass: "聚焦 Top 3",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

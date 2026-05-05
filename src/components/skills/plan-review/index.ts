@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -26,6 +27,16 @@ export const planReviewSkill = defineSkill({
     "是否列出了外部依赖、先决条件和阻塞项。",
     "是否覆盖了回滚、迁移、灰度和验证方式。",
     "是否把风险按严重度和发生概率排过序。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "没计划就评审",
+      pass: "先要计划",
+    }),
+    defineAntiPattern({
+      fail: "只挑表达",
+      pass: "落到执行风险",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

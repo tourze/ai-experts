@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -27,6 +28,16 @@ export const openapiSpecGenerationSkill = defineSkill({
     "是否复用了共享 schema、参数和 response 组件。",
     "是否让示例、默认值和枚举值与 schema 保持一致。",
     "如果 API 生成流程嵌入 CI，参阅 GitHub Actions 工作流配置相关文档。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只写 200 无错误模型",
+      pass: "覆盖错误模型",
+    }),
+    defineAntiPattern({
+      fail: "字段重复定义漂移",
+      pass: "共享 schema 组件",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

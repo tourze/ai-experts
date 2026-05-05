@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { dataAnalysisSkill } from "../data-analysis/index";
@@ -56,6 +57,20 @@ export const dataVisualizationSkill = defineSkill({
       },
       reason: "相关 skill：`data-analysis`、`statistical-analysis`、`data-storytelling`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "6 系列折线 + 双 Y 轴",
+      pass: "一图一问题",
+    }),
+    defineAntiPattern({
+      fail: "颜色是唯一编码",
+      pass: "颜色 + 形状 + 标签",
+    }),
+    defineAntiPattern({
+      fail: "折线连类别 x 轴",
+      pass: "柱图",
+    }),
   ],
   invocation: InvocationPolicy.ModelOnly,
   platforms: [Platform.Claude, Platform.Codex],

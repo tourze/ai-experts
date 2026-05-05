@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { springBootLayeringSkill } from "../spring-boot-layering/index";
@@ -40,6 +41,20 @@ export const javaJunitSkill = defineSkill({
       },
       reason: "通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 `testing-patterns`。本 skill 只覆盖 Java 特有语法与工具。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "@SpringBootTest 测纯逻辑",
+      pass: "纯业务类直接 `new`，不启动容器。",
+    }),
+    defineAntiPattern({
+      fail: "Thread.sleep 等异步",
+      pass: "用 Awaitility 显式等待替代固定睡眠。",
+    }),
+    defineAntiPattern({
+      fail: "只验证 mock 调用",
+      pass: "用 `ArgumentCaptor` 验证传入内容，不要只 `verify(repo).save(any())`。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -4,6 +4,7 @@ import {
   Platform,
   defineAsset,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -42,6 +43,16 @@ export const copywritingSkill = defineSkill({
       },
       reason: "转化率优化 → `cro-methodology`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "Feature-first headline",
+      pass: "Benefit-first headline",
+    }),
+    defineAntiPattern({
+      fail: "Company-speak",
+      pass: "Customer language",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

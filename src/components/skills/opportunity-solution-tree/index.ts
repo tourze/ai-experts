@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { createPrdSkill } from "../create-prd/index";
@@ -32,6 +33,16 @@ export const opportunitySolutionTreeSkill = defineSkill({
       },
       reason: "需要把目标与版本规划、PRD 连接起来时，可配合 `create-prd`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "跳过机会层",
+      pass: "三层完整",
+    }),
+    defineAntiPattern({
+      fail: "实验无判定",
+      pass: "预设阈值 + 样本量",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

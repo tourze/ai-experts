@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -27,6 +28,16 @@ export const androidArchitectureSkill = defineSkill({
     "Hilt Module 中接口绑定用 `@Binds`，仅第三方实例用 `@Provides`",
     "Feature 模块不互相依赖，只依赖 `:core:*`",
     "依赖方向单向向内，无循环依赖",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "Domain 层依赖 Android",
+      pass: "Domain 层纯 Kotlin",
+    }),
+    defineAntiPattern({
+      fail: "ViewModel 暴露可变状态",
+      pass: "只读 StateFlow",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { redisDataModelingSkill } from "../redis-data-modeling/index";
@@ -38,6 +39,20 @@ export const redisCachingPatternsSkill = defineSkill({
       },
       reason: "TTL 抖动防雪崩，配合 `redis-data-modeling` 的键设计与锁模式。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "先删缓存再写 DB",
+      pass: "先写 DB 再删缓存",
+    }),
+    defineAntiPattern({
+      fail: "击穿不加互斥",
+      pass: "SET NX 互斥刷新",
+    }),
+    defineAntiPattern({
+      fail: "不存在的 key 不缓存",
+      pass: "空值缓存（短 TTL）",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

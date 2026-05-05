@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { graalvmNativeImageSkill } from "../graalvm-native-image/index";
@@ -36,6 +37,16 @@ export const gradleBuildPerformanceSkill = defineSkill({
       },
       reason: "Native Image 构建链路过慢时，可与 `graalvm-native-image` 配合使用。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "一次开启所有优化",
+      pass: "一次一个 + 测量",
+    }),
+    defineAntiPattern({
+      fail: "配置期重型 I/O",
+      pass: "Provider 延迟到执行期",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

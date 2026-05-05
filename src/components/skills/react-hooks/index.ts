@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { reactPerformanceSkill } from "../react-performance/index";
@@ -49,6 +50,16 @@ export const reactHooksSkill = defineSkill({
       },
       reason: "如果问题已经扩展成\\\"渲染性能、外部 store 订阅或 memo 治理\\\"，统一看 `react-performance`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "用 effect 复制派生 state",
+      pass: "直接计算派生值",
+    }),
+    defineAntiPattern({
+      fail: "删依赖压 ESLint",
+      pass: "依赖数组表达真实读集：条件调用 Hook，或在普通工具函数里偷偷调用 Hook。 默认到处加 `useMemo` / `useCallback`，却没有证明它能改善瓶颈。 自定义 Hook 直接访问 `window`、`document`、`localStorage`，在 SSR 下崩溃。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

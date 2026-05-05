@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { copywritingSkill } from "../copywriting/index";
@@ -45,6 +46,16 @@ export const fanOperationsSkill = defineSkill({
       },
       reason: "对外表达必须与账号定位一致；账号主张模糊时，先回到 `xiaohongshu-commercial-growth` 确认定位。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "无信息回复",
+      pass: "直接结论 + 钩子",
+    }),
+    defineAntiPattern({
+      fail: "评论区甩链接",
+      pass: "价值置顶",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

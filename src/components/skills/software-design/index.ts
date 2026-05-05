@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -32,6 +33,28 @@ export const softwareDesignSkill = defineSkill({
     "是否识别了变更放大、认知负担、未知未知数。",
     "模块是深还是浅，知识有无泄漏。",
     "注释记录的是设计意图和不变量，还是翻译代码。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "浅模块：多层只转发不封装复杂度的类链。",
+      pass: "把复杂度封装进模块边界，删除只转发的层。",
+    }),
+    defineAntiPattern({
+      fail: "继承滥用：为共享几行工具方法而继承。",
+      pass: "优先组合或委托，只在真实 is-a 层次上使用继承。",
+    }),
+    defineAntiPattern({
+      fail: "Fat Controller：控制器内直接写业务逻辑、发通知、记审计。",
+      pass: "控制器只编排请求响应，业务规则放到 service/use case。",
+    }),
+    defineAntiPattern({
+      fail: "静态定位器：静态 Facade/Service Locator 导致无法测试。",
+      pass: "用显式依赖注入，让测试能替换边界依赖。",
+    }),
+    defineAntiPattern({
+      fail: "配置地狱：18 个参数让调用方承担本应隐藏的复杂度。",
+      pass: "把参数收口成意图明确的配置对象或更高层 API。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -10,32 +10,6 @@
 
 详细命令模板见 [references/code-patterns.md](references/code-patterns.md)。
 
-## 反模式
-
-### FAIL: 凭直觉画模块边界
-
-```
-用户：分析 src/ 的架构
-AI：我觉得 src/utils 是工具层，src/components 是展示层，结构比较清晰...
-```
-
-不读取文件内容直接归类，模块边界全凭目录名猜测。没有文件级证据支撑。
-
-### PASS: 文件级证据驱动的模块地图
-
-```
-AI：
-| 模块 | 目录 | Public Interface | 依赖方向 |
-|------|------|-----------------|---------|
-| core | src/core/ | DataStore, AuthService | 只被 api 层依赖 |
-| api | src/api/ | REST handlers | 依赖 core, 不依赖 ui |
-| ui | src/ui/ | React components | 依赖 core, 不依赖 api |
-
-证据：DataStore 定义在 src/core/store.ts:15，被 src/api/handlers.ts:8 和 src/ui/App.tsx:12 import。
-```
-
-更多反模式与检查清单见 [references/anti-patterns.md](references/anti-patterns.md)。
-
 ## 交叉引用
 
 - `deep-code-read`：深度理解不熟悉代码库

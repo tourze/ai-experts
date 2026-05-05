@@ -61,32 +61,3 @@ async function retryOperation(fn: () => Promise<string>): Promise<string> {
 | "测试第一次就通过了" | 这意味着你在测试已有行为，不是新行为。重新检查测试。 |
 
 **执行前必须读取** [references/discipline-guard.md](./references/discipline-guard.md)——包含完整 Red Flags 表和 Rationalizations 对照表。跳过 = 违反 Iron Law。
-
-## 反模式
-
-### FAIL: 先写完再补测试
-
-```typescript
-// 1. 先写了完整实现
-function add(a: number, b: number) { return a + b; }
-// 2. 再补”测试”
-test(“add works”, () => { expect(add(1, 2)).toBe(3); }); // 测试第一次就通过
-```
-
-→ 这不是 TDD，这是”给已有代码补覆盖率”。测试没有驱动设计。
-
-### PASS: 先写失败测试再实现
-
-```typescript
-// 1. RED：先写测试，看到失败
-test(“add returns sum of two numbers”, () => {
-  expect(add(1, 2)).toBe(3); // ReferenceError: add is not defined ✓
-});
-// 2. GREEN：写最小实现
-function add(a: number, b: number) { return a + b; }
-// 3. 测试通过 ✓
-```
-
-- 失败测试一上来就通过，却继续往下写。
-- 用庞大 mock 代替真实行为断言。
-- 绿灯阶段顺手把未来需求也做了。

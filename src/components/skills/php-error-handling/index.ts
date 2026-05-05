@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { phpTestingSkill } from "../php-testing/index";
@@ -41,6 +42,16 @@ export const phpErrorHandlingSkill = defineSkill({
       },
       reason: "联动：`php-testing` · `php-type-safety`",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "吞异常返 false/null",
+      pass: "异常类型化",
+    }),
+    defineAntiPattern({
+      fail: "直接返回 getMessage",
+      pass: "用户消息 vs 内部细节",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

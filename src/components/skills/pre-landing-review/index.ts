@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -42,6 +43,16 @@ export const preLandingReviewSkill = defineSkill({
       },
       reason: "需要与 `testing-strategy` 配合，决定哪些风险必须补测后才能放行。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "不看 diff 泛泛",
+      pass: "基于 diff 的具体阻断",
+    }),
+    defineAntiPattern({
+      fail: "命名当阻断",
+      pass: "风险分级",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

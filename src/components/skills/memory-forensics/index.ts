@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { binaryAnalysisPatternsSkill } from "../binary-analysis-patterns/index";
@@ -41,6 +42,20 @@ export const memoryForensicsSkill = defineSkill({
       },
       reason: "需要与 `binary-analysis-patterns` 联动定位可疑模块。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "不确认镜像类型",
+      pass: "先 windows.info / banners",
+    }),
+    defineAntiPattern({
+      fail: "单插件下结论",
+      pass: "多插件交叉",
+    }),
+    defineAntiPattern({
+      fail: "改原始证据",
+      pass: "哈希 + 副本",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

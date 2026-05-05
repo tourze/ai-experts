@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { modernWebDesignSkill } from "../modern-web-design/index";
@@ -46,6 +47,12 @@ export const responsiveDesignSkill = defineSkill({
       label: "web-design-guidelines",
       reason: "`web-design-guidelines`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "桌面优先 + JS 读宽度",
+      pass: "移动优先 + CSS 容器查询：断点过多且跟具体设备型号绑定。 小屏上继续保留桌面级内容密度和列数。 因为”适配”而隐藏关键功能或关键信息。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

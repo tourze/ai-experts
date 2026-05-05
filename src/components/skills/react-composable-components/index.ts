@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { reactPerformanceSkill } from "../react-performance/index";
@@ -40,6 +41,16 @@ export const reactComposableComponentsSkill = defineSkill({
       },
       reason: "如果问题的根因是\\\\\\\"外部状态订阅导致整棵树频繁重渲染\\\\\\\"，优先看 `react-performance`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "用配置型 props（`hasHeader`、`headerActions`）替代 `children` 插槽",
+      pass: "无法表达任意嵌套结构。",
+    }),
+    defineAntiPattern({
+      fail: "不透传原生属性",
+      pass: "调用方丢失 `aria-label`、`disabled`、`type` 等能力。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

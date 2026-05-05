@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { dbSchemaDesignSkill } from "../db-schema-design/index";
@@ -46,6 +47,20 @@ export const pgsqlPartitioningSkill = defineSkill({
       },
       reason: "基础表结构参见 `db-schema-design`；索引策略参见 `sql-review-optimization`",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "没有 DEFAULT 分区",
+      pass: "始终有兜底",
+    }),
+    defineAntiPattern({
+      fail: "HASH 分区做时序",
+      pass: "时序用 RANGE",
+    }),
+    defineAntiPattern({
+      fail: "DETACH 不 CONCURRENTLY",
+      pass: "CONCURRENTLY 滚动",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

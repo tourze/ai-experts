@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -30,6 +31,16 @@ export const tauriPluginDevelopmentSkill = defineSkill({
     "移动端是否拆分并用公共 trait？",
     "`default.toml` 是否定义最小权限？",
     "`on_event` 是否处理 `RunEvent::Exit`？",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "硬编码无 Builder",
+      pass: "Builder 模式",
+    }),
+    defineAntiPattern({
+      fail: "JS invoke 无 plugin: 前缀",
+      pass: "plugin:name|cmd：详见 [references/](references/)。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

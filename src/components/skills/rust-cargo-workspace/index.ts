@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -27,6 +28,20 @@ export const rustCargoWorkspaceSkill = defineSkill({
   checklist: [
     "`resolver = \"2\"` 已设？共享依赖全在 workspace 级？",
     "feature 全 additive？`build.rs` 只写 `OUT_DIR`？",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "各成员各写版本",
+      pass: "workspace.dependencies",
+    }),
+    defineAntiPattern({
+      fail: "feature 做减法",
+      pass: "feature additive",
+    }),
+    defineAntiPattern({
+      fail: "build.rs 写 src/",
+      pass: "只写 OUT_DIR",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

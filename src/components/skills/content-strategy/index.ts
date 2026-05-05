@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { seoSkill } from "../seo/index";
@@ -35,6 +36,20 @@ export const contentStrategySkill = defineSkill({
       },
       reason: "若任务转向具体页面优化，配合 `seo`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只堆主题词",
+      pass: "主题 + 读者 + 意图 + CTA",
+    }),
+    defineAntiPattern({
+      fail: "全 SEO 化",
+      pass: "三类平衡",
+    }),
+    defineAntiPattern({
+      fail: "无视发布能力",
+      pass: "按产能定节奏",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

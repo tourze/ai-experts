@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { testingStrategySkill } from "../testing-strategy/index";
@@ -41,6 +42,12 @@ export const testDrivenDevelopmentSkill = defineSkill({
       },
       reason: "需要把 `testing-strategy` 的缺陷后扩面高优先级场景落成真实测试。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "先写完再补测试：这不是 TDD，这是”给已有代码补覆盖率”。测试没有驱动设计。",
+      pass: "先写失败测试再实现：失败测试一上来就通过，却继续往下写。 用庞大 mock 代替真实行为断言。 绿灯阶段顺手把未来需求也做了。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

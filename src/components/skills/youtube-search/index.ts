@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -37,6 +38,16 @@ export const youtubeSearchSkill = defineSkill({
       },
       reason: "用户已经给出明确视频链接且诉求是“总结内容”时，不要继续搜索，直接切到 `youtube-analysis`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "当下载器使",
+      pass: "明确职责边界",
+    }),
+    defineAntiPattern({
+      fail: "flat 字段当真实数据",
+      pass: "缺失字段显式说明",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

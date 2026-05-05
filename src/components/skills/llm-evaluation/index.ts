@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { promptEngineeringPatternsSkill } from "../prompt-engineering-patterns/index";
@@ -40,6 +41,20 @@ export const llmEvaluationSkill = defineSkill({
       },
       reason: "相关 skill：`prompt-engineering-patterns`、`rag-auditor`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "3 个样例替代 benchmark",
+      pass: "冻结评测集 + 多指标",
+    }),
+    defineAntiPattern({
+      fail: "只看平均分",
+      pass: "按类别拆分",
+    }),
+    defineAntiPattern({
+      fail: "样本集随版本改",
+      pass: "冻结基线",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

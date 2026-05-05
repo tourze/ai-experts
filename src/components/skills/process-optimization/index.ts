@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { agileProductOwnerSkill } from "../agile-product-owner/index";
@@ -39,6 +40,16 @@ export const processOptimizationSkill = defineSkill({
       },
       reason: "需要从系统视角看依赖关系时，可配合 `systems-thinking`；涉及 Backlog 或 Sprint 流程时，可配合 `agile-product-owner`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "AI 自动化一切",
+      pass: "先量化 + 修瓶颈",
+    }),
+    defineAntiPattern({
+      fail: "不画现状",
+      pass: "现状图 + 数据",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

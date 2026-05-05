@@ -62,38 +62,3 @@ for commit in [c for c in git("log", "--format=%H", f"{UPSTREAM}..HEAD").splitli
         if len(parts) >= 3 and parts[0].startswith(":") and "R" in parts[0]:
             rename_map.setdefault(parts[2], set()).add(parts[1])
 ```
-
-## 反模式
-
-### FAIL: 模糊作者名
-
-```bash
-git log --author=”Alice” --since=”2 weeks”
-# 命中 Alice Wang / Alice Liu / alice@x.com / alice@y.com 全部
-# 报告失真
-```
-
-### PASS: 精确身份
-
-```bash
-git log --format=”%an <%ae>” upstream..HEAD | sort -u
-# 用户确认是哪个 “Alice Wang <alice.wang@company.com>”
-git log --author=”alice.wang@company.com” ...
-```
-
-### FAIL: 不核对最终落地
-
-```
-报告 alice 改过 50 个文件
-→ 但 30 个已被 bob 重构删除
-→ 合并后 alice 只贡献 20 个 → 报告虚高
-```
-
-### PASS: 与 merge diff 交集
-
-```bash
-# 1. 拿 alice 历史触达的文件集
-# 2. 拿 git diff upstream...HEAD 最终落地集
-# 3. 取交集 → 真实 DIRECT 贡献
-# 4. 沿 rename 链找 VIA_RENAME 间接贡献
-```

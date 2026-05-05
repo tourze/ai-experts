@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { doctrineEntityPatternsSkill } from "../doctrine-entity-patterns/index";
@@ -36,6 +37,16 @@ export const symfonyBundleArchitectureSkill = defineSkill({
       },
       reason: "Entity 设计联动 `doctrine-entity-patterns`；代码示例和调试命令见 reference.md。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "Extension 里做运行时调用",
+      pass: "Extension 只加载配置",
+    }),
+    defineAntiPattern({
+      fail: "所有服务 public: true",
+      pass: "默认 private",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

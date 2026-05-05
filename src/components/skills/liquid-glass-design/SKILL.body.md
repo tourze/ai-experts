@@ -27,31 +27,3 @@ GlassEffectContainer(spacing: 24) {
 ```
 
 WidgetKit 渲染模式与更多代码模式见 [references/advanced-patterns.md](references/advanced-patterns.md)。
-
-## 反模式
-
-### FAIL: 不做版本判断
-
-```swift
-Text("Focus")
-    .glassEffect(.regular)  // iOS 26+ API
-// iOS 17/18 设备：编译错误 / 运行 crash
-```
-
-### PASS: availability 兜底
-
-```swift
-extension View {
-    @ViewBuilder
-    func adaptiveGlass() -> some View {
-        if #available(iOS 26, *) {
-            self.glassEffect(.regular.tint(.blue))
-        } else {
-            self.background(.ultraThinMaterial)  // 旧版本回退
-        }
-    }
-}
-Text("Focus").adaptiveGlass()
-```
-
-更多反模式见 [references/advanced-patterns.md](references/advanced-patterns.md)。

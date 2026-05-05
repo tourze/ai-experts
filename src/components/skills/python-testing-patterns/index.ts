@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { asyncPythonPatternsSkill } from "../async-python-patterns/index";
@@ -46,6 +47,20 @@ export const pythonTestingPatternsSkill = defineSkill({
       },
       reason: "通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 `testing-patterns`。本 skill 只覆盖 Python 特有语法与工具。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "全 mock 测到 mock 自己",
+      pass: "隔离外部，真实业务",
+    }),
+    defineAntiPattern({
+      fail: "低信息量断言",
+      pass: "具体断言",
+    }),
+    defineAntiPattern({
+      fail: "只测 happy path",
+      pass: "覆盖边界 + 错误",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

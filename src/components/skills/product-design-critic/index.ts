@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { competitiveIntelligenceSkill } from "../competitive-intelligence/index";
@@ -48,6 +49,16 @@ export const productDesignCriticSkill = defineSkill({
       },
       reason: "需要结合用户路径和竞争上下文时，可配合 `customer-journey-map`、`obviously-awesome` 与 `competitive-teardown`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "抽象审美词",
+      pass: "落到行为变化",
+    }),
+    defineAntiPattern({
+      fail: "只改视觉",
+      pass: "先架构再视觉",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

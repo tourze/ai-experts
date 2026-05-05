@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -30,6 +31,16 @@ export const legalRiskAssessmentSkill = defineSkill({
     "是否写清了最小缓释动作、负责人、时限、复审频率，以及风险分数变化的条件。",
     "是否识别了必须升级的信号：政府调查、诉讼/仲裁、数据事件、核心产品侵权指控、董事高管责任、跨境强监管冲突。",
     "如果事项来自数据或劳动文档，是否已经联动隐私或 HR 文档技能，保证上下游事实口径一致。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只给”高/低”",
+      pass: "结构化评分",
+    }),
+    defineAntiPattern({
+      fail: "低分掩盖未知",
+      pass: "显式标未知",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

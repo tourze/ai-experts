@@ -4,6 +4,7 @@ import {
   Platform,
   defineAsset,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -46,6 +47,20 @@ export const uxResearcherDesignerSkill = defineSkill({
       },
       reason: "如果问题已经明确是界面启发式错误，先用 `ux-heuristics`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "2 次访谈出 Persona",
+      pass: "显式样本 + 信心等级",
+    }),
+    defineAntiPattern({
+      fail: "自述 = 事实",
+      pass: "看行为而非意愿",
+    }),
+    defineAntiPattern({
+      fail: "只 happy path",
+      pass: "失败与恢复",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

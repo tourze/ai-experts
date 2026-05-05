@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { symfonyUxSkill } from "../symfony-ux/index";
@@ -38,6 +39,16 @@ export const twigComponentsSkill = defineSkill({
       },
       reason: "如果还在决定应该用 Stimulus、Turbo、TwigComponent 还是 LiveComponent，可先看 `symfony-ux`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "静态展示上 LiveComponent",
+      pass: "静态用 TwigComponent",
+    }),
+    defineAntiPattern({
+      fail: "模板里写业务逻辑",
+      pass: "通过显式 props 输入",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

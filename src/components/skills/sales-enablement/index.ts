@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -29,6 +30,32 @@ export const salesEnablementSkill = defineSkill({
     "CTA 明确且低摩擦？",
     "差异化点是竞品做不到的？",
     "销售知道怎么用、什么时候用？",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "功能清单 deck",
+      pass: "每个功能关联一个业务结果",
+    }),
+    defineAntiPattern({
+      fail: "万能 one-pager",
+      pass: "按行业或角色做版本",
+    }),
+    defineAntiPattern({
+      fail: "虚构 ROI",
+      pass: "保守假设 + 标注来源",
+    }),
+    defineAntiPattern({
+      fail: "产品导览式 demo",
+      pass: "从客户目标倒推展示顺序",
+    }),
+    defineAntiPattern({
+      fail: "提案模板化",
+      pass: "每份包含客户专属内容",
+    }),
+    defineAntiPattern({
+      fail: "材料做完就扔",
+      pass: "附带使用场景说明",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -27,35 +27,3 @@ docker compose logs --tail 200 api
 docker compose exec api sh
 docker compose down
 ```
-
-## 反模式
-
-### FAIL: 生产容器内临时修复
-
-```bash
-docker exec -it prod-api sh
-# 在容器里 vim 改配置、pip install 补依赖
-```
-
-→ 状态漂移：下次重启回到原始镜像，"修复"消失。
-
-### PASS: 改 Dockerfile 重新构建
-
-```bash
-# 修改 Dockerfile 或配置 → 构建新镜像 → 滚动更新
-docker build -t my-app:1.2.4 .
-docker compose up -d --no-deps api
-```
-
-### FAIL: 容器在跑就算健康
-
-```bash
-docker ps  # STATUS: Up 3 hours → "没问题"
-```
-
-### PASS: 检查日志和健康状态
-
-```bash
-docker inspect --format='{{.State.Health.Status}}' api  # unhealthy
-docker logs --tail 50 api  # 发现 OOM 后重启循环
-```

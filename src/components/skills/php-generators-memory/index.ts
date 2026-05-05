@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -32,6 +33,16 @@ export const phpGeneratorsMemorySkill = defineSkill({
     "是否保留了键名语义：需要定位来源行、页码、业务 ID 时使用 `yield $key => $value`。",
     "是否用 `memory_get_peak_usage()` 或等价 profiling 在目标数据量上验证，而不是只凭代码观感判断。",
     "PHPDoc 是否表达元素类型，例如 `\\Generator<int, User>` 或 `iterable<User>`，避免静态分析退回 `mixed`。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "先组大数组再返回",
+      pass: "边生成边消费",
+    }),
+    defineAntiPattern({
+      fail: "立刻转回数组",
+      pass: "下游保持流式处理",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

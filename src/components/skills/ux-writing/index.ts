@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { i18nLocalizationSkill } from "../i18n-localization/index";
@@ -41,6 +42,16 @@ export const uxWritingSkill = defineSkill({
       label: "web-design-guidelines",
       reason: "`web-design-guidelines`",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "字符串拼接 / Placeholder 当 label",
+      pass: "ICU + label + what-why-fix",
+    }),
+    defineAntiPattern({
+      fail: "AI 客套话 / 硬译",
+      pass: "直接 + 本地化重写",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

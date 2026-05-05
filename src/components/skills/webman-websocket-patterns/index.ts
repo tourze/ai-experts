@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -26,6 +27,16 @@ export const webmanWebsocketPatternsSkill = defineSkill({
     "私有频道要求签名验证",
     "心跳容许偶尔丢包",
     "多 Worker 通过 Redis pub/sub 广播",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "多 Worker 仅用内存数组",
+      pass: "Redis pub/sub 跨进程",
+    }),
+    defineAntiPattern({
+      fail: "断线立即重连",
+      pass: "指数退避 + 抖动",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { competitiveIntelligenceSkill } from "../competitive-intelligence/index";
@@ -42,6 +43,16 @@ export const portersFiveForcesSkill = defineSkill({
       },
       reason: "与内部能力/执行风险结合分析时，可配合 `swot-analysis` 或 `competitive-teardown`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只看现有竞品",
+      pass: "五力都过",
+    }),
+    defineAntiPattern({
+      fail: "行业 vs 执行混淆",
+      pass: "区分",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

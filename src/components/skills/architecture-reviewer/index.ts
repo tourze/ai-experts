@@ -4,6 +4,7 @@ import {
   Platform,
   defineAsset,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -30,6 +31,16 @@ export const architectureReviewerSkill = defineSkill({
     "是否标记了 S1 到 S5 风险等级和修复顺序。",
     "是否区分“当前实现问题”与“文档缺口/待确认项”。",
     "是否给出可执行的整改建议，而不是空泛建议。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "跳过输入分类",
+      pass: "先扫描再评",
+    }),
+    defineAntiPattern({
+      fail: "风险列表无优先级",
+      pass: "S1-S5 + 修复顺序",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

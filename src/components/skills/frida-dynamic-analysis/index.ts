@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { androidApkAuditSkill } from "../android-apk-audit/index";
@@ -44,6 +45,12 @@ export const fridaDynamicAnalysisSkill = defineSkill({
       label: "jadx",
       reason: "需要与 `jadx` 配合，先静态定位目标再动态验证。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "通用脚本盲跑",
+      pass: "针对目标定制",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

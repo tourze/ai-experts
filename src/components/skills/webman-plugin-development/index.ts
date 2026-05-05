@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -26,6 +27,24 @@ export const webmanPluginDevelopmentSkill = defineSkill({
     "PSR-4 autoload 映射到 `src/`",
     "`mkdir` 权限 `0755`",
     "`uninstall()` 清理已发布配置",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "mkdir 0777",
+      pass: "0755",
+    }),
+    defineAntiPattern({
+      fail: "读应用配置",
+      pass: "插件命名空间",
+    }),
+    defineAntiPattern({
+      fail: "uninstall 留空",
+      pass: "完整清理",
+    }),
+    defineAntiPattern({
+      fail: "framework 在 require",
+      pass: "require-dev",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

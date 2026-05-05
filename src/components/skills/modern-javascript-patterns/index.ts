@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { javascriptTypescriptJestSkill } from "../javascript-typescript-jest/index";
@@ -42,6 +43,16 @@ export const modernJavascriptPatternsSkill = defineSkill({
       },
       reason: "需要在业务代码和测试代码之间复用一致的数据变换模式时，联动 `javascript-typescript-jest`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "用 || 代替 ?? 误伤合法假值",
+      pass: "用 ?? 只兜底 null/undefined",
+    }),
+    defineAntiPattern({
+      fail: "map 里偷偷修改外部状态",
+      pass: "用合适的工具做去重：把 `Promise.all` 用在互相依赖的异步步骤上。 在 CommonJS / ESM 边界混用默认导出与具名导出而不做兼容说明。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

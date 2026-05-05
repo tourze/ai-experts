@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { estimateCalibratorSkill } from "../estimate-calibrator/index";
@@ -35,6 +36,16 @@ export const planningUnderUncertaintySkill = defineSkill({
       },
       reason: "需要把不确定性转成估算或版本节奏时，可配合 `estimate-calibrator`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "线性年度计划",
+      pass: "阶段 + 检查点",
+    }),
+    defineAntiPattern({
+      fail: "不确定就不决定",
+      pass: "写下当前最优下注 + 放弃条件",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

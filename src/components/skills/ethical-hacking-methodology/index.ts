@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { wiresharkAnalysisSkill } from "../wireshark-analysis/index";
@@ -35,6 +36,16 @@ export const ethicalHackingMethodologySkill = defineSkill({
       },
       reason: "需要把 nmap 的侦察结果和 `wireshark-analysis` 的流量证据串起来。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "工具输出当结论",
+      pass: "工具 → 验证 → 影响",
+    }),
+    defineAntiPattern({
+      fail: "范围不清就动手",
+      pass: "范围 + 授权先行",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

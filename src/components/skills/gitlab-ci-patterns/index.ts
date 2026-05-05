@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { helmChartScaffoldingSkill } from "../helm-chart-scaffolding/index";
@@ -35,6 +36,16 @@ export const gitlabCiPatternsSkill = defineSkill({
       },
       reason: "Helm 或 Kubernetes 发布可以衔接 `helm-chart-scaffolding`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "单 job 塞所有步骤",
+      pass: "分 stage + needs 并行",
+    }),
+    defineAntiPattern({
+      fail: "生产自动部署无门禁",
+      pass: "手动门禁 + 环境",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

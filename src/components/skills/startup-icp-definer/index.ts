@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { marketSizingAnalysisSkill } from "../market-sizing-analysis/index";
@@ -34,6 +35,16 @@ export const startupIcpDefinerSkill = defineSkill({
       },
       reason: "需要结合想法验证或市场空间时，可配合 `market-sizing-analysis`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "ICP = 所有人",
+      pass: "窄而深",
+    }),
+    defineAntiPattern({
+      fail: "只人口统计",
+      pass: "加触发 + 痛点",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

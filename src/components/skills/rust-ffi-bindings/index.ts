@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -27,6 +28,20 @@ export const rustFfiBindingsSkill = defineSkill({
   checklist: [
     "`extern \"C\"` 都有 `#[no_mangle]`？入口都有 `catch_unwind`？",
     "`Box::into_raw` 都有配对 `_free`？`#[repr(C)]` 无遗漏？",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "传 String 跨 FFI",
+      pass: "CString + 显式所有权",
+    }),
+    defineAntiPattern({
+      fail: "跨 FFI panic",
+      pass: "catch_unwind + 错误码",
+    }),
+    defineAntiPattern({
+      fail: "_new 无 _free",
+      pass: "配对释放",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

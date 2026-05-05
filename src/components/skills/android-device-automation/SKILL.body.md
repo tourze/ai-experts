@@ -76,35 +76,3 @@ node scripts/diagnose_app.mjs --package com.example.app --no-launch --grep React
 * Android 真机或 Android Emulator
 * Java / OpenJDK
 * Node.js
-
-## 反模式
-
-### FAIL: 截图 + 坐标
-
-```bash
-# 截屏后凭眼力 → adb shell input tap 187 642
-# DPI / 屏幕尺寸 / 字号变 → 点错
-```
-
-### PASS: screen_mapper → navigator
-
-```bash
-node scripts/screen_mapper.mjs
-node scripts/navigator.mjs --find-text "登录" --tap
-# 基于语义定位，屏幕变化不影响
-```
-
-### FAIL: 多设备不指定 serial
-
-```bash
-adb devices  # 2 台设备
-node scripts/navigator.mjs --find-text "登录" --tap
-# 命令发到随机一台
-```
-
-### PASS: 显式 -s
-
-```bash
-adb devices
-node scripts/navigator.mjs -s emulator-5554 --find-text "登录" --tap
-```

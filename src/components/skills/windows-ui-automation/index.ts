@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { prlctlVmControlSkill } from "../prlctl-vm-control/index";
@@ -46,6 +47,16 @@ export const windowsUiAutomationSkill = defineSkill({
       },
       reason: "需要在 Windows 客体里复现自动化脚本或安全边界时，可联动 `prlctl-vm-control`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "敏感窗口自动化",
+      pass: "阻断名单 + 校验",
+    }),
+    defineAntiPattern({
+      fail: "UIA 失败降级到坐标",
+      pass: "多种定位 + 失败报错",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

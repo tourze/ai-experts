@@ -43,22 +43,3 @@ otool -L "$BINARY"           # 链接的动态库
 otool -ov "$BINARY" | head   # ObjC 元数据
 rizin -qc "aaa; afl" "$BINARY"  # 函数列表
 ```
-
-## 反模式
-
-### FAIL: 用旧版 class-dump
-
-```bash
-class-dump App  # 旧版 class-dump
-# → 对 Swift 类输出为空
-# → 对 ARM64e (A12+) 直接 crash
-```
-
-### PASS: 用 ipsw class-dump
-
-```bash
-ipsw class-dump App
-# → 支持 Swift 类
-# → 支持 ARM64e
-# → 输出 @protocol / @interface / @property 完整声明
-```

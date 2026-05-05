@@ -21,17 +21,3 @@
 ```bash
 printf '%s\n' 'systemctl status nginx | cat' | node scripts/ssh-exec.mjs ~/.host/1.2.3.4.json
 ```
-
-## 反模式
-
-### FAIL: 把密码或命令拼进 CLI 参数
-
-```bash
-node scripts/ssh-exec.mjs --password secret --cmd 'rm -rf /tmp/x'
-```
-
-### PASS: 配置走 JSON，命令走 stdin
-
-```bash
-printf '%s\n' 'df -h' | node scripts/ssh-exec.mjs ~/.host/1.2.3.4.json
-```

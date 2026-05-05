@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -29,6 +30,24 @@ export const taskDecomposerSkill = defineSkill({
     "是否为每阶段补齐边界场景和测试方式。",
     "是否标记关键路径、并行项和高风险项。",
     "若输出 Execution Contract，是否检查了同 wave `write_scope` 不重叠且实现任务都有验收引用。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "太粗",
+      pass: "单 PR 粒度",
+    }),
+    defineAntiPattern({
+      fail: "太细",
+      pass: "单元 = \"可独立 demo\"",
+    }),
+    defineAntiPattern({
+      fail: "只拆编码",
+      pass: "编码 + 验证 + 发布",
+    }),
+    defineAntiPattern({
+      fail: "并行任务写同一范围：两个任务会争抢同一实现区域，不能并行。",
+      pass: "并行前先隔离写范围：写范围互不重叠，且都有验收引用，可以交给执行阶段判断是否并行。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

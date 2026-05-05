@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { marketSizingAnalysisSkill } from "../market-sizing-analysis/index";
@@ -34,6 +35,16 @@ export const fundraiseAdvisorSkill = defineSkill({
       },
       reason: "需要市场规模支撑时配合 `market-sizing-analysis`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "资金用途模糊",
+      pass: "里程碑驱动",
+    }),
+    defineAntiPattern({
+      fail: "同时推所有投资人",
+      pass: "三级名单 + 节奏",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

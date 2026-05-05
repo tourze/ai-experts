@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -28,6 +29,20 @@ export const rustSerdePatternsSkill = defineSkill({
   checklist: [
     "enum 标签策略明确？`deny_unknown_fields` 只在入口？",
     "重命名保留 alias？新增字段有 default/Option？",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "所有类型 deny_unknown_fields",
+      pass: "只在 API 入口用",
+    }),
+    defineAntiPattern({
+      fail: "重命名不加 alias",
+      pass: "保留 alias",
+    }),
+    defineAntiPattern({
+      fail: "Deserialize panic",
+      pass: "返回错误",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

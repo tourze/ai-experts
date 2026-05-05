@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { modernWebDesignSkill } from "../modern-web-design/index";
@@ -40,6 +41,16 @@ export const interactionDesignSkill = defineSkill({
       },
       reason: "`modern-web-design`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "按钮无即时反馈",
+      pass: "反馈 + 锁定",
+    }),
+    defineAntiPattern({
+      fail: "到处都在动",
+      pass: "动效克制：动效只为”显得高级”，却不传递任何状态。 用 motion 掩盖信息架构问题。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { fridaDynamicAnalysisSkill } from "../frida-dynamic-analysis/index";
@@ -42,6 +43,12 @@ export const iosSecretScanSkill = defineSkill({
       },
       reason: "需要与 `ios-binary-analysis` 配合：先提取再扫描。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "命中即报告",
+      pass: "分类 + 影响评估",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

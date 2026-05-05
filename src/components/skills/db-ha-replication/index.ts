@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { mysqlTransactionLockingSkill } from "../mysql-transaction-locking/index";
@@ -40,6 +41,28 @@ export const dbHaReplicationSkill = defineSkill({
       },
       reason: "需要理解事务与锁对复制的影响，联动 `mysql-transaction-locking`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "使用 STATEMENT binlog 格式导致主从数据不一致。",
+      pass: "使用 ROW binlog，并把复制格式纳入环境基线检查。",
+    }),
+    defineAntiPattern({
+      fail: "不启用 GTID 导致故障切换时需要手动对齐位点。",
+      pass: "启用 GTID，并演练基于 GTID 的故障切换。",
+    }),
+    defineAntiPattern({
+      fail: "只依赖 SHOW REPLICA STATUS 的 Seconds_Behind_Source 判断延迟（无法检测无写入时的静默延迟）。",
+      pass: "结合心跳表、复制位点和业务写入延迟判断真实延迟。",
+    }),
+    defineAntiPattern({
+      fail: "在 GTID 有缺口时直接提升 Replica。",
+      pass: "先补齐或确认缺口可接受，再执行提升。",
+    }),
+    defineAntiPattern({
+      fail: "半同步降级为异步后不做告警。",
+      pass: "半同步降级必须告警，并声明降级后的 RPO 处置流程。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

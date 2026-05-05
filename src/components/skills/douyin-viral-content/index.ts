@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -29,6 +30,16 @@ export const douyinViralContentSkill = defineSkill({
     "标签数量控制在 4-6 个，不堆砌。",
     "评分理由与文案结构一一对应，而不是只报分不解释。",
     "如果使用了历史数据，已标明是基于用户给定样本的归纳。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "空洞词汇堆砌",
+      pass: "画面 + 情绪 + 动作",
+    }),
+    defineAntiPattern({
+      fail: "假承诺播放量",
+      pass: "显式说明评分仅供比较",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

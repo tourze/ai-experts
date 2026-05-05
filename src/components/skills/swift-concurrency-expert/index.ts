@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -20,6 +21,16 @@ export const swiftConcurrencyExpertSkill = defineSkill({
     "UI 类型先考虑 `@MainActor`，共享可变状态先考虑 `actor`。",
     "只有在能证明线程安全时才接受 `Sendable` / `@unchecked Sendable`。",
     "需要背景资料时读取 `references/swift-6-2-concurrency.md`、`references/approachable-concurrency.md`。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "全局 @MainActor 压报错",
+      pass: "按职责分隔离域",
+    }),
+    defineAntiPattern({
+      fail: "@unchecked Sendable 糊过",
+      pass: "actor 保证隔离",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

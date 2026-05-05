@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -26,6 +27,16 @@ export const hierarchicalMatchingSystemsSkill = defineSkill({
     "是否区分了必须满足的约束和可优化目标。",
     "是否用样例解释匹配失败或不稳定现象。",
     "是否说明求解复杂度和可扩展性限制。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只谈算法",
+      pass: "业务约束建模",
+    }),
+    defineAntiPattern({
+      fail: "不做样本验证",
+      pass: "样本验证",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

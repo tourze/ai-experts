@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { doctrineBatchProcessingSkill } from "../doctrine-batch-processing/index";
@@ -45,6 +46,16 @@ export const symfonyMessengerSkill = defineSkill({
       },
       reason: "如果 Handler 里涉及批量写库，可联动 `doctrine-batch-processing`；如果消息执行前后要做权限判断，可联动 `symfony-voters`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "Entity 塞进消息体",
+      pass: "只传 ID 和稳定字段",
+    }),
+    defineAntiPattern({
+      fail: "Handler 无幂等保护",
+      pass: "去重键 + 幂等",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

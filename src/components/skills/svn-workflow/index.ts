@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -34,6 +35,20 @@ export const svnWorkflowSkill = defineSkill({
     "忽略策略是否选对：单目录用 `svn:ignore`，子树继承用 `svn:global-ignores`。",
     "旧环境兼容性是否确认：`svn cleanup --remove-unversioned` 与自动 reintegration 依赖较新客户端。",
     "做 SVN→Git 迁移前已准备 `authors.txt`，并确认 `trunk/branches/tags` 路径名与仓库真实布局一致。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "svn add . + 模糊提交",
+      pass: "显式路径 + 信息",
+    }),
+    defineAntiPattern({
+      fail: "直接改 tags/",
+      pass: "新建 hotfix tag",
+    }),
+    defineAntiPattern({
+      fail: "脏工作副本合并",
+      pass: "干净副本 + update",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { doctrineBatchProcessingSkill } from "../doctrine-batch-processing/index";
@@ -43,6 +44,16 @@ export const doctrineEntityPatternsSkill = defineSkill({
       },
       reason: "批处理联动 `doctrine-batch-processing`；Bundle 组织联动 `symfony-bundle-architecture`。完整示例见 [reference.md](reference.md)。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "DateTime 可变日期",
+      pass: "DateTimeImmutable",
+    }),
+    defineAntiPattern({
+      fail: "关联缺反向声明",
+      pass: "双向声明 + cascade",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

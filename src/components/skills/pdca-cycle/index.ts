@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { fishboneDiagramSkill } from "../fishbone-diagram/index";
@@ -41,6 +42,12 @@ export const pdcaCycleSkill = defineSkill({
       label: "five-w-two-h",
       reason: "一次性项目（无需迭代）：PDCA 是循环改进工具，一次性交付用 `five-w-two-h` 做计划。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只有 PD 没有 CA",
+      pass: "完整闭环",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

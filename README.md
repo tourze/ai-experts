@@ -81,7 +81,7 @@ TS 源码统一使用无后缀相对 import，例如 `../../sdk`，不写 `../..
 
 ## Skill
 
-Skill 是工作流和能力单元。`SKILL.body.md` 只保留主体流程、检查清单和红线，不写一级标题，也不写开头简介段；正文必须从二级标题开始。大资料放 `references/`，脚本放 `scripts/`，输出资产放 `assets/`。一级标题由 `index.ts` 的 `fullName` 统一生成到最终 `SKILL.md`，适用场景和核心约束分别由 `index.ts` 的 `useCases` 与 `constraints` 统一生成。
+Skill 是工作流和能力单元。`SKILL.body.md` 只保留主体流程和必要红线，不写一级标题，也不写开头简介段；正文必须从二级标题开始。大资料放 `references/`，脚本放 `scripts/`，输出资产放 `assets/`。一级标题由 `index.ts` 的 `fullName` 统一生成到最终 `SKILL.md`，适用场景、核心约束、检查清单和反模式分别由 `index.ts` 的结构化字段统一生成。
 
 定义示例：
 
@@ -103,6 +103,12 @@ export const typescriptTypeSafety = defineSkill({
   checklist: [
     "是否先拿到完整错误输出再决定改哪层？",
     "`any` 是否缩回边界层，而不是换成新的宽松断言？",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "看到类型错误就用 `any`、宽松断言或 `// @ts-ignore` 压掉。",
+      pass: "先确认边界输入和类型合同，把不确定性收口到 `unknown`、类型守卫或 schema。",
+    }),
   ],
   relatedSkills: [
     {
@@ -142,6 +148,7 @@ export const typescriptTypeSafety = defineSkill({
 - 每个 skill 必须声明 `useCases` 与 `constraints`，最终 `SKILL.md` 的 `## 适用场景` 和 `## 核心约束` 只由生成器输出；`SKILL.body.md` 不再手写这两个章节。
 - `SKILL.body.md` 第一个非空行必须是 `## ...`，不要在正文开头写一句简介；简介类内容放进 `description`、`useCases` 或 `constraints`。
 - 检查清单使用 `checklist` 声明为普通字符串数组；构建器会生成 `## 检查清单`，并优先插入到 `## 反模式` / `## 反模式速查` 之前。不要在 `SKILL.body.md` 手写 `## 检查清单`，分组清单改写成 `分组：检查项`。
+- 反模式使用 `antiPatterns` 声明，每行必须通过 `defineAntiPattern({ fail, pass })` 定义；构建器会生成 `## 反模式` Markdown 表格。不要在 `SKILL.body.md` 手写 `## 反模式`，大段代码对照放进 `references/`。
 - 交叉引用其他 skill 时使用 `relatedSkills` 声明；构建器会生成 `## 相关 Skill`。`relatedSkills` 必须 import 对应 skill definition，并通过 `get id() { return otherSkill.id; }` 延迟读取，避免双向关系造成 ESM 初始化循环；不要在 `SKILL.body.md`、`useCases` 或 `constraints` 里手写 `../other-skill/SKILL.md` 或旧 `plugin:skill` 链接。
 - 每个 script 必须通过 `defineSkillScript()` 登记。
 - reference 必须通过 `defineReference()` 登记，asset 必须通过 `defineAsset()` 登记。

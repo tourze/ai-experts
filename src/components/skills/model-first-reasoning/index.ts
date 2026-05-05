@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -44,6 +45,16 @@ export const modelFirstReasoningSkill = defineSkill({
       },
       reason: "相关 skill：`llm-evaluation`、`prompt-engineering-patterns`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "边写代码边补模型",
+      pass: "Phase 1 冻结模型再编码",
+    }),
+    defineAntiPattern({
+      fail: "模型不写约束",
+      pass: "显式约束",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

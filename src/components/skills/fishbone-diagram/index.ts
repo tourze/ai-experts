@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
@@ -50,6 +51,12 @@ export const fishboneDiagramSkill = defineSkill({
       },
       reason: "原因已知只需排优先级：鱼骨图是发散找原因的工具，原因已知时直接用 `priority-judge` 排序。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只列第一层",
+      pass: "追问到根因",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

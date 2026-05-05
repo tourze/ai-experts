@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { redesignMyLandingpageSkill } from "../redesign-my-landingpage/index";
@@ -35,6 +36,20 @@ export const croMethodologySkill = defineSkill({
       },
       reason: "若实验对象是弹窗，转到 popup-cro；若需要产出实现代码，转到 `redesign-my-landingpage`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "拍脑袋改",
+      pass: "先诊断再实验",
+    }),
+    defineAntiPattern({
+      fail: "多变量同改",
+      pass: "一次一变量",
+    }),
+    defineAntiPattern({
+      fail: "只看转化不看质量",
+      pass: "主副指标同时看",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

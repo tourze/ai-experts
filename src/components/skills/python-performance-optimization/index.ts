@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { asyncPythonPatternsSkill } from "../async-python-patterns/index";
@@ -47,6 +48,16 @@ export const pythonPerformanceOptimizationSkill = defineSkill({
       },
       reason: "异步 I/O 优化时，联动 `async-python-patterns`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "没有 profile 就优化：实际瓶颈是 `process()` 里的 HTTP 调用（I/O），换 numpy 不解决问题。",
+      pass: "先测量再优化",
+    }),
+    defineAntiPattern({
+      fail: "单次运行下结论：一次运行受 GC、缓存预热、系统负载影响，不可作为基准。",
+      pass: "可复现的 benchmark",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

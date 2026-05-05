@@ -54,35 +54,3 @@ int main() {
 结论：接口表达的是“读一段连续数据”，不是“接管一个 `std::vector`”。
 
 共享所有权（`weak_ptr` 打断环）、C 单出口 cleanup、Rust 对照校验的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。
-
-## 反模式
-
-### FAIL: shared_ptr 当默认答案
-
-```cpp
-class Engine {
-    std::shared_ptr<Logger> logger_;  // 真需要共享？
-    std::shared_ptr<Config> config_;  // 谁释放说不清
-};
-```
-
-### PASS: 单 owner + observer
-
-```cpp
-class Engine {
-    std::unique_ptr<Logger> logger_;  // Engine 拥有
-    Config* config_;                   // 借用，由调用方管理
-};
-```
-
-### FAIL: 值传递表达只读借用
-
-```cpp
-int sum(std::vector<int> values);  // 拷贝整个 vector
-```
-
-### PASS: span 表达借用
-
-```cpp
-int sum(std::span<const int> values);  // 零拷贝，只读
-```

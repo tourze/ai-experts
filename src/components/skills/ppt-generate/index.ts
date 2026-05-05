@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -38,6 +39,12 @@ export const pptGenerateSkill = defineSkill({
     "image-first 分支没有添加未批准的后期覆盖层",
     "PPTX 可正常打开",
     "页数与 spec_lock 一致",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "详细反模式与正确做法见 [references/anti-patterns.md](references/anti-patterns.md)。 页面类型参考见 [references/page-types.md](references/page-types.md)。",
+      pass: "按 Reference Map 读取 anti-patterns 与 page-types，再把反例压成页面规则。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

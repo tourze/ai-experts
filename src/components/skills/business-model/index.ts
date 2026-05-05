@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { portersFiveForcesSkill } from "../porters-five-forces/index";
@@ -50,6 +51,20 @@ export const businessModelSkill = defineSkill({
       reason:
         "只看竞争结构时转 `porters-five-forces`；只做定价打包时转 `pricing-strategy`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "目标客户“所有人”",
+      pass: "显式画像 + 证据",
+    }),
+    defineAntiPattern({
+      fail: "把 GMV 当收入",
+      pass: "写清收入基础",
+    }),
+    defineAntiPattern({
+      fail: "只看直接竞品",
+      pass: "加 cross-industry analog",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

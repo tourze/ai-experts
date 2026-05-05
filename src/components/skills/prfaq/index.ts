@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { createPrdSkill } from "../create-prd/index";
@@ -34,6 +35,16 @@ export const prfaqSkill = defineSkill({
       },
       reason: "与 `create-prd` 配合：PRFAQ 先定\\\\\\\"为什么做\\\\\\\"，PRD 再定\\\\\\\"怎么做\\\\\\\"。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "公司视角的广告",
+      pass: "用户视角的价值",
+    }),
+    defineAntiPattern({
+      fail: "FAQ 全是软球",
+      pass: "FAQ 直面硬问题",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

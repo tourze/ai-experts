@@ -23,39 +23,3 @@
 | "先改完再补测试" | 没有测试基线，你无法证明行为没变。先补测试。 |
 
 完整的 Red Flags 表和 Rationalizations 对照表见 [references/discipline-guard.md](./references/discipline-guard.md)。
-
-## 反模式
-
-### FAIL: 重构搭车
-
-```bash
-git diff
-# 50% 重命名 + 30% 修 bug + 20% 加新功能
-git commit -m "refactor: 整理 + 修 bug"
-→ 出问题：无法 revert 重构而保留 bug 修复
-```
-
-### PASS: 三类独立提交
-
-```bash
-git commit -m "refactor: extract OrderService"  # 仅结构
-git commit -m "fix: race condition in payment"   # 仅修复
-git commit -m "feat: support multi-currency"     # 仅新功能
-→ 任一可独立 revert
-```
-
-### FAIL: 大爆炸提交
-
-```
-一个 commit 改 80 文件
-→ 上线后某个细节挂了
-→ 无法定位是哪一步引入
-```
-
-### PASS: 增量小步
-
-```
-每步 ≤ 5 文件 + 测试通过 + 提交
-→ 最多 20 个小提交，每个独立可验
-→ 出问题二分法快速定位
-```

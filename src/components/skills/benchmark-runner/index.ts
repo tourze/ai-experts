@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { testingStrategySkill } from "../testing-strategy/index";
@@ -42,6 +43,16 @@ export const benchmarkRunnerSkill = defineSkill({
       },
       reason: "需要结合 `testing-strategy` 制定性能验证计划。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "不同环境比",
+      pass: "同环境",
+    }),
+    defineAntiPattern({
+      fail: "只报均值",
+      pass: "p50/p95/p99 + 样本数",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

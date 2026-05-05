@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { arthasSpringcontextIssuesResolveSkill } from "../arthas-springcontext-issues-resolve/index";
@@ -36,6 +37,16 @@ export const arthasCpuHighSkill = defineSkill({
       },
       reason: "如果怀疑是 Spring Bean 装配或配置注入问题，转到 `arthas-springcontext-issues-resolve`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "对主包直接 trace",
+      pass: "先定位再收敛",
+    }),
+    defineAntiPattern({
+      fail: "只给结论不给证据",
+      pass: "证据驱动的结论",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

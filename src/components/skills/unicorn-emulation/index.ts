@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { binaryAnalysisPatternsSkill } from "../binary-analysis-patterns/index";
@@ -36,6 +37,12 @@ export const unicornEmulationSkill = defineSkill({
       },
       reason: "需要与 `binary-analysis-patterns` 配合，先静态理解再模拟验证。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "解析完整 ELF 再映射所有段",
+      pass: "裸加载 + 按需映射",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { markdownMermaidWritingSkill } from "../markdown-mermaid-writing/index";
@@ -42,6 +43,16 @@ export const readmeBlueprintGeneratorSkill = defineSkill({
       },
       reason: "若后续要写面向终端用户的指南，可转给 `user-guide-writing`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只有营销话术：没有安装/启动/测试命令，新人 clone 完无从下手。",
+      pass: "可复制执行的指令：npm install cp .env.example .env # 配置 DATABASE_URL npm run migrate npm run dev # http://localhost:3000 npm test # 单元 npm run test:e2e # E2E",
+    }),
+    defineAntiPattern({
+      fail: "编造技术栈：实际只用了其中 2 个。",
+      pass: "读代码定位事实：只列真实依赖，缺失信息标\"待补\"。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

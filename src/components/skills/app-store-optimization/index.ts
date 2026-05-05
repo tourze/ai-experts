@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -33,6 +34,20 @@ export const appStoreOptimizationSkill = defineSkill({
     "评论洞察用 `review_analyzer.py`，不要把低星评论直接等同于真实需求。",
     "发版准备使用 `launch_checklist.py`，测试规划使用 `ab_test_planner.py`。",
     "交叉引用：需要审核合规视角时切到 `apple-appstore-reviewer`。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "无证据的”高搜索低竞争”",
+      pass: "基于真实数据",
+    }),
+    defineAntiPattern({
+      fail: "直译代替本地化",
+      pass: "按本地搜索习惯",
+    }),
+    defineAntiPattern({
+      fail: "一次改所有东西",
+      pass: "单变量 + 归因",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

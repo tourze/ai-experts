@@ -1,5 +1,6 @@
 import {
   defineReference,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   InvocationPolicy,
@@ -34,6 +35,16 @@ export const typescriptTypeSafety = defineSkill({
     "每个外部边界是否有\"运行时解析 + 静态类型\"双重约束？",
     "DTO 变换是否集中在适配器层？类型是否由单一源头推导？",
     "AI 或新同事改字段名后，编译期能否暴露影响面？",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "用断言掩盖合同不一致",
+      pass: "用类型守卫收口",
+    }),
+    defineAntiPattern({
+      fail: "schema 漂移前端加可选链兜底：修前端可选链只能让错误更晚暴露。先修上游合同，必要时用 parser 把边界输入变成显式成功/失败。",
+      pass: "先修上游 schema/契约，边界用 parser 显式区分成功和失败。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineAsset,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -31,6 +32,16 @@ export const screenshotSkill = defineSkill({
     "需要窗口 ID 时，先用 `--list-windows` 确认。",
     "没有同时传入互斥参数。",
     "截图命令跑完后，逐个检查输出路径是否真实生成。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "不预检查 macOS 权限",
+      pass: "先 ensure_permissions",
+    }),
+    defineAntiPattern({
+      fail: "临时截图污染项目",
+      pass: "临时模式",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

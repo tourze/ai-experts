@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -28,6 +29,20 @@ export const webmanCustomProcessesSkill = defineSkill({
     "Timer ID 追踪并清理",
     "回调无阻塞调用",
     "长连接进程 `reloadable=>false`",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "构造函数建连接",
+      pass: "onWorkerStart 初始化",
+    }),
+    defineAntiPattern({
+      fail: "Timer 不清理",
+      pass: "追踪 + onWorkerStop 清理",
+    }),
+    defineAntiPattern({
+      fail: "回调 sleep",
+      pass: "异步等待",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { systemDiagnosticsSkill } from "../system-diagnostics/index";
@@ -35,6 +36,20 @@ export const networkTroubleshooterSkill = defineSkill({
       },
       reason: "需要先拿系统整体快照时，先运行 `system-diagnostics`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "跳层诊断",
+      pass: "分层递进",
+    }),
+    defineAntiPattern({
+      fail: "refused vs timeout 不分",
+      pass: "按症状定位",
+    }),
+    defineAntiPattern({
+      fail: "单次 ping 判断间歇问题",
+      pass: "长时采样",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

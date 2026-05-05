@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -29,6 +30,16 @@ export const skillEvalGraderSkill = defineSkill({
     "已抽取并验证输出中的事实、过程和质量 claims。",
     "已指出明显太弱、无法验证或遗漏关键结果的 assertion。",
     "汇总包含 passed、failed、total 和 pass_rate。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只看 transcript 自述：实际输出可能为空、路径错误或内容不符合要求。",
+      pass: "读取输出并验证实质内容",
+    }),
+    defineAntiPattern({
+      fail: "表层 assertion 制造虚假信心：任何空泛文本都能通过，无法判断安全审计是否有效。",
+      pass: "Assertion 绑定可观察结果",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

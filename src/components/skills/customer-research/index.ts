@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -28,6 +29,16 @@ export const customerResearchSkill = defineSkill({
     "样本覆盖目标细分群体。",
     "Persona 从数据构建。",
     "标记了矛盾点和研究缺口。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "凭空编造 persona",
+      pass: "数据驱动",
+    }),
+    defineAntiPattern({
+      fail: "只看好评",
+      pass: "全谱覆盖",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

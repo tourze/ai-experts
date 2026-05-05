@@ -25,38 +25,3 @@ node scripts/take_screenshot_windows.mjs --mode temp
 node scripts/take_screenshot_windows.mjs --path "C:\Temp\screen.png"
 node scripts/take_screenshot_windows.mjs --region 100,200,800,600
 ```
-
-## 反模式
-
-### FAIL: 不预检查 macOS 权限
-
-```bash
-node scripts/take_screenshot.mjs --app "Codex"
-# 弹"未授权 Screen Recording"
-# 用户授权 → 重跑 → 仍弹（macOS 缓存问题）
-# 反复 5 次
-```
-
-### PASS: 先 ensure_permissions
-
-```bash
-node scripts/ensure_macos_permissions.mjs
-# 一次性处理权限链 → 后续命令稳定
-node scripts/take_screenshot.mjs --app "Codex"
-```
-
-### FAIL: 临时截图污染项目
-
-```bash
-# 代理自检
-node scripts/take_screenshot.mjs --path ./debug.png
-git status  # ./debug.png 进了暂存区
-# 不小心 commit / push
-```
-
-### PASS: 临时模式
-
-```bash
-node scripts/take_screenshot.mjs --mode temp
-# 输出到 /tmp/xxx.png，不污染项目
-```

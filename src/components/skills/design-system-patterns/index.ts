@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { modernWebDesignSkill } from "../modern-web-design/index";
@@ -47,6 +48,20 @@ export const designSystemPatternsSkill = defineSkill({
       label: "refactoring-ui",
       reason: "`refactoring-ui`",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "组件里写硬编码值",
+      pass: "组件只引 token",
+    }),
+    defineAntiPattern({
+      fail: "一层 token 当所有用途",
+      pass: "三层 token",
+    }),
+    defineAntiPattern({
+      fail: "组件内部判断主题",
+      pass: "CSS 变量统一切换",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

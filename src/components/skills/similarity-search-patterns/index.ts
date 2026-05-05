@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { embeddingStrategiesSkill } from "../embedding-strategies/index";
@@ -47,6 +48,16 @@ export const similaritySearchPatternsSkill = defineSkill({
       },
       reason: "相关 skill：`embedding-strategies`、`vector-index-tuning`、`rag-auditor`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只比品牌不比 workload",
+      pass: "按 workload 决策",
+    }),
+    defineAntiPattern({
+      fail: "换模型不动距离",
+      pass: "模型 + 距离 + 索引一起换",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

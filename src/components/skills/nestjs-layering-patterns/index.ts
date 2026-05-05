@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -32,6 +33,16 @@ export const nestjsLayeringPatternsSkill = defineSkill({
     "控制器是否声明了 `@ApiTags`、`@ApiOperation`、`@ApiResponse` 等 Swagger 注解。",
     "配置、密钥、数据库连接与第三方 SDK 初始化是否全部走配置模块。",
     "新增逻辑是否同时覆盖单测，涉及路由/认证时是否补了控制器或 E2E 测试。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "Controller 操作 Repository",
+      pass: "Controller 只做协议层",
+    }),
+    defineAntiPattern({
+      fail: "返回整个 Entity",
+      pass: "DTO/ResponseSerializer 隔离",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -31,6 +32,16 @@ export const meetingInsightsAnalyzerSkill = defineSkill({
     "输出同时包含优势、风险和下一步改进动作，不只列缺点。",
     "建议部分给出可直接复用的替代表达或会议动作，而不是空泛鸡汤。",
     "当用户真正要的是摘要或纪要时，已切回会议纪要相关工具。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "无映射伪精确",
+      pass: "先声明边界",
+    }),
+    defineAntiPattern({
+      fail: "空泛鸡汤建议",
+      pass: "证据 + 替代表达",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

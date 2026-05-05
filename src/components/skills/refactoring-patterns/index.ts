@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -27,6 +28,16 @@ export const refactoringPatternsSkill = defineSkill({
     "是否给出可落地的重构序列而非抽象建议。",
     "是否标记需要补测试或人工验证的高风险步骤。",
     "是否避免把多个重构意图塞进一次改动。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "重构和功能变更混在一个 commit：无法区分哪个改动导致回归，也无法安全回滚。",
+      pass: "先重构再变更，分 commit",
+    }),
+    defineAntiPattern({
+      fail: "不知道问题就先抽方法：拆出的函数没有业务含义，只是机械分割，读者要跳转更多次。",
+      pass: "先识别异味再选手法",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

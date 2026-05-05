@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -28,6 +29,16 @@ export const rustTokioRuntimeTuningSkill = defineSkill({
   checklist: [
     "worker_threads 基于实测？有 worker 上的阻塞操作？",
     "`block_on` 只在非 async 上下文？线程名有意义？",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "async 内调 block_on",
+      pass: "直接 await",
+    }),
+    defineAntiPattern({
+      fail: "worker 上做同步阻塞",
+      pass: "spawn_blocking 隔离",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -30,37 +30,3 @@
   ]
 }
 ```
-
-## 反模式
-
-### FAIL: 分数复述
-
-```
-A 9 分，B 6 分，所以 A 更好。建议提升 B。
-```
-
-这没有解释可迁移模式，也不能指导下一轮改动。
-
-### PASS: 因果链
-
-```text
-B 的 skill 只说“验证输出”，没有指定验证什么；
-transcript 显示 executor 只检查文件存在；
-grading 失败项正是内容缺失；
-建议加入字段级验证清单和失败后修复步骤。
-```
-
-### FAIL: 把 eval 问题误判成 skill 问题
-
-```
-两个输出都失败，所以两个 skill 都差。
-```
-
-也可能是任务缺输入、assertion 无法验证或 benchmark harness 有问题。
-
-### PASS: 分清责任层
-
-```text
-expectation 要求“生成准确结论”，但没有给可核对来源；
-这是 eval 设计问题，先改 assertion，再比较 skill。
-```

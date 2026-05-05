@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { asyncPythonPatternsSkill } from "../async-python-patterns/index";
@@ -53,6 +54,16 @@ export const pythonObservabilitySkill = defineSkill({
       },
       reason: "异步链路上下文透传时，联动 `async-python-patterns`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "自然语言 + 无字段",
+      pass: "结构化字段",
+    }),
+    defineAntiPattern({
+      fail: "失败只打 str(error)",
+      pass: "堆栈 + 业务标签",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

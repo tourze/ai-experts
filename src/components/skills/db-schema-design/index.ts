@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { sqlReviewOptimizationSkill } from "../sql-review-optimization/index";
@@ -40,6 +41,32 @@ export const dbSchemaDesignSkill = defineSkill({
       },
       reason: "与 SQL 调优联动，表结构决定查询路径的上限，联动 `sql-review-optimization`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "MySQL 用 INT 做主键，低估了数据增长。",
+      pass: "主键按增长规模选 BIGINT 或 UUID/ULID，并记录容量假设。",
+    }),
+    defineAntiPattern({
+      fail: "MySQL 用 utf8 字符集（实际是 utf8mb3）。",
+      pass: "MySQL 字符集使用 utf8mb4，并明确排序规则。",
+    }),
+    defineAntiPattern({
+      fail: "PostgreSQL 用 `varchar(n)` 而非通用 `TEXT`。",
+      pass: "PostgreSQL 默认用 TEXT，只有真实长度约束才使用 varchar(n)。",
+    }),
+    defineAntiPattern({
+      fail: "金额用 FLOAT/DOUBLE 导致精度丢失。",
+      pass: "金额用 DECIMAL/NUMERIC，或用整数保存最小货币单位。",
+    }),
+    defineAntiPattern({
+      fail: "把大量高频过滤字段塞进 JSON 列而不提为独立列。",
+      pass: "高频过滤字段提升为独立列，并为真实查询路径建索引。",
+    }),
+    defineAntiPattern({
+      fail: "用 JSON 而不是 JSONB（PostgreSQL）。",
+      pass: "PostgreSQL 结构化 JSON 查询默认使用 JSONB。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

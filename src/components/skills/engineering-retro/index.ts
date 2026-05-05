@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -30,6 +31,16 @@ export const engineeringRetroSkill = defineSkill({
     "PR 统计是否在 GitHub/`gh` 不可用时优雅跳过。",
     "若用户没要求落盘，是否保持纯只读输出。",
     "若需要环比，是否明确说明使用了本次或历史快照。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "只读但默认写文件",
+      pass: "显式开关",
+    }),
+    defineAntiPattern({
+      fail: "作者统计当绩效",
+      pass: "中性描述贡献分布",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

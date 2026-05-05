@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 
@@ -26,6 +27,20 @@ export const apiTraceReaderSkill = defineSkill({
     "是否列出了每一级调用者、被调者和关键参数流向。",
     "是否单列了 READ / WRITE / CACHE / MQ / EXTERNAL / FS 副作用。",
     "是否补齐异步链路、重试逻辑、监听器和延迟任务。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "边追边改",
+      pass: "严格只读",
+    }),
+    defineAntiPattern({
+      fail: "主干 only",
+      pass: "全副作用",
+    }),
+    defineAntiPattern({
+      fail: "没证据下结论",
+      pass: "file:line 锚定",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

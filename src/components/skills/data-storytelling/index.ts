@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineReference,
+  defineAntiPattern,
   defineSkill,
 } from "../../sdk";
 import { dataAnalysisSkill } from "../data-analysis/index";
@@ -50,6 +51,20 @@ export const dataStorytellingSkill = defineSkill({
       },
       reason: "结论必须能回指具体数据证据；需要时引用 `data-analysis` 或 `statistical-analysis` 的结果。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "dashboard 截图当报告",
+      pass: "结论先行 + 行动项",
+    }),
+    defineAntiPattern({
+      fail: "形容词堆砌",
+      pass: "量化 + 基线",
+    }),
+    defineAntiPattern({
+      fail: "因果相关混说",
+      pass: "显式标注证据强度",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

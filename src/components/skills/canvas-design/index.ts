@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineAsset,
+  defineAntiPattern,
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
@@ -33,6 +34,16 @@ export const canvasDesignSkill = defineSkill({
     "文字是视觉元素的一部分，不是大段说明文。",
     "使用的字体、色彩、纹理和留白都服务于同一审美方向。",
     "导出的成品文件和哲学文件同时存在。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "跳过哲学直接画",
+      pass: "先写 philosophy",
+    }),
+    defineAntiPattern({
+      fail: "通用 AI 审美",
+      pass: "原创重构",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
