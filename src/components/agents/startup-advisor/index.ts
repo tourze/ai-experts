@@ -27,52 +27,52 @@ export const startupAdvisorAgent = defineAgent({
     {
       id: startupIcpDefinerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: startupIcpDefinerSkill.description,
     },
     {
       id: startupViabilityChecklistSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: startupViabilityChecklistSkill.description,
     },
     {
       id: marketSizingAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: marketSizingAnalysisSkill.description,
     },
     {
       id: businessModelSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: businessModelSkill.description,
     },
     {
       id: businessHealthDiagnosticSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: businessHealthDiagnosticSkill.description,
     },
     {
       id: pricingStrategySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: pricingStrategySkill.description,
     },
     {
       id: fundraiseAdvisorSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: fundraiseAdvisorSkill.description,
     },
     {
       id: customerJourneyMapSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: customerJourneyMapSkill.description,
     },
     {
       id: planningUnderUncertaintySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: planningUnderUncertaintySkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

@@ -29,62 +29,62 @@ export const dbLifecycleEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: codeEngineerAgentFrameworkSkill.description,
     },
     {
       id: dbSchemaDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: dbSchemaDesignSkill.description,
     },
     {
       id: sqlReviewOptimizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: sqlReviewOptimizationSkill.description,
     },
     {
       id: dbHaReplicationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: dbHaReplicationSkill.description,
     },
     {
       id: mysqlTransactionLockingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: mysqlTransactionLockingSkill.description,
     },
     {
       id: pgsqlPartitioningSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: pgsqlPartitioningSkill.description,
     },
     {
       id: pgsqlRowLevelSecuritySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: pgsqlRowLevelSecuritySkill.description,
     },
     {
       id: redisCachingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: redisCachingPatternsSkill.description,
     },
     {
       id: redisDataModelingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: redisDataModelingSkill.description,
     },
     {
       id: redisClusterHaSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: redisClusterHaSkill.description,
     },
     {
       id: redisPitfallDiagnosticsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: redisPitfallDiagnosticsSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

@@ -27,52 +27,52 @@ export const problemDecomposerAgent = defineAgent({
     {
       id: structuredProblemDecompositionSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: structuredProblemDecompositionSkill.description,
     },
     {
       id: systemsThinkingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: systemsThinkingSkill.description,
     },
     {
       id: planningUnderUncertaintySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: planningUnderUncertaintySkill.description,
     },
     {
       id: runningDecisionProcessesSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: runningDecisionProcessesSkill.description,
     },
     {
       id: processOptimizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: processOptimizationSkill.description,
     },
     {
       id: mckinseyStepSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: mckinseyStepSkill.description,
     },
     {
       id: fishboneDiagramSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: fishboneDiagramSkill.description,
     },
     {
       id: businessHealthDiagnosticSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: businessHealthDiagnosticSkill.description,
     },
     {
       id: pdcaCycleSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: pdcaCycleSkill.description,
     },
     {
       id: firstPrinciplesDecomposerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: firstPrinciplesDecomposerSkill.description,
     }
   ],
 });

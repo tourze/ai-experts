@@ -25,42 +25,42 @@ export const swiftuiEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: codeEngineerAgentFrameworkSkill.description,
     },
     {
       id: swiftuiUiPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: swiftuiUiPatternsSkill.description,
     },
     {
       id: swiftuiPerformanceAuditSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: swiftuiPerformanceAuditSkill.description,
     },
     {
       id: swiftConcurrencyExpertSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: swiftConcurrencyExpertSkill.description,
     },
     {
       id: iosHigDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: iosHigDesignSkill.description,
     },
     {
       id: liquidGlassDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: liquidGlassDesignSkill.description,
     },
     {
       id: macosDesignGuidelinesSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: macosDesignGuidelinesSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

@@ -23,32 +23,32 @@ export const sessionFinalizerAgent = defineAgent({
     {
       id: complexityReducerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: complexityReducerSkill.description,
     },
     {
       id: finishingBranchSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: finishingBranchSkill.description,
     },
     {
       id: commitSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: commitSkill.description,
     },
     {
       id: sessionFinalizationWorkflowSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: sessionFinalizationWorkflowSkill.description,
     },
     {
       id: subagentDrivenDevelopmentSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: subagentDrivenDevelopmentSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

@@ -19,12 +19,12 @@ export const threatModelerAgent = defineAgent({
     {
       id: securityThreatModelSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: securityThreatModelSkill.description,
     },
     {
       id: securityOwnershipMapSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: securityOwnershipMapSkill.description,
     }
   ],
 });

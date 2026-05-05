@@ -22,27 +22,27 @@ export const conversionOptimizerAgent = defineAgent({
     {
       id: croMethodologySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: croMethodologySkill.description,
     },
     {
       id: redesignMyLandingpageSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: redesignMyLandingpageSkill.description,
     },
     {
       id: funnelArchitectSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: funnelArchitectSkill.description,
     },
     {
       id: analyticsTrackingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: analyticsTrackingSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

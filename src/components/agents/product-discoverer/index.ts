@@ -27,52 +27,52 @@ export const productDiscovererAgent = defineAgent({
     {
       id: createPrdSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: createPrdSkill.description,
     },
     {
       id: opportunitySolutionTreeSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: opportunitySolutionTreeSkill.description,
     },
     {
       id: prfaqSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: prfaqSkill.description,
     },
     {
       id: designingGrowthLoopsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: designingGrowthLoopsSkill.description,
     },
     {
       id: evaluatingNewTechnologySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evaluatingNewTechnologySkill.description,
     },
     {
       id: productDesignCriticSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: productDesignCriticSkill.description,
     },
     {
       id: orgCanvasSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: orgCanvasSkill.description,
     },
     {
       id: raciMatrixSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: raciMatrixSkill.description,
     },
     {
       id: meetingInsightsAnalyzerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: meetingInsightsAnalyzerSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

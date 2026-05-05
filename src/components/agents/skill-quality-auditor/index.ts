@@ -25,42 +25,42 @@ export const skillQualityAuditorAgent = defineAgent({
     {
       id: skillEvaluatorSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: skillEvaluatorSkill.description,
     },
     {
       id: skillActivationAnalyzerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: skillActivationAnalyzerSkill.description,
     },
     {
       id: skillEvalGraderSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: skillEvalGraderSkill.description,
     },
     {
       id: blindOutputComparatorSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: blindOutputComparatorSkill.description,
     },
     {
       id: benchmarkResultAnalyzerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: benchmarkResultAnalyzerSkill.description,
     },
     {
       id: triggerTelemetryAdvisorSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: triggerTelemetryAdvisorSkill.description,
     },
     {
       id: skillsPruneAndSyncReadmeSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: skillsPruneAndSyncReadmeSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

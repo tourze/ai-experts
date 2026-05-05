@@ -27,52 +27,52 @@ export const businessAnalystAgent = defineAgent({
     {
       id: financialAnalystSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: financialAnalystSkill.description,
     },
     {
       id: mckinseyStepSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: mckinseyStepSkill.description,
     },
     {
       id: structuredBusinessAnalysisFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: structuredBusinessAnalysisFrameworkSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     },
     {
       id: pestelAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: pestelAnalysisSkill.description,
     },
     {
       id: portersFiveForcesSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: portersFiveForcesSkill.description,
     },
     {
       id: businessModelSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: businessModelSkill.description,
     },
     {
       id: businessHealthDiagnosticSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: businessHealthDiagnosticSkill.description,
     },
     {
       id: customerResearchSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: customerResearchSkill.description,
     },
     {
       id: dataAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: dataAnalysisSkill.description,
     }
   ],
 });

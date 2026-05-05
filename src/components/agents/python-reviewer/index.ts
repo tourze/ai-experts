@@ -28,57 +28,57 @@ export const pythonReviewerAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: codeReviewAgentFrameworkSkill.description,
     },
     {
       id: pythonTypeSafetySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: pythonTypeSafetySkill.description,
     },
     {
       id: pythonErrorHandlingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: pythonErrorHandlingSkill.description,
     },
     {
       id: asyncPythonPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: asyncPythonPatternsSkill.description,
     },
     {
       id: pythonPerformanceOptimizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: pythonPerformanceOptimizationSkill.description,
     },
     {
       id: pythonDesignPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: pythonDesignPatternsSkill.description,
     },
     {
       id: pythonObservabilitySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: pythonObservabilitySkill.description,
     },
     {
       id: pythonTestingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: pythonTestingPatternsSkill.description,
     },
     {
       id: testingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: testingPatternsSkill.description,
     },
     {
       id: pythonBackgroundJobsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: pythonBackgroundJobsSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

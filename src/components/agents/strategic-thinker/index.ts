@@ -27,52 +27,52 @@ export const strategicThinkerAgent = defineAgent({
     {
       id: firstPrinciplesDecomposerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: firstPrinciplesDecomposerSkill.description,
     },
     {
       id: scpAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: scpAnalysisSkill.description,
     },
     {
       id: whatIfOracleSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: whatIfOracleSkill.description,
     },
     {
       id: crossPollinationEngineSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: crossPollinationEngineSkill.description,
     },
     {
       id: consciousnessCouncilSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: consciousnessCouncilSkill.description,
     },
     {
       id: grillMeSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: grillMeSkill.description,
     },
     {
       id: priorityJudgeSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: priorityJudgeSkill.description,
     },
     {
       id: scientificBrainstormingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: scientificBrainstormingSkill.description,
     },
     {
       id: thinkingPartnerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: thinkingPartnerSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

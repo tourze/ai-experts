@@ -23,32 +23,32 @@ export const testGeneratorAgent = defineAgent({
     {
       id: testDrivenDevelopmentSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: testDrivenDevelopmentSkill.description,
     },
     {
       id: testingStrategySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: testingStrategySkill.description,
     },
     {
       id: testQualityReviewSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: testQualityReviewSkill.description,
     },
     {
       id: webappTestingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: webappTestingSkill.description,
     },
     {
       id: benchmarkRunnerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: benchmarkRunnerSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

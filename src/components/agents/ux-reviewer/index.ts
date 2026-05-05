@@ -26,47 +26,47 @@ export const uxReviewerAgent = defineAgent({
     {
       id: uxHeuristicsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: uxHeuristicsSkill.description,
     },
     {
       id: uxResearcherDesignerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: uxResearcherDesignerSkill.description,
     },
     {
       id: frontendDesignReviewSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: frontendDesignReviewSkill.description,
     },
     {
       id: uxWritingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: uxWritingSkill.description,
     },
     {
       id: responsiveDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: responsiveDesignSkill.description,
     },
     {
       id: i18nLocalizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: i18nLocalizationSkill.description,
     },
     {
       id: figmaImplementDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: figmaImplementDesignSkill.description,
     },
     {
       id: interactionDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: interactionDesignSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

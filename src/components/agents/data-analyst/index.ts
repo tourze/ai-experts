@@ -23,32 +23,32 @@ export const dataAnalystAgent = defineAgent({
     {
       id: dataAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: dataAnalysisSkill.description,
     },
     {
       id: statisticalAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: statisticalAnalysisSkill.description,
     },
     {
       id: dataVisualizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: dataVisualizationSkill.description,
     },
     {
       id: dataStorytellingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: dataStorytellingSkill.description,
     },
     {
       id: llmEvaluationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: llmEvaluationSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

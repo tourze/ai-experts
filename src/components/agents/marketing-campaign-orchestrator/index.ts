@@ -26,47 +26,47 @@ export const marketingCampaignOrchestratorAgent = defineAgent({
     {
       id: stpSegmentationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: stpSegmentationSkill.description,
     },
     {
       id: customerResearchSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: customerResearchSkill.description,
     },
     {
       id: contentStrategySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: contentStrategySkill.description,
     },
     {
       id: copywritingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: copywritingSkill.description,
     },
     {
       id: seoSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: seoSkill.description,
     },
     {
       id: paidAdsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: paidAdsSkill.description,
     },
     {
       id: croMethodologySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: croMethodologySkill.description,
     },
     {
       id: analyticsTrackingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: analyticsTrackingSkill.description,
     },
     {
       id: marketingPlanSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: marketingPlanSkill.description,
     }
   ],
 });

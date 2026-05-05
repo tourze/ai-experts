@@ -24,37 +24,37 @@ export const socialGrowthPlannerAgent = defineAgent({
     {
       id: youtubeAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: youtubeAnalysisSkill.description,
     },
     {
       id: youtubeSearchSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: youtubeSearchSkill.description,
     },
     {
       id: xiaohongshuCommercialGrowthSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: xiaohongshuCommercialGrowthSkill.description,
     },
     {
       id: fanOperationsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: fanOperationsSkill.description,
     },
     {
       id: douyinViralContentSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: douyinViralContentSkill.description,
     },
     {
       id: copywritingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: copywritingSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

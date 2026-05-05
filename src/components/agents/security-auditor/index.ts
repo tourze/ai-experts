@@ -25,42 +25,42 @@ export const securityAuditorAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: codeReviewAgentFrameworkSkill.description,
     },
     {
       id: securityThreatModelSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: securityThreatModelSkill.description,
     },
     {
       id: frontendDynamicCodeProtectionSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: frontendDynamicCodeProtectionSkill.description,
     },
     {
       id: sqlReviewOptimizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: sqlReviewOptimizationSkill.description,
     },
     {
       id: owaspInjectionAuditSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: owaspInjectionAuditSkill.description,
     },
     {
       id: owaspAuthDataAuditSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: owaspAuthDataAuditSkill.description,
     },
     {
       id: owaspXssMisconfigAuditSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: owaspXssMisconfigAuditSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

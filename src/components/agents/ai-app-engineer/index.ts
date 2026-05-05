@@ -27,52 +27,52 @@ export const aiAppEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: codeEngineerAgentFrameworkSkill.description,
     },
     {
       id: llmAppDesignPipelineSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: llmAppDesignPipelineSkill.description,
     },
     {
       id: llmAppDiagnosisFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: llmAppDiagnosisFrameworkSkill.description,
     },
     {
       id: promptEngineeringPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: promptEngineeringPatternsSkill.description,
     },
     {
       id: llmEvaluationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: llmEvaluationSkill.description,
     },
     {
       id: modelFirstReasoningSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: modelFirstReasoningSkill.description,
     },
     {
       id: ragAuditorSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: ragAuditorSkill.description,
     },
     {
       id: embeddingStrategiesSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: embeddingStrategiesSkill.description,
     },
     {
       id: similaritySearchPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: similaritySearchPatternsSkill.description,
     },
     {
       id: vectorIndexTuningSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: vectorIndexTuningSkill.description,
     }
   ],
 });

@@ -27,52 +27,52 @@ export const refactorPlannerAgent = defineAgent({
     {
       id: refactoringPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: refactoringPatternsSkill.description,
     },
     {
       id: refactorPlanningMethodSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: refactorPlanningMethodSkill.description,
     },
     {
       id: complexityReducerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: complexityReducerSkill.description,
     },
     {
       id: techDebtSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: techDebtSkill.description,
     },
     {
       id: errorHandlingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: errorHandlingPatternsSkill.description,
     },
     {
       id: softwareDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: softwareDesignSkill.description,
     },
     {
       id: pragmaticProgrammerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: pragmaticProgrammerSkill.description,
     },
     {
       id: featureDevSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: featureDevSkill.description,
     },
     {
       id: planReviewSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: planReviewSkill.description,
     },
     {
       id: brainstormingBeforeCodingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: brainstormingBeforeCodingSkill.description,
     }
   ],
 });

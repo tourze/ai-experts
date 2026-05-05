@@ -21,22 +21,22 @@ export const windowsPlatformReviewerAgent = defineAgent({
     {
       id: windowsKernelSecuritySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: windowsKernelSecuritySkill.description,
     },
     {
       id: windowsUiAutomationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: windowsUiAutomationSkill.description,
     },
     {
       id: prlctlVmControlSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: prlctlVmControlSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

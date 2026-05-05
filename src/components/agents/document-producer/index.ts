@@ -25,42 +25,42 @@ export const documentProducerAgent = defineAgent({
     {
       id: consultingAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: consultingAnalysisSkill.description,
     },
     {
       id: proposalWriterSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: proposalWriterSkill.description,
     },
     {
       id: tutorialBuilderSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: tutorialBuilderSkill.description,
     },
     {
       id: pptGenerateSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: pptGenerateSkill.description,
     },
     {
       id: pdfSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: pdfSkill.description,
     },
     {
       id: markitdownSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: markitdownSkill.description,
     },
     {
       id: mdToPdfSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: mdToPdfSkill.description,
     },
     {
       id: markdownMermaidWritingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: markdownMermaidWritingSkill.description,
     }
   ],
 });

@@ -21,22 +21,22 @@ export const iosSimulatorSmokeTesterAgent = defineAgent({
     {
       id: iosSimulatorSkillSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: iosSimulatorSkillSkill.description,
     },
     {
       id: swiftuiPerformanceAuditSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: swiftuiPerformanceAuditSkill.description,
     },
     {
       id: detoxMobileTestSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: detoxMobileTestSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

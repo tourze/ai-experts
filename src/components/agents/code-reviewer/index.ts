@@ -23,32 +23,32 @@ export const codeReviewerAgent = defineAgent({
     {
       id: codeReviewSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: codeReviewSkill.description,
     },
     {
       id: complexityReducerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: complexityReducerSkill.description,
     },
     {
       id: refactoringChecklistSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: refactoringChecklistSkill.description,
     },
     {
       id: debugMethodologySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: debugMethodologySkill.description,
     },
     {
       id: preLandingReviewSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: preLandingReviewSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

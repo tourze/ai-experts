@@ -30,62 +30,62 @@ export const frontendEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: codeEngineerAgentFrameworkSkill.description,
     },
     {
       id: modernWebDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: modernWebDesignSkill.description,
     },
     {
       id: designSystemPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: designSystemPatternsSkill.description,
     },
     {
       id: responsiveDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: responsiveDesignSkill.description,
     },
     {
       id: shadcnUiSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: shadcnUiSkill.description,
     },
     {
       id: figmaImplementDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: figmaImplementDesignSkill.description,
     },
     {
       id: i18nLocalizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: i18nLocalizationSkill.description,
     },
     {
       id: bundleOptimizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: bundleOptimizationSkill.description,
     },
     {
       id: interactionDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: interactionDesignSkill.description,
     },
     {
       id: webPerformanceDiagnosisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: webPerformanceDiagnosisSkill.description,
     },
     {
       id: frontendDesignReviewSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: frontendDesignReviewSkill.description,
     },
     {
       id: uxWritingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: uxWritingSkill.description,
     }
   ],
 });

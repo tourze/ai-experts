@@ -25,42 +25,42 @@ export const skillAuthorAgent = defineAgent({
     {
       id: skillCreatorSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: skillCreatorSkill.description,
     },
     {
       id: skillEvolverSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: skillEvolverSkill.description,
     },
     {
       id: findSkillsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: findSkillsSkill.description,
     },
     {
       id: skillEvaluatorSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: skillEvaluatorSkill.description,
     },
     {
       id: skillActivationAnalyzerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: skillActivationAnalyzerSkill.description,
     },
     {
       id: skillEvalGraderSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: skillEvalGraderSkill.description,
     },
     {
       id: blindOutputComparatorSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: blindOutputComparatorSkill.description,
     },
     {
       id: benchmarkResultAnalyzerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: benchmarkResultAnalyzerSkill.description,
     }
   ],
 });

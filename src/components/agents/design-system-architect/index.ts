@@ -22,27 +22,27 @@ export const designSystemArchitectAgent = defineAgent({
     {
       id: modernWebDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: modernWebDesignSkill.description,
     },
     {
       id: designSystemPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: designSystemPatternsSkill.description,
     },
     {
       id: shadcnUiSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: shadcnUiSkill.description,
     },
     {
       id: industryDesignPresetsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: industryDesignPresetsSkill.description,
     },
     {
       id: interactionDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: interactionDesignSkill.description,
     }
   ],
 });

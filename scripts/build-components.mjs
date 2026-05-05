@@ -809,6 +809,9 @@ function validateRegistry(registry) {
     }
     for (const skill of agent.skills ?? []) {
       if (!skillIds.has(skill.id)) throw new Error(`Agent ${agent.id} references missing skill: ${skill.id}`);
+      if (typeof skill.reason !== "string" || skill.reason.trim().length === 0) {
+        throw new Error(`Agent ${agent.id} skill ${skill.id} must include a non-empty reason`);
+      }
     }
   }
 

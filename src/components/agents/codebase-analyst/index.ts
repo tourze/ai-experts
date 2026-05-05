@@ -25,42 +25,42 @@ export const codebaseAnalystAgent = defineAgent({
     {
       id: codebaseArchitectureAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: codebaseArchitectureAnalysisSkill.description,
     },
     {
       id: architectureReviewerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: architectureReviewerSkill.description,
     },
     {
       id: deepCodeReadSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: deepCodeReadSkill.description,
     },
     {
       id: apiTraceReaderSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: apiTraceReaderSkill.description,
     },
     {
       id: refactoringPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: refactoringPatternsSkill.description,
     },
     {
       id: techDebtSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: techDebtSkill.description,
     },
     {
       id: softwareDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: softwareDesignSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

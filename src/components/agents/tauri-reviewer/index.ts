@@ -24,37 +24,37 @@ export const tauriReviewerAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: codeReviewAgentFrameworkSkill.description,
     },
     {
       id: tauriIpcPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: tauriIpcPatternsSkill.description,
     },
     {
       id: tauriV2Skill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: tauriV2Skill.description,
     },
     {
       id: tauriReactIntegrationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: tauriReactIntegrationSkill.description,
     },
     {
       id: tauriBuildPackagingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: tauriBuildPackagingSkill.description,
     },
     {
       id: tauriPluginDevelopmentSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: tauriPluginDevelopmentSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

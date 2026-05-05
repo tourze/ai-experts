@@ -24,37 +24,37 @@ export const visualProducerAgent = defineAgent({
     {
       id: canvasDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: canvasDesignSkill.description,
     },
     {
       id: baoyuCompressImageSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: baoyuCompressImageSkill.description,
     },
     {
       id: iconRetrievalSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: iconRetrievalSkill.description,
     },
     {
       id: screenshotSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: screenshotSkill.description,
     },
     {
       id: modernWebDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: modernWebDesignSkill.description,
     },
     {
       id: algoVisualizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: algoVisualizationSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

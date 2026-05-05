@@ -23,32 +23,32 @@ export const testQualityReviewerAgent = defineAgent({
     {
       id: testQualityReviewSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: testQualityReviewSkill.description,
     },
     {
       id: codeReviewSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: codeReviewSkill.description,
     },
     {
       id: preLandingReviewSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: preLandingReviewSkill.description,
     },
     {
       id: consciousnessCouncilSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: consciousnessCouncilSkill.description,
     },
     {
       id: testingStrategySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: testingStrategySkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

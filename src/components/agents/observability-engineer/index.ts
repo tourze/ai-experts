@@ -24,37 +24,37 @@ export const observabilityEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: codeEngineerAgentFrameworkSkill.description,
     },
     {
       id: monitoringObservabilitySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: monitoringObservabilitySkill.description,
     },
     {
       id: pythonObservabilitySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: pythonObservabilitySkill.description,
     },
     {
       id: goObservabilitySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: goObservabilitySkill.description,
     },
     {
       id: logAnalyzerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: logAnalyzerSkill.description,
     },
     {
       id: incidentResponseSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: incidentResponseSkill.description,
     },
     {
       id: systemDiagnosticsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: systemDiagnosticsSkill.description,
     }
   ],
 });

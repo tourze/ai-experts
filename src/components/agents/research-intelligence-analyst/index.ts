@@ -23,32 +23,32 @@ export const researchIntelligenceAnalystAgent = defineAgent({
     {
       id: deepResearchSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: deepResearchSkill.description,
     },
     {
       id: webContentFetcherSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: webContentFetcherSkill.description,
     },
     {
       id: comparativeAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: comparativeAnalysisSkill.description,
     },
     {
       id: researchNoteWrapSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: researchNoteWrapSkill.description,
     },
     {
       id: obsidianBasesSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: obsidianBasesSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

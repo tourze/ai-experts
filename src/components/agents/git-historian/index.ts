@@ -21,22 +21,22 @@ export const gitHistorianAgent = defineAgent({
     {
       id: engineeringRetroSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: engineeringRetroSkill.description,
     },
     {
       id: authorContributionsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: authorContributionsSkill.description,
     },
     {
       id: gitAdvancedWorkflowsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: gitAdvancedWorkflowsSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

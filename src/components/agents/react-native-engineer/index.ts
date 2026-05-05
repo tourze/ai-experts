@@ -24,37 +24,37 @@ export const reactNativeEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: codeEngineerAgentFrameworkSkill.description,
     },
     {
       id: reactNativeDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: reactNativeDesignSkill.description,
     },
     {
       id: reactNativeJsPerformanceSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: reactNativeJsPerformanceSkill.description,
     },
     {
       id: reactNativePlatformForkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: reactNativePlatformForkSkill.description,
     },
     {
       id: reactNativeTurbomoduleSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: reactNativeTurbomoduleSkill.description,
     },
     {
       id: reactNativeMetroConfigSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: reactNativeMetroConfigSkill.description,
     },
     {
       id: detoxMobileTestSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: detoxMobileTestSkill.description,
     }
   ],
 });

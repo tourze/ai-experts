@@ -21,22 +21,22 @@ export const typescriptEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: codeEngineerAgentFrameworkSkill.description,
     },
     {
       id: typescriptTypeSafetySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: typescriptTypeSafetySkill.description,
     },
     {
       id: nestjsLayeringPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: nestjsLayeringPatternsSkill.description,
     },
     {
       id: openapiSpecGenerationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: openapiSpecGenerationSkill.description,
     }
   ],
 });

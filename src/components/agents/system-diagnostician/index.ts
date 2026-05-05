@@ -21,22 +21,22 @@ export const systemDiagnosticianAgent = defineAgent({
     {
       id: systemDiagnosticsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: systemDiagnosticsSkill.description,
     },
     {
       id: archLinuxTriageSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: archLinuxTriageSkill.description,
     },
     {
       id: networkTroubleshooterSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: networkTroubleshooterSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

@@ -30,67 +30,67 @@ export const acquisitionStrategistAgent = defineAgent({
     {
       id: contentStrategySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: contentStrategySkill.description,
     },
     {
       id: seoSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: seoSkill.description,
     },
     {
       id: leadChannelOptimizerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: leadChannelOptimizerSkill.description,
     },
     {
       id: croMethodologySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: croMethodologySkill.description,
     },
     {
       id: paidAdsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: paidAdsSkill.description,
     },
     {
       id: analyticsTrackingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: analyticsTrackingSkill.description,
     },
     {
       id: customerResearchSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: customerResearchSkill.description,
     },
     {
       id: stpSegmentationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: stpSegmentationSkill.description,
     },
     {
       id: funnelArchitectSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: funnelArchitectSkill.description,
     },
     {
       id: revopsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: revopsSkill.description,
     },
     {
       id: leadResearchAssistantSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: leadResearchAssistantSkill.description,
     },
     {
       id: customerLifecycleSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: customerLifecycleSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

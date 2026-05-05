@@ -20,17 +20,17 @@ export const mobileReleaseReviewerAgent = defineAgent({
     {
       id: appStoreOptimizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: appStoreOptimizationSkill.description,
     },
     {
       id: appleAppstoreReviewerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: appleAppstoreReviewerSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

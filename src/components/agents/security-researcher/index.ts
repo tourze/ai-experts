@@ -30,67 +30,67 @@ export const securityResearcherAgent = defineAgent({
     {
       id: androidApkAuditSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: androidApkAuditSkill.description,
     },
     {
       id: binaryAnalysisPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: binaryAnalysisPatternsSkill.description,
     },
     {
       id: chipsecSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: chipsecSkill.description,
     },
     {
       id: fridaDynamicAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: fridaDynamicAnalysisSkill.description,
     },
     {
       id: idapythonScriptingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: idapythonScriptingSkill.description,
     },
     {
       id: iosBinaryAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: iosBinaryAnalysisSkill.description,
     },
     {
       id: iosSecretScanSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: iosSecretScanSkill.description,
     },
     {
       id: memoryForensicsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: memoryForensicsSkill.description,
     },
     {
       id: protocolReverseEngineeringSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: protocolReverseEngineeringSkill.description,
     },
     {
       id: unicornEmulationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: unicornEmulationSkill.description,
     },
     {
       id: wiresharkAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: wiresharkAnalysisSkill.description,
     },
     {
       id: ethicalHackingMethodologySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: ethicalHackingMethodologySkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

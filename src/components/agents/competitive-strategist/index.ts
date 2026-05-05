@@ -24,37 +24,37 @@ export const competitiveStrategistAgent = defineAgent({
     {
       id: portersFiveForcesSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: portersFiveForcesSkill.description,
     },
     {
       id: pricingStrategySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: pricingStrategySkill.description,
     },
     {
       id: competitiveIntelligenceSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: competitiveIntelligenceSkill.description,
     },
     {
       id: bcgMatrixSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: bcgMatrixSkill.description,
     },
     {
       id: swotAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: swotAnalysisSkill.description,
     },
     {
       id: stpSegmentationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: stpSegmentationSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

@@ -25,42 +25,42 @@ export const javaEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: codeEngineerAgentFrameworkSkill.description,
     },
     {
       id: springBootLayeringSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: springBootLayeringSkill.description,
     },
     {
       id: javaJunitSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: javaJunitSkill.description,
     },
     {
       id: testingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: testingPatternsSkill.description,
     },
     {
       id: gradleBuildPerformanceSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: gradleBuildPerformanceSkill.description,
     },
     {
       id: graalvmNativeImageSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: graalvmNativeImageSkill.description,
     },
     {
       id: arthasCpuHighSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: arthasCpuHighSkill.description,
     },
     {
       id: arthasSpringcontextIssuesResolveSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: arthasSpringcontextIssuesResolveSkill.description,
     }
   ],
 });

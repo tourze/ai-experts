@@ -32,77 +32,77 @@ export const rustReviewerAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: codeReviewAgentFrameworkSkill.description,
     },
     {
       id: rustOwnershipIdiomsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: rustOwnershipIdiomsSkill.description,
     },
     {
       id: rustErrorHandlingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: rustErrorHandlingSkill.description,
     },
     {
       id: rustTypeDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: rustTypeDesignSkill.description,
     },
     {
       id: rustAsyncPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: rustAsyncPatternsSkill.description,
     },
     {
       id: rustTestingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: rustTestingSkill.description,
     },
     {
       id: testingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: testingPatternsSkill.description,
     },
     {
       id: rustCargoWorkspaceSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: rustCargoWorkspaceSkill.description,
     },
     {
       id: rustTokioRuntimeTuningSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: rustTokioRuntimeTuningSkill.description,
     },
     {
       id: rustSerdePatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: rustSerdePatternsSkill.description,
     },
     {
       id: rustProcMacroPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: rustProcMacroPatternsSkill.description,
     },
     {
       id: rustDocumentationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: rustDocumentationSkill.description,
     },
     {
       id: rustPerformanceSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: rustPerformanceSkill.description,
     },
     {
       id: rustFfiBindingsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: rustFfiBindingsSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

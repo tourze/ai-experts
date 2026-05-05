@@ -23,32 +23,32 @@ export const docReviewerAgent = defineAgent({
     {
       id: comparativeAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: comparativeAnalysisSkill.description,
     },
     {
       id: docCoauthoringSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: docCoauthoringSkill.description,
     },
     {
       id: readmeBlueprintGeneratorSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: readmeBlueprintGeneratorSkill.description,
     },
     {
       id: userGuideWritingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: userGuideWritingSkill.description,
     },
     {
       id: markdownMermaidWritingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: markdownMermaidWritingSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

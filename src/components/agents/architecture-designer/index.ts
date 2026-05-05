@@ -30,67 +30,67 @@ export const architectureDesignerAgent = defineAgent({
     {
       id: architectureDesignWorkflowSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: architectureDesignWorkflowSkill.description,
     },
     {
       id: systemDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: systemDesignSkill.description,
     },
     {
       id: architectureDecisionRecordsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: architectureDecisionRecordsSkill.description,
     },
     {
       id: protocolFreezingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: protocolFreezingPatternsSkill.description,
     },
     {
       id: crossPlatformAdapterPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: crossPlatformAdapterPatternsSkill.description,
     },
     {
       id: hierarchicalMatchingSystemsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: hierarchicalMatchingSystemsSkill.description,
     },
     {
       id: webPerformanceDiagnosisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: webPerformanceDiagnosisSkill.description,
     },
     {
       id: taskDecomposerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: taskDecomposerSkill.description,
     },
     {
       id: backendToFrontendHandoffDocsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: backendToFrontendHandoffDocsSkill.description,
     },
     {
       id: agentOrchestrationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: agentOrchestrationSkill.description,
     },
     {
       id: errorHandlingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: errorHandlingPatternsSkill.description,
     },
     {
       id: softwareDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: softwareDesignSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });

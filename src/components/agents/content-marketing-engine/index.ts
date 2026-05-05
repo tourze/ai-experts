@@ -27,52 +27,52 @@ export const contentMarketingEngineAgent = defineAgent({
     {
       id: contentStrategySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: contentStrategySkill.description,
     },
     {
       id: copywritingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: copywritingSkill.description,
     },
     {
       id: seoSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: seoSkill.description,
     },
     {
       id: douyinViralContentSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: douyinViralContentSkill.description,
     },
     {
       id: youtubeAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: youtubeAnalysisSkill.description,
     },
     {
       id: youtubeSearchSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: youtubeSearchSkill.description,
     },
     {
       id: xiaohongshuCommercialGrowthSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: xiaohongshuCommercialGrowthSkill.description,
     },
     {
       id: fanOperationsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: fanOperationsSkill.description,
     },
     {
       id: analyticsTrackingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: analyticsTrackingSkill.description,
     },
     {
       id: customerResearchSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: customerResearchSkill.description,
     }
   ],
 });

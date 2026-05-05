@@ -19,12 +19,12 @@ export const pmDeliveryCoachAgent = defineAgent({
     {
       id: agileProductOwnerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: agileProductOwnerSkill.description,
     },
     {
       id: estimateCalibratorSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: estimateCalibratorSkill.description,
     }
   ],
 });

@@ -32,77 +32,77 @@ export const symfonyEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: codeEngineerAgentFrameworkSkill.description,
     },
     {
       id: symfonyBundleArchitectureSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: symfonyBundleArchitectureSkill.description,
     },
     {
       id: symfonyMessengerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: symfonyMessengerSkill.description,
     },
     {
       id: symfonyUxSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: symfonyUxSkill.description,
     },
     {
       id: symfonyVotersSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: symfonyVotersSkill.description,
     },
     {
       id: twigComponentsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: twigComponentsSkill.description,
     },
     {
       id: doctrineEntityPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: doctrineEntityPatternsSkill.description,
     },
     {
       id: doctrineBatchProcessingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: doctrineBatchProcessingSkill.description,
     },
     {
       id: phpDesignPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: phpDesignPatternsSkill.description,
     },
     {
       id: phpXFeaturesSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: phpXFeaturesSkill.description,
     },
     {
       id: phpTypeSafetySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: phpTypeSafetySkill.description,
     },
     {
       id: phpErrorHandlingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: phpErrorHandlingSkill.description,
     },
     {
       id: phpTestingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: phpTestingSkill.description,
     },
     {
       id: testingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: testingPatternsSkill.description,
     },
     {
       id: phpGeneratorsMemorySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: phpGeneratorsMemorySkill.description,
     }
   ],
 });

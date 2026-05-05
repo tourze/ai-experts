@@ -23,32 +23,32 @@ export const incidentResponderAgent = defineAgent({
     {
       id: incidentResponseSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: incidentResponseSkill.description,
     },
     {
       id: logAnalyzerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: logAnalyzerSkill.description,
     },
     {
       id: monitoringObservabilitySkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: monitoringObservabilitySkill.description,
     },
     {
       id: systemDiagnosticsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: systemDiagnosticsSkill.description,
     },
     {
       id: networkTroubleshooterSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: networkTroubleshooterSkill.description,
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: "Declared by agent frontmatter.",
+      reason: evidenceQualityFrameworkSkill.description,
     }
   ],
 });
