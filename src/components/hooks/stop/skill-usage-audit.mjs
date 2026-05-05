@@ -5,7 +5,15 @@
  * hook telemetry，供后续 trigger-telemetry-advisor 基于真实使用情况给建议。
  */
 
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync } from "node:fs";
+
+import {
+  findCurrentCodexUserIndex,
+  findCurrentPromptId,
+  getFinalAssistantText,
+  getFinalCodexAssistantText,
+  parseTranscript,
+} from "../_shared/transcript-utils.mjs";
 
 import {
   hasCompletionStatus,
@@ -14,117 +22,6 @@ import {
 import { recordAuditTelemetry } from "../_shared/audit-telemetry.mjs";
 
 const SKILL_TOKEN_RE = /`([A-Za-z0-9_.-]+(?::[A-Za-z0-9_.-]+)?)`/g;
-
-function parseTranscript(path) {
-  let content;
-  try {
-    content = readFileSync(path, "utf-8");
-  } catch {
-    return null;
-  }
-
-  const records = [];
-  for (const line of content.split("\n")) {
-    if (!line) {
-      continue;
-    }
-    try {
-      records.push(JSON.parse(line));
-    } catch {
-      // Skip damaged tail lines.
-    }
-  }
-  return records;
-}
-
-function isToolResultUserRecord(record) {
-  if (record?.type !== "user") {
-    return false;
-  }
-
-  const content = record.message?.content;
-  if (typeof content === "string") {
-    return false;
-  }
-  if (!Array.isArray(content)) {
-    return false;
-  }
-  return content.some((item) => item && typeof item === "object" && "tool_use_id" in item);
-}
-
-function isCodexMessage(record, role) {
-  return record?.type === "response_item" &&
-    record.payload?.type === "message" &&
-    record.payload?.role === role;
-}
-
-function findCurrentPromptId(records) {
-  for (let index = records.length - 1; index >= 0; index -= 1) {
-    const record = records[index];
-    if (record?.isSidechain === true) {
-      continue;
-    }
-    if (!record?.promptId || record.type !== "user") {
-      continue;
-    }
-    if (isToolResultUserRecord(record)) {
-      continue;
-    }
-    return record.promptId;
-  }
-  return null;
-}
-
-function findCurrentCodexUserIndex(records) {
-  for (let index = records.length - 1; index >= 0; index -= 1) {
-    if (isCodexMessage(records[index], "user")) {
-      return index;
-    }
-  }
-  return -1;
-}
-
-function extractTextContent(content) {
-  if (typeof content === "string") {
-    return content;
-  }
-  if (!Array.isArray(content)) {
-    return "";
-  }
-  return content
-    .filter((item) => ["text", "input_text", "output_text"].includes(item?.type) && typeof item.text === "string")
-    .map((item) => item.text)
-    .join("\n");
-}
-
-function getFinalAssistantText(records, promptId) {
-  const texts = [];
-  for (const record of records) {
-    if (record?.promptId !== promptId || record?.isSidechain === true || record?.type !== "assistant") {
-      continue;
-    }
-    const text = extractTextContent(record.message?.content).trim();
-    if (text) {
-      texts.push(text);
-    }
-  }
-  return texts.join("\n\n");
-}
-
-function getFinalCodexAssistantText(records, userIndex) {
-  const texts = [];
-  for (let index = userIndex + 1; index < records.length; index += 1) {
-    const record = records[index];
-    if (!isCodexMessage(record, "assistant")) {
-      continue;
-    }
-    const text = extractTextContent(record.payload?.content).trim();
-    if (text) {
-      texts.push(text);
-    }
-  }
-  return texts.join("\n\n");
-}
 
 function unique(values) {
   return [...new Set(values.filter(Boolean))].sort();

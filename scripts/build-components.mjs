@@ -962,6 +962,9 @@ function normalizeHookResult(result) {
   }
   const additionalContext = result.hookSpecificOutput?.additionalContext || result.additionalContext;
   if (additionalContext) return { kind: "add-context", message: additionalContext };
+  if (result.decision === "context") {
+    return { kind: "add-context", message: result.reason || result.message || "" };
+  }
   if (result.reason || result.message) return { kind: "report", message: result.reason || result.message };
   return null;
 }
@@ -988,10 +991,11 @@ function mergeResults(results, event) {
     .filter((result) => result.kind === "add-context")
     .map((result) => result.message);
   if (report && (event === "PostToolUse" || event === "Stop")) {
+    const merged = contexts.length > 0 ? [report.message, ...contexts].join("\\n\\n") : report.message;
     return {
       decision: "block",
       reason: report.message,
-      hookSpecificOutput: { hookEventName: event, additionalContext: report.message },
+      hookSpecificOutput: { hookEventName: event, additionalContext: merged },
     };
   }
   if (report) contexts.push(report.message);

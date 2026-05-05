@@ -1,0 +1,112 @@
+import { existsSync, readFileSync } from "node:fs";
+
+export function parseTranscript(path) {
+  let content;
+  try {
+    content = readFileSync(path, "utf-8");
+  } catch {
+    return null;
+  }
+
+  const records = [];
+  for (const line of content.split("\n")) {
+    if (!line) {
+      continue;
+    }
+    try {
+      records.push(JSON.parse(line));
+    } catch {
+      // Skip damaged tail lines.
+    }
+  }
+  return records;
+}
+
+export function isToolResultUserRecord(record) {
+  if (record?.type !== "user") {
+    return false;
+  }
+
+  const content = record.message?.content;
+  if (typeof content === "string") {
+    return false;
+  }
+  if (!Array.isArray(content)) {
+    return false;
+  }
+  return content.some((item) => item && typeof item === "object" && "tool_use_id" in item);
+}
+
+export function isCodexMessage(record, role) {
+  return record?.type === "response_item" &&
+    record.payload?.type === "message" &&
+    record.payload?.role === role;
+}
+
+export function findCurrentPromptId(records) {
+  for (let index = records.length - 1; index >= 0; index -= 1) {
+    const record = records[index];
+    if (record?.isSidechain === true) {
+      continue;
+    }
+    if (!record?.promptId || record.type !== "user") {
+      continue;
+    }
+    if (isToolResultUserRecord(record)) {
+      continue;
+    }
+    return record.promptId;
+  }
+  return null;
+}
+
+export function findCurrentCodexUserIndex(records) {
+  for (let index = records.length - 1; index >= 0; index -= 1) {
+    if (isCodexMessage(records[index], "user")) {
+      return index;
+    }
+  }
+  return -1;
+}
+
+export function extractTextContent(content) {
+  if (typeof content === "string") {
+    return content;
+  }
+  if (!Array.isArray(content)) {
+    return "";
+  }
+  return content
+    .filter((item) => ["text", "input_text", "output_text"].includes(item?.type) && typeof item.text === "string")
+    .map((item) => item.text)
+    .join("\n");
+}
+
+export function getFinalAssistantText(records, promptId) {
+  const texts = [];
+  for (const record of records) {
+    if (record?.promptId !== promptId || record?.isSidechain === true || record?.type !== "assistant") {
+      continue;
+    }
+    const text = extractTextContent(record.message?.content).trim();
+    if (text) {
+      texts.push(text);
+    }
+  }
+  return texts.join("\n\n");
+}
+
+export function getFinalCodexAssistantText(records, userIndex) {
+  const texts = [];
+  for (let index = userIndex + 1; index < records.length; index += 1) {
+    const record = records[index];
+    if (!isCodexMessage(record, "assistant")) {
+      continue;
+    }
+    const text = extractTextContent(record.payload?.content).trim();
+    if (text) {
+      texts.push(text);
+    }
+  }
+  return texts.join("\n\n");
+}

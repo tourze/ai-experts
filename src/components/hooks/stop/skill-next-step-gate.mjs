@@ -1,4 +1,12 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync } from "node:fs";
+
+import {
+  findCurrentCodexUserIndex,
+  findCurrentPromptId,
+  getFinalAssistantText,
+  getFinalCodexAssistantText,
+  parseTranscript,
+} from "../_shared/transcript-utils.mjs";
 
 import {
   NEXT_STEP_BLOCK_TEMPLATE,
@@ -8,91 +16,6 @@ import {
   shouldSkipNextStepRequirement,
   summarizeText,
 } from "../_shared/skill-routing-rules.mjs";
-
-function parseTranscript(path) {
-  let content;
-  try {
-    content = readFileSync(path, "utf-8");
-  } catch {
-    return null;
-  }
-
-  const records = [];
-  for (const line of content.split("\n")) {
-    if (!line) {
-      continue;
-    }
-    try {
-      records.push(JSON.parse(line));
-    } catch {
-      // 跳过损坏行，避免因为日志尾部半行而误伤 Stop。
-    }
-  }
-  return records;
-}
-
-function isToolResultUserRecord(record) {
-  if (record?.type !== "user") {
-    return false;
-  }
-
-  const content = record.message?.content;
-  if (typeof content === "string") {
-    return false;
-  }
-  if (!Array.isArray(content)) {
-    return false;
-  }
-  return content.some((item) => item && typeof item === "object" && "tool_use_id" in item);
-}
-
-function findCurrentPromptId(records) {
-  for (let index = records.length - 1; index >= 0; index -= 1) {
-    const record = records[index];
-    if (record?.isSidechain === true) {
-      continue;
-    }
-    if (!record?.promptId || record.type !== "user") {
-      continue;
-    }
-    if (isToolResultUserRecord(record)) {
-      continue;
-    }
-    return record.promptId;
-  }
-  return null;
-}
-
-function extractTextContent(content) {
-  if (typeof content === "string") {
-    return content;
-  }
-  if (!Array.isArray(content)) {
-    return "";
-  }
-  return content
-    .filter((item) => item?.type === "text" && typeof item.text === "string")
-    .map((item) => item.text)
-    .join("\n");
-}
-
-function getFinalAssistantText(records, promptId) {
-  // 聚合当前 promptId 下所有 assistant 消息的文本内容。
-  // 这修复了「最后一轮是 tool_use 导致 gate 被绕过」的问题：
-  // 旧逻辑要求最后一条 assistant 消息必须是纯文本才检查,
-  // 实际场景中最后一条经常含 tool_use,导致 gate 直接放行。
-  const texts = [];
-  for (const record of records) {
-    if (record?.promptId !== promptId || record?.isSidechain === true || record?.type !== "assistant") {
-      continue;
-    }
-    const text = extractTextContent(record.message?.content).trim();
-    if (text) {
-      texts.push(text);
-    }
-  }
-  return texts.join("\n");
-}
 
 export async function run(payload) {
   if (payload?.stop_hook_active) {
@@ -110,11 +33,14 @@ export async function run(payload) {
   }
 
   const promptId = findCurrentPromptId(records);
-  if (!promptId) {
+  const codexUserIndex = promptId ? -1 : findCurrentCodexUserIndex(records);
+  if (!promptId && codexUserIndex < 0) {
     return null;
   }
 
-  const finalText = getFinalAssistantText(records, promptId);
+  const finalText = promptId
+    ? getFinalAssistantText(records, promptId)
+    : getFinalCodexAssistantText(records, codexUserIndex);
   if (!finalText) {
     return null;
   }
@@ -129,8 +55,14 @@ export async function run(payload) {
   if (finalText.length < 500) {
     const hasCompletionInTranscript = records.some((r) => {
       if (r?.type !== "assistant" || r?.isSidechain === true) return false;
-      const text = extractTextContent(r.message?.content);
-      return hasCompletionStatus(text);
+      // Codex records use different structure
+      if (r?.payload?.content) {
+        const text = r.type === "response_item" ? r.payload.content : null;
+        if (text) return hasCompletionStatus(typeof text === "string" ? text : JSON.stringify(text));
+      }
+      const content = r.message?.content;
+      if (!content) return false;
+      return hasCompletionStatus(typeof content === "string" ? content : content.filter?.(c => c?.type === "text").map?.(c => c.text).join("\n") || "");
     });
     if (hasCompletionInTranscript) {
       return null;
