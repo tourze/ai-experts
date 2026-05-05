@@ -8,9 +8,9 @@ import {
 } from "../../sdk";
 
 
-export const analyzerAgent = defineAgent({
-  id: "analyzer",
-  description: "Agent analyzer.",
+export const evalPostHocAnalyzerAgent = defineAgent({
+  id: "eval-post-hoc-analyzer",
+  description: "当盲评比较完成后需要揭盲分析胜者优势、败者弱点和改进建议时使用。它读取比较结果、两个 skill 和两个 transcript，产出结构化改进建议。",
   role: `你是 Post-hoc Analyzer。分析盲评比较结果，解释胜者为什么赢，并生成可执行的改进建议。你只能读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),

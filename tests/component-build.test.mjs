@@ -171,6 +171,13 @@ test("component build emits claude and codex component surfaces", () => {
       existsSync(join(tmp, "codex/skills/screenshot/assets/screenshot.png")),
       true,
     );
+    for (const platform of ["claude", "codex"]) {
+      assert.equal(
+        collectFiles(join(tmp, platform, "skills"), (file) => /[\\/]skills[\\/][^\\/]+[\\/]index\.js$/.test(file)).length,
+        0,
+        `${platform} skill dist should not include compiled component index.js files`,
+      );
+    }
     const sourceMjsSkillScripts = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
       file.split(/[\\/]/).includes("scripts") && file.endsWith(".mjs")
     );
@@ -288,7 +295,7 @@ test("component build emits claude and codex component surfaces", () => {
       /## Bash 使用边界/,
       "agents without KnownTool.Bash should not emit Bash boundary instructions",
     );
-    const analyzerAgent = readFileSync(join(tmp, "claude/agents/analyzer.md"), "utf-8");
+    const analyzerAgent = readFileSync(join(tmp, "claude/agents/eval-post-hoc-analyzer.md"), "utf-8");
     assert.doesNotMatch(
       analyzerAgent,
       /## 质量标准/,

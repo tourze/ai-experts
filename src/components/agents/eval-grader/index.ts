@@ -8,9 +8,9 @@ import {
 } from "../../sdk";
 
 
-export const graderAgent = defineAgent({
-  id: "grader",
-  description: "Agent grader.",
+export const evalGraderAgent = defineAgent({
+  id: "eval-grader",
+  description: "当需要根据执行 transcript 和输出文件评估 expectations 通过或失败时使用。它逐条判定并验证隐含 claims，产出结构化评分结果。",
   role: `你是 Grader。根据执行 transcript 和 outputs 评估 expectations。你只能读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),

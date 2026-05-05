@@ -365,7 +365,7 @@ import { goEngineerAgent } from "./agents/go-engineer/index";
 import { goReviewerAgent } from "./agents/go-reviewer/index";
 import { iosSimulatorSmokeTesterAgent } from "./agents/ios-simulator-smoke-tester/index";
 import { mobileReleaseReviewerAgent } from "./agents/mobile-release-reviewer/index";
-import { swiftuiEngineerAgent } from "./agents/swiftui-engineer/index";
+import { swiftuiReviewerAgent } from "./agents/swiftui-reviewer/index";
 import { javaEngineerAgent } from "./agents/java-engineer/index";
 import { javaReviewerAgent } from "./agents/java-reviewer/index";
 import { javascriptReviewerAgent } from "./agents/javascript-reviewer/index";
@@ -402,9 +402,9 @@ import { securityResearcherAgent } from "./agents/security-researcher/index";
 import { threatModelerAgent } from "./agents/threat-modeler/index";
 import { skillAuthorAgent } from "./agents/skill-author/index";
 import { skillQualityAuditorAgent } from "./agents/skill-quality-auditor/index";
-import { analyzerAgent } from "./agents/analyzer/index";
-import { comparatorAgent } from "./agents/comparator/index";
-import { graderAgent } from "./agents/grader/index";
+import { evalPostHocAnalyzerAgent } from "./agents/eval-post-hoc-analyzer/index";
+import { evalBlindComparatorAgent } from "./agents/eval-blind-comparator/index";
+import { evalGraderAgent } from "./agents/eval-grader/index";
 import { speckitDriverAgent } from "./agents/speckit-driver/index";
 import { tauriEngineerAgent } from "./agents/tauri-engineer/index";
 import { tauriReviewerAgent } from "./agents/tauri-reviewer/index";
@@ -414,7 +414,7 @@ import { strategicThinkerAgent } from "./agents/strategic-thinker/index";
 import { nestjsReviewerAgent } from "./agents/nestjs-reviewer/index";
 import { typescriptEngineerAgent } from "./agents/typescript-engineer/index";
 import { typescriptReviewerAgent } from "./agents/typescript-reviewer/index";
-import { microsoftStackEngineerAgent } from "./agents/microsoft-stack-engineer/index";
+import { microsoftStackReviewerAgent } from "./agents/microsoft-stack-reviewer/index";
 import { windowsPlatformReviewerAgent } from "./agents/windows-platform-reviewer/index";
 
 export const componentSkills = [
@@ -788,7 +788,7 @@ export const componentAgents = [
   goReviewerAgent,
   iosSimulatorSmokeTesterAgent,
   mobileReleaseReviewerAgent,
-  swiftuiEngineerAgent,
+  swiftuiReviewerAgent,
   javaEngineerAgent,
   javaReviewerAgent,
   javascriptReviewerAgent,
@@ -825,9 +825,9 @@ export const componentAgents = [
   threatModelerAgent,
   skillAuthorAgent,
   skillQualityAuditorAgent,
-  analyzerAgent,
-  comparatorAgent,
-  graderAgent,
+  evalPostHocAnalyzerAgent,
+  evalBlindComparatorAgent,
+  evalGraderAgent,
   speckitDriverAgent,
   tauriEngineerAgent,
   tauriReviewerAgent,
@@ -837,6 +837,6 @@ export const componentAgents = [
   nestjsReviewerAgent,
   typescriptEngineerAgent,
   typescriptReviewerAgent,
-  microsoftStackEngineerAgent,
+  microsoftStackReviewerAgent,
   windowsPlatformReviewerAgent
 ];
