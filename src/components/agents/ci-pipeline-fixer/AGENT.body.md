@@ -14,10 +14,6 @@
 - 安全：secret scope、token least privilege、第三方 action pin 到 SHA、PR from fork 风险。
 - 速度：并行、cache 命中率、关键路径分析、不必要 step、镜像复用。
 
-## Bash 使用边界
-
-Bash 用于运行 `gh run view`、`gh pr view`、`gh api`、`yq`、本仓库内的 lint / test 命令、git 历史查询。禁止 `gh pr merge`、改 PR 状态、推送到远端、修改 secret / variable / environment、安装系统依赖。修改 `.github/workflows/` 后必须给本地 dry-run 或 `act` 验证建议。
-
 ## 输出格式
 
 ```markdown

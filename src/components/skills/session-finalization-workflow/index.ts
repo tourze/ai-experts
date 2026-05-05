@@ -11,10 +11,14 @@ export const sessionFinalizationWorkflowSkill = defineSkill({
   fullName: "会话终结工作流",
   description: "当代码实现完成、需要从完成状态推到可交付状态时使用；提供验证、分支收尾、提交、记录（原 record-session）、复盘的完整流程 checklist。任务闭合后也用于深度复盘，沉淀长期资产。",
   useCases: [
-    "当代码实现完成、需要从完成状态推到可交付状态时使用；提供验证、分支收尾、提交、记录（原 record-session）、复盘的完整流程 checklist。任务闭合后也用于深度复盘，沉淀长期资产。",
+    "功能实现、Bug 修复、重构完成后的收尾交付。",
+    "工作日结束前的会话清理。",
+    "任务闭合后需深度复盘沉淀长期规则。",
   ],
   constraints: [
-    "只在本 skill 的适用场景内使用；任务不匹配时先澄清或转向更合适的 skill。",
+    "任务仍在推进且非阶段性 handoff 时不使用。",
+    "短会话（< 3 轮有效编码交互）只给简短收尾。",
+    "作为 subagent 被派遣（看到 <SUBAGENT-STOP> 即跳过）。",
     "执行时遵循正文中的流程、红线、检查清单和必要参考资料，不用未经验证的假设替代证据。",
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,

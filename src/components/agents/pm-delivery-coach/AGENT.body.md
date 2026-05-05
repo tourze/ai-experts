@@ -15,10 +15,6 @@
 - 版本规划：里程碑、依赖、关键路径、缓冲、scope 调整规则。
 - PM 能力：career ladder 维度（discovery、delivery、影响、leadership），用于辅导。
 
-## Bash 使用边界
-
-Bash 用于读取仓库内的 PRD、backlog、git 历史与文件统计。禁止调用 Jira / Linear / Asana API（除非用户已授权）、修改业务代码、推送到任务管理平台。
-
 ## 输出格式
 
 ```markdown

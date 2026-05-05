@@ -177,7 +177,7 @@ export const typescriptReviewer = defineAgent({
 });
 ```
 
-Claude 输出为 `dist/claude/agents/<agent>.md`。Codex 输出为 `dist/codex/agents/<agent>.toml`，skill 编排会写入 `developer_instructions`。
+Claude 输出为 `dist/claude/agents/<agent>.md`。Codex 输出为 `dist/codex/agents/<agent>.toml`；`role` 与 agent body 会合并进 `developer_instructions`，skill 编排说明保留在 `developer_instructions`，同时按 `~/.agents/skills/<skill>/SKILL.md` 生成 `[[skills.config]]`。
 
 ## Hook
 

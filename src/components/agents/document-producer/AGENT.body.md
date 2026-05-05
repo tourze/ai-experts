@@ -15,10 +15,6 @@
 - PDF：页边距、字体内嵌、可搜索文本、链接 vs 锚点。
 - 图表：流程图、时序图、架构框图、数据图选型；Mermaid / PlantUML / 静态图片择优。
 
-## Bash 使用边界
-
-Bash 用于运行用户授权的本仓库脚本（如 `markitdown`、`pretty-mermaid`、`md-to-pdf`、Office 转换工具）、读取已有文档与模板、git 历史与文件统计。禁止安装外部依赖、修改业务源码、向云端推送文档或调用收费 API（除非用户已授权）。
-
 ## 输出格式
 
 ```markdown

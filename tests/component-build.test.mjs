@@ -188,12 +188,38 @@ test("component build emits claude and codex component surfaces", () => {
     const claudeAgent = readFileSync(join(tmp, "claude/agents/typescript-reviewer.md"), "utf-8");
     assert.match(claudeAgent, /name: typescript-reviewer/);
     assert.match(claudeAgent, /skills:\n  - typescript-type-safety/);
+    assert.match(claudeAgent, /你是资深 TypeScript 工程师/);
     assert.match(claudeAgent, /`debug-methodology` \(route\)/);
+
+    const typescriptEngineerAgent = readFileSync(
+      join(tmp, "claude/agents/typescript-engineer.md"),
+      "utf-8",
+    );
+    assert.match(typescriptEngineerAgent, /## Bash 使用边界/);
+    assert.ok(
+      typescriptEngineerAgent.indexOf("## Bash 使用边界") <
+        typescriptEngineerAgent.indexOf("## 输出格式"),
+      "generated agent Bash boundary should stay near the operational guidance sections",
+    );
+
+    const productDiscovererAgent = readFileSync(
+      join(tmp, "claude/agents/product-discoverer.md"),
+      "utf-8",
+    );
+    assert.doesNotMatch(
+      productDiscovererAgent,
+      /## Bash 使用边界/,
+      "agents without KnownTool.Bash should not emit Bash boundary instructions",
+    );
 
     const codexAgent = readFileSync(join(tmp, "codex/agents/frontend-engineer.toml"), "utf-8");
     assert.match(codexAgent, /name = "frontend-engineer"/);
+    assert.doesNotMatch(codexAgent, /model = "sonnet"/);
     assert.match(codexAgent, /sandbox_mode = "workspace-write"/);
-    assert.match(codexAgent, /Skill orchestration:/);
+    assert.match(codexAgent, /你是资深 Web 前端工程师/);
+    assert.match(codexAgent, /## Skill Orchestration/);
+    assert.match(codexAgent, /\[\[skills\.config\]\]\npath = "~\/\.agents\/skills\/modern-web-design\/SKILL\.md"\nenabled = true/);
+    assert.match(codexAgent, /## Bash 使用边界/);
 
     const claudeInstructions = readFileSync(join(tmp, "claude/CLAUDE.md"), "utf-8");
     assert.match(claudeInstructions, /Runtime Model/);
@@ -319,6 +345,35 @@ test("component build emits claude and codex component surfaces", () => {
     );
     const removedLayer = ["migr", "ated"].join("");
     assert.equal(existsSync(join(repoRoot, "src/components", removedLayer)), false);
+
+    for (const agentBodyFile of collectFiles(join(repoRoot, "src/components/agents"), (file) => file.endsWith("AGENT.body.md"))) {
+      const source = readFileSync(agentBodyFile, "utf-8");
+      assert.equal(
+        countH2OutsideCodeFence(source, "Bash 使用边界"),
+        0,
+        `${agentBodyFile} should move Bash boundary instructions to index.ts bashBoundary`,
+      );
+    }
+
+    for (const agentSourceFile of collectFiles(join(repoRoot, "src/components/agents"), (file) => file.endsWith("index.ts"))) {
+      const source = readFileSync(agentSourceFile, "utf-8");
+      const hasBashTool = /\bKnownTool\.Bash\b/.test(source);
+      const hasBashBoundary = /\n\s*bashBoundary:\s*\[/.test(source);
+      assert.equal(
+        hasBashBoundary,
+        hasBashTool,
+        `${agentSourceFile} should define bashBoundary exactly when it declares KnownTool.Bash`,
+      );
+      if (hasBashBoundary) {
+        const bashBoundarySource = extractPropertyArray(source, "bashBoundary");
+        assert.notEqual(bashBoundarySource, null, `${agentSourceFile} should define bashBoundary as an array`);
+        assert.match(
+          bashBoundarySource,
+          /["`][\s\S]*\S[\s\S]*["`]/,
+          `${agentSourceFile} should define bashBoundary as a non-empty string array`,
+        );
+      }
+    }
 
     const allowedHookRoots = new Set([
       "_shared",
@@ -452,7 +507,7 @@ test("component build emits claude and codex component surfaces", () => {
       if (antiPatternsSource) {
         assert.match(
           antiPatternsSource,
-          /defineAntiPattern\(\{\s*fail:\s*"[^"]+",\s*pass:\s*"[^"]+"/s,
+          /defineAntiPattern\(\{\s*fail:\s*(?:"[^"]+"|'[^']+'|`[\s\S]+?`),\s*pass:\s*(?:"[^"]+"|'[^']+'|`[\s\S]+?`)/s,
           `${skillSourceFile} should define antiPatterns with defineAntiPattern({ fail, pass })`,
         );
         assert.doesNotMatch(

@@ -15,10 +15,6 @@
 - OpenAPI 规范：@nestjs/swagger 装饰器完整性、DTO schema 一致性、认证声明、响应类型覆盖。
 - 测试：Jest/Vitest 配置、mock 策略、异步测试、API 集成测试、类型测试（expect-type）。
 
-## Bash 使用边界
-
-Bash 用于：`tsc --noEmit`、`eslint`、`jest`、`vitest`、`npm run build`、`pnpm build`、git 操作。禁止：修改生产配置、连接外部 API 不经确认、`npm install` 不经确认的依赖变更。
-
 ## 输出格式
 
 ```markdown

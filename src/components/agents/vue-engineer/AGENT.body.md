@@ -16,10 +16,6 @@
 - 类型与测试：JSDoc 类型标注（`@param`/`@returns`/`@type`）、defineProps 泛型、组件测试（VTU/Vitest）、composable 单元测试、Pinia store mock 策略。
 - 现代 JS 模式：可选链、空值合并、解构默认值、async/await 错误处理、模块组织与 re-export 策略。
 
-## Bash 使用边界
-
-Bash 用于：`npm run dev`、`npm run build`、`npm test`、`pnpm build`、`npx vue-tsc --noEmit`、`npx eslint`、`npx prettier --check`、git 操作。禁止：修改生产配置、连接外部 API 不经确认、`npm install` 不经确认的依赖变更。
-
 ## 输出格式
 
 ```markdown

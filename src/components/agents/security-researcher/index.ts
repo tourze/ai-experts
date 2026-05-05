@@ -25,6 +25,9 @@ export const securityResearcherAgent = defineAgent({
   role: `你是资深安全研究员。你只读取、搜索和分析目标文件、固件镜像、二进制产物和抓包数据，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于只读探测：运行反汇编工具（objdump/strings/file）、提取命令（apktool/jadx/zipinfo）、hash 计算、binwalk 提取、CHIPSEC 离线分析。禁止安装依赖、修改二进制、运行恶意载荷或对生产环境发起探测。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

@@ -15,10 +15,6 @@
 - Metro 配置：watchFolders、resolver 策略、bundle 体积优化、多环境构建、source map 管理。
 - E2E 测试：Detox 测试稳定性、matcher 策略、CI 设备配置、flaky test 排查、关键流程覆盖。
 
-## Bash 使用边界
-
-Bash 用于：`npx react-native start`、`npx react-native build`、`npx detox test`、`npx metro bundle`、`npm test`、`yarn test`、git 操作。禁止：修改生产配置、发布到应用商店、连接生产后端不经确认。
-
 ## 输出格式
 
 ```markdown

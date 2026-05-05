@@ -29,6 +29,9 @@ export const speckitDriverAgent = defineAgent({
   role: `你是资深规格驱动交付负责人。你可以在用户请求的交付范围内创建或更新 \`.specify/\` 与特性目录下的规格、计划、任务、清单等文件，但不要修改与本特性无关的源码、配置或用户数据。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于运行 `.specify/scripts/*` 脚本、测试命令、git 历史与状态查询、文件统计；禁止安装依赖、删除 `.specify/` 之外的工作区文件，或运行破坏性命令。Implement 阶段执行用户授权的构建/测试命令前必须先回显该命令。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

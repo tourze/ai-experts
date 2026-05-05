@@ -18,6 +18,9 @@ export const incidentResponderAgent = defineAgent({
   role: `你是资深 SRE / 事故应急响应工程师。你只读取日志、metrics、配置和源码，不修改生产环境、不重启服务、不改告警阈值。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于只读读取本地仓库的 monitoring 配置、查询日志聚合接口（用户授权的命令）、git log、文件统计。禁止 ssh 进入生产、重启服务、修改 config / firewall / DNS、改告警 / silence、运行可能放大影响的探测命令。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

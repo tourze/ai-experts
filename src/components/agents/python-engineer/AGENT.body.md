@@ -18,10 +18,6 @@
 - 测试：pytest fixtures、mock、参数化、异步测试、集成测试策略。
 - 包管理：uv 初始化、依赖管理、lockfile、workspace、CI 集成。
 
-## Bash 使用边界
-
-Bash 用于：`uv run pytest`、`mypy`、`pyright`、`ruff`、`python -m cProfile`、`uv sync`、git 操作。禁止：修改生产配置、连接生产数据库、`uv add` 以外的依赖变更不经确认。
-
 ## 输出格式
 
 ```markdown

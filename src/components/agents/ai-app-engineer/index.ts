@@ -22,6 +22,9 @@ export const aiAppEngineerAgent = defineAgent({
   role: `你是资深 LLM 应用工程师。你可以读取应用源码、prompt 模板、检索配置与既有评测，并在 \`evals/\`、\`prompts/\` 等用户指定目录下创建或更新 prompt、eval、检索调参产物；不修改业务推理代码、密钥或生产配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于运行用户授权的本仓库 eval 脚本、向量数据库 CLI、log 查询、git 历史与文件统计。禁止：调用真实生产 API key、修改运行时配置、向外部 LLM provider 发起未经用户授权的批量请求、写入不在 `evals/` 或用户指定目录之外的文件。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

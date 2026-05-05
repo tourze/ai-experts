@@ -187,6 +187,10 @@ function tomlMultiline(value) {
   return `"""\n${String(value).replace(/"""/g, '\\"\\"\\"')}\n"""`;
 }
 
+function tomlBoolean(value) {
+  return value ? "true" : "false";
+}
+
 function renderToolMatcher(matcher) {
   if (typeof matcher === "string") return matcher;
   if (matcher.kind === "mcp") {
@@ -458,6 +462,38 @@ function renderBodyWithGeneratedSections(skill, body) {
   return `${bodyWithChecklist.trimEnd()}\n\n${antiPatterns.trimEnd()}`;
 }
 
+function hasStringTool(component, toolName) {
+  return (component.tools ?? []).some((tool) => tool === toolName);
+}
+
+function validateAgentBashBoundary(agent) {
+  const boundary = agent.bashBoundary;
+  if (boundary === undefined) return [];
+  if (!Array.isArray(boundary) || boundary.length === 0) {
+    throw new Error(`Agent ${agent.id} bashBoundary must be a non-empty string array when defined`);
+  }
+  for (const [index, item] of boundary.entries()) {
+    if (typeof item !== "string" || item.trim() === "") {
+      throw new Error(`Agent ${agent.id} bashBoundary[${index}] must be a non-empty string`);
+    }
+  }
+  return boundary;
+}
+
+function renderAgentBashBoundary(agent) {
+  const boundary = validateAgentBashBoundary(agent);
+  if (boundary.length === 0) return "";
+  return `## Bash 使用边界\n\n${boundary.map((item) => item.trim()).join("\n\n")}\n`;
+}
+
+function renderAgentBodyWithGeneratedSections(agent, body) {
+  return insertSectionBeforeH2Matching(
+    body,
+    renderAgentBashBoundary(agent),
+    (title) => title === "输出格式",
+  );
+}
+
 function renderSkillMd(skill, platform) {
   if (typeof skill.fullName !== "string" || skill.fullName.trim() === "") {
     throw new Error(`Skill ${skill.id} must define a non-empty fullName`);
@@ -622,16 +658,20 @@ function renderClaudeAgent(agent) {
     lines.push("skills:");
     for (const skill of preloadSkills) lines.push(`  - ${skill}`);
   }
-  if (agent.model) lines.push(`model: ${agent.model}`);
+  const model = agent.claudeModel ?? agent.model;
+  if (model) lines.push(`model: ${model}`);
   if (agent.reasoningEffort) lines.push(`effort: ${agent.reasoningEffort}`);
   lines.push("---", "");
 
+  const body = renderAgentBodyWithGeneratedSections(agent, readComponentText(agent.body).trimEnd());
   const skillRoutes = (agent.skills ?? [])
     .map((skill) => `- \`${skill.id}\` (${skill.mode}): ${skill.reason}`)
     .join("\n");
   return [
     lines.join("\n"),
-    readComponentText(agent.body).trimEnd(),
+    agent.role.trimEnd(),
+    "",
+    body,
     "",
     "## Skill Orchestration",
     skillRoutes,
@@ -639,15 +679,36 @@ function renderClaudeAgent(agent) {
   ].join("\n");
 }
 
+function renderCodexSkillConfig(agent) {
+  const skills = agent.skills ?? [];
+  if (skills.length === 0) return [];
+  return skills.flatMap((skill) => [
+    "",
+    "[[skills.config]]",
+    `path = ${tomlString(`~/.agents/skills/${skill.id}/SKILL.md`)}`,
+    `enabled = ${tomlBoolean(true)}`,
+  ]);
+}
+
+function renderCodexModel(agent) {
+  if (agent.codexModel) return agent.codexModel;
+  const model = agent.model;
+  if (!model) return null;
+  const claudeOnlyAliases = new Set(["haiku", "sonnet", "opus"]);
+  return claudeOnlyAliases.has(model) ? null : model;
+}
+
 function renderCodexAgent(agent) {
-  const body = readComponentText(agent.body).trimEnd();
+  const body = renderAgentBodyWithGeneratedSections(agent, readComponentText(agent.body).trimEnd());
   const skillRoutes = (agent.skills ?? [])
     .map((skill) => `- ${skill.id} (${skill.mode}): ${skill.reason}`)
     .join("\n");
   const developerInstructions = [
+    agent.role.trimEnd(),
+    "",
     body,
     "",
-    "Skill orchestration:",
+    "## Skill Orchestration",
     skillRoutes,
     "",
     "When a listed skill is relevant, explicitly route the work through that skill's workflow.",
@@ -657,10 +718,12 @@ function renderCodexAgent(agent) {
     `name = ${tomlString(agent.id)}`,
     `description = ${tomlString(agent.description)}`,
   ];
-  if (agent.model) lines.push(`model = ${tomlString(agent.model)}`);
+  const model = renderCodexModel(agent);
+  if (model) lines.push(`model = ${tomlString(model)}`);
   if (agent.reasoningEffort) lines.push(`model_reasoning_effort = ${tomlString(agent.reasoningEffort)}`);
   if (agent.sandbox) lines.push(`sandbox_mode = ${tomlString(agent.sandbox)}`);
   lines.push(`developer_instructions = ${tomlMultiline(developerInstructions)}`);
+  lines.push(...renderCodexSkillConfig(agent));
   return `${lines.join("\n")}\n`;
 }
 
@@ -1109,6 +1172,17 @@ function validateRegistry(registry) {
     }
     if (!startsWithH2Section(agentBodySource)) {
       throw new Error(`Agent ${agent.id} body must start with an H2 section (##); move non-section content to index.ts role field`);
+    }
+    if (hasH2SectionMatching(agentBodySource, (title) => title === "Bash 使用边界")) {
+      throw new Error(`Agent ${agent.id} must move ## Bash 使用边界 from AGENT.body.md to bashBoundary`);
+    }
+    const hasBashTool = hasStringTool(agent, "Bash");
+    const bashBoundary = validateAgentBashBoundary(agent);
+    if (hasBashTool && bashBoundary.length === 0) {
+      throw new Error(`Agent ${agent.id} uses KnownTool.Bash and must define bashBoundary`);
+    }
+    if (!hasBashTool && bashBoundary.length > 0) {
+      throw new Error(`Agent ${agent.id} defines bashBoundary but does not include KnownTool.Bash`);
     }
     for (const skill of agent.skills ?? []) {
       if (!skillIds.has(skill.id)) throw new Error(`Agent ${agent.id} references missing skill: ${skill.id}`);

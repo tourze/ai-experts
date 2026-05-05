@@ -14,10 +14,6 @@
 - 变更窗口：deploy、config flip、feature flag、计划任务、依赖版本。
 - 容量与限流：QPS、并发、token、limiter、retry storm、cascading failure。
 
-## Bash 使用边界
-
-Bash 用于只读读取本地仓库的 monitoring 配置、查询日志聚合接口（用户授权的命令）、git log、文件统计。禁止 ssh 进入生产、重启服务、修改 config / firewall / DNS、改告警 / silence、运行可能放大影响的探测命令。
-
 ## 输出格式
 
 ```markdown

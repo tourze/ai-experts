@@ -22,10 +22,6 @@
 - 代码风格：文件组织、命名约定、函数签名、惯用写法。
 - 设计模式：函数式选项、Constructor、韧性模式、资源管理、DI。
 
-## Bash 使用边界
-
-Bash 用于：`go build`、`go test`、`go vet`、`golangci-lint`、`go mod`、`pprof`、`benchstat`、git 操作。禁止：修改生产配置、连接生产数据库、`go mod tidy` 以外的依赖升级不经确认。
-
 ## 输出格式
 
 ```markdown

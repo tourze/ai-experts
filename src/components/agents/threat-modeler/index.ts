@@ -14,6 +14,9 @@ export const threatModelerAgent = defineAgent({
   role: `你是资深安全架构师。你可以读取代码、设计文档与现有威胁模型，并在用户指定的目录（默认 \`docs/security/\`）下创建或更新威胁模型、攻击树、安全需求与缓解映射文档；不修改业务代码、不改变运行时配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于读取仓库结构、git 历史、依赖清单、配置、调用图脚本与已有威胁模型文档；运行用户授权的本仓库脚本生成图表（PlantUML / Mermaid）。禁止安装外部依赖、修改业务代码、调用生产接口或访问真实凭据。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

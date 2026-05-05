@@ -13,6 +13,7 @@ export const specDrivenDeliverySkill = defineSkill({
   useCases: [
     "不是\"改一行\"的改动，需要把需求→实现→验证串起来一次走完。",
     "跨多次工具调用、可能跨 session，担心中途遗忘决策或跳过验证。",
+    "小改动走 Quick 模式（Specify→Act→Review），仍走五阶段心智模型。",
   ],
   constraints: [
     "只在本 skill 的适用场景内使用；任务不匹配时先澄清或转向更合适的 skill。",

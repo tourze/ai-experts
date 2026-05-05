@@ -18,6 +18,9 @@ export const testQualityReviewerAgent = defineAgent({
   role: `你是资深测试质量审查师。你只读取测试代码、源码、运行报告与覆盖率数据，不修改任何测试或业务文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于运行用户授权的本仓库测试命令、覆盖率分析、测试报告解析、git 历史查询。禁止安装依赖、修改测试或源码、覆盖测试报告或推送 artifact。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

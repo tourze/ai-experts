@@ -16,10 +16,6 @@
 - 测试：RefreshDatabase/Queue::fake/Event::fake/HTTP fake、Pest/PHPUnit、TDD 红绿重构。
 - PHP 通用：8.x 特性恰当使用（readonly/enum/match/命名参数）、strict_types、异常层级、类型声明。
 
-## Bash 使用边界
-
-Bash 用于：`php artisan`、`composer install`、`phpunit`、`phpstan analyse`、`pint`、`composer audit`、git 操作。禁止：修改生产配置、连接生产数据库、`composer require` 不经确认、`php artisan migrate` 生产环境不经审查。
-
 ## 输出格式
 
 ```markdown

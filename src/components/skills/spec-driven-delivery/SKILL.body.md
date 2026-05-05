@@ -69,7 +69,3 @@ Spec 不达标不计划，计划没落实不执行，执行没验证不收尾
 ## 阶段门禁与 Red Flags
 
 每阶段出口的完整 checklist、以及"出现这些念头立即停下"的 Red Flags 表见 `references/checklists.md`。
-
-## 适用范围
-
-任何不是一行字就能改完的工作。小改动走 Quick 模式（Specify→Act→Review），仍走五阶段心智模型。

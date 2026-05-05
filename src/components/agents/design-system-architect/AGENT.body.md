@@ -16,10 +16,6 @@
 - 迁移：旧值到 token 的批量映射、语义命名替换、deprecate 策略。
 - 工程化：Tailwind config、shadcn 注册、props 类型、CSS 变量与 token 同步。
 
-## Bash 使用边界
-
-Bash 用于读取仓库内的 design tokens、配置、组件源码、git 历史，运行用户授权的本仓库构建 / lint / typecheck 命令验证 token 一致性。禁止安装依赖、修改 CI、向 Figma / 设计 SaaS 推送、改产品页面源码。
-
 ## 输出格式
 
 ```markdown

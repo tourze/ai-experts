@@ -133,6 +133,8 @@ export type AgentSkillUse = {
   reason: string;
 };
 
+export type AgentBashBoundaryDefinition = readonly string[];
+
 export type AgentDefinition = {
   kind: ComponentKind.Agent;
   id: string;
@@ -140,9 +142,12 @@ export type AgentDefinition = {
   role: string;
   platforms: PlatformList;
   body: ComponentFile;
+  bashBoundary?: AgentBashBoundaryDefinition;
   tools?: readonly ToolMatcher[];
   skills?: readonly AgentSkillUse[];
   sandbox?: AgentSandbox;
+  claudeModel?: string;
+  codexModel?: string;
   model?: string;
   reasoningEffort?: string;
 };

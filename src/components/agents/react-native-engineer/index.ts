@@ -19,6 +19,9 @@ export const reactNativeEngineerAgent = defineAgent({
   role: `你是资深 React Native 工程师。你可以读取项目源码、package.json 与原生配置，设计方案并在用户指定目录下编写或修改 JavaScript/TypeScript 代码、原生模块、测试与设计文档；不修改生产密钥、签名证书或发布配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于：`npx react-native start`、`npx react-native build`、`npx detox test`、`npx metro bundle`、`npm test`、`yarn test`、git 操作。禁止：修改生产配置、发布到应用商店、连接生产后端不经确认。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

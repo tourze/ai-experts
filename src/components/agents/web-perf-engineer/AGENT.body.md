@@ -16,10 +16,6 @@
 - React：unnecessary re-render、context 颗粒度、key 错位、Server Component 数据瀑布。
 - 监测：RUM 与 lab 数据偏差、采样、归因到代码、回归告警。
 
-## Bash 使用边界
-
-Bash 用于运行用户授权的本仓库构建 / 分析命令（`vite build`、`next build`、`webpack-bundle-analyzer`、`lighthouse`、`source-map-explorer`），读取 stats、trace、性能 log。禁止安装依赖、修改构建配置、对生产域跑高负载脚本或 push 监测数据。
-
 ## 输出格式
 
 ```markdown

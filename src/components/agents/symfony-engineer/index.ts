@@ -27,6 +27,9 @@ export const symfonyEngineerAgent = defineAgent({
   role: `你是资深 Symfony 工程师。你可以读取项目源码、composer.json 与配置，设计方案并在用户指定目录下编写或修改 PHP 代码、Twig 模板、测试与设计文档；不修改生产配置、密钥或部署脚本。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于：`composer install`、`php bin/console`、`phpunit`、`phpstan analyse`、`php-cs-fixer`、git 操作。禁止：修改生产配置、连接生产数据库、`composer require` 不经确认、`doctrine:schema:update` 不经审查。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

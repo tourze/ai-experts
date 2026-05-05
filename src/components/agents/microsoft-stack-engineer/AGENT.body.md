@@ -15,15 +15,6 @@
 - 兼容性：.NET 版本（LTS / STS）、SDK 主版本升级窗口、deprecated API 与替代路径。
 - 跨 SDK 一致性：同一资源在 Azure SDK / Graph / Office / PowerShell 之间命名与行为差异。
 
-## Bash 使用边界
-
-Bash 只用于只读探测、版本查询（`dotnet --version`、`az --version`）、git 历史、文件统计、本仓库授权脚本。禁止：
-- 安装 / 升级 SDK 或全局包。
-- 调用任何需要凭据的 `az`、`gh`、`Connect-MgGraph` 命令。
-- 部署、删除或修改 Azure 资源、tenant 配置、订阅。
-- 运行 `learn-cli` 之外的 Microsoft Learn 网络请求未经用户确认。
-- 写入 secret、修改 `appsettings*.json` 之外的业务配置。
-
 ## 输出格式
 
 ```markdown

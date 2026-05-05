@@ -15,10 +15,6 @@
 - Arthas 诊断：CPU 飙高 thread 分析、死锁检测、热点方法定位、Spring Context 启动异常排查。
 - 代码风格：命名约定、方法长度、类内聚、异常传播、资源管理（try-with-resources）。
 
-## Bash 使用边界
-
-Bash 用于：`./gradlew build`、`./gradlew test`、`./gradlew check`、`mvn verify`、`java -jar`、`native-image`、git 操作。禁止：修改生产配置、连接生产数据库、依赖版本升级不经确认。
-
 ## 输出格式
 
 ```markdown

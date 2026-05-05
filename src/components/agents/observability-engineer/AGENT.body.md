@@ -18,10 +18,6 @@
 - Python：`structlog` + OpenTelemetry SDK + `prometheus_client`。
 - Go：`slog` + `otelhttp` / `otelgrpc` + `promhttp`。
 
-## Bash 使用边界
-
-Bash 用于读取本地仓库的观测配置、metrics 定义、日志格式模板和告警规则文件；运行用户授权的格式校验与语法检查。禁止连接生产监控系统、修改告警规则/阈值、重启 exporter 或调整采样率。
-
 ## 写入边界
 
 文件写入默认落在 `docs/observability/<service-or-project>/` 下，包含：观测方案、指标清单、告警规则草稿、落地脚本（Python/Go 代码片段）。不修改业务源码、CI/CD 配置或生产部署描述文件。

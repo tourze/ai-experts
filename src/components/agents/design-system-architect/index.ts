@@ -17,6 +17,9 @@ export const designSystemArchitectAgent = defineAgent({
   role: `你是资深设计系统架构师。你可以在用户指定的设计系统目录下创建或更新令牌、主题、组件骨架、文档与示例；不直接修改产品业务页面、不删除已有组件 API。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于读取仓库内的 design tokens、配置、组件源码、git 历史，运行用户授权的本仓库构建 / lint / typecheck 命令验证 token 一致性。禁止安装依赖、修改 CI、向 Figma / 设计 SaaS 推送、改产品页面源码。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

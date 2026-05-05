@@ -16,10 +16,6 @@
 - Shell：`#!/usr/bin/env bash` + `set -euo pipefail`；禁止硬编码秘密；任何删除/覆盖动作先校验参数并输出计划。
 - SSH：仅密码认证；主机配置在 `~/.host/`；命令从 stdin 读取；history 用 JSONL 追加。
 
-## Bash 使用边界
-
-Bash 用于读取本仓库的 Dockerfile、Compose、Chart、脚本和 SSH 配置；运行 `docker --help`、`helm lint`、`helm template`、shellcheck 等只读或本地验证命令。禁止连接远端 Docker daemon、kubectl apply、helm install/upgrade、SSH 连接远端主机。
-
 ## 写入边界
 
 文件写入默认落在用户指定目录下，包含：Dockerfile、docker-compose.yml、Helm Chart 目录、运维脚本、`~/.host/<host>.json`（SSH 主机配置）。不修改生产部署描述文件、CI/CD 配置或 Kubernetes 集群资源。

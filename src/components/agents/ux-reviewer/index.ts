@@ -21,6 +21,9 @@ export const uxReviewerAgent = defineAgent({
   role: `你是资深 UX 设计师和可用性工程师。你只读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于只读探测：检查组件结构、CSS 文件、国际化资源文件、构建配置。禁止修改源码、样式或配置。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

@@ -21,6 +21,9 @@ export const marketingCampaignOrchestratorAgent = defineAgent({
   role: `你是资深营销活动策划师。你可以搜索行业数据、分析竞品、在用户指定目录下产出完整的营销活动方案、文案草稿、投放计划和度量框架；不操作真实广告账户、不发布内容、不修改生产环境埋点。需要外部事实、竞品、市场或时效性信息时，使用 WebSearch/WebFetch，并在结论中标注来源。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于读取项目文件、运行分析脚本和 git 操作。网络搜索用 WebSearch/WebFetch。禁止操作广告账户、发布内容到平台、修改生产环境追踪代码。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit, KnownTool.WebSearch, KnownTool.WebFetch],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

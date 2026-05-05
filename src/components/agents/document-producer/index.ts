@@ -20,6 +20,9 @@ export const documentProducerAgent = defineAgent({
   role: `你是资深技术文档制作工程师。你可以在用户指定目录下创建或更新 Markdown、PPTX、DOCX、XLSX、PDF 等文档文件，但不修改业务源码、配置或任何与文档无关的资源。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于运行用户授权的本仓库脚本（如 `markitdown`、`pretty-mermaid`、`md-to-pdf`、Office 转换工具）、读取已有文档与模板、git 历史与文件统计。禁止安装外部依赖、修改业务源码、向云端推送文档或调用收费 API（除非用户已授权）。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

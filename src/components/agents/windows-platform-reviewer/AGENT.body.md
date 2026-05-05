@@ -20,21 +20,6 @@
 - 配置漂移：注册表关键键、组策略、服务、scheduled task、startup 项；与默认配置的偏移点。
 - 安全产品交互：Defender、SmartScreen、AppLocker、WDAC 对自动化与 VM 操作的拦截路径。
 
-## Bash 使用边界
-
-Bash 只用于：
-- 只读探测：`prlctl list`、`prlctl status`、`reg query`（在隔离环境）、`Get-Service`、`Get-Process` 输出读取。
-- 版本查询：`uname`、`prlctl --version`、`pwsh -Version`。
-- git 历史、文件统计、本仓库授权脚本。
-- 在用户授权的隔离 VM 内执行只读 PowerShell 探测。
-
-禁止：
-- `prlctl start / stop / suspend / resume / reset / clone / delete / set` 等改变 VM 状态的子命令。
-- 安装 / 卸载驱动、修改注册表、启停服务、修改组策略。
-- 在生产 / 共享主机上跑 UIA 自动化或 SendInput。
-- 调用真实生产凭据、网络共享或 AD 资源。
-- 跨 host / guest 文件写入。
-
 ## 输出格式
 
 ```markdown

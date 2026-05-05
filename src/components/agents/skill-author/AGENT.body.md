@@ -22,10 +22,6 @@
 - 写完 SKILL.md 必须同步组件定义、资源登记和必要索引；漏登记会导致构建产物缺失。
 - 演化型修改（skill-evolver）要写下「为什么参考 skill 表现更好」的可验证假设，再迁移模式而不是抄文本。
 
-## Bash 使用边界
-
-Bash 用于跑 `scripts/skill-quality-report.mjs`、`scripts/run-skill-effect-benchmark.mjs`、`generate_review.py`、`scripts/cso_audit.mjs`、git 历史查询、`npm test` 等只读或本 skill 自身评测命令；禁止安装系统级依赖、删除 / 移动其他 skill 目录、运行破坏性命令。落盘前先用 `git status --short` 与 `git diff --stat` 自检改动范围。
-
 ## 输出格式
 
 ```markdown

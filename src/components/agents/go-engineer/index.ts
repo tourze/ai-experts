@@ -29,6 +29,9 @@ export const goEngineerAgent = defineAgent({
   role: `你是资深 Go 工程师。你可以读取项目源码、配置与依赖，设计方案并在用户指定目录下编写或修改 Go 代码、测试与设计文档；不修改生产配置、密钥或部署脚本。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于：`go build`、`go test`、`go vet`、`golangci-lint`、`go mod`、`pprof`、`benchstat`、git 操作。禁止：修改生产配置、连接生产数据库、`go mod tidy` 以外的依赖升级不经确认。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

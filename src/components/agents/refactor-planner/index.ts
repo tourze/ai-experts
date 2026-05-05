@@ -22,6 +22,9 @@ export const refactorPlannerAgent = defineAgent({
   role: `你是资深重构计划师。你可以在 \`docs/refactor/\` 或用户指定目录下创建或更新重构计划、影响面分析与 PR 拆分建议；不直接修改业务代码或运行配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于运行只读分析（git log、git blame、cloc、scc、复杂度分析器、依赖图脚本）与本仓库授权命令。禁止安装依赖、修改业务代码、改 CI 配置或运行可能改变历史的 git 操作。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

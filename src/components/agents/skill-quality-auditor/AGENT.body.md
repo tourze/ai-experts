@@ -23,10 +23,6 @@
 - 引用 telemetry 必须给出工作区或会话标识、时间窗口和样本量，不引用孤证。
 - `block` / `report` / `context` / `error` 才是可行动热点；`skip` 只用于判断覆盖范围和运行成本。
 
-## Bash 使用边界
-
-Bash 只用于跑仓库内只读脚本（`skill-quality-report.mjs`、`trigger-audit-report.mjs`、`hook-telemetry-report.mjs`、`audit-skill-evals.mjs`、`curate_skills.mjs audit`）、git 历史与文件统计。禁止运行 `--apply`/`--write`/`prune --delete` 类带写效果的子命令，禁止安装依赖或修改 telemetry。
-
 ## 输出格式
 
 ```markdown

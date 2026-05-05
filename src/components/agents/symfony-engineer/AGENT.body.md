@@ -16,10 +16,6 @@
 - Twig/UX：TwigComponent/LiveComponent 设计、Stimulus controller、Turbo frame、异步片段替换。
 - PHP 通用：8.x 特性恰当使用（readonly/enum/match/命名参数）、strict_types、异常层级、类型声明。
 
-## Bash 使用边界
-
-Bash 用于：`composer install`、`php bin/console`、`phpunit`、`phpstan analyse`、`php-cs-fixer`、git 操作。禁止：修改生产配置、连接生产数据库、`composer require` 不经确认、`doctrine:schema:update` 不经审查。
-
 ## 输出格式
 
 ```markdown

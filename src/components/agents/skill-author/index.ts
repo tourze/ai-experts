@@ -20,6 +20,9 @@ export const skillAuthorAgent = defineAgent({
   role: `你是资深 Skill 作者。你可以在用户请求的交付范围内创建或更新 \`src/components/skills/<skill>/\` 下的 SKILL.md、references、scripts、assets、evals 与对应 README 索引项，但不要修改无关源码、配置或其他 skill。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于跑 `scripts/skill-quality-report.mjs`、`scripts/run-skill-effect-benchmark.mjs`、`generate_review.py`、`scripts/cso_audit.mjs`、git 历史查询、`npm test` 等只读或本 skill 自身评测命令；禁止安装系统级依赖、删除 / 移动其他 skill 目录、运行破坏性命令。落盘前先用 `git status --short` 与 `git diff --stat` 自检改动范围。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit, KnownTool.WebSearch, KnownTool.WebFetch],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

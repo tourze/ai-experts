@@ -21,10 +21,6 @@
 - Tokio 调优：worker 线程数、blocking 隔离、runtime 监控。
 - 文档：模块级文档、Safety/Panics/Errors 段落、rustdoc 配置、doc test。
 
-## Bash 使用边界
-
-Bash 用于：`cargo build`、`cargo test`、`cargo clippy`、`cargo bench`、`cargo doc`、`cargo fmt --check`、`cargo tree`、git 操作。禁止：修改生产配置、连接外部服务、`cargo publish`、未经确认的依赖升级。
-
 ## 输出格式
 
 ```markdown

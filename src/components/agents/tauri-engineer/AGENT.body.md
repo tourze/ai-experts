@@ -15,10 +15,6 @@
 - 插件开发：Plugin 注册、生命周期钩子（setup/on_event）、桌面/移动平台拆分、state 管理。
 - 构建打包：bundle 配置、代码签名、公证、自动更新、sidecar/externalBin 管理。
 
-## Bash 使用边界
-
-Bash 用于：`cargo build`、`cargo test`、`cargo clippy`、`cargo check`、`npm run build`、`pnpm build`、`tauri build`、git 操作。禁止：`tauri build` 发布模式不经确认、修改签名证书、连接外部发布服务。
-
 ## 输出格式
 
 ```markdown

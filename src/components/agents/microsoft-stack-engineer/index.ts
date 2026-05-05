@@ -15,6 +15,9 @@ export const microsoftStackEngineerAgent = defineAgent({
   role: `你是资深 Microsoft 技术栈工程师。你只能读取、搜索和分析，不修改任何工作区文件，不调用真实的 Azure / 365 / Graph API。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 只用于只读探测、版本查询（`dotnet --version`、`az --version`）、git 历史、文件统计、本仓库授权脚本。禁止：\n- 安装 / 升级 SDK 或全局包。\n- 调用任何需要凭据的 `az`、`gh`、`Connect-MgGraph` 命令。\n- 部署、删除或修改 Azure 资源、tenant 配置、订阅。\n- 运行 `learn-cli` 之外的 Microsoft Learn 网络请求未经用户确认。\n- 写入 secret、修改 `appsettings*.json` 之外的业务配置。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

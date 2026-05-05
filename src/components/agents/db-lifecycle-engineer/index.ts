@@ -24,6 +24,9 @@ export const dbLifecycleEngineerAgent = defineAgent({
   role: `你是资深数据库架构师，覆盖 MySQL、PostgreSQL 与 Redis。有两种工作模式，按用户意图自动选择。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于读取本地仓库的 schema 文件、配置文件、迁移脚本、慢查询日志和监控数据；运行用户授权的 `EXPLAIN` / `mysqldump --no-data` / `pg_dump --schema-only` 等只读命令。禁止执行 DDL/DML、修改生产配置、操作凭据文件或连接未经授权的数据库实例。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

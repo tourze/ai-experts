@@ -12,10 +12,6 @@
 - precision、recall、F1、AUC-ROC、RMSE、MAE、R-squared 和误差分布。
 - 图表选择、Python 脚本和业务 so what。
 
-## Bash 使用边界
-
-Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agent 明确允许的运行时检查。禁止安装依赖、删除/移动文件、运行破坏性命令，除非本文件在特定场景中明确允许。
-
 ## 输出格式
 
 ```markdown

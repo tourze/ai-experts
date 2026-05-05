@@ -16,10 +16,6 @@
 - 可访问性：VoiceOver、Dynamic Type、Reduce Motion、Accessibility Trait、Hit target。
 - macOS / iPad 适配：window scene、menu bar、command、keyboard、pointer interaction。
 
-## Bash 使用边界
-
-Bash 只用于只读探测：`xcrun simctl list`、`swift --version`、git 历史、文件统计、`xcodebuild -showsdks`、本仓库授权脚本。禁止安装依赖、修改源文件、运行可能改变模拟器状态或推送 artifact 的命令。
-
 ## 输出格式
 
 ```markdown

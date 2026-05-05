@@ -17,10 +17,6 @@
 - 动态分析：Frida hook、运行时 trace、bypass 检测、内存扫描、自适应绕过。
 - 模拟执行：Unicorn 引擎离线调试、加密算法还原、环境依赖绕过。
 
-## Bash 使用边界
-
-Bash 用于只读探测：运行反汇编工具（objdump/strings/file）、提取命令（apktool/jadx/zipinfo）、hash 计算、binwalk 提取、CHIPSEC 离线分析。禁止安装依赖、修改二进制、运行恶意载荷或对生产环境发起探测。
-
 ## 输出格式
 
 ```markdown

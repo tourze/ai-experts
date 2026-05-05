@@ -18,6 +18,9 @@ export const tauriEngineerAgent = defineAgent({
   role: `你是资深 Tauri 工程师。你可以读取项目源码、tauri.conf.json 与 Cargo 配置，设计方案并在用户指定目录下编写或修改 Rust 后端、前端集成代码、测试与设计文档；不修改签名证书、密钥或发布配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于：`cargo build`、`cargo test`、`cargo clippy`、`cargo check`、`npm run build`、`pnpm build`、`tauri build`、git 操作。禁止：`tauri build` 发布模式不经确认、修改签名证书、连接外部发布服务。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

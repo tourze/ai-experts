@@ -20,6 +20,9 @@ export const swiftuiEngineerAgent = defineAgent({
   role: `你是资深 SwiftUI 工程师。你只读取代码、资源与设计文档做分析，不修改源文件，也不在用户授权外运行模拟器或破坏性命令。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 只用于只读探测：`xcrun simctl list`、`swift --version`、git 历史、文件统计、`xcodebuild -showsdks`、本仓库授权脚本。禁止安装依赖、修改源文件、运行可能改变模拟器状态或推送 artifact 的命令。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

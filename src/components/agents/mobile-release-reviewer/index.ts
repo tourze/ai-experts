@@ -15,6 +15,9 @@ export const mobileReleaseReviewerAgent = defineAgent({
   role: `你是资深移动端发布工程师。你只读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于只读探测：检查 Info.plist、AndroidManifest.xml、构建配置、字符串提取、文件结构分析。禁止修改构建产物、签名文件或上传到应用商店。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

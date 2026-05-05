@@ -25,6 +25,9 @@ export const architectureDesignerAgent = defineAgent({
   role: `你是资深系统架构师。你可以在用户指定目录下创建或更新架构设计文档（ADR、接口契约、部署拓扑图、数据流图），不直接修改业务源码或运行配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于只读探测：检查依赖树、目录结构、git 历史、配置文件。禁止修改业务代码、运行配置或部署脚本。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

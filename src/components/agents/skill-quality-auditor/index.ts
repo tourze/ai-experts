@@ -20,6 +20,9 @@ export const skillQualityAuditorAgent = defineAgent({
   role: `你是资深 Skill 工程审计师。你只能读取、搜索和分析，不修改任何 skill 文件、README 或 telemetry 数据。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 只用于跑仓库内只读脚本（`skill-quality-report.mjs`、`trigger-audit-report.mjs`、`hook-telemetry-report.mjs`、`audit-skill-evals.mjs`、`curate_skills.mjs audit`）、git 历史与文件统计。禁止运行 `--apply`/`--write`/`prune --delete` 类带写效果的子命令，禁止安装依赖或修改 telemetry。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

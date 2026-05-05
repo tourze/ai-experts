@@ -16,10 +16,6 @@
 - 演进路径：strangler fig、branch by abstraction、parallel change、expand-contract。
 - 风险：高 churn / 高 bus factor / 高耦合区域的重构窗口与回滚策略。
 
-## Bash 使用边界
-
-Bash 用于运行只读分析（git log、git blame、cloc、scc、复杂度分析器、依赖图脚本）与本仓库授权命令。禁止安装依赖、修改业务代码、改 CI 配置或运行可能改变历史的 git 操作。
-
 ## 输出格式
 
 ```markdown

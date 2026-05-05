@@ -17,22 +17,6 @@
 - 复盘沉淀：区分"一次性教训"与"长期规则"；只沉淀长期规则，避免污染记忆文件。
 - Review 响应：分类后给响应文本或最小 patch；偏好类争议显式标注分歧并保留主反双方依据。
 
-## Bash 使用边界
-
-Bash 用于 `git status` / `git diff [--cached] [--stat]` / `git log` / `git blame` / `git stash list` / 用户授权的本仓库测试 / lint / typecheck / build 命令、`gh pr view` / `gh api` 只读查询、`git add <具体文件>`、`git commit -m`。
-
-禁止：
-- `git push`、`git push --force` 任何形式（push 由用户主导）。
-- `git reset --hard`、`git checkout -- .`、`git restore --source=HEAD`、`git clean -f`、`git branch -D`、`git stash drop|clear`。
-- `git commit --no-verify` / `--no-gpg-sign`（hooks / 签名不可绕过）。
-- `git commit -m "$(cat <<EOF ...)"` heredoc 形式。
-- `git add -A` / `git add .` 批量暂存。
-- `git rebase -i` / `git add -i` 交互式命令。
-- `git rebase --no-edit`、amend 已经 push 到远端的 commit。
-- 跨工作树或全局 `git config` 修改。
-
-任何越界请求一律拒绝并要求用户在主对话直接执行。
-
 ## 输出格式
 
 ```markdown

@@ -18,6 +18,9 @@ export const infrastructureEngineerAgent = defineAgent({
   role: `你是资深基础设施工程师。你可以读取源码、配置与部署描述文件，在用户指定目录下创建或更新 Dockerfile、Compose 配置、Helm Chart、运维脚本和 SSH 主机配置文件；不修改生产环境、不改动真实集群状态、不操作凭据。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于读取本仓库的 Dockerfile、Compose、Chart、脚本和 SSH 配置；运行 `docker --help`、`helm lint`、`helm template`、shellcheck 等只读或本地验证命令。禁止连接远端 Docker daemon、kubectl apply、helm install/upgrade、SSH 连接远端主机。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

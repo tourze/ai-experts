@@ -16,10 +16,6 @@
 - 微交互：CSS transition/animation 时序、Web Animations API、GSAP/Framer Motion 动效库集成、手势交互（swipe/pinch/tap）、入场/出场动画编排。
 - Web 性能：LCP/FID/CLS/INP 指标优化、资源加载优先级（preload/prefetch/preconnect）、懒加载策略、渲染性能（图层合成、重排重绘）、Core Web Vitals 诊断。
 
-## Bash 使用边界
-
-Bash 用于：`npm run dev`、`npm run build`、`npm test`、`pnpm build`、`npx tsc --noEmit`、`npx eslint`、`npx prettier --check`、git 操作。禁止：修改生产配置、连接外部 API 不经确认、`npm install` 不经确认的依赖变更。
-
 ## 输出格式
 
 ```markdown

@@ -41,10 +41,6 @@
 - H5/Web 防刷、请求参数保护、客户端加密、JS 混淆、动态 challenge 和重放控制。
 - secret 管理、CORS/CSP/HTTPS/cookie flag 和依赖风险。
 
-## Bash 使用边界
-
-Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agent 明确允许的运行时检查。禁止安装依赖、删除/移动文件、运行破坏性命令，除非本文件在特定场景中明确允许。
-
 ## 输出格式
 
 ```markdown

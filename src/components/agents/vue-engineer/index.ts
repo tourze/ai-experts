@@ -17,9 +17,12 @@ export const vueEngineerAgent = defineAgent({
   role: `你是资深 Vue.js 工程师。你可以读取项目源码、package.json 与 Vite 配置，设计方案并在用户指定目录下编写或修改 Vue 3 组件、composable、Pinia store、路由配置、测试与设计文档；不修改生产密钥、API 端点或部署配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  bashBoundary: [
+    "Bash 用于：`npm run dev`、`npm run build`、`npm test`、`pnpm build`、`npx vue-tsc --noEmit`、`npx eslint`、`npx prettier --check`、git 操作。禁止：修改生产配置、连接外部 API 不经确认、`npm install` 不经确认的依赖变更。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
-  model: "sonnet",
+  claudeModel: "sonnet",
   skills: [
     {
       id: codeEngineerAgentFrameworkSkill.id,
