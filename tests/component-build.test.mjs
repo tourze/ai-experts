@@ -726,7 +726,7 @@ test("hook telemetry records stable component names and reminder cooldown", asyn
     const reminder = await import(
       `${pathToFileURL(join(
         repoRoot,
-        "src/components/hooks/user-prompt-submit/skill-trigger-telemetry-advisor-reminder.mjs",
+        "src/components/hooks/user-prompt-submit/skill-trigger-telemetry-advisor-reminder.ts",
       )).href}${cacheKey}`
     );
     const payload = {

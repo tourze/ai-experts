@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "npm run test:components",
-    "test:components": "node --test tests/component-build.test.mjs",
+    "test:components": "node --import tsx/esm --test tests/component-build.test.mjs",
     "build:components": "node scripts/build-components.mjs",
     "check:components": "node scripts/build-components.mjs --check"
   },
@@ -18,6 +18,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "esbuild": "^0.25.0"
+    "esbuild": "^0.25.0",
+    "tsx": "^4.21.0"
   }
 }

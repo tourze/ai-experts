@@ -183,6 +183,8 @@ Claude 输出为 `dist/claude/agents/<agent>.md`。Codex 输出为 `dist/codex/a
 
 Hook 是生命周期中间件。每个平台只注册生成的 dispatcher，具体 hook 模块由 dispatcher 按事件和 `order` 顺序调用。
 
+Hook 的 `defineHook()` 元数据和 `run()` 实现必须写在同一个 `.ts` 文件中。`entry` 使用 `new URL("./xxx.ts", import.meta.url)` 指向自身。
+
 ```ts
 export const generatedDistGuard = defineHook({
   id: "generated-dist-guard",
@@ -193,6 +195,24 @@ export const generatedDistGuard = defineHook({
   entry: new URL("./generated-dist-guard.ts", import.meta.url),
   order: 20,
 });
+
+export async function run(payload: NormalizedHookPayload): Promise<NormalizedHookResult | null> {
+  if (payload.event !== HookEvent.PostToolUse) return null;
+  const targets = payload.tool?.fileTargets ?? [];
+  const generatedTargets = targets.filter((target) =>
+    target === "dist" || target.startsWith("dist/") || target.includes("/dist/"),
+  );
+  if (generatedTargets.length === 0) return null;
+
+  return {
+    kind: "report",
+    message: [
+      "Generated dist output was edited or touched.",
+      "Update `src/components/` instead, then run `npm run build:components` to regenerate `dist/claude/` and `dist/codex/`.",
+      `Generated target(s): ${generatedTargets.join(", ")}`,
+    ].join("\n"),
+  };
+}
 ```
 
 Hook handler 使用统一 payload：
