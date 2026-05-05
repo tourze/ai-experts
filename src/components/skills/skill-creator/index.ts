@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineAsset,
   defineReference,
   defineSkill,
@@ -19,6 +20,16 @@ export const skillCreatorSkill = defineSkill({
   constraints: [
     "只在本 skill 的适用场景内使用；任务不匹配时先澄清或转向更合适的 skill。",
     "执行时遵循正文中的流程、红线、检查清单和必要参考资料，不用未经验证的假设替代证据。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "过拟合测试用例：在 3 个测试 prompt 上通过就发布，真实用户措辞不同导致 80% 失败。",
+      pass: "从反馈中泛化：每个 FAIL/PASS 实例提炼出原则，编码原则而非具体修复，用 5+ 种措辞变体测试才发布。",
+    }),
+    defineAntiPattern({
+      fail: "MUST/NEVER 地毯式轰炸：ALWAYS 用这个格式、NEVER 偏离、MUST 按 12 步执行——僵化脆弱，模型忽略大部分。",
+      pass: "解释为什么：从用户目标出发而非输出格式，说明为什么用 JSON（下游工具解析），模型理解动机后能智能适应。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

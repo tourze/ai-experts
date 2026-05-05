@@ -15,8 +15,10 @@ export const architectureDesignWorkflowSkill = defineSkill({
     "已有零散设计想法，需要结构化组织成可评审方案。",
   ],
   constraints: [
-    "只在本 skill 的适用场景内使用；任务不匹配时先澄清或转向更合适的 skill。",
-    "执行时遵循正文中的流程、红线、检查清单和必要参考资料，不用未经验证的假设替代证据。",
+    "阶段 1 未完成不准跳到阶段 2。没有量化约束的设计方案是无根方案。",
+    "每个架构决策必须有 Consequences 段。没有后果分析的 ADR 不算完成。",
+    "不写\"视情况而定\"——要么给具体值，要么标注 [假设] 并附降级路径。",
+    "执行时遵循正文中的流程、检查清单和必要参考资料，不用未经验证的假设替代证据。",
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

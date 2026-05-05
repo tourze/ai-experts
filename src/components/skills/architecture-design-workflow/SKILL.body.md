@@ -101,9 +101,3 @@
 | 错误分层与传播 | `error-handling-patterns` |
 | 任务拆解与关键路径 | `task-decomposer` |
 | 数据系统细节 | `system-design` 的 [references/ddia-systems.md](../system-design/references/ddia-systems.md) |
-
-## 红线
-
-- 阶段 1 未完成不准跳到阶段 2。没有量化约束的设计方案是无根方案。
-- 每个架构决策必须有 Consequences 段。没有后果分析的 ADR 不算完成。
-- 不写"视情况而定"——要么给具体值，要么标注 [假设] 并附降级路径。

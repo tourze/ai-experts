@@ -53,10 +53,3 @@
 ```
 
 详见 [references/multi-framework-output-template.md](references/multi-framework-output-template.md)。
-
-## 红线
-
-- 不用框架合理化已有结论——如果结论先于分析得出，分析就是表演。
-- 不堆框架：3 个互补框架 > 10 个重叠框架。
-- 不混淆框架输出和事实：SWOT 的 "Strength" 是判断，必须回溯到证据。
-- 不做静态分析：标注分析的时效性和重新评估的触发条件。
