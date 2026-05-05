@@ -113,37 +113,37 @@ export const tauriReviewerAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeReviewAgentFrameworkSkill.description,
+      reason: "提供代码审查通用方法论与检查清单。",
     },
     {
       id: tauriIpcPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: tauriIpcPatternsSkill.description,
+      reason: "审查 IPC 命令安全性与错误处理。",
     },
     {
       id: tauriV2Skill.id,
       mode: SkillUseMode.Preload,
-      reason: tauriV2Skill.description,
+      reason: "审查 capabilities 声明与最小权限合规。",
     },
     {
       id: tauriReactIntegrationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: tauriReactIntegrationSkill.description,
+      reason: "审查前端 invoke 调用与事件监听生命周期。",
     },
     {
       id: tauriBuildPackagingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: tauriBuildPackagingSkill.description,
+      reason: "审查构建配置、签名与更新策略。",
     },
     {
       id: tauriPluginDevelopmentSkill.id,
       mode: SkillUseMode.Preload,
-      reason: tauriPluginDevelopmentSkill.description,
+      reason: "审查插件注册、生命周期与 state 管理。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条审查发现标注事实/推断/假设。",
     }
   ],
 });

@@ -81,52 +81,52 @@ export const startupAdvisorAgent = defineAgent({
     {
       id: startupIcpDefinerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: startupIcpDefinerSkill.description,
+      reason: "锁定目标客户画像，支撑市场与定价判断。",
     },
     {
       id: startupViabilityChecklistSkill.id,
       mode: SkillUseMode.Preload,
-      reason: startupViabilityChecklistSkill.description,
+      reason: "系统性排查项目可行性与致命风险。",
     },
     {
       id: marketSizingAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: marketSizingAnalysisSkill.description,
+      reason: "量化目标市场规模与增长预期。",
     },
     {
       id: businessModelSkill.id,
       mode: SkillUseMode.Preload,
-      reason: businessModelSkill.description,
+      reason: "评估商业模式可行性与盈利路径。",
     },
     {
       id: businessHealthDiagnosticSkill.id,
       mode: SkillUseMode.Preload,
-      reason: businessHealthDiagnosticSkill.description,
+      reason: "诊断现有业务健康度与关键指标。",
     },
     {
       id: pricingStrategySkill.id,
       mode: SkillUseMode.Preload,
-      reason: pricingStrategySkill.description,
+      reason: "制定定价策略与收费模型。",
     },
     {
       id: fundraiseAdvisorSkill.id,
       mode: SkillUseMode.Preload,
-      reason: fundraiseAdvisorSkill.description,
+      reason: "规划融资轮次、估值与投资人沟通。",
     },
     {
       id: customerJourneyMapSkill.id,
       mode: SkillUseMode.Preload,
-      reason: customerJourneyMapSkill.description,
+      reason: "绘制客户旅程，发现转化与留存断点。",
     },
     {
       id: planningUnderUncertaintySkill.id,
       mode: SkillUseMode.Preload,
-      reason: planningUnderUncertaintySkill.description,
+      reason: "在高度不确定环境下做分阶段规划。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条商业判断标注事实与推断边界。",
     }
   ],
 });

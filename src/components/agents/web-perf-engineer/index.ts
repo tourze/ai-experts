@@ -101,37 +101,37 @@ export const webPerfEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeEngineerAgentFrameworkSkill.description,
+      reason: "提供只读 engineer agent 的分析门禁与交付骨架。",
     },
     {
       id: webPerformanceDiagnosisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: webPerformanceDiagnosisSkill.description,
+      reason: "按网络→渲染→运行时三层定位 CWV 瓶颈。",
     },
     {
       id: bundleOptimizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: bundleOptimizationSkill.description,
+      reason: "分析 bundle 体积、代码分割与 tree shaking 机会。",
     },
     {
       id: modernJavascriptPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: modernJavascriptPatternsSkill.description,
+      reason: "识别 JS 热路径中可优化的 ES6+ 模式。",
     },
     {
       id: reactPerformanceSkill.id,
       mode: SkillUseMode.Preload,
-      reason: reactPerformanceSkill.description,
+      reason: "诊断 React 重渲染、memo 与外部 store 订阅问题。",
     },
     {
       id: reactServerComponentsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: reactServerComponentsSkill.description,
+      reason: "审查 RSC 边界划分、数据瀑布与序列化开销。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保性能发现标注事实/推断/假设并绑定 trace 定位。",
     }
   ],
 });

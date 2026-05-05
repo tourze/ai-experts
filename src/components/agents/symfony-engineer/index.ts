@@ -107,77 +107,77 @@ export const symfonyEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeEngineerAgentFrameworkSkill.description,
+      reason: "提供代码工程通用工作流与安全边界。",
     },
     {
       id: symfonyBundleArchitectureSkill.id,
       mode: SkillUseMode.Preload,
-      reason: symfonyBundleArchitectureSkill.description,
+      reason: "确保 Bundle 边界、DI 配置与 Extension 合规。",
     },
     {
       id: symfonyMessengerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: symfonyMessengerSkill.description,
+      reason: "设计异步消息流与幂等 handler。",
     },
     {
       id: symfonyUxSkill.id,
       mode: SkillUseMode.Preload,
-      reason: symfonyUxSkill.description,
+      reason: "集成 Stimulus/Turbo 前端交互组件。",
     },
     {
       id: symfonyVotersSkill.id,
       mode: SkillUseMode.Preload,
-      reason: symfonyVotersSkill.description,
+      reason: "实现 Voter 授权模型与权限决策矩阵。",
     },
     {
       id: twigComponentsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: twigComponentsSkill.description,
+      reason: "构建可复用 Twig 组件与 LiveComponent。",
     },
     {
       id: doctrineEntityPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: doctrineEntityPatternsSkill.description,
+      reason: "规范 Entity 映射、关联与 Repository 边界。",
     },
     {
       id: doctrineBatchProcessingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: doctrineBatchProcessingSkill.description,
+      reason: "优化批量数据处理的事务与内存。",
     },
     {
       id: phpDesignPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: phpDesignPatternsSkill.description,
+      reason: "选用合适的 PHP 设计模式组织业务逻辑。",
     },
     {
       id: phpXFeaturesSkill.id,
       mode: SkillUseMode.Preload,
-      reason: phpXFeaturesSkill.description,
+      reason: "正确运用 PHP 8.x 新特性提升代码表达力。",
     },
     {
       id: phpTypeSafetySkill.id,
       mode: SkillUseMode.Preload,
-      reason: phpTypeSafetySkill.description,
+      reason: "确保 strict_types 与完整类型标注。",
     },
     {
       id: phpErrorHandlingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: phpErrorHandlingSkill.description,
+      reason: "规范异常层级与错误处理边界。",
     },
     {
       id: phpTestingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: phpTestingSkill.description,
+      reason: "按 PHPUnit 最佳实践编写 PHP 测试。",
     },
     {
       id: testingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: testingPatternsSkill.description,
+      reason: "复用通用测试模式保障三层覆盖。",
     },
     {
       id: phpGeneratorsMemorySkill.id,
       mode: SkillUseMode.Preload,
-      reason: phpGeneratorsMemorySkill.description,
+      reason: "用生成器与迭代器降低大数据集内存占用。",
     }
   ],
 });

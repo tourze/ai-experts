@@ -129,47 +129,47 @@ export const androidReviewerAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeReviewAgentFrameworkSkill.description,
+      reason: "提供只读审查的共享门禁与证据绑定规则。",
     },
     {
       id: androidArchitectureSkill.id,
       mode: SkillUseMode.Preload,
-      reason: androidArchitectureSkill.description,
+      reason: "审查 Clean Architecture 分层与 Hilt 注入。",
     },
     {
       id: androidCoroutinesSkill.id,
       mode: SkillUseMode.Preload,
-      reason: androidCoroutinesSkill.description,
+      reason: "审查协程 Dispatcher、Main-Safety 与取消安全。",
     },
     {
       id: androidDesignGuidelinesSkill.id,
       mode: SkillUseMode.Preload,
-      reason: androidDesignGuidelinesSkill.description,
+      reason: "审查 Material Design 3 与 Compose 组件合规。",
     },
     {
       id: androidAccessibilitySkill.id,
       mode: SkillUseMode.Preload,
-      reason: androidAccessibilitySkill.description,
+      reason: "审查 TalkBack、触摸目标与对比度合规。",
     },
     {
       id: androidTestingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: androidTestingSkill.description,
+      reason: "审查 Hilt 集成测试、截图测试与 Compose 测试。",
     },
     {
       id: gradleBuildPerformanceSkill.id,
       mode: SkillUseMode.Preload,
-      reason: gradleBuildPerformanceSkill.description,
+      reason: "排查 Gradle 构建瓶颈与依赖缓存问题。",
     },
     {
       id: androidRedexSkill.id,
       mode: SkillUseMode.Preload,
-      reason: androidRedexSkill.description,
+      reason: "审查 APK 体积优化与 ReDex 配置。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条审查发现标注事实/推断/假设。",
     }
   ],
 });

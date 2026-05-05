@@ -87,32 +87,32 @@ export const docReviewerAgent = defineAgent({
     {
       id: comparativeAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: comparativeAnalysisSkill.description,
+      reason: "结构化对比文档与代码之间的差异与漂移。",
     },
     {
       id: docCoauthoringSkill.id,
       mode: SkillUseMode.Preload,
-      reason: docCoauthoringSkill.description,
+      reason: "理解文档共创规范，审查结构与表达质量。",
     },
     {
       id: readmeBlueprintGeneratorSkill.id,
       mode: SkillUseMode.Preload,
-      reason: readmeBlueprintGeneratorSkill.description,
+      reason: "按 README 标准骨架审查文档完整性与结构。",
     },
     {
       id: userGuideWritingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: userGuideWritingSkill.description,
+      reason: "评估用户指南的任务导向性与可操作性。",
     },
     {
       id: markdownMermaidWritingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: markdownMermaidWritingSkill.description,
+      reason: "审查 Markdown 格式规范与 Mermaid 图表质量。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保审查结论标注事实/推断/假设并绑定位置。",
     }
   ],
 });

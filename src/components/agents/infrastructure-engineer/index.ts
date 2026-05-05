@@ -89,32 +89,32 @@ scripts/
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeEngineerAgentFrameworkSkill.description,
+      reason: "提供代码工程师通用工作流框架，作为本 agent 的执行主干。",
     },
     {
       id: dockerEssentialsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: dockerEssentialsSkill.description,
+      reason: "编写多阶段构建、安全基线和层级缓存优化的 Dockerfile。",
     },
     {
       id: helmChartScaffoldingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: helmChartScaffoldingSkill.description,
+      reason: "搭建和验证 Helm Chart 结构与 values 分层。",
     },
     {
       id: linuxShellScriptingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: linuxShellScriptingSkill.description,
+      reason: "编写可独立运行的运维自动化 Shell 脚本。",
     },
     {
       id: remoteSshCommandSkill.id,
       mode: SkillUseMode.Preload,
-      reason: remoteSshCommandSkill.description,
+      reason: "管理 SSH 主机配置和远端运维命令执行。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保基础设施变更附带可验证的证据。",
     }
   ],
 });

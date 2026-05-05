@@ -124,57 +124,57 @@ export const pythonReviewerAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeReviewAgentFrameworkSkill.description,
+      reason: "提供统一代码审查流程和发现分级框架。",
     },
     {
       id: pythonTypeSafetySkill.id,
       mode: SkillUseMode.Preload,
-      reason: pythonTypeSafetySkill.description,
+      reason: "检查类型标注完整性和 Any 滥用。",
     },
     {
       id: pythonErrorHandlingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: pythonErrorHandlingSkill.description,
+      reason: "审查裸 except、吞异常和异常层级设计。",
     },
     {
       id: asyncPythonPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: asyncPythonPatternsSkill.description,
+      reason: "审查异步代码中的阻塞混入和 Task 泄漏。",
     },
     {
       id: pythonPerformanceOptimizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: pythonPerformanceOptimizationSkill.description,
+      reason: "验证性能优化是否有 profiling 证据支撑。",
     },
     {
       id: pythonDesignPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: pythonDesignPatternsSkill.description,
+      reason: "审查组合 vs 继承、God object 和依赖方向。",
     },
     {
       id: pythonObservabilitySkill.id,
       mode: SkillUseMode.Preload,
-      reason: pythonObservabilitySkill.description,
+      reason: "审查日志结构化、trace 传播和敏感数据脱敏。",
     },
     {
       id: pythonTestingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: pythonTestingPatternsSkill.description,
+      reason: "审查测试隔离、fixture 作用域和 mock 滥用。",
     },
     {
       id: testingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: testingPatternsSkill.description,
+      reason: "提供通用测试方法论，补齐 Python 测试审查盲区。",
     },
     {
       id: pythonBackgroundJobsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: pythonBackgroundJobsSkill.description,
+      reason: "审查后台任务幂等性、重试边界和死信队列。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条审查结论标注事实/推断/假设。",
     }
   ],
 });

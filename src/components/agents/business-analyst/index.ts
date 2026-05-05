@@ -110,52 +110,52 @@ export const businessAnalystAgent = defineAgent({
     {
       id: financialAnalystSkill.id,
       mode: SkillUseMode.Preload,
-      reason: financialAnalystSkill.description,
+      reason: "提供财报比率、DCF 估值与预算偏差分析。",
     },
     {
       id: mckinseyStepSkill.id,
       mode: SkillUseMode.Preload,
-      reason: mckinseyStepSkill.description,
+      reason: "用七步法将开放问题拆成 MECE 假设树。",
     },
     {
       id: structuredBusinessAnalysisFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: structuredBusinessAnalysisFrameworkSkill.description,
+      reason: "提供 5W2H 界定到验证计划的完整分析框架。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条结论显式标注事实/推断/假设。",
     },
     {
       id: pestelAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: pestelAnalysisSkill.description,
+      reason: "宏观环境扫描时选用 PESTEL 模型。",
     },
     {
       id: portersFiveForcesSkill.id,
       mode: SkillUseMode.Preload,
-      reason: portersFiveForcesSkill.description,
+      reason: "行业竞争分析时选用五力模型。",
     },
     {
       id: businessModelSkill.id,
       mode: SkillUseMode.Preload,
-      reason: businessModelSkill.description,
+      reason: "商业模式分析与变现诊断时选用 BMC。",
     },
     {
       id: businessHealthDiagnosticSkill.id,
       mode: SkillUseMode.Preload,
-      reason: businessHealthDiagnosticSkill.description,
+      reason: "季度复盘与经营健康度记分卡诊断。",
     },
     {
       id: customerResearchSkill.id,
       mode: SkillUseMode.Preload,
-      reason: customerResearchSkill.description,
+      reason: "构建客户画像与 VOC 分析支撑假设验证。",
     },
     {
       id: dataAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: dataAnalysisSkill.description,
+      reason: "分析表格数据以验证商业假设。",
     }
   ],
 });

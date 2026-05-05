@@ -100,52 +100,52 @@ export const productDiscovererAgent = defineAgent({
     {
       id: createPrdSkill.id,
       mode: SkillUseMode.Preload,
-      reason: createPrdSkill.description,
+      reason: "撰写可直接拆为开发任务的结构化 PRD。",
     },
     {
       id: opportunitySolutionTreeSkill.id,
       mode: SkillUseMode.Preload,
-      reason: opportunitySolutionTreeSkill.description,
+      reason: "用 OST 结构化机会识别和优先级排序。",
     },
     {
       id: prfaqSkill.id,
       mode: SkillUseMode.Preload,
-      reason: prfaqSkill.description,
+      reason: "用 PRFAQ 框架验证产品叙事和用户价值。",
     },
     {
       id: designingGrowthLoopsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: designingGrowthLoopsSkill.description,
+      reason: "设计增长飞轮、获客路径和留存机制。",
     },
     {
       id: evaluatingNewTechnologySkill.id,
       mode: SkillUseMode.Preload,
-      reason: evaluatingNewTechnologySkill.description,
+      reason: "评估 build vs buy 和新技术引入风险。",
     },
     {
       id: productDesignCriticSkill.id,
       mode: SkillUseMode.Preload,
-      reason: productDesignCriticSkill.description,
+      reason: "从用户视角批判性审查产品设计方案。",
     },
     {
       id: orgCanvasSkill.id,
       mode: SkillUseMode.Preload,
-      reason: orgCanvasSkill.description,
+      reason: "分析组织协作模式，确保产品落地有组织支撑。",
     },
     {
       id: raciMatrixSkill.id,
       mode: SkillUseMode.Preload,
-      reason: raciMatrixSkill.description,
+      reason: "明确产品各环节的职责分配和决策权。",
     },
     {
       id: meetingInsightsAnalyzerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: meetingInsightsAnalyzerSkill.description,
+      reason: "从访谈和会议记录中提取用户洞察和隐含假设。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "区分产品决策中的事实、推断和假设。",
     }
   ],
 });

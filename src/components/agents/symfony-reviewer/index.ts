@@ -129,47 +129,47 @@ export const symfonyReviewerAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeReviewAgentFrameworkSkill.description,
+      reason: "提供代码审查通用方法论与检查清单。",
     },
     {
       id: doctrineBatchProcessingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: doctrineBatchProcessingSkill.description,
+      reason: "审查批量操作的内存与事务边界。",
     },
     {
       id: doctrineEntityPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: doctrineEntityPatternsSkill.description,
+      reason: "审查 Entity 映射与关联设计合规性。",
     },
     {
       id: symfonyBundleArchitectureSkill.id,
       mode: SkillUseMode.Preload,
-      reason: symfonyBundleArchitectureSkill.description,
+      reason: "审查 Bundle 边界与 DI 配置合规性。",
     },
     {
       id: symfonyMessengerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: symfonyMessengerSkill.description,
+      reason: "审查消息 handler 幂等性与重试策略。",
     },
     {
       id: symfonyVotersSkill.id,
       mode: SkillUseMode.Preload,
-      reason: symfonyVotersSkill.description,
+      reason: "审查 Voter 授权覆盖与权限矩阵完整性。",
     },
     {
       id: symfonyUxSkill.id,
       mode: SkillUseMode.Preload,
-      reason: symfonyUxSkill.description,
+      reason: "审查 Stimulus/Turbo 集成与异步交互。",
     },
     {
       id: twigComponentsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: twigComponentsSkill.description,
+      reason: "审查 Twig 组件 props 与 LiveComponent 联动。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条审查发现标注事实/推断/假设。",
     }
   ],
 });

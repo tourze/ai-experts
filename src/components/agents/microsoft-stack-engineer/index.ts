@@ -90,17 +90,17 @@ export const microsoftStackEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeEngineerAgentFrameworkSkill.description,
+      reason: "提供工程 agent 通用工作流和质量标准。",
     },
     {
       id: microsoftDocsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: microsoftDocsSkill.description,
+      reason: "校验 API 签名和配置是否与官方文档对齐。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条发现标注来源和事实等级。",
     }
   ],
 });

@@ -101,42 +101,42 @@ export const codebaseAnalystAgent = defineAgent({
     {
       id: codebaseArchitectureAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codebaseArchitectureAnalysisSkill.description,
+      reason: "提供模块地图到改进项的系统化架构分析。",
     },
     {
       id: architectureReviewerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: architectureReviewerSkill.description,
+      reason: "评审架构设计与代码库结构风险。",
     },
     {
       id: deepCodeReadSkill.id,
       mode: SkillUseMode.Preload,
-      reason: deepCodeReadSkill.description,
+      reason: "深度理解不熟悉代码库并生成认知产物。",
     },
     {
       id: apiTraceReaderSkill.id,
       mode: SkillUseMode.Preload,
-      reason: apiTraceReaderSkill.description,
+      reason: "追踪接口调用链以梳理模块依赖。",
     },
     {
       id: refactoringPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: refactoringPatternsSkill.description,
+      reason: "提供重构手法选择与代码异味识别。",
     },
     {
       id: techDebtSkill.id,
       mode: SkillUseMode.Preload,
-      reason: techDebtSkill.description,
+      reason: "盘点技术债并生成治理优先级。",
     },
     {
       id: softwareDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: softwareDesignSkill.description,
+      reason: "提供职责拆分与耦合评价的设计原则。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条架构发现绑定文件:行证据。",
     }
   ],
 });

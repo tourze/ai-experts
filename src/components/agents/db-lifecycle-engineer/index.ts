@@ -103,62 +103,62 @@ risk-register.md
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeEngineerAgentFrameworkSkill.description,
+      reason: "提供可写模式的实现门禁、验证闭环与交付规范。",
     },
     {
       id: dbSchemaDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: dbSchemaDesignSkill.description,
+      reason: "设计或审查表结构、列类型、约束与字符集。",
     },
     {
       id: sqlReviewOptimizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: sqlReviewOptimizationSkill.description,
+      reason: "审查 SQL 安全性与正确性，优化慢查询与索引。",
     },
     {
       id: dbHaReplicationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: dbHaReplicationSkill.description,
+      reason: "设计主从复制拓扑与高可用故障切换方案。",
     },
     {
       id: mysqlTransactionLockingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: mysqlTransactionLockingSkill.description,
+      reason: "诊断 MySQL 死锁、锁等待与事务隔离问题。",
     },
     {
       id: pgsqlPartitioningSkill.id,
       mode: SkillUseMode.Preload,
-      reason: pgsqlPartitioningSkill.description,
+      reason: "设计 PostgreSQL 声明式分区与分区裁剪策略。",
     },
     {
       id: pgsqlRowLevelSecuritySkill.id,
       mode: SkillUseMode.Preload,
-      reason: pgsqlRowLevelSecuritySkill.description,
+      reason: "实现或审查 PostgreSQL 行级安全与多租户隔离。",
     },
     {
       id: redisCachingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: redisCachingPatternsSkill.description,
+      reason: "选型缓存读写策略，防护雪崩与穿透。",
     },
     {
       id: redisDataModelingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: redisDataModelingSkill.description,
+      reason: "设计 Redis 数据结构、键命名与分布式锁。",
     },
     {
       id: redisClusterHaSkill.id,
       mode: SkillUseMode.Preload,
-      reason: redisClusterHaSkill.description,
+      reason: "规划 Redis Sentinel/Cluster 高可用与持久化。",
     },
     {
       id: redisPitfallDiagnosticsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: redisPitfallDiagnosticsSkill.description,
+      reason: "排查 Redis 性能抖动、过期异常与主从不一致。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条审查发现绑定 EXPLAIN/监控/日志证据。",
     }
   ],
 });

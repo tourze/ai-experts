@@ -114,32 +114,32 @@ export const sessionFinalizerAgent = defineAgent({
     {
       id: complexityReducerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: complexityReducerSkill.description,
+      reason: "收尾前检测并消除实现中引入的过度复杂度。",
     },
     {
       id: finishingBranchSkill.id,
       mode: SkillUseMode.Preload,
-      reason: finishingBranchSkill.description,
+      reason: "执行分支收尾决策：stash/split/squash/rebase。",
     },
     {
       id: commitSkill.id,
       mode: SkillUseMode.Preload,
-      reason: commitSkill.description,
+      reason: "按 Conventional Commits 规范起草提交信息。",
     },
     {
       id: sessionFinalizationWorkflowSkill.id,
       mode: SkillUseMode.Preload,
-      reason: sessionFinalizationWorkflowSkill.description,
+      reason: "提供会话记录与复盘沉淀模板，作为主干流程。",
     },
     {
       id: subagentDrivenDevelopmentSkill.id,
       mode: SkillUseMode.Preload,
-      reason: subagentDrivenDevelopmentSkill.description,
+      reason: "识别可委托子任务的边界，为下次会话预留入口。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保验证结果与复盘条目如实标注。",
     }
   ],
 });

@@ -81,37 +81,37 @@ export const competitiveStrategistAgent = defineAgent({
     {
       id: portersFiveForcesSkill.id,
       mode: SkillUseMode.Preload,
-      reason: portersFiveForcesSkill.description,
+      reason: "评估行业结构与竞争压力，支撑战略背景分析。",
     },
     {
       id: pricingStrategySkill.id,
       mode: SkillUseMode.Preload,
-      reason: pricingStrategySkill.description,
+      reason: "从价格-价值角度定位竞争策略，制定差异化定价。",
     },
     {
       id: competitiveIntelligenceSkill.id,
       mode: SkillUseMode.Preload,
-      reason: competitiveIntelligenceSkill.description,
+      reason: "多框架交叉验证竞品证据，提升结论置信度。",
     },
     {
       id: bcgMatrixSkill.id,
       mode: SkillUseMode.Preload,
-      reason: bcgMatrixSkill.description,
+      reason: "按业务组合做资源分配与优先级排序。",
     },
     {
       id: swotAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: swotAnalysisSkill.description,
+      reason: "梳理内部能力与外部机会威胁，辅助战略决策。",
     },
     {
       id: stpSegmentationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: stpSegmentationSkill.description,
+      reason: "细分市场与目标定位，支撑差异化竞争策略。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保竞品判断与战略结论标注事实/推断/假设。",
     }
   ],
 });

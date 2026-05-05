@@ -84,17 +84,17 @@ export const bugInvestigatorAgent = defineAgent({
     {
       id: debugMethodologySkill.id,
       mode: SkillUseMode.Preload,
-      reason: debugMethodologySkill.description,
+      reason: "按结构化步骤收敛 bug 根因证据。",
     },
     {
       id: chromeDevtoolsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: chromeDevtoolsSkill.description,
+      reason: "用 DevTools 排查前端性能与网络问题。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条调查结论绑定可核验证据。",
     }
   ],
 });

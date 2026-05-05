@@ -85,22 +85,22 @@ export const gitHistorianAgent = defineAgent({
     {
       id: engineeringRetroSkill.id,
       mode: SkillUseMode.Preload,
-      reason: engineeringRetroSkill.description,
+      reason: "分析工程活动回溯数据，还原代码演化脉络。",
     },
     {
       id: authorContributionsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: authorContributionsSkill.description,
+      reason: "统计作者贡献分布，识别热点区域。",
     },
     {
       id: gitAdvancedWorkflowsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: gitAdvancedWorkflowsSkill.description,
+      reason: "解读分支拓扑、合并策略和高级 Git 操作痕迹。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条结论有 commit 或日期范围支撑。",
     }
   ],
 });

@@ -128,42 +128,42 @@ export const reactNativeReviewerAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeReviewAgentFrameworkSkill.description,
+      reason: "提供统一代码审查流程和发现分级框架。",
     },
     {
       id: reactNativeDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: reactNativeDesignSkill.description,
+      reason: "审查导航层级、deep link 和样式组织。",
     },
     {
       id: reactNativeJsPerformanceSkill.id,
       mode: SkillUseMode.Preload,
-      reason: reactNativeJsPerformanceSkill.description,
+      reason: "检查列表性能、JS 线程掉帧和 FPS 热点。",
     },
     {
       id: reactNativePlatformForkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: reactNativePlatformForkSkill.description,
+      reason: "审查平台分叉粒度和共享代码比例。",
     },
     {
       id: detoxMobileTestSkill.id,
       mode: SkillUseMode.Preload,
-      reason: detoxMobileTestSkill.description,
+      reason: "审查 E2E 测试稳定性、matcher 策略和 CI 配置。",
     },
     {
       id: reactNativeTurbomoduleSkill.id,
       mode: SkillUseMode.Preload,
-      reason: reactNativeTurbomoduleSkill.description,
+      reason: "审查 TurboModule 注册和 codegen 配置。",
     },
     {
       id: reactNativeMetroConfigSkill.id,
       mode: SkillUseMode.Preload,
-      reason: reactNativeMetroConfigSkill.description,
+      reason: "审查 Metro 配置和 bundle 体积。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条审查结论标注事实/推断/假设。",
     }
   ],
 });

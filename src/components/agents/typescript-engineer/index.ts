@@ -96,22 +96,22 @@ export const typescriptEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeEngineerAgentFrameworkSkill.description,
+      reason: "提供可写 engineer agent 的实现门禁、验证闭环与交付骨架。",
     },
     {
       id: typescriptTypeSafetySkill.id,
       mode: SkillUseMode.Preload,
-      reason: typescriptTypeSafetySkill.description,
+      reason: "保障类型系统设计、any 清理与边界类型合同的一致性。",
     },
     {
       id: nestjsLayeringPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: nestjsLayeringPatternsSkill.description,
+      reason: "指导 NestJS 模块分层、DTO 边界与依赖注入装配。",
     },
     {
       id: openapiSpecGenerationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: openapiSpecGenerationSkill.description,
+      reason: "从 NestJS 控制器推导 OpenAPI 契约文档。",
     }
   ],
 });

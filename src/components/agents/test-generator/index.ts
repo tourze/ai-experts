@@ -80,32 +80,32 @@ export const testGeneratorAgent = defineAgent({
     {
       id: testDrivenDevelopmentSkill.id,
       mode: SkillUseMode.Preload,
-      reason: testDrivenDevelopmentSkill.description,
+      reason: "以 TDD 流程驱动测试先行设计。",
     },
     {
       id: testingStrategySkill.id,
       mode: SkillUseMode.Preload,
-      reason: testingStrategySkill.description,
+      reason: "选择合适的测试分层与覆盖策略。",
     },
     {
       id: testQualityReviewSkill.id,
       mode: SkillUseMode.Preload,
-      reason: testQualityReviewSkill.description,
+      reason: "自检生成测试的质量与断言充分性。",
     },
     {
       id: webappTestingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: webappTestingSkill.description,
+      reason: "覆盖 Web 应用端到端与集成测试场景。",
     },
     {
       id: benchmarkRunnerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: benchmarkRunnerSkill.description,
+      reason: "为性能敏感模块生成基准测试。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保测试计划中每条覆盖声明可溯源。",
     }
   ],
 });

@@ -156,77 +156,77 @@ export const rustReviewerAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeReviewAgentFrameworkSkill.description,
+      reason: "提供只读审查方法论，作为审查过程骨架。",
     },
     {
       id: rustOwnershipIdiomsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustOwnershipIdiomsSkill.description,
+      reason: "门禁检查所有权与借用合规性。",
     },
     {
       id: rustErrorHandlingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustErrorHandlingSkill.description,
+      reason: "门禁检查错误处理选型与 unwrap 滥用。",
     },
     {
       id: rustTypeDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustTypeDesignSkill.description,
+      reason: "审查静态分发与 trait object 选型是否合理。",
     },
     {
       id: rustAsyncPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustAsyncPatternsSkill.description,
+      reason: "审查异步代码中锁跨 await 和阻塞混入问题。",
     },
     {
       id: rustTestingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustTestingSkill.description,
+      reason: "审查测试命名、分层与 mock 策略。",
     },
     {
       id: testingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: testingPatternsSkill.description,
+      reason: "补充通用测试质量审查视角。",
     },
     {
       id: rustCargoWorkspaceSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustCargoWorkspaceSkill.description,
+      reason: "审查 workspace 结构与 feature 组织。",
     },
     {
       id: rustTokioRuntimeTuningSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustTokioRuntimeTuningSkill.description,
+      reason: "审查 tokio runtime 配置是否合理。",
     },
     {
       id: rustSerdePatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustSerdePatternsSkill.description,
+      reason: "审查 serde 属性正确性与枚举表示。",
     },
     {
       id: rustProcMacroPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustProcMacroPatternsSkill.description,
+      reason: "审查过程宏错误 span 与编译时间影响。",
     },
     {
       id: rustDocumentationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustDocumentationSkill.description,
+      reason: "审查 rustdoc 覆盖与 Safety 段落完整性。",
     },
     {
       id: rustPerformanceSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustPerformanceSkill.description,
+      reason: "验证性能优化的 benchmark 证据链。",
     },
     {
       id: rustFfiBindingsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustFfiBindingsSkill.description,
+      reason: "审查 unsafe 块 SAFETY 注释与 FFI 边界安全。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "标注每条审查结论的事实/推断/假设属性。",
     }
   ],
 });

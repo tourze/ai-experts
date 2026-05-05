@@ -93,17 +93,17 @@ export const ciPipelineFixerAgent = defineAgent({
     {
       id: ghFixCiSkill.id,
       mode: SkillUseMode.Preload,
-      reason: ghFixCiSkill.description,
+      reason: "排查与修复 GitHub Actions PR 检查失败。",
     },
     {
       id: gitlabCiPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: gitlabCiPatternsSkill.description,
+      reason: "设计或排查 GitLab CI/CD 流水线。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条诊断结论绑定日志或 commit 证据。",
     }
   ],
 });

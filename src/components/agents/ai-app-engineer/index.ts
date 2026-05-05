@@ -105,52 +105,52 @@ export const aiAppEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeEngineerAgentFrameworkSkill.description,
+      reason: "提供可写 agent 的门禁、验证闭环与交付骨架。",
     },
     {
       id: llmAppDesignPipelineSkill.id,
       mode: SkillUseMode.Preload,
-      reason: llmAppDesignPipelineSkill.description,
+      reason: "作为主干设计流程，从形态确认到 eval 验证。",
     },
     {
       id: llmAppDiagnosisFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: llmAppDiagnosisFrameworkSkill.description,
+      reason: "按四层结构逐层定位 LLM 应用问题。",
     },
     {
       id: promptEngineeringPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: promptEngineeringPatternsSkill.description,
+      reason: "调优 prompt 模板与结构化响应契约。",
     },
     {
       id: llmEvaluationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: llmEvaluationSkill.description,
+      reason: "设计离线 eval 以验证每条改动的效果。",
     },
     {
       id: modelFirstReasoningSkill.id,
       mode: SkillUseMode.Preload,
-      reason: modelFirstReasoningSkill.description,
+      reason: "判断何时让模型自主推理 vs 人工设计链路。",
     },
     {
       id: ragAuditorSkill.id,
       mode: SkillUseMode.Preload,
-      reason: ragAuditorSkill.description,
+      reason: "审计 RAG 管线中的检索失配与幻觉问题。",
     },
     {
       id: embeddingStrategiesSkill.id,
       mode: SkillUseMode.Preload,
-      reason: embeddingStrategiesSkill.description,
+      reason: "选择 embedding 模型与切块策略。",
     },
     {
       id: similaritySearchPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: similaritySearchPatternsSkill.description,
+      reason: "设计向量检索、hybrid search 与 reranking。",
     },
     {
       id: vectorIndexTuningSkill.id,
       mode: SkillUseMode.Preload,
-      reason: vectorIndexTuningSkill.description,
+      reason: "调优 HNSW/IVF 等向量索引的召回与延迟。",
     }
   ],
 });

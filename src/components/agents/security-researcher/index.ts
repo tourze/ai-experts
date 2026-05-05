@@ -102,67 +102,67 @@ export const securityResearcherAgent = defineAgent({
     {
       id: androidApkAuditSkill.id,
       mode: SkillUseMode.Preload,
-      reason: androidApkAuditSkill.description,
+      reason: "静态审计 APK 结构、组件暴露与硬编码凭据。",
     },
     {
       id: binaryAnalysisPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: binaryAnalysisPatternsSkill.description,
+      reason: "提供通用二进制反汇编与控制流分析模式。",
     },
     {
       id: chipsecSkill.id,
       mode: SkillUseMode.Preload,
-      reason: chipsecSkill.description,
+      reason: "离线分析固件与硬件平台安全配置。",
     },
     {
       id: fridaDynamicAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: fridaDynamicAnalysisSkill.description,
+      reason: "动态 hook 运行时行为与 bypass 验证。",
     },
     {
       id: idapythonScriptingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: idapythonScriptingSkill.description,
+      reason: "编写 IDAPython 脚本自动化反汇编分析。",
     },
     {
       id: iosBinaryAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: iosBinaryAnalysisSkill.description,
+      reason: "分析 iOS 二进制保护机制与越狱检测。",
     },
     {
       id: iosSecretScanSkill.id,
       mode: SkillUseMode.Preload,
-      reason: iosSecretScanSkill.description,
+      reason: "扫描 iOS 应用中硬编码密钥与敏感信息泄漏。",
     },
     {
       id: memoryForensicsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: memoryForensicsSkill.description,
+      reason: "从内存镜像中提取进程与恶意行为证据。",
     },
     {
       id: protocolReverseEngineeringSkill.id,
       mode: SkillUseMode.Preload,
-      reason: protocolReverseEngineeringSkill.description,
+      reason: "逆向私有协议格式与通信流程。",
     },
     {
       id: unicornEmulationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: unicornEmulationSkill.description,
+      reason: "模拟执行关键代码片段验证漏洞可利用性。",
     },
     {
       id: wiresharkAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: wiresharkAnalysisSkill.description,
+      reason: "分析 PCAP 流量提取异常会话与协议特征。",
     },
     {
       id: ethicalHackingMethodologySkill.id,
       mode: SkillUseMode.Preload,
-      reason: ethicalHackingMethodologySkill.description,
+      reason: "提供合乎伦理的黑客方法论，约束研究边界。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "标注每条发现的置信度与可利用性评估。",
     }
   ],
 });

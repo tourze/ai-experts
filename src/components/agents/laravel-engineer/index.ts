@@ -104,62 +104,62 @@ export const laravelEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeEngineerAgentFrameworkSkill.description,
+      reason: "提供工程 agent 通用工作流和质量标准。",
     },
     {
       id: laravelPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: laravelPatternsSkill.description,
+      reason: "指导分层架构、Eloquent 用法和队列设计。",
     },
     {
       id: laravelSecuritySkill.id,
       mode: SkillUseMode.Preload,
-      reason: laravelSecuritySkill.description,
+      reason: "落地 Policy/Gate 授权和 XSS/CSRF 防护。",
     },
     {
       id: laravelVerificationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: laravelVerificationSkill.description,
+      reason: "执行 phpstan/pint/composer audit 等验证闭环。",
     },
     {
       id: laravelTddSkill.id,
       mode: SkillUseMode.Preload,
-      reason: laravelTddSkill.description,
+      reason: "用 Pest/PHPUnit 驱动 Laravel 特有的 TDD 流程。",
     },
     {
       id: phpDesignPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: phpDesignPatternsSkill.description,
+      reason: "在 Service/Action 层应用合适的 PHP 设计模式。",
     },
     {
       id: phpXFeaturesSkill.id,
       mode: SkillUseMode.Preload,
-      reason: phpXFeaturesSkill.description,
+      reason: "利用 PHP 8.x 新特性编写现代代码。",
     },
     {
       id: phpTypeSafetySkill.id,
       mode: SkillUseMode.Preload,
-      reason: phpTypeSafetySkill.description,
+      reason: "确保 strict_types 和完整类型标注。",
     },
     {
       id: phpErrorHandlingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: phpErrorHandlingSkill.description,
+      reason: "构建结构化异常处理和错误恢复链路。",
     },
     {
       id: phpTestingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: phpTestingSkill.description,
+      reason: "为 PHP 代码编写单元和集成测试。",
     },
     {
       id: testingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: testingPatternsSkill.description,
+      reason: "补充通用测试方法论和参数化测试策略。",
     },
     {
       id: phpGeneratorsMemorySkill.id,
       mode: SkillUseMode.Preload,
-      reason: phpGeneratorsMemorySkill.description,
+      reason: "处理大数据集时用生成器控制内存占用。",
     }
   ],
 });

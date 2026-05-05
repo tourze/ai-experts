@@ -94,12 +94,12 @@ export const pmDeliveryCoachAgent = defineAgent({
     {
       id: agileProductOwnerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: agileProductOwnerSkill.description,
+      reason: "提供 PO 视角的 backlog 管理和用户故事质量标准。",
     },
     {
       id: estimateCalibratorSkill.id,
       mode: SkillUseMode.Preload,
-      reason: estimateCalibratorSkill.description,
+      reason: "用三点估算和历史偏差校准交付估算。",
     }
   ],
 });

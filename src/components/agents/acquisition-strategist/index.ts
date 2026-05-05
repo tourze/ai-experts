@@ -104,67 +104,67 @@ export const acquisitionStrategistAgent = defineAgent({
     {
       id: contentStrategySkill.id,
       mode: SkillUseMode.Preload,
-      reason: contentStrategySkill.description,
+      reason: "为获客蓝图输出内容策略与选题池规划。",
     },
     {
       id: seoSkill.id,
       mode: SkillUseMode.Preload,
-      reason: seoSkill.description,
+      reason: "支撑自然搜索获客渠道的技术 SEO 规划。",
     },
     {
       id: leadChannelOptimizerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: leadChannelOptimizerSkill.description,
+      reason: "按 ROI 排序获客渠道优先级与资源分配。",
     },
     {
       id: croMethodologySkill.id,
       mode: SkillUseMode.Preload,
-      reason: croMethodologySkill.description,
+      reason: "规划 A/B 测试与落地页转化优化。",
     },
     {
       id: paidAdsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: paidAdsSkill.description,
+      reason: "制定付费投放策略与预算分配。",
     },
     {
       id: analyticsTrackingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: analyticsTrackingSkill.description,
+      reason: "设计获客测量计划与埋点追踪。",
     },
     {
       id: customerResearchSkill.id,
       mode: SkillUseMode.Preload,
-      reason: customerResearchSkill.description,
+      reason: "构建目标客户画像与购买决策洞察。",
     },
     {
       id: stpSegmentationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: stpSegmentationSkill.description,
+      reason: "为渠道策略做 STP 市场细分与定位。",
     },
     {
       id: funnelArchitectSkill.id,
       mode: SkillUseMode.Preload,
-      reason: funnelArchitectSkill.description,
+      reason: "设计获客漏斗与线索转化路径。",
     },
     {
       id: revopsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: revopsSkill.description,
+      reason: "串联线索生命周期与营销-销售交接。",
     },
     {
       id: leadResearchAssistantSkill.id,
       mode: SkillUseMode.Preload,
-      reason: leadResearchAssistantSkill.description,
+      reason: "定义 ICP 并筛选高质量目标客户名单。",
     },
     {
       id: customerLifecycleSkill.id,
       mode: SkillUseMode.Preload,
-      reason: customerLifecycleSkill.description,
+      reason: "规划获客后的客户分层与生命周期运营。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条渠道建议标注事实/推断/假设。",
     }
   ],
 });

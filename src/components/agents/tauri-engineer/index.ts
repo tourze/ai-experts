@@ -98,32 +98,32 @@ export const tauriEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeEngineerAgentFrameworkSkill.description,
+      reason: "提供代码工程通用工作流与安全边界。",
     },
     {
       id: tauriV2Skill.id,
       mode: SkillUseMode.Preload,
-      reason: tauriV2Skill.description,
+      reason: "掌握 Tauri v2 项目结构与权限模型。",
     },
     {
       id: tauriIpcPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: tauriIpcPatternsSkill.description,
+      reason: "设计安全的 IPC 命令与错误类型。",
     },
     {
       id: tauriReactIntegrationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: tauriReactIntegrationSkill.description,
+      reason: "实现 React 前端与 Tauri 后端的数据流集成。",
     },
     {
       id: tauriBuildPackagingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: tauriBuildPackagingSkill.description,
+      reason: "配置构建打包、签名与自动更新。",
     },
     {
       id: tauriPluginDevelopmentSkill.id,
       mode: SkillUseMode.Preload,
-      reason: tauriPluginDevelopmentSkill.description,
+      reason: "开发与集成自定义 Tauri 插件。",
     }
   ],
 });

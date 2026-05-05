@@ -206,42 +206,42 @@ export const securityAuditorAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeReviewAgentFrameworkSkill.description,
+      reason: "提供只读审查方法论，作为漏洞审计骨架。",
     },
     {
       id: securityThreatModelSkill.id,
       mode: SkillUseMode.Preload,
-      reason: securityThreatModelSkill.description,
+      reason: "门禁建立攻击面基线与信任边界。",
     },
     {
       id: frontendDynamicCodeProtectionSkill.id,
       mode: SkillUseMode.Preload,
-      reason: frontendDynamicCodeProtectionSkill.description,
+      reason: "门禁检查前端防刷与 JS 混淆强度。",
     },
     {
       id: sqlReviewOptimizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: sqlReviewOptimizationSkill.description,
+      reason: "路由审计 SQL 注入向量与参数化覆盖率。",
     },
     {
       id: owaspInjectionAuditSkill.id,
       mode: SkillUseMode.Preload,
-      reason: owaspInjectionAuditSkill.description,
+      reason: "路由审计 SSRF、命令注入与路径穿越。",
     },
     {
       id: owaspAuthDataAuditSkill.id,
       mode: SkillUseMode.Preload,
-      reason: owaspAuthDataAuditSkill.description,
+      reason: "路由审计认证会话、密钥管理与批量赋值。",
     },
     {
       id: owaspXssMisconfigAuditSkill.id,
       mode: SkillUseMode.Preload,
-      reason: owaspXssMisconfigAuditSkill.description,
+      reason: "路由审计 XSS、安全头与依赖风险。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "门禁标注每条发现的事实/推断/假设属性。",
     }
   ],
 });

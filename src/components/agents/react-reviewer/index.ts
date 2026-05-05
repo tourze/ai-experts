@@ -112,32 +112,32 @@ export const reactReviewerAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeReviewAgentFrameworkSkill.description,
+      reason: "提供统一代码审查流程和发现分级框架。",
     },
     {
       id: reactHooksSkill.id,
       mode: SkillUseMode.Preload,
-      reason: reactHooksSkill.description,
+      reason: "审查 Hooks 依赖完整性、cleanup 和 stale closure。",
     },
     {
       id: reactPerformanceSkill.id,
       mode: SkillUseMode.Preload,
-      reason: reactPerformanceSkill.description,
+      reason: "审查重渲染触发链和 memoization 位置。",
     },
     {
       id: reactServerComponentsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: reactServerComponentsSkill.description,
+      reason: "审查 Server/Client Component 边界和 streaming 策略。",
     },
     {
       id: reactComposableComponentsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: reactComposableComponentsSkill.description,
+      reason: "审查组件拆分粒度和 props 透传规范。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条审查结论标注事实/推断/假设。",
     }
   ],
 });

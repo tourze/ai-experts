@@ -98,12 +98,12 @@ mitigation-map.md
     {
       id: securityThreatModelSkill.id,
       mode: SkillUseMode.Preload,
-      reason: securityThreatModelSkill.description,
+      reason: "提供 STRIDE 分析、攻击树构建与威胁缓解映射，作为威胁建模主干。",
     },
     {
       id: securityOwnershipMapSkill.id,
       mode: SkillUseMode.Preload,
-      reason: securityOwnershipMapSkill.description,
+      reason: "建模产出后更新安全所有权拓扑与 bus factor 风险画像。",
     }
   ],
 });

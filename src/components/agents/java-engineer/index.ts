@@ -100,42 +100,42 @@ export const javaEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeEngineerAgentFrameworkSkill.description,
+      reason: "提供代码工程师通用工作流框架，作为本 agent 的执行主干。",
     },
     {
       id: springBootLayeringSkill.id,
       mode: SkillUseMode.Preload,
-      reason: springBootLayeringSkill.description,
+      reason: "实现 Controller/Service/Repository 分层和构造器注入。",
     },
     {
       id: javaJunitSkill.id,
       mode: SkillUseMode.Preload,
-      reason: javaJunitSkill.description,
+      reason: "编写 JUnit 5 + Mockito 测试，覆盖 happy/edge/error 三层。",
     },
     {
       id: testingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: testingPatternsSkill.description,
+      reason: "提供通用测试方法论，补充 Java 特有模式之外的场景。",
     },
     {
       id: gradleBuildPerformanceSkill.id,
       mode: SkillUseMode.Preload,
-      reason: gradleBuildPerformanceSkill.description,
+      reason: "优化 Gradle 配置阶段耗时、并行构建和依赖缓存。",
     },
     {
       id: graalvmNativeImageSkill.id,
       mode: SkillUseMode.Preload,
-      reason: graalvmNativeImageSkill.description,
+      reason: "处理 Native Image 反射注册和 closed-world 约束。",
     },
     {
       id: arthasCpuHighSkill.id,
       mode: SkillUseMode.Preload,
-      reason: arthasCpuHighSkill.description,
+      reason: "用 Arthas 定位 CPU 热点方法和线程阻塞。",
     },
     {
       id: arthasSpringcontextIssuesResolveSkill.id,
       mode: SkillUseMode.Preload,
-      reason: arthasSpringcontextIssuesResolveSkill.description,
+      reason: "诊断 Spring Context 启动失败和 Bean 注册异常。",
     }
   ],
 });

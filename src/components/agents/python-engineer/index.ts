@@ -102,57 +102,57 @@ export const pythonEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeEngineerAgentFrameworkSkill.description,
+      reason: "提供端到端工程实现流程和质量门禁框架。",
     },
     {
       id: pythonTypeSafetySkill.id,
       mode: SkillUseMode.Preload,
-      reason: pythonTypeSafetySkill.description,
+      reason: "确保新代码满足 mypy/pyright 严格类型检查。",
     },
     {
       id: pythonErrorHandlingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: pythonErrorHandlingSkill.description,
+      reason: "设计异常层级和部分失败处理策略。",
     },
     {
       id: asyncPythonPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: asyncPythonPatternsSkill.description,
+      reason: "指导异步边界设计，避免阻塞混入和 Task 泄漏。",
     },
     {
       id: pythonPerformanceOptimizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: pythonPerformanceOptimizationSkill.description,
+      reason: "用 profiling 数据定位瓶颈并验证优化效果。",
     },
     {
       id: pythonDesignPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: pythonDesignPatternsSkill.description,
+      reason: "选择合适的 DI、组合和分层模式。",
     },
     {
       id: pythonObservabilitySkill.id,
       mode: SkillUseMode.Preload,
-      reason: pythonObservabilitySkill.description,
+      reason: "建设结构化日志、链路追踪和指标暴露。",
     },
     {
       id: pythonTestingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: pythonTestingPatternsSkill.description,
+      reason: "构建 pytest fixture、mock 和参数化测试策略。",
     },
     {
       id: testingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: testingPatternsSkill.description,
+      reason: "提供通用测试方法论，补充 Python 特有模式。",
     },
     {
       id: pythonBackgroundJobsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: pythonBackgroundJobsSkill.description,
+      reason: "设计幂等、可重试的后台任务和死信队列。",
     },
     {
       id: uvPackageManagerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: uvPackageManagerSkill.description,
+      reason: "用 uv 管理依赖和虚拟环境，保持构建可复现。",
     }
   ],
 });

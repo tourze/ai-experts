@@ -115,42 +115,42 @@ export const skillQualityAuditorAgent = defineAgent({
     {
       id: skillEvaluatorSkill.id,
       mode: SkillUseMode.Preload,
-      reason: skillEvaluatorSkill.description,
+      reason: "对 skill 做设计评分与知识覆盖度审计。",
     },
     {
       id: skillActivationAnalyzerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: skillActivationAnalyzerSkill.description,
+      reason: "诊断 description 触发域风险与路由冲突。",
     },
     {
       id: skillEvalGraderSkill.id,
       mode: SkillUseMode.Preload,
-      reason: skillEvalGraderSkill.description,
+      reason: "评分 eval 输出是否通过验收标准。",
     },
     {
       id: blindOutputComparatorSkill.id,
       mode: SkillUseMode.Preload,
-      reason: blindOutputComparatorSkill.description,
+      reason: "盲评对比输出质量，消除来源偏见。",
     },
     {
       id: benchmarkResultAnalyzerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: benchmarkResultAnalyzerSkill.description,
+      reason: "归因 benchmark 胜负并生成改进建议。",
     },
     {
       id: triggerTelemetryAdvisorSkill.id,
       mode: SkillUseMode.Preload,
-      reason: triggerTelemetryAdvisorSkill.description,
+      reason: "分析运行时遥测信号，定位误触发与错误热点。",
     },
     {
       id: skillsPruneAndSyncReadmeSkill.id,
       mode: SkillUseMode.Preload,
-      reason: skillsPruneAndSyncReadmeSkill.description,
+      reason: "只读扫描重复 skill 与 README 同步缺口。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保审计结论区分静态证据与运行时信号。",
     }
   ],
 });

@@ -104,27 +104,27 @@ export const javascriptReviewerAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeReviewAgentFrameworkSkill.description,
+      reason: "提供统一审查流程和发现分级标准。",
     },
     {
       id: modernJavascriptPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: modernJavascriptPatternsSkill.description,
+      reason: "审查 ES6+ 惯用法、异步模式和作用域陷阱。",
     },
     {
       id: javascriptTypescriptJestSkill.id,
       mode: SkillUseMode.Preload,
-      reason: javascriptTypescriptJestSkill.description,
+      reason: "审计 Jest/Vitest 测试隔离、mock 策略和异步测试。",
     },
     {
       id: testingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: testingPatternsSkill.description,
+      reason: "补充通用测试方法论，覆盖测试缺口。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条审查结论标注事实/推断/假设。",
     }
   ],
 });

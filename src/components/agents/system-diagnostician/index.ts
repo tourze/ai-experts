@@ -88,22 +88,22 @@ export const systemDiagnosticianAgent = defineAgent({
     {
       id: systemDiagnosticsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: systemDiagnosticsSkill.description,
+      reason: "提供系统级 CPU/内存/磁盘/服务检查流程。",
     },
     {
       id: archLinuxTriageSkill.id,
       mode: SkillUseMode.Preload,
-      reason: archLinuxTriageSkill.description,
+      reason: "排查 Arch Linux 特有的包管理与启动问题。",
     },
     {
       id: networkTroubleshooterSkill.id,
       mode: SkillUseMode.Preload,
-      reason: networkTroubleshooterSkill.description,
+      reason: "定位网络连通性与协议层故障。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保诊断结论区分事实与推断。",
     }
   ],
 });

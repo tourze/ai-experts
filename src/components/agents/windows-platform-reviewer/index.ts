@@ -100,22 +100,22 @@ export const windowsPlatformReviewerAgent = defineAgent({
     {
       id: windowsKernelSecuritySkill.id,
       mode: SkillUseMode.Preload,
-      reason: windowsKernelSecuritySkill.description,
+      reason: "审查内核对象、驱动边界、IOCTL 与 PatchGuard 约束。",
     },
     {
       id: windowsUiAutomationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: windowsUiAutomationSkill.description,
+      reason: "审查 UIA 元素定位、权限边界与输入注入风险。",
     },
     {
       id: prlctlVmControlSkill.id,
       mode: SkillUseMode.Preload,
-      reason: prlctlVmControlSkill.description,
+      reason: "审查 Parallels VM 编排、快照策略与 host/guest 边界。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条审查发现标注事实/推断/假设并绑定位置。",
     }
   ],
 });

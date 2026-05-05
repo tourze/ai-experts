@@ -93,32 +93,32 @@ export const incidentResponderAgent = defineAgent({
     {
       id: incidentResponseSkill.id,
       mode: SkillUseMode.Preload,
-      reason: incidentResponseSkill.description,
+      reason: "提供事故响应全流程方法论，作为本 agent 的主干。",
     },
     {
       id: logAnalyzerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: logAnalyzerSkill.description,
+      reason: "从日志聚合中提取关键时间线和异常信号。",
     },
     {
       id: monitoringObservabilitySkill.id,
       mode: SkillUseMode.Preload,
-      reason: monitoringObservabilitySkill.description,
+      reason: "读取 metrics 和 trace 数据还原系统行为。",
     },
     {
       id: systemDiagnosticsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: systemDiagnosticsSkill.description,
+      reason: "诊断 CPU、内存、磁盘等系统资源瓶颈。",
     },
     {
       id: networkTroubleshooterSkill.id,
       mode: SkillUseMode.Preload,
-      reason: networkTroubleshooterSkill.description,
+      reason: "排查网络连通性、DNS 和连接超时问题。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保根因分析结论有可追溯的证据链支撑。",
     }
   ],
 });

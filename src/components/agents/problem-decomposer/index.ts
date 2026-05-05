@@ -76,52 +76,52 @@ export const problemDecomposerAgent = defineAgent({
     {
       id: structuredProblemDecompositionSkill.id,
       mode: SkillUseMode.Preload,
-      reason: structuredProblemDecompositionSkill.description,
+      reason: "作为主干六阶段流水线驱动问题拆解全流程。",
     },
     {
       id: systemsThinkingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: systemsThinkingSkill.description,
+      reason: "识别系统反馈回路和延迟，避免线性归因。",
     },
     {
       id: planningUnderUncertaintySkill.id,
       mode: SkillUseMode.Preload,
-      reason: planningUnderUncertaintySkill.description,
+      reason: "在信息不完整时提供结构化决策和降级路径。",
     },
     {
       id: runningDecisionProcessesSkill.id,
       mode: SkillUseMode.Preload,
-      reason: runningDecisionProcessesSkill.description,
+      reason: "推进从候选方案到可执行决策的收敛过程。",
     },
     {
       id: processOptimizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: processOptimizationSkill.description,
+      reason: "识别流程瓶颈和浪费，输出可量化改进建议。",
     },
     {
       id: mckinseyStepSkill.id,
       mode: SkillUseMode.Preload,
-      reason: mckinseyStepSkill.description,
+      reason: "用七步法将模糊问题拆解为 MECE 子问题树。",
     },
     {
       id: fishboneDiagramSkill.id,
       mode: SkillUseMode.Preload,
-      reason: fishboneDiagramSkill.description,
+      reason: "用鱼骨图可视化多维度根因候选。",
     },
     {
       id: businessHealthDiagnosticSkill.id,
       mode: SkillUseMode.Preload,
-      reason: businessHealthDiagnosticSkill.description,
+      reason: "快速评估业务健康度，定位结构性问题区域。",
     },
     {
       id: pdcaCycleSkill.id,
       mode: SkillUseMode.Preload,
-      reason: pdcaCycleSkill.description,
+      reason: "将改进建议组织为可验证的 PDCA 循环。",
     },
     {
       id: firstPrinciplesDecomposerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: firstPrinciplesDecomposerSkill.description,
+      reason: "剥离经验假设，从第一性原理重新定义问题边界。",
     }
   ],
 });

@@ -106,72 +106,72 @@ export const rustEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeEngineerAgentFrameworkSkill.description,
+      reason: "提供代码工程通用方法论，作为实现过程骨架。",
     },
     {
       id: rustOwnershipIdiomsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustOwnershipIdiomsSkill.description,
+      reason: "设计所有权与借用策略，避免不必要的 clone。",
     },
     {
       id: rustErrorHandlingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustErrorHandlingSkill.description,
+      reason: "选择 thiserror/anyhow 等错误处理方案，杜绝 unwrap 滥用。",
     },
     {
       id: rustTypeDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustTypeDesignSkill.description,
+      reason: "设计 trait、泛型与类型状态，构建类型安全架构。",
     },
     {
       id: rustAsyncPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustAsyncPatternsSkill.description,
+      reason: "设计 tokio 异步模型，确保 Send+'static 约束正确。",
     },
     {
       id: rustTestingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustTestingSkill.description,
+      reason: "规划 Rust 单元/集成/文档测试分层策略。",
     },
     {
       id: testingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: testingPatternsSkill.description,
+      reason: "提供通用测试方法论，补充 Rust 测试惯用法。",
     },
     {
       id: rustCargoWorkspaceSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustCargoWorkspaceSkill.description,
+      reason: "管理 workspace 结构与 feature 门控。",
     },
     {
       id: rustTokioRuntimeTuningSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustTokioRuntimeTuningSkill.description,
+      reason: "调优 tokio runtime 线程池与 blocking 配置。",
     },
     {
       id: rustSerdePatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustSerdePatternsSkill.description,
+      reason: "处理 serde 序列化属性与枚举表示。",
     },
     {
       id: rustProcMacroPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustProcMacroPatternsSkill.description,
+      reason: "开发过程宏时保证错误 span 与 hygiene 正确。",
     },
     {
       id: rustDocumentationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustDocumentationSkill.description,
+      reason: "编写符合 rustdoc 规范的公共 API 文档。",
     },
     {
       id: rustPerformanceSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustPerformanceSkill.description,
+      reason: "基于 criterion 基准做性能优化，杜绝凭感觉调优。",
     },
     {
       id: rustFfiBindingsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: rustFfiBindingsSkill.description,
+      reason: "设计 FFI 边界并撰写 SAFETY 注释。",
     }
   ],
 });

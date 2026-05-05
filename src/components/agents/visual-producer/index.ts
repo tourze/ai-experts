@@ -77,37 +77,37 @@ export const visualProducerAgent = defineAgent({
     {
       id: canvasDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: canvasDesignSkill.description,
+      reason: "提供海报、封面等静态视觉作品的设计到渲染流程。",
     },
     {
       id: baoyuCompressImageSkill.id,
       mode: SkillUseMode.Preload,
-      reason: baoyuCompressImageSkill.description,
+      reason: "产出后批量压缩图片并转 WebP 以控制体积。",
     },
     {
       id: iconRetrievalSkill.id,
       mode: SkillUseMode.Preload,
-      reason: iconRetrievalSkill.description,
+      reason: "按语义搜索并筛选 SVG 图标候选。",
     },
     {
       id: screenshotSkill.id,
       mode: SkillUseMode.Preload,
-      reason: screenshotSkill.description,
+      reason: "截取桌面或窗口截图用于视觉资产采集。",
     },
     {
       id: modernWebDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: modernWebDesignSkill.description,
+      reason: "提供风格目录与视觉方向选择，避免 AI 套版感。",
     },
     {
       id: algoVisualizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: algoVisualizationSkill.description,
+      reason: "生成交互式算法可视化教学页面。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保视觉产出决策有证据链支撑。",
     }
   ],
 });

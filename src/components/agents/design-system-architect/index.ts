@@ -101,27 +101,27 @@ export const designSystemArchitectAgent = defineAgent({
     {
       id: modernWebDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: modernWebDesignSkill.description,
+      reason: "提供现代 Web 视觉风格与品牌化设计基础。",
     },
     {
       id: designSystemPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: designSystemPatternsSkill.description,
+      reason: "提供令牌体系、主题系统与组件架构的设计模式。",
     },
     {
       id: shadcnUiSkill.id,
       mode: SkillUseMode.Preload,
-      reason: shadcnUiSkill.description,
+      reason: "集成 shadcn/ui 组件作为设计系统的实现层。",
     },
     {
       id: industryDesignPresetsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: industryDesignPresetsSkill.description,
+      reason: "按行业选择配色、字体与视觉风格预设。",
     },
     {
       id: interactionDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: interactionDesignSkill.description,
+      reason: "设计微交互、状态过渡与反馈动效规范。",
     }
   ],
 });

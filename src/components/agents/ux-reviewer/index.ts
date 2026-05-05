@@ -107,47 +107,47 @@ export const uxReviewerAgent = defineAgent({
     {
       id: uxHeuristicsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: uxHeuristicsSkill.description,
+      reason: "按 Nielsen 启发式原则逐项评估可用性。",
     },
     {
       id: uxResearcherDesignerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: uxResearcherDesignerSkill.description,
+      reason: "提供 persona、旅程图与可用性测试方法论支撑。",
     },
     {
       id: frontendDesignReviewSkill.id,
       mode: SkillUseMode.Preload,
-      reason: frontendDesignReviewSkill.description,
+      reason: "审查界面设计还原度、设计系统一致性与 AI 套版感。",
     },
     {
       id: uxWritingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: uxWritingSkill.description,
+      reason: "审查按钮标签、错误消息与空态文案质量。",
     },
     {
       id: responsiveDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: responsiveDesignSkill.description,
+      reason: "审查多断点布局、触控目标与响应式适配。",
     },
     {
       id: i18nLocalizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: i18nLocalizationSkill.description,
+      reason: "审查硬编码文案、RTL 布局与多语言适配问题。",
     },
     {
       id: figmaImplementDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: figmaImplementDesignSkill.description,
+      reason: "对比 Figma 设计稿与实际实现的还原偏差。",
     },
     {
       id: interactionDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: interactionDesignSkill.description,
+      reason: "审查微交互、状态反馈与动效可用性。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条审查发现标注事实/推断/假设并绑定位置。",
     }
   ],
 });

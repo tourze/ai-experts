@@ -73,22 +73,22 @@ export const iosSimulatorSmokeTesterAgent = defineAgent({
     {
       id: iosSimulatorSkillSkill.id,
       mode: SkillUseMode.Preload,
-      reason: iosSimulatorSkillSkill.description,
+      reason: "提供模拟器启动、app 安装和无障碍树读取的操作规范。",
     },
     {
       id: swiftuiPerformanceAuditSkill.id,
       mode: SkillUseMode.Preload,
-      reason: swiftuiPerformanceAuditSkill.description,
+      reason: "在冒烟过程中检测 SwiftUI 渲染性能异常。",
     },
     {
       id: detoxMobileTestSkill.id,
       mode: SkillUseMode.Preload,
-      reason: detoxMobileTestSkill.description,
+      reason: "复用 Detox 端到端测试模式验证关键用户流程。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每个失败步骤有可复现的证据记录。",
     }
   ],
 });

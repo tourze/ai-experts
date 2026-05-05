@@ -91,32 +91,32 @@ export const dataAnalystAgent = defineAgent({
     {
       id: dataAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: dataAnalysisSkill.description,
+      reason: "探索数据集结构、筛选聚合并产出初步结论。",
     },
     {
       id: statisticalAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: statisticalAnalysisSkill.description,
+      reason: "执行统计检验、置信区间与显著性判断。",
     },
     {
       id: dataVisualizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: dataVisualizationSkill.description,
+      reason: "选择合适的图表类型并生成可视化代码。",
     },
     {
       id: dataStorytellingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: dataStorytellingSkill.description,
+      reason: "把分析结果转化为业务叙事与汇报口径。",
     },
     {
       id: llmEvaluationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: llmEvaluationSkill.description,
+      reason: "评估 LLM 模型表现与 prompt 效果对比。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保分析结论标注数据来源与推断强度。",
     }
   ],
 });

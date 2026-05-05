@@ -87,32 +87,32 @@ export const codeReviewerAgent = defineAgent({
     {
       id: codeReviewSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeReviewSkill.description,
+      reason: "执行代码质量、命名与错误处理审查。",
     },
     {
       id: complexityReducerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: complexityReducerSkill.description,
+      reason: "识别过度复杂代码并给出简化建议。",
     },
     {
       id: refactoringChecklistSkill.id,
       mode: SkillUseMode.Preload,
-      reason: refactoringChecklistSkill.description,
+      reason: "确保重构建议有测试基线与回滚方案。",
     },
     {
       id: debugMethodologySkill.id,
       mode: SkillUseMode.Preload,
-      reason: debugMethodologySkill.description,
+      reason: "遇到疑似 bug 时收敛根因证据。",
     },
     {
       id: preLandingReviewSkill.id,
       mode: SkillUseMode.Preload,
-      reason: preLandingReviewSkill.description,
+      reason: "执行上线前安全与合并就绪检查。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条审查发现绑定文件:行证据。",
     }
   ],
 });

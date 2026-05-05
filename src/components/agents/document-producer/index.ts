@@ -95,42 +95,42 @@ export const documentProducerAgent = defineAgent({
     {
       id: consultingAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: consultingAnalysisSkill.description,
+      reason: "先搭分析框架再产出咨询级报告骨架。",
     },
     {
       id: proposalWriterSkill.id,
       mode: SkillUseMode.Preload,
-      reason: proposalWriterSkill.description,
+      reason: "撰写商业提案与带 ROI 论证的对外方案。",
     },
     {
       id: tutorialBuilderSkill.id,
       mode: SkillUseMode.Preload,
-      reason: tutorialBuilderSkill.description,
+      reason: "把零散素材组装成带章节视觉的完整教程。",
     },
     {
       id: pptGenerateSkill.id,
       mode: SkillUseMode.Preload,
-      reason: pptGenerateSkill.description,
+      reason: "从主题或文档端到端生成演示文稿。",
     },
     {
       id: pdfSkill.id,
       mode: SkillUseMode.Preload,
-      reason: pdfSkill.description,
+      reason: "读取、填写与转换 PDF 文件。",
     },
     {
       id: markitdownSkill.id,
       mode: SkillUseMode.Preload,
-      reason: markitdownSkill.description,
+      reason: "将 Office/图片等源文件抽取为 Markdown 文本。",
     },
     {
       id: mdToPdfSkill.id,
       mode: SkillUseMode.Preload,
-      reason: mdToPdfSkill.description,
+      reason: "将 Markdown 主稿渲染为可打印 PDF。",
     },
     {
       id: markdownMermaidWritingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: markdownMermaidWritingSkill.description,
+      reason: "用 Markdown + Mermaid 产出可维护的文档主稿。",
     }
   ],
 });

@@ -135,42 +135,42 @@ export const nextjsReviewerAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeReviewAgentFrameworkSkill.description,
+      reason: "提供统一审查流程和发现分级标准。",
     },
     {
       id: nextjsDeveloperSkill.id,
       mode: SkillUseMode.Preload,
-      reason: nextjsDeveloperSkill.description,
+      reason: "审查 App Router 路由树、缓存策略和部署配置。",
     },
     {
       id: reactServerComponentsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: reactServerComponentsSkill.description,
+      reason: "审计 Server/Client 边界和 Server Actions 安全。",
     },
     {
       id: reactHooksSkill.id,
       mode: SkillUseMode.Preload,
-      reason: reactHooksSkill.description,
+      reason: "检查 Hooks 依赖完整性、cleanup 和闭包陷阱。",
     },
     {
       id: reactPerformanceSkill.id,
       mode: SkillUseMode.Preload,
-      reason: reactPerformanceSkill.description,
+      reason: "审计重渲染链和 memoization 策略。",
     },
     {
       id: reactComposableComponentsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: reactComposableComponentsSkill.description,
+      reason: "评估组件拆分和职责分离合理性。",
     },
     {
       id: typescriptTypeSafetySkill.id,
       mode: SkillUseMode.Preload,
-      reason: typescriptTypeSafetySkill.description,
+      reason: "审计类型安全和 any 清理情况。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条审查结论标注事实/推断/假设。",
     }
   ],
 });

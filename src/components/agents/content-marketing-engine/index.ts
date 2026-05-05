@@ -98,52 +98,52 @@ export const contentMarketingEngineAgent = defineAgent({
     {
       id: contentStrategySkill.id,
       mode: SkillUseMode.Preload,
-      reason: contentStrategySkill.description,
+      reason: "制定内容支柱、选题池和分发节奏，作为策略主干。",
     },
     {
       id: copywritingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: copywritingSkill.description,
+      reason: "撰写各平台营销文案、价值主张与 CTA。",
     },
     {
       id: seoSkill.id,
       mode: SkillUseMode.Preload,
-      reason: seoSkill.description,
+      reason: "优化内容搜索可见性与关键词策略。",
     },
     {
       id: douyinViralContentSkill.id,
       mode: SkillUseMode.Preload,
-      reason: douyinViralContentSkill.description,
+      reason: "按抖音算法逻辑创作短视频脚本与爆款文案。",
     },
     {
       id: youtubeAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: youtubeAnalysisSkill.description,
+      reason: "拆解 YouTube 视频内容，提炼竞品与行业洞察。",
     },
     {
       id: youtubeSearchSkill.id,
       mode: SkillUseMode.Preload,
-      reason: youtubeSearchSkill.description,
+      reason: "按关键词发现 YouTube 行业内容与热门选题。",
     },
     {
       id: xiaohongshuCommercialGrowthSkill.id,
       mode: SkillUseMode.Preload,
-      reason: xiaohongshuCommercialGrowthSkill.description,
+      reason: "制定小红书种草、投放与变现闭环策略。",
     },
     {
       id: fanOperationsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: fanOperationsSkill.description,
+      reason: "设计粉丝互动、私域承接与复购转化路径。",
     },
     {
       id: analyticsTrackingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: analyticsTrackingSkill.description,
+      reason: "校准内容效果埋点与转化归因。",
     },
     {
       id: customerResearchSkill.id,
       mode: SkillUseMode.Preload,
-      reason: customerResearchSkill.description,
+      reason: "从用户声音提炼内容受众画像与选题洞察。",
     }
   ],
 });

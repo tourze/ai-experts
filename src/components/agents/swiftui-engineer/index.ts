@@ -102,42 +102,42 @@ export const swiftuiEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeEngineerAgentFrameworkSkill.description,
+      reason: "提供代码工程通用工作流与安全边界。",
     },
     {
       id: swiftuiUiPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: swiftuiUiPatternsSkill.description,
+      reason: "诊断视图组合、数据流与状态管理问题。",
     },
     {
       id: swiftuiPerformanceAuditSkill.id,
       mode: SkillUseMode.Preload,
-      reason: swiftuiPerformanceAuditSkill.description,
+      reason: "定位重渲染、内存泄漏等性能瓶颈。",
     },
     {
       id: swiftConcurrencyExpertSkill.id,
       mode: SkillUseMode.Preload,
-      reason: swiftConcurrencyExpertSkill.description,
+      reason: "审查 actor 隔离、Sendable 合规与并发安全。",
     },
     {
       id: iosHigDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: iosHigDesignSkill.description,
+      reason: "核对 iOS/iPadOS 人机界面设计合规性。",
     },
     {
       id: liquidGlassDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: liquidGlassDesignSkill.description,
+      reason: "审查 Liquid Glass 设计语言适配情况。",
     },
     {
       id: macosDesignGuidelinesSkill.id,
       mode: SkillUseMode.Preload,
-      reason: macosDesignGuidelinesSkill.description,
+      reason: "核对 macOS 平台设计规范合规性。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条诊断结论标注事实与推断。",
     }
   ],
 });

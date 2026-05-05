@@ -101,52 +101,52 @@ export const refactorPlannerAgent = defineAgent({
     {
       id: refactoringPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: refactoringPatternsSkill.description,
+      reason: "提供具体重构手法（提取、内联、搬迁）的适用判据。",
     },
     {
       id: refactorPlanningMethodSkill.id,
       mode: SkillUseMode.Preload,
-      reason: refactorPlanningMethodSkill.description,
+      reason: "作为主干方法论驱动重构计划全流程。",
     },
     {
       id: complexityReducerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: complexityReducerSkill.description,
+      reason: "识别圈复杂度和认知复杂度热点。",
     },
     {
       id: techDebtSkill.id,
       mode: SkillUseMode.Preload,
-      reason: techDebtSkill.description,
+      reason: "量化技术债并排定偿还优先级。",
     },
     {
       id: errorHandlingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: errorHandlingPatternsSkill.description,
+      reason: "识别错误处理层的重构接缝和改进方向。",
     },
     {
       id: softwareDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: softwareDesignSkill.description,
+      reason: "用设计原则交叉印证重构必要性，避免凭直觉改动。",
     },
     {
       id: pragmaticProgrammerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: pragmaticProgrammerSkill.description,
+      reason: "提供务实的工程判断，避免过度设计重构方案。",
     },
     {
       id: featureDevSkill.id,
       mode: SkillUseMode.Preload,
-      reason: featureDevSkill.description,
+      reason: "区分纯重构与特性改动，防止二者混步。",
     },
     {
       id: planReviewSkill.id,
       mode: SkillUseMode.Preload,
-      reason: planReviewSkill.description,
+      reason: "审查重构计划的可验证性和回滚安全性。",
     },
     {
       id: brainstormingBeforeCodingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: brainstormingBeforeCodingSkill.description,
+      reason: "在出方案前充分发散，避免过早锁定重构路径。",
     }
   ],
 });

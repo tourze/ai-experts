@@ -99,27 +99,27 @@ export const vueEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeEngineerAgentFrameworkSkill.description,
+      reason: "提供可写 engineer agent 的实现门禁、验证闭环与交付骨架。",
     },
     {
       id: vueExpertJsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: vueExpertJsSkill.description,
+      reason: "指导 Vue 3 Composition API、composable 与 Pinia 设计。",
     },
     {
       id: modernJavascriptPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: modernJavascriptPatternsSkill.description,
+      reason: "确保 ES6+ 惯用法与异步模式的一致性。",
     },
     {
       id: javascriptTypescriptJestSkill.id,
       mode: SkillUseMode.Preload,
-      reason: javascriptTypescriptJestSkill.description,
+      reason: "指导 Vue 组件与 composable 的 Jest/Vitest 测试编写。",
     },
     {
       id: testingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: testingPatternsSkill.description,
+      reason: "提供测试策略、mock 边界与 AAA/FIRST 原则。",
     }
   ],
 });

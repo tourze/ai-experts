@@ -99,37 +99,37 @@ export const reactNativeEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeEngineerAgentFrameworkSkill.description,
+      reason: "提供端到端工程实现流程和质量门禁框架。",
     },
     {
       id: reactNativeDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: reactNativeDesignSkill.description,
+      reason: "指导导航架构、样式组织和安全区域适配。",
     },
     {
       id: reactNativeJsPerformanceSkill.id,
       mode: SkillUseMode.Preload,
-      reason: reactNativeJsPerformanceSkill.description,
+      reason: "优化 FlatList/FlashList 配置和 JS 线程占用。",
     },
     {
       id: reactNativePlatformForkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: reactNativePlatformForkSkill.description,
+      reason: "制定平台分叉策略，平衡共享逻辑和平台适配。",
     },
     {
       id: reactNativeTurbomoduleSkill.id,
       mode: SkillUseMode.Preload,
-      reason: reactNativeTurbomoduleSkill.description,
+      reason: "用 codegen 驱动 TurboModule 原生模块开发。",
     },
     {
       id: reactNativeMetroConfigSkill.id,
       mode: SkillUseMode.Preload,
-      reason: reactNativeMetroConfigSkill.description,
+      reason: "配置 Metro bundler 确保 CI 可复现构建。",
     },
     {
       id: detoxMobileTestSkill.id,
       mode: SkillUseMode.Preload,
-      reason: detoxMobileTestSkill.description,
+      reason: "搭建关键用户流程的 Detox E2E 测试。",
     }
   ],
 });

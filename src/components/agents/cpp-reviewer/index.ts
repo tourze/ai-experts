@@ -105,32 +105,32 @@ export const cppReviewerAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeReviewAgentFrameworkSkill.description,
+      reason: "提供只读审查的共享门禁、边界与证据绑定规则。",
     },
     {
       id: memorySafetyPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: memorySafetyPatternsSkill.description,
+      reason: "检查 RAII、智能指针与裸指针生命周期等内存安全问题。",
     },
     {
       id: codeReviewSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeReviewSkill.description,
+      reason: "审查命名、职责、错误处理与边界条件等通用代码质量。",
     },
     {
       id: debugMethodologySkill.id,
       mode: SkillUseMode.Preload,
-      reason: debugMethodologySkill.description,
+      reason: "按假设驱动调试收敛崩溃与根因证据。",
     },
     {
       id: complexityReducerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: complexityReducerSkill.description,
+      reason: "识别深度嵌套与长函数，给出复杂度拆分建议。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条审查发现标注事实/推断/假设并绑定代码位置。",
     }
   ],
 });

@@ -86,37 +86,37 @@ export const socialGrowthPlannerAgent = defineAgent({
     {
       id: youtubeAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: youtubeAnalysisSkill.description,
+      reason: "分析 YouTube 频道数据制定视频增长策略。",
     },
     {
       id: youtubeSearchSkill.id,
       mode: SkillUseMode.Preload,
-      reason: youtubeSearchSkill.description,
+      reason: "搜索 YouTube 竞品视频与热点话题。",
     },
     {
       id: xiaohongshuCommercialGrowthSkill.id,
       mode: SkillUseMode.Preload,
-      reason: xiaohongshuCommercialGrowthSkill.description,
+      reason: "制定小红书商业化变现与内容增长策略。",
     },
     {
       id: fanOperationsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: fanOperationsSkill.description,
+      reason: "设计粉丝运营与私域转化方案。",
     },
     {
       id: douyinViralContentSkill.id,
       mode: SkillUseMode.Preload,
-      reason: douyinViralContentSkill.description,
+      reason: "策划抖音爆款内容与传播策略。",
     },
     {
       id: copywritingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: copywritingSkill.description,
+      reason: "提供文案创作方法论，支撑内容日历输出。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "标注策略建议的依据来源与可信度。",
     }
   ],
 });

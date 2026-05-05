@@ -106,67 +106,67 @@ export const architectureDesignerAgent = defineAgent({
     {
       id: architectureDesignWorkflowSkill.id,
       mode: SkillUseMode.Preload,
-      reason: architectureDesignWorkflowSkill.description,
+      reason: "作为主干三段式架构设计工作流。",
     },
     {
       id: systemDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: systemDesignSkill.description,
+      reason: "提供需求澄清、高层方案与权衡分析方法。",
     },
     {
       id: architectureDecisionRecordsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: architectureDecisionRecordsSkill.description,
+      reason: "以 ADR 格式记录每个架构决策。",
     },
     {
       id: protocolFreezingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: protocolFreezingPatternsSkill.description,
+      reason: "设计协议版本冻结与向后兼容策略。",
     },
     {
       id: crossPlatformAdapterPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: crossPlatformAdapterPatternsSkill.description,
+      reason: "设计跨平台适配层与 monorepo 组织。",
     },
     {
       id: hierarchicalMatchingSystemsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: hierarchicalMatchingSystemsSkill.description,
+      reason: "设计层级匹配与实体解析系统。",
     },
     {
       id: webPerformanceDiagnosisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: webPerformanceDiagnosisSkill.description,
+      reason: "诊断前端性能瓶颈与 Core Web Vitals。",
     },
     {
       id: taskDecomposerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: taskDecomposerSkill.description,
+      reason: "将架构方案拆解为可执行任务与依赖关系。",
     },
     {
       id: backendToFrontendHandoffDocsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: backendToFrontendHandoffDocsSkill.description,
+      reason: "生成后端到前端的 API 交接材料。",
     },
     {
       id: agentOrchestrationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: agentOrchestrationSkill.description,
+      reason: "设计多 Agent 编排与状态管理架构。",
     },
     {
       id: errorHandlingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: errorHandlingPatternsSkill.description,
+      reason: "设计异常传播、重试边界与错误分层策略。",
     },
     {
       id: softwareDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: softwareDesignSkill.description,
+      reason: "提供职责拆分、耦合控制与深模块设计原则。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保架构决策基于事实而非印象式断言。",
     }
   ],
 });

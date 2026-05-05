@@ -112,32 +112,32 @@ export const laravelReviewerAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeReviewAgentFrameworkSkill.description,
+      reason: "提供统一审查流程和发现分级标准。",
     },
     {
       id: laravelPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: laravelPatternsSkill.description,
+      reason: "审查分层边界、Eloquent 用法和队列设计。",
     },
     {
       id: laravelSecuritySkill.id,
       mode: SkillUseMode.Preload,
-      reason: laravelSecuritySkill.description,
+      reason: "审计 Policy/Gate 授权覆盖和安全红线。",
     },
     {
       id: laravelVerificationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: laravelVerificationSkill.description,
+      reason: "校验 phpstan/pint/migration 等发版基线。",
     },
     {
       id: laravelTddSkill.id,
       mode: SkillUseMode.Preload,
-      reason: laravelTddSkill.description,
+      reason: "评估 Pest/PHPUnit 测试隔离和 mock 质量。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条审查结论标注事实/推断/假设。",
     }
   ],
 });

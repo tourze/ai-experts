@@ -119,32 +119,32 @@ export const webmanReviewerAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeReviewAgentFrameworkSkill.description,
+      reason: "提供只读 reviewer 的共享门禁、只读边界与证据绑定规则。",
     },
     {
       id: webmanNamingConventionsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: webmanNamingConventionsSkill.description,
+      reason: "审查目录命名、接口后缀与命名空间一致性。",
     },
     {
       id: webmanCustomProcessesSkill.id,
       mode: SkillUseMode.Preload,
-      reason: webmanCustomProcessesSkill.description,
+      reason: "审查自定义进程声明、Timer 与 event loop 阻塞风险。",
     },
     {
       id: webmanWebsocketPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: webmanWebsocketPatternsSkill.description,
+      reason: "审查 WebSocket 连接生命周期、心跳与频道广播。",
     },
     {
       id: webmanPluginDevelopmentSkill.id,
       mode: SkillUseMode.Preload,
-      reason: webmanPluginDevelopmentSkill.description,
+      reason: "审查插件安装/卸载、配置发布路径与跨插件冲突。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条审查发现标注事实/推断/假设并绑定位置。",
     }
   ],
 });

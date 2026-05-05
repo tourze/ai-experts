@@ -106,42 +106,42 @@ export const skillAuthorAgent = defineAgent({
     {
       id: skillCreatorSkill.id,
       mode: SkillUseMode.Preload,
-      reason: skillCreatorSkill.description,
+      reason: "创建全新 skill 时作为主干创作流程。",
     },
     {
       id: skillEvolverSkill.id,
       mode: SkillUseMode.Preload,
-      reason: skillEvolverSkill.description,
+      reason: "用参考 skill 演化改进目标 skill。",
     },
     {
       id: findSkillsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: findSkillsSkill.description,
+      reason: "起手查重，确认是否已存在等价 skill。",
     },
     {
       id: skillEvaluatorSkill.id,
       mode: SkillUseMode.Preload,
-      reason: skillEvaluatorSkill.description,
+      reason: "落盘前自检结构、frontmatter 与 knowledge delta。",
     },
     {
       id: skillActivationAnalyzerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: skillActivationAnalyzerSkill.description,
+      reason: "静态审查 description 触发域是否合规。",
     },
     {
       id: skillEvalGraderSkill.id,
       mode: SkillUseMode.Preload,
-      reason: skillEvalGraderSkill.description,
+      reason: "评分单次 eval 输出是否达到通过标准。",
     },
     {
       id: blindOutputComparatorSkill.id,
       mode: SkillUseMode.Preload,
-      reason: blindOutputComparatorSkill.description,
+      reason: "盲评两个输出版本，消除来源偏见。",
     },
     {
       id: benchmarkResultAnalyzerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: benchmarkResultAnalyzerSkill.description,
+      reason: "分析 benchmark 胜负原因并输出改进建议。",
     }
   ],
 });

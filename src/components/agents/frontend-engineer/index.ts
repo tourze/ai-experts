@@ -106,62 +106,62 @@ export const frontendEngineerAgent = defineAgent({
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeEngineerAgentFrameworkSkill.description,
+      reason: "提供代码工程师通用工作流框架，作为本 agent 的执行主干。",
     },
     {
       id: modernWebDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: modernWebDesignSkill.description,
+      reason: "指导现代 Web 布局与视觉方案的落地实现。",
     },
     {
       id: designSystemPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: designSystemPatternsSkill.description,
+      reason: "确保设计系统 token 和组件模式在项目中一致使用。",
     },
     {
       id: responsiveDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: responsiveDesignSkill.description,
+      reason: "保障多断点响应式布局无偏移和截断。",
     },
     {
       id: shadcnUiSkill.id,
       mode: SkillUseMode.Preload,
-      reason: shadcnUiSkill.description,
+      reason: "提供 shadcn/ui 组件的接入和定制规范。",
     },
     {
       id: figmaImplementDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: figmaImplementDesignSkill.description,
+      reason: "将 Figma 设计稿像素级还原为前端代码。",
     },
     {
       id: i18nLocalizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: i18nLocalizationSkill.description,
+      reason: "管理面向用户文本的国际化，消除硬编码文案。",
     },
     {
       id: bundleOptimizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: bundleOptimizationSkill.description,
+      reason: "优化打包体积和代码分割策略。",
     },
     {
       id: interactionDesignSkill.id,
       mode: SkillUseMode.Preload,
-      reason: interactionDesignSkill.description,
+      reason: "实现微交互并兼顾无障碍与关键渲染路径。",
     },
     {
       id: webPerformanceDiagnosisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: webPerformanceDiagnosisSkill.description,
+      reason: "诊断和优化 Core Web Vitals 性能指标。",
     },
     {
       id: frontendDesignReviewSkill.id,
       mode: SkillUseMode.Preload,
-      reason: frontendDesignReviewSkill.description,
+      reason: "自审前端设计还原度和交互质量。",
     },
     {
       id: uxWritingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: uxWritingSkill.description,
+      reason: "打磨界面文案的清晰度和一致性。",
     }
   ],
 });

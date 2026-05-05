@@ -89,27 +89,27 @@ export const conversionOptimizerAgent = defineAgent({
     {
       id: croMethodologySkill.id,
       mode: SkillUseMode.Preload,
-      reason: croMethodologySkill.description,
+      reason: "提供 CRO 主干方法论：漏斗拆解、实验设计与假设排序。",
     },
     {
       id: redesignMyLandingpageSkill.id,
       mode: SkillUseMode.Preload,
-      reason: redesignMyLandingpageSkill.description,
+      reason: "按转化最佳实践重构落地页结构与 CTA。",
     },
     {
       id: funnelArchitectSkill.id,
       mode: SkillUseMode.Preload,
-      reason: funnelArchitectSkill.description,
+      reason: "设计或审计从流量入口到成交的漏斗路径。",
     },
     {
       id: analyticsTrackingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: analyticsTrackingSkill.description,
+      reason: "校准转化事件埋点，确保漏斗数据可信。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条优化建议绑定可观测证据与数据来源。",
     }
   ],
 });

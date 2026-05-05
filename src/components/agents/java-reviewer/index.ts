@@ -115,47 +115,47 @@ export const javaReviewerAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeReviewAgentFrameworkSkill.description,
+      reason: "提供只读代码审查的通用方法论和检查清单。",
     },
     {
       id: springBootLayeringSkill.id,
       mode: SkillUseMode.Preload,
-      reason: springBootLayeringSkill.description,
+      reason: "审查分层合规性、DI 方式和事务边界。",
     },
     {
       id: javaJunitSkill.id,
       mode: SkillUseMode.Preload,
-      reason: javaJunitSkill.description,
+      reason: "评估 JUnit 5 覆盖、Mockito 隔离和参数化测试质量。",
     },
     {
       id: testingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: testingPatternsSkill.description,
+      reason: "提供通用测试方法论，补充 Java 特有审查视角。",
     },
     {
       id: gradleBuildPerformanceSkill.id,
       mode: SkillUseMode.Preload,
-      reason: gradleBuildPerformanceSkill.description,
+      reason: "审查构建配置瓶颈和依赖冲突。",
     },
     {
       id: graalvmNativeImageSkill.id,
       mode: SkillUseMode.Preload,
-      reason: graalvmNativeImageSkill.description,
+      reason: "审计反射配置和 Native Image 兼容性。",
     },
     {
       id: arthasCpuHighSkill.id,
       mode: SkillUseMode.Preload,
-      reason: arthasCpuHighSkill.description,
+      reason: "识别 CPU 热点和线程栈异常。",
     },
     {
       id: arthasSpringcontextIssuesResolveSkill.id,
       mode: SkillUseMode.Preload,
-      reason: arthasSpringcontextIssuesResolveSkill.description,
+      reason: "诊断 Bean 注册失败和条件装配问题。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条审查结论标注事实/推断/假设。",
     }
   ],
 });

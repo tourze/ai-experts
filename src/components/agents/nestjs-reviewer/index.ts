@@ -118,27 +118,27 @@ export const nestjsReviewerAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeReviewAgentFrameworkSkill.description,
+      reason: "提供统一审查流程和发现分级标准。",
     },
     {
       id: nestjsLayeringPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: nestjsLayeringPatternsSkill.description,
+      reason: "审查 Module 分层、DI 和横切关注点。",
     },
     {
       id: openapiSpecGenerationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: openapiSpecGenerationSkill.description,
+      reason: "校验 OpenAPI 规范完整性和 DTO 一致性。",
     },
     {
       id: typescriptTypeSafetySkill.id,
       mode: SkillUseMode.Preload,
-      reason: typescriptTypeSafetySkill.description,
+      reason: "审计 DTO 类型安全和边界合同。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条审查结论标注事实/推断/假设。",
     }
   ],
 });

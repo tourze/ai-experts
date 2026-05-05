@@ -119,32 +119,32 @@ export const vueReviewerAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeReviewAgentFrameworkSkill.description,
+      reason: "提供只读 reviewer 的共享门禁、只读边界与证据绑定规则。",
     },
     {
       id: vueExpertJsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: vueExpertJsSkill.description,
+      reason: "审查 Vue 3 响应式、composable、组件接口与模板性能。",
     },
     {
       id: modernJavascriptPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: modernJavascriptPatternsSkill.description,
+      reason: "审查 JS 模块系统、解构与异步惯用法。",
     },
     {
       id: javascriptTypescriptJestSkill.id,
       mode: SkillUseMode.Preload,
-      reason: javascriptTypescriptJestSkill.description,
+      reason: "审查测试覆盖、mock 边界与异步测试质量。",
     },
     {
       id: testingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: testingPatternsSkill.description,
+      reason: "审查测试策略、隔离性与断言质量。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条审查发现标注事实/推断/假设并绑定位置。",
     }
   ],
 });

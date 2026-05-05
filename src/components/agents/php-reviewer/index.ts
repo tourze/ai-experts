@@ -116,52 +116,52 @@ export const phpReviewerAgent = defineAgent({
     {
       id: codeReviewAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeReviewAgentFrameworkSkill.description,
+      reason: "提供统一代码审查流程和发现分级框架。",
     },
     {
       id: phpXFeaturesSkill.id,
       mode: SkillUseMode.Preload,
-      reason: phpXFeaturesSkill.description,
+      reason: "审查 PHP 8.x 新特性（readonly、enum、match 等）的使用恰当性。",
     },
     {
       id: phpTypeSafetySkill.id,
       mode: SkillUseMode.Preload,
-      reason: phpTypeSafetySkill.description,
+      reason: "检查 strict_types、返回类型和 nullable 声明覆盖率。",
     },
     {
       id: phpErrorHandlingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: phpErrorHandlingSkill.description,
+      reason: "审查异常层级设计和部分失败处理。",
     },
     {
       id: phpGeneratorsMemorySkill.id,
       mode: SkillUseMode.Preload,
-      reason: phpGeneratorsMemorySkill.description,
+      reason: "检查生成器使用和大数组内存峰值风险。",
     },
     {
       id: phpDesignPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: phpDesignPatternsSkill.description,
+      reason: "审查 DI 方式、分层架构和 DTO 使用规范。",
     },
     {
       id: phpAsyncPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: phpAsyncPatternsSkill.description,
+      reason: "审查 Swoole/Fiber 异步场景中的阻塞和泄漏风险。",
     },
     {
       id: phpTestingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: phpTestingSkill.description,
+      reason: "审查 PHPUnit/Pest 测试隔离、mock 和覆盖率。",
     },
     {
       id: testingPatternsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: testingPatternsSkill.description,
+      reason: "提供通用测试方法论，补齐 PHP 测试审查盲区。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每条审查结论标注事实/推断/假设。",
     }
   ],
 });

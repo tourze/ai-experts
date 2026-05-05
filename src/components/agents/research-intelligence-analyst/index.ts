@@ -101,32 +101,32 @@ export const researchIntelligenceAnalystAgent = defineAgent({
     {
       id: deepResearchSkill.id,
       mode: SkillUseMode.Preload,
-      reason: deepResearchSkill.description,
+      reason: "铺开关键词与来源地图，作为研究检索主干。",
     },
     {
       id: webContentFetcherSkill.id,
       mode: SkillUseMode.Preload,
-      reason: webContentFetcherSkill.description,
+      reason: "抽取具体 URL 正文，为分析提供一手原文。",
     },
     {
       id: comparativeAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: comparativeAnalysisSkill.description,
+      reason: "多方案或竞品横向对比时建立统一维度。",
     },
     {
       id: researchNoteWrapSkill.id,
       mode: SkillUseMode.Preload,
-      reason: researchNoteWrapSkill.description,
+      reason: "将研究结论压缩为高密度 Markdown 笔记。",
     },
     {
       id: obsidianBasesSkill.id,
       mode: SkillUseMode.Preload,
-      reason: obsidianBasesSkill.description,
+      reason: "需要 .base 视图时生成 Obsidian 数据库笔记。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "标注事实、推断、假设，确保结论可追溯。",
     }
   ],
 });

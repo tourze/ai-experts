@@ -88,17 +88,17 @@ export const mobileReleaseReviewerAgent = defineAgent({
     {
       id: appStoreOptimizationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: appStoreOptimizationSkill.description,
+      reason: "评估关键词覆盖、截图和分类的 ASO 效果。",
     },
     {
       id: appleAppstoreReviewerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: appleAppstoreReviewerSkill.description,
+      reason: "逐项校验 App Store 审核指南合规性。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保每项检查结论标注事实/推断/假设。",
     }
   ],
 });

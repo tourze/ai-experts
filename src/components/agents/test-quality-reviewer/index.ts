@@ -96,32 +96,32 @@ export const testQualityReviewerAgent = defineAgent({
     {
       id: testQualityReviewSkill.id,
       mode: SkillUseMode.Preload,
-      reason: testQualityReviewSkill.description,
+      reason: "作为主干框架评估测试套件整体质量。",
     },
     {
       id: codeReviewSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeReviewSkill.description,
+      reason: "复用通用代码审查方法论检查测试代码。",
     },
     {
       id: preLandingReviewSkill.id,
       mode: SkillUseMode.Preload,
-      reason: preLandingReviewSkill.description,
+      reason: "按合入前审查标准检查测试变更。",
     },
     {
       id: consciousnessCouncilSkill.id,
       mode: SkillUseMode.Preload,
-      reason: consciousnessCouncilSkill.description,
+      reason: "用六顶思考帽多视角发现测试盲区。",
     },
     {
       id: testingStrategySkill.id,
       mode: SkillUseMode.Preload,
-      reason: testingStrategySkill.description,
+      reason: "评估测试分层与策略是否合理。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "确保审查发现区分事实、推断与假设。",
     }
   ],
 });

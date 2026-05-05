@@ -112,37 +112,37 @@ instrumentation-guide.md
     {
       id: codeEngineerAgentFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: codeEngineerAgentFrameworkSkill.description,
+      reason: "提供工程 agent 通用工作流和质量标准。",
     },
     {
       id: monitoringObservabilitySkill.id,
       mode: SkillUseMode.Preload,
-      reason: monitoringObservabilitySkill.description,
+      reason: "设计四大黄金信号指标和告警规则。",
     },
     {
       id: pythonObservabilitySkill.id,
       mode: SkillUseMode.Preload,
-      reason: pythonObservabilitySkill.description,
+      reason: "落地 Python structlog 和 OpenTelemetry 埋点。",
     },
     {
       id: goObservabilitySkill.id,
       mode: SkillUseMode.Preload,
-      reason: goObservabilitySkill.description,
+      reason: "落地 Go slog 和 otelhttp 埋点。",
     },
     {
       id: logAnalyzerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: logAnalyzerSkill.description,
+      reason: "分析既有日志格式，识别结构化缺口。",
     },
     {
       id: incidentResponseSkill.id,
       mode: SkillUseMode.Preload,
-      reason: incidentResponseSkill.description,
+      reason: "设计事故分级和 oncall 响应流程。",
     },
     {
       id: systemDiagnosticsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: systemDiagnosticsSkill.description,
+      reason: "排查资源瓶颈和运行时性能异常。",
     }
   ],
 });

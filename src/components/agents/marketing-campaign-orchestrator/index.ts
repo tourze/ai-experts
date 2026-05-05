@@ -118,47 +118,47 @@ export const marketingCampaignOrchestratorAgent = defineAgent({
     {
       id: stpSegmentationSkill.id,
       mode: SkillUseMode.Preload,
-      reason: stpSegmentationSkill.description,
+      reason: "明确细分市场、目标人群和价值主张。",
     },
     {
       id: customerResearchSkill.id,
       mode: SkillUseMode.Preload,
-      reason: customerResearchSkill.description,
+      reason: "构建目标人群画像和需求洞察。",
     },
     {
       id: contentStrategySkill.id,
       mode: SkillUseMode.Preload,
-      reason: contentStrategySkill.description,
+      reason: "规划内容支柱、选题池和平台适配方案。",
     },
     {
       id: copywritingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: copywritingSkill.description,
+      reason: "产出有 Hook 和 CTA 的各平台文案变体。",
     },
     {
       id: seoSkill.id,
       mode: SkillUseMode.Preload,
-      reason: seoSkill.description,
+      reason: "建立搜索可见性和关键词矩阵。",
     },
     {
       id: paidAdsSkill.id,
       mode: SkillUseMode.Preload,
-      reason: paidAdsSkill.description,
+      reason: "设计渠道组合、预算分配和受众定向方案。",
     },
     {
       id: croMethodologySkill.id,
       mode: SkillUseMode.Preload,
-      reason: croMethodologySkill.description,
+      reason: "规划落地页结构和转化实验队列。",
     },
     {
       id: analyticsTrackingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: analyticsTrackingSkill.description,
+      reason: "定义事件埋点、归因模型和效果看板。",
     },
     {
       id: marketingPlanSkill.id,
       mode: SkillUseMode.Preload,
-      reason: marketingPlanSkill.description,
+      reason: "汇总为含时间线和风险预案的可执行计划。",
     }
   ],
 });

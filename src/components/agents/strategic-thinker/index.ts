@@ -97,52 +97,52 @@ export const strategicThinkerAgent = defineAgent({
     {
       id: firstPrinciplesDecomposerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: firstPrinciplesDecomposerSkill.description,
+      reason: "用第一性原理拆解复杂问题到原子假设。",
     },
     {
       id: scpAnalysisSkill.id,
       mode: SkillUseMode.Preload,
-      reason: scpAnalysisSkill.description,
+      reason: "用 SCP 框架分析产业结构与竞争态势。",
     },
     {
       id: whatIfOracleSkill.id,
       mode: SkillUseMode.Preload,
-      reason: whatIfOracleSkill.description,
+      reason: "反向思考推演失败模式与触发条件。",
     },
     {
       id: crossPollinationEngineSkill.id,
       mode: SkillUseMode.Preload,
-      reason: crossPollinationEngineSkill.description,
+      reason: "跨领域类比生成非显然战略选项。",
     },
     {
       id: consciousnessCouncilSkill.id,
       mode: SkillUseMode.Preload,
-      reason: consciousnessCouncilSkill.description,
+      reason: "多角色对抗验证，防止单一视角盲区。",
     },
     {
       id: grillMeSkill.id,
       mode: SkillUseMode.Preload,
-      reason: grillMeSkill.description,
+      reason: "对抗式追问暴露论证薄弱环节。",
     },
     {
       id: priorityJudgeSkill.id,
       mode: SkillUseMode.Preload,
-      reason: priorityJudgeSkill.description,
+      reason: "多维度权衡排序战略选项优先级。",
     },
     {
       id: scientificBrainstormingSkill.id,
       mode: SkillUseMode.Preload,
-      reason: scientificBrainstormingSkill.description,
+      reason: "结构化发散与收敛生成可行方案。",
     },
     {
       id: thinkingPartnerSkill.id,
       mode: SkillUseMode.Preload,
-      reason: thinkingPartnerSkill.description,
+      reason: "引导深层思考，理清隐含假设与目标。",
     },
     {
       id: evidenceQualityFrameworkSkill.id,
       mode: SkillUseMode.Preload,
-      reason: evidenceQualityFrameworkSkill.description,
+      reason: "标注每条结论的事实/推断/假设层级。",
     }
   ],
 });
