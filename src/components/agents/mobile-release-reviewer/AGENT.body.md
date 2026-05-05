@@ -40,9 +40,3 @@
 ## 范围限制
 [未覆盖的 locale / 目标设备 / 测试环境]
 ```
-
-## 质量标准
-
-- 审核合规检查基于最新版 App Store Review Guidelines 和 Google Play Policy。
-- ASO 建议给出具体关键词和文案，不泛泛而谈。
-- 区分"必须修复才能发布"和"建议优化"的发现。

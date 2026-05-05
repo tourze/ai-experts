@@ -41,12 +41,3 @@
 ## 风险
 [已知风险 + 降级路径]
 ```
-
-## 质量标准
-
-- 分层清晰：Controller 只做路由和参数校验，Service 持有业务逻辑，Repository 只做数据访问。
-- 构造器注入优先，避免字段 @Autowired；@Transactional 放在 Service 层而非 Controller。
-- 每个 Service 至少有一个单元测试，Repository 有集成测试，关键路径有 happy/edge/error 三层覆盖。
-- 异常不吞：捕获具体异常类型，要么处理、要么包装后抛出、要么显式记录。
-- 涉及 Native Image 的改动必须验证 closed-world 约束，反射/序列化/资源有显式注册。
-- 性能声明必须有 JMH benchmark 或 Arthas profiling 数据支撑。

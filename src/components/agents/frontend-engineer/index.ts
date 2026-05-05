@@ -27,6 +27,15 @@ export const frontendEngineerAgent = defineAgent({
   bashBoundary: [
     "Bash 用于：`npm run dev`、`npm run build`、`npm test`、`pnpm build`、`npx tsc --noEmit`、`npx eslint`、`npx prettier --check`、git 操作。禁止：修改生产配置、连接外部 API 不经确认、`npm install` 不经确认的依赖变更。",
   ],
+  qualityStandards: [
+    "响应式布局在所有目标断点下无布局偏移和内容截断。",
+    "设计系统 token 在组件中一致使用，无硬编码颜色/间距/字体值。",
+    "Figma 还原度在主要页面组件上像素级对齐。",
+    "所有面向用户的文本通过 i18n 框架管理，无硬编码文案。",
+    "Bundle 体积有基线对比，代码分割策略合理。",
+    "微交互不影响无障碍（prefers-reduced-motion 尊重），不阻塞关键内容渲染。",
+    "LCP < 2.5s、FID < 100ms、CLS < 0.1 的目标在主流设备上可达成。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   claudeModel: "sonnet",

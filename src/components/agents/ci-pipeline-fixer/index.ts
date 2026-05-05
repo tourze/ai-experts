@@ -18,6 +18,12 @@ export const ciPipelineFixerAgent = defineAgent({
   bashBoundary: [
     "Bash 用于运行 `gh run view`、`gh pr view`、`gh api`、`yq`、本仓库内的 lint / test 命令、git 历史查询。禁止 `gh pr merge`、改 PR 状态、推送到远端、修改 secret / variable / environment、安装系统依赖。修改 `.github/workflows/` 后必须给本地 dry-run 或 `act` 验证建议。",
   ],
+  qualityStandards: [
+    "间歇失败必须给可重现假设和探针，不能用「重跑试试」糊弄。",
+    "修改 workflow 必须保持现有 trigger 兼容，破坏式改动需显式标注。",
+    "第三方 action 引用必须 pin 到 SHA 或受信任 publisher 的 tag，新增 action 要审许可与维护活跃度。",
+    "不修改业务代码或部署目标配置。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

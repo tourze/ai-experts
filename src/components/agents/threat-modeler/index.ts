@@ -17,6 +17,14 @@ export const threatModelerAgent = defineAgent({
   bashBoundary: [
     "Bash 用于读取仓库结构、git 历史、依赖清单、配置、调用图脚本与已有威胁模型文档；运行用户授权的本仓库脚本生成图表（PlantUML / Mermaid）。禁止安装外部依赖、修改业务代码、调用生产接口或访问真实凭据。",
   ],
+  qualityStandards: [
+    "每条威胁必须落到具体资产、信任边界与数据流路径，不允许悬空描述。",
+    "STRIDE 六类必须显式声明覆盖结果（包括「N/A」并附理由），不允许沉默跳过。",
+    "缓解控制不能停留在「加 WAF」「加密码」之类口号；必须落到具体配置、组件或代码改动方向。",
+    "安全需求必须可验证：明确测试方式与责任方，否则视为未完成。",
+    "文档落盘前先输出结构与摘要让用户确认，再执行写入；写入后再向主对话回报路径。",
+    "不修改 `docs/security/` 之外的目录；不改业务代码。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

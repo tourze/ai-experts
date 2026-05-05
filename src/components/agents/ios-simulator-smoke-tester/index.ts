@@ -19,6 +19,11 @@ export const iosSimulatorSmokeTesterAgent = defineAgent({
   bashBoundary: [
     "Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agent 明确允许的运行时检查。禁止安装依赖、删除/移动文件、运行破坏性命令，除非本文件在特定场景中明确允许。",
   ],
+  qualityStandards: [
+    "失败结果必须指出第一个用户可见失败步骤。",
+    "不能跳过步骤后声称流程通过。",
+    "证据要足够另一位工程师快速复现。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

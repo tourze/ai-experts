@@ -19,6 +19,7 @@ export const typescriptReviewer = defineAgent({
   ],
   tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
+  claudeModel: "sonnet",
   reasoningEffort: "high",
   skills: [
     {

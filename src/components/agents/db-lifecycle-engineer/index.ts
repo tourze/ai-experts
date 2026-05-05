@@ -27,6 +27,15 @@ export const dbLifecycleEngineerAgent = defineAgent({
   bashBoundary: [
     "Bash 用于读取本地仓库的 schema 文件、配置文件、迁移脚本、慢查询日志和监控数据；运行用户授权的 `EXPLAIN` / `mysqldump --no-data` / `pg_dump --schema-only` 等只读命令。禁止执行 DDL/DML、修改生产配置、操作凭据文件或连接未经授权的数据库实例。",
   ],
+  qualityStandards: [
+    "每条 DDL 建议必须标注锁表风险（MySQL metadata lock / PostgreSQL ACCESS EXCLUSIVE）和在线变更方案（pt-osc / gh-ost / CONCURRENTLY）。",
+    "索引建议必须附带 EXPLAIN 对比、写入成本估计和空间预算。",
+    "区分引擎特定建议与通用设计原则；不把 PostgreSQL 最佳实践直接套到 MySQL。",
+    "迁移方案必须包含回滚步骤，且回滚可在不丢失新数据的前提下执行。",
+    "审查模式下优先处理安全、正确性、数据完整性和用户可见风险。",
+    "跨 DBMS 场景明确标注引擎差异，不混用 MySQL/PostgreSQL/Redis 结论。",
+    "不连接未经用户授权的数据库；不输出包含真实凭据或生产 IP 的配置。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

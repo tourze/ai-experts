@@ -135,6 +135,8 @@ export type AgentSkillUse = {
 
 export type AgentBashBoundaryDefinition = readonly string[];
 
+export type AgentQualityStandardsDefinition = readonly string[];
+
 export type AgentDefinition = {
   kind: ComponentKind.Agent;
   id: string;
@@ -143,6 +145,7 @@ export type AgentDefinition = {
   platforms: PlatformList;
   body: ComponentFile;
   bashBoundary?: AgentBashBoundaryDefinition;
+  qualityStandards?: AgentQualityStandardsDefinition;
   tools?: readonly ToolMatcher[];
   skills?: readonly AgentSkillUse[];
   sandbox?: AgentSandbox;

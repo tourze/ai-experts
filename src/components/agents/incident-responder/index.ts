@@ -21,6 +21,13 @@ export const incidentResponderAgent = defineAgent({
   bashBoundary: [
     "Bash 用于只读读取本地仓库的 monitoring 配置、查询日志聚合接口（用户授权的命令）、git log、文件统计。禁止 ssh 进入生产、重启服务、修改 config / firewall / DNS、改告警 / silence、运行可能放大影响的探测命令。",
   ],
+  qualityStandards: [
+    "时间线按 UTC 严格排序；本地时间须显式标注时区。",
+    "止血方案必须可逆，并标注回滚条件。",
+    "根因不能停留在「服务挂了」「DB 慢」级别；必须指向具体代码、配置或资源。",
+    "不在报告中暴露生产 secret 或 token；引用日志时脱敏。",
+    "不修改任何生产配置；改动建议交回 oncall 主导执行。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

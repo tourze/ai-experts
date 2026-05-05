@@ -187,7 +187,8 @@ test("component build emits claude and codex component surfaces", () => {
 
     const claudeAgent = readFileSync(join(tmp, "claude/agents/typescript-reviewer.md"), "utf-8");
     assert.match(claudeAgent, /name: typescript-reviewer/);
-    assert.match(claudeAgent, /skills:\n  - typescript-type-safety/);
+    assert.match(claudeAgent, /skills:\n  - typescript-type-safety\n  - debug-methodology/);
+    assert.match(claudeAgent, /model: sonnet\neffort: high/);
     assert.match(claudeAgent, /你是资深 TypeScript 工程师/);
     assert.match(claudeAgent, /`debug-methodology` \(route\)/);
 
@@ -201,6 +202,12 @@ test("component build emits claude and codex component surfaces", () => {
         typescriptEngineerAgent.indexOf("## 输出格式"),
       "generated agent Bash boundary should stay near the operational guidance sections",
     );
+    assert.match(typescriptEngineerAgent, /## 质量标准/);
+    assert.ok(
+      typescriptEngineerAgent.indexOf("## 输出格式") <
+        typescriptEngineerAgent.indexOf("## 质量标准"),
+      "generated agent quality standards should stay after agent-specific output guidance",
+    );
 
     const productDiscovererAgent = readFileSync(
       join(tmp, "claude/agents/product-discoverer.md"),
@@ -211,6 +218,12 @@ test("component build emits claude and codex component surfaces", () => {
       /## Bash 使用边界/,
       "agents without KnownTool.Bash should not emit Bash boundary instructions",
     );
+    const analyzerAgent = readFileSync(join(tmp, "claude/agents/analyzer.md"), "utf-8");
+    assert.doesNotMatch(
+      analyzerAgent,
+      /## 质量标准/,
+      "agents without qualityStandards should not emit quality standards",
+    );
 
     const codexAgent = readFileSync(join(tmp, "codex/agents/frontend-engineer.toml"), "utf-8");
     assert.match(codexAgent, /name = "frontend-engineer"/);
@@ -220,6 +233,7 @@ test("component build emits claude and codex component surfaces", () => {
     assert.match(codexAgent, /## Skill Orchestration/);
     assert.match(codexAgent, /\[\[skills\.config\]\]\npath = "~\/\.agents\/skills\/modern-web-design\/SKILL\.md"\nenabled = true/);
     assert.match(codexAgent, /## Bash 使用边界/);
+    assert.match(codexAgent, /## 质量标准/);
 
     const claudeInstructions = readFileSync(join(tmp, "claude/CLAUDE.md"), "utf-8");
     assert.match(claudeInstructions, /Runtime Model/);
@@ -353,12 +367,19 @@ test("component build emits claude and codex component surfaces", () => {
         0,
         `${agentBodyFile} should move Bash boundary instructions to index.ts bashBoundary`,
       );
+      assert.equal(
+        countH2OutsideCodeFence(source, "质量标准"),
+        0,
+        `${agentBodyFile} should move quality standards to index.ts qualityStandards`,
+      );
     }
 
+    let agentQualityStandardsCount = 0;
     for (const agentSourceFile of collectFiles(join(repoRoot, "src/components/agents"), (file) => file.endsWith("index.ts"))) {
       const source = readFileSync(agentSourceFile, "utf-8");
       const hasBashTool = /\bKnownTool\.Bash\b/.test(source);
       const hasBashBoundary = /\n\s*bashBoundary:\s*\[/.test(source);
+      const hasQualityStandards = /\n\s*qualityStandards:\s*\[/.test(source);
       assert.equal(
         hasBashBoundary,
         hasBashTool,
@@ -373,7 +394,18 @@ test("component build emits claude and codex component surfaces", () => {
           `${agentSourceFile} should define bashBoundary as a non-empty string array`,
         );
       }
+      if (hasQualityStandards) {
+        agentQualityStandardsCount += 1;
+        const qualityStandardsSource = extractPropertyArray(source, "qualityStandards");
+        assert.notEqual(qualityStandardsSource, null, `${agentSourceFile} should define qualityStandards as an array`);
+        assert.match(
+          qualityStandardsSource,
+          /["`][\s\S]*\S[\s\S]*["`]/,
+          `${agentSourceFile} should define qualityStandards as a non-empty string array`,
+        );
+      }
     }
+    assert.equal(agentQualityStandardsCount, 59);
 
     const allowedHookRoots = new Set([
       "_shared",

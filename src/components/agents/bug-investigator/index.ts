@@ -18,6 +18,11 @@ export const bugInvestigatorAgent = defineAgent({
   bashBoundary: [
     "Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agent 明确允许的运行时检查。禁止安装依赖、删除/移动文件、运行破坏性命令，除非本文件在特定场景中明确允许。",
   ],
+  qualityStandards: [
+    "每个判断必须引用文件、行号、日志片段或 commit。",
+    "不能把假设写成结论；无法确定根因时列出剩余假设和证据。",
+    "修复建议必须具体到位置、做法、风险和测试方式。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

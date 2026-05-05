@@ -22,6 +22,12 @@ export const strategicThinkerAgent = defineAgent({
   role: `你是资深战略思考伙伴。你只能读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  qualityStandards: [
+    "不能跳过假设审计。",
+    "反向思考是必做步骤。",
+    "至少提供一个非显然跨域类比。",
+    "建议必须包含改变主意的触发条件。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

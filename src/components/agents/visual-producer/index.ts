@@ -22,6 +22,12 @@ export const visualProducerAgent = defineAgent({
   bashBoundary: [
     "Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agent 明确允许的运行时检查。禁止安装依赖、删除/移动文件、运行破坏性命令，除非本文件在特定场景中明确允许。",
   ],
+  qualityStandards: [
+    "每个资产必须先定义尺寸和格式。",
+    "色板必须用 hex 值。",
+    "压缩目标必须可量化。",
+    "多资产项目必须共享风格系统。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Write, KnownTool.Edit, KnownTool.Bash, KnownTool.WebSearch, KnownTool.WebFetch],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

@@ -22,6 +22,13 @@ export const observabilityEngineerAgent = defineAgent({
   bashBoundary: [
     "Bash 用于读取本地仓库的观测配置、metrics 定义、日志格式模板和告警规则文件；运行用户授权的格式校验与语法检查。禁止连接生产监控系统、修改告警规则/阈值、重启 exporter 或调整采样率。",
   ],
+  qualityStandards: [
+    "指标必须区分「用户可见」与「内部实现」；告警优先覆盖用户可见指标。",
+    "告警规则必须包含 runbook 链接或排查入口；禁止裸告警无处置流程。",
+    "结构化日志字段按服务统一，不允许多服务不同字段名指代同一含义。",
+    "采样策略明确标注：head sampling vs tail sampling，每种策略的延迟/成本/覆盖折衷。",
+    "不修改生产配置；改动建议交回 SRE/oncall 团队主导执行。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

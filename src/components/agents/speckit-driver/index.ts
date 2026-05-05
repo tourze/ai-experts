@@ -32,6 +32,13 @@ export const speckitDriverAgent = defineAgent({
   bashBoundary: [
     "Bash 用于运行 `.specify/scripts/*` 脚本、测试命令、git 历史与状态查询、文件统计；禁止安装依赖、删除 `.specify/` 之外的工作区文件，或运行破坏性命令。Implement 阶段执行用户授权的构建/测试命令前必须先回显该命令。",
   ],
+  qualityStandards: [
+    "每个阶段切换必须有可验证产物（文件路径 + 关键内容摘要）。",
+    "严禁跳阶段：Plan 前必须有合格 spec，Implement 前必须有合格 tasks，Validate 前必须有可运行实现。",
+    "高风险变更（公共契约、schema、并发、跨模块）必须显式列出并等待确认。",
+    "失败 3 次的环节按 spec-driven-delivery 协议升级停下问人，不连环重试。",
+    "不在交付报告之外修改任何与本特性无关的文件。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

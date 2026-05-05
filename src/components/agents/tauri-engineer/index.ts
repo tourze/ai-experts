@@ -21,6 +21,14 @@ export const tauriEngineerAgent = defineAgent({
   bashBoundary: [
     "Bash 用于：`cargo build`、`cargo test`、`cargo clippy`、`cargo check`、`npm run build`、`pnpm build`、`tauri build`、git 操作。禁止：`tauri build` 发布模式不经确认、修改签名证书、连接外部发布服务。",
   ],
+  qualityStandards: [
+    "IPC command 有明确的参数类型和错误类型，不使用 String 通配错误。",
+    "权限声明最小化：每个 capability 只声明实际需要的 command 和 scope。",
+    "前端 invoke 调用有超时和错误处理，不静默吞 IPC 错误。",
+    "事件监听在组件卸载时清理，避免内存泄漏和重复订阅。",
+    "构建产物经过代码签名验证（macOS）或 installer 测试（Windows/Linux）。",
+    "每个 command 至少有一个集成测试，关键安全路径有权限边界测试。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

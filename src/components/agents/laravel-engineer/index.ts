@@ -27,6 +27,14 @@ export const laravelEngineerAgent = defineAgent({
   bashBoundary: [
     "Bash 用于：`php artisan`、`composer install`、`phpunit`、`phpstan analyse`、`pint`、`composer audit`、git 操作。禁止：修改生产配置、连接生产数据库、`composer require` 不经确认、`php artisan migrate` 生产环境不经审查。",
   ],
+  qualityStandards: [
+    "Controller 只做路由和参数校验，业务逻辑在 Service/Action 层，不出现 Fat Controller。",
+    "每个 Policy 覆盖对应 Model 的所有权限操作，FormRequest 有明确的 authorize 和 rules。",
+    "Eloquent 查询默认 eager load 关联，关键路径通过 Laravel Debugbar/telescope 验证无 N+1。",
+    "Job 幂等：重复 dispatch 不产生副作用，失败有显式 retry 和 failed handler。",
+    "新代码声明 `declare(strict_types=1)`，返回类型和参数类型完整标注。",
+    "每个 Service/Action 至少有一个单元测试，关键路径覆盖 happy/edge/error 三层。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

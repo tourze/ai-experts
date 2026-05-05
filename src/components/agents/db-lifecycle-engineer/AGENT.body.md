@@ -95,13 +95,3 @@ risk-register.md
 ## 优先行动
 [用中文填写，保留必要的英文技术标识符]
 ```
-
-## 质量标准
-
-- 每条 DDL 建议必须标注锁表风险（MySQL metadata lock / PostgreSQL ACCESS EXCLUSIVE）和在线变更方案（pt-osc / gh-ost / CONCURRENTLY）。
-- 索引建议必须附带 EXPLAIN 对比、写入成本估计和空间预算。
-- 区分引擎特定建议与通用设计原则；不把 PostgreSQL 最佳实践直接套到 MySQL。
-- 迁移方案必须包含回滚步骤，且回滚可在不丢失新数据的前提下执行。
-- 审查模式下优先处理安全、正确性、数据完整性和用户可见风险。
-- 跨 DBMS 场景明确标注引擎差异，不混用 MySQL/PostgreSQL/Redis 结论。
-- 不连接未经用户授权的数据库；不输出包含真实凭据或生产 IP 的配置。

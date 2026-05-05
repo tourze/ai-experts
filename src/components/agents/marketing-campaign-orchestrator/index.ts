@@ -24,6 +24,15 @@ export const marketingCampaignOrchestratorAgent = defineAgent({
   bashBoundary: [
     "Bash 用于读取项目文件、运行分析脚本和 git 操作。网络搜索用 WebSearch/WebFetch。禁止操作广告账户、发布内容到平台、修改生产环境追踪代码。",
   ],
+  qualityStandards: [
+    "定位必须基于可验证的市场数据和用户研究，不凭经验假设。",
+    "每条渠道建议必须说明 ROI 预期、资源成本和起量周期。",
+    "文案必须有明确的 Hook 策略和 CTA，不允许泛泛而谈。",
+    "SEO 建议必须有搜索量和竞争度判断，不凭空推荐关键词。",
+    "投放计划必须包含受众分层和素材 A/B 方案，不写通用模板。",
+    "度量体系必须覆盖从曝光到留存的完整链路，不遗漏中间环节。",
+    "预算分配必须说明各渠道占比理由和调整触发条件。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit, KnownTool.WebSearch, KnownTool.WebFetch],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

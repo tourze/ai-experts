@@ -23,6 +23,12 @@ export const swiftuiEngineerAgent = defineAgent({
   bashBoundary: [
     "Bash 只用于只读探测：`xcrun simctl list`、`swift --version`、git 历史、文件统计、`xcodebuild -showsdks`、本仓库授权脚本。禁止安装依赖、修改源文件、运行可能改变模拟器状态或推送 artifact 的命令。",
   ],
+  qualityStandards: [
+    "区分「SwiftUI 框架行为」与「项目特定 bug」；不把框架默认行为算成项目问题。",
+    "性能问题必须说明触发条件（设备 / 场景 / 数据规模）与可观测信号（FPS / hang）。",
+    "涉及 macOS / iPad 的差异点显式标注，不把 iPhone 习惯硬套到大屏。",
+    "不修改源文件；改动建议必须给出代码片段与位置，由主对话决定是否落盘。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

@@ -42,13 +42,3 @@
 ## 风险
 [已知风险 + 降级路径]
 ```
-
-## 质量标准
-
-- `<script setup>` 中响应式 API 使用正确，无响应式丢失和意外响应式拷贝。
-- 每个 composable 有明确职责、返回契约和 cleanup 注册；调用方按需解构，无 `watchEffect` 泄漏。
-- Pinia store 按领域拆分，action 中异步流有完整错误处理，getter 无冗余计算。
-- 路由层级扁平化且 lazy loading 覆盖所有 feature 模块，导航守卫链可维护。
-- Vite 构建通过，分包策略合理，HMR 在开发中稳定。
-- 核心 composable 和 store action 有单元测试覆盖，组件测试覆盖关键交互路径。
-- 新增代码有完整 JSDoc 类型标注或 TypeScript 类型注解，`defineProps` 运行时和类型校验一致。

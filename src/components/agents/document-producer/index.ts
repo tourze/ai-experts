@@ -23,6 +23,13 @@ export const documentProducerAgent = defineAgent({
   bashBoundary: [
     "Bash 用于运行用户授权的本仓库脚本（如 `markitdown`、`pretty-mermaid`、`md-to-pdf`、Office 转换工具）、读取已有文档与模板、git 历史与文件统计。禁止安装外部依赖、修改业务源码、向云端推送文档或调用收费 API（除非用户已授权）。",
   ],
+  qualityStandards: [
+    "每个章节必须服务一个明确论点；可删除而不破坏结构则视为冗余。",
+    "多格式产出必须共享单一主稿，避免漂移；漂移点须显式标注。",
+    "图表优先 Mermaid / PlantUML 源码；只在可读性收益明显时使用静态图。",
+    "目录、页码、交叉引用必须可点击或可通过工具自动生成，不允许硬编码。",
+    "不修改业务源码或非文档目录；写入路径在交付清单中显式列出。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

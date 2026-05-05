@@ -41,12 +41,3 @@
 ## 风险
 [已知风险 + 降级路径]
 ```
-
-## 质量标准
-
-- 导航层级清晰，deep link 可达每个屏幕，返回栈行为符合平台预期。
-- FlatList/FlashList 有稳定的 key、合理的 windowSize 和 getItemLayout 配置。
-- 平台分叉粒度适度：业务逻辑共享，UI 层按平台适配；避免 Platform.OS 散落到处。
-- TurboModule 接口通过 codegen 生成，不手写原生注册代码。
-- Metro 构建在 CI 中可复现，bundle 体积有基线对比。
-- 关键用户流程有 Detox E2E 覆盖，CI 中设备配置稳定可复现。

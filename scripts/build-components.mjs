@@ -480,18 +480,41 @@ function validateAgentBashBoundary(agent) {
   return boundary;
 }
 
+function validateAgentQualityStandards(agent) {
+  const standards = agent.qualityStandards;
+  if (standards === undefined) return [];
+  if (!Array.isArray(standards) || standards.length === 0) {
+    throw new Error(`Agent ${agent.id} qualityStandards must be a non-empty string array when defined`);
+  }
+  for (const [index, item] of standards.entries()) {
+    if (typeof item !== "string" || item.trim() === "") {
+      throw new Error(`Agent ${agent.id} qualityStandards[${index}] must be a non-empty string`);
+    }
+  }
+  return standards;
+}
+
 function renderAgentBashBoundary(agent) {
   const boundary = validateAgentBashBoundary(agent);
   if (boundary.length === 0) return "";
   return `## Bash 使用边界\n\n${boundary.map((item) => item.trim()).join("\n\n")}\n`;
 }
 
+function renderAgentQualityStandards(agent) {
+  const standards = validateAgentQualityStandards(agent);
+  if (standards.length === 0) return "";
+  return `## 质量标准\n\n${renderMarkdownBulletList(standards)}\n`;
+}
+
 function renderAgentBodyWithGeneratedSections(agent, body) {
-  return insertSectionBeforeH2Matching(
+  const bodyWithBashBoundary = insertSectionBeforeH2Matching(
     body,
     renderAgentBashBoundary(agent),
     (title) => title === "输出格式",
   );
+  const qualityStandards = renderAgentQualityStandards(agent);
+  if (!qualityStandards) return bodyWithBashBoundary;
+  return `${bodyWithBashBoundary.trimEnd()}\n\n${qualityStandards.trimEnd()}`;
 }
 
 function renderSkillMd(skill, platform) {
@@ -651,12 +674,12 @@ function renderClaudeAgent(agent) {
   const lines = ["---", `name: ${agent.id}`, `description: ${yamlScalar(agent.description)}`];
   const tools = (agent.tools ?? []).filter((tool) => typeof tool === "string").map(String);
   if (tools.length > 0) lines.push(`tools: ${tools.join(", ")}`);
-  const preloadSkills = (agent.skills ?? [])
-    .filter((skill) => skill.mode === "preload")
-    .map((skill) => skill.id);
-  if (preloadSkills.length > 0) {
+  // Claude subagents do not inherit parent-session skills; every orchestrated
+  // skill must be listed explicitly in frontmatter.
+  const claudeSkills = (agent.skills ?? []).map((skill) => skill.id);
+  if (claudeSkills.length > 0) {
     lines.push("skills:");
-    for (const skill of preloadSkills) lines.push(`  - ${skill}`);
+    for (const skill of claudeSkills) lines.push(`  - ${skill}`);
   }
   const model = agent.claudeModel ?? agent.model;
   if (model) lines.push(`model: ${model}`);
@@ -1176,6 +1199,10 @@ function validateRegistry(registry) {
     if (hasH2SectionMatching(agentBodySource, (title) => title === "Bash 使用边界")) {
       throw new Error(`Agent ${agent.id} must move ## Bash 使用边界 from AGENT.body.md to bashBoundary`);
     }
+    if (hasH2SectionMatching(agentBodySource, (title) => title === "质量标准")) {
+      throw new Error(`Agent ${agent.id} must move ## 质量标准 from AGENT.body.md to qualityStandards`);
+    }
+    validateAgentQualityStandards(agent);
     const hasBashTool = hasStringTool(agent, "Bash");
     const bashBoundary = validateAgentBashBoundary(agent);
     if (hasBashTool && bashBoundary.length === 0) {

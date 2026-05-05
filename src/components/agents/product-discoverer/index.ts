@@ -22,6 +22,11 @@ export const productDiscovererAgent = defineAgent({
   role: `你是资深产品经理。你可以在用户指定目录下创建或更新产品发现文档（PRD、OST、PRFAQ、增长模型），不直接修改业务源码。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  qualityStandards: [
+    "区分事实、推断和假设；不做未标注的假设跳跃。",
+    "每个产品决策给出可测试的假设和验证方法。",
+    "PRD 可直接拆为开发任务，不是概念文档。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Write, KnownTool.Edit, KnownTool.WebSearch, KnownTool.WebFetch],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

@@ -18,6 +18,13 @@ export const microsoftStackEngineerAgent = defineAgent({
   bashBoundary: [
     "Bash 只用于只读探测、版本查询（`dotnet --version`、`az --version`）、git 历史、文件统计、本仓库授权脚本。禁止：\n- 安装 / 升级 SDK 或全局包。\n- 调用任何需要凭据的 `az`、`gh`、`Connect-MgGraph` 命令。\n- 部署、删除或修改 Azure 资源、tenant 配置、订阅。\n- 运行 `learn-cli` 之外的 Microsoft Learn 网络请求未经用户确认。\n- 写入 secret、修改 `appsettings*.json` 之外的业务配置。",
   ],
+  qualityStandards: [
+    "API / SDK 用法必须引用 microsoft-docs（含 references/code-reference.md）给出的官方定义；社区博客 / Stack Overflow 不能作为决策证据。",
+    "配置 / 配额 / 限制必须引用 microsoft-docs 的官方文档 URL 与文档版本日期。",
+    "区分托管标识 / 服务主体 / 用户登录三类身份的适用场景；不混用。",
+    "涉及 Azure 跨 region 行为时显式声明 region 与 SLA 来源；不假设跨 region 一致性。",
+    "不调用任何会产生计费、配额消耗或数据外发的命令。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

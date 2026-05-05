@@ -23,6 +23,12 @@ export const securityAuditorAgent = defineAgent({
   bashBoundary: [
     "Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agent 明确允许的运行时检查。禁止安装依赖、删除/移动文件、运行破坏性命令，除非本文件在特定场景中明确允许。",
   ],
+  qualityStandards: [
+    "区分已确认漏洞（confirmed）/ 潜在风险（likely）/ 推测风险（speculative）。",
+    "按可利用性和业务影响排序，不按数量排序。",
+    "未覆盖的入口和边界必须显式列出，标注为\"未审计\"。",
+    "每条发现必须有可核验的代码位置，不可凭经验猜。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

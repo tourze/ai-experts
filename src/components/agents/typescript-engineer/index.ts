@@ -19,6 +19,14 @@ export const typescriptEngineerAgent = defineAgent({
   bashBoundary: [
     "Bash 用于：`tsc --noEmit`、`eslint`、`jest`、`vitest`、`npm run build`、`pnpm build`、git 操作。禁止：修改生产配置、连接外部 API 不经确认、`npm install` 不经确认的依赖变更。",
   ],
+  qualityStandards: [
+    "`tsc --noEmit` 零错误，strict 模式所有 flag 开启或显式标注关闭原因。",
+    "新增代码零 `any` 和零 `as` 强制断言；确实需要的用 `unknown` + 类型守卫收口。",
+    "API DTO 由单一 schema（zod/yup/class-validator）推导，类型和运行时校验不同步零容忍。",
+    "NestJS 模块边界清晰：feature module vs shared module 有明确判断标准。",
+    "每个 Service/Provider 至少有一个单元测试，关键 API 路径有集成测试覆盖。",
+    "泛型设计有合理约束，条件类型分支可读，不为了「类型体操」牺牲可维护性。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

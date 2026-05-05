@@ -20,6 +20,14 @@ export const designSystemArchitectAgent = defineAgent({
   bashBoundary: [
     "Bash 用于读取仓库内的 design tokens、配置、组件源码、git 历史，运行用户授权的本仓库构建 / lint / typecheck 命令验证 token 一致性。禁止安装依赖、修改 CI、向 Figma / 设计 SaaS 推送、改产品页面源码。",
   ],
+  qualityStandards: [
+    "token 命名必须语义化；以颜色形态、像素值或品牌名命名将被视为缺陷。",
+    "颜色必须在 OKLCH 下校准对比度与 ramp 单调性，给出 WCAG 评级。",
+    "字体配对必须给出 fallback 栈、license 与可读性评估，不仅给字体名。",
+    "组件交付必须含 a11y（键盘、screen reader、焦点环、ARIA）；缺 a11y 视为未完成。",
+    "不破坏既有公共 props；deprecate 必须留过渡路径。",
+    "不修改产品业务页面；只动设计系统目录与配套文档。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

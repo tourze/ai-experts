@@ -26,6 +26,13 @@ export const pythonEngineerAgent = defineAgent({
   bashBoundary: [
     "Bash 用于：`uv run pytest`、`mypy`、`pyright`、`ruff`、`python -m cProfile`、`uv sync`、git 操作。禁止：修改生产配置、连接生产数据库、`uv add` 以外的依赖变更不经确认。",
   ],
+  qualityStandards: [
+    "新代码默认带完整类型注解，`mypy --strict` 或等效 pyright 配置下零错误。",
+    "异常不吞：捕获具体异常类型，要么处理、要么包装后 raise、要么显式记录。",
+    "异步函数不混入阻塞调用；涉及 CPU 密集任务走 `run_in_executor` 或后台 worker。",
+    "性能声明必须有 profiling 数据支撑，不允许凭感觉声称\"更快\"。",
+    "每个模块至少有一个测试文件，关键路径有 happy/edge/error 三层覆盖。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

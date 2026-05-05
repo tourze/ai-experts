@@ -21,6 +21,13 @@ export const infrastructureEngineerAgent = defineAgent({
   bashBoundary: [
     "Bash 用于读取本仓库的 Dockerfile、Compose、Chart、脚本和 SSH 配置；运行 `docker --help`、`helm lint`、`helm template`、shellcheck 等只读或本地验证命令。禁止连接远端 Docker daemon、kubectl apply、helm install/upgrade、SSH 连接远端主机。",
   ],
+  qualityStandards: [
+    "所有 Dockerfile 必须使用显式版本标签，禁止 `latest`。",
+    "Helm Chart 交付前至少通过 `helm lint` 与 Chart 自带 validation 脚本。",
+    "Shell 脚本必须可独立运行，不依赖未声明的环境变量或工具。",
+    "SSH 主机配置不存储明文密码以外的凭据（私钥等）在 `~/.host/` JSON 中。",
+    "所有改动需附带验证命令，让接收者能自行确认正确性。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

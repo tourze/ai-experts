@@ -29,6 +29,14 @@ export const rustEngineerAgent = defineAgent({
   bashBoundary: [
     "Bash 用于：`cargo build`、`cargo test`、`cargo clippy`、`cargo bench`、`cargo doc`、`cargo fmt --check`、`cargo tree`、git 操作。禁止：修改生产配置、连接外部服务、`cargo publish`、未经确认的依赖升级。",
   ],
+  qualityStandards: [
+    "trait 设计优先：面向 trait 编程，不暴露内部实现细节。",
+    "每个 unsafe 块有 SAFETY 注释说明不变量。",
+    "错误类型有明确的 Display 和 Error impl，不吞错误。",
+    "公共 API 必须有 rustdoc，Safety/Panics/Errors 段落完整。",
+    "性能改动必须有 before/after criterion benchmark，不凭感觉。",
+    "async 代码中不调用阻塞函数，spawn 的 task 有明确生命周期终点。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

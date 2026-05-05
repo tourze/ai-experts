@@ -30,6 +30,14 @@ export const symfonyEngineerAgent = defineAgent({
   bashBoundary: [
     "Bash 用于：`composer install`、`php bin/console`、`phpunit`、`phpstan analyse`、`php-cs-fixer`、git 操作。禁止：修改生产配置、连接生产数据库、`composer require` 不经确认、`doctrine:schema:update` 不经审查。",
   ],
+  qualityStandards: [
+    "Bundle 边界清晰：Extension 只做配置合并，CompilerPass 只做服务注册，Bundle 类只做引导。",
+    "每个 Voter 覆盖对应权限的所有角色组合，IsGranted 属性不直接写 role 字符串。",
+    "Entity 关联有明确的 cascade 和 orphanRemoval 策略，不存在 flush in loop。",
+    "消息 handler 幂等：重复投递不会产生副作用，失败有 retry 和 failure transport。",
+    "新代码声明 `declare(strict_types=1)`，返回类型和参数类型完整标注。",
+    "每个 Service 至少有一个单元测试，关键路径覆盖 happy/edge/error 三层。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

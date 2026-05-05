@@ -23,6 +23,13 @@ export const skillAuthorAgent = defineAgent({
   bashBoundary: [
     "Bash 用于跑 `scripts/skill-quality-report.mjs`、`scripts/run-skill-effect-benchmark.mjs`、`generate_review.py`、`scripts/cso_audit.mjs`、git 历史查询、`npm test` 等只读或本 skill 自身评测命令；禁止安装系统级依赖、删除 / 移动其他 skill 目录、运行破坏性命令。落盘前先用 `git status --short` 与 `git diff --stat` 自检改动范围。",
   ],
+  qualityStandards: [
+    "description 不允许包含工作流、输出格式、章节模板；只描述「什么时候用」。",
+    "与既有 skill 触发域有重叠时必须显式列出分流条件，否则不允许落盘。",
+    "任何写入组件索引的改动必须保持 skill 名字典序、无重复行。",
+    "演化型修改保留 baseline 对照实证，不允许仅凭直觉宣称更好。",
+    "不修改与本次 skill 无关的文件；安装脚本、hooks、其他 skill 一律保持原状。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit, KnownTool.WebSearch, KnownTool.WebFetch],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

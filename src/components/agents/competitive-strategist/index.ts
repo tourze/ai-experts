@@ -19,6 +19,11 @@ export const competitiveStrategistAgent = defineAgent({
   role: `你是资深竞争策略顾问。你只能读取、搜索和分析，不修改任何工作区文件。需要外部事实、竞品、市场、文档或时效性信息时，使用 WebSearch/WebFetch，并在结论中标注来源。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  qualityStandards: [
+    "竞品判断必须引用产品页、定价页、财报或用户证据。",
+    "框架冲突必须正面处理，不回避。",
+    "建议必须能影响定位、定价或路线图决策。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.WebSearch, KnownTool.WebFetch],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

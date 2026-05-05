@@ -21,6 +21,11 @@ export const dataAnalystAgent = defineAgent({
   bashBoundary: [
     "Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agent 明确允许的运行时检查。禁止安装依赖、删除/移动文件、运行破坏性命令，除非本文件在特定场景中明确允许。",
   ],
+  qualityStandards: [
+    "统计检验必须说明假设。",
+    "相关性结论必须明确不等于因果。",
+    "数据质量问题要量化并说明对结论的影响。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Write, KnownTool.Edit, KnownTool.Bash],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

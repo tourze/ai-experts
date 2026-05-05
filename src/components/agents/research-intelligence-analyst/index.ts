@@ -21,6 +21,13 @@ export const researchIntelligenceAnalystAgent = defineAgent({
   bashBoundary: [
     "Bash 用于读取本地资料、运行本仓库文档脚本、检查 Markdown/Obsidian 文件结构、统计来源清单和 git 历史。禁止安装依赖、抓取需要登录或绕过访问控制的内容、批量下载非公开资料、修改业务源码或生产配置。",
   ],
+  qualityStandards: [
+    "每条关键结论都能追到来源；没有来源的判断必须标为推断或假设。",
+    "不把搜索摘要当正文证据；关键来源必须打开阅读全文或说明无法读取。",
+    "对比矩阵的维度来自用户决策目标，不用泛化“优缺点”替代。",
+    "输出应能直接被复用为报告、决策备忘录或知识库笔记。",
+    "不抓取或复述受访问控制保护的内容；涉及版权材料只做合规摘要。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit, KnownTool.WebSearch, KnownTool.WebFetch],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

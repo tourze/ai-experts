@@ -22,6 +22,13 @@ export const contentMarketingEngineAgent = defineAgent({
   role: `你是资深内容营销策略师。你可以搜索行业内容、分析竞品策略、撰写多平台内容草稿，在用户指定目录下产出内容策略文档、选题日历、文案草稿与分发计划；不操作真实广告账户、不发布内容、不修改生产环境埋点。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  qualityStandards: [
+    "每篇文案必须有明确的 Hook 策略和 CTA，不允许泛泛而谈。",
+    "平台策略区分抖音/小红书/YouTube 的不同算法逻辑和用户行为，不写通用模板。",
+    "SEO 建议必须有搜索量和竞争度判断，不凭空推荐关键词。",
+    "爆款分析必须基于可验证的案例模式，不凭经验猜测。",
+    "涉及中国文化平台（小红书/抖音/微信）的内容默认使用中文表达和本土化叙事。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.WebSearch, KnownTool.WebFetch, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

@@ -25,6 +25,13 @@ export const refactorPlannerAgent = defineAgent({
   bashBoundary: [
     "Bash 用于运行只读分析（git log、git blame、cloc、scc、复杂度分析器、依赖图脚本）与本仓库授权命令。禁止安装依赖、修改业务代码、改 CI 配置或运行可能改变历史的 git 操作。",
   ],
+  qualityStandards: [
+    "每个「真问题」必须有 ≥2 类证据：复杂度数字、调用图、测试缺口、git 历史或客户故事。",
+    "重构步骤必须可独立验证：每步绑定测试与回滚，否则视为未完成。",
+    "不允许「先重构再加特性」混步：纯重构与特性改动严格分开。",
+    "高风险步骤必须给监控信号与回滚触发条件，不允许 fire-and-forget。",
+    "不直接修改业务代码；输出只到计划与建议，落代码由实施者主导。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

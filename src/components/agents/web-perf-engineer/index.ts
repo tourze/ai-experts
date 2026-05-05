@@ -22,6 +22,12 @@ export const webPerfEngineerAgent = defineAgent({
   bashBoundary: [
     "Bash 用于运行用户授权的本仓库构建 / 分析命令（`vite build`、`next build`、`webpack-bundle-analyzer`、`lighthouse`、`source-map-explorer`），读取 stats、trace、性能 log。禁止安装依赖、修改构建配置、对生产域跑高负载脚本或 push 监测数据。",
   ],
+  qualityStandards: [
+    "区分 lab 数据（lighthouse / synthetic）与 RUM 数据（真实用户），结论中显式标注口径。",
+    "不混层归因：网络问题不写成 React 问题、CSS 问题不写成 JS 问题。",
+    "给出修复成本估计与可逆性，避免「重构整个 bundle」类不可执行建议。",
+    "不修改业务代码或构建配置；改动建议带具体位置与样例代码片段。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

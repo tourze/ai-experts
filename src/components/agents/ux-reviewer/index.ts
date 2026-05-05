@@ -24,6 +24,11 @@ export const uxReviewerAgent = defineAgent({
   bashBoundary: [
     "Bash 用于只读探测：检查组件结构、CSS 文件、国际化资源文件、构建配置。禁止修改源码、样式或配置。",
   ],
+  qualityStandards: [
+    "每条发现绑定具体位置（文件路径 + 组件名或 DOM 位置），不用\"某些地方\"。",
+    "区分可用性违规（必须修复）和设计偏好（建议）。",
+    "不写泛泛建议，每条修复建议具体到可执行的改动。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

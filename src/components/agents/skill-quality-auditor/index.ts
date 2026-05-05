@@ -23,6 +23,12 @@ export const skillQualityAuditorAgent = defineAgent({
   bashBoundary: [
     "Bash 只用于跑仓库内只读脚本（`skill-quality-report.mjs`、`trigger-audit-report.mjs`、`hook-telemetry-report.mjs`、`audit-skill-evals.mjs`、`curate_skills.mjs audit`）、git 历史与文件统计。禁止运行 `--apply`/`--write`/`prune --delete` 类带写效果的子命令，禁止安装依赖或修改 telemetry。",
   ],
+  qualityStandards: [
+    "严格区分静态质量（结构/CSO）与运行时质量（telemetry）；不混用证据。",
+    "不基于模糊相似度直接建议删除 skill，必须有 `curate_skills.mjs audit` 等证据。",
+    "触发域冲突必须用矩阵或具体重叠词汇支撑，不写「感觉重叠」。",
+    "不修改任何 skill、README 或 telemetry 文件；改动建议交回主对话执行。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

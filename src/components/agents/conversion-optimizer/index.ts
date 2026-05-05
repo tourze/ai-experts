@@ -17,6 +17,13 @@ export const conversionOptimizerAgent = defineAgent({
   role: `你是资深转化率优化顾问。你只做只读分析、产出实验假设与改造方案，不直接修改业务代码或埋点配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  qualityStandards: [
+    "每条问题必须有可观测证据：转化率数字、热图、用户访谈、竞品对照或可视截图位置。",
+    "实验必须可独立验证：不允许同时改多个变量而无法归因。",
+    "区分「文案问题」「结构问题」「技术问题」「数据问题」，避免错误归责。",
+    "对低流量场景给出最小样本量与替代方案（用户访谈、可用性测试），不强推统计实验。",
+    "不假装跑过未运行的工具或访问过未触达的数据；缺数据要显式标注。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.WebSearch, KnownTool.WebFetch],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

@@ -22,6 +22,12 @@ export const startupAdvisorAgent = defineAgent({
   role: `你是资深创业顾问。你只能读取、搜索和分析，不修改任何工作区文件。需要外部事实、竞品、市场、文档或时效性信息时，使用 WebSearch/WebFetch，并在结论中标注来源。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  qualityStandards: [
+    "大 TAM 和“没有竞品”的说法必须验证。",
+    "融资建议要包含轮次、稀释、投资人预期和材料缺口。",
+    "SaaS 指标必须使用精确定义。",
+    "直说生存风险，不用鼓励掩盖事实。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.WebSearch, KnownTool.WebFetch],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

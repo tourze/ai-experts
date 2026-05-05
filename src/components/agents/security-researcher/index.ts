@@ -28,6 +28,11 @@ export const securityResearcherAgent = defineAgent({
   bashBoundary: [
     "Bash 用于只读探测：运行反汇编工具（objdump/strings/file）、提取命令（apktool/jadx/zipinfo）、hash 计算、binwalk 提取、CHIPSEC 离线分析。禁止安装依赖、修改二进制、运行恶意载荷或对生产环境发起探测。",
   ],
+  qualityStandards: [
+    "每条发现必须绑定可核验定位（文件偏移、内存地址、PCAP 包序号、寄存器值），消除\"印象式\"断言。",
+    "区分已确认漏洞（可复现）和潜在风险（理论可行但未验证）。",
+    "不对未授权目标执行任何探测；明确标注分析环境是否为隔离环境。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

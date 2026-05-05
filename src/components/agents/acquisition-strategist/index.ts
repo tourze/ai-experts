@@ -25,6 +25,12 @@ export const acquisitionStrategistAgent = defineAgent({
   role: `你是资深获客策略师。你只能读取、搜索和分析，不修改任何工作区文件。需要外部事实、竞品、市场、文档或时效性信息时，使用 WebSearch/WebFetch，并在结论中标注来源。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  qualityStandards: [
+    "每个渠道建议必须说明 ROI 预期和资源成本。",
+    "每条建议必须对应漏斗阶段。",
+    "必须展示框架之间的依赖和复利关系。",
+    "缺数据时明确假设和验证方式。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.WebSearch, KnownTool.WebFetch],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

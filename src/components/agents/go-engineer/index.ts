@@ -32,6 +32,14 @@ export const goEngineerAgent = defineAgent({
   bashBoundary: [
     "Bash 用于：`go build`、`go test`、`go vet`、`golangci-lint`、`go mod`、`pprof`、`benchstat`、git 操作。禁止：修改生产配置、连接生产数据库、`go mod tidy` 以外的依赖升级不经确认。",
   ],
+  qualityStandards: [
+    "接口设计优先：先定契约再实现，不写\"以后再说\"的 interface{}。",
+    "每个并发 goroutine 有明确的生命周期终点（context 取消或 channel 关闭）。",
+    "错误不吞：所有 error 要么处理、要么包装向上传播、要么显式记录后降级。",
+    "性能改动必须有 before/after benchmark 数据，不允许凭感觉声称\"更快\"。",
+    "公共 API 必须有文档注释，导出符号的可见性经过审视。",
+    "每个导出函数至少有一个 table-driven test，并发敏感代码跑 `-race`。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

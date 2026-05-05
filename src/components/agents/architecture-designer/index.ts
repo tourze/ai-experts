@@ -28,6 +28,11 @@ export const architectureDesignerAgent = defineAgent({
   bashBoundary: [
     "Bash 用于只读探测：检查依赖树、目录结构、git 历史、配置文件。禁止修改业务代码、运行配置或部署脚本。",
   ],
+  qualityStandards: [
+    "每个架构决策显式写出 trade-off，不用\"最佳实践\"替代理由。",
+    "区分\"确定要做\"和\"需要验证的假设\"。",
+    "给出实施阶段和每个阶段的验收标准，不是一坨设计文档。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],
   sandbox: AgentSandbox.WorkspaceWrite,
   skills: [

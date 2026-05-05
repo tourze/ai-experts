@@ -21,6 +21,12 @@ export const testQualityReviewerAgent = defineAgent({
   bashBoundary: [
     "Bash 用于运行用户授权的本仓库测试命令、覆盖率分析、测试报告解析、git 历史查询。禁止安装依赖、修改测试或源码、覆盖测试报告或推送 artifact。",
   ],
+  qualityStandards: [
+    "区分「测试代码缺陷」与「待测代码缺陷」；不把生产代码 bug 算成测试质量问题。",
+    "间歇失败必须给可重现假设和复现命令；否则只列为「需要进一步调查」。",
+    "给 mock 替代方案时必须考虑测试运行成本，不强推「全部用真实依赖」。",
+    "不修改测试或源码；改动建议交回主对话与 test-generator agent 执行。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

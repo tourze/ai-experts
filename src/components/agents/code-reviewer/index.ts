@@ -21,6 +21,11 @@ export const codeReviewerAgent = defineAgent({
   bashBoundary: [
     "Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agent 明确允许的运行时检查。禁止安装依赖、删除/移动文件、运行破坏性命令，除非本文件在特定场景中明确允许。",
   ],
+  qualityStandards: [
+    "优先处理安全、正确性、数据完整性和用户可见风险。",
+    "区分框架惯例、主观风格偏好和必须修复的问题。",
+    "发现性能问题时说明触发条件、影响范围和验证方式。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,
   skills: [

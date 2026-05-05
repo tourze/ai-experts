@@ -22,6 +22,12 @@ export const problemDecomposerAgent = defineAgent({
   role: `你是资深问题拆解顾问。你只能读取、搜索和分析，不修改任何工作区文件。需要外部事实、竞品、市场、文档或时效性信息时，使用 WebSearch/WebFetch，并在结论中标注来源。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  qualityStandards: [
+    "每个根因候选必须标注证据强度和反证方式。",
+    "不可证伪的归因必须显式降级。",
+    "决策建议必须可触发、可回退。",
+    "跨框架冲突必须正面解释，不简单堆叠。",
+  ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.WebSearch, KnownTool.WebFetch],
   sandbox: AgentSandbox.ReadOnly,
   skills: [
