@@ -85,6 +85,4 @@ node ./scripts/search.mjs 'document upload cloud' 5
 
 ## 参考资料
 
-- [design-system-patterns](../design-system-patterns/SKILL.md)
-- [figma-implement-design](../figma-implement-design/SKILL.md)
 - [scripts/search.mjs](scripts/search.mjs)

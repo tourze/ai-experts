@@ -319,6 +319,16 @@ function renderConstraints(skill) {
   return renderTextListSection(skill, "constraints", "核心约束", "constraint");
 }
 
+function renderRelatedSkills(skill) {
+  const relatedSkills = skill.relatedSkills ?? [];
+  if (relatedSkills.length === 0) return "";
+  const rows = relatedSkills.map((related) => {
+    const label = related.label ?? related.id;
+    return `- [${label}](../${related.id}/SKILL.md) — ${related.reason}`;
+  });
+  return `## 相关 Skill\n\n${rows.join("\n")}\n`;
+}
+
 function hasH2SectionMatching(source, predicate) {
   let inFence = false;
   for (const line of source.split(/\r?\n/)) {
@@ -346,6 +356,7 @@ function renderSkillMd(skill, platform) {
     "",
     renderUseCases(skill),
     renderConstraints(skill),
+    renderRelatedSkills(skill),
     body,
     renderScriptRegistry(skill, platform),
     renderReferenceMap(skill),
@@ -838,6 +849,30 @@ function validateRegistry(registry) {
     }
     if (hasH2SectionMatching(bodySource, (title) => title.startsWith("核心约束"))) {
       throw new Error(`Skill ${skill.id} must move ## 核心约束 from SKILL.body.md to constraints`);
+    }
+    if (/\]\(\.\.\/[^)]+\/SKILL\.md\)|\]\([a-z0-9-]+-expert:[a-z0-9-]+\)/u.test(bodySource)) {
+      throw new Error(`Skill ${skill.id} must move explicit cross-skill links from SKILL.body.md to relatedSkills`);
+    }
+    const seenRelatedSkills = new Set();
+    for (const related of skill.relatedSkills ?? []) {
+      validateId(related.id, `related skill in ${skill.id}`);
+      if (!skillIds.has(related.id)) {
+        throw new Error(`Skill ${skill.id} references missing related skill: ${related.id}`);
+      }
+      if (related.id === skill.id) {
+        throw new Error(`Skill ${skill.id} must not reference itself as a related skill`);
+      }
+      if (related.label !== undefined && (typeof related.label !== "string" || related.label.trim() === "")) {
+        throw new Error(`Skill ${skill.id} related skill ${related.id} has an empty label`);
+      }
+      if (typeof related.reason !== "string" || related.reason.trim() === "") {
+        throw new Error(`Skill ${skill.id} related skill ${related.id} has an empty reason`);
+      }
+      const key = `${related.id}\0${related.label ?? ""}`;
+      if (seenRelatedSkills.has(key)) {
+        throw new Error(`Skill ${skill.id} has a duplicate related skill entry: ${related.id}`);
+      }
+      seenRelatedSkills.add(key);
     }
     const skillSourceRoot = dirname(toAbsolutePath(skill.body));
     const seenScripts = new Set();

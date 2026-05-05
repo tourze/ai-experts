@@ -16,7 +16,6 @@
 - 返回 `Result` 的函数是否有 `# Errors`？
 - `unsafe fn` 是否有 `# Safety`？
 - 注释是否在解释"为什么"而不是翻译代码？
-- 联动：[rust-ownership-idioms](../rust-ownership-idioms/SKILL.md) · [rust-testing](../rust-testing/SKILL.md)
 
 ## 反模式
 

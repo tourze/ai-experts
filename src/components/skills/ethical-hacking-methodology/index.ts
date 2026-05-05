@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { wiresharkAnalysisSkill } from "../wireshark-analysis/index";
 
 export const ethicalHackingMethodologySkill = defineSkill({
   id: "ethical-hacking-methodology",
@@ -12,7 +13,7 @@ export const ethicalHackingMethodologySkill = defineSkill({
   description: "当用户需要在合法授权范围内做 Nmap 侦察、Linux 提权、AD 攻击、路径遍历、认证绕过、deeplink 滥用、API Fuzzing 或常见 Web 漏洞渗透测试时使用。",
   useCases: [
     "需要从信息收集、验证、利用、横向移动到报告闭环组织测试。",
-    "需要把 [nmap](references/nmap.md) 的侦察结果和 [wireshark-analysis](../wireshark-analysis/SKILL.md) 的流量证据串起来。",
+    "需要把 [nmap](references/nmap.md) 的侦察结果和 `wireshark-analysis` 的流量证据串起来。",
     "需要建立统一的发现分级、证据留存和复测策略。",
   ],
   constraints: [
@@ -20,6 +21,14 @@ export const ethicalHackingMethodologySkill = defineSkill({
     "先证据化、再利用；先低风险验证、再考虑高影响操作。",
     "把目标资产、入口、凭据、影响和回滚方案写清楚。",
     "任何越界发现都要立即停止并升级确认。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return wiresharkAnalysisSkill.id;
+      },
+      reason: "需要把 nmap 的侦察结果和 `wireshark-analysis` 的流量证据串起来。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

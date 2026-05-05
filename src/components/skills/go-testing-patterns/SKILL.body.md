@@ -1,7 +1,3 @@
-## 联动说明
-
-> 通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 [testing-patterns](testing-expert:testing-patterns)。本 skill 只覆盖 Go 特有语法与工具。
-
 ## 代码模式
 
 ### 1. table-driven tests

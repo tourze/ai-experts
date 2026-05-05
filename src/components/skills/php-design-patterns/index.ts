@@ -5,6 +5,9 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { phpXFeaturesSkill } from "../php-8x-features/index";
+import { phpErrorHandlingSkill } from "../php-error-handling/index";
+import { phpTypeSafetySkill } from "../php-type-safety/index";
 
 export const phpDesignPatternsSkill = defineSkill({
   id: "php-design-patterns",
@@ -20,6 +23,26 @@ export const phpDesignPatternsSkill = defineSkill({
     "依赖通过构造函数注入，避免静态 Facade 与服务定位器。",
     "数据传输用 readonly DTO，不用裸数组跨层传递。",
     "业务概念（金额、邮箱）考虑封装为值对象。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return phpErrorHandlingSkill.id;
+      },
+      reason: "联动：`php-8x-features` · `php-error-handling` · `php-type-safety`。",
+    },
+    {
+      get id() {
+        return phpTypeSafetySkill.id;
+      },
+      reason: "联动：`php-8x-features` · `php-error-handling` · `php-type-safety`。",
+    },
+    {
+      get id() {
+        return phpXFeaturesSkill.id;
+      },
+      reason: "联动：`php-8x-features` · `php-error-handling` · `php-type-safety`",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

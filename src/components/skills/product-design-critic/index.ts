@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { competitiveIntelligenceSkill } from "../competitive-intelligence/index";
+import { customerJourneyMapSkill } from "../customer-journey-map/index";
 
 export const productDesignCriticSkill = defineSkill({
   id: "product-design-critic",
@@ -12,12 +14,34 @@ export const productDesignCriticSkill = defineSkill({
   description: "当用户要批判性审视软件产品界面、交互流程、信息层级、信任感或治理暴露时使用（产品策略级设计审视）。像素级 UI 实现质量审查用 `frontend-design-review`；交互可用性启发式诊断用 `ux-heuristics`。",
   useCases: [
     "评审页面、工作流、卡片、配置面板、聊天体验或多角色治理界面。",
-    "需要结合用户路径和竞争上下文时，可配合 [customer-journey-map](../customer-journey-map/SKILL.md)、[obviously-awesome](../competitive-intelligence/SKILL.md) 与 [competitive-teardown](../competitive-intelligence/SKILL.md)。",
+    "需要结合用户路径和竞争上下文时，可配合 `customer-journey-map`、`obviously-awesome` 与 `competitive-teardown`。",
   ],
   constraints: [
     "先讲用户任务、关键决策和风险暴露，再讲样式层建议。",
     "输出要说明 trade-off：提升了什么、牺牲了什么、为什么值得。",
     "评审对象是产品体验，不是单独某个像素或视觉趋势。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return competitiveIntelligenceSkill.id;
+      },
+      label: "obviously-awesome",
+      reason: "需要结合用户路径和竞争上下文时，可配合 `customer-journey-map`、`obviously-awesome` 与 `competitive-teardown`。",
+    },
+    {
+      get id() {
+        return competitiveIntelligenceSkill.id;
+      },
+      label: "competitive-teardown",
+      reason: "需要结合用户路径和竞争上下文时，可配合 `customer-journey-map`、`obviously-awesome` 与 `competitive-teardown`。",
+    },
+    {
+      get id() {
+        return customerJourneyMapSkill.id;
+      },
+      reason: "需要结合用户路径和竞争上下文时，可配合 `customer-journey-map`、`obviously-awesome` 与 `competitive-teardown`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

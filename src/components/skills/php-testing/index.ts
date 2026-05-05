@@ -5,6 +5,10 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { phpXFeaturesSkill } from "../php-8x-features/index";
+import { phpErrorHandlingSkill } from "../php-error-handling/index";
+import { phpTypeSafetySkill } from "../php-type-safety/index";
+import { testingPatternsSkill } from "../testing-patterns/index";
 
 export const phpTestingSkill = defineSkill({
   id: "php-testing",
@@ -20,6 +24,32 @@ export const phpTestingSkill = defineSkill({
     "测试文件启用 `declare(strict_types=1)`，保持显式类型。",
     "优先用 PHP 8 属性（`#[Test]`、`#[DataProvider]`、`#[CoversClass]`），不用旧式注解。",
     "集成测试要明确边界、清理状态、避免环境耦合。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return phpXFeaturesSkill.id;
+      },
+      reason: "联动：`php-8x-features` · `php-error-handling` · `php-type-safety`。",
+    },
+    {
+      get id() {
+        return phpErrorHandlingSkill.id;
+      },
+      reason: "联动：`php-8x-features` · `php-error-handling` · `php-type-safety`。",
+    },
+    {
+      get id() {
+        return phpTypeSafetySkill.id;
+      },
+      reason: "联动：`php-8x-features` · `php-error-handling` · `php-type-safety`。",
+    },
+    {
+      get id() {
+        return testingPatternsSkill.id;
+      },
+      reason: "通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 `testing-patterns`。本 skill 只覆盖 PHP 特有语法与工具。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { protocolReverseEngineeringSkill } from "../protocol-reverse-engineering/index";
 
 export const binaryAnalysisPatternsSkill = defineSkill({
   id: "binary-analysis-patterns",
@@ -13,13 +14,21 @@ export const binaryAnalysisPatternsSkill = defineSkill({
   useCases: [
     "需要理解入口点、导入表、字符串、控制流和数据结构。",
     "需要和 [anti-reversing-techniques](references/anti-reversing-techniques.md) 联动分析保护逻辑。",
-    "协议编解码或加密路径不清晰时，可切到 [protocol-reverse-engineering](../protocol-reverse-engineering/SKILL.md)。",
+    "协议编解码或加密路径不清晰时，可切到 `protocol-reverse-engineering`。",
   ],
   constraints: [
     "先识别架构、位数、ABI 和编译器痕迹，再选工具链。",
     "反编译结果只是假说，必须回到汇编和交叉引用确认。",
     "把初始化/框架噪声与业务逻辑拆开。",
     "所有关键结论都要标明函数、偏移或字符串证据。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return protocolReverseEngineeringSkill.id;
+      },
+      reason: "协议编解码或加密路径不清晰时，可切到 `protocol-reverse-engineering`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -4,6 +4,9 @@ import {
   Platform,
   defineSkill,
 } from "../../sdk";
+import { asyncPythonPatternsSkill } from "../async-python-patterns/index";
+import { pythonErrorHandlingSkill } from "../python-error-handling/index";
+import { pythonObservabilitySkill } from "../python-observability/index";
 
 export const pythonBackgroundJobsSkill = defineSkill({
   id: "python-background-jobs",
@@ -13,9 +16,9 @@ export const pythonBackgroundJobsSkill = defineSkill({
     "HTTP 请求不能同步等待的导出、通知、上传处理、第三方回调等任务。",
     "需要队列、worker、重试、幂等和状态跟踪。",
     "需要把“接单”和“执行”解耦，避免请求线程长时间占用。",
-    "任务编排涉及异步执行细节时，联动 [async-python-patterns](../async-python-patterns/SKILL.md)。",
-    "任务失败治理、异常分层和错误映射时，联动 [python-error-handling](../python-error-handling/SKILL.md)。",
-    "需要为 job 增加可观测性时，联动 [python-observability](../python-observability/SKILL.md)。",
+    "任务编排涉及异步执行细节时，联动 `async-python-patterns`。",
+    "任务失败治理、异常分层和错误映射时，联动 `python-error-handling`。",
+    "需要为 job 增加可观测性时，联动 `python-observability`。",
   ],
   constraints: [
     "请求入口先返回 `job_id`，不要把长任务伪装成同步接口。",
@@ -23,6 +26,26 @@ export const pythonBackgroundJobsSkill = defineSkill({
     "状态机要显式：`pending -> running -> succeeded/failed`，不要靠日志猜状态。",
     "重试只适用于瞬时错误；永久错误要尽早落失败或死信队列。",
     "入队参数必须是稳定、可序列化、可回放的数据，不要把活对象直接塞进队列。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return pythonErrorHandlingSkill.id;
+      },
+      reason: "任务失败治理、异常分层和错误映射时，联动 `python-error-handling`。",
+    },
+    {
+      get id() {
+        return pythonObservabilitySkill.id;
+      },
+      reason: "需要为 job 增加可观测性时，联动 `python-observability`。",
+    },
+    {
+      get id() {
+        return asyncPythonPatternsSkill.id;
+      },
+      reason: "任务编排涉及异步执行细节时，联动 `async-python-patterns`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

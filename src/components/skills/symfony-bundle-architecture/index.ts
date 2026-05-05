@@ -4,6 +4,7 @@ import {
   Platform,
   defineSkill,
 } from "../../sdk";
+import { doctrineEntityPatternsSkill } from "../doctrine-entity-patterns/index";
 
 export const symfonyBundleArchitectureSkill = defineSkill({
   id: "symfony-bundle-architecture",
@@ -12,7 +13,7 @@ export const symfonyBundleArchitectureSkill = defineSkill({
   useCases: [
     "新建或审查 Bundle 的 Extension、services.yaml、CompilerPass 和依赖声明。",
     "Bundle 间依赖混乱、可选依赖缺失、Monorepo 多 Bundle 协作。",
-    "Entity 设计联动 [doctrine-entity-patterns](../doctrine-entity-patterns/SKILL.md)；代码示例和调试命令见 [reference.md](reference.md)。",
+    "Entity 设计联动 `doctrine-entity-patterns`；代码示例和调试命令见 [reference.md](reference.md)。",
   ],
   constraints: [
     "Bundle 类只做：声明依赖 + 注册 CompilerPass。",
@@ -20,6 +21,14 @@ export const symfonyBundleArchitectureSkill = defineSkill({
     "services.yaml 用 `autowire` + `autoconfigure` + 按命名空间 `resource` 扫描；禁用 `exclude`。",
     "CompilerPass 仅用于标签和配置无法完成的操作，必须 `hasDefinition()` 前置检查。",
     "Bundle 间依赖必须显式声明，不靠加载顺序。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return doctrineEntityPatternsSkill.id;
+      },
+      reason: "Entity 设计联动 `doctrine-entity-patterns`；代码示例和调试命令见 reference.md。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -27,7 +27,6 @@ node scripts/validate-model.mjs \
 - 是否存在实现阶段才会冒出来的新实体或新状态。
 - `unknowns` 是否已经清零。
 - 是否已经运行 [scripts/validate-model.mjs](scripts/validate-model.mjs)。
-- 进入实现后，验证方案是否交给 [llm-evaluation](../llm-evaluation/SKILL.md) 或现有测试体系覆盖。
 
 ## 反模式
 

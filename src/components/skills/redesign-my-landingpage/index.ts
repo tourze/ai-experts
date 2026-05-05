@@ -6,6 +6,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { croMethodologySkill } from "../cro-methodology/index";
 
 export const redesignMyLandingpageSkill = defineSkill({
   id: "redesign-my-landingpage",
@@ -20,7 +21,15 @@ export const redesignMyLandingpageSkill = defineSkill({
     "先锁定单一主转化动作，页面其它元素都服务这个动作。",
     "上半屏解决“我为什么继续看”，下半屏解决“我为什么现在行动”。",
     "默认实现约束是 shadcn/ui + Tailwind + Iconify，避免引入额外视觉系统分叉。",
-    "若任务主要是实验设计或诊断，不直接写代码时，配合 [cro-methodology](../cro-methodology/SKILL.md)。",
+    "若任务主要是实验设计或诊断，不直接写代码时，配合 `cro-methodology`。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return croMethodologySkill.id;
+      },
+      reason: "若任务主要是实验设计或诊断，不直接写代码时，配合 `cro-methodology`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

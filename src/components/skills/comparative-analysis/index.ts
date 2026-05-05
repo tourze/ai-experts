@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { deepResearchSkill } from "../deep-research/index";
 
 export const comparativeAnalysisSkill = defineSkill({
   id: "comparative-analysis",
@@ -15,7 +16,7 @@ export const comparativeAnalysisSkill = defineSkill({
     "技术选型、架构决策、工具评估中需要有理有据的比较。",
     "对比对象可以是：仓库、框架、云服务、设计方案、架构模式。",
     "如果只需分析单个仓库，直接进入分析流程。",
-    "如果对比的外部概念需要先收集信息，先用 [deep-research](../deep-research/SKILL.md)。",
+    "如果对比的外部概念需要先收集信息，先用 `deep-research`。",
   ],
   constraints: [
     "先明确对比维度，再逐维度展开。维度从用户场景出发，不凑数。",
@@ -24,6 +25,14 @@ export const comparativeAnalysisSkill = defineSkill({
     "必须下判断——用户要\"该选哪个\"，不是\"两个都行\"。",
     "判断附带适用条件：\"场景 X 选 A；场景 Y 选 B\"。",
     "按 [输出模板](references/output-template.md) 输出。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return deepResearchSkill.id;
+      },
+      reason: "如果对比的外部概念需要先收集信息，先用 `deep-research`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

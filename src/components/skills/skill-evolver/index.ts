@@ -5,6 +5,9 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { skillActivationAnalyzerSkill } from "../skill-activation-analyzer/index";
+import { skillCreatorSkill } from "../skill-creator/index";
+import { skillEvaluatorSkill } from "../skill-evaluator/index";
 
 export const skillEvolverSkill = defineSkill({
   id: "skill-evolver",
@@ -16,6 +19,26 @@ export const skillEvolverSkill = defineSkill({
   constraints: [
     "只在本 skill 的适用场景内使用；任务不匹配时先澄清或转向更合适的 skill。",
     "执行时遵循正文中的流程、红线、检查清单和必要参考资料，不用未经验证的假设替代证据。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return skillEvaluatorSkill.id;
+      },
+      reason: "用源材料闭卷验证 skill 知识覆盖；`skill-evaluator` Mode B。",
+    },
+    {
+      get id() {
+        return skillActivationAnalyzerSkill.id;
+      },
+      reason: "只优化 frontmatter description 触发质量；`skill-activation-analyzer`。",
+    },
+    {
+      get id() {
+        return skillCreatorSkill.id;
+      },
+      reason: "| 创建新 skill、改一个没有参考源的 skill、跑 with-skill/baseline 迭代 | `skill-creator` |",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

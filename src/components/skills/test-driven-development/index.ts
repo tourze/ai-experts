@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { testingStrategySkill } from "../testing-strategy/index";
 
 export const testDrivenDevelopmentSkill = defineSkill({
   id: "test-driven-development",
@@ -14,7 +15,7 @@ export const testDrivenDevelopmentSkill = defineSkill({
     "新功能实现。",
     "bug 修复与回归保护。",
     "行为重构或接口改造。",
-    "需要把 [testing-strategy](../testing-strategy/SKILL.md) 的缺陷后扩面高优先级场景落成真实测试。",
+    "需要把 `testing-strategy` 的缺陷后扩面高优先级场景落成真实测试。",
   ],
   constraints: [
     "**违反字面规则 = 违反规则精神。不存在\"灵活变通\"。**",
@@ -24,6 +25,14 @@ export const testDrivenDevelopmentSkill = defineSkill({
     "绿灯阶段只写“刚好通过”的实现，不顺手加功能。",
     "如果已经先写了代码，不能把它当“参考”继续补测试；要么删掉重来，要么明确承认不是 TDD。",
     "写 mock 或测试工具前先看 [testing-anti-patterns.md](./testing-anti-patterns.md)。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return testingStrategySkill.id;
+      },
+      reason: "需要把 `testing-strategy` 的缺陷后扩面高优先级场景落成真实测试。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

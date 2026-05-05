@@ -8,6 +8,7 @@ import {
   defineSkillScript,
   defineSkillScriptRoot,
 } from "../../sdk";
+import { monitoringObservabilitySkill } from "../monitoring-observability/index";
 
 export const helmChartScaffoldingSkill = defineSkill({
   id: "helm-chart-scaffolding",
@@ -24,6 +25,14 @@ export const helmChartScaffoldingSkill = defineSkill({
     "`values.yaml` 按镜像、网络、资源、安全、依赖项分层，避免扁平大表。",
     "Chart 中不要存放明文敏感值；机密优先交给外部 Secret 管理。",
     "交付前至少运行 `helm lint` 与 [scripts/validate-chart.mjs](scripts/validate-chart.mjs)。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return monitoringObservabilitySkill.id;
+      },
+      reason: "如果 chart 暴露指标或 ServiceMonitor，参阅 `monitoring-observability`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

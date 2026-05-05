@@ -5,6 +5,9 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { rustErrorHandlingSkill } from "../rust-error-handling/index";
+import { rustOwnershipIdiomsSkill } from "../rust-ownership-idioms/index";
+import { testingPatternsSkill } from "../testing-patterns/index";
 
 export const rustTestingSkill = defineSkill({
   id: "rust-testing",
@@ -22,6 +25,26 @@ export const rustTestingSkill = defineSkill({
     "文档测试（`///` 中的代码块）同时充当活文档和回归保护。",
     "snapshot 测试（cargo-insta）适合输出结构复杂的场景；更新 snapshot 前必须人工审查 diff。",
     "集成测试放 `tests/` 目录，每个文件是独立编译 crate。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return rustOwnershipIdiomsSkill.id;
+      },
+      reason: "联动：`rust-ownership-idioms` · `rust-error-handling`。",
+    },
+    {
+      get id() {
+        return rustErrorHandlingSkill.id;
+      },
+      reason: "联动：`rust-ownership-idioms` · `rust-error-handling`。",
+    },
+    {
+      get id() {
+        return testingPatternsSkill.id;
+      },
+      reason: "通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 `testing-patterns`。本 skill 只覆盖 Rust 特有语法与工具。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

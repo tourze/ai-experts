@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { i18nLocalizationSkill } from "../i18n-localization/index";
+import { modernWebDesignSkill } from "../modern-web-design/index";
 
 export const uxWritingSkill = defineSkill({
   id: "ux-writing",
@@ -24,6 +26,21 @@ export const uxWritingSkill = defineSkill({
     "**措辞承担后果**：`Delete forever` 比 `Remove` 诚实；扣费按钮要给金额和频率。",
     "**减字不减义**：每个词都要有工作。`Please click here to continue` → `Continue`。",
     "**大小写与标点一致**：全产品 Title Case 或 Sentence case 选一种。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return i18nLocalizationSkill.id;
+      },
+      reason: "`i18n-localization`。",
+    },
+    {
+      get id() {
+        return modernWebDesignSkill.id;
+      },
+      label: "web-design-guidelines",
+      reason: "`web-design-guidelines`",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -48,8 +48,5 @@ node ./scripts/analyze.mjs ./public
 
 ## 交叉引用
 
-- [`bundle-optimization`](../bundle-optimization/SKILL.md)：代码分割、tree shaking
 - `react-performance`：React 渲染优化
 - `react-server-components`：RSC 边界与 Server Actions
-- [`responsive-design`](../responsive-design/SKILL.md)：响应式布局与图片尺寸策略
-- [`frontend-design-review`](../frontend-design-review/SKILL.md)：前端界面与交互评审

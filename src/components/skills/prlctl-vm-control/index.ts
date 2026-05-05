@@ -7,6 +7,8 @@ import {
   defineSkillScript,
   defineSkillScriptRoot,
 } from "../../sdk";
+import { windowsKernelSecuritySkill } from "../windows-kernel-security/index";
+import { windowsUiAutomationSkill } from "../windows-ui-automation/index";
 
 export const prlctlVmControlSkill = defineSkill({
   id: "prlctl-vm-control",
@@ -15,8 +17,8 @@ export const prlctlVmControlSkill = defineSkill({
   useCases: [
     "需要在 macOS 宿主机上列出、定位、开关机、挂起、恢复或查看 Parallels Desktop 虚拟机详情。",
     "需要在 Windows 或 Linux 客体里执行离散命令、上传文件或下载文件，并优先复用 [辅助脚本](./scripts/prlctl_helper.mjs) 而不是手写长命令。",
-    "需要在隔离环境里复现 Windows 桌面自动化问题时，可联动 [windows-ui-automation](../windows-ui-automation/SKILL.md)。",
-    "需要在虚拟机里验证驱动、回调、VBS/HVCI 等低层问题时，可联动 [windows-kernel-security](../windows-kernel-security/SKILL.md)。",
+    "需要在隔离环境里复现 Windows 桌面自动化问题时，可联动 `windows-ui-automation`。",
+    "需要在虚拟机里验证驱动、回调、VBS/HVCI 等低层问题时，可联动 `windows-kernel-security`。",
     "需要快速查常见命令模板时，读取 [操作配方](./references/recipes.md)；需要对外展示入口文案时，参考 [Agent 配置](./agents/openai.yaml)。",
   ],
   constraints: [
@@ -28,6 +30,20 @@ export const prlctlVmControlSkill = defineSkill({
     "Windows 文本输出优先走 `--shell powershell`，helper 会用 Base64 envelope 规避中文输出在 `prlctl` / 终端链路中的编码损坏；只有需要完全手写进程参数时才用 `--shell raw`。",
     "文件传输走 helper 的 `upload` / `download`，默认会分片传输并覆盖目标文件；传输敏感文件前先确认目标路径和登录上下文。",
     "诊断 helper 挂起时只输出 PID、PPID、状态、运行时长和可执行文件名等摘要；不要把 Claude / CLI 临时任务输出、完整 `ps aux` 长命令行或 PowerShell/Base64 payload 直接贴回对话。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return windowsKernelSecuritySkill.id;
+      },
+      reason: "需要在虚拟机里验证驱动、回调、VBS/HVCI 等低层问题时，可联动 `windows-kernel-security`。",
+    },
+    {
+      get id() {
+        return windowsUiAutomationSkill.id;
+      },
+      reason: "需要在隔离环境里复现 Windows 桌面自动化问题时，可联动 `windows-ui-automation`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

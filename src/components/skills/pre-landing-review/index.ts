@@ -7,6 +7,7 @@ import {
   defineSkillScript,
   defineSkillScriptRoot,
 } from "../../sdk";
+import { testingStrategySkill } from "../testing-strategy/index";
 
 export const preLandingReviewSkill = defineSkill({
   id: "pre-landing-review",
@@ -16,7 +17,7 @@ export const preLandingReviewSkill = defineSkill({
     "用户要判断当前分支或指定 diff 是否可以合并。",
     "关注的是“会不会出事故”，不是一般性的代码美学讨论。",
     "需要围绕数据安全、并发、信任边界、测试缺口做阻断级判断。",
-    "需要与 [testing-strategy](../testing-strategy/SKILL.md) 配合，决定哪些风险必须补测后才能放行。",
+    "需要与 `testing-strategy` 配合，决定哪些风险必须补测后才能放行。",
   ],
   constraints: [
     "**违反字面规则 = 违反规则精神。不存在”灵活变通”。**",
@@ -25,6 +26,14 @@ export const preLandingReviewSkill = defineSkill({
     "必须先读取 [references/checklist.md](./references/checklist.md)。",
     "所有问题按两级输出：\n- 阻断项：不解决或不确认风险，不能放行\n- 建议项：不阻断，但要记录",
     "每个阻断项都要给用户明确三选一：\n- `立即修复`\n- `确认风险`\n- `误报`",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return testingStrategySkill.id;
+      },
+      reason: "需要与 `testing-strategy` 配合，决定哪些风险必须补测后才能放行。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { phpTestingSkill } from "../php-testing/index";
+import { phpTypeSafetySkill } from "../php-type-safety/index";
 
 export const phpErrorHandlingSkill = defineSkill({
   id: "php-error-handling",
@@ -19,6 +21,20 @@ export const phpErrorHandlingSkill = defineSkill({
     "只捕获你能处理的异常类型；其余保留堆栈继续抛出。",
     "用户可见消息与内部调试细节分离，不暴露 SQL、路径、堆栈。",
     "用户输入必须在进入业务逻辑前完成校验和归一化。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return phpTypeSafetySkill.id;
+      },
+      reason: "联动：`php-testing` · `php-type-safety`。",
+    },
+    {
+      get id() {
+        return phpTestingSkill.id;
+      },
+      reason: "联动：`php-testing` · `php-type-safety`",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

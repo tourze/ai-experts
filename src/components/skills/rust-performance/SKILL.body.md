@@ -16,7 +16,6 @@
 - 优化前是否有 benchmark 基线？
 - 是否在 `--release` 模式下测量？
 - 热路径上是否有不必要的 `clone()`、`collect()`、`format!()`？
-- 联动：[rust-ownership-idioms](../rust-ownership-idioms/SKILL.md) · [rust-type-design](../rust-type-design/SKILL.md)
 
 ## 反模式
 

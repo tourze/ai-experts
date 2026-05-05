@@ -25,7 +25,6 @@
 - 是否每个步骤都可执行，且有成功标准或结果说明。
 - 是否把异常情况、权限限制和常见错误单独列出。
 - 是否避免使用内部术语、缩写和实现细节。
-- 若还需要同步更新仓库说明，可结合 [readme-blueprint-generator](../readme-blueprint-generator/SKILL.md)。
 
 ## 反模式
 

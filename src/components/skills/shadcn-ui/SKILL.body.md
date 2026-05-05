@@ -64,9 +64,6 @@ theme: { extend: { colors: { primary: "hsl(var(--brand))" } } }
 
 ## 参考资料
 
-- [design-system-patterns](../design-system-patterns/SKILL.md)
-- [tailwind-design-system](../design-system-patterns/SKILL.md)
-- [frontend-design-review](../frontend-design-review/SKILL.md)
 - [README.md](README.md)
 - [scripts/verify-setup.mjs](scripts/verify-setup.mjs)
 - [resources/setup-guide.md](resources/setup-guide.md)

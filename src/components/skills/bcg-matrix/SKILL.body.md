@@ -11,9 +11,7 @@
 - 与 BCG 2x2 结果交叉验证：分类一致提升信心，分歧暴露被忽略的指标。
 
 ## 不适用场景
-- 单产品公司：BCG/GE 都是多业务组合工具。用 [s-curve-growth](../designing-growth-loops/SKILL.md) 判断生命阶段。
 - 缺乏行业数据：GE 模式权重设定依赖行业理解，数据不足时退回 BCG 2x2 快速分类。
-- 评估外部竞争：BCG/GE 看内部组合，不看行业结构。用 [porters-five-forces](../porters-five-forces/SKILL.md)。
 
 ## 代码模式
 

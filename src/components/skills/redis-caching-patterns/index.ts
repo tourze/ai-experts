@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { redisDataModelingSkill } from "../redis-data-modeling/index";
 
 export const redisCachingPatternsSkill = defineSkill({
   id: "redis-caching-patterns",
@@ -14,7 +15,7 @@ export const redisCachingPatternsSkill = defineSkill({
     "数据库前置缓存层读写策略选型（cache-aside、write-through、write-behind）。",
     "高并发下防缓存击穿（thundering herd），需 singleflight 或锁刷新。",
     "防缓存穿透（恶意请求不存在的 key），需空值缓存或布隆过滤器。",
-    "TTL 抖动防雪崩，配合 [redis-data-modeling](../redis-data-modeling/SKILL.md) 的键设计与锁模式。",
+    "TTL 抖动防雪崩，配合 `redis-data-modeling` 的键设计与锁模式。",
   ],
   constraints: [
     "cache-aside 读路径：check cache → miss → query DB → set cache；写路径：先写 DB 再删缓存。",
@@ -22,6 +23,14 @@ export const redisCachingPatternsSkill = defineSkill({
     "穿透防御至少一种：空值缓存（短 TTL）或布隆过滤器。",
     "TTL 必须添加随机抖动，禁止所有键使用相同固定 TTL。",
     "删缓存失败需有补偿（重试队列或 binlog 监听），不能静默忽略。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return redisDataModelingSkill.id;
+      },
+      reason: "TTL 抖动防雪崩，配合 `redis-data-modeling` 的键设计与锁模式。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -8,6 +8,7 @@ import {
   defineSkillScript,
   defineSkillScriptRoot,
 } from "../../sdk";
+import { uxHeuristicsSkill } from "../ux-heuristics/index";
 
 export const uxResearcherDesignerSkill = defineSkill({
   id: "ux-researcher-designer",
@@ -18,7 +19,7 @@ export const uxResearcherDesignerSkill = defineSkill({
     "要梳理端到端旅程，找出每一阶段的动作、触点、情绪和阻塞点。",
     "要为新流程、新页面制定可用性测试计划和成功指标。",
     "要把原始研究记录压成“发现 → 证据 → 建议”的交付物。",
-    "如果问题已经明确是界面启发式错误，先用 [ux-heuristics](../ux-heuristics/SKILL.md)。",
+    "如果问题已经明确是界面启发式错误，先用 `ux-heuristics`。",
     "工具、模板与方法细节分别在 [persona-methodology](references/persona-methodology.md)、[journey-mapping-guide](references/journey-mapping-guide.md)、[usability-testing-frameworks](references/usability-testing-frameworks.md)、[research-plan-template](assets/research_plan_template.md)。",
   ],
   constraints: [
@@ -28,6 +29,14 @@ export const uxResearcherDesignerSkill = defineSkill({
     "旅程图先定义范围：用户类型、目标、起点、终点、时间跨度。",
     "可用性测试任务必须写成场景，不要写成“点击这里、再点那里”的操作说明。",
     "使用脚本时优先传入真实 JSON 数据；只有演示场景才使用 `--sample`。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return uxHeuristicsSkill.id;
+      },
+      reason: "如果问题已经明确是界面启发式错误，先用 `ux-heuristics`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

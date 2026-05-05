@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { planningUnderUncertaintySkill } from "../planning-under-uncertainty/index";
+import { processOptimizationSkill } from "../process-optimization/index";
 
 export const systemsThinkingSkill = defineSkill({
   id: "systems-thinking",
@@ -13,12 +15,26 @@ export const systemsThinkingSkill = defineSkill({
   useCases: [
     "平台策略、组织协作、复杂业务链路、生态位博弈或长期副作用分析。",
     "需要经验参考时可阅读 [references/guest-insights.md](references/guest-insights.md)。",
-    "涉及流程或不确定性时，可配合 [process-optimization](../process-optimization/SKILL.md) 与 [planning-under-uncertainty](../planning-under-uncertainty/SKILL.md)。",
+    "涉及流程或不确定性时，可配合 `process-optimization` 与 `planning-under-uncertainty`。",
   ],
   constraints: [
     "先识别系统边界、参与方、激励与流量，再讨论解决方案。",
     "重点看反馈回路、延迟、库存与流量，不要只看单点事件。",
     "结论要指出杠杆点和副作用，而不是“多方协同更重要”这种空话。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return planningUnderUncertaintySkill.id;
+      },
+      reason: "涉及流程或不确定性时，可配合 `process-optimization` 与 `planning-under-uncertainty`。",
+    },
+    {
+      get id() {
+        return processOptimizationSkill.id;
+      },
+      reason: "涉及流程或不确定性时，可配合 `process-optimization` 与 `planning-under-uncertainty`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

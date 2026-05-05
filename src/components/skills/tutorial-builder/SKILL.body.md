@@ -4,7 +4,6 @@
 2. 判断用户材料等级：rich / moderate / thin，并据此控制外部研究预算。
 3. 先写来源登记和 evidence map，再写大纲；不要边搜边写正文。
 4. 每章包含目标、概念、视觉、例子、坑、练习、checkpoint 和 source IDs。
-5. 以 Markdown 为源规划 DOCX/PDF/HTML 导出；具体转换分别衔接 [docx](../doc-coauthoring/SKILL.md)、[md-to-pdf](../md-to-pdf/SKILL.md)。
 
 ## 代码模式
 
@@ -38,8 +37,6 @@
   "caption": ""
 }
 ```
-
-需要渲染 Mermaid 成品图时衔接 [pretty-mermaid](../markdown-mermaid-writing/SKILL.md)；需要演示视觉规范时衔接 [ppt-visual](../ppt-generate/SKILL.md)。
 
 ## 检查清单
 

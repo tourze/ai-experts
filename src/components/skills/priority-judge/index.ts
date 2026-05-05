@@ -4,6 +4,8 @@ import {
   Platform,
   defineSkill,
 } from "../../sdk";
+import { thinkingPartnerSkill } from "../thinking-partner/index";
+import { whatIfOracleSkill } from "../what-if-oracle/index";
 
 export const priorityJudgeSkill = defineSkill({
   id: "priority-judge",
@@ -13,8 +15,8 @@ export const priorityJudgeSkill = defineSkill({
     "用户说“我有很多事要做”“帮我排个优先级”“今天先做什么”。",
     "待办很多，但真正要先动手的事情不清楚。",
     "需要把“现在做”“先澄清再做”“有余力再做”“暂缓”分开。",
-    "如果用户连核心目标都说不清，先用 [thinking-partner](../thinking-partner/SKILL.md) 把问题理顺。",
-    "如果用户在两个高风险方向间犹豫，可结合 [what-if-oracle](../what-if-oracle/SKILL.md) 做分支推演。",
+    "如果用户连核心目标都说不清，先用 `thinking-partner` 把问题理顺。",
+    "如果用户在两个高风险方向间犹豫，可结合 `what-if-oracle` 做分支推演。",
   ],
   constraints: [
     "先完整收集待办，再排序；不要边听边武断下结论。",
@@ -23,6 +25,20 @@ export const priorityJudgeSkill = defineSkill({
     "每次只锁定 1-2 个“现在就做”的任务，其余分流到后续或暂缓。",
     "不制造假精确，不把任务拆成 10 分钟颗粒度。",
     "只有用户明确要求留档时，才把结果整理成文档。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return whatIfOracleSkill.id;
+      },
+      reason: "如果用户在两个高风险方向间犹豫，可结合 `what-if-oracle` 做分支推演。",
+    },
+    {
+      get id() {
+        return thinkingPartnerSkill.id;
+      },
+      reason: "如果用户连核心目标都说不清，先用 `thinking-partner` 把问题理顺。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { phpXFeaturesSkill } from "../php-8x-features/index";
+import { phpErrorHandlingSkill } from "../php-error-handling/index";
 
 export const phpAsyncPatternsSkill = defineSkill({
   id: "php-async-patterns",
@@ -20,6 +22,20 @@ export const phpAsyncPatternsSkill = defineSkill({
     "协程间共享状态要用 Channel/Mutex，不要裸读写全局变量。",
     "长驻进程必须处理内存泄漏：清 static 缓存、限 max_request、用弱引用。",
     "WebSocket/TCP 连接要有心跳和超时。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return phpErrorHandlingSkill.id;
+      },
+      reason: "联动：`php-8x-features` · `php-error-handling`。",
+    },
+    {
+      get id() {
+        return phpXFeaturesSkill.id;
+      },
+      reason: "联动：`php-8x-features` · `php-error-handling`",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

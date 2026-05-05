@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { fanOperationsSkill } from "../fan-operations/index";
 
 export const xiaohongshuCommercialGrowthSkill = defineSkill({
   id: "xiaohongshu-commercial-growth",
@@ -15,7 +16,7 @@ export const xiaohongshuCommercialGrowthSkill = defineSkill({
     "品牌、商家、创始人 IP、知识博主或实体店要做小红书增长与变现。",
     "需要把内容、搜索、店铺、直播、达人合作和私域承接串成闭环。",
     "需要输出图文内容时，参考图文生成相关方法。",
-    "需要落评论区和粉丝维护动作时，联动 [fan-operations](../fan-operations/SKILL.md)。",
+    "需要落评论区和粉丝维护动作时，联动 `fan-operations`。",
   ],
   constraints: [
     "先定义商业路径，再定义内容；不要反过来。",
@@ -23,6 +24,14 @@ export const xiaohongshuCommercialGrowthSkill = defineSkill({
     "不把泛流量当最终目标，商业场景优先看精准流量、转粉、线索和成交。",
     "不提供违规导流、刷量或规避平台规则的做法。",
     "单账号模型没跑通前，不默认建议上矩阵。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return fanOperationsSkill.id;
+      },
+      reason: "需要落评论区和粉丝维护动作时，联动 `fan-operations`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

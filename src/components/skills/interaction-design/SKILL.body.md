@@ -91,7 +91,6 @@ function CardSkeleton() {
 ## 参考资料
 
 - [lottie-animations](references/lottie-animations.md)
-- [modern-web-design](../modern-web-design/SKILL.md)
 - [references/microinteraction-patterns.md](references/microinteraction-patterns.md)
 - [references/press-and-icon-patterns.md](references/press-and-icon-patterns.md)
 - [references/scroll-animations.md](references/scroll-animations.md)

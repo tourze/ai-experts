@@ -10,7 +10,7 @@
 
 ### 步骤 3：接到设计系统
 
-把"主色组"接入 [design-system-patterns](../design-system-patterns/SKILL.md) 的 semantic token；字体对接 [font-pairing-library](references/font-pairing-library.md)；风格实现细节查 `modern-web-design`。
+把"主色组"接入 `design-system-patterns` 的 semantic token；字体对接 [font-pairing-library](references/font-pairing-library.md)；风格实现细节查 `modern-web-design`。
 
 ## 代码模式
 
@@ -97,4 +97,3 @@ fintech 公司：完全照 Stripe 视觉
 - [references/presets-catalog.md](references/presets-catalog.md) — 索引（指向下列分类文件）
 - `modern-web-design`
 - [font-pairing-library](references/font-pairing-library.md)
-- [design-system-patterns](../design-system-patterns/SKILL.md)

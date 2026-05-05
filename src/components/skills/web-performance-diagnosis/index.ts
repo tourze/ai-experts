@@ -7,6 +7,9 @@ import {
   defineSkillScript,
   defineSkillScriptRoot,
 } from "../../sdk";
+import { bundleOptimizationSkill } from "../bundle-optimization/index";
+import { frontendDesignReviewSkill } from "../frontend-design-review/index";
+import { responsiveDesignSkill } from "../responsive-design/index";
 
 export const webPerformanceDiagnosisSkill = defineSkill({
   id: "web-performance-diagnosis",
@@ -30,6 +33,41 @@ export const webPerformanceDiagnosisSkill = defineSkill({
     "LCP 元素必须尽早被浏览器发现；不要把它藏在懒加载、轮播或客户端二次渲染之后。",
     "INP 问题优先查主线程长任务、同步计算、重排重绘和阻塞事件处理。",
     "CLS 只能靠稳定布局解决，不能靠\"加载更快\"掩盖。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return responsiveDesignSkill.id;
+      },
+      reason: "`responsive-design`：响应式布局与图片尺寸策略。",
+    },
+    {
+      get id() {
+        return frontendDesignReviewSkill.id;
+      },
+      reason: "`frontend-design-review`：前端界面与交互评审。",
+    },
+    {
+      get id() {
+        return bundleOptimizationSkill.id;
+      },
+      label: "`bundle-optimization`",
+      reason: "``bundle-optimization``：代码分割、tree shaking",
+    },
+    {
+      get id() {
+        return responsiveDesignSkill.id;
+      },
+      label: "`responsive-design`",
+      reason: "``responsive-design``：响应式布局与图片尺寸策略",
+    },
+    {
+      get id() {
+        return frontendDesignReviewSkill.id;
+      },
+      label: "`frontend-design-review`",
+      reason: "``frontend-design-review``：前端界面与交互评审",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

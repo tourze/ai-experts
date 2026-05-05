@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { modernWebDesignSkill } from "../modern-web-design/index";
+import { responsiveDesignSkill } from "../responsive-design/index";
 
 export const frontendDesignReviewSkill = defineSkill({
   id: "frontend-design-review",
@@ -22,6 +24,28 @@ export const frontendDesignReviewSkill = defineSkill({
     "有设计系统时，以系统规则为第一约束；没有系统时，以一致性和可维护性为第一约束。",
     "创意设计要“有方向”，不是把所有流行效果堆在一起。",
     "低质量“AI 味”通常来自：默认字体、默认紫渐变、套路式卡片网格、无意义动画。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return responsiveDesignSkill.id;
+      },
+      reason: "`responsive-design`。",
+    },
+    {
+      get id() {
+        return modernWebDesignSkill.id;
+      },
+      label: "web-design-guidelines",
+      reason: "`web-design-guidelines`。",
+    },
+    {
+      get id() {
+        return modernWebDesignSkill.id;
+      },
+      label: "refactoring-ui",
+      reason: "`refactoring-ui`",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

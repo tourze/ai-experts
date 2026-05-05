@@ -1,9 +1,6 @@
 ## 交叉引用
 - 请求瀑布：`web-performance-diagnosis`。
 - Bundle 体积：`bundle-optimization`。
-- Server 组件：[react-server-components](../react-server-components/SKILL.md)。
-- 组件拆分：[react-composable-components](../react-composable-components/SKILL.md)。
-- Hook 设计：[react-hooks](../react-hooks/SKILL.md)。
 
 ## 代码模式
 - **通用性能**：profiling、虚拟化、懒加载、bundle 分割、worker — 详见 [advanced.md](./advanced.md)。

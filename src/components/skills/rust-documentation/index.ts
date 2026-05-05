@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { rustOwnershipIdiomsSkill } from "../rust-ownership-idioms/index";
+import { rustTestingSkill } from "../rust-testing/index";
 
 export const rustDocumentationSkill = defineSkill({
   id: "rust-documentation",
@@ -24,6 +26,20 @@ export const rustDocumentationSkill = defineSkill({
     "可能 panic 的函数必须有 `# Panics` 段落。",
     "`# Examples` 中的代码块是可执行的文档测试——必须能编译通过。",
     "用 `//!` 写模块级文档，放在文件顶部。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return rustTestingSkill.id;
+      },
+      reason: "联动：`rust-ownership-idioms` · `rust-testing`。",
+    },
+    {
+      get id() {
+        return rustOwnershipIdiomsSkill.id;
+      },
+      reason: "联动：`rust-ownership-idioms` · `rust-testing`",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

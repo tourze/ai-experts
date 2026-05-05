@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { webContentFetcherSkill } from "../web-content-fetcher/index";
 
 export const deepResearchSkill = defineSkill({
   id: "deep-research",
@@ -14,7 +15,7 @@ export const deepResearchSkill = defineSkill({
     "用户明确要求“研究 / 调查 / 比较 / 解释”某个外部主题，且答案依赖联网信息。",
     "需要为报告、文章、方案、演示或内容创作准备事实基础。",
     "话题包含时效性、争议性或多视角信息，单次搜索不足以覆盖。",
-    "如果用户已经给出具体 URL，先转到 [web-content-fetcher](../web-content-fetcher/SKILL.md) 抓正文。",
+    "如果用户已经给出具体 URL，先转到 `web-content-fetcher` 抓正文。",
     "如果问题是”某个代码库里的 X 怎么工作”，不要用本 skill，用代码库分析工具。",
   ],
   constraints: [
@@ -24,6 +25,14 @@ export const deepResearchSkill = defineSkill({
     "关键来源要读全文，不要只看搜索摘要；优先官方文档、论文、公告、权威媒体。",
     "明确区分“来源明确给出的事实”和“基于多来源推断的结论”。",
     "结论阶段必须保留来源链路，避免把搜索过程写成流水账。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return webContentFetcherSkill.id;
+      },
+      reason: "如果用户已经给出具体 URL，先转到 `web-content-fetcher` 抓正文。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

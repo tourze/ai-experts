@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { processOptimizationSkill } from "../process-optimization/index";
 
 export const businessHealthDiagnosticSkill = defineSkill({
   id: "business-health-diagnostic",
@@ -13,7 +14,7 @@ export const businessHealthDiagnosticSkill = defineSkill({
   useCases: [
     "季度复盘、董事会汇报前快速评估业务整体健康度。",
     "感觉\"哪里不对\"但说不清楚，需要系统化扫描定位问题。",
-    "与 [process-optimization](../process-optimization/SKILL.md) 配合优化发现的瓶颈。",
+    "与 `process-optimization` 配合优化发现的瓶颈。",
     "需要更深入的专项分析时：\n- [references/balanced-scorecard.md](references/balanced-scorecard.md) — BSC 战略翻译工具\n- [references/blm-model.md](references/blm-model.md) — 业务领先模型（差距分析 + 战略执行）\n- [references/mckinsey-7s.md](references/mckinsey-7s.md) — 麦肯锡 7S 组织匹配模型",
   ],
   constraints: [
@@ -21,6 +22,14 @@ export const businessHealthDiagnosticSkill = defineSkill({
     "每个指标必须有**当前值、趋势方向和对标基准**，不允许只说\"还行\"。",
     "红黄绿判断必须有明确阈值，不靠感觉打标。",
     "诊断结论必须指向**最多 3 个优先行动**，不是列 20 个待改善项。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return processOptimizationSkill.id;
+      },
+      reason: "与 `process-optimization` 配合优化发现的瓶颈。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

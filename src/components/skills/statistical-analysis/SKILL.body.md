@@ -18,8 +18,6 @@ print(median(values))
 - 样本量、时间窗口、过滤条件是否明确。
 - 是否先看了分布、异常值和缺失值。
 - 是否说明了检验方法、假设前提和结论边界。
-- 如果需要图表支持，是否同步给 [data-visualization](../data-visualization/SKILL.md)。
-- 如果结论要面向业务方表达，是否同步给 [data-storytelling](../data-storytelling/SKILL.md)。
 
 ## 反模式
 

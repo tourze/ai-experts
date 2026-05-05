@@ -42,8 +42,6 @@ Ticket: {content}
 - prompt 是否包含边界条件、拒答规则、异常输入处理方式。
 - 当前 prompt 的失败模式是否已经分类，而不是只收集了零散 bad case。
 - 变体之间是否真正可比较（一次一变量）。
-- 若要比较不同 prompt 版本，是否交给 [llm-evaluation](../llm-evaluation/SKILL.md) 建立回归基线。
-- 如果 prompt 绑定 RAG，上下游检索问题是否已经交给 [rag-auditor](../rag-auditor/SKILL.md)。
 
 ## 反模式
 

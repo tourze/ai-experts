@@ -5,6 +5,10 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { errorHandlingPatternsSkill } from "../error-handling-patterns/index";
+import { protocolFreezingPatternsSkill } from "../protocol-freezing-patterns/index";
+import { softwareDesignSkill } from "../software-design/index";
+import { systemDesignSkill } from "../system-design/index";
 
 export const architectureDecisionRecordsSkill = defineSkill({
   id: "architecture-decision-records",
@@ -20,6 +24,54 @@ export const architectureDecisionRecordsSkill = defineSkill({
   constraints: [
     "只在本 skill 的适用场景内使用；任务不匹配时先澄清或转向更合适的 skill。",
     "执行时遵循正文中的流程、红线、检查清单和必要参考资料，不用未经验证的假设替代证据。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return softwareDesignSkill.id;
+      },
+      reason: "`software-design`：模块内职责拆分与设计原则。",
+    },
+    {
+      get id() {
+        return protocolFreezingPatternsSkill.id;
+      },
+      reason: "`protocol-freezing-patterns`：线格式版本冻结与兼容。",
+    },
+    {
+      get id() {
+        return errorHandlingPatternsSkill.id;
+      },
+      reason: "`error-handling-patterns`：错误分层与传播。",
+    },
+    {
+      get id() {
+        return systemDesignSkill.id;
+      },
+      label: "`system-design`",
+      reason: "``system-design``：系统架构全貌设计",
+    },
+    {
+      get id() {
+        return softwareDesignSkill.id;
+      },
+      label: "`software-design`",
+      reason: "``software-design``：模块内职责拆分与设计原则",
+    },
+    {
+      get id() {
+        return protocolFreezingPatternsSkill.id;
+      },
+      label: "`protocol-freezing-patterns`",
+      reason: "``protocol-freezing-patterns``：线格式版本冻结与兼容",
+    },
+    {
+      get id() {
+        return errorHandlingPatternsSkill.id;
+      },
+      label: "`error-handling-patterns`",
+      reason: "``error-handling-patterns``：错误分层与传播",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

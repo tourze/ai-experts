@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { rustOwnershipIdiomsSkill } from "../rust-ownership-idioms/index";
+import { rustPerformanceSkill } from "../rust-performance/index";
 
 export const rustTypeDesignSkill = defineSkill({
   id: "rust-type-design",
@@ -22,6 +24,20 @@ export const rustTypeDesignSkill = defineSkill({
     "`dyn Trait` 要求 trait 是 object-safe（无泛型方法、不返回 `Self`）。",
     "类型状态适合有明确生命周期阶段的实体（Draft → Published、Connecting → Connected）。",
     "类型状态不适合阶段太多或需要运行时动态决定的场景——此时用枚举。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return rustPerformanceSkill.id;
+      },
+      reason: "联动：`rust-ownership-idioms` · `rust-performance`。",
+    },
+    {
+      get id() {
+        return rustOwnershipIdiomsSkill.id;
+      },
+      reason: "联动：`rust-ownership-idioms` · `rust-performance`",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

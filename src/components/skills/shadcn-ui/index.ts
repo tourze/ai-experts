@@ -6,6 +6,8 @@ import {
   defineSkillScript,
   defineSkillScriptRoot,
 } from "../../sdk";
+import { designSystemPatternsSkill } from "../design-system-patterns/index";
+import { frontendDesignReviewSkill } from "../frontend-design-review/index";
 
 export const shadcnUiSkill = defineSkill({
   id: "shadcn-ui",
@@ -23,6 +25,27 @@ export const shadcnUiSkill = defineSkill({
     "组件接入前先确认项目的 Tailwind、别名、`components.json` 和 `cn()` 是否可用。",
     "有设计系统时，先映射现有 token、字体和 spacing，不要把 shadcn 默认值原样散落全项目。",
     "文档、脚本和示例统一按当前项目形态工作：Tailwind v4 可仅靠 CSS-first 配置，不强制 `tailwind.config.*`。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return designSystemPatternsSkill.id;
+      },
+      label: "tailwind-design-system",
+      reason: "`tailwind-design-system`。",
+    },
+    {
+      get id() {
+        return frontendDesignReviewSkill.id;
+      },
+      reason: "`frontend-design-review`。",
+    },
+    {
+      get id() {
+        return designSystemPatternsSkill.id;
+      },
+      reason: "`design-system-patterns`",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

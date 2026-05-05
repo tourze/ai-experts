@@ -24,7 +24,6 @@ PHPDoc 文档模式与反模式见 [advanced-patterns.md](references/advanced-pa
 - 每个文档块都回答了"签名之外新增了什么信息"，删除冗余 PHPDoc。
 - 泛型/数组结构与实现一致，没有把普通数组误写成 `list<T>`。
 - 签名变化后同步清理陈旧注释。
-- 联动：[php-8x-features](../php-8x-features/SKILL.md) · [php-design-patterns](../php-design-patterns/SKILL.md) · [php-testing](../php-testing/SKILL.md)
 
 ## 反模式
 

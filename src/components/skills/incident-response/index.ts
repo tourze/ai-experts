@@ -5,6 +5,10 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { logAnalyzerSkill } from "../log-analyzer/index";
+import { monitoringObservabilitySkill } from "../monitoring-observability/index";
+import { networkTroubleshooterSkill } from "../network-troubleshooter/index";
+import { systemDiagnosticsSkill } from "../system-diagnostics/index";
 
 export const incidentResponseSkill = defineSkill({
   id: "incident-response",
@@ -23,6 +27,54 @@ export const incidentResponseSkill = defineSkill({
     "区分根因与触发因素：「让事故可能的脆弱性」≠「这次触发的具体动作」。",
     "时间线按 UTC 排序；本地时间显式标注时区。",
     "报告中不暴露生产 secret/token；引用日志时脱敏。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return monitoringObservabilitySkill.id;
+      },
+      reason: "`monitoring-observability`：指标/日志/告警设计。",
+    },
+    {
+      get id() {
+        return systemDiagnosticsSkill.id;
+      },
+      reason: "`system-diagnostics`：Linux 主机健康检查。",
+    },
+    {
+      get id() {
+        return networkTroubleshooterSkill.id;
+      },
+      reason: "`network-troubleshooter`：网络排障。",
+    },
+    {
+      get id() {
+        return logAnalyzerSkill.id;
+      },
+      label: "`log-analyzer`",
+      reason: "``log-analyzer``：日志对齐与错误上下文关联",
+    },
+    {
+      get id() {
+        return monitoringObservabilitySkill.id;
+      },
+      label: "`monitoring-observability`",
+      reason: "``monitoring-observability``：指标/日志/告警设计",
+    },
+    {
+      get id() {
+        return systemDiagnosticsSkill.id;
+      },
+      label: "`system-diagnostics`",
+      reason: "``system-diagnostics``：Linux 主机健康检查",
+    },
+    {
+      get id() {
+        return networkTroubleshooterSkill.id;
+      },
+      label: "`network-troubleshooter`",
+      reason: "``network-troubleshooter``：网络排障",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

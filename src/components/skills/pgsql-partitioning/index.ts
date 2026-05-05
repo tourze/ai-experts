@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { dbSchemaDesignSkill } from "../db-schema-design/index";
+import { sqlReviewOptimizationSkill } from "../sql-review-optimization/index";
 
 export const pgsqlPartitioningSkill = defineSkill({
   id: "pgsql-partitioning",
@@ -15,7 +17,7 @@ export const pgsqlPartitioningSkill = defineSkill({
     "多租户系统按 tenant_id 做 LIST 分区，实现租户级隔离",
     "单表超 1 亿行或 100 GB，需要改善查询和 VACUUM 效率",
     "需要验证分区裁剪是否生效（`EXPLAIN` 只扫描目标分区）",
-    "基础表结构参见 [db-schema-design](../db-schema-design/SKILL.md)；索引策略参见 [sql-review-optimization](../sql-review-optimization/SKILL.md)",
+    "基础表结构参见 `db-schema-design`；索引策略参见 `sql-review-optimization`",
   ],
   constraints: [
     "分区键必须包含在主键和所有唯一约束中",
@@ -23,6 +25,20 @@ export const pgsqlPartitioningSkill = defineSkill({
     "RANGE 边界使用左闭右开（`FROM ... TO ...`），相邻分区无缝无重叠",
     "DETACH 旧分区使用 `CONCURRENTLY` 避免 `ACCESS EXCLUSIVE` 长锁",
     "变更后必须用 `EXPLAIN` 验证 partition pruning 生效",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return sqlReviewOptimizationSkill.id;
+      },
+      reason: "基础表结构参见 `db-schema-design`；索引策略参见 `sql-review-optimization`。",
+    },
+    {
+      get id() {
+        return dbSchemaDesignSkill.id;
+      },
+      reason: "基础表结构参见 `db-schema-design`；索引策略参见 `sql-review-optimization`",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

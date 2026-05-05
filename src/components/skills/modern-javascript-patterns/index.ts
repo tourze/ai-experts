@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { javascriptTypescriptJestSkill } from "../javascript-typescript-jest/index";
 
 export const modernJavascriptPatternsSkill = defineSkill({
   id: "modern-javascript-patterns",
@@ -12,7 +13,7 @@ export const modernJavascriptPatternsSkill = defineSkill({
   description: "当需要用现代 ES6+ 特性重构旧代码、编写可维护 JavaScript 或优化 JS 热路径性能时使用。用户提到微优化、Set/Map 查找、循环优化、DOM 批处理、requestIdleCallback 时触发。",
   useCases: [
     "需要把旧式回调、共享可变状态或冗长工具函数重构为现代 ES6+ 写法。",
-    "需要在业务代码和测试代码之间复用一致的数据变换模式时，联动 [javascript-typescript-jest](../javascript-typescript-jest/SKILL.md)。",
+    "需要在业务代码和测试代码之间复用一致的数据变换模式时，联动 `javascript-typescript-jest`。",
     "涉及复杂状态或 Hook 边界时，优先确认 `react-hooks` 的约束。",
     "需要更完整的函数式、模块化与高级语法补充材料时，再展开 [advanced-patterns.md](references/advanced-patterns.md)。",
     "需要热路径微优化（Set/Map 查找、迭代合并、DOM 批处理、requestIdleCallback）时，展开 [micro-optimization.md](references/micro-optimization.md)。",
@@ -25,6 +26,14 @@ export const modernJavascriptPatternsSkill = defineSkill({
     "模块边界只导出稳定 API，不暴露中间辅助函数与临时状态。",
     "只有在团队已有约定或性能证据明确时才引入函数式管道、生成器等高级抽象。",
     "微优化只在热路径上有意义 — 先 Profiler 确认瓶颈，不牺牲可读性，DOM 批处理先读后写。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return javascriptTypescriptJestSkill.id;
+      },
+      reason: "需要在业务代码和测试代码之间复用一致的数据变换模式时，联动 `javascript-typescript-jest`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

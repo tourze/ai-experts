@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { grillMeSkill } from "../grill-me/index";
+import { whatIfOracleSkill } from "../what-if-oracle/index";
 
 export const consciousnessCouncilSkill = defineSkill({
   id: "consciousness-council",
@@ -20,6 +22,20 @@ export const consciousnessCouncilSkill = defineSkill({
     "对纯事实问题或低风险琐事，不要强行开完整议会。",
     "结尾必须输出：共识、核心张力、共同盲点、建议路径、信心等级。",
     "需要行业化配方时，参考 [高级配置示例](references/advanced-configurations.md)。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return grillMeSkill.id;
+      },
+      reason: "如果重点是把现有方案问穿，优先配合 `grill-me`。",
+    },
+    {
+      get id() {
+        return whatIfOracleSkill.id;
+      },
+      reason: "如果重点是未来分支推演，优先配合 `what-if-oracle`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

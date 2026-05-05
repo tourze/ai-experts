@@ -107,8 +107,6 @@ AI 实现/审查具体页面时，按 **BRAND → MASTER → pages/\<slug\>.md**
 ## 参考资料
 
 - [tailwind-design-system](references/tailwind-design-system.md)
-- [refactoring-ui](../modern-web-design/SKILL.md)
-- [responsive-design](../responsive-design/SKILL.md)
 - [references/design-tokens.md](references/design-tokens.md)
 - [references/theming-architecture.md](references/theming-architecture.md)
 - [references/component-architecture.md](references/component-architecture.md)

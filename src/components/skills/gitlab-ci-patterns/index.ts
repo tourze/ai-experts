@@ -4,6 +4,7 @@ import {
   Platform,
   defineSkill,
 } from "../../sdk";
+import { helmChartScaffoldingSkill } from "../helm-chart-scaffolding/index";
 
 export const gitlabCiPatternsSkill = defineSkill({
   id: "gitlab-ci-patterns",
@@ -19,6 +20,14 @@ export const gitlabCiPatternsSkill = defineSkill({
     "基础镜像尽量固定版本，避免流水线漂移。",
     "凭据只能来自 GitLab CI Variables、Vault 或外部密钥系统。",
     "生产部署必须显式标记人工门禁或受保护分支。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return helmChartScaffoldingSkill.id;
+      },
+      reason: "Helm 或 Kubernetes 发布可以衔接 `helm-chart-scaffolding`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -6,6 +6,8 @@ import {
   defineSkillScript,
   defineSkillScriptRoot,
 } from "../../sdk";
+import { modernWebDesignSkill } from "../modern-web-design/index";
+import { responsiveDesignSkill } from "../responsive-design/index";
 
 export const i18nLocalizationSkill = defineSkill({
   id: "i18n-localization",
@@ -24,6 +26,21 @@ export const i18nLocalizationSkill = defineSkill({
     "RTL 不是“文字反过来”这么简单，布局、图标方向、滚动与动画都要核查。",
     "国际化上线前必须验证回退语言和缺失翻译策略。",
     "需要静态检查时直接运行 `scripts/i18n_checker.mjs`。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return responsiveDesignSkill.id;
+      },
+      reason: "`responsive-design`。",
+    },
+    {
+      get id() {
+        return modernWebDesignSkill.id;
+      },
+      label: "web-design-guidelines",
+      reason: "`web-design-guidelines`",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

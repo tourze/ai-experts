@@ -77,6 +77,4 @@ node ./scripts/i18n_checker.mjs /path/to/project
 
 ## 参考资料
 
-- [web-design-guidelines](../modern-web-design/SKILL.md)
-- [responsive-design](../responsive-design/SKILL.md)
 - [scripts/i18n_checker.mjs](scripts/i18n_checker.mjs)

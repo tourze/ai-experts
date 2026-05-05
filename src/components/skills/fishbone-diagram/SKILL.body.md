@@ -1,7 +1,3 @@
-## 不适用场景
-- 原因已知只需排优先级：鱼骨图是发散找原因的工具，原因已知时直接用 [priority-judge](../priority-judge/SKILL.md) 排序。
-- 系统性风险预判：鱼骨图分析已发生的问题，未来风险预判与事前验尸用 [inversion-strategist](../first-principles-decomposer/SKILL.md)。
-
 ## 代码模式
 
 本 skill 是思维框架，不要求执行代码。输出时先给结构化框架，再列证据、假设和追问，最后给可验证的下一步。

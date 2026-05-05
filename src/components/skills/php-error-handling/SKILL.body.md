@@ -9,8 +9,6 @@ DomainException (abstract, extends RuntimeException)
 
 代码示例见 [patterns.md](references/patterns.md)。
 
-联动：[php-testing](../php-testing/SKILL.md) · [php-type-safety](../php-type-safety/SKILL.md)
-
 ## 代码模式
 
 代码示例见 [patterns.md](references/patterns.md)。

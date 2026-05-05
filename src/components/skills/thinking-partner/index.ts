@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { grillMeSkill } from "../grill-me/index";
+import { priorityJudgeSkill } from "../priority-judge/index";
 
 export const thinkingPartnerSkill = defineSkill({
   id: "thinking-partner",
@@ -14,8 +16,8 @@ export const thinkingPartnerSkill = defineSkill({
     "用户说“我现在很乱”“不知道怎么办”“帮我理一理”“我卡住了”。",
     "局面里同时混着目标、限制、情绪和执行问题，需要先找主导矛盾。",
     "用户需要有人一起思考，而不是直接听一堆标准答案。",
-    "如果用户其实只是要给任务排先后，优先转到 [priority-judge](../priority-judge/SKILL.md)。",
-    "如果用户已经有明确方案，只想做压力测试，转到 [grill-me](../grill-me/SKILL.md)。",
+    "如果用户其实只是要给任务排先后，优先转到 `priority-judge`。",
+    "如果用户已经有明确方案，只想做压力测试，转到 `grill-me`。",
     "如果用户想通过被提问来自己发现答案，转到 [socratic-teaching](references/socratic-teaching.md)。",
   ],
   constraints: [
@@ -25,6 +27,20 @@ export const thinkingPartnerSkill = defineSkill({
     "用户补充新信息时，要判断它是会改变结论的信号，还是执行层面的噪音。",
     "当用户被细节带偏时，要明确指出“这是次要问题”，并把对话拉回核心。",
     "如果判断被新证据推翻，必须直接修正，不要硬撑原结论。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return grillMeSkill.id;
+      },
+      reason: "如果用户已经有明确方案，只想做压力测试，转到 `grill-me`。",
+    },
+    {
+      get id() {
+        return priorityJudgeSkill.id;
+      },
+      reason: "如果用户其实只是要给任务排先后，优先转到 `priority-judge`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

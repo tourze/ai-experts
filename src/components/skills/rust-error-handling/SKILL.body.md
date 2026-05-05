@@ -9,8 +9,6 @@
 
 代码示例见 [chapter_04.md](references/chapter_04.md)。
 
-联动：[rust-ownership-idioms](../rust-ownership-idioms/SKILL.md) · [rust-testing](../rust-testing/SKILL.md) · [rust-async-patterns](../rust-async-patterns/SKILL.md)
-
 ## 反模式
 
 ### FAIL: 库 crate 暴露 anyhow

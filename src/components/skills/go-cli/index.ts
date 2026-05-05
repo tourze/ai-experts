@@ -5,6 +5,9 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { goCodeStyleSkill } from "../go-code-style/index";
+import { goConcurrencyPatternsSkill } from "../go-concurrency-patterns/index";
+import { goErrorHandlingSkill } from "../go-error-handling/index";
 
 export const goCliSkill = defineSkill({
   id: "go-cli",
@@ -16,7 +19,6 @@ export const goCliSkill = defineSkill({
     "需要信号处理与优雅停机（os/signal + context）。",
     "定义退出码约定或注入版本信息（-ldflags）。",
     "生成 shell 自动补全（Bash / Zsh / Fish / PowerShell）。",
-    "相关 skill：\n并发停机编排配合 [go-concurrency-patterns](../go-concurrency-patterns/SKILL.md)；\n错误语义设计配合 [go-error-handling](../go-error-handling/SKILL.md)；\n项目布局配合 [go-project-layout](../go-code-style/SKILL.md)。",
   ],
   constraints: [
     "命令结构用 Cobra；配置管理用 Viper；两者通过 `viper.BindPFlag` 桥接，不要手写 flag 解析。",
@@ -25,6 +27,27 @@ export const goCliSkill = defineSkill({
     "版本信息通过 `-ldflags` 在构建时注入，不要硬编码。",
     "长运行命令必须捕获 SIGINT/SIGTERM 并通过 context 取消传播。",
     "每个 subcommand 独立文件，root command 在 `cmd/root.go`。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return goErrorHandlingSkill.id;
+      },
+      reason: "相关 skill： 并发停机编排配合 `go-concurrency-patterns`； 错误语义设计配合 `go-error-handling`； 项目布局配合 `go-project-layout`。",
+    },
+    {
+      get id() {
+        return goCodeStyleSkill.id;
+      },
+      label: "go-project-layout",
+      reason: "相关 skill： 并发停机编排配合 `go-concurrency-patterns`； 错误语义设计配合 `go-error-handling`； 项目布局配合 `go-project-layout`。",
+    },
+    {
+      get id() {
+        return goConcurrencyPatternsSkill.id;
+      },
+      reason: "相关 skill：\\\\n并发停机编排配合 `go-concurrency-patterns`；\\\\n错误语义设计配合 `go-error-handling`；\\\\n项目布局配合 `go-project-layout`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -1,7 +1,3 @@
-## 不适用场景
-- 问题已经清晰只需执行：七步法从问题定义开始，如果问题和方案都已明确，直接做 [five-w-two-h](../fishbone-diagram/SKILL.md) 制定行动计划。
-- 需要创意发散：七步法是收敛式分析，创意发散用 [scientific-brainstorming](../scientific-brainstorming/SKILL.md)。
-
 ## 代码模式
 
 本 skill 是思维框架，不要求执行代码。输出时先给结构化框架，再列证据、假设和追问，最后给可验证的下一步。

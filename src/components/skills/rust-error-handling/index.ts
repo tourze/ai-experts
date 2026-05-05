@@ -5,6 +5,9 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { rustAsyncPatternsSkill } from "../rust-async-patterns/index";
+import { rustOwnershipIdiomsSkill } from "../rust-ownership-idioms/index";
+import { rustTestingSkill } from "../rust-testing/index";
 
 export const rustErrorHandlingSkill = defineSkill({
   id: "rust-error-handling",
@@ -23,6 +26,26 @@ export const rustErrorHandlingSkill = defineSkill({
     "`?` 操作符是传播首选；手动 `match` 只在需要转换或添加上下文时。",
     "错误信息小写开头、不带句号。",
     "公共函数的 `# Errors` 文档段落解释什么条件下返回哪种错误。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return rustTestingSkill.id;
+      },
+      reason: "联动：`rust-ownership-idioms` · `rust-testing` · `rust-async-patterns`。",
+    },
+    {
+      get id() {
+        return rustAsyncPatternsSkill.id;
+      },
+      reason: "联动：`rust-ownership-idioms` · `rust-testing` · `rust-async-patterns`。",
+    },
+    {
+      get id() {
+        return rustOwnershipIdiomsSkill.id;
+      },
+      reason: "联动：`rust-ownership-idioms` · `rust-testing` · `rust-async-patterns`",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

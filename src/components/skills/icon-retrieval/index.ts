@@ -6,6 +6,8 @@ import {
   defineSkillScript,
   defineSkillScriptRoot,
 } from "../../sdk";
+import { designSystemPatternsSkill } from "../design-system-patterns/index";
+import { figmaImplementDesignSkill } from "../figma-implement-design/index";
 
 export const iconRetrievalSkill = defineSkill({
   id: "icon-retrieval",
@@ -21,7 +23,21 @@ export const iconRetrievalSkill = defineSkill({
     "`topK` 必须是正整数，默认值是 `5`。",
     "返回的是原始 SVG 字符串，落库前要按项目的安全与样式规范处理。",
     "先确认图标风格与现有设计系统匹配，再决定是否采用。",
-    "图标用于界面时，优先与 [design-system-patterns](../design-system-patterns/SKILL.md) 的尺寸、颜色和语义体系一致。",
+    "图标用于界面时，优先与 `design-system-patterns` 的尺寸、颜色和语义体系一致。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return figmaImplementDesignSkill.id;
+      },
+      reason: "`figma-implement-design`。",
+    },
+    {
+      get id() {
+        return designSystemPatternsSkill.id;
+      },
+      reason: "图标用于界面时，优先与 `design-system-patterns` 的尺寸、颜色和语义体系一致。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

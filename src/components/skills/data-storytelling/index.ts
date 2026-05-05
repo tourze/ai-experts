@@ -5,6 +5,9 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { dataAnalysisSkill } from "../data-analysis/index";
+import { dataVisualizationSkill } from "../data-visualization/index";
+import { statisticalAnalysisSkill } from "../statistical-analysis/index";
 
 export const dataStorytellingSkill = defineSkill({
   id: "data-storytelling",
@@ -14,14 +17,33 @@ export const dataStorytellingSkill = defineSkill({
     "已经有分析结果，但用户真正需要的是“怎么讲清楚”“怎么组织成报告或汇报”。",
     "需要把大量指标压缩成 headline、关键洞察、风险、建议、下一步动作。",
     "需要给周报、月报、复盘、董事会材料或项目结论页设计叙事顺序。",
-    "相关 skill：[data-analysis](../data-analysis/SKILL.md)、[data-visualization](../data-visualization/SKILL.md)、[statistical-analysis](../statistical-analysis/SKILL.md)。",
     "需要使用 T8 内联标注语法为文本嵌入机读实体时，参考 [references/t8-syntax.md](references/t8-syntax.md)。",
   ],
   constraints: [
     "先确认“想让谁做什么”，再决定故事结构；没有目标受众就没有叙事。",
     "一个故事只保留 1 个主结论和 2 到 4 个支撑点，避免把所有图表原样堆上去。",
-    "结论必须能回指具体数据证据；需要时引用 [data-analysis](../data-analysis/SKILL.md) 或 [statistical-analysis](../statistical-analysis/SKILL.md) 的结果。",
+    "结论必须能回指具体数据证据；需要时引用 `data-analysis` 或 `statistical-analysis` 的结果。",
     "建议先写 headline，再补证据，再给行动项，不要反过来。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return dataAnalysisSkill.id;
+      },
+      reason: "结论必须能回指具体数据证据；需要时引用 `data-analysis` 或 `statistical-analysis` 的结果。",
+    },
+    {
+      get id() {
+        return dataVisualizationSkill.id;
+      },
+      reason: "相关 skill：`data-analysis`、`data-visualization`、`statistical-analysis`。",
+    },
+    {
+      get id() {
+        return statisticalAnalysisSkill.id;
+      },
+      reason: "结论必须能回指具体数据证据；需要时引用 `data-analysis` 或 `statistical-analysis` 的结果。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

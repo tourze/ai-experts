@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { planningUnderUncertaintySkill } from "../planning-under-uncertainty/index";
 
 export const evaluatingNewTechnologySkill = defineSkill({
   id: "evaluating-new-technology",
@@ -13,12 +14,20 @@ export const evaluatingNewTechnologySkill = defineSkill({
   useCases: [
     "选型新框架、AI 服务、基础设施工具或第三方平台。",
     "需要参考 [references/guest-insights.md](references/guest-insights.md) 的常见判断维度。",
-    "讨论长期不确定性时，可配合 [planning-under-uncertainty](../planning-under-uncertainty/SKILL.md)。",
+    "讨论长期不确定性时，可配合 `planning-under-uncertainty`。",
   ],
   constraints: [
     "先定义业务问题和约束，再讨论技术；技术本身不是目标。",
     "Build vs buy 不是二选一，必须同时看集成成本、迁移成本和团队学习成本。",
     "评估结论要考虑退出路径，避免把组织锁死在脆弱抽象上。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return planningUnderUncertaintySkill.id;
+      },
+      reason: "讨论长期不确定性时，可配合 `planning-under-uncertainty`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

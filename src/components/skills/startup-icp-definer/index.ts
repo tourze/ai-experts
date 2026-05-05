@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { marketSizingAnalysisSkill } from "../market-sizing-analysis/index";
 
 export const startupIcpDefinerSkill = defineSkill({
   id: "startup-icp-definer",
@@ -13,12 +14,20 @@ export const startupIcpDefinerSkill = defineSkill({
   useCases: [
     "B2B/B2B2C 早期定位、销售聚焦、市场切入和外呼名单筛选。",
     "需要完整方法时可阅读 [references/full-guide.md](references/full-guide.md)。",
-    "需要结合想法验证或市场空间时，可配合 [market-sizing-analysis](../market-sizing-analysis/SKILL.md)。",
+    "需要结合想法验证或市场空间时，可配合 `market-sizing-analysis`。",
   ],
   constraints: [
     "ICP 必须同时覆盖公司画像、买方角色、使用者角色和购买触发因素。",
     "先找高痛点、高付费意愿、高成交概率的客户，而不是“最大的市场”。",
     "画像要服务销售和产品决策，不是堆一份漂亮的人设。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return marketSizingAnalysisSkill.id;
+      },
+      reason: "需要结合想法验证或市场空间时，可配合 `market-sizing-analysis`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

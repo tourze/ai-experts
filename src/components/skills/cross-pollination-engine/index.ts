@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
+import { scientificBrainstormingSkill } from "../scientific-brainstorming/index";
 
 export const crossPollinationEngineSkill = defineSkill({
   id: "cross-pollination-engine",
@@ -14,8 +16,8 @@ export const crossPollinationEngineSkill = defineSkill({
     "用户说“别的行业会怎么做”“能借鉴谁”“跳出当前行业想一想”。",
     "现有方案卡在惯性思维里，需要借远场样本打破局限。",
     "适合产品、服务、运营、教育、体验设计等需要新灵感的场景。",
-    "如果核心任务本身还没剥离清楚，先用 [first-principles-decomposer](../first-principles-decomposer/SKILL.md)。",
-    "如果想把跨界灵感继续发散到研究问题，可接 [scientific-brainstorming](../scientific-brainstorming/SKILL.md)。",
+    "如果核心任务本身还没剥离清楚，先用 `first-principles-decomposer`。",
+    "如果想把跨界灵感继续发散到研究问题，可接 `scientific-brainstorming`。",
     "需要案例时，参考 [跨界示例](references/examples.md)。",
   ],
   constraints: [
@@ -25,6 +27,20 @@ export const crossPollinationEngineSkill = defineSkill({
     "每个借鉴都要翻译成“在我们这里最小能怎么试”，而不是停在灵感层。",
     "迁移时必须保留本地约束：成本、监管、团队能力、用户习惯。",
     "最后收敛成一个可验证的小实验，而不是十个脑洞。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return scientificBrainstormingSkill.id;
+      },
+      reason: "如果想把跨界灵感继续发散到研究问题，可接 `scientific-brainstorming`。",
+    },
+    {
+      get id() {
+        return firstPrinciplesDecomposerSkill.id;
+      },
+      reason: "如果核心任务本身还没剥离清楚，先用 `first-principles-decomposer`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

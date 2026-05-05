@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { uxResearcherDesignerSkill } from "../ux-researcher-designer/index";
 
 export const uxHeuristicsSkill = defineSkill({
   id: "ux-heuristics",
@@ -14,7 +15,7 @@ export const uxHeuristicsSkill = defineSkill({
     "用户反馈“找不到入口”“不知道系统在干什么”“提交后没反应”。",
     "需要在没有真实用户测试前，先做一轮低成本可用性体检。",
     "要给页面、流程、组件输出可执行的严重级别与修复顺序。",
-    "发现问题已经超出视觉层，需结合 [ux-researcher-designer](../ux-researcher-designer/SKILL.md) 一起处理。",
+    "发现问题已经超出视觉层，需结合 `ux-researcher-designer` 一起处理。",
     "具体评估细则优先读取 [Nielsen 十原则](references/nielsen-heuristics.md)、[Krug 导航检查](references/krug-principles.md) 与 [审计模板](references/audit-template.md)。",
   ],
   constraints: [
@@ -24,6 +25,14 @@ export const uxHeuristicsSkill = defineSkill({
     "明显的启发式错误先直接修，不要拿 A/B 测试替代基础可用性修复。",
     "涉及诱导、误导、强制续费等模式时，必须交叉检查 [暗黑模式参考](references/dark-patterns.md)。",
     "涉及对比度、焦点状态、键盘访问时，必须交叉检查 [WCAG 清单](references/wcag-checklist.md)。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return uxResearcherDesignerSkill.id;
+      },
+      reason: "发现问题已经超出视觉层，需结合 `ux-researcher-designer` 一起处理。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

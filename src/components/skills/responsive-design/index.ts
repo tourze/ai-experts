@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { modernWebDesignSkill } from "../modern-web-design/index";
+import { webPerformanceDiagnosisSkill } from "../web-performance-diagnosis/index";
 
 export const responsiveDesignSkill = defineSkill({
   id: "responsive-design",
@@ -22,6 +24,21 @@ export const responsiveDesignSkill = defineSkill({
     "组件级响应优先使用 `container queries`，页面级结构再用 `media queries`。",
     "响应式不只是宽度变化，还包括触控、键盘、密度、方向和内容长度。",
     "任何断点策略都不能牺牲可访问性和关键操作路径。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return webPerformanceDiagnosisSkill.id;
+      },
+      reason: "`web-performance-diagnosis`。",
+    },
+    {
+      get id() {
+        return modernWebDesignSkill.id;
+      },
+      label: "web-design-guidelines",
+      reason: "`web-design-guidelines`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -84,6 +84,12 @@ export type SkillAssetDefinition = {
   target?: string;
 };
 
+export type RelatedSkillDefinition = {
+  id: string;
+  label?: string;
+  reason: string;
+};
+
 export type SkillDefinition = {
   kind: ComponentKind.Skill;
   id: string;
@@ -98,6 +104,7 @@ export type SkillDefinition = {
   scripts?: readonly SkillScriptDefinition[];
   scriptRoots?: readonly SkillScriptRootDefinition[];
   references?: readonly SkillReferenceDefinition[];
+  relatedSkills?: readonly RelatedSkillDefinition[];
   assets?: readonly SkillAssetDefinition[];
 };
 

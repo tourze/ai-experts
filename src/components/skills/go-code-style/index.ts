@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { goErrorHandlingSkill } from "../go-error-handling/index";
 
 export const goCodeStyleSkill = defineSkill({
   id: "go-code-style",
@@ -14,7 +15,7 @@ export const goCodeStyleSkill = defineSkill({
     "编写或审查 Go 代码时，需要判断“能跑”和“好维护”之间的差距。",
     "需要处理长函数、深层嵌套、过长参数列表、导出面过大、命名字段缺失等可读性问题。",
     "需要把 AI 生成的 Go 代码改成更接近工程惯例的版本。",
-    "需要命名或错误语义时配合 [go-error-handling](../go-error-handling/SKILL.md)；涉及 nil、slice、map 或资源安全时配合 [go-safety](../go-error-handling/SKILL.md)。",
+    "需要命名或错误语义时配合 `go-error-handling`；涉及 nil、slice、map 或资源安全时配合 `go-safety`。",
   ],
   constraints: [
     "先跑 `gofmt` / `go test` / 项目既有 lint，再讨论主观风格；格式问题交给工具。",
@@ -23,6 +24,21 @@ export const goCodeStyleSkill = defineSkill({
     "struct literal 默认使用命名字段，避免上游结构体字段调整导致静默错位。",
     "slice/map 返回空集合时使用 `[]T{}` / `map[K]V{}` 或 `make`，不要把成功路径表达成 `nil`。",
     "最小化公开 API：没有跨包使用证据的类型、函数、字段默认不导出。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return goErrorHandlingSkill.id;
+      },
+      label: "go-safety",
+      reason: "需要命名或错误语义时配合 `go-error-handling`；涉及 nil、slice、map 或资源安全时配合 `go-safety`。",
+    },
+    {
+      get id() {
+        return goErrorHandlingSkill.id;
+      },
+      reason: "需要命名或错误语义时配合 `go-error-handling`；涉及 nil、slice、map 或资源安全时配合 `go-safety`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

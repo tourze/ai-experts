@@ -4,6 +4,8 @@ import {
   Platform,
   defineSkill,
 } from "../../sdk";
+import { designingGrowthLoopsSkill } from "../designing-growth-loops/index";
+import { portersFiveForcesSkill } from "../porters-five-forces/index";
 
 export const bcgMatrixSkill = defineSkill({
   id: "bcg-matrix",
@@ -18,6 +20,21 @@ export const bcgMatrixSkill = defineSkill({
     "问题象限是唯一需要 Go/No-Go 选择的——给窗口期 + 里程碑，到期不达标就砍。",
     "全投 = 没决策。BCG 的核心价值是**强迫取舍**。",
     "最终输出必须包含资源流向：现金牛 →→ 明星 + 被选中的问题业务，瘦狗 → 退出释放资源。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return portersFiveForcesSkill.id;
+      },
+      reason: "评估外部竞争：BCG/GE 看内部组合，不看行业结构。用 `porters-five-forces`。",
+    },
+    {
+      get id() {
+        return designingGrowthLoopsSkill.id;
+      },
+      label: "s-curve-growth",
+      reason: "单产品公司：BCG/GE 都是多业务组合工具。用 `s-curve-growth` 判断生命阶段。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

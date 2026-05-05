@@ -38,7 +38,4 @@ AI：
 
 ## 交叉引用
 
-- [`architecture-reviewer`](../architecture-reviewer/SKILL.md)：架构设计评审，侧重设计质量而非结构事实取证
 - `deep-code-read`：深度理解不熟悉代码库
-- [`tech-debt`](../tech-debt/SKILL.md)：技术债识别、排序与治理
-- [`software-design`](../software-design/SKILL.md)：设计原则与架构模式，从复杂度、深模块和信息隐藏角度评估设计

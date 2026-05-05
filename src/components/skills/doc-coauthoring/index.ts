@@ -4,6 +4,8 @@ import {
   Platform,
   defineSkill,
 } from "../../sdk";
+import { proposalWriterSkill } from "../proposal-writer/index";
+import { userGuideWritingSkill } from "../user-guide-writing/index";
 
 export const docCoauthoringSkill = defineSkill({
   id: "doc-coauthoring",
@@ -13,13 +15,34 @@ export const docCoauthoringSkill = defineSkill({
     "用户手里有零散素材，需要共同整理成可读、可评审、可交付的文档。",
     "文档类型可以是技术设计、项目方案、研究备忘录、培训材料、用户指南。",
     "用户需要“边问边补、边写边校”，而不是一次性生成完稿。",
-    "若文档偏正式提案，可接续 [proposal-review](../proposal-writer/SKILL.md) 或 [proposal-writer](../proposal-writer/SKILL.md)。",
+    "若文档偏正式提案，可接续 `proposal-review` 或 `proposal-writer`。",
   ],
   constraints: [
     "先收集上下文和读者信息，再决定结构；不要盲写。",
     "每一轮只推进一个明确目标：补背景、定结构、写章节、做验收。",
     "对缺失信息要显式标注“待确认”，但不要把未确认内容包装成事实。",
     "交付前必须做一次读者视角检查：读者是谁、读完要做什么、还缺什么。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return proposalWriterSkill.id;
+      },
+      label: "proposal-review",
+      reason: "若文档偏正式提案，可接续 `proposal-review` 或 `proposal-writer`。",
+    },
+    {
+      get id() {
+        return proposalWriterSkill.id;
+      },
+      reason: "若文档偏正式提案，可接续 `proposal-review` 或 `proposal-writer`。",
+    },
+    {
+      get id() {
+        return userGuideWritingSkill.id;
+      },
+      reason: "交付后若还要延展成用户手册，可转给 `user-guide-writing`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -86,7 +86,4 @@
 
 ## 参考资料
 
-- [design-system-patterns](../design-system-patterns/SKILL.md)
-- [shadcn-ui](../shadcn-ui/SKILL.md)
-- [frontend-design-review](../frontend-design-review/SKILL.md)
 - [Figma MCP 文档](https://developers.figma.com/docs/figma-mcp-server/)

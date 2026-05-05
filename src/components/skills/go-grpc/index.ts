@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { goErrorHandlingSkill } from "../go-error-handling/index";
+import { goPerformanceSkill } from "../go-performance/index";
 
 export const goGrpcSkill = defineSkill({
   id: "go-grpc",
@@ -15,7 +17,7 @@ export const goGrpcSkill = defineSkill({
     "实现服务端注册、客户端连接、拦截器链。",
     "处理流式 RPC（服务端流、客户端流、双向流）。",
     "gRPC 错误码映射、TLS/mTLS 配置、keepalive 调优。",
-    "与 [go-error-handling](../go-error-handling/SKILL.md) 配合处理跨层错误传播；与 [go-performance](../go-performance/SKILL.md) 配合优化序列化与连接复用。",
+    "与 `go-error-handling` 配合处理跨层错误传播；与 `go-performance` 配合优化序列化与连接复用。",
   ],
   constraints: [
     "**Proto 组织**：一个 service 一个 proto 文件；package 用 `lowercase_snake`；`go_package` 必须显式声明。",
@@ -24,6 +26,20 @@ export const goGrpcSkill = defineSkill({
     "**错误处理**：服务端返回错误必须用 `status.Errorf(codes.Internal, ...)` 等标准错误码，禁止裸 `errors.New`；客户端用 `status.FromError` 解析。",
     "**拦截器**：用 `grpc.ChainUnaryInterceptor` / `grpc.ChainStreamInterceptor` 组合多个，不要用单个 `grpc.UnaryInterceptor` 只传一个链。",
     "**context**：interceptor 中不要创建新 context 替换原始 ctx；客户端超时用 `context.WithTimeout`。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return goPerformanceSkill.id;
+      },
+      reason: "与 `go-error-handling` 配合处理跨层错误传播；与 `go-performance` 配合优化序列化与连接复用。",
+    },
+    {
+      get id() {
+        return goErrorHandlingSkill.id;
+      },
+      reason: "与 `go-error-handling` 配合处理跨层错误传播；与 `go-performance` 配合优化序列化与连接复用。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

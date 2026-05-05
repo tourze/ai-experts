@@ -5,6 +5,7 @@ import {
   defineAsset,
   defineSkill,
 } from "../../sdk";
+import { testingStrategySkill } from "../testing-strategy/index";
 
 export const webappTestingSkill = defineSkill({
   id: "webapp-testing",
@@ -13,7 +14,7 @@ export const webappTestingSkill = defineSkill({
   useCases: [
     "本地开发站点或测试环境页面需要真实浏览器验证。",
     "需要验证交互、表单、跳转、控制台日志、截图或响应式表现。",
-    "需要把 [testing-strategy](../testing-strategy/SKILL.md) 里的 Web 场景落成实际浏览器检查。",
+    "需要把 `testing-strategy` 里的 Web 场景落成实际浏览器检查。",
     "需要在执行失败时保留证据用于复盘。",
   ],
   constraints: [
@@ -24,6 +25,14 @@ export const webappTestingSkill = defineSkill({
     "失败时截图并记录浏览器控制台日志。",
     "结束后关闭浏览器上下文，避免遗留进程。",
     "当前目录内可复用辅助函数：[test-helper.js](./assets/test-helper.js)",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return testingStrategySkill.id;
+      },
+      reason: "需要把 `testing-strategy` 里的 Web 场景落成实际浏览器检查。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -1,9 +1,3 @@
-## 边界与协作
-- 只需要“该卖给谁、怎么定位”时，切到 [stp-segmentation](../stp-segmentation/SKILL.md)。
-- 只需要审查产品、价格、渠道、促销一致性时，切到 [stp-segmentation](../stp-segmentation/SKILL.md)。
-- 只需要广告账户、预算、出价和受众结构时，切到 [paid-ads](../paid-ads/SKILL.md)。
-- 需要内容日历时，配合 [content-strategy](../content-strategy/SKILL.md)。
-
 ## 工作流
 1. **Brief 梳理**
    - 拆清 What / Who / When / Why / How / Where。

@@ -67,7 +67,6 @@ node scripts/search_youtube.mjs \
 - 查询词先收窄到主题本身，不要把分析诉求和搜索词混在一起。
 - 需要“最近”或“热门”时，显式指定 `--days` 或 `--sort`，不要靠自然语言脑补。
 - 如果 `upload_date` / `duration_string` 为空，要告诉用户这是 YouTube flat search 的字段缺失，不是脚本 bug。
-- 用户选中具体视频后，切到 [youtube-analysis](../youtube-analysis/SKILL.md) 做内容分析。
 - YouTube 触发 bot challenge 时，直接说明失败原因；不要把空结果伪装成“没有搜到”。
 
 ## 反模式

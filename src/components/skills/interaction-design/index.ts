@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { modernWebDesignSkill } from "../modern-web-design/index";
 
 export const interactionDesignSkill = defineSkill({
   id: "interaction-design",
@@ -22,6 +23,14 @@ export const interactionDesignSkill = defineSkill({
     "所有动效都要兼容 `prefers-reduced-motion`。",
     "微交互时长控制在感知区间：100-150ms 反馈、200-300ms 轻过渡、300-500ms 中型切换。",
     "一个页面只需要少量高质量动效，不要处处都在动。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return modernWebDesignSkill.id;
+      },
+      reason: "`modern-web-design`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

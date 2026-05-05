@@ -3,7 +3,6 @@
 中文平台内部内容（微信公众号、抖音、大众点评、微博、B 站、小红书）通用 WebSearch 覆盖薄弱，先按母公司归属选主源再下查询：
 
 - 判断生态归属（腾讯/字节/美团/阿里/新浪/小红书…），完整决策表见 [`references/chinese-platform-routing.md`](references/chinese-platform-routing.md)。
-- 用 `WebSearch + site:目标域名` 锁定主源，命中 URL 转 [web-content-fetcher](../web-content-fetcher/SKILL.md) 抓正文。
 - site: 无命中时如实标注"未触达平台 native 内容"，不要假装拿到完整数据。
 - 国际话题保持原全景流程，不强套中文路由。
 
@@ -42,7 +41,6 @@
 - 是否把日期粒度与用户问题对齐。
 - 关键事实是否有 2-3 个独立来源支持（chain-of-verification）。
 - 是否已经准备好对结果进行归纳总结。
-
 
 ## 反模式
 

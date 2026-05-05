@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { redisDataModelingSkill } from "../redis-data-modeling/index";
 
 export const redisClusterHaSkill = defineSkill({
   id: "redis-cluster-ha",
@@ -15,7 +16,7 @@ export const redisClusterHaSkill = defineSkill({
     "持久化策略配置（RDB / AOF / 混合），平衡数据安全与性能。",
     "maxmemory 和淘汰策略制定，防止 OOM。",
     "慢查询监控和运维基线建立。",
-    "分布式锁在集群下的考量参考 [redis-data-modeling](../redis-data-modeling/SKILL.md)，键分布和锁模式见该 skill。",
+    "分布式锁在集群下的考量参考 `redis-data-modeling`，键分布和锁模式见该 skill。",
     "完整配置和监控脚本见 [references/code-patterns.md](references/code-patterns.md)。",
   ],
   constraints: [
@@ -24,6 +25,14 @@ export const redisClusterHaSkill = defineSkill({
     "生产环境必须开启持久化（至少 AOF），纯内存模式仅用于可丢失缓存。",
     "maxmemory 预留系统内存 20-30%（fork copy-on-write 开销），不设为物理内存 100%。",
     "SLOWLOG 阈值建议 10ms（10000 微秒），定期巡检并优化。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return redisDataModelingSkill.id;
+      },
+      reason: "分布式锁在集群下的考量参考 `redis-data-modeling`，键分布和锁模式见该 skill。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

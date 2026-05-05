@@ -26,8 +26,6 @@ node scripts/analyze.mjs \
 - 文件路径是否真实存在，扩展名是否在支持范围内。
 - 是否已经通过 `inspect` 确认过表名、列名、类型、空值分布。
 - SQL 是否只引用了实际存在的表和列。
-- 导出路径扩展名是否正确，是否需要交给 [data-visualization](../data-visualization/SKILL.md) 或 [data-storytelling](../data-storytelling/SKILL.md) 做后续表达。
-- 如果需求涉及显著性检验、异常解释或统计边界，是否切换到 [statistical-analysis](../statistical-analysis/SKILL.md)。
 
 ## 反模式
 

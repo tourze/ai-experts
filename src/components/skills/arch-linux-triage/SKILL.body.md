@@ -32,7 +32,6 @@ sudo bootctl status
 - [ ] 检查 `/var/log/pacman.log` 中最近一次升级、回滚或镜像错误。
 - [ ] 若涉及包损坏，先用 `pacman -Qikk <pkg>` 验证再决定重装。
 - [ ] 若涉及引导，确认 `mkinitcpio -P`、`bootctl status` 或 GRUB 生成是否成功。
-- [ ] 若涉及网络安装失败，切到 [network-troubleshooter](../network-troubleshooter/SKILL.md)。
 
 ## 反模式
 

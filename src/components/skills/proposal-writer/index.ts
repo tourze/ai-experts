@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { consultingAnalysisSkill } from "../consulting-analysis/index";
 
 export const proposalWriterSkill = defineSkill({
   id: "proposal-writer",
@@ -16,7 +17,7 @@ export const proposalWriterSkill = defineSkill({
     "目标是\"写出能发给客户的文本\"，不是只做提纲。",
     "交付物可以是长文档、Word 方案、PPT 结构稿或销售跟进材料。",
     "已经具备一部分背景材料，但需要把它们组织成对外表达。",
-    "若前置研究还没完成，先用 [consulting-analysis](../consulting-analysis/SKILL.md) 补齐事实基础。",
+    "若前置研究还没完成，先用 `consulting-analysis` 补齐事实基础。",
   ],
   constraints: [
     "必须围绕客户问题、目标和成交动作写作，不要把公司介绍写成主角。",
@@ -25,6 +26,14 @@ export const proposalWriterSkill = defineSkill({
     "报价、范围、里程碑、假设与排除项必须成套出现，不能只写价格。",
     "文案要服务成交动作，例如预约评审、签试点、进入采购流程或签约节点。",
     "企业级提案要明确客户决策链、预算区间和采购阶段。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return consultingAnalysisSkill.id;
+      },
+      reason: "若前置研究还没完成，先用 `consulting-analysis` 补齐事实基础。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

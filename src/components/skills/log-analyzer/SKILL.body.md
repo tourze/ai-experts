@@ -24,7 +24,6 @@ jq 'select(.level == "error")' app.log | tail -20
 - 是否提炼出第一条异常、最高频异常和受影响组件。
 - 是否补充了上下文行，而不是单独摘一条孤立报错。
 - 是否识别出周期性、突发性或发布后回归模式。
-- 如果问题仍未聚焦，转到 [incident-response](../incident-response/SKILL.md)。
 
 ## 反模式
 

@@ -5,6 +5,9 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { dataAnalysisSkill } from "../data-analysis/index";
+import { dataStorytellingSkill } from "../data-storytelling/index";
+import { statisticalAnalysisSkill } from "../statistical-analysis/index";
 
 export const dataVisualizationSkill = defineSkill({
   id: "data-visualization",
@@ -16,7 +19,6 @@ export const dataVisualizationSkill = defineSkill({
     "需要给图表加注释、颜色策略、数值标签、可访问性约束。",
     "需要审查现有 Dashboard，判断哪些图选错了类型。",
     "需要把\"数据形状 → 图表类型\"规则内化成选型矩阵。",
-    "相关 skill：[data-analysis](../data-analysis/SKILL.md)、[statistical-analysis](../statistical-analysis/SKILL.md)、[data-storytelling](../data-storytelling/SKILL.md)。",
   ],
   constraints: [
     "先回答“图要表达什么关系”，再选图；不要先有图型偏好。",
@@ -26,6 +28,26 @@ export const dataVisualizationSkill = defineSkill({
     "类别数 > 15 时禁用柱图/饼图，改 Top-N 或表格。",
     "饼图禁用于 > 5 片或切片差异 < 5%，默认优先横向柱图。",
     "颜色不能是唯一编码维度，必须配合形状、标签或图案。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return dataStorytellingSkill.id;
+      },
+      reason: "如果图表最终要用于汇报，是否把 headline 与故事顺序同步给 `data-storytelling`。",
+    },
+    {
+      get id() {
+        return dataAnalysisSkill.id;
+      },
+      reason: "相关 skill：`data-analysis`、`statistical-analysis`、`data-storytelling`。",
+    },
+    {
+      get id() {
+        return statisticalAnalysisSkill.id;
+      },
+      reason: "相关 skill：`data-analysis`、`statistical-analysis`、`data-storytelling`。",
+    },
   ],
   invocation: InvocationPolicy.ModelOnly,
   platforms: [Platform.Claude, Platform.Codex],

@@ -4,6 +4,8 @@ import {
   Platform,
   defineSkill,
 } from "../../sdk";
+import { markdownMermaidWritingSkill } from "../markdown-mermaid-writing/index";
+import { userGuideWritingSkill } from "../user-guide-writing/index";
 
 export const readmeBlueprintGeneratorSkill = defineSkill({
   id: "readme-blueprint-generator",
@@ -13,13 +15,27 @@ export const readmeBlueprintGeneratorSkill = defineSkill({
     "仓库没有 README，或 README 已经过时、信息零散、无法指导开发者入门。",
     "用户希望自动扫描项目结构、`.github/copilot` 或 `copilot-instructions.md` 等资料来生成文档骨架。",
     "输出要兼顾“快速上手”和“架构导航”，而不是只列文件树。",
-    "如需统一 Markdown 风格，可结合 [markdown-mermaid-writing](../markdown-mermaid-writing/SKILL.md)。",
+    "如需统一 Markdown 风格，可结合 `markdown-mermaid-writing`。",
   ],
   constraints: [
     "先理解项目是什么、给谁用、怎么跑，再写 README。",
     "README 必须可执行：安装、启动、测试、关键目录都要能落地。",
     "不把猜测写成事实；缺失信息应标成“待补”或“未发现”。",
     "面向开发者的 README 不要混入大量市场宣传话术。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return markdownMermaidWritingSkill.id;
+      },
+      reason: "如需统一 Markdown 风格，可结合 `markdown-mermaid-writing`。",
+    },
+    {
+      get id() {
+        return userGuideWritingSkill.id;
+      },
+      reason: "若后续要写面向终端用户的指南，可转给 `user-guide-writing`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

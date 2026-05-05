@@ -5,6 +5,11 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { docCoauthoringSkill } from "../doc-coauthoring/index";
+import { markdownMermaidWritingSkill } from "../markdown-mermaid-writing/index";
+import { mdToPdfSkill } from "../md-to-pdf/index";
+import { pptGenerateSkill } from "../ppt-generate/index";
+import { userGuideWritingSkill } from "../user-guide-writing/index";
 
 export const tutorialBuilderSkill = defineSkill({
   id: "tutorial-builder",
@@ -14,7 +19,7 @@ export const tutorialBuilderSkill = defineSkill({
     "用户要从主题、零散笔记、URL、论文、仓库、课程材料或草稿生成完整教程。",
     "交付目标是学习包：`brief`、研究记录、教程大纲、正文、章节视觉、练习、来源附录和导出计划。",
     "需要权威来源支撑，而不是无来源博客、短答或普通操作手册。",
-    "只写终端用户的产品操作指南时，转 [user-guide-writing](../user-guide-writing/SKILL.md)；只协作文档结构时，先用 [doc-coauthoring](../doc-coauthoring/SKILL.md)。",
+    "只写终端用户的产品操作指南时，转 `user-guide-writing`；只协作文档结构时，先用 `doc-coauthoring`。",
   ],
   constraints: [
     "用户材料优先：先保留用户的意图、角度、案例、术语和排除项，再补外部来源。",
@@ -22,6 +27,47 @@ export const tutorialBuilderSkill = defineSkill({
     "教程必须是学习路径，不是链接摘要；每章回答一个学习问题并配一个视觉说明。",
     "默认正文长度是完整教程：中文 `5000-10000` 字，英文 `3500-7000` words；用户要求 sample/brief 时再降级。",
     "DOCX/PDF/HTML 以 Markdown 正文为 canonical source，不维护三份不同内容。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return mdToPdfSkill.id;
+      },
+      reason: "5. 以 Markdown 为源规划 DOCX/PDF/HTML 导出；具体转换分别衔接 `docx`、`md-to-pdf`。",
+    },
+    {
+      get id() {
+        return markdownMermaidWritingSkill.id;
+      },
+      label: "pretty-mermaid",
+      reason: "需要渲染 Mermaid 成品图时衔接 `pretty-mermaid`；需要演示视觉规范时衔接 `ppt-visual`。",
+    },
+    {
+      get id() {
+        return pptGenerateSkill.id;
+      },
+      label: "ppt-visual",
+      reason: "需要渲染 Mermaid 成品图时衔接 `pretty-mermaid`；需要演示视觉规范时衔接 `ppt-visual`。",
+    },
+    {
+      get id() {
+        return userGuideWritingSkill.id;
+      },
+      reason: "只写终端用户的产品操作指南时，转 `user-guide-writing`；只协作文档结构时，先用 `doc-coauthoring`。",
+    },
+    {
+      get id() {
+        return docCoauthoringSkill.id;
+      },
+      reason: "只写终端用户的产品操作指南时，转 `user-guide-writing`；只协作文档结构时，先用 `doc-coauthoring`。",
+    },
+    {
+      get id() {
+        return docCoauthoringSkill.id;
+      },
+      label: "docx",
+      reason: "5. 以 Markdown 为源规划 DOCX/PDF/HTML 导出；具体转换分别衔接 `docx`、`md-to-pdf`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

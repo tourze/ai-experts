@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { gradleBuildPerformanceSkill } from "../gradle-build-performance/index";
 
 export const graalvmNativeImageSkill = defineSkill({
   id: "graalvm-native-image",
@@ -14,7 +15,7 @@ export const graalvmNativeImageSkill = defineSkill({
     "需要把 JVM 应用编译成原生可执行文件，以降低冷启动和内存占用。",
     "Native build 失败，报 `ClassNotFoundException`、反射、资源、代理或序列化相关错误。",
     "要为 Spring Boot、Quarkus、Micronaut 或纯 Java 项目补齐原生镜像配置。",
-    "如果构建时间本身是主要问题，联动 [gradle-build-performance](../gradle-build-performance/SKILL.md)。",
+    "如果构建时间本身是主要问题，联动 `gradle-build-performance`。",
   ],
   constraints: [
     "先识别环境，再改配置：必须先确认构建工具、框架、Java 版本和失败日志，再决定 Maven/Gradle 路线。",
@@ -22,6 +23,14 @@ export const graalvmNativeImageSkill = defineSkill({
     "元数据位置必须清晰：优先使用 `META-INF/native-image/<group>/<artifact>/` 下的配置。",
     "Spring Boot 3.x 优先 `RuntimeHints`；只有第三方库或无法代码注册时才退回 JSON metadata。",
     "若引用更细节的构建片段，直接跳到：\n[Maven Native Profile](references/maven-native-profile.md)、\n[Gradle Native Plugin](references/gradle-native-plugin.md)、\n[Spring Boot Native](references/spring-boot-native.md)、\n[Quarkus / Micronaut](references/quarkus-micronaut-native.md)、\n[Reflection / Resource Config](references/reflection-resource-config.md)、\n[Tracing Agent](references/tracing-agent.md)。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return gradleBuildPerformanceSkill.id;
+      },
+      reason: "如果构建时间本身是主要问题，联动 `gradle-build-performance`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

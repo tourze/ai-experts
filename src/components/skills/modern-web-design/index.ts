@@ -8,6 +8,9 @@ import {
   defineSkillScript,
   defineSkillScriptRoot,
 } from "../../sdk";
+import { interactionDesignSkill } from "../interaction-design/index";
+import { responsiveDesignSkill } from "../responsive-design/index";
+import { webPerformanceDiagnosisSkill } from "../web-performance-diagnosis/index";
 
 export const modernWebDesignSkill = defineSkill({
   id: "modern-web-design",
@@ -29,6 +32,33 @@ export const modernWebDesignSkill = defineSkill({
     "不追热点式堆效果；玻璃、渐变、视差、滚动叙事都要有内容理由。",
     "避免\"AI 套版感\"：系统字体堆、紫色渐变、均匀卡片墙、无差别圆角、装饰性噪音。",
     "字体、色彩、网格、动效相互一致，围绕同一个概念服务。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return webPerformanceDiagnosisSkill.id;
+      },
+      reason: "`web-performance-diagnosis`、`interaction-design`、`responsive-design`。",
+    },
+    {
+      get id() {
+        return interactionDesignSkill.id;
+      },
+      reason: "`web-performance-diagnosis`、`interaction-design`、`responsive-design`。",
+    },
+    {
+      get id() {
+        return responsiveDesignSkill.id;
+      },
+      reason: "`web-performance-diagnosis`、`interaction-design`、`responsive-design`。",
+    },
+    {
+      get id() {
+        return webPerformanceDiagnosisSkill.id;
+      },
+      label: "性能诊断",
+      reason: "[ ] 已通过 `性能诊断` 复核。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -35,7 +35,6 @@ groups:
 - 是否为关键依赖提供健康检查和降级语义。
 - 是否定义告警等级、通知对象、静默窗口与 runbook 链接。
 - 是否确认日志字段、trace id、request id 的一致性。
-- 需要沿日志追根溯源时，参阅 [log-analyzer](../log-analyzer/SKILL.md)。
 - 服务健康检查的 curl/nc/pg_isready/redis-cli 探测细节见 [references/service-monitor.md](references/service-monitor.md)。
 
 ## 反模式

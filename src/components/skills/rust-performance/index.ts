@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { rustOwnershipIdiomsSkill } from "../rust-ownership-idioms/index";
+import { rustTypeDesignSkill } from "../rust-type-design/index";
 
 export const rustPerformanceSkill = defineSkill({
   id: "rust-performance",
@@ -23,6 +25,20 @@ export const rustPerformanceSkill = defineSkill({
     "迭代器链通常比手写循环更快（零开销抽象 + 编译器优化）。",
     "`#[inline]` 只在跨 crate 热路径上有意义；同 crate 内编译器自行决定。",
     "Release 模式 (`--release`) 下才有意义的性能数据；Debug 下不要做性能判断。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return rustTypeDesignSkill.id;
+      },
+      reason: "联动：`rust-ownership-idioms` · `rust-type-design`。",
+    },
+    {
+      get id() {
+        return rustOwnershipIdiomsSkill.id;
+      },
+      reason: "联动：`rust-ownership-idioms` · `rust-type-design`",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

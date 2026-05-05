@@ -1,7 +1,3 @@
-## 不适用场景
-- 一次性项目（无需迭代）：PDCA 是循环改进工具，一次性交付用 [five-w-two-h](../fishbone-diagram/SKILL.md) 做计划。
-- 需要根因深挖：PDCA 的 Plan 阶段可以配合 [fishbone-diagram](../fishbone-diagram/SKILL.md)，但 PDCA 本身不做深度根因分析。
-
 ## 代码模式
 
 本 skill 是思维框架，不要求执行代码。输出时先给结构化框架，再列证据、假设和追问，最后给可验证的下一步。

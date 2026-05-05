@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { reactPerformanceSkill } from "../react-performance/index";
+import { reactServerComponentsSkill } from "../react-server-components/index";
 
 export const reactHooksSkill = defineSkill({
   id: "react-hooks",
@@ -14,8 +16,8 @@ export const reactHooksSkill = defineSkill({
     "需要在 `useState`、`useReducer`、`useRef`、`useEffect` 之间做职责划分。",
     "要设计可复用的自定义 Hook，并稳定暴露返回值与错误语义。",
     "遇到 effect 重复执行、闭包拿到旧值、依赖数组写不对、清理逻辑遗漏等问题。",
-    "如果问题已经扩展成\"渲染性能、外部 store 订阅或 memo 治理\"，统一看 [react-performance](../react-performance/SKILL.md)。",
-    "如果任务在 Next.js App Router / RSC 边界上，优先联动 [react-server-components](../react-server-components/SKILL.md)。",
+    "如果问题已经扩展成\"渲染性能、外部 store 订阅或 memo 治理\"，统一看 `react-performance`。",
+    "如果任务在 Next.js App Router / RSC 边界上，优先联动 `react-server-components`。",
     "类型体操很重时，联动 `typescript-magician`。",
   ],
   constraints: [
@@ -25,6 +27,20 @@ export const reactHooksSkill = defineSkill({
     "需要跨渲染持有可变值时用 `useRef`；需要触发渲染时才用 state。",
     "复杂状态机优先 `useReducer`，不要让多个 `useState` 形成隐式事务。",
     "自定义 Hook 要处理 SSR、异常输入和清理路径，避免把环境假设硬编码到浏览器端。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return reactServerComponentsSkill.id;
+      },
+      reason: "如果任务在 Next.js App Router / RSC 边界上，优先联动 `react-server-components`。",
+    },
+    {
+      get id() {
+        return reactPerformanceSkill.id;
+      },
+      reason: "如果问题已经扩展成\\\"渲染性能、外部 store 订阅或 memo 治理\\\"，统一看 `react-performance`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

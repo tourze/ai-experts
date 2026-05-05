@@ -8,6 +8,7 @@ import {
   defineSkillScript,
   defineSkillScriptRoot,
 } from "../../sdk";
+import { croMethodologySkill } from "../cro-methodology/index";
 
 export const copywritingSkill = defineSkill({
   id: "copywriting",
@@ -22,7 +23,15 @@ export const copywritingSkill = defineSkill({
     "先确认页面类型、目标受众、核心价值主张和期望行动（CTA），再动笔。",
     "文案基于用户真实语言，而非公司内部术语。",
     "每个页面只有一个主要 CTA；次要 CTA 不能与主 CTA 竞争注意力。",
-    "转化率优化 → [cro-methodology](../cro-methodology/SKILL.md)。",
+    "转化率优化 → `cro-methodology`。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return croMethodologySkill.id;
+      },
+      reason: "转化率优化 → `cro-methodology`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -96,9 +96,6 @@ function calculateShipping(int $weightGrams, string $zone): float
 - 常量组已迁移为枚举，魔法字符串已消除。
 - 多分支 `switch` 已替换为 `match`。
 - 不可变数据使用了 `readonly class` 或 `readonly` 属性。
-- 需要设计服务层、DTO、Repository 时，联动查看 [php-design-patterns](../php-design-patterns/SKILL.md)。
-- 需要设计异常层级或输入校验时，联动查看 [php-error-handling](../php-error-handling/SKILL.md)。
-- 需要配置 PHPStan/Psalm 或补泛型标注时，联动查看 [php-type-safety](../php-type-safety/SKILL.md)。
 
 ## 反模式
 

@@ -39,7 +39,7 @@ jadx -d work/jadx app.apk
 ### 4. 动态验证
 只有静态阶段提出了明确假设后再使用 Frida/Objection/ADB。优先验证最能改变风险等级的路径：组件可达性、SSL pinning、root/RASP 检测、WebView 域控制、Keystore 使用、native 边界和敏感数据出站。
 
-Intent/deep link 复现切到 [intent-deeplink-abuse](../ethical-hacking-methodology/SKILL.md)；Frida 脚本组合切到 [android-frida-script-catalog](references/android-frida-script-catalog.md)。
+Intent/deep link 复现切到 `intent-deeplink-abuse`；Frida 脚本组合切到 [android-frida-script-catalog](references/android-frida-script-catalog.md)。
 
 ```bash
 adb shell am start -n com.example/.ExportedActivity -d 'scheme://host/path?x=1'

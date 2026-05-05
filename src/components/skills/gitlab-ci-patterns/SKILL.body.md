@@ -50,8 +50,6 @@ deploy_production:
       when: manual
 ```
 
-- Helm 或 Kubernetes 发布可以衔接 [helm-chart-scaffolding](../helm-chart-scaffolding/SKILL.md)。
-
 ## 检查清单
 - 是否明确 stage 顺序、`needs` 依赖和并行边界。
 - 是否区分缓存、制品和部署产物的生命周期。

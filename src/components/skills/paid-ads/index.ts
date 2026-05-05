@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { redesignMyLandingpageSkill } from "../redesign-my-landingpage/index";
 
 export const paidAdsSkill = defineSkill({
   id: "paid-ads",
@@ -19,7 +20,15 @@ export const paidAdsSkill = defineSkill({
     "先明确业务目标、目标 CPA/ROAS、预算边界和转化动作，再谈平台与结构。",
     "创意、受众、落地页要拆开排查；不要把所有问题都归到“平台学习期”。",
     "平台执行细节优先以 [platform-setup-checklists](references/platform-setup-checklists.md) 和 [audience-targeting](references/audience-targeting.md) 为准。",
-    "若着陆页承接弱，配合 [redesign-my-landingpage](../redesign-my-landingpage/SKILL.md)。",
+    "若着陆页承接弱，配合 `redesign-my-landingpage`。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return redesignMyLandingpageSkill.id;
+      },
+      reason: "若着陆页承接弱，配合 `redesign-my-landingpage`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

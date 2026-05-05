@@ -25,8 +25,6 @@ print(round(avg_score, 4))
 - 样本集是否覆盖主路径、边界条件、失败样例和拒答样例。
 - 评分标准是否可复现，是否区分了硬约束和软偏好。
 - 是否保留了基线模型/基线 prompt 的分数用于对比。
-- 如果问题集中在 prompt 设计，是否交给 [prompt-engineering-patterns](../prompt-engineering-patterns/SKILL.md) 进一步拆解。
-- 如果问题集中在检索链路，是否交给 [rag-auditor](../rag-auditor/SKILL.md)。
 
 ## 反模式
 

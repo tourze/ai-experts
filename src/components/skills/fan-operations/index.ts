@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { copywritingSkill } from "../copywriting/index";
+import { xiaohongshuCommercialGrowthSkill } from "../xiaohongshu-commercial-growth/index";
 
 export const fanOperationsSkill = defineSkill({
   id: "fan-operations",
@@ -21,8 +23,22 @@ export const fanOperationsSkill = defineSkill({
     "先解决“回复是否及时”和“回复是否有信息量”，不要只追求高频复制粘贴。",
     "评论区和私信中的承诺必须真实可交付，不要为了互动率乱开口子。",
     "粉丝运营的目标是提高长期信任，不是短期刷互动。",
-    "对外表达必须与账号定位一致；账号主张模糊时，先回到 [xiaohongshu-commercial-growth](../xiaohongshu-commercial-growth/SKILL.md) 确认定位。",
-    "涉及站外导流前，先检查平台安全边界，参考 [copywriting](../copywriting/SKILL.md) 中的社交平台内容安全过滤流程。",
+    "对外表达必须与账号定位一致；账号主张模糊时，先回到 `xiaohongshu-commercial-growth` 确认定位。",
+    "涉及站外导流前，先检查平台安全边界，参考 `copywriting` 中的社交平台内容安全过滤流程。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return copywritingSkill.id;
+      },
+      reason: "涉及站外导流前，先检查平台安全边界，参考 `copywriting` 中的社交平台内容安全过滤流程。",
+    },
+    {
+      get id() {
+        return xiaohongshuCommercialGrowthSkill.id;
+      },
+      reason: "对外表达必须与账号定位一致；账号主张模糊时，先回到 `xiaohongshu-commercial-growth` 确认定位。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

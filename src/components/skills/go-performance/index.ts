@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { goConcurrencyPatternsSkill } from "../go-concurrency-patterns/index";
+import { goErrorHandlingSkill } from "../go-error-handling/index";
 
 export const goPerformanceSkill = defineSkill({
   id: "go-performance",
@@ -14,7 +16,7 @@ export const goPerformanceSkill = defineSkill({
     "优化热路径延迟、吞吐、内存分配、GC 压力或连接池。",
     "写 Go benchmark、用 `benchstat` 比较实现、解释 pprof 输出。",
     "审查\"性能优化\"是否有基线、统计显著性和回归测试。",
-    "并发瓶颈配合 [go-concurrency-patterns](../go-concurrency-patterns/SKILL.md)；资源安全配合 [go-safety](../go-error-handling/SKILL.md)。",
+    "并发瓶颈配合 `go-concurrency-patterns`；资源安全配合 `go-safety`。",
     "持续监控 → go-observability；排查\"为什么慢\" → go-troubleshooting。",
   ],
   constraints: [
@@ -24,6 +26,21 @@ export const goPerformanceSkill = defineSkill({
     "先排除外部瓶颈：数据库、网络、锁等待、上游 API 慢时，减少本地分配通常无效。",
     "优化代码必须保留可读性解释和 benchmark 证据，避免后续被误删。",
     "`sync.Pool`、`unsafe`、手写缓存只在 profile 证明收益并有测试保护时使用。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return goErrorHandlingSkill.id;
+      },
+      label: "go-safety",
+      reason: "并发瓶颈配合 `go-concurrency-patterns`；资源安全配合 `go-safety`。",
+    },
+    {
+      get id() {
+        return goConcurrencyPatternsSkill.id;
+      },
+      reason: "并发瓶颈配合 `go-concurrency-patterns`；资源安全配合 `go-safety`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -4,6 +4,7 @@ import {
   Platform,
   defineSkill,
 } from "../../sdk";
+import { paidAdsSkill } from "../paid-ads/index";
 
 export const leadChannelOptimizerSkill = defineSkill({
   id: "lead-channel-optimizer",
@@ -18,7 +19,15 @@ export const leadChannelOptimizerSkill = defineSkill({
     "渠道优先级必须同时看产出、稳定性和执行复杂度，不能只看单次线索成本。",
     "先统一口径：时间窗、归因方式、目标客户定义、是否算销售成本。",
     "输出必须包含“继续投入 / 保持 / 缩减 / 暂停”四类动作建议。",
-    "若需要重做广告结构，配合 [paid-ads](../paid-ads/SKILL.md)。",
+    "若需要重做广告结构，配合 `paid-ads`。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return paidAdsSkill.id;
+      },
+      reason: "若需要重做广告结构，配合 `paid-ads`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

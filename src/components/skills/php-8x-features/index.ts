@@ -5,6 +5,9 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { phpDesignPatternsSkill } from "../php-design-patterns/index";
+import { phpErrorHandlingSkill } from "../php-error-handling/index";
+import { phpTypeSafetySkill } from "../php-type-safety/index";
 
 export const phpXFeaturesSkill = defineSkill({
   id: "php-8x-features",
@@ -24,6 +27,26 @@ export const phpXFeaturesSkill = defineSkill({
     "`match` 替代多分支 `switch`；利用其穷尽性检查和严格比较。",
     "构造器提升（constructor promotion）简化属性声明，减少样板代码。",
     "命名参数只在调用点提升可读性时使用，不要滥用到每个函数调用。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return phpErrorHandlingSkill.id;
+      },
+      reason: "需要设计异常层级或输入校验时，联动查看 `php-error-handling`。",
+    },
+    {
+      get id() {
+        return phpTypeSafetySkill.id;
+      },
+      reason: "需要配置 PHPStan/Psalm 或补泛型标注时，联动查看 `php-type-safety`。",
+    },
+    {
+      get id() {
+        return phpDesignPatternsSkill.id;
+      },
+      reason: "需要设计服务层、DTO、Repository 时，联动查看 `php-design-patterns`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

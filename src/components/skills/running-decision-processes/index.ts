@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { planningUnderUncertaintySkill } from "../planning-under-uncertainty/index";
 
 export const runningDecisionProcessesSkill = defineSkill({
   id: "running-decision-processes",
@@ -13,13 +14,21 @@ export const runningDecisionProcessesSkill = defineSkill({
   useCases: [
     "多方分歧、迟迟无法拍板、需要明确决策人和输入边界。",
     "需要补充经验参考时可阅读 [references/guest-insights.md](references/guest-insights.md)。",
-    "做失败预演或事前验尸（pre-mortem）时，可配合 `inversion-strategist` 与 [planning-under-uncertainty](../planning-under-uncertainty/SKILL.md)。",
+    "做失败预演或事前验尸（pre-mortem）时，可配合 `inversion-strategist` 与 `planning-under-uncertainty`。",
     "需要把争议证据转成先验、后验、行动阈值和敏感性报告时，配合 `what-if-oracle`。",
   ],
   constraints: [
     "先定义决策问题、影响范围、不可逆程度和 deadline，再设计流程。",
     "明确谁提供输入、谁决策、谁执行，避免“所有人都参与所以没人负责”。",
     "决策需要记录理由与前提，方便日后复盘，不是只留一个结论。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return planningUnderUncertaintySkill.id;
+      },
+      reason: "做失败预演或事前验尸（pre-mortem）时，可配合 `inversion-strategist` 与 `planning-under-uncertainty`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

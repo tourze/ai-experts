@@ -8,6 +8,8 @@ import {
   defineSkillScript,
   defineSkillScriptRoot,
 } from "../../sdk";
+import { llmEvaluationSkill } from "../llm-evaluation/index";
+import { ragAuditorSkill } from "../rag-auditor/index";
 
 export const promptEngineeringPatternsSkill = defineSkill({
   id: "prompt-engineering-patterns",
@@ -19,7 +21,6 @@ export const promptEngineeringPatternsSkill = defineSkill({
     "需要跑完整的 prompt 诊断与优化流程：拆出目标、失败模式、候选变体、评分标准、测试集。",
     "相关资源：[assets/prompt-template-library.md](assets/prompt-template-library.md)、[assets/few-shot-examples.json](assets/few-shot-examples.json)、[scripts/optimize-prompt.mjs](scripts/optimize-prompt.mjs)。",
     "系统化诊断参考文件：[references/prompt-patterns.md](references/prompt-patterns.md)、[references/evaluation-metrics.md](references/evaluation-metrics.md)、[references/failure-modes.md](references/failure-modes.md)、[references/output-constraints.md](references/output-constraints.md)。",
-    "相关 skill：[llm-evaluation](../llm-evaluation/SKILL.md)、[rag-auditor](../rag-auditor/SKILL.md)。",
   ],
   constraints: [
     "先明确输出契约，再写自然语言提示；没有 schema 的 prompt 很难稳定。",
@@ -28,6 +29,20 @@ export const promptEngineeringPatternsSkill = defineSkill({
     "变体实验必须结构化对比：一次只改一个主变量（指令清晰度、示例策略、输出约束）。",
     "评分 rubric 必须包含硬约束和软约束，不要只有\"感觉更好\"。",
     "如果问题本质在检索、数据或工具链，而不是 prompt，本 skill 只负责识别，不负责掩盖。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return ragAuditorSkill.id;
+      },
+      reason: "如果 prompt 绑定 RAG，上下游检索问题是否已经交给 `rag-auditor`。",
+    },
+    {
+      get id() {
+        return llmEvaluationSkill.id;
+      },
+      reason: "相关 skill：`llm-evaluation`、`rag-auditor`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { asyncPythonPatternsSkill } from "../async-python-patterns/index";
+import { pythonDesignPatternsSkill } from "../python-design-patterns/index";
 
 export const pythonPerformanceOptimizationSkill = defineSkill({
   id: "python-performance-optimization",
@@ -15,8 +17,8 @@ export const pythonPerformanceOptimizationSkill = defineSkill({
     "需要比较不同算法、数据结构或缓存策略的收益。",
     "需要给数据库、I/O、批处理、异步并发做针对性优化。",
     "更复杂的 NumPy、并行和缓存策略见 [references/advanced-patterns.md](references/advanced-patterns.md)。",
-    "异步 I/O 优化时，联动 [async-python-patterns](../async-python-patterns/SKILL.md)。",
-    "结构层面的复杂度治理时，联动 [python-design-patterns](../python-design-patterns/SKILL.md)。",
+    "异步 I/O 优化时，联动 `async-python-patterns`。",
+    "结构层面的复杂度治理时，联动 `python-design-patterns`。",
   ],
   constraints: [
     "没有测量就不要优化；先 profile，再改代码。",
@@ -24,6 +26,20 @@ export const pythonPerformanceOptimizationSkill = defineSkill({
     "先做算法和数据结构级优化，再考虑微调语法糖。",
     "benchmark 要写明输入规模、运行轮次和环境，不要凭感觉说“更快”。",
     "不为了局部速度把代码可读性和可维护性直接打穿。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return pythonDesignPatternsSkill.id;
+      },
+      reason: "结构层面的复杂度治理时，联动 `python-design-patterns`。",
+    },
+    {
+      get id() {
+        return asyncPythonPatternsSkill.id;
+      },
+      reason: "异步 I/O 优化时，联动 `async-python-patterns`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

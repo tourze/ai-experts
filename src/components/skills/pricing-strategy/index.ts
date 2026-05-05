@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { businessModelSkill } from "../business-model/index";
+import { marketSizingAnalysisSkill } from "../market-sizing-analysis/index";
 
 export const pricingStrategySkill = defineSkill({
   id: "pricing-strategy",
@@ -13,12 +15,26 @@ export const pricingStrategySkill = defineSkill({
   useCases: [
     "SaaS 套餐设计、涨价、免费试用、价值度量或打包层级重构。",
     "需要参考 [references/research-methods.md](references/research-methods.md) 与 [references/tier-structure.md](references/tier-structure.md)。",
-    "讨论商业模式或市场空间时，可配合 [business-model](../business-model/SKILL.md) 和 [market-sizing-analysis](../market-sizing-analysis/SKILL.md)。",
+    "讨论商业模式或市场空间时，可配合 `business-model` 和 `market-sizing-analysis`。",
   ],
   constraints: [
     "先理解客户获得的价值、替代方案和购买流程，再决定价格。",
     "包装结构、价值度量和升级路径要一致，避免定价与产品体验互相打架。",
     "涨价、免费和折扣策略都要说明目标，不要同时追求“高 ARPU”和“零摩擦”。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return marketSizingAnalysisSkill.id;
+      },
+      reason: "讨论商业模式或市场空间时，可配合 `business-model` 和 `market-sizing-analysis`。",
+    },
+    {
+      get id() {
+        return businessModelSkill.id;
+      },
+      reason: "讨论商业模式或市场空间时，可配合 `business-model` 和 `market-sizing-analysis`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

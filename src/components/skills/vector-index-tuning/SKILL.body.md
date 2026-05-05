@@ -24,8 +24,6 @@
 - 是否定义了基线 recall、p95 latency、内存占用和写入成本。
 - 是否保证每轮只改一个主要参数。
 - benchmark query 是否与真实线上流量接近。
-- 如果质量问题来自向量本身，是否切换到 [embedding-strategies](../embedding-strategies/SKILL.md)。
-- 如果问题已经扩散到整条 RAG 链路，是否交给 [rag-auditor](../rag-auditor/SKILL.md)。
 
 ## 反模式
 

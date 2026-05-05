@@ -1,6 +1,5 @@
 ## 不适用场景
 - 诊断现有组织问题：画布是设计工具不是诊断工具，诊断用 `swot-analysis` 和 `business-health-diagnostic`。
-- 只需明确职责分工：不需要重新设计组织，只理清分工用 [raci-matrix](../raci-matrix/SKILL.md)。
 - 需要深入人才管理与团队设计时：[references/talent-management.md](references/talent-management.md)、[references/team-composition-analysis.md](references/team-composition-analysis.md)。
 
 ## 代码模式

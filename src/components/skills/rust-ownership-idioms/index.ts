@@ -5,6 +5,10 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { rustAsyncPatternsSkill } from "../rust-async-patterns/index";
+import { rustErrorHandlingSkill } from "../rust-error-handling/index";
+import { rustTestingSkill } from "../rust-testing/index";
+import { rustTypeDesignSkill } from "../rust-type-design/index";
 
 export const rustOwnershipIdiomsSkill = defineSkill({
   id: "rust-ownership-idioms",
@@ -23,6 +27,32 @@ export const rustOwnershipIdiomsSkill = defineSkill({
     "选择分发：默认泛型静态分发；只有异构集合、插件边界或缩短编译时间时才转 `dyn Trait`。",
     "`TODO` 必须可追踪，如 `// TODO(#42): 移除兼容分支`。",
     "`#[allow(...)]` 优先替换为 `#[expect(...)]` 并写明原因。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return rustTestingSkill.id;
+      },
+      reason: "联动：`rust-error-handling` · `rust-testing` · `rust-type-design` · `rust-async-patterns`。",
+    },
+    {
+      get id() {
+        return rustTypeDesignSkill.id;
+      },
+      reason: "联动：`rust-error-handling` · `rust-testing` · `rust-type-design` · `rust-async-patterns`。",
+    },
+    {
+      get id() {
+        return rustAsyncPatternsSkill.id;
+      },
+      reason: "联动：`rust-error-handling` · `rust-testing` · `rust-type-design` · `rust-async-patterns`。",
+    },
+    {
+      get id() {
+        return rustErrorHandlingSkill.id;
+      },
+      reason: "联动：`rust-error-handling` · `rust-testing` · `rust-type-design` · `rust-async-patterns`",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

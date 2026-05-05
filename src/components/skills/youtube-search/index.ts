@@ -6,6 +6,7 @@ import {
   defineSkillScript,
   defineSkillScriptRoot,
 } from "../../sdk";
+import { youtubeAnalysisSkill } from "../youtube-analysis/index";
 
 export const youtubeSearchSkill = defineSkill({
   id: "youtube-search",
@@ -14,14 +15,22 @@ export const youtubeSearchSkill = defineSkill({
   useCases: [
     "用户要“搜一下 YouTube 上有哪些视频”“找教程”“列几个候选视频”“看看这个主题最近有什么视频”。",
     "用户需要标题、频道、观看量、URL 这类结构化结果，方便后续筛选。",
-    "用户先做发现，再把选中的单条视频交给 [youtube-analysis](../youtube-analysis/SKILL.md) 深挖。",
+    "用户先做发现，再把选中的单条视频交给 `youtube-analysis` 深挖。",
   ],
   constraints: [
     "默认使用 `yt-dlp ytsearch + --dump-single-json --flat-playlist`，字段是“尽力而为”。",
     "在 flat search 模式下，`upload_date`、`duration_string` 等字段可能为空；缺失时要明确说明，不要伪造。",
     "本技能不负责下载视频、不负责音视频转码，也不承诺绕过 YouTube 的反爬限制。",
     "当前目录已经提供 `scripts/search_youtube.mjs`，优先用它，不要再依赖手写 `jq` 管道。",
-    "用户已经给出明确视频链接且诉求是“总结内容”时，不要继续搜索，直接切到 [youtube-analysis](../youtube-analysis/SKILL.md)。",
+    "用户已经给出明确视频链接且诉求是“总结内容”时，不要继续搜索，直接切到 `youtube-analysis`。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return youtubeAnalysisSkill.id;
+      },
+      reason: "用户已经给出明确视频链接且诉求是“总结内容”时，不要继续搜索，直接切到 `youtube-analysis`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

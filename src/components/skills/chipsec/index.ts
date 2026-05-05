@@ -4,6 +4,7 @@ import {
   Platform,
   defineSkill,
 } from "../../sdk";
+import { binaryAnalysisPatternsSkill } from "../binary-analysis-patterns/index";
 
 export const chipsecSkill = defineSkill({
   id: "chipsec",
@@ -12,13 +13,21 @@ export const chipsecSkill = defineSkill({
   useCases: [
     "需要对 `.bin`、`.rom`、`.fd`、`.cap` 等固件镜像做结构和安全配置分析。",
     "需要在离线环境先做快速风险筛查，再决定是否进入更细的固件逆向。",
-    "需要结合 [binary-analysis-patterns](../binary-analysis-patterns/SKILL.md) 深挖 EFI 可执行模块。",
+    "需要结合 `binary-analysis-patterns` 深挖 EFI 可执行模块。",
   ],
   constraints: [
     "优先离线分析原始 dump；任何写入类动作都必须额外确认。",
     "保留原始镜像哈希，所有派生产物放独立目录。",
     "先确认平台、芯片组和镜像来源，再解释结果。",
     "把平台限制、未知模块和工具误报单独标注。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return binaryAnalysisPatternsSkill.id;
+      },
+      reason: "需要结合 `binary-analysis-patterns` 深挖 EFI 可执行模块。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

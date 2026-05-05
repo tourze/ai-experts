@@ -4,6 +4,8 @@ import {
   Platform,
   defineSkill,
 } from "../../sdk";
+import { portersFiveForcesSkill } from "../porters-five-forces/index";
+import { swotAnalysisSkill } from "../swot-analysis/index";
 
 export const pestelAnalysisSkill = defineSkill({
   id: "pestel-analysis",
@@ -12,7 +14,7 @@ export const pestelAnalysisSkill = defineSkill({
   useCases: [
     "年度战略规划、新市场进入或重大投资决策前的宏观环境扫描。",
     "监管政策变化、技术趋势转折或经济周期变动时评估对业务的影响。",
-    "与 [porters-five-forces](../porters-five-forces/SKILL.md) 配合做行业分析，与 [swot-analysis](../swot-analysis/SKILL.md) 配合把外部因素转化为机会和威胁。",
+    "与 `porters-five-forces` 配合做行业分析，与 `swot-analysis` 配合把外部因素转化为机会和威胁。",
     "融资路演中需要展示对宏观环境的理解。",
   ],
   constraints: [
@@ -20,6 +22,20 @@ export const pestelAnalysisSkill = defineSkill({
     "每个因素必须说明**影响方向**（利好/利空/不确定）、**影响时间窗**（短期/中期/长期）和**影响量级**（高/中/低）。",
     "列举因素不等于分析；必须推导出\"所以我们应该怎么做\"的行动含义。",
     "信息必须标注来源和时效，过期的宏观数据比没有更危险。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return swotAnalysisSkill.id;
+      },
+      reason: "与 `porters-five-forces` 配合做行业分析，与 `swot-analysis` 配合把外部因素转化为机会和威胁。",
+    },
+    {
+      get id() {
+        return portersFiveForcesSkill.id;
+      },
+      reason: "与 `porters-five-forces` 配合做行业分析，与 `swot-analysis` 配合把外部因素转化为机会和威胁。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

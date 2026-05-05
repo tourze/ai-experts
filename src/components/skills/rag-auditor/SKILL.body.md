@@ -21,8 +21,6 @@ RAG 审计顺序:
 - 是否已经拿到 query、gold docs、模型输出、引用片段或日志。
 - retrieval 与 generation 的指标是否分开统计。
 - 失败样例是否能映射到 [references/failure-taxonomy.md](references/failure-taxonomy.md)。
-- 如果怀疑 embedding 或索引问题，是否联动 [embedding-strategies](../embedding-strategies/SKILL.md) 与 [vector-index-tuning](../vector-index-tuning/SKILL.md)。
-- 如果最终要纳入回归，是否同步到 [llm-evaluation](../llm-evaluation/SKILL.md)。
 
 ## 反模式
 

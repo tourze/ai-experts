@@ -4,6 +4,7 @@ import {
   Platform,
   defineSkill,
 } from "../../sdk";
+import { incidentResponseSkill } from "../incident-response/index";
 
 export const logAnalyzerSkill = defineSkill({
   id: "log-analyzer",
@@ -19,6 +20,14 @@ export const logAnalyzerSkill = defineSkill({
     "读取日志时要告诉用户来源文件或来源命令。",
     "输出前必须裁剪或脱敏 token、密码、邮箱和完整 IP。",
     "优先找“第一条异常”和“重复模式”，不要只贴最后一条报错。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return incidentResponseSkill.id;
+      },
+      reason: "如果问题仍未聚焦，转到 `incident-response`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

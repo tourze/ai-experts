@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { portersFiveForcesSkill } from "../porters-five-forces/index";
+import { pricingStrategySkill } from "../pricing-strategy/index";
 
 export const businessModelSkill = defineSkill({
   id: "business-model",
@@ -14,7 +16,7 @@ export const businessModelSkill = defineSkill({
     "`idea_to_model`：新业务、新产品或变现想法，需要生成 `3-5` 个商业模式选项。",
     "`model_diagnosis`：现有产品、网站或公司，需要诊断收入结构、变现缺口和升级机会。",
     "`company_case_study`：成熟公司研究，需要拆解利润池、可迁移经验和环境依赖。",
-    "只看竞争结构时转 [porters-five-forces](../porters-five-forces/SKILL.md)；只做定价打包时转 [pricing-strategy](../pricing-strategy/SKILL.md)。",
+    "只看竞争结构时转 `porters-five-forces`；只做定价打包时转 `pricing-strategy`。",
     "中国市场商业模式因果链推演用[魏朱六要素](references/weizhu-model.md)；快速定位一致性检查用[业务铁三角](references/iron-triangle.md)。",
   ],
   constraints: [
@@ -23,6 +25,20 @@ export const businessModelSkill = defineSkill({
     "诊断和案例研究必须同时看直接竞品与跨行业 analog；不足时说明证据缺口。",
     "收入、GMV、TPV、AUM、用户数和 ARR 不能混用；金额估算要写公式、变量、低/中/高区间和置信度。",
     "不要把功能清单、组织架构或愿景口号误写成商业模式。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return pricingStrategySkill.id;
+      },
+      reason: "只看竞争结构时转 `porters-five-forces`；只做定价打包时转 `pricing-strategy`。",
+    },
+    {
+      get id() {
+        return portersFiveForcesSkill.id;
+      },
+      reason: "只看竞争结构时转 `porters-five-forces`；只做定价打包时转 `pricing-strategy`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

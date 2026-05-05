@@ -64,8 +64,6 @@ ax.spines[['top', 'right']].set_visible(False)
 - 类别数是否合理，未用 3D、未用双 Y 轴、未把饼图用于 > 5 片。
 - 数据量是否匹配渲染方案（> 1k 考虑 Canvas；> 10k 必须聚合）。
 - 是否附 a11y 兜底：标题 + 数据表或 CSV。
-- 是否需要把统计边界、异常点说明同步给 [statistical-analysis](../statistical-analysis/SKILL.md)。
-- 如果图表最终要用于汇报，是否把 headline 与故事顺序同步给 [data-storytelling](../data-storytelling/SKILL.md)。
 
 ## 反模式
 

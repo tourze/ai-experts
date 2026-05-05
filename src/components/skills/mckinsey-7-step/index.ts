@@ -4,6 +4,9 @@ import {
   Platform,
   defineSkill,
 } from "../../sdk";
+import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
+import { fishboneDiagramSkill } from "../fishbone-diagram/index";
+import { scientificBrainstormingSkill } from "../scientific-brainstorming/index";
 
 export const mckinseyStepSkill = defineSkill({
   id: "mckinsey-7-step",
@@ -12,7 +15,7 @@ export const mckinseyStepSkill = defineSkill({
   useCases: [
     "面对模糊的业务问题，需要结构化拆解到可执行方案。",
     "咨询式问题解决：从假设出发，用数据验证。",
-    "与 [first-principles-decomposer](../first-principles-decomposer/SKILL.md) 配合：第一性原理拆假设，七步法走全流程。",
+    "与 `first-principles-decomposer` 配合：第一性原理拆假设，七步法走全流程。",
   ],
   constraints: [
     "七步是循环不是直线——假设不成立时必须退回重来。",
@@ -20,6 +23,27 @@ export const mckinseyStepSkill = defineSkill({
     "步骤 3（确定关键问题）用 80/20 法则聚焦 2-3 个关键驱动因素，不是面面俱到。",
     "**假设驱动**：先假设后验证，不是先收集所有数据再总结。没有假设的分析 = 没有方向 = 信息过载。",
     "最终方案必须有金字塔结构（结论先行），不是流水账。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return scientificBrainstormingSkill.id;
+      },
+      reason: "需要创意发散：七步法是收敛式分析，创意发散用 `scientific-brainstorming`。",
+    },
+    {
+      get id() {
+        return firstPrinciplesDecomposerSkill.id;
+      },
+      reason: "与 `first-principles-decomposer` 配合：第一性原理拆假设，七步法走全流程。",
+    },
+    {
+      get id() {
+        return fishboneDiagramSkill.id;
+      },
+      label: "five-w-two-h",
+      reason: "问题已经清晰只需执行：七步法从问题定义开始，如果问题和方案都已明确，直接做 `five-w-two-h` 制定行动计划。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -39,7 +39,6 @@
 - [ ] 标题、正文、按钮和表单在各断点下都可读可点。
 - [ ] 图片、媒体和表格不会在小屏溢出。
 - [ ] 断点改动没有破坏键盘导航和焦点可见性。
-- [ ] 已联动 [web-performance-diagnosis](../web-performance-diagnosis/SKILL.md) 检查图片与布局稳定性。
 
 ## 反模式
 
@@ -72,8 +71,6 @@ return <DesktopLayout />;
 
 ## 参考资料
 
-- [web-performance-diagnosis](../web-performance-diagnosis/SKILL.md)
-- [web-design-guidelines](../modern-web-design/SKILL.md)
 - [references/container-queries.md](references/container-queries.md)
 - [references/fluid-layouts.md](references/fluid-layouts.md)
 - [references/breakpoint-strategies.md](references/breakpoint-strategies.md)

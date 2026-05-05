@@ -1,7 +1,3 @@
-## 联动说明
-
-> 通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 [testing-patterns](testing-expert:testing-patterns)。本 skill 只覆盖 Rust 特有语法与工具。
-
 ## 测试类型速查
 
 | 类型 | 位置 | 编译方式 | 适合 |
@@ -18,7 +14,6 @@
 - 测试名是否准确表达输入、条件与预期结果？
 - 是否存在 `assert!(true)` 或 `assert_eq!(result, result)` 这类空断言？
 - 公共 API 是否有文档测试？
-- 联动：[rust-ownership-idioms](../rust-ownership-idioms/SKILL.md) · [rust-error-handling](../rust-error-handling/SKILL.md)
 
 ## 反模式
 

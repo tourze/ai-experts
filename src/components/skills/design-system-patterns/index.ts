@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { modernWebDesignSkill } from "../modern-web-design/index";
+import { responsiveDesignSkill } from "../responsive-design/index";
 
 export const designSystemPatternsSkill = defineSkill({
   id: "design-system-patterns",
@@ -22,6 +24,21 @@ export const designSystemPatternsSkill = defineSkill({
     "组件 API 先稳定，再追求“无限灵活”；变体命名要服务业务语义。",
     "设计系统是约束系统，不是素材堆。新增 token 前先确认是否已有语义位。",
     "与 [tailwind-design-system](references/tailwind-design-system.md) 联动时，优先复用同一套 token 名称。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return responsiveDesignSkill.id;
+      },
+      reason: "`responsive-design`。",
+    },
+    {
+      get id() {
+        return modernWebDesignSkill.id;
+      },
+      label: "refactoring-ui",
+      reason: "`refactoring-ui`",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

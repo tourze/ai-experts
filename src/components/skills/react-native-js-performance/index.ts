@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { reactNativeDesignSkill } from "../react-native-design/index";
 
 export const reactNativeJsPerformanceSkill = defineSkill({
   id: "react-native-js-performance",
@@ -16,12 +17,20 @@ export const reactNativeJsPerformanceSkill = defineSkill({
     "动画需要从 JS 线程迁移到 UI 线程（Reanimated worklet）。",
     "React 渲染性能分析、React Compiler 接入评估。",
     "JS 内存泄漏定位与修复。",
-    "交互与视觉实现优先联动 [react-native-design](../react-native-design/SKILL.md)。",
+    "交互与视觉实现优先联动 `react-native-design`。",
   ],
   constraints: [
     "量化 = 帧耗时/FPS 数字，不是\"感觉流畅了\"。用 Perf Monitor 或 Flashlight 拿到数据再下结论。",
     "只用 release 构建做真实性能判断；debug 构建的 JS 执行慢 10-20 倍，结论完全失真。",
     "区分 JS 线程瓶颈和 UI 线程瓶颈——症状相似但解法不同。Perf Monitor 左列（JS）掉帧和右列（UI）掉帧要区别对待。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return reactNativeDesignSkill.id;
+      },
+      reason: "交互与视觉实现优先联动 `react-native-design`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

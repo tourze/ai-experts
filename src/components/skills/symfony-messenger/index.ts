@@ -4,6 +4,8 @@ import {
   Platform,
   defineSkill,
 } from "../../sdk";
+import { doctrineBatchProcessingSkill } from "../doctrine-batch-processing/index";
+import { symfonyVotersSkill } from "../symfony-voters/index";
 
 export const symfonyMessengerSkill = defineSkill({
   id: "symfony-messenger",
@@ -13,7 +15,7 @@ export const symfonyMessengerSkill = defineSkill({
     "新增或审查 Symfony Messenger 消息、Handler、Transport、Failure Transport 与消费命令。",
     "消息重复消费、失败重试、毒消息堆积、路由错误或同步/异步边界不清。",
     "需要在异步处理里协调数据库写入、外部 API 调用和最终一致性。",
-    "如果 Handler 里涉及批量写库，可联动 [doctrine-batch-processing](../doctrine-batch-processing/SKILL.md)；如果消息执行前后要做权限判断，可联动 [symfony-voters](../symfony-voters/SKILL.md)。",
+    "如果 Handler 里涉及批量写库，可联动 `doctrine-batch-processing`；如果消息执行前后要做权限判断，可联动 `symfony-voters`。",
     "更细的命令与失败模式见 [reference.md](reference.md)。",
   ],
   constraints: [
@@ -22,6 +24,20 @@ export const symfonyMessengerSkill = defineSkill({
     "消息契约一旦落到队列，就要考虑向后兼容；不要随意改构造参数含义。",
     "失败传输、重试退避和消费监控必须显式配置，不能靠默认值碰运气。",
     "重活要异步，鉴权和输入校验要在入队前完成，不要把无效消息塞进队列后再兜底。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return symfonyVotersSkill.id;
+      },
+      reason: "如果 Handler 里涉及批量写库，可联动 `doctrine-batch-processing`；如果消息执行前后要做权限判断，可联动 `symfony-voters`。",
+    },
+    {
+      get id() {
+        return doctrineBatchProcessingSkill.id;
+      },
+      reason: "如果 Handler 里涉及批量写库，可联动 `doctrine-batch-processing`；如果消息执行前后要做权限判断，可联动 `symfony-voters`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -20,8 +20,6 @@
 - 目标任务是否明确：搜索、推荐、RAG、代码检索、多语种检索。
 - 是否同时记录了维度、延迟、价格、最大上下文、距离度量。
 - chunk 大小与 overlap 是否基于文档结构，而不是拍脑袋。
-- 是否已经把质量问题与 [vector-index-tuning](../vector-index-tuning/SKILL.md) 和 [similarity-search-patterns](../similarity-search-patterns/SKILL.md) 分层拆开。
-- 若最终目标是 RAG，可把整条链路交给 [rag-auditor](../rag-auditor/SKILL.md) 做回归评估。
 
 ## 反模式
 

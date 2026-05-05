@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { reactPerformanceSkill } from "../react-performance/index";
 
 export const reactComposableComponentsSkill = defineSkill({
   id: "react-composable-components",
@@ -14,7 +15,7 @@ export const reactComposableComponentsSkill = defineSkill({
     "单个组件已经承担过多布局、状态和渲染分支，读写成本很高。",
     "需要把业务页面抽成设计系统组件，且保留插槽、样式扩展和 `ref` 能力。",
     "同一组件开始出现成串布尔 props，如 `hasHeader`、`showFooter`、`compact`、`withActions`。",
-    "如果问题的根因是\"外部状态订阅导致整棵树频繁重渲染\"，优先看 [react-performance](../react-performance/SKILL.md)。",
+    "如果问题的根因是\"外部状态订阅导致整棵树频繁重渲染\"，优先看 `react-performance`。",
   ],
   constraints: [
     "一个组件只做一件事；结构组合优先于“超级配置对象”。",
@@ -23,6 +24,14 @@ export const reactComposableComponentsSkill = defineSkill({
     "共享状态只在局部 compound components 内部用 Context；不要把业务级全局状态塞进组件库内部。",
     "样式覆盖必须可预期；Tailwind 场景下合并类名时要做去重。",
     "避免为了“复用”提炼出过浅抽象；抽象失败时宁可保留两处小重复。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return reactPerformanceSkill.id;
+      },
+      reason: "如果问题的根因是\\\\\\\"外部状态订阅导致整棵树频繁重渲染\\\\\\\"，优先看 `react-performance`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

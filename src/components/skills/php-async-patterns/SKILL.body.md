@@ -10,8 +10,6 @@
 
 代码示例见 [patterns.md](references/patterns.md)。
 
-联动：[php-8x-features](../php-8x-features/SKILL.md) · [php-error-handling](../php-error-handling/SKILL.md)
-
 ## 代码模式
 
 代码示例见 [patterns.md](references/patterns.md)。

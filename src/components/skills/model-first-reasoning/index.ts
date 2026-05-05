@@ -6,6 +6,8 @@ import {
   defineSkillScript,
   defineSkillScriptRoot,
 } from "../../sdk";
+import { llmEvaluationSkill } from "../llm-evaluation/index";
+import { promptEngineeringPatternsSkill } from "../prompt-engineering-patterns/index";
 
 export const modelFirstReasoningSkill = defineSkill({
   id: "model-first-reasoning",
@@ -16,13 +18,26 @@ export const modelFirstReasoningSkill = defineSkill({
     "任务包含显式状态转换、权限矩阵、调度规则、工作流编排、约束求解。",
     "用户要求先建模型、先写约束、先确认 requirement trace，再进入实现阶段。",
     "相关资源：[MODEL_TEMPLATE.json](MODEL_TEMPLATE.json)、[scripts/validate-model.mjs](scripts/validate-model.mjs)。",
-    "相关 skill：[llm-evaluation](../llm-evaluation/SKILL.md)、[prompt-engineering-patterns](../prompt-engineering-patterns/SKILL.md)。",
   ],
   constraints: [
     "Phase 1 只产出模型，不写实现代码。",
     "Phase 2 只能在 Phase 1 已冻结的实体、状态、动作、约束内实现；如果模型不够，必须先返回 `MODEL INCOMPLETE`。",
     "每个用户需求都要能映射到 `goal`、`constraint`、`action` 三者之一。",
     "进入编码前必须运行结构校验；`unknowns` 不为空时，停在 Phase 1。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return llmEvaluationSkill.id;
+      },
+      reason: "相关 skill：`llm-evaluation`、`prompt-engineering-patterns`。",
+    },
+    {
+      get id() {
+        return promptEngineeringPatternsSkill.id;
+      },
+      reason: "相关 skill：`llm-evaluation`、`prompt-engineering-patterns`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

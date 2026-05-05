@@ -73,13 +73,6 @@ df -h; ss -tlnp
 [未触达的子系统 / 时间窗 / 数据类型]
 ```
 
-## 交叉引用
-
-- [`log-analyzer`](../log-analyzer/SKILL.md)：日志对齐与错误上下文关联
-- [`monitoring-observability`](../monitoring-observability/SKILL.md)：指标/日志/告警设计
-- [`system-diagnostics`](../system-diagnostics/SKILL.md)：Linux 主机健康检查
-- [`network-troubleshooter`](../network-troubleshooter/SKILL.md)：网络排障
-
 ## 反模式与检查清单
 
 详见 [references/anti-patterns.md](references/anti-patterns.md)。

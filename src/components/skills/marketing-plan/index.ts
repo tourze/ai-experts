@@ -5,6 +5,9 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { contentStrategySkill } from "../content-strategy/index";
+import { paidAdsSkill } from "../paid-ads/index";
+import { stpSegmentationSkill } from "../stp-segmentation/index";
 
 export const marketingPlanSkill = defineSkill({
   id: "marketing-plan",
@@ -21,6 +24,26 @@ export const marketingPlanSkill = defineSkill({
     "定位必须说明目标人群、核心利益点、差异化依据和心理洞察；slogan 只是定位表达，不是方案本体。",
     "阶段策略必须有目标、人群、事件、渠道组合和指标；只列时间轴或渠道清单不算方案。",
     "活动必须写清目的、对象、流程、素材/渠道、指标和风险。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return stpSegmentationSkill.id;
+      },
+      reason: "只需要审查产品、价格、渠道、促销一致性时，切到 `stp-segmentation`。",
+    },
+    {
+      get id() {
+        return paidAdsSkill.id;
+      },
+      reason: "只需要广告账户、预算、出价和受众结构时，切到 `paid-ads`。",
+    },
+    {
+      get id() {
+        return contentStrategySkill.id;
+      },
+      reason: "需要内容日历时，配合 `content-strategy`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

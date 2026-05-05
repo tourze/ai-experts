@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { raciMatrixSkill } from "../raci-matrix/index";
 
 export const orgCanvasSkill = defineSkill({
   id: "org-canvas",
@@ -22,6 +23,14 @@ export const orgCanvasSkill = defineSkill({
     "组织画布关注\"为什么这样组织\"，不是\"谁向谁汇报\"——不要画成组织架构图。",
     "**组织设计第一原则：结构跟随战略**。先确定策略和产品方向，再设计支撑它们的组织形态。反过来做 = 为组织服务而不是为客户服务。",
     "**常见陷阱：照搬标杆公司的组织结构**。Spotify 模型在 30 人团队不 work，Google 的 OKR 在 5 人创业公司是过度设计。组织设计必须匹配自身阶段。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return raciMatrixSkill.id;
+      },
+      reason: "只需明确职责分工：不需要重新设计组织，只理清分工用 `raci-matrix`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

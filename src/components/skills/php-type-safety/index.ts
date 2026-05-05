@@ -5,6 +5,9 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { phpXFeaturesSkill } from "../php-8x-features/index";
+import { phpDesignPatternsSkill } from "../php-design-patterns/index";
+import { phpTestingSkill } from "../php-testing/index";
 
 export const phpTypeSafetySkill = defineSkill({
   id: "php-type-safety",
@@ -29,6 +32,26 @@ export const phpTypeSafetySkill = defineSkill({
     "只记录类型系统无法表达的事实：数组元素类型、键约束、单位/范围、前置条件、副作用、异常原因。",
     "`@throws` 描述失败事实而不是模板句；优先写\"为什么会失败\"。",
     "`list<T>` 仅用于从 0 开始且连续的整数键，不任意收紧。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return phpDesignPatternsSkill.id;
+      },
+      reason: "联动：`php-8x-features` · `php-design-patterns` · `php-testing`。",
+    },
+    {
+      get id() {
+        return phpTestingSkill.id;
+      },
+      reason: "联动：`php-8x-features` · `php-design-patterns` · `php-testing`。",
+    },
+    {
+      get id() {
+        return phpXFeaturesSkill.id;
+      },
+      reason: "联动：`php-8x-features` · `php-design-patterns` · `php-testing`",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -1,14 +1,9 @@
-## 联动说明
-
-> 通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 [testing-patterns](testing-expert:testing-patterns)。本 skill 只覆盖 Python 特有语法与工具。
-
 ## 代码模式
 
 ```python
 from dataclasses import dataclass
 
 import pytest
-
 
 @dataclass(slots=True)
 class Calculator:
@@ -17,11 +12,9 @@ class Calculator:
     def multiply(self, value: int) -> int:
         return value * self.factor
 
-
 @pytest.fixture
 def calc() -> Calculator:
     return Calculator(factor=3)
-
 
 @pytest.mark.parametrize(("value", "expected"), [(1, 3), (2, 6), (-1, -3)])
 def test_multiply(calc: Calculator, value: int, expected: int) -> None:

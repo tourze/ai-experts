@@ -46,6 +46,3 @@
 
 - [references/industry-anti-patterns.md](references/industry-anti-patterns.md) — 12+ 行业反模式清单
 - `industry-design-presets` — 行业正向预设（风格/配色/字体）
-- [customer-journey-map](../customer-journey-map/SKILL.md)
-- [obviously-awesome](../competitive-intelligence/SKILL.md)
-- [competitive-teardown](../competitive-intelligence/SKILL.md)

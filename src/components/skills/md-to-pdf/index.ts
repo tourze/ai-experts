@@ -6,6 +6,7 @@ import {
   defineSkillScript,
   defineSkillScriptRoot,
 } from "../../sdk";
+import { markdownMermaidWritingSkill } from "../markdown-mermaid-writing/index";
 
 export const mdToPdfSkill = defineSkill({
   id: "md-to-pdf",
@@ -15,13 +16,21 @@ export const mdToPdfSkill = defineSkill({
     "用户明确要求把 `.md` 渲染成 `.pdf`，而不是只生成 HTML 或截图。",
     "文档中包含 Mermaid、LaTeX 数学公式、代码块、表格或脚注。",
     "需要 A4、Letter、横向版式、页码、额外 CSS 等排版控制。",
-    "若文档内容本身还没写好，先用 [markdown-mermaid-writing](../markdown-mermaid-writing/SKILL.md) 产出源文档。",
+    "若文档内容本身还没写好，先用 `markdown-mermaid-writing` 产出源文档。",
   ],
   constraints: [
     "先检查依赖，再开始渲染；不要等到最后一步才发现 `pandoc` 或 `mmdc` 缺失。",
     "对大文档优先走默认管线，只有在确认依赖不足时才使用 `--no-mermaid` 或 `--no-math` 降级。",
     "自定义 CSS 只能叠加，不要覆盖掉基础排版到不可读。",
     "交付前至少抽查目录、图表、数学公式和分页效果。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return markdownMermaidWritingSkill.id;
+      },
+      reason: "若文档内容本身还没写好，先用 `markdown-mermaid-writing` 产出源文档。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

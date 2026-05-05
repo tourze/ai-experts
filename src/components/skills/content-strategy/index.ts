@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { seoSkill } from "../seo/index";
 
 export const contentStrategySkill = defineSkill({
   id: "content-strategy",
@@ -19,7 +20,15 @@ export const contentStrategySkill = defineSkill({
     "先定义目标受众、业务目标和差异化，再排选题。",
     "每个选题都要说明它服务搜索、分享、教育还是转化，不能只看“感觉能写”。",
     "内容策略要和站点结构、分发渠道、复用方式配套考虑。",
-    "若任务转向具体页面优化，配合 [seo](../seo/SKILL.md)。",
+    "若任务转向具体页面优化，配合 `seo`。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return seoSkill.id;
+      },
+      reason: "若任务转向具体页面优化，配合 `seo`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

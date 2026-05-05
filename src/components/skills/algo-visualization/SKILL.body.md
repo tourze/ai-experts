@@ -4,7 +4,6 @@
 - 动画视频 → 使用视频生成工具
 - 业务数据图表 → `data-visualization`
 - 流程图 / 时序图 / 状态图 → `markdown-mermaid-writing`
-- 一页艺术化静态画面 → [canvas-design](../canvas-design/SKILL.md)
 
 ## 5 条铁律（违反任一 = 不合格）
 

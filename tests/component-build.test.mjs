@@ -67,6 +67,36 @@ function firstNonEmptyLine(source) {
   return source.trimStart().split(/\r?\n/, 1)[0] ?? "";
 }
 
+function extractPropertyArray(source, property) {
+  const propertyMatch = new RegExp(`\\b${property}\\s*:`).exec(source);
+  if (!propertyMatch) return null;
+  const open = source.indexOf("[", propertyMatch.index + propertyMatch[0].length);
+  if (open === -1) return null;
+
+  let depth = 0;
+  let quote = null;
+  let escaped = false;
+  for (let index = open; index < source.length; index += 1) {
+    const char = source[index];
+    if (quote) {
+      if (escaped) escaped = false;
+      else if (char === "\\") escaped = true;
+      else if (char === quote) quote = null;
+      continue;
+    }
+    if (char === "\"" || char === "'" || char === "`") {
+      quote = char;
+      continue;
+    }
+    if (char === "[") depth += 1;
+    else if (char === "]") {
+      depth -= 1;
+      if (depth === 0) return source.slice(open + 1, index);
+    }
+  }
+  throw new Error(`Unclosed ${property} array`);
+}
+
 test("component build emits claude and codex component surfaces", () => {
   const tmp = mkdtempSync(join(tmpdir(), "ai-experts-component-build-"));
   try {
@@ -108,6 +138,13 @@ test("component build emits claude and codex component surfaces", () => {
       existsSync(join(tmp, "codex/skills/screenshot/assets/screenshot.png")),
       true,
     );
+
+    const goTestingPatternsSkill = readFileSync(
+      join(tmp, "claude/skills/go-testing-patterns/SKILL.md"),
+      "utf-8",
+    );
+    assert.match(goTestingPatternsSkill, /## 相关 Skill/);
+    assert.match(goTestingPatternsSkill, /\[testing-patterns\]\(\.\.\/testing-patterns\/SKILL\.md\)/);
 
     const codexMetadata = readFileSync(
       join(tmp, "codex/skills/typescript-type-safety/agents/openai.yaml"),
@@ -220,6 +257,11 @@ test("component build emits claude and codex component surfaces", () => {
         0,
         `${bodyFile} should not contain a constraints section; set constraints in index.ts instead`,
       );
+      assert.doesNotMatch(
+        source,
+        /\]\(\.\.\/[^)]+\/SKILL\.md\)|\]\([a-z0-9-]+-expert:[a-z0-9-]+\)/,
+        `${bodyFile} should not contain explicit cross-skill links; set relatedSkills in index.ts instead`,
+      );
     }
 
     for (const skillSourceFile of collectFiles(join(repoRoot, "src/components/skills"), (file) => file.endsWith("index.ts"))) {
@@ -231,6 +273,24 @@ test("component build emits claude and codex component surfaces", () => {
         /id:\s*"evals"|new URL\("\.\/evals(?:\/|")|target:\s*"references\/evals"|title:\s*"Eval Cases"/,
         `${skillSourceFile} should not register evals as references`,
       );
+      assert.doesNotMatch(
+        source,
+        /\]\(\.\.\/[^)]+\/SKILL\.md\)|\]\([a-z0-9-]+-expert:[a-z0-9-]+\)/,
+        `${skillSourceFile} should not contain explicit cross-skill links; set relatedSkills instead`,
+      );
+      const relatedSkillsSource = extractPropertyArray(source, "relatedSkills");
+      if (relatedSkillsSource) {
+        assert.doesNotMatch(
+          relatedSkillsSource,
+          /\n\s*id:\s*["']/,
+          `${skillSourceFile} should import related skills and read otherSkill.id instead of hard-coded ids`,
+        );
+        assert.match(
+          relatedSkillsSource,
+          /\n\s*get id\(\) \{\n\s*return \w+Skill\.id;\n\s*\}/,
+          `${skillSourceFile} should resolve related skill ids through imported skill definitions`,
+        );
+      }
     }
 
     for (const platform of ["claude", "codex"]) {
@@ -260,6 +320,13 @@ test("component build emits claude and codex component surfaces", () => {
           1,
           `${skillFile} should render exactly one constraints section`,
         );
+        if (source.includes("## 相关 Skill")) {
+          assert.match(
+            source,
+            /^## 相关 Skill\r?\n\r?\n- \[[^\]]+\]\(\.\.\/[^)]+\/SKILL\.md\) — \S/m,
+            `${skillFile} should render relatedSkills as generated skill links`,
+          );
+        }
       }
     }
   } finally {

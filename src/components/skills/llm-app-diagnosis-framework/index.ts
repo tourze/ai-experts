@@ -4,6 +4,10 @@ import {
   Platform,
   defineSkill,
 } from "../../sdk";
+import { llmAppDesignPipelineSkill } from "../llm-app-design-pipeline/index";
+import { llmEvaluationSkill } from "../llm-evaluation/index";
+import { promptEngineeringPatternsSkill } from "../prompt-engineering-patterns/index";
+import { ragAuditorSkill } from "../rag-auditor/index";
 
 export const llmAppDiagnosisFrameworkSkill = defineSkill({
   id: "llm-app-diagnosis-framework",
@@ -18,6 +22,54 @@ export const llmAppDiagnosisFrameworkSkill = defineSkill({
   constraints: [
     "只在本 skill 的适用场景内使用；任务不匹配时先澄清或转向更合适的 skill。",
     "执行时遵循正文中的流程、红线、检查清单和必要参考资料，不用未经验证的假设替代证据。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return promptEngineeringPatternsSkill.id;
+      },
+      reason: "`prompt-engineering-patterns`：prompt 模板与约束设计。",
+    },
+    {
+      get id() {
+        return llmEvaluationSkill.id;
+      },
+      reason: "`llm-evaluation`：离线 eval 设计与评测方法。",
+    },
+    {
+      get id() {
+        return ragAuditorSkill.id;
+      },
+      reason: "`rag-auditor`：RAG 管线审计与故障分类。",
+    },
+    {
+      get id() {
+        return llmAppDesignPipelineSkill.id;
+      },
+      label: "`llm-app-design-pipeline`",
+      reason: "``llm-app-design-pipeline``：LLM 应用五步设计流程",
+    },
+    {
+      get id() {
+        return promptEngineeringPatternsSkill.id;
+      },
+      label: "`prompt-engineering-patterns`",
+      reason: "``prompt-engineering-patterns``：prompt 模板与约束设计",
+    },
+    {
+      get id() {
+        return llmEvaluationSkill.id;
+      },
+      label: "`llm-evaluation`",
+      reason: "``llm-evaluation``：离线 eval 设计与评测方法",
+    },
+    {
+      get id() {
+        return ragAuditorSkill.id;
+      },
+      label: "`rag-auditor`",
+      reason: "``rag-auditor``：RAG 管线审计与故障分类",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

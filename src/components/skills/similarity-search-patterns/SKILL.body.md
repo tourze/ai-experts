@@ -24,8 +24,6 @@ LIMIT 10;
 - 检索目标是搜索、推荐还是 RAG。
 - 向量维度、距离度量、索引类型是否一致。
 - 是否明确了过滤条件、排序规则、重排策略与更新频率。
-- 如果问题主要在模型与 chunking，是否转给 [embedding-strategies](../embedding-strategies/SKILL.md)。
-- 如果问题主要在性能与召回权衡，是否转给 [vector-index-tuning](../vector-index-tuning/SKILL.md)。
 
 ## 反模式
 

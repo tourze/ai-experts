@@ -5,6 +5,9 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { goConcurrencyPatternsSkill } from "../go-concurrency-patterns/index";
+import { goPerformanceSkill } from "../go-performance/index";
+import { testingPatternsSkill } from "../testing-patterns/index";
 
 export const goTestingPatternsSkill = defineSkill({
   id: "go-testing-patterns",
@@ -14,7 +17,7 @@ export const goTestingPatternsSkill = defineSkill({
     "为 Go 函数、HTTP handler、repository、worker、并发代码或 CLI 编写测试。",
     "审查测试是否只测实现细节、是否缺错误分支、是否存在顺序依赖或真实时间等待。",
     "排查 flaky test、goroutine 泄漏、race detector 失败或集成测试污染。",
-    "性能测试和 `benchstat` 对比配合 [go-performance](../go-performance/SKILL.md)；并发生命周期配合 [go-concurrency-patterns](../go-concurrency-patterns/SKILL.md)。",
+    "性能测试和 `benchstat` 对比配合 `go-performance`；并发生命周期配合 `go-concurrency-patterns`。",
   ],
   constraints: [
     "公共 API 优先用外部包名 `package xxx_test`。",
@@ -23,6 +26,26 @@ export const goTestingPatternsSkill = defineSkill({
     "集成测试用 `//go:build integration` 隔离，普通 `go test ./...` 不应依赖外部服务。",
     "时间相关测试优先注入 clock 或使用可控时间，不用 `time.Sleep` 猜测异步完成。",
     "并发代码测试要考虑 `go test -race ./...` 和 goroutine leak 检测。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return goPerformanceSkill.id;
+      },
+      reason: "性能测试和 `benchstat` 对比配合 `go-performance`；并发生命周期配合 `go-concurrency-patterns`。",
+    },
+    {
+      get id() {
+        return goConcurrencyPatternsSkill.id;
+      },
+      reason: "性能测试和 `benchstat` 对比配合 `go-performance`；并发生命周期配合 `go-concurrency-patterns`。",
+    },
+    {
+      get id() {
+        return testingPatternsSkill.id;
+      },
+      reason: "通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 `testing-patterns`。本 skill 只覆盖 Go 特有语法与工具。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

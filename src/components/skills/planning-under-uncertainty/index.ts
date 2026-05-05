@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { estimateCalibratorSkill } from "../estimate-calibrator/index";
 
 export const planningUnderUncertaintySkill = defineSkill({
   id: "planning-under-uncertainty",
@@ -13,13 +14,21 @@ export const planningUnderUncertaintySkill = defineSkill({
   useCases: [
     "AI/新市场/复杂依赖项目的路线图规划、资源分配与阶段承诺。",
     "需要补充经验参考时可阅读 [references/guest-insights.md](references/guest-insights.md)。",
-    "需要把不确定性转成估算或版本节奏时，可配合 [estimate-calibrator](../estimate-calibrator/SKILL.md)。",
+    "需要把不确定性转成估算或版本节奏时，可配合 `estimate-calibrator`。",
     "需要把关键未知项转成先验、证据更新、行动阈值和敏感性报告时，配合 `what-if-oracle`。",
   ],
   constraints: [
     "先判断不确定性来自技术、市场、组织还是外部环境，再选规划方式。",
     "规划输出必须包含检查点、触发条件和转向标准，而不是一次性拍死全年计划。",
     "“保持灵活”不是借口，仍然要写清当前最优下注与放弃条件。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return estimateCalibratorSkill.id;
+      },
+      reason: "需要把不确定性转成估算或版本节奏时，可配合 `estimate-calibrator`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

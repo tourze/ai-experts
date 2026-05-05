@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { testingStrategySkill } from "../testing-strategy/index";
 
 export const benchmarkRunnerSkill = defineSkill({
   id: "benchmark-runner",
@@ -14,7 +15,7 @@ export const benchmarkRunnerSkill = defineSkill({
     "用户要比较两个或多个候选方案的性能，而不是做泛泛的架构选型。",
     "需要衡量延迟、吞吐、内存、准确率、成本、冷启动等指标。",
     "需要产出可复现实验方案，或对已有结果做结构化解读。",
-    "需要结合 [testing-strategy](../testing-strategy/SKILL.md) 制定性能验证计划。",
+    "需要结合 `testing-strategy` 制定性能验证计划。",
   ],
   constraints: [
     "候选方案必须可比：相同输入、相同环境、相同配置边界。",
@@ -23,6 +24,14 @@ export const benchmarkRunnerSkill = defineSkill({
     "必须报告波动，不只报平均值；至少给出样本数和离散情况。",
     "无法实际运行时，只输出实验设计，不伪造结果。",
     "优先加载这些参考文件：\n- [metric-selection.md](./references/metric-selection.md)\n- [test-case-design.md](./references/test-case-design.md)\n- [environment-capture.md](./references/environment-capture.md)\n- [statistical-rigor.md](./references/statistical-rigor.md)",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return testingStrategySkill.id;
+      },
+      reason: "需要结合 `testing-strategy` 制定性能验证计划。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

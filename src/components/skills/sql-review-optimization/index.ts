@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { dbSchemaDesignSkill } from "../db-schema-design/index";
 
 export const sqlReviewOptimizationSkill = defineSkill({
   id: "sql-review-optimization",
@@ -16,12 +17,20 @@ export const sqlReviewOptimizationSkill = defineSkill({
     "排查慢查询、索引缺失、回表过多、排序退化、批处理低效、分页越来越慢等性能问题。",
     "基于执行计划、行数估算、锁等待和数据分布决定优化方向。",
     "深度索引设计：索引类型选择（B-tree / GIN / GiST / BRIN）、复合索引列顺序、EXPLAIN 解读与索引维护。",
-    "如果优化依赖具体数据库引擎特性，联动 [db-schema-design](../db-schema-design/SKILL.md)。",
+    "如果优化依赖具体数据库引擎特性，联动 `db-schema-design`。",
   ],
   constraints: [
     "**审查（先安全，再性能）**\n- 先审安全边界，再看性能；权限、条件或事务边界错了跑再快也没意义。\n- 用户输入必须经驱动参数化；不拼接、不内联。\n- 查询要显式列出返回列、连接条件和排序条件。\n- 迁移脚本必须评估锁、回填、回滚和灰度路径。\n- 评审覆盖读写放大、权限模型、审计和异常恢复。",
     "**优化（先测量，再优化）**\n- 先拿执行计划、真实行数、延迟和资源消耗，再决定改 SQL 还是改索引。\n- 优先修访问路径，再谈\"技巧重写\"；大多数慢查询输在过滤、排序和索引布局。\n- 热路径分页优先游标或 seek，避免大偏移 OFFSET。\n- 批处理、报表和在线请求资源模型不同，OLAP 查询不塞进 OLTP 热链路。\n- 复合索引顺序匹配过滤和排序路径，不按\"字段重要性\"拍脑袋。",
     "**深度索引策略**\n通用原则与 MySQL/PostgreSQL 特化策略见 [references/index-strategy.md](references/index-strategy.md)。详细方法论见 [references/sql-code-review.md](references/sql-code-review.md)、[references/sql-optimization.md](references/sql-optimization.md)。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return dbSchemaDesignSkill.id;
+      },
+      reason: "如果优化依赖具体数据库引擎特性，联动 `db-schema-design`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

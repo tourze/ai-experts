@@ -4,6 +4,8 @@ import {
   Platform,
   defineSkill,
 } from "../../sdk";
+import { laravelPatternsSkill } from "../laravel-patterns/index";
+import { laravelVerificationSkill } from "../laravel-verification/index";
 
 export const laravelTddSkill = defineSkill({
   id: "laravel-tdd",
@@ -13,7 +15,7 @@ export const laravelTddSkill = defineSkill({
     "Laravel 新功能、Bug 修复、重构、授权规则或副作用链路需要先写测试再实现。",
     "需要测试 HTTP 端点、Eloquent 模型、策略、队列作业、通知和 Sanctum 认证。",
     "需要把回归范围从“手点一下”提升到可重复执行的自动化验证。",
-    "发布前整体验证看 [laravel-verification](../laravel-verification/SKILL.md)，实现边界约束看 [laravel-patterns](../laravel-patterns/SKILL.md)。",
+    "发布前整体验证看 `laravel-verification`，实现边界约束看 `laravel-patterns`。",
   ],
   constraints: [
     "保持红绿重构循环：先写失败测试，再做最小实现，再清理结构。",
@@ -21,6 +23,20 @@ export const laravelTddSkill = defineSkill({
     "触库测试默认 `RefreshDatabase`；外部副作用默认 `Queue::fake()`、`Event::fake()`、`Http::fake()`。",
     "一个测试只验证一个行为边界：成功、授权失败、验证失败、外部依赖失败分开覆盖。",
     "覆盖率只是结果，不是借口；关键路径没有断言细节时，80% 也可能毫无意义。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return laravelPatternsSkill.id;
+      },
+      reason: "发布前整体验证看 `laravel-verification`，实现边界约束看 `laravel-patterns`。",
+    },
+    {
+      get id() {
+        return laravelVerificationSkill.id;
+      },
+      reason: "发布前整体验证看 `laravel-verification`，实现边界约束看 `laravel-patterns`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

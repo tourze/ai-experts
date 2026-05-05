@@ -4,6 +4,9 @@ import {
   Platform,
   defineSkill,
 } from "../../sdk";
+import { reactComposableComponentsSkill } from "../react-composable-components/index";
+import { reactHooksSkill } from "../react-hooks/index";
+import { reactServerComponentsSkill } from "../react-server-components/index";
 
 export const reactPerformanceSkill = defineSkill({
   id: "react-performance",
@@ -26,6 +29,26 @@ export const reactPerformanceSkill = defineSkill({
     "不要在组件内部定义子组件（每次 render 都是新类型，子树会重新挂载）。",
     "外部 store：默认订阅最小 slice，订阅点尽量下沉到叶子；selector 必须稳定，否则永远 ≠。",
     "Context Provider 的 value 必须稳定（用 useMemo），高频更新不适合 Context。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return reactComposableComponentsSkill.id;
+      },
+      reason: "组件拆分：`react-composable-components`。",
+    },
+    {
+      get id() {
+        return reactHooksSkill.id;
+      },
+      reason: "Hook 设计：`react-hooks`。",
+    },
+    {
+      get id() {
+        return reactServerComponentsSkill.id;
+      },
+      reason: "Server 组件：`react-server-components`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

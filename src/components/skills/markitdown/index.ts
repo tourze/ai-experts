@@ -8,6 +8,9 @@ import {
   defineSkillScript,
   defineSkillScriptRoot,
 } from "../../sdk";
+import { docCoauthoringSkill } from "../doc-coauthoring/index";
+import { mdToPdfSkill } from "../md-to-pdf/index";
+import { pptGenerateSkill } from "../ppt-generate/index";
 
 export const markitdownSkill = defineSkill({
   id: "markitdown",
@@ -17,13 +20,42 @@ export const markitdownSkill = defineSkill({
     "目标是把多种格式统一转成 Markdown，供总结、检索、二次写作或知识库沉淀。",
     "用户需要批量处理目录，而不是只转换单个文件。",
     "用户要处理学术论文或文献库，并生成目录索引、元数据清单。",
-    "当用户只处理单个 Office 文件且最终仍要保留原格式时，优先使用 [docx](../doc-coauthoring/SKILL.md)、[pptx](../ppt-generate/SKILL.md) 或 [xlsx](../doc-coauthoring/SKILL.md)。",
+    "当用户只处理单个 Office 文件且最终仍要保留原格式时，优先使用 `docx`、`pptx` 或 `xlsx`。",
   ],
   constraints: [
     "先确认输出真的是 Markdown；如果最终要的是原格式回写，不要误用。",
     "AI 增强模式依赖 `openai` 兼容客户端与 API key，只在确实需要图片理解时开启。",
     "批量转换时保留原目录结构与文件扩展映射，避免输出目录混乱。",
     "学术文献场景下优先补齐文件命名和元数据，再做批量转换。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return docCoauthoringSkill.id;
+      },
+      label: "docx",
+      reason: "当用户只处理单个 Office 文件且最终仍要保留原格式时，优先使用 `docx`、`pptx` 或 `xlsx`。",
+    },
+    {
+      get id() {
+        return pptGenerateSkill.id;
+      },
+      label: "pptx",
+      reason: "当用户只处理单个 Office 文件且最终仍要保留原格式时，优先使用 `docx`、`pptx` 或 `xlsx`。",
+    },
+    {
+      get id() {
+        return docCoauthoringSkill.id;
+      },
+      label: "xlsx",
+      reason: "当用户只处理单个 Office 文件且最终仍要保留原格式时，优先使用 `docx`、`pptx` 或 `xlsx`。",
+    },
+    {
+      get id() {
+        return mdToPdfSkill.id;
+      },
+      reason: "后续若还要导出 PDF，可转给 `md-to-pdf`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -1,6 +1,5 @@
 ## 不适用场景
 - 极度扁平组织（< 10 人、全员全栈）：角色边界模糊是特性不是 bug，RACI 会引入不必要的官僚。
-- 决策流程设计：RACI 管"谁做什么"，不管"怎么决策"。决策机制用 [running-decision-processes](../running-decision-processes/SKILL.md)。
 
 ## 代码模式
 

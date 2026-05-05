@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { logAnalyzerSkill } from "../log-analyzer/index";
 
 export const monitoringObservabilitySkill = defineSkill({
   id: "monitoring-observability",
@@ -22,6 +23,14 @@ export const monitoringObservabilitySkill = defineSkill({
     "健康检查要区分 `live`、`ready`、依赖降级和完全不可用。",
     "日志级别纪律：开发环境可用 DEBUG；生产环境默认 INFO，仅需人工介入的事件用 ERROR，WARN 用于即将越限的信号。",
     "指标和 trace 围绕系统边界事件布点（入站请求、出站调用、队列消费、定时任务触发），内部纯计算不单独布点。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return logAnalyzerSkill.id;
+      },
+      reason: "需要沿日志追根溯源时，参阅 `log-analyzer`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

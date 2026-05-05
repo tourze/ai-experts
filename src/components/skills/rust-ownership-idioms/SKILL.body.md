@@ -19,7 +19,6 @@
 - 参数能否再借用一层而不是提早拿走所有权？
 - 循环内的 `clone()` / `collect()` 是否必要？
 - `#[allow(...)]` 是否都能改为 `#[expect(...)]` 并注明原因？
-- 联动：[rust-error-handling](../rust-error-handling/SKILL.md) · [rust-testing](../rust-testing/SKILL.md) · [rust-type-design](../rust-type-design/SKILL.md) · [rust-async-patterns](../rust-async-patterns/SKILL.md)
 
 ## 反模式
 

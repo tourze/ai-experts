@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { crossPollinationEngineSkill } from "../cross-pollination-engine/index";
 
 export const firstPrinciplesDecomposerSkill = defineSkill({
   id: "first-principles-decomposer",
@@ -15,7 +16,7 @@ export const firstPrinciplesDecomposerSkill = defineSkill({
     "现有做法很复杂、很贵，或者“行业都这么做”的理由站不住。",
     "需要挑战既有框架、重新定义问题或重建方案。",
     "分解后可配合 [inversion-strategist](references/inversion-strategist.md) 反推失败路径。",
-    "需要借别的行业做类比时，可接 [cross-pollination-engine](../cross-pollination-engine/SKILL.md)。",
+    "需要借别的行业做类比时，可接 `cross-pollination-engine`。",
   ],
   constraints: [
     "先用一句话定义问题，再开始拆，不要一边拆一边换题。",
@@ -24,6 +25,14 @@ export const firstPrinciplesDecomposerSkill = defineSkill({
     "重建方案时，只能引用已验证的基础事实，不能偷偷把旧方案的默认前提带回来。",
     "最后必须对比“重建方案 vs. 常规方案”，让差异可见。",
     "需要更完整方法时，参考 [详细框架](references/framework.md)、[示例集](references/examples.md) 和 [组合框架](references/integrated-frameworks.md)。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return crossPollinationEngineSkill.id;
+      },
+      reason: "需要借别的行业做类比时，可接 `cross-pollination-engine`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

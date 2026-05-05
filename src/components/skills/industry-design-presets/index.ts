@@ -5,6 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { designSystemPatternsSkill } from "../design-system-patterns/index";
 
 export const industryDesignPresetsSkill = defineSkill({
   id: "industry-design-presets",
@@ -14,15 +15,23 @@ export const industryDesignPresetsSkill = defineSkill({
     "产品类型明确（fintech / healthcare / portfolio / gaming / spa 等），要快速锁定视觉方向。",
     "需要同时决定 风格 + 配色 + 字体对 + 关键效果 + 反模式。",
     "不知道某个行业\"不该做什么\"（比如 banking 忌 AI 紫粉渐变）。",
-    "要和 `modern-web-design`、[font-pairing-library](references/font-pairing-library.md)、[design-system-patterns](../design-system-patterns/SKILL.md) 联动。",
+    "要和 `modern-web-design`、[font-pairing-library](references/font-pairing-library.md)、`design-system-patterns` 联动。",
     "详细预设查 [references/presets-catalog.md](references/presets-catalog.md)。",
   ],
   constraints: [
     "预设是**起点不是终点**：先照表落 60%，剩余 40% 由品牌差异化决定。",
     "行业语义先于视觉美感：banking 的首要情绪是\"值得托付\"，不是\"酷\"。",
     "每个行业都有反模式——选之前先看\"AVOID 清单\"。",
-    "风格要和 `modern-web-design` 的 keywords 对齐，配色要和 [design-system-patterns](../design-system-patterns/SKILL.md) 的 token 对齐。",
+    "风格要和 `modern-web-design` 的 keywords 对齐，配色要和 `design-system-patterns` 的 token 对齐。",
     "不机械套用：如果产品是 \"B2B SaaS + Gen-Z 氛围\"，按\"主行业 + 次行业氛围\"叠加，不用单 preset。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return designSystemPatternsSkill.id;
+      },
+      reason: "要和 `modern-web-design`、font-pairing-library、`design-system-patterns` 联动。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

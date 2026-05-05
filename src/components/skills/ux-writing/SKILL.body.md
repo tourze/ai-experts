@@ -88,5 +88,3 @@
 
 - [references/copy-patterns.md](references/copy-patterns.md) — 按钮/错误/空态/确认/Toast/敏感操作模板
 - `product-design-critic`
-- [web-design-guidelines](../modern-web-design/SKILL.md)
-- [i18n-localization](../i18n-localization/SKILL.md)

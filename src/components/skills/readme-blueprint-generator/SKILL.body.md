@@ -23,7 +23,6 @@ rg -n "scripts|test|lint|build|start" package.json pyproject.toml Cargo.toml Mak
 - 是否给出了可复制执行的安装、启动、测试命令。
 - 是否解释了关键目录，而不是只贴文件树。
 - 是否写清楚了贡献方式、环境变量和常见问题入口。
-- 若后续要写面向终端用户的指南，可转给 [user-guide-writing](../user-guide-writing/SKILL.md)。
 
 ## 反模式
 

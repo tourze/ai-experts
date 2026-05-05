@@ -4,6 +4,8 @@ import {
   Platform,
   defineSkill,
 } from "../../sdk";
+import { doctrineBatchProcessingSkill } from "../doctrine-batch-processing/index";
+import { symfonyMessengerSkill } from "../symfony-messenger/index";
 
 export const symfonyVotersSkill = defineSkill({
   id: "symfony-voters",
@@ -13,7 +15,7 @@ export const symfonyVotersSkill = defineSkill({
     "需要新增、收敛或审查 Symfony Voter、`#[IsGranted]`、`denyAccessUnlessGranted()` 等授权逻辑。",
     "权限判断散落在 Controller、Service、Twig 模板和仓储层，导致规则漂移。",
     "需要把“谁能对什么资源执行什么动作”固化为明确的决策矩阵。",
-    "如果授权后的动作会投递异步消息，可联动 [symfony-messenger](../symfony-messenger/SKILL.md)；如果授权绑定 ORM 资源加载，可联动 [doctrine-batch-processing](../doctrine-batch-processing/SKILL.md)。",
+    "如果授权后的动作会投递异步消息，可联动 `symfony-messenger`；如果授权绑定 ORM 资源加载，可联动 `doctrine-batch-processing`。",
     "更细的验证命令见 [reference.md](reference.md)。",
   ],
   constraints: [
@@ -22,6 +24,20 @@ export const symfonyVotersSkill = defineSkill({
     "资源加载、授权判断、错误响应三层职责要分开，避免既查库又改状态。",
     "不要通过错误消息泄露敏感上下文，例如“资源存在但你无权访问”这类差异。",
     "控制器、API Platform、Twig 模板和命令入口必须复用同一套授权事实，而不是各写一份 if/else。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return doctrineBatchProcessingSkill.id;
+      },
+      reason: "如果授权后的动作会投递异步消息，可联动 `symfony-messenger`；如果授权绑定 ORM 资源加载，可联动 `doctrine-batch-processing`。",
+    },
+    {
+      get id() {
+        return symfonyMessengerSkill.id;
+      },
+      reason: "如果授权后的动作会投递异步消息，可联动 `symfony-messenger`；如果授权绑定 ORM 资源加载，可联动 `doctrine-batch-processing`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

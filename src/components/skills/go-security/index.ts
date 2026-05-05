@@ -5,6 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { goErrorHandlingSkill } from "../go-error-handling/index";
+import { goTestingPatternsSkill } from "../go-testing-patterns/index";
 
 export const goSecuritySkill = defineSkill({
   id: "go-security",
@@ -15,13 +17,28 @@ export const goSecuritySkill = defineSkill({
     "实现 token 生成、密码存储、密钥管理、TLS 配置。",
     "执行 `govulncheck` 或评估第三方依赖的安全风险。",
     "需要防止路径穿越、SSRF、XSS 等注入类攻击。",
-    "运行时安全（nil、panic、数据竞争）使用 [go-safety](../go-error-handling/SKILL.md)；安全测试使用 [go-testing-patterns](../go-testing-patterns/SKILL.md)。",
+    "运行时安全（nil、panic、数据竞争）使用 `go-safety`；安全测试使用 `go-testing-patterns`。",
   ],
   constraints: [
     "对任何外部输入，回答三个问题：",
     "**信任边界在哪？** 哪些数据来自用户 / 网络 / 第三方，不可信？",
     "**攻击者能控制什么？** 输入参数、Header、URL、文件名、数据库字段？",
     "**爆炸半径多大？** 泄露密钥？执行任意命令？越权访问？",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return goTestingPatternsSkill.id;
+      },
+      reason: "运行时安全（nil、panic、数据竞争）使用 `go-safety`；安全测试使用 `go-testing-patterns`。",
+    },
+    {
+      get id() {
+        return goErrorHandlingSkill.id;
+      },
+      label: "go-safety",
+      reason: "运行时安全（nil、panic、数据竞争）使用 `go-safety`；安全测试使用 `go-testing-patterns`。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
