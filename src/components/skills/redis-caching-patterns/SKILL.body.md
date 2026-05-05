@@ -1,5 +1,3 @@
-# Redis Caching Patterns
-
 ## 适用场景
 
 - 数据库前置缓存层读写策略选型（cache-aside、write-through、write-behind）。

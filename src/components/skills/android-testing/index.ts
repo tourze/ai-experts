@@ -8,6 +8,7 @@ import {
 
 export const androidTestingSkill = defineSkill({
   id: "android-testing",
+  fullName: "Android 测试策略",
   description: "当用户要为 Android 写单元测试、Hilt 集成测试、Roborazzi 截图测试或 Compose 测试时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

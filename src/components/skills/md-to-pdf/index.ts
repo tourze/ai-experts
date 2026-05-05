@@ -10,6 +10,7 @@ import {
 
 export const mdToPdfSkill = defineSkill({
   id: "md-to-pdf",
+  fullName: "Markdown 转 PDF",
   description: "当用户要将 .md 文稿渲染成可打印 PDF 时使用，支持 Mermaid、KaTeX、代码块、表格、自定义 CSS、页边距和页码。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

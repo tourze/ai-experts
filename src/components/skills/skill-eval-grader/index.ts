@@ -8,6 +8,7 @@ import {
 
 export const skillEvalGraderSkill = defineSkill({
   id: "skill-eval-grader",
+  fullName: "Skill Eval Grader",
   description: "当用户要根据 transcript、outputs 和 expectations 评估一次 skill/eval 执行是否通过，或审查 eval assertions 是否有区分度时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

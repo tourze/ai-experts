@@ -8,6 +8,7 @@ import {
 
 export const specDrivenDeliverySkill = defineSkill({
   id: "spec-driven-delivery",
+  fullName: "需求驱动的可验证交付（SPARV）",
   description: "当需要把需求、计划、实现、审查和沉淀串成可验证交付流程，避免过早实现或跑偏时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

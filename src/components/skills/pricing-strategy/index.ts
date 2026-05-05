@@ -8,6 +8,7 @@ import {
 
 export const pricingStrategySkill = defineSkill({
   id: "pricing-strategy",
+  fullName: "定价策略",
   description: "当用户要制定定价、包装方案、免费策略、涨价节奏或价值度量时使用；帮助在价值捕获、转化效率与市场定位之间做平衡。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -8,6 +8,7 @@ import {
 
 export const codebaseArchitectureAnalysisSkill = defineSkill({
   id: "codebase-architecture-analysis",
+  fullName: "代码库架构分析",
   description: "当用户要分析代码库架构、梳理模块边界、绘制依赖图、检测分层违规或评估结构健康度时使用。提供从模块地图到优先改进项的系统化分析流程，每条发现绑定到文件:行/段。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

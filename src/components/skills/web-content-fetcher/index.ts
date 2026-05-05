@@ -10,6 +10,7 @@ import {
 
 export const webContentFetcherSkill = defineSkill({
   id: "web-content-fetcher",
+  fullName: "网页正文提取",
   description: "当用户给出具体 URL，需要抓取网页正文并转成 Markdown 时使用。适用于博客、文档、新闻页和微信公众号等页面的正文提取与内容准备。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

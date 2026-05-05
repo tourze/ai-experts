@@ -1,5 +1,3 @@
-# 仓库级威胁建模
-
 ## 适用场景
 - 需要基于仓库证据输出针对性的威胁模型，而不是通用模板。
 - 需要与 [stride-analysis-patterns](references/stride-analysis-patterns.md) 联动做系统性枚举。

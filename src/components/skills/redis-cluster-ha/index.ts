@@ -8,6 +8,7 @@ import {
 
 export const redisClusterHaSkill = defineSkill({
   id: "redis-cluster-ha",
+  fullName: "Redis Cluster & High Availability",
   description: "当用户要部署、运维或排查 Redis Sentinel、Cluster 或持久化策略时使用。适用于高可用架构与容量规划。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

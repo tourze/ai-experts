@@ -1,5 +1,3 @@
-# 协议逆向工程
-
 ## 适用场景
 - 需要从 PCAP、串口、USB、TCP/UDP 报文中整理字段、顺序和状态机。
 - 需要和 [wireshark-analysis](../wireshark-analysis/SKILL.md) 配合做流量整理。

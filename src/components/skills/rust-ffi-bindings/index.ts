@@ -8,6 +8,7 @@ import {
 
 export const rustFfiBindingsSkill = defineSkill({
   id: "rust-ffi-bindings",
+  fullName: "Rust FFI Bindings",
   description: "当用户需要通过 FFI 集成 Rust 与 C/C++ 或其他语言时使用；涉及 extern C、#[no_mangle]、CStr/CString 或 opaque pointer 时触发。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

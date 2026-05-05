@@ -1,5 +1,3 @@
-# Doctrine Entity Patterns
-
 ## 适用场景
 
 - 新建或审查 Entity 列映射、关联、索引、Repository 和 Migration。

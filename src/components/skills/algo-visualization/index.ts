@@ -9,6 +9,7 @@ import {
 
 export const algoVisualizationSkill = defineSkill({
   id: "algo-visualization",
+  fullName: "交互式算法可视化教学页",
   description: "当用户要把数据结构、算法或代码执行过程做成交互式教学可视化页面时使用。普通数据图表或流程图不适用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

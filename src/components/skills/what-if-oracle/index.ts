@@ -8,6 +8,7 @@ import {
 
 export const whatIfOracleSkill = defineSkill({
   id: "what-if-oracle",
+  fullName: "What-If 推演器",
   description: "当需要对不确定决策做未来分支推演、情景分析或最好/最坏情况评估时使用。用户提到\"如果会怎样\"\"有哪些可能性\"\"最好最坏情景\"时触发。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

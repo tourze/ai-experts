@@ -1,5 +1,3 @@
-# go-cli
-
 ## 适用场景
 
 - 使用 Cobra 构建 CLI 命令结构（root + subcommands）。

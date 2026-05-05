@@ -8,6 +8,7 @@ import {
 
 export const binaryAnalysisPatternsSkill = defineSkill({
   id: "binary-analysis-patterns",
+  fullName: "二进制分析模式",
   description: "当需要对可执行文件、库或固件组件做静态反汇编、反编译、符号恢复、结构恢复和反逆向技术分析时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

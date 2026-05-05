@@ -8,6 +8,7 @@ import {
 
 export const reactNativeMetroConfigSkill = defineSkill({
   id: "react-native-metro-config",
+  fullName: "Metro 配置",
   description: "当用户要配置或排查 React Native Metro 打包器时使用。用户提到 Metro 配置、watchFolders、inlineRequires、打包慢、自定义 resolver 时触发。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

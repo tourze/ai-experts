@@ -8,6 +8,7 @@ import {
 
 export const tauriBuildPackagingSkill = defineSkill({
   id: "tauri-build-packaging",
+  fullName: "Tauri v2 构建与分发",
   description: "当用户要打包桌面应用、bundle 配置、代码签名、公证、自动更新、sidecar、externalBin、CI 矩阵或体积优化时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

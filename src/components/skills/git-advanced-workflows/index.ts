@@ -8,6 +8,7 @@ import {
 
 export const gitAdvancedWorkflowsSkill = defineSkill({
   id: "git-advanced-workflows",
+  fullName: "Git 高级工作流",
   description: "当需要 rebase、cherry-pick、bisect、worktree、reflog 或从 Git 误操作中恢复时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

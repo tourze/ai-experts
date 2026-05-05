@@ -8,6 +8,7 @@ import {
 
 export const reactComposableComponentsSkill = defineSkill({
   id: "react-composable-components",
+  fullName: "React 可组合组件",
   description: "当用户需要拆分臃肿 React 组件、设计 compound components 或规范 props 透传时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

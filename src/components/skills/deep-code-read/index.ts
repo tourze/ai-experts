@@ -8,6 +8,7 @@ import {
 
 export const deepCodeReadSkill = defineSkill({
   id: "deep-code-read",
+  fullName: "Deep Code Reader",
   description: "当用户要深度理解不熟悉代码库，并生成可复用的认知型 skill 文件时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

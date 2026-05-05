@@ -8,6 +8,7 @@ import {
 
 export const pgsqlRowLevelSecuritySkill = defineSkill({
   id: "pgsql-row-level-security",
+  fullName: "PostgreSQL Row-Level Security",
   description: "当用户要实现或审查 PostgreSQL 行级安全策略、多租户隔离或角色权限管理时使用。适用于共享表的数据边界控制。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

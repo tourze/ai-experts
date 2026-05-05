@@ -8,6 +8,7 @@ import {
 
 export const scpAnalysisSkill = defineSkill({
   id: "scp-analysis",
+  fullName: "SCP 分析模型",
   description: "当用户要分析外部冲击对行业和企业的传导影响或连锁效应时使用。常规竞争分析或内部经营诊断不适用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

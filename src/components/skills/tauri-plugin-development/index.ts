@@ -8,6 +8,7 @@ import {
 
 export const tauriPluginDevelopmentSkill = defineSkill({
   id: "tauri-plugin-development",
+  fullName: "Tauri v2 插件开发",
   description: "在创建自定义 Tauri v2 插件、处理生命周期钩子、桌面/移动拆分、插件状态、命令注册、JS API 或权限定义时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

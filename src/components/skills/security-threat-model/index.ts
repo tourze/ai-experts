@@ -8,6 +8,7 @@ import {
 
 export const securityThreatModelSkill = defineSkill({
   id: "security-threat-model",
+  fullName: "仓库级威胁建模",
   description: "当用户要求对代码仓库做 STRIDE 分析、攻击树构建、威胁缓解映射或安全需求提取的 AppSec 威胁建模时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

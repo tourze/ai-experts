@@ -8,6 +8,7 @@ import {
 
 export const testDrivenDevelopmentSkill = defineSkill({
   id: "test-driven-development",
+  fullName: "测试驱动开发",
   description: "当用户要按 TDD 流程编码、先写测试再写实现、或要求红绿重构时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

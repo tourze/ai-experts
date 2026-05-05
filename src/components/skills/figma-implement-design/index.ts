@@ -9,6 +9,7 @@ import {
 
 export const figmaImplementDesignSkill = defineSkill({
   id: "figma-implement-design",
+  fullName: "Figma 设计实现",
   description: "当用户提供 Figma 链接、要求 1:1 还原界面、或需要根据设计稿实现组件或页面时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

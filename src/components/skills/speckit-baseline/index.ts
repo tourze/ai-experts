@@ -10,6 +10,7 @@ import {
 
 export const speckitBaselineSkill = defineSkill({
   id: "speckit-baseline",
+  fullName: "Speckit Baseline",
   description: "当用户要从现有代码反向抽取需求、建立初始 spec.md 或启动 legacy feature baseline 时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

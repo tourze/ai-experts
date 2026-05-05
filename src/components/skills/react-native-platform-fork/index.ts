@@ -8,6 +8,7 @@ import {
 
 export const reactNativePlatformForkSkill = defineSkill({
   id: "react-native-platform-fork",
+  fullName: "跨平台代码组织",
   description: "当用户要组织 React Native 跨平台代码或配置平台分叉时使用。用户提到平台分叉、跨端代码、.native.ts、.tauri.ts、Platform.select 时触发。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

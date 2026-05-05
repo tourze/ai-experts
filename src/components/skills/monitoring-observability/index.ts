@@ -8,6 +8,7 @@ import {
 
 export const monitoringObservabilitySkill = defineSkill({
   id: "monitoring-observability",
+  fullName: "监控与可观测性",
   description: "当用户需要设计指标、日志、告警、健康检查或可观测性基线时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

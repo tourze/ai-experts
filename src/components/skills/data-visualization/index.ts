@@ -8,6 +8,7 @@ import {
 
 export const dataVisualizationSkill = defineSkill({
   id: "data-visualization",
+  fullName: "data-visualization",
   description: "当用户要选择图表类型、判断图表是否合适、生成 Python 可视化代码、调整图表表达方式或设计 Dashboard 图表时使用。",
   invocation: InvocationPolicy.ModelOnly,
   platforms: [Platform.Claude, Platform.Codex],

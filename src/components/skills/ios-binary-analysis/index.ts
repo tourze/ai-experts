@@ -8,6 +8,7 @@ import {
 
 export const iosBinaryAnalysisSkill = defineSkill({
   id: "ios-binary-analysis",
+  fullName: "iOS 二进制分析",
   description: "当需要提取和分析 iOS IPA、Mach-O 二进制、dylib 或 framework，做类 dump 和调用链追踪时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

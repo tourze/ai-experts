@@ -8,6 +8,7 @@ import {
 
 export const seoSkill = defineSkill({
   id: "seo",
+  fullName: "搜索引擎优化（seo）",
   description: "当用户要提升搜索可见性、修复技术 SEO、优化元数据、结构化数据、索引策略或 Search Console 问题时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

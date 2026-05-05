@@ -1,5 +1,3 @@
-# 估算校准
-
 ## 适用场景
 - 研发排期、路线图沟通、项目承诺、Story points 或任务规模评估。
 - 需要参考 [references/estimation-methods.md](references/estimation-methods.md)、[references/sizing-heuristics.md](references/sizing-heuristics.md)、[references/unknown-categories.md](references/unknown-categories.md)。

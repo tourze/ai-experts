@@ -10,6 +10,7 @@ import {
 
 export const iosSimulatorSkillSkill = defineSkill({
   id: "ios-simulator-skill",
+  fullName: "iOS 模拟器自动化",
   description: "当用户需要用 Simulator、xcrun simctl、设备启动、截图、安装包、日志采集或提审前自动化回归时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

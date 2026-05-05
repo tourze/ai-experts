@@ -8,6 +8,7 @@ import {
 
 export const leadResearchAssistantSkill = defineSkill({
   id: "lead-research-assistant",
+  fullName: "线索研究（lead-research-assistant）",
   description: "在需要定义 ICP、寻找高质量目标客户、筛选公司名单，或深挖已有账号的联系人与买家信号时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

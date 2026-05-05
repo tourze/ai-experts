@@ -8,6 +8,7 @@ import {
 
 export const goErrorHandlingSkill = defineSkill({
   id: "go-error-handling",
+  fullName: "Go 错误处理",
   description: "当 Go 代码需要设计、包装、比较、传播或审查 error 语义时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

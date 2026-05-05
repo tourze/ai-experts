@@ -1,5 +1,3 @@
-# Agent Orchestration
-
 ## 适用场景
 
 - 设计多 Agent 系统：子 Agent 职责划分、fork vs fresh 决策、隔离策略。

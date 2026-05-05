@@ -8,6 +8,7 @@ import {
 
 export const phpAsyncPatternsSkill = defineSkill({
   id: "php-async-patterns",
+  fullName: "PHP 异步模式",
   description: "当用户要在 PHP 中实现异步并发、使用 Swoole 协程/服务器、ReactPHP 事件循环、Amphp 或原生 Fibers 时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -10,6 +10,7 @@ import {
 
 export const analyticsTrackingSkill = defineSkill({
   id: "analytics-tracking",
+  fullName: "埋点与追踪（analytics-tracking）",
   description: "在需要规划、审计或排查 GA4/GTM 埋点时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -1,5 +1,3 @@
-# Go 并发模式
-
 ## 适用场景
 
 - 构建有上限的 worker pool、fan-out/fan-in pipeline、批量请求并发执行。

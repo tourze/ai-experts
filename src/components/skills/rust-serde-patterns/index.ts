@@ -8,6 +8,7 @@ import {
 
 export const rustSerdePatternsSkill = defineSkill({
   id: "rust-serde-patterns",
+  fullName: "Rust Serde Patterns",
   description: "当用户需要设计或调试 serde 序列化/反序列化逻辑时使用；涉及 serde derive 属性、enum 标签策略或自定义 Serializer 时触发。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -8,6 +8,7 @@ import {
 
 export const systemDiagnosticsSkill = defineSkill({
   id: "system-diagnostics",
+  fullName: "Linux 系统诊断",
   description: "当用户说 Linux 主机变慢、服务异常、需要健康检查或要先摸清系统现状时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

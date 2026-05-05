@@ -8,6 +8,7 @@ import {
 
 export const goStructsInterfacesSkill = defineSkill({
   id: "go-structs-interfaces",
+  fullName: "go-structs-interfaces",
   description: "当 Go 代码涉及接口设计、结构体组合、embedding、泛型 vs any、receiver 选择、零值可用或 type assertion 时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

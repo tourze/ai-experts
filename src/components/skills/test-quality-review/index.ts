@@ -8,6 +8,7 @@ import {
 
 export const testQualityReviewSkill = defineSkill({
   id: "test-quality-review",
+  fullName: "测试质量审查",
   description: "当用户要审查已有测试代码质量、诊断测试套件衰退风险、mock 滥用、脆弱测试、flaky test 或 coverage illusion 时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

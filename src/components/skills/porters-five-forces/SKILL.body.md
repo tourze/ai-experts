@@ -1,5 +1,3 @@
-# 波特五力
-
 ## 适用场景
 - 新行业进入评估、市场格局判断、战略机会复盘。
 - 与内部能力/执行风险结合分析时，可配合 [swot-analysis](../swot-analysis/SKILL.md) 或 [competitive-teardown](../competitive-intelligence/SKILL.md)。

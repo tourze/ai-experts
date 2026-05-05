@@ -8,6 +8,7 @@ import {
 
 export const skillEvaluatorSkill = defineSkill({
   id: "skill-evaluator",
+  fullName: "Skill Evaluator",
   description: "当用户要评估 skill 质量、审查 SKILL.md 设计结构或验证 skill 知识完备性时使用。仅优化 frontmatter description 触发质量用 `skill-activation-analyzer`。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

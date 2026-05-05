@@ -8,6 +8,7 @@ import {
 
 export const goObservabilitySkill = defineSkill({
   id: "go-observability",
+  fullName: "go-observability",
   description: "当 Go 代码需要日志、指标、链路追踪、告警或可观测性体系建设时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

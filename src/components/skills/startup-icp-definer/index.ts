@@ -8,6 +8,7 @@ import {
 
 export const startupIcpDefinerSkill = defineSkill({
   id: "startup-icp-definer",
+  fullName: "理想客户画像",
   description: "当用户要定义理想客户画像、购买中心、目标行业或关键 persona 时使用；帮助把“谁最值得卖”说清楚。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

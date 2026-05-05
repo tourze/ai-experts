@@ -11,6 +11,7 @@ import {
 
 export const helmChartScaffoldingSkill = defineSkill({
   id: "helm-chart-scaffolding",
+  fullName: "Helm Chart 搭建",
   description: "当用户要创建、重构或验证 Helm Chart 时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

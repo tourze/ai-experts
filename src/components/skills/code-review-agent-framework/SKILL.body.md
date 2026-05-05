@@ -1,5 +1,3 @@
-# Code Review Agent 框架
-
 本 skill 为所有语言/框架 reviewer agent 提供统一的方法论骨架。每个 reviewer agent 在此基础上追加自己的场景路由编排表。
 
 ## 工作方式

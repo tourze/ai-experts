@@ -1,5 +1,3 @@
-# 销售赋能材料（sales-enablement）
-
 ## 适用场景
 - 制作 pitch deck、one-pager 或销售提案。
 - 编写异议处理文档或 demo 脚本。

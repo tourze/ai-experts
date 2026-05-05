@@ -8,6 +8,7 @@ import {
 
 export const openapiSpecGenerationSkill = defineSkill({
   id: "openapi-spec-generation",
+  fullName: "OpenAPI 规范生成",
   description: "当用户要创建、维护或校验 OpenAPI 3.1 规范时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

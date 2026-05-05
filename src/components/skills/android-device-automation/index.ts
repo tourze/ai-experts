@@ -10,6 +10,7 @@ import {
 
 export const androidDeviceAutomationSkill = defineSkill({
   id: "android-device-automation",
+  fullName: "Android 真机/模拟器自动化",
   description: "当用户要启动、操作或管理 Android 真机/模拟器、自动化构建部署、查看设备日志或做 UI 导航时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

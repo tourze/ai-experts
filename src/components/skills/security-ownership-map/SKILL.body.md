@@ -1,5 +1,3 @@
-# 安全所有权拓扑分析
-
 ## 适用场景
 - 需要找出敏感代码无人维护、单点维护者或高风险变更簇。
 - 需要把 git 历史与 [security-threat-model](../security-threat-model/SKILL.md) 的资产/边界分析关联起来。

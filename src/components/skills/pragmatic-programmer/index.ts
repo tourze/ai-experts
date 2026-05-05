@@ -8,6 +8,7 @@ import {
 
 export const pragmaticProgrammerSkill = defineSkill({
   id: "pragmatic-programmer",
+  fullName: "pragmatic-programmer",
   description: "当用户要用务实工程原则判断抽象是否过度、DRY/YAGNI 取舍、tracer bullet 路径或协作方式时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

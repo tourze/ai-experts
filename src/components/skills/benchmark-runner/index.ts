@@ -8,6 +8,7 @@ import {
 
 export const benchmarkRunnerSkill = defineSkill({
   id: "benchmark-runner",
+  fullName: "基准测试设计",
   description: "当用户需要比较两个或多个实现的性能、做基准测试或评估延迟/吞吐/内存差异时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

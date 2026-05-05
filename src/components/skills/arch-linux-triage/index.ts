@@ -8,6 +8,7 @@ import {
 
 export const archLinuxTriageSkill = defineSkill({
   id: "arch-linux-triage",
+  fullName: "Arch Linux 排障",
   description: "当用户遇到 Arch Linux 的 pacman、systemd、滚动升级、AUR、内核或启动故障时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

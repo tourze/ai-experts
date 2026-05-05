@@ -1,5 +1,3 @@
-# Python 测试模式
-
 > 通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 [testing-patterns](testing-expert:testing-patterns)。本 skill 只覆盖 Python 特有语法与工具。
 
 ## 适用场景

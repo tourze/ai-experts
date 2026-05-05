@@ -8,6 +8,7 @@ import {
 
 export const pythonBackgroundJobsSkill = defineSkill({
   id: "python-background-jobs",
+  fullName: "Python 后台任务",
   description: "当用户要实现任务队列、worker、重试、幂等、死信队列或把长任务从请求链路中解耦时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

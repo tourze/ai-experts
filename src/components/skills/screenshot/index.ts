@@ -11,6 +11,7 @@ import {
 
 export const screenshotSkill = defineSkill({
   id: "screenshot",
+  fullName: "系统截图",
   description: "当用户要截桌面、截窗口、截指定区域或做系统级截图时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

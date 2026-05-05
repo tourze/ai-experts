@@ -8,6 +8,7 @@ import {
 
 export const liquidGlassDesignSkill = defineSkill({
   id: "liquid-glass-design",
+  fullName: "Liquid Glass 设计",
   description: "当用户要在 iOS 26 做 Liquid Glass、玻璃材质、容器融合、WidgetKit 外观、变形过渡或视觉层级时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

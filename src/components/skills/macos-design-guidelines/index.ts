@@ -8,6 +8,7 @@ import {
 
 export const macosDesignGuidelinesSkill = defineSkill({
   id: "macos-design-guidelines",
+  fullName: "macOS HIG 设计",
   description: "当用户要按 macOS HIG 设计桌面界面、菜单栏、窗口层级、工具栏、侧边栏、键盘快捷键或指针交互时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

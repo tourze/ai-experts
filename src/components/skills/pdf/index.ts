@@ -10,6 +10,7 @@ import {
 
 export const pdfSkill = defineSkill({
   id: "pdf",
+  fullName: "PDF",
   description: "当用户要读取、填写表单、批注、分析结构或转换 PDF 文件时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

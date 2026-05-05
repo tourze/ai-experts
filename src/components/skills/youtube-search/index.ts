@@ -10,6 +10,7 @@ import {
 
 export const youtubeSearchSkill = defineSkill({
   id: "youtube-search",
+  fullName: "YouTube 视频搜索",
   description: "当用户要按关键词搜索 YouTube 视频、找教程、找热门视频或列候选清单时使用。如果用户已经给出单条视频链接并要总结内容，改用 youtube-analysis。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

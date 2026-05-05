@@ -8,6 +8,7 @@ import {
 
 export const prfaqSkill = defineSkill({
   id: "prfaq",
+  fullName: "PRFAQ（新闻稿 + FAQ）",
   description: "当用户要用 PRFAQ 或 Working Backwards 验证产品想法、对齐团队认知或推动立项时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

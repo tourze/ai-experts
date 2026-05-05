@@ -8,6 +8,7 @@ import {
 
 export const goTestingPatternsSkill = defineSkill({
   id: "go-testing-patterns",
+  fullName: "go-testing-patterns",
   description: "当 Go 代码需要测试设计、table-driven tests、mock、race、fuzz 或 flaky test 排查时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

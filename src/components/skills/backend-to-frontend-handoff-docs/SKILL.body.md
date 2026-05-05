@@ -1,5 +1,3 @@
-# backend-to-frontend-handoff-docs
-
 ## 适用场景
 - 适合接口开发完成后的交接、联调准备和 API 文档补齐。
 - 适合把散落在控制器、DTO、服务层和业务规则里的细节收敛成一份 handoff。

@@ -1,5 +1,3 @@
-# React Server Components
-
 ## 适用场景
 
 - 项目使用 Next.js App Router，需要在服务端组件与客户端组件之间划边界。

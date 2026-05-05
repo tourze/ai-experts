@@ -8,6 +8,7 @@ import {
 
 export const obsidianBasesSkill = defineSkill({
   id: "obsidian-bases",
+  fullName: "Obsidian Bases",
   description: "当用户要新建、修复或重构 Obsidian Bases 的 `.base` 文件时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -8,6 +8,7 @@ import {
 
 export const croMethodologySkill = defineSkill({
   id: "cro-methodology",
+  fullName: "转化优化方法（cro-methodology）",
   description: "在需要审计网站或落地页转化问题、梳理实验假设和设计 A/B 测试，或优化弹窗、注册流程、新手引导、AIDA 漏斗转化时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

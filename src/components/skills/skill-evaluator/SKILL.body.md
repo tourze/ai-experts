@@ -1,5 +1,3 @@
-# Skill Evaluator
-
 双模式：Mode A 评设计结构，Mode B 验知识覆盖。
 
 ## 路由

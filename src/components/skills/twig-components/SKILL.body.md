@@ -1,5 +1,3 @@
-# Twig Components
-
 ## 适用场景
 
 - 需要在 Symfony 项目中抽取可复用的 TwigComponent 或交互式 LiveComponent。

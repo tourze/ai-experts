@@ -9,6 +9,7 @@ import {
 
 export const markdownMermaidWritingSkill = defineSkill({
   id: "markdown-mermaid-writing",
+  fullName: "Markdown 与 Mermaid 写作",
   description: "当用户要用 Markdown 和 Mermaid 产出报告、技术文档、研究材料、决策记录或图表型说明时使用。该技能把文本化文档和文本化图示作为默认交付标准。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -8,6 +8,7 @@ import {
 
 export const webmanNamingConventionsSkill = defineSkill({
   id: "webman-naming-conventions",
+  fullName: "Webman Naming Conventions",
   description: "当用户要统一或审查 Webman 项目的目录命名、接口后缀、Service 命名或命名空间时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

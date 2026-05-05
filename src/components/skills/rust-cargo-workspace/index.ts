@@ -8,6 +8,7 @@ import {
 
 export const rustCargoWorkspaceSkill = defineSkill({
   id: "rust-cargo-workspace",
+  fullName: "Rust Cargo Workspace",
   description: "当用户需要管理 Cargo workspace 时使用；涉及 [workspace]、workspace.dependencies、feature flag 或 crate 拆分时触发。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

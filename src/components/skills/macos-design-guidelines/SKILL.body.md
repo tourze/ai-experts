@@ -1,5 +1,3 @@
-# macOS HIG 设计
-
 ## 适用场景
 
 - 设计或评审 macOS 的 SwiftUI / AppKit 界面。

@@ -8,6 +8,7 @@ import {
 
 export const goCodeStyleSkill = defineSkill({
   id: "go-code-style",
+  fullName: "go-code-style",
   description: "当 Go 代码需要风格、可读性、文件组织、函数签名或惯用写法判断时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

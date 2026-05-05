@@ -8,6 +8,7 @@ import {
 
 export const priorityJudgeSkill = defineSkill({
   id: "priority-judge",
+  fullName: "优先级判断助手",
   description: "当用户要给待办、项目、机会、风险或资源约束排优先级，决定先做什么、暂缓什么、放弃什么时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

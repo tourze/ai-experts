@@ -1,5 +1,3 @@
-# 代码库架构分析
-
 系统化分析代码库的模块边界、依赖流、分层合规性和结构风险。与 [`architecture-reviewer`](../architecture-reviewer/SKILL.md) 互补：reviewer 侧重设计质量评审，本 skill 侧重结构事实的取证与量化。
 
 ## 适用场景

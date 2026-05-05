@@ -1,5 +1,3 @@
-# 内存取证
-
 ## 适用场景
 - 需要用 Volatility 等工具分析内存镜像的进程、模块、句柄、网络、注入和持久化痕迹。
 - 需要与 [binary-analysis-patterns](../binary-analysis-patterns/SKILL.md) 联动定位可疑模块。

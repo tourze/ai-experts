@@ -1,5 +1,3 @@
-# Rust Proc Macro Patterns
-
 ## 适用场景
 
 - 编写 derive macro 自动实现 trait。

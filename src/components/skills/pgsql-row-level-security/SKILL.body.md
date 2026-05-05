@@ -1,5 +1,3 @@
-# PostgreSQL Row-Level Security
-
 ## 适用场景
 
 - 多租户 SaaS 共享表存储，需要数据库层面强制租户隔离

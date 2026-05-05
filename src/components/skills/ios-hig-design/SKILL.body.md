@@ -1,5 +1,3 @@
-# iOS HIG 设计
-
 ## 适用场景
 
 - 设计或评审 iPhone / iPad 的 SwiftUI、UIKit 界面。

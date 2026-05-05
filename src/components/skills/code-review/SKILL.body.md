@@ -1,5 +1,3 @@
-# 代码审查
-
 ## 审查强度
 
 用户未指定时默认标准模式。高压模式详情见 [references/brutal-mode.md](./references/brutal-mode.md)。

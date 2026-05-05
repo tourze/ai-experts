@@ -8,6 +8,7 @@ import {
 
 export const githubRepoSearchSkill = defineSkill({
   id: "github-repo-search",
+  fullName: "GitHub 仓库搜索",
   description: "当用户要搜索 GitHub 开源项目、找某个方向的仓库或做可比较的仓库推荐时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

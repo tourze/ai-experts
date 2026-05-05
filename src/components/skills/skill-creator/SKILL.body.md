@@ -1,5 +1,3 @@
-# Skill Creator
-
 这个 skill 用于创建新 skill，并通过真实测试反复改进它们。
 
 创建 skill 的整体流程：

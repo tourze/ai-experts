@@ -1,5 +1,3 @@
-# Blind Output Comparator
-
 在不知道输出来源的前提下比较两个结果，降低对 skill、模型、作者或实现方式的偏见。适用于 skill eval、prompt A/B、模型输出比较和人工评审前的结构化初筛。
 
 ## 适用场景

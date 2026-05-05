@@ -8,6 +8,7 @@ import {
 
 export const pdcaCycleSkill = defineSkill({
   id: "pdca-cycle",
+  fullName: "PDCA 循环",
   description: "当用户要用 PDCA 做持续改进、质量管理、运营优化或闭环问题解决时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

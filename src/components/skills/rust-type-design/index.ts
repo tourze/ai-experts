@@ -8,6 +8,7 @@ import {
 
 export const rustTypeDesignSkill = defineSkill({
   id: "rust-type-design",
+  fullName: "Rust 类型设计",
   description: "当用户要在泛型与 trait object 之间做选择、设计静态/动态分发边界、或用类型状态模式把非法状态变成编译错误时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

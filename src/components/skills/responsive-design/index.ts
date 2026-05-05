@@ -8,6 +8,7 @@ import {
 
 export const responsiveDesignSkill = defineSkill({
   id: "responsive-design",
+  fullName: "响应式设计",
   description: "当用户提到响应式布局、适配移动端、流式排版、容器查询、container queries 或移动优先断点时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

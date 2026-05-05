@@ -8,6 +8,7 @@ import {
 
 export const apiTraceReaderSkill = defineSkill({
   id: "api-trace-reader",
+  fullName: "api-trace-reader",
   description: "在需要只读追踪接口、任务、事件或定时任务的调用链时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

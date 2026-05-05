@@ -8,6 +8,7 @@ import {
 
 export const speckitChecklistSkill = defineSkill({
   id: "speckit-checklist",
+  fullName: "Speckit Checklist",
   description: "当用户要为当前特性建立需求质量 checklist、验收问题或安全性能兼容性检查项时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

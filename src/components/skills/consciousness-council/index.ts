@@ -8,6 +8,7 @@ import {
 
 export const consciousnessCouncilSkill = defineSkill({
   id: "consciousness-council",
+  fullName: "多视角思辨议会",
   description: "当需要多视角思辨审视高不确定性决策、角色辩论、专家议会、风险分歧和取舍盲区时使用。支持角色议会模式和六顶思考帽模式。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

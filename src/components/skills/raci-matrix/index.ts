@@ -8,6 +8,7 @@ import {
 
 export const raciMatrixSkill = defineSkill({
   id: "raci-matrix",
+  fullName: "RACI 责任矩阵",
   description: "当用户要用 RACI/RASCI 明确角色分工、职责归属、审批流程或责任矩阵时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -8,6 +8,7 @@ import {
 
 export const modernJavascriptPatternsSkill = defineSkill({
   id: "modern-javascript-patterns",
+  fullName: "现代 JavaScript 模式",
   description: "当需要用现代 ES6+ 特性重构旧代码、编写可维护 JavaScript 或优化 JS 热路径性能时使用。用户提到微优化、Set/Map 查找、循环优化、DOM 批处理、requestIdleCallback 时触发。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

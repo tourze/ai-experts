@@ -8,6 +8,7 @@ import {
 
 export const pythonObservabilitySkill = defineSkill({
   id: "python-observability",
+  fullName: "Python 可观测性",
   description: "当用户要给 Python 服务补结构化日志、指标、trace、请求上下文和故障定位能力时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

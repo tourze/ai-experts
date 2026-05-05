@@ -1,5 +1,3 @@
-# Redis Cluster & High Availability
-
 ## 适用场景
 
 - 高可用架构选型：Sentinel vs Cluster。

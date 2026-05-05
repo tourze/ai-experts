@@ -1,5 +1,3 @@
-# Metro 配置
-
 ## 适用场景
 
 - 配置 Monorepo 下 Metro 的路径解析和包发现时。

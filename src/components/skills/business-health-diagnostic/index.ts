@@ -8,6 +8,7 @@ import {
 
 export const businessHealthDiagnosticSkill = defineSkill({
   id: "business-health-diagnostic",
+  fullName: "业务健康度诊断",
   description: "当用户要诊断业务健康度、做季度复盘或用记分卡发现增长/留存/效率问题时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

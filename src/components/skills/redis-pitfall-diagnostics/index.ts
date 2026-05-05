@@ -8,6 +8,7 @@ import {
 
 export const redisPitfallDiagnosticsSkill = defineSkill({
   id: "redis-pitfall-diagnostics",
+  fullName: "Redis Pitfall Diagnostics",
   description: "当用户遇到 Redis 诡异行为、性能抖动、OOM、key 过期异常、持久化丢数据、主从不一致、复制失败或想系统排查 Redis 坑位时使用。适用于把症状映射到命令复杂度、过期语义、AOF/RDB、主从复制、版本差异和配置契约。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

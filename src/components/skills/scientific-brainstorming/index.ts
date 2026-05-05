@@ -8,6 +8,7 @@ import {
 
 export const scientificBrainstormingSkill = defineSkill({
   id: "scientific-brainstorming",
+  fullName: "科学脑暴",
   description: "当需要围绕研究问题做科学脑暴、跨学科联想、实验设计探索、方法创新或假设生成时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

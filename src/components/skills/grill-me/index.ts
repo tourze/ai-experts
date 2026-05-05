@@ -8,6 +8,7 @@ import {
 
 export const grillMeSkill = defineSkill({
   id: "grill-me",
+  fullName: "追问到底",
   description: "当需要对方案、设计或决策做高压质询来压实假设时使用。用户提到\"grill me\"\"狠狠质问我\"\"压力测试这个方案\"时触发。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

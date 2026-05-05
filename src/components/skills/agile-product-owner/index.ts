@@ -11,6 +11,7 @@ import {
 
 export const agileProductOwnerSkill = defineSkill({
   id: "agile-product-owner",
+  fullName: "敏捷产品负责人",
   description: "当用户需要编写用户故事、补齐验收标准、拆分 Epic、规划 Sprint 或排序 Backlog 时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

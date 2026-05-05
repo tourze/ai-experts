@@ -8,6 +8,7 @@ import {
 
 export const appleRemindersSkill = defineSkill({
   id: "apple-reminders",
+  fullName: "Apple Reminders CLI",
   description: "当用户要查看、创建、完成、删除或管理 Apple Reminders 提醒事项时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

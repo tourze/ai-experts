@@ -1,5 +1,3 @@
-# 敏捷产品负责人
-
 ## 适用场景
 - 把需求拆成可交付的用户故事、Epic 和 Sprint 范围。
 - 需要结合 [references/user-story-templates.md](references/user-story-templates.md)、[references/sprint-planning-guide.md](references/sprint-planning-guide.md) 或模板资产落文档。

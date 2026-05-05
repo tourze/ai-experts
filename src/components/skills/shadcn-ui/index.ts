@@ -10,6 +10,7 @@ import {
 
 export const shadcnUiSkill = defineSkill({
   id: "shadcn-ui",
+  fullName: "shadcn/ui 集成",
   description: "当任务涉及 shadcn/ui 组件集成、components.json 配置、Registry 或 Radix/Base UI 迁移时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

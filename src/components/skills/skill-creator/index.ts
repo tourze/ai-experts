@@ -11,6 +11,7 @@ import {
 
 export const skillCreatorSkill = defineSkill({
   id: "skill-creator",
+  fullName: "Skill Creator",
   description: "当用户要创建新 skill、编辑或改进已有 skill、运行 eval、基准测试 skill 表现，或优化 skill 的 frontmatter description 触发效果时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

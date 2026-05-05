@@ -1,5 +1,3 @@
-# PostgreSQL Declarative Partitioning
-
 ## 适用场景
 
 - 时序数据按时间 RANGE 分区，实现高效裁剪和历史归档

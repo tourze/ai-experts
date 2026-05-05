@@ -8,6 +8,7 @@ import {
 
 export const iosHigDesignSkill = defineSkill({
   id: "ios-hig-design",
+  fullName: "iOS HIG 设计",
   description: "当用户要按 iOS HIG 设计 iPhone/iPad 界面、导航结构、安全区域、系统组件、触控反馈或无障碍体验时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

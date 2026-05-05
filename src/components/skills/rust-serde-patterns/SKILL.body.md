@@ -1,5 +1,3 @@
-# Rust Serde Patterns
-
 ## 适用场景
 
 - 设计 JSON/YAML/TOML 协议消息或配置的序列化方案。

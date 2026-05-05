@@ -8,6 +8,7 @@ import {
 
 export const memorySafetyPatternsSkill = defineSkill({
   id: "memory-safety-patterns",
+  fullName: "Memory Safety Patterns",
   description: "在编写或评审 C/C++ 系统代码、梳理资源所有权或修复内存安全问题时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

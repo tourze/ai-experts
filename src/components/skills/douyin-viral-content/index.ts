@@ -8,6 +8,7 @@ import {
 
 export const douyinViralContentSkill = defineSkill({
   id: "douyin-viral-content",
+  fullName: "抖音爆款文案生成",
   description: "当用户要创作或优化抖音短视频选题、爆款标题、口播脚本、开头钩子、分镜节奏或带货文案时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

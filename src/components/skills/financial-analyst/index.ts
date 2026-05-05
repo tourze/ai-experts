@@ -11,6 +11,7 @@ import {
 
 export const financialAnalystSkill = defineSkill({
   id: "financial-analyst",
+  fullName: "财务分析师技能",
   description: "当需要做财报比率分析、DCF 估值、预算偏差或滚动预测时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

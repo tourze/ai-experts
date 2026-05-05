@@ -1,5 +1,3 @@
-# Spring Boot 分层模式
-
 ## 适用场景
 
 - 新建或重构 Java 21+ / Spring Boot 3.x 服务。

@@ -10,6 +10,7 @@ import {
 
 export const preLandingReviewSkill = defineSkill({
   id: "pre-landing-review",
+  fullName: "落地前审查",
   description: "当用户需要判断代码是否可以合并或上线时使用。适用于 pre-merge review、gate check、上线前安全检查等请求。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

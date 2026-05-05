@@ -1,5 +1,3 @@
-# iOS 二进制分析
-
 ## 适用场景
 - 需要从 IPA 中提取 Mach-O 并用 ipsw class-dump 获取类/方法声明。
 - 需要追踪 ViewController → ViewModel → Service → API 的调用链。

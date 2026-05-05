@@ -10,6 +10,7 @@ import {
 
 export const skillsPruneAndSyncReadmeSkill = defineSkill({
   id: "skills-prune-and-sync-readme",
+  fullName: "Skills Prune And Sync Component Index",
   description: "当用户提到”清理 skills””删除重复/低质量 skill””治理 skill 冲突””更新 README 的 skill 列表”时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

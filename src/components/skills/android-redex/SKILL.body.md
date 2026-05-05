@@ -1,5 +1,3 @@
-# ReDex — Android 字节码优化
-
 ReDex 是 Facebook 开源的 Android 字节码优化工具，直接操作 DEX 文件，通常在 ProGuard/R8 之后再额外压缩 5-25%。
 
 ## 任务决策树

@@ -1,5 +1,3 @@
-# go-troubleshooting
-
 ## 适用场景
 
 - Go 程序出现 CPU 飙高、内存持续增长、goroutine 泄漏、死锁、数据竞争或性能回归。

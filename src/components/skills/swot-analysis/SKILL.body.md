@@ -1,5 +1,3 @@
-# SWOT 分析
-
 ## 适用场景
 - 产品/公司战略评估、年度复盘、竞品对比或进入新市场前的结构化判断。
 - 需要看行业结构或具体对手时，可配合 [porters-five-forces](../porters-five-forces/SKILL.md) 与 [competitive-teardown](../competitive-intelligence/SKILL.md)。

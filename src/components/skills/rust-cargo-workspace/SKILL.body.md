@@ -1,5 +1,3 @@
-# Rust Cargo Workspace
-
 ## 适用场景
 
 - 新建/重构 Rust monorepo，规划成员和共享依赖。

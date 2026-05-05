@@ -8,6 +8,7 @@ import {
 
 export const rustTestingSkill = defineSkill({
   id: "rust-testing",
+  fullName: "Rust 测试",
   description: "当用户要编写或重构 Rust 测试时使用；涉及测试命名、单元/集成/文档测试、断言模式、cargo-insta snapshot 或测试组织时触发。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -1,5 +1,3 @@
-# 设计增长飞轮
-
 ## 适用场景
 - 产品已有一定留存基础，想把拉新、激活、留存和分享串成闭环。
 - 需要结合 [references/guest-insights.md](references/guest-insights.md) 提炼常见增长模式或限制条件。

@@ -1,5 +1,3 @@
-# Skill Evolver
-
 用一个参考 skill 改进目标 skill。重点不是复制内容，而是找出参考 skill 为什么表现更好，并把可验证的模式迁移到目标 skill。
 
 ## 路由

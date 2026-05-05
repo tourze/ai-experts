@@ -8,6 +8,7 @@ import {
 
 export const goCliSkill = defineSkill({
   id: "go-cli",
+  fullName: "go-cli",
   description: "当 Go 项目需要构建 CLI 应用：命令结构、flag 解析、配置分层、信号处理、退出码或 shell 补全时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

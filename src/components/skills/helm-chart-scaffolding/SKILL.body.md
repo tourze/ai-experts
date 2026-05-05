@@ -1,5 +1,3 @@
-# Helm Chart 搭建
-
 ## 适用场景
 - 从零创建新的 Helm Chart。
 - 把散落的 Kubernetes manifest 收敛到可复用 Chart。

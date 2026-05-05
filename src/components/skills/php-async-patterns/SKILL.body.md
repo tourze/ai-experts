@@ -1,5 +1,3 @@
-# PHP 异步模式
-
 ## 适用场景
 
 - 需要 PHP 长驻进程（HTTP 服务器、WebSocket、任务 worker）。

@@ -8,6 +8,7 @@ import {
 
 export const swiftuiUiPatternsSkill = defineSkill({
   id: "swiftui-ui-patterns",
+  fullName: "SwiftUI UI 模式",
   description: "当用户需要构建、重构或拆分 SwiftUI 视图、导航、Tab 架构、组件模式或依赖注入时使用。适用于新建界面、整理视图结构、收敛 Observation 用法和查找可复用范式。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

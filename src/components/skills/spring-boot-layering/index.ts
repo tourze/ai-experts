@@ -8,6 +8,7 @@ import {
 
 export const springBootLayeringSkill = defineSkill({
   id: "spring-boot-layering",
+  fullName: "Spring Boot 分层模式",
   description: "当需要设计或审查 Spring Boot 3.x 分层（Controller/Service/Repository）、DTO 与 Entity 隔离、事务边界或 `@RestControllerAdvice` 异常处理时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

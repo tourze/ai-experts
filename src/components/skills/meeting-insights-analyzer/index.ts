@@ -8,6 +8,7 @@ import {
 
 export const meetingInsightsAnalyzerSkill = defineSkill({
   id: "meeting-insights-analyzer",
+  fullName: "会议洞察分析",
   description: "当需要基于会议转写做沟通行为复盘、发言占比、打断频率、引导风格或跨会议趋势分析时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

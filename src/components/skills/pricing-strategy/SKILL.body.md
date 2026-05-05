@@ -1,5 +1,3 @@
-# 定价策略
-
 ## 适用场景
 - SaaS 套餐设计、涨价、免费试用、价值度量或打包层级重构。
 - 需要参考 [references/research-methods.md](references/research-methods.md) 与 [references/tier-structure.md](references/tier-structure.md)。

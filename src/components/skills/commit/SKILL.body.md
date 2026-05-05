@@ -1,5 +1,3 @@
-# Git Commit — 结构化提交流程
-
 本 skill 指导你完成一次高质量的 git commit。
 遵循下方流程可以自动通过 git-expert 所有 PreToolUse 守卫。
 

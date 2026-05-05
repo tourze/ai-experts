@@ -8,6 +8,7 @@ import {
 
 export const sessionFinalizationWorkflowSkill = defineSkill({
   id: "session-finalization-workflow",
+  fullName: "会话终结工作流",
   description: "当代码实现完成、需要从完成状态推到可交付状态时使用；提供验证、分支收尾、提交、记录（原 record-session）、复盘的完整流程 checklist。任务闭合后也用于深度复盘，沉淀长期资产。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

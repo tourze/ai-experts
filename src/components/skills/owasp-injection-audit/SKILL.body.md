@@ -1,5 +1,3 @@
-# OWASP 注入审计
-
 覆盖命令注入、SSRF、路径遍历三类注入漏洞的只读审计。SQL 注入由 `sql-review-optimization` 独立覆盖。
 
 ## 路由

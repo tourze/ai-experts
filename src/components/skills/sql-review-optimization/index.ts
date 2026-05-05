@@ -8,6 +8,7 @@ import {
 
 export const sqlReviewOptimizationSkill = defineSkill({
   id: "sql-review-optimization",
+  fullName: "SQL Review & Optimization",
   description: "当用户要审查 SQL 安全性、正确性与运维风险，或分析 slow query、EXPLAIN 执行计划、索引调优（含深度索引策略）、join order、分页策略时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

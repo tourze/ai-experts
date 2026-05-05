@@ -1,5 +1,3 @@
-# 编写 PRD
-
 ## 适用场景
 - 新功能立项、需求收敛、跨团队对齐、进入开发前的规格固化。
 - 需要把 discovery 结论转成可执行需求时，可配合 [agile-product-owner](../agile-product-owner/SKILL.md)。

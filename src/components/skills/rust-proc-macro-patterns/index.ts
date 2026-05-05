@@ -8,6 +8,7 @@ import {
 
 export const rustProcMacroPatternsSkill = defineSkill({
   id: "rust-proc-macro-patterns",
+  fullName: "Rust Proc Macro Patterns",
   description: "当用户需要开发 Rust 过程宏时使用；涉及 derive macro、attribute macro、syn/quote 或 proc-macro2 时触发。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

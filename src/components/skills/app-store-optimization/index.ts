@@ -10,6 +10,7 @@ import {
 
 export const appStoreOptimizationSkill = defineSkill({
   id: "app-store-optimization",
+  fullName: "App Store ASO 优化",
   description: "当用户要做 App Store / Google Play 的 ASO 优化、生成发布说明、版本更新文案或门店更新摘要时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

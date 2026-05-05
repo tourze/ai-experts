@@ -8,6 +8,7 @@ import {
 
 export const testingStrategySkill = defineSkill({
   id: "testing-strategy",
+  fullName: "测试策略与计划设计",
   description: "当需要为模块、接口或功能设计测试计划，或制定风险驱动测试策略、质量门、coverage target 与 QA 资源分配时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

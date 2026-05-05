@@ -8,6 +8,7 @@ import {
 
 export const memoryForensicsSkill = defineSkill({
   id: "memory-forensics",
+  fullName: "内存取证",
   description: "当需要分析 RAM 镜像中的进程、注入、网络连接、凭据痕迹或 rootkit 线索时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

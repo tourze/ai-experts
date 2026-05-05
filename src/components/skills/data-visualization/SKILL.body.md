@@ -1,5 +1,3 @@
-# data-visualization
-
 ## 适用场景
 
 - 需要把表格结果转成 line/bar/scatter/heatmap 等图表。

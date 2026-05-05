@@ -8,6 +8,7 @@ import {
 
 export const phpXFeaturesSkill = defineSkill({
   id: "php-8x-features",
+  fullName: "PHP 8.x 现代语言特性",
   description: "当需要在 PHP 8.1-8.3+ 项目中使用 `readonly class`、backed enum、`match`、命名参数、构造器提升、交叉类型、DNF 类型、`#[\\Override]` 等现代语法特性时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

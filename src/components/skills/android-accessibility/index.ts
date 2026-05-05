@@ -8,6 +8,7 @@ import {
 
 export const androidAccessibilitySkill = defineSkill({
   id: "android-accessibility",
+  fullName: "Android 无障碍审计",
   description: "当用户要审计或修复 Android 无障碍、TalkBack、触摸目标、对比度或焦点管理时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

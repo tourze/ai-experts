@@ -1,5 +1,3 @@
-# windows-ui-automation
-
 ## 适用场景
 
 - 需要使用 UIA / Win32 API 做窗口发现、元素定位、按钮点击、键盘输入和状态读取。

@@ -8,6 +8,7 @@ import {
 
 export const comparativeAnalysisSkill = defineSkill({
   id: "comparative-analysis",
+  fullName: "对比分析",
   description: "当用户要对比两个或多个仓库、框架、方案、工具或系统，需要结构化差异矩阵、优劣判断和可落地建议时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

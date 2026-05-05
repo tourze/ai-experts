@@ -8,6 +8,7 @@ import {
 
 export const webmanWebsocketPatternsSkill = defineSkill({
   id: "webman-websocket-patterns",
+  fullName: "Webman Websocket Patterns",
   description: "当用户要在 Webman 中搭建或排查 WebSocket 服务端、心跳、频道广播或客户端重连时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

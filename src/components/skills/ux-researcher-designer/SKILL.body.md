@@ -1,5 +1,3 @@
-# UX Researcher Designer
-
 ## 适用场景
 
 - 要从访谈、问卷、埋点、客服记录中提炼 Persona，而不是凭感觉写角色卡。

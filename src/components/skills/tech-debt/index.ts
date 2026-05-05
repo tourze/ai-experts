@@ -8,6 +8,7 @@ import {
 
 export const techDebtSkill = defineSkill({
   id: "tech-debt",
+  fullName: "tech-debt",
   description: "在需要盘点代码健康状况、识别和排序技术债、制定治理策略、重构路线图或债务预算时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

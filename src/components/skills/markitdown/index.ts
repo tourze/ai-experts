@@ -11,6 +11,7 @@ import {
 
 export const markitdownSkill = defineSkill({
   id: "markitdown",
+  fullName: "MarkItDown",
   description: "当用户要用 MarkItDown 把 Office、图片、HTML、音频或其他源文件抽取成 .md 文本时使用，适合批量转换和 AI 图片描述增强。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

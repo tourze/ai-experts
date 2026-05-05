@@ -8,6 +8,7 @@ import {
 
 export const reactNativeTurbomoduleSkill = defineSkill({
   id: "react-native-turbomodule",
+  fullName: "TurboModule 开发",
   description: "当用户要创建或迁移 New Architecture TurboModule、TurboModuleRegistry、codegenConfig、JSI spec 或 typed native spec 时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

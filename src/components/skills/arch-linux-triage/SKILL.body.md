@@ -1,5 +1,3 @@
-# Arch Linux 排障
-
 ## 适用场景
 
 - 用户提到 `pacman`、`mkinitcpio`、`systemd`、AUR、滚动升级后故障、启动失败或驱动回退。

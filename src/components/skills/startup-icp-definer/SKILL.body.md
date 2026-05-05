@@ -1,5 +1,3 @@
-# 理想客户画像
-
 ## 适用场景
 - B2B/B2B2C 早期定位、销售聚焦、市场切入和外呼名单筛选。
 - 需要完整方法时可阅读 [references/full-guide.md](references/full-guide.md)。

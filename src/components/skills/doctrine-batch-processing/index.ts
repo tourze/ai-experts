@@ -8,6 +8,7 @@ import {
 
 export const doctrineBatchProcessingSkill = defineSkill({
   id: "doctrine-batch-processing",
+  fullName: "Doctrine 批处理",
   description: "当用户要实现或修复 Symfony / Doctrine 批处理、批量导入、数据回填或大数据量写入时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

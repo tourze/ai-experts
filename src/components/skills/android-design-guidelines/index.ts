@@ -8,6 +8,7 @@ import {
 
 export const androidDesignGuidelinesSkill = defineSkill({
   id: "android-design-guidelines",
+  fullName: "Android 平台设计规范 — Material Design 3",
   description: "当用户要构建或评审 Android UI、应用 Material Design 3 规范、动态颜色、Compose 组件或自适应布局时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

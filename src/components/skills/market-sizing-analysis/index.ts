@@ -8,6 +8,7 @@ import {
 
 export const marketSizingAnalysisSkill = defineSkill({
   id: "market-sizing-analysis",
+  fullName: "市场规模分析",
   description: "当用户要计算 TAM/SAM/SOM、验证市场空间、支撑商业计划或融资叙事时使用；支持 top-down、bottom-up 和 value theory 三种方法。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

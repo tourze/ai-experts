@@ -1,5 +1,3 @@
-# 市场规模分析
-
 ## 适用场景
 - 创业立项、融资材料、年度规划或新市场机会评估。
 - 需要参考 [references/data-sources.md](references/data-sources.md) 与 [examples/saas-market-sizing.md](examples/saas-market-sizing.md)。

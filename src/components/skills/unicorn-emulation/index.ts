@@ -8,6 +8,7 @@ import {
 
 export const unicornEmulationSkill = defineSkill({
   id: "unicorn-emulation",
+  fullName: "Unicorn 模拟执行",
   description: "当需要用 Unicorn 引擎模拟执行特定函数、绕过环境依赖或离线调试加密/解密算法时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -1,5 +1,3 @@
-# Tauri v2 构建与分发
-
 ## 适用场景
 - 配置 bundle 段（图标、资源、sidecar、安装器）
 - macOS 公证、Windows Authenticode 签名

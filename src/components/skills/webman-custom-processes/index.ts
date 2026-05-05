@@ -8,6 +8,7 @@ import {
 
 export const webmanCustomProcessesSkill = defineSkill({
   id: "webman-custom-processes",
+  fullName: "Webman Custom Processes",
   description: "当用户要声明或排查 Webman 自定义进程、Timer、Crontab 或 crash-restart 时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

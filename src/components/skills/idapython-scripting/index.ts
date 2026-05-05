@@ -8,6 +8,7 @@ import {
 
 export const idapythonScriptingSkill = defineSkill({
   id: "idapython-scripting",
+  fullName: "IDAPython 脚本参考",
   description: "当需要编写 IDAPython 脚本做函数遍历、交叉引用、字节搜索、Hex-Rays 反编译或 IDALib 批量分析时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

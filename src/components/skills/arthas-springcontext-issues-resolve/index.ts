@@ -8,6 +8,7 @@ import {
 
 export const arthasSpringcontextIssuesResolveSkill = defineSkill({
   id: "arthas-springcontext-issues-resolve",
+  fullName: "Arthas Spring Context 排查",
   description: "当需要排查 Spring ApplicationContext、Bean 注册、条件装配或配置注入问题时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

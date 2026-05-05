@@ -1,5 +1,3 @@
-# Android APK 安全审计
-
 ## 适用场景
 - 用户提供 APK、DEX、smali、JADX 输出或 APKTool 解包目录，需要做授权安全审计。
 - 用户要求 Android 移动渗透测试、APK 漏洞评估、OWASP MASVS/MASTG 映射或 CVSS 报告。

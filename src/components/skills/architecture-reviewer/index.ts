@@ -11,6 +11,7 @@ import {
 
 export const architectureReviewerSkill = defineSkill({
   id: "architecture-reviewer",
+  fullName: "architecture-reviewer",
   description: "当用户要评审架构设计、代码库结构、技术文档或企业就绪风险时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

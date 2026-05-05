@@ -8,6 +8,7 @@ import {
 
 export const mysqlTransactionLockingSkill = defineSkill({
   id: "mysql-transaction-locking",
+  fullName: "MySQL Transaction & Locking",
   description: "当用户要诊断或优化 MySQL InnoDB 事务隔离、行锁、间隙锁、插入意向锁、自增锁或死锁时使用。适用于并发冲突排查。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -1,5 +1,3 @@
-# Redis Pitfall Diagnostics
-
 ## 适用场景
 
 - key 设置了 TTL 后变成不过期，或大量 key 过期时间异常。

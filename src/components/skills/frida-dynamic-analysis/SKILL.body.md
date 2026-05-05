@@ -1,5 +1,3 @@
-# Frida 动态分析
-
 ## 适用场景
 - 需要 hook 函数调用、修改参数/返回值或 trace 执行路径。
 - 需要绕过 root 检测、SSL pinning、RASP 等运行时保护。

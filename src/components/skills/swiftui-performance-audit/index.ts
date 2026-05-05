@@ -8,6 +8,7 @@ import {
 
 export const swiftuiPerformanceAuditSkill = defineSkill({
   id: "swiftui-performance-audit",
+  fullName: "SwiftUI 性能审计",
   description: "当 SwiftUI 界面出现卡顿、掉帧、高 CPU 或重渲染问题时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

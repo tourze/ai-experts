@@ -1,5 +1,3 @@
-# Android 平台设计规范 — Material Design 3
-
 ## 适用场景
 
 * 构建或评审 Android UI 代码（Jetpack Compose / XML）

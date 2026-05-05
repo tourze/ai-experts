@@ -1,5 +1,3 @@
-# 流程优化
-
 ## 适用场景
 - 运营、交付、审批、售前、需求流转等流程过慢或质量不稳。
 - 需要从系统视角看依赖关系时，可配合 [systems-thinking](../systems-thinking/SKILL.md)；涉及 Backlog 或 Sprint 流程时，可配合 [agile-product-owner](../agile-product-owner/SKILL.md)。

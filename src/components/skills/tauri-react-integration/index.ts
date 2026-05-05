@@ -8,6 +8,7 @@ import {
 
 export const tauriReactIntegrationSkill = defineSkill({
   id: "tauri-react-integration",
+  fullName: "Tauri v2 + React 集成",
   description: "当用户要集成 React 前端、invoke 封装、useInvoke Hook、事件监听生命周期、Router 深链接、WebView 限制或错误边界时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

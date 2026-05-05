@@ -1,5 +1,3 @@
-# go-grpc
-
 ## 适用场景
 
 - 定义 `.proto` 文件或生成 Go gRPC 代码。

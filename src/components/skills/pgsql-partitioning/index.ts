@@ -8,6 +8,7 @@ import {
 
 export const pgsqlPartitioningSkill = defineSkill({
   id: "pgsql-partitioning",
+  fullName: "PostgreSQL Declarative Partitioning",
   description: "当用户要设计或验证 PostgreSQL 声明式分区、分区裁剪或分区生命周期管理时使用。适用于时序和大表治理。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

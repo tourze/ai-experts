@@ -1,5 +1,3 @@
-# UX 微文案
-
 ## 适用场景
 
 - 按钮标签（Submit / Save / Continue 还是具体动词）

@@ -8,6 +8,7 @@ import {
 
 export const dbHaReplicationSkill = defineSkill({
   id: "db-ha-replication",
+  fullName: "Database HA & Replication",
   description: "当用户要配置或排查数据库主从复制、GTID、半同步、故障切换或读写分离高可用架构时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

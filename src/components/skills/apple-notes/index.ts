@@ -8,6 +8,7 @@ import {
 
 export const appleNotesSkill = defineSkill({
   id: "apple-notes",
+  fullName: "Apple Notes CLI",
   description: "当用户需要查看、搜索、编辑或导出 Apple Notes 备忘录时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

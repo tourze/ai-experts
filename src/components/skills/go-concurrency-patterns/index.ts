@@ -8,6 +8,7 @@ import {
 
 export const goConcurrencyPatternsSkill = defineSkill({
   id: "go-concurrency-patterns",
+  fullName: "Go 并发模式",
   description: "当 Go 代码涉及并发、goroutine 生命周期控制或竞态排查时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

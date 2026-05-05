@@ -8,6 +8,7 @@ import {
 
 export const goDatabaseSkill = defineSkill({
   id: "go-database",
+  fullName: "go-database",
   description: "当 Go 代码涉及 SQL 查询、事务、连接池、NULLable 列扫描、migration 或数据库访问层设计时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

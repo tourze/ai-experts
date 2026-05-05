@@ -1,5 +1,3 @@
-# PHP 设计模式与分层
-
 ## 适用场景
 
 - 新建 service、repository、DTO、值对象等核心组件时需要先定边界。

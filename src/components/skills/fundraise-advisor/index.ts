@@ -8,6 +8,7 @@ import {
 
 export const fundraiseAdvisorSkill = defineSkill({
   id: "fundraise-advisor",
+  fullName: "融资顾问",
   description: "当用户要准备融资、理清轮次策略、准备投资人沟通或梳理融资故事时使用；适用于 pre-seed 到 seed 阶段的筹资准备与节奏管理。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

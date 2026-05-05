@@ -8,6 +8,7 @@ import {
 
 export const gradleBuildPerformanceSkill = defineSkill({
   id: "gradle-build-performance",
+  fullName: "Gradle 构建性能",
   description: "当 Gradle 构建变慢、需要排查配置阶段或执行阶段瓶颈时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

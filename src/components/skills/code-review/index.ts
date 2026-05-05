@@ -10,6 +10,7 @@ import {
 
 export const codeReviewSkill = defineSkill({
   id: "code-review",
+  fullName: "代码审查",
   description: "当用户要求审查代码质量、发现命名或职责问题、检查错误处理和边界情况时使用。支持标准/高压两档强度——高压模式由 brutal-honesty-review 合并而来。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

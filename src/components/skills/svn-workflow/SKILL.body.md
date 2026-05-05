@@ -1,5 +1,3 @@
-# SVN 工作流
-
 ## 适用场景
 
 - 需要在 SVN 项目中执行 `checkout`、`update`、`status`、`diff`、`commit` 等日常操作。

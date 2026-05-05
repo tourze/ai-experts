@@ -8,6 +8,7 @@ import {
 
 export const llmAppDiagnosisFrameworkSkill = defineSkill({
   id: "llm-app-diagnosis-framework",
+  fullName: "LLM 应用诊断框架",
   description: "当需要系统化诊断 LLM 应用问题（幻觉/检索失配/指令对抗/token 超限/过度引用）、区分 model-first 与 prompt-first 适用边界、或建立 eval-first 改进闭环时使用。与 llm-app-design-pipeline 互补：后者给设计流程，本 skill 给诊断方法与决策框架。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

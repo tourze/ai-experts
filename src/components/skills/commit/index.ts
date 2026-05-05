@@ -8,6 +8,7 @@ import {
 
 export const commitSkill = defineSkill({
   id: "commit",
+  fullName: "Git Commit — 结构化提交流程",
   description: "当用户要求提交代码、commit 变更或完成一组改动需要入库时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -8,6 +8,7 @@ import {
 
 export const nestjsLayeringPatternsSkill = defineSkill({
   id: "nestjs-layering-patterns",
+  fullName: "NestJS Layering Patterns",
   description: "当需要设计或审查 NestJS 模块分层、DTO/ValidationPipe 输入边界、依赖注入或 Guard/Interceptor/Pipe 装配时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

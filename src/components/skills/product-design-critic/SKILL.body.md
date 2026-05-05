@@ -1,5 +1,3 @@
-# 产品设计批评
-
 ## 适用场景
 - 评审页面、工作流、卡片、配置面板、聊天体验或多角色治理界面。
 - 需要结合用户路径和竞争上下文时，可配合 [customer-journey-map](../customer-journey-map/SKILL.md)、[obviously-awesome](../competitive-intelligence/SKILL.md) 与 [competitive-teardown](../competitive-intelligence/SKILL.md)。

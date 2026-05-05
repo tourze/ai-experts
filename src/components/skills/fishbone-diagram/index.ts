@@ -8,6 +8,7 @@ import {
 
 export const fishboneDiagramSkill = defineSkill({
   id: "fishbone-diagram",
+  fullName: "鱼骨图（因果分析图）",
   description: "当用户要用鱼骨图、Ishikawa 或 5 Whys 做根因分析和因果排查时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

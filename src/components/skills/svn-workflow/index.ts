@@ -8,6 +8,7 @@ import {
 
 export const svnWorkflowSkill = defineSkill({
   id: "svn-workflow",
+  fullName: "SVN 工作流",
   description: "当用户要执行 SVN 日常操作、管理分支标签、处理合并冲突、配置属性、维护仓库或做 SVN 到 Git 迁移时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

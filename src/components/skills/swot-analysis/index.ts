@@ -8,6 +8,7 @@ import {
 
 export const swotAnalysisSkill = defineSkill({
   id: "swot-analysis",
+  fullName: "SWOT 分析",
   description: "当用户要做 SWOT 分析、梳理优势劣势、外部机会威胁与战略动作时使用；适合产品、业务或竞争位置评估。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

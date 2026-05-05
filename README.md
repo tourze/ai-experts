@@ -81,13 +81,14 @@ TS 源码统一使用无后缀相对 import，例如 `../../sdk`，不写 `../..
 
 ## Skill
 
-Skill 是工作流和能力单元。`SKILL.body.md` 只保留核心流程、约束、检查清单和红线；大资料放 `references/`，脚本放 `scripts/`，输出资产放 `assets/`。
+Skill 是工作流和能力单元。`SKILL.body.md` 只保留核心流程、约束、检查清单和红线，不写一级标题；大资料放 `references/`，脚本放 `scripts/`，输出资产放 `assets/`。一级标题由 `index.ts` 的 `fullName` 统一生成到最终 `SKILL.md`。
 
 定义示例：
 
 ```ts
 export const typescriptTypeSafety = defineSkill({
   id: "typescript-type-safety",
+  fullName: "TypeScript Type Safety",
   description: "需要定位 TS 编译错误、清理 any、设计泛型/类型守卫/条件类型，或搭建边界类型合同时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -8,6 +8,7 @@ import {
 
 export const ragAuditorSkill = defineSkill({
   id: "rag-auditor",
+  fullName: "rag-auditor",
   description: "当用户要审计 RAG 管线、排查 retrieval failure、groundedness、hallucination、chunking、top-k 或生成答案不忠实时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -8,6 +8,7 @@ import {
 
 export const incidentResponseSkill = defineSkill({
   id: "incident-response",
+  fullName: "事故响应",
   description: "当用户反馈服务异常、性能下降、报错、中断、告警升级或需要事故响应协助时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

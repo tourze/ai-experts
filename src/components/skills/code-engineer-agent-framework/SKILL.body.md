@@ -1,5 +1,3 @@
-# Code Engineer Agent 框架
-
 本 skill 为可写代码实现类 engineer agent 提供统一执行骨架。语言、框架和平台细节由对应 agent 追加；本 skill 只管跨语言都必须遵守的工程闭环。
 
 ## 工作方式

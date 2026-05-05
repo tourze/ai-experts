@@ -8,6 +8,7 @@ import {
 
 export const goTroubleshootingSkill = defineSkill({
   id: "go-troubleshooting",
+  fullName: "go-troubleshooting",
   description: "当 Go 程序出现异常行为需要排查：CPU 飙高、内存泄漏、goroutine 泄漏、死锁、竞态、panic 或性能回归时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -1,5 +1,3 @@
-# GitHub Actions CI 排障
-
 ## 适用场景
 - 当前分支或指定 PR 的 GitHub Actions 检查失败。
 - 需要快速提取失败 job、运行链接和日志片段。

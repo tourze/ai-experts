@@ -1,5 +1,3 @@
-# Android 无障碍审计
-
 ## 适用场景
 
 * 审计或修复 Compose / View 的无障碍问题

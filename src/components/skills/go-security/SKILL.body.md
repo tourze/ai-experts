@@ -1,5 +1,3 @@
-# go-security
-
 ## 适用场景
 
 - 编写或审查涉及用户输入拼接到 SQL / shell 命令 / HTML 的代码。

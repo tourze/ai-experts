@@ -9,6 +9,7 @@ import {
 
 export const redesignMyLandingpageSkill = defineSkill({
   id: "redesign-my-landingpage",
+  fullName: "落地页重构（redesign-my-landingpage）",
   description: "在需要评审、重构或直接实现高转化落地页时使用，默认技术栈为 React + Vite + TypeScript + Tailwind + shadcn/ui + Iconify。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

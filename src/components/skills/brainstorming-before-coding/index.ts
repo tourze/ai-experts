@@ -8,6 +8,7 @@ import {
 
 export const brainstormingBeforeCodingSkill = defineSkill({
   id: "brainstorming-before-coding",
+  fullName: "编码前头脑风暴",
   description: "当用户要在创建功能、构建组件、添加新行为或修改架构前做设计澄清和方案选择时使用。简单修 bug 或单行改动不需要。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

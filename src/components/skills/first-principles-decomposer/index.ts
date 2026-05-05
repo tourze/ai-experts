@@ -8,6 +8,7 @@ import {
 
 export const firstPrinciplesDecomposerSkill = defineSkill({
   id: "first-principles-decomposer",
+  fullName: "第一性原理解构器",
   description: "当需要用第一性原理拆解事实层、识别隐含假设、重建问题边界、从零推导方案时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -1,5 +1,3 @@
-# Next.js Developer
-
 ## 适用场景
 
 - 需要在 `app/` 目录下设计路由树、`layout.tsx` / `template.tsx` / `loading.tsx` / `error.tsx` / `route.ts` 的职责划分时使用。

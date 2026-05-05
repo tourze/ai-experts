@@ -20,6 +20,22 @@ function collectFiles(root, predicate = () => true) {
   return files.sort();
 }
 
+function hasTopLevelHeadingOutsideCodeFence(source) {
+  let inFence = false;
+  for (const line of source.split(/\r?\n/)) {
+    if (/^\s*(?:```|~~~)/.test(line)) {
+      inFence = !inFence;
+    } else if (!inFence && /^#\s+\S/.test(line)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function stripFrontmatter(source) {
+  return source.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n+/, "");
+}
+
 test("component build emits claude and codex component surfaces", () => {
   const tmp = mkdtempSync(join(tmpdir(), "ai-experts-component-build-"));
   try {
@@ -153,6 +169,22 @@ test("component build emits claude and codex component surfaces", () => {
         /from\s+["']\.[^"']+\.js["']|import\s+["']\.[^"']+\.js["']|import\(\s*["']\.[^"']+\.js["']\s*\)/,
         `${sourceFile} should use extensionless relative imports`,
       );
+    }
+
+    for (const bodyFile of collectFiles(join(repoRoot, "src/components/skills"), (file) => file.endsWith("SKILL.body.md"))) {
+      const source = readFileSync(bodyFile, "utf-8");
+      assert.equal(
+        hasTopLevelHeadingOutsideCodeFence(source),
+        false,
+        `${bodyFile} should not contain an H1 heading; set fullName in index.ts instead`,
+      );
+    }
+
+    for (const platform of ["claude", "codex"]) {
+      for (const skillFile of collectFiles(join(tmp, platform, "skills"), (file) => file.endsWith("SKILL.md"))) {
+        const source = stripFrontmatter(readFileSync(skillFile, "utf-8")).trimStart();
+        assert.match(source, /^#\s+\S/, `${skillFile} should render an H1 heading from fullName`);
+      }
     }
   } finally {
     rmSync(tmp, { recursive: true, force: true });

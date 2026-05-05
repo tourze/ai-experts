@@ -9,6 +9,7 @@ import {
 
 export const typescriptTypeSafety = defineSkill({
   id: "typescript-type-safety",
+  fullName: "TypeScript Type Safety",
   description: "需要定位 TS 编译错误、清理 any、设计泛型/类型守卫/条件类型，或搭建路由/API/数据库边界的类型合同时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

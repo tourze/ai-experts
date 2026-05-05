@@ -1,5 +1,3 @@
-# 子代理驱动开发
-
 ## 适用场景
 
 - 有一份实现计划或 Execution Contract（来自 `task-decomposer`、`feature-dev`、`persistent-planning` 等），且用户明确要求子代理、worker、多 agent 或并行实现。

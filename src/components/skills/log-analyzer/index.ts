@@ -8,6 +8,7 @@ import {
 
 export const logAnalyzerSkill = defineSkill({
   id: "log-analyzer",
+  fullName: "日志分析",
   description: "当用户需要查日志、对齐时间线、关联错误上下文或定位根因时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -1,5 +1,3 @@
-# go-observability
-
 ## 适用场景
 
 - 选型或实施日志（slog）、指标（Prometheus）、链路追踪（OpenTelemetry）、profiling、告警。

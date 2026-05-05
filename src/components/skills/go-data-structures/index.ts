@@ -8,6 +8,7 @@ import {
 
 export const goDataStructuresSkill = defineSkill({
   id: "go-data-structures",
+  fullName: "go-data-structures",
   description: "当需要选择、优化或理解 Go 数据结构内部机制：slice 容量增长、map 哈希桶、泛型容器、container/*、unsafe.Pointer、copy 语义时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

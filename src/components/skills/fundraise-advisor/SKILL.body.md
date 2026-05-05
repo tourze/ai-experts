@@ -1,5 +1,3 @@
-# 融资顾问
-
 ## 适用场景
 - 规划融资窗口、目标轮次、投资人名单、会前材料和跟进节奏。
 - 需要展开完整方法时，阅读 [references/full-guide.md](references/full-guide.md)。

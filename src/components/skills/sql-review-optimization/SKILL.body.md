@@ -1,5 +1,3 @@
-# SQL Review & Optimization
-
 ## 适用场景
 
 - 审查手写 SQL、迁移脚本、存储过程和 ORM 生成语句的安全性、正确性和可运维性。

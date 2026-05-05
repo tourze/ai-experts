@@ -1,5 +1,3 @@
-# Skill Eval Grader
-
 把一次 eval 运行从“看起来完成了”转成可审计的通过/失败判定。适用于 skill benchmark、with-skill vs baseline、回归评测和任何带 transcript / outputs / expectations 的任务评估。
 
 ## 适用场景

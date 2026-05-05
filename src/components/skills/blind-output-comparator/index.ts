@@ -8,6 +8,7 @@ import {
 
 export const blindOutputComparatorSkill = defineSkill({
   id: "blind-output-comparator",
+  fullName: "Blind Output Comparator",
   description: "当用户要盲评两个输出版本、比较 A/B 结果质量、生成任务专属 rubric 或避免偏向某个 skill/模型/实现时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

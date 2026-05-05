@@ -8,6 +8,7 @@ import {
 
 export const estimateCalibratorSkill = defineSkill({
   id: "estimate-calibrator",
+  fullName: "估算校准",
   description: "当用户要做三点估算、工作量校准、PERT 区间或不确定性说明时使用；输出最佳/最可能/最差估算、未知项与置信度说明。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

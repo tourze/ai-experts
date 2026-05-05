@@ -11,6 +11,7 @@ import {
 
 export const copywritingSkill = defineSkill({
   id: "copywriting",
+  fullName: "营销页面文案（copywriting）",
   description: "当用户要撰写营销页面文案、价值主张、产品叙事、CTA、hero copy 或落地页段落时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

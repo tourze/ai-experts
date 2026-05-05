@@ -1,5 +1,3 @@
-# OWASP 认证与数据安全审计
-
 覆盖认证会话、密钥管理、批量赋值三类安全审计。与 `frontend-dynamic-code-protection`（前端防刷视角）互补：本 skill 关注服务端认证和数据边界。
 
 ## 路由

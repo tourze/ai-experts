@@ -1,5 +1,3 @@
-# Liquid Glass 设计
-
 ## 适用场景
 
 - 为 iOS 26+ / iPadOS 26+ 界面引入新一代玻璃材质。

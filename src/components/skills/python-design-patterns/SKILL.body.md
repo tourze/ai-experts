@@ -1,5 +1,3 @@
-# Python 设计模式
-
 ## 适用场景
 
 - 新建 service、repository、adapter 等核心组件时需要先定边界。

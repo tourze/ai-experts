@@ -8,6 +8,7 @@ import {
 
 export const designSystemPatternsSkill = defineSkill({
   id: "design-system-patterns",
+  fullName: "设计系统模式",
   description: "当用户需要搭建设计令牌、主题系统或组件架构时使用。适合涉及”设计系统””design tokens””主题切换””组件库规范””多品牌主题”的场景。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

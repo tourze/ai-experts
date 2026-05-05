@@ -11,6 +11,7 @@ import {
 
 export const uxResearcherDesignerSkill = defineSkill({
   id: "ux-researcher-designer",
+  fullName: "UX Researcher Designer",
   description: "当用户需要做用户研究、需求验证、persona 构建或设计复盘时使用（设计视角：访谈→persona→设计输入）。市场/客户研究用 `customer-research`；旅程图触点可视化用 `customer-journey-map`。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

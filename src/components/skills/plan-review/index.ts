@@ -8,6 +8,7 @@ import {
 
 export const planReviewSkill = defineSkill({
   id: "plan-review",
+  fullName: "plan-review",
   description: "在编码前审查实现计划、方案文档或 RFC 时使用；重点核 scope、假设、风险、依赖、回归面和缺口。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

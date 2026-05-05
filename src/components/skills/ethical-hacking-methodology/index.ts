@@ -8,6 +8,7 @@ import {
 
 export const ethicalHackingMethodologySkill = defineSkill({
   id: "ethical-hacking-methodology",
+  fullName: "授权渗透测试方法论",
   description: "当用户需要在合法授权范围内做 Nmap 侦察、Linux 提权、AD 攻击、路径遍历、认证绕过、deeplink 滥用、API Fuzzing 或常见 Web 漏洞渗透测试时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

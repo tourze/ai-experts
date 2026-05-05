@@ -8,6 +8,7 @@ import {
 
 export const symfonyVotersSkill = defineSkill({
   id: "symfony-voters",
+  fullName: "Symfony Voters",
   description: "当用户要设计或修复 Symfony Voter 授权逻辑、IsGranted 属性或权限决策矩阵时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

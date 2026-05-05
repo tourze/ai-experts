@@ -10,6 +10,7 @@ import {
 
 export const securityOwnershipMapSkill = defineSkill({
   id: "security-ownership-map",
+  fullName: "安全所有权拓扑分析",
   description: "当用户明确希望基于 git 历史构建安全所有权、bus factor、敏感代码归属或 CODEOWNERS 风险画像时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -8,6 +8,7 @@ import {
 
 export const javaJunitSkill = defineSkill({
   id: "java-junit",
+  fullName: "Java JUnit",
   description: "当需要编写或审查 JUnit 5 测试、参数化测试或 Mockito 隔离时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

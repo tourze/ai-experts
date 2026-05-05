@@ -1,7 +1,5 @@
 > 脚本路径：以下命令从 `ai-experts` 仓库根目录执行，`scripts/` 指 `ai-experts/scripts/`。
 
-# Trigger Telemetry Advisor
-
 把 `decisions.jsonl` 和触发审计结果转成可执行的仓库改进报告。目标不是复述统计表，而是给出下一步应该改哪些 hook、skill description、eval cases 或 telemetry 配置。
 
 ## 快速流程

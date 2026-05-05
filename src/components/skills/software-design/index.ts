@@ -8,6 +8,7 @@ import {
 
 export const softwareDesignSkill = defineSkill({
   id: "software-design",
+  fullName: "软件设计",
   description: "当需要拆分职责、设计服务层、减少耦合、在组合与继承之间做选择，或从复杂度、深模块、信息隐藏角度评价设计时使用。语言无关的通用设计原则与架构模式。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

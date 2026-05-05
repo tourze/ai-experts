@@ -1,5 +1,3 @@
-# go-database
-
 ## 适用场景
 
 - 编写 SQL 查询、事务块、连接池配置或数据库 migration 脚本。

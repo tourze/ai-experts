@@ -1,5 +1,3 @@
-# MySQL Transaction & Locking
-
 ## 适用场景
 
 - 排查死锁告警，需要读懂 `SHOW ENGINE INNODB STATUS` 并定位根因。

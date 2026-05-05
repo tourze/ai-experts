@@ -1,5 +1,3 @@
-# Apple Notes CLI
-
 ## 适用场景
 
 - 用户要在 macOS 里查看、搜索、编辑或导出 Apple Notes。

@@ -8,6 +8,7 @@ import {
 
 export const industryDesignPresetsSkill = defineSkill({
   id: "industry-design-presets",
+  fullName: "行业设计预设",
   description: "当用户要为特定行业产品选择视觉方向、配色、字体、风格或反模式时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

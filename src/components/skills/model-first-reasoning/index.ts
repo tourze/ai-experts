@@ -10,6 +10,7 @@ import {
 
 export const modelFirstReasoningSkill = defineSkill({
   id: "model-first-reasoning",
+  fullName: "model-first-reasoning",
   description: "当用户明确要求 model-first 或任务涉及状态机、约束系统等需要先建模的场景时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

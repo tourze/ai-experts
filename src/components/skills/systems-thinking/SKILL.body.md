@@ -1,5 +1,3 @@
-# 系统思维
-
 ## 适用场景
 - 平台策略、组织协作、复杂业务链路、生态位博弈或长期副作用分析。
 - 需要经验参考时可阅读 [references/guest-insights.md](references/guest-insights.md)。

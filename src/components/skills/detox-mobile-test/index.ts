@@ -8,6 +8,7 @@ import {
 
 export const detoxMobileTestSkill = defineSkill({
   id: "detox-mobile-test",
+  fullName: "Detox 移动端测试",
   description: "当用户要编写或排查 Detox E2E 测试、移动端自动化、flaky 测试、CI 设备启动或 matcher 等待问题时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

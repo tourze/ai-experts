@@ -8,6 +8,7 @@ import {
 
 export const runningDecisionProcessesSkill = defineSkill({
   id: "running-decision-processes",
+  fullName: "决策流程",
   description: "当用户要推进高风险决策、解决分析瘫痪、对齐多方意见或建立 DACI/RAPID 等决策机制时使用；帮助把模糊争论变成可执行流程。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

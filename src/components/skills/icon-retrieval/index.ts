@@ -10,6 +10,7 @@ import {
 
 export const iconRetrievalSkill = defineSkill({
   id: "icon-retrieval",
+  fullName: "图标检索",
   description: "当需要搜索图标、查找 SVG 或批量筛选图标候选时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

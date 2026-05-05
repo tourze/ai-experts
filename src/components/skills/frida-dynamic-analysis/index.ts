@@ -8,6 +8,7 @@ import {
 
 export const fridaDynamicAnalysisSkill = defineSkill({
   id: "frida-dynamic-analysis",
+  fullName: "Frida 动态分析",
   description: "当需要用 Frida 做运行时 hook、trace、bypass 或动态分析时使用；涉及 Interceptor、Java.perform、ObjC.classes、内存扫描或自适应 bypass。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

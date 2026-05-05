@@ -1,5 +1,3 @@
-# Apple Reminders CLI
-
 ## 适用场景
 
 - 用户要把待办写入 Apple Reminders，并同步到 iPhone / iPad / Mac。

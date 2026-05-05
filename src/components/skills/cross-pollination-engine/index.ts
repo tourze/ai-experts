@@ -8,6 +8,7 @@ import {
 
 export const crossPollinationEngineSkill = defineSkill({
   id: "cross-pollination-engine",
+  fullName: "跨界迁移引擎",
   description: "当需要借鉴其他行业机制、跨界类比、模式迁移、外部案例或跳出本行业寻找解法时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

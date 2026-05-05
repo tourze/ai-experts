@@ -8,6 +8,7 @@ import {
 
 export const businessModelSkill = defineSkill({
   id: "business-model",
+  fullName: "商业模式分析",
   description: "当用户要设计新商业模式、诊断现有产品变现、研究成熟公司商业模式，或用魏朱六要素分析中国市场因果逻辑、做产品-职能-市场铁三角一致性检验时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

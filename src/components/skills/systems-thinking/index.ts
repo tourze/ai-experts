@@ -8,6 +8,7 @@ import {
 
 export const systemsThinkingSkill = defineSkill({
   id: "systems-thinking",
+  fullName: "系统思维",
   description: "当用户要分析多方参与、激励错位、二阶效应或复杂系统动态时使用；帮助识别结构、反馈回路、杠杆点与系统性副作用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

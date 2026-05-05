@@ -8,6 +8,7 @@ import {
 
 export const windowsKernelSecuritySkill = defineSkill({
   id: "windows-kernel-security",
+  fullName: "windows-kernel-security",
   description: "当用户分析或审计 Windows 内核对象、驱动边界、PatchGuard、VBS、HVCI 或 IOCTL 时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

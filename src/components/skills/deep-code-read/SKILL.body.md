@@ -1,5 +1,3 @@
-# Deep Code Reader
-
 系统性精读代码库，产出经过闭卷验证的认知型 skill 文件。
 
 灵感来源：[CiferaTeam/deep-code-reader](https://github.com/CiferaTeam/deep-code-reader)

@@ -8,6 +8,7 @@ import {
 
 export const dataStorytellingSkill = defineSkill({
   id: "data-storytelling",
+  fullName: "data-storytelling",
   description: "当用户要把数据分析结果转成业务叙事、executive narrative、KPI storyline、洞察结论、建议路径或汇报口径时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

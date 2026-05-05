@@ -8,6 +8,7 @@ import {
 
 export const bundleOptimizationSkill = defineSkill({
   id: "bundle-optimization",
+  fullName: "Bundle 体积优化",
   description: "当需要减小前端 bundle、做代码分割、消除 barrel imports、tree shaking 或按用户意图预加载时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

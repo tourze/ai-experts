@@ -8,6 +8,7 @@ import {
 
 export const androidApkAuditSkill = defineSkill({
   id: "android-apk-audit",
+  fullName: "Android APK 安全审计",
   description: "当需要对 Android APK 做 Manifest 配置审查、Frida 动态分析、DEX dump 或 jadx/apktool 端到端安全审计时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

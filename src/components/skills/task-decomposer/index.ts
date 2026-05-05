@@ -8,6 +8,7 @@ import {
 
 export const taskDecomposerSkill = defineSkill({
   id: "task-decomposer",
+  fullName: "task-decomposer",
   description: "当用户要把复杂需求拆成任务板、依赖关系、关键路径或并行工作项时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -1,5 +1,3 @@
-# 网络流量分析
-
 ## 适用场景
 - 需要对抓包文件进行过滤、跟流、字段提取和异常定位。
 - 需要与 [nmap](../ethical-hacking-methodology/SKILL.md) 的端口画像交叉验证暴露服务。

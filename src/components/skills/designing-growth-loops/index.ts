@@ -8,6 +8,7 @@ import {
 
 export const designingGrowthLoopsSkill = defineSkill({
   id: "designing-growth-loops",
+  fullName: "设计增长飞轮",
   description: "当用户要设计增长飞轮、邀请推荐、内容供给循环、产品驱动获客、留存复利，或分析 S 曲线增长阶段、跨越鸿沟策略、PLG 产品自服务增长就绪度时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

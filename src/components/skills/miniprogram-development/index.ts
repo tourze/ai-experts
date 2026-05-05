@@ -8,6 +8,7 @@ import {
 
 export const miniprogramDevelopmentSkill = defineSkill({
   id: "miniprogram-development",
+  fullName: "Miniprogram Development",
   description: "当用户提到微信小程序、小程序页面、组件、project.config.json、appid、真机预览、miniprogram-ci、CloudBase 或 wx.cloud 时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

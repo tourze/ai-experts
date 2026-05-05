@@ -8,6 +8,7 @@ import {
 
 export const thinkingPartnerSkill = defineSkill({
   id: "thinking-partner",
+  fullName: "思考拍档",
   description: "当用户思路混乱、不知道怎么办、需要有人一起理清局面和锁定核心问题时使用。用户提到\"我现在很乱\"\"帮我理一理\"\"我卡住了\"时触发。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

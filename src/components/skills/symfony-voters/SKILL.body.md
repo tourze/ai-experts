@@ -1,5 +1,3 @@
-# Symfony Voters
-
 ## 适用场景
 
 - 需要新增、收敛或审查 Symfony Voter、`#[IsGranted]`、`denyAccessUnlessGranted()` 等授权逻辑。

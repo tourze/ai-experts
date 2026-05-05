@@ -8,6 +8,7 @@ import {
 
 export const linuxShellScriptingSkill = defineSkill({
   id: "linux-shell-scripting",
+  fullName: "Linux Shell 脚本",
   description: "当用户要编写 Bash/Zsh 自动化、运维脚本、巡检脚本、备份脚本或命令行工具时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

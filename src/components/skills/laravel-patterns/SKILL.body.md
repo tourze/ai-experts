@@ -1,5 +1,3 @@
-# Laravel 开发模式
-
 原 `laravel-layering-patterns` 已合并入本 skill，架构与实现两层统一。
 
 ## 适用场景

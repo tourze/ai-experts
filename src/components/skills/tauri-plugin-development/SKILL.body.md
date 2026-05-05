@@ -1,5 +1,3 @@
-# Tauri v2 插件开发
-
 ## 适用场景
 - 创建插件脚手架并理解目录结构
 - 实现 setup/on_event/on_drop 生命周期钩子

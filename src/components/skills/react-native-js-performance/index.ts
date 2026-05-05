@@ -8,6 +8,7 @@ import {
 
 export const reactNativeJsPerformanceSkill = defineSkill({
   id: "react-native-js-performance",
+  fullName: "React Native JS 线程性能",
   description: "当用户要排查 JS thread 性能、掉帧、FPS、FlatList、FlashList、React Compiler、内存泄漏、动画抖动或 ScrollView 慢时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

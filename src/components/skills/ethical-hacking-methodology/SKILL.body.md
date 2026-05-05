@@ -1,5 +1,3 @@
-# 授权渗透测试方法论
-
 ## 适用场景
 - 需要从信息收集、验证、利用、横向移动到报告闭环组织测试。
 - 需要把 [nmap](references/nmap.md) 的侦察结果和 [wireshark-analysis](../wireshark-analysis/SKILL.md) 的流量证据串起来。

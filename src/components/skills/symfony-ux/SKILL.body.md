@@ -1,5 +1,3 @@
-# Symfony UX
-
 ## 适用场景
 
 - 需要在 Symfony 项目里判断应该用 Stimulus、Turbo、TwigComponent、LiveComponent、UX Icons 还是 UX Map。

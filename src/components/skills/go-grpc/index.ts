@@ -8,6 +8,7 @@ import {
 
 export const goGrpcSkill = defineSkill({
   id: "go-grpc",
+  fullName: "go-grpc",
   description: "当 Go 代码涉及 gRPC/protobuf：服务定义、服务端/客户端实现、拦截器、流式 RPC、错误码、TLS 或性能优化时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

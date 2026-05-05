@@ -8,6 +8,7 @@ import {
 
 export const mckinseyStepSkill = defineSkill({
   id: "mckinsey-7-step",
+  fullName: "麦肯锡七步成诗法",
   description: "当用户要系统性解决复杂业务问题、做咨询式分析或结构化拆解方案时使用。简单选择题或已知答案的确认性提问不适用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

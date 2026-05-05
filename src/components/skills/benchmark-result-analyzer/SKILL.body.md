@@ -1,5 +1,3 @@
-# Benchmark Result Analyzer
-
 把 benchmark 的分数、比较结果和执行 transcript 转成可行动的改进计划。目标不是重新打分，而是回答：为什么赢、为什么输、下一轮最该改什么。
 
 ## 适用场景

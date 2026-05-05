@@ -8,6 +8,7 @@ import {
 
 export const leadChannelOptimizerSkill = defineSkill({
   id: "lead-channel-optimizer",
+  fullName: "获客渠道优化（lead-channel-optimizer）",
   description: "在需要判断获客渠道优先级、比较 ROI、削减低效投入或重排增长资源时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

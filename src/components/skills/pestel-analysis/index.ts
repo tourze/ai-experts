@@ -8,6 +8,7 @@ import {
 
 export const pestelAnalysisSkill = defineSkill({
   id: "pestel-analysis",
+  fullName: "PESTEL 宏观环境分析",
   description: "当用户要用 PESTEL/PEST 做宏观环境分析、外部因素评估或战略环境扫描时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

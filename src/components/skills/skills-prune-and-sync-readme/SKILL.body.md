@@ -1,5 +1,3 @@
-# Skills Prune And Sync Component Index
-
 使用本 skill 自带脚本 [`scripts/curate_skills.mjs`](scripts/curate_skills.mjs) 完成组件 skill 审计、删除和 README Skill 清单同步，不要手工逐个维护清单表格。`scripts/` 路径按 skill 目录解析。
 
 ## 工作流

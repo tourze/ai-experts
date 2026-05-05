@@ -8,6 +8,7 @@ import {
 
 export const productDesignCriticSkill = defineSkill({
   id: "product-design-critic",
+  fullName: "产品设计批评",
   description: "当用户要批判性审视软件产品界面、交互流程、信息层级、信任感或治理暴露时使用（产品策略级设计审视）。像素级 UI 实现质量审查用 `frontend-design-review`；交互可用性启发式诊断用 `ux-heuristics`。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -8,6 +8,7 @@ import {
 
 export const fanOperationsSkill = defineSkill({
   id: "fan-operations",
+  fullName: "粉丝运营",
   description: "当用户要提升小红书粉丝互动、评论运营、私信承接、社群留存、粉丝分层或复购转化时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

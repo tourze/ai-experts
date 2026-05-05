@@ -8,6 +8,7 @@ import {
 
 export const funnelArchitectSkill = defineSkill({
   id: "funnel-architect",
+  fullName: "漏斗架构",
   description: "当用户要设计销售漏斗、价值阶梯、落地页序列或线索转化路径时使用；帮助梳理入口、承接、报价与升级路径。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

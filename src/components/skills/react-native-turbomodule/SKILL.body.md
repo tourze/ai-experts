@@ -1,5 +1,3 @@
-# TurboModule 开发
-
 ## 适用场景
 
 - 为 RN 0.76+ New Architecture 创建原生模块时。

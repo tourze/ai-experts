@@ -8,6 +8,7 @@ import {
 
 export const refactoringPatternsSkill = defineSkill({
   id: "refactoring-patterns",
+  fullName: "refactoring-patterns",
   description: "当用户要选择命名化重构手法、处理代码异味或在不改行为下改结构时使用。纯格式整理或单次重命名不需要。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

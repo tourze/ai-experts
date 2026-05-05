@@ -8,6 +8,7 @@ import {
 
 export const salesEnablementSkill = defineSkill({
   id: "sales-enablement",
+  fullName: "销售赋能材料（sales-enablement）",
   description: "当用户要创建销售材料、sales deck、one-pager、异议处理、demo script、销售手册或买家 enablement 内容时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

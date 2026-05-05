@@ -8,6 +8,7 @@ import {
 
 export const nextjsDeveloperSkill = defineSkill({
   id: "nextjs-developer",
+  fullName: "Next.js Developer",
   description: "当用户提到 Next.js、App Router、Server Components、Server Actions、Route Handlers 或 Vercel 部署时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

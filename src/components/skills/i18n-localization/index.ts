@@ -10,6 +10,7 @@ import {
 
 export const i18nLocalizationSkill = defineSkill({
   id: "i18n-localization",
+  fullName: "国际化与本地化",
   description: "当需要实现多语言、排查硬编码文案、管理翻译资源、设计 locale 结构或处理 RTL 与日期数字格式时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

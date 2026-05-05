@@ -1,5 +1,3 @@
-# Database HA & Replication
-
 ## 适用场景
 
 - 搭建或审查基于 GTID 的主从复制拓扑，配置异步或半同步复制。

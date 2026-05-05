@@ -8,6 +8,7 @@ import {
 
 export const laravelSecuritySkill = defineSkill({
   id: "laravel-security",
+  fullName: "Laravel 安全基线",
   description: "当用户提到 Laravel 安全、Sanctum、Policy、FormRequest、文件上传安全、CORS、安全头或密钥管理时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

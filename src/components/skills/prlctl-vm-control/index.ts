@@ -10,6 +10,7 @@ import {
 
 export const prlctlVmControlSkill = defineSkill({
   id: "prlctl-vm-control",
+  fullName: "prlctl-vm-control",
   description: "当用户通过 prlctl 控制 Parallels Desktop 虚拟机、采集状态或执行客体命令时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

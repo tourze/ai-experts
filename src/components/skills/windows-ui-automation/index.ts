@@ -8,6 +8,7 @@ import {
 
 export const windowsUiAutomationSkill = defineSkill({
   id: "windows-ui-automation",
+  fullName: "windows-ui-automation",
   description: "当用户自动化 Windows 桌面操作、UIA 元素定位或 Win32 输入仿真时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -8,6 +8,7 @@ import {
 
 export const swiftConcurrencyExpertSkill = defineSkill({
   id: "swift-concurrency-expert",
+  fullName: "Swift 并发",
   description: "当用户需要审查或修复 Swift 6.2+ concurrency、actor isolation、Sendable、Task、MainActor 或数据竞争迁移时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

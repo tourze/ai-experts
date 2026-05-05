@@ -8,6 +8,7 @@ import {
 
 export const rustOwnershipIdiomsSkill = defineSkill({
   id: "rust-ownership-idioms",
+  fullName: "Rust 所有权与惯用法",
   description: "当需要决定 Rust 借用/所有权边界、选择 Box/Rc/Arc 智能指针、在静态分发与 `dyn Trait` 之间取舍、或配置 Clippy lint 基线时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

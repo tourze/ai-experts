@@ -1,5 +1,3 @@
-# Symfony Bundle Architecture
-
 ## 适用场景
 
 - 新建或审查 Bundle 的 Extension、services.yaml、CompilerPass 和依赖声明。

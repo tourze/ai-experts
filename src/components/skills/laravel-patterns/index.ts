@@ -8,6 +8,7 @@ import {
 
 export const laravelPatternsSkill = defineSkill({
   id: "laravel-patterns",
+  fullName: "Laravel 开发模式",
   description: "当用户需要处理 Laravel 分层架构、Service/Action 边界、Eloquent 模型、Migration、FormRequest、JsonResource、Job、Livewire、scopeBindings、多租户路由或 N+1 问题时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

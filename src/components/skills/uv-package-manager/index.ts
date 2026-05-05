@@ -8,6 +8,7 @@ import {
 
 export const uvPackageManagerSkill = defineSkill({
   id: "uv-package-manager",
+  fullName: "uv 包管理",
   description: "当用户要用 uv 初始化 Python 项目、管理依赖、虚拟环境、lockfile、workspace 或 CI 工作流时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

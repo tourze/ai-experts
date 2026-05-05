@@ -8,6 +8,7 @@ import {
 
 export const orgCanvasSkill = defineSkill({
   id: "org-canvas",
+  fullName: "组织模式画布",
   description: "当用户要用组织画布设计组织架构、检查战略匹配度或规划组织重组时使用。纯岗位 JD 或单点汇报关系调整不适用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

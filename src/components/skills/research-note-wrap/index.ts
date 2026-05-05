@@ -8,6 +8,7 @@ import {
 
 export const researchNoteWrapSkill = defineSkill({
   id: "research-note-wrap",
+  fullName: "调研结论笔记",
   description: "当用户要把当前调研或分析会话压成高密度 Markdown 结论笔记时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

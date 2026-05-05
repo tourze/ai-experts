@@ -8,6 +8,7 @@ import {
 
 export const agentOrchestrationSkill = defineSkill({
   id: "agent-orchestration",
+  fullName: "Agent Orchestration",
   description: "当用户要设计多 Agent 编排、system prompt 架构、状态管理或 Agent 扩展点时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

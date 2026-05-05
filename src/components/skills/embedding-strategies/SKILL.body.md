@@ -1,5 +1,3 @@
-# embedding-strategies
-
 ## 适用场景
 
 - 需要在“效果、成本、维度、语言覆盖、领域适配”之间为 embedding 选型。

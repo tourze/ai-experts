@@ -8,6 +8,7 @@ import {
 
 export const goPerformanceSkill = defineSkill({
   id: "go-performance",
+  fullName: "go-performance",
   description: "当 Go 代码需要性能优化、benchmark、pprof、benchstat 或优化验证时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

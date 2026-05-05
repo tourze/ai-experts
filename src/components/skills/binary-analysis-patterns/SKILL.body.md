@@ -1,5 +1,3 @@
-# 二进制分析模式
-
 ## 适用场景
 - 需要理解入口点、导入表、字符串、控制流和数据结构。
 - 需要和 [anti-reversing-techniques](references/anti-reversing-techniques.md) 联动分析保护逻辑。

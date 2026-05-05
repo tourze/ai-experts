@@ -8,6 +8,7 @@ import {
 
 export const evidenceQualityFrameworkSkill = defineSkill({
   id: "evidence-quality-framework",
+  fullName: "证据质量框架：三态标注 + 发现绑定",
   description: "当代码审查、安全审计、事故复盘、研究分析或战略分析需要把每条结论显式标注为事实/推断/假设，并将发现绑定到可核验定位（文件:行 / log / commit / metric）时使用。消除\"印象式\"断言与无锚结论。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -1,5 +1,3 @@
-# prlctl-vm-control
-
 ## 适用场景
 
 - 需要在 macOS 宿主机上列出、定位、开关机、挂起、恢复或查看 Parallels Desktop 虚拟机详情。

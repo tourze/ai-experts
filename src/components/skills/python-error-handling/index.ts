@@ -8,6 +8,7 @@ import {
 
 export const pythonErrorHandlingSkill = defineSkill({
   id: "python-error-handling",
+  fullName: "Python 错误处理",
   description: "当用户要设计 Python 异常层级、输入校验、部分失败治理或规范 try/except 纪律时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -8,6 +8,7 @@ import {
 
 export const protocolFreezingPatternsSkill = defineSkill({
   id: "protocol-freezing-patterns",
+  fullName: "protocol-freezing-patterns",
   description: "在需要管理协议版本冻结、线格式演进、向后兼容、版本协商和 breaking change 流程时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

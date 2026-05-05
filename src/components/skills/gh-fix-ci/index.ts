@@ -11,6 +11,7 @@ import {
 
 export const ghFixCiSkill = defineSkill({
   id: "gh-fix-ci",
+  fullName: "GitHub Actions CI 排障",
   description: "当用户要求排查或修复 GitHub Actions PR 检查失败时使用；先用 gh 获取失败上下文，再在获批后实施修复。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

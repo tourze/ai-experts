@@ -1,5 +1,3 @@
-# cross-platform-adapter-patterns
-
 ## 适用场景
 - 需要让同一套业务逻辑运行在多个平台上，或设计共享包与平台包的边界。
 - 交叉引用：边界分析配合 `seam-ripper`；架构蓝图配合 `architecture-blueprint-generator`。

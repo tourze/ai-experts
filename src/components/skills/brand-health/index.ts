@@ -8,6 +8,7 @@ import {
 
 export const brandHealthSkill = defineSkill({
   id: "brand-health",
+  fullName: "品牌健康度诊断",
   description: "当用户要诊断品牌健康度、评估品牌漏斗或判断品牌问题环节时使用。新品牌（<6 个月）或纯营销执行方案不适用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -1,5 +1,3 @@
-# Vue Expert（JavaScript）
-
 面向 Vue 3 JavaScript 项目的实现技能。目标是在不引入 TypeScript 的前提下，仍然保持组件 API、composable 返回值、Pinia store 与测试代码具备清晰的 JSDoc 类型边界。
 
 ## 适用场景

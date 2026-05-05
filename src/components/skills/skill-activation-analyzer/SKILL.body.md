@@ -1,5 +1,3 @@
-# Skill Activation Analyzer
-
 从**触发行为**角度诊断 skill 路由质量：该触发的没触发、不该触发的触发了、多个 skill 抢同一请求。
 
 本 skill 已合并原 `description-cso-audit`，同时覆盖 description 的**文本质量**（静态审查）和**路由行为**（动态诊断）。

@@ -1,5 +1,3 @@
-# Android 测试策略
-
 ## 适用场景
 
 * 为 ViewModel / Repository / UseCase 编写单元测试

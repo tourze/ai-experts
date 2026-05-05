@@ -8,6 +8,7 @@ import {
 
 export const customerLifecycleSkill = defineSkill({
   id: "customer-lifecycle",
+  fullName: "客户与产品生命周期",
   description: "当用户要做客户分层管理、CLV 分层、生命周期营销或产品生命周期阶段决策时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

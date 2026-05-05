@@ -8,6 +8,7 @@ import {
 
 export const legalRiskAssessmentSkill = defineSkill({
   id: "legal-risk-assessment",
+  fullName: "法律风险评估",
   description: "当需要评估合同、合规、劳动或争议事项的法律风险时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

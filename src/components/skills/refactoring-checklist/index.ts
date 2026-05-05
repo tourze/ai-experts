@@ -8,6 +8,7 @@ import {
 
 export const refactoringChecklistSkill = defineSkill({
   id: "refactoring-checklist",
+  fullName: "重构前安全检查清单",
   description: "当用户要重构、重组或清理代码，需要从流程纪律保证安全性和增量推进时使用。本 skill 只管「流程门禁」（测试基线、范围界定、回滚方案），不教具体重构手法。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

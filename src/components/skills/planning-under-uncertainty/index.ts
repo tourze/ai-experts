@@ -8,6 +8,7 @@ import {
 
 export const planningUnderUncertaintySkill = defineSkill({
   id: "planning-under-uncertainty",
+  fullName: "不确定性下的规划",
   description: "当用户要在高度不确定条件下做产品或战略规划时使用；帮助识别未知类型、保留选项、设置决策点与滚动调整机制。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

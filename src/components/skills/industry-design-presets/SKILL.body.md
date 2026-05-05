@@ -1,5 +1,3 @@
-# 行业设计预设
-
 ## 适用场景
 
 - 产品类型明确（fintech / healthcare / portfolio / gaming / spa 等），要快速锁定视觉方向。

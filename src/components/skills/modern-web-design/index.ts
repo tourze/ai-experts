@@ -11,6 +11,7 @@ import {
 
 export const modernWebDesignSkill = defineSkill({
   id: "modern-web-design",
+  fullName: "现代 Web 设计",
   description: "当用户需要规划或实现现代 Web 界面、查询视觉风格、选择行业视觉方向、设计品牌化落地页或改进 Web UI 视觉表现时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -8,6 +8,7 @@ import {
 
 export const symfonyMessengerSkill = defineSkill({
   id: "symfony-messenger",
+  fullName: "Symfony Messenger",
   description: "当用户要设计或修复 Symfony Messenger 异步消息处理、重试、失败队列或消费者时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

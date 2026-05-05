@@ -1,5 +1,3 @@
-# OWASP XSS 与安全配置审计
-
 覆盖 XSS（反射/存储/DOM）、安全头配置、依赖风险三类审计。XSS 防御与 `frontend-dynamic-code-protection` 互补：本 skill 关注输出编码和 CSP 策略，后者关注前端动态化反自动化。
 
 ## 路由

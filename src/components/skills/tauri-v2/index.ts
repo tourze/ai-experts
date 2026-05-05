@@ -8,6 +8,7 @@ import {
 
 export const tauriV2Skill = defineSkill({
   id: "tauri-v2",
+  fullName: "Tauri v2",
   description: "当用户要搭建 Tauri v2 应用骨架、src-tauri、tauri.conf.json、capabilities、插件权限、命令注册或移动端支持时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

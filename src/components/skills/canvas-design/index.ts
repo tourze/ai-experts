@@ -11,6 +11,7 @@ import {
 
 export const canvasDesignSkill = defineSkill({
   id: "canvas-design",
+  fullName: "画布设计",
   description: "当用户要做海报、封面、艺术化静态画面、editorial poster、visual composition 或一页高完成度视觉作品时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -1,5 +1,3 @@
-# Chrome DevTools
-
 ## 适用场景
 
 - 需要直接驱动 Chrome 页面，并同时查看 DOM 快照、控制台日志、网络请求与性能 trace。

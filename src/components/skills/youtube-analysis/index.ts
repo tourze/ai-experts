@@ -11,6 +11,7 @@ import {
 
 export const youtubeAnalysisSkill = defineSkill({
   id: "youtube-analysis",
+  fullName: "YouTube 视频分析",
   description: "当用户提供 YouTube 视频链接并要求分析内容、总结字幕、拆解演讲或提炼要点时使用。如果用户只是想搜视频而不是分析单个视频，改用 youtube-search。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

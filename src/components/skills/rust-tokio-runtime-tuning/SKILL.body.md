@@ -1,5 +1,3 @@
-# Rust Tokio Runtime Tuning
-
 ## 适用场景
 
 - 为服务/CLI/移动端选择合适的 runtime 配置。

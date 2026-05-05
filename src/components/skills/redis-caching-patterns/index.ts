@@ -8,6 +8,7 @@ import {
 
 export const redisCachingPatternsSkill = defineSkill({
   id: "redis-caching-patterns",
+  fullName: "Redis Caching Patterns",
   description: "当用户要实现或排查 Redis 缓存旁路、写穿、缓存雪崩或穿透防护时使用。适用于数据库前缓存与热点保护。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

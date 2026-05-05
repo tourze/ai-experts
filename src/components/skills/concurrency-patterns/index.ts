@@ -8,6 +8,7 @@ import {
 
 export const concurrencyPatternsSkill = defineSkill({
   id: "concurrency-patterns",
+  fullName: "并发模式",
   description: "当需要设计或审查并发/异步代码时使用。语言无关的通用并发原则：不阻塞、限制并发、传播取消、不共享可变状态、超时所有外部调用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

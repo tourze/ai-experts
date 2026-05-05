@@ -1,5 +1,3 @@
-# Rust Async Patterns
-
 ## 适用场景
 
 - 构建基于 Tokio 的网络服务、worker、任务编排器或后台轮询器。

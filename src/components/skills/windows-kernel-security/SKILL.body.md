@@ -1,5 +1,3 @@
-# windows-kernel-security
-
 ## 适用场景
 
 - 需要分析 Windows 驱动、设备对象、IOCTL、回调注册和对象生命周期。

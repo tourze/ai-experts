@@ -8,6 +8,7 @@ import {
 
 export const subagentDrivenDevelopmentSkill = defineSkill({
   id: "subagent-driven-development",
+  fullName: "子代理驱动开发",
   description: "当用户明确要求子代理/worker/多 agent/并行实现，并需要按计划派遣与审查时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

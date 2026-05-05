@@ -8,6 +8,7 @@ import {
 
 export const pythonPerformanceOptimizationSkill = defineSkill({
   id: "python-performance-optimization",
+  fullName: "Python 性能优化",
   description: "当用户要分析 Python 性能瓶颈、做 profiling、降低延迟、减少内存占用或建立可复现实验时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

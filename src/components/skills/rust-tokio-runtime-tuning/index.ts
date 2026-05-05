@@ -8,6 +8,7 @@ import {
 
 export const rustTokioRuntimeTuningSkill = defineSkill({
   id: "rust-tokio-runtime-tuning",
+  fullName: "Rust Tokio Runtime Tuning",
   description: "当用户需要调优 Tokio 运行时配置时使用；涉及 Runtime::builder、worker 线程数、blocking 线程池或 current_thread 时触发。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

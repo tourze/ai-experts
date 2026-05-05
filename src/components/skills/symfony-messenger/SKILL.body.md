@@ -1,5 +1,3 @@
-# Symfony Messenger
-
 ## 适用场景
 
 - 新增或审查 Symfony Messenger 消息、Handler、Transport、Failure Transport 与消费命令。

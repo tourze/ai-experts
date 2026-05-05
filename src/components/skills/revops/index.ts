@@ -8,6 +8,7 @@ import {
 
 export const revopsSkill = defineSkill({
   id: "revops",
+  fullName: "收入运营体系（revops）",
   description: "当用户要设计收入运营体系、线索生命周期、MQL/SQL、lead scoring、CRM 自动化、线索路由或营销销售交接时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

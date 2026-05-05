@@ -10,6 +10,7 @@ import {
 
 export const dataAnalysisSkill = defineSkill({
   id: "data-analysis",
+  fullName: "data-analysis",
   description: "当用户上传或指定 .xlsx、.csv 等表格文件，需要分析数据并给出结论时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

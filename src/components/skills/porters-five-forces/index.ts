@@ -8,6 +8,7 @@ import {
 
 export const portersFiveForcesSkill = defineSkill({
   id: "porters-five-forces",
+  fullName: "波特五力",
   description: "当用户要做行业吸引力分析、判断竞争压力、供应商/买方权力或替代威胁时使用；适合市场进入、战略评估和商业环境诊断。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

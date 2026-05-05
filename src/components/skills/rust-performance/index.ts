@@ -8,6 +8,7 @@ import {
 
 export const rustPerformanceSkill = defineSkill({
   id: "rust-performance",
+  fullName: "Rust 性能优化",
   description: "当用户要分析 Rust 性能瓶颈、做 flamegraph/benchmark、优化分配策略或判断\"该不该优化\"时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

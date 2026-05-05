@@ -1,5 +1,3 @@
-# protocol-freezing-patterns
-
 ## 适用场景
 - 需要冻结已部署协议字段或在不破坏旧客户端前提下演进消息结构。
 - 交叉引用：系统级设计配合 `system-design`；错误处理配合 `error-handling-patterns`。

@@ -8,6 +8,7 @@ import {
 
 export const phpTypeSafetySkill = defineSkill({
   id: "php-type-safety",
+  fullName: "PHP 类型安全",
   description: "当用户要配置 PHPStan 或 Psalm、补 array shapes 和泛型标注、使用条件返回类型、做类型收窄或消除 mixed，以及新增、补写或重构 PHPDoc 时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

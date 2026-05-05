@@ -10,6 +10,7 @@ import {
 
 export const remoteSshCommandSkill = defineSkill({
   id: "remote-ssh-command",
+  fullName: "远端机器运维",
   description: "当用户需要通过 SSH 在远端机器执行日常运维命令、写入主机 JSON 凭据或审计执行历史时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

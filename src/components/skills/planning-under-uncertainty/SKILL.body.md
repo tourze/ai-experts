@@ -1,5 +1,3 @@
-# 不确定性下的规划
-
 ## 适用场景
 - AI/新市场/复杂依赖项目的路线图规划、资源分配与阶段承诺。
 - 需要补充经验参考时可阅读 [references/guest-insights.md](references/guest-insights.md)。

@@ -1,5 +1,3 @@
-# go-data-structures
-
 ## 适用场景
 
 - 选择 slice vs array vs map vs container/* 等容器，或排查容量/性能问题。

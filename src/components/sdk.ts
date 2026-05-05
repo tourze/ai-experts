@@ -87,6 +87,7 @@ export type SkillAssetDefinition = {
 export type SkillDefinition = {
   kind: ComponentKind.Skill;
   id: string;
+  fullName: string;
   description: string;
   invocation: InvocationPolicy;
   platforms: PlatformList;

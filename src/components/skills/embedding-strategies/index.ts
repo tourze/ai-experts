@@ -8,6 +8,7 @@ import {
 
 export const embeddingStrategiesSkill = defineSkill({
   id: "embedding-strategies",
+  fullName: "embedding-strategies",
   description: "当用户要选择或比较 embedding 模型、切块策略或向量检索方案时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -8,6 +8,7 @@ import {
 
 export const goSecuritySkill = defineSkill({
   id: "go-security",
+  fullName: "go-security",
   description: "当 Go 代码涉及安全审查或编写安全敏感代码：SQL/命令注入、加密、认证、密钥管理、输入验证、XSS、SSRF、依赖漏洞扫描时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -8,6 +8,7 @@ import {
 
 export const tauriIpcPatternsSkill = defineSkill({
   id: "tauri-ipc-patterns",
+  fullName: "Tauri v2 高级 IPC 模式",
   description: "当用户需要高级 IPC 模式、自定义错误、判别联合事件、Channel<T> 流、多窗口路由、二进制传输或批量命令时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -8,6 +8,7 @@ import {
 
 export const systemDesignSkill = defineSkill({
   id: "system-design",
+  fullName: "system-design",
   description: "在需要设计系统、服务、存储、接口和边界时使用；强调需求澄清、高层方案、关键细节、可靠性和权衡。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

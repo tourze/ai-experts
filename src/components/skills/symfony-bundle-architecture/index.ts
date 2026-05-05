@@ -8,6 +8,7 @@ import {
 
 export const symfonyBundleArchitectureSkill = defineSkill({
   id: "symfony-bundle-architecture",
+  fullName: "Symfony Bundle Architecture",
   description: "当用户要设计或审查 Symfony Bundle 的目录结构、DI Extension、CompilerPass 或 Bundle 间依赖时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

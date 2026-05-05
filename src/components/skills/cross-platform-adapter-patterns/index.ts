@@ -8,6 +8,7 @@ import {
 
 export const crossPlatformAdapterPatternsSkill = defineSkill({
   id: "cross-platform-adapter-patterns",
+  fullName: "cross-platform-adapter-patterns",
   description: "在设计跨平台应用的平台抽象层、适配器接口、运行时分支和 monorepo 组织时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

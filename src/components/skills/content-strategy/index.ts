@@ -8,6 +8,7 @@ import {
 
 export const contentStrategySkill = defineSkill({
   id: "content-strategy",
+  fullName: "内容策略（content-strategy）",
   description: "当用户要制定内容策略、栏目规划、内容支柱、选题池、编辑节奏、内容多平台分发改编、主题集群设计，或 SEO 内容质量评分时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

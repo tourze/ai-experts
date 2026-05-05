@@ -8,6 +8,7 @@ import {
 
 export const goLintSkill = defineSkill({
   id: "go-lint",
+  fullName: "go-lint",
   description: "当 Go 项目需要配置或使用 golangci-lint、理解 linter 规则、抑制误报、或在 CI 中集成 lint 时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

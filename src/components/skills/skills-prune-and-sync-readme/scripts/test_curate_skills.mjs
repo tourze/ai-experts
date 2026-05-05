@@ -19,7 +19,7 @@ function writeComponentSkill(skillDir, id, description, body) {
   fs.mkdirSync(skillDir, { recursive: true });
   fs.writeFileSync(
     path.join(skillDir, "index.ts"),
-    `import { defineSkill } from "../../sdk";\n\nexport const ${id.replaceAll("-", "_")} = defineSkill({\n  id: "${id}",\n  description: "${description}",\n  body: new URL("./SKILL.body.md", import.meta.url),\n});\n`,
+    `import { defineSkill } from "../../sdk";\n\nexport const ${id.replaceAll("-", "_")} = defineSkill({\n  id: "${id}",\n  fullName: "${id}",\n  description: "${description}",\n  body: new URL("./SKILL.body.md", import.meta.url),\n});\n`,
     "utf8",
   );
   fs.writeFileSync(path.join(skillDir, "SKILL.body.md"), `${body}\n`, "utf8");

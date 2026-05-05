@@ -282,9 +282,14 @@ function renderReferenceMap(skill) {
 }
 
 function renderSkillMd(skill, platform) {
+  if (typeof skill.fullName !== "string" || skill.fullName.trim() === "") {
+    throw new Error(`Skill ${skill.id} must define a non-empty fullName`);
+  }
   const body = readComponentText(skill.body).trimEnd();
   return [
     renderSkillFrontmatter(skill, platform),
+    `# ${skill.fullName}`,
+    "",
     body,
     renderScriptRegistry(skill, platform),
     renderReferenceMap(skill),

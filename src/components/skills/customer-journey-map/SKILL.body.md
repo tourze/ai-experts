@@ -1,5 +1,3 @@
-# 用户旅程地图
-
 ## 适用场景
 - 需要分析从认知到留存的完整体验链路，定位关键阻塞点。
 - 需要把访谈、问卷或支持工单转为旅程结构时，可配合 [Mom Test 访谈](references/mom-test.md) 与 [问卷设计](references/designing-surveys.md)。

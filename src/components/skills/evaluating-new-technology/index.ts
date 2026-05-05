@@ -8,6 +8,7 @@ import {
 
 export const evaluatingNewTechnologySkill = defineSkill({
   id: "evaluating-new-technology",
+  fullName: "评估新技术",
   description: "当用户要评估新技术、做 build vs buy、筛选 AI/软件供应商、判断技术成熟度，或评估产品 AI 功能就绪度时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -1,5 +1,3 @@
-# 客户研究（customer-research）
-
 ## 适用场景
 - 有访谈记录、问卷、工单或 NPS 回复，需要系统提炼洞察。
 - 从 Reddit、G2、Capterra、HN、App Store 等渠道挖掘用户声音。

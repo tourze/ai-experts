@@ -8,6 +8,7 @@ import {
 
 export const vueExpertJsSkill = defineSkill({
   id: "vue-expert-js",
+  fullName: "Vue Expert（JavaScript）",
   description: "当用户用 JavaScript 编写 Vue 3、Pinia、composable、JSDoc 或 Vite 相关代码时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

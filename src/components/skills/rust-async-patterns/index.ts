@@ -8,6 +8,7 @@ import {
 
 export const rustAsyncPatternsSkill = defineSkill({
   id: "rust-async-patterns",
+  fullName: "Rust Async Patterns",
   description: "当用户需要开发或排障 Tokio 异步代码时使用；涉及 tokio::spawn、JoinSet、channel、select! 或异步生命周期时触发。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

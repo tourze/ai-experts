@@ -8,6 +8,7 @@ import {
 
 export const createPrdSkill = defineSkill({
   id: "create-prd",
+  fullName: "编写 PRD",
   description: "当用户需要撰写或重构 PRD、功能规格说明或需求文档、做 Epic 分解、按 INVEST 编写用户故事或 MVP 范围取舍时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

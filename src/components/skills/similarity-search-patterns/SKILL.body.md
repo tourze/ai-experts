@@ -1,5 +1,3 @@
-# similarity-search-patterns
-
 ## 适用场景
 
 - 需要从“文本转向量”一路落到“如何存、如何查、如何扩展”。

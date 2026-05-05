@@ -1,5 +1,3 @@
-# 架构决策记录与系统边界分析
-
 ## 适用场景
 
 - 需要把架构决策写成 ADR（Architecture Decision Record）格式

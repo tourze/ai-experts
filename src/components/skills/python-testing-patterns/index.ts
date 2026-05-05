@@ -8,6 +8,7 @@ import {
 
 export const pythonTestingPatternsSkill = defineSkill({
   id: "python-testing-patterns",
+  fullName: "Python 测试模式",
   description: "当用户要用 pytest 编写单元测试、集成测试、fixture、mock、参数化测试或异步测试时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

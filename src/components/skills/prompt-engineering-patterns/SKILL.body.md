@@ -1,5 +1,3 @@
-# prompt-engineering-patterns
-
 ## 适用场景
 
 - 需要给生产环境 LLM 设计稳健 prompt，而不是临时试几句。

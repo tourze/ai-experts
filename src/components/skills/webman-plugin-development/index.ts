@@ -8,6 +8,7 @@ import {
 
 export const webmanPluginDevelopmentSkill = defineSkill({
   id: "webman-plugin-development",
+  fullName: "Webman Plugin Development",
   description: "当用户要开发或审查 Webman 插件的 Install.php、config 发布、进程声明或 Bootstrap 时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

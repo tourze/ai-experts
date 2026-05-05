@@ -8,6 +8,7 @@ import {
 
 export const marketingPlanSkill = defineSkill({
   id: "marketing-plan",
+  fullName: "市场方案策划",
   description: "当用户要写市场方案、推广策划案、上市传播计划、整合营销方案，或把 Brief 转成阶段策略和落地活动时使用；若只做 STP、4P、投放预算或活动复盘，切到对应 skill。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

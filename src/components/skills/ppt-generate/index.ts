@@ -8,6 +8,7 @@ import {
 
 export const pptGenerateSkill = defineSkill({
   id: "ppt-generate",
+  fullName: "PPT 端到端生成",
   description: "当用户要从零生成演示文稿、从文档/主题生成 PPT、或要求 AI 端到端制作幻灯片时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

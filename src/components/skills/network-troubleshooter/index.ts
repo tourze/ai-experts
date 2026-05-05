@@ -8,6 +8,7 @@ import {
 
 export const networkTroubleshooterSkill = defineSkill({
   id: "network-troubleshooter",
+  fullName: "Linux 网络排障",
   description: "当用户遇到 Linux 网络不通、DNS 解析异常、端口连不上、连接超时、TLS 报错或链路抖动时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

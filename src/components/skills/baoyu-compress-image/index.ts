@@ -10,6 +10,7 @@ import {
 
 export const baoyuCompressImageSkill = defineSkill({
   id: "baoyu-compress-image",
+  fullName: "图片压缩器",
   description: "当用户要压缩图片、转成 WebP 或导出更小的 PNG/JPEG 时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

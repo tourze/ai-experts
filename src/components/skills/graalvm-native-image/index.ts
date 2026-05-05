@@ -8,6 +8,7 @@ import {
 
 export const graalvmNativeImageSkill = defineSkill({
   id: "graalvm-native-image",
+  fullName: "GraalVM Native Image",
   description: "当需要构建或排障 GraalVM Native Image 时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -8,6 +8,7 @@ import {
 
 export const reactHooksSkill = defineSkill({
   id: "react-hooks",
+  fullName: "React Hooks",
   description: "当用户需要设计自定义 Hook、修复依赖数组、处理 effect 清理或优化状态建模时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

@@ -8,6 +8,7 @@ import {
 
 export const owaspAuthDataAuditSkill = defineSkill({
   id: "owasp-auth-data-audit",
+  fullName: "OWASP 认证与数据安全审计",
   description: "当需要审计认证会话安全、密钥管理、敏感数据暴露或批量赋值漏洞时使用。适用于 token/JWT/session/cookie/OAuth 认证链路、`api_key`/`API_KEY`/`process.env` 密钥硬编码、`assign(`/`bind(`/`updateAll` 批量赋值等代码模式的安全审查。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

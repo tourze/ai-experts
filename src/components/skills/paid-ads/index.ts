@@ -8,6 +8,7 @@ import {
 
 export const paidAdsSkill = defineSkill({
   id: "paid-ads",
+  fullName: "付费投放（paid-ads）",
   description: "在需要规划、优化或扩展 Google Ads、Meta、LinkedIn、TikTok 等付费投放时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

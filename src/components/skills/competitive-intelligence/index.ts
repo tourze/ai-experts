@@ -8,6 +8,7 @@ import {
 
 export const competitiveIntelligenceSkill = defineSkill({
   id: "competitive-intelligence",
+  fullName: "竞品情报",
   description: "当用户要做竞品情报、battlecard、功能差距分析、市场定位、竞品深度拆解或竞争态势判断时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

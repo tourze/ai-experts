@@ -1,5 +1,3 @@
-# 决策流程
-
 ## 适用场景
 - 多方分歧、迟迟无法拍板、需要明确决策人和输入边界。
 - 需要补充经验参考时可阅读 [references/guest-insights.md](references/guest-insights.md)。

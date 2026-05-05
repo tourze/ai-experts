@@ -8,6 +8,7 @@ import {
 
 export const dockerEssentialsSkill = defineSkill({
   id: "docker-essentials",
+  fullName: "Docker 基础操作",
   description: "当用户需要构建、运行、排障或清理 Docker 容器、镜像、网络和卷时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

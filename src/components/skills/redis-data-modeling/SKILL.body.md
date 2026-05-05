@@ -1,5 +1,3 @@
-# Redis Data Modeling
-
 ## 适用场景
 
 - 新功能数据建模，需在 String / Hash / List / Set / ZSet / Stream 间选型。

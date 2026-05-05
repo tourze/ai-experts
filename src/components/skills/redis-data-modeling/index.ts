@@ -8,6 +8,7 @@ import {
 
 export const redisDataModelingSkill = defineSkill({
   id: "redis-data-modeling",
+  fullName: "Redis Data Modeling",
   description: "当用户要为 Redis 设计数据模型、选择数据结构（String/Hash/List/Set/ZSet/Stream）、设计键命名规范或实现分布式锁时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

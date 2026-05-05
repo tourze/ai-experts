@@ -1,5 +1,3 @@
-# Tauri v2
-
 ## 适用场景
 
 - 需要搭建或调整 `src-tauri/` 目录、`tauri.conf.json`、`Cargo.toml`、`lib.rs` / `main.rs` 分层时使用。

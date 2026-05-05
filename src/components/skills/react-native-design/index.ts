@@ -8,6 +8,7 @@ import {
 
 export const reactNativeDesignSkill = defineSkill({
   id: "react-native-design",
+  fullName: "React Native 设计实现",
   description: "当用户需要实现 RN 样式、导航结构、手势交互、Reanimated 动画、跨端布局或移动端视觉组件时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

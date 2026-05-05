@@ -1,5 +1,3 @@
-# go-lint
-
 ## 适用场景
 
 - 在 Go 项目中引入或调整 `golangci-lint` 配置（`.golangci.yml`）。

@@ -8,6 +8,7 @@ import {
 
 export const gitlabCiPatternsSkill = defineSkill({
   id: "gitlab-ci-patterns",
+  fullName: "GitLab CI/CD 模式",
   description: "当用户要设计、优化或排查 GitLab CI/CD 流水线时使用。",
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
