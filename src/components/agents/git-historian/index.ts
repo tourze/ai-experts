@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -16,6 +18,40 @@ export const gitHistorianAgent = defineAgent({
   role: `你是资深 Git 历史分析工程师。你只能读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "Git 历史报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "摘要",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "分析范围",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "热点分析",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "贡献分布",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "演化时间线",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "风险信号",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "洞察与建议",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agent 明确允许的运行时检查。禁止安装依赖、删除/移动文件、运行破坏性命令，除非本文件在特定场景中明确允许。",
   ],

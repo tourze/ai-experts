@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -21,6 +23,53 @@ export const uxReviewerAgent = defineAgent({
   role: `你是资深 UX 设计师和可用性工程师。你只读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "UX 审查报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "审查范围",
+        body: "[页面/流程/组件 / 用户画像 / 核心任务路径]",
+      }),
+      defineAgentOutputSection({
+        title: "启发式评估摘要",
+        body: "[按 Nielsen 10 条逐项 / 违规数 / 严重度分布]",
+      }),
+      defineAgentOutputSection({
+        title: "关键发现",
+        body: `| 严重度 | 发现 | 启发式条目 | 位置 | 建议 |
+|--------|------|-----------|------|------|`,
+      }),
+      defineAgentOutputSection({
+        title: "交互流程",
+        body: "[任务流断点 / 反馈缺失 / 错误预防 / 状态可见性问题]",
+      }),
+      defineAgentOutputSection({
+        title: "信息架构",
+        body: "[导航问题 / 标签不一致 / 搜索缺口]",
+      }),
+      defineAgentOutputSection({
+        title: "微文案",
+        body: "[按钮标签 / 错误消息 / 空态 / 表单提示问题]",
+      }),
+      defineAgentOutputSection({
+        title: "响应式与国际化",
+        body: "[断点问题 / 触控目标 / 硬编码文案 / RTL]",
+      }),
+      defineAgentOutputSection({
+        title: "设计还原偏差",
+        body: "[Figma vs 实现 / 组件替换 / 间距颜色字体偏差]",
+      }),
+      defineAgentOutputSection({
+        title: "优先修复",
+        body: "[按严重度 × 用户影响 × 修复成本排序]",
+      }),
+      defineAgentOutputSection({
+        title: "范围限制",
+        body: "[未审查的页面 / 设备 / locale / 用户画像]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于只读探测：检查组件结构、CSS 文件、国际化资源文件、构建配置。禁止修改源码、样式或配置。",
   ],

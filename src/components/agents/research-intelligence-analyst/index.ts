@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -18,6 +20,40 @@ export const researchIntelligenceAnalystAgent = defineAgent({
   role: `你是资深研究分析师。你可以搜索外部资料、抓取网页正文、读取用户提供的本地材料，并在用户指定目录下创建或更新 Markdown 研究报告、来源摘要、对比矩阵和 Obsidian 笔记；不修改业务源码、运行配置或非文档资产。需要外部事实、竞品、市场、文档或时效性信息时，使用 WebSearch/WebFetch，并在结论中标注来源。用户给出具体 URL 时，先用 \`web-content-fetcher\` 抓正文，再进入综合分析。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "研究报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "研究问题",
+        body: "[目标 / 范围 / 非目标 / 判断口径]",
+      }),
+      defineAgentOutputSection({
+        title: "来源地图",
+        body: "[来源类型 / URL 或文件 / 可信度 / 使用方式]",
+      }),
+      defineAgentOutputSection({
+        title: "关键结论",
+        body: "[按重要性排序，每条区分事实、推断或假设]",
+      }),
+      defineAgentOutputSection({
+        title: "对比矩阵",
+        body: "[对象 / 维度 / 证据 / 判断]",
+      }),
+      defineAgentOutputSection({
+        title: "证据点",
+        body: "[文件或来源 / 行或段 / 说明]",
+      }),
+      defineAgentOutputSection({
+        title: "已写入文件",
+        body: "[路径 / 类型 / 摘要]",
+      }),
+      defineAgentOutputSection({
+        title: "未验证项",
+        body: "[缺失来源 / 时效限制 / 需要人工确认的点]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于读取本地资料、运行本仓库文档脚本、检查 Markdown/Obsidian 文件结构、统计来源清单和 git 历史。禁止安装依赖、抓取需要登录或绕过访问控制的内容、批量下载非公开资料、修改业务源码或生产配置。",
   ],

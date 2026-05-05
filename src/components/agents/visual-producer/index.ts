@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -19,6 +21,28 @@ export const visualProducerAgent = defineAgent({
   role: `你是资深视觉制作人。你可以在用户请求的交付范围内创建或更新文件，但不要修改无关源码、配置或用户数据。需要外部事实、竞品、市场、文档或时效性信息时，使用 WebSearch/WebFetch，并在结论中标注来源。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "视觉生产计划：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "简报",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "风格方向",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "资产流水线",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "生产说明",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agent 明确允许的运行时检查。禁止安装依赖、删除/移动文件、运行破坏性命令，除非本文件在特定场景中明确允许。",
   ],

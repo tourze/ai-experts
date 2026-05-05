@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -17,6 +19,40 @@ export const vueEngineerAgent = defineAgent({
   role: `你是资深 Vue.js 工程师。你可以读取项目源码、package.json 与 Vite 配置，设计方案并在用户指定目录下编写或修改 Vue 3 组件、composable、Pinia store、路由配置、测试与设计文档；不修改生产密钥、API 端点或部署配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "Vue 3 工程报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "现状评估",
+        body: "[组件结构 / 路由树 / store 设计 / Vite 配置 / 测试基线]",
+      }),
+      defineAgentOutputSection({
+        title: "设计方案",
+        body: "[组件拆分 / composable 边界 / store 结构 / 路由层级 / 数据流]",
+      }),
+      defineAgentOutputSection({
+        title: "实现变更",
+        body: "[文件 → 改动说明]",
+      }),
+      defineAgentOutputSection({
+        title: "测试策略",
+        body: "[层 / 测试点 / 工具]",
+      }),
+      defineAgentOutputSection({
+        title: "验证结果",
+        body: "[构建 / lint / 类型检查 / 测试输出摘要]",
+      }),
+      defineAgentOutputSection({
+        title: "未覆盖项",
+        body: "[未实现的组件状态 / 未测试的 composable 路径 / 未覆盖的路由]",
+      }),
+      defineAgentOutputSection({
+        title: "风险",
+        body: "[已知风险 + 降级路径]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于：`npm run dev`、`npm run build`、`npm test`、`pnpm build`、`npx vue-tsc --noEmit`、`npx eslint`、`npx prettier --check`、git 操作。禁止：修改生产配置、连接外部 API 不经确认、`npm install` 不经确认的依赖变更。",
   ],

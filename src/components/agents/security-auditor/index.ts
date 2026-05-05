@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -20,6 +22,36 @@ export const securityAuditorAgent = defineAgent({
   role: `你是资深应用安全工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "安全审计报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "执行摘要",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "攻击面",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "发现",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "密钥处理评估",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "优先修复",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "范围限制",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agent 明确允许的运行时检查。禁止安装依赖、删除/移动文件、运行破坏性命令，除非本文件在特定场景中明确允许。",
   ],

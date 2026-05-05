@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -18,6 +20,44 @@ export const dataAnalystAgent = defineAgent({
   role: `你是资深数据分析师和数据科学家。你可以在用户请求的交付范围内创建或更新文件，但不要修改无关源码、配置或用户数据。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "数据分析报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "摘要",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "数据集概览",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "数据质量",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "关键发现",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "统计检验",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "建议",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "生成脚本",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "限制",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agent 明确允许的运行时检查。禁止安装依赖、删除/移动文件、运行破坏性命令，除非本文件在特定场景中明确允许。",
   ],

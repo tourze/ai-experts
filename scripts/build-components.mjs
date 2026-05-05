@@ -494,10 +494,69 @@ function validateAgentQualityStandards(agent) {
   return standards;
 }
 
+function validateAgentOutputSection(agent, section, index) {
+  if (!section || typeof section !== "object" || Array.isArray(section)) {
+    throw new Error(`Agent ${agent.id} outputFormat.sections[${index}] must be an object`);
+  }
+  if (typeof section.title !== "string" || section.title.trim() === "") {
+    throw new Error(`Agent ${agent.id} outputFormat.sections[${index}].title must be a non-empty string`);
+  }
+  if (typeof section.body !== "string") {
+    throw new Error(`Agent ${agent.id} outputFormat.sections[${index}].body must be a string`);
+  }
+}
+
+function validateAgentOutputFormat(agent) {
+  const format = agent.outputFormat;
+  if (format === undefined) return null;
+  if (!format || typeof format !== "object" || Array.isArray(format)) {
+    throw new Error(`Agent ${agent.id} outputFormat must be a single object when defined`);
+  }
+  if (format.kind === "markdown") {
+    if (typeof format.title !== "string" || format.title.trim() === "") {
+      throw new Error(`Agent ${agent.id} outputFormat.title must be a non-empty string`);
+    }
+    if (!Array.isArray(format.sections) || format.sections.length === 0) {
+      throw new Error(`Agent ${agent.id} outputFormat.sections must be a non-empty array`);
+    }
+    for (const [index, section] of format.sections.entries()) {
+      validateAgentOutputSection(agent, section, index);
+    }
+    return format;
+  }
+  if (format.kind === "raw") {
+    if (typeof format.body !== "string" || format.body.trim() === "") {
+      throw new Error(`Agent ${agent.id} outputFormat.body must be a non-empty string`);
+    }
+    return format;
+  }
+  throw new Error(`Agent ${agent.id} outputFormat.kind must be "markdown" or "raw"`);
+}
+
 function renderAgentBashBoundary(agent) {
   const boundary = validateAgentBashBoundary(agent);
   if (boundary.length === 0) return "";
   return `## Bash 使用边界\n\n${boundary.map((item) => item.trim()).join("\n\n")}\n`;
+}
+
+function renderAgentOutputFormat(agent) {
+  const format = validateAgentOutputFormat(agent);
+  if (!format) return "";
+  if (format.kind === "raw") {
+    return `## 输出格式\n\n${format.body.trim()}\n`;
+  }
+  const lines = [
+    "```markdown",
+    `# ${format.title.trim()}`,
+    "",
+  ];
+  for (const [index, section] of format.sections.entries()) {
+    if (index > 0) lines.push("");
+    lines.push(`## ${section.title.trim()}`);
+    lines.push(section.body.trim());
+  }
+  lines.push("```");
+  return `## 输出格式\n\n${lines.join("\n")}\n`;
 }
 
 function renderAgentQualityStandards(agent) {
@@ -507,14 +566,16 @@ function renderAgentQualityStandards(agent) {
 }
 
 function renderAgentBodyWithGeneratedSections(agent, body) {
-  const bodyWithBashBoundary = insertSectionBeforeH2Matching(
-    body,
+  const generatedSections = [
     renderAgentBashBoundary(agent),
-    (title) => title === "输出格式",
-  );
+    renderAgentOutputFormat(agent),
+  ].filter(Boolean);
+  const bodyWithGeneratedSections = generatedSections.length === 0
+    ? body
+    : `${body.trimEnd()}\n\n${generatedSections.map((section) => section.trimEnd()).join("\n\n")}`;
   const qualityStandards = renderAgentQualityStandards(agent);
-  if (!qualityStandards) return bodyWithBashBoundary;
-  return `${bodyWithBashBoundary.trimEnd()}\n\n${qualityStandards.trimEnd()}`;
+  if (!qualityStandards) return bodyWithGeneratedSections;
+  return `${bodyWithGeneratedSections.trimEnd()}\n\n${qualityStandards.trimEnd()}`;
 }
 
 function renderSkillMd(skill, platform) {
@@ -1202,6 +1263,10 @@ function validateRegistry(registry) {
     if (hasH2SectionMatching(agentBodySource, (title) => title === "质量标准")) {
       throw new Error(`Agent ${agent.id} must move ## 质量标准 from AGENT.body.md to qualityStandards`);
     }
+    if (hasH2SectionMatching(agentBodySource, (title) => title === "输出格式")) {
+      throw new Error(`Agent ${agent.id} must move ## 输出格式 from AGENT.body.md to outputFormat`);
+    }
+    validateAgentOutputFormat(agent);
     validateAgentQualityStandards(agent);
     const hasBashTool = hasStringTool(agent, "Bash");
     const bashBoundary = validateAgentBashBoundary(agent);

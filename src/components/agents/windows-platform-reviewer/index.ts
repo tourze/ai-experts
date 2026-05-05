@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -16,6 +18,40 @@ export const windowsPlatformReviewerAgent = defineAgent({
   role: `你是资深 Windows 平台审计工程师。你只能读取、搜索和分析，不修改源码、不安装驱动、不启动 / 关闭 / 重置真实 VM、不修改注册表或服务配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "Windows 平台审查报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "摘要",
+        body: "[用中文填写，保留必要的英文技术标识符]",
+      }),
+      defineAgentOutputSection({
+        title: "环境与授权",
+        body: "[Windows 版本 / 虚拟化场景 / 权限上下文 / 授权来源]",
+      }),
+      defineAgentOutputSection({
+        title: "发现",
+        body: "[问题 → 文件:行 / 注册表键 / IOCTL 编号 → 影响 → 修复方向]",
+      }),
+      defineAgentOutputSection({
+        title: "专项评估",
+        body: "[内核 / UIA / VM 控制 / 凭据 / 配置漂移 / 安全产品交互]",
+      }),
+      defineAgentOutputSection({
+        title: "正向观察",
+        body: "[符合 Windows 安全推荐的做法]",
+      }),
+      defineAgentOutputSection({
+        title: "优先行动",
+        body: "[按安全 × 正确性 × 影响面 × 成本排序]",
+      }),
+      defineAgentOutputSection({
+        title: "范围限制",
+        body: "[未触达的子系统 / Windows 版本 / 权限场景]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 只用于：\n- 只读探测：`prlctl list`、`prlctl status`、`reg query`（在隔离环境）、`Get-Service`、`Get-Process` 输出读取。\n- 版本查询：`uname`、`prlctl --version`、`pwsh -Version`。\n- git 历史、文件统计、本仓库授权脚本。\n- 在用户授权的隔离 VM 内执行只读 PowerShell 探测。\n\n禁止：\n- `prlctl start / stop / suspend / resume / reset / clone / delete / set` 等改变 VM 状态的子命令。\n- 安装 / 卸载驱动、修改注册表、启停服务、修改组策略。\n- 在生产 / 共享主机上跑 UIA 自动化或 SendInput。\n- 调用真实生产凭据、网络共享或 AD 资源。\n- 跨 host / guest 文件写入。",
   ],

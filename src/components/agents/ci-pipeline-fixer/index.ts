@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -15,6 +17,40 @@ export const ciPipelineFixerAgent = defineAgent({
   role: `你是资深 CI/CD 工程师。你可以读取流水线日志、修改 \`.github/workflows/\`、\`.gitlab-ci.yml\` 与配套脚本，并对 PR 评论给出回复或代码改动建议；不修改业务代码、不改部署目标。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "CI 流水线诊断与修复：<pipeline>",
+    sections: [
+      defineAgentOutputSection({
+        title: "失败象限",
+        body: "[测试 / 构建 / 缓存 / 权限 / 依赖 / 环境，定位证据]",
+      }),
+      defineAgentOutputSection({
+        title: "时间线",
+        body: "[run_id / step / 失败时间 / 关键日志片段]",
+      }),
+      defineAgentOutputSection({
+        title: "根因",
+        body: "[变更点、缓存状态、环境差异、token / 权限]",
+      }),
+      defineAgentOutputSection({
+        title: "修复方案",
+        body: "[改动文件 → 改动点 → 风险 → 回滚]",
+      }),
+      defineAgentOutputSection({
+        title: "已写入",
+        body: "[.github/workflows/ / .gitlab-ci.yml / scripts → 路径与摘要]",
+      }),
+      defineAgentOutputSection({
+        title: "验证命令",
+        body: "[本地复现 / act / push test branch]",
+      }),
+      defineAgentOutputSection({
+        title: "后续优化",
+        body: "[速度 / 稳定性 / 安全的非紧急项]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于运行 `gh run view`、`gh pr view`、`gh api`、`yq`、本仓库内的 lint / test 命令、git 历史查询。禁止 `gh pr merge`、改 PR 状态、推送到远端、修改 secret / variable / environment、安装系统依赖。修改 `.github/workflows/` 后必须给本地 dry-run 或 `act` 验证建议。",
   ],

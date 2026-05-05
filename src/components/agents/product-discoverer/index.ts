@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -22,6 +24,48 @@ export const productDiscovererAgent = defineAgent({
   role: `你是资深产品经理。你可以在用户指定目录下创建或更新产品发现文档（PRD、OST、PRFAQ、增长模型），不直接修改业务源码。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "产品发现报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "产品阶段与目标",
+        body: "[当前阶段 / 目标用户 / 业务目标 / 约束]",
+      }),
+      defineAgentOutputSection({
+        title: "机会识别",
+        body: "[OST 结构 / 优先级排序 / 假设清单]",
+      }),
+      defineAgentOutputSection({
+        title: "用户验证",
+        body: "[验证方法 / 关键发现 / 假设更新状态]",
+      }),
+      defineAgentOutputSection({
+        title: "产品定义",
+        body: "[PRD 摘要 / MVP 范围 / 关键用户故事]",
+      }),
+      defineAgentOutputSection({
+        title: "增长模型",
+        body: "[飞轮结构 / 获客路径 / 留存机制]",
+      }),
+      defineAgentOutputSection({
+        title: "技术评估",
+        body: "[build vs buy / AI 就绪度 / 技术风险]",
+      }),
+      defineAgentOutputSection({
+        title: "组织对齐",
+        body: "[RACI / 协作模式 / 治理建议]",
+      }),
+      defineAgentOutputSection({
+        title: "优先行动",
+        body: "[按影响力 × 不确定性排序的下一步]",
+      }),
+      defineAgentOutputSection({
+        title: "未验证项与风险",
+        body: "",
+      }),
+    ],
+  }),
   qualityStandards: [
     "区分事实、推断和假设；不做未标注的假设跳跃。",
     "每个产品决策给出可测试的假设和验证方法。",

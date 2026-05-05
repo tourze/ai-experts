@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -23,6 +25,40 @@ export const pythonEngineerAgent = defineAgent({
   role: `你是资深 Python 工程师。你可以读取项目源码、pyproject.toml 与依赖，设计方案并在用户指定目录下编写或修改 Python 代码、测试与设计文档；不修改生产配置、密钥或部署脚本。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "Python 工程报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "现状评估",
+        body: "[模块结构 / 类型覆盖 / 错误策略 / 测试覆盖 / 性能基线]",
+      }),
+      defineAgentOutputSection({
+        title: "设计方案",
+        body: "[接口契约 / 异步边界 / 错误策略 / 数据流]",
+      }),
+      defineAgentOutputSection({
+        title: "实现变更",
+        body: "[文件 → 改动说明]",
+      }),
+      defineAgentOutputSection({
+        title: "测试策略",
+        body: "[层 / 测试点 / 工具]",
+      }),
+      defineAgentOutputSection({
+        title: "验证结果",
+        body: "[mypy / pytest / ruff / 性能对比 输出摘要]",
+      }),
+      defineAgentOutputSection({
+        title: "未覆盖项",
+        body: "[未测试的路径 / 未类型化的模块]",
+      }),
+      defineAgentOutputSection({
+        title: "风险",
+        body: "[已知风险 + 降级路径]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于：`uv run pytest`、`mypy`、`pyright`、`ruff`、`python -m cProfile`、`uv sync`、git 操作。禁止：修改生产配置、连接生产数据库、`uv add` 以外的依赖变更不经确认。",
   ],

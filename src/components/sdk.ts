@@ -137,6 +137,22 @@ export type AgentBashBoundaryDefinition = readonly string[];
 
 export type AgentQualityStandardsDefinition = readonly string[];
 
+export type AgentOutputSectionDefinition = {
+  title: string;
+  body: string;
+};
+
+export type AgentOutputFormatDefinition =
+  | {
+      kind: "markdown";
+      title: string;
+      sections: readonly AgentOutputSectionDefinition[];
+    }
+  | {
+      kind: "raw";
+      body: string;
+    };
+
 export type AgentDefinition = {
   kind: ComponentKind.Agent;
   id: string;
@@ -146,6 +162,7 @@ export type AgentDefinition = {
   body: ComponentFile;
   bashBoundary?: AgentBashBoundaryDefinition;
   qualityStandards?: AgentQualityStandardsDefinition;
+  outputFormat?: AgentOutputFormatDefinition;
   tools?: readonly ToolMatcher[];
   skills?: readonly AgentSkillUse[];
   sandbox?: AgentSandbox;
@@ -226,6 +243,18 @@ export function defineAgent(definition: Omit<AgentDefinition, "kind">): AgentDef
     kind: ComponentKind.Agent,
     ...definition,
   };
+}
+
+export function defineAgentOutputFormat(
+  definition: AgentOutputFormatDefinition,
+): AgentOutputFormatDefinition {
+  return definition;
+}
+
+export function defineAgentOutputSection(
+  definition: AgentOutputSectionDefinition,
+): AgentOutputSectionDefinition {
+  return definition;
 }
 
 export function defineHook(definition: Omit<HookDefinition, "kind">): HookDefinition {

@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -22,6 +24,40 @@ export const refactorPlannerAgent = defineAgent({
   role: `你是资深重构计划师。你可以在 \`docs/refactor/\` 或用户指定目录下创建或更新重构计划、影响面分析与 PR 拆分建议；不直接修改业务代码或运行配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "重构计划：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "现状基线",
+        body: "[模块 / LOC / 测试覆盖 / 热点 / 坏味分布]",
+      }),
+      defineAgentOutputSection({
+        title: "真问题清单",
+        body: "[问题 → 多视角证据 → 影响面 → 优先级]",
+      }),
+      defineAgentOutputSection({
+        title: "接缝与改造路径",
+        body: "[可切位置 / 增量替换策略 / 兼容窗口]",
+      }),
+      defineAgentOutputSection({
+        title: "步骤拆分",
+        body: "[step → 行为是否变化 → 绑定测试 → 回滚策略 → 估时]",
+      }),
+      defineAgentOutputSection({
+        title: "PR 拆分建议",
+        body: "[PR1 / PR2 / ... → 范围 → 顺序约束 → reviewer 关注点]",
+      }),
+      defineAgentOutputSection({
+        title: "风险与缓解",
+        body: "[高风险步骤 → 缓解动作 → 监控信号]",
+      }),
+      defineAgentOutputSection({
+        title: "已写入文件",
+        body: "[路径 + 摘要]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于运行只读分析（git log、git blame、cloc、scc、复杂度分析器、依赖图脚本）与本仓库授权命令。禁止安装依赖、修改业务代码、改 CI 配置或运行可能改变历史的 git 操作。",
   ],

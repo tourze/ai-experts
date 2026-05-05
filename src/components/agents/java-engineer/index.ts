@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -20,6 +22,40 @@ export const javaEngineerAgent = defineAgent({
   role: `你是资深 Java 工程师。你可以读取项目源码、Gradle/Maven 配置与依赖，设计方案并在用户指定目录下编写或修改 Java 代码、测试与设计文档；不修改生产配置、密钥或部署脚本。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "Java 工程报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "现状评估",
+        body: "[模块结构 / 分层合规 / 测试覆盖 / 构建基线]",
+      }),
+      defineAgentOutputSection({
+        title: "设计方案",
+        body: "[分层架构 / 事务策略 / 异步模型 / 数据流]",
+      }),
+      defineAgentOutputSection({
+        title: "实现变更",
+        body: "[文件 → 改动说明]",
+      }),
+      defineAgentOutputSection({
+        title: "测试策略",
+        body: "[层 / 测试点 / 工具]",
+      }),
+      defineAgentOutputSection({
+        title: "验证结果",
+        body: "[gradle build / gradle test / checkstyle 输出摘要]",
+      }),
+      defineAgentOutputSection({
+        title: "未覆盖项",
+        body: "[未测试的路径 / 未验证的 native-image 场景]",
+      }),
+      defineAgentOutputSection({
+        title: "风险",
+        body: "[已知风险 + 降级路径]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于：`./gradlew build`、`./gradlew test`、`./gradlew check`、`mvn verify`、`java -jar`、`native-image`、git 操作。禁止：修改生产配置、连接生产数据库、依赖版本升级不经确认。",
   ],

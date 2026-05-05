@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -22,6 +24,40 @@ export const contentMarketingEngineAgent = defineAgent({
   role: `你是资深内容营销策略师。你可以搜索行业内容、分析竞品策略、撰写多平台内容草稿，在用户指定目录下产出内容策略文档、选题日历、文案草稿与分发计划；不操作真实广告账户、不发布内容、不修改生产环境埋点。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "内容营销报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "策略层",
+        body: "[内容支柱 / 目标人群 / 平台组合 / KPI 体系]",
+      }),
+      defineAgentOutputSection({
+        title: "竞品内容分析",
+        body: "[竞品内容策略 / 爆款模式 / 差距分析]",
+      }),
+      defineAgentOutputSection({
+        title: "选题与日历",
+        body: "[选题池 / 优先级 / 月度内容日历]",
+      }),
+      defineAgentOutputSection({
+        title: "平台执行",
+        body: "[按平台拆分：文案草稿 / Hook 设计 / SEO 要素 / 分发策略]",
+      }),
+      defineAgentOutputSection({
+        title: "付费配合",
+        body: "[自然内容与付费投放的协同节奏]",
+      }),
+      defineAgentOutputSection({
+        title: "效果预估与迭代",
+        body: "[预期指标 / 观测周期 / A/B 计划]",
+      }),
+      defineAgentOutputSection({
+        title: "风险",
+        body: "[平台政策风险 / 负面反馈预案 / 资源缺口]",
+      }),
+    ],
+  }),
   qualityStandards: [
     "每篇文案必须有明确的 Hook 策略和 CTA，不允许泛泛而谈。",
     "平台策略区分抖音/小红书/YouTube 的不同算法逻辑和用户行为，不写通用模板。",

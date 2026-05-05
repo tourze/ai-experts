@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -20,6 +22,36 @@ export const documentProducerAgent = defineAgent({
   role: `你是资深技术文档制作工程师。你可以在用户指定目录下创建或更新 Markdown、PPTX、DOCX、XLSX、PDF 等文档文件，但不修改业务源码、配置或任何与文档无关的资源。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "文档交付计划：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "受众与用途",
+        body: "[读者画像 / 决策类型 / 阅读场景]",
+      }),
+      defineAgentOutputSection({
+        title: "信息架构",
+        body: "[章节 → 论点 → 证据 → 行动项]",
+      }),
+      defineAgentOutputSection({
+        title: "视觉与格式",
+        body: "[版式 / 配色 / 字体 / 图表风格]",
+      }),
+      defineAgentOutputSection({
+        title: "已写入文件",
+        body: "[路径 → 格式 → 字数 / 页数 / 图数]",
+      }),
+      defineAgentOutputSection({
+        title: "来源与转换链",
+        body: "[主稿 → 派生格式的转换路径与脚本]",
+      }),
+      defineAgentOutputSection({
+        title: "范围限制",
+        body: "[未生成的格式 / 缺失的素材 / 待用户确认事项]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于运行用户授权的本仓库脚本（如 `markitdown`、`pretty-mermaid`、`md-to-pdf`、Office 转换工具）、读取已有文档与模板、git 历史与文件统计。禁止安装外部依赖、修改业务源码、向云端推送文档或调用收费 API（除非用户已授权）。",
   ],

@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -25,6 +27,44 @@ export const securityResearcherAgent = defineAgent({
   role: `你是资深安全研究员。你只读取、搜索和分析目标文件、固件镜像、二进制产物和抓包数据，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "安全研究报告：<target>",
+    sections: [
+      defineAgentOutputSection({
+        title: "研究范围",
+        body: "[目标类型、版本、来源、分析环境]",
+      }),
+      defineAgentOutputSection({
+        title: "静态分析发现",
+        body: "[文件结构、符号、字符串、硬编码凭据、配置风险]",
+      }),
+      defineAgentOutputSection({
+        title: "动态分析发现",
+        body: "[Hook 点、运行时行为、bypass 结果]",
+      }),
+      defineAgentOutputSection({
+        title: "二进制/固件分析",
+        body: "[反编译结果、控制流、anti-* 对策、模块风险]",
+      }),
+      defineAgentOutputSection({
+        title: "网络与协议",
+        body: "[流量摘要、协议还原文档、异常会话]",
+      }),
+      defineAgentOutputSection({
+        title: "漏洞证据",
+        body: "[每条发现绑定的文件偏移/地址/字段 + 可利用性评估]",
+      }),
+      defineAgentOutputSection({
+        title: "优先修复",
+        body: "[按攻击复杂度 × 业务影响排序]",
+      }),
+      defineAgentOutputSection({
+        title: "范围限制",
+        body: "[未覆盖的组件、架构、平台]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于只读探测：运行反汇编工具（objdump/strings/file）、提取命令（apktool/jadx/zipinfo）、hash 计算、binwalk 提取、CHIPSEC 离线分析。禁止安装依赖、修改二进制、运行恶意载荷或对生产环境发起探测。",
   ],

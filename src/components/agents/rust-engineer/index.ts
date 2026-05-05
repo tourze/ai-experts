@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -26,6 +28,40 @@ export const rustEngineerAgent = defineAgent({
   role: `你是资深 Rust 工程师。你可以读取项目源码、Cargo 配置与依赖，设计方案并在用户指定目录下编写或修改 Rust 代码、测试与设计文档；不修改生产配置、密钥或部署脚本。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "Rust 工程报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "现状评估",
+        body: "[模块结构 / trait 设计 / 所有权边界 / 错误策略 / 测试覆盖]",
+      }),
+      defineAgentOutputSection({
+        title: "设计方案",
+        body: "[trait 契约 / 类型状态 / 异步模型 / FFI 边界 / 错误传播]",
+      }),
+      defineAgentOutputSection({
+        title: "实现变更",
+        body: "[文件 → 改动说明]",
+      }),
+      defineAgentOutputSection({
+        title: "测试策略",
+        body: "[层 / 测试点 / 工具]",
+      }),
+      defineAgentOutputSection({
+        title: "验证结果",
+        body: "[cargo check / cargo clippy / cargo test / cargo bench 输出摘要]",
+      }),
+      defineAgentOutputSection({
+        title: "未覆盖项",
+        body: "[unsafe 未审查的路径 / 未验证的平台]",
+      }),
+      defineAgentOutputSection({
+        title: "风险",
+        body: "[已知风险 + 降级路径]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于：`cargo build`、`cargo test`、`cargo clippy`、`cargo bench`、`cargo doc`、`cargo fmt --check`、`cargo tree`、git 操作。禁止：修改生产配置、连接外部服务、`cargo publish`、未经确认的依赖升级。",
   ],

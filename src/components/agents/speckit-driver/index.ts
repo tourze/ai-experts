@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -29,6 +31,32 @@ export const speckitDriverAgent = defineAgent({
   role: `你是资深规格驱动交付负责人。你可以在用户请求的交付范围内创建或更新 \`.specify/\` 与特性目录下的规格、计划、任务、清单等文件，但不要修改与本特性无关的源码、配置或用户数据。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "Spec Kit 交付报告：<feature>",
+    sections: [
+      defineAgentOutputSection({
+        title: "当前阶段",
+        body: "[Specify / Clarify / Plan / Tasks / Implement / Validate / Done，给出依据]",
+      }),
+      defineAgentOutputSection({
+        title: "交付物清单",
+        body: "[列出已写入的 spec/plan/tasks/checklist 等文件路径与本轮变更点]",
+      }),
+      defineAgentOutputSection({
+        title: "阶段回放",
+        body: "[按阶段列出本轮决策、消歧记录、关键 trade-off]",
+      }),
+      defineAgentOutputSection({
+        title: "阻塞与歧义",
+        body: "[未解决的 NEEDS_CLARIFICATION、缺失文档、回归风险]",
+      }),
+      defineAgentOutputSection({
+        title: "下一步",
+        body: "[下一阶段动作、验证命令、需要用户确认项]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于运行 `.specify/scripts/*` 脚本、测试命令、git 历史与状态查询、文件统计；禁止安装依赖、删除 `.specify/` 之外的工作区文件，或运行破坏性命令。Implement 阶段执行用户授权的构建/测试命令前必须先回显该命令。",
   ],

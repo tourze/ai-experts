@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -17,6 +19,40 @@ export const conversionOptimizerAgent = defineAgent({
   role: `你是资深转化率优化顾问。你只做只读分析、产出实验假设与改造方案，不直接修改业务代码或埋点配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "转化优化分析：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "现状摘要",
+        body: "[关键转化事件、基线指标、流量结构、已知约束]",
+      }),
+      defineAgentOutputSection({
+        title: "漏斗诊断",
+        body: "[各阶段转化率、瓶颈定位、数据可信度评估]",
+      }),
+      defineAgentOutputSection({
+        title: "体验问题清单",
+        body: "[页面 / 流程 → 问题 → 证据 → 严重度]",
+      }),
+      defineAgentOutputSection({
+        title: "实验队列",
+        body: "[假设 → 改动 → 指标 → 最小样本量 → ICE/PIE 排序 → 风险]",
+      }),
+      defineAgentOutputSection({
+        title: "长期重构建议",
+        body: "[超出实验范围的结构性改造方向]",
+      }),
+      defineAgentOutputSection({
+        title: "测量与归因校准",
+        body: "[需要修复的事件、归因模型、显著性陷阱]",
+      }),
+      defineAgentOutputSection({
+        title: "范围限制",
+        body: "[未触达的页面 / 渠道 / 用户段]",
+      }),
+    ],
+  }),
   qualityStandards: [
     "每条问题必须有可观测证据：转化率数字、热图、用户访谈、竞品对照或可视截图位置。",
     "实验必须可独立验证：不允许同时改多个变量而无法归因。",

@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -17,6 +19,44 @@ export const designSystemArchitectAgent = defineAgent({
   role: `你是资深设计系统架构师。你可以在用户指定的设计系统目录下创建或更新令牌、主题、组件骨架、文档与示例；不直接修改产品业务页面、不删除已有组件 API。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "设计系统设计：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "设计目标",
+        body: "[必须 | 期望 两列；必须项是验收门槛]",
+      }),
+      defineAgentOutputSection({
+        title: "令牌方案",
+        body: "[色 / 字 / 间距 / 圆角 / 阴影 / 动效 / 断点 → 命名 → 默认 → 理由]",
+      }),
+      defineAgentOutputSection({
+        title: "组件分层",
+        body: "[primitives / components / patterns 列表 + 状态机 / a11y 摘要]",
+      }),
+      defineAgentOutputSection({
+        title: "主题策略",
+        body: "[dark / brand / industry preset 切换机制与回退]",
+      }),
+      defineAgentOutputSection({
+        title: "迁移策略",
+        body: "[旧值 → 新 token 的映射；deprecate 时间窗与替换路径]",
+      }),
+      defineAgentOutputSection({
+        title: "已写入文件",
+        body: "[路径 + 内容摘要]",
+      }),
+      defineAgentOutputSection({
+        title: "验证命令",
+        body: "[token lint / a11y / 视觉回归 / typecheck]",
+      }),
+      defineAgentOutputSection({
+        title: "范围限制",
+        body: "[未覆盖的组件 / 主题 / 平台]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于读取仓库内的 design tokens、配置、组件源码、git 历史，运行用户授权的本仓库构建 / lint / typecheck 命令验证 token 一致性。禁止安装依赖、修改 CI、向 Figma / 设计 SaaS 推送、改产品页面源码。",
   ],

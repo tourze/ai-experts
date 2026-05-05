@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -19,6 +21,40 @@ export const reactNativeEngineerAgent = defineAgent({
   role: `你是资深 React Native 工程师。你可以读取项目源码、package.json 与原生配置，设计方案并在用户指定目录下编写或修改 JavaScript/TypeScript 代码、原生模块、测试与设计文档；不修改生产密钥、签名证书或发布配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "React Native 工程报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "现状评估",
+        body: "[导航结构 / JS 性能基线 / 平台分叉现状 / 原生模块配置 / 构建配置]",
+      }),
+      defineAgentOutputSection({
+        title: "设计方案",
+        body: "[导航架构 / 原生模块边界 / 平台适配策略 / 数据流]",
+      }),
+      defineAgentOutputSection({
+        title: "实现变更",
+        body: "[文件 → 改动说明]",
+      }),
+      defineAgentOutputSection({
+        title: "测试策略",
+        body: "[层 / 测试点 / 工具]",
+      }),
+      defineAgentOutputSection({
+        title: "验证结果",
+        body: "[Metro bundle / Detox E2E / JS test 输出摘要]",
+      }),
+      defineAgentOutputSection({
+        title: "未覆盖项",
+        body: "[未测试的平台 / 未覆盖的导航路径]",
+      }),
+      defineAgentOutputSection({
+        title: "风险",
+        body: "[已知风险 + 降级路径]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于：`npx react-native start`、`npx react-native build`、`npx detox test`、`npx metro bundle`、`npm test`、`yarn test`、git 操作。禁止：修改生产配置、发布到应用商店、连接生产后端不经确认。",
   ],

@@ -202,6 +202,7 @@ test("component build emits claude and codex component surfaces", () => {
         typescriptEngineerAgent.indexOf("## 输出格式"),
       "generated agent Bash boundary should stay near the operational guidance sections",
     );
+    assert.match(typescriptEngineerAgent, /# TypeScript 工程报告：<scope>/);
     assert.match(typescriptEngineerAgent, /## 质量标准/);
     assert.ok(
       typescriptEngineerAgent.indexOf("## 输出格式") <
@@ -224,6 +225,16 @@ test("component build emits claude and codex component surfaces", () => {
       /## 质量标准/,
       "agents without qualityStandards should not emit quality standards",
     );
+    assert.doesNotMatch(
+      claudeAgent,
+      /## 输出格式/,
+      "agents without outputFormat should not emit output format instructions",
+    );
+    assert.doesNotMatch(
+      analyzerAgent,
+      /Analyzing Benchmark Results/,
+      "analyzer should keep a single output format and one responsibility",
+    );
 
     const codexAgent = readFileSync(join(tmp, "codex/agents/frontend-engineer.toml"), "utf-8");
     assert.match(codexAgent, /name = "frontend-engineer"/);
@@ -233,6 +244,7 @@ test("component build emits claude and codex component surfaces", () => {
     assert.match(codexAgent, /## 技能编排/);
     assert.match(codexAgent, /\[\[skills\.config\]\]\npath = "~\/\.agents\/skills\/modern-web-design\/SKILL\.md"\nenabled = true/);
     assert.match(codexAgent, /## Bash 使用边界/);
+    assert.match(codexAgent, /# 前端工程报告：<scope>/);
     assert.match(codexAgent, /## 质量标准/);
 
     const claudeInstructions = readFileSync(join(tmp, "claude/CLAUDE.md"), "utf-8");
@@ -372,14 +384,21 @@ test("component build emits claude and codex component surfaces", () => {
         0,
         `${agentBodyFile} should move quality standards to index.ts qualityStandards`,
       );
+      assert.equal(
+        countH2OutsideCodeFence(source, "输出格式"),
+        0,
+        `${agentBodyFile} should move output format instructions to index.ts outputFormat`,
+      );
     }
 
     let agentQualityStandardsCount = 0;
+    let agentOutputFormatCount = 0;
     for (const agentSourceFile of collectFiles(join(repoRoot, "src/components/agents"), (file) => file.endsWith("index.ts"))) {
       const source = readFileSync(agentSourceFile, "utf-8");
       const hasBashTool = /\bKnownTool\.Bash\b/.test(source);
       const hasBashBoundary = /\n\s*bashBoundary:\s*\[/.test(source);
       const hasQualityStandards = /\n\s*qualityStandards:\s*\[/.test(source);
+      const hasOutputFormat = /\n\s*outputFormat:\s*defineAgentOutputFormat\(\{/.test(source);
       assert.equal(
         hasBashBoundary,
         hasBashTool,
@@ -404,8 +423,31 @@ test("component build emits claude and codex component surfaces", () => {
           `${agentSourceFile} should define qualityStandards as a non-empty string array`,
         );
       }
+      if (hasOutputFormat) {
+        agentOutputFormatCount += 1;
+        assert.doesNotMatch(
+          source,
+          /\n\s*outputFormat:\s*\[/,
+          `${agentSourceFile} should define a single outputFormat object, not multiple formats`,
+        );
+        if (/kind:\s*"markdown"/.test(source)) {
+          const sectionsSource = extractPropertyArray(source, "sections");
+          assert.notEqual(sectionsSource, null, `${agentSourceFile} should define markdown output sections`);
+          assert.match(
+            sectionsSource,
+            /defineAgentOutputSection\(\{/,
+            `${agentSourceFile} should define each output section through defineAgentOutputSection`,
+          );
+          assert.doesNotMatch(
+            sectionsSource,
+            /(^|\n)\s*\{\s*\n\s*title:/,
+            `${agentSourceFile} should not define bare output section objects`,
+          );
+        }
+      }
     }
     assert.equal(agentQualityStandardsCount, 59);
+    assert.equal(agentOutputFormatCount, 62);
 
     const allowedHookRoots = new Set([
       "_shared",

@@ -19,22 +19,3 @@
 ## 写入边界
 
 文件写入默认落在用户指定目录下，包含：Dockerfile、docker-compose.yml、Helm Chart 目录、运维脚本、`~/.host/<host>.json`（SSH 主机配置）。不修改生产部署描述文件、CI/CD 配置或 Kubernetes 集群资源。
-
-## 输出格式
-
-写入文件结构（按任务范围自适应）：
-
-```
-Dockerfile
-docker-compose.yml
-chart/
-  Chart.yaml
-  values.yaml
-  templates/
-scripts/
-  deploy.sh
-  health-check.sh
-~/.host/<host>.json
-```
-
-每份可执行文件需附带注释说明调用方式与前置条件。

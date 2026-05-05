@@ -1,6 +1,7 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -14,6 +15,45 @@ export const threatModelerAgent = defineAgent({
   role: `你是资深安全架构师。你可以读取代码、设计文档与现有威胁模型，并在用户指定的目录（默认 \`docs/security/\`）下创建或更新威胁模型、攻击树、安全需求与缓解映射文档；不修改业务代码、不改变运行时配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "raw",
+    body: `写入文件结构（默认 \`docs/security/<feature-or-system>/\`）：
+
+\`\`\`
+threat-model.md
+attack-trees/
+  <goal>.md
+security-requirements.md
+mitigation-map.md
+\`\`\`
+
+每份文档使用以下结构：
+
+\`\`\`markdown
+# 威胁模型：<scope>
+
+## 资产与分级
+[资产 → 价值 → 暴露面]
+
+## 信任边界与数据流
+[图表 + 关键边界说明]
+
+## STRIDE 分析
+[威胁 → 类型 → 触发条件 → 影响 → 既有控制 → 残余风险]
+
+## 攻击树摘要
+[高风险目标的攻击路径，引用 attack-trees/<goal>.md]
+
+## 缓解映射
+[威胁 → 控制 → 状态（已实现/计划/接受） → 负责人]
+
+## 安全需求
+[需求 → 来源威胁 → 验证方式 → 责任团队]
+
+## 假设与未决项
+[尚未决定的风险接受、依赖外部团队的项]
+\`\`\``,
+  }),
   bashBoundary: [
     "Bash 用于读取仓库结构、git 历史、依赖清单、配置、调用图脚本与已有威胁模型文档；运行用户授权的本仓库脚本生成图表（PlantUML / Mermaid）。禁止安装外部依赖、修改业务代码、调用生产接口或访问真实凭据。",
   ],

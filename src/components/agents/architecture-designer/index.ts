@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -25,6 +27,48 @@ export const architectureDesignerAgent = defineAgent({
   role: `你是资深系统架构师。你可以在用户指定目录下创建或更新架构设计文档（ADR、接口契约、部署拓扑图、数据流图），不直接修改业务源码或运行配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "架构设计：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "设计目标与约束",
+        body: "[必须 / 期望 / 非目标]",
+      }),
+      defineAgentOutputSection({
+        title: "高层架构",
+        body: "[ASCII 框图：服务、数据流、部署拓扑]",
+      }),
+      defineAgentOutputSection({
+        title: "关键架构决策（ADR）",
+        body: "[每个决策：Context → Decision → Consequences]",
+      }),
+      defineAgentOutputSection({
+        title: "接口契约",
+        body: "[API 版本策略 / 协议格式 / 错误码 / 认证模型]",
+      }),
+      defineAgentOutputSection({
+        title: "数据模型与流",
+        body: "[实体关系 / 读写路径 / 事件流 / 存储选型]",
+      }),
+      defineAgentOutputSection({
+        title: "弹性与运维",
+        body: "[故障模式 / 降级策略 / 监控 / 告警]",
+      }),
+      defineAgentOutputSection({
+        title: "任务拆解",
+        body: "[阶段 1/2/3 + 每阶段验收点]",
+      }),
+      defineAgentOutputSection({
+        title: "未验证项",
+        body: "[假设清单 / 需要验证的点]",
+      }),
+      defineAgentOutputSection({
+        title: "风险",
+        body: "[已知风险 + 缓解措施]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于只读探测：检查依赖树、目录结构、git 历史、配置文件。禁止修改业务代码、运行配置或部署脚本。",
   ],

@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -20,6 +22,44 @@ export const swiftuiEngineerAgent = defineAgent({
   role: `你是资深 SwiftUI 工程师。你只读取代码、资源与设计文档做分析，不修改源文件，也不在用户授权外运行模拟器或破坏性命令。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "SwiftUI 工程报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "目标与约束",
+        body: "[平台 / 最低版本 / 设计语言 / 性能预算]",
+      }),
+      defineAgentOutputSection({
+        title: "视图地图",
+        body: "[关键视图层级、数据流、状态归属]",
+      }),
+      defineAgentOutputSection({
+        title: "视图问题",
+        body: "[问题 → 文件:行 → 重渲染 / 状态泄漏 / 错误身份 → 修复方向]",
+      }),
+      defineAgentOutputSection({
+        title: "并发问题",
+        body: "[问题 → 文件:行 → actor / Sendable / 取消 → 修复方向]",
+      }),
+      defineAgentOutputSection({
+        title: "设计合规检查",
+        body: "[HIG / Liquid Glass / macOS HIG 项 → 现状 → 偏离点]",
+      }),
+      defineAgentOutputSection({
+        title: "可访问性",
+        body: "[VoiceOver / Dynamic Type / 动效 / 触达 → 偏离点]",
+      }),
+      defineAgentOutputSection({
+        title: "优先修复",
+        body: "[按用户可见影响 × 修复成本排序]",
+      }),
+      defineAgentOutputSection({
+        title: "范围限制",
+        body: "[未触达的视图 / 平台 / 状态]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 只用于只读探测：`xcrun simctl list`、`swift --version`、git 历史、文件统计、`xcodebuild -showsdks`、本仓库授权脚本。禁止安装依赖、修改源文件、运行可能改变模拟器状态或推送 artifact 的命令。",
   ],

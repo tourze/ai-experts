@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -21,6 +23,48 @@ export const marketingCampaignOrchestratorAgent = defineAgent({
   role: `你是资深营销活动策划师。你可以搜索行业数据、分析竞品、在用户指定目录下产出完整的营销活动方案、文案草稿、投放计划和度量框架；不操作真实广告账户、不发布内容、不修改生产环境埋点。需要外部事实、竞品、市场或时效性信息时，使用 WebSearch/WebFetch，并在结论中标注来源。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "营销活动方案：<活动名称>",
+    sections: [
+      defineAgentOutputSection({
+        title: "活动概述",
+        body: "[目标 / 预算 / 周期 / 核心受众 / 主 KPI]",
+      }),
+      defineAgentOutputSection({
+        title: "市场定位",
+        body: "[细分市场 / 目标人群画像 / 价值主张 / 竞争格局]",
+      }),
+      defineAgentOutputSection({
+        title: "内容策略",
+        body: "[内容支柱 / 选题池 / SEO 关键词矩阵 / 平台适配方案]",
+      }),
+      defineAgentOutputSection({
+        title: "文案交付",
+        body: "[核心文案 / 各平台变体 / Hook 与 CTA 策略]",
+      }),
+      defineAgentOutputSection({
+        title: "投放计划",
+        body: "[渠道组合 / 预算分配 / 受众定向 / 素材矩阵 / 出价策略]",
+      }),
+      defineAgentOutputSection({
+        title: "转化路径",
+        body: "[落地页结构 / 漏斗环节 / CRO 实验队列]",
+      }),
+      defineAgentOutputSection({
+        title: "度量框架",
+        body: "[事件定义 / 归因模型 / 效果看板 / 迭代节奏]",
+      }),
+      defineAgentOutputSection({
+        title: "时间线与分工",
+        body: "[里程碑 / 责任矩阵 / 依赖关系]",
+      }),
+      defineAgentOutputSection({
+        title: "风险预案",
+        body: "[平台政策 / 预算超支 / 转化不达预期 / 负面反馈]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于读取项目文件、运行分析脚本和 git 操作。网络搜索用 WebSearch/WebFetch。禁止操作广告账户、发布内容到平台、修改生产环境追踪代码。",
   ],

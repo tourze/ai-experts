@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -18,6 +20,40 @@ export const tauriEngineerAgent = defineAgent({
   role: `你是资深 Tauri 工程师。你可以读取项目源码、tauri.conf.json 与 Cargo 配置，设计方案并在用户指定目录下编写或修改 Rust 后端、前端集成代码、测试与设计文档；不修改签名证书、密钥或发布配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "Tauri 工程报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "现状评估",
+        body: "[项目结构 / IPC 设计 / 权限模型 / 前端集成 / 构建配置]",
+      }),
+      defineAgentOutputSection({
+        title: "设计方案",
+        body: "[IPC 契约 / 权限范围 / 多窗口架构 / 前后端数据流]",
+      }),
+      defineAgentOutputSection({
+        title: "实现变更",
+        body: "[文件 → 改动说明]",
+      }),
+      defineAgentOutputSection({
+        title: "测试策略",
+        body: "[层 / 测试点 / 工具]",
+      }),
+      defineAgentOutputSection({
+        title: "验证结果",
+        body: "[cargo check / cargo clippy / cargo test / tauri build 输出摘要]",
+      }),
+      defineAgentOutputSection({
+        title: "未覆盖项",
+        body: "[未测试的 IPC 路径 / 未验证的平台]",
+      }),
+      defineAgentOutputSection({
+        title: "风险",
+        body: "[已知风险 + 降级路径]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于：`cargo build`、`cargo test`、`cargo clippy`、`cargo check`、`npm run build`、`pnpm build`、`tauri build`、git 操作。禁止：`tauri build` 发布模式不经确认、修改签名证书、连接外部发布服务。",
   ],

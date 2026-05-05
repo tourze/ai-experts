@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -20,6 +22,52 @@ export const skillQualityAuditorAgent = defineAgent({
   role: `你是资深 Skill 工程审计师。你只能读取、搜索和分析，不修改任何 skill 文件、README 或 telemetry 数据。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "Skill 质量审计报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "执行摘要",
+        body: "[关键结论 + 可信度，先判断后依据]",
+      }),
+      defineAgentOutputSection({
+        title: "审计基线",
+        body: "[运行的脚本、参数、采样窗口、覆盖 skill 数]",
+      }),
+      defineAgentOutputSection({
+        title: "设计评分发现",
+        body: "[skill-evaluator 维度问题：结构、frontmatter、knowledge delta，引用文件路径]",
+      }),
+      defineAgentOutputSection({
+        title: "触发域风险",
+        body: "[skill-activation-analyzer 发现：shortcut、模板违规、重叠矩阵摘录]",
+      }),
+      defineAgentOutputSection({
+        title: "知识覆盖缺口",
+        body: "[skill-evaluator 闭卷题目分布、失败题、推断的知识漏洞]",
+      }),
+      defineAgentOutputSection({
+        title: "运行时遥测信号",
+        body: "[trigger-telemetry-advisor 抽取的命中率、错误热点、噪音 skill]",
+      }),
+      defineAgentOutputSection({
+        title: "自运行闭环",
+        body: "[自组织 / 自激励 / 自约束 / 自协同分别缺什么；只列有证据的缺口]",
+      }),
+      defineAgentOutputSection({
+        title: "库存治理建议",
+        body: "[重复 skill、低质量 skill、README 同步缺口；只列证据，不执行删除]",
+      }),
+      defineAgentOutputSection({
+        title: "优先修复",
+        body: "[按影响面 × 修复成本排序，标注负责的 skill]",
+      }),
+      defineAgentOutputSection({
+        title: "范围限制",
+        body: "[未覆盖的 plugin / 时间窗口 / 数据缺失]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 只用于跑仓库内只读脚本（`skill-quality-report.mjs`、`trigger-audit-report.mjs`、`hook-telemetry-report.mjs`、`audit-skill-evals.mjs`、`curate_skills.mjs audit`）、git 历史与文件统计。禁止运行 `--apply`/`--write`/`prune --delete` 类带写效果的子命令，禁止安装依赖或修改 telemetry。",
   ],

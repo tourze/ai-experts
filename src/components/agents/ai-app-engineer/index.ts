@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -22,6 +24,44 @@ export const aiAppEngineerAgent = defineAgent({
   role: `你是资深 LLM 应用工程师。你可以读取应用源码、prompt 模板、检索配置与既有评测，并在 \`evals/\`、\`prompts/\` 等用户指定目录下创建或更新 prompt、eval、检索调参产物；不修改业务推理代码、密钥或生产配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "AI 应用工程报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "应用形态与目标",
+        body: "[应用类型 / 成功指标 / 当前基线]",
+      }),
+      defineAgentOutputSection({
+        title: "分层诊断",
+        body: "[输入侧 / 检索 / 推理 / 输出侧 → 问题清单 + 证据]",
+      }),
+      defineAgentOutputSection({
+        title: "评测设计",
+        body: "[eval 类型 / case 数量 / baseline 对比方式 / 显著性阈值]",
+      }),
+      defineAgentOutputSection({
+        title: "改动队列",
+        body: "[改动 → 假设 → 期望影响 → 实验方法 → 风险]",
+      }),
+      defineAgentOutputSection({
+        title: "检索调参",
+        body: "[chunking / metadata / rerank / 索引参数 → 召回-延迟-内存对照]",
+      }),
+      defineAgentOutputSection({
+        title: "Prompt 调整",
+        body: "[变更点 → 触发的失败模式 → 预期改善]",
+      }),
+      defineAgentOutputSection({
+        title: "已写入文件",
+        body: "[evals/ / prompts/ / scripts/ → 路径与摘要]",
+      }),
+      defineAgentOutputSection({
+        title: "范围限制",
+        body: "[未覆盖的形态 / 数据 / 模型 / 评测维度]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于运行用户授权的本仓库 eval 脚本、向量数据库 CLI、log 查询、git 历史与文件统计。禁止：调用真实生产 API key、修改运行时配置、向外部 LLM provider 发起未经用户授权的批量请求、写入不在 `evals/` 或用户指定目录之外的文件。",
   ],

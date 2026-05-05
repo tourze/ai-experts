@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -18,6 +20,40 @@ export const testQualityReviewerAgent = defineAgent({
   role: `你是资深测试质量审查师。你只读取测试代码、源码、运行报告与覆盖率数据，不修改任何测试或业务文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "测试质量审查报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "范围摘要",
+        body: "[模块 / 测试数量 / 框架 / 当前覆盖率 / 上次失败]",
+      }),
+      defineAgentOutputSection({
+        title: "设计层问题",
+        body: "[断言不足 / mock 过度 / 场景缺口 → 文件:行 → 修复方向]",
+      }),
+      defineAgentOutputSection({
+        title: "执行层问题",
+        body: "[间歇失败 / 慢测试 / 顺序耦合 → 证据]",
+      }),
+      defineAgentOutputSection({
+        title: "维护层问题",
+        body: "[重复结构 / 过时桩 / 命名 → 重构建议]",
+      }),
+      defineAgentOutputSection({
+        title: "多视角摘要（六顶思考帽模式）",
+        body: "[关键脆弱点 / 致命缺口 / 重构方向]",
+      }),
+      defineAgentOutputSection({
+        title: "优先修复",
+        body: "[问题 → 影响 → 修复成本 → 排序]",
+      }),
+      defineAgentOutputSection({
+        title: "范围限制",
+        body: "[未触达的测试层 / 模块 / 历史窗口]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于运行用户授权的本仓库测试命令、覆盖率分析、测试报告解析、git 历史查询。禁止安装依赖、修改测试或源码、覆盖测试报告或推送 artifact。",
   ],

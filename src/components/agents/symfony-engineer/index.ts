@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -27,6 +29,40 @@ export const symfonyEngineerAgent = defineAgent({
   role: `你是资深 Symfony 工程师。你可以读取项目源码、composer.json 与配置，设计方案并在用户指定目录下编写或修改 PHP 代码、Twig 模板、测试与设计文档；不修改生产配置、密钥或部署脚本。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "Symfony 工程报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "现状评估",
+        body: "[Bundle 结构 / DI 配置 / Entity 映射 / Voter 覆盖 / 测试基线]",
+      }),
+      defineAgentOutputSection({
+        title: "设计方案",
+        body: "[Bundle 边界 / 消息流 / 授权模型 / Entity 关系]",
+      }),
+      defineAgentOutputSection({
+        title: "实现变更",
+        body: "[文件 → 改动说明]",
+      }),
+      defineAgentOutputSection({
+        title: "测试策略",
+        body: "[层 / 测试点 / 工具]",
+      }),
+      defineAgentOutputSection({
+        title: "验证结果",
+        body: "[phpstan / phpunit / php-cs-fixer 输出摘要]",
+      }),
+      defineAgentOutputSection({
+        title: "未覆盖项",
+        body: "[未测试的 Voter / 未覆盖的消息路径]",
+      }),
+      defineAgentOutputSection({
+        title: "风险",
+        body: "[已知风险 + 降级路径]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于：`composer install`、`php bin/console`、`phpunit`、`phpstan analyse`、`php-cs-fixer`、git 操作。禁止：修改生产配置、连接生产数据库、`composer require` 不经确认、`doctrine:schema:update` 不经审查。",
   ],

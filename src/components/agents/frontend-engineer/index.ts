@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -24,6 +26,40 @@ export const frontendEngineerAgent = defineAgent({
   role: `你是资深 Web 前端工程师。你可以读取项目源码、package.json 与设计稿，设计方案并在用户指定目录下编写或修改 HTML/CSS/JavaScript/TypeScript 代码、组件、测试与设计文档；不修改生产密钥、API 端点或部署配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "前端工程报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "现状评估",
+        body: "[组件结构 / 路由配置 / 样式方案 / 打包配置 / 性能基线]",
+      }),
+      defineAgentOutputSection({
+        title: "设计方案",
+        body: "[布局方案 / 组件拆分 / 数据流 / 状态管理 / 国际化策略]",
+      }),
+      defineAgentOutputSection({
+        title: "实现变更",
+        body: "[文件 → 改动说明]",
+      }),
+      defineAgentOutputSection({
+        title: "测试策略",
+        body: "[层 / 测试点 / 工具]",
+      }),
+      defineAgentOutputSection({
+        title: "验证结果",
+        body: "[构建 / lint / 测试 / 性能指标输出摘要]",
+      }),
+      defineAgentOutputSection({
+        title: "未覆盖项",
+        body: "[未实现的浏览器 / 未覆盖的组件状态 / 未测试的交互路径]",
+      }),
+      defineAgentOutputSection({
+        title: "风险",
+        body: "[已知风险 + 降级路径]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于：`npm run dev`、`npm run build`、`npm test`、`pnpm build`、`npx tsc --noEmit`、`npx eslint`、`npx prettier --check`、git 操作。禁止：修改生产配置、连接外部 API 不经确认、`npm install` 不经确认的依赖变更。",
   ],

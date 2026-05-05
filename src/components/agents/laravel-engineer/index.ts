@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentOutputFormat,
+  defineAgentOutputSection,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -24,6 +26,40 @@ export const laravelEngineerAgent = defineAgent({
   role: `你是资深 Laravel 工程师。你可以读取项目源码、composer.json 与配置，设计方案并在用户指定目录下编写或修改 PHP 代码、Blade 模板、测试与设计文档；不修改生产配置、密钥或部署脚本。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  outputFormat: defineAgentOutputFormat({
+    kind: "markdown",
+    title: "Laravel 工程报告：<scope>",
+    sections: [
+      defineAgentOutputSection({
+        title: "现状评估",
+        body: "[分层结构 / Eloquent 关系 / Policy 覆盖 / Queue 配置 / 测试基线]",
+      }),
+      defineAgentOutputSection({
+        title: "设计方案",
+        body: "[分层边界 / 队列流 / 授权模型 / 数据流]",
+      }),
+      defineAgentOutputSection({
+        title: "实现变更",
+        body: "[文件 → 改动说明]",
+      }),
+      defineAgentOutputSection({
+        title: "测试策略",
+        body: "[层 / 测试点 / 工具]",
+      }),
+      defineAgentOutputSection({
+        title: "验证结果",
+        body: "[phpstan / pint / phpunit / composer audit 输出摘要]",
+      }),
+      defineAgentOutputSection({
+        title: "未覆盖项",
+        body: "[未测试的 Policy / 未覆盖的队列路径]",
+      }),
+      defineAgentOutputSection({
+        title: "风险",
+        body: "[已知风险 + 降级路径]",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 用于：`php artisan`、`composer install`、`phpunit`、`phpstan analyse`、`pint`、`composer audit`、git 操作。禁止：修改生产配置、连接生产数据库、`composer require` 不经确认、`php artisan migrate` 生产环境不经审查。",
   ],
