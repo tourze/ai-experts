@@ -94,6 +94,10 @@ export function getCppBudget(filePath) {
   return CPP_BUDGET_BY_FILE_NAME[baseName] ?? CPP_BUDGET_BY_EXTENSION[extname(baseName)] ?? null;
 }
 
+export function matchExt(filePath, exts) {
+  return exts.includes(extname(filePath).toLowerCase());
+}
+
 export function countLines(text) {
   if (!text) return 0;
   const lines = text.split(/\r?\n/u);
