@@ -17,6 +17,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 export const swiftuiEngineerAgent = defineAgent({
   id: "swiftui-engineer",
   description: "当需要设计、审查或重构 SwiftUI 视图、导航、列表性能、Swift Concurrency，或按 iOS HIG / macOS HIG / Liquid Glass 规范实现界面时使用。它只读分析视图与代码，不直接修改业务文件。",
+  role: `你是资深 SwiftUI 工程师。你只读取代码、资源与设计文档做分析，不修改源文件，也不在用户授权外运行模拟器或破坏性命令。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],

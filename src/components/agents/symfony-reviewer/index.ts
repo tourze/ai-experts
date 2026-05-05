@@ -18,6 +18,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 export const symfonyReviewerAgent = defineAgent({
   id: "symfony-reviewer",
   description: "当需要只读审查 Symfony DI、Service、Doctrine、Messenger、Event、Security/Voter 和 Twig/UX 时使用。",
+  role: `你是资深 Symfony 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],

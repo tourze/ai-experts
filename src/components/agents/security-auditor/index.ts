@@ -17,6 +17,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 export const securityAuditorAgent = defineAgent({
   id: "security-auditor",
   description: "当需要对应用层代码做只读漏洞审计，识别 OWASP top 10 模式、认证与会话缺陷、敏感数据流、文件路径风险、API 输入校验缺口或前端防刷保护缺口时使用。",
+  role: `你是资深应用安全工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],

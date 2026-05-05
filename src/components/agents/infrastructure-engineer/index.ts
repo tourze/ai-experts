@@ -15,6 +15,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 export const infrastructureEngineerAgent = defineAgent({
   id: "infrastructure-engineer",
   description: "当需要设计或运维容器化基础设施——覆盖 Docker 容器/镜像/网络/卷、Helm Chart 搭建与验证、Linux Shell 自动化脚本、以及 SSH 远端运维命令执行时使用。它可以读取源码与配置，在用户指定目录下产出 Dockerfile、Compose 文件、Helm Chart、运维脚本与 SSH 主机配置，但不修改生产环境。",
+  role: `你是资深基础设施工程师。你可以读取源码、配置与部署描述文件，在用户指定目录下创建或更新 Dockerfile、Compose 配置、Helm Chart、运维脚本和 SSH 主机配置文件；不修改生产环境、不改动真实集群状态、不操作凭据。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],

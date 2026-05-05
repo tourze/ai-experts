@@ -12,6 +12,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 export const mobileReleaseReviewerAgent = defineAgent({
   id: "mobile-release-reviewer",
   description: "当 iOS/Android 应用准备提审或发版时使用——检查二进制安全、审核指南合规、ASO 优化和更新文案。只读分析，产出发布就绪报告。",
+  role: `你是资深移动端发布工程师。你只读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],

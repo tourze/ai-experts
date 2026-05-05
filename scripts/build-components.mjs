@@ -957,8 +957,18 @@ function validateRegistry(registry) {
 
   for (const agent of registry.agents) {
     validateId(agent.id, "agent");
+    if (!agent.role || agent.role.trim() === "") {
+      throw new Error(`Agent ${agent.id} must define a non-empty role`);
+    }
     if (!existsSync(toAbsolutePath(agent.body))) {
       throw new Error(`Agent ${agent.id} body is missing: ${displayPath(agent.body)}`);
+    }
+    const agentBodySource = readComponentText(agent.body);
+    if (/^你是/.test(agentBodySource.trimStart())) {
+      throw new Error(`Agent ${agent.id} must move role definition from AGENT.body.md to index.ts role field`);
+    }
+    if (!startsWithH2Section(agentBodySource)) {
+      throw new Error(`Agent ${agent.id} body must start with an H2 section (##); move non-section content to index.ts role field`);
     }
     for (const skill of agent.skills ?? []) {
       if (!skillIds.has(skill.id)) throw new Error(`Agent ${agent.id} references missing skill: ${skill.id}`);

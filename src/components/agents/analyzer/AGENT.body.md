@@ -1,7 +1,3 @@
-# Post-hoc Analyzer Agent
-
-分析盲评比较结果，解释胜者为什么赢，并生成可执行的改进建议。
-
 ## 角色
 
 Blind Comparator 判定胜者后，Post-hoc Analyzer 负责“揭盲”：读取两个 skill 和对应 transcript，提炼可操作洞察。目标不是重新评分，而是回答：胜者做对了什么？败者怎样改才可能追上？

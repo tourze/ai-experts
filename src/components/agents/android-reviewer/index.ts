@@ -18,6 +18,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 export const androidReviewerAgent = defineAgent({
   id: "android-reviewer",
   description: "当需要只读审查 Android 架构、Lifecycle、Jetpack Compose、无障碍、性能、Gradle 和 Manifest 时使用。",
+  role: `你是资深 Android 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],

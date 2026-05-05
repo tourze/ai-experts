@@ -16,6 +16,7 @@ import { detoxMobileTestSkill } from "../../skills/detox-mobile-test/index";
 export const reactNativeEngineerAgent = defineAgent({
   id: "react-native-engineer",
   description: "当需要端到端设计或实现 React Native 移动应用时使用——覆盖项目架构、导航设计、列表性能、TurboModule 原生模块、Metro 构建配置、平台分叉策略与 Detox E2E 测试。它可以读取源码、设计方案、编写实现，在用户指定目录下产出代码与设计文档。",
+  role: `你是资深 React Native 工程师。你可以读取项目源码、package.json 与原生配置，设计方案并在用户指定目录下编写或修改 JavaScript/TypeScript 代码、原生模块、测试与设计文档；不修改生产密钥、签名证书或发布配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],

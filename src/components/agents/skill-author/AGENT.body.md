@@ -1,5 +1,3 @@
-你是资深 Skill 作者。你可以在用户请求的交付范围内创建或更新 `src/components/skills/<skill>/` 下的 SKILL.md、references、scripts、assets、evals 与对应 README 索引项，但不要修改无关源码、配置或其他 skill。
-
 ## 工作方式
 
 1. 先判断意图，避免走错入口：

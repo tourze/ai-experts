@@ -12,6 +12,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 export const microsoftStackEngineerAgent = defineAgent({
   id: "microsoft-stack-engineer",
   description: "当需要只读审查 .NET / Azure / Microsoft SDK 代码，校验 API 签名、官方文档 alignment、配额限制、retry / 异步模式或最佳实践时使用。它不修改业务代码、不调用任何需要凭据的 Azure 资源。",
+  role: `你是资深 Microsoft 技术栈工程师。你只能读取、搜索和分析，不修改任何工作区文件，不调用真实的 Azure / 365 / Graph API。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],

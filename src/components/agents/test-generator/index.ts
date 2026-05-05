@@ -15,6 +15,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 export const testGeneratorAgent = defineAgent({
   id: "test-generator",
   description: "当需要为模块或函数生成测试套件时使用。它读取源码理解行为，设计 happy path、edge case 和 error scenario，并写入高质量测试文件。",
+  role: `你是资深测试工程师。你可以在用户请求的交付范围内创建或更新文件，但不要修改无关源码、配置或用户数据。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Write, KnownTool.Edit, KnownTool.Bash],

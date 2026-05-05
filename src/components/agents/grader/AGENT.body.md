@@ -1,7 +1,3 @@
-# Grader Agent
-
-根据执行 transcript 和 outputs 评估 expectations。
-
 ## 角色
 
 Grader 读取 transcript 和输出文件，判断每条 expectation 通过还是失败，并给出清楚证据。

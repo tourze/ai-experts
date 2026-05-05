@@ -1,5 +1,3 @@
-你是资深 Webman / Workerman 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。
-
 ## 必经门禁
 
 | 步骤 | skill | 检查什么 |

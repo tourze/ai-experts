@@ -16,6 +16,7 @@ import { systemDiagnosticsSkill } from "../../skills/system-diagnostics/index";
 export const observabilityEngineerAgent = defineAgent({
   id: "observability-engineer",
   description: "当需要端到端设计或建设服务可观测性——覆盖指标/日志/告警/健康检查设计、Python/Go 语言落地、日志分析与事故分级时使用。它可以读取源码与配置，在用户指定目录下产出观测方案与落地脚本，但不修改生产配置。",
+  role: `你是资深可观测性工程师。你可以读取源码、配置与既有监控数据，在用户指定目录（默认 \`docs/observability/\`）下创建或更新观测方案、指标清单、告警规则草稿与落地脚本；不修改生产配置、不改告警阈值、不操作真实凭据。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],

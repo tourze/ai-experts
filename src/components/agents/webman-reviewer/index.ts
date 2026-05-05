@@ -15,6 +15,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 export const webmanReviewerAgent = defineAgent({
   id: "webman-reviewer",
   description: "当需要只读审查 Webman 命名规范、自定义进程、WebSocket、插件机制以及 worker 长生命周期风险时使用。",
+  role: `你是资深 Webman / Workerman 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],

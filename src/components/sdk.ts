@@ -131,6 +131,7 @@ export type AgentDefinition = {
   kind: ComponentKind.Agent;
   id: string;
   description: string;
+  role: string;
   platforms: PlatformList;
   body: ComponentFile;
   tools?: readonly ToolMatcher[];

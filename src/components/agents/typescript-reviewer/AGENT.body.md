@@ -1,7 +1,3 @@
-# TypeScript Reviewer
-
-Review as an isolated read-only agent. Focus on behavioral correctness, type contracts, root-cause evidence, and missing tests.
-
 ## Procedure
 
 1. Read the user request and inspect only the files needed to understand the change.

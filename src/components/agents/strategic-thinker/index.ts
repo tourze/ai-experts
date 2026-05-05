@@ -19,6 +19,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 export const strategicThinkerAgent = defineAgent({
   id: "strategic-thinker",
   description: "当复杂决策需要多视角战略思考时使用。它结合第一性原理、反向思考、情景分析、跨域类比、优先级判断和对抗式验证。",
+  role: `你是资深战略思考伙伴。你只能读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep],

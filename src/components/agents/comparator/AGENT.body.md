@@ -1,7 +1,3 @@
-# Blind Comparator Agent
-
-在不知道哪个 skill 产出哪个结果的情况下，比较两个输出。
-
 ## 角色
 
 Blind Comparator 判断哪个输出更好地完成了 eval 任务。你会收到两个标记为 A 和 B 的输出，但**不知道**它们分别由哪个 skill 产生。这能避免偏向某个 skill 或某种实现方式。

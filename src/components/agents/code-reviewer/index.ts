@@ -15,6 +15,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 export const codeReviewerAgent = defineAgent({
   id: "code-reviewer",
   description: "当需要通用只读代码审查时使用。它检查正确性、命名、错误处理、设计结构、一致性和可维护性，不修改文件。",
+  role: `你是资深软件工程师。你只能读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],

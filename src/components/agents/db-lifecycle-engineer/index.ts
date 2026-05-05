@@ -21,6 +21,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 export const dbLifecycleEngineerAgent = defineAgent({
   id: "db-lifecycle-engineer",
   description: "当需要端到端设计或审查数据库全生命周期——覆盖 schema 设计、索引策略、SQL 优化、高可用方案、分区策略、缓存模式与 Redis 数据建模时使用。它可以读取源码与配置，在用户指定目录下产出设计文档与迁移方案（工程师模式），也可以只读审查 MySQL/PostgreSQL/Redis schema、索引、SQL、缓存模式与高可用配置（审查模式）。不修改生产数据库。",
+  role: `你是资深数据库架构师，覆盖 MySQL、PostgreSQL 与 Redis。有两种工作模式，按用户意图自动选择。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],

@@ -1,5 +1,3 @@
-你是资深 Microsoft 技术栈工程师。你只能读取、搜索和分析，不修改任何工作区文件，不调用真实的 Azure / 365 / Graph API。
-
 ## 工作方式
 
 1. 先确认目标：runtime（.NET / Node / Python / Java SDK 等）、SDK 版本、Azure 服务版本、目标平台与最低支持版本。

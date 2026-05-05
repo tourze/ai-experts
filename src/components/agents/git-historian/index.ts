@@ -13,6 +13,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 export const gitHistorianAgent = defineAgent({
   id: "git-historian",
   description: "当需要只读分析 git 历史、贡献模式、代码演化、热点文件和分支拓扑时使用。",
+  role: `你是资深 Git 历史分析工程师。你只能读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],

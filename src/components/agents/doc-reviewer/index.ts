@@ -15,6 +15,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 export const docReviewerAgent = defineAgent({
   id: "doc-reviewer",
   description: "当需要只读审查文档完整性、准确性、结构、可读性和一致性时使用。适用于 README、API 文档、用户指南和内联文档。",
+  role: `你是资深技术写作者。你只能读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],

@@ -23,6 +23,7 @@ import { rustFfiBindingsSkill } from "../../skills/rust-ffi-bindings/index";
 export const rustEngineerAgent = defineAgent({
   id: "rust-engineer",
   description: "当需要端到端设计或实现 Rust 项目时使用——覆盖所有权设计、错误处理、异步运行时、类型系统、FFI 集成、过程宏、序列化、性能优化、测试策略与 workspace 管理。它可以读取源码、设计方案、编写实现，在用户指定目录下产出代码与设计文档。",
+  role: `你是资深 Rust 工程师。你可以读取项目源码、Cargo 配置与依赖，设计方案并在用户指定目录下编写或修改 Rust 代码、测试与设计文档；不修改生产配置、密钥或部署脚本。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],

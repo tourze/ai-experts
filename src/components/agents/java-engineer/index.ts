@@ -17,6 +17,7 @@ import { arthasSpringcontextIssuesResolveSkill } from "../../skills/arthas-sprin
 export const javaEngineerAgent = defineAgent({
   id: "java-engineer",
   description: "当需要端到端设计或实现 Java 项目时使用——覆盖 Spring Boot 分层架构、JUnit 5 测试、Gradle 构建优化、GraalVM Native Image 编译、Arthas 诊断与性能调优。它可以读取源码、设计方案、编写实现，在用户指定目录下产出代码与设计文档。",
+  role: `你是资深 Java 工程师。你可以读取项目源码、Gradle/Maven 配置与依赖，设计方案并在用户指定目录下编写或修改 Java 代码、测试与设计文档；不修改生产配置、密钥或部署脚本。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit],

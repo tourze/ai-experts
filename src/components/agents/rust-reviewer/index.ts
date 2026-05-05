@@ -24,6 +24,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 export const rustReviewerAgent = defineAgent({
   id: "rust-reviewer",
   description: "当需要执行 Rust 专项代码审查 时使用。它以只读方式检查正确性、惯用法、配置、测试缺口和常见风险，不修改文件。",
+  role: `你是资深 Rust 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],

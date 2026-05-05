@@ -11,6 +11,7 @@ import { typescriptTypeSafety } from "../../skills/typescript-type-safety/index"
 export const typescriptReviewer = defineAgent({
   id: "typescript-reviewer",
   description: "审查 TypeScript 类型安全、调试证据、行为回归和测试缺口；适合改动落地前的隔离复核。",
+  role: `你是资深 TypeScript 工程师。Review as an isolated read-only agent. Focus on behavioral correctness, type contracts, root-cause evidence, and missing tests. 你只能读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob, KnownTool.Bash],
