@@ -27,12 +27,12 @@ export const shadcnUiSkill = defineSkill({
     "文档、脚本和示例统一按当前项目形态工作：Tailwind v4 可仅靠 CSS-first 配置，不强制 `tailwind.config.*`。",
   ],
   checklist: [
-    "[ ] `components.json`、路径别名和 `cn()` 工具都已就位。",
-    "[ ] Tailwind v3/v4 配置与项目实际版本一致。",
-    "[ ] 新增组件通过 CLI 或受控模板引入，不是随手复制旧代码。",
-    "[ ] 组件样式已映射到项目 token、主题和字体体系。",
-    "[ ] 表单、弹层、表格等复杂组件的依赖都已安装。",
-    "[ ] 关键示例可对照 `examples/` 与 `resources/` 落地。",
+    "`components.json`、路径别名和 `cn()` 工具都已就位。",
+    "Tailwind v3/v4 配置与项目实际版本一致。",
+    "新增组件通过 CLI 或受控模板引入，不是随手复制旧代码。",
+    "组件样式已映射到项目 token、主题和字体体系。",
+    "表单、弹层、表格等复杂组件的依赖都已安装。",
+    "关键示例可对照 `examples/` 与 `resources/` 落地。",
   ],
   relatedSkills: [
     {

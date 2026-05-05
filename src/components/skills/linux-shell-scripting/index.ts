@@ -23,11 +23,11 @@ export const linuxShellScriptingSkill = defineSkill({
     "产出的脚本必须具备 `usage`、依赖检查、日志函数和失败返回码。",
   ],
   checklist: [
-    "[ ] shebang、`set -euo pipefail`、参数校验、依赖校验齐全。",
-    "[ ] 所有变量都被双引号包裹，路径与空格安全。",
-    "[ ] 使用 `trap` 处理临时文件、锁文件或后台进程清理。",
-    "[ ] 失败时返回非零 exit code，成功路径可复验。",
-    "[ ] 长循环、网络重试、并发任务包含超时与限次控制。",
+    "shebang、`set -euo pipefail`、参数校验、依赖校验齐全。",
+    "所有变量都被双引号包裹，路径与空格安全。",
+    "使用 `trap` 处理临时文件、锁文件或后台进程清理。",
+    "失败时返回非零 exit code，成功路径可复验。",
+    "长循环、网络重试、并发任务包含超时与限次控制。",
   ],
   relatedSkills: [
     {

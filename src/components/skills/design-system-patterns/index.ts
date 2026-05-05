@@ -26,12 +26,12 @@ export const designSystemPatternsSkill = defineSkill({
     "与 [tailwind-design-system](references/tailwind-design-system.md) 联动时，优先复用同一套 token 名称。",
   ],
   checklist: [
-    "[ ] 颜色、字号、间距、圆角、阴影都已有明确 token。",
-    "[ ] token 命名同时覆盖设计语言和业务语义。",
-    "[ ] 主题切换不会要求组件内重复维护深浅色逻辑。",
-    "[ ] 组件变体与设计稿状态一一对应。",
-    "[ ] 文档里给出了“何时新增 token、何时复用 token”的判断标准。",
-    "[ ] 至少有一个真实业务页面验证过 token 的可复用性。",
+    "颜色、字号、间距、圆角、阴影都已有明确 token。",
+    "token 命名同时覆盖设计语言和业务语义。",
+    "主题切换不会要求组件内重复维护深浅色逻辑。",
+    "组件变体与设计稿状态一一对应。",
+    "文档里给出了“何时新增 token、何时复用 token”的判断标准。",
+    "至少有一个真实业务页面验证过 token 的可复用性。",
   ],
   relatedSkills: [
     {

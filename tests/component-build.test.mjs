@@ -308,6 +308,11 @@ test("component build emits claude and codex component surfaces", () => {
           /\n\s*"[^"]+"/,
           `${skillSourceFile} should define checklist as a non-empty string array`,
         );
+        assert.doesNotMatch(
+          checklistSource,
+          /\[ \]/,
+          `${skillSourceFile} checklist items should not contain "[ ]"; the build adds checkbox markers automatically`,
+        );
       }
     }
 
@@ -348,8 +353,8 @@ test("component build emits claude and codex component surfaces", () => {
         if (source.includes("## 检查清单")) {
           assert.match(
             source,
-            /^## 检查清单\r?\n\r?\n- \S/m,
-            `${skillFile} should render checklist as generated bullet items`,
+            /^## 检查清单\r?\n\r?\n- \[ \] \S/m,
+            `${skillFile} should render checklist as generated checkbox items`,
           );
           assert.equal(
             countH2OutsideCodeFence(source, "检查清单"),

@@ -22,12 +22,12 @@ export const systemDiagnosticsSkill = defineSkill({
     "采样时间、主机名、内核、发行版和负载必须出现在报告顶部。",
   ],
   checklist: [
-    "[ ] 主机名、时间、内核、发行版、启动时长齐全。",
-    "[ ] CPU/负载、内存、磁盘、网络接口、失败服务都被采样。",
-    "[ ] 列出 Top 进程并标明资源热点。",
-    "[ ] 若日志异常，保留最近错误而不是只写“服务异常”。",
-    "[ ] 诊断报告要明确下一步应切换到哪个专用技能。诊断后如需磁盘清理参见 [references/disk-cleanup.md](references/disk-cleanup.md)，如需性能优化参见 [references/performance-optimizer.md](references/performance-optimizer.md)。",
-    "[ ] 如果执行命令失败，报告里记录命令和 stderr 摘要。",
+    "主机名、时间、内核、发行版、启动时长齐全。",
+    "CPU/负载、内存、磁盘、网络接口、失败服务都被采样。",
+    "列出 Top 进程并标明资源热点。",
+    "若日志异常，保留最近错误而不是只写“服务异常”。",
+    "诊断报告要明确下一步应切换到哪个专用技能。诊断后如需磁盘清理参见 [references/disk-cleanup.md](references/disk-cleanup.md)，如需性能优化参见 [references/performance-optimizer.md](references/performance-optimizer.md)。",
+    "如果执行命令失败，报告里记录命令和 stderr 摘要。",
   ],
   relatedSkills: [
     {

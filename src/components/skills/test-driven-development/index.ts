@@ -27,12 +27,12 @@ export const testDrivenDevelopmentSkill = defineSkill({
     "写 mock 或测试工具前先看 [testing-anti-patterns.md](./testing-anti-patterns.md)。",
   ],
   checklist: [
-    "[ ] 每个行为先有失败测试",
-    "[ ] 已确认失败原因是“功能缺失”，不是拼写或环境错误",
-    "[ ] 实现只覆盖当前测试需要的最小能力",
-    "[ ] 当前测试与相关回归测试都通过",
-    "[ ] 没在绿灯阶段偷偷加需求",
-    "[ ] 若用了 mock，确认没在测试 mock 自己",
+    "每个行为先有失败测试",
+    "已确认失败原因是“功能缺失”，不是拼写或环境错误",
+    "实现只覆盖当前测试需要的最小能力",
+    "当前测试与相关回归测试都通过",
+    "没在绿灯阶段偷偷加需求",
+    "若用了 mock，确认没在测试 mock 自己",
   ],
   relatedSkills: [
     {

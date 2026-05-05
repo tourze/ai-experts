@@ -323,7 +323,10 @@ function renderChecklist(skill) {
   const checklist = skill.checklist ?? [];
   if (checklist.length === 0) return "";
   validateTextList(skill, "checklist", "checklist item");
-  return `## 检查清单\n\n${renderMarkdownBulletList(checklist)}\n`;
+  return `## 检查清单\n\n${checklist.map((item) => {
+    const lines = String(item).trim().split(/\r?\n/);
+    return lines.map((line, index) => index === 0 ? `- [ ] ${line}` : `  ${line}`).join("\n");
+  }).join("\n")}\n`;
 }
 
 function renderRelatedSkills(skill) {

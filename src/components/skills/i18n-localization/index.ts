@@ -28,12 +28,12 @@ export const i18nLocalizationSkill = defineSkill({
     "需要静态检查时直接运行 `scripts/i18n_checker.mjs`。",
   ],
   checklist: [
-    "[ ] 所有用户可见文案都已脱离组件硬编码。",
-    "[ ] locale 目录按语言和命名空间组织清晰。",
-    "[ ] 缺失翻译时有明确回退语言。",
-    "[ ] 日期、时间、数字、货币都使用地区化 API。",
-    "[ ] RTL 页面已验证布局、图标方向和文本对齐。",
-    "[ ] 提交前已跑 `scripts/i18n_checker.mjs` 或等价 lint。",
+    "所有用户可见文案都已脱离组件硬编码。",
+    "locale 目录按语言和命名空间组织清晰。",
+    "缺失翻译时有明确回退语言。",
+    "日期、时间、数字、货币都使用地区化 API。",
+    "RTL 页面已验证布局、图标方向和文本对齐。",
+    "提交前已跑 `scripts/i18n_checker.mjs` 或等价 lint。",
   ],
   relatedSkills: [
     {
