@@ -7,11 +7,11 @@ const GIT_GLOBAL_OPTIONS_WITH_VALUE = new Set(["-C", "--git-dir", "--work-tree",
 
 // ── Git ──
 
-function collectGitInvocations(tokens, subcommand) {
+function collectCommandInvocations(tokens, cmdName, subcommand, globalOptionsWithValue = new Set()) {
   const invocations = [];
 
   for (let i = 0; i < tokens.length; i += 1) {
-    if (tokens[i] !== "git") continue;
+    if (tokens[i] !== cmdName) continue;
 
     let j = i + 1;
     while (j < tokens.length && !COMMAND_SEPARATORS.has(tokens[j])) {
@@ -26,7 +26,7 @@ function collectGitInvocations(tokens, subcommand) {
         break;
       }
 
-      if (GIT_GLOBAL_OPTIONS_WITH_VALUE.has(token) && tokens[j + 1]) {
+      if (globalOptionsWithValue.has(token) && tokens[j + 1]) {
         j += 2;
         continue;
       }
@@ -49,7 +49,11 @@ function collectGitInvocations(tokens, subcommand) {
 }
 
 export function findGitSubcommandInvocations(command, subcommand) {
-  return collectGitInvocations(tokenizeShell(command), subcommand);
+  return collectCommandInvocations(tokenizeShell(command), "git", subcommand, GIT_GLOBAL_OPTIONS_WITH_VALUE);
+}
+
+export function findSvnSubcommandInvocations(command, subcommand) {
+  return collectCommandInvocations(tokenizeShell(command), "svn", subcommand);
 }
 
 export function hasShortFlag(token, flag) {
