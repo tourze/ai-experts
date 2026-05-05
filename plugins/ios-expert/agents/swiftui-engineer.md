@@ -4,6 +4,7 @@ description: |
   当需要设计、审查或重构 SwiftUI 视图、导航、列表性能、Swift Concurrency，或按 iOS HIG / macOS HIG / Liquid Glass 规范实现界面时使用。它只读分析视图与代码，不直接修改业务文件。
 tools: Read, Glob, Grep, Bash
 skills:
+  - code-engineer-agent-framework
   - swiftui-ui-patterns
   - swiftui-performance-audit
   - swift-concurrency-expert

@@ -1,0 +1,43 @@
+cases:
+  - id: positive_end_to_end_architecture_design
+    prompt: "帮我从零设计一个多租户报表平台的架构方案，需要能评审和拆实施阶段。"
+    fixtures: []
+    rubric:
+      - "activates architecture-design-workflow for end-to-end architecture design"
+      - "starts with goals, constraints, existing system context, and non-goals before solution design"
+      - "produces high-level architecture, ADR-style decisions, implementation phases, assumptions, and risks"
+    trigger_expected: true
+
+  - id: positive_structure_existing_ideas
+    prompt: "我有一堆零散的架构想法，帮我整理成可评审的设计文档。"
+    fixtures: []
+    rubric:
+      - "uses the three-stage workflow to organize scattered ideas"
+      - "marks unverified assumptions instead of silently treating them as facts"
+      - "includes quality gates for trade-offs, rollback paths, and verification criteria"
+    trigger_expected: true
+
+  - id: positive_pushback_on_missing_constraints
+    prompt: "直接给我一个高并发订单系统架构，不用问延迟和成本，按最佳实践来。"
+    fixtures: []
+    rubric:
+      - "does not skip stage 1 when quantitative constraints are missing"
+      - "labels missing latency, throughput, availability, cost, and team constraints as pending"
+      - "does not use best practice as a substitute for trade-off reasoning"
+    trigger_expected: true
+
+  - id: negative_single_adr_only
+    prompt: "帮我把这个数据库选型决策写成 ADR。"
+    fixtures: []
+    rubric:
+      - "does not activate the full architecture design workflow for a single ADR"
+      - "routes to architecture-decision-records instead"
+    trigger_expected: false
+
+  - id: negative_system_design_overview
+    prompt: "解释一下分布式系统里一致性和可用性的取舍。"
+    fixtures: []
+    rubric:
+      - "does not activate architecture-design-workflow for conceptual system design explanation"
+      - "routes to system-design or answers directly"
+    trigger_expected: false

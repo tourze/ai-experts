@@ -4,6 +4,7 @@ description: |
   当需要端到端设计或实现 Tauri v2 桌面应用时使用——覆盖项目搭建、IPC 命令设计、权限模型、React 前端集成、插件开发、构建打包与代码签名。它可以读取源码、设计方案、编写实现，在用户指定目录下产出代码与设计文档。
 tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
+  - code-engineer-agent-framework
   - tauri-v2
   - tauri-ipc-patterns
   - tauri-react-integration

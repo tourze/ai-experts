@@ -2,16 +2,16 @@
   "version": 1,
   "metadata": {
     "run_date": "2026-05-01",
-    "skill": "thinking-expert/fact-vs-inference-vs-assumption",
+    "skill": "thinking-expert/evidence-quality-framework",
     "provider": "codex",
     "comparison": "content",
-    "cases_source": "plugins/thinking-expert/skills/fact-vs-inference-vs-assumption/evals/cases.yaml",
+    "cases_source": "plugins/thinking-expert/skills/evidence-quality-framework/evals/cases.yaml",
     "executor": "codex content benchmark",
     "grading_method": "Manual assertion grading by Codex on 2026-05-01; includes an implicit incident case designed to measure lift beyond explicit label prompts."
   },
   "runs": [
     {
-      "skill": "thinking-expert/fact-vs-inference-vs-assumption",
+      "skill": "thinking-expert/evidence-quality-framework",
       "prompt_id": "positive_fact_vs_inference_vs_assumption_primary",
       "configuration": "with_skill",
       "model": "gpt-5.4-mini",
@@ -32,7 +32,7 @@
       "comparison": "content"
     },
     {
-      "skill": "thinking-expert/fact-vs-inference-vs-assumption",
+      "skill": "thinking-expert/evidence-quality-framework",
       "prompt_id": "positive_fact_vs_inference_vs_assumption_primary",
       "configuration": "baseline",
       "model": "gpt-5.4-mini",
@@ -53,7 +53,7 @@
       "comparison": "content"
     },
     {
-      "skill": "thinking-expert/fact-vs-inference-vs-assumption",
+      "skill": "thinking-expert/evidence-quality-framework",
       "prompt_id": "positive_fact_vs_inference_vs_assumption_realistic",
       "configuration": "with_skill",
       "model": "gpt-5.4-mini",
@@ -74,7 +74,7 @@
       "comparison": "content"
     },
     {
-      "skill": "thinking-expert/fact-vs-inference-vs-assumption",
+      "skill": "thinking-expert/evidence-quality-framework",
       "prompt_id": "positive_fact_vs_inference_vs_assumption_realistic",
       "configuration": "baseline",
       "model": "gpt-5.4-mini",
@@ -95,7 +95,7 @@
       "comparison": "content"
     },
     {
-      "skill": "thinking-expert/fact-vs-inference-vs-assumption",
+      "skill": "thinking-expert/evidence-quality-framework",
       "prompt_id": "positive_fact_vs_inference_vs_assumption_implicit_incident",
       "configuration": "with_skill",
       "model": "gpt-5.4-mini",
@@ -121,7 +121,7 @@
       "comparison": "content"
     },
     {
-      "skill": "thinking-expert/fact-vs-inference-vs-assumption",
+      "skill": "thinking-expert/evidence-quality-framework",
       "prompt_id": "positive_fact_vs_inference_vs_assumption_implicit_incident",
       "configuration": "baseline",
       "model": "gpt-5.4-mini",

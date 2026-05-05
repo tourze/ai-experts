@@ -4,6 +4,7 @@ description: |
   当需要端到端设计或建设服务可观测性——覆盖指标/日志/告警/健康检查设计、Python/Go 语言落地、日志分析与事故分级时使用。它可以读取源码与配置，在用户指定目录下产出观测方案与落地脚本，但不修改生产配置。
 tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
+  - code-engineer-agent-framework
   - monitoring-observability
   - python-observability
   - go-observability

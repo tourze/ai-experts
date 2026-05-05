@@ -1,0 +1,43 @@
+cases:
+  - id: positive_design_score
+    prompt: "帮我评估这个 SKILL.md 的设计质量、结构和 knowledge delta。"
+    fixtures: []
+    rubric:
+      - "activates skill-evaluator Mode A for skill design scoring"
+      - "uses the 8-dimension 120-point rubric and evidence-driven scoring"
+      - "distinguishes Expert, Activation, and Redundant knowledge"
+    trigger_expected: true
+
+  - id: positive_closed_book_coverage
+    prompt: "拿这个官方文档当 source，闭卷验证目标 skill 有没有遗漏关键事实。"
+    fixtures: []
+    rubric:
+      - "activates skill-evaluator Mode B for knowledge coverage validation"
+      - "uses examiner/examinee/judge roles and requires 100% pass or up to 3 rounds"
+      - "reports failed questions, expected facts, actual answer, and gap"
+    trigger_expected: true
+
+  - id: positive_route_description_vs_design
+    prompt: "这个 skill 触发不准，也可能设计太空，帮我区分该用哪个评估模式。"
+    fixtures: []
+    rubric:
+      - "uses skill-evaluator for design/knowledge issues"
+      - "routes description-only trigger optimization to skill-activation-analyzer"
+      - "does not conflate trigger quality with design quality"
+    trigger_expected: true
+
+  - id: negative_create_new_skill
+    prompt: "帮我创建一个新的 Kubernetes 排障 skill。"
+    fixtures: []
+    rubric:
+      - "does not activate skill-evaluator for initial skill creation"
+      - "routes to skill-creator"
+    trigger_expected: false
+
+  - id: negative_description_only
+    prompt: "只帮我把这个 SKILL.md 的 description 改得更容易触发。"
+    fixtures: []
+    rubric:
+      - "does not use skill-evaluator for description-only optimization"
+      - "routes to skill-activation-analyzer"
+    trigger_expected: false

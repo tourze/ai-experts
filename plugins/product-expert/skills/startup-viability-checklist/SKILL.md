@@ -1,6 +1,6 @@
 ---
 name: startup-viability-checklist
-description: 当需要快速评估创业项目整体可行性时使用，输出结构化检查清单与关键风险信号。
+description: 当需要快速评估创业项目整体可行性、识别创业风险或判断项目是否值得继续投入时使用。
 ---
 
 # 创业项目可行性检查清单

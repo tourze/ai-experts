@@ -1,0 +1,41 @@
+cases:
+  - id: positive_xss_audit
+    prompt: "审计 React/Vue 代码里的 dangerouslySetInnerHTML、v-html、innerHTML 和富文本输出。"
+    fixtures: []
+    rubric:
+      - "activates owasp-xss-misconfig-audit for XSS vectors"
+      - "checks context-aware output encoding, dangerous APIs, DOMPurify-style sanitization, reflected/stored/DOM XSS, and CSP strength"
+      - "binds each finding to file:line, snippet, attack vector, and exploitability"
+    trigger_expected: true
+
+  - id: positive_security_headers
+    prompt: "检查 API 和前端站点的 CORS、CSP、HSTS、X-Frame-Options 和 cookie 安全头。"
+    fixtures: []
+    rubric:
+      - "uses the security headers audit path"
+      - "checks CORS wildcard/credentials, CSP directives, HSTS max-age/includeSubDomains, cookie flags, clickjacking and information leakage headers"
+    trigger_expected: true
+
+  - id: positive_dependency_risk
+    prompt: "审计 package.json、go.mod 和 requirements.txt 的 CVE、过期版本和供应链风险。"
+    fixtures: []
+    rubric:
+      - "uses the dependency risk audit path"
+      - "checks direct and transitive CVEs, EOL versions, lockfile reproducibility, maintenance risk, typosquatting, and license compatibility"
+    trigger_expected: true
+
+  - id: negative_auth_data
+    prompt: "审计 JWT、OAuth state 和批量赋值漏洞。"
+    fixtures: []
+    rubric:
+      - "does not activate XSS/misconfiguration audit for authentication and mass assignment only"
+      - "routes to owasp-auth-data-audit"
+    trigger_expected: false
+
+  - id: negative_command_injection
+    prompt: "审计 exec/spawn 和 path traversal 注入风险。"
+    fixtures: []
+    rubric:
+      - "does not activate XSS/misconfiguration audit for command/path injection only"
+      - "routes to owasp-injection-audit"
+    trigger_expected: false

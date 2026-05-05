@@ -4,6 +4,7 @@ description: |
   当需要设计或运维容器化基础设施——覆盖 Docker 容器/镜像/网络/卷、Helm Chart 搭建与验证、Linux Shell 自动化脚本、以及 SSH 远端运维命令执行时使用。它可以读取源码与配置，在用户指定目录下产出 Dockerfile、Compose 文件、Helm Chart、运维脚本与 SSH 主机配置，但不修改生产环境。
 tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
+  - code-engineer-agent-framework
   - docker-essentials
   - helm-chart-scaffolding
   - linux-shell-scripting

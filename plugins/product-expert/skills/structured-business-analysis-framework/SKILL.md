@@ -96,7 +96,7 @@ P1/P2 假设可只写验证方向，不写完整计划。
 
 ## 交叉引用
 
-- [`mckinsey-7-step`](../../thinking-expert/skills/mckinsey-7-step/SKILL.md)：麦肯锡七步问题解决法
-- [`first-principles-decomposer`](../../thinking-expert/skills/first-principles-decomposer/SKILL.md)：第一性原理拆解
-- [`evidence-quality-framework`](../../coding-expert/skills/evidence-quality-framework/SKILL.md)：证据质量标注方法论
+- `mckinsey-7-step`：麦肯锡七步问题解决法
+- `first-principles-decomposer`：第一性原理拆解
+- `evidence-quality-framework`：证据质量标注方法论
 - [`business-model`](../business-model/SKILL.md)：商业模式分析

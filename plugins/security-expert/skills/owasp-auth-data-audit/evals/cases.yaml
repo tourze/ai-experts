@@ -1,0 +1,42 @@
+cases:
+  - id: positive_auth_session_audit
+    prompt: "审计这个登录和 JWT 刷新链路，重点看 session、cookie 和 token 生命周期。"
+    fixtures: []
+    rubric:
+      - "activates owasp-auth-data-audit for authentication and session security"
+      - "checks token lifetime, revocation, cookie flags, session fixation, MFA, and OAuth state/redirect_uri"
+      - "binds each finding to file:line, code snippet, attack vector, and exploitability"
+    trigger_expected: true
+
+  - id: positive_secret_management_audit
+    prompt: "帮我查代码、配置和 CI 里有没有硬编码 API key、私钥或敏感数据泄露。"
+    fixtures: []
+    rubric:
+      - "uses the secret management audit path"
+      - "checks hardcoded secrets, environment/secret manager/KMS layering, log redaction, git-tracked env files, and least privilege"
+    trigger_expected: true
+
+  - id: positive_mass_assignment_audit
+    prompt: "检查这些 ORM create/update 有没有批量赋值导致 role、isAdmin、balance 被用户改。"
+    fixtures: []
+    rubric:
+      - "uses the mass assignment audit path"
+      - "checks allowlists, DTO constraints, sensitive fields, and ORM field protection"
+      - "does not treat controller-level checks as sufficient if model/DTO boundaries are unsafe"
+    trigger_expected: true
+
+  - id: negative_xss_only
+    prompt: "审计前端 dangerouslySetInnerHTML 和 CSP 配置。"
+    fixtures: []
+    rubric:
+      - "does not activate auth/data audit for XSS and security headers only"
+      - "routes to owasp-xss-misconfig-audit"
+    trigger_expected: false
+
+  - id: negative_sql_injection_only
+    prompt: "检查 SQL 查询拼接有没有注入风险。"
+    fixtures: []
+    rubric:
+      - "does not activate auth/data audit for SQL injection only"
+      - "routes to sql-review-optimization"
+    trigger_expected: false

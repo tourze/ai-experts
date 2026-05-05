@@ -4,6 +4,7 @@ description: |
   当需要端到端设计或实现 Symfony 项目时使用——覆盖 Bundle 架构、Doctrine ORM、Messenger 异步消息、Security/Voter 授权、Twig/UX 前端与批处理优化。它可以读取源码、设计方案、编写实现，在用户指定目录下产出代码与设计文档。
 tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
+  - code-engineer-agent-framework
   - symfony-bundle-architecture
   - symfony-messenger
   - symfony-ux

@@ -1,6 +1,6 @@
 ---
 name: code-review-agent-framework
-description: 所有 reviewer agent 的共享方法论骨架：工作流程、Bash 边界、输出格式、质量标准、证据绑定规范。由各语言/框架 reviewer agent 预加载。
+description: 当编写或维护只读 reviewer agent 时使用，提供跨语言代码审查的共享触发门禁、只读边界和证据绑定规则。
 ---
 
 # Code Review Agent 框架

@@ -1,6 +1,6 @@
 ---
 name: laravel-patterns
-description: 当用户需要 Laravel 分层架构、Service/Action 边界、scopeBindings、多租户路由、N+1 预防或 API 资源设计时使用。覆盖从架构组织到具体实现（Model/Migration/FormRequest/JsonResource/Job/Livewire）的全谱模式。
+description: 当用户需要处理 Laravel 分层架构、Service/Action 边界、Eloquent 模型、Migration、FormRequest、JsonResource、Job、Livewire、scopeBindings、多租户路由或 N+1 问题时使用。
 ---
 
 # Laravel 开发模式

@@ -1,6 +1,6 @@
 ---
 name: competitive-intelligence
-description: 当用户要做竞品情报、battlecard、功能差距分析、市场定位、竞品深度拆解，或用多个竞争框架交叉验证竞争态势时使用。覆盖单一竞品拆解到多框架交叉印证的全谱分析。
+description: 当用户要做竞品情报、battlecard、功能差距分析、市场定位、竞品深度拆解或竞争态势判断时使用。
 ---
 
 # 竞品情报

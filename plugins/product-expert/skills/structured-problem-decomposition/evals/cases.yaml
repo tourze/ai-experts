@@ -1,0 +1,43 @@
+cases:
+  - id: positive_ambiguous_business_problem
+    prompt: "我们增长变慢了，但不知道是产品、渠道还是组织问题，帮我系统拆一下。"
+    fixtures: []
+    rubric:
+      - "activates structured-problem-decomposition for a complex ambiguous problem"
+      - "starts with problem definition before decomposition and root-cause analysis"
+      - "uses a phased pipeline from problem framing through PDCA closure"
+    trigger_expected: true
+
+  - id: positive_multiple_root_causes
+    prompt: "客户续费率下滑，可能和价格、销售交接、产品稳定性都有关，需要排查路径。"
+    fixtures: []
+    rubric:
+      - "uses structured decomposition and root-cause stages"
+      - "marks each root-cause candidate with evidence strength and falsification method"
+      - "includes decision owner, time window, fallback, and validation checkpoints"
+    trigger_expected: true
+
+  - id: positive_skip_stage_when_context_clear
+    prompt: "问题已经定义为 onboarding 完成率低，请从假设树和验证计划开始。"
+    fixtures: []
+    rubric:
+      - "starts from stage 2 when the problem boundary is already clear"
+      - "does not force all six stages when a later entry point is justified"
+      - "still carries assumptions, validation, and PDCA follow-through"
+    trigger_expected: true
+
+  - id: negative_known_technical_bug
+    prompt: "线上接口 500，有 stack trace 和日志，帮我定位根因。"
+    fixtures: []
+    rubric:
+      - "does not activate structured-problem-decomposition for a concrete technical debugging task"
+      - "routes to debug-methodology instead"
+    trigger_expected: false
+
+  - id: negative_single_framework_request
+    prompt: "帮我画一个鱼骨图分析客服响应慢。"
+    fixtures: []
+    rubric:
+      - "does not activate the full orchestration skill for a single framework request"
+      - "routes to fishbone-diagram instead"
+    trigger_expected: false

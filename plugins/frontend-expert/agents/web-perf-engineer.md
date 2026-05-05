@@ -4,6 +4,7 @@ description: |
   当需要诊断或优化 web 前端性能，包括 Core Web Vitals (LCP / INP / CLS)、bundle 体积、浏览器渲染、JS 热路径、React 渲染或 React Server Components 优化时使用。它只读分析，不修改业务代码。
 tools: Read, Glob, Grep, Bash
 skills:
+  - code-engineer-agent-framework
   - web-performance-diagnosis
   - bundle-optimization
   - modern-javascript-patterns

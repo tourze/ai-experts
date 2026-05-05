@@ -1,6 +1,6 @@
 ---
 name: prompt-engineering-patterns
-description: 当用户要设计、优化、约束或排查生产 prompt、结构化输出、few-shot 示例，或做系统化 prompt 诊断/变体实验/评分 rubric 时使用。
+description: 当用户要设计、优化、约束或排查生产 prompt、few-shot 示例、系统 prompt、结构化响应契约或 prompt 变体实验时使用。
 ---
 
 # prompt-engineering-patterns

@@ -4,6 +4,7 @@ description: |
   当需要只读审查 .NET / Azure / Microsoft SDK 代码，校验 API 签名、官方文档 alignment、配额限制、retry / 异步模式或最佳实践时使用。它不修改业务代码、不调用任何需要凭据的 Azure 资源。
 tools: Read, Glob, Grep, Bash
 skills:
+  - code-engineer-agent-framework
   - microsoft-docs
   - evidence-quality-framework
 ---

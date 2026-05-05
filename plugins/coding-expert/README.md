@@ -7,6 +7,7 @@
 | Skill | 用途 |
 |-------|------|
 | `chrome-devtools` | 用 Chrome DevTools 做页面调试、网络排障、性能分析或 Lighthouse 审计 |
+| `code-engineer-agent-framework` | 可写 engineer agent 的共享执行骨架：实现门禁、写入边界、验证闭环与交付报告 |
 | `code-review` | 代码质量、命名、职责边界与错误处理审查 |
 | `complexity-reducer` | 降低嵌套、耦合和函数复杂度，含复杂度度量、简化指南与完成前验证检查清单 |
 | `debug-methodology` | 系统化定位 bug 与异常行为 |

@@ -4,6 +4,7 @@ description: |
   当需要端到端设计或实现 Python 项目时使用——覆盖类型安全、错误处理、异步并发、性能优化、设计模式、后台任务、可观测性建设与测试策略。它可以读取源码、设计方案、编写实现，在用户指定目录下产出代码与设计文档。
 tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
+  - code-engineer-agent-framework
   - python-type-safety
   - python-error-handling
   - async-python-patterns

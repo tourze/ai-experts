@@ -1,0 +1,41 @@
+cases:
+  - id: positive_code_review_evidence
+    prompt: "审查这个模块时，每条结论都要标事实、推断或假设，并绑定文件行号。"
+    fixtures: []
+    rubric:
+      - "activates evidence-quality-framework for evidence-tagged code review"
+      - "labels conclusions as fact, inference, or assumption"
+      - "binds findings to file:line, actual snippet, and reproducible trigger condition"
+    trigger_expected: true
+
+  - id: positive_incident_postmortem
+    prompt: "把这次事故复盘里的日志、指标和猜测分层，别把假设写成事实。"
+    fixtures: []
+    rubric:
+      - "uses three-state evidence labeling for incident analysis"
+      - "facts include log timestamp, trace id, metric, command output, or other verifiable location"
+      - "assumptions include falsification or minimal verification path"
+    trigger_expected: true
+
+  - id: positive_research_report
+    prompt: "写竞品研究报告时，把公开数据、推断和待验证假设分开标注。"
+    fixtures: []
+    rubric:
+      - "activates evidence-quality-framework for research/strategy analysis"
+      - "orders evidence by credibility and matches overall conclusion strength to the weakest link"
+      - "avoids impressionistic or unanchored assertions"
+    trigger_expected: true
+
+  - id: negative_simple_summary
+    prompt: "把这篇文章总结成三句话。"
+    fixtures: []
+    rubric:
+      - "does not activate evidence-quality-framework for a simple summary without evidence-quality requirements"
+    trigger_expected: false
+
+  - id: negative_creative_copy
+    prompt: "给新品发布写 10 条有创意的广告语。"
+    fixtures: []
+    rubric:
+      - "does not activate evidence-quality-framework for pure creative copywriting"
+    trigger_expected: false

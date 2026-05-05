@@ -1,0 +1,41 @@
+cases:
+  - id: positive_command_injection
+    prompt: "审计这段 child_process.exec 和 subprocess 调用，参数可能来自用户输入。"
+    fixtures: []
+    rubric:
+      - "activates owasp-injection-audit for command injection patterns"
+      - "checks shell mode, string concatenation, whitelist validation, least privilege, and argument-array execution"
+      - "binds each finding to file:line, snippet, attack vector, and exploitability"
+    trigger_expected: true
+
+  - id: positive_ssrf
+    prompt: "检查用户可控 URL 的 fetch/axios/webhook 回调有没有 SSRF 风险。"
+    fixtures: []
+    rubric:
+      - "uses the SSRF audit path"
+      - "checks protocol allowlist, private IP ranges, metadata endpoints, redirect revalidation, and DNS rebinding"
+    trigger_expected: true
+
+  - id: positive_path_traversal
+    prompt: "审计文件上传、path.join 和解压逻辑，担心 ../ 路径遍历和 zip slip。"
+    fixtures: []
+    rubric:
+      - "uses the path traversal audit path"
+      - "checks canonicalization, encoded traversal variants, base directory containment, random upload filenames, symlink attacks, and zip slip"
+    trigger_expected: true
+
+  - id: negative_sql_injection
+    prompt: "只检查 SQL 注入和慢查询优化。"
+    fixtures: []
+    rubric:
+      - "does not activate owasp-injection-audit for SQL-only requests"
+      - "routes to sql-review-optimization"
+    trigger_expected: false
+
+  - id: negative_auth_session
+    prompt: "检查登录态、refresh token 和 cookie 安全。"
+    fixtures: []
+    rubric:
+      - "does not activate injection audit for authentication/session-only requests"
+      - "routes to owasp-auth-data-audit"
+    trigger_expected: false

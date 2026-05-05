@@ -4,6 +4,7 @@ description: |
   当需要设计、审查或优化基于 LLM 的应用，覆盖 prompt 工程、检索增强、向量索引、embedding 选型与离线效果评估时使用。它可以读源码、写离线 eval 与 prompt 草稿，但不修改业务推理逻辑。
 tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
+  - code-engineer-agent-framework
   - llm-app-design-pipeline
   - llm-app-diagnosis-framework
   - prompt-engineering-patterns
