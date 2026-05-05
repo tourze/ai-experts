@@ -4,7 +4,7 @@ import { findSvnSubcommandInvocations } from "./git-_shell-utils.mjs";
 
 export const svnBulkOperationGuardHook = defineHook({
   id: "svn-bulk-operation-guard",
-  description: "Converted component hook.",
+  description: "拦截 svn add .、无路径 svn commit 等批量操作，防止混入无关改动。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

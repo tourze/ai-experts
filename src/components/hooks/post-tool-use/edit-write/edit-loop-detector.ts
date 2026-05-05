@@ -6,7 +6,7 @@ import { tmpdir } from "os";
 
 export const editLoopDetectorHook = defineHook({
   id: "edit-loop-detector",
-  description: "Converted component hook.",
+  description: "检测同一文件被反复编辑的试错循环。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

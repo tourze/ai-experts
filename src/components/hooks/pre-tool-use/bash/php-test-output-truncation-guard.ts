@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 export const phpTestOutputTruncationGuardHook = defineHook({
   id: "php-test-output-truncation-guard",
-  description: "Converted component hook.",
+  description: "检测 PHP 测试命令输出被 tail/head 截断，防止关键错误信息丢失。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

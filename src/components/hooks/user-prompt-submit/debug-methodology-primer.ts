@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../sdk";
 
 export const debugMethodologyPrimerHook = defineHook({
   id: "debug-methodology-primer",
-  description: "Converted component hook.",
+  description: "检测 bug 调查意图并注入假设驱动与根因追溯调试方法论。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.UserPromptSubmit,
   entry: new URL("./debug-methodology-primer.ts", import.meta.url),

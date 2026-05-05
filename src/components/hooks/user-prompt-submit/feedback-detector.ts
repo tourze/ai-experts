@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../sdk";
 
 export const feedbackDetectorHook = defineHook({
   id: "feedback-detector",
-  description: "Converted component hook.",
+  description: "检测反馈信号并注入 Reflection 五步反思工作流。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.UserPromptSubmit,
   entry: new URL("./feedback-detector.ts", import.meta.url),

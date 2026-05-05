@@ -6,7 +6,7 @@ import { execFileSync } from "child_process";
 
 export const markdownBudgetGuardHook = defineHook({
   id: "markdown-budget-guard",
-  description: "Converted component hook.",
+  description: "检查 Markdown 文件是否超出 token 预算（棘轮机制）。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

@@ -5,7 +5,7 @@ import { dirname, join, parse } from "node:path";
 
 export const frontendCreativeEnvDetectorHook = defineHook({
   id: "frontend-creative-env-detector",
-  description: "Converted component hook.",
+  description: "检测 Godot 项目引擎版本、渲染器与脚本语言配置。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.SessionStart,
   entry: new URL("./frontend-creative-env-detector.ts", import.meta.url),

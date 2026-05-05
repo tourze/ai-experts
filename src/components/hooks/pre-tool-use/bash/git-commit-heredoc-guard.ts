@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 export const gitCommitHeredocGuardHook = defineHook({
   id: "git-commit-heredoc-guard",
-  description: "Converted component hook.",
+  description: "拦截 git commit 的 heredoc 写法，统一使用 -m 字符串。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

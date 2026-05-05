@@ -5,7 +5,7 @@ import { dirname, join, parse } from "node:path";
 
 export const rustEnvDetectorHook = defineHook({
   id: "rust-env-detector",
-  description: "Converted component hook.",
+  description: "检测 Rust 项目的 edition、workspace 结构与工具链配置。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.SessionStart,
   entry: new URL("./rust-env-detector.ts", import.meta.url),

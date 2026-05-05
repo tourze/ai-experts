@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 export const databaseRedisCliRiskGuardHook = defineHook({
   id: "database-redis-cli-risk-guard",
-  description: "Converted component hook.",
+  description: "拦截 FLUSHALL、KEYS 等高危 redis-cli 命令，防止拖垮实例。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 export const devopsProductionKubectlGuardHook = defineHook({
   id: "devops-production-kubectl-guard",
-  description: "Converted component hook.",
+  description: "拦截生产环境 kubectl drain、scale 0 等高风险运维操作。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

@@ -5,7 +5,7 @@ import { matchExt } from "./frontend-_utils.mjs";
 
 export const frontendSyntaxWxssHook = defineHook({
   id: "frontend-syntax-wxss",
-  description: "Converted component hook.",
+  description: "检查 WXSS 文件括号配对和常见拼写错误。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

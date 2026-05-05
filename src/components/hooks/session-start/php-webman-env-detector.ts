@@ -5,7 +5,7 @@ import { dirname, join, parse } from "node:path";
 
 export const phpWebmanEnvDetectorHook = defineHook({
   id: "php-webman-env-detector",
-  description: "Converted component hook.",
+  description: "检测 Webman 项目的框架版本、Workerman 版本与已安装扩展。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.SessionStart,
   entry: new URL("./php-webman-env-detector.ts", import.meta.url),

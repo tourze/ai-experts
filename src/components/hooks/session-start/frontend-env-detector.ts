@@ -5,7 +5,7 @@ import { dirname, join, parse } from "node:path";
 
 export const frontendEnvDetectorHook = defineHook({
   id: "frontend-env-detector",
-  description: "Converted component hook.",
+  description: "检测前端项目的构建工具、CSS 框架、测试工具与包管理器。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.SessionStart,
   entry: new URL("./frontend-env-detector.ts", import.meta.url),

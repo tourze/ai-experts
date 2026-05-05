@@ -5,7 +5,7 @@ import { dirname, join, parse } from "node:path";
 
 export const typescriptNestjsEnvDetectorHook = defineHook({
   id: "typescript-nestjs-env-detector",
-  description: "Converted component hook.",
+  description: "检测 NestJS 项目的版本、ORM、已安装模块与编译工具。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.SessionStart,
   entry: new URL("./typescript-nestjs-env-detector.ts", import.meta.url),

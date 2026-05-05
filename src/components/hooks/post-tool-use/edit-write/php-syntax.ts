@@ -6,7 +6,7 @@ import { hasCommand, cmd, matchExt } from "./php-_utils.mjs";
 
 export const phpSyntaxHook = defineHook({
   id: "php-syntax",
-  description: "Converted component hook.",
+  description: "用 php -l 检查 PHP 文件语法错误。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

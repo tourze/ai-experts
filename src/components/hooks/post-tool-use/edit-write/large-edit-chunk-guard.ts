@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 export const largeEditChunkGuardHook = defineHook({
   id: "large-edit-chunk-guard",
-  description: "Converted component hook.",
+  description: "检测 Edit 操作中过大的替换块。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

@@ -5,7 +5,7 @@ import { readRecentTelemetryEntries, recordAuditTelemetry } from "../_shared/aud
 
 export const skillTriggerTelemetryAdvisorReminderHook = defineHook({
   id: "skill-trigger-telemetry-advisor-reminder",
-  description: "Converted component hook.",
+  description: "基于审计积累提醒使用 trigger-telemetry-advisor。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.UserPromptSubmit,
   entry: new URL("./skill-trigger-telemetry-advisor-reminder.ts", import.meta.url),

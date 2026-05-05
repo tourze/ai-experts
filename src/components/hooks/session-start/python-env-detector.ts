@@ -5,7 +5,7 @@ import { dirname, join, parse } from "node:path";
 
 export const pythonEnvDetectorHook = defineHook({
   id: "python-env-detector",
-  description: "Converted component hook.",
+  description: "检测 Python 项目的包管理器、版本、框架与虚拟环境。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.SessionStart,
   entry: new URL("./python-env-detector.ts", import.meta.url),

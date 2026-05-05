@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../sdk";
 
 export const overEngineeringPrimerHook = defineHook({
   id: "over-engineering-primer",
-  description: "Converted component hook.",
+  description: "检测过度设计风险信号并注入 KISS/YAGNI 克制提示。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.UserPromptSubmit,
   entry: new URL("./over-engineering-primer.ts", import.meta.url),

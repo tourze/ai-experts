@@ -6,7 +6,7 @@ import { extractCommandCwd, findGitSubcommandInvocations, hasShortFlag } from ".
 
 export const gitCommitMessageGuardHook = defineHook({
   id: "git-commit-message-guard",
-  description: "Converted component hook.",
+  description: "拦截模糊/过短/乱码的提交信息，强制 Conventional Commits。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

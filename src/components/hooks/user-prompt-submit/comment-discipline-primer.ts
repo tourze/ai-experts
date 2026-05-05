@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../sdk";
 
 export const commentDisciplinePrimerHook = defineHook({
   id: "comment-discipline-primer",
-  description: "Converted component hook.",
+  description: "检测注释、契约、并发或 workaround 信号并注入注释纪律。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.UserPromptSubmit,
   entry: new URL("./comment-discipline-primer.ts", import.meta.url),

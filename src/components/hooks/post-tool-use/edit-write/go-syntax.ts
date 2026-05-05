@@ -6,7 +6,7 @@ import { matchExt, hasCommand, findUp } from "./go-_utils.mjs";
 
 export const goSyntaxHook = defineHook({
   id: "go-syntax",
-  description: "Converted component hook.",
+  description: "用 gofmt 和 go vet 检查 Go 语法和静态错误。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

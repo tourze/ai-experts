@@ -7,7 +7,7 @@ import { matchExt, findUp } from "./php-_utils.mjs";
 
 export const phpLintPhpstanHook = defineHook({
   id: "php-lint-phpstan",
-  description: "Converted component hook.",
+  description: "用 PHPStan 检查 PHP 静态类型错误。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

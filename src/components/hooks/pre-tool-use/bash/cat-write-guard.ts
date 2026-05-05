@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 export const catWriteGuardHook = defineHook({
   id: "cat-write-guard",
-  description: "Converted component hook.",
+  description: "拦截 cat heredoc 写文件，防止绕过 PostToolUse 检查链。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

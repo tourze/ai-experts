@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../sdk";
 
 export const investigationPrimerHook = defineHook({
   id: "investigation-primer",
-  description: "Converted component hook.",
+  description: "检测编码任务意图并注入调查先行四步方法论。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.UserPromptSubmit,
   entry: new URL("./investigation-primer.ts", import.meta.url),

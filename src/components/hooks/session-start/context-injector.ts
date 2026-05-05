@@ -6,7 +6,7 @@ import { join } from "path";
 
 export const contextInjectorHook = defineHook({
   id: "context-injector",
-  description: "Converted component hook.",
+  description: "注入 Git 状态、脏文件摘要与记忆文件存在性等起手上下文。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.SessionStart,
   entry: new URL("./context-injector.ts", import.meta.url),

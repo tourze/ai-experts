@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 export const securitySecretLeakGuardHook = defineHook({
   id: "security-secret-leak-guard",
-  description: "Converted component hook.",
+  description: "拦截读取私钥、凭据文件及通过网络发送敏感变量等泄露风险。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

@@ -4,7 +4,7 @@ import { normalize } from "path";
 
 export const phpProtectedPathsHook = defineHook({
   id: "php-protected-paths",
-  description: "Converted component hook.",
+  description: "拦截修改 vendor/、composer.lock 等 PHP/Composer 自动生成路径。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

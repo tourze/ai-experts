@@ -6,7 +6,7 @@ import { hasCommand, cmd, matchExt } from "./devops-linux-_utils.mjs";
 
 export const devopsLinuxLintShellcheckHook = defineHook({
   id: "devops-linux-lint-shellcheck",
-  description: "Converted component hook.",
+  description: "用 ShellCheck 检查脚本并验证防御性 set。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

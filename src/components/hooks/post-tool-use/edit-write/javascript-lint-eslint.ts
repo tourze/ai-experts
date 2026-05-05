@@ -7,7 +7,7 @@ import { cmd, matchExt, findUp } from "./javascript-_utils.mjs";
 
 export const javascriptLintEslintHook = defineHook({
   id: "javascript-lint-eslint",
-  description: "Converted component hook.",
+  description: "用 ESLint 检查 JavaScript 代码质量问题。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

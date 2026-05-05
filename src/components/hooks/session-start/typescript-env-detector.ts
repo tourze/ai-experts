@@ -5,7 +5,7 @@ import { dirname, join, parse } from "node:path";
 
 export const typescriptEnvDetectorHook = defineHook({
   id: "typescript-env-detector",
-  description: "Converted component hook.",
+  description: "检测 TypeScript 项目的 tsconfig 严格模式、编译目标与 monorepo 结构。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.SessionStart,
   entry: new URL("./typescript-env-detector.ts", import.meta.url),

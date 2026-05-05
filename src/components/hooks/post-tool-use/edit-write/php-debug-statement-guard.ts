@@ -6,7 +6,7 @@ import { execFileSync } from "child_process";
 
 export const phpDebugStatementGuardHook = defineHook({
   id: "php-debug-statement-guard",
-  description: "Converted component hook.",
+  description: "检测 PHP 文件中残留的调试语句。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

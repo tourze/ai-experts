@@ -5,7 +5,7 @@ import { dirname, join, parse } from "node:path";
 
 export const phpEnvDetectorHook = defineHook({
   id: "php-env-detector",
-  description: "Converted component hook.",
+  description: "检测 PHP 项目的版本约束、框架与 composer 配置。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.SessionStart,
   entry: new URL("./php-env-detector.ts", import.meta.url),

@@ -5,7 +5,7 @@ import { dirname, join, parse } from "node:path";
 
 export const iosEnvDetectorHook = defineHook({
   id: "ios-env-detector",
-  description: "Converted component hook.",
+  description: "检测 iOS/macOS 项目的 Xcode 结构、SPM/CocoaPods 与 Swift 版本。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.SessionStart,
   entry: new URL("./ios-env-detector.ts", import.meta.url),

@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../sdk";
 
 export const compactionStrategyHook = defineHook({
   id: "compaction-strategy",
-  description: "Converted component hook.",
+  description: "在上下文压缩前注入信息保留优先级策略。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreCompact,
   entry: new URL("./compaction-strategy.ts", import.meta.url),

@@ -5,7 +5,7 @@ import { dirname, join, parse } from "node:path";
 
 export const reactEnvDetectorHook = defineHook({
   id: "react-env-detector",
-  description: "Converted component hook.",
+  description: "检测 React 项目的版本、渲染目标、状态管理与构建工具。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.SessionStart,
   entry: new URL("./react-env-detector.ts", import.meta.url),

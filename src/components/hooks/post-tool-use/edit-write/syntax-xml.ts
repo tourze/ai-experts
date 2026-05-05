@@ -6,7 +6,7 @@ import { hasCommand, matchExt } from "./_utils.mjs";
 
 export const syntaxXmlHook = defineHook({
   id: "syntax-xml",
-  description: "Converted component hook.",
+  description: "用 xmllint 检查 XML 文件语法错误。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

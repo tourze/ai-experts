@@ -6,7 +6,7 @@ import { execFileSync } from "child_process";
 
 export const rustDebugStatementGuardHook = defineHook({
   id: "rust-debug-statement-guard",
-  description: "Converted component hook.",
+  description: "检测多语言文件中残留的调试语句。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

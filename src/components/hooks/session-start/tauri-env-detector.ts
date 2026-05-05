@@ -5,7 +5,7 @@ import { dirname, join, parse } from "node:path";
 
 export const tauriEnvDetectorHook = defineHook({
   id: "tauri-env-detector",
-  description: "Converted component hook.",
+  description: "检测 Tauri 项目的版本、应用标识、前端框架与构建目标。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.SessionStart,
   entry: new URL("./tauri-env-detector.ts", import.meta.url),

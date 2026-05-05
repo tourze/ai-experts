@@ -5,7 +5,7 @@ import { extname } from "path";
 
 export const mergeConflictGuardHook = defineHook({
   id: "merge-conflict-guard",
-  description: "Converted component hook.",
+  description: "检测文件中残留的合并冲突标记。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

@@ -5,7 +5,7 @@ import { dirname, join, parse } from "node:path";
 
 export const javascriptVueEnvDetectorHook = defineHook({
   id: "javascript-vue-env-detector",
-  description: "Converted component hook.",
+  description: "检测 Vue 项目的版本、构建工具、状态管理与 UI 框架。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.SessionStart,
   entry: new URL("./javascript-vue-env-detector.ts", import.meta.url),

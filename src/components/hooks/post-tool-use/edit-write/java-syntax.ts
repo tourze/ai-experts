@@ -8,7 +8,7 @@ import { matchExt } from "./java-_utils.mjs";
 
 export const javaSyntaxHook = defineHook({
   id: "java-syntax",
-  description: "Converted component hook.",
+  description: "用 javac 检查 Java 文件语法错误。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

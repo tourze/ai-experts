@@ -6,7 +6,7 @@ import { cmd, matchExt } from "./javascript-_utils.mjs";
 
 export const javascriptSyntaxHook = defineHook({
   id: "javascript-syntax",
-  description: "Converted component hook.",
+  description: "用 node --check 检查 JavaScript 语法错误。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

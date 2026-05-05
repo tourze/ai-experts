@@ -5,7 +5,7 @@ import { dirname, join, parse } from "node:path";
 
 export const goEnvDetectorHook = defineHook({
   id: "go-env-detector",
-  description: "Converted component hook.",
+  description: "检测 Go 项目的模块路径、版本约束与 workspace 结构。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.SessionStart,
   entry: new URL("./go-env-detector.ts", import.meta.url),

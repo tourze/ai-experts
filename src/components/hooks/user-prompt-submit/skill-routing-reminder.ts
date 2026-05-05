@@ -7,7 +7,7 @@ import {
 
 export const skillRoutingReminderHook = defineHook({
   id: "skill-routing-reminder",
-  description: "Converted component hook.",
+  description: "每轮注入轻量 skill 路由声明与下一步推荐提醒。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.UserPromptSubmit,
   entry: new URL("./skill-routing-reminder.ts", import.meta.url),

@@ -7,7 +7,7 @@ import { matchExt } from "./typescript-_utils.mjs";
 
 export const typescriptSyntaxHook = defineHook({
   id: "typescript-syntax",
-  description: "Converted component hook.",
+  description: "用 esbuild 检查 TypeScript 文件语法错误。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

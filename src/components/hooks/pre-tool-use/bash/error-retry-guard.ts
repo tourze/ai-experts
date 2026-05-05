@@ -6,7 +6,7 @@ import { tmpdir } from "os";
 
 export const errorRetryGuardHook = defineHook({
   id: "error-retry-guard",
-  description: "Converted component hook.",
+  description: "检测连续重复执行相同命令，达到阈值时报告或阻断。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

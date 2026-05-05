@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 export const dbDangerousSqlGuardHook = defineHook({
   id: "db-dangerous-sql-guard",
-  description: "Converted component hook.",
+  description: "拦截 DROP、TRUNCATE、无 WHERE 的 DELETE 等破坏性 SQL 命令。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

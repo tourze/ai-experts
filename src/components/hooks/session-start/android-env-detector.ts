@@ -5,7 +5,7 @@ import { dirname, join, parse } from "node:path";
 
 export const androidEnvDetectorHook = defineHook({
   id: "android-env-detector",
-  description: "Converted component hook.",
+  description: "检测 Android 项目的 SDK 版本、AGP、Kotlin 与 Gradle 配置。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.SessionStart,
   entry: new URL("./android-env-detector.ts", import.meta.url),

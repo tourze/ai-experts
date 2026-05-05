@@ -4,7 +4,7 @@ import { findGitSubcommandInvocations, hasShortFlag } from "./git-_shell-utils.m
 
 export const gitAddGuardHook = defineHook({
   id: "git-add-guard",
-  description: "Converted component hook.",
+  description: "拦截 git add -A / . 等批量暂存，强制逐文件 staged。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

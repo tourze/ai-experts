@@ -6,7 +6,7 @@ import { hasCommand, cmd, matchExt } from "./devops-linux-_utils.mjs";
 
 export const devopsLinuxSyntaxZshHook = defineHook({
   id: "devops-linux-syntax-zsh",
-  description: "Converted component hook.",
+  description: "用 zsh -n 检查 Zsh 脚本语法错误。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

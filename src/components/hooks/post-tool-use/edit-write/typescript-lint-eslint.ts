@@ -7,7 +7,7 @@ import { findUp, matchExt } from "./typescript-_utils.mjs";
 
 export const typescriptLintEslintHook = defineHook({
   id: "typescript-lint-eslint",
-  description: "Converted component hook.",
+  description: "用 ESLint 检查 TypeScript 代码质量问题。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

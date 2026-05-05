@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 export const garbledTextGuardHook = defineHook({
   id: "garbled-text-guard",
-  description: "Converted component hook.",
+  description: "检测写入内容中的 U+FFFD 乱码字符，防止写入损坏文本。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

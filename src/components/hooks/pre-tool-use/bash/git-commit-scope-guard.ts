@@ -5,7 +5,7 @@ import { extractCommandCwd } from "./git-_shell-utils.mjs";
 
 export const gitCommitScopeGuardHook = defineHook({
   id: "git-commit-scope-guard",
-  description: "Converted component hook.",
+  description: "检测提交范围跨度过大，提醒拆分为原子提交。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

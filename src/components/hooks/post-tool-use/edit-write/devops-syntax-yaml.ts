@@ -5,7 +5,7 @@ import { hasCommand, cmd, matchExt } from "./devops-_utils.mjs";
 
 export const devopsSyntaxYamlHook = defineHook({
   id: "devops-syntax-yaml",
-  description: "Converted component hook.",
+  description: "检查 YAML 文件语法错误。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

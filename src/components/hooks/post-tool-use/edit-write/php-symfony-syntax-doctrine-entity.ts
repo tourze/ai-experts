@@ -5,7 +5,7 @@ import { pathContains, matchExt } from "./php-symfony-_utils.mjs";
 
 export const phpSymfonySyntaxDoctrineEntityHook = defineHook({
   id: "php-symfony-syntax-doctrine-entity",
-  description: "Converted component hook.",
+  description: "检查 Doctrine Entity 属性映射和注解规范。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

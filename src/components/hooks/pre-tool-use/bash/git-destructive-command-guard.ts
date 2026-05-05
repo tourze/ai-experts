@@ -4,7 +4,7 @@ import { findGitSubcommandInvocations, hasShortFlag } from "./git-_shell-utils.m
 
 export const gitDestructiveCommandGuardHook = defineHook({
   id: "git-destructive-command-guard",
-  description: "Converted component hook.",
+  description: "拦截 git reset --hard、push --force 等破坏性 Git 命令。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

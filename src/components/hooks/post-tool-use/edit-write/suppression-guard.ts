@@ -6,7 +6,7 @@ import { basename, dirname, extname, relative } from "path";
 
 export const suppressionGuardHook = defineHook({
   id: "suppression-guard",
-  description: "Converted component hook.",
+  description: "检测无理由的 ESLint/TS 静态检查抑制注释。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../sdk";
 
 export const docsVisualStructurePrimerHook = defineHook({
   id: "docs-visual-structure-primer",
-  description: "Converted component hook.",
+  description: "检测架构或链路信号并注入纯文本可视化与结构化表达规则。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.UserPromptSubmit,
   entry: new URL("./docs-visual-structure-primer.ts", import.meta.url),

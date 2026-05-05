@@ -7,7 +7,7 @@ import { isCppSourceFile } from "./_utils.mjs";
 
 export const debugStatementGuardHook = defineHook({
   id: "debug-statement-guard",
-  description: "Converted component hook.",
+  description: "检测 C/C++ 文件中残留的调试输出语句。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

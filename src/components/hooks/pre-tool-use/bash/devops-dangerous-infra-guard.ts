@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 export const devopsDangerousInfraGuardHook = defineHook({
   id: "devops-dangerous-infra-guard",
-  description: "Converted component hook.",
+  description: "拦截 terraform destroy、kubectl delete ns 等高危基础设施命令。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

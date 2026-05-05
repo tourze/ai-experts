@@ -5,7 +5,7 @@ import { matchExt } from "./frontend-_utils.mjs";
 
 export const frontendSyntaxTaroDomHook = defineHook({
   id: "frontend-syntax-taro-dom",
-  description: "Converted component hook.",
+  description: "检测 Taro 文件中的小程序不兼容 DOM API。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

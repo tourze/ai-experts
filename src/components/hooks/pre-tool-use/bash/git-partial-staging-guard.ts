@@ -5,7 +5,7 @@ import { extractCommandCwd } from "./git-_shell-utils.mjs";
 
 export const gitPartialStagingGuardHook = defineHook({
   id: "git-partial-staging-guard",
-  description: "Converted component hook.",
+  description: "检测同一文件同时存在 staged 与 unstaged 改动，防止部分提交遗漏。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

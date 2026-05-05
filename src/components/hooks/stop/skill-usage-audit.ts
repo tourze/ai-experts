@@ -16,7 +16,7 @@ import { recordAuditTelemetry } from "../_shared/audit-telemetry.mjs";
 
 export const skillUsageAuditHook = defineHook({
   id: "skill-usage-audit",
-  description: "Converted component hook.",
+  description: "审计每轮 skill 路由命中、调用与未调用情况。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.Stop,
   entry: new URL("./skill-usage-audit.ts", import.meta.url),

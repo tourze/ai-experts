@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 export const sedInplaceGuardHook = defineHook({
   id: "sed-inplace-guard",
-  description: "Converted component hook.",
+  description: "拦截 sed -i 无备份原地修改，推荐使用 Edit 工具替代。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

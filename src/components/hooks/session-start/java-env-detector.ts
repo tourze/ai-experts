@@ -5,7 +5,7 @@ import { dirname, join, parse } from "node:path";
 
 export const javaEnvDetectorHook = defineHook({
   id: "java-env-detector",
-  description: "Converted component hook.",
+  description: "检测 Java 项目的构建工具、JDK 版本与 Spring Boot 配置。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.SessionStart,
   entry: new URL("./java-env-detector.ts", import.meta.url),

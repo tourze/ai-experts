@@ -5,7 +5,7 @@ import { basename, extname } from "path";
 
 export const encodingGuardHook = defineHook({
   id: "encoding-guard",
-  description: "Converted component hook.",
+  description: "检测文件中的 BOM 头和非 UTF-8 编码。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

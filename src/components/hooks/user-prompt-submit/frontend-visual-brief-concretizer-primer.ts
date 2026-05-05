@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../sdk";
 
 export const frontendVisualBriefConcretizerPrimerHook = defineHook({
   id: "frontend-visual-brief-concretizer-primer",
-  description: "Converted component hook.",
+  description: "检测抽象视觉词并注入审美词翻译为可执行 brief 的引导。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.UserPromptSubmit,
   entry: new URL("./frontend-visual-brief-concretizer-primer.ts", import.meta.url),

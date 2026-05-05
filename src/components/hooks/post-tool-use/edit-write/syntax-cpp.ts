@@ -7,7 +7,7 @@ import { isCppSourceFile, cmd, hasCommand } from "./_utils.mjs";
 
 export const syntaxCppHook = defineHook({
   id: "syntax-cpp",
-  description: "Converted component hook.",
+  description: "用 clang/gcc 检查 C/C++ 文件语法错误。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

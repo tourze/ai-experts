@@ -7,7 +7,7 @@ import { countLines, getLowerBaseName } from "./_utils.mjs";
 
 export const fileBudgetGuardHook = defineHook({
   id: "file-budget-guard",
-  description: "Converted component hook.",
+  description: "检查代码文件是否超出行数预算（棘轮机制）。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

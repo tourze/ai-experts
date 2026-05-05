@@ -7,7 +7,7 @@ import { extractCommandCwd, quoteShellArg } from "./git-_shell-utils.mjs";
 
 export const gitStaleLockGuardHook = defineHook({
   id: "git-stale-lock-guard",
-  description: "Converted component hook.",
+  description: "检测并自动清理 stale 的 .git/index.lock 文件。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

@@ -4,7 +4,7 @@ import { basename, normalize } from "node:path";
 
 export const securitySecretWriteGuardHook = defineHook({
   id: "security-secret-write-guard",
-  description: "Converted component hook.",
+  description: "拦截向 .env、*.pem、私钥等敏感路径写入内容。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

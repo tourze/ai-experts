@@ -7,7 +7,7 @@ import { dirname } from "path";
 
 export const phpSyntaxComposerHook = defineHook({
   id: "php-syntax-composer",
-  description: "Converted component hook.",
+  description: "用 composer validate 检查 composer.json 合法性。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

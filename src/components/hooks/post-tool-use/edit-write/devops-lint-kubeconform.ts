@@ -6,7 +6,7 @@ import { hasCommand, cmd, matchExt } from "./devops-_utils.mjs";
 
 export const devopsLintKubeconformHook = defineHook({
   id: "devops-lint-kubeconform",
-  description: "Converted component hook.",
+  description: "用 kubeconform 校验 Kubernetes manifest schema。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

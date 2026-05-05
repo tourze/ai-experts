@@ -5,7 +5,7 @@ import { dirname, join, parse } from "node:path";
 
 export const phpLaravelEnvDetectorHook = defineHook({
   id: "php-laravel-env-detector",
-  description: "Converted component hook.",
+  description: "检测 Laravel 项目的版本、关键包、队列驱动与环境标识。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.SessionStart,
   entry: new URL("./php-laravel-env-detector.ts", import.meta.url),

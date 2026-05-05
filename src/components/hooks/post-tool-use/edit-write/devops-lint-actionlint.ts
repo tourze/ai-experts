@@ -6,7 +6,7 @@ import { hasCommand, cmd, matchExt, pathContains } from "./devops-_utils.mjs";
 
 export const devopsLintActionlintHook = defineHook({
   id: "devops-lint-actionlint",
-  description: "Converted component hook.",
+  description: "用 actionlint 检查 GitHub Actions 工作流。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../sdk";
 
 export const confusionProtocolHook = defineHook({
   id: "confusion-protocol",
-  description: "Converted component hook.",
+  description: "检测高歧义决策信号并注入命名歧义、呈现选项、问用户协议。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.UserPromptSubmit,
   entry: new URL("./confusion-protocol.ts", import.meta.url),

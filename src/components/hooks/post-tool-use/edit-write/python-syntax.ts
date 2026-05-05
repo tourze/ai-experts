@@ -6,7 +6,7 @@ import { hasCommand, cmd, matchExt } from "./python-_utils.mjs";
 
 export const pythonSyntaxHook = defineHook({
   id: "python-syntax",
-  description: "Converted component hook.",
+  description: "用 py_compile 检查 Python 文件语法错误。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

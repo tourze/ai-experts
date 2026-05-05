@@ -5,7 +5,7 @@ import { matchExt } from "./ios-_utils.mjs";
 
 export const iosLintSwiftConcurrencyHook = defineHook({
   id: "ios-lint-swift-concurrency",
-  description: "Converted component hook.",
+  description: "检测 Swift 并发反模式（Task.detached 等）。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

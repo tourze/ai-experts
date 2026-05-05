@@ -5,7 +5,7 @@ import { matchExt } from "./_utils.mjs";
 
 export const syntaxJsonHook = defineHook({
   id: "syntax-json",
-  description: "Converted component hook.",
+  description: "检查 JSON 文件语法错误。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

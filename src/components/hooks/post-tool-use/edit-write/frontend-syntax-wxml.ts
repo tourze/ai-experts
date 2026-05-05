@@ -5,7 +5,7 @@ import { matchExt } from "./frontend-_utils.mjs";
 
 export const frontendSyntaxWxmlHook = defineHook({
   id: "frontend-syntax-wxml",
-  description: "Converted component hook.",
+  description: "检查 WXML 模板标签和表达式配对。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

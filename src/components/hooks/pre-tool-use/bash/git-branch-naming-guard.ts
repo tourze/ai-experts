@@ -4,7 +4,7 @@ import { findGitSubcommandInvocations } from "./git-_shell-utils.mjs";
 
 export const gitBranchNamingGuardHook = defineHook({
   id: "git-branch-naming-guard",
-  description: "Converted component hook.",
+  description: "强制新建分支遵循 <type>/<slug> 命名规范。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

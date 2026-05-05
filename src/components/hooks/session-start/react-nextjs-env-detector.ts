@@ -5,7 +5,7 @@ import { dirname, join, parse } from "node:path";
 
 export const reactNextjsEnvDetectorHook = defineHook({
   id: "react-nextjs-env-detector",
-  description: "Converted component hook.",
+  description: "检测 Next.js 项目的版本、路由模式、部署目标与关键配置。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.SessionStart,
   entry: new URL("./react-nextjs-env-detector.ts", import.meta.url),

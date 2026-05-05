@@ -6,7 +6,7 @@ import { extractCommandCwd, findSvnSubcommandInvocations } from "./git-_shell-ut
 
 export const svnCommitMessageGuardHook = defineHook({
   id: "svn-commit-message-guard",
-  description: "Converted component hook.",
+  description: "拦截 SVN 模糊/过短提交信息，建议使用 Conventional Commits 格式。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

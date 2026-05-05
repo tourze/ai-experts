@@ -19,7 +19,7 @@ import {
 
 export const skillNextStepGateHook = defineHook({
   id: "skill-next-step-gate",
-  description: "Converted component hook.",
+  description: "拦截缺少下一步推荐区块的回复并要求补全。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.Stop,
   entry: new URL("./skill-next-step-gate.ts", import.meta.url),

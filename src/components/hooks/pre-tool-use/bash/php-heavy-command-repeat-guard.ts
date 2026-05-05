@@ -6,7 +6,7 @@ import { tmpdir } from "os";
 
 export const phpHeavyCommandRepeatGuardHook = defineHook({
   id: "php-heavy-command-repeat-guard",
-  description: "Converted component hook.",
+  description: "追踪 phpunit/phpstan 等重量级命令重复执行，超限时报告或阻断。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

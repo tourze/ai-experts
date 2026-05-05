@@ -6,7 +6,7 @@ import { hasCommand, cmd, matchExt, findUp } from "./python-_utils.mjs";
 
 export const pythonLintRuffHook = defineHook({
   id: "python-lint-ruff",
-  description: "Converted component hook.",
+  description: "用 Ruff 检查 Python 代码风格和错误。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

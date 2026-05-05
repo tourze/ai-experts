@@ -7,7 +7,7 @@ import { matchExt, hasCommand, cmd, findUp } from "./php-symfony-_utils.mjs";
 
 export const phpSymfonySyntaxTwigHook = defineHook({
   id: "php-symfony-syntax-twig",
-  description: "Converted component hook.",
+  description: "检查 Twig 模板语法和标签配对。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

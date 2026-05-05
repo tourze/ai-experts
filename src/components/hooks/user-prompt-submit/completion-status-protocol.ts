@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../sdk";
 
 export const completionStatusProtocolHook = defineHook({
   id: "completion-status-protocol",
-  description: "Converted component hook.",
+  description: "在编码任务中注入标准化退出状态报告协议。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.UserPromptSubmit,
   entry: new URL("./completion-status-protocol.ts", import.meta.url),

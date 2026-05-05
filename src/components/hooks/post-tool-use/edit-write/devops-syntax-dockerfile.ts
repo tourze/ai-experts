@@ -7,7 +7,7 @@ import { basename } from "path";
 
 export const devopsSyntaxDockerfileHook = defineHook({
   id: "devops-syntax-dockerfile",
-  description: "Converted component hook.",
+  description: "检查 Dockerfile 语法和常见反模式。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

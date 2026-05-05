@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 export const dangerousCommandGuardHook = defineHook({
   id: "dangerous-command-guard",
-  description: "Converted component hook.",
+  description: "拦截 rm -rf /、~ 等破坏性文件系统命令，防止数据丢失。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Bash],

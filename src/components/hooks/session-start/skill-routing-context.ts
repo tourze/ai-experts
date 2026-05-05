@@ -4,7 +4,7 @@ import { SESSION_START_ROUTING_CONTEXT } from "../_shared/skill-routing-rules.mj
 
 export const skillRoutingContextHook = defineHook({
   id: "skill-routing-context",
-  description: "Converted component hook.",
+  description: "注入 skill 路由规则上下文，辅助会话内 skill 自动匹配。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.SessionStart,
   entry: new URL("./skill-routing-context.ts", import.meta.url),

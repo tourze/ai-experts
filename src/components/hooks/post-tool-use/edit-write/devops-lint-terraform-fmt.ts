@@ -6,7 +6,7 @@ import { hasCommand, cmd, matchExt } from "./devops-_utils.mjs";
 
 export const devopsLintTerraformFmtHook = defineHook({
   id: "devops-lint-terraform-fmt",
-  description: "Converted component hook.",
+  description: "用 terraform fmt 检查 HCL 格式规范。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PostToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],

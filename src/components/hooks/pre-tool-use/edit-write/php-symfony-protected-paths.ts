@@ -4,7 +4,7 @@ import { normalize } from "node:path";
 
 export const phpSymfonyProtectedPathsHook = defineHook({
   id: "php-symfony-protected-paths",
-  description: "Converted component hook.",
+  description: "拦截修改 var/cache/、public/build/ 等 Symfony 自动生成路径。",
   platforms: [Platform.Claude, Platform.Codex],
   event: HookEvent.PreToolUse,
   matcher: [KnownTool.Edit, KnownTool.Write, KnownTool.MultiEdit, KnownTool.ApplyPatch],
