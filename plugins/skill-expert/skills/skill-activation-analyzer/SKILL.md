@@ -31,7 +31,7 @@ Skill 路由成败取决于三件事：
 
 | 技能 | 关注点 |
 |------|--------|
-| `skill-judge` | skill **整体设计质量**（知识增量、结构、自由度） |
+| `skill-evaluator` | skill **整体设计质量**（知识增量、结构、自由度）和**知识覆盖验证** |
 | `skill-activation-analyzer` | skill **触发行为质量**（命中、漏触发、误触发、冲突）+ **description 文本质量**（静态审查） |
 
 ## NEVER

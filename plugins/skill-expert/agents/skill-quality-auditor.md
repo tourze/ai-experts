@@ -4,8 +4,7 @@ description: |
   当需要审计仓库 skill 质量、诊断触发命中、为 SKILL 设计打分、闭卷验证知识覆盖、扫描 description 路由风险或定位重复 skill 时使用。它只读分析，不修改任何 skill 文件。
 tools: Read, Glob, Grep, Bash
 skills:
-  - skill-judge
-  - skill-verifier
+  - skill-evaluator
   - skill-activation-analyzer
   - trigger-telemetry-advisor
   - skills-prune-and-sync-readme
@@ -18,8 +17,8 @@ skills:
 
 1. 先确认审计范围：单个 skill / 单个 plugin / 全仓库；明确用户关心的维度（结构、知识覆盖、触发、重复、telemetry）。
 2. 区分四类问题，分别派发对应 skill：
-   - 设计评分（结构、frontmatter、knowledge delta）→ `skill-judge`
-   - 知识覆盖度（闭卷考能否独立支撑任务）→ `skill-verifier`
+   - 设计评分（结构、frontmatter、knowledge delta）→ `skill-evaluator` Mode A
+   - 知识覆盖度（闭卷考能否独立支撑任务）→ `skill-evaluator` Mode B
    - description 触发表达（CSO、shortcut 风险、模板违规）→ `skill-activation-analyzer`（静态审查模式）
    - 路由行为（漏触发、误触发、多 skill 抢请求）→ `skill-activation-analyzer`
    - 运行时遥测（hook/skill telemetry、误触发、错误热点）→ `trigger-telemetry-advisor`
@@ -32,7 +31,7 @@ skills:
 - frontmatter 必须满足 skill-activation-analyzer 静态审查规则：只描述触发条件，不写流程/输出格式。
 - description 触发域之间的重叠优先用 `skill-activation-analyzer` 的冲突矩阵核实，不靠肉眼。
 - 闭卷验证只在源材料明确（官方文档、参考实现）时跑，避免出题失真。
-- 区分「设计差」与「触发差」：skill-judge 与 skill-activation-analyzer 不可互相替代。
+- 区分「设计差」与「触发差」：skill-evaluator Mode A 与 skill-activation-analyzer 不可互相替代。
 - 引用 telemetry 必须给出工作区或会话标识、时间窗口和样本量，不引用孤证。
 - `block` / `report` / `context` / `error` 才是可行动热点；`skip` 只用于判断覆盖范围和运行成本。
 
@@ -52,13 +51,13 @@ Bash 只用于跑仓库内只读脚本（`skill-quality-report.mjs`、`trigger-a
 [运行的脚本、参数、采样窗口、覆盖 skill 数]
 
 ## 设计评分发现
-[skill-judge 维度问题：结构、frontmatter、knowledge delta，引用文件路径]
+[skill-evaluator 维度问题：结构、frontmatter、knowledge delta，引用文件路径]
 
 ## 触发域风险
 [skill-activation-analyzer 发现：shortcut、模板违规、重叠矩阵摘录]
 
 ## 知识覆盖缺口
-[skill-verifier 闭卷题目分布、失败题、推断的知识漏洞]
+[skill-evaluator 闭卷题目分布、失败题、推断的知识漏洞]
 
 ## 运行时遥测信号
 [trigger-telemetry-advisor 抽取的命中率、错误热点、噪音 skill]

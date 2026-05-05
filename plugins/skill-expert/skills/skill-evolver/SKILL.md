@@ -13,8 +13,8 @@ description: 当需要把一个 skill 的优势迁移到另一个 skill、对比
 |----------|------|
 | 用 skill B 优化 skill A、把 B 的能力迁移到 A、两个 skill 做 A/B 对标 | 本 skill |
 | 创建新 skill、改一个没有参考源的 skill、跑 with-skill/baseline 迭代 | [skill-creator](../skill-creator/SKILL.md) |
-| 给单个 skill/package 打设计分 | [skill-judge](../skill-judge/SKILL.md) |
-| 用源材料闭卷验证 skill 知识覆盖 | [skill-verifier](../skill-verifier/SKILL.md) |
+| 给单个 skill/package 打设计分 | [skill-evaluator](../skill-evaluator/SKILL.md) Mode A |
+| 用源材料闭卷验证 skill 知识覆盖 | [skill-evaluator](../skill-evaluator/SKILL.md) Mode B |
 | 只优化 frontmatter description 触发质量 | [skill-activation-analyzer](../skill-activation-analyzer/SKILL.md) |
 
 ## 核心原则

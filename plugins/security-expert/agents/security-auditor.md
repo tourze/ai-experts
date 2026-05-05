@@ -8,6 +8,9 @@ skills:
   - security-threat-model
   - frontend-dynamic-code-protection
   - sql-review-optimization
+  - owasp-injection-audit
+  - owasp-auth-data-audit
+  - owasp-xss-misconfig-audit
   - evidence-quality-framework
 ---
 你是资深应用安全工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。
@@ -25,17 +28,17 @@ skills:
 | 触发信号 | 使用 skill | 检查项 | 输出 |
 |---------|-----------|--------|------|
 | route/handler/controller/endpoint/`app.get(`/`@PostMapping`/API 入口 | security-threat-model | 入口枚举完整性、输入源追踪、攻击面映射 | 攻击面清单 |
-| token/JWT/session/cookie/OAuth/`login`/`authenticate`/`set-cookie` | (inline) | 令牌生命周期、传输安全（HTTPS only）、存储位置（httpOnly/Secure）、撤销机制、MFA 覆盖缺口 | 认证会话审计 |
-| secret/key/password/`api_key`/`API_KEY`/credential/PII/`process.env` | (inline) | 硬编码检测、密钥存储层级（env/secret manager/KMS）、日志脱敏、错误消息泄漏 | 密钥管理审计 |
+| token/JWT/session/cookie/OAuth/`login`/`authenticate`/`set-cookie` | owasp-auth-data-audit | 令牌生命周期、传输安全（HTTPS only）、存储位置（httpOnly/Secure）、撤销机制、MFA 覆盖缺口 | 认证会话审计 |
+| secret/key/password/`api_key`/`API_KEY`/credential/PII/`process.env` | owasp-auth-data-audit | 硬编码检测、密钥存储层级（env/secret manager/KMS）、日志脱敏、错误消息泄漏 | 密钥管理审计 |
 | `SELECT`/`INSERT`/`UPDATE`/`DELETE`/`execute(`/`raw(`/模板拼接 | sql-review-optimization | SQLi 向量、参数化覆盖率、ORM escape 配置、拼接链溯源 | SQL 注入审计 |
-| `innerHTML`/`dangerouslySetInnerHTML`/`v-html`/`document.write` | (inline) | XSS 向量（reflected/stored/DOM）、输出编码策略、CSP header 强度 | XSS 审计 |
-| `fetch(`/`axios.`/`http.get`/URL 可控的请求/`SSRF` | (inline) | 请求目标可控性、内网地址过滤、协议白名单、redirect 跟随风险 | SSRF 审计 |
-| `exec(`/`spawn(`/`system(`/`eval(`/`child_process`/`Runtime.exec` | (inline) | 命令参数可控性、shell 注入、沙箱/容器隔离、最小权限 | 命令注入审计 |
-| 文件上传/`path.join`/`fs.readFile`/`../`/路径拼接 | (inline) | path traversal 向量、文件名校验、存储路径隔离、类型白名单 | 文件安全审计 |
-| `assign(`/`bind(`/`updateAll`/`mass assignment`/ORM save | (inline) | 属性白名单、DTO 约束、不可信输入绑定、ORM mass-assignment 防护 | 批量赋值审计 |
+| `innerHTML`/`dangerouslySetInnerHTML`/`v-html`/`document.write` | owasp-xss-misconfig-audit | XSS 向量（reflected/stored/DOM）、输出编码策略、CSP header 强度 | XSS 审计 |
+| `fetch(`/`axios.`/`http.get`/URL 可控的请求/`SSRF` | owasp-injection-audit | 请求目标可控性、内网地址过滤、协议白名单、redirect 跟随风险 | SSRF 审计 |
+| `exec(`/`spawn(`/`system(`/`eval(`/`child_process`/`Runtime.exec` | owasp-injection-audit | 命令参数可控性、shell 注入、沙箱/容器隔离、最小权限 | 命令注入审计 |
+| 文件上传/`path.join`/`fs.readFile`/`../`/路径拼接 | owasp-injection-audit | path traversal 向量、文件名校验、存储路径隔离、类型白名单 | 文件安全审计 |
+| `assign(`/`bind(`/`updateAll`/`mass assignment`/ORM save | owasp-auth-data-audit | 属性白名单、DTO 约束、不可信输入绑定、ORM mass-assignment 防护 | 批量赋值审计 |
 | anti-bot/反爬/JS 混淆/动态加载/参数签名/H5 防刷 | frontend-dynamic-code-protection | 混淆可逆性、签名密钥生命周期、challenge 一次性、重放控制 | 前端防护审计 |
-| CORS/CSP/HSTS/`helmet`/安全头/Secure flag | (inline) | 安全头缺失、CORS 过度宽松、CSP unsafe-inline、cookie flag 遗漏 | 安全头审计 |
-| `package.json`/`Cargo.toml`/`go.mod`/`requirements.txt`/依赖 | (inline) | 已知 CVE、版本过期、间接依赖风险、lockfile 完整性 | 依赖风险审计 |
+| CORS/CSP/HSTS/`helmet`/安全头/Secure flag | owasp-xss-misconfig-audit | 安全头缺失、CORS 过度宽松、CSP unsafe-inline、cookie flag 遗漏 | 安全头审计 |
+| `package.json`/`Cargo.toml`/`go.mod`/`requirements.txt`/依赖 | owasp-xss-misconfig-audit | 已知 CVE、版本过期、间接依赖风险、lockfile 完整性 | 依赖风险审计 |
 
 ## 编排顺序
 

@@ -1,6 +1,6 @@
 ---
 name: ux-researcher-designer
-description: 当用户需要做用户研究、需求验证、persona 构建或设计复盘时使用。适用于用户研究、需求验证、设计复盘，以及需要把访谈与行为数据收敛成可执行设计输入的场景。
+description: 当用户需要做用户研究、需求验证、persona 构建或设计复盘时使用（设计视角：访谈→persona→设计输入）。市场/客户研究用 `customer-research`；旅程图触点可视化用 `customer-journey-map`。
 ---
 
 # UX Researcher Designer

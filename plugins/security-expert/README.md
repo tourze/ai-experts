@@ -8,7 +8,7 @@
 
 | Agent | 适用场景 | 预加载 skill |
 |-------|----------|--------------|
-| `security-auditor` | 应用层只读漏洞审计：OWASP top 10、认证授权、敏感数据流、API 输入校验、前端防刷保护 | code-review-agent-framework, security-threat-model, frontend-dynamic-code-protection, sql-review-optimization, evidence-quality-framework |
+| `security-auditor` | 应用层只读漏洞审计：OWASP top 10、认证授权、敏感数据流、API 输入校验、前端防刷保护 | code-review-agent-framework, security-threat-model, frontend-dynamic-code-protection, sql-review-optimization, owasp-injection-audit, owasp-auth-data-audit, owasp-xss-misconfig-audit, evidence-quality-framework |
 | `mobile-security-auditor` | Android APK / iOS IPA 客户端安全：manifest、组件暴露、硬编码 secret、deeplink、反逆向态势 | android-apk-audit, android-manifest-security, android-frida-script-catalog, intent-deeplink-abuse, apktool, jadx, dex-dumper, ios-binary-analysis, ios-secret-scan, anti-reversing-techniques |
 | `pentest-operator` | 在已授权工程中执行主机发现、漏洞利用验证、提权与后渗透 | ethical-hacking-methodology, nmap, linux-privilege-escalation, active-directory-attacks, broken-authentication, file-path-traversal, api-fuzzing-bug-bounty, intent-deeplink-abuse, top-web-vulnerabilities |
 | `reverse-engineer` | 二进制 / APK / IPA / 固件 / 内存 / 协议的静态反汇编、反编译、动态 hook、符号与结构恢复 | binary-analysis-patterns, apktool, jadx, dex-dumper, idapython-scripting, frida-dynamic-analysis, android-frida-script-catalog, unicorn-emulation, symbol-recovery, struct-recovery, anti-reversing-techniques, ios-binary-analysis, chipsec, protocol-reverse-engineering, wireshark-analysis, memory-forensics |
@@ -34,6 +34,9 @@
 | `active-directory-attacks` | Active Directory 攻击技术 |
 | `linux-privilege-escalation` | Linux 提权技术 |
 | `nmap` | 网络侦察与端口扫描 |
+| `owasp-auth-data-audit` | 认证会话安全、密钥管理、批量赋值漏洞审计 |
+| `owasp-injection-audit` | 命令注入、SSRF、路径遍历等注入类漏洞审计 |
+| `owasp-xss-misconfig-audit` | XSS 跨站脚本、安全头配置、依赖风险审计 |
 | `wireshark-analysis` | 网络流量分析 |
 | `binary-analysis-patterns` | 二进制反汇编/反编译/控制流分析 |
 | `anti-reversing-techniques` | 反逆向与混淆保护技术 |

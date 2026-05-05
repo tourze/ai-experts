@@ -1,6 +1,6 @@
 ---
 name: ux-heuristics
-description: 当用户需要诊断界面可用性问题或做启发式评估时使用。适用于可用性审计、导航混乱、表单阻塞、信息架构复盘，以及”用户不知道下一步做什么”的场景。
+description: 当用户需要诊断界面可用性问题或做启发式评估时使用（交互层：导航混乱、表单阻塞、信息架构复盘）。产品策略级设计审视用 `product-design-critic`；UI 实现质量审查用 `frontend-design-review`。
 ---
 
 # UX Heuristics

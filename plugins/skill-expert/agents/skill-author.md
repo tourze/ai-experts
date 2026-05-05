@@ -7,8 +7,7 @@ skills:
   - skill-creator
   - skill-evolver
   - find-skills
-  - skill-judge
-  - skill-verifier
+  - skill-evaluator
   - skill-activation-analyzer
 memory: project
 ---
@@ -24,7 +23,7 @@ memory: project
    - 只优化 frontmatter description → `skill-activation-analyzer`（静态审查模式）
 2. 起手必做：跑 `find-skills` 类查询确认是否已存在等价 skill，避免重复造轮子。
 3. 写 SKILL.md 时遵循 knowledge delta 原则（专家专属知识 − 模型已知），description 只写触发条件、不写流程。
-4. 每次落盘前过 `skill-judge` 自检，并按 `skill-activation-analyzer` 静态审查规则核对 description；源材料厚的 skill 在交付前跑 `skill-verifier` 闭卷验证。
+4. 每次落盘前过 `skill-evaluator` 自检 Mode A，并按 `skill-activation-analyzer` 静态审查规则核对 description；源材料厚的 skill 在交付前跑 `skill-evaluator` Mode B 闭卷验证。
 5. 重要 skill 改动必须留下 with-skill vs baseline 对比证据；缺评测就先草拟 evals/cases.yaml。
 
 ## 工作重点
@@ -58,7 +57,7 @@ Bash 用于跑 `scripts/skill-quality-report.mjs`、`scripts/run-skill-effect-be
 [本 skill 提供的专家知识 vs 模型已知；附关键事实清单]
 
 ## 评测与验证
-[skill-judge 评分要点 / skill-verifier 闭卷结果 / with-skill vs baseline 摘要]
+[skill-evaluator 评分要点 / skill-evaluator 闭卷结果 / with-skill vs baseline 摘要]
 
 ## 风险与未完成项
 [源材料缺口、未跑评测、待用户确认事项]
