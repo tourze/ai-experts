@@ -230,7 +230,7 @@ test("component build emits claude and codex component surfaces", () => {
     assert.doesNotMatch(codexAgent, /model = "sonnet"/);
     assert.match(codexAgent, /sandbox_mode = "workspace-write"/);
     assert.match(codexAgent, /你是资深 Web 前端工程师/);
-    assert.match(codexAgent, /## Skill Orchestration/);
+    assert.match(codexAgent, /## 技能编排/);
     assert.match(codexAgent, /\[\[skills\.config\]\]\npath = "~\/\.agents\/skills\/modern-web-design\/SKILL\.md"\nenabled = true/);
     assert.match(codexAgent, /## Bash 使用边界/);
     assert.match(codexAgent, /## 质量标准/);

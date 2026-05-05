@@ -696,7 +696,7 @@ function renderClaudeAgent(agent) {
     "",
     body,
     "",
-    "## Skill Orchestration",
+    "## 技能编排",
     skillRoutes,
     "",
   ].join("\n");
@@ -731,7 +731,7 @@ function renderCodexAgent(agent) {
     "",
     body,
     "",
-    "## Skill Orchestration",
+    "## 技能编排",
     skillRoutes,
     "",
     "When a listed skill is relevant, explicitly route the work through that skill's workflow.",
