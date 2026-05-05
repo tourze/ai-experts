@@ -34,6 +34,14 @@ export const industryDesignPresetsSkill = defineSkill({
       reason: "要和 `modern-web-design`、font-pairing-library、`design-system-patterns` 联动。",
     },
   ],
+  checklist: [
+    "已挑出主行业 preset + 必要氛围词。",
+    "5 要素（风格 / 配色 / 字体 / 效果 / 反模式）全部确认，而非只挑喜欢的。",
+    "已检查 preset 的 AVOID 清单，没踩反模式。",
+    "配色接入了设计系统 semantic token，不是组件里硬写。",
+    "字体按 font-pairing-library 导入，不是每处自己写 font-family。",
+    "风格实现对照 modern-web-design 的 CSS 特征清单。",
+  ],
   antiPatterns: [
     defineAntiPattern({
       fail: "跨行业套捷径",

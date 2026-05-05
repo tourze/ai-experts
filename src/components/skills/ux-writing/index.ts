@@ -43,6 +43,17 @@ export const uxWritingSkill = defineSkill({
       reason: "`web-design-guidelines`",
     },
   ],
+  checklist: [
+    "按钮是动词 + 名词，不用 Submit/OK/Confirm。",
+    "错误同时说 what / why / fix。",
+    "空态给“这是什么 + 下一步 CTA”，不止 No results。",
+    "Placeholder 和真 label 共存，不替代。",
+    "敏感操作措辞反映真实后果。",
+    "全产品大小写 / 标点 / 人称统一。",
+    "i18n 友好：不字符串拼接，留 30% 膨胀空间。",
+    "无 AI 腔（Please kindly / Effortlessly / thrilled to...）。",
+    "配合 product-design-critic 的行业反模式。",
+  ],
   antiPatterns: [
     defineAntiPattern({
       fail: "字符串拼接 / Placeholder 当 label",

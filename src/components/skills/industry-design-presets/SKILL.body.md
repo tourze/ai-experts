@@ -46,15 +46,6 @@
 
 → 深蓝 + 增长绿是金融业界长期语义编码；低饱和表面 + 清晰层级 = 信任感；Inter 的几何感传递"现代+专业"。
 
-## 验证清单
-
-- [ ] 已挑出主行业 preset + 必要氛围词。
-- [ ] 5 要素（风格 / 配色 / 字体 / 效果 / 反模式）全部确认，而非只挑喜欢的。
-- [ ] 已检查 preset 的 **AVOID** 清单，没踩反模式。
-- [ ] 配色接入了设计系统 semantic token，不是组件里硬写。
-- [ ] 字体按 [font-pairing-library](references/font-pairing-library.md) 导入，不是每处自己写 `font-family`。
-- [ ] 风格实现对照 `modern-web-design` 的 CSS 特征清单。
-
 ## 参考资料
 
 - [references/presets-catalog.md](references/presets-catalog.md) — 索引（指向下列分类文件）

@@ -54,12 +54,3 @@ result = await task.get_result()           # 完成后读取结果
 
 → 无竞态；变更可审计（diff 分支）；可回滚（删除分支）。
 
-## 验证清单
-
-- [ ] System prompt 是否有明确的缓存边界？静态段是否真正不变？
-- [ ] 每个子 Agent 是否有 `max_turns` 限制？
-- [ ] fork/fresh 决策是否有明确理由（而非默认值）？
-- [ ] 四种状态（turn/session/persistent/project）是否分别用了合适的存储？
-- [ ] 后台 Agent 是否有任务跟踪机制（状态查询、取消、输出持久化）？
-- [ ] 扩展点是否通过协议/事件暴露，而非要求改核心代码？
-- [ ] 每个 prompt 段是否可独立测试？

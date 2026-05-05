@@ -37,18 +37,6 @@
 
 → 按钮说明结果；错误给 what+why+fix；空态教学+下一步 CTA；删除明示不可逆。
 
-## 验证清单
-
-- [ ] 按钮是**动词 + 名词**，不用 Submit/OK/Confirm。
-- [ ] 错误同时说 **what / why / fix**。
-- [ ] 空态给"这是什么 + 下一步 CTA"，不止 "No results"。
-- [ ] Placeholder 和真 label 共存，不替代。
-- [ ] 敏感操作措辞**反映真实后果**。
-- [ ] 全产品大小写 / 标点 / 人称统一。
-- [ ] i18n 友好：不字符串拼接，留 30% 膨胀空间。
-- [ ] 无 AI 腔（"Please kindly" / "Effortlessly" / "thrilled to..."）。
-- [ ] 配合 `product-design-critic` 的行业反模式。
-
 ## 参考资料
 
 - [references/copy-patterns.md](references/copy-patterns.md) — 按钮/错误/空态/确认/Toast/敏感操作模板

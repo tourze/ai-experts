@@ -90,14 +90,3 @@
 - 给出实施阶段和验收标准，不是一坨设计文档。
 - 弹性策略有具体数值（超时多少 ms、重试几次），不是"设一个合理的值"。
 
-## 与相关 skill 的关系
-
-| 需要深挖时 | 用这个 skill |
-|-----------|-------------|
-| 架构全貌方法论 | `system-design` |
-| ADR 格式与系统边界分析 | `architecture-decision-records` |
-| 模块设计与设计原则 | `software-design` |
-| 协议版本冻结 | `protocol-freezing-patterns` |
-| 错误分层与传播 | `error-handling-patterns` |
-| 任务拆解与关键路径 | `task-decomposer` |
-| 数据系统细节 | `system-design` 的 [references/ddia-systems.md](../system-design/references/ddia-systems.md) |
