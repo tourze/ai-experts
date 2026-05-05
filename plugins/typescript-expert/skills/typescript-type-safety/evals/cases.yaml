@@ -30,6 +30,29 @@ cases:
     prompt: "My Node.js server keeps crashing with ECONNREFUSED when connecting to Redis"
     fixtures: []
     rubric:
-      - "does not activate typescript magician workflow"
+      - "does not activate typescript type safety workflow"
       - "runtime connection errors are not TypeScript type system issues"
+    trigger_expected: false
+
+  - id: positive_offensive_typesafety_primary
+    prompt: "我需要在搭建新的 TypeScript 技术栈、设计路由/API/数据库边界，或把字符串协议升级为编译器可验证合同的时候使用。"
+    fixtures: []
+    rubric:
+      - "recognizes the request as boundary type contract territory"
+      - "uses the skill-specific workflow or domain criteria instead of giving a generic answer"
+    trigger_expected: true
+
+  - id: positive_offensive_typesafety_realistic
+    prompt: "帮我处理这个场景：需要为新项目选型，决定路由、表单、服务端接口、数据库模型如何共享同一份合同。"
+    fixtures: []
+    rubric:
+      - "matches a concrete use case described by the skill"
+      - "keeps the response focused on the skill's domain boundary"
+    trigger_expected: true
+
+  - id: negative_general_unrelated_task
+    prompt: "请帮我写一封简短的会议改期通知邮件"
+    fixtures: []
+    rubric:
+      - "general writing or administrative requests are outside this skill"
     trigger_expected: false
