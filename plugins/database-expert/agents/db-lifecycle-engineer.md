@@ -6,7 +6,6 @@ tools: Read, Glob, Grep, Bash, Write, Edit
 skills:
   - code-engineer-agent-framework
   - db-schema-design
-  - db-index-strategy
   - sql-review-optimization
   - db-ha-replication
   - mysql-transaction-locking

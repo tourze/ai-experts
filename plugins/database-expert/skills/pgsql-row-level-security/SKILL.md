@@ -11,7 +11,7 @@ description: "当用户要实现或审查 PostgreSQL 行级安全策略、多租
 - 按角色（admin / manager / member）限制行级可见范围
 - 连接池共享连接，每次请求通过 `SET LOCAL` 设置会话变量驱动 RLS
 - 需要用 `SET ROLE` 测试策略的正确性
-- 租户列设计参见 [db-schema-design](../db-schema-design/SKILL.md)；tenant_id 前缀索引参见 [db-index-strategy](../db-index-strategy/SKILL.md)
+- 租户列设计参见 [db-schema-design](../db-schema-design/SKILL.md)；索引策略参见 [sql-review-optimization](../sql-review-optimization/SKILL.md)
 
 ## 核心约束
 

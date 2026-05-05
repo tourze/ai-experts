@@ -7,7 +7,7 @@
 | Skill | 用途 |
 |-------|------|
 | `db-ha-replication` | 主从复制、GTID、半同步与故障切换 |
-| `db-index-strategy` | 跨引擎索引策略（MySQL B+Tree / PostgreSQL B-tree, GIN, GiST, BRIN）、复合索引顺序与 EXPLAIN |
+| `db-index-strategy` | （已合并到 sql-review-optimization）原跨引擎索引策略内容已整合至 sql-review-optimization |
 | `db-schema-design` | 表结构、列类型、约束、字符集、JSON/JSONB 与半结构化数据建模 |
 | `mysql-transaction-locking` | InnoDB 事务隔离、行锁、间隙锁与死锁诊断 |
 | `pgsql-partitioning` | 声明式分区、裁剪验证与生命周期管理 |
@@ -16,7 +16,7 @@
 | `redis-cluster-ha` | Sentinel、Cluster、持久化与容量规划 |
 | `redis-data-modeling` | 数据结构选型（String/Hash/ZSet/Stream）、键命名规范与分布式锁 |
 | `redis-pitfall-diagnostics` | 诡异行为、卡顿、OOM、TTL 异常、主从不一致排查 |
-| `sql-review-optimization` | SQL 审查（安全/正确性/运维风险）+ 慢查询调优（EXPLAIN / 索引 / 分页 / join order） |
+| `sql-review-optimization` | SQL 审查（安全/正确性/运维风险）+ 慢查询调优 + 深度索引策略（EXPLAIN / 索引类型 / 复合索引 / 分页 / join order） |
 
 ## Agents
 

@@ -11,7 +11,7 @@ description: "当用户要设计或审查数据库表结构、列类型、约束
 - 审查 CREATE TABLE 语句的类型精度、约束完整性和默认值合理性。
 - 表含稀疏或半结构化属性，需判断用 JSON/JSONB 列还是范式化。
 - 对 JSON 内部字段建索引以支持查询过滤。
-- 与索引设计联动，为索引打好列基础，联动 [db-index-strategy](../db-index-strategy/SKILL.md)。
+- 与索引设计联动，为索引打好列基础，联动 [sql-review-optimization](../sql-review-optimization/SKILL.md)（含深度索引策略）。
 - 与 SQL 调优联动，表结构决定查询路径的上限，联动 [sql-review-optimization](../sql-review-optimization/SKILL.md)。
 
 ## 核心约束
