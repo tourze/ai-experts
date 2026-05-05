@@ -56,7 +56,7 @@ export const baoyuCompressImageSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "main",
-      entry: new URL("./scripts/main.mjs", import.meta.url),
+      entry: new URL("./scripts/main.ts", import.meta.url),
       target: "scripts/main.mjs",
       runtime: "node",
       bundle: false,

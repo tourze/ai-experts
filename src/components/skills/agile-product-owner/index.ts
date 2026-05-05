@@ -71,7 +71,7 @@ export const agileProductOwnerSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "user-story-generator",
-      entry: new URL("./scripts/user_story_generator.mjs", import.meta.url),
+      entry: new URL("./scripts/user_story_generator.ts", import.meta.url),
       target: "scripts/user_story_generator.mjs",
       runtime: "node",
       bundle: false,

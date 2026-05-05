@@ -67,7 +67,7 @@ export const copywritingSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "content-filter",
-      entry: new URL("./scripts/content_filter.mjs", import.meta.url),
+      entry: new URL("./scripts/content_filter.ts", import.meta.url),
       target: "scripts/content_filter.mjs",
       runtime: "node",
       bundle: false,

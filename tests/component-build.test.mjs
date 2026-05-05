@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { dirname, extname, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import test from "node:test";
 
@@ -62,6 +62,20 @@ function countH2OutsideCodeFenceMatching(source, predicate) {
 
 function stripFrontmatter(source) {
   return source.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n+/, "");
+}
+
+function extractRelativeRuntimeSpecifiers(source) {
+  const specifiers = [];
+  for (const match of source.matchAll(/^\s*(?:import|export|})[^\n]*\bfrom\s+["'](\.[^"']+)["']/gm)) {
+    specifiers.push(match[1]);
+  }
+  for (const match of source.matchAll(/^\s*import\s+["'](\.[^"']+)["']/gm)) {
+    specifiers.push(match[1]);
+  }
+  for (const match of source.matchAll(/\bimport\(\s*["'](\.[^"']+)["']\s*\)/g)) {
+    specifiers.push(match[1]);
+  }
+  return specifiers;
 }
 
 function firstNonEmptyLine(source) {
@@ -156,6 +170,54 @@ test("component build emits claude and codex component surfaces", () => {
     assert.equal(
       existsSync(join(tmp, "codex/skills/screenshot/assets/screenshot.png")),
       true,
+    );
+    const sourceMjsSkillScripts = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
+      file.split(/[\\/]/).includes("scripts") && file.endsWith(".mjs")
+    );
+    assert.deepEqual(sourceMjsSkillScripts, [], "skill script source files should use TypeScript");
+    const generatedTsSkillScripts = collectFiles(join(tmp, "claude/skills"), (file) =>
+      file.split(/[\\/]/).includes("scripts") && file.endsWith(".ts")
+    );
+    assert.deepEqual(generatedTsSkillScripts, [], "generated skill scripts should not copy TypeScript source files");
+    const generatedMjsScriptsWithExtensionlessImports = collectFiles(join(tmp, "claude/skills"), (file) =>
+      file.split(/[\\/]/).includes("scripts") && file.endsWith(".mjs")
+    ).filter((file) => {
+      const source = readFileSync(file, "utf-8");
+      return extractRelativeRuntimeSpecifiers(source).some((specifier) => {
+        const leaf = specifier.split("/").at(-1) ?? "";
+        return extname(leaf) === "";
+      });
+    });
+    assert.deepEqual(
+      generatedMjsScriptsWithExtensionlessImports,
+      [],
+      "generated .mjs scripts should keep Node-resolvable relative import extensions",
+    );
+    const generatedMjsScriptsWithMissingRelativeImports = collectFiles(join(tmp, "claude/skills"), (file) =>
+      file.split(/[\\/]/).includes("scripts") && file.endsWith(".mjs")
+    ).flatMap((file) => {
+      const source = readFileSync(file, "utf-8");
+      return extractRelativeRuntimeSpecifiers(source)
+        .map((specifier) => join(dirname(file), specifier))
+        .filter((target) => !existsSync(target));
+    });
+    assert.deepEqual(
+      generatedMjsScriptsWithMissingRelativeImports,
+      [],
+      "generated .mjs scripts should only import files that exist in dist",
+    );
+    const generatedMjsScriptsWithDuplicateShebangs = collectFiles(join(tmp, "claude/skills"), (file) =>
+      file.split(/[\\/]/).includes("scripts") && file.endsWith(".mjs")
+    ).filter((file) => {
+      const shebangLines = readFileSync(file, "utf-8")
+        .split(/\r?\n/)
+        .filter((line) => line.startsWith("#!"));
+      return shebangLines.length > 1;
+    });
+    assert.deepEqual(
+      generatedMjsScriptsWithDuplicateShebangs,
+      [],
+      "generated .mjs scripts should not contain duplicate shebangs",
     );
 
     const goTestingPatternsSkill = readFileSync(
@@ -589,7 +651,10 @@ test("component build emits claude and codex component surfaces", () => {
       );
     }
 
-    for (const skillSourceFile of collectFiles(join(repoRoot, "src/components/skills"), (file) => file.endsWith("index.ts"))) {
+    for (const skillSourceFile of collectFiles(
+      join(repoRoot, "src/components/skills"),
+      (file) => file.endsWith("index.ts") && !file.split(/[\\/]/).includes("scripts"),
+    )) {
       const source = readFileSync(skillSourceFile, "utf-8");
       assert.match(source, /\n\s*useCases:\s*\[/, `${skillSourceFile} should define useCases`);
       assert.match(source, /\n\s*constraints:\s*\[/, `${skillSourceFile} should define constraints`);

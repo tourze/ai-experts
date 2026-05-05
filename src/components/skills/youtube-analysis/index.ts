@@ -65,7 +65,7 @@ export const youtubeAnalysisSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "analyze-video",
-      entry: new URL("./scripts/analyze_video.mjs", import.meta.url),
+      entry: new URL("./scripts/analyze_video.ts", import.meta.url),
       target: "scripts/analyze_video.mjs",
       runtime: "node",
       bundle: false,
@@ -73,7 +73,7 @@ export const youtubeAnalysisSkill = defineSkill({
     }),
     defineSkillScript({
       id: "fetch-transcript",
-      entry: new URL("./scripts/fetch_transcript.mjs", import.meta.url),
+      entry: new URL("./scripts/fetch_transcript.ts", import.meta.url),
       target: "scripts/fetch_transcript.mjs",
       runtime: "node",
       bundle: false,
@@ -81,7 +81,7 @@ export const youtubeAnalysisSkill = defineSkill({
     }),
     defineSkillScript({
       id: "utils",
-      entry: new URL("./scripts/utils.mjs", import.meta.url),
+      entry: new URL("./scripts/utils.ts", import.meta.url),
       target: "scripts/utils.mjs",
       runtime: "node",
       bundle: false,

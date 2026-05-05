@@ -91,7 +91,7 @@ export const markitdownSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "batch-convert",
-      entry: new URL("./scripts/batch_convert.mjs", import.meta.url),
+      entry: new URL("./scripts/batch_convert.ts", import.meta.url),
       target: "scripts/batch_convert.mjs",
       runtime: "node",
       bundle: false,
@@ -99,7 +99,7 @@ export const markitdownSkill = defineSkill({
     }),
     defineSkillScript({
       id: "convert-literature",
-      entry: new URL("./scripts/convert_literature.mjs", import.meta.url),
+      entry: new URL("./scripts/convert_literature.ts", import.meta.url),
       target: "scripts/convert_literature.mjs",
       runtime: "node",
       bundle: false,
@@ -107,7 +107,7 @@ export const markitdownSkill = defineSkill({
     }),
     defineSkillScript({
       id: "convert-with-ai",
-      entry: new URL("./scripts/convert_with_ai.mjs", import.meta.url),
+      entry: new URL("./scripts/convert_with_ai.ts", import.meta.url),
       target: "scripts/convert_with_ai.mjs",
       runtime: "node",
       bundle: false,
@@ -115,7 +115,7 @@ export const markitdownSkill = defineSkill({
     }),
     defineSkillScript({
       id: "markitdown-runtime",
-      entry: new URL("./scripts/markitdown_runtime.mjs", import.meta.url),
+      entry: new URL("./scripts/markitdown_runtime.ts", import.meta.url),
       target: "scripts/markitdown_runtime.mjs",
       runtime: "node",
       bundle: false,

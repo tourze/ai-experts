@@ -83,7 +83,7 @@ export const promptEngineeringPatternsSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "optimize-prompt",
-      entry: new URL("./scripts/optimize-prompt.mjs", import.meta.url),
+      entry: new URL("./scripts/optimize-prompt.ts", import.meta.url),
       target: "scripts/optimize-prompt.mjs",
       runtime: "node",
       bundle: false,

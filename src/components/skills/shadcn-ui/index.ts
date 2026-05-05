@@ -79,7 +79,7 @@ export const shadcnUiSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "verify-setup",
-      entry: new URL("./scripts/verify-setup.mjs", import.meta.url),
+      entry: new URL("./scripts/verify-setup.ts", import.meta.url),
       target: "scripts/verify-setup.mjs",
       runtime: "node",
       bundle: false,

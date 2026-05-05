@@ -55,7 +55,7 @@ export const architectureReviewerSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "scan-codebase",
-      entry: new URL("./scripts/scan_codebase.mjs", import.meta.url),
+      entry: new URL("./scripts/scan_codebase.ts", import.meta.url),
       target: "scripts/scan_codebase.mjs",
       runtime: "node",
       bundle: false,

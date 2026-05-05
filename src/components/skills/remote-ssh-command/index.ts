@@ -50,7 +50,7 @@ export const remoteSshCommandSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "install-sshpass",
-      entry: new URL("./scripts/install-sshpass.mjs", import.meta.url),
+      entry: new URL("./scripts/install-sshpass.ts", import.meta.url),
       target: "scripts/install-sshpass.mjs",
       runtime: "node",
       bundle: false,
@@ -58,7 +58,7 @@ export const remoteSshCommandSkill = defineSkill({
     }),
     defineSkillScript({
       id: "ssh-exec",
-      entry: new URL("./scripts/ssh-exec.mjs", import.meta.url),
+      entry: new URL("./scripts/ssh-exec.ts", import.meta.url),
       target: "scripts/ssh-exec.mjs",
       runtime: "node",
       bundle: false,

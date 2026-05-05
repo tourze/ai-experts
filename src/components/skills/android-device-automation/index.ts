@@ -43,7 +43,7 @@ export const androidDeviceAutomationSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "app-launcher",
-      entry: new URL("./scripts/app_launcher.mjs", import.meta.url),
+      entry: new URL("./scripts/app_launcher.ts", import.meta.url),
       target: "scripts/app_launcher.mjs",
       runtime: "node",
       bundle: false,
@@ -51,7 +51,7 @@ export const androidDeviceAutomationSkill = defineSkill({
     }),
     defineSkillScript({
       id: "build-and-test",
-      entry: new URL("./scripts/build_and_test.mjs", import.meta.url),
+      entry: new URL("./scripts/build_and_test.ts", import.meta.url),
       target: "scripts/build_and_test.mjs",
       runtime: "node",
       bundle: false,
@@ -59,7 +59,7 @@ export const androidDeviceAutomationSkill = defineSkill({
     }),
     defineSkillScript({
       id: "common",
-      entry: new URL("./scripts/common.mjs", import.meta.url),
+      entry: new URL("./scripts/common.ts", import.meta.url),
       target: "scripts/common.mjs",
       runtime: "node",
       bundle: false,
@@ -67,7 +67,7 @@ export const androidDeviceAutomationSkill = defineSkill({
     }),
     defineSkillScript({
       id: "diagnose-app",
-      entry: new URL("./scripts/diagnose_app.mjs", import.meta.url),
+      entry: new URL("./scripts/diagnose_app.ts", import.meta.url),
       target: "scripts/diagnose_app.mjs",
       runtime: "node",
       bundle: false,
@@ -75,7 +75,7 @@ export const androidDeviceAutomationSkill = defineSkill({
     }),
     defineSkillScript({
       id: "emu-health-check",
-      entry: new URL("./scripts/emu_health_check.mjs", import.meta.url),
+      entry: new URL("./scripts/emu_health_check.ts", import.meta.url),
       target: "scripts/emu_health_check.mjs",
       runtime: "node",
       bundle: false,
@@ -83,7 +83,7 @@ export const androidDeviceAutomationSkill = defineSkill({
     }),
     defineSkillScript({
       id: "emulator-manage",
-      entry: new URL("./scripts/emulator_manage.mjs", import.meta.url),
+      entry: new URL("./scripts/emulator_manage.ts", import.meta.url),
       target: "scripts/emulator_manage.mjs",
       runtime: "node",
       bundle: false,
@@ -91,7 +91,7 @@ export const androidDeviceAutomationSkill = defineSkill({
     }),
     defineSkillScript({
       id: "gesture",
-      entry: new URL("./scripts/gesture.mjs", import.meta.url),
+      entry: new URL("./scripts/gesture.ts", import.meta.url),
       target: "scripts/gesture.mjs",
       runtime: "node",
       bundle: false,
@@ -99,7 +99,7 @@ export const androidDeviceAutomationSkill = defineSkill({
     }),
     defineSkillScript({
       id: "keyboard",
-      entry: new URL("./scripts/keyboard.mjs", import.meta.url),
+      entry: new URL("./scripts/keyboard.ts", import.meta.url),
       target: "scripts/keyboard.mjs",
       runtime: "node",
       bundle: false,
@@ -107,7 +107,7 @@ export const androidDeviceAutomationSkill = defineSkill({
     }),
     defineSkillScript({
       id: "log-monitor",
-      entry: new URL("./scripts/log_monitor.mjs", import.meta.url),
+      entry: new URL("./scripts/log_monitor.ts", import.meta.url),
       target: "scripts/log_monitor.mjs",
       runtime: "node",
       bundle: false,
@@ -115,7 +115,7 @@ export const androidDeviceAutomationSkill = defineSkill({
     }),
     defineSkillScript({
       id: "navigator",
-      entry: new URL("./scripts/navigator.mjs", import.meta.url),
+      entry: new URL("./scripts/navigator.ts", import.meta.url),
       target: "scripts/navigator.mjs",
       runtime: "node",
       bundle: false,
@@ -123,7 +123,7 @@ export const androidDeviceAutomationSkill = defineSkill({
     }),
     defineSkillScript({
       id: "screen-mapper",
-      entry: new URL("./scripts/screen_mapper.mjs", import.meta.url),
+      entry: new URL("./scripts/screen_mapper.ts", import.meta.url),
       target: "scripts/screen_mapper.mjs",
       runtime: "node",
       bundle: false,

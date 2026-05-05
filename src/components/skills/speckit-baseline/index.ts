@@ -31,7 +31,7 @@ export const speckitBaselineSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "bootstrap-specify",
-      entry: new URL("./scripts/bootstrap-specify.mjs", import.meta.url),
+      entry: new URL("./scripts/bootstrap-specify.ts", import.meta.url),
       target: "scripts/bootstrap-specify.mjs",
       runtime: "node",
       bundle: false,
@@ -39,7 +39,7 @@ export const speckitBaselineSkill = defineSkill({
     }),
     defineSkillScript({
       id: "check-prerequisites",
-      entry: new URL("./scripts/check-prerequisites.mjs", import.meta.url),
+      entry: new URL("./scripts/check-prerequisites.ts", import.meta.url),
       target: "scripts/check-prerequisites.mjs",
       runtime: "node",
       bundle: false,
@@ -47,7 +47,7 @@ export const speckitBaselineSkill = defineSkill({
     }),
     defineSkillScript({
       id: "common",
-      entry: new URL("./scripts/common.mjs", import.meta.url),
+      entry: new URL("./scripts/common.ts", import.meta.url),
       target: "scripts/common.mjs",
       runtime: "node",
       bundle: false,
@@ -55,7 +55,7 @@ export const speckitBaselineSkill = defineSkill({
     }),
     defineSkillScript({
       id: "create-new-feature",
-      entry: new URL("./scripts/create-new-feature.mjs", import.meta.url),
+      entry: new URL("./scripts/create-new-feature.ts", import.meta.url),
       target: "scripts/create-new-feature.mjs",
       runtime: "node",
       bundle: false,
@@ -63,7 +63,7 @@ export const speckitBaselineSkill = defineSkill({
     }),
     defineSkillScript({
       id: "setup-plan",
-      entry: new URL("./scripts/setup-plan.mjs", import.meta.url),
+      entry: new URL("./scripts/setup-plan.ts", import.meta.url),
       target: "scripts/setup-plan.mjs",
       runtime: "node",
       bundle: false,

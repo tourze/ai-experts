@@ -75,7 +75,7 @@ export const uxResearcherDesignerSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "persona-generator",
-      entry: new URL("./scripts/persona_generator.mjs", import.meta.url),
+      entry: new URL("./scripts/persona_generator.ts", import.meta.url),
       target: "scripts/persona_generator.mjs",
       runtime: "node",
       bundle: false,

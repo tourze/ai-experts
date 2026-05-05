@@ -58,7 +58,7 @@ export const canvasDesignSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "baoyu-article-illustrator-build-batch",
-      entry: new URL("./scripts/baoyu-article-illustrator-build-batch.mjs", import.meta.url),
+      entry: new URL("./scripts/baoyu-article-illustrator-build-batch.ts", import.meta.url),
       target: "scripts/baoyu-article-illustrator-build-batch.mjs",
       runtime: "node",
       bundle: false,
@@ -66,7 +66,7 @@ export const canvasDesignSkill = defineSkill({
     }),
     defineSkillScript({
       id: "concept-to-image-render-to-image",
-      entry: new URL("./scripts/concept-to-image-render_to_image.mjs", import.meta.url),
+      entry: new URL("./scripts/concept-to-image-render_to_image.ts", import.meta.url),
       target: "scripts/concept-to-image-render_to_image.mjs",
       runtime: "node",
       bundle: false,
@@ -74,7 +74,7 @@ export const canvasDesignSkill = defineSkill({
     }),
     defineSkillScript({
       id: "concept-to-video-add-audio",
-      entry: new URL("./scripts/concept-to-video-add_audio.mjs", import.meta.url),
+      entry: new URL("./scripts/concept-to-video-add_audio.ts", import.meta.url),
       target: "scripts/concept-to-video-add_audio.mjs",
       runtime: "node",
       bundle: false,
@@ -82,7 +82,7 @@ export const canvasDesignSkill = defineSkill({
     }),
     defineSkillScript({
       id: "concept-to-video-render-video",
-      entry: new URL("./scripts/concept-to-video-render_video.mjs", import.meta.url),
+      entry: new URL("./scripts/concept-to-video-render_video.ts", import.meta.url),
       target: "scripts/concept-to-video-render_video.mjs",
       runtime: "node",
       bundle: false,

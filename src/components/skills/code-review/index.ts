@@ -61,7 +61,7 @@ export const codeReviewSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "assess-code",
-      entry: new URL("./scripts/assess-code.mjs", import.meta.url),
+      entry: new URL("./scripts/assess-code.ts", import.meta.url),
       target: "scripts/assess-code.mjs",
       runtime: "node",
       bundle: false,
@@ -69,7 +69,7 @@ export const codeReviewSkill = defineSkill({
     }),
     defineSkillScript({
       id: "assess-tests",
-      entry: new URL("./scripts/assess-tests.mjs", import.meta.url),
+      entry: new URL("./scripts/assess-tests.ts", import.meta.url),
       target: "scripts/assess-tests.mjs",
       runtime: "node",
       bundle: false,

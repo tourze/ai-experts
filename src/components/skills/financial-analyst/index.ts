@@ -60,7 +60,7 @@ export const financialAnalystSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "budget-variance-analyzer",
-      entry: new URL("./scripts/budget_variance_analyzer.mjs", import.meta.url),
+      entry: new URL("./scripts/budget_variance_analyzer.ts", import.meta.url),
       target: "scripts/budget_variance_analyzer.mjs",
       runtime: "node",
       bundle: false,
@@ -68,7 +68,7 @@ export const financialAnalystSkill = defineSkill({
     }),
     defineSkillScript({
       id: "dcf-valuation",
-      entry: new URL("./scripts/dcf_valuation.mjs", import.meta.url),
+      entry: new URL("./scripts/dcf_valuation.ts", import.meta.url),
       target: "scripts/dcf_valuation.mjs",
       runtime: "node",
       bundle: false,
@@ -76,7 +76,7 @@ export const financialAnalystSkill = defineSkill({
     }),
     defineSkillScript({
       id: "forecast-builder",
-      entry: new URL("./scripts/forecast_builder.mjs", import.meta.url),
+      entry: new URL("./scripts/forecast_builder.ts", import.meta.url),
       target: "scripts/forecast_builder.mjs",
       runtime: "node",
       bundle: false,
@@ -84,7 +84,7 @@ export const financialAnalystSkill = defineSkill({
     }),
     defineSkillScript({
       id: "ratio-calculator",
-      entry: new URL("./scripts/ratio_calculator.mjs", import.meta.url),
+      entry: new URL("./scripts/ratio_calculator.ts", import.meta.url),
       target: "scripts/ratio_calculator.mjs",
       runtime: "node",
       bundle: false,
@@ -92,7 +92,7 @@ export const financialAnalystSkill = defineSkill({
     }),
     defineSkillScript({
       id: "ratio-input-validation",
-      entry: new URL("./scripts/ratio_input_validation.mjs", import.meta.url),
+      entry: new URL("./scripts/ratio_input_validation.ts", import.meta.url),
       target: "scripts/ratio_input_validation.mjs",
       runtime: "node",
       bundle: false,

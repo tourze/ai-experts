@@ -1,0 +1,288 @@
+#!/usr/bin/env node
+import { fileURLToPath } from "node:url";
+import { realpathSync } from "node:fs";
+import {
+  buildIdbCommand,
+  flattenTree,
+  getAccessibilityTree,
+  getScreenSize,
+  parseCoordinatePair,
+  resolveUdid,
+  runCommand,
+  transformScreenshotCoords,
+} from "./interaction_common";
+
+export class Element {
+  constructor(node) {
+    this.type = node.type ?? "Unknown";
+    this.label = node.AXLabel ?? null;
+    this.value = node.AXValue ?? null;
+    this.identifier = node.AXUniqueId ?? null;
+    this.frame = node.frame ?? {};
+    this.traits = node.traits ?? [];
+    this.enabled = node.enabled ?? true;
+  }
+
+  get center() {
+    const x = Math.trunc(Number(this.frame.x ?? 0) + Number(this.frame.width ?? 0) / 2);
+    const y = Math.trunc(Number(this.frame.y ?? 0) + Number(this.frame.height ?? 0) / 2);
+    return [x, y];
+  }
+
+  get description() {
+    const label = this.label || this.value || this.identifier || "Unnamed";
+    return `${this.type} "${label}"`;
+  }
+}
+
+export class Navigator {
+  constructor(udid = null, sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))) {
+    this.udid = udid;
+    this.sleep = sleep;
+    this.treeCache = null;
+  }
+
+  getAccessibilityTree({ forceRefresh = false } = {}) {
+    if (this.treeCache && !forceRefresh) return this.treeCache;
+    this.treeCache = getAccessibilityTree(this.udid, { nested: true });
+    return this.treeCache;
+  }
+
+  listElements({ forceRefresh = false } = {}) {
+    return flattenTree(this.getAccessibilityTree({ forceRefresh }))
+      .filter((node) => node.type)
+      .map((node) => new Element(node));
+  }
+
+  findElement({ text = null, elementType = null, identifier = null, index = 0, fuzzy = true } = {}) {
+    const matches = [];
+    for (const element of this.listElements()) {
+      if (!element.enabled) continue;
+      if (elementType && element.type !== elementType) continue;
+      if (identifier && element.identifier !== identifier) continue;
+      if (text) {
+        const elementText = `${element.label || ""} ${element.value || ""}`;
+        if (fuzzy) {
+          if (!elementText.toLowerCase().includes(text.toLowerCase())) continue;
+        } else if (text !== element.label && text !== element.value) {
+          continue;
+        }
+      }
+      matches.push(element);
+    }
+    return index < matches.length ? matches[index] : null;
+  }
+
+  tap(element) {
+    const [x, y] = element.center;
+    return this.tapAt(x, y);
+  }
+
+  tapAt(x, y) {
+    return runCommand(buildIdbCommand("ui tap", this.udid, x, y)).status === 0;
+  }
+
+  async enterText(text, element = null) {
+    if (element) {
+      if (!this.tap(element)) return false;
+      await this.sleep(500);
+    }
+    return runCommand(buildIdbCommand("ui text", this.udid, text)).status === 0;
+  }
+
+  findAndTap(criteria) {
+    const element = this.findElement(criteria);
+    if (!element) return [false, `Not found: ${formatCriteria(criteria)}`];
+    if (this.tap(element)) return [true, `Tapped: ${element.description} at (${element.center[0]}, ${element.center[1]})`];
+    return [false, `Failed to tap: ${element.description}`];
+  }
+
+  async findAndEnterText({ textToEnter, findText = null, elementType = "TextField", identifier = null, index = 0 } = {}) {
+    const element = this.findElement({ text: findText, elementType, identifier, index });
+    if (!element) return [false, "TextField not found"];
+    if (await this.enterText(textToEnter, element)) return [true, `Entered text in: ${element.description}`];
+    return [false, "Failed to enter text"];
+  }
+}
+
+function formatCriteria({ text = null, elementType = null, identifier = null } = {}) {
+  const criteria = [];
+  if (text) criteria.push(`text='${text}'`);
+  if (elementType) criteria.push(`type=${elementType}`);
+  if (identifier) criteria.push(`id=${identifier}`);
+  return criteria.join(", ");
+}
+
+function usage() {
+  return `Navigate iOS apps using accessibility data.
+
+Usage: node scripts/navigator.mjs [find options] [action options]
+
+Find options:
+  --find-text <text>          Find element by text fuzzy match
+  --find-exact <text>         Find element by exact text
+  --find-type <type>          Element type
+  --find-id <id>              Accessibility identifier
+  --index <number>            Match index (default: 0)
+
+Action options:
+  --tap                       Tap found element
+  --tap-at <x,y>              Tap coordinates
+  --enter-text <text>         Enter text into element
+  --screenshot-coords         Interpret tap coords as screenshot coords
+  --screenshot-width <number> Screenshot width
+  --screenshot-height <num>   Screenshot height
+  --list                      List tappable elements
+  --udid <udid>               Device UDID
+  --help                      Show this help
+`;
+}
+
+export function parseArgs(argv = process.argv.slice(2)) {
+  const args = {
+    findText: null,
+    findExact: null,
+    findType: null,
+    findId: null,
+    index: 0,
+    tap: false,
+    tapAt: null,
+    enterText: null,
+    screenshotCoords: false,
+    screenshotWidth: null,
+    screenshotHeight: null,
+    udid: null,
+    list: false,
+    help: false,
+  };
+  for (let index = 0; index < argv.length; index += 1) {
+    const arg = argv[index];
+    if (arg === "--help" || arg === "-h") args.help = true;
+    else if (arg === "--tap") args.tap = true;
+    else if (arg === "--screenshot-coords") args.screenshotCoords = true;
+    else if (arg === "--list") args.list = true;
+    else if (
+      [
+        "--find-text",
+        "--find-exact",
+        "--find-type",
+        "--find-id",
+        "--index",
+        "--tap-at",
+        "--enter-text",
+        "--screenshot-width",
+        "--screenshot-height",
+        "--udid",
+      ].includes(arg)
+    ) {
+      const value = argv[index + 1];
+      if (value == null || value.startsWith("--")) throw new Error(`${arg} requires a value`);
+      index += 1;
+      if (arg === "--find-text") args.findText = value;
+      if (arg === "--find-exact") args.findExact = value;
+      if (arg === "--find-type") args.findType = value;
+      if (arg === "--find-id") args.findId = value;
+      if (arg === "--index") args.index = Number.parseInt(value, 10);
+      if (arg === "--tap-at") args.tapAt = value;
+      if (arg === "--enter-text") args.enterText = value;
+      if (arg === "--screenshot-width") args.screenshotWidth = Number.parseInt(value, 10);
+      if (arg === "--screenshot-height") args.screenshotHeight = Number.parseInt(value, 10);
+      if (arg === "--udid") args.udid = value;
+    } else {
+      throw new Error(`unrecognized argument: ${arg}`);
+    }
+  }
+  if (!Number.isInteger(args.index)) throw new Error("--index must be an integer");
+  return args;
+}
+
+export async function main(argv = process.argv.slice(2)) {
+  const args = parseArgs(argv);
+  if (args.help) {
+    console.log(usage());
+    return 0;
+  }
+
+  const udid = resolveUdid(args.udid);
+  const navigator = new Navigator(udid);
+
+  if (args.list) {
+    const tappable = navigator
+      .listElements()
+      .filter((element) => element.enabled && ["Button", "Link", "Cell", "TextField", "SecureTextField"].includes(element.type));
+    console.log(`Tappable elements (${tappable.length}):`);
+    for (const element of tappable.slice(0, 10)) {
+      console.log(`  ${element.type}: "${element.label || element.value || "Unnamed"}" (${element.center[0]}, ${element.center[1]})`);
+    }
+    if (tappable.length > 10) console.log(`  ... and ${tappable.length - 10} more`);
+    return 0;
+  }
+
+  if (args.tapAt) {
+    let [x, y] = parseCoordinatePair(args.tapAt, "--tap-at");
+    if (args.screenshotCoords) {
+      if (!args.screenshotWidth || !args.screenshotHeight) {
+        console.log("Error: --screenshot-coords requires --screenshot-width and --screenshot-height");
+        return 1;
+      }
+      const [deviceWidth, deviceHeight] = getScreenSize(udid);
+      [x, y] = transformScreenshotCoords(x, y, args.screenshotWidth, args.screenshotHeight, deviceWidth, deviceHeight);
+      console.log(`Transformed screenshot coords (${args.tapAt}) to device coords (${x}, ${y})`);
+    }
+    if (!navigator.tapAt(x, y)) {
+      console.log(`Failed to tap at (${x}, ${y})`);
+      return 1;
+    }
+    console.log(`Tapped at (${x}, ${y})`);
+    return 0;
+  }
+
+  const text = args.findText || args.findExact;
+  const fuzzy = args.findText != null;
+  if (args.tap) {
+    const [success, message] = navigator.findAndTap({
+      text,
+      elementType: args.findType,
+      identifier: args.findId,
+      index: args.index,
+      fuzzy,
+    });
+    console.log(message);
+    return success ? 0 : 1;
+  }
+
+  if (args.enterText) {
+    const [success, message] = await navigator.findAndEnterText({
+      textToEnter: args.enterText,
+      findText: text,
+      elementType: args.findType || "TextField",
+      identifier: args.findId,
+      index: args.index,
+    });
+    console.log(message);
+    return success ? 0 : 1;
+  }
+
+  const element = navigator.findElement({
+    text,
+    elementType: args.findType,
+    identifier: args.findId,
+    index: args.index,
+    fuzzy,
+  });
+  if (!element) {
+    console.log("Element not found");
+    return 1;
+  }
+  console.log(`Found: ${element.description} at (${element.center[0]}, ${element.center[1]})`);
+  return 0;
+}
+
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  try {
+    process.exitCode = await main();
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    process.exitCode = 1;
+  }
+}

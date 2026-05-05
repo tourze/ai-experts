@@ -62,7 +62,7 @@ export const appStoreOptimizationSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "collect-release-changes",
-      entry: new URL("./scripts/collect_release_changes.mjs", import.meta.url),
+      entry: new URL("./scripts/collect_release_changes.ts", import.meta.url),
       target: "scripts/collect_release_changes.mjs",
       runtime: "node",
       bundle: false,

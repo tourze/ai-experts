@@ -65,7 +65,7 @@ export const webContentFetcherSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "fetch",
-      entry: new URL("./scripts/fetch.mjs", import.meta.url),
+      entry: new URL("./scripts/fetch.ts", import.meta.url),
       target: "scripts/fetch.mjs",
       runtime: "node",
       bundle: false,

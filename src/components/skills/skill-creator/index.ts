@@ -44,7 +44,7 @@ export const skillCreatorSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "aggregate-benchmark",
-      entry: new URL("./scripts/aggregate_benchmark.mjs", import.meta.url),
+      entry: new URL("./scripts/aggregate_benchmark.ts", import.meta.url),
       target: "scripts/aggregate_benchmark.mjs",
       runtime: "node",
       bundle: false,
@@ -52,7 +52,7 @@ export const skillCreatorSkill = defineSkill({
     }),
     defineSkillScript({
       id: "generate-report",
-      entry: new URL("./scripts/generate_report.mjs", import.meta.url),
+      entry: new URL("./scripts/generate_report.ts", import.meta.url),
       target: "scripts/generate_report.mjs",
       runtime: "node",
       bundle: false,
@@ -60,7 +60,7 @@ export const skillCreatorSkill = defineSkill({
     }),
     defineSkillScript({
       id: "improve-description",
-      entry: new URL("./scripts/improve_description.mjs", import.meta.url),
+      entry: new URL("./scripts/improve_description.ts", import.meta.url),
       target: "scripts/improve_description.mjs",
       runtime: "node",
       bundle: false,
@@ -68,7 +68,7 @@ export const skillCreatorSkill = defineSkill({
     }),
     defineSkillScript({
       id: "package-skill",
-      entry: new URL("./scripts/package_skill.mjs", import.meta.url),
+      entry: new URL("./scripts/package_skill.ts", import.meta.url),
       target: "scripts/package_skill.mjs",
       runtime: "node",
       bundle: false,
@@ -76,7 +76,7 @@ export const skillCreatorSkill = defineSkill({
     }),
     defineSkillScript({
       id: "quick-validate",
-      entry: new URL("./scripts/quick_validate.mjs", import.meta.url),
+      entry: new URL("./scripts/quick_validate.ts", import.meta.url),
       target: "scripts/quick_validate.mjs",
       runtime: "node",
       bundle: false,
@@ -84,7 +84,7 @@ export const skillCreatorSkill = defineSkill({
     }),
     defineSkillScript({
       id: "run-eval",
-      entry: new URL("./scripts/run_eval.mjs", import.meta.url),
+      entry: new URL("./scripts/run_eval.ts", import.meta.url),
       target: "scripts/run_eval.mjs",
       runtime: "node",
       bundle: false,
@@ -92,7 +92,7 @@ export const skillCreatorSkill = defineSkill({
     }),
     defineSkillScript({
       id: "run-loop",
-      entry: new URL("./scripts/run_loop.mjs", import.meta.url),
+      entry: new URL("./scripts/run_loop.ts", import.meta.url),
       target: "scripts/run_loop.mjs",
       runtime: "node",
       bundle: false,
@@ -100,7 +100,7 @@ export const skillCreatorSkill = defineSkill({
     }),
     defineSkillScript({
       id: "utils",
-      entry: new URL("./scripts/utils.mjs", import.meta.url),
+      entry: new URL("./scripts/utils.ts", import.meta.url),
       target: "scripts/utils.mjs",
       runtime: "node",
       bundle: false,

@@ -55,7 +55,7 @@ export const pdfSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "check-bounding-boxes",
-      entry: new URL("./scripts/check_bounding_boxes.mjs", import.meta.url),
+      entry: new URL("./scripts/check_bounding_boxes.ts", import.meta.url),
       target: "scripts/check_bounding_boxes.mjs",
       runtime: "node",
       bundle: false,
@@ -63,7 +63,7 @@ export const pdfSkill = defineSkill({
     }),
     defineSkillScript({
       id: "check-fillable-fields",
-      entry: new URL("./scripts/check_fillable_fields.mjs", import.meta.url),
+      entry: new URL("./scripts/check_fillable_fields.ts", import.meta.url),
       target: "scripts/check_fillable_fields.mjs",
       runtime: "node",
       bundle: false,

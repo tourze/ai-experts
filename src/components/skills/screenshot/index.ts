@@ -56,7 +56,7 @@ export const screenshotSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "ensure-macos-permissions",
-      entry: new URL("./scripts/ensure_macos_permissions.mjs", import.meta.url),
+      entry: new URL("./scripts/ensure_macos_permissions.ts", import.meta.url),
       target: "scripts/ensure_macos_permissions.mjs",
       runtime: "node",
       bundle: false,
@@ -64,7 +64,7 @@ export const screenshotSkill = defineSkill({
     }),
     defineSkillScript({
       id: "macos-display-info",
-      entry: new URL("./scripts/macos_display_info.mjs", import.meta.url),
+      entry: new URL("./scripts/macos_display_info.ts", import.meta.url),
       target: "scripts/macos_display_info.mjs",
       runtime: "node",
       bundle: false,
@@ -72,7 +72,7 @@ export const screenshotSkill = defineSkill({
     }),
     defineSkillScript({
       id: "macos-permissions",
-      entry: new URL("./scripts/macos_permissions.mjs", import.meta.url),
+      entry: new URL("./scripts/macos_permissions.ts", import.meta.url),
       target: "scripts/macos_permissions.mjs",
       runtime: "node",
       bundle: false,
@@ -80,7 +80,7 @@ export const screenshotSkill = defineSkill({
     }),
     defineSkillScript({
       id: "macos-window-info",
-      entry: new URL("./scripts/macos_window_info.mjs", import.meta.url),
+      entry: new URL("./scripts/macos_window_info.ts", import.meta.url),
       target: "scripts/macos_window_info.mjs",
       runtime: "node",
       bundle: false,
@@ -88,7 +88,7 @@ export const screenshotSkill = defineSkill({
     }),
     defineSkillScript({
       id: "take-screenshot",
-      entry: new URL("./scripts/take_screenshot.mjs", import.meta.url),
+      entry: new URL("./scripts/take_screenshot.ts", import.meta.url),
       target: "scripts/take_screenshot.mjs",
       runtime: "node",
       bundle: false,
@@ -96,7 +96,7 @@ export const screenshotSkill = defineSkill({
     }),
     defineSkillScript({
       id: "take-screenshot-windows",
-      entry: new URL("./scripts/take_screenshot_windows.mjs", import.meta.url),
+      entry: new URL("./scripts/take_screenshot_windows.ts", import.meta.url),
       target: "scripts/take_screenshot_windows.mjs",
       runtime: "node",
       bundle: false,

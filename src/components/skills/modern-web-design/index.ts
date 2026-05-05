@@ -99,7 +99,7 @@ export const modernWebDesignSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "design-audit",
-      entry: new URL("./scripts/design_audit.mjs", import.meta.url),
+      entry: new URL("./scripts/design_audit.ts", import.meta.url),
       target: "scripts/design_audit.mjs",
       runtime: "node",
       bundle: false,
@@ -107,7 +107,7 @@ export const modernWebDesignSkill = defineSkill({
     }),
     defineSkillScript({
       id: "pattern-generator",
-      entry: new URL("./scripts/pattern_generator.mjs", import.meta.url),
+      entry: new URL("./scripts/pattern_generator.ts", import.meta.url),
       target: "scripts/pattern_generator.mjs",
       runtime: "node",
       bundle: false,

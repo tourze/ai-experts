@@ -62,7 +62,7 @@ export const youtubeSearchSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "search-youtube",
-      entry: new URL("./scripts/search_youtube.mjs", import.meta.url),
+      entry: new URL("./scripts/search_youtube.ts", import.meta.url),
       target: "scripts/search_youtube.mjs",
       runtime: "node",
       bundle: false,

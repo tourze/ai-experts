@@ -66,7 +66,7 @@ export const securityOwnershipMapSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "build-ownership-map",
-      entry: new URL("./scripts/build_ownership_map.mjs", import.meta.url),
+      entry: new URL("./scripts/build_ownership_map.ts", import.meta.url),
       target: "scripts/build_ownership_map.mjs",
       runtime: "node",
       bundle: false,
@@ -74,7 +74,7 @@ export const securityOwnershipMapSkill = defineSkill({
     }),
     defineSkillScript({
       id: "community-maintainers",
-      entry: new URL("./scripts/community_maintainers.mjs", import.meta.url),
+      entry: new URL("./scripts/community_maintainers.ts", import.meta.url),
       target: "scripts/community_maintainers.mjs",
       runtime: "node",
       bundle: false,
@@ -82,7 +82,7 @@ export const securityOwnershipMapSkill = defineSkill({
     }),
     defineSkillScript({
       id: "query-ownership",
-      entry: new URL("./scripts/query_ownership.mjs", import.meta.url),
+      entry: new URL("./scripts/query_ownership.ts", import.meta.url),
       target: "scripts/query_ownership.mjs",
       runtime: "node",
       bundle: false,
@@ -90,7 +90,7 @@ export const securityOwnershipMapSkill = defineSkill({
     }),
     defineSkillScript({
       id: "run-ownership-map",
-      entry: new URL("./scripts/run_ownership_map.mjs", import.meta.url),
+      entry: new URL("./scripts/run_ownership_map.ts", import.meta.url),
       target: "scripts/run_ownership_map.mjs",
       runtime: "node",
       bundle: false,

@@ -69,7 +69,7 @@ export const modelFirstReasoningSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "validate-model",
-      entry: new URL("./scripts/validate-model.mjs", import.meta.url),
+      entry: new URL("./scripts/validate-model.ts", import.meta.url),
       target: "scripts/validate-model.mjs",
       runtime: "node",
       bundle: false,

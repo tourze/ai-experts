@@ -12,7 +12,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { basename, dirname, isAbsolute, join, relative, resolve } from "node:path";
+import { basename, dirname, extname, isAbsolute, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import * as esbuild from "esbuild";
 
@@ -177,6 +177,36 @@ function copyComponentPath(source, target) {
     force: true,
     dereference: false,
   });
+}
+
+function removeFiles(root, predicate) {
+  for (const file of collectFiles(root, predicate)) {
+    rmSync(file, { force: true });
+  }
+}
+
+function runtimeRelativeSpecifier(specifier) {
+  if (!specifier.startsWith(".")) return specifier;
+  const leaf = specifier.split("/").at(-1) ?? "";
+  if (extname(leaf)) return specifier;
+  return `${specifier}.mjs`;
+}
+
+function rewriteRuntimeRelativeImports(file) {
+  const source = readFileSync(file, "utf-8");
+  const rewritten = source
+    .replace(/\b(from\s*["'])(\.[^"']+)(["'])/g, (_, prefix, specifier, suffix) =>
+      `${prefix}${runtimeRelativeSpecifier(specifier)}${suffix}`,
+    )
+    .replace(/\b(import\s*\(\s*["'])(\.[^"']+)(["']\s*\))/g, (_, prefix, specifier, suffix) =>
+      `${prefix}${runtimeRelativeSpecifier(specifier)}${suffix}`,
+    );
+  if (rewritten !== source) writeFileSync(file, rewritten);
+}
+
+function nodeScriptBanner(sourcePath) {
+  const source = readFileSync(sourcePath, "utf-8");
+  return source.startsWith("#!") ? undefined : { js: "#!/usr/bin/env node" };
 }
 
 function yamlScalar(value) {
@@ -786,8 +816,9 @@ async function compileSkillScripts(skill, skillRoot) {
       copyComponentPath(root.source, join(skillRoot, root.target ?? "scripts"));
     }
   }
-  if (!skill.scripts || skill.scripts.length === 0) return [];
   const scriptsRoot = join(skillRoot, "scripts");
+  removeFiles(scriptsRoot, (file) => file.endsWith(".ts"));
+  if (!skill.scripts || skill.scripts.length === 0) return [];
   ensureDir(scriptsRoot);
   const compiled = [];
   for (const script of skill.scripts) {
@@ -796,8 +827,23 @@ async function compileSkillScripts(skill, skillRoot) {
     const defaultTarget = runtime === "python3" ? `scripts/${script.id}.py` : `scripts/${script.id}.mjs`;
     const target = script.target ?? defaultTarget;
     const outfile = join(skillRoot, target);
+    ensureDir(dirname(outfile));
     if (script.bundle === false) {
-      if (!existsSync(outfile)) copyComponentPath(script.entry, outfile);
+      if (sourcePath.endsWith(".ts") && runtime === "node") {
+        await esbuild.build({
+          entryPoints: [sourcePath],
+          outfile,
+          bundle: false,
+          platform: "node",
+          format: "esm",
+          target: "node20",
+          banner: nodeScriptBanner(sourcePath),
+          logLevel: "silent",
+        });
+        rewriteRuntimeRelativeImports(outfile);
+      } else if (!existsSync(outfile)) {
+        copyComponentPath(script.entry, outfile);
+      }
     } else {
       await esbuild.build({
         entryPoints: [sourcePath],
@@ -806,7 +852,7 @@ async function compileSkillScripts(skill, skillRoot) {
         platform: "node",
         format: "esm",
         target: "node20",
-        banner: { js: "#!/usr/bin/env node" },
+        banner: nodeScriptBanner(sourcePath),
         logLevel: "silent",
       });
     }
@@ -1390,7 +1436,12 @@ function validateRegistry(registry) {
       for (const entry of readdirSync(scriptsDir, { withFileTypes: true })) {
         const absoluteEntry = join(scriptsDir, entry.name);
         if (entry.isFile() && entry.name.endsWith(".ts") && !registeredEntries.has(absoluteEntry)) {
-          throw new Error(`Skill ${skill.id} has an unregistered script: ${relative(skillSourceRoot, absoluteEntry)}`);
+          const source = readFileSync(absoluteEntry, "utf-8");
+          if (source.startsWith("#!")) {
+            throw new Error(
+              `Skill ${skill.id} has an unregistered executable script: ${relative(skillSourceRoot, absoluteEntry)}`,
+            );
+          }
         }
       }
     }

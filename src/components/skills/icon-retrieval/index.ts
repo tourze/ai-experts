@@ -74,7 +74,7 @@ export const iconRetrievalSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "search",
-      entry: new URL("./scripts/search.mjs", import.meta.url),
+      entry: new URL("./scripts/search.ts", import.meta.url),
       target: "scripts/search.mjs",
       runtime: "node",
       bundle: false,

@@ -67,7 +67,7 @@ export const preLandingReviewSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "collect-diff",
-      entry: new URL("./scripts/collect_diff.mjs", import.meta.url),
+      entry: new URL("./scripts/collect_diff.ts", import.meta.url),
       target: "scripts/collect_diff.mjs",
       runtime: "node",
       bundle: false,
@@ -75,7 +75,7 @@ export const preLandingReviewSkill = defineSkill({
     }),
     defineSkillScript({
       id: "render-report",
-      entry: new URL("./scripts/render_report.mjs", import.meta.url),
+      entry: new URL("./scripts/render_report.ts", import.meta.url),
       target: "scripts/render_report.mjs",
       runtime: "node",
       bundle: false,

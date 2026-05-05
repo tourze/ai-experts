@@ -58,7 +58,7 @@ export const iosSimulatorSkillSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "accessibility-audit",
-      entry: new URL("./scripts/accessibility_audit.mjs", import.meta.url),
+      entry: new URL("./scripts/accessibility_audit.ts", import.meta.url),
       target: "scripts/accessibility_audit.mjs",
       runtime: "node",
       bundle: false,
@@ -66,7 +66,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "app-launcher",
-      entry: new URL("./scripts/app_launcher.mjs", import.meta.url),
+      entry: new URL("./scripts/app_launcher.ts", import.meta.url),
       target: "scripts/app_launcher.mjs",
       runtime: "node",
       bundle: false,
@@ -74,7 +74,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "app-state-capture",
-      entry: new URL("./scripts/app_state_capture.mjs", import.meta.url),
+      entry: new URL("./scripts/app_state_capture.ts", import.meta.url),
       target: "scripts/app_state_capture.mjs",
       runtime: "node",
       bundle: false,
@@ -82,7 +82,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "build-and-test",
-      entry: new URL("./scripts/build_and_test.mjs", import.meta.url),
+      entry: new URL("./scripts/build_and_test.ts", import.meta.url),
       target: "scripts/build_and_test.mjs",
       runtime: "node",
       bundle: false,
@@ -90,7 +90,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "clipboard",
-      entry: new URL("./scripts/clipboard.mjs", import.meta.url),
+      entry: new URL("./scripts/clipboard.ts", import.meta.url),
       target: "scripts/clipboard.mjs",
       runtime: "node",
       bundle: false,
@@ -98,7 +98,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "gesture",
-      entry: new URL("./scripts/gesture.mjs", import.meta.url),
+      entry: new URL("./scripts/gesture.ts", import.meta.url),
       target: "scripts/gesture.mjs",
       runtime: "node",
       bundle: false,
@@ -106,7 +106,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "interaction-common",
-      entry: new URL("./scripts/interaction_common.mjs", import.meta.url),
+      entry: new URL("./scripts/interaction_common.ts", import.meta.url),
       target: "scripts/interaction_common.mjs",
       runtime: "node",
       bundle: false,
@@ -114,7 +114,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "keyboard",
-      entry: new URL("./scripts/keyboard.mjs", import.meta.url),
+      entry: new URL("./scripts/keyboard.ts", import.meta.url),
       target: "scripts/keyboard.mjs",
       runtime: "node",
       bundle: false,
@@ -122,7 +122,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "log-monitor",
-      entry: new URL("./scripts/log_monitor.mjs", import.meta.url),
+      entry: new URL("./scripts/log_monitor.ts", import.meta.url),
       target: "scripts/log_monitor.mjs",
       runtime: "node",
       bundle: false,
@@ -130,7 +130,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "navigator",
-      entry: new URL("./scripts/navigator.mjs", import.meta.url),
+      entry: new URL("./scripts/navigator.ts", import.meta.url),
       target: "scripts/navigator.mjs",
       runtime: "node",
       bundle: false,
@@ -138,7 +138,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "privacy-manager",
-      entry: new URL("./scripts/privacy_manager.mjs", import.meta.url),
+      entry: new URL("./scripts/privacy_manager.ts", import.meta.url),
       target: "scripts/privacy_manager.mjs",
       runtime: "node",
       bundle: false,
@@ -146,7 +146,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "push-notification",
-      entry: new URL("./scripts/push_notification.mjs", import.meta.url),
+      entry: new URL("./scripts/push_notification.ts", import.meta.url),
       target: "scripts/push_notification.mjs",
       runtime: "node",
       bundle: false,
@@ -154,7 +154,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "screen-mapper",
-      entry: new URL("./scripts/screen_mapper.mjs", import.meta.url),
+      entry: new URL("./scripts/screen_mapper.ts", import.meta.url),
       target: "scripts/screen_mapper.mjs",
       runtime: "node",
       bundle: false,
@@ -162,7 +162,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "screenshot-common",
-      entry: new URL("./scripts/screenshot_common.mjs", import.meta.url),
+      entry: new URL("./scripts/screenshot_common.ts", import.meta.url),
       target: "scripts/screenshot_common.mjs",
       runtime: "node",
       bundle: false,
@@ -170,7 +170,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "sim-health-check",
-      entry: new URL("./scripts/sim_health_check.mjs", import.meta.url),
+      entry: new URL("./scripts/sim_health_check.ts", import.meta.url),
       target: "scripts/sim_health_check.mjs",
       runtime: "node",
       bundle: false,
@@ -178,7 +178,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "sim-list",
-      entry: new URL("./scripts/sim_list.mjs", import.meta.url),
+      entry: new URL("./scripts/sim_list.ts", import.meta.url),
       target: "scripts/sim_list.mjs",
       runtime: "node",
       bundle: false,
@@ -186,7 +186,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "simctl-boot",
-      entry: new URL("./scripts/simctl_boot.mjs", import.meta.url),
+      entry: new URL("./scripts/simctl_boot.ts", import.meta.url),
       target: "scripts/simctl_boot.mjs",
       runtime: "node",
       bundle: false,
@@ -194,7 +194,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "simctl-common",
-      entry: new URL("./scripts/simctl_common.mjs", import.meta.url),
+      entry: new URL("./scripts/simctl_common.ts", import.meta.url),
       target: "scripts/simctl_common.mjs",
       runtime: "node",
       bundle: false,
@@ -202,7 +202,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "simctl-create",
-      entry: new URL("./scripts/simctl_create.mjs", import.meta.url),
+      entry: new URL("./scripts/simctl_create.ts", import.meta.url),
       target: "scripts/simctl_create.mjs",
       runtime: "node",
       bundle: false,
@@ -210,7 +210,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "simctl-delete",
-      entry: new URL("./scripts/simctl_delete.mjs", import.meta.url),
+      entry: new URL("./scripts/simctl_delete.ts", import.meta.url),
       target: "scripts/simctl_delete.mjs",
       runtime: "node",
       bundle: false,
@@ -218,7 +218,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "simctl-erase",
-      entry: new URL("./scripts/simctl_erase.mjs", import.meta.url),
+      entry: new URL("./scripts/simctl_erase.ts", import.meta.url),
       target: "scripts/simctl_erase.mjs",
       runtime: "node",
       bundle: false,
@@ -226,7 +226,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "simctl-shutdown",
-      entry: new URL("./scripts/simctl_shutdown.mjs", import.meta.url),
+      entry: new URL("./scripts/simctl_shutdown.ts", import.meta.url),
       target: "scripts/simctl_shutdown.mjs",
       runtime: "node",
       bundle: false,
@@ -234,7 +234,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "simulator-selector",
-      entry: new URL("./scripts/simulator_selector.mjs", import.meta.url),
+      entry: new URL("./scripts/simulator_selector.ts", import.meta.url),
       target: "scripts/simulator_selector.mjs",
       runtime: "node",
       bundle: false,
@@ -242,7 +242,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "status-bar",
-      entry: new URL("./scripts/status_bar.mjs", import.meta.url),
+      entry: new URL("./scripts/status_bar.ts", import.meta.url),
       target: "scripts/status_bar.mjs",
       runtime: "node",
       bundle: false,
@@ -250,7 +250,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "test-recorder",
-      entry: new URL("./scripts/test_recorder.mjs", import.meta.url),
+      entry: new URL("./scripts/test_recorder.ts", import.meta.url),
       target: "scripts/test_recorder.mjs",
       runtime: "node",
       bundle: false,
@@ -258,7 +258,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "visual-diff",
-      entry: new URL("./scripts/visual_diff.mjs", import.meta.url),
+      entry: new URL("./scripts/visual_diff.ts", import.meta.url),
       target: "scripts/visual_diff.mjs",
       runtime: "node",
       bundle: false,
@@ -266,7 +266,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "xcode-builder",
-      entry: new URL("./scripts/xcode/builder.mjs", import.meta.url),
+      entry: new URL("./scripts/xcode/builder.ts", import.meta.url),
       target: "scripts/xcode/builder.mjs",
       runtime: "node",
       bundle: false,
@@ -274,7 +274,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "xcode-cache",
-      entry: new URL("./scripts/xcode/cache.mjs", import.meta.url),
+      entry: new URL("./scripts/xcode/cache.ts", import.meta.url),
       target: "scripts/xcode/cache.mjs",
       runtime: "node",
       bundle: false,
@@ -282,7 +282,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "xcode-config",
-      entry: new URL("./scripts/xcode/config.mjs", import.meta.url),
+      entry: new URL("./scripts/xcode/config.ts", import.meta.url),
       target: "scripts/xcode/config.mjs",
       runtime: "node",
       bundle: false,
@@ -290,7 +290,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "xcode-index",
-      entry: new URL("./scripts/xcode/index.mjs", import.meta.url),
+      entry: new URL("./scripts/xcode/index.ts", import.meta.url),
       target: "scripts/xcode/index.mjs",
       runtime: "node",
       bundle: false,
@@ -298,7 +298,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "xcode-reporter",
-      entry: new URL("./scripts/xcode/reporter.mjs", import.meta.url),
+      entry: new URL("./scripts/xcode/reporter.ts", import.meta.url),
       target: "scripts/xcode/reporter.mjs",
       runtime: "node",
       bundle: false,
@@ -306,7 +306,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     }),
     defineSkillScript({
       id: "xcode-xcresult",
-      entry: new URL("./scripts/xcode/xcresult.mjs", import.meta.url),
+      entry: new URL("./scripts/xcode/xcresult.ts", import.meta.url),
       target: "scripts/xcode/xcresult.mjs",
       runtime: "node",
       bundle: false,

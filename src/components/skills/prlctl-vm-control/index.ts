@@ -78,7 +78,7 @@ export const prlctlVmControlSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "file-transfer",
-      entry: new URL("./scripts/file_transfer.mjs", import.meta.url),
+      entry: new URL("./scripts/file_transfer.ts", import.meta.url),
       target: "scripts/file_transfer.mjs",
       runtime: "node",
       bundle: false,
@@ -86,7 +86,7 @@ export const prlctlVmControlSkill = defineSkill({
     }),
     defineSkillScript({
       id: "powershell-output",
-      entry: new URL("./scripts/powershell_output.mjs", import.meta.url),
+      entry: new URL("./scripts/powershell_output.ts", import.meta.url),
       target: "scripts/powershell_output.mjs",
       runtime: "node",
       bundle: false,
@@ -94,7 +94,7 @@ export const prlctlVmControlSkill = defineSkill({
     }),
     defineSkillScript({
       id: "prlctl-helper",
-      entry: new URL("./scripts/prlctl_helper.mjs", import.meta.url),
+      entry: new URL("./scripts/prlctl_helper.ts", import.meta.url),
       target: "scripts/prlctl_helper.mjs",
       runtime: "node",
       bundle: false,

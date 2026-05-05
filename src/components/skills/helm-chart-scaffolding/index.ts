@@ -65,7 +65,7 @@ export const helmChartScaffoldingSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "validate-chart",
-      entry: new URL("./scripts/validate-chart.mjs", import.meta.url),
+      entry: new URL("./scripts/validate-chart.ts", import.meta.url),
       target: "scripts/validate-chart.mjs",
       runtime: "node",
       bundle: false,

@@ -93,7 +93,7 @@ export const webPerformanceDiagnosisSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "analyze",
-      entry: new URL("./scripts/analyze.mjs", import.meta.url),
+      entry: new URL("./scripts/analyze.ts", import.meta.url),
       target: "scripts/analyze.mjs",
       runtime: "node",
       bundle: false,

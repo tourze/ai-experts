@@ -43,7 +43,7 @@ export const skillActivationAnalyzerSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "cso-audit",
-      entry: new URL("./scripts/cso_audit.mjs", import.meta.url),
+      entry: new URL("./scripts/cso_audit.ts", import.meta.url),
       target: "scripts/cso_audit.mjs",
       runtime: "node",
       bundle: false,

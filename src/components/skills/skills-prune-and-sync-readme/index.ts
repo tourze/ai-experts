@@ -42,7 +42,7 @@ export const skillsPruneAndSyncReadmeSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "curate-skills",
-      entry: new URL("./scripts/curate_skills.mjs", import.meta.url),
+      entry: new URL("./scripts/curate_skills.ts", import.meta.url),
       target: "scripts/curate_skills.mjs",
       runtime: "node",
       bundle: false,
@@ -50,7 +50,7 @@ export const skillsPruneAndSyncReadmeSkill = defineSkill({
     }),
     defineSkillScript({
       id: "similarity-groups",
-      entry: new URL("./scripts/similarity_groups.mjs", import.meta.url),
+      entry: new URL("./scripts/similarity_groups.ts", import.meta.url),
       target: "scripts/similarity_groups.mjs",
       runtime: "node",
       bundle: false,
@@ -58,7 +58,7 @@ export const skillsPruneAndSyncReadmeSkill = defineSkill({
     }),
     defineSkillScript({
       id: "test-curate-skills",
-      entry: new URL("./scripts/test_curate_skills.mjs", import.meta.url),
+      entry: new URL("./scripts/test_curate_skills.ts", import.meta.url),
       target: "scripts/test_curate_skills.mjs",
       runtime: "node",
       bundle: false,

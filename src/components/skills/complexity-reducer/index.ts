@@ -56,7 +56,7 @@ export const complexityReducerSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "complexity-report",
-      entry: new URL("./scripts/complexity_report.mjs", import.meta.url),
+      entry: new URL("./scripts/complexity_report.ts", import.meta.url),
       target: "scripts/complexity_report.mjs",
       runtime: "node",
       bundle: false,

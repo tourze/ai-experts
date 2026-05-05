@@ -52,7 +52,7 @@ export const analyticsTrackingSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "tracking-plan-generator",
-      entry: new URL("./scripts/tracking_plan_generator.mjs", import.meta.url),
+      entry: new URL("./scripts/tracking_plan_generator.ts", import.meta.url),
       target: "scripts/tracking_plan_generator.mjs",
       runtime: "node",
       bundle: false,

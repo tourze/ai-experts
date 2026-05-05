@@ -78,7 +78,7 @@ export const i18nLocalizationSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "i18n-checker",
-      entry: new URL("./scripts/i18n_checker.mjs", import.meta.url),
+      entry: new URL("./scripts/i18n_checker.ts", import.meta.url),
       target: "scripts/i18n_checker.mjs",
       runtime: "node",
       bundle: false,

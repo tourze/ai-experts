@@ -67,7 +67,7 @@ export const mdToPdfSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "katex-render",
-      entry: new URL("./scripts/katex_render.mjs", import.meta.url),
+      entry: new URL("./scripts/katex_render.ts", import.meta.url),
       target: "scripts/katex_render.mjs",
       runtime: "node",
       bundle: false,
@@ -83,7 +83,7 @@ export const mdToPdfSkill = defineSkill({
     }),
     defineSkillScript({
       id: "setup",
-      entry: new URL("./scripts/setup.mjs", import.meta.url),
+      entry: new URL("./scripts/setup.ts", import.meta.url),
       target: "scripts/setup.mjs",
       runtime: "node",
       bundle: false,

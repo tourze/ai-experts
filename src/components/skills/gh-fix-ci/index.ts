@@ -59,7 +59,7 @@ export const ghFixCiSkill = defineSkill({
   scripts: [
     defineSkillScript({
       id: "inspect-pr-checks",
-      entry: new URL("./scripts/inspect_pr_checks.mjs", import.meta.url),
+      entry: new URL("./scripts/inspect_pr_checks.ts", import.meta.url),
       target: "scripts/inspect_pr_checks.mjs",
       runtime: "node",
       bundle: false,
