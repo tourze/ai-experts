@@ -559,9 +559,9 @@ test("component build emits claude and codex component surfaces", () => {
         }
       }
     }
-    assert.equal(agentQualityStandardsCount, 59);
+    assert.equal(agentQualityStandardsCount, 60);
     assert.equal(agentOutputFormatCount, 62);
-    assert.equal(agentWorkflowCount, 75);
+    assert.equal(agentWorkflowCount, 76);
 
     const allowedHookRoots = new Set([
       "_shared",

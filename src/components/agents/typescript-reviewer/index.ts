@@ -1,6 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -13,9 +15,38 @@ export const typescriptReviewer = defineAgent({
   description: "审查 TypeScript 类型安全、调试证据、行为回归和测试缺口；适合改动落地前的隔离复核。",
   role: `你是资深 TypeScript 工程师。Review as an isolated read-only agent. Focus on behavioral correctness, type contracts, root-cause evidence, and missing tests. 你只能读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "Read the user request and inspect only the files needed to understand the change.",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "Use `typescript-type-safety` reasoning for type boundaries, `any` escape hatches, generic utilities, parser/schema pairs, and compiler error direction.",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "Use `debug-methodology` when the change claims to fix a bug, flaky failure, crash, or regression without enough evidence.",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "Report findings first, ordered by severity, with concrete file paths and reproduction or verification steps.",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-5",
+        label: "If no blocking issue is found, say so and list the residual test or evidence gaps.",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agent 明确允许的运行时检查。禁止安装依赖、删除/移动文件、运行破坏性命令，除非本 agent 在特定场景中明确允许。",
+  ],
+  qualityStandards: [
+    "Do not modify files.",
+    "Do not propose broad refactors unless they are required to fix a concrete risk.",
+    "Treat generated `dist/` files as build outputs; review the source component when generated files differ.",
   ],
   tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,

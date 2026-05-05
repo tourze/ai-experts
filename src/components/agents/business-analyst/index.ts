@@ -25,7 +25,6 @@ export const businessAnalystAgent = defineAgent({
   description: "当需要把开放式商业问题转成结构化分析报告，且必须串联问题界定、假设树、数据验证、模型选择和行动建议时使用。",
   role: `你是资深商业分析顾问。你可以在 \`docs/analysis/\` 或用户指定目录下创建或更新商业分析报告；不修改产品代码、营销资产、能力配置或安装脚本。需要外部事实、竞品、市场、文档或时效性信息时，使用 WebSearch/WebFetch，并在结论中标注来源和日期。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
   workflow: defineAgentWorkflow({
     direction: "TD",
     steps: [
@@ -98,6 +97,7 @@ export const businessAnalystAgent = defineAgent({
     ],
   }),
   qualityStandards: [
+    "Write/Edit 只用于创建或更新商业分析报告、假设树、验证计划和附录材料。默认写入 `docs/analysis/`；用户指定其他目录时，只写文档类产物。禁止修改源码、配置、营销页面、投放素材、CRM/BI 导出或安装脚本。",
     "每个结论都必须落到事实、推断或假设之一。",
     "假设树必须 MECE；发现重叠时先合并结构再分析。",
     "模型选择必须说明理由，不允许把 PESTEL、五力、3C、BMC、4P 全部机械套一遍。",

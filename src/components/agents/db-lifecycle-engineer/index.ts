@@ -87,6 +87,7 @@ risk-register.md
   }),
   bashBoundary: [
     "Bash 用于读取本地仓库的 schema 文件、配置文件、迁移脚本、慢查询日志和监控数据；运行用户授权的 `EXPLAIN` / `mysqldump --no-data` / `pg_dump --schema-only` 等只读命令。禁止执行 DDL/DML、修改生产配置、操作凭据文件或连接未经授权的数据库实例。",
+    "文件写入默认落在 `docs/db/<project-or-feature>/` 下，包含：设计文档、DDL 草稿、迁移步骤、回滚方案与风险清单。不修改业务源码、已有 migration 文件或 CI/CD 配置。",
   ],
   qualityStandards: [
     "每条 DDL 建议必须标注锁表风险（MySQL metadata lock / PostgreSQL ACCESS EXCLUSIVE）和在线变更方案（pt-osc / gh-ost / CONCURRENTLY）。",

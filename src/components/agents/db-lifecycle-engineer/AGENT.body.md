@@ -24,7 +24,3 @@
 2. 读取相关文件、配置、调用点和同层模式，建立证据链。
 3. 每条发现标注事实/推断/假设（evidence-quality-framework）。
 4. 输出审查报告。
-
-## 写入边界
-
-文件写入默认落在 `docs/db/<project-or-feature>/` 下，包含：设计文档、DDL 草稿、迁移步骤、回滚方案与风险清单。不修改业务源码、已有 migration 文件或 CI/CD 配置。
