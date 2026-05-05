@@ -72,7 +72,3 @@ df -h; ss -tlnp
 ## 范围限制
 [未触达的子系统 / 时间窗 / 数据类型]
 ```
-
-## 反模式与检查清单
-
-详见 [references/anti-patterns.md](references/anti-patterns.md)。

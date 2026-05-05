@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineReference,
   defineSkill,
 } from "../../sdk";
@@ -23,6 +24,28 @@ export const androidCoroutinesSkill = defineSkill({
     "**禁用 GlobalScope**：破坏结构化并发，导致泄漏。",
     "**协作式取消**：紧密循环中必须调用 `ensureActive()` 或 `yield()`。",
     "**异常处理**：禁止在通用 `catch (e: Exception)` 中吞掉 `CancellationException`。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "`lifecycleScope.launch` 裸 collect。",
+      pass: "使用 `repeatOnLifecycle(STARTED)` 安全收集。",
+    }),
+    defineAntiPattern({
+      fail: "`catch (e: Exception)` 吞掉取消异常。",
+      pass: "先 catch `CancellationException` 并重抛。",
+    }),
+    defineAntiPattern({
+      fail: "`GlobalScope.launch` 破坏结构化并发。",
+      pass: "使用 `viewModelScope` 或注入 `applicationScope`。",
+    }),
+    defineAntiPattern({
+      fail: "硬编码 `Dispatchers.IO`。",
+      pass: "通过构造函数注入 `CoroutineDispatcher`。",
+    }),
+    defineAntiPattern({
+      fail: "暴露 `MutableStateFlow` 外部可变。",
+      pass: "使用 `.asStateFlow()` 暴露只读视图。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

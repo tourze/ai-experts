@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineReference,
   defineSkill,
 } from "../../sdk";
@@ -27,6 +28,21 @@ export const incidentResponseSkill = defineSkill({
     "区分根因与触发因素：「让事故可能的脆弱性」≠「这次触发的具体动作」。",
     "时间线按 UTC 排序；本地时间显式标注时区。",
     "报告中不暴露生产 secret/token；引用日志时脱敏。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "止血和根因修复混在一起，在止血窗口内提出多个不相关的重构建议。",
+      pass: "分级修复路线：先执行可逆止血，再按短期/中期/长期分别规划修复。",
+    }),
+  ],
+  checklist: [
+    "事故摘要是否包含起止时间、影响面、严重度、用户可见症状？",
+    "时间线是否按 UTC 严格排序，每项标注来源和证据？",
+    "根因是否区分了脆弱性（系统级）和触发因素（事件级）？",
+    "止血方案是否可逆，是否标注了回滚条件？",
+    "修复路线是否按短期/中期/长期分级？",
+    "观测补齐是否标注了优先级和负责方？",
+    "报告中是否有脱敏处理（无真实 secret/token/IP）？",
   ],
   relatedSkills: [
     {

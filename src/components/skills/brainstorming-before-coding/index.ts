@@ -1,4 +1,4 @@
-import { InvocationPolicy, KnownTool, Platform, defineSkill } from "../../sdk";
+import { InvocationPolicy, KnownTool, Platform, defineAntiPattern, defineSkill } from "../../sdk";
 
 export const brainstormingBeforeCodingSkill = defineSkill({
   id: "brainstorming-before-coding",
@@ -14,6 +14,12 @@ export const brainstormingBeforeCodingSkill = defineSkill({
   constraints: [
     '**违反字面规则 = 违反规则精神。不存在"灵活变通"。**',
     "<HARD-GATE> 在展示设计方案并获得用户批准之前，不启动任何实现 skill、不写任何代码、不创建任何文件、不做任何脚手架操作。无论任务看起来多简单，都适用。 </HARD-GATE>",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: '"这个太简单了，不需要设计"——跳过设计流程直接写代码。',
+      pass: "每个项目都走设计流程，简单项目设计可以短但必须展示并获得批准。",
+    }),
   ],
   checklist: [
     "已探索项目上下文（文件、文档、提交）",

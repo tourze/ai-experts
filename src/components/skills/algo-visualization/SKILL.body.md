@@ -1,10 +1,3 @@
-## 不适用场景
-
-- 静态图导出（PNG/SVG）→ `canvas-design`
-- 动画视频 → 使用视频生成工具
-- 业务数据图表 → `data-visualization`
-- 流程图 / 时序图 / 状态图 → `markdown-mermaid-writing`
-
 ## 5 条铁律（违反任一 = 不合格）
 
 1. **正文为主**：80%+ 是 `<p>` + `<h2>`/`<h3>`；callout（`.info`/`.warn`/`.ok`/`.def`/`.formula`）整页 ≤ 4 个；定义/公式用 `<p>` + `<b>`，不塞 `.def`/`.formula` 框。

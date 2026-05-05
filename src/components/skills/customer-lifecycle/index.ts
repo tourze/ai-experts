@@ -22,6 +22,7 @@ export const customerLifecycleSkill = defineSkill({
     "健康度三看：① 铂+金层利润占比 ② 铅层占比 ③ 层级流动性。",
     "产品 PLC 与客户生命周期是两条不同轴，分析时不要混用。",
     "不同阶段营销重点完全不同：用成熟期方法做导入期 = 浪费。",
+    "不适用场景：客户数 < 100 样本不足以分层；纯 PLG/自助产品用产品内分群；多产品组合资源分配转 `bcg-matrix`；增长拐点判断转 `s-curve-growth`。",
   ],
   checklist: [
     "分层依据是利润贡献（CLV），不是收入。",
