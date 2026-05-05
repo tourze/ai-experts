@@ -21,6 +21,12 @@ export const productDesignCriticSkill = defineSkill({
     "输出要说明 trade-off：提升了什么、牺牲了什么、为什么值得。",
     "评审对象是产品体验，不是单独某个像素或视觉趋势。",
   ],
+  checklist: [
+    "[ ] 已明确目标用户、关键任务与最危险状态。",
+    "[ ] 建议覆盖层级、反馈、空态/错态与信任设计。",
+    "[ ] 每条建议都能落到行为变化，而不是抽象审美。",
+    "[ ] 与产品定位和业务约束不冲突。",
+  ],
   relatedSkills: [
     {
       get id() {

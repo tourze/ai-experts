@@ -89,16 +89,6 @@ echo $imported->getReturn();
 
 来源材料：[知乎专栏：在 PHP 中使用 `yield` 来做内存优化](https://zhuanlan.zhihu.com/p/34531081)、[PHP Manual: Generators overview](https://www.php.net/manual/en/language.generators.overview.php)、[PHP Manual: Generator syntax](https://www.php.net/manual/en/language.generators.syntax.php)。
 
-## 检查清单
-
-- 当前内存问题是否来自全量数组、`file()` / `range()` / `fetchAll()`、或上游 API 一次性返回。
-- 调用方是否只需要单次顺序遍历；如果需要排序、分页跳转、随机访问或重复遍历，数组或专用集合可能更清晰。
-- 生成器内部是否避免累积无界状态，例如 `$items[] = ...`、缓存全部中间结果、拼接超大字符串。
-- 是否有 `try` / `finally` 释放文件句柄、数据库游标、锁或外部连接。
-- 是否保留了键名语义：需要定位来源行、页码、业务 ID 时使用 `yield $key => $value`。
-- 是否用 `memory_get_peak_usage()` 或等价 profiling 在目标数据量上验证，而不是只凭代码观感判断。
-- PHPDoc 是否表达元素类型，例如 `\Generator<int, User>` 或 `iterable<User>`，避免静态分析退回 `mixed`。
-
 ## 反模式
 
 ### FAIL: 先组大数组再返回

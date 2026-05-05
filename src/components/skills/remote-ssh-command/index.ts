@@ -24,6 +24,12 @@ export const remoteSshCommandSkill = defineSkill({
     "history 使用 JSONL 追加写入，只记录命令、时间、退出码、耗时和超时状态，不记录远端输出。",
     "脚本输出完整远端 `stdout/stderr`，不做截断。",
   ],
+  checklist: [
+    "是否确认 JSON 文件在 `~/.host/` 下，且只使用密码认证。",
+    "是否把远端命令放在 `stdin`，避免本地 shell 提前展开。",
+    "是否查看脚本退出码；本地退出码等于远端命令退出码，连接失败、配置错误、超时均为非零。",
+    "是否按需查看 `~/.host/<host>.history`，确认执行命令、退出码和耗时。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

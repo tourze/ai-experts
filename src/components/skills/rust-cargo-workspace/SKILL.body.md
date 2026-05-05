@@ -5,11 +5,6 @@
 - [build.rs 代码生成](references/patterns.md#模式-3)
 - [CI workflow 与缓存](references/patterns.md#模式-4)
 
-## 检查清单
-
-- `resolver = "2"` 已设？共享依赖全在 workspace 级？
-- feature 全 additive？`build.rs` 只写 `OUT_DIR`？
-
 ## 反模式
 
 ### FAIL: 各成员各写版本

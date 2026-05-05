@@ -23,6 +23,13 @@ export const refactoringChecklistSkill = defineSkill({
     "每步保持系统可运行、测试可通过。",
     "范围必须提前确定，防止\"顺手改\"扩散。",
   ],
+  checklist: [
+    "[ ] 有测试覆盖（或已补表征测试）",
+    "[ ] 范围已界定，排除项已明确",
+    "[ ] 在干净分支上操作，每步提交",
+    "[ ] 重构提交不混入行为变更",
+    "[ ] 重构后覆盖率不低于基线",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

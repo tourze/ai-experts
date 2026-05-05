@@ -23,6 +23,12 @@ export const protocolFreezingPatternsSkill = defineSkill({
     "扩展点初始设计时预留；协议文档与代码同等冻结。",
     "保留每版本 golden file，新代码须能反序列化所有历史版本。",
   ],
+  checklist: [
+    "每条消息是否有版本标签。",
+    "新增字段是否可选 + 默认值。",
+    "废弃字段是否有四阶段计划。",
+    "CI 是否运行历史 golden file 反序列化测试。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

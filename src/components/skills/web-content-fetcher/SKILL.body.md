@@ -21,14 +21,6 @@ node scripts/fetch.mjs "https://example.com/article" --json
 - sspai.com / blog.csdn.net / openai.com / blog.google → 先用默认模式
 ```
 
-## 检查清单
-
-- 当前环境是否有可用 `node`。
-- 是否根据域名选择了合适模式，而不是所有站点都强制 stealth。
-- 是否优先读取 JSON/Markdown 正文，而不是直接拿错误日志当内容。
-- 对提取失败的 URL，是否及时停止重试并回到上层研究流程。
-- 图片懒加载站点的正文里，图片链接是否被正确替换到 Markdown。
-
 ## 反模式
 
 ### FAIL: 无脑重试同 URL

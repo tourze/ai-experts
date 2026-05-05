@@ -11,12 +11,6 @@
 
 代码示例见 [chapter_03.md](references/chapter_03.md)。
 
-## 检查清单
-
-- 优化前是否有 benchmark 基线？
-- 是否在 `--release` 模式下测量？
-- 热路径上是否有不必要的 `clone()`、`collect()`、`format!()`？
-
 ## 反模式
 
 ### FAIL: Debug 模式判断性能

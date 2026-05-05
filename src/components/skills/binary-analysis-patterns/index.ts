@@ -22,6 +22,12 @@ export const binaryAnalysisPatternsSkill = defineSkill({
     "把初始化/框架噪声与业务逻辑拆开。",
     "所有关键结论都要标明函数、偏移或字符串证据。",
   ],
+  checklist: [
+    "确认入口点、异常处理、导入表和关键字符串。",
+    "标出可疑分发函数、解密函数和状态机边界。",
+    "对关键分支同时看伪代码和汇编。",
+    "记录哪些函数已经确认，哪些仍需动态验证。",
+  ],
   relatedSkills: [
     {
       get id() {

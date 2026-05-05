@@ -21,6 +21,13 @@ export const networkTroubleshooterSkill = defineSkill({
     "涉及防火墙、路由、sysctl 修改时，先读取当前配置并征得确认。",
     "报告里必须明确“失败点”和“支撑命令”，不是只给猜测。",
   ],
+  checklist: [
+    "[ ] `ip -br addr`、`ip route`、默认网关与接口状态正常。",
+    "[ ] `ping` 网关和公网 IP，确认基本连通性。",
+    "[ ] `getent hosts`、`resolvectl status` 或 `/etc/resolv.conf` 验证 DNS。",
+    "[ ] `ss -tulpen` 与目标端口探测确认监听或出站连接是否存在。",
+    "[ ] `curl -v`、`openssl s_client` 或应用日志验证 L7 故障。",
+  ],
   relatedSkills: [
     {
       get id() {

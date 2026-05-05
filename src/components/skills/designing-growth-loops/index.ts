@@ -19,6 +19,12 @@ export const designingGrowthLoopsSkill = defineSkill({
     "飞轮必须说明输入、产出、反馈路径与放大条件，不能只是一张漏斗图。",
     "如果留存、LTV 或用户价值不足，优先修产品基础，而不是强推裂变。",
   ],
+  checklist: [
+    "[ ] 已识别主循环、触发点和关键阻尼项。",
+    "[ ] 指标覆盖转化、留存、分享率和回流效率。",
+    "[ ] 已明确需要的产品、运营或激励支撑。",
+    "[ ] 飞轮假设可被实验验证，而不是纯口号。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

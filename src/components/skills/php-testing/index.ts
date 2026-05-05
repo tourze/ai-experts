@@ -25,6 +25,11 @@ export const phpTestingSkill = defineSkill({
     "优先用 PHP 8 属性（`#[Test]`、`#[DataProvider]`、`#[CoversClass]`），不用旧式注解。",
     "集成测试要明确边界、清理状态、避免环境耦合。",
   ],
+  checklist: [
+    "编码标准：[strict_types](rules/standard-strict-types.md) · [final 类](rules/standard-final-classes.md) · [类型提示](rules/standard-visibility-type-hints.md)",
+    "属性与数据集：[#[Test]](rules/attr-test-attribute.md) · [#[CoversClass]](rules/attr-covers-class.md) · [DataProvider](rules/data-provider.md)",
+    "Mock 与集成：[避免过度 Mock](rules/mock-avoid-over-mocking.md) · [HTTP 冒烟](rules/integration-smoke-http.md) · [事务清理](rules/integration-transactions.md)",
+  ],
   relatedSkills: [
     {
       get id() {

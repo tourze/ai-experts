@@ -26,6 +26,13 @@ export const pgsqlRowLevelSecuritySkill = defineSkill({
     "策略谓词保持简单列比较，避免子查询或复杂函数（每行执行一次影响性能）",
     "RLS 是防御纵深的一层，应用层仍需业务逻辑级权限校验",
   ],
+  checklist: [
+    "是否同时设置了 `FORCE ROW LEVEL SECURITY`",
+    "每个策略是否同时声明了 `USING` 和 `WITH CHECK`",
+    "应用是否在获取连接后正确执行 `SET LOCAL app.tenant_id`",
+    "策略谓词是否只含简单列比较和 `current_setting()` 调用",
+    "是否有自动化测试覆盖正向（看到自己的数据）和反向（不能跨租户读写）",
+  ],
   relatedSkills: [
     {
       get id() {

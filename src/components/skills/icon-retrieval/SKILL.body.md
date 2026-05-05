@@ -23,14 +23,6 @@ node ./scripts/search.mjs 'document upload' 5
 <Icon size="md" color="var(--color-text-primary)" dangerouslySetInnerHTML={{ __html: svg }} />
 ```
 
-## 检查清单
-
-- [ ] 搜索词足够具体，已拿到 3-5 个可比较候选。
-- [ ] `topK` 设定合理，没有盲目拉取过多结果。
-- [ ] SVG 已经过滤、压缩或纳入项目统一图标组件。
-- [ ] 图标尺寸、线宽、圆角和视觉风格与现有系统一致。
-- [ ] 图标语义明确，不会误导用户。
-
 ## 反模式
 
 ### FAIL: 宽泛关键词

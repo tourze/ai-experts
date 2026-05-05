@@ -23,6 +23,13 @@ export const doctrineEntityPatternsSkill = defineSkill({
     "时间字段用 `DateTimeImmutable`。",
     "Repository 继承 `ServiceEntityRepository`；Migration 只做结构变更。",
   ],
+  checklist: [
+    "列映射是否用 Attributes 且有 `comment`。",
+    "关联是否声明了 `mappedBy`/`inversedBy` 和 `cascade`。",
+    "Repository 是否避免了 `findAll()` 和无界查询。",
+    "Migration 是否可回滚、有索引和外键。",
+    "集合遍历是否用了 `JOIN FETCH` 或 `toIterable()` 防 N+1。",
+  ],
   relatedSkills: [
     {
       get id() {

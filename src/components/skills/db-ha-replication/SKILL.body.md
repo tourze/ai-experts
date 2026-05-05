@@ -16,15 +16,6 @@ SHOW REPLICA STATUS\G
 SELECT @@global.gtid_executed;
 ```
 
-## 检查清单
-
-- GTID 是否已启用且 enforce_gtid_consistency=ON。
-- Binlog 格式是否为 ROW。
-- 半同步复制是否在高一致性路径上启用。
-- 复制延迟监控是否同时使用 Seconds_Behind_Source 和心跳表。
-- 故障切换预案是否覆盖 GTID 缺口检测和 Replica 提升流程。
-- 读写分离路由是否考虑了复制延迟容忍度。
-
 ## 反模式
 
 - 使用 STATEMENT binlog 格式导致主从数据不一致。

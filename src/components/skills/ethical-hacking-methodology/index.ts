@@ -22,6 +22,12 @@ export const ethicalHackingMethodologySkill = defineSkill({
     "把目标资产、入口、凭据、影响和回滚方案写清楚。",
     "任何越界发现都要立即停止并升级确认。",
   ],
+  checklist: [
+    "每个发现都要有证据、影响、利用条件和修复建议。",
+    "区分已证实风险、潜在风险和待验证假设。",
+    "记录时间线、工具版本、关键输入和输出。",
+    "最终报告覆盖范围、限制、发现、复测结论。",
+  ],
   relatedSkills: [
     {
       get id() {

@@ -5,11 +5,6 @@
 - [block_on 同步桥接](references/patterns.md#模式-3)
 - [Runtime metrics 收集](references/patterns.md#模式-4)
 
-## 检查清单
-
-- worker_threads 基于实测？有 worker 上的阻塞操作？
-- `block_on` 只在非 async 上下文？线程名有意义？
-
 ## 反模式
 
 ### FAIL: async 内调 block_on

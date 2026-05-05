@@ -14,12 +14,6 @@
 - Clippy 配置与重要 lint：[chapter_02.md](references/chapter_02.md)
 - 指针类型与并发语义：[chapter_09.md](references/chapter_09.md)
 
-## 检查清单
-
-- 参数能否再借用一层而不是提早拿走所有权？
-- 循环内的 `clone()` / `collect()` 是否必要？
-- `#[allow(...)]` 是否都能改为 `#[expect(...)]` 并注明原因？
-
 ## 反模式
 
 ### FAIL: 借用报错就 clone

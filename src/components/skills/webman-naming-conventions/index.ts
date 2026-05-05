@@ -22,6 +22,12 @@ export const webmanNamingConventionsSkill = defineSkill({
     "命名空间与目录一致。见 [namespace-directory-mismatch](references/namespace-directory-mismatch.md)。",
     "Repository 实现加技术前缀。见 [repository-implementation-naming](references/repository-implementation-naming.md)。",
   ],
+  checklist: [
+    "[ ] 目录全小写，无驼峰",
+    "[ ] 接口用 `Interface` 后缀",
+    "[ ] Service 命名表达动作",
+    "[ ] 命名空间与目录路径一致",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

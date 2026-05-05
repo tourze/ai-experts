@@ -68,14 +68,6 @@ node scripts/collect_release_changes.mjs [from..to]
 
 按"新增 / 优化 / 修复"归类，过滤掉 refactor/chore/CI 提交；详见 `references/changelog-guide.md`。
 
-## 检查清单
-
-- 元数据优化优先用 `metadata_optimizer.py`，并校验 Apple / Google 字符上限。
-- 关键词分析优先用 `keyword_analyzer.py`，竞品对标优先用 `competitor_analyzer.py`。
-- 评论洞察用 `review_analyzer.py`，不要把低星评论直接等同于真实需求。
-- 发版准备使用 `launch_checklist.py`，测试规划使用 `ab_test_planner.py`。
-- 交叉引用：需要审核合规视角时切到 `apple-appstore-reviewer`。
-
 ## 反模式
 
 ### FAIL: 无证据的”高搜索低竞争”

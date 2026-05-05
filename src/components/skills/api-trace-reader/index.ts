@@ -21,6 +21,12 @@ export const apiTraceReaderSkill = defineSkill({
     "每条结论必须带 `file:line`、日志片段或 grep 证据，禁止“我猜”。",
     "输出标题固定为 `入口`、`调用链`、`数据读写`、`异步副作用`、`风险点`、`验证方式`。",
   ],
+  checklist: [
+    "是否确认了入口是 HTTP、CLI、消费者、定时任务、事件还是 webhook。",
+    "是否列出了每一级调用者、被调者和关键参数流向。",
+    "是否单列了 READ / WRITE / CACHE / MQ / EXTERNAL / FS 副作用。",
+    "是否补齐异步链路、重试逻辑、监听器和延迟任务。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

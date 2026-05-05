@@ -26,6 +26,11 @@ export const rustTestingSkill = defineSkill({
     "snapshot 测试（cargo-insta）适合输出结构复杂的场景；更新 snapshot 前必须人工审查 diff。",
     "集成测试放 `tests/` 目录，每个文件是独立编译 crate。",
   ],
+  checklist: [
+    "测试名是否准确表达输入、条件与预期结果？",
+    "是否存在 `assert!(true)` 或 `assert_eq!(result, result)` 这类空断言？",
+    "公共 API 是否有文档测试？",
+  ],
   relatedSkills: [
     {
       get id() {

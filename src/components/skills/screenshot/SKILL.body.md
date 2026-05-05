@@ -26,14 +26,6 @@ node scripts/take_screenshot_windows.mjs --path "C:\Temp\screen.png"
 node scripts/take_screenshot_windows.mjs --region 100,200,800,600
 ```
 
-## 检查清单
-
-- 已明确输出位置：显式路径、系统默认目录，还是临时目录。
-- macOS 上已经处理过截图权限。
-- 需要窗口 ID 时，先用 `--list-windows` 确认。
-- 没有同时传入互斥参数。
-- 截图命令跑完后，逐个检查输出路径是否真实生成。
-
 ## 反模式
 
 ### FAIL: 不预检查 macOS 权限

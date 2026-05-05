@@ -65,14 +65,6 @@ for (const chunk of chunkTranscript(data.transcript, 5)) {
 }
 ```
 
-## 检查清单
-
-- 先确认输入是合法的 YouTube 链接或 11 位视频 ID。
-- 需要真实内容而不是占位稿时，优先读取 `scripts/fetch_transcript.mjs` 的 JSON，再在上下文里完成分析。
-- 输出结论前确认 `source` 与 `language`，不要把自动字幕误写成官方字幕。
-- 如果视频明显依赖画面内容，结尾必须提示“仅基于字幕，视觉信息未覆盖”。
-- 生成 Markdown 文件时，确认最终交付是否仍保留 `[TO BE ANALYZED]`；只有用户明确要脚手架时才允许保留。
-
 ## 反模式
 
 ### FAIL: 无字幕硬总结

@@ -25,6 +25,14 @@ export const reactNativeDesignSkill = defineSkill({
     "平台分支应尽量收敛在边界组件或样式层，不要把 `Platform.OS` 散落在整页 JSX 里。",
     "触控区、可见状态、加载态必须明确；移动端交互不能只看静态视觉。",
   ],
+  checklist: [
+    "[ ] 样式是否主要通过 `StyleSheet.create` 或稳定引用构建？",
+    "[ ] 手势与动画是否放在 Reanimated / Gesture Handler 的正确线程模型上？",
+    "[ ] 页面切换是否通过导航栈管理，而不是手写隐藏/显示分支模拟导航？",
+    "[ ] 不同尺寸、刘海屏、安全区与横竖屏下是否都可用？",
+    "[ ] 平台分支是否集中在边界层，而不是散在业务组件内部？",
+    "[ ] 交互反馈、禁用态、加载态与错误态是否明确可见？",
+  ],
   relatedSkills: [
     {
       get id() {

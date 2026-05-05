@@ -26,6 +26,13 @@ export const webContentFetcherSkill = defineSkill({
     "默认 fast 模式会在内容过短时自动用 browser-header 模式重试，因此大多数静态站点无需手动指定 `--stealth`。",
     "如果脚本失败，可以再考虑其他非脚本方案；不要把多次失败的同一 URL 反复塞进上下文。",
   ],
+  checklist: [
+    "当前环境是否有可用 `node`。",
+    "是否根据域名选择了合适模式，而不是所有站点都强制 stealth。",
+    "是否优先读取 JSON/Markdown 正文，而不是直接拿错误日志当内容。",
+    "对提取失败的 URL，是否及时停止重试并回到上层研究流程。",
+    "图片懒加载站点的正文里，图片链接是否被正确替换到 Markdown。",
+  ],
   relatedSkills: [
     {
       get id() {

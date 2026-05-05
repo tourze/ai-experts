@@ -14,13 +14,6 @@
 
 代码示例见 [patterns.md](references/patterns.md)。
 
-## 检查清单
-
-- 选定的异步方案与项目的部署约束匹配。
-- 所有 I/O 都走异步客户端，无同步阻塞调用残留。
-- 协程间通信通过 Channel 或消息，没有裸全局变量共享。
-- 长驻进程有 max_request 或定期重启机制。
-
 ## 反模式
 
 ### FAIL: 协程内 sleep()

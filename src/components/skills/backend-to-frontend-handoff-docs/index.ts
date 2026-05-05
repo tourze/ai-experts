@@ -20,6 +20,12 @@ export const backendToFrontendHandoffDocsSkill = defineSkill({
     "输出应直接落到 `.claude/docs/ai/<feature-name>/api-handoff.md` 或用户指定路径。",
     "不要把“后端如何实现”堆成源码讲解，前端只关心契约和集成行为。",
   ],
+  checklist: [
+    "是否覆盖所有前端会直接消费的接口和 DTO。",
+    "是否明确鉴权、分页、排序、缓存、轮询或实时更新规则。",
+    "是否写清错误码、字段约束和镜像到前端的校验逻辑。",
+    "是否补充了联调测试场景和已知限制。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

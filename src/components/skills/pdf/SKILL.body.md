@@ -14,14 +14,6 @@ python3 scripts/fill_fillable_fields.py form.pdf fields.json filled.pdf
 python3 scripts/fill_pdf_form_with_annotations.py scanned.pdf fields.json annotated.pdf
 ```
 
-## 检查清单
-
-- 是否区分了可填写表单与视觉型表单。
-- 是否先提取字段信息，再让用户或上游流程生成字段值 JSON。
-- 对复选框、单选组、下拉框是否检查了合法取值，而不是直接塞文本。
-- 若走视觉型写入，是否结合标注图或页面截图做了位置核验。
-- 只需抽取文本/表格时，是否切换到 [pdf-extraction](references/pdf-extraction.md)。
-
 ## 反模式
 
 ### FAIL: 不探测字段直接填

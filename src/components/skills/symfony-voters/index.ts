@@ -25,6 +25,13 @@ export const symfonyVotersSkill = defineSkill({
     "不要通过错误消息泄露敏感上下文，例如“资源存在但你无权访问”这类差异。",
     "控制器、API Platform、Twig 模板和命令入口必须复用同一套授权事实，而不是各写一份 if/else。",
   ],
+  checklist: [
+    "是否先画清楚“操作者 / 资源 / 动作”的决策矩阵，再写代码。",
+    "`supports()` 是否足够收敛，避免把不相关的 subject 吃进去。",
+    "拒绝路径是否稳定且默认安全，没有把敏感原因暴露给前端。",
+    "Controller、模板和 API 入口是否共用同一授权属性，而不是分叉实现。",
+    "是否覆盖匿名用户、普通用户、资源所有者、管理员和资源不存在等测试场景。",
+  ],
   relatedSkills: [
     {
       get id() {

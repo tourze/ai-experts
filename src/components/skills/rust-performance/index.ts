@@ -26,6 +26,11 @@ export const rustPerformanceSkill = defineSkill({
     "`#[inline]` 只在跨 crate 热路径上有意义；同 crate 内编译器自行决定。",
     "Release 模式 (`--release`) 下才有意义的性能数据；Debug 下不要做性能判断。",
   ],
+  checklist: [
+    "优化前是否有 benchmark 基线？",
+    "是否在 `--release` 模式下测量？",
+    "热路径上是否有不必要的 `clone()`、`collect()`、`format!()`？",
+  ],
   relatedSkills: [
     {
       get id() {

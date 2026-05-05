@@ -27,6 +27,14 @@ export const modernJavascriptPatternsSkill = defineSkill({
     "只有在团队已有约定或性能证据明确时才引入函数式管道、生成器等高级抽象。",
     "微优化只在热路径上有意义 — 先 Profiler 确认瓶颈，不牺牲可读性，DOM 批处理先读后写。",
   ],
+  checklist: [
+    "是否消除了回调嵌套、共享可变状态和隐式 `this`。",
+    "是否使用 `??` 而不是会误伤 `0` / `\"\"` / `false` 的 `||`。",
+    "是否把数组转换写成 `map` / `filter` / `reduce` 等可读流程，而不是副作用循环。",
+    "是否对异步边界补上错误语义、超时或重试策略。",
+    "是否让导出函数名表达业务意图，而不是暴露 `helper` / `util` / `temp`。",
+    "若引入高级语法，团队成员是否无需额外上下文就能读懂。",
+  ],
   relatedSkills: [
     {
       get id() {

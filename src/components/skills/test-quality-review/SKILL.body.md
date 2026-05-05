@@ -10,14 +10,6 @@
 ## 输出格式
 读取 [references/health-score.md](./references/health-score.md)，按四要素格式输出，含 Test Health Score 和套件概览。
 
-## 检查清单
-- [ ] 已读取实际测试代码
-- [ ] 六类风险（T1-T6）都扫描过
-- [ ] 每条发现含四要素（Symptom / Source / Consequence / Remedy）
-- [ ] 检查了各风险的"不应标记"规则，未误报
-- [ ] 计算并输出 Test Health Score
-- [ ] 未把测试风格偏好当成衰退风险
-
 ## 纪律守卫
 
 **Iron Law：没有读取实际测试代码，不允许给出审查意见。**

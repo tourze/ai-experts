@@ -26,6 +26,14 @@ export const firstPrinciplesDecomposerSkill = defineSkill({
     "最后必须对比“重建方案 vs. 常规方案”，让差异可见。",
     "需要更完整方法时，参考 [详细框架](references/framework.md)、[示例集](references/examples.md) 和 [组合框架](references/integrated-frameworks.md)。",
   ],
+  checklist: [
+    "问题是否已经收敛成一句清晰陈述。",
+    "是否至少列出了 3 个待挑战的关键假设。",
+    "基础事实是否真的不可再压缩、不可轻易反驳。",
+    "新方案是否只建立在这些事实之上。",
+    "是否说明了和常规做法的差别与收益。",
+    "是否给出后续验证点或最小实验。",
+  ],
   relatedSkills: [
     {
       get id() {

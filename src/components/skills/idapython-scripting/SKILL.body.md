@@ -48,12 +48,6 @@ ida.close_database(save=False)
 open("out.json", "w").write(json.dumps(result, indent=2))
 ```
 
-## 检查清单
-- 确认 IDA 版本（API 在 7.x / 8.x / 9.x 之间有重大变化）。
-- `idaapi.FlowChart` 使用 `flags=idaapi.FC_PREDS` 获取前驱块。
-- Appcall 需要在调试态执行，非调试态会抛异常。
-- IDALib `close_database(save=True)` 会写 .idb，确认是否需要。
-
 ## 反模式
 
 ### FAIL: 直接在反编译中搜字符串

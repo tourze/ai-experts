@@ -5,11 +5,6 @@
 - [自定义序列化 Duration 转毫秒](references/patterns.md#模式-3)
 - [反序列化时校验](references/patterns.md#模式-4)
 
-## 检查清单
-
-- enum 标签策略明确？`deny_unknown_fields` 只在入口？
-- 重命名保留 alias？新增字段有 default/Option？
-
 ## 反模式
 
 ### FAIL: 所有类型 deny_unknown_fields

@@ -24,6 +24,14 @@ export const reactNativeJsPerformanceSkill = defineSkill({
     "只用 release 构建做真实性能判断；debug 构建的 JS 执行慢 10-20 倍，结论完全失真。",
     "区分 JS 线程瓶颈和 UI 线程瓶颈——症状相似但解法不同。Perf Monitor 左列（JS）掉帧和右列（UI）掉帧要区别对待。",
   ],
+  checklist: [
+    "[ ] 是否用 Perf Monitor 或 Flashlight 记录了优化前后的 FPS 数据？",
+    "[ ] 是否在 release 构建、真机上复测？",
+    "[ ] 大列表是否使用虚拟化组件，并控制 `windowSize`/`initialNumToRender`？",
+    "[ ] 动画是否尽量放到 Reanimated/UI 线程，而不是 JS 线程？",
+    "[ ] 高频输入是否使用非受控组件或 deferred value？",
+    "[ ] 是否排查了闭包、定时器和事件监听器的内存泄漏？",
+  ],
   relatedSkills: [
     {
       get id() {

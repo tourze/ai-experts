@@ -31,13 +31,6 @@ components:
 
 - 需要代码优先实践时，查看 [references/code-first-and-tooling.md](references/code-first-and-tooling.md)。
 
-## 检查清单
-- 是否定义了版本、服务器地址、认证方式和错误响应模型。
-- 是否为每个 path operation 提供 `operationId`、参数和响应码。
-- 是否复用了共享 schema、参数和 response 组件。
-- 是否让示例、默认值和枚举值与 schema 保持一致。
-- 如果 API 生成流程嵌入 CI，参阅 GitHub Actions 工作流配置相关文档。
-
 ## 反模式
 
 ### FAIL: 只写 200 无错误模型

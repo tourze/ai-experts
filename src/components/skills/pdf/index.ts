@@ -24,6 +24,13 @@ export const pdfSkill = defineSkill({
     "视觉型 PDF 的写入坐标要经过图片标注或抽样核对，不能凭感觉填。",
     "PDF 写回后至少人工检查一页关键字段，避免字段错位或字体异常。",
   ],
+  checklist: [
+    "是否区分了可填写表单与视觉型表单。",
+    "是否先提取字段信息，再让用户或上游流程生成字段值 JSON。",
+    "对复选框、单选组、下拉框是否检查了合法取值，而不是直接塞文本。",
+    "若走视觉型写入，是否结合标注图或页面截图做了位置核验。",
+    "只需抽取文本/表格时，是否切换到 [pdf-extraction](references/pdf-extraction.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

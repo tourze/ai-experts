@@ -96,15 +96,6 @@ export function useCounter(initial = 0, step = 1) {
 // /** @type {import('./types/user.mjs').User} */
 ```
 
-## 检查清单
-
-- 组件是否使用 `<script setup>`，并把 props / emits 的运行时校验与 JSDoc 契约同时写清楚。
-- 每个导出的 composable / store action 是否都带 `@param` / `@returns`，返回结构是否能被 `@typedef` 描述。
-- 共享对象形状是否已经抽出为 `@typedef`，而不是在多个文件重复手写字段说明。
-- `.vue` / `.js` / `.mjs` 文件里是否仍残留 `lang="ts"`、类型断言、接口、枚举等 TypeScript 语法。
-- 测试是否覆盖了组件事件、composable 返回值或 store action 的关键行为，而不是只验证实现细节。
-- 若引入外部参考技能，链接是否真实存在，且当前任务确实需要展开到更通用的 JavaScript 模式。
-
 ## 反模式
 
 ### FAIL: JSDoc 与运行时脱节

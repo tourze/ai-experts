@@ -21,6 +21,12 @@ export const pragmaticProgrammerSkill = defineSkill({
     "示踪弹用于快速打通主路径，不代表可以跳过质量或收尾。",
     "任何不可逆决策都要先验证边界，再决定是否承诺。",
   ],
+  checklist: [
+    "是否识别了重复知识、耦合边界和不可逆决策。",
+    "是否选择了最小可验证路径，而不是一次赌大。",
+    "是否说明了原则对当前实现的具体影响。",
+    "是否保留了后续演进空间。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

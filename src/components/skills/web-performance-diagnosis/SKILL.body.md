@@ -34,18 +34,6 @@ node ./scripts/analyze.mjs ./public
 
 核心代码模式（Promise.all 并行化、hydration 双阶段渲染、resource hints、passive listeners）和规则索引见 [references/rendering-and-waterfall.md](references/rendering-and-waterfall.md)。
 
-## 检查清单
-
-- [ ] 已覆盖性能、a11y、SEO、best practices 四维度。
-- [ ] 问题按 P0/P1/P2 排序，每条指向具体页面/文件/元素。
-- [ ] 已区分 lab 与 RUM 数据口径。
-- [ ] LCP 四段分解、INP 三段分解是否完成？
-- [ ] LCP 元素已确认且存在于初始 HTML，图片/字体已 preload。
-- [ ] 事件处理链路无长任务；关键交互在低端设备和慢网下也可用。
-- [ ] 图片、视频、广告、嵌入内容都已声明尺寸或 `aspect-ratio`。
-- [ ] 无依赖请求已 Promise.all 并行化；hydration 无闪烁。
-- [ ] 修复后同时复测实验室数据与真实用户数据。
-
 ## 交叉引用
 
 - `react-performance`：React 渲染优化

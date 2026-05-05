@@ -33,14 +33,6 @@
 }
 ```
 
-## 检查清单
-
-- [ ] 已读取两个输出的完整内容；输出为目录时检查所有相关文件。
-- [ ] 已从原始任务提炼应产出什么、质量维度是什么、失败标准是什么。
-- [ ] Rubric 同时覆盖 correctness / completeness / accuracy 和 organization / formatting / usability。
-- [ ] 如有 expectations，已统计通过率，但没有用它替代整体判断。
-- [ ] winner 为 `A`、`B` 或 `TIE`，且 reasoning 足以复核。
-
 ## 反模式
 
 ### FAIL: 按来源偏好选择

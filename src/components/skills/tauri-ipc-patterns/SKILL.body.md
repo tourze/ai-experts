@@ -2,11 +2,6 @@
 
 - [高级 IPC 模式](references/ipc-advanced-patterns.md)
 
-## 检查清单
-- 错误是否序列化为结构化 JSON？
-- 事件枚举与前端 TS 类型一一对应？
-- 权限文件在 `permissions/` 并被 capability 引用？
-
 ## 反模式
 
 ### FAIL: String 错误

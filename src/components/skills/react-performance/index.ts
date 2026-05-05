@@ -30,6 +30,16 @@ export const reactPerformanceSkill = defineSkill({
     "外部 store：默认订阅最小 slice，订阅点尽量下沉到叶子；selector 必须稳定，否则永远 ≠。",
     "Context Provider 的 value 必须稳定（用 useMemo），高频更新不适合 Context。",
   ],
+  checklist: [
+    "[ ] 先用 Profiler / Performance / 自定义计时确认了热点？",
+    "[ ] 传给 memoized child 的对象、数组、回调引用稳定？",
+    "[ ] derived state 走渲染期直算而不是 useEffect？",
+    "[ ] 没在组件内定义子组件？",
+    "[ ] 大列表已虚拟化、重模块已懒加载？",
+    "[ ] 外部 store 订阅最小 slice、selector 稳定、必要时 shallowEqual？",
+    "[ ] Context value 已 useMemo 稳定？",
+    "[ ] 优化前后有可对比数据（commit time / latency / bundle size）？",
+  ],
   relatedSkills: [
     {
       get id() {

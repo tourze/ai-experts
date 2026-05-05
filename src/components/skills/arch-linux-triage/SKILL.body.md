@@ -25,14 +25,6 @@ sudo mkinitcpio -P
 sudo bootctl status
 ```
 
-## 检查清单
-
-- [ ] 确认 `cat /etc/os-release`、`uname -a`、`pacman -Q linux` 的输出一致。
-- [ ] 查看 `systemctl --failed` 与 `journalctl -b -p err..alert --no-pager`。
-- [ ] 检查 `/var/log/pacman.log` 中最近一次升级、回滚或镜像错误。
-- [ ] 若涉及包损坏，先用 `pacman -Qikk <pkg>` 验证再决定重装。
-- [ ] 若涉及引导，确认 `mkinitcpio -P`、`bootctl status` 或 GRUB 生成是否成功。
-
 ## 反模式
 
 ### FAIL: pacman -Sy 单独刷新

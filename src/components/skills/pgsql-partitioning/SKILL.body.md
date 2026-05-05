@@ -14,14 +14,6 @@ CREATE TABLE event_log_2025_01 PARTITION OF event_log
 CREATE TABLE event_log_default PARTITION OF event_log DEFAULT;
 ```
 
-## 检查清单
-
-- 分区键是否包含在主键和所有唯一约束中
-- 是否创建了 DEFAULT 分区
-- RANGE 边界是否左闭右开且相邻无缝
-- 是否有自动化脚本提前创建未来分区
-- 是否用 `EXPLAIN` 验证 partition pruning 只访问目标分区
-
 ## 反模式
 
 ### FAIL: 没有 DEFAULT 分区

@@ -3,13 +3,6 @@
 - 调用链格式遵循 [输出示例](references/output-example.md)。
 - 风险分级使用 [风险分级表](references/risk-rubric.md)。
 
-
-## 检查清单
-- 是否确认了入口是 HTTP、CLI、消费者、定时任务、事件还是 webhook。
-- 是否列出了每一级调用者、被调者和关键参数流向。
-- 是否单列了 READ / WRITE / CACHE / MQ / EXTERNAL / FS 副作用。
-- 是否补齐异步链路、重试逻辑、监听器和延迟任务。
-
 ## 反模式
 
 ### FAIL: 边追边改

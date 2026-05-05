@@ -21,6 +21,12 @@ export const hierarchicalMatchingSystemsSkill = defineSkill({
     "任何“匹配质量差”结论都要落到具体输入分布、规则冲突或评分函数。",
     "不要把求解器选择和业务正确性混为一谈。",
   ],
+  checklist: [
+    "是否把输入实体、层级关系和约束表述清楚。",
+    "是否区分了必须满足的约束和可优化目标。",
+    "是否用样例解释匹配失败或不稳定现象。",
+    "是否说明求解复杂度和可扩展性限制。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

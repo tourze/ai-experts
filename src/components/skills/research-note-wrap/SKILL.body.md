@@ -10,16 +10,6 @@
 
 跨会话场景第一版不做自动 transcript 检索；由用户提供具体会话或要点，frontmatter 标 `source: today-topic-synthesis`。
 
-## 检查清单
-
-- [ ] 范围已确定（current-session / today-topic-synthesis）。
-- [ ] 输出路径来自记忆文件或已与用户当面确认。
-- [ ] 主要问题表与核心结论表均已通过用户确认。
-- [ ] 表格承担密度，`## 关键结论` 紧随其后。
-- [ ] 引用的位点都给出了"它做什么 / 为什么关键 / 如何支撑结论"。
-- [ ] 文件名匹配 `YYYY-MM-DD-<topic>.md`。
-- [ ] 追加专题场景没有新建文件。
-
 ## 反模式
 
 完整 FAIL/PASS 对照见 [反模式集](references/anti-patterns.md)。摘要：

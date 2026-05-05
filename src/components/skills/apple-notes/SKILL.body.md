@@ -26,14 +26,6 @@ memo notes --folder "Archive" --remove
 memo notes --export
 ```
 
-## 检查清单
-
-- 先确认 `memo` 已安装：`memo --help`、`memo notes --help`。
-- 操作前确认目标文件夹名称；交互命令默认会弹选择器。
-- 如果用户要批量自动化，先验证是否允许交互式操作。
-- 导出前提醒用户：导出目标默认在桌面。
-- 交叉引用：需要任务提醒时用 `apple-reminders`，不要把 Notes 当待办系统。
-
 ## 反模式
 
 ### FAIL: 假设 CLI 参数

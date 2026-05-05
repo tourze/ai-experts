@@ -31,15 +31,6 @@ await captureScreenshot(page, "dashboard-ready");
 console.log(logs);
 ```
 
-## 检查清单
-
-- [ ] 已确认目标地址可访问
-- [ ] 关键断言使用稳定选择器
-- [ ] 关键步骤后有显式等待
-- [ ] 失败时会截图或保留日志
-- [ ] 测试结束关闭浏览器资源
-- [ ] 没用固定 `sleep` 掩盖同步问题
-
 ## 反模式
 
 ### FAIL: 易碎选择器

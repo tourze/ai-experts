@@ -22,6 +22,13 @@ export const microsoftDocsSkill = defineSkill({
     "优先搜索，确认命中后再抓整页；不要一上来就拉长文档。",
     "CLI 仅作回退链路；已验证的命令只有 `search`、`fetch`、`doctor`。",
   ],
+  checklist: [
+    "搜索词是否包含产品名、版本、平台或任务意图，而不是只写一个宽词。",
+    "是否只在摘要不够时才抓完整页面。",
+    "如果需要具体 SDK API 或示例，是否查阅了 `references/code-reference.md`。",
+    "是否明确区分了 MCP 工具参数与 CLI 参数。",
+    "使用 CLI 回退前，是否可用 `doctor` 快速确认链路健康。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

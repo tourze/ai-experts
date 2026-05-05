@@ -26,6 +26,11 @@ export const tauriIpcPatternsSkill = defineSkill({
     "超 1ms 同步命令必须改 async",
     "批量模式单次 invoke 传操作数组减少往返",
   ],
+  checklist: [
+    "错误是否序列化为结构化 JSON？",
+    "事件枚举与前端 TS 类型一一对应？",
+    "权限文件在 `permissions/` 并被 capability 引用？",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

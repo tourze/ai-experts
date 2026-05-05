@@ -28,6 +28,15 @@ export const mysqlTransactionLockingSkill = defineSkill({
     "`AUTO-INC` 锁模式和版本相关：MySQL 8.0 默认 `innodb_autoinc_lock_mode=2`，MySQL 5.7 默认 `1`；statement-based replication 需要用 `0` 或 `1` 保持自增值可重放顺序。",
     "应用层必须捕获 deadlock 错误（error 1213）并自动重试，InnoDB 会回滚代价较小的事务。",
   ],
+  checklist: [
+    "是否明确了当前隔离级别及其锁行为差异。",
+    "所有 `FOR UPDATE` 是否在显式事务内且 WHERE 命中索引。",
+    "是否区分锁对象在索引记录、间隙、表级意向锁、`AUTO-INC`、MDL 还是空间索引谓词锁上。",
+    "是否确认 MySQL 版本、`innodb_autoinc_lock_mode`、`binlog_format` 与复制模式。",
+    "事务是否保持短小，是否有事务超时保护。",
+    "应用层是否捕获死锁错误码（1213）并实现自动重试。",
+    "是否有定期检查 `SHOW ENGINE INNODB STATUS` 或 `performance_schema.data_locks` 的监控。",
+  ],
   relatedSkills: [
     {
       get id() {

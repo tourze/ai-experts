@@ -23,6 +23,11 @@ export const similaritySearchPatternsSkill = defineSkill({
     "metadata filter、tenant isolation、hybrid ranking 往往和索引结构同级重要。",
     "方案选择时要同时看写入模式、更新频率、召回要求、成本和运维复杂度。",
   ],
+  checklist: [
+    "检索目标是搜索、推荐还是 RAG。",
+    "向量维度、距离度量、索引类型是否一致。",
+    "是否明确了过滤条件、排序规则、重排策略与更新频率。",
+  ],
   relatedSkills: [
     {
       get id() {

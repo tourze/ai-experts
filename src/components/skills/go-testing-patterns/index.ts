@@ -27,6 +27,13 @@ export const goTestingPatternsSkill = defineSkill({
     "时间相关测试优先注入 clock 或使用可控时间，不用 `time.Sleep` 猜测异步完成。",
     "并发代码测试要考虑 `go test -race ./...` 和 goroutine leak 检测。",
   ],
+  checklist: [
+    "每个测试 case 是否有明确 `name`，失败时能定位场景？",
+    "测试是否依赖执行顺序、真实时间、真实网络或全局状态？",
+    "可并行测试是否安全使用 `t.Parallel()`？",
+    "集成测试是否用 build tag 与单元测试隔离？",
+    "并发代码是否跑过 `go test -race ./...`，必要时是否有 leak 检测？",
+  ],
   relatedSkills: [
     {
       get id() {

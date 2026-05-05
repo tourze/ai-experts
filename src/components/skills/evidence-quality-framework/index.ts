@@ -17,6 +17,13 @@ export const evidenceQualityFrameworkSkill = defineSkill({
     "只在本 skill 的适用场景内使用；任务不匹配时先澄清或转向更合适的 skill。",
     "执行时遵循正文中的流程、红线、检查清单和必要参考资料，不用未经验证的假设替代证据。",
   ],
+  checklist: [
+    "[ ] 每段结论是否显式带 `[事实]` / `[推断]` / `[假设]` 标注？",
+    "[ ] `[事实]` 是否附可核验定位？`[推断]` 是否给依据链？`[假设]` 是否给验证路径？",
+    "[ ] 每条发现是否有文件:行 / timestamp / commit / metric 至少一种定位？",
+    "[ ] 证据片段是实际粘贴内容，触发条件可被独立复现？",
+    "[ ] 综合结论级别匹配最弱环节？是否避免了\"显然/大概率/毫无疑问\"等无锚措辞？",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

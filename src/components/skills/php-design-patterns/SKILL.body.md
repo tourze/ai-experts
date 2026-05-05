@@ -36,13 +36,6 @@ class OrderService {
 
 代码示例见 [patterns.md](references/patterns.md)。
 
-## 检查清单
-
-- 控制器没有吞入业务逻辑。
-- 服务通过构造函数注入依赖，没有静态 Facade。
-- 数据传输用 readonly DTO，不用裸数组跨层传递。
-- 依赖方向单向：Controller → Service → Repository。
-
 ## 反模式
 
 ### FAIL: 控制器吞业务

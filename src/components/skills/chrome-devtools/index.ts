@@ -22,6 +22,13 @@ export const chromeDevtoolsSkill = defineSkill({
     "性能分析工具链以 `performance_start_trace` / `performance_stop_trace` / `performance_analyze_insight` 为主，必要时补 `take_memory_snapshot` 与 `lighthouse_audit`。",
     "当前官方工具面包括页面导航、输入交互、调试、网络、性能和仿真；命名基线见官方仓库：<https://github.com/mcp/ChromeDevTools/chrome-devtools-mcp>",
   ],
+  checklist: [
+    "是否在交互前拿到最新 `take_snapshot`，而不是凭截图猜元素。",
+    "是否在多页签场景里确认了当前 page ID，再执行点击、填写或脚本求值。",
+    "是否把控制台、网络和页面脚本求值结果结合起来，而不是单看某一侧证据。",
+    "是否在性能排障时先录 trace，再做 insight / memory / Lighthouse，而不是反过来。",
+    "是否把一次分析得到的 `uid`、request 线索、trace 结论和复现步骤一起记录下来。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

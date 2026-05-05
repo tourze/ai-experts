@@ -35,15 +35,6 @@ const MonacoEditor = dynamic(
 - [rules/bundle-preload.md](rules/bundle-preload.md)
 ```
 
-## 检查清单
-
-- [ ] 是否用 bundle analyzer 确认了最大的几个模块？
-- [ ] 首屏不需要的重型组件是否已动态导入？
-- [ ] 是否消除了 barrel imports 改为 direct path？
-- [ ] 第三方库是否按需加载而不是全量引入？
-- [ ] 预加载是否只用在高概率路径上？
-- [ ] 改动前后是否有 bundle size 对比？
-
 ## 反模式
 
 ### FAIL: 滥动态导入

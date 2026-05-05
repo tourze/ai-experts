@@ -147,17 +147,6 @@ export default async function ProductPage({ params }: PageProps) {
 
 异步 `params: Promise<{ id: string }>` + `await params`，详见 [references/app-router.md](references/app-router.md)。
 
-## 检查清单
-
-- 是否明确说明页面/布局/模板/路由处理器的职责边界？
-- 是否默认保留 Server Component，并把 `'use client'` 压到了交互叶子节点？
-- 是否给每个 `fetch` 写清了缓存、重验证或标签策略？
-- 是否在动态路由、`generateMetadata`、Route Handler 里正确处理了异步 `params`？
-- 是否给异步段补了 `loading.tsx` / `error.tsx` / `not-found.tsx`？
-- 是否对 Server Action 做了输入校验、鉴权/授权、重验证和失败返回约定？
-- 是否避免把服务端密钥暴露到 `NEXT_PUBLIC_*`？
-- 是否在部署说明里覆盖 `next build`、环境变量、图片域名、运行时选择与回滚入口？
-
 ## 反模式
 
 ### FAIL: 整棵树 'use client'

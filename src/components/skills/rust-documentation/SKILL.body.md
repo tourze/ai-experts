@@ -10,13 +10,6 @@
 
 代码示例见 [chapter_08.md](references/chapter_08.md)。
 
-## 检查清单
-
-- 公共 API 是否都有 `///` 文档？
-- 返回 `Result` 的函数是否有 `# Errors`？
-- `unsafe fn` 是否有 `# Safety`？
-- 注释是否在解释"为什么"而不是翻译代码？
-
 ## 反模式
 
 ### FAIL: 注释翻译代码

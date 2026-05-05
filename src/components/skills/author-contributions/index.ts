@@ -21,6 +21,13 @@ export const authorContributionsSkill = defineSkill({
     "最终只汇报 `git diff <upstream>..<branch>` 里仍然会落地的文件；已经被删掉、不会合并的路径不要报。",
     "大仓库优先用 Python 做集合与 rename 图计算，不要写脆弱的 shell 管道循环。",
   ],
+  checklist: [
+    "是否先跑了作者身份枚举，而不是直接写 `--author=xxx`。",
+    "是否同时拿到了 `author_files`、`rename_map` 和最终 merge diff 文件列表。",
+    "是否对 rename 做了传递闭包，而不是只查一跳。",
+    "是否只输出最终会落地的文件，并补了 `git diff --stat` 统计。",
+    "是否在结论里区分了 `DIRECT` 与 `VIA_RENAME`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -27,6 +27,13 @@ export const pythonPerformanceOptimizationSkill = defineSkill({
     "benchmark 要写明输入规模、运行轮次和环境，不要凭感觉说“更快”。",
     "不为了局部速度把代码可读性和可维护性直接打穿。",
   ],
+  checklist: [
+    "已用 profiler 或 benchmark 证明热点在哪里。",
+    "已确认瓶颈是 CPU、内存、数据库、网络还是锁竞争。",
+    "优化前后使用相同输入规模和相同运行环境对比。",
+    "优化带来的复杂度是否值得维护成本。",
+    "已保留回归基线，避免以后“优化”把性能改坏却无从发现。",
+  ],
   relatedSkills: [
     {
       get id() {

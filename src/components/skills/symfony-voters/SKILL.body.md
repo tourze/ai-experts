@@ -48,14 +48,6 @@ public function edit(Post $post): \Symfony\Component\HttpFoundation\Response
 {% endif %}
 ```
 
-## 检查清单
-
-- 是否先画清楚“操作者 / 资源 / 动作”的决策矩阵，再写代码。
-- `supports()` 是否足够收敛，避免把不相关的 subject 吃进去。
-- 拒绝路径是否稳定且默认安全，没有把敏感原因暴露给前端。
-- Controller、模板和 API 入口是否共用同一授权属性，而不是分叉实现。
-- 是否覆盖匿名用户、普通用户、资源所有者、管理员和资源不存在等测试场景。
-
 ## 反模式
 
 ### FAIL: Controller 手写角色判断

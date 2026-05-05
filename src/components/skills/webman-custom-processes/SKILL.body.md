@@ -6,14 +6,6 @@
 return ['heartbeat' => ['handler' => App\Process\Heartbeat::class, 'count' => 1]];
 ```
 
-## 检查清单
-
-- [ ] `config/process.php` 声明 `handler` 和 `count`
-- [ ] 初始化在 `onWorkerStart`
-- [ ] Timer ID 追踪并清理
-- [ ] 回调无阻塞调用
-- [ ] 长连接进程 `reloadable=>false`
-
 ## 反模式
 
 ### FAIL: 构造函数建连接

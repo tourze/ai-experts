@@ -20,12 +20,6 @@ Campaign
 
 - 常见文案与受众切片可参考 [ad-copy-templates](references/ad-copy-templates.md) 与 [audience-targeting](references/audience-targeting.md)。
 
-## 检查清单
-- 是否写清了目标、预算、归因和学习期预期。
-- 是否区分获客、再营销、品牌词和实验流量。
-- 是否给出了停投、扩量和复盘条件。
-- 是否将创意测试与受众测试拆开。
-
 ## 反模式
 
 ### FAIL: 一个 campaign 全堆

@@ -22,6 +22,12 @@ export const phpErrorHandlingSkill = defineSkill({
     "用户可见消息与内部调试细节分离，不暴露 SQL、路径、堆栈。",
     "用户输入必须在进入业务逻辑前完成校验和归一化。",
   ],
+  checklist: [
+    "异常分为验证层、业务层、外部依赖层。",
+    "try/catch 只出现在真正需要处理或转换异常的地方。",
+    "用户可见错误消息不包含堆栈、SQL、文件路径。",
+    "批量处理有部分失败汇总机制。",
+  ],
   relatedSkills: [
     {
       get id() {

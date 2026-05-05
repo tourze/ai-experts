@@ -145,6 +145,11 @@ test("component build emits claude and codex component surfaces", () => {
     );
     assert.match(goTestingPatternsSkill, /## 相关 Skill/);
     assert.match(goTestingPatternsSkill, /\[testing-patterns\]\(\.\.\/testing-patterns\/SKILL\.md\)/);
+    assert.match(goTestingPatternsSkill, /## 检查清单/);
+    assert.ok(
+      goTestingPatternsSkill.indexOf("## 检查清单") < goTestingPatternsSkill.indexOf("## 反模式"),
+      "generated checklist should keep its pre-anti-pattern position",
+    );
 
     const codexMetadata = readFileSync(
       join(tmp, "codex/skills/typescript-type-safety/agents/openai.yaml"),
@@ -257,6 +262,11 @@ test("component build emits claude and codex component surfaces", () => {
         0,
         `${bodyFile} should not contain a constraints section; set constraints in index.ts instead`,
       );
+      assert.equal(
+        countH2OutsideCodeFence(source, "检查清单"),
+        0,
+        `${bodyFile} should not contain a checklist section; set checklist in index.ts instead`,
+      );
       assert.doesNotMatch(
         source,
         /\]\(\.\.\/[^)]+\/SKILL\.md\)|\]\([a-z0-9-]+-expert:[a-z0-9-]+\)/,
@@ -289,6 +299,14 @@ test("component build emits claude and codex component surfaces", () => {
           relatedSkillsSource,
           /\n\s*get id\(\) \{\n\s*return \w+Skill\.id;\n\s*\}/,
           `${skillSourceFile} should resolve related skill ids through imported skill definitions`,
+        );
+      }
+      const checklistSource = extractPropertyArray(source, "checklist");
+      if (checklistSource) {
+        assert.match(
+          checklistSource,
+          /\n\s*"[^"]+"/,
+          `${skillSourceFile} should define checklist as a non-empty string array`,
         );
       }
     }
@@ -325,6 +343,18 @@ test("component build emits claude and codex component surfaces", () => {
             source,
             /^## 相关 Skill\r?\n\r?\n- \[[^\]]+\]\(\.\.\/[^)]+\/SKILL\.md\) — \S/m,
             `${skillFile} should render relatedSkills as generated skill links`,
+          );
+        }
+        if (source.includes("## 检查清单")) {
+          assert.match(
+            source,
+            /^## 检查清单\r?\n\r?\n- \S/m,
+            `${skillFile} should render checklist as generated bullet items`,
+          );
+          assert.equal(
+            countH2OutsideCodeFence(source, "检查清单"),
+            1,
+            `${skillFile} should render exactly one checklist section`,
           );
         }
       }

@@ -22,15 +22,6 @@ const { toast } = useToast();
 toast({ title: "Saved", description: "Changes applied." });
 ```
 
-## 检查清单
-
-- [ ] `components.json`、路径别名和 `cn()` 工具都已就位。
-- [ ] Tailwind v3/v4 配置与项目实际版本一致。
-- [ ] 新增组件通过 CLI 或受控模板引入，不是随手复制旧代码。
-- [ ] 组件样式已映射到项目 token、主题和字体体系。
-- [ ] 表单、弹层、表格等复杂组件的依赖都已安装。
-- [ ] 关键示例可对照 `examples/` 与 `resources/` 落地。
-
 ## 反模式
 
 ### FAIL: 手抄半套源码

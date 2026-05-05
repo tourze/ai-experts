@@ -24,6 +24,21 @@ export const sqlReviewOptimizationSkill = defineSkill({
     "**优化（先测量，再优化）**\n- 先拿执行计划、真实行数、延迟和资源消耗，再决定改 SQL 还是改索引。\n- 优先修访问路径，再谈\"技巧重写\"；大多数慢查询输在过滤、排序和索引布局。\n- 热路径分页优先游标或 seek，避免大偏移 OFFSET。\n- 批处理、报表和在线请求资源模型不同，OLAP 查询不塞进 OLTP 热链路。\n- 复合索引顺序匹配过滤和排序路径，不按\"字段重要性\"拍脑袋。",
     "**深度索引策略**\n通用原则与 MySQL/PostgreSQL 特化策略见 [references/index-strategy.md](references/index-strategy.md)。详细方法论见 [references/sql-code-review.md](references/sql-code-review.md)、[references/sql-optimization.md](references/sql-optimization.md)。",
   ],
+  checklist: [
+    "审查：所有用户输入是否通过参数化绑定，是否存在拼接或内联。",
+    "审查：DELETE/UPDATE/DROP 是否有限制条件（WHERE/LIMIT）和事务边界。",
+    "审查：迁移脚本是否评估了锁范围、回填策略和回滚路径。",
+    "审查：查询是否显式列出列名、连接条件和排序条件。",
+    "审查：权限模型是否满足最小权限原则。",
+    "优化：是否已获取 EXPLAIN / EXPLAIN ANALYZE 输出，type/key/Extra 是否达到预期。",
+    "优化：执行计划是否出现全表扫描、文件排序、临时表或嵌套循环大表。",
+    "优化：索引是否匹配 WHERE / JOIN / ORDER BY 的实际访问路径。",
+    "优化：复合索引列顺序是否匹配查询的过滤 → 排序路径。",
+    "优化：大偏移分页是否已改为游标/seek 分页。",
+    "优化：批处理是否避免了逐行操作和 N+1 查询。",
+    "优化：PostgreSQL：部分索引 WHERE 是否与查询一致；GIN/GiST 是否匹配运算符。",
+    "优化：MySQL：前缀索引是否阻碍 ORDER BY 或覆盖索引场景。",
+  ],
   relatedSkills: [
     {
       get id() {

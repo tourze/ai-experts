@@ -19,6 +19,12 @@ export const pythonDesignPatternsSkill = defineSkill({
     "组合优先于继承；共享几行代码用 mixin 或注入而非继承叠基类。",
     "用 `@dataclass(slots=True)` 或 `NamedTuple` 做不可变 DTO。",
   ],
+  checklist: [
+    "一个类是否只有一个主要变化原因。",
+    "I/O 能否被替身替换，从而让业务逻辑单测独立运行。",
+    "抽象层是否真正减少了重复。",
+    "模块之间是否只暴露最小接口。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -40,13 +40,6 @@ def to_error_response(error: AppError) -> ErrorResponse:
     return ErrorResponse(code="internal_error", message="internal server error")
 ```
 
-## 检查清单
-
-- 是否定义了清晰的异常层级和边界映射。
-- 只捕获可恢复错误。
-- 错误信息不泄露内部实现细节。
-- 批处理保留了成功项、失败项和失败原因。
-
 ## 反模式
 
 ### FAIL: 吞异常返回 None

@@ -27,14 +27,6 @@ npx -y @microsoft/learn-cli doctor --format json
 | 限制/配额 | `"Azure OpenAI rate limits"` |
 | 最佳实践 | `"Azure security best practices"` |
 
-## 检查清单
-
-- 搜索词是否包含产品名、版本、平台或任务意图，而不是只写一个宽词。
-- 是否只在摘要不够时才抓完整页面。
-- 如果需要具体 SDK API 或示例，是否查阅了 `references/code-reference.md`。
-- 是否明确区分了 MCP 工具参数与 CLI 参数。
-- 使用 CLI 回退前，是否可用 `doctor` 快速确认链路健康。
-
 ## 反模式
 
 ### FAIL: 宽词检索

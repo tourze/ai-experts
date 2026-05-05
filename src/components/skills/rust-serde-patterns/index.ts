@@ -25,6 +25,10 @@ export const rustSerdePatternsSkill = defineSkill({
     "`flatten` 有性能开销，热路径慎用。",
     "二进制协议用 `#[serde(with = \"...\")]` 自定义编码。",
   ],
+  checklist: [
+    "enum 标签策略明确？`deny_unknown_fields` 只在入口？",
+    "重命名保留 alias？新增字段有 default/Option？",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

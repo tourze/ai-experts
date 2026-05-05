@@ -5,11 +5,6 @@
 - [函数指针回调](references/patterns.md#模式-3)
 - [uniffi Kotlin+Swift](references/patterns.md#模式-4)
 
-## 检查清单
-
-- `extern "C"` 都有 `#[no_mangle]`？入口都有 `catch_unwind`？
-- `Box::into_raw` 都有配对 `_free`？`#[repr(C)]` 无遗漏？
-
 ## 反模式
 
 ### FAIL: 传 String 跨 FFI

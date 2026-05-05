@@ -44,15 +44,6 @@ export function Counter({ initial = 0 }: { initial?: number }) {
 
 自定义 Hook 与 useMemo 派生值的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。
 
-## 检查清单
-
-- [ ] Hook 是否只在组件或自定义 Hook 顶层调用？
-- [ ] effect 的职责是否确实是“同步外部系统”，而不是做纯派生？
-- [ ] 依赖数组是否完整表达了 effect / memo / callback 读取的值？
-- [ ] 需要清理的订阅、定时器、事件监听是否都在返回函数中释放？
-- [ ] 自定义 Hook 是否处理了 SSR、JSON 解析失败、未挂载组件更新等边界？
-- [ ] 返回值 API 是否稳定、语义清晰，并且易于测试？
-
 ## 反模式
 
 ### FAIL: 用 effect 复制派生 state

@@ -24,6 +24,11 @@ export const reactNativePlatformForkSkill = defineSkill({
     "不直接 `import './foo.ios'`；通过 `index.ts` 让 bundler 解析。",
     "测试从边界文件导入，不直接导入平台文件。",
   ],
+  checklist: [
+    "业务组件是否零 `Platform.OS` 判断？",
+    "平台变体是否都从 `index.ts` 导出？",
+    "自定义平台是否已配置 Metro resolver？",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

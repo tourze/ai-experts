@@ -12,14 +12,6 @@ CREATE POLICY tenant_isolation ON project
     WITH CHECK (tenant_id = current_setting('app.tenant_id')::BIGINT);
 ```
 
-## 检查清单
-
-- 是否同时设置了 `FORCE ROW LEVEL SECURITY`
-- 每个策略是否同时声明了 `USING` 和 `WITH CHECK`
-- 应用是否在获取连接后正确执行 `SET LOCAL app.tenant_id`
-- 策略谓词是否只含简单列比较和 `current_setting()` 调用
-- 是否有自动化测试覆盖正向（看到自己的数据）和反向（不能跨租户读写）
-
 ## 反模式
 
 ### FAIL: 启用 RLS 但 owner 绕过

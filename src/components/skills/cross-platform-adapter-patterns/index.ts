@@ -22,6 +22,11 @@ export const crossPlatformAdapterPatternsSkill = defineSkill({
     "适配器不得将平台原语泄漏到共享层。",
     "平台不支持某能力时必须返回类型化错误或明确降级值。",
   ],
+  checklist: [
+    "`shared-core` 是否零平台导入。",
+    "适配器注册是否集中在 app 入口。",
+    "依赖方向是否单向：`apps -> platform-* -> shared-core`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

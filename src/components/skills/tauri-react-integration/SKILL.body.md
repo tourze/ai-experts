@@ -3,12 +3,6 @@
 - [React 集成 Hooks](references/react-integration-patterns.md)
 - [深链接与状态同步](references/deeplink-state-sync-patterns.md)
 
-## 检查清单
-- 前端无 Node.js API 调用？
-- `useInvoke` 处理 loading/error/success？
-- `useTauriEvent` cleanup 调用 unlisten？
-- Rust 变更后 `emit()` 通知前端？
-
 ## 反模式
 
 ### FAIL: listen 不 cleanup

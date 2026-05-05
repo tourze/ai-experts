@@ -25,6 +25,13 @@ export const iconRetrievalSkill = defineSkill({
     "先确认图标风格与现有设计系统匹配，再决定是否采用。",
     "图标用于界面时，优先与 `design-system-patterns` 的尺寸、颜色和语义体系一致。",
   ],
+  checklist: [
+    "[ ] 搜索词足够具体，已拿到 3-5 个可比较候选。",
+    "[ ] `topK` 设定合理，没有盲目拉取过多结果。",
+    "[ ] SVG 已经过滤、压缩或纳入项目统一图标组件。",
+    "[ ] 图标尺寸、线宽、圆角和视觉风格与现有系统一致。",
+    "[ ] 图标语义明确，不会误导用户。",
+  ],
   relatedSkills: [
     {
       get id() {

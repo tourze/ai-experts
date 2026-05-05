@@ -34,15 +34,6 @@ Route::middleware('auth:sanctum')->scopeBindings()->group(function (): void {
 // 控制器内：$this->authorize('view', [$project, $account]);
 ```
 
-## 检查清单
-
-- 每个 HTTP 入口能回答：控制器/FormRequest/Action/Resource 各负责什么。
-- 嵌套资源启用 `scopeBindings()` 且 Policy 覆盖真正访问控制。
-- 模型变更同步检查 `$fillable`、`$casts`、关系、策略和资源输出。
-- 多表写操作在事务中，缓存失效绑定模型生命周期。
-- N+1 已排查：列表/详情/嵌套资源都用了 `with()` 或 `load()`。
-- 引入后台任务时同步检查幂等、重试、失败日志和 queue 配置。
-
 ## 反模式
 
 ### FAIL: 控制器同步编排副作用

@@ -22,6 +22,12 @@ export const marketSizingAnalysisSkill = defineSkill({
     "TAM/SAM/SOM 要口径一致，避免一个按用户数、一个按收入口径混算。",
     "对新市场或新类别，优先写假设边界和不确定性，而不是装作数字很精确。",
   ],
+  checklist: [
+    "[ ] 已说明数据来源、年份、地区和口径。",
+    "[ ] 至少使用两种方法交叉验证结果。",
+    "[ ] SAM/SOM 与渠道能力、ICP 和资源约束一致。",
+    "[ ] 对不确定性和关键敏感参数有说明。",
+  ],
   relatedSkills: [
     {
       get id() {

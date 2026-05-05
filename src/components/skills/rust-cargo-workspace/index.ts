@@ -24,6 +24,10 @@ export const rustCargoWorkspaceSkill = defineSkill({
     "跨 crate 集成测试放专用 test crate。",
     "CI 用 `--workspace` 全局检查。",
   ],
+  checklist: [
+    "`resolver = \"2\"` 已设？共享依赖全在 workspace 级？",
+    "feature 全 additive？`build.rs` 只写 `OUT_DIR`？",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

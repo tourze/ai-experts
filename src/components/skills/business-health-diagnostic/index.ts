@@ -10,18 +10,25 @@ import { processOptimizationSkill } from "../process-optimization/index";
 export const businessHealthDiagnosticSkill = defineSkill({
   id: "business-health-diagnostic",
   fullName: "业务健康度诊断",
-  description: "当用户要诊断业务健康度、做季度复盘或用记分卡发现增长/留存/效率问题时使用。",
+  description:
+    "当用户要诊断业务健康度、做季度复盘或用记分卡发现增长/留存/效率问题时使用。",
   useCases: [
     "季度复盘、董事会汇报前快速评估业务整体健康度。",
-    "感觉\"哪里不对\"但说不清楚，需要系统化扫描定位问题。",
+    '感觉"哪里不对"但说不清楚，需要系统化扫描定位问题。',
     "与 `process-optimization` 配合优化发现的瓶颈。",
     "需要更深入的专项分析时：\n- [references/balanced-scorecard.md](references/balanced-scorecard.md) — BSC 战略翻译工具\n- [references/blm-model.md](references/blm-model.md) — 业务领先模型（差距分析 + 战略执行）\n- [references/mckinsey-7s.md](references/mckinsey-7s.md) — 麦肯锡 7S 组织匹配模型",
   ],
   constraints: [
     "诊断必须覆盖 4 个象限（增长、留存、效率、现金），不能只看收入。",
-    "每个指标必须有**当前值、趋势方向和对标基准**，不允许只说\"还行\"。",
+    '每个指标必须有**当前值、趋势方向和对标基准**，不允许只说"还行"。',
     "红黄绿判断必须有明确阈值，不靠感觉打标。",
     "诊断结论必须指向**最多 3 个优先行动**，不是列 20 个待改善项。",
+  ],
+  checklist: [
+    "4 个象限都做了扫描，没有只看增长忽略效率。",
+    "每个指标有当前值、趋势和基准三要素。",
+    "红黄绿状态有明确阈值定义。",
+    "诊断结论收敛到 ≤3 个优先行动。",
   ],
   relatedSkills: [
     {
@@ -42,7 +49,8 @@ export const businessHealthDiagnosticSkill = defineSkill({
       target: "references/balanced-scorecard.md",
       title: "balanced-scorecard.md",
       summary: "Reference material for business-health-diagnostic.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      loadWhen:
+        "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
     defineReference({
       id: "blm-model",
@@ -50,7 +58,8 @@ export const businessHealthDiagnosticSkill = defineSkill({
       target: "references/blm-model.md",
       title: "blm-model.md",
       summary: "Reference material for business-health-diagnostic.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      loadWhen:
+        "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
     defineReference({
       id: "mckinsey-7s",
@@ -58,7 +67,8 @@ export const businessHealthDiagnosticSkill = defineSkill({
       target: "references/mckinsey-7s.md",
       title: "mckinsey-7s.md",
       summary: "Reference material for business-health-diagnostic.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      loadWhen:
+        "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
   ],
 });

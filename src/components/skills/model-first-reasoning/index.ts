@@ -25,6 +25,12 @@ export const modelFirstReasoningSkill = defineSkill({
     "每个用户需求都要能映射到 `goal`、`constraint`、`action` 三者之一。",
     "进入编码前必须运行结构校验；`unknowns` 不为空时，停在 Phase 1。",
   ],
+  checklist: [
+    "用户需求是否都被映射进 `goal` / `constraint` / `action`。",
+    "是否存在实现阶段才会冒出来的新实体或新状态。",
+    "`unknowns` 是否已经清零。",
+    "是否已经运行 [scripts/validate-model.mjs](scripts/validate-model.mjs)。",
+  ],
   relatedSkills: [
     {
       get id() {

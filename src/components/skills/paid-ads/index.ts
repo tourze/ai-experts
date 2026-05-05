@@ -22,6 +22,12 @@ export const paidAdsSkill = defineSkill({
     "平台执行细节优先以 [platform-setup-checklists](references/platform-setup-checklists.md) 和 [audience-targeting](references/audience-targeting.md) 为准。",
     "若着陆页承接弱，配合 `redesign-my-landingpage`。",
   ],
+  checklist: [
+    "是否写清了目标、预算、归因和学习期预期。",
+    "是否区分获客、再营销、品牌词和实验流量。",
+    "是否给出了停投、扩量和复盘条件。",
+    "是否将创意测试与受众测试拆开。",
+  ],
   relatedSkills: [
     {
       get id() {

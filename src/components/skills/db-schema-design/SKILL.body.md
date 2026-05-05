@@ -33,16 +33,6 @@ CREATE TABLE product (
 CREATE INDEX idx_product_attrs ON product USING GIN (attrs jsonb_path_ops);
 ```
 
-## 检查清单
-
-- 主键策略是否匹配引擎特性（InnoDB 聚簇 / PostgreSQL identity）。
-- 金额列是否使用精确数值类型。
-- 字符集和排序规则是否统一（MySQL utf8mb4 / PostgreSQL 默认 UTF-8）。
-- nullable 列是否有合理的 DEFAULT 值。
-- JSON/JSONB 列是否有 CHECK 约束，高频过滤字段是否提取为生成列。
-- 标识符命名是否统一（snake_case）且避免了保留字。
-- 外键是否显式声明（PostgreSQL）或在应用层有约束保证（MySQL）。
-
 ## 反模式
 
 - MySQL 用 INT 做主键，低估了数据增长。

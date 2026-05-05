@@ -42,15 +42,6 @@ const inputUser = { name: " Alice ", email: "ALICE@EXAMPLE.COM" };
 const result = pipe(inputUser, trimName, normalizeEmail, markActive);
 ```
 
-## 检查清单
-
-- 是否消除了回调嵌套、共享可变状态和隐式 `this`。
-- 是否使用 `??` 而不是会误伤 `0` / `""` / `false` 的 `||`。
-- 是否把数组转换写成 `map` / `filter` / `reduce` 等可读流程，而不是副作用循环。
-- 是否对异步边界补上错误语义、超时或重试策略。
-- 是否让导出函数名表达业务意图，而不是暴露 `helper` / `util` / `temp`。
-- 若引入高级语法，团队成员是否无需额外上下文就能读懂。
-
 ## 反模式
 
 ### FAIL: 用 || 代替 ?? 误伤合法假值

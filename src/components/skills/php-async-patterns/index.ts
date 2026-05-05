@@ -23,6 +23,12 @@ export const phpAsyncPatternsSkill = defineSkill({
     "长驻进程必须处理内存泄漏：清 static 缓存、限 max_request、用弱引用。",
     "WebSocket/TCP 连接要有心跳和超时。",
   ],
+  checklist: [
+    "选定的异步方案与项目的部署约束匹配。",
+    "所有 I/O 都走异步客户端，无同步阻塞调用残留。",
+    "协程间通信通过 Channel 或消息，没有裸全局变量共享。",
+    "长驻进程有 max_request 或定期重启机制。",
+  ],
   relatedSkills: [
     {
       get id() {

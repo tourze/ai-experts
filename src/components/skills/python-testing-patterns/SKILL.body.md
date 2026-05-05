@@ -21,10 +21,6 @@ def test_multiply(calc: Calculator, value: int, expected: int) -> None:
     assert calc.multiply(value) == expected
 ```
 
-## 检查清单
-
-- 测试数据是否最小化且易读，不靠魔法常量撑着。
-
 ## 反模式
 
 ### FAIL: 全 mock 测到 mock 自己

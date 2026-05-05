@@ -25,16 +25,6 @@ curl -Ivs --max-time 10 "https://$target_host/" 2>&1 | sed -n '1,20p'
 traceroute -n "$target_host" 2>/dev/null || tracepath "$target_host"
 ```
 
-## 检查清单
-
-- [ ] `ip -br addr`、`ip route`、默认网关与接口状态正常。
-- [ ] `ping` 网关和公网 IP，确认基本连通性。
-- [ ] `getent hosts`、`resolvectl status` 或 `/etc/resolv.conf` 验证 DNS。
-- [ ] `ss -tulpen` 与目标端口探测确认监听或出站连接是否存在。
-- [ ] `curl -v`、`openssl s_client` 或应用日志验证 L7 故障。
-
-
-
 ## 反模式
 
 ### FAIL: 跳层诊断

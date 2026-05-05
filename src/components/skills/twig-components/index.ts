@@ -24,6 +24,13 @@ export const twigComponentsSkill = defineSkill({
     "LiveComponent 的可写状态必须显式标记为 `LiveProp(writable: true)`，不要靠隐式提交。",
     "组件应该复用现有样式和路由，不要为了抽组件而重造一层平行 UI 体系。",
   ],
+  checklist: [
+    "组件职责是否单一，且名字能准确表达它提供的 UI 能力。",
+    "公共属性、slots、`attributes` 合并策略是否清晰，而不是依赖模板外部魔法变量。",
+    "LiveComponent 是否只暴露必要的可写状态，并处理了空值、快速输入和重复请求。",
+    "组件模板是否避免直接访问全局状态，改为通过显式 props 或 getter 输入。",
+    "相同样式或交互是否已经有现成组件可复用，避免再造近似组件。",
+  ],
   relatedSkills: [
     {
       get id() {

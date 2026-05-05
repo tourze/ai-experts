@@ -1,12 +1,6 @@
 ## 代码模式
 - 按需读取 `references/versioned-envelope.md`、`references/field-evolution.md`、`references/version-negotiation.md`、`references/golden-file-testing.md`。
 
-## 检查清单
-- 每条消息是否有版本标签。
-- 新增字段是否可选 + 默认值。
-- 废弃字段是否有四阶段计划。
-- CI 是否运行历史 golden file 反序列化测试。
-
 ## 反模式
 
 ### FAIL: 偷改字段类型

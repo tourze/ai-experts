@@ -25,6 +25,12 @@ export const dataStorytellingSkill = defineSkill({
     "结论必须能回指具体数据证据；需要时引用 `data-analysis` 或 `statistical-analysis` 的结果。",
     "建议先写 headline，再补证据，再给行动项，不要反过来。",
   ],
+  checklist: [
+    "主结论是否能在 1 句话里说清楚。",
+    "每个支撑点是否都有数字证据，而不是形容词。",
+    "是否明确说明了不确定性、样本边界或统计限制。",
+    "是否知道这份材料最终要驱动哪个动作。",
+  ],
   relatedSkills: [
     {
       get id() {

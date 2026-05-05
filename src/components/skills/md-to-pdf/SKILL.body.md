@@ -15,14 +15,6 @@ python3 scripts/md_to_pdf.py tests/test_document.md sample.pdf --no-mermaid
 - [tests/test_document.md](tests/test_document.md)
 - [scripts/setup.mjs](scripts/setup.mjs)
 
-## 检查清单
-
-- 是否已确认 `pandoc`、`mmdc`、`node + katex`、`playwright` 可用。
-- 是否按需设置 `--format`、`--margin`、`--header-footer` 和 `--css`。
-- Mermaid 与数学公式是否都成功渲染，没有留下源代码片段。
-- 输出 PDF 是否抽查了首尾页、宽表格、长代码块和分页位置。
-- 若只是要生成 Word 或 PPT，请不要误用本技能。
-
 ## 反模式
 
 ### FAIL: 不检查依赖

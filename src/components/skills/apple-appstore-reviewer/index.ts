@@ -20,6 +20,13 @@ export const appleAppstoreReviewerSkill = defineSkill({
     "如果证据不足，要明确写出“假设”和需要补看的文件，而不是凭经验断言。",
     "审核报告要同时覆盖合规、可审性和用户体验，不只盯 `Info.plist`。",
   ],
+  checklist: [
+    "优先检查 `Info.plist`、`*.entitlements`、`PrivacyInfo.xcprivacy`、StoreKit / 订阅代码、登录删除账号流程。",
+    "重点排查：权限描述缺失、恢复购买缺失、第三方登录未覆盖 Sign in with Apple、外部支付引导、空白页 / 死路。",
+    "输出必须按优先级排序，并附上可执行的验证步骤。",
+    "如果需要真实走一遍审核路径，可配合 `ios-simulator-skill` 复现 UI 流程。",
+    "交叉引用：界面合规与平台习惯看 `ios-hig-design`；门店更新文案看 `app-store-optimization`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

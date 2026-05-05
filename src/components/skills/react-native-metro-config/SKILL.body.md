@@ -4,12 +4,6 @@
 - [自定义平台扩展](references/custom-platform-exts.md)
 - [CI 性能优化](references/ci-performance-config.md)
 
-## 检查清单
-
-- `watchFolders` 是否覆盖所有 symlink 包？
-- `react`/`react-native` 是否唯一解析到 app 版本？
-- CI `maxWorkers` 是否已调低？
-
 ## 反模式
 
 ### FAIL: monorepo 漏 watchFolders

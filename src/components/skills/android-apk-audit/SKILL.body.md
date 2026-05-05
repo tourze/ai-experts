@@ -62,13 +62,6 @@ Coverage:
 - Remaining limitations: <items>
 ```
 
-## 检查清单
-- Manifest 与资源层审计是否覆盖 exported、permission、deep link、FileProvider、backup、debuggable、network security config。
-- JADX 与 smali 是否交叉验证关键逻辑，避免反编译伪代码误导。
-- 所有 grep 命中是否回到调用链，第三方库噪声是否排除。
-- 动态脚本是否围绕静态假设编写，而不是盲跑通用 bypass。
-- 报告是否区分已确认、可能存在和需要动态确认。
-
 ## 反模式
 
 ### FAIL: 字符串命中即报

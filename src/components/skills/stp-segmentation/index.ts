@@ -21,6 +21,12 @@ export const stpSegmentationSkill = defineSkill({
     "定位主张必须用一句话说清楚，格式：\"对于[目标客户]，[产品]是[类别]中能够[核心利益]的产品，不同于[竞品]，我们的[差异化依据]\"。",
     "目标市场选择三种策略：无差异（全市场）、差异化（多个细分）、集中（专注一个）。大多数创业公司应该选集中策略。",
   ],
+  checklist: [
+    "[ ] S -> T -> P 按顺序完成，没有跳步。",
+    "[ ] 细分维度至少用了 2 个。",
+    "[ ] 目标市场有明确选择标准和理由。",
+    "[ ] 定位主张是一句话，且有差异化依据。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

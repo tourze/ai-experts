@@ -28,6 +28,13 @@ export const tutorialBuilderSkill = defineSkill({
     "默认正文长度是完整教程：中文 `5000-10000` 字，英文 `3500-7000` words；用户要求 sample/brief 时再降级。",
     "DOCX/PDF/HTML 以 Markdown 正文为 canonical source，不维护三份不同内容。",
   ],
+  checklist: [
+    "[ ] 已分类用户材料，并说明 rich / moderate / thin 研究等级。",
+    "[ ] 每章都有 source IDs、视觉说明、练习和 checkpoint。",
+    "[ ] 重要事实有官方、论文、实现或可追溯来源支撑。",
+    "[ ] 用户材料足够强时，它是教程主线；外部研究只补缺口。",
+    "[ ] 导出格式以同一份 Markdown 为源，DOCX/PDF/HTML 没有内容分叉。",
+  ],
   relatedSkills: [
     {
       get id() {

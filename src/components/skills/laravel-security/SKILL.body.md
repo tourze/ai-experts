@@ -41,14 +41,6 @@ RateLimiter::for('login', function (Request $request): array {
 });
 ```
 
-## 检查清单
-
-- 每个受保护路由都同时检查“谁能进来”和“谁能操作这个资源”。
-- 文件上传是否验证 MIME、大小、目标磁盘和后续扫描流程。
-- 模型是否显式声明 `$fillable` 或 `$guarded`，避免 `Model::unguard()` 渗透全局。
-- 登录、重置密码、OTP、导出、Webhook 是否有独立速率限制和审计日志。
-- `APP_DEBUG`、`APP_KEY`、HTTPS 代理、Cookie 标志位、CORS 和安全头是否在目标环境真实生效。
-
 ## 反模式
 
 ### FAIL: 只认证不鉴权

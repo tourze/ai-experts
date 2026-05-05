@@ -39,14 +39,6 @@ node scripts/simctl_boot.mjs --name "iPhone 17 Pro" --wait-ready
 node scripts/simctl_shutdown.mjs --all
 ```
 
-## 检查清单
-
-- 先跑 `node scripts/sim_health_check.mjs`，确认 `xcrun`、`simctl`、Node.js 运行时可用。
-- 每次交互前先看 `scripts/screen_mapper.mjs` 或 `scripts/navigator.mjs --list`，不要盲点。
-- 需要日志时确认参数名：`scripts/log_monitor.mjs` 用 `--device-udid`，不是 `--udid`。
-- 需要脚本化输出时统一使用 `--json`；需要完整参数时直接跑对应脚本的 `--help`。
-- 交叉引用：性能瓶颈排查看 `swiftui-performance-audit`；审核流程复现看 `apple-appstore-reviewer`。
-
 ## 反模式
 
 ### FAIL: 用截图坐标导航

@@ -24,6 +24,12 @@ export const symfonyUxSkill = defineSkill({
     "一个页面可以组合多种 UX 工具，但边界必须清楚，避免 Turbo、Stimulus 和 LiveComponent 同时争抢同一块 DOM。",
     "图标和地图属于辅助能力，不要让它们主导页面架构。",
   ],
+  checklist: [
+    "当前交互是否真的需要服务端参与，还是前端行为就够了。",
+    "页面是否先从 Turbo Drive / Frame 方案思考，再决定是否追加 Stimulus。",
+    "同一块 UI 是否只有一个主导机制，避免多套状态源同时控制。",
+    "图标、地图、实时搜索等增强能力是否保持在页面边界内，没有侵入业务核心流程。",
+  ],
   relatedSkills: [
     {
       get id() {

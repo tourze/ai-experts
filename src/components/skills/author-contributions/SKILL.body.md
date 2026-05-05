@@ -63,14 +63,6 @@ for commit in [c for c in git("log", "--format=%H", f"{UPSTREAM}..HEAD").splitli
             rename_map.setdefault(parts[2], set()).add(parts[1])
 ```
 
-## 检查清单
-
-- 是否先跑了作者身份枚举，而不是直接写 `--author=xxx`。
-- 是否同时拿到了 `author_files`、`rename_map` 和最终 merge diff 文件列表。
-- 是否对 rename 做了传递闭包，而不是只查一跳。
-- 是否只输出最终会落地的文件，并补了 `git diff --stat` 统计。
-- 是否在结论里区分了 `DIRECT` 与 `VIA_RENAME`。
-
 ## 反模式
 
 ### FAIL: 模糊作者名

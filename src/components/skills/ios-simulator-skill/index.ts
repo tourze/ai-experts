@@ -23,6 +23,13 @@ export const iosSimulatorSkillSkill = defineSkill({
     "大多数脚本在未传 `--udid` 时会自动选择 booted simulator；`scripts/log_monitor.mjs` 例外，参数名是 `--device-udid`。",
     "`scripts/visual_diff.mjs` 直接处理 PNG；截图缩放优先使用系统 `sips`，缺失时保留原图尺寸。",
   ],
+  checklist: [
+    "先跑 `node scripts/sim_health_check.mjs`，确认 `xcrun`、`simctl`、Node.js 运行时可用。",
+    "每次交互前先看 `scripts/screen_mapper.mjs` 或 `scripts/navigator.mjs --list`，不要盲点。",
+    "需要日志时确认参数名：`scripts/log_monitor.mjs` 用 `--device-udid`，不是 `--udid`。",
+    "需要脚本化输出时统一使用 `--json`；需要完整参数时直接跑对应脚本的 `--help`。",
+    "交叉引用：性能瓶颈排查看 `swiftui-performance-audit`；审核流程复现看 `apple-appstore-reviewer`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

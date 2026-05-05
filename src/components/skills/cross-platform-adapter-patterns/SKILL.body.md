@@ -1,11 +1,6 @@
 ## 代码模式
 - 按需读取 `references/adapter-interface.md`、`references/rust-cfg-abstraction.md`、`references/di-container.md`、`references/monorepo-layout.md`。
 
-## 检查清单
-- `shared-core` 是否零平台导入。
-- 适配器注册是否集中在 app 入口。
-- 依赖方向是否单向：`apps -> platform-* -> shared-core`。
-
 ## 反模式
 
 ### FAIL: 共享包 import 平台

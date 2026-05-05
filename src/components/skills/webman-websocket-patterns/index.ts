@@ -20,6 +20,13 @@ export const webmanWebsocketPatternsSkill = defineSkill({
     "跨进程广播走 Redis pub/sub。见 [channel-subscription](references/channel-subscription.md)。",
     "客户端重连：指数退避 + 抖动 + 最大重试。见 [reconnect-strategy](references/reconnect-strategy.md)。",
   ],
+  checklist: [
+    "[ ] `reloadable => false` 且 `reusePort => true`",
+    "[ ] `onClose` 清理频道订阅和定时器",
+    "[ ] 私有频道要求签名验证",
+    "[ ] 心跳容许偶尔丢包",
+    "[ ] 多 Worker 通过 Redis pub/sub 广播",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

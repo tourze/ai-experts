@@ -31,15 +31,6 @@
 }
 ```
 
-## 检查清单
-
-- [ ] 已读取 comparison / grading / benchmark 汇总，并记录原始胜负判断。
-- [ ] 已读取胜者和败者 skill 的 `SKILL.md` 与关键资源文件。
-- [ ] 已读取双方 transcript，比较工具使用、失败恢复和指令遵循差异。
-- [ ] 已区分稳定模式和单次偶发异常。
-- [ ] 每条建议都写清 category、priority、suggestion 和 expected_impact。
-- [ ] 明确哪些问题属于 eval 本身，需要修 assertion 而不是修 skill。
-
 ## 反模式
 
 ### FAIL: 分数复述

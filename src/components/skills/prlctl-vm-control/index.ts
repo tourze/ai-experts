@@ -31,6 +31,15 @@ export const prlctlVmControlSkill = defineSkill({
     "文件传输走 helper 的 `upload` / `download`，默认会分片传输并覆盖目标文件；传输敏感文件前先确认目标路径和登录上下文。",
     "诊断 helper 挂起时只输出 PID、PPID、状态、运行时长和可执行文件名等摘要；不要把 Claude / CLI 临时任务输出、完整 `ps aux` 长命令行或 PowerShell/Base64 payload 直接贴回对话。",
   ],
+  checklist: [
+    "目标虚拟机是否已经通过 `resolve` 变成唯一结果。",
+    "执行动作前是否已采集 `status` / `info` 作为基线证据。",
+    "Windows 客体任务是否确认了执行上下文：服务态、当前登录用户，还是显式账户。",
+    "文件传输是否确认了方向、源路径、目标路径和覆盖风险。",
+    "排查挂起时是否避免读取 `/private/tmp/claude-*/*/tasks/*.output` 或输出完整长命令行。",
+    "使用 `--user` 时是否同时提供了 `--password-env`，并确认密码来自环境变量而非命令行明文。",
+    "高风险动作前是否确认快照、回滚路径和用户授权。",
+  ],
   relatedSkills: [
     {
       get id() {

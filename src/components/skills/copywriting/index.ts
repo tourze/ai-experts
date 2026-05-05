@@ -25,6 +25,16 @@ export const copywritingSkill = defineSkill({
     "每个页面只有一个主要 CTA；次要 CTA 不能与主 CTA 竞争注意力。",
     "转化率优化 → `cro-methodology`。",
   ],
+  checklist: [
+    "[ ] 明确了页面类型、受众和核心价值主张",
+    "[ ] Headline 5 秒内传达\"这是什么 + 跟我有什么关系\"",
+    "[ ] Benefits 驱动，非 features 驱动",
+    "[ ] CTA 明确告知点击后获得什么",
+    "[ ] 有 social proof 支撑核心声明",
+    "[ ] 使用客户语言而非公司术语",
+    "[ ] 有 objection handling",
+    "[ ] 指定了 voice & tone",
+  ],
   relatedSkills: [
     {
       get id() {

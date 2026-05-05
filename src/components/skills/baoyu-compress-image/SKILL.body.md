@@ -31,15 +31,6 @@ node scripts/main.mjs ./imgs --recursive --quality 72 --json
 - `ratio`：`outputSize / inputSize`。
 - 批处理模式下，如果所有文件都失败，脚本会直接报错而不是输出空摘要。
 
-## 检查清单
-
-- 已确认输入是单文件还是目录。
-- 目录模式下没有误传 `--output`。
-- `quality` 在 `0-100` 范围内。
-- 选择的输出格式与后缀一致：`webp`、`png`、`jpeg`。
-- 若未传 `--keep`，已确认源文件会在成功转码后删除。
-- 若需要链到文章配图流程，先做图片生成再做统一压缩。
-
 ## 反模式
 
 ### FAIL: 误删源文件

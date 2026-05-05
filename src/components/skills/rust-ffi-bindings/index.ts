@@ -24,6 +24,10 @@ export const rustFfiBindingsSkill = defineSkill({
     "复杂类型用 opaque pointer，暴露的结构体 `#[repr(C)]`。",
     "用 cbindgen / uniffi 生成绑定，禁手写头文件。",
   ],
+  checklist: [
+    "`extern \"C\"` 都有 `#[no_mangle]`？入口都有 `catch_unwind`？",
+    "`Box::into_raw` 都有配对 `_free`？`#[repr(C)]` 无遗漏？",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

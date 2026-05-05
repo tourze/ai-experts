@@ -100,6 +100,10 @@ export const typescriptTypeSafety = defineSkill({
     "先拿到完整编译错误或边界输入样例，再判断要修上游合同还是下游症状。",
     "`any` 只能留在最外层适配器，优先用 `unknown`、类型守卫或 schema 收口。",
   ],
+  checklist: [
+    "是否先拿到完整错误输出再决定改哪层？",
+    "`any` 是否缩回边界层，而不是换成新的宽松断言？",
+  ],
   relatedSkills: [
     {
       get id() {
@@ -137,6 +141,7 @@ export const typescriptTypeSafety = defineSkill({
 - `body`、script `entry`、reference `source`、asset `source` 使用 `new URL("./file", import.meta.url)`。
 - 每个 skill 必须声明 `useCases` 与 `constraints`，最终 `SKILL.md` 的 `## 适用场景` 和 `## 核心约束` 只由生成器输出；`SKILL.body.md` 不再手写这两个章节。
 - `SKILL.body.md` 第一个非空行必须是 `## ...`，不要在正文开头写一句简介；简介类内容放进 `description`、`useCases` 或 `constraints`。
+- 检查清单使用 `checklist` 声明为普通字符串数组；构建器会生成 `## 检查清单`，并优先插入到 `## 反模式` / `## 反模式速查` 之前。不要在 `SKILL.body.md` 手写 `## 检查清单`，分组清单改写成 `分组：检查项`。
 - 交叉引用其他 skill 时使用 `relatedSkills` 声明；构建器会生成 `## 相关 Skill`。`relatedSkills` 必须 import 对应 skill definition，并通过 `get id() { return otherSkill.id; }` 延迟读取，避免双向关系造成 ESM 初始化循环；不要在 `SKILL.body.md`、`useCases` 或 `constraints` 里手写 `../other-skill/SKILL.md` 或旧 `plugin:skill` 链接。
 - 每个 script 必须通过 `defineSkillScript()` 登记。
 - reference 必须通过 `defineReference()` 登记，asset 必须通过 `defineAsset()` 登记。

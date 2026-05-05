@@ -24,6 +24,13 @@ export const redisCachingPatternsSkill = defineSkill({
     "TTL 必须添加随机抖动，禁止所有键使用相同固定 TTL。",
     "删缓存失败需有补偿（重试队列或 binlog 监听），不能静默忽略。",
   ],
+  checklist: [
+    "读路径是否严格 check → miss → query → set，写路径是否先写 DB 再删缓存。",
+    "高并发键是否有互斥刷新保护，防止击穿。",
+    "不存在的 key 是否有穿透防御。",
+    "TTL 是否有随机抖动。",
+    "删缓存失败是否有补偿机制。",
+  ],
   relatedSkills: [
     {
       get id() {

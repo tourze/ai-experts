@@ -25,6 +25,10 @@ export const rustTokioRuntimeTuningSkill = defineSkill({
     "`block_on` 只在非 async 上下文调用。",
     "先观测再调参。",
   ],
+  checklist: [
+    "worker_threads 基于实测？有 worker 上的阻塞操作？",
+    "`block_on` 只在非 async 上下文？线程名有意义？",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

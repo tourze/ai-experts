@@ -64,16 +64,6 @@ svn commit path/to/changed-file -m "feat(auth): 合并 OAuth 登录功能分支"
 - `svn cleanup` 修复异常工作副本，1.9+ 支持 `--remove-unversioned`
 - `git svn clone --trunk= --branches= --tags= --authors-file=` 做 SVN→Git 迁移
 
-## 检查清单
-
-- `svn status` 中只包含当前任务相关文件，没有顺手带上的其他改动。
-- 提交命令包含显式路径，提交说明能回答“改了什么、为什么改”。
-- 分支回合并前，目标工作副本已 `svn update`，且没有本地脏改动。
-- 使用 `svn mergeinfo` 时显式写出 `--show-revs=eligible|merged`。
-- 忽略策略是否选对：单目录用 `svn:ignore`，子树继承用 `svn:global-ignores`。
-- 旧环境兼容性是否确认：`svn cleanup --remove-unversioned` 与自动 reintegration 依赖较新客户端。
-- 做 SVN→Git 迁移前已准备 `authors.txt`，并确认 `trunk/branches/tags` 路径名与仓库真实布局一致。
-
 ## 反模式
 
 ### FAIL: svn add . + 模糊提交

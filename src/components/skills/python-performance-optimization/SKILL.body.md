@@ -31,14 +31,6 @@ def profile_callable(fn: Callable[[], object]) -> None:
     stats.print_stats(10)
 ```
 
-## 检查清单
-
-- 已用 profiler 或 benchmark 证明热点在哪里。
-- 已确认瓶颈是 CPU、内存、数据库、网络还是锁竞争。
-- 优化前后使用相同输入规模和相同运行环境对比。
-- 优化带来的复杂度是否值得维护成本。
-- 已保留回归基线，避免以后“优化”把性能改坏却无从发现。
-
 ## 反模式
 
 ### FAIL: 没有 profile 就优化

@@ -22,6 +22,13 @@ export const archLinuxTriageSkill = defineSkill({
     "涉及引导、initramfs、显卡驱动时，必须明确内核版本和最近一次升级时间。",
     "AUR 包与官方仓库问题分开处理，避免把第三方构建失败误判为系统损坏。",
   ],
+  checklist: [
+    "[ ] 确认 `cat /etc/os-release`、`uname -a`、`pacman -Q linux` 的输出一致。",
+    "[ ] 查看 `systemctl --failed` 与 `journalctl -b -p err..alert --no-pager`。",
+    "[ ] 检查 `/var/log/pacman.log` 中最近一次升级、回滚或镜像错误。",
+    "[ ] 若涉及包损坏，先用 `pacman -Qikk <pkg>` 验证再决定重装。",
+    "[ ] 若涉及引导，确认 `mkinitcpio -P`、`bootctl status` 或 GRUB 生成是否成功。",
+  ],
   relatedSkills: [
     {
       get id() {

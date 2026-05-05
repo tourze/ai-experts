@@ -25,6 +25,14 @@ export const reactComposableComponentsSkill = defineSkill({
     "样式覆盖必须可预期；Tailwind 场景下合并类名时要做去重。",
     "避免为了“复用”提炼出过浅抽象；抽象失败时宁可保留两处小重复。",
   ],
+  checklist: [
+    "[ ] 是否把大组件拆成了可独立测试、可复用的结构片段？",
+    "[ ] 可复用组件是否支持 `children`、`className` 与原生属性透传？",
+    "[ ] 包装原生元素时是否保留了 `ref`？",
+    "[ ] 样式合并是否会让调用方可靠覆盖默认样式？",
+    "[ ] 需要共享状态时，是否把 Context 作用域控制在局部复合组件内？",
+    "[ ] 是否优先通过组合表达结构，而不是继续叠加布尔 props？",
+  ],
   relatedSkills: [
     {
       get id() {

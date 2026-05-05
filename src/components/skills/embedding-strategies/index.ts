@@ -23,6 +23,11 @@ export const embeddingStrategiesSkill = defineSkill({
     "文档切块要优先尊重语义边界，其次再谈 token 上限。",
     "检索质量要通过离线样本评估，不要凭主观感觉认定某个模型“更懂业务”。",
   ],
+  checklist: [
+    "目标任务是否明确：搜索、推荐、RAG、代码检索、多语种检索。",
+    "是否同时记录了维度、延迟、价格、最大上下文、距离度量。",
+    "chunk 大小与 overlap 是否基于文档结构，而不是拍脑袋。",
+  ],
   relatedSkills: [
     {
       get id() {

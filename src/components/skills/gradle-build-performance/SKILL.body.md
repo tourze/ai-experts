@@ -34,14 +34,6 @@ val versionProvider = providers
     .asText
 ```
 
-## 检查清单
-
-- 是否分别记录了 clean build、增量 build 和 CI build 的耗时。
-- 是否明确区分初始化、配置、执行、依赖解析四个阶段的瓶颈。
-- 是否检查了 `kapt`、自定义 task、动态依赖、配置期 I/O 和仓库顺序。
-- 如果打开了 Configuration Cache，是否确认不兼容插件与告警项。
-- 如果优化的是 CI，是否同步检查了远端缓存命中率和 JDK/Gradle 版本一致性。
-
 ## 反模式
 
 ### FAIL: 一次开启所有优化

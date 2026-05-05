@@ -23,6 +23,12 @@ export const readmeBlueprintGeneratorSkill = defineSkill({
     "不把猜测写成事实；缺失信息应标成“待补”或“未发现”。",
     "面向开发者的 README 不要混入大量市场宣传话术。",
   ],
+  checklist: [
+    "是否明确了项目定位、主要能力和运行前提。",
+    "是否给出了可复制执行的安装、启动、测试命令。",
+    "是否解释了关键目录，而不是只贴文件树。",
+    "是否写清楚了贡献方式、环境变量和常见问题入口。",
+  ],
   relatedSkills: [
     {
       get id() {

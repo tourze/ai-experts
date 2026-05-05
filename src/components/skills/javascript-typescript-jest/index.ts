@@ -22,6 +22,11 @@ export const javascriptTypescriptJestSkill = defineSkill({
     "快照只用于稳定结构；一旦快照变化，需要同步解释为什么行为仍正确。",
     "组件测试默认按可访问性语义查询元素，而不是依赖实现细节 `className`。",
   ],
+  checklist: [
+    "是否在 `afterEach` / `beforeEach` 清理共享状态。",
+    "是否对 Promise 使用 `await expect(...).rejects` 或 `await expect(...).resolves`。",
+    "组件测试是否优先 `getByRole`、`getByLabelText`、`findByText` 等面向用户的查询。",
+  ],
   relatedSkills: [
     {
       get id() {

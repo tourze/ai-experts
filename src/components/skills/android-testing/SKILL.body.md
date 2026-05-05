@@ -143,15 +143,6 @@ fun `点击新闻项导航到详情`() {
 }
 ```
 
-## 检查清单
-
-- [ ] ViewModel 测试注入 `TestDispatcher`，不依赖真实线程
-- [ ] Repository 测试覆盖正常路径和异常回退路径
-- [ ] Hilt 测试用 `@TestInstallIn` 替换真实依赖
-- [ ] 关键页面有 Roborazzi 截图测试
-- [ ] CI 配置 `verifyRoborazziDebug` 任务
-- [ ] Compose 测试通过语义（文本、testTag）查找节点，不用坐标
-
 ## 反模式
 
 ### FAIL: Compose 测试用坐标

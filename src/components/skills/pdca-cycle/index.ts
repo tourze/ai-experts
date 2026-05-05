@@ -21,6 +21,12 @@ export const pdcaCycleSkill = defineSkill({
     "Check 不是\"看了一眼\"，要有量化对比：目标值 vs 实际值，偏差原因分析。",
     "Act 分两种动作：纠正偏差（修） + 提出新问题（进入下一轮）。只纠正不提新问题 = 开环。",
   ],
+  checklist: [
+    "[ ] Plan 阶段有明确的问题定义和量化目标。",
+    "[ ] Do 阶段有执行记录。",
+    "[ ] Check 阶段有目标 vs 实际的量化对比。",
+    "[ ] Act 阶段同时做了纠正和下一轮问题识别。",
+  ],
   relatedSkills: [
     {
       get id() {

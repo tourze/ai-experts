@@ -21,6 +21,12 @@ export const systemDesignSkill = defineSkill({
     "高层设计和深挖细节要分层表达，避免一开始就陷入实现。",
     "明确指出哪些结论依赖当前规模，未来增长后需复审。",
   ],
+  checklist: [
+    "是否明确了功能、延迟、吞吐、可用性、成本等约束。",
+    "是否画清组件边界、数据流和责任归属。",
+    "是否说明缓存、队列、索引、容灾和监控策略。",
+    "是否标记未来扩展点和需要重审的假设。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

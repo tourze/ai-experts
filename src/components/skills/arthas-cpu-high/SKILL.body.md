@@ -27,14 +27,6 @@ watch com.example.order.OrderService placeOrder '{params, returnObj}' -n 3
 4. 下一步：应继续 trace 哪个方法，或需要用户补充哪个业务入口。
 ```
 
-## 检查清单
-
-- 是否先执行了 `dashboard` 和 `thread -n N`，而不是直接上重型命令。
-- 是否记录了热点线程的 `threadId`、线程名、状态和关键方法。
-- 如果出现大量 `BLOCKED`，是否继续定位阻塞源头，而不是把阻塞线程误判为 CPU 热点。
-- `trace` / `watch` 是否限制了类名、方法名、次数和条件表达式。
-- 报告里是否明确区分“观察到的事实”和“基于事实的推断”。
-
 ## 反模式
 
 ### FAIL: 对主包直接 trace

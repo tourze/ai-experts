@@ -39,15 +39,6 @@ Qualified → Discovery → Demo → Proposal → Negotiation → Closed Won/Los
 - LTV:CAC > 3:1 | Speed-to-lead < 5min | Win rate 20-30%
 - Pipeline velocity = 商机数 x 均单价 x 赢率 / 销售周期
 
-## 检查清单
-- [ ] MQL 定义包含画像+意图双重门槛
-- [ ] 交接 SLA 4h/48h 并有超时升级
-- [ ] 评分含显性、隐性、负分三类且有衰减
-- [ ] 路由有兜底升级逻辑
-- [ ] Pipeline 阶段有客观进入标准
-- [ ] 核心指标仪表盘三方可见
-- [ ] 季度数据健康审计
-
 ## 反模式
 - 只看数量不看质量 → MQL 注水，销售不信任
 - 交接无 SLA → 线索冷掉

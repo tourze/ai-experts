@@ -33,6 +33,15 @@ export const phpTypeSafetySkill = defineSkill({
     "`@throws` 描述失败事实而不是模板句；优先写\"为什么会失败\"。",
     "`list<T>` 仅用于从 0 开始且连续的整数键，不任意收紧。",
   ],
+  checklist: [
+    "PHPStan / Psalm 配置文件存在且级别 ≥ 8。",
+    "无裸 `array` 参数或返回值——都有结构或元素类型标注。",
+    "所有 `@phpstan-ignore` 都附带原因注释。",
+    "`mixed` 出现次数持续下降，每次审查都尝试消除。",
+    "每个文档块都回答了\"签名之外新增了什么信息\"，删除冗余 PHPDoc。",
+    "泛型/数组结构与实现一致，没有把普通数组误写成 `list<T>`。",
+    "签名变化后同步清理陈旧注释。",
+  ],
   relatedSkills: [
     {
       get id() {

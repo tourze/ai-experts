@@ -73,15 +73,6 @@ App({
 - 无法使用开发者工具时，再切换到 `miniprogram-ci` 做 npm 构建、预览或上传。
 - 需要具体命令、前置条件和常见失败点时，转到 [开发者工具与预览参考](references/devtools-debug-preview.md)。
 
-## 检查清单
-
-- `project.config.json` 是否存在且 `miniprogramRoot`、`compileType`、`appid` 合法。
-- 新增或修改的页面是否同步覆盖 `.js/.ts`、`.wxml`、`.wxss`、`.json`。
-- 页面或组件引用的本地资源是否真实存在，路径是否相对 `miniprogramRoot` 正确。
-- 如果使用 Taro，是否误用了 `document`、`window`、`react-dom` 等 DOM-only API。
-- 如果使用 CloudBase，是否使用了 `wx.cloud` 客户端 API、云函数和 `OPENID` 正确边界。
-- 涉及调试、预览、上传时，是否明确了开发者工具链路、CI 链路以及 `appid`/私钥前置条件。
-
 ## 反模式
 
 ### FAIL: 默认套 CloudBase / 用 DOM

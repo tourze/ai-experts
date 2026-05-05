@@ -23,6 +23,12 @@ export const iosBinaryAnalysisSkill = defineSkill({
     "class-dump 输出只是头文件，不包含实现——需要结合 strings 和反汇编工具交叉验证。",
     "区分 app 代码和 framework 代码：第三方 framework 通常在 `Frameworks/` 目录下。",
   ],
+  checklist: [
+    "确认 ipsw 已安装（`brew install blacktop/tap/ipsw`）。",
+    "FairPlay DRM 加密的 IPA 需要先解密（`otool -l binary | grep cryptid`，cryptid=1 表示加密）。",
+    "Swift 混淆后类名为乱码时用 `swift-demangle` 还原。",
+    "列出 `Frameworks/` 下所有第三方 framework 及其版本。",
+  ],
   relatedSkills: [
     {
       get id() {

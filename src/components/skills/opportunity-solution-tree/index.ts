@@ -19,6 +19,12 @@ export const opportunitySolutionTreeSkill = defineSkill({
     "Opportunity 要从用户问题或欲望出发，不要直接写解决方案。",
     "每条分支最终都应落到可验证实验，而不是停在“以后做”。",
   ],
+  checklist: [
+    "[ ] Outcome、机会、方案、实验四层结构清楚。",
+    "[ ] 机会来自研究证据，而非主观猜想。",
+    "[ ] 方案和实验有优先级与判定标准。",
+    "[ ] 可以直接衔接需求文档或实验计划。",
+  ],
   relatedSkills: [
     {
       get id() {

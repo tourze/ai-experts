@@ -21,6 +21,13 @@ export const openapiSpecGenerationSkill = defineSkill({
     "示例数据要与 schema 一致，避免文档可读但不可用。",
     "大型规范优先拆分 `components` 与 `paths`，避免单文件失控。",
   ],
+  checklist: [
+    "是否定义了版本、服务器地址、认证方式和错误响应模型。",
+    "是否为每个 path operation 提供 `operationId`、参数和响应码。",
+    "是否复用了共享 schema、参数和 response 组件。",
+    "是否让示例、默认值和枚举值与 schema 保持一致。",
+    "如果 API 生成流程嵌入 CI，参阅 GitHub Actions 工作流配置相关文档。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

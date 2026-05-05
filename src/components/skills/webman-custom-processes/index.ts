@@ -22,6 +22,13 @@ export const webmanCustomProcessesSkill = defineSkill({
     "不可恢复错误用 `Worker::stopAll()`。见 [crash-recovery](references/crash-recovery.md)。",
     "Crontab 6 位表达式，`onWorkerStart` 中创建。见 [crontab-scheduling](references/crontab-scheduling.md)。",
   ],
+  checklist: [
+    "[ ] `config/process.php` 声明 `handler` 和 `count`",
+    "[ ] 初始化在 `onWorkerStart`",
+    "[ ] Timer ID 追踪并清理",
+    "[ ] 回调无阻塞调用",
+    "[ ] 长连接进程 `reloadable=>false`",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

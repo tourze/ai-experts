@@ -12,14 +12,6 @@ slowlog-log-slower-than 10000
 slowlog-max-len 256
 ```
 
-## 检查清单
-
-- Sentinel 是否至少 3 节点，quorum 是否为多数派。
-- Cluster multi-key 操作是否用了 `{hashtag}`。
-- 持久化是否开启，AOF fsync 是否满足 RPO 要求。
-- maxmemory 是否预留 fork 开销，淘汰策略是否匹配业务场景。
-- 是否配置 SLOWLOG 监控，是否有定期巡检机制。
-
 ## 反模式
 
 ### FAIL: maxmemory = 物理内存

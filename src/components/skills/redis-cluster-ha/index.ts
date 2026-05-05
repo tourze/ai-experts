@@ -26,6 +26,13 @@ export const redisClusterHaSkill = defineSkill({
     "maxmemory 预留系统内存 20-30%（fork copy-on-write 开销），不设为物理内存 100%。",
     "SLOWLOG 阈值建议 10ms（10000 微秒），定期巡检并优化。",
   ],
+  checklist: [
+    "Sentinel 是否至少 3 节点，quorum 是否为多数派。",
+    "Cluster multi-key 操作是否用了 `{hashtag}`。",
+    "持久化是否开启，AOF fsync 是否满足 RPO 要求。",
+    "maxmemory 是否预留 fork 开销，淘汰策略是否匹配业务场景。",
+    "是否配置 SLOWLOG 监控，是否有定期巡检机制。",
+  ],
   relatedSkills: [
     {
       get id() {

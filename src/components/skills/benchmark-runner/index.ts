@@ -10,7 +10,8 @@ import { testingStrategySkill } from "../testing-strategy/index";
 export const benchmarkRunnerSkill = defineSkill({
   id: "benchmark-runner",
   fullName: "基准测试设计",
-  description: "当用户需要比较两个或多个实现的性能、做基准测试或评估延迟/吞吐/内存差异时使用。",
+  description:
+    "当用户需要比较两个或多个实现的性能、做基准测试或评估延迟/吞吐/内存差异时使用。",
   useCases: [
     "用户要比较两个或多个候选方案的性能，而不是做泛泛的架构选型。",
     "需要衡量延迟、吞吐、内存、准确率、成本、冷启动等指标。",
@@ -24,6 +25,15 @@ export const benchmarkRunnerSkill = defineSkill({
     "必须报告波动，不只报平均值；至少给出样本数和离散情况。",
     "无法实际运行时，只输出实验设计，不伪造结果。",
     "优先加载这些参考文件：\n- [metric-selection.md](./references/metric-selection.md)\n- [test-case-design.md](./references/test-case-design.md)\n- [environment-capture.md](./references/environment-capture.md)\n- [statistical-rigor.md](./references/statistical-rigor.md)",
+  ],
+  checklist: [
+    "候选版本和配置写清楚了",
+    "输入规模覆盖小/中/大或等价分层",
+    "预热与正式迭代分开",
+    "环境信息完整记录",
+    "输出包含波动或样本信息",
+    "结论按指标拆开，而不是一句“B 更快”",
+    "已注明实验局限和不可外推条件",
   ],
   relatedSkills: [
     {
@@ -44,7 +54,8 @@ export const benchmarkRunnerSkill = defineSkill({
       target: "references/environment-capture.md",
       title: "environment-capture.md",
       summary: "Reference material for benchmark-runner.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      loadWhen:
+        "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
     defineReference({
       id: "metric-selection",
@@ -52,7 +63,8 @@ export const benchmarkRunnerSkill = defineSkill({
       target: "references/metric-selection.md",
       title: "metric-selection.md",
       summary: "Reference material for benchmark-runner.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      loadWhen:
+        "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
     defineReference({
       id: "statistical-rigor",
@@ -60,7 +72,8 @@ export const benchmarkRunnerSkill = defineSkill({
       target: "references/statistical-rigor.md",
       title: "statistical-rigor.md",
       summary: "Reference material for benchmark-runner.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      loadWhen:
+        "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
     defineReference({
       id: "test-case-design",
@@ -68,7 +81,8 @@ export const benchmarkRunnerSkill = defineSkill({
       target: "references/test-case-design.md",
       title: "test-case-design.md",
       summary: "Reference material for benchmark-runner.",
-      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+      loadWhen:
+        "Read when the skill body points to this reference or the task needs the detailed material.",
     }),
   ],
 });

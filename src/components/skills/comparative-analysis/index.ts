@@ -26,6 +26,13 @@ export const comparativeAnalysisSkill = defineSkill({
     "判断附带适用条件：\"场景 X 选 A；场景 Y 选 B\"。",
     "按 [输出模板](references/output-template.md) 输出。",
   ],
+  checklist: [
+    "是否先明确了维度，而不是想到哪比到哪。",
+    "是否每个维度都有证据支撑。",
+    "是否给出了条件化建议，而不是无条件偏向某方。",
+    "是否检查了定位不对称问题。",
+    "是否区分了\"核心差异\"和\"不影响决策的细节\"。",
+  ],
   relatedSkills: [
     {
       get id() {

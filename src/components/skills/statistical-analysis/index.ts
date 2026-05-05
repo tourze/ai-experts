@@ -24,6 +24,11 @@ export const statisticalAnalysisSkill = defineSkill({
     "趋势、相关、因果必须分开表述；统计上相关不代表业务上可行动。",
     "数据量太小、偏差太大或采样机制不清楚时，应明确降级结论强度。",
   ],
+  checklist: [
+    "样本量、时间窗口、过滤条件是否明确。",
+    "是否先看了分布、异常值和缺失值。",
+    "是否说明了检验方法、假设前提和结论边界。",
+  ],
   relatedSkills: [
     {
       get id() {

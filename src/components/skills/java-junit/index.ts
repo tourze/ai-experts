@@ -23,6 +23,10 @@ export const javaJunitSkill = defineSkill({
     "参数化测试不要只拿它批量堆样例，每个参数组合的意义要可从命名理解。",
     "Mockito 只隔离协作者，不要把每一层都 mock 到测试失真。",
   ],
+  checklist: [
+    "是否正确使用 `assertThrows`、`assertAll`、Mockito 验证与测试数据工厂。",
+    "如果使用 Spring 测试切片，范围是否足够小，启动成本是否合理。",
+  ],
   relatedSkills: [
     {
       get id() {

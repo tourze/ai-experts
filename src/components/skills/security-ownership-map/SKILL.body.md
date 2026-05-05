@@ -10,12 +10,6 @@ node scripts/query_ownership.mjs --data-dir ownership-map-out summary --section 
 node scripts/community_maintainers.mjs --data-dir ownership-map-out --file src/auth/session.go --top 5
 ```
 
-## 检查清单
-- 确认时间窗、身份归因方式和敏感规则配置。
-- 检查 `summary.json`、`people.csv`、`files.csv` 与 `edges.csv` 是否完整生成。
-- 对“隐藏 owner”“低 bus factor”“孤儿敏感代码”分别解释证据。
-- 导出图数据前说明 co-change 过滤规则和作者排除规则。
-
 ## 反模式
 
 ### FAIL: 全量跑大仓库

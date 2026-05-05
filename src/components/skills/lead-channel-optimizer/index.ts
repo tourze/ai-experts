@@ -21,6 +21,12 @@ export const leadChannelOptimizerSkill = defineSkill({
     "输出必须包含“继续投入 / 保持 / 缩减 / 暂停”四类动作建议。",
     "若需要重做广告结构，配合 `paid-ads`。",
   ],
+  checklist: [
+    "是否说明了渠道的口径、周期和数据来源。",
+    "是否区分了“当前回报高”与“长期可放大”。",
+    "是否写出资源重分配后的下一步动作。",
+    "是否把品牌建设型渠道和直接转化型渠道分开比较。",
+  ],
   relatedSkills: [
     {
       get id() {

@@ -23,6 +23,13 @@ export const douyinViralContentSkill = defineSkill({
     "输出必须保留平台安全边界，不给违规导流、虚假收益或极端承诺。",
     "当素材本身信息不足时，优先补问题，不要硬凑长文案。",
   ],
+  checklist: [
+    "已说明是否存在“历史样本校准”。",
+    "口播脚本开头 1-2 句具备明确钩子，不绕弯。",
+    "标签数量控制在 4-6 个，不堆砌。",
+    "评分理由与文案结构一一对应，而不是只报分不解释。",
+    "如果使用了历史数据，已标明是基于用户给定样本的归纳。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

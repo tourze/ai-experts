@@ -5,11 +5,6 @@
 - [带 Span 的错误报告](references/patterns.md#模式-3)
 - [trybuild 编译测试](references/patterns.md#模式-4)
 
-## 检查清单
-
-- `proc-macro = true` 已设？用 syn 2.x？
-- 错误路径返回 `compile_error!` 而非 panic？Span 指向有意义位置？
-
 ## 反模式
 
 ### FAIL: 宏内 panic

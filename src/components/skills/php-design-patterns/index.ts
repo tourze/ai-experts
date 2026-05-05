@@ -24,6 +24,12 @@ export const phpDesignPatternsSkill = defineSkill({
     "数据传输用 readonly DTO，不用裸数组跨层传递。",
     "业务概念（金额、邮箱）考虑封装为值对象。",
   ],
+  checklist: [
+    "控制器没有吞入业务逻辑。",
+    "服务通过构造函数注入依赖，没有静态 Facade。",
+    "数据传输用 readonly DTO，不用裸数组跨层传递。",
+    "依赖方向单向：Controller → Service → Repository。",
+  ],
   relatedSkills: [
     {
       get id() {

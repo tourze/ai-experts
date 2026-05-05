@@ -20,6 +20,12 @@ export const customerJourneyMapSkill = defineSkill({
     "每个阶段至少写清触点、用户心智、阻力、指标与改进机会。",
     "不要把组织内流程当成用户旅程；用户看不见的内部步骤应单独记录。",
   ],
+  checklist: [
+    "[ ] Persona、阶段定义和核心目标已明确。",
+    "[ ] 关键触点、情绪变化、流失点和机会点都有证据来源。",
+    "[ ] 已说明哪些问题值得优先解决，以及为什么。",
+    "[ ] 输出可以直接衔接需求、实验或服务改造。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

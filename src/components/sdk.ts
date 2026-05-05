@@ -97,6 +97,7 @@ export type SkillDefinition = {
   description: string;
   useCases: readonly string[];
   constraints: readonly string[];
+  checklist?: readonly string[];
   invocation: InvocationPolicy;
   platforms: PlatformList;
   body: ComponentFile;

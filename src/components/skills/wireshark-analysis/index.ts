@@ -22,6 +22,12 @@ export const wiresharkAnalysisSkill = defineSkill({
     "保存原始 PCAP，不在原始证据上改写。",
     "异常结论必须绑定具体流、时间和端点。",
   ],
+  checklist: [
+    "确认时间线、端点、协议层次和异常流。",
+    "对关键连接跟流并导出证据。",
+    "把基线流量与异常流量分开描述。",
+    "必要时导出字段表供后续协议分析。",
+  ],
   relatedSkills: [
     {
       get id() {

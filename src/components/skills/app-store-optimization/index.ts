@@ -27,6 +27,13 @@ export const appStoreOptimizationSkill = defineSkill({
     "本地化不是逐词翻译，必须同时考虑市场、文化语义和搜索行为。",
     "更新文案规则：先确认真实改动范围再写，只保留用户可感知改动，每条必须可追溯到真实提交；详见 `references/changelog-guide.md`。",
   ],
+  checklist: [
+    "元数据优化优先用 `metadata_optimizer.py`，并校验 Apple / Google 字符上限。",
+    "关键词分析优先用 `keyword_analyzer.py`，竞品对标优先用 `competitor_analyzer.py`。",
+    "评论洞察用 `review_analyzer.py`，不要把低星评论直接等同于真实需求。",
+    "发版准备使用 `launch_checklist.py`，测试规划使用 `ab_test_planner.py`。",
+    "交叉引用：需要审核合规视角时切到 `apple-appstore-reviewer`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

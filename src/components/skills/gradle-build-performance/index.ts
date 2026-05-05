@@ -22,6 +22,13 @@ export const gradleBuildPerformanceSkill = defineSkill({
     "优先使用 Build Scan / `--profile` 证据定位，不靠感觉拍脑袋。",
     "任何缓存类优化都要确认兼容性和 cache miss 原因，不能只看开关是否打开。",
   ],
+  checklist: [
+    "是否分别记录了 clean build、增量 build 和 CI build 的耗时。",
+    "是否明确区分初始化、配置、执行、依赖解析四个阶段的瓶颈。",
+    "是否检查了 `kapt`、自定义 task、动态依赖、配置期 I/O 和仓库顺序。",
+    "如果打开了 Configuration Cache，是否确认不兼容插件与告警项。",
+    "如果优化的是 CI，是否同步检查了远端缓存命中率和 JDK/Gradle 版本一致性。",
+  ],
   relatedSkills: [
     {
       get id() {

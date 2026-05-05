@@ -23,13 +23,6 @@ async def fetch_all(items: Iterable[str]) -> list[str]:
     return [task.result() for task in tasks]
 ```
 
-## 检查清单
-
-- 已明确哪些步骤是真异步 I/O，哪些是 CPU 或同步阻塞。
-- 每个外部依赖都具备 timeout、重试边界和错误传播策略。
-- 已限制并发度。
-- 任务生命周期可追踪，退出时没有悬空 task。
-
 ## 反模式
 
 ### FAIL: async 函数里调同步阻塞

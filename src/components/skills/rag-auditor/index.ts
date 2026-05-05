@@ -26,6 +26,11 @@ export const ragAuditorSkill = defineSkill({
     "改进建议必须能落到具体层：chunk、embedding、索引、重排、prompt、answer synthesis。",
     "如果没有证据链，就不要直接宣布“模型 hallucination”。",
   ],
+  checklist: [
+    "是否已经拿到 query、gold docs、模型输出、引用片段或日志。",
+    "retrieval 与 generation 的指标是否分开统计。",
+    "失败样例是否能映射到 [references/failure-taxonomy.md](references/failure-taxonomy.md)。",
+  ],
   relatedSkills: [
     {
       get id() {

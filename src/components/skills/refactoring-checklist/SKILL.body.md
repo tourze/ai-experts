@@ -9,13 +9,6 @@
 ## 增量步骤循环
 流程图见 [references/refactor-loop.dot](./references/refactor-loop.dot)。做一个小变更 → 跑测试 → 提交 → 重复。常见动作见 [references/incremental-actions.md](./references/incremental-actions.md)。
 
-## 检查清单
-- [ ] 有测试覆盖（或已补表征测试）
-- [ ] 范围已界定，排除项已明确
-- [ ] 在干净分支上操作，每步提交
-- [ ] 重构提交不混入行为变更
-- [ ] 重构后覆盖率不低于基线
-
 ## 纪律守卫
 
 **Iron Law：没有测试覆盖的代码，不允许开始重构。**

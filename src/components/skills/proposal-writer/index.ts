@@ -27,6 +27,13 @@ export const proposalWriterSkill = defineSkill({
     "文案要服务成交动作，例如预约评审、签试点、进入采购流程或签约节点。",
     "企业级提案要明确客户决策链、预算区间和采购阶段。",
   ],
+  checklist: [
+    "是否写清楚了客户当前问题、目标状态和价值主张。",
+    "是否把交付物、节奏、责任边界和验收方式写完整。",
+    "是否在报价之外给出版本方案、假设和排除项。",
+    "是否包含明确 CTA，例如下一次会议、试点范围或签约步骤。",
+    "在正式发送前，是否用 [proposal-review](references/proposal-review.md) 做过一次评审。",
+  ],
   relatedSkills: [
     {
       get id() {

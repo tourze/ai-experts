@@ -6,14 +6,6 @@
 return ['ws' => ['handler' => App\Ws\Server::class, 'listen' => 'websocket://0.0.0.0:8001', 'reloadable' => false]];
 ```
 
-## 检查清单
-
-- [ ] `reloadable => false` 且 `reusePort => true`
-- [ ] `onClose` 清理频道订阅和定时器
-- [ ] 私有频道要求签名验证
-- [ ] 心跳容许偶尔丢包
-- [ ] 多 Worker 通过 Redis pub/sub 广播
-
 ## 反模式
 
 ### FAIL: 多 Worker 仅用内存数组

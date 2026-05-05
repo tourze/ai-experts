@@ -25,6 +25,13 @@ export const complexityReducerSkill = defineSkill({
     "本质复杂度（业务规则就是复杂的）不强行简化逻辑，而是改善组织。",
     "简化后必须更容易理解，不是更\"巧妙\"。",
   ],
+  checklist: [
+    "[ ] 已识别最主要的复杂度来源",
+    "[ ] 简化策略与来源匹配",
+    "[ ] 每次简化保持行为不变",
+    "[ ] 简化后更容易理解（不只是更短）",
+    "[ ] 没有引入新复杂度（如过度抽象）",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

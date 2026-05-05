@@ -25,6 +25,12 @@ export const tauriPluginDevelopmentSkill = defineSkill({
     "JS 包名与 Rust crate 名对应",
     "始终提供 Builder 模式让宿主可配置",
   ],
+  checklist: [
+    "入口是否 `Builder::new(\"name\").build()`？",
+    "移动端是否拆分并用公共 trait？",
+    "`default.toml` 是否定义最小权限？",
+    "`on_event` 是否处理 `RunEvent::Exit`？",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

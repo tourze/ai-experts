@@ -9,12 +9,6 @@
 
 代码示例见 [chapter_05.md](references/chapter_05.md)。
 
-## 检查清单
-
-- 测试名是否准确表达输入、条件与预期结果？
-- 是否存在 `assert!(true)` 或 `assert_eq!(result, result)` 这类空断言？
-- 公共 API 是否有文档测试？
-
 ## 反模式
 
 ### FAIL: 测试名看不出行为

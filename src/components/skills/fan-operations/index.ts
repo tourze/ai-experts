@@ -26,6 +26,12 @@ export const fanOperationsSkill = defineSkill({
     "对外表达必须与账号定位一致；账号主张模糊时，先回到 `xiaohongshu-commercial-growth` 确认定位。",
     "涉及站外导流前，先检查平台安全边界，参考 `copywriting` 中的社交平台内容安全过滤流程。",
   ],
+  checklist: [
+    "评论回复先给结论，再给补充信息。",
+    "回复内容中至少有一个“继续对话”的钩子问题。",
+    "新粉欢迎语没有夸张承诺或站外导流冲动。",
+    "已把高频问题沉淀成后续选题或 FAQ。",
+  ],
   relatedSkills: [
     {
       get id() {

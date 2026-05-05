@@ -24,6 +24,13 @@ export const ghFixCiSkill = defineSkill({
     "先汇总失败上下文与修复计划，得到用户确认后再改代码。",
     "脚本参数必须与实现一致：`--repo`、`--pr`、`--max-lines`、`--context`、`--json`。",
   ],
+  checklist: [
+    "是否确认目标 PR 编号，或当前分支是否有关联 PR。",
+    "是否列出所有 failing check，并区分 GitHub Actions / 外部 provider。",
+    "是否提取 run id、job id、run URL 与最小失败片段。",
+    "是否说明日志不可用、仍在运行或需要更高权限的情况。",
+    "是否在改代码前给出一份聚焦修复计划。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

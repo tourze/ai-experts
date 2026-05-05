@@ -14,14 +14,6 @@ rg -n "PsSetCreateProcessNotifyRoutine(Ex|Ex2)?|PsSetLoadImageNotifyRoutine(Ex)?
 rg -n "EPROCESS|ETHREAD|MMVAD|DRIVER_OBJECT|DEVICE_OBJECT|IRP" .
 ```
 
-## 检查清单
-
-- 入口是否清楚：谁调用驱动、如何构造 IOCTL、参数在哪一层首次变成可信数据。
-- 权限边界是否清楚：调用方令牌、设备 ACL、`METHOD_NEITHER` 指针、回调注册权限是否匹配。
-- 副作用是否清楚：是否写入全局表、对象回调、进程列表、VAD、或 PatchGuard 关注区域。
-- 约束是否清楚：当前代码是否受 DSE、HVCI、VBS、PatchGuard 或 Secure Boot 影响。
-- 复现路径是否清楚：是否已经在实验环境中准备好符号、日志、快照和回滚方案。
-
 ## 反模式
 
 ### FAIL: 真机无快照实验

@@ -27,6 +27,12 @@ export const rustDocumentationSkill = defineSkill({
     "`# Examples` 中的代码块是可执行的文档测试——必须能编译通过。",
     "用 `//!` 写模块级文档，放在文件顶部。",
   ],
+  checklist: [
+    "公共 API 是否都有 `///` 文档？",
+    "返回 `Result` 的函数是否有 `# Errors`？",
+    "`unsafe fn` 是否有 `# Safety`？",
+    "注释是否在解释\"为什么\"而不是翻译代码？",
+  ],
   relatedSkills: [
     {
       get id() {

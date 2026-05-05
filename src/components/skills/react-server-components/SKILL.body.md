@@ -31,19 +31,6 @@ Client Component 边界、Server Action 及进阶反模式的完整代码见 [re
 
 优化规则索引（请求级去重、并行获取、缓存、序列化、Server Actions 安全等）见 [rules/](rules/) 目录。
 
-## 检查清单
-
-- [ ] 当前组件是否真的需要 `'use client'`，还是可以留在服务端？
-- [ ] Server Component 是否直接使用了浏览器 API 或客户端 Hook？
-- [ ] 数据获取是否已经并行化，避免无意义串行等待？
-- [ ] 传给 Client Component 的 props 是否可序列化且足够小？
-- [ ] Server Action 是否包含鉴权、输入校验和重验证逻辑？
-- [ ] 是否避免了”Server Component 调自己 API route”这种额外 hop？
-- [ ] 服务端模块是否避免了请求级可变状态？
-- [ ] 同一请求内的重复数据获取是否用 React.cache() 去重？
-- [ ] 嵌套 Server Components 的数据获取是否做了并行化？
-- [ ] 非阻塞操作（日志、分析）是否用 after() 延迟执行？
-
 ## 反模式
 
 ### FAIL: 整页 'use client'

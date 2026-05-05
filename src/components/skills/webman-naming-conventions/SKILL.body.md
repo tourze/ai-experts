@@ -7,13 +7,6 @@
 // App\Order\Infrastructure\EloquentOrderRepository
 ```
 
-## 检查清单
-
-- [ ] 目录全小写，无驼峰
-- [ ] 接口用 `Interface` 后缀
-- [ ] Service 命名表达动作
-- [ ] 命名空间与目录路径一致
-
 ## 反模式
 
 ### FAIL: 大小写混用

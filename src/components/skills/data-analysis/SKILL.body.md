@@ -21,12 +21,6 @@ node scripts/analyze.mjs \
   --output-file /absolute/path/query-result.md
 ```
 
-## 检查清单
-
-- 文件路径是否真实存在，扩展名是否在支持范围内。
-- 是否已经通过 `inspect` 确认过表名、列名、类型、空值分布。
-- SQL 是否只引用了实际存在的表和列。
-
 ## 反模式
 
 ### FAIL: 不 inspect 直接 SQL

@@ -12,13 +12,6 @@ node scripts/convert_literature.mjs papers/ literature-md/ --organize-by-year --
 OPENROUTER_API_KEY="$OPENROUTER_API_KEY" node scripts/convert_with_ai.mjs slide.png slide.md --prompt-type presentation
 ```
 
-## 检查清单
-
-- 是否确认了输入目录、输出目录、扩展名过滤和递归策略。
-- 是否在批量模式下保留了原文件名与层级，便于回溯原件。
-- AI 模式是否只在有图像理解需求时启用，并明确模型与密钥来源。
-- 对学术文献是否输出了 `INDEX.md` 或 `catalog.json` 这类导航文件。
-
 ## 反模式
 
 ### FAIL: 输出覆盖原件

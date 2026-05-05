@@ -5,12 +5,6 @@ xxd -g 1 sample-frame.bin | sed -n '1,32p'
 tshark -r capture.pcap -T fields -e frame.number -e data.data
 ```
 
-## 检查清单
-- 确认采集点、时间同步和请求/响应方向。
-- 识别帧头、长度、消息类型、序号、校验和。
-- 把状态转换和错误码单独列出。
-- 必要时回到客户端代码或固件做字段交叉验证。
-
 ## 反模式
 
 ### FAIL: 单包推协议

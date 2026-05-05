@@ -23,6 +23,13 @@ export const taskDecomposerSkill = defineSkill({
     "要同时覆盖边界场景、风险和测试策略，不要只拆开发任务。",
     "如果需求太模糊，要先写清假设而不是硬拆。",
   ],
+  checklist: [
+    "是否写清了用户目标、验收标准和范围边界。",
+    "是否把任务切到单 PR 可完成的粒度。",
+    "是否为每阶段补齐边界场景和测试方式。",
+    "是否标记关键路径、并行项和高风险项。",
+    "若输出 Execution Contract，是否检查了同 wave `write_scope` 不重叠且实现任务都有验收引用。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

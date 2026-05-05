@@ -21,6 +21,12 @@ export const deepCodeReadSkill = defineSkill({
     "验证必须 100% 通过或跑满 3 轮，99% 不算通过",
     "每个模块用 task 跟踪进度",
   ],
+  checklist: [
+    "[ ] 已确认源码版本、分支或 tag。",
+    "[ ] 已选择模块边界并完成逐模块精读。",
+    "[ ] ABC 闭卷验证通过或记录了 3 轮失败原因。",
+    "[ ] 生成的 skill 能独立回答验收问题。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

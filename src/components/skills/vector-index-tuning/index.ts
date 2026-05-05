@@ -23,6 +23,11 @@ export const vectorIndexTuningSkill = defineSkill({
     "所有调参必须依赖固定 benchmark，不接受“感觉更快了”。",
     "如果真正的问题在 chunking 或 embedding 质量，不要误用索引参数掩盖。",
   ],
+  checklist: [
+    "是否定义了基线 recall、p95 latency、内存占用和写入成本。",
+    "是否保证每轮只改一个主要参数。",
+    "benchmark query 是否与真实线上流量接近。",
+  ],
   relatedSkills: [
     {
       get id() {

@@ -1,14 +1,10 @@
-import {
-  InvocationPolicy,
-  KnownTool,
-  Platform,
-  defineSkill,
-} from "../../sdk";
+import { InvocationPolicy, KnownTool, Platform, defineSkill } from "../../sdk";
 
 export const blindOutputComparatorSkill = defineSkill({
   id: "blind-output-comparator",
   fullName: "Blind Output Comparator",
-  description: "当用户要盲评两个输出版本、比较 A/B 结果质量、生成任务专属 rubric 或避免偏向某个 skill/模型/实现时使用。",
+  description:
+    "当用户要盲评两个输出版本、比较 A/B 结果质量、生成任务专属 rubric 或避免偏向某个 skill/模型/实现时使用。",
   useCases: [
     "有两个标记为 A / B 的输出，需要判断哪个更好完成原始任务。",
     "需要根据任务动态生成 rubric，而不是套固定评分表。",
@@ -21,6 +17,13 @@ export const blindOutputComparatorSkill = defineSkill({
     "Rubric 必须由原始任务生成，至少覆盖内容质量和结构可用性两类。",
     "除非两个输出确实等价，否则要果断选择 A 或 B；平局应少见。",
     "reasoning 必须具体说明胜者强在哪里、败者差在哪里。",
+  ],
+  checklist: [
+    "已读取两个输出的完整内容；输出为目录时检查所有相关文件。",
+    "已从原始任务提炼应产出什么、质量维度是什么、失败标准是什么。",
+    "Rubric 同时覆盖 correctness / completeness / accuracy 和 organization / formatting / usability。",
+    "如有 expectations，已统计通过率，但没有用它替代整体判断。",
+    "winner 为 `A`、`B` 或 `TIE`，且 reasoning 足以复核。",
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

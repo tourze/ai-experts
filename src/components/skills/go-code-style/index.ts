@@ -25,6 +25,14 @@ export const goCodeStyleSkill = defineSkill({
     "slice/map 返回空集合时使用 `[]T{}` / `map[K]V{}` 或 `make`，不要把成功路径表达成 `nil`。",
     "最小化公开 API：没有跨包使用证据的类型、函数、字段默认不导出。",
   ],
+  checklist: [
+    "是否存在可以用早返回压平的 `else` / 深层嵌套？",
+    "是否有 5 个以上参数、重复参数组或应成为领域对象的配置集合？",
+    "struct literal 是否使用命名字段？",
+    "成功返回的 slice/map 是否会给调用方暴露 `nil` 语义？",
+    "是否有仅因“未来可能复用”而导出的类型或函数？",
+    "是否跑了 `gofmt`、`go test ./...` 或项目既有验证命令？",
+  ],
   relatedSkills: [
     {
       get id() {

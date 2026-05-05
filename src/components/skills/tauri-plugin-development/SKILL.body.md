@@ -2,12 +2,6 @@
 
 - [插件开发模式](references/plugin-dev-patterns.md)
 
-## 检查清单
-- 入口是否 `Builder::new("name").build()`？
-- 移动端是否拆分并用公共 trait？
-- `default.toml` 是否定义最小权限？
-- `on_event` 是否处理 `RunEvent::Exit`？
-
 ## 反模式
 
 ### FAIL: 硬编码无 Builder

@@ -65,18 +65,6 @@ fn focus_main_window(app: tauri::AppHandle) -> Result<(), String> {
 - 插件 + capability 注册：见 [plugin-reference.md](references/plugin-reference.md) 和 [capabilities-reference.md](references/capabilities-reference.md)
 - `Channel<T>` 流式消息、`State<T>` 共享状态、窗口访问：见 [ipc-patterns.md](references/ipc-patterns.md) 和 [advanced-runtime-reference.md](references/advanced-runtime-reference.md)
 
-## 检查清单
-
-- `main.rs` 是否只做入口转发，`lib.rs` 是否承载了 `run()`、命令注册和插件注册？
-- 每个命令是否都进入了 `tauri::generate_handler![...]`，异步参数是否全部为拥有所有权的类型？
-- 前端是否统一使用 `@tauri-apps/api/core`、`@tauri-apps/api/event` 等 v2 API，而不是遗留的 v1 导入路径？
-- 如果调用的是核心 JS API 或插件 JS API，是否核对了 `src-tauri/capabilities/*.json` 里的默认 permission、额外 permission 与 scope？
-- 插件安装后是否同时验证了三件事：Cargo 依赖、`lib.rs` 注册、capability/权限目标窗口？
-- 长耗时逻辑是否避开 UI 线程阻塞，`Channel<T>` / 事件 / `invoke()` 的 IPC 选择是否和吞吐量匹配？
-- `State<T>` 的类型是否与 `.manage(...)` 注入保持完全一致，锁的粒度是否足够小？
-- 是否先核对目标插件或 API 的桌面 / Android / iOS 支持矩阵，再决定是否需要 `#[cfg(desktop)]` / `#[cfg(mobile)]`？
-- 交付前是否运行 `cargo tauri info`、目标平台构建命令，并检查 `beforeDevCommand` / `beforeBuildCommand`、签名和更新配置？
-
 ## 反模式
 
 ### FAIL: 全部逻辑塞 main.rs

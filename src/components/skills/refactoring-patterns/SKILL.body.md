@@ -3,13 +3,6 @@
 - 动作库按主题拆在 [方法组合](references/composing-methods.md)、[特性搬移](references/moving-features.md)、[数据整理](references/organizing-data.md)、[条件简化](references/simplifying-conditionals.md)。
 - 执行顺序优先参考 [重构流程](references/refactoring-workflow.md)。
 
-
-## 检查清单
-- 是否先说清楚代码异味和目标状态。
-- 是否给出可落地的重构序列而非抽象建议。
-- 是否标记需要补测试或人工验证的高风险步骤。
-- 是否避免把多个重构意图塞进一次改动。
-
 ## 反模式
 
 ### FAIL: 重构和功能变更混在一个 commit

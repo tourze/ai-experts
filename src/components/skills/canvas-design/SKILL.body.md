@@ -35,14 +35,6 @@ outputs/
 - `JetBrainsMono-*` / `GeistMono-*`：技术、编码感
 - `BigShoulders-*` / `Tektur-*`：展示型标题
 
-## 检查清单
-
-- 设计哲学已落盘，且不是空泛口号。
-- 最终成品只有一页，元素没有越界或互相覆盖。
-- 文字是视觉元素的一部分，不是大段说明文。
-- 使用的字体、色彩、纹理和留白都服务于同一审美方向。
-- 导出的成品文件和哲学文件同时存在。
-
 ## 自动化工具
 
 - `node scripts/baoyu-article-illustrator-build-batch.mjs` — 批量图像生成任务构建

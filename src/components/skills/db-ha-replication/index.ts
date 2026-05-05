@@ -25,6 +25,14 @@ export const dbHaReplicationSkill = defineSkill({
     "复制延迟监控使用 `Seconds_Behind_Source`（SHOW REPLICA STATUS）+ 心跳表双保险。",
     "故障切换前必须确认所有 Replica 的 GTID 集合一致，禁止在 GTID 有缺口时提升 Replica。\n\nMySQL 复制运维详细内容见：[references/mysql-replication-ops.md](references/mysql-replication-ops.md)、[references/replication-config.md](references/replication-config.md)。",
   ],
+  checklist: [
+    "GTID 是否已启用且 enforce_gtid_consistency=ON。",
+    "Binlog 格式是否为 ROW。",
+    "半同步复制是否在高一致性路径上启用。",
+    "复制延迟监控是否同时使用 Seconds_Behind_Source 和心跳表。",
+    "故障切换预案是否覆盖 GTID 缺口检测和 Replica 提升流程。",
+    "读写分离路由是否考虑了复制延迟容忍度。",
+  ],
   relatedSkills: [
     {
       get id() {

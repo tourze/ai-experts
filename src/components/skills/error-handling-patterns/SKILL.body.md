@@ -30,14 +30,6 @@ for attempt in range(3):
 raise MaxRetriesExceeded(f"failed after 3 attempts for key={key}")
 ```
 
-## 检查清单
-
-- 是否明确了错误分类（验证/业务/外部）和传播路径。
-- 是否定义了重试、超时、熔断和补偿边界。
-- 错误是否携带了诊断所需的上下文与关联 ID。
-- 是否对部分失败给出可解释的降级策略。
-- 用户可见消息是否不包含内部实现细节。
-
 ## 反模式
 
 ### FAIL: 吞异常 + 通用错误码

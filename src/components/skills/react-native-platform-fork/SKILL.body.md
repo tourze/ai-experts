@@ -5,12 +5,6 @@
 - [适配器接口](references/adapter-interface.md)
 - [Metro 自定义平台](references/metro-custom-platforms.md)
 
-## 检查清单
-
-- 业务组件是否零 `Platform.OS` 判断？
-- 平台变体是否都从 `index.ts` 导出？
-- 自定义平台是否已配置 Metro resolver？
-
 ## 反模式
 
 ### FAIL: 业务组件散射 Platform.OS

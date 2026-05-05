@@ -21,6 +21,12 @@ export const evaluatingNewTechnologySkill = defineSkill({
     "Build vs buy 不是二选一，必须同时看集成成本、迁移成本和团队学习成本。",
     "评估结论要考虑退出路径，避免把组织锁死在脆弱抽象上。",
   ],
+  checklist: [
+    "[ ] 问题定义、成功标准和约束已经明确。",
+    "[ ] 已覆盖能力、成本、供应商风险和替代方案。",
+    "[ ] 有试点或验证路径，而不是直接全量切换。",
+    "[ ] 结论包含保留条件和退出策略。",
+  ],
   relatedSkills: [
     {
       get id() {

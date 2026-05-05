@@ -21,6 +21,12 @@ export const securityThreatModelSkill = defineSkill({
     "威胁数量少而精，优先真实攻击者目标与高价值资产。",
     "当关键上下文缺失时，先提 1 到 3 个高价值问题再定级。",
   ],
+  checklist: [
+    "是否列出资产、边界、入口、攻击者能力和主要假设。",
+    "每条威胁是否绑定具体入口和受影响资产。",
+    "优先级是否说明可能性、影响和现有控制。",
+    "结论是否明确区分证据、推断和待确认项。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

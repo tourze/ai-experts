@@ -1,15 +1,11 @@
-import {
-  InvocationPolicy,
-  KnownTool,
-  Platform,
-  defineSkill,
-} from "../../sdk";
+import { InvocationPolicy, KnownTool, Platform, defineSkill } from "../../sdk";
 import { webPerformanceDiagnosisSkill } from "../web-performance-diagnosis/index";
 
 export const bundleOptimizationSkill = defineSkill({
   id: "bundle-optimization",
   fullName: "Bundle 体积优化",
-  description: "当需要减小前端 bundle、做代码分割、消除 barrel imports、tree shaking 或按用户意图预加载时使用。",
+  description:
+    "当需要减小前端 bundle、做代码分割、消除 barrel imports、tree shaking 或按用户意图预加载时使用。",
   useCases: [
     "首屏加载慢，需要减小初始 bundle 体积以改善 TTI 和 LCP。",
     "需要对重型组件做动态导入 / 代码分割。",
@@ -23,6 +19,14 @@ export const bundleOptimizationSkill = defineSkill({
     "动态导入只用在真正重型的、非首屏必须的组件上，不要滥用。",
     "消除 barrel imports 时优先改成 direct path imports，而不是靠打包器 sideEffects 配置。",
     "预加载（preload）只用在高概率用户路径上，避免浪费带宽。",
+  ],
+  checklist: [
+    "是否用 bundle analyzer 确认了最大的几个模块？",
+    "首屏不需要的重型组件是否已动态导入？",
+    "是否消除了 barrel imports 改为 direct path？",
+    "第三方库是否按需加载而不是全量引入？",
+    "预加载是否只用在高概率路径上？",
+    "改动前后是否有 bundle size 对比？",
   ],
   relatedSkills: [
     {

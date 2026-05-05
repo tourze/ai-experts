@@ -24,6 +24,13 @@ export const monitoringObservabilitySkill = defineSkill({
     "日志级别纪律：开发环境可用 DEBUG；生产环境默认 INFO，仅需人工介入的事件用 ERROR，WARN 用于即将越限的信号。",
     "指标和 trace 围绕系统边界事件布点（入站请求、出站调用、队列消费、定时任务触发），内部纯计算不单独布点。",
   ],
+  checklist: [
+    "是否覆盖延迟、流量、错误率、饱和度四类核心信号。",
+    "是否为关键依赖提供健康检查和降级语义。",
+    "是否定义告警等级、通知对象、静默窗口与 runbook 链接。",
+    "是否确认日志字段、trace id、request id 的一致性。",
+    "服务健康检查的 curl/nc/pg_isready/redis-cli 探测细节见 [references/service-monitor.md](references/service-monitor.md)。",
+  ],
   relatedSkills: [
     {
       get id() {

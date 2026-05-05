@@ -27,6 +27,14 @@ export const springBootLayeringSkill = defineSkill({
     "事务边界必须显式：读操作 `@Transactional(readOnly = true)`，写操作在服务层显式开启事务。",
     "错误处理统一出口：使用 `@RestControllerAdvice` 或等价机制，不要在 Controller 散落 `try/catch`。",
   ],
+  checklist: [
+    "输入 DTO 是否经过校验，返回 DTO 是否与 Entity 隔离。",
+    "Controller 是否只处理 HTTP 语义，没有直接依赖 Repository。",
+    "事务是否定义在 Service 层，且读写事务语义明确。",
+    "JPA 查询是否考虑分页、N+1、索引命中与懒加载边界。",
+    "异常是否经由统一处理层输出稳定错误码和消息。",
+    "日志、指标、审计字段是否放在明确的可观测性边界，而不是业务代码里随手打印。",
+  ],
   relatedSkills: [
     {
       get id() {

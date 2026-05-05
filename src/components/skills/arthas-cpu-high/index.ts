@@ -22,6 +22,13 @@ export const arthasCpuHighSkill = defineSkill({
     "先定位线程，再确认方法：不要一上来对整个包做 `trace` 或 `watch`。",
     "输出必须带证据：至少包含线程 ID、线程状态、关键堆栈和推断原因，不能只给口头结论。",
   ],
+  checklist: [
+    "是否先执行了 `dashboard` 和 `thread -n N`，而不是直接上重型命令。",
+    "是否记录了热点线程的 `threadId`、线程名、状态和关键方法。",
+    "如果出现大量 `BLOCKED`，是否继续定位阻塞源头，而不是把阻塞线程误判为 CPU 热点。",
+    "`trace` / `watch` 是否限制了类名、方法名、次数和条件表达式。",
+    "报告里是否明确区分“观察到的事实”和“基于事实的推断”。",
+  ],
   relatedSkills: [
     {
       get id() {

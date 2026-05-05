@@ -2,12 +2,6 @@
 
 - [构建打包模式](references/build-packaging-patterns.md)
 
-## 检查清单
-- 仓库无 `.key` 文件？
-- macOS 完整签名链？Windows 有证书？
-- Updater pubkey 已填入？端点 HTTPS？
-- Release profile 开启 LTO + strip？
-
 ## 反模式
 
 ### FAIL: 私钥提交仓库

@@ -24,6 +24,9 @@ export const pythonTestingPatternsSkill = defineSkill({
   constraints: [
     "单元测试优先测边界和业务规则，不要把 pytest 框架细节当成主要断言对象。",
   ],
+  checklist: [
+    "测试数据是否最小化且易读，不靠魔法常量撑着。",
+  ],
   relatedSkills: [
     {
       get id() {

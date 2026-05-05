@@ -47,19 +47,6 @@
 
 SVG 质量校验与 PPTX 封装参考 [references/pptx.md](references/pptx.md) 中的 `python-pptx` 流程，按页生成后逐页校验内联属性合规性（禁用 `<mask>`/`<style>`/`<foreignObject>`/`<filter>`/CSS class）。
 
-## 检查清单
-
-- [ ] baseline judgment 已完成并通过需求确认
-- [ ] 薄材料已生成 content_basis.md，且标注 claim status
-- [ ] spec_lock 已锁定
-- [ ] image-first 请求已先给真实 16:9 预览并完成风格确认
-- [ ] 已确认走可编辑 SVG 分支还是 image-first 页面图分支
-- [ ] 大纲标注了 page_rhythm 且不超过 3 页连续 dense
-- [ ] SVG 分支每页生成前重读 spec_lock，且通过 quality checker
-- [ ] image-first 分支没有添加未批准的后期覆盖层
-- [ ] PPTX 可正常打开
-- [ ] 页数与 spec_lock 一致
-
 ## 反模式
 
 详细反模式与正确做法见 [references/anti-patterns.md](references/anti-patterns.md)。

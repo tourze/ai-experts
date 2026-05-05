@@ -36,16 +36,6 @@ node scripts/forecast_builder.mjs assets/sample_financial_data.json --scenarios 
 - `references/industry-adaptations.md`：行业差异化指标。
 - `assets/variance_report_template.md`、`assets/dcf_analysis_template.md`、`assets/forecast_report_template.md`：报告模板。
 
-## 检查清单
-
-- 输入 JSON 是否命中正确工具字段，而不是把别的工具数据传进来。
-- 比率分析前是否确认 `income_statement`、`balance_sheet`、`cash_flow`、`market_data` 完整。
-- DCF 估值前是否确认 `historical.revenue` 非空，且 `assumptions` 中增长率与利润率假设合理。
-- 预算差异分析前是否确认 `line_items` 中包含 `type`、`actual`、`budget`。
-- 滚动预测前是否确认 `historical_periods`、`scenarios`、`cash_flow_inputs` 具备业务含义。
-- 输出为 0 或空列表时，先检查是否把聚合样例的根对象直接传给旧版脚本或错误字段。
-- 需要对结果做长期复用时，确认模型是否满足长期复用要求。
-
 ## 反模式
 
 ### FAIL: Excel 字段名硬塞

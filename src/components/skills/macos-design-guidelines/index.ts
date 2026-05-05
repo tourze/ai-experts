@@ -20,6 +20,13 @@ export const macosDesignGuidelinesSkill = defineSkill({
     "常见命令应该进入标准菜单或工具栏，不要藏在悬浮按钮里。",
     "Mac 用户默认期待右键、拖拽、多窗口和键盘导航，不要按 iPhone 的交互假设来设计。",
   ],
+  checklist: [
+    "是否提供标准菜单、设置入口、常用快捷键和上下文菜单。",
+    "主窗口是否支持调整大小、全屏和多窗口，而不是被固定成移动端画布。",
+    "侧边栏、工具栏、搜索和右键菜单是否体现桌面工作流。",
+    "需要展开规则时读取记忆文件、`rules/_sections.md` 和 `metadata.json`。",
+    "交叉引用：iPhone / iPad 体验看 `ios-hig-design`；SwiftUI 具体实现看 `swiftui-ui-patterns`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

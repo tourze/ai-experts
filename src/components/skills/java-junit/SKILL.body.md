@@ -39,11 +39,6 @@ class UserServiceTest {
 
 assertAll 分组断言的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。
 
-## 检查清单
-
-- 是否正确使用 `assertThrows`、`assertAll`、Mockito 验证与测试数据工厂。
-- 如果使用 Spring 测试切片，范围是否足够小，启动成本是否合理。
-
 ## 反模式
 
 - **@SpringBootTest 测纯逻辑** — 纯业务类直接 `new`，不启动容器。

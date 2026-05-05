@@ -55,17 +55,6 @@ int main() {
 
 共享所有权（`weak_ptr` 打断环）、C 单出口 cleanup、Rust 对照校验的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。
 
-## 检查清单
-
-- 每个资源是否都能回答“谁创建、谁释放、何时释放”。
-- 是否优先使用了 `std::unique_ptr`、栈对象、`std::lock_guard` 这类单 owner 结构。
-- `shared_ptr` 是否真的是多方长期持有，而不是为了省事。
-- 反向引用、观察者、缓存指针是否降成了 `weak_ptr`、裸指针或 `std::reference_wrapper`。
-- 接口签名是否把 ownership 和 borrowing 区分清楚了。
-- C 代码是否只有一个 cleanup 出口，并覆盖所有失败分支。
-- 析构函数是否保证不抛异常；移动后对象是否仍处于可析构状态。
-- 是否避免返回指向局部对象、临时缓冲区或失效容器元素的指针 / 引用。
-
 ## 反模式
 
 ### FAIL: shared_ptr 当默认答案

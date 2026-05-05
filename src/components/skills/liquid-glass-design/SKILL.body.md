@@ -28,14 +28,6 @@ GlassEffectContainer(spacing: 24) {
 
 WidgetKit 渲染模式与更多代码模式见 [references/advanced-patterns.md](references/advanced-patterns.md)。
 
-## 检查清单
-
-- 确认部署目标与回退策略，不要让旧系统直接编译失败。
-- 多个玻璃元素是否已经放入统一容器，并验证间距带来的融合效果。
-- 是否只在重要交互位使用 `interactive()`，而不是整页都带动态反馈。
-- Widget 是否同时检查 full color 与 accented 模式。
-- 交叉引用：整体 iOS 界面规范看 `ios-hig-design`；SwiftUI 结构化实现看 `swiftui-ui-patterns`。
-
 ## 反模式
 
 ### FAIL: 不做版本判断

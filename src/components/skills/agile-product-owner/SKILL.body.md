@@ -9,12 +9,6 @@ node scripts/user_story_generator.mjs sprint 30
 验收标准：Given <前置条件> When <动作> Then <结果>
 ```
 
-## 检查清单
-- [ ] 用户角色、业务目标、非目标和依赖已经明确。
-- [ ] Story 满足 INVEST，验收标准可直接转为测试用例。
-- [ ] Sprint 承诺范围与容量匹配，Stretch 目标没有挤占 committed 范围。
-- [ ] 模板、参考资料与脚本参数保持一致。
-
 ## 反模式
 
 ### FAIL: Epic 当 Story

@@ -20,6 +20,12 @@ export const asyncPythonPatternsSkill = defineSkill({
     "优先使用结构化并发（`asyncio.TaskGroup`）；只有明确接受脱管任务时才做 fire-and-forget。",
     "异步代码里不要出现 `time.sleep()`、同步 ORM 客户端或无界 `asyncio.gather()`。",
   ],
+  checklist: [
+    "已明确哪些步骤是真异步 I/O，哪些是 CPU 或同步阻塞。",
+    "每个外部依赖都具备 timeout、重试边界和错误传播策略。",
+    "已限制并发度。",
+    "任务生命周期可追踪，退出时没有悬空 task。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

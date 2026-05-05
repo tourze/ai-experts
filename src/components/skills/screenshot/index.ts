@@ -25,6 +25,13 @@ export const screenshotSkill = defineSkill({
     "Windows 走 `scripts/take_screenshot_windows.mjs`；主入口会在 Windows 分支委托给该 Node helper。",
     "互斥参数不能混用：`--region` / `--window-id` / `--active-window` / `--app` / `--interactive` 要按脚本约束组合。",
   ],
+  checklist: [
+    "已明确输出位置：显式路径、系统默认目录，还是临时目录。",
+    "macOS 上已经处理过截图权限。",
+    "需要窗口 ID 时，先用 `--list-windows` 确认。",
+    "没有同时传入互斥参数。",
+    "截图命令跑完后，逐个检查输出路径是否真实生成。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

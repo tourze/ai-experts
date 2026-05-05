@@ -24,6 +24,13 @@ export const graalvmNativeImageSkill = defineSkill({
     "Spring Boot 3.x 优先 `RuntimeHints`；只有第三方库或无法代码注册时才退回 JSON metadata。",
     "若引用更细节的构建片段，直接跳到：\n[Maven Native Profile](references/maven-native-profile.md)、\n[Gradle Native Plugin](references/gradle-native-plugin.md)、\n[Spring Boot Native](references/spring-boot-native.md)、\n[Quarkus / Micronaut](references/quarkus-micronaut-native.md)、\n[Reflection / Resource Config](references/reflection-resource-config.md)、\n[Tracing Agent](references/tracing-agent.md)。",
   ],
+  checklist: [
+    "是否确认了 Java 版本、构建工具和框架种类。",
+    "是否先跑出完整 native build 日志，并针对第一条阻断错误修复。",
+    "是否区分了反射、资源、代理、序列化、JNI 这几类 reachability metadata。",
+    "Spring Boot 项目是否优先评估 `RuntimeHints`，而不是先堆 JSON。",
+    "构建成功后是否验证了启动、健康检查、启动时长和 RSS，而不只看“编译过了”。",
+  ],
   relatedSkills: [
     {
       get id() {

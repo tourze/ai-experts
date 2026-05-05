@@ -5,12 +5,6 @@
 - [iOS ObjC++ 实现](references/ios-objcpp-impl.md)
 - [JS 消费层封装](references/js-consumer-wrapper.md)
 
-## 检查清单
-
-- Spec 类型是否精确，无 `any` / `Object`？
-- Codegen 是否重跑以匹配最新 Spec？
-- `ReactModuleInfo.className` 是否为完整限定类名？
-
 ## 反模式
 
 ### FAIL: Spec 用 any

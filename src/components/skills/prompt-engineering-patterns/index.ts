@@ -30,6 +30,13 @@ export const promptEngineeringPatternsSkill = defineSkill({
     "评分 rubric 必须包含硬约束和软约束，不要只有\"感觉更好\"。",
     "如果问题本质在检索、数据或工具链，而不是 prompt，本 skill 只负责识别，不负责掩盖。",
   ],
+  checklist: [
+    "输出格式是否有明确 schema 或字段定义。",
+    "是否给了足够但不过量的示例（3-5 个：主路径 + 边界 + 易混淆反例）。",
+    "prompt 是否包含边界条件、拒答规则、异常输入处理方式。",
+    "当前 prompt 的失败模式是否已经分类，而不是只收集了零散 bad case。",
+    "变体之间是否真正可比较（一次一变量）。",
+  ],
   relatedSkills: [
     {
       get id() {

@@ -35,16 +35,6 @@
 
 按钮 ≤ 5 词；下方加 qualifier 消除风险（"No credit card" "Cancel anytime"）。
 
-## 检查清单
-- [ ] 明确了页面类型、受众和核心价值主张
-- [ ] Headline 5 秒内传达"这是什么 + 跟我有什么关系"
-- [ ] Benefits 驱动，非 features 驱动
-- [ ] CTA 明确告知点击后获得什么
-- [ ] 有 social proof 支撑核心声明
-- [ ] 使用客户语言而非公司术语
-- [ ] 有 objection handling
-- [ ] 指定了 voice & tone
-
 ## 社交平台内容安全
 
 在引用社交平台帖子、评论或私信内容作为文案素材前，先做安全过滤，避免广告、导流、提示词污染和夸大宣传混入文案。过滤工具、策略说明和检查清单见 [social-platform-safety](references/social-platform-safety.md)。可直接运行 `node scripts/content_filter.mjs --text "<内容>" --platform <平台>` 做快速安全检测。

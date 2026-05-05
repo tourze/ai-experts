@@ -319,6 +319,13 @@ function renderConstraints(skill) {
   return renderTextListSection(skill, "constraints", "核心约束", "constraint");
 }
 
+function renderChecklist(skill) {
+  const checklist = skill.checklist ?? [];
+  if (checklist.length === 0) return "";
+  validateTextList(skill, "checklist", "checklist item");
+  return `## 检查清单\n\n${renderMarkdownBulletList(checklist)}\n`;
+}
+
 function renderRelatedSkills(skill) {
   const relatedSkills = skill.relatedSkills ?? [];
   if (relatedSkills.length === 0) return "";
@@ -345,11 +352,38 @@ function startsWithH2Section(source) {
   return /^##\s+\S/.test(firstLine);
 }
 
+function insertSectionBeforeH2Matching(source, section, predicate) {
+  if (!section) return source;
+  const lines = source.split(/\r?\n/);
+  let inFence = false;
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
+    const fence = /^\s*(?:```|~~~)/.test(line);
+    const heading = !inFence ? line.match(/^##\s+(.+?)\s*$/) : null;
+    if (heading && predicate(heading[1].trim())) {
+      const before = lines.slice(0, index).join("\n").trimEnd();
+      const after = lines.slice(index).join("\n").trimStart();
+      return `${before}\n\n${section.trimEnd()}\n\n${after}`;
+    }
+    if (fence) inFence = !inFence;
+  }
+  return `${source.trimEnd()}\n\n${section.trimEnd()}`;
+}
+
+function renderBodyWithGeneratedSections(skill, body) {
+  return insertSectionBeforeH2Matching(
+    body,
+    renderChecklist(skill),
+    (title) => title === "反模式" || title === "反模式速查",
+  );
+}
+
 function renderSkillMd(skill, platform) {
   if (typeof skill.fullName !== "string" || skill.fullName.trim() === "") {
     throw new Error(`Skill ${skill.id} must define a non-empty fullName`);
   }
   const body = readComponentText(skill.body).trimEnd();
+  const generatedBody = renderBodyWithGeneratedSections(skill, body);
   return [
     renderSkillFrontmatter(skill, platform),
     `# ${skill.fullName}`,
@@ -357,7 +391,7 @@ function renderSkillMd(skill, platform) {
     renderUseCases(skill),
     renderConstraints(skill),
     renderRelatedSkills(skill),
-    body,
+    generatedBody,
     renderScriptRegistry(skill, platform),
     renderReferenceMap(skill),
     "",
@@ -849,6 +883,12 @@ function validateRegistry(registry) {
     }
     if (hasH2SectionMatching(bodySource, (title) => title.startsWith("核心约束"))) {
       throw new Error(`Skill ${skill.id} must move ## 核心约束 from SKILL.body.md to constraints`);
+    }
+    if (hasH2SectionMatching(bodySource, (title) => title === "检查清单")) {
+      throw new Error(`Skill ${skill.id} must move ## 检查清单 from SKILL.body.md to checklist`);
+    }
+    if (skill.checklist !== undefined) {
+      validateTextList(skill, "checklist", "checklist item");
     }
     if (/\]\(\.\.\/[^)]+\/SKILL\.md\)|\]\([a-z0-9-]+-expert:[a-z0-9-]+\)/u.test(bodySource)) {
       throw new Error(`Skill ${skill.id} must move explicit cross-skill links from SKILL.body.md to relatedSkills`);

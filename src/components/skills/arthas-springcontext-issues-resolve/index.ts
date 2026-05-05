@@ -22,6 +22,13 @@ export const arthasSpringcontextIssuesResolveSkill = defineSkill({
     "先确认上下文再查 Bean：多容器应用里，选错 `ApplicationContext` 会让后续结论全部失真。",
     "若使用 `--classLoader` / `--classLoaderClass`，必须先解释为什么当前类加载器不对。",
   ],
+  checklist: [
+    "是否先确认拿到的是正确的 `ApplicationContext` 与类加载器。",
+    "是否优先使用 `containsBean*` / `getBeanNamesForType`，避免提前初始化 Bean。",
+    "如果属性值异常，是否同时给出了“值”和“来源”。",
+    "如果出现多个候选 Bean，是否明确列出候选名并说明装配规则。",
+    "如果 `ClassNotFound`，是否回溯到类加载器选择，而不是误判 Bean 不存在。",
+  ],
   relatedSkills: [
     {
       get id() {

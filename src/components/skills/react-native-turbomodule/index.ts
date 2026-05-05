@@ -24,6 +24,11 @@ export const reactNativeTurbomoduleSkill = defineSkill({
     "异步返回 Promise；同步阻塞 JS 线程，仅限微秒级。",
     "参数类型与 Spec 不匹配时运行时崩溃而非编译报错。",
   ],
+  checklist: [
+    "Spec 类型是否精确，无 `any` / `Object`？",
+    "Codegen 是否重跑以匹配最新 Spec？",
+    "`ReactModuleInfo.className` 是否为完整限定类名？",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

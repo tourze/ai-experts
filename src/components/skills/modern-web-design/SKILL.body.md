@@ -37,18 +37,6 @@
 
 Glassmorphism 完整落地示例见 [references/styles-depth-glass.md](references/styles-depth-glass.md)。
 
-## 检查清单
-
-- [ ] 界面有一句能说清的视觉方向定义。
-- [ ] 已查 styles-catalog.md 确认风格名称与实际特征匹配。
-- [ ] 过了 "Do Not Use For" 反适用清单。
-- [ ] CSS 特征清单中的关键特征全部落地（不是只挑 1-2 个）。
-- [ ] 未混搭 > 2 种风格。
-- [ ] 字体、色彩、网格、动效相互一致。
-- [ ] 首屏优先级明确，核心 CTA 和核心叙事一眼可见。
-- [ ] 视觉亮点不会牺牲可读性、可达性和响应速度。
-- [ ] 动效数量克制，且有降级策略。
-
 ## 反模式
 
 ### FAIL: AI 套版感

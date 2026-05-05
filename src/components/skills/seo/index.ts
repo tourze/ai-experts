@@ -24,6 +24,14 @@ export const seoSkill = defineSkill({
     "不对排名结果做承诺；SEO 结论要区分\"可执行项\"和\"结果预期\"。",
     "按站点类型使用对应检查项，见 [site-type-checklists](references/site-type-checklists.md)。",
   ],
+  checklist: [
+    "是否明确索引策略和 canonical 策略。",
+    "是否检查标题/描述/H1/正文与搜索意图的一致性。",
+    "是否评估 E-E-A-T 四个维度的信号强度。",
+    "是否说明 sitemap、robots 和结构化数据的变更点。",
+    "是否按站点类型（SaaS/电商/内容/本地）使用对应检查项。",
+    "是否标注需要前端或内容团队配合的部分。",
+  ],
   relatedSkills: [
     {
       get id() {

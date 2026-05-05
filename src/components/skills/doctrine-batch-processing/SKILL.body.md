@@ -23,14 +23,6 @@ $entityManager->clear();
 
 DBAL 批量更新、Migration 模式的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。
 
-## 检查清单
-
-- 批处理是否避免了 `findAll()`、级联加载和无界集合遍历。
-- 是否为每个批次定义了明确的 `flush()` / `clear()` 节点和批次大小。
-- SQL 日志、事件监听器和二级缓存是否会放大批处理成本。
-- 迁移是否可回滚、可重复验证，并与生产数据量和锁影响相匹配。
-- 如果批量修改跨越多个表，是否明确了事务边界、索引命中和失败恢复策略。
-
 ## 反模式
 
 ### FAIL: findAll + 每条 flush

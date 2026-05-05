@@ -54,12 +54,6 @@ describe("cart", () => {
 });
 ```
 
-## 检查清单
-
-- 是否在 `afterEach` / `beforeEach` 清理共享状态。
-- 是否对 Promise 使用 `await expect(...).rejects` 或 `await expect(...).resolves`。
-- 组件测试是否优先 `getByRole`、`getByLabelText`、`findByText` 等面向用户的查询。
-
 ## 反模式
 
 ### FAIL: setTimeout 等异步

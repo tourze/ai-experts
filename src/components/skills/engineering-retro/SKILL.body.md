@@ -59,15 +59,6 @@ git log origin/$DEFAULT_BRANCH --since="$SINCE" --name-only --format="" -- $PATH
 - `Week-over-Week`：仅在已有上次快照时输出。
 - `Observations`：基于数据的 2-4 条观察，不臆测动机。每条必须附量化引用 `（N commits · files: a.py, b.py）`；无证据不写。
 
-## 检查清单
-
-- 默认分支和时区是否来自实时探测。
-- `PATH_SCOPE` 是否在所有 Git 命令里都被带上。
-- 提交分类是否先看 Conventional Commit 前缀，再用 diff 特征兜底。
-- PR 统计是否在 GitHub/`gh` 不可用时优雅跳过。
-- 若用户没要求落盘，是否保持纯只读输出。
-- 若需要环比，是否明确说明使用了本次或历史快照。
-
 ## 经验提炼
 
 从代码变更提炼工程教训：见 [references/lesson-learned.md](./references/lesson-learned.md)。

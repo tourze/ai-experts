@@ -24,6 +24,13 @@ export const mdToPdfSkill = defineSkill({
     "自定义 CSS 只能叠加，不要覆盖掉基础排版到不可读。",
     "交付前至少抽查目录、图表、数学公式和分页效果。",
   ],
+  checklist: [
+    "是否已确认 `pandoc`、`mmdc`、`node + katex`、`playwright` 可用。",
+    "是否按需设置 `--format`、`--margin`、`--header-footer` 和 `--css`。",
+    "Mermaid 与数学公式是否都成功渲染，没有留下源代码片段。",
+    "输出 PDF 是否抽查了首尾页、宽表格、长代码块和分页位置。",
+    "若只是要生成 Word 或 PPT，请不要误用本技能。",
+  ],
   relatedSkills: [
     {
       get id() {

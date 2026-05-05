@@ -45,18 +45,6 @@ VStack(spacing: 12) {
 .padding()
 ```
 
-## 检查清单
-
-- 布局是否覆盖小屏 iPhone、刘海 / Dynamic Island、Home Indicator、横竖屏。
-- 文本是否全部使用语义样式，且在大字号下不截断关键文案。
-- 导航是否遵循 iOS 习惯：返回、编辑、搜索、sheet、popover 都有清晰归属。
-- 图标、色彩、权限弹窗前文案是否和系统语义一致。
-- 交叉引用：SwiftUI 具体实现细节看 `swiftui-ui-patterns`；液态玻璃外观看 `liquid-glass-design`；Mac 端界面看 `macos-design-guidelines`。
-- 各主题深入指南（按需读取）：
-  - [accessibility](references/accessibility.md)、[app-icons](references/app-icons.md)、[colors-depth](references/colors-depth.md)、[components](references/components.md)
-  - [gestures](references/gestures.md)、[keyboard-input](references/keyboard-input.md)、[navigation](references/navigation.md)、[privacy-permissions](references/privacy-permissions.md)
-  - [system-integration](references/system-integration.md)、[typography](references/typography.md)、[widgets-extensions](references/widgets-extensions.md)
-
 ## 反模式
 
 ### FAIL: 固定字号忽略 Dynamic Type

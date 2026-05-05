@@ -16,12 +16,6 @@ RAG 审计顺序:
 }
 ```
 
-## 检查清单
-
-- 是否已经拿到 query、gold docs、模型输出、引用片段或日志。
-- retrieval 与 generation 的指标是否分开统计。
-- 失败样例是否能映射到 [references/failure-taxonomy.md](references/failure-taxonomy.md)。
-
 ## 反模式
 
 ### FAIL: 错答直接归因 hallucination

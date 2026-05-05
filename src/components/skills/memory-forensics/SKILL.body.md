@@ -5,12 +5,6 @@ python3 vol.py -f mem.raw windows.pslist
 python3 vol.py -f mem.raw windows.netscan
 ```
 
-## 检查清单
-- 确认镜像来源、平台版本、采集时间和时区。
-- 先看进程、命令行、网络、模块，再深入注入与句柄。
-- 对可疑对象记录偏移和关联关系。
-- 导出样本前说明证据完整性和命名规则。
-
 ## 反模式
 
 ### FAIL: 不确认镜像类型

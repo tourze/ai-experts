@@ -26,6 +26,16 @@ export const uxHeuristicsSkill = defineSkill({
     "涉及诱导、误导、强制续费等模式时，必须交叉检查 [暗黑模式参考](references/dark-patterns.md)。",
     "涉及对比度、焦点状态、键盘访问时，必须交叉检查 [WCAG 清单](references/wcag-checklist.md)。",
   ],
+  checklist: [
+    "[ ] 页面一眼能回答“我在哪、能做什么、下一步是什么”。",
+    "[ ] 关键操作都有即时状态反馈，且不会诱发重复点击。",
+    "[ ] 导航、按钮、表单标签使用用户语言，不使用内部术语。",
+    "[ ] 错误提示包含“发生了什么、为什么、怎么恢复”。",
+    "[ ] 重要流程存在撤销、返回或安全退出路径。",
+    "[ ] 移动端没有 hover-only 信息和过小触控区。",
+    "[ ] 同一个概念在不同页面命名一致。",
+    "[ ] 需要国际化时已检查 [文化与本地化约束](references/cultural-ux.md)。",
+  ],
   relatedSkills: [
     {
       get id() {

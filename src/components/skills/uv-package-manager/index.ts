@@ -27,6 +27,13 @@ export const uvPackageManagerSkill = defineSkill({
     "锁文件进 CI 和发布流；需要可复现安装时使用 `uv sync --frozen`。",
     "文档只保留已验证的命令参数，避免写历史版本选项。",
   ],
+  checklist: [
+    "项目是否已经明确 Python 版本、依赖组和锁文件策略。",
+    "开发、测试、CI 是否都通过 `uv run` / `uv sync` 执行。",
+    "文档、脚本和仓库实际命令是否一致。",
+    "是否避免了多个包管理器同时写同一份依赖。",
+    "团队成员首次拉仓后能否按文档一步跑通。",
+  ],
   relatedSkills: [
     {
       get id() {

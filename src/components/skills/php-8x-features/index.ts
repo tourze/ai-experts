@@ -28,6 +28,13 @@ export const phpXFeaturesSkill = defineSkill({
     "构造器提升（constructor promotion）简化属性声明，减少样板代码。",
     "命名参数只在调用点提升可读性时使用，不要滥用到每个函数调用。",
   ],
+  checklist: [
+    "`declare(strict_types=1)` 出现在每个 PHP 文件顶部。",
+    "所有参数、返回值和属性都有显式类型声明。",
+    "常量组已迁移为枚举，魔法字符串已消除。",
+    "多分支 `switch` 已替换为 `match`。",
+    "不可变数据使用了 `readonly class` 或 `readonly` 属性。",
+  ],
   relatedSkills: [
     {
       get id() {

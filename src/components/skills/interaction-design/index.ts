@@ -24,6 +24,15 @@ export const interactionDesignSkill = defineSkill({
     "微交互时长控制在感知区间：100-150ms 反馈、200-300ms 轻过渡、300-500ms 中型切换。",
     "一个页面只需要少量高质量动效，不要处处都在动。",
   ],
+  checklist: [
+    "[ ] 每个动效都能解释”它在告诉用户什么”。",
+    "[ ] hover、focus、active、disabled、loading 状态都完整。",
+    "[ ] 已验证低性能设备和降级动效偏好。",
+    "[ ] 过渡不会阻塞主要操作或影响可读性。",
+    "[ ] 动效速度、位移和透明度变化有一致的系统感。",
+    "[ ] 按钮按压用 `scale(0.96)`，不低于 0.95。",
+    "[ ] 图标动画用 opacity+scale+blur，不直接 toggle visibility。",
+  ],
   relatedSkills: [
     {
       get id() {

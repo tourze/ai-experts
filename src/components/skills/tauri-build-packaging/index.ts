@@ -27,6 +27,12 @@ export const tauriBuildPackagingSkill = defineSkill({
     "干净环境测试构建产物",
     "CI 分别缓存 `target/` 和 `node_modules/`",
   ],
+  checklist: [
+    "仓库无 `.key` 文件？",
+    "macOS 完整签名链？Windows 有证书？",
+    "Updater pubkey 已填入？端点 HTTPS？",
+    "Release profile 开启 LTO + strip？",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

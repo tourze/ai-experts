@@ -30,14 +30,6 @@ def create_order(order_id: str, customer_id: str) -> None:
         logger.info("event=order.create.finished order_id=%s", order_id)
 ```
 
-## 检查清单
-
-- 每条关键链路都能定位到请求入口、外部调用和失败位置。
-- 日志字段在不同模块中保持一致，便于检索和聚合。
-- 指标覆盖了吞吐、延迟、错误率和关键队列长度。
-- trace/span 的边界与真实业务边界一致，而不是随手乱切。
-- 敏感字段已脱敏或根本不写入日志。
-
 ## 反模式
 
 ### FAIL: 自然语言 + 无字段

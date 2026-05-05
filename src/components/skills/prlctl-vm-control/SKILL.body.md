@@ -28,16 +28,6 @@ node ./scripts/prlctl_helper.mjs upload "Ubuntu 24.04" --shell bash -- ./local.t
 node ./scripts/prlctl_helper.mjs download "Ubuntu 24.04" --shell bash -- /tmp/result.tar.gz ./result.tar.gz
 ```
 
-## 检查清单
-
-- 目标虚拟机是否已经通过 `resolve` 变成唯一结果。
-- 执行动作前是否已采集 `status` / `info` 作为基线证据。
-- Windows 客体任务是否确认了执行上下文：服务态、当前登录用户，还是显式账户。
-- 文件传输是否确认了方向、源路径、目标路径和覆盖风险。
-- 排查挂起时是否避免读取 `/private/tmp/claude-*/*/tasks/*.output` 或输出完整长命令行。
-- 使用 `--user` 时是否同时提供了 `--password-env`，并确认密码来自环境变量而非命令行明文。
-- 高风险动作前是否确认快照、回滚路径和用户授权。
-
 ## 反模式
 
 ### FAIL: 模糊名称直接高风险

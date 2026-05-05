@@ -44,12 +44,6 @@ otool -ov "$BINARY" | head   # ObjC 元数据
 rizin -qc "aaa; afl" "$BINARY"  # 函数列表
 ```
 
-## 检查清单
-- 确认 ipsw 已安装（`brew install blacktop/tap/ipsw`）。
-- FairPlay DRM 加密的 IPA 需要先解密（`otool -l binary | grep cryptid`，cryptid=1 表示加密）。
-- Swift 混淆后类名为乱码时用 `swift-demangle` 还原。
-- 列出 `Frameworks/` 下所有第三方 framework 及其版本。
-
 ## 反模式
 
 ### FAIL: 用旧版 class-dump

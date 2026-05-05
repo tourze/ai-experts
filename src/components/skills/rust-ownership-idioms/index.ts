@@ -28,6 +28,11 @@ export const rustOwnershipIdiomsSkill = defineSkill({
     "`TODO` 必须可追踪，如 `// TODO(#42): 移除兼容分支`。",
     "`#[allow(...)]` 优先替换为 `#[expect(...)]` 并写明原因。",
   ],
+  checklist: [
+    "参数能否再借用一层而不是提早拿走所有权？",
+    "循环内的 `clone()` / `collect()` 是否必要？",
+    "`#[allow(...)]` 是否都能改为 `#[expect(...)]` 并注明原因？",
+  ],
   relatedSkills: [
     {
       get id() {

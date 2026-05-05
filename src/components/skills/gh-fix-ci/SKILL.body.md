@@ -15,13 +15,6 @@ gh run view 987654321 --json name,workflowName,conclusion,status,url,event,headB
 gh run view 987654321 --log
 ```
 
-## 检查清单
-- 是否确认目标 PR 编号，或当前分支是否有关联 PR。
-- 是否列出所有 failing check，并区分 GitHub Actions / 外部 provider。
-- 是否提取 run id、job id、run URL 与最小失败片段。
-- 是否说明日志不可用、仍在运行或需要更高权限的情况。
-- 是否在改代码前给出一份聚焦修复计划。
-
 ## 反模式
 
 ### FAIL: 凭名字猜失败原因

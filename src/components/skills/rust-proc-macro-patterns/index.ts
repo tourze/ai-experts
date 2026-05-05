@@ -26,6 +26,10 @@ export const rustProcMacroPatternsSkill = defineSkill({
     "核心逻辑放独立辅助 crate 方便单测。",
     "`cargo expand` 调试展开结果。",
   ],
+  checklist: [
+    "`proc-macro = true` 已设？用 syn 2.x？",
+    "错误路径返回 `compile_error!` 而非 panic？Span 指向有意义位置？",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -25,6 +25,11 @@ export const rustTypeDesignSkill = defineSkill({
     "类型状态适合有明确生命周期阶段的实体（Draft → Published、Connecting → Connected）。",
     "类型状态不适合阶段太多或需要运行时动态决定的场景——此时用枚举。",
   ],
+  checklist: [
+    "用了 `dyn Trait` 的地方，是否真的需要运行时多态？",
+    "trait 是否 object-safe？是否意外加了泛型方法？",
+    "类型状态的阶段数是否可控（<5）？",
+  ],
   relatedSkills: [
     {
       get id() {

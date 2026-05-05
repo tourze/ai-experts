@@ -5,12 +5,6 @@ tshark -r capture.pcap -q -z conv,tcp
 tshark -r capture.pcap -Y 'ip.addr == 10.0.0.10 && tcp.port == 443' -V | sed -n '1,120p'
 ```
 
-## 检查清单
-- 确认时间线、端点、协议层次和异常流。
-- 对关键连接跟流并导出证据。
-- 把基线流量与异常流量分开描述。
-- 必要时导出字段表供后续协议分析。
-
 ## 反模式
 
 ### FAIL: 无过滤肉眼翻

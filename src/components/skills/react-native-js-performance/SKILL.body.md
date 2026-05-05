@@ -49,15 +49,6 @@ function Row({ title }: { title: string }) {
 }
 ```
 
-## 检查清单
-
-- [ ] 是否用 Perf Monitor 或 Flashlight 记录了优化前后的 FPS 数据？
-- [ ] 是否在 release 构建、真机上复测？
-- [ ] 大列表是否使用虚拟化组件，并控制 `windowSize`/`initialNumToRender`？
-- [ ] 动画是否尽量放到 Reanimated/UI 线程，而不是 JS 线程？
-- [ ] 高频输入是否使用非受控组件或 deferred value？
-- [ ] 是否排查了闭包、定时器和事件监听器的内存泄漏？
-
 ## 反模式
 
 ### FAIL: ScrollView 渲染长列表

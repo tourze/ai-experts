@@ -23,6 +23,13 @@ export const gitAdvancedWorkflowsSkill = defineSkill({
     "`reset --hard`、删除分支、覆盖工作树这类破坏性动作，必须是用户明确要求后的最后手段。",
     "恢复现场优先 `git reflog` + 新建恢复分支，不要先执行更大的破坏性命令。",
   ],
+  checklist: [
+    "动手前是否确认了当前分支、工作树状态和远端同步状态。",
+    "改历史前是否判断“这是不是共享分支”。",
+    "强推时是否用了 `--force-with-lease`。",
+    "用 bisect 前是否准备了稳定、可脚本化的复现方式。",
+    "恢复误操作时是否先用 reflog 开恢复分支，而不是继续覆盖现场。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -19,12 +19,6 @@ node scripts/tracking_plan_generator.mjs input.json --json
 
 - 参考资料： [event-taxonomy-guide](references/event-taxonomy-guide.md)、[gtm-patterns](references/gtm-patterns.md)、[debugging-playbook](references/debugging-playbook.md)。
 
-## 检查清单
-- 是否列出了主转化、微转化、用户属性和事件属性。
-- 是否说明每个事件的触发时机、去重规则和负责人。
-- 是否覆盖 Consent、DebugView、Preview、广告平台回传的验证路径。
-- 是否避免了同义事件并存，例如 `signup_complete` 与 `signup_completed`。
-
 ## 反模式
 
 ### FAIL: 全埋

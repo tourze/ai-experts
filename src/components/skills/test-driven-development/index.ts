@@ -26,6 +26,14 @@ export const testDrivenDevelopmentSkill = defineSkill({
     "如果已经先写了代码，不能把它当“参考”继续补测试；要么删掉重来，要么明确承认不是 TDD。",
     "写 mock 或测试工具前先看 [testing-anti-patterns.md](./testing-anti-patterns.md)。",
   ],
+  checklist: [
+    "[ ] 每个行为先有失败测试",
+    "[ ] 已确认失败原因是“功能缺失”，不是拼写或环境错误",
+    "[ ] 实现只覆盖当前测试需要的最小能力",
+    "[ ] 当前测试与相关回归测试都通过",
+    "[ ] 没在绿灯阶段偷偷加需求",
+    "[ ] 若用了 mock，确认没在测试 mock 自己",
+  ],
   relatedSkills: [
     {
       get id() {

@@ -25,6 +25,12 @@ export const architectureReviewerSkill = defineSkill({
     "每个结论都要绑定证据：代码路径、配置项、文档原文或用户明确提供的事实。",
     "Exhaustive 模式必须先做子系统拆分、再分模块审，不能一口气混着看；优先审有状态、有副作用、并发、认证、安全边界的模块。",
   ],
+  checklist: [
+    "是否写清了评审模式、假设、输入边界和证据来源。",
+    "是否标记了 S1 到 S5 风险等级和修复顺序。",
+    "是否区分“当前实现问题”与“文档缺口/待确认项”。",
+    "是否给出可执行的整改建议，而不是空泛建议。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

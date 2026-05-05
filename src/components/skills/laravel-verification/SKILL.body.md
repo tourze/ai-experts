@@ -24,14 +24,6 @@ php artisan queue:failed
 php artisan horizon:status
 ```
 
-## 检查清单
-
-- 确认 PHP、Composer、Artisan 和 `.env` 与目标环境一致，`APP_DEBUG` 在生产为 `false`。
-- `pint`、`phpstan` / `psalm`、测试、`composer audit` 全部通过后再看迁移与缓存命令。
-- 审查迁移文件名、破坏性 SQL、`down()` 回滚路径和是否需要灰度步骤。
-- 运行缓存预热后确认没有闭包路由、环境变量缺失或不可写目录问题。
-- 检查调度器、队列、Horizon、失败作业和健康检查队列是否符合目标环境配置。
-
 ## 反模式
 
 ### FAIL: 只跑测试就认为 OK

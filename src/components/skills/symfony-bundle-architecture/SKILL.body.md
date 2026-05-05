@@ -2,14 +2,6 @@
 
 见 [reference.md](reference.md) 中的 Bundle 类、Extension、services.yaml、CompilerPass 和标签收集完整示例。
 
-## 检查清单
-
-- Bundle 类是否只含 `build()` 和依赖声明。
-- Extension 是否通过 FileLocator + Loader 加载配置。
-- services.yaml 是否按命名空间分组 `resource`。
-- CompilerPass 是否做了存在性前置检查。
-- Bundle 间依赖是否显式声明，可选依赖是否有降级。
-
 ## 反模式
 
 ### FAIL: Extension 里做运行时调用

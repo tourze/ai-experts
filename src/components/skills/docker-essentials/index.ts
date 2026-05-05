@@ -21,6 +21,12 @@ export const dockerEssentialsSkill = defineSkill({
     "删除镜像、卷、网络前先确认影响范围，尤其是共享卷。",
     "新项目优先使用 `docker compose`，仅在遗留仓库明确要求时使用 `docker-compose`。",
   ],
+  checklist: [
+    "是否确认容器名、镜像标签、端口映射和卷挂载。",
+    "是否检查容器退出码、最近日志和健康检查状态。",
+    "是否确认网络连通性、DNS 与环境变量注入方式。",
+    "是否为镜像构建设置固定标签、构建参数和目标平台。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

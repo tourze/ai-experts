@@ -22,6 +22,12 @@ export const croMethodologySkill = defineSkill({
     "优化建议应以证据链为主，参考 [RESEARCH](references/RESEARCH.md)、[PERSUASION](references/PERSUASION.md)、[OBJECTIONS](references/OBJECTIONS.md)。",
     "若实验对象是弹窗，转到 [popup-cro](references/popup-cro.md)；若需要产出实现代码，转到 `redesign-my-landingpage`。",
   ],
+  checklist: [
+    "是否明确了页面目标、主指标和次指标。",
+    "是否把问题拆到“流量质量、页面表达、证据、摩擦”四层。",
+    "是否按影响和实施成本给实验排序。",
+    "是否给出验证窗口和样本量要求。",
+  ],
   relatedSkills: [
     {
       get id() {

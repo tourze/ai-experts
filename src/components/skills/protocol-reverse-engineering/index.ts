@@ -22,6 +22,12 @@ export const protocolReverseEngineeringSkill = defineSkill({
     "记录方向、会话状态、长度字段和错误响应。",
     "不确定的字段要明确标注置信度。",
   ],
+  checklist: [
+    "确认采集点、时间同步和请求/响应方向。",
+    "识别帧头、长度、消息类型、序号、校验和。",
+    "把状态转换和错误码单独列出。",
+    "必要时回到客户端代码或固件做字段交叉验证。",
+  ],
   relatedSkills: [
     {
       get id() {

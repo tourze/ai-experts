@@ -26,6 +26,12 @@ export const tauriReactIntegrationSkill = defineSkill({
     "`useTauriEvent` cleanup 必须 unlisten 并处理卸载竞态",
     "Error Boundary 捕获 IPC Promise rejection",
   ],
+  checklist: [
+    "前端无 Node.js API 调用？",
+    "`useInvoke` 处理 loading/error/success？",
+    "`useTauriEvent` cleanup 调用 unlisten？",
+    "Rust 变更后 `emit()` 通知前端？",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

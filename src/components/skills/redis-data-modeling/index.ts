@@ -24,6 +24,18 @@ export const redisDataModelingSkill = defineSkill({
     "**键设计**\n- 键名格式 `{service}:{object_type}:{id}`，冒号分隔，全小写，禁止空格和特殊字符。\n- 生产环境严禁 `KEYS *`，必须用 `SCAN` + `MATCH` + `COUNT`。\n- 所有临时键必须设置 TTL 且带随机抖动，永久键需文档登记。\n- 单 key value 不超过 10 KB（String）或 5000 元素（集合类），超出需拆分。\n- 用 `MEMORY USAGE` 和 `OBJECT ENCODING` 定期审计键内存。",
     "**分布式锁**\n- 获取锁必须用 `SET key value NX EX seconds` 单条原子命令，严禁 `SETNX` + `EXPIRE`。\n- value 必须是唯一 owner token（UUID），释放时 Lua 校验 owner 后再 DEL。\n- 锁超时必须大于业务最大执行时间，或用 watchdog 自动续期。\n- Redlock 需 5 个独立实例，获取多数派（N/2+1）且扣除获取耗时。\n\n详细模式见：[references/redis-data-structures.md](references/redis-data-structures.md)、[references/redis-key-design.md](references/redis-key-design.md)、[references/redis-distributed-lock.md](references/redis-distributed-lock.md)。",
   ],
+  checklist: [
+    "数据结构：所选结构是否匹配访问模式（点查用 Hash、排序用 ZSet、流式用 Stream）。",
+    "数据结构：大 key 是否已拆分，单值是否在 10 KB / 5000 元素阈值内。",
+    "数据结构：Stream 消费者组是否有 XACK 和 PEL 监控。",
+    "键设计：所有键是否遵循三段式命名，无裸键或无前缀键。",
+    "键设计：TTL 是否带随机抖动，是否存在大量相同固定 TTL 的键。",
+    "键设计：是否有使用 `KEYS` 的代码路径（必须替换为 `SCAN`）。",
+    "分布式锁：是否用 `SET key value NX EX` 单条命令，而非两步操作。",
+    "分布式锁：释放锁是否通过 Lua 校验 owner，防止误删他人锁。",
+    "分布式锁：锁超时是否大于业务执行时间，长任务是否有 watchdog。",
+    "分布式锁：多实例场景是否评估了 Redlock 和时钟偏移风险。",
+  ],
   relatedSkills: [
     {
       get id() {

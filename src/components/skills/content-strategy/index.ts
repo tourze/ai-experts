@@ -22,6 +22,12 @@ export const contentStrategySkill = defineSkill({
     "内容策略要和站点结构、分发渠道、复用方式配套考虑。",
     "若任务转向具体页面优化，配合 `seo`。",
   ],
+  checklist: [
+    "是否明确业务目标、受众层级和内容支柱。",
+    "是否区分短期获客内容与长期品牌内容。",
+    "是否说明更新频率、负责角色和复用方式。",
+    "是否把内容与 CTA、产品页、站点结构关联起来。",
+  ],
   relatedSkills: [
     {
       get id() {

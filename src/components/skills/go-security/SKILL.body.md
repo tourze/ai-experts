@@ -77,16 +77,6 @@ go install golang.org/x/vuln/cmd/govulncheck@latest
 govulncheck ./...
 ```
 
-## 检查清单
-
-- 所有用户输入拼接到查询 / 命令 / HTML / 路径的地方是否使用安全 API？
-- 密码存储是否使用 Argon2id / bcrypt？
-- Token / 密钥生成是否使用 `crypto/rand`？
-- 敏感数据比较是否使用 `subtle.ConstantTimeCompare`？
-- 是否有硬编码密钥 / 凭据？
-- 是否运行过 `govulncheck`？
-- TLS 配置是否禁用过时协议（TLS 1.0/1.1）？
-
 ## 深度参考
 
 - [injection.md](references/injection.md) — SQL 注入、命令注入、XSS、SSRF、路径穿越

@@ -25,6 +25,12 @@ export const agileProductOwnerSkill = defineSkill({
     "验收标准必须覆盖成功路径、失败路径和边界条件，避免“优化一下”这类不可验证表述。",
     "运行脚本时只使用已验证命令：`node scripts/user_story_generator.mjs` 与 `node scripts/user_story_generator.mjs sprint 30`；Sprint 容量必须是正整数。",
   ],
+  checklist: [
+    "[ ] 用户角色、业务目标、非目标和依赖已经明确。",
+    "[ ] Story 满足 INVEST，验收标准可直接转为测试用例。",
+    "[ ] Sprint 承诺范围与容量匹配，Stretch 目标没有挤占 committed 范围。",
+    "[ ] 模板、参考资料与脚本参数保持一致。",
+  ],
   relatedSkills: [
     {
       get id() {

@@ -79,16 +79,6 @@ object NetworkModule {
 - `:core:model` / `:core:domain` 是纯 Kotlin 模块，无 Android 依赖
 - 每个 Feature 独立提供自己的 Hilt Module
 
-## 检查清单
-
-- [ ] Domain 层无 `android.*` 导入
-- [ ] Repository 的 `suspend` 函数 main-safe（内部 `withContext` 切线程）
-- [ ] ViewModel 通过 `StateFlow` 向 UI 暴露状态
-- [ ] `MutableStateFlow` / `MutableSharedFlow` 不对外暴露（通过 `.asStateFlow()` 转为只读）
-- [ ] Hilt Module 中接口绑定用 `@Binds`，仅第三方实例用 `@Provides`
-- [ ] Feature 模块不互相依赖，只依赖 `:core:*`
-- [ ] 依赖方向单向向内，无循环依赖
-
 ## 反模式
 
 ### FAIL: Domain 层依赖 Android

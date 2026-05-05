@@ -19,6 +19,12 @@ export const pythonErrorHandlingSkill = defineSkill({
     "只捕获你能处理的异常类型；其余异常保留堆栈继续抛出。",
     "验证错误、业务错误、外部系统错误要分层，不要全塞进 `ValueError`。",
   ],
+  checklist: [
+    "是否定义了清晰的异常层级和边界映射。",
+    "只捕获可恢复错误。",
+    "错误信息不泄露内部实现细节。",
+    "批处理保留了成功项、失败项和失败原因。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

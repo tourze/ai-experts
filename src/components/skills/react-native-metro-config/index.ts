@@ -24,6 +24,11 @@ export const reactNativeMetroConfigSkill = defineSkill({
     "CI 中 `maxWorkers` 控制在 2-4 避免 OOM。",
     "`import()` 不支持计算路径，须静态字符串。",
   ],
+  checklist: [
+    "`watchFolders` 是否覆盖所有 symlink 包？",
+    "`react`/`react-native` 是否唯一解析到 app 版本？",
+    "CI `maxWorkers` 是否已调低？",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

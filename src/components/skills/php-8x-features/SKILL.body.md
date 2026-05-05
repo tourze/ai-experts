@@ -89,14 +89,6 @@ function calculateShipping(int $weightGrams, string $zone): float
 | 动态常量获取 | 8.3+ | `$enum::{$name}` |
 | `#[\Override]` | 8.3+ | 标记方法为覆写，父类签名变更时编译报错 |
 
-## 检查清单
-
-- `declare(strict_types=1)` 出现在每个 PHP 文件顶部。
-- 所有参数、返回值和属性都有显式类型声明。
-- 常量组已迁移为枚举，魔法字符串已消除。
-- 多分支 `switch` 已替换为 `match`。
-- 不可变数据使用了 `readonly class` 或 `readonly` 属性。
-
 ## 反模式
 
 ### FAIL: class 常量组代替枚举

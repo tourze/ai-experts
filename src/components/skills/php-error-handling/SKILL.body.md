@@ -13,13 +13,6 @@ DomainException (abstract, extends RuntimeException)
 
 代码示例见 [patterns.md](references/patterns.md)。
 
-## 检查清单
-
-- 异常分为验证层、业务层、外部依赖层。
-- try/catch 只出现在真正需要处理或转换异常的地方。
-- 用户可见错误消息不包含堆栈、SQL、文件路径。
-- 批量处理有部分失败汇总机制。
-
 ## 反模式
 
 ### FAIL: 吞异常返 false/null

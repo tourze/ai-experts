@@ -39,13 +39,6 @@ resources:
     memory: 512Mi
 ```
 
-## 检查清单
-- 是否保留 `Chart.yaml`、`values.yaml`、`templates/` 和必要的 `_helpers.tpl`。
-- 是否为资源限制、探针、安全上下文和 ServiceAccount 提供默认值。
-- 是否把环境差异下沉到 values 文件而不是复制模板。
-- 是否验证依赖、渲染结果与 dry-run 安装路径。
-- 完整的 Chart 目录布局、values 模式、模板、钩子和依赖关系参考 [references/chart-structure.md](references/chart-structure.md)。
-
 ## 反模式
 
 ### FAIL: 模板里写死环境差异

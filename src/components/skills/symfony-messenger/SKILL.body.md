@@ -54,14 +54,6 @@ framework:
       App\Message\SyncInventoryMessage: async
 ```
 
-## 检查清单
-
-- 消息是否只携带稳定、可序列化、可重试的数据，而不是整个实体对象。
-- Handler 是否显式处理幂等、重试、超时和外部依赖失败。
-- `messenger.yaml` 是否配置了路由、失败传输和合理的 retry strategy。
-- 消费命令、失败队列查看与重放命令是否被纳入运维手册。
-- 如果消息会触发写库或第三方回调，是否有 request id / 去重键 / outbox 等证据链。
-
 ## 反模式
 
 ### FAIL: Entity 塞进消息体

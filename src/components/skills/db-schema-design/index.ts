@@ -24,6 +24,15 @@ export const dbSchemaDesignSkill = defineSkill({
     "**MySQL 特化**\n- 主键必须 `BIGINT UNSIGNED AUTO_INCREMENT`；禁止 INT（溢出风险）和 UUID 聚簇索引（页分裂、写放大）。\n- 字符集统一 `utf8mb4`，排序规则优先 `utf8mb4_0900_ai_ci`；禁止 `utf8`（不能存 4 字节字符）。\n- 引擎默认 InnoDB；选择其他引擎须在注释中说明理由。\n- JSON 列不能有默认值、不能做主键；高频过滤/排序字段必须提取为生成列（VIRTUAL/STORED）并建索引。\n- 使用 `->>` 获取无引号文本值；JSON 数组场景优先评估多值索引（MySQL 8.0.17+）。",
     "**PostgreSQL 特化**\n- 主键用 `BIGINT GENERATED ALWAYS AS IDENTITY`，不用 `serial`。\n- 时间列一律 `TIMESTAMPTZ`，禁止裸 `timestamp`。\n- 通用字符串用 `TEXT`，不用 `varchar(n)`（内部存储无差异）。\n- 标识符用 unquoted snake_case，禁止 `\"QuotedCamelCase\"`。\n- 使用 `JSONB` 而非 `JSON`（JSONB 支持索引，JSON 只是文本存储）。\n- JSONB 列必须有 CHECK 约束验证顶层类型；嵌套控制在 3 层以内。\n\n详细引擎专有模式见：[references/mysql-schema-design.md](references/mysql-schema-design.md)、[references/pgsql-schema-design.md](references/pgsql-schema-design.md)、[references/mysql-json-generated-columns.md](references/mysql-json-generated-columns.md)、[references/pgsql-jsonb-patterns.md](references/pgsql-jsonb-patterns.md)。",
   ],
+  checklist: [
+    "主键策略是否匹配引擎特性（InnoDB 聚簇 / PostgreSQL identity）。",
+    "金额列是否使用精确数值类型。",
+    "字符集和排序规则是否统一（MySQL utf8mb4 / PostgreSQL 默认 UTF-8）。",
+    "nullable 列是否有合理的 DEFAULT 值。",
+    "JSON/JSONB 列是否有 CHECK 约束，高频过滤字段是否提取为生成列。",
+    "标识符命名是否统一（snake_case）且避免了保留字。",
+    "外键是否显式声明（PostgreSQL）或在应用层有约束保证（MySQL）。",
+  ],
   relatedSkills: [
     {
       get id() {

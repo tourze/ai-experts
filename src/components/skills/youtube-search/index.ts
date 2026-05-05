@@ -24,6 +24,12 @@ export const youtubeSearchSkill = defineSkill({
     "当前目录已经提供 `scripts/search_youtube.mjs`，优先用它，不要再依赖手写 `jq` 管道。",
     "用户已经给出明确视频链接且诉求是“总结内容”时，不要继续搜索，直接切到 `youtube-analysis`。",
   ],
+  checklist: [
+    "查询词先收窄到主题本身，不要把分析诉求和搜索词混在一起。",
+    "需要“最近”或“热门”时，显式指定 `--days` 或 `--sort`，不要靠自然语言脑补。",
+    "如果 `upload_date` / `duration_string` 为空，要告诉用户这是 YouTube flat search 的字段缺失，不是脚本 bug。",
+    "YouTube 触发 bot challenge 时，直接说明失败原因；不要把空结果伪装成“没有搜到”。",
+  ],
   relatedSkills: [
     {
       get id() {

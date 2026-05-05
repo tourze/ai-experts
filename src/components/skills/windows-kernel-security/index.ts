@@ -25,6 +25,13 @@ export const windowsKernelSecuritySkill = defineSkill({
     "区分“研究概念”与“可执行变更”：PatchGuard、DSE、HVCI、VBS 先解释约束，再决定是否需要实验复现。",
     "如果实验需要破坏性动作、重启、回滚或快照切换，先确认虚拟机基线和回滚路径。",
   ],
+  checklist: [
+    "入口是否清楚：谁调用驱动、如何构造 IOCTL、参数在哪一层首次变成可信数据。",
+    "权限边界是否清楚：调用方令牌、设备 ACL、`METHOD_NEITHER` 指针、回调注册权限是否匹配。",
+    "副作用是否清楚：是否写入全局表、对象回调、进程列表、VAD、或 PatchGuard 关注区域。",
+    "约束是否清楚：当前代码是否受 DSE、HVCI、VBS、PatchGuard 或 Secure Boot 影响。",
+    "复现路径是否清楚：是否已经在实验环境中准备好符号、日志、快照和回滚方案。",
+  ],
   relatedSkills: [
     {
       get id() {

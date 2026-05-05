@@ -20,6 +20,13 @@ export const webmanPluginDevelopmentSkill = defineSkill({
     "访问用 `config('plugin.{vendor}.{package}.{key}')`。",
     "`mkdir` 用 `0755`，`webman-framework` 放 `require-dev`。",
   ],
+  checklist: [
+    "[ ] `WEBMAN_PLUGIN = true` 已声明",
+    "[ ] `$pathRelation` 指向 `config/plugin/{vendor}/{package}/`",
+    "[ ] PSR-4 autoload 映射到 `src/`",
+    "[ ] `mkdir` 权限 `0755`",
+    "[ ] `uninstall()` 清理已发布配置",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

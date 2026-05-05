@@ -23,6 +23,13 @@ export const consciousnessCouncilSkill = defineSkill({
     "结尾必须输出：共识、核心张力、共同盲点、建议路径、信心等级。",
     "需要行业化配方时，参考 [高级配置示例](references/advanced-configurations.md)。",
   ],
+  checklist: [
+    "问题是否真的值得做多角色议会推演。",
+    "选出的角色之间是否存在真实冲突。",
+    "每个角色是否都说清了自己的立场和风险点。",
+    "综合部分是否提炼出“核心张力”，而不是复读每个人说过的话。",
+    "输出是否收敛成用户可执行的下一步。",
+  ],
   relatedSkills: [
     {
       get id() {

@@ -17,13 +17,6 @@ rg -n "scripts|test|lint|build|start" package.json pyproject.toml Cargo.toml Mak
 ## 测试与质量保障
 ```
 
-## 检查清单
-
-- 是否明确了项目定位、主要能力和运行前提。
-- 是否给出了可复制执行的安装、启动、测试命令。
-- 是否解释了关键目录，而不是只贴文件树。
-- 是否写清楚了贡献方式、环境变量和常见问题入口。
-
 ## 反模式
 
 ### FAIL: 只有营销话术

@@ -20,6 +20,12 @@ export const estimateCalibratorSkill = defineSkill({
     "估算必须显式写出假设、未知项和最坏情况，不允许只报“乐观值”。",
     "估算不等于承诺，区间越窄越需要证据支撑。",
   ],
+  checklist: [
+    "[ ] 工作已拆到可讨论的不确定性粒度。",
+    "[ ] 已给出三点估算、风险来源和置信度说明。",
+    "[ ] 关键依赖、外部等待和返工概率已纳入。",
+    "[ ] 结果能支撑排期决策，而不是制造虚假确定性。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

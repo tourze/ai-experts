@@ -22,6 +22,12 @@ export const refactoringPatternsSkill = defineSkill({
     "必须先识别异味，再选手法；不要为了秀技巧强行套模式。",
     "没有验证路径的高风险重构，默认不能一次完成。",
   ],
+  checklist: [
+    "是否先说清楚代码异味和目标状态。",
+    "是否给出可落地的重构序列而非抽象建议。",
+    "是否标记需要补测试或人工验证的高风险步骤。",
+    "是否避免把多个重构意图塞进一次改动。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

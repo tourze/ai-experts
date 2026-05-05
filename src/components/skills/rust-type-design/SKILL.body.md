@@ -29,12 +29,6 @@ impl Document<Draft> {
 - 泛型与分发：[chapter_06.md](references/chapter_06.md)
 - 类型状态模式：[chapter_07.md](references/chapter_07.md)
 
-## 检查清单
-
-- 用了 `dyn Trait` 的地方，是否真的需要运行时多态？
-- trait 是否 object-safe？是否意外加了泛型方法？
-- 类型状态的阶段数是否可控（<5）？
-
 ## 反模式
 
 ### FAIL: 默认 dyn 放弃零开销

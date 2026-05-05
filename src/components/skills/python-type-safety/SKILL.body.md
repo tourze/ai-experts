@@ -25,14 +25,6 @@ def recipient_of(value: UserPayload | object) -> str:
     raise TypeError("email field is required")
 ```
 
-## 检查清单
-
-- 所有公共函数和类是否具备明确签名。
-- 可空值、联合类型和边界输入是否被显式表达。
-- `Any`、`cast()` 和 `type: ignore` 是否都有合理解释。
-- 类型检查规则是否进入 CI，而不是只在本地偶尔运行。
-- 运行时校验与静态类型是否保持一致，没有彼此打架。
-
 ## 反模式
 
 ### FAIL: Any 当默认值

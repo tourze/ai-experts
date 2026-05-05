@@ -59,12 +59,6 @@ Interceptor.attach(hook.implementation, {
 | SecurityException | 签名校验 | hook `PackageManager.getPackageInfo` |
 | `System.exit` 在栈中 | RASP 框架 | hook `System.exit` 并打印调用栈 |
 
-## 检查清单
-- 确认 frida-server 版本与 frida-tools 版本匹配。
-- 先用 `--pause` 确保 hook 在应用启动前生效（仅需要 hook 初始化逻辑时）。
-- 二进制数据用 `hexdump()` 而非 `toString()`。
-- hook 回调包裹 try/catch，避免异常导致进程崩溃。
-
 ## 反模式
 
 ### FAIL: 通用脚本盲跑

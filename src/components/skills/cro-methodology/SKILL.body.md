@@ -11,12 +11,6 @@
 
 - 辅助资料： [COPYWRITING](references/COPYWRITING.md)、[funnel-analysis](references/funnel-analysis.md)、[testing-methodology](references/testing-methodology.md)。
 
-## 检查清单
-- 是否明确了页面目标、主指标和次指标。
-- 是否把问题拆到“流量质量、页面表达、证据、摩擦”四层。
-- 是否按影响和实施成本给实验排序。
-- 是否给出验证窗口和样本量要求。
-
 ## 反模式
 
 ### FAIL: 拍脑袋改

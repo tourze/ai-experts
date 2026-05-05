@@ -21,6 +21,12 @@ export const planReviewSkill = defineSkill({
     "优先指出真正会导致失败的缺口，而不是泛泛建议“多测试”。",
     "不替方案作者做实现细节脑补；缺失信息就明确标成缺口。",
   ],
+  checklist: [
+    "是否明确了目标、范围边界和不做什么。",
+    "是否列出了外部依赖、先决条件和阻塞项。",
+    "是否覆盖了回滚、迁移、灰度和验证方式。",
+    "是否把风险按严重度和发生概率排过序。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -37,15 +37,6 @@
 }
 ```
 
-## 检查清单
-
-- [ ] 已完整读取 transcript，并记录执行错误、跳过项和自述不确定性。
-- [ ] 已列出 outputs，并检查与每条 expectation 相关的真实文件内容。
-- [ ] 每条 PASS / FAIL 都有具体证据或缺证据说明。
-- [ ] 已抽取并验证输出中的事实、过程和质量 claims。
-- [ ] 已指出明显太弱、无法验证或遗漏关键结果的 assertion。
-- [ ] 汇总包含 passed、failed、total 和 pass_rate。
-
 ## 反模式
 
 ### FAIL: 只看 transcript 自述

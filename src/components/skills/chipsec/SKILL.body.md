@@ -5,12 +5,6 @@ chipsec_main -m tools.uefi.scan_image -a firmware.bin
 chipsec_util spi dump firmware.bin
 ```
 
-## 检查清单
-- 确认镜像来源、采集方式、哈希和平台信息。
-- 检查写保护、SPI 描述符、UEFI 模块清单和可疑持久化痕迹。
-- 把工具报错与真实发现分开记录。
-- 需要写操作时，明确提示风险和回退方案。
-
 ## 反模式
 
 ### FAIL: 直接跑修改类模块

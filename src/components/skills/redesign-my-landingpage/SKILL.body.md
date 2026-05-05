@@ -14,12 +14,6 @@ import { Button } from '@/components/ui/button'
 
 - 页面结构与风格方向优先参考 [landing-page-anatomy](references/landing-page-anatomy.md)、[section-templates](references/section-templates.md)、[aesthetic-directions](references/aesthetic-directions.md)、[shadcn-vite-setup](references/shadcn-vite-setup.md)。
 
-## 检查清单
-- 是否只有一个主 CTA，且在关键位置重复出现。
-- 是否用真实产品画面或结果预览，而不是装饰图。
-- 是否首屏就说明目标用户、核心价值和下一步动作。
-- 是否兼顾移动端排版、可访问性和组件一致性。
-
 ## 反模式
 
 ### FAIL: shadcn 模板拼装

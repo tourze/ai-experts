@@ -21,6 +21,13 @@ export const liquidGlassDesignSkill = defineSkill({
     "`interactive()` 只给真正可交互的元素，不要让纯装饰层伪装成交互层。",
     "玻璃是强调层次的材料，不是把整页 UI 全部磨成同一块雾面板。",
   ],
+  checklist: [
+    "确认部署目标与回退策略，不要让旧系统直接编译失败。",
+    "多个玻璃元素是否已经放入统一容器，并验证间距带来的融合效果。",
+    "是否只在重要交互位使用 `interactive()`，而不是整页都带动态反馈。",
+    "Widget 是否同时检查 full color 与 accented 模式。",
+    "交叉引用：整体 iOS 界面规范看 `ios-hig-design`；SwiftUI 结构化实现看 `swiftui-ui-patterns`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -29,14 +29,6 @@ remindctl complete 1 2 3
 remindctl delete 4A83 --force
 ```
 
-## 检查清单
-
-- 先跑 `remindctl status`，未授权时执行 `remindctl authorize`。
-- 查看类需求优先用 `show` 过滤器：`today` / `tomorrow` / `week` / `overdue` / `all` / 指定日期。
-- 需要脚本化输出时使用 `--json` 或 `--plain`。
-- 删除和列表变更属于破坏性动作，执行前要确认目标 ID 或列表名。
-- 交叉引用：更适合做长期记录的内容改用 `apple-notes`。
-
 ## 反模式
 
 ### FAIL: 误把过滤器当子命令

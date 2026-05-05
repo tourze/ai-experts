@@ -19,15 +19,6 @@
 
 单测示例见 [references/testing-patterns.md](references/testing-patterns.md)：用 `Test.createTestingModule` 注入 mock Repository，分别断言创建成功与 `ConflictException` 抛出。
 
-## 检查清单
-
-- `AppModule` 或模块级入口是否启用了 `ValidationPipe`、必要的 Guard / Interceptor / Filter。
-- DTO 是否覆盖所有输入边界，是否使用 `readonly`、枚举、嵌套校验与类型转换。
-- Service 是否只依赖抽象或 provider，不在运行时直接创建外部依赖实例。
-- 控制器是否声明了 `@ApiTags`、`@ApiOperation`、`@ApiResponse` 等 Swagger 注解。
-- 配置、密钥、数据库连接与第三方 SDK 初始化是否全部走配置模块。
-- 新增逻辑是否同时覆盖单测，涉及路由/认证时是否补了控制器或 E2E 测试。
-
 ## 反模式
 
 ### FAIL: Controller 操作 Repository

@@ -6,14 +6,6 @@
 final class Install { public const WEBMAN_PLUGIN = true; }
 ```
 
-## 检查清单
-
-- [ ] `WEBMAN_PLUGIN = true` 已声明
-- [ ] `$pathRelation` 指向 `config/plugin/{vendor}/{package}/`
-- [ ] PSR-4 autoload 映射到 `src/`
-- [ ] `mkdir` 权限 `0755`
-- [ ] `uninstall()` 清理已发布配置
-
 ## 反模式
 
 ### FAIL: mkdir 0777

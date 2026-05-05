@@ -24,6 +24,12 @@ export const techDebtSkill = defineSkill({
     "不要把所有代码不喜欢的地方都归类成必须立刻偿还的债。",
     "需要明确债务 owner、验证指标和退出条件。",
   ],
+  checklist: [
+    "是否把债项分类并绑定具体模块。",
+    "是否解释不修会带来的业务或工程后果。",
+    "是否按统一评分规则排过序。",
+    "是否给出分期治理建议、owner、衡量指标和退出条件。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

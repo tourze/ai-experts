@@ -40,14 +40,6 @@ def schedule_export(queue: QueueBackend, user_id: str) -> Job:
     return job
 ```
 
-## 检查清单
-
-- 任务是否能在重复投递、进程重启和超时重试下安全重放。
-- 是否有 `job_id`、状态表和失败原因，而不是只有 worker 日志。
-- 是否区分了瞬时错误、永久错误和人工介入错误。
-- 是否定义了超时、最大重试次数和死信兜底。
-- 上游 API 是否只承担接单，不承担实际重活。
-
 ## 反模式
 
 ### FAIL: 请求里 await 长任务

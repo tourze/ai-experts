@@ -26,12 +26,6 @@
 - 若涉及 CMS 组织方式，可参考 [headless-cms](references/headless-cms.md)。
 - 若做主题聚类，配合 [topic-cluster](references/topic-cluster.md)。
 
-## 检查清单
-- 是否明确业务目标、受众层级和内容支柱。
-- 是否区分短期获客内容与长期品牌内容。
-- 是否说明更新频率、负责角色和复用方式。
-- 是否把内容与 CTA、产品页、站点结构关联起来。
-
 ## 域名方向发散
 
 为新产品、栏目或品牌发散域名时，按"主品牌 / 活动页 / 实验性"分组输出候选，给出记忆点与拼写测试，避免与现有品牌近似。方法和模板见 [domain-name-brainstormer](references/domain-name-brainstormer.md)。

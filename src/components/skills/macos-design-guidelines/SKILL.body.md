@@ -43,14 +43,6 @@ NavigationSplitView {
 }
 ```
 
-## 检查清单
-
-- 是否提供标准菜单、设置入口、常用快捷键和上下文菜单。
-- 主窗口是否支持调整大小、全屏和多窗口，而不是被固定成移动端画布。
-- 侧边栏、工具栏、搜索和右键菜单是否体现桌面工作流。
-- 需要展开规则时读取记忆文件、`rules/_sections.md` 和 `metadata.json`。
-- 交叉引用：iPhone / iPad 体验看 `ios-hig-design`；SwiftUI 具体实现看 `swiftui-ui-patterns`。
-
 ## 反模式
 
 ### FAIL: TabBar 直接搬上 Mac
