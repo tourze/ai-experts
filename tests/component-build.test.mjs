@@ -98,6 +98,24 @@ function extractPropertyArray(source, property) {
   throw new Error(`Unclosed ${property} array`);
 }
 
+function assertSingleDispatcherHookGroups(config, label) {
+  for (const [event, groups] of Object.entries(config.hooks)) {
+    const seenMatchers = new Set();
+    for (const group of groups) {
+      const matcher = group.matcher ?? "";
+      const key = `${event}\0${matcher}`;
+      assert.equal(seenMatchers.has(key), false, `${label} should emit one group per ${event}/${matcher}`);
+      seenMatchers.add(key);
+      assert.equal(
+        group.hooks.length,
+        1,
+        `${label} ${event}/${matcher || "(no matcher)"} should invoke the single bundled dispatcher once`,
+      );
+      assert.match(group.hooks[0].command, /hooks\/dispatch\.mjs/);
+    }
+  }
+}
+
 test("component build emits claude and codex component surfaces", () => {
   const tmp = mkdtempSync(join(tmpdir(), "ai-experts-component-build-"));
   try {
@@ -186,8 +204,13 @@ test("component build emits claude and codex component surfaces", () => {
     assert.match(codexInstructions, /Source of truth: src\/components\//);
 
     const claudeSettings = JSON.parse(readFileSync(join(tmp, "claude/settings.json"), "utf-8"));
+    const codexHooksConfig = JSON.parse(readFileSync(join(tmp, "codex/hooks.json"), "utf-8"));
     assert.equal(claudeSettings.hooks.UserPromptSubmit[0].hooks[0].type, "command");
     assert.match(claudeSettings.hooks.PostToolUse[0].matcher, /apply_patch/);
+    assertSingleDispatcherHookGroups(claudeSettings, "claude settings");
+    assertSingleDispatcherHookGroups(codexHooksConfig, "codex hooks");
+    assert.equal(claudeSettings.hooks.PostToolUse[0].hooks.length, 1);
+    assert.equal(codexHooksConfig.hooks.PostToolUse[0].hooks.length, 1);
 
     const codexConfig = readFileSync(join(tmp, "codex/config.toml"), "utf-8");
     assert.match(codexConfig, /codex_hooks = true/);
@@ -215,6 +238,54 @@ test("component build emits claude and codex component surfaces", () => {
     );
     assert.match(reminderOutput, /additionalContext/);
     assert.match(reminderOutput, /src\/components/);
+
+    const ignoredSecretPathOnBashOutput = execFileSync(
+      process.execPath,
+      [join(tmp, "claude/hooks/dispatch.mjs"), "--platform", "claude-code", "--event", "PreToolUse"],
+      {
+        cwd: repoRoot,
+        input: JSON.stringify({
+          tool_name: "Bash",
+          tool_input: { command: "echo ok", file_path: ".env" },
+        }),
+        encoding: "utf-8",
+      },
+    );
+    assert.equal(
+      ignoredSecretPathOnBashOutput.trim(),
+      "",
+      "Bash matcher should not run Edit/Write secret path hooks",
+    );
+
+    const secretWriteOutput = execFileSync(
+      process.execPath,
+      [join(tmp, "claude/hooks/dispatch.mjs"), "--platform", "claude-code", "--event", "PreToolUse"],
+      {
+        cwd: repoRoot,
+        input: JSON.stringify({
+          tool_name: "Write",
+          tool_input: { file_path: ".env", content: "API_KEY=test" },
+        }),
+        encoding: "utf-8",
+      },
+    );
+    assert.match(secretWriteOutput, /"decision": "block"/);
+    assert.match(secretWriteOutput, /Secret Write Guard/);
+
+    const dangerousCommandOutput = execFileSync(
+      process.execPath,
+      [join(tmp, "codex/hooks/dispatch.mjs"), "--platform", "codex-cli", "--event", "PreToolUse"],
+      {
+        cwd: repoRoot,
+        input: JSON.stringify({
+          toolName: "Bash",
+          toolInput: { command: "rm -rf /" },
+        }),
+        encoding: "utf-8",
+      },
+    );
+    assert.match(dangerousCommandOutput, /"decision": "block"/);
+    assert.match(dangerousCommandOutput, /Dangerous Command/);
 
     const guardOutput = execFileSync(
       process.execPath,

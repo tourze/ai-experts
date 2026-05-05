@@ -30,12 +30,6 @@ const InvocationPolicy = {
   ModelOnly: "model-only",
 };
 
-const HookEvent = {
-  PostToolUse: "PostToolUse",
-  PreToolUse: "PreToolUse",
-  UserPromptSubmit: "UserPromptSubmit",
-};
-
 function parseArgs(argv) {
   const args = { outDir: join(repoRoot, "dist"), check: false };
   for (let index = 0; index < argv.length; index += 1) {
@@ -767,9 +761,10 @@ function fileTargetsFromPatch(command) {
 }
 
 function normalize(raw, event) {
-  const toolInput = raw.tool_input ?? raw.toolInput;
+  const toolInput = raw.tool_input ?? raw.toolInput ?? raw.tool?.input;
+  const toolName = raw.tool_name ?? raw.toolName ?? raw.tool?.name;
   const command = typeof toolInput?.command === "string" ? toolInput.command : "";
-  const filePath = toolInput?.file_path ?? toolInput?.path;
+  const filePath = toolInput?.file_path ?? toolInput?.filePath ?? toolInput?.path;
   const fileTargets = [];
   if (typeof filePath === "string") fileTargets.push(filePath);
   if (command) fileTargets.push(...fileTargetsFromPatch(command));
@@ -784,9 +779,9 @@ function normalize(raw, event) {
     prompt: raw.prompt ?? raw.user_prompt ?? raw.message,
     agent: { id: raw.agent_id, type: raw.agent_type },
     tool: {
-      name: raw.tool_name,
+      name: toolName,
       input: toolInput,
-      response: raw.tool_response ?? raw.toolResult,
+      response: raw.tool_response ?? raw.toolResponse ?? raw.toolResult ?? raw.tool?.response,
       fileTargets: [...new Set(fileTargets)],
     },
     raw,
@@ -820,6 +815,20 @@ function normalizeHookResult(result) {
   return null;
 }
 
+function matcherMatchesTool(matcher, toolName) {
+  if (!matcher) return true;
+  if (typeof toolName !== "string" || toolName.length === 0) return false;
+  try {
+    return new RegExp("^(?:" + matcher + ")$").test(toolName);
+  } catch {
+    return matcher.split("|").includes(toolName);
+  }
+}
+
+function hookMatchesPayload(hook, payload) {
+  return matcherMatchesTool(hook.matcher, payload.tool?.name);
+}
+
 function mergeResults(results, event) {
   const deny = results.find((result) => result.kind === "deny");
   if (deny) return { decision: "block", reason: deny.message };
@@ -851,7 +860,7 @@ async function main() {
   const payload = normalize(raw, event);
   const results = [];
 
-  for (const hook of hooks.filter((item) => item.event === event)) {
+  for (const hook of hooks.filter((item) => item.event === event && hookMatchesPayload(item, payload))) {
     const run = hookRunners.get(hook.id);
     if (typeof run !== "function") continue;
     const hookPayload = hook.payloadMode === "claude-raw" ? toLegacyClaudePayload(payload) : payload;
@@ -875,26 +884,43 @@ function renderHookConfig(hooks, platform) {
   const commandHome = platform === Platform.Claude
     ? '${AI_EXPERTS_CLAUDE_HOME:-$HOME/.claude}'
     : '${AI_EXPERTS_CODEX_HOME:-$HOME/.codex}';
+  const groups = [];
+  const groupsByKey = new Map();
   for (const hook of hooks) {
     const matcher = renderHookMatcher(hook);
     const command = `node "${commandHome}/hooks/dispatch.mjs" --platform ${platform} --event ${hook.event}`;
-    const group = {
-      hooks: [
-        {
-          type: "command",
-          command,
-          timeout: hook.timeoutSeconds ?? 10,
-          ...(platform === Platform.Codex && hook.statusMessage
-            ? { statusMessage: hook.statusMessage }
-            : {}),
-        },
-      ],
+    const key = `${hook.event}\0${matcher}`;
+    let group = groupsByKey.get(key);
+    if (!group) {
+      group = {
+        event: hook.event,
+        matcher,
+        command,
+        timeout: 10,
+        hookCount: 0,
+        statusMessages: new Set(),
+      };
+      groupsByKey.set(key, group);
+      groups.push(group);
+    }
+    group.timeout = Math.max(group.timeout, hook.timeoutSeconds ?? 10);
+    group.hookCount += 1;
+    if (hook.statusMessage) group.statusMessages.add(hook.statusMessage);
+  }
+
+  for (const group of groups) {
+    const commandHook = {
+      type: "command",
+      command: group.command,
+      timeout: group.timeout,
     };
-    if (matcher) group.matcher = matcher;
-    hooksByEvent[hook.event] ??= [];
-    const existing = hooksByEvent[hook.event].find((item) => (item.matcher ?? "") === (group.matcher ?? ""));
-    if (existing) existing.hooks.push(...group.hooks);
-    else hooksByEvent[hook.event].push(group);
+    if (platform === Platform.Codex && group.hookCount === 1 && group.statusMessages.size === 1) {
+      commandHook.statusMessage = [...group.statusMessages][0];
+    }
+    const hookGroup = { hooks: [commandHook] };
+    if (group.matcher) hookGroup.matcher = group.matcher;
+    hooksByEvent[group.event] ??= [];
+    hooksByEvent[group.event].push(hookGroup);
   }
   return { hooks: hooksByEvent };
 }
