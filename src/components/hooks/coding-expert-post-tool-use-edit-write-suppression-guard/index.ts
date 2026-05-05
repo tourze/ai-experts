@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const codingExpertPostToolUseEditWriteSuppressionGuardHook = defineHook({
   id: "coding-expert-post-tool-use-edit-write-suppression-guard",

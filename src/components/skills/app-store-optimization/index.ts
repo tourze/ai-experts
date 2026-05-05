@@ -6,7 +6,7 @@ import {
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const appStoreOptimizationSkill = defineSkill({
   id: "app-store-optimization",

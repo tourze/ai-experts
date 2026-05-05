@@ -4,16 +4,16 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { uxHeuristicsSkill } from "../../skills/ux-heuristics/index.js";
-import { uxResearcherDesignerSkill } from "../../skills/ux-researcher-designer/index.js";
-import { frontendDesignReviewSkill } from "../../skills/frontend-design-review/index.js";
-import { uxWritingSkill } from "../../skills/ux-writing/index.js";
-import { responsiveDesignSkill } from "../../skills/responsive-design/index.js";
-import { i18nLocalizationSkill } from "../../skills/i18n-localization/index.js";
-import { figmaImplementDesignSkill } from "../../skills/figma-implement-design/index.js";
-import { interactionDesignSkill } from "../../skills/interaction-design/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { uxHeuristicsSkill } from "../../skills/ux-heuristics/index";
+import { uxResearcherDesignerSkill } from "../../skills/ux-researcher-designer/index";
+import { frontendDesignReviewSkill } from "../../skills/frontend-design-review/index";
+import { uxWritingSkill } from "../../skills/ux-writing/index";
+import { responsiveDesignSkill } from "../../skills/responsive-design/index";
+import { i18nLocalizationSkill } from "../../skills/i18n-localization/index";
+import { figmaImplementDesignSkill } from "../../skills/figma-implement-design/index";
+import { interactionDesignSkill } from "../../skills/interaction-design/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const uxReviewerAgent = defineAgent({
   id: "ux-reviewer",

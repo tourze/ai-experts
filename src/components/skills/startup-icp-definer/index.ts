@@ -4,7 +4,7 @@ import {
   Platform,
   defineReference,
   defineSkill,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const startupIcpDefinerSkill = defineSkill({
   id: "startup-icp-definer",

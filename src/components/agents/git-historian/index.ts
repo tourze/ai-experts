@@ -4,11 +4,11 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { engineeringRetroSkill } from "../../skills/engineering-retro/index.js";
-import { authorContributionsSkill } from "../../skills/author-contributions/index.js";
-import { gitAdvancedWorkflowsSkill } from "../../skills/git-advanced-workflows/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { engineeringRetroSkill } from "../../skills/engineering-retro/index";
+import { authorContributionsSkill } from "../../skills/author-contributions/index";
+import { gitAdvancedWorkflowsSkill } from "../../skills/git-advanced-workflows/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const gitHistorianAgent = defineAgent({
   id: "git-historian",

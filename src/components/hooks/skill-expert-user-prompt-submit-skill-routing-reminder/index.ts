@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const skillExpertUserPromptSubmitSkillRoutingReminderHook = defineHook({
   id: "skill-expert-user-prompt-submit-skill-routing-reminder",

@@ -4,11 +4,11 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index.js";
-import { typescriptTypeSafetySkill } from "../../skills/typescript-type-safety/index.js";
-import { nestjsLayeringPatternsSkill } from "../../skills/nestjs-layering-patterns/index.js";
-import { openapiSpecGenerationSkill } from "../../skills/openapi-spec-generation/index.js";
+} from "../../sdk";
+import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index";
+import { typescriptTypeSafetySkill } from "../../skills/typescript-type-safety/index";
+import { nestjsLayeringPatternsSkill } from "../../skills/nestjs-layering-patterns/index";
+import { openapiSpecGenerationSkill } from "../../skills/openapi-spec-generation/index";
 
 export const typescriptEngineerAgent = defineAgent({
   id: "typescript-engineer",

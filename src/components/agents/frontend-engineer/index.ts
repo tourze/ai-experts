@@ -4,19 +4,19 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index.js";
-import { modernWebDesignSkill } from "../../skills/modern-web-design/index.js";
-import { designSystemPatternsSkill } from "../../skills/design-system-patterns/index.js";
-import { responsiveDesignSkill } from "../../skills/responsive-design/index.js";
-import { shadcnUiSkill } from "../../skills/shadcn-ui/index.js";
-import { figmaImplementDesignSkill } from "../../skills/figma-implement-design/index.js";
-import { i18nLocalizationSkill } from "../../skills/i18n-localization/index.js";
-import { bundleOptimizationSkill } from "../../skills/bundle-optimization/index.js";
-import { interactionDesignSkill } from "../../skills/interaction-design/index.js";
-import { webPerformanceDiagnosisSkill } from "../../skills/web-performance-diagnosis/index.js";
-import { frontendDesignReviewSkill } from "../../skills/frontend-design-review/index.js";
-import { uxWritingSkill } from "../../skills/ux-writing/index.js";
+} from "../../sdk";
+import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index";
+import { modernWebDesignSkill } from "../../skills/modern-web-design/index";
+import { designSystemPatternsSkill } from "../../skills/design-system-patterns/index";
+import { responsiveDesignSkill } from "../../skills/responsive-design/index";
+import { shadcnUiSkill } from "../../skills/shadcn-ui/index";
+import { figmaImplementDesignSkill } from "../../skills/figma-implement-design/index";
+import { i18nLocalizationSkill } from "../../skills/i18n-localization/index";
+import { bundleOptimizationSkill } from "../../skills/bundle-optimization/index";
+import { interactionDesignSkill } from "../../skills/interaction-design/index";
+import { webPerformanceDiagnosisSkill } from "../../skills/web-performance-diagnosis/index";
+import { frontendDesignReviewSkill } from "../../skills/frontend-design-review/index";
+import { uxWritingSkill } from "../../skills/ux-writing/index";
 
 export const frontendEngineerAgent = defineAgent({
   id: "frontend-engineer",

@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const iosExpertPostToolUseEditWriteLintSwiftConcurrencyHook = defineHook({
   id: "ios-expert-post-tool-use-edit-write-lint-swift-concurrency",

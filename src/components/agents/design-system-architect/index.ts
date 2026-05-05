@@ -4,12 +4,12 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { modernWebDesignSkill } from "../../skills/modern-web-design/index.js";
-import { designSystemPatternsSkill } from "../../skills/design-system-patterns/index.js";
-import { shadcnUiSkill } from "../../skills/shadcn-ui/index.js";
-import { industryDesignPresetsSkill } from "../../skills/industry-design-presets/index.js";
-import { interactionDesignSkill } from "../../skills/interaction-design/index.js";
+} from "../../sdk";
+import { modernWebDesignSkill } from "../../skills/modern-web-design/index";
+import { designSystemPatternsSkill } from "../../skills/design-system-patterns/index";
+import { shadcnUiSkill } from "../../skills/shadcn-ui/index";
+import { industryDesignPresetsSkill } from "../../skills/industry-design-presets/index";
+import { interactionDesignSkill } from "../../skills/interaction-design/index";
 
 export const designSystemArchitectAgent = defineAgent({
   id: "design-system-architect",

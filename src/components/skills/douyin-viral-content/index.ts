@@ -4,7 +4,7 @@ import {
   Platform,
   defineReference,
   defineSkill,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const douyinViralContentSkill = defineSkill({
   id: "douyin-viral-content",

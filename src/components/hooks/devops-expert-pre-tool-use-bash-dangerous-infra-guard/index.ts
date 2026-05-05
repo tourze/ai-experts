@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const devopsExpertPreToolUseBashDangerousInfraGuardHook = defineHook({
   id: "devops-expert-pre-tool-use-bash-dangerous-infra-guard",

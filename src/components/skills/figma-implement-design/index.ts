@@ -5,7 +5,7 @@ import {
   defineAsset,
   defineReference,
   defineSkill,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const figmaImplementDesignSkill = defineSkill({
   id: "figma-implement-design",

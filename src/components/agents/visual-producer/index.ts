@@ -4,14 +4,14 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { canvasDesignSkill } from "../../skills/canvas-design/index.js";
-import { baoyuCompressImageSkill } from "../../skills/baoyu-compress-image/index.js";
-import { iconRetrievalSkill } from "../../skills/icon-retrieval/index.js";
-import { screenshotSkill } from "../../skills/screenshot/index.js";
-import { modernWebDesignSkill } from "../../skills/modern-web-design/index.js";
-import { algoVisualizationSkill } from "../../skills/algo-visualization/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { canvasDesignSkill } from "../../skills/canvas-design/index";
+import { baoyuCompressImageSkill } from "../../skills/baoyu-compress-image/index";
+import { iconRetrievalSkill } from "../../skills/icon-retrieval/index";
+import { screenshotSkill } from "../../skills/screenshot/index";
+import { modernWebDesignSkill } from "../../skills/modern-web-design/index";
+import { algoVisualizationSkill } from "../../skills/algo-visualization/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const visualProducerAgent = defineAgent({
   id: "visual-producer",

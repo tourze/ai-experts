@@ -4,15 +4,15 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index.js";
-import { securityThreatModelSkill } from "../../skills/security-threat-model/index.js";
-import { frontendDynamicCodeProtectionSkill } from "../../skills/frontend-dynamic-code-protection/index.js";
-import { sqlReviewOptimizationSkill } from "../../skills/sql-review-optimization/index.js";
-import { owaspInjectionAuditSkill } from "../../skills/owasp-injection-audit/index.js";
-import { owaspAuthDataAuditSkill } from "../../skills/owasp-auth-data-audit/index.js";
-import { owaspXssMisconfigAuditSkill } from "../../skills/owasp-xss-misconfig-audit/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index";
+import { securityThreatModelSkill } from "../../skills/security-threat-model/index";
+import { frontendDynamicCodeProtectionSkill } from "../../skills/frontend-dynamic-code-protection/index";
+import { sqlReviewOptimizationSkill } from "../../skills/sql-review-optimization/index";
+import { owaspInjectionAuditSkill } from "../../skills/owasp-injection-audit/index";
+import { owaspAuthDataAuditSkill } from "../../skills/owasp-auth-data-audit/index";
+import { owaspXssMisconfigAuditSkill } from "../../skills/owasp-xss-misconfig-audit/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const securityAuditorAgent = defineAgent({
   id: "security-auditor",

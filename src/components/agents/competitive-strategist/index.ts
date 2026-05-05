@@ -4,14 +4,14 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { portersFiveForcesSkill } from "../../skills/porters-five-forces/index.js";
-import { pricingStrategySkill } from "../../skills/pricing-strategy/index.js";
-import { competitiveIntelligenceSkill } from "../../skills/competitive-intelligence/index.js";
-import { bcgMatrixSkill } from "../../skills/bcg-matrix/index.js";
-import { swotAnalysisSkill } from "../../skills/swot-analysis/index.js";
-import { stpSegmentationSkill } from "../../skills/stp-segmentation/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { portersFiveForcesSkill } from "../../skills/porters-five-forces/index";
+import { pricingStrategySkill } from "../../skills/pricing-strategy/index";
+import { competitiveIntelligenceSkill } from "../../skills/competitive-intelligence/index";
+import { bcgMatrixSkill } from "../../skills/bcg-matrix/index";
+import { swotAnalysisSkill } from "../../skills/swot-analysis/index";
+import { stpSegmentationSkill } from "../../skills/stp-segmentation/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const competitiveStrategistAgent = defineAgent({
   id: "competitive-strategist",

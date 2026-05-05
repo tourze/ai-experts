@@ -6,7 +6,7 @@ import {
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const preLandingReviewSkill = defineSkill({
   id: "pre-landing-review",

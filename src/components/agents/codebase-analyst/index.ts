@@ -4,15 +4,15 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codebaseArchitectureAnalysisSkill } from "../../skills/codebase-architecture-analysis/index.js";
-import { architectureReviewerSkill } from "../../skills/architecture-reviewer/index.js";
-import { deepCodeReadSkill } from "../../skills/deep-code-read/index.js";
-import { apiTraceReaderSkill } from "../../skills/api-trace-reader/index.js";
-import { refactoringPatternsSkill } from "../../skills/refactoring-patterns/index.js";
-import { techDebtSkill } from "../../skills/tech-debt/index.js";
-import { softwareDesignSkill } from "../../skills/software-design/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codebaseArchitectureAnalysisSkill } from "../../skills/codebase-architecture-analysis/index";
+import { architectureReviewerSkill } from "../../skills/architecture-reviewer/index";
+import { deepCodeReadSkill } from "../../skills/deep-code-read/index";
+import { apiTraceReaderSkill } from "../../skills/api-trace-reader/index";
+import { refactoringPatternsSkill } from "../../skills/refactoring-patterns/index";
+import { techDebtSkill } from "../../skills/tech-debt/index";
+import { softwareDesignSkill } from "../../skills/software-design/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const codebaseAnalystAgent = defineAgent({
   id: "codebase-analyst",

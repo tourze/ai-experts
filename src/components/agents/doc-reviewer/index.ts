@@ -4,13 +4,13 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { comparativeAnalysisSkill } from "../../skills/comparative-analysis/index.js";
-import { docCoauthoringSkill } from "../../skills/doc-coauthoring/index.js";
-import { readmeBlueprintGeneratorSkill } from "../../skills/readme-blueprint-generator/index.js";
-import { userGuideWritingSkill } from "../../skills/user-guide-writing/index.js";
-import { markdownMermaidWritingSkill } from "../../skills/markdown-mermaid-writing/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { comparativeAnalysisSkill } from "../../skills/comparative-analysis/index";
+import { docCoauthoringSkill } from "../../skills/doc-coauthoring/index";
+import { readmeBlueprintGeneratorSkill } from "../../skills/readme-blueprint-generator/index";
+import { userGuideWritingSkill } from "../../skills/user-guide-writing/index";
+import { markdownMermaidWritingSkill } from "../../skills/markdown-mermaid-writing/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const docReviewerAgent = defineAgent({
   id: "doc-reviewer",

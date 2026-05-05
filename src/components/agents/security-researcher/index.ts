@@ -4,20 +4,20 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { androidApkAuditSkill } from "../../skills/android-apk-audit/index.js";
-import { binaryAnalysisPatternsSkill } from "../../skills/binary-analysis-patterns/index.js";
-import { chipsecSkill } from "../../skills/chipsec/index.js";
-import { fridaDynamicAnalysisSkill } from "../../skills/frida-dynamic-analysis/index.js";
-import { idapythonScriptingSkill } from "../../skills/idapython-scripting/index.js";
-import { iosBinaryAnalysisSkill } from "../../skills/ios-binary-analysis/index.js";
-import { iosSecretScanSkill } from "../../skills/ios-secret-scan/index.js";
-import { memoryForensicsSkill } from "../../skills/memory-forensics/index.js";
-import { protocolReverseEngineeringSkill } from "../../skills/protocol-reverse-engineering/index.js";
-import { unicornEmulationSkill } from "../../skills/unicorn-emulation/index.js";
-import { wiresharkAnalysisSkill } from "../../skills/wireshark-analysis/index.js";
-import { ethicalHackingMethodologySkill } from "../../skills/ethical-hacking-methodology/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { androidApkAuditSkill } from "../../skills/android-apk-audit/index";
+import { binaryAnalysisPatternsSkill } from "../../skills/binary-analysis-patterns/index";
+import { chipsecSkill } from "../../skills/chipsec/index";
+import { fridaDynamicAnalysisSkill } from "../../skills/frida-dynamic-analysis/index";
+import { idapythonScriptingSkill } from "../../skills/idapython-scripting/index";
+import { iosBinaryAnalysisSkill } from "../../skills/ios-binary-analysis/index";
+import { iosSecretScanSkill } from "../../skills/ios-secret-scan/index";
+import { memoryForensicsSkill } from "../../skills/memory-forensics/index";
+import { protocolReverseEngineeringSkill } from "../../skills/protocol-reverse-engineering/index";
+import { unicornEmulationSkill } from "../../skills/unicorn-emulation/index";
+import { wiresharkAnalysisSkill } from "../../skills/wireshark-analysis/index";
+import { ethicalHackingMethodologySkill } from "../../skills/ethical-hacking-methodology/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const securityResearcherAgent = defineAgent({
   id: "security-researcher",

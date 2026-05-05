@@ -5,7 +5,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const debugMethodology = defineSkill({
   id: "debug-methodology",

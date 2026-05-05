@@ -3,7 +3,7 @@ import {
   KnownTool,
   Platform,
   defineSkill,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const testingPatternsSkill = defineSkill({
   id: "testing-patterns",

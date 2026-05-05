@@ -4,17 +4,17 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { startupIcpDefinerSkill } from "../../skills/startup-icp-definer/index.js";
-import { startupViabilityChecklistSkill } from "../../skills/startup-viability-checklist/index.js";
-import { marketSizingAnalysisSkill } from "../../skills/market-sizing-analysis/index.js";
-import { businessModelSkill } from "../../skills/business-model/index.js";
-import { businessHealthDiagnosticSkill } from "../../skills/business-health-diagnostic/index.js";
-import { pricingStrategySkill } from "../../skills/pricing-strategy/index.js";
-import { fundraiseAdvisorSkill } from "../../skills/fundraise-advisor/index.js";
-import { customerJourneyMapSkill } from "../../skills/customer-journey-map/index.js";
-import { planningUnderUncertaintySkill } from "../../skills/planning-under-uncertainty/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { startupIcpDefinerSkill } from "../../skills/startup-icp-definer/index";
+import { startupViabilityChecklistSkill } from "../../skills/startup-viability-checklist/index";
+import { marketSizingAnalysisSkill } from "../../skills/market-sizing-analysis/index";
+import { businessModelSkill } from "../../skills/business-model/index";
+import { businessHealthDiagnosticSkill } from "../../skills/business-health-diagnostic/index";
+import { pricingStrategySkill } from "../../skills/pricing-strategy/index";
+import { fundraiseAdvisorSkill } from "../../skills/fundraise-advisor/index";
+import { customerJourneyMapSkill } from "../../skills/customer-journey-map/index";
+import { planningUnderUncertaintySkill } from "../../skills/planning-under-uncertainty/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const startupAdvisorAgent = defineAgent({
   id: "startup-advisor",

@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const goExpertPostToolUseEditWriteSyntaxGoHook = defineHook({
   id: "go-expert-post-tool-use-edit-write-syntax-go",

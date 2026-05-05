@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const phpExpertPreToolUseEditWriteProtectedPathsHook = defineHook({
   id: "php-expert-pre-tool-use-edit-write-protected-paths",

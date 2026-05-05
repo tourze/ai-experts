@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const phpExpertSessionStartWebmanEnvDetectorHook = defineHook({
   id: "php-expert-session-start-webman-env-detector",

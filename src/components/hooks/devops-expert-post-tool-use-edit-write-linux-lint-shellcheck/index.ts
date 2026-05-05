@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const devopsExpertPostToolUseEditWriteLinuxLintShellcheckHook = defineHook({
   id: "devops-expert-post-tool-use-edit-write-linux-lint-shellcheck",

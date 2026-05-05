@@ -4,14 +4,14 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index.js";
-import { tauriIpcPatternsSkill } from "../../skills/tauri-ipc-patterns/index.js";
-import { tauriV2Skill } from "../../skills/tauri-v2/index.js";
-import { tauriReactIntegrationSkill } from "../../skills/tauri-react-integration/index.js";
-import { tauriBuildPackagingSkill } from "../../skills/tauri-build-packaging/index.js";
-import { tauriPluginDevelopmentSkill } from "../../skills/tauri-plugin-development/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index";
+import { tauriIpcPatternsSkill } from "../../skills/tauri-ipc-patterns/index";
+import { tauriV2Skill } from "../../skills/tauri-v2/index";
+import { tauriReactIntegrationSkill } from "../../skills/tauri-react-integration/index";
+import { tauriBuildPackagingSkill } from "../../skills/tauri-build-packaging/index";
+import { tauriPluginDevelopmentSkill } from "../../skills/tauri-plugin-development/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const tauriReviewerAgent = defineAgent({
   id: "tauri-reviewer",

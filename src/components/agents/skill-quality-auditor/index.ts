@@ -4,15 +4,15 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { skillEvaluatorSkill } from "../../skills/skill-evaluator/index.js";
-import { skillActivationAnalyzerSkill } from "../../skills/skill-activation-analyzer/index.js";
-import { skillEvalGraderSkill } from "../../skills/skill-eval-grader/index.js";
-import { blindOutputComparatorSkill } from "../../skills/blind-output-comparator/index.js";
-import { benchmarkResultAnalyzerSkill } from "../../skills/benchmark-result-analyzer/index.js";
-import { triggerTelemetryAdvisorSkill } from "../../skills/trigger-telemetry-advisor/index.js";
-import { skillsPruneAndSyncReadmeSkill } from "../../skills/skills-prune-and-sync-readme/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { skillEvaluatorSkill } from "../../skills/skill-evaluator/index";
+import { skillActivationAnalyzerSkill } from "../../skills/skill-activation-analyzer/index";
+import { skillEvalGraderSkill } from "../../skills/skill-eval-grader/index";
+import { blindOutputComparatorSkill } from "../../skills/blind-output-comparator/index";
+import { benchmarkResultAnalyzerSkill } from "../../skills/benchmark-result-analyzer/index";
+import { triggerTelemetryAdvisorSkill } from "../../skills/trigger-telemetry-advisor/index";
+import { skillsPruneAndSyncReadmeSkill } from "../../skills/skills-prune-and-sync-readme/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const skillQualityAuditorAgent = defineAgent({
   id: "skill-quality-auditor",

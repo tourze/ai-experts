@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const frontendExpertPostToolUseEditWriteSyntaxWxmlHook = defineHook({
   id: "frontend-expert-post-tool-use-edit-write-syntax-wxml",

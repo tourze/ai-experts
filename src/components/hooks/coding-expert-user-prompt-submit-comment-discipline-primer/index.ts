@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const codingExpertUserPromptSubmitCommentDisciplinePrimerHook = defineHook({
   id: "coding-expert-user-prompt-submit-comment-discipline-primer",

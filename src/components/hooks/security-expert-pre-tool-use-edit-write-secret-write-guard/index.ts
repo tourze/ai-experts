@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const securityExpertPreToolUseEditWriteSecretWriteGuardHook = defineHook({
   id: "security-expert-pre-tool-use-edit-write-secret-write-guard",

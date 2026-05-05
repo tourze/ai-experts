@@ -4,13 +4,13 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index.js";
-import { laravelPatternsSkill } from "../../skills/laravel-patterns/index.js";
-import { laravelSecuritySkill } from "../../skills/laravel-security/index.js";
-import { laravelVerificationSkill } from "../../skills/laravel-verification/index.js";
-import { laravelTddSkill } from "../../skills/laravel-tdd/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index";
+import { laravelPatternsSkill } from "../../skills/laravel-patterns/index";
+import { laravelSecuritySkill } from "../../skills/laravel-security/index";
+import { laravelVerificationSkill } from "../../skills/laravel-verification/index";
+import { laravelTddSkill } from "../../skills/laravel-tdd/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const laravelReviewerAgent = defineAgent({
   id: "laravel-reviewer",

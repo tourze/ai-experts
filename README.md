@@ -66,6 +66,8 @@ src/components/
 
 所有组件源码都直接位于 `src/components/skills/`、`src/components/agents/`、`src/components/hooks/`。不要再引入过渡分层。
 
+TS 源码统一使用无后缀相对 import，例如 `../../sdk`，不写 `../../sdk.js`。构建器会在临时编译产物里补回 Node ESM 运行所需的 `.js` 后缀。
+
 ## 设计依据
 
 - Claude Code skills: https://code.claude.com/docs/en/skills
@@ -124,8 +126,8 @@ export const typescriptTypeSafety = defineSkill({
 Agent 是隔离上下文执行者，可编排多个 skill。
 
 ```ts
-import { debugMethodology } from "../skills/debug-methodology/index.js";
-import { typescriptTypeSafety } from "../skills/typescript-type-safety/index.js";
+import { debugMethodology } from "../skills/debug-methodology/index";
+import { typescriptTypeSafety } from "../skills/typescript-type-safety/index";
 
 export const typescriptReviewer = defineAgent({
   id: "typescript-reviewer",

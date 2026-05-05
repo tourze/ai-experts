@@ -7,7 +7,7 @@ import {
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const markitdownSkill = defineSkill({
   id: "markitdown",

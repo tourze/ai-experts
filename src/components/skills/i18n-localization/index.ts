@@ -6,7 +6,7 @@ import {
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const i18nLocalizationSkill = defineSkill({
   id: "i18n-localization",

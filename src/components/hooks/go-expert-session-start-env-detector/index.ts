@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const goExpertSessionStartEnvDetectorHook = defineHook({
   id: "go-expert-session-start-env-detector",

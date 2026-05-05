@@ -4,7 +4,7 @@ import {
   Platform,
   defineReference,
   defineSkill,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const archLinuxTriageSkill = defineSkill({
   id: "arch-linux-triage",

@@ -4,13 +4,13 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { complexityReducerSkill } from "../../skills/complexity-reducer/index.js";
-import { finishingBranchSkill } from "../../skills/finishing-branch/index.js";
-import { commitSkill } from "../../skills/commit/index.js";
-import { sessionFinalizationWorkflowSkill } from "../../skills/session-finalization-workflow/index.js";
-import { subagentDrivenDevelopmentSkill } from "../../skills/subagent-driven-development/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { complexityReducerSkill } from "../../skills/complexity-reducer/index";
+import { finishingBranchSkill } from "../../skills/finishing-branch/index";
+import { commitSkill } from "../../skills/commit/index";
+import { sessionFinalizationWorkflowSkill } from "../../skills/session-finalization-workflow/index";
+import { subagentDrivenDevelopmentSkill } from "../../skills/subagent-driven-development/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const sessionFinalizerAgent = defineAgent({
   id: "session-finalizer",

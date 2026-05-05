@@ -1,11 +1,24 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import test from "node:test";
 
 const repoRoot = resolve(".");
+
+function collectFiles(root, predicate = () => true) {
+  const files = [];
+  function walk(dir) {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const full = join(dir, entry.name);
+      if (entry.isDirectory()) walk(full);
+      else if (entry.isFile() && predicate(full)) files.push(full);
+    }
+  }
+  walk(root);
+  return files.sort();
+}
 
 test("component build emits claude and codex component surfaces", () => {
   const tmp = mkdtempSync(join(tmpdir(), "ai-experts-component-build-"));
@@ -132,6 +145,15 @@ test("component build emits claude and codex component surfaces", () => {
     assert.doesNotMatch(agentSource, /id: "typescript-type-safety"/);
     const removedLayer = ["migr", "ated"].join("");
     assert.equal(existsSync(join(repoRoot, "src/components", removedLayer)), false);
+
+    for (const sourceFile of collectFiles(join(repoRoot, "src/components"), (file) => file.endsWith(".ts"))) {
+      const source = readFileSync(sourceFile, "utf-8");
+      assert.doesNotMatch(
+        source,
+        /from\s+["']\.[^"']+\.js["']|import\s+["']\.[^"']+\.js["']|import\(\s*["']\.[^"']+\.js["']\s*\)/,
+        `${sourceFile} should use extensionless relative imports`,
+      );
+    }
   } finally {
     rmSync(tmp, { recursive: true, force: true });
   }

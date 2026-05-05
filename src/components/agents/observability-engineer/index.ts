@@ -4,14 +4,14 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index.js";
-import { monitoringObservabilitySkill } from "../../skills/monitoring-observability/index.js";
-import { pythonObservabilitySkill } from "../../skills/python-observability/index.js";
-import { goObservabilitySkill } from "../../skills/go-observability/index.js";
-import { logAnalyzerSkill } from "../../skills/log-analyzer/index.js";
-import { incidentResponseSkill } from "../../skills/incident-response/index.js";
-import { systemDiagnosticsSkill } from "../../skills/system-diagnostics/index.js";
+} from "../../sdk";
+import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index";
+import { monitoringObservabilitySkill } from "../../skills/monitoring-observability/index";
+import { pythonObservabilitySkill } from "../../skills/python-observability/index";
+import { goObservabilitySkill } from "../../skills/go-observability/index";
+import { logAnalyzerSkill } from "../../skills/log-analyzer/index";
+import { incidentResponseSkill } from "../../skills/incident-response/index";
+import { systemDiagnosticsSkill } from "../../skills/system-diagnostics/index";
 
 export const observabilityEngineerAgent = defineAgent({
   id: "observability-engineer",

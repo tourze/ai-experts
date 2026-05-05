@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const devopsExpertPostToolUseEditWriteLintTerraformFmtHook = defineHook({
   id: "devops-expert-post-tool-use-edit-write-lint-terraform-fmt",

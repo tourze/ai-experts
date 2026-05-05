@@ -4,16 +4,16 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index.js";
-import { springBootLayeringSkill } from "../../skills/spring-boot-layering/index.js";
-import { javaJunitSkill } from "../../skills/java-junit/index.js";
-import { testingPatternsSkill } from "../../skills/testing-patterns/index.js";
-import { gradleBuildPerformanceSkill } from "../../skills/gradle-build-performance/index.js";
-import { graalvmNativeImageSkill } from "../../skills/graalvm-native-image/index.js";
-import { arthasCpuHighSkill } from "../../skills/arthas-cpu-high/index.js";
-import { arthasSpringcontextIssuesResolveSkill } from "../../skills/arthas-springcontext-issues-resolve/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index";
+import { springBootLayeringSkill } from "../../skills/spring-boot-layering/index";
+import { javaJunitSkill } from "../../skills/java-junit/index";
+import { testingPatternsSkill } from "../../skills/testing-patterns/index";
+import { gradleBuildPerformanceSkill } from "../../skills/gradle-build-performance/index";
+import { graalvmNativeImageSkill } from "../../skills/graalvm-native-image/index";
+import { arthasCpuHighSkill } from "../../skills/arthas-cpu-high/index";
+import { arthasSpringcontextIssuesResolveSkill } from "../../skills/arthas-springcontext-issues-resolve/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const javaReviewerAgent = defineAgent({
   id: "java-reviewer",

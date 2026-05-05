@@ -4,13 +4,13 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { deepResearchSkill } from "../../skills/deep-research/index.js";
-import { webContentFetcherSkill } from "../../skills/web-content-fetcher/index.js";
-import { comparativeAnalysisSkill } from "../../skills/comparative-analysis/index.js";
-import { researchNoteWrapSkill } from "../../skills/research-note-wrap/index.js";
-import { obsidianBasesSkill } from "../../skills/obsidian-bases/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { deepResearchSkill } from "../../skills/deep-research/index";
+import { webContentFetcherSkill } from "../../skills/web-content-fetcher/index";
+import { comparativeAnalysisSkill } from "../../skills/comparative-analysis/index";
+import { researchNoteWrapSkill } from "../../skills/research-note-wrap/index";
+import { obsidianBasesSkill } from "../../skills/obsidian-bases/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const researchIntelligenceAnalystAgent = defineAgent({
   id: "research-intelligence-analyst",

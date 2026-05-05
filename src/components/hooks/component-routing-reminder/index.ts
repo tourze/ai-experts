@@ -2,7 +2,7 @@ import {
   HookEvent,
   type NormalizedHookPayload,
   type NormalizedHookResult,
-} from "../../sdk.js";
+} from "../../sdk";
 
 const ROUTING_TERMS = /skill|skills|agent|agents|hook|hooks|CLAUDE\.md|AGENTS\.md|dist\/claude|dist\/codex|组件|技能|代理|钩子|指令/u;
 

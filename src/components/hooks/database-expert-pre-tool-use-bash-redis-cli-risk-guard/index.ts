@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const databaseExpertPreToolUseBashRedisCliRiskGuardHook = defineHook({
   id: "database-expert-pre-tool-use-bash-redis-cli-risk-guard",

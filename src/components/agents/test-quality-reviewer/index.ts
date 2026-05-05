@@ -4,13 +4,13 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { testQualityReviewSkill } from "../../skills/test-quality-review/index.js";
-import { codeReviewSkill } from "../../skills/code-review/index.js";
-import { preLandingReviewSkill } from "../../skills/pre-landing-review/index.js";
-import { consciousnessCouncilSkill } from "../../skills/consciousness-council/index.js";
-import { testingStrategySkill } from "../../skills/testing-strategy/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { testQualityReviewSkill } from "../../skills/test-quality-review/index";
+import { codeReviewSkill } from "../../skills/code-review/index";
+import { preLandingReviewSkill } from "../../skills/pre-landing-review/index";
+import { consciousnessCouncilSkill } from "../../skills/consciousness-council/index";
+import { testingStrategySkill } from "../../skills/testing-strategy/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const testQualityReviewerAgent = defineAgent({
   id: "test-quality-reviewer",

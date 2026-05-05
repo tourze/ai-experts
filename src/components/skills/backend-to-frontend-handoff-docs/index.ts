@@ -4,7 +4,7 @@ import {
   Platform,
   defineReference,
   defineSkill,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const backendToFrontendHandoffDocsSkill = defineSkill({
   id: "backend-to-frontend-handoff-docs",

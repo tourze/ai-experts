@@ -4,11 +4,11 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { iosSimulatorSkillSkill } from "../../skills/ios-simulator-skill/index.js";
-import { swiftuiPerformanceAuditSkill } from "../../skills/swiftui-performance-audit/index.js";
-import { detoxMobileTestSkill } from "../../skills/detox-mobile-test/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { iosSimulatorSkillSkill } from "../../skills/ios-simulator-skill/index";
+import { swiftuiPerformanceAuditSkill } from "../../skills/swiftui-performance-audit/index";
+import { detoxMobileTestSkill } from "../../skills/detox-mobile-test/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const iosSimulatorSmokeTesterAgent = defineAgent({
   id: "ios-simulator-smoke-tester",

@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const typescriptExpertSessionStartNestjsEnvDetectorHook = defineHook({
   id: "typescript-expert-session-start-nestjs-env-detector",

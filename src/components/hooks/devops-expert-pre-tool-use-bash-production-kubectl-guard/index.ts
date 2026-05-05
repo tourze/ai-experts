@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const devopsExpertPreToolUseBashProductionKubectlGuardHook = defineHook({
   id: "devops-expert-pre-tool-use-bash-production-kubectl-guard",

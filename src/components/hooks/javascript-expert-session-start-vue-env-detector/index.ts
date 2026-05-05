@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const javascriptExpertSessionStartVueEnvDetectorHook = defineHook({
   id: "javascript-expert-session-start-vue-env-detector",

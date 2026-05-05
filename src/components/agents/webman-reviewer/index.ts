@@ -4,13 +4,13 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index.js";
-import { webmanNamingConventionsSkill } from "../../skills/webman-naming-conventions/index.js";
-import { webmanCustomProcessesSkill } from "../../skills/webman-custom-processes/index.js";
-import { webmanWebsocketPatternsSkill } from "../../skills/webman-websocket-patterns/index.js";
-import { webmanPluginDevelopmentSkill } from "../../skills/webman-plugin-development/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index";
+import { webmanNamingConventionsSkill } from "../../skills/webman-naming-conventions/index";
+import { webmanCustomProcessesSkill } from "../../skills/webman-custom-processes/index";
+import { webmanWebsocketPatternsSkill } from "../../skills/webman-websocket-patterns/index";
+import { webmanPluginDevelopmentSkill } from "../../skills/webman-plugin-development/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const webmanReviewerAgent = defineAgent({
   id: "webman-reviewer",

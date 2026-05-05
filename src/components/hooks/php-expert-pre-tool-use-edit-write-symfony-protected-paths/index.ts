@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const phpExpertPreToolUseEditWriteSymfonyProtectedPathsHook = defineHook({
   id: "php-expert-pre-tool-use-edit-write-symfony-protected-paths",

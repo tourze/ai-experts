@@ -4,12 +4,12 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index.js";
-import { vueExpertJsSkill } from "../../skills/vue-expert-js/index.js";
-import { modernJavascriptPatternsSkill } from "../../skills/modern-javascript-patterns/index.js";
-import { javascriptTypescriptJestSkill } from "../../skills/javascript-typescript-jest/index.js";
-import { testingPatternsSkill } from "../../skills/testing-patterns/index.js";
+} from "../../sdk";
+import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index";
+import { vueExpertJsSkill } from "../../skills/vue-expert-js/index";
+import { modernJavascriptPatternsSkill } from "../../skills/modern-javascript-patterns/index";
+import { javascriptTypescriptJestSkill } from "../../skills/javascript-typescript-jest/index";
+import { testingPatternsSkill } from "../../skills/testing-patterns/index";
 
 export const vueEngineerAgent = defineAgent({
   id: "vue-engineer",

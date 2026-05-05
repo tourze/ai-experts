@@ -4,13 +4,13 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index.js";
-import { dockerEssentialsSkill } from "../../skills/docker-essentials/index.js";
-import { helmChartScaffoldingSkill } from "../../skills/helm-chart-scaffolding/index.js";
-import { linuxShellScriptingSkill } from "../../skills/linux-shell-scripting/index.js";
-import { remoteSshCommandSkill } from "../../skills/remote-ssh-command/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index";
+import { dockerEssentialsSkill } from "../../skills/docker-essentials/index";
+import { helmChartScaffoldingSkill } from "../../skills/helm-chart-scaffolding/index";
+import { linuxShellScriptingSkill } from "../../skills/linux-shell-scripting/index";
+import { remoteSshCommandSkill } from "../../skills/remote-ssh-command/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const infrastructureEngineerAgent = defineAgent({
   id: "infrastructure-engineer",

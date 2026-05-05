@@ -4,11 +4,11 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { windowsKernelSecuritySkill } from "../../skills/windows-kernel-security/index.js";
-import { windowsUiAutomationSkill } from "../../skills/windows-ui-automation/index.js";
-import { prlctlVmControlSkill } from "../../skills/prlctl-vm-control/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { windowsKernelSecuritySkill } from "../../skills/windows-kernel-security/index";
+import { windowsUiAutomationSkill } from "../../skills/windows-ui-automation/index";
+import { prlctlVmControlSkill } from "../../skills/prlctl-vm-control/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const windowsPlatformReviewerAgent = defineAgent({
   id: "windows-platform-reviewer",

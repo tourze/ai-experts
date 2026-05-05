@@ -1,7 +1,7 @@
-import { componentRoutingReminder, generatedDistGuard } from "./hooks/index.js";
-import { coreInstruction } from "./instructions/core/index.js";
-import { componentAgents, componentHooks, componentSkills } from "./registry.generated.js";
-import { defaultProfile } from "./profiles/default.js";
+import { componentRoutingReminder, generatedDistGuard } from "./hooks/index";
+import { coreInstruction } from "./instructions/core/index";
+import { componentAgents, componentHooks, componentSkills } from "./registry.generated";
+import { defaultProfile } from "./profiles/default";
 
 export const registry = {
   version: 1,

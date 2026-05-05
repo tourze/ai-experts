@@ -4,18 +4,18 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index.js";
-import { pythonTypeSafetySkill } from "../../skills/python-type-safety/index.js";
-import { pythonErrorHandlingSkill } from "../../skills/python-error-handling/index.js";
-import { asyncPythonPatternsSkill } from "../../skills/async-python-patterns/index.js";
-import { pythonPerformanceOptimizationSkill } from "../../skills/python-performance-optimization/index.js";
-import { pythonDesignPatternsSkill } from "../../skills/python-design-patterns/index.js";
-import { pythonObservabilitySkill } from "../../skills/python-observability/index.js";
-import { pythonTestingPatternsSkill } from "../../skills/python-testing-patterns/index.js";
-import { testingPatternsSkill } from "../../skills/testing-patterns/index.js";
-import { pythonBackgroundJobsSkill } from "../../skills/python-background-jobs/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index";
+import { pythonTypeSafetySkill } from "../../skills/python-type-safety/index";
+import { pythonErrorHandlingSkill } from "../../skills/python-error-handling/index";
+import { asyncPythonPatternsSkill } from "../../skills/async-python-patterns/index";
+import { pythonPerformanceOptimizationSkill } from "../../skills/python-performance-optimization/index";
+import { pythonDesignPatternsSkill } from "../../skills/python-design-patterns/index";
+import { pythonObservabilitySkill } from "../../skills/python-observability/index";
+import { pythonTestingPatternsSkill } from "../../skills/python-testing-patterns/index";
+import { testingPatternsSkill } from "../../skills/testing-patterns/index";
+import { pythonBackgroundJobsSkill } from "../../skills/python-background-jobs/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const pythonReviewerAgent = defineAgent({
   id: "python-reviewer",

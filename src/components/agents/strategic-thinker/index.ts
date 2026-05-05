@@ -4,17 +4,17 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { firstPrinciplesDecomposerSkill } from "../../skills/first-principles-decomposer/index.js";
-import { scpAnalysisSkill } from "../../skills/scp-analysis/index.js";
-import { whatIfOracleSkill } from "../../skills/what-if-oracle/index.js";
-import { crossPollinationEngineSkill } from "../../skills/cross-pollination-engine/index.js";
-import { consciousnessCouncilSkill } from "../../skills/consciousness-council/index.js";
-import { grillMeSkill } from "../../skills/grill-me/index.js";
-import { priorityJudgeSkill } from "../../skills/priority-judge/index.js";
-import { scientificBrainstormingSkill } from "../../skills/scientific-brainstorming/index.js";
-import { thinkingPartnerSkill } from "../../skills/thinking-partner/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { firstPrinciplesDecomposerSkill } from "../../skills/first-principles-decomposer/index";
+import { scpAnalysisSkill } from "../../skills/scp-analysis/index";
+import { whatIfOracleSkill } from "../../skills/what-if-oracle/index";
+import { crossPollinationEngineSkill } from "../../skills/cross-pollination-engine/index";
+import { consciousnessCouncilSkill } from "../../skills/consciousness-council/index";
+import { grillMeSkill } from "../../skills/grill-me/index";
+import { priorityJudgeSkill } from "../../skills/priority-judge/index";
+import { scientificBrainstormingSkill } from "../../skills/scientific-brainstorming/index";
+import { thinkingPartnerSkill } from "../../skills/thinking-partner/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const strategicThinkerAgent = defineAgent({
   id: "strategic-thinker",

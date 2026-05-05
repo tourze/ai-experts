@@ -4,17 +4,17 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { financialAnalystSkill } from "../../skills/financial-analyst/index.js";
-import { mckinseyStepSkill } from "../../skills/mckinsey-7-step/index.js";
-import { structuredBusinessAnalysisFrameworkSkill } from "../../skills/structured-business-analysis-framework/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
-import { pestelAnalysisSkill } from "../../skills/pestel-analysis/index.js";
-import { portersFiveForcesSkill } from "../../skills/porters-five-forces/index.js";
-import { businessModelSkill } from "../../skills/business-model/index.js";
-import { businessHealthDiagnosticSkill } from "../../skills/business-health-diagnostic/index.js";
-import { customerResearchSkill } from "../../skills/customer-research/index.js";
-import { dataAnalysisSkill } from "../../skills/data-analysis/index.js";
+} from "../../sdk";
+import { financialAnalystSkill } from "../../skills/financial-analyst/index";
+import { mckinseyStepSkill } from "../../skills/mckinsey-7-step/index";
+import { structuredBusinessAnalysisFrameworkSkill } from "../../skills/structured-business-analysis-framework/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
+import { pestelAnalysisSkill } from "../../skills/pestel-analysis/index";
+import { portersFiveForcesSkill } from "../../skills/porters-five-forces/index";
+import { businessModelSkill } from "../../skills/business-model/index";
+import { businessHealthDiagnosticSkill } from "../../skills/business-health-diagnostic/index";
+import { customerResearchSkill } from "../../skills/customer-research/index";
+import { dataAnalysisSkill } from "../../skills/data-analysis/index";
 
 export const businessAnalystAgent = defineAgent({
   id: "business-analyst",

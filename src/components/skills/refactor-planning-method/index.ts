@@ -4,7 +4,7 @@ import {
   Platform,
   defineReference,
   defineSkill,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const refactorPlanningMethodSkill = defineSkill({
   id: "refactor-planning-method",

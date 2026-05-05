@@ -4,9 +4,9 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { securityThreatModelSkill } from "../../skills/security-threat-model/index.js";
-import { securityOwnershipMapSkill } from "../../skills/security-ownership-map/index.js";
+} from "../../sdk";
+import { securityThreatModelSkill } from "../../skills/security-threat-model/index";
+import { securityOwnershipMapSkill } from "../../skills/security-ownership-map/index";
 
 export const threatModelerAgent = defineAgent({
   id: "threat-modeler",

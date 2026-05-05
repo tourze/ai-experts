@@ -4,10 +4,10 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { ghFixCiSkill } from "../../skills/gh-fix-ci/index.js";
-import { gitlabCiPatternsSkill } from "../../skills/gitlab-ci-patterns/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { ghFixCiSkill } from "../../skills/gh-fix-ci/index";
+import { gitlabCiPatternsSkill } from "../../skills/gitlab-ci-patterns/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const ciPipelineFixerAgent = defineAgent({
   id: "ci-pipeline-fixer",

@@ -4,17 +4,17 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { contentStrategySkill } from "../../skills/content-strategy/index.js";
-import { copywritingSkill } from "../../skills/copywriting/index.js";
-import { seoSkill } from "../../skills/seo/index.js";
-import { douyinViralContentSkill } from "../../skills/douyin-viral-content/index.js";
-import { youtubeAnalysisSkill } from "../../skills/youtube-analysis/index.js";
-import { youtubeSearchSkill } from "../../skills/youtube-search/index.js";
-import { xiaohongshuCommercialGrowthSkill } from "../../skills/xiaohongshu-commercial-growth/index.js";
-import { fanOperationsSkill } from "../../skills/fan-operations/index.js";
-import { analyticsTrackingSkill } from "../../skills/analytics-tracking/index.js";
-import { customerResearchSkill } from "../../skills/customer-research/index.js";
+} from "../../sdk";
+import { contentStrategySkill } from "../../skills/content-strategy/index";
+import { copywritingSkill } from "../../skills/copywriting/index";
+import { seoSkill } from "../../skills/seo/index";
+import { douyinViralContentSkill } from "../../skills/douyin-viral-content/index";
+import { youtubeAnalysisSkill } from "../../skills/youtube-analysis/index";
+import { youtubeSearchSkill } from "../../skills/youtube-search/index";
+import { xiaohongshuCommercialGrowthSkill } from "../../skills/xiaohongshu-commercial-growth/index";
+import { fanOperationsSkill } from "../../skills/fan-operations/index";
+import { analyticsTrackingSkill } from "../../skills/analytics-tracking/index";
+import { customerResearchSkill } from "../../skills/customer-research/index";
 
 export const contentMarketingEngineAgent = defineAgent({
   id: "content-marketing-engine",

@@ -4,13 +4,13 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { dataAnalysisSkill } from "../../skills/data-analysis/index.js";
-import { statisticalAnalysisSkill } from "../../skills/statistical-analysis/index.js";
-import { dataVisualizationSkill } from "../../skills/data-visualization/index.js";
-import { dataStorytellingSkill } from "../../skills/data-storytelling/index.js";
-import { llmEvaluationSkill } from "../../skills/llm-evaluation/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { dataAnalysisSkill } from "../../skills/data-analysis/index";
+import { statisticalAnalysisSkill } from "../../skills/statistical-analysis/index";
+import { dataVisualizationSkill } from "../../skills/data-visualization/index";
+import { dataStorytellingSkill } from "../../skills/data-storytelling/index";
+import { llmEvaluationSkill } from "../../skills/llm-evaluation/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const dataAnalystAgent = defineAgent({
   id: "data-analyst",

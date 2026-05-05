@@ -4,13 +4,13 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index.js";
-import { tauriV2Skill } from "../../skills/tauri-v2/index.js";
-import { tauriIpcPatternsSkill } from "../../skills/tauri-ipc-patterns/index.js";
-import { tauriReactIntegrationSkill } from "../../skills/tauri-react-integration/index.js";
-import { tauriBuildPackagingSkill } from "../../skills/tauri-build-packaging/index.js";
-import { tauriPluginDevelopmentSkill } from "../../skills/tauri-plugin-development/index.js";
+} from "../../sdk";
+import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index";
+import { tauriV2Skill } from "../../skills/tauri-v2/index";
+import { tauriIpcPatternsSkill } from "../../skills/tauri-ipc-patterns/index";
+import { tauriReactIntegrationSkill } from "../../skills/tauri-react-integration/index";
+import { tauriBuildPackagingSkill } from "../../skills/tauri-build-packaging/index";
+import { tauriPluginDevelopmentSkill } from "../../skills/tauri-plugin-development/index";
 
 export const tauriEngineerAgent = defineAgent({
   id: "tauri-engineer",

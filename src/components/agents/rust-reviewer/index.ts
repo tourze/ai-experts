@@ -4,22 +4,22 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index.js";
-import { rustOwnershipIdiomsSkill } from "../../skills/rust-ownership-idioms/index.js";
-import { rustErrorHandlingSkill } from "../../skills/rust-error-handling/index.js";
-import { rustTypeDesignSkill } from "../../skills/rust-type-design/index.js";
-import { rustAsyncPatternsSkill } from "../../skills/rust-async-patterns/index.js";
-import { rustTestingSkill } from "../../skills/rust-testing/index.js";
-import { testingPatternsSkill } from "../../skills/testing-patterns/index.js";
-import { rustCargoWorkspaceSkill } from "../../skills/rust-cargo-workspace/index.js";
-import { rustTokioRuntimeTuningSkill } from "../../skills/rust-tokio-runtime-tuning/index.js";
-import { rustSerdePatternsSkill } from "../../skills/rust-serde-patterns/index.js";
-import { rustProcMacroPatternsSkill } from "../../skills/rust-proc-macro-patterns/index.js";
-import { rustDocumentationSkill } from "../../skills/rust-documentation/index.js";
-import { rustPerformanceSkill } from "../../skills/rust-performance/index.js";
-import { rustFfiBindingsSkill } from "../../skills/rust-ffi-bindings/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index";
+import { rustOwnershipIdiomsSkill } from "../../skills/rust-ownership-idioms/index";
+import { rustErrorHandlingSkill } from "../../skills/rust-error-handling/index";
+import { rustTypeDesignSkill } from "../../skills/rust-type-design/index";
+import { rustAsyncPatternsSkill } from "../../skills/rust-async-patterns/index";
+import { rustTestingSkill } from "../../skills/rust-testing/index";
+import { testingPatternsSkill } from "../../skills/testing-patterns/index";
+import { rustCargoWorkspaceSkill } from "../../skills/rust-cargo-workspace/index";
+import { rustTokioRuntimeTuningSkill } from "../../skills/rust-tokio-runtime-tuning/index";
+import { rustSerdePatternsSkill } from "../../skills/rust-serde-patterns/index";
+import { rustProcMacroPatternsSkill } from "../../skills/rust-proc-macro-patterns/index";
+import { rustDocumentationSkill } from "../../skills/rust-documentation/index";
+import { rustPerformanceSkill } from "../../skills/rust-performance/index";
+import { rustFfiBindingsSkill } from "../../skills/rust-ffi-bindings/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const rustReviewerAgent = defineAgent({
   id: "rust-reviewer",

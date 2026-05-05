@@ -4,24 +4,24 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { specDrivenDeliverySkill } from "../../skills/spec-driven-delivery/index.js";
-import { speckitBaselineSkill } from "../../skills/speckit-baseline/index.js";
-import { speckitConstitutionSkill } from "../../skills/speckit-constitution/index.js";
-import { speckitSpecifySkill } from "../../skills/speckit-specify/index.js";
-import { speckitClarifySkill } from "../../skills/speckit-clarify/index.js";
-import { speckitQuizmeSkill } from "../../skills/speckit-quizme/index.js";
-import { speckitChecklistSkill } from "../../skills/speckit-checklist/index.js";
-import { speckitPlanSkill } from "../../skills/speckit-plan/index.js";
-import { speckitTasksSkill } from "../../skills/speckit-tasks/index.js";
-import { speckitTaskstoissuesSkill } from "../../skills/speckit-taskstoissues/index.js";
-import { speckitImplementSkill } from "../../skills/speckit-implement/index.js";
-import { speckitCheckerSkill } from "../../skills/speckit-checker/index.js";
-import { speckitValidateSkill } from "../../skills/speckit-validate/index.js";
-import { speckitAnalyzeSkill } from "../../skills/speckit-analyze/index.js";
-import { speckitDiffSkill } from "../../skills/speckit-diff/index.js";
-import { speckitStatusSkill } from "../../skills/speckit-status/index.js";
-import { speckitReviewerSkill } from "../../skills/speckit-reviewer/index.js";
+} from "../../sdk";
+import { specDrivenDeliverySkill } from "../../skills/spec-driven-delivery/index";
+import { speckitBaselineSkill } from "../../skills/speckit-baseline/index";
+import { speckitConstitutionSkill } from "../../skills/speckit-constitution/index";
+import { speckitSpecifySkill } from "../../skills/speckit-specify/index";
+import { speckitClarifySkill } from "../../skills/speckit-clarify/index";
+import { speckitQuizmeSkill } from "../../skills/speckit-quizme/index";
+import { speckitChecklistSkill } from "../../skills/speckit-checklist/index";
+import { speckitPlanSkill } from "../../skills/speckit-plan/index";
+import { speckitTasksSkill } from "../../skills/speckit-tasks/index";
+import { speckitTaskstoissuesSkill } from "../../skills/speckit-taskstoissues/index";
+import { speckitImplementSkill } from "../../skills/speckit-implement/index";
+import { speckitCheckerSkill } from "../../skills/speckit-checker/index";
+import { speckitValidateSkill } from "../../skills/speckit-validate/index";
+import { speckitAnalyzeSkill } from "../../skills/speckit-analyze/index";
+import { speckitDiffSkill } from "../../skills/speckit-diff/index";
+import { speckitStatusSkill } from "../../skills/speckit-status/index";
+import { speckitReviewerSkill } from "../../skills/speckit-reviewer/index";
 
 export const speckitDriverAgent = defineAgent({
   id: "speckit-driver",

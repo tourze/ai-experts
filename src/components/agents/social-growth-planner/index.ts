@@ -4,14 +4,14 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { youtubeAnalysisSkill } from "../../skills/youtube-analysis/index.js";
-import { youtubeSearchSkill } from "../../skills/youtube-search/index.js";
-import { xiaohongshuCommercialGrowthSkill } from "../../skills/xiaohongshu-commercial-growth/index.js";
-import { fanOperationsSkill } from "../../skills/fan-operations/index.js";
-import { douyinViralContentSkill } from "../../skills/douyin-viral-content/index.js";
-import { copywritingSkill } from "../../skills/copywriting/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { youtubeAnalysisSkill } from "../../skills/youtube-analysis/index";
+import { youtubeSearchSkill } from "../../skills/youtube-search/index";
+import { xiaohongshuCommercialGrowthSkill } from "../../skills/xiaohongshu-commercial-growth/index";
+import { fanOperationsSkill } from "../../skills/fan-operations/index";
+import { douyinViralContentSkill } from "../../skills/douyin-viral-content/index";
+import { copywritingSkill } from "../../skills/copywriting/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const socialGrowthPlannerAgent = defineAgent({
   id: "social-growth-planner",

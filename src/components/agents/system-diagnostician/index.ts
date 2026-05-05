@@ -4,11 +4,11 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { systemDiagnosticsSkill } from "../../skills/system-diagnostics/index.js";
-import { archLinuxTriageSkill } from "../../skills/arch-linux-triage/index.js";
-import { networkTroubleshooterSkill } from "../../skills/network-troubleshooter/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { systemDiagnosticsSkill } from "../../skills/system-diagnostics/index";
+import { archLinuxTriageSkill } from "../../skills/arch-linux-triage/index";
+import { networkTroubleshooterSkill } from "../../skills/network-troubleshooter/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const systemDiagnosticianAgent = defineAgent({
   id: "system-diagnostician",

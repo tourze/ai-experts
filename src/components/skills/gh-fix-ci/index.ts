@@ -7,7 +7,7 @@ import {
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const ghFixCiSkill = defineSkill({
   id: "gh-fix-ci",

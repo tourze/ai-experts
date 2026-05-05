@@ -4,17 +4,17 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { structuredProblemDecompositionSkill } from "../../skills/structured-problem-decomposition/index.js";
-import { systemsThinkingSkill } from "../../skills/systems-thinking/index.js";
-import { planningUnderUncertaintySkill } from "../../skills/planning-under-uncertainty/index.js";
-import { runningDecisionProcessesSkill } from "../../skills/running-decision-processes/index.js";
-import { processOptimizationSkill } from "../../skills/process-optimization/index.js";
-import { mckinseyStepSkill } from "../../skills/mckinsey-7-step/index.js";
-import { fishboneDiagramSkill } from "../../skills/fishbone-diagram/index.js";
-import { businessHealthDiagnosticSkill } from "../../skills/business-health-diagnostic/index.js";
-import { pdcaCycleSkill } from "../../skills/pdca-cycle/index.js";
-import { firstPrinciplesDecomposerSkill } from "../../skills/first-principles-decomposer/index.js";
+} from "../../sdk";
+import { structuredProblemDecompositionSkill } from "../../skills/structured-problem-decomposition/index";
+import { systemsThinkingSkill } from "../../skills/systems-thinking/index";
+import { planningUnderUncertaintySkill } from "../../skills/planning-under-uncertainty/index";
+import { runningDecisionProcessesSkill } from "../../skills/running-decision-processes/index";
+import { processOptimizationSkill } from "../../skills/process-optimization/index";
+import { mckinseyStepSkill } from "../../skills/mckinsey-7-step/index";
+import { fishboneDiagramSkill } from "../../skills/fishbone-diagram/index";
+import { businessHealthDiagnosticSkill } from "../../skills/business-health-diagnostic/index";
+import { pdcaCycleSkill } from "../../skills/pdca-cycle/index";
+import { firstPrinciplesDecomposerSkill } from "../../skills/first-principles-decomposer/index";
 
 export const problemDecomposerAgent = defineAgent({
   id: "problem-decomposer",

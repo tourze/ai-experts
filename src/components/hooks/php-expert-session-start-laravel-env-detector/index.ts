@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const phpExpertSessionStartLaravelEnvDetectorHook = defineHook({
   id: "php-expert-session-start-laravel-env-detector",

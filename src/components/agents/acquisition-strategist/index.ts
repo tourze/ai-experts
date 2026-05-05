@@ -4,20 +4,20 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { contentStrategySkill } from "../../skills/content-strategy/index.js";
-import { seoSkill } from "../../skills/seo/index.js";
-import { leadChannelOptimizerSkill } from "../../skills/lead-channel-optimizer/index.js";
-import { croMethodologySkill } from "../../skills/cro-methodology/index.js";
-import { paidAdsSkill } from "../../skills/paid-ads/index.js";
-import { analyticsTrackingSkill } from "../../skills/analytics-tracking/index.js";
-import { customerResearchSkill } from "../../skills/customer-research/index.js";
-import { stpSegmentationSkill } from "../../skills/stp-segmentation/index.js";
-import { funnelArchitectSkill } from "../../skills/funnel-architect/index.js";
-import { revopsSkill } from "../../skills/revops/index.js";
-import { leadResearchAssistantSkill } from "../../skills/lead-research-assistant/index.js";
-import { customerLifecycleSkill } from "../../skills/customer-lifecycle/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { contentStrategySkill } from "../../skills/content-strategy/index";
+import { seoSkill } from "../../skills/seo/index";
+import { leadChannelOptimizerSkill } from "../../skills/lead-channel-optimizer/index";
+import { croMethodologySkill } from "../../skills/cro-methodology/index";
+import { paidAdsSkill } from "../../skills/paid-ads/index";
+import { analyticsTrackingSkill } from "../../skills/analytics-tracking/index";
+import { customerResearchSkill } from "../../skills/customer-research/index";
+import { stpSegmentationSkill } from "../../skills/stp-segmentation/index";
+import { funnelArchitectSkill } from "../../skills/funnel-architect/index";
+import { revopsSkill } from "../../skills/revops/index";
+import { leadResearchAssistantSkill } from "../../skills/lead-research-assistant/index";
+import { customerLifecycleSkill } from "../../skills/customer-lifecycle/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const acquisitionStrategistAgent = defineAgent({
   id: "acquisition-strategist",

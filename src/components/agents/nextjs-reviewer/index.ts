@@ -4,15 +4,15 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index.js";
-import { nextjsDeveloperSkill } from "../../skills/nextjs-developer/index.js";
-import { reactServerComponentsSkill } from "../../skills/react-server-components/index.js";
-import { reactHooksSkill } from "../../skills/react-hooks/index.js";
-import { reactPerformanceSkill } from "../../skills/react-performance/index.js";
-import { reactComposableComponentsSkill } from "../../skills/react-composable-components/index.js";
-import { typescriptTypeSafetySkill } from "../../skills/typescript-type-safety/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index";
+import { nextjsDeveloperSkill } from "../../skills/nextjs-developer/index";
+import { reactServerComponentsSkill } from "../../skills/react-server-components/index";
+import { reactHooksSkill } from "../../skills/react-hooks/index";
+import { reactPerformanceSkill } from "../../skills/react-performance/index";
+import { reactComposableComponentsSkill } from "../../skills/react-composable-components/index";
+import { typescriptTypeSafetySkill } from "../../skills/typescript-type-safety/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const nextjsReviewerAgent = defineAgent({
   id: "nextjs-reviewer",

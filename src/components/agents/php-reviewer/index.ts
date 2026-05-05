@@ -4,17 +4,17 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index.js";
-import { phpXFeaturesSkill } from "../../skills/php-8x-features/index.js";
-import { phpTypeSafetySkill } from "../../skills/php-type-safety/index.js";
-import { phpErrorHandlingSkill } from "../../skills/php-error-handling/index.js";
-import { phpGeneratorsMemorySkill } from "../../skills/php-generators-memory/index.js";
-import { phpDesignPatternsSkill } from "../../skills/php-design-patterns/index.js";
-import { phpAsyncPatternsSkill } from "../../skills/php-async-patterns/index.js";
-import { phpTestingSkill } from "../../skills/php-testing/index.js";
-import { testingPatternsSkill } from "../../skills/testing-patterns/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index";
+import { phpXFeaturesSkill } from "../../skills/php-8x-features/index";
+import { phpTypeSafetySkill } from "../../skills/php-type-safety/index";
+import { phpErrorHandlingSkill } from "../../skills/php-error-handling/index";
+import { phpGeneratorsMemorySkill } from "../../skills/php-generators-memory/index";
+import { phpDesignPatternsSkill } from "../../skills/php-design-patterns/index";
+import { phpAsyncPatternsSkill } from "../../skills/php-async-patterns/index";
+import { phpTestingSkill } from "../../skills/php-testing/index";
+import { testingPatternsSkill } from "../../skills/testing-patterns/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const phpReviewerAgent = defineAgent({
   id: "php-reviewer",

@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const phpExpertPreToolUseBashHeavyCommandRepeatGuardHook = defineHook({
   id: "php-expert-pre-tool-use-bash-heavy-command-repeat-guard",

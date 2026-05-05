@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const phpExpertPostToolUseEditWriteSymfonySyntaxTwigHook = defineHook({
   id: "php-expert-post-tool-use-edit-write-symfony-syntax-twig",

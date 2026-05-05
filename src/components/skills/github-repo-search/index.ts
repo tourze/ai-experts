@@ -4,7 +4,7 @@ import {
   Platform,
   defineReference,
   defineSkill,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const githubRepoSearchSkill = defineSkill({
   id: "github-repo-search",

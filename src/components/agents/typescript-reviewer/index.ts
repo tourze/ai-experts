@@ -4,9 +4,9 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { debugMethodology } from "../../skills/debug-methodology/index.js";
-import { typescriptTypeSafety } from "../../skills/typescript-type-safety/index.js";
+} from "../../sdk";
+import { debugMethodology } from "../../skills/debug-methodology/index";
+import { typescriptTypeSafety } from "../../skills/typescript-type-safety/index";
 
 export const typescriptReviewer = defineAgent({
   id: "typescript-reviewer",

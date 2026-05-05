@@ -4,13 +4,13 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeReviewSkill } from "../../skills/code-review/index.js";
-import { complexityReducerSkill } from "../../skills/complexity-reducer/index.js";
-import { refactoringChecklistSkill } from "../../skills/refactoring-checklist/index.js";
-import { debugMethodologySkill } from "../../skills/debug-methodology/index.js";
-import { preLandingReviewSkill } from "../../skills/pre-landing-review/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codeReviewSkill } from "../../skills/code-review/index";
+import { complexityReducerSkill } from "../../skills/complexity-reducer/index";
+import { refactoringChecklistSkill } from "../../skills/refactoring-checklist/index";
+import { debugMethodologySkill } from "../../skills/debug-methodology/index";
+import { preLandingReviewSkill } from "../../skills/pre-landing-review/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const codeReviewerAgent = defineAgent({
   id: "code-reviewer",

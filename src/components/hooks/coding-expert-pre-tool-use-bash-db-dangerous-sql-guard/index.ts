@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const codingExpertPreToolUseBashDbDangerousSqlGuardHook = defineHook({
   id: "coding-expert-pre-tool-use-bash-db-dangerous-sql-guard",

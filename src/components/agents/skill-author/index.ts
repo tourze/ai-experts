@@ -4,15 +4,15 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { skillCreatorSkill } from "../../skills/skill-creator/index.js";
-import { skillEvolverSkill } from "../../skills/skill-evolver/index.js";
-import { findSkillsSkill } from "../../skills/find-skills/index.js";
-import { skillEvaluatorSkill } from "../../skills/skill-evaluator/index.js";
-import { skillActivationAnalyzerSkill } from "../../skills/skill-activation-analyzer/index.js";
-import { skillEvalGraderSkill } from "../../skills/skill-eval-grader/index.js";
-import { blindOutputComparatorSkill } from "../../skills/blind-output-comparator/index.js";
-import { benchmarkResultAnalyzerSkill } from "../../skills/benchmark-result-analyzer/index.js";
+} from "../../sdk";
+import { skillCreatorSkill } from "../../skills/skill-creator/index";
+import { skillEvolverSkill } from "../../skills/skill-evolver/index";
+import { findSkillsSkill } from "../../skills/find-skills/index";
+import { skillEvaluatorSkill } from "../../skills/skill-evaluator/index";
+import { skillActivationAnalyzerSkill } from "../../skills/skill-activation-analyzer/index";
+import { skillEvalGraderSkill } from "../../skills/skill-eval-grader/index";
+import { blindOutputComparatorSkill } from "../../skills/blind-output-comparator/index";
+import { benchmarkResultAnalyzerSkill } from "../../skills/benchmark-result-analyzer/index";
 
 export const skillAuthorAgent = defineAgent({
   id: "skill-author",

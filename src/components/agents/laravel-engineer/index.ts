@@ -4,19 +4,19 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index.js";
-import { laravelPatternsSkill } from "../../skills/laravel-patterns/index.js";
-import { laravelSecuritySkill } from "../../skills/laravel-security/index.js";
-import { laravelVerificationSkill } from "../../skills/laravel-verification/index.js";
-import { laravelTddSkill } from "../../skills/laravel-tdd/index.js";
-import { phpDesignPatternsSkill } from "../../skills/php-design-patterns/index.js";
-import { phpXFeaturesSkill } from "../../skills/php-8x-features/index.js";
-import { phpTypeSafetySkill } from "../../skills/php-type-safety/index.js";
-import { phpErrorHandlingSkill } from "../../skills/php-error-handling/index.js";
-import { phpTestingSkill } from "../../skills/php-testing/index.js";
-import { testingPatternsSkill } from "../../skills/testing-patterns/index.js";
-import { phpGeneratorsMemorySkill } from "../../skills/php-generators-memory/index.js";
+} from "../../sdk";
+import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index";
+import { laravelPatternsSkill } from "../../skills/laravel-patterns/index";
+import { laravelSecuritySkill } from "../../skills/laravel-security/index";
+import { laravelVerificationSkill } from "../../skills/laravel-verification/index";
+import { laravelTddSkill } from "../../skills/laravel-tdd/index";
+import { phpDesignPatternsSkill } from "../../skills/php-design-patterns/index";
+import { phpXFeaturesSkill } from "../../skills/php-8x-features/index";
+import { phpTypeSafetySkill } from "../../skills/php-type-safety/index";
+import { phpErrorHandlingSkill } from "../../skills/php-error-handling/index";
+import { phpTestingSkill } from "../../skills/php-testing/index";
+import { testingPatternsSkill } from "../../skills/testing-patterns/index";
+import { phpGeneratorsMemorySkill } from "../../skills/php-generators-memory/index";
 
 export const laravelEngineerAgent = defineAgent({
   id: "laravel-engineer",

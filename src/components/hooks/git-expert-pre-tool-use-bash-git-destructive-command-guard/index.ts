@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const gitExpertPreToolUseBashGitDestructiveCommandGuardHook = defineHook({
   id: "git-expert-pre-tool-use-bash-git-destructive-command-guard",

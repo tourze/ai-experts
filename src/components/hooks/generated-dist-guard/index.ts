@@ -2,7 +2,7 @@ import {
   HookEvent,
   type NormalizedHookPayload,
   type NormalizedHookResult,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export async function run(payload: NormalizedHookPayload): Promise<NormalizedHookResult | null> {
   if (payload.event !== HookEvent.PostToolUse) return null;

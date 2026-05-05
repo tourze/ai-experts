@@ -4,10 +4,10 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { debugMethodologySkill } from "../../skills/debug-methodology/index.js";
-import { chromeDevtoolsSkill } from "../../skills/chrome-devtools/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { debugMethodologySkill } from "../../skills/debug-methodology/index";
+import { chromeDevtoolsSkill } from "../../skills/chrome-devtools/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const bugInvestigatorAgent = defineAgent({
   id: "bug-investigator",

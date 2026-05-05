@@ -4,16 +4,16 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index.js";
-import { doctrineBatchProcessingSkill } from "../../skills/doctrine-batch-processing/index.js";
-import { doctrineEntityPatternsSkill } from "../../skills/doctrine-entity-patterns/index.js";
-import { symfonyBundleArchitectureSkill } from "../../skills/symfony-bundle-architecture/index.js";
-import { symfonyMessengerSkill } from "../../skills/symfony-messenger/index.js";
-import { symfonyVotersSkill } from "../../skills/symfony-voters/index.js";
-import { symfonyUxSkill } from "../../skills/symfony-ux/index.js";
-import { twigComponentsSkill } from "../../skills/twig-components/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index";
+import { doctrineBatchProcessingSkill } from "../../skills/doctrine-batch-processing/index";
+import { doctrineEntityPatternsSkill } from "../../skills/doctrine-entity-patterns/index";
+import { symfonyBundleArchitectureSkill } from "../../skills/symfony-bundle-architecture/index";
+import { symfonyMessengerSkill } from "../../skills/symfony-messenger/index";
+import { symfonyVotersSkill } from "../../skills/symfony-voters/index";
+import { symfonyUxSkill } from "../../skills/symfony-ux/index";
+import { twigComponentsSkill } from "../../skills/twig-components/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const symfonyReviewerAgent = defineAgent({
   id: "symfony-reviewer",

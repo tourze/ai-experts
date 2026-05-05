@@ -4,13 +4,13 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index.js";
-import { vueExpertJsSkill } from "../../skills/vue-expert-js/index.js";
-import { modernJavascriptPatternsSkill } from "../../skills/modern-javascript-patterns/index.js";
-import { javascriptTypescriptJestSkill } from "../../skills/javascript-typescript-jest/index.js";
-import { testingPatternsSkill } from "../../skills/testing-patterns/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index";
+import { vueExpertJsSkill } from "../../skills/vue-expert-js/index";
+import { modernJavascriptPatternsSkill } from "../../skills/modern-javascript-patterns/index";
+import { javascriptTypescriptJestSkill } from "../../skills/javascript-typescript-jest/index";
+import { testingPatternsSkill } from "../../skills/testing-patterns/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const vueReviewerAgent = defineAgent({
   id: "vue-reviewer",

@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const codingExpertPreToolUseEditWriteGarbledTextGuardHook = defineHook({
   id: "coding-expert-pre-tool-use-edit-write-garbled-text-guard",

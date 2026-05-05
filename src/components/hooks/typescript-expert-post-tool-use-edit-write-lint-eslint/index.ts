@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const typescriptExpertPostToolUseEditWriteLintEslintHook = defineHook({
   id: "typescript-expert-post-tool-use-edit-write-lint-eslint",

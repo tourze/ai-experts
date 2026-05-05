@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const frontendExpertSessionStartCreativeEnvDetectorHook = defineHook({
   id: "frontend-expert-session-start-creative-env-detector",

@@ -7,7 +7,7 @@ import {
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const promptEngineeringPatternsSkill = defineSkill({
   id: "prompt-engineering-patterns",

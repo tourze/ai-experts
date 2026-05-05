@@ -4,19 +4,19 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index.js";
-import { dbSchemaDesignSkill } from "../../skills/db-schema-design/index.js";
-import { sqlReviewOptimizationSkill } from "../../skills/sql-review-optimization/index.js";
-import { dbHaReplicationSkill } from "../../skills/db-ha-replication/index.js";
-import { mysqlTransactionLockingSkill } from "../../skills/mysql-transaction-locking/index.js";
-import { pgsqlPartitioningSkill } from "../../skills/pgsql-partitioning/index.js";
-import { pgsqlRowLevelSecuritySkill } from "../../skills/pgsql-row-level-security/index.js";
-import { redisCachingPatternsSkill } from "../../skills/redis-caching-patterns/index.js";
-import { redisDataModelingSkill } from "../../skills/redis-data-modeling/index.js";
-import { redisClusterHaSkill } from "../../skills/redis-cluster-ha/index.js";
-import { redisPitfallDiagnosticsSkill } from "../../skills/redis-pitfall-diagnostics/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index";
+import { dbSchemaDesignSkill } from "../../skills/db-schema-design/index";
+import { sqlReviewOptimizationSkill } from "../../skills/sql-review-optimization/index";
+import { dbHaReplicationSkill } from "../../skills/db-ha-replication/index";
+import { mysqlTransactionLockingSkill } from "../../skills/mysql-transaction-locking/index";
+import { pgsqlPartitioningSkill } from "../../skills/pgsql-partitioning/index";
+import { pgsqlRowLevelSecuritySkill } from "../../skills/pgsql-row-level-security/index";
+import { redisCachingPatternsSkill } from "../../skills/redis-caching-patterns/index";
+import { redisDataModelingSkill } from "../../skills/redis-data-modeling/index";
+import { redisClusterHaSkill } from "../../skills/redis-cluster-ha/index";
+import { redisPitfallDiagnosticsSkill } from "../../skills/redis-pitfall-diagnostics/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const dbLifecycleEngineerAgent = defineAgent({
   id: "db-lifecycle-engineer",

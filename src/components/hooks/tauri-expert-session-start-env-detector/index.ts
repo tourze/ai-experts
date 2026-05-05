@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const tauriExpertSessionStartEnvDetectorHook = defineHook({
   id: "tauri-expert-session-start-env-detector",

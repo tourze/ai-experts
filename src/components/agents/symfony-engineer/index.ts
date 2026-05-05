@@ -4,22 +4,22 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index.js";
-import { symfonyBundleArchitectureSkill } from "../../skills/symfony-bundle-architecture/index.js";
-import { symfonyMessengerSkill } from "../../skills/symfony-messenger/index.js";
-import { symfonyUxSkill } from "../../skills/symfony-ux/index.js";
-import { symfonyVotersSkill } from "../../skills/symfony-voters/index.js";
-import { twigComponentsSkill } from "../../skills/twig-components/index.js";
-import { doctrineEntityPatternsSkill } from "../../skills/doctrine-entity-patterns/index.js";
-import { doctrineBatchProcessingSkill } from "../../skills/doctrine-batch-processing/index.js";
-import { phpDesignPatternsSkill } from "../../skills/php-design-patterns/index.js";
-import { phpXFeaturesSkill } from "../../skills/php-8x-features/index.js";
-import { phpTypeSafetySkill } from "../../skills/php-type-safety/index.js";
-import { phpErrorHandlingSkill } from "../../skills/php-error-handling/index.js";
-import { phpTestingSkill } from "../../skills/php-testing/index.js";
-import { testingPatternsSkill } from "../../skills/testing-patterns/index.js";
-import { phpGeneratorsMemorySkill } from "../../skills/php-generators-memory/index.js";
+} from "../../sdk";
+import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index";
+import { symfonyBundleArchitectureSkill } from "../../skills/symfony-bundle-architecture/index";
+import { symfonyMessengerSkill } from "../../skills/symfony-messenger/index";
+import { symfonyUxSkill } from "../../skills/symfony-ux/index";
+import { symfonyVotersSkill } from "../../skills/symfony-voters/index";
+import { twigComponentsSkill } from "../../skills/twig-components/index";
+import { doctrineEntityPatternsSkill } from "../../skills/doctrine-entity-patterns/index";
+import { doctrineBatchProcessingSkill } from "../../skills/doctrine-batch-processing/index";
+import { phpDesignPatternsSkill } from "../../skills/php-design-patterns/index";
+import { phpXFeaturesSkill } from "../../skills/php-8x-features/index";
+import { phpTypeSafetySkill } from "../../skills/php-type-safety/index";
+import { phpErrorHandlingSkill } from "../../skills/php-error-handling/index";
+import { phpTestingSkill } from "../../skills/php-testing/index";
+import { testingPatternsSkill } from "../../skills/testing-patterns/index";
+import { phpGeneratorsMemorySkill } from "../../skills/php-generators-memory/index";
 
 export const symfonyEngineerAgent = defineAgent({
   id: "symfony-engineer",

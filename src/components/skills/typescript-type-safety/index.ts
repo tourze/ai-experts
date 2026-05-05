@@ -5,7 +5,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const typescriptTypeSafety = defineSkill({
   id: "typescript-type-safety",

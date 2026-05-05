@@ -4,14 +4,14 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index.js";
-import { webPerformanceDiagnosisSkill } from "../../skills/web-performance-diagnosis/index.js";
-import { bundleOptimizationSkill } from "../../skills/bundle-optimization/index.js";
-import { modernJavascriptPatternsSkill } from "../../skills/modern-javascript-patterns/index.js";
-import { reactPerformanceSkill } from "../../skills/react-performance/index.js";
-import { reactServerComponentsSkill } from "../../skills/react-server-components/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index";
+import { webPerformanceDiagnosisSkill } from "../../skills/web-performance-diagnosis/index";
+import { bundleOptimizationSkill } from "../../skills/bundle-optimization/index";
+import { modernJavascriptPatternsSkill } from "../../skills/modern-javascript-patterns/index";
+import { reactPerformanceSkill } from "../../skills/react-performance/index";
+import { reactServerComponentsSkill } from "../../skills/react-server-components/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const webPerfEngineerAgent = defineAgent({
   id: "web-perf-engineer",

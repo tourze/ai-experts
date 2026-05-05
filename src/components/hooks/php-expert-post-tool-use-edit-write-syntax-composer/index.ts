@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const phpExpertPostToolUseEditWriteSyntaxComposerHook = defineHook({
   id: "php-expert-post-tool-use-edit-write-syntax-composer",

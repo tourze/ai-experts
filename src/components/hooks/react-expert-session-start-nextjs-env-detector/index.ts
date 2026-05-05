@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const reactExpertSessionStartNextjsEnvDetectorHook = defineHook({
   id: "react-expert-session-start-nextjs-env-detector",

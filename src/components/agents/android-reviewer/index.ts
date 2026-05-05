@@ -4,16 +4,16 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index.js";
-import { androidArchitectureSkill } from "../../skills/android-architecture/index.js";
-import { androidCoroutinesSkill } from "../../skills/android-coroutines/index.js";
-import { androidDesignGuidelinesSkill } from "../../skills/android-design-guidelines/index.js";
-import { androidAccessibilitySkill } from "../../skills/android-accessibility/index.js";
-import { androidTestingSkill } from "../../skills/android-testing/index.js";
-import { gradleBuildPerformanceSkill } from "../../skills/gradle-build-performance/index.js";
-import { androidRedexSkill } from "../../skills/android-redex/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index";
+import { androidArchitectureSkill } from "../../skills/android-architecture/index";
+import { androidCoroutinesSkill } from "../../skills/android-coroutines/index";
+import { androidDesignGuidelinesSkill } from "../../skills/android-design-guidelines/index";
+import { androidAccessibilitySkill } from "../../skills/android-accessibility/index";
+import { androidTestingSkill } from "../../skills/android-testing/index";
+import { gradleBuildPerformanceSkill } from "../../skills/gradle-build-performance/index";
+import { androidRedexSkill } from "../../skills/android-redex/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const androidReviewerAgent = defineAgent({
   id: "android-reviewer",

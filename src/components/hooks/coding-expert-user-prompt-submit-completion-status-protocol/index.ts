@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const codingExpertUserPromptSubmitCompletionStatusProtocolHook = defineHook({
   id: "coding-expert-user-prompt-submit-completion-status-protocol",

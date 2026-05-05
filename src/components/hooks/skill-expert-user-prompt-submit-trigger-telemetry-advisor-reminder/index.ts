@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const skillExpertUserPromptSubmitTriggerTelemetryAdvisorReminderHook = defineHook({
   id: "skill-expert-user-prompt-submit-trigger-telemetry-advisor-reminder",

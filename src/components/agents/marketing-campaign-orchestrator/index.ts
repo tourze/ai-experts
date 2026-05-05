@@ -4,16 +4,16 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { stpSegmentationSkill } from "../../skills/stp-segmentation/index.js";
-import { customerResearchSkill } from "../../skills/customer-research/index.js";
-import { contentStrategySkill } from "../../skills/content-strategy/index.js";
-import { copywritingSkill } from "../../skills/copywriting/index.js";
-import { seoSkill } from "../../skills/seo/index.js";
-import { paidAdsSkill } from "../../skills/paid-ads/index.js";
-import { croMethodologySkill } from "../../skills/cro-methodology/index.js";
-import { analyticsTrackingSkill } from "../../skills/analytics-tracking/index.js";
-import { marketingPlanSkill } from "../../skills/marketing-plan/index.js";
+} from "../../sdk";
+import { stpSegmentationSkill } from "../../skills/stp-segmentation/index";
+import { customerResearchSkill } from "../../skills/customer-research/index";
+import { contentStrategySkill } from "../../skills/content-strategy/index";
+import { copywritingSkill } from "../../skills/copywriting/index";
+import { seoSkill } from "../../skills/seo/index";
+import { paidAdsSkill } from "../../skills/paid-ads/index";
+import { croMethodologySkill } from "../../skills/cro-methodology/index";
+import { analyticsTrackingSkill } from "../../skills/analytics-tracking/index";
+import { marketingPlanSkill } from "../../skills/marketing-plan/index";
 
 export const marketingCampaignOrchestratorAgent = defineAgent({
   id: "marketing-campaign-orchestrator",

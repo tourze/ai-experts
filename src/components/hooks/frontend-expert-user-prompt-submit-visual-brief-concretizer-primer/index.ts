@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const frontendExpertUserPromptSubmitVisualBriefConcretizerPrimerHook = defineHook({
   id: "frontend-expert-user-prompt-submit-visual-brief-concretizer-primer",

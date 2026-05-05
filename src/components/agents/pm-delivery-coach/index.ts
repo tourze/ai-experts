@@ -4,9 +4,9 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { agileProductOwnerSkill } from "../../skills/agile-product-owner/index.js";
-import { estimateCalibratorSkill } from "../../skills/estimate-calibrator/index.js";
+} from "../../sdk";
+import { agileProductOwnerSkill } from "../../skills/agile-product-owner/index";
+import { estimateCalibratorSkill } from "../../skills/estimate-calibrator/index";
 
 export const pmDeliveryCoachAgent = defineAgent({
   id: "pm-delivery-coach",

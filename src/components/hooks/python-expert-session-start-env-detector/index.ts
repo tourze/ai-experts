@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const pythonExpertSessionStartEnvDetectorHook = defineHook({
   id: "python-expert-session-start-env-detector",

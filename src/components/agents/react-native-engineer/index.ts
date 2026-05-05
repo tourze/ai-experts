@@ -4,14 +4,14 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index.js";
-import { reactNativeDesignSkill } from "../../skills/react-native-design/index.js";
-import { reactNativeJsPerformanceSkill } from "../../skills/react-native-js-performance/index.js";
-import { reactNativePlatformForkSkill } from "../../skills/react-native-platform-fork/index.js";
-import { reactNativeTurbomoduleSkill } from "../../skills/react-native-turbomodule/index.js";
-import { reactNativeMetroConfigSkill } from "../../skills/react-native-metro-config/index.js";
-import { detoxMobileTestSkill } from "../../skills/detox-mobile-test/index.js";
+} from "../../sdk";
+import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index";
+import { reactNativeDesignSkill } from "../../skills/react-native-design/index";
+import { reactNativeJsPerformanceSkill } from "../../skills/react-native-js-performance/index";
+import { reactNativePlatformForkSkill } from "../../skills/react-native-platform-fork/index";
+import { reactNativeTurbomoduleSkill } from "../../skills/react-native-turbomodule/index";
+import { reactNativeMetroConfigSkill } from "../../skills/react-native-metro-config/index";
+import { detoxMobileTestSkill } from "../../skills/detox-mobile-test/index";
 
 export const reactNativeEngineerAgent = defineAgent({
   id: "react-native-engineer",

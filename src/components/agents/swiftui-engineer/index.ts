@@ -4,15 +4,15 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index.js";
-import { swiftuiUiPatternsSkill } from "../../skills/swiftui-ui-patterns/index.js";
-import { swiftuiPerformanceAuditSkill } from "../../skills/swiftui-performance-audit/index.js";
-import { swiftConcurrencyExpertSkill } from "../../skills/swift-concurrency-expert/index.js";
-import { iosHigDesignSkill } from "../../skills/ios-hig-design/index.js";
-import { liquidGlassDesignSkill } from "../../skills/liquid-glass-design/index.js";
-import { macosDesignGuidelinesSkill } from "../../skills/macos-design-guidelines/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index";
+import { swiftuiUiPatternsSkill } from "../../skills/swiftui-ui-patterns/index";
+import { swiftuiPerformanceAuditSkill } from "../../skills/swiftui-performance-audit/index";
+import { swiftConcurrencyExpertSkill } from "../../skills/swift-concurrency-expert/index";
+import { iosHigDesignSkill } from "../../skills/ios-hig-design/index";
+import { liquidGlassDesignSkill } from "../../skills/liquid-glass-design/index";
+import { macosDesignGuidelinesSkill } from "../../skills/macos-design-guidelines/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const swiftuiEngineerAgent = defineAgent({
   id: "swiftui-engineer",

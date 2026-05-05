@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const phpExpertPreToolUseBashTestOutputTruncationGuardHook = defineHook({
   id: "php-expert-pre-tool-use-bash-test-output-truncation-guard",

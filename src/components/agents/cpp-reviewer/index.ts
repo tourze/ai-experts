@@ -4,13 +4,13 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index.js";
-import { memorySafetyPatternsSkill } from "../../skills/memory-safety-patterns/index.js";
-import { codeReviewSkill } from "../../skills/code-review/index.js";
-import { debugMethodologySkill } from "../../skills/debug-methodology/index.js";
-import { complexityReducerSkill } from "../../skills/complexity-reducer/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index";
+import { memorySafetyPatternsSkill } from "../../skills/memory-safety-patterns/index";
+import { codeReviewSkill } from "../../skills/code-review/index";
+import { debugMethodologySkill } from "../../skills/debug-methodology/index";
+import { complexityReducerSkill } from "../../skills/complexity-reducer/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const cppReviewerAgent = defineAgent({
   id: "cpp-reviewer",

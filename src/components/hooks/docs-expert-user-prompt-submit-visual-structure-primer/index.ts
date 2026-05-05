@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const docsExpertUserPromptSubmitVisualStructurePrimerHook = defineHook({
   id: "docs-expert-user-prompt-submit-visual-structure-primer",

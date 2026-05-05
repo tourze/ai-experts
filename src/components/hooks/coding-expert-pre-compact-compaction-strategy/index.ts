@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const codingExpertPreCompactCompactionStrategyHook = defineHook({
   id: "coding-expert-pre-compact-compaction-strategy",

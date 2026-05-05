@@ -4,7 +4,7 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
+} from "../../sdk";
 
 
 export const comparatorAgent = defineAgent({

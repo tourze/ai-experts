@@ -4,15 +4,15 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index.js";
-import { reactNativeDesignSkill } from "../../skills/react-native-design/index.js";
-import { reactNativeJsPerformanceSkill } from "../../skills/react-native-js-performance/index.js";
-import { reactNativePlatformForkSkill } from "../../skills/react-native-platform-fork/index.js";
-import { detoxMobileTestSkill } from "../../skills/detox-mobile-test/index.js";
-import { reactNativeTurbomoduleSkill } from "../../skills/react-native-turbomodule/index.js";
-import { reactNativeMetroConfigSkill } from "../../skills/react-native-metro-config/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index";
+import { reactNativeDesignSkill } from "../../skills/react-native-design/index";
+import { reactNativeJsPerformanceSkill } from "../../skills/react-native-js-performance/index";
+import { reactNativePlatformForkSkill } from "../../skills/react-native-platform-fork/index";
+import { detoxMobileTestSkill } from "../../skills/detox-mobile-test/index";
+import { reactNativeTurbomoduleSkill } from "../../skills/react-native-turbomodule/index";
+import { reactNativeMetroConfigSkill } from "../../skills/react-native-metro-config/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const reactNativeReviewerAgent = defineAgent({
   id: "react-native-reviewer",

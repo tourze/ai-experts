@@ -4,17 +4,17 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index.js";
-import { llmAppDesignPipelineSkill } from "../../skills/llm-app-design-pipeline/index.js";
-import { llmAppDiagnosisFrameworkSkill } from "../../skills/llm-app-diagnosis-framework/index.js";
-import { promptEngineeringPatternsSkill } from "../../skills/prompt-engineering-patterns/index.js";
-import { llmEvaluationSkill } from "../../skills/llm-evaluation/index.js";
-import { modelFirstReasoningSkill } from "../../skills/model-first-reasoning/index.js";
-import { ragAuditorSkill } from "../../skills/rag-auditor/index.js";
-import { embeddingStrategiesSkill } from "../../skills/embedding-strategies/index.js";
-import { similaritySearchPatternsSkill } from "../../skills/similarity-search-patterns/index.js";
-import { vectorIndexTuningSkill } from "../../skills/vector-index-tuning/index.js";
+} from "../../sdk";
+import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index";
+import { llmAppDesignPipelineSkill } from "../../skills/llm-app-design-pipeline/index";
+import { llmAppDiagnosisFrameworkSkill } from "../../skills/llm-app-diagnosis-framework/index";
+import { promptEngineeringPatternsSkill } from "../../skills/prompt-engineering-patterns/index";
+import { llmEvaluationSkill } from "../../skills/llm-evaluation/index";
+import { modelFirstReasoningSkill } from "../../skills/model-first-reasoning/index";
+import { ragAuditorSkill } from "../../skills/rag-auditor/index";
+import { embeddingStrategiesSkill } from "../../skills/embedding-strategies/index";
+import { similaritySearchPatternsSkill } from "../../skills/similarity-search-patterns/index";
+import { vectorIndexTuningSkill } from "../../skills/vector-index-tuning/index";
 
 export const aiAppEngineerAgent = defineAgent({
   id: "ai-app-engineer",

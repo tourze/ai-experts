@@ -4,24 +4,24 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index.js";
-import { goCliSkill } from "../../skills/go-cli/index.js";
-import { goGrpcSkill } from "../../skills/go-grpc/index.js";
-import { goConcurrencyPatternsSkill } from "../../skills/go-concurrency-patterns/index.js";
-import { goErrorHandlingSkill } from "../../skills/go-error-handling/index.js";
-import { goCodeStyleSkill } from "../../skills/go-code-style/index.js";
-import { goDesignPatternsSkill } from "../../skills/go-design-patterns/index.js";
-import { goStructsInterfacesSkill } from "../../skills/go-structs-interfaces/index.js";
-import { goDataStructuresSkill } from "../../skills/go-data-structures/index.js";
-import { goDatabaseSkill } from "../../skills/go-database/index.js";
-import { goPerformanceSkill } from "../../skills/go-performance/index.js";
-import { goSecuritySkill } from "../../skills/go-security/index.js";
-import { goObservabilitySkill } from "../../skills/go-observability/index.js";
-import { goTestingPatternsSkill } from "../../skills/go-testing-patterns/index.js";
-import { testingPatternsSkill } from "../../skills/testing-patterns/index.js";
-import { goTroubleshootingSkill } from "../../skills/go-troubleshooting/index.js";
-import { goLintSkill } from "../../skills/go-lint/index.js";
+} from "../../sdk";
+import { codeEngineerAgentFrameworkSkill } from "../../skills/code-engineer-agent-framework/index";
+import { goCliSkill } from "../../skills/go-cli/index";
+import { goGrpcSkill } from "../../skills/go-grpc/index";
+import { goConcurrencyPatternsSkill } from "../../skills/go-concurrency-patterns/index";
+import { goErrorHandlingSkill } from "../../skills/go-error-handling/index";
+import { goCodeStyleSkill } from "../../skills/go-code-style/index";
+import { goDesignPatternsSkill } from "../../skills/go-design-patterns/index";
+import { goStructsInterfacesSkill } from "../../skills/go-structs-interfaces/index";
+import { goDataStructuresSkill } from "../../skills/go-data-structures/index";
+import { goDatabaseSkill } from "../../skills/go-database/index";
+import { goPerformanceSkill } from "../../skills/go-performance/index";
+import { goSecuritySkill } from "../../skills/go-security/index";
+import { goObservabilitySkill } from "../../skills/go-observability/index";
+import { goTestingPatternsSkill } from "../../skills/go-testing-patterns/index";
+import { testingPatternsSkill } from "../../skills/testing-patterns/index";
+import { goTroubleshootingSkill } from "../../skills/go-troubleshooting/index";
+import { goLintSkill } from "../../skills/go-lint/index";
 
 export const goEngineerAgent = defineAgent({
   id: "go-engineer",

@@ -77,6 +77,38 @@ function collectFiles(root, predicate = () => true) {
   return files.sort();
 }
 
+function needsRuntimeJsExtension(specifier) {
+  if (!specifier.startsWith(".")) return false;
+  const [pathPart] = specifier.split(/[?#]/, 1);
+  return !/\.(?:js|mjs|cjs|json|node)$/u.test(pathPart);
+}
+
+function appendRuntimeJsExtension(specifier) {
+  if (!needsRuntimeJsExtension(specifier)) return specifier;
+  const match = specifier.match(/^([^?#]*)(.*)$/);
+  return `${match[1]}.js${match[2]}`;
+}
+
+function rewriteRelativeImportSpecifiers(source) {
+  return source
+    .replace(/(\bfrom\s*["'])(\.[^"']+)(["'])/g, (_match, prefix, specifier, suffix) =>
+      `${prefix}${appendRuntimeJsExtension(specifier)}${suffix}`)
+    .replace(/(\bimport\s*["'])(\.[^"']+)(["'])/g, (_match, prefix, specifier, suffix) =>
+      `${prefix}${appendRuntimeJsExtension(specifier)}${suffix}`)
+    .replace(/(\bimport\s*\(\s*["'])(\.[^"']+)(["']\s*\))/g, (_match, prefix, specifier, suffix) =>
+      `${prefix}${appendRuntimeJsExtension(specifier)}${suffix}`);
+}
+
+function rewriteCompiledJsImports(root) {
+  for (const file of collectFiles(root, (candidate) => candidate.endsWith(".js"))) {
+    const source = readFileSync(file, "utf-8");
+    const rewritten = rewriteRelativeImportSpecifiers(source);
+    if (rewritten !== source) {
+      writeFileSync(file, rewritten, "utf-8");
+    }
+  }
+}
+
 function toAbsolutePath(source) {
   if (source instanceof URL) return fileURLToPath(source);
   if (typeof source === "string") return resolve(repoRoot, source);
@@ -196,6 +228,7 @@ async function compileRegistry() {
     target: "node20",
     logLevel: "silent",
   });
+  rewriteCompiledJsImports(tempComponentsRoot);
 
   const registryUrl = pathToFileURL(join(tempComponentsRoot, "registry.js"));
   const mod = await import(`${registryUrl.href}?t=${Date.now()}`);

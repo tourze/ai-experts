@@ -4,12 +4,12 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { croMethodologySkill } from "../../skills/cro-methodology/index.js";
-import { redesignMyLandingpageSkill } from "../../skills/redesign-my-landingpage/index.js";
-import { funnelArchitectSkill } from "../../skills/funnel-architect/index.js";
-import { analyticsTrackingSkill } from "../../skills/analytics-tracking/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { croMethodologySkill } from "../../skills/cro-methodology/index";
+import { redesignMyLandingpageSkill } from "../../skills/redesign-my-landingpage/index";
+import { funnelArchitectSkill } from "../../skills/funnel-architect/index";
+import { analyticsTrackingSkill } from "../../skills/analytics-tracking/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const conversionOptimizerAgent = defineAgent({
   id: "conversion-optimizer",

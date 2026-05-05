@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const rustExpertSessionStartEnvDetectorHook = defineHook({
   id: "rust-expert-session-start-env-detector",

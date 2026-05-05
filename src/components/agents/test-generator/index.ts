@@ -4,13 +4,13 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { testDrivenDevelopmentSkill } from "../../skills/test-driven-development/index.js";
-import { testingStrategySkill } from "../../skills/testing-strategy/index.js";
-import { testQualityReviewSkill } from "../../skills/test-quality-review/index.js";
-import { webappTestingSkill } from "../../skills/webapp-testing/index.js";
-import { benchmarkRunnerSkill } from "../../skills/benchmark-runner/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { testDrivenDevelopmentSkill } from "../../skills/test-driven-development/index";
+import { testingStrategySkill } from "../../skills/testing-strategy/index";
+import { testQualityReviewSkill } from "../../skills/test-quality-review/index";
+import { webappTestingSkill } from "../../skills/webapp-testing/index";
+import { benchmarkRunnerSkill } from "../../skills/benchmark-runner/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const testGeneratorAgent = defineAgent({
   id: "test-generator",

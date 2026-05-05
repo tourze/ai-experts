@@ -1,4 +1,4 @@
-import { defineInstruction, Platform } from "../../sdk.js";
+import { defineInstruction, Platform } from "../../sdk";
 
 export const coreInstruction = defineInstruction({
   id: "core-ai-experts",

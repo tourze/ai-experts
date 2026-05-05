@@ -4,20 +4,20 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { architectureDesignWorkflowSkill } from "../../skills/architecture-design-workflow/index.js";
-import { systemDesignSkill } from "../../skills/system-design/index.js";
-import { architectureDecisionRecordsSkill } from "../../skills/architecture-decision-records/index.js";
-import { protocolFreezingPatternsSkill } from "../../skills/protocol-freezing-patterns/index.js";
-import { crossPlatformAdapterPatternsSkill } from "../../skills/cross-platform-adapter-patterns/index.js";
-import { hierarchicalMatchingSystemsSkill } from "../../skills/hierarchical-matching-systems/index.js";
-import { webPerformanceDiagnosisSkill } from "../../skills/web-performance-diagnosis/index.js";
-import { taskDecomposerSkill } from "../../skills/task-decomposer/index.js";
-import { backendToFrontendHandoffDocsSkill } from "../../skills/backend-to-frontend-handoff-docs/index.js";
-import { agentOrchestrationSkill } from "../../skills/agent-orchestration/index.js";
-import { errorHandlingPatternsSkill } from "../../skills/error-handling-patterns/index.js";
-import { softwareDesignSkill } from "../../skills/software-design/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { architectureDesignWorkflowSkill } from "../../skills/architecture-design-workflow/index";
+import { systemDesignSkill } from "../../skills/system-design/index";
+import { architectureDecisionRecordsSkill } from "../../skills/architecture-decision-records/index";
+import { protocolFreezingPatternsSkill } from "../../skills/protocol-freezing-patterns/index";
+import { crossPlatformAdapterPatternsSkill } from "../../skills/cross-platform-adapter-patterns/index";
+import { hierarchicalMatchingSystemsSkill } from "../../skills/hierarchical-matching-systems/index";
+import { webPerformanceDiagnosisSkill } from "../../skills/web-performance-diagnosis/index";
+import { taskDecomposerSkill } from "../../skills/task-decomposer/index";
+import { backendToFrontendHandoffDocsSkill } from "../../skills/backend-to-frontend-handoff-docs/index";
+import { agentOrchestrationSkill } from "../../skills/agent-orchestration/index";
+import { errorHandlingPatternsSkill } from "../../skills/error-handling-patterns/index";
+import { softwareDesignSkill } from "../../skills/software-design/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const architectureDesignerAgent = defineAgent({
   id: "architecture-designer",

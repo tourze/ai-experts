@@ -4,17 +4,17 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { refactoringPatternsSkill } from "../../skills/refactoring-patterns/index.js";
-import { refactorPlanningMethodSkill } from "../../skills/refactor-planning-method/index.js";
-import { complexityReducerSkill } from "../../skills/complexity-reducer/index.js";
-import { techDebtSkill } from "../../skills/tech-debt/index.js";
-import { errorHandlingPatternsSkill } from "../../skills/error-handling-patterns/index.js";
-import { softwareDesignSkill } from "../../skills/software-design/index.js";
-import { pragmaticProgrammerSkill } from "../../skills/pragmatic-programmer/index.js";
-import { featureDevSkill } from "../../skills/feature-dev/index.js";
-import { planReviewSkill } from "../../skills/plan-review/index.js";
-import { brainstormingBeforeCodingSkill } from "../../skills/brainstorming-before-coding/index.js";
+} from "../../sdk";
+import { refactoringPatternsSkill } from "../../skills/refactoring-patterns/index";
+import { refactorPlanningMethodSkill } from "../../skills/refactor-planning-method/index";
+import { complexityReducerSkill } from "../../skills/complexity-reducer/index";
+import { techDebtSkill } from "../../skills/tech-debt/index";
+import { errorHandlingPatternsSkill } from "../../skills/error-handling-patterns/index";
+import { softwareDesignSkill } from "../../skills/software-design/index";
+import { pragmaticProgrammerSkill } from "../../skills/pragmatic-programmer/index";
+import { featureDevSkill } from "../../skills/feature-dev/index";
+import { planReviewSkill } from "../../skills/plan-review/index";
+import { brainstormingBeforeCodingSkill } from "../../skills/brainstorming-before-coding/index";
 
 export const refactorPlannerAgent = defineAgent({
   id: "refactor-planner",

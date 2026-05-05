@@ -6,7 +6,7 @@ import {
   defineSkill,
   defineSkillScript,
   defineSkillScriptRoot,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const iosSimulatorSkillSkill = defineSkill({
   id: "ios-simulator-skill",

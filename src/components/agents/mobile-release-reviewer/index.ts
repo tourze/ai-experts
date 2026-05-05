@@ -4,10 +4,10 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { appStoreOptimizationSkill } from "../../skills/app-store-optimization/index.js";
-import { appleAppstoreReviewerSkill } from "../../skills/apple-appstore-reviewer/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { appStoreOptimizationSkill } from "../../skills/app-store-optimization/index";
+import { appleAppstoreReviewerSkill } from "../../skills/apple-appstore-reviewer/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const mobileReleaseReviewerAgent = defineAgent({
   id: "mobile-release-reviewer",

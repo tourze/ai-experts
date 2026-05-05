@@ -4,13 +4,13 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index.js";
-import { reactHooksSkill } from "../../skills/react-hooks/index.js";
-import { reactPerformanceSkill } from "../../skills/react-performance/index.js";
-import { reactServerComponentsSkill } from "../../skills/react-server-components/index.js";
-import { reactComposableComponentsSkill } from "../../skills/react-composable-components/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { codeReviewAgentFrameworkSkill } from "../../skills/code-review-agent-framework/index";
+import { reactHooksSkill } from "../../skills/react-hooks/index";
+import { reactPerformanceSkill } from "../../skills/react-performance/index";
+import { reactServerComponentsSkill } from "../../skills/react-server-components/index";
+import { reactComposableComponentsSkill } from "../../skills/react-composable-components/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const reactReviewerAgent = defineAgent({
   id: "react-reviewer",

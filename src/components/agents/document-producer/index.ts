@@ -4,15 +4,15 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { consultingAnalysisSkill } from "../../skills/consulting-analysis/index.js";
-import { proposalWriterSkill } from "../../skills/proposal-writer/index.js";
-import { tutorialBuilderSkill } from "../../skills/tutorial-builder/index.js";
-import { pptGenerateSkill } from "../../skills/ppt-generate/index.js";
-import { pdfSkill } from "../../skills/pdf/index.js";
-import { markitdownSkill } from "../../skills/markitdown/index.js";
-import { mdToPdfSkill } from "../../skills/md-to-pdf/index.js";
-import { markdownMermaidWritingSkill } from "../../skills/markdown-mermaid-writing/index.js";
+} from "../../sdk";
+import { consultingAnalysisSkill } from "../../skills/consulting-analysis/index";
+import { proposalWriterSkill } from "../../skills/proposal-writer/index";
+import { tutorialBuilderSkill } from "../../skills/tutorial-builder/index";
+import { pptGenerateSkill } from "../../skills/ppt-generate/index";
+import { pdfSkill } from "../../skills/pdf/index";
+import { markitdownSkill } from "../../skills/markitdown/index";
+import { mdToPdfSkill } from "../../skills/md-to-pdf/index";
+import { markdownMermaidWritingSkill } from "../../skills/markdown-mermaid-writing/index";
 
 export const documentProducerAgent = defineAgent({
   id: "document-producer",

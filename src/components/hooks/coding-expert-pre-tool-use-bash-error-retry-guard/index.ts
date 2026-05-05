@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const codingExpertPreToolUseBashErrorRetryGuardHook = defineHook({
   id: "coding-expert-pre-tool-use-bash-error-retry-guard",

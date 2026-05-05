@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform } from "../sdk.js";
+import { defineHook, HookEvent, KnownTool, Platform } from "../sdk";
 
 export const componentRoutingReminder = defineHook({
   id: "component-routing-reminder",

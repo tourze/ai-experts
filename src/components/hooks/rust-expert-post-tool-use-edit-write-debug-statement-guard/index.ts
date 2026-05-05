@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const rustExpertPostToolUseEditWriteDebugStatementGuardHook = defineHook({
   id: "rust-expert-post-tool-use-edit-write-debug-statement-guard",

@@ -1,6 +1,6 @@
-import { defineProfile } from "../sdk.js";
-import { componentRoutingReminder, generatedDistGuard } from "../hooks/index.js";
-import { componentAgents, componentHooks, componentSkills } from "../registry.generated.js";
+import { defineProfile } from "../sdk";
+import { componentRoutingReminder, generatedDistGuard } from "../hooks/index";
+import { componentAgents, componentHooks, componentSkills } from "../registry.generated";
 
 export const defaultProfile = defineProfile({
   id: "default",

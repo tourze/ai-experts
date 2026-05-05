@@ -4,17 +4,17 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { createPrdSkill } from "../../skills/create-prd/index.js";
-import { opportunitySolutionTreeSkill } from "../../skills/opportunity-solution-tree/index.js";
-import { prfaqSkill } from "../../skills/prfaq/index.js";
-import { designingGrowthLoopsSkill } from "../../skills/designing-growth-loops/index.js";
-import { evaluatingNewTechnologySkill } from "../../skills/evaluating-new-technology/index.js";
-import { productDesignCriticSkill } from "../../skills/product-design-critic/index.js";
-import { orgCanvasSkill } from "../../skills/org-canvas/index.js";
-import { raciMatrixSkill } from "../../skills/raci-matrix/index.js";
-import { meetingInsightsAnalyzerSkill } from "../../skills/meeting-insights-analyzer/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { createPrdSkill } from "../../skills/create-prd/index";
+import { opportunitySolutionTreeSkill } from "../../skills/opportunity-solution-tree/index";
+import { prfaqSkill } from "../../skills/prfaq/index";
+import { designingGrowthLoopsSkill } from "../../skills/designing-growth-loops/index";
+import { evaluatingNewTechnologySkill } from "../../skills/evaluating-new-technology/index";
+import { productDesignCriticSkill } from "../../skills/product-design-critic/index";
+import { orgCanvasSkill } from "../../skills/org-canvas/index";
+import { raciMatrixSkill } from "../../skills/raci-matrix/index";
+import { meetingInsightsAnalyzerSkill } from "../../skills/meeting-insights-analyzer/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const productDiscovererAgent = defineAgent({
   id: "product-discoverer",

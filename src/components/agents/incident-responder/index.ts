@@ -4,13 +4,13 @@ import {
   KnownTool,
   Platform,
   SkillUseMode,
-} from "../../sdk.js";
-import { incidentResponseSkill } from "../../skills/incident-response/index.js";
-import { logAnalyzerSkill } from "../../skills/log-analyzer/index.js";
-import { monitoringObservabilitySkill } from "../../skills/monitoring-observability/index.js";
-import { systemDiagnosticsSkill } from "../../skills/system-diagnostics/index.js";
-import { networkTroubleshooterSkill } from "../../skills/network-troubleshooter/index.js";
-import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index.js";
+} from "../../sdk";
+import { incidentResponseSkill } from "../../skills/incident-response/index";
+import { logAnalyzerSkill } from "../../skills/log-analyzer/index";
+import { monitoringObservabilitySkill } from "../../skills/monitoring-observability/index";
+import { systemDiagnosticsSkill } from "../../skills/system-diagnostics/index";
+import { networkTroubleshooterSkill } from "../../skills/network-troubleshooter/index";
+import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-framework/index";
 
 export const incidentResponderAgent = defineAgent({
   id: "incident-responder",

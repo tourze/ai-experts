@@ -3,7 +3,7 @@ import {
   HookEvent,
   KnownTool,
   Platform,
-} from "../../sdk.js";
+} from "../../sdk";
 
 export const skillExpertStopNextStepGateHook = defineHook({
   id: "skill-expert-stop-next-step-gate",
