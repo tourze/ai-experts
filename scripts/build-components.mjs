@@ -184,7 +184,11 @@ function tomlString(value) {
 }
 
 function tomlMultiline(value) {
-  return `"""\n${String(value).replace(/"""/g, '\\"\\"\\"')}\n"""`;
+  const text = String(value);
+  if (!text.includes("'''")) {
+    return `'''\n${text}\n'''`;
+  }
+  return tomlString(text);
 }
 
 function tomlBoolean(value) {

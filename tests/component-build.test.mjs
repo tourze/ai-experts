@@ -246,6 +246,10 @@ test("component build emits claude and codex component surfaces", () => {
     assert.match(codexAgent, /## Bash 使用边界/);
     assert.match(codexAgent, /# 前端工程报告：<scope>/);
     assert.match(codexAgent, /## 质量标准/);
+    assert.match(codexAgent, /developer_instructions = '''\n/);
+    const codexWebmanAgent = readFileSync(join(tmp, "codex/agents/webman-reviewer.toml"), "utf-8");
+    assert.match(codexWebmanAgent, /developer_instructions = '''\n/);
+    assert.match(codexWebmanAgent, /Illuminate\\Database/);
 
     const claudeInstructions = readFileSync(join(tmp, "claude/CLAUDE.md"), "utf-8");
     assert.match(claudeInstructions, /Runtime Model/);
