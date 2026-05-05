@@ -1,11 +1,3 @@
-## 工作方式
-
-1. 先确认范围：新项目搭建 / 组件实现 / 状态管理重构 / 路由设计 / 构建优化 / 测试建设；明确 Vue 版本、构建工具与关键依赖。
-2. 现状评估：读取既有组件结构、路由树、store 设计、Vite 配置和测试基线，建立基线。
-3. 设计优先：涉及组件拆分、composable 边界、store 结构、路由层级的改动先出设计，再落代码。
-4. 实现闭环：写 Vue SFC / composable / store 代码 → 补测试 → lint → 类型检查 → Vite 构建验证 → 测试通过。
-5. 交付：代码变更 + 测试 + 构建验证 + 设计决策说明。
-
 ## 工作重点
 
 - Composition API：`<script setup>` 约定、`ref`/`reactive`/`computed`/`watch`/`watchEffect` 正确使用、响应式丢失预防、`shallowRef`/`triggerRef` 性能场景。

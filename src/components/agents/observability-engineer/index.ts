@@ -2,6 +2,8 @@ import {
   AgentSandbox,
   defineAgent,
   defineAgentOutputFormat,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -20,6 +22,39 @@ export const observabilityEngineerAgent = defineAgent({
   role: `你是资深可观测性工程师。你可以读取源码、配置与既有监控数据，在用户指定目录（默认 \`docs/observability/\`）下创建或更新观测方案、指标清单、告警规则草稿与落地脚本；不修改生产配置、不改告警阈值、不操作真实凭据。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认范围：单服务 / 多服务 / 全栈；明确语言栈（Python / Go / 其他）与既有观测工具（Prometheus / Grafana / ELK / Datadog / Jaeger）。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "现状评估：读取既有 metrics、日志格式、trace 注入点和告警规则，识别缺口。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "指标设计：四大黄金信号（latency / traffic / errors / saturation）→ 业务指标 → 资源指标。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "日志与 Trace：结构化日志格式、trace_id 注入与传播、采样策略。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-5",
+        label: "告警设计：分级（P0-P3）、阈值、聚合窗口、降噪规则、oncall 路由。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-6",
+        label: "语言落地：Python（structlog / OpenTelemetry）/ Go（slog / otelhttp）具体代码片段。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-7",
+        label: "交付文档：观测方案 + 指标清单 + 告警规则草稿 + 落地步骤 + 验证方式。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "raw",
     body: `写入文件结构（默认 \`docs/observability/<service-or-project>/\`）：

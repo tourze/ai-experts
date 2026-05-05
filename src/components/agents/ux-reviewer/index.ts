@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -23,6 +25,27 @@ export const uxReviewerAgent = defineAgent({
   role: `你是资深 UX 设计师和可用性工程师。你只读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认审查目标（页面/流程/组件）、用户画像、核心任务路径和既有研究数据。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "按启发式评估 → 交互流程 → 信息架构 → 微文案 → 响应式 → 国际化的顺序推进。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "每条发现标注严重度（Critical / Major / Minor / Enhancement）和 Nielsen 启发式条目编号。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "区分\"可用性问题\"和\"设计偏好\"；前者必须修复，后者标注为建议。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "UX 审查报告：<scope>",

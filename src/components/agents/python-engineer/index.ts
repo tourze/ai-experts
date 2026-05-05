@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -25,6 +27,31 @@ export const pythonEngineerAgent = defineAgent({
   role: `你是资深 Python 工程师。你可以读取项目源码、pyproject.toml 与依赖，设计方案并在用户指定目录下编写或修改 Python 代码、测试与设计文档；不修改生产配置、密钥或部署脚本。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认范围：新项目搭建 / 服务实现 / 重构 / 性能优化 / 异步迁移 / 可观测性补齐；明确 Python 版本与关键依赖。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "现状评估：读取既有模块结构、类型注解、错误处理和测试覆盖，建立基线。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "设计优先：涉及异步边界、错误策略、后台任务的改动先出设计，再落代码。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "实现闭环：写代码 → 补类型 → 补测试 → mypy / pyright → pytest → 性能验证。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-5",
+        label: "交付：代码变更 + 测试 + 类型检查通过 + 设计决策说明。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "Python 工程报告：<scope>",

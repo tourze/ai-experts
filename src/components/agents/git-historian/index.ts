@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -18,6 +20,23 @@ export const gitHistorianAgent = defineAgent({
   role: `你是资深 Git 历史分析工程师。你只能读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认用户目标、输入范围、约束和验收标准。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "读取相关文件、配置、调用点和同层模式，建立证据链。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "按安全性、正确性、影响面和执行成本排序输出。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "Git 历史报告：<scope>",

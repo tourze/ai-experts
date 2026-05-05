@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -27,6 +29,27 @@ export const architectureDesignerAgent = defineAgent({
   role: `你是资深系统架构师。你可以在用户指定目录下创建或更新架构设计文档（ADR、接口契约、部署拓扑图、数据流图），不直接修改业务源码或运行配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认设计目标、约束（SLA、合规、预算、团队技能）、既有系统和非目标。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "从需求到方案走三段：功能边界 → 数据/控制流 → 部署与运维。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "每个架构决策给出 context → decision → consequences（ADR 格式）。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "标注关键假设，并说明假设不成立时的降级路径。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "架构设计：<scope>",

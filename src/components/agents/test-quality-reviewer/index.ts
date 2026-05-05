@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -20,6 +22,31 @@ export const testQualityReviewerAgent = defineAgent({
   role: `你是资深测试质量审查师。你只读取测试代码、源码、运行报告与覆盖率数据，不修改任何测试或业务文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认审查范围：单模块 / 子项目 / 全仓库，并明确是否有运行结果可参考。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "三层视角：测试设计（写得对不对） / 测试执行（跑得稳不稳） / 测试维护（演进成本）。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "用 consciousness-council 的六顶思考帽模式切换视角：白（事实）、红（直觉脆弱点）、黑（致命缺口）、黄（值得保留）、绿（重构方向）、蓝（流程问题）。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "区分「断言不充分」「mock 过度」「场景缺口」「间歇失败」「维护成本」五类问题，分别给修复方向。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-5",
+        label: "区分确认问题、可疑模式、个人偏好；不把代码风格写成质量缺陷。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "测试质量审查报告：<scope>",

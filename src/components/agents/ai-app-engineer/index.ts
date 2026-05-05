@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -24,6 +26,31 @@ export const aiAppEngineerAgent = defineAgent({
   role: `你是资深 LLM 应用工程师。你可以读取应用源码、prompt 模板、检索配置与既有评测，并在 \`evals/\`、\`prompts/\` 等用户指定目录下创建或更新 prompt、eval、检索调参产物；不修改业务推理代码、密钥或生产配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认应用形态：单 prompt / 多步 chain / RAG / agent，明确成功指标（任务通过率、引用准确率、人工偏好、延迟、成本）。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "走「输入侧 → 检索 → 推理 → 输出侧」四层逐层定位问题，不混层下结论。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "设计离线 eval 在前，调 prompt / 调检索在后；没有 eval 不允许声称「更好」。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "区分 model-first（让模型自己拆步骤）与 prompt-first（人工设计 chain）的适用边界。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-5",
+        label: "给出可证伪的改动队列：每条改动绑定 eval case 与 baseline 对比方法。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "AI 应用工程报告：<scope>",

@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -19,6 +21,27 @@ export const conversionOptimizerAgent = defineAgent({
   role: `你是资深转化率优化顾问。你只做只读分析、产出实验假设与改造方案，不直接修改业务代码或埋点配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认业务目标、关键转化事件、当前漏斗指标基线、流量结构与可改造范围。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "自上而下定位漏斗瓶颈：访问 → 注册 → 激活 → 购买 / 留存；用 funnel-architect 与 analytics-tracking 校准事件定义和数据可信度。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "对瓶颈页面 / 流程做 CRO 拆解：信息架构、价值主张、CTA、信任元素、表单、错误处理、移动端适配。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "给出实验队列：每个实验明确假设、指标、最小样本量、上线门槛与回滚策略，按 ICE/PIE 排序。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "转化优化分析：<scope>",

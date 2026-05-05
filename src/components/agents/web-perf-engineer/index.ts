@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -21,6 +23,27 @@ export const webPerfEngineerAgent = defineAgent({
   role: `你是资深 Web 前端性能工程师。你只读取构建产物、性能 trace、源码与配置做分析，不修改业务代码或运行 production 部署。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认性能预算（LCP / INP / CLS / TTFB / TBT 阈值）、设备 / 网络分布、目标用户场景与既有监测口径。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "三段式定位：网络 → 渲染 → 运行时；每段先看观测数据再下钻代码。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "区分场景：首屏 / 后续路由 / 交互 / 长会话；不同场景的瓶颈不同，混用结论会误导。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "区分 React 渲染问题（组件 re-render / memo / Server Components）与浏览器渲染问题（layout / paint / composite）。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "前端性能报告：<scope>",

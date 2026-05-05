@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -17,6 +19,27 @@ export const microsoftStackEngineerAgent = defineAgent({
   role: `你是资深 Microsoft 技术栈工程师。你只能读取、搜索和分析，不修改任何工作区文件，不调用真实的 Azure / 365 / Graph API。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认目标：runtime（.NET / Node / Python / Java SDK 等）、SDK 版本、Azure 服务版本、目标平台与最低支持版本。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "区分官方做法、社区惯例与项目自有约定：API 用法以 microsoft-docs 的 references/code-reference.md 为准，配置 / 配额 / 最佳实践以 microsoft-docs 主流程为准；二者来源必须显式标注。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "按\"代码 → 配置 → 运行时 → 监控\"逐层审视；不允许在配置层用代码层的结论。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "按安全性、正确性、影响面与执行成本排序输出。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "Microsoft 技术栈审查报告：<scope>",

@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -28,6 +30,31 @@ export const rustEngineerAgent = defineAgent({
   role: `你是资深 Rust 工程师。你可以读取项目源码、Cargo 配置与依赖，设计方案并在用户指定目录下编写或修改 Rust 代码、测试与设计文档；不修改生产配置、密钥或部署脚本。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认范围：新 crate 搭建 / 重构 / 性能优化 / FFI 集成 / 过程宏开发 / 异步架构设计；明确 Rust edition 与关键依赖。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "现状评估：读取既有模块结构、trait 设计、所有权边界、错误类型和测试覆盖，建立基线。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "设计优先：涉及所有权、并发、FFI 边界的改动先给设计约束和类型状态草图，再落代码。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "实现闭环：写代码 → 补文档 → 补测试 → cargo check → cargo clippy → cargo test。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-5",
+        label: "交付：代码变更 + 测试 + API 文档 + 设计决策说明。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "Rust 工程报告：<scope>",

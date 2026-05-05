@@ -153,16 +153,47 @@ export type AgentOutputFormatDefinition =
       body: string;
     };
 
+export type AgentWorkflowDirection = "TD" | "TB" | "BT" | "RL" | "LR";
+
+export type AgentWorkflowStepDefinition = {
+  id: string;
+  label: string;
+};
+
+export type AgentWorkflowGateDefinition = {
+  id: string;
+  skill: string;
+  label: string;
+  checks: string;
+};
+
+export type AgentWorkflowRouteDefinition = {
+  id: string;
+  triggers: readonly string[];
+  skill: string;
+  checks: string;
+  output: string;
+};
+
+export type AgentWorkflowDefinition = {
+  direction?: AgentWorkflowDirection;
+  steps?: readonly AgentWorkflowStepDefinition[];
+  gates?: readonly AgentWorkflowGateDefinition[];
+  routes?: readonly AgentWorkflowRouteDefinition[];
+  finalSteps?: readonly AgentWorkflowStepDefinition[];
+};
+
 export type AgentDefinition = {
   kind: ComponentKind.Agent;
   id: string;
   description: string;
   role: string;
   platforms: PlatformList;
-  body: ComponentFile;
+  body?: ComponentFile;
   bashBoundary?: AgentBashBoundaryDefinition;
   qualityStandards?: AgentQualityStandardsDefinition;
   outputFormat?: AgentOutputFormatDefinition;
+  workflow?: AgentWorkflowDefinition;
   tools?: readonly ToolMatcher[];
   skills?: readonly AgentSkillUse[];
   sandbox?: AgentSandbox;
@@ -254,6 +285,30 @@ export function defineAgentOutputFormat(
 export function defineAgentOutputSection(
   definition: AgentOutputSectionDefinition,
 ): AgentOutputSectionDefinition {
+  return definition;
+}
+
+export function defineAgentWorkflow(
+  definition: AgentWorkflowDefinition,
+): AgentWorkflowDefinition {
+  return definition;
+}
+
+export function defineAgentWorkflowStep(
+  definition: AgentWorkflowStepDefinition,
+): AgentWorkflowStepDefinition {
+  return definition;
+}
+
+export function defineAgentWorkflowGate(
+  definition: AgentWorkflowGateDefinition,
+): AgentWorkflowGateDefinition {
+  return definition;
+}
+
+export function defineAgentWorkflowRoute(
+  definition: AgentWorkflowRouteDefinition,
+): AgentWorkflowRouteDefinition {
   return definition;
 }
 

@@ -197,6 +197,13 @@ test("component build emits claude and codex component surfaces", () => {
       "utf-8",
     );
     assert.match(typescriptEngineerAgent, /## Bash 使用边界/);
+    assert.match(typescriptEngineerAgent, /## 工作流/);
+    assert.match(typescriptEngineerAgent, /```mermaid\nflowchart TD/);
+    assert.ok(
+      typescriptEngineerAgent.indexOf("## 工作流") <
+        typescriptEngineerAgent.indexOf("## 工作重点"),
+      "generated agent workflow should stay before agent focus sections",
+    );
     assert.ok(
       typescriptEngineerAgent.indexOf("## Bash 使用边界") <
         typescriptEngineerAgent.indexOf("## 输出格式"),
@@ -235,6 +242,11 @@ test("component build emits claude and codex component surfaces", () => {
       /Analyzing Benchmark Results/,
       "analyzer should keep a single output format and one responsibility",
     );
+    const goReviewerAgent = readFileSync(join(tmp, "claude/agents/go-reviewer.md"), "utf-8");
+    assert.match(goReviewerAgent, /## 工作流/);
+    assert.match(goReviewerAgent, /```mermaid\nflowchart TD/);
+    assert.match(goReviewerAgent, /匹配场景路由/);
+    assert.match(goReviewerAgent, /go-concurrency-patterns/);
 
     const codexAgent = readFileSync(join(tmp, "codex/agents/frontend-engineer.toml"), "utf-8");
     assert.match(codexAgent, /name = "frontend-engineer"/);
@@ -378,6 +390,7 @@ test("component build emits claude and codex component surfaces", () => {
 
     for (const agentBodyFile of collectFiles(join(repoRoot, "src/components/agents"), (file) => file.endsWith("AGENT.body.md"))) {
       const source = readFileSync(agentBodyFile, "utf-8");
+      assert.notEqual(source.trim(), "", `${agentBodyFile} should be deleted instead of kept as an empty body placeholder`);
       assert.equal(
         countH2OutsideCodeFence(source, "Bash 使用边界"),
         0,
@@ -393,16 +406,25 @@ test("component build emits claude and codex component surfaces", () => {
         0,
         `${agentBodyFile} should move output format instructions to index.ts outputFormat`,
       );
+      for (const workflowHeading of ["工作方式", "必经门禁", "场景路由", "编排顺序"]) {
+        assert.equal(
+          countH2OutsideCodeFence(source, workflowHeading),
+          0,
+          `${agentBodyFile} should move workflow instructions to index.ts workflow`,
+        );
+      }
     }
 
     let agentQualityStandardsCount = 0;
     let agentOutputFormatCount = 0;
+    let agentWorkflowCount = 0;
     for (const agentSourceFile of collectFiles(join(repoRoot, "src/components/agents"), (file) => file.endsWith("index.ts"))) {
       const source = readFileSync(agentSourceFile, "utf-8");
       const hasBashTool = /\bKnownTool\.Bash\b/.test(source);
       const hasBashBoundary = /\n\s*bashBoundary:\s*\[/.test(source);
       const hasQualityStandards = /\n\s*qualityStandards:\s*\[/.test(source);
       const hasOutputFormat = /\n\s*outputFormat:\s*defineAgentOutputFormat\(\{/.test(source);
+      const hasWorkflow = /\n\s*workflow:\s*defineAgentWorkflow\(\{/.test(source);
       assert.equal(
         hasBashBoundary,
         hasBashTool,
@@ -449,9 +471,35 @@ test("component build emits claude and codex component surfaces", () => {
           );
         }
       }
+      if (hasWorkflow) {
+        agentWorkflowCount += 1;
+        assert.match(
+          source,
+          /defineAgentWorkflow(?:Step|Gate|Route)\(\{/,
+          `${agentSourceFile} should define workflow nodes through defineAgentWorkflow* helpers`,
+        );
+        assert.doesNotMatch(
+          source,
+          /\n\s*workflow:\s*\[/,
+          `${agentSourceFile} should define a single workflow object, not multiple workflows`,
+        );
+        if (/defineAgentWorkflow(?:Gate|Route)\(\{/.test(source)) {
+          assert.doesNotMatch(
+            source,
+            /\n\s*skill:\s*"[^"]+"/,
+            `${agentSourceFile} should reference workflow skills through imported skill definitions`,
+          );
+          assert.match(
+            source,
+            /\n\s*skill:\s*\w+Skill\.id/,
+            `${agentSourceFile} should reference workflow skills through .id`,
+          );
+        }
+      }
     }
     assert.equal(agentQualityStandardsCount, 59);
     assert.equal(agentOutputFormatCount, 62);
+    assert.equal(agentWorkflowCount, 75);
 
     const allowedHookRoots = new Set([
       "_shared",

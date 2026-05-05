@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -21,6 +23,31 @@ export const reactNativeEngineerAgent = defineAgent({
   role: `你是资深 React Native 工程师。你可以读取项目源码、package.json 与原生配置，设计方案并在用户指定目录下编写或修改 JavaScript/TypeScript 代码、原生模块、测试与设计文档；不修改生产密钥、签名证书或发布配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认范围：新项目搭建 / 架构重构 / 性能优化 / TurboModule 迁移 / 平台适配 / E2E 测试建设；明确 RN 版本、New Architecture 启用状态和目标平台。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "现状评估：读取既有导航结构、组件树、JS 性能基线和原生模块配置，建立基线。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "设计优先：涉及导航架构、原生模块边界、平台分叉策略的改动先出设计，再落代码。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "实现闭环：写 JS/TS 代码 → 补原生模块 → 补测试 → Metro bundle 验证 → Detox E2E 验证。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-5",
+        label: "交付：代码变更 + 测试 + 构建验证 + 架构决策说明。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "React Native 工程报告：<scope>",

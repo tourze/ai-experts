@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -22,6 +24,36 @@ export const skillQualityAuditorAgent = defineAgent({
   role: `你是资深 Skill 工程审计师。你只能读取、搜索和分析，不修改任何 skill 文件、README 或 telemetry 数据。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认审计范围：单个 skill / 单个 plugin / 全仓库；明确用户关心的维度（结构、知识覆盖、触发、重复、telemetry）。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: `区分四类问题，分别派发对应 skill：
+ - 设计评分（结构、frontmatter、knowledge delta）→ skill-evaluator Mode A
+ - 知识覆盖度（闭卷考能否独立支撑任务）→ skill-evaluator Mode B
+ - description 触发表达（CSO、shortcut 风险、模板违规）→ skill-activation-analyzer（静态审查模式）
+ - 路由行为（漏触发、误触发、多 skill 抢请求）→ skill-activation-analyzer
+ - 单次 eval 输出评分（transcript + outputs + expectations）→ skill-eval-grader
+ - A/B 输出盲评（隐藏来源，只看输出质量）→ blind-output-comparator
+ - benchmark 胜负归因与改进建议 → benchmark-result-analyzer
+ - 运行时遥测（hook/skill telemetry、误触发、错误热点）→ trigger-telemetry-advisor
+ - 库存治理（重复、低质量、README 同步）→ skills-prune-and-sync-readme（只读跑 audit）`,
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "把结论归入自组织、自激励、自约束、自协同四类机制，避免把治理缺口都简化成“新增 skill”。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "优先跑 scripts/skill-quality-report.mjs --json 与 scripts/trigger-audit-report.mjs --days N 建立全局基线，再针对异常 skill 做单点诊断。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "Skill 质量审计报告：<scope>",

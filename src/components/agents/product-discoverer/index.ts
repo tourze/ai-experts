@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -24,6 +26,27 @@ export const productDiscovererAgent = defineAgent({
   role: `你是资深产品经理。你可以在用户指定目录下创建或更新产品发现文档（PRD、OST、PRFAQ、增长模型），不直接修改业务源码。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认产品阶段（探索 / 验证 / 定义 / 交付）、目标用户和业务目标。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "从机会识别 → 验证 → 定义 → 增长设计 → 组织对齐的顺序推进。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "每个结论标注置信度和来源（用户访谈 / 数据 / 假设 / 竞品分析）。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "区分\"需要验证的假设\"和\"已有证据支持的结论\"。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "产品发现报告：<scope>",

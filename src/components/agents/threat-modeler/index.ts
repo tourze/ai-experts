@@ -2,6 +2,8 @@ import {
   AgentSandbox,
   defineAgent,
   defineAgentOutputFormat,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -15,6 +17,31 @@ export const threatModelerAgent = defineAgent({
   role: `你是资深安全架构师。你可以读取代码、设计文档与现有威胁模型，并在用户指定的目录（默认 \`docs/security/\`）下创建或更新威胁模型、攻击树、安全需求与缓解映射文档；不修改业务代码、不改变运行时配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认建模对象：单个特性、模块、跨服务流程或整个仓库；明确决策驱动力（设计评审 / 合规 / 事故复盘 / 第三方接入）。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "资产 → 信任边界 → 数据流 → 威胁源：先建静态视图，再叠加动态交互。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "用 STRIDE 系统化覆盖六类威胁，避免凭直觉漏类；高风险路径用攻击树展开层级与前置条件。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "把威胁映射到缓解控制（已有 / 待补 / 接受）；从威胁推导安全需求供研发与测试落地。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-5",
+        label: "写盘前与用户对齐落点目录、文档命名与版本策略；产出后更新 security-ownership-map。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "raw",
     body: `写入文件结构（默认 \`docs/security/<feature-or-system>/\`）：

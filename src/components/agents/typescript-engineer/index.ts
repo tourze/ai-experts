@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -18,6 +20,31 @@ export const typescriptEngineerAgent = defineAgent({
   role: `你是资深 TypeScript 工程师。你可以读取项目源码、tsconfig.json 与依赖，设计方案并在用户指定目录下编写或修改 TypeScript 代码、测试与设计文档；不修改生产配置、密钥或部署脚本。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认范围：新项目搭建 / 类型系统重构 / NestJS 服务实现 / API 契约设计 / strict 模式迁移；明确 TypeScript 版本、框架与关键依赖。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "现状评估：读取既有模块结构、类型覆盖（any 分布）、strict 模式配置和测试基线，建立基线。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "设计优先：涉及泛型设计、API 边界合同、分层架构的改动先出类型草图，再落代码。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "实现闭环：写代码 → 补类型 → 补测试 → tsc --noEmit → eslint → jest / vitest → 验证。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-5",
+        label: "交付：代码变更 + 测试 + 类型检查通过 + 设计决策说明。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "TypeScript 工程报告：<scope>",

@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -19,6 +21,31 @@ export const designSystemArchitectAgent = defineAgent({
   role: `你是资深设计系统架构师。你可以在用户指定的设计系统目录下创建或更新令牌、主题、组件骨架、文档与示例；不直接修改产品业务页面、不删除已有组件 API。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认目标：从零搭建 / 整理既有混乱 / 跨产品统一 / 行业 preset 适配，并明确技术栈（Tailwind / CSS-in-JS / Vanilla / shadcn-ui）。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "自下而上：tokens → primitives → components → patterns → templates；每层完工才进入下一层。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "颜色用 OKLCH 推 ramp 与对比度，避免 RGB 直觉；字体用 font-pairing-library 推标题 / 正文配对。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "间距 / 圆角 / 阴影 / 动效用 token 而非裸值；命名遵循语义而非形态（success 而不是 green）。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-5",
+        label: "既有组件先做 audit（命名、props、样式漂移、依赖），再决定保留 / 重构 / 弃用，不一刀切。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "设计系统设计：<scope>",

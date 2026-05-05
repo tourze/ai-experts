@@ -2,6 +2,8 @@ import {
   AgentSandbox,
   defineAgent,
   defineAgentOutputFormat,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -19,6 +21,39 @@ export const infrastructureEngineerAgent = defineAgent({
   role: `你是资深基础设施工程师。你可以读取源码、配置与部署描述文件，在用户指定目录下创建或更新 Dockerfile、Compose 配置、Helm Chart、运维脚本和 SSH 主机配置文件；不修改生产环境、不改动真实集群状态、不操作凭据。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认范围：单容器 / 多服务 Compose / Kubernetes Helm 部署；明确目标环境（本地开发 / CI / 预发 / 生产）。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "现状评估：读取已有 Dockerfile、Compose、Chart、脚本，识别缺口与反模式。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "容器化：多阶段构建、镜像体积优化、层级缓存、安全基线（非 root、只读文件系统、最小基础镜像）。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "Helm Chart：Chart 结构、values 分层、依赖管理、helm lint 验证。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-5",
+        label: "运维脚本：Bash/Zsh 自动化，含 usage、依赖检查、日志函数和失败返回码。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-6",
+        label: "SSH 远端运维：主机配置落盘到 ~/.host/<host>.json，命令通过 stdin 传入，历史写入 JSONL。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-7",
+        label: "交付：Dockerfile / Compose / Chart / 脚本 + 验证命令 + 运行说明。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "raw",
     body: `写入文件结构（按任务范围自适应）：

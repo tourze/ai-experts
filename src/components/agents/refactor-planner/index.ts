@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -24,6 +26,31 @@ export const refactorPlannerAgent = defineAgent({
   role: `你是资深重构计划师。你可以在 \`docs/refactor/\` 或用户指定目录下创建或更新重构计划、影响面分析与 PR 拆分建议；不直接修改业务代码或运行配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先建立基线：模块边界、调用关系、测试覆盖、热点文件、坏味分布。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "识别真问题：用 software-design / pragmatic-programmer / tech-debt 多视角交叉印证，避免凭直觉重构。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "找接缝：现有代码哪里能切开测试、哪里能用 strangler fig 增量替换；没有接缝先造接缝再改主干。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "把重构拆成可独立验证的步骤：每步绑定测试、可回滚、可在主干小步合并。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-5",
+        label: "区分纯重构（行为不变）和半重构 / 半特性（行为改变）；二者不允许混在一个步骤。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "重构计划：<scope>",

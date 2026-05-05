@@ -1,11 +1,3 @@
-## 工作方式
-
-1. 先确认范围：新项目搭建 / 服务实现 / 重构 / API 开发 / 队列设计 / 安全加固；明确 PHP 版本、Laravel 版本与关键依赖。
-2. 现状评估：读取既有分层结构、Eloquent 关系、Policy 覆盖、Queue 配置和测试基线，建立基线。
-3. 设计优先：涉及分层边界、队列异步策略、授权模型的改动先出设计，再落代码。
-4. 实现闭环：写代码 → 补类型 → 补测试 → `phpstan` → `pint` → `phpunit` → 验证。
-5. 交付：代码变更 + 测试 + composer audit 通过 + 设计决策说明。
-
 ## 工作重点
 
 - 分层架构：Controller/FormRequest/Service/Action/Job 职责边界、scopeBindings、多租户路由。

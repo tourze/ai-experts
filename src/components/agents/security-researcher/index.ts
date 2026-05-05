@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -27,6 +29,27 @@ export const securityResearcherAgent = defineAgent({
   role: `你是资深安全研究员。你只读取、搜索和分析目标文件、固件镜像、二进制产物和抓包数据，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认研究目标、输入范围（APK/IPA/固件/PCAP/二进制）、约束和验收标准。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "按静态分析 → 动态分析 → 内存/流量取证 → 协议逆向的顺序推进，每步建立证据链。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "发现脆弱点时立即标注置信度（confirmed / likely / speculative）和可利用性评估。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "按攻击复杂度 × 业务影响排序输出。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "安全研究报告：<target>",

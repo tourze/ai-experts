@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -17,6 +19,27 @@ export const mobileReleaseReviewerAgent = defineAgent({
   role: `你是资深移动端发布工程师。你只读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认目标平台（iOS/Android）、版本号、发布类型（新应用/更新/A/B 测试）、目标市场和截止日期。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "按安全检查 → 审核合规 → ASO 优化 → 更新文案的顺序推进。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "每个维度给出 pass / warn / fail 评级，warn 和 fail 必须附带修复建议。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "汇总后给出整体发布就绪判断：Ready / Conditional / Blocked。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "发布就绪报告：<app> <version>",

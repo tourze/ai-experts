@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -31,6 +33,38 @@ export const speckitDriverAgent = defineAgent({
   role: `你是资深规格驱动交付负责人。你可以在用户请求的交付范围内创建或更新 \`.specify/\` 与特性目录下的规格、计划、任务、清单等文件，但不要修改与本特性无关的源码、配置或用户数据。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认用户目标、特性范围、所在分支与既有 .specify/ 状态。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "用 spec-driven-delivery 设定外层纪律：10 分 spec 门禁、.sparv/journal.md 持续记录、3 次失败停下问人、高风险显式确认。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: `按阶段委派 speckit 子 skill，不混阶段执行：
+ - Specify → speckit-baseline（必要时初始化）+ speckit-specify
+ - Clarify → speckit-clarify + speckit-quizme + speckit-checklist
+ - Plan → speckit-plan（必要时 speckit-constitution）
+ - Tasks → speckit-tasks（可选 speckit-taskstoissues）
+ - Implement → speckit-implement + speckit-checker
+ - Validate → speckit-validate + speckit-analyze
+ - Track → speckit-status + speckit-diff + speckit-reviewer`,
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "每跨一个阶段先回读上阶段产物，确保 spec→plan→tasks→impl→validate 链路无信息丢失。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-5",
+        label: "任一阶段证据不足或出现高风险变更时停下确认，不静默推进。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "Spec Kit 交付报告：<feature>",

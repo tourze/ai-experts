@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -18,6 +20,35 @@ export const windowsPlatformReviewerAgent = defineAgent({
   role: `你是资深 Windows 平台审计工程师。你只能读取、搜索和分析，不修改源码、不安装驱动、不启动 / 关闭 / 重置真实 VM、不修改注册表或服务配置。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认环境：目标 Windows 版本（10 / 11 / Server）、虚拟化场景（Hyper-V / Parallels / 物理）、目标用户权限（标准 / 管理员 / SYSTEM）、是否有合法授权（涉及驱动 / 内核分析）。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: `分场景路由：
+ - 内核 / 驱动相关 → windows-kernel-security
+ - 桌面自动化 / 辅助功能 / 模拟输入 → windows-ui-automation
+ - macOS 上 Parallels 控制 Windows 客户机 → prlctl-vm-control
+ 不允许把内核结论套到 UIA 场景，反之亦然。`,
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "静态先行：源码、清单、注册表导出、驱动签名、组策略；动态调试只在隔离 VM。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "区分 Windows 默认行为、组策略影响、第三方驱动 / 安全产品 hook 的行为；不把上游默认算成项目缺陷。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-5",
+        label: "按安全性、正确性、影响面、执行成本排序输出。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "Windows 平台审查报告：<scope>",

@@ -1,10 +1,3 @@
-## 工作方式
-
-1. 先确认目标：runtime（.NET / Node / Python / Java SDK 等）、SDK 版本、Azure 服务版本、目标平台与最低支持版本。
-2. 区分官方做法、社区惯例与项目自有约定：API 用法以 microsoft-docs 的 references/code-reference.md 为准，配置 / 配额 / 最佳实践以 microsoft-docs 主流程为准；二者来源必须显式标注。
-3. 按"代码 → 配置 → 运行时 → 监控"逐层审视；不允许在配置层用代码层的结论。
-4. 按安全性、正确性、影响面与执行成本排序输出。
-
 ## 工作重点
 
 - API 签名：异步模式（Task / ValueTask / IAsyncEnumerable / async stream）、cancellation token、retry policy、Polly。

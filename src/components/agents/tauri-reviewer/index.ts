@@ -1,6 +1,10 @@
 import {
   AgentSandbox,
   defineAgent,
+  defineAgentWorkflow,
+  defineAgentWorkflowGate,
+  defineAgentWorkflowRoute,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -18,7 +22,88 @@ export const tauriReviewerAgent = defineAgent({
   description: "当需要只读审查 Tauri IPC、权限范围、插件架构、构建配置和前后端边界 时使用。",
   role: `你是资深 Tauri 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。`,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    gates: [
+      defineAgentWorkflowGate({
+        id: "gate-1",
+        skill: tauriV2Skill.id,
+        label: "门禁 1",
+        checks: "项目结构基线：tauri.conf.json、capabilities 声明、Cargo.toml 配置",
+      }),
+      defineAgentWorkflowGate({
+        id: "gate-2",
+        skill: tauriIpcPatternsSkill.id,
+        label: "门禁 2",
+        checks: "IPC 安全基线：command 权限声明、参数校验、错误类型",
+      }),
+      defineAgentWorkflowGate({
+        id: "gate-3",
+        skill: evidenceQualityFrameworkSkill.id,
+        label: "门禁 3",
+        checks: "每条结论标注事实/推断/假设",
+      }),
+    ],
+    routes: [
+      defineAgentWorkflowRoute({
+        id: "route-tauri-ipc-patterns",
+        triggers: ["#[tauri::command]", "invoke"],
+        skill: tauriIpcPatternsSkill.id,
+        checks: "command 签名、判别联合错误、Channel<T> 流、多窗口路由",
+        output: "IPC 审计",
+      }),
+      defineAgentWorkflowRoute({
+        id: "route-tauri-v2",
+        triggers: ["capabilities", "permissions", "windows", "scope"],
+        skill: tauriV2Skill.id,
+        checks: "最小权限、危险命令 opt-in、window scope、CSP 配置",
+        output: "权限安全审计",
+      }),
+      defineAgentWorkflowRoute({
+        id: "route-tauri-react-integration",
+        triggers: ["invoke", "useInvoke", "event"],
+        skill: tauriReactIntegrationSkill.id,
+        checks: "invoke 封装、useInvoke Hook、事件监听生命周期、Router 深链",
+        output: "前端集成审计",
+      }),
+      defineAgentWorkflowRoute({
+        id: "route-tauri-build-packaging",
+        triggers: ["tauri.conf.json", "bundler"],
+        skill: tauriBuildPackagingSkill.id,
+        checks: "bundle 配置、代码签名、公证、自动更新、sidecar",
+        output: "构建打包审计",
+      }),
+      defineAgentWorkflowRoute({
+        id: "route-tauri-plugin-development",
+        triggers: ["Plugin", "Builder", "setup", "on_event"],
+        skill: tauriPluginDevelopmentSkill.id,
+        checks: "插件注册、生命周期钩子、桌面/移动拆分、state 管理",
+        output: "插件架构审计",
+      }),
+    ],
+    finalSteps: [
+      defineAgentWorkflowStep({
+        id: "final-1",
+        label: "门禁：tauri-v2 → tauri-ipc-patterns → 确认基线",
+      }),
+      defineAgentWorkflowStep({
+        id: "final-2",
+        label: "路由：按 diff 内容匹配场景路由表，逐项深入",
+      }),
+      defineAgentWorkflowStep({
+        id: "final-3",
+        label: "证据：每条发现绑定 文件:行 + 代码片段",
+      }),
+      defineAgentWorkflowStep({
+        id: "final-4",
+        label: "标注：事实/推断/假设",
+      }),
+      defineAgentWorkflowStep({
+        id: "final-5",
+        label: "排序：安全（capabilities/权限/command 注入） > 正确性 > 影响面 > 执行成本",
+      }),
+    ],
+  }),
   bashBoundary: [
     "Bash 只用于只读探测、版本查询、git 历史、文件统计或本 agent 明确允许的运行时检查。禁止安装依赖、删除/移动文件、运行破坏性命令，除非本 agent 在特定场景中明确允许。",
   ],

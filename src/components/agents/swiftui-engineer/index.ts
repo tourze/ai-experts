@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -22,6 +24,31 @@ export const swiftuiEngineerAgent = defineAgent({
   role: `你是资深 SwiftUI 工程师。你只读取代码、资源与设计文档做分析，不修改源文件，也不在用户授权外运行模拟器或破坏性命令。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认目标平台（iOS / iPadOS / macOS / visionOS）、最低系统版本、设计语言（HIG / Liquid Glass）与性能预算。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "视图诊断：按数据流（State / Binding / ObservableObject / Observation）→ 视图组合 → 渲染身份 → 性能拐点逐层下钻。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "并发诊断：actor 隔离、async/await、Task 生命周期、MainActor 切换、AsyncSequence 与 backpressure。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "设计合规：HIG / Liquid Glass / macOS HIG 的 token、间距、动效、可访问性逐项核对。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-5",
+        label: "区分必修问题（崩溃、性能拐点、HIG 硬约束）、可选优化（结构性重构）与主观偏好（命名、风格）。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "SwiftUI 工程报告：<scope>",

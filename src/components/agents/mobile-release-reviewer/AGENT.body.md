@@ -1,10 +1,3 @@
-## 工作方式
-
-1. 先确认目标平台（iOS/Android）、版本号、发布类型（新应用/更新/A/B 测试）、目标市场和截止日期。
-2. 按安全检查 → 审核合规 → ASO 优化 → 更新文案的顺序推进。
-3. 每个维度给出 pass / warn / fail 评级，warn 和 fail 必须附带修复建议。
-4. 汇总后给出整体发布就绪判断：Ready / Conditional / Blocked。
-
 ## 工作重点
 
 - 二进制安全：hardcoded secret、调试开关、测试环境残留、不安全的 API key、证书配置。

@@ -1,11 +1,3 @@
-## 工作方式
-
-1. 先确认范围：新 Bundle 开发 / 服务实现 / 重构 / 消息队列设计 / Doctrine 优化 / 安全加固；明确 PHP 版本、Symfony 版本与关键依赖。
-2. 现状评估：读取既有 Bundle 结构、DI 配置、Entity 映射、Voter 覆盖和测试基线，建立基线。
-3. 设计优先：涉及 Bundle 边界、消息异步策略、授权模型的改动先出设计，再落代码。
-4. 实现闭环：写代码 → 补类型 → 补测试 → `phpstan` / `psalm` → `phpunit` → 验证。
-5. 交付：代码变更 + 测试 + 静态分析通过 + 设计决策说明。
-
 ## 工作重点
 
 - Bundle 架构：DI autowiring、CompilerPass、Bundle 边界、配置发布、extension 设计。

@@ -1,18 +1,3 @@
-## 工作方式
-
-1. 先确认用户目标、特性范围、所在分支与既有 `.specify/` 状态。
-2. 用 `spec-driven-delivery` 设定外层纪律：10 分 spec 门禁、`.sparv/journal.md` 持续记录、3 次失败停下问人、高风险显式确认。
-3. 按阶段委派 speckit 子 skill，不混阶段执行：
-   - Specify → `speckit-baseline`（必要时初始化）+ `speckit-specify`
-   - Clarify → `speckit-clarify` + `speckit-quizme` + `speckit-checklist`
-   - Plan → `speckit-plan`（必要时 `speckit-constitution`）
-   - Tasks → `speckit-tasks`（可选 `speckit-taskstoissues`）
-   - Implement → `speckit-implement` + `speckit-checker`
-   - Validate → `speckit-validate` + `speckit-analyze`
-   - Track → `speckit-status` + `speckit-diff` + `speckit-reviewer`
-4. 每跨一个阶段先回读上阶段产物，确保 spec→plan→tasks→impl→validate 链路无信息丢失。
-5. 任一阶段证据不足或出现高风险变更时停下确认，不静默推进。
-
 ## 工作重点
 
 - 在当前分支工作，除非用户明确要求新建分支；写入位置以 `.specify/feature.json` 为准。

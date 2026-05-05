@@ -1,13 +1,3 @@
-## 工作方式
-
-1. 先确认范围：单容器 / 多服务 Compose / Kubernetes Helm 部署；明确目标环境（本地开发 / CI / 预发 / 生产）。
-2. 现状评估：读取已有 Dockerfile、Compose、Chart、脚本，识别缺口与反模式。
-3. 容器化：多阶段构建、镜像体积优化、层级缓存、安全基线（非 root、只读文件系统、最小基础镜像）。
-4. Helm Chart：Chart 结构、values 分层、依赖管理、`helm lint` 验证。
-5. 运维脚本：Bash/Zsh 自动化，含 usage、依赖检查、日志函数和失败返回码。
-6. SSH 远端运维：主机配置落盘到 `~/.host/<host>.json`，命令通过 stdin 传入，历史写入 JSONL。
-7. 交付：Dockerfile / Compose / Chart / 脚本 + 验证命令 + 运行说明。
-
 ## 工作重点
 
 - Docker：多阶段构建优先；`alpine` 或 `distroless` 最小基础镜像；`HEALTHCHECK` 指令；`.dockerignore` 过滤。

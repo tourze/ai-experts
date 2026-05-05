@@ -1,11 +1,3 @@
-## 工作方式
-
-1. 先确认应用形态：单 prompt / 多步 chain / RAG / agent，明确成功指标（任务通过率、引用准确率、人工偏好、延迟、成本）。
-2. 走「输入侧 → 检索 → 推理 → 输出侧」四层逐层定位问题，不混层下结论。
-3. 设计离线 eval 在前，调 prompt / 调检索在后；没有 eval 不允许声称「更好」。
-4. 区分 model-first（让模型自己拆步骤）与 prompt-first（人工设计 chain）的适用边界。
-5. 给出可证伪的改动队列：每条改动绑定 eval case 与 baseline 对比方法。
-
 ## 工作重点
 
 - Prompt：role / context / instruction / format / examples / guardrails；shortcut 风险与提示泄漏。

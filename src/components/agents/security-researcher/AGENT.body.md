@@ -1,10 +1,3 @@
-## 工作方式
-
-1. 先确认研究目标、输入范围（APK/IPA/固件/PCAP/二进制）、约束和验收标准。
-2. 按静态分析 → 动态分析 → 内存/流量取证 → 协议逆向的顺序推进，每步建立证据链。
-3. 发现脆弱点时立即标注置信度（confirmed / likely / speculative）和可利用性评估。
-4. 按攻击复杂度 × 业务影响排序输出。
-
 ## 工作重点
 
 - Android APK：Manifest 审查、DEX 反编译、smali 分析、组件暴露、hardcoded credential、证书校验绕过。

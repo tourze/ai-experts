@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentWorkflow,
+  defineAgentWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -20,6 +22,27 @@ export const incidentResponderAgent = defineAgent({
   role: `你是资深 SRE / 事故应急响应工程师。你只读取日志、metrics、配置和源码，不修改生产环境、不重启服务、不改告警阈值。`,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./AGENT.body.md", import.meta.url),
+  workflow: defineAgentWorkflow({
+    direction: "TD",
+    steps: [
+      defineAgentWorkflowStep({
+        id: "step-1",
+        label: "先确认事故现状：影响面、起始时间、严重度、上下游依赖、用户可见症状。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-2",
+        label: "时间线优先：按 UTC 对齐日志、metrics、deploy / config change、外部事件，构建有序时间线。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-3",
+        label: "根因 vs 触发因素：区分「让事故有可能发生的脆弱性」与「这次触发的具体动作」，不混用。",
+      }),
+      defineAgentWorkflowStep({
+        id: "step-4",
+        label: "先给止血方案再给根因修复：止血在事故窗口内可执行，根因修复进 follow-up。",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "markdown",
     title: "事故响应报告：<incident>",
