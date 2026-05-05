@@ -1,0 +1,188 @@
+import {
+  InvocationPolicy,
+  KnownTool,
+  Platform,
+  defineAsset,
+  defineReference,
+  defineSkill,
+  defineSkillScript,
+  defineSkillScriptRoot,
+} from "../../sdk.js";
+
+export const financialAnalystSkill = defineSkill({
+  id: "financial-analyst",
+  description: "当需要做财报比率分析、DCF 估值、预算偏差或滚动预测时使用。",
+  invocation: InvocationPolicy.ImplicitAndExplicit,
+  platforms: [Platform.Claude, Platform.Codex],
+  body: new URL("./SKILL.body.md", import.meta.url),
+  tools: [],
+  scriptRoots: [
+    defineSkillScriptRoot({
+      source: new URL("./scripts/", import.meta.url),
+      target: "scripts",
+    }),
+  ],
+  scripts: [
+    defineSkillScript({
+      id: "budget-variance-analyzer",
+      entry: new URL("./scripts/budget_variance_analyzer.mjs", import.meta.url),
+      target: "scripts/budget_variance_analyzer.mjs",
+      runtime: "node",
+      bundle: false,
+      description: "Script budget_variance_analyzer.mjs.",
+    }),
+    defineSkillScript({
+      id: "dcf-valuation",
+      entry: new URL("./scripts/dcf_valuation.mjs", import.meta.url),
+      target: "scripts/dcf_valuation.mjs",
+      runtime: "node",
+      bundle: false,
+      description: "Script dcf_valuation.mjs.",
+    }),
+    defineSkillScript({
+      id: "forecast-builder",
+      entry: new URL("./scripts/forecast_builder.mjs", import.meta.url),
+      target: "scripts/forecast_builder.mjs",
+      runtime: "node",
+      bundle: false,
+      description: "Script forecast_builder.mjs.",
+    }),
+    defineSkillScript({
+      id: "ratio-calculator",
+      entry: new URL("./scripts/ratio_calculator.mjs", import.meta.url),
+      target: "scripts/ratio_calculator.mjs",
+      runtime: "node",
+      bundle: false,
+      description: "Script ratio_calculator.mjs.",
+    }),
+    defineSkillScript({
+      id: "ratio-input-validation",
+      entry: new URL("./scripts/ratio_input_validation.mjs", import.meta.url),
+      target: "scripts/ratio_input_validation.mjs",
+      runtime: "node",
+      bundle: false,
+      description: "Script ratio_input_validation.mjs.",
+    })
+  ],
+  references: [
+    defineReference({
+      id: "creating-financial-models",
+      source: new URL("./references/creating-financial-models.md", import.meta.url),
+      target: "references/creating-financial-models.md",
+      title: "creating-financial-models.md",
+      summary: "Reference material for financial-analyst.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "financial-ratios-guide",
+      source: new URL("./references/financial-ratios-guide.md", import.meta.url),
+      target: "references/financial-ratios-guide.md",
+      title: "financial-ratios-guide.md",
+      summary: "Reference material for financial-analyst.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "forecasting-best-practices",
+      source: new URL("./references/forecasting-best-practices.md", import.meta.url),
+      target: "references/forecasting-best-practices.md",
+      title: "forecasting-best-practices.md",
+      summary: "Reference material for financial-analyst.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "industry-adaptations",
+      source: new URL("./references/industry-adaptations.md", import.meta.url),
+      target: "references/industry-adaptations.md",
+      title: "industry-adaptations.md",
+      summary: "Reference material for financial-analyst.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "kelly-sizing",
+      source: new URL("./references/kelly-sizing.md", import.meta.url),
+      target: "references/kelly-sizing.md",
+      title: "kelly-sizing.md",
+      summary: "Reference material for financial-analyst.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "risk-metrics-calculation",
+      source: new URL("./references/risk-metrics-calculation.md", import.meta.url),
+      target: "references/risk-metrics-calculation.md",
+      title: "risk-metrics-calculation.md",
+      summary: "Reference material for financial-analyst.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "saas-metrics",
+      source: new URL("./references/saas-metrics.md", import.meta.url),
+      target: "references/saas-metrics.md",
+      title: "saas-metrics.md",
+      summary: "Reference material for financial-analyst.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "valuation-methodology",
+      source: new URL("./references/valuation-methodology.md", import.meta.url),
+      target: "references/valuation-methodology.md",
+      title: "valuation-methodology.md",
+      summary: "Reference material for financial-analyst.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "evals",
+      source: new URL("./evals/", import.meta.url),
+      target: "references/evals",
+      title: "Eval Cases",
+      summary: "Eval cases for financial-analyst.",
+      loadWhen: "Read only when validating or improving this skill.",
+    })
+  ],
+  assets: [
+    defineAsset({
+      id: "budget-variance-sample",
+      source: new URL("./assets/budget_variance_sample.json", import.meta.url),
+      target: "assets/budget_variance_sample.json",
+    }),
+    defineAsset({
+      id: "dcf-analysis-template",
+      source: new URL("./assets/dcf_analysis_template.md", import.meta.url),
+      target: "assets/dcf_analysis_template.md",
+    }),
+    defineAsset({
+      id: "dcf-valuation-sample",
+      source: new URL("./assets/dcf_valuation_sample.json", import.meta.url),
+      target: "assets/dcf_valuation_sample.json",
+    }),
+    defineAsset({
+      id: "expected-output",
+      source: new URL("./assets/expected_output.json", import.meta.url),
+      target: "assets/expected_output.json",
+    }),
+    defineAsset({
+      id: "forecast-report-template",
+      source: new URL("./assets/forecast_report_template.md", import.meta.url),
+      target: "assets/forecast_report_template.md",
+    }),
+    defineAsset({
+      id: "forecast-sample",
+      source: new URL("./assets/forecast_sample.json", import.meta.url),
+      target: "assets/forecast_sample.json",
+    }),
+    defineAsset({
+      id: "ratio-analysis-sample",
+      source: new URL("./assets/ratio_analysis_sample.json", import.meta.url),
+      target: "assets/ratio_analysis_sample.json",
+    }),
+    defineAsset({
+      id: "sample-financial-data",
+      source: new URL("./assets/sample_financial_data.json", import.meta.url),
+      target: "assets/sample_financial_data.json",
+    }),
+    defineAsset({
+      id: "variance-report-template",
+      source: new URL("./assets/variance_report_template.md", import.meta.url),
+      target: "assets/variance_report_template.md",
+    })
+  ],
+});

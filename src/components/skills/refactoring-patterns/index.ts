@@ -1,0 +1,82 @@
+import {
+  InvocationPolicy,
+  KnownTool,
+  Platform,
+  defineReference,
+  defineSkill,
+} from "../../sdk.js";
+
+export const refactoringPatternsSkill = defineSkill({
+  id: "refactoring-patterns",
+  description: "当用户要选择命名化重构手法、处理代码异味或在不改行为下改结构时使用。纯格式整理或单次重命名不需要。",
+  invocation: InvocationPolicy.ImplicitAndExplicit,
+  platforms: [Platform.Claude, Platform.Codex],
+  body: new URL("./SKILL.body.md", import.meta.url),
+  tools: [],
+  references: [
+    defineReference({
+      id: "composing-methods",
+      source: new URL("./references/composing-methods.md", import.meta.url),
+      target: "references/composing-methods.md",
+      title: "composing-methods.md",
+      summary: "Reference material for refactoring-patterns.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "moving-features",
+      source: new URL("./references/moving-features.md", import.meta.url),
+      target: "references/moving-features.md",
+      title: "moving-features.md",
+      summary: "Reference material for refactoring-patterns.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "organizing-data",
+      source: new URL("./references/organizing-data.md", import.meta.url),
+      target: "references/organizing-data.md",
+      title: "organizing-data.md",
+      summary: "Reference material for refactoring-patterns.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "refactoring-workflow",
+      source: new URL("./references/refactoring-workflow.md", import.meta.url),
+      target: "references/refactoring-workflow.md",
+      title: "refactoring-workflow.md",
+      summary: "Reference material for refactoring-patterns.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "seam-ripper",
+      source: new URL("./references/seam-ripper.md", import.meta.url),
+      target: "references/seam-ripper.md",
+      title: "seam-ripper.md",
+      summary: "Reference material for refactoring-patterns.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "simplifying-conditionals",
+      source: new URL("./references/simplifying-conditionals.md", import.meta.url),
+      target: "references/simplifying-conditionals.md",
+      title: "simplifying-conditionals.md",
+      summary: "Reference material for refactoring-patterns.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "smell-catalog",
+      source: new URL("./references/smell-catalog.md", import.meta.url),
+      target: "references/smell-catalog.md",
+      title: "smell-catalog.md",
+      summary: "Reference material for refactoring-patterns.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "evals",
+      source: new URL("./evals/", import.meta.url),
+      target: "references/evals",
+      title: "Eval Cases",
+      summary: "Eval cases for refactoring-patterns.",
+      loadWhen: "Read only when validating or improving this skill.",
+    })
+  ],
+});

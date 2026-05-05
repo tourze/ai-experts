@@ -1,0 +1,26 @@
+import {
+  InvocationPolicy,
+  KnownTool,
+  Platform,
+  defineReference,
+  defineSkill,
+} from "../../sdk.js";
+
+export const codeReviewAgentFrameworkSkill = defineSkill({
+  id: "code-review-agent-framework",
+  description: "当编写或维护只读 reviewer agent 时使用，提供跨语言代码审查的共享触发门禁、只读边界和证据绑定规则。",
+  invocation: InvocationPolicy.ImplicitAndExplicit,
+  platforms: [Platform.Claude, Platform.Codex],
+  body: new URL("./SKILL.body.md", import.meta.url),
+  tools: [],
+  references: [
+    defineReference({
+      id: "evals",
+      source: new URL("./evals/", import.meta.url),
+      target: "references/evals",
+      title: "Eval Cases",
+      summary: "Eval cases for code-review-agent-framework.",
+      loadWhen: "Read only when validating or improving this skill.",
+    })
+  ],
+});

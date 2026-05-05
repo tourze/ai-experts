@@ -2,22 +2,22 @@
   "name": "ai-experts",
   "private": true,
   "type": "module",
-  "description": "Claude Code 插件集合（55 个领域专家），通过本地 install.mjs 软链到 ~/.claude 与 ~/.codex；本 package.json 仅作为开发态元数据，不发 npm。",
+  "description": "Claude Code 与 Codex CLI 的本地 AI 能力组件库；src/components 编译到 dist/claude 与 dist/codex。",
   "engines": {
     "node": ">=20"
   },
   "scripts": {
-    "test": "node --test tests/*.test.mjs",
-    "audit:skills": "node scripts/skill-quality-report.mjs",
-    "audit:triggers": "node scripts/trigger-audit-report.mjs",
-    "audit:hooks": "node scripts/hook-telemetry-report.mjs",
-    "audit:evals": "node scripts/audit-skill-evals.mjs",
-    "install:dry": "node scripts/install.mjs --dry-run",
-    "install:local": "node scripts/install.mjs"
+    "test": "npm run test:components",
+    "test:components": "node --test tests/component-build.test.mjs",
+    "build:components": "node scripts/build-components.mjs",
+    "check:components": "node scripts/build-components.mjs --check"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tourze/ai-experts.git"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
 }

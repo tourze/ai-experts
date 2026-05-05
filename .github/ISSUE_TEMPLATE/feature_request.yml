@@ -1,5 +1,5 @@
 name: 特性建议
-description: 提议新增 skill / hook / agent 或现有插件的行为改动
+description: 提议新增 skill / hook / agent 或现有组件的行为改动
 title: "[feature] "
 labels:
   - enhancement
@@ -26,10 +26,11 @@ body:
       label: 形态
       description: 你倾向于哪种实现形态？
       options:
-        - 在已有插件里新增 skill
-        - 在已有插件里新增 / 调整 hook
-        - 新建插件
-        - 修改 install / sync 脚本
+        - 新增 / 修改 skill
+        - 新增 / 修改 agent
+        - 新增 / 修改 hook
+        - 修改 profile / instruction
+        - 修改组件构建器
         - 其它（在下方说明）
     validations:
       required: true

@@ -1,0 +1,74 @@
+import {
+  InvocationPolicy,
+  KnownTool,
+  Platform,
+  defineReference,
+  defineSkill,
+} from "../../sdk.js";
+
+export const contentStrategySkill = defineSkill({
+  id: "content-strategy",
+  description: "当用户要制定内容策略、栏目规划、内容支柱、选题池、编辑节奏、内容多平台分发改编、主题集群设计，或 SEO 内容质量评分时使用。",
+  invocation: InvocationPolicy.ImplicitAndExplicit,
+  platforms: [Platform.Claude, Platform.Codex],
+  body: new URL("./SKILL.body.md", import.meta.url),
+  tools: [],
+  references: [
+    defineReference({
+      id: "content-calendar-methodology",
+      source: new URL("./references/content-calendar-methodology.md", import.meta.url),
+      target: "references/content-calendar-methodology.md",
+      title: "content-calendar-methodology.md",
+      summary: "Reference material for content-strategy.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "content-repurpose",
+      source: new URL("./references/content-repurpose.md", import.meta.url),
+      target: "references/content-repurpose.md",
+      title: "content-repurpose.md",
+      summary: "Reference material for content-strategy.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "domain-name-brainstormer",
+      source: new URL("./references/domain-name-brainstormer.md", import.meta.url),
+      target: "references/domain-name-brainstormer.md",
+      title: "domain-name-brainstormer.md",
+      summary: "Reference material for content-strategy.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "headless-cms",
+      source: new URL("./references/headless-cms.md", import.meta.url),
+      target: "references/headless-cms.md",
+      title: "headless-cms.md",
+      summary: "Reference material for content-strategy.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "seo-content-scoring",
+      source: new URL("./references/seo-content-scoring.md", import.meta.url),
+      target: "references/seo-content-scoring.md",
+      title: "seo-content-scoring.md",
+      summary: "Reference material for content-strategy.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "topic-cluster",
+      source: new URL("./references/topic-cluster.md", import.meta.url),
+      target: "references/topic-cluster.md",
+      title: "topic-cluster.md",
+      summary: "Reference material for content-strategy.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "evals",
+      source: new URL("./evals/", import.meta.url),
+      target: "references/evals",
+      title: "Eval Cases",
+      summary: "Eval cases for content-strategy.",
+      loadWhen: "Read only when validating or improving this skill.",
+    })
+  ],
+});

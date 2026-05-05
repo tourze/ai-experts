@@ -16,3 +16,5 @@ skills/.system/
 !.env.sample
 
 .claude/agent-memory/
+
+dist/

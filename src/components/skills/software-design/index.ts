@@ -1,0 +1,82 @@
+import {
+  InvocationPolicy,
+  KnownTool,
+  Platform,
+  defineReference,
+  defineSkill,
+} from "../../sdk.js";
+
+export const softwareDesignSkill = defineSkill({
+  id: "software-design",
+  description: "当需要拆分职责、设计服务层、减少耦合、在组合与继承之间做选择，或从复杂度、深模块、信息隐藏角度评价设计时使用。语言无关的通用设计原则与架构模式。",
+  invocation: InvocationPolicy.ImplicitAndExplicit,
+  platforms: [Platform.Claude, Platform.Codex],
+  body: new URL("./SKILL.body.md", import.meta.url),
+  tools: [],
+  references: [
+    defineReference({
+      id: "anti-patterns",
+      source: new URL("./references/anti-patterns.md", import.meta.url),
+      target: "references/anti-patterns.md",
+      title: "anti-patterns.md",
+      summary: "Reference material for software-design.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "comments-as-design",
+      source: new URL("./references/comments-as-design.md", import.meta.url),
+      target: "references/comments-as-design.md",
+      title: "comments-as-design.md",
+      summary: "Reference material for software-design.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "complexity-symptoms",
+      source: new URL("./references/complexity-symptoms.md", import.meta.url),
+      target: "references/complexity-symptoms.md",
+      title: "complexity-symptoms.md",
+      summary: "Reference material for software-design.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "deep-modules",
+      source: new URL("./references/deep-modules.md", import.meta.url),
+      target: "references/deep-modules.md",
+      title: "deep-modules.md",
+      summary: "Reference material for software-design.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "general-vs-special",
+      source: new URL("./references/general-vs-special.md", import.meta.url),
+      target: "references/general-vs-special.md",
+      title: "general-vs-special.md",
+      summary: "Reference material for software-design.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "information-hiding",
+      source: new URL("./references/information-hiding.md", import.meta.url),
+      target: "references/information-hiding.md",
+      title: "information-hiding.md",
+      summary: "Reference material for software-design.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "strategic-programming",
+      source: new URL("./references/strategic-programming.md", import.meta.url),
+      target: "references/strategic-programming.md",
+      title: "strategic-programming.md",
+      summary: "Reference material for software-design.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "evals",
+      source: new URL("./evals/", import.meta.url),
+      target: "references/evals",
+      title: "Eval Cases",
+      summary: "Eval cases for software-design.",
+      loadWhen: "Read only when validating or improving this skill.",
+    })
+  ],
+});

@@ -1,0 +1,82 @@
+import {
+  InvocationPolicy,
+  KnownTool,
+  Platform,
+  defineReference,
+  defineSkill,
+} from "../../sdk.js";
+
+export const uxHeuristicsSkill = defineSkill({
+  id: "ux-heuristics",
+  description: "当用户需要诊断界面可用性问题或做启发式评估时使用（交互层：导航混乱、表单阻塞、信息架构复盘）。产品策略级设计审视用 `product-design-critic`；UI 实现质量审查用 `frontend-design-review`。",
+  invocation: InvocationPolicy.ImplicitAndExplicit,
+  platforms: [Platform.Claude, Platform.Codex],
+  body: new URL("./SKILL.body.md", import.meta.url),
+  tools: [],
+  references: [
+    defineReference({
+      id: "audit-template",
+      source: new URL("./references/audit-template.md", import.meta.url),
+      target: "references/audit-template.md",
+      title: "audit-template.md",
+      summary: "Reference material for ux-heuristics.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "cultural-ux",
+      source: new URL("./references/cultural-ux.md", import.meta.url),
+      target: "references/cultural-ux.md",
+      title: "cultural-ux.md",
+      summary: "Reference material for ux-heuristics.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "dark-patterns",
+      source: new URL("./references/dark-patterns.md", import.meta.url),
+      target: "references/dark-patterns.md",
+      title: "dark-patterns.md",
+      summary: "Reference material for ux-heuristics.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "heuristic-conflicts",
+      source: new URL("./references/heuristic-conflicts.md", import.meta.url),
+      target: "references/heuristic-conflicts.md",
+      title: "heuristic-conflicts.md",
+      summary: "Reference material for ux-heuristics.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "krug-principles",
+      source: new URL("./references/krug-principles.md", import.meta.url),
+      target: "references/krug-principles.md",
+      title: "krug-principles.md",
+      summary: "Reference material for ux-heuristics.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "nielsen-heuristics",
+      source: new URL("./references/nielsen-heuristics.md", import.meta.url),
+      target: "references/nielsen-heuristics.md",
+      title: "nielsen-heuristics.md",
+      summary: "Reference material for ux-heuristics.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "wcag-checklist",
+      source: new URL("./references/wcag-checklist.md", import.meta.url),
+      target: "references/wcag-checklist.md",
+      title: "wcag-checklist.md",
+      summary: "Reference material for ux-heuristics.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "evals",
+      source: new URL("./evals/", import.meta.url),
+      target: "references/evals",
+      title: "Eval Cases",
+      summary: "Eval cases for ux-heuristics.",
+      loadWhen: "Read only when validating or improving this skill.",
+    })
+  ],
+});

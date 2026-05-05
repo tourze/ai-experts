@@ -1,0 +1,82 @@
+import {
+  InvocationPolicy,
+  KnownTool,
+  Platform,
+  defineReference,
+  defineSkill,
+} from "../../sdk.js";
+
+export const createPrdSkill = defineSkill({
+  id: "create-prd",
+  description: "当用户需要撰写或重构 PRD、功能规格说明或需求文档、做 Epic 分解、按 INVEST 编写用户故事或 MVP 范围取舍时使用。",
+  invocation: InvocationPolicy.ImplicitAndExplicit,
+  platforms: [Platform.Claude, Platform.Codex],
+  body: new URL("./SKILL.body.md", import.meta.url),
+  tools: [],
+  references: [
+    defineReference({
+      id: "epic-decomposition-patterns",
+      source: new URL("./references/epic-decomposition-patterns.md", import.meta.url),
+      target: "references/epic-decomposition-patterns.md",
+      title: "epic-decomposition-patterns.md",
+      summary: "Reference material for create-prd.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "epic-decomposition",
+      source: new URL("./references/epic-decomposition.md", import.meta.url),
+      target: "references/epic-decomposition.md",
+      title: "epic-decomposition.md",
+      summary: "Reference material for create-prd.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "scoping-cutting",
+      source: new URL("./references/scoping-cutting.md", import.meta.url),
+      target: "references/scoping-cutting.md",
+      title: "scoping-cutting.md",
+      summary: "Reference material for create-prd.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "scoping-guest-insights",
+      source: new URL("./references/scoping-guest-insights.md", import.meta.url),
+      target: "references/scoping-guest-insights.md",
+      title: "scoping-guest-insights.md",
+      summary: "Reference material for create-prd.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "user-story-invest-checklist",
+      source: new URL("./references/user-story-invest-checklist.md", import.meta.url),
+      target: "references/user-story-invest-checklist.md",
+      title: "user-story-invest-checklist.md",
+      summary: "Reference material for create-prd.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "user-story-patterns",
+      source: new URL("./references/user-story-patterns.md", import.meta.url),
+      target: "references/user-story-patterns.md",
+      title: "user-story-patterns.md",
+      summary: "Reference material for create-prd.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "user-story-splitting-patterns",
+      source: new URL("./references/user-story-splitting-patterns.md", import.meta.url),
+      target: "references/user-story-splitting-patterns.md",
+      title: "user-story-splitting-patterns.md",
+      summary: "Reference material for create-prd.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "evals",
+      source: new URL("./evals/", import.meta.url),
+      target: "references/evals",
+      title: "Eval Cases",
+      summary: "Eval cases for create-prd.",
+      loadWhen: "Read only when validating or improving this skill.",
+    })
+  ],
+});

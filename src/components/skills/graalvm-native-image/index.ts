@@ -1,0 +1,74 @@
+import {
+  InvocationPolicy,
+  KnownTool,
+  Platform,
+  defineReference,
+  defineSkill,
+} from "../../sdk.js";
+
+export const graalvmNativeImageSkill = defineSkill({
+  id: "graalvm-native-image",
+  description: "当需要构建或排障 GraalVM Native Image 时使用。",
+  invocation: InvocationPolicy.ImplicitAndExplicit,
+  platforms: [Platform.Claude, Platform.Codex],
+  body: new URL("./SKILL.body.md", import.meta.url),
+  tools: [],
+  references: [
+    defineReference({
+      id: "gradle-native-plugin",
+      source: new URL("./references/gradle-native-plugin.md", import.meta.url),
+      target: "references/gradle-native-plugin.md",
+      title: "gradle-native-plugin.md",
+      summary: "Reference material for graalvm-native-image.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "maven-native-profile",
+      source: new URL("./references/maven-native-profile.md", import.meta.url),
+      target: "references/maven-native-profile.md",
+      title: "maven-native-profile.md",
+      summary: "Reference material for graalvm-native-image.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "quarkus-micronaut-native",
+      source: new URL("./references/quarkus-micronaut-native.md", import.meta.url),
+      target: "references/quarkus-micronaut-native.md",
+      title: "quarkus-micronaut-native.md",
+      summary: "Reference material for graalvm-native-image.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "reflection-resource-config",
+      source: new URL("./references/reflection-resource-config.md", import.meta.url),
+      target: "references/reflection-resource-config.md",
+      title: "reflection-resource-config.md",
+      summary: "Reference material for graalvm-native-image.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "spring-boot-native",
+      source: new URL("./references/spring-boot-native.md", import.meta.url),
+      target: "references/spring-boot-native.md",
+      title: "spring-boot-native.md",
+      summary: "Reference material for graalvm-native-image.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "tracing-agent",
+      source: new URL("./references/tracing-agent.md", import.meta.url),
+      target: "references/tracing-agent.md",
+      title: "tracing-agent.md",
+      summary: "Reference material for graalvm-native-image.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "evals",
+      source: new URL("./evals/", import.meta.url),
+      target: "references/evals",
+      title: "Eval Cases",
+      summary: "Eval cases for graalvm-native-image.",
+      loadWhen: "Read only when validating or improving this skill.",
+    })
+  ],
+});

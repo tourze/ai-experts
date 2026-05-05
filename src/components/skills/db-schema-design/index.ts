@@ -1,0 +1,82 @@
+import {
+  InvocationPolicy,
+  KnownTool,
+  Platform,
+  defineReference,
+  defineSkill,
+} from "../../sdk.js";
+
+export const dbSchemaDesignSkill = defineSkill({
+  id: "db-schema-design",
+  description: "当用户要设计或审查数据库表结构、列类型、约束、字符集、JSON 列或半结构化数据建模时使用。",
+  invocation: InvocationPolicy.ImplicitAndExplicit,
+  platforms: [Platform.Claude, Platform.Codex],
+  body: new URL("./SKILL.body.md", import.meta.url),
+  tools: [],
+  references: [
+    defineReference({
+      id: "code-patterns",
+      source: new URL("./references/code-patterns.md", import.meta.url),
+      target: "references/code-patterns.md",
+      title: "code-patterns.md",
+      summary: "Reference material for db-schema-design.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "json-patterns",
+      source: new URL("./references/json-patterns.md", import.meta.url),
+      target: "references/json-patterns.md",
+      title: "json-patterns.md",
+      summary: "Reference material for db-schema-design.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "mysql-json-generated-columns",
+      source: new URL("./references/mysql-json-generated-columns.md", import.meta.url),
+      target: "references/mysql-json-generated-columns.md",
+      title: "mysql-json-generated-columns.md",
+      summary: "Reference material for db-schema-design.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "mysql-schema-design",
+      source: new URL("./references/mysql-schema-design.md", import.meta.url),
+      target: "references/mysql-schema-design.md",
+      title: "mysql-schema-design.md",
+      summary: "Reference material for db-schema-design.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "pgsql-jsonb-patterns",
+      source: new URL("./references/pgsql-jsonb-patterns.md", import.meta.url),
+      target: "references/pgsql-jsonb-patterns.md",
+      title: "pgsql-jsonb-patterns.md",
+      summary: "Reference material for db-schema-design.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "pgsql-schema-design",
+      source: new URL("./references/pgsql-schema-design.md", import.meta.url),
+      target: "references/pgsql-schema-design.md",
+      title: "pgsql-schema-design.md",
+      summary: "Reference material for db-schema-design.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "type-selection",
+      source: new URL("./references/type-selection.md", import.meta.url),
+      target: "references/type-selection.md",
+      title: "type-selection.md",
+      summary: "Reference material for db-schema-design.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "evals",
+      source: new URL("./evals/", import.meta.url),
+      target: "references/evals",
+      title: "Eval Cases",
+      summary: "Eval cases for db-schema-design.",
+      loadWhen: "Read only when validating or improving this skill.",
+    })
+  ],
+});

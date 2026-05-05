@@ -5,18 +5,19 @@
 
 ## 影响范围
 
-- 涉及插件：
+- 涉及组件：
 - 是否新增 / 修改 / 删除 skill：
-- 是否触及 hooks（含 dispatch）：
-- 是否影响 `install.mjs` / sync 脚本：
+- 是否新增 / 修改 / 删除 agent：
+- 是否触及 hooks / dispatcher：
+- 是否影响 `dist/claude` / `dist/codex` 输出：
 
 ## 必跑清单
 
 - [ ] `npm test`
-- [ ] `npm run install:dry`
-- [ ] 新增 / 修改 skill 已有对应 trigger eval 或测试
-- [ ] 新增插件已在 `CLAUDE.md` 的"已声明的插件依赖"段落补充依赖声明
-- [ ] 改动未跨插件 import 其他插件源码（自包含约束）
+- [ ] `npm run check:components`
+- [ ] `npm run build:components`
+- [ ] 新增 / 修改 skill 已登记 scripts / references / assets
+- [ ] agent/profile 通过 import 后读取 `.id` 引用 skill，不在引用处手写 skill id
 
 ## 风险
 

@@ -1,0 +1,148 @@
+import {
+  InvocationPolicy,
+  KnownTool,
+  Platform,
+  defineAsset,
+  defineReference,
+  defineSkill,
+  defineSkillScript,
+  defineSkillScriptRoot,
+} from "../../sdk.js";
+
+export const architectureReviewerSkill = defineSkill({
+  id: "architecture-reviewer",
+  description: "当用户要评审架构设计、代码库结构、技术文档或企业就绪风险时使用。",
+  invocation: InvocationPolicy.ImplicitAndExplicit,
+  platforms: [Platform.Claude, Platform.Codex],
+  body: new URL("./SKILL.body.md", import.meta.url),
+  tools: [],
+  scriptRoots: [
+    defineSkillScriptRoot({
+      source: new URL("./scripts/", import.meta.url),
+      target: "scripts",
+    }),
+  ],
+  scripts: [
+    defineSkillScript({
+      id: "scan-codebase",
+      entry: new URL("./scripts/scan_codebase.mjs", import.meta.url),
+      target: "scripts/scan_codebase.mjs",
+      runtime: "node",
+      bundle: false,
+      description: "Script scan_codebase.mjs.",
+    })
+  ],
+  references: [
+    defineReference({
+      id: "architecture-blueprint-generator",
+      source: new URL("./references/architecture-blueprint-generator.md", import.meta.url),
+      target: "references/architecture-blueprint-generator.md",
+      title: "architecture-blueprint-generator.md",
+      summary: "Reference material for architecture-reviewer.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "architecture-diagram",
+      source: new URL("./references/architecture-diagram.md", import.meta.url),
+      target: "references/architecture-diagram.md",
+      title: "architecture-diagram.md",
+      summary: "Reference material for architecture-reviewer.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "codebase-signals",
+      source: new URL("./references/codebase-signals.md", import.meta.url),
+      target: "references/codebase-signals.md",
+      title: "codebase-signals.md",
+      summary: "Reference material for architecture-reviewer.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "data-architecture",
+      source: new URL("./references/data-architecture.md", import.meta.url),
+      target: "references/data-architecture.md",
+      title: "data-architecture.md",
+      summary: "Reference material for architecture-reviewer.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "document-review-guide",
+      source: new URL("./references/document-review-guide.md", import.meta.url),
+      target: "references/document-review-guide.md",
+      title: "document-review-guide.md",
+      summary: "Reference material for architecture-reviewer.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "enterprise-readiness",
+      source: new URL("./references/enterprise-readiness.md", import.meta.url),
+      target: "references/enterprise-readiness.md",
+      title: "enterprise-readiness.md",
+      summary: "Reference material for architecture-reviewer.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "operational-excellence",
+      source: new URL("./references/operational-excellence.md", import.meta.url),
+      target: "references/operational-excellence.md",
+      title: "operational-excellence.md",
+      summary: "Reference material for architecture-reviewer.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "performance",
+      source: new URL("./references/performance.md", import.meta.url),
+      target: "references/performance.md",
+      title: "performance.md",
+      summary: "Reference material for architecture-reviewer.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "scalability",
+      source: new URL("./references/scalability.md", import.meta.url),
+      target: "references/scalability.md",
+      title: "scalability.md",
+      summary: "Reference material for architecture-reviewer.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "scoring-rubric",
+      source: new URL("./references/scoring-rubric.md", import.meta.url),
+      target: "references/scoring-rubric.md",
+      title: "scoring-rubric.md",
+      summary: "Reference material for architecture-reviewer.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "security",
+      source: new URL("./references/security.md", import.meta.url),
+      target: "references/security.md",
+      title: "security.md",
+      summary: "Reference material for architecture-reviewer.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "structural-integrity",
+      source: new URL("./references/structural-integrity.md", import.meta.url),
+      target: "references/structural-integrity.md",
+      title: "structural-integrity.md",
+      summary: "Reference material for architecture-reviewer.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "evals",
+      source: new URL("./evals/", import.meta.url),
+      target: "references/evals",
+      title: "Eval Cases",
+      summary: "Eval cases for architecture-reviewer.",
+      loadWhen: "Read only when validating or improving this skill.",
+    })
+  ],
+  assets: [
+    defineAsset({
+      id: "report-template",
+      source: new URL("./assets/report-template.md", import.meta.url),
+      target: "assets/report-template.md",
+    })
+  ],
+});

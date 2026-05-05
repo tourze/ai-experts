@@ -13,11 +13,11 @@ body:
       required: true
 
   - type: input
-    id: plugin
+    id: component
     attributes:
-      label: 涉及的插件 / skill / hook
-      description: 例如 `coding-expert/complexity-reducer` 或 `react-expert/react-hooks`
-      placeholder: plugin-name/skill-or-hook-name
+      label: 涉及的组件 / skill / hook
+      description: 例如 `typescript-type-safety`、`typescript-reviewer` 或某个 hook id
+      placeholder: component-or-skill-name
     validations:
       required: true
 
@@ -41,7 +41,7 @@ body:
         - Claude Code / Codex CLI 版本
         - Node.js 版本（`node --version`）
         - 操作系统
-        - 通过 `scripts/install.mjs` 还是其它方式安装
+        - 使用的 `dist/claude` / `dist/codex` 产物版本或提交
       placeholder: |
         - Claude Code: 2.x.x
         - Node: v20.x.x

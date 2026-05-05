@@ -26,22 +26,3 @@ jobs:
 
       - name: 跑测试套件
         run: npm test
-
-  install-dry-run:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: install.mjs --dry-run（隔离目标，验证脚本不崩溃）
-        env:
-          CLAUDE_MEMORY_TARGET: ${{ runner.temp }}/fake-claude/CLAUDE.md
-          CODEX_MEMORY_TARGET: ${{ runner.temp }}/fake-codex/AGENTS.md
-          CODEX_HOME: ${{ runner.temp }}/fake-codex
-          CC_TARGET: ${{ runner.temp }}/fake-claude/skills
-          CODEX_TARGET: ${{ runner.temp }}/fake-codex/skills
-        run: npm run install:dry

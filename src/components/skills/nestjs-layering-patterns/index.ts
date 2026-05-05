@@ -1,0 +1,82 @@
+import {
+  InvocationPolicy,
+  KnownTool,
+  Platform,
+  defineReference,
+  defineSkill,
+} from "../../sdk.js";
+
+export const nestjsLayeringPatternsSkill = defineSkill({
+  id: "nestjs-layering-patterns",
+  description: "当需要设计或审查 NestJS 模块分层、DTO/ValidationPipe 输入边界、依赖注入或 Guard/Interceptor/Pipe 装配时使用。",
+  invocation: InvocationPolicy.ImplicitAndExplicit,
+  platforms: [Platform.Claude, Platform.Codex],
+  body: new URL("./SKILL.body.md", import.meta.url),
+  tools: [],
+  references: [
+    defineReference({
+      id: "authentication",
+      source: new URL("./references/authentication.md", import.meta.url),
+      target: "references/authentication.md",
+      title: "authentication.md",
+      summary: "Reference material for nestjs-layering-patterns.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "basic-scaffold",
+      source: new URL("./references/basic-scaffold.md", import.meta.url),
+      target: "references/basic-scaffold.md",
+      title: "basic-scaffold.md",
+      summary: "Reference material for nestjs-layering-patterns.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "controllers-routing",
+      source: new URL("./references/controllers-routing.md", import.meta.url),
+      target: "references/controllers-routing.md",
+      title: "controllers-routing.md",
+      summary: "Reference material for nestjs-layering-patterns.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "dtos-validation",
+      source: new URL("./references/dtos-validation.md", import.meta.url),
+      target: "references/dtos-validation.md",
+      title: "dtos-validation.md",
+      summary: "Reference material for nestjs-layering-patterns.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "migration-from-express",
+      source: new URL("./references/migration-from-express.md", import.meta.url),
+      target: "references/migration-from-express.md",
+      title: "migration-from-express.md",
+      summary: "Reference material for nestjs-layering-patterns.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "services-di",
+      source: new URL("./references/services-di.md", import.meta.url),
+      target: "references/services-di.md",
+      title: "services-di.md",
+      summary: "Reference material for nestjs-layering-patterns.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "testing-patterns",
+      source: new URL("./references/testing-patterns.md", import.meta.url),
+      target: "references/testing-patterns.md",
+      title: "testing-patterns.md",
+      summary: "Reference material for nestjs-layering-patterns.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "evals",
+      source: new URL("./evals/", import.meta.url),
+      target: "references/evals",
+      title: "Eval Cases",
+      summary: "Eval cases for nestjs-layering-patterns.",
+      loadWhen: "Read only when validating or improving this skill.",
+    })
+  ],
+});

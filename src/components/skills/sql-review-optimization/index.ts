@@ -1,0 +1,82 @@
+import {
+  InvocationPolicy,
+  KnownTool,
+  Platform,
+  defineReference,
+  defineSkill,
+} from "../../sdk.js";
+
+export const sqlReviewOptimizationSkill = defineSkill({
+  id: "sql-review-optimization",
+  description: "当用户要审查 SQL 安全性、正确性与运维风险，或分析 slow query、EXPLAIN 执行计划、索引调优（含深度索引策略）、join order、分页策略时使用。",
+  invocation: InvocationPolicy.ImplicitAndExplicit,
+  platforms: [Platform.Claude, Platform.Codex],
+  body: new URL("./SKILL.body.md", import.meta.url),
+  tools: [],
+  references: [
+    defineReference({
+      id: "code-patterns",
+      source: new URL("./references/code-patterns.md", import.meta.url),
+      target: "references/code-patterns.md",
+      title: "code-patterns.md",
+      summary: "Reference material for sql-review-optimization.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "index-patterns",
+      source: new URL("./references/index-patterns.md", import.meta.url),
+      target: "references/index-patterns.md",
+      title: "index-patterns.md",
+      summary: "Reference material for sql-review-optimization.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "index-strategy",
+      source: new URL("./references/index-strategy.md", import.meta.url),
+      target: "references/index-strategy.md",
+      title: "index-strategy.md",
+      summary: "Reference material for sql-review-optimization.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "mysql-index-strategy",
+      source: new URL("./references/mysql-index-strategy.md", import.meta.url),
+      target: "references/mysql-index-strategy.md",
+      title: "mysql-index-strategy.md",
+      summary: "Reference material for sql-review-optimization.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "pgsql-index-strategy",
+      source: new URL("./references/pgsql-index-strategy.md", import.meta.url),
+      target: "references/pgsql-index-strategy.md",
+      title: "pgsql-index-strategy.md",
+      summary: "Reference material for sql-review-optimization.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "sql-code-review",
+      source: new URL("./references/sql-code-review.md", import.meta.url),
+      target: "references/sql-code-review.md",
+      title: "sql-code-review.md",
+      summary: "Reference material for sql-review-optimization.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "sql-optimization",
+      source: new URL("./references/sql-optimization.md", import.meta.url),
+      target: "references/sql-optimization.md",
+      title: "sql-optimization.md",
+      summary: "Reference material for sql-review-optimization.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "evals",
+      source: new URL("./evals/", import.meta.url),
+      target: "references/evals",
+      title: "Eval Cases",
+      summary: "Eval cases for sql-review-optimization.",
+      loadWhen: "Read only when validating or improving this skill.",
+    })
+  ],
+});

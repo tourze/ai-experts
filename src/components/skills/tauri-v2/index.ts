@@ -1,0 +1,74 @@
+import {
+  InvocationPolicy,
+  KnownTool,
+  Platform,
+  defineReference,
+  defineSkill,
+} from "../../sdk.js";
+
+export const tauriV2Skill = defineSkill({
+  id: "tauri-v2",
+  description: "当用户要搭建 Tauri v2 应用骨架、src-tauri、tauri.conf.json、capabilities、插件权限、命令注册或移动端支持时使用。",
+  invocation: InvocationPolicy.ImplicitAndExplicit,
+  platforms: [Platform.Claude, Platform.Codex],
+  body: new URL("./SKILL.body.md", import.meta.url),
+  tools: [],
+  references: [
+    defineReference({
+      id: "advanced-runtime-reference",
+      source: new URL("./references/advanced-runtime-reference.md", import.meta.url),
+      target: "references/advanced-runtime-reference.md",
+      title: "advanced-runtime-reference.md",
+      summary: "Reference material for tauri-v2.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "capabilities-reference",
+      source: new URL("./references/capabilities-reference.md", import.meta.url),
+      target: "references/capabilities-reference.md",
+      title: "capabilities-reference.md",
+      summary: "Reference material for tauri-v2.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "ipc-patterns",
+      source: new URL("./references/ipc-patterns.md", import.meta.url),
+      target: "references/ipc-patterns.md",
+      title: "ipc-patterns.md",
+      summary: "Reference material for tauri-v2.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "plugin-reference",
+      source: new URL("./references/plugin-reference.md", import.meta.url),
+      target: "references/plugin-reference.md",
+      title: "plugin-reference.md",
+      summary: "Reference material for tauri-v2.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "readme",
+      source: new URL("./references/README.md", import.meta.url),
+      target: "references/README.md",
+      title: "README.md",
+      summary: "Reference material for tauri-v2.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "updater-distribution-reference",
+      source: new URL("./references/updater-distribution-reference.md", import.meta.url),
+      target: "references/updater-distribution-reference.md",
+      title: "updater-distribution-reference.md",
+      summary: "Reference material for tauri-v2.",
+      loadWhen: "Read when the skill body points to this reference or the task needs the detailed material.",
+    }),
+    defineReference({
+      id: "evals",
+      source: new URL("./evals/", import.meta.url),
+      target: "references/evals",
+      title: "Eval Cases",
+      summary: "Eval cases for tauri-v2.",
+      loadWhen: "Read only when validating or improving this skill.",
+    })
+  ],
+});
