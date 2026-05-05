@@ -17,6 +17,13 @@ export const shadcnUiSkill = defineSkill({
     "需要从 Radix / Base UI、Tailwind v3 / v4、Registry 迁移或排障。",
     "需要核对 `components.json`、别名、`cn()` 工具和全局样式是否完整。",
   ],
+  constraints: [
+    "shadcn/ui 不是运行时组件库，而是把组件源码拷进你的仓库；后续维护责任在项目内。",
+    "优先用 CLI 安装组件，不要手抄半套源码。",
+    "组件接入前先确认项目的 Tailwind、别名、`components.json` 和 `cn()` 是否可用。",
+    "有设计系统时，先映射现有 token、字体和 spacing，不要把 shadcn 默认值原样散落全项目。",
+    "文档、脚本和示例统一按当前项目形态工作：Tailwind v4 可仅靠 CSS-first 配置，不强制 `tailwind.config.*`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

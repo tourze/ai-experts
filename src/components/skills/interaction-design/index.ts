@@ -16,6 +16,13 @@ export const interactionDesignSkill = defineSkill({
     "为加载、提交、空态、成功态和失败态设计反馈。",
     "需要把交互与性能、无障碍和品牌风格同时兼顾。",
   ],
+  constraints: [
+    "动效必须服务信息传达：反馈、导向、层级和连续性，不做纯装饰噪音。",
+    "默认优先 CSS 或轻量动画能力；只有需要复杂编排时再引入更重的库。",
+    "所有动效都要兼容 `prefers-reduced-motion`。",
+    "微交互时长控制在感知区间：100-150ms 反馈、200-300ms 轻过渡、300-500ms 中型切换。",
+    "一个页面只需要少量高质量动效，不要处处都在动。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

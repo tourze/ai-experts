@@ -1,12 +1,3 @@
-## 核心约束
-
-- 控制器只负责协议层：参数解析、鉴权装饰器、响应码与 Swagger 注解；业务规则放在 Service/Use Case。
-- 所有输入边界都必须通过 DTO + `class-validator` + `ValidationPipe`，禁止把原始 `req.body` 直接传入服务层。
-- 统一使用构造函数注入与 `@Injectable()`；禁止手写 `new Service()` 绕过 Nest 容器。
-- 配置、密钥、端口、第三方地址必须来自 `ConfigModule` 或环境变量；禁止写死在源码与示例里。
-- Service 层抛出明确的 HTTP/领域异常，避免返回 `null`、魔法字符串或吞异常。
-- 默认要求补单元测试；涉及控制器、路由、认证、全局管道或模块装配时，再补 Controller/E2E 验证。
-
 ## 代码模式
 
 ### 1. 先按问题类型加载参考资料

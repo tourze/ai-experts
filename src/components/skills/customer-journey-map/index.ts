@@ -15,6 +15,11 @@ export const customerJourneyMapSkill = defineSkill({
     "需要分析从认知到留存的完整体验链路，定位关键阻塞点。",
     "需要把访谈、问卷或支持工单转为旅程结构时，可配合 [Mom Test 访谈](references/mom-test.md) 与 [问卷设计](references/designing-surveys.md)。",
   ],
+  constraints: [
+    "旅程必须绑定具体 persona 与目标任务，不能写成“所有用户的通用流程”。",
+    "每个阶段至少写清触点、用户心智、阻力、指标与改进机会。",
+    "不要把组织内流程当成用户旅程；用户看不见的内部步骤应单独记录。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

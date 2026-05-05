@@ -1,10 +1,3 @@
-## 核心约束
-
-- 先确认“想让谁做什么”，再决定故事结构；没有目标受众就没有叙事。
-- 一个故事只保留 1 个主结论和 2 到 4 个支撑点，避免把所有图表原样堆上去。
-- 结论必须能回指具体数据证据；需要时引用 [data-analysis](../data-analysis/SKILL.md) 或 [statistical-analysis](../statistical-analysis/SKILL.md) 的结果。
-- 建议先写 headline，再补证据，再给行动项，不要反过来。
-
 ## 代码模式
 
 ```markdown

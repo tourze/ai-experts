@@ -81,7 +81,7 @@ TS 源码统一使用无后缀相对 import，例如 `../../sdk`，不写 `../..
 
 ## Skill
 
-Skill 是工作流和能力单元。`SKILL.body.md` 只保留主体流程、约束、检查清单和红线，不写一级标题；大资料放 `references/`，脚本放 `scripts/`，输出资产放 `assets/`。一级标题由 `index.ts` 的 `fullName` 统一生成到最终 `SKILL.md`，适用场景由 `index.ts` 的 `useCases` 统一生成。
+Skill 是工作流和能力单元。`SKILL.body.md` 只保留主体流程、检查清单和红线，不写一级标题，也不写开头简介段；正文必须从二级标题开始。大资料放 `references/`，脚本放 `scripts/`，输出资产放 `assets/`。一级标题由 `index.ts` 的 `fullName` 统一生成到最终 `SKILL.md`，适用场景和核心约束分别由 `index.ts` 的 `useCases` 与 `constraints` 统一生成。
 
 定义示例：
 
@@ -93,6 +93,10 @@ export const typescriptTypeSafety = defineSkill({
   useCases: [
     "定位 `tsc --noEmit` 类型错误、清理 `any` 或弱类型字典。",
     "设计泛型、类型守卫、判别联合或外部边界类型合同。",
+  ],
+  constraints: [
+    "先拿到完整编译错误或边界输入样例，再判断要修上游合同还是下游症状。",
+    "`any` 只能留在最外层适配器，优先用 `unknown`、类型守卫或 schema 收口。",
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
@@ -121,7 +125,8 @@ export const typescriptTypeSafety = defineSkill({
 规则：
 
 - `body`、script `entry`、reference `source`、asset `source` 使用 `new URL("./file", import.meta.url)`。
-- 每个 skill 必须声明 `useCases`，最终 `SKILL.md` 的 `## 适用场景` 只由生成器输出；`SKILL.body.md` 不再手写该章节。
+- 每个 skill 必须声明 `useCases` 与 `constraints`，最终 `SKILL.md` 的 `## 适用场景` 和 `## 核心约束` 只由生成器输出；`SKILL.body.md` 不再手写这两个章节。
+- `SKILL.body.md` 第一个非空行必须是 `## ...`，不要在正文开头写一句简介；简介类内容放进 `description`、`useCases` 或 `constraints`。
 - 每个 script 必须通过 `defineSkillScript()` 登记。
 - reference 必须通过 `defineReference()` 登记，asset 必须通过 `defineAsset()` 登记。
 - `evals/` 是源码侧质量验证材料，不是运行时参考资料，不能登记为 reference，也不会复制到 `dist/*/skills/*/references/`。

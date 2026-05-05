@@ -15,6 +15,12 @@ export const ethicalHackingMethodologySkill = defineSkill({
     "需要把 [nmap](references/nmap.md) 的侦察结果和 [wireshark-analysis](../wireshark-analysis/SKILL.md) 的流量证据串起来。",
     "需要建立统一的发现分级、证据留存和复测策略。",
   ],
+  constraints: [
+    "没有书面授权、范围和时间窗口时不进入实施阶段。",
+    "先证据化、再利用；先低风险验证、再考虑高影响操作。",
+    "把目标资产、入口、凭据、影响和回滚方案写清楚。",
+    "任何越界发现都要立即停止并升级确认。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

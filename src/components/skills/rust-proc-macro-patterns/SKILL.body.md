@@ -1,14 +1,3 @@
-## 核心约束
-
-1. `[lib]` 设 `proc-macro = true`。
-2. 用 syn 2.x + quote + proc-macro2。
-3. 不 panic；错误用 `compile_error!` + 正确 Span。
-4. derive macro 只追加 impl，不修改原始 item。
-5. attribute macro 可修改 item，须文档说明。
-6. trybuild 覆盖通过和失败两类测试。
-7. 核心逻辑放独立辅助 crate 方便单测。
-8. `cargo expand` 调试展开结果。
-
 ## 代码模式
 
 - [Derive macro 实现 trait](references/patterns.md#模式-1)

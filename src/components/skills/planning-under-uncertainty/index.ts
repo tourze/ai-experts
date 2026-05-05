@@ -16,6 +16,11 @@ export const planningUnderUncertaintySkill = defineSkill({
     "需要把不确定性转成估算或版本节奏时，可配合 [estimate-calibrator](../estimate-calibrator/SKILL.md)。",
     "需要把关键未知项转成先验、证据更新、行动阈值和敏感性报告时，配合 `what-if-oracle`。",
   ],
+  constraints: [
+    "先判断不确定性来自技术、市场、组织还是外部环境，再选规划方式。",
+    "规划输出必须包含检查点、触发条件和转向标准，而不是一次性拍死全年计划。",
+    "“保持灵活”不是借口，仍然要写清当前最优下注与放弃条件。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

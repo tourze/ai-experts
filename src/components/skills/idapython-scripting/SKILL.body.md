@@ -1,9 +1,3 @@
-## 核心约束
-- 区分调试态 API (`read_dbg_byte`) 和 IDB 态 API (`get_db_byte`)。
-- `idc.find_bytes()` 返回 `BADADDR` 时停止循环。
-- Hex-Rays 反编译结果用 `str(dec)` 转文本，不要直接拼接对象。
-- IDALib 模式必须 `import idapro` 在最前，且 `close_database()` 在最后。
-
 ## 代码模式
 
 ### 函数遍历

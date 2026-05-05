@@ -16,6 +16,12 @@ export const redesignMyLandingpageSkill = defineSkill({
     "已有页面转化弱，需要从首屏到页尾重排结构。",
     "需要直接交付可运行的 React/Vite/Tailwind 代码。",
   ],
+  constraints: [
+    "先锁定单一主转化动作，页面其它元素都服务这个动作。",
+    "上半屏解决“我为什么继续看”，下半屏解决“我为什么现在行动”。",
+    "默认实现约束是 shadcn/ui + Tailwind + Iconify，避免引入额外视觉系统分叉。",
+    "若任务主要是实验设计或诊断，不直接写代码时，配合 [cro-methodology](../cro-methodology/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

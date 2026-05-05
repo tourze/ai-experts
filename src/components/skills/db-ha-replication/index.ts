@@ -17,6 +17,13 @@ export const dbHaReplicationSkill = defineSkill({
     "排查复制延迟、中断、数据不一致等运维问题。",
     "需要理解事务与锁对复制的影响，联动 [mysql-transaction-locking](../mysql-transaction-locking/SKILL.md)。",
   ],
+  constraints: [
+    "必须启用 GTID（`gtid_mode=ON`、`enforce_gtid_consistency=ON`）；GTID 让故障切换位点对齐自动化。",
+    "Binlog 格式必须 `ROW`；STATEMENT 格式在非确定性函数下导致主从不一致。",
+    "高一致性场景必须开启半同步（`rpl_semi_sync_source_enabled`）；至少一个 Replica 确认收到后 Source 才提交。",
+    "复制延迟监控使用 `Seconds_Behind_Source`（SHOW REPLICA STATUS）+ 心跳表双保险。",
+    "故障切换前必须确认所有 Replica 的 GTID 集合一致，禁止在 GTID 有缺口时提升 Replica。\n\nMySQL 复制运维详细内容见：[references/mysql-replication-ops.md](references/mysql-replication-ops.md)、[references/replication-config.md](references/replication-config.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

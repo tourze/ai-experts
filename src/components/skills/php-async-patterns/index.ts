@@ -15,6 +15,12 @@ export const phpAsyncPatternsSkill = defineSkill({
     "需要并发发起多个 HTTP/数据库请求以降低总延迟。",
     "在 Swoole、ReactPHP、Amphp 和原生 Fiber 之间做技术选型。",
   ],
+  constraints: [
+    "协程内不要做阻塞 I/O（file_get_contents、sleep）——用异步替代。",
+    "协程间共享状态要用 Channel/Mutex，不要裸读写全局变量。",
+    "长驻进程必须处理内存泄漏：清 static 缓存、限 max_request、用弱引用。",
+    "WebSocket/TCP 连接要有心跳和超时。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

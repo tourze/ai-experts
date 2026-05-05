@@ -1,20 +1,3 @@
-## 核心约束
-
-| 约束 | 说明 |
-|------|------|
-| 预分配 | 大小已知时用 `make([]T, 0, n)` 或 `make(map[K]V, n)` |
-| slice 增长 | cap < 256 翻倍；cap >= 256 按 `1.25x + 192` 增长 |
-| array | 仅编译期已知大小时使用；函数参数会复制整个数组 |
-| map 不缩容 | 大量删除后应替换为新 map，否则内存不释放 |
-| strings.Builder | 拼接字符串；`defer b.Reset()` 复用 |
-| bytes.Buffer | 双向 I/O；内容可变，`b.Bytes()` 返回内部切片需注意别名 |
-| 泛型约束 | 使用最严格约束：`comparable` > `cmp.Ordered` > `any` |
-| unsafe.Pointer | 仅允许 6 种合法转换模式（见 spec） |
-| weak.Pointer[T] | Go 1.24+，缓存场景替代 `runtime.SetFinalizer` |
-| container/heap | 实现优先队列；需实现 `heap.Interface` |
-| container/list | 双向链表，适合 LRU；零值即可用 |
-| container/ring | 环形缓冲区；固定大小轮转 |
-
 ## 常见错误
 
 | 错误 | 修复 |

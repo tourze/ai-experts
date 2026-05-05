@@ -1,11 +1,3 @@
-## 核心约束
-
-- 用 PHP 8 Attributes 映射，不用注解。
-- ID 生成策略必须显式声明。
-- 关联必须明确 `cascade`、`orphanRemoval` 和反向归属。
-- 时间字段用 `DateTimeImmutable`。
-- Repository 继承 `ServiceEntityRepository`；Migration 只做结构变更。
-
 ## 代码模式
 
 见 [reference.md](reference.md)。

@@ -1,11 +1,3 @@
-## 核心约束
-
-- cache-aside 读路径：check cache → miss → query DB → set cache；写路径：先写 DB 再删缓存。
-- 互斥刷新用 `SET key value NX EX seconds`，严禁无保护地并发回源。
-- 穿透防御至少一种：空值缓存（短 TTL）或布隆过滤器。
-- TTL 必须添加随机抖动，禁止所有键使用相同固定 TTL。
-- 删缓存失败需有补偿（重试队列或 binlog 监听），不能静默忽略。
-
 ## 代码模式
 
 ```python

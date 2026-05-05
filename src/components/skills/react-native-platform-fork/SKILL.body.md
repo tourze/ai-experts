@@ -1,13 +1,3 @@
-## 核心约束
-
-- 平台分叉放边界层；业务组件只导入平台无关接口。
-- `.native.ts` 覆盖 iOS+Android；仅两者真正不同时才拆 `.ios.ts`/`.android.ts`。
-- 共享类型定义放平台无关文件，所有变体导入同一份。
-- `Platform.select` 用于值选择，不用于控制流。
-- Tauri 用 `.tauri.ts`，需在 Metro/Vite 配置自定义解析。
-- 不直接 `import './foo.ios'`；通过 `index.ts` 让 bundler 解析。
-- 测试从边界文件导入，不直接导入平台文件。
-
 ## 代码模式
 
 - [边界文件模式](references/boundary-file-pattern.md)

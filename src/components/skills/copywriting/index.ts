@@ -18,6 +18,12 @@ export const copywritingSkill = defineSkill({
     "改写已有页面文案，使其更清晰、更有说服力、转化率更高。",
     "为 A/B 测试产出多个文案变体。",
   ],
+  constraints: [
+    "先确认页面类型、目标受众、核心价值主张和期望行动（CTA），再动笔。",
+    "文案基于用户真实语言，而非公司内部术语。",
+    "每个页面只有一个主要 CTA；次要 CTA 不能与主 CTA 竞争注意力。",
+    "转化率优化 → [cro-methodology](../cro-methodology/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -1,9 +1,3 @@
-## 核心约束
-- 重构默认不改行为；若必须改行为，要明确拆成“重构”和“行为变更”两步。
-- 优先选最小、安全、可验证的重构序列，而不是一次跳大步。
-- 必须先识别异味，再选手法；不要为了秀技巧强行套模式。
-- 没有验证路径的高风险重构，默认不能一次完成。
-
 ## 代码模式
 - 异味分类参考 [异味目录](references/smell-catalog.md)。
 - 动作库按主题拆在 [方法组合](references/composing-methods.md)、[特性搬移](references/moving-features.md)、[数据整理](references/organizing-data.md)、[条件简化](references/simplifying-conditionals.md)。

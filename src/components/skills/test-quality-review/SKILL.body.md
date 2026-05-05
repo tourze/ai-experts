@@ -1,12 +1,3 @@
-## 核心约束
-
-- 先读真实测试代码，不凭猜测。
-- 按六类衰退风险（T1-T6）逐项扫描，不遗漏维度。
-- 每条发现必须遵循 **Iron Law 四要素**：Symptom → Source → Consequence → Remedy，缺一不可。
-- 按严重度分级：🔴 关键 > 🟡 重要 > 🟢 建议。每个风险类型都有严重度指引和"不应标记"规则。
-- 审查结束输出 **Test Health Score**（100 分制）。
-- 无问题则明确说明——100 分合法。
-
 ## 审查维度
 审查时必须读取 [references/test-decay-risks.md](./references/test-decay-risks.md)，按六类风险扫描：
 - **T1 测试意图模糊** — 理解测试需要多少心智负担

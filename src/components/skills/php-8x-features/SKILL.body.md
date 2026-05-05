@@ -1,13 +1,3 @@
-## 核心约束
-
-- 所有生产代码默认启用 `declare(strict_types=1)`。
-- 方法参数、返回值、属性都要有明确类型；无法收窄时优先定义 DTO 或值对象，不要退回 `mixed`。
-- 优先使用 `readonly` 属性和 `readonly class` 来表达不可变数据。
-- 枚举替代 class 常量组和魔法字符串；有底层值时用 backed enum。
-- `match` 替代多分支 `switch`；利用其穷尽性检查和严格比较。
-- 构造器提升（constructor promotion）简化属性声明，减少样板代码。
-- 命名参数只在调用点提升可读性时使用，不要滥用到每个函数调用。
-
 ## 代码模式
 
 ### Readonly class 与构造器提升

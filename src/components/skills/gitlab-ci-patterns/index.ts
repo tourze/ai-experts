@@ -14,6 +14,12 @@ export const gitlabCiPatternsSkill = defineSkill({
     "优化多阶段流水线的执行顺序、缓存和制品传递。",
     "设计从构建到部署的 GitLab Runner 流程。",
   ],
+  constraints: [
+    "优先使用 `rules:` 和 `needs:`，避免继续扩散遗留的 `only/except` 写法。",
+    "基础镜像尽量固定版本，避免流水线漂移。",
+    "凭据只能来自 GitLab CI Variables、Vault 或外部密钥系统。",
+    "生产部署必须显式标记人工门禁或受保护分支。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

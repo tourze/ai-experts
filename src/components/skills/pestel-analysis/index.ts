@@ -15,6 +15,12 @@ export const pestelAnalysisSkill = defineSkill({
     "与 [porters-five-forces](../porters-five-forces/SKILL.md) 配合做行业分析，与 [swot-analysis](../swot-analysis/SKILL.md) 配合把外部因素转化为机会和威胁。",
     "融资路演中需要展示对宏观环境的理解。",
   ],
+  constraints: [
+    "六个维度（Political, Economic, Social, Technological, Environmental, Legal）都要扫描，但只展开与业务**有直接因果关系**的因素。",
+    "每个因素必须说明**影响方向**（利好/利空/不确定）、**影响时间窗**（短期/中期/长期）和**影响量级**（高/中/低）。",
+    "列举因素不等于分析；必须推导出\"所以我们应该怎么做\"的行动含义。",
+    "信息必须标注来源和时效，过期的宏观数据比没有更危险。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

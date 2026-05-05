@@ -16,6 +16,13 @@ export const redisCachingPatternsSkill = defineSkill({
     "防缓存穿透（恶意请求不存在的 key），需空值缓存或布隆过滤器。",
     "TTL 抖动防雪崩，配合 [redis-data-modeling](../redis-data-modeling/SKILL.md) 的键设计与锁模式。",
   ],
+  constraints: [
+    "cache-aside 读路径：check cache → miss → query DB → set cache；写路径：先写 DB 再删缓存。",
+    "互斥刷新用 `SET key value NX EX seconds`，严禁无保护地并发回源。",
+    "穿透防御至少一种：空值缓存（短 TTL）或布隆过滤器。",
+    "TTL 必须添加随机抖动，禁止所有键使用相同固定 TTL。",
+    "删缓存失败需有补偿（重试队列或 binlog 监听），不能静默忽略。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

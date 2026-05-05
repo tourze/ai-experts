@@ -15,6 +15,11 @@ export const estimateCalibratorSkill = defineSkill({
     "需要参考 [references/estimation-methods.md](references/estimation-methods.md)、[references/sizing-heuristics.md](references/sizing-heuristics.md)、[references/unknown-categories.md](references/unknown-categories.md)。",
     "需要验证案例格式时，可查看 [evals/cases.yaml](evals/cases.yaml)。",
   ],
+  constraints: [
+    "先拆工作，再估时间；没有边界定义的任务不要直接给单点数值。",
+    "估算必须显式写出假设、未知项和最坏情况，不允许只报“乐观值”。",
+    "估算不等于承诺，区间越窄越需要证据支撑。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

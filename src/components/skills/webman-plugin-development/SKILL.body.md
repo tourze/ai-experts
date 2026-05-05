@@ -1,12 +1,3 @@
-Webman 插件的打包、安装和配置约定。
-
-## 核心约束
-
-- `Install.php` 声明 `WEBMAN_PLUGIN = true` 和 `$pathRelation`。见 [reference](reference.md)。
-- 配置路径 `src/config/plugin/{vendor}/{package}/`。
-- 访问用 `config('plugin.{vendor}.{package}.{key}')`。
-- `mkdir` 用 `0755`，`webman-framework` 放 `require-dev`。
-
 ## 代码模式
 
 ```php

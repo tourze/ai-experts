@@ -1,11 +1,3 @@
-## 核心约束
-
-- 保存路径遵循三条规则：用户给路径就存到该路径；用户没给路径则存系统默认截图目录；仅供代理自检时存临时目录。
-- macOS 进行窗口或应用截图前，先跑 `scripts/ensure_macos_permissions.mjs`，统一处理 Screen Recording 权限。
-- `--app`、`--window-name`、`--list-windows` 只支持 macOS。
-- Windows 走 `scripts/take_screenshot_windows.mjs`；主入口会在 Windows 分支委托给该 Node helper。
-- 互斥参数不能混用：`--region` / `--window-id` / `--active-window` / `--app` / `--interactive` 要按脚本约束组合。
-
 ## 代码模式
 
 ### 1. macOS 权限预检查

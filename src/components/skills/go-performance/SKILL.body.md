@@ -1,12 +1,3 @@
-## 核心约束
-
-- 没有基线不优化；先定义目标指标，再写 benchmark 或采集 profile。
-- 一次只改一个变量，改前改后用同一命令多次采样，再用 `benchstat` 比较。
-- 优先优化已证实的瓶颈：CPU profile、heap profile、trace、mutex/block profile 或生产指标。
-- 先排除外部瓶颈：数据库、网络、锁等待、上游 API 慢时，减少本地分配通常无效。
-- 优化代码必须保留可读性解释和 benchmark 证据，避免后续被误删。
-- `sync.Pool`、`unsafe`、手写缓存只在 profile 证明收益并有测试保护时使用。
-
 ## 优化决策树
 
 遇到性能问题时的排查路径：

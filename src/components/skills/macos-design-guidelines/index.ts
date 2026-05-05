@@ -14,6 +14,12 @@ export const macosDesignGuidelinesSkill = defineSkill({
     "用户提到菜单栏、窗口、多窗口、工具栏、快捷键、侧边栏或 Mac Catalyst 桌面体验。",
     "需要把 iPad 式界面改回真正符合 Mac 习惯的桌面产品。",
   ],
+  constraints: [
+    "菜单栏、窗口管理和键盘快捷键是 Mac 的一等入口，优先级高于视觉装饰。",
+    "主窗口必须可调整大小，并给出合理的最小尺寸与默认尺寸。",
+    "常见命令应该进入标准菜单或工具栏，不要藏在悬浮按钮里。",
+    "Mac 用户默认期待右键、拖拽、多窗口和键盘导航，不要按 iPhone 的交互假设来设计。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

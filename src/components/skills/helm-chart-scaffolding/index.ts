@@ -19,6 +19,12 @@ export const helmChartScaffoldingSkill = defineSkill({
     "需要为多环境部署整理 values 分层和依赖管理。",
     "发布前做 `helm lint`、模板渲染与结构校验。",
   ],
+  constraints: [
+    "优先使用 `apiVersion: v2` 的 application chart。",
+    "`values.yaml` 按镜像、网络、资源、安全、依赖项分层，避免扁平大表。",
+    "Chart 中不要存放明文敏感值；机密优先交给外部 Secret 管理。",
+    "交付前至少运行 `helm lint` 与 [scripts/validate-chart.mjs](scripts/validate-chart.mjs)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

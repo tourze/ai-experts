@@ -15,6 +15,11 @@ export const fundraiseAdvisorSkill = defineSkill({
     "需要展开完整方法时，阅读 [references/full-guide.md](references/full-guide.md)。",
     "需要市场规模支撑时配合 [market-sizing-analysis](../market-sizing-analysis/SKILL.md)。",
   ],
+  constraints: [
+    "先确认融资目的、跑道、关键里程碑和资金用途，再决定金额与轮次。",
+    "融资故事必须围绕问题、牵引力、市场、团队和资金用途构建，避免空泛愿景。",
+    "投资人沟通要持续更新事实与风险，不要夸大不可验证指标。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

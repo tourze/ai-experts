@@ -1,9 +1,3 @@
-## 核心约束
-- **单一事实源**：CRM 为主记录系统，不允许影子 pipeline
-- **先定义再自动化**：无业务定义不上自动化
-- **衡量每个交接**：营销→SDR→AE→CS 每个交接点有 SLA
-- **收入团队对齐**：三方共享指标仪表盘和目标定义
-
 ## 线索生命周期
 Subscriber → Lead → MQL → SQL → Opportunity → Customer → Evangelist
 

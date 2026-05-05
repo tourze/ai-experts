@@ -1,13 +1,3 @@
-## 核心约束
-
-- 先收集证据再给结论：Redis 版本、角色、`INFO`、`CONFIG GET`、`SLOWLOG`、命令调用点、key 类型与元素数缺一不可。
-- 每个异常都先归类到四个根因面：命令语义、内存/持久化、复制/故障切换、版本/配置差异。
-- 不把官方复杂度写成绝对安全：`O(1)` 命令仍可能因内存分配、过期扫描、输出缓冲或后台 IO 变成风险点。
-- 主从问题必须同时核对 Redis 版本、实例角色、时钟偏移、`maxmemory` / `maxmemory-policy` / `replica-ignore-maxmemory`。
-- 删除大 key 前先量化 `TYPE`、`MEMORY USAGE` 和元素数，优先 `UNLINK` 或分批删，禁止无证据批量 `DEL`。
-- 持久化风险必须说明 RPO / RTO：AOF `appendfsync everysec` 不是强一致写入承诺，RDB / AOF rewrite 需要预留 `fork` + COW 内存。
-- 展开命令与现场模板见 [references/code-patterns.md](references/code-patterns.md)。
-
 ## 代码模式
 
 ```redis

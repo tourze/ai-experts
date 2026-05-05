@@ -18,6 +18,11 @@ export const dbSchemaDesignSkill = defineSkill({
     "与索引设计联动，为索引打好列基础，联动 [sql-review-optimization](../sql-review-optimization/SKILL.md)（含深度索引策略）。",
     "与 SQL 调优联动，表结构决定查询路径的上限，联动 [sql-review-optimization](../sql-review-optimization/SKILL.md)。",
   ],
+  constraints: [
+    "**通用原则**\n- 业务允许的列显式 `NOT NULL DEFAULT ...`；可空列增加索引和优化器负担。\n- 金额必须精确数值类型，禁止 FLOAT/DOUBLE。\n- 所有表必须有明确的主键和存储引擎选择。",
+    "**MySQL 特化**\n- 主键必须 `BIGINT UNSIGNED AUTO_INCREMENT`；禁止 INT（溢出风险）和 UUID 聚簇索引（页分裂、写放大）。\n- 字符集统一 `utf8mb4`，排序规则优先 `utf8mb4_0900_ai_ci`；禁止 `utf8`（不能存 4 字节字符）。\n- 引擎默认 InnoDB；选择其他引擎须在注释中说明理由。\n- JSON 列不能有默认值、不能做主键；高频过滤/排序字段必须提取为生成列（VIRTUAL/STORED）并建索引。\n- 使用 `->>` 获取无引号文本值；JSON 数组场景优先评估多值索引（MySQL 8.0.17+）。",
+    "**PostgreSQL 特化**\n- 主键用 `BIGINT GENERATED ALWAYS AS IDENTITY`，不用 `serial`。\n- 时间列一律 `TIMESTAMPTZ`，禁止裸 `timestamp`。\n- 通用字符串用 `TEXT`，不用 `varchar(n)`（内部存储无差异）。\n- 标识符用 unquoted snake_case，禁止 `\"QuotedCamelCase\"`。\n- 使用 `JSONB` 而非 `JSON`（JSONB 支持索引，JSON 只是文本存储）。\n- JSONB 列必须有 CHECK 约束验证顶层类型；嵌套控制在 3 层以内。\n\n详细引擎专有模式见：[references/mysql-schema-design.md](references/mysql-schema-design.md)、[references/pgsql-schema-design.md](references/pgsql-schema-design.md)、[references/mysql-json-generated-columns.md](references/mysql-json-generated-columns.md)、[references/pgsql-jsonb-patterns.md](references/pgsql-jsonb-patterns.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

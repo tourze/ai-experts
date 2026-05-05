@@ -1,16 +1,3 @@
-通用架构原则（分层、组合优于继承、构造注入、薄控制器）见 architecture-expert 的 software-design skill。
-
-相关 skill：构造器涉及 error 包装时配合 [go-error-handling](../go-error-handling/SKILL.md)；并发停机场景配合 [go-concurrency-patterns](../go-concurrency-patterns/SKILL.md)。
-
-## Go 特有约束
-
-- **函数式选项优于配置结构体**：公开 API 用 `WithXxx()` 选项函数。
-- **构造器返回具体类型指针**：`func NewT(opts ...Option) (*T, error)`，校验失败返回 error。
-- **禁止 `init()` 做业务逻辑**：只用于纯被动注册（如 driver 注册）。
-- **每个外部调用必须有超时**：不允许无 context 的网络 I/O。
-- **重试必须检查 context 取消**：循环内先 `select { case <-ctx.Done(): return ctx.Err() ... }`。
-- **优雅停机三步**：监听信号 → 停止接受新连接 → 在超时内排空进行中请求。
-
 ## Go 代码模式
 
 ### 函数式选项

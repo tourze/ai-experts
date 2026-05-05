@@ -15,6 +15,12 @@ export const customerResearchSkill = defineSkill({
     "从 Reddit、G2、Capterra、HN、App Store 等渠道挖掘用户声音。",
     "基于真实数据构建 persona 或 JTBD 地图。",
   ],
+  constraints: [
+    "结论必须有原始引用支撑，禁止凭空编造 persona。",
+    "每次明确当前模式：分析已有素材 vs. 在线挖掘。",
+    "所有洞察标注置信度（高/中/低）和样本量。",
+    "文案任务改用 `copywriting`；页面优化改用 `page-cro`；竞品分析配合 `competitive-teardown`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

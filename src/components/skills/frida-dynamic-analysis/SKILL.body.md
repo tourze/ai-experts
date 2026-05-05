@@ -1,9 +1,3 @@
-## 核心约束
-- 先静态分析定位 hook 点，不要盲写 hook 脚本。
-- 使用现代 API：`Process.getModuleByName()` + `mod.getExportByName()`，不用已废弃的 `Module.findBaseAddress()`。
-- 现代 Frida CLI **没有** `--no-pause` 参数，进程自动恢复。
-- hook 早加载模块时先检查 `Process.findModuleByName()` 是否返回 null，用轮询等模块加载后再 attach。
-
 ## 代码模式
 
 ### 启动方式

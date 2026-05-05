@@ -17,6 +17,12 @@ export const goSecuritySkill = defineSkill({
     "需要防止路径穿越、SSRF、XSS 等注入类攻击。",
     "运行时安全（nil、panic、数据竞争）使用 [go-safety](../go-error-handling/SKILL.md)；安全测试使用 [go-testing-patterns](../go-testing-patterns/SKILL.md)。",
   ],
+  constraints: [
+    "对任何外部输入，回答三个问题：",
+    "**信任边界在哪？** 哪些数据来自用户 / 网络 / 第三方，不可信？",
+    "**攻击者能控制什么？** 输入参数、Header、URL、文件名、数据库字段？",
+    "**爆炸半径多大？** 泄露密钥？执行任意命令？越权访问？",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

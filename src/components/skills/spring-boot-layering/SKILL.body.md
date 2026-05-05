@@ -1,11 +1,3 @@
-## 核心约束
-
-- 基线优先：默认使用 Java 21、Spring Boot 3.x、`jakarta.*` 命名空间。
-- 分层必须清晰：Controller 只做协议转换，Service 承担业务与事务，Repository 只做持久化。
-- API 合同与持久化模型分离：不要把 JPA Entity 直接暴露为请求或响应。
-- 事务边界必须显式：读操作 `@Transactional(readOnly = true)`，写操作在服务层显式开启事务。
-- 错误处理统一出口：使用 `@RestControllerAdvice` 或等价机制，不要在 Controller 散落 `try/catch`。
-
 ## 代码模式
 
 ```java

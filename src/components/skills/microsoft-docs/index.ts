@@ -16,6 +16,12 @@ export const microsoftDocsSkill = defineSkill({
     "适合查概念文档、Quickstart、Tutorial、Quota、Limit、Best practices 和配置手册。",
     "交叉引用：如果任务已经进入”写代码/修 SDK 调用/核对 API 签名”，查阅 `references/code-reference.md`。",
   ],
+  constraints: [
+    "查询必须带上产品名、任务意图和必要的版本或平台上下文；不要用过宽泛的关键词。",
+    "`microsoft_docs_fetch` 只接受文档 URL；`--section`、`--max-chars` 是 CLI `fetch` 的参数，不是 MCP 工具参数。",
+    "优先搜索，确认命中后再抓整页；不要一上来就拉长文档。",
+    "CLI 仅作回退链路；已验证的命令只有 `search`、`fetch`、`doctor`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -17,6 +17,13 @@ export const windowsUiAutomationSkill = defineSkill({
     "需要更细的等待策略、审计字段和威胁场景时，继续读取 [进阶模式](./references/advanced-patterns.md)、[安全示例](./references/security-examples.md) 与 [威胁模型](./references/threat-model.md)。",
     "如果问题其实属于驱动、回调或内核对象，不要继续堆 UIA 逻辑，转到 [windows-kernel-security](../windows-kernel-security/SKILL.md)。",
   ],
+  constraints: [
+    "默认 `read-only`；只有在用户明确需要时才提升到可点击、可输入的交互级别。",
+    "必须校验目标进程、权限边界和阻断名单，禁止跨提权边界操作敏感窗口。",
+    "输入类动作必须带超时、速率限制和热键阻断；不要向安全对话框、密码管理器或系统工具注入输入。",
+    "自动化动作必须可审计：至少记录目标进程、操作类型、权限层级和相关窗口标识。",
+    "UI 问题先从“能否只读观测”开始；只有观测不足时才进入输入或点击阶段。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

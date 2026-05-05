@@ -1,12 +1,3 @@
-## 核心约束
-- WebView 无 Node.js API；系统访问必须 `invoke()`
-- CSP 显式允许脚本源；dev server 绑定 localhost
-- TS 类型与 Rust 结构体严格同步，禁 `any`
-- React 与 Rust 状态独立，必须显式同步
-- 深链接同时在 Rust `on_open_url` 和 React Router 处理
-- `useTauriEvent` cleanup 必须 unlisten 并处理卸载竞态
-- Error Boundary 捕获 IPC Promise rejection
-
 ## 代码模式
 
 - [React 集成 Hooks](references/react-integration-patterns.md)

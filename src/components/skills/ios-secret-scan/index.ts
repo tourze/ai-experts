@@ -15,6 +15,12 @@ export const iosSecretScanSkill = defineSkill({
     "需要与 [ios-binary-analysis](../ios-binary-analysis/SKILL.md) 配合：先提取再扫描。",
     "需要与 [frida-dynamic-analysis](../frida-dynamic-analysis/SKILL.md) 配合验证运行时保护有效性。",
   ],
+  constraints: [
+    "区分 client-safe key（Firebase API key、Stripe publishable key）和 server-only key（Stripe secret key、AWS secret）。",
+    "字符串匹配命中后必须回看上下文判断——test data、注释、示例值都是误报。",
+    "对每个发现标注严重级别和影响范围。",
+    "先自动扫描，再人工分析高危发现。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

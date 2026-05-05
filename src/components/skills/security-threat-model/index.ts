@@ -15,6 +15,12 @@ export const securityThreatModelSkill = defineSkill({
     "需要与 [stride-analysis-patterns](references/stride-analysis-patterns.md) 联动做系统性枚举。",
     "产出威胁后，继续用 [threat-mitigation-mapping](references/threat-mitigation-mapping.md) 和 [security-requirement-extraction](references/security-requirement-extraction.md) 落地。",
   ],
+  constraints: [
+    "所有组件、边界和控制都必须有仓库证据或明确假设来源。",
+    "区分运行时路径与 CI/构建/开发工具，避免把辅助脚本混进主系统边界。",
+    "威胁数量少而精，优先真实攻击者目标与高价值资产。",
+    "当关键上下文缺失时，先提 1 到 3 个高价值问题再定级。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

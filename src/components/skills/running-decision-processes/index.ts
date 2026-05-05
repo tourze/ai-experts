@@ -16,6 +16,11 @@ export const runningDecisionProcessesSkill = defineSkill({
     "做失败预演或事前验尸（pre-mortem）时，可配合 `inversion-strategist` 与 [planning-under-uncertainty](../planning-under-uncertainty/SKILL.md)。",
     "需要把争议证据转成先验、后验、行动阈值和敏感性报告时，配合 `what-if-oracle`。",
   ],
+  constraints: [
+    "先定义决策问题、影响范围、不可逆程度和 deadline，再设计流程。",
+    "明确谁提供输入、谁决策、谁执行，避免“所有人都参与所以没人负责”。",
+    "决策需要记录理由与前提，方便日后复盘，不是只留一个结论。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -15,6 +15,12 @@ export const contentStrategySkill = defineSkill({
     "判断“该写什么”而不是“这篇怎么改”。",
     "需要把品牌叙事、搜索流量和销售线索整合成一套发布计划。",
   ],
+  constraints: [
+    "先定义目标受众、业务目标和差异化，再排选题。",
+    "每个选题都要说明它服务搜索、分享、教育还是转化，不能只看“感觉能写”。",
+    "内容策略要和站点结构、分发渠道、复用方式配套考虑。",
+    "若任务转向具体页面优化，配合 [seo](../seo/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

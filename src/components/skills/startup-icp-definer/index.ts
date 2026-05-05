@@ -15,6 +15,11 @@ export const startupIcpDefinerSkill = defineSkill({
     "需要完整方法时可阅读 [references/full-guide.md](references/full-guide.md)。",
     "需要结合想法验证或市场空间时，可配合 [market-sizing-analysis](../market-sizing-analysis/SKILL.md)。",
   ],
+  constraints: [
+    "ICP 必须同时覆盖公司画像、买方角色、使用者角色和购买触发因素。",
+    "先找高痛点、高付费意愿、高成交概率的客户，而不是“最大的市场”。",
+    "画像要服务销售和产品决策，不是堆一份漂亮的人设。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

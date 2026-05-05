@@ -15,6 +15,11 @@ export const marketSizingAnalysisSkill = defineSkill({
     "需要参考 [references/data-sources.md](references/data-sources.md) 与 [examples/saas-market-sizing.md](examples/saas-market-sizing.md)。",
     "与客户画像或融资故事联动时，可配合 [startup-icp-definer](../startup-icp-definer/SKILL.md) 和 [fundraise-advisor](../fundraise-advisor/SKILL.md)。",
   ],
+  constraints: [
+    "同时给出方法、假设和数据来源，不允许只报一个大数字。",
+    "TAM/SAM/SOM 要口径一致，避免一个按用户数、一个按收入口径混算。",
+    "对新市场或新类别，优先写假设边界和不确定性，而不是装作数字很精确。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

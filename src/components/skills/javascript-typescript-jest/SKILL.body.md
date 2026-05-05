@@ -1,10 +1,6 @@
+## 联动说明
+
 > 通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 [testing-patterns](testing-expert:testing-patterns)。本 skill 只覆盖 JavaScript/TypeScript 特有语法与工具。
-
-## 核心约束
-
-- 异步测试必须显式 `await`、`return` 或使用 `resolves` / `rejects`；禁止依赖隐式完成。
-- 快照只用于稳定结构；一旦快照变化，需要同步解释为什么行为仍正确。
-- 组件测试默认按可访问性语义查询元素，而不是依赖实现细节 `className`。
 
 ## 代码模式
 

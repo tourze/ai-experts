@@ -15,6 +15,12 @@ export const openapiSpecGenerationSkill = defineSkill({
     "从现有 API 实现反推出契约文档。",
     "为 SDK、Mock、文档站或契约测试提供统一源文件。",
   ],
+  constraints: [
+    "目标版本默认为 OpenAPI 3.1.0，除非项目已有明确约束。",
+    "路径、参数、响应和错误模型必须显式建模，不能只写 happy path。",
+    "示例数据要与 schema 一致，避免文档可读但不可用。",
+    "大型规范优先拆分 `components` 与 `paths`，避免单文件失控。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

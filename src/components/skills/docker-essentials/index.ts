@@ -15,6 +15,12 @@ export const dockerEssentialsSkill = defineSkill({
     "构建镜像、打标签、推送制品。",
     "使用 Compose 管理多服务开发环境。",
   ],
+  constraints: [
+    "优先使用显式版本标签，避免 `latest`。",
+    "排障先看 `ps / logs / inspect`，再建议重建或删除。",
+    "删除镜像、卷、网络前先确认影响范围，尤其是共享卷。",
+    "新项目优先使用 `docker compose`，仅在遗留仓库明确要求时使用 `docker-compose`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

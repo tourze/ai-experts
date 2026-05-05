@@ -18,6 +18,9 @@ export const pythonTestingPatternsSkill = defineSkill({
     "失败路径设计和断言策略时，联动 [python-error-handling](../python-error-handling/SKILL.md)。",
     "异步测试组织方式时，联动 [async-python-patterns](../async-python-patterns/SKILL.md)。",
   ],
+  constraints: [
+    "单元测试优先测边界和业务规则，不要把 pytest 框架细节当成主要断言对象。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -1,12 +1,6 @@
+## 联动说明
+
 > 通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 [testing-patterns](testing-expert:testing-patterns)。本 skill 只覆盖 Rust 特有语法与工具。
-
-## 核心约束
-
-- 测试名表达输入、条件与预期结果，如 `parse_port_rejects_zero`。
-- `#[should_panic]` 只在确实测试 panic 路径时使用；错误路径用 `assert!(result.is_err())`。
-- 文档测试（`///` 中的代码块）同时充当活文档和回归保护。
-- snapshot 测试（cargo-insta）适合输出结构复杂的场景；更新 snapshot 前必须人工审查 diff。
-- 集成测试放 `tests/` 目录，每个文件是独立编译 crate。
 
 ## 测试类型速查
 

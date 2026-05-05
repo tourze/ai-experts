@@ -1,11 +1,3 @@
-## 核心约束
-
-- 用户材料优先：先保留用户的意图、角度、案例、术语和排除项，再补外部来源。
-- 外部研究按强度分层：官方/标准/论文优先，其次 GitHub/实现证据，再到专家讨论和二级解释。
-- 教程必须是学习路径，不是链接摘要；每章回答一个学习问题并配一个视觉说明。
-- 默认正文长度是完整教程：中文 `5000-10000` 字，英文 `3500-7000` words；用户要求 sample/brief 时再降级。
-- DOCX/PDF/HTML 以 Markdown 正文为 canonical source，不维护三份不同内容。
-
 ## 执行流程
 
 1. 建立 `brief`，字段和材料分类见 [tutorial package contract](references/tutorial-package-contract.md)。

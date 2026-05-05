@@ -15,6 +15,12 @@ export const planReviewSkill = defineSkill({
     "适合在投入编码前做一轮“会在哪翻车”的压力测试。",
     "交叉引用：需要任务化输出时配合 `task-decomposer`；还没做系统设计时先用 `system-design`。",
   ],
+  constraints: [
+    "评审对象必须是计划或方案，不要在没有计划时假装评审。",
+    "要把假设、依赖、风险、回滚和验证路径分开写。",
+    "优先指出真正会导致失败的缺口，而不是泛泛建议“多测试”。",
+    "不替方案作者做实现细节脑补；缺失信息就明确标成缺口。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

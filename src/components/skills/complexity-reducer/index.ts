@@ -18,6 +18,13 @@ export const complexityReducerSkill = defineSkill({
     "上线前做可维护性整理，而不是功能性重写。",
     "交叉引用：重构流程纪律配合 `refactoring-checklist`；具体重构手法配合 `architecture-expert/refactoring-patterns`；审查结果配合 `code-review`；设计原则参考 `software-design`；完成前验证检查清单见 [references/verification-checklist.md](./references/verification-checklist.md)。",
   ],
+  constraints: [
+    "目标是降低认知复杂度，不是减少行数。",
+    "先定位复杂度来源，再决定策略。",
+    "每次简化保持行为不变——这是重构不是重写。",
+    "本质复杂度（业务规则就是复杂的）不强行简化逻辑，而是改善组织。",
+    "简化后必须更容易理解，不是更\"巧妙\"。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

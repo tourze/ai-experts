@@ -15,6 +15,11 @@ export const swotAnalysisSkill = defineSkill({
     "需要看行业结构或具体对手时，可配合 [porters-five-forces](../porters-five-forces/SKILL.md) 与 [competitive-teardown](../competitive-intelligence/SKILL.md)。",
     "补充分析框架：[references/blue-ocean-strategy.md](references/blue-ocean-strategy.md) — 蓝海战略（ERRC 网格、策略画布）；[references/space-matrix.md](references/space-matrix.md) — SPACE 矩阵（战略态势定位）。",
   ],
+  constraints: [
+    "Strength/Weakness 写内部能力，Opportunity/Threat 写外部环境，别混淆。",
+    "SWOT 不是四格词云，每个点都要连接到战略动作。",
+    "先列事实和证据，再做判断，避免把偏好写成优势。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

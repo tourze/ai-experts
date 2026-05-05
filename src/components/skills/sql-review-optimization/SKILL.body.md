@@ -1,25 +1,3 @@
-## 核心约束
-
-### 审查（先安全，再性能）
-
-- 先审安全边界，再看性能；权限、条件或事务边界错了跑再快也没意义。
-- 用户输入必须经驱动参数化；不拼接、不内联。
-- 查询要显式列出返回列、连接条件和排序条件。
-- 迁移脚本必须评估锁、回填、回滚和灰度路径。
-- 评审覆盖读写放大、权限模型、审计和异常恢复。
-
-### 优化（先测量，再优化）
-
-- 先拿执行计划、真实行数、延迟和资源消耗，再决定改 SQL 还是改索引。
-- 优先修访问路径，再谈"技巧重写"；大多数慢查询输在过滤、排序和索引布局。
-- 热路径分页优先游标或 seek，避免大偏移 OFFSET。
-- 批处理、报表和在线请求资源模型不同，OLAP 查询不塞进 OLTP 热链路。
-- 复合索引顺序匹配过滤和排序路径，不按"字段重要性"拍脑袋。
-
-### 深度索引策略
-
-通用原则与 MySQL/PostgreSQL 特化策略见 [references/index-strategy.md](references/index-strategy.md)。详细方法论见 [references/sql-code-review.md](references/sql-code-review.md)、[references/sql-optimization.md](references/sql-optimization.md)。
-
 ## 代码模式
 
 ```sql

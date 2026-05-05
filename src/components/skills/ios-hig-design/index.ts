@@ -15,6 +15,12 @@ export const iosHigDesignSkill = defineSkill({
     "用户提到安全区域、Dynamic Island、导航结构、Dynamic Type、SF Symbols 或 HIG 合规。",
     "需要把“看起来像 iOS”落实到具体布局、组件和交互决策。",
   ],
+  constraints: [
+    "优先使用系统组件与系统导航，不要先造自定义容器。",
+    "交互控件最小触控面积按 `44x44pt` 设计，并尊重 safe area。",
+    "文本要使用语义字体样式并验证 Dynamic Type，不要写死字号和行高。",
+    "iPhone 与 iPad 需要分别考虑信息密度、分栏与横屏，不要拿单一尺寸糊过去。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

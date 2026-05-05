@@ -1,13 +1,3 @@
-## 核心约束
-
-1. FFI 函数必须 `#[no_mangle]` + `extern "C"`。
-2. 字符串只用 `*const c_char` / `*mut c_char`。
-3. 每函数文档注明内存所有权。
-4. 每个 `Box::into_raw` 配对 `_free`，`_free` 处理 null。
-5. 每个入口 `catch_unwind`；panic 跨 FFI 是 UB。
-6. 复杂类型用 opaque pointer，暴露的结构体 `#[repr(C)]`。
-7. 用 cbindgen / uniffi 生成绑定，禁手写头文件。
-
 ## 代码模式
 
 - [Opaque Handle + free](references/patterns.md#模式-1)

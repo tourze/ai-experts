@@ -18,6 +18,13 @@ export const uvPackageManagerSkill = defineSkill({
     "需要把测试工具链串起来时，联动 [python-testing-patterns](../python-testing-patterns/SKILL.md)。",
     "需要把 mypy/pyright 等静态检查纳入开发流时，联动 [python-type-safety](../python-type-safety/SKILL.md)。",
   ],
+  constraints: [
+    "单个项目只保留一个依赖真源：`pyproject.toml` + `uv.lock`。",
+    "优先用 `uv run`，避免“激活了哪个 venv 我也说不清”的状态漂移。",
+    "不要在同一仓库同时混用 `pip install`、Poetry 和 uv 修改依赖。",
+    "锁文件进 CI 和发布流；需要可复现安装时使用 `uv sync --frozen`。",
+    "文档只保留已验证的命令参数，避免写历史版本选项。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

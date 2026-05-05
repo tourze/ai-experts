@@ -1,11 +1,3 @@
-## 核心约束
-
-- 交互前优先 `take_snapshot`，因为 `click`、`fill`、`fill_form` 等输入工具依赖最新 `uid`；导航或 DOM 更新后旧 `uid` 立即失效。
-- 多标签页场景先 `list_pages` / `select_page` 再操作，避免把命令发到错误页签。
-- 排障时不要只看其中一类证据；前端问题通常要把 `list_console_messages`、`list_network_requests`、`evaluate_script` 组合起来看。
-- 性能分析工具链以 `performance_start_trace` / `performance_stop_trace` / `performance_analyze_insight` 为主，必要时补 `take_memory_snapshot` 与 `lighthouse_audit`。
-- 当前官方工具面包括页面导航、输入交互、调试、网络、性能和仿真；命名基线见官方仓库：<https://github.com/mcp/ChromeDevTools/chrome-devtools-mcp>
-
 ## 代码模式
 
 ```json

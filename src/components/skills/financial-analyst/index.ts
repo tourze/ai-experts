@@ -20,6 +20,13 @@ export const financialAnalystSkill = defineSkill({
     "若任务升级为更灵活的估值假设、双变量敏感性或盈亏平衡分析，参考财务建模相关方法。",
     "若问题转向投资组合 VaR、CVaR、Sharpe、回撤等市场风险指标，参考风险管理相关方法。",
   ],
+  constraints: [
+    "`scripts/` 下 4 个 CLI 都使用 Node.js `.mjs` 实现，只依赖本机 Node 运行时。",
+    "每个脚本同时接受两种输入：直接工具专用 JSON，或聚合样例 `assets/sample_financial_data.json` 中对应的子段。",
+    "推荐优先使用专用样例文件：\n`assets/ratio_analysis_sample.json`、`assets/dcf_valuation_sample.json`、`assets/budget_variance_sample.json`、`assets/forecast_sample.json`。",
+    "本技能不负责 Excel、CSV、数据库抽取；先把数据整理成 JSON 再调用脚本。",
+    "CLI 输出面向单次分析；若需要复用模型逻辑或批量场景分析，应该转用本目录中的 Python 库脚本。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

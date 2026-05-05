@@ -1,13 +1,3 @@
-## 核心约束
-
-- 提交前先执行 `svn update`，确保基线最新，再处理冲突并复查 `svn diff`。
-- `svn add` 与 `svn commit` 必须带显式路径；禁止 `svn add .`、`svn add --force`、`svn commit` 无路径提交。
-- `tags/` 视为只读快照；要修补发布内容，创建新 tag，不直接修改已有 tag。
-- 从 Subversion 1.8 开始，不再推荐旧式 reintegrate 参数；整分支回合并应直接执行 `svn merge ^/branches/<name>`。
-- 查询 mergeinfo 时显式写出 `--show-revs=eligible` 或 `--show-revs=merged`，不要依赖默认输出。
-- `svn:ignore` 只作用于当前目录；需要对子树统一生效时，优先使用 `svn:global-ignores`（客户端/服务端至少 1.8）。
-- `svn cleanup --remove-unversioned` 仅在 1.9+ 客户端可用；旧环境只执行 `svn cleanup`，未纳管文件手工清理。
-
 ## 代码模式
 
 ### 模式 1：日常开发闭环

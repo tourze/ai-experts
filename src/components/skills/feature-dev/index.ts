@@ -14,6 +14,12 @@ export const featureDevSkill = defineSkill({
     "适合把一次实现拆成可解释的阶段，而不是直接跳进编码。",
     "交叉引用：设计前风险审计用 `plan-review`；拆任务时配合 `task-decomposer`；跨 session 的复杂任务配合 `persistent-planning` 落盘三文件。",
   ],
+  constraints: [
+    "不要跳阶段，尤其不能跳过代码库探索、澄清问题和方案对比。",
+    "实现阶段必须带验证策略，必要时先补测试再写代码。",
+    "如果只是单行修复或紧急热修，不要强行套满七阶段。",
+    "总结阶段要记录关键决策、限制和后续动作。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

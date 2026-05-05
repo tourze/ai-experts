@@ -16,6 +16,13 @@ export const refactoringChecklistSkill = defineSkill({
     "本 skill 只回答「能不能开始 / 怎么安全推进 / 怎么回滚」。",
     "交叉引用：\n- 具体「该用哪个重构手法」（Extract Method / 异味分类）→ `architecture-expert/refactoring-patterns`。\n- 降低嵌套与函数复杂度的诊断 → `complexity-reducer`。\n- 审查结论触发的重构 → `code-review`。",
   ],
+  constraints: [
+    "**违反字面规则 = 违反规则精神。不存在\"灵活变通\"。**",
+    "重构 = 改结构不改行为。行为变更（bug 修复、新功能）必须另开提交。",
+    "没有测试覆盖的代码，先补表征测试再重构。",
+    "每步保持系统可运行、测试可通过。",
+    "范围必须提前确定，防止\"顺手改\"扩散。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

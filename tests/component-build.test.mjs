@@ -45,8 +45,26 @@ function countH2OutsideCodeFence(source, title) {
   return count;
 }
 
+function countH2OutsideCodeFenceMatching(source, predicate) {
+  let count = 0;
+  let inFence = false;
+  for (const line of source.split(/\r?\n/)) {
+    if (/^\s*(?:```|~~~)/.test(line)) {
+      inFence = !inFence;
+    } else if (!inFence) {
+      const heading = line.match(/^##\s+(.+?)\s*$/);
+      if (heading && predicate(heading[1].trim())) count += 1;
+    }
+  }
+  return count;
+}
+
 function stripFrontmatter(source) {
   return source.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n+/, "");
+}
+
+function firstNonEmptyLine(source) {
+  return source.trimStart().split(/\r?\n/, 1)[0] ?? "";
 }
 
 test("component build emits claude and codex component surfaces", () => {
@@ -187,16 +205,27 @@ test("component build emits claude and codex component surfaces", () => {
         false,
         `${bodyFile} should not contain an H1 heading; set fullName in index.ts instead`,
       );
+      assert.match(
+        firstNonEmptyLine(source),
+        /^##\s+\S/,
+        `${bodyFile} should start with an H2 section, not an intro paragraph`,
+      );
       assert.equal(
         countH2OutsideCodeFence(source, "适用场景"),
         0,
         `${bodyFile} should not contain a useCases section; set useCases in index.ts instead`,
+      );
+      assert.equal(
+        countH2OutsideCodeFenceMatching(source, (title) => title.startsWith("核心约束")),
+        0,
+        `${bodyFile} should not contain a constraints section; set constraints in index.ts instead`,
       );
     }
 
     for (const skillSourceFile of collectFiles(join(repoRoot, "src/components/skills"), (file) => file.endsWith("index.ts"))) {
       const source = readFileSync(skillSourceFile, "utf-8");
       assert.match(source, /\n\s*useCases:\s*\[/, `${skillSourceFile} should define useCases`);
+      assert.match(source, /\n\s*constraints:\s*\[/, `${skillSourceFile} should define constraints`);
       assert.doesNotMatch(
         source,
         /id:\s*"evals"|new URL\("\.\/evals(?:\/|")|target:\s*"references\/evals"|title:\s*"Eval Cases"/,
@@ -218,13 +247,18 @@ test("component build emits claude and codex component surfaces", () => {
         assert.match(source, /^#\s+\S/, `${skillFile} should render an H1 heading from fullName`);
         assert.match(
           source,
-          /^#\s+.+\r?\n\r?\n## 适用场景\r?\n/m,
-          `${skillFile} should render useCases immediately after the H1 heading`,
+          /^#\s+.+\r?\n\r?\n## 适用场景\r?\n[\s\S]*?\r?\n## 核心约束\r?\n/m,
+          `${skillFile} should render useCases and constraints immediately after the H1 heading`,
         );
         assert.equal(
           countH2OutsideCodeFence(source, "适用场景"),
           1,
           `${skillFile} should render exactly one useCases section`,
+        );
+        assert.equal(
+          countH2OutsideCodeFence(source, "核心约束"),
+          1,
+          `${skillFile} should render exactly one constraints section`,
         );
       }
     }

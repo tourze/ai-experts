@@ -17,6 +17,13 @@ export const pgsqlRowLevelSecuritySkill = defineSkill({
     "需要用 `SET ROLE` 测试策略的正确性",
     "租户列设计参见 [db-schema-design](../db-schema-design/SKILL.md)；索引策略参见 [sql-review-optimization](../sql-review-optimization/SKILL.md)",
   ],
+  constraints: [
+    "启用 RLS 后表 owner 默认绕过策略 — 必须加 `FORCE ROW LEVEL SECURITY`",
+    "`USING` 控制读（SELECT/UPDATE/DELETE），`WITH CHECK` 控制写（INSERT/UPDATE），两者都要显式声明",
+    "`current_setting('app.tenant_id')` 必须在每个事务开始时设置，忘记设置会导致数据泄漏或全拒绝",
+    "策略谓词保持简单列比较，避免子查询或复杂函数（每行执行一次影响性能）",
+    "RLS 是防御纵深的一层，应用层仍需业务逻辑级权限校验",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

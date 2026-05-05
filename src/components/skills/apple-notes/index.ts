@@ -14,6 +14,12 @@ export const appleNotesSkill = defineSkill({
     "用户需要在终端中快速浏览某个文件夹下的备忘录。",
     "用户希望把 Notes 内容导出为 HTML / Markdown。",
   ],
+  constraints: [
+    "仅支持 macOS，并且第一次使用通常需要授权 Notes 自动化权限。",
+    "入口命令是 `memo notes`；新增、编辑、删除这类操作依赖交互式选择。",
+    "`--add` / `--edit` / `--delete` 这类操作通常要配合 `--folder` 使用。",
+    "含图片或附件的笔记不适合直接编辑；导出时要预期格式差异。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

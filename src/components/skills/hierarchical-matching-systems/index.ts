@@ -15,6 +15,12 @@ export const hierarchicalMatchingSystemsSkill = defineSkill({
     "适合把业务规则翻译成可执行约束、偏好和目标函数。",
     "交叉引用：更大范围的架构边界用 `system-design`；问题审计用 `architecture-reviewer`（启用 Exhaustive 模式）。",
   ],
+  constraints: [
+    "先判断问题类型：稳定匹配、最优分配、层级对齐还是实体解析。",
+    "业务约束、硬约束、软约束和优先级必须分开建模。",
+    "任何“匹配质量差”结论都要落到具体输入分布、规则冲突或评分函数。",
+    "不要把求解器选择和业务正确性混为一谈。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

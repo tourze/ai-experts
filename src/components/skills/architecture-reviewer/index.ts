@@ -18,6 +18,13 @@ export const architectureReviewerSkill = defineSkill({
     "支持代码库评审、文档评审和混合评审三种模式；深挖时启用 Exhaustive 模式做子系统级穷举审计。",
     "交叉引用：需要画图时改用 `architecture-diagram`；模块接缝问题用 `seam-ripper`；调用链追踪用 `api-trace-reader`。",
   ],
+  constraints: [
+    "必须先判断输入模式与深度（Quick / Exhaustive），再决定是否运行扫描脚本和加载参考文件。",
+    "评分只允许 `1` 到 `5`，可用 `0.5`；不得改成百分制单维评分。",
+    "七个维度都要覆盖：结构、扩展性、安全、性能、企业就绪、运维、数据架构。",
+    "每个结论都要绑定证据：代码路径、配置项、文档原文或用户明确提供的事实。",
+    "Exhaustive 模式必须先做子系统拆分、再分模块审，不能一口气混着看；优先审有状态、有副作用、并发、认证、安全边界的模块。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -1,12 +1,3 @@
-通用并发原则（不阻塞异步上下文、限制并发、传播取消、不共享可变状态、超时所有外部调用、优雅停机）见 architecture-expert 的 concurrency-patterns skill。
-
-## 核心约束
-
-- 协程内不要做阻塞 I/O（file_get_contents、sleep）——用异步替代。
-- 协程间共享状态要用 Channel/Mutex，不要裸读写全局变量。
-- 长驻进程必须处理内存泄漏：清 static 缓存、限 max_request、用弱引用。
-- WebSocket/TCP 连接要有心跳和超时。
-
 ## 技术选型矩阵
 
 | 特性 | Swoole | ReactPHP | Amphp | 原生 Fiber |

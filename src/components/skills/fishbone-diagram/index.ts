@@ -15,6 +15,12 @@ export const fishboneDiagramSkill = defineSkill({
     "质量问题排查、故障诊断、流程改进。",
     "与 [mckinsey-7-step](../mckinsey-7-step/SKILL.md) 配合：七步法的第二步（分解问题）可以用鱼骨图。问题定义阶段的补充工具见 [references/five-w-two-h.md](references/five-w-two-h.md)。",
   ],
+  constraints: [
+    "主要类别（大骨）按场景选择：\n- 制造业：人/机/料/法/环（5M）\n- 服务业：人员/流程/政策/设备/外部\n- 软件/产品：产品/技术/运营/市场/组织",
+    "每个原因要追问\"为什么\"至少 **2-3 层深度**——第一层谁都能写，根因在第二三层。",
+    "最终必须**锁定 1-3 个根本原因**，不是列一堆然后结束。",
+    "根因要有验证方法（如何确认这是真正的根因），不是猜测。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

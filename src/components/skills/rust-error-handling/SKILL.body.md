@@ -1,14 +1,3 @@
-通用错误处理原则（三层模型、重试边界、部分失败）见 architecture-expert 的 error-handling-patterns skill。
-
-## Rust 特有约束
-
-- 库 crate 暴露稳定、可匹配的错误类型（用 `thiserror`）。
-- 应用二进制入口才适合 `anyhow::Result` 兜底。
-- `unwrap()` / `expect()` 只在测试、脚本和进程启动 fail-fast 中使用。
-- `?` 操作符是传播首选；手动 `match` 只在需要转换或添加上下文时。
-- 错误信息小写开头、不带句号。
-- 公共函数的 `# Errors` 文档段落解释什么条件下返回哪种错误。
-
 ## 错误类型选择
 
 | 场景 | 推荐 | 原因 |

@@ -16,6 +16,12 @@ export const revopsSkill = defineSkill({
     "设计营销-销售交接 SLA 和 CRM 自动化",
     "诊断漏斗漏损、交接断裂或数据质量问题",
   ],
+  constraints: [
+    "**单一事实源**：CRM 为主记录系统，不允许影子 pipeline",
+    "**先定义再自动化**：无业务定义不上自动化",
+    "**衡量每个交接**：营销→SDR→AE→CS 每个交接点有 SLA",
+    "**收入团队对齐**：三方共享指标仪表盘和目标定义",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

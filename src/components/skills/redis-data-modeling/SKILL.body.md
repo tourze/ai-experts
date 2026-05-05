@@ -1,30 +1,3 @@
-## 核心约束
-
-### 数据结构选型
-
-- String 用于简单值和原子计数器（INCR），单 value 建议不超过 10 KB。
-- Hash 用于部分字段读写，字段数 ≤128 且值 ≤64B 时用 listpack 更省内存。
-- ZSet score 是 double，精度有限；高精度排序用 score:timestamp 组合。
-- Stream 消费者组必须显式 XACK，未确认消息留在 PEL 导致内存增长。
-- 选结构前必须明确访问模式（点查 / 范围 / 排序 / 聚合），不仅看数据形状。
-
-### 键设计
-
-- 键名格式 `{service}:{object_type}:{id}`，冒号分隔，全小写，禁止空格和特殊字符。
-- 生产环境严禁 `KEYS *`，必须用 `SCAN` + `MATCH` + `COUNT`。
-- 所有临时键必须设置 TTL 且带随机抖动，永久键需文档登记。
-- 单 key value 不超过 10 KB（String）或 5000 元素（集合类），超出需拆分。
-- 用 `MEMORY USAGE` 和 `OBJECT ENCODING` 定期审计键内存。
-
-### 分布式锁
-
-- 获取锁必须用 `SET key value NX EX seconds` 单条原子命令，严禁 `SETNX` + `EXPIRE`。
-- value 必须是唯一 owner token（UUID），释放时 Lua 校验 owner 后再 DEL。
-- 锁超时必须大于业务最大执行时间，或用 watchdog 自动续期。
-- Redlock 需 5 个独立实例，获取多数派（N/2+1）且扣除获取耗时。
-
-详细模式见：[references/redis-data-structures.md](references/redis-data-structures.md)、[references/redis-key-design.md](references/redis-key-design.md)、[references/redis-distributed-lock.md](references/redis-distributed-lock.md)。
-
 ## 代码模式
 
 ```python

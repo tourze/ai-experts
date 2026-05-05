@@ -1,12 +1,3 @@
-## 核心约束
-
-- 一个资源只能有一个清晰 owner。`shared_ptr` 不是“想不清楚时的默认答案”。
-- 裸指针默认视为 observer，不承担释放责任；表达所有权时优先 `std::unique_ptr`。
-- 资源获取和释放必须同层封装。谁 `open/create/alloc`，谁定义对应的析构或 cleanup 语义。
-- C++ 代码默认要求异常安全：构造成功即建立不变量，析构不抛异常。
-- C 代码不能把 cleanup 分支散落在多个 `return`；统一走 `goto cleanup` 或单出口销毁函数。
-- 当一个接口只读不拥有数据时，传 `std::span` / `std::string_view` / `const T&`，不要传拥有型容器副本。
-
 ## 代码模式
 
 ### 模式 1：用 RAII 包住 C 资源，而不是手写成对 `open/close`

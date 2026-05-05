@@ -14,6 +14,11 @@ export const designingGrowthLoopsSkill = defineSkill({
     "产品已有一定留存基础，想把拉新、激活、留存和分享串成闭环。",
     "需要结合 [references/guest-insights.md](references/guest-insights.md) 提炼常见增长模式或限制条件。",
   ],
+  constraints: [
+    "先确认核心用户价值和自然传播时刻，再设计分享或邀请机制。",
+    "飞轮必须说明输入、产出、反馈路径与放大条件，不能只是一张漏斗图。",
+    "如果留存、LTV 或用户价值不足，优先修产品基础，而不是强推裂变。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

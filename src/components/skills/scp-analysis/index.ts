@@ -13,6 +13,12 @@ export const scpAnalysisSkill = defineSkill({
     "分析外部冲击（政策/技术/经济/社会变化）对企业的传导影响。",
     "与 `pestel-analysis` 配合：PESTEL 扫描外部因素，SCP 分析传导路径。",
   ],
+  constraints: [
+    "传导链条：外部冲击 -> 行业结构(Structure) -> 企业行为(Conduct) -> 经营绩效(Performance)。",
+    "**不能跳过中间环节**：冲击不是直接影响绩效，而是通过结构和行为间接影响。\"AI 出现了 -> 我们要转型 AI\"就是跳过了传导分析。",
+    "同一冲击对不同行业、不同规模企业的传导路径可能完全不同——必须区分领先企业、中小企业和自身。",
+    "行业结构变化往往是不可逆的，企业行为必须适应而非抵抗。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -18,6 +18,12 @@ export const ghFixCiSkill = defineSkill({
     "需要快速提取失败 job、运行链接和日志片段。",
     "要区分 GitHub Actions 与外部检查提供方。",
   ],
+  constraints: [
+    "开始前必须确认 `gh auth status` 成功，并且仓库可访问。",
+    "仅处理 GitHub Actions；Buildkite 等外部 provider 只报告 `detailsUrl`。",
+    "先汇总失败上下文与修复计划，得到用户确认后再改代码。",
+    "脚本参数必须与实现一致：`--repo`、`--pr`、`--max-lines`、`--context`、`--json`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

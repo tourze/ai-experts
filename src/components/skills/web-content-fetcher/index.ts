@@ -18,6 +18,13 @@ export const webContentFetcherSkill = defineSkill({
     "常作为 [deep-research](../deep-research/SKILL.md) 的正文抓取阶段。在深度研究流水线中，可先用 [references/question-refiner.md](references/question-refiner.md) 完善问题后再抓取。",
     "如果只是做技术资讯聚合而不是抓单页正文，参考资讯聚合相关方法。",
   ],
+  constraints: [
+    "主脚本是 [`scripts/fetch.mjs`](scripts/fetch.mjs)，使用 Node.js 内置 `fetch`，不依赖 Python 包。",
+    "每个 URL 先选一种模式执行，不要无脑循环重试。",
+    "`--stealth` 使用更接近浏览器的请求头，但不执行 JavaScript；遇到强 JS 渲染页面时应及时切换到浏览器或其他抓取方案。",
+    "默认 fast 模式会在内容过短时自动用 browser-header 模式重试，因此大多数静态站点无需手动指定 `--stealth`。",
+    "如果脚本失败，可以再考虑其他非脚本方案；不要把多次失败的同一 URL 反复塞进上下文。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

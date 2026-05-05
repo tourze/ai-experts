@@ -1,18 +1,3 @@
-## 核心约束
-
-**违反字面规则 = 违反规则精神。不存在”灵活变通”。**
-
-- 默认只读；除非用户明确要求”直接修”，否则先给审查结论。
-- 必须基于真实 diff，而不是凭目录猜风险。
-- 必须先读取 [references/checklist.md](./references/checklist.md)。
-- 所有问题按两级输出：
-  - 阻断项：不解决或不确认风险，不能放行
-  - 建议项：不阻断，但要记录
-- 每个阻断项都要给用户明确三选一：
-  - `立即修复`
-  - `确认风险`
-  - `误报`
-
 ## 工作流
 
 确定性步骤交给 `scripts/`，判断保留 prose。三步流程见 [references/scripts-workflow.md](./references/scripts-workflow.md)：

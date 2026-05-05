@@ -14,6 +14,12 @@ export const memoryForensicsSkill = defineSkill({
     "需要与 [binary-analysis-patterns](../binary-analysis-patterns/SKILL.md) 联动定位可疑模块。",
     "面对反调试或壳层样本时，可结合 [anti-reversing-techniques](../binary-analysis-patterns/SKILL.md) 解释运行时差异。",
   ],
+  constraints: [
+    "保存原始镜像与哈希，所有分析基于副本进行。",
+    "先做时间线、进程树和网络基线，再提取载荷。",
+    "所有结论都要锚定对象偏移、PID、模块名或时间戳。",
+    "区分“未找到证据”和“证据表明不存在”。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

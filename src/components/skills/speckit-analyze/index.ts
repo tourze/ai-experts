@@ -12,6 +12,10 @@ export const speckitAnalyzeSkill = defineSkill({
   useCases: [
     "当用户要在任务拆解后审计规格、计划、任务三件套的一致性、重复、冲突或遗漏风险时使用。",
   ],
+  constraints: [
+    "严格只读，不允许改文件。",
+    "结论必须可追溯到文档中的具体段落。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

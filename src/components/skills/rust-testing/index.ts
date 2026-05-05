@@ -16,6 +16,13 @@ export const rustTestingSkill = defineSkill({
     "引入或使用 cargo-insta 做 snapshot 测试。",
     "组织 `tests/` 目录、test crate 或 benchmark。",
   ],
+  constraints: [
+    "测试名表达输入、条件与预期结果，如 `parse_port_rejects_zero`。",
+    "`#[should_panic]` 只在确实测试 panic 路径时使用；错误路径用 `assert!(result.is_err())`。",
+    "文档测试（`///` 中的代码块）同时充当活文档和回归保护。",
+    "snapshot 测试（cargo-insta）适合输出结构复杂的场景；更新 snapshot 前必须人工审查 diff。",
+    "集成测试放 `tests/` 目录，每个文件是独立编译 crate。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

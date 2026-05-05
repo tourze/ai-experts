@@ -9,17 +9,6 @@
 
 高压模式只攻击工作产物，不攻击作者人格。无授权不对新人/低心理安全团队使用。
 
-## 核心约束
-
-**违反字面规则 = 违反规则精神。不存在"灵活变通"。**
-
-- 先读真实代码或 diff，不凭猜测。
-- 不审查纯风格问题（缩进、括号、行长度）——那是 linter 的事。
-- 每条发现必须遵循 **Iron Law 四要素**：Symptom → Source → Consequence → Remedy，缺一不可。
-- 按严重度分级：🔴 关键 > 🟡 重要 > 🟢 建议。参考 [references/dimensions.md](./references/dimensions.md) 的严重度指引和"不应标记"规则。
-- 审查结束输出 **Health Score**（100 分制），格式见 [references/health-score.md](./references/health-score.md)。
-- 无问题则明确说明，不硬凑——100 分是合法的。
-
 ## 审查维度
 读取 [references/dimensions.md](./references/dimensions.md)，按六维度逐项检查：命名与语义、函数设计、错误处理、逻辑与边界、DRY 与抽象、可读性。
 

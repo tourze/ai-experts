@@ -1,14 +1,3 @@
-## 核心约束
-
-- `.base` 文件必须是合法 YAML。Bases 没有 Dataview / SQL 风格的 `from`、`source` 段，结果集完全由 `filters` 决定。
-- 全局 `filters` 和视图级 `filters` 在求值时会用 `AND` 拼接；不要把同一条件在两层重复堆叠。
-- 属性分三类：笔记属性 `note.foo` 或简写 `foo`、文件属性 `file.*`、公式属性 `formula.*`。
-- 日期相减返回的是“毫秒差”，不是带 `.days` / `.hours` 字段的 Duration 对象；只有显式用 `duration("1d")` 这类值时才是在做 duration 运算。
-- `this.file.*` 的含义取决于展示位置：主内容区指向 base 文件本身；嵌入时指向嵌入它的文件；侧边栏里指向主内容区活动文件。
-- `file.backlinks` 性能较重，且 Vault 变化后不会自动刷新；能用 `file.hasLink(this.file)` 做反向查询时，优先用后者。
-- `map` 视图需要额外安装官方 Maps 插件；不要把 map 当成默认可用布局。
-- 常用函数速查见 [FUNCTIONS_REFERENCE.md](references/FUNCTIONS_REFERENCE.md)，完整能力以官方文档为准。
-
 ## 代码模式
 
 ### 1. 最小可工作的 `.base` 骨架

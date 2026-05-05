@@ -1,11 +1,3 @@
-## 核心约束
-
-- **铁律：Fork vs Fresh 必须显式决策**——子 Agent 继承父上下文（fork）还是独立启动（fresh）不能隐含，必须按风险和隔离需求明确选择。
-- System prompt 必须有缓存边界：静态段在前（可缓存），动态段在后，两者不能混排。
-- 每个 Agent 必须有 `max_turns` 限制，防止无限循环。
-- 状态按生命周期分四层（turn/session/persistent/project），禁止混用。
-- 扩展通过协议和事件，不通过继承或核心代码修改。
-
 ## 实施步骤
 
 ### 步骤 1：设计 System Prompt 架构

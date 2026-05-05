@@ -1,10 +1,3 @@
-## 核心约束
-
-- 先做代码级归因，再决定是否要求用户补 Instruments trace。
-- 优先修根因：状态粒度、身份稳定性、主线程重活、图片解码与布局复杂度。
-- 不要把 `equatable()`、缓存或 `.id()` 当万用药；先解释为什么会重绘。
-- 参考资料只使用真实存在的本地文档：`references/optimizing-swiftui-performance-instruments.md`、`references/understanding-improving-swiftui-performance.md`、`references/understanding-hangs-in-your-app.md`、`references/demystify-swiftui-performance-wwdc23.md`。
-
 ## 代码模式
 
 ### 让 `ForEach` 身份稳定

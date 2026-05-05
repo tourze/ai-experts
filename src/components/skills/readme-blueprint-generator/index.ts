@@ -15,6 +15,12 @@ export const readmeBlueprintGeneratorSkill = defineSkill({
     "输出要兼顾“快速上手”和“架构导航”，而不是只列文件树。",
     "如需统一 Markdown 风格，可结合 [markdown-mermaid-writing](../markdown-mermaid-writing/SKILL.md)。",
   ],
+  constraints: [
+    "先理解项目是什么、给谁用、怎么跑，再写 README。",
+    "README 必须可执行：安装、启动、测试、关键目录都要能落地。",
+    "不把猜测写成事实；缺失信息应标成“待补”或“未发现”。",
+    "面向开发者的 README 不要混入大量市场宣传话术。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

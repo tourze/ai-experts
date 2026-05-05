@@ -15,6 +15,12 @@ export const swiftuiPerformanceAuditSkill = defineSkill({
     "需要从代码审查切到 Instruments 指导，再回到具体修复方案。",
     "需要判断是身份不稳定、状态扇出、重计算还是布局链过深导致的性能问题。",
   ],
+  constraints: [
+    "先做代码级归因，再决定是否要求用户补 Instruments trace。",
+    "优先修根因：状态粒度、身份稳定性、主线程重活、图片解码与布局复杂度。",
+    "不要把 `equatable()`、缓存或 `.id()` 当万用药；先解释为什么会重绘。",
+    "参考资料只使用真实存在的本地文档：`references/optimizing-swiftui-performance-instruments.md`、`references/understanding-improving-swiftui-performance.md`、`references/understanding-hangs-in-your-app.md`、`references/demystify-swiftui-performance-wwdc23.md`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

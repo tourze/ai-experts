@@ -15,6 +15,12 @@ export const iosBinaryAnalysisSkill = defineSkill({
     "需要与 [frida-dynamic-analysis](../frida-dynamic-analysis/SKILL.md) 配合做运行时验证。",
     "需要与 [anti-reversing-techniques](../binary-analysis-patterns/SKILL.md) 联动分析保护逻辑。",
   ],
+  constraints: [
+    "先用 ipsw class-dump（不是旧版 class-dump），它支持 Swift 和现代 ARM64e。",
+    "Fat binary 先用 `lipo -thin arm64` 提取目标架构。",
+    "class-dump 输出只是头文件，不包含实现——需要结合 strings 和反汇编工具交叉验证。",
+    "区分 app 代码和 framework 代码：第三方 framework 通常在 `Frameworks/` 目录下。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

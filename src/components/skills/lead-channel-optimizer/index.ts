@@ -14,6 +14,12 @@ export const leadChannelOptimizerSkill = defineSkill({
     "需要比较广告、内容、推荐、外联等渠道的效率。",
     "想把预算和团队精力从低效渠道转向更高回报渠道。",
   ],
+  constraints: [
+    "渠道优先级必须同时看产出、稳定性和执行复杂度，不能只看单次线索成本。",
+    "先统一口径：时间窗、归因方式、目标客户定义、是否算销售成本。",
+    "输出必须包含“继续投入 / 保持 / 缩减 / 暂停”四类动作建议。",
+    "若需要重做广告结构，配合 [paid-ads](../paid-ads/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

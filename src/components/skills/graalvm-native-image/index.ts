@@ -16,6 +16,13 @@ export const graalvmNativeImageSkill = defineSkill({
     "要为 Spring Boot、Quarkus、Micronaut 或纯 Java 项目补齐原生镜像配置。",
     "如果构建时间本身是主要问题，联动 [gradle-build-performance](../gradle-build-performance/SKILL.md)。",
   ],
+  constraints: [
+    "先识别环境，再改配置：必须先确认构建工具、框架、Java 版本和失败日志，再决定 Maven/Gradle 路线。",
+    "一次只修一个失败类别：先处理最早的原生构建错误，不要同时追加多份 metadata。",
+    "元数据位置必须清晰：优先使用 `META-INF/native-image/<group>/<artifact>/` 下的配置。",
+    "Spring Boot 3.x 优先 `RuntimeHints`；只有第三方库或无法代码注册时才退回 JSON metadata。",
+    "若引用更细节的构建片段，直接跳到：\n[Maven Native Profile](references/maven-native-profile.md)、\n[Gradle Native Plugin](references/gradle-native-plugin.md)、\n[Spring Boot Native](references/spring-boot-native.md)、\n[Quarkus / Micronaut](references/quarkus-micronaut-native.md)、\n[Reflection / Resource Config](references/reflection-resource-config.md)、\n[Tracing Agent](references/tracing-agent.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

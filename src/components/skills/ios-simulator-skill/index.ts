@@ -17,6 +17,12 @@ export const iosSimulatorSkillSkill = defineSkill({
     "需要抓日志、截图、UI 树、权限状态、状态栏和推送来复现问题。",
     "需要批量启动、关闭、擦除、创建或选择模拟器。",
   ],
+  constraints: [
+    "仅把 `scripts/` 目录下的可执行 Node 脚本当作入口；`scripts/xcode/` 是内部模块，不直接执行。",
+    "优先走无障碍树：先 `scripts/screen_mapper.mjs` / `scripts/navigator.mjs`，最后才用坐标。",
+    "大多数脚本在未传 `--udid` 时会自动选择 booted simulator；`scripts/log_monitor.mjs` 例外，参数名是 `--device-udid`。",
+    "`scripts/visual_diff.mjs` 直接处理 PNG；截图缩放优先使用系统 `sips`，缺失时保留原图尺寸。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -1,13 +1,3 @@
-## 核心约束
-- 错误类型必须 impl `serde::Serialize`，序列化为结构体非纯字符串
-- 事件枚举用 `#[serde(tag = "event", content = "data")]`
-- `Channel<T>` 单命令高频流；`emit()` 广播；`invoke()` 请求-响应
-- 权限标识符遵循 `<plugin>:<action>-<command>` 约定
-- 多窗口必须 `emit_to()` / `emit_filter()` 精确路由
-- 二进制用 `tauri::ipc::Request/Response` 零拷贝
-- 超 1ms 同步命令必须改 async
-- 批量模式单次 invoke 传操作数组减少往返
-
 ## 代码模式
 
 - [高级 IPC 模式](references/ipc-advanced-patterns.md)

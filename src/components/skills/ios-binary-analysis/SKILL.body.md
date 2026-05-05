@@ -1,9 +1,3 @@
-## 核心约束
-- 先用 ipsw class-dump（不是旧版 class-dump），它支持 Swift 和现代 ARM64e。
-- Fat binary 先用 `lipo -thin arm64` 提取目标架构。
-- class-dump 输出只是头文件，不包含实现——需要结合 strings 和反汇编工具交叉验证。
-- 区分 app 代码和 framework 代码：第三方 framework 通常在 `Frameworks/` 目录下。
-
 ## 实施步骤
 
 ### 步骤 1：提取 IPA

@@ -1,13 +1,3 @@
-## 核心约束
-
-1. 共享依赖放 `[workspace.dependencies]`；成员用 `dep.workspace = true`。
-2. edition 2021+ 必须 `resolver = "2"`。
-3. feature 必须 additive：启用只增功能不减。
-4. 未发布成员 path 依赖；已发布 crate 版本号依赖。
-5. `build.rs` 只写 `OUT_DIR`，禁写 `src/`。
-6. 跨 crate 集成测试放专用 test crate。
-7. CI 用 `--workspace` 全局检查。
-
 ## 代码模式
 
 - [Workspace Cargo.toml 配置](references/patterns.md#模式-1)

@@ -1,5 +1,3 @@
-This skill helps you discover and install skills from the open agent skills ecosystem.
-
 ## When to Use This Skill
 
 Use this skill when the user:

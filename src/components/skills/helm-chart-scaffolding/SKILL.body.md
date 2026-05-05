@@ -1,9 +1,3 @@
-## 核心约束
-- 优先使用 `apiVersion: v2` 的 application chart。
-- `values.yaml` 按镜像、网络、资源、安全、依赖项分层，避免扁平大表。
-- Chart 中不要存放明文敏感值；机密优先交给外部 Secret 管理。
-- 交付前至少运行 `helm lint` 与 [scripts/validate-chart.mjs](scripts/validate-chart.mjs)。
-
 ## 代码模式
 - 初始化与校验：
 

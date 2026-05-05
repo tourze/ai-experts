@@ -293,27 +293,46 @@ function renderMarkdownBulletList(items) {
   }).join("\n");
 }
 
-function renderUseCases(skill) {
-  if (!Array.isArray(skill.useCases) || skill.useCases.length === 0) {
-    throw new Error(`Skill ${skill.id} must define at least one useCase`);
+function validateTextList(skill, property, itemLabel) {
+  const items = skill[property];
+  if (!Array.isArray(items) || items.length === 0) {
+    throw new Error(`Skill ${skill.id} must define at least one ${itemLabel}`);
   }
-  for (const useCase of skill.useCases) {
-    if (typeof useCase !== "string" || useCase.trim() === "") {
-      throw new Error(`Skill ${skill.id} has an empty useCase`);
+  for (const item of items) {
+    if (typeof item !== "string" || item.trim() === "") {
+      throw new Error(`Skill ${skill.id} has an empty ${itemLabel}`);
     }
   }
-  return `## 适用场景\n\n${renderMarkdownBulletList(skill.useCases)}\n`;
+  return items;
 }
 
-function hasH2Section(source, expectedTitle) {
+function renderTextListSection(skill, property, title, itemLabel) {
+  const items = validateTextList(skill, property, itemLabel);
+  return `## ${title}\n\n${renderMarkdownBulletList(items)}\n`;
+}
+
+function renderUseCases(skill) {
+  return renderTextListSection(skill, "useCases", "适用场景", "useCase");
+}
+
+function renderConstraints(skill) {
+  return renderTextListSection(skill, "constraints", "核心约束", "constraint");
+}
+
+function hasH2SectionMatching(source, predicate) {
   let inFence = false;
   for (const line of source.split(/\r?\n/)) {
     const fence = /^\s*(?:```|~~~)/.test(line);
     const heading = !inFence ? line.match(/^##\s+(.+?)\s*$/) : null;
-    if (heading && heading[1].trim() === expectedTitle) return true;
+    if (heading && predicate(heading[1].trim())) return true;
     if (fence) inFence = !inFence;
   }
   return false;
+}
+
+function startsWithH2Section(source) {
+  const firstLine = source.trimStart().split(/\r?\n/, 1)[0] ?? "";
+  return /^##\s+\S/.test(firstLine);
 }
 
 function renderSkillMd(skill, platform) {
@@ -326,6 +345,7 @@ function renderSkillMd(skill, platform) {
     `# ${skill.fullName}`,
     "",
     renderUseCases(skill),
+    renderConstraints(skill),
     body,
     renderScriptRegistry(skill, platform),
     renderReferenceMap(skill),
@@ -804,19 +824,20 @@ function validateRegistry(registry) {
     if (!skill.description || skill.description.length < 20) {
       throw new Error(`Skill ${skill.id} has a weak description`);
     }
-    if (!Array.isArray(skill.useCases) || skill.useCases.length === 0) {
-      throw new Error(`Skill ${skill.id} must define at least one useCase`);
-    }
-    for (const useCase of skill.useCases) {
-      if (typeof useCase !== "string" || useCase.trim() === "") {
-        throw new Error(`Skill ${skill.id} has an empty useCase`);
-      }
-    }
+    validateTextList(skill, "useCases", "useCase");
+    validateTextList(skill, "constraints", "constraint");
     if (!existsSync(toAbsolutePath(skill.body))) {
       throw new Error(`Skill ${skill.id} body is missing: ${displayPath(skill.body)}`);
     }
-    if (hasH2Section(readComponentText(skill.body), "适用场景")) {
+    const bodySource = readComponentText(skill.body);
+    if (!startsWithH2Section(bodySource)) {
+      throw new Error(`Skill ${skill.id} body must start with an H2 section; move intro text to index.ts fields`);
+    }
+    if (hasH2SectionMatching(bodySource, (title) => title === "适用场景")) {
       throw new Error(`Skill ${skill.id} must move ## 适用场景 from SKILL.body.md to useCases`);
+    }
+    if (hasH2SectionMatching(bodySource, (title) => title.startsWith("核心约束"))) {
+      throw new Error(`Skill ${skill.id} must move ## 核心约束 from SKILL.body.md to constraints`);
     }
     const skillSourceRoot = dirname(toAbsolutePath(skill.body));
     const seenScripts = new Set();

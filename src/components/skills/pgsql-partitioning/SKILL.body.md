@@ -1,11 +1,3 @@
-## 核心约束
-
-- 分区键必须包含在主键和所有唯一约束中
-- 始终创建 `DEFAULT` 分区兜底，防止插入不匹配数据时报错
-- RANGE 边界使用左闭右开（`FROM ... TO ...`），相邻分区无缝无重叠
-- DETACH 旧分区使用 `CONCURRENTLY` 避免 `ACCESS EXCLUSIVE` 长锁
-- 变更后必须用 `EXPLAIN` 验证 partition pruning 生效
-
 ## 代码模式
 
 详细示例参见 [references/code-patterns.md](./references/code-patterns.md)。核心模板：

@@ -16,6 +16,12 @@ export const businessHealthDiagnosticSkill = defineSkill({
     "与 [process-optimization](../process-optimization/SKILL.md) 配合优化发现的瓶颈。",
     "需要更深入的专项分析时：\n- [references/balanced-scorecard.md](references/balanced-scorecard.md) — BSC 战略翻译工具\n- [references/blm-model.md](references/blm-model.md) — 业务领先模型（差距分析 + 战略执行）\n- [references/mckinsey-7s.md](references/mckinsey-7s.md) — 麦肯锡 7S 组织匹配模型",
   ],
+  constraints: [
+    "诊断必须覆盖 4 个象限（增长、留存、效率、现金），不能只看收入。",
+    "每个指标必须有**当前值、趋势方向和对标基准**，不允许只说\"还行\"。",
+    "红黄绿判断必须有明确阈值，不靠感觉打标。",
+    "诊断结论必须指向**最多 3 个优先行动**，不是列 20 个待改善项。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

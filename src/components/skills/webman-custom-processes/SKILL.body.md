@@ -1,14 +1,3 @@
-自定义进程声明与运行时约束。
-
-## 核心约束
-
-- 初始化放 `onWorkerStart`，构造函数禁止副作用。见 [process-lifecycle](references/process-lifecycle.md)。
-- Timer ID 必须追踪，`onWorkerStop` 清理。见 [timer-management](references/timer-management.md)。
-- 回调禁止 `sleep()`、同步阻塞。见 [event-loop-blocking](references/event-loop-blocking.md)。
-- 不可恢复错误用 `Worker::stopAll()`。见 [crash-recovery](references/crash-recovery.md)。
-- Crontab 6 位表达式，`onWorkerStart` 中创建。见 [crontab-scheduling](references/crontab-scheduling.md)。
-
-
 ## 代码模式
 
 ```php

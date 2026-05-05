@@ -15,6 +15,12 @@ export const deepCodeReadSkill = defineSkill({
     "用户希望把代码库知识沉淀成可复用 skill。",
     "用户能接受多轮闭卷验证，要求产出可被问答检验。",
   ],
+  constraints: [
+    "源码只读，全程不修改",
+    "Agent 隔离：A 读码写 skill，B 读码出题，C 只读 skill 答题",
+    "验证必须 100% 通过或跑满 3 轮，99% 不算通过",
+    "每个模块用 task 跟踪进度",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

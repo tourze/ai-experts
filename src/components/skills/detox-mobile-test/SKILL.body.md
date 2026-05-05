@@ -1,11 +1,3 @@
-## 核心约束
-
-- 选择器优先 `testID` / `by.id()`；`by.text()` 只能当补充，不做主定位手段。
-- 禁止无条件 `sleep`；等待必须绑定可观察状态，用 `waitFor(...).toBeVisible()` 等显式同步。
-- 每个测试独立可重跑，不依赖前一个用例留下的登录态或数据。
-- CI 里优先跑 release 或接近生产的构建；debug 构建更容易放大时序噪音。
-- 用例只断言用户可感知的行为，不把内部实现细节暴露为断言前提。
-
 ## 代码模式
 
 `.detoxrc` 配置和 Jest 配置的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。

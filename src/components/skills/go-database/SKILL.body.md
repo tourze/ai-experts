@@ -1,13 +1,3 @@
-## 核心约束
-
-- 参数化查询：必须用 `?` 占位符，禁止字符串拼接 SQL。安全性细节见 go-security。
-- Context 传播：所有数据库操作使用 `QueryContext`、`QueryRowContext`、`ExecContext`，不使用无 Context 版本。
-- 事务模式：`db.BeginTx(ctx, nil)` + `defer tx.Rollback()` + 显式 `tx.Commit()`。
-- NULLable 列：使用 `sql.NullString` / `sql.NullInt64` 或指针类型 `*string` / `*int64` 接收。
-- 连接池：上线前必须配置 `SetMaxOpenConns`、`SetMaxIdleConns`、`SetConnMaxLifetime`。
-- ORM 约束：复杂查询（多表 JOIN、子查询、窗口函数）不用 ORM，使用 query builder 或 raw SQL。
-- Migration：使用 golang-migrate、goose 或 atlas（声明式），禁止手动 DDL 部署。
-
 ## 常见错误
 
 | 错误 | 修复 |

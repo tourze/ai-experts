@@ -18,6 +18,13 @@ export const youtubeAnalysisSkill = defineSkill({
     "用户明确提到“字幕”“转录”“tech talk 拆解”“podcast 摘要”“把这条 YouTube 视频看一遍”。",
     "用户先通过 [youtube-search](../youtube-search/SKILL.md) 找到候选视频，再对其中一条做深度分析。",
   ],
+  constraints: [
+    "只基于字幕与元数据分析，不做画面、PPT、代码演示或肢体语言的臆测。",
+    "通过 `yt-dlp` 提取字幕与元数据；脚本本身统一为 Node.js ESM。",
+    "`scripts/analyze_video.mjs` 生成的是“分析脚手架”，其中的 `[TO BE ANALYZED]` 是有意保留的占位符，不代表脚本缺失实现。",
+    "没有字幕、视频私有、年龄限制或被地区封锁时，必须直接说明限制，不要伪造摘要。",
+    "需要按视频类型调整提炼重点时，参考 `references/analysis-patterns.md`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -14,6 +14,11 @@ export const pythonErrorHandlingSkill = defineSkill({
     "需要建立统一异常层级、错误码和用户可见错误映射。",
     "批处理场景要区分\"全部失败\"和\"部分失败\"。",
   ],
+  constraints: [
+    "先定义错误边界，再写 `try/except`；不要一上来就全局兜底。",
+    "只捕获你能处理的异常类型；其余异常保留堆栈继续抛出。",
+    "验证错误、业务错误、外部系统错误要分层，不要全塞进 `ValueError`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

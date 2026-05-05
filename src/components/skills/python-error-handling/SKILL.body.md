@@ -1,13 +1,3 @@
-通用错误处理原则（三层模型、重试边界、部分失败）见 architecture-expert 的 error-handling-patterns skill。
-
-联动：[python-type-safety](../python-type-safety/SKILL.md) · [python-observability](../python-observability/SKILL.md) · [python-testing-patterns](../python-testing-patterns/SKILL.md)
-
-## 核心约束
-
-- 先定义错误边界，再写 `try/except`；不要一上来就全局兜底。
-- 只捕获你能处理的异常类型；其余异常保留堆栈继续抛出。
-- 验证错误、业务错误、外部系统错误要分层，不要全塞进 `ValueError`。
-
 ## 代码模式
 
 ```python

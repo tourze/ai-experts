@@ -1,13 +1,3 @@
-## 核心约束
-
-1. `deny_unknown_fields` 只用在 API 入口类型。
-2. 枚举默认 `#[serde(tag = "type")]`（internally tagged）。
-3. 重命名后保留 `#[serde(alias = "old_name")]`。
-4. 新增字段用 `#[serde(default)]` 或 `Option<T>`。
-5. 自定义 Deserialize 返回错误不 panic。
-6. `flatten` 有性能开销，热路径慎用。
-7. 二进制协议用 `#[serde(with = "...")]` 自定义编码。
-
 ## 代码模式
 
 - [Internally tagged enum](references/patterns.md#模式-1)

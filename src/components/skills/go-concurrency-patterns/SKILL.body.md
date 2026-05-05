@@ -1,14 +1,3 @@
-通用并发原则（不阻塞异步上下文、限制并发、传播取消、不共享可变状态、超时所有外部调用、优雅停机）见 architecture-expert 的 concurrency-patterns skill。
-
-## Go 特有约束
-
-- 每个 goroutine 都必须有明确退出路径：`ctx.Done()`、输入 channel 关闭、或父协程回收。
-- channel 的关闭权属于发送方；接收方只能消费，不能代替上游收尾。
-- 并发数必须可控：默认使用 `errgroup.SetLimit` 或信号量。
-- 错误传播必须和取消联动：某个子任务失败后，其他子任务尽快退出。
-- 避免把 `sync.Map` 当作默认容器。写多读少时优先分片 map + `RWMutex`。
-- 不要用 `time.Sleep` 做同步。等待完成用 `WaitGroup`、channel、`errgroup`。
-
 ## Go 代码模式
 
 ### errgroup + 限流，先失败先取消

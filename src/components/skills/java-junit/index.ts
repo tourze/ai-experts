@@ -16,6 +16,11 @@ export const javaJunitSkill = defineSkill({
     "想区分单元测试、切片测试和 `@SpringBootTest` 的使用边界。",
     "如果测试对象本身来自服务层设计问题，可回看 [spring-boot-layering](../spring-boot-layering/SKILL.md)。",
   ],
+  constraints: [
+    "单元测试优先：能不用 Spring 容器就不用，避免用 `@SpringBootTest` 包住纯业务类。",
+    "参数化测试不要只拿它批量堆样例，每个参数组合的意义要可从命名理解。",
+    "Mockito 只隔离协作者，不要把每一层都 mock 到测试失真。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -15,6 +15,11 @@ export const phpErrorHandlingSkill = defineSkill({
     "需要建立统一异常层级和用户可见错误映射。",
     "批处理场景要区分\"全部失败\"和\"部分失败\"。",
   ],
+  constraints: [
+    "只捕获你能处理的异常类型；其余保留堆栈继续抛出。",
+    "用户可见消息与内部调试细节分离，不暴露 SQL、路径、堆栈。",
+    "用户输入必须在进入业务逻辑前完成校验和归一化。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

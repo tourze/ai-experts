@@ -1,8 +1,6 @@
+## 联动说明
+
 > 通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 [testing-patterns](testing-expert:testing-patterns)。本 skill 只覆盖 Python 特有语法与工具。
-
-## 核心约束
-
-- 单元测试优先测边界和业务规则，不要把 pytest 框架细节当成主要断言对象。
 
 ## 代码模式
 

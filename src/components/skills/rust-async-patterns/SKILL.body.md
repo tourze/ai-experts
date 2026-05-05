@@ -1,13 +1,3 @@
-通用并发原则（不阻塞异步上下文、限制并发、传播取消、不共享可变状态、超时所有外部调用、优雅停机）见 architecture-expert 的 concurrency-patterns skill。
-
-## Rust 特有约束
-
-- `tokio::spawn` 只接受 `Send + 'static` future。拿不出 `'static` 所有权时，先重画数据边界。
-- async 代码里禁止直接做阻塞工作；CPU 密集或同步 IO 用 `spawn_blocking`。
-- 锁的持有范围必须短于 `await`。需要跨异步边界共享状态时，优先消息传递。
-- 并发必须有上限：`JoinSet` 负责收尸，`Semaphore` 负责限流，channel 容量负责背压。
-- 诊断顺序固定：先确认任务是谁 spawn 的 → 看取消信号有没有传到 → 看是否有阻塞/锁跨 `await`。
-
 ## Rust 代码模式
 
 ### JoinSet + Semaphore 有上限并发

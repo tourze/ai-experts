@@ -1,10 +1,3 @@
-## 核心约束
-
-- Phase 1 只产出模型，不写实现代码。
-- Phase 2 只能在 Phase 1 已冻结的实体、状态、动作、约束内实现；如果模型不够，必须先返回 `MODEL INCOMPLETE`。
-- 每个用户需求都要能映射到 `goal`、`constraint`、`action` 三者之一。
-- 进入编码前必须运行结构校验；`unknowns` 不为空时，停在 Phase 1。
-
 ## 代码模式
 
 ```bash

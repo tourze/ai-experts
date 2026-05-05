@@ -1,7 +1,3 @@
-系统性精读代码库，产出经过闭卷验证的认知型 skill 文件。
-
-灵感来源：[CiferaTeam/deep-code-reader](https://github.com/CiferaTeam/deep-code-reader)
-
 ## 路由
 
 - 快速评估 → 直接进入本 skill 的快速扫描模式
@@ -32,13 +28,6 @@
 - Agent A: `references/agent-a-prompt.md`
 - Agent B: `references/agent-b-prompt.md`（用 haiku 模型）
 - Agent C: `references/agent-c-prompt.md`
-
-## 核心约束
-
-- 源码只读，全程不修改
-- Agent 隔离：A 读码写 skill，B 读码出题，C 只读 skill 答题
-- 验证必须 100% 通过或跑满 3 轮，99% 不算通过
-- 每个模块用 task 跟踪进度
 
 ## 代码模式
 

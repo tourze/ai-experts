@@ -1,11 +1,3 @@
-## 核心约束
-
-- Sentinel 至少 3 节点，quorum = `(N/2)+1`（3 节点时 quorum=2）。
-- Cluster multi-key 操作要求所有 key 在同一 hash slot，用 `{hashtag}` 保证。
-- 生产环境必须开启持久化（至少 AOF），纯内存模式仅用于可丢失缓存。
-- maxmemory 预留系统内存 20-30%（fork copy-on-write 开销），不设为物理内存 100%。
-- SLOWLOG 阈值建议 10ms（10000 微秒），定期巡检并优化。
-
 ## 代码模式
 
 ```redis

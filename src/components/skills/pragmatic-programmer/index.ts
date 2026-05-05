@@ -15,6 +15,12 @@ export const pragmaticProgrammerSkill = defineSkill({
     "适合回答“现在该用多重抽象、该不该一次做大、如何降低不可逆决策”。",
     "交叉引用：代码层面的动作配合 `refactoring-patterns`；复杂度治理配合 `software-design`。",
   ],
+  constraints: [
+    "原则是为了降低复杂度和反馈成本，不是为了凑口号。",
+    "DRY 只消灭真正重复的知识，不要把相似但不同的逻辑强行合并。",
+    "示踪弹用于快速打通主路径，不代表可以跳过质量或收尾。",
+    "任何不可逆决策都要先验证边界，再决定是否承诺。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

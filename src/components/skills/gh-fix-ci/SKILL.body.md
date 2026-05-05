@@ -1,9 +1,3 @@
-## 核心约束
-- 开始前必须确认 `gh auth status` 成功，并且仓库可访问。
-- 仅处理 GitHub Actions；Buildkite 等外部 provider 只报告 `detailsUrl`。
-- 先汇总失败上下文与修复计划，得到用户确认后再改代码。
-- 脚本参数必须与实现一致：`--repo`、`--pr`、`--max-lines`、`--context`、`--json`。
-
 ## 代码模式
 - 使用内置脚本抓取失败检查：
 

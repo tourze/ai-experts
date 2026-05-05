@@ -1,12 +1,3 @@
-## 核心约束
-- 已部署字段的线上表示不可变（类型、位置、编码）。
-- 新增字段必须可选且带默认值；旧客户端遇未知字段必须忽略。
-- 每条消息携带版本标签或版本化信封。
-- 删除字段走四阶段：标记废弃 -> 停写 -> 停读 -> 移除。
-- 破坏性变更必须升版本号；禁止同版本下变更语义。
-- 扩展点初始设计时预留；协议文档与代码同等冻结。
-- 保留每版本 golden file，新代码须能反序列化所有历史版本。
-
 ## 代码模式
 - 按需读取 `references/versioned-envelope.md`、`references/field-evolution.md`、`references/version-negotiation.md`、`references/golden-file-testing.md`。
 

@@ -17,6 +17,13 @@ export const businessModelSkill = defineSkill({
     "只看竞争结构时转 [porters-five-forces](../porters-five-forces/SKILL.md)；只做定价打包时转 [pricing-strategy](../pricing-strategy/SKILL.md)。",
     "中国市场商业模式因果链推演用[魏朱六要素](references/weizhu-model.md)；快速定位一致性检查用[业务铁三角](references/iron-triangle.md)。",
   ],
+  constraints: [
+    "先建 `market_environment`，再套画布：目标市场、买方、渠道、监管、支付、交付约束都会改变商业模式。",
+    "每个关键判断都标注 `fact`、`estimate`、`hypothesis` 或 `recommendation`，并给证据等级。",
+    "诊断和案例研究必须同时看直接竞品与跨行业 analog；不足时说明证据缺口。",
+    "收入、GMV、TPV、AUM、用户数和 ARR 不能混用；金额估算要写公式、变量、低/中/高区间和置信度。",
+    "不要把功能清单、组织架构或愿景口号误写成商业模式。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

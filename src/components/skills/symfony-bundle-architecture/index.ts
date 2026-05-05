@@ -14,6 +14,13 @@ export const symfonyBundleArchitectureSkill = defineSkill({
     "Bundle 间依赖混乱、可选依赖缺失、Monorepo 多 Bundle 协作。",
     "Entity 设计联动 [doctrine-entity-patterns](../doctrine-entity-patterns/SKILL.md)；代码示例和调试命令见 [reference.md](reference.md)。",
   ],
+  constraints: [
+    "Bundle 类只做：声明依赖 + 注册 CompilerPass。",
+    "Extension `load()` 只加载配置文件，不直接构造服务。",
+    "services.yaml 用 `autowire` + `autoconfigure` + 按命名空间 `resource` 扫描；禁用 `exclude`。",
+    "CompilerPass 仅用于标签和配置无法完成的操作，必须 `hasDefinition()` 前置检查。",
+    "Bundle 间依赖必须显式声明，不靠加载顺序。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

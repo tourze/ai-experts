@@ -43,17 +43,6 @@
 
 编排规则：dense 不连续超过 3 页；首尾必须 anchor；每 4-6 页至少一次 breathing。
 
-## 核心约束
-
-1. 每页只传达一个核心观点（4±1 信息块上限）
-2. SVG 禁用 `<mask>`/`<style>`/`<foreignObject>`/`<filter>`/CSS class，只用内联属性
-3. 逐页生成，不批量（防质量下降）
-4. 每页生成前必须重读 spec_lock（防上下文漂移）
-5. page_rhythm 大纲阶段锁定，执行时不改
-6. image-first 只在用户明确要求视觉预览、图像级成稿或视觉保真优先时启用；普通 PPT 默认走可编辑 SVG 分支
-7. 4 个 HARD STOP 必须用户确认才继续
-8. 预览图必须是 16:9 的内容型页面，不用文字 mockup、空壳占位或纯装饰图冒充
-
 ## 代码模式
 
 SVG 质量校验与 PPTX 封装参考 [references/pptx.md](references/pptx.md) 中的 `python-pptx` 流程，按页生成后逐页校验内联属性合规性（禁用 `<mask>`/`<style>`/`<foreignObject>`/`<filter>`/CSS class）。

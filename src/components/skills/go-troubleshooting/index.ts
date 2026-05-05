@@ -18,6 +18,13 @@ export const goTroubleshootingSkill = defineSkill({
     "goroutine/channel 死锁与泄漏模式 → [go-concurrency-patterns](../go-concurrency-patterns/SKILL.md)。",
     "panic 恢复与运行时安全 → [go-safety](../go-error-handling/SKILL.md)。",
   ],
+  constraints: [
+    "**先复现再修复**：无法复现的 bug 先增加可观测性（日志/pprof 端点），不盲改。",
+    "**一次一个假设**：同时改多处 = 放弃定位能力；失败的假设要记录，避免重复。",
+    "**修根因不修症状**：下游吞异常、放宽校验、加 retry 掩盖问题一律禁止。",
+    "**证据先行**：日志/trace/profile/stack trace 排在假设前面；凭经验猜排序是反复出错的主因。",
+    "**红牌警告**：\n- 没复现就提 PR → 停下\n- 一次改两个以上变量 → 停下\n- 用 `_ = err` 吞掉错误 → 停下",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

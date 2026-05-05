@@ -14,6 +14,12 @@ export const webmanWebsocketPatternsSkill = defineSkill({
     "搭建 WebSocket 服务端或客户端。",
     "管理连接生命周期、心跳、频道广播。",
   ],
+  constraints: [
+    "声明 `listen => 'websocket://...'`，设 `reloadable => false`。见 [websocket-server-setup](references/websocket-server-setup.md)。",
+    "`onConnect` 分配 ID，`onWebSocketConnect` 认证，失败用 `pauseRecv()`。见 [connection-lifecycle](references/connection-lifecycle.md)。",
+    "跨进程广播走 Redis pub/sub。见 [channel-subscription](references/channel-subscription.md)。",
+    "客户端重连：指数退避 + 抖动 + 最大重试。见 [reconnect-strategy](references/reconnect-strategy.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

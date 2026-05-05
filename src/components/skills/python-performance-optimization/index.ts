@@ -18,6 +18,13 @@ export const pythonPerformanceOptimizationSkill = defineSkill({
     "异步 I/O 优化时，联动 [async-python-patterns](../async-python-patterns/SKILL.md)。",
     "结构层面的复杂度治理时，联动 [python-design-patterns](../python-design-patterns/SKILL.md)。",
   ],
+  constraints: [
+    "没有测量就不要优化；先 profile，再改代码。",
+    "一次只改一个变量，并用同一组输入做前后对比。",
+    "先做算法和数据结构级优化，再考虑微调语法糖。",
+    "benchmark 要写明输入规模、运行轮次和环境，不要凭感觉说“更快”。",
+    "不为了局部速度把代码可读性和可维护性直接打穿。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

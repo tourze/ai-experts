@@ -16,6 +16,13 @@ export const customerLifecycleSkill = defineSkill({
     "产品 PLC：判断产品所处阶段（导入/成长/成熟/衰退），匹配策略与投入。",
     "与 `s-curve-growth` 配合：S 曲线看动力学，本 skill 看运营策略。",
   ],
+  constraints: [
+    "价值分层依据是**利润贡献（CLV）**，不是收入或频次。高收入低利润可能是铅层。",
+    "铅层处理方案（提价 / 减服务 / 放弃）必须显式给出——不是所有客户都值得留。",
+    "健康度三看：① 铂+金层利润占比 ② 铅层占比 ③ 层级流动性。",
+    "产品 PLC 与客户生命周期是两条不同轴，分析时不要混用。",
+    "不同阶段营销重点完全不同：用成熟期方法做导入期 = 浪费。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

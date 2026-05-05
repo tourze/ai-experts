@@ -1,13 +1,3 @@
-## 核心约束
-
-- **按钮动词化**：写按下之后发生什么。`Submit` → `Create account` / `Send invoice`。
-- **错误三要素**：what + why + fix。不要只说 "Invalid"。
-- **空态是教学机会**：解释这是什么 + 为什么空 + 下一步怎么办。
-- **Placeholder 不是 label**：placeholder 在输入后消失，永远配真 label。
-- **措辞承担后果**：`Delete forever` 比 `Remove` 诚实；扣费按钮要给金额和频率。
-- **减字不减义**：每个词都要有工作。`Please click here to continue` → `Continue`。
-- **大小写与标点一致**：全产品 Title Case 或 Sentence case 选一种。
-
 ## 实施步骤
 
 1. 盘出场景：按钮/错误/空态/Helper/确认/Toast/敬告。

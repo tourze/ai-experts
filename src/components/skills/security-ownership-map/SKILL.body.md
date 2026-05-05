@@ -1,9 +1,3 @@
-## 核心约束
-- 只用于安全导向的所有权分析，不回答泛化的“谁维护这个仓库”问题。
-- 优先缩小时间窗；大仓库默认加 `--since` 或 `--until`。
-- 社区检测和 GraphML 输出由 Node.js 脚本直接生成，无需 Python `networkx`。
-- 脚本路径以当前 skill 目录为基准；构建、查询与社区分析脚本都使用 Node.js。
-
 ## 代码模式
 ```bash
 node scripts/run_ownership_map.mjs \

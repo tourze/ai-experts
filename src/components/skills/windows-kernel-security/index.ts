@@ -16,6 +16,13 @@ export const windowsKernelSecuritySkill = defineSkill({
     "需要在实验环境里追踪 `PsSetCreateProcessNotifyRoutine*`、`ObRegisterCallbacks`、`CmRegisterCallbackEx`、`FltRegisterFilter` 等关键入口。",
     "需要先在虚拟机里建立快照和回滚路径时，配合 [prlctl-vm-control](../prlctl-vm-control/SKILL.md)；如果问题其实属于桌面自动化或输入注入边界，转到 [windows-ui-automation](../windows-ui-automation/SKILL.md)。",
   ],
+  constraints: [
+    "先做静态分析、日志与符号级证据采集，再做实验；不要在真实主机上盲改驱动或内核状态。",
+    "任何问题都拆成五层：入口、权限边界、状态拥有者、副作用、检测面；不要只盯最终崩溃点。",
+    "优先梳理用户态输入如何进入 IOCTL，再进入驱动，再触达内核对象或内存写入点。",
+    "区分“研究概念”与“可执行变更”：PatchGuard、DSE、HVCI、VBS 先解释约束，再决定是否需要实验复现。",
+    "如果实验需要破坏性动作、重启、回滚或快照切换，先确认虚拟机基线和回滚路径。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

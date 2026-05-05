@@ -17,6 +17,13 @@ export const pythonBackgroundJobsSkill = defineSkill({
     "任务失败治理、异常分层和错误映射时，联动 [python-error-handling](../python-error-handling/SKILL.md)。",
     "需要为 job 增加可观测性时，联动 [python-observability](../python-observability/SKILL.md)。",
   ],
+  constraints: [
+    "请求入口先返回 `job_id`，不要把长任务伪装成同步接口。",
+    "任务处理必须幂等，默认假设“至少一次投递”而不是“恰好一次”。",
+    "状态机要显式：`pending -> running -> succeeded/failed`，不要靠日志猜状态。",
+    "重试只适用于瞬时错误；永久错误要尽早落失败或死信队列。",
+    "入队参数必须是稳定、可序列化、可回放的数据，不要把活对象直接塞进队列。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -1,11 +1,3 @@
-## 核心约束
-
-- 先建 `market_environment`，再套画布：目标市场、买方、渠道、监管、支付、交付约束都会改变商业模式。
-- 每个关键判断都标注 `fact`、`estimate`、`hypothesis` 或 `recommendation`，并给证据等级。
-- 诊断和案例研究必须同时看直接竞品与跨行业 analog；不足时说明证据缺口。
-- 收入、GMV、TPV、AUM、用户数和 ARR 不能混用；金额估算要写公式、变量、低/中/高区间和置信度。
-- 不要把功能清单、组织架构或愿景口号误写成商业模式。
-
 ## 执行流程
 
 1. 选择主分支：`idea_to_model`、`model_diagnosis` 或 `company_case_study`。

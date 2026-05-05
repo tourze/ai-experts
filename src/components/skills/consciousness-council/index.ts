@@ -13,6 +13,14 @@ export const consciousnessCouncilSkill = defineSkill({
   useCases: [
     "当需要多视角思辨审视高不确定性决策、角色辩论、专家议会、风险分歧和取舍盲区时使用。支持角色议会模式和六顶思考帽模式。",
   ],
+  constraints: [
+    "每次选 4-6 个角色，重点是制造有效张力，不是凑人数。",
+    "角色必须有不同的关注点、风险偏好和盲区，不能只是“换个措辞表达同意”。",
+    "至少保留一个实质性分歧；如果所有角色都在同意，说明角色选择失败。",
+    "对纯事实问题或低风险琐事，不要强行开完整议会。",
+    "结尾必须输出：共识、核心张力、共同盲点、建议路径、信心等级。",
+    "需要行业化配方时，参考 [高级配置示例](references/advanced-configurations.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

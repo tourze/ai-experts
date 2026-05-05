@@ -1,13 +1,3 @@
-把一次 eval 运行从“看起来完成了”转成可审计的通过/失败判定。适用于 skill benchmark、with-skill vs baseline、回归评测和任何带 transcript / outputs / expectations 的任务评估。
-
-## 核心约束
-
-- 通过的举证责任在被评估输出一方；找不到证据就是 FAIL。
-- 必须读取 transcript 和实际输出文件；输出不是纯文本时使用可用检查工具，不只看文件名。
-- PASS 必须有实质证据，不能是“文件存在”“提到了关键词”这类表层合规。
-- 预设 expectations 之外，还要抽取事实、过程和质量 claims，并标明是否可验证。
-- 发现弱 assertion 时要指出 eval 缺口，但不要为了挑毛病而泛化批评。
-
 ## 代码模式
 
 评估时保持下面的最小数据结构，方便 benchmark 汇总：

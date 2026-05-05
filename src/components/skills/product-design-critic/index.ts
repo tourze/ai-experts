@@ -14,6 +14,11 @@ export const productDesignCriticSkill = defineSkill({
     "评审页面、工作流、卡片、配置面板、聊天体验或多角色治理界面。",
     "需要结合用户路径和竞争上下文时，可配合 [customer-journey-map](../customer-journey-map/SKILL.md)、[obviously-awesome](../competitive-intelligence/SKILL.md) 与 [competitive-teardown](../competitive-intelligence/SKILL.md)。",
   ],
+  constraints: [
+    "先讲用户任务、关键决策和风险暴露，再讲样式层建议。",
+    "输出要说明 trade-off：提升了什么、牺牲了什么、为什么值得。",
+    "评审对象是产品体验，不是单独某个像素或视觉趋势。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

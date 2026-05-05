@@ -1,10 +1,3 @@
-## 核心约束
-
-- 先确定任务目标和数据规模，再决定是精确检索还是 ANN。
-- 距离度量必须与 embedding 模型假设一致；cosine、dot product、L2 不能乱换。
-- metadata filter、tenant isolation、hybrid ranking 往往和索引结构同级重要。
-- 方案选择时要同时看写入模式、更新频率、召回要求、成本和运维复杂度。
-
 ## 代码模式
 
 ```json

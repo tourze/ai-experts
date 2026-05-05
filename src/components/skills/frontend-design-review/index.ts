@@ -16,6 +16,13 @@ export const frontendDesignReviewSkill = defineSkill({
     "需要创建风格明确、非模板化的前端界面。",
     "需要在可访问性、响应式和工程实现之间做平衡。",
   ],
+  constraints: [
+    "评审优先指出问题，再给方案；结论要能落到具体文件、状态和组件。",
+    "先判断用户任务是否清晰，再看视觉层级和美术方向。",
+    "有设计系统时，以系统规则为第一约束；没有系统时，以一致性和可维护性为第一约束。",
+    "创意设计要“有方向”，不是把所有流行效果堆在一起。",
+    "低质量“AI 味”通常来自：默认字体、默认紫渐变、套路式卡片网格、无意义动画。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

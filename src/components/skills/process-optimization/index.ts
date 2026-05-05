@@ -13,6 +13,11 @@ export const processOptimizationSkill = defineSkill({
     "运营、交付、审批、售前、需求流转等流程过慢或质量不稳。",
     "需要从系统视角看依赖关系时，可配合 [systems-thinking](../systems-thinking/SKILL.md)；涉及 Backlog 或 Sprint 流程时，可配合 [agile-product-owner](../agile-product-owner/SKILL.md)。",
   ],
+  constraints: [
+    "先画出现状流程和等待点，再讨论优化；不要跳过事实直接给方案。",
+    "优化目标必须量化，例如周期、一次通过率、返工率或等待时间。",
+    "先消除瓶颈和无价值步骤，再考虑自动化。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -1,9 +1,3 @@
-## 核心约束
-- 区分 client-safe key（Firebase API key、Stripe publishable key）和 server-only key（Stripe secret key、AWS secret）。
-- 字符串匹配命中后必须回看上下文判断——test data、注释、示例值都是误报。
-- 对每个发现标注严重级别和影响范围。
-- 先自动扫描，再人工分析高危发现。
-
 ## 扫描清单
 
 ### 凭据搜索

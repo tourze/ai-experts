@@ -1,13 +1,3 @@
-## 核心约束
-
-- Spec 导出 `interface Spec extends TurboModule`，类型必须精确。
-- `package.json` 的 `codegenConfig` 须含 `name`、`type: "modules"`、`jsSrcsDir`。
-- Android：继承 Codegen 基类 + `TurboReactPackage`；禁用废弃 `ReactPackage`。
-- iOS：`.mm` 中 `#ifdef RCT_NEW_ARCH_ENABLED` 实现 `getTurboModule:`。
-- 只用 `TurboModuleRegistry.getEnforcing<Spec>()`，不做 null 回退。
-- 异步返回 Promise；同步阻塞 JS 线程，仅限微秒级。
-- 参数类型与 Spec 不匹配时运行时崩溃而非编译报错。
-
 ## 代码模式
 
 - [Spec 定义](references/spec-definition.md)

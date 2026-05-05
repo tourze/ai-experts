@@ -1,14 +1,3 @@
-通用并发原则（不阻塞异步上下文、限制并发、传播取消、不共享可变状态、超时所有外部调用、优雅停机）见 architecture-expert 的 concurrency-patterns skill。
-
-## Kotlin/Android 特有约束
-
-- **Dispatcher 注入**：禁止硬编码 `Dispatchers.IO`，必须通过构造函数注入 `CoroutineDispatcher`。
-- **Main-Safety**：Data/Domain 层的所有 `suspend` 函数必须 main-safe。
-- **生命周期安全收集**：必须使用 `repeatOnLifecycle(Lifecycle.State.STARTED)`。
-- **禁用 GlobalScope**：破坏结构化并发，导致泄漏。
-- **协作式取消**：紧密循环中必须调用 `ensureActive()` 或 `yield()`。
-- **异常处理**：禁止在通用 `catch (e: Exception)` 中吞掉 `CancellationException`。
-
 ## Kotlin 代码模式
 
 ### Dispatcher 注入

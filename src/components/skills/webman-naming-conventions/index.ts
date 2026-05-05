@@ -15,6 +15,13 @@ export const webmanNamingConventionsSkill = defineSkill({
     "审查 Service/Repository 命名。",
     "修复命名空间与目录不一致。",
   ],
+  constraints: [
+    "目录小写，多词下划线。见 [directory-lowercase](references/directory-lowercase.md)。",
+    "接口 `Interface` 后缀。见 [interface-naming](references/interface-naming.md)。",
+    "Service `VerbNounService`。见 [service-naming-pattern](references/service-naming-pattern.md)。",
+    "命名空间与目录一致。见 [namespace-directory-mismatch](references/namespace-directory-mismatch.md)。",
+    "Repository 实现加技术前缀。见 [repository-implementation-naming](references/repository-implementation-naming.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

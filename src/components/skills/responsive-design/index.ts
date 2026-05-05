@@ -16,6 +16,13 @@ export const responsiveDesignSkill = defineSkill({
     "需要统一断点、栅格、流式字号和图片策略。",
     "需要排查移动端溢出、断行、内容拥挤或过宽阅读区。",
   ],
+  constraints: [
+    "采用移动优先；基础样式先服务窄屏，再逐级增强。",
+    "断点跟内容走，不跟设备型号走。",
+    "组件级响应优先使用 `container queries`，页面级结构再用 `media queries`。",
+    "响应式不只是宽度变化，还包括触控、键盘、密度、方向和内容长度。",
+    "任何断点策略都不能牺牲可访问性和关键操作路径。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -8,15 +8,6 @@
 | Profiles | 持续性能采样（CPU/内存） | `runtime/pprof`、`net/http/pprof` |
 | Alerts | 基于症状的主动通知 | Alertmanager / 规则引擎 |
 
-## 核心约束
-
-- **结构化优先**：所有日志必须用 `slog` 结构化输出，禁止 `fmt.Println` / `log.Printf` 进入生产。
-- **信号关联**：日志注入 trace_id 和 span_id；指标 exemplar 关联到 trace。三条信号必须能通过 trace ID 串联。
-- **告警面向症状**：告警基于用户可感知的症状（错误率、延迟 P99），不基于内部原因（goroutine 数量、缓存命中率）。
-- **日志级别纪律**：DEBUG 开发时用、生产默认 INFO 起步、ERROR 只放需要人工介入的事件。WARN 放可自动恢复的异常。
-- **高吞吐采样**：热路径日志用采样 Handler 降低 I/O；指标用 histogram 而非全量日志统计。
-- **PII 脱敏**：日志 Handler 层统一拦截敏感字段，不在业务代码逐处处理。
-
 ## 常见错误
 
 | 错误 | 修复 |

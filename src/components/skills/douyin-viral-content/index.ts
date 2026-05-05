@@ -16,6 +16,13 @@ export const douyinViralContentSkill = defineSkill({
     "用户提供视频摘要或逐字稿，需要二次改写成更适合短视频的口播文本。",
     "需要先提取视频内容时，使用本 skill 的视频摘要功能。",
   ],
+  constraints: [
+    "不要承诺“必定 5 星”或“保证爆款”；评分只能作为内部比较，不是结果保证。",
+    "只有在用户明确提供历史样本、目录或表现数据时，才做校准；否则使用通用基线并明确说明。",
+    "不要虚构播放量、完播率、账号体量和历史数据。",
+    "输出必须保留平台安全边界，不给违规导流、虚假收益或极端承诺。",
+    "当素材本身信息不足时，优先补问题，不要硬凑长文案。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -1,14 +1,3 @@
-## 核心约束
-
-- 默认使用 App Router；除非明确维护遗留项目，否则不要把新实现落到 `pages/`。
-- 默认保持 Server Components，只在交互真正发生的叶子节点添加 `'use client'`。
-- 所有 `fetch` 都显式写出 `cache`、`next.revalidate` 或 `next.tags` 策略，不依赖隐式缓存。
-- 所有动态 SEO 都用 `metadata` / `generateMetadata`，不要在 JSX 里手写 `<title>` / `<meta>`。
-- 所有内容型图片默认走 `next/image`；公共静态资源才考虑 `<img>`。
-- 对会阻塞首屏的数据段补 `loading.tsx` / `error.tsx`，不要把错误与等待状态散落在页面组件内部。
-- Next.js 15+ 的 `params` / `searchParams` / `cookies()` / `headers()` 已转为异步 API；面向当前版本写示例时优先使用 `Promise` / `await` 形式，并在需要兼容 Next.js 14 时显式说明。
-- 交付前必须本地运行 `next build`；如果项目使用 TypeScript，还要保证零类型错误并核对 `NEXT_PUBLIC_*` 与 server-only 环境变量边界。
-
 ## 代码模式
 
 ### 模式 1：Server Component 默认承载数据获取

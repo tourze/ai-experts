@@ -1,16 +1,3 @@
-## 核心约束
-
-- 候选方案必须可比：相同输入、相同环境、相同配置边界。
-- 每次只选 `2-4` 个核心指标；指标过多会让结论失真。
-- 必须记录环境：硬件、系统、运行时、依赖版本、关键配置。
-- 必须报告波动，不只报平均值；至少给出样本数和离散情况。
-- 无法实际运行时，只输出实验设计，不伪造结果。
-- 优先加载这些参考文件：
-  - [metric-selection.md](./references/metric-selection.md)
-  - [test-case-design.md](./references/test-case-design.md)
-  - [environment-capture.md](./references/environment-capture.md)
-  - [statistical-rigor.md](./references/statistical-rigor.md)
-
 ## 代码模式
 
 ### 模式 1：定义基准范围

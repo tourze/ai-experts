@@ -18,6 +18,12 @@ export const pdfSkill = defineSkill({
     "需要把 PDF 渲染成图片，或根据坐标/框选信息做人工校验。",
     "纯抽取场景优先看 [pdf-extraction](references/pdf-extraction.md)。",
   ],
+  constraints: [
+    "先判断是“可填写表单”还是“视觉表单”，两条链路不要混用。",
+    "填表前必须先跑字段发现脚本，确认字段 ID、页码和合法值。",
+    "视觉型 PDF 的写入坐标要经过图片标注或抽样核对，不能凭感觉填。",
+    "PDF 写回后至少人工检查一页关键字段，避免字段错位或字体异常。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

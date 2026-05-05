@@ -1,13 +1,3 @@
-## 核心约束
-- 签名密钥绝不提交仓库；CI secrets 注入
-- macOS 需 Developer ID + Notarization
-- Windows 需 EV/OV 证书过 SmartScreen
-- Updater 密钥用 `cargo tauri signer generate`；私钥存 CI，公钥写 conf
-- Sidecar 遵循 `name-{target_triple}` 命名
-- `bundle.resources` 运行时通过 `resolve_resource()` 访问
-- 干净环境测试构建产物
-- CI 分别缓存 `target/` 和 `node_modules/`
-
 ## 代码模式
 
 - [构建打包模式](references/build-packaging-patterns.md)

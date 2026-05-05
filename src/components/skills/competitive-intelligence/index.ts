@@ -15,6 +15,12 @@ export const competitiveIntelligenceSkill = defineSkill({
     "高级档：多框架交叉验证（Porter 五力 + SWOT + BCG + Blue Ocean 等），避免单一框架盲区。",
     "先做广度扫描，再决定是否进入[竞品深度拆解](references/competitive-teardown.md)。",
   ],
+  constraints: [
+    "先明确比较目的：赢单、路线图决策、定位更新或市场监控；不同目的的证据粒度不同。",
+    "情报必须区分\"公开事实\"\"合理推断\"\"内部假设\"。",
+    "输出要能直接支持行动，不是堆截图和链接。",
+    "高级档：至少用 3 个互补框架交叉验证同一结论，不堆重叠框架。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

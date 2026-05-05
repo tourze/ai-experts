@@ -15,6 +15,12 @@ export const consultingAnalysisSkill = defineSkill({
     "题目涉及市场规模、行业格局、品牌表现、增长路径、尽调结论等结构化研究。",
     "当研究结果还要继续转成提案时，可联动 [proposal-writer](../proposal-writer/SKILL.md)。",
   ],
+  constraints: [
+    "先做框架，再写正文；不要在问题定义含糊时直接写完整报告。",
+    "没有证据的数据不能编造；每个关键判断都要标注来源类型、时间范围和置信度。",
+    "结论必须能回溯到分析链路：研究问题 → 方法 → 数据 → 推理 → 建议。",
+    "图表、表格和结论口径必须一致；若数据缺失，要明确缺口而不是“合理猜测”。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

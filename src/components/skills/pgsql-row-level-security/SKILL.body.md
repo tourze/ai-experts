@@ -1,11 +1,3 @@
-## 核心约束
-
-- 启用 RLS 后表 owner 默认绕过策略 — 必须加 `FORCE ROW LEVEL SECURITY`
-- `USING` 控制读（SELECT/UPDATE/DELETE），`WITH CHECK` 控制写（INSERT/UPDATE），两者都要显式声明
-- `current_setting('app.tenant_id')` 必须在每个事务开始时设置，忘记设置会导致数据泄漏或全拒绝
-- 策略谓词保持简单列比较，避免子查询或复杂函数（每行执行一次影响性能）
-- RLS 是防御纵深的一层，应用层仍需业务逻辑级权限校验
-
 ## 代码模式
 
 详细示例参见 [references/code-patterns.md](./references/code-patterns.md)。核心模板：

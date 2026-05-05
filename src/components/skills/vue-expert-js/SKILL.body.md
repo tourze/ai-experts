@@ -1,14 +1,3 @@
-面向 Vue 3 JavaScript 项目的实现技能。目标是在不引入 TypeScript 的前提下，仍然保持组件 API、composable 返回值、Pinia store 与测试代码具备清晰的 JSDoc 类型边界。
-
-## 核心约束
-
-- 统一使用 Vue 3 Composition API 与 `<script setup>`；不要回退到 Options API 作为默认实现。
-- 禁止使用 TypeScript 语法：不写 `lang="ts"`、不写 `.ts` / `.tsx`，也不在 JavaScript 文件里塞入 TS-only 语法。
-- 公开 API 必须带 JSDoc：组件 props / emits、导出函数、store action、公共 composable 返回值都要能从注释看出契约。
-- 复杂对象形状用 `@typedef` 明确声明；跨文件复用的类型通过 `import('./path').TypeName` 引用，不复制粘贴类型描述。
-- `.mjs` 只在需要显式 ESM 边界时使用；普通浏览器端模块沿用项目既有 `.js` 约定，不为“看起来更现代”盲目改后缀。
-- 验证顺序固定为“先 JSDoc 完整，再跑测试”；测试失败时优先修逻辑或注释契约不一致，而不是弱化断言。
-
 ## 代码模式
 
 ### 1. 组件：props 与 emits 同时声明运行时约束和 JSDoc 契约

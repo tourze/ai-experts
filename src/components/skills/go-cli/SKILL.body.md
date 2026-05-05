@@ -1,12 +1,3 @@
-## 核心约束
-
-- 命令结构用 Cobra；配置管理用 Viper；两者通过 `viper.BindPFlag` 桥接，不要手写 flag 解析。
-- 配置按优先级覆盖：默认值 < 配置文件 < 环境变量 < 命令行 flags。
-- 退出码遵循 Unix 惯例：0 成功，1 一般错误，2 用法错误。不要自创退出码。
-- 版本信息通过 `-ldflags` 在构建时注入，不要硬编码。
-- 长运行命令必须捕获 SIGINT/SIGTERM 并通过 context 取消传播。
-- 每个 subcommand 独立文件，root command 在 `cmd/root.go`。
-
 ## 代码模式
 
 ### 1. Root 命令 + subcommand 注册

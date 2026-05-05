@@ -1,30 +1,3 @@
-## 核心约束
-
-### 通用原则
-
-- 业务允许的列显式 `NOT NULL DEFAULT ...`；可空列增加索引和优化器负担。
-- 金额必须精确数值类型，禁止 FLOAT/DOUBLE。
-- 所有表必须有明确的主键和存储引擎选择。
-
-### MySQL 特化
-
-- 主键必须 `BIGINT UNSIGNED AUTO_INCREMENT`；禁止 INT（溢出风险）和 UUID 聚簇索引（页分裂、写放大）。
-- 字符集统一 `utf8mb4`，排序规则优先 `utf8mb4_0900_ai_ci`；禁止 `utf8`（不能存 4 字节字符）。
-- 引擎默认 InnoDB；选择其他引擎须在注释中说明理由。
-- JSON 列不能有默认值、不能做主键；高频过滤/排序字段必须提取为生成列（VIRTUAL/STORED）并建索引。
-- 使用 `->>` 获取无引号文本值；JSON 数组场景优先评估多值索引（MySQL 8.0.17+）。
-
-### PostgreSQL 特化
-
-- 主键用 `BIGINT GENERATED ALWAYS AS IDENTITY`，不用 `serial`。
-- 时间列一律 `TIMESTAMPTZ`，禁止裸 `timestamp`。
-- 通用字符串用 `TEXT`，不用 `varchar(n)`（内部存储无差异）。
-- 标识符用 unquoted snake_case，禁止 `"QuotedCamelCase"`。
-- 使用 `JSONB` 而非 `JSON`（JSONB 支持索引，JSON 只是文本存储）。
-- JSONB 列必须有 CHECK 约束验证顶层类型；嵌套控制在 3 层以内。
-
-详细引擎专有模式见：[references/mysql-schema-design.md](references/mysql-schema-design.md)、[references/pgsql-schema-design.md](references/pgsql-schema-design.md)、[references/mysql-json-generated-columns.md](references/mysql-json-generated-columns.md)、[references/pgsql-jsonb-patterns.md](references/pgsql-jsonb-patterns.md)。
-
 ## 代码模式
 
 ```sql

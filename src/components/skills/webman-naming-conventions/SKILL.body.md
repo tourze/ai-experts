@@ -1,13 +1,3 @@
-Webman 项目命名与目录约束。
-
-## 核心约束
-
-- 目录小写，多词下划线。见 [directory-lowercase](references/directory-lowercase.md)。
-- 接口 `Interface` 后缀。见 [interface-naming](references/interface-naming.md)。
-- Service `VerbNounService`。见 [service-naming-pattern](references/service-naming-pattern.md)。
-- 命名空间与目录一致。见 [namespace-directory-mismatch](references/namespace-directory-mismatch.md)。
-- Repository 实现加技术前缀。见 [repository-implementation-naming](references/repository-implementation-naming.md)。
-
 ## 代码模式
 
 ```php

@@ -1,14 +1,3 @@
-## 核心约束
-
-- `src-tauri/src/main.rs` 只保留薄入口；真正的构建器、命令注册、插件注册和状态注入都放在 `src-tauri/src/lib.rs::run()`。
-- 面向移动端时，`lib.rs::run()` 必须带 `#[cfg_attr(mobile, tauri::mobile_entry_point)]`；不要把核心逻辑写死在 `main()`。
-- 每个 `#[tauri::command]` 都必须出现在 `tauri::generate_handler![...]` 中；漏注册时前端会得到 “command not found”。
-- `async` 命令参数一律使用拥有所有权的类型，例如 `String`、结构体、`Vec<T>`；不要在异步命令里使用 `&str` 之类借用类型。
-- 自定义 `#[tauri::command]` 默认可以被调用；capability 主要约束核心 API、插件权限、远程 URL 和你主动收紧的命令集。不要误以为 “所有命令都必须先写 capability”。
-- 官方插件通过 `cargo tauri add <plugin>` 安装时，默认 permission 常常会被 CLI 自动加入；但非默认 permission、自定义 scope、多窗口目标、手工安装场景仍然必须显式检查 `src-tauri/capabilities/*.json`。
-- 共享可变状态用 `Mutex<T>` / `RwLock<T>` 包裹，并保证 `State<T>` 的泛型与 `.manage(...)` 注入的真实类型完全一致。
-- 所有桌面专属能力都要先核对平台支持矩阵；系统托盘、多窗口标签、部分 shell 功能经常需要 `#[cfg(desktop)]` 或运行时分支。
-
 ## 代码模式
 
 ### 模式 1：`main.rs` 保持薄入口，`lib.rs` 负责命令注册

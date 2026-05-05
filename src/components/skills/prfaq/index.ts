@@ -14,6 +14,12 @@ export const prfaqSkill = defineSkill({
     "需要在团队或管理层之间对齐\"我们到底要做什么、为谁做\"。",
     "与 [create-prd](../create-prd/SKILL.md) 配合：PRFAQ 先定\"为什么做\"，PRD 再定\"怎么做\"。",
   ],
+  constraints: [
+    "新闻稿必须从**用户视角**写，不是从公司视角；主语是用户，不是\"我们\"。",
+    "新闻稿限 1 页（≤500 字）；FAQ 分内部和外部两组，各 3-5 个问题。",
+    "如果写不出让人想点击的标题，说明价值主张还不清楚，先退回去想清楚。",
+    "FAQ 必须直面最难的问题（\"为什么现在做\"\"为什么是我们\"\"失败了怎么办\"），不允许只放软球。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

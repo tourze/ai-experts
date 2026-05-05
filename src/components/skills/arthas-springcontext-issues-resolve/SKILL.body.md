@@ -1,10 +1,3 @@
-## 核心约束
-
-- 优先只读查询：先用 `containsBean`、`getBeanNamesForType`、`Environment`，不要直接 `getBean()` 触发初始化副作用。
-- 严格限量：`vmtool -l` 必须给上限，任何批量输出都要截断。
-- 先确认上下文再查 Bean：多容器应用里，选错 `ApplicationContext` 会让后续结论全部失真。
-- 若使用 `--classLoader` / `--classLoaderClass`，必须先解释为什么当前类加载器不对。
-
 ## 代码模式
 
 ```bash

@@ -16,6 +16,12 @@ export const codebaseArchitectureAnalysisSkill = defineSkill({
     "合并前结构检查，防止引入循环依赖或越层调用",
     "技术债摸底，量化结构健康度并排序改进项",
   ],
+  constraints: [
+    "每个判断必须绑定到具体文件:行/段，不得凭直觉归类模块。",
+    "区分框架惯例（如 Rails `app/models` 放业务逻辑）与真正的分层违规（如 View 直接写 SQL）。",
+    "区分主观风格偏好与必须修复的结构风险；风格问题单独标注，不混入风险评分。",
+    "未覆盖的模块和路径必须在报告的「范围限制」段显式列出。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

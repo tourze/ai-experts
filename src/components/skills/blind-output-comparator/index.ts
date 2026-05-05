@@ -15,6 +15,13 @@ export const blindOutputComparatorSkill = defineSkill({
     "expectations 可用但不完整，需要同时看整体质量和断言通过率。",
     "两个输出都失败或都不错时，需要选择“失败更轻”或“边际更好”的一方。",
   ],
+  constraints: [
+    "保持盲评：不要推断 A / B 来自哪个 skill、模型或作者。",
+    "主要依据是任务完成度和输出质量；expectations 只是次要证据。",
+    "Rubric 必须由原始任务生成，至少覆盖内容质量和结构可用性两类。",
+    "除非两个输出确实等价，否则要果断选择 A 或 B；平局应少见。",
+    "reasoning 必须具体说明胜者强在哪里、败者差在哪里。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

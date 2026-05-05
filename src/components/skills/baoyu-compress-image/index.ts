@@ -17,6 +17,13 @@ export const baoyuCompressImageSkill = defineSkill({
     "文章配图生成后，需要在提交前统一压缩。",
     "如果目标是重新设计图片内容而不是压缩体积，参考图片设计相关方法。",
   ],
+  constraints: [
+    "使用 Node.js 直接运行 `scripts/main.mjs`。",
+    "`--output` 只支持单文件输入；目录批处理时禁止传自定义输出路径。",
+    "默认 `--keep=false`，表示成功转码后删除原文件；只有显式加 `--keep` 才保留源文件。",
+    "目录模式默认不递归；需要跨子目录时必须显式加 `--recursive`。",
+    "压缩后端按“系统工具优先、`sharp` 兜底”顺序选择；如果没有任何后端，先补依赖再运行。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

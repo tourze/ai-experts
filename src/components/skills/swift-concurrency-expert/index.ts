@@ -15,6 +15,12 @@ export const swiftConcurrencyExpertSkill = defineSkill({
     "判断代码应放在 `@MainActor`、`actor`、`nonisolated` 还是普通类型上。",
     "审查 `Sendable`、任务生命周期、结构化并发和 SwiftUI 并发用法。",
   ],
+  constraints: [
+    "先收集真实诊断信息，再决定修法；不要先加 `@unchecked Sendable` 或 `nonisolated(unsafe)` 糊过去。",
+    "UI 类型先考虑 `@MainActor`，共享可变状态先考虑 `actor`。",
+    "只有在能证明线程安全时才接受 `Sendable` / `@unchecked Sendable`。",
+    "需要背景资料时读取 `references/swift-6-2-concurrency.md`、`references/approachable-concurrency.md`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

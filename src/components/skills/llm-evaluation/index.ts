@@ -15,6 +15,12 @@ export const llmEvaluationSkill = defineSkill({
     "需要建立离线样本集、评分 rubric、回归报警与上线门槛。",
     "相关 skill：[prompt-engineering-patterns](../prompt-engineering-patterns/SKILL.md)、[rag-auditor](../rag-auditor/SKILL.md)。",
   ],
+  constraints: [
+    "先定义任务成功标准，再谈指标；没有目标函数的 evaluation 没有意义。",
+    "自动指标、人工评审、LLM-as-judge 各有盲点，至少要两种视角交叉验证。",
+    "回归测试必须使用冻结样本集，避免一边改题一边看分数。",
+    "评估报告必须区分“统计显著”“业务显著”“可上线”三个层级。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

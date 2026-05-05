@@ -20,6 +20,13 @@ export const appStoreOptimizationSkill = defineSkill({
     "需要从最近一个 tag 到当前版本提炼 App Store「新内容」文案。",
     "需要把技术提交整理成用户能看懂的发布摘要。",
   ],
+  constraints: [
+    "这些 `*.py` 主要是库模块；优先通过 `python3 - <<'PY'` 导入调用，不要假设每个文件都提供稳定 CLI。",
+    "搜索量、竞争度、转化率等输入必须来自用户或可信数据源；不要伪造市场数据。",
+    "Apple 与 Google 的字段限制不同，所有输出都必须带字符数校验。",
+    "本地化不是逐词翻译，必须同时考虑市场、文化语义和搜索行为。",
+    "更新文案规则：先确认真实改动范围再写，只保留用户可感知改动，每条必须可追溯到真实提交；详见 `references/changelog-guide.md`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

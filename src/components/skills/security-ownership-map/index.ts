@@ -17,6 +17,12 @@ export const securityOwnershipMapSkill = defineSkill({
     "需要把 git 历史与 [security-threat-model](../security-threat-model/SKILL.md) 的资产/边界分析关联起来。",
     "需要导出 CSV/JSON 给图数据库或可视化工具。导入 Neo4j 的方法见 [references/neo4j-import.md](references/neo4j-import.md)。",
   ],
+  constraints: [
+    "只用于安全导向的所有权分析，不回答泛化的“谁维护这个仓库”问题。",
+    "优先缩小时间窗；大仓库默认加 `--since` 或 `--until`。",
+    "社区检测和 GraphML 输出由 Node.js 脚本直接生成，无需 Python `networkx`。",
+    "脚本路径以当前 skill 目录为基准；构建、查询与社区分析脚本都使用 Node.js。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

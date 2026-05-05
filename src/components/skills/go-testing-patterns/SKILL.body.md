@@ -1,13 +1,6 @@
+## 联动说明
+
 > 通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 [testing-patterns](testing-expert:testing-patterns)。本 skill 只覆盖 Go 特有语法与工具。
-
-## 核心约束
-
-- 公共 API 优先用外部包名 `package xxx_test`。
-- table-driven tests 必须有 `name` 字段并通过 `t.Run(tt.name, ...)` 暴露失败场景。
-- 可独立并行的纯函数测试使用 `t.Parallel()`；共享资源、环境变量、全局状态测试不要盲目并行。
-- 集成测试用 `//go:build integration` 隔离，普通 `go test ./...` 不应依赖外部服务。
-- 时间相关测试优先注入 clock 或使用可控时间，不用 `time.Sleep` 猜测异步完成。
-- 并发代码测试要考虑 `go test -race ./...` 和 goroutine leak 检测。
 
 ## 代码模式
 

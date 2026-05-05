@@ -1,10 +1,6 @@
+## 联动说明
+
 > 通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 [testing-patterns](testing-expert:testing-patterns)。本 skill 只覆盖 PHP 特有语法与工具。
-
-## 核心约束
-
-- 测试文件启用 `declare(strict_types=1)`，保持显式类型。
-- 优先用 PHP 8 属性（`#[Test]`、`#[DataProvider]`、`#[CoversClass]`），不用旧式注解。
-- 集成测试要明确边界、清理状态、避免环境耦合。
 
 ## 代码模式
 

@@ -14,6 +14,11 @@ export const funnelArchitectSkill = defineSkill({
     "需要把流量入口、价值阶梯、转化页面和后续培育串起来。",
     "需要补充用户旅程时可配合 [customer-journey-map](../customer-journey-map/SKILL.md)，讨论套餐结构时可配合 [pricing-strategy](../pricing-strategy/SKILL.md)。",
   ],
+  constraints: [
+    "先明确目标用户、核心承诺和单步转化目标，再设计页面和自动化链路。",
+    "每一级价值阶梯都要回答“为什么现在值得升级”，不能只靠更多功能堆价格。",
+    "漏斗设计必须考虑流量来源和成交门槛，不要把所有受众塞进同一条路径。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

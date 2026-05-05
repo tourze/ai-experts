@@ -15,6 +15,12 @@ export const finishingBranchSkill = defineSkill({
     "需要从 feature 分支合并回主分支。",
     "交叉引用：提交用 `commit`；合并前审查配合 `pre-landing-review`。",
   ],
+  constraints: [
+    "**违反字面规则 = 违反规则精神。不存在\"灵活变通\"。**",
+    "测试未通过，不展示选项。",
+    "不替用户做选择——展示选项，等用户决定。",
+    "丢弃操作必须二次确认。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

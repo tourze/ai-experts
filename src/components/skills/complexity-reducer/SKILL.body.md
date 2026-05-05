@@ -1,10 +1,3 @@
-## 核心约束
-- 目标是降低认知复杂度，不是减少行数。
-- 先定位复杂度来源，再决定策略。
-- 每次简化保持行为不变——这是重构不是重写。
-- 本质复杂度（业务规则就是复杂的）不强行简化逻辑，而是改善组织。
-- 简化后必须更容易理解，不是更"巧妙"。
-
 ## 复杂度来源与对策
 每种来源的详细症状、对策和代码示例见 [references/patterns.md](./references/patterns.md)。
 按语言看具体重构示例：[Python 指南](references/python.md)、[Go 指南](references/go.md)、[TypeScript 指南](references/typescript.md)、[Rust 指南](references/rust.md)。

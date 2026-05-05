@@ -15,6 +15,12 @@ export const userGuideWritingSkill = defineSkill({
     "用户希望内容“能照着做”，而不是高层概述。",
     "如果当前还在收集素材和结构，可先用 [doc-coauthoring](../doc-coauthoring/SKILL.md)。",
   ],
+  constraints: [
+    "以任务为单位组织内容，例如“如何导出数据”，不要按内部模块堆目录。",
+    "用用户语言，不用系统实现语言；一步只做一件事。",
+    "只有在必要时才插图，并说明截图位置、状态和成功标准。",
+    "指南必须标明前置条件、结果预期和异常情况的处理方式。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

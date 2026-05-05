@@ -16,6 +16,13 @@ export const taskDecomposerSkill = defineSkill({
     "交叉引用：先审计划质量用 `plan-review`；需要完整功能工作流用 `feature-dev`；需要把拆解结果持久化到文件用 `persistent-planning`。",
     "当用户要为后续子代理/多 agent 执行准备计划或交接文本时，输出 Execution Contract，供 `subagent-driven-development` 消费。",
   ],
+  constraints: [
+    "任务粒度要能在单个 PR 内完成、可验证、可交付。",
+    "必须显式区分硬依赖、软依赖和可并行任务。",
+    "标记可并行任务时必须给出 `read_scope` / `write_scope`；同一并行组内 `write_scope` 重叠则不能并行。",
+    "要同时覆盖边界场景、风险和测试策略，不要只拆开发任务。",
+    "如果需求太模糊，要先写清假设而不是硬拆。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

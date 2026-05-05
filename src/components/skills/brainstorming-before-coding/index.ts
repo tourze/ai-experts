@@ -15,6 +15,10 @@ export const brainstormingBeforeCodingSkill = defineSkill({
     "用户说\"帮我做一个 X\"但 X 的边界和设计不明确。",
     "交叉引用：设计确认后用 `feature-dev` 或 `task-decomposer` 拆解实现。",
   ],
+  constraints: [
+    "**违反字面规则 = 违反规则精神。不存在\"灵活变通\"。**",
+    "<HARD-GATE> 在展示设计方案并获得用户批准之前，不启动任何实现 skill、不写任何代码、不创建任何文件、不做任何脚手架操作。无论任务看起来多简单，都适用。 </HARD-GATE>",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

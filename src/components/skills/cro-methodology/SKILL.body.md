@@ -1,9 +1,3 @@
-## 核心约束
-- 先定义页面目标和关键路径，再审计视觉、文案和证据层。
-- 每个实验必须写清假设、影响机制、成功指标和失败回滚条件。
-- 优化建议应以证据链为主，参考 [RESEARCH](references/RESEARCH.md)、[PERSUASION](references/PERSUASION.md)、[OBJECTIONS](references/OBJECTIONS.md)。
-- 若实验对象是弹窗，转到 [popup-cro](references/popup-cro.md)；若需要产出实现代码，转到 [redesign-my-landingpage](../redesign-my-landingpage/SKILL.md)。
-
 ## 代码模式
 - 推荐输出模板：
 

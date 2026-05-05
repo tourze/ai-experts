@@ -1,14 +1,3 @@
-## 核心约束
-
-- 优先使用 SwiftUI 原生状态模型：`@State`、`@Binding`、`@Observable`、`@Environment`。
-- `sheet` 状态能表达”选中了谁”时，优先用 `.sheet(item:)`，不要回退到布尔开关 + `if let`。
-- 新建页面前先读 `references/components-index.md` 和 `references/app-wiring.md`，再决定是否需要额外 reference。
-- 新增 reference 时必须是具体文件名，例如 `references/top-bar.md`，不要写占位路径。
-- 重构时先保证行为不变，再整理结构；重构不是顺手改交互。
-- 默认走 MV：视图负责状态表达和轻量编排，业务逻辑留在模型 / 服务层。
-- 如果 view model 已存在，优先让它变成非可选并在 `init` 中完成注入。
-- 需要理念展开时读取 `references/mv-patterns.md`，不要另造一套术语。
-
 ## 代码模式
 
 ### App 级导航接线

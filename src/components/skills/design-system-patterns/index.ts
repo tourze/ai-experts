@@ -16,6 +16,13 @@ export const designSystemPatternsSkill = defineSkill({
     "希望把 Figma、代码和组件库约束成同一套命名体系。",
     "需要审查项目里大量硬编码颜色、间距和阴影值。",
   ],
+  constraints: [
+    "令牌必须分层：原始值、语义值、组件值，不要把品牌色直接写进组件。",
+    "主题切换必须以 CSS 变量或等价机制为中心，避免每个组件各自判断主题。",
+    "组件 API 先稳定，再追求“无限灵活”；变体命名要服务业务语义。",
+    "设计系统是约束系统，不是素材堆。新增 token 前先确认是否已有语义位。",
+    "与 [tailwind-design-system](references/tailwind-design-system.md) 联动时，优先复用同一套 token 名称。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

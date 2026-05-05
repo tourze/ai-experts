@@ -15,6 +15,12 @@ export const apiTraceReaderSkill = defineSkill({
     "适合定位数据库写入、缓存变更、消息投递、定时任务和事件监听的真实来源。",
     "交叉引用：若要做系统级问题盘点，配合 `architecture-reviewer`（Exhaustive 模式）；若要审方案而不是追链路，改用 `plan-review`。",
   ],
+  constraints: [
+    "只允许只读操作：`Read` / `Grep` / `Glob` / 只读 Bash。",
+    "禁止 `Edit` / `Write` / 迁移 / 清缓存 / 推送 / 任何会改状态的命令。",
+    "每条结论必须带 `file:line`、日志片段或 grep 证据，禁止“我猜”。",
+    "输出标题固定为 `入口`、`调用链`、`数据读写`、`异步副作用`、`风险点`、`验证方式`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

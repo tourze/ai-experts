@@ -1,10 +1,3 @@
-## 核心约束
-- 先确认页面是否值得被索引，再谈标题和关键词。
-- 技术 SEO 改动必须说明影响范围，尤其是 robots、canonical、noindex、重定向。
-- 站点层级和 URL 规划配合 [content-strategy](../content-strategy/SKILL.md)。
-- 不对排名结果做承诺；SEO 结论要区分"可执行项"和"结果预期"。
-- 按站点类型使用对应检查项，见 [site-type-checklists](references/site-type-checklists.md)。
-
 ## 代码模式
 
 输出按 `可抓取性 → 可索引性 → 页面语义 → E-E-A-T → 结构化数据 → 内链` 顺序组织。

@@ -1,10 +1,6 @@
+## 联动说明
+
 > 通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 [testing-patterns](testing-expert:testing-patterns)。本 skill 只覆盖 Java 特有语法与工具。
-
-## 核心约束
-
-- 单元测试优先：能不用 Spring 容器就不用，避免用 `@SpringBootTest` 包住纯业务类。
-- 参数化测试不要只拿它批量堆样例，每个参数组合的意义要可从命名理解。
-- Mockito 只隔离协作者，不要把每一层都 mock 到测试失真。
 
 ## 代码模式
 

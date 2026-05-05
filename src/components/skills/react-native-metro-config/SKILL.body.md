@@ -1,13 +1,3 @@
-## 核心约束
-
-- `inlineRequires: true` 改变初始化顺序，须充分回归测试。
-- `watchFolders` 必须含 Monorepo 根和所有 symlink 包目录。
-- `extraNodeModules` 用绝对路径；`react` 须指向 app 本地版本。
-- 自定义 `sourceExts` 平台特定在前、通用在后。
-- 不在 `assetExts` 中的扩展名会被当 JS 解析。
-- CI 中 `maxWorkers` 控制在 2-4 避免 OOM。
-- `import()` 不支持计算路径，须静态字符串。
-
 ## 代码模式
 
 - [Monorepo 配置](references/monorepo-config.md)

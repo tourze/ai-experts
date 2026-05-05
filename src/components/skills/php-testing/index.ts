@@ -16,6 +16,11 @@ export const phpTestingSkill = defineSkill({
     "统一 `#[Test]`、数据提供者、覆盖率边界与测试分组。",
     "调整 `phpunit.xml` 的严格模式、套件划分和覆盖率策略。",
   ],
+  constraints: [
+    "测试文件启用 `declare(strict_types=1)`，保持显式类型。",
+    "优先用 PHP 8 属性（`#[Test]`、`#[DataProvider]`、`#[CoversClass]`），不用旧式注解。",
+    "集成测试要明确边界、清理状态、避免环境耦合。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

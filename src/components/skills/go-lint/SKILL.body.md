@@ -1,11 +1,3 @@
-## 核心约束
-
-- **golangci-lint 是唯一推荐的 meta-linter**：不要单独安装 `gometalinter` 或手动逐个运行 linter。
-- **不要因为一处违规模而全局禁用 linter**：用行级 `//nolint` 精准抑制，并附带 linter 名称和原因。
-- **lint 必须在 CI 中运行**：PR 检查至少包含 `golangci-lint run`，阻止新问题合入。
-- **先修复，后抑制**：看到告警优先修复代码，`//nolint` 是最后手段。
-- **配置文件纳入版本控制**：`.golangci.yml` 放在仓库根目录，团队共享同一份配置。
-
 ## 代码模式
 
 ### 1. 最小可用的 .golangci.yml

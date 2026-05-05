@@ -15,6 +15,12 @@ export const paidAdsSkill = defineSkill({
     "需要判断平台选择、预算分配、出价方式和受众策略。",
     "已有创意但不知道怎么挂到投放结构里验证。",
   ],
+  constraints: [
+    "先明确业务目标、目标 CPA/ROAS、预算边界和转化动作，再谈平台与结构。",
+    "创意、受众、落地页要拆开排查；不要把所有问题都归到“平台学习期”。",
+    "平台执行细节优先以 [platform-setup-checklists](references/platform-setup-checklists.md) 和 [audience-targeting](references/audience-targeting.md) 为准。",
+    "若着陆页承接弱，配合 [redesign-my-landingpage](../redesign-my-landingpage/SKILL.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -14,6 +14,12 @@ export const systemDiagnosticsSkill = defineSkill({
     "用户要做健康检查、系统摸底、上线前巡检、故障前置采样或基础资源审计。",
     "若后续需要网络分析，可切到 [network-troubleshooter](../network-troubleshooter/SKILL.md)。",
   ],
+  constraints: [
+    "只运行只读命令；不安装软件、不修改配置、不重启服务。",
+    "必须同时报告原始指标和解释性结论，不能只给“正常/异常”。",
+    "某条命令失败时要记录失败原因并继续，不得中断整个诊断。",
+    "采样时间、主机名、内核、发行版和负载必须出现在报告顶部。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

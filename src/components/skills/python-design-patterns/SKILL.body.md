@@ -1,13 +1,3 @@
-通用架构原则（分层、组合优于继承、构造注入、薄控制器）见 architecture-expert 的 software-design skill。
-
-需要补齐类型约束时联动 [python-type-safety](../python-type-safety/SKILL.md)；补测试时联动 [python-testing-patterns](../python-testing-patterns/SKILL.md)；边界错误表达联动 [python-error-handling](../python-error-handling/SKILL.md)。
-
-## 核心约束
-
-- 依赖注入用 `Protocol` 或 ABC 定义接口，构造函数注入实现。
-- 组合优先于继承；共享几行代码用 mixin 或注入而非继承叠基类。
-- 用 `@dataclass(slots=True)` 或 `NamedTuple` 做不可变 DTO。
-
 ## 代码模式
 
 ```python

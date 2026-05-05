@@ -1,11 +1,3 @@
-## 核心约束
-
-- 渐进增强优先：先保证 HTML 和服务端渲染可用，再叠加交互能力。
-- 选最简单的工具：Turbo 能解决的不要先上 Stimulus，TwigComponent 能解决的不要直接上 LiveComponent。
-- LiveComponent 只用于确实需要服务端参与的交互；纯前端状态切换优先 Stimulus。
-- 一个页面可以组合多种 UX 工具，但边界必须清楚，避免 Turbo、Stimulus 和 LiveComponent 同时争抢同一块 DOM。
-- 图标和地图属于辅助能力，不要让它们主导页面架构。
-
 ## 代码模式
 
 ```twig

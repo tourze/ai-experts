@@ -1,8 +1,3 @@
-## 核心约束
-- 先确认业务目标、角色、成功标准，再拆故事；单条 Story 应能在一个 Sprint 内完成。
-- 验收标准必须覆盖成功路径、失败路径和边界条件，避免“优化一下”这类不可验证表述。
-- 运行脚本时只使用已验证命令：`node scripts/user_story_generator.mjs` 与 `node scripts/user_story_generator.mjs sprint 30`；Sprint 容量必须是正整数。
-
 ## 代码模式
 ```bash
 node scripts/user_story_generator.mjs

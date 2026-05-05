@@ -16,6 +16,13 @@ export const seoSkill = defineSkill({
     "评估内容 E-E-A-T 信号和页面级 SEO 质量。",
     "为内容页、产品页或栏目页补齐搜索可见性基础。",
   ],
+  constraints: [
+    "先确认页面是否值得被索引，再谈标题和关键词。",
+    "技术 SEO 改动必须说明影响范围，尤其是 robots、canonical、noindex、重定向。",
+    "站点层级和 URL 规划配合 [content-strategy](../content-strategy/SKILL.md)。",
+    "不对排名结果做承诺；SEO 结论要区分\"可执行项\"和\"结果预期\"。",
+    "按站点类型使用对应检查项，见 [site-type-checklists](references/site-type-checklists.md)。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

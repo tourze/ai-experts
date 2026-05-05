@@ -15,6 +15,12 @@ export const liquidGlassDesignSkill = defineSkill({
     "需要实现玻璃按钮、工具栏、卡片、浮层或元素之间的变形过渡。",
     "需要让 WidgetKit 在 full color / accented 模式下保持正确视觉层次。",
   ],
+  constraints: [
+    "仅在目标系统支持 Liquid Glass API 时使用；旧系统必须保留材质回退方案。",
+    "多个玻璃元素优先放进 `GlassEffectContainer`，否则融合与性能都不稳定。",
+    "`interactive()` 只给真正可交互的元素，不要让纯装饰层伪装成交互层。",
+    "玻璃是强调层次的材料，不是把整页 UI 全部磨成同一块雾面板。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

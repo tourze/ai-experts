@@ -15,6 +15,12 @@ export const salesEnablementSkill = defineSkill({
     "编写异议处理文档或 demo 脚本。",
     "构建 ROI 计算器或买家画像卡。",
   ],
+  constraints: [
+    "**销售信任真实数据**——材料基于真实场景，不是市场部想象。",
+    "**场景驱动**——锁定具体买家角色、行业和购买阶段。",
+    "**30 秒可扫读**——核心信息前置，详细内容放附录。",
+    "**锚定业务结果**——每页回答\"对客户生意意味着什么\"。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

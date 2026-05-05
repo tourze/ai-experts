@@ -14,6 +14,12 @@ export const appleAppstoreReviewerSkill = defineSkill({
     "需要在提审前找出高概率拒审项、信息缺失和审核路径阻塞点。",
     "需要生成审核备注、测试账号说明或提交前检查清单。",
   ],
+  constraints: [
+    "第一轮只做审计，不直接改代码；先给出 P0 / P1 / P2 风险清单。",
+    "所有判断都要落到证据：文件、符号、配置项、屏幕流程或网络行为。",
+    "如果证据不足，要明确写出“假设”和需要补看的文件，而不是凭经验断言。",
+    "审核报告要同时覆盖合规、可审性和用户体验，不只盯 `Info.plist`。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

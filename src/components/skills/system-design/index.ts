@@ -15,6 +15,12 @@ export const systemDesignSkill = defineSkill({
     "适合把业务目标转成组件、数据流、协议、状态和扩展路线。",
     "交叉引用：数据系统细节配合 [references/ddia-systems.md](references/ddia-systems.md)；计划化落地配合 `task-decomposer`。",
   ],
+  constraints: [
+    "必须先问清功能需求、非功能需求和约束，再谈架构。",
+    "每个关键决策都要配 trade-off，不能只报方案名。",
+    "高层设计和深挖细节要分层表达，避免一开始就陷入实现。",
+    "明确指出哪些结论依赖当前规模，未来增长后需复审。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

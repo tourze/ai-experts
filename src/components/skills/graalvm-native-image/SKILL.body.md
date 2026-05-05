@@ -1,17 +1,3 @@
-## 核心约束
-
-- 先识别环境，再改配置：必须先确认构建工具、框架、Java 版本和失败日志，再决定 Maven/Gradle 路线。
-- 一次只修一个失败类别：先处理最早的原生构建错误，不要同时追加多份 metadata。
-- 元数据位置必须清晰：优先使用 `META-INF/native-image/<group>/<artifact>/` 下的配置。
-- Spring Boot 3.x 优先 `RuntimeHints`；只有第三方库或无法代码注册时才退回 JSON metadata。
-- 若引用更细节的构建片段，直接跳到：
-  [Maven Native Profile](references/maven-native-profile.md)、
-  [Gradle Native Plugin](references/gradle-native-plugin.md)、
-  [Spring Boot Native](references/spring-boot-native.md)、
-  [Quarkus / Micronaut](references/quarkus-micronaut-native.md)、
-  [Reflection / Resource Config](references/reflection-resource-config.md)、
-  [Tracing Agent](references/tracing-agent.md)。
-
 ## 代码模式
 
 ```xml

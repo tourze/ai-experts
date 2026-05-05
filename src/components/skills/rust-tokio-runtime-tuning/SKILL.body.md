@@ -1,13 +1,3 @@
-## 核心约束
-
-1. `worker_threads` 先测量再设；默认 num_cpus 常过多。
-2. 同步 IO / CPU 密集必须 `spawn_blocking`。
-3. 组件有独立生命周期时用独立 Runtime。
-4. 资源受限环境优先 `current_thread`。
-5. `max_blocking_threads` 按实际阻塞数设；默认 512 过大。
-6. `block_on` 只在非 async 上下文调用。
-7. 先观测再调参。
-
 ## 代码模式
 
 - [自定义 Runtime Builder](references/patterns.md#模式-1)

@@ -16,6 +16,13 @@ export const twigComponentsSkill = defineSkill({
     "如果还在决定应该用 Stimulus、Turbo、TwigComponent 还是 LiveComponent，可先看 [symfony-ux](../symfony-ux/SKILL.md)。",
     "更细的组件示例见 [reference.md](reference.md)。",
   ],
+  constraints: [
+    "先判断组件类型：静态可复用 UI 用 TwigComponent，交互后需要服务端重渲染时再上 LiveComponent。",
+    "组件公共属性必须稳定、可命名、可组合，避免把页面级上下文隐式塞进组件内部。",
+    "模板只负责展示，不要在 Twig 里堆复杂业务判断或副作用。",
+    "LiveComponent 的可写状态必须显式标记为 `LiveProp(writable: true)`，不要靠隐式提交。",
+    "组件应该复用现有样式和路由，不要为了抽组件而重造一层平行 UI 体系。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

@@ -15,6 +15,12 @@ export const phpDesignPatternsSkill = defineSkill({
     "现有类已经变成 God class，业务逻辑散落在控制器和模型里。",
     "需要把依赖注入从\"到处 `new`\"收敛为构造函数注入。",
   ],
+  constraints: [
+    "控制器只做编排：验证 → 鉴权 → 调服务 → 映射响应。业务规则放到服务或领域对象。",
+    "依赖通过构造函数注入，避免静态 Facade 与服务定位器。",
+    "数据传输用 readonly DTO，不用裸数组跨层传递。",
+    "业务概念（金额、邮箱）考虑封装为值对象。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),

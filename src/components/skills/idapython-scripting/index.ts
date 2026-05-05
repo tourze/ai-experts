@@ -15,6 +15,12 @@ export const idapythonScriptingSkill = defineSkill({
     "需要用 IDALib (IDA 9.0+) 做无 GUI 的批量分析。",
     "需要与 [binary-analysis-patterns](../binary-analysis-patterns/SKILL.md) 配合做深入逆向。",
   ],
+  constraints: [
+    "区分调试态 API (`read_dbg_byte`) 和 IDB 态 API (`get_db_byte`)。",
+    "`idc.find_bytes()` 返回 `BADADDR` 时停止循环。",
+    "Hex-Rays 反编译结果用 `str(dec)` 转文本，不要直接拼接对象。",
+    "IDALib 模式必须 `import idapro` 在最前，且 `close_database()` 在最后。",
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
