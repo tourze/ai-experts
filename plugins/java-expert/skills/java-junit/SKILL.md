@@ -5,6 +5,8 @@ description: 当需要编写或审查 JUnit 5 测试、参数化测试或 Mockit
 
 # Java JUnit
 
+> 通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 [testing-patterns](testing-expert:testing-patterns)。本 skill 只覆盖 Java 特有语法与工具。
+
 ## 适用场景
 
 - 为 Java / Spring 代码补 JUnit 5 单元测试或重构现有测试。
@@ -14,11 +16,9 @@ description: 当需要编写或审查 JUnit 5 测试、参数化测试或 Mockit
 
 ## 核心约束
 
-- 一个测试只验证一个行为，遵循 AAA（Arrange / Act / Assert）。
 - 单元测试优先：能不用 Spring 容器就不用，避免用 `@SpringBootTest` 包住纯业务类。
-- 参数化测试优先覆盖边界和等价类，不要只拿它批量堆样例。
-- 断言要指向业务结果，不要依赖日志输出或内部实现细节。
-- Mock 只隔离协作者，不要把每一层都 mock 到测试失真。
+- 参数化测试不要只拿它批量堆样例，每个参数组合的意义要可从命名理解。
+- Mockito 只隔离协作者，不要把每一层都 mock 到测试失真。
 
 ## 代码模式
 
@@ -63,9 +63,6 @@ assertAll 分组断言的完整代码见 [references/advanced-patterns.md](refer
 
 ## 检查清单
 
-- 测试命名是否能表达“方法 / 期望行为 / 场景”。
-- 是否优先测试公共行为与边界值，而不是私有实现细节。
-- 参数化测试是否覆盖空值、边界值、异常值和典型值。
 - 是否正确使用 `assertThrows`、`assertAll`、Mockito 验证与测试数据工厂。
 - 如果使用 Spring 测试切片，范围是否足够小，启动成本是否合理。
 

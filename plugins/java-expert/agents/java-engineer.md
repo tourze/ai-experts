@@ -7,6 +7,7 @@ skills:
   - code-engineer-agent-framework
   - spring-boot-layering
   - java-junit
+  - testing-patterns
   - gradle-build-performance
   - graalvm-native-image
   - arthas-cpu-high

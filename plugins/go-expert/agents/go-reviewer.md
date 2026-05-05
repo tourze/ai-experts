@@ -10,6 +10,7 @@ skills:
   - go-troubleshooting
   - go-concurrency-patterns
   - go-testing-patterns
+  - testing-patterns
   - go-error-handling
   - go-code-style
   - go-performance

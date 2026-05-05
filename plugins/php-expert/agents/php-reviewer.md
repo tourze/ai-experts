@@ -12,6 +12,7 @@ skills:
   - php-design-patterns
   - php-async-patterns
   - php-testing
+  - testing-patterns
   - evidence-quality-framework
 ---
 你是资深 PHP 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。

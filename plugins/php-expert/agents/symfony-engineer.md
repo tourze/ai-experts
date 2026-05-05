@@ -17,6 +17,7 @@ skills:
   - php-type-safety
   - php-error-handling
   - php-testing
+  - testing-patterns
   - php-generators-memory
 ---
 

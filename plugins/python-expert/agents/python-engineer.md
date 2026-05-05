@@ -12,6 +12,7 @@ skills:
   - python-design-patterns
   - python-observability
   - python-testing-patterns
+  - testing-patterns
   - python-background-jobs
   - uv-package-manager
 ---

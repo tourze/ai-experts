@@ -10,6 +10,7 @@ skills:
   - rust-type-design
   - rust-async-patterns
   - rust-testing
+  - testing-patterns
   - rust-cargo-workspace
   - rust-tokio-runtime-tuning
   - rust-serde-patterns

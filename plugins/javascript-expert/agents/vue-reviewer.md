@@ -8,6 +8,7 @@ skills:
   - vue-expert-js
   - modern-javascript-patterns
   - javascript-typescript-jest
+  - testing-patterns
   - evidence-quality-framework
 ---
 你是资深 Vue.js 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。

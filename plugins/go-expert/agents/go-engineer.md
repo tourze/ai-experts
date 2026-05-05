@@ -18,6 +18,7 @@ skills:
   - go-security
   - go-observability
   - go-testing-patterns
+  - testing-patterns
   - go-troubleshooting
   - go-lint
 ---
