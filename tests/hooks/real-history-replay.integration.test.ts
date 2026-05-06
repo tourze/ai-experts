@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
-import { homedir, tmpdir } from "node:os";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { extname, join } from "node:path";
 import { afterAll, beforeAll, describe, test } from "vitest";
 import { Platform } from "../../src/build/core.ts";
@@ -10,19 +10,44 @@ import { componentHooks } from "../../src/components/hooks/index.ts";
 import { repoRoot } from "../components/test-helpers";
 
 type JsonRecord = Record<string, unknown>;
+type FixturePrompt = {
+  ts: number | null;
+  prompt: string;
+  sessionHash?: string | null;
+  sourceFileHash?: string | null;
+};
+type FixtureTelemetry = {
+  ts: number | null;
+  event: string | null;
+  decision: string | null;
+  hook: string | null;
+  tool: string | null;
+  file: string | null;
+  detail: string | null;
+  pluginHash: string | null;
+  durationMs: number | null;
+};
+type RealHistoryFixture = {
+  schema: string;
+  generatedAt: string;
+  source: Record<string, string>;
+  redaction: { notes: string[] };
+  samples: {
+    claudeHistory: FixturePrompt[];
+    codexHistory: FixturePrompt[];
+    codexSessionPrompts: FixturePrompt[];
+    claudeHookTelemetry: FixtureTelemetry[];
+  };
+};
+
 type ReplayCase = {
   platform: Platform;
   event: "UserPromptSubmit" | "PreToolUse" | "PostToolUse" | "SessionStart";
   input: JsonRecord;
 };
 
-const claudeHistoryPath = join(homedir(), ".claude", "history.jsonl");
-const codexHistoryPath = join(homedir(), ".codex", "history.jsonl");
-const codexSessionsRoot = join(homedir(), ".codex", "sessions");
-const claudeTelemetryPath = join(homedir(), ".claude", "hook-telemetry", "decisions.jsonl");
-
-const hasRealHistoryData = existsSync(claudeHistoryPath) && existsSync(codexHistoryPath) && existsSync(claudeTelemetryPath);
-const describeRealHistory = hasRealHistoryData ? describe : describe.skip;
+const fixturePath = join(repoRoot, "tests/fixtures/real-history/sanitized-session-fixture.json");
+const fixture = JSON.parse(readFileSync(fixturePath, "utf-8")) as RealHistoryFixture;
 
 let tmpRoot = "";
 let claudeHooksRoot = "";
@@ -31,66 +56,6 @@ let sampleJsonPath = "";
 let sampleMdPath = "";
 let sampleTsPath = "";
 let sampleEnvPath = "";
-
-function readJsonlTail(filePath: string, tailCount: number): JsonRecord[] {
-  const lines = readFileSync(filePath, "utf-8").split(/\r?\n/).filter((line) => line.trim() !== "");
-  return lines.slice(-tailCount).flatMap((line) => {
-    try {
-      const parsed = JSON.parse(line);
-      if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return [];
-      return [parsed as JsonRecord];
-    } catch {
-      return [];
-    }
-  });
-}
-
-function trimPrompt(value: unknown): string | null {
-  if (typeof value !== "string") return null;
-  const text = value.trim();
-  if (text.length === 0) return null;
-  if (text.length > 600) return text.slice(0, 600);
-  return text;
-}
-
-function readLatestCodexSessionPrompts(maxPrompts: number): string[] {
-  if (!existsSync(codexSessionsRoot)) return [];
-
-  const files: string[] = [];
-  const stack = [codexSessionsRoot];
-  while (stack.length > 0) {
-    const dir = stack.pop() as string;
-    for (const entry of readdirSync(dir, { withFileTypes: true })) {
-      const full = join(dir, entry.name);
-      if (entry.isDirectory()) stack.push(full);
-      else if (entry.isFile() && entry.name.endsWith(".jsonl")) files.push(full);
-    }
-  }
-  if (files.length === 0) return [];
-
-  files.sort((a, b) => statSync(b).mtimeMs - statSync(a).mtimeMs);
-  const latestFile = files[0];
-  const prompts: string[] = [];
-  for (const line of readFileSync(latestFile, "utf-8").split(/\r?\n/).filter((item) => item.trim() !== "")) {
-    try {
-      const parsed = JSON.parse(line) as JsonRecord;
-      if (parsed.type !== "response_item") continue;
-      const payload = parsed.payload;
-      if (!payload || typeof payload !== "object" || Array.isArray(payload)) continue;
-      if ((payload as JsonRecord).type !== "message" || (payload as JsonRecord).role !== "user") continue;
-      const content = (payload as JsonRecord).content;
-      if (!Array.isArray(content)) continue;
-      for (const item of content) {
-        if (!item || typeof item !== "object" || Array.isArray(item)) continue;
-        const text = trimPrompt((item as JsonRecord).text);
-        if (text) prompts.push(text);
-      }
-    } catch {
-      // ignore malformed line
-    }
-  }
-  return prompts.slice(-maxPrompts);
-}
 
 function pickSampleFilePath(sourcePath: unknown): string {
   if (typeof sourcePath !== "string") {
@@ -112,14 +77,17 @@ function mapTelemetryEvent(value: unknown): ReplayCase["event"] | null {
   return null;
 }
 
-function mapTelemetryToReplayCases(entries: readonly JsonRecord[]): ReplayCase[] {
+function mapTelemetryToReplayCases(entries: readonly FixtureTelemetry[]): ReplayCase[] {
   const cases: ReplayCase[] = [];
+
   for (const entry of entries) {
     const mappedEvent = mapTelemetryEvent(entry.event);
     if (!mappedEvent) continue;
 
     if (mappedEvent === "UserPromptSubmit") {
-      const prompt = trimPrompt(entry.detail) ?? "请检查 hooks 行为是否符合预期";
+      const prompt = typeof entry.detail === "string" && entry.detail.trim() !== ""
+        ? entry.detail
+        : "请验证 hooks 行为";
       cases.push({
         platform: Platform.Claude,
         event: "UserPromptSubmit",
@@ -143,36 +111,34 @@ function mapTelemetryToReplayCases(entries: readonly JsonRecord[]): ReplayCase[]
       continue;
     }
 
-    const toolName = typeof entry.tool === "string" && entry.tool.trim() !== "" ? entry.tool : "Bash";
-    if (toolName === "Bash") {
-      const command = typeof entry.detail === "string" && entry.detail.includes("Dangerous")
-        ? "git reset --hard HEAD"
-        : "echo hook-replay";
+    if (mappedEvent === "PreToolUse") {
+      const fromDangerousDetail = typeof entry.detail === "string" && /dangerous|block|reset|rm|force/i.test(entry.detail);
       cases.push({
         platform: Platform.Claude,
-        event: mappedEvent,
+        event: "PreToolUse",
         input: {
           cwd: repoRoot,
           tool_name: "Bash",
           tool_input: {
-            command,
+            command: fromDangerousDetail ? "git reset --hard HEAD" : "echo hook-replay",
           },
         },
       });
       continue;
     }
 
-    if (["Edit", "Write", "MultiEdit", "apply_patch"].includes(toolName)) {
+    if (mappedEvent === "PostToolUse") {
+      const toolName = entry.tool === "Write" ? "Write" : "apply_patch";
       const filePath = pickSampleFilePath(entry.file);
       const toolInput: JsonRecord = {
         file_path: filePath,
       };
-      if (mappedEvent === "PostToolUse" && toolName === "apply_patch") {
+      if (toolName === "apply_patch") {
         toolInput.command = `*** Update File: ${filePath}\n@@\n-const x = 1;\n+const x = 2;\n`;
       }
       cases.push({
         platform: Platform.Claude,
-        event: mappedEvent,
+        event: "PostToolUse",
         input: {
           cwd: repoRoot,
           tool_name: toolName,
@@ -181,6 +147,7 @@ function mapTelemetryToReplayCases(entries: readonly JsonRecord[]): ReplayCase[]
       });
     }
   }
+
   return cases;
 }
 
@@ -197,9 +164,7 @@ function runDispatch(hooksRoot: string, platform: Platform, event: ReplayCase["e
 }
 
 beforeAll(async () => {
-  if (!hasRealHistoryData) return;
-
-  tmpRoot = mkdtempSync(join(tmpdir(), "ai-experts-real-history-hooks-"));
+  tmpRoot = mkdtempSync(join(tmpdir(), "ai-experts-real-history-hooks-fixture-"));
   claudeHooksRoot = join(tmpRoot, "claude-hooks");
   codexHooksRoot = join(tmpRoot, "codex-hooks");
 
@@ -223,69 +188,48 @@ afterAll(() => {
   }
 });
 
-describeRealHistory("hooks real-history replay", () => {
-  test("reads recent prompts from ~/.claude and ~/.codex history", () => {
-    const claudeRecords = readJsonlTail(claudeHistoryPath, 120);
-    const codexRecords = readJsonlTail(codexHistoryPath, 120);
+describe("hooks real-history fixture replay", () => {
+  test("fixture schema and sample volumes are complete", () => {
+    assert.equal(fixture.schema, "ai-experts-real-history-fixture/v1");
+    assert.equal(typeof fixture.generatedAt, "string");
 
-    const claudePrompts = claudeRecords
-      .map((record) => trimPrompt(record.display))
-      .filter((prompt): prompt is string => prompt !== null);
-    const codexPrompts = codexRecords
-      .map((record) => trimPrompt(record.text))
-      .filter((prompt): prompt is string => prompt !== null);
-    const codexSessionPrompts = readLatestCodexSessionPrompts(20);
-
-    assert.ok(claudePrompts.length > 0, "expected recent Claude prompts from ~/.claude/history.jsonl");
-    assert.ok(codexPrompts.length > 0, "expected recent Codex prompts from ~/.codex/history.jsonl");
-    assert.ok(codexSessionPrompts.length > 0, "expected recent Codex prompts from ~/.codex/sessions/*/*.jsonl");
+    assert.ok(fixture.samples.claudeHistory.length >= 80, "expected enough claude history samples");
+    assert.ok(fixture.samples.codexHistory.length >= 80, "expected enough codex history samples");
+    assert.ok(fixture.samples.codexSessionPrompts.length >= 20, "expected enough codex session prompt samples");
+    assert.ok(fixture.samples.claudeHookTelemetry.length >= 40, "expected enough claude hook telemetry samples");
   });
 
-  test("validates recent ~/.claude hook telemetry schema", () => {
-    const telemetryEntries = readJsonlTail(claudeTelemetryPath, 200);
-    assert.ok(telemetryEntries.length > 0, "expected recent hook telemetry entries");
-
-    const allowedDecisions = new Set(["allow", "audit", "block", "context", "report"]);
-    for (const entry of telemetryEntries) {
-      assert.equal(typeof entry.event, "string");
-      assert.equal(typeof entry.hook, "string");
-      assert.equal(typeof entry.decision, "string");
-      assert.equal(allowedDecisions.has(String(entry.decision)), true);
-    }
+  test("fixture is redacted (no raw local absolute path/uuid/email/token)", () => {
+    const raw = JSON.stringify(fixture);
+    assert.equal(/\/Users\//.test(raw), false, "fixture must not leak macOS absolute paths");
+    assert.equal(/[A-Z]:\\\\/.test(raw), false, "fixture must not leak Windows absolute paths");
+    assert.equal(/\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/i.test(raw), false, "fixture must not leak UUIDs");
+    assert.equal(/\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}\b/.test(raw), false, "fixture must not leak email");
+    assert.equal(/\b(sk|rk|pk)-[A-Za-z0-9_-]{12,}\b/.test(raw), false, "fixture must not leak API-like tokens");
   });
 
-  test("replays recent real-history prompts and telemetry samples through dispatcher", () => {
-    const claudeRecords = readJsonlTail(claudeHistoryPath, 120);
-    const codexRecords = readJsonlTail(codexHistoryPath, 120);
-    const telemetryEntries = readJsonlTail(claudeTelemetryPath, 160);
-
-    const claudePrompts = claudeRecords
-      .map((record) => trimPrompt(record.display))
-      .filter((prompt): prompt is string => prompt !== null)
-      .slice(-12);
-    const codexPrompts = codexRecords
-      .map((record) => trimPrompt(record.text))
-      .filter((prompt): prompt is string => prompt !== null)
-      .slice(-12);
-    const codexSessionPrompts = readLatestCodexSessionPrompts(12);
+  test("replays fixture prompts and telemetry samples through hook dispatcher", () => {
+    const claudePrompts = fixture.samples.claudeHistory.slice(-32).map((item): ReplayCase => ({
+      platform: Platform.Claude,
+      event: "UserPromptSubmit",
+      input: { cwd: repoRoot, prompt: item.prompt },
+    }));
+    const codexPrompts = fixture.samples.codexHistory.slice(-32).map((item): ReplayCase => ({
+      platform: Platform.Codex,
+      event: "UserPromptSubmit",
+      input: { cwd: repoRoot, prompt: item.prompt },
+    }));
+    const codexSessionPrompts = fixture.samples.codexSessionPrompts.slice(-32).map((item): ReplayCase => ({
+      platform: Platform.Codex,
+      event: "UserPromptSubmit",
+      input: { cwd: repoRoot, prompt: item.prompt },
+    }));
 
     const replayCases: ReplayCase[] = [
-      ...claudePrompts.map((prompt): ReplayCase => ({
-        platform: Platform.Claude,
-        event: "UserPromptSubmit",
-        input: { cwd: repoRoot, prompt },
-      })),
-      ...codexPrompts.map((prompt): ReplayCase => ({
-        platform: Platform.Codex,
-        event: "UserPromptSubmit",
-        input: { cwd: repoRoot, prompt },
-      })),
-      ...codexSessionPrompts.map((prompt): ReplayCase => ({
-        platform: Platform.Codex,
-        event: "UserPromptSubmit",
-        input: { cwd: repoRoot, prompt },
-      })),
-      ...mapTelemetryToReplayCases(telemetryEntries).slice(-24),
+      ...claudePrompts,
+      ...codexPrompts,
+      ...codexSessionPrompts,
+      ...mapTelemetryToReplayCases(fixture.samples.claudeHookTelemetry).slice(-48),
       {
         platform: Platform.Claude,
         event: "PreToolUse",
@@ -306,12 +250,23 @@ describeRealHistory("hooks real-history replay", () => {
           },
         },
       },
+      {
+        platform: Platform.Claude,
+        event: "PreToolUse",
+        input: {
+          cwd: repoRoot,
+          tool_name: "Write",
+          tool_input: { file_path: ".env", content: "API_KEY=test" },
+        },
+      },
     ];
 
-    assert.ok(replayCases.length >= 20, "expected enough replay samples from real history and telemetry");
+    assert.ok(replayCases.length >= 120, "expected sufficient replay coverage");
 
     let nonEmptyOutputs = 0;
-    let outputWithDecisionOrContext = 0;
+    let outputsWithDecisionOrContext = 0;
+    let blockCount = 0;
+    let contextCount = 0;
 
     for (const replayCase of replayCases) {
       const hooksRoot = replayCase.platform === Platform.Claude ? claudeHooksRoot : codexHooksRoot;
@@ -320,20 +275,27 @@ describeRealHistory("hooks real-history replay", () => {
       nonEmptyOutputs += 1;
 
       const parsed = JSON.parse(output) as JsonRecord;
-      const hasDecision = typeof parsed.decision === "string";
+      const decision = parsed.decision;
       const maybeHookOutput = parsed.hookSpecificOutput;
-      const hasContext =
-        !!maybeHookOutput &&
+      const hasContext = !!maybeHookOutput &&
         typeof maybeHookOutput === "object" &&
         !Array.isArray(maybeHookOutput) &&
         typeof (maybeHookOutput as JsonRecord).additionalContext === "string";
 
-      if (hasDecision || hasContext) {
-        outputWithDecisionOrContext += 1;
+      if (typeof decision === "string" || hasContext) {
+        outputsWithDecisionOrContext += 1;
+      }
+      if (decision === "block") {
+        blockCount += 1;
+      }
+      if (hasContext) {
+        contextCount += 1;
       }
     }
 
-    assert.ok(nonEmptyOutputs > 0, "expected at least one hook output from replay samples");
-    assert.ok(outputWithDecisionOrContext > 0, "expected hook outputs to include decision or additionalContext");
+    assert.ok(nonEmptyOutputs > 0, "expected non-empty hook outputs");
+    assert.ok(outputsWithDecisionOrContext > 0, "expected outputs to include decision or context");
+    assert.ok(blockCount > 0, "expected at least one blocking hook decision");
+    assert.ok(contextCount > 0, "expected at least one additionalContext output");
   });
 });
