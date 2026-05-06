@@ -4,8 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 
 export const remoteSshCommandSkill = defineSkill({
@@ -41,28 +39,8 @@ export const remoteSshCommandSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "install-sshpass",
-      entry: new URL("./scripts/install-sshpass.ts", import.meta.url),
-      target: "scripts/install-sshpass.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script install-sshpass.mjs.",
-    }),
-    defineSkillScript({
-      id: "ssh-exec",
-      entry: new URL("./scripts/ssh-exec.ts", import.meta.url),
-      target: "scripts/ssh-exec.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script ssh-exec.mjs.",
-    })
+    "remote-ssh-command-install-sshpass",
+    "remote-ssh-command-ssh-exec",
   ],
 });

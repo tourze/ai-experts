@@ -6,8 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 
 export const financialAnalystSkill = defineSkill({
@@ -51,53 +49,12 @@ export const financialAnalystSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "budget-variance-analyzer",
-      entry: new URL("./scripts/budget_variance_analyzer.ts", import.meta.url),
-      target: "scripts/budget_variance_analyzer.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script budget_variance_analyzer.mjs.",
-    }),
-    defineSkillScript({
-      id: "dcf-valuation",
-      entry: new URL("./scripts/dcf_valuation.ts", import.meta.url),
-      target: "scripts/dcf_valuation.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script dcf_valuation.mjs.",
-    }),
-    defineSkillScript({
-      id: "forecast-builder",
-      entry: new URL("./scripts/forecast_builder.ts", import.meta.url),
-      target: "scripts/forecast_builder.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script forecast_builder.mjs.",
-    }),
-    defineSkillScript({
-      id: "ratio-calculator",
-      entry: new URL("./scripts/ratio_calculator.ts", import.meta.url),
-      target: "scripts/ratio_calculator.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script ratio_calculator.mjs.",
-    }),
-    defineSkillScript({
-      id: "ratio-input-validation",
-      entry: new URL("./scripts/ratio_input_validation.ts", import.meta.url),
-      target: "scripts/ratio_input_validation.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script ratio_input_validation.mjs.",
-    })
+    "financial-analyst-budget-variance-analyzer",
+    "financial-analyst-dcf-valuation",
+    "financial-analyst-forecast-builder",
+    "financial-analyst-ratio-calculator",
+    "financial-analyst-ratio-input-validation",
   ],
   references: [
     defineReference({

@@ -2,7 +2,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
   InvocationPolicy,
   KnownTool,
   Platform,
@@ -51,13 +50,7 @@ export const typescriptTypeSafety = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob, KnownTool.Bash],
   scripts: [
-    defineSkillScript({
-      id: "extract-ts-errors",
-      entry: new URL("./scripts/extract-ts-errors.ts", import.meta.url),
-      description: "把 tsc 输出按文件和错误码归组，便于先定位上游合同错误。",
-      argsSchema: "ExtractTsErrorsArgs",
-      outputSchema: "ExtractTsErrorsSummary",
-    }),
+    "typescript-type-safety-extract-ts-errors",
   ],
   references: [
     defineReference({

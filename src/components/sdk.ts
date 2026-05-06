@@ -53,12 +53,18 @@ export type ToolMatcher =
   | { kind: "mcp"; server: string; tool?: string }
   | { kind: "regex"; source: string };
 
-export type SkillScriptDefinition = {
+export type ScriptOwners = {
+  skillIds?: readonly string[];
+  agentIds?: readonly string[];
+};
+
+export type ScriptDefinition = {
   id: string;
   entry: ComponentFile;
   description: string;
+  owners: ScriptOwners;
   target?: string;
-  runtime?: "node" | "python3";
+  runtime?: "node";
   bundle?: boolean;
   argsSchema?: string;
   outputSchema?: string;
@@ -115,7 +121,7 @@ export type SkillDefinition = {
   platforms: PlatformList;
   body: ComponentFile;
   tools?: readonly ToolMatcher[];
-  scripts?: readonly SkillScriptDefinition[];
+  scripts?: readonly string[];
   scriptRoots?: readonly SkillScriptRootDefinition[];
   references?: readonly SkillReferenceDefinition[];
   relatedSkills?: readonly RelatedSkillDefinition[];
@@ -205,6 +211,7 @@ export type AgentDefinition = {
   workflow?: AgentWorkflowDefinition;
   tools?: readonly ToolMatcher[];
   skills?: readonly AgentSkillUse[];
+  scripts?: readonly string[];
   sandbox?: AgentSandbox;
   claudeModel?: string;
   codexModel?: string;
@@ -365,7 +372,7 @@ export function defineProfile(definition: Omit<ProfileDefinition, "kind">): Prof
   };
 }
 
-export function defineSkillScript(definition: SkillScriptDefinition): SkillScriptDefinition {
+export function defineScript(definition: ScriptDefinition): ScriptDefinition {
   return definition;
 }
 

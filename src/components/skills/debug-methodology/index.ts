@@ -1,7 +1,6 @@
 import {
   defineReference,
   defineSkill,
-  defineSkillScript,
   InvocationPolicy,
   KnownTool,
   Platform,
@@ -37,13 +36,7 @@ export const debugMethodology = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob, KnownTool.Bash],
   scripts: [
-    defineSkillScript({
-      id: "debug-checklist",
-      entry: new URL("./scripts/debug-checklist.ts", import.meta.url),
-      description: "根据问题标题生成六步调试检查清单骨架。",
-      argsSchema: "DebugChecklistArgs",
-      outputSchema: "MarkdownChecklist",
-    }),
+    "debug-methodology-debug-checklist",
   ],
   references: [
     defineReference({

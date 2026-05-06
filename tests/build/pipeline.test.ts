@@ -10,7 +10,7 @@ import { compileHookModules, renderCodexConfig, renderHookConfig } from "../../s
 import { main } from "../../src/build/main.ts";
 import { emitPlatform, renderInstruction, validateId, validateRegistry } from "../../src/build/platform.ts";
 import { byId, compileRegistry, materializeProfile, selectProfile } from "../../src/build/registry.ts";
-import { compileSkillScripts, emitSkill, renderSkillMd, validateAntiPatterns, validateTextList } from "../../src/build/skills.ts";
+import { emitSkill, renderSkillMd, validateAntiPatterns, validateTextList } from "../../src/build/skills.ts";
 import type { ComponentRegistry } from "../../src/build/types.ts";
 import {
   AgentSandbox,
@@ -32,8 +32,8 @@ import {
   defineInstruction,
   defineProfile,
   defineReference,
+  defineScript,
   defineSkill,
-  defineSkillScript,
 } from "../../src/components/sdk.ts";
 
 const tempDirs: string[] = [];
@@ -59,21 +59,24 @@ function createFixture() {
   const hooksRoot = join(root, "hooks");
   const instructionRoot = join(root, "instruction");
   ensureDir(skillRoot);
-  ensureDir(join(skillRoot, "scripts"));
   ensureDir(agentRoot);
   ensureDir(hooksRoot);
   ensureDir(instructionRoot);
 
   const skillBody = join(skillRoot, "SKILL.body.md");
-  const skillScript = join(skillRoot, "scripts", "collect.ts");
-  const skillDep = join(skillRoot, "scripts", "dep.ts");
   const skillReference = join(skillRoot, "reference.md");
   const skillAsset = join(skillRoot, "asset.txt");
   writeText(skillBody, "## 步骤\n\n执行检查。\n");
-  writeText(skillDep, "export const dep = 'ok';\n");
-  writeText(skillScript, "import { dep } from './dep';\nconsole.log(dep);\n");
   writeText(skillReference, "# Ref\n");
   writeText(skillAsset, "asset");
+
+  const script = defineScript({
+    id: "fixture-script",
+    entry: pathToFileURL(join(process.cwd(), "src/components/scripts/sources/debug-methodology/debug-checklist.ts")),
+    description: "fixture script",
+    owners: { skillIds: ["fixture-skill"] },
+    runtime: "node",
+  });
 
   const agentBody = join(agentRoot, "AGENT.body.md");
   writeText(agentBody, "## 执行策略\n\n按流程执行。\n");
@@ -107,14 +110,7 @@ function createFixture() {
     platforms: [ComponentPlatform.Claude, ComponentPlatform.Codex],
     body: pathToFileURL(skillBody),
     tools: [KnownTool.Read, KnownTool.Grep],
-    scripts: [
-      defineSkillScript({
-        id: "collect",
-        entry: pathToFileURL(skillScript),
-        description: "collect fixture output",
-        bundle: false,
-      }),
-    ],
+    scripts: [script.id],
     references: [
       defineReference({
         id: "fixture-ref",
@@ -195,12 +191,13 @@ function createFixture() {
     version: 1,
     defaultProfile: profile.id,
     instructions: [instruction],
+    scripts: [script],
     skills: [skill],
     agents: [agent],
     hooks: [hook],
     profiles: [profile],
   };
-  return { root, skill, agent, hook, instruction, profile, registry };
+  return { root, script, skill, agent, hook, instruction, profile, registry };
 }
 
 describe("build/pipeline modules", () => {
@@ -221,20 +218,14 @@ describe("build/pipeline modules", () => {
     const fixture = createFixture();
     expect(validateTextList(fixture.skill, "useCases", "useCase")[0]).toContain("fixture");
     expect(validateAntiPatterns(fixture.skill).length).toBe(1);
-    expect(renderSkillMd(fixture.skill, Platform.Claude)).toContain("## 适用场景");
-    expect(renderSkillMd(fixture.skill, Platform.Codex)).toContain("# Fixture Skill");
+    const scriptMap = new Map([[fixture.script.id, fixture.script]]);
+    expect(renderSkillMd(fixture.skill, Platform.Claude, scriptMap)).toContain("## 适用场景");
+    expect(renderSkillMd(fixture.skill, Platform.Codex, scriptMap)).toContain("# Fixture Skill");
     expect(() => validateTextList({ ...fixture.skill, useCases: [] }, "useCases", "useCase")).toThrow();
     expect(() => validateAntiPatterns({ ...fixture.skill, antiPatterns: [] })).toThrow();
 
-    const skillOut = createTempDir("ai-experts-skill-out-");
-    const compiledScripts = await compileSkillScripts(fixture.skill, skillOut);
-    expect(compiledScripts[0]?.id).toBe("collect");
-    expect(existsSync(join(skillOut, "scripts", "collect.mjs"))).toBe(true);
-    expect(readFileSync(join(skillOut, "scripts", "collect.mjs"), "utf-8")).toContain("./dep.mjs");
-    expect(existsSync(join(skillOut, "scripts", "run.mjs"))).toBe(true);
-
     const codexRoot = createTempDir("ai-experts-emit-skill-");
-    await emitSkill(fixture.skill, codexRoot, Platform.Codex);
+    await emitSkill(fixture.skill, codexRoot, Platform.Codex, scriptMap);
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "SKILL.md"))).toBe(true);
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "agents", "openai.yaml"))).toBe(true);
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "references", "index.md"))).toBe(true);

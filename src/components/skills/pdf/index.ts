@@ -5,8 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 
 export const pdfSkill = defineSkill({
@@ -46,77 +44,15 @@ export const pdfSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "check-bounding-boxes",
-      entry: new URL("./scripts/check_bounding_boxes.ts", import.meta.url),
-      target: "scripts/check_bounding_boxes.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script check_bounding_boxes.mjs.",
-    }),
-    defineSkillScript({
-      id: "check-fillable-fields",
-      entry: new URL("./scripts/check_fillable_fields.ts", import.meta.url),
-      target: "scripts/check_fillable_fields.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script check_fillable_fields.mjs.",
-    }),
-    defineSkillScript({
-      id: "convert-pdf-to-images",
-      entry: new URL("./scripts/convert_pdf_to_images.ts", import.meta.url),
-      target: "scripts/convert_pdf_to_images.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script convert_pdf_to_images.mjs.",
-    }),
-    defineSkillScript({
-      id: "create-validation-image",
-      entry: new URL("./scripts/create_validation_image.ts", import.meta.url),
-      target: "scripts/create_validation_image.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script create_validation_image.mjs.",
-    }),
-    defineSkillScript({
-      id: "extract-form-field-info",
-      entry: new URL("./scripts/extract_form_field_info.ts", import.meta.url),
-      target: "scripts/extract_form_field_info.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script extract_form_field_info.mjs.",
-    }),
-    defineSkillScript({
-      id: "extract-form-structure",
-      entry: new URL("./scripts/extract_form_structure.ts", import.meta.url),
-      target: "scripts/extract_form_structure.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script extract_form_structure.mjs.",
-    }),
-    defineSkillScript({
-      id: "fill-fillable-fields",
-      entry: new URL("./scripts/fill_fillable_fields.ts", import.meta.url),
-      target: "scripts/fill_fillable_fields.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script fill_fillable_fields.mjs.",
-    }),
-    defineSkillScript({
-      id: "fill-pdf-form-with-annotations",
-      entry: new URL("./scripts/fill_pdf_form_with_annotations.ts", import.meta.url),
-      target: "scripts/fill_pdf_form_with_annotations.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script fill_pdf_form_with_annotations.mjs.",
-    })
+    "pdf-check-bounding-boxes",
+    "pdf-check-fillable-fields",
+    "pdf-convert-pdf-to-images",
+    "pdf-create-validation-image",
+    "pdf-extract-form-field-info",
+    "pdf-extract-form-structure",
+    "pdf-fill-fillable-fields",
+    "pdf-fill-pdf-form-with-annotations",
   ],
   references: [
     defineReference({

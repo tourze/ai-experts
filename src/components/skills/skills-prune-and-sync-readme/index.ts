@@ -4,8 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 
 export const skillsPruneAndSyncReadmeSkill = defineSkill({
@@ -33,36 +31,9 @@ export const skillsPruneAndSyncReadmeSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "curate-skills",
-      entry: new URL("./scripts/curate_skills.ts", import.meta.url),
-      target: "scripts/curate_skills.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script curate_skills.mjs.",
-    }),
-    defineSkillScript({
-      id: "similarity-groups",
-      entry: new URL("./scripts/similarity_groups.ts", import.meta.url),
-      target: "scripts/similarity_groups.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script similarity_groups.mjs.",
-    }),
-    defineSkillScript({
-      id: "test-curate-skills",
-      entry: new URL("./scripts/test_curate_skills.ts", import.meta.url),
-      target: "scripts/test_curate_skills.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script test_curate_skills.mjs.",
-    })
+    "skills-prune-and-sync-readme-curate-skills",
+    "skills-prune-and-sync-readme-similarity-groups",
+    "skills-prune-and-sync-readme-test-curate-skills",
   ],
 });

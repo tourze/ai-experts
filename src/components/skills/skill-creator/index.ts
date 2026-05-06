@@ -6,8 +6,6 @@ import {
   defineAsset,
   defineReference,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 
 export const skillCreatorSkill = defineSkill({
@@ -35,77 +33,15 @@ export const skillCreatorSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "aggregate-benchmark",
-      entry: new URL("./scripts/aggregate_benchmark.ts", import.meta.url),
-      target: "scripts/aggregate_benchmark.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script aggregate_benchmark.mjs.",
-    }),
-    defineSkillScript({
-      id: "generate-report",
-      entry: new URL("./scripts/generate_report.ts", import.meta.url),
-      target: "scripts/generate_report.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script generate_report.mjs.",
-    }),
-    defineSkillScript({
-      id: "improve-description",
-      entry: new URL("./scripts/improve_description.ts", import.meta.url),
-      target: "scripts/improve_description.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script improve_description.mjs.",
-    }),
-    defineSkillScript({
-      id: "package-skill",
-      entry: new URL("./scripts/package_skill.ts", import.meta.url),
-      target: "scripts/package_skill.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script package_skill.mjs.",
-    }),
-    defineSkillScript({
-      id: "quick-validate",
-      entry: new URL("./scripts/quick_validate.ts", import.meta.url),
-      target: "scripts/quick_validate.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script quick_validate.mjs.",
-    }),
-    defineSkillScript({
-      id: "run-eval",
-      entry: new URL("./scripts/run_eval.ts", import.meta.url),
-      target: "scripts/run_eval.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script run_eval.mjs.",
-    }),
-    defineSkillScript({
-      id: "run-loop",
-      entry: new URL("./scripts/run_loop.ts", import.meta.url),
-      target: "scripts/run_loop.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script run_loop.mjs.",
-    }),
-    defineSkillScript({
-      id: "utils",
-      entry: new URL("./scripts/utils.ts", import.meta.url),
-      target: "scripts/utils.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script utils.mjs.",
-    })
+    "skill-creator-aggregate-benchmark",
+    "skill-creator-generate-report",
+    "skill-creator-improve-description",
+    "skill-creator-package-skill",
+    "skill-creator-quick-validate",
+    "skill-creator-run-eval",
+    "skill-creator-run-loop",
+    "skill-creator-utils",
   ],
   references: [
     defineReference({

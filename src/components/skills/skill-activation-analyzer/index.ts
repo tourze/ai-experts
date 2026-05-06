@@ -5,8 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 
 export const skillActivationAnalyzerSkill = defineSkill({
@@ -34,21 +32,8 @@ export const skillActivationAnalyzerSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "cso-audit",
-      entry: new URL("./scripts/cso_audit.ts", import.meta.url),
-      target: "scripts/cso_audit.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script cso_audit.mjs.",
-    })
+    "skill-activation-analyzer-cso-audit",
   ],
   references: [
     defineReference({

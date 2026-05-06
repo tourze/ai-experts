@@ -6,8 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 import { monitoringObservabilitySkill } from "../monitoring-observability/index";
 
@@ -56,21 +54,8 @@ export const helmChartScaffoldingSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "validate-chart",
-      entry: new URL("./scripts/validate-chart.ts", import.meta.url),
-      target: "scripts/validate-chart.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script validate-chart.mjs.",
-    })
+    "helm-chart-scaffolding-validate-chart",
   ],
   references: [
     defineReference({

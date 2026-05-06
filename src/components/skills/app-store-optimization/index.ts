@@ -5,8 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 
 export const appStoreOptimizationSkill = defineSkill({
@@ -53,21 +51,8 @@ export const appStoreOptimizationSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "collect-release-changes",
-      entry: new URL("./scripts/collect_release_changes.ts", import.meta.url),
-      target: "scripts/collect_release_changes.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script collect_release_changes.mjs.",
-    })
+    "app-store-optimization-collect-release-changes",
   ],
   references: [
     defineReference({

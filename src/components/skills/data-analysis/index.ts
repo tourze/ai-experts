@@ -4,8 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 import { dataStorytellingSkill } from "../data-storytelling/index";
 import { dataVisualizationSkill } from "../data-visualization/index";
@@ -66,20 +64,7 @@ export const dataAnalysisSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "analyze",
-      entry: new URL("./scripts/analyze.ts", import.meta.url),
-      target: "scripts/analyze.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script analyze.mjs.",
-    })
+    "data-analysis-analyze",
   ],
 });

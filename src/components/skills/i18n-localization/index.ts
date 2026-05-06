@@ -4,8 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 import { modernWebDesignSkill } from "../modern-web-design/index";
 import { responsiveDesignSkill } from "../responsive-design/index";
@@ -69,20 +67,7 @@ export const i18nLocalizationSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "i18n-checker",
-      entry: new URL("./scripts/i18n_checker.ts", import.meta.url),
-      target: "scripts/i18n_checker.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script i18n_checker.mjs.",
-    })
+    "i18n-localization-i18n-checker",
   ],
 });

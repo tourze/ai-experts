@@ -4,8 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 import { markdownMermaidWritingSkill } from "../markdown-mermaid-writing/index";
 
@@ -58,36 +56,9 @@ export const mdToPdfSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "katex-render",
-      entry: new URL("./scripts/katex_render.ts", import.meta.url),
-      target: "scripts/katex_render.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script katex_render.mjs.",
-    }),
-    defineSkillScript({
-      id: "md-to-pdf",
-      entry: new URL("./scripts/md_to_pdf.ts", import.meta.url),
-      target: "scripts/md_to_pdf.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script md_to_pdf.mjs.",
-    }),
-    defineSkillScript({
-      id: "setup",
-      entry: new URL("./scripts/setup.ts", import.meta.url),
-      target: "scripts/setup.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script setup.mjs.",
-    })
+    "md-to-pdf-katex-render",
+    "md-to-pdf-md-to-pdf",
+    "md-to-pdf-setup",
   ],
 });

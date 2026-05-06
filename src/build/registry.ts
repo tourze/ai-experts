@@ -4,7 +4,14 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import * as esbuild from "esbuild";
 import { collectFiles, rewriteCompiledJsImports, sourceRoot, writeText } from "./core.ts";
-import type { AgentDefinition, HookDefinition, InstructionDefinition, ProfileDefinition, SkillDefinition } from "../components/sdk";
+import type {
+  AgentDefinition,
+  HookDefinition,
+  InstructionDefinition,
+  ProfileDefinition,
+  ScriptDefinition,
+  SkillDefinition,
+} from "../components/sdk";
 import type { ComponentRegistry, ProfileSurface } from "./types.ts";
 
 export function selectProfile(registry: ComponentRegistry): ProfileDefinition {
@@ -44,12 +51,31 @@ export function materializeProfile(registry: ComponentRegistry): ProfileSurface 
   const skills = byId<SkillDefinition>(registry.skills, "skill");
   const agents = byId<AgentDefinition>(registry.agents, "agent");
   const hooks = byId<HookDefinition>(registry.hooks, "hook");
+  const scripts = byId<ScriptDefinition>(registry.scripts, "script");
+
+  const profileSkills = pickByIds(profile.id, skills, profile.skills, "skill");
+  const profileAgents = pickByIds(profile.id, agents, profile.agents, "agent");
+  const scriptIds = new Set<string>();
+  for (const skill of profileSkills) {
+    for (const scriptId of skill.scripts ?? []) scriptIds.add(scriptId);
+  }
+  for (const agent of profileAgents) {
+    for (const scriptId of agent.scripts ?? []) scriptIds.add(scriptId);
+  }
+  const profileScripts = [...scriptIds]
+    .sort((a, b) => a.localeCompare(b))
+    .map((id) => {
+      const value = scripts.get(id);
+      if (!value) throw new Error(`Profile ${profile.id} references missing script: ${id}`);
+      return value;
+    });
 
   return {
     profile,
     instructions: pickByIds(profile.id, instructions, profile.instructions, "instruction"),
-    skills: pickByIds(profile.id, skills, profile.skills, "skill"),
-    agents: pickByIds(profile.id, agents, profile.agents, "agent"),
+    scripts: profileScripts,
+    skills: profileSkills,
+    agents: profileAgents,
     hooks: pickByIds(profile.id, hooks, profile.hooks, "hook"),
   };
 }
@@ -87,6 +113,7 @@ function isComponentRegistry(value: unknown): value is ComponentRegistry {
   const maybe = value as Partial<ComponentRegistry>;
   return typeof maybe.defaultProfile === "string" &&
     Array.isArray(maybe.instructions) &&
+    Array.isArray(maybe.scripts) &&
     Array.isArray(maybe.skills) &&
     Array.isArray(maybe.agents) &&
     Array.isArray(maybe.hooks) &&

@@ -6,8 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 import { youtubeSearchSkill } from "../youtube-search/index";
 
@@ -56,37 +54,10 @@ export const youtubeAnalysisSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "analyze-video",
-      entry: new URL("./scripts/analyze_video.ts", import.meta.url),
-      target: "scripts/analyze_video.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script analyze_video.mjs.",
-    }),
-    defineSkillScript({
-      id: "fetch-transcript",
-      entry: new URL("./scripts/fetch_transcript.ts", import.meta.url),
-      target: "scripts/fetch_transcript.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script fetch_transcript.mjs.",
-    }),
-    defineSkillScript({
-      id: "utils",
-      entry: new URL("./scripts/utils.ts", import.meta.url),
-      target: "scripts/utils.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script utils.mjs.",
-    })
+    "youtube-analysis-analyze-video",
+    "youtube-analysis-fetch-transcript",
+    "youtube-analysis-utils",
   ],
   references: [
     defineReference({

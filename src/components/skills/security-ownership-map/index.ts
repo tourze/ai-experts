@@ -5,8 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 import { securityThreatModelSkill } from "../security-threat-model/index";
 
@@ -57,45 +55,11 @@ export const securityOwnershipMapSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "build-ownership-map",
-      entry: new URL("./scripts/build_ownership_map.ts", import.meta.url),
-      target: "scripts/build_ownership_map.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script build_ownership_map.mjs.",
-    }),
-    defineSkillScript({
-      id: "community-maintainers",
-      entry: new URL("./scripts/community_maintainers.ts", import.meta.url),
-      target: "scripts/community_maintainers.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script community_maintainers.mjs.",
-    }),
-    defineSkillScript({
-      id: "query-ownership",
-      entry: new URL("./scripts/query_ownership.ts", import.meta.url),
-      target: "scripts/query_ownership.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script query_ownership.mjs.",
-    }),
-    defineSkillScript({
-      id: "run-ownership-map",
-      entry: new URL("./scripts/run_ownership_map.ts", import.meta.url),
-      target: "scripts/run_ownership_map.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script run_ownership_map.mjs.",
-    })
+    "security-ownership-map-build-ownership-map",
+    "security-ownership-map-community-maintainers",
+    "security-ownership-map-query-ownership",
+    "security-ownership-map-run-ownership-map",
   ],
   references: [
     defineReference({

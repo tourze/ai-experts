@@ -4,8 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 import { llmEvaluationSkill } from "../llm-evaluation/index";
 import { promptEngineeringPatternsSkill } from "../prompt-engineering-patterns/index";
@@ -60,20 +58,7 @@ export const modelFirstReasoningSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "validate-model",
-      entry: new URL("./scripts/validate-model.ts", import.meta.url),
-      target: "scripts/validate-model.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script validate-model.mjs.",
-    })
+    "model-first-reasoning-validate-model",
   ],
 });

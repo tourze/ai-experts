@@ -5,8 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 import { testingStrategySkill } from "../testing-strategy/index";
 
@@ -58,29 +56,9 @@ export const preLandingReviewSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "collect-diff",
-      entry: new URL("./scripts/collect_diff.ts", import.meta.url),
-      target: "scripts/collect_diff.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script collect_diff.mjs.",
-    }),
-    defineSkillScript({
-      id: "render-report",
-      entry: new URL("./scripts/render_report.ts", import.meta.url),
-      target: "scripts/render_report.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script render_report.mjs.",
-    })
+    "pre-landing-review-collect-diff",
+    "pre-landing-review-render-report",
   ],
   references: [
     defineReference({

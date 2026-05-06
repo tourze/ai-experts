@@ -5,8 +5,6 @@ import {
   defineAsset,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 
 export const canvasDesignSkill = defineSkill({
@@ -49,45 +47,11 @@ export const canvasDesignSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "baoyu-article-illustrator-build-batch",
-      entry: new URL("./scripts/baoyu-article-illustrator-build-batch.ts", import.meta.url),
-      target: "scripts/baoyu-article-illustrator-build-batch.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script baoyu-article-illustrator-build-batch.mjs.",
-    }),
-    defineSkillScript({
-      id: "concept-to-image-render-to-image",
-      entry: new URL("./scripts/concept-to-image-render_to_image.ts", import.meta.url),
-      target: "scripts/concept-to-image-render_to_image.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script concept-to-image-render_to_image.mjs.",
-    }),
-    defineSkillScript({
-      id: "concept-to-video-add-audio",
-      entry: new URL("./scripts/concept-to-video-add_audio.ts", import.meta.url),
-      target: "scripts/concept-to-video-add_audio.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script concept-to-video-add_audio.mjs.",
-    }),
-    defineSkillScript({
-      id: "concept-to-video-render-video",
-      entry: new URL("./scripts/concept-to-video-render_video.ts", import.meta.url),
-      target: "scripts/concept-to-video-render_video.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script concept-to-video-render_video.mjs.",
-    })
+    "canvas-design-baoyu-article-illustrator-build-batch",
+    "canvas-design-concept-to-image-render-to-image",
+    "canvas-design-concept-to-video-add-audio",
+    "canvas-design-concept-to-video-render-video",
   ],
   assets: [
     defineAsset({

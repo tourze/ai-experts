@@ -6,8 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 import { interactionDesignSkill } from "../interaction-design/index";
 import { responsiveDesignSkill } from "../responsive-design/index";
@@ -90,29 +88,9 @@ export const modernWebDesignSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "design-audit",
-      entry: new URL("./scripts/design_audit.ts", import.meta.url),
-      target: "scripts/design_audit.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script design_audit.mjs.",
-    }),
-    defineSkillScript({
-      id: "pattern-generator",
-      entry: new URL("./scripts/pattern_generator.ts", import.meta.url),
-      target: "scripts/pattern_generator.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script pattern_generator.mjs.",
-    })
+    "modern-web-design-design-audit",
+    "modern-web-design-pattern-generator",
   ],
   references: [
     defineReference({

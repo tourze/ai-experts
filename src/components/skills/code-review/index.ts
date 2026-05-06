@@ -5,8 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 
 export const codeReviewSkill = defineSkill({
@@ -52,29 +50,9 @@ export const codeReviewSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "assess-code",
-      entry: new URL("./scripts/assess-code.ts", import.meta.url),
-      target: "scripts/assess-code.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script assess-code.mjs.",
-    }),
-    defineSkillScript({
-      id: "assess-tests",
-      entry: new URL("./scripts/assess-tests.ts", import.meta.url),
-      target: "scripts/assess-tests.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script assess-tests.mjs.",
-    }),
+    "code-review-assess-code",
+    "code-review-assess-tests",
   ],
   references: [
     defineReference({

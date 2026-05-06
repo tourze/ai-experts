@@ -4,8 +4,6 @@ import {
   Platform,
   defineReference,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 import { bundleOptimizationSkill } from "../bundle-optimization/index";
 import { frontendDesignReviewSkill } from "../frontend-design-review/index";
@@ -98,21 +96,8 @@ export const webPerformanceDiagnosisSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "analyze",
-      entry: new URL("./scripts/analyze.ts", import.meta.url),
-      target: "scripts/analyze.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script analyze.mjs.",
-    })
+    "web-performance-diagnosis-analyze",
   ],
   references: [
     defineReference({

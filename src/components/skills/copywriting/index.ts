@@ -6,8 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 import { croMethodologySkill } from "../cro-methodology/index";
 
@@ -58,21 +56,8 @@ export const copywritingSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "content-filter",
-      entry: new URL("./scripts/content_filter.ts", import.meta.url),
-      target: "scripts/content_filter.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script content_filter.mjs.",
-    })
+    "copywriting-content-filter",
   ],
   references: [
     defineReference({

@@ -4,8 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 import { youtubeAnalysisSkill } from "../youtube-analysis/index";
 
@@ -53,20 +51,7 @@ export const youtubeSearchSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "search-youtube",
-      entry: new URL("./scripts/search_youtube.ts", import.meta.url),
-      target: "scripts/search_youtube.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script search_youtube.mjs.",
-    })
+    "youtube-search-search-youtube",
   ],
 });

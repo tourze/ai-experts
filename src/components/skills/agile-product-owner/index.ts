@@ -6,8 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 import { createPrdSkill } from "../create-prd/index";
 
@@ -62,21 +60,8 @@ export const agileProductOwnerSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "user-story-generator",
-      entry: new URL("./scripts/user_story_generator.ts", import.meta.url),
-      target: "scripts/user_story_generator.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script user_story_generator.mjs.",
-    })
+    "agile-product-owner-user-story-generator",
   ],
   references: [
     defineReference({

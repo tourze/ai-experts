@@ -5,8 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 
 export const complexityReducerSkill = defineSkill({
@@ -47,21 +45,8 @@ export const complexityReducerSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "complexity-report",
-      entry: new URL("./scripts/complexity_report.ts", import.meta.url),
-      target: "scripts/complexity_report.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script complexity_report.mjs.",
-    })
+    "complexity-reducer-complexity-report",
   ],
   references: [
     defineReference({

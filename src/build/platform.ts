@@ -5,8 +5,8 @@ import type {
   AgentDefinition,
   HookDefinition,
   InstructionDefinition,
+  ScriptDefinition,
   SkillDefinition,
-  SkillScriptDefinition,
 } from "../components/sdk";
 import {
   collectFiles,
@@ -31,6 +31,7 @@ import {
 import { compileHookModules, renderCodexConfig, renderHookConfig } from "./hooks.ts";
 import { hasH2SectionMatching, startsWithH2Section } from "./markdown.ts";
 import { materializeProfile } from "./registry.ts";
+import { emitScriptRuntime } from "./scripts.ts";
 import { emitSkill, validateAntiPatterns, validateParameters, validateTextList } from "./skills.ts";
 import type { ComponentRegistry, ProfileSurface } from "./types.ts";
 
@@ -89,12 +90,48 @@ export function validateId(id: string, kind: string): void {
 export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
   if (!registry || !Array.isArray(registry.skills)) throw new Error("registry.skills must be an array");
   if (!Array.isArray(registry.instructions)) throw new Error("registry.instructions must be an array");
+  if (!Array.isArray(registry.scripts)) throw new Error("registry.scripts must be an array");
   if (!Array.isArray(registry.agents)) throw new Error("registry.agents must be an array");
   if (!Array.isArray(registry.hooks)) throw new Error("registry.hooks must be an array");
   if (!Array.isArray(registry.profiles)) throw new Error("registry.profiles must be an array");
 
   const surface = materializeProfile(registry);
   const skillIds = new Set(registry.skills.map((skill) => skill.id));
+  const agentIds = new Set(registry.agents.map((agent) => agent.id));
+  const scriptsById = new Map<string, ScriptDefinition>();
+
+  for (const script of registry.scripts) {
+    validateId(script.id, "script");
+    if (scriptsById.has(script.id)) {
+      throw new Error(`Duplicate script id: ${script.id}`);
+    }
+    const runtime = script.runtime ?? "node";
+    if (runtime !== "node") {
+      throw new Error(`Script ${script.id} runtime must be node`);
+    }
+    if (!existsSync(toAbsolutePath(script.entry))) {
+      throw new Error(`Script ${script.id} entry is missing: ${displayPath(script.entry)}`);
+    }
+
+    const ownerSkillIds = script.owners.skillIds ?? [];
+    const ownerAgentIds = script.owners.agentIds ?? [];
+    if (ownerSkillIds.length === 0 && ownerAgentIds.length === 0) {
+      throw new Error(`Script ${script.id} must define at least one owner`);
+    }
+    for (const ownerSkillId of ownerSkillIds) {
+      validateId(ownerSkillId, `script owner skill in ${script.id}`);
+      if (!skillIds.has(ownerSkillId)) {
+        throw new Error(`Script ${script.id} references missing owner skill: ${ownerSkillId}`);
+      }
+    }
+    for (const ownerAgentId of ownerAgentIds) {
+      validateId(ownerAgentId, `script owner agent in ${script.id}`);
+      if (!agentIds.has(ownerAgentId)) {
+        throw new Error(`Script ${script.id} references missing owner agent: ${ownerAgentId}`);
+      }
+    }
+    scriptsById.set(script.id, script);
+  }
 
   for (const instruction of registry.instructions) {
     validateId(instruction.id, "instruction");
@@ -168,18 +205,26 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
 
     const skillSourceRoot = dirname(toAbsolutePath(skill.body));
     const seenScripts = new Set<string>();
-    for (const script of skill.scripts ?? []) {
-      validateId(script.id, `script in ${skill.id}`);
-      if (seenScripts.has(script.id)) throw new Error(`Duplicate script id in ${skill.id}: ${script.id}`);
-      seenScripts.add(script.id);
-      if (!existsSync(toAbsolutePath(script.entry))) {
-        throw new Error(`Skill ${skill.id} script is missing: ${displayPath(script.entry)}`);
+    for (const scriptId of skill.scripts ?? []) {
+      validateId(scriptId, `script in ${skill.id}`);
+      if (seenScripts.has(scriptId)) throw new Error(`Duplicate script id in ${skill.id}: ${scriptId}`);
+      seenScripts.add(scriptId);
+      const script = scriptsById.get(scriptId);
+      if (!script) {
+        throw new Error(`Skill ${skill.id} references missing script: ${scriptId}`);
+      }
+      const ownerSkills = script.owners.skillIds ?? [];
+      if (!ownerSkills.includes(skill.id)) {
+        throw new Error(`Skill ${skill.id} references script ${scriptId} without skill ownership`);
       }
     }
     const scriptsDir = join(skillSourceRoot, "scripts");
     if (existsSync(scriptsDir)) {
-      const skillScripts: readonly SkillScriptDefinition[] = skill.scripts ?? [];
-      const registeredEntries = new Set(skillScripts.map((script) => toAbsolutePath(script.entry)));
+      const registeredEntries = new Set(
+        registry.scripts
+          .filter((script) => (script.owners.skillIds ?? []).includes(skill.id))
+          .map((script) => toAbsolutePath(script.entry)),
+      );
       for (const entry of readdirSync(scriptsDir, { withFileTypes: true })) {
         const absoluteEntry = join(scriptsDir, entry.name);
         if (entry.isFile() && entry.name.endsWith(".ts") && !registeredEntries.has(absoluteEntry)) {
@@ -264,6 +309,22 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
         throw new Error(`Agent ${agent.id} skill ${skill.id} must include a non-empty reason`);
       }
     }
+    const seenScripts = new Set<string>();
+    for (const scriptId of agent.scripts ?? []) {
+      validateId(scriptId, `script in ${agent.id}`);
+      if (seenScripts.has(scriptId)) {
+        throw new Error(`Duplicate script id in ${agent.id}: ${scriptId}`);
+      }
+      seenScripts.add(scriptId);
+      const script = scriptsById.get(scriptId);
+      if (!script) {
+        throw new Error(`Agent ${agent.id} references missing script: ${scriptId}`);
+      }
+      const ownerAgents = script.owners.agentIds ?? [];
+      if (!ownerAgents.includes(agent.id)) {
+        throw new Error(`Agent ${agent.id} references script ${scriptId} without agent ownership`);
+      }
+    }
   }
 
   for (const hook of registry.hooks) {
@@ -310,13 +371,17 @@ export async function emitPlatform(
     writeText(join(root, "config.toml"), renderCodexConfig());
   }
 
+  const scriptRuntime = await emitScriptRuntime(profileSurface, root, platform);
+  const scriptsById = new Map(profileSurface.scripts.map((script) => [script.id, script]));
+
   for (const skill of profileSurface.skills) {
-    if (skill.platforms.includes(platform)) await emitSkill(skill, root, platform);
+    if (skill.platforms.includes(platform)) await emitSkill(skill, root, platform, scriptsById);
   }
   for (const agent of profileSurface.agents) {
     if (agent.platforms.includes(platform)) await emitAgent(agent, root, platform);
   }
 
+  const files = checksumFiles(root);
   writeText(join(root, "manifest.json"), JSON.stringify({
     schema: 2,
     profile: profileSurface.profile.id,
@@ -337,6 +402,19 @@ export async function emitPlatform(
       .filter((item) => item.platforms.includes(platform))
       .map((item) => item.id)
       .sort(),
-    files: checksumFiles(root),
+    scripts: {
+      runFile: scriptRuntime.runFile,
+      runBundleChecksum: scriptRuntime.runBundleChecksum,
+      items: scriptRuntime.scripts.map((script) => ({
+        id: script.id,
+        file: script.file,
+        runtime: script.runtime,
+        description: script.description,
+        owners: script.owners,
+        argsSchema: script.argsSchema,
+        outputSchema: script.outputSchema,
+      })),
+    },
+    files,
   }, null, 2) + "\n");
 }

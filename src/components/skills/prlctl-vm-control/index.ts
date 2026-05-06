@@ -5,8 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 import { windowsKernelSecuritySkill } from "../windows-kernel-security/index";
 import { windowsUiAutomationSkill } from "../windows-ui-automation/index";
@@ -69,37 +67,10 @@ export const prlctlVmControlSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "file-transfer",
-      entry: new URL("./scripts/file_transfer.ts", import.meta.url),
-      target: "scripts/file_transfer.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script file_transfer.mjs.",
-    }),
-    defineSkillScript({
-      id: "powershell-output",
-      entry: new URL("./scripts/powershell_output.ts", import.meta.url),
-      target: "scripts/powershell_output.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script powershell_output.mjs.",
-    }),
-    defineSkillScript({
-      id: "prlctl-helper",
-      entry: new URL("./scripts/prlctl_helper.ts", import.meta.url),
-      target: "scripts/prlctl_helper.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script prlctl_helper.mjs.",
-    })
+    "prlctl-vm-control-file-transfer",
+    "prlctl-vm-control-powershell-output",
+    "prlctl-vm-control-prlctl-helper",
   ],
   references: [
     defineReference({

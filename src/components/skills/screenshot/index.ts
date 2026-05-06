@@ -5,8 +5,6 @@ import {
   defineAsset,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 
 export const screenshotSkill = defineSkill({
@@ -47,61 +45,13 @@ export const screenshotSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "ensure-macos-permissions",
-      entry: new URL("./scripts/ensure_macos_permissions.ts", import.meta.url),
-      target: "scripts/ensure_macos_permissions.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script ensure_macos_permissions.mjs.",
-    }),
-    defineSkillScript({
-      id: "macos-display-info",
-      entry: new URL("./scripts/macos_display_info.ts", import.meta.url),
-      target: "scripts/macos_display_info.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script macos_display_info.mjs.",
-    }),
-    defineSkillScript({
-      id: "macos-permissions",
-      entry: new URL("./scripts/macos_permissions.ts", import.meta.url),
-      target: "scripts/macos_permissions.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script macos_permissions.mjs.",
-    }),
-    defineSkillScript({
-      id: "macos-window-info",
-      entry: new URL("./scripts/macos_window_info.ts", import.meta.url),
-      target: "scripts/macos_window_info.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script macos_window_info.mjs.",
-    }),
-    defineSkillScript({
-      id: "take-screenshot",
-      entry: new URL("./scripts/take_screenshot.ts", import.meta.url),
-      target: "scripts/take_screenshot.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script take_screenshot.mjs.",
-    }),
-    defineSkillScript({
-      id: "take-screenshot-windows",
-      entry: new URL("./scripts/take_screenshot_windows.ts", import.meta.url),
-      target: "scripts/take_screenshot_windows.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script take_screenshot_windows.mjs.",
-    })
+    "screenshot-ensure-macos-permissions",
+    "screenshot-macos-display-info",
+    "screenshot-macos-permissions",
+    "screenshot-macos-window-info",
+    "screenshot-take-screenshot",
+    "screenshot-take-screenshot-windows",
   ],
   assets: [
     defineAsset({

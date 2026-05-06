@@ -5,8 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 import { deepResearchSkill } from "../deep-research/index";
 
@@ -56,21 +54,8 @@ export const webContentFetcherSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "fetch",
-      entry: new URL("./scripts/fetch.ts", import.meta.url),
-      target: "scripts/fetch.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script fetch.mjs.",
-    })
+    "web-content-fetcher-fetch",
   ],
   references: [
     defineReference({

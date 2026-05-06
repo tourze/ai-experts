@@ -5,8 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 
 export const analyticsTrackingSkill = defineSkill({
@@ -43,21 +41,8 @@ export const analyticsTrackingSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "tracking-plan-generator",
-      entry: new URL("./scripts/tracking_plan_generator.ts", import.meta.url),
-      target: "scripts/tracking_plan_generator.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script tracking_plan_generator.mjs.",
-    })
+    "analytics-tracking-tracking-plan-generator",
   ],
   references: [
     defineReference({

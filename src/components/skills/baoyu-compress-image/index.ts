@@ -4,8 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 
 export const baoyuCompressImageSkill = defineSkill({
@@ -47,20 +45,7 @@ export const baoyuCompressImageSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "main",
-      entry: new URL("./scripts/main.ts", import.meta.url),
-      target: "scripts/main.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script main.mjs.",
-    })
+    "baoyu-compress-image-main",
   ],
 });

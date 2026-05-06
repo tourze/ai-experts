@@ -3,6 +3,7 @@ import type {
   HookDefinition,
   InstructionDefinition,
   ProfileDefinition,
+  ScriptDefinition,
   SkillDefinition,
 } from "../components/sdk";
 
@@ -10,6 +11,7 @@ export type ComponentRegistry = {
   version: number;
   defaultProfile: string;
   instructions: readonly InstructionDefinition[];
+  scripts: readonly ScriptDefinition[];
   skills: readonly SkillDefinition[];
   agents: readonly AgentDefinition[];
   hooks: readonly HookDefinition[];
@@ -19,6 +21,7 @@ export type ComponentRegistry = {
 export type ProfileSurface = {
   profile: ProfileDefinition;
   instructions: InstructionDefinition[];
+  scripts: ScriptDefinition[];
   skills: SkillDefinition[];
   agents: AgentDefinition[];
   hooks: HookDefinition[];
@@ -32,4 +35,3 @@ export type BuildStats = {
   claudeHooks: number;
   codexHooks: number;
 };
-

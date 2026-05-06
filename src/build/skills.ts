@@ -1,25 +1,21 @@
-import { existsSync, readdirSync } from "node:fs";
+import { readdirSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
 import { pathToFileURL } from "node:url";
-import * as esbuild from "esbuild";
 import type {
   AntiPatternDefinition,
   Platform as PlatformType,
+  ScriptDefinition,
   SkillDefinition,
   SkillParameter,
   SkillReferenceDefinition,
-  SkillScriptDefinition,
 } from "../components/sdk";
 import {
   copyComponentPath,
   defaultReferenceTarget,
   ensureDir,
   InvocationPolicy,
-  nodeScriptBanner,
   Platform,
   readComponentText,
-  removeFiles,
-  rewriteRuntimeRelativeImports,
   toAbsolutePath,
   writeText,
   yamlScalar,
@@ -31,15 +27,6 @@ import {
 } from "./markdown.ts";
 
 type TextListProperty = "useCases" | "constraints" | "checklist";
-
-type CompiledScriptManifestItem = {
-  id: string;
-  file: string;
-  runtime: "node" | "python3";
-  description: string;
-  argsSchema: string | null;
-  outputSchema: string | null;
-};
 
 function renderSkillFrontmatter(skill: SkillDefinition, platform: PlatformType): string {
   const lines = ["---", `name: ${skill.id}`, `description: ${yamlScalar(skill.description)}`];
@@ -70,17 +57,21 @@ function renderSkillFrontmatter(skill: SkillDefinition, platform: PlatformType):
   return lines.join("\n");
 }
 
-function renderScriptRegistry(skill: SkillDefinition, platform: PlatformType): string {
+function renderScriptRegistry(
+  skill: SkillDefinition,
+  platform: PlatformType,
+  scriptsById: ReadonlyMap<string, ScriptDefinition>,
+): string {
   if (!skill.scripts || skill.scripts.length === 0) return "";
-  const skillDir = platform === Platform.Claude
-    ? "${CLAUDE_SKILL_DIR}"
-    : "<this skill directory>";
+  const runPath = platform === Platform.Claude ? "../../run.js" : "../../run.js";
   const rows = [
     "| Script | 作用 | 调用 |",
     "|--------|------|------|",
-    ...skill.scripts.map((script) =>
-      `| \`${script.id}\` | ${script.description} | \`node ${skillDir}/scripts/run.mjs ${script.id}\` |`
-    ),
+    ...skill.scripts.map((scriptId) => {
+      const script = scriptsById.get(scriptId);
+      const description = script?.description ?? "(missing script definition)";
+      return `| \`${scriptId}\` | ${description} | \`node ${runPath} --script-id ${scriptId} --trigger-skill ${skill.id} --request-json '{\"args\":[]}'\` |`;
+    }),
   ];
   return `\n## Script Registry\n\n${rows.join("\n")}\n`;
 }
@@ -244,7 +235,11 @@ function renderBodyWithGeneratedSections(skill: SkillDefinition, body: string): 
   return `${bodyWithChecklist.trimEnd()}\n\n${antiPatterns.trimEnd()}`;
 }
 
-export function renderSkillMd(skill: SkillDefinition, platform: PlatformType): string {
+export function renderSkillMd(
+  skill: SkillDefinition,
+  platform: PlatformType,
+  scriptsById: ReadonlyMap<string, ScriptDefinition>,
+): string {
   if (typeof skill.fullName !== "string" || skill.fullName.trim() === "") {
     throw new Error(`Skill ${skill.id} must define a non-empty fullName`);
   }
@@ -259,7 +254,7 @@ export function renderSkillMd(skill: SkillDefinition, platform: PlatformType): s
     renderRelatedSkills(skill),
     renderUserInput(skill, platform),
     generatedBody,
-    renderScriptRegistry(skill, platform),
+    renderScriptRegistry(skill, platform, scriptsById),
     renderReferenceMap(skill),
     "",
   ].join("\n");
@@ -278,113 +273,6 @@ function renderReferencesIndex(skill: SkillDefinition): string {
   return `# Reference Index\n\n${rows.join("\n")}\n`;
 }
 
-async function buildScriptFromTypeScript(
-  sourcePath: string,
-  outfile: string,
-  bundle: boolean,
-): Promise<void> {
-  await esbuild.build({
-    entryPoints: [sourcePath],
-    outfile,
-    bundle,
-    platform: "node",
-    format: "esm",
-    target: "node20",
-    banner: nodeScriptBanner(sourcePath),
-    logLevel: "silent",
-  });
-}
-
-export async function compileSkillScripts(
-  skill: SkillDefinition,
-  skillRoot: string,
-): Promise<CompiledScriptManifestItem[]> {
-  if (skill.scriptRoots && skill.scriptRoots.length > 0) {
-    for (const root of skill.scriptRoots) {
-      copyComponentPath(root.source, join(skillRoot, root.target ?? "scripts"));
-    }
-  }
-
-  const scriptsRoot = join(skillRoot, "scripts");
-  removeFiles(scriptsRoot, (file) => file.endsWith(".ts"));
-  if (!skill.scripts || skill.scripts.length === 0) return [];
-  ensureDir(scriptsRoot);
-
-  const compiled: CompiledScriptManifestItem[] = [];
-  for (const script of skill.scripts) {
-    await compileSingleScript(skillRoot, script, compiled);
-  }
-
-  const runner = `#!/usr/bin/env node
-import { spawnSync } from "node:child_process";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
-
-const scripts = ${JSON.stringify(Object.fromEntries(compiled.map((script) => [script.id, script.file])), null, 2)};
-const runtimes = ${JSON.stringify(Object.fromEntries(compiled.map((script) => [script.id, script.runtime])), null, 2)};
-const [, , scriptId, ...args] = process.argv;
-
-if (!scriptId || !scripts[scriptId]) {
-  console.error(\`Usage: node scripts/run.mjs <script-id> [...args]\\n\\nAvailable scripts: \${Object.keys(scripts).join(", ")}\`);
-  process.exit(1);
-}
-
-const here = dirname(fileURLToPath(import.meta.url));
-const command = runtimes[scriptId] === "python3" ? "python3" : process.execPath;
-const child = spawnSync(command, [join(here, scripts[scriptId].replace(/^scripts\\//, "")), ...args], {
-  stdio: "inherit",
-});
-process.exit(child.status ?? 1);
-`;
-  writeText(join(scriptsRoot, "run.mjs"), runner);
-  writeText(join(scriptsRoot, "manifest.json"), JSON.stringify({ scripts: compiled }, null, 2) + "\n");
-  return compiled;
-}
-
-async function compileSingleScript(
-  skillRoot: string,
-  script: SkillScriptDefinition,
-  compiled: CompiledScriptManifestItem[],
-): Promise<void> {
-  const sourcePath = toAbsolutePath(script.entry);
-  const runtime = script.runtime ?? (sourcePath.endsWith(".py") ? "python3" : "node");
-  const defaultTarget = runtime === "python3" ? `scripts/${script.id}.py` : `scripts/${script.id}.mjs`;
-  const target = script.target ?? defaultTarget;
-  const outfile = join(skillRoot, target);
-  ensureDir(dirname(outfile));
-
-  if (script.bundle === false) {
-    if (sourcePath.endsWith(".ts") && runtime === "node") {
-      await buildScriptFromTypeScript(sourcePath, outfile, false);
-      rewriteRuntimeRelativeImports(outfile);
-    } else if (!existsSync(outfile)) {
-      copyComponentPath(script.entry, outfile);
-    }
-  } else if (sourcePath.endsWith(".ts") && runtime === "node") {
-    await buildScriptFromTypeScript(sourcePath, outfile, true);
-  } else {
-    await esbuild.build({
-      entryPoints: [sourcePath],
-      outfile,
-      bundle: true,
-      platform: "node",
-      format: "esm",
-      target: "node20",
-      banner: runtime === "node" ? nodeScriptBanner(sourcePath) : undefined,
-      logLevel: "silent",
-    });
-  }
-
-  compiled.push({
-    id: script.id,
-    file: target,
-    runtime,
-    description: script.description,
-    argsSchema: script.argsSchema ?? null,
-    outputSchema: script.outputSchema ?? null,
-  });
-}
-
 function renderCodexOpenAiYaml(skill: SkillDefinition): string {
   const allowImplicit = skill.invocation !== InvocationPolicy.ExplicitOnly;
   return [
@@ -401,10 +289,11 @@ export async function emitSkill(
   skill: SkillDefinition,
   platformRoot: string,
   platform: PlatformType,
+  scriptsById: ReadonlyMap<string, ScriptDefinition>,
 ): Promise<void> {
   const skillRoot = join(platformRoot, "skills", skill.id);
   ensureDir(skillRoot);
-  writeText(join(skillRoot, "SKILL.md"), renderSkillMd(skill, platform));
+  writeText(join(skillRoot, "SKILL.md"), renderSkillMd(skill, platform, scriptsById));
   copyLooseSkillFiles(skill, skillRoot);
 
   if (skill.references && skill.references.length > 0) {
@@ -419,8 +308,6 @@ export async function emitSkill(
       copyComponentPath(asset.source, join(skillRoot, asset.target ?? `assets/${basename(toAbsolutePath(asset.source))}`));
     }
   }
-
-  await compileSkillScripts(skill, skillRoot);
 
   if (platform === Platform.Codex) {
     writeText(join(skillRoot, "agents", "openai.yaml"), renderCodexOpenAiYaml(skill));
@@ -447,4 +334,3 @@ function copyLooseSkillFiles(skill: SkillDefinition, skillRoot: string): void {
     copyComponentPath(sourceUrl, join(skillRoot, entry.name));
   }
 }
-

@@ -69,8 +69,9 @@ describe("component build integration", () => {
 
     const screenshotSkill = readFileSync(join(tmpDistDir, "codex/skills/screenshot/SKILL.md"), "utf-8");
     assert.match(screenshotSkill, /Script Registry/);
-    assert.match(screenshotSkill, /take-screenshot/);
-    assert.equal(existsSync(join(tmpDistDir, "codex/skills/screenshot/scripts/take_screenshot.mjs")), true);
+    assert.match(screenshotSkill, /screenshot-take-screenshot/);
+    assert.equal(existsSync(join(tmpDistDir, "codex/run.js")), true);
+    assert.equal(existsSync(join(tmpDistDir, "codex/scripts/screenshot/take_screenshot.mjs")), true);
     assert.equal(existsSync(join(tmpDistDir, "codex/skills/screenshot/assets/screenshot.png")), true);
 
     const goTestingPatternsSkill = readFileSync(
@@ -91,12 +92,16 @@ describe("component build integration", () => {
     );
     assert.match(codexMetadata, /allow_implicit_invocation: true/);
 
-    const scriptManifest = JSON.parse(readFileSync(
-      join(tmpDistDir, "claude/skills/screenshot/scripts/manifest.json"),
+    const claudeManifestWithScripts = JSON.parse(readFileSync(
+      join(tmpDistDir, "claude/manifest.json"),
       "utf-8",
     ));
+    assert.equal(claudeManifestWithScripts.scripts.runFile, "run.js");
+    assert.match(claudeManifestWithScripts.scripts.runBundleChecksum, /^[a-f0-9]{64}$/);
     assert.equal(
-      scriptManifest.scripts.some((script: any) => script.id === "take-screenshot" && script.runtime === "node"),
+      claudeManifestWithScripts.scripts.items.some((script: any) =>
+        script.id === "screenshot-take-screenshot" && script.runtime === "node"
+      ),
       true,
     );
 
@@ -175,6 +180,57 @@ describe("component build integration", () => {
     assert.match(codexInstructions, /Source of truth: src\/components\//);
   });
 
+  test("provides unified run.js protocol with normalized JSON output", () => {
+    const runPath = join(tmpDistDir, "claude/run.js");
+    assert.equal(existsSync(runPath), true);
+
+    const missingScriptId = JSON.parse(execFileSync(process.execPath, [runPath], { encoding: "utf-8" }));
+    assert.equal(missingScriptId.ok, false);
+    assert.equal(missingScriptId.error.code, "RUNNER_ERROR");
+    assert.match(missingScriptId.error.message, /--script-id is required/);
+
+    const unknownScript = JSON.parse(execFileSync(process.execPath, [
+      runPath,
+      "--script-id",
+      "not-exists",
+      "--trigger-skill",
+      "debug-methodology",
+    ], { encoding: "utf-8" }));
+    assert.equal(unknownScript.ok, false);
+    assert.match(unknownScript.error.message, /script not found/);
+
+    const ownerMismatch = JSON.parse(execFileSync(process.execPath, [
+      runPath,
+      "--script-id",
+      "debug-methodology-debug-checklist",
+      "--trigger-skill",
+      "screenshot",
+      "--request-json",
+      "{\"args\":[\"--title\",\"owner-mismatch\"]}",
+    ], { encoding: "utf-8" }));
+    assert.equal(ownerMismatch.ok, false);
+    assert.match(ownerMismatch.error.message, /not callable by trigger skill/);
+
+    const success = JSON.parse(execFileSync(process.execPath, [
+      runPath,
+      "--script-id",
+      "debug-methodology-debug-checklist",
+      "--trigger-skill",
+      "debug-methodology",
+      "--session-id",
+      "fixture-session",
+      "--request-json",
+      "{\"args\":[\"--title\",\"fixture-checklist\"]}",
+    ], { encoding: "utf-8" }));
+    assert.equal(success.ok, true);
+    assert.equal(success.scriptId, "debug-methodology-debug-checklist");
+    assert.equal(success.sessionId, "fixture-session");
+    assert.equal(success.trigger.skillId, "debug-methodology");
+    assert.equal(success.error, null);
+    assert.equal(typeof success.timingMs, "number");
+    assert.match(success.result.stdout, /Debug Checklist: fixture-checklist/);
+  });
+
   test("generates clean script artifacts with valid runtime imports", () => {
     for (const platform of ["claude", "codex"]) {
       assert.equal(
@@ -196,9 +252,18 @@ describe("component build integration", () => {
     );
     assert.deepEqual(generatedTsSkillScripts, [], "generated skill scripts should not copy TypeScript source files");
 
-    const generatedMjsScripts = collectFiles(join(tmpDistDir, "claude/skills"), (file) =>
+    const generatedMjsScripts = collectFiles(join(tmpDistDir, "claude/scripts"), (file) =>
       file.split(/[\\/]/).includes("scripts") && file.endsWith(".mjs"),
     );
+
+    const legacySkillScriptRunners = collectFiles(join(tmpDistDir, "claude/skills"), (file) =>
+      /[\\/]scripts[\\/]run\.mjs$/.test(file),
+    );
+    const legacySkillScriptManifests = collectFiles(join(tmpDistDir, "claude/skills"), (file) =>
+      /[\\/]scripts[\\/]manifest\.json$/.test(file),
+    );
+    assert.deepEqual(legacySkillScriptRunners, [], "legacy per-skill scripts/run.mjs should not be generated");
+    assert.deepEqual(legacySkillScriptManifests, [], "legacy per-skill scripts/manifest.json should not be generated");
 
     const withExtensionlessImports = generatedMjsScripts.filter((file) => {
       const source = readFileSync(file, "utf-8");

@@ -4,8 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 import { designSystemPatternsSkill } from "../design-system-patterns/index";
 import { frontendDesignReviewSkill } from "../frontend-design-review/index";
@@ -70,20 +68,7 @@ export const shadcnUiSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: ["\"shadcn*:*\"", "\"mcp_shadcn*\"", "\"Read\"", "\"Write\"", "\"Bash\"", "\"web_fetch\""],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "verify-setup",
-      entry: new URL("./scripts/verify-setup.ts", import.meta.url),
-      target: "scripts/verify-setup.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script verify-setup.mjs.",
-    })
+    "shadcn-ui-verify-setup",
   ],
 });

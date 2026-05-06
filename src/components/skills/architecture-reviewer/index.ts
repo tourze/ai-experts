@@ -6,8 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 
 export const architectureReviewerSkill = defineSkill({
@@ -46,21 +44,8 @@ export const architectureReviewerSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "scan-codebase",
-      entry: new URL("./scripts/scan_codebase.ts", import.meta.url),
-      target: "scripts/scan_codebase.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script scan_codebase.mjs.",
-    })
+    "architecture-reviewer-scan-codebase",
   ],
   references: [
     defineReference({

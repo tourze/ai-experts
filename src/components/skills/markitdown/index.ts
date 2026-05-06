@@ -6,8 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillScript,
-  defineSkillScriptRoot,
 } from "../../sdk";
 import { docCoauthoringSkill } from "../doc-coauthoring/index";
 import { mdToPdfSkill } from "../md-to-pdf/index";
@@ -82,45 +80,11 @@ export const markitdownSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scriptRoots: [
-    defineSkillScriptRoot({
-      source: new URL("./scripts/", import.meta.url),
-      target: "scripts",
-    }),
-  ],
   scripts: [
-    defineSkillScript({
-      id: "batch-convert",
-      entry: new URL("./scripts/batch_convert.ts", import.meta.url),
-      target: "scripts/batch_convert.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script batch_convert.mjs.",
-    }),
-    defineSkillScript({
-      id: "convert-literature",
-      entry: new URL("./scripts/convert_literature.ts", import.meta.url),
-      target: "scripts/convert_literature.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script convert_literature.mjs.",
-    }),
-    defineSkillScript({
-      id: "convert-with-ai",
-      entry: new URL("./scripts/convert_with_ai.ts", import.meta.url),
-      target: "scripts/convert_with_ai.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script convert_with_ai.mjs.",
-    }),
-    defineSkillScript({
-      id: "markitdown-runtime",
-      entry: new URL("./scripts/markitdown_runtime.ts", import.meta.url),
-      target: "scripts/markitdown_runtime.mjs",
-      runtime: "node",
-      bundle: false,
-      description: "Script markitdown_runtime.mjs.",
-    })
+    "markitdown-batch-convert",
+    "markitdown-convert-literature",
+    "markitdown-convert-with-ai",
+    "markitdown-markitdown-runtime",
   ],
   references: [
     defineReference({
