@@ -6,7 +6,7 @@ import {
   KnownTool,
   Platform,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, typescriptTypeSafetyExtractTsErrors } from "../../scripts/index";
 
 export const typescriptTypeSafety = defineSkill({
   id: "typescript-type-safety",
@@ -50,8 +50,8 @@ export const typescriptTypeSafety = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob, KnownTool.Bash],
-  scripts: [
-    scriptUse("typescript-type-safety-extract-ts-errors"),
+  procedures: [
+    procedureUse(typescriptTypeSafetyExtractTsErrors.id),
   ],
   references: [
     defineReference({

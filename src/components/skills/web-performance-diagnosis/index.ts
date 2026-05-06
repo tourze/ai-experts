@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, webPerformanceDiagnosisAnalyze } from "../../scripts/index";
+
 import { bundleOptimizationSkill } from "../bundle-optimization/index";
 import { frontendDesignReviewSkill } from "../frontend-design-review/index";
 import { reactPerformanceSkill } from "../react-performance/index";
@@ -97,8 +98,8 @@ export const webPerformanceDiagnosisSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("web-performance-diagnosis-analyze"),
+  procedures: [
+    procedureUse(webPerformanceDiagnosisAnalyze.id),
   ],
   references: [
     defineReference({

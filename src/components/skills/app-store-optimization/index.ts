@@ -6,7 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, appStoreOptimizationAbTestPlanner, appStoreOptimizationAsoScorer, appStoreOptimizationCompetitorAnalyzer, appStoreOptimizationCollectReleaseChanges, appStoreOptimizationKeywordAnalyzer, appStoreOptimizationLaunchChecklist, appStoreOptimizationLocalizationHelper, appStoreOptimizationMetadataOptimizer, appStoreOptimizationReviewAnalyzer } from "../../scripts/index";
 
 export const appStoreOptimizationSkill = defineSkill({
   id: "app-store-optimization",
@@ -52,16 +52,16 @@ export const appStoreOptimizationSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("app-store-optimization-ab-test-planner"),
-    scriptUse("app-store-optimization-aso-scorer"),
-    scriptUse("app-store-optimization-competitor-analyzer"),
-    scriptUse("app-store-optimization-collect-release-changes"),
-    scriptUse("app-store-optimization-keyword-analyzer"),
-    scriptUse("app-store-optimization-launch-checklist"),
-    scriptUse("app-store-optimization-localization-helper"),
-    scriptUse("app-store-optimization-metadata-optimizer"),
-    scriptUse("app-store-optimization-review-analyzer"),
+  procedures: [
+    procedureUse(appStoreOptimizationAbTestPlanner.id),
+    procedureUse(appStoreOptimizationAsoScorer.id),
+    procedureUse(appStoreOptimizationCompetitorAnalyzer.id),
+    procedureUse(appStoreOptimizationCollectReleaseChanges.id),
+    procedureUse(appStoreOptimizationKeywordAnalyzer.id),
+    procedureUse(appStoreOptimizationLaunchChecklist.id),
+    procedureUse(appStoreOptimizationLocalizationHelper.id),
+    procedureUse(appStoreOptimizationMetadataOptimizer.id),
+    procedureUse(appStoreOptimizationReviewAnalyzer.id),
   ],
   references: [
     defineReference({

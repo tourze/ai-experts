@@ -5,7 +5,7 @@ import {
   KnownTool,
   Platform,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, debugMethodologyDebugChecklist } from "../../scripts/index";
 
 export const debugMethodology = defineSkill({
   id: "debug-methodology",
@@ -36,8 +36,8 @@ export const debugMethodology = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob, KnownTool.Bash],
-  scripts: [
-    scriptUse("debug-methodology-debug-checklist"),
+  procedures: [
+    procedureUse(debugMethodologyDebugChecklist.id),
   ],
   references: [
     defineReference({

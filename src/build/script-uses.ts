@@ -1,31 +1,67 @@
-import type { ScriptUseReference } from "../components/sdk";
+import type {
+  AgentDefinition,
+  ProcedureUseReference,
+  ScriptUseReference,
+  SkillDefinition,
+} from "../components/sdk";
 
-export type ResolvedScriptUse = {
+export type ResolvedProcedureUse = {
   id: string;
+  when?: string;
   reason?: string;
+  requestJsonTemplate?: string;
 };
 
-export function resolveScriptUse(scriptUse: ScriptUseReference): ResolvedScriptUse {
-  if (typeof scriptUse === "string") {
-    return { id: scriptUse };
+export function resolveProcedureUse(procedureUse: ProcedureUseReference): ResolvedProcedureUse {
+  if (typeof procedureUse === "string") {
+    return { id: procedureUse };
   }
-  if (!scriptUse || typeof scriptUse !== "object" || Array.isArray(scriptUse)) {
-    throw new Error("script reference must be a string or { id, reason? }");
+  if (!procedureUse || typeof procedureUse !== "object" || Array.isArray(procedureUse)) {
+    throw new Error("procedure reference must be a string or { id, when?, reason?, requestJsonTemplate? }");
   }
-  const id = scriptUse.id;
+  const id = procedureUse.id;
   if (typeof id !== "string" || id.trim() === "") {
-    throw new Error("script reference id must be a non-empty string");
+    throw new Error("procedure reference id must be a non-empty string");
   }
-  const reason = scriptUse.reason;
+  const when = procedureUse.when;
+  if (when !== undefined && (typeof when !== "string" || when.trim() === "")) {
+    throw new Error(`procedure reference ${id} when must be a non-empty string when provided`);
+  }
+  const reason = procedureUse.reason;
   if (reason !== undefined && (typeof reason !== "string" || reason.trim() === "")) {
-    throw new Error(`script reference ${id} reason must be a non-empty string when provided`);
+    throw new Error(`procedure reference ${id} reason must be a non-empty string when provided`);
+  }
+  const requestJsonTemplate = procedureUse.requestJsonTemplate;
+  if (requestJsonTemplate !== undefined && (typeof requestJsonTemplate !== "string" || requestJsonTemplate.trim() === "")) {
+    throw new Error(`procedure reference ${id} requestJsonTemplate must be a non-empty string when provided`);
   }
   return {
     id,
+    when,
     reason,
+    requestJsonTemplate,
   };
 }
 
+export function resolveProcedureUses(
+  procedureUses: readonly ProcedureUseReference[] | undefined,
+): ResolvedProcedureUse[] {
+  return (procedureUses ?? []).map((procedureUse) => resolveProcedureUse(procedureUse));
+}
+
+export function listProcedureUses(component: Pick<SkillDefinition | AgentDefinition, "procedures" | "scripts">): ResolvedProcedureUse[] {
+  if (component.procedures && component.procedures.length > 0) {
+    return resolveProcedureUses(component.procedures);
+  }
+  return resolveProcedureUses(component.scripts as readonly ScriptUseReference[] | undefined);
+}
+
+export type ResolvedScriptUse = ResolvedProcedureUse;
+
+export function resolveScriptUse(scriptUse: ScriptUseReference): ResolvedScriptUse {
+  return resolveProcedureUse(scriptUse);
+}
+
 export function resolveScriptUses(scriptUses: readonly ScriptUseReference[] | undefined): ResolvedScriptUse[] {
-  return (scriptUses ?? []).map((scriptUse) => resolveScriptUse(scriptUse));
+  return resolveProcedureUses(scriptUses);
 }

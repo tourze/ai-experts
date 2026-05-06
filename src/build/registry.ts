@@ -4,13 +4,13 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import * as esbuild from "esbuild";
 import { collectFiles, rewriteCompiledJsImports, sourceRoot, writeText } from "./core.ts";
-import { resolveScriptUses } from "./script-uses.ts";
+import { listProcedureUses } from "./script-uses.ts";
 import type {
   AgentDefinition,
   HookDefinition,
   InstructionDefinition,
+  ProcedureDefinition,
   ProfileDefinition,
-  ScriptDefinition,
   SkillDefinition,
 } from "../components/sdk";
 import type { ComponentRegistry, ProfileSurface } from "./types.ts";
@@ -52,29 +52,30 @@ export function materializeProfile(registry: ComponentRegistry): ProfileSurface 
   const skills = byId<SkillDefinition>(registry.skills, "skill");
   const agents = byId<AgentDefinition>(registry.agents, "agent");
   const hooks = byId<HookDefinition>(registry.hooks, "hook");
-  const scripts = byId<ScriptDefinition>(registry.scripts, "script");
+  const procedures = byId<ProcedureDefinition>(registry.procedures ?? registry.scripts ?? [], "procedure");
 
   const profileSkills = pickByIds(profile.id, skills, profile.skills, "skill");
   const profileAgents = pickByIds(profile.id, agents, profile.agents, "agent");
-  const scriptIds = new Set<string>();
+  const procedureIds = new Set<string>();
   for (const skill of profileSkills) {
-    for (const scriptUse of resolveScriptUses(skill.scripts)) scriptIds.add(scriptUse.id);
+    for (const procedureUse of listProcedureUses(skill)) procedureIds.add(procedureUse.id);
   }
   for (const agent of profileAgents) {
-    for (const scriptUse of resolveScriptUses(agent.scripts)) scriptIds.add(scriptUse.id);
+    for (const procedureUse of listProcedureUses(agent)) procedureIds.add(procedureUse.id);
   }
-  const profileScripts = [...scriptIds]
+  const profileProcedures = [...procedureIds]
     .sort((a, b) => a.localeCompare(b))
     .map((id) => {
-      const value = scripts.get(id);
-      if (!value) throw new Error(`Profile ${profile.id} references missing script: ${id}`);
+      const value = procedures.get(id);
+      if (!value) throw new Error(`Profile ${profile.id} references missing procedure: ${id}`);
       return value;
     });
 
   return {
     profile,
     instructions: pickByIds(profile.id, instructions, profile.instructions, "instruction"),
-    scripts: profileScripts,
+    procedures: profileProcedures,
+    scripts: profileProcedures,
     skills: profileSkills,
     agents: profileAgents,
     hooks: pickByIds(profile.id, hooks, profile.hooks, "hook"),
@@ -114,7 +115,7 @@ function isComponentRegistry(value: unknown): value is ComponentRegistry {
   const maybe = value as Partial<ComponentRegistry>;
   return typeof maybe.defaultProfile === "string" &&
     Array.isArray(maybe.instructions) &&
-    Array.isArray(maybe.scripts) &&
+    (Array.isArray(maybe.procedures) || Array.isArray(maybe.scripts)) &&
     Array.isArray(maybe.skills) &&
     Array.isArray(maybe.agents) &&
     Array.isArray(maybe.hooks) &&

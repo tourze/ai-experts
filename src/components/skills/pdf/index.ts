@@ -6,7 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, pdfCheckBoundingBoxes, pdfCheckFillableFields, pdfConvertPdfToImages, pdfCreateValidationImage, pdfExtractFormFieldInfo, pdfExtractFormStructure, pdfFillFillableFields, pdfFillPdfFormWithAnnotations } from "../../scripts/index";
 
 export const pdfSkill = defineSkill({
   id: "pdf",
@@ -45,15 +45,15 @@ export const pdfSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("pdf-check-bounding-boxes"),
-    scriptUse("pdf-check-fillable-fields"),
-    scriptUse("pdf-convert-pdf-to-images"),
-    scriptUse("pdf-create-validation-image"),
-    scriptUse("pdf-extract-form-field-info"),
-    scriptUse("pdf-extract-form-structure"),
-    scriptUse("pdf-fill-fillable-fields"),
-    scriptUse("pdf-fill-pdf-form-with-annotations"),
+  procedures: [
+    procedureUse(pdfCheckBoundingBoxes.id),
+    procedureUse(pdfCheckFillableFields.id),
+    procedureUse(pdfConvertPdfToImages.id),
+    procedureUse(pdfCreateValidationImage.id),
+    procedureUse(pdfExtractFormFieldInfo.id),
+    procedureUse(pdfExtractFormStructure.id),
+    procedureUse(pdfFillFillableFields.id),
+    procedureUse(pdfFillPdfFormWithAnnotations.id),
   ],
   references: [
     defineReference({

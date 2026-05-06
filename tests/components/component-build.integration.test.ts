@@ -1,14 +1,13 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, extname, join } from "node:path";
+import { join } from "node:path";
 import { afterAll, beforeAll, describe, test } from "vitest";
 import {
   assertSingleDispatcherHookGroups,
   collectFiles,
   countH2OutsideCodeFence,
-  extractRelativeRuntimeSpecifiers,
   repoRoot,
   stripFrontmatter,
 } from "./test-helpers";
@@ -33,7 +32,7 @@ beforeAll(() => {
     ["--import", "tsx/esm", "src/build.ts", "--out-dir", tmpDistDir],
     { cwd: repoRoot, encoding: "utf-8" },
   );
-});
+}, 30_000);
 
 afterAll(() => {
   if (tmpDistDir) {
@@ -68,10 +67,13 @@ describe("component build integration", () => {
     );
 
     const screenshotSkill = readFileSync(join(tmpDistDir, "codex/skills/screenshot/SKILL.md"), "utf-8");
-    assert.match(screenshotSkill, /Script Registry/);
+    assert.match(screenshotSkill, /Procedure Registry/);
     assert.match(screenshotSkill, /screenshot-take-screenshot/);
-    assert.equal(existsSync(join(tmpDistDir, "codex/run.js")), true);
-    assert.equal(existsSync(join(tmpDistDir, "codex/scripts/screenshot/take_screenshot.mjs")), true);
+    assert.match(screenshotSkill, /node \.\.\/\.\.\/procedures\.js --procedure-id screenshot-take-screenshot/);
+    assert.doesNotMatch(screenshotSkill, /node scripts\/take_screenshot\.mjs/);
+    assert.equal(existsSync(join(tmpDistDir, "codex/procedures.js")), true);
+    assert.equal(existsSync(join(tmpDistDir, "codex/run.js")), false);
+    assert.equal(existsSync(join(tmpDistDir, "codex/scripts")), false);
     assert.equal(existsSync(join(tmpDistDir, "codex/skills/screenshot/assets/screenshot.png")), true);
 
     const goTestingPatternsSkill = readFileSync(
@@ -96,14 +98,15 @@ describe("component build integration", () => {
       join(tmpDistDir, "claude/manifest.json"),
       "utf-8",
     ));
-    assert.equal(claudeManifestWithScripts.scripts.runFile, "run.js");
-    assert.match(claudeManifestWithScripts.scripts.runBundleChecksum, /^[a-f0-9]{64}$/);
+    assert.equal(claudeManifestWithScripts.procedures.proceduresFile, "procedures.js");
+    assert.match(claudeManifestWithScripts.procedures.bundleChecksum, /^[a-f0-9]{64}$/);
     assert.equal(
-      claudeManifestWithScripts.scripts.items.some((script: any) =>
-        script.id === "screenshot-take-screenshot" && script.runtime === "node"
+      claudeManifestWithScripts.procedures.items.some((procedure: any) =>
+        procedure.id === "screenshot-take-screenshot" && procedure.runtime === "node" && procedure.bundled === true
       ),
       true,
     );
+    assert.equal("scripts" in claudeManifestWithScripts, false);
 
     const claudeAgent = readFileSync(join(tmpDistDir, "claude/agents/typescript-reviewer.md"), "utf-8");
     assert.match(claudeAgent, /name: typescript-reviewer/);
@@ -180,28 +183,31 @@ describe("component build integration", () => {
     assert.match(codexInstructions, /Source of truth: src\/components\//);
   });
 
-  test("provides unified run.js protocol with normalized JSON output", () => {
-    const runPath = join(tmpDistDir, "claude/run.js");
-    assert.equal(existsSync(runPath), true);
+  test("provides bundled procedures.js protocol", () => {
+    const proceduresPath = join(tmpDistDir, "claude/procedures.js");
+    assert.equal(existsSync(proceduresPath), true);
 
-    const missingScriptId = JSON.parse(execFileSync(process.execPath, [runPath], { encoding: "utf-8" }));
+    const runPath = join(tmpDistDir, "claude/run.js");
+    assert.equal(existsSync(runPath), false);
+
+    const missingScriptId = JSON.parse(execFileSync(process.execPath, [proceduresPath], { encoding: "utf-8" }));
     assert.equal(missingScriptId.ok, false);
     assert.equal(missingScriptId.error.code, "RUNNER_ERROR");
-    assert.match(missingScriptId.error.message, /--script-id is required/);
+    assert.match(missingScriptId.error.message, /--procedure-id is required/);
 
     const unknownScript = JSON.parse(execFileSync(process.execPath, [
-      runPath,
-      "--script-id",
+      proceduresPath,
+      "--procedure-id",
       "not-exists",
       "--trigger-skill",
       "debug-methodology",
     ], { encoding: "utf-8" }));
     assert.equal(unknownScript.ok, false);
-    assert.match(unknownScript.error.message, /script not found/);
+    assert.match(unknownScript.error.message, /procedure not found/);
 
     const ownerMismatch = JSON.parse(execFileSync(process.execPath, [
-      runPath,
-      "--script-id",
+      proceduresPath,
+      "--procedure-id",
       "debug-methodology-debug-checklist",
       "--trigger-skill",
       "screenshot",
@@ -212,8 +218,8 @@ describe("component build integration", () => {
     assert.match(ownerMismatch.error.message, /not callable by trigger skill/);
 
     const invalidJson = JSON.parse(execFileSync(process.execPath, [
-      runPath,
-      "--script-id",
+      proceduresPath,
+      "--procedure-id",
       "debug-methodology-debug-checklist",
       "--trigger-skill",
       "debug-methodology",
@@ -224,8 +230,8 @@ describe("component build integration", () => {
     assert.match(invalidJson.error.message, /Unexpected token|JSON/i);
 
     const success = JSON.parse(execFileSync(process.execPath, [
-      runPath,
-      "--script-id",
+      proceduresPath,
+      "--procedure-id",
       "debug-methodology-debug-checklist",
       "--trigger-skill",
       "debug-methodology",
@@ -235,7 +241,7 @@ describe("component build integration", () => {
       "{\"args\":[\"--title\",\"fixture-checklist\"]}",
     ], { encoding: "utf-8" }));
     assert.equal(success.ok, true);
-    assert.equal(success.scriptId, "debug-methodology-debug-checklist");
+    assert.equal(success.procedureId, "debug-methodology-debug-checklist");
     assert.equal(success.sessionId, "fixture-session");
     assert.equal(success.trigger.skillId, "debug-methodology");
     assert.equal(success.error, null);
@@ -243,8 +249,8 @@ describe("component build integration", () => {
     assert.match(success.result.stdout, /Debug Checklist: fixture-checklist/);
 
     const executionFailure = JSON.parse(execFileSync(process.execPath, [
-      runPath,
-      "--script-id",
+      proceduresPath,
+      "--procedure-id",
       "web-content-fetcher-fetch",
       "--trigger-skill",
       "web-content-fetcher",
@@ -252,12 +258,87 @@ describe("component build integration", () => {
       "{\"args\":[\"--invalid\"]}",
     ], { encoding: "utf-8" }));
     assert.equal(executionFailure.ok, false);
-    assert.equal(executionFailure.error.code, "SCRIPT_EXECUTION_FAILED");
+    assert.equal(executionFailure.error.code, "PROCEDURE_EXECUTION_FAILED");
     assert.equal(typeof executionFailure.result.exitCode, "number");
+
+    const passthroughArgs = JSON.parse(execFileSync(process.execPath, [
+      proceduresPath,
+      "--procedure-id",
+      "debug-methodology-debug-checklist",
+      "--trigger-skill",
+      "debug-methodology",
+      "--",
+      "--title",
+      "passthrough-mode",
+    ], { encoding: "utf-8" }));
+    assert.equal(passthroughArgs.ok, true);
+    assert.equal(passthroughArgs.procedureId, "debug-methodology-debug-checklist");
+    assert.match(passthroughArgs.result.stdout, /Debug Checklist: passthrough-mode/);
   });
+
+  test("executes representative bundled procedures with real fixtures", () => {
+    const proceduresPath = join(tmpDistDir, "claude/procedures.js");
+    const runtimeTmp = mkdtempSync(join(tmpdir(), "ai-experts-procedure-runtime-"));
+
+    function runProcedure(id: string, skillId: string, args: string[]): any {
+      return JSON.parse(execFileSync(process.execPath, [
+        proceduresPath,
+        "--procedure-id",
+        id,
+        "--trigger-skill",
+        skillId,
+        "--request-json",
+        JSON.stringify({ args }),
+      ], { encoding: "utf-8", timeout: 20_000 }));
+    }
+
+    try {
+      const tscOutput = join(runtimeTmp, "tsc.txt");
+      writeFileSync(tscOutput, [
+        "src/a.ts(1,2): error TS2322: Type string is not assignable to type number.",
+        "src/b.ts(3,4): error TS7006: Parameter x implicitly has an any type.",
+      ].join("\n"));
+      const tsErrors = runProcedure("typescript-type-safety-extract-ts-errors", "typescript-type-safety", [
+        "--input",
+        tscOutput,
+      ]);
+      assert.equal(tsErrors.ok, true);
+      assert.equal(JSON.parse(tsErrors.result.stdout).total, 2);
+
+      const workspace = join(runtimeTmp, "review-workspace");
+      mkdirSync(join(workspace, "case-1", "outputs"), { recursive: true });
+      writeFileSync(join(workspace, "case-1", "eval_metadata.json"), JSON.stringify({
+        eval_id: 1,
+        prompt: "Review fixture prompt",
+      }));
+      writeFileSync(join(workspace, "case-1", "outputs", "answer.md"), "# Fixture Answer\n");
+      const staticHtml = join(runtimeTmp, "review.html");
+      const review = runProcedure("skill-creator-generate-review", "skill-creator", [
+        workspace,
+        "--skill-name",
+        "fixture-skill",
+        "--static",
+        staticHtml,
+      ]);
+      assert.equal(review.ok, true, review.result?.stderr);
+      assert.equal(existsSync(staticHtml), true);
+      assert.match(readFileSync(staticHtml, "utf-8"), /fixture-skill/);
+
+      const curate = runProcedure(
+        "skills-prune-and-sync-readme-test-curate-skills",
+        "skills-prune-and-sync-readme",
+        [],
+      );
+      assert.equal(curate.ok, true, curate.result?.stderr);
+      assert.match(curate.result.stdout, /curate_skills smoke test passed/);
+    } finally {
+      rmSync(runtimeTmp, { recursive: true, force: true });
+    }
+  }, 30_000);
 
   test("generates clean script artifacts with valid runtime imports", () => {
     for (const platform of ["claude", "codex"]) {
+      assert.equal(existsSync(join(tmpDistDir, platform, "scripts")), false);
       assert.equal(
         collectFiles(join(tmpDistDir, platform, "skills"), (file) =>
           /[\\/]skills[\\/][^\\/]+[\\/]index\.js$/.test(file),
@@ -277,10 +358,6 @@ describe("component build integration", () => {
     );
     assert.deepEqual(generatedTsSkillScripts, [], "generated skill scripts should not copy TypeScript source files");
 
-    const generatedMjsScripts = collectFiles(join(tmpDistDir, "claude/scripts"), (file) =>
-      file.split(/[\\/]/).includes("scripts") && file.endsWith(".mjs"),
-    );
-
     const legacySkillScriptRunners = collectFiles(join(tmpDistDir, "claude/skills"), (file) =>
       /[\\/]scripts[\\/]run\.mjs$/.test(file),
     );
@@ -290,40 +367,38 @@ describe("component build integration", () => {
     assert.deepEqual(legacySkillScriptRunners, [], "legacy per-skill scripts/run.mjs should not be generated");
     assert.deepEqual(legacySkillScriptManifests, [], "legacy per-skill scripts/manifest.json should not be generated");
 
-    const withExtensionlessImports = generatedMjsScripts.filter((file) => {
-      const source = readFileSync(file, "utf-8");
-      return extractRelativeRuntimeSpecifiers(source).some((specifier) => {
-        const leaf = specifier.split("/").at(-1) ?? "";
-        return extname(leaf) === "";
-      });
-    });
+    const proceduresSource = readFileSync(join(tmpDistDir, "claude/procedures.js"), "utf-8");
+    const procedureRegistrySource = readFileSync(join(repoRoot, "src/components/scripts/registry.ts"), "utf-8");
+    assert.doesNotMatch(procedureRegistrySource, /bundle:\s*false/);
+    assert.match(proceduresSource, /^#!\/usr\/bin\/env node/);
+    assert.match(proceduresSource, /__webpack_modules__/);
+    assert.doesNotMatch(proceduresSource, /"source"\s*:/, "procedures.js should not embed procedure code as JSON strings");
+    assert.doesNotMatch(proceduresSource, /procedure\.source|writeFileSync\(target/);
+    assert.doesNotMatch(proceduresSource, /ai-components-|procedure-runtime-entry/);
+    assert.doesNotMatch(proceduresSource, /\.globalThis\.__aiExperts/);
+    const distLocalImports = proceduresSource
+      .split(/\r?\n/)
+      .filter((line) => line.startsWith("import "))
+      .filter((line) => /from ["']\.\.?\//.test(line));
     assert.deepEqual(
-      withExtensionlessImports,
+      distLocalImports,
       [],
-      "generated .mjs scripts should keep Node-resolvable relative import extensions",
+      "bundled procedures.js should not import dist-local modules",
     );
-
-    const withMissingRelativeImports = generatedMjsScripts.flatMap((file) => {
-      const source = readFileSync(file, "utf-8");
-      return extractRelativeRuntimeSpecifiers(source)
-        .map((specifier) => join(dirname(file), specifier))
-        .filter((target) => !existsSync(target));
-    });
-    assert.deepEqual(withMissingRelativeImports, [], "generated .mjs scripts should only import files that exist in dist");
-
-    const withDuplicateShebangs = generatedMjsScripts.filter((file) => {
-      const shebangLines = readFileSync(file, "utf-8").split(/\r?\n/).filter((line) => line.startsWith("#!"));
-      return shebangLines.length > 1;
-    });
-    assert.deepEqual(withDuplicateShebangs, [], "generated .mjs scripts should not contain duplicate shebangs");
   });
 
   test("wires hook dispatchers and runtime guard behaviors", () => {
     const claudeSettings = JSON.parse(readFileSync(join(tmpDistDir, "claude/settings.json"), "utf-8"));
     const codexHooksConfig = JSON.parse(readFileSync(join(tmpDistDir, "codex/hooks.json"), "utf-8"));
+    const claudeHookCommand = claudeSettings.hooks.PostToolUse[0].hooks[0].command as string;
+    const codexHookCommand = codexHooksConfig.hooks.PostToolUse[0].hooks[0].command as string;
 
     assert.equal(claudeSettings.hooks.UserPromptSubmit[0].hooks[0].type, "command");
     assert.match(claudeSettings.hooks.PostToolUse[0].matcher, /apply_patch/);
+    assert.match(claudeHookCommand, /\$HOME\/\.claude\/hooks\/dispatch\.mjs/);
+    assert.match(codexHookCommand, /\$HOME\/\.codex\/hooks\/dispatch\.mjs/);
+    assert.doesNotMatch(claudeHookCommand, /:-/);
+    assert.doesNotMatch(codexHookCommand, /:-/);
     assertSingleDispatcherHookGroups(claudeSettings, "claude settings");
     assertSingleDispatcherHookGroups(codexHooksConfig, "codex hooks");
     assert.equal(claudeSettings.hooks.PostToolUse[0].hooks.length, 1);

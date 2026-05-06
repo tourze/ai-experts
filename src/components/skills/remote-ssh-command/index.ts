@@ -5,7 +5,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, remoteSshCommandInstallSshpass, remoteSshCommandSshExec } from "../../scripts/index";
 
 export const remoteSshCommandSkill = defineSkill({
   id: "remote-ssh-command",
@@ -40,8 +40,8 @@ export const remoteSshCommandSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("remote-ssh-command-install-sshpass"),
-    scriptUse("remote-ssh-command-ssh-exec"),
+  procedures: [
+    procedureUse(remoteSshCommandInstallSshpass.id),
+    procedureUse(remoteSshCommandSshExec.id),
   ],
 });

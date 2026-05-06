@@ -53,16 +53,16 @@ export type ToolMatcher =
   | { kind: "mcp"; server: string; tool?: string }
   | { kind: "regex"; source: string };
 
-export type ScriptOwners = {
+export type ProcedureOwners = {
   skillIds?: readonly string[];
   agentIds?: readonly string[];
 };
 
-export type ScriptDefinition = {
+export type ProcedureDefinition = {
   id: string;
   entry: ComponentFile;
   description: string;
-  owners: ScriptOwners;
+  owners: ProcedureOwners;
   target?: string;
   runtime?: "node";
   bundle?: boolean;
@@ -70,12 +70,19 @@ export type ScriptDefinition = {
   outputSchema?: string;
 };
 
-export type ScriptUseDefinition = {
+export type ProcedureUseDefinition = {
   id: string;
+  when?: string;
   reason?: string;
+  requestJsonTemplate?: string;
 };
 
-export type ScriptUseReference = string | ScriptUseDefinition;
+export type ProcedureUseReference = string | ProcedureUseDefinition;
+
+export type ScriptOwners = ProcedureOwners;
+export type ScriptDefinition = ProcedureDefinition;
+export type ScriptUseDefinition = ProcedureUseDefinition;
+export type ScriptUseReference = ProcedureUseReference;
 
 export type SkillScriptRootDefinition = {
   source: ComponentFile;
@@ -128,6 +135,7 @@ export type SkillDefinition = {
   platforms: PlatformList;
   body: ComponentFile;
   tools?: readonly ToolMatcher[];
+  procedures?: readonly ProcedureUseReference[];
   scripts?: readonly ScriptUseReference[];
   scriptRoots?: readonly SkillScriptRootDefinition[];
   references?: readonly SkillReferenceDefinition[];
@@ -218,6 +226,7 @@ export type AgentDefinition = {
   workflow?: AgentWorkflowDefinition;
   tools?: readonly ToolMatcher[];
   skills?: readonly AgentSkillUse[];
+  procedures?: readonly ProcedureUseReference[];
   scripts?: readonly ScriptUseReference[];
   sandbox?: AgentSandbox;
   claudeModel?: string;
@@ -379,20 +388,36 @@ export function defineProfile(definition: Omit<ProfileDefinition, "kind">): Prof
   };
 }
 
-export function defineScript(definition: ScriptDefinition): ScriptDefinition {
+export function defineProcedure(definition: ProcedureDefinition): ProcedureDefinition {
   return definition;
+}
+
+export function defineProcedureUse(
+  definition: ProcedureUseDefinition,
+): ProcedureUseDefinition {
+  return definition;
+}
+
+export function defineScript(definition: ScriptDefinition): ScriptDefinition {
+  return defineProcedure(definition);
 }
 
 export function defineScriptUse(
   definition: ScriptUseDefinition,
 ): ScriptUseDefinition {
+  return defineProcedureUse(definition);
+}
+
+export function defineSkillProcedureRoot(
+  definition: SkillScriptRootDefinition,
+): SkillScriptRootDefinition {
   return definition;
 }
 
 export function defineSkillScriptRoot(
   definition: SkillScriptRootDefinition,
 ): SkillScriptRootDefinition {
-  return definition;
+  return defineSkillProcedureRoot(definition);
 }
 
 export function defineReference(definition: SkillReferenceDefinition): SkillReferenceDefinition {

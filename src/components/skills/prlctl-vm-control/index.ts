@@ -6,7 +6,8 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, prlctlVmControlFileTransfer, prlctlVmControlPowershellOutput, prlctlVmControlPrlctlHelper } from "../../scripts/index";
+
 import { windowsKernelSecuritySkill } from "../windows-kernel-security/index";
 import { windowsUiAutomationSkill } from "../windows-ui-automation/index";
 
@@ -68,10 +69,10 @@ export const prlctlVmControlSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("prlctl-vm-control-file-transfer"),
-    scriptUse("prlctl-vm-control-powershell-output"),
-    scriptUse("prlctl-vm-control-prlctl-helper"),
+  procedures: [
+    procedureUse(prlctlVmControlFileTransfer.id),
+    procedureUse(prlctlVmControlPowershellOutput.id),
+    procedureUse(prlctlVmControlPrlctlHelper.id),
   ],
   references: [
     defineReference({

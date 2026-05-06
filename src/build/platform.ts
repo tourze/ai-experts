@@ -5,7 +5,7 @@ import type {
   AgentDefinition,
   HookDefinition,
   InstructionDefinition,
-  ScriptDefinition,
+  ProcedureDefinition,
   SkillDefinition,
 } from "../components/sdk";
 import {
@@ -31,7 +31,7 @@ import {
 import { compileHookModules, renderCodexConfig, renderHookConfig } from "./hooks.ts";
 import { hasH2SectionMatching, startsWithH2Section } from "./markdown.ts";
 import { materializeProfile } from "./registry.ts";
-import { resolveScriptUses } from "./script-uses.ts";
+import { listProcedureUses } from "./script-uses.ts";
 import { emitScriptRuntime } from "./scripts.ts";
 import { emitSkill, validateAntiPatterns, validateParameters, validateTextList } from "./skills.ts";
 import type { ComponentRegistry, ProfileSurface } from "./types.ts";
@@ -91,7 +91,9 @@ export function validateId(id: string, kind: string): void {
 export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
   if (!registry || !Array.isArray(registry.skills)) throw new Error("registry.skills must be an array");
   if (!Array.isArray(registry.instructions)) throw new Error("registry.instructions must be an array");
-  if (!Array.isArray(registry.scripts)) throw new Error("registry.scripts must be an array");
+  if (!Array.isArray(registry.procedures ?? registry.scripts)) {
+    throw new Error("registry.procedures or registry.scripts must be an array");
+  }
   if (!Array.isArray(registry.agents)) throw new Error("registry.agents must be an array");
   if (!Array.isArray(registry.hooks)) throw new Error("registry.hooks must be an array");
   if (!Array.isArray(registry.profiles)) throw new Error("registry.profiles must be an array");
@@ -99,39 +101,40 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
   const surface = materializeProfile(registry);
   const skillIds = new Set(registry.skills.map((skill) => skill.id));
   const agentIds = new Set(registry.agents.map((agent) => agent.id));
-  const scriptsById = new Map<string, ScriptDefinition>();
+  const proceduresById = new Map<string, ProcedureDefinition>();
+  const procedures = registry.procedures ?? registry.scripts ?? [];
 
-  for (const script of registry.scripts) {
-    validateId(script.id, "script");
-    if (scriptsById.has(script.id)) {
-      throw new Error(`Duplicate script id: ${script.id}`);
+  for (const procedure of procedures) {
+    validateId(procedure.id, "procedure");
+    if (proceduresById.has(procedure.id)) {
+      throw new Error(`Duplicate procedure id: ${procedure.id}`);
     }
-    const runtime = script.runtime ?? "node";
+    const runtime = procedure.runtime ?? "node";
     if (runtime !== "node") {
-      throw new Error(`Script ${script.id} runtime must be node`);
+      throw new Error(`Procedure ${procedure.id} runtime must be node`);
     }
-    if (!existsSync(toAbsolutePath(script.entry))) {
-      throw new Error(`Script ${script.id} entry is missing: ${displayPath(script.entry)}`);
+    if (!existsSync(toAbsolutePath(procedure.entry))) {
+      throw new Error(`Procedure ${procedure.id} entry is missing: ${displayPath(procedure.entry)}`);
     }
 
-    const ownerSkillIds = script.owners.skillIds ?? [];
-    const ownerAgentIds = script.owners.agentIds ?? [];
+    const ownerSkillIds = procedure.owners.skillIds ?? [];
+    const ownerAgentIds = procedure.owners.agentIds ?? [];
     if (ownerSkillIds.length === 0 && ownerAgentIds.length === 0) {
-      throw new Error(`Script ${script.id} must define at least one owner`);
+      throw new Error(`Procedure ${procedure.id} must define at least one owner`);
     }
     for (const ownerSkillId of ownerSkillIds) {
-      validateId(ownerSkillId, `script owner skill in ${script.id}`);
+      validateId(ownerSkillId, `procedure owner skill in ${procedure.id}`);
       if (!skillIds.has(ownerSkillId)) {
-        throw new Error(`Script ${script.id} references missing owner skill: ${ownerSkillId}`);
+        throw new Error(`Procedure ${procedure.id} references missing owner skill: ${ownerSkillId}`);
       }
     }
     for (const ownerAgentId of ownerAgentIds) {
-      validateId(ownerAgentId, `script owner agent in ${script.id}`);
+      validateId(ownerAgentId, `procedure owner agent in ${procedure.id}`);
       if (!agentIds.has(ownerAgentId)) {
-        throw new Error(`Script ${script.id} references missing owner agent: ${ownerAgentId}`);
+        throw new Error(`Procedure ${procedure.id} references missing owner agent: ${ownerAgentId}`);
       }
     }
-    scriptsById.set(script.id, script);
+    proceduresById.set(procedure.id, procedure);
   }
 
   for (const instruction of registry.instructions) {
@@ -205,27 +208,27 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
     }
 
     const skillSourceRoot = dirname(toAbsolutePath(skill.body));
-    const seenScripts = new Set<string>();
-    for (const scriptUse of resolveScriptUses(skill.scripts)) {
-      const scriptId = scriptUse.id;
-      validateId(scriptId, `script in ${skill.id}`);
-      if (seenScripts.has(scriptId)) throw new Error(`Duplicate script id in ${skill.id}: ${scriptId}`);
-      seenScripts.add(scriptId);
-      const script = scriptsById.get(scriptId);
-      if (!script) {
-        throw new Error(`Skill ${skill.id} references missing script: ${scriptId}`);
+    const seenProcedures = new Set<string>();
+    for (const procedureUse of listProcedureUses(skill)) {
+      const procedureId = procedureUse.id;
+      validateId(procedureId, `procedure in ${skill.id}`);
+      if (seenProcedures.has(procedureId)) throw new Error(`Duplicate procedure id in ${skill.id}: ${procedureId}`);
+      seenProcedures.add(procedureId);
+      const procedure = proceduresById.get(procedureId);
+      if (!procedure) {
+        throw new Error(`Skill ${skill.id} references missing procedure: ${procedureId}`);
       }
-      const ownerSkills = script.owners.skillIds ?? [];
+      const ownerSkills = procedure.owners.skillIds ?? [];
       if (!ownerSkills.includes(skill.id)) {
-        throw new Error(`Skill ${skill.id} references script ${scriptId} without skill ownership`);
+        throw new Error(`Skill ${skill.id} references procedure ${procedureId} without skill ownership`);
       }
     }
     const scriptsDir = join(skillSourceRoot, "scripts");
     if (existsSync(scriptsDir)) {
       const registeredEntries = new Set(
-        registry.scripts
-          .filter((script) => (script.owners.skillIds ?? []).includes(skill.id))
-          .map((script) => toAbsolutePath(script.entry)),
+        procedures
+          .filter((procedure) => (procedure.owners.skillIds ?? []).includes(skill.id))
+          .map((procedure) => toAbsolutePath(procedure.entry)),
       );
       for (const entry of readdirSync(scriptsDir, { withFileTypes: true })) {
         const absoluteEntry = join(scriptsDir, entry.name);
@@ -233,7 +236,7 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
           const source = readFileSync(absoluteEntry, "utf-8");
           if (source.startsWith("#!")) {
             throw new Error(
-              `Skill ${skill.id} has an unregistered executable script: ${relative(skillSourceRoot, absoluteEntry)}`,
+              `Skill ${skill.id} has an unregistered executable procedure source: ${relative(skillSourceRoot, absoluteEntry)}`,
             );
           }
         }
@@ -311,21 +314,21 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
         throw new Error(`Agent ${agent.id} skill ${skill.id} must include a non-empty reason`);
       }
     }
-    const seenScripts = new Set<string>();
-    for (const scriptUse of resolveScriptUses(agent.scripts)) {
-      const scriptId = scriptUse.id;
-      validateId(scriptId, `script in ${agent.id}`);
-      if (seenScripts.has(scriptId)) {
-        throw new Error(`Duplicate script id in ${agent.id}: ${scriptId}`);
+    const seenProcedures = new Set<string>();
+    for (const procedureUse of listProcedureUses(agent)) {
+      const procedureId = procedureUse.id;
+      validateId(procedureId, `procedure in ${agent.id}`);
+      if (seenProcedures.has(procedureId)) {
+        throw new Error(`Duplicate procedure id in ${agent.id}: ${procedureId}`);
       }
-      seenScripts.add(scriptId);
-      const script = scriptsById.get(scriptId);
-      if (!script) {
-        throw new Error(`Agent ${agent.id} references missing script: ${scriptId}`);
+      seenProcedures.add(procedureId);
+      const procedure = proceduresById.get(procedureId);
+      if (!procedure) {
+        throw new Error(`Agent ${agent.id} references missing procedure: ${procedureId}`);
       }
-      const ownerAgents = script.owners.agentIds ?? [];
+      const ownerAgents = procedure.owners.agentIds ?? [];
       if (!ownerAgents.includes(agent.id)) {
-        throw new Error(`Agent ${agent.id} references script ${scriptId} without agent ownership`);
+        throw new Error(`Agent ${agent.id} references procedure ${procedureId} without agent ownership`);
       }
     }
   }
@@ -374,11 +377,11 @@ export async function emitPlatform(
     writeText(join(root, "config.toml"), renderCodexConfig());
   }
 
-  const scriptRuntime = await emitScriptRuntime(profileSurface, root, platform);
-  const scriptsById = new Map(profileSurface.scripts.map((script) => [script.id, script]));
+  const procedureRuntime = await emitScriptRuntime(profileSurface, root, platform);
+  const proceduresById = new Map(profileSurface.procedures.map((procedure) => [procedure.id, procedure]));
 
   for (const skill of profileSurface.skills) {
-    if (skill.platforms.includes(platform)) await emitSkill(skill, root, platform, scriptsById);
+    if (skill.platforms.includes(platform)) await emitSkill(skill, root, platform, proceduresById);
   }
   for (const agent of profileSurface.agents) {
     if (agent.platforms.includes(platform)) await emitAgent(agent, root, platform);
@@ -405,17 +408,18 @@ export async function emitPlatform(
       .filter((item) => item.platforms.includes(platform))
       .map((item) => item.id)
       .sort(),
-    scripts: {
-      runFile: scriptRuntime.runFile,
-      runBundleChecksum: scriptRuntime.runBundleChecksum,
-      items: scriptRuntime.scripts.map((script) => ({
-        id: script.id,
-        file: script.file,
-        runtime: script.runtime,
-        description: script.description,
-        owners: script.owners,
-        argsSchema: script.argsSchema,
-        outputSchema: script.outputSchema,
+    procedures: {
+      proceduresFile: procedureRuntime.proceduresFile,
+      bundleChecksum: procedureRuntime.bundleChecksum,
+      items: procedureRuntime.procedures.map((procedure) => ({
+        id: procedure.id,
+        target: procedure.target,
+        bundled: procedure.bundled,
+        runtime: procedure.runtime,
+        description: procedure.description,
+        owners: procedure.owners,
+        argsSchema: procedure.argsSchema,
+        outputSchema: procedure.outputSchema,
       })),
     },
     files,

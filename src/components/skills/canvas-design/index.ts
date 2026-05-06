@@ -6,7 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, canvasDesignBaoyuArticleIllustratorBuildBatch, canvasDesignConceptToImageRenderToImage, canvasDesignConceptToVideoAddAudio, canvasDesignConceptToVideoRenderVideo } from "../../scripts/index";
 
 export const canvasDesignSkill = defineSkill({
   id: "canvas-design",
@@ -48,11 +48,11 @@ export const canvasDesignSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("canvas-design-baoyu-article-illustrator-build-batch"),
-    scriptUse("canvas-design-concept-to-image-render-to-image"),
-    scriptUse("canvas-design-concept-to-video-add-audio"),
-    scriptUse("canvas-design-concept-to-video-render-video"),
+  procedures: [
+    procedureUse(canvasDesignBaoyuArticleIllustratorBuildBatch.id),
+    procedureUse(canvasDesignConceptToImageRenderToImage.id),
+    procedureUse(canvasDesignConceptToVideoAddAudio.id),
+    procedureUse(canvasDesignConceptToVideoRenderVideo.id),
   ],
   assets: [
     defineAsset({

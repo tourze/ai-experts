@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, iconRetrievalSearch } from "../../scripts/index";
+
 import { designSystemPatternsSkill } from "../design-system-patterns/index";
 import { figmaImplementDesignSkill } from "../figma-implement-design/index";
 
@@ -64,7 +65,7 @@ export const iconRetrievalSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("icon-retrieval-search"),
+  procedures: [
+    procedureUse(iconRetrievalSearch.id),
   ],
 });

@@ -1,22 +1,16 @@
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import * as esbuild from "esbuild";
-import type { Platform as PlatformType, ScriptDefinition } from "../components/sdk";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { basename, join } from "node:path";
+import webpack, { type Configuration, type Stats } from "webpack";
+import type { Platform as PlatformType, ProcedureDefinition } from "../components/sdk";
+import { sourceRoot, toAbsolutePath } from "./core.ts";
+import { listProcedureUses } from "./script-uses.ts";
 import type { ProfileSurface } from "./types.ts";
-import {
-  Platform,
-  ensureDir,
-  nodeScriptBanner,
-  rewriteRuntimeRelativeImports,
-  toAbsolutePath,
-  writeText,
-} from "./core.ts";
-import { resolveScriptUses } from "./script-uses.ts";
 
-type RuntimeScriptEntry = {
+type RuntimeProcedureEntry = {
   id: string;
-  file: string;
+  target: string;
   runtime: "node";
   description: string;
   owners: {
@@ -27,70 +21,101 @@ type RuntimeScriptEntry = {
   outputSchema: string | null;
 };
 
-export type ScriptRuntimeBuildResult = {
-  runFile: string;
-  runBundleChecksum: string;
-  scripts: RuntimeScriptEntry[];
+type RuntimeProcedureModule = RuntimeProcedureEntry & {
+  sourcePath: string;
 };
+
+type ProcedureManifestEntry = RuntimeProcedureEntry & {
+  bundled: true;
+};
+
+export type ScriptRuntimeBuildResult = {
+  proceduresFile: string;
+  bundleChecksum: string;
+  procedures: ProcedureManifestEntry[];
+};
+
+const runtimeEntryId = "virtual:ai-experts-procedure-runtime-entry";
 
 function normalizeSeparators(path: string): string {
   return path.replaceAll("\\", "/");
 }
 
-function toScriptRelativeEntryPath(script: ScriptDefinition): string {
-  const sourcePath = toAbsolutePath(script.entry);
-  const normalizedSourcePath = normalizeSeparators(sourcePath);
+function normalizeProcedureTarget(target: string): string {
+  const normalized = normalizeSeparators(target).replace(/\.ts$/u, ".mjs");
+  if (
+    normalized.startsWith("/") ||
+    normalized === ".." ||
+    normalized.startsWith("../") ||
+    normalized.includes("/../")
+  ) {
+    throw new Error(`Invalid procedure target: ${target}`);
+  }
+  return normalized;
+}
+
+function toProcedureTarget(procedure: ProcedureDefinition): string {
+  return normalizeProcedureTarget(
+    procedure.target ?? `scripts/${basename(toAbsolutePath(procedure.entry)).replace(/\.ts$/u, ".mjs")}`,
+  );
+}
+
+function toStableProcedureSourcePath(procedure: ProcedureDefinition): string {
+  const absolute = toAbsolutePath(procedure.entry);
+  const normalized = normalizeSeparators(absolute);
   const marker = "/components/";
-  const markerIndex = normalizedSourcePath.lastIndexOf(marker);
-  if (markerIndex < 0) {
-    throw new Error(`Script ${script.id} entry must be inside a /components/ tree: ${sourcePath}`);
+  const markerIndex = normalized.lastIndexOf(marker);
+  if (markerIndex >= 0) {
+    const relativePath = normalized.slice(markerIndex + marker.length);
+    const stablePath = join(sourceRoot, relativePath);
+    if (existsSync(stablePath)) return stablePath;
   }
-  const relativePath = normalizedSourcePath.slice(markerIndex + marker.length);
-  let runtimeRelativePath = relativePath;
-  if (runtimeRelativePath.startsWith("scripts/sources/")) {
-    runtimeRelativePath = runtimeRelativePath.slice("scripts/sources/".length);
-  }
-  if (runtimeRelativePath.endsWith(".ts")) {
-    return runtimeRelativePath.replace(/\.ts$/u, ".mjs");
-  }
-  return runtimeRelativePath;
+  return absolute;
 }
 
-async function buildScript(script: ScriptDefinition, outfile: string): Promise<void> {
-  const sourcePath = toAbsolutePath(script.entry);
-  const runtime = script.runtime ?? "node";
-  const bundle = script.bundle ?? true;
-  if (runtime !== "node") {
-    throw new Error(`Script ${script.id} has unsupported runtime: ${runtime}`);
-  }
-  ensureDir(dirname(outfile));
-
-  const banner = nodeScriptBanner(sourcePath);
-  await esbuild.build({
-    entryPoints: [sourcePath],
-    outfile,
-    bundle,
-    platform: "node",
-    format: "esm",
-    target: "node20",
-    banner,
-    logLevel: "silent",
-  });
-
-  if (!bundle) {
-    rewriteRuntimeRelativeImports(outfile);
-  }
+function checksum(content: string): string {
+  return createHash("sha256").update(content).digest("hex");
 }
 
-function renderRunEntrypoint(scripts: RuntimeScriptEntry[]): string {
-  const scriptMap = JSON.stringify(Object.fromEntries(scripts.map((script) => [script.id, script])), null, 2);
-  return `#!/usr/bin/env node
+function toManifestEntry(procedure: RuntimeProcedureModule): ProcedureManifestEntry {
+  const { sourcePath: _sourcePath, ...entry } = procedure;
+  return { ...entry, bundled: true };
+}
+
+function metadataForRuntime(procedure: RuntimeProcedureModule): RuntimeProcedureEntry {
+  const { sourcePath: _sourcePath, ...entry } = procedure;
+  return entry;
+}
+
+function renderProcedureLoaders(procedures: readonly RuntimeProcedureModule[]): string {
+  return [
+    "const procedureLoaders = {",
+    ...procedures.map((procedure) =>
+      `  ${JSON.stringify(procedure.id)}: () => import(/* webpackMode: "eager" */ ${JSON.stringify(normalizeSeparators(procedure.sourcePath))}),`
+    ),
+    "};",
+  ].join("\n");
+}
+
+function isExternalRuntimeImport(id: string | undefined): boolean {
+  if (!id) return false;
+  return id.startsWith("node:") ||
+    (!id.startsWith(".") && !id.startsWith("/") && !id.startsWith("\0") && id !== runtimeEntryId);
+}
+
+function renderProceduresEntrypoint(procedures: readonly RuntimeProcedureModule[]): string {
+  const procedureMap = Object.fromEntries(procedures.map((procedure) => [procedure.id, metadataForRuntime(procedure)]));
+  return `
 import { spawnSync } from "node:child_process";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
+import { existsSync, realpathSync } from "node:fs";
+import { delimiter, dirname, join, resolve } from "node:path";
 
-const scripts = ${scriptMap};
-const version = "script-runtime-v2";
+const procedures = ${JSON.stringify(procedureMap)};
+${renderProcedureLoaders(procedures)}
+const version = "procedure-runtime-v3";
+const runtimeFile = realpathSync(resolve(process.argv[1] || "."));
+const runtimeRoot = dirname(runtimeFile);
 
 function parseCliArgs(argv) {
   const parsed = {
@@ -98,30 +123,44 @@ function parseCliArgs(argv) {
     sessionId: null,
     triggerSkill: null,
     triggerAgent: null,
-    scriptId: null,
+    procedureId: null,
+    passthroughArgs: [],
   };
+
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
+    if (arg === "--") {
+      parsed.passthroughArgs = argv.slice(index + 1);
+      break;
+    }
     if (arg === "--help" || arg === "-h") {
       parsed.help = true;
       continue;
     }
-    if (arg === "--request-json" || arg === "--session-id" || arg === "--trigger-skill" || arg === "--trigger-agent" || arg === "--script-id") {
+    if (arg === "--request-json" || arg === "--session-id" || arg === "--trigger-skill" || arg === "--trigger-agent" || arg === "--procedure-id") {
       const value = argv[index + 1];
       if (value == null || value.startsWith("--")) {
-        throw new Error(\`\${arg} requires a value\`);
+        throw new Error(String(arg) + " requires a value");
       }
       index += 1;
       if (arg === "--request-json") parsed.requestJson = value;
       if (arg === "--session-id") parsed.sessionId = value;
       if (arg === "--trigger-skill") parsed.triggerSkill = value;
       if (arg === "--trigger-agent") parsed.triggerAgent = value;
-      if (arg === "--script-id") parsed.scriptId = value;
+      if (arg === "--procedure-id") parsed.procedureId = value;
       continue;
     }
-    throw new Error(\`unknown argument: \${arg}\`);
+    throw new Error("unknown argument: " + String(arg) + "; use -- to pass through procedure args");
   }
+
   return parsed;
+}
+
+function parseChildArgs(argv) {
+  if (argv[0] !== "--__procedure-child") return null;
+  const rawPayload = argv[1];
+  if (!rawPayload) throw new Error("--__procedure-child requires a JSON payload");
+  return JSON.parse(rawPayload);
 }
 
 function normalizeTrigger(parsed) {
@@ -140,46 +179,79 @@ function parseRequestJson(rawValue) {
   return parsed;
 }
 
-function resolveScriptArgs(requestPayload) {
+function resolveProcedureArgs(requestPayload) {
   const args = requestPayload.args;
   if (args == null) return [];
   if (!Array.isArray(args)) {
-    throw new Error("request-json field \\"args\\" must be an array when provided");
+    throw new Error("request-json field args must be an array when provided");
   }
   return args.map((item) => String(item));
 }
 
-function ensureAuthorized(script, parsed) {
+function ensureAuthorized(procedure, parsed) {
   if (!parsed.triggerSkill && !parsed.triggerAgent) {
     throw new Error("one of --trigger-skill or --trigger-agent is required");
   }
   if (parsed.triggerSkill) {
-    const allowed = Array.isArray(script.owners?.skillIds) ? script.owners.skillIds : [];
+    const allowed = Array.isArray(procedure.owners?.skillIds) ? procedure.owners.skillIds : [];
     if (!allowed.includes(parsed.triggerSkill)) {
-      throw new Error(\`script \${script.id} is not callable by trigger skill: \${parsed.triggerSkill}\`);
+      throw new Error("procedure " + procedure.id + " is not callable by trigger skill: " + parsed.triggerSkill);
     }
   }
   if (parsed.triggerAgent) {
-    const allowed = Array.isArray(script.owners?.agentIds) ? script.owners.agentIds : [];
+    const allowed = Array.isArray(procedure.owners?.agentIds) ? procedure.owners.agentIds : [];
     if (!allowed.includes(parsed.triggerAgent)) {
-      throw new Error(\`script \${script.id} is not callable by trigger agent: \${parsed.triggerAgent}\`);
+      throw new Error("procedure " + procedure.id + " is not callable by trigger agent: " + parsed.triggerAgent);
     }
   }
 }
 
+function hashText(value) {
+  return createHash("sha256").update(value).digest("hex").slice(0, 16);
+}
+
+function nodePath() {
+  const candidates = [
+    join(runtimeRoot, "node_modules"),
+    join(runtimeRoot, "..", "node_modules"),
+    join(runtimeRoot, "..", "..", "node_modules"),
+    join(process.cwd(), "node_modules"),
+  ].filter((candidate) => existsSync(candidate));
+  const current = process.env.NODE_PATH ? process.env.NODE_PATH.split(delimiter).filter(Boolean) : [];
+  return [...candidates, ...current].join(delimiter);
+}
+
+function activeOwnerRoot(procedure, trigger) {
+  if (trigger.skillId) return join(runtimeRoot, "skills", trigger.skillId);
+  if (trigger.agentId) return join(runtimeRoot, "agents", trigger.agentId);
+  const fallbackSkill = procedure.owners?.skillIds?.[0];
+  if (fallbackSkill) return join(runtimeRoot, "skills", fallbackSkill);
+  const fallbackAgent = procedure.owners?.agentIds?.[0];
+  if (fallbackAgent) return join(runtimeRoot, "agents", fallbackAgent);
+  return runtimeRoot;
+}
+
+function installProcedureGlobals(procedure, trigger) {
+  const ownerRoot = activeOwnerRoot(procedure, trigger);
+  globalThis.__aiExpertsModuleFile = () => runtimeFile;
+  globalThis.__aiExpertsScriptDir = (target) => join(ownerRoot, dirname(String(target)));
+  globalThis.__aiExpertsRuntimeRoot = runtimeRoot;
+  globalThis.__aiExpertsOwnerRoot = ownerRoot;
+}
+
 function printResult(payload) {
-  process.stdout.write(\`\${JSON.stringify(payload)}\\n\`);
+  process.stdout.write(JSON.stringify(payload) + "\\n");
 }
 
 function printHelp() {
   printResult({
     ok: true,
-    scriptId: null,
+    procedureId: null,
     sessionId: null,
     trigger: {},
     result: {
-      usage: "node run.js --script-id <id> [--request-json <json>] [--session-id <id>] [--trigger-skill <skill-id>] [--trigger-agent <agent-id>]",
-      scripts: Object.keys(scripts).sort(),
+      usage: "node procedures.js --procedure-id <id> [--request-json <json>] [--session-id <id>] [--trigger-skill <skill-id>] [--trigger-agent <agent-id>] [-- <procedure-args...>]",
+      procedures: Object.keys(procedures).sort(),
     },
     error: null,
     timingMs: 0,
@@ -187,43 +259,80 @@ function printHelp() {
   });
 }
 
-function main() {
+async function runProcedureChild(payload) {
+  const procedure = procedures[payload.procedureId];
+  const loader = procedureLoaders[payload.procedureId];
+  if (!procedure || !loader) {
+    throw new Error("procedure not found: " + payload.procedureId);
+  }
+  const trigger = {
+    skillId: payload.triggerSkill ?? undefined,
+    agentId: payload.triggerAgent ?? undefined,
+  };
+  installProcedureGlobals(procedure, trigger);
+  process.argv = [process.execPath, runtimeFile, ...payload.args.map(String)];
+  process.env.AI_EXPERTS_PROCEDURE_ID = procedure.id;
+  process.env.AI_EXPERTS_PROCEDURE_SESSION_ID = payload.sessionId ?? "";
+  process.env.AI_EXPERTS_PROCEDURE_TRIGGER_SKILL = payload.triggerSkill ?? "";
+  process.env.AI_EXPERTS_PROCEDURE_TRIGGER_AGENT = payload.triggerAgent ?? "";
+  process.env.AI_EXPERTS_PROCEDURE_REQUEST_JSON = JSON.stringify(payload.requestPayload ?? {});
+  await loader();
+}
+
+export function main(rawArgv = process.argv.slice(2)) {
   const startAt = Date.now();
   let parsed = null;
   try {
-    parsed = parseCliArgs(process.argv.slice(2));
+    parsed = parseCliArgs(rawArgv);
     if (parsed.help) {
       printHelp();
       return;
     }
-    if (!parsed.scriptId) {
-      throw new Error("--script-id is required");
+    if (!parsed.procedureId) {
+      throw new Error("--procedure-id is required");
     }
-    const script = scripts[parsed.scriptId];
-    if (!script) {
-      throw new Error(\`script not found: \${parsed.scriptId}\`);
+
+    const procedure = procedures[parsed.procedureId];
+    if (!procedure) {
+      throw new Error("procedure not found: " + parsed.procedureId);
     }
-    ensureAuthorized(script, parsed);
+    ensureAuthorized(procedure, parsed);
+
     const requestPayload = parseRequestJson(parsed.requestJson);
-    const scriptArgs = resolveScriptArgs(requestPayload);
-    const root = dirname(fileURLToPath(import.meta.url));
-    const scriptPath = join(root, script.file);
-    const child = spawnSync(process.execPath, [scriptPath, ...scriptArgs], {
+    if (parsed.passthroughArgs.length > 0) {
+      if (Array.isArray(requestPayload.args) && requestPayload.args.length > 0) {
+        throw new Error("pass-through args (after --) conflict with request-json args");
+      }
+      requestPayload.args = parsed.passthroughArgs;
+    }
+
+    const procedureArgs = resolveProcedureArgs(requestPayload);
+    const childPayload = {
+      procedureId: procedure.id,
+      args: procedureArgs,
+      sessionId: parsed.sessionId ?? "",
+      triggerSkill: parsed.triggerSkill ?? "",
+      triggerAgent: parsed.triggerAgent ?? "",
+      requestPayload,
+    };
+    const child = spawnSync(process.execPath, [
+      runtimeFile,
+      "--__procedure-child",
+      JSON.stringify(childPayload),
+    ], {
       encoding: "utf-8",
       env: {
         ...process.env,
-        AI_EXPERTS_SCRIPT_ID: script.id,
-        AI_EXPERTS_SCRIPT_SESSION_ID: parsed.sessionId ?? "",
-        AI_EXPERTS_SCRIPT_TRIGGER_SKILL: parsed.triggerSkill ?? "",
-        AI_EXPERTS_SCRIPT_TRIGGER_AGENT: parsed.triggerAgent ?? "",
-        AI_EXPERTS_SCRIPT_REQUEST_JSON: JSON.stringify(requestPayload),
+        NODE_PATH: nodePath(),
+        AI_EXPERTS_PROCEDURES_FILE: runtimeFile,
+        AI_EXPERTS_PROCEDURE_CACHE_KEY: hashText(JSON.stringify(procedures)),
       },
     });
 
     const success = (child.status ?? 1) === 0;
     const payload = {
       ok: success,
-      scriptId: script.id,
+      procedureId: procedure.id,
       sessionId: parsed.sessionId ?? null,
       trigger: normalizeTrigger(parsed),
       result: {
@@ -235,8 +344,8 @@ function main() {
       error: success
         ? null
         : {
-            code: "SCRIPT_EXECUTION_FAILED",
-            message: \`script exited with code \${child.status ?? 1}\`,
+            code: "PROCEDURE_EXECUTION_FAILED",
+            message: "procedure exited with code " + String(child.status ?? 1),
           },
       timingMs: Date.now() - startAt,
       version,
@@ -246,7 +355,7 @@ function main() {
     const message = error instanceof Error ? error.message : String(error);
     printResult({
       ok: false,
-      scriptId: parsed?.scriptId ?? null,
+      procedureId: parsed?.procedureId ?? null,
       sessionId: parsed?.sessionId ?? null,
       trigger: parsed ? normalizeTrigger(parsed) : {},
       result: null,
@@ -260,30 +369,163 @@ function main() {
   }
 }
 
-main();
+const childPayload = parseChildArgs(process.argv.slice(2));
+if (childPayload) {
+  await runProcedureChild(childPayload);
+} else {
+  main();
+}
 `;
 }
 
-function checksum(content: string): string {
-  return createHash("sha256").update(content).digest("hex");
+type ProcedureTransformContext = {
+  target: string;
+};
+
+function renderProcedurePathLoader(): string {
+  return `
+module.exports = function aiExpertsProcedurePathLoader(source) {
+  const options = this.getOptions() || {};
+  const contexts = options.contexts || {};
+  const file = String(this.resourcePath || "").replaceAll("\\\\", "/");
+  const context = contexts[file];
+  if (!context) return source;
+  const replacement = "globalThis.__aiExpertsScriptDir(" + JSON.stringify(context.target) + ")";
+  const moduleFile = "globalThis.__aiExpertsModuleFile(" + JSON.stringify(context.target) + ")";
+  return source
+    .replace(/\\bpath\\.dirname\\s*\\(\\s*fileURLToPath\\s*\\(\\s*import\\.meta\\.url\\s*\\)\\s*\\)/g, replacement)
+    .replace(/(?<!\\.)\\bdirname\\s*\\(\\s*fileURLToPath\\s*\\(\\s*import\\.meta\\.url\\s*\\)\\s*\\)/g, replacement)
+    .replace(/\\bpath\\.dirname\\s*\\(\\s*__filename\\s*\\)/g, replacement)
+    .replace(/(?<!\\.)\\bdirname\\s*\\(\\s*__filename\\s*\\)/g, replacement)
+    .replace(/\\bfileURLToPath\\s*\\(\\s*import\\.meta\\.url\\s*\\)/g, moduleFile);
+};
+`;
 }
 
-function toRuntimeScriptEntry(script: ScriptDefinition, file: string): RuntimeScriptEntry {
-  return {
-    id: script.id,
-    file: normalizeSeparators(file),
-    runtime: "node",
-    description: script.description,
-    owners: {
-      skillIds: [...(script.owners.skillIds ?? [])],
-      agentIds: [...(script.owners.agentIds ?? [])],
-    },
-    argsSchema: script.argsSchema ?? null,
-    outputSchema: script.outputSchema ?? null,
-  };
+function webpackExternal(
+  data: { request?: string },
+  callback: (error?: Error | null, result?: string) => void,
+): void {
+  const request = data.request;
+  if (request?.startsWith("node:")) {
+    callback(null, `module ${request}`);
+    return;
+  }
+  if (isExternalRuntimeImport(request)) {
+    callback(null, `node-commonjs ${request}`);
+    return;
+  }
+  callback();
 }
 
-function collectPlatformScripts(profileSurface: ProfileSurface, platform: PlatformType): ScriptDefinition[] {
+function runWebpack(config: Configuration): Promise<void> {
+  return new Promise((resolve, reject) => {
+    webpack(config, (error?: Error | null, stats?: Stats) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      if (stats?.hasErrors()) {
+        reject(new Error(stats.toString({ all: false, errors: true, warnings: true })));
+        return;
+      }
+      resolve();
+    });
+  });
+}
+
+async function emitBundledProceduresFile(root: string, runtimeProcedures: readonly RuntimeProcedureModule[]): Promise<string> {
+  const tempDir = join(tmpdir(), "ai-experts-procedure-webpack");
+  const entryFile = join(tempDir, "procedure-runtime-entry.ts");
+  const loaderFile = join(tempDir, "procedure-path-loader.cjs");
+  const transformContexts = new Map(
+    runtimeProcedures.map((procedure) => [
+      normalizeSeparators(procedure.sourcePath),
+      { target: procedure.target },
+    ]),
+  );
+  rmSync(tempDir, { recursive: true, force: true });
+  mkdirSync(tempDir, { recursive: true });
+  writeFileSync(entryFile, renderProceduresEntrypoint(runtimeProcedures), "utf-8");
+  writeFileSync(loaderFile, renderProcedurePathLoader(), "utf-8");
+
+  try {
+    await runWebpack({
+      mode: "production",
+      target: "node20",
+      entry: entryFile,
+      output: {
+        path: root,
+        filename: "procedures.js",
+        module: true,
+        chunkFormat: "module",
+        pathinfo: false,
+        environment: {
+          module: true,
+          dynamicImport: true,
+          const: true,
+          arrowFunction: true,
+        },
+      },
+      experiments: {
+        outputModule: true,
+        topLevelAwait: true,
+      },
+      externalsType: "module",
+      externalsPresets: {
+        node: true,
+      },
+      externals: [webpackExternal],
+      resolve: {
+        extensions: [".ts", ".js", ".mjs", ".json"],
+      },
+      module: {
+        rules: [
+          {
+            test: /\.[cm]?tsx?$/u,
+            use: [
+              {
+                loader: "esbuild-loader",
+                options: {
+                  loader: "ts",
+                  target: "node20",
+                },
+              },
+              {
+                loader: loaderFile,
+                options: {
+                  contexts: Object.fromEntries(transformContexts),
+                },
+              },
+            ],
+          },
+        ],
+      },
+      optimization: {
+        moduleIds: "deterministic",
+        chunkIds: "deterministic",
+        minimize: false,
+        concatenateModules: false,
+        splitChunks: false,
+        runtimeChunk: false,
+      },
+      plugins: [
+        new webpack.BannerPlugin({
+          banner: "#!/usr/bin/env node",
+          raw: true,
+          entryOnly: true,
+        }),
+      ],
+      devtool: false,
+      stats: "errors-warnings",
+    });
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+  return readFileSync(join(root, "procedures.js"), "utf-8");
+}
+
+function collectPlatformProcedures(profileSurface: ProfileSurface, platform: PlatformType): ProcedureDefinition[] {
   const enabledSkillIds = new Set(
     profileSurface.skills
       .filter((skill) => skill.platforms.includes(platform))
@@ -294,24 +536,42 @@ function collectPlatformScripts(profileSurface: ProfileSurface, platform: Platfo
       .filter((agent) => agent.platforms.includes(platform))
       .map((agent) => agent.id),
   );
-  const enabledScriptIds = new Set<string>();
+  const enabledProcedureIds = new Set<string>();
   for (const skill of profileSurface.skills) {
     if (!skill.platforms.includes(platform)) continue;
-    for (const scriptUse of resolveScriptUses(skill.scripts)) enabledScriptIds.add(scriptUse.id);
+    for (const procedureUse of listProcedureUses(skill)) enabledProcedureIds.add(procedureUse.id);
   }
   for (const agent of profileSurface.agents) {
     if (!agent.platforms.includes(platform)) continue;
-    for (const scriptUse of resolveScriptUses(agent.scripts)) enabledScriptIds.add(scriptUse.id);
+    for (const procedureUse of listProcedureUses(agent)) enabledProcedureIds.add(procedureUse.id);
   }
-  return profileSurface.scripts
-    .filter((script) => enabledScriptIds.has(script.id))
-    .filter((script) => {
-      const ownerSkills = script.owners.skillIds ?? [];
-      const ownerAgents = script.owners.agentIds ?? [];
+
+  return profileSurface.procedures
+    .filter((procedure) => enabledProcedureIds.has(procedure.id))
+    .filter((procedure) => {
+      const ownerSkills = procedure.owners.skillIds ?? [];
+      const ownerAgents = procedure.owners.agentIds ?? [];
       return ownerSkills.some((id) => enabledSkillIds.has(id)) ||
         ownerAgents.some((id) => enabledAgentIds.has(id));
     })
     .sort((a, b) => a.id.localeCompare(b.id));
+}
+
+function toRuntimeProcedureEntry(procedure: ProcedureDefinition): RuntimeProcedureModule {
+  const sourcePath = toStableProcedureSourcePath(procedure);
+  return {
+    id: procedure.id,
+    target: toProcedureTarget(procedure),
+    runtime: "node",
+    description: procedure.description,
+    owners: {
+      skillIds: [...(procedure.owners.skillIds ?? [])],
+      agentIds: [...(procedure.owners.agentIds ?? [])],
+    },
+    argsSchema: procedure.argsSchema ?? null,
+    outputSchema: procedure.outputSchema ?? null,
+    sourcePath,
+  };
 }
 
 export async function emitScriptRuntime(
@@ -319,24 +579,13 @@ export async function emitScriptRuntime(
   root: string,
   platform: PlatformType,
 ): Promise<ScriptRuntimeBuildResult> {
-  const scriptsRoot = join(root, "scripts");
-  ensureDir(scriptsRoot);
-  const platformScripts = collectPlatformScripts(profileSurface, platform);
-  const runtimeScripts: RuntimeScriptEntry[] = [];
+  const platformProcedures = collectPlatformProcedures(profileSurface, platform);
+  const runtimeProcedures = platformProcedures.map(toRuntimeProcedureEntry);
+  const proceduresSource = await emitBundledProceduresFile(root, runtimeProcedures);
 
-  for (const script of platformScripts) {
-    const relativeEntryPath = toScriptRelativeEntryPath(script);
-    const outputPath = join(scriptsRoot, relativeEntryPath);
-    await buildScript(script, outputPath);
-    runtimeScripts.push(toRuntimeScriptEntry(script, normalizeSeparators(join("scripts", relativeEntryPath))));
-  }
-
-  const runSource = renderRunEntrypoint(runtimeScripts);
-  const runFile = join(root, "run.js");
-  writeText(runFile, runSource);
   return {
-    runFile: "run.js",
-    runBundleChecksum: checksum(runSource),
-    scripts: runtimeScripts,
+    proceduresFile: "procedures.js",
+    bundleChecksum: checksum(proceduresSource),
+    procedures: runtimeProcedures.map(toManifestEntry),
   };
 }

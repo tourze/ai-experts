@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Audit, prune, and sync repository skills metadata.
-import fs from "node:fs";
+import fs, { realpathSync } from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { buildSimilarityGroups } from "./similarity_groups";
 const ALLOWED_FRONTMATTER_KEYS = new Set("acknowledgments agent allowed-tools alwaysApply compatibility context date_added dependency description license metadata name related-skills risk source tools user-invocable user_invocable version".split(" "));
 const README_SECTION_START = "## Skill 清单";
@@ -629,8 +630,8 @@ function parseArgs(argv: any): any {
     }
     return args;
 }
-function main(): any {
-    const args = parseArgs(process.argv.slice(2));
+export function main(argv: any = process.argv.slice(2)): any {
+    const args = parseArgs([...argv]);
     if (args.help) {
         printHelp();
         return 0;
@@ -660,10 +661,12 @@ function main(): any {
     }
     throw new Error(`未知命令: ${args.command}`);
 }
-try {
-    process.exitCode = main();
-}
-catch (error: any) {
-    console.error(error.message);
-    process.exitCode = 1;
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
+    try {
+        process.exitCode = main();
+    }
+    catch (error: any) {
+        console.error(error.message);
+        process.exitCode = 1;
+    }
 }

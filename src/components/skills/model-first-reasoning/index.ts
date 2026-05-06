@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, modelFirstReasoningValidateModel } from "../../scripts/index";
+
 import { llmEvaluationSkill } from "../llm-evaluation/index";
 import { promptEngineeringPatternsSkill } from "../prompt-engineering-patterns/index";
 
@@ -59,7 +60,7 @@ export const modelFirstReasoningSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("model-first-reasoning-validate-model"),
+  procedures: [
+    procedureUse(modelFirstReasoningValidateModel.id),
   ],
 });

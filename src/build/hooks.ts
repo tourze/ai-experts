@@ -269,8 +269,8 @@ export function renderHookConfig(
 ): { hooks: Record<string, HookConfigGroup[]> } {
   const hooksByEvent: Record<string, HookConfigGroup[]> = {};
   const commandHome = platform === Platform.Claude
-    ? "${AI_EXPERTS_CLAUDE_HOME:-$HOME/.claude}"
-    : "${AI_EXPERTS_CODEX_HOME:-$HOME/.codex}";
+    ? "$HOME/.claude"
+    : "$HOME/.codex";
 
   const groups: HookDispatchGroup[] = [];
   const groupsByKey = new Map<string, HookDispatchGroup>();

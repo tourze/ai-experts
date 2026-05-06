@@ -4,9 +4,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { spawnSync } from "node:child_process";
-import { fileURLToPath } from "node:url";
-const scriptPath = path.join(path.dirname(fileURLToPath(import.meta.url)), "curate_skills.mjs");
+import { main as curateSkillsMain } from "./curate_skills";
 function writeSkill(skillDir: any, frontmatter: any, body: any): any {
     fs.mkdirSync(skillDir, { recursive: true });
     fs.writeFileSync(path.join(skillDir, "SKILL.md"), `---\n${frontmatter}\n---\n\n${body}\n`, "utf8");
@@ -17,10 +15,32 @@ function writeComponentSkill(skillDir: any, id: any, description: any, body: any
     fs.writeFileSync(path.join(skillDir, "SKILL.body.md"), `${body}\n`, "utf8");
 }
 function runCommand(...args: any): any {
-    return spawnSync(process.execPath, [scriptPath, ...args], {
-        encoding: "utf8",
-        timeout: 30000,
-    });
+    const originalStdoutWrite = process.stdout.write;
+    const originalStderrWrite = process.stderr.write;
+    const originalExitCode = process.exitCode;
+    let stdout = "";
+    let stderr = "";
+    (process.stdout.write as any) = (chunk: any): boolean => {
+        stdout += Buffer.isBuffer(chunk) ? chunk.toString("utf8") : String(chunk);
+        return true;
+    };
+    (process.stderr.write as any) = (chunk: any): boolean => {
+        stderr += Buffer.isBuffer(chunk) ? chunk.toString("utf8") : String(chunk);
+        return true;
+    };
+    try {
+        process.exitCode = undefined;
+        const status = Number(curateSkillsMain(args) ?? process.exitCode ?? 0);
+        return { status, stdout, stderr };
+    }
+    catch (error: any) {
+        return { status: 1, stdout, stderr: `${stderr}${error?.message ?? String(error)}\n` };
+    }
+    finally {
+        process.stdout.write = originalStdoutWrite;
+        process.stderr.write = originalStderrWrite;
+        process.exitCode = originalExitCode;
+    }
 }
 function assertContainsPair(pairs: any, left: any, right: any): any {
     const targets = new Set([left, right]);
@@ -41,7 +61,6 @@ function assertContainsGroup(groups: any, ...skills: any): any {
     throw new Error(`Expected group not found: ${skills.join(", ")}`);
 }
 function main(): any {
-    assert.ok(fs.existsSync(scriptPath), `Missing script under test: ${scriptPath}`);
     const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "curate-skills-"));
     try {
         const skillsDir = path.join(repoRoot, "skills");

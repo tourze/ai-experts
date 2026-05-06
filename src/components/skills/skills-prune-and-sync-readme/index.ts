@@ -5,7 +5,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, skillsPruneAndSyncReadmeCurateSkills, skillsPruneAndSyncReadmeSimilarityGroups, skillsPruneAndSyncReadmeTestCurateSkills } from "../../scripts/index";
 
 export const skillsPruneAndSyncReadmeSkill = defineSkill({
   id: "skills-prune-and-sync-readme",
@@ -32,9 +32,9 @@ export const skillsPruneAndSyncReadmeSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("skills-prune-and-sync-readme-curate-skills"),
-    scriptUse("skills-prune-and-sync-readme-similarity-groups"),
-    scriptUse("skills-prune-and-sync-readme-test-curate-skills"),
+  procedures: [
+    procedureUse(skillsPruneAndSyncReadmeCurateSkills.id),
+    procedureUse(skillsPruneAndSyncReadmeSimilarityGroups.id),
+    procedureUse(skillsPruneAndSyncReadmeTestCurateSkills.id),
   ],
 });

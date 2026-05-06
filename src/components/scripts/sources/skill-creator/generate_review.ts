@@ -479,6 +479,7 @@ function parseCliArgs() {
   const parsed = parseArgs({
     allowPositionals: true,
     options: {
+      help: { type: "boolean", short: "h" },
       port: { type: "string", short: "p" },
       "skill-name": { type: "string", short: "n" },
       "previous-workspace": { type: "string" },
@@ -486,6 +487,10 @@ function parseCliArgs() {
       static: { type: "string", short: "s" },
     },
   });
+
+  if (parsed.values.help) {
+    return { help: true };
+  }
 
   const workspaceArg = parsed.positionals[0];
   if (!workspaceArg) {
@@ -541,6 +546,7 @@ function parseCliArgs() {
 
 function main(): void {
   const {
+    help,
     workspace,
     runs,
     port,
@@ -551,6 +557,11 @@ function main(): void {
     benchmark,
     staticOutputPath,
   } = parseCliArgs();
+
+  if (help) {
+    console.log("Usage: node generate_review.mjs <workspace> [--static output.html] [--skill-name name] [--port 3117]");
+    return;
+  }
 
   if (staticOutputPath) {
     const html = generateHtml(runs, skillName, previous, benchmark);

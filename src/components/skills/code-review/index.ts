@@ -6,7 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, codeReviewAssessCode, codeReviewAssessTests } from "../../scripts/index";
 
 export const codeReviewSkill = defineSkill({
   id: "code-review",
@@ -51,9 +51,9 @@ export const codeReviewSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("code-review-assess-code"),
-    scriptUse("code-review-assess-tests"),
+  procedures: [
+    procedureUse(codeReviewAssessCode.id),
+    procedureUse(codeReviewAssessTests.id),
   ],
   references: [
     defineReference({

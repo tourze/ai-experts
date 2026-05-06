@@ -6,7 +6,8 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, securityOwnershipMapBuildOwnershipMap, securityOwnershipMapCommunityMaintainers, securityOwnershipMapQueryOwnership, securityOwnershipMapRunOwnershipMap } from "../../scripts/index";
+
 import { securityThreatModelSkill } from "../security-threat-model/index";
 
 export const securityOwnershipMapSkill = defineSkill({
@@ -56,11 +57,11 @@ export const securityOwnershipMapSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("security-ownership-map-build-ownership-map"),
-    scriptUse("security-ownership-map-community-maintainers"),
-    scriptUse("security-ownership-map-query-ownership"),
-    scriptUse("security-ownership-map-run-ownership-map"),
+  procedures: [
+    procedureUse(securityOwnershipMapBuildOwnershipMap.id),
+    procedureUse(securityOwnershipMapCommunityMaintainers.id),
+    procedureUse(securityOwnershipMapQueryOwnership.id),
+    procedureUse(securityOwnershipMapRunOwnershipMap.id),
   ],
   references: [
     defineReference({

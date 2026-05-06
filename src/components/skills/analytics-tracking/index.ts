@@ -6,7 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, analyticsTrackingTrackingPlanGenerator } from "../../scripts/index";
 
 export const analyticsTrackingSkill = defineSkill({
   id: "analytics-tracking",
@@ -42,8 +42,8 @@ export const analyticsTrackingSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("analytics-tracking-tracking-plan-generator"),
+  procedures: [
+    procedureUse(analyticsTrackingTrackingPlanGenerator.id),
   ],
   references: [
     defineReference({

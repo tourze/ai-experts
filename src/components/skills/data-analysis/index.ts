@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, dataAnalysisAnalyze } from "../../scripts/index";
+
 import { dataStorytellingSkill } from "../data-storytelling/index";
 import { dataVisualizationSkill } from "../data-visualization/index";
 import { statisticalAnalysisSkill } from "../statistical-analysis/index";
@@ -65,7 +66,7 @@ export const dataAnalysisSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("data-analysis-analyze"),
+  procedures: [
+    procedureUse(dataAnalysisAnalyze.id),
   ],
 });

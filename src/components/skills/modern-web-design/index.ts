@@ -7,7 +7,8 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, modernWebDesignDesignAudit, modernWebDesignPatternGenerator } from "../../scripts/index";
+
 import { interactionDesignSkill } from "../interaction-design/index";
 import { responsiveDesignSkill } from "../responsive-design/index";
 import { webPerformanceDiagnosisSkill } from "../web-performance-diagnosis/index";
@@ -89,9 +90,9 @@ export const modernWebDesignSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("modern-web-design-design-audit"),
-    scriptUse("modern-web-design-pattern-generator"),
+  procedures: [
+    procedureUse(modernWebDesignDesignAudit.id),
+    procedureUse(modernWebDesignPatternGenerator.id),
   ],
   references: [
     defineReference({

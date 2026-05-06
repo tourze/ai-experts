@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, i18nLocalizationI18nChecker } from "../../scripts/index";
+
 import { modernWebDesignSkill } from "../modern-web-design/index";
 import { responsiveDesignSkill } from "../responsive-design/index";
 
@@ -68,7 +69,7 @@ export const i18nLocalizationSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("i18n-localization-i18n-checker"),
+  procedures: [
+    procedureUse(i18nLocalizationI18nChecker.id),
   ],
 });

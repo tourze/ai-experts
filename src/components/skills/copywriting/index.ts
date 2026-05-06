@@ -7,7 +7,8 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, copywritingContentFilter } from "../../scripts/index";
+
 import { croMethodologySkill } from "../cro-methodology/index";
 
 export const copywritingSkill = defineSkill({
@@ -57,8 +58,8 @@ export const copywritingSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("copywriting-content-filter"),
+  procedures: [
+    procedureUse(copywritingContentFilter.id),
   ],
   references: [
     defineReference({

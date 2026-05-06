@@ -36,7 +36,7 @@ import {
   defineScriptUse,
   defineSkill,
 } from "../../src/components/sdk.ts";
-import { scriptUse } from "../../src/components/scripts/index.ts";
+import { procedureUse, scriptUse } from "../../src/components/scripts/index.ts";
 
 const tempDirs: string[] = [];
 
@@ -233,13 +233,13 @@ describe("build/pipeline modules", () => {
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "references", "index.md"))).toBe(true);
   });
 
-  test("registry script validation enforces owner/runtime/id constraints", () => {
+  test("registry procedure validation enforces owner/runtime/id constraints", () => {
     const fixture = createFixture();
     const duplicateScriptRegistry: ComponentRegistry = {
       ...fixture.registry,
       scripts: [fixture.script, { ...fixture.script }],
     };
-    expect(() => validateRegistry(duplicateScriptRegistry)).toThrow("Duplicate script id");
+    expect(() => validateRegistry(duplicateScriptRegistry)).toThrow("Duplicate procedure id");
 
     const invalidRuntimeRegistry: ComponentRegistry = {
       ...fixture.registry,
@@ -257,10 +257,10 @@ describe("build/pipeline modules", () => {
       ...fixture.registry,
       skills: [{ ...fixture.skill, scripts: ["missing-script"] }],
     };
-    expect(() => validateRegistry(missingScriptReferenceRegistry)).toThrow("references missing script");
+    expect(() => validateRegistry(missingScriptReferenceRegistry)).toThrow("references missing procedure");
   });
 
-  test("script references support structured links and scripts helper guard", () => {
+  test("procedure references support structured links and scripts helper guard", () => {
     const fixture = createFixture();
     const agentScript = defineScript({
       id: "fixture-agent-script",
@@ -297,7 +297,7 @@ describe("build/pipeline modules", () => {
       Platform.Claude,
       new Map([[fixture.script.id, fixture.script]]),
     );
-    expect(skillMd).toContain("关联说明");
+    expect(skillMd).toContain("调用目的");
     expect(skillMd).toContain("用于 fixture 场景校验");
 
     const invalidReasonRegistry: ComponentRegistry = {
@@ -314,8 +314,9 @@ describe("build/pipeline modules", () => {
     };
     expect(() => validateRegistry(invalidReasonRegistry)).toThrow("reason must be a non-empty string");
 
+    expect(() => procedureUse("debug-methodology-debug-checklist")).not.toThrow();
     expect(() => scriptUse("debug-methodology-debug-checklist")).not.toThrow();
-    expect(() => scriptUse("missing-script-id")).toThrow("Unknown component script id");
+    expect(() => procedureUse("missing-script-id")).toThrow("Unknown component procedure id");
   });
 
   test("agent helpers validate and emit claude/codex agents", async () => {
@@ -366,6 +367,9 @@ describe("build/pipeline modules", () => {
 
     const config = renderHookConfig([fixture.hook], Platform.Codex);
     expect(config.hooks.UserPromptSubmit[0]?.hooks[0]?.statusMessage).toBe("running fixture hook");
+    const hookCommand = config.hooks.UserPromptSubmit[0]?.hooks[0]?.command ?? "";
+    expect(hookCommand).toContain("$HOME/.codex/hooks/dispatch.mjs");
+    expect(hookCommand).not.toContain(":-");
     expect(renderCodexConfig()).toContain("codex_hooks = true");
   });
 

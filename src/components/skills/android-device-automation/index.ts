@@ -6,7 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, androidDeviceAutomationAppLauncher, androidDeviceAutomationBuildAndTest, androidDeviceAutomationCommon, androidDeviceAutomationDiagnoseApp, androidDeviceAutomationEmuHealthCheck, androidDeviceAutomationEmulatorManage, androidDeviceAutomationGesture, androidDeviceAutomationKeyboard, androidDeviceAutomationLogMonitor, androidDeviceAutomationNavigator, androidDeviceAutomationScreenMapper } from "../../scripts/index";
 
 export const androidDeviceAutomationSkill = defineSkill({
   id: "android-device-automation",
@@ -33,18 +33,18 @@ export const androidDeviceAutomationSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("android-device-automation-app-launcher"),
-    scriptUse("android-device-automation-build-and-test"),
-    scriptUse("android-device-automation-common"),
-    scriptUse("android-device-automation-diagnose-app"),
-    scriptUse("android-device-automation-emu-health-check"),
-    scriptUse("android-device-automation-emulator-manage"),
-    scriptUse("android-device-automation-gesture"),
-    scriptUse("android-device-automation-keyboard"),
-    scriptUse("android-device-automation-log-monitor"),
-    scriptUse("android-device-automation-navigator"),
-    scriptUse("android-device-automation-screen-mapper"),
+  procedures: [
+    procedureUse(androidDeviceAutomationAppLauncher.id),
+    procedureUse(androidDeviceAutomationBuildAndTest.id),
+    procedureUse(androidDeviceAutomationCommon.id),
+    procedureUse(androidDeviceAutomationDiagnoseApp.id),
+    procedureUse(androidDeviceAutomationEmuHealthCheck.id),
+    procedureUse(androidDeviceAutomationEmulatorManage.id),
+    procedureUse(androidDeviceAutomationGesture.id),
+    procedureUse(androidDeviceAutomationKeyboard.id),
+    procedureUse(androidDeviceAutomationLogMonitor.id),
+    procedureUse(androidDeviceAutomationNavigator.id),
+    procedureUse(androidDeviceAutomationScreenMapper.id),
   ],
   references: [
     defineReference({

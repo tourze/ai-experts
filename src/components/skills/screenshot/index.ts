@@ -6,7 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, screenshotEnsureMacosPermissions, screenshotMacosDisplayInfo, screenshotMacosPermissions, screenshotMacosWindowInfo, screenshotTakeScreenshot, screenshotTakeScreenshotWindows } from "../../scripts/index";
 
 export const screenshotSkill = defineSkill({
   id: "screenshot",
@@ -46,13 +46,13 @@ export const screenshotSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("screenshot-ensure-macos-permissions"),
-    scriptUse("screenshot-macos-display-info"),
-    scriptUse("screenshot-macos-permissions"),
-    scriptUse("screenshot-macos-window-info"),
-    scriptUse("screenshot-take-screenshot"),
-    scriptUse("screenshot-take-screenshot-windows"),
+  procedures: [
+    procedureUse(screenshotEnsureMacosPermissions.id),
+    procedureUse(screenshotMacosDisplayInfo.id),
+    procedureUse(screenshotMacosPermissions.id),
+    procedureUse(screenshotMacosWindowInfo.id),
+    procedureUse(screenshotTakeScreenshot.id),
+    procedureUse(screenshotTakeScreenshotWindows.id),
   ],
   assets: [
     defineAsset({

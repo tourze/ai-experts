@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, youtubeSearchSearchYoutube } from "../../scripts/index";
+
 import { youtubeAnalysisSkill } from "../youtube-analysis/index";
 
 export const youtubeSearchSkill = defineSkill({
@@ -52,7 +53,7 @@ export const youtubeSearchSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("youtube-search-search-youtube"),
+  procedures: [
+    procedureUse(youtubeSearchSearchYoutube.id),
   ],
 });

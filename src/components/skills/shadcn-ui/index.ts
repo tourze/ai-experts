@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, shadcnUiVerifySetup } from "../../scripts/index";
+
 import { designSystemPatternsSkill } from "../design-system-patterns/index";
 import { frontendDesignReviewSkill } from "../frontend-design-review/index";
 
@@ -76,7 +77,7 @@ export const shadcnUiSkill = defineSkill({
     KnownTool.Bash,
     KnownTool.WebFetch,
   ],
-  scripts: [
-    scriptUse("shadcn-ui-verify-setup"),
+  procedures: [
+    procedureUse(shadcnUiVerifySetup.id),
   ],
 });

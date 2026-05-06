@@ -7,7 +7,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, financialAnalystBudgetVarianceAnalyzer, financialAnalystDcfValuation, financialAnalystForecastBuilder, financialAnalystRatioCalculator, financialAnalystRatioInputValidation } from "../../scripts/index";
 
 export const financialAnalystSkill = defineSkill({
   id: "financial-analyst",
@@ -50,12 +50,12 @@ export const financialAnalystSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("financial-analyst-budget-variance-analyzer"),
-    scriptUse("financial-analyst-dcf-valuation"),
-    scriptUse("financial-analyst-forecast-builder"),
-    scriptUse("financial-analyst-ratio-calculator"),
-    scriptUse("financial-analyst-ratio-input-validation"),
+  procedures: [
+    procedureUse(financialAnalystBudgetVarianceAnalyzer.id),
+    procedureUse(financialAnalystDcfValuation.id),
+    procedureUse(financialAnalystForecastBuilder.id),
+    procedureUse(financialAnalystRatioCalculator.id),
+    procedureUse(financialAnalystRatioInputValidation.id),
   ],
   references: [
     defineReference({

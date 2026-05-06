@@ -7,7 +7,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, skillCreatorAggregateBenchmark, skillCreatorGenerateReview, skillCreatorGenerateReport, skillCreatorImproveDescription, skillCreatorPackageSkill, skillCreatorQuickValidate, skillCreatorRunEval, skillCreatorRunLoop, skillCreatorUtils } from "../../scripts/index";
 
 export const skillCreatorSkill = defineSkill({
   id: "skill-creator",
@@ -34,16 +34,16 @@ export const skillCreatorSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("skill-creator-aggregate-benchmark"),
-    scriptUse("skill-creator-generate-review"),
-    scriptUse("skill-creator-generate-report"),
-    scriptUse("skill-creator-improve-description"),
-    scriptUse("skill-creator-package-skill"),
-    scriptUse("skill-creator-quick-validate"),
-    scriptUse("skill-creator-run-eval"),
-    scriptUse("skill-creator-run-loop"),
-    scriptUse("skill-creator-utils"),
+  procedures: [
+    procedureUse(skillCreatorAggregateBenchmark.id),
+    procedureUse(skillCreatorGenerateReview.id),
+    procedureUse(skillCreatorGenerateReport.id),
+    procedureUse(skillCreatorImproveDescription.id),
+    procedureUse(skillCreatorPackageSkill.id),
+    procedureUse(skillCreatorQuickValidate.id),
+    procedureUse(skillCreatorRunEval.id),
+    procedureUse(skillCreatorRunLoop.id),
+    procedureUse(skillCreatorUtils.id),
   ],
   references: [
     defineReference({

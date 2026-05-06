@@ -7,7 +7,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, architectureReviewerScanCodebase } from "../../scripts/index";
 
 export const architectureReviewerSkill = defineSkill({
   id: "architecture-reviewer",
@@ -45,8 +45,8 @@ export const architectureReviewerSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("architecture-reviewer-scan-codebase"),
+  procedures: [
+    procedureUse(architectureReviewerScanCodebase.id),
   ],
   references: [
     defineReference({

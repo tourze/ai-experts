@@ -6,7 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, complexityReducerComplexityReport } from "../../scripts/index";
 
 export const complexityReducerSkill = defineSkill({
   id: "complexity-reducer",
@@ -46,8 +46,8 @@ export const complexityReducerSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("complexity-reducer-complexity-report"),
+  procedures: [
+    procedureUse(complexityReducerComplexityReport.id),
   ],
   references: [
     defineReference({

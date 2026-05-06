@@ -5,7 +5,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, baoyuCompressImageMain } from "../../scripts/index";
 
 export const baoyuCompressImageSkill = defineSkill({
   id: "baoyu-compress-image",
@@ -46,7 +46,7 @@ export const baoyuCompressImageSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("baoyu-compress-image-main"),
+  procedures: [
+    procedureUse(baoyuCompressImageMain.id),
   ],
 });

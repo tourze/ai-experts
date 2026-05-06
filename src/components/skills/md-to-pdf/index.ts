@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, mdToPdfKatexRender, mdToPdfMdToPdf, mdToPdfSetup } from "../../scripts/index";
+
 import { markdownMermaidWritingSkill } from "../markdown-mermaid-writing/index";
 
 export const mdToPdfSkill = defineSkill({
@@ -57,9 +58,9 @@ export const mdToPdfSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("md-to-pdf-katex-render"),
-    scriptUse("md-to-pdf-md-to-pdf"),
-    scriptUse("md-to-pdf-setup"),
+  procedures: [
+    procedureUse(mdToPdfKatexRender.id),
+    procedureUse(mdToPdfMdToPdf.id),
+    procedureUse(mdToPdfSetup.id),
   ],
 });

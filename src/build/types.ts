@@ -2,8 +2,8 @@ import type {
   AgentDefinition,
   HookDefinition,
   InstructionDefinition,
+  ProcedureDefinition,
   ProfileDefinition,
-  ScriptDefinition,
   SkillDefinition,
 } from "../components/sdk";
 
@@ -11,7 +11,8 @@ export type ComponentRegistry = {
   version: number;
   defaultProfile: string;
   instructions: readonly InstructionDefinition[];
-  scripts: readonly ScriptDefinition[];
+  procedures?: readonly ProcedureDefinition[];
+  scripts?: readonly ProcedureDefinition[];
   skills: readonly SkillDefinition[];
   agents: readonly AgentDefinition[];
   hooks: readonly HookDefinition[];
@@ -21,7 +22,8 @@ export type ComponentRegistry = {
 export type ProfileSurface = {
   profile: ProfileDefinition;
   instructions: InstructionDefinition[];
-  scripts: ScriptDefinition[];
+  procedures: ProcedureDefinition[];
+  scripts: ProcedureDefinition[];
   skills: SkillDefinition[];
   agents: AgentDefinition[];
   hooks: HookDefinition[];

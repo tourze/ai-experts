@@ -7,7 +7,8 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { scriptUse } from "../../scripts/index";
+import { procedureUse, markitdownBatchConvert, markitdownConvertLiterature, markitdownConvertWithAi, markitdownMarkitdownRuntime } from "../../scripts/index";
+
 import { docCoauthoringSkill } from "../doc-coauthoring/index";
 import { mdToPdfSkill } from "../md-to-pdf/index";
 import { pptGenerateSkill } from "../ppt-generate/index";
@@ -81,11 +82,11 @@ export const markitdownSkill = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
-  scripts: [
-    scriptUse("markitdown-batch-convert"),
-    scriptUse("markitdown-convert-literature"),
-    scriptUse("markitdown-convert-with-ai"),
-    scriptUse("markitdown-markitdown-runtime"),
+  procedures: [
+    procedureUse(markitdownBatchConvert.id),
+    procedureUse(markitdownConvertLiterature.id),
+    procedureUse(markitdownConvertWithAi.id),
+    procedureUse(markitdownMarkitdownRuntime.id),
   ],
   references: [
     defineReference({
