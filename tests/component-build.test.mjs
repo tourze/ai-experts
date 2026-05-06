@@ -446,7 +446,7 @@ test("component build emits claude and codex component surfaces", () => {
         encoding: "utf-8",
       },
     );
-    assert.match(guardOutput, /"decision": "block"/);
+    assert.match(guardOutput, /additionalContext/);
     assert.match(guardOutput, /Generated dist output/);
 
     const agentSource = readFileSync(

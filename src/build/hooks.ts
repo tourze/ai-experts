@@ -212,19 +212,13 @@ function hookMatchesPayload(hook, payload) {
 function mergeResults(results, event) {
   const deny = results.find((result) => result.kind === "deny");
   if (deny) return { decision: "block", reason: deny.message };
-  const report = results.find((result) => result.kind === "report");
   const contexts = results
     .filter((result) => result.kind === "add-context")
     .map((result) => result.message);
-  if (report && (event === "PostToolUse" || event === "Stop")) {
-    const merged = contexts.length > 0 ? [report.message, ...contexts].join("\\n\\n") : report.message;
-    return {
-      decision: "block",
-      reason: report.message,
-      hookSpecificOutput: { hookEventName: event, additionalContext: merged },
-    };
-  }
-  if (report) contexts.push(report.message);
+  const reports = results
+    .filter((result) => result.kind === "report")
+    .map((result) => result.message);
+  contexts.push(...reports);
   if (contexts.length > 0) {
     return {
       hookSpecificOutput: { hookEventName: event, additionalContext: contexts.join("\\n\\n") },
@@ -329,4 +323,3 @@ export function renderCodexConfig(): string {
     "",
   ].join("\n");
 }
-
