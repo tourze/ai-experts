@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineReference,
   defineSkill,
 } from "../../sdk";
@@ -22,6 +23,36 @@ export const goConcurrencyPatternsSkill = defineSkill({
     "错误传播必须和取消联动：某个子任务失败后，其他子任务尽快退出。",
     "避免把 `sync.Map` 当作默认容器。写多读少时优先分片 map + `RWMutex`。",
     "不要用 `time.Sleep` 做同步。等待完成用 `WaitGroup`、channel、`errgroup`。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "无限制地启动 goroutine。",
+      pass: "用 errgroup.SetLimit(n) 或信号量控制并发数。",
+    }),
+    defineAntiPattern({
+      fail: "接收方关闭 channel。",
+      pass: "关闭权属于发送方。",
+    }),
+    defineAntiPattern({
+      fail: "在循环中使用 time.After 造成内存泄漏。",
+      pass: "用 time.NewTimer + Reset 复用定时器。",
+    }),
+    defineAntiPattern({
+      fail: "select 中缺少 ctx.Done() 分支。",
+      pass: "始终包含 ctx.Done() 以防 goroutine 泄漏。",
+    }),
+    defineAntiPattern({
+      fail: "wg.Add 放在 goroutine 内部。",
+      pass: "Add 必须在 go 之前调用。",
+    }),
+    defineAntiPattern({
+      fail: "mutex 持有期间跨越 I/O 调用。",
+      pass: "临界区保持最短，I/O 前释放锁。",
+    }),
+    defineAntiPattern({
+      fail: "不跑 race 检测就上线。",
+      pass: "go test -race ./... 必须通过。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

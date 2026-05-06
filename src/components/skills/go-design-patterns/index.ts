@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineReference,
   defineSkill,
 } from "../../sdk";
@@ -24,6 +25,32 @@ export const goDesignPatternsSkill = defineSkill({
     "**每个外部调用必须有超时**：不允许无 context 的网络 I/O。",
     "**重试必须检查 context 取消**：循环内先 `select { case <-ctx.Done(): return ctx.Err() ... }`。",
     "**优雅停机三步**：监听信号 → 停止接受新连接 → 在超时内排空进行中请求。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "构造器返回接口值。",
+      pass: "返回 *T，让调用方按需转接口。",
+    }),
+    defineAntiPattern({
+      fail: "在 init() 里建连接或读文件。",
+      pass: "移入 New() 显式调用。",
+    }),
+    defineAntiPattern({
+      fail: "外部调用无超时。",
+      pass: "所有 I/O 传 context.WithTimeout。",
+    }),
+    defineAntiPattern({
+      fail: "重试循环忽略 context 取消。",
+      pass: "每次循环先检查 ctx.Err()。",
+    }),
+    defineAntiPattern({
+      fail: "停机直接 os.Exit。",
+      pass: "先 Shutdown 排空进行中请求，再退出。",
+    }),
+    defineAntiPattern({
+      fail: "使用 Service Locator 全局注册表。",
+      pass: "构造器注入依赖。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
