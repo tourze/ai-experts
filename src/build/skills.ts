@@ -2,6 +2,13 @@ import { existsSync, readdirSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
 import { pathToFileURL } from "node:url";
 import * as esbuild from "esbuild";
+import type {
+  AntiPatternDefinition,
+  Platform as PlatformType,
+  SkillDefinition,
+  SkillReferenceDefinition,
+  SkillScriptDefinition,
+} from "../components/sdk";
 import {
   copyComponentPath,
   defaultReferenceTarget,
@@ -22,7 +29,18 @@ import {
   renderMarkdownTableCell,
 } from "./markdown.ts";
 
-function renderSkillFrontmatter(skill, platform) {
+type TextListProperty = "useCases" | "constraints" | "checklist";
+
+type CompiledScriptManifestItem = {
+  id: string;
+  file: string;
+  runtime: "node" | "python3";
+  description: string;
+  argsSchema: string | null;
+  outputSchema: string | null;
+};
+
+function renderSkillFrontmatter(skill: SkillDefinition, platform: PlatformType): string {
   const lines = ["---", `name: ${skill.id}`, `description: ${yamlScalar(skill.description)}`];
   if (platform === Platform.Claude) {
     if (skill.invocation === InvocationPolicy.ExplicitOnly) {
@@ -41,7 +59,7 @@ function renderSkillFrontmatter(skill, platform) {
   return lines.join("\n");
 }
 
-function renderScriptRegistry(skill, platform) {
+function renderScriptRegistry(skill: SkillDefinition, platform: PlatformType): string {
   if (!skill.scripts || skill.scripts.length === 0) return "";
   const skillDir = platform === Platform.Claude
     ? "${CLAUDE_SKILL_DIR}"
@@ -56,7 +74,7 @@ function renderScriptRegistry(skill, platform) {
   return `\n## Script Registry\n\n${rows.join("\n")}\n`;
 }
 
-function renderReferenceMap(skill) {
+function renderReferenceMap(skill: SkillDefinition): string {
   if (!skill.references || skill.references.length === 0) return "";
   const rows = [
     "| Reference | 内容 | 何时读取 |",
@@ -68,7 +86,11 @@ function renderReferenceMap(skill) {
   return `\n## Reference Map\n\n${rows.join("\n")}\n`;
 }
 
-export function validateTextList(skill, property, itemLabel) {
+export function validateTextList(
+  skill: SkillDefinition,
+  property: TextListProperty,
+  itemLabel: string,
+): readonly string[] {
   const items = skill[property];
   if (!Array.isArray(items) || items.length === 0) {
     throw new Error(`Skill ${skill.id} must define at least one ${itemLabel}`);
@@ -81,20 +103,25 @@ export function validateTextList(skill, property, itemLabel) {
   return items;
 }
 
-function renderTextListSection(skill, property, title, itemLabel) {
+function renderTextListSection(
+  skill: SkillDefinition,
+  property: TextListProperty,
+  title: string,
+  itemLabel: string,
+): string {
   const items = validateTextList(skill, property, itemLabel);
-  return `## ${title}\n\n${renderMarkdownBulletList(items)}\n`;
+  return `## ${title}\n\n${renderMarkdownBulletList([...items])}\n`;
 }
 
-function renderUseCases(skill) {
+function renderUseCases(skill: SkillDefinition): string {
   return renderTextListSection(skill, "useCases", "适用场景", "useCase");
 }
 
-function renderConstraints(skill) {
+function renderConstraints(skill: SkillDefinition): string {
   return renderTextListSection(skill, "constraints", "核心约束", "constraint");
 }
 
-function renderChecklist(skill) {
+function renderChecklist(skill: SkillDefinition): string {
   const checklist = skill.checklist ?? [];
   if (checklist.length === 0) return "";
   validateTextList(skill, "checklist", "checklist item");
@@ -104,7 +131,7 @@ function renderChecklist(skill) {
   }).join("\n")}\n`;
 }
 
-export function validateAntiPatterns(skill) {
+export function validateAntiPatterns(skill: SkillDefinition): readonly AntiPatternDefinition[] {
   const antiPatterns = skill.antiPatterns;
   if (antiPatterns === undefined) return [];
   if (!Array.isArray(antiPatterns) || antiPatterns.length === 0) {
@@ -128,7 +155,7 @@ export function validateAntiPatterns(skill) {
   return antiPatterns;
 }
 
-function renderAntiPatterns(skill) {
+function renderAntiPatterns(skill: SkillDefinition): string {
   const antiPatterns = validateAntiPatterns(skill);
   if (antiPatterns.length === 0) return "";
   const rows = [
@@ -141,7 +168,7 @@ function renderAntiPatterns(skill) {
   return `## 反模式\n\n${rows.join("\n")}\n`;
 }
 
-function renderRelatedSkills(skill) {
+function renderRelatedSkills(skill: SkillDefinition): string {
   const relatedSkills = skill.relatedSkills ?? [];
   if (relatedSkills.length === 0) return "";
   const rows = relatedSkills.map((related) => {
@@ -151,7 +178,7 @@ function renderRelatedSkills(skill) {
   return `## 相关 Skill\n\n${rows.join("\n")}\n`;
 }
 
-function renderBodyWithGeneratedSections(skill, body) {
+function renderBodyWithGeneratedSections(skill: SkillDefinition, body: string): string {
   const bodyWithChecklist = insertSectionBeforeH2Matching(
     body,
     renderChecklist(skill),
@@ -162,7 +189,7 @@ function renderBodyWithGeneratedSections(skill, body) {
   return `${bodyWithChecklist.trimEnd()}\n\n${antiPatterns.trimEnd()}`;
 }
 
-export function renderSkillMd(skill, platform) {
+export function renderSkillMd(skill: SkillDefinition, platform: PlatformType): string {
   if (typeof skill.fullName !== "string" || skill.fullName.trim() === "") {
     throw new Error(`Skill ${skill.id} must define a non-empty fullName`);
   }
@@ -182,7 +209,7 @@ export function renderSkillMd(skill, platform) {
   ].join("\n");
 }
 
-function renderReferencesIndex(skill) {
+function renderReferencesIndex(skill: SkillDefinition): string {
   const rows = [
     "| Reference | Title | Summary | Load When |",
     "|-----------|-------|---------|-----------|",
@@ -195,60 +222,41 @@ function renderReferencesIndex(skill) {
   return `# Reference Index\n\n${rows.join("\n")}\n`;
 }
 
-export async function compileSkillScripts(skill, skillRoot) {
+async function buildScriptFromTypeScript(
+  sourcePath: string,
+  outfile: string,
+  bundle: boolean,
+): Promise<void> {
+  await esbuild.build({
+    entryPoints: [sourcePath],
+    outfile,
+    bundle,
+    platform: "node",
+    format: "esm",
+    target: "node20",
+    banner: nodeScriptBanner(sourcePath),
+    logLevel: "silent",
+  });
+}
+
+export async function compileSkillScripts(
+  skill: SkillDefinition,
+  skillRoot: string,
+): Promise<CompiledScriptManifestItem[]> {
   if (skill.scriptRoots && skill.scriptRoots.length > 0) {
     for (const root of skill.scriptRoots) {
       copyComponentPath(root.source, join(skillRoot, root.target ?? "scripts"));
     }
   }
+
   const scriptsRoot = join(skillRoot, "scripts");
   removeFiles(scriptsRoot, (file) => file.endsWith(".ts"));
   if (!skill.scripts || skill.scripts.length === 0) return [];
   ensureDir(scriptsRoot);
-  const compiled = [];
+
+  const compiled: CompiledScriptManifestItem[] = [];
   for (const script of skill.scripts) {
-    const sourcePath = toAbsolutePath(script.entry);
-    const runtime = script.runtime ?? (sourcePath.endsWith(".py") ? "python3" : "node");
-    const defaultTarget = runtime === "python3" ? `scripts/${script.id}.py` : `scripts/${script.id}.mjs`;
-    const target = script.target ?? defaultTarget;
-    const outfile = join(skillRoot, target);
-    ensureDir(dirname(outfile));
-    if (script.bundle === false) {
-      if (sourcePath.endsWith(".ts") && runtime === "node") {
-        await esbuild.build({
-          entryPoints: [sourcePath],
-          outfile,
-          bundle: false,
-          platform: "node",
-          format: "esm",
-          target: "node20",
-          banner: nodeScriptBanner(sourcePath),
-          logLevel: "silent",
-        });
-        rewriteRuntimeRelativeImports(outfile);
-      } else if (!existsSync(outfile)) {
-        copyComponentPath(script.entry, outfile);
-      }
-    } else {
-      await esbuild.build({
-        entryPoints: [sourcePath],
-        outfile,
-        bundle: true,
-        platform: "node",
-        format: "esm",
-        target: "node20",
-        banner: nodeScriptBanner(sourcePath),
-        logLevel: "silent",
-      });
-    }
-    compiled.push({
-      id: script.id,
-      file: target,
-      runtime,
-      description: script.description,
-      argsSchema: script.argsSchema ?? null,
-      outputSchema: script.outputSchema ?? null,
-    });
+    await compileSingleScript(skillRoot, script, compiled);
   }
 
   const runner = `#!/usr/bin/env node
@@ -277,7 +285,51 @@ process.exit(child.status ?? 1);
   return compiled;
 }
 
-function renderCodexOpenAiYaml(skill) {
+async function compileSingleScript(
+  skillRoot: string,
+  script: SkillScriptDefinition,
+  compiled: CompiledScriptManifestItem[],
+): Promise<void> {
+  const sourcePath = toAbsolutePath(script.entry);
+  const runtime = script.runtime ?? (sourcePath.endsWith(".py") ? "python3" : "node");
+  const defaultTarget = runtime === "python3" ? `scripts/${script.id}.py` : `scripts/${script.id}.mjs`;
+  const target = script.target ?? defaultTarget;
+  const outfile = join(skillRoot, target);
+  ensureDir(dirname(outfile));
+
+  if (script.bundle === false) {
+    if (sourcePath.endsWith(".ts") && runtime === "node") {
+      await buildScriptFromTypeScript(sourcePath, outfile, false);
+      rewriteRuntimeRelativeImports(outfile);
+    } else if (!existsSync(outfile)) {
+      copyComponentPath(script.entry, outfile);
+    }
+  } else if (sourcePath.endsWith(".ts") && runtime === "node") {
+    await buildScriptFromTypeScript(sourcePath, outfile, true);
+  } else {
+    await esbuild.build({
+      entryPoints: [sourcePath],
+      outfile,
+      bundle: true,
+      platform: "node",
+      format: "esm",
+      target: "node20",
+      banner: runtime === "node" ? nodeScriptBanner(sourcePath) : undefined,
+      logLevel: "silent",
+    });
+  }
+
+  compiled.push({
+    id: script.id,
+    file: target,
+    runtime,
+    description: script.description,
+    argsSchema: script.argsSchema ?? null,
+    outputSchema: script.outputSchema ?? null,
+  });
+}
+
+function renderCodexOpenAiYaml(skill: SkillDefinition): string {
   const allowImplicit = skill.invocation !== InvocationPolicy.ExplicitOnly;
   return [
     "interface:",
@@ -289,7 +341,11 @@ function renderCodexOpenAiYaml(skill) {
   ].join("\n");
 }
 
-export async function emitSkill(skill, platformRoot, platform) {
+export async function emitSkill(
+  skill: SkillDefinition,
+  platformRoot: string,
+  platform: PlatformType,
+): Promise<void> {
   const skillRoot = join(platformRoot, "skills", skill.id);
   ensureDir(skillRoot);
   writeText(join(skillRoot, "SKILL.md"), renderSkillMd(skill, platform));
@@ -315,7 +371,7 @@ export async function emitSkill(skill, platformRoot, platform) {
   }
 }
 
-function copyLooseSkillFiles(skill, skillRoot) {
+function copyLooseSkillFiles(skill: SkillDefinition, skillRoot: string): void {
   const sourceDir = dirname(toAbsolutePath(skill.body));
   const reserved = new Set([
     "index.ts",
@@ -328,6 +384,11 @@ function copyLooseSkillFiles(skill, skillRoot) {
   ]);
   for (const entry of readdirSync(sourceDir, { withFileTypes: true })) {
     if (reserved.has(entry.name)) continue;
-    copyComponentPath(new URL(`./${entry.name}${entry.isDirectory() ? "/" : ""}`, pathToFileURL(`${sourceDir}/`)), join(skillRoot, entry.name));
+    const sourceUrl = new URL(
+      `./${entry.name}${entry.isDirectory() ? "/" : ""}`,
+      pathToFileURL(`${sourceDir}/`),
+    );
+    copyComponentPath(sourceUrl, join(skillRoot, entry.name));
   }
 }
+

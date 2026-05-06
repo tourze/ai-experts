@@ -1,6 +1,7 @@
 import { rmSync } from "node:fs";
 import { isAbsolute, join, relative } from "node:path";
 import * as esbuild from "esbuild";
+import type { HookDefinition } from "../components/sdk";
 import {
   ensureDir,
   Platform,
@@ -10,15 +11,46 @@ import {
   writeText,
 } from "./core.ts";
 
-function relativeImportSpecifier(fromDir, targetPath) {
+type CompiledHook = {
+  id: string;
+  event: HookDefinition["event"];
+  matcher: string;
+  order: number;
+  payloadMode: NonNullable<HookDefinition["payloadMode"]>;
+  description: string;
+  timeoutSeconds?: number;
+  statusMessage?: string;
+  runnerName: string;
+  entryPath: string;
+};
+
+type HookManifestEntry = Omit<CompiledHook, "runnerName" | "entryPath">;
+
+type CommandHook = {
+  type: "command";
+  command: string;
+  timeout: number;
+  statusMessage?: string;
+};
+
+type HookConfigGroup = {
+  hooks: [CommandHook];
+  matcher?: string;
+};
+
+function relativeImportSpecifier(fromDir: string, targetPath: string): string {
   if (isAbsolute(targetPath)) return targetPath.split("\\").join("/");
   const specifier = relative(fromDir, targetPath).split("\\").join("/");
   return specifier.startsWith(".") ? specifier : `./${specifier}`;
 }
 
-export async function compileHookModules(hooks, hooksRoot, platform) {
+export async function compileHookModules(
+  hooks: readonly HookDefinition[],
+  hooksRoot: string,
+  platform: Platform,
+): Promise<HookManifestEntry[]> {
   ensureDir(hooksRoot);
-  const compiled = hooks
+  const compiled: CompiledHook[] = hooks
     .map((hook, index) => ({
       id: hook.id,
       event: hook.event,
@@ -26,11 +58,14 @@ export async function compileHookModules(hooks, hooksRoot, platform) {
       order: hook.order ?? 100,
       payloadMode: hook.payloadMode ?? "normalized",
       description: hook.description,
+      timeoutSeconds: hook.timeoutSeconds,
+      statusMessage: hook.statusMessage,
       runnerName: `runHook${index}`,
       entryPath: toAbsolutePath(hook.entry),
     }))
     .sort((a, b) => a.order - b.order || a.id.localeCompare(b.id));
-  const manifestHooks = compiled.map(({ runnerName, entryPath, ...hook }) => hook);
+
+  const manifestHooks: HookManifestEntry[] = compiled.map(({ runnerName, entryPath, ...hook }) => hook);
   writeText(join(hooksRoot, "manifest.json"), JSON.stringify({ hooks: manifestHooks }, null, 2) + "\n");
 
   const dispatcherEntry = join(hooksRoot, ".dispatch-entry.mjs");
@@ -53,7 +88,11 @@ export async function compileHookModules(hooks, hooksRoot, platform) {
   return manifestHooks;
 }
 
-function renderDispatcher(compiledHooks, platform, hooksRoot) {
+function renderDispatcher(
+  compiledHooks: readonly CompiledHook[],
+  platform: Platform,
+  hooksRoot: string,
+): string {
   const imports = compiledHooks.map((hook) =>
     `import { run as ${hook.runnerName} } from ${JSON.stringify(relativeImportSpecifier(hooksRoot, hook.entryPath))};`
   );
@@ -221,13 +260,26 @@ main().catch((error) => {
 `;
 }
 
-export function renderHookConfig(hooks, platform) {
-  const hooksByEvent = {};
+type HookDispatchGroup = {
+  event: HookDefinition["event"];
+  matcher: string;
+  command: string;
+  timeout: number;
+  hookCount: number;
+  statusMessages: Set<string>;
+};
+
+export function renderHookConfig(
+  hooks: readonly HookDefinition[],
+  platform: Platform,
+): { hooks: Record<string, HookConfigGroup[]> } {
+  const hooksByEvent: Record<string, HookConfigGroup[]> = {};
   const commandHome = platform === Platform.Claude
-    ? '${AI_EXPERTS_CLAUDE_HOME:-$HOME/.claude}'
-    : '${AI_EXPERTS_CODEX_HOME:-$HOME/.codex}';
-  const groups = [];
-  const groupsByKey = new Map();
+    ? "${AI_EXPERTS_CLAUDE_HOME:-$HOME/.claude}"
+    : "${AI_EXPERTS_CODEX_HOME:-$HOME/.codex}";
+
+  const groups: HookDispatchGroup[] = [];
+  const groupsByKey = new Map<string, HookDispatchGroup>();
   for (const hook of hooks) {
     const matcher = renderHookMatcher(hook);
     const command = `node "${commandHome}/hooks/dispatch.mjs" --platform ${platform} --event ${hook.event}`;
@@ -240,7 +292,7 @@ export function renderHookConfig(hooks, platform) {
         command,
         timeout: 10,
         hookCount: 0,
-        statusMessages: new Set(),
+        statusMessages: new Set<string>(),
       };
       groupsByKey.set(key, group);
       groups.push(group);
@@ -251,7 +303,7 @@ export function renderHookConfig(hooks, platform) {
   }
 
   for (const group of groups) {
-    const commandHook = {
+    const commandHook: CommandHook = {
       type: "command",
       command: group.command,
       timeout: group.timeout,
@@ -259,7 +311,7 @@ export function renderHookConfig(hooks, platform) {
     if (platform === Platform.Codex && group.hookCount === 1 && group.statusMessages.size === 1) {
       commandHook.statusMessage = [...group.statusMessages][0];
     }
-    const hookGroup = { hooks: [commandHook] };
+    const hookGroup: HookConfigGroup = { hooks: [commandHook] };
     if (group.matcher) hookGroup.matcher = group.matcher;
     hooksByEvent[group.event] ??= [];
     hooksByEvent[group.event].push(hookGroup);
@@ -267,7 +319,7 @@ export function renderHookConfig(hooks, platform) {
   return { hooks: hooksByEvent };
 }
 
-export function renderCodexConfig() {
+export function renderCodexConfig(): string {
   return [
     "[features]",
     "codex_hooks = true",
@@ -277,3 +329,4 @@ export function renderCodexConfig() {
     "",
   ].join("\n");
 }
+

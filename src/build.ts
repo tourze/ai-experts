@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { main } from "./build-components/main.ts";
+import { main } from "./build/main.ts";
 
 main().catch((error) => {
   console.error(`component build failed: ${error.stack || error.message || error}`);

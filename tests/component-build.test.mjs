@@ -4,7 +4,7 @@ import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync } from "node
 import { tmpdir } from "node:os";
 import { dirname, extname, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import test from "node:test";
+import { test } from "vitest";
 
 const repoRoot = resolve(".");
 
@@ -134,13 +134,18 @@ test("component build emits claude and codex component surfaces", () => {
   const tmp = mkdtempSync(join(tmpdir(), "ai-experts-component-build-"));
   try {
     const packageJson = JSON.parse(readFileSync(join(repoRoot, "package.json"), "utf-8"));
+    assert.equal(existsSync(join(repoRoot, "scripts")), false);
     assert.equal(existsSync(join(repoRoot, "scripts/build-components.mjs")), false);
-    assert.match(packageJson.scripts["build:components"], /scripts\/build-components\.ts/);
+    assert.equal(existsSync(join(repoRoot, "src/build-components.ts")), false);
+    assert.equal(existsSync(join(repoRoot, "src/build-components")), false);
+    assert.match(packageJson.scripts["build:components"], /src\/build\.ts/);
+    assert.doesNotMatch(packageJson.scripts["build:components"], /scripts\/build-components/);
+    assert.doesNotMatch(packageJson.scripts["build:components"], /src\/build-components/);
     assert.doesNotMatch(packageJson.scripts["build:components"], /build-components\.mjs/);
 
     execFileSync(
       process.execPath,
-      ["--import", "tsx/esm", "scripts/build-components.ts", "--out-dir", tmp],
+      ["--import", "tsx/esm", "src/build.ts", "--out-dir", tmp],
       { cwd: repoRoot, encoding: "utf-8" },
     );
 
@@ -457,7 +462,7 @@ test("component build emits claude and codex component surfaces", () => {
     assert.doesNotMatch(
       generatedRegistrySource,
       /from\s+"\.\/hooks\//,
-      "registry.generated.ts should not manually import hooks; build-components discovers hooks from src/components/hooks",
+      "registry.generated.ts should not manually import hooks; build discovers hooks from src/components/hooks",
     );
     const removedLayer = ["migr", "ated"].join("");
     assert.equal(existsSync(join(repoRoot, "src/components", removedLayer)), false);

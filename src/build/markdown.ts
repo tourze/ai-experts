@@ -1,15 +1,15 @@
-export function renderMarkdownBulletList(items) {
+export function renderMarkdownBulletList(items: readonly string[]): string {
   return items.map((item) => {
     const lines = String(item).trim().split(/\r?\n/);
     return lines.map((line, index) => index === 0 ? `- ${line}` : `  ${line}`).join("\n");
   }).join("\n");
 }
 
-export function renderMarkdownTableCell(value) {
+export function renderMarkdownTableCell(value: string): string {
   return String(value).trim().replace(/\r?\n/g, "<br>").replaceAll("|", "\\|");
 }
 
-export function hasH2SectionMatching(source, predicate) {
+export function hasH2SectionMatching(source: string, predicate: (title: string) => boolean): boolean {
   let inFence = false;
   for (const line of source.split(/\r?\n/)) {
     const fence = /^\s*(?:```|~~~)/.test(line);
@@ -20,12 +20,16 @@ export function hasH2SectionMatching(source, predicate) {
   return false;
 }
 
-export function startsWithH2Section(source) {
+export function startsWithH2Section(source: string): boolean {
   const firstLine = source.trimStart().split(/\r?\n/, 1)[0] ?? "";
   return /^##\s+\S/.test(firstLine);
 }
 
-export function insertSectionBeforeH2Matching(source, section, predicate) {
+export function insertSectionBeforeH2Matching(
+  source: string,
+  section: string,
+  predicate: (title: string) => boolean,
+): string {
   if (!section) return source;
   const lines = source.split(/\r?\n/);
   let inFence = false;

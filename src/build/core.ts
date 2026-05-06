@@ -9,29 +9,34 @@ import {
 } from "node:fs";
 import { basename, dirname, extname, isAbsolute, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { InvocationPolicy, Platform } from "../components/sdk";
+import type {
+  ComponentFile,
+  HookDefinition,
+  SkillReferenceDefinition,
+  ToolMatcher,
+} from "../components/sdk";
 
 const buildComponentsRoot = dirname(fileURLToPath(import.meta.url));
-export const scriptsRoot = resolve(buildComponentsRoot, "..");
-export const repoRoot = resolve(scriptsRoot, "..");
+export const srcRoot = resolve(buildComponentsRoot, "..");
+export const repoRoot = resolve(srcRoot, "..");
 export const sourceRoot = join(repoRoot, "src/components");
 
-export const Platform = {
-  Claude: "claude-code",
-  Codex: "codex-cli",
+export { InvocationPolicy, Platform };
+
+export type ParsedBuildArgs = {
+  outDir: string;
+  check: boolean;
+  help: boolean;
 };
 
-export const InvocationPolicy = {
-  ExplicitOnly: "explicit-only",
-  ModelOnly: "model-only",
-};
-
-export function parseArgs(argv) {
-  const args = { outDir: join(repoRoot, "dist"), check: false };
+export function parseArgs(argv: readonly string[]): ParsedBuildArgs {
+  const args: ParsedBuildArgs = { outDir: join(repoRoot, "dist"), check: false, help: false };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === "--check") args.check = true;
-    else if (arg === "--out-dir" && argv[index + 1]) {
-      args.outDir = resolve(argv[index + 1]);
+    else if (arg === "--out-dir" && argv[index + 1] !== undefined) {
+      args.outDir = resolve(argv[index + 1] as string);
       index += 1;
     } else if (arg.startsWith("--out-dir=")) {
       args.outDir = resolve(arg.slice("--out-dir=".length));
@@ -44,18 +49,20 @@ export function parseArgs(argv) {
   return args;
 }
 
-export function ensureDir(path) {
+export function ensureDir(path: string): void {
   mkdirSync(path, { recursive: true });
 }
 
-export function writeText(path, content) {
+export function writeText(path: string, content: string): void {
   ensureDir(dirname(path));
   writeFileSync(path, content, "utf-8");
 }
 
-export function collectFiles(root, predicate = () => true) {
-  const files = [];
-  function walk(dir) {
+export type FilePredicate = (path: string) => boolean;
+
+export function collectFiles(root: string, predicate: FilePredicate = () => true): string[] {
+  const files: string[] = [];
+  function walk(dir: string): void {
     for (const entry of readdirSync(dir, { withFileTypes: true })) {
       const full = join(dir, entry.name);
       if (entry.isDirectory()) walk(full);
@@ -66,29 +73,30 @@ export function collectFiles(root, predicate = () => true) {
   return files.sort();
 }
 
-export function needsRuntimeJsExtension(specifier) {
+export function needsRuntimeJsExtension(specifier: string): boolean {
   if (!specifier.startsWith(".")) return false;
   const [pathPart] = specifier.split(/[?#]/, 1);
-  return !/\.(?:js|mjs|cjs|json|node)$/u.test(pathPart);
+  return typeof pathPart === "string" && !/\.(?:js|mjs|cjs|json|node)$/u.test(pathPart);
 }
 
-export function appendRuntimeJsExtension(specifier) {
+export function appendRuntimeJsExtension(specifier: string): string {
   if (!needsRuntimeJsExtension(specifier)) return specifier;
   const match = specifier.match(/^([^?#]*)(.*)$/);
+  if (!match) return `${specifier}.js`;
   return `${match[1]}.js${match[2]}`;
 }
 
-export function rewriteRelativeImportSpecifiers(source) {
+export function rewriteRelativeImportSpecifiers(source: string): string {
   return source
-    .replace(/(\bfrom\s*["'])(\.[^"']+)(["'])/g, (_match, prefix, specifier, suffix) =>
+    .replace(/(\bfrom\s*["'])(\.[^"']+)(["'])/g, (_match, prefix: string, specifier: string, suffix: string) =>
       `${prefix}${appendRuntimeJsExtension(specifier)}${suffix}`)
-    .replace(/(\bimport\s*["'])(\.[^"']+)(["'])/g, (_match, prefix, specifier, suffix) =>
+    .replace(/(\bimport\s*["'])(\.[^"']+)(["'])/g, (_match, prefix: string, specifier: string, suffix: string) =>
       `${prefix}${appendRuntimeJsExtension(specifier)}${suffix}`)
-    .replace(/(\bimport\s*\(\s*["'])(\.[^"']+)(["']\s*\))/g, (_match, prefix, specifier, suffix) =>
+    .replace(/(\bimport\s*\(\s*["'])(\.[^"']+)(["']\s*\))/g, (_match, prefix: string, specifier: string, suffix: string) =>
       `${prefix}${appendRuntimeJsExtension(specifier)}${suffix}`);
 }
 
-export function rewriteCompiledJsImports(root) {
+export function rewriteCompiledJsImports(root: string): void {
   for (const file of collectFiles(root, (candidate) => candidate.endsWith(".js"))) {
     const source = readFileSync(file, "utf-8");
     const rewritten = rewriteRelativeImportSpecifiers(source);
@@ -98,7 +106,7 @@ export function rewriteCompiledJsImports(root) {
   }
 }
 
-export function stripBundledSourcePathComments(file) {
+export function stripBundledSourcePathComments(file: string): void {
   const source = readFileSync(file, "utf-8");
   const stripped = source.replace(
     /^\/\/ .*?(?:[\\/]components[\\/].*|[\\/]hooks[\\/]\.dispatch-entry)\.(?:ts|mjs)\r?\n/gm,
@@ -109,18 +117,19 @@ export function stripBundledSourcePathComments(file) {
   }
 }
 
-export function renderDiscoveredHooksIndex(componentsRoot) {
+export function renderDiscoveredHooksIndex(componentsRoot: string): string {
   const hooksRoot = join(componentsRoot, "hooks");
   const hookFiles = collectFiles(hooksRoot, (file) =>
     file.endsWith(".ts") &&
     basename(file) !== "index.ts" &&
     !relative(hooksRoot, file).split("\\").join("/").startsWith("_shared/")
   );
-  const imports = [];
-  const values = [];
+  const imports: string[] = [];
+  const values: string[] = [];
   for (const [index, file] of hookFiles.entries()) {
     const source = readFileSync(file, "utf-8");
-    const exportName = source.match(/export\s+const\s+([A-Za-z0-9_$]+)\s*=\s*defineHook\s*\(/u)?.[1];
+    const match = source.match(/export\s+const\s+([A-Za-z0-9_$]+)\s*=\s*defineHook\s*\(/u);
+    const exportName = match?.[1];
     if (!exportName) continue;
     const alias = `hook${index}`;
     let specifier = relative(hooksRoot, file).split("\\").join("/").replace(/\.ts$/u, "");
@@ -131,37 +140,39 @@ export function renderDiscoveredHooksIndex(componentsRoot) {
   return [
     ...imports,
     "",
-    `export const componentHooks = [${values.join(", ")}];`,
+    'import type { HookDefinition } from "../sdk";',
+    "",
+    `export const componentHooks: readonly HookDefinition[] = [${values.join(", ")}];`,
     "",
   ].join("\n");
 }
 
-export function toAbsolutePath(source) {
+export function toAbsolutePath(source: ComponentFile): string {
   if (source instanceof URL) return fileURLToPath(source);
   if (typeof source === "string") return resolve(repoRoot, source);
   throw new Error(`Unsupported component file reference: ${String(source)}`);
 }
 
-export function displayPath(source) {
+export function displayPath(source: ComponentFile): string {
   const absolute = toAbsolutePath(source);
   const rel = relative(repoRoot, absolute);
   return rel.startsWith("..") ? absolute : rel;
 }
 
-export function isSameOrInsidePath(candidate, parent) {
+export function isSameOrInsidePath(candidate: string, parent: string): boolean {
   const rel = relative(parent, candidate);
   return rel === "" || (!rel.startsWith("..") && !isAbsolute(rel));
 }
 
-export function readComponentText(source) {
+export function readComponentText(source: ComponentFile): string {
   return readFileSync(toAbsolutePath(source), "utf-8");
 }
 
-export function readOptionalComponentText(source) {
+export function readOptionalComponentText(source: ComponentFile | undefined): string {
   return source === undefined ? "" : readComponentText(source);
 }
 
-export function copyComponentPath(source, target) {
+export function copyComponentPath(source: ComponentFile, target: string): void {
   const absoluteSource = toAbsolutePath(source);
   if (!existsSync(absoluteSource)) {
     throw new Error(`Missing source path: ${displayPath(source)}`);
@@ -174,45 +185,45 @@ export function copyComponentPath(source, target) {
   });
 }
 
-export function removeFiles(root, predicate) {
+export function removeFiles(root: string, predicate: FilePredicate): void {
   for (const file of collectFiles(root, predicate)) {
     rmSync(file, { force: true });
   }
 }
 
-export function runtimeRelativeSpecifier(specifier) {
+export function runtimeRelativeSpecifier(specifier: string): string {
   if (!specifier.startsWith(".")) return specifier;
   const leaf = specifier.split("/").at(-1) ?? "";
   if (extname(leaf)) return specifier;
   return `${specifier}.mjs`;
 }
 
-export function rewriteRuntimeRelativeImports(file) {
+export function rewriteRuntimeRelativeImports(file: string): void {
   const source = readFileSync(file, "utf-8");
   const rewritten = source
-    .replace(/\b(from\s*["'])(\.[^"']+)(["'])/g, (_, prefix, specifier, suffix) =>
+    .replace(/\b(from\s*["'])(\.[^"']+)(["'])/g, (_, prefix: string, specifier: string, suffix: string) =>
       `${prefix}${runtimeRelativeSpecifier(specifier)}${suffix}`,
     )
-    .replace(/\b(import\s*\(\s*["'])(\.[^"']+)(["']\s*\))/g, (_, prefix, specifier, suffix) =>
+    .replace(/\b(import\s*\(\s*["'])(\.[^"']+)(["']\s*\))/g, (_, prefix: string, specifier: string, suffix: string) =>
       `${prefix}${runtimeRelativeSpecifier(specifier)}${suffix}`,
     );
-  if (rewritten !== source) writeFileSync(file, rewritten);
+  if (rewritten !== source) writeFileSync(file, rewritten, "utf-8");
 }
 
-export function nodeScriptBanner(sourcePath) {
+export function nodeScriptBanner(sourcePath: string): { js: string } | undefined {
   const source = readFileSync(sourcePath, "utf-8");
   return source.startsWith("#!") ? undefined : { js: "#!/usr/bin/env node" };
 }
 
-export function yamlScalar(value) {
+export function yamlScalar(value: unknown): string {
   return JSON.stringify(String(value));
 }
 
-export function tomlString(value) {
+export function tomlString(value: unknown): string {
   return JSON.stringify(String(value));
 }
 
-export function tomlMultiline(value) {
+export function tomlMultiline(value: unknown): string {
   const text = String(value);
   if (!text.includes("'''")) {
     return `'''\n${text}\n'''`;
@@ -220,11 +231,11 @@ export function tomlMultiline(value) {
   return tomlString(text);
 }
 
-export function tomlBoolean(value) {
+export function tomlBoolean(value: boolean): string {
   return value ? "true" : "false";
 }
 
-export function renderToolMatcher(matcher) {
+export function renderToolMatcher(matcher: ToolMatcher): string {
   if (typeof matcher === "string") return matcher;
   if (matcher.kind === "mcp") {
     return matcher.tool
@@ -235,12 +246,12 @@ export function renderToolMatcher(matcher) {
   throw new Error(`Unsupported matcher: ${JSON.stringify(matcher)}`);
 }
 
-export function renderHookMatcher(hook) {
+export function renderHookMatcher(hook: Pick<HookDefinition, "matcher">): string {
   if (!hook.matcher || hook.matcher.length === 0) return "";
   return hook.matcher.map(renderToolMatcher).join("|");
 }
 
-export function defaultReferenceTarget(reference) {
+export function defaultReferenceTarget(reference: SkillReferenceDefinition): string {
   const sourcePath = toAbsolutePath(reference.source);
   const name = basename(sourcePath);
   return reference.target ?? `references/${name}`;

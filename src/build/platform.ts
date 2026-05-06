@@ -1,6 +1,13 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync, rmSync } from "node:fs";
-import { basename, dirname, join, relative } from "node:path";
+import { dirname, join, relative } from "node:path";
+import type {
+  AgentDefinition,
+  HookDefinition,
+  InstructionDefinition,
+  SkillDefinition,
+  SkillScriptDefinition,
+} from "../components/sdk";
 import {
   collectFiles,
   defaultReferenceTarget,
@@ -13,13 +20,21 @@ import {
   toAbsolutePath,
   writeText,
 } from "./core.ts";
-import { emitAgent, hasStringTool, validateAgentBashBoundary, validateAgentOutputFormat, validateAgentQualityStandards, validateAgentWorkflow } from "./agents.ts";
+import {
+  emitAgent,
+  hasStringTool,
+  validateAgentBashBoundary,
+  validateAgentOutputFormat,
+  validateAgentQualityStandards,
+  validateAgentWorkflow,
+} from "./agents.ts";
 import { compileHookModules, renderCodexConfig, renderHookConfig } from "./hooks.ts";
 import { hasH2SectionMatching, startsWithH2Section } from "./markdown.ts";
 import { materializeProfile } from "./registry.ts";
 import { emitSkill, validateAntiPatterns, validateTextList } from "./skills.ts";
+import type { ComponentRegistry, ProfileSurface } from "./types.ts";
 
-export function renderInstruction(profileSurface, platform) {
+export function renderInstruction(profileSurface: ProfileSurface, platform: Platform): string {
   const title = platform === Platform.Claude ? "CLAUDE.md" : "AGENTS.md";
   const instructions = profileSurface.instructions
     .filter((instruction) => instruction.platforms.includes(platform))
@@ -28,9 +43,14 @@ export function renderInstruction(profileSurface, platform) {
     .map((instruction) => readComponentText(instruction.body).trimEnd())
     .join("\n\n");
 
-  const list = (label, items) => [
+  type ListedItem = SkillDefinition | AgentDefinition | HookDefinition | InstructionDefinition;
+  const describeItem = (item: ListedItem): string => ("description" in item ? item.description : item.title);
+  const list = (
+    label: string,
+    items: readonly ListedItem[],
+  ): string => [
     `### ${label}`,
-    ...(items.length > 0 ? items.map((item) => `- ${item.id}: ${item.description ?? item.title}`) : ["- none"]),
+    ...(items.length > 0 ? items.map((item) => `- ${item.id}: ${describeItem(item)}`) : ["- none"]),
   ].join("\n");
 
   return [
@@ -51,7 +71,7 @@ export function renderInstruction(profileSurface, platform) {
   ].join("\n");
 }
 
-export function checksumFiles(root) {
+export function checksumFiles(root: string): Record<string, string> {
   return Object.fromEntries(
     collectFiles(root).map((file) => {
       const hash = createHash("sha256").update(readFileSync(file)).digest("hex");
@@ -60,13 +80,13 @@ export function checksumFiles(root) {
   );
 }
 
-export function validateId(id, kind) {
+export function validateId(id: string, kind: string): void {
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(id)) {
     throw new Error(`Invalid ${kind} id: ${id}`);
   }
 }
 
-export function validateRegistry(registry) {
+export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
   if (!registry || !Array.isArray(registry.skills)) throw new Error("registry.skills must be an array");
   if (!Array.isArray(registry.instructions)) throw new Error("registry.instructions must be an array");
   if (!Array.isArray(registry.agents)) throw new Error("registry.agents must be an array");
@@ -116,7 +136,8 @@ export function validateRegistry(registry) {
     if (/\]\(\.\.\/[^)]+\/SKILL\.md\)|\]\([a-z0-9-]+-expert:[a-z0-9-]+\)/u.test(bodySource)) {
       throw new Error(`Skill ${skill.id} must move explicit cross-skill links from SKILL.body.md to relatedSkills`);
     }
-    const seenRelatedSkills = new Set();
+
+    const seenRelatedSkills = new Set<string>();
     for (const related of skill.relatedSkills ?? []) {
       validateId(related.id, `related skill in ${skill.id}`);
       if (!skillIds.has(related.id)) {
@@ -137,8 +158,9 @@ export function validateRegistry(registry) {
       }
       seenRelatedSkills.add(key);
     }
+
     const skillSourceRoot = dirname(toAbsolutePath(skill.body));
-    const seenScripts = new Set();
+    const seenScripts = new Set<string>();
     for (const script of skill.scripts ?? []) {
       validateId(script.id, `script in ${skill.id}`);
       if (seenScripts.has(script.id)) throw new Error(`Duplicate script id in ${skill.id}: ${script.id}`);
@@ -149,7 +171,8 @@ export function validateRegistry(registry) {
     }
     const scriptsDir = join(skillSourceRoot, "scripts");
     if (existsSync(scriptsDir)) {
-      const registeredEntries = new Set((skill.scripts ?? []).map((script) => toAbsolutePath(script.entry)));
+      const skillScripts: readonly SkillScriptDefinition[] = skill.scripts ?? [];
+      const registeredEntries = new Set(skillScripts.map((script) => toAbsolutePath(script.entry)));
       for (const entry of readdirSync(scriptsDir, { withFileTypes: true })) {
         const absoluteEntry = join(scriptsDir, entry.name);
         if (entry.isFile() && entry.name.endsWith(".ts") && !registeredEntries.has(absoluteEntry)) {
@@ -162,7 +185,8 @@ export function validateRegistry(registry) {
         }
       }
     }
-    const seenReferences = new Set();
+
+    const seenReferences = new Set<string>();
     for (const reference of skill.references ?? []) {
       validateId(reference.id, `reference in ${skill.id}`);
       if (seenReferences.has(reference.id)) throw new Error(`Duplicate reference id in ${skill.id}: ${reference.id}`);
@@ -245,7 +269,11 @@ export function validateRegistry(registry) {
   return surface;
 }
 
-export async function emitPlatform(profileSurface, outDir, platform) {
+export async function emitPlatform(
+  profileSurface: ProfileSurface,
+  outDir: string,
+  platform: Platform,
+): Promise<void> {
   const root = join(outDir, platform === Platform.Claude ? "claude" : "codex");
   rmSync(root, { recursive: true, force: true });
   ensureDir(root);
