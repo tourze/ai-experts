@@ -365,3 +365,7 @@ export function defineAntiPattern(definition: AntiPatternDefinition): AntiPatter
 export function defineAsset(definition: SkillAssetDefinition): SkillAssetDefinition {
   return definition;
 }
+
+export function defineSkillParameter(definition: SkillParameter): SkillParameter {
+  return definition;
+}

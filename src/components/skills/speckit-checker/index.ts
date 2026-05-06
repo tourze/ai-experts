@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineSkill,
+  defineSkillParameter,
 } from "../../sdk";
 
 export const speckitCheckerSkill = defineSkill({
@@ -21,7 +22,7 @@ export const speckitCheckerSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   parameters: [
-    { name: "arguments", description: "用户原始输入，如功能名称、需求描述或其他上下文。" },
+    defineSkillParameter({ name: "arguments", description: "用户原始输入，如功能名称、需求描述或其他上下文。" }),
   ],
   argumentHint: "[用户输入]",
 });
