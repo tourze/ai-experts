@@ -211,6 +211,18 @@ describe("component build integration", () => {
     assert.equal(ownerMismatch.ok, false);
     assert.match(ownerMismatch.error.message, /not callable by trigger skill/);
 
+    const invalidJson = JSON.parse(execFileSync(process.execPath, [
+      runPath,
+      "--script-id",
+      "debug-methodology-debug-checklist",
+      "--trigger-skill",
+      "debug-methodology",
+      "--request-json",
+      "{not-json}",
+    ], { encoding: "utf-8" }));
+    assert.equal(invalidJson.ok, false);
+    assert.match(invalidJson.error.message, /Unexpected token|JSON/i);
+
     const success = JSON.parse(execFileSync(process.execPath, [
       runPath,
       "--script-id",

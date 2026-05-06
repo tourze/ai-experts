@@ -231,6 +231,33 @@ describe("build/pipeline modules", () => {
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "references", "index.md"))).toBe(true);
   });
 
+  test("registry script validation enforces owner/runtime/id constraints", () => {
+    const fixture = createFixture();
+    const duplicateScriptRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      scripts: [fixture.script, { ...fixture.script }],
+    };
+    expect(() => validateRegistry(duplicateScriptRegistry)).toThrow("Duplicate script id");
+
+    const invalidRuntimeRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      scripts: [{ ...fixture.script, runtime: "python3" as any }],
+    };
+    expect(() => validateRegistry(invalidRuntimeRegistry)).toThrow("runtime must be node");
+
+    const missingOwnerRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      scripts: [{ ...fixture.script, owners: { skillIds: ["missing-skill"] } }],
+    };
+    expect(() => validateRegistry(missingOwnerRegistry)).toThrow("missing owner skill");
+
+    const missingScriptReferenceRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{ ...fixture.skill, scripts: ["missing-script"] }],
+    };
+    expect(() => validateRegistry(missingScriptReferenceRegistry)).toThrow("references missing script");
+  });
+
   test("agent helpers validate and emit claude/codex agents", async () => {
     const fixture = createFixture();
     expect(hasStringTool(fixture.agent, "Bash")).toBe(true);
