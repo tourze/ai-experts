@@ -1,19 +1,9 @@
-# ai-experts
+# 本地 AI 能力使用指南
 
-This generated surface is managed from `src/components/`.
+本文件定义当前本地 AI 能力集合的稳定会话级协作规则；具体工作流由匹配的 Skill 或 Agent 承载。
 
-## Runtime Model
+## 使用原则
 
-- Instructions are stable session guidance and should stay small.
-- Skills contain task workflows plus optional scripts and references.
-- Agents isolate long-running or multi-skill work.
-- Hooks are event middleware for context injection, guardrails, and telemetry.
-- Profiles compose instructions, skills, agents, and hooks into installable surfaces.
-
-## Maintenance Rules
-
-- Do not edit generated files under `dist/` by hand.
-- Add or migrate capabilities in `src/components/`, then run `npm run build:components`.
-- Register every script, reference, agent, and hook in TypeScript; unregistered resources must fail the build.
-- Prefer `new URL("./file", import.meta.url)` for component resources so editors and bundlers can track local files.
-- Treat `src/components/` as the only architecture boundary for local AI capabilities.
+- 先遵守本文件的全局行为协议；遇到具体任务时，再按可用 Skill / Agent 的说明执行。
+- Skill 是可复用工作流：当任务命中某个 Skill 的适用场景时，优先使用该 Skill。
+- Agent 是隔离上下文执行者：当任务需要独立审查、并行执行或专门角色时，按用户授权使用对应 Agent。

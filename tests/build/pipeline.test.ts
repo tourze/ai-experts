@@ -378,7 +378,8 @@ describe("build/pipeline modules", () => {
     expect(() => validateId("bad_id", "skill")).toThrow();
     const surface = validateRegistry(fixture.registry);
     expect(surface.skills.length).toBe(1);
-    expect(renderInstruction(surface, Platform.Claude)).toContain("Generated Profile");
+    expect(renderInstruction(surface, Platform.Claude)).not.toContain("可用能力索引");
+    expect(renderInstruction(surface, Platform.Codex)).toContain("可用能力索引");
 
     const out = createTempDir("ai-experts-platform-out-");
     await emitPlatform(surface, out, Platform.Claude);

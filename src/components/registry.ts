@@ -1,5 +1,5 @@
 import { componentHooks } from "./hooks/index";
-import { coreInstruction } from "./instructions/core/index";
+import { componentInstructions } from "./instructions/index";
 import { componentAgents, componentSkills } from "./registry.generated";
 import { defaultProfile } from "./profiles/default";
 import { componentProcedures } from "./scripts/index";
@@ -7,9 +7,7 @@ import { componentProcedures } from "./scripts/index";
 export const registry = {
   version: 1,
   defaultProfile: "default",
-  instructions: [
-    coreInstruction,
-  ],
+  instructions: componentInstructions,
   procedures: componentProcedures,
   scripts: componentProcedures,
   skills: componentSkills,

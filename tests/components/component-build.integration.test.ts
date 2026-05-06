@@ -47,6 +47,8 @@ describe("component build integration", () => {
 
     assert.equal(claudeManifest.skills.length, 338);
     assert.equal(codexManifest.skills.length, 338);
+    assert.equal(claudeManifest.instructions.length, 6);
+    assert.equal(codexManifest.instructions.length, 6);
     assert.equal(claudeManifest.agents.length, 80);
     assert.equal(codexManifest.agents.length, 80);
     assert.equal(claudeManifest.hooks.length, 99);
@@ -175,12 +177,48 @@ describe("component build integration", () => {
     assert.match(codexWebmanAgent, /Illuminate\\Database/);
 
     const claudeInstructions = readFileSync(join(tmpDistDir, "claude/CLAUDE.md"), "utf-8");
-    assert.match(claudeInstructions, /Runtime Model/);
-    assert.match(claudeInstructions, /frontend-engineer/);
-    assert.match(claudeInstructions, /component-routing-reminder/);
+    const expectedInstructionSections = [
+      "## 使用原则",
+      "## 通用行为协议",
+      "## 任务执行协议",
+      "## 安全与交付门禁",
+      "## 沟通与输出协议",
+      "## 复杂报告模板",
+    ];
+    assert.match(claudeInstructions, /^# 本地 AI 能力使用指南\n/);
+    assert.doesNotMatch(claudeInstructions.slice(0, 220), /# ai-experts|你正在使用|ai-experts/);
+    let previousInstructionSectionIndex = -1;
+    for (const section of expectedInstructionSections) {
+      const sectionIndex = claudeInstructions.indexOf(section);
+      assert.notEqual(sectionIndex, -1, `missing instruction section: ${section}`);
+      assert.ok(
+        sectionIndex > previousInstructionSectionIndex,
+        `instruction section should be ordered after previous section: ${section}`,
+      );
+      previousInstructionSectionIndex = sectionIndex;
+    }
+    assert.doesNotMatch(claudeInstructions, /可用能力索引|Skill 索引|Agent 索引|frontend-engineer/);
+    assert.doesNotMatch(claudeInstructions, /组件运行模型|组件源码边界|Procedure 运行时|生成画像|Hook 索引/);
 
     const codexInstructions = readFileSync(join(tmpDistDir, "codex/AGENTS.md"), "utf-8");
-    assert.match(codexInstructions, /Source of truth: src\/components\//);
+    assert.match(codexInstructions, /^# 本地 AI 能力使用指南\n/);
+    assert.doesNotMatch(codexInstructions.slice(0, 220), /# ai-experts|你正在使用|ai-experts/);
+    assert.match(codexInstructions, /## 使用原则/);
+    assert.match(codexInstructions, /## 任务执行协议/);
+    assert.match(codexInstructions, /## 可用能力索引/);
+    assert.doesNotMatch(codexInstructions, /组件运行模型|组件源码边界|Procedure 运行时|生成画像|Hook 索引/);
+
+    for (const platformName of ["claude", "codex"]) {
+      const skillFiles = collectFiles(join(tmpDistDir, platformName, "skills"))
+        .filter((file) => file.endsWith("/SKILL.md"));
+      for (const skillFile of skillFiles) {
+        assert.doesNotMatch(
+          readFileSync(skillFile, "utf-8"),
+          /\n{3,}/,
+          `${skillFile} should not contain repeated blank lines`,
+        );
+      }
+    }
   });
 
   test("provides bundled procedures.js protocol", () => {

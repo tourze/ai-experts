@@ -37,13 +37,16 @@ import { emitSkill, validateAntiPatterns, validateParameters, validateTextList }
 import type { ComponentRegistry, ProfileSurface } from "./types.ts";
 
 export function renderInstruction(profileSurface: ProfileSurface, platform: Platform): string {
-  const title = platform === Platform.Claude ? "CLAUDE.md" : "AGENTS.md";
   const instructions = profileSurface.instructions
     .filter((instruction) => instruction.platforms.includes(platform))
     .sort((a, b) => (a.priority ?? 100) - (b.priority ?? 100) || a.id.localeCompare(b.id));
   const body = instructions
     .map((instruction) => readComponentText(instruction.body).trimEnd())
     .join("\n\n");
+
+  if (platform === Platform.Claude) {
+    return `${body}\n`;
+  }
 
   type ListedItem = SkillDefinition | AgentDefinition | HookDefinition | InstructionDefinition;
   const describeItem = (item: ListedItem): string => ("description" in item ? item.description : item.title);
@@ -58,17 +61,13 @@ export function renderInstruction(profileSurface: ProfileSurface, platform: Plat
   return [
     body,
     "",
-    "## Generated Profile",
+    "## 可用能力索引",
     "",
-    `- Profile: ${profileSurface.profile.id}`,
-    `- Generated file: ${title}`,
-    `- Source of truth: src/components/`,
+    "以下索引用于帮助模型识别当前安装的可用能力；具体执行规则以对应 Skill / Agent 文件为准。",
     "",
-    list("Skills", profileSurface.skills.filter((item) => item.platforms.includes(platform))),
+    list("Skill 索引", profileSurface.skills.filter((item) => item.platforms.includes(platform))),
     "",
-    list("Agents", profileSurface.agents.filter((item) => item.platforms.includes(platform))),
-    "",
-    list("Hooks", profileSurface.hooks.filter((item) => item.platforms.includes(platform))),
+    list("Agent 索引", profileSurface.agents.filter((item) => item.platforms.includes(platform))),
     "",
   ].join("\n");
 }

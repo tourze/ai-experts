@@ -288,6 +288,10 @@ function rewriteLegacyScriptCommands(
   });
 }
 
+function normalizeMarkdownBlankLines(markdown: string): string {
+  return `${markdown.replace(/\r\n/g, "\n").replace(/\n{3,}/gu, "\n\n").trimEnd()}\n`;
+}
+
 export function renderSkillMd(
   skill: SkillDefinition,
   platform: PlatformType,
@@ -298,7 +302,7 @@ export function renderSkillMd(
   }
   const body = readComponentText(skill.body).trimEnd();
   const generatedBody = renderBodyWithGeneratedSections(skill, rewriteLegacyScriptCommands(skill, body, proceduresById));
-  return [
+  return normalizeMarkdownBlankLines([
     renderSkillFrontmatter(skill, platform),
     `# ${skill.fullName}`,
     "",
@@ -310,7 +314,7 @@ export function renderSkillMd(
     renderProcedureRegistry(skill, proceduresById),
     renderReferenceMap(skill),
     "",
-  ].join("\n");
+  ].join("\n"));
 }
 
 function renderReferencesIndex(skill: SkillDefinition): string {

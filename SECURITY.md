@@ -28,7 +28,7 @@
 
 - **hooks/dispatch.mjs 与各插件 dispatch.mjs**：会动态执行 `plugins/<plugin>/hooks/<event>/*.mjs`，禁止从这些 hook 里执行未经验证的外部输入
 - **install.mjs**：会 `symlink` 到 `~/.claude` 与 `~/.codex`，并写入 `settings.json` / `hooks.json`；改动需保证 `--dry-run` 始终不接触磁盘
-- **MEMORY.md**：被软链到用户级记忆文件，会注入到所有 CLI 会话，须避免写入特权指令或绕过权限的提示
+- **src/components/instructions/**：生成 `CLAUDE.md` / `AGENTS.md` 并注入 CLI 会话，须避免写入特权指令或绕过权限的提示
 
 ## 范围
 
