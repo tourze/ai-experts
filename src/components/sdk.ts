@@ -271,6 +271,27 @@ export type NormalizedHookResult =
   | { kind: "report"; message: string }
   | { kind: "audit"; record: unknown };
 
+export type LegacyHookToolInput = {
+  command?: string;
+  file_path?: string;
+  old_string?: string;
+  new_string?: string;
+  [key: string]: unknown;
+};
+
+export type LegacyHookPayload = {
+  hook_event_name?: string;
+  cwd?: string;
+  session_id?: string;
+  transcript_path?: string | null;
+  permission_mode?: string;
+  prompt?: string;
+  tool_name?: KnownTool | string;
+  tool_input?: LegacyHookToolInput;
+  tool_response?: unknown;
+  [key: string]: unknown;
+};
+
 export function defineSkill(definition: Omit<SkillDefinition, "kind">): SkillDefinition {
   return {
     kind: ComponentKind.Skill,

@@ -1,4 +1,16 @@
 import type { HookDefinition } from "../sdk";
+import { commandSafetyHooks } from "./command-safety/index";
+import { contextCompactionHooks } from "./context-compaction/index";
+import { editSafetyHooks } from "./edit-safety/index";
+import { promptGuidanceHooks } from "./prompt-guidance/index";
+import { sessionBootstrapHooks } from "./session-bootstrap/index";
+import { skillRoutingHooks } from "./skill-routing/index";
 
-// Build-time placeholder. src/build.ts generates this file in the temporary component tree.
-export const componentHooks: readonly HookDefinition[] = [];
+export const componentHooks: readonly HookDefinition[] = [
+  ...commandSafetyHooks,
+  ...editSafetyHooks,
+  ...promptGuidanceHooks,
+  ...skillRoutingHooks,
+  ...sessionBootstrapHooks,
+  ...contextCompactionHooks,
+];

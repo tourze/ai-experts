@@ -72,7 +72,7 @@ export const SESSION_USAGE_SUMMARY_TEMPLATE = [
   "- 建议下次使用：`skill-name-4`：一句话说明 → 期望效果",
 ].join("\n");
 
-export function hasNextStepSection(text) {
+export function hasNextStepSection(text: string): boolean {
   // 注意：\b 对中文字符无效（JS 的 \w 只匹配 [a-zA-Z0-9_]），所以不用 \b。
   return /(^|\n)📌 下一步推荐/m.test(text) || /本轮无推荐，原因[:：]/.test(text);
 }
@@ -81,11 +81,11 @@ export function hasNextStepSection(text) {
 const COMPLETION_STATUS_RE =
   /(?:✅\s*DONE|⚠️\s*DONE_WITH_CONCERNS|🚫\s*BLOCKED|❓\s*NEEDS_CONTEXT)/;
 
-export function hasCompletionStatus(text) {
+export function hasCompletionStatus(text: string): boolean {
   return COMPLETION_STATUS_RE.test(text);
 }
 
-export function shouldSkipNextStepRequirement(text) {
+export function shouldSkipNextStepRequirement(text: string): boolean {
   const normalized = text.trim();
   if (!normalized) {
     return true;
@@ -112,7 +112,7 @@ export function shouldSkipNextStepRequirement(text) {
   return false;
 }
 
-export function summarizeText(text, limit = 120) {
+export function summarizeText(text: string, limit = 120): string {
   const normalized = text.replace(/\s+/g, " ").trim();
   if (normalized.length <= limit) {
     return normalized;

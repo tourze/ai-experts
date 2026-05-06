@@ -1,6 +1,30 @@
 import { existsSync, readFileSync } from "node:fs";
 
-export function parseTranscript(path) {
+type TranscriptContentItem = {
+  type?: string;
+  text?: string;
+  tool_use_id?: string;
+  [key: string]: unknown;
+};
+
+type TranscriptRecord = {
+  type?: string;
+  promptId?: string;
+  isSidechain?: boolean;
+  message?: {
+    content?: string | TranscriptContentItem[];
+    [key: string]: unknown;
+  };
+  payload?: {
+    type?: string;
+    role?: string;
+    content?: string | TranscriptContentItem[];
+    [key: string]: unknown;
+  };
+  [key: string]: unknown;
+};
+
+export function parseTranscript(path: string): TranscriptRecord[] | null {
   let content;
   try {
     content = readFileSync(path, "utf-8");
@@ -8,13 +32,13 @@ export function parseTranscript(path) {
     return null;
   }
 
-  const records = [];
+  const records: TranscriptRecord[] = [];
   for (const line of content.split("\n")) {
     if (!line) {
       continue;
     }
     try {
-      records.push(JSON.parse(line));
+      records.push(JSON.parse(line) as TranscriptRecord);
     } catch {
       // Skip damaged tail lines.
     }
@@ -22,7 +46,7 @@ export function parseTranscript(path) {
   return records;
 }
 
-export function isToolResultUserRecord(record) {
+export function isToolResultUserRecord(record: TranscriptRecord): boolean {
   if (record?.type !== "user") {
     return false;
   }
@@ -37,13 +61,13 @@ export function isToolResultUserRecord(record) {
   return content.some((item) => item && typeof item === "object" && "tool_use_id" in item);
 }
 
-export function isCodexMessage(record, role) {
+export function isCodexMessage(record: TranscriptRecord, role: "user" | "assistant"): boolean {
   return record?.type === "response_item" &&
     record.payload?.type === "message" &&
     record.payload?.role === role;
 }
 
-export function findCurrentPromptId(records) {
+export function findCurrentPromptId(records: readonly TranscriptRecord[]): string | null {
   for (let index = records.length - 1; index >= 0; index -= 1) {
     const record = records[index];
     if (record?.isSidechain === true) {
@@ -60,7 +84,7 @@ export function findCurrentPromptId(records) {
   return null;
 }
 
-export function findCurrentCodexUserIndex(records) {
+export function findCurrentCodexUserIndex(records: readonly TranscriptRecord[]): number {
   for (let index = records.length - 1; index >= 0; index -= 1) {
     if (isCodexMessage(records[index], "user")) {
       return index;
@@ -69,7 +93,7 @@ export function findCurrentCodexUserIndex(records) {
   return -1;
 }
 
-export function extractTextContent(content) {
+export function extractTextContent(content: unknown): string {
   if (typeof content === "string") {
     return content;
   }
@@ -82,7 +106,7 @@ export function extractTextContent(content) {
     .join("\n");
 }
 
-export function getFinalAssistantText(records, promptId) {
+export function getFinalAssistantText(records: readonly TranscriptRecord[], promptId: string): string {
   const texts = [];
   for (const record of records) {
     if (record?.promptId !== promptId || record?.isSidechain === true || record?.type !== "assistant") {
@@ -96,7 +120,7 @@ export function getFinalAssistantText(records, promptId) {
   return texts.join("\n\n");
 }
 
-export function getFinalCodexAssistantText(records, userIndex) {
+export function getFinalCodexAssistantText(records: readonly TranscriptRecord[], userIndex: number): string {
   const texts = [];
   for (let index = userIndex + 1; index < records.length; index += 1) {
     const record = records[index];

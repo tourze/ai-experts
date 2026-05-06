@@ -4,11 +4,11 @@ import { basename, dirname, extname, join, resolve } from "path";
 
 const isWin = process.platform === "win32";
 
-export function cmd(name) {
+export function cmd(name: string): string {
   return isWin ? `${name}.exe` : name;
 }
 
-export function hasCommand(name) {
+export function hasCommand(name: string): boolean {
   try {
     execFileSync(cmd(name), ["--version"], { stdio: "ignore", timeout: 5000 });
     return true;
@@ -17,20 +17,38 @@ export function hasCommand(name) {
   }
 }
 
-export function matchExt(filePath, exts) {
+export function matchExt(filePath: string, exts: readonly string[]): boolean {
   return exts.includes(extname(filePath).toLowerCase());
 }
 
-export function matchName(filePath, names) {
+export function matchName(filePath: string, names: readonly string[]): boolean {
   return names.includes(basename(filePath));
 }
 
-export function pathContains(filePath, segment) {
-  const normalized = filePath.replaceAll("\\", "/");
-  return normalized.includes(`/${segment}/`);
+export function pathContains(filePath: string, segment: string): boolean {
+  const normalizedPath = filePath.replaceAll("\\", "/");
+  const normalizedSegment = segment.replaceAll("\\", "/").replace(/^\/+|\/+$/g, "");
+  if (!normalizedSegment) return false;
+  return (
+    normalizedPath === normalizedSegment ||
+    normalizedPath.startsWith(`${normalizedSegment}/`) ||
+    normalizedPath.includes(`/${normalizedSegment}/`) ||
+    normalizedPath.endsWith(`/${normalizedSegment}`)
+  );
 }
 
-export function findUp(startPath, fileNames) {
+export const JS_LINT_EXTENSIONS = [
+  ".js",
+  ".cjs",
+  ".mjs",
+  ".jsx",
+  ".ts",
+  ".tsx",
+  ".mts",
+  ".cts",
+] as const;
+
+export function findUp(startPath: string, fileNames: readonly string[]): string | null {
   let dir = dirname(resolve(startPath));
   while (true) {
     for (const name of fileNames) {
@@ -42,13 +60,14 @@ export function findUp(startPath, fileNames) {
   }
 }
 
-export function getLowerBaseName(filePath) {
+export function getLowerBaseName(filePath: string): string {
   return basename(filePath.replaceAll("\\", "/")).toLowerCase();
 }
 
-export function countLines(text) {
+export function countLines(text: string | Buffer | null | undefined): number {
   if (!text) return 0;
-  const lines = text.split(/\r?\n/u);
+  const raw = typeof text === "string" ? text : text.toString("utf-8");
+  const lines = raw.split(/\r?\n/u);
   if (lines.at(-1) === "") lines.pop();
   return lines.length;
 }
@@ -87,7 +106,7 @@ const CPP_RELATED_TEXT_FILE_NAMES = new Set([
   ".gitignore",
 ]);
 
-const CPP_BUDGET_BY_EXTENSION = {
+const CPP_BUDGET_BY_EXTENSION: Record<string, number> = {
   ".c": 800,
   ".cc": 800,
   ".cpp": 800,
@@ -104,17 +123,17 @@ const CPP_BUDGET_BY_EXTENSION = {
   ".cmake": 300,
 };
 
-const CPP_BUDGET_BY_FILE_NAME = {
+const CPP_BUDGET_BY_FILE_NAME: Record<string, number> = {
   "cmakelists.txt": 300,
   "makefile": 300,
   "gnumakefile": 300,
 };
 
-export function isCppSourceFile(filePath) {
+export function isCppSourceFile(filePath: string): boolean {
   return CPP_SOURCE_EXTENSIONS.has(extname(filePath).toLowerCase());
 }
 
-export function shouldCheckCppTextFile(filePath) {
+export function shouldCheckCppTextFile(filePath: string): boolean {
   const baseName = getLowerBaseName(filePath);
   return (
     CPP_RELATED_TEXT_FILE_NAMES.has(baseName) ||
@@ -122,7 +141,7 @@ export function shouldCheckCppTextFile(filePath) {
   );
 }
 
-export function getCppBudget(filePath) {
+export function getCppBudget(filePath: string): number | null {
   const baseName = getLowerBaseName(filePath);
   return CPP_BUDGET_BY_FILE_NAME[baseName] ?? CPP_BUDGET_BY_EXTENSION[extname(baseName)] ?? null;
 }

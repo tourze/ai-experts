@@ -12,10 +12,31 @@ import {
 } from "node:fs";
 import { homedir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
+import type { LegacyHookPayload } from "../../sdk";
 
 const COMPONENT_NAME = "hooks";
 const DEFAULT_MAX_BYTES = 5 * 1024 * 1024;
 const DEFAULT_MAX_FILES = 5;
+
+type AuditTelemetryData = Record<string, unknown>;
+
+export type HookTelemetryEntry = {
+  ts?: number;
+  pid?: number;
+  session_id?: string | null;
+  transcript_path?: string | null;
+  workspace?: string;
+  component?: string;
+  hook?: string;
+  event?: string;
+  decision?: string;
+  audit_type?: string;
+  missing_route?: boolean;
+  routed_but_not_used?: boolean;
+  skills_recommended?: string[];
+  skills_used?: string[];
+  [key: string]: unknown;
+};
 
 function telemetryRoot() {
   return process.env.AI_EXPERTS_HOOK_TELEMETRY_DIR ||
@@ -33,8 +54,8 @@ function telemetryRootsForRead() {
   return [...new Set([telemetryRoot(), legacyTelemetryRoot()])];
 }
 
-function parsePositiveInt(value, fallback) {
-  const parsed = Number.parseInt(value ?? "", 10);
+function parsePositiveInt(value: string | number | null | undefined, fallback: number): number {
+  const parsed = Number.parseInt(String(value ?? ""), 10);
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 }
 
@@ -46,7 +67,7 @@ function telemetryMaxFiles() {
   return parsePositiveInt(process.env.AI_EXPERTS_HOOK_TELEMETRY_MAX_FILES, DEFAULT_MAX_FILES);
 }
 
-function workspacePathForTelemetry(payload) {
+function workspacePathForTelemetry(payload: LegacyHookPayload): string {
   if (typeof process.env.AI_EXPERTS_HOOK_TELEMETRY_WORKSPACE === "string" &&
       process.env.AI_EXPERTS_HOOK_TELEMETRY_WORKSPACE.trim()) {
     return resolve(process.env.AI_EXPERTS_HOOK_TELEMETRY_WORKSPACE);
@@ -61,14 +82,18 @@ function workspacePathForTelemetry(payload) {
   return resolve(process.cwd());
 }
 
-function telemetryBucketForWorkspace(workspacePath, root = telemetryRoot()) {
+function telemetryBucketForWorkspace(workspacePath: string, root = telemetryRoot()): string {
   const hash = createHash("sha256").update(workspacePath).digest("hex").slice(0, 12);
   const rawName = basename(workspacePath) || "workspace";
   const slug = rawName.replace(/[^A-Za-z0-9._-]+/g, "-").slice(0, 48) || "workspace";
   return join(root, "workspaces", `${hash}-${slug}`);
 }
 
-export function telemetryFileForPayload(payload, root = telemetryRoot()) {
+export function telemetryFileForPayload(payload: LegacyHookPayload, root = telemetryRoot()): {
+  workspacePath: string;
+  dir: string;
+  file: string;
+} {
   const workspacePath = workspacePathForTelemetry(payload);
   const dir = telemetryBucketForWorkspace(workspacePath, root);
   return {
@@ -78,7 +103,7 @@ export function telemetryFileForPayload(payload, root = telemetryRoot()) {
   };
 }
 
-function rotateTelemetryFile(filePath) {
+function rotateTelemetryFile(filePath: string): void {
   if (!existsSync(filePath)) {
     return;
   }
@@ -111,7 +136,7 @@ function rotateTelemetryFile(filePath) {
   }
 }
 
-export function recordAuditTelemetry(payload, data) {
+export function recordAuditTelemetry(payload: LegacyHookPayload, data: AuditTelemetryData): void {
   if (process.env.AI_EXPERTS_HOOK_TELEMETRY === "0") {
     return;
   }
@@ -140,8 +165,8 @@ export function recordAuditTelemetry(payload, data) {
   }
 }
 
-export function readRecentTelemetryEntries(payload, maxBytes = 256 * 1024) {
-  const entries = [];
+export function readRecentTelemetryEntries(payload: LegacyHookPayload, maxBytes = 256 * 1024): HookTelemetryEntry[] {
+  const entries: HookTelemetryEntry[] = [];
   for (const root of telemetryRootsForRead()) {
     const { file } = telemetryFileForPayload(payload, root);
     if (!existsSync(file)) {
@@ -163,14 +188,14 @@ export function readRecentTelemetryEntries(payload, maxBytes = 256 * 1024) {
         .toString("utf-8")
         .split("\n")
         .filter(Boolean)
-        .map((line) => {
+        .map((line): HookTelemetryEntry | null => {
           try {
-            return JSON.parse(line);
+            return JSON.parse(line) as HookTelemetryEntry;
           } catch {
             return null;
           }
         })
-        .filter(Boolean));
+        .filter((entry): entry is HookTelemetryEntry => entry !== null));
     } catch {
       // Telemetry reads should be best effort.
     }

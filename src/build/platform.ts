@@ -268,8 +268,16 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
 
   for (const hook of registry.hooks) {
     validateId(hook.id, "hook");
-    if (!existsSync(toAbsolutePath(hook.entry))) {
+    const hookEntryPath = toAbsolutePath(hook.entry);
+    if (!existsSync(hookEntryPath)) {
       throw new Error(`Hook ${hook.id} entry is missing: ${displayPath(hook.entry)}`);
+    }
+    const normalizedHookEntryPath = hookEntryPath.replaceAll("\\", "/");
+    if (/\/hooks\/(pre-tool-use|post-tool-use|session-start|user-prompt-submit|stop|pre-compact)\//.test(normalizedHookEntryPath)) {
+      throw new Error(
+        `Hook ${hook.id} uses a legacy lifecycle directory: ${displayPath(hook.entry)}. ` +
+        "Move it to business workflow groups under src/components/hooks/.",
+      );
     }
   }
 

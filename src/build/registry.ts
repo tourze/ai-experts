@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import * as esbuild from "esbuild";
-import { collectFiles, rewriteCompiledJsImports, renderDiscoveredHooksIndex, sourceRoot, writeText } from "./core.ts";
+import { collectFiles, rewriteCompiledJsImports, sourceRoot, writeText } from "./core.ts";
 import type { AgentDefinition, HookDefinition, InstructionDefinition, ProfileDefinition, SkillDefinition } from "../components/sdk";
 import type { ComponentRegistry, ProfileSurface } from "./types.ts";
 
@@ -59,7 +59,6 @@ export async function compileRegistry(): Promise<{ registry: ComponentRegistry; 
   const tempComponentsRoot = join(tempDir, "components");
   cpSync(sourceRoot, tempComponentsRoot, { recursive: true, force: true });
   writeText(join(tempDir, "package.json"), JSON.stringify({ type: "module" }, null, 2) + "\n");
-  writeText(join(tempComponentsRoot, "hooks", "index.ts"), renderDiscoveredHooksIndex(tempComponentsRoot));
 
   const entryPoints = collectFiles(tempComponentsRoot, (file) => file.endsWith(".ts"));
   await esbuild.build({

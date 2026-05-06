@@ -5,8 +5,13 @@ const COMMAND_SEPARATORS = new Set(["&&", "||", ";", "|"]);
 
 const GIT_GLOBAL_OPTIONS_WITH_VALUE = new Set(["-C", "--git-dir", "--work-tree", "-c", "--config-env"]);
 
-function collectCommandInvocations(tokens, cmdName, subcommand, globalOptionsWithValue = new Set()) {
-  const invocations = [];
+function collectCommandInvocations(
+  tokens: readonly string[],
+  cmdName: string,
+  subcommand: string,
+  globalOptionsWithValue: ReadonlySet<string> = new Set(),
+): string[][] {
+  const invocations: string[][] = [];
 
   for (let i = 0; i < tokens.length; i += 1) {
     if (tokens[i] !== cmdName) continue;
@@ -46,34 +51,34 @@ function collectCommandInvocations(tokens, cmdName, subcommand, globalOptionsWit
   return invocations;
 }
 
-export function findGitSubcommandInvocations(command, subcommand) {
+export function findGitSubcommandInvocations(command: string, subcommand: string): string[][] {
   return collectCommandInvocations(tokenizeShell(command), "git", subcommand, GIT_GLOBAL_OPTIONS_WITH_VALUE);
 }
 
-export function findSvnSubcommandInvocations(command, subcommand) {
+export function findSvnSubcommandInvocations(command: string, subcommand: string): string[][] {
   return collectCommandInvocations(tokenizeShell(command), "svn", subcommand);
 }
 
-export function hasShortFlag(token, flag) {
+export function hasShortFlag(token: string, flag: string): boolean {
   if (!token.startsWith("-") || token.startsWith("--")) return false;
   return token.slice(1).includes(flag);
 }
 
-export function quoteShellArg(arg) {
+export function quoteShellArg(arg: string): string {
   return `'${arg.replace(/'/g, "'\\''")}'`;
 }
 
-function resolvePathToken(pathToken, baseCwd) {
+function resolvePathToken(pathToken: string | null | undefined, baseCwd: string): string {
   if (!pathToken) return baseCwd;
   if (pathToken === "~") return homedir();
   if (pathToken.startsWith("~/")) return resolve(homedir(), pathToken.slice(2));
   return resolve(baseCwd, pathToken);
 }
 
-export function tokenizeShell(command) {
-  const tokens = [];
+export function tokenizeShell(command: string): string[] {
+  const tokens: string[] = [];
   let current = "";
-  let quote = null;
+  let quote: "'" | "\"" | null = null;
   let escaped = false;
 
   const pushCurrent = () => {
@@ -148,7 +153,7 @@ export function tokenizeShell(command) {
   return tokens;
 }
 
-export function extractCommandCwd(command, fallbackCwd = process.cwd()) {
+export function extractCommandCwd(command: string, fallbackCwd = process.cwd()): string {
   const tokens = tokenizeShell(command);
   let cwd = fallbackCwd;
 

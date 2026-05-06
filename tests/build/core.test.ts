@@ -33,6 +33,7 @@ import {
   yamlScalar,
 } from "../../src/build/core.ts";
 import { KnownTool } from "../../src/components/sdk";
+import { JS_LINT_EXTENSIONS, pathContains } from "../../src/components/hooks/_shared/hook-edit-write-utils";
 
 const tempDirs: string[] = [];
 
@@ -157,5 +158,14 @@ describe("build/core", () => {
     };
     expect(defaultReferenceTarget(reference)).toBe("references/alpha.ts");
     expect(defaultReferenceTarget({ ...reference, target: "references/custom.md" })).toBe("references/custom.md");
+  });
+
+  test("hook path and extension helpers cover root paths and mjs", () => {
+    expect(pathContains(".github/workflows/ci.yml", ".github/workflows")).toBe(true);
+    expect(pathContains("src/.github/workflows/ci.yml", ".github/workflows")).toBe(true);
+    expect(pathContains("src/github/workflows/ci.yml", ".github/workflows")).toBe(false);
+
+    expect(JS_LINT_EXTENSIONS.includes(".mjs")).toBe(true);
+    expect(JS_LINT_EXTENSIONS.some((ext) => ext === "")).toBe(false);
   });
 });

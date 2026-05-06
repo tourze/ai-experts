@@ -582,12 +582,12 @@ test("component build emits claude and codex component surfaces", () => {
 
     const allowedHookRoots = new Set([
       "_shared",
-      "post-tool-use",
-      "pre-compact",
-      "pre-tool-use",
-      "session-start",
-      "stop",
-      "user-prompt-submit",
+      "command-safety",
+      "context-compaction",
+      "edit-safety",
+      "prompt-guidance",
+      "session-bootstrap",
+      "skill-routing",
       "index.ts",
     ]);
     for (const hookSourceFile of collectFiles(join(repoRoot, "src/components/hooks"))) {
@@ -595,7 +595,7 @@ test("component build emits claude and codex component surfaces", () => {
       assert.equal(
         allowedHookRoots.has(relativeHookPath.split(/[\\/]/)[0]),
         true,
-        `${hookSourceFile} should live directly under lifecycle hook directories`,
+        `${hookSourceFile} should live directly under business hook directories`,
       );
       assert.equal(
         relativeHookPath.split(/[\\/]/).includes("module"),
@@ -803,12 +803,12 @@ test("hook telemetry records stable component names and reminder cooldown", asyn
   try {
     const cacheKey = `?test=${Date.now()}`;
     const auditTelemetry = await import(
-      `${pathToFileURL(join(repoRoot, "src/components/hooks/_shared/audit-telemetry.mjs")).href}${cacheKey}`
+      `${pathToFileURL(join(repoRoot, "src/components/hooks/_shared/audit-telemetry.ts")).href}${cacheKey}`
     );
     const reminder = await import(
       `${pathToFileURL(join(
         repoRoot,
-        "src/components/hooks/user-prompt-submit/skill-trigger-telemetry-advisor-reminder.ts",
+        "src/components/hooks/skill-routing/skill-trigger-telemetry-advisor-reminder.ts",
       )).href}${cacheKey}`
     );
     const payload = {
