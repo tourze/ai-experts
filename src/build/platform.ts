@@ -31,6 +31,7 @@ import {
 import { compileHookModules, renderCodexConfig, renderHookConfig } from "./hooks.ts";
 import { hasH2SectionMatching, startsWithH2Section } from "./markdown.ts";
 import { materializeProfile } from "./registry.ts";
+import { resolveScriptUses } from "./script-uses.ts";
 import { emitScriptRuntime } from "./scripts.ts";
 import { emitSkill, validateAntiPatterns, validateParameters, validateTextList } from "./skills.ts";
 import type { ComponentRegistry, ProfileSurface } from "./types.ts";
@@ -205,7 +206,8 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
 
     const skillSourceRoot = dirname(toAbsolutePath(skill.body));
     const seenScripts = new Set<string>();
-    for (const scriptId of skill.scripts ?? []) {
+    for (const scriptUse of resolveScriptUses(skill.scripts)) {
+      const scriptId = scriptUse.id;
       validateId(scriptId, `script in ${skill.id}`);
       if (seenScripts.has(scriptId)) throw new Error(`Duplicate script id in ${skill.id}: ${scriptId}`);
       seenScripts.add(scriptId);
@@ -310,7 +312,8 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
       }
     }
     const seenScripts = new Set<string>();
-    for (const scriptId of agent.scripts ?? []) {
+    for (const scriptUse of resolveScriptUses(agent.scripts)) {
+      const scriptId = scriptUse.id;
       validateId(scriptId, `script in ${agent.id}`);
       if (seenScripts.has(scriptId)) {
         throw new Error(`Duplicate script id in ${agent.id}: ${scriptId}`);

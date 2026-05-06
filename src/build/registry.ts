@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import * as esbuild from "esbuild";
 import { collectFiles, rewriteCompiledJsImports, sourceRoot, writeText } from "./core.ts";
+import { resolveScriptUses } from "./script-uses.ts";
 import type {
   AgentDefinition,
   HookDefinition,
@@ -57,10 +58,10 @@ export function materializeProfile(registry: ComponentRegistry): ProfileSurface 
   const profileAgents = pickByIds(profile.id, agents, profile.agents, "agent");
   const scriptIds = new Set<string>();
   for (const skill of profileSkills) {
-    for (const scriptId of skill.scripts ?? []) scriptIds.add(scriptId);
+    for (const scriptUse of resolveScriptUses(skill.scripts)) scriptIds.add(scriptUse.id);
   }
   for (const agent of profileAgents) {
-    for (const scriptId of agent.scripts ?? []) scriptIds.add(scriptId);
+    for (const scriptUse of resolveScriptUses(agent.scripts)) scriptIds.add(scriptUse.id);
   }
   const profileScripts = [...scriptIds]
     .sort((a, b) => a.localeCompare(b))

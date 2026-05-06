@@ -5,6 +5,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
+import { scriptUse } from "../../scripts/index";
 import { dataStorytellingSkill } from "../data-storytelling/index";
 import { dataVisualizationSkill } from "../data-visualization/index";
 import { statisticalAnalysisSkill } from "../statistical-analysis/index";
@@ -65,6 +66,6 @@ export const dataAnalysisSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   scripts: [
-    "data-analysis-analyze",
+    scriptUse("data-analysis-analyze"),
   ],
 });

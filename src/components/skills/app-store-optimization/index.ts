@@ -6,6 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
+import { scriptUse } from "../../scripts/index";
 
 export const appStoreOptimizationSkill = defineSkill({
   id: "app-store-optimization",
@@ -52,15 +53,15 @@ export const appStoreOptimizationSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   scripts: [
-    "app-store-optimization-ab-test-planner",
-    "app-store-optimization-aso-scorer",
-    "app-store-optimization-competitor-analyzer",
-    "app-store-optimization-collect-release-changes",
-    "app-store-optimization-keyword-analyzer",
-    "app-store-optimization-launch-checklist",
-    "app-store-optimization-localization-helper",
-    "app-store-optimization-metadata-optimizer",
-    "app-store-optimization-review-analyzer",
+    scriptUse("app-store-optimization-ab-test-planner"),
+    scriptUse("app-store-optimization-aso-scorer"),
+    scriptUse("app-store-optimization-competitor-analyzer"),
+    scriptUse("app-store-optimization-collect-release-changes"),
+    scriptUse("app-store-optimization-keyword-analyzer"),
+    scriptUse("app-store-optimization-launch-checklist"),
+    scriptUse("app-store-optimization-localization-helper"),
+    scriptUse("app-store-optimization-metadata-optimizer"),
+    scriptUse("app-store-optimization-review-analyzer"),
   ],
   references: [
     defineReference({

@@ -12,6 +12,7 @@ import {
   toAbsolutePath,
   writeText,
 } from "./core.ts";
+import { resolveScriptUses } from "./script-uses.ts";
 
 type RuntimeScriptEntry = {
   id: string;
@@ -296,11 +297,11 @@ function collectPlatformScripts(profileSurface: ProfileSurface, platform: Platfo
   const enabledScriptIds = new Set<string>();
   for (const skill of profileSurface.skills) {
     if (!skill.platforms.includes(platform)) continue;
-    for (const scriptId of skill.scripts ?? []) enabledScriptIds.add(scriptId);
+    for (const scriptUse of resolveScriptUses(skill.scripts)) enabledScriptIds.add(scriptUse.id);
   }
   for (const agent of profileSurface.agents) {
     if (!agent.platforms.includes(platform)) continue;
-    for (const scriptId of agent.scripts ?? []) enabledScriptIds.add(scriptId);
+    for (const scriptUse of resolveScriptUses(agent.scripts)) enabledScriptIds.add(scriptUse.id);
   }
   return profileSurface.scripts
     .filter((script) => enabledScriptIds.has(script.id))

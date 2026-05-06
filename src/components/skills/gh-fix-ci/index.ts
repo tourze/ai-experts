@@ -7,6 +7,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
+import { scriptUse } from "../../scripts/index";
 
 export const ghFixCiSkill = defineSkill({
   id: "gh-fix-ci",
@@ -49,7 +50,7 @@ export const ghFixCiSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   scripts: [
-    "gh-fix-ci-inspect-pr-checks",
+    scriptUse("gh-fix-ci-inspect-pr-checks"),
   ],
   references: [
     defineReference({

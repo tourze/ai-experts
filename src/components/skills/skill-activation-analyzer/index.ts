@@ -6,6 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
+import { scriptUse } from "../../scripts/index";
 
 export const skillActivationAnalyzerSkill = defineSkill({
   id: "skill-activation-analyzer",
@@ -33,7 +34,7 @@ export const skillActivationAnalyzerSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   scripts: [
-    "skill-activation-analyzer-cso-audit",
+    scriptUse("skill-activation-analyzer-cso-audit"),
   ],
   references: [
     defineReference({

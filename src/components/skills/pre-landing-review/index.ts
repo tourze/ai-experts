@@ -6,6 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
+import { scriptUse } from "../../scripts/index";
 import { testingStrategySkill } from "../testing-strategy/index";
 
 export const preLandingReviewSkill = defineSkill({
@@ -57,8 +58,8 @@ export const preLandingReviewSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   scripts: [
-    "pre-landing-review-collect-diff",
-    "pre-landing-review-render-report",
+    scriptUse("pre-landing-review-collect-diff"),
+    scriptUse("pre-landing-review-render-report"),
   ],
   references: [
     defineReference({

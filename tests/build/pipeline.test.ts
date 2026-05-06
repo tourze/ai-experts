@@ -33,8 +33,10 @@ import {
   defineProfile,
   defineReference,
   defineScript,
+  defineScriptUse,
   defineSkill,
 } from "../../src/components/sdk.ts";
+import { scriptUse } from "../../src/components/scripts/index.ts";
 
 const tempDirs: string[] = [];
 
@@ -256,6 +258,64 @@ describe("build/pipeline modules", () => {
       skills: [{ ...fixture.skill, scripts: ["missing-script"] }],
     };
     expect(() => validateRegistry(missingScriptReferenceRegistry)).toThrow("references missing script");
+  });
+
+  test("script references support structured links and scripts helper guard", () => {
+    const fixture = createFixture();
+    const agentScript = defineScript({
+      id: "fixture-agent-script",
+      entry: fixture.script.entry,
+      description: "fixture agent script",
+      owners: { agentIds: [fixture.agent.id] },
+      runtime: "node",
+    });
+    const structuredScriptRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        scripts: [
+          defineScriptUse({
+            id: fixture.script.id,
+            reason: "用于 fixture 场景校验",
+          }),
+        ],
+      }],
+      scripts: [...fixture.registry.scripts, agentScript],
+      agents: [{
+        ...fixture.agent,
+        scripts: [
+          defineScriptUse({
+            id: agentScript.id,
+            reason: "用于 fixture agent 关联校验",
+          }),
+        ],
+      }],
+    };
+    expect(() => validateRegistry(structuredScriptRegistry)).not.toThrow();
+    const skillMd = renderSkillMd(
+      structuredScriptRegistry.skills[0]!,
+      Platform.Claude,
+      new Map([[fixture.script.id, fixture.script]]),
+    );
+    expect(skillMd).toContain("关联说明");
+    expect(skillMd).toContain("用于 fixture 场景校验");
+
+    const invalidReasonRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        scripts: [
+          defineScriptUse({
+            id: fixture.script.id,
+            reason: "",
+          }),
+        ],
+      }],
+    };
+    expect(() => validateRegistry(invalidReasonRegistry)).toThrow("reason must be a non-empty string");
+
+    expect(() => scriptUse("debug-methodology-debug-checklist")).not.toThrow();
+    expect(() => scriptUse("missing-script-id")).toThrow("Unknown component script id");
   });
 
   test("agent helpers validate and emit claude/codex agents", async () => {

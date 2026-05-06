@@ -70,6 +70,13 @@ export type ScriptDefinition = {
   outputSchema?: string;
 };
 
+export type ScriptUseDefinition = {
+  id: string;
+  reason?: string;
+};
+
+export type ScriptUseReference = string | ScriptUseDefinition;
+
 export type SkillScriptRootDefinition = {
   source: ComponentFile;
   target?: string;
@@ -121,7 +128,7 @@ export type SkillDefinition = {
   platforms: PlatformList;
   body: ComponentFile;
   tools?: readonly ToolMatcher[];
-  scripts?: readonly string[];
+  scripts?: readonly ScriptUseReference[];
   scriptRoots?: readonly SkillScriptRootDefinition[];
   references?: readonly SkillReferenceDefinition[];
   relatedSkills?: readonly RelatedSkillDefinition[];
@@ -211,7 +218,7 @@ export type AgentDefinition = {
   workflow?: AgentWorkflowDefinition;
   tools?: readonly ToolMatcher[];
   skills?: readonly AgentSkillUse[];
-  scripts?: readonly string[];
+  scripts?: readonly ScriptUseReference[];
   sandbox?: AgentSandbox;
   claudeModel?: string;
   codexModel?: string;
@@ -373,6 +380,12 @@ export function defineProfile(definition: Omit<ProfileDefinition, "kind">): Prof
 }
 
 export function defineScript(definition: ScriptDefinition): ScriptDefinition {
+  return definition;
+}
+
+export function defineScriptUse(
+  definition: ScriptUseDefinition,
+): ScriptUseDefinition {
   return definition;
 }
 

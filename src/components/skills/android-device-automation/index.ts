@@ -6,6 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
+import { scriptUse } from "../../scripts/index";
 
 export const androidDeviceAutomationSkill = defineSkill({
   id: "android-device-automation",
@@ -33,17 +34,17 @@ export const androidDeviceAutomationSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   scripts: [
-    "android-device-automation-app-launcher",
-    "android-device-automation-build-and-test",
-    "android-device-automation-common",
-    "android-device-automation-diagnose-app",
-    "android-device-automation-emu-health-check",
-    "android-device-automation-emulator-manage",
-    "android-device-automation-gesture",
-    "android-device-automation-keyboard",
-    "android-device-automation-log-monitor",
-    "android-device-automation-navigator",
-    "android-device-automation-screen-mapper",
+    scriptUse("android-device-automation-app-launcher"),
+    scriptUse("android-device-automation-build-and-test"),
+    scriptUse("android-device-automation-common"),
+    scriptUse("android-device-automation-diagnose-app"),
+    scriptUse("android-device-automation-emu-health-check"),
+    scriptUse("android-device-automation-emulator-manage"),
+    scriptUse("android-device-automation-gesture"),
+    scriptUse("android-device-automation-keyboard"),
+    scriptUse("android-device-automation-log-monitor"),
+    scriptUse("android-device-automation-navigator"),
+    scriptUse("android-device-automation-screen-mapper"),
   ],
   references: [
     defineReference({

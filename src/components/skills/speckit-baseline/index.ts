@@ -5,6 +5,7 @@ import {
   defineSkill,
   defineSkillParameter,
 } from "../../sdk";
+import { scriptUse } from "../../scripts/index";
 
 export const speckitBaselineSkill = defineSkill({
   id: "speckit-baseline",
@@ -26,10 +27,10 @@ export const speckitBaselineSkill = defineSkill({
   ],
   argumentHint: "[用户输入]",
   scripts: [
-    "speckit-baseline-bootstrap-specify",
-    "speckit-baseline-check-prerequisites",
-    "speckit-baseline-common",
-    "speckit-baseline-create-new-feature",
-    "speckit-baseline-setup-plan",
+    scriptUse("speckit-baseline-bootstrap-specify"),
+    scriptUse("speckit-baseline-check-prerequisites"),
+    scriptUse("speckit-baseline-common"),
+    scriptUse("speckit-baseline-create-new-feature"),
+    scriptUse("speckit-baseline-setup-plan"),
   ],
 });

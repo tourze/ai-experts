@@ -7,6 +7,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
+import { scriptUse } from "../../scripts/index";
 import { llmEvaluationSkill } from "../llm-evaluation/index";
 import { ragAuditorSkill } from "../rag-auditor/index";
 
@@ -73,7 +74,7 @@ export const promptEngineeringPatternsSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   scripts: [
-    "prompt-engineering-patterns-optimize-prompt",
+    scriptUse("prompt-engineering-patterns-optimize-prompt"),
   ],
   references: [
     defineReference({

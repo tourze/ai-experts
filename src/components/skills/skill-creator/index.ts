@@ -7,6 +7,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
+import { scriptUse } from "../../scripts/index";
 
 export const skillCreatorSkill = defineSkill({
   id: "skill-creator",
@@ -34,15 +35,15 @@ export const skillCreatorSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   scripts: [
-    "skill-creator-aggregate-benchmark",
-    "skill-creator-generate-review",
-    "skill-creator-generate-report",
-    "skill-creator-improve-description",
-    "skill-creator-package-skill",
-    "skill-creator-quick-validate",
-    "skill-creator-run-eval",
-    "skill-creator-run-loop",
-    "skill-creator-utils",
+    scriptUse("skill-creator-aggregate-benchmark"),
+    scriptUse("skill-creator-generate-review"),
+    scriptUse("skill-creator-generate-report"),
+    scriptUse("skill-creator-improve-description"),
+    scriptUse("skill-creator-package-skill"),
+    scriptUse("skill-creator-quick-validate"),
+    scriptUse("skill-creator-run-eval"),
+    scriptUse("skill-creator-run-loop"),
+    scriptUse("skill-creator-utils"),
   ],
   references: [
     defineReference({

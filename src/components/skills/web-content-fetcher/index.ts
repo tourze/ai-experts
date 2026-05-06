@@ -6,6 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
+import { scriptUse } from "../../scripts/index";
 import { deepResearchSkill } from "../deep-research/index";
 
 export const webContentFetcherSkill = defineSkill({
@@ -55,7 +56,7 @@ export const webContentFetcherSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   scripts: [
-    "web-content-fetcher-fetch",
+    scriptUse("web-content-fetcher-fetch"),
   ],
   references: [
     defineReference({

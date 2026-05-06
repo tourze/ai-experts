@@ -7,6 +7,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
+import { scriptUse } from "../../scripts/index";
 import { docCoauthoringSkill } from "../doc-coauthoring/index";
 import { mdToPdfSkill } from "../md-to-pdf/index";
 import { pptGenerateSkill } from "../ppt-generate/index";
@@ -81,10 +82,10 @@ export const markitdownSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   scripts: [
-    "markitdown-batch-convert",
-    "markitdown-convert-literature",
-    "markitdown-convert-with-ai",
-    "markitdown-markitdown-runtime",
+    scriptUse("markitdown-batch-convert"),
+    scriptUse("markitdown-convert-literature"),
+    scriptUse("markitdown-convert-with-ai"),
+    scriptUse("markitdown-markitdown-runtime"),
   ],
   references: [
     defineReference({

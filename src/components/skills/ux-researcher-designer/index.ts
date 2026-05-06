@@ -7,6 +7,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
+import { scriptUse } from "../../scripts/index";
 import { uxHeuristicsSkill } from "../ux-heuristics/index";
 
 export const uxResearcherDesignerSkill = defineSkill({
@@ -65,7 +66,7 @@ export const uxResearcherDesignerSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   scripts: [
-    "ux-researcher-designer-persona-generator",
+    scriptUse("ux-researcher-designer-persona-generator"),
   ],
   references: [
     defineReference({

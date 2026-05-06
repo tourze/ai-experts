@@ -6,6 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
+import { scriptUse } from "../../scripts/index";
 import { securityThreatModelSkill } from "../security-threat-model/index";
 
 export const securityOwnershipMapSkill = defineSkill({
@@ -56,10 +57,10 @@ export const securityOwnershipMapSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   scripts: [
-    "security-ownership-map-build-ownership-map",
-    "security-ownership-map-community-maintainers",
-    "security-ownership-map-query-ownership",
-    "security-ownership-map-run-ownership-map",
+    scriptUse("security-ownership-map-build-ownership-map"),
+    scriptUse("security-ownership-map-community-maintainers"),
+    scriptUse("security-ownership-map-query-ownership"),
+    scriptUse("security-ownership-map-run-ownership-map"),
   ],
   references: [
     defineReference({

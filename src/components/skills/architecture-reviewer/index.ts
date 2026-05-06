@@ -7,6 +7,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
+import { scriptUse } from "../../scripts/index";
 
 export const architectureReviewerSkill = defineSkill({
   id: "architecture-reviewer",
@@ -45,7 +46,7 @@ export const architectureReviewerSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   scripts: [
-    "architecture-reviewer-scan-codebase",
+    scriptUse("architecture-reviewer-scan-codebase"),
   ],
   references: [
     defineReference({

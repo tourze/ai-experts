@@ -20,6 +20,7 @@ import {
   writeText,
   yamlScalar,
 } from "./core.ts";
+import { resolveScriptUses } from "./script-uses.ts";
 import {
   insertSectionBeforeH2Matching,
   renderMarkdownBulletList,
@@ -62,14 +63,23 @@ function renderScriptRegistry(
   platform: PlatformType,
   scriptsById: ReadonlyMap<string, ScriptDefinition>,
 ): string {
-  if (!skill.scripts || skill.scripts.length === 0) return "";
+  const scriptUses = resolveScriptUses(skill.scripts);
+  if (scriptUses.length === 0) return "";
   const runPath = platform === Platform.Claude ? "../../run.js" : "../../run.js";
+  const hasReason = scriptUses.some((scriptUse) => typeof scriptUse.reason === "string" && scriptUse.reason.trim() !== "");
+  const header = hasReason
+    ? ["| Script | 作用 | 关联说明 | 调用 |", "|--------|------|----------|------|"]
+    : ["| Script | 作用 | 调用 |", "|--------|------|------|"];
   const rows = [
-    "| Script | 作用 | 调用 |",
-    "|--------|------|------|",
-    ...skill.scripts.map((scriptId) => {
+    ...header,
+    ...scriptUses.map((scriptUse) => {
+      const scriptId = scriptUse.id;
       const script = scriptsById.get(scriptId);
       const description = script?.description ?? "(missing script definition)";
+      if (hasReason) {
+        const reason = scriptUse.reason ?? "-";
+        return `| \`${scriptId}\` | ${description} | ${reason} | \`node ${runPath} --script-id ${scriptId} --trigger-skill ${skill.id} --request-json '{\"args\":[]}'\` |`;
+      }
       return `| \`${scriptId}\` | ${description} | \`node ${runPath} --script-id ${scriptId} --trigger-skill ${skill.id} --request-json '{\"args\":[]}'\` |`;
     }),
   ];

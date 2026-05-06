@@ -6,6 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
+import { scriptUse } from "../../scripts/index";
 
 export const pdfSkill = defineSkill({
   id: "pdf",
@@ -45,14 +46,14 @@ export const pdfSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   scripts: [
-    "pdf-check-bounding-boxes",
-    "pdf-check-fillable-fields",
-    "pdf-convert-pdf-to-images",
-    "pdf-create-validation-image",
-    "pdf-extract-form-field-info",
-    "pdf-extract-form-structure",
-    "pdf-fill-fillable-fields",
-    "pdf-fill-pdf-form-with-annotations",
+    scriptUse("pdf-check-bounding-boxes"),
+    scriptUse("pdf-check-fillable-fields"),
+    scriptUse("pdf-convert-pdf-to-images"),
+    scriptUse("pdf-create-validation-image"),
+    scriptUse("pdf-extract-form-field-info"),
+    scriptUse("pdf-extract-form-structure"),
+    scriptUse("pdf-fill-fillable-fields"),
+    scriptUse("pdf-fill-pdf-form-with-annotations"),
   ],
   references: [
     defineReference({

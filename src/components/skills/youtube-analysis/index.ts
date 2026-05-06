@@ -7,6 +7,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
+import { scriptUse } from "../../scripts/index";
 import { youtubeSearchSkill } from "../youtube-search/index";
 
 export const youtubeAnalysisSkill = defineSkill({
@@ -55,9 +56,9 @@ export const youtubeAnalysisSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   scripts: [
-    "youtube-analysis-analyze-video",
-    "youtube-analysis-fetch-transcript",
-    "youtube-analysis-utils",
+    scriptUse("youtube-analysis-analyze-video"),
+    scriptUse("youtube-analysis-fetch-transcript"),
+    scriptUse("youtube-analysis-utils"),
   ],
   references: [
     defineReference({

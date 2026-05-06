@@ -7,6 +7,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
+import { scriptUse } from "../../scripts/index";
 import { createPrdSkill } from "../create-prd/index";
 
 export const agileProductOwnerSkill = defineSkill({
@@ -61,7 +62,7 @@ export const agileProductOwnerSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   scripts: [
-    "agile-product-owner-user-story-generator",
+    scriptUse("agile-product-owner-user-story-generator"),
   ],
   references: [
     defineReference({
