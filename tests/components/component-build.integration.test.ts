@@ -241,6 +241,19 @@ describe("component build integration", () => {
     assert.equal(success.error, null);
     assert.equal(typeof success.timingMs, "number");
     assert.match(success.result.stdout, /Debug Checklist: fixture-checklist/);
+
+    const executionFailure = JSON.parse(execFileSync(process.execPath, [
+      runPath,
+      "--script-id",
+      "web-content-fetcher-fetch",
+      "--trigger-skill",
+      "web-content-fetcher",
+      "--request-json",
+      "{\"args\":[\"--invalid\"]}",
+    ], { encoding: "utf-8" }));
+    assert.equal(executionFailure.ok, false);
+    assert.equal(executionFailure.error.code, "SCRIPT_EXECUTION_FAILED");
+    assert.equal(typeof executionFailure.result.exitCode, "number");
   });
 
   test("generates clean script artifacts with valid runtime imports", () => {
