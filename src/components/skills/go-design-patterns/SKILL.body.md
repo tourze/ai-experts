@@ -67,7 +67,3 @@ if err := server.Shutdown(ctx); err != nil {
 | 重试忽略 context 取消 | 每次循环先检查 `ctx.Err()` |
 | 停机直接 `os.Exit` | 先 Shutdown 排空，再退出 |
 | Service Locator 全局注册表 | 构造器注入依赖，见 [di.md](references/di.md) |
-
-## 深度参考
-
-- [di.md](references/di.md) — 手动构造器注入、接口设计、Wire/Dig 选型、Service Locator 反模式

@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineReference,
   defineSkill,
 } from "../../sdk";
@@ -27,6 +28,32 @@ export const goCliSkill = defineSkill({
     "版本信息通过 `-ldflags` 在构建时注入，不要硬编码。",
     "长运行命令必须捕获 SIGINT/SIGTERM 并通过 context 取消传播。",
     "每个 subcommand 独立文件，root command 在 `cmd/root.go`。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "手写 flag 解析不用 Cobra。",
+      pass: "用 `cobra.Command` 统一管理。",
+    }),
+    defineAntiPattern({
+      fail: "配置文件覆盖命令行 flags。",
+      pass: "调整优先级：flags > env > file > defaults。",
+    }),
+    defineAntiPattern({
+      fail: "os.Exit() 在 deferred 函数之前调用。",
+      pass: "Execute() 返回 error，在 main 里 exit。",
+    }),
+    defineAntiPattern({
+      fail: "忽略 SIGTERM 导致容器强杀。",
+      pass: "用 signal.NotifyContext + context 传播。",
+    }),
+    defineAntiPattern({
+      fail: "版本号硬编码。",
+      pass: "用 -ldflags -X 构建时注入。",
+    }),
+    defineAntiPattern({
+      fail: "shell 补全不完整。",
+      pass: "用 Cobra 内置 completion 子命令生成。",
+    }),
   ],
   relatedSkills: [
     {

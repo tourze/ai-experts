@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineReference,
   defineSkill,
 } from "../../sdk";
@@ -27,6 +28,40 @@ export const goDatabaseSkill = defineSkill({
     "连接池：上线前必须配置 `SetMaxOpenConns`、`SetMaxIdleConns`、`SetConnMaxLifetime`。",
     "ORM 约束：复杂查询（多表 JOIN、子查询、窗口函数）不用 ORM，使用 query builder 或 raw SQL。",
     "Migration：使用 golang-migrate、goose 或 atlas（声明式），禁止手动 DDL 部署。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "字符串拼接 SQL。",
+      pass: "用 `?` 占位符 + 参数化查询。",
+    }),
+    defineAntiPattern({
+      fail: "使用 db.Query() / db.Exec() 无 Context 版本。",
+      pass: "改用 QueryContext / ExecContext。",
+    }),
+    defineAntiPattern({
+      fail: "事务中忘记 defer tx.Rollback()。",
+      pass: "Begin 后立即 defer Rollback，Commit 成功后 Rollback 为 no-op。",
+    }),
+    defineAntiPattern({
+      fail: "NULL 列直接 Scan 到值类型。",
+      pass: "使用 sql.NullString 或指针 *string。",
+    }),
+    defineAntiPattern({
+      fail: "忽略 sql.ErrNoRows。",
+      pass: `业务语义区分"不存在"与"查询失败"。`,
+    }),
+    defineAntiPattern({
+      fail: "连接池未配置导致连接耗尽。",
+      pass: "上线前设置 MaxOpenConns / MaxIdleConns / ConnMaxLifetime。",
+    }),
+    defineAntiPattern({
+      fail: "ORM 处理复杂查询产生 N+1。",
+      pass: "改用 raw SQL 或 query builder。",
+    }),
+    defineAntiPattern({
+      fail: "Migration 手动执行 DDL。",
+      pass: "使用 golang-migrate / goose 版本化管理。",
+    }),
   ],
   relatedSkills: [
     {

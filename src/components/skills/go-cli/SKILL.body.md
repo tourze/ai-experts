@@ -73,21 +73,3 @@ func init() {
 ```bash
 go build -ldflags "-X main.version=$(git describe --tags)" -o myapp ./cmd/myapp
 ```
-
-## 常见错误
-
-| 错误 | 修复 |
-|------|------|
-| 手写 flag 解析不用 Cobra | 用 `cobra.Command` 统一管理 |
-| 配置文件覆盖命令行 flags | 调整优先级：flags > env > file > defaults |
-| `os.Exit()` 在 deferred 函数之前调用 | `Execute()` 返回 error，在 `main` 里 exit |
-| 忽略 SIGTERM 导致容器强杀 | `signal.NotifyContext` + context 传播 |
-| 版本号硬编码 | `-ldflags -X` 构建时注入 |
-| shell 补全不完整 | 用 Cobra 内置 `completion` 子命令生成 |
-
-## 深度参考
-
-- [cobra-patterns.md](references/cobra-patterns.md) — root 设置、subcommand 注册、Persistent/Local flags、PreRun hooks、信号处理、退出码
-- [Cobra 官方文档](https://github.com/spf13/cobra)
-- [Viper 官方文档](https://github.com/spf13/viper)
-- [Go SIGTERM 优雅停机模式](https://pkg.go.dev/os/signal)

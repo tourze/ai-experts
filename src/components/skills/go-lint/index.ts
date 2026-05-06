@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineReference,
   defineSkill,
 } from "../../sdk";
@@ -23,6 +24,32 @@ export const goLintSkill = defineSkill({
     "**lint 必须在 CI 中运行**：PR 检查至少包含 `golangci-lint run`，阻止新问题合入。",
     "**先修复，后抑制**：看到告警优先修复代码，`//nolint` 是最后手段。",
     "**配置文件纳入版本控制**：`.golangci.yml` 放在仓库根目录，团队共享同一份配置。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "全局禁用 linter 只因一个文件违规。",
+      pass: "用行级 `//nolint:<linter> // <原因>` 精准抑制。",
+    }),
+    defineAntiPattern({
+      fail: "//nolint 不带 linter 名称。",
+      pass: "必须指定：`//nolint:gosec`，避免掩盖其他问题。",
+    }),
+    defineAntiPattern({
+      fail: "CI 中不设 timeout 导致卡死。",
+      pass: "设置 run.timeout: 5m 或命令行 --timeout=5m。",
+    }),
+    defineAntiPattern({
+      fail: "同时启用 gofmt 和 gofumpt。",
+      pass: "只保留 gofumpt，它是 gofmt 的超集。",
+    }),
+    defineAntiPattern({
+      fail: "修改配置后不验证。",
+      pass: "运行 `golangci-lint config verify` 检查配置合法性。",
+    }),
+    defineAntiPattern({
+      fail: "在 generated 文件上跑 lint。",
+      pass: "用 `exclude-generated` 或 `skip-dirs` 排除。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

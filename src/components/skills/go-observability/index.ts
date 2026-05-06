@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineReference,
   defineSkill,
 } from "../../sdk";
@@ -25,6 +26,36 @@ export const goObservabilitySkill = defineSkill({
     "**日志级别纪律**：DEBUG 开发时用、生产默认 INFO 起步、ERROR 只放需要人工介入的事件。WARN 放可自动恢复的异常。",
     "**高吞吐采样**：热路径日志用采样 Handler 降低 I/O；指标用 histogram 而非全量日志统计。",
     "**PII 脱敏**：日志 Handler 层统一拦截敏感字段，不在业务代码逐处处理。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "用 log.Printf 写生产日志。",
+      pass: "迁移到 slog.Info，携带结构化字段。",
+    }),
+    defineAntiPattern({
+      fail: "日志不带 trace_id。",
+      pass: "slog Handler 自动注入 trace/span ID。",
+    }),
+    defineAntiPattern({
+      fail: "指标用 histogram 但桶不合理。",
+      pass: "先看数据分布再配 buckets，或用 prometheus.DefBuckets 起步。",
+    }),
+    defineAntiPattern({
+      fail: "告警基于 goroutine 数量。",
+      pass: "改为基于错误率或延迟 P99 的症状告警。",
+    }),
+    defineAntiPattern({
+      fail: "每个请求打多条 INFO 日志。",
+      pass: "热路径用 DEBUG 或采样 Handler。",
+    }),
+    defineAntiPattern({
+      fail: "手动拼接日志字段 fmt.Sprintf。",
+      pass: "用 slog.With 预置上下文字段。",
+    }),
+    defineAntiPattern({
+      fail: "指标 label 基数爆炸（user_id 等）。",
+      pass: "label 只用低基数枚举值。",
+    }),
   ],
   relatedSkills: [
     {

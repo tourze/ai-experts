@@ -41,9 +41,3 @@ fan-out/fan-in pipeline、优雅停机完整代码见 [references/advanced-patte
 | `wg.Add` 放在 goroutine 内 | `Add` 必须在 `go` 之前 |
 | mutex 持有跨越 I/O | 临界区保持最短 |
 | 未跑 race 检测 | `go test -race ./...` |
-
-## 深度参考
-
-- [advanced-patterns.md](references/advanced-patterns.md) — worker pool、fan-out/fan-in、优雅停机
-- [channels-and-select.md](references/channels-and-select.md) — channel 方向、缓冲、select 模式
-- [sync-primitives.md](references/sync-primitives.md) — Mutex/RWMutex/atomic/Once/Pool/singleflight

@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineReference,
   defineSkill,
 } from "../../sdk";
@@ -48,6 +49,36 @@ export const goTroubleshootingSkill = defineSkill({
       },
       reason: "优化方法论和 benchmark 验证 → `go-performance`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "未复现就改代码。",
+      pass: "先构造最小复现，再提假设。",
+    }),
+    defineAntiPattern({
+      fail: "同时改多处。",
+      pass: "一次改一个变量，逐步验证。",
+    }),
+    defineAntiPattern({
+      fail: "用 `log.Fatal` 吞上下文。",
+      pass: "返回 error 让调用方决定。",
+    }),
+    defineAntiPattern({
+      fail: "只看日志不看 profile。",
+      pass: "CPU/内存问题必须用 pprof 定量。",
+    }),
+    defineAntiPattern({
+      fail: "goroutine 只开不关。",
+      pass: "检查退出路径，配合 context 取消。",
+    }),
+    defineAntiPattern({
+      fail: "data race 靠肉眼查。",
+      pass: "用 `go test -race ./...` 必须跑。",
+    }),
+    defineAntiPattern({
+      fail: "线上加了 `fmt.Println` 调试。",
+      pass: "用 delve 或 pprof HTTP 端点。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

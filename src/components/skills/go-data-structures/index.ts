@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineReference,
   defineSkill,
 } from "../../sdk";
@@ -21,6 +22,36 @@ export const goDataStructuresSkill = defineSkill({
   ],
   constraints: [
     "| 约束 | 说明 |\n|------|------|\n| 预分配 | 大小已知时用 `make([]T, 0, n)` 或 `make(map[K]V, n)` |\n| slice 增长 | cap < 256 翻倍；cap >= 256 按 `1.25x + 192` 增长 |\n| array | 仅编译期已知大小时使用；函数参数会复制整个数组 |\n| map 不缩容 | 大量删除后应替换为新 map，否则内存不释放 |\n| strings.Builder | 拼接字符串；`defer b.Reset()` 复用 |\n| bytes.Buffer | 双向 I/O；内容可变，`b.Bytes()` 返回内部切片需注意别名 |\n| 泛型约束 | 使用最严格约束：`comparable` > `cmp.Ordered` > `any` |\n| unsafe.Pointer | 仅允许 6 种合法转换模式（见 spec） |\n| weak.Pointer[T] | Go 1.24+，缓存场景替代 `runtime.SetFinalizer` |\n| container/heap | 实现优先队列；需实现 `heap.Interface` |\n| container/list | 双向链表，适合 LRU；零值即可用 |\n| container/ring | 环形缓冲区；固定大小轮转 |",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "append 后未接收返回值。",
+      pass: "`s = append(s, x)` 始终赋值回原变量。",
+    }),
+    defineAntiPattern({
+      fail: "共享 backing array 导致数据污染。",
+      pass: "需隔离时用 copy 或三索引切片 `s[:n:n]`。",
+    }),
+    defineAntiPattern({
+      fail: "map 并发读写 panic。",
+      pass: "单协程写 + sync.RWMutex 读，或用 sync.Map（高读低写场景）。",
+    }),
+    defineAntiPattern({
+      fail: "range 循环变量复用导致闭包捕获错误。",
+      pass: "Go 1.22+ 已修复；旧版本需 `v := v`。",
+    }),
+    defineAntiPattern({
+      fail: "对大 map 大量删除后期望内存释放。",
+      pass: "删除后重建 `make(map[K]V)`。",
+    }),
+    defineAntiPattern({
+      fail: "unsafe.Pointer 跳过中间变量。",
+      pass: "遵守 spec 6 种模式，避免 GC 出错。",
+    }),
+    defineAntiPattern({
+      fail: "泛型约束写 `any` 但实际只需 `comparable`。",
+      pass: "缩窄约束提升类型安全。",
+    }),
   ],
   relatedSkills: [
     {

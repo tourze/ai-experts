@@ -55,8 +55,28 @@ export const goCodeStyleSkill = defineSkill({
       pass: "边界先返回",
     }),
     defineAntiPattern({
-      fail: "为了“可复用”导出内部细节",
+      fail: "为了”可复用”导出内部细节",
       pass: "先保持内部可变",
+    }),
+    defineAntiPattern({
+      fail: "深层嵌套 `if-else`。",
+      pass: "错误/边界先返回，主路径保持浅缩进。",
+    }),
+    defineAntiPattern({
+      fail: "5+ 个函数参数。",
+      pass: "收敛成配置结构体或领域对象。",
+    }),
+    defineAntiPattern({
+      fail: "struct literal 不命名字段。",
+      pass: "命名字段防止字段重排导致静默错位。",
+    }),
+    defineAntiPattern({
+      fail: "成功返回 `nil` slice/map。",
+      pass: "返回 `[]T{}` / `map[K]V{}`。",
+    }),
+    defineAntiPattern({
+      fail: "导出”将来可能复用”的类型。",
+      pass: "先不导出，有跨包需求时再导出。",
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,

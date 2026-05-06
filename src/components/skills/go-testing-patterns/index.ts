@@ -64,6 +64,30 @@ export const goTestingPatternsSkill = defineSkill({
       fail: "用 Sleep 等异步完成",
       pass: "用同步信号",
     }),
+    defineAntiPattern({
+      fail: "测内部字段/方法。",
+      pass: "测公共 API 的可观察行为。",
+    }),
+    defineAntiPattern({
+      fail: "`time.Sleep` 等异步完成。",
+      pass: "用 channel/WaitGroup 同步。",
+    }),
+    defineAntiPattern({
+      fail: "测试间有执行顺序依赖。",
+      pass: "每个测试独立可运行。",
+    }),
+    defineAntiPattern({
+      fail: "忘记 `t.Parallel()`。",
+      pass: "独立纯函数测试应并行。",
+    }),
+    defineAntiPattern({
+      fail: "集成测试混入单元测试。",
+      pass: "用 `//go:build integration` 隔离。",
+    }),
+    defineAntiPattern({
+      fail: "并发测试不跑 `-race`。",
+      pass: "用 `go test -race ./...`。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

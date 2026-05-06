@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineReference,
   defineSkill,
 } from "../../sdk";
@@ -40,6 +41,40 @@ export const goGrpcSkill = defineSkill({
       },
       reason: "与 `go-error-handling` 配合处理跨层错误传播；与 `go-performance` 配合优化序列化与连接复用。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "用 `grpc.Dial` + `WithInsecure`。",
+      pass: "改用 `grpc.NewClient` + `insecure.NewCredentials()`。",
+    }),
+    defineAntiPattern({
+      fail: "服务端返回裸 `errors.New`。",
+      pass: "改用 `status.Errorf(codes.Internal, ...)`。",
+    }),
+    defineAntiPattern({
+      fail: "proto 未设 `go_package`。",
+      pass: "显式 `option go_package = \"pkg/path;pkgname\";`。",
+    }),
+    defineAntiPattern({
+      fail: "单个 `grpc.UnaryInterceptor` 传多个函数。",
+      pass: "改用 `grpc.ChainUnaryInterceptor(f1, f2)`。",
+    }),
+    defineAntiPattern({
+      fail: "客户端不设 keepalive。",
+      pass: "添加 `WithKeepaliveParams` 防空闲断连。",
+    }),
+    defineAntiPattern({
+      fail: "流式 RPC 不检查取消。",
+      pass: "循环中检查 `stream.Context().Done()`。",
+    }),
+    defineAntiPattern({
+      fail: "大消息超 4MB 默认限制。",
+      pass: "设 `grpc.MaxRecvMsgSize` / `grpc.MaxSendMsgSize`。",
+    }),
+    defineAntiPattern({
+      fail: "TLS 设 `InsecureSkipVerify: true`。",
+      pass: "生产环境必须验证证书。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

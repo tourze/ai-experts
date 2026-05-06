@@ -76,8 +76,3 @@ subtle.ConstantTimeCompare(a, b)
 go install golang.org/x/vuln/cmd/govulncheck@latest
 govulncheck ./...
 ```
-
-## 深度参考
-
-- [injection.md](references/injection.md) — SQL 注入、命令注入、XSS、SSRF、路径穿越
-- [cryptography.md](references/cryptography.md) — 加密、密码哈希、密钥管理、TLS 配置

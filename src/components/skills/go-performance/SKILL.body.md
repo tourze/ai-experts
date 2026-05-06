@@ -23,20 +23,3 @@
 1- `go tool pprof -alloc_objects` — 分配最多的函数
 2- `go build -gcflags="-m"` — 逃逸分析，找 "moved to heap"
 3- `go tool trace` — goroutine 调度延迟和阻塞
-
-## 常见错误
-
-| 错误 | 修复 |
-|------|------|
-| 无基线就优化 | 先写 benchmark 采集基线，再改 |
-| 单次采样下结论 | `benchstat` 至少 8 次采样 |
-| 优化外部瓶颈 | 先排除 DB/网络延迟，再改 Go 代码 |
-| 逃逸分析盲区 | `go build -gcflags="-m"` 检查 |
-| 结构体字段乱序 padding | `fieldalignment` 工具，按大小降序排列 |
-| `sync.Pool` 用于长期对象 | Pool 只适合短生命周期临时对象 |
-| 优化删了正确性测试 | 优化必须保留正确性测试 |
-
-## 深度参考
-
-- [benchmarking.md](references/benchmarking.md) — benchstat、统计显著性、CI 回归、b.Loop()
-- [pprof.md](references/pprof.md) — CPU/heap/mutex/block/trace profile 深度工作流

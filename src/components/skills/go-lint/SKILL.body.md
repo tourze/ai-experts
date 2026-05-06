@@ -52,18 +52,3 @@ _, _ = resp.Body.Read(nil)
 # 修复支持自动修复的 linter 报告（gofmt、goimports 等）
 golangci-lint run --fix
 ```
-
-## 常见错误
-
-| 错误 | 修复 |
-|------|------|
-| 全局禁用 linter 只因一个文件违规 | 用行级 `//nolint:<linter> // <原因>` 精准抑制 |
-| `//nolint` 不带 linter 名称 | 必须指定：`//nolint:gosec`，避免掩盖其他问题 |
-| CI 中不设 timeout 导致卡死 | `run.timeout: 5m` 或命令行 `--timeout=5m` |
-| 同时启用 gofmt 和 gofumpt | 只保留 gofumpt，它是 gofmt 的超集 |
-| 修改配置后不验证 | 运行 `golangci-lint config verify` 检查配置合法性 |
-| 在 generated 文件上跑 lint | 用 `exclude-generated` 或 `skip-dirs` 排除 |
-
-## 深度参考
-
-- [linter-reference.md](references/linter-reference.md) — linter 速查表、配置模板、nolint 模式、常见问题修复

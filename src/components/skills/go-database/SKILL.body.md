@@ -1,15 +1,3 @@
-## 常见错误
-
-| 错误 | 修复 |
-|------|------|
-| 字符串拼接 SQL | 用 `?` 占位符 + 参数化查询 |
-| 使用 `db.Query()` / `db.Exec()` 无 Context 版本 | 改用 `QueryContext` / `ExecContext` |
-| 事务中忘记 `defer tx.Rollback()` | Begin 后立即 defer Rollback，Commit 成功后 Rollback 为 no-op |
-| NULL 列直接 Scan 到值类型 | 使用 `sql.NullString` 或指针 `*string` |
-| 忽略 `sql.ErrNoRows` | 业务语义区分"不存在"与"查询失败" |
-| 连接池未配置导致连接耗尽 | 上线前设置 MaxOpenConns / MaxIdleConns / ConnMaxLifetime |
-| ORM 处理复杂查询产生 N+1 | 改用 raw SQL 或 query builder |
-| Migration 手动执行 DDL | 使用 golang-migrate / goose 版本化管理 |
 
 ## Repository 模式
 
@@ -65,7 +53,3 @@ db.SetMaxIdleConns(10)                  // 最大空闲连接数
 db.SetConnMaxLifetime(5 * time.Minute)  // 连接最大存活时间
 db.SetConnMaxIdleTime(1 * time.Minute)  // 空闲连接最大存活时间
 ```
-
-## 深度参考
-
-- [transactions.md](references/transactions.md) — 事务模式、隔离级别、乐观锁、批量插入、Context 超时

@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineReference,
   defineSkill,
 } from "../../sdk";
@@ -41,6 +42,36 @@ export const goPerformanceSkill = defineSkill({
       },
       reason: "并发瓶颈配合 `go-concurrency-patterns`；资源安全配合 `go-safety`。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "无基线就优化。",
+      pass: "先写 benchmark 采集基线，再改。",
+    }),
+    defineAntiPattern({
+      fail: "单次采样下结论。",
+      pass: "用 `benchstat` 至少 8 次采样。",
+    }),
+    defineAntiPattern({
+      fail: "优化外部瓶颈。",
+      pass: "先排除 DB/网络延迟，再改 Go 代码。",
+    }),
+    defineAntiPattern({
+      fail: "逃逸分析盲区。",
+      pass: "用 `go build -gcflags=\"-m\"` 检查。",
+    }),
+    defineAntiPattern({
+      fail: "结构体字段乱序导致 padding 浪费。",
+      pass: "用 `fieldalignment` 工具，按大小降序排列。",
+    }),
+    defineAntiPattern({
+      fail: "`sync.Pool` 用于长期对象。",
+      pass: "Pool 只适合短生命周期临时对象。",
+    }),
+    defineAntiPattern({
+      fail: "优化删了正确性测试。",
+      pass: "优化必须保留正确性测试。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

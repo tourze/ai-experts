@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineAntiPattern,
   defineReference,
   defineSkill,
 } from "../../sdk";
@@ -20,6 +21,28 @@ export const goErrorHandlingSkill = defineSkill({
     "错误文本面向人，错误类型/变量面向程序；调用方需要分支时提供 sentinel error 或自定义类型。",
     "不用 panic 表达普通业务失败；panic 只用于不可恢复的编程错误或初始化失败。",
     "错误字符串小写、无句号，并带操作上下文；不要把动态上下文塞进 sentinel error。",
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "用 %v 格式化吞掉错误链。",
+      pass: "用 %w 保留根因。",
+    }),
+    defineAntiPattern({
+      fail: "用 err.Error() 字符串分支。",
+      pass: "用 errors.Is / errors.As。",
+    }),
+    defineAntiPattern({
+      fail: "sentinel error 含动态值。",
+      pass: "sentinel 只表达稳定类别。",
+    }),
+    defineAntiPattern({
+      fail: "普通业务失败用 panic。",
+      pass: "panic 只用于不可恢复的编程错误。",
+    }),
+    defineAntiPattern({
+      fail: "错误字符串大写或有句号。",
+      pass: "小写、无句号、带操作上下文。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
