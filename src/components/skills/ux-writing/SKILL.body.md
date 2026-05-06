@@ -36,8 +36,3 @@
 ```
 
 → 按钮说明结果；错误给 what+why+fix；空态教学+下一步 CTA；删除明示不可逆。
-
-## 参考资料
-
-- [references/copy-patterns.md](references/copy-patterns.md) — 按钮/错误/空态/确认/Toast/敏感操作模板
-- `product-design-critic`

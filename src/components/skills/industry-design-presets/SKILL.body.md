@@ -45,9 +45,3 @@
 ```
 
 → 深蓝 + 增长绿是金融业界长期语义编码；低饱和表面 + 清晰层级 = 信任感；Inter 的几何感传递"现代+专业"。
-
-## 参考资料
-
-- [references/presets-catalog.md](references/presets-catalog.md) — 索引（指向下列分类文件）
-- `modern-web-design`
-- [font-pairing-library](references/font-pairing-library.md)

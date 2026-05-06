@@ -17,6 +17,4 @@
 </Button>
 ```
 
-## 参考资料
-
-- [Figma MCP 文档](https://developers.figma.com/docs/figma-mcp-server/)
+Figma MCP 文档：https://developers.figma.com/docs/figma-mcp-server/

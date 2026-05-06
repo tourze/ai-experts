@@ -48,11 +48,3 @@ design-system/
 ```
 
 AI 实现/审查具体页面时，按 **BRAND → MASTER → pages/\<slug\>.md** 顺序拼上下文；pages 存在则覆盖 MASTER 同字段，任何决定都不能违反 BRAND 的反参考。详见 [references/master-overrides-pattern.md](references/master-overrides-pattern.md)。
-
-## 参考资料
-
-- [tailwind-design-system](references/tailwind-design-system.md)
-- [references/design-tokens.md](references/design-tokens.md)
-- [references/theming-architecture.md](references/theming-architecture.md)
-- [references/component-architecture.md](references/component-architecture.md)
-- [references/master-overrides-pattern.md](references/master-overrides-pattern.md)

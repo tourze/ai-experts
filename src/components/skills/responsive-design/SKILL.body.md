@@ -31,9 +31,3 @@
   alt="Hero"
 >
 ```
-
-## 参考资料
-
-- [references/container-queries.md](references/container-queries.md)
-- [references/fluid-layouts.md](references/fluid-layouts.md)
-- [references/breakpoint-strategies.md](references/breakpoint-strategies.md)

@@ -21,12 +21,3 @@ import { useToast } from "@/components/ui/use-toast";
 const { toast } = useToast();
 toast({ title: "Saved", description: "Changes applied." });
 ```
-
-## 参考资料
-
-- [README.md](README.md)
-- [scripts/verify-setup.mjs](scripts/verify-setup.mjs)
-- [resources/setup-guide.md](resources/setup-guide.md)
-- [resources/customization-guide.md](resources/customization-guide.md)
-- [resources/component-catalog.md](resources/component-catalog.md)
-- [resources/migration-guide.md](resources/migration-guide.md)

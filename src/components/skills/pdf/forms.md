@@ -3,11 +3,11 @@
 If you need to fill out a PDF form, first check to see if the PDF has fillable form fields. Run this script from this file's directory:
  `node scripts/check_fillable_fields.mjs <file.pdf>`, and depending on the result go to either the "Fillable fields" or "Non-fillable fields" and follow those instructions.
 
-Node-based image helpers require `@pdfme/converter` and `sharp` to be resolvable by Node.js; install them with `npm install -g @pdfme/converter sharp` if the scripts report missing modules.
+Node-based PDF helpers require `pdf-lib`, `pdfjs-dist`, `@pdfme/converter`, and `sharp` to be resolvable by Node.js; install them with `npm install -g pdf-lib pdfjs-dist @pdfme/converter sharp` if the scripts report missing modules.
 
 # Fillable fields
 If the PDF has fillable form fields:
-- Run this script from this file's directory: `python scripts/extract_form_field_info.py <input.pdf> <field_info.json>`. It will create a JSON file with a list of fields in this format:
+- Run this script from this file's directory: `node scripts/extract_form_field_info.mjs <input.pdf> <field_info.json>`. It will create a JSON file with a list of fields in this format:
 ```
 [
   {
@@ -59,7 +59,7 @@ Then analyze the images to determine the purpose of each form field (make sure t
 ```
 [
   {
-    "field_id": "last_name", // Must match the field_id from `extract_form_field_info.py`
+    "field_id": "last_name", // Must match the field_id from `extract_form_field_info.mjs`
     "description": "The user's last name",
     "page": 1, // Must match the "page" value in field_info.json
     "value": "Simpson"
@@ -73,8 +73,8 @@ Then analyze the images to determine the purpose of each form field (make sure t
   // more fields
 ]
 ```
-- Run the `fill_fillable_fields.py` script from this file's directory to create a filled-in PDF:
-`python scripts/fill_fillable_fields.py <input pdf> <field_values.json> <output pdf>`
+- Run the `fill_fillable_fields.mjs` script from this file's directory to create a filled-in PDF:
+`node scripts/fill_fillable_fields.mjs <input pdf> <field_values.json> <output pdf>`
 This script will verify that the field IDs and values you provide are valid; if it prints error messages, correct the appropriate fields and try again.
 
 # Non-fillable fields
@@ -83,7 +83,7 @@ If the PDF doesn't have fillable form fields, you'll add text annotations. First
 ## Step 1: Try Structure Extraction First
 
 Run this script to extract text labels, lines, and checkboxes with their exact PDF coordinates:
-`python scripts/extract_form_structure.py <input.pdf> form_structure.json`
+`node scripts/extract_form_structure.mjs <input.pdf> form_structure.json`
 
 This creates a JSON file containing:
 - **labels**: Every text element with exact coordinates (x0, top, x1, bottom in PDF points)
@@ -97,7 +97,7 @@ This creates a JSON file containing:
 
 ## Approach A: Structure-Based Coordinates (Preferred)
 
-Use this when `extract_form_structure.py` found text labels in the PDF.
+Use this when `extract_form_structure.mjs` found text labels in the PDF.
 
 ### A.1: Analyze the Structure
 
@@ -283,7 +283,7 @@ Fix any reported errors in fields.json before proceeding.
 ## Step 3: Fill the Form
 
 The fill script auto-detects the coordinate system and handles conversion:
-`python scripts/fill_pdf_form_with_annotations.py <input.pdf> fields.json <output.pdf>`
+`node scripts/fill_pdf_form_with_annotations.mjs <input.pdf> fields.json <output.pdf>`
 
 ## Step 4: Verify Output
 

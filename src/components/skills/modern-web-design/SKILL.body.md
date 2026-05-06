@@ -36,11 +36,3 @@
 ```
 
 Glassmorphism 完整落地示例见 [references/styles-depth-glass.md](references/styles-depth-glass.md)。
-
-## 参考资料
-
-- [styles-catalog.md](references/styles-catalog.md) — 60 种 UI 风格与 CSS 落地特征
-- [design_trends_2024.md](references/design_trends_2024.md)、[high-agency-protocol.md](references/high-agency-protocol.md)、[web-design-guidelines.md](references/web-design-guidelines.md)
-- [interaction_patterns.md](references/interaction_patterns.md)、[performance_checklist.md](references/performance_checklist.md)、[accessibility_guide.md](references/accessibility_guide.md)
-- [visual-design-foundations.md](references/visual-design-foundations.md)、[visual-brief-concretizer.md](references/visual-brief-concretizer.md)
-- 脚本：`node scripts/design_audit.mjs`、`node scripts/pattern_generator.mjs`

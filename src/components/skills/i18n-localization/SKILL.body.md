@@ -20,7 +20,3 @@ export function WelcomeCard() {
 ```bash
 node ./scripts/i18n_checker.mjs /path/to/project
 ```
-
-## 参考资料
-
-- [scripts/i18n_checker.mjs](scripts/i18n_checker.mjs)
