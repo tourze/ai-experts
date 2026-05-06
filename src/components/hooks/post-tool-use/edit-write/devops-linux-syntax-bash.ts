@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 import { existsSync } from "fs";
 import { execFileSync } from "child_process";
-import { hasCommand, cmd, matchExt } from "./devops-linux-_utils.mjs";
+import { hasCommand, cmd, matchExt } from "../../_shared/hook-edit-write-utils";
 
 export const devopsLinuxSyntaxBashHook = defineHook({
   id: "devops-linux-syntax-bash",

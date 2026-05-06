@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 import { existsSync } from "node:fs";
 import { execFileSync } from "node:child_process";
-import { hasCommand, cmd, matchExt } from "./python-_utils.mjs";
+import { hasCommand, cmd, matchExt } from "../../_shared/hook-edit-write-utils";
 
 export const pythonSyntaxHook = defineHook({
   id: "python-syntax",

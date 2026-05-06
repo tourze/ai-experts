@@ -1,6 +1,6 @@
 import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
-import { findGitSubcommandInvocations, hasShortFlag } from "./git-_shell-utils.mjs";
+import { findGitSubcommandInvocations, hasShortFlag } from "../../_shared/hook-bash-git-shell-utils";
 
 export const gitAddGuardHook = defineHook({
   id: "git-add-guard",

@@ -1,7 +1,7 @@
 import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 import { readFileSync, existsSync } from "fs";
-import { matchExt } from "./frontend-_utils.mjs";
+import { matchExt } from "../../_shared/hook-edit-write-utils";
 
 export const frontendSyntaxWxmlHook = defineHook({
   id: "frontend-syntax-wxml",

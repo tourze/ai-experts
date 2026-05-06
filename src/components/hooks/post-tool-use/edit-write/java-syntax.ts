@@ -4,7 +4,7 @@ import { readFileSync, existsSync, mkdtempSync, rmSync } from "fs";
 import { execFileSync } from "child_process";
 import { tmpdir } from "os";
 import { join } from "path";
-import { matchExt } from "./java-_utils.mjs";
+import { matchExt } from "../../_shared/hook-edit-write-utils";
 
 export const javaSyntaxHook = defineHook({
   id: "java-syntax",

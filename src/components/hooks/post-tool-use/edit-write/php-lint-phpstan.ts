@@ -3,7 +3,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 import { existsSync } from "fs";
 import { execFileSync } from "child_process";
 import { join } from "path";
-import { matchExt, findUp } from "./php-_utils.mjs";
+import { matchExt, findUp } from "../../_shared/hook-edit-write-utils";
 
 export const phpLintPhpstanHook = defineHook({
   id: "php-lint-phpstan",

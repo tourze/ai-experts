@@ -7,12 +7,12 @@ import {
   getFinalAssistantText,
   getFinalCodexAssistantText,
   parseTranscript,
-} from "../_shared/transcript-utils.mjs";
+} from "../_shared/transcript-utils";
 import {
   hasCompletionStatus,
   shouldSkipNextStepRequirement,
-} from "../_shared/skill-routing-rules.mjs";
-import { recordAuditTelemetry } from "../_shared/audit-telemetry.mjs";
+} from "../_shared/skill-routing-rules";
+import { recordAuditTelemetry } from "../_shared/audit-telemetry";
 
 export const skillUsageAuditHook = defineHook({
   id: "skill-usage-audit",
@@ -138,7 +138,7 @@ export async function run(payload) {
 
   const summary = summarizeSkillUsage(finalText);
   recordAuditTelemetry(payload, {
-    hook: "skill-usage-audit.mjs",
+    hook: "skill-usage-audit",
     event: "stop",
     decision: "audit",
     audit_type: "skill_usage",

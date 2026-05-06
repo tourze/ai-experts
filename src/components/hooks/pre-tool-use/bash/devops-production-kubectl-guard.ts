@@ -15,7 +15,7 @@ export const devopsProductionKubectlGuardHook = defineHook({
 /**
  * 生产集群高危操作守卫（PreToolUse — Bash）
  *
- * 与 dangerous-infra-guard.mjs 互补：
+ * 与 dangerous-infra-guard.ts 互补：
  *   dangerous-infra-guard → 拦截"明确的毁灭性命令"（delete ns, destroy, prune -a）
  *   production-kubectl-guard → 拦截"在生产上下文中有严重副作用的操作性命令"
  *

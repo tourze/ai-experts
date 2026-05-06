@@ -1,6 +1,6 @@
 import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
-import { findSvnSubcommandInvocations } from "./git-_shell-utils.mjs";
+import { findSvnSubcommandInvocations } from "../../_shared/hook-bash-git-shell-utils";
 
 export const svnBulkOperationGuardHook = defineHook({
   id: "svn-bulk-operation-guard",

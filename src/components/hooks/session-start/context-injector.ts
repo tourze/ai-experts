@@ -109,7 +109,7 @@ export async function run(payload) {
     "",
     "[Session Context] 起手上下文",
     "",
-    "本段由 hooks/session-start/context-injector.mjs 在 SessionStart 时一次性",
+    "本段由 hooks/session-start/context-injector.ts 在 SessionStart 时一次性",
     "注入,代替每次会话起手重复执行 `git status` / `ls <记忆文件>` 的探测。",
     "",
     `  cwd:       ${cwd}`,

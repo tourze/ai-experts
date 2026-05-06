@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 import { readFileSync, existsSync } from "fs";
 import { execFileSync } from "child_process";
-import { hasCommand, cmd, matchName } from "./devops-_utils.mjs";
+import { hasCommand, cmd, matchName } from "../../_shared/hook-edit-write-utils";
 import { basename } from "path";
 
 export const devopsSyntaxDockerfileHook = defineHook({

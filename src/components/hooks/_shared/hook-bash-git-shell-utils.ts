@@ -5,8 +5,6 @@ const COMMAND_SEPARATORS = new Set(["&&", "||", ";", "|"]);
 
 const GIT_GLOBAL_OPTIONS_WITH_VALUE = new Set(["-C", "--git-dir", "--work-tree", "-c", "--config-env"]);
 
-// ── Git ──
-
 function collectCommandInvocations(tokens, cmdName, subcommand, globalOptionsWithValue = new Set()) {
   const invocations = [];
 
@@ -64,8 +62,6 @@ export function hasShortFlag(token, flag) {
 export function quoteShellArg(arg) {
   return `'${arg.replace(/'/g, "'\\''")}'`;
 }
-
-// ── 通用 ──
 
 function resolvePathToken(pathToken, baseCwd) {
   if (!pathToken) return baseCwd;

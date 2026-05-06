@@ -3,7 +3,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 import { existsSync, readFileSync, realpathSync } from "fs";
 import { basename, dirname, relative } from "path";
 import { execFileSync } from "child_process";
-import { isCppSourceFile } from "./_utils.mjs";
+import { isCppSourceFile } from "../../_shared/hook-edit-write-utils";
 
 export const debugStatementGuardHook = defineHook({
   id: "debug-statement-guard",

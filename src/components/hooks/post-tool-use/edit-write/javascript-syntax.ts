@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 import { existsSync } from "fs";
 import { execFileSync } from "child_process";
-import { cmd, matchExt } from "./javascript-_utils.mjs";
+import { cmd, matchExt } from "../../_shared/hook-edit-write-utils";
 
 export const javascriptSyntaxHook = defineHook({
   id: "javascript-syntax",
@@ -17,7 +17,7 @@ export const javascriptSyntaxHook = defineHook({
 });
 
 function matches(filePath) {
-  return matchExt(filePath, [".js", ".mjs", ".cjs"]);
+  return matchExt(filePath, [".js", "", ".cjs"]);
 }
 
 async function check(filePath) {

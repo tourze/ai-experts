@@ -3,7 +3,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 import { existsSync } from "fs";
 import { execFileSync } from "child_process";
 import { join } from "path";
-import { cmd, matchExt, findUp } from "./javascript-_utils.mjs";
+import { cmd, matchExt, findUp } from "../../_shared/hook-edit-write-utils";
 
 export const javascriptLintEslintHook = defineHook({
   id: "javascript-lint-eslint",
@@ -28,11 +28,11 @@ export const javascriptLintEslintHook = defineHook({
 
 const CONFIG_NAMES = [
   "eslint.config.js",
-  "eslint.config.mjs",
+  "eslint.config",
   "eslint.config.cjs",
   "eslint.config.ts",
 ];
-const EXTS = [".js", ".mjs", ".cjs", ".jsx", ".ts", ".tsx", ".mts", ".cts"];
+const EXTS = [".js", "", ".cjs", ".jsx", ".ts", ".tsx", ".mts", ".cts"];
 
 function matches(filePath) {
   return matchExt(filePath, EXTS);

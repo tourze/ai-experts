@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 import { existsSync } from "fs";
 import { execFileSync } from "child_process";
-import { hasCommand, matchExt } from "./_utils.mjs";
+import { hasCommand, matchExt } from "../../_shared/hook-edit-write-utils";
 
 export const syntaxXmlHook = defineHook({
   id: "syntax-xml",

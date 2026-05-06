@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 import { readFileSync } from "fs";
 import { resolve } from "path";
-import { extractCommandCwd, findGitSubcommandInvocations, hasShortFlag } from "./git-_shell-utils.mjs";
+import { extractCommandCwd, findGitSubcommandInvocations, hasShortFlag } from "../../_shared/hook-bash-git-shell-utils";
 
 export const gitCommitMessageGuardHook = defineHook({
   id: "git-commit-message-guard",

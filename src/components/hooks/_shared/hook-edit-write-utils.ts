@@ -1,5 +1,6 @@
-import { basename, extname } from "path";
 import { execFileSync } from "child_process";
+import { existsSync } from "fs";
+import { basename, dirname, extname, join, resolve } from "path";
 
 const isWin = process.platform === "win32";
 
@@ -16,7 +17,43 @@ export function hasCommand(name) {
   }
 }
 
-export const CPP_SOURCE_EXTENSIONS = new Set([
+export function matchExt(filePath, exts) {
+  return exts.includes(extname(filePath).toLowerCase());
+}
+
+export function matchName(filePath, names) {
+  return names.includes(basename(filePath));
+}
+
+export function pathContains(filePath, segment) {
+  const normalized = filePath.replaceAll("\\", "/");
+  return normalized.includes(`/${segment}/`);
+}
+
+export function findUp(startPath, fileNames) {
+  let dir = dirname(resolve(startPath));
+  while (true) {
+    for (const name of fileNames) {
+      if (existsSync(join(dir, name))) return dir;
+    }
+    const parent = dirname(dir);
+    if (parent === dir) return null;
+    dir = parent;
+  }
+}
+
+export function getLowerBaseName(filePath) {
+  return basename(filePath.replaceAll("\\", "/")).toLowerCase();
+}
+
+export function countLines(text) {
+  if (!text) return 0;
+  const lines = text.split(/\r?\n/u);
+  if (lines.at(-1) === "") lines.pop();
+  return lines.length;
+}
+
+const CPP_SOURCE_EXTENSIONS = new Set([
   ".c",
   ".cc",
   ".cpp",
@@ -73,10 +110,6 @@ const CPP_BUDGET_BY_FILE_NAME = {
   "gnumakefile": 300,
 };
 
-export function getLowerBaseName(filePath) {
-  return basename(filePath.replaceAll("\\", "/")).toLowerCase();
-}
-
 export function isCppSourceFile(filePath) {
   return CPP_SOURCE_EXTENSIONS.has(extname(filePath).toLowerCase());
 }
@@ -92,15 +125,4 @@ export function shouldCheckCppTextFile(filePath) {
 export function getCppBudget(filePath) {
   const baseName = getLowerBaseName(filePath);
   return CPP_BUDGET_BY_FILE_NAME[baseName] ?? CPP_BUDGET_BY_EXTENSION[extname(baseName)] ?? null;
-}
-
-export function matchExt(filePath, exts) {
-  return exts.includes(extname(filePath).toLowerCase());
-}
-
-export function countLines(text) {
-  if (!text) return 0;
-  const lines = text.split(/\r?\n/u);
-  if (lines.at(-1) === "") lines.pop();
-  return lines.length;
 }

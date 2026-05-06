@@ -7,7 +7,7 @@ import {
   getFinalAssistantText,
   getFinalCodexAssistantText,
   parseTranscript,
-} from "../_shared/transcript-utils.mjs";
+} from "../_shared/transcript-utils";
 import {
   NEXT_STEP_BLOCK_TEMPLATE,
   NEXT_STEP_RULES,
@@ -15,7 +15,7 @@ import {
   hasNextStepSection,
   shouldSkipNextStepRequirement,
   summarizeText,
-} from "../_shared/skill-routing-rules.mjs";
+} from "../_shared/skill-routing-rules";
 
 export const skillNextStepGateHook = defineHook({
   id: "skill-next-step-gate",

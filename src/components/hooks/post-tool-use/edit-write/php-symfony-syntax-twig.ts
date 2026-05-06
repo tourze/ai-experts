@@ -3,7 +3,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { matchExt, hasCommand, cmd, findUp } from "./php-symfony-_utils.mjs";
+import { matchExt, hasCommand, cmd, findUp } from "../../_shared/hook-edit-write-utils";
 
 export const phpSymfonySyntaxTwigHook = defineHook({
   id: "php-symfony-syntax-twig",

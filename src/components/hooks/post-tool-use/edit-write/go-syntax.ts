@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 import { readFileSync, existsSync } from "fs";
 import { execFileSync } from "child_process";
-import { matchExt, hasCommand, findUp } from "./go-_utils.mjs";
+import { matchExt, hasCommand, findUp } from "../../_shared/hook-edit-write-utils";
 
 export const goSyntaxHook = defineHook({
   id: "go-syntax",

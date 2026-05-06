@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 import { readFileSync } from "fs";
 import { resolve } from "path";
-import { extractCommandCwd, findSvnSubcommandInvocations } from "./git-_shell-utils.mjs";
+import { extractCommandCwd, findSvnSubcommandInvocations } from "../../_shared/hook-bash-git-shell-utils";
 
 export const svnCommitMessageGuardHook = defineHook({
   id: "svn-commit-message-guard",

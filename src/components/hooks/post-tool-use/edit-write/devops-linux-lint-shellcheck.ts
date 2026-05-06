@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 import { existsSync, readFileSync } from "fs";
 import { execFileSync } from "child_process";
-import { hasCommand, cmd, matchExt } from "./devops-linux-_utils.mjs";
+import { hasCommand, cmd, matchExt } from "../../_shared/hook-edit-write-utils";
 
 export const devopsLinuxLintShellcheckHook = defineHook({
   id: "devops-linux-lint-shellcheck",

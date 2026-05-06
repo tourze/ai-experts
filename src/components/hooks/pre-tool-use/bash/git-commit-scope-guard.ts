@@ -1,7 +1,7 @@
 import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 import { execFileSync } from "child_process";
-import { extractCommandCwd } from "./git-_shell-utils.mjs";
+import { extractCommandCwd } from "../../_shared/hook-bash-git-shell-utils";
 
 export const gitCommitScopeGuardHook = defineHook({
   id: "git-commit-scope-guard",

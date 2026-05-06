@@ -1,7 +1,7 @@
 import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 import { existsSync, readFileSync } from "node:fs";
-import { pathContains, matchExt } from "./php-symfony-_utils.mjs";
+import { pathContains, matchExt } from "../../_shared/hook-edit-write-utils";
 
 export const phpSymfonySyntaxDoctrineEntityHook = defineHook({
   id: "php-symfony-syntax-doctrine-entity",

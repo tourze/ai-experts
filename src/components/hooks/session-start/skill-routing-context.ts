@@ -1,6 +1,6 @@
 import { defineHook, HookEvent, KnownTool, Platform } from "../../sdk";
 
-import { SESSION_START_ROUTING_CONTEXT } from "../_shared/skill-routing-rules.mjs";
+import { SESSION_START_ROUTING_CONTEXT } from "../_shared/skill-routing-rules";
 
 export const skillRoutingContextHook = defineHook({
   id: "skill-routing-context",

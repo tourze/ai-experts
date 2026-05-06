@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 import { existsSync } from "fs";
 import { execFileSync } from "child_process";
-import { hasCommand, cmd, matchExt, findUp } from "./python-_utils.mjs";
+import { hasCommand, cmd, matchExt, findUp } from "../../_shared/hook-edit-write-utils";
 
 export const pythonLintRuffHook = defineHook({
   id: "python-lint-ruff",

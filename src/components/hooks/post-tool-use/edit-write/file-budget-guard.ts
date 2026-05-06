@@ -3,7 +3,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 import { execFileSync } from "child_process";
 import { existsSync, readFileSync, realpathSync } from "fs";
 import { dirname, extname, relative } from "path";
-import { countLines, getLowerBaseName } from "./_utils.mjs";
+import { countLines, getLowerBaseName } from "../../_shared/hook-edit-write-utils";
 
 export const fileBudgetGuardHook = defineHook({
   id: "file-budget-guard",
@@ -34,7 +34,7 @@ const BUDGETS_BY_EXTENSION = {
   ".gradle": 600,
   ".js": 500,
   ".jsx": 500,
-  ".mjs": 500,
+  "": 500,
   ".cjs": 500,
   ".ts": 500,
   ".tsx": 500,

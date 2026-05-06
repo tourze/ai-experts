@@ -3,7 +3,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 import { existsSync, readFileSync } from "fs";
 import { execFileSync } from "child_process";
 import { extname } from "path";
-import { isCppSourceFile, cmd, hasCommand } from "./_utils.mjs";
+import { isCppSourceFile, cmd, hasCommand } from "../../_shared/hook-edit-write-utils";
 
 export const syntaxCppHook = defineHook({
   id: "syntax-cpp",

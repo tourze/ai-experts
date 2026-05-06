@@ -1,7 +1,7 @@
 import { defineHook, HookEvent, KnownTool, Platform } from "../../sdk";
 
-import { SHORT_CONFIRMATION_RE } from "../_shared/skill-routing-rules.mjs";
-import { readRecentTelemetryEntries, recordAuditTelemetry } from "../_shared/audit-telemetry.mjs";
+import { SHORT_CONFIRMATION_RE } from "../_shared/skill-routing-rules";
+import { readRecentTelemetryEntries, recordAuditTelemetry } from "../_shared/audit-telemetry";
 
 export const skillTriggerTelemetryAdvisorReminderHook = defineHook({
   id: "skill-trigger-telemetry-advisor-reminder",
@@ -57,8 +57,8 @@ function summarizeSignals(entries) {
   const skillAudits = entries.filter((entry) => entry.audit_type === "skill_usage");
   const lastReminder = entries
     .filter((entry) =>
-      (entry.hook === "skill-trigger-telemetry-advisor-reminder.mjs" ||
-        entry.hook === "trigger-telemetry-advisor-reminder.mjs") &&
+      (entry.hook === "skill-trigger-telemetry-advisor-reminder" ||
+        entry.hook === "trigger-telemetry-advisor-reminder") &&
       entry.decision === "context")
     .sort((left, right) => right.ts - left.ts)[0];
   const hookErrors = entries.filter((entry) => entry.decision === "error");
@@ -154,7 +154,7 @@ export async function run(payload) {
   }
 
   recordAuditTelemetry(payload, {
-    hook: "skill-trigger-telemetry-advisor-reminder.mjs",
+    hook: "skill-trigger-telemetry-advisor-reminder",
     event: "user-prompt-submit",
     decision: "context",
     audit_type: "trigger_telemetry_advisor_reminder",

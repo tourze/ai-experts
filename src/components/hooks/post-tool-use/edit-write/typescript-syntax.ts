@@ -3,7 +3,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 import { existsSync, readFileSync } from "fs";
 import { createRequire } from "module";
 import { dirname, extname, resolve } from "path";
-import { matchExt } from "./typescript-_utils.mjs";
+import { matchExt } from "../../_shared/hook-edit-write-utils";
 
 export const typescriptSyntaxHook = defineHook({
   id: "typescript-syntax",

@@ -1,6 +1,6 @@
 import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
-import { findGitSubcommandInvocations } from "./git-_shell-utils.mjs";
+import { findGitSubcommandInvocations } from "../../_shared/hook-bash-git-shell-utils";
 
 export const gitBranchNamingGuardHook = defineHook({
   id: "git-branch-naming-guard",

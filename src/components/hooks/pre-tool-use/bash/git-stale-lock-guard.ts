@@ -3,7 +3,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 import { existsSync, statSync, readFileSync, unlinkSync } from "fs";
 import { execFileSync } from "child_process";
 import { join, resolve } from "path";
-import { extractCommandCwd, quoteShellArg } from "./git-_shell-utils.mjs";
+import { extractCommandCwd, quoteShellArg } from "../../_shared/hook-bash-git-shell-utils";
 
 export const gitStaleLockGuardHook = defineHook({
   id: "git-stale-lock-guard",

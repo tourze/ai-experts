@@ -1,7 +1,7 @@
 import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 import { existsSync, readFileSync } from "fs";
-import { matchExt } from "./ios-_utils.mjs";
+import { matchExt } from "../../_shared/hook-edit-write-utils";
 
 export const iosLintSwiftConcurrencyHook = defineHook({
   id: "ios-lint-swift-concurrency",

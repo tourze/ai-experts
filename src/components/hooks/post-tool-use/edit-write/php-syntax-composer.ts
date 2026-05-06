@@ -2,7 +2,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../../sdk";
 
 import { existsSync } from "fs";
 import { execFileSync } from "child_process";
-import { hasCommand, cmd, matchName } from "./php-_utils.mjs";
+import { hasCommand, cmd, matchName } from "../../_shared/hook-edit-write-utils";
 import { dirname } from "path";
 
 export const phpSyntaxComposerHook = defineHook({

@@ -3,7 +3,7 @@ import { defineHook, HookEvent, KnownTool, Platform } from "../../sdk";
 import {
   ROUTING_REMINDER,
   SHORT_CONFIRMATION_RE,
-} from "../_shared/skill-routing-rules.mjs";
+} from "../_shared/skill-routing-rules";
 
 export const skillRoutingReminderHook = defineHook({
   id: "skill-routing-reminder",

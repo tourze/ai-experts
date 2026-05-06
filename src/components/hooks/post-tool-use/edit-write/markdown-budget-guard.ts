@@ -45,7 +45,7 @@ export const markdownBudgetGuardHook = defineHook({
  *   历史超标且缩减          → report（正向反馈）
  *   历史超标且不变          → 静默放行（避免重复噪音）
  *
- * 不把 getHeadContent 提到 _utils.mjs：本 hook 要的是原文字符串，
+ * 不把 getHeadContent 提到 hook-edit-write-utils.ts：本 hook 要的是原文字符串，
  * 与其他守卫的需求不同；YAGNI 原则下先局部持有，避免提前抽象。
  */
 
