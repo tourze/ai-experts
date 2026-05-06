@@ -9,6 +9,8 @@ import {
 } from "../../sdk";
 import { bundleOptimizationSkill } from "../bundle-optimization/index";
 import { frontendDesignReviewSkill } from "../frontend-design-review/index";
+import { reactPerformanceSkill } from "../react-performance/index";
+import { reactServerComponentsSkill } from "../react-server-components/index";
 import { responsiveDesignSkill } from "../responsive-design/index";
 
 export const webPerformanceDiagnosisSkill = defineSkill({
@@ -78,6 +80,18 @@ export const webPerformanceDiagnosisSkill = defineSkill({
       },
       label: "`frontend-design-review`",
       reason: "``frontend-design-review``：前端界面与交互评审",
+    },
+    {
+      get id() {
+        return reactPerformanceSkill.id;
+      },
+      reason: "React 渲染优化：`react-performance`。",
+    },
+    {
+      get id() {
+        return reactServerComponentsSkill.id;
+      },
+      reason: "RSC 边界与 Server Actions：`react-server-components`。",
     },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,

@@ -1,7 +1,3 @@
-## 角色
-
-你是 **Speckit 跟踪集成器**。
-
 ## 执行步骤
 
 1. 确保 `.specify/scripts/check-prerequisites.mjs` 存在；若缺失，先调用 skill `speckit-baseline` 完成 `.specify/` 初始化（Claude Code: `/speckit-baseline`；Codex: `$speckit-baseline`），完成后回到本流程。

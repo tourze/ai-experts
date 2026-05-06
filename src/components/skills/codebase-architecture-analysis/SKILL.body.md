@@ -9,7 +9,3 @@
 7. **修改指南**：为核心模块给出新增功能、改变行为、扩展接口的具体操作路径。
 
 详细命令模板见 [references/code-patterns.md](references/code-patterns.md)。
-
-## 交叉引用
-
-- `deep-code-read`：深度理解不熟悉代码库

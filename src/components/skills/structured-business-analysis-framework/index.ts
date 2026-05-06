@@ -5,6 +5,9 @@ import {
   defineSkill,
 } from "../../sdk";
 import { businessModelSkill } from "../business-model/index";
+import { evidenceQualityFrameworkSkill } from "../evidence-quality-framework/index";
+import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
+import { mckinseyStepSkill } from "../mckinsey-7-step/index";
 
 export const structuredBusinessAnalysisFrameworkSkill = defineSkill({
   id: "structured-business-analysis-framework",
@@ -41,6 +44,24 @@ export const structuredBusinessAnalysisFrameworkSkill = defineSkill({
       },
       label: "`business-model`",
       reason: "``business-model``：商业模式分析",
+    },
+    {
+      get id() {
+        return mckinseyStepSkill.id;
+      },
+      reason: "`mckinsey-7-step`：麦肯锡七步问题解决法。",
+    },
+    {
+      get id() {
+        return firstPrinciplesDecomposerSkill.id;
+      },
+      reason: "`first-principles-decomposer`：第一性原理拆解。",
+    },
+    {
+      get id() {
+        return evidenceQualityFrameworkSkill.id;
+      },
+      reason: "`evidence-quality-framework`：证据质量标注方法论。",
     },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,

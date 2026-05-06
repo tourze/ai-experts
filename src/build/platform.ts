@@ -135,6 +135,9 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
     if (hasH2SectionMatching(bodySource, (title) => title === "用户输入")) {
       throw new Error(`Skill ${skill.id} must move ## 用户输入 from SKILL.body.md to parameters`);
     }
+    if (hasH2SectionMatching(bodySource, (title) => title === "交叉引用")) {
+      throw new Error(`Skill ${skill.id} must move ## 交叉引用 from SKILL.body.md to relatedSkills`);
+    }
     validateAntiPatterns(skill);
     validateParameters(skill);
     if (/\]\(\.\.\/[^)]+\/SKILL\.md\)|\]\([a-z0-9-]+-expert:[a-z0-9-]+\)/u.test(bodySource)) {

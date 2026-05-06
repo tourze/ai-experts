@@ -33,8 +33,3 @@ node ./scripts/analyze.mjs ./public
 ## 瀑布流消除与浏览器渲染
 
 核心代码模式（Promise.all 并行化、hydration 双阶段渲染、resource hints、passive listeners）和规则索引见 [references/rendering-and-waterfall.md](references/rendering-and-waterfall.md)。
-
-## 交叉引用
-
-- `react-performance`：React 渲染优化
-- `react-server-components`：RSC 边界与 Server Actions

@@ -7,6 +7,7 @@ import {
   defineSkill,
 } from "../../sdk";
 import { architectureReviewerSkill } from "../architecture-reviewer/index";
+import { deepCodeReadSkill } from "../deep-code-read/index";
 import { softwareDesignSkill } from "../software-design/index";
 import { techDebtSkill } from "../tech-debt/index";
 
@@ -59,6 +60,12 @@ export const codebaseArchitectureAnalysisSkill = defineSkill({
       },
       label: "`software-design`",
       reason: "``software-design``：设计原则与架构模式，从复杂度、深模块和信息隐藏角度评估设计",
+    },
+    {
+      get id() {
+        return deepCodeReadSkill.id;
+      },
+      reason: "`deep-code-read`：深度理解不熟悉代码库。",
     },
   ],
   antiPatterns: [

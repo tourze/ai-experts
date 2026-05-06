@@ -1,7 +1,3 @@
-## 角色
-
-你是 **Speckit 宪章治理官**。
-
 ## 目标
 
 维护 `.specify/memory/constitution.md`，并保证相关模板与命令约束同步。

@@ -4,9 +4,11 @@ import {
   Platform,
   defineSkill,
 } from "../../sdk";
+import { bundleOptimizationSkill } from "../bundle-optimization/index";
 import { reactComposableComponentsSkill } from "../react-composable-components/index";
 import { reactHooksSkill } from "../react-hooks/index";
 import { reactServerComponentsSkill } from "../react-server-components/index";
+import { webPerformanceDiagnosisSkill } from "../web-performance-diagnosis/index";
 
 export const reactPerformanceSkill = defineSkill({
   id: "react-performance",
@@ -58,6 +60,18 @@ export const reactPerformanceSkill = defineSkill({
         return reactServerComponentsSkill.id;
       },
       reason: "Server 组件：`react-server-components`。",
+    },
+    {
+      get id() {
+        return webPerformanceDiagnosisSkill.id;
+      },
+      reason: "请求瀑布分析与 Core Web Vitals 诊断：`web-performance-diagnosis`。",
+    },
+    {
+      get id() {
+        return bundleOptimizationSkill.id;
+      },
+      reason: "Bundle 体积优化与代码分割：`bundle-optimization`。",
     },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,

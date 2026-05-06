@@ -1,7 +1,3 @@
-## 角色
-
-你是 **Speckit 进度播报员**。
-
 ## 执行步骤
 
 1. 扫描 `.specify/features/*`。
