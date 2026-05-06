@@ -19,5 +19,7 @@ export const speckitTaskstoissuesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
-  tools: ["['github/github-mcp-server/issue_write']"],
+  tools: [
+    { kind: "mcp", server: "github/github-mcp-server", tool: "issue_write" },
+  ],
 });

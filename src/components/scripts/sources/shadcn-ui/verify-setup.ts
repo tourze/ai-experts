@@ -3,190 +3,172 @@
  * shadcn/ui Setup Verification Script
  * Validates that a project is correctly configured for shadcn/ui.
  */
-
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
-
 const GREEN = "\x1b[0;32m";
 const RED = "\x1b[0;31m";
 const YELLOW = "\x1b[1;33m";
 const NC = "\x1b[0m";
-
-function logOk(message) {
-  console.log(`${GREEN}✓${NC} ${message}`);
+function logOk(message: any): any {
+    console.log(`${GREEN}✓${NC} ${message}`);
 }
-
-function logError(message) {
-  console.log(`${RED}✗${NC} ${message}`);
+function logError(message: any): any {
+    console.log(`${RED}✗${NC} ${message}`);
 }
-
-function logWarn(message) {
-  console.log(`${YELLOW}⚠${NC} ${message}`);
+function logWarn(message: any): any {
+    console.log(`${YELLOW}⚠${NC} ${message}`);
 }
-
-function fileExists(path) {
-  return existsSync(path) && statSync(path).isFile();
+function fileExists(path: any): any {
+    return existsSync(path) && statSync(path).isFile();
 }
-
-function dirExists(path) {
-  return existsSync(path) && statSync(path).isDirectory();
+function dirExists(path: any): any {
+    return existsSync(path) && statSync(path).isDirectory();
 }
-
-function readIfExists(path) {
-  return fileExists(path) ? readFileSync(path, "utf8") : "";
+function readIfExists(path: any): any {
+    return fileExists(path) ? readFileSync(path, "utf8") : "";
 }
-
-function walkFiles(root, predicate, results = []) {
-  if (!existsSync(root)) {
+function walkFiles(root: any, predicate: any, results: any = []): any {
+    if (!existsSync(root)) {
+        return results;
+    }
+    for (const entry of readdirSync(root, { withFileTypes: true })) {
+        if (entry.name === "node_modules" || entry.name === ".git") {
+            continue;
+        }
+        const fullPath = join(root, entry.name);
+        if (entry.isDirectory()) {
+            walkFiles(fullPath, predicate, results);
+        }
+        else if (entry.isFile() && predicate(fullPath)) {
+            results.push(fullPath);
+        }
+    }
     return results;
-  }
-
-  for (const entry of readdirSync(root, { withFileTypes: true })) {
-    if (entry.name === "node_modules" || entry.name === ".git") {
-      continue;
-    }
-
-    const fullPath = join(root, entry.name);
-    if (entry.isDirectory()) {
-      walkFiles(fullPath, predicate, results);
-    } else if (entry.isFile() && predicate(fullPath)) {
-      results.push(fullPath);
-    }
-  }
-  return results;
 }
-
-function findCssFile() {
-  return walkFiles(".", (path) => /(?:^|\/)(globals|index|app)\.css$/.test(path)).sort()[0] ?? null;
+function findCssFile(): any {
+    return walkFiles(".", (path: any) => /(?:^|\/)(globals|index|app)\.css$/.test(path)).sort()[0] ?? null;
 }
-
-function countInstalledComponents() {
-  return walkFiles(".", (path) => /(?:^|\/)components\/ui\/[^/]+\.(tsx|jsx)$/.test(path)).length;
+function countInstalledComponents(): any {
+    return walkFiles(".", (path: any) => /(?:^|\/)components\/ui\/[^/]+\.(tsx|jsx)$/.test(path)).length;
 }
-
-function dependencyExists(packageSource, dependency) {
-  return new RegExp(`"${dependency}"`).test(packageSource);
+function dependencyExists(packageSource: any, dependency: any): any {
+    return new RegExp(`"${dependency}"`).test(packageSource);
 }
-
 console.log("🔍 Verifying shadcn/ui setup...");
 console.log("");
-
 if (fileExists("components.json")) {
-  logOk("components.json found");
-} else {
-  logError("components.json not found");
-  console.log(`${YELLOW}Run:${NC} npx shadcn@latest init`);
-  process.exit(1);
+    logOk("components.json found");
 }
-
+else {
+    logError("components.json not found");
+    console.log(`${YELLOW}Run:${NC} npx shadcn@latest init`);
+    process.exit(1);
+}
 let tailwindConfigFound = false;
-if (
-  fileExists("tailwind.config.js")
-  || fileExists("tailwind.config.ts")
-  || fileExists("tailwind.config.cjs")
-  || fileExists("tailwind.config.mjs")
-) {
-  tailwindConfigFound = true;
-  logOk("Tailwind config found");
+if (fileExists("tailwind.config.js")
+    || fileExists("tailwind.config.ts")
+    || fileExists("tailwind.config.cjs")
+    || fileExists("tailwind.config.mjs")) {
+    tailwindConfigFound = true;
+    logOk("Tailwind config found");
 }
-
 if (fileExists("tsconfig.json")) {
-  if (readIfExists("tsconfig.json").includes('"@/*"')) {
-    logOk("Path aliases configured in tsconfig.json");
-  } else {
-    logWarn("Path aliases not found in tsconfig.json");
-    console.log("  Add to compilerOptions.paths:");
-    console.log('  "@/*": ["./src/*"]');
-  }
-} else {
-  logWarn("tsconfig.json not found (TypeScript not configured)");
+    if (readIfExists("tsconfig.json").includes('"@/*"')) {
+        logOk("Path aliases configured in tsconfig.json");
+    }
+    else {
+        logWarn("Path aliases not found in tsconfig.json");
+        console.log("  Add to compilerOptions.paths:");
+        console.log('  "@/*": ["./src/*"]');
+    }
 }
-
-let cssFile = null;
-if (
-  fileExists("src/index.css")
-  || fileExists("src/globals.css")
-  || fileExists("app/globals.css")
-  || fileExists("src/app.css")
-  || fileExists("app.css")
-) {
-  logOk("Global CSS file found");
-
-  cssFile = findCssFile();
-  const cssSource = cssFile ? readIfExists(cssFile) : "";
-  if (cssSource.includes('@import "tailwindcss"')) {
-    logOk("Tailwind v4 CSS-first import present");
-  } else if (cssSource.includes("@tailwind base")) {
-    logOk("Tailwind v3 directives present");
-  } else {
-    logError("Tailwind directives missing");
-    console.log("  Add to your CSS file:");
-    console.log('  Tailwind v4: @import "tailwindcss";');
-    console.log("  Tailwind v3: @tailwind base; @tailwind components; @tailwind utilities;");
-  }
-
-  if (/^:root/m.test(cssSource) || cssSource.includes("@layer base")) {
-    logOk("CSS variables defined");
-  } else {
-    logWarn("CSS variables not found");
-    console.log("  shadcn/ui requires CSS variables for theming");
-  }
-} else {
-  logError("Global CSS file not found");
+else {
+    logWarn("tsconfig.json not found (TypeScript not configured)");
 }
-
+let cssFile: any = null;
+if (fileExists("src/index.css")
+    || fileExists("src/globals.css")
+    || fileExists("app/globals.css")
+    || fileExists("src/app.css")
+    || fileExists("app.css")) {
+    logOk("Global CSS file found");
+    cssFile = findCssFile();
+    const cssSource = cssFile ? readIfExists(cssFile) : "";
+    if (cssSource.includes('@import "tailwindcss"')) {
+        logOk("Tailwind v4 CSS-first import present");
+    }
+    else if (cssSource.includes("@tailwind base")) {
+        logOk("Tailwind v3 directives present");
+    }
+    else {
+        logError("Tailwind directives missing");
+        console.log("  Add to your CSS file:");
+        console.log('  Tailwind v4: @import "tailwindcss";');
+        console.log("  Tailwind v3: @tailwind base; @tailwind components; @tailwind utilities;");
+    }
+    if (/^:root/m.test(cssSource) || cssSource.includes("@layer base")) {
+        logOk("CSS variables defined");
+    }
+    else {
+        logWarn("CSS variables not found");
+        console.log("  shadcn/ui requires CSS variables for theming");
+    }
+}
+else {
+    logError("Global CSS file not found");
+}
 if (!tailwindConfigFound && cssFile && readIfExists(cssFile).includes('@import "tailwindcss"')) {
-  logOk("Tailwind v4 can run without tailwind.config.*");
-} else if (!tailwindConfigFound) {
-  logError("Tailwind config not found");
-  console.log(`${YELLOW}Install Tailwind:${NC} npm install -D tailwindcss postcss autoprefixer`);
-  process.exit(1);
+    logOk("Tailwind v4 can run without tailwind.config.*");
 }
-
+else if (!tailwindConfigFound) {
+    logError("Tailwind config not found");
+    console.log(`${YELLOW}Install Tailwind:${NC} npm install -D tailwindcss postcss autoprefixer`);
+    process.exit(1);
+}
 if (dirExists("src/components/ui") || dirExists("components/ui")) {
-  logOk("components/ui directory exists");
-  console.log(`  ${countInstalledComponents()} components installed`);
-} else {
-  logWarn("components/ui directory not found");
-  console.log("  Add your first component: npx shadcn@latest add button");
+    logOk("components/ui directory exists");
+    console.log(`  ${countInstalledComponents()} components installed`);
 }
-
+else {
+    logWarn("components/ui directory not found");
+    console.log("  Add your first component: npx shadcn@latest add button");
+}
 if (fileExists("src/lib/utils.ts") || fileExists("lib/utils.ts")) {
-  logOk("lib/utils.ts exists");
-  const utilsFile = walkFiles(".", (path) => /(?:^|\/)lib\/utils\.ts$/.test(path)).sort()[0];
-  if (utilsFile && /export (function|const) cn/.test(readIfExists(utilsFile))) {
-    logOk("cn() utility function present");
-  } else {
-    logError("cn() utility function missing");
-  }
-} else {
-  logError("lib/utils.ts not found");
+    logOk("lib/utils.ts exists");
+    const utilsFile = walkFiles(".", (path: any): any => /(?:^|\/)lib\/utils\.ts$/.test(path)).sort()[0];
+    if (utilsFile && /export (function|const) cn/.test(readIfExists(utilsFile))) {
+        logOk("cn() utility function present");
+    }
+    else {
+        logError("cn() utility function missing");
+    }
 }
-
+else {
+    logError("lib/utils.ts not found");
+}
 if (fileExists("package.json")) {
-  console.log("");
-  console.log("📦 Checking dependencies...");
-
-  const packageSource = readIfExists("package.json");
-  for (const dep of ["react", "tailwindcss"]) {
-    if (dependencyExists(packageSource, dep)) {
-      logOk(`${dep} installed`);
-    } else {
-      logError(`${dep} not installed`);
+    console.log("");
+    console.log("📦 Checking dependencies...");
+    const packageSource = readIfExists("package.json");
+    for (const dep of ["react", "tailwindcss"]) {
+        if (dependencyExists(packageSource, dep)) {
+            logOk(`${dep} installed`);
+        }
+        else {
+            logError(`${dep} not installed`);
+        }
     }
-  }
-
-  console.log("");
-  console.log("Recommended dependencies:");
-  for (const dep of ["class-variance-authority", "clsx", "tailwind-merge"]) {
-    if (dependencyExists(packageSource, dep)) {
-      logOk(`${dep} installed`);
-    } else {
-      logWarn(`${dep} not installed (recommended)`);
+    console.log("");
+    console.log("Recommended dependencies:");
+    for (const dep of ["class-variance-authority", "clsx", "tailwind-merge"]) {
+        if (dependencyExists(packageSource, dep)) {
+            logOk(`${dep} installed`);
+        }
+        else {
+            logWarn(`${dep} not installed (recommended)`);
+        }
     }
-  }
 }
-
 console.log("");
 logOk("Setup verification complete!");
 console.log("");

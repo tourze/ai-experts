@@ -5,63 +5,61 @@
 import { execFileSync } from "node:child_process";
 import { realpathSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-
-function gitOut(args, { cwd } = {}) {
-  return execFileSync("git", args, { cwd, encoding: "utf-8" }).trimEnd();
+function gitOut(args: any, { cwd }: any = {}): any {
+    return execFileSync("git", args, { cwd, encoding: "utf-8" }).trimEnd();
 }
-
-export function collectDiff({ base = "origin/main", cwd, paths = [] } = {}) {
-  const range = `${base}...`;
-  const nameOnly = gitOut(["diff", "--name-only", range, ...paths.flatMap((p) => ["--", p])], { cwd });
-  const stat = gitOut(["diff", "--stat", range, ...paths.flatMap((p) => ["--", p])], { cwd });
-  const numstatRaw = gitOut(["diff", "--numstat", range, ...paths.flatMap((p) => ["--", p])], { cwd });
-
-  const files = nameOnly ? nameOnly.split("\n") : [];
-  const numstat = numstatRaw
-    ? numstatRaw.split("\n").map((line) => {
-        const [added, removed, path] = line.split("\t");
-        return {
-          path,
-          added: added === "-" ? null : Number(added),
-          removed: removed === "-" ? null : Number(removed),
-        };
-      })
-    : [];
-
-  return {
-    base,
-    range,
-    files,
-    fileCount: files.length,
-    numstat,
-    stat,
-    cwd: cwd ?? process.cwd(),
-  };
+export function collectDiff({ base = "origin/main", cwd, paths = [] }: any = {}): any {
+    const range = `${base}...`;
+    const nameOnly = gitOut(["diff", "--name-only", range, ...paths.flatMap((p: any) => ["--", p])], { cwd });
+    const stat = gitOut(["diff", "--stat", range, ...paths.flatMap((p: any) => ["--", p])], { cwd });
+    const numstatRaw = gitOut(["diff", "--numstat", range, ...paths.flatMap((p: any) => ["--", p])], { cwd });
+    const files = nameOnly ? nameOnly.split("\n") : [];
+    const numstat = numstatRaw
+        ? numstatRaw.split("\n").map((line: any) => {
+            const [added, removed, path] = line.split("\t");
+            return {
+                path,
+                added: added === "-" ? null : Number(added),
+                removed: removed === "-" ? null : Number(removed),
+            };
+        })
+        : [];
+    return {
+        base,
+        range,
+        files,
+        fileCount: files.length,
+        numstat,
+        stat,
+        cwd: cwd ?? process.cwd(),
+    };
 }
-
-function parseArgs(argv) {
-  const args = { base: "origin/main", cwd: process.cwd(), paths: [] };
-  for (let i = 0; i < argv.length; i += 1) {
-    const a = argv[i];
-    if (a === "--base") args.base = argv[++i];
-    else if (a === "--cwd") args.cwd = argv[++i];
-    else if (a === "--") args.paths.push(...argv.slice(i + 1));
-    else if (!a.startsWith("--")) args.paths.push(a);
-  }
-  return args;
+function parseArgs(argv: any): any {
+    const args: Record<string, any> = { base: "origin/main", cwd: process.cwd(), paths: [] };
+    for (let i = 0; i < argv.length; i += 1) {
+        const a = argv[i];
+        if (a === "--base")
+            args.base = argv[++i];
+        else if (a === "--cwd")
+            args.cwd = argv[++i];
+        else if (a === "--")
+            args.paths.push(...argv.slice(i + 1));
+        else if (!a.startsWith("--"))
+            args.paths.push(a);
+    }
+    return args;
 }
-
-function isMain() {
-  return process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url);
+function isMain(): any {
+    return process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url);
 }
-
 if (isMain()) {
-  const args = parseArgs(process.argv.slice(2));
-  try {
-    const result = collectDiff(args);
-    process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
-  } catch (err) {
-    process.stderr.write(`collect_diff failed: ${err.message}\n`);
-    process.exit(1);
-  }
+    const args = parseArgs(process.argv.slice(2));
+    try {
+        const result = collectDiff(args);
+        process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+    }
+    catch (err: any) {
+        process.stderr.write(`collect_diff failed: ${err.message}\n`);
+        process.exit(1);
+    }
 }

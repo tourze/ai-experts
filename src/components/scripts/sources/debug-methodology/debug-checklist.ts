@@ -1,26 +1,25 @@
 type ChecklistOptions = {
-  title: string;
-  symptom?: string;
+    title: string;
+    symptom?: string;
 };
-
 function parseArgs(argv: string[]): ChecklistOptions {
-  const options: ChecklistOptions = { title: "未命名问题" };
-  for (let index = 0; index < argv.length; index += 1) {
-    const arg = argv[index];
-    if ((arg === "--title" || arg === "-t") && argv[index + 1]) {
-      options.title = argv[index + 1];
-      index += 1;
-    } else if ((arg === "--symptom" || arg === "-s") && argv[index + 1]) {
-      options.symptom = argv[index + 1];
-      index += 1;
+    const options: ChecklistOptions = { title: "未命名问题" };
+    for (let index = 0; index < argv.length; index += 1) {
+        const arg = argv[index];
+        if ((arg === "--title" || arg === "-t") && argv[index + 1]) {
+            options.title = argv[index + 1];
+            index += 1;
+        }
+        else if ((arg === "--symptom" || arg === "-s") && argv[index + 1]) {
+            options.symptom = argv[index + 1];
+            index += 1;
+        }
     }
-  }
-  return options;
+    return options;
 }
-
 function renderChecklist(options: ChecklistOptions): string {
-  const symptom = options.symptom ? `\n\n现象：${options.symptom}` : "";
-  return `# Debug Checklist: ${options.title}${symptom}
+    const symptom = options.symptom ? `\n\n现象：${options.symptom}` : "";
+    return `# Debug Checklist: ${options.title}${symptom}
 
 ## 1. 复现
 - [ ] 复现命令：
@@ -52,5 +51,4 @@ function renderChecklist(options: ChecklistOptions): string {
 - [ ] 已运行验证命令：
 `;
 }
-
 console.log(renderChecklist(parseArgs(process.argv.slice(2))));

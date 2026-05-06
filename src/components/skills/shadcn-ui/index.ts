@@ -67,7 +67,14 @@ export const shadcnUiSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
-  tools: ["\"shadcn*:*\"", "\"mcp_shadcn*\"", "\"Read\"", "\"Write\"", "\"Bash\"", "\"web_fetch\""],
+  tools: [
+    { kind: "regex", source: "shadcn.*:.*" },
+    { kind: "regex", source: "mcp_shadcn.*" },
+    KnownTool.Read,
+    KnownTool.Write,
+    KnownTool.Bash,
+    KnownTool.WebFetch,
+  ],
   scripts: [
     "shadcn-ui-verify-setup",
   ],
