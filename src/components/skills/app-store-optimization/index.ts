@@ -22,17 +22,17 @@ export const appStoreOptimizationSkill = defineSkill({
     "需要把技术提交整理成用户能看懂的发布摘要。",
   ],
   constraints: [
-    "这些 `*.py` 主要是库模块；优先通过 `python3 - <<'PY'` 导入调用，不要假设每个文件都提供稳定 CLI。",
+    "这些 `*.ts` 主要是库模块；优先通过 `npx tsx --eval` 导入调用，不要假设每个文件都提供稳定 CLI。",
     "搜索量、竞争度、转化率等输入必须来自用户或可信数据源；不要伪造市场数据。",
     "Apple 与 Google 的字段限制不同，所有输出都必须带字符数校验。",
     "本地化不是逐词翻译，必须同时考虑市场、文化语义和搜索行为。",
     "更新文案规则：先确认真实改动范围再写，只保留用户可感知改动，每条必须可追溯到真实提交；详见 `references/changelog-guide.md`。",
   ],
   checklist: [
-    "元数据优化优先用 `metadata_optimizer.py`，并校验 Apple / Google 字符上限。",
-    "关键词分析优先用 `keyword_analyzer.py`，竞品对标优先用 `competitor_analyzer.py`。",
-    "评论洞察用 `review_analyzer.py`，不要把低星评论直接等同于真实需求。",
-    "发版准备使用 `launch_checklist.py`，测试规划使用 `ab_test_planner.py`。",
+    "元数据优化优先用 `metadata_optimizer.ts`，并校验 Apple / Google 字符上限。",
+    "关键词分析优先用 `keyword_analyzer.ts`，竞品对标优先用 `competitor_analyzer.ts`。",
+    "评论洞察用 `review_analyzer.ts`，不要把低星评论直接等同于真实需求。",
+    "发版准备使用 `launch_checklist.ts`，测试规划使用 `ab_test_planner.ts`。",
     "交叉引用：需要审核合规视角时切到 `apple-appstore-reviewer`。",
   ],
   antiPatterns: [

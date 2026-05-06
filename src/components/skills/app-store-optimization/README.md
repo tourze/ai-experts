@@ -86,11 +86,11 @@ This skill provides end-to-end ASO capabilities across seven key areas:
 - Optimal timing recommendations
 - Seasonal campaign planning
 
-## Python Modules
+## TypeScript Modules
 
-This skill includes 8 powerful Python modules:
+This skill includes 8 powerful TypeScript modules:
 
-### 1. keyword_analyzer.py
+### 1. keyword_analyzer.ts
 **Purpose**: Analyzes keywords for search volume, competition, and relevance
 
 **Key Functions**:
@@ -100,7 +100,7 @@ This skill includes 8 powerful Python modules:
 - `calculate_keyword_density()`: Analyze keyword usage in text
 - `extract_keywords_from_text()`: Extract keywords from reviews/descriptions
 
-### 2. metadata_optimizer.py
+### 2. metadata_optimizer.ts
 **Purpose**: Optimizes titles, descriptions, keywords with character limit validation
 
 **Key Functions**:
@@ -110,7 +110,7 @@ This skill includes 8 powerful Python modules:
 - `validate_character_limits()`: Ensure platform compliance
 - `calculate_keyword_density()`: Analyze keyword integration
 
-### 3. competitor_analyzer.py
+### 3. competitor_analyzer.ts
 **Purpose**: Analyzes competitor ASO strategies
 
 **Key Functions**:
@@ -119,7 +119,7 @@ This skill includes 8 powerful Python modules:
 - `identify_gaps()`: Find competitive opportunities
 - `_calculate_competitive_strength()`: Score competitor ASO quality
 
-### 4. aso_scorer.py
+### 4. aso_scorer.ts
 **Purpose**: Calculates comprehensive ASO health score
 
 **Key Functions**:
@@ -130,7 +130,7 @@ This skill includes 8 powerful Python modules:
 - `score_conversion_metrics()`: Evaluate conversion rates
 - `generate_recommendations()`: Prioritized improvement actions
 
-### 5. ab_test_planner.py
+### 5. ab_test_planner.ts
 **Purpose**: Plans and tracks A/B tests for ASO elements
 
 **Key Functions**:
@@ -140,7 +140,7 @@ This skill includes 8 powerful Python modules:
 - `track_test_results()`: Monitor ongoing tests
 - `generate_test_report()`: Create comprehensive test reports
 
-### 6. localization_helper.py
+### 6. localization_helper.ts
 **Purpose**: Manages multi-language ASO optimization
 
 **Key Functions**:
@@ -150,7 +150,7 @@ This skill includes 8 powerful Python modules:
 - `validate_translations()`: Character limit validation
 - `calculate_localization_roi()`: Estimate investment returns
 
-### 7. review_analyzer.py
+### 7. review_analyzer.ts
 **Purpose**: Analyzes user reviews for actionable insights
 
 **Key Functions**:
@@ -161,7 +161,7 @@ This skill includes 8 powerful Python modules:
 - `track_sentiment_trends()`: Monitor changes over time
 - `generate_response_templates()`: Create review responses
 
-### 8. launch_checklist.py
+### 8. launch_checklist.ts
 **Purpose**: Generates comprehensive launch and update checklists
 
 **Key Functions**:
@@ -205,14 +205,14 @@ ls ~/.claude/skills/app-store-optimization/
 
 # You should see:
 # SKILL.md
-# keyword_analyzer.py
-# metadata_optimizer.py
-# competitor_analyzer.py
-# aso_scorer.py
-# ab_test_planner.py
-# localization_helper.py
-# review_analyzer.py
-# launch_checklist.py
+# keyword_analyzer.ts
+# metadata_optimizer.ts
+# competitor_analyzer.ts
+# aso_scorer.ts
+# ab_test_planner.ts
+# localization_helper.ts
+# review_analyzer.ts
+# launch_checklist.ts
 # sample_input.json
 # expected_output.json
 # HOW_TO_USE.md
@@ -228,8 +228,8 @@ Hey Claude—I just added the "app-store-optimization" skill. Can you research k
 ```
 
 **What Claude will do**:
-- Use `keyword_analyzer.py` to research keywords
-- Use `competitor_analyzer.py` to analyze Nike Training Club and Peloton
+- Use `keyword_analyzer.ts` to research keywords
+- Use `competitor_analyzer.ts` to analyze Nike Training Club and Peloton
 - Provide prioritized keyword list with search volumes, competition levels
 - Identify gaps and long-tail opportunities
 - Recommend primary keywords for title and secondary keywords for description
@@ -245,7 +245,7 @@ Hey Claude—I just added the "app-store-optimization" skill. Optimize my app's 
 ```
 
 **What Claude will do**:
-- Use `metadata_optimizer.py` to create optimized titles (multiple options)
+- Use `metadata_optimizer.ts` to create optimized titles (multiple options)
 - Generate platform-specific descriptions (short and full)
 - Optimize Apple's 100-character keyword field
 - Validate all character limits
@@ -265,7 +265,7 @@ Hey Claude—I just added the "app-store-optimization" skill. Calculate my app's
 ```
 
 **What Claude will do**:
-- Use `aso_scorer.py` to calculate overall score (0-100)
+- Use `aso_scorer.ts` to calculate overall score (0-100)
 - Break down by category (Metadata: X/25, Ratings: X/25, Keywords: X/25, Conversion: X/25)
 - Identify strengths and weaknesses
 - Generate prioritized recommendations
@@ -278,7 +278,7 @@ Hey Claude—I just added the "app-store-optimization" skill. I want to A/B test
 ```
 
 **What Claude will do**:
-- Use `ab_test_planner.py` to design test
+- Use `ab_test_planner.ts` to design test
 - Calculate required sample size (based on minimum detectable effect)
 - Estimate test duration for low/medium/high traffic scenarios
 - Provide test structure and success metrics
@@ -295,7 +295,7 @@ Hey Claude—I just added the "app-store-optimization" skill. Analyze my last 50
 ```
 
 **What Claude will do**:
-- Use `review_analyzer.py` to process reviews
+- Use `review_analyzer.ts` to process reviews
 - Calculate sentiment distribution
 - Extract common themes
 - Identify and prioritize issues
@@ -309,7 +309,7 @@ Hey Claude—I just added the "app-store-optimization" skill. Generate a complet
 ```
 
 **What Claude will do**:
-- Use `launch_checklist.py` to generate checklists
+- Use `launch_checklist.ts` to generate checklists
 - Create Apple App Store checklist (metadata, assets, technical, legal)
 - Create Google Play Store checklist (metadata, assets, technical, legal)
 - Add universal checklist (marketing, QA, support)
@@ -355,7 +355,7 @@ Hey Claude—I just added the "app-store-optimization" skill. Generate a complet
 
 ## Technical Requirements
 
-- **Python**: 3.7+ (for Python modules)
+- **Node.js**: 20+ (run modules with `npx tsx`)
 - **Platform Support**: Apple App Store, Google Play Store
 - **Data Formats**: JSON input/output
 - **Dependencies**: Standard library only (no external packages required)
@@ -382,8 +382,8 @@ Hey Claude—I just added the "app-store-optimization" skill. Generate a complet
 
 ## Troubleshooting
 
-### Issue: Python modules not found
-**Solution**: Ensure all .py files are in the same directory as SKILL.md
+### Issue: TypeScript modules not found
+**Solution**: Ensure all `.ts` files are in the same directory as SKILL.md, and run through `npx tsx`
 
 ### Issue: Character limit validation failing
 **Solution**: Check that you're using the correct platform ('apple' or 'google')
@@ -398,7 +398,7 @@ Hey Claude—I just added the "app-store-optimization" skill. Generate a complet
 
 ### Version 1.0.0 (November 7, 2025)
 - Initial release
-- 8 Python modules with comprehensive ASO capabilities
+- 8 TypeScript modules with comprehensive ASO capabilities
 - Support for both Apple App Store and Google Play Store
 - Keyword research, metadata optimization, competitor analysis
 - ASO scoring, A/B testing, localization, review analysis
