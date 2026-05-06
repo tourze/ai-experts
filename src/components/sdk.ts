@@ -95,6 +95,13 @@ export type AntiPatternDefinition = {
   pass: string;
 };
 
+export type SkillParameter = {
+  name: string;
+  description: string;
+  required?: boolean;
+  type?: "string" | "file" | "url" | "slug";
+};
+
 export type SkillDefinition = {
   kind: ComponentKind.Skill;
   id: string;
@@ -113,6 +120,8 @@ export type SkillDefinition = {
   references?: readonly SkillReferenceDefinition[];
   relatedSkills?: readonly RelatedSkillDefinition[];
   assets?: readonly SkillAssetDefinition[];
+  parameters?: readonly SkillParameter[];
+  argumentHint?: string;
 };
 
 export enum AgentSandbox {

@@ -31,7 +31,7 @@ import {
 import { compileHookModules, renderCodexConfig, renderHookConfig } from "./hooks.ts";
 import { hasH2SectionMatching, startsWithH2Section } from "./markdown.ts";
 import { materializeProfile } from "./registry.ts";
-import { emitSkill, validateAntiPatterns, validateTextList } from "./skills.ts";
+import { emitSkill, validateAntiPatterns, validateParameters, validateTextList } from "./skills.ts";
 import type { ComponentRegistry, ProfileSurface } from "./types.ts";
 
 export function renderInstruction(profileSurface: ProfileSurface, platform: Platform): string {
@@ -132,7 +132,11 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
     if (hasH2SectionMatching(bodySource, (title) => title === "反模式")) {
       throw new Error(`Skill ${skill.id} must move ## 反模式 from SKILL.body.md to antiPatterns`);
     }
+    if (hasH2SectionMatching(bodySource, (title) => title === "用户输入")) {
+      throw new Error(`Skill ${skill.id} must move ## 用户输入 from SKILL.body.md to parameters`);
+    }
     validateAntiPatterns(skill);
+    validateParameters(skill);
     if (/\]\(\.\.\/[^)]+\/SKILL\.md\)|\]\([a-z0-9-]+-expert:[a-z0-9-]+\)/u.test(bodySource)) {
       throw new Error(`Skill ${skill.id} must move explicit cross-skill links from SKILL.body.md to relatedSkills`);
     }

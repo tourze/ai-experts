@@ -6,6 +6,7 @@ import type {
   AntiPatternDefinition,
   Platform as PlatformType,
   SkillDefinition,
+  SkillParameter,
   SkillReferenceDefinition,
   SkillScriptDefinition,
 } from "../components/sdk";
@@ -53,6 +54,16 @@ function renderSkillFrontmatter(skill: SkillDefinition, platform: PlatformType):
     if (tools.length > 0) {
       lines.push("allowed-tools:");
       for (const tool of tools) lines.push(`  - ${tool}`);
+    }
+    if (skill.argumentHint) {
+      lines.push(`argument-hint: ${yamlScalar(skill.argumentHint)}`);
+    }
+    const params = skill.parameters ?? [];
+    if (params.length > 0) {
+      lines.push("arguments:");
+      for (const param of params) {
+        lines.push(`  - ${param.name}`);
+      }
     }
   }
   lines.push("---", "");
@@ -168,6 +179,50 @@ function renderAntiPatterns(skill: SkillDefinition): string {
   return `## 反模式\n\n${rows.join("\n")}\n`;
 }
 
+export function validateParameters(skill: SkillDefinition): readonly SkillParameter[] {
+  const params = skill.parameters ?? [];
+  if (params.length === 0) return [];
+  const seen = new Set<string>();
+  for (const [index, param] of params.entries()) {
+    if (!param || typeof param !== "object") {
+      throw new Error(`Skill ${skill.id} parameters[${index}] must be an object`);
+    }
+    if (typeof param.name !== "string" || param.name.trim() === "") {
+      throw new Error(`Skill ${skill.id} parameters[${index}].name must be a non-empty string`);
+    }
+    if (typeof param.description !== "string" || param.description.trim() === "") {
+      throw new Error(`Skill ${skill.id} parameters[${index}].description must be a non-empty string`);
+    }
+    const name = param.name.trim();
+    if (seen.has(name)) {
+      throw new Error(`Skill ${skill.id} parameters[${index}].name "${name}" is duplicate`);
+    }
+    seen.add(name);
+    if (param.type !== undefined && !["string", "file", "url", "slug"].includes(param.type)) {
+      throw new Error(`Skill ${skill.id} parameters[${index}].type "${param.type}" is invalid; must be string, file, url, or slug`);
+    }
+  }
+  return params;
+}
+
+function renderUserInput(skill: SkillDefinition, platform: PlatformType): string {
+  const params = skill.parameters ?? [];
+  if (params.length === 0) return "";
+  if (platform === Platform.Claude) {
+    const names = params.map((p) => `$${p.name}`).join(" ");
+    return `## 用户输入\n\n\`\`\`text\n${names}\n\`\`\`\n`;
+  }
+  // Codex: parameter table
+  const rows = [
+    "| 参数 | 类型 | 必填 | 说明 |",
+    "|------|------|------|------|",
+    ...params.map((p) =>
+      `| \`${p.name}\` | ${p.type ?? "string"} | ${p.required !== false ? "是" : "否"} | ${p.description} |`
+    ),
+  ];
+  return `## 用户输入\n\n${rows.join("\n")}\n`;
+}
+
 function renderRelatedSkills(skill: SkillDefinition): string {
   const relatedSkills = skill.relatedSkills ?? [];
   if (relatedSkills.length === 0) return "";
@@ -202,6 +257,7 @@ export function renderSkillMd(skill: SkillDefinition, platform: PlatformType): s
     renderUseCases(skill),
     renderConstraints(skill),
     renderRelatedSkills(skill),
+    renderUserInput(skill, platform),
     generatedBody,
     renderScriptRegistry(skill, platform),
     renderReferenceMap(skill),
