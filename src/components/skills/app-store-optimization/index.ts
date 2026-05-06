@@ -20,7 +20,7 @@ export const appStoreOptimizationSkill = defineSkill({
     "需要把技术提交整理成用户能看懂的发布摘要。",
   ],
   constraints: [
-    "这些 `*.ts` 主要是库模块；优先通过 `npx tsx --eval` 导入调用，不要假设每个文件都提供稳定 CLI。",
+    "这些 `src/components/scripts/sources/app-store-optimization/*.ts` 主要是库模块；优先通过 `npx tsx --eval` 导入调用，不要假设每个文件都提供稳定 CLI。",
     "搜索量、竞争度、转化率等输入必须来自用户或可信数据源；不要伪造市场数据。",
     "Apple 与 Google 的字段限制不同，所有输出都必须带字符数校验。",
     "本地化不是逐词翻译，必须同时考虑市场、文化语义和搜索行为。",
@@ -52,7 +52,15 @@ export const appStoreOptimizationSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   scripts: [
+    "app-store-optimization-ab-test-planner",
+    "app-store-optimization-aso-scorer",
+    "app-store-optimization-competitor-analyzer",
     "app-store-optimization-collect-release-changes",
+    "app-store-optimization-keyword-analyzer",
+    "app-store-optimization-launch-checklist",
+    "app-store-optimization-localization-helper",
+    "app-store-optimization-metadata-optimizer",
+    "app-store-optimization-review-analyzer",
   ],
   references: [
     defineReference({

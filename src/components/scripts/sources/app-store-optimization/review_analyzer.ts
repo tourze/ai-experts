@@ -431,8 +431,11 @@ export class ReviewAnalyzer {
 
   private rankIssuesBySeverity(severityScores: AnyRecord): AnyRecord[] {
     return Object.entries(severityScores)
-      .map(([category, data]) => ({ category, ...(data as AnyRecord) }))
-      .sort((a, b) => Number(b.severity_score) - Number(a.severity_score));
+      .map(([category, data]) => ({ category, ...(data as { severity_score?: number } & AnyRecord) }))
+      .sort(
+        (a: { severity_score?: number }, b: { severity_score?: number }) =>
+          Number(b.severity_score ?? 0) - Number(a.severity_score ?? 0),
+      );
   }
 
   private generateIssueRecommendations(

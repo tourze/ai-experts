@@ -35,6 +35,7 @@ export const skillCreatorSkill = defineSkill({
   tools: [],
   scripts: [
     "skill-creator-aggregate-benchmark",
+    "skill-creator-generate-review",
     "skill-creator-generate-report",
     "skill-creator-improve-description",
     "skill-creator-package-skill",

@@ -205,14 +205,7 @@ ls ~/.claude/skills/app-store-optimization/
 
 # You should see:
 # SKILL.md
-# keyword_analyzer.ts
-# metadata_optimizer.ts
-# competitor_analyzer.ts
-# aso_scorer.ts
-# ab_test_planner.ts
-# localization_helper.ts
-# review_analyzer.ts
-# launch_checklist.ts
+# references/
 # sample_input.json
 # expected_output.json
 # HOW_TO_USE.md

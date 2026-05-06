@@ -67,6 +67,18 @@ function getMimeType(path: string): string {
   return "application/octet-stream";
 }
 
+function resolveViewerTemplatePath(): string {
+  const candidates = [
+    join(__dirname, "viewer.html"),
+    join(__dirname, "../../../skills/skill-creator/eval-viewer/viewer.html"),
+    join(__dirname, "../../skills/skill-creator/eval-viewer/viewer.html"),
+  ];
+  for (const candidate of candidates) {
+    if (existsSync(candidate)) return candidate;
+  }
+  throw new Error("viewer.html not found for generate_review.ts");
+}
+
 export function findRuns(workspace: string): any[] {
   const runs: any[] = [];
   findRunsRecursive(workspace, workspace, runs);
@@ -277,7 +289,7 @@ export function generateHtml(
   previous: Record<string, { feedback: string; outputs: any[] }> | null = null,
   benchmark: any = null,
 ): string {
-  const templatePath = join(__dirname, "viewer.html");
+  const templatePath = resolveViewerTemplatePath();
   const template = readFileSync(templatePath, "utf8");
 
   const previousFeedback: Record<string, string> = {};

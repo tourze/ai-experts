@@ -99,7 +99,7 @@ export class LocalizationHelper {
     const targetLangCode = targetLanguage.split("-")[0];
     const charMultiplier = LocalizationHelper.CHAR_MULTIPLIERS[targetLangCode] ?? 1;
 
-    const limits =
+    const limits: Record<string, number> =
       platform === "apple"
         ? { title: 30, subtitle: 30, description: 4000, keywords: 100 }
         : { title: 50, short_description: 80, description: 4000 };
@@ -111,7 +111,7 @@ export class LocalizationHelper {
       if (!(field in limits)) continue;
 
       const estimatedLength = Math.floor(text.length * charMultiplier);
-      const limit = limits[field as keyof typeof limits];
+      const limit = limits[field];
 
       localizedFields[field] = {
         original_text: text,
@@ -176,7 +176,7 @@ export class LocalizationHelper {
     targetLanguage: string,
     platform = "apple",
   ): AnyRecord {
-    const limits =
+    const limits: Record<string, number> =
       platform === "apple"
         ? { title: 30, subtitle: 30, description: 4000, keywords: 100 }
         : { title: 50, short_description: 80, description: 4000 };
@@ -192,7 +192,7 @@ export class LocalizationHelper {
       if (!(field in limits)) continue;
 
       const actualLength = text.length;
-      const limit = limits[field as keyof typeof limits];
+      const limit = limits[field];
       const isWithinLimit = actualLength <= limit;
 
       validation.field_validations[field] = {

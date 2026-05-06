@@ -5,7 +5,7 @@
 - 写几个测试 prompt，并让带目标 skill 的 Claude 跑一遍
 - 帮用户同时做定性和定量评估
   - 运行在后台进行时，如果还没有定量 eval，就先草拟一组；如果已有 eval，检查它们是否还能直接使用或是否需要调整。然后向用户解释这些 eval 检查什么
-  - 用 `eval-viewer/generate_review.ts` 展示结果，让用户能查看输出并查看定量指标
+  - 用 `src/components/scripts/sources/skill-creator/generate_review.ts` 展示结果，让用户能查看输出并查看定量指标
 - 根据用户反馈重写 skill；如果定量 benchmark 暴露明显问题，也一并修正
 - 重复，直到结果足够好
 - 扩大测试集，再做更大规模验证
@@ -234,7 +234,7 @@ Execute this task:
 
 4. **启动 viewer**，同时展示定性输出和定量数据：
    ```bash
-   nohup npx tsx <skill-creator-path>/eval-viewer/generate_review.ts \
+   nohup npx tsx src/components/scripts/sources/skill-creator/generate_review.ts \
      <workspace>/iteration-N \
      --skill-name "my-skill" \
      --benchmark <workspace>/iteration-N/benchmark.json \
@@ -245,7 +245,7 @@ Execute this task:
 
    **Cowork / headless 环境**：如果 `webbrowser.open()` 不可用，或环境没有显示器，使用 `--static <output_path>` 写出独立 HTML 文件，而不是启动 server。用户点击“提交全部 Review”后会下载 `feedback.json`。下载后，把 `feedback.json` 复制到 workspace 目录，供下一轮迭代读取。
 
-   注意：请使用 `eval-viewer/generate_review.ts` 创建 viewer，不需要自写 HTML。
+   注意：请使用 `src/components/scripts/sources/skill-creator/generate_review.ts` 创建 viewer，不需要自写 HTML。
 
 5. **告诉用户**，例如：“我已经在浏览器里打开结果页。里面有两个 tab：`输出` 用来逐个查看测试输出并留下反馈，`Benchmark` 展示定量对比。看完后回来告诉我你已完成 review。”
 
@@ -448,9 +448,9 @@ node scripts/package_skill.mjs <path/to/skill-folder>
 - 起草或编辑 skill
 - 用测试 prompt 运行带 skill 的 Claude
 - 和用户一起评估输出：
-  - 创建 `benchmark.json` 并运行 `eval-viewer/generate_review.ts`，帮助用户 review
+  - 创建 `benchmark.json` 并运行 `src/components/scripts/sources/skill-creator/generate_review.ts`，帮助用户 review
   - 运行定量 eval
 - 重复，直到你和用户都满意
 - 打包最终 skill 并交付
 
-使用 TodoList 跟踪进度。在 Cowork 中，尤其要把 “Create evals JSON and run `eval-viewer/generate_review.ts`” 放进列表。
+使用 TodoList 跟踪进度。在 Cowork 中，尤其要把 “Create evals JSON and run `src/components/scripts/sources/skill-creator/generate_review.ts`” 放进列表。
