@@ -64,7 +64,7 @@ export function buildFfmpegCommand(video: any, audio: any, output: any, volume: 
 function usage(): any {
     return `Overlay audio onto a Manim-rendered video using ffmpeg.
 
-Usage: node scripts/add_audio.mjs <video> <audio> --output <output> [options]
+Usage: node scripts/concept-to-video-add_audio.mjs <video> <audio> --output <output> [options]
 
 Options:
   --output, -o <path>      Output video file

@@ -76,7 +76,7 @@ export function ensureManimInstalled(python: any = defaultPython()): any {
 function usage(): any {
     return `Render Manim scene to video.
 
-Usage: node scripts/render_video.mjs <scene.py> <SceneName> [options]
+Usage: node scripts/concept-to-video-render_video.mjs <scene.py> <SceneName> [options]
 
 Options:
   --quality <low|medium|high|4k>  Render quality preset (default: high)

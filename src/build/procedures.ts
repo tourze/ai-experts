@@ -419,7 +419,9 @@ if (childPayload) {
 }
 
 type ProcedureTransformContext = {
+  id: string;
   target: string;
+  ownerSkillIds: readonly string[];
 };
 
 function renderProcedurePathLoader(): string {
@@ -427,19 +429,58 @@ function renderProcedurePathLoader(): string {
 module.exports = function aiExpertsProcedurePathLoader(source) {
   const options = this.getOptions() || {};
   const contexts = options.contexts || {};
+  const commandRewrites = options.commandRewrites || {};
   const file = String(this.resourcePath || "").replaceAll("\\\\", "/");
   const context = contexts[file];
   if (!context) return source;
   const replacement = "globalThis.__aiExpertsProcedureDir(" + JSON.stringify(context.target) + ")";
   const moduleFile = "globalThis.__aiExpertsModuleFile(" + JSON.stringify(context.target) + ")";
+  const runtimeCommand = (procedureId) => "node procedures.js --procedure-id " + procedureId + " --";
+  const rewriteScriptCommand = (match) => {
+    const target = match.replace(/^node\\s+(?:\\.\\/)?/, "");
+    if (target === context.target) return runtimeCommand(context.id);
+    for (const skillId of context.ownerSkillIds || []) {
+      const ownerRewrite = commandRewrites[JSON.stringify([skillId, target])];
+      if (ownerRewrite) return runtimeCommand(ownerRewrite);
+    }
+    const globalRewrite = commandRewrites[JSON.stringify(["", target])];
+    return globalRewrite ? runtimeCommand(globalRewrite) : match;
+  };
   return source
     .replace(/\\bpath\\.dirname\\s*\\(\\s*fileURLToPath\\s*\\(\\s*import\\.meta\\.url\\s*\\)\\s*\\)/g, replacement)
     .replace(/(?<!\\.)\\bdirname\\s*\\(\\s*fileURLToPath\\s*\\(\\s*import\\.meta\\.url\\s*\\)\\s*\\)/g, replacement)
     .replace(/\\bpath\\.dirname\\s*\\(\\s*__filename\\s*\\)/g, replacement)
     .replace(/(?<!\\.)\\bdirname\\s*\\(\\s*__filename\\s*\\)/g, replacement)
-    .replace(/\\bfileURLToPath\\s*\\(\\s*import\\.meta\\.url\\s*\\)/g, moduleFile);
+    .replace(/\\bfileURLToPath\\s*\\(\\s*import\\.meta\\.url\\s*\\)/g, moduleFile)
+    .replace(/\\bnode\\s+(?:\\.\\/)?scripts\\/[A-Za-z0-9._/-]+\\.mjs\\b/g, rewriteScriptCommand);
 };
 `;
+}
+
+function pushMapValue(map: Map<string, string[]>, key: string, value: string): void {
+  const values = map.get(key) ?? [];
+  if (!values.includes(value)) values.push(value);
+  map.set(key, values);
+}
+
+function buildProcedureCommandRewrites(
+  procedures: readonly RuntimeProcedureModule[],
+): Record<string, string> {
+  const byOwnerAndTarget = new Map<string, string[]>();
+  const byTarget = new Map<string, string[]>();
+
+  for (const procedure of procedures) {
+    pushMapValue(byTarget, JSON.stringify(["", procedure.target]), procedure.id);
+    for (const skillId of procedure.owners.skillIds) {
+      pushMapValue(byOwnerAndTarget, JSON.stringify([skillId, procedure.target]), procedure.id);
+    }
+  }
+
+  const rewrites: Record<string, string> = {};
+  for (const [key, procedureIds] of [...byTarget, ...byOwnerAndTarget]) {
+    if (procedureIds.length === 1) rewrites[key] = procedureIds[0]!;
+  }
+  return rewrites;
 }
 
 function webpackExternal(
@@ -481,9 +522,14 @@ async function emitBundledProceduresFile(root: string, runtimeProcedures: readon
   const transformContexts = new Map(
     runtimeProcedures.map((procedure) => [
       normalizeSeparators(procedure.sourcePath),
-      { target: procedure.target },
+      {
+        id: procedure.id,
+        target: procedure.target,
+        ownerSkillIds: procedure.owners.skillIds,
+      },
     ]),
   );
+  const commandRewrites = buildProcedureCommandRewrites(runtimeProcedures);
   writeFileSync(entryFile, renderProceduresEntrypoint(runtimeProcedures), "utf-8");
   writeFileSync(loaderFile, renderProcedurePathLoader(), "utf-8");
 
@@ -533,6 +579,7 @@ async function emitBundledProceduresFile(root: string, runtimeProcedures: readon
                 loader: loaderFile,
                 options: {
                   contexts: Object.fromEntries(transformContexts),
+                  commandRewrites,
                 },
               },
             ],

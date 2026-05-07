@@ -78,7 +78,7 @@ export async function renderSvg(page: any, outputPath: any, selector: any): Prom
 function usage(): any {
     return `Render HTML to PNG or SVG.
 
-Usage: node scripts/render_to_image.mjs <input.html> <output.png|output.svg> [options]
+Usage: node scripts/concept-to-image-render_to_image.mjs <input.html> <output.png|output.svg> [options]
 
 Options:
   --width <px>          Viewport width (default: 1920)

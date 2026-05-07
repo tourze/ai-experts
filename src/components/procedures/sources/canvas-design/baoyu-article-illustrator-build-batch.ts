@@ -3,7 +3,7 @@ import process from "node:process";
 import { readdir, readFile, stat, writeFile } from "node:fs/promises";
 function printUsage(): any {
     console.log(`Usage:
-  node scripts/build-batch.mjs --outline outline.md --prompts prompts --output batch.json --images-dir attachments
+  node scripts/baoyu-article-illustrator-build-batch.mjs --outline outline.md --prompts prompts --output batch.json --images-dir attachments
 
 Options:
   --outline <path>     Path to outline.md

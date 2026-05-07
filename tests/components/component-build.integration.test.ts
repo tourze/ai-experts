@@ -804,11 +804,21 @@ describe("component build integration", () => {
       );
     }
 
+    for (const platform of ["claude", "codex"]) {
+      const platformProceduresSource = readFileSync(join(tmpDistDir, `${platform}/procedures.js`), "utf-8");
+      assert.doesNotMatch(
+        platformProceduresSource,
+        /\bnode\s+(?:\.\/)?scripts\/[A-Za-z0-9._/-]+\.mjs\b/,
+        `${platform} bundled procedures.js should not suggest removed repository-local scripts`,
+      );
+    }
+
     const proceduresSource = readFileSync(join(tmpDistDir, "claude/procedures.js"), "utf-8");
     const procedureRegistrySource = readFileSync(join(repoRoot, "src/components/procedures/registry.ts"), "utf-8");
     assert.doesNotMatch(procedureRegistrySource, /bundle:\s*false/);
     assert.match(proceduresSource, /^#!\/usr\/bin\/env node/);
     assert.match(proceduresSource, /__webpack_modules__/);
+    assert.match(proceduresSource, /\bnode procedures\.js --procedure-id md-to-pdf-setup -- --install\b/);
     assert.doesNotMatch(proceduresSource, /"source"\s*:/, "procedures.js should not embed procedure code as JSON strings");
     assert.doesNotMatch(proceduresSource, /procedure\.source|writeFileSync\(target/);
     assert.doesNotMatch(proceduresSource, /ai-components-|procedure-runtime-entry/);
