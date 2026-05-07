@@ -14,8 +14,8 @@ import {
   extractPropertyArray,
   firstNonEmptyLine,
   hasTopLevelHeadingOutsideCodeFence,
+  nonCanonicalComponentLayoutPattern,
   repoRoot,
-  stalePluginLayoutPattern,
 } from "./test-helpers";
 
 describe("component source conventions", () => {
@@ -111,8 +111,8 @@ describe("component source conventions", () => {
     for (const sourceFile of layoutAuthoritySources) {
       assert.doesNotMatch(
         readFileSync(sourceFile, "utf-8"),
-        stalePluginLayoutPattern,
-        `${sourceFile} should use the single canonical src/components layout without stale plugin path aliases`,
+        nonCanonicalComponentLayoutPattern,
+        `${sourceFile} should use the single canonical src/components layout without plugin-root aliases`,
       );
     }
   });
@@ -772,7 +772,7 @@ describe("component source conventions", () => {
       assert.doesNotMatch(
         source,
         /(?<![./\w-])\b[a-z0-9]+(?:-[a-z0-9]+)*-expert\/(?!index\b)[a-z0-9]+(?:-[a-z0-9]+)*\b/,
-        `${skillSourceFile} should not use legacy plugin namespace skill references`,
+        `${skillSourceFile} should not use plugin namespace skill references`,
       );
 
       const relatedSkillsSource = extractPropertyArray(source, "relatedSkills");

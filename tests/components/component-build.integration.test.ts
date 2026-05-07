@@ -8,9 +8,9 @@ import {
   assertSingleDispatcherHookGroups,
   collectFiles,
   countH2OutsideCodeFence,
+  nonCanonicalComponentLayoutPattern,
   repoRoot,
   stripFrontmatter,
-  stalePluginLayoutPattern,
 } from "./test-helpers";
 
 let tmpDistDir = "";
@@ -1021,7 +1021,7 @@ describe("component build integration", () => {
       );
       assert.doesNotMatch(
         platformProceduresSource,
-        stalePluginLayoutPattern,
+        nonCanonicalComponentLayoutPattern,
         `${platform} bundled procedures.js should only support the canonical component layout`,
       );
       assert.match(
