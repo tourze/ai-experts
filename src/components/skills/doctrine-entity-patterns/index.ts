@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
   defineSkillGoal,
   defineSkillOutputs,
@@ -18,7 +19,7 @@ export const doctrineEntityPatternsSkill = defineSkill({
   useCases: [
     "新建或审查 Entity 列映射、关联、索引、Repository 和 Migration。",
     "排查 N+1、懒加载异常、级联删除或 UnitOfWork 性能问题。",
-    "批处理联动 `doctrine-batch-processing`；Bundle 组织联动 `symfony-bundle-architecture`。完整示例见 [reference.md](reference.md)。",
+    "批处理联动 `doctrine-batch-processing`；Bundle 组织联动 `symfony-bundle-architecture`。完整示例读取 `entity-reference`。",
   ],
   constraints: [
     "用 PHP 8 Attributes 映射，不用注解。",
@@ -39,13 +40,13 @@ export const doctrineEntityPatternsSkill = defineSkill({
       get id() {
         return symfonyBundleArchitectureSkill.id;
       },
-      reason: "批处理联动 `doctrine-batch-processing`；Bundle 组织联动 `symfony-bundle-architecture`。完整示例见 reference.md。",
+      reason: "Entity 需要进入 Bundle 目录结构、DI 配置或多 Bundle 边界时联动。",
     },
     {
       get id() {
         return doctrineBatchProcessingSkill.id;
       },
-      reason: "批处理联动 `doctrine-batch-processing`；Bundle 组织联动 `symfony-bundle-architecture`。完整示例见 [reference.md](reference.md)。",
+      reason: "Repository 查询、数据回填或大批量更新需要批处理策略时联动。",
     },
   ],
   antiPatterns: [
@@ -66,7 +67,7 @@ export const doctrineEntityPatternsSkill = defineSkill({
   }),
   workflow: defineSkillWorkflow({
     steps: [
-      "读取目标 Entity、Repository、Migration、调用点和数据库约束；完整代码示例按需读取 `reference.md`。",
+      "读取目标 Entity、Repository、Migration、调用点和数据库约束；完整代码示例按需读取 `entity-reference`。",
       "审查列映射、ID 策略、时间类型、nullable、索引、唯一约束和注释。",
       "审查关联关系、归属端、反向声明、cascade、orphanRemoval 和懒加载风险。",
       "审查 Repository 查询边界，避免无界 `findAll()`、N+1 和不可分页集合遍历。",
@@ -79,8 +80,18 @@ export const doctrineEntityPatternsSkill = defineSkill({
       "Entity 映射与关联审查结果。",
       "Repository 查询边界和性能风险。",
       "Migration 回滚、索引和外键检查。",
-      "需要参考的 `reference.md` 示例和最小修改建议。",
+      "需要参考的 `entity-reference` 示例和最小修改建议。",
     ],
   }),
   tools: [],
+  references: [
+    defineReference({
+      id: "entity-reference",
+      source: new URL("./references/entity-reference.md", import.meta.url),
+      target: "references/entity-reference.md",
+      title: "Doctrine Entity 实现参考",
+      summary: "Doctrine Entity、Repository、Migration、关联、索引和验证命令的完整示例。",
+      loadWhen: "需要完整 Doctrine Entity / Repository / Migration 代码示例或命令时读取。",
+    }),
+  ],
 });

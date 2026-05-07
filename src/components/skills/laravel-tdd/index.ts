@@ -3,7 +3,11 @@ import {
   KnownTool,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { laravelPatternsSkill } from "../laravel-patterns/index";
 import { laravelVerificationSkill } from "../laravel-verification/index";
@@ -37,13 +41,13 @@ export const laravelTddSkill = defineSkill({
       get id() {
         return laravelPatternsSkill.id;
       },
-      reason: "发布前整体验证看 `laravel-verification`，实现边界约束看 `laravel-patterns`。",
+      reason: "测试暴露控制器、Action、模型关系、队列或资源边界设计问题时联动。",
     },
     {
       get id() {
         return laravelVerificationSkill.id;
       },
-      reason: "发布前整体验证看 `laravel-verification`，实现边界约束看 `laravel-patterns`。",
+      reason: "需要把局部测试扩展为发布前完整验证命令链时联动。",
     },
   ],
   antiPatterns: [
@@ -58,6 +62,34 @@ export const laravelTddSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 Pest / PHPUnit 为 Laravel HTTP 端点、Eloquent 模型、Policy、队列、通知、Sanctum 和 Action 设计红绿重构测试循环。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先写成功路径失败测试，再补授权失败、验证失败和外部依赖失败。",
+      "触库测试默认 RefreshDatabase；队列、事件、通知和 HTTP 客户端默认 fake 并断言副作用。",
+      "一个测试只覆盖一个行为边界，名称直接描述业务行为。",
+      "Pest HTTP + Queue fake 和 PHPUnit Action 示例读取 `test-code-patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "测试用例、fixture / factory、fake 边界和断言策略。",
+      "成功、授权失败、验证失败、外部依赖失败和副作用覆盖矩阵。",
+      "仍需人工验证或发布前命令验证的风险。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "test-code-patterns",
+      source: new URL("./references/test-code-patterns.md", import.meta.url),
+      target: "references/test-code-patterns.md",
+      title: "Laravel 测试代码模式",
+      summary: "Pest HTTP 测试、Queue::fake、Sanctum 和 PHPUnit Action 单测示例。",
+      loadWhen: "需要快速编写 Laravel HTTP / Action / Queue 测试时读取。",
+    }),
+  ],
 });

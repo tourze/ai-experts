@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
   defineSkillGoal,
   defineSkillOutputs,
@@ -17,7 +18,7 @@ export const symfonyBundleArchitectureSkill = defineSkill({
   useCases: [
     "新建或审查 Bundle 的 Extension、services.yaml、CompilerPass 和依赖声明。",
     "Bundle 间依赖混乱、可选依赖缺失、Monorepo 多 Bundle 协作。",
-    "Entity 设计联动 `doctrine-entity-patterns`；代码示例和调试命令见 [reference.md](reference.md)。",
+    "Entity 设计联动 `doctrine-entity-patterns`；代码示例和调试命令读取 `bundle-reference`。",
   ],
   constraints: [
     "Bundle 类只做：声明依赖 + 注册 CompilerPass。",
@@ -38,7 +39,7 @@ export const symfonyBundleArchitectureSkill = defineSkill({
       get id() {
         return doctrineEntityPatternsSkill.id;
       },
-      reason: "Entity 设计联动 `doctrine-entity-patterns`；代码示例和调试命令见 reference.md。",
+      reason: "Bundle 内包含 Doctrine Entity、Repository 或 Migration 设计时联动。",
     },
   ],
   antiPatterns: [
@@ -59,7 +60,7 @@ export const symfonyBundleArchitectureSkill = defineSkill({
   }),
   workflow: defineSkillWorkflow({
     steps: [
-      "读取 Bundle 类、Extension、配置文件、CompilerPass、服务定义和 Bundle 间依赖；完整示例按需读取 `reference.md`。",
+      "读取 Bundle 类、Extension、配置文件、CompilerPass、服务定义和 Bundle 间依赖；完整示例按需读取 `bundle-reference`。",
       "检查 Bundle 类是否只做依赖声明和 CompilerPass 注册，不承载运行时逻辑。",
       "检查 Extension 是否只加载配置，不直接构造服务或访问运行时状态。",
       "检查 services.yaml 是否按命名空间 resource 扫描、默认 private、避免无意义 public 服务。",
@@ -72,8 +73,18 @@ export const symfonyBundleArchitectureSkill = defineSkill({
       "Bundle 边界与依赖审查结果。",
       "Extension、services.yaml、CompilerPass 的最小修复建议。",
       "可选依赖和降级策略。",
-      "需要参考的 `reference.md` 示例。",
+      "需要参考的 `bundle-reference` 示例。",
     ],
   }),
   tools: [],
+  references: [
+    defineReference({
+      id: "bundle-reference",
+      source: new URL("./references/bundle-reference.md", import.meta.url),
+      target: "references/bundle-reference.md",
+      title: "Symfony Bundle 实现参考",
+      summary: "Bundle 类、Extension、CompilerPass、services.yaml、依赖声明和调试命令示例。",
+      loadWhen: "需要完整 Symfony Bundle 结构、DI 或 CompilerPass 示例时读取。",
+    }),
+  ],
 });

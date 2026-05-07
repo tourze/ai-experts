@@ -3,7 +3,11 @@ import {
   KnownTool,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { laravelPatternsSkill } from "../laravel-patterns/index";
 import { laravelSecuritySkill } from "../laravel-security/index";
@@ -37,13 +41,13 @@ export const laravelVerificationSkill = defineSkill({
       get id() {
         return laravelSecuritySkill.id;
       },
-      reason: "代码级实现和安全基线分别参考 `laravel-patterns` 与 `laravel-security`。",
+      reason: "验证失败涉及安全配置、密钥、CORS、上传、限流或生产 debug 时联动。",
     },
     {
       get id() {
         return laravelPatternsSkill.id;
       },
-      reason: "代码级实现和安全基线分别参考 `laravel-patterns` 与 `laravel-security`。",
+      reason: "验证失败指向控制器、模型、队列、路由或资源实现边界时联动。",
     },
   ],
   antiPatterns: [
@@ -58,6 +62,34 @@ export const laravelVerificationSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把 Laravel 本地自检、CI、发版前检查和运行时契约收敛为格式、静态分析、测试、依赖审计、迁移、缓存和队列状态命令链。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认 PHP、Composer、Artisan、.env、数据库连接和目标环境配置。",
+      "按 composer validate、dump-autoload、pint、phpstan / psalm、test、composer audit、migration 顺序验证。",
+      "迁移检查 `--pretend`、状态、回滚路径、破坏性变更和灰度步骤。",
+      "环境、质量、迁移、缓存、调度、队列和 Horizon 命令读取 `verification-commands`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Laravel 验证命令清单、执行顺序和失败阻断点。",
+      "迁移、缓存、队列、调度器、Horizon 和运行时配置风险。",
+      "CI / 交接文档中应固化的命令和人工确认项。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "verification-commands",
+      source: new URL("./references/verification-commands.md", import.meta.url),
+      target: "references/verification-commands.md",
+      title: "Laravel 验证命令",
+      summary: "PHP、Composer、Artisan、Pint、PHPStan、测试、审计、迁移、缓存、调度和队列检查命令。",
+      loadWhen: "需要快速组装 Laravel 本地或 CI 验证命令链时读取。",
+    }),
+  ],
 });

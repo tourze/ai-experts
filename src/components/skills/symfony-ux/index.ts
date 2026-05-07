@@ -3,7 +3,11 @@ import {
   KnownTool,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { symfonyMessengerSkill } from "../symfony-messenger/index";
 import { twigComponentsSkill } from "../twig-components/index";
@@ -36,13 +40,13 @@ export const symfonyUxSkill = defineSkill({
       get id() {
         return twigComponentsSkill.id;
       },
-      reason: "如果已经明确要抽取组件，可直接联动 `twig-components`；如果页面交互最终要进入异步任务，可联动 `symfony-messenger`。",
+      reason: "页面需要抽取可复用 TwigComponent、slots 或服务端渲染组件时联动。",
     },
     {
       get id() {
         return symfonyMessengerSkill.id;
       },
-      reason: "如果已经明确要抽取组件，可直接联动 `twig-components`；如果页面交互最终要进入异步任务，可联动 `symfony-messenger`。",
+      reason: "页面交互会触发异步任务、后台处理或失败队列时联动。",
     },
   ],
   antiPatterns: [
@@ -57,6 +61,34 @@ export const symfonyUxSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "在 Symfony 服务端渲染页面中选择 Turbo、Stimulus、TwigComponent、LiveComponent、UX Icons 和 UX Map 的最小交互组合。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认交互是否需要服务端参与、是否只需局部导航、表单增强、实时搜索或第三方 JS。",
+      "优先从 Turbo Drive / Frame 思考页面流，纯前端行为用 Stimulus，需要服务端状态参与再用 LiveComponent。",
+      "同一块 DOM 只能有一个主导状态机制，避免 Turbo、Stimulus、LiveComponent 抢控制权。",
+      "Turbo Frame、Stimulus、LiveComponent 和 UX Icons 示例读取 `ux-component-patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Symfony UX 工具选择、页面边界和状态主导机制。",
+      "Turbo / Stimulus / TwigComponent / LiveComponent / Icons 组合建议。",
+      "需要补的渐进增强、测试和异步任务衔接风险。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "ux-component-patterns",
+      source: new URL("./references/ux-component-patterns.md", import.meta.url),
+      target: "references/ux-component-patterns.md",
+      title: "Symfony UX 组件模式",
+      summary: "Turbo Frame、Stimulus、LiveComponent 和 UX Icons 的 Twig 示例。",
+      loadWhen: "需要快速选择或实现 Symfony UX 页面交互模式时读取。",
+    }),
+  ],
 });

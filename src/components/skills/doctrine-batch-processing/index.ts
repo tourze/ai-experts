@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { symfonyMessengerSkill } from "../symfony-messenger/index";
 import { symfonyVotersSkill } from "../symfony-voters/index";
@@ -18,7 +21,7 @@ export const doctrineBatchProcessingSkill = defineSkill({
     "Doctrine ORM 在长循环中内存上涨、SQL 日志过多、`UnitOfWork` 膨胀或 `flush()` 过慢。",
     "需要判断某段批处理应该继续走 ORM，还是切到 DBAL / 原生 SQL。",
     "如果批处理由异步消息驱动，可联动 `symfony-messenger`；如果涉及权限边界，可联动 `symfony-voters`。",
-    "更细的示例和命令参考见 [reference.md](reference.md)。",
+    "更细的示例和命令参考读取 `implementation-reference`。",
   ],
   constraints: [
     "默认假设数据量会增长：不要用 `findAll()`、不要把全量结果一次性放进内存。",
@@ -39,26 +42,60 @@ export const doctrineBatchProcessingSkill = defineSkill({
       get id() {
         return symfonyVotersSkill.id;
       },
-      reason: "如果批处理由异步消息驱动，可联动 `symfony-messenger`；如果涉及权限边界，可联动 `symfony-voters`。",
+      reason: "批处理涉及权限过滤、资源归属或授权后动作时联动。",
     },
     {
       get id() {
         return symfonyMessengerSkill.id;
       },
-      reason: "如果批处理由异步消息驱动，可联动 `symfony-messenger`；如果涉及权限边界，可联动 `symfony-voters`。",
+      reason: "批处理由异步消息、失败队列或消费者驱动时联动。",
     },
   ],
   antiPatterns: [
     defineAntiPattern({
       fail: "findAll + 每条 flush",
-      pass: "toIterable + 分批 clear：ORM 大批量 UPDATE、改旧 migration 等反模式的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。",
+      pass: "toIterable + 分批 flush/clear",
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 Symfony / Doctrine 大批量导入、回填、迁移和更新设计可控内存、批次大小、事务边界和 ORM / DBAL 切换策略。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认数据量、查询方式、事务范围、锁影响、监听器副作用和是否需要 ORM 生命周期事件。",
+      "ORM 批处理用 `toIterable()`，按批次 `flush()` / `clear()`，必要时收敛 SQL logger 和 UnitOfWork 膨胀。",
+      "能用 DBAL 一条 SQL 完成的批量更新优先走 DBAL / 原生 SQL，不强行绕回 ORM。",
+      "基础 ORM 批处理读取 `orm-batch-patterns`；完整命令、分页和失败模式读取 `implementation-reference`；DBAL / migration 深入读取 `advanced-patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "批处理方案、ORM / DBAL 边界、批次大小和事务策略。",
+      "`flush()` / `clear()` 节点、内存风险、锁影响和失败恢复建议。",
+      "需要运行的迁移、schema、测试和性能验证命令。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "orm-batch-patterns",
+      source: new URL("./references/orm-batch-patterns.md", import.meta.url),
+      target: "references/orm-batch-patterns.md",
+      title: "Doctrine ORM 批处理模式",
+      summary: "toIterable、分批 flush/clear 和基础 ORM 回填示例。",
+      loadWhen: "需要快速实现 Doctrine ORM 分批处理或修复 findAll 批处理时读取。",
+    }),
+    defineReference({
+      id: "implementation-reference",
+      source: new URL("./references/implementation-reference.md", import.meta.url),
+      target: "references/implementation-reference.md",
+      title: "Doctrine 批处理实现参考",
+      summary: "Doctrine 批处理命令、稳定分页、DBAL 更新、验证命令和失败模式。",
+      loadWhen: "需要更完整的 Doctrine 批处理实现、命令或排障清单时读取。",
+    }),
     defineReference({
       id: "advanced-patterns",
       source: new URL("./references/advanced-patterns.md", import.meta.url),

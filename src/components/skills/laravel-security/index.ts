@@ -3,7 +3,11 @@ import {
   KnownTool,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { laravelTddSkill } from "../laravel-tdd/index";
 import { laravelVerificationSkill } from "../laravel-verification/index";
@@ -37,13 +41,13 @@ export const laravelSecuritySkill = defineSkill({
       get id() {
         return laravelVerificationSkill.id;
       },
-      reason: "需要实现层面的配套测试时参考 `laravel-tdd`；需要发布前全量自检时参考 `laravel-verification`。",
+      reason: "安全配置需要发布前环境、缓存、审计、迁移或依赖检查时联动。",
     },
     {
       get id() {
         return laravelTddSkill.id;
       },
-      reason: "需要实现层面的配套测试时参考 `laravel-tdd`；需要发布前全量自检时参考 `laravel-verification`。",
+      reason: "Policy、FormRequest、上传、限流或认证授权需要测试覆盖时联动。",
     },
   ],
   antiPatterns: [
@@ -53,11 +57,51 @@ export const laravelSecuritySkill = defineSkill({
     }),
     defineAntiPattern({
       fail: "批量赋值全开",
-      pass: "显式白名单：把上传文件放在公开目录，再指望前端不猜路径。 记录明文 token、密码、完整邮箱或卡号到日志。 线上依赖 `APP_DEBUG=true`。",
+      pass: "显式 $fillable / $guarded 白名单",
+    }),
+    defineAntiPattern({
+      fail: "上传文件放公开目录",
+      pass: "非公开磁盘 + MIME/大小校验",
+    }),
+    defineAntiPattern({
+      fail: "日志记录明文 token",
+      pass: "敏感字段脱敏或不记录",
+    }),
+    defineAntiPattern({
+      fail: "线上 APP_DEBUG=true",
+      pass: "生产环境强制关闭 debug",
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 Laravel 入口补认证授权、Policy、FormRequest、上传校验、限流、安全头、密钥管理、日志脱敏和生产配置基线。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先列出受保护路由、用户输入、文件上传、令牌、Webhook、高风险入口和目标部署环境。",
+      "入口用 auth 中间件保护，资源权限用 Policy / authorize 判断，写入口先经过 FormRequest。",
+      "上传校验 MIME、大小和磁盘；登录、重置密码、OTP、导出和 Webhook 设独立限流。",
+      "FormRequest 上传和 RateLimiter 示例读取 `security-code-patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "认证授权、Policy、FormRequest、上传、限流和日志脱敏结论。",
+      "APP_DEBUG、APP_KEY、HTTPS 代理、Cookie、CORS、安全头和密钥风险。",
+      "需要补的 Laravel 测试、发布检查和剩余安全风险。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "security-code-patterns",
+      source: new URL("./references/security-code-patterns.md", import.meta.url),
+      target: "references/security-code-patterns.md",
+      title: "Laravel 安全代码模式",
+      summary: "FormRequest 文件上传授权校验和 RateLimiter 独立限流示例。",
+      loadWhen: "需要快速实现 Laravel 上传校验、入口授权或限流时读取。",
+    }),
+  ],
 });

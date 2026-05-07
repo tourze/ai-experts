@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const laravelPatternsSkill = defineSkill({
@@ -51,9 +54,35 @@ export const laravelPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计 Laravel 控制器、FormRequest、Action / Service、Eloquent Model、JsonResource、路由绑定、队列和 Livewire 边界。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认 HTTP 入口、授权点、校验边界、业务动作、模型关系、响应资源和副作用是否需要队列。",
+      "控制器保持薄化：授权、接收参数、调用 Action / Service、返回 JsonResource。",
+      "模型同步检查 fillable、casts、relation、scope、Policy、Resource 和 N+1 查询。",
+      "控制器 + Action + FormRequest 示例读取 `http-action-patterns`；Eloquent、routing、queues、livewire、testing 深入内容读取对应 references。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Controller / FormRequest / Action / Model / Resource 职责拆分。",
+      "Eloquent 关系、scopeBindings、Policy、事务、缓存失效和队列边界建议。",
+      "需要补的测试、N+1 验证和发布前检查项。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "http-action-patterns",
+      source: new URL("./references/http-action-patterns.md", import.meta.url),
+      target: "references/http-action-patterns.md",
+      title: "Laravel HTTP Action 模式",
+      summary: "控制器、Action、FormRequest、Eloquent Model、scopeBindings 和 Policy 示例。",
+      loadWhen: "需要快速设计 Laravel HTTP 入口、Action 或模型规范时读取。",
+    }),
     defineReference({
       id: "eloquent",
       source: new URL("./references/eloquent.md", import.meta.url),
