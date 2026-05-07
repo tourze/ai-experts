@@ -63,6 +63,9 @@ describe("component source conventions", () => {
     const proceduresIndexSource = readFileSync(join(repoRoot, "src/components/procedures/index.ts"), "utf-8");
     const registrySource = readFileSync(join(repoRoot, "src/components/registry.ts"), "utf-8");
     const buildRoot = join(repoRoot, "src/build");
+    const procedureSources = collectFiles(join(repoRoot, "src/components/procedures/sources"), (file) =>
+      file.endsWith(".ts"),
+    );
 
     assert.doesNotMatch(
       sdkSource,
@@ -73,6 +76,14 @@ describe("component source conventions", () => {
     assert.equal(existsSync(join(buildRoot, "scripts.ts")), false);
     assert.equal(existsSync(join(buildRoot, "script-uses.ts")), false);
     assert.doesNotMatch(readFileSync(join(buildRoot, "procedures.ts"), "utf-8"), /__aiExpertsScriptDir/);
+    for (const procedureSourceFile of procedureSources) {
+      const source = readFileSync(procedureSourceFile, "utf-8");
+      assert.doesNotMatch(
+        source,
+        /\b(?:isLegacyPluginsRoot|--plugins-dir|plugins-dir)\b|plugins\/[^/\s]+\/skills/,
+        `${procedureSourceFile} should use canonical skills roots instead of legacy plugin roots`,
+      );
+    }
   });
 
   test("component source directories match the registered component surface", () => {
