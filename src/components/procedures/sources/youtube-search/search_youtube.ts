@@ -15,10 +15,11 @@ export function runYtdlp(query: any, count: any, options: any = {}): any {
         encoding: "utf-8",
         timeout: timeoutMs,
     });
-    if (result.error?.code === "ENOENT") {
+    const spawnError = result.error as NodeJS.ErrnoException | undefined;
+    if (spawnError?.code === "ENOENT") {
         throw new Error("yt-dlp 未安装，请先安装后执行");
     }
-    if (result.error?.code === "ETIMEDOUT") {
+    if (spawnError?.code === "ETIMEDOUT") {
         throw new Error("yt-dlp 搜索超时，请减少结果数量或稍后重试");
     }
     if (result.error) {

@@ -11,9 +11,10 @@ function log(message: any): any {
 export function runCommand(command: any, args: any, { timeoutMs = 60000 }: any = {}): any {
     const result = spawnSync(command, args, { encoding: "utf8", timeout: timeoutMs });
     if (result.error) {
-        if (result.error.code === "ENOENT")
+        const spawnError = result.error as NodeJS.ErrnoException;
+        if (spawnError.code === "ENOENT")
             throw new Error(`Command not found: ${command}`);
-        if (result.error.code === "ETIMEDOUT")
+        if (spawnError.code === "ETIMEDOUT")
             throw new Error(`Command timed out: ${command}`);
         throw result.error;
     }
@@ -146,7 +147,7 @@ export function fetchVideo(urlOrId: any, lang: any = "en", options: any = {}): a
     const videoId = parseYoutubeUrl(urlOrId);
     if (!videoId) {
         const error = new Error(`Cannot parse YouTube URL or video ID: ${urlOrId}`);
-        error.exitCode = 1;
+        (error as Error & { exitCode: number }).exitCode = 1;
         throw error;
     }
     log(`Video ID: ${videoId}`);
@@ -159,7 +160,7 @@ export function fetchVideo(urlOrId: any, lang: any = "en", options: any = {}): a
     catch (error: any) {
         log(`Transcript fetch failed: ${error.message}`);
         const wrapped = new Error("No transcript available for this video");
-        wrapped.exitCode = 2;
+        (wrapped as Error & { exitCode: number }).exitCode = 2;
         throw wrapped;
     }
     log(`Transcript: ${segments.length} segments via ${source} (lang=${language})`);

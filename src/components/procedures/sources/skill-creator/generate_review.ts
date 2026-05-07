@@ -475,7 +475,22 @@ function printServerBanner(
   console.log("\n  按 Ctrl+C 停止。\n");
 }
 
-function parseCliArgs() {
+type GenerateReviewCliArgs =
+  | { help: true }
+  | {
+      help?: false;
+      workspace: string;
+      runs: any[];
+      port: number;
+      skillName: string;
+      feedbackPath: string;
+      previous: Record<string, { feedback: string; outputs: any[] }>;
+      benchmarkPath: string | null;
+      benchmark: any;
+      staticOutputPath: string | null;
+    };
+
+function parseCliArgs(): GenerateReviewCliArgs {
   const parsed = parseArgs({
     allowPositionals: true,
     options: {
@@ -545,8 +560,14 @@ function parseCliArgs() {
 }
 
 export function main(): void {
+  const args = parseCliArgs();
+
+  if (args.help) {
+    console.log("Usage: node generate_review.mjs <workspace> [--static output.html] [--skill-name name] [--port 3117]");
+    return;
+  }
+
   const {
-    help,
     workspace,
     runs,
     port,
@@ -556,12 +577,7 @@ export function main(): void {
     benchmarkPath,
     benchmark,
     staticOutputPath,
-  } = parseCliArgs();
-
-  if (help) {
-    console.log("Usage: node generate_review.mjs <workspace> [--static output.html] [--skill-name name] [--port 3117]");
-    return;
-  }
+  } = args;
 
   if (staticOutputPath) {
     const html = generateHtml(runs, skillName, previous, benchmark);

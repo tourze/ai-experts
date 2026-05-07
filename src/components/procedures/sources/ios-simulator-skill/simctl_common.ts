@@ -7,7 +7,7 @@ export function runXcrunSimctl(args: any, { timeoutMs = 30000, check = false }: 
     });
     if (check && result.status !== 0) {
         const error = new Error((result.stderr || result.stdout || "simctl command failed").trim());
-        error.result = result;
+        (error as Error & { result: typeof result }).result = result;
         throw error;
     }
     return result;

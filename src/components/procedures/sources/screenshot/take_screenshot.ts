@@ -182,7 +182,8 @@ export function multiOutputPaths(base: any, suffixes: any): any {
 }
 export function runCommand(cmd: any): any {
     const proc = spawnSync(cmd[0], cmd.slice(1), { stdio: "inherit" });
-    if (proc.error?.code === "ENOENT") {
+    const spawnError = proc.error as NodeJS.ErrnoException | undefined;
+    if (spawnError?.code === "ENOENT") {
         throw new Error(`required command not found: ${cmd[0]}`);
     }
     if (proc.status !== 0) {
@@ -190,11 +191,12 @@ export function runCommand(cmd: any): any {
     }
 }
 function writeChunkText(chunk: any, encoding: any): any {
+    const textEncoding = typeof encoding === "string" ? encoding as BufferEncoding : "utf8";
     if (Buffer.isBuffer(chunk)) {
-        return chunk.toString(typeof encoding === "string" ? encoding : "utf8");
+        return chunk.toString(textEncoding);
     }
     if (chunk instanceof Uint8Array) {
-        return Buffer.from(chunk).toString(typeof encoding === "string" ? encoding : "utf8");
+        return Buffer.from(chunk).toString(textEncoding);
     }
     return String(chunk);
 }

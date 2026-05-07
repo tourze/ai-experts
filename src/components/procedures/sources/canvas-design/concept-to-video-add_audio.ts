@@ -12,7 +12,8 @@ export function getMediaDuration(path: any): any {
     ], {
         encoding: "utf-8",
     });
-    if (result.error?.code === "ENOENT") {
+    const spawnError = result.error as NodeJS.ErrnoException | undefined;
+    if (spawnError?.code === "ENOENT") {
         throw new Error("Error: ffprobe not found");
     }
     if (result.status !== 0) {
@@ -154,7 +155,8 @@ export function main(argv: any = process.argv.slice(2)): any {
     const command = buildFfmpegCommand(video, audio, output, args.volume, args.fadeIn, args.fadeOut, args.trimToVideo);
     console.log(`Running: ${command.join(" ")}`);
     const result = spawnSync(command[0], command.slice(1), { stdio: "inherit" });
-    if (result.error?.code === "ENOENT")
+    const spawnError = result.error as NodeJS.ErrnoException | undefined;
+    if (spawnError?.code === "ENOENT")
         throw new Error("Error: ffmpeg not found");
     if (result.status !== 0)
         throw new Error(`Error: ffmpeg exited with code ${result.status ?? 1}`);

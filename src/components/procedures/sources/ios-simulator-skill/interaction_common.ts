@@ -17,7 +17,7 @@ export function runCommand(command: any, { check = false, input = null, timeoutM
     const result = spawnSync(command[0], command.slice(1), options);
     if (check && result.status !== 0) {
         const error = new Error(String(result.stderr || result.stdout || `${command[0]} failed`).trim());
-        error.result = result;
+        (error as Error & { result: typeof result }).result = result;
         throw error;
     }
     return result;

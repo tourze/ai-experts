@@ -33,7 +33,7 @@ export function runAdbCommand(cmd: any, serial: any = null, { check = true }: an
     });
     if (check && result.status !== 0) {
         const error = new Error(result.stderr || result.stdout || `adb exited with code ${result.status ?? 1}`);
-        error.result = result;
+        (error as Error & { result: typeof result }).result = result;
         throw error;
     }
     return result;

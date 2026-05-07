@@ -35,7 +35,8 @@ function runProcess(command: any, args: any, { check = true }: any = {}): any {
         stdio: ["ignore", "pipe", "pipe"],
     });
     if (result.error) {
-        if (result.error.code === "ENOENT") {
+        const spawnError = result.error as NodeJS.ErrnoException;
+        if (spawnError.code === "ENOENT") {
             throw new PrlctlError(`找不到可执行文件: ${command}`);
         }
         throw new PrlctlError(`执行命令失败: ${[command, ...args].join(" ")}\n错误: ${result.error.message}`);
