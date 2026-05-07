@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { dbSchemaDesignSkill } from "../db-schema-design/index";
 import { sqlReviewOptimizationSkill } from "../sql-review-optimization/index";
@@ -39,13 +42,13 @@ export const pgsqlPartitioningSkill = defineSkill({
       get id() {
         return sqlReviewOptimizationSkill.id;
       },
-      reason: "基础表结构参见 `db-schema-design`；索引策略参见 `sql-review-optimization`。",
+      reason: "需要验证分区裁剪、索引设计或查询计划时联动。",
     },
     {
       get id() {
         return dbSchemaDesignSkill.id;
       },
-      reason: "基础表结构参见 `db-schema-design`；索引策略参见 `sql-review-optimization`",
+      reason: "需要确定基础表结构、主键/唯一约束和分区键建模时联动。",
     },
   ],
   antiPatterns: [
@@ -64,7 +67,25 @@ export const pgsqlPartitioningSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计或验证 PostgreSQL 声明式分区，让大表在写入、查询、归档和分区生命周期上可控。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认数据增长模式、主要查询谓词、归档窗口和分区键；时序数据默认优先 RANGE 分区。",
+      "父表主键和所有唯一约束必须包含分区键；RANGE 边界使用左闭右开并保持相邻无缝。",
+      "创建 DEFAULT 分区兜底，并提前创建未来分区；旧分区归档/DETACH 时优先使用低锁策略。",
+      "变更后用 `EXPLAIN` 验证 partition pruning 只扫描目标分区；完整 DDL 和管理脚本读取 code-patterns reference。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "父表、分区表、DEFAULT 分区、主键/唯一约束和索引 DDL。",
+      "未来分区创建、旧分区 DETACH/归档、监控和异常插入兜底计划。",
+      "`EXPLAIN` 裁剪证据、未裁剪查询风险和需要优化的谓词/索引。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

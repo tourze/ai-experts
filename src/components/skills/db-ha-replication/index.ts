@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { mysqlTransactionLockingSkill } from "../mysql-transaction-locking/index";
 
@@ -66,7 +69,25 @@ export const dbHaReplicationSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "配置或排查数据库复制与高可用拓扑，围绕 GTID、ROW binlog、半同步、延迟监控和故障切换建立可验证流程。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认拓扑、MySQL 版本、复制账号、GTID、binlog 格式、半同步要求、读写分离策略和 RPO/RTO。",
+      "Replica 配置复制源时使用 GTID auto-position；检查 `SHOW REPLICA STATUS\\G`、复制线程和 `@@global.gtid_executed`。",
+      "延迟监控同时看 `Seconds_Behind_Source`、心跳表和业务写入延迟；半同步降级必须告警。",
+      "故障切换前核对所有 Replica 的 GTID 集合和缺口；详细参数和运维命令读取 replication references。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "复制拓扑、GTID/ROW/半同步配置基线、复制账号和安全边界。",
+      "Replica 状态、GTID 集合、延迟证据、错误线程和数据一致性风险。",
+      "故障切换或修复步骤、回滚路径、RPO/RTO 说明和后续监控项。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

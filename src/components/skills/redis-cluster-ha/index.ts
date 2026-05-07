@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { redisDataModelingSkill } from "../redis-data-modeling/index";
 
@@ -58,7 +61,25 @@ export const redisClusterHaSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计、部署或排查 Redis Sentinel / Cluster 高可用、持久化、容量和慢查询基线。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先按业务目标选择 Sentinel 还是 Cluster：高可用主从切换用 Sentinel，容量水平扩展和 slot 分片用 Cluster。",
+      "Sentinel 至少 3 节点并设置多数派 quorum；Cluster multi-key 操作必须用 `{hashtag}` 保证同 slot。",
+      "生产至少开启 AOF，并根据 RPO/RTO 选择 RDB/AOF 混合策略；`maxmemory` 预留 20-30% fork copy-on-write 余量。",
+      "配置 `slowlog-log-slower-than`、`slowlog-max-len` 和周期巡检；完整配置模板读取 code-patterns reference。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Sentinel 或 Cluster 拓扑、quorum/slot/hash tag 约束和故障切换说明。",
+      "持久化策略、`maxmemory`、淘汰策略、fork 余量和 RPO/RTO 取舍。",
+      "SLOWLOG/监控基线、容量风险、multi-key 风险和需要进一步验证的命令清单。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

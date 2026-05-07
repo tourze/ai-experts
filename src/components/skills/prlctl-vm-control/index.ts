@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, prlctlVmControlFileTransfer, prlctlVmControlPowershellOutput, prlctlVmControlPrlctlHelper } from "../../procedures/index";
 
@@ -67,7 +70,25 @@ export const prlctlVmControlSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "通过 prlctl helper 安全定位 Parallels 虚拟机、采集状态、执行客体命令并完成上传/下载等可审计操作。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先用 helper 的 `list` / `resolve` 把目标虚拟机解析为唯一对象，再采集 `status` / `info` 作为基线。",
+      "执行客体命令前先做小命令或 dry-run；Windows 输出优先走 PowerShell envelope，依赖登录态的任务先确认当前用户上下文。",
+      "上传和下载统一走 file-transfer procedure，执行前确认方向、源路径、目标路径和覆盖风险。",
+      "只有用户明确要求时才执行 reset、kill stop、snapshot 切换/删除或 `prlctl set`；常见模板读取 recipes reference。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "唯一虚拟机标识、状态/info 基线、执行上下文和选择的 procedure。",
+      "客体命令或文件传输的 stdout/stderr 摘要、退出码、失败原因和下一步缩小范围动作。",
+      "高风险动作的用户授权、快照/回滚路径和操作后验证结果。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(prlctlVmControlFileTransfer),

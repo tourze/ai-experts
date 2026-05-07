@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { pythonTestingPatternsSkill } from "../python-testing-patterns/index";
 import { pythonTypeSafetySkill } from "../python-type-safety/index";
@@ -65,7 +68,25 @@ export const uvPackageManagerSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 uv 统一 Python 项目的解释器、虚拟环境、依赖声明、lockfile、测试执行和 CI 可复现安装。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认项目边界、目标 Python 版本和是否已有 `pyproject.toml` / `uv.lock`；新项目可用 `uv init .` 起步。",
+      "用 `uv python install <version>` 和 `uv venv --python <version>` 固定解释器与虚拟环境，避免依赖本机隐式状态。",
+      "运行时依赖用 `uv add`，开发依赖用 `uv add --dev`；测试、类型检查和脚本统一通过 `uv run` 执行。",
+      "提交 `uv.lock`；CI 或可复现安装使用 `uv sync --frozen`，workspace、Docker 和缓存策略读取 advanced reference。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "`pyproject.toml`、`uv.lock`、Python 版本和依赖组的单一真源说明。",
+      "本地开发、测试、类型检查、lock、sync 和 CI 的 uv 命令清单。",
+      "迁移项目中的旧包管理器残留、requirements 兼容处理和后续清理项。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

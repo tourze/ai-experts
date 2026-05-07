@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { dbSchemaDesignSkill } from "../db-schema-design/index";
 import { sqlReviewOptimizationSkill } from "../sql-review-optimization/index";
@@ -39,13 +42,13 @@ export const pgsqlRowLevelSecuritySkill = defineSkill({
       get id() {
         return sqlReviewOptimizationSkill.id;
       },
-      reason: "租户列设计参见 `db-schema-design`；索引策略参见 `sql-review-optimization`。",
+      reason: "需要审查 RLS 谓词、索引命中或策略性能风险时联动。",
     },
     {
       get id() {
         return dbSchemaDesignSkill.id;
       },
-      reason: "租户列设计参见 `db-schema-design`；索引策略参见 `sql-review-optimization`",
+      reason: "需要设计租户列、共享表边界或权限表结构时联动。",
     },
   ],
   antiPatterns: [
@@ -64,7 +67,25 @@ export const pgsqlRowLevelSecuritySkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 PostgreSQL 共享表实现或审查 RLS 策略，确保租户和角色隔离在数据库层强制执行并可测试。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认租户边界、角色模型、表 owner、连接池行为和应用层会话变量设置点。",
+      "对目标表同时启用 `ENABLE ROW LEVEL SECURITY` 与 `FORCE ROW LEVEL SECURITY`，避免 owner 绕过策略。",
+      "为读写路径分别写清 `USING` 与 `WITH CHECK`，常见租户隔离谓词是 `tenant_id = current_setting('app.tenant_id')::BIGINT`。",
+      "每个事务开始时通过中间件设置 `SET LOCAL app.tenant_id`；用 `SET ROLE`、正向/反向样例和索引计划验证隔离与性能。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "RLS 策略 DDL、会话变量合同、角色/租户权限矩阵和 owner 绕过处理。",
+      "正向可见、跨租户拒绝、写入 `WITH CHECK` 拒绝和缺失 `tenant_id` 的测试结果。",
+      "RLS 谓词索引需求、性能风险和需要读取 code-patterns reference 的具体实现点。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

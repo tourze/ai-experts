@@ -6,6 +6,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, ghFixCiInspectPrChecks } from "../../procedures/index";
 
@@ -22,7 +25,7 @@ export const ghFixCiSkill = defineSkill({
     "开始前必须确认 `gh auth status` 成功，并且仓库可访问。",
     "仅处理 GitHub Actions；Buildkite 等外部 provider 只报告 `detailsUrl`。",
     "先汇总失败上下文与修复计划，得到用户确认后再改代码。",
-    "脚本参数必须与实现一致：`--repo`、`--pr`、`--max-lines`、`--context`、`--json`。",
+    "procedure 参数必须与实现一致：`--repo`、`--pr`、`--max-lines`、`--context`、`--json`。",
   ],
   checklist: [
     "是否确认目标 PR 编号，或当前分支是否有关联 PR。",
@@ -47,7 +50,25 @@ export const ghFixCiSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "排查 GitHub Actions PR 检查失败，提取 failing checks、run/job 上下文和最小日志证据，在改代码前形成聚焦修复计划。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认 `gh auth status` 成功，并定位目标 PR；用户未给 PR 时从当前分支关联 PR 入手。",
+      "优先调用 `gh-fix-ci-inspect-pr-checks` procedure 抽取 failing checks、run id、job id、run URL 和失败片段；外部 provider 只记录 `detailsUrl`。",
+      "procedure 不足时用 `gh pr checks <pr> --json ...`、`gh run view <run-id> --json ...` 和 `gh run view <run-id> --log` 手工兜底。",
+      "先输出失败上下文与聚焦修复计划，得到用户确认后再修改 workflow 或业务代码；创建或修改 GitHub Actions workflow 前读取 workflow reference。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "目标 PR、失败检查列表、provider 类型、run/job id、URL 和最小失败日志片段。",
+      "日志不可用、检查仍在运行、权限不足或外部 provider 无法展开的说明。",
+      "获批前的修复计划，以及获批后对应的代码或 workflow 修改验证结果。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(ghFixCiInspectPrChecks),

@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { sqlReviewOptimizationSkill } from "../sql-review-optimization/index";
 
@@ -62,7 +65,25 @@ export const mysqlTransactionLockingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "诊断和优化 MySQL InnoDB 事务、锁等待、死锁、间隙锁、Next-Key Lock、自增锁和 MDL 风险。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认 MySQL 版本、隔离级别、`innodb_autoinc_lock_mode`、`binlog_format`、复制模式和相关 SQL。",
+      "采集 `SHOW ENGINE INNODB STATUS`、`performance_schema.data_locks` / `data_lock_waits` 和慢查询证据，区分 record、gap、next-key、AUTO-INC、MDL 等锁对象。",
+      "`SELECT ... FOR UPDATE` 必须在显式事务内且命中索引；涉及多行更新时固定加锁顺序并保持短事务。",
+      "应用层捕获 deadlock 1213 并做有限重试；死锁日志、锁模式细节和 SQL 模板读取 locking-patterns reference。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "锁等待/死锁时间线、参与事务、SQL、索引命中情况和锁对象分类。",
+      "根因：隔离级别、索引范围、加锁顺序、长事务、自增锁或 MDL 的具体证据。",
+      "修复建议、重试策略、事务边界调整和验证命令。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

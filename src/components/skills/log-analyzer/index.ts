@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { incidentResponseSkill } from "../incident-response/index";
 
@@ -33,7 +36,7 @@ export const logAnalyzerSkill = defineSkill({
       get id() {
         return incidentResponseSkill.id;
       },
-      reason: "如果问题仍未聚焦，转到 `incident-response`。",
+      reason: "日志线索指向线上事故、影响面扩大或需要处置编排时联动。",
     },
   ],
   antiPatterns: [
@@ -52,6 +55,24 @@ export const logAnalyzerSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "从系统日志和应用日志中缩小时间窗、抽取关键模式、建立时间线，并输出可验证的根因假设。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认时间范围、日志源、关键词、请求 ID / trace ID / host / service 等关联线索。",
+      "从小时间窗开始筛选，再逐步扩大；常用命令包括 `journalctl --since ... -p err`、`grep -in ... | tail`、`jq 'select(...)' ...`。",
+      "同时找第一条异常、最高频异常、上下文行和发布/配置/流量变化点；不要只贴最后一条错误。",
+      "输出前脱敏 token、密码、邮箱和完整 IP；如果影响面扩大或需要处置编排，联动 incident response。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "日志来源文件或命令、时间窗、筛选条件和脱敏后的关键片段。",
+      "时间线：第一条异常、重复模式、受影响组件、上下游先后关系和证据强度。",
+      "根因假设、仍需验证的问题、下一步命令或 incident response 交接条件。",
+    ],
+  }),
   tools: [],
 });
