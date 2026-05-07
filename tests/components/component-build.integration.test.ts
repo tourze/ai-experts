@@ -436,6 +436,22 @@ describe("component build integration", () => {
       assert.equal(removedPluginsArgAudit.ok, false);
       assert.match(removedPluginsArgAudit.result.stderr, /unknown argument: --plugins-dir/);
 
+      const persona = runProcedure(
+        "ux-researcher-designer-persona-generator",
+        "ux-researcher-designer",
+        ["--sample", "--output-format", "json"],
+      );
+      assert.equal(persona.ok, true, persona.result?.stderr);
+      assert.equal(typeof JSON.parse(persona.result.stdout).name, "string");
+
+      const removedPersonaJsonArg = runProcedure(
+        "ux-researcher-designer-persona-generator",
+        "ux-researcher-designer",
+        ["--sample", "json"],
+      );
+      assert.equal(removedPersonaJsonArg.ok, false);
+      assert.match(removedPersonaJsonArg.result.stderr, /unrecognized arguments: json/);
+
       const screenshotOutput = join(runtimeTmp, "screen.png");
       const screenshot = runProcedureWithEnv(
         "screenshot-take-screenshot",

@@ -513,7 +513,7 @@ export function createSampleInterviews(): any {
         }];
 }
 function printUsage(): any {
-    console.log(`Usage: node scripts/persona_generator.mjs [options] [json]
+    console.log(`Usage: node scripts/persona_generator.mjs [options]
 
 Options:
   --input <path>             User data JSON file; must be an array of objects
@@ -530,7 +530,6 @@ function parseArgs(argv: any): any {
         outputFormat: "text",
         sample: false,
         seed: 7,
-        legacyOutputFormat: null,
         help: false,
     };
     for (let index = 0; index < argv.length; index += 1) {
@@ -570,10 +569,6 @@ function parseArgs(argv: any): any {
             }
             continue;
         }
-        if (arg === "json" && args.legacyOutputFormat == null) {
-            args.legacyOutputFormat = "json";
-            continue;
-        }
         throw new Error(`unrecognized arguments: ${arg}`);
     }
     return args;
@@ -591,7 +586,7 @@ export function main(argv: any = process.argv.slice(2)): any {
         printUsage();
         return 0;
     }
-    const outputFormat = args.legacyOutputFormat ?? args.outputFormat;
+    const outputFormat = args.outputFormat;
     try {
         let userData;
         let interviewData: any[] = [];
