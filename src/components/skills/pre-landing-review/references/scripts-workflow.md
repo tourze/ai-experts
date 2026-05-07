@@ -1,10 +1,10 @@
 # 脚本工作流（确定性步骤交给脚本，判断保留 prose）
 
-设计原则：固定输出（diff 收集、报告渲染）由 `scripts/` 提供确定性实现；
+设计原则：固定输出（diff 收集、报告渲染）由 Procedure 提供确定性实现；
 severity 分级、是否阻断、措辞和用户三选一沟通由你判断，不脚本化。
 
-> 命令中的 `scripts/...` 路径相对本 skill 根目录解析（与 Anthropic Agent Skills spec 一致）。
-> 调用前自行拼接 SKILL.md 所在目录的绝对路径，无需 cwd 切换到仓库根。
+> 生成后的运行时命令通过平台级 `procedures.js` 调用，不依赖 skill-local `scripts/` 目录。
+> 源码侧命令示例在构建时会改写为对应平台的 Procedure 调用。
 
 ## 步骤 1：用 `collect_diff.mjs` 锁定审查范围
 

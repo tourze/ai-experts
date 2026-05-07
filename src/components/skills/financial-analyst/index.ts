@@ -22,11 +22,11 @@ export const financialAnalystSkill = defineSkill({
     "若问题转向投资组合 VaR、CVaR、Sharpe、回撤等市场风险指标，参考风险管理相关方法。",
   ],
   constraints: [
-    "`scripts/` 下 4 个 CLI 都使用 Node.js `.mjs` 实现，只依赖本机 Node 运行时。",
-    "每个脚本同时接受两种输入：直接工具专用 JSON，或聚合样例 `assets/sample_financial_data.json` 中对应的子段。",
+    "5 个分析入口都通过本 skill 的 Procedure 调用，运行时统一走平台级 `procedures.js`。",
+    "每个 Procedure 同时接受两种输入：直接工具专用 JSON，或聚合样例 `assets/sample_financial_data.json` 中对应的子段。",
     "推荐优先使用专用样例文件：\n`assets/ratio_analysis_sample.json`、`assets/dcf_valuation_sample.json`、`assets/budget_variance_sample.json`、`assets/forecast_sample.json`。",
-    "本技能不负责 Excel、CSV、数据库抽取；先把数据整理成 JSON 再调用脚本。",
-    "CLI 输出面向单次分析；若需要复用模型逻辑或批量场景分析，应该转用本目录中的 Python 库脚本。",
+    "本技能不负责 Excel、CSV、数据库抽取；先把数据整理成 JSON 再调用 Procedure。",
+    "Procedure 输出面向单次分析；若需要复用模型逻辑或批量场景分析，应先把需求拆成独立模型化任务。",
   ],
   checklist: [
     "输入 JSON 是否命中正确工具字段，而不是把别的工具数据传进来。",
@@ -34,7 +34,7 @@ export const financialAnalystSkill = defineSkill({
     "DCF 估值前是否确认 `historical.revenue` 非空，且 `assumptions` 中增长率与利润率假设合理。",
     "预算差异分析前是否确认 `line_items` 中包含 `type`、`actual`、`budget`。",
     "滚动预测前是否确认 `historical_periods`、`scenarios`、`cash_flow_inputs` 具备业务含义。",
-    "输出为 0 或空列表时，先检查是否把聚合样例的根对象直接传给旧版脚本或错误字段。",
+    "输出为 0 或空列表时，先检查是否把聚合样例的根对象直接传给 Procedure 或错误字段。",
     "需要对结果做长期复用时，确认模型是否满足长期复用要求。",
   ],
   antiPatterns: [

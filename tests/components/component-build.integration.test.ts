@@ -515,32 +515,62 @@ describe("component build integration", () => {
       const explicitSkillsDirActivationReport = JSON.parse(explicitSkillsDirActivationAudit.result.stdout);
       assert.equal(explicitSkillsDirActivationReport.total, 335);
 
-      const legacyPluginsRoot = join(runtimeTmp, "plugins");
-      const legacySkillDir = join(legacyPluginsRoot, "old-expert", "skills", "alpha-skill");
-      mkdirSync(legacySkillDir, { recursive: true });
-      writeFileSync(join(legacySkillDir, "SKILL.md"), [
+      const canonicalSkillsRoot = join(runtimeTmp, "canonical-skills");
+      const canonicalSkillDir = join(canonicalSkillsRoot, "alpha-skill");
+      const nestedNonCanonicalSkillDir = join(canonicalSkillsRoot, "package-a", "skills", "nested-skill");
+      mkdirSync(canonicalSkillDir, { recursive: true });
+      mkdirSync(nestedNonCanonicalSkillDir, { recursive: true });
+      writeFileSync(join(canonicalSkillDir, "SKILL.md"), [
         "---",
         "name: alpha-skill",
-        "description: Use when auditing a legacy plugin fixture.",
+        "description: Use when auditing a canonical skill fixture.",
         "---",
         "",
         "# Alpha Skill",
       ].join("\n"));
-      const legacyPluginsRootAudit = runProcedure(
+      writeFileSync(join(nestedNonCanonicalSkillDir, "SKILL.md"), [
+        "---",
+        "name: nested-skill",
+        "description: Use when auditing a nested non-canonical fixture.",
+        "---",
+        "",
+        "# Nested Skill",
+      ].join("\n"));
+      const canonicalSkillsRootAudit = runProcedure(
         "skill-activation-analyzer-cso-audit",
         "skill-activation-analyzer",
-        ["--skills-dir", legacyPluginsRoot, "--json"],
+        ["--skills-dir", canonicalSkillsRoot, "--json"],
       );
-      assert.equal(legacyPluginsRootAudit.ok, false);
-      assert.match(legacyPluginsRootAudit.result.stderr, /cannot find component skills directory/);
+      assert.equal(canonicalSkillsRootAudit.ok, true, canonicalSkillsRootAudit.result?.stderr);
+      const canonicalSkillsRootReport = JSON.parse(canonicalSkillsRootAudit.result.stdout);
+      assert.equal(canonicalSkillsRootReport.total, 1);
 
-      const legacyPluginsDirArgAudit = runProcedure(
+      const nestedLayoutRoot = join(runtimeTmp, "nested-layout");
+      const nestedLayoutSkillDir = join(nestedLayoutRoot, "package-a", "skills", "alpha-skill");
+      mkdirSync(nestedLayoutSkillDir, { recursive: true });
+      writeFileSync(join(nestedLayoutSkillDir, "SKILL.md"), [
+        "---",
+        "name: alpha-skill",
+        "description: Use when auditing a nested layout fixture.",
+        "---",
+        "",
+        "# Alpha Skill",
+      ].join("\n"));
+      const nestedLayoutRootAudit = runProcedure(
         "skill-activation-analyzer-cso-audit",
         "skill-activation-analyzer",
-        ["--plugins-dir", legacyPluginsRoot, "--json"],
+        ["--skills-dir", nestedLayoutRoot, "--json"],
       );
-      assert.equal(legacyPluginsDirArgAudit.ok, false);
-      assert.match(legacyPluginsDirArgAudit.result.stderr, /unknown argument: --plugins-dir/);
+      assert.equal(nestedLayoutRootAudit.ok, false);
+      assert.match(nestedLayoutRootAudit.result.stderr, /cannot find component skills directory/);
+
+      const removedPluginsDirArgAudit = runProcedure(
+        "skill-activation-analyzer-cso-audit",
+        "skill-activation-analyzer",
+        ["--plugins-dir", nestedLayoutRoot, "--json"],
+      );
+      assert.equal(removedPluginsDirArgAudit.ok, false);
+      assert.match(removedPluginsDirArgAudit.result.stderr, /unknown argument: --plugins-dir/);
 
       const persona = runProcedure(
         "ux-researcher-designer-persona-generator",
@@ -638,6 +668,23 @@ describe("component build integration", () => {
         ),
         [],
         `${platform} skill dist should not include source-side tests/ directories`,
+      );
+      const staleSkillLocalScriptMentions: string[] = [];
+      for (const markdownFile of collectFiles(join(tmpDistDir, platform, "skills"), (file) => file.endsWith(".md"))) {
+        const markdown = readFileSync(markdownFile, "utf-8");
+        if (
+          /`scripts\/` 下 \d+ 个 CLI/u.test(markdown) ||
+          /仅把 `scripts\/` 目录下的可执行 Node 脚本当作入口/u.test(markdown) ||
+          /命令中的 `scripts\/\.\.\.` 路径相对本 skill 根目录解析/u.test(markdown) ||
+          /└── scripts\/\s+— Utility scripts/u.test(markdown)
+        ) {
+          staleSkillLocalScriptMentions.push(markdownFile);
+        }
+      }
+      assert.deepEqual(
+        staleSkillLocalScriptMentions,
+        [],
+        `${platform} generated skill docs should not describe removed skill-local script directories`,
       );
       assert.equal(
         collectFiles(join(tmpDistDir, platform, "skills"), (file) =>

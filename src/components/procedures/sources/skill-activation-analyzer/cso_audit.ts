@@ -112,17 +112,12 @@ function findSkillsDir(explicitDir: any): any {
 }
 function collectSkillFiles(root: any): any {
     const files: any[] = [];
-    const stack: any[] = [root];
-    while (stack.length > 0) {
-        const current = stack.pop();
-        for (const entry of readdirSync(current, { withFileTypes: true })) {
-            const next = join(current, entry.name);
-            if (entry.isDirectory()) {
-                stack.push(next);
-            }
-            else if (entry.isFile() && entry.name === "SKILL.md") {
-                files.push(next);
-            }
+    for (const entry of readdirSync(root, { withFileTypes: true })) {
+        if (!entry.isDirectory())
+            continue;
+        const skillFile = join(root, entry.name, "SKILL.md");
+        if (existsSync(skillFile)) {
+            files.push(skillFile);
         }
     }
     return files.sort();

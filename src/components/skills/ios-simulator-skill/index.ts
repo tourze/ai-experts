@@ -19,16 +19,16 @@ export const iosSimulatorSkillSkill = defineSkill({
     "需要批量启动、关闭、擦除、创建或选择模拟器。",
   ],
   constraints: [
-    "仅把 `scripts/` 目录下的可执行 Node 脚本当作入口；`scripts/xcode/` 是内部模块，不直接执行。",
+    "仅把本 skill 登记的 Procedure 当作入口；`xcode/` 相关源码是内部模块，不直接执行。",
     "优先走无障碍树：先 `procedure ios-simulator-skill-screen-mapper` / `procedure ios-simulator-skill-navigator`，最后才用坐标。",
-    "大多数脚本在未传 `--udid` 时会自动选择 booted simulator；`procedure ios-simulator-skill-log-monitor` 例外，参数名是 `--device-udid`。",
+    "大多数 Procedure 在未传 `--udid` 时会自动选择 booted simulator；`procedure ios-simulator-skill-log-monitor` 例外，参数名是 `--device-udid`。",
     "`procedure ios-simulator-skill-visual-diff` 直接处理 PNG；截图缩放优先使用系统 `sips`，缺失时保留原图尺寸。",
   ],
   checklist: [
     "先跑 `procedure ios-simulator-skill-sim-health-check`，确认 `xcrun`、`simctl`、Node.js 运行时可用。",
     "每次交互前先看 `procedure ios-simulator-skill-screen-mapper` 或 `procedure ios-simulator-skill-navigator --list`，不要盲点。",
     "需要日志时确认参数名：`procedure ios-simulator-skill-log-monitor` 用 `--device-udid`，不是 `--udid`。",
-    "需要脚本化输出时统一使用 `--json`；需要完整参数时直接跑对应脚本的 `--help`。",
+    "需要结构化输出时统一使用 `--json`；需要完整参数时直接跑对应 Procedure 的 `--help`。",
     "交叉引用：性能瓶颈排查看 `swiftui-performance-audit`；审核流程复现看 `apple-appstore-reviewer`。",
   ],
   antiPatterns: [
