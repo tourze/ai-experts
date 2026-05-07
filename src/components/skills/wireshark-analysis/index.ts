@@ -16,7 +16,7 @@ export const wiresharkAnalysisSkill = defineSkill({
   description: "当需要分析 PCAP、提取关键会话、定位异常连接、排查协议行为或重建时间线时使用。",
   useCases: [
     "需要对抓包文件进行过滤、跟流、字段提取和异常定位。",
-    "需要与 `nmap` 的端口画像交叉验证暴露服务。",
+    "需要与 `ethical-hacking-methodology` 的端口侦察结果交叉验证暴露服务。",
     "需要把会话样本交给 `protocol-reverse-engineering` 深挖协议。",
   ],
   constraints: [
@@ -42,8 +42,7 @@ export const wiresharkAnalysisSkill = defineSkill({
       get id() {
         return ethicalHackingMethodologySkill.id;
       },
-      label: "nmap",
-      reason: "需要与 `nmap` 的端口画像交叉验证暴露服务。",
+      reason: "需要把端口侦察结果和流量证据交叉验证暴露服务时联动。",
     },
   ],
   antiPatterns: [

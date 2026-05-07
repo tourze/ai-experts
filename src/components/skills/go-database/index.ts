@@ -19,7 +19,7 @@ export const goDatabaseSkill = defineSkill({
     "选择扫描方式（`database/sql` 手动 Scan / sqlx / sqlc）或处理 NULLable 列。",
     "设计 Repository 接口、实现 batch insert、乐观锁、读写分离。",
     "排查连接泄漏、事务未提交/回滚、查询超时不生效等问题。",
-    "SQL 注入防护详见 `go-security`；查询取消传播详见 `go-context-lifecycle`。",
+    "SQL 注入防护详见 `go-security`；查询取消传播详见 `go-concurrency-patterns`。",
   ],
   constraints: [
     "参数化查询：必须用 `?` 占位符，禁止字符串拼接 SQL。安全性细节见 go-security。",
@@ -69,14 +69,13 @@ export const goDatabaseSkill = defineSkill({
       get id() {
         return goConcurrencyPatternsSkill.id;
       },
-      label: "go-context-lifecycle",
-      reason: "SQL 注入防护详见 `go-security`；查询取消传播详见 `go-context-lifecycle`。",
+      reason: "查询取消传播、context 生命周期和长查询超时控制需要并发模型支撑时联动。",
     },
     {
       get id() {
         return goSecuritySkill.id;
       },
-      reason: "SQL 注入防护详见 `go-security`；查询取消传播详见 `go-context-lifecycle`。",
+      reason: "需要审查 SQL 注入防护、参数化查询和数据库访问安全边界时联动。",
     },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
