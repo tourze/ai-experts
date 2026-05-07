@@ -45,6 +45,12 @@ describe("component source conventions", () => {
     assert.match(readme, /构建器会生成 `## 检查清单`，并放在生成的 `## 反模式` 之后/);
     assert.match(readme, /Agent 不再使用 `AGENT\.body\.md`/);
     assert.match(readme, /defineAgentWorkflow\(\{/);
+    assert.match(
+      readme,
+      /defineAntiPattern,\n  defineReference,\n  defineSkill,\n  InvocationPolicy,\n  KnownTool,\n  Platform,\n\} from "\.\.\/\.\.\/sdk"/,
+    );
+    assert.match(readme, /defineAgent,\n  defineAgentWorkflow,\n  defineAgentWorkflowStep,\n  KnownTool,\n  Platform,\n  SkillUseMode,\n\} from "\.\.\/\.\.\/sdk"/);
+    assert.match(readme, /type NormalizedHookPayload,\n  type NormalizedHookResult,\n\} from "\.\.\/\.\.\/sdk"/);
     assert.match(readme, /from "\.\.\/\.\.\/skills\/typescript-type-safety\/index"/);
     assert.doesNotMatch(readme, /from "\.\.\/skills\//);
     assert.doesNotMatch(readme, /body: new URL\("\.\/AGENT\.body\.md"|agent body/);
