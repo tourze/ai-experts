@@ -61,20 +61,19 @@ export const goCliSkill = defineSkill({
       get id() {
         return goErrorHandlingSkill.id;
       },
-      reason: "相关 skill： 并发停机编排配合 `go-concurrency-patterns`； 错误语义设计配合 `go-error-handling`； 项目布局配合 `go-project-layout`。",
+      reason: "需要设计 CLI 错误语义、错误包装、用户可见消息和退出码映射时联动。",
     },
     {
       get id() {
         return goCodeStyleSkill.id;
       },
-      label: "go-project-layout",
-      reason: "相关 skill： 并发停机编排配合 `go-concurrency-patterns`； 错误语义设计配合 `go-error-handling`； 项目布局配合 `go-project-layout`。",
+      reason: "需要校验 `cmd/` 组织、Go 命名、文件拆分和可读性惯例时联动。",
     },
     {
       get id() {
         return goConcurrencyPatternsSkill.id;
       },
-      reason: "相关 skill：\\\\n并发停机编排配合 `go-concurrency-patterns`；\\\\n错误语义设计配合 `go-error-handling`；\\\\n项目布局配合 `go-project-layout`。",
+      reason: "长运行命令需要取消传播、信号处理、goroutine 生命周期或并发上限时联动。",
     },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,

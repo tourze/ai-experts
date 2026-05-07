@@ -677,6 +677,11 @@ describe("component source conventions", () => {
           /\n\s*get id\(\) \{\n\s*return \w+Skill\.id;\n\s*\}/,
           `${skillSourceFile} should resolve related skill ids through imported skill definitions`,
         );
+        assert.doesNotMatch(
+          relatedSkillsSource,
+          /相关 skill：|\\\\n/,
+          `${skillSourceFile} related skill reasons should be specific sentences, not copied route blobs`,
+        );
       }
 
       const checklistSource = extractPropertyArray(source, "checklist");
