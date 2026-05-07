@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { modernWebDesignSkill } from "../modern-web-design/index";
 import { responsiveDesignSkill } from "../responsive-design/index";
@@ -24,7 +27,7 @@ export const designSystemPatternsSkill = defineSkill({
     "主题切换必须以 CSS 变量或等价机制为中心，避免每个组件各自判断主题。",
     "组件 API 先稳定，再追求“无限灵活”；变体命名要服务业务语义。",
     "设计系统是约束系统，不是素材堆。新增 token 前先确认是否已有语义位。",
-    "与 [tailwind-design-system](references/tailwind-design-system.md) 联动时，优先复用同一套 token 名称。",
+    "Tailwind 项目中也必须复用同一套 token 名称，避免工具类和组件 token 两套口径。",
   ],
   checklist: [
     "颜色、字号、间距、圆角、阴影都已有明确 token。",
@@ -39,14 +42,13 @@ export const designSystemPatternsSkill = defineSkill({
       get id() {
         return responsiveDesignSkill.id;
       },
-      reason: "`responsive-design`。",
+      reason: "需要把 token、组件状态和断点策略落到响应式布局时联动。",
     },
     {
       get id() {
         return modernWebDesignSkill.id;
       },
-      label: "refactoring-ui",
-      reason: "`refactoring-ui`",
+      reason: "需要把设计系统原则落到现代 Web 页面视觉、层级、间距和组件审美时联动。",
     },
   ],
   antiPatterns: [
@@ -65,7 +67,27 @@ export const designSystemPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "建立或审查设计令牌、主题系统、组件 API 和跨会话设计系统文档，让 Figma、代码和组件库共享同一套语义。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先审计现有颜色、字号、间距、圆角、阴影、组件变体和硬编码值，确认真实业务页面。",
+      "建立三层 token：原始值、语义值、组件值；组件只能引用 token，不直接写品牌色或硬编码值。",
+      "用 CSS 变量或等价机制做主题切换，深色、多品牌和多租户覆盖不进入组件内部判断。",
+      "稳定组件 API：variant、size、state 和业务语义先定，避免无限灵活的 props。",
+      "需要 AI 协作持久化时落三层 Markdown：BRAND、MASTER、pages/<slug> overrides，按 BRAND → MASTER → page 顺序拼上下文。",
+      "需要 Tailwind、主题架构或组件接口细节时读取对应 reference，并用至少一个真实业务页面验证 token 可复用性。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "token 分层：原始值、语义值、组件值、主题变量和新增 token 判断规则。",
+      "组件 API、变体、状态、尺寸、主题切换策略和硬编码清理建议。",
+      "BRAND/MASTER/pages overrides 文档结构、覆盖规则、真实页面验证和与响应式/现代 Web 的联动点。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

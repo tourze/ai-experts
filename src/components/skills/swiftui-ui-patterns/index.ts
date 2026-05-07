@@ -5,7 +5,12 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
+import { iosHigDesignSkill } from "../ios-hig-design/index";
+import { swiftConcurrencyExpertSkill } from "../swift-concurrency-expert/index";
 
 export const swiftuiUiPatternsSkill = defineSkill({
   id: "swiftui-ui-patterns",
@@ -37,7 +42,20 @@ export const swiftuiUiPatternsSkill = defineSkill({
     "大型 `body` 是否拆成可命名的子区域，而不是继续堆条件分支。",
     "是否移除了不必要的可选 view model、`bootstrapIfNeeded` 和重复包装。",
     "根视图是否正确持有 `@Observable`，下游只接收必要输入。",
-    "交叉引用：并发边界问题看 `swift-concurrency-expert`；性能与重渲染看 `swiftui-performance-audit`；平台设计规范看 `ios-hig-design` / `macos-design-guidelines`。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return swiftConcurrencyExpertSkill.id;
+      },
+      reason: "UI 状态流涉及 Task、actor、MainActor 或异步加载边界时联动。",
+    },
+    {
+      get id() {
+        return iosHigDesignSkill.id;
+      },
+      reason: "需要按 iPhone/iPad 平台规范校准导航、表单、控件或系统行为时联动。",
+    },
   ],
   antiPatterns: [
     defineAntiPattern({
@@ -51,7 +69,27 @@ export const swiftuiUiPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "构建或重构 SwiftUI 页面、Tab、导航、sheet、表单和组件模式，让状态拥有者清晰、视图结构可维护。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "新建页面前先读取 components-index 和 app-wiring，选择最接近的组件或接线 reference。",
+      "按场景选择 TabView、NavigationStack、sheet(item:)、searchable、form、split view 或 overlay，不默认造 view model。",
+      "把状态留在最近拥有者；根视图持有 `@Observable`，下游只接收必要输入。",
+      "sheet 能表达选中对象时优先 `.sheet(item:)`；sheet 自己负责 dismiss，不把关闭逻辑散在父视图。",
+      "重构时先保证行为不变，再统一成员顺序：环境依赖、let、@State、非视图计算属性、init、body、子视图/helper。",
+      "大型 body 拆成可命名子区域；MV 理念和重构反模式需要时读取 mv-patterns 与 view-refactoring。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "SwiftUI 页面结构、导航/Tab/sheet/form 方案和状态拥有者说明。",
+      "组件引用、reference 选择、依赖注入方式、dismiss/back/loading/error 归属。",
+      "重构清单：成员顺序、body 拆分、可选 view model 清理、Observation 持有和平台规范联动点。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

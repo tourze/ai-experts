@@ -5,7 +5,12 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
+import { swiftConcurrencyExpertSkill } from "../swift-concurrency-expert/index";
+import { swiftuiUiPatternsSkill } from "../swiftui-ui-patterns/index";
 
 export const swiftuiPerformanceAuditSkill = defineSkill({
   id: "swiftui-performance-audit",
@@ -27,7 +32,20 @@ export const swiftuiPerformanceAuditSkill = defineSkill({
     "检查 `body`、计算属性和 `task` 中是否混入格式化、图片解码、数据库或网络副作用。",
     "如果代码审查不足以定案，明确要求用户提供 SwiftUI template + Time Profiler trace。",
     "修复后要求按同一交互路径复测，比较前后 CPU、掉帧和内存峰值。",
-    "交叉引用：并发边界问题看 `swift-concurrency-expert`；视图结构整理看 `swiftui-ui-patterns`。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return swiftConcurrencyExpertSkill.id;
+      },
+      reason: "性能问题来自 Task、actor、主线程隔离或并发边界时联动。",
+    },
+    {
+      get id() {
+        return swiftuiUiPatternsSkill.id;
+      },
+      reason: "需要整理视图结构、状态拥有者、导航或 sheet 模式以降低重绘扇出时联动。",
+    },
   ],
   antiPatterns: [
     defineAntiPattern({
@@ -41,7 +59,27 @@ export const swiftuiPerformanceAuditSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "定位 SwiftUI 卡顿、掉帧、高 CPU、内存峰值或重渲染根因，并给出可复测的代码和 Instruments 修复路径。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先审查列表、动画和高频刷新区域，定位身份稳定性、状态扇出、主线程重活和布局链复杂度。",
+      "检查 `ForEach` 身份是否稳定，避免 `UUID()`、不稳定 `id: \\.self` 和临时排序/过滤导致树重建。",
+      "把排序、格式化、图片解码、数据库、网络副作用和其他重计算移出 `body`。",
+      "缩小状态扇出：让行视图只接收必要值，根视图持有状态，下游避免无关重绘。",
+      "代码审查不足以定案时，要求 SwiftUI template 与 Time Profiler trace，并按同一交互路径复测。",
+      "修复后比较 CPU、掉帧、hang、内存峰值和用户可感知路径，不把 `.equatable()` 或缓存当万用药。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "性能假设、代码定位、身份稳定性、状态扇出、主线程重活和布局链审计结果。",
+      "Instruments 需求或 trace 解读、修复建议、复测路径和前后指标。",
+      "需要联动 Swift 并发或 SwiftUI UI 结构整理的边界。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

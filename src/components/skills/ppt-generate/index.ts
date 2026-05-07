@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const pptGenerateSkill = defineSkill({
@@ -16,7 +19,7 @@ export const pptGenerateSkill = defineSkill({
     "用户提供源文档（PDF/文本/URL），要求转化为 PPT。",
     "用户说\"帮我做个 PPT\"、\"生成幻灯片\"、\"做个 deck\"。",
     "用户要求先看多套真实页面预览、图像级视觉方向或 image-first 成稿，再确认整套 PPT。",
-    "区别：[ppt-visual](references/ppt-visual.md) 只输出设计说明；[pptx](references/pptx.md) 处理已有文件。",
+    "需要区分从零生成、只做视觉说明、处理已有 PPTX 或 image-first 成稿。",
   ],
   constraints: [
     "每页只传达一个核心观点（4±1 信息块上限）",
@@ -42,13 +45,37 @@ export const pptGenerateSkill = defineSkill({
   ],
   antiPatterns: [
     defineAntiPattern({
-      fail: "详细反模式与正确做法见 [references/anti-patterns.md](references/anti-patterns.md)。 页面类型参考见 [references/page-types.md](references/page-types.md)。",
-      pass: "按 Reference Map 读取 anti-patterns 与 page-types，再把反例压成页面规则。",
+      fail: "跳过 hard stop：未确认需求、视觉策略、生成分支或初稿评审就继续生成。",
+      pass: "四个 hard stop 都拿到确认后再推进下一阶段。",
+    }),
+    defineAntiPattern({
+      fail: "把文字 mockup、空壳占位或纯装饰图当 16:9 预览。",
+      pass: "预览必须是真实内容型页面，能暴露信息密度、视觉方向和可读性。",
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "从主题、文档或需求端到端生成 PPT，先确认需求和视觉策略，再按可编辑 SVG 或 image-first 分支逐页生成、评审和返修。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "阶段 1 轻量需求确认并 hard stop：用途、受众、页数/时长、材料状态、身份锚点和交付偏好。",
+      "阶段 1.5 生成内容基底：薄材料先写 content_basis.md，完整材料只抽取结构，并标注 user_provided、inferred、needs_confirmation。",
+      "阶段 2 锁定视觉策略和大纲并 hard stop：必要时先给 16:9 首页、目录页、正文页真实预览，再产出 design_spec、spec_lock 和 outline。",
+      "阶段 3 确认生成分支并 hard stop：默认可编辑 SVG 到 DrawingML PPTX；用户明确 image-first 或视觉保真优先才走整页图像。",
+      "阶段 4 逐页生成与转换：每页前重读 spec_lock；SVG 分支校验内联属性，image-first 分支默认零后期覆盖。",
+      "阶段 5 初稿评审并 hard stop；阶段 6 按页返修，区分 SVG 修改、整页重生、局部编辑或内容蓝图变更。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "baseline judgment、content_basis、design_spec、spec_lock、outline 和 page_rhythm。",
+      "生成分支说明、逐页 SVG 或 image-first 页面图、PPTX 文件和质量校验结果。",
+      "初稿评审、返修清单、页面节奏检查、可编辑性/视觉保真的取舍说明。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

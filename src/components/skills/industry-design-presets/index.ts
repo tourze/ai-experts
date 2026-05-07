@@ -5,8 +5,12 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { designSystemPatternsSkill } from "../design-system-patterns/index";
+import { modernWebDesignSkill } from "../modern-web-design/index";
 
 export const industryDesignPresetsSkill = defineSkill({
   id: "industry-design-presets",
@@ -16,14 +20,13 @@ export const industryDesignPresetsSkill = defineSkill({
     "产品类型明确（fintech / healthcare / portfolio / gaming / spa 等），要快速锁定视觉方向。",
     "需要同时决定 风格 + 配色 + 字体对 + 关键效果 + 反模式。",
     "不知道某个行业\"不该做什么\"（比如 banking 忌 AI 紫粉渐变）。",
-    "要和 `modern-web-design`、[font-pairing-library](references/font-pairing-library.md)、`design-system-patterns` 联动。",
-    "详细预设查 [references/presets-catalog.md](references/presets-catalog.md)。",
+    "需要把行业预设接到设计系统 token、字体搭配和现代 Web 实现。",
   ],
   constraints: [
     "预设是**起点不是终点**：先照表落 60%，剩余 40% 由品牌差异化决定。",
     "行业语义先于视觉美感：banking 的首要情绪是\"值得托付\"，不是\"酷\"。",
     "每个行业都有反模式——选之前先看\"AVOID 清单\"。",
-    "风格要和 `modern-web-design` 的 keywords 对齐，配色要和 `design-system-patterns` 的 token 对齐。",
+    "风格要和现代 Web 关键词对齐，配色要落到设计系统 token。",
     "不机械套用：如果产品是 \"B2B SaaS + Gen-Z 氛围\"，按\"主行业 + 次行业氛围\"叠加，不用单 preset。",
   ],
   relatedSkills: [
@@ -31,7 +34,13 @@ export const industryDesignPresetsSkill = defineSkill({
       get id() {
         return designSystemPatternsSkill.id;
       },
-      reason: "要和 `modern-web-design`、font-pairing-library、`design-system-patterns` 联动。",
+      reason: "需要把主色组、字体、效果和反模式沉淀为 semantic token 与组件约束时联动。",
+    },
+    {
+      get id() {
+        return modernWebDesignSkill.id;
+      },
+      reason: "需要把行业风格落到具体 Web 布局、材质、层级、动效或 CSS 特征时联动。",
     },
   ],
   checklist: [
@@ -54,7 +63,26 @@ export const industryDesignPresetsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为特定行业产品选择视觉 preset，并把风格、配色、字体、关键效果和反模式转成可落地的设计系统方向。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确定主行业和 1-2 个氛围词，例如 trust、playful、luxury 或 technical。",
+      "读取 presets-catalog 或对应行业 reference，取出风格、主色组、字体对、关键效果和 AVOID 清单。",
+      "按 60% 行业预设、40% 品牌差异化落地，不机械套用单一 preset。",
+      "把主色组接入 design-system semantic token，字体对接 font-pairing-library，风格实现细节交给现代 Web 设计。",
+      "检查行业语义是否优先于视觉好看：例如金融首要情绪是可托付，不能用廉价 AI 渐变破坏信任。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "主行业、氛围词、preset 来源和 5 要素：风格、配色、字体、效果、反模式。",
+      "semantic token、字体导入、关键视觉效果、AVOID 清单和品牌差异化空间。",
+      "与设计系统、现代 Web 实现和行业专属 reference 的联动建议。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

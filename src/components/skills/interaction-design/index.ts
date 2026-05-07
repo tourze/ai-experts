@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { modernWebDesignSkill } from "../modern-web-design/index";
 
@@ -39,7 +42,7 @@ export const interactionDesignSkill = defineSkill({
       get id() {
         return modernWebDesignSkill.id;
       },
-      reason: "`modern-web-design`。",
+      reason: "需要把动效语言和整体视觉风格、层级、布局及现代 Web 质感统一时联动。",
     },
   ],
   antiPatterns: [
@@ -49,12 +52,32 @@ export const interactionDesignSkill = defineSkill({
     }),
     defineAntiPattern({
       fail: "到处都在动",
-      pass: "动效克制：动效只为”显得高级”，却不传递任何状态。 用 motion 掩盖信息架构问题。",
+      pass: "只保留说明状态、层级或路径的动效。",
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为界面设计有信息含义、可中断、性能克制且兼容 reduced motion 的微交互、过渡和反馈状态。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先说明每个动效告诉用户什么：反馈、导向、层级、连续性或状态变化。",
+      "补齐 hover、focus、active、disabled、loading、success 和 error 状态，不用动效掩盖信息架构问题。",
+      "按钮按压默认 scale 0.96，不低于 0.95；图标切换用 opacity、scale、blur 或 AnimatePresence 交叉过渡。",
+      "控制时长：100-150ms 即时反馈，200-300ms 轻过渡，300-500ms 中型切换。",
+      "优先 CSS 或轻量能力；复杂编排才读取 animation-libraries、microinteraction-patterns 或 press-and-icon-patterns。",
+      "为 `prefers-reduced-motion` 提供降级，并检查低性能设备、可读性和主要操作是否被阻塞。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "交互状态矩阵：元素、状态、动效目的、时长、easing 和降级方式。",
+      "按钮按压、图标切换、入场/退场、loading/skeleton 或页面过渡方案。",
+      "性能、无障碍、reduced motion、品牌一致性和需要联动视觉设计的事项。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

@@ -4,7 +4,12 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
+import { iosHigDesignSkill } from "../ios-hig-design/index";
+import { swiftuiUiPatternsSkill } from "../swiftui-ui-patterns/index";
 
 export const macosDesignGuidelinesSkill = defineSkill({
   id: "macos-design-guidelines",
@@ -26,7 +31,20 @@ export const macosDesignGuidelinesSkill = defineSkill({
     "主窗口是否支持调整大小、全屏和多窗口，而不是被固定成移动端画布。",
     "侧边栏、工具栏、搜索和右键菜单是否体现桌面工作流。",
     "需要展开规则时读取记忆文件、`rules/_sections.md` 和 `metadata.json`。",
-    "交叉引用：iPhone / iPad 体验看 `ios-hig-design`；SwiftUI 具体实现看 `swiftui-ui-patterns`。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return iosHigDesignSkill.id;
+      },
+      reason: "目标平台转为 iPhone、iPad 或需要比较移动端 HIG 差异时联动。",
+    },
+    {
+      get id() {
+        return swiftuiUiPatternsSkill.id;
+      },
+      reason: "需要把 macOS 设计落到 SwiftUI 导航、窗口、工具栏或设置实现时联动。",
+    },
   ],
   antiPatterns: [
     defineAntiPattern({
@@ -44,6 +62,26 @@ export const macosDesignGuidelinesSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "按 macOS HIG 设计或审查桌面界面，把菜单栏、窗口、工具栏、侧边栏、快捷键和指针交互作为一等入口。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认产品是原生 macOS、Mac Catalyst 还是跨平台桌面，并列出核心桌面任务。",
+      "设计菜单栏、Settings、常用命令、快捷键和上下文菜单；命令不要只藏在悬浮按钮。",
+      "设置主窗口最小尺寸、默认尺寸、可调整大小、全屏和多窗口策略。",
+      "用 NavigationSplitView、侧边栏、工具栏、搜索和右键菜单组织桌面工作流。",
+      "检查指针、拖拽、键盘导航和桌面多窗口预期，不按 iPhone 交互假设设计 Mac。",
+      "需要实现示例时输出 SwiftUI WindowGroup、Settings、commands、defaultSize、toolbar 和 split view 方案。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "macOS 界面结构、菜单栏/设置/命令/快捷键/上下文菜单设计。",
+      "窗口尺寸、窗口层级、侧边栏、工具栏、搜索和多窗口策略。",
+      "SwiftUI/AppKit 实现提示、HIG 风险、与 iOS/iPad 或 SwiftUI 模式的联动点。",
+    ],
+  }),
   tools: [],
 });

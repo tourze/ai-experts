@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { contentStrategySkill } from "../content-strategy/index";
 import { paidAdsSkill } from "../paid-ads/index";
@@ -38,19 +41,19 @@ export const marketingPlanSkill = defineSkill({
       get id() {
         return stpSegmentationSkill.id;
       },
-      reason: "只需要审查产品、价格、渠道、促销一致性时，切到 `stp-segmentation`。",
+      reason: "只需要做用户细分、目标市场、定位或 STP 判断，而不是完整推广方案时联动。",
     },
     {
       get id() {
         return paidAdsSkill.id;
       },
-      reason: "只需要广告账户、预算、出价和受众结构时，切到 `paid-ads`。",
+      reason: "只需要广告账户、预算、出价、素材测试和受众结构时联动。",
     },
     {
       get id() {
         return contentStrategySkill.id;
       },
-      reason: "需要内容日历时，配合 `content-strategy`。",
+      reason: "需要把信息支柱落到内容主题、内容日历和渠道内容矩阵时联动。",
     },
   ],
   antiPatterns: [
@@ -61,7 +64,27 @@ export const marketingPlanSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把 Brief、产品卖点、竞品环境、用户洞察、传播定位、渠道节奏和活动执行串成可落地的市场方案。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先做 Brief 梳理：What、Who、When、Why、How、Where、目标、预算/资源、素材、限制和待确认项。",
+      "分析输入：产品功能/玩法/调性/卖点/可信证据，竞品定位/打法/渠道，可区隔机会和用户转化阻力。",
+      "输出定位包装：卖点 x 市场区隔 x 用户洞察的一句话定位，拆 3-5 个信息支柱，必要时给 slogan 方向。",
+      "制定策略规划：一句话主轴、阶段主题、目标、人群、核心事件、渠道组合和指标。",
+      "做节奏校验：每阶段必须承接上一阶段用户状态变化，不只列时间轴或渠道清单。",
+      "落活动卡和资源清单：时间、目的、对象、流程、渠道/素材、指标、依赖、风险和分工；模板细节读取 market-plan-template。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Brief 复述、已确认/假设/待确认、产品/市场/用户分析表和证据来源。",
+      "定位句、信息支柱、slogan 方向、阶段推广规划和指标。",
+      "活动落地表、资源清单、依赖、风险、分工和需要联动的 STP/广告/内容策略事项。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

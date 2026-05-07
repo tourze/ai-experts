@@ -5,6 +5,9 @@ import {
   defineAsset,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, canvasDesignBaoyuArticleIllustratorBuildBatch, canvasDesignConceptToImageRenderToImage, canvasDesignConceptToVideoAddAudio, canvasDesignConceptToVideoRenderVideo } from "../../procedures/index";
 
@@ -46,7 +49,27 @@ export const canvasDesignSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "先建立原创设计哲学，再把它表达成一页高完成度画布作品，并导出对应静态或视频资产。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先产出 philosophy.md，包含运动/流派名称、4-6 段审美阐述，以及空间、色彩、节奏、材质、排版和工艺约束。",
+      "确认画布尺寸、边距、主视觉、次级视觉、字体组合、字号层级和导出格式。",
+      "优先使用 canvas-fonts 中的字体；按作品气质选择 InstrumentSans、IBMPlexSerif、JetBrainsMono、GeistMono、BigShoulders 或 Tektur 等字族。",
+      "把设计哲学转成单页成品，默认 90% 视觉、10% 必要文字，避免说明文堆叠。",
+      "需要 PNG 时用 concept-to-image 渲染；需要视频时先渲染帧序列再用 ffmpeg 合成和加音频。",
+      "最后确认 philosophy.md 与最终 png/pdf/video 同时存在，元素不越界、不重叠且没有复刻现实品牌或艺术家。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "philosophy.md：审美方向、空间秩序、配色语言、材质、排版和工艺标准。",
+      "单页视觉成品：尺寸、边距、主/次视觉、字体层级、色彩与导出格式。",
+      "渲染产物、使用的 procedure、字体选择、质量检查和原创性说明。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(canvasDesignBaoyuArticleIllustratorBuildBatch),
