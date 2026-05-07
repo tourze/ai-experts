@@ -4,6 +4,9 @@ import {
   Platform,
   defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, webPerformanceDiagnosisAnalyze } from "../../procedures/index";
 
@@ -52,42 +55,67 @@ export const webPerformanceDiagnosisSkill = defineSkill({
       get id() {
         return responsiveDesignSkill.id;
       },
-      reason: "`responsive-design`：响应式布局与图片尺寸策略。",
+      reason: "性能问题涉及响应式图片、尺寸预留、移动端布局或小屏内容密度时联动。",
     },
     {
       get id() {
         return frontendDesignReviewSkill.id;
       },
-      reason: "`frontend-design-review`：前端界面与交互评审。",
+      reason: "性能修复会影响视觉层级、交互清晰度、可访问性或设计系统一致性时联动。",
     },
     {
       get id() {
         return bundleOptimizationSkill.id;
       },
-      label: "`bundle-optimization`",
-      reason: "``bundle-optimization``：代码分割、tree shaking",
+      reason: "诊断指向 JS 体积、代码分割、tree shaking 或第三方脚本加载时联动。",
     },
     {
       get id() {
         return reactPerformanceSkill.id;
       },
-      reason: "React 渲染优化：`react-performance`。",
+      reason: "瓶颈来自 React re-render、memo、外部 store 订阅或组件渲染成本时联动。",
     },
     {
       get id() {
         return reactServerComponentsSkill.id;
       },
-      reason: "RSC 边界与 Server Actions：`react-server-components`。",
+      reason: "瓶颈来自 RSC 边界、Server Actions、请求瀑布或序列化成本时联动。",
     },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用网络层、渲染层、运行时三段式方法诊断 Web 性能、Core Web Vitals、质量审计、请求瀑布和 hydration 问题。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先区分 lab / RUM 数据、页面场景、设备网络和目标指标，不看数据不猜瓶颈。",
+      "按网络层、渲染层、运行时分段定位 LCP、INP、CLS、瀑布流、hydration 和长任务。",
+      "每条发现按 P0/P1/P2 排序，绑定页面、元素、文件、证据和复测方式。",
+      "三段式概览读取 `diagnosis-overview`；深度流程、CWV、质量审计和瀑布流读取对应 references。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "lab / RUM 数据口径、目标场景、瓶颈分层和优先级。",
+      "LCP / INP / CLS / 瀑布流 / hydration / bundle / React 的具体发现与修复建议。",
+      "性能预算、复测命令、真实用户验证和剩余风险。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(webPerformanceDiagnosisAnalyze),
   ],
   references: [
+    defineReference({
+      id: "diagnosis-overview",
+      source: new URL("./references/diagnosis-overview.md", import.meta.url),
+      target: "references/diagnosis-overview.md",
+      title: "Web 性能诊断概览",
+      summary: "网络层、渲染层、运行时三段式诊断、CWV 深度优化、质量审计和瀑布流入口。",
+      loadWhen: "需要快速建立 Web 性能诊断路径和引用后续资料时读取。",
+    }),
     defineReference({
       id: "anti-patterns",
       source: new URL("./references/anti-patterns.md", import.meta.url),

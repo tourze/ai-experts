@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { modernWebDesignSkill } from "../modern-web-design/index";
 import { webPerformanceDiagnosisSkill } from "../web-performance-diagnosis/index";
@@ -38,27 +41,64 @@ export const responsiveDesignSkill = defineSkill({
       get id() {
         return webPerformanceDiagnosisSkill.id;
       },
-      reason: "`web-performance-diagnosis`。",
+      reason: "响应式图片、CLS、LCP、移动端长任务或真实设备性能问题需要诊断时联动。",
     },
     {
       get id() {
         return modernWebDesignSkill.id;
       },
-      label: "web-design-guidelines",
-      reason: "`web-design-guidelines`。",
+      reason: "响应式方案需要落到整体视觉方向、排版系统或 Web 设计规范时联动。",
     },
   ],
   antiPatterns: [
     defineAntiPattern({
       fail: "桌面优先 + JS 读宽度",
-      pass: "移动优先 + CSS 容器查询：断点过多且跟具体设备型号绑定。 小屏上继续保留桌面级内容密度和列数。 因为”适配”而隐藏关键功能或关键信息。",
+      pass: "移动优先 + CSS 容器查询",
+    }),
+    defineAntiPattern({
+      fail: "断点绑定具体设备型号",
+      pass: "断点跟内容和容器走",
+    }),
+    defineAntiPattern({
+      fail: "小屏保留桌面内容密度",
+      pass: "重排信息层级和操作密度",
+    }),
+    defineAntiPattern({
+      fail: "适配时隐藏关键功能",
+      pass: "保留关键路径并调整呈现",
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计移动优先、内容驱动断点、container queries、流式字号、图片 srcset/sizes 和可访问操作路径的响应式布局。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认窄屏核心路径、内容长度、触控目标、图片 / 表格 / 媒体和容器边界。",
+      "基础样式服务窄屏，再逐步增强到大屏；组件级响应优先 container queries。",
+      "断点跟内容走，图片声明 width/height、srcset、sizes，字号用 clamp 但不牺牲可读性。",
+      "container query、clamp、responsive image 示例读取 `responsive-code-patterns`；策略细节读取 breakpoint / container / fluid references。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "移动优先布局、内容驱动断点和 container query 方案。",
+      "流式排版、图片 / 媒体 / 表格适配和小屏操作路径建议。",
+      "可访问性、CLS、LCP 和真实设备验证风险。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "responsive-code-patterns",
+      source: new URL("./references/responsive-code-patterns.md", import.meta.url),
+      target: "references/responsive-code-patterns.md",
+      title: "响应式代码模式",
+      summary: "CSS container queries、clamp 流式字号和 responsive image srcset/sizes 示例。",
+      loadWhen: "需要快速实现组件级响应、流式排版或响应式图片时读取。",
+    }),
     defineReference({
       id: "breakpoint-strategies",
       source: new URL("./references/breakpoint-strategies.md", import.meta.url),

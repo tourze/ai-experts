@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { modernWebDesignSkill } from "../modern-web-design/index";
 import { responsiveDesignSkill } from "../responsive-design/index";
@@ -39,7 +42,7 @@ export const frontendDesignReviewSkill = defineSkill({
       get id() {
         return responsiveDesignSkill.id;
       },
-      reason: "`responsive-design`。",
+      reason: "评审发现断点、移动端密度、触控目标或容器自适应问题时联动。",
     },
     {
       get id() {
@@ -64,9 +67,35 @@ export const frontendDesignReviewSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "审查前端界面的用户目标、视觉层级、主次操作、设计系统一致性、状态完整性、可访问性、响应式和 AI 套版感风险。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先按用户目标、主次操作、设计系统、断点 / 状态、信任细节顺序评审。",
+      "发现问题先给具体文件、组件、状态和阻塞级别，再给可执行修复方案。",
+      "对 10 条 Absolute Bans 直接 P0 阻塞，不通过改色或改宽度绕过。",
+      "评审顺序和示例读取 `review-sequence`；硬禁令、输出格式和 modifier 读取对应 references。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "按 P0/P1/P2 排序的界面质量、交互、响应式、状态和设计系统问题。",
+      "每条问题对应的文件 / 组件 / 状态证据和修复建议。",
+      "Absolute Bans、AI 套版感、可访问性和剩余设计风险。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "review-sequence",
+      source: new URL("./references/review-sequence.md", import.meta.url),
+      target: "references/review-sequence.md",
+      title: "前端设计评审顺序",
+      summary: "用户目标、主次操作、设计系统、断点/状态、信任细节的推荐评审顺序和按钮示例。",
+      loadWhen: "需要快速开展前端界面质量评审时读取。",
+    }),
     defineReference({
       id: "absolute-bans",
       source: new URL("./references/absolute-bans.md", import.meta.url),

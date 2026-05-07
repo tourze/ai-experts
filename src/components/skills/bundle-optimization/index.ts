@@ -1,4 +1,14 @@
-import { InvocationPolicy, KnownTool, Platform, defineSkill, defineAntiPattern } from "../../sdk";
+import {
+  InvocationPolicy,
+  KnownTool,
+  Platform,
+  defineAntiPattern,
+  defineReference,
+  defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
+} from "../../sdk";
 import { webPerformanceDiagnosisSkill } from "../web-performance-diagnosis/index";
 
 export const bundleOptimizationSkill = defineSkill({
@@ -33,7 +43,7 @@ export const bundleOptimizationSkill = defineSkill({
       get id() {
         return webPerformanceDiagnosisSkill.id;
       },
-      reason: "性能指标层面可联动 `web-performance-diagnosis`。",
+      reason: "bundle 体积问题需要落到 LCP、INP、瀑布流或质量审计指标时联动。",
     },
   ],
   antiPatterns: [
@@ -48,6 +58,34 @@ export const bundleOptimizationSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "减小前端初始 bundle，治理 barrel imports、重型组件同步导入、tree shaking、动态导入、第三方脚本和意图预加载。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先用 bundle analyzer 量化最大模块、入口 chunk、初始 JS、gzip/brotli 和 parse/execute 成本。",
+      "把 barrel imports 改成 direct path imports，重型且非首屏必需的组件改为动态导入。",
+      "第三方库按需加载，preload 只用于高概率路径，避免为了体积拆分破坏首屏体验。",
+      "barrel import 和 dynamic import 示例读取 `bundle-code-patterns`；专项规则读取 `rules/`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "bundle analyzer 结论、最大模块和入口 chunk 风险。",
+      "direct import、dynamic import、tree shaking、第三方延迟和 preload 建议。",
+      "改动前后 bundle size / LCP / TTI / INP 验证方式。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "bundle-code-patterns",
+      source: new URL("./references/bundle-code-patterns.md", import.meta.url),
+      target: "references/bundle-code-patterns.md",
+      title: "Bundle 优化代码模式",
+      summary: "barrel import 改 direct path import、重型组件动态导入和 bundle 规则索引。",
+      loadWhen: "需要快速修复前端 bundle 体积、barrel import 或动态导入问题时读取。",
+    }),
+  ],
 });

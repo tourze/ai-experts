@@ -3,7 +3,11 @@ import {
   KnownTool,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const frontendDynamicCodeProtectionSkill = defineSkill({
@@ -48,6 +52,34 @@ export const frontendDynamicCodeProtectionSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 H5/Web 高收益场景设计前端动态化代码保护、短生命周期 signature、服务端验签、重放限制、缓存策略和风控信号闭环。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先明确资产、攻击者类型和成本目标，确认这是反自动化成本控制而非绝对安全承诺。",
+      "审计参数生成、签名、混淆、challenge、缓存和服务端验签入口，区分请求伪造、脚本自动化和重放攻击。",
+      "将保护逻辑独立构建、短缓存、灰度发布，signature 绑定组合标识、随机数、时间戳、版本和上下文。",
+      "完整对抗目标、动态化设计、工程约束和验证监控流程读取 `protection-framework`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "前端保护资产、攻击模型、可见逻辑和服务端最终判定边界。",
+      "动态片段、signature、缓存、灰度、验签、重放限制和风控日志方案。",
+      "重放、过期、多标签、弱网、低端设备、性能和业务转化验证清单。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "protection-framework",
+      source: new URL("./references/protection-framework.md", import.meta.url),
+      target: "references/protection-framework.md",
+      title: "前端动态化代码保护框架",
+      summary: "前端动态化代码保护的来源材料、核心判断、工作流、工程约束、验证和监控方法。",
+      loadWhen: "需要设计或审计 H5/Web 参数保护、anti-bot challenge 或动态签名方案时读取。",
+    }),
+  ],
 });

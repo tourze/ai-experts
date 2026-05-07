@@ -6,9 +6,13 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, modernWebDesignDesignAudit, modernWebDesignPatternGenerator } from "../../procedures/index";
 
+import { industryDesignPresetsSkill } from "../industry-design-presets/index";
 import { interactionDesignSkill } from "../interaction-design/index";
 import { responsiveDesignSkill } from "../responsive-design/index";
 import { webPerformanceDiagnosisSkill } from "../web-performance-diagnosis/index";
@@ -24,7 +28,7 @@ export const modernWebDesignSkill = defineSkill({
     "需要明确视觉方向，而不是套用通用模板。",
     "用户提到 \"premium\"、\"高级感\"、\"不要 AI 味\" 时，先读取 [references/high-agency-protocol.md](references/high-agency-protocol.md)。",
     "要给 AI 图像生成工具提供风格 prompt 关键词。",
-    "与 `industry-design-presets` 联动：preset 选风格，本 skill 落地。",
+    "行业 preset 已给出方向，需要把它落到具体 Web 视觉系统。",
   ],
   constraints: [
     "性能优先：任何视觉方案都不能明显伤害 LCP、INP、CLS。",
@@ -50,19 +54,25 @@ export const modernWebDesignSkill = defineSkill({
       get id() {
         return webPerformanceDiagnosisSkill.id;
       },
-      reason: "`web-performance-diagnosis`、`interaction-design`、`responsive-design`。",
+      reason: "视觉方案可能影响 LCP、INP、CLS、图片、字体、脚本或动画成本时联动。",
     },
     {
       get id() {
         return interactionDesignSkill.id;
       },
-      reason: "`web-performance-diagnosis`、`interaction-design`、`responsive-design`。",
+      reason: "视觉方向需要转化为交互反馈、动效、状态流或可用性流程时联动。",
     },
     {
       get id() {
         return responsiveDesignSkill.id;
       },
-      reason: "`web-performance-diagnosis`、`interaction-design`、`responsive-design`。",
+      reason: "视觉方案需要落到移动端、断点、容器查询或小屏内容路径时联动。",
+    },
+    {
+      get id() {
+        return industryDesignPresetsSkill.id;
+      },
+      reason: "需要先按行业语义、配色、字体和反模式选择视觉 preset 时联动。",
     },
   ],
   antiPatterns: [
@@ -72,22 +82,48 @@ export const modernWebDesignSkill = defineSkill({
     }),
     defineAntiPattern({
       fail: "三风格混搭",
-      pass: "一页一风格：全局 Bento + 微 Glass 强调，不混入 Neumorphism / Brutalism / Cyberpunk。",
+      pass: "一页一主风格，最多一个弱辅助风格",
     }),
     defineAntiPattern({
       fail: "重型视觉无预算：LCP 1.5s → 6s，移动端卡死。",
-      pass: "配性能预算：预算 LCP < 2.5s，JS < 300KB。hero 用渐变+静态图，滚动动效用 IntersectionObserver + CSS。",
+      pass: "先设性能预算，再选视觉实现方式",
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为现代 Web 界面选择视觉风格、CSS 特征、字体色彩网格动效、AI 图像 prompt、性能预算和可访问性约束。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先把抽象 brief 转成一句视觉方向定义，再用 styles-catalog 找候选风格。",
+      "检查风格 Do Not Use For、CSS 特征清单、行业适配和是否混搭超过两种风格。",
+      "把风格落到字体、色彩、网格、动效和首屏叙事，同时设置 LCP / INP / CLS 预算和动效降级。",
+      "风格选择步骤和 CSS 示例读取 `style-selection-method`；高辨识方向读取 high-agency 和 styles catalog references。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "视觉方向定义、候选风格、反适用判断和 CSS 特征清单。",
+      "字体、色彩、网格、动效、首屏 CTA 和可访问性 / 响应式约束。",
+      "性能预算、AI 套版感风险、需要读取的 style / VDF references。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(modernWebDesignDesignAudit),
     procedureUse(modernWebDesignPatternGenerator),
   ],
   references: [
+    defineReference({
+      id: "style-selection-method",
+      source: new URL("./references/style-selection-method.md", import.meta.url),
+      target: "references/style-selection-method.md",
+      title: "Web 视觉风格选择方法",
+      summary: "基于 styles-catalog 的风格选择步骤、CSS 特征落地和结构示例。",
+      loadWhen: "需要快速为 Web 界面选择视觉方向并落到 CSS 特征时读取。",
+    }),
     defineReference({
       id: "accessibility-guide",
       source: new URL("./references/accessibility_guide.md", import.meta.url),
