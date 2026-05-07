@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { basename, join } from "node:path";
 import webpack, { type Configuration, type Stats } from "webpack";
@@ -438,7 +438,7 @@ function runWebpack(config: Configuration): Promise<void> {
 }
 
 async function emitBundledProceduresFile(root: string, runtimeProcedures: readonly RuntimeProcedureModule[]): Promise<string> {
-  const tempDir = join(tmpdir(), "ai-experts-procedure-webpack");
+  const tempDir = mkdtempSync(join(tmpdir(), "ai-experts-procedure-webpack-"));
   const entryFile = join(tempDir, "procedure-runtime-entry.ts");
   const loaderFile = join(tempDir, "procedure-path-loader.cjs");
   const transformContexts = new Map(
@@ -447,8 +447,6 @@ async function emitBundledProceduresFile(root: string, runtimeProcedures: readon
       { target: procedure.target },
     ]),
   );
-  rmSync(tempDir, { recursive: true, force: true });
-  mkdirSync(tempDir, { recursive: true });
   writeFileSync(entryFile, renderProceduresEntrypoint(runtimeProcedures), "utf-8");
   writeFileSync(loaderFile, renderProcedurePathLoader(), "utf-8");
 
