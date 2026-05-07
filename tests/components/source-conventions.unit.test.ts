@@ -34,7 +34,9 @@ describe("component source conventions", () => {
   test("README documents current component counts and procedure runtime", () => {
     const readme = readFileSync(join(repoRoot, "README.md"), "utf-8");
     const componentSurface = validateRegistry(registry);
-    const currentCounts = `${registry.skills.length} 个 skill、${registry.agents.length} 个 agent、${registry.hooks.length} 个 hook`;
+    const currentCounts =
+      `${registry.skills.length} 个 skill、${registry.agents.length} 个 agent、` +
+      `${registry.hooks.length} 个 hook、${registry.procedures.length} 个 procedure`;
     const claudeHookCount = registry.hooks.filter((hook) => hook.platforms.includes(Platform.Claude)).length;
     const codexHookCount = registry.hooks.filter((hook) => hook.platforms.includes(Platform.Codex)).length;
     const claudeProcedureCount = collectPlatformProcedures(componentSurface, Platform.Claude).length;
