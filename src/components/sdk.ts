@@ -165,6 +165,22 @@ export type SkillParameter = {
   type?: "string" | "file" | "url" | "slug";
 };
 
+export type SkillGoalDefinition = {
+  title?: string;
+  body: string;
+};
+
+export type SkillWorkflowDefinition = {
+  title?: string;
+  steps: readonly string[];
+};
+
+export type SkillOutputsDefinition = {
+  title?: string;
+  items?: readonly string[];
+  body?: string;
+};
+
 export type SkillDefinition = {
   kind: ComponentKind.Skill;
   id: string;
@@ -176,7 +192,11 @@ export type SkillDefinition = {
   antiPatterns?: readonly AntiPatternDefinition[];
   invocation: InvocationPolicy;
   platforms: PlatformList;
-  body: ComponentFile;
+  body?: ComponentFile;
+  sourceDir?: ComponentFile;
+  goal?: SkillGoalDefinition;
+  workflow?: SkillWorkflowDefinition;
+  outputs?: SkillOutputsDefinition;
   tools?: readonly ToolMatcher[];
   procedures?: readonly ProcedureUseReference[];
   scripts?: readonly ScriptUseReference[];
@@ -381,6 +401,24 @@ export function defineSkill(definition: Omit<SkillDefinition, "kind">): SkillDef
     kind: ComponentKind.Skill,
     ...definition,
   };
+}
+
+export function defineSkillGoal(
+  definition: SkillGoalDefinition,
+): SkillGoalDefinition {
+  return definition;
+}
+
+export function defineSkillWorkflow(
+  definition: SkillWorkflowDefinition,
+): SkillWorkflowDefinition {
+  return definition;
+}
+
+export function defineSkillOutputs(
+  definition: SkillOutputsDefinition,
+): SkillOutputsDefinition {
+  return definition;
 }
 
 export function defineAgent(definition: Omit<AgentDefinition, "kind">): AgentDefinition {

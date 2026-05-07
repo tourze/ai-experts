@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync, rmSync } from "node:fs";
-import { dirname, join, relative } from "node:path";
+import { join, relative } from "node:path";
 import type {
   AgentDefinition,
   HookDefinition,
@@ -36,7 +36,17 @@ import { materializeProfile } from "./registry.ts";
 import { listProcedureUses } from "./script-uses.ts";
 import type { ResolvedProcedureUse } from "./script-uses.ts";
 import { emitScriptRuntime } from "./scripts.ts";
-import { emitSkill, validateAntiPatterns, validateParameters, validateTextList } from "./skills.ts";
+import {
+  emitSkill,
+  hasStructuredSkillBody,
+  skillSourceRoot,
+  validateAntiPatterns,
+  validateParameters,
+  validateSkillGoal,
+  validateSkillOutputs,
+  validateSkillWorkflow,
+  validateTextList,
+} from "./skills.ts";
 import type { ComponentRegistry, ProfileSurface } from "./types.ts";
 
 export function renderInstruction(profileSurface: ProfileSurface, platform: Platform): string {
@@ -172,12 +182,24 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
     }
     validateTextList(skill, "useCases", "useCase");
     validateTextList(skill, "constraints", "constraint");
-    if (!existsSync(toAbsolutePath(skill.body))) {
+    if (skill.body !== undefined && !existsSync(toAbsolutePath(skill.body))) {
       throw new Error(`Skill ${skill.id} body is missing: ${displayPath(skill.body)}`);
     }
-    const bodySource = readComponentText(skill.body);
-    if (!startsWithH2Section(bodySource)) {
+    if (skill.body === undefined && skill.sourceDir === undefined) {
+      throw new Error(`Skill ${skill.id} must define body or sourceDir`);
+    }
+    if (skill.sourceDir !== undefined && !existsSync(toAbsolutePath(skill.sourceDir))) {
+      throw new Error(`Skill ${skill.id} sourceDir is missing: ${displayPath(skill.sourceDir)}`);
+    }
+    const bodySource = readOptionalComponentText(skill.body);
+    if (bodySource.trim() !== "" && !startsWithH2Section(bodySource)) {
       throw new Error(`Skill ${skill.id} body must start with an H2 section; move intro text to index.ts fields`);
+    }
+    validateSkillGoal(skill);
+    validateSkillWorkflow(skill);
+    validateSkillOutputs(skill);
+    if (bodySource.trim() === "" && !hasStructuredSkillBody(skill)) {
+      throw new Error(`Skill ${skill.id} must define body content or structured skill sections`);
     }
     if (hasH2SectionMatching(bodySource, (title) => title === "适用场景")) {
       throw new Error(`Skill ${skill.id} must move ## 适用场景 from SKILL.body.md to useCases`);
@@ -231,7 +253,7 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
       seenRelatedSkills.add(related.id);
     }
 
-    const skillSourceRoot = dirname(toAbsolutePath(skill.body));
+    const sourceRoot = skillSourceRoot(skill);
     const procedureUses = listProcedureUses(skill);
     validateUniqueProcedureUses(skill.id, procedureUses);
     for (const procedureUse of procedureUses) {
@@ -246,7 +268,7 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
         throw new Error(`Skill ${skill.id} references procedure ${procedureId} without skill ownership`);
       }
     }
-    const scriptsDir = join(skillSourceRoot, "scripts");
+    const scriptsDir = join(sourceRoot, "scripts");
     if (existsSync(scriptsDir)) {
       const registeredEntries = new Set(
         procedures
@@ -259,7 +281,7 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
           const source = readFileSync(absoluteEntry, "utf-8");
           if (source.startsWith("#!")) {
             throw new Error(
-              `Skill ${skill.id} has an unregistered executable procedure source: ${relative(skillSourceRoot, absoluteEntry)}`,
+              `Skill ${skill.id} has an unregistered executable procedure source: ${relative(sourceRoot, absoluteEntry)}`,
             );
           }
         }
@@ -277,7 +299,7 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
         reference.id === "evals" ||
         referenceTarget === "references/evals" ||
         referenceTarget.startsWith("references/evals/") ||
-        isSameOrInsidePath(referenceSource, join(skillSourceRoot, "evals"))
+        isSameOrInsidePath(referenceSource, join(sourceRoot, "evals"))
       ) {
         throw new Error(`Skill ${skill.id} must not register evals/ as a reference`);
       }

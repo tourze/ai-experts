@@ -36,6 +36,9 @@ import {
   defineScript,
   defineScriptUse,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../src/components/sdk.ts";
 import { procedureUse, scriptUse } from "../../src/components/procedures/index.ts";
 
@@ -238,6 +241,41 @@ describe("build/pipeline modules", () => {
     expect(relatedSkillMd.match(/\.\.\/other-skill\/SKILL\.md/g)?.length).toBe(1);
     expect(() => validateTextList({ ...fixture.skill, useCases: [] }, "useCases", "useCase")).toThrow();
     expect(() => validateAntiPatterns({ ...fixture.skill, antiPatterns: [] })).toThrow();
+
+    const structuredSkill = defineSkill({
+      ...fixture.skill,
+      id: "structured-skill",
+      fullName: "Structured Skill",
+      body: undefined,
+      sourceDir: pathToFileURL(`${fixture.root}/skill/`),
+      procedures: [],
+      scripts: [],
+      goal: defineSkillGoal({ body: "明确流程目标。" }),
+      workflow: defineSkillWorkflow({
+        steps: [
+          "读取输入。",
+          "执行检查。",
+        ],
+      }),
+      outputs: defineSkillOutputs({ items: ["结论", "后续动作"] }),
+    });
+    expect(() => validateRegistry({ ...fixture.registry, skills: [fixture.skill, structuredSkill] })).not.toThrow();
+    const structuredRendered = renderSkillMd(structuredSkill, Platform.Claude, scriptMap);
+    expect(structuredRendered).toContain("## 目标\n\n明确流程目标。");
+    expect(structuredRendered).toContain("## 执行步骤\n\n1. 读取输入。\n2. 执行检查。");
+    expect(structuredRendered).toContain("## 输出\n\n- 结论\n- 后续动作");
+    expect(() =>
+      validateRegistry({
+        ...fixture.registry,
+        skills: [fixture.skill, {
+          ...structuredSkill,
+          sourceDir: undefined,
+          goal: undefined,
+          workflow: undefined,
+          outputs: undefined,
+        }],
+      })
+    ).toThrow("must define body or sourceDir");
 
     const codexRoot = createTempDir("ai-experts-emit-skill-");
     await emitSkill(fixture.skill, codexRoot, Platform.Codex, scriptMap);

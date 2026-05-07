@@ -9,8 +9,11 @@ import type {
   ProcedureOutputDefinition,
   RelatedSkillDefinition,
   SkillDefinition,
+  SkillGoalDefinition,
+  SkillOutputsDefinition,
   SkillParameter,
   SkillReferenceDefinition,
+  SkillWorkflowDefinition,
 } from "../components/sdk";
 import {
   copyComponentPath,
@@ -18,7 +21,7 @@ import {
   ensureDir,
   InvocationPolicy,
   Platform,
-  readComponentText,
+  readOptionalComponentText,
   toAbsolutePath,
   writeText,
   yamlScalar,
@@ -32,6 +35,12 @@ import {
 } from "./markdown.ts";
 
 type TextListProperty = "useCases" | "constraints" | "checklist";
+
+export function skillSourceRoot(skill: SkillDefinition): string {
+  if (skill.body !== undefined) return dirname(toAbsolutePath(skill.body));
+  if (skill.sourceDir !== undefined) return toAbsolutePath(skill.sourceDir);
+  throw new Error(`Skill ${skill.id} must define body or sourceDir`);
+}
 
 function renderSkillFrontmatter(skill: SkillDefinition, platform: PlatformType): string {
   const lines = ["---", `name: ${skill.id}`, `description: ${yamlScalar(skill.description)}`];
@@ -258,6 +267,71 @@ export function validateParameters(skill: SkillDefinition): readonly SkillParame
   return params;
 }
 
+export function validateSkillGoal(skill: SkillDefinition): SkillGoalDefinition | null {
+  const goal = skill.goal;
+  if (goal === undefined) return null;
+  if (!goal || typeof goal !== "object" || Array.isArray(goal)) {
+    throw new Error(`Skill ${skill.id} goal must be a single object when defined`);
+  }
+  if (goal.title !== undefined && (typeof goal.title !== "string" || goal.title.trim() === "")) {
+    throw new Error(`Skill ${skill.id} goal.title must be non-empty when defined`);
+  }
+  if (typeof goal.body !== "string" || goal.body.trim() === "") {
+    throw new Error(`Skill ${skill.id} goal.body must be a non-empty string`);
+  }
+  return goal;
+}
+
+export function validateSkillWorkflow(skill: SkillDefinition): SkillWorkflowDefinition | null {
+  const workflow = skill.workflow;
+  if (workflow === undefined) return null;
+  if (!workflow || typeof workflow !== "object" || Array.isArray(workflow)) {
+    throw new Error(`Skill ${skill.id} workflow must be a single object when defined`);
+  }
+  if (workflow.title !== undefined && (typeof workflow.title !== "string" || workflow.title.trim() === "")) {
+    throw new Error(`Skill ${skill.id} workflow.title must be non-empty when defined`);
+  }
+  if (!Array.isArray(workflow.steps) || workflow.steps.length === 0) {
+    throw new Error(`Skill ${skill.id} workflow.steps must be a non-empty array`);
+  }
+  for (const [index, step] of workflow.steps.entries()) {
+    if (typeof step !== "string" || step.trim() === "") {
+      throw new Error(`Skill ${skill.id} workflow.steps[${index}] must be a non-empty string`);
+    }
+  }
+  return workflow;
+}
+
+export function validateSkillOutputs(skill: SkillDefinition): SkillOutputsDefinition | null {
+  const outputs = skill.outputs;
+  if (outputs === undefined) return null;
+  if (!outputs || typeof outputs !== "object" || Array.isArray(outputs)) {
+    throw new Error(`Skill ${skill.id} outputs must be a single object when defined`);
+  }
+  if (outputs.title !== undefined && (typeof outputs.title !== "string" || outputs.title.trim() === "")) {
+    throw new Error(`Skill ${skill.id} outputs.title must be non-empty when defined`);
+  }
+  const hasItems = outputs.items !== undefined;
+  const hasBody = outputs.body !== undefined;
+  if (hasItems === hasBody) {
+    throw new Error(`Skill ${skill.id} outputs must define exactly one of items or body`);
+  }
+  if (outputs.items !== undefined) {
+    if (!Array.isArray(outputs.items) || outputs.items.length === 0) {
+      throw new Error(`Skill ${skill.id} outputs.items must be a non-empty array when defined`);
+    }
+    for (const [index, item] of outputs.items.entries()) {
+      if (typeof item !== "string" || item.trim() === "") {
+        throw new Error(`Skill ${skill.id} outputs.items[${index}] must be a non-empty string`);
+      }
+    }
+  }
+  if (outputs.body !== undefined && (typeof outputs.body !== "string" || outputs.body.trim() === "")) {
+    throw new Error(`Skill ${skill.id} outputs.body must be a non-empty string when defined`);
+  }
+  return outputs;
+}
+
 function renderUserInput(skill: SkillDefinition, platform: PlatformType): string {
   const params = skill.parameters ?? [];
   if (params.length === 0) return "";
@@ -274,6 +348,43 @@ function renderUserInput(skill: SkillDefinition, platform: PlatformType): string
     ),
   ];
   return `## 用户输入\n\n${rows.join("\n")}\n`;
+}
+
+function renderSkillGoal(skill: SkillDefinition): string {
+  const goal = validateSkillGoal(skill);
+  if (!goal) return "";
+  return `## ${goal.title?.trim() ?? "目标"}\n\n${goal.body.trim()}\n`;
+}
+
+function renderSkillWorkflow(skill: SkillDefinition): string {
+  const workflow = validateSkillWorkflow(skill);
+  if (!workflow) return "";
+  const lines = workflow.steps.map((step, index) => `${index + 1}. ${step.trim()}`);
+  return `## ${workflow.title?.trim() ?? "执行步骤"}\n\n${lines.join("\n")}\n`;
+}
+
+function renderSkillOutputs(skill: SkillDefinition): string {
+  const outputs = validateSkillOutputs(skill);
+  if (!outputs) return "";
+  const title = outputs.title?.trim() ?? "输出";
+  if (outputs.items !== undefined) {
+    return `## ${title}\n\n${renderMarkdownBulletList([...outputs.items])}\n`;
+  }
+  return `## ${title}\n\n${outputs.body?.trim()}\n`;
+}
+
+export function hasStructuredSkillBody(skill: SkillDefinition): boolean {
+  return skill.goal !== undefined || skill.workflow !== undefined || skill.outputs !== undefined;
+}
+
+function renderStructuredSkillBody(skill: SkillDefinition): string {
+  return [
+    renderSkillGoal(skill),
+    renderSkillWorkflow(skill),
+    renderSkillOutputs(skill),
+  ].filter((section) => section.trim() !== "")
+    .map((section) => section.trimEnd())
+    .join("\n\n");
 }
 
 function renderRelatedSkills(skill: SkillDefinition): string {
@@ -320,7 +431,11 @@ export function renderSkillMd(
   if (typeof skill.fullName !== "string" || skill.fullName.trim() === "") {
     throw new Error(`Skill ${skill.id} must define a non-empty fullName`);
   }
-  const body = readComponentText(skill.body).trimEnd();
+  const body = [
+    renderStructuredSkillBody(skill),
+    readOptionalComponentText(skill.body).trimEnd(),
+  ].filter((section) => section.trim() !== "")
+    .join("\n\n");
   const generatedBody = renderBodyWithGeneratedSections(skill, body);
   return normalizeMarkdownBlankLines([
     renderSkillFrontmatter(skill, platform),
@@ -392,7 +507,7 @@ export async function emitSkill(
 }
 
 function copyLooseSkillFiles(skill: SkillDefinition, skillRoot: string): void {
-  const sourceDir = dirname(toAbsolutePath(skill.body));
+  const sourceDir = skillSourceRoot(skill);
   const reserved = new Set([
     "index.ts",
     "index.js",
