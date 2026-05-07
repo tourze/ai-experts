@@ -19,21 +19,21 @@ function hlLines(id,line){
 // ============================================================
 // 模板 A：数组 + 完全二叉树（堆、堆排序等）
 // 使用场景：堆的 push/pop、建堆、堆排序——任何"数组 + 完全二叉树双视角"的演示
-// 需要：全局 steps 数组；DOM 里有 svgId / arrId / capId / pbId / nbId / dotsId
+// 需要：stepsTreeArray 数组；DOM 里有 svgId / arrId / capId / pbId / nbId / dotsId
 //
 // ⚠ 使用前必须自行定义 clsFn(i) —— 根据 step 状态返回数组单元格的 CSS 类后缀。
 //    参考实现：
 //       function clsFn(i){
-//         var s=steps[cur];
+//         var s=stepsTreeArray[curTreeArray];
 //         if(s.swap&&(s.swap[0]===i||s.swap[1]===i))return' sw';
 //         if(s.focus===i)return' hl';
 //         if(s.lk&&s.lk.indexOf(i)>=0)return' lk';
 //         return'';
 //       }
 // ============================================================
-var steps=[/* ... 你的 steps 数据 ... */], cur=0;
-function render(){
-  var s=steps[cur], n=s.vals.length, pos=treePos(n), sg='';
+var stepsTreeArray=[/* ... 你的 steps 数据 ... */], curTreeArray=0;
+function renderTreeArray(){
+  var s=stepsTreeArray[curTreeArray], n=s.vals.length, pos=treePos(n), sg='';
   for(var i=0;i<n;i++){[2*i+1,2*i+2].forEach(function(ch){
     if(ch<n) sg+='<line x1="'+pos[i].x+'" y1="'+(pos[i].y+24)+'" x2="'+pos[ch].x+'" y2="'+(pos[ch].y-24)+'" stroke="var(--bd2)" stroke-width="0.5"/>';
   })}
@@ -52,14 +52,14 @@ function render(){
   var ae=document.getElementById('xx-arr');ae.innerHTML='';
   for(var i=0;i<n;i++){var cl=document.createElement('div');cl.className='ac'+clsFn(i);cl.innerHTML=s.vals[i]+'<span class="ci">'+D(i)+'</span>';ae.appendChild(cl)}
   document.getElementById('xx-cap').innerHTML=s.cap;
-  document.getElementById('xx-pb').disabled=cur===0;
-  document.getElementById('xx-nb').disabled=cur===steps.length-1;
-  mkDots(document.getElementById('xx-dots'),steps.length,cur);
+  document.getElementById('xx-pb').disabled=curTreeArray===0;
+  document.getElementById('xx-nb').disabled=curTreeArray===stepsTreeArray.length-1;
+  mkDots(document.getElementById('xx-dots'),stepsTreeArray.length,curTreeArray);
   // 若动画联动代码，取消下一行注释并把 'xx-code' 换成你的 code-panel id：
   // hlLines('xx-code', s.line);
 }
-function go(d){var n=cur+d;if(n>=0&&n<steps.length){cur=n;render()}}
-render();
+function goTreeArray(d){var n=curTreeArray+d;if(n>=0&&n<stepsTreeArray.length){curTreeArray=n;renderTreeArray()}}
+if(stepsTreeArray.length) renderTreeArray();
 
 
 // ============================================================
@@ -99,9 +99,9 @@ function renderStep(svgId,capId,pbId,nbId,dotsId,steps,cur){
 // 模板 C：纯数组动画（简单排序、队列、栈）
 // 使用场景：没有树形结构、只需数组条状视图的场景
 // ============================================================
-var steps=[/* ... 你的 steps 数据 ... */], cur=0;
-function render(){
-  var s=steps[cur], n=s.vals.length, ae=document.getElementById('xx-arr');ae.innerHTML='';
+var stepsArrayOnly=[/* ... 你的 steps 数据 ... */], curArrayOnly=0;
+function renderArrayOnly(){
+  var s=stepsArrayOnly[curArrayOnly], n=s.vals.length, ae=document.getElementById('xx-arr');ae.innerHTML='';
   for(var i=0;i<n;i++){
     var cl=document.createElement('div');cl.className='ac';
     if(s.swap&&(s.swap[0]===i||s.swap[1]===i))cl.classList.add('sw');
@@ -110,18 +110,20 @@ function render(){
     cl.innerHTML=s.vals[i]+'<span class="ci">'+D(i)+'</span>';ae.appendChild(cl);
   }
   document.getElementById('xx-cap').innerHTML=s.cap;
-  document.getElementById('xx-pb').disabled=cur===0;
-  document.getElementById('xx-nb').disabled=cur===steps.length-1;
-  mkDots(document.getElementById('xx-dots'),steps.length,cur);
+  document.getElementById('xx-pb').disabled=curArrayOnly===0;
+  document.getElementById('xx-nb').disabled=curArrayOnly===stepsArrayOnly.length-1;
+  mkDots(document.getElementById('xx-dots'),stepsArrayOnly.length,curArrayOnly);
 }
-function go(d){var n=cur+d;if(n>=0&&n<steps.length){cur=n;render()}}
-render();
+function goArrayOnly(d){var n=curArrayOnly+d;if(n>=0&&n<stepsArrayOnly.length){curArrayOnly=n;renderArrayOnly()}}
+if(stepsArrayOnly.length) renderArrayOnly();
 
 
 // ============================================================
 // 键盘导航（所有动画页面都应加这段）
 // ============================================================
 document.addEventListener('keydown',function(e){
+  if(!stepsTreeArray.length && !stepsArrayOnly.length) return;
+  var go = stepsArrayOnly.length ? goArrayOnly : goTreeArray;
   if(e.key==='ArrowLeft') go(-1);
   if(e.key==='ArrowRight') go(1);
 });
