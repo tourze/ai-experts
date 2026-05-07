@@ -180,6 +180,21 @@ describe("component source conventions", () => {
     }
   });
 
+  test("copied skill readmes do not self-identify as Claude-only skills", () => {
+    const skillReadmes = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
+      file.endsWith("README.md"),
+    );
+
+    for (const readmeFile of skillReadmes) {
+      const source = readFileSync(readmeFile, "utf-8");
+      assert.doesNotMatch(
+        source,
+        /\bA Claude skill\b|\bClaude skill\b/u,
+        `${readmeFile} should describe the component neutrally because README files are copied to both platforms`,
+      );
+    }
+  });
+
   test("cross-platform source names project memory files neutrally", () => {
     const platformSpecificMemoryRefs: string[] = [];
     for (const sourceFile of collectFiles(join(repoRoot, "src/components"))) {

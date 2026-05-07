@@ -1,6 +1,6 @@
 # md-to-pdf
 
-A Claude skill that converts Markdown files to professionally styled PDF documents with full support for **Mermaid diagrams**, **LaTeX math (KaTeX)**, **tables**, **syntax-highlighted code blocks**, and all standard Markdown features.
+A local AI skill that converts Markdown files to professionally styled PDF documents with full support for **Mermaid diagrams**, **LaTeX math (KaTeX)**, **tables**, **syntax-highlighted code blocks**, and all standard Markdown features.
 
 ## Quick Start
 
