@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join, resolve } from "node:path";
+import { basename, dirname, join, resolve } from "node:path";
 import { afterAll, beforeAll, describe, test } from "vitest";
 import {
   assertSingleDispatcherHookGroups,
@@ -13,6 +13,72 @@ import {
 } from "./test-helpers";
 
 let tmpDistDir = "";
+
+type ParsedTomlScalar = string | boolean | number;
+type ParsedGeneratedToml = {
+  root: Record<string, ParsedTomlScalar>;
+  sections: Record<string, Record<string, ParsedTomlScalar>>;
+  arrays: Record<string, Record<string, ParsedTomlScalar>[]>;
+};
+
+function parseGeneratedToml(source: string, label: string): ParsedGeneratedToml {
+  const parsed: ParsedGeneratedToml = { root: {}, sections: {}, arrays: {} };
+  let current = parsed.root;
+  const lines = source.split(/\r?\n/);
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
+    const trimmed = line.trim();
+    if (trimmed === "" || trimmed.startsWith("#")) continue;
+
+    const arrayMatch = trimmed.match(/^\[\[([A-Za-z0-9_.-]+)\]\]$/);
+    if (arrayMatch) {
+      current = {};
+      (parsed.arrays[arrayMatch[1]] ??= []).push(current);
+      continue;
+    }
+
+    const sectionMatch = trimmed.match(/^\[([A-Za-z0-9_.-]+)\]$/);
+    if (sectionMatch) {
+      current = parsed.sections[sectionMatch[1]] ??= {};
+      continue;
+    }
+
+    const assignment = line.match(/^([A-Za-z_][A-Za-z0-9_]*) = (.*)$/);
+    assert.ok(assignment, `${label}:${index + 1} should be a TOML assignment or table header`);
+    const key = assignment[1];
+    const rawValue = assignment[2];
+    assert.equal(Object.hasOwn(current, key), false, `${label}:${index + 1} should not duplicate ${key}`);
+
+    if (rawValue === "'''") {
+      const valueLines: string[] = [];
+      let foundTerminator = false;
+      for (index += 1; index < lines.length; index += 1) {
+        if (lines[index] === "'''") {
+          foundTerminator = true;
+          break;
+        }
+        valueLines.push(lines[index]);
+      }
+      assert.equal(foundTerminator, true, `${label}:${key} multiline literal should terminate`);
+      current[key] = valueLines.join("\n");
+      continue;
+    }
+
+    if (rawValue === "true" || rawValue === "false") {
+      current[key] = rawValue === "true";
+      continue;
+    }
+    if (/^-?\d+$/.test(rawValue)) {
+      current[key] = Number(rawValue);
+      continue;
+    }
+    assert.match(rawValue, /^"/, `${label}:${index + 1} should use a TOML basic string`);
+    current[key] = JSON.parse(rawValue) as string;
+  }
+
+  return parsed;
+}
 
 beforeAll(() => {
   tmpDistDir = mkdtempSync(join(tmpdir(), "ai-experts-component-build-"));
@@ -85,6 +151,64 @@ describe("component build integration", () => {
     assert.equal(Object.hasOwn(codexManifest, "profile"), false);
     assert.equal(existsSync(join(tmpDistDir, "claude/rules")), false);
     assert.equal(existsSync(join(tmpDistDir, "codex/rules")), false);
+  });
+
+  test("emits parseable codex TOML configs", () => {
+    const codexManifest = JSON.parse(readFileSync(join(tmpDistDir, "codex/manifest.json"), "utf-8"));
+    const codexConfig = parseGeneratedToml(
+      readFileSync(join(tmpDistDir, "codex/config.toml"), "utf-8"),
+      "codex/config.toml",
+    );
+    assert.equal(codexConfig.sections.features.codex_hooks, true);
+    assert.equal(codexConfig.sections.agents.max_depth, 1);
+
+    const agentFiles = collectFiles(join(tmpDistDir, "codex/agents"), (file) => file.endsWith(".toml"));
+    assert.deepEqual(
+      agentFiles.map((file) => basename(file, ".toml")).sort(),
+      [...codexManifest.agents].sort(),
+      "Codex manifest agents should exactly match generated TOML files",
+    );
+
+    const allowedTopLevelKeys = new Set([
+      "name",
+      "description",
+      "model",
+      "model_reasoning_effort",
+      "sandbox_mode",
+      "developer_instructions",
+    ]);
+    for (const agentFile of agentFiles) {
+      const label = agentFile.slice(tmpDistDir.length + 1);
+      const parsed = parseGeneratedToml(readFileSync(agentFile, "utf-8"), label);
+      const agentId = basename(agentFile, ".toml");
+      assert.equal(parsed.root.name, agentId, `${label} name should match filename`);
+      assert.equal(typeof parsed.root.description, "string", `${label} description should be a string`);
+      assert.equal(typeof parsed.root.developer_instructions, "string", `${label} instructions should be a string`);
+      assert.match(String(parsed.root.developer_instructions), /## /, `${label} instructions should include sections`);
+      assert.deepEqual(Object.keys(parsed.sections), [], `${label} should not emit unexpected TOML sections`);
+      for (const key of Object.keys(parsed.root)) {
+        assert.equal(allowedTopLevelKeys.has(key), true, `${label} should not emit unsupported top-level key ${key}`);
+      }
+
+      const arrayKeys = Object.keys(parsed.arrays).sort();
+      assert.deepEqual(
+        arrayKeys,
+        arrayKeys.length === 0 ? [] : ["skills.config"],
+        `${label} should only emit skills.config arrays`,
+      );
+      for (const skillConfig of parsed.arrays["skills.config"] ?? []) {
+        assert.deepEqual(Object.keys(skillConfig).sort(), ["enabled", "path"], `${label} skill config shape`);
+        assert.equal(skillConfig.enabled, true, `${label} skill config should be enabled`);
+        assert.equal(typeof skillConfig.path, "string", `${label} skill path should be a string`);
+        const pathMatch = String(skillConfig.path).match(/^~\/\.agents\/skills\/([a-z0-9-]+)\/SKILL\.md$/);
+        assert.ok(pathMatch, `${label} skill path should use the Codex user skill root`);
+        assert.equal(
+          existsSync(join(tmpDistDir, "codex/skills", pathMatch[1], "SKILL.md")),
+          true,
+          `${label} should reference an emitted Codex skill`,
+        );
+      }
+    }
   });
 
   test("renders representative skill/agent/instruction outputs", () => {
