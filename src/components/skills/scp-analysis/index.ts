@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const scpAnalysisSkill = defineSkill({
@@ -35,6 +38,27 @@ export const scpAnalysisSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "沿外部冲击 -> 行业结构 -> 企业行为 -> 经营绩效的链条，解释冲击如何传导，并产出差异化战略建议。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "定义外部冲击：政策、技术、经济或社会变化是什么，发生时间、强度、确定性和影响范围如何。",
+      "分析行业结构变化：供需、进入壁垒、替代品、渠道、成本结构、规模经济和议价权发生了什么变化。",
+      "推导企业行为变化：领先企业、中小企业和自身可能如何定价、投资、扩张、收缩、合作或转型。",
+      "推导经营绩效影响：收入、成本、利润率、现金流、增长、风险暴露和估值逻辑如何变化。",
+      "检查传导链完整性：不能从冲击直接跳到绩效结论，必须说明结构和行为中间环节。",
+      "给出战略选项：列出适应结构变化的动作、触发条件、风险和监测指标。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "外部冲击定义和关键不确定性。",
+      "S-C-P 传导链表：结构变化、行为变化、绩效影响。",
+      "不同类型企业的差异化影响。",
+      "战略建议、风险、验证证据和监测指标。",
+    ],
+  }),
   tools: [],
 });

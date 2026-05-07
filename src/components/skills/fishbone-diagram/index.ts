@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
 import { mckinseyStepSkill } from "../mckinsey-7-step/index";
@@ -60,7 +63,29 @@ export const fishboneDiagramSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把一个已发生的问题拆成可验证的因果树，找到 1-3 个最可能的根因，并给出验证动作。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先界定问题：现象、影响对象、时间范围、地点/系统边界、当前证据；范围不清时读取 `five-w-two-h` reference 辅助定义。",
+      "选择大骨类别：制造业用人/机/料/法/环，服务业用人员/流程/政策/设备/外部，软件/产品用产品/技术/运营/市场/组织。",
+      "在每个类别下列出第一层可能原因，并标注已有证据、推断和未知项。",
+      "对高可疑原因连续追问 2-3 层“为什么”，直到落到可改变、可验证的机制或条件。",
+      "合并重复原因，区分症状、近因和根因；避免把负责人、团队或单个事件当作终点。",
+      "按影响、证据强度、可验证性和可干预性筛出 1-3 个根本原因。",
+      "为每个候选根因设计验证方法：要看什么数据、做什么实验、找谁确认、成功/失败判据是什么。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "问题定义：现象、边界、影响和已知证据。",
+      "鱼骨结构：大骨类别、原因层级和证据标注。",
+      "根因候选：1-3 个，分别说明证据、假设和反证风险。",
+      "验证计划：验证动作、负责人/输入、判据和下一步。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

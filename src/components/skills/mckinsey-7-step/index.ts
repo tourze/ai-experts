@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
 import { fishboneDiagramSkill } from "../fishbone-diagram/index";
@@ -60,6 +63,28 @@ export const mckinseyStepSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用假设驱动的七步流程，把模糊业务问题拆成 MECE 结构、关键假设、验证计划和结论先行的行动方案。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "定义问题：把宽泛诉求改写成具体、可回答、有边界的问题，并列出成功标准。",
+      "分解问题：用 MECE 结构拆成互斥且穷尽的子问题；根因型问题可联动 `fishbone-diagram`。",
+      "确定关键问题：用 80/20 聚焦 2-3 个最可能改变结论的驱动因素，不平均用力。",
+      "制定工作计划：为每个关键问题写假设、所需证据、验证方法和优先级。",
+      "展开分析：围绕假设收集数据和事实，区分证据、推断和待验证假设。",
+      "综合结论：验证或推翻初始假设，必要时回到前面步骤重新分解。",
+      "形成建议：用金字塔结构输出结论、理由、证据和可执行下一步。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "问题陈述和成功标准。",
+      "MECE 问题树与关键驱动因素。",
+      "假设-证据-验证计划矩阵。",
+      "结论先行的建议、风险和下一步行动。",
+    ],
+  }),
   tools: [],
 });

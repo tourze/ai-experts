@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { fishboneDiagramSkill } from "../fishbone-diagram/index";
 
@@ -44,6 +47,26 @@ export const pdcaCycleSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把持续改进任务组织成 Plan-Do-Check-Act 闭环，每一轮只解决一个可度量问题，并把结果带入下一轮。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "Plan：定义问题、现状基线、量化目标、根因假设、措施、负责人、截止时间和风险；根因不清时先用 `fishbone-diagram`。",
+      "Do：按最小可控范围执行措施，记录变更内容、执行时间、受影响对象和异常情况。",
+      "Check：用目标值 vs 实际值做量化对比，解释偏差来源，并判断措施是否真正影响目标指标。",
+      "Act：把有效措施标准化，把无效或副作用措施回滚/修正，同时提出下一轮要解决的新问题。",
+      "进入下一轮：保留本轮证据、决策和未解决项，不把一次性行动计划伪装成 PDCA。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "本轮问题与量化目标。",
+      "PDCA 表：Plan / Do / Check / Act 的动作、证据和责任人。",
+      "目标值 vs 实际值对比与偏差原因。",
+      "标准化动作、纠偏动作和下一轮问题。",
+    ],
+  }),
   tools: [],
 });
