@@ -163,6 +163,7 @@ export const typescriptTypeSafety = defineSkill({
 Agent 是隔离上下文执行者，可编排多个 skill。
 
 ```ts
+import { defineAgentWorkflow, defineAgentWorkflowStep } from "../../sdk";
 import { debugMethodology } from "../skills/debug-methodology/index";
 import { typescriptTypeSafety } from "../skills/typescript-type-safety/index";
 
@@ -170,7 +171,13 @@ export const typescriptReviewer = defineAgent({
   id: "typescript-reviewer",
   description: "审查 TypeScript 类型安全、调试证据、行为回归和测试缺口。",
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./AGENT.body.md", import.meta.url),
+  role: "你是资深 TypeScript Reviewer。只读审查类型合同、行为回归和测试缺口。",
+  workflow: defineAgentWorkflow({
+    steps: [
+      defineAgentWorkflowStep({ id: "inspect", label: "读取改动范围、类型边界和失败证据。" }),
+      defineAgentWorkflowStep({ id: "report", label: "按严重度输出发现、证据和修复方向。" }),
+    ],
+  }),
   tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob, KnownTool.Bash],
   skills: [
     { id: typescriptTypeSafety.id, mode: SkillUseMode.Preload, reason: "审查 TS 类型合同。" },
@@ -179,7 +186,9 @@ export const typescriptReviewer = defineAgent({
 });
 ```
 
-Claude 输出为 `dist/claude/agents/<agent>.md`。Codex 输出为 `dist/codex/agents/<agent>.toml`；`role` 与 agent body 会合并进 `developer_instructions`，skill 编排说明保留在 `developer_instructions`，同时按 `~/.agents/skills/<skill>/SKILL.md` 生成 `[[skills.config]]`。
+Agent 不再使用 `AGENT.body.md`；正文应拆入 `role`、`workflow`、`outputFormat`、`qualityStandards`、`bashBoundary` 等结构化字段。
+
+Claude 输出为 `dist/claude/agents/<agent>.md`。Codex 输出为 `dist/codex/agents/<agent>.toml`；`role` 与结构化 agent 内容会合并进 `developer_instructions`，skill 编排说明保留在 `developer_instructions`，同时按 `~/.agents/skills/<skill>/SKILL.md` 生成 `[[skills.config]]`。
 
 ## Hook
 
