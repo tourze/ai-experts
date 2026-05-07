@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { businessModelSkill } from "../business-model/index";
 import { marketSizingAnalysisSkill } from "../market-sizing-analysis/index";
@@ -59,7 +62,26 @@ export const pricingStrategySkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计价格、套餐、免费边界和升级路径，使价值捕获、转化效率和市场定位保持一致。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "确认目标客群、购买流程、替代方案、核心价值和成功指标。",
+      "选择价值度量、套餐层级、限制项、免费/试用边界和升级触发点。",
+      "比较客户价值、竞品锚点、支付意愿、销售复杂度和计费实现成本。",
+      "评估涨价、折扣、免费策略和套餐变化的副作用；需要分层细节时读取 `tier-structure` reference。",
+      "输出定价建议、实验路径、风控条件和产品/销售/计费落地要求。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    title: "输出模板",
+    body: `\`\`\`markdown
+| 套餐 | 目标客群 | 核心价值 | 限制项 | 价格 |
+| --- | --- | --- | --- | --- |
+\`\`\``,
+  }),
   tools: [],
   references: [
     defineReference({

@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { competitiveIntelligenceSkill } from "../competitive-intelligence/index";
 import { portersFiveForcesSkill } from "../porters-five-forces/index";
@@ -56,7 +59,26 @@ export const swotAnalysisSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把内部优势/劣势和外部机会/威胁转成可执行的 SO/WO/ST/WT 战略动作。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先界定分析对象、目标、时间尺度和证据来源。",
+      "把 Strength/Weakness 限定为内部能力，把 Opportunity/Threat 限定为外部环境。",
+      "为每个点写事实/证据、战略含义和可行动建议，避免口号和偏好。",
+      "组合形成 SO/WO/ST/WT 动作，并按影响、可行性、风险和资源约束排序。",
+      "需要行业结构或竞争视角时联动 `porters-five-forces` 或 `competitive-teardown`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    title: "输出模板",
+    body: `\`\`\`markdown
+| 类别 | 事实/证据 | 战略含义 | 建议动作 |
+| --- | --- | --- | --- |
+\`\`\``,
+  }),
   tools: [],
   references: [
     defineReference({

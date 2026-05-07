@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { agileProductOwnerSkill } from "../agile-product-owner/index";
 import { systemsThinkingSkill } from "../systems-thinking/index";
@@ -53,6 +56,25 @@ export const processOptimizationSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "从现状流程、等待/返工、瓶颈和指标入手，设计更短、更稳、更可验证的未来流程。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先画出现状流程、参与角色、输入输出、等待点、返工点和当前指标。",
+      "区分流程问题、资源问题、能力问题和系统激励问题；系统性依赖可联动 `systems-thinking`。",
+      "找出瓶颈、无价值步骤、重复审批、信息丢失和自动化前应先消除的问题。",
+      "设计未来状态流程，明确责任人、SLA、交接标准、异常处理和验证指标。",
+      "输出变更顺序、试点范围、风险和复盘节奏。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    title: "输出模板",
+    body: `\`\`\`markdown
+| 步骤 | 责任人 | 周期 | 等待/返工 | 是否保留 |
+| --- | --- | --- | --- | --- |
+\`\`\``,
+  }),
   tools: [],
 });

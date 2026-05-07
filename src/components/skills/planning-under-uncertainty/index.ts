@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { estimateCalibratorSkill } from "../estimate-calibrator/index";
 
@@ -49,7 +52,26 @@ export const planningUnderUncertaintySkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把高度不确定的计划拆成当前下注、关键未知项、触发条件和下一个决策点，保留可调整空间。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "识别不确定性来源：技术、市场、组织、外部环境或依赖链。",
+      "区分可验证未知项、不可控外部变量和当前必须下注的假设。",
+      "为每个阶段写当前最优下注、观察指标、触发条件、放弃条件和责任人。",
+      "把近期计划做实，把远期计划写成选项和决策点；估算或节奏可联动 `estimate-calibrator`。",
+      "输出对外承诺、内部不确定性说明和滚动调整机制。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    title: "输出模板",
+    body: `\`\`\`markdown
+| 阶段 | 当前下注 | 关键未知项 | 触发条件 | 下一个决策点 |
+| --- | --- | --- | --- | --- |
+\`\`\``,
+  }),
   tools: [],
   references: [
     defineReference({

@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { planningUnderUncertaintySkill } from "../planning-under-uncertainty/index";
 
@@ -48,7 +51,26 @@ export const evaluatingNewTechnologySkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "围绕业务问题、成熟度、集成成本、风险和退出路径评估新技术或供应商，形成可试点的选型建议。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先定义要解决的业务问题、成功标准、约束和不可接受风险。",
+      "列出候选技术/供应商、替代方案和不采用的基线方案。",
+      "比较能力匹配、成熟度、集成成本、迁移成本、团队学习成本、供应商锁定和安全/合规风险。",
+      "设计试点或验证路径，明确验证指标、时间盒和退出条件；长期不确定性可联动 `planning-under-uncertainty`。",
+      "输出建议、保留条件、后续验证和退出策略。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    title: "输出模板",
+    body: `\`\`\`markdown
+| 选项 | 解决的问题 | 成熟度 | 集成成本 | 风险 | 建议 |
+| --- | --- | --- | --- | --- | --- |
+\`\`\``,
+  }),
   tools: [],
   references: [
     defineReference({

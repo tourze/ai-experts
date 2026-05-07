@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const estimateCalibratorSkill = defineSkill({
@@ -39,7 +42,26 @@ export const estimateCalibratorSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把模糊工作拆到可估算粒度，用三点估算表达区间、未知项、置信度和决策含义。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先界定范围、交付物、完成定义和外部依赖；边界不清时先澄清。",
+      "把工作拆成可独立讨论的不确定性单元，避免对大块需求报单点数值。",
+      "为每项给出 Best / Likely / Worst，并写明主要未知项、风险来源和假设。",
+      "按历史数据或类比案例校准估算；需要方法时读取 `estimation-methods`、`sizing-heuristics` 或 `unknown-categories` references。",
+      "输出区间、置信度、缓冲建议和需要先验证的未知项。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    title: "输出模板",
+    body: `\`\`\`markdown
+| 工作项 | Best | Likely | Worst | 主要未知项 |
+| --- | --- | --- | --- | --- |
+\`\`\``,
+  }),
   tools: [],
   references: [
     defineReference({
