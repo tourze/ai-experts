@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const stpSegmentationSkill = defineSkill({
@@ -37,6 +40,27 @@ export const stpSegmentationSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "按 Segmentation -> Targeting -> Positioning 顺序，把市场选择收敛成可验证的目标市场和一句话定位。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认产品、市场边界、竞争对象和可用数据；已有明确 ICP 时只补定位，不重复做完整 STP。",
+      "S：至少用两个细分维度划分市场，并逐项检查可衡量、可进入、有规模、可区分、可操作。",
+      "T：为候选细分市场设定选择标准，比较规模、进入成本、竞争强度、战略匹配和短期可验证性。",
+      "确定目标策略：无差异、差异化或集中；资源有限时优先解释为什么选择集中或为什么不适用。",
+      "P：用固定句式写出定位主张，明确目标客户、品类、核心利益、竞品和差异化依据。",
+      "用证据检验定位是否可防守、可传播、可兑现，并列出下一步验证动作。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "市场细分表和五项可用性检查。",
+      "目标市场选择理由与被放弃细分的取舍说明。",
+      "一句话定位主张和差异化依据。",
+      "证据缺口、定位风险和下一步市场验证动作。",
+    ],
+  }),
   tools: [],
 });

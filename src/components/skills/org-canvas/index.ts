@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { raciMatrixSkill } from "../raci-matrix/index";
 
@@ -48,7 +51,28 @@ export const orgCanvasSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用组织画布把战略、产品、市场和组织结构放到同一张逻辑图里，找出不一致处并转成组织设计动作。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先定义中心命题：企业定位、当前阶段、业务边界和这次组织设计要解决的问题。",
+      "围绕中心填写六个维度：挑战与问题、未来愿景、产品与服务、策略与机会、市场定位，以及中心企业定位。",
+      "逐项做一致性交叉检查：战略是否支撑愿景，产品是否服务定位，组织能力是否能承接策略。",
+      "把不一致处翻译成组织设计问题：职责缺口、协作断点、能力缺口、决策瓶颈或汇报关系错配。",
+      "需要深入人才管理或团队构成时读取对应 reference，不在画布里伪造人才结论。",
+      "输出调整方向，并说明哪些问题只需用 `raci-matrix` 理清职责，不需要重组。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "六维组织画布和输入事实。",
+      "维度之间的不一致点与证据。",
+      "组织设计影响：结构、职责、能力和决策机制。",
+      "后续动作：重组方向、RACI 澄清项、人才/团队分析需求。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

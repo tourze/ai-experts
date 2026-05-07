@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { runningDecisionProcessesSkill } from "../running-decision-processes/index";
 
@@ -46,6 +49,27 @@ export const raciMatrixSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把任务、决策和角色整理成 RACI 责任矩阵，消除无人负责、多人审批和协作过载的问题。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先列出需要明确职责的任务、决策或流程节点，并确认参与角色而不是具体人名。",
+      "为每行分配 R/A/C/I：R 可多个，A 必须且只能一个，C 控制在必要少数，I 只接收通知。",
+      "逐行检查：是否无 A、多个 A、所有人都是 R、C 过多或关键角色缺席。",
+      "纵向检查角色负载：谁 A 太多形成瓶颈，谁长期无角色，谁在跨部门事项里缺少结果责任。",
+      "对跨部门任务，把 A 放给最关心结果且能推动结果的人，而不是默认给职级最高者。",
+      "定义更新触发条件：组织调整、人员变动、流程变化或关键职责争议。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "任务/决策 × 角色的 RACI 表。",
+      "矩阵健康检查问题：无 A、多 A、C 过多、瓶颈角色和冗余角色。",
+      "职责冲突或协作断点的修复建议。",
+      "RACI 更新规则和责任人。",
+    ],
+  }),
   tools: [],
 });

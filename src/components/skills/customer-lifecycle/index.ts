@@ -4,6 +4,9 @@ import {
   Platform,
   defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const customerLifecycleSkill = defineSkill({
@@ -34,7 +37,28 @@ export const customerLifecycleSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把客户价值分层、客户生命周期和产品生命周期三条轴分开判断，再组合成阶段化运营策略。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认分析轴：客户价值分层、客户生命周期、产品 PLC，或三者组合，并明确数据来源和样本规模。",
+      "按利润贡献/CLV 做客户分层，不用收入或频次替代；对铅层给出提价、减服务或放弃方案。",
+      "判断客户生命周期阶段：观望、激活、扩展、续约、赢回，并匹配对应营销动作。",
+      "判断产品 PLC 阶段：导入、成长、成熟、衰退，并保持它与客户生命周期分开分析。",
+      "需要选择具体策略时读取 `strategy-matrix` reference，再评估铂金+金层利润占比、铅层占比和层级流动性。",
+      "输出分层健康度、阶段策略、风险假设和下一步验证。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "客户价值分层与铅层处理方案。",
+      "客户生命周期阶段判断和营销动作。",
+      "产品 PLC 阶段判断、投入策略和下一阶段准备。",
+      "健康度风险、关键假设和可验证下一步。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

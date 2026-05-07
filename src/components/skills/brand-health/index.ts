@@ -1,4 +1,13 @@
-import { InvocationPolicy, KnownTool, Platform, defineSkill, defineAntiPattern } from "../../sdk";
+import {
+  InvocationPolicy,
+  KnownTool,
+  Platform,
+  defineAntiPattern,
+  defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
+} from "../../sdk";
 import { contentStrategySkill } from "../content-strategy/index";
 
 export const brandHealthSkill = defineSkill({
@@ -41,6 +50,26 @@ export const brandHealthSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用认知度、美誉度、使用率、购买意愿和推荐率五维漏斗定位品牌瓶颈，并匹配修复策略。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "确认品牌阶段、目标市场、竞品/行业对标和可用数据；新品牌或数据不足时先说明不适用。",
+      "依次评估认知度、美誉度、使用率、购买意愿和推荐率（NPS），每一项都绑定证据或定性依据。",
+      "找出漏斗突然收窄的维度，并判断是传播缺乏、健康低认知、虚名品牌还是健康高认知。",
+      "把品牌类型映射到策略：维护、加大曝光、扩大触达或改善产品体验。",
+      "输出优先修复动作、指标、对标差距和需要 `content-strategy` 承接的内容任务。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "五维品牌漏斗和对标数据。",
+      "漏斗瓶颈与品牌类型判断。",
+      "匹配策略、优先动作和责任指标。",
+      "证据缺口、假设和后续调研。",
+    ],
+  }),
   tools: [],
 });
