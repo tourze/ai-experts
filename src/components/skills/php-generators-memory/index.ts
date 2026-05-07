@@ -3,7 +3,11 @@ import {
   KnownTool,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const phpGeneratorsMemorySkill = defineSkill({
@@ -46,6 +50,34 @@ export const phpGeneratorsMemorySkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 PHP `yield`、`Generator`、`yield from` 和 `iterable` 把大文件、分页 API、CSV 和导出流水线改成流式处理，降低峰值内存。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认内存问题是否来自全量数组、一次性读取大文件、fetchAll、range 或上游 API 全量返回。",
+      "只有调用方能单次顺序消费且不需要随机访问 / 重复遍历时，才用生成器替代数组。",
+      "持有文件句柄、游标、锁或网络连接的生成器必须用 `try` / `finally` 清理资源。",
+      "逐行读取、分页展开和 `getReturn()` 示例读取 `generator-patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "当前内存热点、可流式处理边界和不适合生成器的消费需求。",
+      "`iterable` / `\\Generator` 返回合同、键名语义和资源清理策略。",
+      "峰值内存验证命令、PHPDoc 元素类型和回归风险。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "generator-patterns",
+      source: new URL("./references/generator-patterns.md", import.meta.url),
+      target: "references/generator-patterns.md",
+      title: "PHP 生成器内存模式",
+      summary: "大文件逐行读取、分页数据流式展开和 Generator::getReturn 示例。",
+      loadWhen: "需要快速用 PHP generator 改写大数组或大文件处理时读取。",
+    }),
+  ],
 });

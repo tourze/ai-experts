@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { phpTestingSkill } from "../php-testing/index";
 import { phpTypeSafetySkill } from "../php-type-safety/index";
@@ -34,13 +37,13 @@ export const phpErrorHandlingSkill = defineSkill({
       get id() {
         return phpTypeSafetySkill.id;
       },
-      reason: "联动：`php-testing` · `php-type-safety`。",
+      reason: "异常类型、错误响应和批处理结果需要精确 PHPDoc / 静态分析表达时联动。",
     },
     {
       get id() {
         return phpTestingSkill.id;
       },
-      reason: "联动：`php-testing` · `php-type-safety`",
+      reason: "需要覆盖输入校验、业务异常、外部依赖失败或部分失败路径时联动。",
     },
   ],
   antiPatterns: [
@@ -55,9 +58,35 @@ export const phpErrorHandlingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计 PHP 异常层级、输入校验边界、用户错误映射、外部依赖包装和批量部分失败治理。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先划分验证错误、业务规则错误、外部依赖错误和系统故障，不在全局 catch 里吞掉未知异常。",
+      "用户可见消息与内部调试细节分离，禁止暴露 SQL、文件路径、堆栈和敏感数据。",
+      "批量处理要保留成功项、失败项和失败原因；try/catch 只放在需要处理或转换异常的边界。",
+      "异常层级速查读取 `error-boundary-map`；具体输入校验和错误映射代码读取 `patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "异常层级、捕获边界、用户错误映射和内部日志策略。",
+      "批处理部分失败结构、外部依赖包装和重试边界。",
+      "需要补的错误路径测试、类型标注和泄露风险。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "error-boundary-map",
+      source: new URL("./references/error-boundary-map.md", import.meta.url),
+      target: "references/error-boundary-map.md",
+      title: "PHP 异常边界图",
+      summary: "DomainException、ValidationException、BusinessRuleException 和 ExternalServiceException 的层级速查。",
+      loadWhen: "需要快速设计 PHP 异常层级或判断错误边界时读取。",
+    }),
     defineReference({
       id: "patterns",
       source: new URL("./references/patterns.md", import.meta.url),

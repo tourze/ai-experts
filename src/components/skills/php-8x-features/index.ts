@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { phpDesignPatternsSkill } from "../php-design-patterns/index";
 import { phpErrorHandlingSkill } from "../php-error-handling/index";
@@ -72,9 +75,35 @@ export const phpXFeaturesSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "在 PHP 8.1-8.3+ 代码中选择 readonly、enum、match、构造器提升、交叉 / DNF 类型、never 和 attributes 等现代特性。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认项目最低 PHP 版本、strict_types 状态、静态分析级别和框架约束。",
+      "DTO / 值对象优先考虑 readonly class，魔法字符串和常量组优先考虑 backed enum。",
+      "多分支条件优先用 `match` 表达严格比较和穷尽性；高级类型和 attributes 只在提升边界清晰度时使用。",
+      "readonly、enum、match 和版本速查读取 `language-feature-patterns`；交叉类型、DNF 类型和 attributes 读取 `advanced-types-and-attributes`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "可使用的 PHP 8.x 特性、最低版本要求和迁移收益。",
+      "readonly / enum / match / 类型系统改造建议和代码风险。",
+      "需要补的静态分析、测试和兼容性验证。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "language-feature-patterns",
+      source: new URL("./references/language-feature-patterns.md", import.meta.url),
+      target: "references/language-feature-patterns.md",
+      title: "PHP 8.x 语言特性模式",
+      summary: "readonly class、backed enum、match 和 PHP 8.x 特性版本速查。",
+      loadWhen: "需要快速选择或迁移 PHP 8.x 现代语言特性时读取。",
+    }),
     defineReference({
       id: "advanced-types-and-attributes",
       source: new URL("./references/advanced-types-and-attributes.md", import.meta.url),

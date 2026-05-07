@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { phpXFeaturesSkill } from "../php-8x-features/index";
 import { phpDesignPatternsSkill } from "../php-design-patterns/index";
@@ -48,19 +51,19 @@ export const phpTypeSafetySkill = defineSkill({
       get id() {
         return phpDesignPatternsSkill.id;
       },
-      reason: "联动：`php-8x-features` · `php-design-patterns` · `php-testing`。",
+      reason: "需要把类型合同落实到 DTO、Repository、Service 或值对象边界时联动。",
     },
     {
       get id() {
         return phpTestingSkill.id;
       },
-      reason: "联动：`php-8x-features` · `php-design-patterns` · `php-testing`。",
+      reason: "类型守卫、断言、条件返回或复杂数组结构需要测试覆盖时联动。",
     },
     {
       get id() {
         return phpXFeaturesSkill.id;
       },
-      reason: "联动：`php-8x-features` · `php-design-patterns` · `php-testing`",
+      reason: "PHP 8.x 原生类型、readonly、enum 或 attributes 可替代 PHPDoc 约束时联动。",
     },
   ],
   antiPatterns: [
@@ -79,9 +82,35 @@ export const phpTypeSafetySkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "配置 PHPStan / Psalm，补 array shapes、list、泛型、条件返回、类型断言和 PHPDoc 文档块，持续消除 `mixed`。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认 PHPStan / Psalm 级别、裸 array / mixed 分布、公共 API 签名和框架类型约束。",
+      "优先用原生签名表达参数、返回值和属性；PHPDoc 只补类型系统表达不了的信息。",
+      "array shapes、list、泛型、条件返回和 assert 必须与实现和测试保持一致。",
+      "常用标注速查读取 `type-annotation-cheatsheet`；基础模式读取 `patterns`；复杂泛型和条件返回读取 `advanced-patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "静态分析级别、裸 array / mixed / ignore 风险和收敛顺序。",
+      "array shape、list、泛型、assert、条件返回和 PHPDoc 改造建议。",
+      "需要补的类型测试、CI 检查和陈旧注释清理。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "type-annotation-cheatsheet",
+      source: new URL("./references/type-annotation-cheatsheet.md", import.meta.url),
+      target: "references/type-annotation-cheatsheet.md",
+      title: "PHP 类型标注速查",
+      summary: "array shapes、list、泛型集合、条件返回和 phpstan assert 标注速查表。",
+      loadWhen: "需要快速选择 PHPStan / Psalm PHPDoc 标注形式时读取。",
+    }),
     defineReference({
       id: "advanced-patterns",
       source: new URL("./references/advanced-patterns.md", import.meta.url),

@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { phpXFeaturesSkill } from "../php-8x-features/index";
 import { phpErrorHandlingSkill } from "../php-error-handling/index";
@@ -35,13 +38,13 @@ export const phpAsyncPatternsSkill = defineSkill({
       get id() {
         return phpErrorHandlingSkill.id;
       },
-      reason: "联动：`php-8x-features` · `php-error-handling`。",
+      reason: "异步 worker、长驻服务和外部 I/O 需要异常映射、重试边界或失败治理时联动。",
     },
     {
       get id() {
         return phpXFeaturesSkill.id;
       },
-      reason: "联动：`php-8x-features` · `php-error-handling`",
+      reason: "需要 Fiber、readonly、enum 或现代语法支撑异步代码结构时联动。",
     },
   ],
   antiPatterns: [
@@ -56,9 +59,35 @@ export const phpAsyncPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 PHP 长驻进程、WebSocket、worker 和并发 I/O 选择 Swoole、ReactPHP、Amphp 或原生 Fiber，并约束阻塞、共享状态和内存泄漏。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认部署是否允许 C 扩展、是否需要内置 HTTP/WebSocket 服务器、并发 I/O 类型和长期运行时长。",
+      "按 Swoole、ReactPHP、Amphp、原生 Fiber 的约束选择方案，避免把同步阻塞 I/O 混进协程。",
+      "协程间共享状态必须通过 Channel / Mutex / 消息边界，长驻进程要设计 max_request、心跳、超时和清理策略。",
+      "运行时选型矩阵读取 `runtime-selection`；具体协程、Channel、定时器和并发控制代码读取 `patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "异步运行时选择、部署约束、阻塞 I/O 风险和并发模型。",
+      "Channel / Mutex / 心跳 / timeout / max_request 设计建议。",
+      "需要补的压力测试、泄漏观测和异常治理。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "runtime-selection",
+      source: new URL("./references/runtime-selection.md", import.meta.url),
+      target: "references/runtime-selection.md",
+      title: "PHP 异步运行时选型",
+      summary: "Swoole、ReactPHP、Amphp 和原生 Fiber 的能力、扩展要求和适用场景矩阵。",
+      loadWhen: "需要在 PHP 异步运行时之间做技术选型时读取。",
+    }),
     defineReference({
       id: "patterns",
       source: new URL("./references/patterns.md", import.meta.url),

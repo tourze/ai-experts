@@ -39,19 +39,19 @@ export const phpTestingSkill = defineSkill({
       get id() {
         return phpXFeaturesSkill.id;
       },
-      reason: "联动：`php-8x-features` · `php-error-handling` · `php-type-safety`。",
+      reason: "测试代码需要 PHP 8 attributes、readonly DTO、enum 或 match 语法时联动。",
     },
     {
       get id() {
         return phpErrorHandlingSkill.id;
       },
-      reason: "联动：`php-8x-features` · `php-error-handling` · `php-type-safety`。",
+      reason: "需要覆盖异常层级、输入校验、外部依赖失败或用户错误映射时联动。",
     },
     {
       get id() {
         return phpTypeSafetySkill.id;
       },
-      reason: "联动：`php-8x-features` · `php-error-handling` · `php-type-safety`。",
+      reason: "测试夹具、data provider 和 mock 需要精确 PHPDoc / 静态分析类型时联动。",
     },
     {
       get id() {
