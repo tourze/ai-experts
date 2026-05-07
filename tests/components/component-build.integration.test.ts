@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
@@ -777,6 +777,18 @@ describe("component build integration", () => {
     );
     assert.match(guardOutput, /additionalContext/);
     assert.match(guardOutput, /Generated dist output/);
+
+    const stalePlatformArgResult = spawnSync(
+      process.execPath,
+      [join(tmpDistDir, "codex/hooks/dispatch.mjs"), "--platform", "codex-cli", "--event", "PreToolUse"],
+      {
+        cwd: repoRoot,
+        input: "{}",
+        encoding: "utf-8",
+      },
+    );
+    assert.notEqual(stalePlatformArgResult.status, 0);
+    assert.match(stalePlatformArgResult.stderr, /Unknown argument: --platform/);
   });
 
   test("renders generated skill markdown sections and excludes eval references", () => {

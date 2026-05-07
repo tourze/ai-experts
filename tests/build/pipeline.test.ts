@@ -523,7 +523,7 @@ describe("build/pipeline modules", () => {
 
     const output = execFileSync(
       process.execPath,
-      [join(hooksOut, "dispatch.mjs"), "--platform", "codex-cli", "--event", "UserPromptSubmit"],
+      [join(hooksOut, "dispatch.mjs"), "--event", "UserPromptSubmit"],
       {
         input: JSON.stringify({ prompt: "normal prompt", tool_name: "Read", tool_input: {} }),
         encoding: "utf-8",
@@ -533,7 +533,7 @@ describe("build/pipeline modules", () => {
 
     const denyOutput = execFileSync(
       process.execPath,
-      [join(hooksOut, "dispatch.mjs"), "--platform", "codex-cli", "--event", "UserPromptSubmit"],
+      [join(hooksOut, "dispatch.mjs"), "--event", "UserPromptSubmit"],
       {
         input: JSON.stringify({ prompt: "please deny", tool_name: "Read", tool_input: {} }),
         encoding: "utf-8",
@@ -545,6 +545,7 @@ describe("build/pipeline modules", () => {
     expect(config.hooks.UserPromptSubmit[0]?.hooks[0]?.statusMessage).toBe("running fixture hook");
     const hookCommand = config.hooks.UserPromptSubmit[0]?.hooks[0]?.command ?? "";
     expect(hookCommand).toContain("$HOME/.codex/hooks/dispatch.mjs");
+    expect(hookCommand).not.toContain("--platform");
     expect(hookCommand).not.toContain(":-");
     expect(renderCodexConfig()).toContain("codex_hooks = true");
   });

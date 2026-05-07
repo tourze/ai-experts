@@ -108,7 +108,13 @@ ${runners.join("\n")}
 function parseArgs(argv) {
   const args = {};
   for (let index = 0; index < argv.length; index += 1) {
-    if (argv[index] === "--event") args.event = argv[++index];
+    if (argv[index] === "--event") {
+      const value = argv[++index];
+      if (!value) throw new Error("--event requires a value");
+      args.event = value;
+    } else {
+      throw new Error("Unknown argument: " + argv[index]);
+    }
   }
   return args;
 }
