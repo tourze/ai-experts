@@ -3,7 +3,11 @@ import {
   KnownTool,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const asyncPythonPatternsSkill = defineSkill({
@@ -39,6 +43,34 @@ export const asyncPythonPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计 Python asyncio 调用链中的结构化并发、timeout、cancellation、backpressure 和并发上限。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认调用链是全同步还是全异步，标出外部 I/O、CPU 密集步骤和可能阻塞的库。",
+      "用 TaskGroup 管理子任务生命周期，用 timeout 包住外部边界，用 Semaphore 或队列限制并发。",
+      "取消路径必须可传播，CPU 密集任务移到 `asyncio.to_thread()` 或进程池。",
+      "TaskGroup、timeout 和信号量代码模式读取 `taskgroup-patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "异步边界、并发度、timeout、取消传播和阻塞风险清单。",
+      "TaskGroup / semaphore / queue / to_thread 的实现建议。",
+      "需要补的异步测试、泄漏验证和错误传播验证。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "taskgroup-patterns",
+      source: new URL("./references/taskgroup-patterns.md", import.meta.url),
+      target: "references/taskgroup-patterns.md",
+      title: "asyncio TaskGroup 模式",
+      summary: "TaskGroup、Semaphore 和 asyncio.timeout 的结构化并发示例。",
+      loadWhen: "需要快速实现 asyncio 限流并发或 timeout 边界时读取。",
+    }),
+  ],
 });

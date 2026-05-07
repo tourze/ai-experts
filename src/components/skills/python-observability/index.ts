@@ -3,7 +3,11 @@ import {
   KnownTool,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { asyncPythonPatternsSkill } from "../async-python-patterns/index";
 import { pythonBackgroundJobsSkill } from "../python-background-jobs/index";
@@ -67,6 +71,34 @@ export const pythonObservabilitySkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 Python API、worker 和定时任务补结构化日志、指标、trace、请求上下文、耗时观测和安全脱敏。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认请求入口、外部调用、任务边界、失败路径、敏感字段和现有日志字段。",
+      "结构化日志固定 `event`、`request_id`、`elapsed_ms` 等键名，错误日志带堆栈和业务标签。",
+      "指标覆盖吞吐、延迟、错误率和队列长度；trace/span 边界要贴近真实业务边界。",
+      "logging context manager 和耗时字段示例读取 `logging-patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "关键链路的日志字段、指标、trace/span 和 profile / alert 缺口。",
+      "请求上下文、错误标签、耗时记录和脱敏策略。",
+      "需要补的失败路径测试和 dashboard / alert 建议。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "logging-patterns",
+      source: new URL("./references/logging-patterns.md", import.meta.url),
+      target: "references/logging-patterns.md",
+      title: "Python 结构化日志模式",
+      summary: "logging、contextmanager 耗时记录和稳定业务字段示例。",
+      loadWhen: "需要快速给 Python 代码补结构化日志和耗时观测时读取。",
+    }),
+  ],
 });

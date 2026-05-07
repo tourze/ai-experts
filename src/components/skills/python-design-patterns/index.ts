@@ -3,7 +3,11 @@ import {
   KnownTool,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const pythonDesignPatternsSkill = defineSkill({
@@ -38,6 +42,34 @@ export const pythonDesignPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "拆分 Python service、repository、adapter、DTO 和 Protocol 边界，让职责清晰、I/O 可替换、业务逻辑可测试。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先找主要变化原因、I/O 边界、领域对象和当前耦合点。",
+      "用 Protocol 或 ABC 描述消费方需要的最小接口，构造函数注入具体实现。",
+      "组合优先于继承；DTO 用 dataclass / NamedTuple 表达稳定数据。",
+      "Service + Repository + Protocol 代码模式读取 `service-boundary-patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "组件职责、接口边界、依赖注入方式和 DTO 形态。",
+      "需要拆分的 God object、继承链或构造参数膨胀问题。",
+      "测试替身、模块暴露面和剩余抽象成本。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "service-boundary-patterns",
+      source: new URL("./references/service-boundary-patterns.md", import.meta.url),
+      target: "references/service-boundary-patterns.md",
+      title: "Python 服务边界模式",
+      summary: "dataclass DTO、Protocol repository 和 service 构造注入示例。",
+      loadWhen: "需要快速拆分 Python service/repository/adapter 边界时读取。",
+    }),
+  ],
 });

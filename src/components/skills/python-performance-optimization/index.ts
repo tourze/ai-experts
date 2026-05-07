@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { asyncPythonPatternsSkill } from "../async-python-patterns/index";
 import { pythonDesignPatternsSkill } from "../python-design-patterns/index";
@@ -61,9 +64,35 @@ export const pythonPerformanceOptimizationSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 profiling、benchmark 和可复现实验定位 Python CPU、内存、数据库、网络、锁竞争和算法瓶颈。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认慢在 CPU、内存、数据库、网络、锁竞争还是外部服务，不用直觉猜热点。",
+      "用 cProfile、pstats、timeit 或项目 benchmark 固定输入规模、轮次和环境。",
+      "一次只改一个变量，先做算法和数据结构优化，再考虑局部微调。",
+      "cProfile 和测量代码模式读取 `profiling-patterns`；NumPy、并行和缓存策略读取 `advanced-patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "性能基线、输入规模、测量命令和瓶颈分类。",
+      "优化建议、复杂度成本、预期收益和回归验证方式。",
+      "仍需采集的 profile、benchmark 或生产观测数据。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "profiling-patterns",
+      source: new URL("./references/profiling-patterns.md", import.meta.url),
+      target: "references/profiling-patterns.md",
+      title: "Python profiling 模式",
+      summary: "time.perf_counter、cProfile 和 pstats 的测量代码示例。",
+      loadWhen: "需要快速搭建 Python 可复现性能测量或 cProfile 分析时读取。",
+    }),
     defineReference({
       id: "advanced-patterns",
       source: new URL("./references/advanced-patterns.md", import.meta.url),

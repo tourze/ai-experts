@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { asyncPythonPatternsSkill } from "../async-python-patterns/index";
 import { pythonErrorHandlingSkill } from "../python-error-handling/index";
@@ -64,9 +67,35 @@ export const pythonTestingPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 pytest 组织 Python 单元测试、集成测试、fixture、mock、参数化、异步测试和失败路径回归。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认被测边界、外部依赖、失败路径、是否异步和测试数据最小集合。",
+      "单元测试聚焦业务规则和边界条件，外部依赖用 fixture / mock / monkeypatch 隔离。",
+      "参数化测试命名输入和预期，集成测试与单元测试分层运行。",
+      "pytest fixture 和参数化代码模式读取 `pytest-patterns`；异步、monkeypatch、临时目录和 property-based 读取 `advanced-patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "测试层级、fixture、mock、参数化 case 和断言策略。",
+      "失败路径、边界条件、异步测试和外部依赖隔离建议。",
+      "脆弱测试、低信息断言和回归缺口。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "pytest-patterns",
+      source: new URL("./references/pytest-patterns.md", import.meta.url),
+      target: "references/pytest-patterns.md",
+      title: "pytest 基础模式",
+      summary: "dataclass 被测对象、fixture 和 parametrize 的 pytest 示例。",
+      loadWhen: "需要快速编写 Python pytest fixture 或参数化测试时读取。",
+    }),
     defineReference({
       id: "advanced-patterns",
       source: new URL("./references/advanced-patterns.md", import.meta.url),

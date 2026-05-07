@@ -3,7 +3,11 @@ import {
   KnownTool,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { asyncPythonPatternsSkill } from "../async-python-patterns/index";
 import { pythonErrorHandlingSkill } from "../python-error-handling/index";
@@ -71,6 +75,34 @@ export const pythonBackgroundJobsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把 Python 长任务从请求链路中解耦，设计 job 状态机、队列消息、worker、重试、幂等和死信兜底。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认上游接单 API、任务 payload、幂等键、状态表、worker 数量、超时和重试策略。",
+      "入口只返回 `job_id`，worker 读取稳定可序列化 payload，状态机显式记录 pending/running/succeeded/failed。",
+      "瞬时错误才重试，永久错误落失败或死信；任务执行要可重放。",
+      "Job dataclass、状态枚举和 QueueBackend 协议示例读取 `job-model-patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "job_id、payload、状态机、幂等键和队列边界设计。",
+      "worker 执行、重试、死信、超时和失败原因记录方案。",
+      "需要补的重放测试、失败测试和可观测性字段。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "job-model-patterns",
+      source: new URL("./references/job-model-patterns.md", import.meta.url),
+      target: "references/job-model-patterns.md",
+      title: "Python 后台任务模型",
+      summary: "Job 状态枚举、dataclass payload 和 QueueBackend 协议示例。",
+      loadWhen: "需要快速定义 Python 后台任务数据模型和入队边界时读取。",
+    }),
+  ],
 });

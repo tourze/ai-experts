@@ -3,7 +3,11 @@ import {
   KnownTool,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { pythonDesignPatternsSkill } from "../python-design-patterns/index";
 import { pythonErrorHandlingSkill } from "../python-error-handling/index";
@@ -67,6 +71,34 @@ export const pythonTypeSafetySkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 Python 公共 API、DTO、Protocol、TypedDict、TypeGuard、泛型和 mypy/pyright 严格模式设计类型边界。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先标注公共函数、类属性、跨层 DTO 和外部输入边界，再逐步收敛内部实现。",
+      "优先用 Protocol、TypedDict、TypeGuard 和泛型表达真实约束，`Any` 只允许在边界适配层有解释。",
+      "静态类型不能替代运行时校验，外部输入仍要验证后再进入核心逻辑。",
+      "TypedDict、Protocol 和 TypeGuard 代码模式读取 `type-boundary-patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "公共 API 签名、DTO / Protocol / TypedDict / TypeGuard 设计。",
+      "`Any`、`cast()`、`type: ignore` 的收口或保留理由。",
+      "类型检查 CI、运行时校验和需要补的类型守卫测试。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "type-boundary-patterns",
+      source: new URL("./references/type-boundary-patterns.md", import.meta.url),
+      target: "references/type-boundary-patterns.md",
+      title: "Python 类型边界模式",
+      summary: "TypedDict、Protocol、TypeGuard 和联合输入收窄示例。",
+      loadWhen: "需要快速设计 Python 边界类型或类型守卫时读取。",
+    }),
+  ],
 });

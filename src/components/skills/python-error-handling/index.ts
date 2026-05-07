@@ -3,7 +3,11 @@ import {
   KnownTool,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const pythonErrorHandlingSkill = defineSkill({
@@ -38,6 +42,34 @@ export const pythonErrorHandlingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计 Python 异常层级、错误边界、输入校验、外部依赖映射、批处理部分失败和用户可见错误响应。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先划清错误边界：输入验证、业务规则、外部依赖、系统故障和批处理部分失败。",
+      "只捕获能处理的异常，应用层异常向外映射为稳定 code/message，内部异常保留堆栈。",
+      "批处理要保留成功项、失败项和失败原因，不用一个布尔值盖住全部结果。",
+      "异常层级和 ErrorResponse 代码模式读取 `error-contract-patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "异常层级、捕获边界、错误码和用户可见消息映射。",
+      "外部异常包装、批处理失败模型和堆栈保留策略。",
+      "需要补的错误路径测试和敏感信息泄露检查。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "error-contract-patterns",
+      source: new URL("./references/error-contract-patterns.md", import.meta.url),
+      target: "references/error-contract-patterns.md",
+      title: "Python 错误合同模式",
+      summary: "应用层异常、校验异常、外部依赖异常和 ErrorResponse 映射示例。",
+      loadWhen: "需要快速定义 Python 异常层级或错误响应合同时读取。",
+    }),
+  ],
 });
