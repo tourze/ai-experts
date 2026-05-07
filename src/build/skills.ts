@@ -458,7 +458,13 @@ function renderReferencesIndex(skill: SkillDefinition): string {
     ...(skill.references ?? []).map((reference) => {
       const target = defaultReferenceTarget(reference);
       const link = target.startsWith("references/") ? target.slice("references/".length) : target;
-      return `| [${reference.id}](${link}) | ${reference.title} | ${reference.summary} | ${reference.loadWhen} |`;
+      const cells = [
+        `[${reference.id}](${link})`,
+        reference.title,
+        reference.summary,
+        reference.loadWhen,
+      ];
+      return `| ${cells.map(renderMarkdownTableCell).join(" | ")} |`;
     }),
   ];
   return `# Reference Index\n\n${rows.join("\n")}\n`;

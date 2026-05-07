@@ -121,9 +121,9 @@ function createFixture() {
       defineReference({
         id: "fixture-ref",
         source: pathToFileURL(skillReference),
-        title: "Fixture Ref",
-        summary: "fixture summary",
-        loadWhen: "需要参考样例时",
+        title: "Fixture | Ref",
+        summary: "fixture summary\nwith detail",
+        loadWhen: "需要参考 | 样例时",
       }),
     ],
     assets: [
@@ -269,6 +269,10 @@ describe("build/pipeline modules", () => {
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "SKILL.md"))).toBe(true);
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "agents", "openai.yaml"))).toBe(true);
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "references", "index.md"))).toBe(true);
+    const referenceIndex = readFileSync(join(codexRoot, "skills", fixture.skill.id, "references", "index.md"), "utf-8");
+    expect(referenceIndex).toContain("Fixture \\| Ref");
+    expect(referenceIndex).toContain("fixture summary<br>with detail");
+    expect(referenceIndex).toContain("需要参考 \\| 样例时");
   });
 
   test("registry procedure validation enforces owner/runtime/id constraints", () => {
