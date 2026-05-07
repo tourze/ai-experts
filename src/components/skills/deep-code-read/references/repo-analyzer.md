@@ -10,7 +10,7 @@
 ## 核心约束
 
 - 默认"本地克隆"模式：克隆到 `/tmp/` 下，`--depth=50` 浅克隆，不污染工作区。
-- 用户已锁定仓库要做"演进时间线 / 架构演进 / 竞品对比"等深度研究时切到"GitHub API 深度模式"：先跑 [scripts/github_api.mjs](scripts/github_api.mjs) 用一手数据建立基线，详见 [references/deep-research-mode.md](references/deep-research-mode.md)。
+- 用户已锁定仓库要做"演进时间线 / 架构演进 / 竞品对比"等深度研究时切到"GitHub API 深度模式"：用 `gh api`、release/tag/issue/PR 数据和本地 git 历史建立一手基线，详见 [references/deep-research-mode.md](references/deep-research-mode.md)。
 - 先读 README、LICENSE、构建配置，建立全景认知。
 - 用 `git log --oneline -30` 和 `git shortlog -sn --no-merges` 判断维护状态。
 - 必须进入核心文件实际读代码，不能只凭文件名下结论。

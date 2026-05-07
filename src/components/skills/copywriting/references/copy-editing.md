@@ -16,19 +16,10 @@
 - 避免凭空注入不存在的个人经历、客户案例或主张。
 - 若主要问题是表达记忆度不足，参考 [made-to-stick](../made-to-stick/SKILL.md)。
 
-## 代码模式
-- 先跑可读性诊断：
-
-```bash
-node scripts/readability_scorer.mjs --file copy.txt --json
-```
-
-- 机器腔明显时先跑人性化诊断：
-
-```bash
-node scripts/humanizer_scorer.mjs draft.txt --json
-```
-
+## 诊断模式
+- 先做可读性诊断：标出句长过长、抽象名词堆叠、被动句、空洞形容词、模糊主语和无证据承诺。
+- 机器腔明显时做 AI 腔诊断：标出模板化转折、泛泛总结、过度平滑节奏、缺少具体判断和不自然的强调词。
+- 平台安全或敏感表达检查优先使用本 skill 已登记的 content filter procedure；可读性和人性化诊断不要引用未生成的本地脚本。
 - 高频替换表参考 [plain-english-alternatives](references/plain-english-alternatives.md)。
 - 参与度增强（hook 类型、APP 公式、mini-story、CTA 分布）参考 [engagement-techniques](references/engagement-techniques.md)。
 - AI 腔诊断参考 [ai-tells-checklist](references/ai-tells-checklist.md)、[ai-phrases-extended](references/ai-phrases-extended.md) 和 [voice-techniques](references/voice-techniques.md)。

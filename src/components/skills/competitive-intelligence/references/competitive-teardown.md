@@ -4,19 +4,14 @@
 ## 适用场景
 - 路线图评审、季度竞品复盘、对手发布重大功能或调价后的深度分析。
 - 需要结合 [references/data-collection-guide.md](references/data-collection-guide.md)、[references/scoring-rubric.md](references/scoring-rubric.md)、[references/analysis-templates.md](references/analysis-templates.md) 做证据化拆解。
-- 需要生成量化矩阵时，可运行 `node scripts/competitive_matrix_builder.mjs <input.json> --format text`。
+- 需要生成量化矩阵时，先用 rubric 明确维度、权重和证据来源，再按模板输出评分矩阵；不要引用未登记的本地脚本。
 
 ## 核心约束
 - 先定义维度和评分标准，再收集证据；评分必须能回溯到原始资料。
 - 竞品差距分析必须排除自身样本，避免把我方分数混入竞品均值。
 - 输出需要区分产品、定价、组织信号与市场动作，避免把所有信息堆成一张表。
 
-## 代码模式
-```bash
-node scripts/competitive_matrix_builder.mjs competitors.json --format text
-node scripts/competitive_matrix_builder.mjs competitors.json --format json --weights pricing=2,ux=1.5
-```
-
+## 矩阵模式
 ```markdown
 | 维度 | 我方 | 竞品均值 | 最强竞品 | 行动优先级 |
 | --- | --- | --- | --- | --- |
@@ -25,7 +20,7 @@ node scripts/competitive_matrix_builder.mjs competitors.json --format json --wei
 ## 检查清单
 - [ ] 已明确分析范围、维度、权重和证据来源。
 - [ ] 评分矩阵、SWOT、定位判断和行动建议相互一致。
-- [ ] 命令参数与输入 JSON 结构匹配，脚本输出可复现。
+- [ ] 输入 JSON、评分矩阵和证据链接可复核。
 - [ ] 结论能够回答“继续追”“差异化绕开”或“无需跟随”。
 
 ## 反模式

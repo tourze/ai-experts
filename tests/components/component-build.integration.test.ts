@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join, relative, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { afterAll, beforeAll, describe, test } from "vitest";
 import {
   assertSingleDispatcherHookGroups,
@@ -13,10 +13,6 @@ import {
 } from "./test-helpers";
 
 let tmpDistDir = "";
-
-function escapeRegExp(value: string): string {
-  return value.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
-}
 
 beforeAll(() => {
   tmpDistDir = mkdtempSync(join(tmpdir(), "ai-experts-component-build-"));
@@ -619,35 +615,18 @@ describe("component build integration", () => {
     assert.deepEqual(legacySkillScriptManifests, [], "legacy per-skill scripts/manifest.json should not be generated");
 
     for (const platform of ["claude", "codex"]) {
-      const manifest = JSON.parse(readFileSync(join(tmpDistDir, platform, "manifest.json"), "utf-8"));
-      const procedureTargetsBySkill = new Map<string, string[]>();
-      for (const procedure of manifest.procedures.items) {
-        if (!/^scripts\/[A-Za-z0-9._/-]+\.mjs$/u.test(procedure.target)) continue;
-        for (const skillId of procedure.owners.skillIds ?? []) {
-          procedureTargetsBySkill.set(skillId, [
-            ...(procedureTargetsBySkill.get(skillId) ?? []),
-            procedure.target,
-          ]);
-        }
-      }
-
-      const staleProcedureCommands: string[] = [];
+      const legacyRuntimeScriptCommands: string[] = [];
       const skillsRoot = join(tmpDistDir, platform, "skills");
       for (const markdownFile of collectFiles(skillsRoot, (file) => file.endsWith(".md"))) {
-        const [skillId] = relative(skillsRoot, markdownFile).split(/[\\/]/u);
-        const targets = procedureTargetsBySkill.get(skillId) ?? [];
-        if (targets.length === 0) continue;
-
         const markdown = readFileSync(markdownFile, "utf-8");
-        for (const target of targets) {
-          const legacyCommand = new RegExp(`\\bnode\\s+(?:\\.\\/)?${escapeRegExp(target)}\\b`, "u");
-          if (legacyCommand.test(markdown)) staleProcedureCommands.push(`${markdownFile}: ${target}`);
+        for (const match of markdown.matchAll(/\bnode\s+(?:\.\/)?scripts\/[A-Za-z0-9._/-]+\.mjs\b/gu)) {
+          legacyRuntimeScriptCommands.push(`${markdownFile}: ${match[0]}`);
         }
       }
       assert.deepEqual(
-        staleProcedureCommands,
+        legacyRuntimeScriptCommands,
         [],
-        `${platform} Markdown should reference registered procedures, not legacy local scripts`,
+        `${platform} Markdown should not reference legacy local scripts`,
       );
     }
 

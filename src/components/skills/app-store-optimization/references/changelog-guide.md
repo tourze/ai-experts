@@ -8,7 +8,7 @@
 
 ## 核心约束
 
-- 先跑 `scripts/collect_release_changes.mjs` 确认真实改动范围，不要凭提交标题想象功能。
+- 先用 `git log`、`git diff --stat` 和变更文件确认真实改动范围，不要凭提交标题想象功能。
 - 只保留用户可感知改动：新功能、体验优化、缺陷修复；丢弃纯重构、CI、依赖升级、脚本调整。
 - 每条文案都必须能追溯到真实提交或变更文件。
 - 默认写成短句或短 bullet，不要出现内部术语、模块名、PR 编号。
@@ -47,7 +47,7 @@ git log v1.2.3..HEAD --oneline →
 ### PASS: 按用户视角归类
 
 ```
-1. 跑 scripts/collect_release_changes.mjs v1.2.3 HEAD
+1. 跑 `git log --name-status --no-merges v1.2.3..HEAD` 和 `git diff --stat v1.2.3..HEAD`
 2. 过滤掉 refactor/chore/test/CI 提交
 3. 按"新增 / 优化 / 修复"重组：
 

@@ -19,11 +19,20 @@
 
 ```bash
 ps -axo pid,comm | grep MyApp
-node scripts/collect_stacks.mjs --pid 12345 --out /tmp/myapp-hang --repeat 3 --sleep 0.5
+mkdir -p /tmp/myapp-hang
+for i in 1 2 3; do
+  lldb -p 12345 -o 'thread backtrace all' -o 'detach' -o 'quit' > "/tmp/myapp-hang/stack_$i.txt" 2>&1
+  sleep 0.5
+done
 ```
 
 ```bash
-node scripts/collect_stacks.mjs --name "MyApp" --out /tmp/myapp-hang --repeat 5 --sleep 0.2
+mkdir -p /tmp/myapp-hang
+PID=$(pgrep -n "MyApp")
+for i in 1 2 3 4 5; do
+  lldb -p "$PID" -o 'thread backtrace all' -o 'detach' -o 'quit' > "/tmp/myapp-hang/stack_$i.txt" 2>&1
+  sleep 0.2
+done
 ```
 
 ```bash
@@ -32,7 +41,7 @@ gdb -q -p 12345 -ex "thread apply all bt" -ex "detach" -ex "quit" > /tmp/hang-li
 ```
 
 - 快速判型参考 [references/triage.md](references/triage.md)。
-- 脚本入口是 [scripts/collect_stacks.mjs](scripts/collect_stacks.mjs)，支持 `--pid`、`--name`、`--repeat`、`--sleep` 和 `--out`。
+- 如需封装自动化采样，先登记为 procedure；运行时参考资料不要指向未生成的本地脚本。
 
 ## 检查清单
 

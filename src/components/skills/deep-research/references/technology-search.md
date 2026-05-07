@@ -10,36 +10,25 @@
 ## 核心约束
 
 - 只在“技术主题”下使用，泛社会新闻不要走这个 skill。
-- 脚本输出已经是 JSON，先读结构化结果，再决定是否翻译和分层展示。
-- 默认启用智能路由：按关键词映射领域，仅查询相关源；必要时可加 `--all-sources`。
-- 当前实现只依赖本 skill 自带的 RSS/API 数据源，不再假定存在仓库外的额外搜索脚本回退链路。
+- 搜索结果要先整理成结构化列表，再决定是否翻译和分层展示。
+- 默认按关键词映射领域，仅查询相关源；只有用户要求全面扫描时才扩展到全部可用源。
+- 当前流程只依赖可用的搜索、RSS 或官方发布源，不假定存在仓库外的额外搜索脚本回退链路。
 - 对“最新 / 今天 / 本周”类问题，要在最终答案里保留真实日期上下文。
 
 ## 代码模式
 
-```bash
-node scripts/search-news.mjs "Electron" --limit 15 --max-per-source 5
-
-# 搜索全部可用源，关闭智能路由
-node scripts/search-news.mjs "OpenAI" --all-sources --limit 10
-
-# 仅保留近 3 天结果
-node scripts/search-news.mjs "Kubernetes" --max-age 3 --limit 12
-```
-
 ```text
 推荐输出流程
 1. 提取关键词
-2. 运行脚本，读取 JSON
-3. 按 heat_score 排序分层
+2. 使用可用的搜索、RSS 或官方发布源取回结果
+3. 按发布时间、来源可信度和主题相关性排序分层
 4. 对英文标题/摘要做中文翻译
 5. 标注来源、发布时间、热度和是否为推荐项
 ```
 
 ## 检查清单
 
-- 命令是否使用了当前目录下的 `scripts/search-news.mjs`。
-- 是否根据用户时效要求设置了合理的 `--max-age`。
+- 是否根据用户时效要求限定了合理的发布时间范围。
 - 是否区分“精准匹配结果”和“推荐补位结果”。
 - 是否在输出里保留来源、发布时间和热度。
 - 是否在需要时把结果交给 [knowledge-synthesis](../knowledge-synthesis/SKILL.md) 做二次归纳。
@@ -71,10 +60,6 @@ node scripts/search-news.mjs "Kubernetes" --max-age 3 --limit 12
 → 信号被噪声淹没
 ```
 
-### PASS: --max-age + 排序
+### PASS: 时间范围 + 排序
 
-```bash
-node scripts/search-news.mjs “Kubernetes” --max-age 7 --limit 10
-# 仅近 7 天
-# 按热度/时间排序
-```
+近 7 天、官方源和高可信媒体优先；旧内容只能作为背景，不进入“最近动态”列表。

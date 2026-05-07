@@ -9,8 +9,8 @@
 
 ## 核心约束
 
-- `scripts/kelly_sizer.mjs` 使用 Node.js `.mjs` 实现，只依赖本机 Node 运行时。
-- CLI 支持二元机会、情景机会和多机会分配，可读取直接 JSON 或聚合字段 `kelly_sizing`。
+- Kelly sizing 需要结构化输入；没有完整字段时先补齐假设，不引用未登记的本地计算脚本。
+- 支持二元机会、情景机会和多机会分配三类分析，可读取直接 JSON 或聚合字段 `kelly_sizing`。
 - `capital_base`、胜率/情景概率、收益倍数、亏损倍数和约束必须显式建模；缺字段时先补输入，不要凭感觉给仓位。
 - 默认使用 `fractional Kelly`，不要把 full Kelly 当成可直接执行的仓位。
 - 每个关键数字必须标注 `observed`、`estimated` 或 `assumed`。
@@ -22,25 +22,13 @@
 
 1. 先把自然语言整理成 brief，字段见 [sizing playbook](references/sizing-playbook.md)。
 2. 判断路径：`binary-bet`、`scenario-sizing` 或 `multi-opportunity-allocation`。
-3. 有结构化输入时优先运行 `scripts/kelly_sizer.mjs`；没有完整输入时先列缺口，不要手算替代校验。
+3. 有结构化输入时按公式复核；没有完整输入时先列缺口，不要凭感觉给仓位。
 4. 计算 full Kelly；二元机会必须先确认赢时收益倍数 `b` 和输时损失倍数 `a`，再应用 fractional Kelly、相关性 haircut、单机会 cap 和总暴露 cap。
 5. 输出 action first：先给 `no allocation / observe / tiny test / small / medium / large`，再给公式。
 
 ## 代码模式
 
-### 模式 1：完整样例
-
-```bash
-node scripts/kelly_sizer.mjs assets/kelly_sizing_sample.json --format json
-```
-
-### 模式 2：只输出多机会分配
-
-```bash
-node scripts/kelly_sizer.mjs assets/kelly_sizing_sample.json --section multi --format json
-```
-
-### 模式 3：直接二元机会输入
+### 模式 1：直接二元机会输入
 
 ```json
 {
@@ -55,6 +43,21 @@ node scripts/kelly_sizer.mjs assets/kelly_sizing_sample.json --section multi --f
     "win_return_multiple": 1.2,
     "loss_multiple": 1
   }
+}
+```
+
+### 模式 2：多机会分配输入
+
+```json
+{
+  "capital_base": 100000,
+  "constraints": {
+    "total_exposure_cap": 0.25,
+    "single_opportunity_cap": 0.10
+  },
+  "opportunities": [
+    { "name": "A", "win_probability": 0.58, "win_return_multiple": 1.2, "loss_multiple": 1, "correlation_group": "unknown" }
+  ]
 }
 ```
 

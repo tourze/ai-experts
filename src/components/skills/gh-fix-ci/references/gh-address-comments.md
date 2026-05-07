@@ -7,7 +7,7 @@
 
 ## 核心约束
 - 开始前必须确认 `gh auth status` 成功。
-- 优先使用 [scripts/fetch_comments.mjs](scripts/fetch_comments.mjs) 拉全量评论，不要只看 `gh pr view --comments`。
+- 优先使用 `gh api --paginate` 拉全量 issue comments、review comments 和 reviews，不要只看 `gh pr view --comments`。
 - 默认先做只读归类，除非用户明确指定要处理哪些评论。
 - 修改代码后要回到评论编号，逐项说明已处理、需澄清或拒绝原因。
 
@@ -15,8 +15,11 @@
 - 拉取当前分支 PR 的完整评论数据：
 
 ```bash
-node scripts/fetch_comments.mjs > /tmp/pr-comments.json
-jq '.conversation_comments | length, .review_threads | length' /tmp/pr-comments.json
+PR_NUMBER=$(gh pr view --json number --jq .number)
+gh api --paginate "repos/{owner}/{repo}/issues/$PR_NUMBER/comments" --jq '.[]' > /tmp/pr-issue-comments.jsonl
+gh api --paginate "repos/{owner}/{repo}/pulls/$PR_NUMBER/comments" --jq '.[]' > /tmp/pr-review-comments.jsonl
+gh api --paginate "repos/{owner}/{repo}/pulls/$PR_NUMBER/reviews" --jq '.[]' > /tmp/pr-reviews.jsonl
+wc -l /tmp/pr-issue-comments.jsonl /tmp/pr-review-comments.jsonl /tmp/pr-reviews.jsonl
 ```
 
 - 推荐输出格式：
@@ -59,15 +62,14 @@ jq '.conversation_comments | length, .review_threads | length' /tmp/pr-comments.
 
 ### FAIL: 只看最新一页
 
-```bash
-gh pr view --comments   # 只看到最新 30 条
-```
+`gh pr view --comments` 只适合快速预览，不能作为完整审查依据。
 
 ### PASS: 全量拉取
 
 ```bash
-node scripts/fetch_comments.mjs > /tmp/pr.json
-jq '.review_threads | length' /tmp/pr.json
+PR_NUMBER=$(gh pr view --json number --jq .number)
+gh api --paginate "repos/{owner}/{repo}/pulls/$PR_NUMBER/comments" --jq '.[]' > /tmp/pr-review-comments.jsonl
+wc -l /tmp/pr-review-comments.jsonl
 ```
 
 ### FAIL: 改代码不回溯编号

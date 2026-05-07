@@ -10,8 +10,8 @@
 
 ## 核心约束
 
-- `scripts/risk_metrics_calculator.mjs` 使用 Node.js `.mjs` 实现，只依赖本机 Node 运行时。
-- CLI 支持单资产、投资组合和滚动风险三类输入，可读取直接 JSON 或聚合字段 `risk_metrics`。
+- 风险指标计算需要结构化收益率输入；没有完整字段时先补齐数据口径，不引用未登记的本地计算脚本。
+- 支持单资产、投资组合和滚动风险三类输入，可读取直接 JSON 或聚合字段 `risk_metrics`。
 - 输入收益率必须使用小数制，例如 `0.01` 代表 1%，不能混用百分数。
 - 年化因子要与数据频率一致；以下示例默认日频、252 个交易日。
 - 历史 VaR/CVaR 只描述样本分布，不等于极端行情的完整上界。
@@ -19,23 +19,26 @@
 
 ## 代码模式
 
-### 模式 1：完整样例
-
-```bash
-node scripts/risk_metrics_calculator.mjs assets/risk_metrics_sample.json --format json
-```
-
-### 模式 2：只输出投资组合风险
-
-```bash
-node scripts/risk_metrics_calculator.mjs assets/risk_metrics_sample.json --section portfolio --format json
-```
-
-### 模式 3：直接单资产输入
+### 模式 1：直接单资产输入
 
 ```json
 {
   "returns": [0.012, -0.008, 0.004, -0.021],
+  "annualization_factor": 252,
+  "risk_free_rate": 0.02,
+  "confidence_level": 0.95
+}
+```
+
+### 模式 2：投资组合输入
+
+```json
+{
+  "assets": [
+    { "name": "A", "returns": [0.012, -0.008, 0.004] },
+    { "name": "B", "returns": [0.006, -0.003, 0.002] }
+  ],
+  "weights": { "A": 0.6, "B": 0.4 },
   "annualization_factor": 252,
   "risk_free_rate": 0.02,
   "confidence_level": 0.95
@@ -61,10 +64,7 @@ node scripts/risk_metrics_calculator.mjs assets/risk_metrics_sample.json --secti
 ```json
 { "returns": [1.2, -0.8, 2.1] }
 ```
-```bash
-node scripts/risk_metrics_calculator.mjs input.json
-# Error: field "returns" must use decimal returns, not percentages
-```
+结论：这是百分数写法，不是小数制收益率；必须先转换为 `[0.012, -0.008, 0.021]` 再计算。
 
 ### PASS: 统一小数
 
