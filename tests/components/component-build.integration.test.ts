@@ -753,18 +753,23 @@ describe("component build integration", () => {
         `${platform} output should not copy evals under references`,
       );
 
-      const brokenSkillLinks: string[] = [];
-      for (const markdownFile of collectFiles(join(tmpDistDir, platform, "skills"), (file) => file.endsWith(".md"))) {
+      const brokenLocalLinks: string[] = [];
+      const runtimeMarkdownFiles = collectFiles(join(tmpDistDir, platform, "skills"), (file) =>
+        file.endsWith("SKILL.md") || file.includes(join("references", "")),
+      );
+      for (const markdownFile of runtimeMarkdownFiles) {
         const markdown = readFileSync(markdownFile, "utf-8");
-        for (const match of markdown.matchAll(/\[[^\]]+\]\((\.{1,2}\/[^)\s]+\/SKILL\.md(?:#[^)]+)?)\)/gu)) {
+        for (const match of markdown.matchAll(/(?<!!)\[[^\]]+\]\(([^)\s]+)\)/gu)) {
           const href = match[1] as string;
+          if (/^[a-z][a-z0-9+.-]*:|^#|^\//iu.test(href)) continue;
+          if (href.includes("{")) continue;
           const [pathWithoutAnchor] = href.split("#", 1);
-          if (!existsSync(resolve(dirname(markdownFile), pathWithoutAnchor))) {
-            brokenSkillLinks.push(`${markdownFile}: ${href}`);
+          if (pathWithoutAnchor && !existsSync(resolve(dirname(markdownFile), pathWithoutAnchor))) {
+            brokenLocalLinks.push(`${markdownFile}: ${href}`);
           }
         }
       }
-      assert.deepEqual(brokenSkillLinks, [], `${platform} generated Markdown should not contain broken SKILL.md links`);
+      assert.deepEqual(brokenLocalLinks, [], `${platform} generated Markdown should not contain broken local links`);
 
       for (const skillFile of collectFiles(join(tmpDistDir, platform, "skills"), (file) => file.endsWith("SKILL.md"))) {
         const source = stripFrontmatter(readFileSync(skillFile, "utf-8")).trimStart();

@@ -1,4 +1,4 @@
-import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, relative } from "node:path";
 import { pathToFileURL } from "node:url";
 import type {
@@ -516,21 +516,69 @@ function rewriteReferenceSkillLinks(
   );
 }
 
-function rewriteCopiedReferenceMarkdown(
+function isLocalMarkdownHref(href: string): boolean {
+  return !/^[a-z][a-z0-9+.-]*:/iu.test(href) &&
+    !href.startsWith("#") &&
+    !href.startsWith("/") &&
+    !href.includes("{") &&
+    href.trim() !== "";
+}
+
+function splitMarkdownHref(href: string): { path: string; anchor: string } {
+  const hashIndex = href.indexOf("#");
+  if (hashIndex < 0) return { path: href, anchor: "" };
+  return {
+    path: href.slice(0, hashIndex),
+    anchor: href.slice(hashIndex),
+  };
+}
+
+function rewriteReferenceLocalLinks(
+  source: string,
+  outputFile: string,
+  skillRoot: string,
+): string {
+  return source.replace(
+    /(?<!!)\[([^\]]+)\]\(([^)\s]+)\)/gu,
+    (match, label: string, href: string) => {
+      if (!isLocalMarkdownHref(href)) return match;
+
+      const { path: hrefPath, anchor } = splitMarkdownHref(href);
+      if (!hrefPath) return match;
+      if (hrefPath === "SKILL.md" || hrefPath.endsWith("/SKILL.md")) return match;
+
+      const currentTarget = join(dirname(outputFile), hrefPath);
+      if (existsSync(currentTarget)) return match;
+
+      const skillRootTarget = join(skillRoot, hrefPath);
+      if (existsSync(skillRootTarget)) {
+        return `[${label}](${markdownRelativePath(outputFile, skillRootTarget)}${anchor})`;
+      }
+
+      return label;
+    },
+  );
+}
+
+function rewriteGeneratedSkillMarkdown(
   skill: SkillDefinition,
   skillRoot: string,
-  copiedPath: string,
   platformSkillIds: ReadonlySet<string>,
 ): void {
-  const markdownFiles = statSync(copiedPath).isDirectory()
-    ? collectFiles(copiedPath, (file) => file.endsWith(".md"))
-    : copiedPath.endsWith(".md")
-      ? [copiedPath]
-      : [];
+  const markdownFiles = [
+    join(skillRoot, "SKILL.md"),
+    ...(existsSync(join(skillRoot, "references"))
+      ? collectFiles(join(skillRoot, "references"), (file) => file.endsWith(".md"))
+      : []),
+  ];
 
   for (const file of markdownFiles) {
     const source = readFileSync(file, "utf-8");
-    const rewritten = rewriteReferenceSkillLinks(source, skill, file, skillRoot, platformSkillIds);
+    const rewritten = rewriteReferenceLocalLinks(
+      rewriteReferenceSkillLinks(source, skill, file, skillRoot, platformSkillIds),
+      file,
+      skillRoot,
+    );
     if (rewritten !== source) writeFileSync(file, rewritten, "utf-8");
   }
 }
@@ -551,7 +599,6 @@ export async function emitSkill(
     for (const reference of skill.references) {
       const target = join(skillRoot, defaultReferenceTarget(reference));
       copyComponentPath(reference.source, target);
-      rewriteCopiedReferenceMarkdown(skill, skillRoot, target, platformSkillIds);
     }
     writeText(join(skillRoot, "references", "index.md"), renderReferencesIndex(skill));
   }
@@ -565,6 +612,8 @@ export async function emitSkill(
   if (platform === Platform.Codex) {
     writeText(join(skillRoot, "agents", "openai.yaml"), renderCodexOpenAiYaml(skill));
   }
+
+  rewriteGeneratedSkillMarkdown(skill, skillRoot, platformSkillIds);
 }
 
 function copyLooseSkillFiles(skill: SkillDefinition, skillRoot: string): void {
