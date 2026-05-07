@@ -56,7 +56,7 @@ export const markdownMermaidWritingSkill = defineSkill({
   sourceDir: new URL("./", import.meta.url),
   workflow: defineSkillWorkflow({
     steps: [
-      "先确定文档类型、读者和结论，再选择 templates 下的合适模板，不从空白页硬写。",
+      "先确定文档类型、读者和结论，再选择 `templates` reference 下的合适模板，不从空白页硬写。",
       "读取 Markdown 与 Mermaid 样式指南，保持标题层级、列表、表格、代码块和节点命名一致。",
       "图表先服务于一个明确问题；复杂主题拆成多个 Mermaid 小图，常见图示参考 diagrams reference。",
       "交付前检查 Mermaid 语法、节点命名、图表是否支撑结论；需要 SVG/ASCII 输出时读取 pretty-mermaid。",
@@ -102,12 +102,20 @@ export const markdownMermaidWritingSkill = defineSkill({
       summary: "将 Mermaid 源码渲染为主题化 SVG 或终端 ASCII 图的方案说明。",
       loadWhen: "需要将 Mermaid 图表输出为漂亮的 SVG 图片或终端兼容格式时读取。",
     }),
+    defineReference({
+      id: "templates",
+      source: new URL("./references/templates/", import.meta.url),
+      target: "references/templates",
+      title: "Markdown Document Templates",
+      summary: "PR、Issue、Kanban、ADR、项目文档、研究报告、状态汇报和演示稿等 Markdown 模板。",
+      loadWhen: "需要按文档类型选择 Markdown 起始模板时读取。",
+    }),
   ],
   assets: [
     defineAsset({
       id: "examples",
       source: new URL("./assets/examples/", import.meta.url),
       target: "assets/examples",
-    })
+    }),
   ],
 });

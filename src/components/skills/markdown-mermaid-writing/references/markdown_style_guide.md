@@ -63,9 +63,9 @@ Everything is code. PRs, issues, kanban boards — they're all markdown files in
 
 ### Templates for tracked documents
 
-- [Pull request record](../templates/pull_request.md) — the PR description IS this file
-- [Issue record](../templates/issue.md) — bug reports and feature requests as repo files
-- [Kanban board](../templates/kanban.md) — sprint/project boards that merge with your code
+- [Pull request record](templates/pull_request.md) — the PR description IS this file
+- [Issue record](templates/issue.md) — bug reports and feature requests as repo files
+- [Kanban board](templates/kanban.md) — sprint/project boards that merge with your code
 
 See [File conventions](#file-conventions-for-tracked-documents) for directory structure and naming.
 
@@ -612,15 +612,15 @@ Templates provide pre-built structures for common document types. Copy the templ
 
 | Document type                   | Template                                                                | Best for                                                                                              |
 | ------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Presentation / briefing         | [presentation.md](../templates/presentation.md)                   | Slide-deck-style documents with speaker notes, structured sections, and visual flow                   |
-| Research paper / analysis       | [research_paper.md](../templates/research_paper.md)               | Data-driven analysis, literature reviews, methodology + findings with heavy citations                 |
-| Project documentation           | [project_documentation.md](../templates/project_documentation.md) | Software/product docs — architecture, getting started, API reference, contribution guide              |
-| Decision record (ADR/RFC)       | [decision_record.md](../templates/decision_record.md)             | Recording why a decision was made — context, options evaluated, outcome, consequences                 |
-| How-to / tutorial guide         | [how_to_guide.md](../templates/how_to_guide.md)                   | Step-by-step instructions with prerequisites, verification steps, and troubleshooting                 |
-| Status report / executive brief | [status_report.md](../templates/status_report.md)                 | Progress updates, risk summaries, decisions needed — for leadership and stakeholders                  |
-| Pull request record             | [pull_request.md](../templates/pull_request.md)                   | PR documentation with change inventory, testing evidence, rollback plan, and review notes             |
-| Issue record                    | [issue.md](../templates/issue.md)                                 | Bug reports (reproduction steps, root cause) and feature requests (acceptance criteria, user stories) |
-| Kanban board                    | [kanban.md](../templates/kanban.md)                               | Sprint/release/project work tracking with visual board, WIP limits, metrics, and blocked items        |
+| Presentation / briefing         | [presentation.md](templates/presentation.md)                   | Slide-deck-style documents with speaker notes, structured sections, and visual flow                   |
+| Research paper / analysis       | [research_paper.md](templates/research_paper.md)               | Data-driven analysis, literature reviews, methodology + findings with heavy citations                 |
+| Project documentation           | [project_documentation.md](templates/project_documentation.md) | Software/product docs — architecture, getting started, API reference, contribution guide              |
+| Decision record (ADR/RFC)       | [decision_record.md](templates/decision_record.md)             | Recording why a decision was made — context, options evaluated, outcome, consequences                 |
+| How-to / tutorial guide         | [how_to_guide.md](templates/how_to_guide.md)                   | Step-by-step instructions with prerequisites, verification steps, and troubleshooting                 |
+| Status report / executive brief | [status_report.md](templates/status_report.md)                 | Progress updates, risk summaries, decisions needed — for leadership and stakeholders                  |
+| Pull request record             | [pull_request.md](templates/pull_request.md)                   | PR documentation with change inventory, testing evidence, rollback plan, and review notes             |
+| Issue record                    | [issue.md](templates/issue.md)                                 | Bug reports (reproduction steps, root cause) and feature requests (acceptance criteria, user stories) |
+| Kanban board                    | [kanban.md](templates/kanban.md)                               | Sprint/release/project work tracking with visual board, WIP limits, metrics, and blocked items        |
 
 ### File conventions for tracked documents
 

@@ -25,7 +25,7 @@ export const canvasDesignSkill = defineSkill({
     "先写设计哲学，再开始画面表达；不能跳过第一步直接做图。",
     "设计哲学不是模板说明书，而是审美方向、空间秩序、配色语言和工艺标准。",
     "输出必须是单页作品，默认 90% 视觉、10% 必要文字。",
-    "字体优先使用本目录 `canvas-fonts/` 中已有字体；需要额外字体时，只能为了作品质量引入，不能随手套默认系统字。",
+    "字体优先使用本 skill 的 `assets/canvas-fonts/` 中已有字体；需要额外字体时，只能为了作品质量引入，不能随手套默认系统字。",
     "严禁复刻现实艺术家或品牌现成视觉语言；只能做原创重构。",
   ],
   checklist: [
@@ -52,7 +52,7 @@ export const canvasDesignSkill = defineSkill({
     steps: [
       "先产出 philosophy.md，包含运动/流派名称、4-6 段审美阐述，以及空间、色彩、节奏、材质、排版和工艺约束。",
       "确认画布尺寸、边距、主视觉、次级视觉、字体组合、字号层级和导出格式。",
-      "优先使用 canvas-fonts 中的字体；按作品气质选择 InstrumentSans、IBMPlexSerif、JetBrainsMono、GeistMono、BigShoulders 或 Tektur 等字族。",
+      "优先使用 `assets/canvas-fonts` 中的字体；按作品气质选择 InstrumentSans、IBMPlexSerif、JetBrainsMono、GeistMono、BigShoulders 或 Tektur 等字族。",
       "把设计哲学转成单页成品，默认 90% 视觉、10% 必要文字，避免说明文堆叠。",
       "需要 PNG 时用 concept-to-image 渲染；需要视频时先渲染帧序列再用 ffmpeg 合成和加音频。",
       "最后确认 philosophy.md 与最终 png/pdf/video 同时存在，元素不越界、不重叠且没有复刻现实品牌或艺术家。",
@@ -81,6 +81,11 @@ export const canvasDesignSkill = defineSkill({
       id: "baoyu-article-illustrator-system",
       source: new URL("./assets/prompts/baoyu-article-illustrator-system.md", import.meta.url),
       target: "assets/prompts/baoyu-article-illustrator-system.md",
+    }),
+    defineAsset({
+      id: "canvas-fonts",
+      source: new URL("./assets/canvas-fonts/", import.meta.url),
+      target: "assets/canvas-fonts",
     }),
   ],
 });

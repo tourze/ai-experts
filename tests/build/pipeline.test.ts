@@ -65,13 +65,15 @@ function createFixture() {
   const hooksRoot = join(root, "hooks");
   const instructionRoot = join(root, "instruction");
   ensureDir(skillRoot);
+  ensureDir(join(skillRoot, "references"));
+  ensureDir(join(skillRoot, "assets"));
   ensureDir(agentRoot);
   ensureDir(hooksRoot);
   ensureDir(instructionRoot);
 
   const skillBody = join(skillRoot, "SKILL.body.md");
-  const skillReference = join(skillRoot, "reference.md");
-  const skillAsset = join(skillRoot, "asset.txt");
+  const skillReference = join(skillRoot, "references", "reference.md");
+  const skillAsset = join(skillRoot, "assets", "asset.txt");
   writeText(skillBody, "## 步骤\n\n执行检查。\n");
   writeText(skillReference, "# Ref\n");
   writeText(skillAsset, "asset");

@@ -86,7 +86,7 @@ export const reactServerComponentsSkill = defineSkill({
       "先识别组件是否真的需要客户端交互，默认保留 Server Component，只在交互叶子加 `'use client'`。",
       "并行化互不依赖的数据获取，使用 Suspense / streaming 暴露加载边界，避免嵌套 waterfall。",
       "Server Action 内部执行鉴权、授权、输入校验和重验证；Client Component props 只传最小可序列化数据。",
-      "并行 fetch 代码读取 `server-component-patterns`；缓存、streaming 和高级反模式读取 `advanced` / `advanced-patterns` / `rules`。",
+      "并行 fetch 代码读取 `server-component-patterns`；缓存、streaming 和高级反模式读取 `advanced` / `advanced-patterns` / `rsc-rules`。",
     ],
   }),
   outputs: defineSkillOutputs({
@@ -120,6 +120,14 @@ export const reactServerComponentsSkill = defineSkill({
       title: "advanced-patterns.md",
       summary: "RSC 边界划分、序列化陷阱、Server Actions 鉴权、React.cache 去重与流式渲染等高级模式。",
       loadWhen: "需要处理 RSC 边界拆分、序列化开销治理、Server Action 安全或数据获取合并时读取。",
+    }),
+    defineReference({
+      id: "rsc-rules",
+      source: new URL("./references/rules/", import.meta.url),
+      target: "references/rules",
+      title: "React Server Components Rules",
+      summary: "RSC 请求级去重、并行获取、缓存、序列化、Server Actions 和 after() 的专项规则。",
+      loadWhen: "需要按具体 RSC 性能、安全或边界场景读取专项规则时读取。",
     }),
   ],
 });

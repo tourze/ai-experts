@@ -25,7 +25,7 @@ export default async function UsersPage() {
 }
 ```
 
-Client Component 边界、Server Action 及进阶反模式的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。
+Client Component 边界、Server Action 及进阶反模式的完整代码见 [advanced-patterns](advanced-patterns.md)。
 
 更多流式与缓存模式见 [advanced](advanced.md)。
 

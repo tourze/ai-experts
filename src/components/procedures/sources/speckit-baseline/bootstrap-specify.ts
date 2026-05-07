@@ -117,7 +117,7 @@ export function main(argv: any = process.argv.slice(2)): any {
     const repoRoot = getRepoRoot();
     const skillRoot = resolveAbsolute(argv[0] ?? defaultSkillRoot);
     const targetDir = resolveAbsolute(argv[1] ?? path.join(repoRoot, '.specify'));
-    const templatesDir = path.join(skillRoot, 'templates');
+    const templatesDir = path.join(skillRoot, 'assets', 'templates');
     if (!fs.existsSync(templatesDir) || !fs.statSync(templatesDir).isDirectory()) {
         process.stderr.write(`[error] Spec Kit 模板资源缺失：${templatesDir} 不存在\n`);
         return 1;

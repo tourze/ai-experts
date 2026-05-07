@@ -599,19 +599,51 @@ describe("component source conventions", () => {
       "sample_input.json",
       "expected_output.json",
     ]);
+    const reservedSkillRootEntries = new Set([
+      "index.ts",
+      "index.js",
+      "SKILL.body.md",
+      "scripts",
+      "references",
+      "assets",
+      "evals",
+      "tests",
+      "README.md",
+      "LICENSE.txt",
+    ]);
     const legacySkillScriptFiles = collectFiles(skillRoot, (file) =>
       file.slice(skillRoot.length + 1).split(/[\\/]/).includes("scripts"),
     );
     const legacySkillRuntimeDirs = collectFiles(skillRoot, (file) => {
       const parts = file.slice(skillRoot.length + 1).split(/[\\/]/);
-      return ["commands", "hooks", "schemas", "examples", "resources", "prompts", "eval-viewer", "quick-ref"].includes(
-        parts[1] ?? "",
-      );
+      const legacyRuntimeDirs = [
+        "commands",
+        "hooks",
+        "schemas",
+        "examples",
+        "resources",
+        "prompts",
+        "eval-viewer",
+        "quick-ref",
+        "rules",
+        "templates",
+        "canvas-fonts",
+      ];
+      return legacyRuntimeDirs.includes(parts[1] ?? "");
     });
     const misplacedRootArtifacts = collectFiles(skillRoot, (file) => {
       const parts = file.slice(skillRoot.length + 1).split(/[\\/]/);
       return parts.length === 2 && rootArtifacts.has(parts[1]);
     });
+    const unregisteredRootEntries: string[] = [];
+    for (const skillEntry of readdirSync(skillRoot, { withFileTypes: true })) {
+      if (!skillEntry.isDirectory()) continue;
+      const skillDir = join(skillRoot, skillEntry.name);
+      for (const entry of readdirSync(skillDir, { withFileTypes: true })) {
+        if (reservedSkillRootEntries.has(entry.name)) continue;
+        unregisteredRootEntries.push(`${skillEntry.name}/${entry.name}${entry.isDirectory() ? "/" : ""}`);
+      }
+    }
 
     assert.deepEqual(
       legacySkillScriptFiles,
@@ -627,6 +659,11 @@ describe("component source conventions", () => {
       misplacedRootArtifacts,
       [],
       "root-level skill package artifacts and platform memory files should be split into references, assets, or evals before dist copy",
+    );
+    assert.deepEqual(
+      unregisteredRootEntries.sort(),
+      [],
+      "skill root entries should be registered as references, assets, evals, procedures, or explicit README/LICENSE supplements",
     );
   });
 

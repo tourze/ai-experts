@@ -683,8 +683,15 @@ function copyLooseSkillFiles(skill: SkillDefinition, skillRoot: string): void {
     "evals",
     "tests",
   ]);
+  const allowedLooseRootFiles = new Set(["README.md", "LICENSE.txt"]);
   for (const entry of readdirSync(sourceDir, { withFileTypes: true })) {
     if (reserved.has(entry.name)) continue;
+    if (!entry.isFile() || !allowedLooseRootFiles.has(entry.name)) {
+      const sourcePath = join(sourceDir, entry.name);
+      throw new Error(
+        `Skill ${skill.id} has unregistered root entry ${relative(sourceDir, sourcePath)}; move it to references/, assets/, evals/, or procedures.`,
+      );
+    }
     const sourceUrl = new URL(
       `./${entry.name}${entry.isDirectory() ? "/" : ""}`,
       pathToFileURL(`${sourceDir}/`),

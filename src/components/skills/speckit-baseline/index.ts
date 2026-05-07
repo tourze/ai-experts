@@ -1,6 +1,7 @@
 import {
   InvocationPolicy,
   Platform,
+  defineAsset,
   defineSkill,
   defineSkillOutputs,
   defineSkillParameter,
@@ -55,5 +56,12 @@ export const speckitBaselineSkill = defineSkill({
     procedureUse(speckitBaselineCheckPrerequisites),
     procedureUse(speckitBaselineCreateNewFeature),
     procedureUse(speckitBaselineSetupPlan),
+  ],
+  assets: [
+    defineAsset({
+      id: "templates",
+      source: new URL("./assets/templates/", import.meta.url),
+      target: "assets/templates",
+    }),
   ],
 });

@@ -28,9 +28,9 @@ export const phpTestingSkill = defineSkill({
     "集成测试要明确边界、清理状态、避免环境耦合。",
   ],
   checklist: [
-    "编码标准：[strict_types](rules/standard-strict-types.md) · [final 类](rules/standard-final-classes.md) · [类型提示](rules/standard-visibility-type-hints.md)",
-    "属性与数据集：[#[Test]](rules/attr-test-attribute.md) · [#[CoversClass]](rules/attr-covers-class.md) · [DataProvider](rules/data-provider.md)",
-    "Mock 与集成：[避免过度 Mock](rules/mock-avoid-over-mocking.md) · [HTTP 冒烟](rules/integration-smoke-http.md) · [事务清理](rules/integration-transactions.md)",
+    "编码标准：[strict_types](references/rules/standard-strict-types.md) · [final 类](references/rules/standard-final-classes.md) · [类型提示](references/rules/standard-visibility-type-hints.md)",
+    "属性与数据集：[#[Test]](references/rules/attr-test-attribute.md) · [#[CoversClass]](references/rules/attr-covers-class.md) · [DataProvider](references/rules/data-provider.md)",
+    "Mock 与集成：[避免过度 Mock](references/rules/mock-avoid-over-mocking.md) · [HTTP 冒烟](references/rules/integration-smoke-http.md) · [事务清理](references/rules/integration-transactions.md)",
   ],
   relatedSkills: [
     {
@@ -73,7 +73,7 @@ export const phpTestingSkill = defineSkill({
   sourceDir: new URL("./", import.meta.url),
   workflow: defineSkillWorkflow({
     steps: [
-      "确认被测行为、测试层级、依赖边界和现有测试风格；需要具体写法时读取 `examples` reference。",
+      "确认被测行为、测试层级、依赖边界和现有测试风格；需要具体写法时读取 `examples` reference，需要专项规范时读取 `rules` reference。",
       "选择 PHPUnit 或 Pest 结构，优先使用 `#[Test]`、`#[DataProvider]`、`#[CoversClass]` 等 PHP 8 属性。",
       "设计 Arrange-Act-Assert、fixture、数据提供者和外部边界 mock，避免 mock 被测对象内部。",
       "为集成测试明确状态清理、事务边界、环境依赖和 HTTP/CLI 冒烟路径。",
@@ -105,6 +105,14 @@ export const phpTestingSkill = defineSkill({
       title: "examples.md",
       summary: "PHP 测试用例编写示例，包括 PHPUnit/Pest 的 fixture、mock、参数化测试等模式。",
       loadWhen: "需要查阅 PHP 测试的具体编写示例或模式时读取。",
+    }),
+    defineReference({
+      id: "rules",
+      source: new URL("./references/rules/", import.meta.url),
+      target: "references/rules",
+      title: "PHP Testing Rules",
+      summary: "PHPUnit/Pest 严格类型、属性、DataProvider、Mock、集成测试和 phpunit.xml 的分主题规则。",
+      loadWhen: "需要按 PHP 测试主题读取细粒度规范或规则模板时读取。",
     }),
   ],
 });

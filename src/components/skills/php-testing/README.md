@@ -5,14 +5,14 @@
 ## 当前结构
 
 - `SKILL.md`：面向代理的入口说明，定义触发场景、约束、代码模式和交叉引用。
-- `rules/`：分主题拆开的规则文件，每个文件只描述一条实践。
-- `rules/_sections.md`：章节元数据。
-- `rules/_template.md`：新增规则时的模板。
+- `references/rules/`：分主题拆开的规则文件，每个文件只描述一条实践。
+- `references/rules/_sections.md`：章节元数据。
+- `references/rules/_template.md`：新增规则时的模板。
 - `references/metadata.json`：规则库版本、摘要和参考链接。
 
 ## 新增或修改规则
 
-1. 复制 `rules/_template.md` 为新文件。
+1. 复制 `references/rules/_template.md` 为新文件。
 2. 使用正确的区域前缀：
    - `principle-`：原则与模式
    - `standard-`：编码标准
