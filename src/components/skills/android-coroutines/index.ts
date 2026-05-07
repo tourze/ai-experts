@@ -5,6 +5,9 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const androidCoroutinesSkill = defineSkill({
@@ -49,7 +52,28 @@ export const androidCoroutinesSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "在 Android 中实现或审查 Kotlin Coroutines、Flow、生命周期收集、取消传播、异常处理和可测试 dispatcher 边界。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认协程运行位置：ViewModel、Repository、DataSource、Worker、Application scope 或 UI 生命周期。",
+      "检查 dispatcher 注入、main-safe suspend 函数和测试 dispatcher，避免硬编码线程池导致不可测。",
+      "检查 Flow 收集是否绑定生命周期，Fragment / Activity 使用 `repeatOnLifecycle(STARTED)`。",
+      "检查结构化并发：避免 `GlobalScope`，长任务要有明确 owner、取消传播和错误上报路径。",
+      "检查紧密循环、callbackFlow、Channel 和异常处理；代码模式读取 `advanced-patterns` reference。",
+      "修复后用 `runTest`、`advanceUntilIdle` 和泄漏 / 生命周期路径复测。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "协程 owner、scope、dispatcher、Flow 收集点和取消路径审计结果。",
+      "main-safe、生命周期安全、异常处理和测试可控性的修复建议。",
+      "需要迁移到 Flow、callbackFlow、Channel 或 applicationScope 的位置。",
+      "对应单元测试、生命周期复测和剩余风险。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

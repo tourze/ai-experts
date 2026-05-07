@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const androidDesignGuidelinesSkill = defineSkill({
@@ -18,8 +21,11 @@ export const androidDesignGuidelinesSkill = defineSkill({
     "审计无障碍或平台合规性",
   ],
   constraints: [
-    "只在本 skill 的适用场景内使用；任务不匹配时先澄清或转向更合适的 skill。",
-    "执行时遵循正文中的流程、红线、检查清单和必要参考资料，不用未经验证的假设替代证据。",
+    "Android 12+ 默认支持动态颜色，并为 Android 12 以下提供静态回退配色。",
+    "组件内禁止硬编码颜色 hex；必须使用 Material 3 color role 和对应 `on*` 前景色。",
+    "手机、折叠屏和平板分别按 Window Size Class 选择 Navigation Bar、Rail 或 Drawer。",
+    "布局必须支持 Light / Dark、Dynamic Type / 字体缩放、edge-to-edge 和系统手势区域。",
+    "权限、通知、Widget、App Links 和无障碍规则按需读取 `rules-4-to-10`，不要凭印象套通用 UI 规则。",
   ],
   antiPatterns: [
     defineAntiPattern({
@@ -37,9 +43,38 @@ export const androidDesignGuidelinesSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "按 Material Design 3 和 Android 平台约束设计或审查 UI，覆盖动态颜色、导航、自适应布局、edge-to-edge、无障碍和系统集成。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认目标 Android 版本、屏幕形态、主要导航目的地、Compose / XML 技术栈和是否涉及权限、通知或系统集成。",
+      "检查主题：动态颜色、静态回退、Light / Dark、语义 color role 和品牌定制色来源；规则读取 `rules-1-to-3`。",
+      "检查导航：Compact、Medium、Expanded 使用合适的 Navigation Bar、Rail 或 Drawer，并支持预测性返回。",
+      "检查布局：Window Size Class、网格边距、最大内容宽度、edge-to-edge、WindowInsets 和折叠屏铰链避让。",
+      "检查排版、组件、无障碍、手势、通知、权限和系统集成时读取 `rules-4-to-10`。",
+      "输出设计修复建议时同时给出设备矩阵和复测路径，不只给视觉偏好判断。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Material 3 主题、颜色角色、Light / Dark 和动态颜色审计结论。",
+      "导航、Window Size Class、edge-to-edge 和折叠屏适配建议。",
+      "组件、排版、无障碍、手势、通知、权限和系统集成风险点。",
+      "需要验证的设备矩阵、截图 / UI 测试路径和剩余设计风险。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "rules-1-to-3",
+      source: new URL("./references/rules-1-to-3.md", import.meta.url),
+      target: "references/rules-1-to-3.md",
+      title: "Android Material Design 3 第 1-3 条规范",
+      summary: "Material You 动态颜色、导航模式、Window Size Class、网格、edge-to-edge 和折叠屏规则。",
+      loadWhen: "需要深入审计 Android 主题、导航或响应式布局合规性时读取。",
+    }),
     defineReference({
       id: "rules-4-to-10",
       source: new URL("./references/rules-4-to-10.md", import.meta.url),

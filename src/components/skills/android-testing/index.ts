@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const androidTestingSkill = defineSkill({
@@ -18,8 +21,12 @@ export const androidTestingSkill = defineSkill({
     "编写 Compose UI 测试",
   ],
   constraints: [
-    "只在本 skill 的适用场景内使用；任务不匹配时先澄清或转向更合适的 skill。",
-    "执行时遵循正文中的流程、红线、检查清单和必要参考资料，不用未经验证的假设替代证据。",
+    "测试金字塔以 ViewModel、Repository、UseCase 单元测试为主，UI / 截图测试只覆盖关键页面和高风险交互。",
+    "ViewModel 和协程测试必须注入 `TestDispatcher`，用 `runTest`、`advanceUntilIdle` 确定性推进。",
+    "Repository 测试必须覆盖正常路径、错误路径和缓存 / fallback 行为。",
+    "Hilt 集成测试用 `@TestInstallIn` 替换真实依赖，不连真实网络或生产数据库。",
+    "Compose UI 测试通过文本、语义或 testTag 定位节点，不使用坐标。",
+    "Roborazzi 基准录制和验证命令必须接入 CI，截图差异要可复核。",
   ],
   checklist: [
     "ViewModel 测试注入 `TestDispatcher`，不依赖真实线程",
@@ -41,9 +48,38 @@ export const androidTestingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 Android 项目建立单元、集成、Compose UI 和 Roborazzi 截图测试策略，覆盖逻辑、依赖注入、UI 语义和视觉回归。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先识别待测对象：ViewModel、Repository、UseCase、Room DAO、网络层、Compose UI 或截图回归。",
+      "按测试金字塔分配覆盖：逻辑层优先单元测试，组件交互用集成测试，关键页面用 UI / 截图测试。",
+      "配置依赖时读取 `dependencies`，确认 JUnit、coroutines-test、AndroidX Test、Compose、Hilt 和 Roborazzi 版本。",
+      "编写协程测试时注入 TestDispatcher，避免真实 delay、真实线程和非确定性等待。",
+      "编写 Hilt、Roborazzi 和 Compose 测试时读取 `code-patterns`，按语义节点和可复核截图路径实现。",
+      "输出 CI 命令、基准截图策略和失败定位方法，确保测试能在本地与 CI 重现。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "测试范围分层、优先级和每层建议用例。",
+      "依赖配置、Hilt 替换、TestDispatcher 和 Roborazzi / Compose 测试接线。",
+      "示例测试代码位置、运行命令和 CI 验证任务。",
+      "剩余未覆盖风险、flaky 风险和需要人工验证的路径。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "code-patterns",
+      source: new URL("./references/code-patterns.md", import.meta.url),
+      target: "references/code-patterns.md",
+      title: "Android 测试代码模式",
+      summary: "测试金字塔、ViewModel / Repository / Hilt / Roborazzi / Compose UI 测试示例和运行命令。",
+      loadWhen: "需要编写 Android 测试代码或配置截图 / UI 测试命令时读取。",
+    }),
     defineReference({
       id: "dependencies",
       source: new URL("./references/dependencies.md", import.meta.url),

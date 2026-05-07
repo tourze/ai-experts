@@ -2,8 +2,12 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const androidArchitectureSkill = defineSkill({
@@ -17,8 +21,12 @@ export const androidArchitectureSkill = defineSkill({
     "评审代码的分层合理性",
   ],
   constraints: [
-    "只在本 skill 的适用场景内使用；任务不匹配时先澄清或转向更合适的 skill。",
-    "执行时遵循正文中的流程、红线、检查清单和必要参考资料，不用未经验证的假设替代证据。",
+    "依赖方向必须单向向内：UI -> Domain -> Data，禁止反向依赖和循环依赖。",
+    "Domain 层必须是纯 Kotlin，不能导入 `android.*`，并只依赖 Repository 接口或 domain model。",
+    "ViewModel 通过只读 `StateFlow` 暴露 UI 状态，不能把 `MutableStateFlow` / `MutableSharedFlow` 暴露给 UI。",
+    "Repository 的 `suspend` 函数必须 main-safe，线程切换和数据源兜底在实现内部处理。",
+    "Hilt 接口绑定优先用 `@Binds`，第三方实例或 builder 才用 `@Provides`。",
+    "Feature 模块之间禁止互相依赖；共享模型、domain、ui 和 data 能力放入合适的 `:core:*` 模块。",
   ],
   checklist: [
     "Domain 层无 `android.*` 导入",
@@ -41,6 +49,37 @@ export const androidArchitectureSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计或重构 Android Clean Architecture、Hilt 注入和多模块边界，让依赖方向、状态暴露和数据访问保持可测试、可演进。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先画出现有模块、包、入口页面、ViewModel、UseCase、Repository 和 DataSource 的依赖关系。",
+      "按 UI、Domain、Data 三层归类职责；Domain 可选但推荐，用于收敛业务规则和纯 Kotlin model。",
+      "检查状态边界：ViewModel 只暴露只读状态，UI 不直接依赖 Data 层实现。",
+      "检查数据边界：Repository 接口放在内层，Data 层实现远端、本地和缓存兜底，`suspend` 函数保持 main-safe。",
+      "检查 Hilt 模块：接口绑定、第三方实例、scope 和 feature 自有 Module 是否归属清晰；代码模式读取 `architecture-patterns`。",
+      "给出模块拆分、依赖倒置、迁移顺序和验证点，避免一次性大重构破坏交付。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "当前架构依赖图、层级归类和违反单向依赖的具体位置。",
+      "目标模块结构、接口归属、Hilt Module 归属和迁移顺序。",
+      "StateFlow、Repository、UseCase、DataSource 的边界修复建议。",
+      "需要补充的单元测试 / 集成测试和架构守护规则。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "architecture-patterns",
+      source: new URL("./references/architecture-patterns.md", import.meta.url),
+      target: "references/architecture-patterns.md",
+      title: "Android 架构代码模式",
+      summary: "Clean Architecture 分层、Repository main-safe 实现、Hilt Module 和多模块规则示例。",
+      loadWhen: "需要查看 Android 架构分层、Hilt 绑定或多模块拆分代码模式时读取。",
+    }),
+  ],
 });
