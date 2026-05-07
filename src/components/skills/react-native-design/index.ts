@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { reactNativeJsPerformanceSkill } from "../react-native-js-performance/index";
 
@@ -54,9 +57,38 @@ export const reactNativeDesignSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "实现 React Native 页面、样式、导航、手势和 Reanimated 动画时，保持稳定样式、清晰导航和正确线程模型。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认页面目标、导航层级、视觉状态、平台差异、安全区、触控反馈和动画需求。",
+      "样式和主题实现读取 `styling-patterns` reference；快速代码样例读取 `component-code-patterns`。",
+      "导航结构、深链和 auth flow 读取 `navigation-patterns` reference，避免手写伪导航状态。",
+      "手势和动画读取 `reanimated-patterns` reference，跟手动画放到 Reanimated worklet/UI 线程。",
+      "平台分支集中在边界组件或样式层，避免散落在业务 JSX。",
+      "输出组件结构、样式策略、导航/动画实现、状态覆盖和跨设备验证清单。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "页面/组件目标、状态和平台约束。",
+      "StyleSheet/主题/响应式布局方案。",
+      "导航、深链、手势和 Reanimated 动画实现方案。",
+      "安全区、触控反馈、加载/错误/禁用态和验证矩阵。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "component-code-patterns",
+      source: new URL("./references/component-code-patterns.md", import.meta.url),
+      target: "references/component-code-patterns.md",
+      title: "React Native 组件代码模式",
+      summary: "React Native StyleSheet 卡片、Reanimated CTA 和 React Navigation 栈的最小代码示例。",
+      loadWhen: "需要快速查看 RN 样式、动画或导航基础代码模式时读取。",
+    }),
     defineReference({
       id: "navigation-patterns",
       source: new URL("./references/navigation-patterns.md", import.meta.url),

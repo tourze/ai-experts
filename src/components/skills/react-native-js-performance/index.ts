@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { reactNativeDesignSkill } from "../react-native-design/index";
 
@@ -53,9 +56,38 @@ export const reactNativeJsPerformanceSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 release 真机数据定位 React Native JS 线程瓶颈，并按症状选择列表、输入、动画、渲染或内存优化路径。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先在 release 构建和真机上用 Perf Monitor 或 Flashlight 记录优化前 FPS/帧耗时。",
+      "读取 `js-diagnosis-path` reference，根据症状选择首选参考和升级路径。",
+      "区分 JS 线程和 UI 线程掉帧；列表、输入、动画、页面切换、内存泄漏和首屏慢分别处理。",
+      "大列表先用 FlatList/FlashList 虚拟化并调 `windowSize`、`initialNumToRender`、`maxToRenderPerBatch`。",
+      "动画和手势优先迁移到 Reanimated/UI 线程；高频输入考虑非受控组件或 deferred value。",
+      "优化后在同一设备和场景复测，记录指标、剩余瓶颈和下一步。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "优化前后的 FPS/帧耗时数据和测试环境。",
+      "症状分类、默认怀疑和选用 reference。",
+      "列表、输入、动画、渲染或内存优化动作。",
+      "复测结果、残留风险和后续排查路径。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "js-diagnosis-path",
+      source: new URL("./references/js-diagnosis-path.md", import.meta.url),
+      target: "references/js-diagnosis-path.md",
+      title: "React Native JS 性能诊断路径",
+      summary: "按症状选择 React Native JS 线程性能参考资料，并包含 FlatList/deferred value 调优示例。",
+      loadWhen: "需要根据卡顿症状选择性能排查路径，或快速查看列表调优代码示例时读取。",
+    }),
     defineReference({
       id: "images",
       source: new URL("./references/images/", import.meta.url),

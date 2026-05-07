@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const reactNativeTurbomoduleSkill = defineSkill({
@@ -46,7 +49,28 @@ export const reactNativeTurbomoduleSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "按 React Native New Architecture 设计 typed Spec、codegen、Android/iOS 原生实现和 JS 消费层封装。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认模块能力、同步/异步边界、平台支持、错误模型、数据结构和兼容要求。",
+      "读取 `spec-definition` reference 定义 TypeScript Spec、codegenConfig 和 TurboModuleRegistry 边界。",
+      "Android 实现读取 `android-kotlin-impl`，iOS 实现读取 `ios-objcpp-impl`，确保命名、类型和错误处理一致。",
+      "读取 `js-consumer-wrapper` reference，为业务层封装稳定 API，不让原生细节泄漏到页面。",
+      "验证 codegen 产物、链接、平台编译和 JS 调用路径。",
+      "输出 Spec、原生实现清单、JS wrapper、测试方法和迁移风险。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Typed Spec、codegenConfig 和 TurboModuleRegistry 设计。",
+      "Android Kotlin 与 iOS ObjC++ 实现边界。",
+      "JS 消费层 wrapper、错误模型和类型合同。",
+      "编译/codegen/运行验证和迁移风险。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

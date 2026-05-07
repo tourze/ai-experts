@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const reactNativePlatformForkSkill = defineSkill({
@@ -46,7 +49,28 @@ export const reactNativePlatformForkSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把 React Native 跨平台差异收敛到边界文件、Platform.select、适配器或 Metro 自定义平台，而不是散落在业务 JSX 中。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认平台差异类型：样式值、API 能力、组件实现、导航流程、原生模块或完整平台目标。",
+      "小型值差异读取 `platform-select-values`，用 `Platform.select` 收敛到样式/配置层。",
+      "组件或 API 差异读取 `boundary-file-pattern` 和 `adapter-interface`，把分叉放到边界文件或接口适配层。",
+      "自定义平台后缀或非 iOS/Android 目标读取 `metro-custom-platforms`，确认 resolver 扩展顺序。",
+      "避免在业务组件内部散落 `Platform.OS`，并保持类型合同一致。",
+      "输出分叉边界、共享代码、平台专属文件和验证矩阵。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "平台差异分类和分叉策略选择。",
+      "边界文件、Platform.select、适配器接口或 Metro 自定义平台方案。",
+      "共享代码与平台专属代码清单。",
+      "类型合同、测试矩阵和维护风险。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

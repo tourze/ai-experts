@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const reactNativeMetroConfigSkill = defineSkill({
@@ -46,7 +49,28 @@ export const reactNativeMetroConfigSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 React Native Metro 配置 monorepo、resolver、平台扩展和 CI 性能优化，避免打包器边界失控。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认项目结构、包管理器、workspace 边界、平台扩展、CI 环境和当前 Metro 报错/性能症状。",
+      "monorepo 或 workspace 问题读取 `monorepo-config` reference，核对 `watchFolders`、resolver 和重复依赖。",
+      "自定义平台后缀读取 `custom-platform-exts` reference，确认扩展顺序和平台目标。",
+      "CI 慢或缓存不稳定读取 `ci-performance-config` reference，拆分 Metro、node_modules 和构建缓存。",
+      "验证配置不会引入重复 React/RN、错误 symlink 解析或平台文件优先级错乱。",
+      "输出 Metro 配置变更、风险、验证命令和回滚方式。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Metro 问题类型、项目结构和 resolver 约束。",
+      "monorepo/watchFolders/custom platform/CI 配置方案。",
+      "重复依赖、平台扩展顺序和缓存风险检查。",
+      "验证命令、性能对比和回滚方案。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

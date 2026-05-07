@@ -1,4 +1,6 @@
-## 代码模式
+# React Native 组件代码模式
+
+## 稳定 StyleSheet 卡片
 
 ```tsx
 import { StyleSheet, Text, View } from "react-native";
@@ -39,6 +41,8 @@ export function ProfileCard() {
 }
 ```
 
+## Reanimated CTA
+
 ```tsx
 import Animated, {
   useAnimatedStyle,
@@ -70,6 +74,8 @@ export function AnimatedCTA() {
   );
 }
 ```
+
+## Native Stack
 
 ```tsx
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
