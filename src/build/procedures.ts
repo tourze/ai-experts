@@ -39,7 +39,7 @@ export type ProcedureRuntimeBuildResult = {
   procedures: ProcedureManifestEntry[];
 };
 
-const runtimeEntryId = "virtual:ai-experts-procedure-runtime-entry";
+const runtimeEntryId = "virtual:ai-experts-procedures";
 
 function normalizeSeparators(path: string): string {
   return path.replaceAll("\\", "/");
@@ -79,6 +79,13 @@ function toStableProcedureSourcePath(procedure: ProcedureDefinition): string {
 
 function checksum(content: string): string {
   return createHash("sha256").update(content).digest("hex");
+}
+
+function canonicalizeProcedureBundleSource(source: string): string {
+  return source.replace(
+    /(?:\.\.\/)*[^"'\n]*ai-experts-procedure-webpack-[^/"'\n]+\/procedure-runtime-entry\.ts/gu,
+    runtimeEntryId,
+  );
 }
 
 function toManifestEntry(procedure: RuntimeProcedureModule, bundleTarget: string): ProcedureManifestEntry {
@@ -593,8 +600,8 @@ async function emitBundledProceduresFile(
         ],
       },
       optimization: {
-        moduleIds: "deterministic",
-        chunkIds: "deterministic",
+        moduleIds: "named",
+        chunkIds: "named",
         minimize: false,
         concatenateModules: false,
         splitChunks: false,
@@ -613,7 +620,11 @@ async function emitBundledProceduresFile(
   } finally {
     rmSync(tempDir, { recursive: true, force: true });
   }
-  return readFileSync(join(root, "procedures.js"), "utf-8");
+  const proceduresFile = join(root, "procedures.js");
+  const bundledSource = readFileSync(proceduresFile, "utf-8");
+  const canonicalSource = canonicalizeProcedureBundleSource(bundledSource);
+  if (canonicalSource !== bundledSource) writeFileSync(proceduresFile, canonicalSource, "utf-8");
+  return canonicalSource;
 }
 
 function collectPlatformProcedures(componentSurface: ComponentSurface, platform: PlatformType): ProcedureDefinition[] {

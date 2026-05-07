@@ -80,6 +80,14 @@ function parseGeneratedToml(source: string, label: string): ParsedGeneratedToml 
   return parsed;
 }
 
+function buildComponents(outDir: string): void {
+  execFileSync(
+    process.execPath,
+    ["--import", "tsx/esm", "src/build.ts", "--out-dir", outDir],
+    { cwd: repoRoot, encoding: "utf-8" },
+  );
+}
+
 beforeAll(() => {
   tmpDistDir = mkdtempSync(join(tmpdir(), "ai-experts-component-build-"));
 
@@ -93,11 +101,7 @@ beforeAll(() => {
   assert.doesNotMatch(packageJson.scripts["build:components"], /src\/build-components/);
   assert.doesNotMatch(packageJson.scripts["build:components"], /build-components\.mjs/);
 
-  execFileSync(
-    process.execPath,
-    ["--import", "tsx/esm", "src/build.ts", "--out-dir", tmpDistDir],
-    { cwd: repoRoot, encoding: "utf-8" },
-  );
+  buildComponents(tmpDistDir);
 }, 60_000);
 
 afterAll(() => {
@@ -152,6 +156,30 @@ describe("component build integration", () => {
     assert.equal(existsSync(join(tmpDistDir, "claude/rules")), false);
     assert.equal(existsSync(join(tmpDistDir, "codex/rules")), false);
   });
+
+  test("emits reproducible manifests and procedure bundles", () => {
+    const firstDistDir = mkdtempSync(join(tmpdir(), "ai-experts-repro-a-"));
+    const secondDistDir = mkdtempSync(join(tmpdir(), "ai-experts-repro-b-"));
+    try {
+      buildComponents(firstDistDir);
+      buildComponents(secondDistDir);
+      for (const platform of ["claude", "codex"]) {
+        assert.equal(
+          readFileSync(join(firstDistDir, platform, "procedures.js"), "utf-8"),
+          readFileSync(join(secondDistDir, platform, "procedures.js"), "utf-8"),
+          `${platform} procedure bundle should be reproducible`,
+        );
+        assert.equal(
+          readFileSync(join(firstDistDir, platform, "manifest.json"), "utf-8"),
+          readFileSync(join(secondDistDir, platform, "manifest.json"), "utf-8"),
+          `${platform} manifest should be reproducible`,
+        );
+      }
+    } finally {
+      rmSync(firstDistDir, { recursive: true, force: true });
+      rmSync(secondDistDir, { recursive: true, force: true });
+    }
+  }, 120_000);
 
   test("emits parseable codex TOML configs", () => {
     const codexManifest = JSON.parse(readFileSync(join(tmpDistDir, "codex/manifest.json"), "utf-8"));
