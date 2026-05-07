@@ -3,6 +3,8 @@ import {
   KnownTool,
   Platform,
   defineSkill,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const speckitStatusSkill = defineSkill({
@@ -18,6 +20,29 @@ export const speckitStatusSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "扫描 `.specify/features/*`。",
+      `对每个 feature 统计：
+   - \`spec.md\` 是否存在
+   - \`plan.md\` 是否存在
+   - \`tasks.md\` 完成率（\`[x] / [ ] / [/]\`）
+   - \`<feature>/checklists/requirements.md\` 完成率`,
+      `标记阻塞项：
+   - 待澄清标记
+   - 缺关键文档
+   - 长期未推进任务`,
+      "输出看板与优先处理建议。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    title: "输出格式",
+    body: `\`\`\`markdown
+# Speckit 状态看板
+| Feature | 阶段 | 完成度 | 阻塞 |
+|---|---:|---:|---|
+\`\`\``,
+  }),
   tools: [],
 });

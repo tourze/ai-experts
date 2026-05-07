@@ -3,6 +3,8 @@ import {
   KnownTool,
   Platform,
   defineSkill,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const speckitDiffSkill = defineSkill({
@@ -18,6 +20,33 @@ export const speckitDiffSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  workflow: defineSkillWorkflow({
+    steps: [
+      `参数解析：
+   - 两个路径：直接比较
+   - 一个路径：与 \`HEAD\` 比较
+   - 无参数：定位当前 feature 的 \`spec.md\` 与 \`HEAD\` 比较`,
+      "读取新旧版本内容。",
+      "按章节输出语义差异：新增、删除、修改、重排。",
+      "对每项变化给出影响判断：需求范围/技术成本/测试影响。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    title: "输出模板",
+    body: `\`\`\`markdown
+# 文档差异报告
+
+## 汇总
+- 新增: X
+- 删除: Y
+- 修改: Z
+
+## 章节明细
+### <章节>
+- 变化：...
+- 影响：...
+\`\`\``,
+  }),
   tools: [],
 });
