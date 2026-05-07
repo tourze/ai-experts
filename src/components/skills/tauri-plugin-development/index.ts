@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const tauriPluginDevelopmentSkill = defineSkill({
@@ -44,7 +47,28 @@ export const tauriPluginDevelopmentSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "按 Tauri v2 插件约定设计 Builder、生命周期、平台拆分、状态、命令、JS API 和最小权限。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认插件名称、宿主配置项、目标平台、命令面、权限范围和 JS 包边界。",
+      "读取 `plugin-dev-patterns` reference，搭建插件目录、Builder 入口、生命周期钩子和权限文件。",
+      "桌面/移动平台拆成 `desktop.rs` / `mobile.rs`，公共 trait 定义统一接口。",
+      "通过 `Builder.setup()` 注入状态，命令参数保持 camelCase JS API 与 Rust 结构同步。",
+      "权限放在 `permissions/`，`default.toml` 只包含最小默认集，capability 显式引用。",
+      "输出 Rust crate、JS API、权限、宿主注册方式和测试检查点。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "插件目录结构、Builder 入口和生命周期钩子。",
+      "桌面/移动拆分、公共 trait 和状态管理设计。",
+      "命令注册、JS API、参数命名和错误结构。",
+      "权限文件、capability 引用、宿主集成和测试清单。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

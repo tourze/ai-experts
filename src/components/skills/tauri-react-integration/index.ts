@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const tauriReactIntegrationSkill = defineSkill({
@@ -49,7 +52,28 @@ export const tauriReactIntegrationSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把 Tauri v2 IPC、事件生命周期、React 状态、Router 深链接和错误边界集成成可维护的前端边界。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认 React 前端路由、状态边界、IPC 调用点、事件订阅点和错误展示策略。",
+      "读取 `react-integration-patterns` reference，封装 `useInvoke`、`useTauriEvent` 和 IPC 错误边界。",
+      "读取 `deeplink-state-sync-patterns` reference，处理 Rust `on_open_url`、React Router 和状态同步事件。",
+      "确保前端不调用 Node.js API，系统能力都通过 `invoke()` 或 Tauri JS API。",
+      "Rust 状态变更后显式 `emit()`，React 订阅 cleanup 必须 `unlisten()` 并处理卸载竞态。",
+      "输出 hooks、类型合同、错误状态、深链接路由和同步测试点。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "React/Tauri 边界、IPC 调用点和事件订阅点。",
+      "`useInvoke`、`useTauriEvent`、错误边界和 cleanup 设计。",
+      "深链接处理、状态同步和 Router 集成方案。",
+      "TypeScript 类型合同、CSP/WebView 限制和验证清单。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const tauriIpcPatternsSkill = defineSkill({
@@ -44,7 +47,28 @@ export const tauriIpcPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 Tauri v2 设计结构化错误、事件、Channel<T>、多窗口路由、二进制传输和批量命令等高级 IPC 模式。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先判断通信模式：`invoke()` 请求响应、`emit()` 事件广播、`Channel<T>` 高频流或二进制传输。",
+      "读取 `ipc-advanced-patterns` reference，按需求选择结构化错误、判别联合事件、多窗口路由或批量命令。",
+      "把 Rust 错误序列化为结构化 JSON，并同步前端 TypeScript 类型。",
+      "多窗口数据必须用 `emit_to()` 或 `emit_filter()` 精确路由，避免广播隐私数据。",
+      "超过 1ms 的同步命令改 async；高频消息用 Channel，批量操作合并往返。",
+      "输出权限、事件类型、命令签名、错误结构和前端封装建议。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "IPC 模式选择和吞吐/路由理由。",
+      "Rust 命令、事件、错误结构和权限设计。",
+      "前端 TypeScript 类型、调用封装和 cleanup 策略。",
+      "性能、隐私、多窗口和批量化风险检查。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const tauriBuildPackagingSkill = defineSkill({
@@ -50,7 +53,28 @@ export const tauriBuildPackagingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把 Tauri v2 桌面应用构建、签名、公证、更新、sidecar 和 CI 分发配置成可复现的发布流水线。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认目标平台、安装器格式、签名证书、CI 环境、自动更新需求和外部二进制/资源清单。",
+      "读取 `build-packaging-patterns` reference，配置 bundle、resources、sidecar、updater、公证和平台签名。",
+      "检查密钥边界：私钥和证书只通过 CI secrets 注入，仓库只保留公钥和非敏感配置。",
+      "按平台分别验证 macOS 签名/公证/装订、Windows Authenticode/SmartScreen、Linux 包格式和依赖。",
+      "优化 release profile、缓存策略和构建矩阵，确保干净环境能复现产物。",
+      "输出发布前检查清单、CI 变量、构建命令和失败回滚路径。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "平台构建/分发矩阵和 bundle 配置。",
+      "签名、公证、updater、sidecar 和资源访问配置。",
+      "CI secrets、缓存、release profile 和构建命令。",
+      "发布前验证清单、失败排查和回滚方案。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

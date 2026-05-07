@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const tauriV2Skill = defineSkill({
@@ -60,9 +63,38 @@ export const tauriV2Skill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "搭建或排查 Tauri v2 应用骨架、命令注册、capability 权限、插件接入、IPC 和平台分支。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认任务类型：新建骨架、命令/IPC、插件权限、capability、移动端、运行时特性、签名更新或故障排查。",
+      "保持 `main.rs` 为薄入口，核心构建器、命令注册、插件注册和状态注入放在 `lib.rs::run()`；代码片段读取 `quick-patterns` reference。",
+      "每个 `#[tauri::command]` 都进入 `generate_handler!`，async 参数使用拥有所有权的类型。",
+      "调用核心 JS API 或插件 JS API 时，核对 capability、permission、scope 和目标窗口。",
+      "按专题读取 reference：capability、IPC、插件、updater、advanced runtime 或 README 索引。",
+      "交付前运行 `cargo tauri info` 和目标平台构建命令，验证 beforeDev/beforeBuild、签名和更新配置。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Tauri v2 项目骨架、`main.rs`/`lib.rs` 分层和命令注册方案。",
+      "capability、permission、scope、插件注册和平台分支检查。",
+      "IPC、事件、Channel、State 和窗口访问设计。",
+      "构建/更新验证命令、排查结果和剩余风险。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "quick-patterns",
+      source: new URL("./references/quick-patterns.md", import.meta.url),
+      target: "references/quick-patterns.md",
+      title: "Tauri v2 快速代码模式",
+      summary: "Tauri v2 main/lib 分层、invoke 调用、capability JSON 和窗口访问的常用代码模式。",
+      loadWhen: "需要快速查看 Tauri v2 骨架代码、命令注册、前端 invoke 或 capability 示例时读取。",
+    }),
     defineReference({
       id: "advanced-runtime-reference",
       source: new URL("./references/advanced-runtime-reference.md", import.meta.url),

@@ -1,6 +1,6 @@
-## 代码模式
+# Tauri v2 快速代码模式
 
-### 模式 1：`main.rs` 保持薄入口，`lib.rs` 负责命令注册
+## 模式 1：`main.rs` 薄入口，`lib.rs` 负责命令注册
 
 ```rust
 // src-tauri/src/main.rs
@@ -34,7 +34,7 @@ const greeting = await invoke<string>("greet", { name: "World" });
 console.log(greeting);
 ```
 
-### 模式 2：capability JSON 与窗口获取
+## 模式 2：capability JSON 与窗口获取
 
 ```json
 {
@@ -60,7 +60,7 @@ fn focus_main_window(app: tauri::AppHandle) -> Result<(), String> {
 }
 ```
 
-### 模式 3-4
+## 继续展开
 
-- 插件 + capability 注册：见 [plugin-reference.md](references/plugin-reference.md) 和 [capabilities-reference.md](references/capabilities-reference.md)
-- `Channel<T>` 流式消息、`State<T>` 共享状态、窗口访问：见 [ipc-patterns.md](references/ipc-patterns.md) 和 [advanced-runtime-reference.md](references/advanced-runtime-reference.md)
+- 插件 + capability 注册：见 [plugin-reference.md](plugin-reference.md) 和 [capabilities-reference.md](capabilities-reference.md)。
+- `Channel<T>` 流式消息、`State<T>` 共享状态、窗口访问：见 [ipc-patterns.md](ipc-patterns.md) 和 [advanced-runtime-reference.md](advanced-runtime-reference.md)。
