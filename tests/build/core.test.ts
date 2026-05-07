@@ -8,7 +8,6 @@ import {
   copyComponentPath,
   defaultReferenceTarget,
   displayPath,
-  ensureDir,
   isSameOrInsidePath,
   needsRuntimeJsExtension,
   nodeScriptBanner,
@@ -16,7 +15,6 @@ import {
   readComponentText,
   readOptionalComponentText,
   removeFiles,
-  renderDiscoveredHooksIndex,
   renderHookMatcher,
   renderToolMatcher,
   repoRoot,
@@ -124,23 +122,8 @@ describe("build/core", () => {
     expect(tomlMultiline("a\nb")).toContain("'''");
   });
 
-  test("hook index discovery and matcher rendering", () => {
+  test("hook matcher rendering and reference targets", () => {
     const componentsRoot = createTempDir("ai-experts-hooks-index-");
-    ensureDir(join(componentsRoot, "hooks", "session-start"));
-    ensureDir(join(componentsRoot, "hooks", "_shared"));
-    writeText(
-      join(componentsRoot, "hooks", "session-start", "alpha.ts"),
-      "import { defineHook } from '../../sdk';\nexport const alphaHook = defineHook({ id: 'alpha', platforms: [], event: 'SessionStart', entry: new URL('./alpha.ts', import.meta.url), description: 'x' });\n",
-    );
-    writeText(
-      join(componentsRoot, "hooks", "_shared", "ignored.ts"),
-      "export const ignoredHook = defineHook({});\n",
-    );
-    writeText(join(componentsRoot, "hooks", "index.ts"), "placeholder");
-    const source = renderDiscoveredHooksIndex(componentsRoot);
-    expect(source).toContain("import { alphaHook as hook0 }");
-    expect(source).not.toContain("ignoredHook");
-    expect(source).toContain("readonly HookDefinition[]");
 
     expect(renderToolMatcher(KnownTool.Bash)).toBe("Bash");
     expect(renderToolMatcher({ kind: "mcp", server: "x" })).toBe("mcp__x__.*");

@@ -117,36 +117,6 @@ export function stripBundledSourcePathComments(file: string): void {
   }
 }
 
-export function renderDiscoveredHooksIndex(componentsRoot: string): string {
-  const hooksRoot = join(componentsRoot, "hooks");
-  const hookFiles = collectFiles(hooksRoot, (file) =>
-    file.endsWith(".ts") &&
-    basename(file) !== "index.ts" &&
-    !relative(hooksRoot, file).split("\\").join("/").startsWith("_shared/")
-  );
-  const imports: string[] = [];
-  const values: string[] = [];
-  for (const [index, file] of hookFiles.entries()) {
-    const source = readFileSync(file, "utf-8");
-    const match = source.match(/export\s+const\s+([A-Za-z0-9_$]+)\s*=\s*defineHook\s*\(/u);
-    const exportName = match?.[1];
-    if (!exportName) continue;
-    const alias = `hook${index}`;
-    let specifier = relative(hooksRoot, file).split("\\").join("/").replace(/\.ts$/u, "");
-    if (!specifier.startsWith(".")) specifier = `./${specifier}`;
-    imports.push(`import { ${exportName} as ${alias} } from ${JSON.stringify(specifier)};`);
-    values.push(alias);
-  }
-  return [
-    ...imports,
-    "",
-    'import type { HookDefinition } from "../sdk";',
-    "",
-    `export const componentHooks: readonly HookDefinition[] = [${values.join(", ")}];`,
-    "",
-  ].join("\n");
-}
-
 export function toAbsolutePath(source: ComponentFile): string {
   if (source instanceof URL) return fileURLToPath(source);
   if (typeof source === "string") return resolve(repoRoot, source);

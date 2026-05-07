@@ -504,7 +504,7 @@ describe("component source conventions", () => {
     assert.doesNotMatch(
       generatedRegistrySource,
       /from\s+"\.\/hooks\//,
-      "registry.generated.ts should not manually import hooks; build discovers hooks from src/components/hooks",
+      "registry.generated.ts should not import hooks; hooks are registered through src/components/hooks/index.ts",
     );
 
     const removedLayer = ["migr", "ated"].join("");
