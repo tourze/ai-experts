@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { systemDiagnosticsSkill } from "../system-diagnostics/index";
 
@@ -53,6 +56,24 @@ export const networkTroubleshooterSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "按链路层、IP、路由、DNS、端口和应用层分层定位 Linux 网络故障，并给出失败点和支撑命令。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先采样 `ip -br addr`、`ip route`、DNS 配置和目标主机/端口，明确症状是 timeout、refused、解析失败还是 TLS/应用错误。",
+      "先用 IP 验证连通性，再用域名验证，拆开路由和 DNS；默认网关、公网 IP、目标域名依次检查。",
+      "端口层用监听状态、`ss`、`/dev/tcp` 或等效探测确认；应用层用 `curl -v`、`openssl s_client` 或日志确认。",
+      "需要改防火墙、路由或 sysctl 时先读取当前配置并征得确认；间歇问题要长时采样。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "网络路径分层证据：接口、路由、DNS、端口、TLS/应用层。",
+      "明确失败点、支撑命令、stderr/返回码摘要和已排除层级。",
+      "建议修复动作、需确认的配置变更和需要系统诊断的资源信号。",
+    ],
+  }),
   tools: [],
 });

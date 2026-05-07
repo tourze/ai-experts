@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const redisPitfallDiagnosticsSkill = defineSkill({
@@ -49,7 +52,25 @@ export const redisPitfallDiagnosticsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把 Redis 诡异行为或稳定性问题映射到命令语义、内存/持久化、复制/故障切换和版本/配置差异四个根因面。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先收集时间窗、实例角色、Redis 版本、调用方、key 类型、元素数、`INFO`、`CONFIG GET`、`SLOWLOG` 和命令调用点。",
+      "先归类到命令语义、内存/持久化、复制/故障切换、版本/配置差异；每个结论都保留可证伪假设。",
+      "TTL 异常重点检查 `SET` 未带 EX/PX/EXAT/PXAT/KEEPTTL 覆盖旧值；big key 删除前量化 `TYPE`、`MEMORY USAGE` 和元素数。",
+      "主从/持久化问题必须说明异步复制、AOF/RDB RPO/RTO、rewrite/fork COW 余量和 replica 配置一致性；命令模板读取 code-patterns reference。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Redis 现场证据、实例角色、版本、配置、慢查询、key 量化和调用点。",
+      "按四个根因面的假设分类、证据强度、反证方式和风险等级。",
+      "安全修复路径、删除/限流/替换命令策略、复制或持久化 RPO/RTO 说明。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

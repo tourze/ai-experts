@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { networkTroubleshooterSkill } from "../network-troubleshooter/index";
 
@@ -50,7 +53,25 @@ export const systemDiagnosticsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用只读命令采样 Linux 主机基础状态，输出原始指标、解释性结论和下一步专用排障入口。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先记录主机名、采样时间、发行版、内核、启动时长和负载，命令失败时记录错误并继续。",
+      "采样 CPU/负载、内存、磁盘、网络接口、失败服务、Top CPU/内存进程、socket 摘要和最近错误日志。",
+      "报告同时给出原始指标和解释性结论，不偷偷安装软件、改配置或重启服务。",
+      "磁盘不足读取 disk-cleanup reference；性能瓶颈读取 performance-optimizer；网络问题转 network-troubleshooter。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "主机基础信息、资源采样、失败服务、Top 进程、网络接口和日志异常。",
+      "每项指标的正常/异常解释、命令失败记录和 stderr 摘要。",
+      "下一步专用技能、参考资料或只读复查命令。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { redisCachingPatternsSkill } from "../redis-caching-patterns/index";
 import { redisClusterHaSkill } from "../redis-cluster-ha/index";
@@ -18,7 +21,6 @@ export const redisDataModelingSkill = defineSkill({
     "排行榜、计数器、消息队列、UV 统计等典型场景的结构选择和键设计。",
     "多服务共享 Redis 实例，需要统一键命名规范、TTL 策略和生命周期管理。",
     "跨进程互斥：订单支付、库存扣减、幂等提交、定时任务单实例执行。",
-    "缓存刷新互斥保护，联动 `redis-caching-patterns`；集群部署联动 `redis-cluster-ha`。",
   ],
   constraints: [
     "**数据结构选型**\n- String 用于简单值和原子计数器（INCR），单 value 建议不超过 10 KB。\n- Hash 用于部分字段读写，字段数 ≤128 且值 ≤64B 时用 listpack 更省内存。\n- ZSet score 是 double，精度有限；高精度排序用 score:timestamp 组合。\n- Stream 消费者组必须显式 XACK，未确认消息留在 PEL 导致内存增长。\n- 选结构前必须明确访问模式（点查 / 范围 / 排序 / 聚合），不仅看数据形状。",
@@ -42,13 +44,13 @@ export const redisDataModelingSkill = defineSkill({
       get id() {
         return redisClusterHaSkill.id;
       },
-      reason: "缓存刷新互斥保护，联动 `redis-caching-patterns`；集群部署联动 `redis-cluster-ha`。",
+      reason: "需要考虑 Cluster slot、hash tag、multi-key 操作或高可用拓扑时联动。",
     },
     {
       get id() {
         return redisCachingPatternsSkill.id;
       },
-      reason: "缓存刷新互斥保护，联动 `redis-caching-patterns`；集群部署联动 `redis-cluster-ha`。",
+      reason: "需要把键设计、TTL 和互斥锁落到缓存读写策略时联动。",
     },
   ],
   antiPatterns: [
@@ -75,7 +77,25 @@ export const redisDataModelingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 Redis 功能选择合适数据结构、键命名、TTL 生命周期和分布式锁模式，避免大 key、阻塞命令和锁误删。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认访问模式：点查、范围、排序、聚合、队列、计数、互斥或幂等；不要只按数据形状选结构。",
+      "按 String/Hash/List/Set/ZSet/Stream 的约束选择结构，并量化单值 10KB、集合 5000 元素等阈值。",
+      "键名使用 `{service}:{object_type}:{id}`，临时键必须 TTL+jitter，永久键要登记；生产遍历用 `SCAN`。",
+      "分布式锁用 `SET key value NX EX seconds` 和唯一 owner token，释放时 Lua 校验；Redlock 需评估独立实例、时钟和多数派。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "数据结构选择、访问模式、键命名、TTL 策略和大 key 阈值。",
+      "分布式锁获取/释放合同、owner token、watchdog/超时和 Redlock 适用性说明。",
+      "需要读取数据结构、键设计、锁或代码模式 references 的实现点。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

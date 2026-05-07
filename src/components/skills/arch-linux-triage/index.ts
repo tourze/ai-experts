@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { networkTroubleshooterSkill } from "../network-troubleshooter/index";
 import { systemDiagnosticsSkill } from "../system-diagnostics/index";
@@ -56,6 +59,24 @@ export const archLinuxTriageSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "按 Arch Linux 的滚动升级和包管理约束排障，先保留系统、内核、pacman 与 systemd 证据，再决定修复动作。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先采样 `cat /etc/os-release`、`uname -a`、`systemctl --failed`、`journalctl -b -p err..alert` 和 `/var/log/pacman.log`。",
+      "确认内核包、运行内核、最近一次升级时间和失败服务状态；AUR 与官方仓库问题分开归因。",
+      "包损坏先用 `pacman -Qikk <pkg>` 验证；升级修复必须走完整 `pacman -Syu`，禁止单独 `pacman -Sy`。",
+      "引导、initramfs 或显卡驱动问题再检查 `mkinitcpio -P`、`bootctl status` 或 GRUB 生成结果。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "发行版、内核、失败服务、pacman 最近记录和升级/回滚时间线。",
+      "官方仓库、AUR、内核/initramfs、引导、驱动或网络问题的归因证据。",
+      "最小修复动作、风险、回滚点和需要转给 system/network skill 的条件。",
+    ],
+  }),
   tools: [],
 });

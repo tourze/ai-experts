@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { redisDataModelingSkill } from "../redis-data-modeling/index";
 
@@ -56,7 +59,25 @@ export const redisCachingPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计或排查 Redis 缓存读写策略、击穿/穿透/雪崩防护和删缓存补偿，保护数据库前置缓存层。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认读写路径、数据源真源、热点 key、TTL 策略、不存在 key 行为和删除失败补偿。",
+      "cache-aside 读路径保持 check cache、miss、query DB、set cache；写路径先写 DB 再删缓存。",
+      "高并发热点用 `SET key value NX EX seconds` 做互斥刷新；穿透防御用短 TTL 空值缓存或布隆过滤器。",
+      "所有 TTL 加随机抖动；具体代码实现和补偿模式读取 code-patterns reference。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "缓存模式选择、读写路径、TTL+jitter、热点 key 和穿透/击穿/雪崩防护设计。",
+      "删缓存失败补偿、重试/监听机制、互斥刷新锁和不存在 key 策略。",
+      "需要联动 redis-data-modeling 的键设计、锁 owner token 或数据结构问题。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

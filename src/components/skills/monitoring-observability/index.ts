@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { logAnalyzerSkill } from "../log-analyzer/index";
 
@@ -52,7 +55,25 @@ export const monitoringObservabilitySkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计指标、日志、告警、健康检查和 runbook 基线，让系统稳定性问题有可追踪证据链和明确响应路径。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认业务目标、SLO、告警接收人、升级路径和系统边界事件。",
+      "围绕延迟、流量、错误率、饱和度定义指标；控制标签基数，不把 user_id、订单号等放进 label。",
+      "结构化日志保留 trace/request id，生产默认 INFO；ERROR 只用于需要人工介入的事件，敏感字段必须脱敏。",
+      "健康检查区分 live、ready、依赖降级和不可用；服务探测细节读取 service-monitor reference。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Golden Signals、SLO、指标标签、日志字段、trace/request id 和健康检查语义。",
+      "告警规则、等级、通知对象、静默窗口、runbook 链接和降级策略。",
+      "高基数风险、敏感日志风险、边界事件覆盖缺口和后续验证点。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({
