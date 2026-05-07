@@ -12,7 +12,7 @@
 
 事实源在 `src/components/`，默认构建产物在 `dist/claude/` 与 `dist/codex/`。仓库根的 `CLAUDE.md` 与 `AGENTS.md` 是指向本文件的 symlink；构建产物里的 `CLAUDE.md` / `AGENTS.md` 由 `src/components/instructions/` 生成。
 
-当前组件规模：338 个 skill、80 个 agent、99 个 hook。
+当前组件规模：337 个 skill、80 个 agent、99 个 hook。
 
 ## 快速开始
 

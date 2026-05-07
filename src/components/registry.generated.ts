@@ -208,7 +208,6 @@ import { evaluatingNewTechnologySkill } from "./skills/evaluating-new-technology
 import { financialAnalystSkill } from "./skills/financial-analyst/index";
 import { fundraiseAdvisorSkill } from "./skills/fundraise-advisor/index";
 import { funnelArchitectSkill } from "./skills/funnel-architect/index";
-import { legalRiskAssessmentSkill } from "./skills/legal-risk-assessment/index";
 import { marketSizingAnalysisSkill } from "./skills/market-sizing-analysis/index";
 import { meetingInsightsAnalyzerSkill } from "./skills/meeting-insights-analyzer/index";
 import { opportunitySolutionTreeSkill } from "./skills/opportunity-solution-tree/index";
@@ -628,7 +627,6 @@ export const componentSkills = [
   financialAnalystSkill,
   fundraiseAdvisorSkill,
   funnelArchitectSkill,
-  legalRiskAssessmentSkill,
   marketSizingAnalysisSkill,
   meetingInsightsAnalyzerSkill,
   opportunitySolutionTreeSkill,
