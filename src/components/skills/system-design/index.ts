@@ -7,6 +7,7 @@ import {
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
+import { taskDecomposerSkill } from "../task-decomposer/index";
 
 export const systemDesignSkill = defineSkill({
   id: "system-design",
@@ -15,7 +16,7 @@ export const systemDesignSkill = defineSkill({
   useCases: [
     "适合系统设计题、平台方案、服务拆分、API 设计、数据模型和可靠性策略。",
     "适合把业务目标转成组件、数据流、协议、状态和扩展路线。",
-    "交叉引用：数据系统细节配合 [references/ddia-systems.md](references/ddia-systems.md)；计划化落地配合 `task-decomposer`。",
+    "适合需要按 Reference Map 深挖数据系统细节和扩展权衡的方案。",
   ],
   constraints: [
     "必须先问清功能需求、非功能需求和约束，再谈架构。",
@@ -42,6 +43,14 @@ export const systemDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
+  relatedSkills: [
+    {
+      get id() {
+        return taskDecomposerSkill.id;
+      },
+      reason: "系统方案需要转成可执行任务、依赖关系或 Execution Contract 时联动。",
+    },
+  ],
   workflow: defineSkillWorkflow({
     steps: [
       "先澄清功能需求、非功能需求、规模、团队约束、成本边界和不可接受的失败模式。",

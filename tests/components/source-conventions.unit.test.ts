@@ -654,6 +654,11 @@ describe("component source conventions", () => {
         /\]\(\.\.\/[^)]+\/SKILL\.md\)|\]\([a-z0-9-]+-expert:[a-z0-9-]+\)/,
         `${skillSourceFile} should not contain explicit cross-skill links; set relatedSkills instead`,
       );
+      assert.doesNotMatch(
+        source,
+        /交叉引用：/,
+        `${skillSourceFile} should move cross-skill routing text to relatedSkills`,
+      );
 
       const relatedSkillsSource = extractPropertyArray(source, "relatedSkills");
       if (relatedSkillsSource) {

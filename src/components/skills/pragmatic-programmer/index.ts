@@ -7,6 +7,8 @@ import {
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
+import { refactoringPatternsSkill } from "../refactoring-patterns/index";
+import { softwareDesignSkill } from "../software-design/index";
 
 export const pragmaticProgrammerSkill = defineSkill({
   id: "pragmatic-programmer",
@@ -15,7 +17,7 @@ export const pragmaticProgrammerSkill = defineSkill({
   useCases: [
     "适合方案取舍、代码评审、流程纠偏和开发习惯校准。",
     "适合回答“现在该用多重抽象、该不该一次做大、如何降低不可逆决策”。",
-    "交叉引用：代码层面的动作配合 `refactoring-patterns`；复杂度治理配合 `software-design`。",
+    "适合把务实原则转成当前决策的最小可验证动作。",
   ],
   constraints: [
     "原则是为了降低复杂度和反馈成本，不是为了凑口号。",
@@ -42,6 +44,20 @@ export const pragmaticProgrammerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
+  relatedSkills: [
+    {
+      get id() {
+        return refactoringPatternsSkill.id;
+      },
+      reason: "原则判断需要落到具体重构手法、代码异味或重构序列时联动。",
+    },
+    {
+      get id() {
+        return softwareDesignSkill.id;
+      },
+      reason: "需要从耦合、抽象、复杂度或设计原则层面治理方案时联动。",
+    },
+  ],
   workflow: defineSkillWorkflow({
     steps: [
       "先明确当前决策、约束、不可逆点、反馈周期和要避免的复杂度。",

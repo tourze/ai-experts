@@ -19,6 +19,7 @@ import {
   appStoreOptimizationReviewAnalyzer,
   procedureUse,
 } from "../../procedures/index";
+import { appleAppstoreReviewerSkill } from "../apple-appstore-reviewer/index";
 
 export const appStoreOptimizationSkill = defineSkill({
   id: "app-store-optimization",
@@ -44,7 +45,6 @@ export const appStoreOptimizationSkill = defineSkill({
     "关键词分析优先用 `app-store-optimization-keyword-analyzer`，竞品对标优先用 `app-store-optimization-competitor-analyzer`。",
     "评论洞察用 `app-store-optimization-review-analyzer`，不要把低星评论直接等同于真实需求。",
     "发版准备使用 `app-store-optimization-launch-checklist`，测试规划使用 `app-store-optimization-ab-test-planner`。",
-    "交叉引用：需要审核合规视角时切到 `apple-appstore-reviewer`。",
   ],
   antiPatterns: [
     defineAntiPattern({
@@ -63,6 +63,14 @@ export const appStoreOptimizationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
+  relatedSkills: [
+    {
+      get id() {
+        return appleAppstoreReviewerSkill.id;
+      },
+      reason: "ASO 或发版文案需要进入审核合规、拒审风险或 reviewer notes 视角时联动。",
+    },
+  ],
   workflow: defineSkillWorkflow({
     steps: [
       "先确认平台、市场、应用类别、目标用户、当前元数据、关键词、评分评论、竞品和可用转化数据。",

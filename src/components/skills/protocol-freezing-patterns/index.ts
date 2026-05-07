@@ -7,6 +7,8 @@ import {
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
+import { errorHandlingPatternsSkill } from "../error-handling-patterns/index";
+import { systemDesignSkill } from "../system-design/index";
 
 export const protocolFreezingPatternsSkill = defineSkill({
   id: "protocol-freezing-patterns",
@@ -14,7 +16,7 @@ export const protocolFreezingPatternsSkill = defineSkill({
   description: "在需要管理协议版本冻结、线格式演进、向后兼容、版本协商和 breaking change 流程时使用。",
   useCases: [
     "需要冻结已部署协议字段或在不破坏旧客户端前提下演进消息结构。",
-    "交叉引用：系统级设计配合 `system-design`；错误处理配合 `error-handling-patterns`。",
+    "需要设计版本标签、版本化信封、兼容矩阵和 breaking change 流程。",
   ],
   constraints: [
     "已部署字段的线上表示不可变（类型、位置、编码）。",
@@ -48,6 +50,20 @@ export const protocolFreezingPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
+  relatedSkills: [
+    {
+      get id() {
+        return systemDesignSkill.id;
+      },
+      reason: "协议演进需要放回系统边界、服务职责、数据流或可靠性设计中判断时联动。",
+    },
+    {
+      get id() {
+        return errorHandlingPatternsSkill.id;
+      },
+      reason: "版本协商、未知字段、兼容失败或 breaking change 需要错误语义和降级策略时联动。",
+    },
+  ],
   workflow: defineSkillWorkflow({
     steps: [
       "盘点已部署消息、字段、编码、版本标签、客户端版本和兼容性承诺。",

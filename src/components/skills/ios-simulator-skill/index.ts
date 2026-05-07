@@ -7,6 +7,8 @@ import {
   defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, iosSimulatorSkillAccessibilityAudit, iosSimulatorSkillAppLauncher, iosSimulatorSkillAppStateCapture, iosSimulatorSkillBuildAndTest, iosSimulatorSkillClipboard, iosSimulatorSkillGesture, iosSimulatorSkillKeyboard, iosSimulatorSkillLogMonitor, iosSimulatorSkillNavigator, iosSimulatorSkillPrivacyManager, iosSimulatorSkillPushNotification, iosSimulatorSkillScreenMapper, iosSimulatorSkillSimHealthCheck, iosSimulatorSkillSimList, iosSimulatorSkillSimctlBoot, iosSimulatorSkillSimctlCreate, iosSimulatorSkillSimctlDelete, iosSimulatorSkillSimctlErase, iosSimulatorSkillSimctlShutdown, iosSimulatorSkillSimulatorSelector, iosSimulatorSkillStatusBar, iosSimulatorSkillTestRecorder, iosSimulatorSkillVisualDiff } from "../../procedures/index";
+import { appleAppstoreReviewerSkill } from "../apple-appstore-reviewer/index";
+import { swiftuiPerformanceAuditSkill } from "../swiftui-performance-audit/index";
 
 export const iosSimulatorSkillSkill = defineSkill({
   id: "ios-simulator-skill",
@@ -29,7 +31,6 @@ export const iosSimulatorSkillSkill = defineSkill({
     "每次交互前先看 `procedure ios-simulator-skill-screen-mapper` 或 `procedure ios-simulator-skill-navigator --list`，不要盲点。",
     "需要日志时确认参数名：`procedure ios-simulator-skill-log-monitor` 用 `--device-udid`，不是 `--udid`。",
     "需要结构化输出时统一使用 `--json`；需要完整参数时直接跑对应 Procedure 的 `--help`。",
-    "交叉引用：性能瓶颈排查看 `swiftui-performance-audit`；审核流程复现看 `apple-appstore-reviewer`。",
   ],
   antiPatterns: [
     defineAntiPattern({
@@ -48,6 +49,20 @@ export const iosSimulatorSkillSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
+  relatedSkills: [
+    {
+      get id() {
+        return swiftuiPerformanceAuditSkill.id;
+      },
+      reason: "模拟器复现发现 SwiftUI 列表、动画、主线程或状态更新性能瓶颈时联动。",
+    },
+    {
+      get id() {
+        return appleAppstoreReviewerSkill.id;
+      },
+      reason: "需要把模拟器证据用于提审前审核路径复现或拒审风险审查时联动。",
+    },
+  ],
   workflow: defineSkillWorkflow({
     steps: [
       "先跑 `procedure ios-simulator-skill-sim-health-check`，确认 Xcode、`xcrun simctl`、Node.js 和可用 runtime。",

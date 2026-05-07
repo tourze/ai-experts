@@ -7,6 +7,8 @@ import {
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
+import { complexityReducerSkill } from "../complexity-reducer/index";
+import { refactoringPatternsSkill } from "../refactoring-patterns/index";
 
 export const techDebtSkill = defineSkill({
   id: "tech-debt",
@@ -16,7 +18,6 @@ export const techDebtSkill = defineSkill({
     "适合代码健康盘点、重构优先级排序和维护 backlog 整理。",
     "适合回答“先还哪些债最划算、为什么”。",
     "适合遗留系统治理、重构路线图、债务预算争取和版本节奏协调。",
-    "交叉引用：落到代码整改时配合 `complexity-reducer` 或 `refactoring-patterns`。",
   ],
   constraints: [
     "债项必须归类：代码、架构、测试、依赖、文档、基础设施。",
@@ -49,6 +50,20 @@ export const techDebtSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
+  relatedSkills: [
+    {
+      get id() {
+        return complexityReducerSkill.id;
+      },
+      reason: "债务治理需要先量化复杂度热点或降低复杂函数、模块和调用链时联动。",
+    },
+    {
+      get id() {
+        return refactoringPatternsSkill.id;
+      },
+      reason: "债务项需要落到具体重构手法、测试接缝或分步整改序列时联动。",
+    },
+  ],
   workflow: defineSkillWorkflow({
     steps: [
       "先收集债项并按代码、架构、测试、依赖、文档、基础设施分类；债项多时先按模块或领域分组。",

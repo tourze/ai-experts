@@ -7,6 +7,9 @@ import {
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
+import { liquidGlassDesignSkill } from "../liquid-glass-design/index";
+import { macosDesignGuidelinesSkill } from "../macos-design-guidelines/index";
+import { swiftuiUiPatternsSkill } from "../swiftui-ui-patterns/index";
 
 export const iosHigDesignSkill = defineSkill({
   id: "ios-hig-design",
@@ -28,7 +31,6 @@ export const iosHigDesignSkill = defineSkill({
     "文本是否全部使用语义样式，且在大字号下不截断关键文案。",
     "导航是否遵循 iOS 习惯：返回、编辑、搜索、sheet、popover 都有清晰归属。",
     "图标、色彩、权限弹窗前文案是否和系统语义一致。",
-    "交叉引用：SwiftUI 具体实现细节看 `swiftui-ui-patterns`；液态玻璃外观看 `liquid-glass-design`；Mac 端界面看 `macos-design-guidelines`。",
     "是否按问题类型读取 Reference Map 中的专题资料，而不是把 HIG 规则凭印象泛化。",
   ],
   antiPatterns: [
@@ -52,6 +54,26 @@ export const iosHigDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
+  relatedSkills: [
+    {
+      get id() {
+        return swiftuiUiPatternsSkill.id;
+      },
+      reason: "需要把 iOS HIG 决策落到 SwiftUI 导航、状态、表单或工具栏实现时联动。",
+    },
+    {
+      get id() {
+        return liquidGlassDesignSkill.id;
+      },
+      reason: "需要处理 iOS 液态玻璃外观、层级、材质或可读性时联动。",
+    },
+    {
+      get id() {
+        return macosDesignGuidelinesSkill.id;
+      },
+      reason: "目标平台转为 Mac、Mac Catalyst 或需要比较桌面端 HIG 差异时联动。",
+    },
+  ],
   workflow: defineSkillWorkflow({
     steps: [
       "先确认目标设备、iPhone / iPad 形态、导航层级、主要任务流和是否涉及权限、输入、Widget 或系统集成。",

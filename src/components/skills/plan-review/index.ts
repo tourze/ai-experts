@@ -7,6 +7,8 @@ import {
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
+import { systemDesignSkill } from "../system-design/index";
+import { taskDecomposerSkill } from "../task-decomposer/index";
 
 export const planReviewSkill = defineSkill({
   id: "plan-review",
@@ -15,7 +17,7 @@ export const planReviewSkill = defineSkill({
   useCases: [
     "适合评审方案是否可落地、是否漏边界、是否高估团队能力或低估依赖。",
     "适合在投入编码前做一轮“会在哪翻车”的压力测试。",
-    "交叉引用：需要任务化输出时配合 `task-decomposer`；还没做系统设计时先用 `system-design`。",
+    "适合把计划风险、依赖、回滚和验证路径分档输出。",
   ],
   constraints: [
     "评审对象必须是计划或方案，不要在没有计划时假装评审。",
@@ -42,6 +44,20 @@ export const planReviewSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
+  relatedSkills: [
+    {
+      get id() {
+        return taskDecomposerSkill.id;
+      },
+      reason: "评审后需要把方案拆成任务板、依赖关系或 Execution Contract 时联动。",
+    },
+    {
+      get id() {
+        return systemDesignSkill.id;
+      },
+      reason: "计划缺少系统边界、组件、数据流或关键架构权衡时联动。",
+    },
+  ],
   workflow: defineSkillWorkflow({
     steps: [
       "先确认评审对象是计划、方案或 RFC；没有计划时先要求补计划，不假装评审。",
