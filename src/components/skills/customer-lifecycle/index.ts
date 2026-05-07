@@ -6,6 +6,8 @@ import {
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
+import { bcgMatrixSkill } from "../bcg-matrix/index";
+import { designingGrowthLoopsSkill } from "../designing-growth-loops/index";
 
 export const customerLifecycleSkill = defineSkill({
   id: "customer-lifecycle",
@@ -15,7 +17,7 @@ export const customerLifecycleSkill = defineSkill({
     "客户价值分层：按 CLV / 利润贡献切层（铂金/金/铁/铅）。",
     "客户生命周期：从观望-激活-扩展-续约-赢回，按阶段定营销动作。",
     "产品 PLC：判断产品所处阶段（导入/成长/成熟/衰退），匹配策略与投入。",
-    "与 `s-curve-growth` 配合：S 曲线看动力学，本 skill 看运营策略。",
+    "与 `designing-growth-loops` 配合：增长阶段和 S 曲线看动力学，本 skill 看运营策略。",
   ],
   constraints: [
     "价值分层依据是**利润贡献（CLV）**，不是收入或频次。高收入低利润可能是铅层。",
@@ -23,7 +25,7 @@ export const customerLifecycleSkill = defineSkill({
     "健康度三看：① 铂+金层利润占比 ② 铅层占比 ③ 层级流动性。",
     "产品 PLC 与客户生命周期是两条不同轴，分析时不要混用。",
     "不同阶段营销重点完全不同：用成熟期方法做导入期 = 浪费。",
-    "不适用场景：客户数 < 100 样本不足以分层；纯 PLG/自助产品用产品内分群；多产品组合资源分配转 `bcg-matrix`；增长拐点判断转 `s-curve-growth`。",
+    "不适用场景：客户数 < 100 样本不足以分层；纯 PLG/自助产品用产品内分群；多产品组合资源分配转 `bcg-matrix`；增长拐点判断转 `designing-growth-loops`。",
   ],
   checklist: [
     "分层依据是利润贡献（CLV），不是收入。",
@@ -32,6 +34,20 @@ export const customerLifecycleSkill = defineSkill({
     "准确判断了产品所处 PLC 阶段，策略与阶段匹配。",
     "考虑了下一阶段过渡准备（成熟期前布局下一代）。",
     "产品 PLC 与客户 LC 分别分析，没有混淆。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return bcgMatrixSkill.id;
+      },
+      reason: "多产品组合资源分配、业务优先级排序或 BCG/GE 矩阵分析时联动。",
+    },
+    {
+      get id() {
+        return designingGrowthLoopsSkill.id;
+      },
+      reason: "需要判断增长阶段、S 曲线拐点或增长飞轮动力学时联动。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

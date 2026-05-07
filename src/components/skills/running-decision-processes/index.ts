@@ -7,6 +7,7 @@ import {
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
+import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
 import { planningUnderUncertaintySkill } from "../planning-under-uncertainty/index";
 
 export const runningDecisionProcessesSkill = defineSkill({
@@ -16,7 +17,7 @@ export const runningDecisionProcessesSkill = defineSkill({
   useCases: [
     "多方分歧、迟迟无法拍板、需要明确决策人和输入边界。",
     "需要补充经验参考时可阅读 [references/guest-insights.md](references/guest-insights.md)。",
-    "做失败预演或事前验尸（pre-mortem）时，可配合 `inversion-strategist` 与 `planning-under-uncertainty`。",
+    "做失败预演或事前验尸（pre-mortem）时，可配合 `first-principles-decomposer` 与 `planning-under-uncertainty`。",
     "需要把争议证据转成先验、后验、行动阈值和敏感性报告时，配合 `what-if-oracle`。",
   ],
   constraints: [
@@ -33,9 +34,15 @@ export const runningDecisionProcessesSkill = defineSkill({
   relatedSkills: [
     {
       get id() {
+        return firstPrinciplesDecomposerSkill.id;
+      },
+      reason: "需要反推失败路径、拆解关键假设或做事前验尸时联动。",
+    },
+    {
+      get id() {
         return planningUnderUncertaintySkill.id;
       },
-      reason: "做失败预演或事前验尸（pre-mortem）时，可配合 `inversion-strategist` 与 `planning-under-uncertainty`。",
+      reason: "高不确定性决策需要情景、触发条件和可逆性设计时联动。",
     },
   ],
   antiPatterns: [

@@ -7,6 +7,9 @@ import {
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
+import { competitiveIntelligenceSkill } from "../competitive-intelligence/index";
+import { copywritingSkill } from "../copywriting/index";
+import { croMethodologySkill } from "../cro-methodology/index";
 
 export const customerResearchSkill = defineSkill({
   id: "customer-research",
@@ -21,7 +24,7 @@ export const customerResearchSkill = defineSkill({
     "结论必须有原始引用支撑，禁止凭空编造 persona。",
     "每次明确当前模式：分析已有素材 vs. 在线挖掘。",
     "所有洞察标注置信度（高/中/低）和样本量。",
-    "文案任务改用 `copywriting`；页面优化改用 `page-cro`；竞品分析配合 `competitive-teardown`。",
+    "文案任务改用 `copywriting`；页面优化改用 `cro-methodology`；竞品分析配合 `competitive-intelligence`。",
   ],
   checklist: [
     "明确了当前模式（素材分析 / 在线挖掘）。",
@@ -40,6 +43,26 @@ export const customerResearchSkill = defineSkill({
       fail: "只看好评",
       pass: "全谱覆盖",
     }),
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return copywritingSkill.id;
+      },
+      reason: "用户目标转为营销页面文案、价值主张、CTA 或落地页段落撰写时联动。",
+    },
+    {
+      get id() {
+        return croMethodologySkill.id;
+      },
+      reason: "用户目标转为页面转化诊断、CRO 实验假设或落地页优化时联动。",
+    },
+    {
+      get id() {
+        return competitiveIntelligenceSkill.id;
+      },
+      reason: "用户目标转为竞品情报、市场定位、battlecard 或竞品深拆时联动。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

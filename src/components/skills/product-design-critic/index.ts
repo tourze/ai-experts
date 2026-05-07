@@ -16,7 +16,7 @@ export const productDesignCriticSkill = defineSkill({
   description: "当用户要批判性审视软件产品界面、交互流程、信息层级、信任感或治理暴露时使用（产品策略级设计审视）。像素级 UI 实现质量审查用 `frontend-design-review`；交互可用性启发式诊断用 `ux-heuristics`。",
   useCases: [
     "评审页面、工作流、卡片、配置面板、聊天体验或多角色治理界面。",
-    "需要结合用户路径和竞争上下文时，可配合 `customer-journey-map`、`obviously-awesome` 与 `competitive-teardown`。",
+    "需要结合用户路径和竞争上下文时，可配合 `customer-journey-map` 与 `competitive-intelligence`。",
   ],
   constraints: [
     "先讲用户任务、关键决策和风险暴露，再讲样式层建议。",
@@ -34,13 +34,13 @@ export const productDesignCriticSkill = defineSkill({
       get id() {
         return competitiveIntelligenceSkill.id;
       },
-      reason: "需要结合用户路径和竞争上下文时，可配合 `customer-journey-map`、`obviously-awesome` 与 `competitive-teardown`。",
+      reason: "需要竞争定位、竞品深拆或市场上下文校验产品设计判断时联动。",
     },
     {
       get id() {
         return customerJourneyMapSkill.id;
       },
-      reason: "需要结合用户路径和竞争上下文时，可配合 `customer-journey-map`、`obviously-awesome` 与 `competitive-teardown`。",
+      reason: "需要把页面或流程评审放回端到端用户路径与关键触点时联动。",
     },
   ],
   antiPatterns: [

@@ -16,7 +16,7 @@ export const portersFiveForcesSkill = defineSkill({
   description: "当用户要做行业吸引力分析、判断竞争压力、供应商/买方权力或替代威胁时使用；适合市场进入、战略评估和商业环境诊断。",
   useCases: [
     "新行业进入评估、市场格局判断、战略机会复盘。",
-    "与内部能力/执行风险结合分析时，可配合 `swot-analysis` 或 `competitive-teardown`。",
+    "与内部能力/执行风险结合分析时，可配合 `swot-analysis`；需要单一竞品深拆时配合 `competitive-intelligence`。",
     "补充分析框架：[references/3c-strategic-triangle.md](references/3c-strategic-triangle.md) — 3C 战略三角（客户-公司-竞争对手）；[references/strategy-clock.md](references/strategy-clock.md) — 战略钟（定价-价值定位）。",
   ],
   constraints: [
@@ -35,14 +35,13 @@ export const portersFiveForcesSkill = defineSkill({
       get id() {
         return competitiveIntelligenceSkill.id;
       },
-      label: "competitive-teardown",
-      reason: "与内部能力/执行风险结合分析时，可配合 `swot-analysis` 或 `competitive-teardown`。",
+      reason: "需要从行业结构下钻到具体竞品、battlecard 或竞品深拆时联动。",
     },
     {
       get id() {
         return swotAnalysisSkill.id;
       },
-      reason: "与内部能力/执行风险结合分析时，可配合 `swot-analysis` 或 `competitive-teardown`。",
+      reason: "需要把行业结构判断连接到内部优势、劣势和执行风险时联动。",
     },
   ],
   antiPatterns: [

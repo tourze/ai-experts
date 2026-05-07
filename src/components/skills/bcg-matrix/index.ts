@@ -43,8 +43,7 @@ export const bcgMatrixSkill = defineSkill({
       get id() {
         return designingGrowthLoopsSkill.id;
       },
-      label: "s-curve-growth",
-      reason: "单产品公司：BCG/GE 都是多业务组合工具。用 `s-curve-growth` 判断生命阶段。",
+      reason: "单产品公司不适合用组合矩阵时，需要判断增长阶段、S 曲线或增长飞轮动力学时联动。",
     },
   ],
   antiPatterns: [

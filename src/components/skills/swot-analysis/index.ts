@@ -16,7 +16,7 @@ export const swotAnalysisSkill = defineSkill({
   description: "当用户要做 SWOT 分析、梳理优势劣势、外部机会威胁与战略动作时使用；适合产品、业务或竞争位置评估。",
   useCases: [
     "产品/公司战略评估、年度复盘、竞品对比或进入新市场前的结构化判断。",
-    "需要看行业结构或具体对手时，可配合 `porters-five-forces` 与 `competitive-teardown`。",
+    "需要看行业结构时配合 `porters-five-forces`；需要具体对手深拆时配合 `competitive-intelligence`。",
     "补充分析框架：[references/blue-ocean-strategy.md](references/blue-ocean-strategy.md) — 蓝海战略（ERRC 网格、策略画布）；[references/space-matrix.md](references/space-matrix.md) — SPACE 矩阵（战略态势定位）。",
   ],
   constraints: [
@@ -35,14 +35,13 @@ export const swotAnalysisSkill = defineSkill({
       get id() {
         return competitiveIntelligenceSkill.id;
       },
-      label: "competitive-teardown",
-      reason: "需要看行业结构或具体对手时，可配合 `porters-five-forces` 与 `competitive-teardown`。",
+      reason: "需要从 SWOT 的机会和威胁下钻到具体竞品、定位或 battlecard 时联动。",
     },
     {
       get id() {
         return portersFiveForcesSkill.id;
       },
-      reason: "需要看行业结构或具体对手时，可配合 `porters-five-forces` 与 `competitive-teardown`。",
+      reason: "需要用行业结构解释外部机会、威胁和利润空间时联动。",
     },
   ],
   antiPatterns: [
@@ -64,7 +63,7 @@ export const swotAnalysisSkill = defineSkill({
       "把 Strength/Weakness 限定为内部能力，把 Opportunity/Threat 限定为外部环境。",
       "为每个点写事实/证据、战略含义和可行动建议，避免口号和偏好。",
       "组合形成 SO/WO/ST/WT 动作，并按影响、可行性、风险和资源约束排序。",
-      "需要行业结构或竞争视角时联动 `porters-five-forces` 或 `competitive-teardown`。",
+      "需要行业结构或竞争视角时联动 `porters-five-forces` 或 `competitive-intelligence`。",
     ],
   }),
   outputs: defineSkillOutputs({

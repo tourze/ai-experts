@@ -682,6 +682,11 @@ describe("component source conventions", () => {
           /相关 skill：|\\\\n/,
           `${skillSourceFile} related skill reasons should be specific sentences, not copied route blobs`,
         );
+        assert.doesNotMatch(
+          relatedSkillsSource,
+          /label:\s*["'`](?:competitive-teardown|go-project-layout|inversion-strategist|s-curve-growth)["'`]/,
+          `${skillSourceFile} related skill labels should not preserve deprecated reference-style aliases`,
+        );
       }
 
       const checklistSource = extractPropertyArray(source, "checklist");

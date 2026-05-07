@@ -37,8 +37,7 @@ export const fishboneDiagramSkill = defineSkill({
       get id() {
         return firstPrinciplesDecomposerSkill.id;
       },
-      label: "inversion-strategist",
-      reason: "系统性风险预判：鱼骨图分析已发生的问题，未来风险预判与事前验尸用 `inversion-strategist`。",
+      reason: "需要反推失败路径、做未来风险预判或事前验尸时联动。",
     },
     {
       get id() {
