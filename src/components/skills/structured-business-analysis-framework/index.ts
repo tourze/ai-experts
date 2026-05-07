@@ -3,6 +3,9 @@ import {
   KnownTool,
   Platform,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { businessModelSkill } from "../business-model/index";
 import { evidenceQualityFrameworkSkill } from "../evidence-quality-framework/index";
@@ -20,8 +23,11 @@ export const structuredBusinessAnalysisFrameworkSkill = defineSkill({
     "需要区分事实、推断和假设，把分析结论的可信度显式标出来",
   ],
   constraints: [
-    "只在本 skill 的适用场景内使用；任务不匹配时先澄清或转向更合适的 skill。",
-    "执行时遵循正文中的流程、红线、检查清单和必要参考资料，不用未经验证的假设替代证据。",
+    "先用 5W2H 收敛问题边界，再进入 MECE 假设树和模型选择。",
+    "假设必须可证伪；不可验证的口号不能作为二级假设。",
+    "每个发现必须标注事实、推断、假设或待确认，禁止把推断写成事实。",
+    "模型按问题类型选择，不按清单堆框架；未使用的相邻模型要写排除理由。",
+    "P0 假设必须有数据来源、验证方法、通过标准和反证信号。",
   ],
   checklist: [
     "问题界定包含 5W2H 七个维度，有明确的\"不回答什么\"。",
@@ -36,29 +42,50 @@ export const structuredBusinessAnalysisFrameworkSkill = defineSkill({
       get id() {
         return businessModelSkill.id;
       },
-      reason: "`business-model`：商业模式分析。",
+      reason: "问题落在商业模式、价值主张、收入结构或 BMC 分析时联动。",
     },
     {
       get id() {
         return mckinseyStepSkill.id;
       },
-      reason: "`mckinsey-7-step`：麦肯锡七步问题解决法。",
+      reason: "需要七步问题解决法的完整项目节奏和汇报结构时联动。",
     },
     {
       get id() {
         return firstPrinciplesDecomposerSkill.id;
       },
-      reason: "`first-principles-decomposer`：第一性原理拆解。",
+      reason: "需要先剥离类比、行业惯例或隐含前提时联动。",
     },
     {
       get id() {
         return evidenceQualityFrameworkSkill.id;
       },
-      reason: "`evidence-quality-framework`：证据质量标注方法论。",
+      reason: "需要更严格的证据质量、来源可信度或结论置信度标注时联动。",
     },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把开放式商业问题收敛为可回答边界、MECE 假设树、证据分层、模型选择和最小验证计划。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "用 5W2H 定义 Why、What、Who、Where、When、How、How much，明确回答什么和不回答什么。",
+      "构建 MECE 假设树：一级分支互不重叠且覆盖问题空间，二级假设每条可验证。",
+      "按 P0/P1/P2 标注假设优先级：>30% 解释力、10-30%、<10%。",
+      "对每个发现标注事实、推断、假设或待确认，并写明来源或缺口。",
+      "按问题类型选模型：宏观 PESTEL、行业五力、竞争 3C、商业模式 BMC、经营健康度记分卡、营销 4P。",
+      "为 P0 假设写最小验证计划：假设、数据来源、验证方法、通过标准、反证信号。",
+      "最终行动建议不超过 3 条，每条带验证指标和停止条件。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "问题界定：5W2H、范围内/范围外、决策者、时间窗、资源和行动阈值。",
+      "分析骨架：MECE 假设树、证据分层表、模型选择和排除理由。",
+      "验证与建议：P0 假设验证计划、反证信号、≤3 条行动建议、指标和停止条件。",
+    ],
+  }),
   tools: [],
 });

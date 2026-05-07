@@ -5,6 +5,9 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const findSkillsSkill = defineSkill({
@@ -38,7 +41,27 @@ export const findSkillsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把用户的任务意图转成可搜索的 skill 查询，验证来源质量后推荐、安装或给出无结果兜底方案。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先理解用户需要：领域、具体任务、是否是常见可复用工作流，以及是否已点名某个 skill。",
+      "优先查 skills.sh leaderboard，判断是否已有高安装量、常见来源或官方维护的 skill。",
+      "leaderboard 未覆盖时运行 `npx skills find <query>`，查询词包含领域和任务动词。",
+      "推荐前验证安装量、来源声誉和源仓库活跃度；<100 安装量默认谨慎。",
+      "给用户展示 skill 名称、用途、安装量、来源、安装命令和 skills.sh 链接。",
+      "用户同意后再安装，可用 `npx skills add <owner/repo@skill> -g -y`；无结果时给通用兜底或建议 `npx skills init`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "搜索意图：领域、任务、关键词、是否已有本地 skill 和查询语句。",
+      "候选 skill 表：名称、来源、安装量、repo 信号、适配理由、风险和安装命令。",
+      "无结果兜底：通用处理建议、创建 skill 的触发条件和下一步。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

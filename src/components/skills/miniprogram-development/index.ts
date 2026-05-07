@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const miniprogramDevelopmentSkill = defineSkill({
@@ -16,8 +19,7 @@ export const miniprogramDevelopmentSkill = defineSkill({
     "需要检查 `project.config.json`、`app.json`、页面级 `.json`、资源路径、`appid` 或构建配置。",
     "需要规划开发者工具调试、预览、上传、真机验证或 `miniprogram-ci` 自动化链路。",
     "代码或需求明确出现 `wx.cloud`、CloudBase、腾讯云开发、云函数、云数据库、云存储等关键词。",
-    "需要继续细化 CloudBase 集成时，先读 [CloudBase 集成参考](references/cloudbase-integration.md)。",
-    "需要继续细化调试、预览、上传流程时，先读 [开发者工具与预览参考](references/devtools-debug-preview.md)。",
+    "需要继续细化 CloudBase 集成、开发者工具调试、预览、上传或 CI 发布流程。",
   ],
   constraints: [
     "默认按“普通微信小程序”处理，除非用户或代码明确表明项目正在使用 CloudBase。",
@@ -47,7 +49,28 @@ export const miniprogramDevelopmentSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "按微信小程序项目结构、页面四件套、CloudBase 边界和开发者工具链路创建、修改或排查小程序。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先读 `project.config.json`，确认 `appid`、`miniprogramRoot`、`compileType`，路径判断以 `miniprogramRoot` 为准。",
+      "新增或排查页面时检查 `.js/.ts`、`.wxml`、`.wxss`、`.json` 四件套，并同步 app.json 路由。",
+      "页面逻辑只放数据与事件，WXML 负责结构，WXSS 负责样式，页面 JSON 负责标题和组件声明。",
+      "只有看到 `wx.cloud.init`、云函数目录或云数据库调用，才进入 CloudBase 约束；初始化放 App.onLaunch 或等价入口。",
+      "检查本地资源、组件引用和分包路径是否真实存在且相对 `miniprogramRoot` 正确。",
+      "调试优先微信开发者工具；无法使用时再用 `miniprogram-ci` 做 npm 构建、预览或上传。",
+      "CloudBase 或发布链路细节按需读取 cloudbase-integration 或 devtools-debug-preview。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "项目入口审计：appid、miniprogramRoot、compileType、app.json、分包和资源路径。",
+      "页面/组件变更清单：四件套、路由同步、模板结构、样式和事件逻辑。",
+      "调试发布计划：开发者工具、真机预览、miniprogram-ci、CloudBase 前置条件和风险。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

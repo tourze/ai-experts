@@ -5,6 +5,9 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { logAnalyzerSkill } from "../log-analyzer/index";
 import { monitoringObservabilitySkill } from "../monitoring-observability/index";
@@ -49,31 +52,51 @@ export const incidentResponseSkill = defineSkill({
       get id() {
         return monitoringObservabilitySkill.id;
       },
-      reason: "`monitoring-observability`：指标/日志/告警设计。",
+      reason: "需要补齐 metrics、logs、traces、告警和 SLO 监控设计时联动。",
     },
     {
       get id() {
         return systemDiagnosticsSkill.id;
       },
-      reason: "`system-diagnostics`：Linux 主机健康检查。",
+      reason: "需要检查 Linux 主机、进程、磁盘、CPU、内存或服务状态时联动。",
     },
     {
       get id() {
         return networkTroubleshooterSkill.id;
       },
-      reason: "`network-troubleshooter`：网络排障。",
+      reason: "症状指向 DNS、TLS、端口、路由、丢包或外部依赖网络问题时联动。",
     },
     {
       get id() {
         return logAnalyzerSkill.id;
       },
-      label: "`log-analyzer`",
-      reason: "``log-analyzer``：日志对齐与错误上下文关联",
+      reason: "需要对齐多源日志、错误上下文和时间窗口以支撑时间线时联动。",
     },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "在事故中先只读诊断、快速分级、建立 UTC 时间线，再提出可逆止血、分层修复和观测补齐。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "Triage 先确认影响面、起始时间、严重度、用户可见症状、上下游依赖和收入/业务影响。",
+      "只读采集服务状态、错误日志、磁盘、端口、进程和最近部署/配置/feature flag 变化。",
+      "生成 2-3 个候选假设，逐个验证和反证；每次只验证一个假设。",
+      "按 P0/P1/P2/P3 分级：核心全阻、核心严重降级、部分异常、非核心异常。",
+      "构建 UTC 时间线，对齐 log、metric、deploy、config change、计划任务和外部事件。",
+      "止血方案只选可逆动作：切流、回滚、限流、降级；写明回滚条件和生效时间。",
+      "根因分析区分触发动作和系统脆弱性，修复路线按短期、本月、季度拆分。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "事故响应报告：事故摘要、诊断过程、时间线、根因分析、止血方案、修复路线、待补观测、范围限制。",
+      "根因记录：症状、触发条件、候选假设、证据、反证、根因和修复建议。",
+      "分级与行动：P0/P1/P2/P3、响应要求、可逆止血、回滚条件和 owner。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({
