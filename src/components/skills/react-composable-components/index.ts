@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { reactPerformanceSkill } from "../react-performance/index";
 
@@ -39,22 +42,43 @@ export const reactComposableComponentsSkill = defineSkill({
       get id() {
         return reactPerformanceSkill.id;
       },
-      reason: "如果问题的根因是\\\\\\\"外部状态订阅导致整棵树频繁重渲染\\\\\\\"，优先看 `react-performance`。",
+      reason: "根因是外部状态订阅、memo 边界或整棵树频繁重渲染时联动。",
     },
   ],
   antiPatterns: [
     defineAntiPattern({
       fail: "用配置型 props（`hasHeader`、`headerActions`）替代 `children` 插槽",
-      pass: "无法表达任意嵌套结构。",
+      pass: "通过 `children`、slots 或 compound components 表达任意嵌套结构。",
     }),
     defineAntiPattern({
       fail: "不透传原生属性",
-      pass: "调用方丢失 `aria-label`、`disabled`、`type` 等能力。",
+      pass: "继承原生 props 并透传 `aria-label`、`disabled`、`type` 等能力。",
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把臃肿 React 组件拆成透明、可组合、可扩展的 UI 原语和局部 compound components。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先标出组件职责、状态来源、渲染分支、布局边界和复用场景；过浅重复不急着抽象。",
+      "优先用 `children`、slots 和 compound components 表达结构，不继续堆布尔 props 或超级配置对象。",
+      "复用型组件默认接受 `className`、`children` 和 `...props`，并继承对应原生元素属性类型。",
+      "包装 DOM 元素默认用 `forwardRef`，保留焦点、测量、滚动和表单能力。",
+      "样式合并要让调用方可预期覆盖默认样式；Tailwind 场景用 `clsx` + `tailwind-merge`。",
+      "共享状态只放在局部 compound components 的 Context 内，业务级全局状态不要塞进组件库。",
+      "需要 compound、render props、插槽或 Context 细节时读取 advanced-patterns。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "组件拆分方案：职责、子组件、slots/children、props 透传、ref 保留和状态归属。",
+      "实现约束：原生属性类型、className 合并、Tailwind 去重、Context 作用域和测试点。",
+      "反抽象判断：哪些重复保留、哪些布尔 props 改为组合、何时转 react-performance。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

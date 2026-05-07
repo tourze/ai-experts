@@ -3,6 +3,9 @@ import {
   KnownTool,
   Platform,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const startupViabilityChecklistSkill = defineSkill({
@@ -24,6 +27,27 @@ export const startupViabilityChecklistSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 12 个维度快速评估创业项目可行性，标注已验证/假设、致命盲区和下一步优先行动。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "逐项标注状态和置信度：想法验证、ICP、市场规模、商业模式、业务健康度、定价、渠道、竞争、融资、团队、用户旅程、不确定性。",
+      "想法验证必须问真实用户、替代方案、不解决后果和 Mom Test 访谈结论。",
+      "市场规模要用至少两种方法交叉验证 TAM/SAM/SOM，不用假设 1% 市占率。",
+      "商业模式检查收入模型、单位经济、CLV/CAC ≥3、毛利率和增长投入承载能力。",
+      "渠道检查主要获客渠道、CAC、是否有 2+ 渠道和 ICP 匹配度。",
+      "竞争检查前三竞品、差异化、壁垒和一句话“为什么选你”。",
+      "最后收敛最大的 3 个不确定性、验证计划、pivot 方向和现金流跑道。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "创业项目评估：Strong/Moderate/Weak 总评、致命盲区、核心优势。",
+      "维度评分表：12 维度、状态、置信度、关键发现和已验证/假设标记。",
+      "致命假设、Top 3 优先行动、验证指标、停止条件和当前阶段不做的事。",
+    ],
+  }),
   tools: [],
 });

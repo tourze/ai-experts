@@ -4,6 +4,9 @@ import {
   Platform,
   defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const sessionFinalizationWorkflowSkill = defineSkill({
@@ -29,7 +32,28 @@ export const sessionFinalizationWorkflowSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把已完成的代码工作推进到可交付状态，覆盖验证、分支收尾、提交审查、会话记录和治理复盘。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "Step 1 自检验证：审查 `git diff --cached`、运行相关验证命令、确认无新增 lint/类型/测试失败、无调试语句和敏感信息。",
+      "Step 2 分支收尾：用 `git status --short` 查遗漏文件，排除无关 hunk，确认分支名与改动一致。",
+      "Step 3 提交：Conventional Commits、跨关注点拆分、`git diff --cached --stat` 确认提交范围。",
+      "Step 4 会话记录：基于 git log/diff/status 采集事实，按 session-record 模板记录完成工作、关键决策、遗留事项和变更文件。",
+      "Step 5 复盘：识别效率瓶颈、方向调整、信息不足和可沉淀规则。",
+      "Step 6 评审响应：逐条处理 PR review，先解决冲突再提交。",
+      "深度复盘只在任务闭合或出现长期规则信号时做，治理建议先去重、量化收益，并经用户确认后再落盘。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "会话终结报告：完成项、改动文件、验证结果、关键决策、未完成项与下次入口。",
+      "治理资产建议：MEMORY ≤5、工作流 ≤2、Skill ≤3、Hooks ≤2，每条含 Why/How 或具体路径。",
+      "不沉淀清单：短期状态、无长期价值观察、未验证治理建议和不落盘原因。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

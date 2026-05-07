@@ -3,6 +3,9 @@ import {
   KnownTool,
   Platform,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const llmAppDesignPipelineSkill = defineSkill({
@@ -23,6 +26,28 @@ export const llmAppDesignPipelineSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用五步 pipeline 设计或优化 LLM 应用，从应用形态、分层设计、eval 到迭代和上线监控形成闭环。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "Step 1 确认应用形态：单 Prompt、多步 Chain、RAG、Agent 或对话，并定义成功指标和目标值。",
+      "成功指标覆盖任务通过率、引用准确率、人工偏好、延迟和成本。",
+      "Step 2 按输入侧、检索、推理、输出四段逐一检查，不跨层归因。",
+      "输入侧处理清洗、截断、意图识别、上下文窗口和多模态输入；RAG 检索处理切块、embedding、索引、top-k、metadata、rerank 和混合检索。",
+      "推理层处理 prompt 结构、few-shot、CoT/ToT/ReAct、温度采样和模型选型；输出层处理 JSON/function/XML、schema 校验、格式修复、去重和引用标注。",
+      "Step 3 设计离线 eval、在线 eval、A/B 和压力测试；rubric 至少覆盖正确性、完整性、安全性三个维度并有 1-5 分描述。",
+      "Step 4 每轮只改一个变量，同一测试集对比，记录改动、假设、baseline、结果和 ROI。",
+      "Step 5 上线准备覆盖延迟 SLA、fallback、缓存/队列、成本预算、token 熔断、内容安全、PII 脱敏和反馈队列。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "LLM 应用设计：应用形态、成功指标、目标值、输入→检索→推理→输出架构。",
+      "各段设计决策：段、决策、理由、备选、绑定 eval case 和 baseline。",
+      "评估与上线：测试集、rubric、优化计划、延迟 SLA、成本预算、安全过滤、监控和风险。",
+    ],
+  }),
   tools: [],
 });
