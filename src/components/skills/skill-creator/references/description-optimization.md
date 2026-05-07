@@ -43,10 +43,12 @@ Remember the trigger mechanism: the model sees available skill names and descrip
 
 ## Packaging
 
-If file presentation tooling is available, package with:
+If file presentation tooling is available, package by calling the `skill-creator-package-skill` procedure command shown in `SKILL.md`, replacing the default empty args with:
 
-```bash
-procedure `skill-creator-package-skill` <path/to/skill-folder>
+```json
+{
+  "args": ["<path/to/skill-folder>"]
+}
 ```
 
 Report the generated `.skill` path and installation instructions appropriate to the environment.

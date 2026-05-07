@@ -1149,16 +1149,28 @@ describe("component build integration", () => {
       );
 
       const sourceProcedureEntrypointReferences: string[] = [];
+      const pseudoProcedureCommands: string[] = [];
       for (const markdownFile of collectFiles(skillsRoot, (file) => file.endsWith(".md"))) {
         const markdown = readFileSync(markdownFile, "utf-8");
         if (/src\/components\/procedures\/sources/.test(markdown)) {
           sourceProcedureEntrypointReferences.push(markdownFile);
+        }
+        if (
+          markdownFile.split(/[\\/]/).includes("references") &&
+          /\bprocedure\s+`[a-z0-9-]+`/.test(markdown)
+        ) {
+          pseudoProcedureCommands.push(markdownFile);
         }
       }
       assert.deepEqual(
         sourceProcedureEntrypointReferences,
         [],
         `${platform} Markdown should not reference source-side procedure entrypoints`,
+      );
+      assert.deepEqual(
+        pseudoProcedureCommands,
+        [],
+        `${platform} reference docs should point to generated procedure commands instead of pseudo procedure syntax`,
       );
 
       const staleAgentScriptCommands: string[] = [];

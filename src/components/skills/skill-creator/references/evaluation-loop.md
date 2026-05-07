@@ -70,10 +70,12 @@ For every run, produce `grading.json`. The viewer expects exact fields:
 
 Do not use `name`, `met`, `details`, or other variants. If an assertion can be checked by script, use a script rather than manual inspection.
 
-Aggregate from the skill-creator directory:
+Aggregate by calling the `skill-creator-aggregate-benchmark` procedure command shown in `SKILL.md`, replacing the default empty args with:
 
-```bash
-procedure `skill-creator-aggregate-benchmark` <workspace>/iteration-N --skill-name <name>
+```json
+{
+  "args": ["<workspace>/iteration-N", "--skill-name", "<name>"]
+}
 ```
 
 This creates `benchmark.json` and `benchmark.md` with pass rate, time, tokens, mean/stddev, and deltas. When hand-writing or inspecting benchmark data, use `schemas.md`.
