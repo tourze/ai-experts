@@ -154,6 +154,16 @@ describe("component source conventions", () => {
     }
   });
 
+  test("skill creator viewer uses platform-neutral review wording", () => {
+    const viewerSource = readFileSync(
+      join(repoRoot, "src/components/skills/skill-creator/eval-viewer/viewer.html"),
+      "utf-8",
+    );
+
+    assert.doesNotMatch(viewerSource, /Claude Code|告诉 Claude|回到 Claude/u);
+    assert.match(viewerSource, /回到当前 CLI 会话告诉代理/u);
+  });
+
   test("cross-platform source names project memory files neutrally", () => {
     const platformSpecificMemoryRefs: string[] = [];
     for (const sourceFile of collectFiles(join(repoRoot, "src/components"))) {
