@@ -4,7 +4,7 @@
 
 ## 输出位置
 
-- 默认输出到 `.claude/docs/ai/<feature-name>/api-handoff.md`。
+- 默认输出到 `docs/ai/<feature-name>/api-handoff.md`。
 - 如果重复生成同一功能，应在文件名或标题中体现版本迭代。
 
 ## 最小结构

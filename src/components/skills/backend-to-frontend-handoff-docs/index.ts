@@ -20,7 +20,7 @@ export const backendToFrontendHandoffDocsSkill = defineSkill({
   constraints: [
     "文档必须以真实实现为准，字段名、状态值、校验规则和错误码不得猜测。",
     "简单 CRUD 可用简版模板，但复杂业务必须补齐业务背景、边界规则和测试场景。",
-    "输出应直接落到 `.claude/docs/ai/<feature-name>/api-handoff.md` 或用户指定路径。",
+    "输出应直接落到 `docs/ai/<feature-name>/api-handoff.md` 或用户指定路径。",
     "不要把“后端如何实现”堆成源码讲解，前端只关心契约和集成行为。",
   ],
   checklist: [
@@ -61,7 +61,7 @@ export const backendToFrontendHandoffDocsSkill = defineSkill({
       "先从控制器、路由、DTO、服务层、错误码和鉴权配置收集事实；缺失信息标为待确认。",
       "按业务背景、Endpoints、DTO、枚举常量、校验规则、业务边界、集成建议组织正文。",
       "复杂业务必须补 JSON 请求/响应形状、字段说明、错误码、分页/排序/缓存/轮询或实时更新规则。",
-      "输出到 `.claude/docs/ai/<feature-name>/api-handoff.md` 或用户指定路径，并注明联调测试场景和已知限制。",
+      "输出到 `docs/ai/<feature-name>/api-handoff.md` 或用户指定路径，并注明联调测试场景和已知限制。",
     ],
   }),
   outputs: defineSkillOutputs({

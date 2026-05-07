@@ -86,6 +86,22 @@ describe("component source conventions", () => {
     );
   });
 
+  test("skill source uses platform-neutral workspace output paths", () => {
+    const platformSpecificDocPaths: string[] = [];
+    for (const sourceFile of collectFiles(join(repoRoot, "src/components/skills"))) {
+      const source = readFileSync(sourceFile, "utf-8");
+      if (/(?:^|[`"'\s])\.(?:claude|codex)\/docs\//.test(source)) {
+        platformSpecificDocPaths.push(relative(repoRoot, sourceFile));
+      }
+    }
+
+    assert.deepEqual(
+      platformSpecificDocPaths,
+      [],
+      "cross-platform skills should write workspace docs under neutral paths such as docs/ai/, not .claude/docs/ or .codex/docs/",
+    );
+  });
+
   test("hooks use the normalized payload contract", () => {
     const sdkSource = readFileSync(join(repoRoot, "src/components/sdk.ts"), "utf-8");
     const hookBuilderSource = readFileSync(join(repoRoot, "src/build/hooks.ts"), "utf-8");
