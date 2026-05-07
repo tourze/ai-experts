@@ -854,6 +854,11 @@ describe("component build integration", () => {
         /\bnode\s+(?:\.\/)?scripts\/[A-Za-z0-9._/-]+\.mjs\b/,
         `${platform} bundled procedures.js should not suggest removed repository-local scripts`,
       );
+      assert.doesNotMatch(
+        platformProceduresSource,
+        /\bis(?:Legacy|Deprecated)[A-Za-z]*(?:Plugin|Component)[A-Za-z]*Root\b|\b--plugins-dir\b|\bplugins-dir\b|plugins\/[^/\s]+\/(?:skills|agents|hooks)\b/u,
+        `${platform} bundled procedures.js should only support the canonical component layout`,
+      );
       assert.match(
         platformProceduresSource,
         /skills\/skill-creator\/assets\/eval-viewer\/viewer\.html/,

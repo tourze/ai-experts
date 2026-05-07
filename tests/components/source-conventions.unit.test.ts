@@ -76,17 +76,18 @@ describe("component source conventions", () => {
     assert.equal(existsSync(join(buildRoot, "scripts.ts")), false);
     assert.equal(existsSync(join(buildRoot, "script-uses.ts")), false);
     assert.doesNotMatch(readFileSync(join(buildRoot, "procedures.ts"), "utf-8"), /__aiExpertsScriptDir/);
-    const deprecatedPluginRootPatterns = [
+    const unsupportedComponentRootPatterns = [
+      /\bis(?:Legacy|Deprecated)[A-Za-z]*(?:Plugin|Component)[A-Za-z]*Root\b/u,
       /\b--plugins-dir\b|\bplugins-dir\b/u,
       /plugins\/[^/\s]+\/(?:skills|agents|hooks)\b/u,
     ];
     for (const procedureSourceFile of procedureSources) {
       const source = readFileSync(procedureSourceFile, "utf-8");
-      for (const pattern of deprecatedPluginRootPatterns) {
+      for (const pattern of unsupportedComponentRootPatterns) {
         assert.doesNotMatch(
           source,
           pattern,
-          `${procedureSourceFile} should use canonical component roots instead of deprecated plugin-root layouts`,
+          `${procedureSourceFile} should use the single canonical src/components layout`,
         );
       }
     }
