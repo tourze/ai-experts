@@ -267,7 +267,7 @@ describe("build/pipeline modules", () => {
     ).toThrow("must define body or sourceDir");
 
     const codexRoot = createTempDir("ai-experts-emit-skill-");
-    await emitSkill(fixture.skill, codexRoot, Platform.Codex, procedureMap);
+    await emitSkill(fixture.skill, codexRoot, Platform.Codex, procedureMap, new Set([fixture.skill.id]));
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "SKILL.md"))).toBe(true);
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "agents", "openai.yaml"))).toBe(true);
     expect(readFileSync(join(codexRoot, "skills", fixture.skill.id, "agents", "openai.yaml"), "utf-8")).toContain(
@@ -727,16 +727,19 @@ describe("build/pipeline modules", () => {
 
     vi.resetModules();
     vi.doMock("../../src/build/main.ts", () => ({ main: vi.fn().mockRejectedValue(new Error("fixture boom")) }));
+    // @ts-expect-error Vite query import is used to force a fresh wrapper module instance.
     await import("../../src/build.ts?case=error-stack");
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     vi.resetModules();
     vi.doMock("../../src/build/main.ts", () => ({ main: vi.fn().mockRejectedValue({ message: "fixture message" }) }));
+    // @ts-expect-error Vite query import is used to force a fresh wrapper module instance.
     await import("../../src/build.ts?case=error-message");
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     vi.resetModules();
     vi.doMock("../../src/build/main.ts", () => ({ main: vi.fn().mockRejectedValue("fixture raw") }));
+    // @ts-expect-error Vite query import is used to force a fresh wrapper module instance.
     await import("../../src/build.ts?case=error-raw");
     await new Promise((resolve) => setTimeout(resolve, 0));
 

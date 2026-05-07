@@ -166,6 +166,6 @@ describe("build/core", () => {
     expect(pathContains("src/github/workflows/ci.yml", ".github/workflows")).toBe(false);
 
     expect(JS_LINT_EXTENSIONS.includes(".mjs")).toBe(true);
-    expect(JS_LINT_EXTENSIONS.some((ext) => ext === "")).toBe(false);
+    expect(JS_LINT_EXTENSIONS.every((ext) => ext.length > 0)).toBe(true);
   });
 });
