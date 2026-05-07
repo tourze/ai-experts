@@ -185,6 +185,9 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     if (skill.invocation === InvocationPolicy.Disabled) {
       throw new Error(`Skill ${skill.id} uses unsupported disabled invocation policy`);
     }
+    if (skill.invocation === InvocationPolicy.ModelOnly && skill.platforms.includes(Platform.Codex)) {
+      throw new Error(`Skill ${skill.id} uses model-only invocation on Codex, which cannot hide explicit skill invocation`);
+    }
     validateTextList(skill, "useCases", "useCase");
     validateTextList(skill, "constraints", "constraint");
     if (skill.body !== undefined && !existsSync(toAbsolutePath(skill.body))) {

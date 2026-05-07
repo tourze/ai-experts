@@ -73,7 +73,7 @@ export const dataVisualizationSkill = defineSkill({
       pass: "柱图",
     }),
   ],
-  invocation: InvocationPolicy.ModelOnly,
+  invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
   workflow: defineSkillWorkflow({

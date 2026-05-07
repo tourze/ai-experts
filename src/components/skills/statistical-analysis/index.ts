@@ -71,7 +71,7 @@ export const statisticalAnalysisSkill = defineSkill({
       pass: "区分观测与因果",
     }),
   ],
-  invocation: InvocationPolicy.ModelOnly,
+  invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
   workflow: defineSkillWorkflow({

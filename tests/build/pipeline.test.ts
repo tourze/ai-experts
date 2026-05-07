@@ -270,6 +270,9 @@ describe("build/pipeline modules", () => {
     await emitSkill(fixture.skill, codexRoot, Platform.Codex, procedureMap);
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "SKILL.md"))).toBe(true);
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "agents", "openai.yaml"))).toBe(true);
+    expect(readFileSync(join(codexRoot, "skills", fixture.skill.id, "agents", "openai.yaml"), "utf-8")).toContain(
+      "allow_implicit_invocation: false",
+    );
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "references", "index.md"))).toBe(true);
     const referenceIndex = readFileSync(join(codexRoot, "skills", fixture.skill.id, "references", "index.md"), "utf-8");
     expect(referenceIndex).toContain("Fixture \\| Ref");
@@ -296,6 +299,22 @@ describe("build/pipeline modules", () => {
       skills: [{ ...fixture.skill, invocation: InvocationPolicy.Disabled }],
     };
     expect(() => validateRegistry(disabledInvocationRegistry)).toThrow("unsupported disabled invocation policy");
+
+    const codexModelOnlyInvocationRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{ ...fixture.skill, invocation: InvocationPolicy.ModelOnly }],
+    };
+    expect(() => validateRegistry(codexModelOnlyInvocationRegistry)).toThrow(
+      "model-only invocation on Codex",
+    );
+
+    const claudeModelOnlyInvocationRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{ ...fixture.skill, invocation: InvocationPolicy.ModelOnly, platforms: [ComponentPlatform.Claude] }],
+      agents: [{ ...fixture.agent, platforms: [ComponentPlatform.Claude] }],
+      hooks: [{ ...fixture.hook, platforms: [ComponentPlatform.Claude] }],
+    };
+    expect(() => validateRegistry(claudeModelOnlyInvocationRegistry)).not.toThrow();
 
     const missingOwnerRegistry: ComponentRegistry = {
       ...fixture.registry,
