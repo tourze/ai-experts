@@ -50,11 +50,11 @@ const WORKFLOW_PATTERNS: any[] = [
 const TRIGGER_RE = /(当.*时(?:候)?使用|在.*时(?:候)?使用|Use when|适用于|用于)/u;
 const SEVERITY_ORDER: Record<string, any> = { critical: 0, high: 1, medium: 2, low: 3 };
 function parseArgs(argv: any): any {
-    const args: Record<string, any> = { pluginsDir: null, json: false, severity: null };
+    const args: Record<string, any> = { skillsDir: null, json: false, severity: null, help: false };
     for (let i = 0; i < argv.length; i += 1) {
         const current = argv[i];
-        if (current === "--plugins-dir") {
-            args.pluginsDir = argv[++i] ?? null;
+        if (current === "--skills-dir" || current === "--plugins-dir") {
+            args.skillsDir = argv[++i] ?? null;
         }
         else if (current === "--json") {
             args.json = true;
@@ -63,26 +63,61 @@ function parseArgs(argv: any): any {
             args.severity = argv[++i] ?? null;
         }
         else if (current === "-h" || current === "--help") {
-            printUsage();
-            process.exit(0);
+            args.help = true;
         }
     }
     return args;
 }
 function printUsage(): any {
     console.log(`Usage:
-  node cso_audit.mjs [--plugins-dir <path>] [--json] [--severity critical|high|medium|low]`);
+  node cso_audit.mjs [--skills-dir <path>] [--json] [--severity critical|high|medium|low]`);
 }
-function findPluginsDir(explicitDir: any): any {
+function directoryExists(path: any): any {
+    return existsSync(path);
+}
+function isSkillsRoot(path: any): any {
+    if (!directoryExists(path))
+        return false;
+    try {
+        return readdirSync(path, { withFileTypes: true }).some((entry: any) => {
+            if (!entry.isDirectory())
+                return false;
+            return existsSync(join(path, entry.name, "SKILL.md"));
+        });
+    }
+    catch {
+        return false;
+    }
+}
+function isLegacyPluginsRoot(path: any): any {
+    if (!directoryExists(path))
+        return false;
+    try {
+        return readdirSync(path, { withFileTypes: true }).some((entry: any) => {
+            if (!entry.isDirectory())
+                return false;
+            return existsSync(join(path, entry.name, "skills"));
+        });
+    }
+    catch {
+        return false;
+    }
+}
+function findSkillsDir(explicitDir: any): any {
     if (explicitDir) {
         const resolved = resolve(explicitDir);
-        return existsSync(resolved) ? resolved : null;
+        return isSkillsRoot(resolved) || isLegacyPluginsRoot(resolved) ? resolved : null;
     }
     let current = dirname(fileURLToPath(import.meta.url));
     while (true) {
-        const candidate = join(current, "plugins");
-        if (existsSync(candidate))
+        if (isSkillsRoot(current))
+            return current;
+        const candidate = join(current, "skills");
+        if (isSkillsRoot(candidate))
             return candidate;
+        const legacyCandidate = join(current, "plugins");
+        if (isLegacyPluginsRoot(legacyCandidate))
+            return legacyCandidate;
         const parent = dirname(current);
         if (parent === current)
             return null;
@@ -148,15 +183,18 @@ function auditDescription(desc: any): any {
     }
     return hits;
 }
-function relativeSkillName(pluginsDir: any, skillFile: any): any {
-    const parts = relative(pluginsDir, skillFile).split(/[\\/]/);
-    const plugin = parts[0];
-    const skill = parts.slice(2, -1).join("/");
-    return `${plugin}/${skill}`;
+function relativeSkillName(skillsDir: any, skillFile: any): any {
+    const parts = relative(skillsDir, skillFile).split(/[\\/]/);
+    if (parts[1] === "skills") {
+        const plugin = parts[0];
+        const skill = parts.slice(2, -1).join("/");
+        return `${plugin}/${skill}`;
+    }
+    return parts.slice(0, -1).join("/");
 }
-function buildReport(pluginsDir: any, severity: any): any {
+function buildReport(skillsDir: any, severity: any): any {
     const minSeverity = SEVERITY_ORDER[severity] ?? 3;
-    const allSkills = collectSkillFiles(pluginsDir);
+    const allSkills = collectSkillFiles(skillsDir);
     const results: any[] = [];
     let passCount = 0;
     const violationCounts = Object.fromEntries(Object.keys(VIOLATIONS).map((key: any) => [key, 0]));
@@ -174,7 +212,7 @@ function buildReport(pluginsDir: any, severity: any): any {
             violationCounts[hit.type] += 1;
         }
         results.push({
-            skill: relativeSkillName(pluginsDir, path),
+            skill: relativeSkillName(skillsDir, path),
             description: desc.length > 150 ? `${desc.slice(0, 150)}...` : desc,
             violations: hits,
         });
@@ -218,18 +256,25 @@ function printHuman(report: any): any {
         console.log();
     }
 }
-function main(): any {
-    const args = parseArgs(process.argv.slice(2));
-    const pluginsDir = findPluginsDir(args.pluginsDir);
-    if (!pluginsDir) {
-        console.error("Error: cannot find component skills directory");
-        process.exit(1);
+export function main(argv: any = process.argv.slice(2)): any {
+    const args = parseArgs(argv);
+    if (args.help) {
+        printUsage();
+        return 0;
     }
-    const report = buildReport(pluginsDir, args.severity);
+    const skillsDir = findSkillsDir(args.skillsDir);
+    if (!skillsDir) {
+        console.error("Error: cannot find component skills directory");
+        return 1;
+    }
+    const report = buildReport(skillsDir, args.severity);
     if (args.json) {
         console.log(JSON.stringify(report, null, 2));
-        return;
+        return 0;
     }
     printHuman(report);
+    return 0;
 }
-main();
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+    process.exitCode = main();
+}

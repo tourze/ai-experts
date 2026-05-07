@@ -418,6 +418,16 @@ describe("component build integration", () => {
       assert.equal(curate.ok, true, curate.result?.stderr);
       assert.match(curate.result.stdout, /curate_skills smoke test passed/);
 
+      const activationAudit = runProcedure(
+        "skill-activation-analyzer-cso-audit",
+        "skill-activation-analyzer",
+        ["--json", "--severity", "critical"],
+      );
+      assert.equal(activationAudit.ok, true, activationAudit.result?.stderr);
+      const activationReport = JSON.parse(activationAudit.result.stdout);
+      assert.equal(activationReport.total, 335);
+      assert.equal(typeof activationReport.pass_rate, "string");
+
       const screenshotOutput = join(runtimeTmp, "screen.png");
       const screenshot = runProcedureWithEnv(
         "screenshot-take-screenshot",
