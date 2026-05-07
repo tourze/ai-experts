@@ -162,7 +162,7 @@ describe("component source conventions", () => {
 
   test("skill creator viewer uses platform-neutral review wording", () => {
     const viewerSource = readFileSync(
-      join(repoRoot, "src/components/skills/skill-creator/eval-viewer/viewer.html"),
+      join(repoRoot, "src/components/skills/skill-creator/assets/eval-viewer/viewer.html"),
       "utf-8",
     );
 
@@ -604,7 +604,9 @@ describe("component source conventions", () => {
     );
     const legacySkillRuntimeDirs = collectFiles(skillRoot, (file) => {
       const parts = file.slice(skillRoot.length + 1).split(/[\\/]/);
-      return ["commands", "hooks", "schemas"].includes(parts[1] ?? "");
+      return ["commands", "hooks", "schemas", "examples", "resources", "prompts", "eval-viewer"].includes(
+        parts[1] ?? "",
+      );
     });
     const misplacedRootArtifacts = collectFiles(skillRoot, (file) => {
       const parts = file.slice(skillRoot.length + 1).split(/[\\/]/);
@@ -619,7 +621,7 @@ describe("component source conventions", () => {
     assert.deepEqual(
       legacySkillRuntimeDirs,
       [],
-      "skill-local commands/, hooks/, and schemas/ directories should move to first-class components, procedures, references, or assets",
+      "skill-local runtime/resource directories should move to first-class components, procedures, references, or assets",
     );
     assert.deepEqual(
       misplacedRootArtifacts,

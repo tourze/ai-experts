@@ -3,6 +3,7 @@ import {
   KnownTool,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
   defineSkillOutputs,
   defineSkillWorkflow,
@@ -35,7 +36,7 @@ export const shadcnUiSkill = defineSkill({
     "新增组件通过 CLI 或受控模板引入，不是随手复制旧代码。",
     "组件样式已映射到项目 token、主题和字体体系。",
     "表单、弹层、表格等复杂组件的依赖都已安装。",
-    "关键示例可对照 `examples/` 与 `resources/` 落地。",
+    "关键示例可对照 `references/examples/` 与 `references/resources/` 落地。",
   ],
   relatedSkills: [
     {
@@ -69,7 +70,7 @@ export const shadcnUiSkill = defineSkill({
       "先检查 `components.json`、路径别名、`cn()`、Tailwind v3/v4 配置、全局样式和包管理器状态。",
       "优先用 shadcn CLI 或受控模板添加组件，不手抄半套源码；需要核对时调用 `shadcn-ui-verify-setup`。",
       "把 Button、Dialog、Form、Table、Toast 等组件映射到项目 token、字体、spacing、主题和交互状态。",
-      "复杂示例优先对照 `examples/`、`resources/` 和 README；迁移或排障时区分 Radix/Base UI、Tailwind 版本和 Registry 来源。",
+      "复杂示例优先对照 `references/examples/`、`references/resources/` 和 README；迁移或排障时区分 Radix/Base UI、Tailwind 版本和 Registry 来源。",
     ],
   }),
   outputs: defineSkillOutputs({
@@ -89,5 +90,23 @@ export const shadcnUiSkill = defineSkill({
   ],
   procedures: [
     procedureUse(shadcnUiVerifySetup),
+  ],
+  references: [
+    defineReference({
+      id: "examples",
+      source: new URL("./references/examples/", import.meta.url),
+      target: "references/examples",
+      title: "shadcn/ui examples",
+      summary: "表单、数据表和认证布局的 shadcn/ui 示例实现。",
+      loadWhen: "需要落地复杂 shadcn/ui 组件组合或对照代码样例时读取。",
+    }),
+    defineReference({
+      id: "resources",
+      source: new URL("./references/resources/", import.meta.url),
+      target: "references/resources",
+      title: "shadcn/ui resources",
+      summary: "项目初始化、组件目录、定制主题和迁移指南。",
+      loadWhen: "需要配置 shadcn/ui、迁移组件库或定制设计 token 时读取。",
+    }),
   ],
 });

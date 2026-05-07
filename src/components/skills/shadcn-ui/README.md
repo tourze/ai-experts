@@ -43,15 +43,16 @@ shadcn/ui is a collection of beautifully designed, accessible, and customizable 
 skills/shadcn-ui/
 ├── SKILL.md              — Core instructions & workflow
 ├── README.md             — This file
-├── examples/             — Example implementations
-│   ├── form-pattern.tsx       — Form with validation
-│   ├── data-table.tsx         — Advanced table with sorting
-│   └── auth-layout.tsx        — Authentication flow
-├── resources/            — Reference documentation
-│   ├── setup-guide.md         — Project initialization
-│   ├── component-catalog.md   — Component reference
-│   ├── customization-guide.md — Theming patterns
-│   └── migration-guide.md     — Migration from other libraries
+├── references/
+│   ├── examples/         — Example implementations
+│   │   ├── form-pattern.tsx       — Form with validation
+│   │   ├── data-table.tsx         — Advanced table with sorting
+│   │   └── auth-layout.tsx        — Authentication flow
+│   └── resources/        — Reference documentation
+│       ├── setup-guide.md         — Project initialization
+│       ├── component-catalog.md   — Component reference
+│       ├── customization-guide.md — Theming patterns
+│       └── migration-guide.md     — Migration from other libraries
 ```
 
 ## How It Works

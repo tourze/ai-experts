@@ -16,7 +16,7 @@ export const marketSizingAnalysisSkill = defineSkill({
   description: "当用户要计算 TAM/SAM/SOM、验证市场空间、支撑商业计划或融资叙事时使用；支持 top-down、bottom-up 和 value theory 三种方法。",
   useCases: [
     "创业立项、融资材料、年度规划或新市场机会评估。",
-    "需要参考 [references/data-sources.md](references/data-sources.md) 与 [examples/saas-market-sizing.md](examples/saas-market-sizing.md)。",
+    "需要参考 [references/data-sources.md](references/data-sources.md) 与 [references/examples/saas-market-sizing.md](references/examples/saas-market-sizing.md)。",
     "与客户画像或融资故事联动时，可配合 `startup-icp-definer` 和 `fundraise-advisor`。",
   ],
   constraints: [
@@ -83,6 +83,14 @@ export const marketSizingAnalysisSkill = defineSkill({
       title: "data-sources.md",
       summary: "市场规模估算的常用数据来源、行业报告渠道和可信度评估方法。",
       loadWhen: "需要查找市场数据来源、确定数据口径或评估数据可信度时读取。",
+    }),
+    defineReference({
+      id: "saas-market-sizing-example",
+      source: new URL("./references/examples/saas-market-sizing.md", import.meta.url),
+      target: "references/examples/saas-market-sizing.md",
+      title: "saas-market-sizing.md",
+      summary: "SaaS TAM/SAM/SOM 的 bottom-up、top-down、value theory 和敏感性分析示例。",
+      loadWhen: "需要一份完整市场规模测算样例或表格结构时读取。",
     }),
   ],
 });

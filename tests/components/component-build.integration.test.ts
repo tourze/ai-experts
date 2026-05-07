@@ -182,6 +182,8 @@ describe("component build integration", () => {
     const codexSkillCreator = readFileSync(join(tmpDistDir, "codex/skills/skill-creator/SKILL.md"), "utf-8");
     assert.doesNotMatch(codexSkillCreator, /skill-creator-run-eval|skill-creator-run-loop/);
     assert.match(codexSkillCreator, /skill-creator-improve-description/);
+    assert.equal(existsSync(join(tmpDistDir, "claude/skills/skill-creator/assets/eval-viewer/viewer.html")), true);
+    assert.equal(existsSync(join(tmpDistDir, "codex/skills/skill-creator/assets/eval-viewer/viewer.html")), true);
     const codexSkillAuthor = readFileSync(join(tmpDistDir, "codex/agents/skill-author.toml"), "utf-8");
     assert.doesNotMatch(codexSkillAuthor, /skill-creator-run-eval|skill-creator-run-loop/);
 
@@ -851,6 +853,16 @@ describe("component build integration", () => {
         platformProceduresSource,
         /\bnode\s+(?:\.\/)?scripts\/[A-Za-z0-9._/-]+\.mjs\b/,
         `${platform} bundled procedures.js should not suggest removed repository-local scripts`,
+      );
+      assert.match(
+        platformProceduresSource,
+        /skills\/skill-creator\/assets\/eval-viewer\/viewer\.html/,
+        `${platform} bundled procedures.js should load the registered skill-creator viewer asset`,
+      );
+      assert.doesNotMatch(
+        platformProceduresSource,
+        /skills\/skill-creator\/eval-viewer\/viewer\.html/,
+        `${platform} bundled procedures.js should not load stale loose skill-creator viewer paths`,
       );
     }
 

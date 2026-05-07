@@ -76,6 +76,11 @@ export const canvasDesignSkill = defineSkill({
       id: "concept-to-image-template",
       source: new URL("./assets/concept-to-image-template.html", import.meta.url),
       target: "assets/concept-to-image-template.html",
-    })
+    }),
+    defineAsset({
+      id: "baoyu-article-illustrator-system",
+      source: new URL("./assets/prompts/baoyu-article-illustrator-system.md", import.meta.url),
+      target: "assets/prompts/baoyu-article-illustrator-system.md",
+    }),
   ],
 });

@@ -115,5 +115,10 @@ export const skillCreatorSkill = defineSkill({
       source: new URL("./assets/eval_review.html", import.meta.url),
       target: "assets/eval_review.html",
     }),
+    defineAsset({
+      id: "eval-viewer",
+      source: new URL("./assets/eval-viewer/viewer.html", import.meta.url),
+      target: "assets/eval-viewer/viewer.html",
+    }),
   ],
 });

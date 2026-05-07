@@ -70,8 +70,8 @@ function getMimeType(path: string): string {
 function resolveViewerTemplatePath(): string {
   const candidates = [
     join(__dirname, "viewer.html"),
-    join(__dirname, "../../../skills/skill-creator/eval-viewer/viewer.html"),
-    join(__dirname, "../../skills/skill-creator/eval-viewer/viewer.html"),
+    join(__dirname, "../../../skills/skill-creator/assets/eval-viewer/viewer.html"),
+    join(__dirname, "../../skills/skill-creator/assets/eval-viewer/viewer.html"),
   ];
   for (const candidate of candidates) {
     if (existsSync(candidate)) return candidate;
