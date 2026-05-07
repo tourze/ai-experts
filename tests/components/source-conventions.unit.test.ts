@@ -15,6 +15,7 @@ import {
   firstNonEmptyLine,
   hasTopLevelHeadingOutsideCodeFence,
   repoRoot,
+  unsupportedAlternateComponentRootPattern,
 } from "./test-helpers";
 
 describe("component source conventions", () => {
@@ -78,11 +79,12 @@ describe("component source conventions", () => {
     assert.doesNotMatch(readme, /优先插入到 `## 反模式`/);
   });
 
-  test("component API exposes procedures without legacy script aliases", () => {
+  test("component API exposes procedures through the single component layout", () => {
     const sdkSource = readFileSync(join(repoRoot, "src/components/sdk.ts"), "utf-8");
     const proceduresIndexSource = readFileSync(join(repoRoot, "src/components/procedures/index.ts"), "utf-8");
     const registrySource = readFileSync(join(repoRoot, "src/components/registry.ts"), "utf-8");
     const buildRoot = join(repoRoot, "src/build");
+    const buildSources = collectFiles(buildRoot, (file) => file.endsWith(".ts"));
     const procedureSources = collectFiles(join(repoRoot, "src/components/procedures/sources"), (file) =>
       file.endsWith(".ts"),
     );
@@ -96,20 +98,20 @@ describe("component source conventions", () => {
     assert.equal(existsSync(join(buildRoot, "scripts.ts")), false);
     assert.equal(existsSync(join(buildRoot, "script-uses.ts")), false);
     assert.doesNotMatch(readFileSync(join(buildRoot, "procedures.ts"), "utf-8"), /__aiExpertsScriptDir/);
-    const unsupportedComponentRootPatterns = [
-      /\bis(?:Legacy|Deprecated)[A-Za-z]*(?:Plugin|Component)[A-Za-z]*Root\b/u,
-      /\b--plugins-dir\b|\bplugins-dir\b/u,
-      /plugins\/[^/\s]+\/(?:skills|agents|hooks)\b/u,
+
+    const layoutAuthoritySources = [
+      join(repoRoot, "src/components/sdk.ts"),
+      join(repoRoot, "src/components/procedures/index.ts"),
+      join(repoRoot, "src/components/registry.ts"),
+      ...buildSources,
+      ...procedureSources,
     ];
-    for (const procedureSourceFile of procedureSources) {
-      const source = readFileSync(procedureSourceFile, "utf-8");
-      for (const pattern of unsupportedComponentRootPatterns) {
-        assert.doesNotMatch(
-          source,
-          pattern,
-          `${procedureSourceFile} should use the single canonical src/components layout`,
-        );
-      }
+    for (const sourceFile of layoutAuthoritySources) {
+      assert.doesNotMatch(
+        readFileSync(sourceFile, "utf-8"),
+        unsupportedAlternateComponentRootPattern,
+        `${sourceFile} should use the single canonical src/components layout instead of plugin-root compatibility`,
+      );
     }
   });
 

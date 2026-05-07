@@ -4,6 +4,9 @@ import { join, resolve } from "node:path";
 
 export const repoRoot = resolve(".");
 
+export const unsupportedAlternateComponentRootPattern =
+  /\b(?:is|has|find|load|read|resolve|detect|allow|use|normalize)[A-Za-z]*(?:Legacy|Deprecated)?Plugins?Root\b|\b(?:legacy|deprecated)?Plugins?(?:Root|Dir)\b|\bplugins?(?:Root|Dir)\b|\b(?:legacy_|deprecated_)?plugins?_(?:root|dir)\b|\b--plugins-dir\b|\bplugins-dir\b|plugins\/[^/\s]+\/(?:skills|agents|hooks)\b/u;
+
 export function collectFiles(root: string, predicate: (file: string) => boolean = () => true): string[] {
   const files: string[] = [];
 
