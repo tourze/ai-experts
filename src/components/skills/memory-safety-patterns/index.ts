@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const memorySafetyPatternsSkill = defineSkill({
@@ -48,7 +51,27 @@ export const memorySafetyPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 C/C++ 资源和指针建立清晰 ownership、borrowing、RAII、cleanup 与异常安全边界，减少泄漏、双重释放和悬空引用。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先为每个资源回答谁创建、谁释放、何时释放，区分 owner、observer 和 borrowed view。",
+      "C++ 资源优先用 RAII、栈对象、`std::unique_ptr`、`std::lock_guard`；`shared_ptr` 只用于真实多方长期持有。",
+      "只读连续数据用 `std::span`、`std::string_view` 或 `const T&`，不要用拥有型容器副本表达借用。",
+      "循环引用用 `weak_ptr` 或 observer 打断；缓存、回调和反向引用不能偷偷延长生命周期。",
+      "C 代码统一 `goto cleanup` 或单出口销毁函数，覆盖所有失败分支。",
+      "需要共享所有权、C cleanup、Rust 对照或异常安全完整示例时读取 advanced-patterns。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "资源 ownership 表：资源、owner、borrower、释放点、异常/失败路径和移动后状态。",
+      "接口签名建议：unique_ptr/shared_ptr/weak_ptr/span/string_view/reference/裸指针的使用理由。",
+      "RAII/C cleanup 修复方案、泄漏/双重释放/悬空指针风险和需要 reference 支撑的复杂模式。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

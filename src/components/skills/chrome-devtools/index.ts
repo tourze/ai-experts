@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const chromeDevtoolsSkill = defineSkill({
@@ -42,6 +45,26 @@ export const chromeDevtoolsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 Chrome DevTools 的页面、控制台、网络、性能、内存和 Lighthouse 证据调试 Web 页面问题。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "交互前先 `take_snapshot` 获取最新页面结构和 uid；导航或 DOM 更新后重新取 snapshot。",
+      "多标签页先 `list_pages` 和 `select_page`，确认当前 page ID 后再点击、填写或求值。",
+      "页面排障按三方证据组合：`list_console_messages`、`list_network_requests`、`evaluate_script`。",
+      "性能排障先 `performance_start_trace`，必要时伴随 reload，再 stop 并用 `performance_analyze_insight` 看 LCP、CLS、长任务等。",
+      "怀疑泄漏或大对象驻留时补 `take_memory_snapshot`；需要整页质量基线时再跑 `lighthouse_audit`。",
+      "记录 uid、request、console、trace、复现步骤和结论，避免只凭截图或坐标猜测。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "页面状态：snapshot uid、当前 page ID、目标元素和复现步骤。",
+      "排障证据：console、network、DOM/global state、trace insight、memory 或 Lighthouse 结果。",
+      "问题归因、修复建议、验证路径和仍需补采的 DevTools 证据。",
+    ],
+  }),
   tools: [],
 });

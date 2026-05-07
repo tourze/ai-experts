@@ -1,4 +1,13 @@
-import { InvocationPolicy, KnownTool, Platform, defineSkill } from "../../sdk";
+import {
+  InvocationPolicy,
+  KnownTool,
+  Platform,
+  defineAntiPattern,
+  defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
+} from "../../sdk";
 import { llmAppDesignPipelineSkill } from "../llm-app-design-pipeline/index";
 import { llmEvaluationSkill } from "../llm-evaluation/index";
 import { promptEngineeringPatternsSkill } from "../prompt-engineering-patterns/index";
@@ -16,8 +25,10 @@ export const llmAppDiagnosisFrameworkSkill = defineSkill({
     "prompt 改了很多轮但没有系统衡量效果",
   ],
   constraints: [
-    "只在本 skill 的适用场景内使用；任务不匹配时先澄清或转向更合适的 skill。",
-    "执行时遵循正文中的流程、红线、检查清单和必要参考资料，不用未经验证的假设替代证据。",
+    "Eval-first：没有可复现 eval case，不允许声称改动让系统更好。",
+    "不跨层归因：输入、检索、推理、输出各层问题必须在对应层修复。",
+    "每条改动都要可证伪，绑定 eval case、baseline、目标分数和可能变差的场景。",
+    "Model-first 与 prompt-first 决策必须有样例实验支撑，不能凭偏好选架构。",
   ],
   checklist: [
     '问题定位到了具体层（输入/检索/推理/输出），不是笼统的"效果不好"。',
@@ -31,30 +42,59 @@ export const llmAppDiagnosisFrameworkSkill = defineSkill({
       get id() {
         return promptEngineeringPatternsSkill.id;
       },
-      reason: "`prompt-engineering-patterns`：prompt 模板与约束设计。",
+      reason: "诊断结果落到 prompt 模板、输出约束、few-shot 或失败模式修复时联动。",
     },
     {
       get id() {
         return llmEvaluationSkill.id;
       },
-      reason: "`llm-evaluation`：离线 eval 设计与评测方法。",
+      reason: "需要设计离线 eval、case 集、评分 rubric 或 baseline 对比时联动。",
     },
     {
       get id() {
         return ragAuditorSkill.id;
       },
-      reason: "`rag-auditor`：RAG 管线审计与故障分类。",
+      reason: "问题落在 chunking、embedding、混合检索、rerank、top-k 或引用对齐时联动。",
     },
     {
       get id() {
         return llmAppDesignPipelineSkill.id;
       },
-      label: "`llm-app-design-pipeline`",
-      reason: "``llm-app-design-pipeline``：LLM 应用五步设计流程",
+      reason: "需要从诊断回到 LLM 应用五步设计流程、重建需求和架构时联动。",
     },
+  ],
+  antiPatterns: [
+    defineAntiPattern({
+      fail: "prompt 盲改：改了很多轮但没有 eval 和 baseline。",
+      pass: "先补 eval case，再把每个改动绑定到可证伪假设。",
+    }),
+    defineAntiPattern({
+      fail: "跨层打补丁：检索漏文档却继续加 prompt 约束。",
+      pass: "定位到输入/检索/推理/输出具体层，再在对应层修复。",
+    }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 eval-first 闭环诊断 LLM 应用质量问题，逐层区分输入、检索、推理和输出侧根因，并决定 model-first 或 prompt-first。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先设计可复现离线 eval case，记录 baseline；没有 eval 不评价改动优劣。",
+      "按输入侧、检索、推理、输出侧四层排查：输入字段/上下文、chunking/embedding/rerank、工具/温度/示例、引用/parser/max_tokens/guardrails。",
+      "每个问题只在对应层修复，检索失败不写成 prompt 问题，幻觉不写成 embedding 问题。",
+      "Model-first vs prompt-first 用 10 个 case 决策：单 prompt 拆解正确且无关键步骤跳过达到 8 个以上，保留 model-first；否则对失败 case 设计 chain。",
+      "建立改动队列：改动、假设、绑定 eval case、baseline 对比、目标分数和风险场景。",
+      "检索调参同时报告召回、延迟、内存/成本，不只看回答主观质量。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "四层诊断表：输入、检索、推理、输出侧信号、检查点、证据和归因。",
+      "Model-first vs prompt-first 决策、10 case 结果、失败模式和选择理由。",
+      "改动队列：改动、假设、绑定 eval、baseline→目标、风险和验证结果。",
+    ],
+  }),
   tools: [],
 });

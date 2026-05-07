@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { grillMeSkill } from "../grill-me/index";
 import { whatIfOracleSkill } from "../what-if-oracle/index";
@@ -36,13 +39,13 @@ export const consciousnessCouncilSkill = defineSkill({
       get id() {
         return grillMeSkill.id;
       },
-      reason: "如果重点是把现有方案问穿，优先配合 `grill-me`。",
+      reason: "重点是把现有方案、论证或计划问穿，而不是并列多视角生成时联动。",
     },
     {
       get id() {
         return whatIfOracleSkill.id;
       },
-      reason: "如果重点是未来分支推演，优先配合 `what-if-oracle`。",
+      reason: "重点是未来分支、反事实路径或二阶后果推演时联动。",
     },
   ],
   antiPatterns: [
@@ -57,7 +60,27 @@ export const consciousnessCouncilSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用角色议会或六顶思考帽制造有效认知张力，暴露高不确定性决策中的风险、盲点和可执行路径。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先判断模式：用户要专家多视角、council 或角色冲突时用角色议会；要六顶帽子、复盘或团队分歧时用六顶思考帽。",
+      "角色议会选 4-6 个有真实冲突的角色，例如架构师、唱反调者、实证派、伦理派、未来派、务实派、历史派或局外人。",
+      "每个角色必须输出立场、推理、关键风险和意外洞见；不能只是换措辞赞同。",
+      "六顶思考帽模式先读取 six-hats-guide，团队或单人场景分别读取对应模板。",
+      "综合时提炼共识、核心张力、共同盲点、建议路径和信心等级，不复读每个角色。",
+      "需要行业化角色配方或复杂参数时读取 advanced-configurations。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "模式选择、角色/帽子配置、每个视角的立场、推理、风险和意外洞见。",
+      "共识、核心张力、共同盲点、建议路径、信心等级和仍需验证的问题。",
+      "需要转入方案拷问或未来分支推演的联动建议。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

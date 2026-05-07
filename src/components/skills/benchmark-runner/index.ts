@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { testingStrategySkill } from "../testing-strategy/index";
 
@@ -17,7 +20,7 @@ export const benchmarkRunnerSkill = defineSkill({
     "用户要比较两个或多个候选方案的性能，而不是做泛泛的架构选型。",
     "需要衡量延迟、吞吐、内存、准确率、成本、冷启动等指标。",
     "需要产出可复现实验方案，或对已有结果做结构化解读。",
-    "需要结合 `testing-strategy` 制定性能验证计划。",
+    "需要把性能实验纳入更大的测试策略或验收计划。",
   ],
   constraints: [
     "候选方案必须可比：相同输入、相同环境、相同配置边界。",
@@ -25,7 +28,7 @@ export const benchmarkRunnerSkill = defineSkill({
     "必须记录环境：硬件、系统、运行时、依赖版本、关键配置。",
     "必须报告波动，不只报平均值；至少给出样本数和离散情况。",
     "无法实际运行时，只输出实验设计，不伪造结果。",
-    "优先加载这些参考文件：\n- [metric-selection.md](./references/metric-selection.md)\n- [test-case-design.md](./references/test-case-design.md)\n- [environment-capture.md](./references/environment-capture.md)\n- [statistical-rigor.md](./references/statistical-rigor.md)",
+    "需要指标、用例、环境或统计细节时按 Reference Map 读取对应 reference。",
   ],
   checklist: [
     "候选版本和配置写清楚了",
@@ -41,7 +44,7 @@ export const benchmarkRunnerSkill = defineSkill({
       get id() {
         return testingStrategySkill.id;
       },
-      reason: "需要结合 `testing-strategy` 制定性能验证计划。",
+      reason: "需要把基准测试纳入端到端验证、发布门禁或测试矩阵时联动。",
     },
   ],
   antiPatterns: [
@@ -56,7 +59,27 @@ export const benchmarkRunnerSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计或解读可复现的基准测试，比较候选实现的延迟、吞吐、内存、准确率、成本或冷启动表现。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先定义 benchmark scope：候选版本、配置边界、决策问题和 2-4 个核心指标。",
+      "设计测试矩阵：小/中/大输入规模、生产常见载荷、边界压力、预热次数和正式迭代次数。",
+      "固定环境：硬件、系统、运行时、依赖版本、关键配置、端口、并发度和数据集。",
+      "给出可复现执行命令；能运行时采集结果，不能运行时只输出实验设计。",
+      "报告 p50/p95/p99、吞吐、峰值 RSS、样本数、波动和异常值，不只报平均值。",
+      "按指标拆结论和取舍，并写明实验局限、不可外推条件和下一轮验证。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Benchmark Scope：候选 A/B、决策问题、核心指标和环境边界。",
+      "测试矩阵、预热/迭代计划、执行命令、环境快照和原始结果位置。",
+      "结果摘要、波动/样本信息、取舍分析、结论、局限和测试策略联动项。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

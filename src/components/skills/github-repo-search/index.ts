@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const githubRepoSearchSkill = defineSkill({
@@ -42,6 +45,26 @@ export const githubRepoSearchSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "围绕一个开源方向设计多组 GitHub 查询，召回、去重、过滤、重排并交付可决策的仓库推荐榜单。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先收敛输入：主题、Top N、最低 stars、排序模式和目标形态；缺失时只做必要澄清。",
+      "设计 5-10 组查询，每组写明目的，例如高召回核心主题、补同义词盲区、框架/产品/工具服务分支。",
+      "每组 query 抓 30-50 个候选，按 owner/repo 去重并应用默认或用户指定硬过滤。",
+      "记录检索时间、过滤规则、配额状态和排序依据，保证结果可复现。",
+      "按需求相关性、场景适配、活跃度、工程成熟度、license、示例和 stars 综合重排。",
+      "给每个仓库打角色标签：通用框架、应用产品、基础设施、MCP/工具服务、目录清单、方法论/研究。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "查询计划：主题、Top N、门槛、排序偏好、目标形态和 5-10 组 query。",
+      "过滤与重排记录：检索时间、去重、硬过滤、噪音剔除、排序依据和配额状态。",
+      "推荐表：仓库、星标、类型、是什么、为什么推荐、补充信息、链接和下一步深度分析建议。",
+    ],
+  }),
   tools: [],
 });
