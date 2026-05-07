@@ -627,7 +627,7 @@ async function emitBundledProceduresFile(
   return canonicalSource;
 }
 
-function collectPlatformProcedures(componentSurface: ComponentSurface, platform: PlatformType): ProcedureDefinition[] {
+export function collectPlatformProcedures(componentSurface: ComponentSurface, platform: PlatformType): ProcedureDefinition[] {
   const enabledSkillIds = new Set(
     componentSurface.skills
       .filter((skill) => skill.platforms.includes(platform))
