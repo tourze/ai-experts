@@ -1043,8 +1043,14 @@ describe("component build integration", () => {
     assert.match(proceduresSource, /__webpack_modules__/);
     assert.match(proceduresSource, /\bnode procedures\.js --procedure-id md-to-pdf-setup -- --install\b/);
     assert.match(codexProceduresSource, /const platform = "codex-cli"/);
+    assert.match(
+      codexProceduresSource,
+      /homedir\)\(\),\s*"\.agents",\s*"skills",\s*skillId/,
+      "codex bundled procedures should resolve skill owner roots from ~/.agents/skills",
+    );
     assert.doesNotMatch(codexProceduresSource, /spawn\)\("claude"|spawn\("claude"/);
     assert.doesNotMatch(codexProceduresSource, /\.claude["']\s*,\s*["']skills|\.claude\/skills/);
+    assert.doesNotMatch(codexProceduresSource, /\.codex["']\s*,\s*["']skills|\.codex\/skills/);
     assert.doesNotMatch(proceduresSource, /"source"\s*:/, "procedures.js should not embed procedure code as JSON strings");
     assert.doesNotMatch(proceduresSource, /procedure\.source|writeFileSync\(target/);
     assert.doesNotMatch(proceduresSource, /ai-components-|procedure-runtime-entry/);

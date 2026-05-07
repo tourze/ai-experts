@@ -120,6 +120,7 @@ function renderProceduresEntrypoint(procedures: readonly RuntimeProcedureModule[
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { existsSync, realpathSync } from "node:fs";
+import { homedir } from "node:os";
 import { delimiter, dirname, join, resolve } from "node:path";
 
 const procedures = ${JSON.stringify(procedureMap)};
@@ -233,11 +234,16 @@ function nodePath() {
   return [...candidates, ...current].join(delimiter);
 }
 
+function activeSkillRoot(skillId) {
+  if (platform === "codex-cli") return join(homedir(), ".agents", "skills", skillId);
+  return join(runtimeRoot, "skills", skillId);
+}
+
 function activeOwnerRoot(procedure, trigger) {
-  if (trigger.skillId) return join(runtimeRoot, "skills", trigger.skillId);
+  if (trigger.skillId) return activeSkillRoot(trigger.skillId);
   if (trigger.agentId) return join(runtimeRoot, "agents", trigger.agentId);
   const fallbackSkill = procedure.owners?.skillIds?.[0];
-  if (fallbackSkill) return join(runtimeRoot, "skills", fallbackSkill);
+  if (fallbackSkill) return activeSkillRoot(fallbackSkill);
   const fallbackAgent = procedure.owners?.agentIds?.[0];
   if (fallbackAgent) return join(runtimeRoot, "agents", fallbackAgent);
   return runtimeRoot;
