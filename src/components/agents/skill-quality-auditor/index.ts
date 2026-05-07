@@ -28,7 +28,7 @@ export const skillQualityAuditorAgent = defineAgent({
     steps: [
       defineAgentWorkflowStep({
         id: "step-1",
-        label: "先确认审计范围：单个 skill / 单个 plugin / 全仓库；明确用户关心的维度（结构、知识覆盖、触发、重复、telemetry）。",
+        label: "先确认审计范围：单个 skill / 一组 skill / 全仓库；明确用户关心的维度（结构、知识覆盖、触发、重复、telemetry）。",
       }),
       defineAgentWorkflowStep({
         id: "step-2",
@@ -95,7 +95,7 @@ export const skillQualityAuditorAgent = defineAgent({
       }),
       defineAgentOutputSection({
         title: "范围限制",
-        body: "[未覆盖的 plugin / 时间窗口 / 数据缺失]",
+        body: "[未覆盖的 skill 范围 / 时间窗口 / 数据缺失]",
       }),
     ],
   }),

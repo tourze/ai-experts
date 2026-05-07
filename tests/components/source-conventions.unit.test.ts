@@ -230,6 +230,11 @@ describe("component source conventions", () => {
         /\n\s*bodyText:\s*`/,
         `${agentSourceFile} should split body content into structured fields instead of bodyText`,
       );
+      assert.doesNotMatch(
+        source,
+        /单个 plugin|未覆盖的 plugin/,
+        `${agentSourceFile} should not describe ai-experts audit scope with legacy plugin roots`,
+      );
 
       assert.equal(
         hasBashBoundary,
