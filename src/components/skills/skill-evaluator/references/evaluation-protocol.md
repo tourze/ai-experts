@@ -2,12 +2,12 @@
 
 ## Step 1：第一遍——知识增量扫描
 
-通读 SKILL.md，对每节问：> "Claude 已知这个吗？"
+通读 SKILL.md，对每节问：> "基础模型已知这个吗？"
 
 逐节标注：
-- **[E] Expert**：Claude 确实不知道——价值增
-- **[A] Activation**：Claude 知道但提醒有用——可接受
-- **[R] Redundant**：Claude 肯定知道——应删除
+- **[E] Expert**：基础模型通常不知道——价值增
+- **[A] Activation**：基础模型知道但提醒有用——可接受
+- **[R] Redundant**：基础模型肯定知道——应删除
 
 计算比例 E:A:R：
 - 好 Skill：>70% Expert，<20% Activation，<10% Redundant

@@ -164,6 +164,22 @@ describe("component source conventions", () => {
     assert.match(viewerSource, /回到当前 CLI 会话告诉代理/u);
   });
 
+  test("skill evaluator uses model-neutral knowledge wording", () => {
+    const evaluatorSources = [
+      join(repoRoot, "src/components/skills/skill-evaluator/index.ts"),
+      ...collectFiles(join(repoRoot, "src/components/skills/skill-evaluator/references")),
+    ];
+
+    for (const sourceFile of evaluatorSources) {
+      const source = readFileSync(sourceFile, "utf-8");
+      assert.doesNotMatch(
+        source,
+        /Claude 已知|Claude 不具备|Claude 不知道|Claude 不会|向 Claude|为 Claude|Claude 肯定|Claude 确实/u,
+        `${sourceFile} should use model-neutral skill evaluation wording`,
+      );
+    }
+  });
+
   test("cross-platform source names project memory files neutrally", () => {
     const platformSpecificMemoryRefs: string[] = [];
     for (const sourceFile of collectFiles(join(repoRoot, "src/components"))) {

@@ -20,7 +20,7 @@ export const skillEvaluatorSkill = defineSkill({
     "Mode B 知识覆盖验证必须分别配置 examiner 和 examinee 输入，并保持闭卷边界。",
     "评分只看知识增量、流程质量、反模式和可用性，不因格式漂亮或篇幅长给高分。",
     "触发质量仅优化 description 时转 skill-activation-analyzer；用参考 skill 优化目标 skill 时转 skill-evolver。",
-    "不能把 Claude 已知的基础概念包装成高价值 skill 知识。",
+    "不能把基础模型已知的概念包装成高价值 skill 知识。",
   ],
   antiPatterns: [
     defineAntiPattern({
