@@ -2,6 +2,7 @@
 import { existsSync, readFileSync, realpathSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { iosSimulatorConfigPath } from "./runtime_config";
 import { runXcrunSimctl } from "./simctl_common";
 export class SimulatorInfo {
     iosVersion: any;
@@ -207,7 +208,7 @@ export function extractIosVersion(runtime: any): any {
 }
 export function loadPreferredSimulator(projectDir: any = process.cwd(), skillRoot: any = dirname(dirname(fileURLToPath(import.meta.url)))): any {
     const skillName = basename(skillRoot);
-    const configPath = join(projectDir, ".claude", "skills", skillName, "config.json");
+    const configPath = iosSimulatorConfigPath(projectDir, skillName);
     if (!existsSync(configPath))
         return null;
     try {

@@ -839,6 +839,7 @@ describe("component build integration", () => {
     assert.match(proceduresSource, /\bnode procedures\.js --procedure-id md-to-pdf-setup -- --install\b/);
     assert.match(codexProceduresSource, /const platform = "codex-cli"/);
     assert.doesNotMatch(codexProceduresSource, /spawn\)\("claude"|spawn\("claude"/);
+    assert.doesNotMatch(codexProceduresSource, /\.claude["']\s*,\s*["']skills|\.claude\/skills/);
     assert.doesNotMatch(proceduresSource, /"source"\s*:/, "procedures.js should not embed procedure code as JSON strings");
     assert.doesNotMatch(proceduresSource, /procedure\.source|writeFileSync\(target/);
     assert.doesNotMatch(proceduresSource, /ai-components-|procedure-runtime-entry/);

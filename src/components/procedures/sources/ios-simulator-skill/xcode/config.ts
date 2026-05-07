@@ -1,16 +1,11 @@
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
-import { basename, dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { dirname } from "node:path";
+import { iosSimulatorConfigPath } from "../runtime_config";
 function clone(value: any): any {
     return JSON.parse(JSON.stringify(value));
 }
 function defaultConfig(): any {
     return clone(Config.DEFAULT_CONFIG);
-}
-function skillNameFromModule(): any {
-    const currentFile = fileURLToPath(import.meta.url);
-    const skillRoot = dirname(dirname(dirname(currentFile)));
-    return basename(skillRoot);
 }
 export class Config {
     configPath: any;
@@ -29,7 +24,7 @@ export class Config {
         this.configPath = configPath;
     }
     static load(projectDir: any = process.cwd()): any {
-        const configPath = join(projectDir, ".claude", "skills", skillNameFromModule(), "config.json");
+        const configPath = iosSimulatorConfigPath(projectDir);
         if (!existsSync(configPath)) {
             return new Config(defaultConfig(), configPath);
         }
