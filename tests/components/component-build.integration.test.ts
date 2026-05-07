@@ -4,6 +4,8 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync,
 import { tmpdir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
 import { afterAll, beforeAll, describe, test } from "vitest";
+import { registry } from "../../src/components/registry.ts";
+import { InvocationPolicy, Platform } from "../../src/components/sdk.ts";
 import {
   assertSingleDispatcherHookGroups,
   collectFiles,
@@ -249,6 +251,46 @@ describe("component build integration", () => {
         );
       }
     }
+  });
+
+  test("emits Codex skill metadata for every generated skill", () => {
+    const codexManifest = JSON.parse(readFileSync(join(tmpDistDir, "codex/manifest.json"), "utf-8"));
+    const codexSkillDefinitions = new Map(
+      registry.skills
+        .filter((skill) => skill.platforms.includes(Platform.Codex))
+        .map((skill) => [skill.id, skill]),
+    );
+
+    assert.deepEqual(
+      [...codexManifest.skills].sort(),
+      [...codexSkillDefinitions.keys()].sort(),
+      "Codex manifest skills should exactly match Codex-enabled source skills",
+    );
+
+    for (const skillId of codexManifest.skills as string[]) {
+      const skill = codexSkillDefinitions.get(skillId);
+      assert.ok(skill, `${skillId} should have a source definition`);
+      const metadataPath = join(tmpDistDir, "codex/skills", skillId, "agents/openai.yaml");
+      assert.equal(existsSync(metadataPath), true, `${skillId} should emit agents/openai.yaml`);
+      const metadata = readFileSync(metadataPath, "utf-8");
+      const allowImplicit = skill.invocation !== InvocationPolicy.ExplicitOnly;
+
+      assert.match(metadata, /^interface:\n/);
+      assert.match(metadata, new RegExp(`^  display_name: "${skillId}"$`, "m"));
+      assert.match(metadata, /^  short_description: ".+"$/m);
+      assert.match(metadata, /^policy:\n/m);
+      assert.match(
+        metadata,
+        new RegExp(`^  allow_implicit_invocation: ${allowImplicit ? "true" : "false"}$`, "m"),
+        `${skillId} should mirror its InvocationPolicy in openai.yaml`,
+      );
+    }
+
+    assert.deepEqual(
+      collectFiles(join(tmpDistDir, "claude/skills"), (file) => file.endsWith("openai.yaml")),
+      [],
+      "Claude skill packages should not include Codex openai.yaml metadata",
+    );
   });
 
   test("renders representative skill/agent/instruction outputs", () => {
