@@ -8,7 +8,7 @@
 - `rules/`：分主题拆开的规则文件，每个文件只描述一条实践。
 - `rules/_sections.md`：章节元数据。
 - `rules/_template.md`：新增规则时的模板。
-- `metadata.json`：规则库版本、摘要和参考链接。
+- `references/metadata.json`：规则库版本、摘要和参考链接。
 
 ## 新增或修改规则
 

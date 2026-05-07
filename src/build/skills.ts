@@ -677,6 +677,8 @@ function copyLooseSkillFiles(skill: SkillDefinition, skillRoot: string): void {
     "SKILL.body.md",
     "AGENTS.md",
     "CLAUDE.md",
+    "metadata.json",
+    "_meta.json",
     "scripts",
     "references",
     "assets",

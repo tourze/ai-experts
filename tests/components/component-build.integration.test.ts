@@ -792,6 +792,16 @@ describe("component build integration", () => {
         [],
         `${platform} skill dist should not include platform memory files inside skill packages`,
       );
+
+      const generatedRootMetadataFiles = collectFiles(join(tmpDistDir, platform, "skills"), (file) => {
+        const parts = file.slice(join(tmpDistDir, platform, "skills").length + 1).split(/[\\/]/);
+        return parts.length === 2 && /^(?:_meta|metadata)\.json$/.test(parts[1] ?? "");
+      });
+      assert.deepEqual(
+        generatedRootMetadataFiles,
+        [],
+        `${platform} skill dist should not include root provenance metadata files inside skill packages`,
+      );
     }
 
     const legacySkillScriptRunners = collectFiles(join(tmpDistDir, "claude/skills"), (file) =>

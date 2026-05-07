@@ -91,6 +91,14 @@ export const phpTestingSkill = defineSkill({
   }),
   references: [
     defineReference({
+      id: "metadata",
+      source: new URL("./references/metadata.json", import.meta.url),
+      target: "references/metadata.json",
+      title: "PHP Testing Metadata",
+      summary: "PHP 测试规则库版本、摘要和官方参考链接。",
+      loadWhen: "需要核对规则库范围、版本或 PHPUnit 官方资料来源时读取。",
+    }),
+    defineReference({
       id: "examples",
       source: new URL("./references/examples.md", import.meta.url),
       target: "references/examples.md",
