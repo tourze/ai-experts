@@ -22,20 +22,23 @@
 上游有更新时：
 
 ```bash
+# 0. 指向上游本地克隆；按自己的工作区调整
+UPSTREAM=../_external_refs/claude-algo-visualize
+
 # 1. 更新外部克隆
-git -C /Users/air/work/_external_refs/claude-algo-visualize pull
+git -C "$UPSTREAM" pull
 
 # 2. 比较 4 个资产文件
-diff assets/base.css /Users/air/work/_external_refs/claude-algo-visualize/assets/base.css
-diff assets/boilerplate.js /Users/air/work/_external_refs/claude-algo-visualize/assets/boilerplate.js
-diff assets/animation-html.html /Users/air/work/_external_refs/claude-algo-visualize/assets/animation-html.html
-diff references/heap_overview.html /Users/air/work/_external_refs/claude-algo-visualize/references/heap_overview.html
+diff assets/base.css "$UPSTREAM/assets/base.css"
+diff assets/boilerplate.js "$UPSTREAM/assets/boilerplate.js"
+diff assets/animation-html.html "$UPSTREAM/assets/animation-html.html"
+diff references/heap_overview.html "$UPSTREAM/references/heap_overview.html"
 
 # 3. 看上游 SKILL.md 是否新增模板/铁律，决定是否需要回填本仓 SKILL.md
 diff /tmp/upstream-skill.md SKILL.md   # 仅作参考，不要直接覆盖
 
 # 4. 更新本文件 "同步 commit" 字段
-git -C /Users/air/work/_external_refs/claude-algo-visualize rev-parse HEAD
+git -C "$UPSTREAM" rev-parse HEAD
 ```
 
 ## MIT 许可全文

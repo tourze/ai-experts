@@ -32,9 +32,9 @@
 - 执行 `cmd.exe` 命令：
   - `node scripts/prlctl_helper.mjs exec '<vm-selector>' --shell cmd -- 'dir C:\\'`
 - 上传文件到桌面登录用户上下文：
-  - `node scripts/prlctl_helper.mjs upload '<vm-selector>' --current-user --shell powershell -- ./local.txt 'C:\Users\air\Desktop\local.txt'`
+  - `node scripts/prlctl_helper.mjs upload '<vm-selector>' --current-user --shell powershell -- ./local.txt '<remote-desktop>\local.txt'`
 - 从客体下载文件：
-  - `node scripts/prlctl_helper.mjs download '<vm-selector>' --current-user --shell powershell -- 'C:\Users\air\Desktop\result.zip' ./result.zip`
+  - `node scripts/prlctl_helper.mjs download '<vm-selector>' --current-user --shell powershell -- '<remote-desktop>\result.zip' ./result.zip`
 
 ### 用户上下文选择
 

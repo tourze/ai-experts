@@ -155,6 +155,20 @@ describe("component source conventions", () => {
     );
   });
 
+  test("runtime component sources do not leak maintainer-local absolute paths", () => {
+    const localPathPattern = /(?:^|[\s"'`(])(?:\/Users\/[^\s"'`)]+|\/home\/[^\s"'`)]+|\/private\/var\/[^\s"'`)]+|\/var\/folders\/[^\s"'`)]+|[A-Za-z]:\\Users\\[^\s"'`)]+)/u;
+    const leakedPaths: string[] = [];
+
+    for (const sourceFile of collectFiles(join(repoRoot, "src/components"))) {
+      const source = readFileSync(sourceFile, "utf-8");
+      if (localPathPattern.test(source)) {
+        leakedPaths.push(relative(repoRoot, sourceFile));
+      }
+    }
+
+    assert.deepEqual(leakedPaths, [], "runtime component files should use portable paths, placeholders, or variables");
+  });
+
   test("skill activation analyzer uses component terminology", () => {
     const activationAnalyzerSources = [
       join(repoRoot, "src/components/procedures/sources/skill-activation-analyzer/cso_audit.ts"),
