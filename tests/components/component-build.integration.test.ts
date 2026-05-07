@@ -513,6 +513,33 @@ describe("component build integration", () => {
       const explicitSkillsDirActivationReport = JSON.parse(explicitSkillsDirActivationAudit.result.stdout);
       assert.equal(explicitSkillsDirActivationReport.total, 335);
 
+      const legacyPluginsRoot = join(runtimeTmp, "plugins");
+      const legacySkillDir = join(legacyPluginsRoot, "old-expert", "skills", "alpha-skill");
+      mkdirSync(legacySkillDir, { recursive: true });
+      writeFileSync(join(legacySkillDir, "SKILL.md"), [
+        "---",
+        "name: alpha-skill",
+        "description: Use when auditing a legacy plugin fixture.",
+        "---",
+        "",
+        "# Alpha Skill",
+      ].join("\n"));
+      const legacyPluginsRootAudit = runProcedure(
+        "skill-activation-analyzer-cso-audit",
+        "skill-activation-analyzer",
+        ["--skills-dir", legacyPluginsRoot, "--json"],
+      );
+      assert.equal(legacyPluginsRootAudit.ok, false);
+      assert.match(legacyPluginsRootAudit.result.stderr, /cannot find component skills directory/);
+
+      const legacyPluginsDirArgAudit = runProcedure(
+        "skill-activation-analyzer-cso-audit",
+        "skill-activation-analyzer",
+        ["--plugins-dir", legacyPluginsRoot, "--json"],
+      );
+      assert.equal(legacyPluginsDirArgAudit.ok, false);
+      assert.match(legacyPluginsDirArgAudit.result.stderr, /unknown argument: --plugins-dir/);
+
       const persona = runProcedure(
         "ux-researcher-designer-persona-generator",
         "ux-researcher-designer",
