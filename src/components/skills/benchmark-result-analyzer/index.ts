@@ -1,4 +1,13 @@
-import { InvocationPolicy, KnownTool, Platform, defineSkill, defineAntiPattern } from "../../sdk";
+import {
+  InvocationPolicy,
+  KnownTool,
+  Platform,
+  defineSkill,
+  defineAntiPattern,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
+} from "../../sdk";
 
 export const benchmarkResultAnalyzerSkill = defineSkill({
   id: "benchmark-result-analyzer",
@@ -38,6 +47,25 @@ export const benchmarkResultAnalyzerSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "揭盲并分析 benchmark 或 A/B 评测结果，解释胜负因果、责任层和最可能改变下一轮结果的改进项。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先读取 comparison、grading 或 benchmark 汇总，记录原始胜负判断，不重新替代 comparator 判胜。",
+      "并排读取胜者/败者 skill、关键资源、transcript 和输出，比较指令遵循、工具使用和失败恢复。",
+      "区分 skill 指令问题、executor 执行问题、eval assertion 问题和任务本身不合理。",
+      "从多轮结果中识别稳定失败、稳定通过、异常波动和只在特定 expectation 上暴露的问题。",
+      "按 impact 排序建议；每条建议必须绑定可观察失败原因、category、priority、expected_impact 和下一轮验证方式。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "comparison_summary：winner、原始判胜理由、关键证据和是否保留 comparator 结论。",
+      "winner_strengths、loser_weaknesses、instruction_following 差异和责任层分类。",
+      "improvement_suggestions：priority、category、suggestion、expected_impact 和下一轮验证方式。",
+    ],
+  }),
   tools: [],
 });

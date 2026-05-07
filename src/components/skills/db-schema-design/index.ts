@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { sqlReviewOptimizationSkill } from "../sql-review-optimization/index";
 
@@ -17,13 +20,12 @@ export const dbSchemaDesignSkill = defineSkill({
     "审查 CREATE TABLE 语句的类型精度、约束完整性和默认值合理性。",
     "表含稀疏或半结构化属性，需判断用 JSON/JSONB 列还是范式化。",
     "对 JSON 内部字段建索引以支持查询过滤。",
-    "与索引设计联动，为索引打好列基础，联动 `sql-review-optimization`（含深度索引策略）。",
-    "与 SQL 调优联动，表结构决定查询路径的上限，联动 `sql-review-optimization`。",
+    "与索引设计或 SQL 调优联动，为真实查询路径打好列基础。",
   ],
   constraints: [
     "**通用原则**\n- 业务允许的列显式 `NOT NULL DEFAULT ...`；可空列增加索引和优化器负担。\n- 金额必须精确数值类型，禁止 FLOAT/DOUBLE。\n- 所有表必须有明确的主键和存储引擎选择。",
     "**MySQL 特化**\n- 主键必须 `BIGINT UNSIGNED AUTO_INCREMENT`；禁止 INT（溢出风险）和 UUID 聚簇索引（页分裂、写放大）。\n- 字符集统一 `utf8mb4`，排序规则优先 `utf8mb4_0900_ai_ci`；禁止 `utf8`（不能存 4 字节字符）。\n- 引擎默认 InnoDB；选择其他引擎须在注释中说明理由。\n- JSON 列不能有默认值、不能做主键；高频过滤/排序字段必须提取为生成列（VIRTUAL/STORED）并建索引。\n- 使用 `->>` 获取无引号文本值；JSON 数组场景优先评估多值索引（MySQL 8.0.17+）。",
-    "**PostgreSQL 特化**\n- 主键用 `BIGINT GENERATED ALWAYS AS IDENTITY`，不用 `serial`。\n- 时间列一律 `TIMESTAMPTZ`，禁止裸 `timestamp`。\n- 通用字符串用 `TEXT`，不用 `varchar(n)`（内部存储无差异）。\n- 标识符用 unquoted snake_case，禁止 `\"QuotedCamelCase\"`。\n- 使用 `JSONB` 而非 `JSON`（JSONB 支持索引，JSON 只是文本存储）。\n- JSONB 列必须有 CHECK 约束验证顶层类型；嵌套控制在 3 层以内。\n\n详细引擎专有模式见：[references/mysql-schema-design.md](references/mysql-schema-design.md)、[references/pgsql-schema-design.md](references/pgsql-schema-design.md)、[references/mysql-json-generated-columns.md](references/mysql-json-generated-columns.md)、[references/pgsql-jsonb-patterns.md](references/pgsql-jsonb-patterns.md)。",
+    "**PostgreSQL 特化**\n- 主键用 `BIGINT GENERATED ALWAYS AS IDENTITY`，不用 `serial`。\n- 时间列一律 `TIMESTAMPTZ`，禁止裸 `timestamp`。\n- 通用字符串用 `TEXT`，不用 `varchar(n)`（内部存储无差异）。\n- 标识符用 unquoted snake_case，禁止 `\"QuotedCamelCase\"`。\n- 使用 `JSONB` 而非 `JSON`（JSONB 支持索引，JSON 只是文本存储）。\n- JSONB 列必须有 CHECK 约束验证顶层类型；嵌套控制在 3 层以内。",
   ],
   checklist: [
     "主键策略是否匹配引擎特性（InnoDB 聚簇 / PostgreSQL identity）。",
@@ -39,7 +41,7 @@ export const dbSchemaDesignSkill = defineSkill({
       get id() {
         return sqlReviewOptimizationSkill.id;
       },
-      reason: "与 SQL 调优联动，表结构决定查询路径的上限，联动 `sql-review-optimization`。",
+      reason: "需要基于表结构继续设计索引、解释执行计划或优化真实 SQL 查询路径时联动。",
     },
   ],
   antiPatterns: [
@@ -70,7 +72,26 @@ export const dbSchemaDesignSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 MySQL 或 PostgreSQL 业务表选择主键、列类型、约束、字符集、时间/金额类型和 JSON/JSONB 建模方案。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认数据库引擎、版本、写入规模、查询路径、保留周期、外键策略和迁移约束。",
+      "按业务实体拆表，确定主键、唯一约束、外键/应用层约束、nullable 语义和默认值。",
+      "逐列选择类型：金额用精确数值，时间按引擎规范，字符串和枚举避免过度限制或隐式截断。",
+      "半结构化字段先判断独立列、子表、JSON/JSONB 或生成列；高频过滤字段必须可索引。",
+      "需要示例或引擎专有细节时读取 code-patterns、mysql-schema-design、pgsql-schema-design、json-patterns 等 reference。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "表结构草案或审查结论：主键、列类型、约束、默认值、命名和注释。",
+      "MySQL/PostgreSQL 专有决策：字符集、identity/auto_increment、时间类型、JSON/JSONB 策略。",
+      "查询路径与索引前置条件、迁移风险、数据增长假设和需要联动 SQL 调优的点。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

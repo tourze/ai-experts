@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const errorHandlingPatternsSkill = defineSkill({
@@ -42,6 +45,25 @@ export const errorHandlingPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把错误按验证、业务、外部系统和未知故障分层，设计可传播、可诊断、可恢复且不泄漏内部细节的错误处理合同。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先列出调用边界、外部依赖、用户可见接口和批处理单位，识别每类错误的责任方。",
+      "按验证错误、业务错误、外部系统错误和未知错误分层，定义对外错误码、用户消息和内部日志字段。",
+      "只捕获能处理的异常；可恢复错误加有界重试、退避、幂等键和熔断/降级条件。",
+      "批处理和异步任务要汇总部分失败，返回 succeeded/failed/retryable，不因单条坏数据丢整批。",
+      "最后反查调用点和测试，确认错误语义、重试边界、关联 ID 和用户消息都被覆盖。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "错误分类表：类型、触发条件、对外暴露、内部上下文、调用方处理方式。",
+      "重试/退避/幂等/熔断边界，以及哪些错误必须直接传播。",
+      "批处理失败汇总结构、用户可见消息、日志字段、测试用例和兼容性风险。",
+    ],
+  }),
   tools: [],
 });

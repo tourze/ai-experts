@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const concurrencyPatternsSkill = defineSkill({
@@ -48,6 +51,25 @@ export const concurrencyPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计或审查并发工作流，确保外部调用有超时、任务有 owner、取消能传播、并发有上限且停机可排空。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先画出入口、子任务、外部依赖、共享状态和长期运行任务，明确每个任务的 owner。",
+      "为任务队列、worker 池或批量请求设置并发上限；溢出策略在排队、背压和快速失败中明确选择。",
+      "把 timeout/cancel 信号从入口传给所有子任务，并检查每个 await/yield/select 点能退出。",
+      "跨并发边界优先消息传递；必须共享可变状态时写清锁范围、顺序和死锁规避。",
+      "设计优雅停机：收到信号后停止接收新工作、在超时内排空、关闭连接池并刷新缓冲。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "并发拓扑：入口、队列、worker、外部依赖、共享状态和任务 owner。",
+      "限流策略、取消传播路径、超时策略、共享状态保护方式和泄漏风险。",
+      "优雅停机顺序、排空超时、失败/背压行为和需要语言特化 skill 补充的实现点。",
+    ],
+  }),
   tools: [],
 });

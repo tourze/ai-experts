@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const skillEvalGraderSkill = defineSkill({
@@ -43,6 +46,25 @@ export const skillEvalGraderSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "根据 transcript、outputs 和 expectations 给 skill/eval 执行判 PASS/FAIL，并指出 assertion 区分度和覆盖缺口。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先完整读取 transcript，记录执行错误、跳过项、自述不确定性和声称已验证的内容。",
+      "列出 outputs 并读取与每条 expectation 相关的真实文件内容；找不到证据就是 FAIL。",
+      "逐条 expectation 判定 passed、failed、evidence；PASS 必须绑定实质证据，不接受只存在文件或关键词命中。",
+      "从输出中抽取事实、过程和质量 claims，标注 process/fact/quality、verified 和 evidence。",
+      "审查 assertion 是否太弱、不可验证或漏掉关键结果，并给出可操作 eval_feedback。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "expectations 数组：text、passed、evidence 或缺证据说明。",
+      "summary：passed、failed、total、pass_rate。",
+      "claims 与 eval_feedback：claim、type、verified、evidence、assertion、reason、overall。",
+    ],
+  }),
   tools: [],
 });

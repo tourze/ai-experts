@@ -6,6 +6,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, financialAnalystBudgetVarianceAnalyzer, financialAnalystDcfValuation, financialAnalystForecastBuilder, financialAnalystRatioCalculator, financialAnalystRatioInputValidation } from "../../procedures/index";
 
@@ -48,7 +51,26 @@ export const financialAnalystSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "基于 JSON 输入运行财务比率、DCF、预算差异和滚动预测 procedure，并把结果解释成可审计的经营或估值结论。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先判断分析类型：比率分析、DCF 估值、预算差异、滚动预测或输入校验，并选择对应 procedure。",
+      "确认输入是工具专用 JSON 或聚合样例的正确子段；Excel、CSV、数据库抽取不在本 skill 内完成。",
+      "需要公式、行业口径或估值方法时读取 financial-ratios-guide、valuation-methodology、forecasting-best-practices 或 industry-adaptations。",
+      "运行 procedure 后先检查 0、空列表、异常大数和字段错配，再解释结果。",
+      "需要报告时使用 variance_report_template、dcf_analysis_template 或 forecast_report_template，区分事实计算、假设和管理层判断。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "分析类型、输入文件/字段、使用的 procedure、样例资产和关键假设。",
+      "比率、估值、预算差异或预测结果，以及异常值、口径限制和行业适配说明。",
+      "可交付报告、模板选择、结论置信度、后续敏感性分析或长期模型化建议。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(financialAnalystBudgetVarianceAnalyzer),

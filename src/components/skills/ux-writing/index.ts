@@ -5,9 +5,13 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { i18nLocalizationSkill } from "../i18n-localization/index";
 import { modernWebDesignSkill } from "../modern-web-design/index";
+import { productDesignCriticSkill } from "../product-design-critic/index";
 
 export const uxWritingSkill = defineSkill({
   id: "ux-writing",
@@ -17,7 +21,7 @@ export const uxWritingSkill = defineSkill({
     "按钮标签（Submit / Save / Continue 还是具体动词）",
     "错误消息、空态、表单 helper、确认对话框",
     "Onboarding 首次提示、敏感操作措辞（删除/支付/注销）",
-    "与 `product-design-critic` 联动评审文案。",
+    "需要把微文案放回产品体验、关键任务和风险状态一起审查。",
   ],
   constraints: [
     "**按钮动词化**：写按下之后发生什么。`Submit` → `Create account` / `Send invoice`。",
@@ -33,14 +37,19 @@ export const uxWritingSkill = defineSkill({
       get id() {
         return i18nLocalizationSkill.id;
       },
-      reason: "`i18n-localization`。",
+      reason: "微文案需要国际化、本地化重写、ICU 变量或字符串拼接审查时联动。",
     },
     {
       get id() {
         return modernWebDesignSkill.id;
       },
-      label: "web-design-guidelines",
-      reason: "`web-design-guidelines`",
+      reason: "微文案问题和整体 Web 界面结构、视觉层级或交互设计一起审查时联动。",
+    },
+    {
+      get id() {
+        return productDesignCriticSkill.id;
+      },
+      reason: "需要从产品任务、关键状态、信任损耗和 trade-off 角度审查文案时联动。",
     },
   ],
   checklist: [
@@ -52,7 +61,7 @@ export const uxWritingSkill = defineSkill({
     "全产品大小写 / 标点 / 人称统一。",
     "i18n 友好：不字符串拼接，留 30% 膨胀空间。",
     "无 AI 腔（Please kindly / Effortlessly / thrilled to...）。",
-    "配合 product-design-critic 的行业反模式。",
+    "配合产品体验评审检查行业反模式。",
   ],
   antiPatterns: [
     defineAntiPattern({
@@ -66,7 +75,26 @@ export const uxWritingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "写或审界面微文案，让按钮、错误、空态、表单提示、确认对话框和 Toast 具体、可行动、诚实且便于本地化。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先盘出场景类型：按钮、错误、空态、helper、确认、toast、敬告、onboarding 或敏感操作。",
+      "按场景读取 copy-patterns 模板，明确用户当前状态、下一步动作、限制条件和真实后果。",
+      "重写按钮为动词+名词；错误写 what/why/fix；空态说明这是什么、为什么空和下一步 CTA。",
+      "统一声音：友好、专业、权威或技术只选一种；删掉 AI 腔、客套词和不承担后果的模糊动词。",
+      "做 i18n 预审：不使用字符串拼接，变量可翻译，预留 30% 膨胀空间，placeholder 不替代 label。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "按场景分组的原文问题、改写版本、采用的语气和具体改动理由。",
+      "按钮、错误、空态、helper、确认对话框、Toast 或 onboarding 文案。",
+      "i18n 风险、变量/ICU 建议、不可逆或扣费操作的后果提示和一致性检查。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({
