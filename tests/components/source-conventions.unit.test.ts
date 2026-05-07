@@ -386,6 +386,22 @@ describe("component source conventions", () => {
     );
   });
 
+  test("procedure sources do not contain source-side test modules", () => {
+    const sourceSideTestModules = collectFiles(
+      join(repoRoot, "src/components/procedures/sources"),
+      (file) => file.endsWith(".ts"),
+    ).filter((file) => {
+      const source = readFileSync(file, "utf-8");
+      return /\.test\.ts$/.test(file) || /\bfrom\s+["']node:test["']/.test(source);
+    }).map((file) => relative(repoRoot, file));
+
+    assert.deepEqual(
+      sourceSideTestModules,
+      [],
+      "procedure source tests should live under tests/ so they run with the project test suite",
+    );
+  });
+
   test("procedure sources do not call sibling mjs helper files", () => {
     const physicalMjsHelperCalls = collectFiles(
       join(repoRoot, "src/components/procedures/sources"),

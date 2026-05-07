@@ -1,12 +1,38 @@
-import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, symlinkSync, writeFileSync } from "node:fs";
+import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
-import { renderReport } from "./render_report";
-const scriptDir = dirname(fileURLToPath(import.meta.url));
+import { join } from "node:path";
+import { describe, it } from "vitest";
+import { main as collectDiffMain } from "../../src/components/procedures/sources/pre-landing-review/collect_diff.ts";
+import { main as renderReportMain, renderReport } from "../../src/components/procedures/sources/pre-landing-review/render_report.ts";
+
+async function captureMain(run: () => unknown): Promise<{ status: number; stdout: string; stderr: string }> {
+    const originalStdoutWrite = process.stdout.write;
+    const originalStderrWrite = process.stderr.write;
+    const originalExitCode = process.exitCode;
+    let stdout = "";
+    let stderr = "";
+    (process.stdout.write as any) = (chunk: any): boolean => {
+        stdout += Buffer.isBuffer(chunk) ? chunk.toString("utf8") : String(chunk);
+        return true;
+    };
+    (process.stderr.write as any) = (chunk: any): boolean => {
+        stderr += Buffer.isBuffer(chunk) ? chunk.toString("utf8") : String(chunk);
+        return true;
+    };
+    try {
+        process.exitCode = undefined;
+        const result = await run();
+        return { status: Number(result ?? process.exitCode ?? 0), stdout, stderr };
+    }
+    finally {
+        process.stdout.write = originalStdoutWrite;
+        process.stderr.write = originalStderrWrite;
+        process.exitCode = originalExitCode;
+    }
+}
+
 describe("renderReport", (): any => {
     it("阻断项段含文件:行号、问题、风险、用户三选一（默认）", () => {
         const md = renderReport({
@@ -61,21 +87,18 @@ describe("renderReport", (): any => {
     });
 });
 describe("CLI entrypoints", (): any => {
-    it("render_report.mjs 通过 symlink 执行时输出报告", () => {
+    it("render_report main 输出报告", async () => {
         const dir = mkdtempSync(join(tmpdir(), "pre-landing-render-"));
         const inputPath = join(dir, "findings.json");
-        const linkPath = join(dir, "render_report.mjs");
         writeFileSync(inputPath, JSON.stringify({ verdict: "BLOCKED", blocking: [], informational: [] }));
-        symlinkSync(join(scriptDir, "render_report.mjs"), linkPath);
-        const output = execFileSync(process.execPath, [linkPath, "--input", inputPath], { encoding: "utf-8" });
-        assert.match(output, /## 阻断项/);
-        assert.match(output, /结论：BLOCKED/);
+        const result = await captureMain(() => renderReportMain(["--input", inputPath]));
+        assert.equal(result.status, 0, result.stderr);
+        assert.match(result.stdout, /## 阻断项/);
+        assert.match(result.stdout, /结论：BLOCKED/);
     });
-    it("collect_diff.mjs 通过 symlink 执行时输出 diff JSON", () => {
+    it("collect_diff main 输出 diff JSON", async () => {
         const dir = mkdtempSync(join(tmpdir(), "pre-landing-collect-"));
         const repoDir = join(dir, "repo");
-        const linkPath = join(dir, "collect_diff.mjs");
-        symlinkSync(join(scriptDir, "collect_diff.mjs"), linkPath);
         execFileSync("git", ["init", repoDir], { encoding: "utf-8" });
         writeFileSync(join(repoDir, "a.txt"), "old\n");
         execFileSync("git", ["add", "a.txt"], { cwd: repoDir, encoding: "utf-8" });
@@ -89,8 +112,9 @@ describe("CLI entrypoints", (): any => {
             cwd: repoDir,
             encoding: "utf-8",
         });
-        const output = execFileSync(process.execPath, [linkPath, "--base", "HEAD~1", "--cwd", repoDir], { encoding: "utf-8" });
-        const result = JSON.parse(output);
+        const output = await captureMain(() => collectDiffMain(["--base", "HEAD~1", "--cwd", repoDir]));
+        assert.equal(output.status, 0, output.stderr);
+        const result = JSON.parse(output.stdout);
         assert.equal(result.range, "HEAD~1...");
         assert.deepEqual(result.files, ["a.txt"]);
     });
