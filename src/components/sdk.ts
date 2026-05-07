@@ -115,22 +115,6 @@ export type ProcedureUseDefinition<
 
 export type ProcedureUseReference = string | ProcedureUseDefinition;
 
-export type ScriptOwners = ProcedureOwners;
-export type ScriptDefinition<
-  TArgs extends object = object,
-  TResult extends object = object,
-> = ProcedureDefinition<TArgs, TResult>;
-export type ScriptUseDefinition<
-  TArgs extends object = object,
-  TResult extends object = object,
-> = ProcedureUseDefinition<TArgs, TResult>;
-export type ScriptUseReference = ProcedureUseReference;
-
-export type SkillScriptRootDefinition = {
-  source: ComponentFile;
-  target?: string;
-};
-
 export type SkillReferenceDefinition = {
   id: string;
   source: ComponentFile;
@@ -198,8 +182,6 @@ export type SkillDefinition = {
   outputs?: SkillOutputsDefinition;
   tools?: readonly ToolMatcher[];
   procedures?: readonly ProcedureUseReference[];
-  scripts?: readonly ScriptUseReference[];
-  scriptRoots?: readonly SkillScriptRootDefinition[];
   references?: readonly SkillReferenceDefinition[];
   relatedSkills?: readonly RelatedSkillDefinition[];
   assets?: readonly SkillAssetDefinition[];
@@ -335,7 +317,6 @@ export type AgentDefinition = {
   tools?: readonly ToolMatcher[];
   skills?: readonly AgentSkillUse[];
   procedures?: readonly ProcedureUseReference[];
-  scripts?: readonly ScriptUseReference[];
   sandbox?: AgentSandbox;
   claudeModel?: string;
   codexModel?: string;
@@ -543,36 +524,6 @@ export function defineProcedureOutput<TResult>(
   definition: ProcedureOutputDefinition<TResult>,
 ): ProcedureOutputDefinition<TResult> {
   return definition;
-}
-
-export function defineScript<
-  TArgs extends object = object,
-  TResult extends object = object,
->(
-  definition: ScriptDefinition<TArgs, TResult>,
-): ScriptDefinition<TArgs, TResult> {
-  return defineProcedure(definition);
-}
-
-export function defineScriptUse<
-  TArgs extends object = object,
-  TResult extends object = object,
->(
-  definition: ScriptUseDefinition<TArgs, TResult>,
-): ScriptUseDefinition<TArgs, TResult> {
-  return defineProcedureUse(definition);
-}
-
-export function defineSkillProcedureRoot(
-  definition: SkillScriptRootDefinition,
-): SkillScriptRootDefinition {
-  return definition;
-}
-
-export function defineSkillScriptRoot(
-  definition: SkillScriptRootDefinition,
-): SkillScriptRootDefinition {
-  return defineSkillProcedureRoot(definition);
 }
 
 export function defineReference(definition: SkillReferenceDefinition): SkillReferenceDefinition {

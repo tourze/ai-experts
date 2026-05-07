@@ -7,7 +7,6 @@ export const registry = {
   version: 1,
   instructions: componentInstructions,
   procedures: componentProcedures,
-  scripts: componentProcedures,
   skills: componentSkills,
   agents: componentAgents,
   hooks: componentHooks,

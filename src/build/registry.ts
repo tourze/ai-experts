@@ -28,7 +28,7 @@ export function materializeRegistry(registry: ComponentRegistry): ComponentSurfa
   const skills = byId<SkillDefinition>(registry.skills, "skill");
   const agents = byId<AgentDefinition>(registry.agents, "agent");
   const hooks = byId<HookDefinition>(registry.hooks, "hook");
-  const procedures = byId<ProcedureDefinition>(registry.procedures ?? registry.scripts ?? [], "procedure");
+  const procedures = byId<ProcedureDefinition>(registry.procedures, "procedure");
 
   const procedureIds = new Set<string>();
   for (const skill of skills.values()) {
@@ -48,7 +48,6 @@ export function materializeRegistry(registry: ComponentRegistry): ComponentSurfa
   return {
     instructions: [...instructions.values()],
     procedures: surfaceProcedures,
-    scripts: surfaceProcedures,
     skills: [...skills.values()],
     agents: [...agents.values()],
     hooks: [...hooks.values()],
@@ -87,7 +86,7 @@ function isComponentRegistry(value: unknown): value is ComponentRegistry {
   if (!value || typeof value !== "object") return false;
   const maybe = value as Partial<ComponentRegistry>;
   return Array.isArray(maybe.instructions) &&
-    (Array.isArray(maybe.procedures) || Array.isArray(maybe.scripts)) &&
+    Array.isArray(maybe.procedures) &&
     Array.isArray(maybe.skills) &&
     Array.isArray(maybe.agents) &&
     Array.isArray(maybe.hooks);

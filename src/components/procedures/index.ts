@@ -1,11 +1,9 @@
 import {
   defineProcedureUse,
-  defineScriptUse,
   type ProcedureArgs,
   type ProcedureDefinition,
   type ProcedureResult,
   type ProcedureUseDefinition,
-  type ScriptUseDefinition,
 } from "../sdk";
 import { componentProcedures } from "./registry";
 
@@ -41,19 +39,5 @@ export function procedureUse(
   return defineProcedureUse({ id, ...(options ?? {}) });
 }
 
-export function scriptUse<const TProcedure extends ProcedureDefinition<object, object>>(
-  procedure: TProcedure,
-  reason?: string,
-): ScriptUseDefinition<ProcedureArgs<TProcedure>, ProcedureResult<TProcedure>>;
-export function scriptUse(id: string, reason?: string): ScriptUseDefinition;
-export function scriptUse(
-  procedure: ProcedureDefinition<object, object> | string,
-  reason?: string,
-): ScriptUseDefinition {
-  const use = typeof procedure === "string" ? procedureUse(procedure, reason) : procedureUse(procedure, reason);
-  return defineScriptUse(use);
-}
-
-export const componentScripts = componentProcedures;
 export { componentProcedures };
 export * from "./registry";

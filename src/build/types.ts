@@ -9,8 +9,7 @@ import type {
 export type ComponentRegistry = {
   version: number;
   instructions: readonly InstructionDefinition[];
-  procedures?: readonly ProcedureDefinition[];
-  scripts?: readonly ProcedureDefinition[];
+  procedures: readonly ProcedureDefinition[];
   skills: readonly SkillDefinition[];
   agents: readonly AgentDefinition[];
   hooks: readonly HookDefinition[];
@@ -19,7 +18,6 @@ export type ComponentRegistry = {
 export type ComponentSurface = {
   instructions: InstructionDefinition[];
   procedures: ProcedureDefinition[];
-  scripts: ProcedureDefinition[];
   skills: SkillDefinition[];
   agents: AgentDefinition[];
   hooks: HookDefinition[];

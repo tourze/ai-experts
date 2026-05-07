@@ -34,6 +34,19 @@ describe("component source conventions", () => {
     assert.doesNotMatch(readme, /338 个 skill|scripts\/manifest\.json|defineSkillScript\(\)|skill script registry/);
   });
 
+  test("component API exposes procedures without legacy script aliases", () => {
+    const sdkSource = readFileSync(join(repoRoot, "src/components/sdk.ts"), "utf-8");
+    const proceduresIndexSource = readFileSync(join(repoRoot, "src/components/procedures/index.ts"), "utf-8");
+    const registrySource = readFileSync(join(repoRoot, "src/components/registry.ts"), "utf-8");
+
+    assert.doesNotMatch(
+      sdkSource,
+      /\b(?:ScriptDefinition|ScriptUseDefinition|SkillScriptRootDefinition|defineScript|defineScriptUse|defineSkillScriptRoot|scriptRoots\?:|scripts\?:)\b/,
+    );
+    assert.doesNotMatch(proceduresIndexSource, /\b(?:scriptUse|componentScripts)\b/);
+    assert.doesNotMatch(registrySource, /\bscripts:/);
+  });
+
   test("agent source keeps structured fields", () => {
     const agentSource = readFileSync(
       join(repoRoot, "src/components/agents/typescript-reviewer/index.ts"),

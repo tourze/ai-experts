@@ -32,15 +32,15 @@ import {
   defineHook,
   defineAgentInput,
   defineInstruction,
+  defineProcedure,
+  defineProcedureUse,
   defineReference,
-  defineScript,
-  defineScriptUse,
   defineSkill,
   defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../src/components/sdk.ts";
-import { procedureUse, scriptUse } from "../../src/components/procedures/index.ts";
+import { procedureUse } from "../../src/components/procedures/index.ts";
 
 const tempDirs: string[] = [];
 
@@ -76,10 +76,10 @@ function createFixture() {
   writeText(skillReference, "# Ref\n");
   writeText(skillAsset, "asset");
 
-  const script = defineScript({
-    id: "fixture-script",
+  const procedure = defineProcedure({
+    id: "fixture-procedure",
     entry: pathToFileURL(join(process.cwd(), "src/components/procedures/sources/debug-methodology/debug-checklist.ts")),
-    description: "fixture script",
+    description: "fixture procedure",
     owners: { skillIds: ["fixture-skill"] },
     runtime: "node",
   });
@@ -116,7 +116,7 @@ function createFixture() {
     platforms: [ComponentPlatform.Claude, ComponentPlatform.Codex],
     body: pathToFileURL(skillBody),
     tools: [KnownTool.Read, KnownTool.Grep],
-    scripts: [script.id],
+    procedures: [procedure.id],
     references: [
       defineReference({
         id: "fixture-ref",
@@ -187,12 +187,12 @@ function createFixture() {
   const registry: ComponentRegistry = {
     version: 1,
     instructions: [instruction],
-    scripts: [script],
+    procedures: [procedure],
     skills: [skill],
     agents: [agent],
     hooks: [hook],
   };
-  return { root, script, skill, agent, hook, instruction, registry };
+  return { root, procedure, skill, agent, hook, instruction, registry };
 }
 
 describe("build/pipeline modules", () => {
@@ -212,9 +212,9 @@ describe("build/pipeline modules", () => {
     const fixture = createFixture();
     expect(validateTextList(fixture.skill, "useCases", "useCase")[0]).toContain("fixture");
     expect(validateAntiPatterns(fixture.skill).length).toBe(1);
-    const scriptMap = new Map([[fixture.script.id, fixture.script]]);
-    expect(renderSkillMd(fixture.skill, Platform.Claude, scriptMap)).toContain("## 适用场景");
-    expect(renderSkillMd(fixture.skill, Platform.Codex, scriptMap)).toContain("# Fixture Skill");
+    const procedureMap = new Map([[fixture.procedure.id, fixture.procedure]]);
+    expect(renderSkillMd(fixture.skill, Platform.Claude, procedureMap)).toContain("## 适用场景");
+    expect(renderSkillMd(fixture.skill, Platform.Codex, procedureMap)).toContain("# Fixture Skill");
     const relatedSkillMd = renderSkillMd(
       {
         ...fixture.skill,
@@ -224,7 +224,7 @@ describe("build/pipeline modules", () => {
         ],
       },
       Platform.Claude,
-      scriptMap,
+      procedureMap,
     );
     expect(relatedSkillMd.match(/\.\.\/other-skill\/SKILL\.md/g)?.length).toBe(1);
     expect(() => validateTextList({ ...fixture.skill, useCases: [] }, "useCases", "useCase")).toThrow();
@@ -237,7 +237,6 @@ describe("build/pipeline modules", () => {
       body: undefined,
       sourceDir: pathToFileURL(`${fixture.root}/skill/`),
       procedures: [],
-      scripts: [],
       goal: defineSkillGoal({ title: "完成条件", body: "明确流程目标。" }),
       workflow: defineSkillWorkflow({
         steps: [
@@ -248,7 +247,7 @@ describe("build/pipeline modules", () => {
       outputs: defineSkillOutputs({ items: ["结论", "后续动作"] }),
     });
     expect(() => validateRegistry({ ...fixture.registry, skills: [fixture.skill, structuredSkill] })).not.toThrow();
-    const structuredRendered = renderSkillMd(structuredSkill, Platform.Claude, scriptMap);
+    const structuredRendered = renderSkillMd(structuredSkill, Platform.Claude, procedureMap);
     expect(structuredRendered).toContain("## 完成条件\n\n明确流程目标。");
     expect(structuredRendered).toContain("## 执行步骤\n\n1. 读取输入。\n2. 执行检查。");
     expect(structuredRendered).toContain("## 输出\n\n- 结论\n- 后续动作");
@@ -266,7 +265,7 @@ describe("build/pipeline modules", () => {
     ).toThrow("must define body or sourceDir");
 
     const codexRoot = createTempDir("ai-experts-emit-skill-");
-    await emitSkill(fixture.skill, codexRoot, Platform.Codex, scriptMap);
+    await emitSkill(fixture.skill, codexRoot, Platform.Codex, procedureMap);
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "SKILL.md"))).toBe(true);
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "agents", "openai.yaml"))).toBe(true);
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "references", "index.md"))).toBe(true);
@@ -274,29 +273,29 @@ describe("build/pipeline modules", () => {
 
   test("registry procedure validation enforces owner/runtime/id constraints", () => {
     const fixture = createFixture();
-    const duplicateScriptRegistry: ComponentRegistry = {
+    const duplicateProcedureRegistry: ComponentRegistry = {
       ...fixture.registry,
-      scripts: [fixture.script, { ...fixture.script }],
+      procedures: [fixture.procedure, { ...fixture.procedure }],
     };
-    expect(() => validateRegistry(duplicateScriptRegistry)).toThrow("Duplicate procedure id");
+    expect(() => validateRegistry(duplicateProcedureRegistry)).toThrow("Duplicate procedure id");
 
     const invalidRuntimeRegistry: ComponentRegistry = {
       ...fixture.registry,
-      scripts: [{ ...fixture.script, runtime: "python3" as any }],
+      procedures: [{ ...fixture.procedure, runtime: "python3" as any }],
     };
     expect(() => validateRegistry(invalidRuntimeRegistry)).toThrow("runtime must be node");
 
     const missingOwnerRegistry: ComponentRegistry = {
       ...fixture.registry,
-      scripts: [{ ...fixture.script, owners: { skillIds: ["missing-skill"] } }],
+      procedures: [{ ...fixture.procedure, owners: { skillIds: ["missing-skill"] } }],
     };
     expect(() => validateRegistry(missingOwnerRegistry)).toThrow("missing owner skill");
 
-    const missingScriptReferenceRegistry: ComponentRegistry = {
+    const missingProcedureReferenceRegistry: ComponentRegistry = {
       ...fixture.registry,
-      skills: [{ ...fixture.skill, scripts: ["missing-script"] }],
+      skills: [{ ...fixture.skill, procedures: ["missing-procedure"] }],
     };
-    expect(() => validateRegistry(missingScriptReferenceRegistry)).toThrow("references missing procedure");
+    expect(() => validateRegistry(missingProcedureReferenceRegistry)).toThrow("references missing procedure");
 
     const duplicateRelatedSkillRegistry: ComponentRegistry = {
       ...fixture.registry,
@@ -315,16 +314,14 @@ describe("build/pipeline modules", () => {
       id: "other-skill",
       fullName: "Other Skill",
       relatedSkills: [],
-      scripts: [],
       procedures: [],
     });
     expect(() =>
       validateRegistry({
         ...fixture.registry,
-        scripts: [],
+        procedures: [],
         skills: [{
           ...fixture.skill,
-          scripts: [],
           procedures: [],
           relatedSkills: [
             { id: otherSkill.id, reason: "first route" },
@@ -347,61 +344,61 @@ describe("build/pipeline modules", () => {
     ).toThrow("markdown link to missing skill: missing-skill");
   });
 
-  test("procedure references support structured links and scripts helper guard", () => {
+  test("procedure references support structured links and helper guard", () => {
     const fixture = createFixture();
-    const agentScript = defineScript({
-      id: "fixture-agent-script",
-      entry: fixture.script.entry,
-      description: "fixture agent script",
+    const agentProcedure = defineProcedure({
+      id: "fixture-agent-procedure",
+      entry: fixture.procedure.entry,
+      description: "fixture agent procedure",
       owners: { agentIds: [fixture.agent.id] },
       runtime: "node",
     });
-    const structuredScriptRegistry: ComponentRegistry = {
+    const structuredProcedureRegistry: ComponentRegistry = {
       ...fixture.registry,
       skills: [{
         ...fixture.skill,
-        scripts: [
-          defineScriptUse({
-            id: fixture.script.id,
+        procedures: [
+          defineProcedureUse({
+            id: fixture.procedure.id,
             reason: "用于 fixture 场景校验",
           }),
         ],
       }],
-      scripts: [...fixture.registry.scripts, agentScript],
+      procedures: [...fixture.registry.procedures, agentProcedure],
       agents: [{
         ...fixture.agent,
-        scripts: [
-          defineScriptUse({
-            id: agentScript.id,
+        procedures: [
+          defineProcedureUse({
+            id: agentProcedure.id,
             reason: "用于 fixture agent 关联校验",
           }),
         ],
       }],
     };
-    expect(() => validateRegistry(structuredScriptRegistry)).not.toThrow();
+    expect(() => validateRegistry(structuredProcedureRegistry)).not.toThrow();
     const skillMd = renderSkillMd(
-      structuredScriptRegistry.skills[0]!,
+      structuredProcedureRegistry.skills[0]!,
       Platform.Claude,
-      new Map([[fixture.script.id, fixture.script]]),
+      new Map([[fixture.procedure.id, fixture.procedure]]),
     );
     expect(skillMd).toContain("调用目的");
     expect(skillMd).toContain("参数");
     expect(skillMd).toContain("返回值");
     expect(skillMd).toContain("用于 fixture 场景校验");
 
-    const duplicateScriptUsesRegistry: ComponentRegistry = {
+    const duplicateProcedureUsesRegistry: ComponentRegistry = {
       ...fixture.registry,
       skills: [{
         ...fixture.skill,
-        scripts: [
-          defineScriptUse({
-            id: fixture.script.id,
+        procedures: [
+          defineProcedureUse({
+            id: fixture.procedure.id,
             useId: "mode-a",
             label: "模式 A",
             exampleArgs: { args: ["--mode", "a"] },
           }),
-          defineScriptUse({
-            id: fixture.script.id,
+          defineProcedureUse({
+            id: fixture.procedure.id,
             useId: "mode-b",
             label: "模式 B",
             exampleArgs: { args: ["--mode", "b"] },
@@ -409,27 +406,27 @@ describe("build/pipeline modules", () => {
         ],
       }],
     };
-    expect(() => validateRegistry(duplicateScriptUsesRegistry)).toThrow("Duplicate procedure id in fixture-skill: fixture-script");
+    expect(() => validateRegistry(duplicateProcedureUsesRegistry)).toThrow("Duplicate procedure id in fixture-skill: fixture-procedure");
 
-    const duplicateScriptUsesWithoutUseIdRegistry: ComponentRegistry = {
+    const duplicateProcedureUsesWithoutUseIdRegistry: ComponentRegistry = {
       ...fixture.registry,
       skills: [{
         ...fixture.skill,
-        scripts: [
-          defineScriptUse({ id: fixture.script.id, label: "模式 A" }),
-          defineScriptUse({ id: fixture.script.id, label: "模式 B" }),
+        procedures: [
+          defineProcedureUse({ id: fixture.procedure.id, label: "模式 A" }),
+          defineProcedureUse({ id: fixture.procedure.id, label: "模式 B" }),
         ],
       }],
     };
-    expect(() => validateRegistry(duplicateScriptUsesWithoutUseIdRegistry)).toThrow("Duplicate procedure id in fixture-skill: fixture-script");
+    expect(() => validateRegistry(duplicateProcedureUsesWithoutUseIdRegistry)).toThrow("Duplicate procedure id in fixture-skill: fixture-procedure");
 
     const invalidReasonRegistry: ComponentRegistry = {
       ...fixture.registry,
       skills: [{
         ...fixture.skill,
-        scripts: [
-          defineScriptUse({
-            id: fixture.script.id,
+        procedures: [
+          defineProcedureUse({
+            id: fixture.procedure.id,
             reason: "",
           }),
         ],
@@ -438,8 +435,7 @@ describe("build/pipeline modules", () => {
     expect(() => validateRegistry(invalidReasonRegistry)).toThrow("reason must be a non-empty string");
 
     expect(() => procedureUse("debug-methodology-debug-checklist")).not.toThrow();
-    expect(() => scriptUse("debug-methodology-debug-checklist")).not.toThrow();
-    expect(() => procedureUse("missing-script-id")).toThrow("Unknown component procedure id");
+    expect(() => procedureUse("missing-procedure-id")).toThrow("Unknown component procedure id");
   });
 
   test("agent helpers validate and emit claude/codex agents", async () => {

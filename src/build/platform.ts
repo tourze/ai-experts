@@ -122,8 +122,8 @@ function validateSkillBodyCrossSkillLinks(skill: SkillDefinition, bodySource: st
 export function validateRegistry(registry: ComponentRegistry): ComponentSurface {
   if (!registry || !Array.isArray(registry.skills)) throw new Error("registry.skills must be an array");
   if (!Array.isArray(registry.instructions)) throw new Error("registry.instructions must be an array");
-  if (!Array.isArray(registry.procedures ?? registry.scripts)) {
-    throw new Error("registry.procedures or registry.scripts must be an array");
+  if (!Array.isArray(registry.procedures)) {
+    throw new Error("registry.procedures must be an array");
   }
   if (!Array.isArray(registry.agents)) throw new Error("registry.agents must be an array");
   if (!Array.isArray(registry.hooks)) throw new Error("registry.hooks must be an array");
@@ -131,7 +131,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
   const skillIds = new Set(registry.skills.map((skill) => skill.id));
   const agentIds = new Set(registry.agents.map((agent) => agent.id));
   const proceduresById = new Map<string, ProcedureDefinition>();
-  const procedures = registry.procedures ?? registry.scripts ?? [];
+  const procedures = registry.procedures;
 
   for (const procedure of procedures) {
     validateId(procedure.id, "procedure");

@@ -1,7 +1,6 @@
 import type {
   AgentDefinition,
   ProcedureUseReference,
-  ScriptUseReference,
   SkillDefinition,
 } from "../components/sdk";
 
@@ -76,19 +75,6 @@ export function resolveProcedureUses(
   return (procedureUses ?? []).map((procedureUse) => resolveProcedureUse(procedureUse));
 }
 
-export function listProcedureUses(component: Pick<SkillDefinition | AgentDefinition, "procedures" | "scripts">): ResolvedProcedureUse[] {
-  if (component.procedures && component.procedures.length > 0) {
-    return resolveProcedureUses(component.procedures);
-  }
-  return resolveProcedureUses(component.scripts as readonly ScriptUseReference[] | undefined);
-}
-
-export type ResolvedScriptUse = ResolvedProcedureUse;
-
-export function resolveScriptUse(scriptUse: ScriptUseReference): ResolvedScriptUse {
-  return resolveProcedureUse(scriptUse);
-}
-
-export function resolveScriptUses(scriptUses: readonly ScriptUseReference[] | undefined): ResolvedScriptUse[] {
-  return resolveProcedureUses(scriptUses);
+export function listProcedureUses(component: Pick<SkillDefinition | AgentDefinition, "procedures">): ResolvedProcedureUse[] {
+  return resolveProcedureUses(component.procedures);
 }
