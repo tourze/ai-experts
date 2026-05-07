@@ -1,6 +1,6 @@
-## Rust 代码模式
+# Rust Async Runtime Examples
 
-### JoinSet + Semaphore 有上限并发
+## JoinSet + Semaphore 有上限并发
 
 ```rust
 use std::sync::Arc;
@@ -18,13 +18,15 @@ async fn run_jobs(inputs: Vec<u64>, limit: usize) -> Vec<u64> {
         });
     }
     let mut output = Vec::new();
-    while let Some(r) = set.join_next().await { output.push(r.expect("panic")); }
+    while let Some(result) = set.join_next().await {
+        output.push(result.expect("panic"));
+    }
     output.sort_unstable();
     output
 }
 ```
 
-### CancellationToken 显式传播停机
+## CancellationToken 显式传播停机
 
 ```rust
 use tokio::{select, sync::mpsc, time::{sleep, Duration}};
@@ -36,7 +38,10 @@ async fn worker(mut rx: mpsc::Receiver<u32>, stop: CancellationToken) -> Vec<u32
         select! {
             _ = stop.cancelled() => break,
             item = rx.recv() => match item {
-                Some(value) => { sleep(Duration::from_millis(5)).await; handled.push(value); }
+                Some(value) => {
+                    sleep(Duration::from_millis(5)).await;
+                    handled.push(value);
+                }
                 None => break,
             },
         }
@@ -45,4 +50,4 @@ async fn worker(mut rx: mpsc::Receiver<u32>, stop: CancellationToken) -> Vec<u32
 }
 ```
 
-async trait 与超时边界的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。
+为每个 spawned task 明确所有者、取消信号和 join / abort 策略。

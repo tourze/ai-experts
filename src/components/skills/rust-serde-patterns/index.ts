@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const rustSerdePatternsSkill = defineSkill({
@@ -46,7 +49,25 @@ export const rustSerdePatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计和调试 Rust serde 序列化 / 反序列化方案，保持 enum 标签、字段演进、自定义编码和校验逻辑可兼容。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认数据格式、兼容性要求、enum 标签策略、未知字段策略和热路径性能要求。",
+      "检查新增字段是否有 default / Option，重命名字段是否保留 alias，Deserialize 是否返回错误而非 panic。",
+      "只在 API 入口使用 `deny_unknown_fields`，热路径谨慎使用 `flatten`。",
+      "按需读取 `patterns` 中的 internally tagged enum、结构体演进、Duration 编码和校验模式。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "serde 属性方案、enum 标签策略和字段兼容性计划。",
+      "自定义序列化 / 反序列化校验与错误处理建议。",
+      "需要引用的 `patterns` 模式和兼容性风险。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

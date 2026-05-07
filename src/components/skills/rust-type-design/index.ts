@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { rustOwnershipIdiomsSkill } from "../rust-ownership-idioms/index";
 import { rustPerformanceSkill } from "../rust-performance/index";
@@ -57,9 +60,35 @@ export const rustTypeDesignSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计 Rust 泛型、trait object、静态 / 动态分发和 typestate，让非法状态尽量在编译期暴露。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认是否真的需要多态、类型是否编译期确定、是否存在阶段化状态机。",
+      "默认选择泛型静态分发，只在异构集合、插件边界或编译时间压力下选择 dyn Trait。",
+      "检查 trait object safety：无泛型方法、不返回 `Self`、receiver 兼容。",
+      "分发决策树和 typestate 速查读取 `type-dispatch-guide`；深入示例读取 `chapter-06` / `chapter-07`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "泛型 / dyn Trait 选择、object safety 检查和性能 / 编译时间 trade-off。",
+      "typestate 阶段设计、非法状态收口方式和何时改用 enum。",
+      "需要联动 ownership 或 performance 的后续设计问题。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "type-dispatch-guide",
+      source: new URL("./references/type-dispatch-guide.md", import.meta.url),
+      target: "references/type-dispatch-guide.md",
+      title: "Rust 分发与类型状态速查",
+      summary: "泛型、dyn Trait 分发决策树和 typestate 最小示例。",
+      loadWhen: "需要快速判断 Rust 类型分发或 typestate 方案时读取。",
+    }),
     defineReference({
       id: "chapter-06",
       source: new URL("./references/chapter_06.md", import.meta.url),

@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const rustAsyncPatternsSkill = defineSkill({
@@ -31,9 +34,35 @@ export const rustAsyncPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "开发和排障 Tokio 异步任务、channel、select、限流、取消、超时、锁边界和 Send / 'static 生命周期问题。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认任务是谁 spawn 的、数据所有权如何进入 `'static` future、取消信号是否能传到每个分支。",
+      "为并发设置上限：JoinSet 收尸，Semaphore 限流，channel 容量提供背压。",
+      "检查阻塞工作、锁跨 await、任务泄漏、超时缺失和 future is not Send 编译错误。",
+      "JoinSet / Semaphore 和 CancellationToken 示例读取 `runtime-examples`；阻塞、死锁和 Send 陷阱读取 `advanced-patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "任务边界、所有权迁移、限流、背压、取消和超时设计。",
+      "Send / 'static / 锁跨 await / 阻塞路径诊断结论。",
+      "需要修改的 async API 边界、测试建议和剩余风险。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "runtime-examples",
+      source: new URL("./references/runtime-examples.md", import.meta.url),
+      target: "references/runtime-examples.md",
+      title: "Rust Async Runtime Examples",
+      summary: "JoinSet + Semaphore 限流并发和 CancellationToken 停机传播示例。",
+      loadWhen: "需要快速套用 Tokio 限流并发或取消传播模式时读取。",
+    }),
     defineReference({
       id: "advanced-patterns",
       source: new URL("./references/advanced-patterns.md", import.meta.url),

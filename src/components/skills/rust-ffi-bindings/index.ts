@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const rustFfiBindingsSkill = defineSkill({
@@ -45,7 +48,25 @@ export const rustFfiBindingsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计 Rust 与 C/C++/Swift/Kotlin/Python 等语言之间的 FFI 边界，明确 ABI、内存所有权、错误码、字符串和回调约定。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认调用方语言、ABI、对象生命周期、错误处理、线程模型和绑定生成方式。",
+      "为每个 `extern \"C\"` 入口检查 `#[no_mangle]`、`#[repr(C)]`、`catch_unwind` 和所有权文档。",
+      "复杂对象优先 opaque handle，`Box::into_raw` 必须有配对 `_free`，字符串使用 CStr / CString。",
+      "按需读取 `patterns` 中的 Opaque Handle、字符串传递、回调和 uniffi 模式。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "FFI API 边界、内存所有权表、错误码和释放函数设计。",
+      "绑定生成方案、panic / UB 风险和测试建议。",
+      "需要引用的 `patterns` 模式与未决 ABI 约束。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

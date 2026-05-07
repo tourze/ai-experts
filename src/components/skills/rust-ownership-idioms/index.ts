@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { rustAsyncPatternsSkill } from "../rust-async-patterns/index";
 import { rustErrorHandlingSkill } from "../rust-error-handling/index";
@@ -76,9 +79,35 @@ export const rustOwnershipIdiomsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 Rust 模块、函数、trait 和类型设计借用 / 所有权边界，选择 Box / Rc / Arc / Cell / Mutex 等指针与内部可变性方案。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认数据所有者、调用生命周期、线程边界、热路径和是否需要共享可变状态。",
+      "默认借用和泛型，只有边界需要才转所有权、智能指针或 dyn Trait。",
+      "审查循环内 clone / collect、unwrap 控制流和 `#[allow]` lint 豁免。",
+      "智能指针速查读取 `pointer-guide`；借用、Clippy 和 Send / Sync 深入内容读取对应 chapter reference。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "API 借用 / 所有权边界、智能指针选择和线程安全约束。",
+      "clone / collect / unwrap / allow 的风险点和替代方案。",
+      "需要联动错误处理、测试、类型设计或 async 的后续问题。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "pointer-guide",
+      source: new URL("./references/pointer-guide.md", import.meta.url),
+      target: "references/pointer-guide.md",
+      title: "Rust 智能指针速查",
+      summary: "`&T`、Box、Rc、Arc、Cell/RefCell、Mutex/RwLock 的所有权、线程安全和典型场景。",
+      loadWhen: "需要快速选择 Rust 借用、所有权或智能指针方案时读取。",
+    }),
     defineReference({
       id: "chapter-01",
       source: new URL("./references/chapter_01.md", import.meta.url),

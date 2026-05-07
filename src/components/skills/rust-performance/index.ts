@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { rustOwnershipIdiomsSkill } from "../rust-ownership-idioms/index";
 import { rustTypeDesignSkill } from "../rust-type-design/index";
@@ -62,9 +65,35 @@ export const rustPerformanceSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 benchmark、profiling 和分配分析定位 Rust 性能瓶颈，并按算法、API 边界、分配策略和微优化顺序收敛。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认性能目标、release 基线、硬件 / 数据集和可复现 benchmark。",
+      "从 Clippy、cargo bench / criterion、flamegraph、系统 profiler 和堆分配工具逐层定位。",
+      "优先改算法和数据结构，再评估 API 边界、分配策略和局部微优化。",
+      "工具速查读取 `profiling-tools`，详细 benchmark 和归因流程读取 `chapter-03`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "性能基线、测量命令、数据集、profile 证据和瓶颈排序。",
+      "算法 / 数据结构 / API / 分配 / 微优化层面的建议。",
+      "验证计划、回归风险和还缺的测量数据。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "profiling-tools",
+      source: new URL("./references/profiling-tools.md", import.meta.url),
+      target: "references/profiling-tools.md",
+      title: "Rust 性能工具速查",
+      summary: "Clippy、cargo bench、criterion、flamegraph、perf/Instruments 和 DHAT 的使用场景。",
+      loadWhen: "需要快速选择 Rust 性能测量或 profiling 工具时读取。",
+    }),
     defineReference({
       id: "chapter-03",
       source: new URL("./references/chapter_03.md", import.meta.url),

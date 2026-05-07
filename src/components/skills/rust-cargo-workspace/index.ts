@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const rustCargoWorkspaceSkill = defineSkill({
@@ -45,7 +48,25 @@ export const rustCargoWorkspaceSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计和维护 Rust Cargo workspace 的成员划分、共享依赖、feature 传播、build.rs 和 CI 检查策略。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认 crate 成员、发布边界、共享依赖、feature 关系和 CI 目标。",
+      "统一 `[workspace.dependencies]`、`resolver = \"2\"`、path / version 依赖和 additive feature 策略。",
+      "检查 `build.rs` 是否只写 `OUT_DIR`，跨 crate 集成测试是否放在专用 test crate。",
+      "按需读取 `patterns` 中的 workspace Cargo.toml、feature flag、build.rs 和 CI 缓存模式。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "workspace 成员划分、共享依赖和 feature 传播方案。",
+      "Cargo.toml / build.rs / CI 检查建议与风险点。",
+      "需要读取或引用的 `patterns` 章节和剩余决策。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

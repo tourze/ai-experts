@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { rustOwnershipIdiomsSkill } from "../rust-ownership-idioms/index";
 import { rustTestingSkill } from "../rust-testing/index";
@@ -64,9 +67,35 @@ export const rustDocumentationSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "编写和审查 Rust 公共 API 文档、模块文档、rustdoc lint，以及 Safety / Errors / Panics / Examples 段落。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先区分注释、公共 API 文档和模块级 `//!` 文档的职责。",
+      "为公共函数补齐摘要、Examples、Errors、Panics 和 unsafe Safety 不变量。",
+      "确保示例代码可作为文档测试编译，注释只解释 why，不翻译代码。",
+      "段落速查读取 `doc-section-guide`，详细 rustdoc 规范读取 `chapter-08`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "需要补齐的公共 API 文档、模块文档和 rustdoc lint 设置。",
+      "Safety / Errors / Panics / Examples 段落清单和具体缺口。",
+      "文档测试风险、注释职责偏差和后续测试建议。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "doc-section-guide",
+      source: new URL("./references/doc-section-guide.md", import.meta.url),
+      target: "references/doc-section-guide.md",
+      title: "Rust 文档段落速查",
+      summary: "摘要、Examples、Errors、Panics、Safety 等 rustdoc 段落的使用时机和内容要求。",
+      loadWhen: "需要快速判断 Rust 公共 API 文档应补哪些段落时读取。",
+    }),
     defineReference({
       id: "chapter-08",
       source: new URL("./references/chapter_08.md", import.meta.url),

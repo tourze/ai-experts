@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { rustErrorHandlingSkill } from "../rust-error-handling/index";
 import { rustOwnershipIdiomsSkill } from "../rust-ownership-idioms/index";
@@ -64,9 +67,35 @@ export const rustTestingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 Rust 代码编写和重构单元测试、集成测试、文档测试、snapshot 测试和测试目录组织。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认被测边界是内部逻辑、公共 API、文档示例还是复杂输出。",
+      "按测试类型选择 `#[cfg(test)]`、`tests/*.rs`、rustdoc 代码块或 cargo-insta snapshot。",
+      "测试名表达输入、条件和预期；错误路径用 Result 断言，不滥用 `#[should_panic]`。",
+      "测试类型速查读取 `testing-matrix`，详细命名、snapshot 和组织模式读取 `chapter-05`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "测试类型选择、文件位置、命名方案和断言策略。",
+      "snapshot 审查流程、文档测试缺口和集成测试组织建议。",
+      "需要联动 `testing-patterns` 的通用 fixture / mock / 参数化问题。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "testing-matrix",
+      source: new URL("./references/testing-matrix.md", import.meta.url),
+      target: "references/testing-matrix.md",
+      title: "Rust 测试类型速查",
+      summary: "单元测试、集成测试、文档测试和 snapshot 测试的位置、编译方式与适用场景。",
+      loadWhen: "需要快速选择 Rust 测试类型或组织测试目录时读取。",
+    }),
     defineReference({
       id: "chapter-05",
       source: new URL("./references/chapter_05.md", import.meta.url),

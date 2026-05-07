@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const rustTokioRuntimeTuningSkill = defineSkill({
@@ -42,7 +45,25 @@ export const rustTokioRuntimeTuningSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "调优 Tokio runtime 的 worker、blocking、current_thread、block_on 桥接和 metrics / tokio-console 观测配置。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认服务类型、部署资源、阻塞操作比例、runtime 生命周期和观测数据。",
+      "基于测量结果调整 worker_threads、max_blocking_threads、stack_size 和 thread_name。",
+      "同步桥接只在非 async 上下文使用 `block_on`，async 内直接 await。",
+      "按需读取 `patterns` 中的 Runtime Builder、按需创建、block_on 桥接和 runtime metrics 模式。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "runtime 类型、线程池参数、blocking 隔离和生命周期建议。",
+      "观测指标、tokio-console / metrics 配置和验证方法。",
+      "需要引用的 `patterns` 模式和仍需测量的数据。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

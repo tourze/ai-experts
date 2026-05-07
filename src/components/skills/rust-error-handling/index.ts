@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { rustAsyncPatternsSkill } from "../rust-async-patterns/index";
 import { rustOwnershipIdiomsSkill } from "../rust-ownership-idioms/index";
@@ -60,9 +63,35 @@ export const rustErrorHandlingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 Rust 库、应用和 async 边界设计可匹配、可传播、可文档化的错误类型与 Result 使用方式。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认当前 crate 是库、二进制入口、内部模块还是原型脚本。",
+      "按 API 稳定性、调用方是否需要 match、上下文补充和传播边界选择 thiserror、anyhow 或自定义类型。",
+      "消除生产路径中的 `unwrap()` / `expect()`，公共 `Result` API 同步补齐 `# Errors` 文档。",
+      "错误类型选择速查读取 `error-type-decision`，详细模式读取 `chapter-04`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "错误类型层级、thiserror / anyhow 使用边界和转换策略。",
+      "`unwrap` / `expect` 清理建议、错误消息规范和 `# Errors` 文档缺口。",
+      "需要测试覆盖的错误路径与 async 传播风险。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "error-type-decision",
+      source: new URL("./references/error-type-decision.md", import.meta.url),
+      target: "references/error-type-decision.md",
+      title: "Rust 错误类型选择速查",
+      summary: "库、应用、内部模块和原型脚本中 thiserror、anyhow、自定义错误和 unwrap 的选择表。",
+      loadWhen: "需要快速判断某个 Rust 边界应使用哪类错误类型时读取。",
+    }),
     defineReference({
       id: "chapter-04",
       source: new URL("./references/chapter_04.md", import.meta.url),
