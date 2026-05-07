@@ -6,7 +6,7 @@ const VIOLATIONS: Record<string, any> = {
     workflow_leak: {
         severity: "critical",
         label: "工作流泄露",
-        why: "Claude 会按 description 走捷径，跳过 SKILL.md 完整流程",
+        why: "模型可能按 description 走捷径，跳过 SKILL.md 完整流程",
     },
     output_leak: {
         severity: "critical",
@@ -16,7 +16,7 @@ const VIOLATIONS: Record<string, any> = {
     missing_trigger: {
         severity: "high",
         label: "缺少触发条件",
-        why: "缺少 '当...时使用' 格式，Claude 难以判断何时触发",
+        why: "缺少 '当...时使用' 格式，模型难以判断何时触发",
     },
     tool_leak: {
         severity: "medium",

@@ -26,7 +26,7 @@ export const skillActivationAnalyzerSkill = defineSkill({
   ],
   checklist: [
     "是否明确当前模式：单次诊断、冲突检测、健康度评估或静态文本审查。",
-    "是否还原了用户意图、候选 skill、实际触发/漏触发结果和插件层级。",
+    "是否还原了用户意图、候选 skill、实际触发/漏触发结果和组件层级。",
     "是否区分了覆盖不足、区分度不足、触发词误导和路由链路断点。",
     "是否只建议修改 description/frontmatter，而不是用正文修触发。",
     "批量审查是否给出 procedure 输出、违规类别和具体 rewrite 建议。",

@@ -22,7 +22,7 @@ cases:
     fixtures: []
     rubric:
       - "treats the task as multi-skill trigger conflict analysis"
-      - "extracts or compares trigger domains within the same plugin"
+      - "extracts or compares trigger domains within the same capability domain"
       - "prefers description differentiation over merging skills"
     trigger_expected: true
 

@@ -124,6 +124,23 @@ describe("component source conventions", () => {
     );
   });
 
+  test("skill activation analyzer uses component terminology", () => {
+    const activationAnalyzerSources = [
+      join(repoRoot, "src/components/procedures/sources/skill-activation-analyzer/cso_audit.ts"),
+      ...collectFiles(join(repoRoot, "src/components/skills/skill-activation-analyzer/references")),
+      ...collectFiles(join(repoRoot, "src/components/skills/skill-activation-analyzer/evals")),
+    ];
+
+    for (const sourceFile of activationAnalyzerSources) {
+      const source = readFileSync(sourceFile, "utf-8");
+      assert.doesNotMatch(
+        source,
+        /插件|plugin|Claude 会|Claude 难|Claude 一次/u,
+        `${sourceFile} should use platform-neutral component terminology`,
+      );
+    }
+  });
+
   test("cross-platform source names project memory files neutrally", () => {
     const platformSpecificMemoryRefs: string[] = [];
     for (const sourceFile of collectFiles(join(repoRoot, "src/components"))) {
