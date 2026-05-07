@@ -151,10 +151,10 @@ function mapTelemetryToReplayCases(entries: readonly FixtureTelemetry[]): Replay
   return cases;
 }
 
-function runDispatch(hooksRoot: string, platform: Platform, event: ReplayCase["event"], input: JsonRecord): string {
+function runDispatch(hooksRoot: string, event: ReplayCase["event"], input: JsonRecord): string {
   return execFileSync(
     process.execPath,
-    [join(hooksRoot, "dispatch.mjs"), "--platform", platform, "--event", event],
+    [join(hooksRoot, "dispatch.mjs"), "--event", event],
     {
       cwd: repoRoot,
       input: JSON.stringify(input),
@@ -270,7 +270,7 @@ describe("hooks real-history fixture replay", () => {
 
     for (const replayCase of replayCases) {
       const hooksRoot = replayCase.platform === Platform.Claude ? claudeHooksRoot : codexHooksRoot;
-      const output = runDispatch(hooksRoot, replayCase.platform, replayCase.event, replayCase.input).trim();
+      const output = runDispatch(hooksRoot, replayCase.event, replayCase.input).trim();
       if (output === "") continue;
       nonEmptyOutputs += 1;
 

@@ -690,7 +690,7 @@ describe("component build integration", () => {
 
     const reminderOutput = execFileSync(
       process.execPath,
-      [join(tmpDistDir, "claude/hooks/dispatch.mjs"), "--platform", "claude-code", "--event", "UserPromptSubmit"],
+      [join(tmpDistDir, "claude/hooks/dispatch.mjs"), "--event", "UserPromptSubmit"],
       {
         cwd: repoRoot,
         input: JSON.stringify({ prompt: "请检查 dist/claude 的 hooks" }),
@@ -702,7 +702,7 @@ describe("component build integration", () => {
 
     const ignoredSecretPathOnBashOutput = execFileSync(
       process.execPath,
-      [join(tmpDistDir, "claude/hooks/dispatch.mjs"), "--platform", "claude-code", "--event", "PreToolUse"],
+      [join(tmpDistDir, "claude/hooks/dispatch.mjs"), "--event", "PreToolUse"],
       {
         cwd: repoRoot,
         input: JSON.stringify({
@@ -720,7 +720,7 @@ describe("component build integration", () => {
 
     const secretWriteOutput = execFileSync(
       process.execPath,
-      [join(tmpDistDir, "claude/hooks/dispatch.mjs"), "--platform", "claude-code", "--event", "PreToolUse"],
+      [join(tmpDistDir, "claude/hooks/dispatch.mjs"), "--event", "PreToolUse"],
       {
         cwd: repoRoot,
         input: JSON.stringify({
@@ -735,7 +735,7 @@ describe("component build integration", () => {
 
     const codexSecretWriteOutput = execFileSync(
       process.execPath,
-      [join(tmpDistDir, "codex/hooks/dispatch.mjs"), "--platform", "codex-cli", "--event", "PreToolUse"],
+      [join(tmpDistDir, "codex/hooks/dispatch.mjs"), "--event", "PreToolUse"],
       {
         cwd: repoRoot,
         input: JSON.stringify({
@@ -750,7 +750,7 @@ describe("component build integration", () => {
 
     const dangerousCommandOutput = execFileSync(
       process.execPath,
-      [join(tmpDistDir, "codex/hooks/dispatch.mjs"), "--platform", "codex-cli", "--event", "PreToolUse"],
+      [join(tmpDistDir, "codex/hooks/dispatch.mjs"), "--event", "PreToolUse"],
       {
         cwd: repoRoot,
         input: JSON.stringify({
@@ -765,7 +765,7 @@ describe("component build integration", () => {
 
     const guardOutput = execFileSync(
       process.execPath,
-      [join(tmpDistDir, "codex/hooks/dispatch.mjs"), "--platform", "codex-cli", "--event", "PostToolUse"],
+      [join(tmpDistDir, "codex/hooks/dispatch.mjs"), "--event", "PostToolUse"],
       {
         cwd: repoRoot,
         input: JSON.stringify({

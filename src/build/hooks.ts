@@ -109,7 +109,6 @@ function parseArgs(argv) {
   const args = {};
   for (let index = 0; index < argv.length; index += 1) {
     if (argv[index] === "--event") args.event = argv[++index];
-    else if (argv[index] === "--platform") args.platform = argv[++index];
   }
   return args;
 }
@@ -269,7 +268,7 @@ export function renderHookConfig(
   const groupsByKey = new Map<string, HookDispatchGroup>();
   for (const hook of hooks) {
     const matcher = renderHookMatcher(hook);
-    const command = `node "${commandHome}/hooks/dispatch.mjs" --platform ${platform} --event ${hook.event}`;
+    const command = `node "${commandHome}/hooks/dispatch.mjs" --event ${hook.event}`;
     const key = `${hook.event}\0${matcher}`;
     let group = groupsByKey.get(key);
     if (!group) {
