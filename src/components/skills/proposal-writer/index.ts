@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { consultingAnalysisSkill } from "../consulting-analysis/index";
 
@@ -59,7 +62,25 @@ export const proposalWriterSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "撰写面向客户、采购方或管理层的商业提案，围绕客户问题、价值主张、实施计划、商务条款和成交动作组织文本。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认客户类型、合作目标、方案时长、必须包含项、决策链、预算区间和采购阶段。",
+      "以客户问题和目标为主线组织背景、问题、方案、价值、实施、商务条款和下一步动作。",
+      "案例、业绩、统计数字、节约金额和承诺必须有证据，按强弱分层表达。",
+      "正式发送前读取 `proposal-review` 做结构、价值主张和成交动作评审。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "客户问题、目标状态、价值主张和方案摘要。",
+      "里程碑、交付物、责任边界、验收方式、报价逻辑、假设和排除项。",
+      "企业级决策链、CTA、下一步动作和发送前评审结论。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

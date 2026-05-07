@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const salesEnablementSkill = defineSkill({
@@ -59,7 +62,25 @@ export const salesEnablementSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为具体买家角色和购买阶段创建销售材料，包括 sales deck、one-pager、异议处理、Demo 脚本、ROI 计算器、买家画像和提案。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先锁定买家角色、行业、购买阶段、业务结果和销售使用场景。",
+      "按需求选择材料：面对面演示读 `sales-deck`，会后留资读 `one-pager`，异议处理读 `objection-handling`，量化价值读 `roi-calculator`。",
+      "产品演示读 `demo-script`，了解买家读 `buyer-persona`，推进签约读 `proposal-template`，冷启动触达读 `cold-email`。",
+      "按买家类型定制：技术买家看架构/安全/集成，经济买家看 ROI/TCO/回收周期，内部倡导者看对比和审批材料，终端用户看日常体验。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "材料类型、买家角色、购买阶段、使用场景和核心业务结果。",
+      "对应 reference 的材料结构、论点、证据、CTA 和使用说明。",
+      "技术买家、经济买家、内部倡导者、终端用户的定制差异。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

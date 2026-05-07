@@ -6,6 +6,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, agileProductOwnerUserStoryGenerator } from "../../procedures/index";
 
@@ -52,7 +55,25 @@ export const agileProductOwnerSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把需求拆成可交付用户故事、验收标准、Epic、Backlog 和 Sprint 范围，保证故事满足 INVEST 并可直接转测试。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认业务目标、用户角色、成功标准、非目标、依赖和 Sprint 容量。",
+      "按用户故事模板写成“作为<角色>，我想要<动作>，以便<收益>”，验收标准使用 Given / When / Then。",
+      "需要故事、Sprint 或版本模板时读取 user-story / sprint / version references，生成样例 Backlog 时调用 procedure。",
+      "检查 Story 是否可在一个 Sprint 内完成，Stretch 不挤占 committed 范围。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "用户故事、验收标准、Epic 拆分、Backlog 或 Sprint 承诺范围。",
+      "角色、业务目标、非目标、依赖、容量和 Stretch / committed 边界。",
+      "需要读取的模板 reference、使用的 asset 和 procedure 参数。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(agileProductOwnerUserStoryGenerator),

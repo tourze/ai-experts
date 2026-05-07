@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { paidAdsSkill } from "../paid-ads/index";
 
@@ -48,6 +51,24 @@ export const leadChannelOptimizerSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "比较获客渠道的成本、线索质量、规模潜力、稳定性和执行复杂度，重排预算与团队资源。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先统一时间窗、归因方式、目标客户定义、线索质量口径和是否计入销售成本。",
+      "按渠道比较成本、线索质量、规模潜力、稳定性、执行复杂度和闭环转化。",
+      "把渠道分成继续投入、保持、缩减、暂停四类动作，并说明资源重分配后的下一步。",
+      "若结论指向广告账户结构或创意/受众问题，联动 paid-ads。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "渠道、成本、线索质量、规模潜力和建议动作对照表。",
+      "品牌建设型渠道与直接转化型渠道的分开判断。",
+      "预算/人力重分配建议、暂停条件和后续 paid ads 专项入口。",
+    ],
+  }),
   tools: [],
 });

@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const researchNoteWrapSkill = defineSkill({
@@ -56,7 +59,26 @@ export const researchNoteWrapSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把当前调研或分析会话压成高密度 Markdown 结论笔记，经主要问题和核心结论双步确认后再落盘。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先决定范围：默认 current-session，只有用户显式给出“今天 + 主题”才走 today-topic-synthesis。",
+      "读取记忆文件确认输出目录；未定义则先询问，并建议写回记忆文件。",
+      "先草拟主要问题表等待确认，再草拟核心结论表和关键结论编号列表等待确认。",
+      "确认后套用 `output-template` 落盘；引用位点前读取 `citation-validator`，反模式检查读 `anti-patterns`。",
+      "跨会话第一版不自动检索 transcript，由用户提供具体会话或要点，并在 frontmatter 标注来源。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "主要问题表、核心结论表、关键结论编号列表和必要实现位点表。",
+      "输出绝对路径、文件名 `YYYY-MM-DD-<topic>.md` 和 source frontmatter。",
+      "追加专题段落、引用三件事完整性和用户确认记录。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

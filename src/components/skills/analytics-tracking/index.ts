@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, analyticsTrackingTrackingPlanGenerator } from "../../procedures/index";
 
@@ -40,7 +43,25 @@ export const analyticsTrackingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "规划、生成、审计或排查 GA4/GTM 埋点方案，围绕业务漏斗、事件 taxonomy、Consent、DebugView 和广告回传验证建立追踪计划。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先画业务漏斗、主转化、微转化、关键页面、用户属性和事件属性。",
+      "使用 generator 时，输入至少包含 business_type、key_pages、conversion_actions、paid_channels 和 consent_required。",
+      "事件命名先查 `event-taxonomy-guide`，GTM 容器设计查 `gtm-patterns`，排障查 `debugging-playbook`。",
+      "方案层一次说明 Consent、内部流量过滤、跨域追踪、广告平台回传和验证路径。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "埋点计划、事件名、触发时机、参数、去重规则和负责人。",
+      "Consent、DebugView、Preview、广告平台回传和跨域追踪验证路径。",
+      "generator 输入 JSON 口径、事件 taxonomy 风险和迁移建议。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(analyticsTrackingTrackingPlanGenerator),

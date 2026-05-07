@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { agileProductOwnerSkill } from "../agile-product-owner/index";
 import { prfaqSkill } from "../prfaq/index";
@@ -36,7 +39,7 @@ export const createPrdSkill = defineSkill({
       get id() {
         return prfaqSkill.id;
       },
-      reason: "如果还在验证阶段，先用 `prfaq` 定\\\\\\\"为什么做\\\\\\\"，再用 PRD 定\\\\\\\"怎么做\\\\\\\"。",
+      reason: "如果还在验证阶段，先用 `prfaq` 定“为什么做”，再用 PRD 定“怎么做”。",
     },
     {
       get id() {
@@ -57,7 +60,25 @@ export const createPrdSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "撰写或重构 PRD、功能规格说明和需求文档，把问题、目标、用户、方案、详细需求、边界、风险、发布和数据监控固化为开发事实源。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先写背景与问题、目标与成功指标、用户与场景、方案概述、详细需求；轻量 PRD 至少覆盖 1-5 段。",
+      "中型项目补非目标与排除项、风险与依赖、发布与上线计划；完整 PRD 再补数据与监控、附录。",
+      "Epic 分解读 epic references，用户故事读 user-story references，MVP 范围取舍读 scoping references。",
+      "确保每条需求可验证、可拆任务、可测试，并明确上线方式、回滚预案和非目标。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "PRD 10 段式结构或轻量 1-5 段最小完整集。",
+      "问题、目标、用户、成功指标、关键流程、状态变化、异常路径和边界条件。",
+      "非目标、依赖、风险、上线方式、回滚预案、埋点需求和后续任务拆解入口。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

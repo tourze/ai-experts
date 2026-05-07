@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { marketSizingAnalysisSkill } from "../market-sizing-analysis/index";
 
@@ -48,7 +51,25 @@ export const fundraiseAdvisorSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 pre-seed 到 seed 阶段融资准备目标金额、轮次策略、故事线、投资人分层、会前材料、跟进节奏和证据表。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认融资目的、跑道、目标金额、关键里程碑、资金用途和当前牵引力。",
+      "把融资故事拆成问题/机会、牵引力、市场、团队、资金用途和下一阶段里程碑。",
+      "投资人按优先级分层推进，保持会前材料、Deck、数据室和口径一致。",
+      "需要展开完整流程时读取 `full-guide`，市场规模证据不足时联动 market sizing。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "融资目的、轮次、金额、跑道、里程碑和资金用途。",
+      "问题/机会、牵引力、市场、团队等模块的关键信息和证据。",
+      "投资人分层、跟进节奏、问答清单和不可夸大的风险边界。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

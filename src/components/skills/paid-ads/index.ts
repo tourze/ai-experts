@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { redesignMyLandingpageSkill } from "../redesign-my-landingpage/index";
 
@@ -53,7 +56,25 @@ export const paidAdsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "规划、诊断或扩展 Google Ads、Meta、LinkedIn、TikTok 等付费投放，明确目标、预算、平台、受众、创意、着陆页和复盘条件。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先明确业务目标、目标 CPA/ROAS、预算边界、转化动作、归因方式和学习期预期。",
+      "搭建或诊断账户结构时按 Brand、Non-brand、Retargeting、实验流量等层级拆开。",
+      "每层输出目标受众、关键词/兴趣、创意变量、着陆页、停投/扩量/复盘条件。",
+      "平台设置读取 `platform-setup-checklists`，受众读 `audience-targeting`，文案和创意读 ad copy / creative references。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "平台、目标、预算、campaign 层级、受众、关键词/兴趣、创意变量和着陆页。",
+      "停投、扩量、复盘条件和学习期预期。",
+      "创意/受众/落地页拆分诊断，以及需要联动 landing page 重设计的承接风险。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({
