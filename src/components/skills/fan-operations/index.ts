@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { copywritingSkill } from "../copywriting/index";
 import { xiaohongshuCommercialGrowthSkill } from "../xiaohongshu-commercial-growth/index";
@@ -17,8 +20,8 @@ export const fanOperationsSkill = defineSkill({
     "需要回复评论、私信或设计忠粉维护动作。",
     "想从“发完就走”变成“持续互动”，提高粉丝粘性和复访率。",
     "需要围绕粉丝互动反推选题、内容节奏或社群活动。",
-    "需要把公域粉丝进一步沉淀到私域时，参考 [references/private-domain.md](references/private-domain.md)。",
-    "需要统一品牌语气和人设时，参考 [references/personal-branding-advanced.md](references/personal-branding-advanced.md)。",
+    "需要把公域粉丝进一步沉淀到私域时，读取 `private-domain` reference。",
+    "需要统一品牌语气和人设时，读取 `personal-branding-advanced` reference。",
   ],
   constraints: [
     "先解决“回复是否及时”和“回复是否有信息量”，不要只追求高频复制粘贴。",
@@ -59,7 +62,26 @@ export const fanOperationsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "提升评论、私信、社群和复购互动质量，把公域粉丝转化为长期信任、内容选题和可持续承接路径。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认账号定位、粉丝类型、互动目标、高频问题、当前回复率、私信咨询和可交付承诺边界。",
+      "评论回复先给直接结论，再补场景动作，并用一个钩子问题延续对话；不得用无信息回复刷互动。",
+      "新粉欢迎语说明账号分享内容、适合解决的问题和主页置顶路径，不夸张承诺或冲动站外导流。",
+      "每周复盘新增评论、回复率、私信咨询和反复被问到的话题，沉淀 FAQ、选题和下周互动实验。",
+      "需要人设统一读取 personal-branding-advanced；公域转私域读取 private-domain；涉及安全导流联动 copywriting。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "评论回复、私信承接、新粉欢迎语、社群互动和复购维护建议。",
+      "高频问题沉淀、FAQ/选题反哺、每周互动复盘和下周动作。",
+      "品牌语气、人设一致性、私域边界和平台安全风险说明。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

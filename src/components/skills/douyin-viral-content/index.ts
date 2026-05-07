@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const douyinViralContentSkill = defineSkill({
@@ -43,7 +46,26 @@ export const douyinViralContentSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把主题素材、历史样本、视频摘要或逐字稿转成适合抖音短视频的标题、钩子、口播、分镜节奏、标签、评分和优化建议。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先判断是否有历史文案目录、表现数据、视频摘要或逐字稿；没有校准样本时使用通用基线并显式说明。",
+      "创作输出先定 20 字内钩子标题，再写 3-6 段口播，单段不超过 40 字，标签控制在 4-6 个。",
+      "评分和优化只引用 viral-factors、scoring-system、estimation-model、optimization-guide 和 learning-guide，不承诺播放量或爆款结果。",
+      "需要从视频提取内容时读取 douyin-video-summary；素材信息不足时先补问题，不硬凑长文案。",
+      "所有输出保留平台安全边界，避免违规导流、虚假收益、极端承诺和伪造历史数据。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "标题、口播文案、推荐标签、分镜/节奏建议和互动动作。",
+      "复盘说明：核心钩子、情绪方向、适配人群、评分理由和优化建议。",
+      "历史样本校准状态、使用的参考资料、平台安全风险和需要补充的素材缺口。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

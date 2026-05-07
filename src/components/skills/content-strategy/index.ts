@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { seoSkill } from "../seo/index";
 
@@ -53,7 +56,26 @@ export const contentStrategySkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "制定内容支柱、主题集群、选题优先级、内容日历、分发复用和站点内容结构，让内容服务搜索、分享、教育和转化目标。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认业务目标、目标受众、差异化、发布产能、核心 CTA 和内容在获客/教育/品牌中的角色。",
+      "用选题矩阵把每个主题绑定读者、意图、主分发渠道和 CTA；避免只按关键词或内部想法排期。",
+      "内容日历读取 content-calendar-methodology，按 Quick Win、Rewrite、New Article、Trending 四类来源交叉去重后排序。",
+      "主题集群读取 topic-cluster，SEO 内容评分读取 seo-content-scoring，CMS 组织读取 headless-cms，跨平台复用读取 content-repurpose。",
+      "新产品、栏目或品牌需要域名方向时，按主品牌、活动页、实验性分组，并读取 domain-name-brainstormer。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "内容支柱、选题矩阵、主题集群、内部链接方向、目标读者、意图和 CTA。",
+      "内容日历、优先级、负责人、发布节奏、复用渠道和产能约束。",
+      "CMS/站点结构建议、SEO 内容评分、域名候选分组和需要 SEO 联动的页面优化事项。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

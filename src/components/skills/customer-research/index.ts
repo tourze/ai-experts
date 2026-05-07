@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const customerResearchSkill = defineSkill({
@@ -42,7 +45,26 @@ export const customerResearchSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "从访谈、问卷、工单、评论、NPS 和公开渠道中提炼客户洞察、JTBD、痛点、触发事件、原话词汇、persona 和研究缺口。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先声明当前模式：分析已有素材或在线挖掘；输入可能是访谈转写、问卷开放题、客服工单、赢/丢单笔记、NPS 或公开评论。",
+      "已有素材按 extraction-framework 提取 JTBD、痛点、触发事件、期望结果、原话词汇和替代方案，再做主题聚类、频率×强度打分和分群。",
+      "在线挖掘先确定关键词和默认 12 个月窗口，逐条抽取角色、痛点、JTBD、原话、情绪极性，并跨渠道验证。",
+      "置信度按来源数量和渠道交叉验证分高/中/低；样本不足或偏差明显时标为初步信号。",
+      "需要 persona 或 JTBD 地图时读取 persona-template，所有画像必须回链到真实数据来源。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "结构化洞察：主题、JTBD、痛点、触发事件、期望结果、替代方案、原话和来源。",
+      "置信度、样本量、样本偏差、矛盾点、研究缺口和时效窗口说明。",
+      "基于真实数据的 persona、分群差异、金句摘录和可用于内容/产品/销售的行动建议。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

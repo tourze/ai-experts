@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const leadResearchAssistantSkill = defineSkill({
@@ -52,7 +55,25 @@ export const leadResearchAssistantSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把产品定位、ICP、公开买家信号、联系人角色和外联切入点串成销售可执行的目标账号与调研卡片。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认产品、客单价、成交周期、目标行业、公司规模、区域、购买角色和理想客户定义。",
+      "从 ICP 到首批账号时，逐家公司说明触发信号、适配原因、建议联系人角色和首次切入角度。",
+      "已有账号深挖时读取 account-research-guide，拆分公司背景、阶段信号、岗位分布、公开项目、招聘和技术栈线索。",
+      "联系人发现与公司研究分开汇报；公开事实、公开信号、推测结论、信息日期和置信度必须分层标注。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "目标账号清单：公司、触发信号、适配原因、建议联系人、首次切入角度和优先级。",
+      "单账号调研卡片：阶段信号、关键岗位、买家痛点、切入点、风险和后续动作。",
+      "事实/信号/推测/置信度分层，以及适合试单和适合长期跟进的目标区分。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

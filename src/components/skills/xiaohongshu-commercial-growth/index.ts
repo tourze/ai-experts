@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { fanOperationsSkill } from "../fan-operations/index";
 
@@ -53,7 +56,25 @@ export const xiaohongshuCommercialGrowthSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为小红书账号、品牌、商家、创始人 IP、知识博主或实体店设计商业增长路径，把定位、内容、搜索、店铺、投放、达人合作和私域承接串成闭环。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先定义商业路径，再定义内容；输入至少包含主体、产品/服务、目标人群、资源、当前数据、目标和卡点。",
+      "用业务诊断区分内容定位、流量路径和变现路径；自然流量、搜索、店铺成交、直播、达人和私域承接各自说明角色。",
+      "需要完整定位、投放和复盘读取 playbook；需要阶段检查读取 checklists；需要图文笔记读取 xhs-graphic-generator。",
+      "输出必须包含首周动作，单账号模型未跑通前不默认建议矩阵；涉及最新规则、收费、处罚和工具权限时先核验。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "业务诊断：主体、产品/服务、目标人群、当前卡点、核心判断和商业路径。",
+      "内容定位、流量路径、变现路径、首周动作、承接检查和复盘指标。",
+      "需要图文生成、评论区维护、私域承接或平台规则核验的明确分工。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

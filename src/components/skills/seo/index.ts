@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { contentStrategySkill } from "../content-strategy/index";
 
@@ -23,7 +26,7 @@ export const seoSkill = defineSkill({
     "技术 SEO 改动必须说明影响范围，尤其是 robots、canonical、noindex、重定向。",
     "站点层级和 URL 规划配合 `content-strategy`。",
     "不对排名结果做承诺；SEO 结论要区分\"可执行项\"和\"结果预期\"。",
-    "按站点类型使用对应检查项，见 [site-type-checklists](references/site-type-checklists.md)。",
+    "按站点类型使用对应检查项，必要时读取 `site-type-checklists` reference。",
   ],
   checklist: [
     "是否明确索引策略和 canonical 策略。",
@@ -53,7 +56,25 @@ export const seoSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "提升搜索可见性和页面级 SEO 质量，覆盖可抓取性、可索引性、canonical、结构化数据、E-E-A-T、站点架构和程序化 SEO。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先判断页面或站点是否值得被索引，再按可抓取性、可索引性、页面语义、E-E-A-T、结构化数据、内链的顺序审计。",
+      "技术改动必须逐项说明 robots、canonical、noindex、重定向、sitemap 和结构化数据的影响范围与回滚路径。",
+      "E-E-A-T 审计分 Experience、Expertise、Authoritativeness、Trustworthiness 四类证据，不把品牌自述当作外部权威。",
+      "按站点类型读取 site-type-checklists；站点架构读取 site-architecture，程序化 SEO 读取 programmatic-seo-playbooks，AI 搜索优化读取 aeo-geo。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "SEO 审计或改造清单：抓取、索引、canonical、robots、sitemap、结构化数据、内链和页面语义。",
+      "E-E-A-T 证据矩阵、站点类型特定检查项、内容质量风险和需要内容策略联动的问题。",
+      "程序化 SEO 页面体系、模板风险、独特价值要求、数据来源和子目录/子域取舍建议。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

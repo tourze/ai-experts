@@ -6,6 +6,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, copywritingContentFilter } from "../../procedures/index";
 
@@ -56,7 +59,26 @@ export const copywritingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为首页、落地页、定价页、功能页、关于页和产品页写出清晰、具体、可信、以客户语言驱动转化的营销文案。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认页面类型、目标受众、核心价值主张、主要 CTA、证明材料、反对意见和 voice & tone。",
+      "写作优先级是 Clarity、Benefits、Specificity、Customer language；风格保持 simple、specific、active、confident、honest。",
+      "页面结构按首屏、社会证明、痛点、解决方案/收益、How it works、FAQ/异议处理、最终 CTA 组合；不同页面读取 page-type-guide。",
+      "CTA 使用 action verb + what they get + qualifier，按钮控制在 5 词内，必要时加低风险说明。",
+      "引用社交平台素材或投放文案前读取 social-platform-safety，并可调用 copywriting-content-filter 做安全过滤。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "页面文案：headline、subheadline、CTA、social proof、主体区块、FAQ/异议处理和最终 CTA。",
+      "A/B 文案变体、voice & tone、客户语言替换、利益点排序和证明材料缺口。",
+      "内容安全检查结果、敏感内容过滤说明和需要 CRO 联动的实验假设。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(copywritingContentFilter),
