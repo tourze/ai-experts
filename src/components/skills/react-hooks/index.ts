@@ -5,9 +5,13 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { reactPerformanceSkill } from "../react-performance/index";
 import { reactServerComponentsSkill } from "../react-server-components/index";
+import { typescriptTypeSafetySkill } from "../typescript-type-safety/index";
 
 export const reactHooksSkill = defineSkill({
   id: "react-hooks",
@@ -19,7 +23,7 @@ export const reactHooksSkill = defineSkill({
     "遇到 effect 重复执行、闭包拿到旧值、依赖数组写不对、清理逻辑遗漏等问题。",
     "如果问题已经扩展成\"渲染性能、外部 store 订阅或 memo 治理\"，统一看 `react-performance`。",
     "如果任务在 Next.js App Router / RSC 边界上，优先联动 `react-server-components`。",
-    "类型体操很重时，联动 `typescript-magician`。",
+    "类型体操很重时，联动 `typescript-type-safety`。",
   ],
   constraints: [
     "Hook 只能在 React 组件或自定义 Hook 顶层调用，不能放进条件、循环、普通函数。",
@@ -50,6 +54,12 @@ export const reactHooksSkill = defineSkill({
       },
       reason: "如果问题已经扩展成\\\"渲染性能、外部 store 订阅或 memo 治理\\\"，统一看 `react-performance`。",
     },
+    {
+      get id() {
+        return typescriptTypeSafetySkill.id;
+      },
+      reason: "自定义 Hook 返回类型、Reducer action 或泛型约束复杂时联动。",
+    },
   ],
   antiPatterns: [
     defineAntiPattern({
@@ -58,14 +68,52 @@ export const reactHooksSkill = defineSkill({
     }),
     defineAntiPattern({
       fail: "删依赖压 ESLint",
-      pass: "依赖数组表达真实读集：条件调用 Hook，或在普通工具函数里偷偷调用 Hook。 默认到处加 `useMemo` / `useCallback`，却没有证明它能改善瓶颈。 自定义 Hook 直接访问 `window`、`document`、`localStorage`，在 SSR 下崩溃。",
+      pass: "依赖数组表达真实读集",
+    }),
+    defineAntiPattern({
+      fail: "条件或普通函数里调用 Hook",
+      pass: "只在组件或自定义 Hook 顶层调用",
+    }),
+    defineAntiPattern({
+      fail: "默认到处加 useMemo/useCallback",
+      pass: "先证明渲染瓶颈再 memo",
+    }),
+    defineAntiPattern({
+      fail: "Hook 直接访问 window/localStorage",
+      pass: "隔离 SSR 边界并延后到 effect",
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计 React state、reducer、ref、effect、自定义 Hook、依赖数组、清理逻辑和 SSR 安全边界。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先判断逻辑属于 state、reducer、ref、effect、memo 还是自定义 Hook，避免把纯派生塞进 effect。",
+      "`useEffect` 只同步 React 外部系统，依赖数组必须表达真实读集，清理函数释放订阅、定时器和事件监听。",
+      "复杂状态机优先 `useReducer`，跨渲染可变值用 `useRef`，需要触发渲染才用 state。",
+      "useReducer + useEffect 示例读取 `hooks-code-patterns`；自定义 Hook 和 useMemo 派生值读取 `advanced-patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Hook 职责划分、状态建模、effect 依赖和清理策略。",
+      "自定义 Hook API、SSR 边界、异常输入和测试建议。",
+      "性能 memo、RSC 边界或类型复杂度的联动风险。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "hooks-code-patterns",
+      source: new URL("./references/hooks-code-patterns.md", import.meta.url),
+      target: "references/hooks-code-patterns.md",
+      title: "React Hooks 代码模式",
+      summary: "useReducer 状态机、useState 和 useEffect 清理逻辑示例。",
+      loadWhen: "需要快速设计 React Hook 状态和 effect 结构时读取。",
+    }),
     defineReference({
       id: "advanced-patterns",
       source: new URL("./references/advanced-patterns.md", import.meta.url),

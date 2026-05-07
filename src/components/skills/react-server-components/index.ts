@@ -5,7 +5,12 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
+import { nextjsDeveloperSkill } from "../nextjs-developer/index";
+import { webPerformanceDiagnosisSkill } from "../web-performance-diagnosis/index";
 
 export const reactServerComponentsSkill = defineSkill({
   id: "react-server-components",
@@ -43,17 +48,77 @@ export const reactServerComponentsSkill = defineSkill({
     "嵌套 Server Components 的数据获取是否做了并行化？",
     "非阻塞操作（日志、分析）是否用 after() 延迟执行？",
   ],
+  relatedSkills: [
+    {
+      get id() {
+        return nextjsDeveloperSkill.id;
+      },
+      reason: "需要完整 Next.js App Router、Route Handler、Metadata 或部署约束时联动。",
+    },
+    {
+      get id() {
+        return webPerformanceDiagnosisSkill.id;
+      },
+      reason: "RSC 问题表现为首屏、瀑布流、序列化或缓存性能退化时联动。",
+    },
+  ],
   antiPatterns: [
     defineAntiPattern({
       fail: "整页 'use client'",
-      pass: "服务端获取 + 局部交互：Server Action 认证、模块级状态污染、整 row 序列化、React.cache 去重等优化反模式见 [references/advanced-patterns.md](references/advanced-patterns.md)。",
+      pass: "服务端获取 + 局部交互",
+    }),
+    defineAntiPattern({
+      fail: "Server Action 无认证授权",
+      pass: "Action 内部校验身份、权限和输入",
+    }),
+    defineAntiPattern({
+      fail: "模块级保存请求状态",
+      pass: "请求状态放入请求作用域或显式参数",
+    }),
+    defineAntiPattern({
+      fail: "整 row 序列化到客户端",
+      pass: "只传最小可序列化 props",
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计 React Server Components 边界、数据获取并行化、Server Actions、安全校验、streaming、React.cache 去重和序列化成本治理。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先识别组件是否真的需要客户端交互，默认保留 Server Component，只在交互叶子加 `'use client'`。",
+      "并行化互不依赖的数据获取，使用 Suspense / streaming 暴露加载边界，避免嵌套 waterfall。",
+      "Server Action 内部执行鉴权、授权、输入校验和重验证；Client Component props 只传最小可序列化数据。",
+      "并行 fetch 代码读取 `server-component-patterns`；缓存、streaming 和高级反模式读取 `advanced` / `advanced-patterns` / `rules`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Server / Client Component 边界和 `'use client'` 下沉建议。",
+      "数据获取并行化、缓存、streaming、Server Action 安全和序列化治理方案。",
+      "需要补的性能测量、请求去重、安全测试和 RSC 边界验证。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "server-component-patterns",
+      source: new URL("./references/server-component-patterns.md", import.meta.url),
+      target: "references/server-component-patterns.md",
+      title: "RSC 基础代码模式",
+      summary: "Server Component 中并行获取数据的基础示例和相关进阶资料入口。",
+      loadWhen: "需要快速实现 React Server Component 数据获取或边界示例时读取。",
+    }),
+    defineReference({
+      id: "advanced",
+      source: new URL("./references/advanced.md", import.meta.url),
+      target: "references/advanced.md",
+      title: "RSC 流式与缓存模式",
+      summary: "React Server Components 的 streaming、缓存和进阶实现模式。",
+      loadWhen: "需要更完整的 RSC 流式渲染或缓存策略时读取。",
+    }),
     defineReference({
       id: "advanced-patterns",
       source: new URL("./references/advanced-patterns.md", import.meta.url),

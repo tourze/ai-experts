@@ -3,10 +3,16 @@ import {
   KnownTool,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { modernJavascriptPatternsSkill } from "../modern-javascript-patterns/index";
+import { reactHooksSkill } from "../react-hooks/index";
 import { testingPatternsSkill } from "../testing-patterns/index";
+import { typescriptTypeSafetySkill } from "../typescript-type-safety/index";
 
 export const javascriptTypescriptJestSkill = defineSkill({
   id: "javascript-typescript-jest",
@@ -15,7 +21,7 @@ export const javascriptTypescriptJestSkill = defineSkill({
   useCases: [
     "需要为 JavaScript / TypeScript 模块补单元测试或轻量集成测试。",
     "写测试前需要先把生产代码整理为更易测试的现代写法时，先参考 `modern-javascript-patterns`。",
-    "组件测试涉及 Hook 行为时，对照 `react-hooks`；涉及复杂类型推断时，对照 `typescript-magician`。",
+    "组件测试涉及 Hook 行为时，对照 `react-hooks`；涉及复杂类型推断时，对照 `typescript-type-safety`。",
     "已有 React Testing Library 栈时，沿用项目既有 `render` / `screen` / `userEvent` 封装，不要另起一套 helper。",
   ],
   constraints: [
@@ -41,6 +47,18 @@ export const javascriptTypescriptJestSkill = defineSkill({
       },
       reason: "通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 `testing-patterns`。本 skill 只覆盖 JavaScript/TypeScript 特有语法与工具。",
     },
+    {
+      get id() {
+        return reactHooksSkill.id;
+      },
+      reason: "组件测试涉及 Hook 行为、effect 清理或 React Testing Library 交互边界时联动。",
+    },
+    {
+      get id() {
+        return typescriptTypeSafetySkill.id;
+      },
+      reason: "测试夹具、mock、泛型或断言需要收敛复杂 TypeScript 类型时联动。",
+    },
   ],
   antiPatterns: [
     defineAntiPattern({
@@ -58,6 +76,34 @@ export const javascriptTypescriptJestSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 Jest 为 JavaScript / TypeScript 模块、异步函数、mock 边界和组件行为编写可维护的单元测试和轻量集成测试。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认被测行为、外部边界、异步完成方式、共享状态和项目既有 Jest / RTL helper。",
+      "按 Arrange-Act-Assert 写清行为，外部依赖只 mock 边界，不 mock 被测对象内部。",
+      "异步测试必须显式 `await`、`return`、`resolves` 或 `rejects`，共享状态用 beforeEach / afterEach 收敛。",
+      "sum、async mock 和 beforeEach 示例读取 `jest-code-patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Jest 测试结构、fixture、mock 边界和异步断言方式。",
+      "组件测试查询策略、共享状态清理和快照使用结论。",
+      "仍需补的失败路径、边界条件和重构建议。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "jest-code-patterns",
+      source: new URL("./references/jest-code-patterns.md", import.meta.url),
+      target: "references/jest-code-patterns.md",
+      title: "Jest 代码模式",
+      summary: "Jest 基础行为测试、显式 mock 和 beforeEach 共享状态清理示例。",
+      loadWhen: "需要快速编写 JavaScript / TypeScript Jest 测试样例时读取。",
+    }),
+  ],
 });

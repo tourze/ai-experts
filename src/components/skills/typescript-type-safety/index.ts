@@ -2,6 +2,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
   InvocationPolicy,
   KnownTool,
   Platform,
@@ -48,7 +51,25 @@ export const typescriptTypeSafetySkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "定位 TypeScript 编译错误，收敛 `any`、泛型、类型守卫、条件类型和路由/API/数据库边界合同。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先获取完整 `tsc --noEmit` 输出；已有输出文件时用 `extract-ts-errors` 归组错误。",
+      "按文件、错误码和边界合同定位上游 schema / DTO / 泛型漂移，再处理下游症状。",
+      "`any` 优先改为 `unknown` + 类型守卫、schema parser、判别联合或必要泛型约束。",
+      "诊断顺序读取 `diagnosis-workflow`；高级类型读取 `advanced-patterns`；边界合同代码读取 `code-patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "TypeScript 错误归组、上游合同根因和修复顺序。",
+      "`any` / 断言 / 类型守卫 / 泛型 / schema parser 的收敛建议。",
+      "需要补的类型示例、运行时校验和 `tsc --noEmit` / 测试验证命令。",
+    ],
+  }),
   tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob, KnownTool.Bash],
   procedures: [
     procedureUse(typescriptTypeSafetyExtractTsErrors, {
@@ -59,6 +80,14 @@ export const typescriptTypeSafetySkill = defineSkill({
     }),
   ],
   references: [
+    defineReference({
+      id: "diagnosis-workflow",
+      source: new URL("./references/diagnosis-workflow.md", import.meta.url),
+      target: "references/diagnosis-workflow.md",
+      title: "TypeScript 诊断流程",
+      summary: "tsc 输出归组、上游合同优先和逐类根因修复流程。",
+      loadWhen: "需要定位 TypeScript 编译错误或组织修复顺序时读取。",
+    }),
     defineReference({
       id: "advanced-patterns",
       source: new URL("./references/advanced-patterns.md", import.meta.url),

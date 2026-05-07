@@ -5,8 +5,13 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { javascriptTypescriptJestSkill } from "../javascript-typescript-jest/index";
+import { reactHooksSkill } from "../react-hooks/index";
+import { typescriptTypeSafetySkill } from "../typescript-type-safety/index";
 
 export const modernJavascriptPatternsSkill = defineSkill({
   id: "modern-javascript-patterns",
@@ -18,7 +23,7 @@ export const modernJavascriptPatternsSkill = defineSkill({
     "涉及复杂状态或 Hook 边界时，优先确认 `react-hooks` 的约束。",
     "需要更完整的函数式、模块化与高级语法补充材料时，再展开 [advanced-patterns.md](references/advanced-patterns.md)。",
     "需要热路径微优化（Set/Map 查找、迭代合并、DOM 批处理、requestIdleCallback）时，展开 [micro-optimization.md](references/micro-optimization.md)。",
-    "涉及复杂类型推导、API 合同收敛或 `any` 清理时，转到 `typescript-magician`。",
+    "涉及复杂类型推导、API 合同收敛或 `any` 清理时，转到 `typescript-type-safety`。",
   ],
   constraints: [
     "优先用小而直白的语法升级：`const` / `let`、解构、可选链、空值合并、`async/await`。",
@@ -43,6 +48,18 @@ export const modernJavascriptPatternsSkill = defineSkill({
       },
       reason: "需要在业务代码和测试代码之间复用一致的数据变换模式时，联动 `javascript-typescript-jest`。",
     },
+    {
+      get id() {
+        return reactHooksSkill.id;
+      },
+      reason: "现代 JS 重构触及 React Hook 状态、effect 或闭包依赖边界时联动。",
+    },
+    {
+      get id() {
+        return typescriptTypeSafetySkill.id;
+      },
+      reason: "重构涉及 API 合同、复杂泛型、`any` 清理或 TypeScript 边界时联动。",
+    },
   ],
   antiPatterns: [
     defineAntiPattern({
@@ -51,14 +68,48 @@ export const modernJavascriptPatternsSkill = defineSkill({
     }),
     defineAntiPattern({
       fail: "map 里偷偷修改外部状态",
-      pass: "用合适的工具做去重：把 `Promise.all` 用在互相依赖的异步步骤上。 在 CommonJS / ESM 边界混用默认导出与具名导出而不做兼容说明。",
+      pass: "返回新值或改用显式循环表达副作用",
+    }),
+    defineAntiPattern({
+      fail: "依赖步骤用 Promise.all 并发",
+      pass: "只并发互不依赖的异步操作",
+    }),
+    defineAntiPattern({
+      fail: "CommonJS / ESM 边界混用无说明",
+      pass: "明确模块导出形态和兼容层",
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用现代 ES6+ 语法重构 JavaScript 回调、共享可变状态、异步流程、数据转换和热路径代码，保持可读性与证据驱动优化。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认目标是语法升级、异步收口、数据变换、模块边界还是热路径优化。",
+      "优先使用 `const` / `let`、解构、展开、可选链、空值合并和 `async/await` 消除隐式状态。",
+      "数据转换默认不可变，Promise 并发只用于互不依赖步骤；微优化必须先有 profiler 证据。",
+      "解构、async/await 和纯函数流水线示例读取 `core-refactor-patterns`；高级抽象和微优化读取对应 references。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "现代 JS 重构点、异步边界、模块 API 和数据转换建议。",
+      "可读性、不可变性、错误语义和性能证据结论。",
+      "需要补的 Jest 测试、类型边界或微优化验证。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "core-refactor-patterns",
+      source: new URL("./references/core-refactor-patterns.md", import.meta.url),
+      target: "references/core-refactor-patterns.md",
+      title: "现代 JavaScript 核心重构模式",
+      summary: "解构与展开、async/await 错误收口和小型纯函数数据流水线示例。",
+      loadWhen: "需要快速把旧 JavaScript 代码改成现代可维护写法时读取。",
+    }),
     defineReference({
       id: "advanced-patterns",
       source: new URL("./references/advanced-patterns.md", import.meta.url),

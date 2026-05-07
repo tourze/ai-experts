@@ -5,7 +5,12 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
+import { javascriptTypescriptJestSkill } from "../javascript-typescript-jest/index";
+import { modernJavascriptPatternsSkill } from "../modern-javascript-patterns/index";
 
 export const vueExpertJsSkill = defineSkill({
   id: "vue-expert-js",
@@ -35,17 +40,69 @@ export const vueExpertJsSkill = defineSkill({
     "测试是否覆盖了组件事件、composable 返回值或 store action 的关键行为，而不是只验证实现细节。",
     "若引入外部参考技能，链接是否真实存在，且当前任务确实需要展开到更通用的 JavaScript 模式。",
   ],
+  relatedSkills: [
+    {
+      get id() {
+        return javascriptTypescriptJestSkill.id;
+      },
+      reason: "Vue JavaScript 组件、composable 或 Pinia store 需要 Vitest / Jest 测试边界时联动。",
+    },
+    {
+      get id() {
+        return modernJavascriptPatternsSkill.id;
+      },
+      reason: "Vue 代码涉及 ES 模块、异步流程、数据转换或现代 JavaScript 重构时联动。",
+    },
+  ],
   antiPatterns: [
     defineAntiPattern({
       fail: "JSDoc 与运行时脱节",
-      pass: "JSDoc + 运行时同时声明：composable 返回未约束的巨大对象，调用方不知道哪些字段稳定。 为\"类型安全\"把简单对象抽成独立文件，制造跨目录跳转噪音。 使用 `require()` 或 CommonJS 导出，破坏 Vite ESM 一致性。",
+      pass: "JSDoc + 运行时同时声明",
+    }),
+    defineAntiPattern({
+      fail: "composable 返回未约束的巨大对象",
+      pass: "用稳定返回契约和 @typedef 收口",
+    }),
+    defineAntiPattern({
+      fail: "简单对象过度抽类型文件",
+      pass: "只抽跨文件复用的对象形状",
+    }),
+    defineAntiPattern({
+      fail: "Vite 代码使用 require/CommonJS",
+      pass: "保持 ESM 导入导出一致",
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用纯 JavaScript 编写 Vue 3 `<script setup>`、composable、Pinia store、JSDoc 类型契约和 Vite ESM 代码。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认项目保持 JavaScript，不引入 TS-only 语法，再识别组件、composable、store 或 Vite 配置边界。",
+      "组件 props / emits 同时声明运行时约束和 JSDoc 契约；复杂对象用 `@typedef` 收口。",
+      "公共 composable 和 store action 必须有 `@param` / `@returns`，跨文件共享类型用 `import('./path').TypeName`。",
+      "组件、composable、跨文件 typedef 示例读取 `jsdoc-component-patterns`；深入主题读取 JSDoc / composable / state / testing references。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Vue 组件、props / emits、composable、Pinia store 和 JSDoc 契约设计。",
+      "TS-only 语法清理、跨文件 typedef、ESM 后缀和 Vite 一致性建议。",
+      "需要补的 Vitest 测试、运行时校验和文档契约风险。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "jsdoc-component-patterns",
+      source: new URL("./references/jsdoc-component-patterns.md", import.meta.url),
+      target: "references/jsdoc-component-patterns.md",
+      title: "Vue JavaScript JSDoc 组件模式",
+      summary: "Vue 3 props/emits、composable 返回契约和跨文件 typedef 示例。",
+      loadWhen: "需要快速在 Vue JavaScript 代码中补 JSDoc 类型契约时读取。",
+    }),
     defineReference({
       id: "component-architecture",
       source: new URL("./references/component-architecture.md", import.meta.url),

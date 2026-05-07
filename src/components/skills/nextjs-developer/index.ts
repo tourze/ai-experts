@@ -5,7 +5,12 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
+import { reactServerComponentsSkill } from "../react-server-components/index";
+import { typescriptTypeSafetySkill } from "../typescript-type-safety/index";
 
 export const nextjsDeveloperSkill = defineSkill({
   id: "nextjs-developer",
@@ -15,7 +20,7 @@ export const nextjsDeveloperSkill = defineSkill({
     "需要在 `app/` 目录下设计路由树、`layout.tsx` / `template.tsx` / `loading.tsx` / `error.tsx` / `route.ts` 的职责划分时使用。",
     "需要决定某段 UI 应该保持 Server Component、下沉为 Client Component，还是拆成 Server + Client island 时使用。",
     "需要为数据获取、缓存、ISR、按路径/标签重验证、Server Actions、Metadata API、Middleware、Edge Runtime 或 Vercel 部署做实现选择时使用。",
-    "复杂 RSC 边界和性能问题优先联动 `react-server-components`；需要类型体操或 DTO/泛型修复时联动 `typescript-magician`。",
+    "复杂 RSC 边界和性能问题优先联动 `react-server-components`；需要类型体操或 DTO/泛型修复时联动 `typescript-type-safety`。",
     "需要展开细节时按主题加载参考资料：\n[App Router](references/app-router.md)、\n[Server Components](references/server-components.md)、\n[Server Actions](references/server-actions.md)、\n[Data Fetching](references/data-fetching.md)、\n[Deployment](references/deployment.md)。",
   ],
   constraints: [
@@ -38,6 +43,20 @@ export const nextjsDeveloperSkill = defineSkill({
     "是否避免把服务端密钥暴露到 `NEXT_PUBLIC_*`？",
     "是否在部署说明里覆盖 `next build`、环境变量、图片域名、运行时选择与回滚入口？",
   ],
+  relatedSkills: [
+    {
+      get id() {
+        return reactServerComponentsSkill.id;
+      },
+      reason: "Next.js App Router 中 RSC 边界、Server Action、安全或性能问题需要深入时联动。",
+    },
+    {
+      get id() {
+        return typescriptTypeSafetySkill.id;
+      },
+      reason: "动态路由 params、DTO、Server Action 输入或 API 合同类型需要收敛时联动。",
+    },
+  ],
   antiPatterns: [
     defineAntiPattern({
       fail: "整棵树 'use client'",
@@ -50,9 +69,35 @@ export const nextjsDeveloperSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计 Next.js App Router、Server Components、Server Actions、Route Handlers、Metadata、缓存、重验证和 Vercel 部署边界。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认路由树、Server / Client Component 边界、数据获取、缓存策略、写路径和部署目标。",
+      "默认使用 App Router 和 Server Component，只在交互叶子节点添加 `'use client'`。",
+      "所有 fetch 明确 cache / revalidate / tags，动态路由和 Metadata API 按当前版本处理异步 params。",
+      "RSC fetch、Server Action、Metadata 和 Route Handler 示例读取 `app-router-code-patterns`；深入主题读取对应 references。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Next.js 路由树、布局、Server / Client Component 和 Route Handler 职责边界。",
+      "fetch 缓存、ISR、tags、Server Action 校验 / 鉴权 / 重验证和 Metadata 方案。",
+      "loading/error/not-found、环境变量、部署、`next build` 和回滚检查项。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "app-router-code-patterns",
+      source: new URL("./references/app-router-code-patterns.md", import.meta.url),
+      target: "references/app-router-code-patterns.md",
+      title: "Next.js App Router 代码模式",
+      summary: "Server Component 数据获取、Server Action + useActionState、异步 params Metadata 和 Route Handler 示例。",
+      loadWhen: "需要快速实现 Next.js App Router 页面、表单或动态路由时读取。",
+    }),
     defineReference({
       id: "app-router",
       source: new URL("./references/app-router.md", import.meta.url),
