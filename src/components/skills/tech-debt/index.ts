@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const techDebtSkill = defineSkill({
@@ -47,7 +50,28 @@ export const techDebtSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把技术债按类型、影响、风险和工作量量化排序，并转成可并入迭代的治理路线图。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先收集债项并按代码、架构、测试、依赖、文档、基础设施分类；债项多时先按模块或领域分组。",
+      "为每条债务写清不修的业务或工程后果、影响范围、风险和 owner。",
+      "用默认优先级公式 `(影响 + 风险) × (6 - 工作量)` 排序，不把所有不喜欢的代码都标成 P0。",
+      "需要治理视角或组织案例时读取 `guest-insights` reference。",
+      "把建议切成立即止血、近期治理、长期重构三层，并说明建议时机和迭代预算。",
+      "为每项治理定义收益、验证指标、退出条件和可回滚路径。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "债项清单、类型、模块、owner 和业务/工程后果。",
+      "影响、风险、工作量评分和排序依据。",
+      "立即止血、近期治理、长期重构三层路线图。",
+      "收益、验证方式、退出条件和迭代预算建议。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

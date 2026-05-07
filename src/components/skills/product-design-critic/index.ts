@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { competitiveIntelligenceSkill } from "../competitive-intelligence/index";
 import { customerJourneyMapSkill } from "../customer-journey-map/index";
@@ -54,7 +57,28 @@ export const productDesignCriticSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "从产品任务、界面责任、关键状态、信任损耗和 trade-off 出发，给出能改变用户行为的设计批评。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先明确目标用户、任务目标、产品定位、业务约束和评审对象范围。",
+      "判断主界面承担什么决策或行动，哪些状态最关键：空态、错态、加载、权限、危险操作或多角色协作。",
+      "检查信息层级、反馈、信任证据、治理暴露和流程中断点，优先讲产品体验而不是视觉风格。",
+      "需要创意验证、行业反模式、pitch、命名等专项判断时读取对应 reference。",
+      "结合用户路径和竞争上下文时联动 `customer-journey-map` 或 `competitive-intelligence`。",
+      "每条建议都说明提升了什么、牺牲了什么、为什么值得，以及预期行为变化。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "任务目标、主界面职责和关键状态清单。",
+      "层级、反馈、空态/错态、信任和治理暴露问题。",
+      "按严重度排序的设计批评和行为影响。",
+      "建议、trade-off、验证方式和后续研究入口。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

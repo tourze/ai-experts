@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { deepResearchSkill } from "../deep-research/index";
 
@@ -54,7 +57,28 @@ export const comparativeAnalysisSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把多个方案或工具放到同一决策场景和维度矩阵里，用证据给出条件化选择建议。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先澄清对比目标、用户决策场景、约束和必须下判断的问题。",
+      "确定统一维度：功能、架构、性能、生态、学习曲线、维护、许可证或用户指定维度。",
+      "逐维度收集证据；代码仓看代码和 git 历史，外部产品查官方文档、定价、案例和限制。",
+      "检查定位不对称和遗漏维度，避免把解决不同问题的对象硬凑成同类比较。",
+      "需要标准报告格式时读取 `output-template` reference；外部概念资料不足时联动 `deep-research`。",
+      "输出矩阵、详细分析和条件化建议：场景 X 选 A，场景 Y 选 B。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "对比目标、场景、约束和候选对象定位。",
+      "统一维度矩阵和每项证据来源。",
+      "核心差异、假对称风险和不影响决策的细节。",
+      "条件化选择建议、适用边界和后续验证。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

@@ -3,7 +3,11 @@ import {
   KnownTool,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { proposalWriterSkill } from "../proposal-writer/index";
 
@@ -49,6 +53,37 @@ export const consultingAnalysisSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把研究任务先拆成问题定义、分析框架、数据需求和证据链，再产出咨询级报告。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先明确研究主题、目标读者、分析目标、地区/时间范围、交付物形态和决策场景。",
+      "读取 `report-brief-template` reference，生成研究 brief 和报告骨架。",
+      "为每个章节指定分析模型，例如 TAM/SAM/SOM、五力、SWOT、漏斗、单位经济模型或尽调框架。",
+      "列出数据需求、来源优先级、不可替代的一手证据和无法取得数据时的替代方案。",
+      "按事实、推断、建议分层写结论，并标注来源类型、时间范围和置信度。",
+      "需要把研究结果转成提案时联动 `proposal-writer`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "研究 brief：主题、目标、读者、范围、交付物和数据要求。",
+      "咨询报告骨架和每章分析模型。",
+      "数据清单、证据等级、缺口和替代方案。",
+      "执行摘要、核心发现、战略含义和下一步建议。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "report-brief-template",
+      source: new URL("./references/report-brief-template.md", import.meta.url),
+      target: "references/report-brief-template.md",
+      title: "咨询分析 brief 与报告骨架",
+      summary: "咨询分析任务的输入 brief JSON 示例和 Markdown 报告骨架。",
+      loadWhen: "需要启动咨询级研究、定义数据需求或生成报告章节骨架时读取。",
+    }),
+  ],
 });

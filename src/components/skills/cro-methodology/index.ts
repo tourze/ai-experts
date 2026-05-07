@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { redesignMyLandingpageSkill } from "../redesign-my-landingpage/index";
 
@@ -53,7 +56,28 @@ export const croMethodologySkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把转化问题拆成关键路径、流失证据、用户疑虑和可验证实验，避免拍脑袋改页面。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先定义页面目标、关键路径、主指标、次指标、样本窗口和当前基线。",
+      "按流量质量、页面表达、证据链、摩擦四层定位阻塞点。",
+      "根据对象读取相关 reference：页面读 `page-cro`，漏斗读 `funnel-analysis`，注册读 `signup-flow-cro`，弹窗读 `popup-cro`。",
+      "把每个问题写成实验假设：问题、假设、实验、主指标、次指标、失败回滚条件。",
+      "按影响、信心、实施成本和学习价值排序实验，一次只改一个主要变量。",
+      "需要产出实现代码或页面重做时联动 `redesign-my-landingpage`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "页面/漏斗目标、主副指标和基线。",
+      "流量、表达、证据、摩擦四层诊断。",
+      "实验假设表：问题、假设、实验、主指标、次指标。",
+      "实验优先级、验证窗口、样本要求和回滚条件。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({
