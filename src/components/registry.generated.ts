@@ -134,8 +134,6 @@ import { goTestingPatternsSkill } from "./skills/go-testing-patterns/index";
 import { goTroubleshootingSkill } from "./skills/go-troubleshooting/index";
 import { appStoreOptimizationSkill } from "./skills/app-store-optimization/index";
 import { appleAppstoreReviewerSkill } from "./skills/apple-appstore-reviewer/index";
-import { appleNotesSkill } from "./skills/apple-notes/index";
-import { appleRemindersSkill } from "./skills/apple-reminders/index";
 import { iosHigDesignSkill } from "./skills/ios-hig-design/index";
 import { iosSimulatorSkillSkill } from "./skills/ios-simulator-skill/index";
 import { liquidGlassDesignSkill } from "./skills/liquid-glass-design/index";
@@ -553,8 +551,6 @@ export const componentSkills = [
   goTroubleshootingSkill,
   appStoreOptimizationSkill,
   appleAppstoreReviewerSkill,
-  appleNotesSkill,
-  appleRemindersSkill,
   iosHigDesignSkill,
   iosSimulatorSkillSkill,
   liquidGlassDesignSkill,

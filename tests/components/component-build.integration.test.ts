@@ -45,8 +45,8 @@ describe("component build integration", () => {
     const claudeManifest = JSON.parse(readFileSync(join(tmpDistDir, "claude/manifest.json"), "utf-8"));
     const codexManifest = JSON.parse(readFileSync(join(tmpDistDir, "codex/manifest.json"), "utf-8"));
 
-    assert.equal(claudeManifest.skills.length, 337);
-    assert.equal(codexManifest.skills.length, 337);
+    assert.equal(claudeManifest.skills.length, 335);
+    assert.equal(codexManifest.skills.length, 335);
     assert.equal(claudeManifest.instructions.length, 6);
     assert.equal(codexManifest.instructions.length, 6);
     assert.equal(claudeManifest.agents.length, 80);
