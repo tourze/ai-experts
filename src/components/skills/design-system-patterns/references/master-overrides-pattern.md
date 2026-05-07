@@ -1,6 +1,6 @@
 # Master + Overrides 持久化范式
 
-在 AI 协作场景下（Claude Code / Cursor 等）设计系统决策会跨多个会话复用。把设计系统落到可被 AI 读取的 Markdown 文件，比留在聊天记录里更可靠。
+在 AI 协作场景下（Claude Code / Codex / Cursor 等）设计系统决策会跨多个会话复用。把设计系统落到可被 AI 读取的 Markdown 文件，比留在聊天记录里更可靠。
 
 ## 目录结构
 

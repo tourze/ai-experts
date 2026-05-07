@@ -195,6 +195,21 @@ describe("component source conventions", () => {
     }
   });
 
+  test("AI collaboration examples include Codex when listing Claude Code and Cursor", () => {
+    const skillSources = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
+      file.endsWith(".md"),
+    );
+
+    for (const sourceFile of skillSources) {
+      const source = readFileSync(sourceFile, "utf-8");
+      assert.doesNotMatch(
+        source,
+        /Claude Code\s*\/\s*Cursor(?![^()\n]*Codex)/u,
+        `${sourceFile} should include Codex in cross-platform AI collaboration examples`,
+      );
+    }
+  });
+
   test("cross-platform source names project memory files neutrally", () => {
     const platformSpecificMemoryRefs: string[] = [];
     for (const sourceFile of collectFiles(join(repoRoot, "src/components"))) {
