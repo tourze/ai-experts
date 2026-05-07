@@ -468,13 +468,14 @@ describe("component build integration", () => {
       assert.equal(activationReport.total, 335);
       assert.equal(typeof activationReport.pass_rate, "string");
 
-      const removedPluginsArgAudit = runProcedure(
+      const explicitSkillsDirActivationAudit = runProcedure(
         "skill-activation-analyzer-cso-audit",
         "skill-activation-analyzer",
-        ["--plugins-dir", runtimeTmp, "--json"],
+        ["--skills-dir", join(tmpDistDir, "codex/skills"), "--json", "--severity", "critical"],
       );
-      assert.equal(removedPluginsArgAudit.ok, false);
-      assert.match(removedPluginsArgAudit.result.stderr, /unknown argument: --plugins-dir/);
+      assert.equal(explicitSkillsDirActivationAudit.ok, true, explicitSkillsDirActivationAudit.result?.stderr);
+      const explicitSkillsDirActivationReport = JSON.parse(explicitSkillsDirActivationAudit.result.stdout);
+      assert.equal(explicitSkillsDirActivationReport.total, 335);
 
       const persona = runProcedure(
         "ux-researcher-designer-persona-generator",
