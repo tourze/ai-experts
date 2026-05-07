@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { grillMeSkill } from "../grill-me/index";
 import { priorityJudgeSkill } from "../priority-judge/index";
@@ -67,7 +70,25 @@ export const thinkingPartnerSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "作为思考拍档帮助用户从混乱局面中锁定核心问题，拆解卡点，共创 1-2 条可落地路径。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "阶段 1 信息获取：每轮最多问 1-3 个高价值问题，确认目标、约束、已尝试路径和最卡的一步。",
+      "阶段 2 锁定核心问题：说明真正卡住的不是表面 X 而是 Y，并给出为什么 Y 决定后续问题。",
+      "阶段 3 拆解卡点：把表面现象、中层障碍和根因分开；新信息能推翻判断时直接修正。",
+      "阶段 4/5 共创解法与落地计划：压缩到 1-2 条主路径，明确先做什么、暂不做什么和下次复盘点。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "当前阶段、已确认目标/约束/尝试路径和核心问题判断。",
+      "表面现象、中层障碍、根因和会改变结论的关键信号。",
+      "1-2 条主路径、本周行动、暂不做事项和复盘点。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

@@ -1,4 +1,13 @@
-import { InvocationPolicy, KnownTool, Platform, defineSkill, defineAntiPattern } from "../../sdk";
+import {
+  InvocationPolicy,
+  KnownTool,
+  Platform,
+  defineSkill,
+  defineAntiPattern,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
+} from "../../sdk";
 
 export const blindOutputComparatorSkill = defineSkill({
   id: "blind-output-comparator",
@@ -37,6 +46,24 @@ export const blindOutputComparatorSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "盲评两个输出版本，基于原始任务生成任务专属 rubric，并选择质量更高或失败更轻的一方。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先读取原始任务、expectations 和 A/B 输出完整内容；输出是目录时检查所有相关文件。",
+      "保持盲评，不推断来源、模型、作者或实现路径；根据任务生成专属 rubric。",
+      "Rubric 同时覆盖内容正确性、完整性、准确性、结构、格式和可用性；expectations 只作为次要证据。",
+      "除非确实等价，否则选择 A 或 B，并具体说明胜者强在哪里、败者差在哪里。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "JSON 盲评结果，包含 `winner`、`reasoning`、任务专属 `rubric` 和 `output_quality`。",
+      "A/B 的 strengths、weaknesses、content/structure/overall score 和 expectations 通过率。",
+      "如果 TIE，说明为什么等价以及仍需人工决策的维度。",
+    ],
+  }),
   tools: [],
 });

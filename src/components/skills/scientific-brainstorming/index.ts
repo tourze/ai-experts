@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { crossPollinationEngineSkill } from "../cross-pollination-engine/index";
 import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
@@ -63,7 +66,25 @@ export const scientificBrainstormingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "围绕研究问题做协作式科学脑暴，生成跨学科、可验证的候选方向，并收敛到下一步实验或文献动作。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认研究目标、已有证据、方法约束、用户已判断过的方向和不可触碰边界。",
+      "发散阶段先追求多样性，使用跨学科类比、反转假设、尺度切换、新技术切入和移除约束。",
+      "收敛阶段区分创意有趣和创意可验证，寻找共享底层机制和最小可证伪路径。",
+      "结束时给出 1-3 个最值得继续验证的方向，以及文献补洞、最小实验、资源或合作动作。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "研究目标、证据基础、方法约束和发散方向清单。",
+      "候选方向的机制解释、可验证性、风险和差异化程度。",
+      "1-3 个优先验证方向、下一步文献/实验/合作动作和不过度承诺的边界说明。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

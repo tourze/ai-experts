@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { wiresharkAnalysisSkill } from "../wireshark-analysis/index";
 
@@ -49,7 +52,25 @@ export const ethicalHackingMethodologySkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "在明确授权范围内组织渗透测试，从范围确认、低噪声侦察、证据化验证到报告和复测闭环。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认书面授权、范围、联系人、禁测项、时间窗口、成功标准和回滚/升级路径。",
+      "低噪声侦察与资产归类后，再按假设驱动做低风险验证；高影响操作必须先确认影响和回滚。",
+      "按目标场景读取 nmap、AD、Linux 提权、路径遍历、认证绕过、deeplink、API fuzzing 或 Web 漏洞 references。",
+      "每个发现都记录证据、影响、利用条件、修复建议和复测结论；越界发现立即停止并升级确认。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "授权范围、测试时间线、资产入口、工具版本、关键输入输出和越界处理记录。",
+      "发现清单：证据、影响、利用条件、风险分级、修复建议和复测结果。",
+      "范围限制、未验证假设、后续复测策略和交付报告结构。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

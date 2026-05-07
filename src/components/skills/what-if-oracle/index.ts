@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
 import { priorityJudgeSkill } from "../priority-judge/index";
@@ -17,7 +20,7 @@ export const whatIfOracleSkill = defineSkill({
     "用户说“如果……会怎样”“我们有哪些可能性”“帮我做最好/最坏情景分析”。",
     "需要在多个可能未来之间做准备，而不是押注单一路径。",
     "适合战略、产品、职业、风险应对、资源配置等高不确定性问题。",
-    "如果要先从失败角度找脆弱点，可先用 `inversion-strategist`。",
+    "如果要先从失败角度找脆弱点，可先用 `first-principles-decomposer` 的反向推理方法。",
     "如果要给多个候选动作排当前优先级，可在推演后接 `priority-judge`。",
     "如果要把分支概率、证据质量和行动代价转成证据到行动报告，可接 [bayesian-decision](references/bayesian-decision.md)。",
     "需要按领域套模板时，参考 [scenario-templates.md](references/scenario-templates.md)。",
@@ -49,8 +52,7 @@ export const whatIfOracleSkill = defineSkill({
       get id() {
         return firstPrinciplesDecomposerSkill.id;
       },
-      label: "inversion-strategist",
-      reason: "如果要先从失败角度找脆弱点，可先用 `inversion-strategist`。",
+      reason: "如果要先从失败角度找脆弱点，可先用第一性原理中的反向推理方法。",
     },
   ],
   antiPatterns: [
@@ -69,7 +71,25 @@ export const whatIfOracleSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "对高不确定决策做情景分支推演，输出概率、触发信号、后果、应对动作和跨分支稳健策略。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先把问题收紧为单变量：变量、幅度、时间窗口和当前状态。",
+      "生成 4-6 条互相区分的分支，覆盖最好、最可能、最坏、意外变量、反共识和二阶连锁。",
+      "每条分支写清概率、触发信号、立即后果、后续影响和应对动作；概率总和应接近 100%。",
+      "结尾明确这是推演不是预测，并给出稳健动作、对冲动作和决策触发器。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "变量、幅度、时间窗口、当前状态和分支地图。",
+      "每条分支的概率、触发信号、后果、行动和证据质量。",
+      "跨分支稳健动作、坏分支对冲动作、决策触发器和需要继续观察的指标。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

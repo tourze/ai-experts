@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, modelFirstReasoningValidateModel } from "../../procedures/index";
 
@@ -37,13 +40,13 @@ export const modelFirstReasoningSkill = defineSkill({
       get id() {
         return llmEvaluationSkill.id;
       },
-      reason: "相关 skill：`llm-evaluation`、`prompt-engineering-patterns`。",
+      reason: "冻结模型后需要把行为合同纳入评测或回归集时联动。",
     },
     {
       get id() {
         return promptEngineeringPatternsSkill.id;
       },
-      reason: "相关 skill：`llm-evaluation`、`prompt-engineering-patterns`。",
+      reason: "模型用于约束 prompt、工具调用或 agent 行为时联动。",
     },
   ],
   antiPatterns: [
@@ -58,7 +61,25 @@ export const modelFirstReasoningSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "在编码前先冻结实体、状态、动作、约束和未知项，让复杂状态机或约束系统按模型实现，而不是边写边发明规则。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "Phase 1 只产出模型：deliverable、goals、entities、states、actions、constraints、unknowns 和 requirement trace。",
+      "把每条用户需求映射到 `goal`、`constraint` 或 `action`；映射不了就标入 `unknowns`。",
+      "运行 `model-first-reasoning-validate-model` 校验结构；`unknowns` 不为空时返回 `MODEL INCOMPLETE`，不进入实现。",
+      "Phase 2 只能在冻结模型内实现；发现新实体、新状态或新约束时先回到 Phase 1 更新模型。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "冻结前的模型 JSON、requirement trace、unknowns 和结构校验结果。",
+      "`MODEL INCOMPLETE` 时的缺口说明，或允许实现时的模型边界。",
+      "实现阶段发现模型不足时的回滚到 Phase 1 的说明。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(modelFirstReasoningValidateModel),

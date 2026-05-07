@@ -5,8 +5,15 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, complexityReducerComplexityReport } from "../../procedures/index";
+import { codeReviewSkill } from "../code-review/index";
+import { refactoringChecklistSkill } from "../refactoring-checklist/index";
+import { refactoringPatternsSkill } from "../refactoring-patterns/index";
+import { softwareDesignSkill } from "../software-design/index";
 
 export const complexityReducerSkill = defineSkill({
   id: "complexity-reducer",
@@ -16,7 +23,6 @@ export const complexityReducerSkill = defineSkill({
     "代码能跑但难以理解、修改和测试。",
     "函数超长、嵌套超深、参数超多、条件超复杂。",
     "上线前做可维护性整理，而不是功能性重写。",
-    "交叉引用：重构流程纪律配合 `refactoring-checklist`；具体重构手法配合 `architecture-expert/refactoring-patterns`；审查结果配合 `code-review`；设计原则参考 `software-design`；完成前验证检查清单见 [references/verification-checklist.md](./references/verification-checklist.md)。",
   ],
   constraints: [
     "目标是降低认知复杂度，不是减少行数。",
@@ -42,9 +48,53 @@ export const complexityReducerSkill = defineSkill({
       pass: "用查找表消除分支",
     }),
   ],
+  relatedSkills: [
+    {
+      get id() {
+        return refactoringChecklistSkill.id;
+      },
+      reason: "需要按重构纪律控制行为不变、步长和验证顺序时联动。",
+    },
+    {
+      get id() {
+        return refactoringPatternsSkill.id;
+      },
+      reason: "需要选择具体重构手法或替换复杂结构时联动。",
+    },
+    {
+      get id() {
+        return codeReviewSkill.id;
+      },
+      reason: "复杂度问题来自审查发现或需要复核可维护性风险时联动。",
+    },
+    {
+      get id() {
+        return softwareDesignSkill.id;
+      },
+      reason: "复杂度来自职责边界、抽象层次或模块设计问题时联动。",
+    },
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "识别代码认知复杂度来源，选择最小行为保持重构动作，并用测试和可读性证据确认复杂度真的下降。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先用阅读或 `complexity-reducer-complexity-report` 定位嵌套、长函数、参数爆炸、布尔组合、特性嫉妒、原始类型偏执或条件过长。",
+      "按问题、最小重构动作、风险、验证方式组织计划；语言细节读取对应 language reference，通用手法读取 patterns reference。",
+      "每次只处理一个主要来源：深嵌套优先 guard clause，长函数按段落抽取，过多参数改参数对象或拆分，复杂条件抽命名布尔或查找表。",
+      "每步后跑测试或最小验证，关闭任务前读取 verification checklist 和 task-closure reference。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "复杂度来源清单、定量/定性证据、排序和最小重构动作。",
+      "行为不变验证方式、测试结果、风险和回滚点。",
+      "简化前后可读性对比，以及仍属于业务本质复杂度的部分。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(complexityReducerComplexityReport),
