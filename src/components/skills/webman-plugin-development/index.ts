@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
   defineSkillOutputs,
   defineSkillWorkflow,
@@ -17,7 +18,7 @@ export const webmanPluginDevelopmentSkill = defineSkill({
     "排查插件配置不生效、进程不启动。",
   ],
   constraints: [
-    "`Install.php` 声明 `WEBMAN_PLUGIN = true` 和 `$pathRelation`。见 [reference](reference.md)。",
+    "`Install.php` 声明 `WEBMAN_PLUGIN = true` 和 `$pathRelation`。见 [reference](references/reference.md)。",
     "配置路径 `src/config/plugin/{vendor}/{package}/`。",
     "访问用 `config('plugin.{vendor}.{package}.{key}')`。",
     "`mkdir` 用 `0755`，`webman-framework` 放 `require-dev`。",
@@ -45,6 +46,16 @@ export const webmanPluginDevelopmentSkill = defineSkill({
     defineAntiPattern({
       fail: "framework 在 require",
       pass: "require-dev",
+    }),
+  ],
+  references: [
+    defineReference({
+      id: "reference",
+      source: new URL("./references/reference.md", import.meta.url),
+      target: "references/reference.md",
+      title: "Webman Plugin Reference",
+      summary: "Webman 插件目录、Install.php、配置发布、进程声明和卸载清理示例。",
+      loadWhen: "需要开发或审查 Webman 插件安装、配置发布或清理行为时读取。",
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,

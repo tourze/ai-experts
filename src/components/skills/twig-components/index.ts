@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
   defineSkillOutputs,
   defineSkillWorkflow,
@@ -49,6 +50,16 @@ export const twigComponentsSkill = defineSkill({
     defineAntiPattern({
       fail: "模板里写业务逻辑",
       pass: "通过显式 props 输入",
+    }),
+  ],
+  references: [
+    defineReference({
+      id: "reference",
+      source: new URL("./references/reference.md", import.meta.url),
+      target: "references/reference.md",
+      title: "Twig Components Reference",
+      summary: "TwigComponent、LiveComponent、slots、状态和模板复用示例。",
+      loadWhen: "需要实现或审查 Symfony UX TwigComponent / LiveComponent 细节时读取。",
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,

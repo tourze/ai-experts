@@ -591,6 +591,8 @@ describe("component source conventions", () => {
       "AGENTS.md",
       "CLAUDE.md",
       "HOW_TO_USE.md",
+      "reference.md",
+      "references.md",
       "_meta.json",
       "metadata.json",
       "sample_input.json",
