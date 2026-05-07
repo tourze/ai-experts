@@ -390,7 +390,6 @@ export async function emitPlatform(
   ensureDir(join(root, "skills"));
   ensureDir(join(root, "agents"));
   ensureDir(join(root, "hooks"));
-  ensureDir(join(root, "rules"));
 
   const instructionName = platform === Platform.Claude ? "CLAUDE.md" : "AGENTS.md";
   writeText(join(root, instructionName), renderInstruction(componentSurface, platform));

@@ -33,7 +33,6 @@ dist/
     skills/
     agents/
     hooks/
-    rules/
     procedures.js
     manifest.json
   codex/
@@ -43,7 +42,6 @@ dist/
     skills/
     agents/
     hooks/
-    rules/
     procedures.js
     manifest.json
 ```

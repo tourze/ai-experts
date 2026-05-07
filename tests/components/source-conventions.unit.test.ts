@@ -40,6 +40,7 @@ describe("component source conventions", () => {
       true,
       "README quality-gate summary should include procedure runtime count",
     );
+    assert.doesNotMatch(readme, /^\s+rules\/$/m);
     assert.match(readme, /procedureUse\(procedureDefinition\)/);
     assert.doesNotMatch(readme, /338 个 skill|scripts\/manifest\.json|defineSkillScript\(\)|skill script registry/);
   });

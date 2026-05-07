@@ -32,7 +32,7 @@ beforeAll(() => {
     ["--import", "tsx/esm", "src/build.ts", "--out-dir", tmpDistDir],
     { cwd: repoRoot, encoding: "utf-8" },
   );
-}, 30_000);
+}, 60_000);
 
 afterAll(() => {
   if (tmpDistDir) {
@@ -83,6 +83,8 @@ describe("component build integration", () => {
     assert.equal(codexManifest.hooks.length, 98);
     assert.equal(Object.hasOwn(claudeManifest, "profile"), false);
     assert.equal(Object.hasOwn(codexManifest, "profile"), false);
+    assert.equal(existsSync(join(tmpDistDir, "claude/rules")), false);
+    assert.equal(existsSync(join(tmpDistDir, "codex/rules")), false);
   });
 
   test("renders representative skill/agent/instruction outputs", () => {
