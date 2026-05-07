@@ -5,7 +5,11 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
+import { preLandingReviewSkill } from "../pre-landing-review/index";
 
 export const testQualityReviewSkill = defineSkill({
   id: "test-quality-review",
@@ -15,7 +19,7 @@ export const testQualityReviewSkill = defineSkill({
     "用户提交测试代码或指向测试文件，要求诊断测试质量问题。",
     "关注\"测试写得好不好\"，不是\"该测什么\"（那用 `testing-strategy`）。",
     "关注已有测试的结构性问题，不是\"怎么补测\"（那用 `testing-strategy` 的缺陷后扩面）。",
-    "交叉引用：高压审查使用 `code-review` 高压模式；合并门禁配合 `pre-landing-review`。",
+    "需要把测试质量风险转成合并阻断项或发布前质量门。",
   ],
   constraints: [
     "先读真实测试代码，不凭猜测。",
@@ -33,6 +37,14 @@ export const testQualityReviewSkill = defineSkill({
     "计算并输出 Test Health Score",
     "未把测试风格偏好当成衰退风险",
   ],
+  relatedSkills: [
+    {
+      get id() {
+        return preLandingReviewSkill.id;
+      },
+      reason: "测试质量问题需要上升为合并阻断项、发布门禁或风险确认时联动。",
+    },
+  ],
   antiPatterns: [
     defineAntiPattern({
       fail: "泛泛评论：没有 T1-T6 分类、没有代码证据、没有四要素。",
@@ -41,9 +53,35 @@ export const testQualityReviewSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "审查已有测试代码的六类衰退风险、误报边界和 Test Health Score，找出脆弱测试、mock 滥用与覆盖幻觉。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "必须先读取真实测试代码，再按 T1-T6 六类衰退风险逐项扫描。",
+      "每条发现用 Symptom / Source / Consequence / Remedy 四要素表达，并区分关键、重要、建议。",
+      "检查每类风险的不应标记规则，避免把风格偏好误报为测试衰退。",
+      "审查维度和纪律读取 `review-workflow`；六类风险和 Test Health Score 读取对应 references。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "按 T1-T6 分类的测试质量发现、代码证据和修复方向。",
+      "误报排除、严重度、套件概览和 Test Health Score。",
+      "需要补测、降低 mock、重构测试结构或进入合并门禁的风险项。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "review-workflow",
+      source: new URL("./references/review-workflow.md", import.meta.url),
+      target: "references/review-workflow.md",
+      title: "测试质量审查工作流",
+      summary: "测试质量审查的六类风险入口、输出格式和纪律守卫。",
+      loadWhen: "需要执行测试质量审查主流程或确认输出格式与纪律时读取。",
+    }),
     defineReference({
       id: "health-score",
       source: new URL("./references/health-score.md", import.meta.url),

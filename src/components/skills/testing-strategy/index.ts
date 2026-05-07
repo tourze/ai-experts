@@ -5,8 +5,12 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { preLandingReviewSkill } from "../pre-landing-review/index";
+import { testingPatternsSkill } from "../testing-patterns/index";
 import { webappTestingSkill } from "../webapp-testing/index";
 
 export const testingStrategySkill = defineSkill({
@@ -47,19 +51,29 @@ export const testingStrategySkill = defineSkill({
       get id() {
         return preLandingReviewSkill.id;
       },
-      reason: "需要和 `pre-landing-review` 联动，把阻断项映射到补测策略。",
+      reason: "需要把落地前阻断项、风险确认或发布门禁映射成补测策略时联动。",
     },
     {
       get id() {
         return webappTestingSkill.id;
       },
-      reason: "为 `webapp-testing` 提供执行列表。",
+      reason: "测试策略需要转成 Web 应用手工/自动化执行清单时联动。",
+    },
+    {
+      get id() {
+        return testingPatternsSkill.id;
+      },
+      reason: "测试计划需要落到 AAA / FIRST、fixture、mock 或参数化测试结构时联动。",
     },
   ],
   antiPatterns: [
     defineAntiPattern({
       fail: "不分层级的测试建议：getter/setter 和第三方框架行为也要测？成本失控。",
-      pass: "按风险分层：不区分单测、集成、E2E，导致成本失控。 把框架行为和样板代码当成重点测试对象。",
+      pass: "按风险分层，说明每个测试项为什么测、用什么层级测。",
+    }),
+    defineAntiPattern({
+      fail: "把框架行为和样板代码当成重点测试对象。",
+      pass: "把测试投入留给业务关键路径、失败路径、边界条件和安全边界。",
     }),
     defineAntiPattern({
       fail: "一刀切覆盖率：支付链路和营销页获得同等投入，高风险模块被平均化覆盖。",
@@ -72,9 +86,35 @@ export const testingStrategySkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为模块、接口或功能制定风险驱动测试计划，明确测试层级、关键路径、覆盖目标、质量门和自动化投入边界。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先识别业务关键路径、失败路径、边界条件、安全边界、现有覆盖缺口和不值得自动化的区域。",
+      "每个测试项都说明为什么测、用什么层级测，并按成本与信心权衡单测、集成、E2E 和人工验证。",
+      "用风险矩阵决定测试深度和质量门，覆盖率必须结合风险分布解释。",
+      "轻量测试计划、覆盖目标、风险矩阵和质量门示例读取 `test-plan-patterns`；缺陷扩面和验证循环读取对应 references。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "测试层级规划、关键场景、覆盖缺口和不自动化范围。",
+      "风险矩阵、质量门、coverage target 和 QA / 自动化投入建议。",
+      "可直接转成任务列表或 Web 测试执行清单的补测计划。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "test-plan-patterns",
+      source: new URL("./references/test-plan-patterns.md", import.meta.url),
+      target: "references/test-plan-patterns.md",
+      title: "测试计划模式",
+      summary: "轻量测试计划、覆盖目标、生产级风险矩阵和质量门示例。",
+      loadWhen: "需要快速制定测试计划、风险矩阵或质量门时读取。",
+    }),
     defineReference({
       id: "test-brainstorm",
       source: new URL("./references/test-brainstorm.md", import.meta.url),

@@ -5,8 +5,14 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, codeReviewAssessCode, codeReviewAssessTests } from "../../procedures/index";
+
+import { complexityReducerSkill } from "../complexity-reducer/index";
+import { testQualityReviewSkill } from "../test-quality-review/index";
 
 export const codeReviewSkill = defineSkill({
   id: "code-review",
@@ -16,7 +22,7 @@ export const codeReviewSkill = defineSkill({
   useCases: [
     "用户提交代码或文件，要求找出逻辑和设计层面的问题。",
     '关注"代码写得好不好"，不是"能不能上线"（那用 `pre-landing-review`）。',
-    "交叉引用：降低复杂度配合 `complexity-reducer`；测试质量审查配合 `test-quality-review`。",
+    "需要识别命名、职责、错误处理、边界情况、复杂度或测试质量问题。",
   ],
   constraints: [
     '**违反字面规则 = 违反规则精神。不存在"灵活变通"。**',
@@ -37,6 +43,20 @@ export const codeReviewSkill = defineSkill({
     "未混入 linter 能抓的风格问题",
     "高压模式：每条批评有证据 + 修复方向，未攻击作者人格",
   ],
+  relatedSkills: [
+    {
+      get id() {
+        return complexityReducerSkill.id;
+      },
+      reason: "审查结论指向函数过长、嵌套过深、条件复杂或可维护性复杂度时联动。",
+    },
+    {
+      get id() {
+        return testQualityReviewSkill.id;
+      },
+      reason: "审查对象主要是测试代码、mock 滥用、脆弱测试或覆盖幻觉时联动。",
+    },
+  ],
   antiPatterns: [
     defineAntiPattern({
       fail: "凭猜测：\"getUser() 可能有 null 安全问题 / 建议加错误处理\" → 没有文件位置、没有代码证据。",
@@ -49,13 +69,39 @@ export const codeReviewSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "基于真实代码或 diff 做标准/高压代码审查，按严重度输出有证据、有后果、有修复方向的问题和 Health Score。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认审查强度；用户未指定时使用标准模式，高压模式只在明确授权时启用。",
+      "必须先读取真实代码或 diff，再按命名语义、函数设计、错误处理、逻辑边界、抽象和可读性逐项审查。",
+      "每条发现遵循 Symptom / Source / Consequence / Remedy 四要素，并按关键、重要、建议排序。",
+      "审查强度、纪律守卫和 procedure 入口读取 `review-workflow`；严重度与 Health Score 读取对应 references。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "按严重度排序的代码审查发现，每条含症状、来源、后果和修复方向。",
+      "需要跳转的文件 / 代码位置、误报排除说明和不应标记项。",
+      "Health Score、无问题时的明确结论，以及是否需要测试质量或复杂度专项联动。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(codeReviewAssessCode),
     procedureUse(codeReviewAssessTests),
   ],
   references: [
+    defineReference({
+      id: "review-workflow",
+      source: new URL("./references/review-workflow.md", import.meta.url),
+      target: "references/review-workflow.md",
+      title: "代码审查工作流",
+      summary: "标准/高压审查强度、审查维度、纪律守卫和自动化预扫描 procedure 用法。",
+      loadWhen: "需要执行代码审查主流程或确认审查强度、纪律和预扫描入口时读取。",
+    }),
     defineReference({
       id: "brutal-mode",
       source: new URL("./references/brutal-mode.md", import.meta.url),

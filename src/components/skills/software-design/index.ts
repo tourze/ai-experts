@@ -5,7 +5,11 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
+import { refactoringPatternsSkill } from "../refactoring-patterns/index";
 
 export const softwareDesignSkill = defineSkill({
   id: "software-design",
@@ -18,7 +22,7 @@ export const softwareDesignSkill = defineSkill({
     "需要规划依赖注入策略和分层方向。",
     "需要从复杂度、深模块、信息隐藏角度评价现有设计。",
     "各语言落地：`go-design-patterns`、`python-design-patterns`、`php-design-patterns`。",
-    "具体重构配合 `refactoring-patterns`；重构计划配合 `refactor-planning-method`。",
+    "需要把设计判断转成具体命名化重构手法。",
   ],
   constraints: [
     "只在本 skill 的适用场景内使用；任务不匹配时先澄清或转向更合适的 skill。",
@@ -56,11 +60,45 @@ export const softwareDesignSkill = defineSkill({
       pass: "把参数收口成意图明确的配置对象或更高层 API。",
     }),
   ],
+  relatedSkills: [
+    {
+      get id() {
+        return refactoringPatternsSkill.id;
+      },
+      reason: "设计判断已经明确，需要选择 Extract Method、Move Method、Extract Class 等具体重构动作时联动。",
+    },
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用深模块、信息隐藏、职责边界、组合优先、分层和依赖注入原则评价或设计语言无关的软件结构。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先判断问题是职责边界、抽象层次、I/O 隔离、依赖方向还是复杂度泄漏。",
+      "以是否降低整体复杂度为最高标准，不为局部优雅引入浅模块或跳转成本。",
+      "检查模块是否隐藏变化知识、接口是否最小、依赖是否单向、业务逻辑是否脱离框架边界。",
+      "设计原则和分层速查读取 `design-principles`；深模块、信息隐藏和复杂度症状读取对应 references。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "职责边界、抽象选择、模块深浅和信息隐藏判断。",
+      "分层、依赖注入、I/O 隔离和接口最小化建议。",
+      "设计反模式、复杂度来源和需要转成具体重构动作的下一步。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "design-principles",
+      source: new URL("./references/design-principles.md", import.meta.url),
+      target: "references/design-principles.md",
+      title: "软件设计原则与分层速查",
+      summary: "深模块、信息隐藏、战略式编程、组合优先、分层职责和依赖方向速查。",
+      loadWhen: "需要评价或设计语言无关的软件结构、职责边界和分层方案时读取。",
+    }),
     defineReference({
       id: "anti-patterns",
       source: new URL("./references/anti-patterns.md", import.meta.url),

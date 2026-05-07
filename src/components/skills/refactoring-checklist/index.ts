@@ -5,7 +5,13 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
+import { codeReviewSkill } from "../code-review/index";
+import { complexityReducerSkill } from "../complexity-reducer/index";
+import { refactoringPatternsSkill } from "../refactoring-patterns/index";
 
 export const refactoringChecklistSkill = defineSkill({
   id: "refactoring-checklist",
@@ -15,7 +21,7 @@ export const refactoringChecklistSkill = defineSkill({
     "用户要对现有代码做结构调整、抽取、合并、移动职责。",
     "用户觉得代码\"很乱\"想整理但没想清楚具体做什么。",
     "本 skill 只回答「能不能开始 / 怎么安全推进 / 怎么回滚」。",
-    "交叉引用：\n- 具体「该用哪个重构手法」（Extract Method / 异味分类）→ `architecture-expert/refactoring-patterns`。\n- 降低嵌套与函数复杂度的诊断 → `complexity-reducer`。\n- 审查结论触发的重构 → `code-review`。",
+    "需要把重构和行为变更分开，建立测试基线、范围边界和回滚方案。",
   ],
   constraints: [
     "**违反字面规则 = 违反规则精神。不存在\"灵活变通\"。**",
@@ -31,6 +37,26 @@ export const refactoringChecklistSkill = defineSkill({
     "重构提交不混入行为变更",
     "重构后覆盖率不低于基线",
   ],
+  relatedSkills: [
+    {
+      get id() {
+        return refactoringPatternsSkill.id;
+      },
+      reason: "已经满足流程门禁，需要选择 Extract Method、Move Method 或异味对应手法时联动。",
+    },
+    {
+      get id() {
+        return complexityReducerSkill.id;
+      },
+      reason: "重构目标是降低过长函数、深层嵌套、复杂条件或认知复杂度时联动。",
+    },
+    {
+      get id() {
+        return codeReviewSkill.id;
+      },
+      reason: "重构触发来自代码审查发现，或完成后需要审查结构质量时联动。",
+    },
+  ],
   antiPatterns: [
     defineAntiPattern({
       fail: "重构搭车",
@@ -43,9 +69,35 @@ export const refactoringChecklistSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "在重构前建立测试基线、范围边界、目标、回滚方案和增量循环，保证结构调整不混入行为变更。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先做准入四项：测试基线、范围界定、目标明确、回滚方案。",
+      "没有可信测试覆盖时先补表征测试；行为变更、bug 修复和重构必须分开提交。",
+      "按小步修改、跑测试、提交、重复的循环推进，每步保持系统可运行且可回滚。",
+      "准入、增量循环和纪律守卫读取 `refactor-safety-workflow`；具体检查项和 DOT 流程读取对应 references。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "能否开始重构的准入结论、测试基线和范围排除项。",
+      "增量步骤、验证命令、提交边界和回滚方案。",
+      "行为变更混入、大爆炸提交、覆盖率下降等风险提示。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "refactor-safety-workflow",
+      source: new URL("./references/refactor-safety-workflow.md", import.meta.url),
+      target: "references/refactor-safety-workflow.md",
+      title: "重构安全工作流",
+      summary: "重构前准入四项、增量步骤循环、纪律守卫和常见偷步风险。",
+      loadWhen: "需要判断能否开始重构、制定安全推进方式或解释重构纪律时读取。",
+    }),
     defineReference({
       id: "discipline-guard",
       source: new URL("./references/discipline-guard.md", import.meta.url),
