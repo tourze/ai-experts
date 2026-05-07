@@ -3,6 +3,9 @@ import {
   KnownTool,
   Platform,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const speckitValidateSkill = defineSkill({
@@ -18,6 +21,31 @@ export const speckitValidateSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "验证“实现是否真的满足 spec”，而不是只看任务是否勾选完成。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "读取：`spec.md`、`plan.md`、`tasks.md`。",
+      `构建需求矩阵：
+   - 功能需求
+   - 验收标准
+   - 边界条件`,
+      "扫描实现与测试，建立“需求 → 代码/测试”映射。",
+      `识别缺口：
+   - 未实现需求
+   - 不可验证需求
+   - 未覆盖边界条件`,
+      "输出验证结论：PASS / PARTIAL / FAIL。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "验证矩阵",
+      "缺口清单",
+      "最小补救建议",
+    ],
+  }),
   tools: [],
 });

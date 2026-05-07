@@ -3,6 +3,9 @@ import {
   KnownTool,
   Platform,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const speckitQuizmeSkill = defineSkill({
@@ -18,6 +21,29 @@ export const speckitQuizmeSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "不是补定义，而是挑战逻辑：找出“看起来可行、上线会出事”的地方。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "读取当前 `spec.md`（若有 `plan.md` 也读取）。",
+      `识别典型薄弱区：
+   - 快乐路径偏置
+   - 状态竞争与重复提交
+   - 权限与越权边界
+   - 异常链路与补偿策略`,
+      "逐条提出 3-5 个场景问题（一次一个）。",
+      "基于用户回答继续追问，直到可落地。",
+      "经用户同意后，把结论写入 `Edge Cases`/`Requirements`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "已覆盖场景数",
+      "新增需求条目",
+      "仍待决策项",
+    ],
+  }),
   tools: [],
 });

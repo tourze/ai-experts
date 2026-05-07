@@ -3,6 +3,9 @@ import {
   KnownTool,
   Platform,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const speckitConstitutionSkill = defineSkill({
@@ -18,6 +21,30 @@ export const speckitConstitutionSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "维护 `.specify/memory/constitution.md`，并保证相关模板与命令约束同步。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "读取宪章模板，识别占位符（如 `[PROJECT_NAME]`）。",
+      "根据用户输入和仓库上下文填充内容。",
+      `按语义版本规则更新版本号：
+   - MAJOR：原则被重定义/移除
+   - MINOR：新增原则或明显扩展
+   - PATCH：文字澄清`,
+      `同步检查并更新：
+   - \`.specify/templates/plan-template.md\`
+   - \`.specify/templates/spec-template.md\`
+   - \`.specify/templates/tasks-template.md\``,
+      "在宪章头部输出变更摘要（版本、原则变更、影响面）。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "更新后的宪章",
+      "同步影响列表",
+    ],
+  }),
   tools: [],
 });

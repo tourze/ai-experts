@@ -3,6 +3,8 @@ import {
   KnownTool,
   Platform,
   defineSkill,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const speckitReviewerSkill = defineSkill({
@@ -18,6 +20,27 @@ export const speckitReviewerSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  workflow: defineSkillWorkflow({
+    steps: [
+      `确定审查范围：
+   - 指定文件 / staged / 当前分支变更`,
+      `审查维度：
+   - 正确性
+   - 安全性
+   - 性能
+   - 可维护性
+   - 测试覆盖`,
+      `问题分级：
+   - \`CRITICAL\` / \`HIGH\` / \`MEDIUM\` / \`LOW\``,
+      `每条问题需包含：
+   - 文件与位置
+   - 风险说明
+   - 最小修复建议`,
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    body: "先列问题，再给简要总结与残余风险。",
+  }),
   tools: [],
 });
