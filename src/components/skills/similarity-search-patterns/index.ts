@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { embeddingStrategiesSkill } from "../embedding-strategies/index";
 import { ragAuditorSkill } from "../rag-auditor/index";
@@ -40,13 +43,13 @@ export const similaritySearchPatternsSkill = defineSkill({
       get id() {
         return embeddingStrategiesSkill.id;
       },
-      reason: "相关 skill：`embedding-strategies`、`vector-index-tuning`、`rag-auditor`。",
+      reason: "检索问题指向模型选择、chunking、metadata 或距离度量前置设计时联动。",
     },
     {
       get id() {
         return ragAuditorSkill.id;
       },
-      reason: "相关 skill：`embedding-strategies`、`vector-index-tuning`、`rag-auditor`。",
+      reason: "需要把检索与生成链路一起审计或纳入 RAG 回归时联动。",
     },
   ],
   antiPatterns: [
@@ -61,6 +64,24 @@ export const similaritySearchPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计语义检索、向量检索、hybrid search、metadata filters、reranking 和多租户检索架构。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确定检索目标、数据规模、写入/更新频率、召回要求、延迟预算、租户隔离和成本约束。",
+      "确认 embedding 维度、distance metric、top_k、索引类型和过滤条件一致；模型、距离和索引不能孤立替换。",
+      "根据 workload 选择 pgvector、Qdrant、Pinecone、Weaviate 等路线；同时设计 metadata filter、hybrid ranking 和 rerank。",
+      "用真实 query 和 gold set 验证 recall、precision、latency 与过滤正确性；性能调参转 vector-index-tuning。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "检索架构方案：engine、distance、top_k、index、metadata filters、tenant isolation 和 rerank。",
+      "写入/更新模式、成本、运维复杂度和扩展路径取舍。",
+      "召回/准确性/延迟验证结果，以及需要上游 embedding 或下游 RAG 审计的信号。",
+    ],
+  }),
   tools: [],
 });

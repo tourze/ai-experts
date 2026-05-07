@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { ragAuditorSkill } from "../rag-auditor/index";
 import { similaritySearchPatternsSkill } from "../similarity-search-patterns/index";
@@ -34,7 +37,7 @@ export const embeddingStrategiesSkill = defineSkill({
       get id() {
         return similaritySearchPatternsSkill.id;
       },
-      reason: "是否已经把质量问题与 `vector-index-tuning` 和 `similarity-search-patterns` 分层拆开。",
+      reason: "需要把 embedding 方案落到检索架构、过滤、hybrid search 或 rerank 时联动。",
     },
     {
       get id() {
@@ -46,7 +49,7 @@ export const embeddingStrategiesSkill = defineSkill({
       get id() {
         return vectorIndexTuningSkill.id;
       },
-      reason: "相关 skill：`similarity-search-patterns`、`vector-index-tuning`、`rag-auditor`。",
+      reason: "检索质量已经确认不是 chunk/embedding 问题，而是索引召回、延迟或内存权衡时联动。",
     },
   ],
   antiPatterns: [
@@ -61,6 +64,24 @@ export const embeddingStrategiesSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为搜索、推荐、RAG、代码检索或多语种检索选择 embedding 模型、chunk 策略、metadata 和距离度量。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认任务类型、语种、领域、文档结构、成本/延迟约束和评测样本，不看榜单直接选模型。",
+      "同时设计 embedding model、distance metric、chunk size、chunk overlap、metadata fields 和 query/document 双塔约束。",
+      "文档先按语义边界清洗和分块，再向量化、建索引、检索、重排/生成；不要只调 chunk size 掩盖上游问题。",
+      "用离线样本评估召回和答案质量；无法归因时转 rag-auditor 分层审计。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "任务、模型、距离度量、chunk size/overlap、metadata fields 和 query/document 约束。",
+      "文档清洗、分块、向量化、索引、检索、重排/生成的数据流。",
+      "离线评测样本、质量指标、成本/延迟取舍和需要联动的索引或检索架构问题。",
+    ],
+  }),
   tools: [],
 });

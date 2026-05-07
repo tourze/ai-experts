@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { promptEngineeringPatternsSkill } from "../prompt-engineering-patterns/index";
 import { ragAuditorSkill } from "../rag-auditor/index";
@@ -39,7 +42,7 @@ export const llmEvaluationSkill = defineSkill({
       get id() {
         return promptEngineeringPatternsSkill.id;
       },
-      reason: "相关 skill：`prompt-engineering-patterns`、`rag-auditor`。",
+      reason: "评测结果指向 prompt 结构、指令层次或输出格式问题时联动。",
     },
   ],
   antiPatterns: [
@@ -58,6 +61,24 @@ export const llmEvaluationSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 LLM 应用、prompt、模型或 agent 流程建立可复现评测集、rubric、指标、回归报警和上线门槛。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先定义任务成功标准和目标函数，再确定数据集、指标、rubric、硬约束和软偏好。",
+      "冻结样本集，覆盖主路径、边界条件、失败样例和拒答样例；保留基线模型/prompt 分数。",
+      "至少组合两种视角：自动指标、人工评审、LLM-as-judge 或规则断言；按类别拆分而不是只看平均分。",
+      "报告区分统计显著、业务显著和可上线；RAG 检索链路问题转 rag-auditor，prompt 问题转 prompt-engineering-patterns。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "冻结评测集、指标、rubric、pass thresholds、基线分数和版本记录。",
+      "按类别拆分的分数、失败样例、硬约束通过率、软偏好变化和显著性解释。",
+      "上线门槛、回归报警、需人工复核点和下一轮 prompt/model/agent 修改建议。",
+    ],
+  }),
   tools: [],
 });
