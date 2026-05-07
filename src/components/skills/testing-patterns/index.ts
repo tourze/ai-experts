@@ -11,7 +11,7 @@ import {
 export const testingPatternsSkill = defineSkill({
   id: "testing-patterns",
   fullName: "通用测试模式",
-  description: "当需要设计测试策略、编写高质量测试、选择 mock/fixture/参数化方案或遵循 AAA/FIRST 原则时使用。语言特定语法/工具细节由对应语言测试 skill 覆盖。",
+  description: "当需要处理语言无关的测试设计、fixture、test double、参数化或脆弱测试排查时使用；具体语言语法转对应测试 skill。",
   useCases: [
     "编写或审查测试时，需要确认结构、命名、隔离策略和 mock 边界是否正确。",
     "需要选择 fixture 策略、参数化方案或区分 mock/stub/fake 的适用场景。",
