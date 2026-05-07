@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -35,9 +34,6 @@ export const rustAsyncPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "开发和排障 Tokio 异步任务、channel、select、限流、取消、超时、锁边界和 Send / 'static 生命周期问题。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认任务是谁 spawn 的、数据所有权如何进入 `'static` future、取消信号是否能传到每个分支。",

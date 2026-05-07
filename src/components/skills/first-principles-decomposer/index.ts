@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -59,9 +58,6 @@ export const firstPrinciplesDecomposerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把问题拆到不可再压缩的事实和约束，显式挑战隐含假设，再基于已验证事实重建方案。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先用一句话定义问题、现有做法和要挑战的边界；问题没收敛前不要进入推导。",

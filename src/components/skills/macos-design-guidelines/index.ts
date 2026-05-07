@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -63,9 +62,6 @@ export const macosDesignGuidelinesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "按 macOS HIG 设计或审查桌面界面，把菜单栏、窗口、工具栏、侧边栏、快捷键和指针交互作为一等入口。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认产品是原生 macOS、Mac Catalyst 还是跨平台桌面，并列出核心桌面任务。",

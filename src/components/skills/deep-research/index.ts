@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -62,9 +61,6 @@ export const deepResearchSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "围绕外部主题做多轮联网研究，覆盖全景、分支、事实验证、争议点、权威来源和可引用证据链。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先铺开全景，确认主题边界、主要分支、关键参与方和需要回答的问题，不一上来盯单个关键词。",

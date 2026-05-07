@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -50,9 +49,6 @@ export const protocolFreezingPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "在不破坏已部署客户端的前提下冻结协议线格式，并规划可回归测试的版本演进路径。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "盘点已部署消息、字段、编码、版本标签、客户端版本和兼容性承诺。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -78,9 +77,6 @@ export const redisDataModelingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 Redis 功能选择合适数据结构、键命名、TTL 生命周期和分布式锁模式，避免大 key、阻塞命令和锁误删。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认访问模式：点查、范围、排序、聚合、队列、计数、互斥或幂等；不要只按数据形状选结构。",

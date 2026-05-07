@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -68,9 +67,6 @@ export const pythonTestingPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 pytest 组织 Python 单元测试、集成测试、fixture、mock、参数化、异步测试和失败路径回归。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认被测边界、外部依赖、失败路径、是否异步和测试数据最小集合。",

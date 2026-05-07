@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -39,9 +38,6 @@ export const scpAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "沿外部冲击 -> 行业结构 -> 企业行为 -> 经营绩效的链条，解释冲击如何传导，并产出差异化战略建议。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "定义外部冲击：政策、技术、经济或社会变化是什么，发生时间、强度、确定性和影响范围如何。",

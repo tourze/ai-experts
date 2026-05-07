@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -49,9 +48,6 @@ export const rustFfiBindingsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计 Rust 与 C/C++/Swift/Kotlin/Python 等语言之间的 FFI 边界，明确 ABI、内存所有权、错误码、字符串和回调约定。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认调用方语言、ABI、对象生命周期、错误处理、线程模型和绑定生成方式。",

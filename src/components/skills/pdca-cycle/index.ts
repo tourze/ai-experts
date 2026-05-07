@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -48,9 +47,6 @@ export const pdcaCycleSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把持续改进任务组织成 Plan-Do-Check-Act 闭环，每一轮只解决一个可度量问题，并把结果带入下一轮。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "Plan：定义问题、现状基线、量化目标、根因假设、措施、负责人、截止时间和风险；根因不清时先用 `fishbone-diagram`。",

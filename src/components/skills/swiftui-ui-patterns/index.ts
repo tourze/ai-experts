@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -70,9 +69,6 @@ export const swiftuiUiPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "构建或重构 SwiftUI 页面、Tab、导航、sheet、表单和组件模式，让状态拥有者清晰、视图结构可维护。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "新建页面前先读取 components-index 和 app-wiring，选择最接近的组件或接线 reference。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -77,9 +76,6 @@ export const taskDecomposerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把复杂需求拆成可执行任务板、依赖图、关键路径、并行 wave、验收标准和可交接的 Execution Contract。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先写清用户目标、验收标准、范围边界、非目标和关键假设；需求太模糊时先列假设，不硬拆。",

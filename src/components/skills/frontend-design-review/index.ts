@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -68,9 +67,6 @@ export const frontendDesignReviewSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "审查前端界面的用户目标、视觉层级、主次操作、设计系统一致性、状态完整性、可访问性、响应式和 AI 套版感风险。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先按用户目标、主次操作、设计系统、断点 / 状态、信任细节顺序评审。",

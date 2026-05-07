@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -74,9 +73,6 @@ export const ragAuditorSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "分层审计 RAG 管线，区分 query、chunk、embedding、index、retrieval、rerank、prompt 和 generation 的失败原因。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先收集 query、gold docs、召回文档、引用片段、模型输出、prompt 和日志；缺证据时不直接定性 hallucination。",

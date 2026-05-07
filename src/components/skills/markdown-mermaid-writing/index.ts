@@ -6,7 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -56,9 +55,6 @@ export const markdownMermaidWritingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用可审阅、可 diff、可版本管理的 Markdown 和 Mermaid 产出报告、技术文档、决策记录和图表型说明。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确定文档类型、读者和结论，再选择 templates 下的合适模板，不从空白页硬写。",

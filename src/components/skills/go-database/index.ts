@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -84,9 +83,6 @@ export const goDatabaseSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计 Go 数据访问层、Repository 接口、NULL 扫描、连接池参数、事务边界和 SQL 错误处理。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认 DB driver、上下文超时、事务范围、NULL 字段、连接池负载和测试替身。",

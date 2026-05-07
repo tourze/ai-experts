@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -70,9 +69,6 @@ export const nextjsDeveloperSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计 Next.js App Router、Server Components、Server Actions、Route Handlers、Metadata、缓存、重验证和 Vercel 部署边界。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认路由树、Server / Client Component 边界、数据获取、缓存策略、写路径和部署目标。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -60,9 +59,6 @@ export const detoxMobileTestSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "编写、排查和稳定 Detox 移动端 E2E 测试，覆盖配置一致性、稳定选择器、显式等待、CI 设备和失败证据。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认 React Native 项目、Detox 配置、app/device/configuration 名称、本地与 CI 命令是否一致。",

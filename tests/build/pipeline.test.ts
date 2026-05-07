@@ -238,7 +238,7 @@ describe("build/pipeline modules", () => {
       sourceDir: pathToFileURL(`${fixture.root}/skill/`),
       procedures: [],
       scripts: [],
-      goal: defineSkillGoal({ body: "明确流程目标。" }),
+      goal: defineSkillGoal({ title: "完成条件", body: "明确流程目标。" }),
       workflow: defineSkillWorkflow({
         steps: [
           "读取输入。",
@@ -249,7 +249,7 @@ describe("build/pipeline modules", () => {
     });
     expect(() => validateRegistry({ ...fixture.registry, skills: [fixture.skill, structuredSkill] })).not.toThrow();
     const structuredRendered = renderSkillMd(structuredSkill, Platform.Claude, scriptMap);
-    expect(structuredRendered).toContain("## 目标\n\n明确流程目标。");
+    expect(structuredRendered).toContain("## 完成条件\n\n明确流程目标。");
     expect(structuredRendered).toContain("## 执行步骤\n\n1. 读取输入。\n2. 执行检查。");
     expect(structuredRendered).toContain("## 输出\n\n- 结论\n- 后续动作");
     expect(() =>

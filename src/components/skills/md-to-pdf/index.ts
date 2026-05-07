@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -60,9 +59,6 @@ export const mdToPdfSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把 Markdown 文稿稳定渲染为可打印 PDF，并保留 Mermaid、KaTeX、代码块、表格、页码和自定义 CSS 的排版质量。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认源 `.md`、目标 `.pdf`、纸张格式、页边距、页眉页脚、CSS 和是否包含 Mermaid/数学公式。",

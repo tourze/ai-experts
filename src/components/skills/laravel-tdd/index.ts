@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -63,9 +62,6 @@ export const laravelTddSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 Pest / PHPUnit 为 Laravel HTTP 端点、Eloquent 模型、Policy、队列、通知、Sanctum 和 Action 设计红绿重构测试循环。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先写成功路径失败测试，再补授权失败、验证失败和外部依赖失败。",

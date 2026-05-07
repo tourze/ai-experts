@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -54,9 +53,6 @@ export const systemDiagnosticsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用只读命令采样 Linux 主机基础状态，输出原始指标、解释性结论和下一步专用排障入口。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先记录主机名、采样时间、发行版、内核、启动时长和负载，命令失败时记录错误并继续。",

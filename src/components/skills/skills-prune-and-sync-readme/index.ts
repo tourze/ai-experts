@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -37,9 +36,6 @@ export const skillsPruneAndSyncReadmeSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "审计低质量、重复、相似和冲突 skill，按明确名单清理，并用 procedure 同步 README 的 Skill 清单区块。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先运行审计 procedure，输出低质量、重复、相似分组和冲突证据。",

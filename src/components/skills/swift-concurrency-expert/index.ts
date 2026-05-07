@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -54,9 +53,6 @@ export const swiftConcurrencyExpertSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "审查或迁移 Swift 6.2+ 并发边界，收敛 actor isolation、Sendable、Task 生命周期、MainActor 和数据竞争诊断。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先收集完整编译诊断、运行时卡顿 / 数据竞争证据和相关类型边界，不凭单条报错泛化修法。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -73,9 +72,6 @@ export const phpTestingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用现代 PHPUnit/Pest 写出边界清晰、断言稳定、fixture 可维护的 PHP 测试。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "确认被测行为、测试层级、依赖边界和现有测试风格；需要具体写法时读取 `examples` reference。",

@@ -3,7 +3,6 @@ import {
   KnownTool,
   Platform,
   defineSkill,
-  defineSkillGoal,
   defineSkillWorkflow,
 } from "../../sdk";
 
@@ -19,14 +18,11 @@ export const speckitImplementSkill = defineSkill({
     "执行时遵循正文中的流程、红线、检查清单和必要参考资料，不用未经验证的假设替代证据。",
     "禁止用吞异常或放宽校验来掩盖根因。",
     "禁止未验证即宣称完成。",
+    "在不破坏既有能力的前提下完成任务，保持实现与 spec/plan 对齐。",
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    title: "核心目标",
-    body: "在不破坏既有能力的前提下完成任务，保持实现与 spec/plan 对齐。",
-  }),
   workflow: defineSkillWorkflow({
     title: "执行协议",
     steps: [

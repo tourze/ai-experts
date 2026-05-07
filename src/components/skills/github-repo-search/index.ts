@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -46,9 +45,6 @@ export const githubRepoSearchSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "围绕一个开源方向设计多组 GitHub 查询，召回、去重、过滤、重排并交付可决策的仓库推荐榜单。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先收敛输入：主题、Top N、最低 stars、排序模式和目标形态；缺失时只做必要澄清。",

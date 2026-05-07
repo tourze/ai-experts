@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -82,9 +81,6 @@ export const modernJavascriptPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用现代 ES6+ 语法重构 JavaScript 回调、共享可变状态、异步流程、数据转换和热路径代码，保持可读性与证据驱动优化。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认目标是语法升级、异步收口、数据变换、模块边界还是热路径优化。",

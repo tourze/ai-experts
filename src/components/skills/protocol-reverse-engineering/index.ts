@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -60,9 +59,6 @@ export const protocolReverseEngineeringSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "从 PCAP、串口、USB、TCP/UDP 报文或二进制实现中还原私有协议的帧边界、字段语义、状态机和编码规则。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先整理多个请求 / 响应样本，标注方向、时间、端点、会话状态和采集点。",

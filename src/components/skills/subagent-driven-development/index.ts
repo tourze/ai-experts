@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -63,9 +62,6 @@ export const subagentDrivenDevelopmentSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "在用户明确要求多 agent/worker/并行实现时，按 wave、读写范围、验收证据和双阶段审查推进执行计划。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "一次性读取完整计划或 Execution Contract，提取 tasks、depends_on、read_scope、write_scope、acceptance_refs 和 acceptance。",

@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -62,9 +61,6 @@ export const modelFirstReasoningSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "在编码前先冻结实体、状态、动作、约束和未知项，让复杂状态机或约束系统按模型实现，而不是边写边发明规则。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "Phase 1 只产出模型：deliverable、goals、entities、states、actions、constraints、unknowns 和 requirement trace。",

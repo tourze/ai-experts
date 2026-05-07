@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -65,9 +64,6 @@ export const priorityJudgeSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用清晰度和截止时间两条主轴，把待办分成现在做、然后做、先澄清和暂缓，避免全部任务都被当成 P0。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先完整收集待办、约束、截止时间、依赖和用户当前精力，不边听边排序。",

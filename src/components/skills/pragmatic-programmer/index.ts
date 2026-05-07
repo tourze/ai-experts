@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -44,9 +43,6 @@ export const pragmaticProgrammerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用务实工程原则降低当前决策的复杂度和反馈成本，把原则转成今天能执行的取舍。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先明确当前决策、约束、不可逆点、反馈周期和要避免的复杂度。",

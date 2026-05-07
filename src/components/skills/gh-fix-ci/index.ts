@@ -6,7 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -51,9 +50,6 @@ export const ghFixCiSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "排查 GitHub Actions PR 检查失败，提取 failing checks、run/job 上下文和最小日志证据，在改代码前形成聚焦修复计划。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认 `gh auth status` 成功，并定位目标 PR；用户未给 PR 时从当前分支关联 PR 入手。",

@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -83,9 +82,6 @@ export const springBootLayeringSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计或审查 Spring Boot 3.x 服务分层，保证 Controller/Service/Repository、DTO/Entity、事务和异常处理边界清晰。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认 Java 21、Spring Boot 3.x 和 jakarta.* 基线，以及 API、持久化、事务和错误处理范围。",

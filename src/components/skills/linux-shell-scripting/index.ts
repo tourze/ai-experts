@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -63,9 +62,6 @@ export const linuxShellScriptingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "编写 Bash/Zsh 自动化、巡检、备份、发布、清理和 CLI 包装脚本，保证严格模式、参数校验、依赖检查、日志、清理和失败语义完整。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "默认使用 `#!/usr/bin/env bash` 和 `set -euo pipefail`；仅在明确需要 POSIX sh 时降级。",

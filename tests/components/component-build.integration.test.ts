@@ -598,6 +598,7 @@ describe("component build integration", () => {
         );
         assert.equal(countH2OutsideCodeFence(source, "适用场景"), 1, `${skillFile} should render exactly one useCases section`);
         assert.equal(countH2OutsideCodeFence(source, "核心约束"), 1, `${skillFile} should render exactly one constraints section`);
+        assert.equal(countH2OutsideCodeFence(source, "目标"), 0, `${skillFile} should not render a generic route-style goal section`);
 
         if (source.includes("## 相关 Skill")) {
           assert.match(
@@ -619,6 +620,12 @@ describe("component build integration", () => {
             `${skillFile} should render antiPatterns as a generated markdown table`,
           );
           assert.equal(countH2OutsideCodeFence(source, "反模式"), 1, `${skillFile} should render exactly one anti-pattern section`);
+          if (source.includes("## 相关 Skill")) {
+            assert.ok(
+              source.indexOf("## 相关 Skill") > source.indexOf("## 反模式"),
+              `${skillFile} should render relatedSkills after antiPatterns`,
+            );
+          }
         }
       }
     }

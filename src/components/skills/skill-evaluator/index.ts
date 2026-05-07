@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -41,9 +40,6 @@ export const skillEvaluatorSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "评估 skill 的知识增量、结构质量、触发描述和闭卷知识覆盖，区分设计评分与源材料覆盖验证。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先路由：设计质量评分用 Mode A，源材料覆盖验证用 Mode B，新建 skill 转 skill-creator，迁移优化转 skill-evolver，description 触发优化转 skill-activation-analyzer。",

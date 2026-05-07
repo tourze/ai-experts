@@ -6,7 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -58,9 +57,6 @@ export const youtubeAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "基于 YouTube 字幕和元数据分析单个视频，输出摘要、结构拆解、讲义、会议笔记或深度内容分析。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认输入是合法 YouTube URL 或 11 位视频 ID；没有具体视频时转入搜索。",

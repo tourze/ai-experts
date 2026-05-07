@@ -5,7 +5,6 @@ import {
   defineAsset,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -50,9 +49,6 @@ export const canvasDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "先建立原创设计哲学，再把它表达成一页高完成度画布作品，并导出对应静态或视频资产。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先产出 philosophy.md，包含运动/流派名称、4-6 段审美阐述，以及空间、色彩、节奏、材质、排版和工艺约束。",

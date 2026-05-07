@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -53,9 +52,6 @@ export const gradleBuildPerformanceSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用可重复测量和 Gradle 证据定位 clean、增量、CI 构建中的配置阶段、执行阶段、依赖解析和缓存瓶颈。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先记录 clean build、增量 build 和 CI build 基线，不在没有基线时改配置。",

@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -62,9 +61,6 @@ export const llmEvaluationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 LLM 应用、prompt、模型或 agent 流程建立可复现评测集、rubric、指标、回归报警和上线门槛。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先定义任务成功标准和目标函数，再确定数据集、指标、rubric、硬约束和软偏好。",

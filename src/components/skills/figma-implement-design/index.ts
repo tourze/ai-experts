@@ -5,7 +5,6 @@ import {
   defineAsset,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -76,9 +75,6 @@ export const figmaImplementDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把 Figma 设计稿翻译成项目现有组件、token、布局和状态实现，而不是复制自动生成代码。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先解析 fileKey/nodeId 或读取桌面当前选区，确认目标节点范围，避免整页和局部混淆。",

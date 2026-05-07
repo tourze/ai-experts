@@ -6,7 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -75,9 +74,6 @@ export const promptEngineeringPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计、诊断和优化生产 prompt，优先稳定输出契约、few-shot 分布、失败模式分类、评分 rubric 和可比较变体实验。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先明确任务目标、输出契约、schema/字段、硬约束、软约束和失败样例，再写自然语言提示。",

@@ -4,7 +4,6 @@ import {
   Platform,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -33,9 +32,6 @@ export const sessionFinalizationWorkflowSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把已完成的代码工作推进到可交付状态，覆盖验证、分支收尾、提交审查、会话记录和治理复盘。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "Step 1 自检验证：审查 `git diff --cached`、运行相关验证命令、确认无新增 lint/类型/测试失败、无调试语句和敏感信息。",

@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -58,9 +57,6 @@ export const funnelArchitectSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把流量入口、价值承接、核心报价、升级路径和留存复购设计成可追踪的转化系统。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认入口人群、流量来源、核心承诺、单步转化目标和成交门槛。",

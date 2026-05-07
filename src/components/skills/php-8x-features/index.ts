@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -76,9 +75,6 @@ export const phpXFeaturesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "在 PHP 8.1-8.3+ 代码中选择 readonly、enum、match、构造器提升、交叉 / DNF 类型、never 和 attributes 等现代特性。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认项目最低 PHP 版本、strict_types 状态、静态分析级别和框架约束。",

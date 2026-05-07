@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -63,9 +62,6 @@ export const proposalWriterSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "撰写面向客户、采购方或管理层的商业提案，围绕客户问题、价值主张、实施计划、商务条款和成交动作组织文本。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认客户类型、合作目标、方案时长、必须包含项、决策链、预算区间和采购阶段。",

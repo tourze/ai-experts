@@ -3,7 +3,6 @@ import {
   KnownTool,
   Platform,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -25,9 +24,6 @@ export const codeReviewAgentFrameworkSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为只读代码审查类 reviewer agent 提供证据绑定、只读边界、发现排序和专项路由框架。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认用户目标、输入范围、约束和验收标准。",

@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -57,9 +56,6 @@ export const goLintSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "配置和治理 Go lint 基线、golangci-lint 规则、精准抑制、CI 集成和自动修复流程。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认 Go 版本、CI 时限、已有 lint 报告、允许的规则集和渐进收敛策略。",

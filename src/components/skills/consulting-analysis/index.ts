@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -54,9 +53,6 @@ export const consultingAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把研究任务先拆成问题定义、分析框架、数据需求和证据链，再产出咨询级报告。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先明确研究主题、目标读者、分析目标、地区/时间范围、交付物形态和决策场景。",

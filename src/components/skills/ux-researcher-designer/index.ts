@@ -6,7 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -68,9 +67,6 @@ export const uxResearcherDesignerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把访谈、问卷、行为数据和支持记录转成可追溯的 Persona、旅程图、可用性测试计划和设计输入。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认研究问题、用户类型、数据来源、样本量、时间范围和输出用途。",

@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -41,9 +40,6 @@ export const commitSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把当前任务相关变更精确暂存、审查 staged diff、写出合格 Conventional Commit 并验证提交结果。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先并行查看 `git status --short`、`git diff --stat`、`git log --oneline -5`，识别改动范围和最近提交风格。",

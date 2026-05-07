@@ -4,7 +4,6 @@ import {
   Platform,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -85,9 +84,6 @@ export const webPerformanceDiagnosisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用网络层、渲染层、运行时三段式方法诊断 Web 性能、Core Web Vitals、质量审计、请求瀑布和 hydration 问题。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先区分 lab / RUM 数据、页面场景、设备网络和目标指标，不看数据不猜瓶颈。",

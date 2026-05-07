@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -54,9 +53,6 @@ export const obsidianBasesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "新建、修复或重构合法的 Obsidian `.base` YAML，正确表达 filters、formulas、properties、summaries 和 views。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认目标视图和结果集；Bases 没有 `from`、`source`、`where` 段，结果集完全由 `filters` 决定。",

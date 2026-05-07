@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -50,9 +49,6 @@ export const reactNativePlatformForkSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把 React Native 跨平台差异收敛到边界文件、Platform.select、适配器或 Metro 自定义平台，而不是散落在业务 JSX 中。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认平台差异类型：样式值、API 能力、组件实现、导航流程、原生模块或完整平台目标。",

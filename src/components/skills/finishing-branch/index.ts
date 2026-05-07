@@ -3,7 +3,6 @@ import {
   KnownTool,
   Platform,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -35,9 +34,6 @@ export const finishingBranchSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "在实现和测试完成后，引导用户选择本地合并、创建 PR、保留分支或丢弃工作，并安全清理分支/worktree。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先运行项目测试套件；测试失败就展示失败列表并停止，不进入选项展示。",

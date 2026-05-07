@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -76,9 +75,6 @@ export const llmAppDiagnosisFrameworkSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 eval-first 闭环诊断 LLM 应用质量问题，逐层区分输入、检索、推理和输出侧根因，并决定 model-first 或 prompt-first。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先设计可复现离线 eval case，记录 baseline；没有 eval 不评价改动优劣。",

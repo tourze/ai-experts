@@ -4,7 +4,6 @@ import {
   Platform,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -38,9 +37,6 @@ export const customerLifecycleSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把客户价值分层、客户生命周期和产品生命周期三条轴分开判断，再组合成阶段化运营策略。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认分析轴：客户价值分层、客户生命周期、产品 PLC，或三者组合，并明确数据来源和样本规模。",

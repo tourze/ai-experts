@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -70,9 +69,6 @@ export const refactoringChecklistSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "在重构前建立测试基线、范围边界、目标、回滚方案和增量循环，保证结构调整不混入行为变更。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先做准入四项：测试基线、范围界定、目标明确、回滚方案。",

@@ -3,7 +3,6 @@ import {
   KnownTool,
   Platform,
   defineSkill,
-  defineSkillGoal,
   defineSkillParameter,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -22,9 +21,6 @@ export const speckitClarifySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "在进入 `speckit-plan` 之前，消除会造成实现分歧的需求不确定项。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "确保 `.specify/scripts/check-prerequisites.mjs` 存在；若缺失，先调用 skill `speckit-baseline` 完成 `.specify/` 初始化（Claude Code: `/speckit-baseline`；Codex: `$speckit-baseline`），完成后回到本流程。",

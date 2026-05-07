@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -40,9 +39,6 @@ export const owaspInjectionAuditSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "审计命令执行、出站请求和文件路径边界中的注入风险，并把 SQL 注入明确分流到 SQL 专项 skill。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先按触发信号分类：命令执行、SSRF、路径遍历；SQL 字符串拼接、ORM raw query 或模板 SQL 直接转 `sql-review-optimization`。",

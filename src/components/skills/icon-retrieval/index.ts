@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -67,9 +66,6 @@ export const iconRetrievalSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "按业务语义检索 SVG 图标候选，并在进入前端代码或设计系统前检查风格、尺寸、语义和安全处理边界。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先把用户需求转成具体业务语义词，优先搜索 security shield、document upload 这类概念词。",

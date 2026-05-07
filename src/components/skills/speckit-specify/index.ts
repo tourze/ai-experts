@@ -3,7 +3,6 @@ import {
   KnownTool,
   Platform,
   defineSkill,
-  defineSkillGoal,
   defineSkillParameter,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -24,9 +23,6 @@ export const speckitSpecifySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把自然语言需求转成结构化、可测试、可落地的 `spec.md`。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "确保 `.specify/scripts` 与 `.specify/templates` 存在；若缺失，先调用 skill `speckit-baseline` 完成 `.specify/` 初始化（Claude Code: `/speckit-baseline`；Codex: `$speckit-baseline`），完成后回到本流程。",

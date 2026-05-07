@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -68,9 +67,6 @@ export const appleAppstoreReviewerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "从 App Store 审核视角审计 iOS / macOS 应用的合规、可审性、付费、隐私和核心流程，提前暴露拒审风险。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先识别 App 核心用途、目标平台、首屏路径、审核账号、演示数据和 reviewer notes 是否齐全。",

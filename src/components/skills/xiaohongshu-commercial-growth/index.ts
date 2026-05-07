@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -57,9 +56,6 @@ export const xiaohongshuCommercialGrowthSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为小红书账号、品牌、商家、创始人 IP、知识博主或实体店设计商业增长路径，把定位、内容、搜索、店铺、投放、达人合作和私域承接串成闭环。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先定义商业路径，再定义内容；输入至少包含主体、产品/服务、目标人群、资源、当前数据、目标和卡点。",

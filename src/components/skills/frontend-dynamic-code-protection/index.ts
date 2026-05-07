@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -53,9 +52,6 @@ export const frontendDynamicCodeProtectionSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 H5/Web 高收益场景设计前端动态化代码保护、短生命周期 signature、服务端验签、重放限制、缓存策略和风控信号闭环。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先明确资产、攻击者类型和成本目标，确认这是反自动化成本控制而非绝对安全承诺。",

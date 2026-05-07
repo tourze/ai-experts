@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -51,9 +50,6 @@ export const brandHealthSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用认知度、美誉度、使用率、购买意愿和推荐率五维漏斗定位品牌瓶颈，并匹配修复策略。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "确认品牌阶段、目标市场、竞品/行业对标和可用数据；新品牌或数据不足时先说明不适用。",

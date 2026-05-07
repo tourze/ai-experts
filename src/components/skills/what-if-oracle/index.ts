@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -72,9 +71,6 @@ export const whatIfOracleSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "对高不确定决策做情景分支推演，输出概率、触发信号、后果、应对动作和跨分支稳健策略。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先把问题收紧为单变量：变量、幅度、时间窗口和当前状态。",

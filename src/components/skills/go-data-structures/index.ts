@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -72,9 +71,6 @@ export const goDataStructuresSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "判断 Go array、slice、map、channel、string 和 struct 的复制语义、共享底层数据和容量 / 扩容风险。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认数据结构的所有权、是否跨 goroutine、是否会 append / mutate、是否暴露给调用方。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -59,9 +58,6 @@ export const systemsThinkingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把复杂问题从单点事件拆成参与方、激励、行为、结果、反馈回路和杠杆点，暴露二阶效应。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先定义系统边界、时间尺度、关键参与方、资源流和要解释的结果。",

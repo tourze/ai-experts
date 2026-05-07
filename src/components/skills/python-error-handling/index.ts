@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -43,9 +42,6 @@ export const pythonErrorHandlingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计 Python 异常层级、错误边界、输入校验、外部依赖映射、批处理部分失败和用户可见错误响应。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先划清错误边界：输入验证、业务规则、外部依赖、系统故障和批处理部分失败。",

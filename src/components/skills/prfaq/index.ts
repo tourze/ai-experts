@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -52,9 +51,6 @@ export const prfaqSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 Working Backwards 写 PRFAQ，从用户视角验证产品想法、价值主张、机会窗口、风险和团队共识。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认目标用户、痛点、机会窗口、替代方案、成功标准和需要对齐的受众。",

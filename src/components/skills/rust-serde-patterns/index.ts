@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -50,9 +49,6 @@ export const rustSerdePatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计和调试 Rust serde 序列化 / 反序列化方案，保持 enum 标签、字段演进、自定义编码和校验逻辑可兼容。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认数据格式、兼容性要求、enum 标签策略、未知字段策略和热路径性能要求。",

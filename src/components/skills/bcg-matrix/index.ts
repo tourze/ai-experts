@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -62,9 +61,6 @@ export const bcgMatrixSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 BCG 2x2 或 GE-McKinsey 九宫格对多业务组合做取舍，明确资源流向、投资窗口和退出逻辑。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认分析对象是多产品/多业务组合，并收集每条业务的市场增长、相对份额、利润贡献、资源占用和战略价值。",

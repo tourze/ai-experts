@@ -3,7 +3,6 @@ import {
   KnownTool,
   Platform,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -22,9 +21,6 @@ export const speckitValidateSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "验证“实现是否真的满足 spec”，而不是只看任务是否勾选完成。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "读取：`spec.md`、`plan.md`、`tasks.md`。",

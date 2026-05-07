@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -62,9 +61,6 @@ export const redisClusterHaSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计、部署或排查 Redis Sentinel / Cluster 高可用、持久化、容量和慢查询基线。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先按业务目标选择 Sentinel 还是 Cluster：高可用主从切换用 Sentinel，容量水平扩展和 slot 分片用 Cluster。",

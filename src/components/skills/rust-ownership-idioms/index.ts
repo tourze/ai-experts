@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -80,9 +79,6 @@ export const rustOwnershipIdiomsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 Rust 模块、函数、trait 和类型设计借用 / 所有权边界，选择 Box / Rc / Arc / Cell / Mutex 等指针与内部可变性方案。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认数据所有者、调用生命周期、线程边界、热路径和是否需要共享可变状态。",

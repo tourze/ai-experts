@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -53,9 +52,6 @@ export const arthasSpringcontextIssuesResolveSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 Arthas 只读查询排查 Spring ApplicationContext、Bean 注册、条件装配、配置注入和类加载器选择问题。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先用 `vmtool --action getInstances --className org.springframework.context.support.AbstractApplicationContext -l 5` 枚举上下文。",

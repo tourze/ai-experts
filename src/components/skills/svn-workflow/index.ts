@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -56,9 +55,6 @@ export const svnWorkflowSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "安全完成 SVN 日常开发、分支标签、合并、属性配置、仓库维护和 SVN 到 Git 迁移操作。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "日常提交先 `svn update`、`svn status -u`、`svn diff <path>`，只提交当前任务显式路径。",

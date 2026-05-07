@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -54,9 +53,6 @@ export const testQualityReviewSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "审查已有测试代码的六类衰退风险、误报边界和 Test Health Score，找出脆弱测试、mock 滥用与覆盖幻觉。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "必须先读取真实测试代码，再按 T1-T6 六类衰退风险逐项扫描。",

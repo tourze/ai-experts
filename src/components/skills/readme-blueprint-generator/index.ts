@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -60,9 +59,6 @@ export const readmeBlueprintGeneratorSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为仓库生成或重构 README 蓝图，让开发者能理解项目定位、技术栈、目录结构、运行方式、测试和贡献入口。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先扫描 README、copilot instructions、包管理配置、Makefile、CI 配置和关键目录，确认项目真实运行方式。",

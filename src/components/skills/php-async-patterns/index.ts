@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -60,9 +59,6 @@ export const phpAsyncPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 PHP 长驻进程、WebSocket、worker 和并发 I/O 选择 Swoole、ReactPHP、Amphp 或原生 Fiber，并约束阻塞、共享状态和内存泄漏。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认部署是否允许 C 扩展、是否需要内置 HTTP/WebSocket 服务器、并发 I/O 类型和长期运行时长。",

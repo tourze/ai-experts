@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -64,9 +63,6 @@ export const industryDesignPresetsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为特定行业产品选择视觉 preset，并把风格、配色、字体、关键效果和反模式转成可落地的设计系统方向。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确定主行业和 1-2 个氛围词，例如 trust、playful、luxury 或 technical。",

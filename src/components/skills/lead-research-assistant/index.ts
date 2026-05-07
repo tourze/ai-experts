@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -56,9 +55,6 @@ export const leadResearchAssistantSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把产品定位、ICP、公开买家信号、联系人角色和外联切入点串成销售可执行的目标账号与调研卡片。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认产品、客单价、成交周期、目标行业、公司规模、区域、购买角色和理想客户定义。",

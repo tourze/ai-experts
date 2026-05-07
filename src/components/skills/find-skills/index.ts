@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -42,9 +41,6 @@ export const findSkillsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把用户的任务意图转成可搜索的 skill 查询，验证来源质量后推荐、安装或给出无结果兜底方案。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先理解用户需要：领域、具体任务、是否是常见可复用工作流，以及是否已点名某个 skill。",

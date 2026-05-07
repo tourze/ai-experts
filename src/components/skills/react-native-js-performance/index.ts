@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -57,9 +56,6 @@ export const reactNativeJsPerformanceSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 release 真机数据定位 React Native JS 线程瓶颈，并按症状选择列表、输入、动画、渲染或内存优化路径。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先在 release 构建和真机上用 Perf Monitor 或 Flashlight 记录优化前 FPS/帧耗时。",

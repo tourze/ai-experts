@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -49,9 +48,6 @@ export const webmanNamingConventionsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "统一 Webman 项目的目录、命名空间、接口、Service 和 Repository 命名，降低 PSR-4 与职责漂移风险。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认要审查的目录、命名空间、接口、Service、Repository 和自动加载规则。",

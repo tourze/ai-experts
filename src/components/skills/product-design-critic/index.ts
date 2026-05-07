@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -58,9 +57,6 @@ export const productDesignCriticSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "从产品任务、界面责任、关键状态、信任损耗和 trade-off 出发，给出能改变用户行为的设计批评。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先明确目标用户、任务目标、产品定位、业务约束和评审对象范围。",

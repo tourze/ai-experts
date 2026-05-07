@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -46,9 +45,6 @@ export const customerResearchSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "从访谈、问卷、工单、评论、NPS 和公开渠道中提炼客户洞察、JTBD、痛点、触发事件、原话词汇、persona 和研究缺口。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先声明当前模式：分析已有素材或在线挖掘；输入可能是访谈转写、问卷开放题、客服工单、赢/丢单笔记、NPS 或公开评论。",

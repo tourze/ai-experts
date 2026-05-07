@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -57,9 +56,6 @@ export const networkTroubleshooterSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "按链路层、IP、路由、DNS、端口和应用层分层定位 Linux 网络故障，并给出失败点和支撑命令。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先采样 `ip -br addr`、`ip route`、DNS 配置和目标主机/端口，明确症状是 timeout、refused、解析失败还是 TLS/应用错误。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -53,9 +52,6 @@ export const binaryAnalysisPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "对可执行文件、库和固件模块做静态二进制分析，恢复架构、入口、字符串、符号、控制流和关键数据结构。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先识别文件格式、架构、位数、编译器痕迹、入口点和导入导出表。",

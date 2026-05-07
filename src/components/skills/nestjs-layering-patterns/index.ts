@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -73,9 +72,6 @@ export const nestjsLayeringPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计 NestJS Module、Controller、Service、DTO、ValidationPipe、Provider、Guard、Interceptor、Pipe、Filter 和测试分层边界。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认触及模块、控制器、服务、DTO、认证授权、配置、数据库和测试中的哪些层。",

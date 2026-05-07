@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -60,9 +59,6 @@ export const userGuideWritingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "编写面向终端用户的任务导向指南、教程、FAQ 或帮助中心内容，让读者能按步骤完成真实任务。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认目标读者、文档类型、关键任务、前置条件、权限限制和成功标准。",

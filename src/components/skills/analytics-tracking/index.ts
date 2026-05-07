@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -44,9 +43,6 @@ export const analyticsTrackingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "规划、生成、审计或排查 GA4/GTM 埋点方案，围绕业务漏斗、事件 taxonomy、Consent、DebugView 和广告回传验证建立追踪计划。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先画业务漏斗、主转化、微转化、关键页面、用户属性和事件属性。",

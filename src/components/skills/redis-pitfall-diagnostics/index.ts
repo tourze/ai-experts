@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -53,9 +52,6 @@ export const redisPitfallDiagnosticsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把 Redis 诡异行为或稳定性问题映射到命令语义、内存/持久化、复制/故障切换和版本/配置差异四个根因面。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先收集时间窗、实例角色、Redis 版本、调用方、key 类型、元素数、`INFO`、`CONFIG GET`、`SLOWLOG` 和命令调用点。",

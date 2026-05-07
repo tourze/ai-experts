@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -45,9 +44,6 @@ export const refactoringPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "先识别代码异味，再选择最小、可验证、不改行为的命名化重构序列。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先说明代码异味、目标状态、行为是否保持不变，以及验证路径。",

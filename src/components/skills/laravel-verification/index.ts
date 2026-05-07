@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -63,9 +62,6 @@ export const laravelVerificationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把 Laravel 本地自检、CI、发版前检查和运行时契约收敛为格式、静态分析、测试、依赖审计、迁移、缓存和队列状态命令链。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认 PHP、Composer、Artisan、.env、数据库连接和目标环境配置。",

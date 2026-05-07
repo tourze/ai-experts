@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -53,9 +52,6 @@ export const tauriReactIntegrationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把 Tauri v2 IPC、事件生命周期、React 状态、Router 深链接和错误边界集成成可维护的前端边界。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认 React 前端路由、状态边界、IPC 调用点、事件订阅点和错误展示策略。",

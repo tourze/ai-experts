@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -64,9 +63,6 @@ export const tauriV2Skill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "搭建或排查 Tauri v2 应用骨架、命令注册、capability 权限、插件接入、IPC 和平台分支。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认任务类型：新建骨架、命令/IPC、插件权限、capability、移动端、运行时特性、签名更新或故障排查。",

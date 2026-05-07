@@ -6,7 +6,6 @@ import {
   defineAsset,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -40,9 +39,6 @@ export const skillCreatorSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "创建、改进、评估、迭代和打包 skill，把用户工作流沉淀成能稳定触发、可验证、可复用的能力单元。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先捕获意图：skill 要让 agent 做什么、何时触发、期望输出、是否需要 eval，以及来源材料是什么。",

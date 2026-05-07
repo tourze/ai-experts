@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -68,9 +67,6 @@ export const pgsqlRowLevelSecuritySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 PostgreSQL 共享表实现或审查 RLS 策略，确保租户和角色隔离在数据库层强制执行并可测试。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认租户边界、角色模型、表 owner、连接池行为和应用层会话变量设置点。",

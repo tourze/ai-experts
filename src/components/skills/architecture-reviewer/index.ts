@@ -6,7 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -63,9 +62,6 @@ export const architectureReviewerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "评审架构设计、代码库结构和技术文档，输出基于证据的七维评分、关键风险、企业就绪问题和整改优先级。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先判断输入模式：代码库、文档或混合；再选择 Quick 或 Exhaustive 深度。",

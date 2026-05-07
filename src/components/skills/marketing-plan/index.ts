@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -65,9 +64,6 @@ export const marketingPlanSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把 Brief、产品卖点、竞品环境、用户洞察、传播定位、渠道节奏和活动执行串成可落地的市场方案。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先做 Brief 梳理：What、Who、When、Why、How、Where、目标、预算/资源、素材、限制和待确认项。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -63,9 +62,6 @@ export const fanOperationsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "提升评论、私信、社群和复购互动质量，把公域粉丝转化为长期信任、内容选题和可持续承接路径。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认账号定位、粉丝类型、互动目标、高频问题、当前回复率、私信咨询和可交付承诺边界。",

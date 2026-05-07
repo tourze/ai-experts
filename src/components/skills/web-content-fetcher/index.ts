@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -58,9 +57,6 @@ export const webContentFetcherSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "对用户给出的具体 URL 选择合适抓取模式，调用网页正文提取 procedure，将正文转成 Markdown 并为后续研究或总结准备内容。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认用户给的是具体 URL；深度研究前需要精炼问题时读取 `question-refiner`。",

@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -60,9 +59,6 @@ export const docCoauthoringSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "和用户共同把零散素材整理成可读、可评审、可交付的结构化文档，并在每轮明确推进目标。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认文档类型、目标读者、已有素材、截止时间、使用场景和本轮目标。",

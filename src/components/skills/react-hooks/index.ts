@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -86,9 +85,6 @@ export const reactHooksSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计 React state、reducer、ref、effect、自定义 Hook、依赖数组、清理逻辑和 SSR 安全边界。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先判断逻辑属于 state、reducer、ref、effect、memo 还是自定义 Hook，避免把纯派生塞进 effect。",

@@ -6,7 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -54,9 +53,6 @@ export const redesignMyLandingpageSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "评审、重构或实现高转化落地页，让单一主 CTA、首屏价值、信任证据、区块结构和视觉系统共同服务转化。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先锁定目标用户、单一主转化动作、核心价值、信任证据和页面当前转化阻塞点。",

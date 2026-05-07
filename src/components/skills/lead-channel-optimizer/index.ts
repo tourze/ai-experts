@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -52,9 +51,6 @@ export const leadChannelOptimizerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "比较获客渠道的成本、线索质量、规模潜力、稳定性和执行复杂度，重排预算与团队资源。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先统一时间窗、归因方式、目标客户定义、线索质量口径和是否计入销售成本。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -50,9 +49,6 @@ export const androidArchitectureSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计或重构 Android Clean Architecture、Hilt 注入和多模块边界，让依赖方向、状态暴露和数据访问保持可测试、可演进。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先画出现有模块、包、入口页面、ViewModel、UseCase、Repository 和 DataSource 的依赖关系。",

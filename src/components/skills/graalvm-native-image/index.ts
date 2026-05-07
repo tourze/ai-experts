@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -55,9 +54,6 @@ export const graalvmNativeImageSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "构建或排查 GraalVM Native Image，按框架、构建工具和第一条阻断错误补齐 reachability metadata、RuntimeHints 或构建插件配置。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认 Java 版本、构建工具、框架、GraalVM/Native Build Tools 版本和完整 native build 日志。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -43,9 +42,6 @@ export const estimateCalibratorSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把模糊工作拆到可估算粒度，用三点估算表达区间、未知项、置信度和决策含义。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先界定范围、交付物、完成定义和外部依赖；边界不清时先澄清。",

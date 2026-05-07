@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -77,9 +76,6 @@ export const goObservabilitySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 Go 服务设计 logs、metrics、traces、profiles 和 alerts 五大信号，并规划 log.Printf 到 slog 的迁移。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认服务边界、关键 SLO、已有日志 / 指标 / trace / profile 和告警来源。",

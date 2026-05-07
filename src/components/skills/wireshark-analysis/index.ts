@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -65,9 +64,6 @@ export const wiresharkAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "分析 PCAP 中的端点、会话、协议层、异常连接和时间线，提取可复现的网络流量证据。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认抓包点、时间窗口、时区、过滤目标和是否存在采样 / 丢包。",

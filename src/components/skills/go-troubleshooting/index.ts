@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -85,9 +84,6 @@ export const goTroubleshootingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "排查 Go crash、panic、异常行为、性能退化、不可复现问题和根因假设验证流程。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先按现象分流：crash / panic、存活但异常、性能退化或不可稳定复现。",

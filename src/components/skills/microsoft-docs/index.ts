@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -46,9 +45,6 @@ export const microsoftDocsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "优先检索 Microsoft Learn 官方内容，理解 Microsoft 技术概念、配置、限制、配额、最佳实践和 SDK/API 使用方式。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先把查询收窄为产品名、任务意图、版本、平台或语言上下文，不用单个宽泛关键词。",

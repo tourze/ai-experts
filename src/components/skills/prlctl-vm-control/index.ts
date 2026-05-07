@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -71,9 +70,6 @@ export const prlctlVmControlSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "通过 prlctl helper 安全定位 Parallels 虚拟机、采集状态、执行客体命令并完成上传/下载等可审计操作。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先用 helper 的 `list` / `resolve` 把目标虚拟机解析为唯一对象，再采集 `status` / `info` 作为基线。",

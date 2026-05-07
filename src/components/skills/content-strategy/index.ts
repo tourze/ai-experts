@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -57,9 +56,6 @@ export const contentStrategySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "制定内容支柱、主题集群、选题优先级、内容日历、分发复用和站点内容结构，让内容服务搜索、分享、教育和转化目标。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认业务目标、目标受众、差异化、发布产能、核心 CTA 和内容在获客/教育/品牌中的角色。",

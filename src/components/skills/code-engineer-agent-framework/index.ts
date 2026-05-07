@@ -3,7 +3,6 @@ import {
   KnownTool,
   Platform,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -25,9 +24,6 @@ export const codeEngineerAgentFrameworkSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为可写代码实现类 engineer agent 提供从范围确认、现状读取、设计、实现、验证到交付报告的通用工程框架。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认目标、范围、非目标、约束、验收标准和允许写入的位置。",

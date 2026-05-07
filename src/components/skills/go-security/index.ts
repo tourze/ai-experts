@@ -4,7 +4,6 @@ import {
   Platform,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -61,9 +60,6 @@ export const goSecuritySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "审查 Go 代码中的注入、XSS、SSRF、路径穿越、随机数、密码哈希、时序攻击、依赖漏洞和密钥处理风险。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认攻击面、输入边界、认证状态、敏感数据和外部调用路径。",

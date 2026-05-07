@@ -6,7 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -60,9 +59,6 @@ export const copywritingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为首页、落地页、定价页、功能页、关于页和产品页写出清晰、具体、可信、以客户语言驱动转化的营销文案。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认页面类型、目标受众、核心价值主张、主要 CTA、证明材料、反对意见和 voice & tone。",

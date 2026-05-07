@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -65,9 +64,6 @@ export const embeddingStrategiesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为搜索、推荐、RAG、代码检索或多语种检索选择 embedding 模型、chunk 策略、metadata 和距离度量。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认任务类型、语种、领域、文档结构、成本/延迟约束和评测样本，不看榜单直接选模型。",

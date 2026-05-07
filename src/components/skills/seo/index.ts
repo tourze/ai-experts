@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -57,9 +56,6 @@ export const seoSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "提升搜索可见性和页面级 SEO 质量，覆盖可抓取性、可索引性、canonical、结构化数据、E-E-A-T、站点架构和程序化 SEO。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先判断页面或站点是否值得被索引，再按可抓取性、可索引性、页面语义、E-E-A-T、结构化数据、内链的顺序审计。",

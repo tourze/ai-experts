@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -41,9 +40,6 @@ export const stpSegmentationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "按 Segmentation -> Targeting -> Positioning 顺序，把市场选择收敛成可验证的目标市场和一句话定位。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认产品、市场边界、竞争对象和可用数据；已有明确 ICP 时只补定位，不重复做完整 STP。",

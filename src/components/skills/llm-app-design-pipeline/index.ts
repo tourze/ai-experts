@@ -3,7 +3,6 @@ import {
   KnownTool,
   Platform,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -27,9 +26,6 @@ export const llmAppDesignPipelineSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用五步 pipeline 设计或优化 LLM 应用，从应用形态、分层设计、eval 到迭代和上线监控形成闭环。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "Step 1 确认应用形态：单 Prompt、多步 Chain、RAG、Agent 或对话，并定义成功指标和目标值。",

@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -44,9 +43,6 @@ export const asyncPythonPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计 Python asyncio 调用链中的结构化并发、timeout、cancellation、backpressure 和并发上限。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认调用链是全同步还是全异步，标出外部 I/O、CPU 密集步骤和可能阻塞的库。",

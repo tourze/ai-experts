@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -66,9 +65,6 @@ export const codebaseArchitectureAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用文件级证据建立代码库模块地图、依赖图、架构合规检查和结构健康度评级。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "模块地图：列出目录/包边界、public interface 和职责声明，标注 ownership 模糊点。",

@@ -4,7 +4,6 @@ import {
   Platform,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -81,9 +80,6 @@ export const reactPerformanceSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 Profiler、Performance 和 bundle 数据定位 React 渲染热点，治理重渲染、memo 误用、derived state、列表、懒加载和外部 store 订阅问题。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先用 React DevTools Profiler、浏览器 Performance 或自定义计时确认热点，没有数据不动 memo。",

@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -65,9 +64,6 @@ export const shadcnUiSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "在前端项目中正确接入和维护 shadcn/ui 组件源码、配置、主题 token、CLI 流程和复杂组件依赖。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先检查 `components.json`、路径别名、`cn()`、Tailwind v3/v4 配置、全局样式和包管理器状态。",

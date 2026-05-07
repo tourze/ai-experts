@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -64,9 +63,6 @@ export const fishboneDiagramSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把一个已发生的问题拆成可验证的因果树，找到 1-3 个最可能的根因，并给出验证动作。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先界定问题：现象、影响对象、时间范围、地点/系统边界、当前证据；范围不清时读取 `five-w-two-h` reference 辅助定义。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -65,9 +64,6 @@ export const pythonPerformanceOptimizationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 profiling、benchmark 和可复现实验定位 Python CPU、内存、数据库、网络、锁竞争和算法瓶颈。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认慢在 CPU、内存、数据库、网络、锁竞争还是外部服务，不用直觉猜热点。",

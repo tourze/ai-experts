@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -57,9 +56,6 @@ export const croMethodologySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把转化问题拆成关键路径、流失证据、用户疑虑和可验证实验，避免拍脑袋改页面。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先定义页面目标、关键路径、主指标、次指标、样本窗口和当前基线。",

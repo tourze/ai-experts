@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -47,9 +46,6 @@ export const douyinViralContentSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把主题素材、历史样本、视频摘要或逐字稿转成适合抖音短视频的标题、钩子、口播、分镜节奏、标签、评分和优化建议。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先判断是否有历史文案目录、表现数据、视频摘要或逐字稿；没有校准样本时使用通用基线并显式说明。",

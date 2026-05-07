@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -56,9 +55,6 @@ export const liquidGlassDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "在支持 Liquid Glass 的 Apple 平台上设计玻璃材质、容器融合、交互层级、Widget 外观和旧系统回退方案。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认部署目标、API 可用性和旧系统回退；不做版本判断时不得直接使用 Liquid Glass API。",

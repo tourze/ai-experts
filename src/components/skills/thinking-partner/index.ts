@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -71,9 +70,6 @@ export const thinkingPartnerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "作为思考拍档帮助用户从混乱局面中锁定核心问题，拆解卡点，共创 1-2 条可落地路径。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "阶段 1 信息获取：每轮最多问 1-3 个高价值问题，确认目标、约束、已尝试路径和最卡的一步。",

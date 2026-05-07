@@ -6,7 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -52,9 +51,6 @@ export const financialAnalystSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "基于 JSON 输入运行财务比率、DCF、预算差异和滚动预测 procedure，并把结果解释成可审计的经营或估值结论。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先判断分析类型：比率分析、DCF 估值、预算差异、滚动预测或输入校验，并选择对应 procedure。",

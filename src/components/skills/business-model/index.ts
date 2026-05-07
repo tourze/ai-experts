@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -72,9 +71,6 @@ export const businessModelSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "按分支把商业模式设计、诊断或案例研究转成可审计 JSON 源、证据分级和人类可读报告。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先选择主分支：`idea_to_model`、`model_diagnosis` 或 `company_case_study`，并说明辅助模块如何处理。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -76,9 +75,6 @@ export const uxWritingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "写或审界面微文案，让按钮、错误、空态、表单提示、确认对话框和 Toast 具体、可行动、诚实且便于本地化。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先盘出场景类型：按钮、错误、空态、helper、确认、toast、敬告、onboarding 或敏感操作。",

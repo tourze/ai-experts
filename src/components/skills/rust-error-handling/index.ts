@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -64,9 +63,6 @@ export const rustErrorHandlingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 Rust 库、应用和 async 边界设计可匹配、可传播、可文档化的错误类型与 Result 使用方式。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认当前 crate 是库、二进制入口、内部模块还是原型脚本。",

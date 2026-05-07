@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -60,9 +59,6 @@ export const swotAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把内部优势/劣势和外部机会/威胁转成可执行的 SO/WO/ST/WT 战略动作。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先界定分析对象、目标、时间尺度和证据来源。",

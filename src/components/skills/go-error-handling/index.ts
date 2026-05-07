@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -50,9 +49,6 @@ export const goErrorHandlingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计 Go 错误合同、错误链、sentinel error、自定义错误类型和上下文包装方式。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认错误是否跨包暴露、调用方是否需要 `errors.Is` / `errors.As`、是否需要稳定合同。",

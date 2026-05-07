@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -56,9 +55,6 @@ export const pptGenerateSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "从主题、文档或需求端到端生成 PPT，先确认需求和视觉策略，再按可编辑 SVG 或 image-first 分支逐页生成、评审和返修。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "阶段 1 轻量需求确认并 hard stop：用途、受众、页数/时长、材料状态、身份锚点和交付偏好。",

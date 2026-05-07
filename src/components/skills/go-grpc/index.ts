@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -82,9 +81,6 @@ export const goGrpcSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "实现和审查 Go gRPC 服务端 / 客户端注册、连接、错误状态、拦截器和 protobuf 生成流程。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认 proto、生成命令、服务端注册、客户端凭据、deadline 和拦截器需求。",

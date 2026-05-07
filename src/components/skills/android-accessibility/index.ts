@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -13,13 +12,11 @@ import {
 export const androidAccessibilitySkill = defineSkill({
   id: "android-accessibility",
   fullName: "Android 无障碍审计",
-  description: "当用户要审计或修复 Android 无障碍、TalkBack、触摸目标、对比度或焦点管理时使用。",
+  description: "审计或修复 Android Compose / View 无障碍问题。用于 TalkBack 播报、contentDescription、48dp 触摸目标、WCAG 对比度、焦点顺序、键盘 / Switch Access、自定义控件语义或 Canvas 可达性问题。",
   useCases: [
-    "审计或修复 Compose / View 的无障碍问题",
-    "TalkBack 播报不正确、缺失或冗余",
-    "触摸目标过小导致误触",
-    "色彩对比度不达标",
-    "键盘 / Switch Access 无法操作",
+    "用户要求 Android accessibility / a11y / TalkBack 审计或修复。",
+    "Compose / View 中标签、语义分组、状态暴露、触摸目标、对比度或焦点顺序存在问题。",
+    "需要验证键盘、Switch Access、字体缩放、高对比模式或自定义 Canvas 控件可达性。",
   ],
   constraints: [
     "`Image`、`Icon` 必须提供有意义的 `contentDescription`；纯装饰图片设为 `null`，可点击元素描述动作而不是外观。",
@@ -43,9 +40,6 @@ export const androidAccessibilitySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "审计 Android Compose / View 界面的无障碍语义、触摸目标、对比度、焦点顺序和辅助输入可达性。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "逐屏用 TalkBack 扫描核心任务路径，记录缺失、冗余或顺序错误的播报。",

@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -68,9 +67,6 @@ export const dataAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "对用户显式给出的 `.xlsx` / `.csv` 文件先 inspect，再 query / summary / export，输出可验证的数据结构、聚合和结论。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认文件真实存在、扩展名受支持，并用 `procedure data-analysis-analyze` inspect 表名、列名、类型和空值。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -71,9 +70,6 @@ export const softwareDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用深模块、信息隐藏、职责边界、组合优先、分层和依赖注入原则评价或设计语言无关的软件结构。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先判断问题是职责边界、抽象层次、I/O 隔离、依赖方向还是复杂度泄漏。",

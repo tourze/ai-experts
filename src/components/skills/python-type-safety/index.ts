@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -72,9 +71,6 @@ export const pythonTypeSafetySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 Python 公共 API、DTO、Protocol、TypedDict、TypeGuard、泛型和 mypy/pyright 严格模式设计类型边界。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先标注公共函数、类属性、跨层 DTO 和外部输入边界，再逐步收敛内部实现。",

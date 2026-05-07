@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -55,9 +54,6 @@ export const laravelPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计 Laravel 控制器、FormRequest、Action / Service、Eloquent Model、JsonResource、路由绑定、队列和 Livewire 边界。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认 HTTP 入口、授权点、校验边界、业务动作、模型关系、响应资源和副作用是否需要队列。",

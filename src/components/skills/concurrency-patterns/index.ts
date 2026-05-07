@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -52,9 +51,6 @@ export const concurrencyPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计或审查并发工作流，确保外部调用有超时、任务有 owner、取消能传播、并发有上限且停机可排空。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先画出入口、子任务、外部依赖、共享状态和长期运行任务，明确每个任务的 owner。",

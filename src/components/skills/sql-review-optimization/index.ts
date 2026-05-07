@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -91,9 +90,6 @@ export const sqlReviewOptimizationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "审查 SQL 的安全性、正确性、可运维性和性能，并基于执行计划、真实基数、锁风险和数据分布制定优化方案。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "审查先看安全边界和正确性，再谈性能；权限、条件或事务边界错了，查询跑得快也不能放行。",

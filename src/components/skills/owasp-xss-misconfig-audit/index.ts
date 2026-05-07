@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -40,9 +39,6 @@ export const owaspXssMisconfigAuditSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "审计 XSS 输出边界、安全头配置和依赖供应链风险，输出可验证的位置、证据和修复版本/策略。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先按触发信号路由：危险 DOM/API 为 XSS，CORS/CSP/HSTS/helmet/cookie 为安全头，依赖声明和 lockfile 为依赖风险。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -43,9 +42,6 @@ export const evidenceQualityFrameworkSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把代码审查、安全审计、事故复盘、研究或战略分析中的结论标注为事实/推断/假设，并绑定可核验定位。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先采集实际代码、diff、日志、metric、commit 或命令输出片段；没有实际片段时只能标为假设或待验证。",

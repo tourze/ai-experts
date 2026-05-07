@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -76,9 +75,6 @@ export const incidentResponseSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "在事故中先只读诊断、快速分级、建立 UTC 时间线，再提出可逆止血、分层修复和观测补齐。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "Triage 先确认影响面、起始时间、严重度、用户可见症状、上下游依赖和收入/业务影响。",

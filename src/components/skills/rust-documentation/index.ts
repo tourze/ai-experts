@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -68,9 +67,6 @@ export const rustDocumentationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "编写和审查 Rust 公共 API 文档、模块文档、rustdoc lint，以及 Safety / Errors / Panics / Examples 段落。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先区分注释、公共 API 文档和模块级 `//!` 文档的职责。",

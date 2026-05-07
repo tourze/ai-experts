@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -50,9 +49,6 @@ export const miniprogramDevelopmentSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "按微信小程序项目结构、页面四件套、CloudBase 边界和开发者工具链路创建、修改或排查小程序。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先读 `project.config.json`，确认 `appid`、`miniprogramRoot`、`compileType`，路径判断以 `miniprogramRoot` 为准。",

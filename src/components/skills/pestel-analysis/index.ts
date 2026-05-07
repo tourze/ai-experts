@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -61,9 +60,6 @@ export const pestelAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 PESTEL 扫描宏观外部因素，把政策、经济、社会、技术、环境和法律变化转成可行动的战略含义。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认目标市场、行业、地区、时间窗口和战略问题，例如进入、投资、融资或风险评估。",

@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -78,9 +77,6 @@ export const goPerformanceSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 pprof、trace、逃逸分析和基准数据定位 Go CPU、内存、锁竞争、外部瓶颈和并发度问题。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认是否外部瓶颈，再用 CPU / heap / goroutine / mutex / block profile 和 trace 定位 Go 侧问题。",

@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -45,9 +44,6 @@ export const authorContributionsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "只读追踪某个作者在分支相对上游的真实落地贡献，区分直接修改、rename 继承和最终不会合并的路径。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先用 `git log --format=\"%an <%ae>\" <upstream>..<branch> | sort -u` 枚举精确作者身份。",

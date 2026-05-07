@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -43,9 +42,6 @@ export const pythonDesignPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "拆分 Python service、repository、adapter、DTO 和 Protocol 边界，让职责清晰、I/O 可替换、业务逻辑可测试。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先找主要变化原因、I/O 边界、领域对象和当前耦合点。",

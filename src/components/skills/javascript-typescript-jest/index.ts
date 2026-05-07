@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -77,9 +76,6 @@ export const javascriptTypescriptJestSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 Jest 为 JavaScript / TypeScript 模块、异步函数、mock 边界和组件行为编写可维护的单元测试和轻量集成测试。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认被测行为、外部边界、异步完成方式、共享状态和项目既有 Jest / RTL helper。",

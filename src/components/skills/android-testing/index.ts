@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -49,9 +48,6 @@ export const androidTestingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 Android 项目建立单元、集成、Compose UI 和 Roborazzi 截图测试策略，覆盖逻辑、依赖注入、UI 语义和视觉回归。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先识别待测对象：ViewModel、Repository、UseCase、Room DAO、网络层、Compose UI 或截图回归。",

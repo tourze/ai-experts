@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -64,9 +63,6 @@ export const apiTraceReaderSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "只读追踪接口、任务、事件或定时任务的真实调用链，定位数据读写、异步副作用、风险点和验证方式。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先判断入口类型是 HTTP、CLI、消费者、定时任务、事件还是 webhook，必要时读取 `entry-types`。",

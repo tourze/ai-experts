@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -58,9 +57,6 @@ export const goDesignPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "选择 Go 中轻量、可测试的实现模式，包括函数式选项、重试、优雅停机和依赖注入边界。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认问题是构造参数膨胀、可选配置、重试容错、生命周期管理还是依赖替换。",

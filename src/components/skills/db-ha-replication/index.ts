@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -70,9 +69,6 @@ export const dbHaReplicationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "配置或排查数据库复制与高可用拓扑，围绕 GTID、ROW binlog、半同步、延迟监控和故障切换建立可验证流程。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认拓扑、MySQL 版本、复制账号、GTID、binlog 格式、半同步要求、读写分离策略和 RPO/RTO。",

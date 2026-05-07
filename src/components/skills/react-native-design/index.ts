@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -58,9 +57,6 @@ export const reactNativeDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "实现 React Native 页面、样式、导航、手势和 Reanimated 动画时，保持稳定样式、清晰导航和正确线程模型。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认页面目标、导航层级、视觉状态、平台差异、安全区、触控反馈和动画需求。",

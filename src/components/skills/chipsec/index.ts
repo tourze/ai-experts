@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -53,9 +52,6 @@ export const chipsecSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 CHIPSEC 对 UEFI / BIOS 固件 dump 做离线只读分析，生成 EFI 模块清单、威胁扫描、结构解码和 NVRAM 线索。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认固件来源、采集方式、哈希、平台信息和文件格式，所有分析基于副本进行。",

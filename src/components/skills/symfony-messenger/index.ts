@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -64,9 +63,6 @@ export const symfonyMessengerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计 Symfony Messenger 消息、Handler、Transport、失败队列、重试退避、消费者命令和至少一次投递下的幂等处理。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认同步 / 异步边界、消息字段、序列化兼容性、外部副作用、失败传输和消费监控。",

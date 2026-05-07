@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -62,9 +61,6 @@ export const doctrineEntityPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计或审查 Doctrine Entity、Repository 和 Migration，使映射、关联、查询和迁移行为可维护且可回滚。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "读取目标 Entity、Repository、Migration、调用点和数据库约束；完整代码示例按需读取 `entity-reference`。",

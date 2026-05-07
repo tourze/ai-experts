@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -53,9 +52,6 @@ export const planningUnderUncertaintySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把高度不确定的计划拆成当前下注、关键未知项、触发条件和下一个决策点，保留可调整空间。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "识别不确定性来源：技术、市场、组织、外部环境或依赖链。",

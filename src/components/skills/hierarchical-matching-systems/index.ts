@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -60,9 +59,6 @@ export const hierarchicalMatchingSystemsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把层级匹配、稳定匹配、最优分配或实体解析问题翻译成实体、约束、评分函数、失败样本和可验证调整方案。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先判断问题类型：稳定匹配、最优分配、层级对齐还是实体解析。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -60,9 +59,6 @@ export const doctrineBatchProcessingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 Symfony / Doctrine 大批量导入、回填、迁移和更新设计可控内存、批次大小、事务边界和 ORM / DBAL 切换策略。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认数据量、查询方式、事务范围、锁影响、监听器副作用和是否需要 ORM 生命周期事件。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -57,9 +56,6 @@ export const memoryForensicsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "分析 RAM 镜像中的进程、网络、模块、注入、凭据痕迹和 rootkit 线索，形成可复核的内存取证证据链。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认镜像来源、平台、采集时间、时区、哈希和 Volatility profile / symbol 状态。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -50,9 +49,6 @@ export const reactNativeMetroConfigSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 React Native Metro 配置 monorepo、resolver、平台扩展和 CI 性能优化，避免打包器边界失控。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认项目结构、包管理器、workspace 边界、平台扩展、CI 环境和当前 Metro 报错/性能症状。",

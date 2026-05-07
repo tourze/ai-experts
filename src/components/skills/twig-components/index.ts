@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -56,9 +55,6 @@ export const twigComponentsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "在 Symfony 中把重复 Twig 片段抽成 TwigComponent 或 LiveComponent，保持服务端渲染优先和显式 props 边界。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先判断组件类型：静态复用 UI 用 TwigComponent；交互后需要服务端重渲染再用 LiveComponent。",

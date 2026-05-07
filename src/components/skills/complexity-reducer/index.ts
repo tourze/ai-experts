@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -77,9 +76,6 @@ export const complexityReducerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "识别代码认知复杂度来源，选择最小行为保持重构动作，并用测试和可读性证据确认复杂度真的下降。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先用阅读或 `complexity-reducer-complexity-report` 定位嵌套、长函数、参数爆炸、布尔组合、特性嫉妒、原始类型偏执或条件过长。",

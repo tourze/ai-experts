@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -126,9 +125,6 @@ export const structuredProblemDecompositionSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把复杂模糊问题编排成问题界定、结构化拆解、根因分析、系统动态、决策推进和 PDCA 闭环六阶段。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "问题界定：用一句话说明回答什么、不回答什么；说不清时先收敛范围。",

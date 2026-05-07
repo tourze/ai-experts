@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -44,9 +43,6 @@ export const androidDesignGuidelinesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "按 Material Design 3 和 Android 平台约束设计或审查 UI，覆盖动态颜色、导航、自适应布局、edge-to-edge、无障碍和系统集成。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认目标 Android 版本、屏幕形态、主要导航目的地、Compose / XML 技术栈和是否涉及权限、通知或系统集成。",

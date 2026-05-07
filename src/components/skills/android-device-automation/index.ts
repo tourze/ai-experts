@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -37,9 +36,6 @@ export const androidDeviceAutomationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用登记的 Android device procedures 管理真机 / 模拟器、构建安装、语义化 UI 操作、日志采集和诊断证据。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先运行健康检查或等价检查，确认 adb、Java、Android SDK 和目标设备 / AVD 状态。",

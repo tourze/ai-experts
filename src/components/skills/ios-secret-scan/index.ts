@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -57,9 +56,6 @@ export const iosSecretScanSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "扫描 iOS IPA / Mach-O 中的硬编码凭据、安全配置、弱加密和运行时保护线索，并区分真实风险与 client-safe 命中。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先用 iOS 二进制分析流程定位主 Mach-O、Info.plist、headers 和 strings 输出；命令细节读取 `scan-runbook`。",

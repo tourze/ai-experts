@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -74,9 +73,6 @@ export const testDrivenDevelopmentSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用红-绿-重构循环驱动功能、缺陷修复和行为重构，每轮只围绕一个可观察行为推进。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先写一个当前行为的失败测试，并亲眼确认失败原因是功能缺失而不是环境或断言错误。",

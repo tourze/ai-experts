@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -54,9 +53,6 @@ export const tauriBuildPackagingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把 Tauri v2 桌面应用构建、签名、公证、更新、sidecar 和 CI 分发配置成可复现的发布流水线。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认目标平台、安装器格式、签名证书、CI 环境、自动更新需求和外部二进制/资源清单。",

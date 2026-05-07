@@ -3,7 +3,6 @@ import {
   KnownTool,
   Platform,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -28,9 +27,6 @@ export const startupViabilityChecklistSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 12 个维度快速评估创业项目可行性，标注已验证/假设、致命盲区和下一步优先行动。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "逐项标注状态和置信度：想法验证、ICP、市场规模、商业模式、业务健康度、定价、渠道、竞争、融资、团队、用户旅程、不确定性。",

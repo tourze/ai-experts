@@ -5,7 +5,6 @@ import {
   defineAsset,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -63,9 +62,6 @@ export const webappTestingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用真实浏览器验证 Web 应用的页面可达性、交互、表单、跳转、控制台日志、截图和响应式表现。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认目标 URL 可访问和验证目标；本地开发站点需要确认 dev server 状态。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -48,9 +47,6 @@ export const engineeringRetroSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "基于 Git 历史只读生成工程回顾，解释交付节奏、热点文件、工作主题、协作分布和可复用工程经验。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "解析 `/engineering-retro [TIME_WINDOW] [PATH_SCOPE]`；默认 7d，路径范围一旦存在，所有 Git 命令都带 `-- <PATH_SCOPE>`。",

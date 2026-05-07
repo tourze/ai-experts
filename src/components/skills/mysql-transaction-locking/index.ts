@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -66,9 +65,6 @@ export const mysqlTransactionLockingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "诊断和优化 MySQL InnoDB 事务、锁等待、死锁、间隙锁、Next-Key Lock、自增锁和 MDL 风险。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认 MySQL 版本、隔离级别、`innodb_autoinc_lock_mode`、`binlog_format`、复制模式和相关 SQL。",

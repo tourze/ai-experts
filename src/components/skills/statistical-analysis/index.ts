@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -76,9 +75,6 @@ export const statisticalAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ModelOnly,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为业务指标、实验、相关性、趋势或异常波动提供统计推断，明确样本口径、方法、效应量和结论边界。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认数据生成过程、样本量、时间窗口、过滤条件、采样机制和缺失/异常值。",

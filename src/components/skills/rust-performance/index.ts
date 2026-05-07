@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -66,9 +65,6 @@ export const rustPerformanceSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 benchmark、profiling 和分配分析定位 Rust 性能瓶颈，并按算法、API 边界、分配策略和微优化顺序收敛。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认性能目标、release 基线、硬件 / 数据集和可复现 benchmark。",

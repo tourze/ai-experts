@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -70,9 +69,6 @@ export const i18nLocalizationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "实现或审计多语言、locale 资源、翻译键、复数规则、地区格式、RTL 布局和缺失翻译回退策略。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先盘点用户可见文案、目标语言/地区、命名空间、locale 目录和当前硬编码来源。",

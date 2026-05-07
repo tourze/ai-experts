@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -76,9 +75,6 @@ export const pythonBackgroundJobsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把 Python 长任务从请求链路中解耦，设计 job 状态机、队列消息、worker、重试、幂等和死信兜底。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认上游接单 API、任务 payload、幂等键、状态表、worker 数量、超时和重试策略。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -49,9 +48,6 @@ export const meetingInsightsAnalyzerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "基于会议转写做沟通行为复盘，提炼有证据的观察、影响解释和可执行改进动作。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先定位会议转写、字幕或文本文件，并确认分析对象、说话人映射、会议数量、时间窗和数据缺口。",

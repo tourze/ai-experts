@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -59,9 +58,6 @@ export const securityOwnershipMapSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "基于 git 历史和敏感规则构建安全所有权图，识别隐藏 owner、低 bus factor 和孤儿敏感代码。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "确认分析范围、时间窗、身份归并规则、敏感文件规则和输出格式。",

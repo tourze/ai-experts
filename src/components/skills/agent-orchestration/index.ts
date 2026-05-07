@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -58,9 +57,6 @@ export const agentOrchestrationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计可隔离、可追踪、可扩展的多 Agent 编排方案，明确 system prompt、子 Agent、状态和工具边界。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先拆 system prompt：静态角色/规则/工具说明放缓存边界前，动态环境/记忆/任务上下文放边界后。",

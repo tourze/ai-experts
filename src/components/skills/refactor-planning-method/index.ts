@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -67,9 +66,6 @@ export const refactorPlanningMethodSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为既有代码制定系统化重构计划，先建立基线并多视角验证真问题，再识别安全边界和可回滚拆步。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先建立基线：测试覆盖、依赖拓扑、热点文件和坏味分布。",

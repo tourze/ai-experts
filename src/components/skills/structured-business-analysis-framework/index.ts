@@ -3,7 +3,6 @@ import {
   KnownTool,
   Platform,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -66,9 +65,6 @@ export const structuredBusinessAnalysisFrameworkSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把开放式商业问题收敛为可回答边界、MECE 假设树、证据分层、模型选择和最小验证计划。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "用 5W2H 定义 Why、What、Who、Where、When、How、How much，明确回答什么和不回答什么。",

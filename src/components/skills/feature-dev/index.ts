@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -43,9 +42,6 @@ export const featureDevSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把跨模块功能开发按发现、探索、澄清、设计、实现、复核和总结七阶段推进，避免陌生代码库直接开写。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "发现：定义功能目标、成功标准、范围边界和非目标。",

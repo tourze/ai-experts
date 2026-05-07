@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -58,9 +57,6 @@ export const backendToFrontendHandoffDocsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "基于真实后端实现生成前端可直接联调的 API handoff，收敛接口契约、DTO 语义、状态码、校验和边界场景。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先从控制器、路由、DTO、服务层、错误码和鉴权配置收集事实；缺失信息标为待确认。",

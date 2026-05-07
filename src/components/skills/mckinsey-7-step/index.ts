@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -64,9 +63,6 @@ export const mckinseyStepSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用假设驱动的七步流程，把模糊业务问题拆成 MECE 结构、关键假设、验证计划和结论先行的行动方案。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "定义问题：把宽泛诉求改写成具体、可回答、有边界的问题，并列出成功标准。",

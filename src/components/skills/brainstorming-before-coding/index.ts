@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -41,9 +40,6 @@ export const brainstormingBeforeCodingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "在创造性编码前先探索上下文、澄清目标、比较方案并获得明确设计批准，再进入实现。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先探索相关文件、文档、最近提交和已有模式；多子系统请求先建议拆分。",

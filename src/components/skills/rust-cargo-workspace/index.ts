@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -49,9 +48,6 @@ export const rustCargoWorkspaceSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计和维护 Rust Cargo workspace 的成员划分、共享依赖、feature 传播、build.rs 和 CI 检查策略。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认 crate 成员、发布边界、共享依赖、feature 关系和 CI 目标。",

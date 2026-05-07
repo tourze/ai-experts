@@ -3,7 +3,6 @@ import {
   KnownTool,
   Platform,
   defineAntiPattern,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
   defineSkill,
@@ -43,9 +42,6 @@ export const triggerTelemetryAdvisorSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "分析 ai-experts hook/skill telemetry、触发审计、dispatch 错误和运行故障，输出带证据和验证命令的修复建议。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认当前仓库是否实际安装并启用了 ai-experts hook telemetry。",

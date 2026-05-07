@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -47,9 +46,6 @@ export const pdfSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "读取、分析、填写、批注、校验或转换 PDF，先区分可填写表单与视觉型表单，再选择字段发现、坐标标注或图片渲染链路。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先判断任务是纯抽取、可填写表单、视觉型表单写入、坐标校验还是 PDF 转图片。",

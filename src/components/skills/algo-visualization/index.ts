@@ -5,7 +5,6 @@ import {
   defineAsset,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -55,9 +54,6 @@ export const algoVisualizationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把算法、数据结构、代码执行过程或教材内容做成正文充分、SVG 清晰、动画可交互的单文件 HTML 教学页。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先判断输入类型：PDF/教材、无代码算法主题、含代码执行过程或概念对比，并选择对应页面骨架。",

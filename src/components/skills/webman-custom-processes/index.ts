@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -50,9 +49,6 @@ export const webmanCustomProcessesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 Webman 自定义进程、Timer、Crontab 和 crash-restart 设计生命周期安全的进程配置。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认进程用途、`config/process.php` handler、count、是否长连接、是否可 reload 和停止语义。",

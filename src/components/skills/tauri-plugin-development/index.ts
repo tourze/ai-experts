@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -48,9 +47,6 @@ export const tauriPluginDevelopmentSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "按 Tauri v2 插件约定设计 Builder、生命周期、平台拆分、状态、命令、JS API 和最小权限。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认插件名称、宿主配置项、目标平台、命令面、权限范围和 JS 包边界。",

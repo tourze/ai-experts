@@ -165,7 +165,7 @@ export type SkillParameter = {
 };
 
 export type SkillGoalDefinition = {
-  title?: string;
+  title: string;
   body: string;
 };
 

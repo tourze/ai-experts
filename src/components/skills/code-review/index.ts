@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -70,9 +69,6 @@ export const codeReviewSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "基于真实代码或 diff 做标准/高压代码审查，按严重度输出有证据、有后果、有修复方向的问题和 Health Score。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认审查强度；用户未指定时使用标准模式，高压模式只在明确授权时启用。",

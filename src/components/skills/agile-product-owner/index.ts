@@ -6,7 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -56,9 +55,6 @@ export const agileProductOwnerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把需求拆成可交付用户故事、验收标准、Epic、Backlog 和 Sprint 范围，保证故事满足 INVEST 并可直接转测试。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认业务目标、用户角色、成功标准、非目标、依赖和 Sprint 容量。",

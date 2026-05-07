@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -50,9 +49,6 @@ export const opportunitySolutionTreeSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把一个可度量 outcome 拆成机会、方案和实验，避免产品探索直接从目标跳到功能。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先定义树顶 outcome：单一、可度量、有时间边界，并说明它和业务目标的关系。",

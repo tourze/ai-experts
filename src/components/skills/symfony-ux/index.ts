@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -62,9 +61,6 @@ export const symfonyUxSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "在 Symfony 服务端渲染页面中选择 Turbo、Stimulus、TwigComponent、LiveComponent、UX Icons 和 UX Map 的最小交互组合。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认交互是否需要服务端参与、是否只需局部导航、表单增强、实时搜索或第三方 JS。",

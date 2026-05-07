@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -56,9 +55,6 @@ export const monitoringObservabilitySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计指标、日志、告警、健康检查和 runbook 基线，让系统稳定性问题有可追踪证据链和明确响应路径。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认业务目标、SLO、告警接收人、升级路径和系统边界事件。",

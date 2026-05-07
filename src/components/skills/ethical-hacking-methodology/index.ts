@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -53,9 +52,6 @@ export const ethicalHackingMethodologySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "在明确授权范围内组织渗透测试，从范围确认、低噪声侦察、证据化验证到报告和复测闭环。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认书面授权、范围、联系人、禁测项、时间窗口、成功标准和回滚/升级路径。",

@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -69,9 +68,6 @@ export const vectorIndexTuningSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "围绕 recall、p95 latency、内存和写入成本调优向量索引参数，避免用索引参数掩盖上游质量问题。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先按优先级排序优化目标：延迟、召回、内存或写入成本；冻结 embedding、distance metric 和 benchmark query。",

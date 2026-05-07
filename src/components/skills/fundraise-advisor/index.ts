@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -52,9 +51,6 @@ export const fundraiseAdvisorSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 pre-seed 到 seed 阶段融资准备目标金额、轮次策略、故事线、投资人分层、会前材料、跟进节奏和证据表。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认融资目的、跑道、目标金额、关键里程碑、资金用途和当前牵引力。",

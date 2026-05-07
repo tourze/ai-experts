@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -83,9 +82,6 @@ export const reactServerComponentsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计 React Server Components 边界、数据获取并行化、Server Actions、安全校验、streaming、React.cache 去重和序列化成本治理。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先识别组件是否真的需要客户端交互，默认保留 Server Component，只在交互叶子加 `'use client'`。",

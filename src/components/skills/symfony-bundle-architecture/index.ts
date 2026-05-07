@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -55,9 +54,6 @@ export const symfonyBundleArchitectureSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计或审查 Symfony Bundle 边界，让 Extension、CompilerPass、services.yaml 和 Bundle 依赖保持清晰可组合。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "读取 Bundle 类、Extension、配置文件、CompilerPass、服务定义和 Bundle 间依赖；完整示例按需读取 `bundle-reference`。",

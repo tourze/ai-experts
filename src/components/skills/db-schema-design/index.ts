@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -73,9 +72,6 @@ export const dbSchemaDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 MySQL 或 PostgreSQL 业务表选择主键、列类型、约束、字符集、时间/金额类型和 JSON/JSONB 建模方案。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认数据库引擎、版本、写入规模、查询路径、保留周期、外键策略和迁移约束。",

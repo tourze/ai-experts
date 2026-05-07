@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -58,9 +57,6 @@ export const interactionDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为界面设计有信息含义、可中断、性能克制且兼容 reduced motion 的微交互、过渡和反馈状态。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先说明每个动效告诉用户什么：反馈、导向、层级、连续性或状态变化。",

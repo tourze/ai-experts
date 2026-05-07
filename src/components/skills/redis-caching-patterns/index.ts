@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -60,9 +59,6 @@ export const redisCachingPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计或排查 Redis 缓存读写策略、击穿/穿透/雪崩防护和删缓存补偿，保护数据库前置缓存层。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认读写路径、数据源真源、热点 key、TTL 策略、不存在 key 行为和删除失败补偿。",

@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -53,9 +52,6 @@ export const arthasCpuHighSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 Arthas 只读证据定位 Java/JVM CPU 飙高、负载异常和请求变慢的热点线程、关键堆栈和下一步 trace 边界。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先执行 `dashboard -n 3` 看整体趋势，再执行 `thread -n 5` 找最忙线程，不直接上重型 trace/watch。",

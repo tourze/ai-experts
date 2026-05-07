@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -72,9 +71,6 @@ export const dataStorytellingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把数据分析结果压缩为面向决策者的业务叙事，让主结论、证据、风险边界和行动建议闭环。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认目标受众、材料用途和希望驱动的动作，再写主结论。",

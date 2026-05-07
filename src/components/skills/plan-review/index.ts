@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -44,9 +43,6 @@ export const planReviewSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "在编码前审查计划的范围、假设、依赖、风险、回滚和验证路径，提前暴露会导致失败的缺口。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认评审对象是计划、方案或 RFC；没有计划时先要求补计划，不假装评审。",

@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -72,9 +71,6 @@ export const pythonObservabilitySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 Python API、worker 和定时任务补结构化日志、指标、trace、请求上下文、耗时观测和安全脱敏。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认请求入口、外部调用、任务边界、失败路径、敏感字段和现有日志字段。",

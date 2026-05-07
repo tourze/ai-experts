@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -59,9 +58,6 @@ export const marketSizingAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 TAM/SAM/SOM 和多方法交叉验证，把市场空间估算成有口径、有假设、有敏感性的商业判断。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先定义市场边界、地区、年份、币种、客户单位、收入模型和 TAM/SAM/SOM 口径。",

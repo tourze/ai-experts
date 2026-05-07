@@ -3,7 +3,6 @@ import {
   KnownTool,
   Platform,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -70,9 +69,6 @@ export const architectureDesignWorkflowSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "端到端推进架构设计，从需求澄清到方案设计再到落地拆解，产出可评审、可验证的架构文档。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "阶段 1 需求澄清：确认功能边界、量化约束、既有系统和非目标；缺数字标 `[待确认]` 并说明影响。",

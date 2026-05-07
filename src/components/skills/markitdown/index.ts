@@ -6,7 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -75,9 +74,6 @@ export const markitdownSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 MarkItDown 将 Office、图片、HTML、音频、论文或目录批量转换为 Markdown，保留可回溯文件结构并按需启用 AI 图片描述。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认用户要的是 Markdown 抽取；若要保留或回写原 Office 格式，转向文档/PPT 相关 skill。",

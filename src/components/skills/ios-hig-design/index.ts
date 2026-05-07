@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -54,9 +53,6 @@ export const iosHigDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把 iOS HIG 原则落到具体界面结构、系统组件、安全区域、语义字体、权限时机和可访问触控体验上。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认目标设备、iPhone / iPad 形态、导航层级、主要任务流和是否涉及权限、输入、Widget 或系统集成。",

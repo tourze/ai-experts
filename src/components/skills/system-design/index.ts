@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -44,9 +43,6 @@ export const systemDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把业务目标和约束转成分层系统方案，明确组件边界、数据流、关键决策、可靠性策略和可复审假设。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先澄清功能需求、非功能需求、规模、团队约束、成本边界和不可接受的失败模式。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -60,9 +59,6 @@ export const preLandingReviewSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "在合并或上线前基于真实 diff 做阻断级风险审查，明确区分阻断项、建议项和可落地结论。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先读取 checklist 和 discipline-guard；没有实际 diff 和验证命令，不得声称可以落地。",

@@ -4,7 +4,6 @@ import {
   Platform,
   defineSkill,
   defineAntiPattern,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -47,9 +46,6 @@ export const blindOutputComparatorSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "盲评两个输出版本，基于原始任务生成任务专属 rubric，并选择质量更高或失败更轻的一方。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先读取原始任务、expectations 和 A/B 输出完整内容；输出是目录时检查所有相关文件。",

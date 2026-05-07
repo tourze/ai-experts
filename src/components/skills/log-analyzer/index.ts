@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -56,9 +55,6 @@ export const logAnalyzerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "从系统日志和应用日志中缩小时间窗、抽取关键模式、建立时间线，并输出可验证的根因假设。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认时间范围、日志源、关键词、请求 ID / trace ID / host / service 等关联线索。",

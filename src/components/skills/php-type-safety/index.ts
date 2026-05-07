@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -83,9 +82,6 @@ export const phpTypeSafetySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "配置 PHPStan / Psalm，补 array shapes、list、泛型、条件返回、类型断言和 PHPDoc 文档块，持续消除 `mixed`。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认 PHPStan / Psalm 级别、裸 array / mixed 分布、公共 API 签名和框架类型约束。",

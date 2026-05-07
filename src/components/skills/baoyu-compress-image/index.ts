@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -48,9 +47,6 @@ export const baoyuCompressImageSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "压缩单张图片或目录图片，转换为 webp/png/jpeg，并在删除源文件、批处理和后端依赖上保持明确边界。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认输入是单文件还是目录、目标格式、quality、是否递归和是否需要保留源文件。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -57,9 +56,6 @@ export const paidAdsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "规划、诊断或扩展 Google Ads、Meta、LinkedIn、TikTok 等付费投放，明确目标、预算、平台、受众、创意、着陆页和复盘条件。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先明确业务目标、目标 CPA/ROAS、预算边界、转化动作、归因方式和学习期预期。",

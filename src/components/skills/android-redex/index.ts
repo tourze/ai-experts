@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -37,9 +36,6 @@ export const androidRedexSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 ReDex 对 Android APK 做字节码优化、pass 配置和后处理集成，同时控制反射失效、签名对齐和运行时回归风险。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "根据用户意图选择路径：安装、pass 选择、基本集成、优化问题排查或 pass 原理解释。",

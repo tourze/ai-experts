@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -51,9 +50,6 @@ export const phpGeneratorsMemorySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 PHP `yield`、`Generator`、`yield from` 和 `iterable` 把大文件、分页 API、CSV 和导出流水线改成流式处理，降低峰值内存。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认内存问题是否来自全量数组、一次性读取大文件、fetchAll、range 或上游 API 全量返回。",

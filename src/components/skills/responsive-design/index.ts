@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -71,9 +70,6 @@ export const responsiveDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计移动优先、内容驱动断点、container queries、流式字号、图片 srcset/sizes 和可访问操作路径的响应式布局。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认窄屏核心路径、内容长度、触控目标、图片 / 表格 / 媒体和容器边界。",

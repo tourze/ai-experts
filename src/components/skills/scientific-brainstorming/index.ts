@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -67,9 +66,6 @@ export const scientificBrainstormingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "围绕研究问题做协作式科学脑暴，生成跨学科、可验证的候选方向，并收敛到下一步实验或文献动作。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认研究目标、已有证据、方法约束、用户已判断过的方向和不可触碰边界。",

@@ -6,7 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -58,9 +57,6 @@ export const helmChartScaffoldingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "创建、重构或验证 Helm Chart，建立 Chart.yaml、values.yaml、templates、helpers、依赖、校验和多环境 values 分层。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认服务类型、部署环境、镜像、网络、资源、安全、依赖项和是否需要从 Kubernetes manifest 收敛为 Chart。",

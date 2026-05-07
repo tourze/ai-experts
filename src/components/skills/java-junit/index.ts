@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -62,9 +61,6 @@ export const javaJunitSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 Java 代码编写或审查 JUnit 5 测试，优先小范围单元测试，并在需要时使用参数化测试、Mockito、assertAll 和 Awaitility。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先判断测试层级：纯业务类直接 new，Web/Data/Spring 切片测试限定范围，只有端到端集成才用 `@SpringBootTest`。",

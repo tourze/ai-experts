@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -69,9 +68,6 @@ export const uvPackageManagerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 uv 统一 Python 项目的解释器、虚拟环境、依赖声明、lockfile、测试执行和 CI 可复现安装。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认项目边界、目标 Python 版本和是否已有 `pyproject.toml` / `uv.lock`；新项目可用 `uv init .` 起步。",

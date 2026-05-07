@@ -273,10 +273,13 @@ describe("component source conventions", () => {
   });
 
   test("skill index metadata definitions stay normalized", () => {
-    for (const skillSourceFile of collectFiles(
+    const skillIndexFiles = collectFiles(
       join(repoRoot, "src/components/skills"),
       (file) => file.endsWith("index.ts") && !file.split(/[\\/]/).includes("scripts"),
-    )) {
+    );
+    const goalDefinitionFiles: string[] = [];
+
+    for (const skillSourceFile of skillIndexFiles) {
       const source = readFileSync(skillSourceFile, "utf-8");
       assert.match(source, /\n\s*useCases:\s*\[/, `${skillSourceFile} should define useCases`);
       assert.match(source, /\n\s*constraints:\s*\[/, `${skillSourceFile} should define constraints`);
@@ -288,6 +291,24 @@ describe("component source conventions", () => {
           source,
           /\n\s*(?:goal|workflow|outputs):\s*defineSkill(?:Goal|Workflow|Outputs)\(\{/,
           `${skillSourceFile} should define structured skill content when it omits SKILL.body.md`,
+        );
+      }
+      if (/\n\s*goal:\s*defineSkillGoal\(\{/.test(source)) {
+        goalDefinitionFiles.push(skillSourceFile);
+        assert.doesNotMatch(
+          source,
+          /goal:\s*defineSkillGoal\(\{\s*body:/,
+          `${skillSourceFile} goal should not be a default route-style body; move route text to description/useCases`,
+        );
+        assert.match(
+          source,
+          /goal:\s*defineSkillGoal\(\{\s*title:\s*["'`][^"'`]+["'`]/,
+          `${skillSourceFile} goal must use a specific custom title such as 完成条件`,
+        );
+        assert.doesNotMatch(
+          source,
+          /goal:\s*defineSkillGoal\(\{\s*title:\s*(?:"目标"|'目标'|`目标`)/,
+          `${skillSourceFile} goal title must not be the generic 目标 heading`,
         );
       }
       assert.doesNotMatch(
@@ -343,5 +364,10 @@ describe("component source conventions", () => {
         );
       }
     }
+
+    assert.ok(
+      goalDefinitionFiles.length <= 10,
+      `goal is a rare field for non-routing completion contracts; found ${goalDefinitionFiles.length}: ${goalDefinitionFiles.join(", ")}`,
+    );
   });
 });

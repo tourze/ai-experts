@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -46,9 +45,6 @@ export const errorHandlingPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把错误按验证、业务、外部系统和未知故障分层，设计可传播、可诊断、可恢复且不泄漏内部细节的错误处理合同。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先列出调用边界、外部依赖、用户可见接口和批处理单位，识别每类错误的责任方。",

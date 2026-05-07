@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -75,9 +74,6 @@ export const vueExpertJsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用纯 JavaScript 编写 Vue 3 `<script setup>`、composable、Pinia store、JSDoc 类型契约和 Vite ESM 代码。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认项目保持 JavaScript，不引入 TS-only 语法，再识别组件、composable、store 或 Vite 配置边界。",

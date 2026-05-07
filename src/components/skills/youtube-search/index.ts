@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -55,9 +54,6 @@ export const youtubeSearchSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "按关键词搜索 YouTube 视频，返回可筛选的候选清单，并明确 flat search 字段缺失、排序和近 N 天过滤边界。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先把查询词收窄到主题本身，不把分析诉求混进搜索词；已有单条视频链接且要总结时转 youtube-analysis。",

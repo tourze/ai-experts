@@ -3,7 +3,6 @@ import {
   KnownTool,
   Platform,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillParameter,
   defineSkillWorkflow,
@@ -23,9 +22,6 @@ export const speckitAnalyzeSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "输出一份**只读**分析报告，不修改任何文件；优先发现会导致返工或错误实现的问题。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       `前置检查：确认 \`.specify/scripts/check-prerequisites.mjs\` 存在。

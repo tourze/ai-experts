@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -66,9 +65,6 @@ export const androidApkAuditSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "在授权边界内对 Android APK 做 Manifest、JADX / smali、数据流和动态验证闭环审计，输出可复核的移动安全发现。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先记录授权范围、APK 哈希、包名、版本、minSdk / targetSdk 和工具可用性；命令细节读取 `audit-runbook`。",

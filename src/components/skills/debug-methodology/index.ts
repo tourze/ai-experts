@@ -1,7 +1,6 @@
 import {
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
   InvocationPolicy,
@@ -54,9 +53,6 @@ export const debugMethodologySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用六步调试流程把 bug、崩溃、间歇性失败和性能异常收敛到可复现、可验证、可回归测试的根因修复。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先用一句话写下用户可观察到的问题和期望/实际差异；必要时调用 debug-checklist 生成六步骨架。",

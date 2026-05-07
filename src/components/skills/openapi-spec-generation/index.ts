@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -45,9 +44,6 @@ export const openapiSpecGenerationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "创建、维护和校验 OpenAPI 3.1 规范，覆盖路径、参数、认证、响应、错误模型、共享 schema、示例和代码优先生成流程。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认目标版本、服务器地址、认证方式、路径操作、错误模型和是否需要 SDK / mock / 契约测试。",

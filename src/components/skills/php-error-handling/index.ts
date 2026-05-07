@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -59,9 +58,6 @@ export const phpErrorHandlingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计 PHP 异常层级、输入校验边界、用户错误映射、外部依赖包装和批量部分失败治理。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先划分验证错误、业务规则错误、外部依赖错误和系统故障，不在全局 catch 里吞掉未知异常。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -51,9 +50,6 @@ export const techDebtSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把技术债按类型、影响、风险和工作量量化排序，并转成可并入迭代的治理路线图。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先收集债项并按代码、架构、测试、依赖、文档、基础设施分类；债项多时先按模块或领域分组。",

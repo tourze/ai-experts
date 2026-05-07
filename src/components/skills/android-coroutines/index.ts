@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -53,9 +52,6 @@ export const androidCoroutinesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "在 Android 中实现或审查 Kotlin Coroutines、Flow、生命周期收集、取消传播、异常处理和可测试 dispatcher 边界。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认协程运行位置：ViewModel、Repository、DataSource、Worker、Application scope 或 UI 生命周期。",

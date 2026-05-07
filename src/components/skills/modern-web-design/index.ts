@@ -6,7 +6,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -92,9 +91,6 @@ export const modernWebDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为现代 Web 界面选择视觉风格、CSS 特征、字体色彩网格动效、AI 图像 prompt、性能预算和可访问性约束。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先把抽象 brief 转成一句视觉方向定义，再用 styles-catalog 找候选风格。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -57,9 +56,6 @@ export const runningDecisionProcessesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把模糊争论转成有问题定义、备选项、标准、角色、截止时间和复盘条件的决策流程。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先写清决策问题、影响范围、不可逆程度、deadline 和不决策的代价。",

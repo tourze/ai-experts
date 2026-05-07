@@ -3,7 +3,6 @@ import {
   KnownTool,
   Platform,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -22,9 +21,6 @@ export const speckitQuizmeSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "不是补定义，而是挑战逻辑：找出“看起来可行、上线会出事”的地方。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "读取当前 `spec.md`（若有 `plan.md` 也读取）。",

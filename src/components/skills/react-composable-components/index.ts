@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -58,9 +57,6 @@ export const reactComposableComponentsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把臃肿 React 组件拆成透明、可组合、可扩展的 UI 原语和局部 compound components。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先标出组件职责、状态来源、渲染分支、布局边界和复用场景；过浅重复不急着抽象。",

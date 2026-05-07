@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -40,9 +39,6 @@ export const owaspAuthDataAuditSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "审计认证会话、密钥/敏感数据和批量赋值风险，确认攻击路径、控制缺口和修复优先级。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先按触发信号路由：token/JWT/session/cookie/OAuth 为认证会话，secret/key/password/PII/process.env 为密钥管理，assign/bind/updateAll/ORM save 为批量赋值。",

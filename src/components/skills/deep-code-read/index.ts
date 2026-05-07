@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -40,9 +39,6 @@ export const deepCodeReadSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "只读深度理解陌生代码库，并通过 A/B/C 闭卷验证把代码库知识沉淀为可复用、可问答验收的 skill。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认源码版本、分支/tag、输出目录和只读边界；执行前读取 workflow reference。",

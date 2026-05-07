@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -60,9 +59,6 @@ export const researchNoteWrapSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把当前调研或分析会话压成高密度 Markdown 结论笔记，经主要问题和核心结论双步确认后再落盘。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先决定范围：默认 current-session，只有用户显式给出“今天 + 主题”才走 today-topic-synthesis。",

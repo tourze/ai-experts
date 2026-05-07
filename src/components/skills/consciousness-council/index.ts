@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -61,9 +60,6 @@ export const consciousnessCouncilSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用角色议会或六顶思考帽制造有效认知张力，暴露高不确定性决策中的风险、盲点和可执行路径。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先判断模式：用户要专家多视角、council 或角色冲突时用角色议会；要六顶帽子、复盘或团队分歧时用六顶思考帽。",

@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -60,9 +59,6 @@ export const archLinuxTriageSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "按 Arch Linux 的滚动升级和包管理约束排障，先保留系统、内核、pacman 与 systemd 证据，再决定修复动作。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先采样 `cat /etc/os-release`、`uname -a`、`systemctl --failed`、`journalctl -b -p err..alert` 和 `/var/log/pacman.log`。",

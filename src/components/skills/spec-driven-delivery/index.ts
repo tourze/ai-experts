@@ -4,7 +4,6 @@ import {
   Platform,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -28,9 +27,6 @@ export const specDrivenDeliverySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 Specify、Plan、Act、Review、Vault 五阶段把需求、实现、验证和沉淀串成可追踪交付闭环。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "Specify：按 Value、Scope、Acceptance、Boundaries、Risk 各 0/1/2 评分；低于 9 分先澄清，不进入 Plan。",

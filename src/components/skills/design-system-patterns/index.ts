@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -68,9 +67,6 @@ export const designSystemPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "建立或审查设计令牌、主题系统、组件 API 和跨会话设计系统文档，让 Figma、代码和组件库共享同一套语义。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先审计现有颜色、字号、间距、圆角、阴影、组件变体和硬编码值，确认真实业务页面。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -58,9 +57,6 @@ export const iosBinaryAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "提取并分析 iOS IPA / Mach-O / framework，建立 Info.plist、entitlements、类声明、第三方库和关键调用链的证据链。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认 IPA 是否可解包、主 Mach-O 路径、目标架构和 FairPlay 加密状态；命令细节读取 `analysis-runbook`。",

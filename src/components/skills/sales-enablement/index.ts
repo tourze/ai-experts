@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -63,9 +62,6 @@ export const salesEnablementSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为具体买家角色和购买阶段创建销售材料，包括 sales deck、one-pager、异议处理、Demo 脚本、ROI 计算器、买家画像和提案。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先锁定买家角色、行业、购买阶段、业务结果和销售使用场景。",

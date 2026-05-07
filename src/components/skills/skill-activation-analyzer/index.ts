@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -46,9 +45,6 @@ export const skillActivationAnalyzerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "诊断 skill 命中、漏触发、误触发、多 skill 冲突和 description 质量问题，给出可验证的路由修复建议。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先选择模式：单次诊断、冲突检测、健康度评估或 description 静态文本审查。",

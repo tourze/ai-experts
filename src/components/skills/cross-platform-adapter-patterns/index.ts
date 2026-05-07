@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -44,9 +43,6 @@ export const crossPlatformAdapterPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把跨平台差异收敛到稳定 adapter 边界，让共享业务逻辑不依赖平台原语。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先列出需要跨平台支持的能力、目标平台、差异点和最低可接受降级行为。",

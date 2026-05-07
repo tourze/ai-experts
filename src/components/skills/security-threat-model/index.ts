@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -44,9 +43,6 @@ export const securityThreatModelSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "基于仓库证据识别资产、边界、入口和真实攻击路径，产出可落地的 STRIDE 威胁模型和缓解需求。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认分析范围、仓库证据、关键假设和缺失上下文；上下文不足时先问 1 到 3 个高价值问题。",

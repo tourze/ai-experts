@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -53,9 +52,6 @@ export const gitlabCiPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计、优化或排查 GitLab CI/CD 流水线，覆盖 stages、needs、rules、cache、artifacts、runner、凭据和生产部署门禁。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认流水线目标、runner 类型、分支策略、制品生命周期、部署环境和失败后要保留的证据。",

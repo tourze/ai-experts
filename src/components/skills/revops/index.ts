@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -64,9 +63,6 @@ export const revopsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计或诊断收入运营体系，把线索生命周期、评分、MQL/SQL、路由、SLA、Pipeline、CRM 自动化和数据治理对齐到统一收入引擎。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先定义线索生命周期：Subscriber、Lead、MQL、SQL、Opportunity、Customer、Evangelist，以及每阶段客观进入标准。",

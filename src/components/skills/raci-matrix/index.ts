@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -50,9 +49,6 @@ export const raciMatrixSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把任务、决策和角色整理成 RACI 责任矩阵，消除无人负责、多人审批和协作过载的问题。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先列出需要明确职责的任务、决策或流程节点，并确认参与角色而不是具体人名。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -87,9 +86,6 @@ export const testingStrategySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为模块、接口或功能制定风险驱动测试计划，明确测试层级、关键路径、覆盖目标、质量门和自动化投入边界。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先识别业务关键路径、失败路径、边界条件、安全边界、现有覆盖缺口和不值得自动化的区域。",

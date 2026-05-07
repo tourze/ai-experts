@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -61,9 +60,6 @@ export const createPrdSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "撰写或重构 PRD、功能规格说明和需求文档，把问题、目标、用户、方案、详细需求、边界、风险、发布和数据监控固化为开发事实源。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先写背景与问题、目标与成功指标、用户与场景、方案概述、详细需求；轻量 PRD 至少覆盖 1-5 段。",

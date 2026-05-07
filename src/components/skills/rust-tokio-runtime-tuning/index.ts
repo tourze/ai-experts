@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -46,9 +45,6 @@ export const rustTokioRuntimeTuningSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "调优 Tokio runtime 的 worker、blocking、current_thread、block_on 桥接和 metrics / tokio-console 观测配置。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认服务类型、部署资源、阻塞操作比例、runtime 生命周期和观测数据。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -65,9 +64,6 @@ export const uxHeuristicsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用启发式原则诊断界面和流程可用性问题，输出带证据、严重级别和修复顺序的可执行审计结果。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先明确任务目标、用户上下文、阻塞行为和要评估的页面/流程/组件范围。",

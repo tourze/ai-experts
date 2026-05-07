@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -43,9 +42,6 @@ export const customerJourneyMapSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把目标 persona 的完整体验链路拆成阶段、触点、情绪阻力、指标和机会点，定位最值得改进的阻塞。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认 persona、核心任务、旅程起点/终点和证据来源；访谈或问卷不足时按需读取 `mom-test` / `designing-surveys` references。",

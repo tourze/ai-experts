@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -60,9 +59,6 @@ export const benchmarkRunnerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计或解读可复现的基准测试，比较候选实现的延迟、吞吐、内存、准确率、成本或冷启动表现。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先定义 benchmark scope：候选版本、配置边界、决策问题和 2-4 个核心指标。",

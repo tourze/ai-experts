@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -44,9 +43,6 @@ export const webmanWebsocketPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 Webman WebSocket 设计服务端进程、连接生命周期、频道广播、心跳和客户端重连策略。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认服务端监听地址、worker 数量、频道模型、认证方式、心跳和重连要求。",

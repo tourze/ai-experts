@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -60,9 +59,6 @@ export const swiftuiPerformanceAuditSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "定位 SwiftUI 卡顿、掉帧、高 CPU、内存峰值或重渲染根因，并给出可复测的代码和 Instruments 修复路径。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先审查列表、动画和高频刷新区域，定位身份稳定性、状态扇出、主线程重活和布局链复杂度。",

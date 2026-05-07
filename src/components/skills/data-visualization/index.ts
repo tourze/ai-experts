@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -78,9 +77,6 @@ export const dataVisualizationSkill = defineSkill({
   invocation: InvocationPolicy.ModelOnly,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "先从数据关系和表达问题反推图表类型，再给出清晰、可读、可访问的可视化方案或代码方向。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先判断主问题：趋势、对比、构成、分布、相关或流转；每张图只回答一个主问题。",

@@ -3,7 +3,6 @@ import {
   KnownTool,
   Platform,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillParameter,
   defineSkillWorkflow,
@@ -25,9 +24,6 @@ export const speckitBaselineSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "基于现有代码生成 `spec.md` 与需求检查清单，便于后续规范化演进。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "确保 `.specify/scripts` 与 `.specify/templates` 存在；若缺失，运行本 skill 自带的 bootstrap procedure。",

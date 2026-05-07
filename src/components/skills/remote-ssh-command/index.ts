@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -42,9 +41,6 @@ export const remoteSshCommandSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "通过 `~/.host/<host>.json` 保存密码认证 SSH 配置，并把远端运维命令经 stdin 交给 procedure 执行、记录审计历史。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先读取或创建 `~/.host/<host>.json`，字段包含 `host`、`port`、`user`、`timeoutSeconds` 和 `auth.type=password`。",

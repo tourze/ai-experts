@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -52,9 +51,6 @@ export const orgCanvasSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用组织画布把战略、产品、市场和组织结构放到同一张逻辑图里，找出不一致处并转成组织设计动作。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先定义中心命题：企业定位、当前阶段、业务边界和这次组织设计要解决的问题。",

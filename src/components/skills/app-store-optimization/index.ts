@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -65,9 +64,6 @@ export const appStoreOptimizationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 App Store / Google Play 做 ASO 元数据、关键词、竞品、评论、评分、本地化、A/B 测试、上线检查和版本更新文案优化。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认平台、市场、应用类别、目标用户、当前元数据、关键词、评分评论、竞品和可用转化数据。",

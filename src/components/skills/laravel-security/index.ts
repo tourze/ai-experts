@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -75,9 +74,6 @@ export const laravelSecuritySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 Laravel 入口补认证授权、Policy、FormRequest、上传校验、限流、安全头、密钥管理、日志脱敏和生产配置基线。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先列出受保护路由、用户输入、文件上传、令牌、Webhook、高风险入口和目标部署环境。",

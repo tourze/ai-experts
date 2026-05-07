@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -82,9 +81,6 @@ export const goCliSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计和实现 Go CLI 的 Cobra command tree、配置绑定、信号处理、退出码、版本注入和发布构建约定。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认 CLI 的入口、subcommand 层级、配置来源、环境变量前缀、退出码和发布方式。",

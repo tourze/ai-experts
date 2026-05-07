@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -55,9 +54,6 @@ export const competitiveIntelligenceSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把公开事实、合理推断和内部假设转成可行动的竞品情报、battlecard、差距分析或多框架竞争态势判断。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先明确目的：赢单、路线图决策、定位更新或市场监控，并确定时间窗口和目标受众。",

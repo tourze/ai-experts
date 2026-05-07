@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -48,9 +47,6 @@ export const tauriIpcPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 Tauri v2 设计结构化错误、事件、Channel<T>、多窗口路由、二进制传输和批量命令等高级 IPC 模式。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先判断通信模式：`invoke()` 请求响应、`emit()` 事件广播、`Channel<T>` 高频流或二进制传输。",

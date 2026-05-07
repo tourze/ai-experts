@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -61,9 +60,6 @@ export const rustTypeDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计 Rust 泛型、trait object、静态 / 动态分发和 typestate，让非法状态尽量在编译期暴露。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认是否真的需要多态、类型是否编译期确定、是否存在阶段化状态机。",

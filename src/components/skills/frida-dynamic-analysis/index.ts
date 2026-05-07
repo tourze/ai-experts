@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -56,9 +55,6 @@ export const fridaDynamicAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 Frida 对 Android、iOS 或 native 目标做运行时 hook、trace、参数/返回值修改和自适应 bypass。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先静态定位 hook 点：包名、PID、模块名、导出符号、Java 类/方法或 ObjC selector。",

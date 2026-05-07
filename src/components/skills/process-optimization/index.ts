@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -57,9 +56,6 @@ export const processOptimizationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "从现状流程、等待/返工、瓶颈和指标入手，设计更短、更稳、更可验证的未来流程。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先画出现状流程、参与角色、输入输出、等待点、返工点和当前指标。",

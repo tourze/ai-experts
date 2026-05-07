@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -60,9 +59,6 @@ export const goStructsInterfacesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计 Go struct、interface、receiver、泛型约束和组合边界，让 API 小、可测试且零值可用。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认结构体所有权、零值语义、消费方接口、receiver 一致性和泛型约束。",

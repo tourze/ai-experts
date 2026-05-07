@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -58,9 +57,6 @@ export const comparativeAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把多个方案或工具放到同一决策场景和维度矩阵里，用证据给出条件化选择建议。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先澄清对比目标、用户决策场景、约束和必须下判断的问题。",

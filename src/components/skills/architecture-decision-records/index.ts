@@ -4,7 +4,6 @@ import {
   Platform,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -69,9 +68,6 @@ export const architectureDecisionRecordsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把架构选择、系统边界、接口契约和弹性策略写成可审查、可追溯、可回滚的决策记录。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先写 ADR 三段：Context、Decision、Consequences，并列出未选方案和放弃理由。",

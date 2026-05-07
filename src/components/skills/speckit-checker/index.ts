@@ -3,7 +3,6 @@ import {
   KnownTool,
   Platform,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillParameter,
   defineSkillWorkflow,
@@ -23,10 +22,6 @@ export const speckitCheckerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    title: "任务",
-    body: "识别当前项目栈并运行可用的 lint/type/security 检查，输出按优先级排序的问题列表。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "检测项目配置：`package.json`、`pyproject.toml`、`go.mod`、`Cargo.toml`、`pom.xml`。",

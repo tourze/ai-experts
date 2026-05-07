@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -46,9 +45,6 @@ export const chromeDevtoolsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 Chrome DevTools 的页面、控制台、网络、性能、内存和 Lighthouse 证据调试 Web 页面问题。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "交互前先 `take_snapshot` 获取最新页面结构和 uid；导航或 DOM 更新后重新取 snapshot。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -68,9 +67,6 @@ export const pgsqlPartitioningSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计或验证 PostgreSQL 声明式分区，让大表在写入、查询、归档和分区生命周期上可控。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认数据增长模式、主要查询谓词、归档窗口和分区键；时序数据默认优先 RANGE 分区。",

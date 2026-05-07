@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -63,9 +62,6 @@ export const pricingStrategySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计价格、套餐、免费边界和升级路径，使价值捕获、转化效率和市场定位保持一致。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "确认目标客群、购买流程、替代方案、核心价值和成功指标。",

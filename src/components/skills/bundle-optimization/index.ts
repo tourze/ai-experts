@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -59,9 +58,6 @@ export const bundleOptimizationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "减小前端初始 bundle，治理 barrel imports、重型组件同步导入、tree shaking、动态导入、第三方脚本和意图预加载。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先用 bundle analyzer 量化最大模块、入口 chunk、初始 JS、gzip/brotli 和 parse/execute 成本。",

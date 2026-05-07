@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -62,9 +61,6 @@ export const windowsKernelSecuritySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "分析 Windows 内核对象、驱动入口、IOCTL 信任边界、回调注册、PatchGuard/DSE/HVCI/VBS 约束和实验回滚路径。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先采集静态分析、日志、符号和环境证据，再决定是否实验；真实主机上不得盲改驱动或内核状态。",

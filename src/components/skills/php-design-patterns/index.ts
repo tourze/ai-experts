@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -67,9 +66,6 @@ export const phpDesignPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "拆分 PHP 控制器、Service、Repository、DTO 和 Value Object 边界，减少静态 Facade、服务定位器和裸数组跨层传递。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先定位业务逻辑散落位置、依赖创建方式、跨层数据形态和测试替身边界。",

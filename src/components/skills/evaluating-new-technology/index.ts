@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -52,9 +51,6 @@ export const evaluatingNewTechnologySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "围绕业务问题、成熟度、集成成本、风险和退出路径评估新技术或供应商，形成可试点的选型建议。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先定义要解决的业务问题、成功标准、约束和不可接受风险。",

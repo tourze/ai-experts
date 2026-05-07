@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -64,9 +63,6 @@ export const windowsUiAutomationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "以只读优先和可审计为默认边界，设计 Windows UIA/Win32 自动化的定位、等待、输入和安全策略。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先判断权限层级：read-only、click、input 或高风险复现；默认从只读窗口/元素查询开始。",

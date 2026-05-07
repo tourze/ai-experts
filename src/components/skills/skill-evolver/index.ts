@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -64,9 +63,6 @@ export const skillEvolverSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把参考 skill 的高价值模式迁移到目标 skill，基于证据做对比、渐进注入和可回滚验证。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先读取 migration-protocol，确认目标 A、参考 B、模式：compare-only、sandbox 或 write。",

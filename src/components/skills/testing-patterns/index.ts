@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -55,9 +54,6 @@ export const testingPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为语言无关测试设计提供 AAA / FIRST、行为合同、fixture、mock/stub/fake、参数化和命名约定的通用基线。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认测试目标是行为合同、边界条件、失败路径还是回归保护，不从内部实现反推测试。",

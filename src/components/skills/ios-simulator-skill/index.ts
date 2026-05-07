@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -50,9 +49,6 @@ export const iosSimulatorSkillSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用登记的 iOS Simulator procedures 完成模拟器选择、启动、构建运行、语义化界面操作、截图、日志和回归证据采集。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先跑 `procedure ios-simulator-skill-sim-health-check`，确认 Xcode、`xcrun simctl`、Node.js 和可用 runtime。",

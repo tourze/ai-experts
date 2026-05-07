@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -52,9 +51,6 @@ export const startupIcpDefinerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把“谁最值得卖”拆成公司画像、买方角色、使用者角色、触发事件和排除条件，让销售、产品和市场动作可聚焦。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先收集现有客户、赢单/输单、销售管道、使用数据和创始人假设；资料不足时说明置信度。",

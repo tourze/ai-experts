@@ -5,7 +5,6 @@ import {
   defineAsset,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -48,9 +47,6 @@ export const screenshotSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "截取桌面、应用窗口、活动窗口或指定区域，并按平台权限、目标类型和输出路径选择正确的截图 procedure。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认目标平台、截图对象、输出路径规则和截图用途；浏览器/Figma 等已有专用截图时优先使用专用工具。",

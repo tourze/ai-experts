@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -60,9 +59,6 @@ export const portersFiveForcesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用五种行业结构力量判断行业吸引力、利润空间和可改善的战略杠杆。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先界定行业边界、客户群、地理范围、时间尺度和分析对象。",

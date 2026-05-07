@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -65,9 +64,6 @@ export const crossPollinationEngineSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把当前行业问题改写成核心任务，从远场行业提取底层机制，并转译成当前约束下可验证的最小实验。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先把问题改写成核心任务，去掉行业行话、既有方案和表面诉求。",

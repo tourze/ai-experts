@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -47,9 +46,6 @@ export const rustProcMacroPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "开发 Rust derive / attribute 过程宏，并让 syn/quote 解析、Span 错误、trybuild 测试和辅助 crate 边界可维护。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认宏类型、输入语法、生成代码边界、错误路径和测试策略。",

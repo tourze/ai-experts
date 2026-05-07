@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -65,9 +64,6 @@ export const similaritySearchPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计语义检索、向量检索、hybrid search、metadata filters、reranking 和多租户检索架构。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确定检索目标、数据规模、写入/更新频率、召回要求、延迟预算、租户隔离和成本约束。",

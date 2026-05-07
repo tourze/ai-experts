@@ -4,7 +4,6 @@ import {
   Platform,
   defineSkill,
   defineAntiPattern,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -48,9 +47,6 @@ export const benchmarkResultAnalyzerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "揭盲并分析 benchmark 或 A/B 评测结果，解释胜负因果、责任层和最可能改变下一轮结果的改进项。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先读取 comparison、grading 或 benchmark 汇总，记录原始胜负判断，不重新替代 comparator 判胜。",

@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -50,9 +49,6 @@ export const reactNativeTurbomoduleSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "按 React Native New Architecture 设计 typed Spec、codegen、Android/iOS 原生实现和 JS 消费层封装。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认模块能力、同步/异步边界、平台支持、错误模型、数据结构和兼容要求。",

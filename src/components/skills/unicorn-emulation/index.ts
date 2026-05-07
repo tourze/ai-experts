@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -50,9 +49,6 @@ export const unicornEmulationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 Unicorn 离线模拟执行目标函数，按需补映射、stub 和 hook，还原算法行为而不是运行完整程序。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先静态确认架构、基址、目标函数范围、调用约定、参数位置、返回寄存器和外部依赖。",

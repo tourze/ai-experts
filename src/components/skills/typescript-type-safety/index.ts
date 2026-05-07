@@ -2,7 +2,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
   InvocationPolicy,
@@ -52,9 +51,6 @@ export const typescriptTypeSafetySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "定位 TypeScript 编译错误，收敛 `any`、泛型、类型守卫、条件类型和路由/API/数据库边界合同。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先获取完整 `tsc --noEmit` 输出；已有输出文件时用 `extract-ts-errors` 归组错误。",

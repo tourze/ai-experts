@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -52,9 +51,6 @@ export const memorySafetyPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 C/C++ 资源和指针建立清晰 ownership、borrowing、RAII、cleanup 与异常安全边界，减少泄漏、双重释放和悬空引用。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先为每个资源回答谁创建、谁释放、何时释放，区分 owner、observer 和 borrowed view。",

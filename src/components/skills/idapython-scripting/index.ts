@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -49,9 +48,6 @@ export const idapythonScriptingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "编写 IDAPython 或 IDALib 脚本批量遍历函数、搜索字节、追踪交叉引用、调用 Hex-Rays 反编译和导出分析结果。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认 IDA 版本、是否有 Hex-Rays、是否处于调试态，以及脚本运行在 GUI IDA 还是 IDALib。",

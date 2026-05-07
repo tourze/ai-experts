@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -47,9 +46,6 @@ export const skillEvalGraderSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "根据 transcript、outputs 和 expectations 给 skill/eval 执行判 PASS/FAIL，并指出 assertion 区分度和覆盖缺口。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先完整读取 transcript，记录执行错误、跳过项、自述不确定性和声称已验证的内容。",

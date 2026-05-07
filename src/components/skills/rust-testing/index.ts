@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -68,9 +67,6 @@ export const rustTestingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "为 Rust 代码编写和重构单元测试、集成测试、文档测试、snapshot 测试和测试目录组织。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认被测边界是内部逻辑、公共 API、文档示例还是复杂输出。",

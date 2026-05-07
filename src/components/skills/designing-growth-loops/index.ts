@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -42,9 +41,6 @@ export const designingGrowthLoopsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把一次性获客动作改造成可重复的增长循环，并明确循环成立的价值、反馈、阻尼和实验验证方式。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认产品的核心用户价值、留存基础、自然传播时刻和当前增长阶段；留存不足时先回到产品价值修复。",

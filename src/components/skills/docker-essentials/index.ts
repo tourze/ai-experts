@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -44,9 +43,6 @@ export const dockerEssentialsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用 Docker 构建、运行、排障和清理容器/镜像/网络/卷，优先保留证据并避免破坏共享资源。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认容器名、镜像标签、端口映射、卷挂载、网络、环境变量和目标平台。",

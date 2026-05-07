@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -51,9 +50,6 @@ export const gitAdvancedWorkflowsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "安全执行 rebase、cherry-pick、bisect、worktree 和 reflog 恢复，优先保护当前工作树和共享历史。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "动手前先跑 `git status --short`、`git branch --show-current`，必要时补 `git fetch origin` 和远端跟踪检查。",

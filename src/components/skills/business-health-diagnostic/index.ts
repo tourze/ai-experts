@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -55,9 +54,6 @@ export const businessHealthDiagnosticSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用增长、留存、效率和现金四象限扫描业务健康度，定位最弱环节并收敛到最多 3 个优先行动。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认业务类型、阶段、时间窗口、可用指标和对标基准。",

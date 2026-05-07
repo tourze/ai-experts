@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -64,9 +63,6 @@ export const symfonyVotersSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计 Symfony Voter、`#[IsGranted]`、`denyAccessUnlessGranted()` 和 Twig `is_granted()` 的统一授权决策矩阵。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先画清操作者、资源、动作和入口，默认拒绝匿名、空 subject、不支持属性和错误资源类型。",

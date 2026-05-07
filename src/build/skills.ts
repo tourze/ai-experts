@@ -273,8 +273,11 @@ export function validateSkillGoal(skill: SkillDefinition): SkillGoalDefinition |
   if (!goal || typeof goal !== "object" || Array.isArray(goal)) {
     throw new Error(`Skill ${skill.id} goal must be a single object when defined`);
   }
-  if (goal.title !== undefined && (typeof goal.title !== "string" || goal.title.trim() === "")) {
-    throw new Error(`Skill ${skill.id} goal.title must be non-empty when defined`);
+  if (typeof goal.title !== "string" || goal.title.trim() === "") {
+    throw new Error(`Skill ${skill.id} goal.title must be a non-empty string`);
+  }
+  if (goal.title.trim() === "目标") {
+    throw new Error(`Skill ${skill.id} goal.title must be specific; use outputs or checklist for generic goals`);
   }
   if (typeof goal.body !== "string" || goal.body.trim() === "") {
     throw new Error(`Skill ${skill.id} goal.body must be a non-empty string`);
@@ -353,7 +356,7 @@ function renderUserInput(skill: SkillDefinition, platform: PlatformType): string
 function renderSkillGoal(skill: SkillDefinition): string {
   const goal = validateSkillGoal(skill);
   if (!goal) return "";
-  return `## ${goal.title?.trim() ?? "目标"}\n\n${goal.body.trim()}\n`;
+  return `## ${goal.title.trim()}\n\n${goal.body.trim()}\n`;
 }
 
 function renderSkillWorkflow(skill: SkillDefinition): string {
@@ -437,19 +440,19 @@ export function renderSkillMd(
   ].filter((section) => section.trim() !== "")
     .join("\n\n");
   const generatedBody = renderBodyWithGeneratedSections(skill, body);
-  return normalizeMarkdownBlankLines([
+  const sections = [
     renderSkillFrontmatter(skill, platform),
     `# ${skill.fullName}`,
-    "",
     renderUseCases(skill),
     renderConstraints(skill),
-    renderRelatedSkills(skill),
     renderUserInput(skill, platform),
     generatedBody,
+    renderRelatedSkills(skill),
     renderProcedureRegistry(skill, platform, proceduresById),
     renderReferenceMap(skill),
-    "",
-  ].join("\n"));
+  ].filter((section) => section.trim() !== "")
+    .map((section) => section.trimEnd());
+  return normalizeMarkdownBlankLines(sections.join("\n\n"));
 }
 
 function renderReferencesIndex(skill: SkillDefinition): string {

@@ -5,7 +5,6 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -60,9 +59,6 @@ export const goConcurrencyPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "设计 Go 并发中的 goroutine 生命周期、context 取消、errgroup 限流、worker pool、channel 和同步原语边界。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认任务所有者、取消路径、并发上限、结果收集和错误传播策略。",

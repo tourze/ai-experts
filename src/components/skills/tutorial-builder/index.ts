@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -84,9 +83,6 @@ export const tutorialBuilderSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "把主题、笔记、URL、论文或仓库材料组织成有来源支撑的教程学习包，包含 brief、证据、章节、视觉、练习和导出计划。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先建立 brief：topic、audience、learning_goal、language、material_tier 和 output_formats；字段合同读取 tutorial-package-contract。",

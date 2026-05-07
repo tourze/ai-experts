@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -52,9 +51,6 @@ export const webmanPluginDevelopmentSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "按 Webman 插件约定设计 Install.php、配置发布、autoload、进程声明和卸载清理。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认插件 vendor/package、Composer autoload、配置目录、进程需求和安装/卸载行为。",

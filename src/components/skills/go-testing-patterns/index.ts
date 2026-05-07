@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -95,9 +94,6 @@ export const goTestingPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "编写和重构 Go table-driven tests、集成测试 build tag、consumer-side mock、HTTP 测试和 testify 使用方式。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认测试层级、被测边界、是否并行、是否需要外部依赖和 mock 边界。",

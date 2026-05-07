@@ -5,7 +5,6 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -85,9 +84,6 @@ export const goCodeStyleSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "审查和重构 Go 代码风格，让函数主路径、参数对象、命名条件、注释和错误上下文保持清晰。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先识别函数职责、错误路径、参数列表、条件复杂度和注释噪声。",

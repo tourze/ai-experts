@@ -4,7 +4,6 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
-  defineSkillGoal,
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
@@ -56,9 +55,6 @@ export const grillMeSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  goal: defineSkillGoal({
-    body: "用逐步高压质询压实方案、设计或决策的目标、约束、风险、验证路径、负责人和发布边界。",
-  }),
   workflow: defineSkillWorkflow({
     steps: [
       "先确认要压力测试的具体方案和单一成功标准；问题本身不清时转 thinking-partner 收敛。",
