@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { existsSync, readFileSync, readdirSync, rmSync } from "node:fs";
+import { existsSync, readFileSync, rmSync } from "node:fs";
 import { join, relative } from "node:path";
 import type {
   AgentDefinition,
@@ -266,24 +266,10 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
         throw new Error(`Skill ${skill.id} references procedure ${procedureId} without skill ownership`);
       }
     }
-    const scriptsDir = join(sourceRoot, "scripts");
-    if (existsSync(scriptsDir)) {
-      const registeredEntries = new Set(
-        procedures
-          .filter((procedure) => (procedure.owners.skillIds ?? []).includes(skill.id))
-          .map((procedure) => toAbsolutePath(procedure.entry)),
+    if (existsSync(join(sourceRoot, "scripts"))) {
+      throw new Error(
+        `Skill ${skill.id} must move local scripts/ sources to src/components/procedures/sources/ and reference them through procedures`,
       );
-      for (const entry of readdirSync(scriptsDir, { withFileTypes: true })) {
-        const absoluteEntry = join(scriptsDir, entry.name);
-        if (entry.isFile() && entry.name.endsWith(".ts") && !registeredEntries.has(absoluteEntry)) {
-          const source = readFileSync(absoluteEntry, "utf-8");
-          if (source.startsWith("#!")) {
-            throw new Error(
-              `Skill ${skill.id} has an unregistered executable procedure source: ${relative(sourceRoot, absoluteEntry)}`,
-            );
-          }
-        }
-      }
     }
 
     const seenReferences = new Set<string>();

@@ -298,11 +298,19 @@ describe("component source conventions", () => {
   test("skill source does not keep legacy root package artifacts", () => {
     const skillRoot = join(repoRoot, "src/components/skills");
     const legacyRootArtifacts = new Set(["HOW_TO_USE.md", "sample_input.json", "expected_output.json"]);
+    const legacySkillScriptFiles = collectFiles(skillRoot, (file) =>
+      file.slice(skillRoot.length + 1).split(/[\\/]/).includes("scripts"),
+    );
     const rootArtifacts = collectFiles(skillRoot, (file) => {
       const parts = file.slice(skillRoot.length + 1).split(/[\\/]/);
       return parts.length === 2 && legacyRootArtifacts.has(parts[1]);
     });
 
+    assert.deepEqual(
+      legacySkillScriptFiles,
+      [],
+      "skill-local scripts/ directories should move to src/components/procedures/sources/ and be referenced through procedures",
+    );
     assert.deepEqual(
       rootArtifacts,
       [],
