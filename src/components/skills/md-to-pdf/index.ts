@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
   defineSkillOutputs,
   defineSkillWorkflow,
@@ -61,7 +62,7 @@ export const mdToPdfSkill = defineSkill({
   workflow: defineSkillWorkflow({
     steps: [
       "先确认源 `.md`、目标 `.pdf`、纸张格式、页边距、页眉页脚、CSS 和是否包含 Mermaid/数学公式。",
-      "先调用 `md-to-pdf-setup` 做依赖检查；需要排版细节时读取 README 和测试文档资源。",
+      "先调用 `md-to-pdf-setup` 做依赖检查；需要排版细节时读取 README 和示例文档资源。",
       "用 `md-to-pdf-md-to-pdf` 执行渲染；只有依赖缺失且用户接受降级时才使用无 Mermaid 或无数学公式路径。",
       "交付前抽查首尾页、目录、宽表格、长代码块、Mermaid、数学公式和分页位置。",
     ],
@@ -77,5 +78,15 @@ export const mdToPdfSkill = defineSkill({
     procedureUse(mdToPdfKatexRender),
     procedureUse(mdToPdfMdToPdf),
     procedureUse(mdToPdfSetup),
+  ],
+  references: [
+    defineReference({
+      id: "test-document",
+      source: new URL("./references/test-document.md", import.meta.url),
+      target: "references/test-document.md",
+      title: "Feature Test Document",
+      summary: "覆盖 Mermaid、数学公式、表格、代码块、脚注和分页的 Markdown 示例。",
+      loadWhen: "需要验证渲染管线或构造覆盖多种 Markdown 特性的样例输入时读取。",
+    }),
   ],
 });

@@ -673,6 +673,7 @@ function copyLooseSkillFiles(skill: SkillDefinition, skillRoot: string): void {
     "references",
     "assets",
     "evals",
+    "tests",
   ]);
   for (const entry of readdirSync(sourceDir, { withFileTypes: true })) {
     if (reserved.has(entry.name)) continue;

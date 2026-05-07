@@ -15,24 +15,21 @@ node scripts/md_to_pdf.mjs input.md output.pdf
 node scripts/md_to_pdf.mjs input.md output.pdf --format Letter --header-footer --landscape
 ```
 
-## Installation as a Claude Skill
+## Runtime Layout
 
-Copy the `md-to-pdf/` directory into your agent's skills folder:
+The generated skill directory is installed under the active agent skill root:
 
 ```text
 <skills-dir>/md-to-pdf/
 ├── SKILL.md
 ├── LICENSE.txt
 ├── README.md
-├── scripts/
-│   ├── md_to_pdf.mjs
-│   ├── katex_render.mjs
-│   └── setup.mjs
-└── tests/
-    └── test_document.md
+└── references/
+    ├── index.md
+    └── test-document.md
 ```
 
-The skill auto-triggers when Claude sees requests like "convert this markdown to PDF" or "export as PDF".
+Executable entrypoints are bundled in the platform-level `procedures.js`; use the procedure commands shown in `SKILL.md`.
 
 ## Rendering Pipeline
 
@@ -74,7 +71,7 @@ Do not assume these tools are pre-installed. Run `node scripts/setup.mjs` before
 ## Testing
 
 ```bash
-node scripts/md_to_pdf.mjs tests/test_document.md test_output.pdf --header-footer
+node scripts/md_to_pdf.mjs references/test-document.md test_output.pdf --header-footer
 ```
 
 The test document exercises all supported features: 4 Mermaid diagram types, inline + display math, tables, code blocks in 3 languages, footnotes, definition lists, blockquotes, and text formatting.

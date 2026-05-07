@@ -632,6 +632,13 @@ describe("component build integration", () => {
   test("generates clean script artifacts with valid runtime imports", () => {
     for (const platform of ["claude", "codex"]) {
       assert.equal(existsSync(join(tmpDistDir, platform, "scripts")), false);
+      assert.deepEqual(
+        collectFiles(join(tmpDistDir, platform, "skills"), (file) =>
+          file.slice(join(tmpDistDir, platform, "skills").length + 1).split(/[\\/]/).includes("tests"),
+        ),
+        [],
+        `${platform} skill dist should not include source-side tests/ directories`,
+      );
       assert.equal(
         collectFiles(join(tmpDistDir, platform, "skills"), (file) =>
           /[\\/]skills[\\/][^\\/]+[\\/]index\.js$/.test(file),
