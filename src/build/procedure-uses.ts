@@ -1,11 +1,13 @@
 import type {
   AgentDefinition,
+  Platform as PlatformType,
   ProcedureUseReference,
   SkillDefinition,
 } from "../components/sdk";
 
 export type ResolvedProcedureUse = {
   id: string;
+  platforms?: readonly PlatformType[];
   useId?: string;
   label?: string;
   when?: string;
@@ -37,6 +39,13 @@ export function resolveProcedureUse(procedureUse: ProcedureUseReference): Resolv
   if (typeof id !== "string" || id.trim() === "") {
     throw new Error("procedure reference id must be a non-empty string");
   }
+  const platforms = procedureUse.platforms;
+  if (
+    platforms !== undefined &&
+    (!Array.isArray(platforms) || platforms.length === 0 || platforms.some((platform) => typeof platform !== "string"))
+  ) {
+    throw new Error(`procedure reference ${id} platforms must be a non-empty platform array when provided`);
+  }
   const useId = validateOptionalNonEmptyString(id, "useId", procedureUse.useId);
   if (useId !== undefined && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(useId)) {
     throw new Error(`procedure reference ${id} useId must be a slug`);
@@ -60,6 +69,7 @@ export function resolveProcedureUse(procedureUse: ProcedureUseReference): Resolv
   }
   return {
     id,
+    platforms,
     useId,
     label,
     when,
@@ -77,4 +87,8 @@ export function resolveProcedureUses(
 
 export function listProcedureUses(component: Pick<SkillDefinition | AgentDefinition, "procedures">): ResolvedProcedureUse[] {
   return resolveProcedureUses(component.procedures);
+}
+
+export function procedureUseAppliesToPlatform(procedureUse: ResolvedProcedureUse, platform: PlatformType): boolean {
+  return !procedureUse.platforms || procedureUse.platforms.includes(platform);
 }

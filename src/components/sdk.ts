@@ -106,6 +106,7 @@ export type ProcedureUseDefinition<
   TResult extends object = object,
 > = {
   id: string;
+  platforms?: PlatformList;
   useId?: string;
   label?: string;
   when?: string;

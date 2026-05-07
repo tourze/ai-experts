@@ -166,6 +166,7 @@ export const typescriptTypeSafety = defineSkill({
 - agent 引用 skill 时 import skill definition 并读取 `.id`，不在引用处手写 skill id。
 - 低频或高风险流程用 `InvocationPolicy.ExplicitOnly`；构建器会映射到 Claude 与 Codex 的平台配置。
 - `InvocationPolicy.ModelOnly` 只用于 Claude-only skill；Codex 只能通过 `allow_implicit_invocation` 控制隐式触发，不能隐藏显式 `$skill` 调用。
+- 如果一个 Procedure 只支持部分平台，skill/agent 引用时必须用 `procedureUse(procedureDefinition, { platforms: [...] })` 明确声明引用平台，不能依赖生成器静默过滤。
 
 ## Agent
 

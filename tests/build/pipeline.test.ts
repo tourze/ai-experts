@@ -386,6 +386,42 @@ describe("build/pipeline modules", () => {
     };
     expect(() => validateRegistry(missingProcedureReferenceRegistry)).toThrow("references missing procedure");
 
+    const claudeOnlyProcedure = {
+      ...fixture.procedure,
+      platforms: [ComponentPlatform.Claude],
+    };
+    const unscopedClaudeOnlyProcedureUseRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      procedures: [claudeOnlyProcedure],
+    };
+    expect(() => validateRegistry(unscopedClaudeOnlyProcedureUseRegistry)).toThrow(
+      "skill fixture-skill references procedure fixture-procedure unavailable on platform(s): codex-cli",
+    );
+
+    const scopedClaudeOnlyProcedureUseRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      procedures: [claudeOnlyProcedure],
+      skills: [{
+        ...fixture.skill,
+        procedures: [defineProcedureUse({ id: fixture.procedure.id, platforms: [ComponentPlatform.Claude] })],
+      }],
+    };
+    expect(() => validateRegistry(scopedClaudeOnlyProcedureUseRegistry)).not.toThrow();
+
+    const unsupportedProcedureUsePlatformRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        platforms: [ComponentPlatform.Claude],
+        procedures: [defineProcedureUse({ id: fixture.procedure.id, platforms: [ComponentPlatform.Codex] })],
+      }],
+      agents: [{ ...fixture.agent, platforms: [ComponentPlatform.Claude] }],
+      hooks: [{ ...fixture.hook, platforms: [ComponentPlatform.Claude] }],
+    };
+    expect(() => validateRegistry(unsupportedProcedureUsePlatformRegistry)).toThrow(
+      "skill fixture-skill references procedure fixture-procedure for unsupported platform(s): codex-cli",
+    );
+
     const duplicateRelatedSkillRegistry: ComponentRegistry = {
       ...fixture.registry,
       skills: [{

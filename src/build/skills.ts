@@ -27,7 +27,7 @@ import {
   writeText,
   yamlScalar,
 } from "./core.ts";
-import { listProcedureUses } from "./procedure-uses.ts";
+import { listProcedureUses, procedureUseAppliesToPlatform } from "./procedure-uses.ts";
 import type { ResolvedProcedureUse } from "./procedure-uses.ts";
 import {
   renderMarkdownBulletList,
@@ -76,7 +76,9 @@ function renderProcedureRegistry(
   platform: PlatformType,
   proceduresById: ReadonlyMap<string, ProcedureDefinition>,
 ): string {
-  const procedureUses = listProcedureUses(skill).filter((procedureUse) => proceduresById.has(procedureUse.id));
+  const procedureUses = listProcedureUses(skill)
+    .filter((procedureUse) => procedureUseAppliesToPlatform(procedureUse, platform))
+    .filter((procedureUse) => proceduresById.has(procedureUse.id));
   if (procedureUses.length === 0) return "";
   const columns = ["Procedure", "用法", "何时调用", "调用目的", "参数", "返回值", "示例命令"];
   const header = `| ${columns.join(" | ")} |`;
@@ -571,10 +573,17 @@ function rewriteReferenceLocalLinks(
 
 function procedureByScriptTarget(
   skill: SkillDefinition,
+  platform: PlatformType,
   proceduresById: ReadonlyMap<string, ProcedureDefinition>,
 ): ReadonlyMap<string, ProcedureDefinition> {
   const procedures = new Map<string, ProcedureDefinition>();
+  const platformProcedureIds = new Set(
+    listProcedureUses(skill)
+      .filter((procedureUse) => procedureUseAppliesToPlatform(procedureUse, platform))
+      .map((procedureUse) => procedureUse.id),
+  );
   for (const procedure of proceduresById.values()) {
+    if (!platformProcedureIds.has(procedure.id)) continue;
     if (!procedure.owners.skillIds?.includes(skill.id) || !procedure.target) continue;
     procedures.set(procedure.target, procedure);
   }
@@ -615,7 +624,7 @@ function rewriteGeneratedSkillMarkdown(
   platformSkillIds: ReadonlySet<string>,
 ): void {
   const markdownFiles = collectFiles(skillRoot, (file) => file.endsWith(".md"));
-  const proceduresByTarget = procedureByScriptTarget(skill, proceduresById);
+  const proceduresByTarget = procedureByScriptTarget(skill, platform, proceduresById);
 
   for (const file of markdownFiles) {
     const source = readFileSync(file, "utf-8");

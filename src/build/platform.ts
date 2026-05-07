@@ -136,6 +136,29 @@ function validateAgentSkillPlatform(
   }
 }
 
+function validateProcedureUsePlatforms(
+  component: SkillDefinition | AgentDefinition,
+  procedureUse: ResolvedProcedureUse,
+  procedure: ProcedureDefinition,
+): void {
+  const usePlatforms = procedureUse.platforms ?? component.platforms;
+  const unsupportedUsePlatforms = usePlatforms.filter((platform) => !component.platforms.includes(platform));
+  if (unsupportedUsePlatforms.length > 0) {
+    throw new Error(
+      `${component.kind} ${component.id} references procedure ${procedureUse.id} for unsupported platform(s): ${unsupportedUsePlatforms.join(", ")}`,
+    );
+  }
+
+  const procedurePlatforms = procedure.platforms;
+  if (!procedurePlatforms) return;
+  const missingPlatforms = usePlatforms.filter((platform) => !procedurePlatforms.includes(platform));
+  if (missingPlatforms.length > 0) {
+    throw new Error(
+      `${component.kind} ${component.id} references procedure ${procedureUse.id} unavailable on platform(s): ${missingPlatforms.join(", ")}`,
+    );
+  }
+}
+
 export function validateRegistry(registry: ComponentRegistry): ComponentSurface {
   if (!registry || !Array.isArray(registry.skills)) throw new Error("registry.skills must be an array");
   if (!Array.isArray(registry.instructions)) throw new Error("registry.instructions must be an array");
@@ -292,6 +315,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
       if (!ownerSkills.includes(skill.id)) {
         throw new Error(`Skill ${skill.id} references procedure ${procedureId} without skill ownership`);
       }
+      validateProcedureUsePlatforms(skill, procedureUse, procedure);
     }
     if (existsSync(join(sourceRoot, "scripts"))) {
       throw new Error(
@@ -388,6 +412,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
       if (!ownerAgents.includes(agent.id)) {
         throw new Error(`Agent ${agent.id} references procedure ${procedureId} without agent ownership`);
       }
+      validateProcedureUsePlatforms(agent, procedureUse, procedure);
     }
   }
 

@@ -8,7 +8,7 @@ import type {
   ProcedureDefinition,
 } from "../components/sdk";
 import { sourceRoot, toAbsolutePath } from "./core.ts";
-import { listProcedureUses } from "./procedure-uses.ts";
+import { listProcedureUses, procedureUseAppliesToPlatform } from "./procedure-uses.ts";
 import type { ComponentSurface } from "./types.ts";
 
 type RuntimeProcedureEntry = {
@@ -647,11 +647,15 @@ export function collectPlatformProcedures(componentSurface: ComponentSurface, pl
   const enabledProcedureIds = new Set<string>();
   for (const skill of componentSurface.skills) {
     if (!skill.platforms.includes(platform)) continue;
-    for (const procedureUse of listProcedureUses(skill)) enabledProcedureIds.add(procedureUse.id);
+    for (const procedureUse of listProcedureUses(skill)) {
+      if (procedureUseAppliesToPlatform(procedureUse, platform)) enabledProcedureIds.add(procedureUse.id);
+    }
   }
   for (const agent of componentSurface.agents) {
     if (!agent.platforms.includes(platform)) continue;
-    for (const procedureUse of listProcedureUses(agent)) enabledProcedureIds.add(procedureUse.id);
+    for (const procedureUse of listProcedureUses(agent)) {
+      if (procedureUseAppliesToPlatform(procedureUse, platform)) enabledProcedureIds.add(procedureUse.id);
+    }
   }
 
   return componentSurface.procedures

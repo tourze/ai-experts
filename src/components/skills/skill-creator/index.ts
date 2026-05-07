@@ -64,8 +64,8 @@ export const skillCreatorSkill = defineSkill({
     procedureUse(skillCreatorImproveDescription),
     procedureUse(skillCreatorPackageSkill),
     procedureUse(skillCreatorQuickValidate),
-    procedureUse(skillCreatorRunEval),
-    procedureUse(skillCreatorRunLoop),
+    procedureUse(skillCreatorRunEval, { platforms: [Platform.Claude] }),
+    procedureUse(skillCreatorRunLoop, { platforms: [Platform.Claude] }),
   ],
   references: [
     defineReference({

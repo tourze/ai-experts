@@ -66,6 +66,7 @@ describe("component source conventions", () => {
     assert.match(readme, /构建器会生成 `## 检查清单`，并放在生成的 `## 反模式` 之后/);
     assert.match(readme, /Agent 不再使用 `AGENT\.body\.md`/);
     assert.match(readme, /`InvocationPolicy\.ModelOnly` 只用于 Claude-only skill/);
+    assert.match(readme, /`procedureUse\(procedureDefinition, \{ platforms: \[\.\.\.\] \}\)`/);
     assert.match(readme, /defineAgentWorkflow\(\{/);
     assert.match(
       readme,
