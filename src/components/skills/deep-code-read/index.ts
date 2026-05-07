@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const deepCodeReadSkill = defineSkill({
@@ -36,7 +39,26 @@ export const deepCodeReadSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "只读深度理解陌生代码库，并通过 A/B/C 闭卷验证把代码库知识沉淀为可复用、可问答验收的 skill。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认源码版本、分支/tag、输出目录和只读边界；执行前读取 workflow reference。",
+      "准备阶段定位仓库并检测版本；扫描阶段识别模块边界、依赖和精读顺序，必要时读取 repo-analyzer。",
+      "Agent A 逐模块读源码并写 skill，Agent B 基于源码出题，Agent C 只读生成的 skill 答题。",
+      "闭卷验证必须 100% 通过或跑满 3 轮；失败问题反向补齐 skill，99% 不算通过。",
+      "生成全局 index skill 后做用户问答验收，最后询问是否清理克隆源码。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "仓库版本、模块边界、精读进度、使用的 Agent prompt reference 和只读保证。",
+      "生成的模块 skill、全局 index skill、验收问题、回答结果和失败修正记录。",
+      "3 轮验证结果、未覆盖问题、最终可复用 skill 输出目录和清理建议。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

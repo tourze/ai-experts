@@ -6,6 +6,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, promptEngineeringPatternsOptimizePrompt } from "../../procedures/index";
 
@@ -20,8 +23,7 @@ export const promptEngineeringPatternsSkill = defineSkill({
     "需要给生产环境 LLM 设计稳健 prompt，而不是临时试几句。",
     "需要解决结构化输出、few-shot、角色设定、错误恢复、长上下文约束。",
     "需要跑完整的 prompt 诊断与优化流程：拆出目标、失败模式、候选变体、评分标准、测试集。",
-    "相关资源：[assets/prompt-template-library.md](assets/prompt-template-library.md)、[assets/few-shot-examples.json](assets/few-shot-examples.json)、procedure `prompt-engineering-patterns-optimize-prompt`。",
-    "系统化诊断参考文件：[references/prompt-patterns.md](references/prompt-patterns.md)、[references/evaluation-metrics.md](references/evaluation-metrics.md)、[references/failure-modes.md](references/failure-modes.md)、[references/output-constraints.md](references/output-constraints.md)。",
+    "需要把 prompt 模板、few-shot 示例、评测 rubric 和变体实验组织成可复用流程。",
   ],
   constraints: [
     "先明确输出契约，再写自然语言提示；没有 schema 的 prompt 很难稳定。",
@@ -43,13 +45,13 @@ export const promptEngineeringPatternsSkill = defineSkill({
       get id() {
         return ragAuditorSkill.id;
       },
-      reason: "如果 prompt 绑定 RAG，上下游检索问题是否已经交给 `rag-auditor`。",
+      reason: "Prompt 绑定 RAG，且失败可能来自检索、上下文拼接或引用质量时联动。",
     },
     {
       get id() {
         return llmEvaluationSkill.id;
       },
-      reason: "相关 skill：`llm-evaluation`、`rag-auditor`。",
+      reason: "需要设计评测集、打分 rubric、变体对比或模型表现验收时联动。",
     },
   ],
   antiPatterns: [
@@ -59,7 +61,7 @@ export const promptEngineeringPatternsSkill = defineSkill({
     }),
     defineAntiPattern({
       fail: "小问题大流程",
-      pass: "任务匹配深度（见上文\"按任务复杂度选粒度\"）",
+      pass: "按任务复杂度选粒度",
     }),
     defineAntiPattern({
       fail: "同时改三个变量",
@@ -72,7 +74,26 @@ export const promptEngineeringPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计、诊断和优化生产 prompt，优先稳定输出契约、few-shot 分布、失败模式分类、评分 rubric 和可比较变体实验。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先明确任务目标、输出契约、schema/字段、硬约束、软约束和失败样例，再写自然语言提示。",
+      "按复杂度选粒度：小变更给最小修改和验证，中等优化给 3 个候选变体，系统重构走完整诊断流程。",
+      "系统化诊断拆出目标、当前问题、失败模式、候选变体、评分维度、测试集和实验计划。",
+      "few-shot 示例必须同分布，覆盖主路径、边界和易混淆反例；示例数量以质量和覆盖为准。",
+      "调用 optimize-prompt procedure 或读取 prompt-patterns、output-constraints、failure-modes、evaluation-metrics 等 reference 支撑设计。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Prompt 目标、输出 schema、边界条件、拒答规则、异常输入处理和示例策略。",
+      "失败模式分类、候选变体矩阵、一次一变量的实验计划和评分 rubric。",
+      "优化后的 system/user prompt、few-shot 示例、测试集、评测结果和 RAG/评测联动项。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(promptEngineeringPatternsOptimizePrompt),

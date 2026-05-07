@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { createPrdSkill } from "../create-prd/index";
 
@@ -14,7 +17,7 @@ export const prfaqSkill = defineSkill({
   useCases: [
     "新产品/功能立项前，用\"从终点倒推\"的方式验证用户价值主张。",
     "需要在团队或管理层之间对齐\"我们到底要做什么、为谁做\"。",
-    "与 `create-prd` 配合：PRFAQ 先定\"为什么做\"，PRD 再定\"怎么做\"。",
+    "需要先说清为什么做、为谁做和为什么现在做，再进入 PRD。",
   ],
   constraints: [
     "新闻稿必须从**用户视角**写，不是从公司视角；主语是用户，不是\"我们\"。",
@@ -33,7 +36,7 @@ export const prfaqSkill = defineSkill({
       get id() {
         return createPrdSkill.id;
       },
-      reason: "与 `create-prd` 配合：PRFAQ 先定\\\\\\\"为什么做\\\\\\\"，PRD 再定\\\\\\\"怎么做\\\\\\\"。",
+      reason: "PRFAQ 已压实用户价值和立项理由，需要继续写 PRD、需求边界和验收标准时联动。",
     },
   ],
   antiPatterns: [
@@ -48,6 +51,25 @@ export const prfaqSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 Working Backwards 写 PRFAQ，从用户视角验证产品想法、价值主张、机会窗口、风险和团队共识。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认目标用户、痛点、机会窗口、替代方案、成功标准和需要对齐的受众。",
+      "新闻稿从用户视角写，标题不超过 15 字，副标题补目标用户和核心价值，全文控制在 1 页/500 字内。",
+      "正文包含问题段、方案段、用户引言、如何开始和负责人引言；主语是用户，不是公司。",
+      "FAQ 分外部和内部两组，各 3-5 个问题；内部 FAQ 必须直面为什么现在做、为什么是我们、失败怎么办等硬问题。",
+      "写不出让目标用户想点击的标题时，先回退重想价值主张，不进入 PRD。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "PRFAQ 新闻稿：标题、副标题、日期地点、问题、方案、用户引言、如何开始、负责人引言。",
+      "外部 FAQ、内部 FAQ、硬问题、风险、资源/ROI、退出策略和竞品解释。",
+      "是否进入 create-prd 的判断：用户价值、团队共识、机会窗口和仍需澄清的问题。",
+    ],
+  }),
   tools: [],
 });

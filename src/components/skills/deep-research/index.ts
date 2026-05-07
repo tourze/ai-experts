@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { webContentFetcherSkill } from "../web-content-fetcher/index";
 
@@ -16,7 +19,6 @@ export const deepResearchSkill = defineSkill({
     "用户明确要求“研究 / 调查 / 比较 / 解释”某个外部主题，且答案依赖联网信息。",
     "需要为报告、文章、方案、演示或内容创作准备事实基础。",
     "话题包含时效性、争议性或多视角信息，单次搜索不足以覆盖。",
-    "如果用户已经给出具体 URL，先转到 `web-content-fetcher` 抓正文。",
     "如果问题是”某个代码库里的 X 怎么工作”，不要用本 skill，用代码库分析工具。",
   ],
   constraints: [
@@ -40,7 +42,7 @@ export const deepResearchSkill = defineSkill({
       get id() {
         return webContentFetcherSkill.id;
       },
-      reason: "如果用户已经给出具体 URL，先转到 `web-content-fetcher` 抓正文。",
+      reason: "用户已经给出具体 URL，或需要抓取关键页面全文沉淀可引用材料时联动。",
     },
   ],
   antiPatterns: [
@@ -59,7 +61,26 @@ export const deepResearchSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "围绕外部主题做多轮联网研究，覆盖全景、分支、事实验证、争议点、权威来源和可引用证据链。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先铺开全景，确认主题边界、主要分支、关键参与方和需要回答的问题，不一上来盯单个关键词。",
+      "第二轮按分支纵深检索，补齐事实、案例、数据、限制条件、反例和争议点。",
+      "第三轮做交叉验证和 Chain-of-Verification：关键事实用 2-3 个独立来源确认并记录分歧。",
+      "时效问题用 current_date 生成具体日期查询；高风险声明优先官方、论文、公告或权威媒体。",
+      "中文平台内容先按母公司/生态判断主源，必要时读取 chinese-platform-routing；关键页面交给 web-content-fetcher 抓正文。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "研究问题、检索角度、查询词、已确认事实、剩余缺口和下一轮搜索计划。",
+      "关键来源、权威性分级、交叉验证结果、分歧、争议点和时效说明。",
+      "最终归纳、来源链路、事实/推断区分和可引用材料清单。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

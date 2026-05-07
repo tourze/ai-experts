@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
 import { scientificBrainstormingSkill } from "../scientific-brainstorming/index";
@@ -17,9 +20,7 @@ export const crossPollinationEngineSkill = defineSkill({
     "用户说“别的行业会怎么做”“能借鉴谁”“跳出当前行业想一想”。",
     "现有方案卡在惯性思维里，需要借远场样本打破局限。",
     "适合产品、服务、运营、教育、体验设计等需要新灵感的场景。",
-    "如果核心任务本身还没剥离清楚，先用 `first-principles-decomposer`。",
-    "如果想把跨界灵感继续发散到研究问题，可接 `scientific-brainstorming`。",
-    "需要案例时，参考 [跨界示例](references/examples.md)。",
+    "需要把外部案例转译成当前场景下可验证的小实验。",
   ],
   constraints: [
     "先把问题改写成“核心任务”，去掉行业行话和既有解决方案。",
@@ -42,13 +43,13 @@ export const crossPollinationEngineSkill = defineSkill({
       get id() {
         return scientificBrainstormingSkill.id;
       },
-      reason: "如果想把跨界灵感继续发散到研究问题，可接 `scientific-brainstorming`。",
+      reason: "跨界灵感需要继续发散成研究问题、实验假设或科学式探索时联动。",
     },
     {
       get id() {
         return firstPrinciplesDecomposerSkill.id;
       },
-      reason: "如果核心任务本身还没剥离清楚，先用 `first-principles-decomposer`。",
+      reason: "核心任务还没剥离清楚，或行业行话遮蔽真实问题时联动。",
     },
   ],
   antiPatterns: [
@@ -63,7 +64,26 @@ export const crossPollinationEngineSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把当前行业问题改写成核心任务，从远场行业提取底层机制，并转译成当前约束下可验证的最小实验。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先把问题改写成核心任务，去掉行业行话、既有方案和表面诉求。",
+      "选择 2-4 个相距较远的借鉴源，不做同业竞品互抄；需要案例时读取 examples。",
+      "对每个借鉴源拆出他们怎么解决、背后的机制、激励结构、体验原则和迁移条件。",
+      "把机制翻译成当前场景的最小可试版本，并保留成本、监管、团队能力和用户习惯约束。",
+      "最后收敛成一个本周能验证的小实验，定义成功信号和反证条件。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "核心任务改写、借鉴行业清单和选择理由。",
+      "每个借鉴源的解决方式、底层原理、迁移方式和本地约束。",
+      "合成方案、最小实验、成功信号、反证条件和需要继续研究的问题。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

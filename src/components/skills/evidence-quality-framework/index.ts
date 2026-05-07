@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const evidenceQualityFrameworkSkill = defineSkill({
@@ -15,8 +18,10 @@ export const evidenceQualityFrameworkSkill = defineSkill({
     "代码审查、架构审计、安全审计、性能诊断、事故复盘、研究报告、咨询分析——任何需要输出结构化证据判断的场景。",
   ],
   constraints: [
-    "只在本 skill 的适用场景内使用；任务不匹配时先澄清或转向更合适的 skill。",
-    "执行时遵循正文中的流程、红线、检查清单和必要参考资料，不用未经验证的假设替代证据。",
+    "每段结论必须显式标注 `[事实]` / `[推断]` / `[假设]`，不能沉默。",
+    "`[事实]` 必须附可核验定位；`[推断]` 必须给事实链；`[假设]` 必须给验证路径。",
+    "每条发现至少绑定一种定位：文件:行、log 时间戳、commit、metric 或命令输出。",
+    "综合结论级别必须匹配最弱证据链，不允许用假设包装成事实。",
   ],
   checklist: [
     "每段结论是否显式带 `[事实]` / `[推断]` / `[假设]` 标注？",
@@ -27,13 +32,36 @@ export const evidenceQualityFrameworkSkill = defineSkill({
   ],
   antiPatterns: [
     defineAntiPattern({
-      fail: "完整对照参见 [references/anti-patterns.md](references/anti-patterns.md)。 三态标注对照参见 [references/tri-state-examples.md](references/tri-state-examples.md)。 证据绑定对照参见 [references/binding-examples.md](references/binding-examples.md)。",
-      pass: "读取对应 reference 的反模式、三态标注和证据绑定示例后再评估。",
+      fail: "印象式结论没有定位、证据片段或触发条件。",
+      pass: "每条发现绑定定位、实际证据片段和可复现触发条件。",
+    }),
+    defineAntiPattern({
+      fail: "把推断或假设写成事实。",
+      pass: "三态标注并让综合结论服从最弱证据。",
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把代码审查、安全审计、事故复盘、研究或战略分析中的结论标注为事实/推断/假设，并绑定可核验定位。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先采集实际代码、diff、日志、metric、commit 或命令输出片段；没有实际片段时只能标为假设或待验证。",
+      "每条结论标注 `[事实]`、`[推断]` 或 `[假设]`；事实附定位，推断给依据链，假设给最小验证实验。",
+      "每条发现绑定定位、证据片段和触发条件，定位优先级为文件:行 > log+trace_id > commit > metric > 命令输出。",
+      "性能、安全、并发类断言必须有实验或观测窗口；纯代码扫描只能标为推断。",
+      "综合结论按最弱证据降级；需要示例时读取 anti-patterns、tri-state-examples 或 binding-examples。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "三态标注后的发现：事实、推断、假设、定位、证据片段和触发条件。",
+      "影响范围、修复方向、验证路径、反例或最小实验。",
+      "综合结论、置信度、最弱证据环节和需要升级/降级的判断。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({
