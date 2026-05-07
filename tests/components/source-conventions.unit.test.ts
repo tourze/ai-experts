@@ -602,6 +602,10 @@ describe("component source conventions", () => {
     const legacySkillScriptFiles = collectFiles(skillRoot, (file) =>
       file.slice(skillRoot.length + 1).split(/[\\/]/).includes("scripts"),
     );
+    const legacySkillRuntimeDirs = collectFiles(skillRoot, (file) => {
+      const parts = file.slice(skillRoot.length + 1).split(/[\\/]/);
+      return ["commands", "hooks", "schemas"].includes(parts[1] ?? "");
+    });
     const misplacedRootArtifacts = collectFiles(skillRoot, (file) => {
       const parts = file.slice(skillRoot.length + 1).split(/[\\/]/);
       return parts.length === 2 && rootArtifacts.has(parts[1]);
@@ -611,6 +615,11 @@ describe("component source conventions", () => {
       legacySkillScriptFiles,
       [],
       "skill-local scripts/ directories should move to src/components/procedures/sources/ and be referenced through procedures",
+    );
+    assert.deepEqual(
+      legacySkillRuntimeDirs,
+      [],
+      "skill-local commands/, hooks/, and schemas/ directories should move to first-class components, procedures, references, or assets",
     );
     assert.deepEqual(
       misplacedRootArtifacts,

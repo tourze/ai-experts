@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
   defineSkillOutputs,
   defineSkillWorkflow,
@@ -97,4 +98,22 @@ export const springBootLayeringSkill = defineSkill({
       "需要 java-junit、GraalVM、Gradle 或 Arthas 运行时诊断联动的具体触发点。",
     ],
   }),
+  references: [
+    defineReference({
+      id: "layering-rules",
+      source: new URL("./references/layering-rules.md", import.meta.url),
+      target: "references/layering-rules.md",
+      title: "Spring Boot Layering Rules",
+      summary: "Spring Boot 分层边界、输出风格、验证顺序和相关 skill 路由。",
+      loadWhen: "需要快速复核 Spring Boot 分层审查规则或相关 skill 路由时读取。",
+    }),
+    defineReference({
+      id: "implementation-template",
+      source: new URL("./references/implementation-template.md", import.meta.url),
+      target: "references/implementation-template.md",
+      title: "Spring Boot Implementation Template",
+      summary: "Spring Boot 分层实现的目标、TDD 顺序和验证清单模板。",
+      loadWhen: "需要输出 Spring Boot 分层实现计划或变更模板时读取。",
+    }),
+  ],
 });
