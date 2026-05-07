@@ -43,17 +43,6 @@ function telemetryRoot() {
     join(homedir(), ".ai-components", "hook-telemetry");
 }
 
-function legacyTelemetryRoot() {
-  return join(homedir(), ".claude", "hook-telemetry");
-}
-
-function telemetryRootsForRead() {
-  if (process.env.AI_EXPERTS_HOOK_TELEMETRY_DIR) {
-    return [telemetryRoot()];
-  }
-  return [...new Set([telemetryRoot(), legacyTelemetryRoot()])];
-}
-
 function parsePositiveInt(value: string | number | null | undefined, fallback: number): number {
   const parsed = Number.parseInt(String(value ?? ""), 10);
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
@@ -167,38 +156,36 @@ export function recordAuditTelemetry(payload: LegacyHookPayload, data: AuditTele
 
 export function readRecentTelemetryEntries(payload: LegacyHookPayload, maxBytes = 256 * 1024): HookTelemetryEntry[] {
   const entries: HookTelemetryEntry[] = [];
-  for (const root of telemetryRootsForRead()) {
-    const { file } = telemetryFileForPayload(payload, root);
-    if (!existsSync(file)) {
-      continue;
-    }
+  const { file } = telemetryFileForPayload(payload);
+  if (!existsSync(file)) {
+    return entries;
+  }
 
+  try {
+    const size = statSync(file).size;
+    const length = Math.min(size, maxBytes);
+    const buffer = Buffer.alloc(length);
+    const fd = openSync(file, "r");
     try {
-      const size = statSync(file).size;
-      const length = Math.min(size, maxBytes);
-      const buffer = Buffer.alloc(length);
-      const fd = openSync(file, "r");
-      try {
-        readSync(fd, buffer, 0, length, size - length);
-      } finally {
-        closeSync(fd);
-      }
-
-      entries.push(...buffer
-        .toString("utf-8")
-        .split("\n")
-        .filter(Boolean)
-        .map((line): HookTelemetryEntry | null => {
-          try {
-            return JSON.parse(line) as HookTelemetryEntry;
-          } catch {
-            return null;
-          }
-        })
-        .filter((entry): entry is HookTelemetryEntry => entry !== null));
-    } catch {
-      // Telemetry reads should be best effort.
+      readSync(fd, buffer, 0, length, size - length);
+    } finally {
+      closeSync(fd);
     }
+
+    entries.push(...buffer
+      .toString("utf-8")
+      .split("\n")
+      .filter(Boolean)
+      .map((line): HookTelemetryEntry | null => {
+        try {
+          return JSON.parse(line) as HookTelemetryEntry;
+        } catch {
+          return null;
+        }
+      })
+      .filter((entry): entry is HookTelemetryEntry => entry !== null));
+  } catch {
+    // Telemetry reads should be best effort.
   }
   return entries;
 }

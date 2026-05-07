@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -20,6 +20,12 @@ test("hook telemetry records stable component names and reminder cooldown", asyn
     const auditTelemetry = await import(
       `${pathToFileURL(join(repoRoot, "src/components/hooks/_shared/audit-telemetry.ts")).href}${cacheKey}`
     );
+    const auditTelemetrySource = readFileSync(
+      join(repoRoot, "src/components/hooks/_shared/audit-telemetry.ts"),
+      "utf-8",
+    );
+    assert.doesNotMatch(auditTelemetrySource, /legacyTelemetryRoot|\.claude["'], "hook-telemetry"/);
+
     const reminder = await import(
       `${pathToFileURL(join(
         repoRoot,
