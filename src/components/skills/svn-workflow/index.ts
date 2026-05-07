@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const svnWorkflowSkill = defineSkill({
@@ -52,7 +55,27 @@ export const svnWorkflowSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "安全完成 SVN 日常开发、分支标签、合并、属性配置、仓库维护和 SVN 到 Git 迁移操作。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "日常提交先 `svn update`、`svn status -u`、`svn diff <path>`，只提交当前任务显式路径。",
+      "创建分支或标签用 `svn copy <trunk-url> <branches-or-tags-url> -m ...`；`tags/` 只做发布快照。",
+      "工作副本切换用 `svn switch <branch-url>` 后 `svn info` 核对目标路径。",
+      "挑单个修订用 `svn merge -c <rev> <source-url>`；整分支回合并到 trunk 前先更新干净 trunk 工作副本。",
+      "查询合并状态显式使用 `svn mergeinfo --show-revs=eligible|merged <source-url> .`。",
+      "属性、仓库 hotcopy/dump/load、cleanup 和 SVN→Git 迁移细节读取 properties-and-admin。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "操作计划：工作副本路径、目标 URL、命令、显式提交路径和回滚/冲突处理路径。",
+      "合并记录：来源、目标、修订号、mergeinfo 检查、冲突状态和提交说明。",
+      "属性/维护/迁移结果：版本兼容性、authors.txt、trunk/branches/tags 映射和后续 Git 整理建议。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

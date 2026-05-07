@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { prlctlVmControlSkill } from "../prlctl-vm-control/index";
 import { windowsKernelSecuritySkill } from "../windows-kernel-security/index";
@@ -17,7 +20,7 @@ export const windowsUiAutomationSkill = defineSkill({
     "需要使用 UIA / Win32 API 做窗口发现、元素定位、按钮点击、键盘输入和状态读取。",
     "需要先定义权限分层、阻断名单、超时和审计字段，再实施自动化动作。",
     "需要在 Windows 客体里复现自动化脚本或安全边界时，可联动 `prlctl-vm-control`。",
-    "需要更细的等待策略、审计字段和威胁场景时，继续读取 [进阶模式](./references/advanced-patterns.md)、[安全示例](./references/security-examples.md) 与 [威胁模型](./references/threat-model.md)。",
+    "需要更细的等待策略、审计字段、安全示例或威胁场景。",
     "如果问题其实属于驱动、回调或内核对象，不要继续堆 UIA 逻辑，转到 `windows-kernel-security`。",
   ],
   constraints: [
@@ -39,13 +42,13 @@ export const windowsUiAutomationSkill = defineSkill({
       get id() {
         return windowsKernelSecuritySkill.id;
       },
-      reason: "如果问题其实属于驱动、回调或内核对象，不要继续堆 UIA 逻辑，转到 `windows-kernel-security`。",
+      reason: "问题属于驱动、回调、内核对象或内核安全边界时联动。",
     },
     {
       get id() {
         return prlctlVmControlSkill.id;
       },
-      reason: "需要在 Windows 客体里复现自动化脚本或安全边界时，可联动 `prlctl-vm-control`。",
+      reason: "需要在 Windows 虚拟机里复现自动化脚本、高风险窗口或安全边界时联动。",
     },
   ],
   antiPatterns: [
@@ -60,7 +63,27 @@ export const windowsUiAutomationSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "以只读优先和可审计为默认边界，设计 Windows UIA/Win32 自动化的定位、等待、输入和安全策略。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先判断权限层级：read-only、click、input 或高风险复现；默认从只读窗口/元素查询开始。",
+      "定义阻断名单：密码管理器、系统管理工具、shell、注册表、提权窗口和敏感热键。",
+      "自动化前校验目标进程、完整性级别、source/target 是否跨提权边界，以及操作类型。",
+      "元素定位按窗口标题、AutomationId、控件类型、可见性和焦点约束组合，不把 UIA 失败降级成坐标猜测。",
+      "等待策略先建模 timeout、poll interval、重试和失败回退，再调用 UIA/Win32。",
+      "每次动作至少记录目标进程、窗口标识、操作类型、权限层级、超时和结果；需要复杂场景时读取 advanced-patterns、安全示例或 threat-model。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "自动化策略：权限层级、阻断名单、目标校验、热键限制和审计字段。",
+      "定位与等待计划：窗口/元素 selector、可见性/焦点约束、timeout、poll interval、失败回退。",
+      "执行或复现记录：目标进程、操作类型、结果、风险判断、VM 快照建议和需联动的安全 skill。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

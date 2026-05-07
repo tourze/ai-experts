@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { symfonyUxSkill } from "../symfony-ux/index";
 
@@ -16,7 +19,7 @@ export const twigComponentsSkill = defineSkill({
     "组件已经重复出现在多个 Twig 模板里，或模板逻辑复杂到难以维护。",
     "想在服务端渲染优先的前提下，为局部界面增加响应式交互。",
     "如果还在决定应该用 Stimulus、Turbo、TwigComponent 还是 LiveComponent，可先看 `symfony-ux`。",
-    "更细的组件示例见 [reference.md](reference.md)。",
+    "需要设计 props、slots、attributes 合并、LiveProp 或模板复用边界。",
   ],
   constraints: [
     "先判断组件类型：静态可复用 UI 用 TwigComponent，交互后需要服务端重渲染时再上 LiveComponent。",
@@ -37,7 +40,7 @@ export const twigComponentsSkill = defineSkill({
       get id() {
         return symfonyUxSkill.id;
       },
-      reason: "如果还在决定应该用 Stimulus、Turbo、TwigComponent 还是 LiveComponent，可先看 `symfony-ux`。",
+      reason: "还在选择 Stimulus、Turbo、TwigComponent 或 LiveComponent 方案边界时联动。",
     },
   ],
   antiPatterns: [
@@ -52,6 +55,26 @@ export const twigComponentsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "在 Symfony 中把重复 Twig 片段抽成 TwigComponent 或 LiveComponent，保持服务端渲染优先和显式 props 边界。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先判断组件类型：静态复用 UI 用 TwigComponent；交互后需要服务端重渲染再用 LiveComponent。",
+      "定义组件职责、名称、公共 props、slots、`attributes` 合并策略和现有样式复用方式。",
+      "TwigComponent 类用 `#[AsTwigComponent]` 暴露稳定 public 属性，模板放在 `templates/components/<Name>.html.twig`。",
+      "LiveComponent 类用 `#[AsLiveComponent]` 和 `DefaultActionTrait`；只有必要状态标记 `#[LiveProp(writable: true)]`。",
+      "Live 模板输入用 `data-model`，快速输入场景加 debounce，并处理空值、重复请求和最小查询长度。",
+      "模板只展示，不读取隐式全局状态；业务判断放到组件 getter、服务或上游 use case。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "组件方案：TwigComponent/LiveComponent 选择理由、职责、props、slots、attributes 和样式复用。",
+      "实现清单：PHP 组件类、Twig 模板、LiveProp 状态、事件/输入模型和空值处理。",
+      "风险与验证：重复组件规避、模板业务逻辑移除、请求频率控制和 Symfony UX 联动点。",
+    ],
+  }),
   tools: [],
 });

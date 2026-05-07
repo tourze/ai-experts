@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const legalRiskAssessmentSkill = defineSkill({
@@ -14,8 +17,7 @@ export const legalRiskAssessmentSkill = defineSkill({
   useCases: [
     "评估合同偏离标准条款、监管变化、数据事件、劳动争议、知识产权争议、董事会敏感事项的法律暴露。",
     "为业务、法务、管理层提供统一的 `severity × likelihood` 口径，决定接受、缓释、升级或外部律师介入。",
-    "事项涉及个人信息、跨境传输、监管申报时，参考 [references/gdpr-data-handling.md](references/gdpr-data-handling.md)。",
-    "事项来源于招聘、用工、离职文件或 HR 政策时，参考 [references/employment-contract-templates.md](references/employment-contract-templates.md)。",
+    "事项涉及个人信息、跨境传输、监管申报、招聘、用工、离职文件或 HR 政策。",
   ],
   constraints: [
     "这是内部评估框架，不替代法律意见；结论必须明确区分“已知事实”“假设”“风险判断”“缓释建议”，不能把猜测写成定论。",
@@ -44,7 +46,27 @@ export const legalRiskAssessmentSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把合同、合规、劳动、数据、IP 或争议事项拆成事实、假设、风险判断、缓释动作和升级建议。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先列事项、业务负责人、法域、是否特权材料、已知事实、缺失事实和关键假设。",
+      "按合同、监管、数据、劳动、争议、IP、公司治理分类，写清第一个会让风险落地的触发事件。",
+      "严重度从金钱损失、业务中断、监管处罚、声誉影响、管理层责任和救济成本评 1-5。",
+      "概率从触发条件、合同文本、监管先例、对手方行为模式和当前控制缺口评 1-5。",
+      "计算风险分并定级：low 1-4、medium 5-9、high 10-15、critical 16-25。",
+      "输出立即动作、缓释负责人、复审日期、剩余风险和升级路径；数据或劳动事项按需读取对应 reference。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "法律风险评估备忘录：事项摘要、法域、特权标记、事实/假设分层和风险判断。",
+      "风险登记项：Risk ID、Category、Trigger、Severity、Likelihood、Controls、Owner、Residual Risk、Escalation。",
+      "缓释计划：立即动作、负责人、时限、复审频率、风险分变化条件和外部律师使用范围。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

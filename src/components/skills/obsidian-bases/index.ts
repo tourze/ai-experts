@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const obsidianBasesSkill = defineSkill({
@@ -26,7 +29,7 @@ export const obsidianBasesSkill = defineSkill({
     "`this.file.*` 的含义取决于展示位置：主内容区指向 base 文件本身；嵌入时指向嵌入它的文件；侧边栏里指向主内容区活动文件。",
     "`file.backlinks` 性能较重，且 Vault 变化后不会自动刷新；能用 `file.hasLink(this.file)` 做反向查询时，优先用后者。",
     "`map` 视图需要额外安装官方 Maps 插件；不要把 map 当成默认可用布局。",
-    "常用函数速查见 [FUNCTIONS_REFERENCE.md](references/FUNCTIONS_REFERENCE.md)，完整能力以官方文档为准。",
+    "常用函数速查按 Reference Map 读取，完整能力以官方文档为准。",
   ],
   checklist: [
     "文件后缀是否为 `.base`，并且整份 YAML 已通过基本语法校验。",
@@ -50,7 +53,28 @@ export const obsidianBasesSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "新建、修复或重构合法的 Obsidian `.base` YAML，正确表达 filters、formulas、properties、summaries 和 views。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认目标视图和结果集；Bases 没有 `from`、`source`、`where` 段，结果集完全由 `filters` 决定。",
+      "从最小 `.base` 骨架开始：全局 `filters`、可选 `formulas`、`properties`、`views`。",
+      "视图级 filters 与全局 filters 会 AND 拼接，不重复堆同一条件。",
+      "引用属性时区分笔记属性、`file.*` 和 `formula.*`；`formula.X` 使用前必须先在 `formulas` 定义。",
+      "日期相减按毫秒差处理；需要 duration 运算时显式使用 `duration(\"1d\")` 等值。",
+      "`this.file.*` 要按主区、嵌入块或侧栏上下文解释；反链优先 `file.hasLink(this.file)`。",
+      "嵌入用 `![[Reading.base]]` 或 `![[Reading.base#Books]]`；map 视图必须说明需要官方 Maps 插件。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "合法 `.base` YAML：filters、formulas、properties、views、order、groupBy 和 summaries。",
+      "语义说明：结果集来源、公式依赖、日期/链接/this 语义和 YAML 引号处理。",
+      "修复报告：发现的 Dataview 心智残留、无效引用、性能风险、插件依赖和 CLI 联动建议。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({
