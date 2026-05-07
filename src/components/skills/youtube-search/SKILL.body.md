@@ -2,54 +2,27 @@
 
 ### 文件入口
 
-- `scripts/search_youtube.mjs`：执行搜索、规范化字段、支持排序与近 N 天过滤。
+- `procedure youtube-search-search-youtube`：执行搜索、规范化字段、支持排序与近 N 天过滤。
 
 ### 基础搜索
 
-```bash
-node scripts/search_youtube.mjs \
-  "claude code skills" \
-  --count 5 \
-  --format table
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 ### 输出 JSON
 
-```bash
-node scripts/search_youtube.mjs \
-  "claude code mcp servers" \
-  --count 5 \
-  --format json
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 ### 按观看量排序
 
-```bash
-node scripts/search_youtube.mjs \
-  "AI agents" \
-  --count 10 \
-  --sort views \
-  --format table
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 ### 过滤最近 N 天
 
-```bash
-node scripts/search_youtube.mjs \
-  "claude code tutorial" \
-  --count 10 \
-  --days 30 \
-  --format json
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 ### 只输出 URL，交给其他流程继续处理
 
-```bash
-node scripts/search_youtube.mjs \
-  "claude code hooks" \
-  --count 5 \
-  --format urls
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 标准化输出字段：
 

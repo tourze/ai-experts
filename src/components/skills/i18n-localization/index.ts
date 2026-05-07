@@ -26,7 +26,7 @@ export const i18nLocalizationSkill = defineSkill({
     "locale 文件按功能域拆分，不要把全部文案塞进一个大 JSON。",
     "RTL 不是“文字反过来”这么简单，布局、图标方向、滚动与动画都要核查。",
     "国际化上线前必须验证回退语言和缺失翻译策略。",
-    "需要静态检查时直接运行 `scripts/i18n_checker.mjs`。",
+    "需要静态检查时直接运行 `procedure i18n-localization-i18n-checker`。",
   ],
   checklist: [
     "所有用户可见文案都已脱离组件硬编码。",
@@ -34,7 +34,7 @@ export const i18nLocalizationSkill = defineSkill({
     "缺失翻译时有明确回退语言。",
     "日期、时间、数字、货币都使用地区化 API。",
     "RTL 页面已验证布局、图标方向和文本对齐。",
-    "提交前已跑 `scripts/i18n_checker.mjs` 或等价 lint。",
+    "提交前已跑 `procedure i18n-localization-i18n-checker` 或等价 lint。",
   ],
   relatedSkills: [
     {
@@ -70,6 +70,6 @@ export const i18nLocalizationSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(i18nLocalizationI18nChecker.id),
+    procedureUse(i18nLocalizationI18nChecker),
   ],
 });

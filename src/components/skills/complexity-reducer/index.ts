@@ -47,7 +47,7 @@ export const complexityReducerSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(complexityReducerComplexityReport.id),
+    procedureUse(complexityReducerComplexityReport),
   ],
   references: [
     defineReference({

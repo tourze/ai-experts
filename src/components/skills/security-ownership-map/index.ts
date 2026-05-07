@@ -58,10 +58,10 @@ export const securityOwnershipMapSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(securityOwnershipMapBuildOwnershipMap.id),
-    procedureUse(securityOwnershipMapCommunityMaintainers.id),
-    procedureUse(securityOwnershipMapQueryOwnership.id),
-    procedureUse(securityOwnershipMapRunOwnershipMap.id),
+    procedureUse(securityOwnershipMapBuildOwnershipMap),
+    procedureUse(securityOwnershipMapCommunityMaintainers),
+    procedureUse(securityOwnershipMapQueryOwnership),
+    procedureUse(securityOwnershipMapRunOwnershipMap),
   ],
   references: [
     defineReference({

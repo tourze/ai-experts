@@ -23,13 +23,13 @@ export const youtubeAnalysisSkill = defineSkill({
   constraints: [
     "只基于字幕与元数据分析，不做画面、PPT、代码演示或肢体语言的臆测。",
     "通过 `yt-dlp` 提取字幕与元数据；脚本本身统一为 Node.js ESM。",
-    "`scripts/analyze_video.mjs` 生成的是“分析脚手架”，其中的 `[TO BE ANALYZED]` 是有意保留的占位符，不代表脚本缺失实现。",
+    "`procedure youtube-analysis-analyze-video` 生成的是“分析脚手架”，其中的 `[TO BE ANALYZED]` 是有意保留的占位符，不代表脚本缺失实现。",
     "没有字幕、视频私有、年龄限制或被地区封锁时，必须直接说明限制，不要伪造摘要。",
     "需要按视频类型调整提炼重点时，参考 `references/analysis-patterns.md`。",
   ],
   checklist: [
     "先确认输入是合法的 YouTube 链接或 11 位视频 ID。",
-    "需要真实内容而不是占位稿时，优先读取 `scripts/fetch_transcript.mjs` 的 JSON，再在上下文里完成分析。",
+    "需要真实内容而不是占位稿时，优先读取 `procedure youtube-analysis-fetch-transcript` 的 JSON，再在上下文里完成分析。",
     "输出结论前确认 `source` 与 `language`，不要把自动字幕误写成官方字幕。",
     "如果视频明显依赖画面内容，结尾必须提示“仅基于字幕，视觉信息未覆盖”。",
     "生成 Markdown 文件时，确认最终交付是否仍保留 `[TO BE ANALYZED]`；只有用户明确要脚手架时才允许保留。",
@@ -57,9 +57,9 @@ export const youtubeAnalysisSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(youtubeAnalysisAnalyzeVideo.id),
-    procedureUse(youtubeAnalysisFetchTranscript.id),
-    procedureUse(youtubeAnalysisUtils.id),
+    procedureUse(youtubeAnalysisAnalyzeVideo),
+    procedureUse(youtubeAnalysisFetchTranscript),
+    procedureUse(youtubeAnalysisUtils),
   ],
   references: [
     defineReference({

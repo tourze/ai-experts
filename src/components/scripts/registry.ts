@@ -1,1105 +1,1176 @@
-import { defineProcedure } from "../sdk";
+import {
+  defineProcedure,
+  defineProcedureArgs,
+  defineProcedureOutput,
+  type ProcedureDefinition,
+} from "../sdk";
 
-export const agileProductOwnerUserStoryGenerator = defineProcedure({
+export type CliProcedureRequest = {
+  args?: readonly string[];
+};
+
+export type RuntimeProcedureResult = {
+  exitCode: number;
+  stdout: string;
+  stderr: string;
+};
+
+const cliProcedureArgs = defineProcedureArgs<CliProcedureRequest>({
+  typeName: "CliProcedureRequest",
+  fields: {
+    args: {
+      type: "string[]",
+      required: false,
+      description: "传给 procedure CLI 的 argv 参数。",
+    },
+  },
+});
+
+const runtimeProcedureOutput = defineProcedureOutput<RuntimeProcedureResult>({
+  typeName: "RuntimeProcedureResult",
+  fields: {
+    exitCode: {
+      type: "number",
+      description: "子进程退出码。",
+    },
+    stdout: {
+      type: "string",
+      description: "procedure 标准输出。",
+    },
+    stderr: {
+      type: "string",
+      description: "procedure 标准错误。",
+    },
+  },
+});
+
+type CliProcedureDefinition = Omit<
+  ProcedureDefinition<CliProcedureRequest, RuntimeProcedureResult>,
+  "args" | "output"
+> & Partial<Pick<ProcedureDefinition<CliProcedureRequest, RuntimeProcedureResult>, "args" | "output">>;
+
+function defineCliProcedure(
+  definition: CliProcedureDefinition,
+): ProcedureDefinition<CliProcedureRequest, RuntimeProcedureResult> {
+  return defineProcedure({
+    args: cliProcedureArgs,
+    output: runtimeProcedureOutput,
+    ...definition,
+  });
+}
+
+export const agileProductOwnerUserStoryGenerator = defineCliProcedure({
     id: "agile-product-owner-user-story-generator",
     entry: new URL("./sources/agile-product-owner/user_story_generator.ts", import.meta.url),
-    description: "Script user_story_generator.mjs.",
+    description: "执行 user-story-generator procedure。",
     owners: { skillIds: ["agile-product-owner"] },
     target: "scripts/user_story_generator.mjs",
     runtime: "node",
   });
-export const analyticsTrackingTrackingPlanGenerator = defineProcedure({
+export const analyticsTrackingTrackingPlanGenerator = defineCliProcedure({
     id: "analytics-tracking-tracking-plan-generator",
     entry: new URL("./sources/analytics-tracking/tracking_plan_generator.ts", import.meta.url),
-    description: "Script tracking_plan_generator.mjs.",
+    description: "执行 tracking-plan-generator procedure。",
     owners: { skillIds: ["analytics-tracking"] },
     target: "scripts/tracking_plan_generator.mjs",
     runtime: "node",
   });
-export const androidDeviceAutomationAppLauncher = defineProcedure({
+export const androidDeviceAutomationAppLauncher = defineCliProcedure({
     id: "android-device-automation-app-launcher",
     entry: new URL("./sources/android-device-automation/app_launcher.ts", import.meta.url),
-    description: "Script app_launcher.mjs.",
+    description: "执行 app-launcher procedure。",
     owners: { skillIds: ["android-device-automation"] },
     target: "scripts/app_launcher.mjs",
     runtime: "node",
   });
-export const androidDeviceAutomationBuildAndTest = defineProcedure({
+export const androidDeviceAutomationBuildAndTest = defineCliProcedure({
     id: "android-device-automation-build-and-test",
     entry: new URL("./sources/android-device-automation/build_and_test.ts", import.meta.url),
-    description: "Script build_and_test.mjs.",
+    description: "执行 build-and-test procedure。",
     owners: { skillIds: ["android-device-automation"] },
     target: "scripts/build_and_test.mjs",
     runtime: "node",
   });
-export const androidDeviceAutomationCommon = defineProcedure({
+export const androidDeviceAutomationCommon = defineCliProcedure({
     id: "android-device-automation-common",
     entry: new URL("./sources/android-device-automation/common.ts", import.meta.url),
-    description: "Script common.mjs.",
+    description: "执行 common procedure。",
     owners: { skillIds: ["android-device-automation"] },
     target: "scripts/common.mjs",
     runtime: "node",
   });
-export const androidDeviceAutomationDiagnoseApp = defineProcedure({
+export const androidDeviceAutomationDiagnoseApp = defineCliProcedure({
     id: "android-device-automation-diagnose-app",
     entry: new URL("./sources/android-device-automation/diagnose_app.ts", import.meta.url),
-    description: "Script diagnose_app.mjs.",
+    description: "执行 diagnose-app procedure。",
     owners: { skillIds: ["android-device-automation"] },
     target: "scripts/diagnose_app.mjs",
     runtime: "node",
   });
-export const androidDeviceAutomationEmuHealthCheck = defineProcedure({
+export const androidDeviceAutomationEmuHealthCheck = defineCliProcedure({
     id: "android-device-automation-emu-health-check",
     entry: new URL("./sources/android-device-automation/emu_health_check.ts", import.meta.url),
-    description: "Script emu_health_check.mjs.",
+    description: "执行 emu-health-check procedure。",
     owners: { skillIds: ["android-device-automation"] },
     target: "scripts/emu_health_check.mjs",
     runtime: "node",
   });
-export const androidDeviceAutomationEmulatorManage = defineProcedure({
+export const androidDeviceAutomationEmulatorManage = defineCliProcedure({
     id: "android-device-automation-emulator-manage",
     entry: new URL("./sources/android-device-automation/emulator_manage.ts", import.meta.url),
-    description: "Script emulator_manage.mjs.",
+    description: "执行 emulator-manage procedure。",
     owners: { skillIds: ["android-device-automation"] },
     target: "scripts/emulator_manage.mjs",
     runtime: "node",
   });
-export const androidDeviceAutomationGesture = defineProcedure({
+export const androidDeviceAutomationGesture = defineCliProcedure({
     id: "android-device-automation-gesture",
     entry: new URL("./sources/android-device-automation/gesture.ts", import.meta.url),
-    description: "Script gesture.mjs.",
+    description: "执行 gesture procedure。",
     owners: { skillIds: ["android-device-automation"] },
     target: "scripts/gesture.mjs",
     runtime: "node",
   });
-export const androidDeviceAutomationKeyboard = defineProcedure({
+export const androidDeviceAutomationKeyboard = defineCliProcedure({
     id: "android-device-automation-keyboard",
     entry: new URL("./sources/android-device-automation/keyboard.ts", import.meta.url),
-    description: "Script keyboard.mjs.",
+    description: "执行 keyboard procedure。",
     owners: { skillIds: ["android-device-automation"] },
     target: "scripts/keyboard.mjs",
     runtime: "node",
   });
-export const androidDeviceAutomationLogMonitor = defineProcedure({
+export const androidDeviceAutomationLogMonitor = defineCliProcedure({
     id: "android-device-automation-log-monitor",
     entry: new URL("./sources/android-device-automation/log_monitor.ts", import.meta.url),
-    description: "Script log_monitor.mjs.",
+    description: "执行 log-monitor procedure。",
     owners: { skillIds: ["android-device-automation"] },
     target: "scripts/log_monitor.mjs",
     runtime: "node",
   });
-export const androidDeviceAutomationNavigator = defineProcedure({
+export const androidDeviceAutomationNavigator = defineCliProcedure({
     id: "android-device-automation-navigator",
     entry: new URL("./sources/android-device-automation/navigator.ts", import.meta.url),
-    description: "Script navigator.mjs.",
+    description: "执行 navigator procedure。",
     owners: { skillIds: ["android-device-automation"] },
     target: "scripts/navigator.mjs",
     runtime: "node",
   });
-export const androidDeviceAutomationScreenMapper = defineProcedure({
+export const androidDeviceAutomationScreenMapper = defineCliProcedure({
     id: "android-device-automation-screen-mapper",
     entry: new URL("./sources/android-device-automation/screen_mapper.ts", import.meta.url),
-    description: "Script screen_mapper.mjs.",
+    description: "执行 screen-mapper procedure。",
     owners: { skillIds: ["android-device-automation"] },
     target: "scripts/screen_mapper.mjs",
     runtime: "node",
   });
-export const appStoreOptimizationAbTestPlanner = defineProcedure({
+export const appStoreOptimizationAbTestPlanner = defineCliProcedure({
     id: "app-store-optimization-ab-test-planner",
     entry: new URL("./sources/app-store-optimization/ab_test_planner.ts", import.meta.url),
-    description: "Script ab_test_planner.mjs.",
+    description: "执行 ab-test-planner procedure。",
     owners: { skillIds: ["app-store-optimization"] },
     target: "scripts/ab_test_planner.mjs",
     runtime: "node",
   });
-export const appStoreOptimizationAsoScorer = defineProcedure({
+export const appStoreOptimizationAsoScorer = defineCliProcedure({
     id: "app-store-optimization-aso-scorer",
     entry: new URL("./sources/app-store-optimization/aso_scorer.ts", import.meta.url),
-    description: "Script aso_scorer.mjs.",
+    description: "执行 aso-scorer procedure。",
     owners: { skillIds: ["app-store-optimization"] },
     target: "scripts/aso_scorer.mjs",
     runtime: "node",
   });
-export const appStoreOptimizationCompetitorAnalyzer = defineProcedure({
+export const appStoreOptimizationCompetitorAnalyzer = defineCliProcedure({
     id: "app-store-optimization-competitor-analyzer",
     entry: new URL("./sources/app-store-optimization/competitor_analyzer.ts", import.meta.url),
-    description: "Script competitor_analyzer.mjs.",
+    description: "执行 competitor-analyzer procedure。",
     owners: { skillIds: ["app-store-optimization"] },
     target: "scripts/competitor_analyzer.mjs",
     runtime: "node",
   });
-export const appStoreOptimizationCollectReleaseChanges = defineProcedure({
+export const appStoreOptimizationCollectReleaseChanges = defineCliProcedure({
     id: "app-store-optimization-collect-release-changes",
     entry: new URL("./sources/app-store-optimization/collect_release_changes.ts", import.meta.url),
-    description: "Script collect_release_changes.mjs.",
+    description: "执行 collect-release-changes procedure。",
     owners: { skillIds: ["app-store-optimization"] },
     target: "scripts/collect_release_changes.mjs",
     runtime: "node",
   });
-export const appStoreOptimizationKeywordAnalyzer = defineProcedure({
+export const appStoreOptimizationKeywordAnalyzer = defineCliProcedure({
     id: "app-store-optimization-keyword-analyzer",
     entry: new URL("./sources/app-store-optimization/keyword_analyzer.ts", import.meta.url),
-    description: "Script keyword_analyzer.mjs.",
+    description: "执行 keyword-analyzer procedure。",
     owners: { skillIds: ["app-store-optimization"] },
     target: "scripts/keyword_analyzer.mjs",
     runtime: "node",
   });
-export const appStoreOptimizationLaunchChecklist = defineProcedure({
+export const appStoreOptimizationLaunchChecklist = defineCliProcedure({
     id: "app-store-optimization-launch-checklist",
     entry: new URL("./sources/app-store-optimization/launch_checklist.ts", import.meta.url),
-    description: "Script launch_checklist.mjs.",
+    description: "执行 launch-checklist procedure。",
     owners: { skillIds: ["app-store-optimization"] },
     target: "scripts/launch_checklist.mjs",
     runtime: "node",
   });
-export const appStoreOptimizationLocalizationHelper = defineProcedure({
+export const appStoreOptimizationLocalizationHelper = defineCliProcedure({
     id: "app-store-optimization-localization-helper",
     entry: new URL("./sources/app-store-optimization/localization_helper.ts", import.meta.url),
-    description: "Script localization_helper.mjs.",
+    description: "执行 localization-helper procedure。",
     owners: { skillIds: ["app-store-optimization"] },
     target: "scripts/localization_helper.mjs",
     runtime: "node",
   });
-export const appStoreOptimizationMetadataOptimizer = defineProcedure({
+export const appStoreOptimizationMetadataOptimizer = defineCliProcedure({
     id: "app-store-optimization-metadata-optimizer",
     entry: new URL("./sources/app-store-optimization/metadata_optimizer.ts", import.meta.url),
-    description: "Script metadata_optimizer.mjs.",
+    description: "执行 metadata-optimizer procedure。",
     owners: { skillIds: ["app-store-optimization"] },
     target: "scripts/metadata_optimizer.mjs",
     runtime: "node",
   });
-export const appStoreOptimizationReviewAnalyzer = defineProcedure({
+export const appStoreOptimizationReviewAnalyzer = defineCliProcedure({
     id: "app-store-optimization-review-analyzer",
     entry: new URL("./sources/app-store-optimization/review_analyzer.ts", import.meta.url),
-    description: "Script review_analyzer.mjs.",
+    description: "执行 review-analyzer procedure。",
     owners: { skillIds: ["app-store-optimization"] },
     target: "scripts/review_analyzer.mjs",
     runtime: "node",
   });
-export const architectureReviewerScanCodebase = defineProcedure({
+export const architectureReviewerScanCodebase = defineCliProcedure({
     id: "architecture-reviewer-scan-codebase",
     entry: new URL("./sources/architecture-reviewer/scan_codebase.ts", import.meta.url),
-    description: "Script scan_codebase.mjs.",
+    description: "执行 scan-codebase procedure。",
     owners: { skillIds: ["architecture-reviewer"] },
     target: "scripts/scan_codebase.mjs",
     runtime: "node",
   });
-export const baoyuCompressImageMain = defineProcedure({
+export const baoyuCompressImageMain = defineCliProcedure({
     id: "baoyu-compress-image-main",
     entry: new URL("./sources/baoyu-compress-image/main.ts", import.meta.url),
-    description: "Script main.mjs.",
+    description: "执行 main procedure。",
     owners: { skillIds: ["baoyu-compress-image"] },
     target: "scripts/main.mjs",
     runtime: "node",
   });
-export const canvasDesignBaoyuArticleIllustratorBuildBatch = defineProcedure({
+export const canvasDesignBaoyuArticleIllustratorBuildBatch = defineCliProcedure({
     id: "canvas-design-baoyu-article-illustrator-build-batch",
     entry: new URL("./sources/canvas-design/baoyu-article-illustrator-build-batch.ts", import.meta.url),
-    description: "Script baoyu-article-illustrator-build-batch.mjs.",
+    description: "执行 baoyu-article-illustrator-build-batch procedure。",
     owners: { skillIds: ["canvas-design"] },
     target: "scripts/baoyu-article-illustrator-build-batch.mjs",
     runtime: "node",
   });
-export const canvasDesignConceptToImageRenderToImage = defineProcedure({
+export const canvasDesignConceptToImageRenderToImage = defineCliProcedure({
     id: "canvas-design-concept-to-image-render-to-image",
     entry: new URL("./sources/canvas-design/concept-to-image-render_to_image.ts", import.meta.url),
-    description: "Script concept-to-image-render_to_image.mjs.",
+    description: "执行 concept-to-image-render-to-image procedure。",
     owners: { skillIds: ["canvas-design"] },
     target: "scripts/concept-to-image-render_to_image.mjs",
     runtime: "node",
   });
-export const canvasDesignConceptToVideoAddAudio = defineProcedure({
+export const canvasDesignConceptToVideoAddAudio = defineCliProcedure({
     id: "canvas-design-concept-to-video-add-audio",
     entry: new URL("./sources/canvas-design/concept-to-video-add_audio.ts", import.meta.url),
-    description: "Script concept-to-video-add_audio.mjs.",
+    description: "执行 concept-to-video-add-audio procedure。",
     owners: { skillIds: ["canvas-design"] },
     target: "scripts/concept-to-video-add_audio.mjs",
     runtime: "node",
   });
-export const canvasDesignConceptToVideoRenderVideo = defineProcedure({
+export const canvasDesignConceptToVideoRenderVideo = defineCliProcedure({
     id: "canvas-design-concept-to-video-render-video",
     entry: new URL("./sources/canvas-design/concept-to-video-render_video.ts", import.meta.url),
-    description: "Script concept-to-video-render_video.mjs.",
+    description: "执行 concept-to-video-render-video procedure。",
     owners: { skillIds: ["canvas-design"] },
     target: "scripts/concept-to-video-render_video.mjs",
     runtime: "node",
   });
-export const codeReviewAssessCode = defineProcedure({
+export const codeReviewAssessCode = defineCliProcedure({
     id: "code-review-assess-code",
     entry: new URL("./sources/code-review/assess-code.ts", import.meta.url),
-    description: "Script assess-code.mjs.",
+    description: "执行 assess-code procedure。",
     owners: { skillIds: ["code-review"] },
     target: "scripts/assess-code.mjs",
     runtime: "node",
   });
-export const codeReviewAssessTests = defineProcedure({
+export const codeReviewAssessTests = defineCliProcedure({
     id: "code-review-assess-tests",
     entry: new URL("./sources/code-review/assess-tests.ts", import.meta.url),
-    description: "Script assess-tests.mjs.",
+    description: "执行 assess-tests procedure。",
     owners: { skillIds: ["code-review"] },
     target: "scripts/assess-tests.mjs",
     runtime: "node",
   });
-export const complexityReducerComplexityReport = defineProcedure({
+export const complexityReducerComplexityReport = defineCliProcedure({
     id: "complexity-reducer-complexity-report",
     entry: new URL("./sources/complexity-reducer/complexity_report.ts", import.meta.url),
-    description: "Script complexity_report.mjs.",
+    description: "执行 complexity-report procedure。",
     owners: { skillIds: ["complexity-reducer"] },
     target: "scripts/complexity_report.mjs",
     runtime: "node",
   });
-export const copywritingContentFilter = defineProcedure({
+export const copywritingContentFilter = defineCliProcedure({
     id: "copywriting-content-filter",
     entry: new URL("./sources/copywriting/content_filter.ts", import.meta.url),
-    description: "Script content_filter.mjs.",
+    description: "执行 content-filter procedure。",
     owners: { skillIds: ["copywriting"] },
     target: "scripts/content_filter.mjs",
     runtime: "node",
   });
-export const dataAnalysisAnalyze = defineProcedure({
+export const dataAnalysisAnalyze = defineCliProcedure({
     id: "data-analysis-analyze",
     entry: new URL("./sources/data-analysis/analyze.ts", import.meta.url),
-    description: "Script analyze.mjs.",
+    description: "执行 analyze procedure。",
     owners: { skillIds: ["data-analysis"] },
     target: "scripts/analyze.mjs",
     runtime: "node",
   });
-export const debugMethodologyDebugChecklist = defineProcedure({
+export const debugMethodologyDebugChecklist = defineCliProcedure({
     id: "debug-methodology-debug-checklist",
     entry: new URL("./sources/debug-methodology/debug-checklist.ts", import.meta.url),
     description: "根据问题标题生成六步调试检查清单骨架。",
     owners: { skillIds: ["debug-methodology"] },
-    argsSchema: "DebugChecklistArgs",
-    outputSchema: "MarkdownChecklist",
+    args: defineProcedureArgs<CliProcedureRequest>({
+      typeName: "DebugChecklistArgs",
+      fields: cliProcedureArgs.fields,
+    }),
+    output: defineProcedureOutput<RuntimeProcedureResult>({
+      typeName: "MarkdownChecklist",
+      fields: runtimeProcedureOutput.fields,
+    }),
   });
-export const financialAnalystBudgetVarianceAnalyzer = defineProcedure({
+export const financialAnalystBudgetVarianceAnalyzer = defineCliProcedure({
     id: "financial-analyst-budget-variance-analyzer",
     entry: new URL("./sources/financial-analyst/budget_variance_analyzer.ts", import.meta.url),
-    description: "Script budget_variance_analyzer.mjs.",
+    description: "执行 budget-variance-analyzer procedure。",
     owners: { skillIds: ["financial-analyst"] },
     target: "scripts/budget_variance_analyzer.mjs",
     runtime: "node",
   });
-export const financialAnalystDcfValuation = defineProcedure({
+export const financialAnalystDcfValuation = defineCliProcedure({
     id: "financial-analyst-dcf-valuation",
     entry: new URL("./sources/financial-analyst/dcf_valuation.ts", import.meta.url),
-    description: "Script dcf_valuation.mjs.",
+    description: "执行 dcf-valuation procedure。",
     owners: { skillIds: ["financial-analyst"] },
     target: "scripts/dcf_valuation.mjs",
     runtime: "node",
   });
-export const financialAnalystForecastBuilder = defineProcedure({
+export const financialAnalystForecastBuilder = defineCliProcedure({
     id: "financial-analyst-forecast-builder",
     entry: new URL("./sources/financial-analyst/forecast_builder.ts", import.meta.url),
-    description: "Script forecast_builder.mjs.",
+    description: "执行 forecast-builder procedure。",
     owners: { skillIds: ["financial-analyst"] },
     target: "scripts/forecast_builder.mjs",
     runtime: "node",
   });
-export const financialAnalystRatioCalculator = defineProcedure({
+export const financialAnalystRatioCalculator = defineCliProcedure({
     id: "financial-analyst-ratio-calculator",
     entry: new URL("./sources/financial-analyst/ratio_calculator.ts", import.meta.url),
-    description: "Script ratio_calculator.mjs.",
+    description: "执行 ratio-calculator procedure。",
     owners: { skillIds: ["financial-analyst"] },
     target: "scripts/ratio_calculator.mjs",
     runtime: "node",
   });
-export const financialAnalystRatioInputValidation = defineProcedure({
+export const financialAnalystRatioInputValidation = defineCliProcedure({
     id: "financial-analyst-ratio-input-validation",
     entry: new URL("./sources/financial-analyst/ratio_input_validation.ts", import.meta.url),
-    description: "Script ratio_input_validation.mjs.",
+    description: "执行 ratio-input-validation procedure。",
     owners: { skillIds: ["financial-analyst"] },
     target: "scripts/ratio_input_validation.mjs",
     runtime: "node",
   });
-export const ghFixCiInspectPrChecks = defineProcedure({
+export const ghFixCiInspectPrChecks = defineCliProcedure({
     id: "gh-fix-ci-inspect-pr-checks",
     entry: new URL("./sources/gh-fix-ci/inspect_pr_checks.ts", import.meta.url),
-    description: "Script inspect_pr_checks.mjs.",
+    description: "执行 inspect-pr-checks procedure。",
     owners: { skillIds: ["gh-fix-ci"] },
     target: "scripts/inspect_pr_checks.mjs",
     runtime: "node",
   });
-export const helmChartScaffoldingValidateChart = defineProcedure({
+export const helmChartScaffoldingValidateChart = defineCliProcedure({
     id: "helm-chart-scaffolding-validate-chart",
     entry: new URL("./sources/helm-chart-scaffolding/validate-chart.ts", import.meta.url),
-    description: "Script validate-chart.mjs.",
+    description: "执行 validate-chart procedure。",
     owners: { skillIds: ["helm-chart-scaffolding"] },
     target: "scripts/validate-chart.mjs",
     runtime: "node",
   });
-export const i18nLocalizationI18nChecker = defineProcedure({
+export const i18nLocalizationI18nChecker = defineCliProcedure({
     id: "i18n-localization-i18n-checker",
     entry: new URL("./sources/i18n-localization/i18n_checker.ts", import.meta.url),
-    description: "Script i18n_checker.mjs.",
+    description: "执行 i18n-checker procedure。",
     owners: { skillIds: ["i18n-localization"] },
     target: "scripts/i18n_checker.mjs",
     runtime: "node",
   });
-export const iconRetrievalSearch = defineProcedure({
+export const iconRetrievalSearch = defineCliProcedure({
     id: "icon-retrieval-search",
     entry: new URL("./sources/icon-retrieval/search.ts", import.meta.url),
-    description: "Script search.mjs.",
+    description: "执行 search procedure。",
     owners: { skillIds: ["icon-retrieval"] },
     target: "scripts/search.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillAccessibilityAudit = defineProcedure({
+export const iosSimulatorSkillAccessibilityAudit = defineCliProcedure({
     id: "ios-simulator-skill-accessibility-audit",
     entry: new URL("./sources/ios-simulator-skill/accessibility_audit.ts", import.meta.url),
-    description: "Script accessibility_audit.mjs.",
+    description: "执行 accessibility-audit procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/accessibility_audit.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillAppLauncher = defineProcedure({
+export const iosSimulatorSkillAppLauncher = defineCliProcedure({
     id: "ios-simulator-skill-app-launcher",
     entry: new URL("./sources/ios-simulator-skill/app_launcher.ts", import.meta.url),
-    description: "Script app_launcher.mjs.",
+    description: "执行 app-launcher procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/app_launcher.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillAppStateCapture = defineProcedure({
+export const iosSimulatorSkillAppStateCapture = defineCliProcedure({
     id: "ios-simulator-skill-app-state-capture",
     entry: new URL("./sources/ios-simulator-skill/app_state_capture.ts", import.meta.url),
-    description: "Script app_state_capture.mjs.",
+    description: "执行 app-state-capture procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/app_state_capture.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillBuildAndTest = defineProcedure({
+export const iosSimulatorSkillBuildAndTest = defineCliProcedure({
     id: "ios-simulator-skill-build-and-test",
     entry: new URL("./sources/ios-simulator-skill/build_and_test.ts", import.meta.url),
-    description: "Script build_and_test.mjs.",
+    description: "执行 build-and-test procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/build_and_test.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillClipboard = defineProcedure({
+export const iosSimulatorSkillClipboard = defineCliProcedure({
     id: "ios-simulator-skill-clipboard",
     entry: new URL("./sources/ios-simulator-skill/clipboard.ts", import.meta.url),
-    description: "Script clipboard.mjs.",
+    description: "执行 clipboard procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/clipboard.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillGesture = defineProcedure({
+export const iosSimulatorSkillGesture = defineCliProcedure({
     id: "ios-simulator-skill-gesture",
     entry: new URL("./sources/ios-simulator-skill/gesture.ts", import.meta.url),
-    description: "Script gesture.mjs.",
+    description: "执行 gesture procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/gesture.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillInteractionCommon = defineProcedure({
+export const iosSimulatorSkillInteractionCommon = defineCliProcedure({
     id: "ios-simulator-skill-interaction-common",
     entry: new URL("./sources/ios-simulator-skill/interaction_common.ts", import.meta.url),
-    description: "Script interaction_common.mjs.",
+    description: "执行 interaction-common procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/interaction_common.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillKeyboard = defineProcedure({
+export const iosSimulatorSkillKeyboard = defineCliProcedure({
     id: "ios-simulator-skill-keyboard",
     entry: new URL("./sources/ios-simulator-skill/keyboard.ts", import.meta.url),
-    description: "Script keyboard.mjs.",
+    description: "执行 keyboard procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/keyboard.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillLogMonitor = defineProcedure({
+export const iosSimulatorSkillLogMonitor = defineCliProcedure({
     id: "ios-simulator-skill-log-monitor",
     entry: new URL("./sources/ios-simulator-skill/log_monitor.ts", import.meta.url),
-    description: "Script log_monitor.mjs.",
+    description: "执行 log-monitor procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/log_monitor.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillNavigator = defineProcedure({
+export const iosSimulatorSkillNavigator = defineCliProcedure({
     id: "ios-simulator-skill-navigator",
     entry: new URL("./sources/ios-simulator-skill/navigator.ts", import.meta.url),
-    description: "Script navigator.mjs.",
+    description: "执行 navigator procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/navigator.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillPrivacyManager = defineProcedure({
+export const iosSimulatorSkillPrivacyManager = defineCliProcedure({
     id: "ios-simulator-skill-privacy-manager",
     entry: new URL("./sources/ios-simulator-skill/privacy_manager.ts", import.meta.url),
-    description: "Script privacy_manager.mjs.",
+    description: "执行 privacy-manager procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/privacy_manager.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillPushNotification = defineProcedure({
+export const iosSimulatorSkillPushNotification = defineCliProcedure({
     id: "ios-simulator-skill-push-notification",
     entry: new URL("./sources/ios-simulator-skill/push_notification.ts", import.meta.url),
-    description: "Script push_notification.mjs.",
+    description: "执行 push-notification procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/push_notification.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillScreenMapper = defineProcedure({
+export const iosSimulatorSkillScreenMapper = defineCliProcedure({
     id: "ios-simulator-skill-screen-mapper",
     entry: new URL("./sources/ios-simulator-skill/screen_mapper.ts", import.meta.url),
-    description: "Script screen_mapper.mjs.",
+    description: "执行 screen-mapper procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/screen_mapper.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillScreenshotCommon = defineProcedure({
+export const iosSimulatorSkillScreenshotCommon = defineCliProcedure({
     id: "ios-simulator-skill-screenshot-common",
     entry: new URL("./sources/ios-simulator-skill/screenshot_common.ts", import.meta.url),
-    description: "Script screenshot_common.mjs.",
+    description: "执行 screenshot-common procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/screenshot_common.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillSimHealthCheck = defineProcedure({
+export const iosSimulatorSkillSimHealthCheck = defineCliProcedure({
     id: "ios-simulator-skill-sim-health-check",
     entry: new URL("./sources/ios-simulator-skill/sim_health_check.ts", import.meta.url),
-    description: "Script sim_health_check.mjs.",
+    description: "执行 sim-health-check procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/sim_health_check.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillSimList = defineProcedure({
+export const iosSimulatorSkillSimList = defineCliProcedure({
     id: "ios-simulator-skill-sim-list",
     entry: new URL("./sources/ios-simulator-skill/sim_list.ts", import.meta.url),
-    description: "Script sim_list.mjs.",
+    description: "执行 sim-list procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/sim_list.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillSimctlBoot = defineProcedure({
+export const iosSimulatorSkillSimctlBoot = defineCliProcedure({
     id: "ios-simulator-skill-simctl-boot",
     entry: new URL("./sources/ios-simulator-skill/simctl_boot.ts", import.meta.url),
-    description: "Script simctl_boot.mjs.",
+    description: "执行 simctl-boot procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/simctl_boot.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillSimctlCommon = defineProcedure({
+export const iosSimulatorSkillSimctlCommon = defineCliProcedure({
     id: "ios-simulator-skill-simctl-common",
     entry: new URL("./sources/ios-simulator-skill/simctl_common.ts", import.meta.url),
-    description: "Script simctl_common.mjs.",
+    description: "执行 simctl-common procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/simctl_common.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillSimctlCreate = defineProcedure({
+export const iosSimulatorSkillSimctlCreate = defineCliProcedure({
     id: "ios-simulator-skill-simctl-create",
     entry: new URL("./sources/ios-simulator-skill/simctl_create.ts", import.meta.url),
-    description: "Script simctl_create.mjs.",
+    description: "执行 simctl-create procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/simctl_create.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillSimctlDelete = defineProcedure({
+export const iosSimulatorSkillSimctlDelete = defineCliProcedure({
     id: "ios-simulator-skill-simctl-delete",
     entry: new URL("./sources/ios-simulator-skill/simctl_delete.ts", import.meta.url),
-    description: "Script simctl_delete.mjs.",
+    description: "执行 simctl-delete procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/simctl_delete.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillSimctlErase = defineProcedure({
+export const iosSimulatorSkillSimctlErase = defineCliProcedure({
     id: "ios-simulator-skill-simctl-erase",
     entry: new URL("./sources/ios-simulator-skill/simctl_erase.ts", import.meta.url),
-    description: "Script simctl_erase.mjs.",
+    description: "执行 simctl-erase procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/simctl_erase.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillSimctlShutdown = defineProcedure({
+export const iosSimulatorSkillSimctlShutdown = defineCliProcedure({
     id: "ios-simulator-skill-simctl-shutdown",
     entry: new URL("./sources/ios-simulator-skill/simctl_shutdown.ts", import.meta.url),
-    description: "Script simctl_shutdown.mjs.",
+    description: "执行 simctl-shutdown procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/simctl_shutdown.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillSimulatorSelector = defineProcedure({
+export const iosSimulatorSkillSimulatorSelector = defineCliProcedure({
     id: "ios-simulator-skill-simulator-selector",
     entry: new URL("./sources/ios-simulator-skill/simulator_selector.ts", import.meta.url),
-    description: "Script simulator_selector.mjs.",
+    description: "执行 simulator-selector procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/simulator_selector.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillStatusBar = defineProcedure({
+export const iosSimulatorSkillStatusBar = defineCliProcedure({
     id: "ios-simulator-skill-status-bar",
     entry: new URL("./sources/ios-simulator-skill/status_bar.ts", import.meta.url),
-    description: "Script status_bar.mjs.",
+    description: "执行 status-bar procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/status_bar.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillTestRecorder = defineProcedure({
+export const iosSimulatorSkillTestRecorder = defineCliProcedure({
     id: "ios-simulator-skill-test-recorder",
     entry: new URL("./sources/ios-simulator-skill/test_recorder.ts", import.meta.url),
-    description: "Script test_recorder.mjs.",
+    description: "执行 test-recorder procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/test_recorder.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillVisualDiff = defineProcedure({
+export const iosSimulatorSkillVisualDiff = defineCliProcedure({
     id: "ios-simulator-skill-visual-diff",
     entry: new URL("./sources/ios-simulator-skill/visual_diff.ts", import.meta.url),
-    description: "Script visual_diff.mjs.",
+    description: "执行 visual-diff procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/visual_diff.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillXcodeBuilder = defineProcedure({
+export const iosSimulatorSkillXcodeBuilder = defineCliProcedure({
     id: "ios-simulator-skill-xcode-builder",
     entry: new URL("./sources/ios-simulator-skill/xcode/builder.ts", import.meta.url),
-    description: "Script xcode/builder.mjs.",
+    description: "执行 xcode/builder procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/xcode/builder.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillXcodeCache = defineProcedure({
+export const iosSimulatorSkillXcodeCache = defineCliProcedure({
     id: "ios-simulator-skill-xcode-cache",
     entry: new URL("./sources/ios-simulator-skill/xcode/cache.ts", import.meta.url),
-    description: "Script xcode/cache.mjs.",
+    description: "执行 xcode/cache procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/xcode/cache.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillXcodeConfig = defineProcedure({
+export const iosSimulatorSkillXcodeConfig = defineCliProcedure({
     id: "ios-simulator-skill-xcode-config",
     entry: new URL("./sources/ios-simulator-skill/xcode/config.ts", import.meta.url),
-    description: "Script xcode/config.mjs.",
+    description: "执行 xcode/config procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/xcode/config.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillXcodeIndex = defineProcedure({
+export const iosSimulatorSkillXcodeIndex = defineCliProcedure({
     id: "ios-simulator-skill-xcode-index",
     entry: new URL("./sources/ios-simulator-skill/xcode/index.ts", import.meta.url),
-    description: "Script xcode/index.mjs.",
+    description: "执行 xcode/index procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/xcode/index.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillXcodeReporter = defineProcedure({
+export const iosSimulatorSkillXcodeReporter = defineCliProcedure({
     id: "ios-simulator-skill-xcode-reporter",
     entry: new URL("./sources/ios-simulator-skill/xcode/reporter.ts", import.meta.url),
-    description: "Script xcode/reporter.mjs.",
+    description: "执行 xcode/reporter procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/xcode/reporter.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillXcodeXcresult = defineProcedure({
+export const iosSimulatorSkillXcodeXcresult = defineCliProcedure({
     id: "ios-simulator-skill-xcode-xcresult",
     entry: new URL("./sources/ios-simulator-skill/xcode/xcresult.ts", import.meta.url),
-    description: "Script xcode/xcresult.mjs.",
+    description: "执行 xcode/xcresult procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/xcode/xcresult.mjs",
     runtime: "node",
   });
-export const markitdownBatchConvert = defineProcedure({
+export const markitdownBatchConvert = defineCliProcedure({
     id: "markitdown-batch-convert",
     entry: new URL("./sources/markitdown/batch_convert.ts", import.meta.url),
-    description: "Script batch_convert.mjs.",
+    description: "执行 batch-convert procedure。",
     owners: { skillIds: ["markitdown"] },
     target: "scripts/batch_convert.mjs",
     runtime: "node",
   });
-export const markitdownConvertLiterature = defineProcedure({
+export const markitdownConvertLiterature = defineCliProcedure({
     id: "markitdown-convert-literature",
     entry: new URL("./sources/markitdown/convert_literature.ts", import.meta.url),
-    description: "Script convert_literature.mjs.",
+    description: "执行 convert-literature procedure。",
     owners: { skillIds: ["markitdown"] },
     target: "scripts/convert_literature.mjs",
     runtime: "node",
   });
-export const markitdownConvertWithAi = defineProcedure({
+export const markitdownConvertWithAi = defineCliProcedure({
     id: "markitdown-convert-with-ai",
     entry: new URL("./sources/markitdown/convert_with_ai.ts", import.meta.url),
-    description: "Script convert_with_ai.mjs.",
+    description: "执行 convert-with-ai procedure。",
     owners: { skillIds: ["markitdown"] },
     target: "scripts/convert_with_ai.mjs",
     runtime: "node",
   });
-export const markitdownMarkitdownRuntime = defineProcedure({
+export const markitdownMarkitdownRuntime = defineCliProcedure({
     id: "markitdown-markitdown-runtime",
     entry: new URL("./sources/markitdown/markitdown_runtime.ts", import.meta.url),
-    description: "Script markitdown_runtime.mjs.",
+    description: "执行 markitdown-runtime procedure。",
     owners: { skillIds: ["markitdown"] },
     target: "scripts/markitdown_runtime.mjs",
     runtime: "node",
   });
-export const mdToPdfKatexRender = defineProcedure({
+export const mdToPdfKatexRender = defineCliProcedure({
     id: "md-to-pdf-katex-render",
     entry: new URL("./sources/md-to-pdf/katex_render.ts", import.meta.url),
-    description: "Script katex_render.mjs.",
+    description: "执行 katex-render procedure。",
     owners: { skillIds: ["md-to-pdf"] },
     target: "scripts/katex_render.mjs",
     runtime: "node",
   });
-export const mdToPdfMdToPdf = defineProcedure({
+export const mdToPdfMdToPdf = defineCliProcedure({
     id: "md-to-pdf-md-to-pdf",
     entry: new URL("./sources/md-to-pdf/md_to_pdf.ts", import.meta.url),
-    description: "Script md_to_pdf.mjs.",
+    description: "执行 md-to-pdf procedure。",
     owners: { skillIds: ["md-to-pdf"] },
     target: "scripts/md_to_pdf.mjs",
     runtime: "node",
   });
-export const mdToPdfSetup = defineProcedure({
+export const mdToPdfSetup = defineCliProcedure({
     id: "md-to-pdf-setup",
     entry: new URL("./sources/md-to-pdf/setup.ts", import.meta.url),
-    description: "Script setup.mjs.",
+    description: "执行 setup procedure。",
     owners: { skillIds: ["md-to-pdf"] },
     target: "scripts/setup.mjs",
     runtime: "node",
   });
-export const modelFirstReasoningValidateModel = defineProcedure({
+export const modelFirstReasoningValidateModel = defineCliProcedure({
     id: "model-first-reasoning-validate-model",
     entry: new URL("./sources/model-first-reasoning/validate-model.ts", import.meta.url),
-    description: "Script validate-model.mjs.",
+    description: "执行 validate-model procedure。",
     owners: { skillIds: ["model-first-reasoning"] },
     target: "scripts/validate-model.mjs",
     runtime: "node",
   });
-export const modernWebDesignDesignAudit = defineProcedure({
+export const modernWebDesignDesignAudit = defineCliProcedure({
     id: "modern-web-design-design-audit",
     entry: new URL("./sources/modern-web-design/design_audit.ts", import.meta.url),
-    description: "Script design_audit.mjs.",
+    description: "执行 design-audit procedure。",
     owners: { skillIds: ["modern-web-design"] },
     target: "scripts/design_audit.mjs",
     runtime: "node",
   });
-export const modernWebDesignPatternGenerator = defineProcedure({
+export const modernWebDesignPatternGenerator = defineCliProcedure({
     id: "modern-web-design-pattern-generator",
     entry: new URL("./sources/modern-web-design/pattern_generator.ts", import.meta.url),
-    description: "Script pattern_generator.mjs.",
+    description: "执行 pattern-generator procedure。",
     owners: { skillIds: ["modern-web-design"] },
     target: "scripts/pattern_generator.mjs",
     runtime: "node",
   });
-export const pdfCheckBoundingBoxes = defineProcedure({
+export const pdfCheckBoundingBoxes = defineCliProcedure({
     id: "pdf-check-bounding-boxes",
     entry: new URL("./sources/pdf/check_bounding_boxes.ts", import.meta.url),
-    description: "Script check_bounding_boxes.mjs.",
+    description: "执行 check-bounding-boxes procedure。",
     owners: { skillIds: ["pdf"] },
     target: "scripts/check_bounding_boxes.mjs",
     runtime: "node",
   });
-export const pdfCheckFillableFields = defineProcedure({
+export const pdfCheckFillableFields = defineCliProcedure({
     id: "pdf-check-fillable-fields",
     entry: new URL("./sources/pdf/check_fillable_fields.ts", import.meta.url),
-    description: "Script check_fillable_fields.mjs.",
+    description: "执行 check-fillable-fields procedure。",
     owners: { skillIds: ["pdf"] },
     target: "scripts/check_fillable_fields.mjs",
     runtime: "node",
   });
-export const pdfConvertPdfToImages = defineProcedure({
+export const pdfConvertPdfToImages = defineCliProcedure({
     id: "pdf-convert-pdf-to-images",
     entry: new URL("./sources/pdf/convert_pdf_to_images.ts", import.meta.url),
-    description: "Script convert_pdf_to_images.mjs.",
+    description: "执行 convert-pdf-to-images procedure。",
     owners: { skillIds: ["pdf"] },
     target: "scripts/convert_pdf_to_images.mjs",
     runtime: "node",
   });
-export const pdfCreateValidationImage = defineProcedure({
+export const pdfCreateValidationImage = defineCliProcedure({
     id: "pdf-create-validation-image",
     entry: new URL("./sources/pdf/create_validation_image.ts", import.meta.url),
-    description: "Script create_validation_image.mjs.",
+    description: "执行 create-validation-image procedure。",
     owners: { skillIds: ["pdf"] },
     target: "scripts/create_validation_image.mjs",
     runtime: "node",
   });
-export const pdfExtractFormFieldInfo = defineProcedure({
+export const pdfExtractFormFieldInfo = defineCliProcedure({
     id: "pdf-extract-form-field-info",
     entry: new URL("./sources/pdf/extract_form_field_info.ts", import.meta.url),
-    description: "Script extract_form_field_info.mjs.",
+    description: "执行 extract-form-field-info procedure。",
     owners: { skillIds: ["pdf"] },
     target: "scripts/extract_form_field_info.mjs",
     runtime: "node",
   });
-export const pdfExtractFormStructure = defineProcedure({
+export const pdfExtractFormStructure = defineCliProcedure({
     id: "pdf-extract-form-structure",
     entry: new URL("./sources/pdf/extract_form_structure.ts", import.meta.url),
-    description: "Script extract_form_structure.mjs.",
+    description: "执行 extract-form-structure procedure。",
     owners: { skillIds: ["pdf"] },
     target: "scripts/extract_form_structure.mjs",
     runtime: "node",
   });
-export const pdfFillFillableFields = defineProcedure({
+export const pdfFillFillableFields = defineCliProcedure({
     id: "pdf-fill-fillable-fields",
     entry: new URL("./sources/pdf/fill_fillable_fields.ts", import.meta.url),
-    description: "Script fill_fillable_fields.mjs.",
+    description: "执行 fill-fillable-fields procedure。",
     owners: { skillIds: ["pdf"] },
     target: "scripts/fill_fillable_fields.mjs",
     runtime: "node",
   });
-export const pdfFillPdfFormWithAnnotations = defineProcedure({
+export const pdfFillPdfFormWithAnnotations = defineCliProcedure({
     id: "pdf-fill-pdf-form-with-annotations",
     entry: new URL("./sources/pdf/fill_pdf_form_with_annotations.ts", import.meta.url),
-    description: "Script fill_pdf_form_with_annotations.mjs.",
+    description: "执行 fill-pdf-form-with-annotations procedure。",
     owners: { skillIds: ["pdf"] },
     target: "scripts/fill_pdf_form_with_annotations.mjs",
     runtime: "node",
   });
-export const preLandingReviewCollectDiff = defineProcedure({
+export const preLandingReviewCollectDiff = defineCliProcedure({
     id: "pre-landing-review-collect-diff",
     entry: new URL("./sources/pre-landing-review/collect_diff.ts", import.meta.url),
-    description: "Script collect_diff.mjs.",
+    description: "执行 collect-diff procedure。",
     owners: { skillIds: ["pre-landing-review"] },
     target: "scripts/collect_diff.mjs",
     runtime: "node",
   });
-export const preLandingReviewRenderReport = defineProcedure({
+export const preLandingReviewRenderReport = defineCliProcedure({
     id: "pre-landing-review-render-report",
     entry: new URL("./sources/pre-landing-review/render_report.ts", import.meta.url),
-    description: "Script render_report.mjs.",
+    description: "执行 render-report procedure。",
     owners: { skillIds: ["pre-landing-review"] },
     target: "scripts/render_report.mjs",
     runtime: "node",
   });
-export const prlctlVmControlFileTransfer = defineProcedure({
+export const prlctlVmControlFileTransfer = defineCliProcedure({
     id: "prlctl-vm-control-file-transfer",
     entry: new URL("./sources/prlctl-vm-control/file_transfer.ts", import.meta.url),
-    description: "Script file_transfer.mjs.",
+    description: "执行 file-transfer procedure。",
     owners: { skillIds: ["prlctl-vm-control"] },
     target: "scripts/file_transfer.mjs",
     runtime: "node",
   });
-export const prlctlVmControlPowershellOutput = defineProcedure({
+export const prlctlVmControlPowershellOutput = defineCliProcedure({
     id: "prlctl-vm-control-powershell-output",
     entry: new URL("./sources/prlctl-vm-control/powershell_output.ts", import.meta.url),
-    description: "Script powershell_output.mjs.",
+    description: "执行 powershell-output procedure。",
     owners: { skillIds: ["prlctl-vm-control"] },
     target: "scripts/powershell_output.mjs",
     runtime: "node",
   });
-export const prlctlVmControlPrlctlHelper = defineProcedure({
+export const prlctlVmControlPrlctlHelper = defineCliProcedure({
     id: "prlctl-vm-control-prlctl-helper",
     entry: new URL("./sources/prlctl-vm-control/prlctl_helper.ts", import.meta.url),
-    description: "Script prlctl_helper.mjs.",
+    description: "执行 prlctl-helper procedure。",
     owners: { skillIds: ["prlctl-vm-control"] },
     target: "scripts/prlctl_helper.mjs",
     runtime: "node",
   });
-export const promptEngineeringPatternsOptimizePrompt = defineProcedure({
+export const promptEngineeringPatternsOptimizePrompt = defineCliProcedure({
     id: "prompt-engineering-patterns-optimize-prompt",
     entry: new URL("./sources/prompt-engineering-patterns/optimize-prompt.ts", import.meta.url),
-    description: "Script optimize-prompt.mjs.",
+    description: "执行 optimize-prompt procedure。",
     owners: { skillIds: ["prompt-engineering-patterns"] },
     target: "scripts/optimize-prompt.mjs",
     runtime: "node",
   });
-export const remoteSshCommandInstallSshpass = defineProcedure({
+export const remoteSshCommandInstallSshpass = defineCliProcedure({
     id: "remote-ssh-command-install-sshpass",
     entry: new URL("./sources/remote-ssh-command/install-sshpass.ts", import.meta.url),
-    description: "Script install-sshpass.mjs.",
+    description: "执行 install-sshpass procedure。",
     owners: { skillIds: ["remote-ssh-command"] },
     target: "scripts/install-sshpass.mjs",
     runtime: "node",
   });
-export const remoteSshCommandSshExec = defineProcedure({
+export const remoteSshCommandSshExec = defineCliProcedure({
     id: "remote-ssh-command-ssh-exec",
     entry: new URL("./sources/remote-ssh-command/ssh-exec.ts", import.meta.url),
-    description: "Script ssh-exec.mjs.",
+    description: "执行 ssh-exec procedure。",
     owners: { skillIds: ["remote-ssh-command"] },
     target: "scripts/ssh-exec.mjs",
     runtime: "node",
   });
-export const screenshotEnsureMacosPermissions = defineProcedure({
+export const screenshotEnsureMacosPermissions = defineCliProcedure({
     id: "screenshot-ensure-macos-permissions",
     entry: new URL("./sources/screenshot/ensure_macos_permissions.ts", import.meta.url),
-    description: "Script ensure_macos_permissions.mjs.",
+    description: "执行 ensure-macos-permissions procedure。",
     owners: { skillIds: ["screenshot"] },
     target: "scripts/ensure_macos_permissions.mjs",
     runtime: "node",
   });
-export const screenshotMacosDisplayInfo = defineProcedure({
+export const screenshotMacosDisplayInfo = defineCliProcedure({
     id: "screenshot-macos-display-info",
     entry: new URL("./sources/screenshot/macos_display_info.ts", import.meta.url),
-    description: "Script macos_display_info.mjs.",
+    description: "执行 macos-display-info procedure。",
     owners: { skillIds: ["screenshot"] },
     target: "scripts/macos_display_info.mjs",
     runtime: "node",
   });
-export const screenshotMacosPermissions = defineProcedure({
+export const screenshotMacosPermissions = defineCliProcedure({
     id: "screenshot-macos-permissions",
     entry: new URL("./sources/screenshot/macos_permissions.ts", import.meta.url),
-    description: "Script macos_permissions.mjs.",
+    description: "执行 macos-permissions procedure。",
     owners: { skillIds: ["screenshot"] },
     target: "scripts/macos_permissions.mjs",
     runtime: "node",
   });
-export const screenshotMacosWindowInfo = defineProcedure({
+export const screenshotMacosWindowInfo = defineCliProcedure({
     id: "screenshot-macos-window-info",
     entry: new URL("./sources/screenshot/macos_window_info.ts", import.meta.url),
-    description: "Script macos_window_info.mjs.",
+    description: "执行 macos-window-info procedure。",
     owners: { skillIds: ["screenshot"] },
     target: "scripts/macos_window_info.mjs",
     runtime: "node",
   });
-export const screenshotTakeScreenshot = defineProcedure({
+export const screenshotTakeScreenshot = defineCliProcedure({
     id: "screenshot-take-screenshot",
     entry: new URL("./sources/screenshot/take_screenshot.ts", import.meta.url),
-    description: "Script take_screenshot.mjs.",
+    description: "执行 take-screenshot procedure。",
     owners: { skillIds: ["screenshot"] },
     target: "scripts/take_screenshot.mjs",
     runtime: "node",
   });
-export const screenshotTakeScreenshotWindows = defineProcedure({
+export const screenshotTakeScreenshotWindows = defineCliProcedure({
     id: "screenshot-take-screenshot-windows",
     entry: new URL("./sources/screenshot/take_screenshot_windows.ts", import.meta.url),
-    description: "Script take_screenshot_windows.mjs.",
+    description: "执行 take-screenshot-windows procedure。",
     owners: { skillIds: ["screenshot"] },
     target: "scripts/take_screenshot_windows.mjs",
     runtime: "node",
   });
-export const securityOwnershipMapBuildOwnershipMap = defineProcedure({
+export const securityOwnershipMapBuildOwnershipMap = defineCliProcedure({
     id: "security-ownership-map-build-ownership-map",
     entry: new URL("./sources/security-ownership-map/build_ownership_map.ts", import.meta.url),
-    description: "Script build_ownership_map.mjs.",
+    description: "执行 build-ownership-map procedure。",
     owners: { skillIds: ["security-ownership-map"] },
     target: "scripts/build_ownership_map.mjs",
     runtime: "node",
   });
-export const securityOwnershipMapCommunityMaintainers = defineProcedure({
+export const securityOwnershipMapCommunityMaintainers = defineCliProcedure({
     id: "security-ownership-map-community-maintainers",
     entry: new URL("./sources/security-ownership-map/community_maintainers.ts", import.meta.url),
-    description: "Script community_maintainers.mjs.",
+    description: "执行 community-maintainers procedure。",
     owners: { skillIds: ["security-ownership-map"] },
     target: "scripts/community_maintainers.mjs",
     runtime: "node",
   });
-export const securityOwnershipMapQueryOwnership = defineProcedure({
+export const securityOwnershipMapQueryOwnership = defineCliProcedure({
     id: "security-ownership-map-query-ownership",
     entry: new URL("./sources/security-ownership-map/query_ownership.ts", import.meta.url),
-    description: "Script query_ownership.mjs.",
+    description: "执行 query-ownership procedure。",
     owners: { skillIds: ["security-ownership-map"] },
     target: "scripts/query_ownership.mjs",
     runtime: "node",
   });
-export const securityOwnershipMapRunOwnershipMap = defineProcedure({
+export const securityOwnershipMapRunOwnershipMap = defineCliProcedure({
     id: "security-ownership-map-run-ownership-map",
     entry: new URL("./sources/security-ownership-map/run_ownership_map.ts", import.meta.url),
-    description: "Script run_ownership_map.mjs.",
+    description: "执行 run-ownership-map procedure。",
     owners: { skillIds: ["security-ownership-map"] },
     target: "scripts/run_ownership_map.mjs",
     runtime: "node",
   });
-export const shadcnUiVerifySetup = defineProcedure({
+export const shadcnUiVerifySetup = defineCliProcedure({
     id: "shadcn-ui-verify-setup",
     entry: new URL("./sources/shadcn-ui/verify-setup.ts", import.meta.url),
-    description: "Script verify-setup.mjs.",
+    description: "执行 verify-setup procedure。",
     owners: { skillIds: ["shadcn-ui"] },
     target: "scripts/verify-setup.mjs",
     runtime: "node",
   });
-export const skillActivationAnalyzerCsoAudit = defineProcedure({
+export const skillActivationAnalyzerCsoAudit = defineCliProcedure({
     id: "skill-activation-analyzer-cso-audit",
     entry: new URL("./sources/skill-activation-analyzer/cso_audit.ts", import.meta.url),
-    description: "Script cso_audit.mjs.",
+    description: "执行 cso-audit procedure。",
     owners: { skillIds: ["skill-activation-analyzer"] },
     target: "scripts/cso_audit.mjs",
     runtime: "node",
   });
-export const skillCreatorAggregateBenchmark = defineProcedure({
+export const skillCreatorAggregateBenchmark = defineCliProcedure({
     id: "skill-creator-aggregate-benchmark",
     entry: new URL("./sources/skill-creator/aggregate_benchmark.ts", import.meta.url),
-    description: "Script aggregate_benchmark.mjs.",
+    description: "执行 aggregate-benchmark procedure。",
     owners: { skillIds: ["skill-creator"] },
     target: "scripts/aggregate_benchmark.mjs",
     runtime: "node",
   });
-export const skillCreatorGenerateReport = defineProcedure({
+export const skillCreatorGenerateReport = defineCliProcedure({
     id: "skill-creator-generate-report",
     entry: new URL("./sources/skill-creator/generate_report.ts", import.meta.url),
-    description: "Script generate_report.mjs.",
+    description: "执行 generate-report procedure。",
     owners: { skillIds: ["skill-creator"] },
     target: "scripts/generate_report.mjs",
     runtime: "node",
   });
-export const skillCreatorGenerateReview = defineProcedure({
+export const skillCreatorGenerateReview = defineCliProcedure({
     id: "skill-creator-generate-review",
     entry: new URL("./sources/skill-creator/generate_review.ts", import.meta.url),
-    description: "Script generate_review.mjs.",
+    description: "执行 generate-review procedure。",
     owners: { skillIds: ["skill-creator"] },
     target: "scripts/generate_review.mjs",
     runtime: "node",
   });
-export const skillCreatorImproveDescription = defineProcedure({
+export const skillCreatorImproveDescription = defineCliProcedure({
     id: "skill-creator-improve-description",
     entry: new URL("./sources/skill-creator/improve_description.ts", import.meta.url),
-    description: "Script improve_description.mjs.",
+    description: "执行 improve-description procedure。",
     owners: { skillIds: ["skill-creator"] },
     target: "scripts/improve_description.mjs",
     runtime: "node",
   });
-export const skillCreatorPackageSkill = defineProcedure({
+export const skillCreatorPackageSkill = defineCliProcedure({
     id: "skill-creator-package-skill",
     entry: new URL("./sources/skill-creator/package_skill.ts", import.meta.url),
-    description: "Script package_skill.mjs.",
+    description: "执行 package-skill procedure。",
     owners: { skillIds: ["skill-creator"] },
     target: "scripts/package_skill.mjs",
     runtime: "node",
   });
-export const skillCreatorQuickValidate = defineProcedure({
+export const skillCreatorQuickValidate = defineCliProcedure({
     id: "skill-creator-quick-validate",
     entry: new URL("./sources/skill-creator/quick_validate.ts", import.meta.url),
-    description: "Script quick_validate.mjs.",
+    description: "执行 quick-validate procedure。",
     owners: { skillIds: ["skill-creator"] },
     target: "scripts/quick_validate.mjs",
     runtime: "node",
   });
-export const skillCreatorRunEval = defineProcedure({
+export const skillCreatorRunEval = defineCliProcedure({
     id: "skill-creator-run-eval",
     entry: new URL("./sources/skill-creator/run_eval.ts", import.meta.url),
-    description: "Script run_eval.mjs.",
+    description: "执行 run-eval procedure。",
     owners: { skillIds: ["skill-creator"] },
     target: "scripts/run_eval.mjs",
     runtime: "node",
   });
-export const skillCreatorRunLoop = defineProcedure({
+export const skillCreatorRunLoop = defineCliProcedure({
     id: "skill-creator-run-loop",
     entry: new URL("./sources/skill-creator/run_loop.ts", import.meta.url),
-    description: "Script run_loop.mjs.",
+    description: "执行 run-loop procedure。",
     owners: { skillIds: ["skill-creator"] },
     target: "scripts/run_loop.mjs",
     runtime: "node",
   });
-export const skillCreatorUtils = defineProcedure({
+export const skillCreatorUtils = defineCliProcedure({
     id: "skill-creator-utils",
     entry: new URL("./sources/skill-creator/utils.ts", import.meta.url),
-    description: "Script utils.mjs.",
+    description: "执行 utils procedure。",
     owners: { skillIds: ["skill-creator"] },
     target: "scripts/utils.mjs",
     runtime: "node",
   });
-export const skillsPruneAndSyncReadmeCurateSkills = defineProcedure({
+export const skillsPruneAndSyncReadmeCurateSkills = defineCliProcedure({
     id: "skills-prune-and-sync-readme-curate-skills",
     entry: new URL("./sources/skills-prune-and-sync-readme/curate_skills.ts", import.meta.url),
-    description: "Script curate_skills.mjs.",
+    description: "执行 curate-skills procedure。",
     owners: { skillIds: ["skills-prune-and-sync-readme"] },
     target: "scripts/curate_skills.mjs",
     runtime: "node",
   });
-export const skillsPruneAndSyncReadmeSimilarityGroups = defineProcedure({
+export const skillsPruneAndSyncReadmeSimilarityGroups = defineCliProcedure({
     id: "skills-prune-and-sync-readme-similarity-groups",
     entry: new URL("./sources/skills-prune-and-sync-readme/similarity_groups.ts", import.meta.url),
-    description: "Script similarity_groups.mjs.",
+    description: "执行 similarity-groups procedure。",
     owners: { skillIds: ["skills-prune-and-sync-readme"] },
     target: "scripts/similarity_groups.mjs",
     runtime: "node",
   });
-export const skillsPruneAndSyncReadmeTestCurateSkills = defineProcedure({
+export const skillsPruneAndSyncReadmeTestCurateSkills = defineCliProcedure({
     id: "skills-prune-and-sync-readme-test-curate-skills",
     entry: new URL("./sources/skills-prune-and-sync-readme/test_curate_skills.ts", import.meta.url),
-    description: "Script test_curate_skills.mjs.",
+    description: "执行 test-curate-skills procedure。",
     owners: { skillIds: ["skills-prune-and-sync-readme"] },
     target: "scripts/test_curate_skills.mjs",
     runtime: "node",
   });
-export const speckitBaselineBootstrapSpecify = defineProcedure({
+export const speckitBaselineBootstrapSpecify = defineCliProcedure({
     id: "speckit-baseline-bootstrap-specify",
     entry: new URL("./sources/speckit-baseline/bootstrap-specify.ts", import.meta.url),
-    description: "Script bootstrap-specify.mjs.",
+    description: "执行 bootstrap-specify procedure。",
     owners: { skillIds: ["speckit-baseline"] },
     target: "scripts/bootstrap-specify.mjs",
     runtime: "node",
   });
-export const speckitBaselineCheckPrerequisites = defineProcedure({
+export const speckitBaselineCheckPrerequisites = defineCliProcedure({
     id: "speckit-baseline-check-prerequisites",
     entry: new URL("./sources/speckit-baseline/check-prerequisites.ts", import.meta.url),
-    description: "Script check-prerequisites.mjs.",
+    description: "执行 check-prerequisites procedure。",
     owners: { skillIds: ["speckit-baseline"] },
     target: "scripts/check-prerequisites.mjs",
     runtime: "node",
   });
-export const speckitBaselineCommon = defineProcedure({
+export const speckitBaselineCommon = defineCliProcedure({
     id: "speckit-baseline-common",
     entry: new URL("./sources/speckit-baseline/common.ts", import.meta.url),
-    description: "Script common.mjs.",
+    description: "执行 common procedure。",
     owners: { skillIds: ["speckit-baseline"] },
     target: "scripts/common.mjs",
     runtime: "node",
   });
-export const speckitBaselineCreateNewFeature = defineProcedure({
+export const speckitBaselineCreateNewFeature = defineCliProcedure({
     id: "speckit-baseline-create-new-feature",
     entry: new URL("./sources/speckit-baseline/create-new-feature.ts", import.meta.url),
-    description: "Script create-new-feature.mjs.",
+    description: "执行 create-new-feature procedure。",
     owners: { skillIds: ["speckit-baseline"] },
     target: "scripts/create-new-feature.mjs",
     runtime: "node",
   });
-export const speckitBaselineSetupPlan = defineProcedure({
+export const speckitBaselineSetupPlan = defineCliProcedure({
     id: "speckit-baseline-setup-plan",
     entry: new URL("./sources/speckit-baseline/setup-plan.ts", import.meta.url),
-    description: "Script setup-plan.mjs.",
+    description: "执行 setup-plan procedure。",
     owners: { skillIds: ["speckit-baseline"] },
     target: "scripts/setup-plan.mjs",
     runtime: "node",
   });
-export const typescriptTypeSafetyExtractTsErrors = defineProcedure({
+export const typescriptTypeSafetyExtractTsErrors = defineCliProcedure({
     id: "typescript-type-safety-extract-ts-errors",
     entry: new URL("./sources/typescript-type-safety/extract-ts-errors.ts", import.meta.url),
     description: "把 tsc 输出按文件和错误码归组，便于先定位上游合同错误。",
     owners: { skillIds: ["typescript-type-safety"] },
-    argsSchema: "ExtractTsErrorsArgs",
-    outputSchema: "ExtractTsErrorsSummary",
+    args: defineProcedureArgs<CliProcedureRequest>({
+      typeName: "ExtractTsErrorsArgs",
+      fields: cliProcedureArgs.fields,
+    }),
+    output: defineProcedureOutput<RuntimeProcedureResult>({
+      typeName: "ExtractTsErrorsSummary",
+      fields: runtimeProcedureOutput.fields,
+    }),
   });
-export const uxResearcherDesignerPersonaGenerator = defineProcedure({
+export const uxResearcherDesignerPersonaGenerator = defineCliProcedure({
     id: "ux-researcher-designer-persona-generator",
     entry: new URL("./sources/ux-researcher-designer/persona_generator.ts", import.meta.url),
-    description: "Script persona_generator.mjs.",
+    description: "执行 persona-generator procedure。",
     owners: { skillIds: ["ux-researcher-designer"] },
     target: "scripts/persona_generator.mjs",
     runtime: "node",
   });
-export const webContentFetcherFetch = defineProcedure({
+export const webContentFetcherFetch = defineCliProcedure({
     id: "web-content-fetcher-fetch",
     entry: new URL("./sources/web-content-fetcher/fetch.ts", import.meta.url),
-    description: "Script fetch.mjs.",
+    description: "执行 fetch procedure。",
     owners: { skillIds: ["web-content-fetcher"] },
     target: "scripts/fetch.mjs",
     runtime: "node",
   });
-export const webPerformanceDiagnosisAnalyze = defineProcedure({
+export const webPerformanceDiagnosisAnalyze = defineCliProcedure({
     id: "web-performance-diagnosis-analyze",
     entry: new URL("./sources/web-performance-diagnosis/analyze.ts", import.meta.url),
-    description: "Script analyze.mjs.",
+    description: "执行 analyze procedure。",
     owners: { skillIds: ["web-performance-diagnosis"] },
     target: "scripts/analyze.mjs",
     runtime: "node",
   });
-export const youtubeAnalysisAnalyzeVideo = defineProcedure({
+export const youtubeAnalysisAnalyzeVideo = defineCliProcedure({
     id: "youtube-analysis-analyze-video",
     entry: new URL("./sources/youtube-analysis/analyze_video.ts", import.meta.url),
-    description: "Script analyze_video.mjs.",
+    description: "执行 analyze-video procedure。",
     owners: { skillIds: ["youtube-analysis"] },
     target: "scripts/analyze_video.mjs",
     runtime: "node",
   });
-export const youtubeAnalysisFetchTranscript = defineProcedure({
+export const youtubeAnalysisFetchTranscript = defineCliProcedure({
     id: "youtube-analysis-fetch-transcript",
     entry: new URL("./sources/youtube-analysis/fetch_transcript.ts", import.meta.url),
-    description: "Script fetch_transcript.mjs.",
+    description: "执行 fetch-transcript procedure。",
     owners: { skillIds: ["youtube-analysis"] },
     target: "scripts/fetch_transcript.mjs",
     runtime: "node",
   });
-export const youtubeAnalysisUtils = defineProcedure({
+export const youtubeAnalysisUtils = defineCliProcedure({
     id: "youtube-analysis-utils",
     entry: new URL("./sources/youtube-analysis/utils.ts", import.meta.url),
-    description: "Script utils.mjs.",
+    description: "执行 utils procedure。",
     owners: { skillIds: ["youtube-analysis"] },
     target: "scripts/utils.mjs",
     runtime: "node",
   });
-export const youtubeSearchSearchYoutube = defineProcedure({
+export const youtubeSearchSearchYoutube = defineCliProcedure({
     id: "youtube-search-search-youtube",
     entry: new URL("./sources/youtube-search/search_youtube.ts", import.meta.url),
-    description: "Script search_youtube.mjs.",
+    description: "执行 search-youtube procedure。",
     owners: { skillIds: ["youtube-search"] },
     target: "scripts/search_youtube.mjs",
     runtime: "node",

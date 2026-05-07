@@ -27,10 +27,10 @@ export const speckitBaselineSkill = defineSkill({
   ],
   argumentHint: "[用户输入]",
   procedures: [
-    procedureUse(speckitBaselineBootstrapSpecify.id),
-    procedureUse(speckitBaselineCheckPrerequisites.id),
-    procedureUse(speckitBaselineCommon.id),
-    procedureUse(speckitBaselineCreateNewFeature.id),
-    procedureUse(speckitBaselineSetupPlan.id),
+    procedureUse(speckitBaselineBootstrapSpecify),
+    procedureUse(speckitBaselineCheckPrerequisites),
+    procedureUse(speckitBaselineCommon),
+    procedureUse(speckitBaselineCreateNewFeature),
+    procedureUse(speckitBaselineSetupPlan),
   ],
 });

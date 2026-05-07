@@ -41,7 +41,7 @@ export const remoteSshCommandSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(remoteSshCommandInstallSshpass.id),
-    procedureUse(remoteSshCommandSshExec.id),
+    procedureUse(remoteSshCommandInstallSshpass),
+    procedureUse(remoteSshCommandSshExec),
   ],
 });

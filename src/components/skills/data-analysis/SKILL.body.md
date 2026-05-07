@@ -1,22 +1,7 @@
 ## 代码模式
 
-```bash
-node scripts/analyze.mjs \
-  --files /absolute/path/sales.xlsx \
-  --action inspect
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
-```bash
-node scripts/analyze.mjs \
-  --files /absolute/path/sales.csv /absolute/path/customers.csv \
-  --action query \
-  --sql 'SELECT region, SUM(amount) AS revenue FROM sales GROUP BY region ORDER BY revenue DESC'
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
-```bash
-node scripts/analyze.mjs \
-  --files /absolute/path/sales.xlsx \
-  --action query \
-  --sql 'SELECT * FROM sales LIMIT 20' \
-  --output-file /absolute/path/query-result.md
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。

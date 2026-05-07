@@ -28,5 +28,5 @@
 
 可在审查前用 CLI 脚本做预扫描，获取结构化发现后再进入人工审查：
 
-- `node scripts/assess-code.mjs <target>` — 代码质量预扫描（TODO 检测、文件分析、严重度分级）
-- `node scripts/assess-tests.mjs <test-dir>` — 测试质量预扫描（测试文件发现、套件运行、质量评估）
+- `procedure code-review-assess-code <target>` — 代码质量预扫描（TODO 检测、文件分析、严重度分级）
+- `procedure code-review-assess-tests <test-dir>` — 测试质量预扫描（测试文件发现、套件运行、质量评估）

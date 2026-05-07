@@ -51,7 +51,12 @@ export const typescriptTypeSafetySkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob, KnownTool.Bash],
   procedures: [
-    procedureUse(typescriptTypeSafetyExtractTsErrors.id),
+    procedureUse(typescriptTypeSafetyExtractTsErrors, {
+      label: "归组 tsc 错误",
+      when: "已有完整 `tsc --noEmit` 输出文件，需要按文件和错误码归组时。",
+      reason: "先定位上游类型合同错误，再决定修复顺序。",
+      exampleArgs: { args: ["--input", "tsc-output.txt"] },
+    }),
   ],
   references: [
     defineReference({

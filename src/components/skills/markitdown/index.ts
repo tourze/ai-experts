@@ -75,10 +75,10 @@ export const markitdownSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(markitdownBatchConvert.id),
-    procedureUse(markitdownConvertLiterature.id),
-    procedureUse(markitdownConvertWithAi.id),
-    procedureUse(markitdownMarkitdownRuntime.id),
+    procedureUse(markitdownBatchConvert),
+    procedureUse(markitdownConvertLiterature),
+    procedureUse(markitdownConvertWithAi),
+    procedureUse(markitdownMarkitdownRuntime),
   ],
   references: [
     defineReference({

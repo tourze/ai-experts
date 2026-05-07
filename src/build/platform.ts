@@ -32,6 +32,7 @@ import { compileHookModules, renderCodexConfig, renderHookConfig } from "./hooks
 import { hasH2SectionMatching, startsWithH2Section } from "./markdown.ts";
 import { materializeProfile } from "./registry.ts";
 import { listProcedureUses } from "./script-uses.ts";
+import type { ResolvedProcedureUse } from "./script-uses.ts";
 import { emitScriptRuntime } from "./scripts.ts";
 import { emitSkill, validateAntiPatterns, validateParameters, validateTextList } from "./skills.ts";
 import type { ComponentRegistry, ProfileSurface } from "./types.ts";
@@ -84,6 +85,16 @@ export function checksumFiles(root: string): Record<string, string> {
 export function validateId(id: string, kind: string): void {
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(id)) {
     throw new Error(`Invalid ${kind} id: ${id}`);
+  }
+}
+
+function validateUniqueProcedureUses(componentId: string, procedureUses: readonly ResolvedProcedureUse[]): void {
+  const seenProcedureIds = new Set<string>();
+  for (const procedureUse of procedureUses) {
+    if (seenProcedureIds.has(procedureUse.id)) {
+      throw new Error(`Duplicate procedure id in ${componentId}: ${procedureUse.id}`);
+    }
+    seenProcedureIds.add(procedureUse.id);
   }
 }
 
@@ -193,6 +204,9 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
     if (/\]\(\.\.\/[^)]+\/SKILL\.md\)|\]\([a-z0-9-]+-expert:[a-z0-9-]+\)/u.test(bodySource)) {
       throw new Error(`Skill ${skill.id} must move explicit cross-skill links from SKILL.body.md to relatedSkills`);
     }
+    if (/node\s+(?:\.\/)?scripts\/[A-Za-z0-9._/-]+\.mjs/u.test(bodySource)) {
+      throw new Error(`Skill ${skill.id} must move legacy local script commands from SKILL.body.md to procedures`);
+    }
 
     const seenRelatedSkills = new Set<string>();
     for (const related of skill.relatedSkills ?? []) {
@@ -216,12 +230,11 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
     }
 
     const skillSourceRoot = dirname(toAbsolutePath(skill.body));
-    const seenProcedures = new Set<string>();
-    for (const procedureUse of listProcedureUses(skill)) {
+    const procedureUses = listProcedureUses(skill);
+    validateUniqueProcedureUses(skill.id, procedureUses);
+    for (const procedureUse of procedureUses) {
       const procedureId = procedureUse.id;
       validateId(procedureId, `procedure in ${skill.id}`);
-      if (seenProcedures.has(procedureId)) throw new Error(`Duplicate procedure id in ${skill.id}: ${procedureId}`);
-      seenProcedures.add(procedureId);
       const procedure = proceduresById.get(procedureId);
       if (!procedure) {
         throw new Error(`Skill ${skill.id} references missing procedure: ${procedureId}`);
@@ -322,14 +335,11 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
         throw new Error(`Agent ${agent.id} skill ${skill.id} must include a non-empty reason`);
       }
     }
-    const seenProcedures = new Set<string>();
-    for (const procedureUse of listProcedureUses(agent)) {
+    const procedureUses = listProcedureUses(agent);
+    validateUniqueProcedureUses(agent.id, procedureUses);
+    for (const procedureUse of procedureUses) {
       const procedureId = procedureUse.id;
       validateId(procedureId, `procedure in ${agent.id}`);
-      if (seenProcedures.has(procedureId)) {
-        throw new Error(`Duplicate procedure id in ${agent.id}: ${procedureId}`);
-      }
-      seenProcedures.add(procedureId);
       const procedure = proceduresById.get(procedureId);
       if (!procedure) {
         throw new Error(`Agent ${agent.id} references missing procedure: ${procedureId}`);

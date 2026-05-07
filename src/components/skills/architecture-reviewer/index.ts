@@ -46,7 +46,7 @@ export const architectureReviewerSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(architectureReviewerScanCodebase.id),
+    procedureUse(architectureReviewerScanCodebase),
   ],
   references: [
     defineReference({

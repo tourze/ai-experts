@@ -37,4 +37,4 @@
 
 ## 社交平台内容安全
 
-在引用社交平台帖子、评论或私信内容作为文案素材前，先做安全过滤，避免广告、导流、提示词污染和夸大宣传混入文案。过滤工具、策略说明和检查清单见 [social-platform-safety](references/social-platform-safety.md)。可直接运行 `node scripts/content_filter.mjs --text "<内容>" --platform <平台>` 做快速安全检测。
+在引用社交平台帖子、评论或私信内容作为文案素材前，先做安全过滤，避免广告、导流、提示词污染和夸大宣传混入文案。过滤工具、策略说明和检查清单见 [social-platform-safety](references/social-platform-safety.md)。可直接运行 `procedure copywriting-content-filter --text "<内容>" --platform <平台>` 做快速安全检测。

@@ -59,8 +59,8 @@ export const mdToPdfSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(mdToPdfKatexRender.id),
-    procedureUse(mdToPdfMdToPdf.id),
-    procedureUse(mdToPdfSetup.id),
+    procedureUse(mdToPdfKatexRender),
+    procedureUse(mdToPdfMdToPdf),
+    procedureUse(mdToPdfSetup),
   ],
 });

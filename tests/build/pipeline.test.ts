@@ -362,7 +362,43 @@ describe("build/pipeline modules", () => {
       new Map([[fixture.script.id, fixture.script]]),
     );
     expect(skillMd).toContain("调用目的");
+    expect(skillMd).toContain("参数");
+    expect(skillMd).toContain("返回值");
     expect(skillMd).toContain("用于 fixture 场景校验");
+
+    const duplicateScriptUsesRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        scripts: [
+          defineScriptUse({
+            id: fixture.script.id,
+            useId: "mode-a",
+            label: "模式 A",
+            exampleArgs: { args: ["--mode", "a"] },
+          }),
+          defineScriptUse({
+            id: fixture.script.id,
+            useId: "mode-b",
+            label: "模式 B",
+            exampleArgs: { args: ["--mode", "b"] },
+          }),
+        ],
+      }],
+    };
+    expect(() => validateRegistry(duplicateScriptUsesRegistry)).toThrow("Duplicate procedure id in fixture-skill: fixture-script");
+
+    const duplicateScriptUsesWithoutUseIdRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        scripts: [
+          defineScriptUse({ id: fixture.script.id, label: "模式 A" }),
+          defineScriptUse({ id: fixture.script.id, label: "模式 B" }),
+        ],
+      }],
+    };
+    expect(() => validateRegistry(duplicateScriptUsesWithoutUseIdRegistry)).toThrow("Duplicate procedure id in fixture-skill: fixture-script");
 
     const invalidReasonRegistry: ComponentRegistry = {
       ...fixture.registry,

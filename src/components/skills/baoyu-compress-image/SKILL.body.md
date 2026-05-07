@@ -2,27 +2,19 @@
 
 ### 1. 查看帮助
 
-```bash
-node scripts/main.mjs --help
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 ### 2. 单文件压缩
 
-```bash
-node scripts/main.mjs image.png --format webp --quality 80
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 ### 3. 保留原图
 
-```bash
-node scripts/main.mjs image.png --format png --quality 75 --keep
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 ### 4. 目录批处理
 
-```bash
-node scripts/main.mjs ./imgs --recursive --quality 72 --json
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 输出字段与行为要点：
 

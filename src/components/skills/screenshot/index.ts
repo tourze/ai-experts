@@ -20,9 +20,9 @@ export const screenshotSkill = defineSkill({
   ],
   constraints: [
     "保存路径遵循三条规则：用户给路径就存到该路径；用户没给路径则存系统默认截图目录；仅供代理自检时存临时目录。",
-    "macOS 进行窗口或应用截图前，先跑 `scripts/ensure_macos_permissions.mjs`，统一处理 Screen Recording 权限。",
+    "macOS 进行窗口或应用截图前，先跑 `procedure screenshot-ensure-macos-permissions`，统一处理 Screen Recording 权限。",
     "`--app`、`--window-name`、`--list-windows` 只支持 macOS。",
-    "Windows 走 `scripts/take_screenshot_windows.mjs`；主入口会在 Windows 分支委托给该 Node helper。",
+    "Windows 走 `procedure screenshot-take-screenshot-windows`；主入口会在 Windows 分支委托给该 Node helper。",
     "互斥参数不能混用：`--region` / `--window-id` / `--active-window` / `--app` / `--interactive` 要按脚本约束组合。",
   ],
   checklist: [
@@ -47,12 +47,17 @@ export const screenshotSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(screenshotEnsureMacosPermissions.id),
-    procedureUse(screenshotMacosDisplayInfo.id),
-    procedureUse(screenshotMacosPermissions.id),
-    procedureUse(screenshotMacosWindowInfo.id),
-    procedureUse(screenshotTakeScreenshot.id),
-    procedureUse(screenshotTakeScreenshotWindows.id),
+    procedureUse(screenshotEnsureMacosPermissions),
+    procedureUse(screenshotMacosDisplayInfo),
+    procedureUse(screenshotMacosPermissions),
+    procedureUse(screenshotMacosWindowInfo),
+    procedureUse(screenshotTakeScreenshot, {
+      label: "截图主入口",
+      when: "需要截取临时截图、指定路径、指定区域、应用窗口、window id 或活动窗口时。",
+      reason: "按参数选择截图目标和输出位置。",
+      exampleArgs: { args: ["--mode", "temp"] },
+    }),
+    procedureUse(screenshotTakeScreenshotWindows),
   ],
   assets: [
     defineAsset({

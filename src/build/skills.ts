@@ -4,7 +4,9 @@ import { pathToFileURL } from "node:url";
 import type {
   AntiPatternDefinition,
   Platform as PlatformType,
+  ProcedureArgsDefinition,
   ProcedureDefinition,
+  ProcedureOutputDefinition,
   RelatedSkillDefinition,
   SkillDefinition,
   SkillParameter,
@@ -22,6 +24,7 @@ import {
   yamlScalar,
 } from "./core.ts";
 import { listProcedureUses } from "./script-uses.ts";
+import type { ResolvedProcedureUse } from "./script-uses.ts";
 import {
   insertSectionBeforeH2Matching,
   renderMarkdownBulletList,
@@ -61,20 +64,12 @@ function renderSkillFrontmatter(skill: SkillDefinition, platform: PlatformType):
 
 function renderProcedureRegistry(
   skill: SkillDefinition,
+  platform: PlatformType,
   proceduresById: ReadonlyMap<string, ProcedureDefinition>,
 ): string {
   const procedureUses = listProcedureUses(skill);
   if (procedureUses.length === 0) return "";
-  const hasWhen = procedureUses.some((procedureUse) =>
-    typeof procedureUse.when === "string" && procedureUse.when.trim() !== ""
-  );
-  const hasReason = procedureUses.some((procedureUse) =>
-    typeof procedureUse.reason === "string" && procedureUse.reason.trim() !== ""
-  );
-  const columns = ["Procedure", "作用"];
-  if (hasWhen) columns.push("何时调用");
-  if (hasReason) columns.push("调用目的");
-  columns.push("调用");
+  const columns = ["Procedure", "用法", "何时调用", "调用目的", "参数", "返回值", "示例命令"];
   const header = `| ${columns.join(" | ")} |`;
   const divider = `| ${columns.map(() => "----------").join(" | ")} |`;
   const rows = [
@@ -83,19 +78,64 @@ function renderProcedureRegistry(
     ...procedureUses.map((procedureUse) => {
       const procedureId = procedureUse.id;
       const procedure = proceduresById.get(procedureId);
-      const description = procedure?.description ?? "(missing procedure definition)";
       const cells = [
         `\`${procedureId}\``,
-        description,
+        procedureUse.label ?? procedureUse.useId ?? "默认",
+        procedureUse.when ?? "按 skill 主流程需要调用时",
+        procedureUse.reason ?? procedure?.description ?? "执行该 procedure 对应步骤",
+        renderProcedureArgs(procedure),
+        renderProcedureOutput(procedure),
+        renderProcedureCommand(skill, platform, procedureUse),
       ];
-      if (hasWhen) cells.push(procedureUse.when ?? "按 skill 主流程需要调用时");
-      if (hasReason) cells.push(procedureUse.reason ?? "执行该 procedure 对应步骤");
-      const template = procedureUse.requestJsonTemplate ?? "{\"args\":[]}";
-      cells.push(`\`node ../../procedures.js --procedure-id ${procedureId} --trigger-skill ${skill.id} --request-json '${template}'\``);
-      return `| ${cells.join(" | ")} |`;
+      return `| ${cells.map(renderMarkdownTableCell).join(" | ")} |`;
     }),
   ];
-  return `\n## Procedure Registry\n\n${rows.join("\n")}\n`;
+  return `\n## Procedure 调用说明\n\n${rows.join("\n")}\n`;
+}
+
+function procedureRuntimePath(platform: PlatformType): string {
+  return platform === Platform.Claude ? "~/.claude/procedures.js" : "~/.codex/procedures.js";
+}
+
+function renderProcedureFields<TValue>(schema: ProcedureArgsDefinition<TValue> | ProcedureOutputDefinition<TValue> | undefined): string {
+  if (!schema) return "未声明";
+  const fields = Object.entries(schema.fields).map(([name, definition]) => {
+    const required = definition.required === false ? "可选" : "必填";
+    return `\`${name}\`: ${definition.type} (${required}) - ${definition.description}`;
+  });
+  if (fields.length === 0) return `\`${schema.typeName}\``;
+  return `\`${schema.typeName}\`: ${fields.join("; ")}`;
+}
+
+function renderProcedureArgs(procedure: ProcedureDefinition | undefined): string {
+  return renderProcedureFields(procedure?.args);
+}
+
+function renderProcedureOutput(procedure: ProcedureDefinition | undefined): string {
+  return renderProcedureFields(procedure?.output);
+}
+
+function shellSingleQuote(value: string): string {
+  return `'${value.replaceAll("'", "'\\''")}'`;
+}
+
+function renderProcedureCommand(
+  skill: SkillDefinition,
+  platform: PlatformType,
+  procedureUse: ResolvedProcedureUse,
+): string {
+  const requestPayload = procedureUse.exampleArgs ?? { args: [] };
+  const requestJson = JSON.stringify(requestPayload);
+  return [
+    "node",
+    procedureRuntimePath(platform),
+    "--procedure-id",
+    procedureUse.id,
+    "--trigger-skill",
+    skill.id,
+    "--request-json",
+    shellSingleQuote(requestJson),
+  ].join(" ");
 }
 
 function renderReferenceMap(skill: SkillDefinition): string {
@@ -268,38 +308,6 @@ function renderBodyWithGeneratedSections(skill: SkillDefinition, body: string): 
   return `${bodyWithChecklist.trimEnd()}\n\n${antiPatterns.trimEnd()}`;
 }
 
-function procedureLegacyCommandMap(
-  skill: SkillDefinition,
-  proceduresById: ReadonlyMap<string, ProcedureDefinition>,
-): Map<string, string> {
-  const mapping = new Map<string, string>();
-  for (const procedureUse of listProcedureUses(skill)) {
-    const procedure = proceduresById.get(procedureUse.id);
-    if (!procedure) continue;
-    const target = (procedure.target ?? `scripts/${basename(toAbsolutePath(procedure.entry)).replace(/\.ts$/u, ".mjs")}`)
-      .replaceAll("\\", "/");
-    const targetBase = `scripts/${basename(target)}`;
-    mapping.set(target, procedure.id);
-    mapping.set(targetBase, procedure.id);
-  }
-  return mapping;
-}
-
-function rewriteLegacyScriptCommands(
-  skill: SkillDefinition,
-  body: string,
-  proceduresById: ReadonlyMap<string, ProcedureDefinition>,
-): string {
-  const mapping = procedureLegacyCommandMap(skill, proceduresById);
-  if (mapping.size === 0) return body;
-  return body.replace(/node\s+scripts\/([A-Za-z0-9._/-]+\.mjs)/g, (matched, scriptPath) => {
-    const normalized = `scripts/${String(scriptPath).replaceAll("\\", "/")}`;
-    const procedureId = mapping.get(normalized) ?? mapping.get(`scripts/${basename(normalized)}`);
-    if (!procedureId) return matched;
-    return `node ../../procedures.js --procedure-id ${procedureId} --trigger-skill ${skill.id} --`;
-  });
-}
-
 function normalizeMarkdownBlankLines(markdown: string): string {
   return `${markdown.replace(/\r\n/g, "\n").replace(/\n{3,}/gu, "\n\n").trimEnd()}\n`;
 }
@@ -313,7 +321,7 @@ export function renderSkillMd(
     throw new Error(`Skill ${skill.id} must define a non-empty fullName`);
   }
   const body = readComponentText(skill.body).trimEnd();
-  const generatedBody = renderBodyWithGeneratedSections(skill, rewriteLegacyScriptCommands(skill, body, proceduresById));
+  const generatedBody = renderBodyWithGeneratedSections(skill, body);
   return normalizeMarkdownBlankLines([
     renderSkillFrontmatter(skill, platform),
     `# ${skill.fullName}`,
@@ -323,7 +331,7 @@ export function renderSkillMd(
     renderRelatedSkills(skill),
     renderUserInput(skill, platform),
     generatedBody,
-    renderProcedureRegistry(skill, proceduresById),
+    renderProcedureRegistry(skill, platform, proceduresById),
     renderReferenceMap(skill),
     "",
   ].join("\n"));

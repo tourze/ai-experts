@@ -46,14 +46,14 @@ export const pdfSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(pdfCheckBoundingBoxes.id),
-    procedureUse(pdfCheckFillableFields.id),
-    procedureUse(pdfConvertPdfToImages.id),
-    procedureUse(pdfCreateValidationImage.id),
-    procedureUse(pdfExtractFormFieldInfo.id),
-    procedureUse(pdfExtractFormStructure.id),
-    procedureUse(pdfFillFillableFields.id),
-    procedureUse(pdfFillPdfFormWithAnnotations.id),
+    procedureUse(pdfCheckBoundingBoxes),
+    procedureUse(pdfCheckFillableFields),
+    procedureUse(pdfConvertPdfToImages),
+    procedureUse(pdfCreateValidationImage),
+    procedureUse(pdfExtractFormFieldInfo),
+    procedureUse(pdfExtractFormStructure),
+    procedureUse(pdfFillFillableFields),
+    procedureUse(pdfFillPdfFormWithAnnotations),
   ],
   references: [
     defineReference({

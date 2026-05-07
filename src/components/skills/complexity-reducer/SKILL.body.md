@@ -2,11 +2,9 @@
 每种来源的详细症状、对策和代码示例见 [references/patterns.md](./references/patterns.md)。
 按语言看具体重构示例：[Python 指南](references/python.md)、[Go 指南](references/go.md)、[TypeScript 指南](references/typescript.md)、[Rust 指南](references/rust.md)。
 
-需要定量度量时优先跑 `scripts/complexity_report.mjs <路径> --format markdown`，按"问题 → 最小重构动作 → 风险 → 验证方式"组织产出，而不是凭主观感受决定。
+需要定量度量时优先跑 `procedure complexity-reducer-complexity-report <路径> --format markdown`，按"问题 → 最小重构动作 → 风险 → 验证方式"组织产出，而不是凭主观感受决定。
 
-```bash
-node scripts/complexity_report.mjs src --format markdown
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 | 来源 | 判定标准 | 首选对策 |
 |------|---------|---------|

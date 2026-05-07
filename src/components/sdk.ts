@@ -58,7 +58,30 @@ export type ProcedureOwners = {
   agentIds?: readonly string[];
 };
 
-export type ProcedureDefinition = {
+export type ProcedureFieldDefinition = {
+  type: string;
+  description: string;
+  required?: boolean;
+};
+
+export type ProcedureFieldMap<TValue> = TValue extends object
+  ? { readonly [Key in keyof TValue]-?: ProcedureFieldDefinition }
+  : Record<string, ProcedureFieldDefinition>;
+
+export type ProcedureArgsDefinition<TArgs> = {
+  typeName: string;
+  fields: ProcedureFieldMap<TArgs>;
+};
+
+export type ProcedureOutputDefinition<TResult> = {
+  typeName: string;
+  fields: ProcedureFieldMap<TResult>;
+};
+
+export type ProcedureDefinition<
+  TArgs extends object = object,
+  TResult extends object = object,
+> = {
   id: string;
   entry: ComponentFile;
   description: string;
@@ -66,22 +89,42 @@ export type ProcedureDefinition = {
   target?: string;
   runtime?: "node";
   bundle?: boolean;
-  argsSchema?: string;
-  outputSchema?: string;
+  args?: ProcedureArgsDefinition<TArgs>;
+  output?: ProcedureOutputDefinition<TResult>;
 };
 
-export type ProcedureUseDefinition = {
+export type ProcedureArgs<TProcedure> =
+  TProcedure extends ProcedureDefinition<infer TArgs, infer _TResult> ? TArgs : never;
+
+export type ProcedureResult<TProcedure> =
+  TProcedure extends ProcedureDefinition<infer _TArgs, infer TResult> ? TResult : never;
+
+export type ProcedureExpectedOutput<TResult> = TResult extends object ? Partial<TResult> : TResult;
+
+export type ProcedureUseDefinition<
+  TArgs extends object = object,
+  TResult extends object = object,
+> = {
   id: string;
+  useId?: string;
+  label?: string;
   when?: string;
   reason?: string;
-  requestJsonTemplate?: string;
+  exampleArgs?: TArgs;
+  expectedOutput?: ProcedureExpectedOutput<TResult>;
 };
 
 export type ProcedureUseReference = string | ProcedureUseDefinition;
 
 export type ScriptOwners = ProcedureOwners;
-export type ScriptDefinition = ProcedureDefinition;
-export type ScriptUseDefinition = ProcedureUseDefinition;
+export type ScriptDefinition<
+  TArgs extends object = object,
+  TResult extends object = object,
+> = ProcedureDefinition<TArgs, TResult>;
+export type ScriptUseDefinition<
+  TArgs extends object = object,
+  TResult extends object = object,
+> = ProcedureUseDefinition<TArgs, TResult>;
 export type ScriptUseReference = ProcedureUseReference;
 
 export type SkillScriptRootDefinition = {
@@ -388,23 +431,51 @@ export function defineProfile(definition: Omit<ProfileDefinition, "kind">): Prof
   };
 }
 
-export function defineProcedure(definition: ProcedureDefinition): ProcedureDefinition {
+export function defineProcedure<
+  TArgs extends object = object,
+  TResult extends object = object,
+>(
+  definition: ProcedureDefinition<TArgs, TResult>,
+): ProcedureDefinition<TArgs, TResult> {
   return definition;
 }
 
-export function defineProcedureUse(
-  definition: ProcedureUseDefinition,
-): ProcedureUseDefinition {
+export function defineProcedureUse<
+  TArgs extends object = object,
+  TResult extends object = object,
+>(
+  definition: ProcedureUseDefinition<TArgs, TResult>,
+): ProcedureUseDefinition<TArgs, TResult> {
   return definition;
 }
 
-export function defineScript(definition: ScriptDefinition): ScriptDefinition {
+export function defineProcedureArgs<TArgs>(
+  definition: ProcedureArgsDefinition<TArgs>,
+): ProcedureArgsDefinition<TArgs> {
+  return definition;
+}
+
+export function defineProcedureOutput<TResult>(
+  definition: ProcedureOutputDefinition<TResult>,
+): ProcedureOutputDefinition<TResult> {
+  return definition;
+}
+
+export function defineScript<
+  TArgs extends object = object,
+  TResult extends object = object,
+>(
+  definition: ScriptDefinition<TArgs, TResult>,
+): ScriptDefinition<TArgs, TResult> {
   return defineProcedure(definition);
 }
 
-export function defineScriptUse(
-  definition: ScriptUseDefinition,
-): ScriptUseDefinition {
+export function defineScriptUse<
+  TArgs extends object = object,
+  TResult extends object = object,
+>(
+  definition: ScriptUseDefinition<TArgs, TResult>,
+): ScriptUseDefinition<TArgs, TResult> {
   return defineProcedureUse(definition);
 }
 

@@ -1,41 +1,16 @@
-## 脚本路径
-
-> 脚本路径：以下命令从 `ai-experts` 仓库根目录执行，`scripts/` 指 `ai-experts/scripts/`。
-
 ## 快速流程
 
-1. 确认当前目录是 `ai-experts` 仓库根目录，或向上查找 `scripts/trigger-audit-report.mjs`。
-2. 默认分析当前工作区：
-
-```bash
-node scripts/trigger-audit-report.mjs --json --workspace "$PWD" --days 7 --top 20
-```
-
-3. 如果用户明确要看当前会话，优先使用最新会话记录：
-
-```bash
-node scripts/trigger-audit-report.mjs --json --workspace "$PWD" --session latest --days 7 --top 20
-```
-
-如果输出提示旧日志缺少 `session_id/transcript_path`，再重新运行不带 `--session` 的当前工作区分析，并在报告中把“无法会话级过滤”列为数据质量限制。
-
-4. 如果用户要看多个并行 cc/codex 进程或跨目录总览，改用：
-
-```bash
-node scripts/trigger-audit-report.mjs --json --all-workspaces --days 7 --top 20
-```
-
-5. 需要人工校准 hook 热点时，再跑表格版：
-
-```bash
-node scripts/hook-telemetry-report.mjs --workspace "$PWD" --days 7
-```
+1. 先确认当前仓库是否实际安装并启用了 ai-experts hook telemetry。
+2. 读取运行时记录、hook 配置和相关 skill 定义，优先使用本地可验证日志而不是凭触发描述推断。
+3. 如果用户明确要看当前会话，先确认日志中是否存在 `session_id` 或 `transcript_path`；缺失时退回工作区时间窗分析，并把会话级过滤不可用列为数据质量限制。
+4. 如果用户要看多个并行 Claude Code / Codex 进程或跨目录总览，按 workspace、session、platform 和 hook id 聚合，不混用不同口径。
+5. 需要人工校准 hook 热点时，先定位高频 `block`、`report`、`error` 与异常耗时，再回到源码和测试验证规则是否过宽。
 
 ## 分析口径
 
 - Hook runtime 是权威运行记录：重点看 `error`、`block`、高频 `report`、同一目标反复命中、异常耗时。
-- Skill 原生激活不能直接从 Claude/Codex 路由层获得权威事件；运行时侧使用 `skill-expert` Stop hook 自动记录的路由声明、已调用/未调用和下一步推荐作为审计信号，静态侧继续结合 description、evals/cases.yaml 和触发域重叠。
-- `--session latest` 依赖 telemetry 中的 `session_id` 或 `transcript_path`。旧日志没有这些字段时，退回当前工作区时间窗分析，不要假装已有会话级证据。
+- Skill 原生激活不能直接从 Claude/Codex 路由层获得权威事件；运行时侧使用 Stop hook 自动记录的路由声明、已调用/未调用和下一步推荐作为审计信号，静态侧继续结合 description、evals/cases.yaml 和触发域重叠。
+- `session latest` 依赖 telemetry 中的 `session_id` 或 `transcript_path`。旧日志没有这些字段时，退回当前工作区时间窗分析，不要假装已有会话级证据。
 - `skip` 默认自动记录，用于判断 hook 是否实际被调用；如果用户设置 `AI_EXPERTS_HOOK_AUDIT=0`，报告中要把 skip 缺失列为数据质量限制。
 
 ## 报告格式
@@ -53,13 +28,13 @@ node scripts/hook-telemetry-report.mjs --workspace "$PWD" --days 7
 - 同一 hook 对同一目标多次 `block`：怀疑误拦或用户工作流不顺，检查规则是否过宽，必要时补 allowlist 或测试。
 - 高频 `report` 但用户无法行动：这是噪音，建议改成更具体的 reason、降级为 `context`，或收窄触发条件。
 - 缺 `evals/cases.yaml` 的 skill：建议至少补 2 个正例和 1 个反例，优先补 telemetry 或用户问题中出现过的高频领域。
-- 多轮缺少 Skill 路由声明：优先检查 `skill-routing-reminder` 是否注入、模型是否遵守、Stop gate 是否只覆盖下一步推荐而未覆盖路由声明。
+- 多轮缺少 Skill 路由声明：优先检查 routing reminder 是否注入、模型是否遵守、Stop gate 是否只覆盖下一步推荐而未覆盖路由声明。
 - 多轮 skill 命中但未调用：优先检查 description 是否过宽、路由摘要是否流于形式、是否需要把相关任务交给更具体的 skill。
 - 同插件 skill 触发域重叠：不要建议合并 skill；优先给 description 增加排他条件和对照反例。
-- telemetry 记录为 0：先建议验证安装、环境变量、工作区分桶路径和 `AI_EXPERTS_HOOK_TELEMETRY`，不要推断 hook/skill 健康。
+- telemetry 记录为 0：先建议验证安装、环境变量、工作区分桶路径和 telemetry 开关，不要推断 hook/skill 健康。
 
 ## Guardrails
 
-- 不要在分析阶段清理或轮转 telemetry；`--purge` 只在用户明确要求清理时使用。
+- 不要在分析阶段清理或轮转 telemetry；清理只在用户明确要求时执行。
 - 不要把 telemetry 中的完整命令、prompt 或路径原样贴进面向外部的报告；必要时脱敏。
 - 不要只输出“补测试/优化描述”这类泛化建议。每条建议必须能追到具体数据或具体文件。

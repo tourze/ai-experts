@@ -33,8 +33,8 @@ export const skillsPruneAndSyncReadmeSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(skillsPruneAndSyncReadmeCurateSkills.id),
-    procedureUse(skillsPruneAndSyncReadmeSimilarityGroups.id),
-    procedureUse(skillsPruneAndSyncReadmeTestCurateSkills.id),
+    procedureUse(skillsPruneAndSyncReadmeCurateSkills),
+    procedureUse(skillsPruneAndSyncReadmeSimilarityGroups),
+    procedureUse(skillsPruneAndSyncReadmeTestCurateSkills),
   ],
 });

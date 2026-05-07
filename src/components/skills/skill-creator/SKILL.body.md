@@ -224,7 +224,7 @@ Execute this task:
 
 2. **聚合 benchmark**：从 skill-creator 目录运行聚合脚本：
    ```bash
-   node scripts/aggregate_benchmark.mjs <workspace>/iteration-N --skill-name <name>
+   procedure `skill-creator-aggregate-benchmark` <workspace>/iteration-N --skill-name <name>
    ```
    这会生成 `benchmark.json` 和 `benchmark.md`，包含每种配置的 pass_rate、time、tokens，以及 mean ± stddev 和 delta。手写 `benchmark.json` 时，必须参考 `references/schemas.md` 的准确 schema。
 
@@ -380,7 +380,7 @@ kill $VIEWER_PID 2>/dev/null
 将 eval set 保存到 workspace，然后后台运行：
 
 ```bash
-node scripts/run_loop.mjs \
+procedure `skill-creator-run-loop` \
   --eval-set <path-to-trigger-eval.json> \
   --skill-path <path-to-skill> \
   --model <model-id-powering-this-session> \
@@ -411,7 +411,7 @@ node scripts/run_loop.mjs \
 检查是否能使用 `present_files` tool。不能用就跳过。能用时，打包 skill 并把 `.skill` 文件展示给用户：
 
 ```bash
-node scripts/package_skill.mjs <path/to/skill-folder>
+procedure `skill-creator-package-skill` <path/to/skill-folder>
 ```
 
 打包完成后，告诉用户生成的 `.skill` 文件路径，便于安装。

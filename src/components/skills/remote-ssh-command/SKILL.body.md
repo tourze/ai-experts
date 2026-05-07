@@ -11,13 +11,6 @@
     "password": "..."
   }
 }
-```
-
-## 执行流程
-1. 若本机缺少 `sshpass`，先运行 `node scripts/install-sshpass.mjs`。
-2. 保存主机配置到 `~/.host/<host>.json`。
-3. 用 `printf` 将远端命令写入 `stdin`，再调用执行脚本：
-
-```bash
-printf '%s\n' 'systemctl status nginx | cat' | node scripts/ssh-exec.mjs ~/.host/1.2.3.4.json
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。bash
+printf '%s\n' 'systemctl status nginx | cat' | procedure `remote-ssh-command-ssh-exec` ~/.host/1.2.3.4.json
 ```

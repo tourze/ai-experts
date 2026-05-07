@@ -19,12 +19,12 @@ export const agileProductOwnerSkill = defineSkill({
     "把需求拆成可交付的用户故事、Epic 和 Sprint 范围。",
     "需要结合 [references/user-story-templates.md](references/user-story-templates.md)、[references/sprint-planning-guide.md](references/sprint-planning-guide.md) 或模板资产落文档。",
     "故事拆分可配合 `user-story-patterns`（8 种拆分模式 + INVEST 检查），Epic 分解可配合 `epic-decomposition`（9 种分解模式 + Story Mapping）。",
-    "需要运行脚本生成示例 Backlog 或 Sprint 计划时，可直接调用 `scripts/user_story_generator.mjs`。",
+    "需要运行脚本生成示例 Backlog 或 Sprint 计划时，可直接调用 `procedure agile-product-owner-user-story-generator`。",
   ],
   constraints: [
     "先确认业务目标、角色、成功标准，再拆故事；单条 Story 应能在一个 Sprint 内完成。",
     "验收标准必须覆盖成功路径、失败路径和边界条件，避免“优化一下”这类不可验证表述。",
-    "运行脚本时只使用已验证命令：`node scripts/user_story_generator.mjs` 与 `node scripts/user_story_generator.mjs sprint 30`；Sprint 容量必须是正整数。",
+    "运行脚本时只使用已验证命令：`procedure agile-product-owner-user-story-generator` 与 `procedure agile-product-owner-user-story-generator sprint 30`；Sprint 容量必须是正整数。",
   ],
   checklist: [
     "用户角色、业务目标、非目标和依赖已经明确。",
@@ -55,7 +55,7 @@ export const agileProductOwnerSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(agileProductOwnerUserStoryGenerator.id),
+    procedureUse(agileProductOwnerUserStoryGenerator),
   ],
   references: [
     defineReference({

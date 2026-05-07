@@ -1,9 +1,7 @@
 ## 代码模式
 - 使用生成器快速产出初版埋点方案：
 
-```bash
-node scripts/tracking_plan_generator.mjs input.json --json
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 - `input.json` 至少包含：
 

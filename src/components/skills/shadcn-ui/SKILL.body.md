@@ -1,10 +1,6 @@
 ## 代码模式
 
-```bash
-npx shadcn@latest init
-npx shadcn@latest add button dialog form
-node ./scripts/verify-setup.mjs
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 ```ts
 import { clsx, type ClassValue } from "clsx";

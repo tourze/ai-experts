@@ -50,7 +50,7 @@ export const ghFixCiSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(ghFixCiInspectPrChecks.id),
+    procedureUse(ghFixCiInspectPrChecks),
   ],
   references: [
     defineReference({

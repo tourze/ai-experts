@@ -7,39 +7,66 @@ import type {
 
 export type ResolvedProcedureUse = {
   id: string;
+  useId?: string;
+  label?: string;
   when?: string;
   reason?: string;
-  requestJsonTemplate?: string;
+  exampleArgs?: unknown;
+  expectedOutput?: unknown;
 };
+
+function validateOptionalNonEmptyString(
+  id: string,
+  property: "useId" | "label" | "when" | "reason",
+  value: unknown,
+): string | undefined {
+  if (value === undefined) return undefined;
+  if (typeof value !== "string" || value.trim() === "") {
+    throw new Error(`procedure reference ${id} ${property} must be a non-empty string when provided`);
+  }
+  return value;
+}
 
 export function resolveProcedureUse(procedureUse: ProcedureUseReference): ResolvedProcedureUse {
   if (typeof procedureUse === "string") {
     return { id: procedureUse };
   }
   if (!procedureUse || typeof procedureUse !== "object" || Array.isArray(procedureUse)) {
-    throw new Error("procedure reference must be a string or { id, when?, reason?, requestJsonTemplate? }");
+    throw new Error("procedure reference must be a string or { id, useId?, label?, when?, reason?, exampleArgs?, expectedOutput? }");
   }
   const id = procedureUse.id;
   if (typeof id !== "string" || id.trim() === "") {
     throw new Error("procedure reference id must be a non-empty string");
   }
-  const when = procedureUse.when;
-  if (when !== undefined && (typeof when !== "string" || when.trim() === "")) {
-    throw new Error(`procedure reference ${id} when must be a non-empty string when provided`);
+  const useId = validateOptionalNonEmptyString(id, "useId", procedureUse.useId);
+  if (useId !== undefined && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(useId)) {
+    throw new Error(`procedure reference ${id} useId must be a slug`);
   }
-  const reason = procedureUse.reason;
-  if (reason !== undefined && (typeof reason !== "string" || reason.trim() === "")) {
-    throw new Error(`procedure reference ${id} reason must be a non-empty string when provided`);
+  const label = validateOptionalNonEmptyString(id, "label", procedureUse.label);
+  const when = validateOptionalNonEmptyString(id, "when", procedureUse.when);
+  const reason = validateOptionalNonEmptyString(id, "reason", procedureUse.reason);
+  const exampleArgs = procedureUse.exampleArgs;
+  if (
+    exampleArgs !== undefined &&
+    (exampleArgs === null || typeof exampleArgs !== "object" || Array.isArray(exampleArgs))
+  ) {
+    throw new Error(`procedure reference ${id} exampleArgs must be a JSON object when provided`);
   }
-  const requestJsonTemplate = procedureUse.requestJsonTemplate;
-  if (requestJsonTemplate !== undefined && (typeof requestJsonTemplate !== "string" || requestJsonTemplate.trim() === "")) {
-    throw new Error(`procedure reference ${id} requestJsonTemplate must be a non-empty string when provided`);
+  const expectedOutput = procedureUse.expectedOutput;
+  if (
+    expectedOutput !== undefined &&
+    (expectedOutput === null || typeof expectedOutput !== "object" || Array.isArray(expectedOutput))
+  ) {
+    throw new Error(`procedure reference ${id} expectedOutput must be a JSON object when provided`);
   }
   return {
     id,
+    useId,
+    label,
     when,
     reason,
-    requestJsonTemplate,
+    exampleArgs,
+    expectedOutput,
   };
 }
 

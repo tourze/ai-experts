@@ -4,12 +4,7 @@
 
 - [forms.md](forms.md)
 - [reference.md](reference.md)
-- [scripts/check_fillable_fields.mjs](scripts/check_fillable_fields.mjs)
-- [scripts/extract_form_field_info.mjs](scripts/extract_form_field_info.mjs)
+- procedure `pdf-check-fillable-fields`
+- procedure `pdf-extract-form-field-info`
 
-```bash
-node scripts/check_fillable_fields.mjs form.pdf
-node scripts/extract_form_field_info.mjs form.pdf fields.json
-node scripts/fill_fillable_fields.mjs form.pdf fields.json filled.pdf
-node scripts/fill_pdf_form_with_annotations.mjs scanned.pdf fields.json annotated.pdf
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。

@@ -43,7 +43,7 @@ export const analyticsTrackingSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(analyticsTrackingTrackingPlanGenerator.id),
+    procedureUse(analyticsTrackingTrackingPlanGenerator),
   ],
   references: [
     defineReference({

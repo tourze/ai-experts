@@ -52,8 +52,8 @@ export const codeReviewSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(codeReviewAssessCode.id),
-    procedureUse(codeReviewAssessTests.id),
+    procedureUse(codeReviewAssessCode),
+    procedureUse(codeReviewAssessTests),
   ],
   references: [
     defineReference({

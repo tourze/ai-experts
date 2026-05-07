@@ -34,7 +34,7 @@ export const skillActivationAnalyzerSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(skillActivationAnalyzerCsoAudit.id),
+    procedureUse(skillActivationAnalyzerCsoAudit),
   ],
   references: [
     defineReference({

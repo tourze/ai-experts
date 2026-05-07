@@ -6,8 +6,4 @@
 - [references/api_reference.md](references/api_reference.md)
 - [assets/example_usage.md](assets/example_usage.md)
 
-```bash
-node scripts/batch_convert.mjs input/ output/ --extensions .pdf .docx --recursive
-node scripts/convert_literature.mjs papers/ literature-md/ --organize-by-year --create-index
-OPENROUTER_API_KEY="$OPENROUTER_API_KEY" node scripts/convert_with_ai.mjs slide.png slide.md --prompt-type presentation
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。

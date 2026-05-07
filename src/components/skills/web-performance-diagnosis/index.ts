@@ -85,7 +85,7 @@ export const webPerformanceDiagnosisSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(webPerformanceDiagnosisAnalyze.id),
+    procedureUse(webPerformanceDiagnosisAnalyze),
   ],
   references: [
     defineReference({

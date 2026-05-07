@@ -66,6 +66,6 @@ export const iconRetrievalSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(iconRetrievalSearch.id),
+    procedureUse(iconRetrievalSearch),
   ],
 });

@@ -1,8 +1,5 @@
 ## 代码模式
-```bash
-node scripts/user_story_generator.mjs
-node scripts/user_story_generator.mjs sprint 30
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 ```markdown
 用户故事：作为<角色>，我想要<动作>，以便<收益>

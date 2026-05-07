@@ -1,11 +1,9 @@
 ## 代码模式
-- 代码库模式先执行 `scripts/scan_codebase.mjs <代码路径>` 获取结构指纹。
+- 代码库模式先执行 `procedure architecture-reviewer-scan-codebase <代码路径>` 获取结构指纹。
 - 按需加载 `references/*.md`，只读当前维度对应的参考。
 - 报告顺序推荐：评分总览 → 关键风险 → 分维度结论 → 修复优先级。
 
-```bash
-node scripts/scan_codebase.mjs /path/to/codebase
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 ## Exhaustive 模式
 - 触发条件：用户要求 "穷举式拆解 / subsystem audit / failure modes / 影响面审计"，或代码库规模较大且需要逐子系统盘点。

@@ -2,31 +2,19 @@
 
 ### 模式 1：财务比率分析
 
-```bash
-node scripts/ratio_calculator.mjs assets/ratio_analysis_sample.json --format json
-node scripts/ratio_calculator.mjs assets/sample_financial_data.json --category profitability
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 ### 模式 2：DCF 估值
 
-```bash
-node scripts/dcf_valuation.mjs assets/dcf_valuation_sample.json --format json
-node scripts/dcf_valuation.mjs assets/sample_financial_data.json --projection-years 7
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 ### 模式 3：预算差异分析
 
-```bash
-node scripts/budget_variance_analyzer.mjs assets/budget_variance_sample.json --format json
-node scripts/budget_variance_analyzer.mjs assets/sample_financial_data.json --threshold-pct 5 --threshold-amt 25000
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 ### 模式 4：滚动预测
 
-```bash
-node scripts/forecast_builder.mjs assets/forecast_sample.json --format json
-node scripts/forecast_builder.mjs assets/sample_financial_data.json --scenarios base,bull,bear
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 ### 可复用资料
 

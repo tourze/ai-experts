@@ -18,5 +18,5 @@ export function WelcomeCard() {
 ```
 
 ```bash
-node ./scripts/i18n_checker.mjs /path/to/project
+procedure `i18n-localization-i18n-checker` /path/to/project
 ```

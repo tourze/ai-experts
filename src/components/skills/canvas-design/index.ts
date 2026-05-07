@@ -49,10 +49,10 @@ export const canvasDesignSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(canvasDesignBaoyuArticleIllustratorBuildBatch.id),
-    procedureUse(canvasDesignConceptToImageRenderToImage.id),
-    procedureUse(canvasDesignConceptToVideoAddAudio.id),
-    procedureUse(canvasDesignConceptToVideoRenderVideo.id),
+    procedureUse(canvasDesignBaoyuArticleIllustratorBuildBatch),
+    procedureUse(canvasDesignConceptToImageRenderToImage),
+    procedureUse(canvasDesignConceptToVideoAddAudio),
+    procedureUse(canvasDesignConceptToVideoRenderVideo),
   ],
   assets: [
     defineAsset({

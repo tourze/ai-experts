@@ -1,11 +1,7 @@
 ## 代码模式
 - 初始化与校验：
 
-```bash
-helm create my-app
-helm lint my-app
-node scripts/validate-chart.mjs my-app
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 - `Chart.yaml` 最小骨架，可参考 [assets/Chart.yaml.template](assets/Chart.yaml.template)：
 

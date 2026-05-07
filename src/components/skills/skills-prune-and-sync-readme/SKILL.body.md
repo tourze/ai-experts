@@ -2,27 +2,19 @@
 
 1. 先跑审计，输出证据。
 
-```bash
-node scripts/curate_skills.mjs audit --repo-root .
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 2. 只在用户明确要求删除时，按名单删除；不要基于模糊相似度直接批量删除。
 
-```bash
-node scripts/curate_skills.mjs prune --repo-root . --skills skill-a skill-b --yes
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 3. 删除后重建 `README.md` 的 Skill 清单区块。
 
-```bash
-node scripts/curate_skills.mjs sync-readme --repo-root . --write
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 4. 最后校验 README 是否已同步。
 
-```bash
-node scripts/curate_skills.mjs sync-readme --repo-root . --check
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 ## 判定准则
 

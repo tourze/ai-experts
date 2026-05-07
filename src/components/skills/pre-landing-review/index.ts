@@ -59,8 +59,8 @@ export const preLandingReviewSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(preLandingReviewCollectDiff.id),
-    procedureUse(preLandingReviewRenderReport.id),
+    procedureUse(preLandingReviewCollectDiff),
+    procedureUse(preLandingReviewRenderReport),
   ],
   references: [
     defineReference({

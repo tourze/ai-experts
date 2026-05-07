@@ -71,6 +71,6 @@ export const shadcnUiSkill = defineSkill({
     KnownTool.WebFetch,
   ],
   procedures: [
-    procedureUse(shadcnUiVerifySetup.id),
+    procedureUse(shadcnUiVerifySetup),
   ],
 });

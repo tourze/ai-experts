@@ -2,18 +2,14 @@
 
 ### 文件入口
 
-- `scripts/fetch_transcript.mjs`：抓字幕与元数据，输出 JSON。
-- `scripts/analyze_video.mjs`：生成 Markdown 脚手架，便于后续人工或模型补全分析。
-- `scripts/utils.mjs`：URL 解析、时间戳格式化、字幕分块。
+- `procedure youtube-analysis-fetch-transcript`：抓字幕与元数据，输出 JSON。
+- `procedure youtube-analysis-analyze-video`：生成 Markdown 脚手架，便于后续人工或模型补全分析。
+- `procedure youtube-analysis-utils`：URL 解析、时间戳格式化、字幕分块。
 - `assets/output-template.md`：脚手架模板。
 
 ### 直接抓取字幕 JSON
 
-```bash
-node scripts/fetch_transcript.mjs \
-  "https://www.youtube.com/watch?v=dQw4w9WgXcQ" \
-  --lang en
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 返回字段包括：
 
@@ -29,12 +25,7 @@ node scripts/fetch_transcript.mjs \
 
 ### 生成分析脚手架
 
-```bash
-node scripts/analyze_video.mjs \
-  "https://www.youtube.com/watch?v=dQw4w9WgXcQ" \
-  --depth quick \
-  --output /tmp/youtube-analysis.md
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 可选参数与脚本保持一致：
 
@@ -44,23 +35,6 @@ node scripts/analyze_video.mjs \
 - `--json`
 - `--output <输出路径>`
 
-### 在 Node.js 中调用
-
-```js
-import { fetchVideo } from "./scripts/fetch_transcript.mjs";
-
-const data = fetchVideo("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "en");
-console.log(data.title, data.language, data.transcript.length);
-```
-
 ### 深度分析时按时间分块
 
-```js
-import { fetchVideo } from "./scripts/fetch_transcript.mjs";
-import { chunkTranscript } from "./scripts/utils.mjs";
-
-const data = fetchVideo("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "en");
-for (const chunk of chunkTranscript(data.transcript, 5)) {
-  console.log(chunk.start_formatted, chunk.end_formatted);
-}
-```
+先调用 `procedure youtube-analysis-fetch-transcript` 获取 JSON，再按 `transcript` 中的时间戳和文本字段在当前上下文中分块分析；不要尝试从 dist 中 import procedure 源码。

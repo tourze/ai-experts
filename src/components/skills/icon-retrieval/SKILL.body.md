@@ -1,8 +1,6 @@
 ## 代码模式
 
-```bash
-node ./scripts/search.mjs 'document upload' 5
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 ```json
 {

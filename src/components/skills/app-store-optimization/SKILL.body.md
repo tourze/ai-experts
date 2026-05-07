@@ -59,8 +59,6 @@ console.log(locales.target_markets.recommended_markets.slice(0, 2));
 
 ### 生成更新文案
 
-```bash
-node scripts/collect_release_changes.mjs [from..to]
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 按"新增 / 优化 / 修复"归类，过滤掉 refactor/chore/CI 提交；详见 `references/changelog-guide.md`。

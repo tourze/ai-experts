@@ -2,26 +2,20 @@
 
 ### 1. macOS 权限预检查
 
-```bash
-node scripts/ensure_macos_permissions.mjs
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 ### 2. 截图主入口
 
-```bash
-node scripts/take_screenshot.mjs --mode temp
-node scripts/take_screenshot.mjs --path output/screen.png
-node scripts/take_screenshot.mjs --region 100,200,800,600
-node scripts/take_screenshot.mjs --app "Codex"
-node scripts/take_screenshot.mjs --list-windows --app "Codex"
-node scripts/take_screenshot.mjs --window-id 12345
-node scripts/take_screenshot.mjs --active-window
-```
+使用 `procedure screenshot-take-screenshot`，按目标选择参数：
+
+- 临时截图：`--mode temp`
+- 指定路径：`--path output/screen.png`
+- 指定区域：`--region 100,200,800,600`
+- 指定应用：`--app "Codex"`
+- 列出应用窗口：`--list-windows --app "Codex"`
+- 指定窗口：`--window-id 12345`
+- 活动窗口：`--active-window`
 
 ### 3. Windows Node 脚本
 
-```bash
-node scripts/take_screenshot_windows.mjs --mode temp
-node scripts/take_screenshot_windows.mjs --path "C:\Temp\screen.png"
-node scripts/take_screenshot_windows.mjs --region 100,200,800,600
-```
+使用 `procedure screenshot-take-screenshot-windows`，按目标选择参数：`--mode temp`、`--path "C:\Temp\screen.png"` 或 `--region 100,200,800,600`。

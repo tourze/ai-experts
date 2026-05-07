@@ -18,7 +18,7 @@ export const baoyuCompressImageSkill = defineSkill({
     "如果目标是重新设计图片内容而不是压缩体积，参考图片设计相关方法。",
   ],
   constraints: [
-    "使用 Node.js 直接运行 `scripts/main.mjs`。",
+    "使用 Node.js 直接运行 `procedure baoyu-compress-image-main`。",
     "`--output` 只支持单文件输入；目录批处理时禁止传自定义输出路径。",
     "默认 `--keep=false`，表示成功转码后删除原文件；只有显式加 `--keep` 才保留源文件。",
     "目录模式默认不递归；需要跨子目录时必须显式加 `--recursive`。",
@@ -47,6 +47,6 @@ export const baoyuCompressImageSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(baoyuCompressImageMain.id),
+    procedureUse(baoyuCompressImageMain),
   ],
 });

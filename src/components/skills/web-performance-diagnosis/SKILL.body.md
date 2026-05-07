@@ -24,9 +24,7 @@ LCP 子阶段分解、框架特定优化（Next.js Image priority、NuxtImg prel
 
 四维度（性能/a11y/SEO/best practices）全覆盖。快速 HTML 扫描：
 
-```bash
-node ./scripts/analyze.mjs ./public
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 问题分级与 AI 指纹检测详见 [references/quality-audit.md](references/quality-audit.md)。
 

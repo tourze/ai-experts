@@ -1,17 +1,6 @@
 ## 代码模式
 
-```bash
-node scripts/fetch.mjs "https://sspai.com/post/73145"
-
-# 对请求头更敏感的站点可先强制 stealth
-node scripts/fetch.mjs "https://mp.weixin.qq.com/s/xxx" --stealth
-
-# 限制最大输出字符数
-node scripts/fetch.mjs "https://example.com/article" 15000
-
-# JSON 输出（包含 mode、selector、content_length）
-node scripts/fetch.mjs "https://example.com/article" --json
-```
+调用对应 procedure；具体用法、参数和示例命令见下方 **Procedure 调用说明**。
 
 ```text
 域名路由建议

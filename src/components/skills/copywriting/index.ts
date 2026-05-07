@@ -59,7 +59,7 @@ export const copywritingSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(copywritingContentFilter.id),
+    procedureUse(copywritingContentFilter),
   ],
   references: [
     defineReference({

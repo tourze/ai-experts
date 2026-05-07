@@ -3,7 +3,10 @@ import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node
 import { tmpdir } from "node:os";
 import { basename, join } from "node:path";
 import webpack, { type Configuration, type Stats } from "webpack";
-import type { Platform as PlatformType, ProcedureDefinition } from "../components/sdk";
+import type {
+  Platform as PlatformType,
+  ProcedureDefinition,
+} from "../components/sdk";
 import { sourceRoot, toAbsolutePath } from "./core.ts";
 import { listProcedureUses } from "./script-uses.ts";
 import type { ProfileSurface } from "./types.ts";
@@ -568,10 +571,14 @@ function toRuntimeProcedureEntry(procedure: ProcedureDefinition): RuntimeProcedu
       skillIds: [...(procedure.owners.skillIds ?? [])],
       agentIds: [...(procedure.owners.agentIds ?? [])],
     },
-    argsSchema: procedure.argsSchema ?? null,
-    outputSchema: procedure.outputSchema ?? null,
+    argsSchema: schemaName(procedure.args),
+    outputSchema: schemaName(procedure.output),
     sourcePath,
   };
+}
+
+function schemaName(schema: { typeName: string } | undefined): string | null {
+  return schema?.typeName ?? null;
 }
 
 export async function emitScriptRuntime(

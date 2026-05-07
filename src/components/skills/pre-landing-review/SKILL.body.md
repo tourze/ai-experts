@@ -2,9 +2,9 @@
 
 确定性步骤交给 `scripts/`，判断保留 prose。三步流程见 [references/scripts-workflow.md](./references/scripts-workflow.md)：
 
-1. `scripts/collect_diff.mjs` 锁定审查范围（输出 files/numstat/stat JSON）
+1. `procedure pre-landing-review-collect-diff` 锁定审查范围（输出 files/numstat/stat JSON）
 2. **判断**（必须你做）：读 checklist + 实际 diff，给每个变更点定 severity / 阻断或建议 / 用户三选一
-3. `scripts/render_report.mjs` 把 findings JSON 渲染成标准 markdown（阻断项 / 建议项 / 门禁结论）
+3. `procedure pre-landing-review-render-report` 把 findings JSON 渲染成标准 markdown（阻断项 / 建议项 / 门禁结论）
 
 详细字段、JSON schema 与命令示例见上述 references 文件，触发时再读取。
 

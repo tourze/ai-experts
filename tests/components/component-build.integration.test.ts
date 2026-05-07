@@ -69,9 +69,16 @@ describe("component build integration", () => {
     );
 
     const screenshotSkill = readFileSync(join(tmpDistDir, "codex/skills/screenshot/SKILL.md"), "utf-8");
-    assert.match(screenshotSkill, /Procedure Registry/);
+    assert.match(screenshotSkill, /Procedure 调用说明/);
+    assert.match(screenshotSkill, /\| Procedure \| 用法 \| 何时调用 \| 调用目的 \| 参数 \| 返回值 \| 示例命令 \|/);
     assert.match(screenshotSkill, /screenshot-take-screenshot/);
-    assert.match(screenshotSkill, /node \.\.\/\.\.\/procedures\.js --procedure-id screenshot-take-screenshot/);
+    assert.match(screenshotSkill, /截图主入口/);
+    assert.match(screenshotSkill, /--path output\/screen\.png/);
+    assert.match(screenshotSkill, /--active-window/);
+    assert.match(screenshotSkill, /CliProcedureRequest/);
+    assert.match(screenshotSkill, /RuntimeProcedureResult/);
+    assert.match(screenshotSkill, /node ~\/\.codex\/procedures\.js --procedure-id screenshot-take-screenshot/);
+    assert.doesNotMatch(screenshotSkill, /node \.\.\/\.\.\/procedures\.js/);
     assert.doesNotMatch(screenshotSkill, /node scripts\/take_screenshot\.mjs/);
     assert.equal(existsSync(join(tmpDistDir, "codex/procedures.js")), true);
     assert.equal(existsSync(join(tmpDistDir, "codex/run.js")), false);
@@ -95,6 +102,9 @@ describe("component build integration", () => {
       "utf-8",
     );
     assert.match(codexMetadata, /allow_implicit_invocation: true/);
+    assert.match(tsSkill, /node ~\/\.claude\/procedures\.js --procedure-id typescript-type-safety-extract-ts-errors/);
+    assert.match(tsSkill, /ExtractTsErrorsArgs/);
+    assert.match(tsSkill, /ExtractTsErrorsSummary/);
 
     const claudeManifestWithScripts = JSON.parse(readFileSync(
       join(tmpDistDir, "claude/manifest.json"),
@@ -212,10 +222,21 @@ describe("component build integration", () => {
       const skillFiles = collectFiles(join(tmpDistDir, platformName, "skills"))
         .filter((file) => file.endsWith("/SKILL.md"));
       for (const skillFile of skillFiles) {
+        const skillSource = readFileSync(skillFile, "utf-8");
         assert.doesNotMatch(
-          readFileSync(skillFile, "utf-8"),
+          skillSource,
           /\n{3,}/,
           `${skillFile} should not contain repeated blank lines`,
+        );
+        assert.doesNotMatch(
+          skillSource,
+          /node \.\.\/\.\.\/procedures\.js/,
+          `${skillFile} should not render invalid relative procedure runtime paths`,
+        );
+        assert.doesNotMatch(
+          skillSource,
+          /node\s+(?:\.\/)?scripts\/[A-Za-z0-9._/-]+\.mjs/,
+          `${skillFile} should not render legacy local script commands`,
         );
       }
     }
@@ -390,6 +411,26 @@ describe("component build integration", () => {
       file.split(/[\\/]/).includes("scripts") && file.endsWith(".mjs"),
     );
     assert.deepEqual(sourceMjsSkillScripts, [], "skill script source files should use TypeScript");
+
+    const legacyScriptCommandsInSkillBodies = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
+      file.endsWith("SKILL.body.md") &&
+      /node\s+(?:\.\/)?scripts\/[A-Za-z0-9._/-]+\.mjs/.test(readFileSync(file, "utf-8")),
+    );
+    assert.deepEqual(
+      legacyScriptCommandsInSkillBodies,
+      [],
+      "SKILL.body.md should not describe legacy local node scripts; use procedureUse metadata instead",
+    );
+
+    const procedureUseIdReferences = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
+      file.endsWith("index.ts") &&
+      /procedureUse\([A-Za-z_][A-Za-z0-9_]*\.id\b/.test(readFileSync(file, "utf-8")),
+    );
+    assert.deepEqual(
+      procedureUseIdReferences,
+      [],
+      "skills should call procedureUse(exportedProcedure) so TypeScript can infer args/results",
+    );
 
     const generatedTsSkillScripts = collectFiles(join(tmpDistDir, "claude/skills"), (file) =>
       file.split(/[\\/]/).includes("scripts") && file.endsWith(".ts"),

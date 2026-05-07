@@ -51,11 +51,11 @@ export const financialAnalystSkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [],
   procedures: [
-    procedureUse(financialAnalystBudgetVarianceAnalyzer.id),
-    procedureUse(financialAnalystDcfValuation.id),
-    procedureUse(financialAnalystForecastBuilder.id),
-    procedureUse(financialAnalystRatioCalculator.id),
-    procedureUse(financialAnalystRatioInputValidation.id),
+    procedureUse(financialAnalystBudgetVarianceAnalyzer),
+    procedureUse(financialAnalystDcfValuation),
+    procedureUse(financialAnalystForecastBuilder),
+    procedureUse(financialAnalystRatioCalculator),
+    procedureUse(financialAnalystRatioInputValidation),
   ],
   references: [
     defineReference({

@@ -5,7 +5,7 @@
 | 用户报告某次 skill 没触发或触发错误 | A：单次诊断 | 还原意图 → 模拟匹配 → 定位根因 |
 | 要检查一组 skill 之间是否互相抢请求 | B：冲突检测 | 提取触发域 → 构建重叠矩阵 → 分类冲突 |
 | 要对插件或仓库做路由全面体检 | C：健康度评估 | 覆盖度 + 区分度 + 触发词密度 + 排他指引 |
-| 批量审查 description 文本质量 | D：静态文本审查 | 运行 `scripts/cso_audit.mjs`，检测 6 类违规（workflow_leak/output_leak/missing_trigger/tool_leak/too_long/too_short），修复指南见 `references/rewrite-examples.md` |
+| 批量审查 description 文本质量 | D：静态文本审查 | 运行 `procedure skill-activation-analyzer-cso-audit`，检测 6 类违规（workflow_leak/output_leak/missing_trigger/tool_leak/too_long/too_short），修复指南见 `references/rewrite-examples.md` |
 
 **MANDATORY — READ ENTIRE FILE**: 选定模式后，必须完整阅读 `references/diagnosis-modes.md` 中对应模式的详细流程。
 

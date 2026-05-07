@@ -37,7 +37,7 @@ outputs/
 
 ## 自动化工具
 
-- `node scripts/baoyu-article-illustrator-build-batch.mjs` — 批量图像生成任务构建
-- `node scripts/concept-to-image-render_to_image.mjs` — HTML/CSS 概念稿渲染为 PNG（Playwright）
-- `node scripts/concept-to-video-render_video.mjs` — 帧序列渲染为视频（ffmpeg）
-- `node scripts/concept-to-video-add_audio.mjs` — 为视频添加音频轨道（ffmpeg）
+- `procedure canvas-design-baoyu-article-illustrator-build-batch` — 批量图像生成任务构建
+- `procedure canvas-design-concept-to-image-render-to-image` — HTML/CSS 概念稿渲染为 PNG（Playwright）
+- `procedure canvas-design-concept-to-video-render-video` — 帧序列渲染为视频（ffmpeg）
+- `procedure canvas-design-concept-to-video-add-audio` — 为视频添加音频轨道（ffmpeg）

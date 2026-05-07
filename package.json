@@ -11,9 +11,10 @@
     "test:components": "vitest run tests/components",
     "fixtures:real-history": "node tests/fixtures/real-history/generate-fixtures.mjs",
     "typecheck:build": "tsc -p tsconfig.build.json",
+    "typecheck:components": "tsc -p tsconfig.components.json",
     "typecheck:hooks": "tsc -p tsconfig.hooks.json",
     "build:components": "tsx src/build.ts",
-    "check:components": "tsx src/build.ts --check"
+    "check:components": "npm run typecheck:components && tsx src/build.ts --check"
   },
   "repository": {
     "type": "git",

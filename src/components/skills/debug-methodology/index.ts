@@ -37,7 +37,12 @@ export const debugMethodologySkill = defineSkill({
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob, KnownTool.Bash],
   procedures: [
-    procedureUse(debugMethodologyDebugChecklist.id),
+    procedureUse(debugMethodologyDebugChecklist, {
+      label: "生成调试检查清单",
+      when: "问题边界还不清楚，需要先生成六步调试骨架时。",
+      reason: "强制补齐复现、假设、证据、修复和回归验证。",
+      exampleArgs: { args: ["--title", "fixture-checklist"] },
+    }),
   ],
   references: [
     defineReference({
