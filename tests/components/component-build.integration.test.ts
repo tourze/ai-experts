@@ -771,7 +771,7 @@ describe("component build integration", () => {
 
       const brokenLocalLinks: string[] = [];
       const runtimeMarkdownFiles = collectFiles(join(tmpDistDir, platform, "skills"), (file) =>
-        file.endsWith("SKILL.md") || file.includes(join("references", "")),
+        file.endsWith(".md"),
       );
       for (const markdownFile of runtimeMarkdownFiles) {
         const markdown = readFileSync(markdownFile, "utf-8");

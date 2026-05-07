@@ -555,6 +555,11 @@ function rewriteReferenceLocalLinks(
         return `[${label}](${markdownRelativePath(outputFile, skillRootTarget)}${anchor})`;
       }
 
+      const referenceTarget = join(skillRoot, "references", hrefPath.replace(/^(\.\.\/)+/u, ""));
+      if (existsSync(referenceTarget)) {
+        return `[${label}](${markdownRelativePath(outputFile, referenceTarget)}${anchor})`;
+      }
+
       return label;
     },
   );
@@ -605,13 +610,6 @@ function rewriteGeneratedSkillMarkdown(
   proceduresById: ReadonlyMap<string, ProcedureDefinition>,
   platformSkillIds: ReadonlySet<string>,
 ): void {
-  const referenceMarkdownFiles = existsSync(join(skillRoot, "references"))
-    ? collectFiles(join(skillRoot, "references"), (file) => file.endsWith(".md"))
-    : [];
-  const linkRewrittenMarkdownFiles = new Set([
-    join(skillRoot, "SKILL.md"),
-    ...referenceMarkdownFiles,
-  ]);
   const markdownFiles = collectFiles(skillRoot, (file) => file.endsWith(".md"));
   const proceduresByTarget = procedureByScriptTarget(skill, proceduresById);
 
@@ -623,13 +621,11 @@ function rewriteGeneratedSkillMarkdown(
       platform,
       proceduresByTarget,
     );
-    const rewritten = linkRewrittenMarkdownFiles.has(file)
-      ? rewriteReferenceLocalLinks(
-        rewriteReferenceSkillLinks(commandRewritten, skill, file, skillRoot, platformSkillIds),
-        file,
-        skillRoot,
-      )
-      : commandRewritten;
+    const rewritten = rewriteReferenceLocalLinks(
+      rewriteReferenceSkillLinks(commandRewritten, skill, file, skillRoot, platformSkillIds),
+      file,
+      skillRoot,
+    );
     if (rewritten !== source) writeFileSync(file, rewritten, "utf-8");
   }
 }
