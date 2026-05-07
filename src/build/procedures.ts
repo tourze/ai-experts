@@ -28,7 +28,8 @@ type RuntimeProcedureModule = RuntimeProcedureEntry & {
   sourcePath: string;
 };
 
-type ProcedureManifestEntry = RuntimeProcedureEntry & {
+type ProcedureManifestEntry = Omit<RuntimeProcedureEntry, "target"> & {
+  target: string;
   bundled: true;
 };
 
@@ -80,9 +81,9 @@ function checksum(content: string): string {
   return createHash("sha256").update(content).digest("hex");
 }
 
-function toManifestEntry(procedure: RuntimeProcedureModule): ProcedureManifestEntry {
-  const { sourcePath: _sourcePath, ...entry } = procedure;
-  return { ...entry, bundled: true };
+function toManifestEntry(procedure: RuntimeProcedureModule, bundleTarget: string): ProcedureManifestEntry {
+  const { sourcePath: _sourcePath, target: _runtimeTarget, ...entry } = procedure;
+  return { ...entry, target: bundleTarget, bundled: true };
 }
 
 function metadataForRuntime(procedure: RuntimeProcedureModule): RuntimeProcedureEntry {
@@ -623,10 +624,11 @@ export async function emitProcedureRuntime(
   const platformProcedures = collectPlatformProcedures(componentSurface, platform);
   const runtimeProcedures = platformProcedures.map(toRuntimeProcedureEntry);
   const proceduresSource = await emitBundledProceduresFile(root, runtimeProcedures);
+  const proceduresFile = "procedures.js";
 
   return {
-    proceduresFile: "procedures.js",
+    proceduresFile,
     bundleChecksum: checksum(proceduresSource),
-    procedures: runtimeProcedures.map(toManifestEntry),
+    procedures: runtimeProcedures.map((procedure) => toManifestEntry(procedure, proceduresFile)),
   };
 }

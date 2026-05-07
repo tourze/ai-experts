@@ -144,9 +144,17 @@ describe("component build integration", () => {
     assert.match(claudeManifestWithScripts.procedures.bundleChecksum, /^[a-f0-9]{64}$/);
     assert.equal(
       claudeManifestWithScripts.procedures.items.some((procedure: any) =>
-        procedure.id === "screenshot-take-screenshot" && procedure.runtime === "node" && procedure.bundled === true
+        procedure.id === "screenshot-take-screenshot" &&
+        procedure.target === "procedures.js" &&
+        procedure.runtime === "node" &&
+        procedure.bundled === true
       ),
       true,
+    );
+    assert.deepEqual(
+      claudeManifestWithScripts.procedures.items.filter((procedure: any) => procedure.target !== "procedures.js"),
+      [],
+      "bundled procedure manifest entries should point at the generated bundle, not removed per-script files",
     );
     assert.equal("scripts" in claudeManifestWithScripts, false);
 
