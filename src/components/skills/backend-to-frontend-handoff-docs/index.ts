@@ -4,7 +4,12 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
+import { featureDevSkill } from "../feature-dev/index";
+import { systemDesignSkill } from "../system-design/index";
 
 export const backendToFrontendHandoffDocsSkill = defineSkill({
   id: "backend-to-frontend-handoff-docs",
@@ -13,7 +18,6 @@ export const backendToFrontendHandoffDocsSkill = defineSkill({
   useCases: [
     "适合接口开发完成后的交接、联调准备和 API 文档补齐。",
     "适合把散落在控制器、DTO、服务层和业务规则里的细节收敛成一份 handoff。",
-    "交叉引用：若还在做方案设计，先用 `system-design`；若接口尚未落地，先用 `feature-dev`。",
   ],
   constraints: [
     "文档必须以真实实现为准，字段名、状态值、校验规则和错误码不得猜测。",
@@ -37,8 +41,40 @@ export const backendToFrontendHandoffDocsSkill = defineSkill({
       pass: "全状态码 + 边界",
     }),
   ],
+  relatedSkills: [
+    {
+      get id() {
+        return systemDesignSkill.id;
+      },
+      reason: "接口还处在方案设计或系统边界讨论阶段时先联动。",
+    },
+    {
+      get id() {
+        return featureDevSkill.id;
+      },
+      reason: "接口尚未落地、还需要实现或补齐开发任务时联动。",
+    },
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "基于真实后端实现生成前端可直接联调的 API handoff，收敛接口契约、DTO 语义、状态码、校验和边界场景。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先从控制器、路由、DTO、服务层、错误码和鉴权配置收集事实；缺失信息标为待确认。",
+      "按业务背景、Endpoints、DTO、枚举常量、校验规则、业务边界、集成建议组织正文。",
+      "复杂业务必须补 JSON 请求/响应形状、字段说明、错误码、分页/排序/缓存/轮询或实时更新规则。",
+      "输出到 `.claude/docs/ai/<feature-name>/api-handoff.md` 或用户指定路径，并注明联调测试场景和已知限制。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "API handoff Markdown，覆盖业务背景、接口列表、DTO、枚举、校验、错误码和边界条件。",
+      "可复制的 JSON 示例、字段语义说明、前端需要镜像的校验逻辑和鉴权/状态规则。",
+      "联调检查项、测试场景、待确认问题和文档落地路径。",
+    ],
+  }),
   tools: [],
 });

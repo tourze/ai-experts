@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { dataAnalysisSkill } from "../data-analysis/index";
 import { dataStorytellingSkill } from "../data-storytelling/index";
@@ -35,25 +38,25 @@ export const statisticalAnalysisSkill = defineSkill({
       get id() {
         return dataStorytellingSkill.id;
       },
-      reason: "如果结论要面向业务方表达，是否同步给 `data-storytelling`。",
+      reason: "统计结论需要转成业务叙事或汇报口径时联动。",
     },
     {
       get id() {
         return dataAnalysisSkill.id;
       },
-      reason: "相关 skill：`data-analysis`、`data-visualization`、`data-storytelling`、`llm-evaluation`。",
+      reason: "需要先做数据清洗、聚合、缺失值或异常值检查时联动。",
     },
     {
       get id() {
         return dataVisualizationSkill.id;
       },
-      reason: "相关 skill：`data-analysis`、`data-visualization`、`data-storytelling`、`llm-evaluation`。",
+      reason: "需要用分布图、置信区间或趋势图解释统计结果时联动。",
     },
     {
       get id() {
         return llmEvaluationSkill.id;
       },
-      reason: "相关 skill：`data-analysis`、`data-visualization`、`data-storytelling`、`llm-evaluation`。",
+      reason: "统计对象是 LLM 评测集、模型对比或回归实验时联动。",
     },
   ],
   antiPatterns: [
@@ -72,6 +75,24 @@ export const statisticalAnalysisSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ModelOnly,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为业务指标、实验、相关性、趋势或异常波动提供统计推断，明确样本口径、方法、效应量和结论边界。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认数据生成过程、样本量、时间窗口、过滤条件、采样机制和缺失/异常值。",
+      "先看分布、分位数和异常，再做比较、相关、回归或假设检验；不要只看均值。",
+      "显著性结论同时报告效应量、置信区间或业务影响；相关、趋势和因果分开表述。",
+      "样本太小、偏差太大或采样不清时降低结论强度，并说明需要补充的数据。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "样本口径、方法选择、前提假设、分布/异常检查和统计结果。",
+      "p 值之外的效应量、置信区间、业务影响和结论边界。",
+      "可行动结论、不能下结论的原因、需要补充的数据或实验设计建议。",
+    ],
+  }),
   tools: [],
 });

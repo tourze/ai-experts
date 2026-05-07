@@ -6,6 +6,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { mdToPdfSkill } from "../md-to-pdf/index";
 
@@ -52,7 +55,25 @@ export const markdownMermaidWritingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用可审阅、可 diff、可版本管理的 Markdown 和 Mermaid 产出报告、技术文档、决策记录和图表型说明。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确定文档类型、读者和结论，再选择 templates 下的合适模板，不从空白页硬写。",
+      "读取 Markdown 与 Mermaid 样式指南，保持标题层级、列表、表格、代码块和节点命名一致。",
+      "图表先服务于一个明确问题；复杂主题拆成多个 Mermaid 小图，常见图示参考 diagrams reference。",
+      "交付前检查 Mermaid 语法、节点命名、图表是否支撑结论；需要 SVG/ASCII 输出时读取 pretty-mermaid。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Markdown 文档、选用模板、图表清单和 Mermaid 源码。",
+      "样式指南遵循情况、图表与结论的对应关系和需要拆分的复杂图。",
+      "如需后续发布，说明是否转给 md-to-pdf 或 pretty-mermaid 流程。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

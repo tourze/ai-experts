@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, mdToPdfKatexRender, mdToPdfMdToPdf, mdToPdfSetup } from "../../procedures/index";
 
@@ -56,7 +59,25 @@ export const mdToPdfSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把 Markdown 文稿稳定渲染为可打印 PDF，并保留 Mermaid、KaTeX、代码块、表格、页码和自定义 CSS 的排版质量。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认源 `.md`、目标 `.pdf`、纸张格式、页边距、页眉页脚、CSS 和是否包含 Mermaid/数学公式。",
+      "先调用 `md-to-pdf-setup` 做依赖检查；需要排版细节时读取 README 和测试文档资源。",
+      "用 `md-to-pdf-md-to-pdf` 执行渲染；只有依赖缺失且用户接受降级时才使用无 Mermaid 或无数学公式路径。",
+      "交付前抽查首尾页、目录、宽表格、长代码块、Mermaid、数学公式和分页位置。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "依赖检查结果、渲染参数、源文件路径和输出 PDF 路径。",
+      "Mermaid/KaTeX/表格/代码块/分页抽查结果，以及是否发生降级渲染。",
+      "失败时的缺失依赖、源 Markdown 修复建议和可重跑命令。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(mdToPdfKatexRender),

@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { dataAnalysisSkill } from "../data-analysis/index";
 import { dataVisualizationSkill } from "../data-visualization/index";
@@ -37,19 +40,19 @@ export const dataStorytellingSkill = defineSkill({
       get id() {
         return dataAnalysisSkill.id;
       },
-      reason: "结论必须能回指具体数据证据；需要时引用 `data-analysis` 或 `statistical-analysis` 的结果。",
+      reason: "需要先清洗、聚合或验证指标事实时联动。",
     },
     {
       get id() {
         return dataVisualizationSkill.id;
       },
-      reason: "相关 skill：`data-analysis`、`data-visualization`、`statistical-analysis`。",
+      reason: "需要把叙事支撑点转成图表或仪表盘时联动。",
     },
     {
       get id() {
         return statisticalAnalysisSkill.id;
       },
-      reason: "结论必须能回指具体数据证据；需要时引用 `data-analysis` 或 `statistical-analysis` 的结果。",
+      reason: "需要判断显著性、效应量或因果边界时联动。",
     },
   ],
   antiPatterns: [
@@ -68,7 +71,25 @@ export const dataStorytellingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把数据分析结果压缩为面向决策者的业务叙事，让主结论、证据、风险边界和行动建议闭环。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认目标受众、材料用途和希望驱动的动作，再写主结论。",
+      "用主结论、支撑证据、风险边界、决策建议、下一步负责人组织叙事；一个故事只保留 1 个主结论。",
+      "每个支撑点都回指数字证据、基线、时间窗和样本边界；相关不等于因果时显式降级。",
+      "需要 T8 机读实体标注时读取 t8-syntax reference；需要图表或统计判断时联动相关 skill。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "结论先行的数据故事：发生了什么、为什么重要、建议动作和负责人。",
+      "每个支撑点对应的数据证据、基线、风险边界和不确定性说明。",
+      "汇报口径、下一步行动、需要补充分析或可视化的点。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

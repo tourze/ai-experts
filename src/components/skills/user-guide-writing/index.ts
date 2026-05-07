@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { docCoauthoringSkill } from "../doc-coauthoring/index";
 import { readmeBlueprintGeneratorSkill } from "../readme-blueprint-generator/index";
@@ -56,6 +59,24 @@ export const userGuideWritingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "编写面向终端用户的任务导向指南、教程、FAQ 或帮助中心内容，让读者能按步骤完成真实任务。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认目标读者、文档类型、关键任务、前置条件、权限限制和成功标准。",
+      "按任务组织章节，使用开始前准备、步骤、常见问题、失败时怎么办的顺序；一步只做一件事。",
+      "必要截图只放在关键分叉或状态确认处，并说明截图位置、状态和成功标准。",
+      "交付前检查用户语言、异常路径、权限限制和内部术语，避免把实现细节暴露给终端用户。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "面向终端用户的指南结构或完整稿，包含开始前准备、任务步骤、成功标准、FAQ 和故障处理。",
+      "关键任务清单、截图规划、权限/前置条件和异常情况说明。",
+      "需要产品、客服或业务方补充确认的术语、界面状态和边界问题。",
+    ],
+  }),
   tools: [],
 });

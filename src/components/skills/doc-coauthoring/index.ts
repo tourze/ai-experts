@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { proposalWriterSkill } from "../proposal-writer/index";
 import { userGuideWritingSkill } from "../user-guide-writing/index";
@@ -56,6 +59,24 @@ export const docCoauthoringSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "和用户共同把零散素材整理成可读、可评审、可交付的结构化文档，并在每轮明确推进目标。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认文档类型、目标读者、已有素材、截止时间、使用场景和本轮目标。",
+      "先产出目录、边界、事实输入、作者判断和待确认问题，不直接写成大段完稿。",
+      "按收集背景与目标、列目录与缺口、逐章起草、读者视角复核、定稿交接推进。",
+      "每轮只推进一个明确目标；缺失信息标为待确认，不把未确认内容包装成事实。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "文档结构、章节草稿或定稿，以及每轮推进目标。",
+      "事实输入、作者判断、待确认问题和后续行动的分层清单。",
+      "读者视角复核结论：读者是谁、读完要做什么、还缺什么。",
+    ],
+  }),
   tools: [],
 });

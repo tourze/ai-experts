@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { embeddingStrategiesSkill } from "../embedding-strategies/index";
 import { llmEvaluationSkill } from "../llm-evaluation/index";
@@ -19,7 +22,7 @@ export const ragAuditorSkill = defineSkill({
     "用户说“RAG 效果不稳定”“为什么总答非所问”“检索命中了但生成没用上”。",
     "需要分层回答：问题出在 query、chunk、embedding、index、retrieval、rerank、prompt 还是 generation。",
     "需要构造评测集、定义 retrieval/generation 指标并输出改进优先级。",
-    "相关资源：[references/retrieval-metrics.md](references/retrieval-metrics.md)、[references/generation-metrics.md](references/generation-metrics.md)、[references/failure-taxonomy.md](references/failure-taxonomy.md)、[references/diagnostic-queries.md](references/diagnostic-queries.md)、[evals/cases.yaml](evals/cases.yaml)。",
+    "相关资源：[references/retrieval-metrics.md](references/retrieval-metrics.md)、[references/generation-metrics.md](references/generation-metrics.md)、[references/failure-taxonomy.md](references/failure-taxonomy.md)、[references/diagnostic-queries.md](references/diagnostic-queries.md)。",
   ],
   constraints: [
     "先把 retrieval 和 generation 分开看，不要把所有锅都甩给“大模型”。",
@@ -37,25 +40,25 @@ export const ragAuditorSkill = defineSkill({
       get id() {
         return vectorIndexTuningSkill.id;
       },
-      reason: "如果怀疑 embedding 或索引问题，是否联动 `embedding-strategies` 与 `vector-index-tuning`。",
+      reason: "检索失败指向索引参数、top-k、过滤或向量库配置时联动。",
     },
     {
       get id() {
         return llmEvaluationSkill.id;
       },
-      reason: "如果最终要纳入回归，是否同步到 `llm-evaluation`。",
+      reason: "需要把 RAG 指标纳入模型或系统回归评测时联动。",
     },
     {
       get id() {
         return embeddingStrategiesSkill.id;
       },
-      reason: "相关 skill：`embedding-strategies`、`similarity-search-patterns`、`vector-index-tuning`、`llm-evaluation`。",
+      reason: "失败原因指向 embedding 模型、chunk 表示或语义覆盖时联动。",
     },
     {
       get id() {
         return similaritySearchPatternsSkill.id;
       },
-      reason: "相关 skill：`embedding-strategies`、`similarity-search-patterns`、`vector-index-tuning`、`llm-evaluation`。",
+      reason: "需要审查相似度检索策略、过滤、rerank 或混合检索时联动。",
     },
   ],
   antiPatterns: [
@@ -70,7 +73,25 @@ export const ragAuditorSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "分层审计 RAG 管线，区分 query、chunk、embedding、index、retrieval、rerank、prompt 和 generation 的失败原因。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先收集 query、gold docs、召回文档、引用片段、模型输出、prompt 和日志；缺证据时不直接定性 hallucination。",
+      "构造覆盖主路径、易混淆路径和长尾样例的 query set，必要时读取 diagnostic-queries reference。",
+      "先评估 retrieval@k、precision/recall/MRR，再评估 groundedness、completeness 和 hallucination rate。",
+      "把失败样例映射到 failure taxonomy，并按 chunk、embedding、索引、重排、prompt、answer synthesis 给 P0/P1/P2 改进优先级。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Query set、gold docs、检索结果、生成答案和证据链覆盖情况。",
+      "Retrieval 指标、generation 指标、失败分类和分层根因判断。",
+      "P0/P1/P2 改进建议、需要联动的 embedding/index/evaluation skill 和回归评测入口。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const meetingInsightsAnalyzerSkill = defineSkill({
@@ -45,7 +48,25 @@ export const meetingInsightsAnalyzerSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "基于会议转写做沟通行为复盘，提炼有证据的观察、影响解释和可执行改进动作。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先定位会议转写、字幕或文本文件，并确认分析对象、说话人映射、会议数量、时间窗和数据缺口。",
+      "只有在说话人和时间戳足够可靠时才输出发言占比、打断、口头禅等指标；否则先声明边界。",
+      "每条发现按观察、影响、建议组织，至少绑定会议名称、时间点或原句片段。",
+      "如果用户只需要摘要、决策或行动项，改读会议纪要 references，而不是做行为反馈。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "样本范围、说话人映射、数据缺口和指标可信度说明。",
+      "带证据的行为发现：观察、影响、替代表达或会议动作。",
+      "优势、风险、下一步练习建议，以及必要时的会议纪要/行动项交接。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

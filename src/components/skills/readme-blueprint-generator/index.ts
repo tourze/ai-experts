@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { markdownMermaidWritingSkill } from "../markdown-mermaid-writing/index";
 import { userGuideWritingSkill } from "../user-guide-writing/index";
@@ -56,6 +59,24 @@ export const readmeBlueprintGeneratorSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为仓库生成或重构 README 蓝图，让开发者能理解项目定位、技术栈、目录结构、运行方式、测试和贡献入口。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先扫描 README、copilot instructions、包管理配置、Makefile、CI 配置和关键目录，确认项目真实运行方式。",
+      "用 `rg --files` 和对包管理文件的脚本/测试/build/start 字段检查，避免把猜测写成事实。",
+      "按项目简介、技术栈、快速开始、项目结构、开发流程、测试与质量保障组织蓝图。",
+      "缺失信息标为待补；面向开发者写可执行命令，不混入营销式描述。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "README 骨架或重构稿，覆盖项目简介、技术栈、快速开始、结构、开发流程和测试质量入口。",
+      "可复制执行的安装、启动、测试、lint/build 命令和环境变量说明。",
+      "未发现或待确认的事实列表，以及需要用户补充的项目上下文。",
+    ],
+  }),
   tools: [],
 });
