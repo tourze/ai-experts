@@ -89,13 +89,21 @@ Run an analyst pass on the aggregate:
 
 Use the provided procedure instead of building custom HTML:
 
-```bash
-nohup npx tsx src/components/procedures/sources/skill-creator/generate_review.ts \
-  <workspace>/iteration-N \
-  --skill-name "my-skill" \
-  --benchmark <workspace>/iteration-N/benchmark.json \
-  > /dev/null 2>&1 &
+Call the `skill-creator-generate-review` procedure command shown in `SKILL.md`, replacing the default empty args with:
+
+```json
+{
+  "args": [
+    "<workspace>/iteration-N",
+    "--skill-name",
+    "my-skill",
+    "--benchmark",
+    "<workspace>/iteration-N/benchmark.json"
+  ]
+}
 ```
+
+If the viewer should keep running in the background, wrap that platform-specific procedure command with `nohup ... > /dev/null 2>&1 &`.
 
 For iteration 2+, also pass `--previous-workspace <workspace>/iteration-<N-1>`.
 

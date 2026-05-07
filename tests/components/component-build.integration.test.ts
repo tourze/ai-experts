@@ -1148,6 +1148,19 @@ describe("component build integration", () => {
         `${platform} Markdown should not reference legacy local scripts`,
       );
 
+      const sourceProcedureEntrypointReferences: string[] = [];
+      for (const markdownFile of collectFiles(skillsRoot, (file) => file.endsWith(".md"))) {
+        const markdown = readFileSync(markdownFile, "utf-8");
+        if (/src\/components\/procedures\/sources/.test(markdown)) {
+          sourceProcedureEntrypointReferences.push(markdownFile);
+        }
+      }
+      assert.deepEqual(
+        sourceProcedureEntrypointReferences,
+        [],
+        `${platform} Markdown should not reference source-side procedure entrypoints`,
+      );
+
       const staleAgentScriptCommands: string[] = [];
       const agentsRoot = join(tmpDistDir, platform, "agents");
       for (const agentFile of collectFiles(agentsRoot, (file) => /\.(?:md|toml)$/.test(file))) {
