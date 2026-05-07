@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const featureDevSkill = defineSkill({
@@ -39,6 +42,28 @@ export const featureDevSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把跨模块功能开发按发现、探索、澄清、设计、实现、复核和总结七阶段推进，避免陌生代码库直接开写。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "发现：定义功能目标、成功标准、范围边界和非目标。",
+      "代码库探索：识别相关文件、既有模式、相似实现和集成点。",
+      "澄清问题：补齐业务规则、边界情况、数据迁移、兼容性和验收标准。",
+      "架构设计：至少比较两种方案，说明复杂度、风险和集成成本。",
+      "实现：按既有模式改代码，必要时先补测试或验证脚手架。",
+      "质量复核：跑测试/检查，审查回归面、错误处理、日志、文档和交接需求。",
+      "总结：记录关键决策、限制、验证结果和后续动作。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "功能目标、成功标准、范围和非目标。",
+      "代码库探索结果、相似实现和集成点。",
+      "方案对比、实现计划和验证策略。",
+      "代码、测试、文档/交接说明、限制和后续动作。",
+    ],
+  }),
   tools: [],
 });

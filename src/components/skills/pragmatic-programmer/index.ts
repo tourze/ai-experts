@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const pragmaticProgrammerSkill = defineSkill({
@@ -40,7 +43,28 @@ export const pragmaticProgrammerSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用务实工程原则降低当前决策的复杂度和反馈成本，把原则转成今天能执行的取舍。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先明确当前决策、约束、不可逆点、反馈周期和要避免的复杂度。",
+      "按问题读取 reference：估算读 `estimation-portfolio`，示踪弹读 `tracer-bullets`，DRY/正交性读 `dry-orthogonality`，契约读 `contracts-assertions`，破窗读 `broken-windows`。",
+      "判断重复是否是真正重复的知识，避免把相似但不同的逻辑强行合并。",
+      "设计最小可验证路径；示踪弹必须能演进，不能变成无质量边界的临时代码。",
+      "对不可逆决策读取 `reversibility`，先验证边界再承诺。",
+      "输出原则如何改变本次选择，以及今天该做的最小动作。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "当前决策、约束、反馈周期和不可逆点。",
+      "相关务实原则及适用/不适用理由。",
+      "最小可验证路径、边界验证和保留的演进空间。",
+      "今天要做的动作、避免的过度抽象和后续复审点。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

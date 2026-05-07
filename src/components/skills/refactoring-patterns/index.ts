@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const refactoringPatternsSkill = defineSkill({
@@ -41,7 +44,28 @@ export const refactoringPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "先识别代码异味，再选择最小、可验证、不改行为的命名化重构序列。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先说明代码异味、目标状态、行为是否保持不变，以及验证路径。",
+      "读取 `smell-catalog` reference 归类异味，不为了套模式强行重构。",
+      "按问题读取动作库：函数组合读 `composing-methods`，职责搬移读 `moving-features`，数据整理读 `organizing-data`，条件简化读 `simplifying-conditionals`。",
+      "需要排序完整步骤时读取 `refactoring-workflow` reference；遗留代码隔离测试时读取 `seam-ripper`。",
+      "把重构和行为变更拆成两步，优先选择小步、安全、可回滚的动作序列。",
+      "标记需要补测试、人工验证或拆 commit 的高风险步骤。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "代码异味、证据和目标结构。",
+      "选用的重构手法及选择理由。",
+      "小步重构序列、验证点和回滚点。",
+      "需要补测试或拆分提交的风险提示。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

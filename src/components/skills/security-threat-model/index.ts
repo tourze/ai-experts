@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const securityThreatModelSkill = defineSkill({
@@ -40,7 +43,28 @@ export const securityThreatModelSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "基于仓库证据识别资产、边界、入口和真实攻击路径，产出可落地的 STRIDE 威胁模型和缓解需求。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认分析范围、仓库证据、关键假设和缺失上下文；上下文不足时先问 1 到 3 个高价值问题。",
+      "列出资产、信任边界、入口、攻击者能力和现有控制，区分运行时路径与 CI/构建/开发工具。",
+      "按 STRIDE 枚举威胁；需要系统化分类时读取 `stride-analysis-patterns` reference。",
+      "对高价值资产构建攻击树；需要路径展开时读取 `attack-tree-construction` reference。",
+      "把威胁映射到现有控制和缓解措施，读取 `security-controls-and-assets` 与 `threat-mitigation-mapping`。",
+      "从威胁中提取安全需求，读取 `security-requirement-extraction`，并区分证据、推断和待确认项。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "资产、边界、入口、攻击者能力、现有控制和假设。",
+      "STRIDE 威胁清单、受影响资产、入口和证据位置。",
+      "攻击树、可能性/影响/优先级和已有控制差距。",
+      "缓解映射、安全需求、待确认问题和复审建议。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({
