@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
@@ -158,6 +159,31 @@ describe("component build integration", () => {
     assert.equal(Object.hasOwn(codexManifest, "profile"), false);
     assert.equal(existsSync(join(tmpDistDir, "claude/rules")), false);
     assert.equal(existsSync(join(tmpDistDir, "codex/rules")), false);
+  });
+
+  test("manifest file checksums cover every generated file", () => {
+    for (const platform of ["claude", "codex"]) {
+      const platformRoot = join(tmpDistDir, platform);
+      const manifest = JSON.parse(readFileSync(join(platformRoot, "manifest.json"), "utf-8"));
+      const manifestFiles = manifest.files as Record<string, string>;
+      const actualFiles = collectFiles(platformRoot)
+        .map((file) => file.slice(platformRoot.length + 1).split("\\").join("/"))
+        .filter((file) => file !== "manifest.json")
+        .sort();
+
+      assert.deepEqual(
+        Object.keys(manifestFiles).sort(),
+        actualFiles,
+        `${platform} manifest files should exactly cover generated output except manifest.json`,
+      );
+
+      for (const relativeFile of actualFiles) {
+        const checksum = createHash("sha256")
+          .update(readFileSync(join(platformRoot, relativeFile)))
+          .digest("hex");
+        assert.equal(manifestFiles[relativeFile], checksum, `${platform} manifest checksum for ${relativeFile}`);
+      }
+    }
   });
 
   test("emits reproducible manifests and procedure bundles", () => {
