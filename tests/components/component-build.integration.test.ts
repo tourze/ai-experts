@@ -221,6 +221,42 @@ describe("component build integration", () => {
         [],
         `${platform} procedure owners should reference generated skills or agents for the same platform`,
       );
+
+      const proceduresById = new Map((manifest.procedures.items as any[]).map((procedure) => [procedure.id, procedure]));
+      const invalidProcedureCommands: string[] = [];
+      const commandSources = [
+        ...collectFiles(join(platformRoot, "skills"), (file) => /\.(?:md|toml)$/.test(file)),
+        ...collectFiles(join(platformRoot, "agents"), (file) => /\.(?:md|toml)$/.test(file)),
+      ];
+
+      for (const commandSource of commandSources) {
+        const source = readFileSync(commandSource, "utf-8");
+        for (const match of source.matchAll(/--procedure-id\s+([A-Za-z0-9-]+)[^\n]*/g)) {
+          const procedureId = match[1];
+          const commandText = match[0];
+          const procedure = proceduresById.get(procedureId);
+          if (!procedure) {
+            invalidProcedureCommands.push(`${commandSource}:missing-procedure:${procedureId}`);
+            continue;
+          }
+          const triggerSkill = commandText.match(/--trigger-skill\s+([A-Za-z0-9-]+)/)?.[1];
+          const triggerAgent = commandText.match(/--trigger-agent\s+([A-Za-z0-9-]+)/)?.[1];
+          if (!triggerSkill && !triggerAgent) {
+            invalidProcedureCommands.push(`${commandSource}:${procedureId}:missing-trigger`);
+          }
+          if (triggerSkill && !procedure.owners?.skillIds?.includes(triggerSkill)) {
+            invalidProcedureCommands.push(`${commandSource}:${procedureId}:skill:${triggerSkill}`);
+          }
+          if (triggerAgent && !procedure.owners?.agentIds?.includes(triggerAgent)) {
+            invalidProcedureCommands.push(`${commandSource}:${procedureId}:agent:${triggerAgent}`);
+          }
+        }
+      }
+      assert.deepEqual(
+        invalidProcedureCommands,
+        [],
+        `${platform} generated procedure commands should reference manifest procedures and valid owners`,
+      );
     }
   });
 
