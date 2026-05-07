@@ -783,6 +783,15 @@ describe("component build integration", () => {
         [],
         `${platform} skill dist should not include alternate SKILL.toon artifacts`,
       );
+
+      const generatedPlatformMemoryFiles = collectFiles(join(tmpDistDir, platform, "skills"), (file) =>
+        /[\\/](?:AGENTS|CLAUDE)\.md$/.test(file),
+      );
+      assert.deepEqual(
+        generatedPlatformMemoryFiles,
+        [],
+        `${platform} skill dist should not include platform memory files inside skill packages`,
+      );
     }
 
     const legacySkillScriptRunners = collectFiles(join(tmpDistDir, "claude/skills"), (file) =>

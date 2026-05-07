@@ -570,15 +570,21 @@ describe("component source conventions", () => {
     }
   });
 
-  test("skill source does not keep legacy root package artifacts", () => {
+  test("skill source does not keep root package artifacts", () => {
     const skillRoot = join(repoRoot, "src/components/skills");
-    const legacyRootArtifacts = new Set(["HOW_TO_USE.md", "sample_input.json", "expected_output.json"]);
+    const rootArtifacts = new Set([
+      "AGENTS.md",
+      "CLAUDE.md",
+      "HOW_TO_USE.md",
+      "sample_input.json",
+      "expected_output.json",
+    ]);
     const legacySkillScriptFiles = collectFiles(skillRoot, (file) =>
       file.slice(skillRoot.length + 1).split(/[\\/]/).includes("scripts"),
     );
-    const rootArtifacts = collectFiles(skillRoot, (file) => {
+    const misplacedRootArtifacts = collectFiles(skillRoot, (file) => {
       const parts = file.slice(skillRoot.length + 1).split(/[\\/]/);
-      return parts.length === 2 && legacyRootArtifacts.has(parts[1]);
+      return parts.length === 2 && rootArtifacts.has(parts[1]);
     });
 
     assert.deepEqual(
@@ -587,9 +593,9 @@ describe("component source conventions", () => {
       "skill-local scripts/ directories should move to src/components/procedures/sources/ and be referenced through procedures",
     );
     assert.deepEqual(
-      rootArtifacts,
+      misplacedRootArtifacts,
       [],
-      "root-level skill package artifacts should be split into references, assets, or evals before dist copy",
+      "root-level skill package artifacts and platform memory files should be split into references, assets, or evals before dist copy",
     );
   });
 

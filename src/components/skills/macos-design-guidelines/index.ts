@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
   defineSkillOutputs,
   defineSkillWorkflow,
@@ -28,7 +29,7 @@ export const macosDesignGuidelinesSkill = defineSkill({
     "是否提供标准菜单、设置入口、常用快捷键和上下文菜单。",
     "主窗口是否支持调整大小、全屏和多窗口，而不是被固定成移动端画布。",
     "侧边栏、工具栏、搜索和右键菜单是否体现桌面工作流。",
-    "需要展开规则时读取记忆文件、`rules/_sections.md` 和 `metadata.json`。",
+    "需要展开规则时读取 `references/agent-instructions.md`、`references/rules/_sections.md` 和 `references/metadata.json`。",
   ],
   relatedSkills: [
     {
@@ -61,6 +62,30 @@ export const macosDesignGuidelinesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
+  references: [
+    defineReference({
+      id: "agent-instructions",
+      source: new URL("./references/agent-instructions.md", import.meta.url),
+      title: "macOS Guidelines Reference",
+      summary: "macOS HIG 适用场景、优先级、规则类别和禁止事项。",
+      loadWhen: "需要快速理解 macOS HIG 桌面设计要求时读取。",
+    }),
+    defineReference({
+      id: "section-index",
+      source: new URL("./references/rules/_sections.md", import.meta.url),
+      target: "references/rules/_sections.md",
+      title: "macOS HIG Section Index",
+      summary: "11 个 macOS HIG 类别和 62 条规则的速查索引。",
+      loadWhen: "需要按菜单栏、窗口、工具栏、键盘、指针等类别展开规则时读取。",
+    }),
+    defineReference({
+      id: "metadata",
+      source: new URL("./references/metadata.json", import.meta.url),
+      title: "macOS Guidelines Metadata",
+      summary: "版本、组织、摘要和 Apple 官方参考链接。",
+      loadWhen: "需要核对资料范围、版本和官方链接时读取。",
+    }),
+  ],
   workflow: defineSkillWorkflow({
     steps: [
       "先确认产品是原生 macOS、Mac Catalyst 还是跨平台桌面，并列出核心桌面任务。",

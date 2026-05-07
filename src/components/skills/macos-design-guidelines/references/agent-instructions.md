@@ -1,8 +1,8 @@
-# macOS Design Guidelines — Agent Instructions
+# macOS Design Guidelines Reference
 
 ## Purpose
 
-This skill provides Apple Human Interface Guidelines for macOS. Apply these rules when building, reviewing, or designing Mac apps using SwiftUI or AppKit.
+This reference provides Apple Human Interface Guidelines for macOS. Apply these rules when building, reviewing, or designing Mac apps using SwiftUI or AppKit.
 
 ## When to Apply
 
@@ -15,7 +15,7 @@ This skill provides Apple Human Interface Guidelines for macOS. Apply these rule
 
 ## How to Use
 
-1. Read `SKILL.md` for the full rule set with code examples
+1. Read `../SKILL.md` for the generated workflow and checklist
 2. Read `rules/_sections.md` for the categorized quick-reference
 3. Use the evaluation checklist in SKILL.md before shipping
 

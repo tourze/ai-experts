@@ -675,6 +675,8 @@ function copyLooseSkillFiles(skill: SkillDefinition, skillRoot: string): void {
     "index.ts",
     "index.js",
     "SKILL.body.md",
+    "AGENTS.md",
+    "CLAUDE.md",
     "scripts",
     "references",
     "assets",
