@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillParameter,
@@ -35,7 +34,6 @@ export const speckitClarifySkill = defineSkill({
       "若用户拒绝澄清，记录风险并允许继续。",
     ],
   }),
-  tools: [],
   parameters: [
     defineSkillParameter({ name: "arguments", description: "用户原始输入，如功能名称、需求描述或其他上下文。" }),
   ],

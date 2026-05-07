@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -72,7 +71,6 @@ export const contentStrategySkill = defineSkill({
       "CMS/站点结构建议、SEO 内容评分、域名候选分组和需要 SEO 联动的页面优化事项。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "content-calendar-methodology",

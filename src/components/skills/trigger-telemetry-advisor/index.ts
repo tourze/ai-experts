@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkillOutputs,
@@ -59,5 +58,4 @@ export const triggerTelemetryAdvisorSkill = defineSkill({
       "建议改动、验证命令、数据口径限制和需要脱敏的报告内容。",
     ],
   }),
-  tools: [],
 });

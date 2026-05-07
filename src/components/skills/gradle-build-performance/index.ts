@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -68,5 +67,4 @@ export const gradleBuildPerformanceSkill = defineSkill({
       "配置期 I/O、自定义 task、动态依赖、仓库顺序、kapt/ksp 或 Native Image 相关风险。",
     ],
   }),
-  tools: [],
 });

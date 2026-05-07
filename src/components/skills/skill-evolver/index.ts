@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -81,7 +80,6 @@ export const skillEvolverSkill = defineSkill({
       "建议动作：先做什么、需要确认的写入点、验证命令和回滚方式。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "migration-protocol",

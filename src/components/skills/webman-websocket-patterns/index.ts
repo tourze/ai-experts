@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -61,7 +60,6 @@ export const webmanWebsocketPatternsSkill = defineSkill({
       "客户端重连策略、验证步骤和运行风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "channel-subscription",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -68,7 +67,6 @@ export const techDebtSkill = defineSkill({
       "收益、验证方式、退出条件和迭代预算建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "guest-insights",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -70,7 +69,6 @@ export const tauriReactIntegrationSkill = defineSkill({
       "TypeScript 类型合同、CSP/WebView 限制和验证清单。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "deeplink-state-sync-patterns",

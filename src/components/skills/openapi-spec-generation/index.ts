@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -59,7 +58,6 @@ export const openapiSpecGenerationSkill = defineSkill({
       "代码优先生成、SDK / mock / 契约测试工具链建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "openapi-skeleton",

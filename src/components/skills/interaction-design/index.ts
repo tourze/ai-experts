@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -74,7 +73,6 @@ export const interactionDesignSkill = defineSkill({
       "性能、无障碍、reduced motion、品牌一致性和需要联动视觉设计的事项。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "animation-libraries",

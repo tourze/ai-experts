@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -94,7 +93,6 @@ export const dataVisualizationSkill = defineSkill({
       "需要生成代码时给出可运行图表代码、输入数据假设和渲染规模注意事项。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "chart-decision-matrix",

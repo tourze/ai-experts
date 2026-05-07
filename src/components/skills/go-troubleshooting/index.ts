@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -99,7 +98,6 @@ export const goTroubleshootingSkill = defineSkill({
       "已排除假设、剩余未知项和回归验证建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "debugging-decision-tree",

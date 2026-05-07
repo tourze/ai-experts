@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -49,7 +48,6 @@ export const rustAsyncPatternsSkill = defineSkill({
       "需要修改的 async API 边界、测试建议和剩余风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "runtime-examples",

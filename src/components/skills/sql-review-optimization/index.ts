@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -106,7 +105,6 @@ export const sqlReviewOptimizationSkill = defineSkill({
       "变更影响、回滚/灰度/监控方案，以及需要 db-schema-design 联动的 schema 或引擎约束。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "code-patterns",

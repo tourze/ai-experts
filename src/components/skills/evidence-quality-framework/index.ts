@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -58,7 +57,6 @@ export const evidenceQualityFrameworkSkill = defineSkill({
       "综合结论、置信度、最弱证据环节和需要升级/降级的判断。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "anti-patterns",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -85,7 +84,6 @@ export const responsiveDesignSkill = defineSkill({
       "可访问性、CLS、LCP 和真实设备验证风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "responsive-code-patterns",

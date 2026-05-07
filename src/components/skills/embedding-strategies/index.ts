@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -79,5 +78,4 @@ export const embeddingStrategiesSkill = defineSkill({
       "离线评测样本、质量指标、成本/延迟取舍和需要联动的索引或检索架构问题。",
     ],
   }),
-  tools: [],
 });

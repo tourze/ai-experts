@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -62,5 +61,4 @@ export const chromeDevtoolsSkill = defineSkill({
       "问题归因、修复建议、验证路径和仍需补采的 DevTools 证据。",
     ],
   }),
-  tools: [],
 });

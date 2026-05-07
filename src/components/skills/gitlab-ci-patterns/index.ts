@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -68,5 +67,4 @@ export const gitlabCiPatternsSkill = defineSkill({
       "失败诊断、日志/报告/测试产物保留策略和 Helm/Kubernetes 发布衔接点。",
     ],
   }),
-  tools: [],
 });

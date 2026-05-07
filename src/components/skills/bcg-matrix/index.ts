@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -79,7 +78,6 @@ export const bcgMatrixSkill = defineSkill({
       "资源流向、窗口期、里程碑和复审条件。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "ge-mckinsey-mode",

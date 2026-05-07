@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillOutputs,
@@ -53,7 +52,6 @@ export const speckitAnalyzeSkill = defineSkill({
       "修复建议：按阻断程度排序的可选下一步。",
     ],
   }),
-  tools: [],
   parameters: [
     defineSkillParameter({ name: "arguments", description: "用户原始输入，如功能名称、需求描述或其他上下文。" }),
   ],

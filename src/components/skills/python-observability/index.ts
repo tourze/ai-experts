@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -86,7 +85,6 @@ export const pythonObservabilitySkill = defineSkill({
       "需要补的失败路径测试和 dashboard / alert 建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "logging-patterns",

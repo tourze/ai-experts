@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAsset,
   defineReference,
@@ -65,7 +64,6 @@ export const ghFixCiSkill = defineSkill({
       "获批前的修复计划，以及获批后对应的代码或 workflow 修改验证结果。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(ghFixCiInspectPrChecks),
   ],

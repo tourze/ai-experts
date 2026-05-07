@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -71,7 +70,6 @@ export const xiaohongshuCommercialGrowthSkill = defineSkill({
       "需要图文生成、评论区维护、私域承接或平台规则核验的明确分工。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "checklists",

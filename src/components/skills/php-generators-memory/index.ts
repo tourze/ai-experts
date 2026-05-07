@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -65,7 +64,6 @@ export const phpGeneratorsMemorySkill = defineSkill({
       "峰值内存验证命令、PHPDoc 元素类型和回归风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "generator-patterns",

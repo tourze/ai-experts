@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineSkill,
@@ -55,7 +54,6 @@ export const customerLifecycleSkill = defineSkill({
       "健康度风险、关键假设和可验证下一步。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "strategy-matrix",

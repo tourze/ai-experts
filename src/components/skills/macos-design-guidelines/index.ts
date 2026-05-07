@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -79,5 +78,4 @@ export const macosDesignGuidelinesSkill = defineSkill({
       "SwiftUI/AppKit 实现提示、HIG 风险、与 iOS/iPad 或 SwiftUI 模式的联动点。",
     ],
   }),
-  tools: [],
 });

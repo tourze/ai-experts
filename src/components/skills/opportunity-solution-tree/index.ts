@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -67,5 +66,4 @@ export const opportunitySolutionTreeSkill = defineSkill({
       "暂缓分支、风险假设和 PRD/实验计划衔接项。",
     ],
   }),
-  tools: [],
 });

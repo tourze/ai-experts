@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillOutputs,
@@ -42,5 +41,4 @@ export const speckitReviewerSkill = defineSkill({
   outputs: defineSkillOutputs({
     body: "先列问题，再给简要总结与残余风险。",
   }),
-  tools: [],
 });

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -62,7 +61,6 @@ export const refactoringPatternsSkill = defineSkill({
       "需要补测试或拆分提交的风险提示。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "composing-methods",

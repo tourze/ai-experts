@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -109,7 +108,6 @@ export const goTestingPatternsSkill = defineSkill({
       "脆弱断言、共享状态、fixture 或外部依赖风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "testing-code-patterns",

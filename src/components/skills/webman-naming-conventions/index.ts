@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -66,7 +65,6 @@ export const webmanNamingConventionsSkill = defineSkill({
       "需要同步调整的引用、配置和测试范围。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "directory-lowercase",

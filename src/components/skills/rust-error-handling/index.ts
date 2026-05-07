@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -78,7 +77,6 @@ export const rustErrorHandlingSkill = defineSkill({
       "需要测试覆盖的错误路径与 async 传播风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "error-type-decision",

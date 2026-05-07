@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -83,7 +82,6 @@ export const androidApkAuditSkill = defineSkill({
       "动态验证证据、PoC、修复建议、置信度和覆盖声明。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "audit-runbook",

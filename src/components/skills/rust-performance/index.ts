@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -80,7 +79,6 @@ export const rustPerformanceSkill = defineSkill({
       "验证计划、回归风险和还缺的测量数据。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "profiling-tools",

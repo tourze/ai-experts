@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAsset,
   defineReference,
@@ -90,7 +89,6 @@ export const promptEngineeringPatternsSkill = defineSkill({
       "优化后的 system/user prompt、few-shot 示例、测试集、评测结果和 RAG/评测联动项。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(promptEngineeringPatternsOptimizePrompt),
   ],

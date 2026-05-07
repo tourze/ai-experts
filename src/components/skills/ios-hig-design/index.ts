@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -71,7 +70,6 @@ export const iosHigDesignSkill = defineSkill({
       "SwiftUI / UIKit 落地建议、风险点和复测清单。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "swiftui-quick-patterns",

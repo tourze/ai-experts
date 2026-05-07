@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -96,7 +95,6 @@ export const goCliSkill = defineSkill({
       "需要补的测试、文档和发布命令。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "cli-patterns",

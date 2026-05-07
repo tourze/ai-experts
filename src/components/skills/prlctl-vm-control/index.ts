@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -85,7 +84,6 @@ export const prlctlVmControlSkill = defineSkill({
       "高风险动作的用户授权、快照/回滚路径和操作后验证结果。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(prlctlVmControlFileTransfer),
     procedureUse(prlctlVmControlPowershellOutput),

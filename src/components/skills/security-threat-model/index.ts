@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -61,7 +60,6 @@ export const securityThreatModelSkill = defineSkill({
       "缓解映射、安全需求、待确认问题和复审建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "attack-tree-construction",

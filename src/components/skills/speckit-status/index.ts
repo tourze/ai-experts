@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillOutputs,
@@ -42,5 +41,4 @@ export const speckitStatusSkill = defineSkill({
       "Speckit 状态看板列：Feature、阶段、完成度、阻塞。",
     ],
   }),
-  tools: [],
 });

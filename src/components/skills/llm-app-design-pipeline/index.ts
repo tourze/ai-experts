@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillOutputs,
@@ -45,5 +44,4 @@ export const llmAppDesignPipelineSkill = defineSkill({
       "评估与上线：测试集、rubric、优化计划、延迟 SLA、成本预算、安全过滤、监控和风险。",
     ],
   }),
-  tools: [],
 });

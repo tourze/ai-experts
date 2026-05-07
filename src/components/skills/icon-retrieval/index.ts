@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -81,7 +80,6 @@ export const iconRetrievalSkill = defineSkill({
       "进入统一 Icon 包装器、设计系统 token 或 Figma 实现的后续处理建议。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(iconRetrievalSearch),
   ],

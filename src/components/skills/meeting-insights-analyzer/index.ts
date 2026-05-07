@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -63,7 +62,6 @@ export const meetingInsightsAnalyzerSkill = defineSkill({
       "优势、风险、下一步练习建议，以及必要时的会议纪要/行动项交接。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "meeting-minutes",

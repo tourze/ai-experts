@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -56,5 +55,4 @@ export const owaspAuthDataAuditSkill = defineSkill({
       "补救计划：令牌/会话调整、密钥轮换和脱敏、字段白名单/DTO 重构、历史泄漏处理。",
     ],
   }),
-  tools: [],
 });

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -74,7 +73,6 @@ export const goStructsInterfacesSkill = defineSkill({
       "API 泄漏、过度抽象或 nil / copy 风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "implementation-guide",

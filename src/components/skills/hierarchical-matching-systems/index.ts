@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -74,7 +73,6 @@ export const hierarchicalMatchingSystemsSkill = defineSkill({
       "失败样本、冲突规则、调参建议和验证方式。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "algorithms",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -90,7 +89,6 @@ export const pythonBackgroundJobsSkill = defineSkill({
       "需要补的重放测试、失败测试和可观测性字段。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "job-model-patterns",

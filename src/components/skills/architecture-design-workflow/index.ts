@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillOutputs,
@@ -87,5 +86,4 @@ export const architectureDesignWorkflowSkill = defineSkill({
       "落地计划：阶段、范围、验收标准、假设与未验证项、风险、缓解和触发条件。",
     ],
   }),
-  tools: [],
 });

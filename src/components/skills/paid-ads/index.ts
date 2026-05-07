@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -71,7 +70,6 @@ export const paidAdsSkill = defineSkill({
       "创意/受众/落地页拆分诊断，以及需要联动 landing page 重设计的承接风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "ad-copy-templates",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillParameter,
@@ -36,7 +35,6 @@ export const speckitSpecifySkill = defineSkill({
       "输出：feature 目录、spec 路径、待澄清项。",
     ],
   }),
-  tools: [],
   parameters: [
     defineSkillParameter({ name: "arguments", description: "用户原始输入，如功能名称、需求描述或其他上下文。" }),
   ],

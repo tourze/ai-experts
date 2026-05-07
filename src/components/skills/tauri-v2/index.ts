@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -81,7 +80,6 @@ export const tauriV2Skill = defineSkill({
       "构建/更新验证命令、排查结果和剩余风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "quick-patterns",

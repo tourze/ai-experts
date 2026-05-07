@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -66,7 +65,6 @@ export const fundraiseAdvisorSkill = defineSkill({
       "投资人分层、跟进节奏、问答清单和不可夸大的风险边界。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "full-guide",

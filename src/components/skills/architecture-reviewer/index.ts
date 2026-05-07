@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAsset,
   defineReference,
@@ -79,7 +78,6 @@ export const architectureReviewerSkill = defineSkill({
       "子系统清单、重复根因合并、修复优先级、待确认项和可执行整改建议。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(architectureReviewerScanCodebase),
   ],

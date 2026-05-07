@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -74,5 +73,4 @@ export const readmeBlueprintGeneratorSkill = defineSkill({
       "未发现或待确认的事实列表，以及需要用户补充的项目上下文。",
     ],
   }),
-  tools: [],
 });

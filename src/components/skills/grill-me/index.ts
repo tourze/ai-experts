@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -71,5 +70,4 @@ export const grillMeSkill = defineSkill({
       "仍未关闭的高风险假设、需要查证的事实和下一步行动。",
     ],
   }),
-  tools: [],
 });

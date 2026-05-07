@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -86,7 +85,6 @@ export const dataStorytellingSkill = defineSkill({
       "汇报口径、下一步行动、需要补充分析或可视化的点。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "t8-syntax",

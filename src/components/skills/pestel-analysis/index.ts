@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -78,7 +77,6 @@ export const pestelAnalysisSkill = defineSkill({
       "影响矩阵、监测项和后续战略分析入口。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "pestel-template",

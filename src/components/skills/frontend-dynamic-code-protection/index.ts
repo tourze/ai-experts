@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -67,7 +66,6 @@ export const frontendDynamicCodeProtectionSkill = defineSkill({
       "重放、过期、多标签、弱网、低端设备、性能和业务转化验证清单。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "protection-framework",

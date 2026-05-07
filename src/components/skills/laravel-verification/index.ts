@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -77,7 +76,6 @@ export const laravelVerificationSkill = defineSkill({
       "CI / 交接文档中应固化的命令和人工确认项。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "verification-commands",

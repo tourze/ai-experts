@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -89,7 +88,6 @@ export const vueExpertJsSkill = defineSkill({
       "需要补的 Vitest 测试、运行时校验和文档契约风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "jsdoc-component-patterns",

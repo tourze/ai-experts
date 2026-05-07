@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -70,7 +69,6 @@ export const youtubeSearchSkill = defineSkill({
       "字段缺失说明、候选筛选建议和需要 youtube-analysis 深挖的单条视频。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(youtubeSearchSearchYoutube),
   ],

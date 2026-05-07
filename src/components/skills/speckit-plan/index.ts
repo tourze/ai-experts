@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillOutputs,
@@ -44,5 +43,4 @@ export const speckitPlanSkill = defineSkill({
       "`quickstart.md`",
     ],
   }),
-  tools: [],
 });

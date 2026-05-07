@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -57,7 +56,6 @@ export const skillEvaluatorSkill = defineSkill({
       "路由建议：是否应转 skill-creator、skill-evolver 或 skill-activation-analyzer。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "evaluation-dimensions",

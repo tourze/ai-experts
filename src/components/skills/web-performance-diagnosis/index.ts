@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineSkill,
@@ -99,7 +98,6 @@ export const webPerformanceDiagnosisSkill = defineSkill({
       "性能预算、复测命令、真实用户验证和剩余风险。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(webPerformanceDiagnosisAnalyze),
   ],

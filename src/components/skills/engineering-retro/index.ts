@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -65,7 +64,6 @@ export const engineeringRetroSkill = defineSkill({
       "Observations：2-4 条有量化引用的观察，不臆测动机；需要复盘方法时链接对应 reference。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "anti-patterns",

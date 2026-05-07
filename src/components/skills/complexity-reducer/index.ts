@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -91,7 +90,6 @@ export const complexityReducerSkill = defineSkill({
       "简化前后可读性对比，以及仍属于业务本质复杂度的部分。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(complexityReducerComplexityReport),
   ],

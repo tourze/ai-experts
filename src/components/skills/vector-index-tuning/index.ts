@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -83,5 +82,4 @@ export const vectorIndexTuningSkill = defineSkill({
       "推荐参数、风险、未解决上游问题和需要联动的检索/embedding/RAG 审计点。",
     ],
   }),
-  tools: [],
 });

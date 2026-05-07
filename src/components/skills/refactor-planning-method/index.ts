@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -82,7 +81,6 @@ export const refactorPlanningMethodSkill = defineSkill({
       "拆步计划、验证命令、回滚方式、不做事项和风险缓解。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "planning-method",

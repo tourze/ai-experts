@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineSkill,
@@ -86,7 +85,6 @@ export const architectureDecisionRecordsSkill = defineSkill({
       "契约与弹性方案：版本策略、breaking change 流程、超时/重试/熔断/降级参数和复杂度取舍。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "contract-templates",

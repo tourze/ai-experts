@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -70,7 +69,6 @@ export const graalvmNativeImageSkill = defineSkill({
       "启动验证、健康检查、启动时长、RSS、剩余 reachability 风险和 Gradle 性能联动项。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "gradle-native-plugin",

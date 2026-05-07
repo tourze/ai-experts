@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -67,7 +66,6 @@ export const reactNativeMetroConfigSkill = defineSkill({
       "验证命令、性能对比和回滚方案。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "ci-performance-config",

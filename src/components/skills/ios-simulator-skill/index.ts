@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -67,7 +66,6 @@ export const iosSimulatorSkillSkill = defineSkill({
       "失败命令的退出码、stderr 摘要和下一步排查方向。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(iosSimulatorSkillAccessibilityAudit),
     procedureUse(iosSimulatorSkillAppLauncher),

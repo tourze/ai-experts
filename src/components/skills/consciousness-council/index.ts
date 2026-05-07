@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -77,7 +76,6 @@ export const consciousnessCouncilSkill = defineSkill({
       "需要转入方案拷问或未来分支推演的联动建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "advanced-configurations",

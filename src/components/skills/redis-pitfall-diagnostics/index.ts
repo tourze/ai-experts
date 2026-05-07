@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -67,7 +66,6 @@ export const redisPitfallDiagnosticsSkill = defineSkill({
       "安全修复路径、删除/限流/替换命令策略、复制或持久化 RPO/RTO 说明。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "code-patterns",

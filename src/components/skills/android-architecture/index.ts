@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -67,7 +66,6 @@ export const androidArchitectureSkill = defineSkill({
       "需要补充的单元测试 / 集成测试和架构守护规则。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "architecture-patterns",

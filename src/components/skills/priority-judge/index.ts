@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -82,5 +81,4 @@ export const priorityJudgeSkill = defineSkill({
       "延后理由、澄清动作和下一次重排触发条件。",
     ],
   }),
-  tools: [],
 });

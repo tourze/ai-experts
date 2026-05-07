@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -80,7 +79,6 @@ export const mysqlTransactionLockingSkill = defineSkill({
       "修复建议、重试策略、事务边界调整和验证命令。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "locking-patterns",

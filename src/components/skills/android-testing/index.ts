@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -66,7 +65,6 @@ export const androidTestingSkill = defineSkill({
       "剩余未覆盖风险、flaky 风险和需要人工验证的路径。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "code-patterns",

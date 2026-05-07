@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -87,7 +86,6 @@ export const nestjsLayeringPatternsSkill = defineSkill({
       "需要参考的 scaffold / testing / migration 资料和最小改动顺序。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "topic-map",

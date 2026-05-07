@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -91,7 +90,6 @@ export const uxWritingSkill = defineSkill({
       "i18n 风险、变量/ICU 建议、不可逆或扣费操作的后果提示和一致性检查。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "copy-patterns",

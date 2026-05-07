@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -54,7 +53,6 @@ export const androidRedexSkill = defineSkill({
       "高风险 pass、keep 规则、回滚方案和剩余兼容性风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "quickstart",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -84,7 +83,6 @@ export const codeReviewSkill = defineSkill({
       "Health Score、无问题时的明确结论，以及是否需要测试质量或复杂度专项联动。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(codeReviewAssessCode),
     procedureUse(codeReviewAssessTests),

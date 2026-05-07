@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -76,7 +75,6 @@ export const benchmarkRunnerSkill = defineSkill({
       "结果摘要、波动/样本信息、取舍分析、结论、局限和测试策略联动项。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "environment-capture",

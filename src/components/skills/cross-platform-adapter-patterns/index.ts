@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -61,7 +60,6 @@ export const crossPlatformAdapterPatternsSkill = defineSkill({
       "需要读取的 reference 和验证计划。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "adapter-interface",

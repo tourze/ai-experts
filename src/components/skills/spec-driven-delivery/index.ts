@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineSkill,
@@ -45,7 +44,6 @@ export const specDrivenDeliverySkill = defineSkill({
       "Review/Vault：验收证据、未覆盖项、可复用 Patterns、Decisions、Gotchas 和下一步。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "checklists",

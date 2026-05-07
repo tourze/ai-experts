@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -75,7 +74,6 @@ export const comparativeAnalysisSkill = defineSkill({
       "条件化选择建议、适用边界和后续验证。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "output-template",

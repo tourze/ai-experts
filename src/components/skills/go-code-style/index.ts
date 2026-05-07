@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -99,7 +98,6 @@ export const goCodeStyleSkill = defineSkill({
       "注释与文档的职责边界和剩余可读性风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "code-patterns",

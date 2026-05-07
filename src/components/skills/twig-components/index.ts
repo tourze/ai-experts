@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -72,5 +71,4 @@ export const twigComponentsSkill = defineSkill({
       "风险与验证：重复组件规避、模板业务逻辑移除、请求频率控制和 Symfony UX 联动点。",
     ],
   }),
-  tools: [],
 });

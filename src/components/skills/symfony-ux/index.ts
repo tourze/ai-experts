@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -76,7 +75,6 @@ export const symfonyUxSkill = defineSkill({
       "需要补的渐进增强、测试和异步任务衔接风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "ux-component-patterns",

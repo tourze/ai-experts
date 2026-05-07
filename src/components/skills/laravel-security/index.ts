@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -89,7 +88,6 @@ export const laravelSecuritySkill = defineSkill({
       "需要补的 Laravel 测试、发布检查和剩余安全风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "security-code-patterns",

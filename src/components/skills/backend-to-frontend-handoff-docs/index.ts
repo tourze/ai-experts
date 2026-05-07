@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -72,5 +71,4 @@ export const backendToFrontendHandoffDocsSkill = defineSkill({
       "联调检查项、测试场景、待确认问题和文档落地路径。",
     ],
   }),
-  tools: [],
 });

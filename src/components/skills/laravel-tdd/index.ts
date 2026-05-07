@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -77,7 +76,6 @@ export const laravelTddSkill = defineSkill({
       "仍需人工验证或发布前命令验证的风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "test-code-patterns",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -57,7 +56,6 @@ export const pythonDesignPatternsSkill = defineSkill({
       "测试替身、模块暴露面和剩余抽象成本。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "service-boundary-patterns",

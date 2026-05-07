@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -79,7 +78,6 @@ export const pythonPerformanceOptimizationSkill = defineSkill({
       "仍需采集的 profile、benchmark 或生产观测数据。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "profiling-patterns",

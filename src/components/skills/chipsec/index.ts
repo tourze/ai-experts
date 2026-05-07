@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -68,7 +67,6 @@ export const chipsecSkill = defineSkill({
       "安全发现、误报 / 不适用说明、受影响模块 GUID / SHA256 和后续逆向建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "offline-analysis-guide",

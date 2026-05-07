@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -57,7 +56,6 @@ export const pythonErrorHandlingSkill = defineSkill({
       "需要补的错误路径测试和敏感信息泄露检查。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "error-contract-patterns",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -75,7 +74,6 @@ export const securityOwnershipMapSkill = defineSkill({
       "CSV/JSON/GraphML 或 Neo4j 导入建议。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(securityOwnershipMapBuildOwnershipMap),
     procedureUse(securityOwnershipMapCommunityMaintainers),

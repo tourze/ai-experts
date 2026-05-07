@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -75,7 +74,6 @@ export const protocolReverseEngineeringSkill = defineSkill({
       "状态机、错误码、校验 / 编码规则和需要更多样本的未知项。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "frame-triage",

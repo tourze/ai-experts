@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -72,7 +71,6 @@ export const symfonyBundleArchitectureSkill = defineSkill({
       "需要参考的 `bundle-reference` 示例。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "bundle-reference",

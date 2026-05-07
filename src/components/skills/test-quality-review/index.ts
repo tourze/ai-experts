@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -68,7 +67,6 @@ export const testQualityReviewSkill = defineSkill({
       "需要补测、降低 mock、重构测试结构或进入合并门禁的风险项。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "review-workflow",

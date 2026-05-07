@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -52,7 +51,6 @@ export const skillsPruneAndSyncReadmeSkill = defineSkill({
       "README 同步结果、校验结果、失败项和需要人工复核的 skill。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(skillsPruneAndSyncReadmeCurateSkills),
     procedureUse(skillsPruneAndSyncReadmeSimilarityGroups),

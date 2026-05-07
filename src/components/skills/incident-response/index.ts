@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -93,7 +92,6 @@ export const incidentResponseSkill = defineSkill({
       "分级与行动：P0/P1/P2/P3、响应要求、可逆止血、回滚条件和 owner。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "anti-patterns",

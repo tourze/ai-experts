@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -75,7 +74,6 @@ export const rustTypeDesignSkill = defineSkill({
       "需要联动 ownership 或 performance 的后续设计问题。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "type-dispatch-guide",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -85,7 +84,6 @@ export const appleAppstoreReviewerSkill = defineSkill({
       "证据不足的假设、需要补看的文件或需要模拟器复现的步骤。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "review-templates",

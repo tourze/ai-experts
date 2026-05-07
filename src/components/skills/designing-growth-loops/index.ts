@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -59,7 +58,6 @@ export const designingGrowthLoopsSkill = defineSkill({
       "增长假设、实验计划和阶段判断依据。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "crossing-the-chasm",

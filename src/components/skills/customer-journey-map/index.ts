@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -57,7 +56,6 @@ export const customerJourneyMapSkill = defineSkill({
       "旅程图表列：阶段、触点、用户目标、情绪/阻力、指标、机会点。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "designing-surveys",

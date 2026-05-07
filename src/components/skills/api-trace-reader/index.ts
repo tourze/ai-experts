@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -78,7 +77,6 @@ export const apiTraceReaderSkill = defineSkill({
       "主链路、旁路副作用和需要上升到架构审计或计划评审的风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "entry-types",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -67,7 +66,6 @@ export const webmanCustomProcessesSkill = defineSkill({
       "验证步骤、日志观察点和回滚方案。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "crash-recovery",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -61,7 +60,6 @@ export const androidDesignGuidelinesSkill = defineSkill({
       "需要验证的设备矩阵、截图 / UI 测试路径和剩余设计风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "rules-1-to-3",

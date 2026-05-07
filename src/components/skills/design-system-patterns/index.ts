@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -84,7 +83,6 @@ export const designSystemPatternsSkill = defineSkill({
       "BRAND/MASTER/pages overrides 文档结构、覆盖规则、真实页面验证和与响应式/现代 Web 的联动点。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "component-architecture",

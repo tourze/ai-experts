@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillOutputs,
@@ -45,5 +44,4 @@ export const startupViabilityChecklistSkill = defineSkill({
       "致命假设、Top 3 优先行动、验证指标、停止条件和当前阶段不做的事。",
     ],
   }),
-  tools: [],
 });

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAsset,
   defineAntiPattern,
@@ -63,7 +62,6 @@ export const screenshotSkill = defineSkill({
       "失败时的互斥参数、权限、路径或平台能力边界说明。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(screenshotEnsureMacosPermissions),
     procedureUse(screenshotMacosDisplayInfo),

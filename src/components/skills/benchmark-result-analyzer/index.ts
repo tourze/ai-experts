@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineAntiPattern,
@@ -63,5 +62,4 @@ export const benchmarkResultAnalyzerSkill = defineSkill({
       "improvement_suggestions：priority、category、suggestion、expected_impact 和下一轮验证方式。",
     ],
   }),
-  tools: [],
 });

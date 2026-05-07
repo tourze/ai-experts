@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -80,7 +79,6 @@ export const crossPollinationEngineSkill = defineSkill({
       "合成方案、最小实验、成功信号、反证条件和需要继续研究的问题。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "examples",

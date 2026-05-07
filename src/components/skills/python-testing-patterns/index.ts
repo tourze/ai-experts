@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -82,7 +81,6 @@ export const pythonTestingPatternsSkill = defineSkill({
       "脆弱测试、低信息断言和回归缺口。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "pytest-patterns",

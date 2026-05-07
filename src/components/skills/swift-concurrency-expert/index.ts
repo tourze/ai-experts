@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -71,7 +70,6 @@ export const swiftConcurrencyExpertSkill = defineSkill({
       "编译 / 测试 / 性能复测结论和剩余风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "code-patterns",

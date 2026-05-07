@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -56,5 +55,4 @@ export const owaspXssMisconfigAuditSkill = defineSkill({
       "依赖修复表：包名、当前版本、CVE/风险、修复版本、间接依赖路径和构建复现影响。",
     ],
   }),
-  tools: [],
 });

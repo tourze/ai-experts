@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -79,7 +78,6 @@ export const doctrineEntityPatternsSkill = defineSkill({
       "需要参考的 `entity-reference` 示例和最小修改建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "entity-reference",

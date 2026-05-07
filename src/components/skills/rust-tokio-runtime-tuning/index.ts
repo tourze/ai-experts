@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -60,7 +59,6 @@ export const rustTokioRuntimeTuningSkill = defineSkill({
       "需要引用的 `patterns` 模式和仍需测量的数据。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "patterns",

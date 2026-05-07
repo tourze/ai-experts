@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -66,5 +65,4 @@ export const leadChannelOptimizerSkill = defineSkill({
       "预算/人力重分配建议、暂停条件和后续 paid ads 专项入口。",
     ],
   }),
-  tools: [],
 });

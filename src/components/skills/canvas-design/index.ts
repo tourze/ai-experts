@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAsset,
   defineAntiPattern,
@@ -66,7 +65,6 @@ export const canvasDesignSkill = defineSkill({
       "渲染产物、使用的 procedure、字体选择、质量检查和原创性说明。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(canvasDesignBaoyuArticleIllustratorBuildBatch),
     procedureUse(canvasDesignConceptToImageRenderToImage),

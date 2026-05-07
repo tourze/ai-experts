@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -76,7 +75,6 @@ export const marketSizingAnalysisSkill = defineSkill({
       "敏感参数、交叉验证结论和可用于规划/融资的叙事要点。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "data-sources",

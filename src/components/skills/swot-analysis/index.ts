@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -74,7 +73,6 @@ export const swotAnalysisSkill = defineSkill({
       "SWOT 表列：类别、事实/证据、战略含义、建议动作。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "blue-ocean-strategy",

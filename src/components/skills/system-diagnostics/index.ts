@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -68,7 +67,6 @@ export const systemDiagnosticsSkill = defineSkill({
       "下一步专用技能、参考资料或只读复查命令。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "disk-cleanup",

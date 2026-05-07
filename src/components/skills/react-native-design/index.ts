@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -75,7 +74,6 @@ export const reactNativeDesignSkill = defineSkill({
       "安全区、触控反馈、加载/错误/禁用态和验证矩阵。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "component-code-patterns",

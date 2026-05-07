@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -75,7 +74,6 @@ export const preLandingReviewSkill = defineSkill({
       "`CLEAR TO LAND` 或 `BLOCKED` 结论，以及必须补测或需要 testing-strategy 联动的风险。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(preLandingReviewCollectDiff),
     procedureUse(preLandingReviewRenderReport),

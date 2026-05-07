@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -64,7 +63,6 @@ export const goErrorHandlingSkill = defineSkill({
       "需要修复的丢链、字符串匹配或上下文重复问题。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "error-patterns",

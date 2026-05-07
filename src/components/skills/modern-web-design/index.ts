@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAsset,
   defineReference,
@@ -106,7 +105,6 @@ export const modernWebDesignSkill = defineSkill({
       "性能预算、AI 套版感风险、需要读取的 style / VDF references。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(modernWebDesignDesignAudit),
     procedureUse(modernWebDesignPatternGenerator),

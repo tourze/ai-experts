@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -74,7 +73,6 @@ export const runningDecisionProcessesSkill = defineSkill({
       "Decision log：结论、理由、前提、反对意见和行动项。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "guest-insights",

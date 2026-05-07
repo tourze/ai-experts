@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -80,7 +79,6 @@ export const windowsUiAutomationSkill = defineSkill({
       "执行或复现记录：目标进程、操作类型、结果、风险判断、VM 快照建议和需联动的安全 skill。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "advanced-patterns",

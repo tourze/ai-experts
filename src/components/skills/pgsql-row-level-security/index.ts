@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -82,7 +81,6 @@ export const pgsqlRowLevelSecuritySkill = defineSkill({
       "RLS 谓词索引需求、性能风险和需要读取 code-patterns reference 的具体实现点。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "code-patterns",

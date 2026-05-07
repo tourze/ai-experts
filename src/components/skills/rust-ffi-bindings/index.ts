@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -63,7 +62,6 @@ export const rustFfiBindingsSkill = defineSkill({
       "需要引用的 `patterns` 模式与未决 ABI 约束。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "patterns",

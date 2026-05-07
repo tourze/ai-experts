@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -57,7 +56,6 @@ export const estimateCalibratorSkill = defineSkill({
       "估算表列：工作项、Best、Likely、Worst、主要未知项。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "calibration-tips",

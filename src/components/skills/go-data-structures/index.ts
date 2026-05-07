@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -86,7 +85,6 @@ export const goDataStructuresSkill = defineSkill({
       "需要联动性能、并发或 API 设计的后续问题。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "copy-semantics",

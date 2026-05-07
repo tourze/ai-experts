@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -97,7 +96,6 @@ export const phpTypeSafetySkill = defineSkill({
       "需要补的类型测试、CI 检查和陈旧注释清理。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "type-annotation-cheatsheet",

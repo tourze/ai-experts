@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -86,7 +85,6 @@ export const swiftuiUiPatternsSkill = defineSkill({
       "重构清单：成员顺序、body 拆分、可选 view model 清理、Observation 持有和平台规范联动点。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "app-wiring",

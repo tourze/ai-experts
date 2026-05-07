@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -72,7 +71,6 @@ export const svnWorkflowSkill = defineSkill({
       "属性/维护/迁移结果：版本兼容性、authors.txt、trunk/branches/tags 映射和后续 Git 整理建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "properties-and-admin",

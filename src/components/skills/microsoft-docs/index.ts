@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -61,7 +60,6 @@ export const microsoftDocsSkill = defineSkill({
       "需要 code-reference 或 CLI 回退的 SDK/API 签名、示例和链路健康结果。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "code-reference",

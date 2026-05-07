@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -65,7 +64,6 @@ export const tauriIpcPatternsSkill = defineSkill({
       "性能、隐私、多窗口和批量化风险检查。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "ipc-advanced-patterns",

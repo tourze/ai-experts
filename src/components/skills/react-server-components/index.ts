@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -97,7 +96,6 @@ export const reactServerComponentsSkill = defineSkill({
       "需要补的性能测量、请求去重、安全测试和 RSC 边界验证。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "server-component-patterns",

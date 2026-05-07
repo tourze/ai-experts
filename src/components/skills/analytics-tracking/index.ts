@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -58,7 +57,6 @@ export const analyticsTrackingSkill = defineSkill({
       "generator 输入 JSON 口径、事件 taxonomy 风险和迁移建议。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(analyticsTrackingTrackingPlanGenerator),
   ],

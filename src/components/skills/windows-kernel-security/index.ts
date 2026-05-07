@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -77,5 +76,4 @@ export const windowsKernelSecuritySkill = defineSkill({
       "约束、检测面、副作用、实验环境、快照/回滚路径和仍需验证的风险。",
     ],
   }),
-  tools: [],
 });

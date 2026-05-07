@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillOutputs,
@@ -40,5 +39,4 @@ export const speckitChecklistSkill = defineSkill({
       "输出 yes/no checklist 条目，例如：是否定义权限不足时的用户可见反馈。",
     ],
   }),
-  tools: [],
 });

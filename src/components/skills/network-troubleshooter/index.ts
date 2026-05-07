@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -71,5 +70,4 @@ export const networkTroubleshooterSkill = defineSkill({
       "建议修复动作、需确认的配置变更和需要系统诊断的资源信号。",
     ],
   }),
-  tools: [],
 });

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -90,5 +89,4 @@ export const statisticalAnalysisSkill = defineSkill({
       "可行动结论、不能下结论的原因、需要补充的数据或实验设计建议。",
     ],
   }),
-  tools: [],
 });

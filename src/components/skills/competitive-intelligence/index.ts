@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -71,7 +70,6 @@ export const competitiveIntelligenceSkill = defineSkill({
       "多框架输出矩阵：结论、验证框架、置信度、行动建议、矛盾点和需深入调查项。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "competitive-teardown",

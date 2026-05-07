@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -74,5 +73,4 @@ export const userGuideWritingSkill = defineSkill({
       "需要产品、客服或业务方补充确认的术语、界面状态和边界问题。",
     ],
   }),
-  tools: [],
 });

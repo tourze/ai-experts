@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -71,7 +70,6 @@ export const obsidianBasesSkill = defineSkill({
       "修复报告：发现的 Dataview 心智残留、无效引用、性能风险、插件依赖和 CLI 联动建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "functions-reference",

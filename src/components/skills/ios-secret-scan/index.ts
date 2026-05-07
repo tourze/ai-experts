@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -73,7 +72,6 @@ export const iosSecretScanSkill = defineSkill({
       "验证方式、修复步骤和需要运行时验证的剩余问题。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "scan-runbook",

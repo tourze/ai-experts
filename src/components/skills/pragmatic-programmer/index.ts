@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -61,7 +60,6 @@ export const pragmaticProgrammerSkill = defineSkill({
       "今天要做的动作、避免的过度抽象和后续复审点。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "broken-windows",

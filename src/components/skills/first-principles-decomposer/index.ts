@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -73,7 +72,6 @@ export const firstPrinciplesDecomposerSkill = defineSkill({
       "重建方案、与常规方案对比、收益、风险和最小验证实验。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "examples",

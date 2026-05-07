@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -65,5 +64,4 @@ export const unicornEmulationSkill = defineSkill({
       "迭代调试记录：崩溃类型、修复动作、模拟输出、未覆盖环境依赖和需要 Frida/静态分析补证的点。",
     ],
   }),
-  tools: [],
 });

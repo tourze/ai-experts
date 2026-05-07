@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -75,7 +74,6 @@ export const researchNoteWrapSkill = defineSkill({
       "追加专题段落、引用三件事完整性和用户确认记录。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "anti-patterns",

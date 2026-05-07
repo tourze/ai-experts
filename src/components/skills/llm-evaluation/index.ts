@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -76,5 +75,4 @@ export const llmEvaluationSkill = defineSkill({
       "上线门槛、回归报警、需人工复核点和下一轮 prompt/model/agent 修改建议。",
     ],
   }),
-  tools: [],
 });

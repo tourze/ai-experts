@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -92,7 +91,6 @@ export const goPerformanceSkill = defineSkill({
       "验证指标、回归风险和仍需采集的数据。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "performance-triage",

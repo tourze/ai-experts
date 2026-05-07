@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -61,7 +60,6 @@ export const skillActivationAnalyzerSkill = defineSkill({
       "description/frontmatter 修复建议、冲突矩阵、procedure 审查结果和需要复测的样例请求。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(skillActivationAnalyzerCsoAudit),
   ],

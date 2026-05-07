@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -83,7 +82,6 @@ export const uvPackageManagerSkill = defineSkill({
       "迁移项目中的旧包管理器残留、requirements 兼容处理和后续清理项。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "advanced-patterns",

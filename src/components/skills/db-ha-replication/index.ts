@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -84,7 +83,6 @@ export const dbHaReplicationSkill = defineSkill({
       "故障切换或修复步骤、回滚路径、RPO/RTO 说明和后续监控项。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "mysql-replication-ops",

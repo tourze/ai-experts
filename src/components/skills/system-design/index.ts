@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -61,7 +60,6 @@ export const systemDesignSkill = defineSkill({
       "关键 trade-off、扩展路线和待复审假设。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "ddia-systems",

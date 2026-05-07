@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -67,7 +66,6 @@ export const planningUnderUncertaintySkill = defineSkill({
       "决策表列：阶段、当前下注、关键未知项、触发条件、下一个决策点。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "guest-insights",

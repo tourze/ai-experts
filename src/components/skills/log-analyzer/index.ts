@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -70,5 +69,4 @@ export const logAnalyzerSkill = defineSkill({
       "根因假设、仍需验证的问题、下一步命令或 incident response 交接条件。",
     ],
   }),
-  tools: [],
 });

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -58,5 +57,4 @@ export const dockerEssentialsSkill = defineSkill({
       "问题根因、修复路径、持久化到 Dockerfile/Compose 的修改点和验证结果。",
     ],
   }),
-  tools: [],
 });

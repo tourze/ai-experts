@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAsset,
   defineReference,
@@ -70,7 +69,6 @@ export const agileProductOwnerSkill = defineSkill({
       "需要读取的模板 reference、使用的 asset 和 procedure 参数。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(agileProductOwnerUserStoryGenerator),
   ],

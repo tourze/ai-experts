@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -73,7 +72,6 @@ export const bundleOptimizationSkill = defineSkill({
       "改动前后 bundle size / LCP / TTI / INP 验证方式。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "bundle-code-patterns",

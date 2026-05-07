@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -84,7 +83,6 @@ export const refactoringChecklistSkill = defineSkill({
       "行为变更混入、大爆炸提交、覆盖率下降等风险提示。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "refactor-safety-workflow",

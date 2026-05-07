@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -98,5 +97,4 @@ export const springBootLayeringSkill = defineSkill({
       "需要 java-junit、GraalVM、Gradle 或 Arthas 运行时诊断联动的具体触发点。",
     ],
   }),
-  tools: [],
 });

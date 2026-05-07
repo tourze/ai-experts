@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -67,7 +66,6 @@ export const ethicalHackingMethodologySkill = defineSkill({
       "范围限制、未验证假设、后续复测策略和交付报告结构。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "active-directory-attacks",

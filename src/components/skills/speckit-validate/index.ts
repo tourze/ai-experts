@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillOutputs,
@@ -43,5 +42,4 @@ export const speckitValidateSkill = defineSkill({
       "最小补救建议",
     ],
   }),
-  tools: [],
 });

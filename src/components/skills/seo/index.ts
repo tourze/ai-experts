@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -71,7 +70,6 @@ export const seoSkill = defineSkill({
       "程序化 SEO 页面体系、模板风险、独特价值要求、数据来源和子目录/子域取舍建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "aeo-geo",

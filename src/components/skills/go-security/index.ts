@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineSkill,
@@ -75,7 +74,6 @@ export const goSecuritySkill = defineSkill({
       "需要补的安全测试、回归验证和剩余风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "security-patterns",

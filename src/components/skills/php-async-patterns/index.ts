@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -74,7 +73,6 @@ export const phpAsyncPatternsSkill = defineSkill({
       "需要补的压力测试、泄漏观测和异常治理。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "runtime-selection",

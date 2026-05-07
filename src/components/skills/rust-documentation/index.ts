@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -82,7 +81,6 @@ export const rustDocumentationSkill = defineSkill({
       "文档测试风险、注释职责偏差和后续测试建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "doc-section-guide",

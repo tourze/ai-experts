@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -67,7 +66,6 @@ export const reactNativeTurbomoduleSkill = defineSkill({
       "编译/codegen/运行验证和迁移风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "activity-system-services",

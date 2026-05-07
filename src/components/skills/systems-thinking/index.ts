@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -76,7 +75,6 @@ export const systemsThinkingSkill = defineSkill({
       "建议动作、监测指标和复盘时间点。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "channel-economics",

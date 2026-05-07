@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -67,5 +66,4 @@ export const brandHealthSkill = defineSkill({
       "证据缺口、假设和后续调研。",
     ],
   }),
-  tools: [],
 });

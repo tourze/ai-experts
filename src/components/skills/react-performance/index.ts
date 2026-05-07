@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineSkill,
@@ -95,7 +94,6 @@ export const reactPerformanceSkill = defineSkill({
       "优化前后指标对比、未优化原因和需要转向 Web 性能或 bundle 专项的风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "advanced",

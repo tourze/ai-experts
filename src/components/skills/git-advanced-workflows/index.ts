@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -67,5 +66,4 @@ export const gitAdvancedWorkflowsSkill = defineSkill({
       "结果记录：新 commit/分支、冲突处理、需要 push 的命令和后续验证。",
     ],
   }),
-  tools: [],
 });

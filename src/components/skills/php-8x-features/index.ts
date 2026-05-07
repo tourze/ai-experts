@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -90,7 +89,6 @@ export const phpXFeaturesSkill = defineSkill({
       "需要补的静态分析、测试和兼容性验证。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "language-feature-patterns",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -85,7 +84,6 @@ export const thinkingPartnerSkill = defineSkill({
       "1-2 条主路径、本周行动、暂不做事项和复盘点。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "socratic-teaching",

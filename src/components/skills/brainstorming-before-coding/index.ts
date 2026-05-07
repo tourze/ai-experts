@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -58,5 +57,4 @@ export const brainstormingBeforeCodingSkill = defineSkill({
       "批准记录：确认过的设计段、仍待确认点、进入实现的条件和后续 skill。",
     ],
   }),
-  tools: [],
 });

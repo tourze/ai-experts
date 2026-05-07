@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -74,7 +73,6 @@ export const iosBinaryAnalysisSkill = defineSkill({
       "需要动态验证、脱壳或进一步反汇编的剩余问题。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "analysis-runbook",

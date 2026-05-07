@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -82,7 +81,6 @@ export const pgsqlPartitioningSkill = defineSkill({
       "`EXPLAIN` 裁剪证据、未裁剪查询风险和需要优化的谓词/索引。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "code-patterns",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -76,7 +75,6 @@ export const redisClusterHaSkill = defineSkill({
       "SLOWLOG/监控基线、容量风险、multi-key 风险和需要进一步验证的命令清单。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "code-patterns",

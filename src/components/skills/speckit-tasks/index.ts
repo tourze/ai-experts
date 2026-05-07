@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillOutputs,
@@ -42,5 +41,4 @@ export const speckitTasksSkill = defineSkill({
   outputs: defineSkillOutputs({
     body: "写入 `tasks.md`，并附并行执行建议。",
   }),
-  tools: [],
 });

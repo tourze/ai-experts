@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -100,7 +99,6 @@ export const reactHooksSkill = defineSkill({
       "性能 memo、RSC 边界或类型复杂度的联动风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "hooks-code-patterns",

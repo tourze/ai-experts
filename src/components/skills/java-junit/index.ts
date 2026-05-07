@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -77,7 +76,6 @@ export const javaJunitSkill = defineSkill({
       "测试反模式审查结果、运行命令、失败路径覆盖和与 spring-boot-layering/testing-patterns 的联动点。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "advanced-patterns",

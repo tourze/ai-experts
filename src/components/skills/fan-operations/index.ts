@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -78,7 +77,6 @@ export const fanOperationsSkill = defineSkill({
       "品牌语气、人设一致性、私域边界和平台安全风险说明。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "personal-branding-advanced",

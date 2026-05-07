@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -75,7 +74,6 @@ export const detoxMobileTestSkill = defineSkill({
       "CI/flaky 风险、失败截图/日志/录像证据和需要 advanced-patterns 的复杂场景。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "advanced-patterns",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -78,7 +77,6 @@ export const symfonyVotersSkill = defineSkill({
       "匿名、所有者、管理员、资源不存在和拒绝信息泄露测试建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "voter-patterns",

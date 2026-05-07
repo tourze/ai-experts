@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -85,7 +84,6 @@ export const softwareDesignSkill = defineSkill({
       "设计反模式、复杂度来源和需要转成具体重构动作的下一步。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "design-principles",

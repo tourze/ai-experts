@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -69,5 +68,4 @@ export const webmanPluginDevelopmentSkill = defineSkill({
       "安装验证、卸载清理和常见反模式检查。",
     ],
   }),
-  tools: [],
 });

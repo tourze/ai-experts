@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -91,7 +90,6 @@ export const goObservabilitySkill = defineSkill({
       "需要新增的仪表盘、告警和性能 profile 入口。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "signals-and-migration",

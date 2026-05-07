@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillOutputs,
@@ -41,5 +40,4 @@ export const codeReviewAgentFrameworkSkill = defineSkill({
       "Reviewer agent 扩展：必经门禁表和按 diff 内容触发的场景路由表。",
     ],
   }),
-  tools: [],
 });

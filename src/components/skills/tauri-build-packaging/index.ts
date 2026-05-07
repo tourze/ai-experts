@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -71,7 +70,6 @@ export const tauriBuildPackagingSkill = defineSkill({
       "发布前验证清单、失败排查和回滚方案。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "build-packaging-patterns",

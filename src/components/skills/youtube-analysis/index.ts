@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAsset,
   defineReference,
@@ -74,7 +73,6 @@ export const youtubeAnalysisSkill = defineSkill({
       "分析脚手架或 Markdown 输出路径、是否仍含占位、仅基于字幕的覆盖限制和下一步补证建议。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(youtubeAnalysisAnalyzeVideo),
     procedureUse(youtubeAnalysisFetchTranscript),

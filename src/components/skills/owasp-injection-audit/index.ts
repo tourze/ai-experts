@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -56,5 +55,4 @@ export const owaspInjectionAuditSkill = defineSkill({
       "修复建议：参数数组/白名单、协议和网段限制、路径规范化、ID 映射、权限与沙箱控制。",
     ],
   }),
-  tools: [],
 });

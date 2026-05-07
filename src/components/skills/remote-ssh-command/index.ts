@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -56,7 +55,6 @@ export const remoteSshCommandSkill = defineSkill({
       "必要时给出 history JSONL 路径与最近执行摘要，不泄露密码或敏感远端输出。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(remoteSshCommandInstallSshpass),
     procedureUse(remoteSshCommandSshExec),

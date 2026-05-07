@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -70,7 +69,6 @@ export const monitoringObservabilitySkill = defineSkill({
       "高基数风险、敏感日志风险、边界事件覆盖缺口和后续验证点。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "service-monitor",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -62,7 +61,6 @@ export const douyinViralContentSkill = defineSkill({
       "历史样本校准状态、使用的参考资料、平台安全风险和需要补充的素材缺口。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "douyin-video-summary",

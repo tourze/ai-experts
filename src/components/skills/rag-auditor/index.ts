@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -88,7 +87,6 @@ export const ragAuditorSkill = defineSkill({
       "P0/P1/P2 改进建议、需要联动的 embedding/index/evaluation skill 和回归评测入口。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "diagnostic-queries",

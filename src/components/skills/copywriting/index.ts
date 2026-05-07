@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAsset,
   defineReference,
@@ -75,7 +74,6 @@ export const copywritingSkill = defineSkill({
       "内容安全检查结果、敏感内容过滤说明和需要 CRO 联动的实验假设。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(copywritingContentFilter),
   ],

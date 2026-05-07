@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAsset,
   defineReference,
@@ -73,7 +72,6 @@ export const helmChartScaffoldingSkill = defineSkill({
       "helm lint、渲染、dry-run、validate-chart 结果和监控/ServiceMonitor 联动项。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(helmChartScaffoldingValidateChart),
   ],

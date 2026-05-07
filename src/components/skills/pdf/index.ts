@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -61,7 +60,6 @@ export const pdfSkill = defineSkill({
       "关键字段抽样检查、错位/字体/坐标风险和人工复核要求。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(pdfCheckBoundingBoxes),
     procedureUse(pdfCheckFillableFields),

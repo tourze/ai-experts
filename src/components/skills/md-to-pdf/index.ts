@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -74,7 +73,6 @@ export const mdToPdfSkill = defineSkill({
       "失败时的缺失依赖、源 Markdown 修复建议和可重跑命令。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(mdToPdfKatexRender),
     procedureUse(mdToPdfMdToPdf),

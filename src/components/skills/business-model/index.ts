@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -89,7 +88,6 @@ export const businessModelSkill = defineSkill({
       "结构化 JSON 审计源、人类摘要和模块化报告规划。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "analysis-json-template",

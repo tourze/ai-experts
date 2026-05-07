@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -75,7 +74,6 @@ export const productDesignCriticSkill = defineSkill({
       "建议、trade-off、验证方式和后续研究入口。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "idea-validator",

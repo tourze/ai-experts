@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -98,7 +97,6 @@ export const goDatabaseSkill = defineSkill({
       "SQL 风险、迁移影响和需要压测的数据。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "repository-patterns",

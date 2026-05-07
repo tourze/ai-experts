@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -74,7 +73,6 @@ export const reactNativeJsPerformanceSkill = defineSkill({
       "复测结果、残留风险和后续排查路径。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "js-diagnosis-path",

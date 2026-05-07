@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -61,7 +60,6 @@ export const customerResearchSkill = defineSkill({
       "基于真实数据的 persona、分群差异、金句摘录和可用于内容/产品/销售的行动建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "extraction-framework",

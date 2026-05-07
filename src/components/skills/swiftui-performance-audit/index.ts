@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -76,7 +75,6 @@ export const swiftuiPerformanceAuditSkill = defineSkill({
       "需要联动 Swift 并发或 SwiftUI UI 结构整理的边界。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "demystify-swiftui-performance-wwdc23",

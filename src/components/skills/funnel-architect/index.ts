@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -75,5 +74,4 @@ export const funnelArchitectSkill = defineSkill({
       "追踪指标、掉点假设和优化实验。",
     ],
   }),
-  tools: [],
 });

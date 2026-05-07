@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAsset,
   defineReference,
@@ -71,7 +70,6 @@ export const algoVisualizationSkill = defineSkill({
       "自检结果：铁律合规、SVG 不重叠、viewBox 正确、无重复 `steps` 声明、引用 SOURCE。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "heap-overview",

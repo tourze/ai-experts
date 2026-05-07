@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAsset,
   defineReference,
@@ -68,7 +67,6 @@ export const redesignMyLandingpageSkill = defineSkill({
       "若直接实现，输出可运行 React/Vite/Tailwind 代码、引用资源、测试/预览方式和转化假设。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "aesthetic-directions",

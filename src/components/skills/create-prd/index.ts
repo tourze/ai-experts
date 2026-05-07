@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -75,7 +74,6 @@ export const createPrdSkill = defineSkill({
       "非目标、依赖、风险、上线方式、回滚预案、埋点需求和后续任务拆解入口。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "epic-decomposition-patterns",

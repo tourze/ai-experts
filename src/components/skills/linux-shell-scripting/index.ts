@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -78,5 +77,4 @@ export const linuxShellScriptingSkill = defineSkill({
       "超时、重试、并发、临时文件清理和系统/网络诊断联动说明。",
     ],
   }),
-  tools: [],
 });

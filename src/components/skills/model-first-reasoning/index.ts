@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -76,7 +75,6 @@ export const modelFirstReasoningSkill = defineSkill({
       "实现阶段发现模型不足时的回滚到 Phase 1 的说明。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(modelFirstReasoningValidateModel),
   ],

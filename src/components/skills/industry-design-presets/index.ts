@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -79,7 +78,6 @@ export const industryDesignPresetsSkill = defineSkill({
       "与设计系统、现代 Web 实现和行业专属 reference 的联动建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "font-pairing-library",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -85,7 +84,6 @@ export const i18nLocalizationSkill = defineSkill({
       "RTL、响应式和视觉层级风险，以及 i18n checker 输出摘要。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(i18nLocalizationI18nChecker),
   ],

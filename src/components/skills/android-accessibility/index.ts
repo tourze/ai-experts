@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -57,7 +56,6 @@ export const androidAccessibilitySkill = defineSkill({
       "TalkBack、键盘 / Switch Access、字体缩放和高对比度复测结果。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "advanced-patterns",

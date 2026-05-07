@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -82,5 +81,4 @@ export const mckinseyStepSkill = defineSkill({
       "结论先行的建议、风险和下一步行动。",
     ],
   }),
-  tools: [],
 });

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -62,5 +61,4 @@ export const skillEvalGraderSkill = defineSkill({
       "claims 与 eval_feedback：claim、type、verified、evidence、assertion、reason、overall。",
     ],
   }),
-  tools: [],
 });

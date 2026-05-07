@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -65,7 +64,6 @@ export const tauriPluginDevelopmentSkill = defineSkill({
       "权限文件、capability 引用、宿主集成和测试清单。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "plugin-dev-patterns",

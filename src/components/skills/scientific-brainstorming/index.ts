@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -81,7 +80,6 @@ export const scientificBrainstormingSkill = defineSkill({
       "1-3 个优先验证方向、下一步文献/实验/合作动作和不过度承诺的边界说明。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "brainstorming-methods",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -82,7 +81,6 @@ export const dataAnalysisSkill = defineSkill({
       "导出路径、格式限制，以及是否需要统计、可视化或数据叙事后续处理。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(dataAnalysisAnalyze),
   ],

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -67,5 +66,4 @@ export const concurrencyPatternsSkill = defineSkill({
       "优雅停机顺序、排空超时、失败/背压行为和需要语言特化 skill 补充的实现点。",
     ],
   }),
-  tools: [],
 });

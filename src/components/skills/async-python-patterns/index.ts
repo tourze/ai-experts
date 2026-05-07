@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -58,7 +57,6 @@ export const asyncPythonPatternsSkill = defineSkill({
       "需要补的异步测试、泄漏验证和错误传播验证。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "taskgroup-patterns",

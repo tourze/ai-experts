@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -96,7 +95,6 @@ export const goGrpcSkill = defineSkill({
       "兼容性、观测和安全风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "implementation-guide",

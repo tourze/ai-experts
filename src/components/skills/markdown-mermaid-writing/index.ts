@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAsset,
   defineReference,
@@ -70,7 +69,6 @@ export const markdownMermaidWritingSkill = defineSkill({
       "如需后续发布，说明是否转给 md-to-pdf 或 pretty-mermaid 流程。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "diagrams",

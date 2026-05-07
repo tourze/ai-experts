@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -84,7 +83,6 @@ export const nextjsDeveloperSkill = defineSkill({
       "loading/error/not-found、环境变量、部署、`next build` 和回滚检查项。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "app-router-code-patterns",

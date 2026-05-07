@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -74,5 +73,4 @@ export const archLinuxTriageSkill = defineSkill({
       "最小修复动作、风险、回滚点和需要转给 system/network skill 的条件。",
     ],
   }),
-  tools: [],
 });

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -64,7 +63,6 @@ export const rustSerdePatternsSkill = defineSkill({
       "需要引用的 `patterns` 模式和兼容性风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "patterns",

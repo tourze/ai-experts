@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -82,7 +81,6 @@ export const rustTestingSkill = defineSkill({
       "需要联动 `testing-patterns` 的通用 fixture / mock / 参数化问题。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "testing-matrix",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -78,7 +77,6 @@ export const symfonyMessengerSkill = defineSkill({
       "需要补的重复投递、失败传输和外部副作用测试。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "message-handler-patterns",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -68,5 +67,4 @@ export const arthasSpringcontextIssuesResolveSkill = defineSkill({
       "只读查询命令、观察事实、推断结论和需要进一步确认的容器/类加载器问题。",
     ],
   }),
-  tools: [],
 });

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -67,5 +66,4 @@ export const prfaqSkill = defineSkill({
       "是否进入 create-prd 的判断：用户价值、团队共识、机会窗口和仍需澄清的问题。",
     ],
   }),
-  tools: [],
 });

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -71,7 +70,6 @@ export const consultingAnalysisSkill = defineSkill({
       "执行摘要、核心发现、战略含义和下一步建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "report-brief-template",

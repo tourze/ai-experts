@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -82,7 +81,6 @@ export const frontendDesignReviewSkill = defineSkill({
       "Absolute Bans、AI 套版感、可访问性和剩余设计风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "review-sequence",

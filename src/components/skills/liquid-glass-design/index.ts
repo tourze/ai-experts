@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -70,7 +69,6 @@ export const liquidGlassDesignSkill = defineSkill({
       "SwiftUI 实现建议、性能风险、视觉层级风险和需要读取 advanced patterns 的复杂场景。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "advanced-patterns",

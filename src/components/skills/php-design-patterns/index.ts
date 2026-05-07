@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -81,7 +80,6 @@ export const phpDesignPatternsSkill = defineSkill({
       "构造注入、测试替身、类型标注和迁移顺序建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "layered-architecture",

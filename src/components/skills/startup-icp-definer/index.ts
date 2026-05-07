@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -69,7 +68,6 @@ export const startupIcpDefinerSkill = defineSkill({
       "销售名单规则、定位信息、产品路线图影响和下一步验证。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "full-guide",

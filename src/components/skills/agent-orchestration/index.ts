@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -74,7 +73,6 @@ export const agentOrchestrationSkill = defineSkill({
       "状态与扩展设计：四层状态归属、后台任务跟踪、工具/协议/事件接口和风险控制。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "agent-permission-safety",

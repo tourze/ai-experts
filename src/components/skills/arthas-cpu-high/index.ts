@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -68,5 +67,4 @@ export const arthasCpuHighSkill = defineSkill({
       "trace/watch 的目标类方法、次数/条件限制、风险边界和需要用户补充的入口。",
     ],
   }),
-  tools: [],
 });

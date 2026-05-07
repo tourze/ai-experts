@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -56,5 +55,4 @@ export const scpAnalysisSkill = defineSkill({
       "战略建议、风险、验证证据和监测指标。",
     ],
   }),
-  tools: [],
 });

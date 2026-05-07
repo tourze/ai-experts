@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillOutputs,
@@ -41,5 +40,4 @@ export const speckitQuizmeSkill = defineSkill({
       "仍待决策项",
     ],
   }),
-  tools: [],
 });

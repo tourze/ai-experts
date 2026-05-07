@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -72,7 +71,6 @@ export const businessHealthDiagnosticSkill = defineSkill({
       "证据缺口、专项分析建议和下次诊断时间。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "health-scorecard-template",

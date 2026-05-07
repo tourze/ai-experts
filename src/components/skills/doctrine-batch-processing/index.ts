@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -74,7 +73,6 @@ export const doctrineBatchProcessingSkill = defineSkill({
       "需要运行的迁移、schema、测试和性能验证命令。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "orm-batch-patterns",

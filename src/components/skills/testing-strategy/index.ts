@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -101,7 +100,6 @@ export const testingStrategySkill = defineSkill({
       "可直接转成任务列表或 Web 测试执行清单的补测计划。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "test-plan-patterns",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillOutputs,
@@ -42,5 +41,4 @@ export const speckitConstitutionSkill = defineSkill({
       "同步影响列表",
     ],
   }),
-  tools: [],
 });

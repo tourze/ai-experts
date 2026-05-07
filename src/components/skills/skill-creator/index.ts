@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineAsset,
@@ -58,7 +57,6 @@ export const skillCreatorSkill = defineSkill({
       "交付结果：before/after description、held-out 分数、打包路径、剩余风险和下一轮验证建议。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(skillCreatorAggregateBenchmark),
     procedureUse(skillCreatorGenerateReview),

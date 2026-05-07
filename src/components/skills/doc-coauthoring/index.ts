@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -74,5 +73,4 @@ export const docCoauthoringSkill = defineSkill({
       "读者视角复核结论：读者是谁、读完要做什么、还缺什么。",
     ],
   }),
-  tools: [],
 });

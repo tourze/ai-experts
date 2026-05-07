@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -70,7 +69,6 @@ export const androidCoroutinesSkill = defineSkill({
       "对应单元测试、生命周期复测和剩余风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "advanced-patterns",

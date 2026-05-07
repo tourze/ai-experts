@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillWorkflow,
@@ -39,5 +38,4 @@ export const speckitImplementSkill = defineSkill({
    - 下一步建议`,
     ],
   }),
-  tools: [],
 });

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -74,7 +73,6 @@ export const redisCachingPatternsSkill = defineSkill({
       "需要联动 redis-data-modeling 的键设计、锁 owner token 或数据结构问题。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "code-patterns",

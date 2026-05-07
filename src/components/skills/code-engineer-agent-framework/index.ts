@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillOutputs,
@@ -41,5 +40,4 @@ export const codeEngineerAgentFrameworkSkill = defineSkill({
       "专项扩展：语言或框架关键实现维度、最小验证命令和需要确认后才能运行的命令。",
     ],
   }),
-  tools: [],
 });

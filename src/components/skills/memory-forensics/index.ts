@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -72,7 +71,6 @@ export const memoryForensicsSkill = defineSkill({
       "可疑对象列表，含 offset、PID、模块名、时间戳、置信度和下一步提取建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "volatility-triage",

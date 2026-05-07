@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -61,7 +60,6 @@ export const rustProcMacroPatternsSkill = defineSkill({
       "需要引用的 `patterns` 模式与剩余宏语义风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "patterns",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAsset,
   defineAntiPattern,
@@ -78,7 +77,6 @@ export const webappTestingSkill = defineSkill({
       "需要 testing-strategy 联动的覆盖缺口或自动化测试建议。",
     ],
   }),
-  tools: [],
   assets: [
     defineAsset({
       id: "test-helper",

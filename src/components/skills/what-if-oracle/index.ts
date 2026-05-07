@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -86,7 +85,6 @@ export const whatIfOracleSkill = defineSkill({
       "跨分支稳健动作、坏分支对冲动作、决策触发器和需要继续观察的指标。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "bayesian-decision",

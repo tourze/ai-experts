@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -80,7 +79,6 @@ export const wiresharkAnalysisSkill = defineSkill({
       "基线与异常对比、剩余未知项和需要进一步协议逆向的样本。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "tshark-triage",

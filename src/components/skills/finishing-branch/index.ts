@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillOutputs,
@@ -53,5 +52,4 @@ export const finishingBranchSkill = defineSkill({
       "执行结果：合并/PR/保留/丢弃动作、分支状态、worktree 状态和后续入口。",
     ],
   }),
-  tools: [],
 });

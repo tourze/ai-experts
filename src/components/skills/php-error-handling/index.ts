@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -73,7 +72,6 @@ export const phpErrorHandlingSkill = defineSkill({
       "需要补的错误路径测试、类型标注和泄露风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "error-boundary-map",

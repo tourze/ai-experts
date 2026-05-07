@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineAntiPattern,
@@ -61,5 +60,4 @@ export const blindOutputComparatorSkill = defineSkill({
       "如果 TIE，说明为什么等价以及仍需人工决策的维度。",
     ],
   }),
-  tools: [],
 });

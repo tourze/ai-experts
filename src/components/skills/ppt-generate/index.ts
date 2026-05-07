@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -72,7 +71,6 @@ export const pptGenerateSkill = defineSkill({
       "初稿评审、返修清单、页面节奏检查、可编辑性/视觉保真的取舍说明。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "anti-patterns",

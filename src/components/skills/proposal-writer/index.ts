@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -77,7 +76,6 @@ export const proposalWriterSkill = defineSkill({
       "企业级决策链、CTA、下一步动作和发送前评审结论。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "proposal-review",

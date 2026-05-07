@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -86,7 +85,6 @@ export const pythonTypeSafetySkill = defineSkill({
       "类型检查 CI、运行时校验和需要补的类型守卫测试。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "type-boundary-patterns",

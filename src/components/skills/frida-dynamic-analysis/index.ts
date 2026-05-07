@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -72,5 +71,4 @@ export const fridaDynamicAnalysisSkill = defineSkill({
       "Bypass 迭代记录：静态证据、运行结果、crash 信号、修复假设和下一轮验证。",
     ],
   }),
-  tools: [],
 });

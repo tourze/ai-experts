@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAsset,
   defineReference,
@@ -85,7 +84,6 @@ export const uxResearcherDesignerSkill = defineSkill({
       "研究交付：发现、证据、建议、影响面、严重度、可解性和后续验证计划。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(uxResearcherDesignerPersonaGenerator),
   ],

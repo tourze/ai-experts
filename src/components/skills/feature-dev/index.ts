@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -61,5 +60,4 @@ export const featureDevSkill = defineSkill({
       "代码、测试、文档/交接说明、限制和后续动作。",
     ],
   }),
-  tools: [],
 });

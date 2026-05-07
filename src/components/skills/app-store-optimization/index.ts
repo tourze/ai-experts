@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -82,7 +81,6 @@ export const appStoreOptimizationSkill = defineSkill({
       "已调用的 procedure、关键输入、输出摘要、假设和剩余数据缺口。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(appStoreOptimizationAbTestPlanner),
     procedureUse(appStoreOptimizationAsoScorer),

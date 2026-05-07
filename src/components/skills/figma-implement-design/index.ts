@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAsset,
   defineAntiPattern,
@@ -90,7 +89,6 @@ export const figmaImplementDesignSkill = defineSkill({
       "实现文件、验证方式、与设计稿偏差和需要设计确认的问题。",
     ],
   }),
-  tools: [],
   assets: [
     defineAsset({
       id: "figma-small",

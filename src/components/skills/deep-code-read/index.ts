@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -55,7 +54,6 @@ export const deepCodeReadSkill = defineSkill({
       "3 轮验证结果、未覆盖问题、最终可复用 skill 输出目录和清理建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "agent-a-prompt",

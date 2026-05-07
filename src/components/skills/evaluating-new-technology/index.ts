@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -66,7 +65,6 @@ export const evaluatingNewTechnologySkill = defineSkill({
       "选型表列：选项、解决的问题、成熟度、集成成本、风险、建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "ai-product-readiness",

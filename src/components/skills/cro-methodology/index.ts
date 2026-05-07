@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -74,7 +73,6 @@ export const croMethodologySkill = defineSkill({
       "实验优先级、验证窗口、样本要求和回滚条件。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "aida-funnel",

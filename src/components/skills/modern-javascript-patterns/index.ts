@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -96,7 +95,6 @@ export const modernJavascriptPatternsSkill = defineSkill({
       "需要补的 Jest 测试、类型边界或微优化验证。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "core-refactor-patterns",

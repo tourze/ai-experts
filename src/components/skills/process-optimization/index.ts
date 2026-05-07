@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -71,5 +70,4 @@ export const processOptimizationSkill = defineSkill({
       "流程表列：步骤、责任人、周期、等待/返工、是否保留。",
     ],
   }),
-  tools: [],
 });

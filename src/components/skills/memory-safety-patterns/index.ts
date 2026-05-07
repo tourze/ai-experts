@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -68,7 +67,6 @@ export const memorySafetyPatternsSkill = defineSkill({
       "RAII/C cleanup 修复方案、泄漏/双重释放/悬空指针风险和需要 reference 支撑的复杂模式。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "advanced-patterns",

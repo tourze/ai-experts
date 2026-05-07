@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -67,5 +66,4 @@ export const raciMatrixSkill = defineSkill({
       "RACI 更新规则和责任人。",
     ],
   }),
-  tools: [],
 });

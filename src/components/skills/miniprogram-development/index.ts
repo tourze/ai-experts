@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -67,7 +66,6 @@ export const miniprogramDevelopmentSkill = defineSkill({
       "调试发布计划：开发者工具、真机预览、miniprogram-ci、CloudBase 前置条件和风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "cloudbase-integration",

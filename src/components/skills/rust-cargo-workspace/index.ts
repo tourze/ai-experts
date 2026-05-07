@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -63,7 +62,6 @@ export const rustCargoWorkspaceSkill = defineSkill({
       "需要读取或引用的 `patterns` 章节和剩余决策。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "patterns",

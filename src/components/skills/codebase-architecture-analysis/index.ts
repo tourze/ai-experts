@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -84,7 +83,6 @@ export const codebaseArchitectureAnalysisSkill = defineSkill({
       "S1-S5 结构健康度、优先改进项和修改指南。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "anti-patterns",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillOutputs,
@@ -39,5 +38,4 @@ export const speckitDiffSkill = defineSkill({
       "章节明细：章节名、变化说明、对需求范围/技术成本/测试影响的判断。",
     ],
   }),
-  tools: [],
 });

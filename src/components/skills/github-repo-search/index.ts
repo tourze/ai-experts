@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -62,5 +61,4 @@ export const githubRepoSearchSkill = defineSkill({
       "推荐表：仓库、星标、类型、是什么、为什么推荐、补充信息、链接和下一步深度分析建议。",
     ],
   }),
-  tools: [],
 });

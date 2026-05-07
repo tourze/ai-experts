@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -80,7 +79,6 @@ export const revopsSkill = defineSkill({
       "核心指标仪表盘：Lead→MQL、MQL→SQL、SQL→Opp、LTV:CAC、speed-to-lead、win rate 和 pipeline velocity。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "scoring-and-pipeline",

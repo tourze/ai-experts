@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -58,5 +57,4 @@ export const stpSegmentationSkill = defineSkill({
       "证据缺口、定位风险和下一步市场验证动作。",
     ],
   }),
-  tools: [],
 });

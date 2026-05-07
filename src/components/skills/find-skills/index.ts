@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -58,7 +57,6 @@ export const findSkillsSkill = defineSkill({
       "无结果兜底：通用处理建议、创建 skill 的触发条件和下一步。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "search-guide",

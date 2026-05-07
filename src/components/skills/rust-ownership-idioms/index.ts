@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -94,7 +93,6 @@ export const rustOwnershipIdiomsSkill = defineSkill({
       "需要联动错误处理、测试、类型设计或 async 的后续问题。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "pointer-guide",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -54,7 +53,6 @@ export const androidDeviceAutomationSkill = defineSkill({
       "未能自动化的步骤、坐标兜底依据和后续排查建议。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(androidDeviceAutomationAppLauncher),
     procedureUse(androidDeviceAutomationBuildAndTest),

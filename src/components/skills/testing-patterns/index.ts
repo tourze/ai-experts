@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -69,7 +68,6 @@ export const testingPatternsSkill = defineSkill({
       "测试反模式、脆弱性来源和需要转向的语言特定测试 skill。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "testing-patterns-guide",

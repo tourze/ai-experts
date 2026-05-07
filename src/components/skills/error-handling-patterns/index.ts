@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -61,5 +60,4 @@ export const errorHandlingPatternsSkill = defineSkill({
       "批处理失败汇总结构、用户可见消息、日志字段、测试用例和兼容性风险。",
     ],
   }),
-  tools: [],
 });

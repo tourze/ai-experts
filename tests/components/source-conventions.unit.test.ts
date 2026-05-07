@@ -283,6 +283,10 @@ describe("component source conventions", () => {
       const source = readFileSync(skillSourceFile, "utf-8");
       assert.match(source, /\n\s*useCases:\s*\[/, `${skillSourceFile} should define useCases`);
       assert.match(source, /\n\s*constraints:\s*\[/, `${skillSourceFile} should define constraints`);
+      assert.doesNotMatch(source, /\n\s*tools:\s*\[\],/, `${skillSourceFile} should omit empty tools arrays`);
+      if (/\bKnownTool\b/.test(source)) {
+        assert.match(source, /KnownTool\./, `${skillSourceFile} should import KnownTool only when a tool is declared`);
+      }
       const hasSkillBody = /\n\s*body:\s*new URL\("\.\/SKILL\.body\.md", import\.meta\.url\)/.test(source);
       const hasSourceDir = /\n\s*sourceDir:\s*new URL\("\.\/", import\.meta\.url\)/.test(source);
       if (!hasSkillBody) {

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineSkill,
@@ -50,7 +49,6 @@ export const sessionFinalizationWorkflowSkill = defineSkill({
       "不沉淀清单：短期状态、无长期价值观察、未验证治理建议和不落盘原因。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "session-record",

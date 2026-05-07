@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -100,7 +99,6 @@ export const tutorialBuilderSkill = defineSkill({
       "Markdown canonical source、导出计划、格式风险和需要联动的文档/图示/PDF/PPT skill。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "tutorial-package-contract",

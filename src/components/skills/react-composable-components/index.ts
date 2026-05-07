@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -75,7 +74,6 @@ export const reactComposableComponentsSkill = defineSkill({
       "反抽象判断：哪些重复保留、哪些布尔 props 改为组合、何时转 react-performance。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "advanced-patterns",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -70,7 +69,6 @@ export const leadResearchAssistantSkill = defineSkill({
       "事实/信号/推测/置信度分层，以及适合试单和适合长期跟进的目标区分。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "account-research-guide",

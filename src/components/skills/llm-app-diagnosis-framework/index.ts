@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -92,5 +91,4 @@ export const llmAppDiagnosisFrameworkSkill = defineSkill({
       "改动队列：改动、假设、绑定 eval、baseline→目标、风险和验证结果。",
     ],
   }),
-  tools: [],
 });

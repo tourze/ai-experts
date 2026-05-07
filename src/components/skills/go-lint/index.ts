@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -71,7 +70,6 @@ export const goLintSkill = defineSkill({
       "自动修复命令、剩余风险和基线收敛计划。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "golangci-guide",

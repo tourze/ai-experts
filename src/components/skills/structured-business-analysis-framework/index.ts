@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillOutputs,
@@ -83,5 +82,4 @@ export const structuredBusinessAnalysisFrameworkSkill = defineSkill({
       "验证与建议：P0 假设验证计划、反证信号、≤3 条行动建议、指标和停止条件。",
     ],
   }),
-  tools: [],
 });

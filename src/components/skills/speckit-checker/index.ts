@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineSkill,
   defineSkillOutputs,
@@ -42,7 +41,6 @@ export const speckitCheckerSkill = defineSkill({
       "问题分级：P0/P1/P2、位置、证据和建议修复顺序。",
     ],
   }),
-  tools: [],
   parameters: [
     defineSkillParameter({ name: "arguments", description: "用户原始输入，如功能名称、需求描述或其他上下文。" }),
   ],

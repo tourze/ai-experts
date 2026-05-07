@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -69,7 +68,6 @@ export const laravelPatternsSkill = defineSkill({
       "需要补的测试、N+1 验证和发布前检查项。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "http-action-patterns",

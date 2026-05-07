@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -93,7 +92,6 @@ export const taskDecomposerSkill = defineSkill({
       "Execution Contract JSON：goal、waves、tasks、read_scope、write_scope、acceptance_refs 和 acceptance。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "decomposition-patterns",

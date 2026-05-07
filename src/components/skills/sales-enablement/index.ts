@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -77,7 +76,6 @@ export const salesEnablementSkill = defineSkill({
       "技术买家、经济买家、内部倡导者、终端用户的定制差异。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "buyer-persona",

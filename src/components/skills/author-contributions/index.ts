@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -61,5 +60,4 @@ export const authorContributionsSkill = defineSkill({
       "排除说明：作者动过但最终删除、未进入 merge diff 或仅历史路径命中的文件。",
     ],
   }),
-  tools: [],
 });

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -90,7 +89,6 @@ export const phpTestingSkill = defineSkill({
       "未覆盖风险和下一步补测计划。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "examples",

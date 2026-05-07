@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -72,7 +71,6 @@ export const goDesignPatternsSkill = defineSkill({
       "测试点、生命周期风险和剩余 trade-off。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "implementation-patterns",

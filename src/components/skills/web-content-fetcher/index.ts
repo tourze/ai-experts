@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -72,7 +71,6 @@ export const webContentFetcherSkill = defineSkill({
       "可交给 deep-research、总结、引用整理或其他流程的清洗正文。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(webContentFetcherFetch),
   ],

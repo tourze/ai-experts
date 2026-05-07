@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -65,5 +64,4 @@ export const idapythonScriptingSkill = defineSkill({
       "输出文件结构、保存策略、异常处理和需要静态逆向联动的线索。",
     ],
   }),
-  tools: [],
 });

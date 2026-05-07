@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -88,7 +87,6 @@ export const testDrivenDevelopmentSkill = defineSkill({
       "重构动作、mock 风险和不是 TDD 的偏离说明。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "red-green-refactor-patterns",

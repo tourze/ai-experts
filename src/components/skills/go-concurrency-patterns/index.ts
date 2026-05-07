@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -74,7 +73,6 @@ export const goConcurrencyPatternsSkill = defineSkill({
       "需要补的 race 测试、超时测试和观测点。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "runtime-patterns",

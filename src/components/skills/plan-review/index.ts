@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -61,7 +60,6 @@ export const planReviewSkill = defineSkill({
       "建议处理顺序和需要澄清的问题。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "project-detection",

@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -91,7 +90,6 @@ export const javascriptTypescriptJestSkill = defineSkill({
       "仍需补的失败路径、边界条件和重构建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "jest-code-patterns",

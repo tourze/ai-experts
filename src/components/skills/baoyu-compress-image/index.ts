@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -63,7 +62,6 @@ export const baoyuCompressImageSkill = defineSkill({
       "源文件删除风险、批处理限制和需要补依赖的压缩后端问题。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(baoyuCompressImageMain),
   ],

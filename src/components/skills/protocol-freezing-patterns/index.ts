@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -67,7 +66,6 @@ export const protocolFreezingPatternsSkill = defineSkill({
       "Golden file 回归测试清单。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "field-evolution",

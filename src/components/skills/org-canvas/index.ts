@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -69,7 +68,6 @@ export const orgCanvasSkill = defineSkill({
       "后续动作：重组方向、RACI 澄清项、人才/团队分析需求。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "talent-management",

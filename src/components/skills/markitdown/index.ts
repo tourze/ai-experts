@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAsset,
   defineReference,
@@ -89,7 +88,6 @@ export const markitdownSkill = defineSkill({
       "转换后抽样检查结果、异常格式和需要转向 doc/PPT/PDF 流程的边界。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(markitdownBatchConvert),
     procedureUse(markitdownConvertLiterature),

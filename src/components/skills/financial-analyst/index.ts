@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAsset,
   defineReference,
@@ -67,7 +66,6 @@ export const financialAnalystSkill = defineSkill({
       "可交付报告、模板选择、结论置信度、后续敏感性分析或长期模型化建议。",
     ],
   }),
-  tools: [],
   procedures: [
     procedureUse(financialAnalystBudgetVarianceAnalyzer),
     procedureUse(financialAnalystDcfValuation),

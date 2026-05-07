@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -77,7 +76,6 @@ export const deepResearchSkill = defineSkill({
       "最终归纳、来源链路、事实/推断区分和可引用材料清单。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "chinese-platform-routing",

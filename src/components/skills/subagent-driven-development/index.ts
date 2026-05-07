@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -81,7 +80,6 @@ export const subagentDrivenDevelopmentSkill = defineSkill({
       "验收证据：command/diff/artifact/manual 的命令、退出码、关键输出、检查范围和未覆盖项。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "prompt-templates",

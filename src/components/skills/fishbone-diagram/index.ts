@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -82,7 +81,6 @@ export const fishboneDiagramSkill = defineSkill({
       "验证计划：验证动作、负责人/输入、判据和下一步。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "five-w-two-h",

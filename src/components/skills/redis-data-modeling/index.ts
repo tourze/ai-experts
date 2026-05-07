@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -92,7 +91,6 @@ export const redisDataModelingSkill = defineSkill({
       "需要读取数据结构、键设计、锁或代码模式 references 的实现点。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "code-patterns",

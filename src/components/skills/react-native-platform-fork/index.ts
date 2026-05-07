@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -67,7 +66,6 @@ export const reactNativePlatformForkSkill = defineSkill({
       "类型合同、测试矩阵和维护风险。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "adapter-interface",

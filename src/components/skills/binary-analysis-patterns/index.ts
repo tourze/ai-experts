@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -68,7 +67,6 @@ export const binaryAnalysisPatternsSkill = defineSkill({
       "结构恢复、符号恢复、反逆向保护或协议路径的后续分析建议。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "triage-commands",

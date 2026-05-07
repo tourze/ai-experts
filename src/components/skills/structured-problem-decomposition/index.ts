@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -142,7 +141,6 @@ export const structuredProblemDecompositionSkill = defineSkill({
       "决策建议、负责人、时间窗、回退策略、PDCA 检查点和后续验证计划。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "six-phases",

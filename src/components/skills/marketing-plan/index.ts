@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -81,7 +80,6 @@ export const marketingPlanSkill = defineSkill({
       "活动落地表、资源清单、依赖、风险、分工和需要联动的 STP/广告/内容策略事项。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "ansoff-matrix",

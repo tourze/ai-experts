@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineReference,
@@ -58,7 +57,6 @@ export const commitSkill = defineSkill({
       "提交结果：commit SHA、message、涉及文件和剩余工作区状态。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "discipline-guard",

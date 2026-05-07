@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -79,7 +78,6 @@ export const uxHeuristicsSkill = defineSkill({
       "需要进一步用户研究、可访问性修复或产品策略升级的边界说明。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "audit-template",

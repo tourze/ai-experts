@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -64,5 +63,4 @@ export const pdcaCycleSkill = defineSkill({
       "标准化动作、纠偏动作和下一轮问题。",
     ],
   }),
-  tools: [],
 });

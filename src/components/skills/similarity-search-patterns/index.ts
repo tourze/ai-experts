@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineAntiPattern,
   defineSkill,
@@ -79,5 +78,4 @@ export const similaritySearchPatternsSkill = defineSkill({
       "召回/准确性/延迟验证结果，以及需要上游 embedding 或下游 RAG 审计的信号。",
     ],
   }),
-  tools: [],
 });

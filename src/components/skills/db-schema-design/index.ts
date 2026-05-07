@@ -1,6 +1,5 @@
 import {
   InvocationPolicy,
-  KnownTool,
   Platform,
   defineReference,
   defineAntiPattern,
@@ -88,7 +87,6 @@ export const dbSchemaDesignSkill = defineSkill({
       "查询路径与索引前置条件、迁移风险、数据增长假设和需要联动 SQL 调优的点。",
     ],
   }),
-  tools: [],
   references: [
     defineReference({
       id: "code-patterns",
