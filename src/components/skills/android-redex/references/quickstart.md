@@ -1,19 +1,11 @@
-## 任务决策树
-
-根据用户意图选择路径：
-
-- **安装 ReDex** → 读 `references/installation.md`，按用户平台给出对应步骤
-- **选择/配置 pass** → 读 `references/passes.md`，根据优化目标推荐 pass 组合
-- **基本集成** → 使用下方「快速开始」模板
-- **排查优化问题** → 读 `references/troubleshooting.md`
-- **理解某个 pass 原理** → 读 `references/passes.md` 中对应章节
+# ReDex 快速开始与 Gradle 集成
 
 ## 快速开始
 
 ```bash
 redex.py input.apk -o output.apk \
   -c config.json \
-  --android-sdk-path $ANDROID_HOME \
+  --android-sdk-path "$ANDROID_HOME" \
   --sign -s release.keystore -a alias -p password
 ```
 
@@ -69,20 +61,22 @@ redex.py input.apk -o output.apk \
 
 ## Gradle 集成
 
-ReDex 作为后处理步骤接在 `assembleRelease` 之后：
+ReDex 作为后处理步骤接在 `assembleRelease` 之后。
 
 ```kotlin
 tasks.register<Exec>("redexRelease") {
     dependsOn("assembleRelease")
-    commandLine("redex.py",
+    commandLine(
+        "redex.py",
         layout.buildDirectory.file("outputs/apk/release/app-release.apk")
             .get().asFile.absolutePath,
         "-o", "app-release-redex.apk",
         "-c", "${rootDir}/redex-config.json",
         "--sign", "-s", "${rootDir}/release.keystore",
         "-a", "alias", "-p", "password",
-        "--android-sdk-path", android.sdkDirectory.absolutePath)
+        "--android-sdk-path", android.sdkDirectory.absolutePath,
+    )
 }
 ```
 
-CI 流程：`assembleRelease` → `redex.py` → `zipalign` + `apksigner` 验证。
+CI 流程：`assembleRelease` -> `redex.py` -> `zipalign` + `apksigner` 验证。

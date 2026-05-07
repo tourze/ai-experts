@@ -5,7 +5,7 @@
 - 已有 APKTool 解包目录，需要审计 `AndroidManifest.xml` 与 `res/xml/` 安全配置。
 - 需要判断 exported Activity/Service/Receiver/Provider 是否构成攻击面。
 - 需要检查 `debuggable`、`allowBackup`、cleartext、Network Security Config、FileProvider、custom permission、taskAffinity、launchMode。
-- 需要作为 [android-apk-audit](../android-apk-audit/SKILL.md) 的 Manifest 下钻阶段。
+- 需要作为 `android-apk-audit` 的 Manifest 下钻阶段。
 
 ## 核心约束
 - Manifest 命中只是入口线索，不能单独定性漏洞；必须回到组件代码或资源配置验证影响。
@@ -70,7 +70,7 @@ rg -n 'cleartextTrafficPermitted|certificates src="user"|debug-overrides|pin-set
 | API | 检查点 | 处理 |
 | --- | --- | --- |
 | 31+ | 带 `intent-filter` 的组件必须显式 `exported` | 构建错误或迁移遗漏 |
-| 31+ | `PendingIntent` mutability 必须明确 | 下钻到 [intent-deeplink-abuse](../intent-deeplink-abuse/SKILL.md) |
+| 31+ | `PendingIntent` mutability 必须明确 | 下钻到 `ethical-hacking-methodology` 的 `intent-deeplink-abuse` reference |
 | 33+ | 媒体/通知权限拆分 | 判断是否过度申请 |
 | 34+ | implicit intent 与 exported receiver 更严格 | 动态 PoC 要标注 API 版本 |
 

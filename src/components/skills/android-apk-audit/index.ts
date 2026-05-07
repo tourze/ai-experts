@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { ethicalHackingMethodologySkill } from "../ethical-hacking-methodology/index";
 import { fridaDynamicAnalysisSkill } from "../frida-dynamic-analysis/index";
@@ -47,8 +50,7 @@ export const androidApkAuditSkill = defineSkill({
       get id() {
         return ethicalHackingMethodologySkill.id;
       },
-      label: "intent-deeplink-abuse",
-      reason: "Manifest 配置下钻使用 android-manifest-security；Intent/deep link 下钻使用 `intent-deeplink-abuse`；Frida 脚本选型使用 android-frida-script-catalog。",
+      reason: "Intent/deep link 下钻使用该 skill 的 `intent-deeplink-abuse` reference。",
     },
   ],
   antiPatterns: [
@@ -63,9 +65,38 @@ export const androidApkAuditSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "在授权边界内对 Android APK 做 Manifest、JADX / smali、数据流和动态验证闭环审计，输出可复核的移动安全发现。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先记录授权范围、APK 哈希、包名、版本、minSdk / targetSdk 和工具可用性；命令细节读取 `audit-runbook`。",
+      "识别应用框架与保护形态，建立 Activity、Service、Receiver、Provider、permission、deep link、FileProvider 和 network security config 攻击面表。",
+      "围绕 IPC、WebView、存储、网络 TLS、加密和 native 边界做入口到 sink 的定向搜索，避免全仓库关键词轰炸。",
+      "对每条可疑路径标注 source、传播节点、sink、保护条件和证据类型，并按 Confirmed / Likely / Needs Dynamic Confirmation 分级。",
+      "只有静态阶段提出明确假设后再使用 Frida、Objection 或 ADB，优先验证能改变风险等级的路径。",
+      "报告按严重性排序并去重同一根因，每个发现包含证据、PoC、影响、修复、置信度、验证状态和覆盖声明。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "授权范围、目标 APK 元数据、工具检查结果和工作目录约定。",
+      "Manifest / 资源攻击面表、框架识别、混淆 / 加壳判断和关键数据流路径。",
+      "按严重性排序的漏洞发现，含 CVSS、CWE / OWASP Mobile Top 10 或 MASVS / MASTG 映射。",
+      "动态验证证据、PoC、修复建议、置信度和覆盖声明。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "audit-runbook",
+      source: new URL("./references/audit-runbook.md", import.meta.url),
+      target: "references/audit-runbook.md",
+      title: "Android APK 审计执行 Runbook",
+      summary: "APK 哈希、工具检查、静态分析、动态验证和覆盖声明的执行流程。",
+      loadWhen: "需要实际执行 Android APK 安全审计命令或输出完整覆盖声明时读取。",
+    }),
     defineReference({
       id: "android-frida-script-catalog",
       source: new URL(

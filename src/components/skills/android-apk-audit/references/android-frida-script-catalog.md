@@ -4,8 +4,8 @@
 ## 适用场景
 - 已有 Android 动态分析假设，需要选择合适的 Frida 脚本族或加载顺序。
 - 用户提到 SSL pinning bypass、root detection、RASP、anti-Frida、IPC logger、WebView monitor、network interceptor、crypto trace、Keystore inspector、JNI/native hook、DEX dump。
-- 需要与 [frida-dynamic-analysis](../frida-dynamic-analysis/SKILL.md) 配合：本 skill 负责选型和组合，具体 hook 编写仍要静态定位后执行。
-- 需要作为 [android-apk-audit](../android-apk-audit/SKILL.md) 的动态验证下钻。
+- 需要与 `frida-dynamic-analysis` 配合：本 reference 负责选型和组合，具体 hook 编写仍要静态定位后执行。
+- 需要作为 `android-apk-audit` 的动态验证下钻。
 
 ## 核心约束
 - 脚本目录是选型指南，不代表本目录随包提供这些脚本文件；执行前先确认脚本路径真实存在。
@@ -29,7 +29,7 @@
 | Keystore/biometric | `keystore-inspector`, `biometric-bypass` | CryptoObject 与 auth-bound key 验证 |
 | crypto | `crypto-intercept` | `Cipher`, `Mac`, `MessageDigest`, `SecretKeySpec` 定点 trace |
 | JNI/native | `jni-tracer`, `native-hook` | by-offset hook、Ghidra/IDA 交叉验证 |
-| 加壳/动态 DEX | `dexdump`, `packer-unpacker` | dump 后用 [jadx](../jadx/SKILL.md) 反编译 |
+| 加壳/动态 DEX | `dexdump`, `packer-unpacker` | dump 后用 [jadx](jadx.md) 反编译 |
 
 ## 加载顺序
 

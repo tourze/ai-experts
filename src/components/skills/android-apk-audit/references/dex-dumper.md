@@ -4,8 +4,8 @@
 ## 适用场景
 - APK 使用了加固/加壳（360、梆梆、爱加密等），jadx 反编译后只看到壳代码。
 - 需要在运行时等壳解密后从内存中提取真实 DEX。
-- 需要与 [jadx](../jadx/SKILL.md) 配合：dump 出的 DEX 用 jadx 反编译得到真实业务代码。
-- 需要与 [apktool](../apktool/SKILL.md) 区分：apktool 是静态解包，本 skill 是动态脱壳。
+- 需要与 [jadx](jadx.md) 配合：dump 出的 DEX 用 jadx 反编译得到真实业务代码。
+- 需要与 [apktool](apktool.md) 区分：apktool 是静态解包，本 reference 是动态脱壳。
 
 ## 核心约束
 - 必须在 root 设备或模拟器上执行（需要 ptrace 权限）。

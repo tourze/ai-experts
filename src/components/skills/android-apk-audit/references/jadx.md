@@ -3,8 +3,8 @@
 
 ## 适用场景
 - 需要快速查看移动端业务逻辑、硬编码密钥、接口调用和反调试逻辑。
-- 需要与 [apktool](../apktool/SKILL.md) 配合，对照 Manifest、资源与 smali。
-- 需要为 [api-fuzzing-bug-bounty](../api-fuzzing-bug-bounty/SKILL.md) 提供移动端接口线索。
+- 需要与 [apktool](apktool.md) 配合，对照 Manifest、资源与 smali。
+- 需要为 `ethical-hacking-methodology` 的 `api-fuzzing-bug-bounty` reference 提供移动端接口线索。
 
 ## 核心约束
 - 先只读反编译，再决定是否修改 smali 或资源。
