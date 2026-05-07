@@ -15,7 +15,7 @@ import {
   firstNonEmptyLine,
   hasTopLevelHeadingOutsideCodeFence,
   repoRoot,
-  unsupportedAlternateComponentRootPattern,
+  stalePluginLayoutPattern,
 } from "./test-helpers";
 
 describe("component source conventions", () => {
@@ -111,8 +111,8 @@ describe("component source conventions", () => {
     for (const sourceFile of layoutAuthoritySources) {
       assert.doesNotMatch(
         readFileSync(sourceFile, "utf-8"),
-        unsupportedAlternateComponentRootPattern,
-        `${sourceFile} should use the single canonical src/components layout instead of plugin-root compatibility`,
+        stalePluginLayoutPattern,
+        `${sourceFile} should use the single canonical src/components layout without stale plugin path aliases`,
       );
     }
   });

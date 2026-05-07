@@ -10,7 +10,7 @@ import {
   countH2OutsideCodeFence,
   repoRoot,
   stripFrontmatter,
-  unsupportedAlternateComponentRootPattern,
+  stalePluginLayoutPattern,
 } from "./test-helpers";
 
 let tmpDistDir = "";
@@ -1021,7 +1021,7 @@ describe("component build integration", () => {
       );
       assert.doesNotMatch(
         platformProceduresSource,
-        unsupportedAlternateComponentRootPattern,
+        stalePluginLayoutPattern,
         `${platform} bundled procedures.js should only support the canonical component layout`,
       );
       assert.match(
