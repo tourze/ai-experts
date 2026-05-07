@@ -110,11 +110,11 @@ function writeScriptWrappers(scriptsDir: string, runtimeFallback: string): void 
 }
 export function main(argv: any = process.argv.slice(2)): any {
     const scriptDir = path.dirname(fileURLToPath(import.meta.url));
-    const defaultPluginDir = path.resolve(scriptDir, '..');
+    const defaultSkillRoot = path.resolve(scriptDir, '..');
     const repoRoot = getRepoRoot();
-    const pluginDir = resolveAbsolute(argv[0] ?? defaultPluginDir);
+    const skillRoot = resolveAbsolute(argv[0] ?? defaultSkillRoot);
     const targetDir = resolveAbsolute(argv[1] ?? path.join(repoRoot, '.specify'));
-    const templatesDir = path.join(pluginDir, 'templates');
+    const templatesDir = path.join(skillRoot, 'templates');
     if (!fs.existsSync(templatesDir) || !fs.statSync(templatesDir).isDirectory()) {
         process.stderr.write(`[error] Spec Kit 模板资源缺失：${templatesDir} 不存在\n`);
         return 1;
