@@ -29,7 +29,6 @@ import {
 import { listProcedureUses } from "./script-uses.ts";
 import type { ResolvedProcedureUse } from "./script-uses.ts";
 import {
-  insertSectionBeforeH2Matching,
   renderMarkdownBulletList,
   renderMarkdownTableCell,
 } from "./markdown.ts";
@@ -412,14 +411,9 @@ function uniqueRelatedSkills(relatedSkills: readonly RelatedSkillDefinition[]): 
 }
 
 function renderBodyWithGeneratedSections(skill: SkillDefinition, body: string): string {
-  const bodyWithChecklist = insertSectionBeforeH2Matching(
-    body,
-    renderChecklist(skill),
-    (title) => title === "反模式" || title === "反模式速查",
-  );
   const antiPatterns = renderAntiPatterns(skill);
-  if (!antiPatterns) return bodyWithChecklist;
-  return `${bodyWithChecklist.trimEnd()}\n\n${antiPatterns.trimEnd()}`;
+  if (!antiPatterns) return body;
+  return `${body.trimEnd()}\n\n${antiPatterns.trimEnd()}`;
 }
 
 function normalizeMarkdownBlankLines(markdown: string): string {
@@ -447,9 +441,10 @@ export function renderSkillMd(
     renderConstraints(skill),
     renderUserInput(skill, platform),
     generatedBody,
-    renderRelatedSkills(skill),
+    renderChecklist(skill),
     renderProcedureRegistry(skill, platform, proceduresById),
     renderReferenceMap(skill),
+    renderRelatedSkills(skill),
   ].filter((section) => section.trim() !== "")
     .map((section) => section.trimEnd());
   return normalizeMarkdownBlankLines(sections.join("\n\n"));

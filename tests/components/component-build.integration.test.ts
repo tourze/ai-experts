@@ -95,8 +95,8 @@ describe("component build integration", () => {
     assert.match(goTestingPatternsSkill, /\[testing-patterns\]\(\.\.\/testing-patterns\/SKILL\.md\)/);
     assert.match(goTestingPatternsSkill, /## 检查清单/);
     assert.ok(
-      goTestingPatternsSkill.indexOf("## 检查清单") < goTestingPatternsSkill.indexOf("## 反模式"),
-      "generated checklist should keep its pre-anti-pattern position",
+      goTestingPatternsSkill.indexOf("## 反模式") < goTestingPatternsSkill.indexOf("## 检查清单"),
+      "generated checklist should render after anti-patterns",
     );
 
     const codexMetadata = readFileSync(
@@ -620,12 +620,25 @@ describe("component build integration", () => {
             `${skillFile} should render antiPatterns as a generated markdown table`,
           );
           assert.equal(countH2OutsideCodeFence(source, "反模式"), 1, `${skillFile} should render exactly one anti-pattern section`);
+          if (source.includes("## 检查清单")) {
+            assert.ok(
+              source.indexOf("## 反模式") < source.indexOf("## 检查清单"),
+              `${skillFile} should render antiPatterns before checklist`,
+            );
+          }
           if (source.includes("## 相关 Skill")) {
             assert.ok(
               source.indexOf("## 相关 Skill") > source.indexOf("## 反模式"),
               `${skillFile} should render relatedSkills after antiPatterns`,
             );
           }
+        }
+
+        if (source.includes("## Reference Map") && source.includes("## 相关 Skill")) {
+          assert.ok(
+            source.indexOf("## Reference Map") < source.indexOf("## 相关 Skill"),
+            `${skillFile} should render Reference Map before relatedSkills`,
+          );
         }
       }
     }
