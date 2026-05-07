@@ -4,6 +4,7 @@ import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, test } from "vitest";
 import { registry } from "../../src/components/registry.ts";
+import { Platform } from "../../src/components/sdk.ts";
 import {
   collectFiles,
   countH2OutsideCodeFence,
@@ -18,8 +19,11 @@ describe("component source conventions", () => {
   test("README documents current component counts and procedure runtime", () => {
     const readme = readFileSync(join(repoRoot, "README.md"), "utf-8");
     const currentCounts = `${registry.skills.length} 个 skill、${registry.agents.length} 个 agent、${registry.hooks.length} 个 hook`;
+    const claudeHookCount = registry.hooks.filter((hook) => hook.platforms.includes(Platform.Claude)).length;
+    const codexHookCount = registry.hooks.filter((hook) => hook.platforms.includes(Platform.Codex)).length;
     const gateSummary =
-      `- \`dist/claude\` 与 \`dist/codex\` 都生成 ${currentCounts}，并包含 ${registry.procedures.length} 个 procedure 的 \`procedures.js\` bundle。`;
+      `- \`dist/claude\` 生成 ${registry.skills.length} 个 skill、${registry.agents.length} 个 agent、${claudeHookCount} 个 hook；` +
+      `\`dist/codex\` 生成 ${registry.skills.length} 个 skill、${registry.agents.length} 个 agent、${codexHookCount} 个 hook`;
 
     assert.equal(
       readme.includes(`当前组件规模：${currentCounts}。`),
@@ -30,6 +34,11 @@ describe("component source conventions", () => {
       readme.includes(gateSummary),
       true,
       "README quality-gate summary should match generated dist manifests",
+    );
+    assert.equal(
+      readme.includes(`${registry.procedures.length} 个 procedure 的 \`procedures.js\` bundle`),
+      true,
+      "README quality-gate summary should include procedure runtime count",
     );
     assert.match(readme, /procedureUse\(procedureDefinition\)/);
     assert.doesNotMatch(readme, /338 个 skill|scripts\/manifest\.json|defineSkillScript\(\)|skill script registry/);

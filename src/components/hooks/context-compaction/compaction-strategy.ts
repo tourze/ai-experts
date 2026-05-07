@@ -3,7 +3,7 @@ import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } fr
 export const compactionStrategyHook = defineHook({
   id: "compaction-strategy",
   description: "在上下文压缩前注入信息保留优先级策略。",
-  platforms: [Platform.Claude, Platform.Codex],
+  platforms: [Platform.Claude],
   event: HookEvent.PreCompact,
   entry: new URL("./compaction-strategy.ts", import.meta.url),
   order: 100,

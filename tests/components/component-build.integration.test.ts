@@ -52,7 +52,7 @@ describe("component build integration", () => {
     assert.equal(claudeManifest.agents.length, 80);
     assert.equal(codexManifest.agents.length, 80);
     assert.equal(claudeManifest.hooks.length, 99);
-    assert.equal(codexManifest.hooks.length, 99);
+    assert.equal(codexManifest.hooks.length, 98);
     assert.equal(Object.hasOwn(claudeManifest, "profile"), false);
     assert.equal(Object.hasOwn(codexManifest, "profile"), false);
   });
@@ -673,6 +673,11 @@ describe("component build integration", () => {
     const hookManifest = JSON.parse(readFileSync(join(tmpDistDir, "codex/hooks/manifest.json"), "utf-8"));
     assert.equal(hookManifest.hooks.some((hook: any) => hook.id === "component-routing-reminder"), true);
     assert.equal(hookManifest.hooks.some((hook: any) => hook.id === "dangerous-command-guard"), true);
+    assert.equal(
+      hookManifest.hooks.some((hook: any) => hook.event === "PreCompact"),
+      false,
+      "Codex hooks should only include events supported by the current Codex hooks contract",
+    );
     assert.equal(existsSync(join(tmpDistDir, "claude/hooks/dispatch.mjs")), true);
     assert.equal(existsSync(join(tmpDistDir, "codex/hooks/dispatch.mjs")), true);
     assert.equal(existsSync(join(tmpDistDir, "claude/hooks/modules")), false);
