@@ -560,25 +560,76 @@ function rewriteReferenceLocalLinks(
   );
 }
 
+function procedureByScriptTarget(
+  skill: SkillDefinition,
+  proceduresById: ReadonlyMap<string, ProcedureDefinition>,
+): ReadonlyMap<string, ProcedureDefinition> {
+  const procedures = new Map<string, ProcedureDefinition>();
+  for (const procedure of proceduresById.values()) {
+    if (!procedure.owners.skillIds?.includes(skill.id) || !procedure.target) continue;
+    procedures.set(procedure.target, procedure);
+  }
+  return procedures;
+}
+
+function rewriteProcedureScriptCommands(
+  source: string,
+  skill: SkillDefinition,
+  platform: PlatformType,
+  proceduresByTarget: ReadonlyMap<string, ProcedureDefinition>,
+): string {
+  if (proceduresByTarget.size === 0) return source;
+
+  return source.replace(
+    /\bnode\s+(?:\.\/)?scripts\/([A-Za-z0-9._/-]+\.mjs)\b/gu,
+    (match, scriptPath: string) => {
+      const procedure = proceduresByTarget.get(`scripts/${scriptPath}`);
+      if (!procedure) return match;
+      return [
+        "node",
+        procedureRuntimePath(platform),
+        "--procedure-id",
+        procedure.id,
+        "--trigger-skill",
+        skill.id,
+        "--",
+      ].join(" ");
+    },
+  );
+}
+
 function rewriteGeneratedSkillMarkdown(
   skill: SkillDefinition,
   skillRoot: string,
+  platform: PlatformType,
+  proceduresById: ReadonlyMap<string, ProcedureDefinition>,
   platformSkillIds: ReadonlySet<string>,
 ): void {
-  const markdownFiles = [
+  const referenceMarkdownFiles = existsSync(join(skillRoot, "references"))
+    ? collectFiles(join(skillRoot, "references"), (file) => file.endsWith(".md"))
+    : [];
+  const linkRewrittenMarkdownFiles = new Set([
     join(skillRoot, "SKILL.md"),
-    ...(existsSync(join(skillRoot, "references"))
-      ? collectFiles(join(skillRoot, "references"), (file) => file.endsWith(".md"))
-      : []),
-  ];
+    ...referenceMarkdownFiles,
+  ]);
+  const markdownFiles = collectFiles(skillRoot, (file) => file.endsWith(".md"));
+  const proceduresByTarget = procedureByScriptTarget(skill, proceduresById);
 
   for (const file of markdownFiles) {
     const source = readFileSync(file, "utf-8");
-    const rewritten = rewriteReferenceLocalLinks(
-      rewriteReferenceSkillLinks(source, skill, file, skillRoot, platformSkillIds),
-      file,
-      skillRoot,
+    const commandRewritten = rewriteProcedureScriptCommands(
+      source,
+      skill,
+      platform,
+      proceduresByTarget,
     );
+    const rewritten = linkRewrittenMarkdownFiles.has(file)
+      ? rewriteReferenceLocalLinks(
+        rewriteReferenceSkillLinks(commandRewritten, skill, file, skillRoot, platformSkillIds),
+        file,
+        skillRoot,
+      )
+      : commandRewritten;
     if (rewritten !== source) writeFileSync(file, rewritten, "utf-8");
   }
 }
@@ -613,7 +664,7 @@ export async function emitSkill(
     writeText(join(skillRoot, "agents", "openai.yaml"), renderCodexOpenAiYaml(skill));
   }
 
-  rewriteGeneratedSkillMarkdown(skill, skillRoot, platformSkillIds);
+  rewriteGeneratedSkillMarkdown(skill, skillRoot, platform, proceduresById, platformSkillIds);
 }
 
 function copyLooseSkillFiles(skill: SkillDefinition, skillRoot: string): void {
