@@ -1,10 +1,9 @@
-#!/usr/bin/env node
-// Smoke tests for curate_skills.mjs.
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { main as curateSkillsMain } from "./curate_skills";
+import { describe, test } from "vitest";
+import { main as curateSkillsMain } from "../../src/components/procedures/sources/skills-prune-and-sync-readme/curate_skills.ts";
 function writeSkill(skillDir: any, frontmatter: any, body: any): any {
     fs.mkdirSync(skillDir, { recursive: true });
     fs.writeFileSync(path.join(skillDir, "SKILL.md"), `---\n${frontmatter}\n---\n\n${body}\n`, "utf8");
@@ -16,6 +15,8 @@ function writeComponentSkill(skillDir: any, id: any, description: any, body: any
 function runCommand(...args: any): any {
     const originalStdoutWrite = process.stdout.write;
     const originalStderrWrite = process.stderr.write;
+    const originalConsoleLog = console.log;
+    const originalConsoleError = console.error;
     const originalExitCode = process.exitCode;
     let stdout = "";
     let stderr = "";
@@ -26,6 +27,12 @@ function runCommand(...args: any): any {
     (process.stderr.write as any) = (chunk: any): boolean => {
         stderr += Buffer.isBuffer(chunk) ? chunk.toString("utf8") : String(chunk);
         return true;
+    };
+    console.log = (...chunks: any[]): void => {
+        stdout += `${chunks.map((chunk) => String(chunk)).join(" ")}\n`;
+    };
+    console.error = (...chunks: any[]): void => {
+        stderr += `${chunks.map((chunk) => String(chunk)).join(" ")}\n`;
     };
     try {
         process.exitCode = undefined;
@@ -38,6 +45,8 @@ function runCommand(...args: any): any {
     finally {
         process.stdout.write = originalStdoutWrite;
         process.stderr.write = originalStderrWrite;
+        console.log = originalConsoleLog;
+        console.error = originalConsoleError;
         process.exitCode = originalExitCode;
     }
 }
@@ -59,7 +68,7 @@ function assertContainsGroup(groups: any, ...skills: any): any {
     }
     throw new Error(`Expected group not found: ${skills.join(", ")}`);
 }
-function main(): any {
+function runSmokeScenario(): any {
     const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "curate-skills-"));
     try {
         const skillsDir = path.join(repoRoot, "skills");
@@ -113,6 +122,10 @@ function main(): any {
     finally {
         fs.rmSync(repoRoot, { recursive: true, force: true });
     }
-    console.log("curate_skills smoke test passed");
 }
-main();
+
+describe("curate skills procedure", () => {
+    test("audits, prunes, and syncs skill indexes", () => {
+        runSmokeScenario();
+    });
+});

@@ -6,7 +6,7 @@ import {
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
-import { procedureUse, skillsPruneAndSyncReadmeCurateSkills, skillsPruneAndSyncReadmeTestCurateSkills } from "../../procedures/index";
+import { procedureUse, skillsPruneAndSyncReadmeCurateSkills } from "../../procedures/index";
 
 export const skillsPruneAndSyncReadmeSkill = defineSkill({
   id: "skills-prune-and-sync-readme",
@@ -53,6 +53,5 @@ export const skillsPruneAndSyncReadmeSkill = defineSkill({
   }),
   procedures: [
     procedureUse(skillsPruneAndSyncReadmeCurateSkills),
-    procedureUse(skillsPruneAndSyncReadmeTestCurateSkills),
   ],
 });

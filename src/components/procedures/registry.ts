@@ -940,14 +940,6 @@ export const skillsPruneAndSyncReadmeCurateSkills = defineCliProcedure({
     target: "scripts/curate_skills.mjs",
     runtime: "node",
   });
-export const skillsPruneAndSyncReadmeTestCurateSkills = defineCliProcedure({
-    id: "skills-prune-and-sync-readme-test-curate-skills",
-    entry: new URL("./sources/skills-prune-and-sync-readme/test_curate_skills.ts", import.meta.url),
-    description: "执行 test-curate-skills procedure。",
-    owners: { skillIds: ["skills-prune-and-sync-readme"] },
-    target: "scripts/test_curate_skills.mjs",
-    runtime: "node",
-  });
 export const speckitBaselineBootstrapSpecify = defineCliProcedure({
     id: "speckit-baseline-bootstrap-specify",
     entry: new URL("./sources/speckit-baseline/bootstrap-specify.ts", import.meta.url),
@@ -1153,7 +1145,6 @@ export const componentProcedures = [
   skillCreatorRunEval,
   skillCreatorRunLoop,
   skillsPruneAndSyncReadmeCurateSkills,
-  skillsPruneAndSyncReadmeTestCurateSkills,
   speckitBaselineBootstrapSpecify,
   speckitBaselineCheckPrerequisites,
   speckitBaselineCreateNewFeature,

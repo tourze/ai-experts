@@ -786,13 +786,24 @@ describe("component build integration", () => {
       assert.equal(existsSync(staticHtml), true);
       assert.match(readFileSync(staticHtml, "utf-8"), /fixture-skill/);
 
-      const curate = runProcedure(
-        "skills-prune-and-sync-readme-test-curate-skills",
-        "skills-prune-and-sync-readme",
-        [],
+      const curateRepo = join(runtimeTmp, "curate-repo");
+      const curateSkillDir = join(curateRepo, "skills", "stub-skill");
+      mkdirSync(curateSkillDir, { recursive: true });
+      writeFileSync(
+        join(curateSkillDir, "SKILL.md"),
+        "---\nname: stub-skill\ndescription: TODO\n---\n\n# Stub Skill\n\nTODO\n",
+        "utf-8",
       );
+      const curate = runProcedure("skills-prune-and-sync-readme-curate-skills", "skills-prune-and-sync-readme", [
+        "audit",
+        "--repo-root",
+        curateRepo,
+        "--format",
+        "json",
+      ]);
       assert.equal(curate.ok, true, curate.result?.stderr);
-      assert.match(curate.result.stdout, /curate_skills smoke test passed/);
+      const curateReport = JSON.parse(curate.result.stdout);
+      assert.equal(curateReport.low_quality_candidates.some((item: any) => item.skill === "stub-skill"), true);
 
       const activationAudit = runProcedure(
         "skill-activation-analyzer-cso-audit",

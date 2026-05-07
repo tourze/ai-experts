@@ -361,6 +361,29 @@ describe("component source conventions", () => {
       [],
       "registered Procedure entries must be callable procedures; import-only helper modules should stay unregistered",
     );
+
+    const sourceSideTestProcedures = registry.procedures
+      .map((procedure) => {
+        const path = procedurePath(procedure.entry);
+        const source = readFileSync(path, "utf-8");
+        return {
+          id: procedure.id,
+          path,
+          source,
+        };
+      })
+      .filter(({ path, source }) =>
+        /\.test\.ts$/.test(path) ||
+        /(?:^|\n)\s*\/\/\s*Smoke tests for\b/.test(source) ||
+        /\bfrom\s+["']node:test["']/.test(source)
+      )
+      .map(({ id, path }) => `${id}: ${relative(repoRoot, path)}`);
+
+    assert.deepEqual(
+      sourceSideTestProcedures,
+      [],
+      "source-side smoke tests and test modules should stay out of the runtime Procedure manifest",
+    );
   });
 
   test("procedure sources do not call sibling mjs helper files", () => {
