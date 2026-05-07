@@ -38,6 +38,6 @@ export function parseSkillMd(skillPath: any): any {
     }
     return { name, description, content };
 }
-export function withoutClaudeCodeEnv(env: any = process.env): any {
+export function withoutNestedAgentCliEnv(env: any = process.env): any {
     return Object.fromEntries(Object.entries(env).filter(([key]: any) => key !== "CLAUDECODE"));
 }

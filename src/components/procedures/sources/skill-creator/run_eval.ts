@@ -4,7 +4,7 @@ import { spawn } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync, realpathSync } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { parseSkillMd, withoutClaudeCodeEnv } from "./utils";
+import { parseSkillMd, withoutNestedAgentCliEnv } from "./utils";
 export function findProjectRoot(startDir: any = process.cwd()): any {
     let current = resolve(startDir);
     while (true) {
@@ -87,7 +87,7 @@ export function runSingleQuery(query: any, skillName: any, skillDescription: any
             args.push("--model", model);
         const child = spawn("claude", args, {
             cwd: projectRoot,
-            env: withoutClaudeCodeEnv(),
+            env: withoutNestedAgentCliEnv(),
             stdio: ["ignore", "pipe", "ignore"],
         });
         const state: Record<string, any> = { pendingToolName: null, accumulatedJson: "", triggered: false, done: false };

@@ -158,7 +158,32 @@ describe("component build integration", () => {
       [],
       "bundled procedure manifest entries should point at the generated bundle, not removed per-script files",
     );
+    assert.equal(
+      claudeManifestWithScripts.procedures.items.some((procedure: any) => procedure.id === "skill-creator-run-eval"),
+      true,
+      "Claude should include Claude trigger-eval procedures",
+    );
     assert.equal("scripts" in claudeManifestWithScripts, false);
+
+    const codexManifestWithScripts = JSON.parse(readFileSync(
+      join(tmpDistDir, "codex/manifest.json"),
+      "utf-8",
+    ));
+    assert.equal(
+      codexManifestWithScripts.procedures.items.some((procedure: any) => procedure.id === "skill-creator-run-eval"),
+      false,
+      "Codex should not expose Claude trigger-eval procedures",
+    );
+    assert.equal(
+      codexManifestWithScripts.procedures.items.some((procedure: any) => procedure.id === "skill-creator-run-loop"),
+      false,
+      "Codex should not expose Claude trigger-optimization loops",
+    );
+    const codexSkillCreator = readFileSync(join(tmpDistDir, "codex/skills/skill-creator/SKILL.md"), "utf-8");
+    assert.doesNotMatch(codexSkillCreator, /skill-creator-run-eval|skill-creator-run-loop/);
+    assert.match(codexSkillCreator, /skill-creator-improve-description/);
+    const codexSkillAuthor = readFileSync(join(tmpDistDir, "codex/agents/skill-author.toml"), "utf-8");
+    assert.doesNotMatch(codexSkillAuthor, /skill-creator-run-eval|skill-creator-run-loop/);
 
     const claudeAgent = readFileSync(join(tmpDistDir, "claude/agents/typescript-reviewer.md"), "utf-8");
     assert.match(claudeAgent, /name: typescript-reviewer/);
@@ -806,11 +831,14 @@ describe("component build integration", () => {
     }
 
     const proceduresSource = readFileSync(join(tmpDistDir, "claude/procedures.js"), "utf-8");
+    const codexProceduresSource = readFileSync(join(tmpDistDir, "codex/procedures.js"), "utf-8");
     const procedureRegistrySource = readFileSync(join(repoRoot, "src/components/procedures/registry.ts"), "utf-8");
     assert.doesNotMatch(procedureRegistrySource, /bundle:\s*false/);
     assert.match(proceduresSource, /^#!\/usr\/bin\/env node/);
     assert.match(proceduresSource, /__webpack_modules__/);
     assert.match(proceduresSource, /\bnode procedures\.js --procedure-id md-to-pdf-setup -- --install\b/);
+    assert.match(codexProceduresSource, /const platform = "codex-cli"/);
+    assert.doesNotMatch(codexProceduresSource, /spawn\)\("claude"|spawn\("claude"/);
     assert.doesNotMatch(proceduresSource, /"source"\s*:/, "procedures.js should not embed procedure code as JSON strings");
     assert.doesNotMatch(proceduresSource, /procedure\.source|writeFileSync\(target/);
     assert.doesNotMatch(proceduresSource, /ai-components-|procedure-runtime-entry/);

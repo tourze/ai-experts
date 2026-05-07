@@ -107,7 +107,7 @@ function isExternalRuntimeImport(id: string | undefined): boolean {
     (!id.startsWith(".") && !id.startsWith("/") && !id.startsWith("\0") && id !== runtimeEntryId);
 }
 
-function renderProceduresEntrypoint(procedures: readonly RuntimeProcedureModule[]): string {
+function renderProceduresEntrypoint(procedures: readonly RuntimeProcedureModule[], platform: PlatformType): string {
   const procedureMap = Object.fromEntries(procedures.map((procedure) => [procedure.id, metadataForRuntime(procedure)]));
   return `
 import { spawnSync } from "node:child_process";
@@ -118,6 +118,7 @@ import { delimiter, dirname, join, resolve } from "node:path";
 const procedures = ${JSON.stringify(procedureMap)};
 ${renderProcedureLoaders(procedures)}
 const version = "procedure-runtime-v3";
+const platform = ${JSON.stringify(platform)};
 const runtimeFile = realpathSync(resolve(process.argv[1] || "."));
 const runtimeRoot = dirname(runtimeFile);
 
@@ -300,6 +301,7 @@ async function runProcedureChild(payload) {
   process.env.AI_EXPERTS_PROCEDURE_SESSION_ID = payload.sessionId ?? "";
   process.env.AI_EXPERTS_PROCEDURE_TRIGGER_SKILL = payload.triggerSkill ?? "";
   process.env.AI_EXPERTS_PROCEDURE_TRIGGER_AGENT = payload.triggerAgent ?? "";
+  process.env.AI_EXPERTS_PROCEDURE_PLATFORM = platform;
   process.env.AI_EXPERTS_PROCEDURE_REQUEST_JSON = JSON.stringify(payload.requestPayload ?? {});
   const output = interceptProcedureOutput();
   try {
@@ -515,7 +517,11 @@ function runWebpack(config: Configuration): Promise<void> {
   });
 }
 
-async function emitBundledProceduresFile(root: string, runtimeProcedures: readonly RuntimeProcedureModule[]): Promise<string> {
+async function emitBundledProceduresFile(
+  root: string,
+  runtimeProcedures: readonly RuntimeProcedureModule[],
+  platform: PlatformType,
+): Promise<string> {
   const tempDir = mkdtempSync(join(tmpdir(), "ai-experts-procedure-webpack-"));
   const entryFile = join(tempDir, "procedure-runtime-entry.ts");
   const loaderFile = join(tempDir, "procedure-path-loader.cjs");
@@ -530,7 +536,7 @@ async function emitBundledProceduresFile(root: string, runtimeProcedures: readon
     ]),
   );
   const commandRewrites = buildProcedureCommandRewrites(runtimeProcedures);
-  writeFileSync(entryFile, renderProceduresEntrypoint(runtimeProcedures), "utf-8");
+  writeFileSync(entryFile, renderProceduresEntrypoint(runtimeProcedures, platform), "utf-8");
   writeFileSync(loaderFile, renderProcedurePathLoader(), "utf-8");
 
   try {
@@ -633,6 +639,7 @@ function collectPlatformProcedures(componentSurface: ComponentSurface, platform:
 
   return componentSurface.procedures
     .filter((procedure) => enabledProcedureIds.has(procedure.id))
+    .filter((procedure) => !procedure.platforms || procedure.platforms.includes(platform))
     .filter((procedure) => {
       const ownerSkills = procedure.owners.skillIds ?? [];
       const ownerAgents = procedure.owners.agentIds ?? [];
@@ -670,7 +677,7 @@ export async function emitProcedureRuntime(
 ): Promise<ProcedureRuntimeBuildResult> {
   const platformProcedures = collectPlatformProcedures(componentSurface, platform);
   const runtimeProcedures = platformProcedures.map(toRuntimeProcedureEntry);
-  const proceduresSource = await emitBundledProceduresFile(root, runtimeProcedures);
+  const proceduresSource = await emitBundledProceduresFile(root, runtimeProcedures, platform);
   const proceduresFile = "procedures.js";
 
   return {

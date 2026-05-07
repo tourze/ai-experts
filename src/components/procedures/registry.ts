@@ -1,4 +1,5 @@
 import {
+  Platform,
   defineProcedure,
   defineProcedureArgs,
   defineProcedureOutput,
@@ -918,6 +919,7 @@ export const skillCreatorRunEval = defineCliProcedure({
     entry: new URL("./sources/skill-creator/run_eval.ts", import.meta.url),
     description: "执行 run-eval procedure。",
     owners: { skillIds: ["skill-creator"] },
+    platforms: [Platform.Claude],
     target: "scripts/run_eval.mjs",
     runtime: "node",
   });
@@ -926,6 +928,7 @@ export const skillCreatorRunLoop = defineCliProcedure({
     entry: new URL("./sources/skill-creator/run_loop.ts", import.meta.url),
     description: "执行 run-loop procedure。",
     owners: { skillIds: ["skill-creator"] },
+    platforms: [Platform.Claude],
     target: "scripts/run_loop.mjs",
     runtime: "node",
   });

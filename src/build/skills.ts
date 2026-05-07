@@ -76,7 +76,7 @@ function renderProcedureRegistry(
   platform: PlatformType,
   proceduresById: ReadonlyMap<string, ProcedureDefinition>,
 ): string {
-  const procedureUses = listProcedureUses(skill);
+  const procedureUses = listProcedureUses(skill).filter((procedureUse) => proceduresById.has(procedureUse.id));
   if (procedureUses.length === 0) return "";
   const columns = ["Procedure", "用法", "何时调用", "调用目的", "参数", "返回值", "示例命令"];
   const header = `| ${columns.join(" | ")} |`;

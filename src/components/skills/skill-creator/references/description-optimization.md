@@ -25,24 +25,15 @@ Use `assets/eval_review.html`:
 
 Bad eval queries directly damage optimization quality, so let the user review before running the loop.
 
-## Run Optimization Loop
+## Run Optimization
 
-Save the reviewed eval set, then run:
-
-```bash
-procedure `skill-creator-run-loop` \
-  --eval-set <path-to-trigger-eval.json> \
-  --skill-path <path-to-skill> \
-  --model <model-id-powering-this-session> \
-  --max-iterations 5 \
-  --verbose
-```
+Save the reviewed eval set. If the generated Procedure table includes an automatic optimization loop, use that generated command with the eval set, skill path, current model, five max iterations, and verbose progress.
 
 Use the actual model powering the current session so trigger behavior matches user experience.
 
 The loop splits data into train and held-out test, runs each query multiple times for stability, proposes improved descriptions, and picks `best_description` by held-out test score rather than train score.
 
-Report progress while it runs.
+When no automatic loop procedure is available in the current platform, call `skill-creator-improve-description` for a candidate description and manually verify the held-out queries before applying it. Report whether the result came from the automatic loop or a manual held-out verification.
 
 ## Apply Result
 

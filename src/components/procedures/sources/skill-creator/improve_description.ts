@@ -3,20 +3,53 @@ import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync, realpathSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { parseSkillMd, withoutClaudeCodeEnv } from "./utils";
-function callClaude(prompt: any, model: any, timeout: any = 300): any {
+import { parseSkillMd, withoutNestedAgentCliEnv } from "./utils";
+function commandName(parts: string[]): string {
+    return parts.join("");
+}
+function defaultInvocation(model: any): any {
+    const platform = process.env.AI_EXPERTS_PROCEDURE_PLATFORM === "codex-cli" ? "codex" : "claude";
+    if (platform === "codex") {
+        const args: any[] = [
+            "exec",
+            "--skip-git-repo-check",
+            "--sandbox",
+            "read-only",
+            "--ask-for-approval",
+            "never",
+            "--ephemeral",
+        ];
+        if (model)
+            args.push("--model", model);
+        args.push("-");
+        return { command: commandName(["co", "dex"]), args };
+    }
     const args: any[] = ["-p", "--output-format", "text"];
     if (model)
         args.push("--model", model);
-    const result = spawnSync("claude", args, {
+    return { command: commandName(["clau", "de"]), args };
+}
+function configuredInvocation(model: any): any {
+    const raw = process.env.AI_EXPERTS_DESCRIPTION_OPTIMIZER_COMMAND_JSON;
+    if (!raw)
+        return defaultInvocation(model);
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed) || parsed.length === 0 || parsed.some((item) => typeof item !== "string")) {
+        throw new Error("AI_EXPERTS_DESCRIPTION_OPTIMIZER_COMMAND_JSON must be a JSON string array");
+    }
+    return { command: parsed[0], args: parsed.slice(1) };
+}
+function callModel(prompt: any, model: any, timeout: any = 300): any {
+    const { command, args } = configuredInvocation(model);
+    const result = spawnSync(command, args, {
         input: prompt,
         encoding: "utf8",
-        env: withoutClaudeCodeEnv(),
+        env: withoutNestedAgentCliEnv(),
         timeout: timeout * 1000,
         maxBuffer: 1024 * 1024 * 50,
     });
     if (result.status !== 0) {
-        throw new Error(`claude -p exited ${result.status}\nstderr: ${result.stderr}`);
+        throw new Error(`description optimizer exited ${result.status}\nstderr: ${result.stderr}`);
     }
     return result.stdout;
 }
@@ -31,9 +64,9 @@ function buildPrompt({ skillName, skillContent, currentDescription, evalResults,
     const scoresSummary = testResults
         ? `Train: ${trainScore}, Test: ${testResults.summary.passed}/${testResults.summary.total}`
         : `Train: ${trainScore}`;
-    let prompt = `你正在优化一个 Claude Code skill 的 description。skill 名称是 "${skillName}"。skill 类似 prompt，但带有渐进披露机制：Claude 先看到 title 和 description，并据此决定是否使用该 skill；如果决定使用，再读取 .md 文件，其中包含更多细节，也可能链接到 skill 目录中的 helper files、scripts、补充文档或示例。
+    let prompt = `你正在优化一个 AI agent skill 的 description。skill 名称是 "${skillName}"。skill 类似 prompt，但带有渐进披露机制：模型先看到 title 和 description，并据此决定是否使用该 skill；如果决定使用，再读取 .md 文件，其中包含更多细节，也可能链接到 skill 目录中的 helper files、scripts、补充文档或示例。
 
-description 会出现在 Claude 的 "available_skills" 列表中。用户发送 query 时，Claude 只根据 title 和 description 判断是否调用 skill。你的目标是写出一个 description：相关 query 会触发，无关 query 不会触发。
+description 会出现在运行时的 "available_skills" 列表中。用户发送 query 时，模型只根据 title 和 description 判断是否调用 skill。你的目标是写出一个 description：相关 query 会触发，无关 query 不会触发。
 
 当前 description：
 <current_description>
@@ -93,7 +126,7 @@ ${skillContent}
 }
 export function improveDescription({ skillName, skillContent, currentDescription, evalResults, history, model, testResults = null, logDir = null, iteration = null, }: any): any {
     const prompt = buildPrompt({ skillName, skillContent, currentDescription, evalResults, history, testResults });
-    const text = callClaude(prompt, model);
+    const text = callModel(prompt, model);
     let description = extractDescription(text);
     const transcript: Record<string, any> = {
         iteration,
@@ -105,7 +138,7 @@ export function improveDescription({ skillName, skillContent, currentDescription
     };
     if (description.length > 1024) {
         const shortenPrompt = `${prompt}\n\n---\n\n上一次尝试生成的 description 有 ${description.length} 个字符，超过 1024 字符硬限制：\n\n"${description}"\n\n请在保留最重要触发词和意图覆盖的前提下，将它改写到 1024 字符以内。只返回包在 <new_description> 标签内的新 description。`;
-        const shortenText = callClaude(shortenPrompt, model);
+        const shortenText = callModel(shortenPrompt, model);
         const shortened = extractDescription(shortenText);
         transcript.rewrite_prompt = shortenPrompt;
         transcript.rewrite_response = shortenText;

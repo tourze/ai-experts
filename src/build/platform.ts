@@ -143,6 +143,9 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     if (runtime !== "node") {
       throw new Error(`Procedure ${procedure.id} runtime must be node`);
     }
+    if (procedure.platforms && procedure.platforms.length === 0) {
+      throw new Error(`Procedure ${procedure.id} platforms must not be empty`);
+    }
     if (!existsSync(toAbsolutePath(procedure.entry))) {
       throw new Error(`Procedure ${procedure.id} entry is missing: ${displayPath(procedure.entry)}`);
     }
@@ -409,7 +412,12 @@ export async function emitPlatform(
   }
 
   const procedureRuntime = await emitProcedureRuntime(componentSurface, root, platform);
-  const proceduresById = new Map(componentSurface.procedures.map((procedure) => [procedure.id, procedure]));
+  const platformProcedureIds = new Set(procedureRuntime.procedures.map((procedure) => procedure.id));
+  const proceduresById = new Map(
+    componentSurface.procedures
+      .filter((procedure) => platformProcedureIds.has(procedure.id))
+      .map((procedure) => [procedure.id, procedure]),
+  );
 
   const platformSkillIds = new Set(
     componentSurface.skills

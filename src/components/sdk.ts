@@ -85,6 +85,7 @@ export type ProcedureDefinition<
   entry: ComponentFile;
   description: string;
   owners: ProcedureOwners;
+  platforms?: PlatformList;
   target?: string;
   runtime?: "node";
   bundle?: boolean;
