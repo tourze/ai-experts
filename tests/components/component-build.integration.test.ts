@@ -166,6 +166,7 @@ describe("component build integration", () => {
       const platformRoot = join(tmpDistDir, platform);
       const manifest = JSON.parse(readFileSync(join(platformRoot, "manifest.json"), "utf-8"));
       const manifestFiles = manifest.files as Record<string, string>;
+      const proceduresFile = manifest.procedures.proceduresFile as string;
       const actualFiles = collectFiles(platformRoot)
         .map((file) => file.slice(platformRoot.length + 1).split("\\").join("/"))
         .filter((file) => file !== "manifest.json")
@@ -183,6 +184,23 @@ describe("component build integration", () => {
           .digest("hex");
         assert.equal(manifestFiles[relativeFile], checksum, `${platform} manifest checksum for ${relativeFile}`);
       }
+
+      assert.equal(existsSync(join(platformRoot, proceduresFile)), true, `${platform} procedures bundle should exist`);
+      const proceduresChecksum = createHash("sha256")
+        .update(readFileSync(join(platformRoot, proceduresFile)))
+        .digest("hex");
+      assert.equal(
+        manifest.procedures.bundleChecksum,
+        proceduresChecksum,
+        `${platform} procedure bundle checksum should match generated procedures.js`,
+      );
+      assert.deepEqual(
+        manifest.procedures.items
+          .filter((procedure: any) => procedure.target !== proceduresFile)
+          .map((procedure: any) => `${procedure.id}:${procedure.target}`),
+        [],
+        `${platform} procedure manifest entries should all target the generated procedures bundle`,
+      );
     }
   });
 
