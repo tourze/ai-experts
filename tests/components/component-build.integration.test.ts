@@ -1051,7 +1051,6 @@ describe("component build integration", () => {
         for (const match of markdown.matchAll(/(?<!!)\[[^\]]+\]\(([^)\s]+)\)/gu)) {
           const href = match[1] as string;
           if (/^[a-z][a-z0-9+.-]*:|^#|^\//iu.test(href)) continue;
-          if (href.includes("{")) continue;
           const [pathWithoutAnchor] = href.split("#", 1);
           if (pathWithoutAnchor && !existsSync(resolve(dirname(markdownFile), pathWithoutAnchor))) {
             brokenLocalLinks.push(`${markdownFile}: ${href}`);

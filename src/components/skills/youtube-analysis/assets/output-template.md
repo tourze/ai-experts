@@ -1,7 +1,7 @@
 # {title}
 
 **Channel:** {channel} | **Duration:** {duration} | **Published:** {upload_date}
-**Source:** [{video_url}]({video_url})
+**Source:** {video_url}
 
 ---
 
