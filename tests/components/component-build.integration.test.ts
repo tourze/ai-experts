@@ -648,8 +648,13 @@ describe("component build integration", () => {
       assert.equal(existsSync(checkPrerequisitesScript), true);
       assert.equal(existsSync(join(speckitTemplatesDir, "spec-template.md")), true);
       assert.equal(existsSync(join(speckitTemplatesDir, "plan-template.md")), true);
+      const createFeatureWrapper = readFileSync(createFeatureScript, "utf-8");
+      assert.doesNotMatch(createFeatureWrapper, /\.claude|\.codex|homedir/);
+      assert.match(createFeatureWrapper, new RegExp(proceduresPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
 
-      const wrapperEnv = { ...process.env, AI_EXPERTS_PROCEDURES_FILE: proceduresPath };
+      const wrapperEnv = { ...process.env };
+      delete wrapperEnv.AI_EXPERTS_PROCEDURES_FILE;
+      delete wrapperEnv.AI_EXPERTS_PROCEDURE_RUNTIME;
       const feature = JSON.parse(execFileSync(process.execPath, [
         createFeatureScript,
         "--json",

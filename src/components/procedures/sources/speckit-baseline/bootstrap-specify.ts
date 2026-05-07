@@ -37,8 +37,6 @@ function wrapperSource(procedureId: string, runtimeFallback: string): string {
     return `#!/usr/bin/env node
 import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
-import { homedir } from "node:os";
-import { join } from "node:path";
 
 const procedureId = ${shellQuote(procedureId)};
 const triggerSkill = "speckit-baseline";
@@ -48,8 +46,6 @@ function runtimeCandidates() {
   return [
     process.env.AI_EXPERTS_PROCEDURES_FILE,
     process.env.AI_EXPERTS_PROCEDURE_RUNTIME,
-    join(homedir(), ".claude", "procedures.js"),
-    join(homedir(), ".codex", "procedures.js"),
     runtimeFallback,
   ].filter(Boolean);
 }
@@ -58,7 +54,7 @@ function findRuntime() {
   for (const candidate of runtimeCandidates()) {
     if (existsSync(candidate)) return candidate;
   }
-  throw new Error("Cannot find procedures.js. Set AI_EXPERTS_PROCEDURES_FILE or install ai-experts for Claude/Codex.");
+  throw new Error("Cannot find procedures.js. Set AI_EXPERTS_PROCEDURES_FILE or rerun bootstrap from an installed ai-experts runtime.");
 }
 
 function main(argv = process.argv.slice(2)) {
@@ -100,6 +96,13 @@ function main(argv = process.argv.slice(2)) {
 process.exitCode = main();
 `;
 }
+function currentRuntimeFallback(): string {
+    const runtimeRoot = (globalThis as Record<string, unknown>).__aiExpertsRuntimeRoot;
+    if (typeof runtimeRoot === 'string' && runtimeRoot.length > 0) {
+        return path.join(runtimeRoot, 'procedures.js');
+    }
+    return process.env.AI_EXPERTS_PROCEDURES_FILE ?? '';
+}
 function writeScriptWrappers(scriptsDir: string, runtimeFallback: string): void {
     fs.mkdirSync(scriptsDir, { recursive: true });
     for (const [scriptName, procedureId] of Object.entries(SPECKIT_SCRIPT_PROCEDURES)) {
@@ -120,7 +123,7 @@ export function main(argv: any = process.argv.slice(2)): any {
         return 1;
     }
     fs.mkdirSync(targetDir, { recursive: true });
-    const runtimeFallback = process.env.AI_EXPERTS_PROCEDURES_FILE ?? '';
+    const runtimeFallback = currentRuntimeFallback();
     writeScriptWrappers(path.join(targetDir, 'scripts'), runtimeFallback);
     copyDirectoryContents(templatesDir, path.join(targetDir, 'templates'));
     process.stdout.write(`[ok] 已初始化 .specify 资源：${targetDir}\n`);
