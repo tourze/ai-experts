@@ -686,6 +686,18 @@ describe("component build integration", () => {
         [],
         `${platform} generated skill docs should not describe removed skill-local script directories`,
       );
+      const crossPlatformSkillInvocationHints: string[] = [];
+      for (const markdownFile of collectFiles(join(tmpDistDir, platform, "skills"), (file) => file.endsWith(".md"))) {
+        const markdown = readFileSync(markdownFile, "utf-8");
+        if (/Claude Code: `\/[A-Za-z0-9_-]+`；Codex: `\$[A-Za-z0-9_-]+`/u.test(markdown)) {
+          crossPlatformSkillInvocationHints.push(markdownFile);
+        }
+      }
+      assert.deepEqual(
+        crossPlatformSkillInvocationHints,
+        [],
+        `${platform} generated skill docs should not include dual-platform invocation syntax`,
+      );
       assert.equal(
         collectFiles(join(tmpDistDir, platform, "skills"), (file) =>
           /[\\/]skills[\\/][^\\/]+[\\/]index\.js$/.test(file),
@@ -704,6 +716,16 @@ describe("component build integration", () => {
       /[\\/]SKILL\.toon$/.test(file),
     );
     assert.deepEqual(sourceAlternateSkillFiles, [], "source skills should not keep alternate SKILL.toon artifacts");
+
+    const sourceCrossPlatformInvocationHints = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
+      file.endsWith("index.ts") &&
+      /Claude Code: `\/[A-Za-z0-9_-]+`；Codex: `\$[A-Za-z0-9_-]+`/u.test(readFileSync(file, "utf-8")),
+    );
+    assert.deepEqual(
+      sourceCrossPlatformInvocationHints,
+      [],
+      "source skills should avoid hard-coded dual-platform invocation syntax",
+    );
 
     const legacyScriptCommandsInSkillBodies = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
       file.endsWith("SKILL.body.md") &&

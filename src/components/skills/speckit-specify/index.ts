@@ -24,7 +24,7 @@ export const speckitSpecifySkill = defineSkill({
   sourceDir: new URL("./", import.meta.url),
   workflow: defineSkillWorkflow({
     steps: [
-      "确保 `.specify/scripts` 与 `.specify/templates` 存在；若缺失，先调用 skill `speckit-baseline` 完成 `.specify/` 初始化（Claude Code: `/speckit-baseline`；Codex: `$speckit-baseline`），完成后回到本流程。",
+      "确保 `.specify/scripts` 与 `.specify/templates` 存在；若缺失，先调用 `speckit-baseline` skill 完成 `.specify/` 初始化，完成后回到本流程。",
       "从需求生成 `slug`（2-4 词，连字符）。",
       "在当前仓库创建或复用目录：`.specify/features/<slug>/`",
       `使用模板生成/更新：\`.specify/features/<slug>/spec.md\`

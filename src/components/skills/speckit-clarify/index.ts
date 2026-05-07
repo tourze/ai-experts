@@ -22,7 +22,7 @@ export const speckitClarifySkill = defineSkill({
   sourceDir: new URL("./", import.meta.url),
   workflow: defineSkillWorkflow({
     steps: [
-      "确保 `.specify/scripts/check-prerequisites.mjs` 存在；若缺失，先调用 skill `speckit-baseline` 完成 `.specify/` 初始化（Claude Code: `/speckit-baseline`；Codex: `$speckit-baseline`），完成后回到本流程。",
+      "确保 `.specify/scripts/check-prerequisites.mjs` 存在；若缺失，先调用 `speckit-baseline` skill 完成 `.specify/` 初始化，完成后回到本流程。",
       "运行：`node .specify/scripts/check-prerequisites.mjs --json --paths-only`",
       `读取当前 \`spec.md\`，按以下维度打标：清晰/部分清晰/缺失。
    - 角色与目标

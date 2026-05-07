@@ -24,7 +24,7 @@ export const speckitAnalyzeSkill = defineSkill({
   workflow: defineSkillWorkflow({
     steps: [
       `前置检查：确认 \`.specify/scripts/check-prerequisites.mjs\` 存在。
-   - 若不存在，先调用 skill \`speckit-baseline\` 完成 \`.specify/\` 初始化（Claude Code: \`/speckit-baseline\`；Codex: \`$speckit-baseline\`），完成后回到本流程。
+   - 若不存在，先调用 \`speckit-baseline\` skill 完成 \`.specify/\` 初始化，完成后回到本流程。
    - 不要改跑 bash 版脚本；当前能力的 current feature 定位依赖 Node.js 脚本。`,
       `在仓库根目录运行：
    - \`node .specify/scripts/check-prerequisites.mjs --json --require-tasks --include-tasks\``,

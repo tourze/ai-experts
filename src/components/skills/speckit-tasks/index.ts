@@ -22,7 +22,7 @@ export const speckitTasksSkill = defineSkill({
   sourceDir: new URL("./", import.meta.url),
   workflow: defineSkillWorkflow({
     steps: [
-      "确保 `.specify/scripts/check-prerequisites.mjs` 存在；若缺失，先调用 skill `speckit-baseline` 完成 `.specify/` 初始化（Claude Code: `/speckit-baseline`；Codex: `$speckit-baseline`），完成后回到本流程。",
+      "确保 `.specify/scripts/check-prerequisites.mjs` 存在；若缺失，先调用 `speckit-baseline` skill 完成 `.specify/` 初始化，完成后回到本流程。",
       "运行：`node .specify/scripts/check-prerequisites.mjs --json`",
       "读取：`plan.md`、`spec.md`，并按需读取 `data-model.md`、`contracts/`、`research.md`。",
       `以用户故事为单位生成任务阶段：

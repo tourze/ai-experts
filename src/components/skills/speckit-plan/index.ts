@@ -22,7 +22,7 @@ export const speckitPlanSkill = defineSkill({
   sourceDir: new URL("./", import.meta.url),
   workflow: defineSkillWorkflow({
     steps: [
-      "确保 `.specify/scripts/setup-plan.mjs` 存在；若缺失，先调用 skill `speckit-baseline` 完成 `.specify/` 初始化（Claude Code: `/speckit-baseline`；Codex: `$speckit-baseline`），完成后回到本流程。",
+      "确保 `.specify/scripts/setup-plan.mjs` 存在；若缺失，先调用 `speckit-baseline` skill 完成 `.specify/` 初始化，完成后回到本流程。",
       "运行：`node .specify/scripts/setup-plan.mjs --json`。",
       `读取：
    - \`spec.md\`
