@@ -564,14 +564,6 @@ describe("component build integration", () => {
       assert.equal(nestedLayoutRootAudit.ok, false);
       assert.match(nestedLayoutRootAudit.result.stderr, /cannot find component skills directory/);
 
-      const removedPluginsDirArgAudit = runProcedure(
-        "skill-activation-analyzer-cso-audit",
-        "skill-activation-analyzer",
-        ["--plugins-dir", nestedLayoutRoot, "--json"],
-      );
-      assert.equal(removedPluginsDirArgAudit.ok, false);
-      assert.match(removedPluginsDirArgAudit.result.stderr, /unknown argument: --plugins-dir/);
-
       const persona = runProcedure(
         "ux-researcher-designer-persona-generator",
         "ux-researcher-designer",

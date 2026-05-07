@@ -80,7 +80,7 @@ export const sessionFinalizerAgent = defineAgent({
       }),
       defineAgentOutputSection({
         title: "复盘沉淀",
-        body: "[长期规则 1-3 条；标明落点（记忆文件 / plan / CLAUDE.md）]",
+        body: "[长期规则 1-3 条；标明落点（项目记忆文件 / plan）]",
       }),
       defineAgentOutputSection({
         title: "未完成项与下次入口",

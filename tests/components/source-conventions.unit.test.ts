@@ -107,6 +107,22 @@ describe("component source conventions", () => {
     );
   });
 
+  test("cross-platform source names project memory files neutrally", () => {
+    const platformSpecificMemoryRefs: string[] = [];
+    for (const sourceFile of collectFiles(join(repoRoot, "src/components"))) {
+      const source = readFileSync(sourceFile, "utf-8");
+      if (/全局 CLAUDE\.md|仓库 `CLAUDE\.md`|记忆文件 \/ plan \/ CLAUDE\.md/.test(source)) {
+        platformSpecificMemoryRefs.push(relative(repoRoot, sourceFile));
+      }
+    }
+
+    assert.deepEqual(
+      platformSpecificMemoryRefs,
+      [],
+      "cross-platform components should refer to project memory files neutrally, not only CLAUDE.md",
+    );
+  });
+
   test("hooks use the normalized payload contract", () => {
     const sdkSource = readFileSync(join(repoRoot, "src/components/sdk.ts"), "utf-8");
     const hookBuilderSource = readFileSync(join(repoRoot, "src/build/hooks.ts"), "utf-8");
@@ -254,7 +270,7 @@ describe("component source conventions", () => {
       assert.doesNotMatch(
         source,
         /单个 plugin|未覆盖的 plugin/,
-        `${agentSourceFile} should not describe ai-experts audit scope with legacy plugin roots`,
+        `${agentSourceFile} should describe ai-experts audit scope with current component terms`,
       );
 
       assert.equal(

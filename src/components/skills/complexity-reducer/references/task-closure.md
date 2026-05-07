@@ -15,7 +15,7 @@
 | 1 | 新模式? | 用了未记录在 skill / memory 的模式、约定、调用顺序 |
 | 2 | 新陷阱? | 走了弯路、踩了不提前知道就会浪费时间的坑 |
 | 3 | 缺失规则? | 因为缺某条规则导致绕路、回退或返工 |
-| 4 | 过时规则? | 现有 skill / memory / CLAUDE.md 的某条规则已不准确 |
+| 4 | 过时规则? | 现有 skill / memory / 项目记忆文件的某条规则已不准确 |
 
 任意一条"是" → 进入录入门槛判断；全部"否" → 到此结束。
 
@@ -48,7 +48,7 @@
 | 稳定约束 / 必须遵守 | 对应 skill 正文 或 memory `feedback_*.md` |
 | 踩坑 / 边缘情况 | skill 内 `references/gotchas.md`（文件夹结构）或 memory `project_*.md` |
 | 流程步骤 | skill 内 `workflows/*.md` |
-| 触发或路由变更 | skill 的 description 或全局 CLAUDE.md |
+| 触发或路由变更 | skill 的 description 或项目记忆文件 |
 
 ## 泛化规则（录入前必做）
 

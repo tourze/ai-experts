@@ -26,7 +26,7 @@ export const researchNoteWrapSkill = defineSkill({
     "输出位置先查项目记忆文件（`CLAUDE.md` / `AGENTS.md` / `MEMORY.md`）的\"调研笔记目录\"约定；未定义则首次询问，并建议写回记忆文件。",
     "文件名 `YYYY-MM-DD-<topic>.md`；topic 不明确用 `session-research`。",
     "用户后续说「再调研 xx 写入笔记」「补充分析 xx」**默认追加**到现有笔记 `## 追加专题：xx` 段，不另开新文件。",
-    "表格列名对齐仓库 `CLAUDE.md` 的「证据点 / 方案对比 / 风险登记」口径，完整骨架见 [输出模板](references/output-template.md)。",
+    "表格列名对齐项目记忆文件的「证据点 / 方案对比 / 风险登记」口径，完整骨架见 [输出模板](references/output-template.md)。",
   ],
   checklist: [
     "范围已确定（current-session / today-topic-synthesis）。",
