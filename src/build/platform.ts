@@ -33,9 +33,9 @@ import {
 import { compileHookModules, renderCodexConfig, renderHookConfig } from "./hooks.ts";
 import { hasH2SectionMatching, startsWithH2Section } from "./markdown.ts";
 import { materializeRegistry } from "./registry.ts";
-import { listProcedureUses } from "./script-uses.ts";
-import type { ResolvedProcedureUse } from "./script-uses.ts";
-import { emitScriptRuntime } from "./scripts.ts";
+import { listProcedureUses } from "./procedure-uses.ts";
+import type { ResolvedProcedureUse } from "./procedure-uses.ts";
+import { emitProcedureRuntime } from "./procedures.ts";
 import {
   emitSkill,
   hasStructuredSkillBody,
@@ -419,7 +419,7 @@ export async function emitPlatform(
     writeText(join(root, "config.toml"), renderCodexConfig());
   }
 
-  const procedureRuntime = await emitScriptRuntime(componentSurface, root, platform);
+  const procedureRuntime = await emitProcedureRuntime(componentSurface, root, platform);
   const proceduresById = new Map(componentSurface.procedures.map((procedure) => [procedure.id, procedure]));
 
   for (const skill of componentSurface.skills) {

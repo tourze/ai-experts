@@ -26,8 +26,8 @@ import {
   writeText,
   yamlScalar,
 } from "./core.ts";
-import { listProcedureUses } from "./script-uses.ts";
-import type { ResolvedProcedureUse } from "./script-uses.ts";
+import { listProcedureUses } from "./procedure-uses.ts";
+import type { ResolvedProcedureUse } from "./procedure-uses.ts";
 import {
   renderMarkdownBulletList,
   renderMarkdownTableCell,

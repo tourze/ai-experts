@@ -8,7 +8,7 @@ import type {
   ProcedureDefinition,
 } from "../components/sdk";
 import { sourceRoot, toAbsolutePath } from "./core.ts";
-import { listProcedureUses } from "./script-uses.ts";
+import { listProcedureUses } from "./procedure-uses.ts";
 import type { ComponentSurface } from "./types.ts";
 
 type RuntimeProcedureEntry = {
@@ -32,7 +32,7 @@ type ProcedureManifestEntry = RuntimeProcedureEntry & {
   bundled: true;
 };
 
-export type ScriptRuntimeBuildResult = {
+export type ProcedureRuntimeBuildResult = {
   proceduresFile: string;
   bundleChecksum: string;
   procedures: ProcedureManifestEntry[];
@@ -237,7 +237,7 @@ function activeOwnerRoot(procedure, trigger) {
 function installProcedureGlobals(procedure, trigger) {
   const ownerRoot = activeOwnerRoot(procedure, trigger);
   globalThis.__aiExpertsModuleFile = () => runtimeFile;
-  globalThis.__aiExpertsScriptDir = (target) => join(ownerRoot, dirname(String(target)));
+  globalThis.__aiExpertsProcedureDir = (target) => join(ownerRoot, dirname(String(target)));
   globalThis.__aiExpertsRuntimeRoot = runtimeRoot;
   globalThis.__aiExpertsOwnerRoot = ownerRoot;
 }
@@ -393,7 +393,7 @@ module.exports = function aiExpertsProcedurePathLoader(source) {
   const file = String(this.resourcePath || "").replaceAll("\\\\", "/");
   const context = contexts[file];
   if (!context) return source;
-  const replacement = "globalThis.__aiExpertsScriptDir(" + JSON.stringify(context.target) + ")";
+  const replacement = "globalThis.__aiExpertsProcedureDir(" + JSON.stringify(context.target) + ")";
   const moduleFile = "globalThis.__aiExpertsModuleFile(" + JSON.stringify(context.target) + ")";
   return source
     .replace(/\\bpath\\.dirname\\s*\\(\\s*fileURLToPath\\s*\\(\\s*import\\.meta\\.url\\s*\\)\\s*\\)/g, replacement)
@@ -579,11 +579,11 @@ function schemaName(schema: { typeName: string } | undefined): string | null {
   return schema?.typeName ?? null;
 }
 
-export async function emitScriptRuntime(
+export async function emitProcedureRuntime(
   componentSurface: ComponentSurface,
   root: string,
   platform: PlatformType,
-): Promise<ScriptRuntimeBuildResult> {
+): Promise<ProcedureRuntimeBuildResult> {
   const platformProcedures = collectPlatformProcedures(componentSurface, platform);
   const runtimeProcedures = platformProcedures.map(toRuntimeProcedureEntry);
   const proceduresSource = await emitBundledProceduresFile(root, runtimeProcedures);

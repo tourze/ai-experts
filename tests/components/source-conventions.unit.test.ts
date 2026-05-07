@@ -38,6 +38,7 @@ describe("component source conventions", () => {
     const sdkSource = readFileSync(join(repoRoot, "src/components/sdk.ts"), "utf-8");
     const proceduresIndexSource = readFileSync(join(repoRoot, "src/components/procedures/index.ts"), "utf-8");
     const registrySource = readFileSync(join(repoRoot, "src/components/registry.ts"), "utf-8");
+    const buildRoot = join(repoRoot, "src/build");
 
     assert.doesNotMatch(
       sdkSource,
@@ -45,6 +46,9 @@ describe("component source conventions", () => {
     );
     assert.doesNotMatch(proceduresIndexSource, /\b(?:scriptUse|componentScripts)\b/);
     assert.doesNotMatch(registrySource, /\bscripts:/);
+    assert.equal(existsSync(join(buildRoot, "scripts.ts")), false);
+    assert.equal(existsSync(join(buildRoot, "script-uses.ts")), false);
+    assert.doesNotMatch(readFileSync(join(buildRoot, "procedures.ts"), "utf-8"), /__aiExpertsScriptDir/);
   });
 
   test("agent source keeps structured fields", () => {

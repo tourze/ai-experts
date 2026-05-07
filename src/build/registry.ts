@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import * as esbuild from "esbuild";
 import { collectFiles, rewriteCompiledJsImports, sourceRoot, writeText } from "./core.ts";
-import { listProcedureUses } from "./script-uses.ts";
+import { listProcedureUses } from "./procedure-uses.ts";
 import type {
   AgentDefinition,
   HookDefinition,
