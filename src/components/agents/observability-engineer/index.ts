@@ -2,6 +2,8 @@ import {
   AgentSandbox,
   defineAgent,
   defineAgentOutputFormat,
+  defineAgentOutputSection,
+  defineAgentOutputTemplate,
   defineAgentWorkflow,
   defineAgentWorkflowStep,
   KnownTool,
@@ -55,45 +57,54 @@ export const observabilityEngineerAgent = defineAgent({
     ],
   }),
   outputFormat: defineAgentOutputFormat({
-    kind: "raw",
-    body: `写入文件结构（默认 \`docs/observability/<service-or-project>/\`）：
-
-\`\`\`
-observability-plan.md
-metrics-catalog.md
-alerting-rules.md
-instrumentation-guide.md
-\`\`\`
-
-每份文档使用以下结构：
-
-\`\`\`markdown
-# 可观测性方案：<scope>
-
-## 现状基线
-[既有监控 / 日志 / trace / 告警 → 缺口矩阵]
-
-## 指标设计
-[四大黄金信号 → 业务指标 → 资源指标 → 采集方式]
-
-## 日志规范
-[结构化格式 / 必填字段 / 敏感信息脱敏 / 级别使用约定]
-
-## Trace 策略
-[注入与传播 / 采样率 / 跨服务串联 / OpenTelemetry 配置]
-
-## 告警规则
-[分级 P0-P3 / 阈值 / 聚合窗口 / 降噪 / oncall 路由]
-
-## 落地步骤
-[按服务拆分 / Python structlog + OTel / Go slog + OTel / 验证方法]
-
-## 监控补齐
-[Dashboard 布局 / Runbook 链接 / 故障演练脚本]
-
-## 风险
-[工具链锁定 / 性能开销 / 存储成本 / 告警风暴]
-\`\`\``,
+    kind: "file-set",
+    introduction: "写入文件结构（默认 `docs/observability/<service-or-project>/`）：",
+    files: [
+      "observability-plan.md",
+      "metrics-catalog.md",
+      "alerting-rules.md",
+      "instrumentation-guide.md",
+    ],
+    templates: [
+      defineAgentOutputTemplate({
+        intro: "每份文档使用以下结构：",
+        title: "可观测性方案：<scope>",
+        sections: [
+          defineAgentOutputSection({
+            title: "现状基线",
+            body: "[既有监控 / 日志 / trace / 告警 → 缺口矩阵]",
+          }),
+          defineAgentOutputSection({
+            title: "指标设计",
+            body: "[四大黄金信号 → 业务指标 → 资源指标 → 采集方式]",
+          }),
+          defineAgentOutputSection({
+            title: "日志规范",
+            body: "[结构化格式 / 必填字段 / 敏感信息脱敏 / 级别使用约定]",
+          }),
+          defineAgentOutputSection({
+            title: "Trace 策略",
+            body: "[注入与传播 / 采样率 / 跨服务串联 / OpenTelemetry 配置]",
+          }),
+          defineAgentOutputSection({
+            title: "告警规则",
+            body: "[分级 P0-P3 / 阈值 / 聚合窗口 / 降噪 / oncall 路由]",
+          }),
+          defineAgentOutputSection({
+            title: "落地步骤",
+            body: "[按服务拆分 / Python structlog + OTel / Go slog + OTel / 验证方法]",
+          }),
+          defineAgentOutputSection({
+            title: "监控补齐",
+            body: "[Dashboard 布局 / Runbook 链接 / 故障演练脚本]",
+          }),
+          defineAgentOutputSection({
+            title: "风险",
+            body: "[工具链锁定 / 性能开销 / 存储成本 / 告警风暴]",
+          }),
+        ],
+      }),
+    ],
   }),
   bashBoundary: [
     "Bash 用于读取本地仓库的观测配置、metrics 定义、日志格式模板和告警规则文件；运行用户授权的格式校验与语法检查。禁止连接生产监控系统、修改告警规则/阈值、重启 exporter 或调整采样率。",

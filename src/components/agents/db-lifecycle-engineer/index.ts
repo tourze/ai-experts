@@ -3,6 +3,8 @@ import {
   defineAgent,
   defineAgentMode,
   defineAgentOutputFormat,
+  defineAgentOutputSection,
+  defineAgentOutputTemplate,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -59,64 +61,77 @@ export const dbLifecycleEngineerAgent = defineAgent({
     }),
   ],
   outputFormat: defineAgentOutputFormat({
-    kind: "raw",
-    body: `写入文件结构（默认 \`docs/db/<project-or-feature>/\`）：
-
-\`\`\`
-schema-design.md
-index-strategy.md
-migration-plan.md
-ha-topology.md
-risk-register.md
-\`\`\`
-
-每份文档使用以下结构：
-
-\`\`\`markdown
-# 数据库设计文档：<scope>
-
-## 现状基线
-[引擎与版本 / 表数量与规模 / 慢查询热点 / 既有问题]
-
-## Schema 设计
-[表 → 列类型 → 约束 → 字符集 → 分区策略 → 决策理由]
-
-## 索引策略
-[查询模式 → 索引建议 → EXPLAIN 对比 → 空间/写入成本估计]
-
-## SQL 审查
-[问题 SQL → 根因 → 重写建议 → 预期改善]
-
-## 迁移方案
-[DDL 草稿 / 步骤顺序 / 锁表风险评估 / 回滚方案]
-
-## 高可用规划
-[复制拓扑 / 故障切换流程 / 备份策略 / 监控指标]
-
-## 风险清单
-[风险 → 影响 → 缓解 → 验证方式]
-\`\`\`
-
-### 审查模式
-
-\`\`\`markdown
-# 数据库审查报告：<scope>
-
-## 摘要
-[用中文填写，保留必要的英文技术标识符]
-
-## 发现
-[按安全性 > 正确性 > 性能 > 可维护性排序，每条标注证据级别]
-
-## 安全与正确性风险
-[用中文填写，保留必要的英文技术标识符]
-
-## 性能分析
-[用中文填写，保留必要的英文技术标识符]
-
-## 优先行动
-[用中文填写，保留必要的英文技术标识符]
-\`\`\``,
+    kind: "file-set",
+    introduction: "写入文件结构（默认 `docs/db/<project-or-feature>/`）：",
+    files: [
+      "schema-design.md",
+      "index-strategy.md",
+      "migration-plan.md",
+      "ha-topology.md",
+      "risk-register.md",
+    ],
+    templates: [
+      defineAgentOutputTemplate({
+        intro: "每份文档使用以下结构：",
+        title: "数据库设计文档：<scope>",
+        sections: [
+          defineAgentOutputSection({
+            title: "现状基线",
+            body: "[引擎与版本 / 表数量与规模 / 慢查询热点 / 既有问题]",
+          }),
+          defineAgentOutputSection({
+            title: "Schema 设计",
+            body: "[表 → 列类型 → 约束 → 字符集 → 分区策略 → 决策理由]",
+          }),
+          defineAgentOutputSection({
+            title: "索引策略",
+            body: "[查询模式 → 索引建议 → EXPLAIN 对比 → 空间/写入成本估计]",
+          }),
+          defineAgentOutputSection({
+            title: "SQL 审查",
+            body: "[问题 SQL → 根因 → 重写建议 → 预期改善]",
+          }),
+          defineAgentOutputSection({
+            title: "迁移方案",
+            body: "[DDL 草稿 / 步骤顺序 / 锁表风险评估 / 回滚方案]",
+          }),
+          defineAgentOutputSection({
+            title: "高可用规划",
+            body: "[复制拓扑 / 故障切换流程 / 备份策略 / 监控指标]",
+          }),
+          defineAgentOutputSection({
+            title: "风险清单",
+            body: "[风险 → 影响 → 缓解 → 验证方式]",
+          }),
+        ],
+      }),
+      defineAgentOutputTemplate({
+        heading: "审查模式",
+        title: "数据库审查报告：<scope>",
+        sections: [
+          defineAgentOutputSection({
+            title: "摘要",
+            body: "[用中文填写，保留必要的英文技术标识符]",
+          }),
+          defineAgentOutputSection({
+            title: "发现",
+            body: "[按安全性 > 正确性 > 性能 > 可维护性排序，每条标注证据级别]",
+          }),
+          defineAgentOutputSection({
+            title: "安全与正确性风险",
+            body: "[用中文填写，保留必要的英文技术标识符]",
+          }),
+          defineAgentOutputSection({
+            title: "性能分析",
+            body: "[用中文填写，保留必要的英文技术标识符]",
+          }),
+          defineAgentOutputSection({
+            title: "优先行动",
+            body: "[用中文填写，保留必要的英文技术标识符]",
+          }),
+        ],
+      }),
+    ],
   }),
   bashBoundary: [
     "Bash 用于读取本地仓库的 schema 文件、配置文件、迁移脚本、慢查询日志和监控数据；运行用户授权的 `EXPLAIN` / `mysqldump --no-data` / `pg_dump --schema-only` 等只读命令。禁止执行 DDL/DML、修改生产配置、操作凭据文件或连接未经授权的数据库实例。",

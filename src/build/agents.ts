@@ -5,6 +5,7 @@ import type {
   AgentModeDefinition,
   AgentOutputFormatDefinition,
   AgentOutputSectionDefinition,
+  AgentOutputTemplateDefinition,
   AgentWorkflowDefinition,
   AgentWorkflowDirection,
   AgentWorkflowGateDefinition,
@@ -166,6 +167,63 @@ function validateAgentOutputSection(
   }
 }
 
+function validateStringArray(
+  agentId: string,
+  value: readonly string[] | undefined,
+  property: string,
+  options: { required?: boolean } = {},
+): readonly string[] {
+  if (value === undefined) {
+    if (options.required) throw new Error(`Agent ${agentId} ${property} must be a non-empty string array`);
+    return [];
+  }
+  if (!Array.isArray(value) || value.length === 0) {
+    throw new Error(`Agent ${agentId} ${property} must be a non-empty string array`);
+  }
+  for (const [index, item] of value.entries()) {
+    if (typeof item !== "string" || item.trim() === "") {
+      throw new Error(`Agent ${agentId} ${property}[${index}] must be a non-empty string`);
+    }
+  }
+  return value;
+}
+
+function validateJsonValue(value: unknown): boolean {
+  if (value === null) return true;
+  if (typeof value === "string" || typeof value === "boolean") return true;
+  if (typeof value === "number") return Number.isFinite(value);
+  if (Array.isArray(value)) return value.every(validateJsonValue);
+  if (typeof value === "object") {
+    return Object.values(value as Record<string, unknown>).every(validateJsonValue);
+  }
+  return false;
+}
+
+function validateAgentOutputTemplate(
+  agent: AgentDefinition,
+  template: AgentOutputTemplateDefinition,
+  index: number,
+): void {
+  if (!template || typeof template !== "object" || Array.isArray(template)) {
+    throw new Error(`Agent ${agent.id} outputFormat.templates[${index}] must be an object`);
+  }
+  if (template.heading !== undefined && (typeof template.heading !== "string" || template.heading.trim() === "")) {
+    throw new Error(`Agent ${agent.id} outputFormat.templates[${index}].heading must be non-empty when defined`);
+  }
+  if (template.intro !== undefined && (typeof template.intro !== "string" || template.intro.trim() === "")) {
+    throw new Error(`Agent ${agent.id} outputFormat.templates[${index}].intro must be non-empty when defined`);
+  }
+  if (typeof template.title !== "string" || template.title.trim() === "") {
+    throw new Error(`Agent ${agent.id} outputFormat.templates[${index}].title must be a non-empty string`);
+  }
+  if (!Array.isArray(template.sections) || template.sections.length === 0) {
+    throw new Error(`Agent ${agent.id} outputFormat.templates[${index}].sections must be a non-empty array`);
+  }
+  for (const [sectionIndex, section] of template.sections.entries()) {
+    validateAgentOutputSection(agent, section, sectionIndex);
+  }
+}
+
 export function validateAgentOutputFormat(
   agent: AgentDefinition,
 ): AgentOutputFormatDefinition | null {
@@ -186,13 +244,42 @@ export function validateAgentOutputFormat(
     }
     return format;
   }
+  if (format.kind === "json") {
+    if (
+      format.introduction !== undefined &&
+      (typeof format.introduction !== "string" || format.introduction.trim() === "")
+    ) {
+      throw new Error(`Agent ${agent.id} outputFormat.introduction must be non-empty when defined`);
+    }
+    if (!validateJsonValue(format.example)) {
+      throw new Error(`Agent ${agent.id} outputFormat.example must be JSON-serializable`);
+    }
+    validateStringArray(agent.id, format.notes, "outputFormat.notes");
+    return format;
+  }
+  if (format.kind === "file-set") {
+    if (typeof format.introduction !== "string" || format.introduction.trim() === "") {
+      throw new Error(`Agent ${agent.id} outputFormat.introduction must be a non-empty string`);
+    }
+    validateStringArray(agent.id, format.files, "outputFormat.files", { required: true });
+    if (format.templates !== undefined) {
+      if (!Array.isArray(format.templates) || format.templates.length === 0) {
+        throw new Error(`Agent ${agent.id} outputFormat.templates must be a non-empty array when defined`);
+      }
+      for (const [index, template] of format.templates.entries()) {
+        validateAgentOutputTemplate(agent, template, index);
+      }
+    }
+    validateStringArray(agent.id, format.notes, "outputFormat.notes");
+    return format;
+  }
   if (format.kind === "raw") {
     if (typeof format.body !== "string" || format.body.trim() === "") {
       throw new Error(`Agent ${agent.id} outputFormat.body must be a non-empty string`);
     }
     return format;
   }
-  throw new Error(`Agent ${agent.id} outputFormat.kind must be "markdown" or "raw"`);
+  throw new Error(`Agent ${agent.id} outputFormat.kind must be "markdown", "json", "file-set", or "raw"`);
 }
 
 export function validateAgentWorkflow(agent: AgentDefinition): AgentWorkflowDefinition | null {
@@ -410,6 +497,45 @@ function renderAgentOutputFormat(agent: AgentDefinition): string {
   if (!format) return "";
   if (format.kind === "raw") {
     return `## 输出格式\n\n${format.body.trim()}\n`;
+  }
+  if (format.kind === "json") {
+    const introduction = format.introduction?.trim() ?? "写一个 JSON 文件，结构如下：";
+    const lines = [
+      introduction,
+      "",
+      "```json",
+      JSON.stringify(format.example, null, 2),
+      "```",
+    ];
+    if (format.notes && format.notes.length > 0) {
+      lines.push("", ...format.notes.map((note) => note.trim()));
+    }
+    return `## 输出格式\n\n${lines.join("\n")}\n`;
+  }
+  if (format.kind === "file-set") {
+    const lines = [
+      format.introduction.trim(),
+      "",
+      "```",
+      ...format.files.map((file) => file.trimEnd()),
+      "```",
+    ];
+    for (const template of format.templates ?? []) {
+      lines.push("");
+      if (template.heading) lines.push(`### ${template.heading.trim()}`, "");
+      if (template.intro) lines.push(template.intro.trim(), "");
+      lines.push("```markdown", `# ${template.title.trim()}`, "");
+      for (const [index, section] of template.sections.entries()) {
+        if (index > 0) lines.push("");
+        lines.push(`## ${section.title.trim()}`);
+        lines.push(section.body.trim());
+      }
+      lines.push("```");
+    }
+    if (format.notes && format.notes.length > 0) {
+      lines.push("", ...format.notes.map((note) => note.trim()));
+    }
+    return `## 输出格式\n\n${lines.join("\n")}\n`;
   }
   const lines = [
     "```markdown",

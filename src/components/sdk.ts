@@ -251,11 +251,39 @@ export type AgentOutputSectionDefinition = {
   body: string;
 };
 
+export type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | readonly JsonValue[]
+  | { readonly [key: string]: JsonValue };
+
+export type AgentOutputTemplateDefinition = {
+  heading?: string;
+  intro?: string;
+  title: string;
+  sections: readonly AgentOutputSectionDefinition[];
+};
+
 export type AgentOutputFormatDefinition =
   | {
       kind: "markdown";
       title: string;
       sections: readonly AgentOutputSectionDefinition[];
+    }
+  | {
+      kind: "json";
+      introduction?: string;
+      example: JsonValue;
+      notes?: readonly string[];
+    }
+  | {
+      kind: "file-set";
+      introduction: string;
+      files: readonly string[];
+      templates?: readonly AgentOutputTemplateDefinition[];
+      notes?: readonly string[];
     }
   | {
       kind: "raw";
@@ -449,6 +477,12 @@ export function defineAgentOutputFormat(
 export function defineAgentOutputSection(
   definition: AgentOutputSectionDefinition,
 ): AgentOutputSectionDefinition {
+  return definition;
+}
+
+export function defineAgentOutputTemplate(
+  definition: AgentOutputTemplateDefinition,
+): AgentOutputTemplateDefinition {
   return definition;
 }
 

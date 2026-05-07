@@ -59,8 +59,10 @@ export const uxReviewerAgent = defineAgent({
       }),
       defineAgentOutputSection({
         title: "关键发现",
-        body: `| 严重度 | 发现 | 启发式条目 | 位置 | 建议 |
-|--------|------|-----------|------|------|`,
+        body: [
+          "| 严重度 | 发现 | 启发式条目 | 位置 | 建议 |",
+          "|--------|------|-----------|------|------|",
+        ].join("\n"),
       }),
       defineAgentOutputSection({
         title: "交互流程",

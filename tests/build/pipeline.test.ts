@@ -23,6 +23,7 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
+  defineAgentOutputTemplate,
   defineAgentWorkflow,
   defineAgentWorkflowGate,
   defineAgentWorkflowRoute,
@@ -479,6 +480,59 @@ describe("build/pipeline modules", () => {
     await emitAgent(fixture.agent, out, Platform.Codex);
     expect(readFileSync(join(out, "agents", "fixture-agent.md"), "utf-8")).toContain("## Bash 使用边界");
     expect(readFileSync(join(out, "agents", "fixture-agent.toml"), "utf-8")).toContain("developer_instructions");
+  });
+
+  test("agent output formats render structured json and file sets", async () => {
+    const fixture = createFixture();
+    const out = createTempDir("ai-experts-agent-output-");
+    const jsonAgent = defineAgent({
+      ...fixture.agent,
+      id: "json-agent",
+      outputFormat: defineAgentOutputFormat({
+        kind: "json",
+        example: {
+          ok: true,
+          count: 2,
+          items: ["alpha", "beta"],
+        },
+        notes: ["省略不可验证的字段。"],
+      }),
+    });
+    const fileSetAgent = defineAgent({
+      ...fixture.agent,
+      id: "file-set-agent",
+      outputFormat: defineAgentOutputFormat({
+        kind: "file-set",
+        introduction: "写入文件结构：",
+        files: ["report.md", "evidence/", "  trace.md"],
+        templates: [
+          defineAgentOutputTemplate({
+            intro: "报告使用以下结构：",
+            title: "报告：<scope>",
+            sections: [
+              defineAgentOutputSection({
+                title: "摘要",
+                body: "[关键结论]",
+              }),
+            ],
+          }),
+        ],
+        notes: ["文件名按实际 scope 调整。"],
+      }),
+    });
+
+    expect(validateAgentOutputFormat(jsonAgent)?.kind).toBe("json");
+    expect(validateAgentOutputFormat(fileSetAgent)?.kind).toBe("file-set");
+    await emitAgent(jsonAgent, out, Platform.Claude);
+    await emitAgent(fileSetAgent, out, Platform.Claude);
+    const jsonAgentBody = readFileSync(join(out, "agents", "json-agent.md"), "utf-8");
+    const fileSetAgentBody = readFileSync(join(out, "agents", "file-set-agent.md"), "utf-8");
+
+    expect(jsonAgentBody).toContain("```json\n{\n  \"ok\": true,");
+    expect(jsonAgentBody).toContain("省略不可验证的字段。");
+    expect(fileSetAgentBody).toContain("```\nreport.md\nevidence/\n  trace.md\n```");
+    expect(fileSetAgentBody).toContain("# 报告：<scope>");
+    expect(fileSetAgentBody).toContain("## 摘要");
   });
 
   test("hook compiler and renderer produce runtime config", async () => {

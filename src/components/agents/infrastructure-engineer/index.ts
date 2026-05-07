@@ -54,23 +54,21 @@ export const infrastructureEngineerAgent = defineAgent({
     ],
   }),
   outputFormat: defineAgentOutputFormat({
-    kind: "raw",
-    body: `写入文件结构（按任务范围自适应）：
-
-\`\`\`
-Dockerfile
-docker-compose.yml
-chart/
-  Chart.yaml
-  values.yaml
-  templates/
-scripts/
-  deploy.sh
-  health-check.sh
-~/.host/<host>.json
-\`\`\`
-
-每份可执行文件需附带注释说明调用方式与前置条件。`,
+    kind: "file-set",
+    introduction: "写入文件结构（按任务范围自适应）：",
+    files: [
+      "Dockerfile",
+      "docker-compose.yml",
+      "chart/",
+      "  Chart.yaml",
+      "  values.yaml",
+      "  templates/",
+      "scripts/",
+      "  deploy.sh",
+      "  health-check.sh",
+      "~/.host/<host>.json",
+    ],
+    notes: ["每份可执行文件需附带注释说明调用方式与前置条件。"],
   }),
   bashBoundary: [
     "Bash 用于读取本仓库的 Dockerfile、Compose、Chart、脚本和 SSH 配置；运行 `docker --help`、`helm lint`、`helm template`、shellcheck 等只读或本地验证命令。禁止连接远端 Docker daemon、kubectl apply、helm install/upgrade、SSH 连接远端主机。",

@@ -2,6 +2,8 @@ import {
   AgentSandbox,
   defineAgent,
   defineAgentOutputFormat,
+  defineAgentOutputSection,
+  defineAgentOutputTemplate,
   defineAgentWorkflow,
   defineAgentWorkflowStep,
   KnownTool,
@@ -42,43 +44,51 @@ export const threatModelerAgent = defineAgent({
     ],
   }),
   outputFormat: defineAgentOutputFormat({
-    kind: "raw",
-    body: `写入文件结构（默认 \`docs/security/<feature-or-system>/\`）：
-
-\`\`\`
-threat-model.md
-attack-trees/
-  <goal>.md
-security-requirements.md
-mitigation-map.md
-\`\`\`
-
-每份文档使用以下结构：
-
-\`\`\`markdown
-# 威胁模型：<scope>
-
-## 资产与分级
-[资产 → 价值 → 暴露面]
-
-## 信任边界与数据流
-[图表 + 关键边界说明]
-
-## STRIDE 分析
-[威胁 → 类型 → 触发条件 → 影响 → 既有控制 → 残余风险]
-
-## 攻击树摘要
-[高风险目标的攻击路径，引用 attack-trees/<goal>.md]
-
-## 缓解映射
-[威胁 → 控制 → 状态（已实现/计划/接受） → 负责人]
-
-## 安全需求
-[需求 → 来源威胁 → 验证方式 → 责任团队]
-
-## 假设与未决项
-[尚未决定的风险接受、依赖外部团队的项]
-\`\`\``,
+    kind: "file-set",
+    introduction: "写入文件结构（默认 `docs/security/<feature-or-system>/`）：",
+    files: [
+      "threat-model.md",
+      "attack-trees/",
+      "  <goal>.md",
+      "security-requirements.md",
+      "mitigation-map.md",
+    ],
+    templates: [
+      defineAgentOutputTemplate({
+        intro: "每份文档使用以下结构：",
+        title: "威胁模型：<scope>",
+        sections: [
+          defineAgentOutputSection({
+            title: "资产与分级",
+            body: "[资产 → 价值 → 暴露面]",
+          }),
+          defineAgentOutputSection({
+            title: "信任边界与数据流",
+            body: "[图表 + 关键边界说明]",
+          }),
+          defineAgentOutputSection({
+            title: "STRIDE 分析",
+            body: "[威胁 → 类型 → 触发条件 → 影响 → 既有控制 → 残余风险]",
+          }),
+          defineAgentOutputSection({
+            title: "攻击树摘要",
+            body: "[高风险目标的攻击路径，引用 attack-trees/<goal>.md]",
+          }),
+          defineAgentOutputSection({
+            title: "缓解映射",
+            body: "[威胁 → 控制 → 状态（已实现/计划/接受） → 负责人]",
+          }),
+          defineAgentOutputSection({
+            title: "安全需求",
+            body: "[需求 → 来源威胁 → 验证方式 → 责任团队]",
+          }),
+          defineAgentOutputSection({
+            title: "假设与未决项",
+            body: "[尚未决定的风险接受、依赖外部团队的项]",
+          }),
+        ],
+      }),
+    ],
   }),
   bashBoundary: [
     "Bash 用于读取仓库结构、git 历史、依赖清单、配置、调用图脚本与已有威胁模型文档；运行用户授权的本仓库脚本生成图表（PlantUML / Mermaid）。禁止安装外部依赖、修改业务代码、调用生产接口或访问真实凭据。",
