@@ -316,6 +316,64 @@ describe("build/pipeline modules", () => {
     };
     expect(() => validateRegistry(claudeModelOnlyInvocationRegistry)).not.toThrow();
 
+    const codexAgentWithClaudeOnlySkillRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{ ...fixture.skill, platforms: [ComponentPlatform.Claude] }],
+      agents: [{
+        ...fixture.agent,
+        workflow: undefined,
+        skills: [{ id: fixture.skill.id, mode: SkillUseMode.Route, reason: "fixture routing" }],
+      }],
+    };
+    expect(() => validateRegistry(codexAgentWithClaudeOnlySkillRegistry)).toThrow(
+      "references skill fixture-skill unavailable on platform(s): codex-cli",
+    );
+
+    const codexAgentWorkflowWithClaudeOnlySkillRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{ ...fixture.skill, platforms: [ComponentPlatform.Claude] }],
+      agents: [{
+        ...fixture.agent,
+        workflow: defineAgentWorkflow({
+          gates: [
+            defineAgentWorkflowGate({
+              id: "gate-check",
+              skill: fixture.skill.id,
+              label: "门禁",
+              checks: "检查证据",
+            }),
+          ],
+        }),
+        skills: [],
+      }],
+    };
+    expect(() => validateRegistry(codexAgentWorkflowWithClaudeOnlySkillRegistry)).toThrow(
+      "workflow gate references skill fixture-skill unavailable on platform(s): codex-cli",
+    );
+
+    const codexAgentRouteWithClaudeOnlySkillRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{ ...fixture.skill, platforms: [ComponentPlatform.Claude] }],
+      agents: [{
+        ...fixture.agent,
+        workflow: defineAgentWorkflow({
+          routes: [
+            defineAgentWorkflowRoute({
+              id: "route-a",
+              triggers: ["需要技能"],
+              skill: fixture.skill.id,
+              checks: "路由检查",
+              output: "产出结果",
+            }),
+          ],
+        }),
+        skills: [],
+      }],
+    };
+    expect(() => validateRegistry(codexAgentRouteWithClaudeOnlySkillRegistry)).toThrow(
+      "workflow route references skill fixture-skill unavailable on platform(s): codex-cli",
+    );
+
     const missingOwnerRegistry: ComponentRegistry = {
       ...fixture.registry,
       procedures: [{ ...fixture.procedure, owners: { skillIds: ["missing-skill"] } }],

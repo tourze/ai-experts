@@ -120,6 +120,22 @@ function validateSkillBodyCrossSkillLinks(skill: SkillDefinition, bodySource: st
   }
 }
 
+function validateAgentSkillPlatform(
+  agent: AgentDefinition,
+  skillId: string,
+  skillsById: ReadonlyMap<string, SkillDefinition>,
+  context: string,
+): void {
+  const skill = skillsById.get(skillId);
+  if (!skill) return;
+  const missingPlatforms = agent.platforms.filter((platform) => !skill.platforms.includes(platform));
+  if (missingPlatforms.length > 0) {
+    throw new Error(
+      `Agent ${agent.id} ${context} ${skillId} unavailable on platform(s): ${missingPlatforms.join(", ")}`,
+    );
+  }
+}
+
 export function validateRegistry(registry: ComponentRegistry): ComponentSurface {
   if (!registry || !Array.isArray(registry.skills)) throw new Error("registry.skills must be an array");
   if (!Array.isArray(registry.instructions)) throw new Error("registry.instructions must be an array");
@@ -130,6 +146,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
   if (!Array.isArray(registry.hooks)) throw new Error("registry.hooks must be an array");
   const surface = materializeRegistry(registry);
   const skillIds = new Set(registry.skills.map((skill) => skill.id));
+  const skillsById = new Map(registry.skills.map((skill) => [skill.id, skill]));
   const agentIds = new Set(registry.agents.map((agent) => agent.id));
   const proceduresById = new Map<string, ProcedureDefinition>();
   const procedures = registry.procedures;
@@ -336,9 +353,11 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     const workflow = validateAgentWorkflow(agent);
     for (const gate of workflow?.gates ?? []) {
       if (!skillIds.has(gate.skill)) throw new Error(`Agent ${agent.id} workflow gate references missing skill: ${gate.skill}`);
+      validateAgentSkillPlatform(agent, gate.skill, skillsById, "workflow gate references skill");
     }
     for (const route of workflow?.routes ?? []) {
       if (!skillIds.has(route.skill)) throw new Error(`Agent ${agent.id} workflow route references missing skill: ${route.skill}`);
+      validateAgentSkillPlatform(agent, route.skill, skillsById, "workflow route references skill");
     }
     validateAgentQualityStandards(agent);
     const hasBashTool = hasStringTool(agent, "Bash");
@@ -351,6 +370,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     }
     for (const skill of agent.skills ?? []) {
       if (!skillIds.has(skill.id)) throw new Error(`Agent ${agent.id} references missing skill: ${skill.id}`);
+      validateAgentSkillPlatform(agent, skill.id, skillsById, "references skill");
       if (typeof skill.reason !== "string" || skill.reason.trim().length === 0) {
         throw new Error(`Agent ${agent.id} skill ${skill.id} must include a non-empty reason`);
       }
