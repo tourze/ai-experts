@@ -6,8 +6,13 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, architectureReviewerScanCodebase } from "../../procedures/index";
+import { apiTraceReaderSkill } from "../api-trace-reader/index";
+import { refactoringPatternsSkill } from "../refactoring-patterns/index";
 
 export const architectureReviewerSkill = defineSkill({
   id: "architecture-reviewer",
@@ -16,7 +21,7 @@ export const architectureReviewerSkill = defineSkill({
   useCases: [
     "适合技术尽调、上线前审计、扩容评估、企业合规审查和架构争议仲裁。",
     "支持代码库评审、文档评审和混合评审三种模式；深挖时启用 Exhaustive 模式做子系统级穷举审计。",
-    "交叉引用：需要画图时改用 `architecture-diagram`；模块接缝问题用 `seam-ripper`；调用链追踪用 `api-trace-reader`。",
+    "需要输出七维架构评分、关键风险、修复优先级和可追溯证据。",
   ],
   constraints: [
     "必须先判断输入模式与深度（Quick / Exhaustive），再决定是否运行扫描脚本和加载参考文件。",
@@ -31,6 +36,20 @@ export const architectureReviewerSkill = defineSkill({
     "是否区分“当前实现问题”与“文档缺口/待确认项”。",
     "是否给出可执行的整改建议，而不是空泛建议。",
   ],
+  relatedSkills: [
+    {
+      get id() {
+        return apiTraceReaderSkill.id;
+      },
+      reason: "需要把请求链路、调用路径或跨服务 API 行为作为架构证据时联动。",
+    },
+    {
+      get id() {
+        return refactoringPatternsSkill.id;
+      },
+      reason: "模块接缝、遗留代码隔离测试或 seam-ripper 类重构策略需要落到代码级改造时联动。",
+    },
+  ],
   antiPatterns: [
     defineAntiPattern({
       fail: "跳过输入分类",
@@ -43,7 +62,27 @@ export const architectureReviewerSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "评审架构设计、代码库结构和技术文档，输出基于证据的七维评分、关键风险、企业就绪问题和整改优先级。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先判断输入模式：代码库、文档或混合；再选择 Quick 或 Exhaustive 深度。",
+      "代码库模式先调用 architecture-reviewer-scan-codebase 获取结构指纹，再只读取当前维度需要的 reference。",
+      "按结构、扩展性、安全、性能、企业就绪、运维、数据架构七维覆盖证据，不把单点印象当总评。",
+      "Exhaustive 模式先列子系统清单：模块、文件范围、优先级、副作用；优先审状态、副作用、并发、认证和安全边界。",
+      "逐子系统审计后合并重复根因，区分现象与根因，按 Critical/High/Medium/Low 或 S1-S5 给修复顺序。",
+      "需要画图读取 architecture-diagram reference；需要蓝图读取 architecture-blueprint-generator。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "评审模式、输入边界、假设、扫描结果和证据来源。",
+      "七维评分总览、关键风险、分维度结论、S1-S5 或 Critical/High/Medium/Low 排序。",
+      "子系统清单、重复根因合并、修复优先级、待确认项和可执行整改建议。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(architectureReviewerScanCodebase),

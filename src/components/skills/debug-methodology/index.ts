@@ -1,11 +1,16 @@
 import {
   defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
   InvocationPolicy,
   KnownTool,
   Platform,
 } from "../../sdk";
 import { procedureUse, debugMethodologyDebugChecklist } from "../../procedures/index";
+import { refactoringChecklistSkill } from "../refactoring-checklist/index";
+import { testDrivenDevelopmentSkill } from "../test-driven-development/index";
 
 export const debugMethodologySkill = defineSkill({
   id: "debug-methodology",
@@ -14,7 +19,7 @@ export const debugMethodologySkill = defineSkill({
   useCases: [
     "用户遇到 bug、异常行为、崩溃或性能问题。",
     "用户已经试过一些修复但问题仍在，需要系统化排查。",
-    "交叉引用：修复后补测试配合 `test-driven-development`；修复涉及重构配合 `refactoring-checklist`。",
+    "需要把复现、隔离、假设、验证、修复和回归测试串成证据链。",
   ],
   constraints: [
     "**违反字面规则 = 违反规则精神。不存在\"灵活变通\"。**",
@@ -32,9 +37,42 @@ export const debugMethodologySkill = defineSkill({
     "修复针对根因，不是症状。",
     "已补回归测试。",
   ],
+  relatedSkills: [
+    {
+      get id() {
+        return testDrivenDevelopmentSkill.id;
+      },
+      reason: "根因修复后需要补回归测试、先写失败用例或用测试锁住复现条件时联动。",
+    },
+    {
+      get id() {
+        return refactoringChecklistSkill.id;
+      },
+      reason: "修复涉及重构、拆分风险或需要保持行为不变的结构调整时联动。",
+    },
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用六步调试流程把 bug、崩溃、间歇性失败和性能异常收敛到可复现、可验证、可回归测试的根因修复。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先用一句话写下用户可观察到的问题和期望/实际差异；必要时调用 debug-checklist 生成六步骨架。",
+      "按复现、隔离、假设、验证、修复、回归测试推进，不跳过复现直接猜原因。",
+      "每轮只验证一个假设，记录命令、环境、输入、输出摘要和反证结果；假设 10 分钟未证实就换。",
+      "找到看似合理来源时先做最小复刻验证，复现或反证通过后才改代码。",
+      "修复针对根因最小化落地，补回归测试并跑现有测试；LLDB/GDB 场景按对应 reference 分诊。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "复现条件、隔离范围、假设列表、验证命令、证据摘要和根因结论。",
+      "最小修复方案、回归测试、已运行测试和未覆盖风险。",
+      "需要读取的 six-steps、discipline-guard、debug-flow 或 LLDB/GDB reference。",
+    ],
+  }),
   tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob, KnownTool.Bash],
   procedures: [
     procedureUse(debugMethodologyDebugChecklist, {

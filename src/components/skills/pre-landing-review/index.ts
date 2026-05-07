@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, preLandingReviewCollectDiff, preLandingReviewRenderReport } from "../../procedures/index";
 
@@ -18,13 +21,13 @@ export const preLandingReviewSkill = defineSkill({
     "用户要判断当前分支或指定 diff 是否可以合并。",
     "关注的是“会不会出事故”，不是一般性的代码美学讨论。",
     "需要围绕数据安全、并发、信任边界、测试缺口做阻断级判断。",
-    "需要与 `testing-strategy` 配合，决定哪些风险必须补测后才能放行。",
+    "需要给出 `CLEAR TO LAND` 或 `BLOCKED` 的门禁结论。",
   ],
   constraints: [
     "**违反字面规则 = 违反规则精神。不存在”灵活变通”。**",
     "默认只读；除非用户明确要求”直接修”，否则先给审查结论。",
     "必须基于真实 diff，而不是凭目录猜风险。",
-    "必须先读取 [references/checklist.md](./references/checklist.md)。",
+    "必须先读取 `checklist` reference，并在执行前读取 `discipline-guard` reference。",
     "所有问题按两级输出：\n- 阻断项：不解决或不确认风险，不能放行\n- 建议项：不阻断，但要记录",
     "每个阻断项都要给用户明确三选一：\n- `立即修复`\n- `确认风险`\n- `误报`",
   ],
@@ -56,7 +59,26 @@ export const preLandingReviewSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "在合并或上线前基于真实 diff 做阻断级风险审查，明确区分阻断项、建议项和可落地结论。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先读取 checklist 和 discipline-guard；没有实际 diff 和验证命令，不得声称可以落地。",
+      "调用 pre-landing-review-collect-diff 锁定审查范围，得到 files、numstat 和 stat JSON。",
+      "人工判断每个变更点的 severity、阻断/建议属性、文件位置、风险证据和缺失验证。",
+      "每个阻断项都给用户三选一：立即修复、确认风险、误报；建议项不阻断但必须记录。",
+      "调用 pre-landing-review-render-report 把 findings JSON 渲染成阻断项/建议项/门禁结论的标准报告。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "审查范围、真实 diff 摘要、读取的 checklist/discipline-guard 和执行过的验证命令。",
+      "阻断项、建议项、文件位置、具体风险、证据、用户三选一处理方式。",
+      "`CLEAR TO LAND` 或 `BLOCKED` 结论，以及必须补测或需要 testing-strategy 联动的风险。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(preLandingReviewCollectDiff),

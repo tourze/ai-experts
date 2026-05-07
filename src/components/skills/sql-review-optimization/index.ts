@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { dbSchemaDesignSkill } from "../db-schema-design/index";
 
@@ -18,12 +21,11 @@ export const sqlReviewOptimizationSkill = defineSkill({
     "排查慢查询、索引缺失、回表过多、排序退化、批处理低效、分页越来越慢等性能问题。",
     "基于执行计划、行数估算、锁等待和数据分布决定优化方向。",
     "深度索引设计：索引类型选择（B-tree / GIN / GiST / BRIN）、复合索引列顺序、EXPLAIN 解读与索引维护。",
-    "如果优化依赖具体数据库引擎特性，联动 `db-schema-design`。",
   ],
   constraints: [
     "**审查（先安全，再性能）**\n- 先审安全边界，再看性能；权限、条件或事务边界错了跑再快也没意义。\n- 用户输入必须经驱动参数化；不拼接、不内联。\n- 查询要显式列出返回列、连接条件和排序条件。\n- 迁移脚本必须评估锁、回填、回滚和灰度路径。\n- 评审覆盖读写放大、权限模型、审计和异常恢复。",
     "**优化（先测量，再优化）**\n- 先拿执行计划、真实行数、延迟和资源消耗，再决定改 SQL 还是改索引。\n- 优先修访问路径，再谈\"技巧重写\"；大多数慢查询输在过滤、排序和索引布局。\n- 热路径分页优先游标或 seek，避免大偏移 OFFSET。\n- 批处理、报表和在线请求资源模型不同，OLAP 查询不塞进 OLTP 热链路。\n- 复合索引顺序匹配过滤和排序路径，不按\"字段重要性\"拍脑袋。",
-    "**深度索引策略**\n通用原则与 MySQL/PostgreSQL 特化策略见 [references/index-strategy.md](references/index-strategy.md)。详细方法论见 [references/sql-code-review.md](references/sql-code-review.md)、[references/sql-optimization.md](references/sql-optimization.md)。",
+    "**深度索引策略**\n通用原则与 MySQL/PostgreSQL 特化策略读取 `index-strategy`、`mysql-index-strategy`、`pgsql-index-strategy` references；审查和优化方法论读取 `sql-code-review` 与 `sql-optimization` references。",
   ],
   checklist: [
     "审查：所有用户输入是否通过参数化绑定，是否存在拼接或内联。",
@@ -88,7 +90,26 @@ export const sqlReviewOptimizationSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "审查 SQL 的安全性、正确性、可运维性和性能，并基于执行计划、真实基数、锁风险和数据分布制定优化方案。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "审查先看安全边界和正确性，再谈性能；权限、条件或事务边界错了，查询跑得快也不能放行。",
+      "优化先拿 EXPLAIN/EXPLAIN ANALYZE、真实行数、延迟、锁等待和资源消耗，再决定改 SQL、改索引或改执行位置。",
+      "代码模式优先读取 code-patterns；索引模式读取 index-patterns；深度索引读取 index-strategy 及数据库特化 reference。",
+      "逐项检查参数化、显式列、JOIN 条件、WHERE/ORDER BY 访问路径、复合索引顺序、分页方式、批处理和 N+1。",
+      "迁移脚本必须评估锁范围、回填、回滚、灰度和审计恢复路径；报表查询不得塞进 OLTP 热链路。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "SQL 审查发现：安全边界、参数化、权限、事务、迁移锁和正确性风险。",
+      "执行计划解读、访问路径、索引设计、分页/批处理优化和数据库引擎特化建议。",
+      "变更影响、回滚/灰度/监控方案，以及需要 db-schema-design 联动的 schema 或引擎约束。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

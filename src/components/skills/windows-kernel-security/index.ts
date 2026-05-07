@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { prlctlVmControlSkill } from "../prlctl-vm-control/index";
 import { windowsUiAutomationSkill } from "../windows-ui-automation/index";
@@ -17,7 +20,6 @@ export const windowsKernelSecuritySkill = defineSkill({
     "需要区分普通 bug、PatchGuard / DSE / HVCI 约束、以及检测面之间的边界。",
     "需要审查 `EPROCESS`、`ETHREAD`、`MMVAD`、`DRIVER_OBJECT`、`IRP` 等内核结构如何被读写。",
     "需要在实验环境里追踪 `PsSetCreateProcessNotifyRoutine*`、`ObRegisterCallbacks`、`CmRegisterCallbackEx`、`FltRegisterFilter` 等关键入口。",
-    "需要先在虚拟机里建立快照和回滚路径时，配合 `prlctl-vm-control`；如果问题其实属于桌面自动化或输入注入边界，转到 `windows-ui-automation`。",
   ],
   constraints: [
     "先做静态分析、日志与符号级证据采集，再做实验；不要在真实主机上盲改驱动或内核状态。",
@@ -38,13 +40,13 @@ export const windowsKernelSecuritySkill = defineSkill({
       get id() {
         return windowsUiAutomationSkill.id;
       },
-      reason: "需要先在虚拟机里建立快照和回滚路径时，配合 `prlctl-vm-control`；如果问题其实属于桌面自动化或输入注入边界，转到 `windows-ui-automation`。",
+      reason: "问题实际属于桌面自动化、窗口输入或用户态 UI 注入边界时联动。",
     },
     {
       get id() {
         return prlctlVmControlSkill.id;
       },
-      reason: "需要先在虚拟机里建立快照和回滚路径时，配合 `prlctl-vm-control`；如果问题其实属于桌面自动化或输入注入边界，转到 `windows-ui-automation`。",
+      reason: "实验需要虚拟机快照、回滚、重启或破坏性验证路径时联动。",
     },
   ],
   antiPatterns: [
@@ -59,6 +61,25 @@ export const windowsKernelSecuritySkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "分析 Windows 内核对象、驱动入口、IOCTL 信任边界、回调注册、PatchGuard/DSE/HVCI/VBS 约束和实验回滚路径。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先采集静态分析、日志、符号和环境证据，再决定是否实验；真实主机上不得盲改驱动或内核状态。",
+      "从 IOCTL 与设备边界反查信任面：定位 IRP_MJ_DEVICE_CONTROL、CTL_CODE、METHOD_*、DeviceIoControl 和 CreateFile/Zw* 入口。",
+      "从回调注册点回溯对象生命周期：检查 PsSetCreateProcessNotifyRoutine*、ObRegisterCallbacks、CmRegisterCallbackEx、FltRegisterFilter 等。",
+      "把问题拆成入口、权限边界、状态拥有者、副作用、检测面五层，分别标注证据与未确认项。",
+      "实验涉及 PatchGuard、DSE、HVCI、VBS、Secure Boot 或破坏性动作时，先确认 VM 快照、符号、日志和回滚方案。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "入口与信任面：IOCTL、设备对象、调用方、参数可信边界和用户态到内核态路径。",
+      "内核对象与生命周期：EPROCESS、ETHREAD、MMVAD、DRIVER_OBJECT、DEVICE_OBJECT、IRP 和回调注册点。",
+      "约束、检测面、副作用、实验环境、快照/回滚路径和仍需验证的风险。",
+    ],
+  }),
   tools: [],
 });
