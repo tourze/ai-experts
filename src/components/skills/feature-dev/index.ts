@@ -6,6 +6,8 @@ import {
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
+import { planReviewSkill } from "../plan-review/index";
+import { taskDecomposerSkill } from "../task-decomposer/index";
 
 export const featureDevSkill = defineSkill({
   id: "feature-dev",
@@ -14,7 +16,7 @@ export const featureDevSkill = defineSkill({
   useCases: [
     "适合复杂功能、陌生代码库、新模块建设和需要沉淀文档的功能开发。",
     "适合把一次实现拆成可解释的阶段，而不是直接跳进编码。",
-    "交叉引用：设计前风险审计用 `plan-review`；拆任务时配合 `task-decomposer`；跨 session 的复杂任务配合 `persistent-planning` 落盘三文件。",
+    "适合需要先发现、再设计、再实现和验证的功能交付。",
   ],
   constraints: [
     "不要跳阶段，尤其不能跳过代码库探索、澄清问题和方案对比。",
@@ -27,6 +29,20 @@ export const featureDevSkill = defineSkill({
     "是否识别了相关文件、既有模式和相似实现。",
     "是否补齐了关键澄清问题和方案对比。",
     "是否在收尾阶段记录已知限制和后续改进项。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return planReviewSkill.id;
+      },
+      reason: "进入实现前需要审查方案风险、依赖、回滚和验证路径时联动。",
+    },
+    {
+      get id() {
+        return taskDecomposerSkill.id;
+      },
+      reason: "需要拆成任务板、Execution Contract，或使用 persistent-planning reference 做跨 session 落盘时联动。",
+    },
   ],
   antiPatterns: [
     defineAntiPattern({
