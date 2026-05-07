@@ -780,6 +780,11 @@ describe("component source conventions", () => {
       );
       assert.doesNotMatch(
         source,
+        /\]\((?:\.\/)?evals\//,
+        `${skillSourceFile} should not link runtime skill content to source-side evals`,
+      );
+      assert.doesNotMatch(
+        source,
         /\]\(\.\.\/[^)]+\/SKILL\.md\)|\]\([a-z0-9-]+-expert:[a-z0-9-]+\)/,
         `${skillSourceFile} should not contain explicit cross-skill links; set relatedSkills instead`,
       );

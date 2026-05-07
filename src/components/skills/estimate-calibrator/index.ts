@@ -15,7 +15,7 @@ export const estimateCalibratorSkill = defineSkill({
   useCases: [
     "研发排期、路线图沟通、项目承诺、Story points 或任务规模评估。",
     "需要参考 [references/estimation-methods.md](references/estimation-methods.md)、[references/sizing-heuristics.md](references/sizing-heuristics.md)、[references/unknown-categories.md](references/unknown-categories.md)。",
-    "需要验证案例格式时，可查看 [evals/cases.yaml](evals/cases.yaml)。",
+    "需要把估算结论转换为排期沟通材料、缓冲建议或风险说明。",
   ],
   constraints: [
     "先拆工作，再估时间；没有边界定义的任务不要直接给单点数值。",
