@@ -42,7 +42,9 @@ describe("component source conventions", () => {
     );
     assert.doesNotMatch(readme, /^\s+rules\/$/m);
     assert.match(readme, /procedureUse\(procedureDefinition\)/);
+    assert.match(readme, /构建器会生成 `## 检查清单`，并放在生成的 `## 反模式` 之后/);
     assert.doesNotMatch(readme, /338 个 skill|scripts\/manifest\.json|defineSkillScript\(\)|skill script registry/);
+    assert.doesNotMatch(readme, /优先插入到 `## 反模式`/);
   });
 
   test("component API exposes procedures without legacy script aliases", () => {
