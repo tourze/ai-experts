@@ -282,14 +282,14 @@ export function renderHookConfig(
         event: hook.event,
         matcher,
         command,
-        timeout: 10,
+        timeout: 0,
         hookCount: 0,
         statusMessages: new Set<string>(),
       };
       groupsByKey.set(key, group);
       groups.push(group);
     }
-    group.timeout = Math.max(group.timeout, hook.timeoutSeconds ?? 10);
+    group.timeout += hook.timeoutSeconds ?? 10;
     group.hookCount += 1;
     if (hook.statusMessage) group.statusMessages.add(hook.statusMessage);
   }

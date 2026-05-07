@@ -40,6 +40,34 @@ afterAll(() => {
   }
 });
 
+function collectHookGroupTimeouts(config: any): Record<string, number> {
+  const timeouts: Record<string, number> = {};
+  for (const [event, groups] of Object.entries(config.hooks as Record<string, any[]>)) {
+    for (const group of groups) {
+      const key = `${event}\0${group.matcher ?? ""}`;
+      timeouts[key] = group.hooks[0].timeout;
+    }
+  }
+  return timeouts;
+}
+
+function collectExpectedHookGroupTimeouts(manifest: any): Record<string, number> {
+  const timeouts: Record<string, number> = {};
+  for (const hook of manifest.hooks as any[]) {
+    const key = `${hook.event}\0${hook.matcher ?? ""}`;
+    timeouts[key] = (timeouts[key] ?? 0) + (hook.timeoutSeconds ?? 10);
+  }
+  return timeouts;
+}
+
+function assertHookGroupTimeoutsMatchManifest(config: any, manifest: any, label: string): void {
+  assert.deepEqual(
+    collectHookGroupTimeouts(config),
+    collectExpectedHookGroupTimeouts(manifest),
+    `${label} grouped dispatcher timeouts should equal the sum of sequential hook budgets`,
+  );
+}
+
 describe("component build integration", () => {
   test("emits claude/codex manifests and core component counts", () => {
     const claudeManifest = JSON.parse(readFileSync(join(tmpDistDir, "claude/manifest.json"), "utf-8"));
@@ -671,7 +699,10 @@ describe("component build integration", () => {
     const codexConfig = readFileSync(join(tmpDistDir, "codex/config.toml"), "utf-8");
     assert.match(codexConfig, /codex_hooks = true/);
 
+    const claudeHookManifest = JSON.parse(readFileSync(join(tmpDistDir, "claude/hooks/manifest.json"), "utf-8"));
     const hookManifest = JSON.parse(readFileSync(join(tmpDistDir, "codex/hooks/manifest.json"), "utf-8"));
+    assertHookGroupTimeoutsMatchManifest(claudeSettings, claudeHookManifest, "claude settings");
+    assertHookGroupTimeoutsMatchManifest(codexHooksConfig, hookManifest, "codex hooks");
     assert.equal(hookManifest.hooks.some((hook: any) => hook.id === "component-routing-reminder"), true);
     assert.equal(hookManifest.hooks.some((hook: any) => hook.id === "dangerous-command-guard"), true);
     assert.equal(

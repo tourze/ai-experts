@@ -547,6 +547,23 @@ describe("build/pipeline modules", () => {
     expect(hookCommand).toContain("$HOME/.codex/hooks/dispatch.mjs");
     expect(hookCommand).not.toContain("--platform");
     expect(hookCommand).not.toContain(":-");
+
+    const secondHook = defineHook({
+      id: "fixture-second-hook",
+      description: "second fixture hook",
+      platforms: [ComponentPlatform.Claude, ComponentPlatform.Codex],
+      event: HookEvent.UserPromptSubmit,
+      entry: fixture.hook.entry,
+      matcher: [KnownTool.Read],
+      order: 20,
+      timeoutSeconds: 7,
+      statusMessage: "running second fixture hook",
+    });
+    const groupedConfig = renderHookConfig([fixture.hook, secondHook], Platform.Codex);
+    expect(groupedConfig.hooks.UserPromptSubmit).toHaveLength(1);
+    expect(groupedConfig.hooks.UserPromptSubmit[0]?.hooks[0]?.timeout).toBe(19);
+    expect(groupedConfig.hooks.UserPromptSubmit[0]?.hooks[0]?.statusMessage).toBeUndefined();
+
     expect(renderCodexConfig()).toContain("codex_hooks = true");
   });
 
