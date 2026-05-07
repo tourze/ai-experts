@@ -16,7 +16,7 @@
     "typecheck:procedures": "tsc -p tsconfig.procedures.json",
     "typecheck:tests": "tsc -p tsconfig.tests.json",
     "build:components": "tsx src/build.ts",
-    "check:components": "npm run typecheck:components && npm run typecheck:build && npm run typecheck:procedures && npm run typecheck:tests && tsx src/build.ts --check"
+    "check:components": "npm run typecheck:components && npm run typecheck:hooks && npm run typecheck:build && npm run typecheck:procedures && npm run typecheck:tests && tsx src/build.ts --check"
   },
   "repository": {
     "type": "git",

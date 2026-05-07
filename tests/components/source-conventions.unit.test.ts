@@ -81,6 +81,25 @@ describe("component source conventions", () => {
     assert.doesNotMatch(readme, /优先插入到 `## 反模式`/);
   });
 
+  test("component check script runs every typecheck gate", () => {
+    const packageJson = JSON.parse(readFileSync(join(repoRoot, "package.json"), "utf-8"));
+    const scripts = packageJson.scripts as Record<string, string>;
+    const checkComponents = scripts["check:components"] ?? "";
+    const typecheckScripts = Object.keys(scripts)
+      .filter((scriptName) => scriptName.startsWith("typecheck:"))
+      .sort();
+    const missingTypecheckScripts = typecheckScripts.filter(
+      (scriptName) => !checkComponents.includes(`npm run ${scriptName}`),
+    );
+
+    assert.deepEqual(
+      missingTypecheckScripts,
+      [],
+      "`check:components` should run every dedicated typecheck script",
+    );
+    assert.match(checkComponents, /tsx src\/build\.ts --check/);
+  });
+
   test("component API exposes procedures through the single component layout", () => {
     const sdkSource = readFileSync(join(repoRoot, "src/components/sdk.ts"), "utf-8");
     const proceduresIndexSource = readFileSync(join(repoRoot, "src/components/procedures/index.ts"), "utf-8");
