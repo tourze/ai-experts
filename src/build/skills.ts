@@ -644,7 +644,7 @@ export async function emitSkill(
   const skillRoot = join(platformRoot, "skills", skill.id);
   ensureDir(skillRoot);
   writeText(join(skillRoot, "SKILL.md"), renderSkillMd(skill, platform, proceduresById));
-  copyLooseSkillFiles(skill, skillRoot);
+  copySupplementalSkillRootFiles(skill, skillRoot);
 
   if (skill.references && skill.references.length > 0) {
     for (const reference of skill.references) {
@@ -667,7 +667,7 @@ export async function emitSkill(
   rewriteGeneratedSkillMarkdown(skill, skillRoot, platform, proceduresById, platformSkillIds);
 }
 
-function copyLooseSkillFiles(skill: SkillDefinition, skillRoot: string): void {
+function copySupplementalSkillRootFiles(skill: SkillDefinition, skillRoot: string): void {
   const sourceDir = skillSourceRoot(skill);
   const reserved = new Set([
     "index.ts",
