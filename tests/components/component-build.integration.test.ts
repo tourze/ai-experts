@@ -53,6 +53,8 @@ describe("component build integration", () => {
     assert.equal(codexManifest.agents.length, 80);
     assert.equal(claudeManifest.hooks.length, 99);
     assert.equal(codexManifest.hooks.length, 99);
+    assert.equal(Object.hasOwn(claudeManifest, "profile"), false);
+    assert.equal(Object.hasOwn(codexManifest, "profile"), false);
   });
 
   test("renders representative skill/agent/instruction outputs", () => {

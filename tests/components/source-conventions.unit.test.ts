@@ -33,6 +33,14 @@ describe("component source conventions", () => {
 
     const removedLayer = ["migr", "ated"].join("");
     assert.equal(existsSync(join(repoRoot, "src/components", removedLayer)), false);
+    assert.equal(
+      existsSync(join(repoRoot, "src/components/profiles")),
+      false,
+      "profile layer should not be reintroduced; registry emits all registered components directly",
+    );
+
+    const sdkSource = readFileSync(join(repoRoot, "src/components/sdk.ts"), "utf-8");
+    assert.doesNotMatch(sdkSource, /defineProfile|ProfileDefinition|ComponentKind\.Profile/);
 
     const agentBodyFiles = collectFiles(
       join(repoRoot, "src/components/agents"),
