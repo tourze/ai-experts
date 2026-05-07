@@ -51,6 +51,44 @@ describe("component source conventions", () => {
     assert.doesNotMatch(readFileSync(join(buildRoot, "procedures.ts"), "utf-8"), /__aiExpertsScriptDir/);
   });
 
+  test("guarded procedure sources export main for bundled invocation", () => {
+    const guardedWithoutExport = collectFiles(
+      join(repoRoot, "src/components/procedures/sources"),
+      (file) => file.endsWith(".ts"),
+    ).filter((file) => {
+      const source = readFileSync(file, "utf-8");
+      const hasMainGuard =
+        /process\.argv\[1\][\s\S]{0,120}(?:fileURLToPath\(import\.meta\.url\)|__filename)/.test(source) ||
+        /const\s+isMain\s*=\s*process\.argv\[1\]/.test(source);
+      const exportsMain = /\bexport\s+(?:async\s+)?function\s+main\b|\bexport\s+const\s+main\b/.test(source);
+      return hasMainGuard && !exportsMain;
+    });
+
+    assert.deepEqual(
+      guardedWithoutExport,
+      [],
+      "procedures guarded by an is-main check must export main() so procedures.js can invoke only the selected module",
+    );
+  });
+
+  test("procedure sources do not call sibling mjs helper files", () => {
+    const physicalMjsHelperCalls = collectFiles(
+      join(repoRoot, "src/components/procedures/sources"),
+      (file) => file.endsWith(".ts") && !file.endsWith(".test.ts"),
+    ).filter((file) => {
+      const source = readFileSync(file, "utf-8");
+      return /join\([^\n]*(?:scriptDir|SCRIPT_DIR|__dirname)[^\n]*\.mjs/.test(source) ||
+        /spawnSync\((?:process\.execPath|"node"),\s*\[[^\]]*\.mjs/.test(source) ||
+        /process\.execPath,\s*\[[^\]]*\.mjs/.test(source);
+    });
+
+    assert.deepEqual(
+      physicalMjsHelperCalls,
+      [],
+      "bundled procedure sources should import helper modules directly instead of spawning adjacent .mjs files",
+    );
+  });
+
   test("agent source keeps structured fields", () => {
     const agentSource = readFileSync(
       join(repoRoot, "src/components/agents/typescript-reviewer/index.ts"),

@@ -52,14 +52,18 @@ function parseArgs(argv: any): any {
 function isMain(): any {
     return process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url);
 }
-if (isMain()) {
-    const args = parseArgs(process.argv.slice(2));
+export function main(argv: any = process.argv.slice(2)): any {
+    const args = parseArgs(argv);
     try {
         const result = collectDiff(args);
         process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+        return 0;
     }
     catch (err: any) {
         process.stderr.write(`collect_diff failed: ${err.message}\n`);
-        process.exit(1);
+        return 1;
     }
+}
+if (isMain()) {
+    process.exitCode = main();
 }

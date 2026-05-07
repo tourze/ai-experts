@@ -1,10 +1,7 @@
 #!/usr/bin/env node
-import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { spawnSync } from "node:child_process";
 import { realpathSync } from "node:fs";
-const scriptDir = dirname(fileURLToPath(import.meta.url));
-const nodeBin = process.execPath;
+import { main as buildOwnershipMapMain } from "./build_ownership_map";
 function requireValue(argv: any, index: any, option: any): any {
     const value = argv[index + 1];
     if (value == null || value.startsWith("--"))
@@ -94,10 +91,8 @@ export function parseArgs(argv: any = process.argv.slice(2)): any {
         throw new Error(`invalid --date-field: ${args.dateField}`);
     return args;
 }
-export function buildCommand(args: any, node: any = nodeBin): any {
-    const command: any[] = [
-        node,
-        join(scriptDir, "build_ownership_map.mjs"),
+export function buildOwnershipMapArgs(args: any): any {
+    const commandArgs: any[] = [
         "--repo",
         args.repo,
         "--out",
@@ -122,37 +117,35 @@ export function buildCommand(args: any, node: any = nodeBin): any {
         String(args.ownerThreshold),
     ];
     if (args.since)
-        command.push("--since", args.since);
+        commandArgs.push("--since", args.since);
     if (args.until)
-        command.push("--until", args.until);
+        commandArgs.push("--until", args.until);
     if (args.includeMerges)
-        command.push("--include-merges");
+        commandArgs.push("--include-merges");
     if (args.emitCommits)
-        command.push("--emit-commits");
+        commandArgs.push("--emit-commits");
     if (args.graphml)
-        command.push("--graphml");
+        commandArgs.push("--graphml");
     if (args.sensitiveConfig)
-        command.push("--sensitive-config", args.sensitiveConfig);
+        commandArgs.push("--sensitive-config", args.sensitiveConfig);
     if (args.noCochange)
-        command.push("--no-cochange");
+        commandArgs.push("--no-cochange");
     if (args.noCommunities)
-        command.push("--no-communities");
+        commandArgs.push("--no-communities");
     if (args.noDefaultCochangeExcludes)
-        command.push("--no-default-cochange-excludes");
+        commandArgs.push("--no-default-cochange-excludes");
     for (const pattern of args.cochangeExclude)
-        command.push("--cochange-exclude", pattern);
+        commandArgs.push("--cochange-exclude", pattern);
     if (args.noDefaultAuthorExcludes)
-        command.push("--no-default-author-excludes");
+        commandArgs.push("--no-default-author-excludes");
     for (const pattern of args.authorExcludeRegex)
-        command.push("--author-exclude-regex", pattern);
-    return command;
+        commandArgs.push("--author-exclude-regex", pattern);
+    return commandArgs;
 }
 export function main(argv: any = process.argv.slice(2)): any {
     try {
         const args = parseArgs(argv);
-        const [command, ...commandArgs] = buildCommand(args);
-        const result = spawnSync(command, commandArgs, { stdio: "inherit" });
-        return result.status ?? 1;
+        return buildOwnershipMapMain(buildOwnershipMapArgs(args));
     }
     catch (error: any) {
         console.error(error.message);

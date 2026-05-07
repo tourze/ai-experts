@@ -70,7 +70,7 @@ export async function loadBoundingBoxMessages(fieldsJsonPath: any): Promise<any>
     const fields = JSON.parse(await readFile(fieldsJsonPath, "utf-8"));
     return getBoundingBoxMessages(fields);
 }
-async function main(argv: any = process.argv.slice(2)): Promise<any> {
+export async function main(argv: any = process.argv.slice(2)): Promise<any> {
     if (argv.length !== 1) {
         console.log("Usage: check_bounding_boxes.mjs [fields.json]");
         return 1;

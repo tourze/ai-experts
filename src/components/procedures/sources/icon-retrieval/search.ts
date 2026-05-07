@@ -30,7 +30,7 @@ async function searchIcons(query: any, topK: any = 5): Promise<any> {
     }
     return results;
 }
-async function main(): Promise<any> {
+export async function main(): Promise<any> {
     if (process.argv.length < 3) {
         const error: Record<string, any> = {
             error: 'Missing search query',

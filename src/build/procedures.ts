@@ -236,7 +236,7 @@ function activeOwnerRoot(procedure, trigger) {
 
 function installProcedureGlobals(procedure, trigger) {
   const ownerRoot = activeOwnerRoot(procedure, trigger);
-  globalThis.__aiExpertsModuleFile = () => runtimeFile;
+  globalThis.__aiExpertsModuleFile = (target) => join(ownerRoot, String(target));
   globalThis.__aiExpertsProcedureDir = (target) => join(ownerRoot, dirname(String(target)));
   globalThis.__aiExpertsRuntimeRoot = runtimeRoot;
   globalThis.__aiExpertsOwnerRoot = ownerRoot;
@@ -279,7 +279,13 @@ async function runProcedureChild(payload) {
   process.env.AI_EXPERTS_PROCEDURE_TRIGGER_SKILL = payload.triggerSkill ?? "";
   process.env.AI_EXPERTS_PROCEDURE_TRIGGER_AGENT = payload.triggerAgent ?? "";
   process.env.AI_EXPERTS_PROCEDURE_REQUEST_JSON = JSON.stringify(payload.requestPayload ?? {});
-  await loader();
+  const module = await loader();
+  if (typeof module.main === "function") {
+    const result = await module.main(payload.args.map(String));
+    if (typeof result === "number") {
+      process.exitCode = result;
+    }
+  }
 }
 
 export function main(rawArgv = process.argv.slice(2)) {

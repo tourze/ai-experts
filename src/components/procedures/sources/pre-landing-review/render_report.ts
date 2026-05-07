@@ -92,19 +92,23 @@ async function readInput(source: any): Promise<any> {
 function isMain(): any {
     return process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url);
 }
-if (isMain()) {
-    const args = parseArgs(process.argv.slice(2));
+export async function main(argv: any = process.argv.slice(2)): Promise<any> {
+    const args = parseArgs(argv);
     if (args.help) {
         process.stdout.write("usage: render_report.mjs [--input findings.json|-]\n");
-        process.exit(0);
+        return 0;
     }
     try {
         const raw = await readInput(args.input);
         const findings = JSON.parse(raw);
         process.stdout.write(renderReport(findings));
+        return 0;
     }
     catch (err: any) {
         process.stderr.write(`render_report failed: ${err.message}\n`);
-        process.exit(1);
+        return 1;
     }
+}
+if (isMain()) {
+    process.exitCode = await main();
 }

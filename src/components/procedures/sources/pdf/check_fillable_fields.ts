@@ -38,7 +38,7 @@ export function hasFillableFields(pdfBuffer: any): any {
 export async function pdfHasFillableFields(pdfPath: any): Promise<any> {
     return hasFillableFields(await readFile(pdfPath));
 }
-async function main(argv: any = process.argv.slice(2)): Promise<any> {
+export async function main(argv: any = process.argv.slice(2)): Promise<any> {
     if (argv.length !== 1) {
         console.log("Usage: check_fillable_fields.mjs <input.pdf>");
         return 1;

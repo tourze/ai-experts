@@ -162,7 +162,7 @@ export function createIndex(papers: any, outputDir: any): any {
     console.log(`\nCreated index: ${join(outputDir, "INDEX.md")}`);
     console.log(`Created catalog: ${join(outputDir, "catalog.json")}`);
 }
-async function main(argv: any = process.argv.slice(2)): Promise<any> {
+export async function main(argv: any = process.argv.slice(2)): Promise<any> {
     const args = parseArgs(argv);
     if (args.help) {
         usage();

@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-import fs from "node:fs";
+import fs, { realpathSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 function showHelp(): any {
     console.log(`Windows screenshot helper
 
@@ -224,34 +225,40 @@ try {
 Write-Output $outputPath
 `;
 }
-let options;
-try {
-    options = parseArgs(process.argv.slice(2));
-    if (options.help) {
-        showHelp();
-        process.exit(0);
+export function main(argv: any = process.argv.slice(2)): any {
+    let options;
+    try {
+        options = parseArgs(argv);
+        if (options.help) {
+            showHelp();
+            return 0;
+        }
+        validateOptions(options);
     }
-    validateOptions(options);
+    catch (error: any) {
+        console.error(error.message);
+        return 1;
+    }
+    if (process.platform !== "win32") {
+        console.error("take_screenshot_windows.mjs only supports Windows");
+        return 1;
+    }
+    const shell = findExecutable("powershell.exe") || findExecutable("pwsh.exe");
+    if (!shell) {
+        console.error("PowerShell is required for Windows screenshot capture");
+        return 1;
+    }
+    const payload = Buffer.from(JSON.stringify(options), "utf8").toString("base64");
+    const result = spawnSync(shell, ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", powershellScript(payload)], {
+        encoding: "utf8",
+    });
+    if (result.status !== 0) {
+        process.stderr.write(result.stderr || result.stdout || "Windows screenshot capture failed\n");
+        return result.status ?? 1;
+    }
+    process.stdout.write(result.stdout);
+    return 0;
 }
-catch (error: any) {
-    console.error(error.message);
-    process.exit(1);
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
+    process.exitCode = main();
 }
-if (process.platform !== "win32") {
-    console.error("take_screenshot_windows.mjs only supports Windows");
-    process.exit(1);
-}
-const shell = findExecutable("powershell.exe") || findExecutable("pwsh.exe");
-if (!shell) {
-    console.error("PowerShell is required for Windows screenshot capture");
-    process.exit(1);
-}
-const payload = Buffer.from(JSON.stringify(options), "utf8").toString("base64");
-const result = spawnSync(shell, ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", powershellScript(payload)], {
-    encoding: "utf8",
-});
-if (result.status !== 0) {
-    process.stderr.write(result.stderr || result.stdout || "Windows screenshot capture failed\n");
-    process.exit(result.status ?? 1);
-}
-process.stdout.write(result.stdout);

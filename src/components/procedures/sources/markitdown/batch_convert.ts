@@ -149,7 +149,7 @@ export async function batchConvert(inputDir: any, outputDir: any, options: any =
         details,
     };
 }
-async function main(argv: any = process.argv.slice(2)): Promise<any> {
+export async function main(argv: any = process.argv.slice(2)): Promise<any> {
     const args = parseArgs(argv);
     if (args.help) {
         usage();

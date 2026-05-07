@@ -4,8 +4,8 @@ import { accessSync, constants, copyFileSync, existsSync, mkdirSync, mkdtempSync
 import { createRequire } from "node:module";
 import { homedir, tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
-const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
+import { pathToFileURL } from "node:url";
+import { renderKatexFile } from "./katex_render";
 const requireFromScript = createRequire(import.meta.url);
 const numberFormatter = new Intl.NumberFormat("en-US");
 type PageFormat = "A4" | "Letter" | "Legal" | "A3";
@@ -560,33 +560,14 @@ function markdownToHtml(markdownPath: string, title: string): string {
     return result.stdout;
 }
 function renderKatex(htmlPath: string, outputPath: string): KatexStats {
-    const katexScript = join(SCRIPT_DIR, "katex_render.mjs");
-    if (!existsSync(katexScript)) {
-        console.error("  WARNING: katex_render.mjs not found, math will not be rendered");
+    try {
+        return renderKatexFile(htmlPath, outputPath);
+    }
+    catch (error: any) {
+        console.error(`  KaTeX warning: ${(error instanceof Error ? error.message : String(error)).slice(0, 500)}`);
         copyFileSync(htmlPath, outputPath);
         return { inline: 0, display: 0, errors: 0 };
     }
-    const result = run(process.execPath, [katexScript, htmlPath, outputPath], 30000);
-    const stats = result.stdout
-        .trim()
-        .split(/\r?\n/)
-        .reduce((latest: any, line: any): any => {
-        try {
-            const parsed = JSON.parse(line);
-            return {
-                inline: typeof parsed.inline === "number" ? parsed.inline : latest.inline,
-                display: typeof parsed.display === "number" ? parsed.display : latest.display,
-                errors: typeof parsed.errors === "number" ? parsed.errors : latest.errors,
-            };
-        }
-        catch {
-            return latest;
-        }
-    }, { inline: 0, display: 0, errors: 0 });
-    if (result.stderr) {
-        console.error(`  KaTeX warnings:\n${result.stderr.slice(0, 500)}`);
-    }
-    return stats;
 }
 function injectCss(html: string, pageFormat: PageFormat, margins: Margins, headerFooter: boolean, customCssPath?: string): string {
     const katex = findKatexCss();

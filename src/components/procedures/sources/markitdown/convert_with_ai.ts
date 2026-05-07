@@ -132,7 +132,7 @@ export async function convertWithAi(inputFile: any, outputFile: any, options: an
     writeFileSync(outputFile, content, "utf-8");
     console.log(`Successfully converted to: ${outputFile}`);
 }
-async function main(argv: any = process.argv.slice(2)): Promise<any> {
+export async function main(argv: any = process.argv.slice(2)): Promise<any> {
     const args = parseArgs(argv);
     if (args.help) {
         usage();

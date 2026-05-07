@@ -10,40 +10,41 @@
  * This produces HTML that displays math without any client-side JavaScript,
  * requiring only the KaTeX CSS + fonts for proper rendering.
  */
-import fs from "node:fs";
+import fs, { realpathSync } from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
 const require = createRequire(import.meta.url);
-if (process.argv.length < 4) {
-    console.error("Usage: node katex_render.mjs <input.html> <output.html>");
-    process.exit(1);
-}
-let katex;
-try {
-    katex = require("katex");
-}
-catch (error: any) {
-    const npmRoot = spawnSync("npm", ["root", "-g"], { encoding: "utf8" }).stdout.trim();
-    if (npmRoot) {
-        try {
-            katex = require(path.join(npmRoot, "katex"));
-        }
-        catch {
-            // Report the normal install guidance below.
+type KatexRenderer = {
+    renderToString(source: string, options: Record<string, any>): string;
+};
+type KatexStats = {
+    inline: number;
+    display: number;
+    errors: number;
+};
+function loadKatex(): KatexRenderer {
+    let katex: KatexRenderer | null = null;
+    try {
+        katex = require("katex") as KatexRenderer;
+    }
+    catch {
+        const npmRoot = spawnSync("npm", ["root", "-g"], { encoding: "utf8" }).stdout.trim();
+        if (npmRoot) {
+            try {
+                katex = require(path.join(npmRoot, "katex")) as KatexRenderer;
+            }
+            catch {
+                // Report the normal install guidance below.
+            }
         }
     }
     if (!katex) {
-        console.error("KaTeX is not installed. Run `node scripts/setup.mjs` or `npm install -g katex`.");
-        process.exit(1);
+        throw new Error("KaTeX is not installed. Run `node scripts/setup.mjs` or `npm install -g katex`.");
     }
+    return katex;
 }
-const inputPath = process.argv[2];
-const outputPath = process.argv[3];
-let html = fs.readFileSync(inputPath, "utf8");
-let inlineCount = 0;
-let displayCount = 0;
-let errorCount = 0;
 // Decode HTML entities that pandoc may have inserted
 function decodeEntities(str: any): any {
     return str
@@ -53,48 +54,72 @@ function decodeEntities(str: any): any {
         .replace(/&quot;/g, '"')
         .replace(/&#39;/g, "'");
 }
-// Replace inline math: <span class="math inline">LATEX</span>
-html = html.replace(/<span class="math inline">([\s\S]*?)<\/span>/g, (match: any, latex: any): any => {
+export function renderKatexFile(inputPath: string, outputPath: string): KatexStats {
+    const katex = loadKatex();
+    let html = fs.readFileSync(inputPath, "utf8");
+    let inlineCount = 0;
+    let displayCount = 0;
+    let errorCount = 0;
+    // Replace inline math: <span class="math inline">LATEX</span>
+    html = html.replace(/<span class="math inline">([\s\S]*?)<\/span>/g, (match: any, latex: any): any => {
+        try {
+            const decoded = decodeEntities(latex.trim());
+            inlineCount++;
+            return katex.renderToString(decoded, {
+                displayMode: false,
+                throwOnError: false,
+                output: "html",
+                strict: false,
+            });
+        }
+        catch (e: any) {
+            errorCount++;
+            console.error(`  Inline math error: ${e.message} | Source: ${latex.substring(0, 60)}`);
+            return match;
+        }
+    });
+    // Replace display math: <span class="math display">LATEX</span>
+    // pandoc may wrap these in <p> tags or use newlines
+    html = html.replace(/<span[^>]*class="math display"[^>]*>([\s\S]*?)<\/span>/g, (match: any, latex: any): any => {
+        try {
+            const decoded = decodeEntities(latex.trim());
+            displayCount++;
+            return katex.renderToString(decoded, {
+                displayMode: true,
+                throwOnError: false,
+                output: "html",
+                strict: false,
+            });
+        }
+        catch (e: any) {
+            errorCount++;
+            console.error(`  Display math error: ${e.message} | Source: ${latex.substring(0, 60)}`);
+            return match;
+        }
+    });
+    fs.writeFileSync(outputPath, html, "utf8");
+    return {
+        inline: inlineCount,
+        display: displayCount,
+        errors: errorCount,
+    };
+}
+export function main(argv: any = process.argv.slice(2)): any {
+    if (argv.length < 2) {
+        console.error("Usage: node katex_render.mjs <input.html> <output.html>");
+        return 1;
+    }
     try {
-        const decoded = decodeEntities(latex.trim());
-        inlineCount++;
-        return katex.renderToString(decoded, {
-            displayMode: false,
-            throwOnError: false,
-            output: "html",
-            strict: false,
-        });
+        const stats = renderKatexFile(argv[0], argv[1]);
+        // Output stats as JSON on the last line for parsing by md_to_pdf.mjs.
+        console.log(JSON.stringify(stats));
+        return 0;
     }
-    catch (e: any) {
-        errorCount++;
-        console.error(`  Inline math error: ${e.message} | Source: ${latex.substring(0, 60)}`);
-        return match;
+    catch (error: any) {
+        console.error(error instanceof Error ? error.message : String(error));
+        return 1;
     }
-});
-// Replace display math: <span class="math display">LATEX</span>
-// pandoc may wrap these in <p> tags or use newlines
-html = html.replace(/<span[^>]*class="math display"[^>]*>([\s\S]*?)<\/span>/g, (match: any, latex: any): any => {
-    try {
-        const decoded = decodeEntities(latex.trim());
-        displayCount++;
-        return katex.renderToString(decoded, {
-            displayMode: true,
-            throwOnError: false,
-            output: "html",
-            strict: false,
-        });
-    }
-    catch (e: any) {
-        errorCount++;
-        console.error(`  Display math error: ${e.message} | Source: ${latex.substring(0, 60)}`);
-        return match;
-    }
-});
-fs.writeFileSync(outputPath, html, "utf8");
-const stats: Record<string, any> = {
-    inline: inlineCount,
-    display: displayCount,
-    errors: errorCount,
-};
-// Output stats as JSON on the last line for parsing by md_to_pdf.mjs.
-console.log(JSON.stringify(stats));
+}
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
+    process.exitCode = main();
+}

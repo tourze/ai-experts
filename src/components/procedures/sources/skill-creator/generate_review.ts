@@ -544,7 +544,7 @@ function parseCliArgs() {
   };
 }
 
-function main(): void {
+export function main(): void {
   const {
     help,
     workspace,

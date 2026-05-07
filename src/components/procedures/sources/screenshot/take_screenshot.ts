@@ -4,12 +4,10 @@ import { existsSync, mkdirSync, statSync, writeFileSync, realpathSync } from "no
 import { homedir, platform as osPlatform, tmpdir } from "node:os";
 import { basename, dirname, extname, join, parse, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
-const MAC_PERM_SCRIPT = join(SCRIPT_DIR, "macos_permissions.mjs");
-const MAC_PERM_HELPER = join(SCRIPT_DIR, "ensure_macos_permissions.mjs");
-const MAC_WINDOW_SCRIPT = join(SCRIPT_DIR, "macos_window_info.mjs");
-const MAC_DISPLAY_SCRIPT = join(SCRIPT_DIR, "macos_display_info.mjs");
-const WINDOWS_HELPER = join(SCRIPT_DIR, "take_screenshot_windows.mjs");
+import { runMacosDisplayInfo } from "./macos_display_info";
+import { runMacosPermissions } from "./macos_permissions";
+import { runMacosWindowInfo } from "./macos_window_info";
+import { main as runWindowsScreenshot } from "./take_screenshot_windows";
 const TEST_MODE_ENV = "CODEX_SCREENSHOT_TEST_MODE";
 const TEST_PLATFORM_ENV = "CODEX_SCREENSHOT_TEST_PLATFORM";
 const TEST_WINDOWS_ENV = "CODEX_SCREENSHOT_TEST_WINDOWS";
@@ -191,11 +189,56 @@ export function runCommand(cmd: any): any {
         throw new Error(`command failed (${proc.status ?? 1}): ${cmd.join(" ")}`);
     }
 }
-export function helperJson(script: any, extraArgs: any = []): any {
-    const proc = runCapture(process.execPath, [script, ...extraArgs]);
-    if (proc.error?.code === "ENOENT") {
-        throw new Error("node not found; install Node.js");
+function writeChunkText(chunk: any, encoding: any): any {
+    if (Buffer.isBuffer(chunk)) {
+        return chunk.toString(typeof encoding === "string" ? encoding : "utf8");
     }
+    if (chunk instanceof Uint8Array) {
+        return Buffer.from(chunk).toString(typeof encoding === "string" ? encoding : "utf8");
+    }
+    return String(chunk);
+}
+export function captureMainOutput(mainFn: any, args: any = []): any {
+    const previousStdoutWrite = process.stdout.write;
+    const previousStderrWrite = process.stderr.write;
+    const previousExitCode = process.exitCode;
+    let stdout = "";
+    let stderr = "";
+    function captureStdout(chunk: any, encodingOrCallback?: any, callback?: any): any {
+        stdout += writeChunkText(chunk, encodingOrCallback);
+        const done = typeof encodingOrCallback === "function" ? encodingOrCallback : callback;
+        if (done)
+            done();
+        return true;
+    }
+    function captureStderr(chunk: any, encodingOrCallback?: any, callback?: any): any {
+        stderr += writeChunkText(chunk, encodingOrCallback);
+        const done = typeof encodingOrCallback === "function" ? encodingOrCallback : callback;
+        if (done)
+            done();
+        return true;
+    }
+    try {
+        process.stdout.write = captureStdout as any;
+        process.stderr.write = captureStderr as any;
+        const status = mainFn(args);
+        if (status && typeof status.then === "function") {
+            throw new Error("async helper output capture is not supported");
+        }
+        return {
+            status: typeof status === "number" ? status : 0,
+            stdout,
+            stderr,
+        };
+    }
+    finally {
+        process.stdout.write = previousStdoutWrite;
+        process.stderr.write = previousStderrWrite;
+        process.exitCode = previousExitCode;
+    }
+}
+export function helperJson(mainFn: any, extraArgs: any = []): any {
+    const proc = mainFn(extraArgs);
     if (proc.status !== 0) {
         const stderr = (proc.stderr ?? "").trim();
         if (stderr.includes("ModuleCache") && stderr.includes("Operation not permitted")) {
@@ -211,7 +254,7 @@ export function helperJson(script: any, extraArgs: any = []): any {
     }
 }
 export function macosScreenCaptureGranted(request: any = false): any {
-    const payload = helperJson(MAC_PERM_SCRIPT, request ? ["--request"] : []);
+    const payload = helperJson(runMacosPermissions, request ? ["--request"] : []);
     return Boolean(payload.screenCapture);
 }
 export function ensureMacosPermissions(): any {
@@ -221,10 +264,18 @@ export function ensureMacosPermissions(): any {
     if (macosScreenCaptureGranted()) {
         return;
     }
-    spawnSync("node", [MAC_PERM_HELPER], { stdio: "inherit" });
+    console.log(`This workflow needs macOS Screen Recording permission to capture screenshots.
+macOS will show a single system prompt for Screen Recording. Approve it, then
+return here. If macOS opens System Settings instead of prompting, enable Screen
+Recording for your terminal and rerun the command.`);
+    macosScreenCaptureGranted(true);
     if (!macosScreenCaptureGranted()) {
+        console.log(`Screen Recording is still not granted.
+Open System Settings > Privacy & Security > Screen Recording and enable it for
+your terminal (and Codex if needed), then rerun your screenshot command.`);
         throw new Error("Screen Recording permission is required; enable it in System Settings and retry");
     }
+    console.log("Screen Recording permission granted.");
 }
 export function activateApp(app: any): any {
     const safeApp = app.replaceAll('"', '\\"');
@@ -242,10 +293,10 @@ export function macosWindowPayload(args: any, frontmost: any, includeList: any):
         flags.push("--window-name", args.windowName);
     if (includeList)
         flags.push("--list");
-    return helperJson(MAC_WINDOW_SCRIPT, flags);
+    return helperJson(runMacosWindowInfo, flags);
 }
 export function macosDisplayIndexes(): any {
-    const payload = helperJson(MAC_DISPLAY_SCRIPT);
+    const payload = helperJson(runMacosDisplayInfo);
     const displays = payload.displays ?? [];
     const indexes = displays
         .map((item: any) => Number.parseInt(String(item), 10))
@@ -400,7 +451,7 @@ export function captureLinux(args: any, output: any): any {
     throw new Error("no supported screenshot tool found (scrot, gnome-screenshot, or import)");
 }
 export function captureWindows(args: any, output: any): any {
-    const cmd: any[] = ["node", WINDOWS_HELPER, "--path", output, "--format", args.format];
+    const cmd: any[] = ["--path", output, "--format", args.format];
     if (args.region) {
         cmd.push("--region", args.region.join(","));
     }
@@ -410,10 +461,7 @@ export function captureWindows(args: any, output: any): any {
     if (args.windowId != null) {
         cmd.push("--window-handle", String(args.windowId));
     }
-    const proc = runCapture(cmd[0], cmd.slice(1));
-    if (proc.error?.code === "ENOENT") {
-        throw new Error("node not found; install Node.js to capture screenshots on Windows");
-    }
+    const proc = captureMainOutput(runWindowsScreenshot, cmd);
     if (proc.status !== 0) {
         throw new Error((proc.stderr || proc.stdout || "Windows screenshot capture failed").trim());
     }

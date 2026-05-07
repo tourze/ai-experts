@@ -43,8 +43,11 @@ export function runSwiftSource(source: any, args: any = []): any {
         rmSync(workDir, { recursive: true, force: true });
     }
 }
+export function runMacosDisplayInfo(argv: any = []): any {
+    return runSwiftSource(SWIFT_SOURCE, argv);
+}
 export function main(argv: any = process.argv.slice(2)): any {
-    const result = runSwiftSource(SWIFT_SOURCE, argv);
+    const result = runMacosDisplayInfo(argv);
     if (result.error?.code === "ENOENT") {
         console.error("swift not found; install Xcode command line tools");
         return 1;

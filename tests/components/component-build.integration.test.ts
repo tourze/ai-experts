@@ -354,6 +354,18 @@ describe("component build integration", () => {
       ], { encoding: "utf-8", timeout: 20_000 }));
     }
 
+    function runProcedureWithEnv(id: string, skillId: string, args: string[], env: NodeJS.ProcessEnv): any {
+      return JSON.parse(execFileSync(process.execPath, [
+        proceduresPath,
+        "--procedure-id",
+        id,
+        "--trigger-skill",
+        skillId,
+        "--request-json",
+        JSON.stringify({ args }),
+      ], { encoding: "utf-8", env: { ...process.env, ...env }, timeout: 20_000 }));
+    }
+
     try {
       const tscOutput = join(runtimeTmp, "tsc.txt");
       writeFileSync(tscOutput, [
@@ -393,6 +405,30 @@ describe("component build integration", () => {
       );
       assert.equal(curate.ok, true, curate.result?.stderr);
       assert.match(curate.result.stdout, /curate_skills smoke test passed/);
+
+      const screenshotOutput = join(runtimeTmp, "screen.png");
+      const screenshot = runProcedureWithEnv(
+        "screenshot-take-screenshot",
+        "screenshot",
+        ["--mode", "temp", "--path", screenshotOutput],
+        {
+          CODEX_SCREENSHOT_TEST_MODE: "1",
+          CODEX_SCREENSHOT_TEST_PLATFORM: "Darwin",
+          CODEX_SCREENSHOT_TEST_DISPLAYS: "1,2",
+        },
+      );
+      assert.equal(screenshot.ok, true, screenshot.result?.stderr);
+      const screenshotPaths = screenshot.result.stdout.trim().split(/\r?\n/);
+      assert.deepEqual(
+        screenshotPaths,
+        [
+          join(runtimeTmp, "screen-d1.png"),
+          join(runtimeTmp, "screen-d2.png"),
+        ],
+      );
+      for (const path of screenshotPaths) {
+        assert.equal(existsSync(path), true, `${path} should be written by screenshot test mode`);
+      }
     } finally {
       rmSync(runtimeTmp, { recursive: true, force: true });
     }
