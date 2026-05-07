@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, test } from "vitest";
@@ -59,6 +59,28 @@ describe("component source conventions", () => {
     assert.equal(existsSync(join(buildRoot, "scripts.ts")), false);
     assert.equal(existsSync(join(buildRoot, "script-uses.ts")), false);
     assert.doesNotMatch(readFileSync(join(buildRoot, "procedures.ts"), "utf-8"), /__aiExpertsScriptDir/);
+  });
+
+  test("component source directories match the registered component surface", () => {
+    const skillDirs = readdirSync(join(repoRoot, "src/components/skills"), { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name)
+      .sort();
+    const agentDirs = readdirSync(join(repoRoot, "src/components/agents"), { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name)
+      .sort();
+
+    assert.deepEqual(
+      skillDirs,
+      registry.skills.map((skill) => skill.id).sort(),
+      "every skill source directory should be registered and every registered skill should have a source directory",
+    );
+    assert.deepEqual(
+      agentDirs,
+      registry.agents.map((agent) => agent.id).sort(),
+      "every agent source directory should be registered and every registered agent should have a source directory",
+    );
   });
 
   test("hooks use the normalized payload contract", () => {
