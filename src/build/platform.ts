@@ -13,6 +13,7 @@ import {
   defaultReferenceTarget,
   displayPath,
   ensureDir,
+  InvocationPolicy,
   isSameOrInsidePath,
   Platform,
   readComponentText,
@@ -177,6 +178,9 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     validateId(skill.id, "skill");
     if (!skill.description || skill.description.length < 20) {
       throw new Error(`Skill ${skill.id} has a weak description`);
+    }
+    if (skill.invocation === InvocationPolicy.Disabled) {
+      throw new Error(`Skill ${skill.id} uses unsupported disabled invocation policy`);
     }
     validateTextList(skill, "useCases", "useCase");
     validateTextList(skill, "constraints", "constraint");

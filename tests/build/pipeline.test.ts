@@ -285,6 +285,12 @@ describe("build/pipeline modules", () => {
     };
     expect(() => validateRegistry(invalidRuntimeRegistry)).toThrow("runtime must be node");
 
+    const disabledInvocationRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{ ...fixture.skill, invocation: InvocationPolicy.Disabled }],
+    };
+    expect(() => validateRegistry(disabledInvocationRegistry)).toThrow("unsupported disabled invocation policy");
+
     const missingOwnerRegistry: ComponentRegistry = {
       ...fixture.registry,
       procedures: [{ ...fixture.procedure, owners: { skillIds: ["missing-skill"] } }],
