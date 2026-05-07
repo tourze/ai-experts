@@ -6,7 +6,7 @@ import {
   defineSkillParameter,
   defineSkillWorkflow,
 } from "../../sdk";
-import { procedureUse, speckitBaselineBootstrapSpecify, speckitBaselineCheckPrerequisites, speckitBaselineCommon, speckitBaselineCreateNewFeature, speckitBaselineSetupPlan } from "../../procedures/index";
+import { procedureUse, speckitBaselineBootstrapSpecify, speckitBaselineCheckPrerequisites, speckitBaselineCreateNewFeature, speckitBaselineSetupPlan } from "../../procedures/index";
 
 export const speckitBaselineSkill = defineSkill({
   id: "speckit-baseline",
@@ -53,7 +53,6 @@ export const speckitBaselineSkill = defineSkill({
   procedures: [
     procedureUse(speckitBaselineBootstrapSpecify),
     procedureUse(speckitBaselineCheckPrerequisites),
-    procedureUse(speckitBaselineCommon),
     procedureUse(speckitBaselineCreateNewFeature),
     procedureUse(speckitBaselineSetupPlan),
   ],

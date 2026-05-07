@@ -6,7 +6,7 @@ import {
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
-import { procedureUse, iosSimulatorSkillAccessibilityAudit, iosSimulatorSkillAppLauncher, iosSimulatorSkillAppStateCapture, iosSimulatorSkillBuildAndTest, iosSimulatorSkillClipboard, iosSimulatorSkillGesture, iosSimulatorSkillInteractionCommon, iosSimulatorSkillKeyboard, iosSimulatorSkillLogMonitor, iosSimulatorSkillNavigator, iosSimulatorSkillPrivacyManager, iosSimulatorSkillPushNotification, iosSimulatorSkillScreenMapper, iosSimulatorSkillScreenshotCommon, iosSimulatorSkillSimHealthCheck, iosSimulatorSkillSimList, iosSimulatorSkillSimctlBoot, iosSimulatorSkillSimctlCommon, iosSimulatorSkillSimctlCreate, iosSimulatorSkillSimctlDelete, iosSimulatorSkillSimctlErase, iosSimulatorSkillSimctlShutdown, iosSimulatorSkillSimulatorSelector, iosSimulatorSkillStatusBar, iosSimulatorSkillTestRecorder, iosSimulatorSkillVisualDiff, iosSimulatorSkillXcodeBuilder, iosSimulatorSkillXcodeCache, iosSimulatorSkillXcodeConfig, iosSimulatorSkillXcodeIndex, iosSimulatorSkillXcodeReporter, iosSimulatorSkillXcodeXcresult } from "../../procedures/index";
+import { procedureUse, iosSimulatorSkillAccessibilityAudit, iosSimulatorSkillAppLauncher, iosSimulatorSkillAppStateCapture, iosSimulatorSkillBuildAndTest, iosSimulatorSkillClipboard, iosSimulatorSkillGesture, iosSimulatorSkillKeyboard, iosSimulatorSkillLogMonitor, iosSimulatorSkillNavigator, iosSimulatorSkillPrivacyManager, iosSimulatorSkillPushNotification, iosSimulatorSkillScreenMapper, iosSimulatorSkillSimHealthCheck, iosSimulatorSkillSimList, iosSimulatorSkillSimctlBoot, iosSimulatorSkillSimctlCreate, iosSimulatorSkillSimctlDelete, iosSimulatorSkillSimctlErase, iosSimulatorSkillSimctlShutdown, iosSimulatorSkillSimulatorSelector, iosSimulatorSkillStatusBar, iosSimulatorSkillTestRecorder, iosSimulatorSkillVisualDiff } from "../../procedures/index";
 
 export const iosSimulatorSkillSkill = defineSkill({
   id: "ios-simulator-skill",
@@ -73,18 +73,15 @@ export const iosSimulatorSkillSkill = defineSkill({
     procedureUse(iosSimulatorSkillBuildAndTest),
     procedureUse(iosSimulatorSkillClipboard),
     procedureUse(iosSimulatorSkillGesture),
-    procedureUse(iosSimulatorSkillInteractionCommon),
     procedureUse(iosSimulatorSkillKeyboard),
     procedureUse(iosSimulatorSkillLogMonitor),
     procedureUse(iosSimulatorSkillNavigator),
     procedureUse(iosSimulatorSkillPrivacyManager),
     procedureUse(iosSimulatorSkillPushNotification),
     procedureUse(iosSimulatorSkillScreenMapper),
-    procedureUse(iosSimulatorSkillScreenshotCommon),
     procedureUse(iosSimulatorSkillSimHealthCheck),
     procedureUse(iosSimulatorSkillSimList),
     procedureUse(iosSimulatorSkillSimctlBoot),
-    procedureUse(iosSimulatorSkillSimctlCommon),
     procedureUse(iosSimulatorSkillSimctlCreate),
     procedureUse(iosSimulatorSkillSimctlDelete),
     procedureUse(iosSimulatorSkillSimctlErase),
@@ -93,11 +90,5 @@ export const iosSimulatorSkillSkill = defineSkill({
     procedureUse(iosSimulatorSkillStatusBar),
     procedureUse(iosSimulatorSkillTestRecorder),
     procedureUse(iosSimulatorSkillVisualDiff),
-    procedureUse(iosSimulatorSkillXcodeBuilder),
-    procedureUse(iosSimulatorSkillXcodeCache),
-    procedureUse(iosSimulatorSkillXcodeConfig),
-    procedureUse(iosSimulatorSkillXcodeIndex),
-    procedureUse(iosSimulatorSkillXcodeReporter),
-    procedureUse(iosSimulatorSkillXcodeXcresult),
   ],
 });

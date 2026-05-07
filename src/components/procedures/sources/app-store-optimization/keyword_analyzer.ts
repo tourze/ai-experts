@@ -3,6 +3,8 @@
  * Analyzes keyword search volume, competition, and relevance for app discovery.
  */
 
+import { getArray, runJsonProcedure } from "./cli";
+
 type AnyRecord = Record<string, any>;
 
 export class KeywordAnalyzer {
@@ -262,6 +264,12 @@ export function analyzeKeywordSet(keywordsData: AnyRecord[]): AnyRecord {
 }
 
 export const analyze_keyword_set = analyzeKeywordSet;
+
+export function main(argv: string[] = process.argv.slice(2)): number {
+  return runJsonProcedure(argv, (request) =>
+    analyzeKeywordSet(getArray<AnyRecord>(request, ["keywordsData", "keywords_data", "keywords"])),
+  );
+}
 
 function roundTo(value: number, digits: number): number {
   const factor = 10 ** digits;

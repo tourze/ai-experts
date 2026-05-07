@@ -7,7 +7,7 @@ import {
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
-import { procedureUse, androidDeviceAutomationAppLauncher, androidDeviceAutomationBuildAndTest, androidDeviceAutomationCommon, androidDeviceAutomationDiagnoseApp, androidDeviceAutomationEmuHealthCheck, androidDeviceAutomationEmulatorManage, androidDeviceAutomationGesture, androidDeviceAutomationKeyboard, androidDeviceAutomationLogMonitor, androidDeviceAutomationNavigator, androidDeviceAutomationScreenMapper } from "../../procedures/index";
+import { procedureUse, androidDeviceAutomationAppLauncher, androidDeviceAutomationBuildAndTest, androidDeviceAutomationDiagnoseApp, androidDeviceAutomationEmuHealthCheck, androidDeviceAutomationEmulatorManage, androidDeviceAutomationGesture, androidDeviceAutomationKeyboard, androidDeviceAutomationLogMonitor, androidDeviceAutomationNavigator, androidDeviceAutomationScreenMapper } from "../../procedures/index";
 
 export const androidDeviceAutomationSkill = defineSkill({
   id: "android-device-automation",
@@ -56,7 +56,6 @@ export const androidDeviceAutomationSkill = defineSkill({
   procedures: [
     procedureUse(androidDeviceAutomationAppLauncher),
     procedureUse(androidDeviceAutomationBuildAndTest),
-    procedureUse(androidDeviceAutomationCommon),
     procedureUse(androidDeviceAutomationDiagnoseApp),
     procedureUse(androidDeviceAutomationEmuHealthCheck),
     procedureUse(androidDeviceAutomationEmulatorManage),

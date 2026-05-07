@@ -91,14 +91,6 @@ export const androidDeviceAutomationBuildAndTest = defineCliProcedure({
     target: "scripts/build_and_test.mjs",
     runtime: "node",
   });
-export const androidDeviceAutomationCommon = defineCliProcedure({
-    id: "android-device-automation-common",
-    entry: new URL("./sources/android-device-automation/common.ts", import.meta.url),
-    description: "执行 common procedure。",
-    owners: { skillIds: ["android-device-automation"] },
-    target: "scripts/common.mjs",
-    runtime: "node",
-  });
 export const androidDeviceAutomationDiagnoseApp = defineCliProcedure({
     id: "android-device-automation-diagnose-app",
     entry: new URL("./sources/android-device-automation/diagnose_app.ts", import.meta.url),
@@ -457,14 +449,6 @@ export const iosSimulatorSkillGesture = defineCliProcedure({
     target: "scripts/gesture.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillInteractionCommon = defineCliProcedure({
-    id: "ios-simulator-skill-interaction-common",
-    entry: new URL("./sources/ios-simulator-skill/interaction_common.ts", import.meta.url),
-    description: "执行 interaction-common procedure。",
-    owners: { skillIds: ["ios-simulator-skill"] },
-    target: "scripts/interaction_common.mjs",
-    runtime: "node",
-  });
 export const iosSimulatorSkillKeyboard = defineCliProcedure({
     id: "ios-simulator-skill-keyboard",
     entry: new URL("./sources/ios-simulator-skill/keyboard.ts", import.meta.url),
@@ -513,14 +497,6 @@ export const iosSimulatorSkillScreenMapper = defineCliProcedure({
     target: "scripts/screen_mapper.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillScreenshotCommon = defineCliProcedure({
-    id: "ios-simulator-skill-screenshot-common",
-    entry: new URL("./sources/ios-simulator-skill/screenshot_common.ts", import.meta.url),
-    description: "执行 screenshot-common procedure。",
-    owners: { skillIds: ["ios-simulator-skill"] },
-    target: "scripts/screenshot_common.mjs",
-    runtime: "node",
-  });
 export const iosSimulatorSkillSimHealthCheck = defineCliProcedure({
     id: "ios-simulator-skill-sim-health-check",
     entry: new URL("./sources/ios-simulator-skill/sim_health_check.ts", import.meta.url),
@@ -543,14 +519,6 @@ export const iosSimulatorSkillSimctlBoot = defineCliProcedure({
     description: "执行 simctl-boot procedure。",
     owners: { skillIds: ["ios-simulator-skill"] },
     target: "scripts/simctl_boot.mjs",
-    runtime: "node",
-  });
-export const iosSimulatorSkillSimctlCommon = defineCliProcedure({
-    id: "ios-simulator-skill-simctl-common",
-    entry: new URL("./sources/ios-simulator-skill/simctl_common.ts", import.meta.url),
-    description: "执行 simctl-common procedure。",
-    owners: { skillIds: ["ios-simulator-skill"] },
-    target: "scripts/simctl_common.mjs",
     runtime: "node",
   });
 export const iosSimulatorSkillSimctlCreate = defineCliProcedure({
@@ -617,54 +585,6 @@ export const iosSimulatorSkillVisualDiff = defineCliProcedure({
     target: "scripts/visual_diff.mjs",
     runtime: "node",
   });
-export const iosSimulatorSkillXcodeBuilder = defineCliProcedure({
-    id: "ios-simulator-skill-xcode-builder",
-    entry: new URL("./sources/ios-simulator-skill/xcode/builder.ts", import.meta.url),
-    description: "执行 xcode/builder procedure。",
-    owners: { skillIds: ["ios-simulator-skill"] },
-    target: "scripts/xcode/builder.mjs",
-    runtime: "node",
-  });
-export const iosSimulatorSkillXcodeCache = defineCliProcedure({
-    id: "ios-simulator-skill-xcode-cache",
-    entry: new URL("./sources/ios-simulator-skill/xcode/cache.ts", import.meta.url),
-    description: "执行 xcode/cache procedure。",
-    owners: { skillIds: ["ios-simulator-skill"] },
-    target: "scripts/xcode/cache.mjs",
-    runtime: "node",
-  });
-export const iosSimulatorSkillXcodeConfig = defineCliProcedure({
-    id: "ios-simulator-skill-xcode-config",
-    entry: new URL("./sources/ios-simulator-skill/xcode/config.ts", import.meta.url),
-    description: "执行 xcode/config procedure。",
-    owners: { skillIds: ["ios-simulator-skill"] },
-    target: "scripts/xcode/config.mjs",
-    runtime: "node",
-  });
-export const iosSimulatorSkillXcodeIndex = defineCliProcedure({
-    id: "ios-simulator-skill-xcode-index",
-    entry: new URL("./sources/ios-simulator-skill/xcode/index.ts", import.meta.url),
-    description: "执行 xcode/index procedure。",
-    owners: { skillIds: ["ios-simulator-skill"] },
-    target: "scripts/xcode/index.mjs",
-    runtime: "node",
-  });
-export const iosSimulatorSkillXcodeReporter = defineCliProcedure({
-    id: "ios-simulator-skill-xcode-reporter",
-    entry: new URL("./sources/ios-simulator-skill/xcode/reporter.ts", import.meta.url),
-    description: "执行 xcode/reporter procedure。",
-    owners: { skillIds: ["ios-simulator-skill"] },
-    target: "scripts/xcode/reporter.mjs",
-    runtime: "node",
-  });
-export const iosSimulatorSkillXcodeXcresult = defineCliProcedure({
-    id: "ios-simulator-skill-xcode-xcresult",
-    entry: new URL("./sources/ios-simulator-skill/xcode/xcresult.ts", import.meta.url),
-    description: "执行 xcode/xcresult procedure。",
-    owners: { skillIds: ["ios-simulator-skill"] },
-    target: "scripts/xcode/xcresult.mjs",
-    runtime: "node",
-  });
 export const markitdownBatchConvert = defineCliProcedure({
     id: "markitdown-batch-convert",
     entry: new URL("./sources/markitdown/batch_convert.ts", import.meta.url),
@@ -687,14 +607,6 @@ export const markitdownConvertWithAi = defineCliProcedure({
     description: "执行 convert-with-ai procedure。",
     owners: { skillIds: ["markitdown"] },
     target: "scripts/convert_with_ai.mjs",
-    runtime: "node",
-  });
-export const markitdownMarkitdownRuntime = defineCliProcedure({
-    id: "markitdown-markitdown-runtime",
-    entry: new URL("./sources/markitdown/markitdown_runtime.ts", import.meta.url),
-    description: "执行 markitdown-runtime procedure。",
-    owners: { skillIds: ["markitdown"] },
-    target: "scripts/markitdown_runtime.mjs",
     runtime: "node",
   });
 export const mdToPdfKatexRender = defineCliProcedure({
@@ -823,22 +735,6 @@ export const preLandingReviewRenderReport = defineCliProcedure({
     description: "执行 render-report procedure。",
     owners: { skillIds: ["pre-landing-review"] },
     target: "scripts/render_report.mjs",
-    runtime: "node",
-  });
-export const prlctlVmControlFileTransfer = defineCliProcedure({
-    id: "prlctl-vm-control-file-transfer",
-    entry: new URL("./sources/prlctl-vm-control/file_transfer.ts", import.meta.url),
-    description: "执行 file-transfer procedure。",
-    owners: { skillIds: ["prlctl-vm-control"] },
-    target: "scripts/file_transfer.mjs",
-    runtime: "node",
-  });
-export const prlctlVmControlPowershellOutput = defineCliProcedure({
-    id: "prlctl-vm-control-powershell-output",
-    entry: new URL("./sources/prlctl-vm-control/powershell_output.ts", import.meta.url),
-    description: "执行 powershell-output procedure。",
-    owners: { skillIds: ["prlctl-vm-control"] },
-    target: "scripts/powershell_output.mjs",
     runtime: "node",
   });
 export const prlctlVmControlPrlctlHelper = defineCliProcedure({
@@ -1033,28 +929,12 @@ export const skillCreatorRunLoop = defineCliProcedure({
     target: "scripts/run_loop.mjs",
     runtime: "node",
   });
-export const skillCreatorUtils = defineCliProcedure({
-    id: "skill-creator-utils",
-    entry: new URL("./sources/skill-creator/utils.ts", import.meta.url),
-    description: "执行 utils procedure。",
-    owners: { skillIds: ["skill-creator"] },
-    target: "scripts/utils.mjs",
-    runtime: "node",
-  });
 export const skillsPruneAndSyncReadmeCurateSkills = defineCliProcedure({
     id: "skills-prune-and-sync-readme-curate-skills",
     entry: new URL("./sources/skills-prune-and-sync-readme/curate_skills.ts", import.meta.url),
     description: "执行 curate-skills procedure。",
     owners: { skillIds: ["skills-prune-and-sync-readme"] },
     target: "scripts/curate_skills.mjs",
-    runtime: "node",
-  });
-export const skillsPruneAndSyncReadmeSimilarityGroups = defineCliProcedure({
-    id: "skills-prune-and-sync-readme-similarity-groups",
-    entry: new URL("./sources/skills-prune-and-sync-readme/similarity_groups.ts", import.meta.url),
-    description: "执行 similarity-groups procedure。",
-    owners: { skillIds: ["skills-prune-and-sync-readme"] },
-    target: "scripts/similarity_groups.mjs",
     runtime: "node",
   });
 export const skillsPruneAndSyncReadmeTestCurateSkills = defineCliProcedure({
@@ -1079,14 +959,6 @@ export const speckitBaselineCheckPrerequisites = defineCliProcedure({
     description: "执行 check-prerequisites procedure。",
     owners: { skillIds: ["speckit-baseline"] },
     target: "scripts/check-prerequisites.mjs",
-    runtime: "node",
-  });
-export const speckitBaselineCommon = defineCliProcedure({
-    id: "speckit-baseline-common",
-    entry: new URL("./sources/speckit-baseline/common.ts", import.meta.url),
-    description: "执行 common procedure。",
-    owners: { skillIds: ["speckit-baseline"] },
-    target: "scripts/common.mjs",
     runtime: "node",
   });
 export const speckitBaselineCreateNewFeature = defineCliProcedure({
@@ -1159,14 +1031,6 @@ export const youtubeAnalysisFetchTranscript = defineCliProcedure({
     target: "scripts/fetch_transcript.mjs",
     runtime: "node",
   });
-export const youtubeAnalysisUtils = defineCliProcedure({
-    id: "youtube-analysis-utils",
-    entry: new URL("./sources/youtube-analysis/utils.ts", import.meta.url),
-    description: "执行 utils procedure。",
-    owners: { skillIds: ["youtube-analysis"] },
-    target: "scripts/utils.mjs",
-    runtime: "node",
-  });
 export const youtubeSearchSearchYoutube = defineCliProcedure({
     id: "youtube-search-search-youtube",
     entry: new URL("./sources/youtube-search/search_youtube.ts", import.meta.url),
@@ -1181,7 +1045,6 @@ export const componentProcedures = [
   analyticsTrackingTrackingPlanGenerator,
   androidDeviceAutomationAppLauncher,
   androidDeviceAutomationBuildAndTest,
-  androidDeviceAutomationCommon,
   androidDeviceAutomationDiagnoseApp,
   androidDeviceAutomationEmuHealthCheck,
   androidDeviceAutomationEmulatorManage,
@@ -1226,18 +1089,15 @@ export const componentProcedures = [
   iosSimulatorSkillBuildAndTest,
   iosSimulatorSkillClipboard,
   iosSimulatorSkillGesture,
-  iosSimulatorSkillInteractionCommon,
   iosSimulatorSkillKeyboard,
   iosSimulatorSkillLogMonitor,
   iosSimulatorSkillNavigator,
   iosSimulatorSkillPrivacyManager,
   iosSimulatorSkillPushNotification,
   iosSimulatorSkillScreenMapper,
-  iosSimulatorSkillScreenshotCommon,
   iosSimulatorSkillSimHealthCheck,
   iosSimulatorSkillSimList,
   iosSimulatorSkillSimctlBoot,
-  iosSimulatorSkillSimctlCommon,
   iosSimulatorSkillSimctlCreate,
   iosSimulatorSkillSimctlDelete,
   iosSimulatorSkillSimctlErase,
@@ -1246,16 +1106,9 @@ export const componentProcedures = [
   iosSimulatorSkillStatusBar,
   iosSimulatorSkillTestRecorder,
   iosSimulatorSkillVisualDiff,
-  iosSimulatorSkillXcodeBuilder,
-  iosSimulatorSkillXcodeCache,
-  iosSimulatorSkillXcodeConfig,
-  iosSimulatorSkillXcodeIndex,
-  iosSimulatorSkillXcodeReporter,
-  iosSimulatorSkillXcodeXcresult,
   markitdownBatchConvert,
   markitdownConvertLiterature,
   markitdownConvertWithAi,
-  markitdownMarkitdownRuntime,
   mdToPdfKatexRender,
   mdToPdfMdToPdf,
   mdToPdfSetup,
@@ -1272,8 +1125,6 @@ export const componentProcedures = [
   pdfFillPdfFormWithAnnotations,
   preLandingReviewCollectDiff,
   preLandingReviewRenderReport,
-  prlctlVmControlFileTransfer,
-  prlctlVmControlPowershellOutput,
   prlctlVmControlPrlctlHelper,
   promptEngineeringPatternsOptimizePrompt,
   remoteSshCommandInstallSshpass,
@@ -1298,13 +1149,10 @@ export const componentProcedures = [
   skillCreatorQuickValidate,
   skillCreatorRunEval,
   skillCreatorRunLoop,
-  skillCreatorUtils,
   skillsPruneAndSyncReadmeCurateSkills,
-  skillsPruneAndSyncReadmeSimilarityGroups,
   skillsPruneAndSyncReadmeTestCurateSkills,
   speckitBaselineBootstrapSpecify,
   speckitBaselineCheckPrerequisites,
-  speckitBaselineCommon,
   speckitBaselineCreateNewFeature,
   speckitBaselineSetupPlan,
   typescriptTypeSafetyExtractTsErrors,
@@ -1313,6 +1161,5 @@ export const componentProcedures = [
   webPerformanceDiagnosisAnalyze,
   youtubeAnalysisAnalyzeVideo,
   youtubeAnalysisFetchTranscript,
-  youtubeAnalysisUtils,
   youtubeSearchSearchYoutube,
 ] as const;

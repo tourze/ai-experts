@@ -3,6 +3,8 @@
  * Plans and tracks A/B tests for metadata and visual assets.
  */
 
+import { getNumber, getRecord, getString, runJsonProcedure } from "./cli";
+
 type AnyRecord = Record<string, any>;
 
 export class ABTestPlanner {
@@ -484,6 +486,18 @@ export function planAbTest(
 }
 
 export const plan_ab_test = planAbTest;
+
+export function main(argv: string[] = process.argv.slice(2)): number {
+  return runJsonProcedure(argv, (request) =>
+    planAbTest(
+      getString(request, ["testType", "test_type"]),
+      getRecord(request, ["variantA", "variant_a"]),
+      getRecord(request, ["variantB", "variant_b"]),
+      getString(request, ["hypothesis"]),
+      getNumber(request, ["baselineConversion", "baseline_conversion"]),
+    ),
+  );
+}
 
 function roundTo(value: number, digits: number): number {
   const factor = 10 ** digits;

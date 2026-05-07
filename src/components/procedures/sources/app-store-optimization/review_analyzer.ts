@@ -3,6 +3,8 @@
  * Analyzes user reviews for sentiment, issues, and feature requests.
  */
 
+import { getArray, getString, runJsonProcedure } from "./cli";
+
 type AnyRecord = Record<string, any>;
 
 const POSITIVE_KEYWORDS = [
@@ -560,6 +562,15 @@ export function analyzeReviews(appName: string, reviews: AnyRecord[]): AnyRecord
 }
 
 export const analyze_reviews = analyzeReviews;
+
+export function main(argv: string[] = process.argv.slice(2)): number {
+  return runJsonProcedure(argv, (request) =>
+    analyzeReviews(
+      getString(request, ["appName", "app_name"], "App"),
+      getArray<AnyRecord>(request, ["reviews"]),
+    ),
+  );
+}
 
 function topCounts(items: string[], limit: number, minMentions: number): Array<[string, number]> {
   const counts = new Map<string, number>();

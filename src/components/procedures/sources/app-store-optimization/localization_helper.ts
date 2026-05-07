@@ -3,6 +3,8 @@
  * Manages multi-language ASO optimization strategies.
  */
 
+import { getNumber, getString, runJsonProcedure } from "./cli";
+
 type AnyRecord = Record<string, any>;
 
 export class LocalizationHelper {
@@ -454,6 +456,16 @@ export function planLocalizationStrategy(
 }
 
 export const plan_localization_strategy = planLocalizationStrategy;
+
+export function main(argv: string[] = process.argv.slice(2)): number {
+  return runJsonProcedure(argv, (request) =>
+    planLocalizationStrategy(
+      getString(request, ["currentMarket", "current_market"]),
+      getString(request, ["budgetLevel", "budget_level"], "medium"),
+      getNumber(request, ["monthlyDownloads", "monthly_downloads"], 0),
+    ),
+  );
+}
 
 function roundTo(value: number, digits: number): number {
   const factor = 10 ** digits;

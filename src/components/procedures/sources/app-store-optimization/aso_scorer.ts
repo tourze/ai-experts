@@ -3,6 +3,8 @@
  * Calculates comprehensive ASO health score across multiple dimensions.
  */
 
+import { getRecord, runJsonProcedure } from "./cli";
+
 type AnyRecord = Record<string, any>;
 
 export class ASOScorer {
@@ -366,6 +368,17 @@ export function calculateAsoScore(
 }
 
 export const calculate_aso_score = calculateAsoScore;
+
+export function main(argv: string[] = process.argv.slice(2)): number {
+  return runJsonProcedure(argv, (request) =>
+    calculateAsoScore(
+      getRecord(request, ["metadata"]),
+      getRecord(request, ["ratings"]),
+      getRecord(request, ["keywordPerformance", "keyword_performance"]),
+      getRecord(request, ["conversion"]),
+    ),
+  );
+}
 
 function roundTo(value: number, digits: number): number {
   const factor = 10 ** digits;

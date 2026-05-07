@@ -8,7 +8,7 @@ import {
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
-import { procedureUse, markitdownBatchConvert, markitdownConvertLiterature, markitdownConvertWithAi, markitdownMarkitdownRuntime } from "../../procedures/index";
+import { procedureUse, markitdownBatchConvert, markitdownConvertLiterature, markitdownConvertWithAi } from "../../procedures/index";
 
 import { docCoauthoringSkill } from "../doc-coauthoring/index";
 import { mdToPdfSkill } from "../md-to-pdf/index";
@@ -92,7 +92,6 @@ export const markitdownSkill = defineSkill({
     procedureUse(markitdownBatchConvert),
     procedureUse(markitdownConvertLiterature),
     procedureUse(markitdownConvertWithAi),
-    procedureUse(markitdownMarkitdownRuntime),
   ],
   references: [
     defineReference({

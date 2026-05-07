@@ -267,6 +267,16 @@ describe("component build integration", () => {
     assert.equal(unknownScript.ok, false);
     assert.match(unknownScript.error.message, /procedure not found/);
 
+    const helperOnlyProcedure = JSON.parse(execFileSync(process.execPath, [
+      proceduresPath,
+      "--procedure-id",
+      "android-device-automation-common",
+      "--trigger-skill",
+      "android-device-automation",
+    ], { encoding: "utf-8" }));
+    assert.equal(helperOnlyProcedure.ok, false);
+    assert.match(helperOnlyProcedure.error.message, /procedure not found/);
+
     const ownerMismatch = JSON.parse(execFileSync(process.execPath, [
       proceduresPath,
       "--procedure-id",
@@ -354,6 +364,18 @@ describe("component build integration", () => {
       ], { encoding: "utf-8", timeout: 20_000 }));
     }
 
+    function runProcedureRequest(id: string, skillId: string, request: Record<string, unknown>): any {
+      return JSON.parse(execFileSync(process.execPath, [
+        proceduresPath,
+        "--procedure-id",
+        id,
+        "--trigger-skill",
+        skillId,
+        "--request-json",
+        JSON.stringify(request),
+      ], { encoding: "utf-8", timeout: 20_000 }));
+    }
+
     function runProcedureWithEnv(id: string, skillId: string, args: string[], env: NodeJS.ProcessEnv): any {
       return JSON.parse(execFileSync(process.execPath, [
         proceduresPath,
@@ -390,6 +412,24 @@ describe("component build integration", () => {
       ]);
       assert.equal(tsErrors.ok, true);
       assert.equal(JSON.parse(tsErrors.result.stdout).total, 2);
+
+      const metadataOptimizer = runProcedureRequest(
+        "app-store-optimization-metadata-optimizer",
+        "app-store-optimization",
+        {
+          platform: "apple",
+          appInfo: {
+            name: "Focus Timer",
+            primary_benefit: "stay focused during deep work",
+            features: ["focus sessions", "progress tracking"],
+          },
+          targetKeywords: ["focus", "timer"],
+        },
+      );
+      assert.equal(metadataOptimizer.ok, true, metadataOptimizer.result?.stderr);
+      const metadata = JSON.parse(metadataOptimizer.result.stdout);
+      assert.equal(metadata.platform, "apple");
+      assert.equal(typeof metadata.title.recommendation, "string");
 
       const workspace = join(runtimeTmp, "review-workspace");
       mkdirSync(join(workspace, "case-1", "outputs"), { recursive: true });

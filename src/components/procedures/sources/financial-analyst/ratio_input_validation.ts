@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 const REQUIRED_FIELDS_BY_CATEGORY: Record<string, any> = {
     profitability: [
         "income_statement.revenue",
@@ -71,4 +73,71 @@ export function validateRatioInput(data: any, category: any = null): any {
         messages.push(`required ${invalid.length === 1 ? "field" : "fields"} ${formatPathList(invalid)} must be finite ${invalid.length === 1 ? "number" : "numbers"}`);
     }
     throw new Error(messages.join("; "));
+}
+
+function parseArgs(argv: string[]): { inputFile?: string; category?: string; help: boolean } {
+    const args: { inputFile?: string; category?: string; help: boolean } = { help: false };
+    for (let index = 0; index < argv.length; index += 1) {
+        const arg = argv[index];
+        if (arg === "--help" || arg === "-h") {
+            args.help = true;
+        }
+        else if (arg === "--input" || arg === "-i") {
+            args.inputFile = argv[++index];
+        }
+        else if (arg === "--category" || arg === "-c") {
+            args.category = argv[++index];
+        }
+        else {
+            throw new Error(`unknown argument: ${arg}`);
+        }
+    }
+    return args;
+}
+
+function readRequestPayload(): Record<string, any> {
+    const raw = process.env.AI_EXPERTS_PROCEDURE_REQUEST_JSON;
+    if (!raw || raw.trim() === "") {
+        return {};
+    }
+    const parsed = JSON.parse(raw);
+    if (parsed == null || typeof parsed !== "object" || Array.isArray(parsed)) {
+        throw new Error("AI_EXPERTS_PROCEDURE_REQUEST_JSON must be a JSON object");
+    }
+    return parsed;
+}
+
+function readInputData(args: { inputFile?: string }, request: Record<string, any>): any {
+    if (args.inputFile) {
+        return JSON.parse(readFileSync(args.inputFile, "utf-8"));
+    }
+    if (request.data !== undefined) {
+        return request.data;
+    }
+    if (request.financialData !== undefined) {
+        return request.financialData;
+    }
+    if (request.financial_data !== undefined) {
+        return request.financial_data;
+    }
+    throw new Error("missing input data; pass --input <json-file> or request JSON field data");
+}
+
+export function main(argv: string[] = process.argv.slice(2)): number {
+    try {
+        const args = parseArgs(argv);
+        if (args.help) {
+            console.log("Usage: ratio_input_validation.mjs --input <json-file> [--category <name>]");
+            return 0;
+        }
+        const request = readRequestPayload();
+        const category = args.category ?? request.category ?? null;
+        validateRatioInput(readInputData(args, request), category);
+        console.log(JSON.stringify({ ok: true, category }, null, 2));
+        return 0;
+    }
+    catch (error) {
+        console.error(`Error: ${error instanceof Error ? error.message : String(error)}`);
+        return 1;
+    }
 }

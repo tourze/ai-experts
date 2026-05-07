@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, relative } from "node:path";
+import { fileURLToPath } from "node:url";
 import { describe, test } from "vitest";
 import { registry } from "../../src/components/registry.ts";
 import {
@@ -68,6 +69,40 @@ describe("component source conventions", () => {
       guardedWithoutExport,
       [],
       "procedures guarded by an is-main check must export main() so procedures.js can invoke only the selected module",
+    );
+  });
+
+  test("registered procedures are executable entries, not helper-only modules", () => {
+    function procedurePath(entry: URL | string): string {
+      return entry instanceof URL ? fileURLToPath(entry) : entry;
+    }
+
+    function hasRunnableEntry(source: string): boolean {
+      const exportsMain = /\bexport\s+(?:async\s+)?function\s+main\b|\bexport\s+const\s+main\b/.test(source);
+      const invokesMain =
+        /(?:^|\n)\s*(?:process\.exitCode\s*=\s*)?(?:await\s+)?main\(/.test(source) ||
+        /(?:^|\n)\s*main\(\)\.(?:then|catch)\(/.test(source);
+      const topLevelOutputOrExit =
+        /(?:^|\n)(?:console\.(?:log|error|warn)|process\.(?:stdout|stderr)\.write|process\.exitCode\s*=|process\.exit\()/.test(source);
+      return exportsMain || invokesMain || topLevelOutputOrExit;
+    }
+
+    const helperOnlyProcedures = registry.procedures
+      .map((procedure) => {
+        const path = procedurePath(procedure.entry);
+        return {
+          id: procedure.id,
+          path,
+          source: readFileSync(path, "utf-8"),
+        };
+      })
+      .filter(({ source }) => !hasRunnableEntry(source))
+      .map(({ id, path }) => `${id}: ${relative(repoRoot, path)}`);
+
+    assert.deepEqual(
+      helperOnlyProcedures,
+      [],
+      "registered Procedure entries must be callable procedures; import-only helper modules should stay unregistered",
     );
   });
 

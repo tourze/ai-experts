@@ -3,6 +3,8 @@
  * Generates comprehensive pre-launch and update checklists.
  */
 
+import { getField, getRecord, getString, runJsonProcedure } from "./cli";
+
 type AnyRecord = Record<string, any>;
 
 export class LaunchChecklistGenerator {
@@ -519,6 +521,16 @@ export function generateLaunchChecklist(platform: "apple" | "google" | "both", a
 }
 
 export const generate_launch_checklist = generateLaunchChecklist;
+
+export function main(argv: string[] = process.argv.slice(2)): number {
+  return runJsonProcedure(argv, (request) =>
+    generateLaunchChecklist(
+      getString(request, ["platform"], "both") as "apple" | "google" | "both",
+      getRecord(request, ["appInfo", "app_info", "app"]),
+      getField<string | undefined>(request, ["launchDate", "launch_date"], undefined),
+    ),
+  );
+}
 
 function parseDate(value: string): Date {
   const [year, month, day] = value.split("-").map(Number);

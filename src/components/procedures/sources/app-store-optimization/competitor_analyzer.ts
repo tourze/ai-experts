@@ -3,6 +3,8 @@
  * Analyzes top competitors' ASO strategies and identifies opportunities.
  */
 
+import { getArray, getString, runJsonProcedure } from "./cli";
+
 type AnyRecord = Record<string, any>;
 
 export class CompetitorAnalyzer {
@@ -442,6 +444,16 @@ export function analyzeCompetitorSet(
 }
 
 export const analyze_competitor_set = analyzeCompetitorSet;
+
+export function main(argv: string[] = process.argv.slice(2)): number {
+  return runJsonProcedure(argv, (request) =>
+    analyzeCompetitorSet(
+      getString(request, ["category"]),
+      getArray<AnyRecord>(request, ["competitorsData", "competitors_data", "competitors"]),
+      getString(request, ["platform"], "apple"),
+    ),
+  );
+}
 
 function roundTo(value: number, digits: number): number {
   const factor = 10 ** digits;

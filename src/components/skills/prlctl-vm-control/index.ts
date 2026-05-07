@@ -7,7 +7,7 @@ import {
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
-import { procedureUse, prlctlVmControlFileTransfer, prlctlVmControlPowershellOutput, prlctlVmControlPrlctlHelper } from "../../procedures/index";
+import { procedureUse, prlctlVmControlPrlctlHelper } from "../../procedures/index";
 
 import { windowsKernelSecuritySkill } from "../windows-kernel-security/index";
 import { windowsUiAutomationSkill } from "../windows-ui-automation/index";
@@ -30,7 +30,7 @@ export const prlctlVmControlSkill = defineSkill({
     "优先把任务拆成多个可验证的小命令；失败时先保留 stdout / stderr，再缩小范围重试。",
     "如果任务依赖 GUI、剪贴板、浏览器会话或登录态，不要假定 `prlctl exec` 默认上下文正确，必须先做身份验证。",
     "Windows 文本输出优先走 `--shell powershell`，helper 会用 Base64 envelope 规避中文输出在 `prlctl` / 终端链路中的编码损坏；只有需要完全手写进程参数时才用 `--shell raw`。",
-    "文件传输走 helper 的 `upload` / `download`，默认会分片传输并覆盖目标文件；传输敏感文件前先确认目标路径和登录上下文。",
+    "文件传输走 `prlctl-helper` 的 `upload` / `download` 子命令，默认会分片传输并覆盖目标文件；传输敏感文件前先确认目标路径和登录上下文。",
     "诊断 helper 挂起时只输出 PID、PPID、状态、运行时长和可执行文件名等摘要；不要把 Claude / CLI 临时任务输出、完整 `ps aux` 长命令行或 PowerShell/Base64 payload 直接贴回对话。",
   ],
   checklist: [
@@ -73,7 +73,7 @@ export const prlctlVmControlSkill = defineSkill({
     steps: [
       "先用 helper 的 `list` / `resolve` 把目标虚拟机解析为唯一对象，再采集 `status` / `info` 作为基线。",
       "执行客体命令前先做小命令或 dry-run；Windows 输出优先走 PowerShell envelope，依赖登录态的任务先确认当前用户上下文。",
-      "上传和下载统一走 file-transfer procedure，执行前确认方向、源路径、目标路径和覆盖风险。",
+      "上传和下载统一走 `prlctl-helper` 的文件传输子命令，执行前确认方向、源路径、目标路径和覆盖风险。",
       "只有用户明确要求时才执行 reset、kill stop、snapshot 切换/删除或 `prlctl set`；常见模板读取 recipes reference。",
     ],
   }),
@@ -85,8 +85,6 @@ export const prlctlVmControlSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(prlctlVmControlFileTransfer),
-    procedureUse(prlctlVmControlPowershellOutput),
     procedureUse(prlctlVmControlPrlctlHelper),
   ],
   references: [

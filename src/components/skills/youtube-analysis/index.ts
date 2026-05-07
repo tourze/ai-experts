@@ -8,7 +8,7 @@ import {
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
-import { procedureUse, youtubeAnalysisAnalyzeVideo, youtubeAnalysisFetchTranscript, youtubeAnalysisUtils } from "../../procedures/index";
+import { procedureUse, youtubeAnalysisAnalyzeVideo, youtubeAnalysisFetchTranscript } from "../../procedures/index";
 
 import { youtubeSearchSkill } from "../youtube-search/index";
 
@@ -76,7 +76,6 @@ export const youtubeAnalysisSkill = defineSkill({
   procedures: [
     procedureUse(youtubeAnalysisAnalyzeVideo),
     procedureUse(youtubeAnalysisFetchTranscript),
-    procedureUse(youtubeAnalysisUtils),
   ],
   references: [
     defineReference({

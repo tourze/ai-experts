@@ -8,7 +8,7 @@ import {
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
-import { procedureUse, skillCreatorAggregateBenchmark, skillCreatorGenerateReview, skillCreatorGenerateReport, skillCreatorImproveDescription, skillCreatorPackageSkill, skillCreatorQuickValidate, skillCreatorRunEval, skillCreatorRunLoop, skillCreatorUtils } from "../../procedures/index";
+import { procedureUse, skillCreatorAggregateBenchmark, skillCreatorGenerateReview, skillCreatorGenerateReport, skillCreatorImproveDescription, skillCreatorPackageSkill, skillCreatorQuickValidate, skillCreatorRunEval, skillCreatorRunLoop } from "../../procedures/index";
 
 export const skillCreatorSkill = defineSkill({
   id: "skill-creator",
@@ -66,7 +66,6 @@ export const skillCreatorSkill = defineSkill({
     procedureUse(skillCreatorQuickValidate),
     procedureUse(skillCreatorRunEval),
     procedureUse(skillCreatorRunLoop),
-    procedureUse(skillCreatorUtils),
   ],
   references: [
     defineReference({

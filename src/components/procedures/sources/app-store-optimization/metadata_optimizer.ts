@@ -3,6 +3,8 @@
  * Optimizes titles, descriptions, and keyword fields with platform-specific limits.
  */
 
+import { getArray, getRecord, getString, runJsonProcedure } from "./cli";
+
 type AnyRecord = Record<string, any>;
 type Platform = "apple" | "google";
 
@@ -433,6 +435,16 @@ export function optimizeAppMetadata(platform: Platform, appInfo: AnyRecord, targ
 }
 
 export const optimize_app_metadata = optimizeAppMetadata;
+
+export function main(argv: string[] = process.argv.slice(2)): number {
+  return runJsonProcedure(argv, (request) =>
+    optimizeAppMetadata(
+      getString(request, ["platform"], "apple") as Platform,
+      getRecord(request, ["appInfo", "app_info", "app"]),
+      getArray<string>(request, ["targetKeywords", "target_keywords", "keywords"]).map(String),
+    ),
+  );
+}
 
 function countOccurrences(text: string, keyword: string): number {
   if (!keyword) return 0;
