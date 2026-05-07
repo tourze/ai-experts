@@ -5,6 +5,9 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { goConcurrencyPatternsSkill } from "../go-concurrency-patterns/index";
 import { goSecuritySkill } from "../go-security/index";
@@ -80,9 +83,35 @@ export const goDatabaseSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计 Go 数据访问层、Repository 接口、NULL 扫描、连接池参数、事务边界和 SQL 错误处理。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认 DB driver、上下文超时、事务范围、NULL 字段、连接池负载和测试替身。",
+      "用 Repository 隐藏数据访问，接口放消费方或业务边界，错误保留 `%w` 链。",
+      "NULLable 字段选择 `sql.Null*` 或指针，连接池参数基于 DB 和服务并发设置。",
+      "Repository / NULL / pool 示例读取 `repository-patterns`；事务细节读取 `transactions`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Repository 接口、实现结构、事务边界和上下文超时策略。",
+      "NULL 扫描、连接池参数、错误合同和测试替身建议。",
+      "SQL 风险、迁移影响和需要压测的数据。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "repository-patterns",
+      source: new URL("./references/repository-patterns.md", import.meta.url),
+      target: "references/repository-patterns.md",
+      title: "Go Repository 与数据库模式",
+      summary: "Repository 接口、sql.ErrNoRows、NULLable 扫描和连接池配置示例。",
+      loadWhen: "需要快速实现或审查 Go database/sql 数据访问层时读取。",
+    }),
     defineReference({
       id: "transactions",
       source: new URL("./references/transactions.md", import.meta.url),

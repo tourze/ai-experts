@@ -5,6 +5,9 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { goConcurrencyPatternsSkill } from "../go-concurrency-patterns/index";
 import { goErrorHandlingSkill } from "../go-error-handling/index";
@@ -20,7 +23,7 @@ export const goTroubleshootingSkill = defineSkill({
     "生产环境异常排查：crash 日志分析、stack trace 解读、运行时 profile 采集。",
     "优化方法论和 benchmark 验证 → `go-performance`。",
     "goroutine/channel 死锁与泄漏模式 → `go-concurrency-patterns`。",
-    "panic 恢复与运行时安全 → `go-safety`。",
+    "panic、错误传播与资源释放边界 → `go-error-handling`。",
   ],
   constraints: [
     "**先复现再修复**：无法复现的 bug 先增加可观测性（日志/pprof 端点），不盲改。",
@@ -40,8 +43,7 @@ export const goTroubleshootingSkill = defineSkill({
       get id() {
         return goErrorHandlingSkill.id;
       },
-      label: "go-safety",
-      reason: "panic 恢复与运行时安全 → `go-safety`。",
+      reason: "panic、错误传播与资源释放边界需要收敛时联动。",
     },
     {
       get id() {
@@ -82,9 +84,35 @@ export const goTroubleshootingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "排查 Go crash、panic、异常行为、性能退化、不可复现问题和根因假设验证流程。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先按现象分流：crash / panic、存活但异常、性能退化或不可稳定复现。",
+      "panic 先读 stack trace；行为异常先收日志、指标和 profile；不可复现先补观测。",
+      "一次只验证一个假设，失败假设要记录，避免同时改多个变量。",
+      "调试决策树读取 `debugging-decision-tree`；工具和方法论细节读取 `diagnostic-tools` / `methodology`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "问题分类、已收集证据、复现条件和初步假设。",
+      "下一步诊断命令、profile / log / trace 采集点和验证计划。",
+      "已排除假设、剩余未知项和回归验证建议。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "debugging-decision-tree",
+      source: new URL("./references/debugging-decision-tree.md", import.meta.url),
+      target: "references/debugging-decision-tree.md",
+      title: "Go 调试决策树",
+      summary: "crash/panic、行为异常、复现性和根因假设验证的分流决策树。",
+      loadWhen: "需要快速判断 Go 问题下一步该收集什么证据时读取。",
+    }),
     defineReference({
       id: "diagnostic-tools",
       source: new URL("./references/diagnostic-tools.md", import.meta.url),

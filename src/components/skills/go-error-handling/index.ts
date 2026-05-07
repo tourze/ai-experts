@@ -5,6 +5,9 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const goErrorHandlingSkill = defineSkill({
@@ -46,9 +49,35 @@ export const goErrorHandlingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计 Go 错误合同、错误链、sentinel error、自定义错误类型和上下文包装方式。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认错误是否跨包暴露、调用方是否需要 `errors.Is` / `errors.As`、是否需要稳定合同。",
+      "保留错误链用 `%w`，sentinel error 表达稳定可匹配状态，自定义类型携带结构化字段。",
+      "错误信息保留操作和关键上下文，但不要重复上层已经会补的内容。",
+      "快速代码模式读取 `error-patterns`；创建和包装细节读取 `error-creation` / `error-wrapping`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "错误类型、sentinel、自定义字段和 `%w` 包装策略。",
+      "调用方匹配方式、HTTP / gRPC 等边界转换和测试建议。",
+      "需要修复的丢链、字符串匹配或上下文重复问题。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "error-patterns",
+      source: new URL("./references/error-patterns.md", import.meta.url),
+      target: "references/error-patterns.md",
+      title: "Go 错误处理代码模式",
+      summary: "错误链、sentinel error 和自定义错误类型的 Go 示例。",
+      loadWhen: "需要快速套用 Go 错误合同或错误包装模式时读取。",
+    }),
     defineReference({
       id: "error-creation",
       source: new URL("./references/error-creation.md", import.meta.url),

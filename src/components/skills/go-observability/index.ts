@@ -5,6 +5,9 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { goPerformanceSkill } from "../go-performance/index";
 import { goTroubleshootingSkill } from "../go-troubleshooting/index";
@@ -73,9 +76,35 @@ export const goObservabilitySkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 Go 服务设计 logs、metrics、traces、profiles 和 alerts 五大信号，并规划 log.Printf 到 slog 的迁移。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认服务边界、关键 SLO、已有日志 / 指标 / trace / profile 和告警来源。",
+      "按五大信号补齐事件、趋势、调用链、性能采样和症状告警，不用单一日志代替观测体系。",
+      "迁移 slog 时先拆字段、注入 trace_id / span_id、设置 JSON handler 和采样策略。",
+      "五大信号和 slog 迁移读取 `signals-and-migration`；日志细节读取 `logging`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "logs / metrics / traces / profiles / alerts 覆盖矩阵和缺口。",
+      "slog 迁移步骤、字段规范、trace 注入和采样建议。",
+      "需要新增的仪表盘、告警和性能 profile 入口。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "signals-and-migration",
+      source: new URL("./references/signals-and-migration.md", import.meta.url),
+      target: "references/signals-and-migration.md",
+      title: "Go 可观测性信号与 slog 迁移",
+      summary: "Logs、Metrics、Traces、Profiles、Alerts 五大信号职责和 log.Printf 到 slog 的迁移路径。",
+      loadWhen: "需要快速规划 Go 服务观测体系或 slog 迁移时读取。",
+    }),
     defineReference({
       id: "logging",
       source: new URL("./references/logging.md", import.meta.url),

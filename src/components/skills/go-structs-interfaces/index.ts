@@ -5,6 +5,9 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const goStructsInterfacesSkill = defineSkill({
@@ -56,9 +59,35 @@ export const goStructsInterfacesSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计 Go struct、interface、receiver、泛型约束和组合边界，让 API 小、可测试且零值可用。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认结构体所有权、零值语义、消费方接口、receiver 一致性和泛型约束。",
+      "函数接受小接口、返回具体结构体；接口在消费方定义；小接口命名用行为后缀。",
+      "结构体尽量零值可用，pointer / value receiver 不混用，泛型约束保持最窄。",
+      "实现要点读取 `implementation-guide`；组合细节读取 `composition`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "struct 字段、零值语义、receiver 策略和 interface 边界建议。",
+      "泛型约束、组合方式和测试替身设计。",
+      "API 泄漏、过度抽象或 nil / copy 风险。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "implementation-guide",
+      source: new URL("./references/implementation-guide.md", import.meta.url),
+      target: "references/implementation-guide.md",
+      title: "Go structs/interfaces 实现要点",
+      summary: "接受接口返回结构体、消费方接口、零值可用、receiver 一致性和最窄泛型约束规则。",
+      loadWhen: "需要快速审查 Go struct/interface API 边界时读取。",
+    }),
     defineReference({
       id: "composition",
       source: new URL("./references/composition.md", import.meta.url),

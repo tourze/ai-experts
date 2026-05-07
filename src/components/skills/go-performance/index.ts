@@ -5,6 +5,9 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { goConcurrencyPatternsSkill } from "../go-concurrency-patterns/index";
 import { goErrorHandlingSkill } from "../go-error-handling/index";
@@ -17,7 +20,7 @@ export const goPerformanceSkill = defineSkill({
     "优化热路径延迟、吞吐、内存分配、GC 压力或连接池。",
     "写 Go benchmark、用 `benchstat` 比较实现、解释 pprof 输出。",
     "审查\"性能优化\"是否有基线、统计显著性和回归测试。",
-    "并发瓶颈配合 `go-concurrency-patterns`；资源安全配合 `go-safety`。",
+    "并发瓶颈配合 `go-concurrency-patterns`；panic / 错误边界配合 `go-error-handling`。",
     "持续监控 → go-observability；排查\"为什么慢\" → go-troubleshooting。",
   ],
   constraints: [
@@ -33,14 +36,13 @@ export const goPerformanceSkill = defineSkill({
       get id() {
         return goErrorHandlingSkill.id;
       },
-      label: "go-safety",
-      reason: "并发瓶颈配合 `go-concurrency-patterns`；资源安全配合 `go-safety`。",
+      reason: "panic、错误传播或资源释放边界影响性能修复安全性时联动。",
     },
     {
       get id() {
         return goConcurrencyPatternsSkill.id;
       },
-      reason: "并发瓶颈配合 `go-concurrency-patterns`；资源安全配合 `go-safety`。",
+      reason: "goroutine、channel、锁竞争或并发度瓶颈时联动。",
     },
   ],
   antiPatterns: [
@@ -75,9 +77,35 @@ export const goPerformanceSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 pprof、trace、逃逸分析和基准数据定位 Go CPU、内存、锁竞争、外部瓶颈和并发度问题。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认是否外部瓶颈，再用 CPU / heap / goroutine / mutex / block profile 和 trace 定位 Go 侧问题。",
+      "按算法复杂度、分配、系统调用、GC、锁竞争和并发度顺序收敛，不凭直觉优化。",
+      "逃逸分析、alloc profile 和 trace 结果必须绑定命令和输入场景。",
+      "排查决策树读取 `performance-triage`；pprof / benchmark 细节读取对应 references。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "性能基线、profile / trace 命令、输入场景和瓶颈分类。",
+      "CPU、内存、GC、锁、goroutine 或外部依赖的优先修复建议。",
+      "验证指标、回归风险和仍需采集的数据。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "performance-triage",
+      source: new URL("./references/performance-triage.md", import.meta.url),
+      target: "references/performance-triage.md",
+      title: "Go 性能排查决策树",
+      summary: "外部瓶颈、CPU、内存、GC、锁竞争和并发度的排查路径与诊断命令。",
+      loadWhen: "需要快速判断 Go 性能问题应该先看哪类证据时读取。",
+    }),
     defineReference({
       id: "benchmarking",
       source: new URL("./references/benchmarking.md", import.meta.url),

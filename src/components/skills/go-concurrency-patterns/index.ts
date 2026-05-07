@@ -5,6 +5,9 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const goConcurrencyPatternsSkill = defineSkill({
@@ -56,9 +59,35 @@ export const goConcurrencyPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计 Go 并发中的 goroutine 生命周期、context 取消、errgroup 限流、worker pool、channel 和同步原语边界。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认任务所有者、取消路径、并发上限、结果收集和错误传播策略。",
+      "优先用 errgroup + context 管理先失败先取消；worker pool 必须有界并可关闭。",
+      "检查 goroutine 泄漏、无缓冲阻塞、锁粒度、channel 关闭方和 context 传递边界。",
+      "errgroup / worker pool 速查读取 `runtime-patterns`；fan-out、context、channel、sync 深入读取对应 references。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "goroutine 生命周期、取消传播、并发上限和错误收敛方案。",
+      "channel / worker pool / sync primitive 使用边界和泄漏风险。",
+      "需要补的 race 测试、超时测试和观测点。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "runtime-patterns",
+      source: new URL("./references/runtime-patterns.md", import.meta.url),
+      target: "references/runtime-patterns.md",
+      title: "Go 并发运行时模式",
+      summary: "errgroup + SetLimit、有界 worker pool 和 pipeline 的快速代码模式。",
+      loadWhen: "需要快速套用 Go 限流并发或 worker pool 模式时读取。",
+    }),
     defineReference({
       id: "advanced-patterns",
       source: new URL("./references/advanced-patterns.md", import.meta.url),

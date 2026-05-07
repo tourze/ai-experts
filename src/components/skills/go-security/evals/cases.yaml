@@ -22,7 +22,7 @@ cases:
     fixtures: []
     rubric:
       - "不触发 go-security"
-      - "运行时 nil 安全属于 go-safety"
+      - "nil 指针 panic 排查属于 go-troubleshooting 或 go-error-handling"
     trigger_expected: false
 
   - id: negative_concurrency_pattern

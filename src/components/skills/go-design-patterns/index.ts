@@ -5,6 +5,9 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const goDesignPatternsSkill = defineSkill({
@@ -54,9 +57,35 @@ export const goDesignPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "选择 Go 中轻量、可测试的实现模式，包括函数式选项、重试、优雅停机和依赖注入边界。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认问题是构造参数膨胀、可选配置、重试容错、生命周期管理还是依赖替换。",
+      "函数式选项用于稳定构造 API；重试必须检查 context；优雅停机必须有超时。",
+      "不要为模式而模式，优先使用简单函数、接口和组合。",
+      "常用代码模式读取 `implementation-patterns`；依赖注入细节读取 `di`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "适用的 Go 设计模式、使用原因和不使用更重抽象的理由。",
+      "构造、重试、停机或依赖注入的代码结构建议。",
+      "测试点、生命周期风险和剩余 trade-off。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "implementation-patterns",
+      source: new URL("./references/implementation-patterns.md", import.meta.url),
+      target: "references/implementation-patterns.md",
+      title: "Go 设计模式代码示例",
+      summary: "函数式选项、context-aware retry 和优雅停机的 Go 代码模式。",
+      loadWhen: "需要快速实现 Go 构造配置、重试或 graceful shutdown 时读取。",
+    }),
     defineReference({
       id: "di",
       source: new URL("./references/di.md", import.meta.url),

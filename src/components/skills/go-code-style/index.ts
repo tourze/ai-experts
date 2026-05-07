@@ -5,7 +5,11 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
+import { goDataStructuresSkill } from "../go-data-structures/index";
 import { goErrorHandlingSkill } from "../go-error-handling/index";
 
 export const goCodeStyleSkill = defineSkill({
@@ -16,7 +20,7 @@ export const goCodeStyleSkill = defineSkill({
     "编写或审查 Go 代码时，需要判断“能跑”和“好维护”之间的差距。",
     "需要处理长函数、深层嵌套、过长参数列表、导出面过大、命名字段缺失等可读性问题。",
     "需要把 AI 生成的 Go 代码改成更接近工程惯例的版本。",
-    "需要命名或错误语义时配合 `go-error-handling`；涉及 nil、slice、map 或资源安全时配合 `go-safety`。",
+    "需要命名或错误语义时配合 `go-error-handling`；涉及 nil、slice、map 或 copy 语义时配合 `go-data-structures`。",
   ],
   constraints: [
     "先跑 `gofmt` / `go test` / 项目既有 lint，再讨论主观风格；格式问题交给工具。",
@@ -39,7 +43,13 @@ export const goCodeStyleSkill = defineSkill({
       get id() {
         return goErrorHandlingSkill.id;
       },
-      reason: "需要命名或错误语义时配合 `go-error-handling`；涉及 nil、slice、map 或资源安全时配合 `go-safety`。",
+      reason: "需要命名或错误语义时联动。",
+    },
+    {
+      get id() {
+        return goDataStructuresSkill.id;
+      },
+      reason: "涉及 nil、slice、map 或 copy 语义时联动。",
     },
   ],
   antiPatterns: [
@@ -74,9 +84,35 @@ export const goCodeStyleSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "审查和重构 Go 代码风格，让函数主路径、参数对象、命名条件、注释和错误上下文保持清晰。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先识别函数职责、错误路径、参数列表、条件复杂度和注释噪声。",
+      "用早返回保持主路径清晰，用领域对象收口参数膨胀，用命名布尔表达式拆复杂条件。",
+      "注释优先解释原因和不变量，不翻译代码；公共 API 文档另按文档规范处理。",
+      "常用代码模式读取 `code-patterns`；更完整文档规则读取 `documentation`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "需要调整的函数职责、参数对象、条件命名和错误路径。",
+      "早返回 / 请求对象 / 命名条件等重构建议。",
+      "注释与文档的职责边界和剩余可读性风险。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "code-patterns",
+      source: new URL("./references/code-patterns.md", import.meta.url),
+      target: "references/code-patterns.md",
+      title: "Go 代码风格模式",
+      summary: "早返回、领域请求对象和复杂条件命名的 Go 代码示例。",
+      loadWhen: "需要快速套用 Go 可读性重构模式时读取。",
+    }),
     defineReference({
       id: "documentation",
       source: new URL("./references/documentation.md", import.meta.url),

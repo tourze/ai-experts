@@ -5,6 +5,9 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { goErrorHandlingSkill } from "../go-error-handling/index";
 import { goPerformanceSkill } from "../go-performance/index";
@@ -78,9 +81,35 @@ export const goGrpcSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "实现和审查 Go gRPC 服务端 / 客户端注册、连接、错误状态、拦截器和 protobuf 生成流程。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认 proto、生成命令、服务端注册、客户端凭据、deadline 和拦截器需求。",
+      "服务端用生成的 Register 方法注册实现，客户端统一设置 transport credentials 和超时。",
+      "错误必须转成 `status.Errorf(codes.XXX, ...)`，拦截器用 chain 组合。",
+      "实现要点读取 `implementation-guide`；protoc / buf / 生成细节读取 `protoc-reference`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "gRPC 服务注册、客户端连接、deadline、credentials 和 interceptor 方案。",
+      "错误 code 映射、proto 生成命令和测试建议。",
+      "兼容性、观测和安全风险。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "implementation-guide",
+      source: new URL("./references/implementation-guide.md", import.meta.url),
+      target: "references/implementation-guide.md",
+      title: "Go gRPC 实现要点",
+      summary: "服务注册、客户端连接、status error 和拦截器组合的实现约束。",
+      loadWhen: "需要快速审查 Go gRPC 服务端或客户端实现时读取。",
+    }),
     defineReference({
       id: "protoc-reference",
       source: new URL("./references/protoc-reference.md", import.meta.url),

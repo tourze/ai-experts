@@ -4,7 +4,11 @@ import {
   Platform,
   defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
+import { goConcurrencyPatternsSkill } from "../go-concurrency-patterns/index";
 import { goErrorHandlingSkill } from "../go-error-handling/index";
 import { goTestingPatternsSkill } from "../go-testing-patterns/index";
 
@@ -17,7 +21,7 @@ export const goSecuritySkill = defineSkill({
     "实现 token 生成、密码存储、密钥管理、TLS 配置。",
     "执行 `govulncheck` 或评估第三方依赖的安全风险。",
     "需要防止路径穿越、SSRF、XSS 等注入类攻击。",
-    "运行时安全（nil、panic、数据竞争）使用 `go-safety`；安全测试使用 `go-testing-patterns`。",
+    "panic / 错误边界使用 `go-error-handling`；数据竞争使用 `go-concurrency-patterns`；安全测试使用 `go-testing-patterns`。",
   ],
   constraints: [
     "对任何外部输入，回答三个问题：",
@@ -39,21 +43,52 @@ export const goSecuritySkill = defineSkill({
       get id() {
         return goTestingPatternsSkill.id;
       },
-      reason: "运行时安全（nil、panic、数据竞争）使用 `go-safety`；安全测试使用 `go-testing-patterns`。",
+      reason: "需要为安全修复补回归测试、table-driven tests、HTTP 测试或 mock 边界时联动。",
     },
     {
       get id() {
         return goErrorHandlingSkill.id;
       },
-      label: "go-safety",
-      reason: "运行时安全（nil、panic、数据竞争）使用 `go-safety`；安全测试使用 `go-testing-patterns`。",
+      reason: "panic、错误传播、sentinel error 或边界错误合同影响安全行为时联动。",
+    },
+    {
+      get id() {
+        return goConcurrencyPatternsSkill.id;
+      },
+      reason: "数据竞争、goroutine 泄漏或并发取消问题影响安全边界时联动。",
     },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "审查 Go 代码中的注入、XSS、SSRF、路径穿越、随机数、密码哈希、时序攻击、依赖漏洞和密钥处理风险。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认攻击面、输入边界、认证状态、敏感数据和外部调用路径。",
+      "按 DREAD 简化严重性评级排序，先处理远程无需认证和敏感数据泄露风险。",
+      "逐项检查参数化 SQL、命令参数分离、html/template、URL allowlist、路径根限制、crypto/rand、密码哈希和 govulncheck。",
+      "严重性、漏洞速查和防御代码读取 `security-patterns`；加密和注入深入资料读取对应 references。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "按严重性排序的 Go 安全发现、证据、影响和修复建议。",
+      "输入验证、输出编码、依赖扫描、密钥和密码学处理结论。",
+      "需要补的安全测试、回归验证和剩余风险。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "security-patterns",
+      source: new URL("./references/security-patterns.md", import.meta.url),
+      target: "references/security-patterns.md",
+      title: "Go 安全模式速查",
+      summary: "DREAD 简化评级、常见漏洞防御表和参数化查询、命令执行、HTML 转义、crypto/rand、常量时间比较示例。",
+      loadWhen: "需要快速审查 Go 常见安全漏洞或选择防御 API 时读取。",
+    }),
     defineReference({
       id: "cryptography",
       source: new URL("./references/cryptography.md", import.meta.url),

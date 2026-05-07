@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { goConcurrencyPatternsSkill } from "../go-concurrency-patterns/index";
 import { goPerformanceSkill } from "../go-performance/index";
@@ -91,9 +94,35 @@ export const goTestingPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "编写和重构 Go table-driven tests、集成测试 build tag、consumer-side mock、HTTP 测试和 testify 使用方式。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认测试层级、被测边界、是否并行、是否需要外部依赖和 mock 边界。",
+      "table-driven tests 要命名输入和预期，子测试中重新绑定 loop variable，能并行时显式 `t.Parallel()`。",
+      "集成测试使用 build tag 隔离，mock 接口定义在消费方。",
+      "代码模式读取 `testing-code-patterns`；HTTP、mock、testify 深入内容读取对应 references。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "测试类型、文件位置、table case 结构和并行策略。",
+      "集成测试 tag、mock 边界、HTTP 测试和断言库建议。",
+      "脆弱断言、共享状态、fixture 或外部依赖风险。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "testing-code-patterns",
+      source: new URL("./references/testing-code-patterns.md", import.meta.url),
+      target: "references/testing-code-patterns.md",
+      title: "Go 测试代码模式",
+      summary: "table-driven tests、integration build tag 和 consumer-side mock 示例。",
+      loadWhen: "需要快速编写或审查 Go 测试代码结构时读取。",
+    }),
     defineReference({
       id: "http-testing",
       source: new URL("./references/http-testing.md", import.meta.url),

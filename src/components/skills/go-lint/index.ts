@@ -5,6 +5,9 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const goLintSkill = defineSkill({
@@ -53,9 +56,35 @@ export const goLintSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "配置和治理 Go lint 基线、golangci-lint 规则、精准抑制、CI 集成和自动修复流程。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认 Go 版本、CI 时限、已有 lint 报告、允许的规则集和渐进收敛策略。",
+      "从最小可用 golangci 配置开始，启用 errcheck、govet、staticcheck、revive、gosec、gofmt / gofumpt 等核心规则。",
+      "`nolint` 必须指定 linter 和原因，支持自动修复的规则先运行 `--fix`。",
+      "配置模板和抑制示例读取 `golangci-guide`；完整规则参考读取 `linter-reference`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "golangci-lint 配置、启用规则和 CI 运行策略。",
+      "需要修复、抑制或分阶段处理的 lint 发现。",
+      "自动修复命令、剩余风险和基线收敛计划。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "golangci-guide",
+      source: new URL("./references/golangci-guide.md", import.meta.url),
+      target: "references/golangci-guide.md",
+      title: "Go golangci-lint 配置指南",
+      summary: "最小 .golangci.yml、精准 nolint、GitHub Actions 集成和 --fix 示例。",
+      loadWhen: "需要快速配置或审查 golangci-lint 基线时读取。",
+    }),
     defineReference({
       id: "linter-reference",
       source: new URL("./references/linter-reference.md", import.meta.url),

@@ -5,6 +5,9 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { goCodeStyleSkill } from "../go-code-style/index";
 import { goConcurrencyPatternsSkill } from "../go-concurrency-patterns/index";
@@ -78,9 +81,35 @@ export const goCliSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计和实现 Go CLI 的 Cobra command tree、配置绑定、信号处理、退出码、版本注入和发布构建约定。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认 CLI 的入口、subcommand 层级、配置来源、环境变量前缀、退出码和发布方式。",
+      "按 root command、subcommand 注册、flags / viper 配置绑定和信号处理建立骨架。",
+      "明确用法错误、业务错误和中断退出的 exit code，版本号通过 ldflags 注入。",
+      "常用代码模式读取 `cli-patterns`；Cobra / Viper 细节读取 `cobra-patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "CLI 命令树、flags / config / env 优先级和退出码约定。",
+      "Cobra / Viper 代码骨架、优雅停机和版本注入方案。",
+      "需要补的测试、文档和发布命令。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "cli-patterns",
+      source: new URL("./references/cli-patterns.md", import.meta.url),
+      target: "references/cli-patterns.md",
+      title: "Go CLI 代码模式",
+      summary: "Cobra root command、subcommand 注册、Viper 配置绑定、信号处理、退出码和版本注入示例。",
+      loadWhen: "需要快速搭建或审查 Go CLI 代码骨架时读取。",
+    }),
     defineReference({
       id: "cobra-patterns",
       source: new URL("./references/cobra-patterns.md", import.meta.url),
