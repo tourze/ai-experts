@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { existsSync, lstatSync, readdirSync, readFileSync, readlinkSync } from "node:fs";
-import { join, relative } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, test } from "vitest";
 import { validateRegistry } from "../../src/build/platform.ts";
@@ -399,6 +399,54 @@ describe("component source conventions", () => {
       sourceSideTestModules,
       [],
       "procedure source tests should live under tests/ so they run with the project test suite",
+    );
+  });
+
+  test("procedure source modules are registered entries or imported helpers", () => {
+    function procedurePath(entry: URL | string): string {
+      return entry instanceof URL ? fileURLToPath(entry) : entry;
+    }
+
+    function resolveRelativeProcedureImport(fromFile: string, specifier: string): string | null {
+      const base = resolve(dirname(fromFile), specifier);
+      const candidates = [
+        base,
+        `${base}.ts`,
+        join(base, "index.ts"),
+      ];
+      return candidates.find((candidate) => existsSync(candidate)) ?? null;
+    }
+
+    const procedureSourceRoot = join(repoRoot, "src/components/procedures/sources");
+    const procedureSources = collectFiles(
+      procedureSourceRoot,
+      (file) => file.endsWith(".ts") && !file.endsWith(".d.ts"),
+    );
+    const registeredEntries = new Set(registry.procedures.map((procedure) => procedurePath(procedure.entry)));
+    const importedHelpers = new Set<string>();
+
+    for (const sourceFile of procedureSources) {
+      const source = readFileSync(sourceFile, "utf-8");
+      for (const match of source.matchAll(
+        /\bfrom\s+["'](\.[^"']+)["']|\bimport\s*\(\s*["'](\.[^"']+)["']\s*\)/g,
+      )) {
+        const specifier = match[1] ?? match[2];
+        if (!specifier) continue;
+        const resolved = resolveRelativeProcedureImport(sourceFile, specifier);
+        if (resolved?.startsWith(procedureSourceRoot)) {
+          importedHelpers.add(resolved);
+        }
+      }
+    }
+
+    const orphanedProcedureSources = procedureSources
+      .filter((sourceFile) => !registeredEntries.has(sourceFile) && !importedHelpers.has(sourceFile))
+      .map((sourceFile) => relative(repoRoot, sourceFile));
+
+    assert.deepEqual(
+      orphanedProcedureSources,
+      [],
+      "procedure source modules should either be registered runtime entries or imported helper modules",
     );
   });
 
