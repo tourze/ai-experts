@@ -30,6 +30,13 @@ export function hasStringTool(
   return (component.tools ?? []).some((tool) => tool === toolName);
 }
 
+export function readAgentBodyText(agent: AgentDefinition): string {
+  if (agent.body !== undefined && agent.bodyText !== undefined) {
+    throw new Error(`Agent ${agent.id} must define either body or bodyText, not both`);
+  }
+  return agent.bodyText ?? readOptionalComponentText(agent.body);
+}
+
 export function validateAgentBashBoundary(agent: AgentDefinition): readonly string[] {
   const boundary = agent.bashBoundary;
   if (boundary === undefined) return [];
@@ -336,7 +343,7 @@ function renderClaudeAgent(agent: AgentDefinition): string {
   if (agent.reasoningEffort) lines.push(`effort: ${agent.reasoningEffort}`);
   lines.push("---", "");
 
-  const body = renderAgentBodyWithGeneratedSections(agent, readOptionalComponentText(agent.body).trimEnd());
+  const body = renderAgentBodyWithGeneratedSections(agent, readAgentBodyText(agent).trimEnd());
   const skillRoutes = (agent.skills ?? [])
     .map((skill) => `- \`${skill.id}\` (${skill.mode}): ${skill.reason}`)
     .join("\n");
@@ -372,7 +379,7 @@ function renderCodexModel(agent: AgentDefinition): string | null {
 }
 
 function renderCodexAgent(agent: AgentDefinition): string {
-  const body = renderAgentBodyWithGeneratedSections(agent, readOptionalComponentText(agent.body).trimEnd());
+  const body = renderAgentBodyWithGeneratedSections(agent, readAgentBodyText(agent).trimEnd());
   const skillRoutes = (agent.skills ?? [])
     .map((skill) => `- ${skill.id} (${skill.mode}): ${skill.reason}`)
     .join("\n");
@@ -407,4 +414,3 @@ export async function emitAgent(agent: AgentDefinition, platformRoot: string, pl
     writeText(join(platformRoot, "agents", `${agent.id}.toml`), renderCodexAgent(agent));
   }
 }
-

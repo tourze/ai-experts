@@ -263,6 +263,7 @@ export type AgentDefinition = {
   role: string;
   platforms: PlatformList;
   body?: ComponentFile;
+  bodyText?: string;
   bashBoundary?: AgentBashBoundaryDefinition;
   qualityStandards?: AgentQualityStandardsDefinition;
   outputFormat?: AgentOutputFormatDefinition;

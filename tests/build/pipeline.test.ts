@@ -430,12 +430,26 @@ describe("build/pipeline modules", () => {
     expect(() => validateAgentQualityStandards({ ...fixture.agent, qualityStandards: [] })).toThrow();
     expect(() => validateAgentOutputFormat({ ...fixture.agent, outputFormat: { kind: "raw", body: "" } })).toThrow();
     expect(() => validateAgentWorkflow({ ...fixture.agent, workflow: { steps: [] } })).toThrow();
+    expect(() =>
+      validateRegistry({
+        ...fixture.registry,
+        agents: [{ ...fixture.agent, bodyText: "## Inline Body\n\nDuplicate body source." }],
+      })
+    ).toThrow("either body or bodyText");
 
     const out = createTempDir("ai-experts-agent-out-");
     await emitAgent(fixture.agent, out, Platform.Claude);
     await emitAgent(fixture.agent, out, Platform.Codex);
     expect(readFileSync(join(out, "agents", "fixture-agent.md"), "utf-8")).toContain("## Bash 使用边界");
     expect(readFileSync(join(out, "agents", "fixture-agent.toml"), "utf-8")).toContain("developer_instructions");
+
+    const inlineOut = createTempDir("ai-experts-inline-agent-out-");
+    await emitAgent(
+      { ...fixture.agent, body: undefined, bodyText: "## Inline Body\n\nUse inline instructions." },
+      inlineOut,
+      Platform.Claude,
+    );
+    expect(readFileSync(join(inlineOut, "agents", "fixture-agent.md"), "utf-8")).toContain("## Inline Body");
   });
 
   test("hook compiler and renderer produce runtime config", async () => {

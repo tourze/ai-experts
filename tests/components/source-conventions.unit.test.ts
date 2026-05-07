@@ -13,7 +13,7 @@ import {
 } from "./test-helpers";
 
 describe("component source conventions", () => {
-  test("agent source and body files keep structured fields", () => {
+  test("agent source keeps structured fields", () => {
     const agentSource = readFileSync(
       join(repoRoot, "src/components/agents/typescript-reviewer/index.ts"),
       "utf-8",
@@ -34,39 +34,11 @@ describe("component source conventions", () => {
     const removedLayer = ["migr", "ated"].join("");
     assert.equal(existsSync(join(repoRoot, "src/components", removedLayer)), false);
 
-    for (const agentBodyFile of collectFiles(
+    const agentBodyFiles = collectFiles(
       join(repoRoot, "src/components/agents"),
       (file) => file.endsWith("AGENT.body.md"),
-    )) {
-      const source = readFileSync(agentBodyFile, "utf-8");
-      assert.notEqual(
-        source.trim(),
-        "",
-        `${agentBodyFile} should be deleted instead of kept as an empty body placeholder`,
-      );
-      assert.equal(
-        countH2OutsideCodeFence(source, "Bash 使用边界"),
-        0,
-        `${agentBodyFile} should move Bash boundary instructions to index.ts bashBoundary`,
-      );
-      assert.equal(
-        countH2OutsideCodeFence(source, "质量标准"),
-        0,
-        `${agentBodyFile} should move quality standards to index.ts qualityStandards`,
-      );
-      assert.equal(
-        countH2OutsideCodeFence(source, "输出格式"),
-        0,
-        `${agentBodyFile} should move output format instructions to index.ts outputFormat`,
-      );
-      for (const workflowHeading of ["工作方式", "必经门禁", "场景路由", "编排顺序"]) {
-        assert.equal(
-          countH2OutsideCodeFence(source, workflowHeading),
-          0,
-          `${agentBodyFile} should move workflow instructions to index.ts workflow`,
-        );
-      }
-    }
+    );
+    assert.deepEqual(agentBodyFiles, [], "agent Markdown bodies should be inlined in index.ts bodyText");
 
     let agentQualityStandardsCount = 0;
     let agentOutputFormatCount = 0;
