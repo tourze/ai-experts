@@ -136,6 +136,21 @@ function validateAgentSkillPlatform(
   }
 }
 
+function validateRelatedSkillPlatform(
+  skill: SkillDefinition,
+  relatedSkillId: string,
+  skillsById: ReadonlyMap<string, SkillDefinition>,
+): void {
+  const relatedSkill = skillsById.get(relatedSkillId);
+  if (!relatedSkill) return;
+  const missingPlatforms = skill.platforms.filter((platform) => !relatedSkill.platforms.includes(platform));
+  if (missingPlatforms.length > 0) {
+    throw new Error(
+      `Skill ${skill.id} related skill ${relatedSkillId} unavailable on platform(s): ${missingPlatforms.join(", ")}`,
+    );
+  }
+}
+
 function validateProcedureUsePlatforms(
   component: SkillDefinition | AgentDefinition,
   procedureUse: ResolvedProcedureUse,
@@ -286,6 +301,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
       if (!skillIds.has(related.id)) {
         throw new Error(`Skill ${skill.id} references missing related skill: ${related.id}`);
       }
+      validateRelatedSkillPlatform(skill, related.id, skillsById);
       if (related.id === skill.id) {
         throw new Error(`Skill ${skill.id} must not reference itself as a related skill`);
       }

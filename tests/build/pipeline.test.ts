@@ -441,6 +441,26 @@ describe("build/pipeline modules", () => {
       relatedSkills: [],
       procedures: [],
     });
+    const claudeOnlySkill = defineSkill({
+      ...fixture.skill,
+      id: "claude-only-skill",
+      fullName: "Claude Only Skill",
+      platforms: [ComponentPlatform.Claude],
+      relatedSkills: [],
+      procedures: [],
+    });
+    expect(() =>
+      validateRegistry({
+        ...fixture.registry,
+        procedures: [],
+        skills: [{
+          ...fixture.skill,
+          procedures: [],
+          relatedSkills: [{ id: claudeOnlySkill.id, reason: "Claude-only route" }],
+        }, claudeOnlySkill],
+      })
+    ).toThrow("related skill claude-only-skill unavailable on platform(s): codex-cli");
+
     expect(() =>
       validateRegistry({
         ...fixture.registry,
