@@ -525,7 +525,6 @@ function isLocalMarkdownHref(href: string): boolean {
   return !/^[a-z][a-z0-9+.-]*:/iu.test(href) &&
     !href.startsWith("#") &&
     !href.startsWith("/") &&
-    !href.includes("{") &&
     href.trim() !== "";
 }
 

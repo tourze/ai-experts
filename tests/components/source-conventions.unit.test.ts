@@ -216,6 +216,21 @@ describe("component source conventions", () => {
     }
   });
 
+  test("skill markdown sources do not use placeholder markdown links", () => {
+    const skillMarkdownSources = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
+      file.endsWith(".md"),
+    );
+
+    for (const sourceFile of skillMarkdownSources) {
+      const source = readFileSync(sourceFile, "utf-8");
+      assert.doesNotMatch(
+        source,
+        /\]\(\{[^}\n]+\}\)/u,
+        `${sourceFile} should render placeholder URLs as plain text instead of broken local markdown links`,
+      );
+    }
+  });
+
   test("cross-platform source names project memory files neutrally", () => {
     const platformSpecificMemoryRefs: string[] = [];
     for (const sourceFile of collectFiles(join(repoRoot, "src/components"))) {
