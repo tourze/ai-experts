@@ -659,6 +659,11 @@ describe("component source conventions", () => {
         /交叉引用：/,
         `${skillSourceFile} should move cross-skill routing text to relatedSkills`,
       );
+      assert.doesNotMatch(
+        source,
+        /(?<![./\w-])\b[a-z0-9]+(?:-[a-z0-9]+)*-expert\/(?!index\b)[a-z0-9]+(?:-[a-z0-9]+)*\b/,
+        `${skillSourceFile} should not use legacy plugin namespace skill references`,
+      );
 
       const relatedSkillsSource = extractPropertyArray(source, "relatedSkills");
       if (relatedSkillsSource) {
