@@ -201,6 +201,27 @@ describe("component build integration", () => {
         [],
         `${platform} procedure manifest entries should all target the generated procedures bundle`,
       );
+      const platformSkillIds = new Set(manifest.skills as string[]);
+      const platformAgentIds = new Set(manifest.agents as string[]);
+      const invalidProcedureOwners: string[] = [];
+      for (const procedure of manifest.procedures.items as any[]) {
+        const ownerSkillIds = procedure.owners?.skillIds ?? [];
+        const ownerAgentIds = procedure.owners?.agentIds ?? [];
+        if (ownerSkillIds.length + ownerAgentIds.length === 0) {
+          invalidProcedureOwners.push(`${procedure.id}:missing-owner`);
+        }
+        for (const skillId of ownerSkillIds) {
+          if (!platformSkillIds.has(skillId)) invalidProcedureOwners.push(`${procedure.id}:skill:${skillId}`);
+        }
+        for (const agentId of ownerAgentIds) {
+          if (!platformAgentIds.has(agentId)) invalidProcedureOwners.push(`${procedure.id}:agent:${agentId}`);
+        }
+      }
+      assert.deepEqual(
+        invalidProcedureOwners,
+        [],
+        `${platform} procedure owners should reference generated skills or agents for the same platform`,
+      );
     }
   });
 
