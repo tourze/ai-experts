@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { thinkingPartnerSkill } from "../thinking-partner/index";
 import { whatIfOracleSkill } from "../what-if-oracle/index";
@@ -61,6 +64,27 @@ export const priorityJudgeSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用清晰度和截止时间两条主轴，把待办分成现在做、然后做、先澄清和暂缓，避免全部任务都被当成 P0。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先完整收集待办、约束、截止时间、依赖和用户当前精力，不边听边排序。",
+      "为每个任务标注清晰度、截止时间、影响、依赖和下一步是否明确。",
+      "把任务分到四类：现在做、然后做、先澄清再做、暂缓/放弃。",
+      "每轮只锁定 1-2 个现在做的任务；有截止但不清楚的任务先安排澄清动作。",
+      "核心目标不清时联动 `thinking-partner`；高风险分支犹豫时联动 `what-if-oracle`。",
+      "给出粗粒度行动顺序、延后理由和需要再次排序的触发条件。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "待办清单及清晰度、截止时间、依赖和下一步状态。",
+      "现在做、然后做、先澄清、暂缓/放弃的分档结果。",
+      "1-2 个立即任务及选择理由。",
+      "延后理由、澄清动作和下一次重排触发条件。",
+    ],
+  }),
   tools: [],
 });

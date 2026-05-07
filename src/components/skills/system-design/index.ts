@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const systemDesignSkill = defineSkill({
@@ -40,7 +43,28 @@ export const systemDesignSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把业务目标和约束转成分层系统方案，明确组件边界、数据流、关键决策、可靠性策略和可复审假设。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先澄清功能需求、非功能需求、规模、团队约束、成本边界和不可接受的失败模式。",
+      "给出高层组件和责任边界，再画清请求路径、异步路径、数据流和外部依赖。",
+      "深入关键细节：数据模型、API/协议、存储、缓存、队列、索引、一致性和幂等策略。",
+      "需要深入数据系统细节时读取 `ddia-systems` reference，并标注哪些结论来自当前规模假设。",
+      "逐项说明可靠性、扩展性、监控、容灾、迁移和安全边界。",
+      "为每个关键决策写 trade-off，并列出未来规模变化后必须复审的假设。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "需求和约束清单。",
+      "高层组件图、数据流和责任边界。",
+      "数据模型/API/存储/可靠性设计要点。",
+      "关键 trade-off、扩展路线和待复审假设。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

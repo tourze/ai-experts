@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const planReviewSkill = defineSkill({
@@ -40,7 +43,28 @@ export const planReviewSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "在编码前审查计划的范围、假设、依赖、风险、回滚和验证路径，提前暴露会导致失败的缺口。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认评审对象是计划、方案或 RFC；没有计划时先要求补计划，不假装评审。",
+      "需要判断项目类型或审查重点时读取 `project-detection` reference。",
+      "按范围、不做什么、假设、依赖、风险、迁移/回滚、验证和回归面逐项检查。",
+      "把问题分成必须修、建议补和可接受风险三档，并说明后果而不是只给泛泛建议。",
+      "不要替作者脑补缺失信息；无法确认的内容直接标成缺口或待澄清问题。",
+      "输出建议顺序，先处理阻断性风险，再处理可并行补齐项。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "计划范围、目标、非目标和关键假设。",
+      "依赖、阻塞项、风险、回滚/迁移和验证路径审查。",
+      "必须修、建议补、可接受风险三档发现。",
+      "建议处理顺序和需要澄清的问题。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

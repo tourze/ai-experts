@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { planningUnderUncertaintySkill } from "../planning-under-uncertainty/index";
 
@@ -53,7 +56,28 @@ export const runningDecisionProcessesSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把模糊争论转成有问题定义、备选项、标准、角色、截止时间和复盘条件的决策流程。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先写清决策问题、影响范围、不可逆程度、deadline 和不决策的代价。",
+      "列出备选项、决策标准、最低所需证据和明确不讨论的范围。",
+      "定义角色分工：谁输入、谁建议、谁决策、谁执行、谁被通知，避免多人参与但无人负责。",
+      "需要突破僵局或参考常见陷阱时读取 `guest-insights` reference；高不确定性可联动 `planning-under-uncertainty`。",
+      "设定决策时间点、升级条件、记录格式和复盘触发条件。",
+      "形成 decision log，记录结论、理由、前提、反对意见和后续动作。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "决策问题、选项、标准和证据边界。",
+      "DACI/RAPID 风格角色分工和最终责任人。",
+      "决策时间点、升级条件和复盘条件。",
+      "Decision log：结论、理由、前提、反对意见和行动项。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({
