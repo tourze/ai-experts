@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const androidAccessibilitySkill = defineSkill({
@@ -19,12 +22,13 @@ export const androidAccessibilitySkill = defineSkill({
     "键盘 / Switch Access 无法操作",
   ],
   constraints: [
-    "**1. 内容描述（contentDescription）**\n* `Image`、`Icon` 必须提供有意义的 `contentDescription`\n* 纯装饰性图片设置 `contentDescription = null`\n* 可点击元素描述**动作**（\"播放音乐\"），不描述图标外观（\"三角形\"）\n\n```kotlin\n// ✅ 描述动作\nIconButton(onClick = { playMusic() }) {\nIcon(Icons.Default.PlayArrow, contentDescription = \"播放音乐\")\n}\n\n// ✅ 纯装饰\nImage(painter, contentDescription = null)\n\n// ❌ 描述外观\nIcon(Icons.Default.PlayArrow, contentDescription = \"三角形图标\")\n```",
-    "**2. 触摸目标尺寸**\n* 所有可交互元素最小 **48×48dp**，无例外\n* 视觉图标小于 48dp 时，通过 padding 或 `sizeIn` 扩大触摸区域\n* `IconButton` 默认保证 48dp，自定义组件需手动保证\n\n```kotlin\n// 自定义小图标组件 — 触摸区域扩大到 48dp\nBox(\nmodifier = Modifier\n.sizeIn(minWidth = 48.dp, minHeight = 48.dp)\n.clickable { onFavorite() },\ncontentAlignment = Alignment.Center\n) {\nIcon(Icons.Default.Star, contentDescription = \"收藏\", modifier = Modifier.size(16.dp))\n}\n```",
-    "**3. 色彩对比度**\n* WCAG AA：普通文本 ≥ **4.5:1**，大文本（≥18sp 或 14sp bold）/ 图标 ≥ **3.0:1**\n* **禁止**仅靠颜色传递信息 — 必须辅以文字、图标或形状\n* 支持系统级粗体文本和高对比度设置\n\n```kotlin\n// 检测系统高对比度文本模式\nval context = LocalContext.current\nval accessibilityManager = context.getSystemService<AccessibilityManager>()\nval isHighTextContrast = accessibilityManager?.isHighTextContrastEnabled ?: false\n\n// 检测系统字体缩放（200% 以上需特别关注布局裁切）\nval fontScale = LocalDensity.current.fontScale\n```",
-    "**4. 语义分组与状态**\n* 相关元素用 `Modifier.semantics(mergeDescendants = true)` 合并为单个播报单元\n* 自定义控件通过 `stateDescription` 暴露状态（\"已选中\"、\"已展开\"）\n* 仅通过手势或长按触发的操作，必须同时提供 `customActions` 替代路径\n\n语义分组与状态的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。",
-    "**5. 焦点与导航顺序**\n* 焦点顺序：从上到下、Start 到 End\n* 标题用 `Modifier.semantics { heading() }`，支持 TalkBack 按标题跳转\n* 页面切换或 Dialog 关闭后，焦点移至逻辑目标\n* 全部功能可通过 TalkBack、Switch Access、键盘操作\n\n```kotlin\nText(\"设置\", modifier = Modifier.semantics { heading() })\n```",
-    "**6. 自定义 Canvas 视图**\nCanvas 绘制的交互区对 TalkBack 完全不可见。View 体系实现 `ExploreByTouchHelper`；Compose 通过 `Modifier.semantics` 叠加语义节点。",
+    "`Image`、`Icon` 必须提供有意义的 `contentDescription`；纯装饰图片设为 `null`，可点击元素描述动作而不是外观。",
+    "所有可交互元素最小触摸区域为 48x48dp；视觉图标小于 48dp 时用 padding 或 `sizeIn` 扩大可点击区域。",
+    "色彩对比度至少满足 WCAG AA：普通文本 4.5:1，大文本和图标 3.0:1；禁止只靠颜色传递状态。",
+    "相关元素要合并为清晰的语义单元，自定义控件必须暴露状态，手势 / 长按操作必须有 `customActions` 替代路径。",
+    "焦点顺序遵循从上到下、Start 到 End；标题暴露 heading，页面切换或 Dialog 关闭后焦点回到逻辑目标。",
+    "Canvas 绘制的交互区对 TalkBack 不可见；View 体系用 `ExploreByTouchHelper`，Compose 用语义节点叠加。",
+    "需要 Compose / View 代码模式时读取 `advanced-patterns` reference，不把大段代码样例塞进核心约束。",
   ],
   antiPatterns: [
     defineAntiPattern({
@@ -38,7 +42,27 @@ export const androidAccessibilitySkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "审计 Android Compose / View 界面的无障碍语义、触摸目标、对比度、焦点顺序和辅助输入可达性。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "逐屏用 TalkBack 扫描核心任务路径，记录缺失、冗余或顺序错误的播报。",
+      "用 Layout Inspector 或 UI 层级确认交互元素的语义、状态、分组和最小触摸区域。",
+      "用 Accessibility Scanner 自动检测触摸目标、标签、对比度和可聚焦性问题。",
+      "用外接键盘或 Switch Access 跑一遍 Tab / 方向键路径，确认所有功能都有非触摸操作方式。",
+      "在 200% 字体、粗体文本和高对比度模式下复测关键页面，确认文案不裁切、状态仍可识别。",
+      "遇到自定义控件、Canvas 或复杂状态时读取 `advanced-patterns` reference，再给出具体修复方案。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "按页面列出的无障碍缺陷、影响用户和复现路径。",
+      "Compose / View 层面的修复点，包括语义、状态、触摸区域、对比度和焦点顺序。",
+      "TalkBack、键盘 / Switch Access、字体缩放和高对比度复测结果。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

@@ -1,6 +1,6 @@
-## 扫描清单
+# iOS 安全扫描命令与报告模板
 
-### 凭据搜索
+## 凭据搜索
 
 ```bash
 # Firebase / Google
@@ -16,22 +16,25 @@ strings "$BINARY" | rg 'sk_live_[a-zA-Z0-9]{24,}|pk_live_'
 strings "$BINARY" | rg -i 'api[_-]?key|api[_-]?secret|bearer |authorization'
 ```
 
-### ATS 配置审计
+## ATS 配置审计
 
 ```bash
 plutil -p Info.plist | rg -A5 'NSAppTransportSecurity'
-# 危险信号：NSAllowsArbitraryLoads = true
-# 危险信号：NSExceptionAllowsInsecureHTTPLoads = true
 ```
 
-### 弱加密检查
+危险信号：
+
+- `NSAllowsArbitraryLoads = true`
+- `NSExceptionAllowsInsecureHTTPLoads = true`
+
+## 弱加密检查
 
 ```bash
 strings "$BINARY" | rg 'CC_MD5|MD5|ECB|DES|RC4'
-rg 'kSecAttrAccessibleAlways' headers/  # Keychain 弱保护
+rg 'kSecAttrAccessibleAlways' headers/
 ```
 
-### 越狱检测 / 反调试
+## 越狱检测 / 反调试
 
 ```bash
 strings "$BINARY" | rg '/Applications/Cydia|/bin/bash|canOpenURL.*cydia|ptrace'
@@ -41,7 +44,7 @@ rg 'IOSSecuritySuite|isSafeDevice|isJailbroken' headers/
 ## 发现报告格式
 
 ```markdown
-### [严重级别] 服务 — 凭据类型
+### [严重级别] 服务 - 凭据类型
 
 - **值**: `AIza...[后4位]`（已脱敏）
 - **位置**: strings 输出第 N 行 / 类名

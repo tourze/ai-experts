@@ -2,8 +2,12 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { fridaDynamicAnalysisSkill } from "../frida-dynamic-analysis/index";
 import { iosBinaryAnalysisSkill } from "../ios-binary-analysis/index";
@@ -52,6 +56,36 @@ export const iosSecretScanSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "扫描 iOS IPA / Mach-O 中的硬编码凭据、安全配置、弱加密和运行时保护线索，并区分真实风险与 client-safe 命中。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先用 iOS 二进制分析流程定位主 Mach-O、Info.plist、headers 和 strings 输出；命令细节读取 `scan-runbook`。",
+      "按云服务、支付、通用 API key / secret、Bearer token 等类别扫描字符串，并对每个命中保留上下文。",
+      "把命中分类为 client-safe、server-only、测试数据、示例值或疑似泄漏；高危值只报告脱敏片段。",
+      "审计 ATS 配置、弱加密 API、Keychain 保护级别、越狱检测和反调试线索。",
+      "必要时联动 Frida 做运行时验证，例如证书 pinning、越狱检测或密钥实际使用路径。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "按严重级别分组的凭据和安全配置发现，包含脱敏值、位置、上下文和误报概率。",
+      "client-safe 与 server-only 密钥分类，以及可被攻击者利用的实际影响。",
+      "ATS、弱加密、Keychain、越狱检测 / 反调试的审计结论。",
+      "验证方式、修复步骤和需要运行时验证的剩余问题。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "scan-runbook",
+      source: new URL("./references/scan-runbook.md", import.meta.url),
+      target: "references/scan-runbook.md",
+      title: "iOS 安全扫描命令与报告模板",
+      summary: "硬编码凭据、ATS、弱加密、越狱检测扫描命令，以及发现报告格式。",
+      loadWhen: "需要执行 iOS 安全扫描命令或输出标准化发现报告时读取。",
+    }),
+  ],
 });

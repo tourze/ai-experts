@@ -1,6 +1,6 @@
-## 代码模式
+# iOS HIG SwiftUI 快速代码模式
 
-### 安全区域与底部操作
+## 安全区域与底部操作
 
 ```swift
 NavigationStack {
@@ -18,7 +18,7 @@ NavigationStack {
 }
 ```
 
-### 语义字体与系统图标
+## 语义字体与系统图标
 
 ```swift
 VStack(alignment: .leading, spacing: 8) {
@@ -30,7 +30,7 @@ VStack(alignment: .leading, spacing: 8) {
 }
 ```
 
-### 权限前置说明
+## 权限前置说明
 
 ```swift
 VStack(spacing: 12) {

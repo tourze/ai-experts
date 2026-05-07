@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const iosHigDesignSkill = defineSkill({
@@ -28,10 +31,7 @@ export const iosHigDesignSkill = defineSkill({
     "导航是否遵循 iOS 习惯：返回、编辑、搜索、sheet、popover 都有清晰归属。",
     "图标、色彩、权限弹窗前文案是否和系统语义一致。",
     "交叉引用：SwiftUI 具体实现细节看 `swiftui-ui-patterns`；液态玻璃外观看 `liquid-glass-design`；Mac 端界面看 `macos-design-guidelines`。",
-    "各主题深入指南（按需读取）：",
-    "[accessibility](references/accessibility.md)、[app-icons](references/app-icons.md)、[colors-depth](references/colors-depth.md)、[components](references/components.md)",
-    "[gestures](references/gestures.md)、[keyboard-input](references/keyboard-input.md)、[navigation](references/navigation.md)、[privacy-permissions](references/privacy-permissions.md)",
-    "[system-integration](references/system-integration.md)、[typography](references/typography.md)、[widgets-extensions](references/widgets-extensions.md)",
+    "是否按问题类型读取 Reference Map 中的专题资料，而不是把 HIG 规则凭印象泛化。",
   ],
   antiPatterns: [
     defineAntiPattern({
@@ -40,14 +40,51 @@ export const iosHigDesignSkill = defineSkill({
     }),
     defineAntiPattern({
       fail: "首屏立即弹权限",
-      pass: "先解释再请求：用 Web / Android 导航模式硬套到 iOS。 可点击区域压到 44pt 以下。",
+      pass: "先给上下文再请求权限",
+    }),
+    defineAntiPattern({
+      fail: "用 Web / Android 导航模式硬套到 iOS",
+      pass: "使用 iOS 系统导航、sheet、popover、tab / sidebar 模式",
+    }),
+    defineAntiPattern({
+      fail: "可点击区域压到 44pt 以下",
+      pass: "保留 44x44pt 最小触控目标",
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把 iOS HIG 原则落到具体界面结构、系统组件、安全区域、语义字体、权限时机和可访问触控体验上。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认目标设备、iPhone / iPad 形态、导航层级、主要任务流和是否涉及权限、输入、Widget 或系统集成。",
+      "优先选择系统组件和系统导航模式；需要代码落地时读取 `swiftui-quick-patterns` reference。",
+      "按 safe area、Dynamic Island、Home Indicator、横竖屏和 iPad 分栏检查布局边界。",
+      "用语义字体、SF Symbols、系统色和标准控件表达层级，不用固定字号或自定义控件硬凑 iOS 外观。",
+      "权限请求先给上下文说明，再触发系统权限弹窗；隐私、导航、排版、组件等专题按需读取对应 reference。",
+      "用小屏、大字号、深浅色、横屏和辅助功能设置复测，确认关键文案、控件和导航不会失效。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "iOS 界面结构、导航模式、系统组件和平台差异决策。",
+      "safe area、Dynamic Type、触控目标、权限说明和无障碍检查结果。",
+      "需要读取的 HIG 专题 reference 与对应设计依据。",
+      "SwiftUI / UIKit 落地建议、风险点和复测清单。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "swiftui-quick-patterns",
+      source: new URL("./references/swiftui-quick-patterns.md", import.meta.url),
+      target: "references/swiftui-quick-patterns.md",
+      title: "iOS HIG SwiftUI 快速代码模式",
+      summary: "安全区域、语义字体、SF Symbols 和权限前置说明的 SwiftUI 示例。",
+      loadWhen: "需要把 iOS HIG 决策快速落成 SwiftUI 代码模式时读取。",
+    }),
     defineReference({
       id: "accessibility",
       source: new URL("./references/accessibility.md", import.meta.url),

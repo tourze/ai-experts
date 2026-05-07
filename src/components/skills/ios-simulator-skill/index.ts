@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, iosSimulatorSkillAccessibilityAudit, iosSimulatorSkillAppLauncher, iosSimulatorSkillAppStateCapture, iosSimulatorSkillBuildAndTest, iosSimulatorSkillClipboard, iosSimulatorSkillGesture, iosSimulatorSkillInteractionCommon, iosSimulatorSkillKeyboard, iosSimulatorSkillLogMonitor, iosSimulatorSkillNavigator, iosSimulatorSkillPrivacyManager, iosSimulatorSkillPushNotification, iosSimulatorSkillScreenMapper, iosSimulatorSkillScreenshotCommon, iosSimulatorSkillSimHealthCheck, iosSimulatorSkillSimList, iosSimulatorSkillSimctlBoot, iosSimulatorSkillSimctlCommon, iosSimulatorSkillSimctlCreate, iosSimulatorSkillSimctlDelete, iosSimulatorSkillSimctlErase, iosSimulatorSkillSimctlShutdown, iosSimulatorSkillSimulatorSelector, iosSimulatorSkillStatusBar, iosSimulatorSkillTestRecorder, iosSimulatorSkillVisualDiff, iosSimulatorSkillXcodeBuilder, iosSimulatorSkillXcodeCache, iosSimulatorSkillXcodeConfig, iosSimulatorSkillXcodeIndex, iosSimulatorSkillXcodeReporter, iosSimulatorSkillXcodeXcresult } from "../../procedures/index";
 
@@ -46,7 +49,28 @@ export const iosSimulatorSkillSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用登记的 iOS Simulator procedures 完成模拟器选择、启动、构建运行、语义化界面操作、截图、日志和回归证据采集。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先跑 `procedure ios-simulator-skill-sim-health-check`，确认 Xcode、`xcrun simctl`、Node.js 和可用 runtime。",
+      "列出或选择目标模拟器；没有 booted simulator 时先 boot，必要时创建、擦除或关闭模拟器。",
+      "构建运行走 xcode / build-and-test 相关 procedure，安装、启动、终止和状态采集走 app-launcher / app-state-capture。",
+      "交互前先用 screen-mapper 或 navigator 读取无障碍树，再通过语义节点点击、输入或导航。",
+      "需要日志、截图、状态栏、权限、剪贴板、推送或视觉 diff 时调用对应 procedure，并优先使用 `--json` 输出。",
+      "每次关键操作后保留截图、UI 树、日志或状态输出作为验证证据；完整参数以对应 procedure 的 `--help` 为准。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "目标模拟器 UDID、runtime、启动状态和健康检查结果。",
+      "构建 / 安装 / 启动 / 交互时调用的 procedure 与关键参数。",
+      "截图、UI 树、日志、权限状态、推送或视觉 diff 等复现证据。",
+      "失败命令的退出码、stderr 摘要和下一步排查方向。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(iosSimulatorSkillAccessibilityAudit),
