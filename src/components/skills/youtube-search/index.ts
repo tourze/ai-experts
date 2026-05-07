@@ -23,7 +23,7 @@ export const youtubeSearchSkill = defineSkill({
     "默认使用 `yt-dlp ytsearch + --dump-single-json --flat-playlist`，字段是“尽力而为”。",
     "在 flat search 模式下，`upload_date`、`duration_string` 等字段可能为空；缺失时要明确说明，不要伪造。",
     "本技能不负责下载视频、不负责音视频转码，也不承诺绕过 YouTube 的反爬限制。",
-    "当前目录已经提供 `procedure youtube-search-search-youtube`，优先用它，不要再依赖手写 `jq` 管道。",
+    "当前目录已经提供 `youtube-search-search-youtube` procedure，优先用它，不要再依赖手写 `jq` 管道。",
     "用户已经给出明确视频链接且诉求是“总结内容”时，不要继续搜索，直接转入关联的视频分析 skill。",
   ],
   checklist: [

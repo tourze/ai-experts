@@ -22,14 +22,14 @@ export const iosSimulatorSkillSkill = defineSkill({
   ],
   constraints: [
     "仅把本 skill 登记的 Procedure 当作入口；`xcode/` 相关源码是内部模块，不直接执行。",
-    "优先走无障碍树：先 `procedure ios-simulator-skill-screen-mapper` / `procedure ios-simulator-skill-navigator`，最后才用坐标。",
-    "大多数 Procedure 在未传 `--udid` 时会自动选择 booted simulator；`procedure ios-simulator-skill-log-monitor` 例外，参数名是 `--device-udid`。",
-    "`procedure ios-simulator-skill-visual-diff` 直接处理 PNG；截图缩放优先使用系统 `sips`，缺失时保留原图尺寸。",
+    "优先走无障碍树：先 `ios-simulator-skill-screen-mapper` / `ios-simulator-skill-navigator` procedure，最后才用坐标。",
+    "大多数 Procedure 在未传 `--udid` 时会自动选择 booted simulator；`ios-simulator-skill-log-monitor` procedure 例外，参数名是 `--device-udid`。",
+    "`ios-simulator-skill-visual-diff` procedure 直接处理 PNG；截图缩放优先使用系统 `sips`，缺失时保留原图尺寸。",
   ],
   checklist: [
-    "先跑 `procedure ios-simulator-skill-sim-health-check`，确认 `xcrun`、`simctl`、Node.js 运行时可用。",
-    "每次交互前先看 `procedure ios-simulator-skill-screen-mapper` 或 `procedure ios-simulator-skill-navigator --list`，不要盲点。",
-    "需要日志时确认参数名：`procedure ios-simulator-skill-log-monitor` 用 `--device-udid`，不是 `--udid`。",
+    "先跑 `ios-simulator-skill-sim-health-check` procedure，确认 `xcrun`、`simctl`、Node.js 运行时可用。",
+    "每次交互前先看 `ios-simulator-skill-screen-mapper` procedure 或 `ios-simulator-skill-navigator` procedure（参数 `--list`），不要盲点。",
+    "需要日志时确认参数名：`ios-simulator-skill-log-monitor` procedure 用 `--device-udid`，不是 `--udid`。",
     "需要结构化输出时统一使用 `--json`；需要完整参数时直接跑对应 Procedure 的 `--help`。",
   ],
   antiPatterns: [
@@ -65,7 +65,7 @@ export const iosSimulatorSkillSkill = defineSkill({
   ],
   workflow: defineSkillWorkflow({
     steps: [
-      "先跑 `procedure ios-simulator-skill-sim-health-check`，确认 Xcode、`xcrun simctl`、Node.js 和可用 runtime。",
+      "先跑 `ios-simulator-skill-sim-health-check` procedure，确认 Xcode、`xcrun simctl`、Node.js 和可用 runtime。",
       "列出或选择目标模拟器；没有 booted simulator 时先 boot，必要时创建、擦除或关闭模拟器。",
       "构建运行走 xcode / build-and-test 相关 procedure，安装、启动、终止和状态采集走 app-launcher / app-state-capture。",
       "交互前先用 screen-mapper 或 navigator 读取无障碍树，再通过语义节点点击、输入或导航。",

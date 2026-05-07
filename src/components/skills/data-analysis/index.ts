@@ -25,7 +25,7 @@ export const dataAnalysisSkill = defineSkill({
     "先 `inspect`，再 `query` 或 `summary`；没看清表结构就直接写 SQL，命中率会很差。",
     "只处理显式给出的本地文件路径；不要假设上传目录，也不要猜测文件名。",
     "当前脚本直接支持 `.xlsx` 与 `.csv`；旧式 `.xls` 需要先转存为 `.xlsx`。",
-    "`procedure data-analysis-analyze` 使用 Node.js 内置 API，不依赖 Python、DuckDB 或 OpenPyXL；`query` 支持常用单表 `SELECT`、`WHERE`、`GROUP BY`、聚合、`ORDER BY` 与 `LIMIT`，不承诺完整 DuckDB 方言。",
+    "`data-analysis-analyze` procedure 使用 Node.js 内置 API，不依赖 Python、DuckDB 或 OpenPyXL；`query` 支持常用单表 `SELECT`、`WHERE`、`GROUP BY`、聚合、`ORDER BY` 与 `LIMIT`，不承诺完整 DuckDB 方言。",
     "导出结果只支持 `.csv`、`.json`、`.md`。",
   ],
   checklist: [
@@ -68,7 +68,7 @@ export const dataAnalysisSkill = defineSkill({
   sourceDir: new URL("./", import.meta.url),
   workflow: defineSkillWorkflow({
     steps: [
-      "先确认文件真实存在、扩展名受支持，并用 `procedure data-analysis-analyze` inspect 表名、列名、类型和空值。",
+      "先确认文件真实存在、扩展名受支持，并用 `data-analysis-analyze` procedure inspect 表名、列名、类型和空值。",
       "基于 inspect 结果再写 query 或 summary，不引用不存在的表和列。",
       "按问题选择筛选、聚合、排序、limit、导出格式或后续可视化 / 叙事流程。",
       "导出前确认输出扩展名只使用 `.csv`、`.json` 或 `.md`。",

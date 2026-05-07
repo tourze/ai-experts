@@ -21,9 +21,9 @@ export const screenshotSkill = defineSkill({
   ],
   constraints: [
     "保存路径遵循三条规则：用户给路径就存到该路径；用户没给路径则存系统默认截图目录；仅供代理自检时存临时目录。",
-    "macOS 进行窗口或应用截图前，先跑 `procedure screenshot-ensure-macos-permissions`，统一处理 Screen Recording 权限。",
+    "macOS 进行窗口或应用截图前，先跑 `screenshot-ensure-macos-permissions` procedure，统一处理 Screen Recording 权限。",
     "`--app`、`--window-name`、`--list-windows` 只支持 macOS。",
-    "Windows 走 `procedure screenshot-take-screenshot-windows`；主入口会在 Windows 分支委托给该 Node helper。",
+    "Windows 走 `screenshot-take-screenshot-windows` procedure；主入口会在 Windows 分支委托给该 Node helper。",
     "互斥参数不能混用：`--region` / `--window-id` / `--active-window` / `--app` / `--interactive` 要按脚本约束组合。",
   ],
   checklist: [

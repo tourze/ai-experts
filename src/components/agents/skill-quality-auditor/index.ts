@@ -49,7 +49,7 @@ export const skillQualityAuditorAgent = defineAgent({
       }),
       defineAgentWorkflowStep({
         id: "step-4",
-        label: "优先调用 `procedure skill-activation-analyzer-cso-audit --json` 和 `procedure skills-prune-and-sync-readme-curate-skills audit --format json` 建立静态基线；运行时 telemetry 证据交给 trigger-telemetry-advisor 按本地可用数据读取。",
+        label: "优先通过对应 skill 的 Procedure 调用说明运行 `skill-activation-analyzer-cso-audit`（参数 `--json`）和 `skills-prune-and-sync-readme-curate-skills`（参数 `audit --format json`）建立静态基线；运行时 telemetry 证据交给 trigger-telemetry-advisor 按本地可用数据读取。",
       }),
     ],
   }),

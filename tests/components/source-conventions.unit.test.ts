@@ -276,6 +276,34 @@ describe("component source conventions", () => {
     }
   });
 
+  test("procedure references use generated command tables instead of pseudo shell syntax", () => {
+    const componentRuntimeDocs = [
+      ...collectFiles(
+        join(repoRoot, "src/components/skills"),
+        (file) => (file.endsWith(".ts") || file.endsWith(".md")) && !file.split(/[\\/]/).includes("evals"),
+      ),
+      ...collectFiles(
+        join(repoRoot, "src/components/agents"),
+        (file) => (file.endsWith(".ts") || file.endsWith(".md")) && !file.split(/[\\/]/).includes("evals"),
+      ),
+    ];
+    const pseudoProcedureReferences: string[] = [];
+    const pseudoProcedurePattern = /`procedure\s+[a-z0-9-]+(?:\s[^`]*)?`|\bprocedure\s+`[a-z0-9-]+`/g;
+
+    for (const sourceFile of componentRuntimeDocs) {
+      const source = readFileSync(sourceFile, "utf-8");
+      for (const match of source.matchAll(pseudoProcedurePattern)) {
+        pseudoProcedureReferences.push(`${relative(repoRoot, sourceFile)}: ${match[0]}`);
+      }
+    }
+
+    assert.deepEqual(
+      pseudoProcedureReferences,
+      [],
+      "procedure ids should be referenced as `<id> procedure`; runnable commands come from generated Procedure 调用说明",
+    );
+  });
+
   test("cross-platform source names project memory files neutrally", () => {
     const platformSpecificMemoryRefs: string[] = [];
     for (const sourceFile of collectFiles(join(repoRoot, "src/components"))) {

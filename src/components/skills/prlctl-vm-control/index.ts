@@ -18,7 +18,7 @@ export const prlctlVmControlSkill = defineSkill({
   description: "当用户通过 prlctl 控制 Parallels Desktop 虚拟机、采集状态或执行客体命令时使用。",
   useCases: [
     "需要在 macOS 宿主机上列出、定位、开关机、挂起、恢复或查看 Parallels Desktop 虚拟机详情。",
-    "需要在 Windows 或 Linux 客体里执行离散命令、上传文件或下载文件，并优先复用 `procedure prlctl-vm-control-prlctl-helper` 而不是手写长命令。",
+    "需要在 Windows 或 Linux 客体里执行离散命令、上传文件或下载文件，并优先复用 `prlctl-vm-control-prlctl-helper` procedure，而不是手写长命令。",
     "需要在隔离环境里复现 Windows 桌面自动化问题时，可联动 `windows-ui-automation`。",
     "需要在虚拟机里验证驱动、回调、VBS/HVCI 等低层问题时，可联动 `windows-kernel-security`。",
     "需要快速查常见命令模板时，读取 [操作配方](./references/recipes.md)。",
