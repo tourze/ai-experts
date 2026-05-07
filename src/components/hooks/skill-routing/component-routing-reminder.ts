@@ -29,7 +29,7 @@ export async function run(payload: NormalizedHookPayload): Promise<NormalizedHoo
     message: [
       "component routing reminder:",
       "- Use `src/components/` as the source of truth.",
-      "- Manage Instructions, Skills, Agents, Hooks, and Profiles as registered TS components.",
+      "- Manage Instructions, Skills, Agents, Hooks, and Procedures as registered TS components.",
       "- Treat `dist/claude/` and `dist/codex/` as generated output.",
       "- Do not create any separate compatibility layer for new design work.",
     ].join("\n"),

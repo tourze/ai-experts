@@ -32,7 +32,7 @@ import {
 } from "./agents.ts";
 import { compileHookModules, renderCodexConfig, renderHookConfig } from "./hooks.ts";
 import { hasH2SectionMatching, startsWithH2Section } from "./markdown.ts";
-import { materializeProfile } from "./registry.ts";
+import { materializeRegistry } from "./registry.ts";
 import { listProcedureUses } from "./script-uses.ts";
 import type { ResolvedProcedureUse } from "./script-uses.ts";
 import { emitScriptRuntime } from "./scripts.ts";
@@ -47,10 +47,10 @@ import {
   validateSkillWorkflow,
   validateTextList,
 } from "./skills.ts";
-import type { ComponentRegistry, ProfileSurface } from "./types.ts";
+import type { ComponentRegistry, ComponentSurface } from "./types.ts";
 
-export function renderInstruction(profileSurface: ProfileSurface, platform: Platform): string {
-  const instructions = profileSurface.instructions
+export function renderInstruction(componentSurface: ComponentSurface, platform: Platform): string {
+  const instructions = componentSurface.instructions
     .filter((instruction) => instruction.platforms.includes(platform))
     .sort((a, b) => (a.priority ?? 100) - (b.priority ?? 100) || a.id.localeCompare(b.id));
   const body = instructions
@@ -78,9 +78,9 @@ export function renderInstruction(profileSurface: ProfileSurface, platform: Plat
     "",
     "以下索引用于帮助模型识别当前安装的可用能力；具体执行规则以对应 Skill / Agent 文件为准。",
     "",
-    list("Skill 索引", profileSurface.skills.filter((item) => item.platforms.includes(platform))),
+    list("Skill 索引", componentSurface.skills.filter((item) => item.platforms.includes(platform))),
     "",
-    list("Agent 索引", profileSurface.agents.filter((item) => item.platforms.includes(platform))),
+    list("Agent 索引", componentSurface.agents.filter((item) => item.platforms.includes(platform))),
     "",
   ].join("\n");
 }
@@ -119,7 +119,7 @@ function validateSkillBodyCrossSkillLinks(skill: SkillDefinition, bodySource: st
   }
 }
 
-export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
+export function validateRegistry(registry: ComponentRegistry): ComponentSurface {
   if (!registry || !Array.isArray(registry.skills)) throw new Error("registry.skills must be an array");
   if (!Array.isArray(registry.instructions)) throw new Error("registry.instructions must be an array");
   if (!Array.isArray(registry.procedures ?? registry.scripts)) {
@@ -127,9 +127,7 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
   }
   if (!Array.isArray(registry.agents)) throw new Error("registry.agents must be an array");
   if (!Array.isArray(registry.hooks)) throw new Error("registry.hooks must be an array");
-  if (!Array.isArray(registry.profiles)) throw new Error("registry.profiles must be an array");
-
-  const surface = materializeProfile(registry);
+  const surface = materializeRegistry(registry);
   const skillIds = new Set(registry.skills.map((skill) => skill.id));
   const agentIds = new Set(registry.agents.map((agent) => agent.id));
   const proceduresById = new Map<string, ProcedureDefinition>();
@@ -396,7 +394,7 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
 }
 
 export async function emitPlatform(
-  profileSurface: ProfileSurface,
+  componentSurface: ComponentSurface,
   outDir: string,
   platform: Platform,
 ): Promise<void> {
@@ -409,9 +407,9 @@ export async function emitPlatform(
   ensureDir(join(root, "rules"));
 
   const instructionName = platform === Platform.Claude ? "CLAUDE.md" : "AGENTS.md";
-  writeText(join(root, instructionName), renderInstruction(profileSurface, platform));
+  writeText(join(root, instructionName), renderInstruction(componentSurface, platform));
 
-  const platformHooks = profileSurface.hooks.filter((hook) => hook.platforms.includes(platform));
+  const platformHooks = componentSurface.hooks.filter((hook) => hook.platforms.includes(platform));
   await compileHookModules(platformHooks, join(root, "hooks"), platform);
 
   if (platform === Platform.Claude) {
@@ -421,34 +419,33 @@ export async function emitPlatform(
     writeText(join(root, "config.toml"), renderCodexConfig());
   }
 
-  const procedureRuntime = await emitScriptRuntime(profileSurface, root, platform);
-  const proceduresById = new Map(profileSurface.procedures.map((procedure) => [procedure.id, procedure]));
+  const procedureRuntime = await emitScriptRuntime(componentSurface, root, platform);
+  const proceduresById = new Map(componentSurface.procedures.map((procedure) => [procedure.id, procedure]));
 
-  for (const skill of profileSurface.skills) {
+  for (const skill of componentSurface.skills) {
     if (skill.platforms.includes(platform)) await emitSkill(skill, root, platform, proceduresById);
   }
-  for (const agent of profileSurface.agents) {
+  for (const agent of componentSurface.agents) {
     if (agent.platforms.includes(platform)) await emitAgent(agent, root, platform);
   }
 
   const files = checksumFiles(root);
   writeText(join(root, "manifest.json"), JSON.stringify({
     schema: 2,
-    profile: profileSurface.profile.id,
     platform,
-    instructions: profileSurface.instructions
+    instructions: componentSurface.instructions
       .filter((item) => item.platforms.includes(platform))
       .map((item) => item.id)
       .sort(),
-    skills: profileSurface.skills
+    skills: componentSurface.skills
       .filter((item) => item.platforms.includes(platform))
       .map((item) => item.id)
       .sort(),
-    agents: profileSurface.agents
+    agents: componentSurface.agents
       .filter((item) => item.platforms.includes(platform))
       .map((item) => item.id)
       .sort(),
-    hooks: profileSurface.hooks
+    hooks: componentSurface.hooks
       .filter((item) => item.platforms.includes(platform))
       .map((item) => item.id)
       .sort(),

@@ -3,24 +3,20 @@ import type {
   HookDefinition,
   InstructionDefinition,
   ProcedureDefinition,
-  ProfileDefinition,
   SkillDefinition,
 } from "../components/sdk";
 
 export type ComponentRegistry = {
   version: number;
-  defaultProfile: string;
   instructions: readonly InstructionDefinition[];
   procedures?: readonly ProcedureDefinition[];
   scripts?: readonly ProcedureDefinition[];
   skills: readonly SkillDefinition[];
   agents: readonly AgentDefinition[];
   hooks: readonly HookDefinition[];
-  profiles: readonly ProfileDefinition[];
 };
 
-export type ProfileSurface = {
-  profile: ProfileDefinition;
+export type ComponentSurface = {
   instructions: InstructionDefinition[];
   procedures: ProcedureDefinition[];
   scripts: ProcedureDefinition[];

@@ -9,7 +9,7 @@ import type {
 } from "../components/sdk";
 import { sourceRoot, toAbsolutePath } from "./core.ts";
 import { listProcedureUses } from "./script-uses.ts";
-import type { ProfileSurface } from "./types.ts";
+import type { ComponentSurface } from "./types.ts";
 
 type RuntimeProcedureEntry = {
   id: string;
@@ -526,28 +526,28 @@ async function emitBundledProceduresFile(root: string, runtimeProcedures: readon
   return readFileSync(join(root, "procedures.js"), "utf-8");
 }
 
-function collectPlatformProcedures(profileSurface: ProfileSurface, platform: PlatformType): ProcedureDefinition[] {
+function collectPlatformProcedures(componentSurface: ComponentSurface, platform: PlatformType): ProcedureDefinition[] {
   const enabledSkillIds = new Set(
-    profileSurface.skills
+    componentSurface.skills
       .filter((skill) => skill.platforms.includes(platform))
       .map((skill) => skill.id),
   );
   const enabledAgentIds = new Set(
-    profileSurface.agents
+    componentSurface.agents
       .filter((agent) => agent.platforms.includes(platform))
       .map((agent) => agent.id),
   );
   const enabledProcedureIds = new Set<string>();
-  for (const skill of profileSurface.skills) {
+  for (const skill of componentSurface.skills) {
     if (!skill.platforms.includes(platform)) continue;
     for (const procedureUse of listProcedureUses(skill)) enabledProcedureIds.add(procedureUse.id);
   }
-  for (const agent of profileSurface.agents) {
+  for (const agent of componentSurface.agents) {
     if (!agent.platforms.includes(platform)) continue;
     for (const procedureUse of listProcedureUses(agent)) enabledProcedureIds.add(procedureUse.id);
   }
 
-  return profileSurface.procedures
+  return componentSurface.procedures
     .filter((procedure) => enabledProcedureIds.has(procedure.id))
     .filter((procedure) => {
       const ownerSkills = procedure.owners.skillIds ?? [];
@@ -580,11 +580,11 @@ function schemaName(schema: { typeName: string } | undefined): string | null {
 }
 
 export async function emitScriptRuntime(
-  profileSurface: ProfileSurface,
+  componentSurface: ComponentSurface,
   root: string,
   platform: PlatformType,
 ): Promise<ScriptRuntimeBuildResult> {
-  const platformProcedures = collectPlatformProcedures(profileSurface, platform);
+  const platformProcedures = collectPlatformProcedures(componentSurface, platform);
   const runtimeProcedures = platformProcedures.map(toRuntimeProcedureEntry);
   const proceduresSource = await emitBundledProceduresFile(root, runtimeProcedures);
 

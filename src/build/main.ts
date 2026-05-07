@@ -39,13 +39,13 @@ export async function main(): Promise<void> {
 
   const { registry, tempDir } = await compileRegistry();
   try {
-    const profileSurface = validateRegistry(registry);
+    const componentSurface = validateRegistry(registry);
     const outDir = args.check
       ? join(tmpdir(), `ai-experts-dist-check-${process.pid}-${Date.now()}`)
       : args.outDir;
 
-    await emitPlatform(profileSurface, outDir, Platform.Claude);
-    await emitPlatform(profileSurface, outDir, Platform.Codex);
+    await emitPlatform(componentSurface, outDir, Platform.Claude);
+    await emitPlatform(componentSurface, outDir, Platform.Codex);
 
     const stats = collectStats(outDir);
     console.log(

@@ -8,7 +8,6 @@ export enum ComponentKind {
   Skill = "skill",
   Agent = "agent",
   Hook = "hook",
-  Profile = "profile",
 }
 
 export enum InvocationPolicy {
@@ -367,16 +366,6 @@ export type InstructionDefinition = {
   priority?: number;
 };
 
-export type ProfileDefinition = {
-  kind: ComponentKind.Profile;
-  id: string;
-  description: string;
-  instructions: readonly string[];
-  skills: readonly string[];
-  agents: readonly string[];
-  hooks: readonly string[];
-};
-
 export type NormalizedHookPayload = {
   platform: Platform;
   event: HookEvent;
@@ -522,13 +511,6 @@ export function defineInstruction(
 ): InstructionDefinition {
   return {
     kind: ComponentKind.Instruction,
-    ...definition,
-  };
-}
-
-export function defineProfile(definition: Omit<ProfileDefinition, "kind">): ProfileDefinition {
-  return {
-    kind: ComponentKind.Profile,
     ...definition,
   };
 }

@@ -10,19 +10,9 @@ import type {
   HookDefinition,
   InstructionDefinition,
   ProcedureDefinition,
-  ProfileDefinition,
   SkillDefinition,
 } from "../components/sdk";
-import type { ComponentRegistry, ProfileSurface } from "./types.ts";
-
-export function selectProfile(registry: ComponentRegistry): ProfileDefinition {
-  const profiles = registry.profiles ?? [];
-  const profile = profiles.find((item) => item.id === registry.defaultProfile) ?? profiles[0];
-  if (!profile) {
-    throw new Error("registry.profiles must include a default profile");
-  }
-  return profile;
-}
+import type { ComponentRegistry, ComponentSurface } from "./types.ts";
 
 export function byId<T extends { id: string }>(items: readonly T[] | undefined, kind: string): Map<string, T> {
   const map = new Map<string, T>();
@@ -33,52 +23,35 @@ export function byId<T extends { id: string }>(items: readonly T[] | undefined, 
   return map;
 }
 
-function pickByIds<T extends { id: string }>(
-  profileId: string,
-  map: Map<string, T>,
-  ids: readonly string[],
-  kind: string,
-): T[] {
-  return ids.map((id) => {
-    const value = map.get(id);
-    if (!value) throw new Error(`Profile ${profileId} references missing ${kind}: ${id}`);
-    return value;
-  });
-}
-
-export function materializeProfile(registry: ComponentRegistry): ProfileSurface {
-  const profile = selectProfile(registry);
+export function materializeRegistry(registry: ComponentRegistry): ComponentSurface {
   const instructions = byId<InstructionDefinition>(registry.instructions, "instruction");
   const skills = byId<SkillDefinition>(registry.skills, "skill");
   const agents = byId<AgentDefinition>(registry.agents, "agent");
   const hooks = byId<HookDefinition>(registry.hooks, "hook");
   const procedures = byId<ProcedureDefinition>(registry.procedures ?? registry.scripts ?? [], "procedure");
 
-  const profileSkills = pickByIds(profile.id, skills, profile.skills, "skill");
-  const profileAgents = pickByIds(profile.id, agents, profile.agents, "agent");
   const procedureIds = new Set<string>();
-  for (const skill of profileSkills) {
+  for (const skill of skills.values()) {
     for (const procedureUse of listProcedureUses(skill)) procedureIds.add(procedureUse.id);
   }
-  for (const agent of profileAgents) {
+  for (const agent of agents.values()) {
     for (const procedureUse of listProcedureUses(agent)) procedureIds.add(procedureUse.id);
   }
-  const profileProcedures = [...procedureIds]
+  const surfaceProcedures = [...procedureIds]
     .sort((a, b) => a.localeCompare(b))
     .map((id) => {
       const value = procedures.get(id);
-      if (!value) throw new Error(`Profile ${profile.id} references missing procedure: ${id}`);
+      if (!value) throw new Error(`Registry references missing procedure: ${id}`);
       return value;
     });
 
   return {
-    profile,
-    instructions: pickByIds(profile.id, instructions, profile.instructions, "instruction"),
-    procedures: profileProcedures,
-    scripts: profileProcedures,
-    skills: profileSkills,
-    agents: profileAgents,
-    hooks: pickByIds(profile.id, hooks, profile.hooks, "hook"),
+    instructions: [...instructions.values()],
+    procedures: surfaceProcedures,
+    scripts: surfaceProcedures,
+    skills: [...skills.values()],
+    agents: [...agents.values()],
+    hooks: [...hooks.values()],
   };
 }
 
@@ -113,11 +86,9 @@ export async function compileRegistry(): Promise<{ registry: ComponentRegistry; 
 function isComponentRegistry(value: unknown): value is ComponentRegistry {
   if (!value || typeof value !== "object") return false;
   const maybe = value as Partial<ComponentRegistry>;
-  return typeof maybe.defaultProfile === "string" &&
-    Array.isArray(maybe.instructions) &&
+  return Array.isArray(maybe.instructions) &&
     (Array.isArray(maybe.procedures) || Array.isArray(maybe.scripts)) &&
     Array.isArray(maybe.skills) &&
     Array.isArray(maybe.agents) &&
-    Array.isArray(maybe.hooks) &&
-    Array.isArray(maybe.profiles);
+    Array.isArray(maybe.hooks);
 }

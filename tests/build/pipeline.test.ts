@@ -9,7 +9,7 @@ import { Platform, ensureDir, writeText } from "../../src/build/core.ts";
 import { compileHookModules, renderCodexConfig, renderHookConfig } from "../../src/build/hooks.ts";
 import { main } from "../../src/build/main.ts";
 import { emitPlatform, renderInstruction, validateId, validateRegistry } from "../../src/build/platform.ts";
-import { byId, compileRegistry, materializeProfile, selectProfile } from "../../src/build/registry.ts";
+import { byId, compileRegistry, materializeRegistry } from "../../src/build/registry.ts";
 import { emitSkill, renderSkillMd, validateAntiPatterns, validateTextList } from "../../src/build/skills.ts";
 import type { ComponentRegistry } from "../../src/build/types.ts";
 import {
@@ -32,7 +32,6 @@ import {
   defineHook,
   defineAgentInput,
   defineInstruction,
-  defineProfile,
   defineReference,
   defineScript,
   defineScriptUse,
@@ -185,35 +184,23 @@ function createFixture() {
     body: pathToFileURL(instructionBody),
   });
 
-  const profile = defineProfile({
-    id: "fixture-profile",
-    description: "fixture profile",
-    instructions: [instruction.id],
-    skills: [skill.id],
-    agents: [agent.id],
-    hooks: [hook.id],
-  });
-
   const registry: ComponentRegistry = {
     version: 1,
-    defaultProfile: profile.id,
     instructions: [instruction],
     scripts: [script],
     skills: [skill],
     agents: [agent],
     hooks: [hook],
-    profiles: [profile],
   };
-  return { root, script, skill, agent, hook, instruction, profile, registry };
+  return { root, script, skill, agent, hook, instruction, registry };
 }
 
 describe("build/pipeline modules", () => {
   test("registry helpers and compileRegistry work", async () => {
     const fixture = createFixture();
-    expect(selectProfile(fixture.registry).id).toBe("fixture-profile");
     expect(byId(fixture.registry.skills, "skill").get("fixture-skill")?.id).toBe("fixture-skill");
     expect(() => byId([...fixture.registry.skills, fixture.skill], "skill")).toThrow("Duplicate skill id");
-    expect(materializeProfile(fixture.registry).skills[0].id).toBe("fixture-skill");
+    expect(materializeRegistry(fixture.registry).skills[0].id).toBe("fixture-skill");
 
     const compiled = await compileRegistry();
     expect(compiled.registry.skills.length).toBeGreaterThan(0);
@@ -344,10 +331,6 @@ describe("build/pipeline modules", () => {
             { id: otherSkill.id, label: "other alias", reason: "duplicate route" },
           ],
         }, otherSkill],
-        profiles: [{
-          ...fixture.profile,
-          skills: [fixture.skill.id, otherSkill.id],
-        }],
       })
     ).toThrow("duplicate related skill entry: other-skill");
 

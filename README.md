@@ -7,12 +7,12 @@
 - **Instruction**：稳定会话指令，生成 `dist/claude/CLAUDE.md` 与 `dist/codex/AGENTS.md`。
 - **Skill**：可复用工作流，生成 `skills/<skill>/SKILL.md`，并可携带 `scripts/`、`references/`、`assets/`。
 - **Agent**：隔离上下文执行者，可编排多个 skill。
+- **Procedure**：可被 skill/agent 调用的本地可执行过程，统一打包进 `procedures.js`。
 - **Hook**：生命周期中间件，用于补上下文、阻断、报告和审计。
-- **Profile**：组合 instruction、skill、agent 和 hook 的安装画像。
 
 事实源在 `src/components/`，默认构建产物在 `dist/claude/` 与 `dist/codex/`。仓库根的 `CLAUDE.md` 与 `AGENTS.md` 是指向本文件的 symlink；构建产物里的 `CLAUDE.md` / `AGENTS.md` 由 `src/components/instructions/` 生成。
 
-当前组件规模：338 个 skill、80 个 agent、101 个 hook。
+当前组件规模：338 个 skill、80 个 agent、99 个 hook。
 
 ## 快速开始
 
@@ -61,7 +61,7 @@ src/components/
   skills/<skill>/
   agents/<agent>/
   hooks/<hook>/
-  profiles/default.ts
+  procedures/sources/<procedure>/
 ```
 
 所有组件源码都直接位于 `src/components/skills/`、`src/components/agents/`、`src/components/hooks/`。不要再引入过渡分层。
@@ -153,7 +153,7 @@ export const typescriptTypeSafety = defineSkill({
 - 每个 script 必须通过 `defineSkillScript()` 登记。
 - reference 必须通过 `defineReference()` 登记，asset 必须通过 `defineAsset()` 登记。
 - `evals/` 是源码侧质量验证材料，不是运行时参考资料，不能登记为 reference，也不会复制到 `dist/*/skills/*/references/`。
-- agent/profile 引用 skill 时 import skill definition 并读取 `.id`，不在引用处手写 skill id。
+- agent 引用 skill 时 import skill definition 并读取 `.id`，不在引用处手写 skill id。
 - 低频或高风险流程用 `InvocationPolicy.ExplicitOnly`；构建器会映射到 Claude 与 Codex 的平台配置。
 
 ## Agent
@@ -242,25 +242,6 @@ type NormalizedHookResult =
   | { kind: "add-context"; message: string }
   | { kind: "report"; message: string }
   | { kind: "audit"; record: unknown };
-```
-
-## Profile
-
-Profile 负责组合能力：
-
-```ts
-export const defaultProfile = defineProfile({
-  id: "default",
-  description: "默认组件画像。",
-  instructions: ["core-ai-experts"],
-  skills: componentSkills.map((skill) => skill.id),
-  agents: componentAgents.map((agent) => agent.id),
-  hooks: [
-    componentRoutingReminder.id,
-    generatedDistGuard.id,
-    ...componentHooks.map((hook) => hook.id),
-  ],
-});
 ```
 
 ## 质量门禁
