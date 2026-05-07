@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, securityOwnershipMapBuildOwnershipMap, securityOwnershipMapCommunityMaintainers, securityOwnershipMapQueryOwnership, securityOwnershipMapRunOwnershipMap } from "../../procedures/index";
 
@@ -55,7 +58,27 @@ export const securityOwnershipMapSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "基于 git 历史和敏感规则构建安全所有权图，识别隐藏 owner、低 bus factor 和孤儿敏感代码。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "确认分析范围、时间窗、身份归并规则、敏感文件规则和输出格式。",
+      "调用 ownership map 相关 procedure 构建 `summary.json`、`people.csv`、`files.csv`、`edges.csv` 等产物。",
+      "查询高风险文件、敏感规则命中、owner 覆盖度、bus factor 和 co-change 关系。",
+      "需要社区或图结构分析时调用 community procedure；需要图数据库可视化时读取 `neo4j-import` reference。",
+      "把所有发现绑定到文件、作者、时间窗、规则命中和共改证据，避免只用活跃度下结论。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "分析范围、时间窗和敏感规则说明。",
+      "所有权图关键指标：owner 覆盖、bus factor、孤儿敏感代码和隐藏 owner。",
+      "高风险文件/模块清单及证据。",
+      "CSV/JSON/GraphML 或 Neo4j 导入建议。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(securityOwnershipMapBuildOwnershipMap),

@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const crossPlatformAdapterPatternsSkill = defineSkill({
@@ -40,7 +43,28 @@ export const crossPlatformAdapterPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把跨平台差异收敛到稳定 adapter 边界，让共享业务逻辑不依赖平台原语。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先列出需要跨平台支持的能力、目标平台、差异点和最低可接受降级行为。",
+      "定义共享层接口和错误/降级合同，接口设计细节按需读取 `adapter-interface` reference。",
+      "为每个平台设计独立实现和注册位置，避免平台包互相依赖；DI 方案按需读取 `di-container` reference。",
+      "检查 monorepo 包边界和依赖方向，目录布局按需读取 `monorepo-layout` reference。",
+      "如果涉及 Rust 条件编译或平台特性门控，读取 `rust-cfg-abstraction` reference。",
+      "输出边界图、接口草案、平台实现清单和验证方案。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "平台能力矩阵与降级策略。",
+      "共享接口、平台实现和注册点。",
+      "包依赖方向与禁止依赖清单。",
+      "需要读取的 reference 和验证计划。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

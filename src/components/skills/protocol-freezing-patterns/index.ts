@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const protocolFreezingPatternsSkill = defineSkill({
@@ -46,7 +49,28 @@ export const protocolFreezingPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "在不破坏已部署客户端的前提下冻结协议线格式，并规划可回归测试的版本演进路径。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "盘点已部署消息、字段、编码、版本标签、客户端版本和兼容性承诺。",
+      "判断本次变化属于新增、废弃、删除、语义调整还是线格式破坏；字段演进细节按需读取 `field-evolution` reference。",
+      "为新增字段设计可选默认值，为删除字段制定标记废弃 -> 停写 -> 停读 -> 移除四阶段计划。",
+      "设计版本标签、版本化信封或协商机制；需要方案时读取 `versioned-envelope` 和 `version-negotiation` references。",
+      "为每个历史版本补 golden file 反序列化测试，测试方法按需读取 `golden-file-testing` reference。",
+      "输出兼容性矩阵、迁移计划、测试清单和破坏性变更决策。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "协议版本与字段演进矩阵。",
+      "兼容/不兼容变更判定和版本号策略。",
+      "废弃或迁移阶段计划。",
+      "Golden file 回归测试清单。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

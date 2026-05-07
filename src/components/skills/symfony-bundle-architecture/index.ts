@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { doctrineEntityPatternsSkill } from "../doctrine-entity-patterns/index";
 
@@ -50,6 +53,27 @@ export const symfonyBundleArchitectureSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计或审查 Symfony Bundle 边界，让 Extension、CompilerPass、services.yaml 和 Bundle 依赖保持清晰可组合。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "读取 Bundle 类、Extension、配置文件、CompilerPass、服务定义和 Bundle 间依赖；完整示例按需读取 `reference.md`。",
+      "检查 Bundle 类是否只做依赖声明和 CompilerPass 注册，不承载运行时逻辑。",
+      "检查 Extension 是否只加载配置，不直接构造服务或访问运行时状态。",
+      "检查 services.yaml 是否按命名空间 resource 扫描、默认 private、避免无意义 public 服务。",
+      "检查 CompilerPass 是否只处理标签或配置无法覆盖的操作，并在 `hasDefinition()` 后再改定义。",
+      "检查显式依赖、可选依赖降级和多 Bundle monorepo 协作边界。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Bundle 边界与依赖审查结果。",
+      "Extension、services.yaml、CompilerPass 的最小修复建议。",
+      "可选依赖和降级策略。",
+      "需要参考的 `reference.md` 示例。",
+    ],
+  }),
   tools: [],
 });

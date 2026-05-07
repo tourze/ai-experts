@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { doctrineBatchProcessingSkill } from "../doctrine-batch-processing/index";
 import { symfonyBundleArchitectureSkill } from "../symfony-bundle-architecture/index";
@@ -57,6 +60,27 @@ export const doctrineEntityPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计或审查 Doctrine Entity、Repository 和 Migration，使映射、关联、查询和迁移行为可维护且可回滚。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "读取目标 Entity、Repository、Migration、调用点和数据库约束；完整代码示例按需读取 `reference.md`。",
+      "审查列映射、ID 策略、时间类型、nullable、索引、唯一约束和注释。",
+      "审查关联关系、归属端、反向声明、cascade、orphanRemoval 和懒加载风险。",
+      "审查 Repository 查询边界，避免无界 `findAll()`、N+1 和不可分页集合遍历。",
+      "审查 Migration 是否只做结构变更、可回滚、包含索引/外键并避免数据副作用。",
+      "输出实体设计建议、查询修复点和迁移风险。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Entity 映射与关联审查结果。",
+      "Repository 查询边界和性能风险。",
+      "Migration 回滚、索引和外键检查。",
+      "需要参考的 `reference.md` 示例和最小修改建议。",
+    ],
+  }),
   tools: [],
 });

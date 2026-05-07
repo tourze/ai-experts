@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { phpXFeaturesSkill } from "../php-8x-features/index";
 import { phpErrorHandlingSkill } from "../php-error-handling/index";
@@ -69,7 +72,28 @@ export const phpTestingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用现代 PHPUnit/Pest 写出边界清晰、断言稳定、fixture 可维护的 PHP 测试。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "确认被测行为、测试层级、依赖边界和现有测试风格；需要具体写法时读取 `examples` reference。",
+      "选择 PHPUnit 或 Pest 结构，优先使用 `#[Test]`、`#[DataProvider]`、`#[CoversClass]` 等 PHP 8 属性。",
+      "设计 Arrange-Act-Assert、fixture、数据提供者和外部边界 mock，避免 mock 被测对象内部。",
+      "为集成测试明确状态清理、事务边界、环境依赖和 HTTP/CLI 冒烟路径。",
+      "审查 `phpunit.xml` 的严格模式、测试套件、覆盖率和分组策略。",
+      "输出新增/重构测试、覆盖边界和仍需补测的风险。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "测试用例或测试重构建议。",
+      "fixture、DataProvider、Mock 和集成边界说明。",
+      "`phpunit.xml` 或 Pest 配置检查项。",
+      "未覆盖风险和下一步补测计划。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({
