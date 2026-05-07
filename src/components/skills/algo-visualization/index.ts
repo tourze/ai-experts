@@ -5,8 +5,13 @@ import {
   defineAsset,
   defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { canvasDesignSkill } from "../canvas-design/index";
+import { dataVisualizationSkill } from "../data-visualization/index";
+import { markdownMermaidWritingSkill } from "../markdown-mermaid-writing/index";
 
 export const algoVisualizationSkill = defineSkill({
   id: "algo-visualization",
@@ -20,21 +25,56 @@ export const algoVisualizationSkill = defineSkill({
     "输出物：**单文件 HTML**，CSS/JS 内联，可直接打开。",
   ],
   constraints: [
-    "只在本 skill 的适用场景内使用；任务不匹配时先澄清或转向更合适的 skill。",
-    "执行时遵循正文中的流程、红线、检查清单和必要参考资料，不用未经验证的假设替代证据。",
-    "不适用场景：静态图导出（PNG/SVG）转 `canvas-design`；动画视频使用视频生成工具；业务数据图表转 `data-visualization`；流程图/时序图/状态图转 `markdown-mermaid-writing`。",
+    "输出必须是单文件 HTML，CSS/JS 内联，可直接打开；普通静态图、业务数据图表和流程图不走本 skill。",
+    "正文为主：80% 以上是 `<p>` 与 `<h2>/<h3>`，callout 整页不超过 4 个。",
+    "SVG 不重叠：相邻圆心距至少 56px，父子 y 间距至少 60px，viewBox 高度按最大节点 y+r+40 计算。",
+    "涉及代码时每个 step 必须有 `line` 字段，代码面板和动画双面板联动，并在 render 末尾调用高亮函数。",
+    "每个概念配 SVG，节奏是讲完概念、紧跟 SVG、再接文字；整页静态 SVG 数不少于交互动画数。",
+    "assets 三件套必须原样读取；boilerplate.js 只能按块摘取，不能整文件复制导致重复声明 `steps`。",
   ],
   relatedSkills: [
     {
       get id() {
         return canvasDesignSkill.id;
       },
-      reason: "一页艺术化静态画面 → `canvas-design`。",
+      reason: "用户要的是一页艺术化静态画面、PNG/SVG 或非交互式视觉稿时联动。",
+    },
+    {
+      get id() {
+        return dataVisualizationSkill.id;
+      },
+      reason: "用户要的是业务数据图表、指标看板或统计可视化，而不是算法教学页时联动。",
+    },
+    {
+      get id() {
+        return markdownMermaidWritingSkill.id;
+      },
+      reason: "用户要的是流程图、时序图、状态图或 Mermaid 文档图示时联动。",
     },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把算法、数据结构、代码执行过程或教材内容做成正文充分、SVG 清晰、动画可交互的单文件 HTML 教学页。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先判断输入类型：PDF/教材、无代码算法主题、含代码执行过程或概念对比，并选择对应页面骨架。",
+      "按来源脉络组织内容：有 PDF 时顺原文页面和例子，无来源时按是什么、怎么工作、实例、总结。",
+      "先读取 iron-rules，再读取 page-skeleton、steps-shapes、rationalizations；需要堆示例时读取 heap_overview。",
+      "根据数据形态选 JS 模板：数组+完全二叉树用 A，不规则树用 B，纯数组用 C；代码联动必须带 line 和 hlLines。",
+      "嵌入 assets 时按块摘取工具函数、模板、可选高亮、键盘导航和自己的 steps，避免重复顶层变量。",
+      "生成后检查 SVG 间距、viewBox、高亮联动、静态/交互比例、可直接打开和来源引用。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "单文件 HTML、输入类型判断、骨架选择、JS 模板选择和来源脉络说明。",
+      "概念正文、静态 SVG、交互 steps、代码联动 line 字段、颜色语义和键盘导航。",
+      "自检结果：铁律合规、SVG 不重叠、viewBox 正确、无重复 `steps` 声明、引用 SOURCE。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

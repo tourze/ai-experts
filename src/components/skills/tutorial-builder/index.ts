@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { docCoauthoringSkill } from "../doc-coauthoring/index";
 import { markdownMermaidWritingSkill } from "../markdown-mermaid-writing/index";
@@ -20,7 +23,7 @@ export const tutorialBuilderSkill = defineSkill({
     "用户要从主题、零散笔记、URL、论文、仓库、课程材料或草稿生成完整教程。",
     "交付目标是学习包：`brief`、研究记录、教程大纲、正文、章节视觉、练习、来源附录和导出计划。",
     "需要权威来源支撑，而不是无来源博客、短答或普通操作手册。",
-    "只写终端用户的产品操作指南时，转 `user-guide-writing`；只协作文档结构时，先用 `doc-coauthoring`。",
+    "需要区分完整教程、终端用户操作指南和纯文档协作。",
   ],
   constraints: [
     "用户材料优先：先保留用户的意图、角度、案例、术语和排除项，再补外部来源。",
@@ -41,33 +44,31 @@ export const tutorialBuilderSkill = defineSkill({
       get id() {
         return mdToPdfSkill.id;
       },
-      reason: "5. 以 Markdown 为源规划 DOCX/PDF/HTML 导出；具体转换分别衔接 `docx`、`md-to-pdf`。",
+      reason: "教程正文定稿后，需要以 Markdown 为源导出 PDF 时联动。",
     },
     {
       get id() {
         return markdownMermaidWritingSkill.id;
       },
-      label: "pretty-mermaid",
-      reason: "需要渲染 Mermaid 成品图时衔接 `pretty-mermaid`；需要演示视觉规范时衔接 `ppt-visual`。",
+      reason: "章节视觉需要流程图、架构图、时间线或 Mermaid 图示时联动。",
     },
     {
       get id() {
         return pptGenerateSkill.id;
       },
-      label: "ppt-visual",
-      reason: "需要渲染 Mermaid 成品图时衔接 `pretty-mermaid`；需要演示视觉规范时衔接 `ppt-visual`。",
+      reason: "教程需要转成演示材料、课程讲义或视觉规范 slide 时联动。",
     },
     {
       get id() {
         return userGuideWritingSkill.id;
       },
-      reason: "只写终端用户的产品操作指南时，转 `user-guide-writing`；只协作文档结构时，先用 `doc-coauthoring`。",
+      reason: "目标是终端用户操作指南、帮助中心或产品使用说明，而不是课程学习包时联动。",
     },
     {
       get id() {
         return docCoauthoringSkill.id;
       },
-      reason: "只写终端用户的产品操作指南时，转 `user-guide-writing`；只协作文档结构或 DOCX 交付边界时，先用 `doc-coauthoring`。",
+      reason: "只需要协作文档结构、章节组织、审稿或 DOCX 交付边界时联动。",
     },
   ],
   antiPatterns: [
@@ -82,7 +83,27 @@ export const tutorialBuilderSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把主题、笔记、URL、论文或仓库材料组织成有来源支撑的教程学习包，包含 brief、证据、章节、视觉、练习和导出计划。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先建立 brief：topic、audience、learning_goal、language、material_tier 和 output_formats；字段合同读取 tutorial-package-contract。",
+      "判断用户材料等级 rich/moderate/thin，并据此控制外部研究预算；用户材料强时以其为主线。",
+      "先写来源登记和 evidence map，再写大纲；不要边搜边写正文。",
+      "每章包含学习目标、概念、视觉、例子、坑、练习、checkpoint 和 source IDs。",
+      "章节视觉先写 visual-spec，明确 visual_type、learning_point、elements 和 caption，不直接堆装饰图。",
+      "以 Markdown 正文作为 canonical source，再规划 DOCX/PDF/HTML 或演示材料导出。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "brief、材料等级、研究预算、来源登记、evidence map 和来源附录。",
+      "教程大纲、章节正文、视觉规格、练习、checkpoint 和 source IDs。",
+      "Markdown canonical source、导出计划、格式风险和需要联动的文档/图示/PDF/PPT skill。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

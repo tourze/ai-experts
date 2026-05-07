@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { binaryAnalysisPatternsSkill } from "../binary-analysis-patterns/index";
 import { fridaDynamicAnalysisSkill } from "../frida-dynamic-analysis/index";
@@ -15,8 +18,8 @@ export const unicornEmulationSkill = defineSkill({
   useCases: [
     "需要在无完整运行环境下执行特定函数（解密、哈希、校验）。",
     "需要绕过 JNI、syscall、libc 等环境依赖做算法还原。",
-    "需要与 `binary-analysis-patterns` 配合，先静态理解再模拟验证。",
-    "需要与 `frida-dynamic-analysis` 互补：Frida 需要真机，Unicorn 纯离线。",
+    "需要先静态理解函数边界、调用约定和外部依赖，再离线模拟验证。",
+    "需要在真机动态观察和离线模拟执行之间交叉确认。",
   ],
   constraints: [
     "先裸加载文件映射内存，不要解析 ELF/PE 头——只模拟目标函数，不是整个程序。",
@@ -29,13 +32,13 @@ export const unicornEmulationSkill = defineSkill({
       get id() {
         return fridaDynamicAnalysisSkill.id;
       },
-      reason: "需要与 `frida-dynamic-analysis` 互补：Frida 需要真机，Unicorn 纯离线。",
+      reason: "需要用真机动态观察补齐参数、返回值、JNI 或系统调用行为时联动。",
     },
     {
       get id() {
         return binaryAnalysisPatternsSkill.id;
       },
-      reason: "需要与 `binary-analysis-patterns` 配合，先静态理解再模拟验证。",
+      reason: "需要先静态定位函数边界、调用约定、导入依赖和关键数据结构时联动。",
     },
   ],
   antiPatterns: [
@@ -46,6 +49,25 @@ export const unicornEmulationSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 Unicorn 离线模拟执行目标函数，按需补映射、stub 和 hook，还原算法行为而不是运行完整程序。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先静态确认架构、基址、目标函数范围、调用约定、参数位置、返回寄存器和外部依赖。",
+      "裸加载目标代码并按需映射内存；不要试图完整解析和运行整个 ELF/PE。",
+      "为 libc、JNI、syscall、C++ runtime 等外部调用写 stub 或 hook，返回最小可信值。",
+      "用块级 trace 定位崩溃；未映射 fetch 补代码映射，未映射 read 补数据或 hook，命中 import stub 就补模拟实现。",
+      "死循环加计数器和超时阈值；每轮记录 crash callback、修复点、输入、输出和剩余未模拟依赖。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "架构速查：UC_ARCH/模式、SP、LR/返回地址、参数寄存器、返回寄存器和 syscall 入口寄存器。",
+      "映射计划、目标函数地址范围、输入内存布局、stub/hook 清单和 trace 策略。",
+      "迭代调试记录：崩溃类型、修复动作、模拟输出、未覆盖环境依赖和需要 Frida/静态分析补证的点。",
+    ],
+  }),
   tools: [],
 });

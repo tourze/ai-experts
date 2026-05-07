@@ -6,6 +6,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, youtubeAnalysisAnalyzeVideo, youtubeAnalysisFetchTranscript, youtubeAnalysisUtils } from "../../procedures/index";
 
@@ -18,7 +21,7 @@ export const youtubeAnalysisSkill = defineSkill({
   useCases: [
     "用户给出单个 `youtube.com` / `youtu.be` 链接，希望你总结内容、提炼概念、输出讲义或会议笔记。",
     "用户明确提到“字幕”“转录”“tech talk 拆解”“podcast 摘要”“把这条 YouTube 视频看一遍”。",
-    "用户先通过 `youtube-search` 找到候选视频，再对其中一条做深度分析。",
+    "用户已找到候选视频，需要对其中一条做深度内容分析。",
   ],
   constraints: [
     "只基于字幕与元数据分析，不做画面、PPT、代码演示或肢体语言的臆测。",
@@ -39,7 +42,7 @@ export const youtubeAnalysisSkill = defineSkill({
       get id() {
         return youtubeSearchSkill.id;
       },
-      reason: "用户先通过 `youtube-search` 找到候选视频，再对其中一条做深度分析。",
+      reason: "用户还没有具体视频链接，需要先搜索候选视频或比较多个视频时联动。",
     },
   ],
   antiPatterns: [
@@ -54,7 +57,27 @@ export const youtubeAnalysisSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "基于 YouTube 字幕和元数据分析单个视频，输出摘要、结构拆解、讲义、会议笔记或深度内容分析。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认输入是合法 YouTube URL 或 11 位视频 ID；没有具体视频时转入搜索。",
+      "调用 fetch-transcript procedure 获取字幕 JSON，检查 video_id、title、channel、duration、upload_date、language、source 和 transcript。",
+      "没有字幕、私有、年龄限制或地区封锁时直接说明限制，不伪造摘要。",
+      "需要脚手架文件时调用 analyze-video procedure；如果要真实内容，必须再基于 transcript 填充占位。",
+      "深度分析按 transcript 时间戳分块，不从 dist 中 import procedure 源码。",
+      "按 lecture、tutorial、interview、podcast、tech-talk 或 panel 选择分析重点，必要时读取 analysis-patterns。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "字幕获取结果：video_id、title、channel、duration_seconds、upload_date、language、source 和限制说明。",
+      "按时间戳组织的摘要、主题结构、关键概念、论点、例子、行动项或讲义。",
+      "分析脚手架或 Markdown 输出路径、是否仍含占位、仅基于字幕的覆盖限制和下一步补证建议。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(youtubeAnalysisAnalyzeVideo),

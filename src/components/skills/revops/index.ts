@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const revopsSkill = defineSkill({
@@ -60,7 +63,27 @@ export const revopsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计或诊断收入运营体系，把线索生命周期、评分、MQL/SQL、路由、SLA、Pipeline、CRM 自动化和数据治理对齐到统一收入引擎。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先定义线索生命周期：Subscriber、Lead、MQL、SQL、Opportunity、Customer、Evangelist，以及每阶段客观进入标准。",
+      "建立 lead scoring：显性 fit、隐性 engagement、负分和时间衰减三类规则缺一不可；细节读取 scoring-and-pipeline。",
+      "设计 MQL 到 SQL 交接 SLA：4 小时内首次联系，48 小时内 qualify/reject 并记录原因。",
+      "设计路由和兜底：轮询、区域、账户或技能优先，主负责人未响应时转备选并通知管理者。",
+      "管理 Pipeline：阶段推进要有客观标准，停留超阶段均值 2 倍触发复盘，丢单必须记录原因。",
+      "最后落 CRM 自动化和数据治理：生命周期升级、任务、SLA 告警、阶段通知、赢输触发、去重、必填字段和季度审计。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "线索生命周期、MQL/SQL 定义、评分模型、路由规则和 SLA。",
+      "Pipeline 阶段标准、停滞复盘规则、丢单原因分类和 CRM 自动化清单。",
+      "核心指标仪表盘：Lead→MQL、MQL→SQL、SQL→Opp、LTV:CAC、speed-to-lead、win rate 和 pipeline velocity。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({
