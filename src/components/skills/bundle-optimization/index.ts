@@ -20,7 +20,7 @@ export const bundleOptimizationSkill = defineSkill({
     "项目使用 barrel exports（index.ts 重导出），导致 tree shaking 失效。",
     "需要基于用户行为意图预加载即将用到的模块。",
     "性能指标层面可联动 `web-performance-diagnosis`。",
-    "这套 skill 是规则索引；需要细节时直接打开对应 `rules/*.md` 文件。",
+    "这套 skill 是规则索引；需要细节时直接打开对应 `references/rules/*.md` 文件。",
   ],
   constraints: [
     "先量化：用 bundle analyzer 确认哪些模块占比最大，再决定拆分策略。",
@@ -62,7 +62,7 @@ export const bundleOptimizationSkill = defineSkill({
       "先用 bundle analyzer 量化最大模块、入口 chunk、初始 JS、gzip/brotli 和 parse/execute 成本。",
       "把 barrel imports 改成 direct path imports，重型且非首屏必需的组件改为动态导入。",
       "第三方库按需加载，preload 只用于高概率路径，避免为了体积拆分破坏首屏体验。",
-      "barrel import 和 dynamic import 示例读取 `bundle-code-patterns`；专项规则读取 `rules/`。",
+      "barrel import 和 dynamic import 示例读取 `bundle-code-patterns`；专项规则读取 `bundle-rules`。",
     ],
   }),
   outputs: defineSkillOutputs({
@@ -80,6 +80,14 @@ export const bundleOptimizationSkill = defineSkill({
       title: "Bundle 优化代码模式",
       summary: "barrel import 改 direct path import、重型组件动态导入和 bundle 规则索引。",
       loadWhen: "需要快速修复前端 bundle 体积、barrel import 或动态导入问题时读取。",
+    }),
+    defineReference({
+      id: "bundle-rules",
+      source: new URL("./references/rules/", import.meta.url),
+      target: "references/rules",
+      title: "Bundle Optimization Rules",
+      summary: "barrel imports、dynamic import、条件分支、第三方延迟和 preload 专项规则。",
+      loadWhen: "需要按具体 bundle 优化场景读取专项规则时读取。",
     }),
   ],
 });

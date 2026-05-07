@@ -604,7 +604,7 @@ describe("component source conventions", () => {
     );
     const legacySkillRuntimeDirs = collectFiles(skillRoot, (file) => {
       const parts = file.slice(skillRoot.length + 1).split(/[\\/]/);
-      return ["commands", "hooks", "schemas", "examples", "resources", "prompts", "eval-viewer"].includes(
+      return ["commands", "hooks", "schemas", "examples", "resources", "prompts", "eval-viewer", "quick-ref"].includes(
         parts[1] ?? "",
       );
     });

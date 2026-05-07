@@ -116,5 +116,13 @@ export const reactHooksSkill = defineSkill({
       summary: "React Hooks 高级模式，包括自定义 Hook 设计、复杂 useReducer 状态机、Effect 清理和闭包处理。",
       loadWhen: "需要查阅自定义 Hook 设计或复杂 Effect 处理等高级模式时读取。",
     }),
+    defineReference({
+      id: "hooks-cheatsheet",
+      source: new URL("./references/hooks-cheatsheet.md", import.meta.url),
+      target: "references/hooks-cheatsheet.md",
+      title: "React Hooks Quick Reference",
+      summary: "React state、effect、ref、memo、依赖数组和自定义 Hook 模板速查。",
+      loadWhen: "需要快速回忆 Hooks API、规则或依赖数组语义时读取。",
+    }),
   ],
 });
