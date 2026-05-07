@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const webmanCustomProcessesSkill = defineSkill({
@@ -46,7 +49,28 @@ export const webmanCustomProcessesSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 Webman 自定义进程、Timer、Crontab 和 crash-restart 设计生命周期安全的进程配置。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认进程用途、`config/process.php` handler、count、是否长连接、是否可 reload 和停止语义。",
+      "生命周期初始化读取 `process-lifecycle` reference，连接和资源放在 `onWorkerStart`。",
+      "Timer/Crontab 读取 `timer-management` 与 `crontab-scheduling`，追踪 Timer ID 并在 `onWorkerStop` 清理。",
+      "排查阻塞读取 `event-loop-blocking`，移除 `sleep()` 和同步阻塞调用。",
+      "崩溃恢复读取 `crash-recovery`，不可恢复错误用 `Worker::stopAll()` 或明确退出策略。",
+      "输出 process 配置、生命周期钩子、清理逻辑和验证命令。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "`config/process.php` 进程声明和 handler/count/reloadable 设置。",
+      "onWorkerStart/onWorkerStop 生命周期设计。",
+      "Timer/Crontab 管理、阻塞风险和崩溃恢复策略。",
+      "验证步骤、日志观察点和回滚方案。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

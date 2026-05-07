@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const webmanNamingConventionsSkill = defineSkill({
@@ -45,7 +48,28 @@ export const webmanNamingConventionsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "统一 Webman 项目的目录、命名空间、接口、Service 和 Repository 命名，降低 PSR-4 与职责漂移风险。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认要审查的目录、命名空间、接口、Service、Repository 和自动加载规则。",
+      "目录规则读取 `directory-lowercase`，统一小写和多词下划线。",
+      "接口规则读取 `interface-naming`，统一 `Interface` 后缀。",
+      "Service 命名读取 `service-naming-pattern`，使用表达动作的 `VerbNounService`。",
+      "命名空间与目录不一致读取 `namespace-directory-mismatch`；Repository 实现读取 `repository-implementation-naming`。",
+      "输出命名问题清单、修改建议、PSR-4 风险和分阶段重命名计划。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "目录、命名空间、接口、Service、Repository 命名审查表。",
+      "不一致项、违反规则和 PSR-4 自动加载风险。",
+      "目标命名方案和重命名顺序。",
+      "需要同步调整的引用、配置和测试范围。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

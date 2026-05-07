@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const webmanPluginDevelopmentSkill = defineSkill({
@@ -48,6 +51,27 @@ export const webmanPluginDevelopmentSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "按 Webman 插件约定设计 Install.php、配置发布、autoload、进程声明和卸载清理。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认插件 vendor/package、Composer autoload、配置目录、进程需求和安装/卸载行为。",
+      "在 `src/Install.php` 声明 `WEBMAN_PLUGIN = true` 和 `$pathRelation`，路径指向 `config/plugin/{vendor}/{package}/`。",
+      "配置读取统一用 `config('plugin.{vendor}.{package}.{key}')`，避免直接读应用全局配置。",
+      "`mkdir` 权限使用 `0755`，`webman-framework` 放 `require-dev`。",
+      "实现 `uninstall()` 清理已发布配置、进程声明或其它安装副作用。",
+      "输出插件目录结构、Install.php 要点、配置访问方式和发布/卸载检查清单。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "插件 composer/autoload/目录结构。",
+      "`Install.php`、`$pathRelation` 和配置发布设计。",
+      "配置访问、进程声明、Bootstrap 或权限边界。",
+      "安装验证、卸载清理和常见反模式检查。",
+    ],
+  }),
   tools: [],
 });

@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const webmanWebsocketPatternsSkill = defineSkill({
@@ -40,7 +43,28 @@ export const webmanWebsocketPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 Webman WebSocket 设计服务端进程、连接生命周期、频道广播、心跳和客户端重连策略。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认服务端监听地址、worker 数量、频道模型、认证方式、心跳和重连要求。",
+      "服务端配置读取 `websocket-server-setup`，声明 `listen => 'websocket://...'`、`reloadable => false` 和必要进程参数。",
+      "连接生命周期读取 `connection-lifecycle`，在 `onConnect` 分配 ID，`onWebSocketConnect` 做认证，`onClose` 清理资源。",
+      "多 Worker 广播读取 `channel-subscription`，跨进程使用 Redis pub/sub，不只依赖内存数组。",
+      "客户端重连读取 `reconnect-strategy`，使用指数退避、抖动和最大重试。",
+      "输出 WebSocket process 配置、认证/频道/广播设计和重连验证方案。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "`config/process.php` WebSocket 服务声明。",
+      "连接认证、ID 分配、onClose 清理和心跳策略。",
+      "频道订阅、私有频道签名和 Redis pub/sub 广播。",
+      "客户端重连策略、验证步骤和运行风险。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({
