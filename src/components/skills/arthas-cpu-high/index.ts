@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { arthasSpringcontextIssuesResolveSkill } from "../arthas-springcontext-issues-resolve/index";
 
@@ -15,7 +18,6 @@ export const arthasCpuHighSkill = defineSkill({
     "Java 进程 CPU 飙高、请求明显变慢、机器负载异常升高。",
     "需要快速确认是计算热点、锁竞争、GC 压力还是日志/序列化开销。",
     "已能连到目标 JVM，并且允许使用 Arthas 做只读诊断。",
-    "如果怀疑是 Spring Bean 装配或配置注入问题，转到 `arthas-springcontext-issues-resolve`。",
   ],
   constraints: [
     "先只读、后追踪：必须先拿到 `dashboard` 与 `thread` 证据，再决定是否使用 `trace` / `watch`。",
@@ -35,7 +37,7 @@ export const arthasCpuHighSkill = defineSkill({
       get id() {
         return arthasSpringcontextIssuesResolveSkill.id;
       },
-      reason: "如果怀疑是 Spring Bean 装配或配置注入问题，转到 `arthas-springcontext-issues-resolve`。",
+      reason: "症状转向 Spring Bean 装配、条件装配或配置注入问题时联动。",
     },
   ],
   antiPatterns: [
@@ -50,6 +52,25 @@ export const arthasCpuHighSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 Arthas 只读证据定位 Java/JVM CPU 飙高、负载异常和请求变慢的热点线程、关键堆栈和下一步 trace 边界。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先执行 `dashboard -n 3` 看整体趋势，再执行 `thread -n 5` 找最忙线程，不直接上重型 trace/watch。",
+      "对热点线程执行 `thread <threadId>`，记录线程 ID、线程名、状态和关键堆栈。",
+      "大量 BLOCKED 时先定位阻塞源头，不把阻塞线程误判为 CPU 热点；GC、日志、序列化和锁竞争要分开判断。",
+      "堆栈收敛到具体类/方法后，才用有限 `trace ... '#cost > 20' -n 5` 或 `watch ... -n 3`。",
+      "输出时分清观察事实和基于事实的推断，并说明下一步该 trace 哪个方法或需要补哪个业务入口。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "CPU/负载趋势、dashboard 摘要、topN 线程 ID、线程名、状态和关键堆栈。",
+      "计算热点、锁竞争、GC、序列化或日志开销的证据化判断。",
+      "trace/watch 的目标类方法、次数/条件限制、风险边界和需要用户补充的入口。",
+    ],
+  }),
   tools: [],
 });

@@ -6,6 +6,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, helmChartScaffoldingValidateChart } from "../../procedures/index";
 
@@ -32,14 +35,14 @@ export const helmChartScaffoldingSkill = defineSkill({
     "是否为资源限制、探针、安全上下文和 ServiceAccount 提供默认值。",
     "是否把环境差异下沉到 values 文件而不是复制模板。",
     "是否验证依赖、渲染结果与 dry-run 安装路径。",
-    "完整的 Chart 目录布局、values 模式、模板、钩子和依赖关系参考 [references/chart-structure.md](references/chart-structure.md)。",
+    "完整的 Chart 目录布局、values 模式、模板、钩子和依赖关系是否读取 `chart-structure` reference。",
   ],
   relatedSkills: [
     {
       get id() {
         return monitoringObservabilitySkill.id;
       },
-      reason: "如果 chart 暴露指标或 ServiceMonitor，参阅 `monitoring-observability`。",
+      reason: "Chart 暴露指标、ServiceMonitor、探针或告警配置时联动。",
     },
   ],
   antiPatterns: [
@@ -54,7 +57,26 @@ export const helmChartScaffoldingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "创建、重构或验证 Helm Chart，建立 Chart.yaml、values.yaml、templates、helpers、依赖、校验和多环境 values 分层。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认服务类型、部署环境、镜像、网络、资源、安全、依赖项和是否需要从 Kubernetes manifest 收敛为 Chart。",
+      "默认使用 apiVersion v2 的 application chart，并保留 Chart.yaml、values.yaml、templates/ 和必要 _helpers.tpl。",
+      "values.yaml 按镜像、网络、资源、安全、依赖项分层；环境差异下沉到 values 文件，不复制模板。",
+      "Chart.yaml 和 values.yaml 最小骨架优先复用 chart-yaml 与 values-yaml assets；复杂目录和模板模式读取 chart-structure。",
+      "交付前运行 helm lint、模板渲染、dry-run 路径和 helm-chart-scaffolding-validate-chart procedure。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Chart 目录布局、Chart.yaml、values.yaml 分层、templates/_helpers.tpl 和依赖关系。",
+      "资源限制、探针、安全上下文、ServiceAccount、Secret 外部引用和环境 values 策略。",
+      "helm lint、渲染、dry-run、validate-chart 结果和监控/ServiceMonitor 联动项。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(helmChartScaffoldingValidateChart),

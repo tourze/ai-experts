@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { arthasCpuHighSkill } from "../arthas-cpu-high/index";
 import { arthasSpringcontextIssuesResolveSkill } from "../arthas-springcontext-issues-resolve/index";
@@ -18,8 +21,7 @@ export const springBootLayeringSkill = defineSkill({
   useCases: [
     "新建或重构 Java 21+ / Spring Boot 3.x 服务。",
     "审查 REST API、事务边界、JPA 映射、异常处理与可观测性。",
-    "需要对接测试、原生镜像或构建优化时，联动：\n`java-junit`、\n`graalvm-native-image`、\n`gradle-build-performance`。",
-    "诊断线上 JVM / Spring 运行时问题时，联动：\n`arthas-cpu-high`、\n`arthas-springcontext-issues-resolve`。",
+    "需要建立 Controller、Service、Repository、DTO、Entity 和异常处理的清晰边界。",
   ],
   constraints: [
     "基线优先：默认使用 Java 21、Spring Boot 3.x、`jakarta.*` 命名空间。",
@@ -41,31 +43,31 @@ export const springBootLayeringSkill = defineSkill({
       get id() {
         return graalvmNativeImageSkill.id;
       },
-      reason: "需要对接测试、原生镜像或构建优化时，联动： `java-junit`、 `graalvm-native-image`、 `gradle-build-performance`。",
+      reason: "Spring Boot 服务需要原生镜像、RuntimeHints 或 Native Image 配置时联动。",
     },
     {
       get id() {
         return gradleBuildPerformanceSkill.id;
       },
-      reason: "需要对接测试、原生镜像或构建优化时，联动： `java-junit`、 `graalvm-native-image`、 `gradle-build-performance`。",
+      reason: "构建变慢、Gradle 配置或 CI 构建性能影响服务交付时联动。",
     },
     {
       get id() {
         return arthasCpuHighSkill.id;
       },
-      reason: "诊断线上 JVM / Spring 运行时问题时，联动： `arthas-cpu-high`、 `arthas-springcontext-issues-resolve`。",
+      reason: "线上 JVM CPU 飙高、线程热点或负载异常需要运行时诊断时联动。",
     },
     {
       get id() {
         return arthasSpringcontextIssuesResolveSkill.id;
       },
-      reason: "诊断线上 JVM / Spring 运行时问题时，联动： `arthas-cpu-high`、 `arthas-springcontext-issues-resolve`。",
+      reason: "线上 Bean、ApplicationContext、条件装配或配置注入异常需要运行时诊断时联动。",
     },
     {
       get id() {
         return javaJunitSkill.id;
       },
-      reason: "需要对接测试、原生镜像或构建优化时，联动：\\\\n`java-junit`、\\\\n`graalvm-native-image`、\\\\n`gradle-build-performance`。",
+      reason: "需要为 Controller、Service、Repository 或异常处理补单元/集成测试时联动。",
     },
   ],
   antiPatterns: [
@@ -80,6 +82,25 @@ export const springBootLayeringSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计或审查 Spring Boot 3.x 服务分层，保证 Controller/Service/Repository、DTO/Entity、事务和异常处理边界清晰。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认 Java 21、Spring Boot 3.x 和 jakarta.* 基线，以及 API、持久化、事务和错误处理范围。",
+      "Controller 只处理 HTTP 协议转换和校验，不直接依赖 Repository；输入输出使用 DTO，不暴露 Entity。",
+      "Service 承担业务逻辑与事务边界：读操作 readOnly，写操作显式 @Transactional。",
+      "Repository 只做持久化；JPA 查询检查分页、N+1、索引命中、懒加载和事务边界。",
+      "异常统一经 @RestControllerAdvice 或等价机制输出稳定错误码和消息，日志/指标/审计放在明确可观测性边界。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "分层设计或审查结论：Controller、Service、Repository、DTO、Entity、事务和异常出口。",
+      "JPA 查询、分页、N+1、索引、懒加载、日志/指标/审计边界风险。",
+      "需要 java-junit、GraalVM、Gradle 或 Arthas 运行时诊断联动的具体触发点。",
+    ],
+  }),
   tools: [],
 });

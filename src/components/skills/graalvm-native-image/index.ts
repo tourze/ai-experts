@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { gradleBuildPerformanceSkill } from "../gradle-build-performance/index";
 
@@ -16,14 +19,13 @@ export const graalvmNativeImageSkill = defineSkill({
     "需要把 JVM 应用编译成原生可执行文件，以降低冷启动和内存占用。",
     "Native build 失败，报 `ClassNotFoundException`、反射、资源、代理或序列化相关错误。",
     "要为 Spring Boot、Quarkus、Micronaut 或纯 Java 项目补齐原生镜像配置。",
-    "如果构建时间本身是主要问题，联动 `gradle-build-performance`。",
   ],
   constraints: [
     "先识别环境，再改配置：必须先确认构建工具、框架、Java 版本和失败日志，再决定 Maven/Gradle 路线。",
     "一次只修一个失败类别：先处理最早的原生构建错误，不要同时追加多份 metadata。",
     "元数据位置必须清晰：优先使用 `META-INF/native-image/<group>/<artifact>/` 下的配置。",
     "Spring Boot 3.x 优先 `RuntimeHints`；只有第三方库或无法代码注册时才退回 JSON metadata。",
-    "若引用更细节的构建片段，直接跳到：\n[Maven Native Profile](references/maven-native-profile.md)、\n[Gradle Native Plugin](references/gradle-native-plugin.md)、\n[Spring Boot Native](references/spring-boot-native.md)、\n[Quarkus / Micronaut](references/quarkus-micronaut-native.md)、\n[Reflection / Resource Config](references/reflection-resource-config.md)、\n[Tracing Agent](references/tracing-agent.md)。",
+    "更细节的构建片段按场景读取 `maven-native-profile`、`gradle-native-plugin`、`spring-boot-native`、`quarkus-micronaut-native`、`reflection-resource-config` 或 `tracing-agent` references。",
   ],
   checklist: [
     "是否确认了 Java 版本、构建工具和框架种类。",
@@ -37,7 +39,7 @@ export const graalvmNativeImageSkill = defineSkill({
       get id() {
         return gradleBuildPerformanceSkill.id;
       },
-      reason: "如果构建时间本身是主要问题，联动 `gradle-build-performance`。",
+      reason: "主要问题是 Gradle 构建时间、缓存、配置阶段或 CI 构建性能时联动。",
     },
   ],
   antiPatterns: [
@@ -52,7 +54,26 @@ export const graalvmNativeImageSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "构建或排查 GraalVM Native Image，按框架、构建工具和第一条阻断错误补齐 reachability metadata、RuntimeHints 或构建插件配置。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认 Java 版本、构建工具、框架、GraalVM/Native Build Tools 版本和完整 native build 日志。",
+      "Maven 路线读取 maven-native-profile；Gradle 路线读取 gradle-native-plugin；Spring Boot 3.x 读取 spring-boot-native。",
+      "一次只修第一条阻断错误，区分反射、资源、代理、序列化、JNI 和类初始化问题。",
+      "Spring Boot 3.x 优先 RuntimeHints；第三方库或无法代码注册时才退回 JSON metadata，位置放在 META-INF/native-image/<group>/<artifact>/。",
+      "需要自动收集 metadata 时读取 tracing-agent；构建成功后验证启动、健康检查、启动时长和 RSS。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "环境与构建路线：Java、框架、Maven/Gradle、Native Build Tools、GraalVM 和失败日志。",
+      "阻断错误分类、metadata/RuntimeHints 修改点、reference 使用路径和验证命令。",
+      "启动验证、健康检查、启动时长、RSS、剩余 reachability 风险和 Gradle 性能联动项。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

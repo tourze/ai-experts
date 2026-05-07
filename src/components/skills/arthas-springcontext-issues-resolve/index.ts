@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { arthasCpuHighSkill } from "../arthas-cpu-high/index";
 
@@ -15,7 +18,6 @@ export const arthasSpringcontextIssuesResolveSkill = defineSkill({
     "Bean 找不到、注入到错误实现、`@Conditional` / `@Profile` 判断异常。",
     "线上环境配置值与预期不一致，需要确认属性来源。",
     "怀疑选错了 `ApplicationContext`、父子容器或类加载器。",
-    "如果核心症状是 CPU 飙高而不是 Bean / 配置问题，转到 `arthas-cpu-high`。",
   ],
   constraints: [
     "优先只读查询：先用 `containsBean`、`getBeanNamesForType`、`Environment`，不要直接 `getBean()` 触发初始化副作用。",
@@ -35,7 +37,7 @@ export const arthasSpringcontextIssuesResolveSkill = defineSkill({
       get id() {
         return arthasCpuHighSkill.id;
       },
-      reason: "如果核心症状是 CPU 飙高而不是 Bean / 配置问题，转到 `arthas-cpu-high`。",
+      reason: "核心症状是 JVM CPU 飙高、线程热点或负载异常而不是 Bean/配置问题时联动。",
     },
   ],
   antiPatterns: [
@@ -50,6 +52,25 @@ export const arthasSpringcontextIssuesResolveSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 Arthas 只读查询排查 Spring ApplicationContext、Bean 注册、条件装配、配置注入和类加载器选择问题。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先用 `vmtool --action getInstances --className org.springframework.context.support.AbstractApplicationContext -l 5` 枚举上下文。",
+      "确认 ApplicationContext 与类加载器后，再用 containsBean、containsBeanDefinition 或 getBeanNamesForType 做只读检查。",
+      "查询配置值时通过 Environment 读取值和来源，避免只报值不报来源。",
+      "多个候选 Bean 时列出候选名、类型、Profile/Conditional 条件和实际装配规则。",
+      "ClassNotFound 或表达式失败时先回溯 classLoader/classLoaderClass 选择，不直接判定 Bean 不存在。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "ApplicationContext 实例、类加载器、父子容器和 vmtool 限量参数。",
+      "Bean 是否存在、候选实现、装配规则、配置值及来源。",
+      "只读查询命令、观察事实、推断结论和需要进一步确认的容器/类加载器问题。",
+    ],
+  }),
   tools: [],
 });

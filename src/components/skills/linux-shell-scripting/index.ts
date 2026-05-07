@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { networkTroubleshooterSkill } from "../network-troubleshooter/index";
 import { systemDiagnosticsSkill } from "../system-diagnostics/index";
@@ -14,8 +17,7 @@ export const linuxShellScriptingSkill = defineSkill({
   description: "当用户要编写 Bash/Zsh 自动化、运维脚本、巡检脚本、备份脚本或命令行工具时使用。",
   useCases: [
     "用户要写 Bash 自动化、巡检、备份、发布、清理、定时任务或包装 CLI。",
-    "需要系统快照与诊断输出模板时，可参考 `system-diagnostics`。",
-    "涉及网络探测或重试逻辑时，联动 `network-troubleshooter`。",
+    "脚本需要参数校验、依赖检查、日志、清理、超时、重试或 dry-run。",
   ],
   constraints: [
     "默认使用 `#!/usr/bin/env bash` 与 `set -euo pipefail`；仅在明确需要 POSIX `sh` 时降级。",
@@ -35,13 +37,13 @@ export const linuxShellScriptingSkill = defineSkill({
       get id() {
         return networkTroubleshooterSkill.id;
       },
-      reason: "涉及网络探测或重试逻辑时，联动 `network-troubleshooter`。",
+      reason: "脚本涉及网络探测、连通性验证、DNS/TLS 或重试策略时联动。",
     },
     {
       get id() {
         return systemDiagnosticsSkill.id;
       },
-      reason: "需要系统快照与诊断输出模板时，可参考 `system-diagnostics`。",
+      reason: "需要系统快照、诊断输出模板或主机状态采集时联动。",
     },
   ],
   antiPatterns: [
@@ -60,6 +62,25 @@ export const linuxShellScriptingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "编写 Bash/Zsh 自动化、巡检、备份、发布、清理和 CLI 包装脚本，保证严格模式、参数校验、依赖检查、日志、清理和失败语义完整。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "默认使用 `#!/usr/bin/env bash` 和 `set -euo pipefail`；仅在明确需要 POSIX sh 时降级。",
+      "先定义 usage、参数校验、require_cmd、日志函数、失败返回码和 dry-run 行为。",
+      "所有变量和路径加双引号，避免 for f in $(ls ...)；破坏性删除/覆盖/远程执行必须先输出计划。",
+      "临时文件、锁文件和后台进程用 trap 清理；长循环、网络重试和并发任务设置超时与限次。",
+      "涉及系统快照联动 system-diagnostics，涉及网络探测或重试联动 network-troubleshooter。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "可执行脚本结构：shebang、严格模式、usage、参数校验、依赖检查、日志、trap 和 exit code。",
+      "dry-run 计划、破坏性动作保护、路径/空格安全和秘密处理方式。",
+      "超时、重试、并发、临时文件清理和系统/网络诊断联动说明。",
+    ],
+  }),
   tools: [],
 });
