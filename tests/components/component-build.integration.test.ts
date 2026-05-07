@@ -447,7 +447,7 @@ describe("component build integration", () => {
     assert.deepEqual(legacySkillScriptManifests, [], "legacy per-skill scripts/manifest.json should not be generated");
 
     const proceduresSource = readFileSync(join(tmpDistDir, "claude/procedures.js"), "utf-8");
-    const procedureRegistrySource = readFileSync(join(repoRoot, "src/components/scripts/registry.ts"), "utf-8");
+    const procedureRegistrySource = readFileSync(join(repoRoot, "src/components/procedures/registry.ts"), "utf-8");
     assert.doesNotMatch(procedureRegistrySource, /bundle:\s*false/);
     assert.match(proceduresSource, /^#!\/usr\/bin\/env node/);
     assert.match(proceduresSource, /__webpack_modules__/);

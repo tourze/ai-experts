@@ -6,7 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, screenshotEnsureMacosPermissions, screenshotMacosDisplayInfo, screenshotMacosPermissions, screenshotMacosWindowInfo, screenshotTakeScreenshot, screenshotTakeScreenshotWindows } from "../../scripts/index";
+import { procedureUse, screenshotEnsureMacosPermissions, screenshotMacosDisplayInfo, screenshotMacosPermissions, screenshotMacosWindowInfo, screenshotTakeScreenshot, screenshotTakeScreenshotWindows } from "../../procedures/index";
 
 export const screenshotSkill = defineSkill({
   id: "screenshot",

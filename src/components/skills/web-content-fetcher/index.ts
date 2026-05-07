@@ -6,7 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, webContentFetcherFetch } from "../../scripts/index";
+import { procedureUse, webContentFetcherFetch } from "../../procedures/index";
 
 import { deepResearchSkill } from "../deep-research/index";
 

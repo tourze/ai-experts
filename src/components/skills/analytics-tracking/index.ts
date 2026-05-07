@@ -6,7 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, analyticsTrackingTrackingPlanGenerator } from "../../scripts/index";
+import { procedureUse, analyticsTrackingTrackingPlanGenerator } from "../../procedures/index";
 
 export const analyticsTrackingSkill = defineSkill({
   id: "analytics-tracking",

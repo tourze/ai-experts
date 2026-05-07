@@ -6,7 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, complexityReducerComplexityReport } from "../../scripts/index";
+import { procedureUse, complexityReducerComplexityReport } from "../../procedures/index";
 
 export const complexityReducerSkill = defineSkill({
   id: "complexity-reducer",

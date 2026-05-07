@@ -5,7 +5,7 @@ import {
   KnownTool,
   Platform,
 } from "../../sdk";
-import { procedureUse, debugMethodologyDebugChecklist } from "../../scripts/index";
+import { procedureUse, debugMethodologyDebugChecklist } from "../../procedures/index";
 
 export const debugMethodologySkill = defineSkill({
   id: "debug-methodology",

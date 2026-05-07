@@ -5,7 +5,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, shadcnUiVerifySetup } from "../../scripts/index";
+import { procedureUse, shadcnUiVerifySetup } from "../../procedures/index";
 
 import { designSystemPatternsSkill } from "../design-system-patterns/index";
 import { frontendDesignReviewSkill } from "../frontend-design-review/index";

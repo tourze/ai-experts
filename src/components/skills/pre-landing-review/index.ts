@@ -6,7 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, preLandingReviewCollectDiff, preLandingReviewRenderReport } from "../../scripts/index";
+import { procedureUse, preLandingReviewCollectDiff, preLandingReviewRenderReport } from "../../procedures/index";
 
 import { testingStrategySkill } from "../testing-strategy/index";
 

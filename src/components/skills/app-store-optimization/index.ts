@@ -6,7 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, appStoreOptimizationAbTestPlanner, appStoreOptimizationAsoScorer, appStoreOptimizationCompetitorAnalyzer, appStoreOptimizationCollectReleaseChanges, appStoreOptimizationKeywordAnalyzer, appStoreOptimizationLaunchChecklist, appStoreOptimizationLocalizationHelper, appStoreOptimizationMetadataOptimizer, appStoreOptimizationReviewAnalyzer } from "../../scripts/index";
+import { procedureUse, appStoreOptimizationAbTestPlanner, appStoreOptimizationAsoScorer, appStoreOptimizationCompetitorAnalyzer, appStoreOptimizationCollectReleaseChanges, appStoreOptimizationKeywordAnalyzer, appStoreOptimizationLaunchChecklist, appStoreOptimizationLocalizationHelper, appStoreOptimizationMetadataOptimizer, appStoreOptimizationReviewAnalyzer } from "../../procedures/index";
 
 export const appStoreOptimizationSkill = defineSkill({
   id: "app-store-optimization",
@@ -21,7 +21,7 @@ export const appStoreOptimizationSkill = defineSkill({
     "需要把技术提交整理成用户能看懂的发布摘要。",
   ],
   constraints: [
-    "这些 `src/components/scripts/sources/app-store-optimization/*.ts` 主要是库模块；优先通过 `npx tsx --eval` 导入调用，不要假设每个文件都提供稳定 CLI。",
+    "这些 `src/components/procedures/sources/app-store-optimization/*.ts` 主要是库模块；优先通过 `npx tsx --eval` 导入调用，不要假设每个文件都提供稳定 CLI。",
     "搜索量、竞争度、转化率等输入必须来自用户或可信数据源；不要伪造市场数据。",
     "Apple 与 Google 的字段限制不同，所有输出都必须带字符数校验。",
     "本地化不是逐词翻译，必须同时考虑市场、文化语义和搜索行为。",

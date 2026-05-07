@@ -7,7 +7,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, copywritingContentFilter } from "../../scripts/index";
+import { procedureUse, copywritingContentFilter } from "../../procedures/index";
 
 import { croMethodologySkill } from "../cro-methodology/index";
 

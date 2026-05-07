@@ -7,7 +7,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, uxResearcherDesignerPersonaGenerator } from "../../scripts/index";
+import { procedureUse, uxResearcherDesignerPersonaGenerator } from "../../procedures/index";
 
 import { uxHeuristicsSkill } from "../ux-heuristics/index";
 

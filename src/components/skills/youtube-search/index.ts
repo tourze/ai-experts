@@ -5,7 +5,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, youtubeSearchSearchYoutube } from "../../scripts/index";
+import { procedureUse, youtubeSearchSearchYoutube } from "../../procedures/index";
 
 import { youtubeAnalysisSkill } from "../youtube-analysis/index";
 

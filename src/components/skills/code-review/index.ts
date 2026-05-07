@@ -6,7 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, codeReviewAssessCode, codeReviewAssessTests } from "../../scripts/index";
+import { procedureUse, codeReviewAssessCode, codeReviewAssessTests } from "../../procedures/index";
 
 export const codeReviewSkill = defineSkill({
   id: "code-review",

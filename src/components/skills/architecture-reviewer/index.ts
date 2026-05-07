@@ -7,7 +7,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, architectureReviewerScanCodebase } from "../../scripts/index";
+import { procedureUse, architectureReviewerScanCodebase } from "../../procedures/index";
 
 export const architectureReviewerSkill = defineSkill({
   id: "architecture-reviewer",

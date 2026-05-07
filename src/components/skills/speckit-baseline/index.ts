@@ -5,7 +5,7 @@ import {
   defineSkill,
   defineSkillParameter,
 } from "../../sdk";
-import { procedureUse, speckitBaselineBootstrapSpecify, speckitBaselineCheckPrerequisites, speckitBaselineCommon, speckitBaselineCreateNewFeature, speckitBaselineSetupPlan } from "../../scripts/index";
+import { procedureUse, speckitBaselineBootstrapSpecify, speckitBaselineCheckPrerequisites, speckitBaselineCommon, speckitBaselineCreateNewFeature, speckitBaselineSetupPlan } from "../../procedures/index";
 
 export const speckitBaselineSkill = defineSkill({
   id: "speckit-baseline",

@@ -5,7 +5,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, iconRetrievalSearch } from "../../scripts/index";
+import { procedureUse, iconRetrievalSearch } from "../../procedures/index";
 
 import { designSystemPatternsSkill } from "../design-system-patterns/index";
 import { figmaImplementDesignSkill } from "../figma-implement-design/index";

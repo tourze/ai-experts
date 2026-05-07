@@ -5,7 +5,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, i18nLocalizationI18nChecker } from "../../scripts/index";
+import { procedureUse, i18nLocalizationI18nChecker } from "../../procedures/index";
 
 import { modernWebDesignSkill } from "../modern-web-design/index";
 import { responsiveDesignSkill } from "../responsive-design/index";

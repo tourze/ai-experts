@@ -4,7 +4,7 @@
 
 ```bash
 npx tsx --eval '
-import { optimize_app_metadata } from "./src/components/scripts/sources/app-store-optimization/metadata_optimizer.ts";
+import { optimize_app_metadata } from "./src/components/procedures/sources/app-store-optimization/metadata_optimizer.ts";
 
 const report = optimize_app_metadata(
   "apple",
@@ -26,7 +26,7 @@ console.log(report.title.recommendation);
 
 ```bash
 npx tsx --eval '
-import { calculate_aso_score } from "./src/components/scripts/sources/app-store-optimization/aso_scorer.ts";
+import { calculate_aso_score } from "./src/components/procedures/sources/app-store-optimization/aso_scorer.ts";
 
 const score = calculate_aso_score(
   { title_quality: 0.8, description_quality: 0.7, keyword_density: 0.6 },
@@ -43,9 +43,9 @@ console.log(score.overall_score);
 
 ```bash
 npx tsx --eval '
-import { analyze_reviews } from "./src/components/scripts/sources/app-store-optimization/review_analyzer.ts";
-import { analyze_competitor_set } from "./src/components/scripts/sources/app-store-optimization/competitor_analyzer.ts";
-import { plan_localization_strategy } from "./src/components/scripts/sources/app-store-optimization/localization_helper.ts";
+import { analyze_reviews } from "./src/components/procedures/sources/app-store-optimization/review_analyzer.ts";
+import { analyze_competitor_set } from "./src/components/procedures/sources/app-store-optimization/competitor_analyzer.ts";
+import { plan_localization_strategy } from "./src/components/procedures/sources/app-store-optimization/localization_helper.ts";
 
 const reviews = analyze_reviews("FocusFlow", [{ id: "1", text: "Great app but crashes on sync", rating: 2 }]);
 const competitors = analyze_competitor_set("Productivity", [{ title: "Todoist", description: "Task manager", rating: 4.8, ratings_count: 100000 }], "apple");

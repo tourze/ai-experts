@@ -7,7 +7,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, ghFixCiInspectPrChecks } from "../../scripts/index";
+import { procedureUse, ghFixCiInspectPrChecks } from "../../procedures/index";
 
 export const ghFixCiSkill = defineSkill({
   id: "gh-fix-ci",

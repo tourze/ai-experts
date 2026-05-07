@@ -7,7 +7,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, helmChartScaffoldingValidateChart } from "../../scripts/index";
+import { procedureUse, helmChartScaffoldingValidateChart } from "../../procedures/index";
 
 import { monitoringObservabilitySkill } from "../monitoring-observability/index";
 

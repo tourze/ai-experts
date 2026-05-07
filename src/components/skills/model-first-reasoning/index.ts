@@ -5,7 +5,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, modelFirstReasoningValidateModel } from "../../scripts/index";
+import { procedureUse, modelFirstReasoningValidateModel } from "../../procedures/index";
 
 import { llmEvaluationSkill } from "../llm-evaluation/index";
 import { promptEngineeringPatternsSkill } from "../prompt-engineering-patterns/index";

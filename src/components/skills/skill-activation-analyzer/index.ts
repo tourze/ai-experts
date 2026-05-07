@@ -6,7 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, skillActivationAnalyzerCsoAudit } from "../../scripts/index";
+import { procedureUse, skillActivationAnalyzerCsoAudit } from "../../procedures/index";
 
 export const skillActivationAnalyzerSkill = defineSkill({
   id: "skill-activation-analyzer",

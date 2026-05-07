@@ -7,7 +7,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, markitdownBatchConvert, markitdownConvertLiterature, markitdownConvertWithAi, markitdownMarkitdownRuntime } from "../../scripts/index";
+import { procedureUse, markitdownBatchConvert, markitdownConvertLiterature, markitdownConvertWithAi, markitdownMarkitdownRuntime } from "../../procedures/index";
 
 import { docCoauthoringSkill } from "../doc-coauthoring/index";
 import { mdToPdfSkill } from "../md-to-pdf/index";

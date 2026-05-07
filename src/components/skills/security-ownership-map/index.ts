@@ -6,7 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, securityOwnershipMapBuildOwnershipMap, securityOwnershipMapCommunityMaintainers, securityOwnershipMapQueryOwnership, securityOwnershipMapRunOwnershipMap } from "../../scripts/index";
+import { procedureUse, securityOwnershipMapBuildOwnershipMap, securityOwnershipMapCommunityMaintainers, securityOwnershipMapQueryOwnership, securityOwnershipMapRunOwnershipMap } from "../../procedures/index";
 
 import { securityThreatModelSkill } from "../security-threat-model/index";
 

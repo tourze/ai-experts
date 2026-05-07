@@ -7,7 +7,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, agileProductOwnerUserStoryGenerator } from "../../scripts/index";
+import { procedureUse, agileProductOwnerUserStoryGenerator } from "../../procedures/index";
 
 import { createPrdSkill } from "../create-prd/index";
 

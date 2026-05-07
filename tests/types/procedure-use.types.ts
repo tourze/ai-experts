@@ -3,7 +3,7 @@ import {
   defineProcedureArgs,
   defineProcedureOutput,
 } from "../../src/components/sdk";
-import { procedureUse } from "../../src/components/scripts/index";
+import { procedureUse } from "../../src/components/procedures/index";
 
 type TypedProcedureArgs = {
   inputPath: string;
@@ -17,7 +17,7 @@ type TypedProcedureResult = {
 
 const typedProcedure = defineProcedure<TypedProcedureArgs, TypedProcedureResult>({
   id: "typed-procedure-fixture",
-  entry: new URL("../../src/components/scripts/sources/debug-methodology/debug-checklist.ts", import.meta.url),
+  entry: new URL("../../src/components/procedures/sources/debug-methodology/debug-checklist.ts", import.meta.url),
   description: "Fixture procedure for compile-time procedureUse checks.",
   owners: { skillIds: ["debug-methodology"] },
   args: defineProcedureArgs<TypedProcedureArgs>({

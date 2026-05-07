@@ -36,7 +36,7 @@ import {
   defineScriptUse,
   defineSkill,
 } from "../../src/components/sdk.ts";
-import { procedureUse, scriptUse } from "../../src/components/scripts/index.ts";
+import { procedureUse, scriptUse } from "../../src/components/procedures/index.ts";
 
 const tempDirs: string[] = [];
 
@@ -74,7 +74,7 @@ function createFixture() {
 
   const script = defineScript({
     id: "fixture-script",
-    entry: pathToFileURL(join(process.cwd(), "src/components/scripts/sources/debug-methodology/debug-checklist.ts")),
+    entry: pathToFileURL(join(process.cwd(), "src/components/procedures/sources/debug-methodology/debug-checklist.ts")),
     description: "fixture script",
     owners: { skillIds: ["fixture-skill"] },
     runtime: "node",

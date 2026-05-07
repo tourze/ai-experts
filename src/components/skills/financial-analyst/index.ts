@@ -7,7 +7,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, financialAnalystBudgetVarianceAnalyzer, financialAnalystDcfValuation, financialAnalystForecastBuilder, financialAnalystRatioCalculator, financialAnalystRatioInputValidation } from "../../scripts/index";
+import { procedureUse, financialAnalystBudgetVarianceAnalyzer, financialAnalystDcfValuation, financialAnalystForecastBuilder, financialAnalystRatioCalculator, financialAnalystRatioInputValidation } from "../../procedures/index";
 
 export const financialAnalystSkill = defineSkill({
   id: "financial-analyst",

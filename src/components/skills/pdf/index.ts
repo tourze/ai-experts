@@ -6,7 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, pdfCheckBoundingBoxes, pdfCheckFillableFields, pdfConvertPdfToImages, pdfCreateValidationImage, pdfExtractFormFieldInfo, pdfExtractFormStructure, pdfFillFillableFields, pdfFillPdfFormWithAnnotations } from "../../scripts/index";
+import { procedureUse, pdfCheckBoundingBoxes, pdfCheckFillableFields, pdfConvertPdfToImages, pdfCreateValidationImage, pdfExtractFormFieldInfo, pdfExtractFormStructure, pdfFillFillableFields, pdfFillPdfFormWithAnnotations } from "../../procedures/index";
 
 export const pdfSkill = defineSkill({
   id: "pdf",

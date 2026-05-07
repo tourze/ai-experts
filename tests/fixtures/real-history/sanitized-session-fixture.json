@@ -1604,7 +1604,7 @@
       },
       {
         "ts": 1778048845,
-        "prompt": "各个skill中的scripts要迁移到 src/components/scripts 下喔",
+        "prompt": "各个skill中的scripts要迁移到 src/components/procedures 下喔",
         "sessionHash": "de76b785d3f0e1ae"
       },
       {
@@ -1651,7 +1651,7 @@
       },
       {
         "ts": 1778048850979,
-        "prompt": "各个skill中的scripts要迁移到 src/components/scripts 下喔",
+        "prompt": "各个skill中的scripts要迁移到 src/components/procedures 下喔",
         "sourceFileHash": "328574ba9d579016"
       },
       {

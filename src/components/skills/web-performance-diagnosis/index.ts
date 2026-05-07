@@ -5,7 +5,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, webPerformanceDiagnosisAnalyze } from "../../scripts/index";
+import { procedureUse, webPerformanceDiagnosisAnalyze } from "../../procedures/index";
 
 import { bundleOptimizationSkill } from "../bundle-optimization/index";
 import { frontendDesignReviewSkill } from "../frontend-design-review/index";

@@ -6,7 +6,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, prlctlVmControlFileTransfer, prlctlVmControlPowershellOutput, prlctlVmControlPrlctlHelper } from "../../scripts/index";
+import { procedureUse, prlctlVmControlFileTransfer, prlctlVmControlPowershellOutput, prlctlVmControlPrlctlHelper } from "../../procedures/index";
 
 import { windowsKernelSecuritySkill } from "../windows-kernel-security/index";
 import { windowsUiAutomationSkill } from "../windows-ui-automation/index";

@@ -5,7 +5,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, dataAnalysisAnalyze } from "../../scripts/index";
+import { procedureUse, dataAnalysisAnalyze } from "../../procedures/index";
 
 import { dataStorytellingSkill } from "../data-storytelling/index";
 import { dataVisualizationSkill } from "../data-visualization/index";

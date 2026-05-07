@@ -6,7 +6,7 @@ import {
   KnownTool,
   Platform,
 } from "../../sdk";
-import { procedureUse, typescriptTypeSafetyExtractTsErrors } from "../../scripts/index";
+import { procedureUse, typescriptTypeSafetyExtractTsErrors } from "../../procedures/index";
 
 export const typescriptTypeSafetySkill = defineSkill({
   id: "typescript-type-safety",

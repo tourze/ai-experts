@@ -7,7 +7,7 @@ import {
   defineReference,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, skillCreatorAggregateBenchmark, skillCreatorGenerateReview, skillCreatorGenerateReport, skillCreatorImproveDescription, skillCreatorPackageSkill, skillCreatorQuickValidate, skillCreatorRunEval, skillCreatorRunLoop, skillCreatorUtils } from "../../scripts/index";
+import { procedureUse, skillCreatorAggregateBenchmark, skillCreatorGenerateReview, skillCreatorGenerateReport, skillCreatorImproveDescription, skillCreatorPackageSkill, skillCreatorQuickValidate, skillCreatorRunEval, skillCreatorRunLoop, skillCreatorUtils } from "../../procedures/index";
 
 export const skillCreatorSkill = defineSkill({
   id: "skill-creator",

@@ -5,7 +5,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, remoteSshCommandInstallSshpass, remoteSshCommandSshExec } from "../../scripts/index";
+import { procedureUse, remoteSshCommandInstallSshpass, remoteSshCommandSshExec } from "../../procedures/index";
 
 export const remoteSshCommandSkill = defineSkill({
   id: "remote-ssh-command",

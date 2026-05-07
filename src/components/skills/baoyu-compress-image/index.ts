@@ -5,7 +5,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, baoyuCompressImageMain } from "../../scripts/index";
+import { procedureUse, baoyuCompressImageMain } from "../../procedures/index";
 
 export const baoyuCompressImageSkill = defineSkill({
   id: "baoyu-compress-image",

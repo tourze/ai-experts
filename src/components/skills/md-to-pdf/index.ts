@@ -5,7 +5,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, mdToPdfKatexRender, mdToPdfMdToPdf, mdToPdfSetup } from "../../scripts/index";
+import { procedureUse, mdToPdfKatexRender, mdToPdfMdToPdf, mdToPdfSetup } from "../../procedures/index";
 
 import { markdownMermaidWritingSkill } from "../markdown-mermaid-writing/index";
 

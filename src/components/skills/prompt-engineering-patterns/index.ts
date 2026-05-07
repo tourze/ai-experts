@@ -7,7 +7,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, promptEngineeringPatternsOptimizePrompt } from "../../scripts/index";
+import { procedureUse, promptEngineeringPatternsOptimizePrompt } from "../../procedures/index";
 
 import { llmEvaluationSkill } from "../llm-evaluation/index";
 import { ragAuditorSkill } from "../rag-auditor/index";

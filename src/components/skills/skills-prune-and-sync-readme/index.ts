@@ -5,7 +5,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, skillsPruneAndSyncReadmeCurateSkills, skillsPruneAndSyncReadmeSimilarityGroups, skillsPruneAndSyncReadmeTestCurateSkills } from "../../scripts/index";
+import { procedureUse, skillsPruneAndSyncReadmeCurateSkills, skillsPruneAndSyncReadmeSimilarityGroups, skillsPruneAndSyncReadmeTestCurateSkills } from "../../procedures/index";
 
 export const skillsPruneAndSyncReadmeSkill = defineSkill({
   id: "skills-prune-and-sync-readme",

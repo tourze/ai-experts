@@ -7,7 +7,7 @@ import {
   defineAntiPattern,
   defineSkill,
 } from "../../sdk";
-import { procedureUse, modernWebDesignDesignAudit, modernWebDesignPatternGenerator } from "../../scripts/index";
+import { procedureUse, modernWebDesignDesignAudit, modernWebDesignPatternGenerator } from "../../procedures/index";
 
 import { interactionDesignSkill } from "../interaction-design/index";
 import { responsiveDesignSkill } from "../responsive-design/index";
