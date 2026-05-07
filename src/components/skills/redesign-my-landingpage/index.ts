@@ -6,6 +6,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { croMethodologySkill } from "../cro-methodology/index";
 
@@ -50,7 +53,25 @@ export const redesignMyLandingpageSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "评审、重构或实现高转化落地页，让单一主 CTA、首屏价值、信任证据、区块结构和视觉系统共同服务转化。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先锁定目标用户、单一主转化动作、核心价值、信任证据和页面当前转化阻塞点。",
+      "页面结构先参考 landing-page-anatomy 和 section-templates；文案读取 copy-templates，视觉方向读取 aesthetic-directions。",
+      "实现默认走 React + Vite + TypeScript + Tailwind + shadcn/ui + Iconify，项目初始化或配置问题读取 shadcn-vite-setup。",
+      "需要代码时优先复用资产中的 LandingPage 示例和 shadcn/Button/Iconify 模式；移动端、可访问性和 CTA 重复位置必须复查。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "落地页结构：首屏、信任区、价值解释、社会证明、FAQ、主 CTA 和页尾转化路径。",
+      "文案、视觉方向、组件实现入口、真实产品画面/结果预览和移动端布局要求。",
+      "若直接实现，输出可运行 React/Vite/Tailwind 代码、引用资源、测试/预览方式和转化假设。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

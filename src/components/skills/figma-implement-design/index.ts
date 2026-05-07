@@ -5,6 +5,9 @@ import {
   defineAsset,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { designSystemPatternsSkill } from "../design-system-patterns/index";
 import { frontendDesignReviewSkill } from "../frontend-design-review/index";
@@ -41,7 +44,7 @@ export const figmaImplementDesignSkill = defineSkill({
       get id() {
         return shadcnUiSkill.id;
       },
-      reason: "`shadcn-ui`。",
+      reason: "设计稿落地到 shadcn/ui 组件、主题或配置时联动。",
     },
     {
       get id() {
@@ -53,7 +56,7 @@ export const figmaImplementDesignSkill = defineSkill({
       get id() {
         return designSystemPatternsSkill.id;
       },
-      reason: "`design-system-patterns`",
+      reason: "需要把 Figma token、组件状态和视觉语言映射到项目设计系统时联动。",
     },
   ],
   antiPatterns: [
@@ -72,7 +75,25 @@ export const figmaImplementDesignSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把 Figma 设计稿翻译成项目现有组件、token、布局和状态实现，而不是复制自动生成代码。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先解析 fileKey/nodeId 或读取桌面当前选区，确认目标节点范围，避免整页和局部混淆。",
+      "先获取结构化 design context，再获取 screenshot 做视觉对照；没有设计上下文不开始实现。",
+      "下载 Figma 返回的图片/SVG 资产，并映射到项目组件、token、图标包装器、样式体系和路由约定。",
+      "先还原布局、层级、默认/hover/focus/disabled/loading/异常态，再做动效和工程抽象；完成后用 frontend-design-review 复核。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "目标 Figma 节点、结构化设计数据、截图对照、导入资产和实现范围。",
+      "项目组件/token 映射、状态覆盖、响应式断点、间距/换行/溢出复查结果。",
+      "实现文件、验证方式、与设计稿偏差和需要设计确认的问题。",
+    ],
+  }),
   tools: [],
   assets: [
     defineAsset({

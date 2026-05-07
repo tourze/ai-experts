@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { uxResearcherDesignerSkill } from "../ux-researcher-designer/index";
 
@@ -61,7 +64,25 @@ export const uxHeuristicsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用启发式原则诊断界面和流程可用性问题，输出带证据、严重级别和修复顺序的可执行审计结果。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先明确任务目标、用户上下文、阻塞行为和要评估的页面/流程/组件范围。",
+      "每条发现必须包含 heuristic、severity(0-4)、evidence 和 recommendation；基础审计格式读取 audit-template。",
+      "导航和信息架构优先读 Krug，通用可用性读 Nielsen；冲突取舍读 heuristic-conflicts。",
+      "暗黑模式、可访问性和本地化分别读取 dark-patterns、wcag-checklist、cultural-ux；代码落地前可用关键字搜索状态、错误和导航命名。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "结构化审计 JSON 或 Markdown：score、summary、findings、severity、heuristic、evidence、recommendation。",
+      "问题排序、修复优先级、可直接落地的标签/状态/导航/表单建议。",
+      "需要进一步用户研究、可访问性修复或产品策略升级的边界说明。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

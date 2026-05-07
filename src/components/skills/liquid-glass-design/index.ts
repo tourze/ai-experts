@@ -5,7 +5,12 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
+import { iosHigDesignSkill } from "../ios-hig-design/index";
+import { swiftuiUiPatternsSkill } from "../swiftui-ui-patterns/index";
 
 export const liquidGlassDesignSkill = defineSkill({
   id: "liquid-glass-design",
@@ -27,7 +32,20 @@ export const liquidGlassDesignSkill = defineSkill({
     "多个玻璃元素是否已经放入统一容器，并验证间距带来的融合效果。",
     "是否只在重要交互位使用 `interactive()`，而不是整页都带动态反馈。",
     "Widget 是否同时检查 full color 与 accented 模式。",
-    "交叉引用：整体 iOS 界面规范看 `ios-hig-design`；SwiftUI 结构化实现看 `swiftui-ui-patterns`。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return iosHigDesignSkill.id;
+      },
+      reason: "需要确认整体 iOS 界面层级、平台规范或旧系统回退体验时联动。",
+    },
+    {
+      get id() {
+        return swiftuiUiPatternsSkill.id;
+      },
+      reason: "需要把 Liquid Glass 落到 SwiftUI 组件结构、状态和布局实现时联动。",
+    },
   ],
   antiPatterns: [
     defineAntiPattern({
@@ -37,7 +55,25 @@ export const liquidGlassDesignSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "在支持 Liquid Glass 的 Apple 平台上设计玻璃材质、容器融合、交互层级、Widget 外观和旧系统回退方案。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认部署目标、API 可用性和旧系统回退；不做版本判断时不得直接使用 Liquid Glass API。",
+      "多个玻璃元素放入 `GlassEffectContainer` 并通过 spacing 验证融合效果；玻璃只用于强调层级，不铺满整页。",
+      "`interactive()` 只给真实可交互控件；纯装饰层不得伪装成交互层。",
+      "Widget 同时检查 full color 和 accented 模式；复杂变形、性能和版本兼容读取 advanced-patterns reference。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "目标系统、availability 判断、回退策略和 Liquid Glass API 使用边界。",
+      "玻璃元素层级、GlassEffectContainer 结构、interactive 使用点和 Widget 渲染模式检查结果。",
+      "SwiftUI 实现建议、性能风险、视觉层级风险和需要读取 advanced patterns 的复杂场景。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

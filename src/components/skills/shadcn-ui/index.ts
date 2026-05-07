@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, shadcnUiVerifySetup } from "../../procedures/index";
 
@@ -40,13 +43,13 @@ export const shadcnUiSkill = defineSkill({
       get id() {
         return frontendDesignReviewSkill.id;
       },
-      reason: "`frontend-design-review`。",
+      reason: "组件接入后需要复核视觉一致性、交互状态或响应式质量时联动。",
     },
     {
       get id() {
         return designSystemPatternsSkill.id;
       },
-      reason: "`design-system-patterns`",
+      reason: "需要把 shadcn 默认 token 映射到既有品牌、主题和设计系统时联动。",
     },
   ],
   antiPatterns: [
@@ -61,7 +64,25 @@ export const shadcnUiSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "在前端项目中正确接入和维护 shadcn/ui 组件源码、配置、主题 token、CLI 流程和复杂组件依赖。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先检查 `components.json`、路径别名、`cn()`、Tailwind v3/v4 配置、全局样式和包管理器状态。",
+      "优先用 shadcn CLI 或受控模板添加组件，不手抄半套源码；需要核对时调用 `shadcn-ui-verify-setup`。",
+      "把 Button、Dialog、Form、Table、Toast 等组件映射到项目 token、字体、spacing、主题和交互状态。",
+      "复杂示例优先对照 `examples/`、`resources/` 和 README；迁移或排障时区分 Radix/Base UI、Tailwind 版本和 Registry 来源。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "shadcn/ui 接入状态：components.json、cn、Tailwind、别名、全局样式和依赖。",
+      "组件添加/迁移命令、项目 token 映射、复杂组件依赖和验证结果。",
+      "需要设计系统或前端视觉复核的遗留问题。",
+    ],
+  }),
   tools: [
     { kind: "regex", source: "shadcn.*:.*" },
     { kind: "regex", source: "mcp_shadcn.*" },
