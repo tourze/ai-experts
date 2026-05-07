@@ -700,6 +700,11 @@ describe("component build integration", () => {
     );
     assert.deepEqual(sourceMjsSkillScripts, [], "skill script source files should use TypeScript");
 
+    const sourceAlternateSkillFiles = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
+      /[\\/]SKILL\.toon$/.test(file),
+    );
+    assert.deepEqual(sourceAlternateSkillFiles, [], "source skills should not keep alternate SKILL.toon artifacts");
+
     const legacyScriptCommandsInSkillBodies = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
       file.endsWith("SKILL.body.md") &&
       /node\s+(?:\.\/)?scripts\/[A-Za-z0-9._/-]+\.mjs/.test(readFileSync(file, "utf-8")),
@@ -724,6 +729,17 @@ describe("component build integration", () => {
       file.split(/[\\/]/).includes("scripts") && file.endsWith(".ts"),
     );
     assert.deepEqual(generatedTsSkillScripts, [], "generated skill scripts should not copy TypeScript source files");
+
+    for (const platform of ["claude", "codex"]) {
+      const generatedAlternateSkillFiles = collectFiles(join(tmpDistDir, platform, "skills"), (file) =>
+        /[\\/]SKILL\.toon$/.test(file),
+      );
+      assert.deepEqual(
+        generatedAlternateSkillFiles,
+        [],
+        `${platform} skill dist should not include alternate SKILL.toon artifacts`,
+      );
+    }
 
     const legacySkillScriptRunners = collectFiles(join(tmpDistDir, "claude/skills"), (file) =>
       /[\\/]scripts[\\/]run\.mjs$/.test(file),
