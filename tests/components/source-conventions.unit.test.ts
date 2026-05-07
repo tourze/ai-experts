@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, test } from "vitest";
+import { registry } from "../../src/components/registry.ts";
 import {
   collectFiles,
   countH2OutsideCodeFence,
@@ -13,6 +14,26 @@ import {
 } from "./test-helpers";
 
 describe("component source conventions", () => {
+  test("README documents current component counts and procedure runtime", () => {
+    const readme = readFileSync(join(repoRoot, "README.md"), "utf-8");
+    const currentCounts = `${registry.skills.length} 个 skill、${registry.agents.length} 个 agent、${registry.hooks.length} 个 hook`;
+    const gateSummary =
+      `- \`dist/claude\` 与 \`dist/codex\` 都生成 ${currentCounts}，并包含 ${registry.procedures.length} 个 procedure 的 \`procedures.js\` bundle。`;
+
+    assert.equal(
+      readme.includes(`当前组件规模：${currentCounts}。`),
+      true,
+      "README component summary should match the registered component surface",
+    );
+    assert.equal(
+      readme.includes(gateSummary),
+      true,
+      "README quality-gate summary should match generated dist manifests",
+    );
+    assert.match(readme, /procedureUse\(procedureDefinition\)/);
+    assert.doesNotMatch(readme, /338 个 skill|scripts\/manifest\.json|defineSkillScript\(\)|skill script registry/);
+  });
+
   test("agent source keeps structured fields", () => {
     const agentSource = readFileSync(
       join(repoRoot, "src/components/agents/typescript-reviewer/index.ts"),

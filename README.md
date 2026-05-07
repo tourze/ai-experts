@@ -5,7 +5,7 @@
 运行时一等对象：
 
 - **Instruction**：稳定会话指令，生成 `dist/claude/CLAUDE.md` 与 `dist/codex/AGENTS.md`。
-- **Skill**：可复用工作流，生成 `skills/<skill>/SKILL.md`，并可携带 `scripts/`、`references/`、`assets/`。
+- **Skill**：可复用工作流，生成 `skills/<skill>/SKILL.md`，可携带 `references/`、`assets/`，并通过 Procedure 暴露可执行能力。
 - **Agent**：隔离上下文执行者，可编排多个 skill。
 - **Procedure**：可被 skill/agent 调用的本地可执行过程，统一打包进 `procedures.js`。
 - **Hook**：生命周期中间件，用于补上下文、阻断、报告和审计。
@@ -34,6 +34,7 @@ dist/
     agents/
     hooks/
     rules/
+    procedures.js
     manifest.json
   codex/
     AGENTS.md
@@ -43,6 +44,7 @@ dist/
     agents/
     hooks/
     rules/
+    procedures.js
     manifest.json
 ```
 
@@ -81,12 +83,13 @@ TS 源码统一使用无后缀相对 import，例如 `../../sdk`，不写 `../..
 
 ## Skill
 
-Skill 是工作流和能力单元。`SKILL.body.md` 只保留主体流程和必要红线，不写一级标题，也不写开头简介段；正文必须从二级标题开始。大资料放 `references/`，脚本放 `scripts/`，输出资产放 `assets/`。一级标题由 `index.ts` 的 `fullName` 统一生成到最终 `SKILL.md`，适用场景、核心约束、检查清单和反模式分别由 `index.ts` 的结构化字段统一生成。
+Skill 是工作流和能力单元。`SKILL.body.md` 只保留主体流程和必要红线，不写一级标题，也不写开头简介段；正文必须从二级标题开始。大资料放 `references/`，输出资产放 `assets/`，可执行过程放 `src/components/procedures/sources/` 并由 skill/agent 通过 `procedureUse()` 引用。一级标题由 `index.ts` 的 `fullName` 统一生成到最终 `SKILL.md`，适用场景、核心约束、检查清单和反模式分别由 `index.ts` 的结构化字段统一生成。
 
 定义示例：
 
 ```ts
 import { testingPatternsSkill } from "../testing-patterns/index";
+import { procedureUse, typescriptTypeSafetyExtractTsErrors } from "../../procedures/index";
 
 export const typescriptTypeSafety = defineSkill({
   id: "typescript-type-safety",
@@ -122,11 +125,12 @@ export const typescriptTypeSafety = defineSkill({
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
   tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob, KnownTool.Bash],
-  scripts: [
-    defineSkillScript({
-      id: "extract-ts-errors",
-      entry: new URL("./scripts/extract-ts-errors.ts", import.meta.url),
-      description: "把 tsc 输出按文件和错误码归组。",
+  procedures: [
+    procedureUse(typescriptTypeSafetyExtractTsErrors, {
+      label: "归组 tsc 错误",
+      when: "已有完整 `tsc --noEmit` 输出文件，需要按文件和错误码归组时。",
+      reason: "先定位上游类型合同错误，再决定修复顺序。",
+      exampleArgs: { args: ["--input", "tsc-output.txt"] },
     }),
   ],
   references: [
@@ -144,13 +148,13 @@ export const typescriptTypeSafety = defineSkill({
 
 规则：
 
-- `body`、script `entry`、reference `source`、asset `source` 使用 `new URL("./file", import.meta.url)`。
+- `body`、Procedure `entry`、reference `source`、asset `source` 使用 `new URL("./file", import.meta.url)`。
 - 每个 skill 必须声明 `useCases` 与 `constraints`，最终 `SKILL.md` 的 `## 适用场景` 和 `## 核心约束` 只由生成器输出；`SKILL.body.md` 不再手写这两个章节。
 - `SKILL.body.md` 第一个非空行必须是 `## ...`，不要在正文开头写一句简介；简介类内容放进 `description`、`useCases` 或 `constraints`。
 - 检查清单使用 `checklist` 声明为普通字符串数组；构建器会生成 `## 检查清单`，并优先插入到 `## 反模式` / `## 反模式速查` 之前。不要在 `SKILL.body.md` 手写 `## 检查清单`，分组清单改写成 `分组：检查项`。
 - 反模式使用 `antiPatterns` 声明，每行必须通过 `defineAntiPattern({ fail, pass })` 定义；构建器会生成 `## 反模式` Markdown 表格。不要在 `SKILL.body.md` 手写 `## 反模式`，大段代码对照放进 `references/`。
 - 交叉引用其他 skill 时使用 `relatedSkills` 声明；构建器会生成 `## 相关 Skill`。`relatedSkills` 必须 import 对应 skill definition，并通过 `get id() { return otherSkill.id; }` 延迟读取，避免双向关系造成 ESM 初始化循环；不要在 `SKILL.body.md`、`useCases` 或 `constraints` 里手写 `../other-skill/SKILL.md` 或旧 `plugin:skill` 链接。
-- 每个 script 必须通过 `defineSkillScript()` 登记。
+- 每个可执行过程必须在 `src/components/procedures/` 登记为 Procedure；skill/agent 通过 `procedureUse(procedureDefinition)` 引用，不手写裸 procedure id。
 - reference 必须通过 `defineReference()` 登记，asset 必须通过 `defineAsset()` 登记。
 - `evals/` 是源码侧质量验证材料，不是运行时参考资料，不能登记为 reference，也不会复制到 `dist/*/skills/*/references/`。
 - agent 引用 skill 时 import skill definition 并读取 `.id`，不在引用处手写 skill id。
@@ -254,8 +258,8 @@ npm run build:components
 
 当前门禁覆盖：
 
-- `dist/claude` 与 `dist/codex` 都生成 338 个 skill、80 个 agent、99 个 hook。
-- 代表性 skill 的 `references/`、`assets/`、`scripts/manifest.json` 被复制并可发现。
+- `dist/claude` 与 `dist/codex` 都生成 335 个 skill、80 个 agent、99 个 hook，并包含 138 个 procedure 的 `procedures.js` bundle。
+- 代表性 skill 的 `references/`、`assets/` 被复制并可发现；Procedure 调用说明会渲染到相关 `SKILL.md`。
 - agent 会生成 Claude Markdown 与 Codex TOML 两种格式。
 - hook dispatcher 可真实输出 `additionalContext`，并能阻断直接编辑 `dist/`。
 - manifest checksum 可重复生成。
@@ -263,7 +267,7 @@ npm run build:components
 ## 维护建议
 
 - 不把多步骤流程写进 Instruction；优先写 skill。
-- 不把脚本藏在正文；脚本必须登记到 skill script registry。
+- 不把脚本藏在正文；可执行过程必须登记到 Procedure registry，并由 skill/agent 通过 `procedureUse()` 暴露调用说明。
 - 不跨 skill 运行时 import；共享资料在源码层复用，dist 层复制。
 - 不让 hook 依赖 CLI 原生多 hook 顺序；统一经过 dispatcher。
 - 不假设 Claude 与 Codex payload 等价；payload 差异都放 adapter/dispatcher。
