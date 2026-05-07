@@ -164,8 +164,8 @@ Agent 是隔离上下文执行者，可编排多个 skill。
 
 ```ts
 import { defineAgentWorkflow, defineAgentWorkflowStep } from "../../sdk";
-import { debugMethodology } from "../skills/debug-methodology/index";
-import { typescriptTypeSafety } from "../skills/typescript-type-safety/index";
+import { debugMethodologySkill } from "../../skills/debug-methodology/index";
+import { typescriptTypeSafetySkill } from "../../skills/typescript-type-safety/index";
 
 export const typescriptReviewer = defineAgent({
   id: "typescript-reviewer",
@@ -180,8 +180,8 @@ export const typescriptReviewer = defineAgent({
   }),
   tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob, KnownTool.Bash],
   skills: [
-    { id: typescriptTypeSafety.id, mode: SkillUseMode.Preload, reason: "审查 TS 类型合同。" },
-    { id: debugMethodology.id, mode: SkillUseMode.Route, reason: "遇到 flaky 或根因不清时收敛证据。" },
+    { id: typescriptTypeSafetySkill.id, mode: SkillUseMode.Preload, reason: "审查 TS 类型合同。" },
+    { id: debugMethodologySkill.id, mode: SkillUseMode.Route, reason: "遇到 flaky 或根因不清时收敛证据。" },
   ],
 });
 ```
