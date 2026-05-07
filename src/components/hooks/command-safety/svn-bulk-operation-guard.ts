@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { findSvnSubcommandInvocations } from "../_shared/hook-bash-git-shell-utils";
 
@@ -11,7 +11,6 @@ export const svnBulkOperationGuardHook = defineHook({
   entry: new URL("./svn-bulk-operation-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -171,8 +170,8 @@ function inspectCommitArgs(args: readonly string[]): string | null {
   return null;
 }
 
-export async function run(payload: LegacyHookPayload) {
-  const command = payload?.tool_input?.command || "";
+export async function run(payload: NormalizedHookPayload) {
+  const command = payload?.tool?.input?.command || "";
 
   for (const args of findSvnSubcommandInvocations(command, "add")) {
     const reason = inspectAddArgs(args);

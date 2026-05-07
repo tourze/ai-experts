@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { existsSync } from "node:fs";
 import {
@@ -25,17 +25,16 @@ export const skillNextStepGateHook = defineHook({
   entry: new URL("./skill-next-step-gate.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 type TranscriptTextItem = { type?: string; text?: string };
 
-export async function run(payload: LegacyHookPayload) {
-  if (payload?.stop_hook_active) {
+export async function run(payload: NormalizedHookPayload) {
+  if (payload?.stopHookActive) {
     return null;
   }
 
-  const transcriptPath = payload?.transcript_path;
+  const transcriptPath = payload?.transcriptPath;
   if (typeof transcriptPath !== "string" || !transcriptPath || !existsSync(transcriptPath)) {
     return null;
   }

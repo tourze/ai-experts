@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { findGitSubcommandInvocations, hasShortFlag } from "../_shared/hook-bash-git-shell-utils";
 
@@ -11,7 +11,6 @@ export const gitAddGuardHook = defineHook({
   entry: new URL("./git-add-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -76,8 +75,8 @@ function inspectArgs(args: readonly string[]) {
   return null;
 }
 
-export async function run(payload: LegacyHookPayload) {
-  const command = payload?.tool_input?.command || "";
+export async function run(payload: NormalizedHookPayload) {
+  const command = payload?.tool?.input?.command || "";
 
   // 只对含 git add 的命令生效
   if (!/\bgit\s+add\b/.test(command)) return null;

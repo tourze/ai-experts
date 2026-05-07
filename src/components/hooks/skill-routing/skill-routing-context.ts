@@ -10,7 +10,6 @@ export const skillRoutingContextHook = defineHook({
   entry: new URL("./skill-routing-context.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 export async function run() {

@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { execFileSync } from "child_process";
 import { existsSync } from "fs";
@@ -12,7 +12,6 @@ export const contextInjectorHook = defineHook({
   entry: new URL("./context-injector.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -85,7 +84,7 @@ function findRepoRoot(cwd: string): string {
   return safeGit(["rev-parse", "--show-toplevel"], cwd);
 }
 
-export async function run(payload: LegacyHookPayload) {
+export async function run(payload: NormalizedHookPayload) {
   const cwd = payload?.cwd;
   if (typeof cwd !== "string" || !cwd) return null;
 

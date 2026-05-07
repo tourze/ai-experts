@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { existsSync, readFileSync, realpathSync } from "fs";
 import { basename, dirname, relative } from "path";
@@ -14,7 +14,6 @@ export const debugStatementGuardHook = defineHook({
   entry: new URL("./debug-statement-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -139,8 +138,8 @@ function collectFileLocations(text: string, re: RegExp, skip: number) {
 
 // ── 主入口 ──
 
-export async function run(payload: LegacyHookPayload) {
-  const filePath = payload?.tool_input?.file_path;
+export async function run(payload: NormalizedHookPayload) {
+  const filePath = payload?.tool?.input?.file_path;
   if (!filePath || !existsSync(filePath)) return null;
 
   // 自排除：本文件的规则定义中包含调试关键字（debugger、console.log 等）作为检测数据，
@@ -154,7 +153,7 @@ export async function run(payload: LegacyHookPayload) {
   if (isTestFile(filePath)) return null;
 
   // 确定新增文本（newText）和基线文本（baselineText）
-  const toolInput = payload?.tool_input;
+  const toolInput = payload?.tool?.input;
   const isEdit = toolInput?.old_string !== undefined;
   let newText, baselineText;
 

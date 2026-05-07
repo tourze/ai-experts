@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { existsSync, statSync, readFileSync, unlinkSync } from "fs";
 import { execFileSync } from "child_process";
@@ -15,7 +15,6 @@ export const gitStaleLockGuardHook = defineHook({
   entry: new URL("./git-stale-lock-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -98,8 +97,8 @@ function getHolderPid(lockPath: string, cwd: string) {
   return null;
 }
 
-export async function run(payload: LegacyHookPayload) {
-  const command = payload?.tool_input?.command || "";
+export async function run(payload: NormalizedHookPayload) {
+  const command = payload?.tool?.input?.command || "";
 
   // 仅对 git 写命令做检查
   if (!GIT_WRITE_RE.test(command)) return null;

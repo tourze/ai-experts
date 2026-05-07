@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { existsSync, readFileSync } from "fs";
 import { basename, extname } from "path";
@@ -12,7 +12,6 @@ export const encodingGuardHook = defineHook({
   entry: new URL("./encoding-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -69,8 +68,8 @@ const BOM_SIGNATURES = [
   { name: "UTF-32 BE BOM", bytes: [0x00, 0x00, 0xFE, 0xFF] },
 ];
 
-export async function run(payload: LegacyHookPayload) {
-  const filePath = payload?.tool_input?.file_path;
+export async function run(payload: NormalizedHookPayload) {
+  const filePath = payload?.tool?.input?.file_path;
   if (!filePath || !existsSync(filePath)) return null;
 
   // 按扩展名过滤；无扩展名的文件也检查（可能是 Makefile、Dockerfile 等）

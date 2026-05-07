@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join, parse } from "node:path";
@@ -11,7 +11,6 @@ export const phpLaravelEnvDetectorHook = defineHook({
   entry: new URL("./php-laravel-env-detector.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -49,7 +48,7 @@ function readText(p: string) {
   }
 }
 
-export async function run(payload: LegacyHookPayload) {
+export async function run(payload: NormalizedHookPayload) {
   const cwd = payload?.cwd;
   if (typeof cwd !== "string" || !cwd) return null;
 

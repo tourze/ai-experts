@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 export const databaseRedisCliRiskGuardHook = defineHook({
   id: "database-redis-cli-risk-guard",
@@ -9,7 +9,6 @@ export const databaseRedisCliRiskGuardHook = defineHook({
   entry: new URL("./database-redis-cli-risk-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -118,8 +117,8 @@ function firstRedisCommand(segment: string) {
   return null;
 }
 
-export async function run(payload: LegacyHookPayload) {
-  const command = payload?.tool_input?.command || "";
+export async function run(payload: NormalizedHookPayload) {
+  const command = payload?.tool?.input?.command || "";
   const segments = redisCliSegments(command);
 
   for (const segment of segments) {

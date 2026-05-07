@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { execFileSync } from "child_process";
 import { extractCommandCwd } from "../_shared/hook-bash-git-shell-utils";
@@ -12,7 +12,6 @@ export const gitCommitScopeGuardHook = defineHook({
   entry: new URL("./git-commit-scope-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -103,8 +102,8 @@ function getWorkspaceScope(file: string) {
   return `${parts[0]}/${parts[1]}`;
 }
 
-export async function run(payload: LegacyHookPayload) {
-  const command = payload?.tool_input?.command || "";
+export async function run(payload: NormalizedHookPayload) {
+  const command = payload?.tool?.input?.command || "";
 
   // 只对 git commit 生效
   if (!/\bgit\s+commit\b/.test(command)) return null;

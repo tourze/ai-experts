@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 export const completionStatusProtocolHook = defineHook({
   id: "completion-status-protocol",
@@ -8,7 +8,6 @@ export const completionStatusProtocolHook = defineHook({
   entry: new URL("./completion-status-protocol.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -87,7 +86,7 @@ const QA_SIGNALS = [
 
 const MIN_PROMPT_LENGTH = 12;
 
-export async function run(payload: LegacyHookPayload) {
+export async function run(payload: NormalizedHookPayload) {
   const prompt = payload?.prompt;
   if (typeof prompt !== "string") return null;
 

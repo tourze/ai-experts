@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { readFileSync } from "fs";
 import { resolve } from "path";
@@ -13,7 +13,6 @@ export const svnCommitMessageGuardHook = defineHook({
   entry: new URL("./svn-commit-message-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -136,8 +135,8 @@ function extractCommitMessage(command: string, cwd: string) {
   return paragraphs.join("\n\n").trim();
 }
 
-export async function run(payload: LegacyHookPayload) {
-  const command = payload?.tool_input?.command || "";
+export async function run(payload: NormalizedHookPayload) {
+  const command = payload?.tool?.input?.command || "";
 
   if (!/\bsvn\s+(commit|ci)\b/.test(command)) return null;
 

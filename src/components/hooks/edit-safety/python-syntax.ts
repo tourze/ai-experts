@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { existsSync } from "node:fs";
 import { execFileSync } from "node:child_process";
@@ -14,7 +14,6 @@ export const pythonSyntaxHook = defineHook({
   entry: new URL("./python-syntax.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 function matches(filePath: string) {
@@ -43,8 +42,8 @@ async function check(filePath: string) {
   }
 }
 
-export async function run(payload: LegacyHookPayload) {
-  const filePath = payload?.tool_input?.file_path;
+export async function run(payload: NormalizedHookPayload) {
+  const filePath = payload?.tool?.input?.file_path;
   if (!filePath || !existsSync(filePath)) return null;
   if (!matches(filePath)) return null;
   const result = await check(filePath);

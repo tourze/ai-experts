@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 export const securitySecretLeakGuardHook = defineHook({
   id: "security-secret-leak-guard",
@@ -9,7 +9,6 @@ export const securitySecretLeakGuardHook = defineHook({
   entry: new URL("./security-secret-leak-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -69,8 +68,8 @@ const ALL_RULES = [
   ...SENSITIVE_ECHO,
 ];
 
-export async function run(payload: LegacyHookPayload) {
-  const command = payload?.tool_input?.command || "";
+export async function run(payload: NormalizedHookPayload) {
+  const command = payload?.tool?.input?.command || "";
 
   for (const [pattern, reason] of ALL_RULES) {
     if (pattern.test(command)) {

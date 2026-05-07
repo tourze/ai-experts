@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { normalize } from "path";
 
@@ -11,7 +11,6 @@ export const phpProtectedPathsHook = defineHook({
   entry: new URL("./php-protected-paths.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -31,8 +30,8 @@ const PROTECTED_PATTERNS: readonly (readonly [RegExp, string])[] = [
   [/\/\.phpunit\.result\.cache$/, ".phpunit.result.cache 是测试缓存，自动生成"],
 ];
 
-export async function run(payload: LegacyHookPayload) {
-  const filePath = payload?.tool_input?.file_path;
+export async function run(payload: NormalizedHookPayload) {
+  const filePath = payload?.tool?.input?.file_path;
   if (!filePath) return null;
 
   const normalized = normalize(filePath).replaceAll("\\", "/");

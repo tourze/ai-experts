@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { SHORT_CONFIRMATION_RE } from "../_shared/skill-routing-rules";
 import {
@@ -15,7 +15,6 @@ export const skillTriggerTelemetryAdvisorReminderHook = defineHook({
   entry: new URL("./skill-trigger-telemetry-advisor-reminder.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -36,9 +35,9 @@ function sessionKey(entry: HookTelemetryEntry) {
   return entry.session_id || entry.transcript_path || null;
 }
 
-function relevantEntriesForPayload(entries: readonly HookTelemetryEntry[], payload: LegacyHookPayload) {
+function relevantEntriesForPayload(entries: readonly HookTelemetryEntry[], payload: NormalizedHookPayload) {
   const cutoff = Date.now() - LOOKBACK_MS;
-  const payloadSessionKey = payload?.session_id || payload?.transcript_path || null;
+  const payloadSessionKey = payload?.sessionId || payload?.transcriptPath || null;
   return entries
     .filter((entry) => typeof entry.ts === "number" && entry.ts >= cutoff)
     .filter((entry) => {
@@ -142,7 +141,7 @@ function buildReason(signals: ReturnType<typeof summarizeSignals>) {
   ].join("\n");
 }
 
-export async function run(payload: LegacyHookPayload) {
+export async function run(payload: NormalizedHookPayload) {
   const prompt = payload?.prompt;
   if (typeof prompt !== "string") return null;
 

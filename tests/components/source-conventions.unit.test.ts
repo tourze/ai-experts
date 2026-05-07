@@ -61,6 +61,23 @@ describe("component source conventions", () => {
     assert.doesNotMatch(readFileSync(join(buildRoot, "procedures.ts"), "utf-8"), /__aiExpertsScriptDir/);
   });
 
+  test("hooks use the normalized payload contract", () => {
+    const sdkSource = readFileSync(join(repoRoot, "src/components/sdk.ts"), "utf-8");
+    const hookBuilderSource = readFileSync(join(repoRoot, "src/build/hooks.ts"), "utf-8");
+    const hookSources = collectFiles(join(repoRoot, "src/components/hooks"), (file) => file.endsWith(".ts"));
+
+    assert.doesNotMatch(sdkSource, /\bLegacyHook(?:Payload|ToolInput)\b|payloadMode\?:/);
+    assert.doesNotMatch(hookBuilderSource, /\btoLegacyClaudePayload\b|payloadMode|claude-raw/);
+    for (const hookSource of hookSources) {
+      const source = readFileSync(hookSource, "utf-8");
+      assert.doesNotMatch(
+        source,
+        /\bLegacyHookPayload\b|payloadMode:\s*"claude-raw"|payload\?\.(?:tool_input|tool_name|transcript_path|session_id|stop_hook_active)/,
+        `${hookSource} should consume NormalizedHookPayload directly`,
+      );
+    }
+  });
+
   test("guarded procedure sources export main for bundled invocation", () => {
     const guardedWithoutExport = collectFiles(
       join(repoRoot, "src/components/procedures/sources"),

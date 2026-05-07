@@ -5,7 +5,6 @@ import { afterEach, describe, expect, test } from "vitest";
 import {
   HookEvent,
   Platform,
-  type LegacyHookPayload,
   type NormalizedHookPayload,
 } from "../../src/components/sdk";
 import { run as runDangerousCommandGuard } from "../../src/components/hooks/command-safety/dangerous-command-guard";
@@ -30,12 +29,16 @@ afterEach(() => {
   }
 });
 
-function makeLegacyPayload(
-  overrides: Partial<LegacyHookPayload> = {},
-): LegacyHookPayload {
+function makeHookPayload(
+  event: HookEvent,
+  overrides: Partial<NormalizedHookPayload> = {},
+): NormalizedHookPayload {
   return {
+    platform: Platform.Codex,
+    event,
     cwd: process.cwd(),
-    tool_input: {},
+    raw: {},
+    tool: { input: {} },
     ...overrides,
   };
 }
@@ -56,8 +59,8 @@ function makeNormalizedPayload(
 describe("hooks implementation coverage", () => {
   test("dangerous-command-guard blocks destructive rm command", async () => {
     const result = await runDangerousCommandGuard(
-      makeLegacyPayload({
-        tool_input: { command: "rm -rf /" },
+      makeHookPayload(HookEvent.PreToolUse, {
+        tool: { input: { command: "rm -rf /" } },
       }),
     );
 
@@ -68,8 +71,8 @@ describe("hooks implementation coverage", () => {
 
   test("dangerous-command-guard ignores safe command", async () => {
     const result = await runDangerousCommandGuard(
-      makeLegacyPayload({
-        tool_input: { command: "ls -la" },
+      makeHookPayload(HookEvent.PreToolUse, {
+        tool: { input: { command: "ls -la" } },
       }),
     );
     expect(result).toBeNull();
@@ -77,16 +80,16 @@ describe("hooks implementation coverage", () => {
 
   test("git-destructive-command-guard blocks reset --hard and allows --force-with-lease", async () => {
     const blocked = await runGitDestructiveGuard(
-      makeLegacyPayload({
-        tool_input: { command: "git reset --hard HEAD" },
+      makeHookPayload(HookEvent.PreToolUse, {
+        tool: { input: { command: "git reset --hard HEAD" } },
       }),
     );
     expect(blocked?.decision).toBe("block");
     expect(blocked?.reason).toContain("[Dangerous Git Command]");
 
     const allowed = await runGitDestructiveGuard(
-      makeLegacyPayload({
-        tool_input: { command: "git push --force-with-lease origin main" },
+      makeHookPayload(HookEvent.PreToolUse, {
+        tool: { input: { command: "git push --force-with-lease origin main" } },
       }),
     );
     expect(allowed).toBeNull();
@@ -94,24 +97,24 @@ describe("hooks implementation coverage", () => {
 
   test("cat-write-guard reports tmp heredoc write and blocks normal heredoc write", async () => {
     const reported = await runCatWriteGuard(
-      makeLegacyPayload({
-        tool_input: { command: "cat > /tmp/demo.txt <<'EOF'\nhello\nEOF" },
+      makeHookPayload(HookEvent.PreToolUse, {
+        tool: { input: { command: "cat > /tmp/demo.txt <<'EOF'\nhello\nEOF" } },
       }),
     );
     expect(reported?.decision).toBe("report");
     expect(reported?.reason).toContain("/tmp");
 
     const blocked = await runCatWriteGuard(
-      makeLegacyPayload({
-        tool_input: { command: "cat > src/demo.ts <<'EOF'\nconsole.log(1)\nEOF" },
+      makeHookPayload(HookEvent.PreToolUse, {
+        tool: { input: { command: "cat > src/demo.ts <<'EOF'\nconsole.log(1)\nEOF" } },
       }),
     );
     expect(blocked?.decision).toBe("block");
     expect(blocked?.reason).toContain("已拦截 cat heredoc 写文件");
 
     const piped = await runCatWriteGuard(
-      makeLegacyPayload({
-        tool_input: { command: "cat <<'EOF' | sed 's/a/b/'\nhello\nEOF" },
+      makeHookPayload(HookEvent.PreToolUse, {
+        tool: { input: { command: "cat <<'EOF' | sed 's/a/b/'\nhello\nEOF" } },
       }),
     );
     expect(piped).toBeNull();
@@ -125,16 +128,16 @@ describe("hooks implementation coverage", () => {
     writeFileSync(textFile, "plain text", "utf-8");
 
     const blocked = await runSyntaxJson(
-      makeLegacyPayload({
-        tool_input: { file_path: invalidJson },
+      makeHookPayload(HookEvent.PreToolUse, {
+        tool: { input: { file_path: invalidJson } },
       }),
     );
     expect(blocked?.decision).toBe("block");
     expect(blocked?.reason).toContain("[JSON Syntax]");
 
     const skipped = await runSyntaxJson(
-      makeLegacyPayload({
-        tool_input: { file_path: textFile },
+      makeHookPayload(HookEvent.PreToolUse, {
+        tool: { input: { file_path: textFile } },
       }),
     );
     expect(skipped).toBeNull();
@@ -176,7 +179,7 @@ describe("hooks implementation coverage", () => {
     writeFileSync(join(projectRoot, ".node-version"), "20.11.0\n", "utf-8");
 
     const result = await runJavascriptEnvDetector(
-      makeLegacyPayload({ cwd: srcDir }),
+      makeHookPayload(HookEvent.SessionStart, { cwd: srcDir }),
     );
     expect(result?.decision).toBe("context");
     expect(result?.reason).toContain("[JS Env]");

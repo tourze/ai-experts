@@ -12,7 +12,7 @@ import {
 } from "node:fs";
 import { homedir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
-import type { LegacyHookPayload } from "../../sdk";
+import type { NormalizedHookPayload } from "../../sdk";
 
 const COMPONENT_NAME = "hooks";
 const DEFAULT_MAX_BYTES = 5 * 1024 * 1024;
@@ -56,7 +56,7 @@ function telemetryMaxFiles() {
   return parsePositiveInt(process.env.AI_EXPERTS_HOOK_TELEMETRY_MAX_FILES, DEFAULT_MAX_FILES);
 }
 
-function workspacePathForTelemetry(payload: LegacyHookPayload): string {
+function workspacePathForTelemetry(payload: NormalizedHookPayload): string {
   if (typeof process.env.AI_EXPERTS_HOOK_TELEMETRY_WORKSPACE === "string" &&
       process.env.AI_EXPERTS_HOOK_TELEMETRY_WORKSPACE.trim()) {
     return resolve(process.env.AI_EXPERTS_HOOK_TELEMETRY_WORKSPACE);
@@ -64,7 +64,7 @@ function workspacePathForTelemetry(payload: LegacyHookPayload): string {
   if (typeof payload?.cwd === "string" && payload.cwd.trim()) {
     return resolve(payload.cwd);
   }
-  const filePath = payload?.tool_input?.file_path;
+  const filePath = payload?.tool?.input?.file_path;
   if (typeof filePath === "string" && filePath.trim()) {
     return resolve(dirname(filePath));
   }
@@ -78,7 +78,7 @@ function telemetryBucketForWorkspace(workspacePath: string, root = telemetryRoot
   return join(root, "workspaces", `${hash}-${slug}`);
 }
 
-export function telemetryFileForPayload(payload: LegacyHookPayload, root = telemetryRoot()): {
+export function telemetryFileForPayload(payload: NormalizedHookPayload, root = telemetryRoot()): {
   workspacePath: string;
   dir: string;
   file: string;
@@ -125,7 +125,7 @@ function rotateTelemetryFile(filePath: string): void {
   }
 }
 
-export function recordAuditTelemetry(payload: LegacyHookPayload, data: AuditTelemetryData): void {
+export function recordAuditTelemetry(payload: NormalizedHookPayload, data: AuditTelemetryData): void {
   if (process.env.AI_EXPERTS_HOOK_TELEMETRY === "0") {
     return;
   }
@@ -141,8 +141,8 @@ export function recordAuditTelemetry(payload: LegacyHookPayload, data: AuditTele
       JSON.stringify({
         ts: Date.now(),
         pid: process.pid,
-        session_id: payload?.session_id ?? null,
-        transcript_path: payload?.transcript_path ?? null,
+        session_id: payload?.sessionId ?? null,
+        transcript_path: payload?.transcriptPath ?? null,
         workspace: telemetry.workspacePath,
         component: COMPONENT_NAME,
         ...data,
@@ -154,7 +154,7 @@ export function recordAuditTelemetry(payload: LegacyHookPayload, data: AuditTele
   }
 }
 
-export function readRecentTelemetryEntries(payload: LegacyHookPayload, maxBytes = 256 * 1024): HookTelemetryEntry[] {
+export function readRecentTelemetryEntries(payload: NormalizedHookPayload, maxBytes = 256 * 1024): HookTelemetryEntry[] {
   const entries: HookTelemetryEntry[] = [];
   const { file } = telemetryFileForPayload(payload);
   if (!existsSync(file)) {

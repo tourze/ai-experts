@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 export const gitCommitHeredocGuardHook = defineHook({
   id: "git-commit-heredoc-guard",
@@ -9,7 +9,6 @@ export const gitCommitHeredocGuardHook = defineHook({
   entry: new URL("./git-commit-heredoc-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -22,8 +21,8 @@ export const gitCommitHeredocGuardHook = defineHook({
 
 const HEREDOC_COMMIT_PATTERN = /\bgit\s+commit\b[\s\S]*\$\(\s*cat\s+<</;
 
-export async function run(payload: LegacyHookPayload) {
-  const command = payload?.tool_input?.command || "";
+export async function run(payload: NormalizedHookPayload) {
+  const command = payload?.tool?.input?.command || "";
 
   if (!HEREDOC_COMMIT_PATTERN.test(command)) return null;
 

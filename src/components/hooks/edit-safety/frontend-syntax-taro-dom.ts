@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { readFileSync, existsSync } from "fs";
 import { matchExt } from "../_shared/hook-edit-write-utils";
@@ -12,7 +12,6 @@ export const frontendSyntaxTaroDomHook = defineHook({
   entry: new URL("./frontend-syntax-taro-dom.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -70,8 +69,8 @@ async function check(filePath: string) {
   return { lang: "Taro/MiniProgram", message: errors.join("\n") };
 }
 
-export async function run(payload: LegacyHookPayload) {
-  const filePath = payload?.tool_input?.file_path;
+export async function run(payload: NormalizedHookPayload) {
+  const filePath = payload?.tool?.input?.file_path;
   if (!filePath || !existsSync(filePath)) return null;
   if (!matches(filePath)) return null;
   const result = await check(filePath);

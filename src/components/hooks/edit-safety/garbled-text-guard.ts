@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 export const garbledTextGuardHook = defineHook({
   id: "garbled-text-guard",
@@ -9,7 +9,6 @@ export const garbledTextGuardHook = defineHook({
   entry: new URL("./garbled-text-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -27,8 +26,8 @@ const SCATTERED_PATTERN = /\uFFFD/g;
 // 散布阈值：单独 U+FFFD 达到此数量即判定为乱码
 const SCATTERED_THRESHOLD = 3;
 
-export async function run(payload: LegacyHookPayload) {
-  const rawContent = payload?.tool_input?.new_string ?? payload?.tool_input?.content;
+export async function run(payload: NormalizedHookPayload) {
+  const rawContent = payload?.tool?.input?.new_string ?? payload?.tool?.input?.content;
   if (typeof rawContent !== "string" || rawContent.length === 0) return null;
   const content = rawContent;
 

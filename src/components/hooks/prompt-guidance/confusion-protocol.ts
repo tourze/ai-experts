@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 export const confusionProtocolHook = defineHook({
   id: "confusion-protocol",
@@ -8,7 +8,6 @@ export const confusionProtocolHook = defineHook({
   entry: new URL("./confusion-protocol.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -133,7 +132,7 @@ function isAutonomyGranted(prompt: string) {
   return AUTONOMY_SIGNALS.some((re) => re.test(prompt));
 }
 
-export async function run(payload: LegacyHookPayload) {
+export async function run(payload: NormalizedHookPayload) {
   const prompt = payload?.prompt;
   if (typeof prompt !== "string") return null;
 

@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { execFileSync } from "child_process";
 import { extractCommandCwd } from "../_shared/hook-bash-git-shell-utils";
@@ -12,7 +12,6 @@ export const gitPartialStagingGuardHook = defineHook({
   entry: new URL("./git-partial-staging-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -46,8 +45,8 @@ function isCommitAll(command: string) {
   return /\s--all\b|\s-[a-z]*a[a-z]*(?:\s|$)/.test(` ${command}`);
 }
 
-export async function run(payload: LegacyHookPayload) {
-  const command = payload?.tool_input?.command || "";
+export async function run(payload: NormalizedHookPayload) {
+  const command = payload?.tool?.input?.command || "";
   if (!/\bgit\s+commit\b/.test(command)) return null;
   if (/--amend\b|--fixup\b|--squash\b/.test(command)) return null;
   if (isCommitAll(command)) return null;

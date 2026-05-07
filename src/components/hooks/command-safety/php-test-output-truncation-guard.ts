@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 export const phpTestOutputTruncationGuardHook = defineHook({
   id: "php-test-output-truncation-guard",
@@ -9,7 +9,6 @@ export const phpTestOutputTruncationGuardHook = defineHook({
   entry: new URL("./php-test-output-truncation-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -29,8 +28,8 @@ const HEAVY_RE = new RegExp(`\\b(?:${HEAVY_COMMANDS.join("|")})\\b`);
 // 排除 | tail -1（常用于只取 exit code 的合理场景）
 const TRUNCATION_RE = /\|\s*(?:tail|head)\s+-(?:n\s*)?(\d+)\s*$/;
 
-export async function run(payload: LegacyHookPayload) {
-  const command = payload?.tool_input?.command || "";
+export async function run(payload: NormalizedHookPayload) {
+  const command = payload?.tool?.input?.command || "";
 
   // 不含重量级命令 → 跳过
   if (!HEAVY_RE.test(command)) return null;

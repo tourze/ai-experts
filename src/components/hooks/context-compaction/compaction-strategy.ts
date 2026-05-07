@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 export const compactionStrategyHook = defineHook({
   id: "compaction-strategy",
@@ -8,7 +8,6 @@ export const compactionStrategyHook = defineHook({
   entry: new URL("./compaction-strategy.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -68,7 +67,7 @@ const STRATEGY = `[Compaction Preservation Strategy] 压缩保留策略
 - 有什么约束？（项目规则 + 用户偏好）
 - 下一步是什么？（行动计划）`;
 
-export async function run(_payload: LegacyHookPayload) {
+export async function run(_payload: NormalizedHookPayload) {
   return {
     decision: "context",
     reason: STRATEGY,

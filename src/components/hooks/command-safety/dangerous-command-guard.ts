@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 export const dangerousCommandGuardHook = defineHook({
   id: "dangerous-command-guard",
@@ -9,7 +9,6 @@ export const dangerousCommandGuardHook = defineHook({
   entry: new URL("./dangerous-command-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -30,8 +29,8 @@ const DANGEROUS_PATTERNS: readonly (readonly [RegExp, string])[] = [
   [/\brm\s+-[A-Za-z]*[rR][A-Za-z]*\s+\.\/?(\s|$|;|&|\|)/, "rm -r . 会删除当前目录所有内容"],
 ];
 
-export async function run(payload: LegacyHookPayload) {
-  const command = payload?.tool_input?.command || "";
+export async function run(payload: NormalizedHookPayload) {
+  const command = payload?.tool?.input?.command || "";
 
   for (const [pattern, reason] of DANGEROUS_PATTERNS) {
     if (pattern.test(command)) {

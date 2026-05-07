@@ -16,7 +16,6 @@ type CompiledHook = {
   event: HookDefinition["event"];
   matcher: string;
   order: number;
-  payloadMode: NonNullable<HookDefinition["payloadMode"]>;
   description: string;
   timeoutSeconds?: number;
   statusMessage?: string;
@@ -56,7 +55,6 @@ export async function compileHookModules(
       event: hook.event,
       matcher: renderHookMatcher(hook),
       order: hook.order ?? 100,
-      payloadMode: hook.payloadMode ?? "normalized",
       description: hook.description,
       timeoutSeconds: hook.timeoutSeconds,
       statusMessage: hook.statusMessage,
@@ -137,11 +135,21 @@ function fileTargetsFromPatch(command) {
   return [...new Set(targets.filter(Boolean))];
 }
 
+function normalizeToolInput(toolInput) {
+  if (!toolInput || typeof toolInput !== "object") return undefined;
+  const input = { ...toolInput };
+  if (typeof input.file_path !== "string") {
+    if (typeof input.filePath === "string") input.file_path = input.filePath;
+    else if (typeof input.path === "string") input.file_path = input.path;
+  }
+  return input;
+}
+
 function normalize(raw, event) {
-  const toolInput = raw.tool_input ?? raw.toolInput ?? raw.tool?.input;
+  const toolInput = normalizeToolInput(raw.tool_input ?? raw.toolInput ?? raw.tool?.input);
   const toolName = raw.tool_name ?? raw.toolName ?? raw.tool?.name;
   const command = typeof toolInput?.command === "string" ? toolInput.command : "";
-  const filePath = toolInput?.file_path ?? toolInput?.filePath ?? toolInput?.path;
+  const filePath = toolInput?.file_path;
   const fileTargets = [];
   if (typeof filePath === "string") fileTargets.push(filePath);
   if (command) fileTargets.push(...fileTargetsFromPatch(command));
@@ -149,12 +157,13 @@ function normalize(raw, event) {
     platform,
     event,
     cwd: raw.cwd ?? process.cwd(),
-    sessionId: raw.session_id,
-    transcriptPath: raw.transcript_path ?? null,
-    permissionMode: raw.permission_mode,
-    turnId: raw.turn_id,
+    sessionId: raw.session_id ?? raw.sessionId,
+    transcriptPath: raw.transcript_path ?? raw.transcriptPath ?? null,
+    permissionMode: raw.permission_mode ?? raw.permissionMode,
+    turnId: raw.turn_id ?? raw.turnId,
+    stopHookActive: Boolean(raw.stop_hook_active ?? raw.stopHookActive),
     prompt: raw.prompt ?? raw.user_prompt ?? raw.message,
-    agent: { id: raw.agent_id, type: raw.agent_type },
+    agent: { id: raw.agent_id ?? raw.agent?.id, type: raw.agent_type ?? raw.agent?.type },
     tool: {
       name: toolName,
       input: toolInput,
@@ -162,21 +171,6 @@ function normalize(raw, event) {
       fileTargets: [...new Set(fileTargets)],
     },
     raw,
-  };
-}
-
-function toLegacyClaudePayload(payload) {
-  return {
-    ...payload.raw,
-    hook_event_name: payload.event,
-    cwd: payload.cwd,
-    session_id: payload.sessionId,
-    transcript_path: payload.transcriptPath,
-    permission_mode: payload.permissionMode,
-    prompt: payload.prompt,
-    tool_name: payload.tool?.name,
-    tool_input: payload.tool?.input,
-    tool_response: payload.tool?.response,
   };
 }
 
@@ -238,8 +232,7 @@ async function main() {
   for (const hook of hooks.filter((item) => item.event === event && hookMatchesPayload(item, payload))) {
     const run = hookRunners.get(hook.id);
     if (typeof run !== "function") continue;
-    const hookPayload = hook.payloadMode === "claude-raw" ? toLegacyClaudePayload(payload) : payload;
-    const result = normalizeHookResult(await run(hookPayload));
+    const result = normalizeHookResult(await run(payload));
     if (result && result.kind !== "allow" && result.kind !== "audit") results.push(result);
   }
 

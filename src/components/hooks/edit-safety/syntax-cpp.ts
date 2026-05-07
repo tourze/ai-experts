@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { existsSync, readFileSync } from "fs";
 import { execFileSync } from "child_process";
@@ -15,7 +15,6 @@ export const syntaxCppHook = defineHook({
   entry: new URL("./syntax-cpp.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -208,8 +207,8 @@ async function check(filePath: string) {
     : null;
 }
 
-export async function run(payload: LegacyHookPayload) {
-  const filePath = payload?.tool_input?.file_path;
+export async function run(payload: NormalizedHookPayload) {
+  const filePath = payload?.tool?.input?.file_path;
   if (!filePath || !existsSync(filePath)) return null;
   if (!isCppSourceFile(filePath)) return null;
   const result = await check(filePath);

@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 export const commentDisciplinePrimerHook = defineHook({
   id: "comment-discipline-primer",
@@ -8,7 +8,6 @@ export const commentDisciplinePrimerHook = defineHook({
   entry: new URL("./comment-discipline-primer.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -91,7 +90,7 @@ function findHits(prompt: string) {
   return hits;
 }
 
-export async function run(payload: LegacyHookPayload) {
+export async function run(payload: NormalizedHookPayload) {
   const prompt = payload?.prompt;
   if (typeof prompt !== "string") return null;
 

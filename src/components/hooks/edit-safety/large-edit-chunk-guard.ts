@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 export const largeEditChunkGuardHook = defineHook({
   id: "large-edit-chunk-guard",
@@ -9,7 +9,6 @@ export const largeEditChunkGuardHook = defineHook({
   entry: new URL("./large-edit-chunk-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -31,13 +30,13 @@ export const largeEditChunkGuardHook = defineHook({
 const REPORT_THRESHOLD = 5000;  // 字符数
 const BLOCK_THRESHOLD = 10000;  // 字符数
 
-export async function run(payload: LegacyHookPayload) {
+export async function run(payload: NormalizedHookPayload) {
   // 仅对 Edit 操作生效（Write 是全量覆写，不适用此检查）
-  const toolName = payload?.tool_name;
+  const toolName = payload?.tool?.name;
   if (toolName !== "Edit") return null;
 
-  const oldString = payload?.tool_input?.old_string || "";
-  const newString = payload?.tool_input?.new_string || "";
+  const oldString = payload?.tool?.input?.old_string || "";
+  const newString = payload?.tool?.input?.new_string || "";
 
   // Edit 工具的核心参数
   if (!oldString && !newString) return null;
@@ -48,7 +47,7 @@ export async function run(payload: LegacyHookPayload) {
 
   if (maxLen <= REPORT_THRESHOLD) return null;
 
-  const filePath = payload?.tool_input?.file_path || "(unknown)";
+  const filePath = payload?.tool?.input?.file_path || "(unknown)";
 
   if (oldLen > BLOCK_THRESHOLD) {
     return {

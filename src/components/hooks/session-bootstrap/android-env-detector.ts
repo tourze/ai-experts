@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, join, parse } from "node:path";
@@ -11,7 +11,6 @@ export const androidEnvDetectorHook = defineHook({
   entry: new URL("./android-env-detector.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -49,7 +48,7 @@ function findGradle(dir: string, base: string) {
   return null;
 }
 
-export async function run(payload: LegacyHookPayload) {
+export async function run(payload: NormalizedHookPayload) {
   const cwd = payload?.cwd;
   if (typeof cwd !== "string" || !cwd) return null;
 

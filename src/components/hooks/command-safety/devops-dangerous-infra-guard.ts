@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 export const devopsDangerousInfraGuardHook = defineHook({
   id: "devops-dangerous-infra-guard",
@@ -9,7 +9,6 @@ export const devopsDangerousInfraGuardHook = defineHook({
   entry: new URL("./devops-dangerous-infra-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -84,8 +83,8 @@ const PATTERNS: readonly (readonly [RegExp, string])[] = [
   ],
 ];
 
-export async function run(payload: LegacyHookPayload) {
-  const command = payload?.tool_input?.command || "";
+export async function run(payload: NormalizedHookPayload) {
+  const command = payload?.tool?.input?.command || "";
 
   for (const [pattern, reason] of PATTERNS) {
     if (pattern.test(command)) {

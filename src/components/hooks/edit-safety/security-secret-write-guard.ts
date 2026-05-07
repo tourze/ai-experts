@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { basename, normalize } from "node:path";
 
@@ -11,7 +11,6 @@ export const securitySecretWriteGuardHook = defineHook({
   entry: new URL("./security-secret-write-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -78,8 +77,8 @@ function isWhitelisted(filePath: string) {
   return WHITELIST.some((pattern) => pattern.test(filePath));
 }
 
-export async function run(payload: LegacyHookPayload) {
-  const filePath = payload?.tool_input?.file_path;
+export async function run(payload: NormalizedHookPayload) {
+  const filePath = payload?.tool?.input?.file_path;
   if (!filePath) return null;
 
   const normalized = normalize(filePath).replaceAll("\\", "/");

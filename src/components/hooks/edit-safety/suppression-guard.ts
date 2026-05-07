@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { existsSync, readFileSync, realpathSync } from "fs";
 import { execFileSync } from "child_process";
@@ -13,7 +13,6 @@ export const suppressionGuardHook = defineHook({
   entry: new URL("./suppression-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -110,8 +109,8 @@ function countViolations(text: string, pattern: RegExp) {
   return count;
 }
 
-export async function run(payload: LegacyHookPayload) {
-  const filePath = payload?.tool_input?.file_path;
+export async function run(payload: NormalizedHookPayload) {
+  const filePath = payload?.tool?.input?.file_path;
   if (!filePath || !existsSync(filePath)) return null;
 
   const normalized = filePath.replaceAll("\\", "/");
@@ -123,7 +122,7 @@ export async function run(payload: LegacyHookPayload) {
   if (!SUPPORTED_EXTS.includes(ext)) return null;
   if (isTestFile(filePath)) return null;
 
-  const toolInput = payload?.tool_input;
+  const toolInput = payload?.tool?.input;
   const isEdit = toolInput?.old_string !== undefined;
   const newText = isEdit
     ? toolInput?.new_string || ""

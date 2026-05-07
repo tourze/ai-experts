@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { normalize } from "node:path";
 
@@ -11,7 +11,6 @@ export const phpSymfonyProtectedPathsHook = defineHook({
   entry: new URL("./php-symfony-protected-paths.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -35,8 +34,8 @@ const PROTECTED_PATTERNS: readonly (readonly [RegExp, string])[] = [
   [/\/migrations\/Version\d+\.php$/, "已存在的迁移文件不可修改，只能新建迁移"],
 ];
 
-export async function run(payload: LegacyHookPayload) {
-  const filePath = payload?.tool_input?.file_path;
+export async function run(payload: NormalizedHookPayload) {
+  const filePath = payload?.tool?.input?.file_path;
   if (!filePath) return null;
 
   const normalized = normalize(filePath).replaceAll("\\", "/");

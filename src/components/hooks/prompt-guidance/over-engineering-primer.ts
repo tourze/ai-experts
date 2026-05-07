@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 export const overEngineeringPrimerHook = defineHook({
   id: "over-engineering-primer",
@@ -8,7 +8,6 @@ export const overEngineeringPrimerHook = defineHook({
   entry: new URL("./over-engineering-primer.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -170,7 +169,7 @@ function isUserRequired(prompt: string) {
   return USER_REQUIRED_SIGNALS.some((re) => re.test(prompt));
 }
 
-export async function run(payload: LegacyHookPayload) {
+export async function run(payload: NormalizedHookPayload) {
   const prompt = payload?.prompt;
   if (typeof prompt !== "string") return null;
 

@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 export const catWriteGuardHook = defineHook({
   id: "cat-write-guard",
@@ -9,7 +9,6 @@ export const catWriteGuardHook = defineHook({
   entry: new URL("./cat-write-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -48,8 +47,8 @@ function isPipeInput(command: string) {
   return /<<-?\s*['"]?\w+['"]?\s*\|/.test(command);
 }
 
-export async function run(payload: LegacyHookPayload) {
-  const command = payload?.tool_input?.command || "";
+export async function run(payload: NormalizedHookPayload) {
+  const command = payload?.tool?.input?.command || "";
 
   if (!CAT_HEREDOC_WRITE_RE.test(command)) return null;
 

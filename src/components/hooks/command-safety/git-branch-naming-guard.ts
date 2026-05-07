@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { findGitSubcommandInvocations } from "../_shared/hook-bash-git-shell-utils";
 
@@ -11,7 +11,6 @@ export const gitBranchNamingGuardHook = defineHook({
   entry: new URL("./git-branch-naming-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -71,8 +70,8 @@ function validateName(name: string) {
     : "不符合 <type>/<slug> 命名规范";
 }
 
-export async function run(payload: LegacyHookPayload) {
-  const command = payload?.tool_input?.command || "";
+export async function run(payload: NormalizedHookPayload) {
+  const command = payload?.tool?.input?.command || "";
 
   // 快速短路
   if (!/\bgit\b/.test(command)) return null;

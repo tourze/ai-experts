@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 export const dbDangerousSqlGuardHook = defineHook({
   id: "db-dangerous-sql-guard",
@@ -9,7 +9,6 @@ export const dbDangerousSqlGuardHook = defineHook({
   entry: new URL("./db-dangerous-sql-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -73,8 +72,8 @@ const REPORT_RULES: readonly (readonly [RegExp, string])[] = [
   [/\bREVOKE\b/i, "REVOKE 会撤销数据库权限，请确认影响范围"],
 ];
 
-export async function run(payload: LegacyHookPayload) {
-  const command = payload?.tool_input?.command || "";
+export async function run(payload: NormalizedHookPayload) {
+  const command = payload?.tool?.input?.command || "";
   const cleaned = stripLiterals(command);
 
   // 1. Block 级规则

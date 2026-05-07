@@ -335,7 +335,17 @@ export type HookDefinition = {
   order?: number;
   timeoutSeconds?: number;
   statusMessage?: string;
-  payloadMode?: "normalized" | "claude-raw";
+};
+
+export type NormalizedHookToolInput = {
+  command?: string;
+  content?: string;
+  file_path?: string;
+  filePath?: string;
+  new_string?: string;
+  old_string?: string;
+  path?: string;
+  [key: string]: unknown;
 };
 
 export type InstructionDefinition = {
@@ -355,11 +365,12 @@ export type NormalizedHookPayload = {
   transcriptPath?: string | null;
   permissionMode?: string;
   turnId?: string;
+  stopHookActive?: boolean;
   prompt?: string;
   agent?: { id?: string; type?: string };
   tool?: {
     name?: KnownTool | string;
-    input?: unknown;
+    input?: NormalizedHookToolInput;
     response?: unknown;
     fileTargets?: string[];
   };
@@ -372,27 +383,6 @@ export type NormalizedHookResult =
   | { kind: "add-context"; message: string }
   | { kind: "report"; message: string }
   | { kind: "audit"; record: unknown };
-
-export type LegacyHookToolInput = {
-  command?: string;
-  file_path?: string;
-  old_string?: string;
-  new_string?: string;
-  [key: string]: unknown;
-};
-
-export type LegacyHookPayload = {
-  hook_event_name?: string;
-  cwd?: string;
-  session_id?: string;
-  transcript_path?: string | null;
-  permission_mode?: string;
-  prompt?: string;
-  tool_name?: KnownTool | string;
-  tool_input?: LegacyHookToolInput;
-  tool_response?: unknown;
-  [key: string]: unknown;
-};
 
 export function defineSkill(definition: Omit<SkillDefinition, "kind">): SkillDefinition {
   return {

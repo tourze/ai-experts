@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 export const sedInplaceGuardHook = defineHook({
   id: "sed-inplace-guard",
@@ -9,7 +9,6 @@ export const sedInplaceGuardHook = defineHook({
   entry: new URL("./sed-inplace-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -79,8 +78,8 @@ function stripMessagePayloads(cmd: string): string {
   return stripped;
 }
 
-export async function run(payload: LegacyHookPayload) {
-  const command = payload?.tool_input?.command || "";
+export async function run(payload: NormalizedHookPayload) {
+  const command = payload?.tool?.input?.command || "";
 
   // 对剥离后的命令做检测，避免引号/HEREDOC 内容误报
   const sanitized = stripMessagePayloads(command);

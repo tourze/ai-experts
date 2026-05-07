@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { findGitSubcommandInvocations, hasShortFlag } from "../_shared/hook-bash-git-shell-utils";
 
@@ -11,7 +11,6 @@ export const gitDestructiveCommandGuardHook = defineHook({
   entry: new URL("./git-destructive-command-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -77,8 +76,8 @@ const RULES = [
   },
 ];
 
-export async function run(payload: LegacyHookPayload) {
-  const command = payload?.tool_input?.command || "";
+export async function run(payload: NormalizedHookPayload) {
+  const command = payload?.tool?.input?.command || "";
   if (!/\bgit\b/.test(command)) return null;
 
   for (const rule of RULES) {

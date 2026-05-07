@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import {
   ROUTING_REMINDER,
@@ -13,7 +13,6 @@ export const skillRoutingReminderHook = defineHook({
   entry: new URL("./skill-routing-reminder.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -37,7 +36,7 @@ export const skillRoutingReminderHook = defineHook({
 
 const MIN_PROMPT_LENGTH = 8;
 
-export async function run(payload: LegacyHookPayload) {
+export async function run(payload: NormalizedHookPayload) {
   const prompt = payload?.prompt;
   if (typeof prompt !== "string") return null;
 

@@ -1,4 +1,4 @@
-import { defineHook, HookEvent, KnownTool, Platform, type LegacyHookPayload } from "../../sdk";
+import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { execFileSync } from "child_process";
 import { existsSync, readFileSync, realpathSync } from "fs";
@@ -14,7 +14,6 @@ export const fileBudgetGuardHook = defineHook({
   entry: new URL("./file-budget-guard.ts", import.meta.url),
   order: 100,
   timeoutSeconds: 10,
-  payloadMode: "claude-raw",
 });
 
 /**
@@ -160,8 +159,8 @@ function getHeadLineCount(filePath: string) {
   }
 }
 
-export async function run(payload: LegacyHookPayload) {
-  const filePath = payload?.tool_input?.file_path;
+export async function run(payload: NormalizedHookPayload) {
+  const filePath = payload?.tool?.input?.file_path;
   if (!filePath || !existsSync(filePath)) return null;
 
   const budget = getBudget(filePath);

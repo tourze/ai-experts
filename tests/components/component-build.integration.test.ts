@@ -683,6 +683,7 @@ describe("component build integration", () => {
     assert.equal(existsSync(join(tmpDistDir, "claude/hooks/modules")), false);
     assert.equal(existsSync(join(tmpDistDir, "codex/hooks/modules")), false);
     assert.equal(hookManifest.hooks.some((hook: any) => "module" in hook), false);
+    assert.equal(hookManifest.hooks.some((hook: any) => "payloadMode" in hook), false);
     assert.equal(hookManifest.hooks.some((hook: any) => /(?:expert|plugin)/.test(hook.id)), false);
     assert.doesNotMatch(readFileSync(join(tmpDistDir, "claude/hooks/dispatch.mjs"), "utf-8"), /(?:expert|plugin)/);
     assert.doesNotMatch(readFileSync(join(tmpDistDir, "codex/hooks/dispatch.mjs"), "utf-8"), /(?:expert|plugin)/);
@@ -731,6 +732,21 @@ describe("component build integration", () => {
     );
     assert.match(secretWriteOutput, /"decision": "block"/);
     assert.match(secretWriteOutput, /Secret Write Guard/);
+
+    const codexSecretWriteOutput = execFileSync(
+      process.execPath,
+      [join(tmpDistDir, "codex/hooks/dispatch.mjs"), "--platform", "codex-cli", "--event", "PreToolUse"],
+      {
+        cwd: repoRoot,
+        input: JSON.stringify({
+          toolName: "Write",
+          toolInput: { filePath: ".env", content: "API_KEY=test" },
+        }),
+        encoding: "utf-8",
+      },
+    );
+    assert.match(codexSecretWriteOutput, /"decision": "block"/);
+    assert.match(codexSecretWriteOutput, /Secret Write Guard/);
 
     const dangerousCommandOutput = execFileSync(
       process.execPath,
