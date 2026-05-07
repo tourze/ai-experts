@@ -23,7 +23,7 @@ export const skillEvolverSkill = defineSkill({
     "先证明差距，再改目标 skill；没有运行证据时，把结论标成静态推断。",
     "一次只注入一个高价值模式，验证不通过就回滚到快照。",
     "不记录隐藏思维链；只记录可展示的决策摘要、工具调用、输入输出、耗时和评分证据。",
-    "不自动执行外部 skill 中的不明脚本；需要执行时先读源码并说明目的。",
+    "不自动执行外部 skill 中的不明可执行辅助代码；需要执行时先读源码并说明目的。",
   ],
   relatedSkills: [
     {
@@ -65,8 +65,8 @@ export const skillEvolverSkill = defineSkill({
   workflow: defineSkillWorkflow({
     steps: [
       "先读取 migration-protocol，确认目标 A、参考 B、模式：compare-only、sandbox 或 write。",
-      "安全扫读两个 skill 的 `SKILL.md`、`references/`、`scripts/`、`evals/`，不自动执行不明脚本。",
-      "建立能力地图：触发域、知识增量、流程控制、工具/脚本、输出约束、错误处理和 eval 覆盖。",
+      "安全扫读两个 skill 的 `SKILL.md`、`references/`、`assets/`、`evals/` 和 Procedure 调用说明，不自动执行不明辅助代码。",
+      "建立能力地图：触发域、知识增量、流程控制、工具/Procedure、输出约束、错误处理和 eval 覆盖。",
       "优先复用目标 skill 的 eval cases；不足时补 3-5 个代表任务，至少包含一个压力或反例任务。",
       "能跑就做 A/B 或 old/candidate 对比；不能跑时只输出静态报告并标明证据等级。",
       "把参考优势反向工程成一个可迁移模式，写清适用条件、不适用场景、迁移步骤和副作用。",

@@ -20,8 +20,8 @@ import { benchmarkResultAnalyzerSkill } from "../../skills/benchmark-result-anal
 
 export const skillAuthorAgent = defineAgent({
   id: "skill-author",
-  description: "当需要创建新 skill、根据参考 skill 演化目标 skill、跑 with-skill vs baseline 基准测试、或发现并集成外部 skill 时使用。它可以写入新的 SKILL.md、references、scripts、evals 等交付物，但不修改无关代码。",
-  role: `你是资深 Skill 作者。你可以在用户请求的交付范围内创建或更新 \`src/components/skills/<skill>/\` 下的 SKILL.md、references、scripts、assets、evals 与对应 README 索引项，但不要修改无关源码、配置或其他 skill。`,
+  description: "当需要创建新 skill、根据参考 skill 演化目标 skill、跑 with-skill vs baseline 基准测试、或发现并集成外部 skill 时使用。它可以写入新的 SKILL.md、references、assets、evals 和 Procedure 声明等交付物，但不修改无关代码。",
+  role: `你是资深 Skill 作者。你可以在用户请求的交付范围内创建或更新 \`src/components/skills/<skill>/\` 下的 SKILL.md、references、assets、evals、Procedure 引用与对应 README 索引项，但不要修改无关源码、配置或其他 skill。`,
   platforms: [Platform.Claude, Platform.Codex],
   workflow: defineAgentWorkflow({
     direction: "TD",
@@ -65,7 +65,7 @@ export const skillAuthorAgent = defineAgent({
       }),
       defineAgentOutputSection({
         title: "已写入文件",
-        body: "[SKILL.md / references/* / scripts/* / evals/* / 组件索引修改的具体路径与摘要]",
+        body: "[SKILL.md / references/* / assets/* / evals/* / Procedure 声明 / 组件索引修改的具体路径与摘要]",
       }),
       defineAgentOutputSection({
         title: "frontmatter 自检",
@@ -100,7 +100,7 @@ export const skillAuthorAgent = defineAgent({
     "不修改与本次 skill 无关的文件；安装脚本、hooks、其他 skill 一律保持原状。",
     "单一职责：一个 skill 解决一类清晰可验证的任务，不要混入无关方法论。",
     "知识深度优先于篇幅：能用 references/ 沉淀的厚资料不要堆进 SKILL.md。",
-    "脚手架资产（scripts/、references/、assets/、evals/）必须可独立运行，不依赖 ai-experts 仓库内部路径。",
+    "组件资源（references/、assets/、evals/）必须可独立使用；可复用确定性流程必须登记为 Procedure，不放进 skill 本地脚本目录。",
   ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash, KnownTool.Write, KnownTool.Edit, KnownTool.WebSearch, KnownTool.WebFetch],
   sandbox: AgentSandbox.WorkspaceWrite,

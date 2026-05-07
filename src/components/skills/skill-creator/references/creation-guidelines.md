@@ -23,12 +23,12 @@ Ask only for missing decisions:
 
 Before editing an existing skill, do a short source check:
 
-- Identify sources: official docs, code, telemetry, failed transcripts, user feedback, examples, scripts, or eval results.
+- Identify sources: official docs, code, telemetry, failed transcripts, user feedback, examples, Procedure output, helper code, or eval results.
 - Write one acceptance target: "the agent should reliably do X and avoid Y."
 - Separate source facts from inference.
 - If testable, preserve the old skill as the baseline.
 
-Do not transfer background wholesale. Keep only knowledge that changes agent behavior: triggers, workflow, constraints, examples, anti-patterns, references, scripts, assets, and procedures.
+Do not transfer background wholesale. Keep only knowledge that changes agent behavior: triggers, workflow, constraints, examples, anti-patterns, references, assets, evals, and procedures.
 
 ## User Communication
 
@@ -42,7 +42,7 @@ The generated skill should have:
 - `description`: what the skill does and when to use it. This is the main trigger surface; include trigger keywords and contexts here, not only in the body.
 - Workflow: concrete process and decision rules.
 - Constraints and anti-patterns: behavior-changing boundaries and common failure modes.
-- Bundled resources: scripts for deterministic repeated work, references for large context, assets for templates or output material.
+- Bundled resources: references for large context, assets for templates or output material, and procedures for deterministic repeated work.
 
 Use progressive disclosure:
 

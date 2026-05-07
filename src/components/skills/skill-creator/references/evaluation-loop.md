@@ -124,7 +124,7 @@ After feedback:
 
 1. Generalize from failures. Do not patch only the example.
 2. Remove instructions that wasted tokens or induced unhelpful actions.
-3. Add scripts when repeated deterministic helper code appears across evals.
+3. Add eval-local helper code or a reusable Procedure when repeated deterministic helper code appears across evals.
 4. Explain why new constraints exist.
 5. Re-run all evals into `iteration-N+1`, including the appropriate baseline.
 

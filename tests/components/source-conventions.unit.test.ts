@@ -304,6 +304,36 @@ describe("component source conventions", () => {
     );
   });
 
+  test("skill authoring guidance does not reintroduce skill-local scripts directories", () => {
+    const authoringSources = [
+      join(repoRoot, "src/components/agents/skill-author/index.ts"),
+      join(repoRoot, "src/components/skills/skill-creator/index.ts"),
+      ...collectFiles(join(repoRoot, "src/components/skills/skill-creator/references"), (file) =>
+        file.endsWith(".md"),
+      ),
+      join(repoRoot, "src/components/skills/skill-evolver/index.ts"),
+      ...collectFiles(join(repoRoot, "src/components/skills/skill-evolver/references"), (file) =>
+        file.endsWith(".md"),
+      ),
+    ];
+    const legacyAuthoringScriptRefs: string[] = [];
+    const legacyScriptPackagePattern = /scripts\/\*|`scripts\/`|references\/scripts|scripts\/references|scripts、|脚手架资产（scripts/u;
+
+    for (const sourceFile of authoringSources) {
+      const source = readFileSync(sourceFile, "utf-8");
+      const match = source.match(legacyScriptPackagePattern);
+      if (match) {
+        legacyAuthoringScriptRefs.push(`${relative(repoRoot, sourceFile)}: ${match[0]}`);
+      }
+    }
+
+    assert.deepEqual(
+      legacyAuthoringScriptRefs,
+      [],
+      "skill authoring guidance should route reusable code through procedures instead of skill-local scripts/ directories",
+    );
+  });
+
   test("cross-platform source names project memory files neutrally", () => {
     const platformSpecificMemoryRefs: string[] = [];
     for (const sourceFile of collectFiles(join(repoRoot, "src/components"))) {
