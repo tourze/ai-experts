@@ -4,9 +4,6 @@ import { join, resolve } from "node:path";
 
 export const repoRoot = resolve(".");
 
-export const nonCanonicalComponentLayoutPattern =
-  /\b[A-Za-z]*Plugins?(?:Root|Dir)\b|\b[A-Za-z_]*plugins?_(?:root|dir)\b|\b--plugins-dir\b|\bplugins-dir\b|plugins\/[^/\s]+\/(?:skills|agents|hooks)\b/u;
-
 export function collectFiles(root: string, predicate: (file: string) => boolean = () => true): string[] {
   const files: string[] = [];
 

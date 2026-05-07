@@ -11,7 +11,6 @@ import {
   assertSingleDispatcherHookGroups,
   collectFiles,
   countH2OutsideCodeFence,
-  nonCanonicalComponentLayoutPattern,
   repoRoot,
   stripFrontmatter,
 } from "./test-helpers";
@@ -1121,15 +1120,20 @@ describe("component build integration", () => {
 
     for (const platform of ["claude", "codex"]) {
       const platformProceduresSource = readFileSync(join(tmpDistDir, `${platform}/procedures.js`), "utf-8");
+      const bundledTsModuleIds = [...platformProceduresSource.matchAll(/["'](\.\/src\/[^"']+\.ts)["']/gu)]
+        .map((match) => match[1] ?? "");
+      const nonComponentModuleIds = bundledTsModuleIds.filter(
+        (moduleId) => !moduleId.startsWith("./src/components/"),
+      );
       assert.doesNotMatch(
         platformProceduresSource,
         /\bnode\s+(?:\.\/)?scripts\/[A-Za-z0-9._/-]+\.mjs\b/,
         `${platform} bundled procedures.js should not suggest removed repository-local scripts`,
       );
-      assert.doesNotMatch(
-        platformProceduresSource,
-        nonCanonicalComponentLayoutPattern,
-        `${platform} bundled procedures.js should only support the canonical component layout`,
+      assert.deepEqual(
+        nonComponentModuleIds,
+        [],
+        `${platform} bundled procedures.js should only include TypeScript modules from src/components`,
       );
       assert.match(
         platformProceduresSource,

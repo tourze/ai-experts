@@ -14,7 +14,6 @@ import {
   extractPropertyArray,
   firstNonEmptyLine,
   hasTopLevelHeadingOutsideCodeFence,
-  nonCanonicalComponentLayoutPattern,
   repoRoot,
 } from "./test-helpers";
 
@@ -105,10 +104,7 @@ describe("component source conventions", () => {
     const proceduresIndexSource = readFileSync(join(repoRoot, "src/components/procedures/index.ts"), "utf-8");
     const registrySource = readFileSync(join(repoRoot, "src/components/registry.ts"), "utf-8");
     const buildRoot = join(repoRoot, "src/build");
-    const buildSources = collectFiles(buildRoot, (file) => file.endsWith(".ts"));
-    const procedureSources = collectFiles(join(repoRoot, "src/components/procedures/sources"), (file) =>
-      file.endsWith(".ts"),
-    );
+    const coreSource = readFileSync(join(buildRoot, "core.ts"), "utf-8");
 
     assert.doesNotMatch(
       sdkSource,
@@ -119,21 +115,12 @@ describe("component source conventions", () => {
     assert.equal(existsSync(join(buildRoot, "scripts.ts")), false);
     assert.equal(existsSync(join(buildRoot, "script-uses.ts")), false);
     assert.doesNotMatch(readFileSync(join(buildRoot, "procedures.ts"), "utf-8"), /__aiExpertsScriptDir/);
-
-    const layoutAuthoritySources = [
-      join(repoRoot, "src/components/sdk.ts"),
-      join(repoRoot, "src/components/procedures/index.ts"),
-      join(repoRoot, "src/components/registry.ts"),
-      ...buildSources,
-      ...procedureSources,
-    ];
-    for (const sourceFile of layoutAuthoritySources) {
-      assert.doesNotMatch(
-        readFileSync(sourceFile, "utf-8"),
-        nonCanonicalComponentLayoutPattern,
-        `${sourceFile} should use the single canonical src/components layout without plugin-root aliases`,
-      );
-    }
+    assert.match(coreSource, /export const sourceRoot = join\(repoRoot, "src\/components"\);/);
+    assert.equal(
+      existsSync(join(repoRoot, "plugins")),
+      false,
+      "component sources should only live under the canonical src/components root",
+    );
   });
 
   test("component source directories match the registered component surface", () => {
