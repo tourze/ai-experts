@@ -40,5 +40,5 @@ node scripts/fetch.mjs "https://example.com/article" --json
 
 ## 说明
 
-- 本 README 只描述目录内脚本的本地用法。
+- 本 README 只描述网页正文提取入口的基础用法；构建后命令会映射为平台级 `procedures.js` 调用。
 - 更完整的 agent 调用规范见 [`SKILL.md`](SKILL.md)。

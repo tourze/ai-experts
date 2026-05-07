@@ -189,7 +189,7 @@ describe("component source conventions", () => {
       const source = readFileSync(readmeFile, "utf-8");
       assert.doesNotMatch(
         source,
-        /\bA Claude skill\b|\bClaude skill\b/u,
+        /\bA Claude skill\b|\bClaude skill\b|目录内脚本的本地用法/u,
         `${readmeFile} should describe the component neutrally because README files are copied to both platforms`,
       );
     }
