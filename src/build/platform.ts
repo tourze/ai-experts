@@ -408,8 +408,13 @@ export async function emitPlatform(
   const procedureRuntime = await emitProcedureRuntime(componentSurface, root, platform);
   const proceduresById = new Map(componentSurface.procedures.map((procedure) => [procedure.id, procedure]));
 
+  const platformSkillIds = new Set(
+    componentSurface.skills
+      .filter((skill) => skill.platforms.includes(platform))
+      .map((skill) => skill.id),
+  );
   for (const skill of componentSurface.skills) {
-    if (skill.platforms.includes(platform)) await emitSkill(skill, root, platform, proceduresById);
+    if (skill.platforms.includes(platform)) await emitSkill(skill, root, platform, proceduresById, platformSkillIds);
   }
   for (const agent of componentSurface.agents) {
     if (agent.platforms.includes(platform)) await emitAgent(agent, root, platform);

@@ -53,7 +53,7 @@ function parseArgs(argv: any): any {
     const args: Record<string, any> = { skillsDir: null, json: false, severity: null, help: false };
     for (let i = 0; i < argv.length; i += 1) {
         const current = argv[i];
-        if (current === "--skills-dir" || current === "--plugins-dir") {
+        if (current === "--skills-dir") {
             args.skillsDir = argv[++i] ?? null;
         }
         else if (current === "--json") {
@@ -64,6 +64,9 @@ function parseArgs(argv: any): any {
         }
         else if (current === "-h" || current === "--help") {
             args.help = true;
+        }
+        else {
+            throw new Error(`unknown argument: ${current}`);
         }
     }
     return args;
@@ -89,24 +92,10 @@ function isSkillsRoot(path: any): any {
         return false;
     }
 }
-function isLegacyPluginsRoot(path: any): any {
-    if (!directoryExists(path))
-        return false;
-    try {
-        return readdirSync(path, { withFileTypes: true }).some((entry: any) => {
-            if (!entry.isDirectory())
-                return false;
-            return existsSync(join(path, entry.name, "skills"));
-        });
-    }
-    catch {
-        return false;
-    }
-}
 function findSkillsDir(explicitDir: any): any {
     if (explicitDir) {
         const resolved = resolve(explicitDir);
-        return isSkillsRoot(resolved) || isLegacyPluginsRoot(resolved) ? resolved : null;
+        return isSkillsRoot(resolved) ? resolved : null;
     }
     let current = dirname(fileURLToPath(import.meta.url));
     while (true) {
@@ -115,9 +104,6 @@ function findSkillsDir(explicitDir: any): any {
         const candidate = join(current, "skills");
         if (isSkillsRoot(candidate))
             return candidate;
-        const legacyCandidate = join(current, "plugins");
-        if (isLegacyPluginsRoot(legacyCandidate))
-            return legacyCandidate;
         const parent = dirname(current);
         if (parent === current)
             return null;
@@ -185,11 +171,6 @@ function auditDescription(desc: any): any {
 }
 function relativeSkillName(skillsDir: any, skillFile: any): any {
     const parts = relative(skillsDir, skillFile).split(/[\\/]/);
-    if (parts[1] === "skills") {
-        const plugin = parts[0];
-        const skill = parts.slice(2, -1).join("/");
-        return `${plugin}/${skill}`;
-    }
     return parts.slice(0, -1).join("/");
 }
 function buildReport(skillsDir: any, severity: any): any {
@@ -257,7 +238,15 @@ function printHuman(report: any): any {
     }
 }
 export function main(argv: any = process.argv.slice(2)): any {
-    const args = parseArgs(argv);
+    let args;
+    try {
+        args = parseArgs(argv);
+    }
+    catch (error: any) {
+        console.error(error.message);
+        printUsage();
+        return 1;
+    }
     if (args.help) {
         printUsage();
         return 0;

@@ -1,5 +1,5 @@
-import { readdirSync } from "node:fs";
-import { basename, dirname, join } from "node:path";
+import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { basename, dirname, join, relative } from "node:path";
 import { pathToFileURL } from "node:url";
 import type {
   AntiPatternDefinition,
@@ -17,6 +17,7 @@ import type {
 } from "../components/sdk";
 import {
   copyComponentPath,
+  collectFiles,
   defaultReferenceTarget,
   ensureDir,
   InvocationPolicy,
@@ -475,11 +476,71 @@ function renderCodexOpenAiYaml(skill: SkillDefinition): string {
   ].join("\n");
 }
 
+function markdownRelativePath(fromFile: string, toFile: string): string {
+  return relative(dirname(fromFile), toFile).split("\\").join("/");
+}
+
+function rewriteReferenceSkillLinks(
+  source: string,
+  skill: SkillDefinition,
+  outputFile: string,
+  skillRoot: string,
+  platformSkillIds: ReadonlySet<string>,
+): string {
+  return source.replace(
+    /\[([^\]]+)\]\((\.{1,2}\/[^)\s]+\/SKILL\.md)(#[^)]+)?\)/gu,
+    (match, label: string, href: string, anchor = "") => {
+      const originalTarget = join(dirname(outputFile), href);
+      if (existsSync(originalTarget)) return match;
+
+      const targetSkillId = href.match(/(?:^|\/)([a-z0-9]+(?:-[a-z0-9]+)*)\/SKILL\.md$/u)?.[1];
+      if (!targetSkillId) return match;
+
+      if (targetSkillId === skill.id) {
+        return `[${label}](${markdownRelativePath(outputFile, join(skillRoot, "SKILL.md"))}${anchor})`;
+      }
+
+      const localReference = join(skillRoot, "references", `${targetSkillId}.md`);
+      if (existsSync(localReference)) {
+        return `[${label}](${markdownRelativePath(outputFile, localReference)}${anchor})`;
+      }
+
+      if (platformSkillIds.has(targetSkillId)) {
+        const skillsRoot = dirname(skillRoot);
+        const target = join(skillsRoot, targetSkillId, "SKILL.md");
+        return `[${label}](${markdownRelativePath(outputFile, target)}${anchor})`;
+      }
+
+      return label;
+    },
+  );
+}
+
+function rewriteCopiedReferenceMarkdown(
+  skill: SkillDefinition,
+  skillRoot: string,
+  copiedPath: string,
+  platformSkillIds: ReadonlySet<string>,
+): void {
+  const markdownFiles = statSync(copiedPath).isDirectory()
+    ? collectFiles(copiedPath, (file) => file.endsWith(".md"))
+    : copiedPath.endsWith(".md")
+      ? [copiedPath]
+      : [];
+
+  for (const file of markdownFiles) {
+    const source = readFileSync(file, "utf-8");
+    const rewritten = rewriteReferenceSkillLinks(source, skill, file, skillRoot, platformSkillIds);
+    if (rewritten !== source) writeFileSync(file, rewritten, "utf-8");
+  }
+}
+
 export async function emitSkill(
   skill: SkillDefinition,
   platformRoot: string,
   platform: PlatformType,
   proceduresById: ReadonlyMap<string, ProcedureDefinition>,
+  platformSkillIds: ReadonlySet<string>,
 ): Promise<void> {
   const skillRoot = join(platformRoot, "skills", skill.id);
   ensureDir(skillRoot);
@@ -488,7 +549,9 @@ export async function emitSkill(
 
   if (skill.references && skill.references.length > 0) {
     for (const reference of skill.references) {
-      copyComponentPath(reference.source, join(skillRoot, defaultReferenceTarget(reference)));
+      const target = join(skillRoot, defaultReferenceTarget(reference));
+      copyComponentPath(reference.source, target);
+      rewriteCopiedReferenceMarkdown(skill, skillRoot, target, platformSkillIds);
     }
     writeText(join(skillRoot, "references", "index.md"), renderReferencesIndex(skill));
   }

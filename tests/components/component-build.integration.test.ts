@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { afterAll, beforeAll, describe, test } from "vitest";
 import {
   assertSingleDispatcherHookGroups,
@@ -428,6 +428,14 @@ describe("component build integration", () => {
       assert.equal(activationReport.total, 335);
       assert.equal(typeof activationReport.pass_rate, "string");
 
+      const removedPluginsArgAudit = runProcedure(
+        "skill-activation-analyzer-cso-audit",
+        "skill-activation-analyzer",
+        ["--plugins-dir", runtimeTmp, "--json"],
+      );
+      assert.equal(removedPluginsArgAudit.ok, false);
+      assert.match(removedPluginsArgAudit.result.stderr, /unknown argument: --plugins-dir/);
+
       const screenshotOutput = join(runtimeTmp, "screen.png");
       const screenshot = runProcedureWithEnv(
         "screenshot-take-screenshot",
@@ -688,6 +696,19 @@ describe("component build integration", () => {
         0,
         `${platform} output should not copy evals under references`,
       );
+
+      const brokenSkillLinks: string[] = [];
+      for (const markdownFile of collectFiles(join(tmpDistDir, platform, "skills"), (file) => file.endsWith(".md"))) {
+        const markdown = readFileSync(markdownFile, "utf-8");
+        for (const match of markdown.matchAll(/\[[^\]]+\]\((\.{1,2}\/[^)\s]+\/SKILL\.md(?:#[^)]+)?)\)/gu)) {
+          const href = match[1] as string;
+          const [pathWithoutAnchor] = href.split("#", 1);
+          if (!existsSync(resolve(dirname(markdownFile), pathWithoutAnchor))) {
+            brokenSkillLinks.push(`${markdownFile}: ${href}`);
+          }
+        }
+      }
+      assert.deepEqual(brokenSkillLinks, [], `${platform} generated Markdown should not contain broken SKILL.md links`);
 
       for (const skillFile of collectFiles(join(tmpDistDir, platform, "skills"), (file) => file.endsWith("SKILL.md"))) {
         const source = stripFrontmatter(readFileSync(skillFile, "utf-8")).trimStart();
