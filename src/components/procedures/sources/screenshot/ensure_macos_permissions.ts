@@ -59,7 +59,7 @@ Recording for your terminal and rerun the command.`);
     if (!finalStatus) {
         console.log(`Screen Recording is still not granted.
 Open System Settings > Privacy & Security > Screen Recording and enable it for
-your terminal (and Codex if needed), then rerun your screenshot command.`);
+your terminal and the active CLI if needed, then rerun your screenshot command.`);
         return 2;
     }
     console.log("Screen Recording permission granted.");

@@ -141,6 +141,19 @@ describe("component source conventions", () => {
     }
   });
 
+  test("screenshot procedures use platform-neutral helper labels", () => {
+    const screenshotSources = collectFiles(join(repoRoot, "src/components/procedures/sources/screenshot"));
+
+    for (const sourceFile of screenshotSources) {
+      const source = readFileSync(sourceFile, "utf-8");
+      assert.doesNotMatch(
+        source,
+        /CODEX_SCREENSHOT|codex-shot|Codex if needed|Codex skills|Cross-platform screenshot helper for Codex/u,
+        `${sourceFile} should not expose Codex-specific screenshot labels in cross-platform helpers`,
+      );
+    }
+  });
+
   test("cross-platform source names project memory files neutrally", () => {
     const platformSpecificMemoryRefs: string[] = [];
     for (const sourceFile of collectFiles(join(repoRoot, "src/components"))) {

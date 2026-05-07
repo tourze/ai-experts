@@ -611,9 +611,9 @@ describe("component build integration", () => {
         "screenshot",
         ["--mode", "temp", "--path", screenshotOutput],
         {
-          CODEX_SCREENSHOT_TEST_MODE: "1",
-          CODEX_SCREENSHOT_TEST_PLATFORM: "Darwin",
-          CODEX_SCREENSHOT_TEST_DISPLAYS: "1,2",
+          AI_EXPERTS_SCREENSHOT_TEST_MODE: "1",
+          AI_EXPERTS_SCREENSHOT_TEST_PLATFORM: "Darwin",
+          AI_EXPERTS_SCREENSHOT_TEST_DISPLAYS: "1,2",
         },
       );
       assert.equal(screenshot.ok, true, screenshot.result?.stderr);

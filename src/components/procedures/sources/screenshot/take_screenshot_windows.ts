@@ -144,7 +144,7 @@ function Resolve-OutputPath {
   }
 
   if ($opts.mode -eq "temp") {
-    return Join-Path ([System.IO.Path]::GetTempPath()) (New-DefaultFilename "codex-shot")
+    return Join-Path ([System.IO.Path]::GetTempPath()) (New-DefaultFilename "ai-experts-shot")
   }
 
   return Join-Path (Get-DefaultDirectory) (New-DefaultFilename "")

@@ -8,10 +8,10 @@ import { runMacosDisplayInfo } from "./macos_display_info";
 import { runMacosPermissions } from "./macos_permissions";
 import { runMacosWindowInfo } from "./macos_window_info";
 import { main as runWindowsScreenshot } from "./take_screenshot_windows";
-const TEST_MODE_ENV = "CODEX_SCREENSHOT_TEST_MODE";
-const TEST_PLATFORM_ENV = "CODEX_SCREENSHOT_TEST_PLATFORM";
-const TEST_WINDOWS_ENV = "CODEX_SCREENSHOT_TEST_WINDOWS";
-const TEST_DISPLAYS_ENV = "CODEX_SCREENSHOT_TEST_DISPLAYS";
+const TEST_MODE_ENV = "AI_EXPERTS_SCREENSHOT_TEST_MODE";
+const TEST_PLATFORM_ENV = "AI_EXPERTS_SCREENSHOT_TEST_PLATFORM";
+const TEST_WINDOWS_ENV = "AI_EXPERTS_SCREENSHOT_TEST_WINDOWS";
+const TEST_DISPLAYS_ENV = "AI_EXPERTS_SCREENSHOT_TEST_DISPLAYS";
 const TEST_PNG = Buffer.from("89504e470d0a1a0a0000000d49484452000000010000000108060000001f15c4890000000c4944415408d763f8ffff3f0005fe02fe41ad1c1c0000000049454e44ae426082", "hex");
 export function parseRegion(value: any): any {
     const parts = String(value).split(",").map((part: any) => part.trim());
@@ -161,7 +161,7 @@ export function resolveOutputPath(requestedPath: any, mode: any, format: any, sy
         return path;
     }
     if (mode === "temp") {
-        const path = join(tmpdir(), defaultFilename(format, "codex-shot"));
+        const path = join(tmpdir(), defaultFilename(format, "ai-experts-shot"));
         ensureParent(path);
         return path;
     }
@@ -272,7 +272,7 @@ Recording for your terminal and rerun the command.`);
     if (!macosScreenCaptureGranted()) {
         console.log(`Screen Recording is still not granted.
 Open System Settings > Privacy & Security > Screen Recording and enable it for
-your terminal (and Codex if needed), then rerun your screenshot command.`);
+your terminal and the active CLI if needed, then rerun your screenshot command.`);
         throw new Error("Screen Recording permission is required; enable it in System Settings and retry");
     }
     console.log("Screen Recording permission granted.");
@@ -467,7 +467,7 @@ export function captureWindows(args: any, output: any): any {
     }
 }
 function usage(): any {
-    return `Cross-platform screenshot helper for Codex skills.
+    return `Cross-platform screenshot helper for AI skills.
 
 Usage: node scripts/take_screenshot.mjs [options]
 
