@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { portersFiveForcesSkill } from "../porters-five-forces/index";
 import { pricingStrategySkill } from "../pricing-strategy/index";
@@ -68,9 +71,38 @@ export const businessModelSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "按分支把商业模式设计、诊断或案例研究转成可审计 JSON 源、证据分级和人类可读报告。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先选择主分支：`idea_to_model`、`model_diagnosis` 或 `company_case_study`，并说明辅助模块如何处理。",
+      "读取 `report-contract` reference，按分支确认必备字段、章节约定和输出边界。",
+      "建立 `market_environment`：目标市场、买方、渠道、监管、支付、交付约束和竞争环境。",
+      "收集证据并分级：`S/A` 支撑摘要事实，`B/C/D` 只支撑信号、估算或假设。",
+      "需要 JSON 审计源或字段示例时读取 `analysis-json-template` reference；中国市场因果链读取 `weizhu-model`，一致性检查读取 `iron-triangle`。",
+      "生成结构化 JSON 作为审计源，再输出人类可读摘要、关键判断和 HTML 模块规划。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "已选择的分析分支和市场环境画像。",
+      "商业模式结构、收入线、公式、变量、区间和置信度。",
+      "证据分级、事实/估算/假设/建议标注和证据缺口。",
+      "结构化 JSON 审计源、人类摘要和模块化报告规划。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "analysis-json-template",
+      source: new URL("./references/analysis-json-template.md", import.meta.url),
+      target: "references/analysis-json-template.md",
+      title: "商业模式 JSON 审计源模板",
+      summary: "商业模式分析的结构化 JSON 字段示例，用于保留证据、公式、收入线和置信度。",
+      loadWhen: "需要生成或校验商业模式分析的结构化 JSON 审计源时读取。",
+    }),
     defineReference({
       id: "iron-triangle",
       source: new URL("./references/iron-triangle.md", import.meta.url),

@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { processOptimizationSkill } from "../process-optimization/index";
 
@@ -51,9 +54,38 @@ export const businessHealthDiagnosticSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用增长、留存、效率和现金四象限扫描业务健康度，定位最弱环节并收敛到最多 3 个优先行动。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认业务类型、阶段、时间窗口、可用指标和对标基准。",
+      "读取 `health-scorecard-template` reference，按增长、留存、效率、现金四象限收集当前值、趋势和基准。",
+      "为每个指标定义红黄绿阈值，不用主观感觉替代状态判断。",
+      "判断最强象限、最弱象限和跨象限因果关系，例如增长变快但现金效率恶化。",
+      "需要专项诊断时读取 `balanced-scorecard`、`blm-model` 或 `mckinsey-7s` reference；发现流程瓶颈时联动 `process-optimization`。",
+      "把结论收敛到 Top 3 优先行动，每个行动绑定目标指标、预期变化和复诊时间。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "四象限健康记分卡。",
+      "整体评级、最强象限、最弱象限和关键因果判断。",
+      "Top 3 优先行动、目标指标和预期时间。",
+      "证据缺口、专项分析建议和下次诊断时间。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "health-scorecard-template",
+      source: new URL("./references/health-scorecard-template.md", import.meta.url),
+      target: "references/health-scorecard-template.md",
+      title: "四象限健康记分卡模板",
+      summary: "增长、留存、效率、现金四象限指标模板，以及诊断摘要和 Top 3 行动输出格式。",
+      loadWhen: "需要生成业务健康度记分卡、设定红黄绿状态或组织诊断摘要时读取。",
+    }),
     defineReference({
       id: "balanced-scorecard",
       source: new URL("./references/balanced-scorecard.md", import.meta.url),

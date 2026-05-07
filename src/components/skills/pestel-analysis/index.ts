@@ -3,7 +3,11 @@ import {
   KnownTool,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { portersFiveForcesSkill } from "../porters-five-forces/index";
 import { swotAnalysisSkill } from "../swot-analysis/index";
@@ -56,6 +60,37 @@ export const pestelAnalysisSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 PESTEL 扫描宏观外部因素，把政策、经济、社会、技术、环境和法律变化转成可行动的战略含义。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认目标市场、行业、地区、时间窗口和战略问题，例如进入、投资、融资或风险评估。",
+      "读取 `pestel-template` reference，按 Political、Economic、Social、Technological、Environmental、Legal 六维扫描。",
+      "每个关键因素都标注来源、时效、影响方向、时间窗、量级和不确定性。",
+      "只展开与业务有直接因果关系的因素，不把新闻罗列当作分析。",
+      "用影响矩阵判断立即行动、制定方案、纳入路线图、情景规划或保持监测。",
+      "需要行业结构判断时联动 `porters-five-forces`；需要转成机会/威胁时联动 `swot-analysis`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "PESTEL 六维因素表。",
+      "每个因素的方向、时间窗、量级、来源和时效。",
+      "高影响因素的行动含义和风险/机会判断。",
+      "影响矩阵、监测项和后续战略分析入口。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "pestel-template",
+      source: new URL("./references/pestel-template.md", import.meta.url),
+      target: "references/pestel-template.md",
+      title: "PESTEL 分析模板",
+      summary: "PESTEL 六维扫描表、常见扫描点和影响矩阵。",
+      loadWhen: "需要展开宏观因素扫描、填写 PESTEL 表格或判断影响优先级时读取。",
+    }),
+  ],
 });

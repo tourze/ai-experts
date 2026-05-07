@@ -3,7 +3,11 @@ import {
   KnownTool,
   Platform,
   defineAntiPattern,
+  defineReference,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { designingGrowthLoopsSkill } from "../designing-growth-loops/index";
 import { portersFiveForcesSkill } from "../porters-five-forces/index";
@@ -57,6 +61,37 @@ export const bcgMatrixSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 BCG 2x2 或 GE-McKinsey 九宫格对多业务组合做取舍，明确资源流向、投资窗口和退出逻辑。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认分析对象是多产品/多业务组合，并收集每条业务的市场增长、相对份额、利润贡献、资源占用和战略价值。",
+      "默认用 BCG 2x2 分类：明星、现金牛、问题、瘦狗；相对市场份额必须对比最大竞品。",
+      "对问题业务做 Go/No-Go：给窗口期、里程碑、投入上限和到期砍掉条件。",
+      "当 2x2 太粗、需要多指标量化时读取 `ge-mckinsey-mode` reference，切到 GE-McKinsey 九宫格。",
+      "用 GE 模式时分别评估市场吸引力和竞争实力，权重必须反映行业关键成功因素，不能平均分配。",
+      "输出资源流向：现金牛支持明星和被选中的问题业务，瘦狗退出释放资源。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "业务组合清单、数据口径和关键假设。",
+      "BCG 2x2 或 GE-McKinsey 九宫格定位。",
+      "每个业务的投资、维持、试验、收缩或退出建议。",
+      "资源流向、窗口期、里程碑和复审条件。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "ge-mckinsey-mode",
+      source: new URL("./references/ge-mckinsey-mode.md", import.meta.url),
+      target: "references/ge-mckinsey-mode.md",
+      title: "GE-McKinsey 九宫格模式",
+      summary: "BCG 2x2 过粗时使用的 GE-McKinsey 多指标加权方法、行业权重示例和交叉验证规则。",
+      loadWhen: "需要量化打分、多指标组合评估，或 BCG 2x2 分类分歧较大时读取。",
+    }),
+  ],
 });
