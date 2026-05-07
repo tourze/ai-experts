@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, beforeAll, describe, test } from "vitest";
@@ -366,6 +366,18 @@ describe("component build integration", () => {
       ], { encoding: "utf-8", env: { ...process.env, ...env }, timeout: 20_000 }));
     }
 
+    function runProcedureInCwd(id: string, skillId: string, args: string[], cwd: string): any {
+      return JSON.parse(execFileSync(process.execPath, [
+        proceduresPath,
+        "--procedure-id",
+        id,
+        "--trigger-skill",
+        skillId,
+        "--request-json",
+        JSON.stringify({ args }),
+      ], { cwd, encoding: "utf-8", timeout: 20_000 }));
+    }
+
     try {
       const tscOutput = join(runtimeTmp, "tsc.txt");
       writeFileSync(tscOutput, [
@@ -429,6 +441,49 @@ describe("component build integration", () => {
       for (const path of screenshotPaths) {
         assert.equal(existsSync(path), true, `${path} should be written by screenshot test mode`);
       }
+
+      const speckitRepo = join(runtimeTmp, "speckit-repo");
+      mkdirSync(speckitRepo, { recursive: true });
+      const bootstrap = runProcedureInCwd(
+        "speckit-baseline-bootstrap-specify",
+        "speckit-baseline",
+        [],
+        speckitRepo,
+      );
+      assert.equal(bootstrap.ok, true, bootstrap.result?.stderr);
+      const speckitScriptsDir = join(speckitRepo, ".specify", "scripts");
+      const speckitTemplatesDir = join(speckitRepo, ".specify", "templates");
+      const createFeatureScript = join(speckitScriptsDir, "create-new-feature.mjs");
+      const setupPlanScript = join(speckitScriptsDir, "setup-plan.mjs");
+      const checkPrerequisitesScript = join(speckitScriptsDir, "check-prerequisites.mjs");
+      assert.equal(existsSync(createFeatureScript), true);
+      assert.equal(existsSync(setupPlanScript), true);
+      assert.equal(existsSync(checkPrerequisitesScript), true);
+      assert.equal(existsSync(join(speckitTemplatesDir, "spec-template.md")), true);
+      assert.equal(existsSync(join(speckitTemplatesDir, "plan-template.md")), true);
+
+      const wrapperEnv = { ...process.env, AI_EXPERTS_PROCEDURES_FILE: proceduresPath };
+      const feature = JSON.parse(execFileSync(process.execPath, [
+        createFeatureScript,
+        "--json",
+        "--short-name",
+        "demo-feature",
+        "Demo feature",
+      ], { cwd: speckitRepo, encoding: "utf-8", env: wrapperEnv, stdio: ["ignore", "pipe", "pipe"], timeout: 20_000 }));
+      assert.equal(feature.SLUG, "demo-feature");
+      const plan = JSON.parse(execFileSync(process.execPath, [
+        setupPlanScript,
+        "--json",
+      ], { cwd: speckitRepo, encoding: "utf-8", env: wrapperEnv, stdio: ["ignore", "pipe", "pipe"], timeout: 20_000 }));
+      const expectedFeatureDir = realpathSync(join(speckitRepo, ".specify", "features", "demo-feature"));
+      assert.equal(plan.SPECS_DIR, expectedFeatureDir);
+      assert.equal(existsSync(join(expectedFeatureDir, "plan.md")), true);
+      const prerequisites = JSON.parse(execFileSync(process.execPath, [
+        checkPrerequisitesScript,
+        "--json",
+        "--paths-only",
+      ], { cwd: speckitRepo, encoding: "utf-8", env: wrapperEnv, stdio: ["ignore", "pipe", "pipe"], timeout: 20_000 }));
+      assert.equal(prerequisites.FEATURE_DIR, expectedFeatureDir);
     } finally {
       rmSync(runtimeTmp, { recursive: true, force: true });
     }
