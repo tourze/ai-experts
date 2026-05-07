@@ -309,6 +309,27 @@ describe("component source conventions", () => {
     }
   });
 
+  test("hook source modules are all registered", () => {
+    const hookRoot = join(repoRoot, "src/components/hooks");
+    const hookSourceFiles = collectFiles(
+      hookRoot,
+      (file) => file.endsWith(".ts") && !file.endsWith("/index.ts") && !file.includes(`${join("hooks", "_shared")}${"/"}`),
+    );
+    const hookFilesWithDefinitions = hookSourceFiles
+      .filter((file) => /export\s+const\s+[A-Za-z0-9_$]+\s*=\s*defineHook\s*\(/.test(readFileSync(file, "utf-8")))
+      .map((file) => relative(repoRoot, file))
+      .sort();
+    const registeredHookFiles = registry.hooks
+      .map((hook) => relative(repoRoot, hook.entry instanceof URL ? fileURLToPath(hook.entry) : hook.entry))
+      .sort();
+
+    assert.deepEqual(
+      registeredHookFiles,
+      hookFilesWithDefinitions,
+      "every hook source that defines a hook should be registered through src/components/hooks/index.ts",
+    );
+  });
+
   test("guarded procedure sources export main for bundled invocation", () => {
     const guardedWithoutExport = collectFiles(
       join(repoRoot, "src/components/procedures/sources"),
