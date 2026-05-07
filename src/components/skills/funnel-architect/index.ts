@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { customerJourneyMapSkill } from "../customer-journey-map/index";
 import { pricingStrategySkill } from "../pricing-strategy/index";
@@ -54,6 +57,27 @@ export const funnelArchitectSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把流量入口、价值承接、核心报价、升级路径和留存复购设计成可追踪的转化系统。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认入口人群、流量来源、核心承诺、单步转化目标和成交门槛。",
+      "画出漏斗路径：流量入口 -> 诱饵/预约 -> 核心报价 -> 升级项 -> 留存/复购。",
+      "为每一级价值阶梯写清楚用户为什么现在升级，避免只用更多功能解释更高价格。",
+      "检查页面顺序、CTA、表单摩擦、异议处理、销售跟进和培育链路是否一致。",
+      "需要补用户情境时联动 `customer-journey-map`；需要定价结构时联动 `pricing-strategy`。",
+      "为每一步定义事件、转化率、掉点、归因来源和改版实验。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "入口人群、承诺、CTA 和单步转化目标。",
+      "漏斗路径与价值阶梯图。",
+      "报价逻辑、升级理由和异议处理清单。",
+      "追踪指标、掉点假设和优化实验。",
+    ],
+  }),
   tools: [],
 });

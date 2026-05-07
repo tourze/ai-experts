@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const designingGrowthLoopsSkill = defineSkill({
@@ -38,7 +41,28 @@ export const designingGrowthLoopsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把一次性获客动作改造成可重复的增长循环，并明确循环成立的价值、反馈、阻尼和实验验证方式。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认产品的核心用户价值、留存基础、自然传播时刻和当前增长阶段；留存不足时先回到产品价值修复。",
+      "画出主循环：输入动作 -> 用户获得价值 -> 产生可传播资产 -> 新用户进入 -> 留存放大。",
+      "标注每个节点的放大条件、阻尼项和可控杠杆，区分产品机制、运营动作和激励机制。",
+      "需要判断阶段或模式时读取 `s-curve-growth`、`crossing-the-chasm`、`plg-readiness` 或 `guest-insights` reference。",
+      "为循环设置指标：触发率、转化率、留存、分享率、回流效率和循环周期。",
+      "把最大不确定性转成实验，定义样本、阈值、观察期和停止条件。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "增长循环图和主循环叙述。",
+      "节点杠杆、阻尼项和所需产品/运营支撑。",
+      "循环指标体系和当前基线。",
+      "增长假设、实验计划和阶段判断依据。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

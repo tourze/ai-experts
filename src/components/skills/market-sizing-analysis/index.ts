@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { fundraiseAdvisorSkill } from "../fundraise-advisor/index";
 import { startupIcpDefinerSkill } from "../startup-icp-definer/index";
@@ -55,7 +58,28 @@ export const marketSizingAnalysisSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 TAM/SAM/SOM 和多方法交叉验证，把市场空间估算成有口径、有假设、有敏感性的商业判断。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先定义市场边界、地区、年份、币种、客户单位、收入模型和 TAM/SAM/SOM 口径。",
+      "读取 `data-sources` reference 查找或评估数据来源，记录数据年份、可信度和缺口。",
+      "至少做两种估算：top-down、bottom-up 或 value theory，并分别列出假设、公式和结果。",
+      "检查 TAM/SAM/SOM 是否使用一致口径，避免用户数、收入、地区或价格体系混算。",
+      "把 SAM/SOM 与 ICP、渠道能力、销售周期、资源约束和融资叙事对齐。",
+      "做敏感性分析：找出最影响结论的价格、渗透率、转化率、市场增长率或覆盖范围。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "TAM/SAM/SOM 定义、口径和边界。",
+      "方法 × 假设 × 公式 × 结果的市场规模表。",
+      "数据来源、可信度、年份和不确定性说明。",
+      "敏感参数、交叉验证结论和可用于规划/融资的叙事要点。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({
