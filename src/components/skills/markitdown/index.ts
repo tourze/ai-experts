@@ -6,6 +6,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, markitdownBatchConvert, markitdownConvertLiterature, markitdownConvertWithAi, markitdownMarkitdownRuntime } from "../../procedures/index";
 
@@ -46,8 +49,7 @@ export const markitdownSkill = defineSkill({
       get id() {
         return pptGenerateSkill.id;
       },
-      label: "pptx",
-      reason: "当用户只处理单个 Office 文件且最终仍要保留原格式时，优先使用 `docx`、`pptx` 或 `xlsx`。",
+      reason: "用户目标是生成、改写或保留 PPT 结构而不是抽取 Markdown 文本时转向。",
     },
     {
       get id() {
@@ -72,7 +74,25 @@ export const markitdownSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 MarkItDown 将 Office、图片、HTML、音频、论文或目录批量转换为 Markdown，保留可回溯文件结构并按需启用 AI 图片描述。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认用户要的是 Markdown 抽取；若要保留或回写原 Office 格式，转向文档/PPT 相关 skill。",
+      "根据输入格式读取 `file-formats`，需要 CLI/API 参数时读取 `api-reference`，示例用法看 asset `example-usage`。",
+      "批量转换时明确输入目录、输出目录、递归策略、扩展名过滤和原目录结构保留方式。",
+      "AI 增强只在图片理解确有必要时启用，并明确模型、密钥来源和抽样验收页。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "转换模式、输入/输出路径、扩展名过滤、递归和保留层级策略。",
+      "是否启用 AI 图片描述、学术文献索引、`INDEX.md` 或 `catalog.json`。",
+      "转换后抽样检查结果、异常格式和需要转向 doc/PPT/PDF 流程的边界。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(markitdownBatchConvert),

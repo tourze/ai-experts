@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, webContentFetcherFetch } from "../../procedures/index";
 
@@ -54,7 +57,25 @@ export const webContentFetcherSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "对用户给出的具体 URL 选择合适抓取模式，调用网页正文提取 procedure，将正文转成 Markdown 并为后续研究或总结准备内容。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认用户给的是具体 URL；深度研究前需要精炼问题时读取 `question-refiner`。",
+      "根据域名选择模式：微信公众号、知乎专栏、掘金优先 stealth；少数派、CSDN、OpenAI、Google Blog 先默认模式。",
+      "默认 fast 模式内容过短会自动用 browser-header 重试，不要对同一 URL 无脑重复调用。",
+      "提取失败两次后停止重试，保留错误和模式信息，回到上层研究流程选择浏览器或其他方案。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "URL、抓取模式、procedure 输出和 Markdown 正文路径或内容。",
+      "正文长度、图片链接替换、失败原因和是否需要切换方案。",
+      "可交给 deep-research、总结、引用整理或其他流程的清洗正文。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(webContentFetcherFetch),

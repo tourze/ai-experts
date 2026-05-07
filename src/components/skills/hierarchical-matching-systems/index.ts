@@ -5,7 +5,12 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
+import { architectureReviewerSkill } from "../architecture-reviewer/index";
+import { systemDesignSkill } from "../system-design/index";
 
 export const hierarchicalMatchingSystemsSkill = defineSkill({
   id: "hierarchical-matching-systems",
@@ -14,7 +19,7 @@ export const hierarchicalMatchingSystemsSkill = defineSkill({
   useCases: [
     "适合学生分班、岗位匹配、组织树映射、分层分类归并、记录链接等问题。",
     "适合把业务规则翻译成可执行约束、偏好和目标函数。",
-    "交叉引用：更大范围的架构边界用 `system-design`；问题审计用 `architecture-reviewer`（启用 Exhaustive 模式）。",
+    "需要比较稳定匹配、最优分配、层级约束或实体解析方案。",
   ],
   constraints: [
     "先判断问题类型：稳定匹配、最优分配、层级对齐还是实体解析。",
@@ -28,6 +33,20 @@ export const hierarchicalMatchingSystemsSkill = defineSkill({
     "是否用样例解释匹配失败或不稳定现象。",
     "是否说明求解复杂度和可扩展性限制。",
   ],
+  relatedSkills: [
+    {
+      get id() {
+        return systemDesignSkill.id;
+      },
+      reason: "匹配系统需要扩展到服务边界、存储、接口、数据流或可靠性设计时联动。",
+    },
+    {
+      get id() {
+        return architectureReviewerSkill.id;
+      },
+      reason: "已有匹配系统需要子系统级问题审计、风险评分或企业就绪评审时联动。",
+    },
+  ],
   antiPatterns: [
     defineAntiPattern({
       fail: "只谈算法",
@@ -40,7 +59,25 @@ export const hierarchicalMatchingSystemsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把层级匹配、稳定匹配、最优分配或实体解析问题翻译成实体、约束、评分函数、失败样本和可验证调整方案。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先判断问题类型：稳定匹配、最优分配、层级对齐还是实体解析。",
+      "把输入实体、层级关系、硬约束、软约束、偏好和优化目标分开建模。",
+      "按 `decision-guide` 选择求解方向，需要比较算法时读取 `algorithms`。",
+      "用失败样本验证匹配质量，把问题落到输入分布、规则冲突或评分函数。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "模型定义、实体/层级关系、约束表和评分函数。",
+      "算法或求解方案选择理由、复杂度和可扩展性限制。",
+      "失败样本、冲突规则、调参建议和验证方式。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

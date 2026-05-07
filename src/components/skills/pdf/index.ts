@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, pdfCheckBoundingBoxes, pdfCheckFillableFields, pdfConvertPdfToImages, pdfCreateValidationImage, pdfExtractFormFieldInfo, pdfExtractFormStructure, pdfFillFillableFields, pdfFillPdfFormWithAnnotations } from "../../procedures/index";
 
@@ -43,7 +46,25 @@ export const pdfSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "读取、分析、填写、批注、校验或转换 PDF，先区分可填写表单与视觉型表单，再选择字段发现、坐标标注或图片渲染链路。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先判断任务是纯抽取、可填写表单、视觉型表单写入、坐标校验还是 PDF 转图片。",
+      "可填写表单先运行字段/结构发现 procedure，确认字段 ID、页码、合法值和字段类型。",
+      "视觉型 PDF 先渲染或创建标注图，再按 bounding boxes / 抽样核验坐标，不能凭感觉填。",
+      "表单链路读取 `forms` 和 `runtime-reference`；纯抽取任务读取 `pdf-extraction`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "PDF 类型判断、字段结构、页码、合法取值或视觉坐标证据。",
+      "填写/批注/转换 procedure 选择、参数来源和生成文件路径。",
+      "关键字段抽样检查、错位/字体/坐标风险和人工复核要求。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(pdfCheckBoundingBoxes),
@@ -56,6 +77,22 @@ export const pdfSkill = defineSkill({
     procedureUse(pdfFillPdfFormWithAnnotations),
   ],
   references: [
+    defineReference({
+      id: "forms",
+      source: new URL("./references/forms.md", import.meta.url),
+      target: "references/forms.md",
+      title: "PDF 表单处理指南",
+      summary: "PDF 可填写表单与视觉表单的字段发现、填写、批注和校验流程。",
+      loadWhen: "需要填写、标注或校验 PDF 表单时读取。",
+    }),
+    defineReference({
+      id: "runtime-reference",
+      source: new URL("./references/reference.md", import.meta.url),
+      target: "references/reference.md",
+      title: "PDF procedure 运行参考",
+      summary: "PDF 处理脚本/procedure 的参数、坐标、字段结构和运行注意事项。",
+      loadWhen: "需要确认 PDF procedure 具体参数、字段结构或坐标处理细节时读取。",
+    }),
     defineReference({
       id: "pdf-extraction",
       source: new URL("./references/pdf-extraction.md", import.meta.url),

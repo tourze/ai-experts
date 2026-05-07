@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, dataAnalysisAnalyze } from "../../procedures/index";
 
@@ -37,19 +40,19 @@ export const dataAnalysisSkill = defineSkill({
       get id() {
         return dataStorytellingSkill.id;
       },
-      reason: "导出路径扩展名是否正确，是否需要交给 `data-visualization` 或 `data-storytelling` 做后续表达。",
+      reason: "分析结果需要组织成业务叙事、洞察摘要或面向读者的结论材料时联动。",
     },
     {
       get id() {
         return statisticalAnalysisSkill.id;
       },
-      reason: "如果需求涉及显著性检验、异常解释或统计边界，是否切换到 `statistical-analysis`。",
+      reason: "需求涉及显著性检验、置信区间、异常解释或统计边界时联动。",
     },
     {
       get id() {
         return dataVisualizationSkill.id;
       },
-      reason: "相关 skill：`statistical-analysis`、`data-visualization`、`data-storytelling`。",
+      reason: "需要把聚合、对比或趋势结果转成图表和可视化表达时联动。",
     },
   ],
   antiPatterns: [
@@ -64,7 +67,25 @@ export const dataAnalysisSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "对用户显式给出的 `.xlsx` / `.csv` 文件先 inspect，再 query / summary / export，输出可验证的数据结构、聚合和结论。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认文件真实存在、扩展名受支持，并用 `procedure data-analysis-analyze` inspect 表名、列名、类型和空值。",
+      "基于 inspect 结果再写 query 或 summary，不引用不存在的表和列。",
+      "按问题选择筛选、聚合、排序、limit、导出格式或后续可视化 / 叙事流程。",
+      "导出前确认输出扩展名只使用 `.csv`、`.json` 或 `.md`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "文件、表、列、类型、空值和可疑数据结构摘要。",
+      "查询、汇总、聚合、排序或 join 结果及其口径说明。",
+      "导出路径、格式限制，以及是否需要统计、可视化或数据叙事后续处理。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(dataAnalysisAnalyze),

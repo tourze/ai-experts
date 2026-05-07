@@ -5,7 +5,12 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
+import { architectureReviewerSkill } from "../architecture-reviewer/index";
+import { planReviewSkill } from "../plan-review/index";
 
 export const apiTraceReaderSkill = defineSkill({
   id: "api-trace-reader",
@@ -14,7 +19,7 @@ export const apiTraceReaderSkill = defineSkill({
   useCases: [
     "当用户问“这个接口都干了什么”“什么情况会触发”“帮我串一下调用链”时使用。",
     "适合定位数据库写入、缓存变更、消息投递、定时任务和事件监听的真实来源。",
-    "交叉引用：若要做系统级问题盘点，配合 `architecture-reviewer`（Exhaustive 模式）；若要审方案而不是追链路，改用 `plan-review`。",
+    "需要基于只读证据串起真实代码调用链，而不是评审方案或直接改代码。",
   ],
   constraints: [
     "只允许只读操作：`Read` / `Grep` / `Glob` / 只读 Bash。",
@@ -27,6 +32,20 @@ export const apiTraceReaderSkill = defineSkill({
     "是否列出了每一级调用者、被调者和关键参数流向。",
     "是否单列了 READ / WRITE / CACHE / MQ / EXTERNAL / FS 副作用。",
     "是否补齐异步链路、重试逻辑、监听器和延迟任务。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return architectureReviewerSkill.id;
+      },
+      reason: "调用链发现上升为系统级结构、企业就绪或子系统审计问题时联动。",
+    },
+    {
+      get id() {
+        return planReviewSkill.id;
+      },
+      reason: "用户要审查方案、RFC 或实现计划，而不是追踪已存在调用链时转向。",
+    },
   ],
   antiPatterns: [
     defineAntiPattern({
@@ -44,7 +63,25 @@ export const apiTraceReaderSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "只读追踪接口、任务、事件或定时任务的真实调用链，定位数据读写、异步副作用、风险点和验证方式。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先判断入口类型是 HTTP、CLI、消费者、定时任务、事件还是 webhook，必要时读取 `entry-types`。",
+      "沿代码逐级追踪调用者、被调者、关键参数和分支条件，不执行会改状态的命令。",
+      "单列 READ / WRITE / CACHE / MQ / EXTERNAL / FS 副作用，并补齐重试、监听器、延迟任务和异步链路。",
+      "输出格式对齐 `output-example`，风险分级读取 `risk-rubric`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "`入口`、`调用链`、`数据读写`、`异步副作用`、`风险点`、`验证方式` 六段输出。",
+      "每条结论的 `file:line`、日志片段、grep 证据或明确待验证项。",
+      "主链路、旁路副作用和需要上升到架构审计或计划评审的风险。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({
