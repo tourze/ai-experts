@@ -77,10 +77,9 @@ export const pricingStrategySkill = defineSkill({
   }),
   outputs: defineSkillOutputs({
     title: "输出模板",
-    body: `\`\`\`markdown
-| 套餐 | 目标客群 | 核心价值 | 限制项 | 价格 |
-| --- | --- | --- | --- | --- |
-\`\`\``,
+    items: [
+      "定价表列：套餐、目标客群、核心价值、限制项、价格。",
+    ],
   }),
   tools: [],
   references: [

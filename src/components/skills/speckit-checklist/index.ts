@@ -25,10 +25,7 @@ export const speckitChecklistSkill = defineSkill({
   sourceDir: new URL("./", import.meta.url),
   goal: defineSkillGoal({
     title: "核心原则",
-    body: `清单是“需求文档的单元测试”，不是代码测试。
-
-- 检查对象：完整性、可测性、一致性、可执行性
-- 非检查对象：按钮是否可点击、接口是否返回 200（这是实现测试）`,
+    body: "清单是需求文档的单元测试，不是代码测试；检查完整性、可测性、一致性和可执行性，不检查按钮是否可点击或接口是否返回 200。",
   }),
   workflow: defineSkillWorkflow({
     steps: [
@@ -42,10 +39,10 @@ export const speckitChecklistSkill = defineSkill({
   }),
   outputs: defineSkillOutputs({
     title: "输出示例",
-    body: `\`\`\`markdown
-- [ ] 是否定义了失败重试次数与退避策略？
-- [ ] 是否定义了权限不足时的用户可见反馈？
-\`\`\``,
+    items: [
+      "输出 yes/no checklist 条目，例如：是否定义失败重试次数与退避策略。",
+      "输出 yes/no checklist 条目，例如：是否定义权限不足时的用户可见反馈。",
+    ],
   }),
   tools: [],
 });

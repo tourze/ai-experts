@@ -57,10 +57,9 @@ export const estimateCalibratorSkill = defineSkill({
   }),
   outputs: defineSkillOutputs({
     title: "输出模板",
-    body: `\`\`\`markdown
-| 工作项 | Best | Likely | Worst | 主要未知项 |
-| --- | --- | --- | --- | --- |
-\`\`\``,
+    items: [
+      "估算表列：工作项、Best、Likely、Worst、主要未知项。",
+    ],
   }),
   tools: [],
   references: [

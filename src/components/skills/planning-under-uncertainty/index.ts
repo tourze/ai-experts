@@ -67,10 +67,9 @@ export const planningUnderUncertaintySkill = defineSkill({
   }),
   outputs: defineSkillOutputs({
     title: "输出模板",
-    body: `\`\`\`markdown
-| 阶段 | 当前下注 | 关键未知项 | 触发条件 | 下一个决策点 |
-| --- | --- | --- | --- | --- |
-\`\`\``,
+    items: [
+      "决策表列：阶段、当前下注、关键未知项、触发条件、下一个决策点。",
+    ],
   }),
   tools: [],
   references: [

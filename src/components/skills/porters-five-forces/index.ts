@@ -74,10 +74,9 @@ export const portersFiveForcesSkill = defineSkill({
   }),
   outputs: defineSkillOutputs({
     title: "输出模板",
-    body: `\`\`\`markdown
-| 力量 | 当前强弱 | 驱动因素 | 对利润的影响 |
-| --- | --- | --- | --- |
-\`\`\``,
+    items: [
+      "五力分析表列：力量、当前强弱、驱动因素、对利润的影响。",
+    ],
   }),
   tools: [],
   references: [

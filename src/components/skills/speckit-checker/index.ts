@@ -42,18 +42,10 @@ export const speckitCheckerSkill = defineSkill({
   }),
   outputs: defineSkillOutputs({
     title: "输出模板",
-    body: `\`\`\`markdown
-# 静态检查汇总
-
-## 运行概览
-- 检查器：...
-- 成功/失败：...
-
-## 问题分级
-- P0: ...
-- P1: ...
-- P2: ...
-\`\`\``,
+    items: [
+      "静态检查汇总：检查器列表、成功/失败状态和关键输出。",
+      "问题分级：P0/P1/P2、位置、证据和建议修复顺序。",
+    ],
   }),
   tools: [],
   parameters: [

@@ -34,19 +34,10 @@ export const speckitDiffSkill = defineSkill({
   }),
   outputs: defineSkillOutputs({
     title: "输出模板",
-    body: `\`\`\`markdown
-# 文档差异报告
-
-## 汇总
-- 新增: X
-- 删除: Y
-- 修改: Z
-
-## 章节明细
-### <章节>
-- 变化：...
-- 影响：...
-\`\`\``,
+    items: [
+      "文档差异报告：汇总新增、删除、修改数量。",
+      "章节明细：章节名、变化说明、对需求范围/技术成本/测试影响的判断。",
+    ],
   }),
   tools: [],
 });

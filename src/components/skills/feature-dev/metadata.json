@@ -1,7 +1,7 @@
 {
   "name": "feature-dev",
   "repo": "anton-abyzov/specweave",
-  "path": "src/components/skills/feature-dev/SKILL.body.md",
+  "path": "src/components/skills/feature-dev/index.ts",
   "source": "github.com/anton-abyzov/specweave",
   "downloaded_at": "2026-02-04T04:41:01.299403Z",
   "dir_name": "feature-dev",

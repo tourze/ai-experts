@@ -38,11 +38,9 @@ export const speckitStatusSkill = defineSkill({
   }),
   outputs: defineSkillOutputs({
     title: "输出格式",
-    body: `\`\`\`markdown
-# Speckit 状态看板
-| Feature | 阶段 | 完成度 | 阻塞 |
-|---|---:|---:|---|
-\`\`\``,
+    items: [
+      "Speckit 状态看板列：Feature、阶段、完成度、阻塞。",
+    ],
   }),
   tools: [],
 });

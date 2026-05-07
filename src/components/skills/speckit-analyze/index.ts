@@ -51,21 +51,11 @@ export const speckitAnalyzeSkill = defineSkill({
   }),
   outputs: defineSkillOutputs({
     title: "输出格式",
-    body: `\`\`\`markdown
-# 一致性分析报告
-
-## 概览
-- Feature: <path>
-- 文档状态: spec/plan/tasks
-
-## 问题清单
-- [CRITICAL] ...
-- [HIGH] ...
-
-## 修复建议（可选）
-1. ...
-2. ...
-\`\`\``,
+    items: [
+      "一致性分析报告：Feature 路径、spec/plan/tasks 文档状态。",
+      "问题清单：CRITICAL/HIGH/LOW、证据和影响。",
+      "修复建议：按阻断程度排序的可选下一步。",
+    ],
   }),
   tools: [],
   parameters: [

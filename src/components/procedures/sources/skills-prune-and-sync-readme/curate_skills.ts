@@ -199,7 +199,7 @@ function computeQuality(folder: any, frontmatter: any, frontmatterKeys: any, bod
 function readSkill(skillDir: any, options: any = {}): any {
     const skillFile = fs.existsSync(path.join(skillDir, "SKILL.md"))
         ? path.join(skillDir, "SKILL.md")
-        : path.join(skillDir, "SKILL.body.md");
+        : path.join(skillDir, "index.ts");
     if (!fs.existsSync(skillFile)) {
         return null;
     }

@@ -57,10 +57,9 @@ export const customerJourneyMapSkill = defineSkill({
   }),
   outputs: defineSkillOutputs({
     title: "输出模板",
-    body: `\`\`\`markdown
-| 阶段 | 触点 | 用户目标 | 情绪/阻力 | 指标 | 机会点 |
-| --- | --- | --- | --- | --- | --- |
-\`\`\``,
+    items: [
+      "旅程图表列：阶段、触点、用户目标、情绪/阻力、指标、机会点。",
+    ],
   }),
   tools: [],
   references: [

@@ -66,10 +66,9 @@ export const evaluatingNewTechnologySkill = defineSkill({
   }),
   outputs: defineSkillOutputs({
     title: "输出模板",
-    body: `\`\`\`markdown
-| 选项 | 解决的问题 | 成熟度 | 集成成本 | 风险 | 建议 |
-| --- | --- | --- | --- | --- | --- |
-\`\`\``,
+    items: [
+      "选型表列：选项、解决的问题、成熟度、集成成本、风险、建议。",
+    ],
   }),
   tools: [],
   references: [

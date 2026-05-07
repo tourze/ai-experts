@@ -74,10 +74,9 @@ export const swotAnalysisSkill = defineSkill({
   }),
   outputs: defineSkillOutputs({
     title: "输出模板",
-    body: `\`\`\`markdown
-| 类别 | 事实/证据 | 战略含义 | 建议动作 |
-| --- | --- | --- | --- |
-\`\`\``,
+    items: [
+      "SWOT 表列：类别、事实/证据、战略含义、建议动作。",
+    ],
   }),
   tools: [],
   references: [

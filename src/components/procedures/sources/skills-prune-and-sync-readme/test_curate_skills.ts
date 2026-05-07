@@ -11,8 +11,7 @@ function writeSkill(skillDir: any, frontmatter: any, body: any): any {
 }
 function writeComponentSkill(skillDir: any, id: any, description: any, body: any): any {
     fs.mkdirSync(skillDir, { recursive: true });
-    fs.writeFileSync(path.join(skillDir, "index.ts"), `import { defineSkill } from "../../sdk";\n\nexport const ${id.replaceAll("-", "_")} = defineSkill({\n  id: "${id}",\n  fullName: "${id}",\n  description: "${description}",\n  useCases: [\n    "${description}",\n  ],\n  constraints: [\n    "遵循该 skill 的正文流程、边界和检查清单。",\n  ],\n  body: new URL("./SKILL.body.md", import.meta.url),\n});\n`, "utf8");
-    fs.writeFileSync(path.join(skillDir, "SKILL.body.md"), `${body}\n`, "utf8");
+    fs.writeFileSync(path.join(skillDir, "index.ts"), `import { defineSkill, defineSkillGoal, defineSkillWorkflow } from "../../sdk";\n\nexport const ${id.replaceAll("-", "_")} = defineSkill({\n  id: "${id}",\n  fullName: "${id}",\n  description: "${description}",\n  useCases: [\n    "${description}",\n  ],\n  constraints: [\n    "遵循该 skill 的正文流程、边界和检查清单。",\n  ],\n  sourceDir: new URL("./", import.meta.url),\n  goal: defineSkillGoal({ body: "${id} goal." }),\n  workflow: defineSkillWorkflow({ steps: [${JSON.stringify(body)}] }),\n});\n`, "utf8");
 }
 function runCommand(...args: any): any {
     const originalStdoutWrite = process.stdout.write;
@@ -106,7 +105,7 @@ function main(): any {
         const readme = fs.readFileSync(readmePath, "utf8");
         assert.match(readme, /### 公共 Skills（5）/);
         assert.ok(readme.includes("| [alpha-skill](skills/alpha-skill/SKILL.md) | 旧摘要，应被保留。 |"));
-        assert.ok(readme.includes("| [beta-skill](src/components/skills/beta-skill/SKILL.body.md) |"));
+        assert.ok(readme.includes("| [beta-skill](src/components/skills/beta-skill/index.ts) |"));
         assert.equal(readme.includes("skills/skills-prune-and-sync-readme/SKILL.md"), false);
         const check = runCommand("sync-readme", "--repo-root", repoRoot, "--check");
         assert.equal(check.status, 0, `sync-readme --check failed:\nSTDOUT:\n${check.stdout}\nSTDERR:\n${check.stderr}`);

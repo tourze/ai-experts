@@ -71,10 +71,9 @@ export const processOptimizationSkill = defineSkill({
   }),
   outputs: defineSkillOutputs({
     title: "输出模板",
-    body: `\`\`\`markdown
-| 步骤 | 责任人 | 周期 | 等待/返工 | 是否保留 |
-| --- | --- | --- | --- | --- |
-\`\`\``,
+    items: [
+      "流程表列：步骤、责任人、周期、等待/返工、是否保留。",
+    ],
   }),
   tools: [],
 });
