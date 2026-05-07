@@ -748,6 +748,22 @@ describe("component build integration", () => {
         [],
         `${platform} Markdown should not reference legacy local scripts`,
       );
+
+      const staleAgentScriptCommands: string[] = [];
+      const agentsRoot = join(tmpDistDir, platform, "agents");
+      for (const agentFile of collectFiles(agentsRoot, (file) => /\.(?:md|toml)$/.test(file))) {
+        const agentText = readFileSync(agentFile, "utf-8");
+        for (const match of agentText.matchAll(/\b(?:node\s+)?scripts\/[A-Za-z0-9._/-]+\.mjs\b/gu)) {
+          const prefix = agentText.slice(Math.max(0, (match.index ?? 0) - ".specify/".length), match.index);
+          if (prefix === ".specify/") continue;
+          staleAgentScriptCommands.push(`${agentFile}: ${match[0]}`);
+        }
+      }
+      assert.deepEqual(
+        staleAgentScriptCommands,
+        [],
+        `${platform} agents should reference procedures or skills instead of legacy repository scripts`,
+      );
     }
 
     const proceduresSource = readFileSync(join(tmpDistDir, "claude/procedures.js"), "utf-8");
@@ -759,6 +775,14 @@ describe("component build integration", () => {
     assert.doesNotMatch(proceduresSource, /procedure\.source|writeFileSync\(target/);
     assert.doesNotMatch(proceduresSource, /ai-components-|procedure-runtime-entry/);
     assert.doesNotMatch(proceduresSource, /\.globalThis\.__aiExperts/);
+    for (const platform of ["claude", "codex"]) {
+      const hookDispatchSource = readFileSync(join(tmpDistDir, `${platform}/hooks/dispatch.mjs`), "utf-8");
+      assert.doesNotMatch(
+        hookDispatchSource,
+        /\bnode scripts\/(?:trigger-audit-report|skill-quality-report|hook-telemetry-report|audit-skill-evals)\.mjs\b/,
+        `${platform} hooks should not suggest removed repository-local scripts`,
+      );
+    }
     const distLocalImports = proceduresSource
       .split(/\r?\n/)
       .filter((line) => line.startsWith("import "))

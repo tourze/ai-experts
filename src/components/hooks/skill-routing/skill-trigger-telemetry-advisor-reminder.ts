@@ -132,10 +132,7 @@ function buildReason(signals: ReturnType<typeof summarizeSignals>) {
     "",
     "应优先使用 `trigger-telemetry-advisor skill`，基于当前会话或工作区 telemetry 生成触发治理建议报告。",
     "",
-    "推荐执行：",
-    "- 当前会话：`node scripts/trigger-audit-report.mjs --json --workspace \"$PWD\" --session latest --days 7 --top 20`",
-    "- 当前工作区：`node scripts/trigger-audit-report.mjs --json --workspace \"$PWD\" --days 7 --top 20`",
-    "- 并行/跨目录：`node scripts/trigger-audit-report.mjs --json --all-workspaces --days 7 --top 20`",
+    "建议按三种口径读取 telemetry：当前会话、当前工作区、必要时跨工作区汇总；只引用本机实际存在的 telemetry 文件和 hook 配置。",
     "",
     "最终报告需包含：范围与数据质量、P0/P1/P2 发现、证据、建议改动和验证命令。",
   ].join("\n");

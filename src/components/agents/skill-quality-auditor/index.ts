@@ -49,7 +49,7 @@ export const skillQualityAuditorAgent = defineAgent({
       }),
       defineAgentWorkflowStep({
         id: "step-4",
-        label: "优先跑 scripts/skill-quality-report.mjs --json 与 scripts/trigger-audit-report.mjs --days N 建立全局基线，再针对异常 skill 做单点诊断。",
+        label: "优先调用 `procedure skill-activation-analyzer-cso-audit --json` 和 `procedure skills-prune-and-sync-readme-curate-skills audit --format json` 建立静态基线；运行时 telemetry 证据交给 trigger-telemetry-advisor 按本地可用数据读取。",
       }),
     ],
   }),
@@ -100,7 +100,7 @@ export const skillQualityAuditorAgent = defineAgent({
     ],
   }),
   bashBoundary: [
-    "Bash 只用于跑仓库内只读脚本（`skill-quality-report.mjs`、`trigger-audit-report.mjs`、`hook-telemetry-report.mjs`、`audit-skill-evals.mjs`、`curate_skills.mjs audit`）、git 历史与文件统计。禁止运行 `--apply`/`--write`/`prune --delete` 类带写效果的子命令，禁止安装依赖或修改 telemetry。",
+    "Bash 只用于调用只读 Procedure（`skill-activation-analyzer-cso-audit`、`skills-prune-and-sync-readme-curate-skills audit`）、读取 telemetry、git 历史与文件统计。禁止运行 `--apply`/`--write`/`prune --delete` 类带写效果的子命令，禁止安装依赖或修改 telemetry。",
   ],
   qualityStandards: [
     "严格区分静态质量（结构/CSO）与运行时质量（telemetry）；不混用证据。",
