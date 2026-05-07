@@ -16,14 +16,16 @@ import {
   isSameOrInsidePath,
   Platform,
   readComponentText,
+  readOptionalComponentText,
   toAbsolutePath,
   writeText,
 } from "./core.ts";
 import {
   emitAgent,
   hasStringTool,
-  readAgentBodyText,
   validateAgentBashBoundary,
+  validateAgentInputs,
+  validateAgentModes,
   validateAgentOutputFormat,
   validateAgentQualityStandards,
   validateAgentWorkflow,
@@ -290,13 +292,10 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
     if (!agent.role || agent.role.trim() === "") {
       throw new Error(`Agent ${agent.id} must define a non-empty role`);
     }
-    if (agent.body !== undefined && agent.bodyText !== undefined) {
-      throw new Error(`Agent ${agent.id} must define either body or bodyText, not both`);
-    }
     if (agent.body !== undefined && !existsSync(toAbsolutePath(agent.body))) {
       throw new Error(`Agent ${agent.id} body is missing: ${displayPath(agent.body)}`);
     }
-    const agentBodySource = readAgentBodyText(agent);
+    const agentBodySource = readOptionalComponentText(agent.body);
     if (/^你是/.test(agentBodySource.trimStart())) {
       throw new Error(`Agent ${agent.id} must move role definition from agent body to index.ts role field`);
     }
@@ -316,6 +315,8 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
       throw new Error(`Agent ${agent.id} must move workflow sections from agent body to workflow`);
     }
     validateAgentOutputFormat(agent);
+    validateAgentInputs(agent);
+    validateAgentModes(agent);
     const workflow = validateAgentWorkflow(agent);
     for (const gate of workflow?.gates ?? []) {
       if (!skillIds.has(gate.skill)) throw new Error(`Agent ${agent.id} workflow gate references missing skill: ${gate.skill}`);

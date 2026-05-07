@@ -206,6 +206,22 @@ export type AgentSkillUse = {
   reason: string;
 };
 
+export type AgentInputDefinition = {
+  name: string;
+  description: string;
+  required?: boolean;
+};
+
+export type AgentModeDefinition = {
+  id: string;
+  label: string;
+  triggers: readonly string[];
+  tools?: readonly string[];
+  output: string;
+  description?: string;
+  steps?: readonly string[];
+};
+
 export type AgentBashBoundaryDefinition = readonly string[];
 
 export type AgentQualityStandardsDefinition = readonly string[];
@@ -263,7 +279,8 @@ export type AgentDefinition = {
   role: string;
   platforms: PlatformList;
   body?: ComponentFile;
-  bodyText?: string;
+  inputs?: readonly AgentInputDefinition[];
+  modes?: readonly AgentModeDefinition[];
   bashBoundary?: AgentBashBoundaryDefinition;
   qualityStandards?: AgentQualityStandardsDefinition;
   outputFormat?: AgentOutputFormatDefinition;
@@ -371,6 +388,18 @@ export function defineAgent(definition: Omit<AgentDefinition, "kind">): AgentDef
     kind: ComponentKind.Agent,
     ...definition,
   };
+}
+
+export function defineAgentInput(
+  definition: AgentInputDefinition,
+): AgentInputDefinition {
+  return definition;
+}
+
+export function defineAgentMode(
+  definition: AgentModeDefinition,
+): AgentModeDefinition {
+  return definition;
 }
 
 export function defineAgentOutputFormat(

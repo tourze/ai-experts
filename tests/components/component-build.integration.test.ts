@@ -159,9 +159,10 @@ describe("component build integration", () => {
       "agents without KnownTool.Bash should not emit Bash boundary instructions",
     );
 
-    const analyzerAgent = readFileSync(join(tmpDistDir, "claude/agents/eval-post-hoc-analyzer.md"), "utf-8");
-    assert.doesNotMatch(analyzerAgent, /## 质量标准/, "agents without qualityStandards should not emit quality standards");
+    const androidReviewerAgent = readFileSync(join(tmpDistDir, "claude/agents/android-reviewer.md"), "utf-8");
+    assert.doesNotMatch(androidReviewerAgent, /## 质量标准/, "agents without qualityStandards should not emit quality standards");
     assert.doesNotMatch(claudeAgent, /## 输出格式/, "agents without outputFormat should not emit output format instructions");
+    const analyzerAgent = readFileSync(join(tmpDistDir, "claude/agents/eval-post-hoc-analyzer.md"), "utf-8");
     assert.doesNotMatch(analyzerAgent, /Analyzing Benchmark Results/, "analyzer should keep a single output format and one responsibility");
 
     const goReviewerAgent = readFileSync(join(tmpDistDir, "claude/agents/go-reviewer.md"), "utf-8");

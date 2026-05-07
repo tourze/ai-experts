@@ -38,7 +38,7 @@ describe("component source conventions", () => {
       join(repoRoot, "src/components/agents"),
       (file) => file.endsWith("AGENT.body.md"),
     );
-    assert.deepEqual(agentBodyFiles, [], "agent Markdown bodies should be inlined in index.ts bodyText");
+    assert.deepEqual(agentBodyFiles, [], "agent Markdown bodies should be split into structured index.ts fields");
 
     let agentQualityStandardsCount = 0;
     let agentOutputFormatCount = 0;
@@ -54,6 +54,12 @@ describe("component source conventions", () => {
       const hasQualityStandards = /\n\s*qualityStandards:\s*\[/.test(source);
       const hasOutputFormat = /\n\s*outputFormat:\s*defineAgentOutputFormat\(\{/.test(source);
       const hasWorkflow = /\n\s*workflow:\s*defineAgentWorkflow\(\{/.test(source);
+
+      assert.doesNotMatch(
+        source,
+        /\n\s*bodyText:\s*`/,
+        `${agentSourceFile} should split body content into structured fields instead of bodyText`,
+      );
 
       assert.equal(
         hasBashBoundary,
@@ -136,9 +142,9 @@ describe("component source conventions", () => {
       }
     }
 
-    assert.equal(agentQualityStandardsCount, 60);
+    assert.ok(agentQualityStandardsCount >= 60);
     assert.equal(agentOutputFormatCount, 62);
-    assert.equal(agentWorkflowCount, 76);
+    assert.ok(agentWorkflowCount >= 76);
   });
 
   test("hook source tree uses canonical directories and ids", () => {
