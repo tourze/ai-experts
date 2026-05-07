@@ -45,8 +45,7 @@ export const codebaseArchitectureAnalysisSkill = defineSkill({
       get id() {
         return architectureReviewerSkill.id;
       },
-      label: "`architecture-reviewer`",
-      reason: "``architecture-reviewer``：架构设计评审，侧重设计质量而非结构事实取证",
+      reason: "需要做架构设计质量评审，而不只是结构事实取证时联动。",
     },
     {
       get id() {

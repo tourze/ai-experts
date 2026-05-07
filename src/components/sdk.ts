@@ -133,7 +133,6 @@ export type SkillAssetDefinition = {
 
 export type RelatedSkillDefinition = {
   id: string;
-  label?: string;
   reason: string;
 };
 

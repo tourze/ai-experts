@@ -394,8 +394,7 @@ function renderRelatedSkills(skill: SkillDefinition): string {
   const relatedSkills = uniqueRelatedSkills(skill.relatedSkills ?? []);
   if (relatedSkills.length === 0) return "";
   const rows = relatedSkills.map((related) => {
-    const label = related.label ?? related.id;
-    return `- [${label}](../${related.id}/SKILL.md) — ${related.reason}`;
+    return `- [${related.id}](../${related.id}/SKILL.md) — ${related.reason}`;
   });
   return `## 相关 Skill\n\n${rows.join("\n")}\n`;
 }

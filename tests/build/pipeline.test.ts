@@ -220,7 +220,7 @@ describe("build/pipeline modules", () => {
         ...fixture.skill,
         relatedSkills: [
           { id: "other-skill", reason: "first route" },
-          { id: "other-skill", label: "other alias", reason: "duplicate route" },
+          { id: "other-skill", reason: "duplicate route" },
         ],
       },
       Platform.Claude,
@@ -313,7 +313,7 @@ describe("build/pipeline modules", () => {
         ...fixture.skill,
         relatedSkills: [
           { id: "other-skill", reason: "first route" },
-          { id: "other-skill", label: "other alias", reason: "duplicate route" },
+          { id: "other-skill", reason: "duplicate route" },
         ],
       }],
     };
@@ -335,7 +335,7 @@ describe("build/pipeline modules", () => {
           procedures: [],
           relatedSkills: [
             { id: otherSkill.id, reason: "first route" },
-            { id: otherSkill.id, label: "other alias", reason: "duplicate route" },
+            { id: otherSkill.id, reason: "duplicate route" },
           ],
         }, otherSkill],
       })

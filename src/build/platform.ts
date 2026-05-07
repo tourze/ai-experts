@@ -246,8 +246,8 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
       if (related.id === skill.id) {
         throw new Error(`Skill ${skill.id} must not reference itself as a related skill`);
       }
-      if (related.label !== undefined && (typeof related.label !== "string" || related.label.trim() === "")) {
-        throw new Error(`Skill ${skill.id} related skill ${related.id} has an empty label`);
+      if ("label" in related) {
+        throw new Error(`Skill ${skill.id} related skill ${related.id} must not define a label alias`);
       }
       if (typeof related.reason !== "string" || related.reason.trim() === "") {
         throw new Error(`Skill ${skill.id} related skill ${related.id} has an empty reason`);

@@ -684,8 +684,8 @@ describe("component source conventions", () => {
         );
         assert.doesNotMatch(
           relatedSkillsSource,
-          /label:\s*["'`](?:anti-reversing-techniques|competitive-teardown|go-context-lifecycle|go-project-layout|inversion-strategist|nmap|s-curve-growth)["'`]/,
-          `${skillSourceFile} related skill labels should not preserve deprecated reference-style aliases`,
+          /\n\s*label:/,
+          `${skillSourceFile} related skills should use the canonical skill id as link text, not label aliases`,
         );
       }
 
