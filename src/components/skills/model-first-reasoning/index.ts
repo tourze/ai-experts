@@ -2,6 +2,7 @@ import {
   InvocationPolicy,
   Platform,
   defineAntiPattern,
+  defineAsset,
   defineSkill,
   defineSkillOutputs,
   defineSkillWorkflow,
@@ -19,7 +20,7 @@ export const modelFirstReasoningSkill = defineSkill({
     "功能复杂，直接编码容易引入隐含状态、漏掉约束或发明接口。",
     "任务包含显式状态转换、权限矩阵、调度规则、工作流编排、约束求解。",
     "用户要求先建模型、先写约束、先确认 requirement trace，再进入实现阶段。",
-    "相关资源：[MODEL_TEMPLATE.json](MODEL_TEMPLATE.json)、procedure `model-first-reasoning-validate-model`。",
+    "相关资源：[MODEL_TEMPLATE.json](assets/MODEL_TEMPLATE.json)、procedure `model-first-reasoning-validate-model`。",
   ],
   constraints: [
     "Phase 1 只产出模型，不写实现代码。",
@@ -77,5 +78,12 @@ export const modelFirstReasoningSkill = defineSkill({
   }),
   procedures: [
     procedureUse(modelFirstReasoningValidateModel),
+  ],
+  assets: [
+    defineAsset({
+      id: "model-template",
+      source: new URL("./assets/MODEL_TEMPLATE.json", import.meta.url),
+      target: "assets/MODEL_TEMPLATE.json",
+    }),
   ],
 });

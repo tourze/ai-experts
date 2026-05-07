@@ -593,6 +593,7 @@ describe("component source conventions", () => {
       "HOW_TO_USE.md",
       "reference.md",
       "references.md",
+      "MODEL_TEMPLATE.json",
       "_meta.json",
       "metadata.json",
       "sample_input.json",
