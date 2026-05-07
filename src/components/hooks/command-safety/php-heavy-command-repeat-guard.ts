@@ -28,7 +28,7 @@ export const phpHeavyCommandRepeatGuardHook = defineHook({
  */
 
 
-const TRACKER_DIR = join(tmpdir(), ".ai-components-heavy-cmd-tracker");
+const TRACKER_DIR = join(tmpdir(), ".ai-experts-heavy-cmd-tracker");
 const WARN_THRESHOLD = 3;
 const BLOCK_THRESHOLD = 6;
 const EXPIRY_MS = 30 * 60 * 1000; // 30 分钟无调用自动重置

@@ -887,6 +887,11 @@ describe("component build integration", () => {
         /\bnode scripts\/(?:trigger-audit-report|skill-quality-report|hook-telemetry-report|audit-skill-evals)\.mjs\b/,
         `${platform} hooks should not suggest removed repository-local scripts`,
       );
+      assert.doesNotMatch(
+        hookDispatchSource,
+        /\.ai-components/,
+        `${platform} hooks should use ai-experts runtime state directories`,
+      );
     }
     const distLocalImports = proceduresSource
       .split(/\r?\n/)
@@ -936,9 +941,10 @@ describe("component build integration", () => {
     assert.equal(existsSync(join(tmpDistDir, "codex/hooks/modules")), false);
     assert.equal(hookManifest.hooks.some((hook: any) => "module" in hook), false);
     assert.equal(hookManifest.hooks.some((hook: any) => "payloadMode" in hook), false);
-    assert.equal(hookManifest.hooks.some((hook: any) => /(?:expert|plugin)/.test(hook.id)), false);
-    assert.doesNotMatch(readFileSync(join(tmpDistDir, "claude/hooks/dispatch.mjs"), "utf-8"), /(?:expert|plugin)/);
-    assert.doesNotMatch(readFileSync(join(tmpDistDir, "codex/hooks/dispatch.mjs"), "utf-8"), /(?:expert|plugin)/);
+    const legacyHookNamingPattern = /(?:^|["/_.-])(?:expert|plugin)(?:["/_.-]|$)/;
+    assert.equal(hookManifest.hooks.some((hook: any) => legacyHookNamingPattern.test(hook.id)), false);
+    assert.doesNotMatch(readFileSync(join(tmpDistDir, "claude/hooks/dispatch.mjs"), "utf-8"), legacyHookNamingPattern);
+    assert.doesNotMatch(readFileSync(join(tmpDistDir, "codex/hooks/dispatch.mjs"), "utf-8"), legacyHookNamingPattern);
 
     const reminderOutput = execFileSync(
       process.execPath,

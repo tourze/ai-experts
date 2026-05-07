@@ -32,7 +32,7 @@ export const editLoopDetectorHook = defineHook({
 // 文档/计划类文件天然会被反复编辑，豁免循环检测
 const EXEMPT_EXTENSIONS = new Set([".md", ".mdx"]);
 
-const TRACKER_DIR = join(tmpdir(), ".ai-components-edit-tracker");
+const TRACKER_DIR = join(tmpdir(), ".ai-experts-edit-tracker");
 const WARN_THRESHOLD = 5;
 const BLOCK_THRESHOLD = 10;
 // 追踪记录超过此时间（毫秒）后自动过期，视为新会话

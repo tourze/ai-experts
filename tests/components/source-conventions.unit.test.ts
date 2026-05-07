@@ -515,6 +515,11 @@ describe("component source conventions", () => {
 
       if (hookSourceFile.endsWith(".ts")) {
         const source = readFileSync(hookSourceFile, "utf-8");
+        assert.doesNotMatch(
+          source,
+          /\.ai-components/,
+          `${hookSourceFile} should use ai-experts runtime state directories`,
+        );
         const hookId = source.match(/\bid:\s*"([^"]+)"/)?.[1];
         if (hookId) {
           assert.doesNotMatch(

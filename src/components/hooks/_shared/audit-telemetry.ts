@@ -40,7 +40,7 @@ export type HookTelemetryEntry = {
 
 function telemetryRoot() {
   return process.env.AI_EXPERTS_HOOK_TELEMETRY_DIR ||
-    join(homedir(), ".ai-components", "hook-telemetry");
+    join(homedir(), ".ai-experts", "hook-telemetry");
 }
 
 function parsePositiveInt(value: string | number | null | undefined, fallback: number): number {

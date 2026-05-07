@@ -24,7 +24,10 @@ test("hook telemetry records stable component names and reminder cooldown", asyn
       join(repoRoot, "src/components/hooks/_shared/audit-telemetry.ts"),
       "utf-8",
     );
-    assert.doesNotMatch(auditTelemetrySource, /legacyTelemetryRoot|\.claude["'], "hook-telemetry"/);
+    assert.doesNotMatch(auditTelemetrySource, /legacyTelemetryRoot/);
+    assert.doesNotMatch(auditTelemetrySource, /\.claude|\.codex/);
+    assert.doesNotMatch(auditTelemetrySource, /\.ai-components/);
+    assert.match(auditTelemetrySource, /\.ai-experts/);
 
     const reminder = await import(
       `${pathToFileURL(join(

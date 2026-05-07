@@ -40,7 +40,7 @@ export const errorRetryGuardHook = defineHook({
  */
 
 
-const TRACKER_DIR = join(tmpdir(), ".ai-components-error-retry-tracker");
+const TRACKER_DIR = join(tmpdir(), ".ai-experts-error-retry-tracker");
 const TRACKER_FILE = join(TRACKER_DIR, "last-cmd.json");
 const REPORT_THRESHOLD = 3; // 连续相同命令 ≥ 3 次 report
 const BLOCK_THRESHOLD = 8; // 连续相同命令 ≥ 8 次 block
