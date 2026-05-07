@@ -2,9 +2,16 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
+import { appStoreOptimizationSkill } from "../app-store-optimization/index";
+import { iosHigDesignSkill } from "../ios-hig-design/index";
+import { iosSimulatorSkillSkill } from "../ios-simulator-skill/index";
 
 export const appleAppstoreReviewerSkill = defineSkill({
   id: "apple-appstore-reviewer",
@@ -38,8 +45,59 @@ export const appleAppstoreReviewerSkill = defineSkill({
       pass: "先审再修",
     }),
   ],
+  relatedSkills: [
+    {
+      get id() {
+        return iosHigDesignSkill.id;
+      },
+      reason: "需要判断界面是否符合 iOS 平台习惯、权限前置说明或 HIG 合规时联动。",
+    },
+    {
+      get id() {
+        return iosSimulatorSkillSkill.id;
+      },
+      reason: "需要真实走审核路径、截图、日志或无障碍树复现 UI 流程时联动。",
+    },
+    {
+      get id() {
+        return appStoreOptimizationSkill.id;
+      },
+      reason: "需要撰写门店更新文案、发布说明或 ASO 元数据时联动。",
+    },
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "从 App Store 审核视角审计 iOS / macOS 应用的合规、可审性、付费、隐私和核心流程，提前暴露拒审风险。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先识别 App 核心用途、目标平台、首屏路径、审核账号、演示数据和 reviewer notes 是否齐全。",
+      "检查权限文案、隐私清单、第三方 SDK、账号登录 / 删除、IAP / 订阅 / 恢复购买和外链支付。",
+      "检查审核可达性：空状态、离线、崩溃、受限内容、付费墙、演示账号和核心功能是否能被 reviewer 复现。",
+      "把每个风险写入 P0 / P1 / P2 风险表，证据必须落到文件、配置、符号、屏幕流程或网络行为。",
+      "需要真实复现时联动 iOS Simulator；需要界面平台合规时联动 iOS HIG；模板读取 `review-templates` reference。",
+      "第一轮只输出审计和修复建议；用户确认后再进入代码或配置修改。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "按 P0 / P1 / P2 排序的拒审风险表，含证据、影响、建议、成本和置信度。",
+      "审核路径、测试账号、演示数据、权限请求和付费流程的可复现说明。",
+      "Reviewer Notes 草稿和提交前检查清单。",
+      "证据不足的假设、需要补看的文件或需要模拟器复现的步骤。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "review-templates",
+      source: new URL("./references/review-templates.md", import.meta.url),
+      target: "references/review-templates.md",
+      title: "App Store 审核风险表与 Reviewer Notes 模板",
+      summary: "审核切入点、P0/P1/P2 风险登记表和 reviewer notes 草稿结构。",
+      loadWhen: "需要输出提审前风险登记表或准备 reviewer notes 时读取。",
+    }),
+  ],
 });

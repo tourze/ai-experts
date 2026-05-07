@@ -2,9 +2,14 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
+import { appleRemindersSkill } from "../apple-reminders/index";
 
 export const appleNotesSkill = defineSkill({
   id: "apple-notes",
@@ -42,8 +47,45 @@ export const appleNotesSkill = defineSkill({
       pass: "显式 --folder",
     }),
   ],
+  relatedSkills: [
+    {
+      get id() {
+        return appleRemindersSkill.id;
+      },
+      reason: "用户要创建系统提醒、完成待办或管理提醒列表时联动；Notes 更适合长期记录。",
+    },
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "在 macOS 上通过 `memo notes` 查看、搜索、编辑、移动、删除或导出 Apple Notes 备忘录。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认运行环境是 macOS，并检查 `memo --help` 与 `memo notes --help` 是否可用。",
+      "确认目标文件夹、搜索关键词、要查看的 note 编号或导出需求；交互式修改前先让用户确认范围。",
+      "查看和搜索先用只读命令；新增、编辑、删除、移动这类操作需要明确 `--folder` 或交互选择。",
+      "含图片或附件的笔记不适合直接编辑，导出时说明 HTML / Markdown 格式差异和默认导出位置。",
+      "命令细节读取 `command-reference` reference；如果需求实际是系统提醒，转用 `apple-reminders`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "实际执行或建议执行的 `memo notes` 命令及其目的。",
+      "目标文件夹、搜索条件、笔记编号或导出路径。",
+      "对新增、编辑、删除、移动等交互式操作的确认点和风险说明。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "command-reference",
+      source: new URL("./references/command-reference.md", import.meta.url),
+      target: "references/command-reference.md",
+      title: "Apple Notes CLI 命令速查",
+      summary: "`memo notes` 查看、搜索、新增、编辑、移动、删除、文件夹和导出命令。",
+      loadWhen: "需要实际操作 Apple Notes 或查看 memo notes 参数示例时读取。",
+    }),
+  ],
 });

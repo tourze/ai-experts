@@ -5,8 +5,22 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
-import { procedureUse, appStoreOptimizationAbTestPlanner, appStoreOptimizationAsoScorer, appStoreOptimizationCompetitorAnalyzer, appStoreOptimizationCollectReleaseChanges, appStoreOptimizationKeywordAnalyzer, appStoreOptimizationLaunchChecklist, appStoreOptimizationLocalizationHelper, appStoreOptimizationMetadataOptimizer, appStoreOptimizationReviewAnalyzer } from "../../procedures/index";
+import {
+  appStoreOptimizationAbTestPlanner,
+  appStoreOptimizationAsoScorer,
+  appStoreOptimizationCollectReleaseChanges,
+  appStoreOptimizationCompetitorAnalyzer,
+  appStoreOptimizationKeywordAnalyzer,
+  appStoreOptimizationLaunchChecklist,
+  appStoreOptimizationLocalizationHelper,
+  appStoreOptimizationMetadataOptimizer,
+  appStoreOptimizationReviewAnalyzer,
+  procedureUse,
+} from "../../procedures/index";
 
 export const appStoreOptimizationSkill = defineSkill({
   id: "app-store-optimization",
@@ -21,22 +35,22 @@ export const appStoreOptimizationSkill = defineSkill({
     "需要把技术提交整理成用户能看懂的发布摘要。",
   ],
   constraints: [
-    "这些 `src/components/procedures/sources/app-store-optimization/*.ts` 主要是库模块；优先通过 `npx tsx --eval` 导入调用，不要假设每个文件都提供稳定 CLI。",
+    "优先使用本 skill 登记的 procedures；procedure 源码是内部实现，不把源码 import 示例或源码路径写进运行时正文。",
     "搜索量、竞争度、转化率等输入必须来自用户或可信数据源；不要伪造市场数据。",
     "Apple 与 Google 的字段限制不同，所有输出都必须带字符数校验。",
     "本地化不是逐词翻译，必须同时考虑市场、文化语义和搜索行为。",
     "更新文案规则：先确认真实改动范围再写，只保留用户可感知改动，每条必须可追溯到真实提交；详见 `references/changelog-guide.md`。",
   ],
   checklist: [
-    "元数据优化优先用 `metadata_optimizer.ts`，并校验 Apple / Google 字符上限。",
-    "关键词分析优先用 `keyword_analyzer.ts`，竞品对标优先用 `competitor_analyzer.ts`。",
-    "评论洞察用 `review_analyzer.ts`，不要把低星评论直接等同于真实需求。",
-    "发版准备使用 `launch_checklist.ts`，测试规划使用 `ab_test_planner.ts`。",
+    "元数据优化优先用 `app-store-optimization-metadata-optimizer`，并校验 Apple / Google 字符上限。",
+    "关键词分析优先用 `app-store-optimization-keyword-analyzer`，竞品对标优先用 `app-store-optimization-competitor-analyzer`。",
+    "评论洞察用 `app-store-optimization-review-analyzer`，不要把低星评论直接等同于真实需求。",
+    "发版准备使用 `app-store-optimization-launch-checklist`，测试规划使用 `app-store-optimization-ab-test-planner`。",
     "交叉引用：需要审核合规视角时切到 `apple-appstore-reviewer`。",
   ],
   antiPatterns: [
     defineAntiPattern({
-      fail: "无证据的”高搜索低竞争”",
+      fail: "无证据的“高搜索低竞争”",
       pass: "基于真实数据",
     }),
     defineAntiPattern({
@@ -50,7 +64,28 @@ export const appStoreOptimizationSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "为 App Store / Google Play 做 ASO 元数据、关键词、竞品、评论、评分、本地化、A/B 测试、上线检查和版本更新文案优化。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认平台、市场、应用类别、目标用户、当前元数据、关键词、评分评论、竞品和可用转化数据。",
+      "按任务路由 procedure：元数据、关键词、竞品、评分健康分、评论洞察、本地化、A/B 测试、上线检查或发版改动采集。",
+      "所有关键词、搜索量、竞争度、转化率和竞品判断都要标明数据来源；缺数据时输出假设和需要补采的数据。",
+      "Apple / Google 字段分别做字符数和策略校验，避免把一个平台的格式硬套到另一个平台。",
+      "更新文案先读取 `changelog-guide` 和真实提交 / tag 范围，只保留用户可感知改动。",
+      "输入清单、常见流程和输出形态读取 `briefing-guide`；procedure 路由读取 `procedure-recipes`，完整参数以生成的 Procedure 调用说明为准。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "ASO 元数据建议、关键词策略、字符数校验和平台差异说明。",
+      "竞品、评论、评分、转化或本地化分析结论及数据来源。",
+      "A/B 测试计划、上线检查清单或发版更新文案。",
+      "已调用的 procedure、关键输入、输出摘要、假设和剩余数据缺口。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(appStoreOptimizationAbTestPlanner),
@@ -64,6 +99,22 @@ export const appStoreOptimizationSkill = defineSkill({
     procedureUse(appStoreOptimizationReviewAnalyzer),
   ],
   references: [
+    defineReference({
+      id: "briefing-guide",
+      source: new URL("./references/briefing-guide.md", import.meta.url),
+      target: "references/briefing-guide.md",
+      title: "App Store ASO Briefing Guide",
+      summary: "ASO 任务输入清单、输出结构、常见工作流、数据限制和示例 brief。",
+      loadWhen: "需要收集 ASO 输入、整理用户 brief 或规划多阶段 ASO 工作时读取。",
+    }),
+    defineReference({
+      id: "procedure-recipes",
+      source: new URL("./references/procedure-recipes.md", import.meta.url),
+      target: "references/procedure-recipes.md",
+      title: "App Store ASO Procedure 路由指南",
+      summary: "元数据、评分、评论、竞品、本地化、A/B 测试、上线检查和发版文案的 procedure 选择方式。",
+      loadWhen: "需要决定调用哪个 ASO procedure 或准备输入数据时读取。",
+    }),
     defineReference({
       id: "changelog-guide",
       source: new URL("./references/changelog-guide.md", import.meta.url),

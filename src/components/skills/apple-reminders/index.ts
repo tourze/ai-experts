@@ -2,9 +2,14 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
+import { appleNotesSkill } from "../apple-notes/index";
 
 export const appleRemindersSkill = defineSkill({
   id: "apple-reminders",
@@ -42,8 +47,46 @@ export const appleRemindersSkill = defineSkill({
       pass: "先 show 再删",
     }),
   ],
+  relatedSkills: [
+    {
+      get id() {
+        return appleNotesSkill.id;
+      },
+      reason: "用户要保存长期记录、资料或富文本内容时联动；Reminders 更适合到期提醒和待办。",
+    },
+  ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "在 macOS 上通过 `remindctl` 查看、创建、完成、删除和管理 Apple Reminders 提醒事项。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认运行环境是 macOS，执行 `remindctl status`，未授权时引导 `remindctl authorize`。",
+      "判断需求类型：查看提醒、管理列表、新增提醒、完成提醒或删除提醒。",
+      "查看类需求优先使用 `show` 过滤器和 `--json` / `--plain`；日期和列表名需要明确。",
+      "新增提醒前确认标题、列表、到期时间和是否需要同步到系统提醒。",
+      "完成、删除和列表变更属于破坏性动作，先 `show` 核对 ID 或列表名，再执行操作。",
+      "命令细节读取 `command-reference` reference；如果需求是长期记录或资料整理，转用 `apple-notes`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "实际执行或建议执行的 `remindctl` 命令及其目的。",
+      "目标列表、提醒 ID、日期过滤器、输出格式和授权状态。",
+      "新增 / 完成 / 删除 / 列表变更前的确认项和执行结果。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "command-reference",
+      source: new URL("./references/command-reference.md", import.meta.url),
+      target: "references/command-reference.md",
+      title: "Apple Reminders CLI 命令速查",
+      summary: "`remindctl` 查看提醒、管理列表、新增、完成和删除提醒的命令示例。",
+      loadWhen: "需要实际操作 Apple Reminders 或查看 remindctl 参数示例时读取。",
+    }),
+  ],
 });

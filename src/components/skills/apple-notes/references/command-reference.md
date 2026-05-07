@@ -1,6 +1,6 @@
-## 代码模式
+# Apple Notes CLI 命令速查
 
-### 查看与搜索
+## 查看与搜索
 
 ```bash
 memo notes
@@ -9,7 +9,7 @@ memo notes --search "退款"
 memo notes --view 3
 ```
 
-### 新增、编辑与移动
+## 新增、编辑与移动
 
 ```bash
 memo notes --folder "Work" --add
@@ -18,7 +18,7 @@ memo notes --folder "Work" --delete
 memo notes --move
 ```
 
-### 文件夹与导出
+## 文件夹与导出
 
 ```bash
 memo notes --flist
