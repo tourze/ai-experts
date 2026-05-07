@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, lstatSync, readdirSync, readFileSync, readlinkSync } from "node:fs";
 import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, test } from "vitest";
@@ -16,6 +16,19 @@ import {
 } from "./test-helpers";
 
 describe("component source conventions", () => {
+  test("root platform memory files stay linked to README", () => {
+    for (const fileName of ["AGENTS.md", "CLAUDE.md"]) {
+      const filePath = join(repoRoot, fileName);
+      assert.equal(lstatSync(filePath).isSymbolicLink(), true, `${fileName} should be a symlink`);
+      assert.equal(readlinkSync(filePath), "README.md", `${fileName} should point at README.md`);
+      assert.equal(
+        readFileSync(filePath, "utf-8"),
+        readFileSync(join(repoRoot, "README.md"), "utf-8"),
+        `${fileName} content should match README.md`,
+      );
+    }
+  });
+
   test("README documents current component counts and procedure runtime", () => {
     const readme = readFileSync(join(repoRoot, "README.md"), "utf-8");
     const currentCounts = `${registry.skills.length} 个 skill、${registry.agents.length} 个 agent、${registry.hooks.length} 个 hook`;
