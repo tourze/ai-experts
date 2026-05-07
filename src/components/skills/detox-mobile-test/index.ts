@@ -5,7 +5,11 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
+import { javascriptTypescriptJestSkill } from "../javascript-typescript-jest/index";
 
 export const detoxMobileTestSkill = defineSkill({
   id: "detox-mobile-test",
@@ -15,7 +19,6 @@ export const detoxMobileTestSkill = defineSkill({
     "React Native 项目需要覆盖登录、下单、支付、权限、深链等关键 E2E 流程。",
     "CI 上的 Detox 用例经常 flaky，需要收紧选择器和等待策略。",
     "需要把本地运行、模拟器/模拟机配置与 CI 执行命令统一起来。",
-    "单元测试与组件测试任务更适合联动 `javascript-typescript-jest`。",
   ],
   constraints: [
     "选择器优先 `testID` / `by.id()`；`by.text()` 只能当补充，不做主定位手段。",
@@ -31,6 +34,14 @@ export const detoxMobileTestSkill = defineSkill({
     "每条用例是否可独立运行，不依赖前置状态？",
     "构建方式、模拟器/模拟机版本、Jest 配置是否已统一？",
     "失败时是否能通过截图、日志、录像快速定位问题？",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return javascriptTypescriptJestSkill.id;
+      },
+      reason: "任务转为单元测试、组件测试、Jest 配置或非 E2E 断言设计时联动。",
+    },
   ],
   antiPatterns: [
     defineAntiPattern({
@@ -48,7 +59,26 @@ export const detoxMobileTestSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "编写、排查和稳定 Detox 移动端 E2E 测试，覆盖配置一致性、稳定选择器、显式等待、CI 设备和失败证据。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认 React Native 项目、Detox 配置、app/device/configuration 名称、本地与 CI 命令是否一致。",
+      "关键流程用 testID/by.id 作为主选择器，by.text 只做补充；断言用户可感知行为，不依赖内部实现。",
+      "每条用例独立启动和清理状态，避免依赖前一个测试的登录态、缓存或数据。",
+      "所有异步等待绑定可观察状态，如 waitFor(...).toBeVisible()，禁止固定 sleep 掩盖时序问题。",
+      "复杂配置、flaky 排查、高级等待或 matcher 策略读取 advanced-patterns。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Detox 配置审查：app/device/configuration、构建模式、模拟器/模拟机和 Jest 配置一致性。",
+      "E2E 用例结构、testID 覆盖、显式等待、独立状态和用户可感知断言。",
+      "CI/flaky 风险、失败截图/日志/录像证据和需要 advanced-patterns 的复杂场景。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

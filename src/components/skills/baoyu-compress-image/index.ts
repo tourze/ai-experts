@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, baoyuCompressImageMain } from "../../procedures/index";
 
@@ -44,7 +47,26 @@ export const baoyuCompressImageSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "压缩单张图片或目录图片，转换为 webp/png/jpeg，并在删除源文件、批处理和后端依赖上保持明确边界。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认输入是单文件还是目录、目标格式、quality、是否递归和是否需要保留源文件。",
+      "调用 baoyu-compress-image-main；单文件可传 output，目录批处理禁止传自定义 output。",
+      "默认 keep=false，成功转码后会删除原文件；只有用户明确要求保留时才传 --keep。",
+      "目录默认不递归，需要跨子目录时显式传 --recursive；输出格式必须与后缀一致。",
+      "压缩后检查 input、output、ratio 和失败项；全部失败时按错误处理，不输出空摘要。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "输入类型、输出格式、quality、keep/recursive/output 参数和实际执行的 procedure。",
+      "每个文件的 input、output、压缩比例、后端选择和失败原因。",
+      "源文件删除风险、批处理限制和需要补依赖的压缩后端问题。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(baoyuCompressImageMain),

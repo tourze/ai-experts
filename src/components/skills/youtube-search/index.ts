@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, youtubeSearchSearchYoutube } from "../../procedures/index";
 
@@ -16,14 +19,14 @@ export const youtubeSearchSkill = defineSkill({
   useCases: [
     "用户要“搜一下 YouTube 上有哪些视频”“找教程”“列几个候选视频”“看看这个主题最近有什么视频”。",
     "用户需要标题、频道、观看量、URL 这类结构化结果，方便后续筛选。",
-    "用户先做发现，再把选中的单条视频交给 `youtube-analysis` 深挖。",
+    "用户还没有指定单条视频，需要先做候选发现和筛选。",
   ],
   constraints: [
     "默认使用 `yt-dlp ytsearch + --dump-single-json --flat-playlist`，字段是“尽力而为”。",
     "在 flat search 模式下，`upload_date`、`duration_string` 等字段可能为空；缺失时要明确说明，不要伪造。",
     "本技能不负责下载视频、不负责音视频转码，也不承诺绕过 YouTube 的反爬限制。",
     "当前目录已经提供 `procedure youtube-search-search-youtube`，优先用它，不要再依赖手写 `jq` 管道。",
-    "用户已经给出明确视频链接且诉求是“总结内容”时，不要继续搜索，直接切到 `youtube-analysis`。",
+    "用户已经给出明确视频链接且诉求是“总结内容”时，不要继续搜索，直接转入关联的视频分析 skill。",
   ],
   checklist: [
     "查询词先收窄到主题本身，不要把分析诉求和搜索词混在一起。",
@@ -36,7 +39,7 @@ export const youtubeSearchSkill = defineSkill({
       get id() {
         return youtubeAnalysisSkill.id;
       },
-      reason: "用户已经给出明确视频链接且诉求是“总结内容”时，不要继续搜索，直接切到 `youtube-analysis`。",
+      reason: "用户已经给出明确视频链接且诉求是“总结内容”时联动。",
     },
   ],
   antiPatterns: [
@@ -51,7 +54,26 @@ export const youtubeSearchSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "按关键词搜索 YouTube 视频，返回可筛选的候选清单，并明确 flat search 字段缺失、排序和近 N 天过滤边界。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先把查询词收窄到主题本身，不把分析诉求混进搜索词；已有单条视频链接且要总结时转 youtube-analysis。",
+      "优先调用 youtube-search-search-youtube，使用 yt-dlp flat search 规范化字段。",
+      "需要最近或热门时显式传 days 或 sort；不要靠自然语言脑补时间和排序。",
+      "upload_date、duration_string 等字段可能为空，缺失时说明是 flat search 限制而不是脚本 bug。",
+      "遇到 bot challenge 或反爬失败时直接说明失败原因，不把空结果伪装成没有搜到。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "查询词、排序/时间过滤参数、执行的 procedure 和失败原因。",
+      "标准化视频字段：id、title、url、channel、view_count、duration_string、upload_date、description。",
+      "字段缺失说明、候选筛选建议和需要 youtube-analysis 深挖的单条视频。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(youtubeSearchSearchYoutube),

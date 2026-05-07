@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, iconRetrievalSearch } from "../../procedures/index";
 
@@ -38,7 +41,7 @@ export const iconRetrievalSkill = defineSkill({
       get id() {
         return figmaImplementDesignSkill.id;
       },
-      reason: "`figma-implement-design`。",
+      reason: "设计稿实现时需要把检索到的图标映射到 Figma 资产、组件或视觉状态时联动。",
     },
     {
       get id() {
@@ -63,7 +66,25 @@ export const iconRetrievalSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "按业务语义检索 SVG 图标候选，并在进入前端代码或设计系统前检查风格、尺寸、语义和安全处理边界。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先把用户需求转成具体业务语义词，优先搜索 security shield、document upload 这类概念词。",
+      "调用 icon-retrieval-search，topK 必须是正整数；默认先拿 3-5 个可比较候选。",
+      "结果中的 SVG 是原始字符串，落库或渲染前必须按项目安全、压缩、颜色和包装器规范处理。",
+      "用于界面前检查尺寸、线宽、圆角、语义、可访问名称和与现有设计系统的一致性。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "查询词、topK、候选 URL、SVG 摘要和采用/淘汰理由。",
+      "图标风格、尺寸、线宽、颜色、语义和可访问性检查结果。",
+      "进入统一 Icon 包装器、设计系统 token 或 Figma 实现的后续处理建议。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(iconRetrievalSearch),

@@ -5,6 +5,9 @@ import {
   defineAsset,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { testingStrategySkill } from "../testing-strategy/index";
 
@@ -15,7 +18,7 @@ export const webappTestingSkill = defineSkill({
   useCases: [
     "本地开发站点或测试环境页面需要真实浏览器验证。",
     "需要验证交互、表单、跳转、控制台日志、截图或响应式表现。",
-    "需要把 `testing-strategy` 里的 Web 场景落成实际浏览器检查。",
+    "需要把 Web 测试策略落成实际浏览器检查。",
     "需要在执行失败时保留证据用于复盘。",
   ],
   constraints: [
@@ -25,7 +28,7 @@ export const webappTestingSkill = defineSkill({
     "关键步骤后要显式等待，不靠裸 `sleep`。",
     "失败时截图并记录浏览器控制台日志。",
     "结束后关闭浏览器上下文，避免遗留进程。",
-    "当前目录内可复用辅助函数：[test-helper.js](./assets/test-helper.js)",
+    "需要本地辅助函数时使用 `test-helper` asset，不在运行时正文手写资产链接。",
   ],
   checklist: [
     "已确认目标地址可访问",
@@ -40,7 +43,7 @@ export const webappTestingSkill = defineSkill({
       get id() {
         return testingStrategySkill.id;
       },
-      reason: "需要把 `testing-strategy` 里的 Web 场景落成实际浏览器检查。",
+      reason: "需要把测试策略里的 Web 场景落成实际浏览器检查时联动。",
     },
   ],
   antiPatterns: [
@@ -59,7 +62,26 @@ export const webappTestingSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用真实浏览器验证 Web 应用的页面可达性、交互、表单、跳转、控制台日志、截图和响应式表现。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认目标 URL 可访问和验证目标；本地开发站点需要确认 dev server 状态。",
+      "优先用 Playwright 能力；环境不支持时退回本地 Node + Playwright，并复用 test-helper asset。",
+      "选择器优先 data-testid、role、可访问名称；避免脆弱 CSS 选择器。",
+      "导航、表单提交和异步状态后使用显式等待，如 waitForURL、locator 可见性或业务 ready 标记。",
+      "失败时截图并收集控制台日志；结束后关闭浏览器上下文，避免遗留进程。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "目标 URL、浏览器验证范围、关键步骤、稳定选择器和显式等待方式。",
+      "截图、控制台日志、错误信息、响应式观察和可复现步骤。",
+      "需要 testing-strategy 联动的覆盖缺口或自动化测试建议。",
+    ],
+  }),
   tools: [],
   assets: [
     defineAsset({
