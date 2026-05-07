@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const gitAdvancedWorkflowsSkill = defineSkill({
@@ -47,6 +50,26 @@ export const gitAdvancedWorkflowsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "安全执行 rebase、cherry-pick、bisect、worktree 和 reflog 恢复，优先保护当前工作树和共享历史。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "动手前先跑 `git status --short`、`git branch --show-current`，必要时补 `git fetch origin` 和远端跟踪检查。",
+      "清理本地 PR 历史时用 `git rebase -i --autosquash \"$(git merge-base HEAD origin/main)\"`，共享分支需先确认。",
+      "只搬单个修复用 `git cherry-pick <sha>` 或范围 `<start>^..<end>`；需要自己组织提交时用 `git cherry-pick -n`。",
+      "定位回归先准备稳定脚本，再用 `git bisect start/bad/good/run/reset`；没有可脚本化复现不要硬跑。",
+      "并行热修、主线和实验分支优先 `git worktree add -b ...`，删除前确认目标 worktree 没有未提交改动。",
+      "恢复误操作先看 `git reflog --date=iso`，再 `git switch -c recovery/<topic> <sha>` 核对内容。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "现场确认：当前分支、工作树状态、远端/共享判断和风险动作确认。",
+      "执行计划：选用 rebase/cherry-pick/bisect/worktree/reflog 的理由、命令和中止路径。",
+      "结果记录：新 commit/分支、冲突处理、需要 push 的命令和后续验证。",
+    ],
+  }),
   tools: [],
 });

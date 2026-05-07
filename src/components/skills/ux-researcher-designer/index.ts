@@ -6,6 +6,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { procedureUse, uxResearcherDesignerPersonaGenerator } from "../../procedures/index";
 
@@ -21,7 +24,7 @@ export const uxResearcherDesignerSkill = defineSkill({
     "要为新流程、新页面制定可用性测试计划和成功指标。",
     "要把原始研究记录压成“发现 → 证据 → 建议”的交付物。",
     "如果问题已经明确是界面启发式错误，先用 `ux-heuristics`。",
-    "工具、模板与方法细节分别在 [persona-methodology](references/persona-methodology.md)、[journey-mapping-guide](references/journey-mapping-guide.md)、[usability-testing-frameworks](references/usability-testing-frameworks.md)、[research-plan-template](assets/research_plan_template.md)。",
+    "需要 persona、旅程图、可用性测试、研究计划模板或 procedure 支持。",
   ],
   constraints: [
     "没有真实数据就明确说“假设版”，不要伪装成已验证 Persona。",
@@ -45,7 +48,7 @@ export const uxResearcherDesignerSkill = defineSkill({
       get id() {
         return uxHeuristicsSkill.id;
       },
-      reason: "如果问题已经明确是界面启发式错误，先用 `ux-heuristics`。",
+      reason: "问题已明确是界面启发式错误、交互可用性或设计评审项时联动。",
     },
   ],
   antiPatterns: [
@@ -64,7 +67,28 @@ export const uxResearcherDesignerSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "把访谈、问卷、行为数据和支持记录转成可追溯的 Persona、旅程图、可用性测试计划和设计输入。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认研究问题、用户类型、数据来源、样本量、时间范围和输出用途。",
+      "Persona 输入优先使用稳定对象数组，字段能追溯来源；只有演示场景才使用 procedure 的 `--sample`。",
+      "基于真实 JSON 数据运行 `ux-researcher-designer-persona-generator` 时传入 `--input`、可选 `--interviews` 和输出格式。",
+      "Persona 输出必须保留样本量、访谈数、信心等级、痛点频次、行为证据和推断边界。",
+      "旅程图先定用户类型、目标、起点、终点和时间跨度，再填 stage、actions、touchpoints、emotions、pain_points、opportunities。",
+      "可用性测试任务写成场景、目标和成功条件；研究结论按发现、证据、建议、优先级交付。",
+      "方法细节按需读取 persona-methodology、journey-mapping-guide、usability-testing-frameworks 或 research-plan-template。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Persona：数据来源、样本量、信心等级、角色特征、痛点频次、行为证据和推断边界。",
+      "旅程图：阶段、动作、触点、情绪、阻塞点、机会点和成功标准。",
+      "研究交付：发现、证据、建议、影响面、严重度、可解性和后续验证计划。",
+    ],
+  }),
   tools: [],
   procedures: [
     procedureUse(uxResearcherDesignerPersonaGenerator),

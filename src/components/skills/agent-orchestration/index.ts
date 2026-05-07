@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 
 export const agentOrchestrationSkill = defineSkill({
@@ -16,7 +19,7 @@ export const agentOrchestrationSkill = defineSkill({
     "构建 system prompt 架构：静态/动态分离、缓存边界、模块化段函数。",
     "设计 Agent 状态管理：四种状态生命周期、层级配置、记忆提取。",
     "规划 Agent 扩展点：协议（MCP）、事件（Hooks）、声明式（Skills）。",
-    "需要与 [agent-tool-design](references/agent-tool-design.md) 联动做工具加载策略。",
+    "需要设计工具注册、加载、执行和权限边界策略。",
   ],
   constraints: [
     "**铁律：Fork vs Fresh 必须显式决策**——子 Agent 继承父上下文（fork）还是独立启动（fresh）不能隐含，必须按风险和隔离需求明确选择。",
@@ -54,7 +57,27 @@ export const agentOrchestrationSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "设计可隔离、可追踪、可扩展的多 Agent 编排方案，明确 system prompt、子 Agent、状态和工具边界。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先拆 system prompt：静态角色/规则/工具说明放缓存边界前，动态环境/记忆/任务上下文放边界后。",
+      "定义每类子 Agent 的职责、输入、输出、`max_turns`、权限和失败退出条件。",
+      "逐个子 Agent 做 fork/fresh/worktree 决策；高风险写入、长任务或需要文件隔离时优先 worktree 或 fresh。",
+      "状态按 turn/session/persistent/project 四层落位，跨 Agent 只传消息和结果，不共享可变状态对象。",
+      "后台任务必须有任务 ID、状态查询、取消路径、结果持久化和审计记录。",
+      "扩展点用 MCP、Hooks、Skills 或声明式配置暴露；需要工具加载细节时读取 agent-tool-design。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "Agent 拓扑：角色、职责、输入输出、`max_turns`、权限和隔离模式。",
+      "Prompt 架构：静态段、缓存边界、动态段和每段测试方式。",
+      "状态与扩展设计：四层状态归属、后台任务跟踪、工具/协议/事件接口和风险控制。",
+    ],
+  }),
   tools: [],
   references: [
     defineReference({

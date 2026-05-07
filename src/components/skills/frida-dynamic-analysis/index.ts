@@ -4,6 +4,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { androidApkAuditSkill } from "../android-apk-audit/index";
 import { binaryAnalysisPatternsSkill } from "../binary-analysis-patterns/index";
@@ -15,8 +18,8 @@ export const fridaDynamicAnalysisSkill = defineSkill({
   useCases: [
     "需要 hook 函数调用、修改参数/返回值或 trace 执行路径。",
     "需要绕过 root 检测、SSL pinning、RASP 等运行时保护。",
-    "需要与 `jadx` 配合，先静态定位目标再动态验证。",
-    "需要与 `anti-reversing-techniques` 联动识别保护逻辑。",
+    "需要先静态定位目标，再用动态 hook 验证保护逻辑或运行时行为。",
+    "需要诊断 Frida 脚本崩溃、模块未加载、API 过时或数据打印错误。",
   ],
   constraints: [
     "先静态分析定位 hook 点，不要盲写 hook 脚本。",
@@ -35,15 +38,13 @@ export const fridaDynamicAnalysisSkill = defineSkill({
       get id() {
         return binaryAnalysisPatternsSkill.id;
       },
-      label: "anti-reversing-techniques",
-      reason: "需要与 `anti-reversing-techniques` 联动识别保护逻辑。",
+      reason: "需要先识别静态保护逻辑、字符串/xref 线索、函数边界或算法假设时联动。",
     },
     {
       get id() {
         return androidApkAuditSkill.id;
       },
-      label: "jadx",
-      reason: "需要与 `jadx` 配合，先静态定位目标再动态验证。",
+      reason: "Android APK 需要 jadx 静态定位类、方法、签名校验或网络栈后再 hook 时联动。",
     },
   ],
   antiPatterns: [
@@ -54,6 +55,26 @@ export const fridaDynamicAnalysisSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 Frida 对 Android、iOS 或 native 目标做运行时 hook、trace、参数/返回值修改和自适应 bypass。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先静态定位 hook 点：包名、PID、模块名、导出符号、Java 类/方法或 ObjC selector。",
+      "选择启动方式：`frida -U -f <pkg> -l hook.js` spawn、`frida -U <pkg> -l hook.js` attach，或 `frida -U -p <pid> -l hook.js`。",
+      "Native hook 用 `Process.getModuleByName()` 和 `mod.getExportByName()`，早加载模块先轮询 `Process.findModuleByName()`。",
+      "Android Java hook 包在 `Java.perform()` 内；iOS ObjC hook 从 `ObjC.classes` 取 selector implementation。",
+      "二进制数据用 `hexdump()`，hook 回调用 try/catch，避免脚本异常放大成目标崩溃。",
+      "自适应 bypass 按静态定位、首次 hook、运行/崩溃/诊断、迭代修复推进；crash log 决定下一轮 hook 点。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "目标信息：设备、进程/包名、Frida 版本、模块/类/selector、启动方式和 hook 时机。",
+      "Hook 脚本要点：native、Java 或 ObjC 入口、参数/返回值处理、日志和异常保护。",
+      "Bypass 迭代记录：静态证据、运行结果、crash 信号、修复假设和下一轮验证。",
+    ],
+  }),
   tools: [],
 });
