@@ -7,6 +7,8 @@ import {
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../sdk";
+import { architectureReviewerSkill } from "../architecture-reviewer/index";
+import { refactoringPatternsSkill } from "../refactoring-patterns/index";
 
 export const crossPlatformAdapterPatternsSkill = defineSkill({
   id: "cross-platform-adapter-patterns",
@@ -14,7 +16,7 @@ export const crossPlatformAdapterPatternsSkill = defineSkill({
   description: "在设计跨平台应用的平台抽象层、适配器接口、运行时分支和 monorepo 组织时使用。",
   useCases: [
     "需要让同一套业务逻辑运行在多个平台上，或设计共享包与平台包的边界。",
-    "交叉引用：边界分析配合 `seam-ripper`；架构蓝图配合 `architecture-blueprint-generator`。",
+    "需要定义共享接口、平台实现、降级策略和 monorepo 依赖方向。",
   ],
   constraints: [
     "领域逻辑必须平台无关；平台代码只存在于 adapter 层。",
@@ -28,6 +30,20 @@ export const crossPlatformAdapterPatternsSkill = defineSkill({
     "`shared-core` 是否零平台导入。",
     "适配器注册是否集中在 app 入口。",
     "依赖方向是否单向：`apps -> platform-* -> shared-core`。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return refactoringPatternsSkill.id;
+      },
+      reason: "需要用 seam-ripper reference 分析接缝、隔离遗留代码或规划重构路径时联动。",
+    },
+    {
+      get id() {
+        return architectureReviewerSkill.id;
+      },
+      reason: "需要用 architecture-blueprint-generator reference 产出架构蓝图或做子系统级结构分析时联动。",
+    },
   ],
   antiPatterns: [
     defineAntiPattern({
