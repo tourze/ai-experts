@@ -40,21 +40,13 @@ export const markitdownSkill = defineSkill({
       get id() {
         return docCoauthoringSkill.id;
       },
-      label: "docx",
-      reason: "当用户只处理单个 Office 文件且最终仍要保留原格式时，优先使用 `docx`、`pptx` 或 `xlsx`。",
+      reason: "当用户只处理单个 Office 文件且最终仍要保留原格式或进入文档协作时，优先转 `doc-coauthoring`；PPT 生成转 `ppt-generate`。",
     },
     {
       get id() {
         return pptGenerateSkill.id;
       },
       label: "pptx",
-      reason: "当用户只处理单个 Office 文件且最终仍要保留原格式时，优先使用 `docx`、`pptx` 或 `xlsx`。",
-    },
-    {
-      get id() {
-        return docCoauthoringSkill.id;
-      },
-      label: "xlsx",
       reason: "当用户只处理单个 Office 文件且最终仍要保留原格式时，优先使用 `docx`、`pptx` 或 `xlsx`。",
     },
     {

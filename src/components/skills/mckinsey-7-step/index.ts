@@ -49,8 +49,7 @@ export const mckinseyStepSkill = defineSkill({
       get id() {
         return fishboneDiagramSkill.id;
       },
-      label: "five-w-two-h",
-      reason: "问题已经清晰只需执行：七步法从问题定义开始，如果问题和方案都已明确，直接做 `five-w-two-h` 制定行动计划。",
+      reason: "步骤 2 需要根因或问题结构拆解时用 `fishbone-diagram`；问题和方案都已明确、只需一次性行动计划时，参考 fishbone-diagram 的 5W2H reference。",
     },
   ],
   antiPatterns: [

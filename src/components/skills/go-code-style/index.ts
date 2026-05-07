@@ -39,13 +39,6 @@ export const goCodeStyleSkill = defineSkill({
       get id() {
         return goErrorHandlingSkill.id;
       },
-      label: "go-safety",
-      reason: "需要命名或错误语义时配合 `go-error-handling`；涉及 nil、slice、map 或资源安全时配合 `go-safety`。",
-    },
-    {
-      get id() {
-        return goErrorHandlingSkill.id;
-      },
       reason: "需要命名或错误语义时配合 `go-error-handling`；涉及 nil、slice、map 或资源安全时配合 `go-safety`。",
     },
   ],

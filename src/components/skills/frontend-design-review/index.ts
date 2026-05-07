@@ -45,15 +45,7 @@ export const frontendDesignReviewSkill = defineSkill({
       get id() {
         return modernWebDesignSkill.id;
       },
-      label: "web-design-guidelines",
-      reason: "`web-design-guidelines`。",
-    },
-    {
-      get id() {
-        return modernWebDesignSkill.id;
-      },
-      label: "refactoring-ui",
-      reason: "`refactoring-ui`",
+      reason: "`modern-web-design`：视觉方向、Web 设计规范和界面风格参考。",
     },
   ],
   antiPatterns: [

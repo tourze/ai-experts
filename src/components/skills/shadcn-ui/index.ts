@@ -38,13 +38,6 @@ export const shadcnUiSkill = defineSkill({
   relatedSkills: [
     {
       get id() {
-        return designSystemPatternsSkill.id;
-      },
-      label: "tailwind-design-system",
-      reason: "`tailwind-design-system`。",
-    },
-    {
-      get id() {
         return frontendDesignReviewSkill.id;
       },
       reason: "`frontend-design-review`。",

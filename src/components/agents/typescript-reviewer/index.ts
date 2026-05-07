@@ -7,8 +7,8 @@ import {
   Platform,
   SkillUseMode,
 } from "../../sdk";
-import { debugMethodology } from "../../skills/debug-methodology/index";
-import { typescriptTypeSafety } from "../../skills/typescript-type-safety/index";
+import { debugMethodologySkill } from "../../skills/debug-methodology/index";
+import { typescriptTypeSafetySkill } from "../../skills/typescript-type-safety/index";
 
 export const typescriptReviewer = defineAgent({
   id: "typescript-reviewer",
@@ -54,12 +54,12 @@ export const typescriptReviewer = defineAgent({
   reasoningEffort: "high",
   skills: [
     {
-      id: typescriptTypeSafety.id,
+      id: typescriptTypeSafetySkill.id,
       mode: SkillUseMode.Preload,
       reason: "审查 TS 合同、any 逃逸、运行时解析与泛型复杂度。",
     },
     {
-      id: debugMethodology.id,
+      id: debugMethodologySkill.id,
       mode: SkillUseMode.Route,
       reason: "遇到失败日志、flaky 或根因不清时按调试流程收敛证据。",
     },

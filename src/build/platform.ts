@@ -87,6 +87,15 @@ export function validateId(id: string, kind: string): void {
   }
 }
 
+function validateSkillBodyCrossSkillLinks(skill: SkillDefinition, bodySource: string, skillIds: ReadonlySet<string>): void {
+  for (const match of bodySource.matchAll(/\]\(\.\.\/([a-z0-9]+(?:-[a-z0-9]+)*)\/SKILL\.md(?:#[^)]+)?\)/gu)) {
+    const targetSkillId = match[1] as string;
+    if (!skillIds.has(targetSkillId)) {
+      throw new Error(`Skill ${skill.id} contains a markdown link to missing skill: ${targetSkillId}`);
+    }
+  }
+}
+
 export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
   if (!registry || !Array.isArray(registry.skills)) throw new Error("registry.skills must be an array");
   if (!Array.isArray(registry.instructions)) throw new Error("registry.instructions must be an array");
@@ -180,6 +189,7 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
     }
     validateAntiPatterns(skill);
     validateParameters(skill);
+    validateSkillBodyCrossSkillLinks(skill, bodySource, skillIds);
     if (/\]\(\.\.\/[^)]+\/SKILL\.md\)|\]\([a-z0-9-]+-expert:[a-z0-9-]+\)/u.test(bodySource)) {
       throw new Error(`Skill ${skill.id} must move explicit cross-skill links from SKILL.body.md to relatedSkills`);
     }
@@ -199,11 +209,10 @@ export function validateRegistry(registry: ComponentRegistry): ProfileSurface {
       if (typeof related.reason !== "string" || related.reason.trim() === "") {
         throw new Error(`Skill ${skill.id} related skill ${related.id} has an empty reason`);
       }
-      const key = `${related.id}\0${related.label ?? ""}`;
-      if (seenRelatedSkills.has(key)) {
+      if (seenRelatedSkills.has(related.id)) {
         throw new Error(`Skill ${skill.id} has a duplicate related skill entry: ${related.id}`);
       }
-      seenRelatedSkills.add(key);
+      seenRelatedSkills.add(related.id);
     }
 
     const skillSourceRoot = dirname(toAbsolutePath(skill.body));

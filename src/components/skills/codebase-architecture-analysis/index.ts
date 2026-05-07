@@ -49,20 +49,6 @@ export const codebaseArchitectureAnalysisSkill = defineSkill({
     },
     {
       get id() {
-        return techDebtSkill.id;
-      },
-      label: "`tech-debt`",
-      reason: "``tech-debt``：技术债识别、排序与治理",
-    },
-    {
-      get id() {
-        return softwareDesignSkill.id;
-      },
-      label: "`software-design`",
-      reason: "``software-design``：设计原则与架构模式，从复杂度、深模块和信息隐藏角度评估设计",
-    },
-    {
-      get id() {
         return deepCodeReadSkill.id;
       },
       reason: "`deep-code-read`：深度理解不熟悉代码库。",

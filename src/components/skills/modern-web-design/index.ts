@@ -64,13 +64,6 @@ export const modernWebDesignSkill = defineSkill({
       },
       reason: "`web-performance-diagnosis`、`interaction-design`、`responsive-design`。",
     },
-    {
-      get id() {
-        return webPerformanceDiagnosisSkill.id;
-      },
-      label: "性能诊断",
-      reason: "已通过 `性能诊断` 复核。",
-    },
   ],
   antiPatterns: [
     defineAntiPattern({

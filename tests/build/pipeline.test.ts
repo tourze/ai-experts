@@ -223,6 +223,18 @@ describe("build/pipeline modules", () => {
     const scriptMap = new Map([[fixture.script.id, fixture.script]]);
     expect(renderSkillMd(fixture.skill, Platform.Claude, scriptMap)).toContain("## 适用场景");
     expect(renderSkillMd(fixture.skill, Platform.Codex, scriptMap)).toContain("# Fixture Skill");
+    const relatedSkillMd = renderSkillMd(
+      {
+        ...fixture.skill,
+        relatedSkills: [
+          { id: "other-skill", reason: "first route" },
+          { id: "other-skill", label: "other alias", reason: "duplicate route" },
+        ],
+      },
+      Platform.Claude,
+      scriptMap,
+    );
+    expect(relatedSkillMd.match(/\.\.\/other-skill\/SKILL\.md/g)?.length).toBe(1);
     expect(() => validateTextList({ ...fixture.skill, useCases: [] }, "useCases", "useCase")).toThrow();
     expect(() => validateAntiPatterns({ ...fixture.skill, antiPatterns: [] })).toThrow();
 
@@ -258,6 +270,58 @@ describe("build/pipeline modules", () => {
       skills: [{ ...fixture.skill, scripts: ["missing-script"] }],
     };
     expect(() => validateRegistry(missingScriptReferenceRegistry)).toThrow("references missing procedure");
+
+    const duplicateRelatedSkillRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        relatedSkills: [
+          { id: "other-skill", reason: "first route" },
+          { id: "other-skill", label: "other alias", reason: "duplicate route" },
+        ],
+      }],
+    };
+    expect(() => validateRegistry(duplicateRelatedSkillRegistry)).toThrow("references missing related skill");
+
+    const otherSkill = defineSkill({
+      ...fixture.skill,
+      id: "other-skill",
+      fullName: "Other Skill",
+      relatedSkills: [],
+      scripts: [],
+      procedures: [],
+    });
+    expect(() =>
+      validateRegistry({
+        ...fixture.registry,
+        scripts: [],
+        skills: [{
+          ...fixture.skill,
+          scripts: [],
+          procedures: [],
+          relatedSkills: [
+            { id: otherSkill.id, reason: "first route" },
+            { id: otherSkill.id, label: "other alias", reason: "duplicate route" },
+          ],
+        }, otherSkill],
+        profiles: [{
+          ...fixture.profile,
+          skills: [fixture.skill.id, otherSkill.id],
+        }],
+      })
+    ).toThrow("duplicate related skill entry: other-skill");
+
+    const bodyWithMissingSkillLink = join(fixture.root, "skill", "missing-link.body.md");
+    writeText(bodyWithMissingSkillLink, "## 步骤\n\n参见 [missing](../missing-skill/SKILL.md)。\n");
+    expect(() =>
+      validateRegistry({
+        ...fixture.registry,
+        skills: [{
+          ...fixture.skill,
+          body: pathToFileURL(bodyWithMissingSkillLink),
+        }],
+      })
+    ).toThrow("markdown link to missing skill: missing-skill");
   });
 
   test("procedure references support structured links and scripts helper guard", () => {

@@ -37,15 +37,7 @@ export const agileProductOwnerSkill = defineSkill({
       get id() {
         return createPrdSkill.id;
       },
-      label: "epic-decomposition",
-      reason: "故事拆分可配合 `user-story-patterns`（8 种拆分模式 + INVEST 检查），Epic 分解可配合 `epic-decomposition`（9 种分解模式 + Story Mapping）。",
-    },
-    {
-      get id() {
-        return createPrdSkill.id;
-      },
-      label: "user-story-patterns",
-      reason: "故事拆分可配合 `user-story-patterns`（8 种拆分模式 + INVEST 检查），Epic 分解可配合 `epic-decomposition`（9 种分解模式 + Story Mapping）。",
+      reason: "故事拆分可配合 `user-story-patterns`，Epic 分解可配合 `epic-decomposition`；这些模板归入 `create-prd` 相关资料。",
     },
   ],
   antiPatterns: [

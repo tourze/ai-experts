@@ -40,13 +40,6 @@ export const structuredBusinessAnalysisFrameworkSkill = defineSkill({
     },
     {
       get id() {
-        return businessModelSkill.id;
-      },
-      label: "`business-model`",
-      reason: "``business-model``：商业模式分析",
-    },
-    {
-      get id() {
         return mckinseyStepSkill.id;
       },
       reason: "`mckinsey-7-step`：麦肯锡七步问题解决法。",

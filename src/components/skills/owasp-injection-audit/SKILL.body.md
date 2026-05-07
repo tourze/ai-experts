@@ -1,10 +1,11 @@
 ## 路由
 
-| 触发信号 | 审计类型 | 若仅涉及 SQL 注入 |
-|---------|---------|------------------|
-| `exec(`/`spawn(`/`system(`/`eval(`/`child_process`/`Runtime.exec`/`subprocess` | 命令注入 | → `sql-review-optimization` |
-| `fetch(`/`axios.`/`http.get`/URL 可控的请求/`SSRF` | SSRF | → `sql-review-optimization` |
-| 文件上传/`path.join`/`fs.readFile`/`../`/路径拼接/`multer`/`file_put_contents` | 路径遍历 | → `sql-review-optimization` |
+| 触发信号 | 审计类型 | 处理方式 |
+|---------|---------|----------|
+| `exec(`/`spawn(`/`system(`/`eval(`/`child_process`/`Runtime.exec`/`subprocess` | 命令注入 | 使用本 skill 审计命令执行边界 |
+| `fetch(`/`axios.`/`http.get`/URL 可控的请求/`SSRF` | SSRF | 使用本 skill 审计出站请求边界 |
+| 文件上传/`path.join`/`fs.readFile`/`../`/路径拼接/`multer`/`file_put_contents` | 路径遍历 | 使用本 skill 审计文件路径边界 |
+| SQL 字符串拼接/ORM raw query/`SELECT ... ${input}`/`WHERE id = ' +` | SQL 注入 | 转 `sql-review-optimization` |
 
 ## 命令注入审计
 

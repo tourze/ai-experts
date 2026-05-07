@@ -33,14 +33,7 @@ export const pdcaCycleSkill = defineSkill({
       get id() {
         return fishboneDiagramSkill.id;
       },
-      reason: "需要根因深挖：PDCA 的 Plan 阶段可以配合 `fishbone-diagram`，但 PDCA 本身不做深度根因分析。",
-    },
-    {
-      get id() {
-        return fishboneDiagramSkill.id;
-      },
-      label: "five-w-two-h",
-      reason: "一次性项目（无需迭代）：PDCA 是循环改进工具，一次性交付用 `five-w-two-h` 做计划。",
+      reason: "需要根因深挖：PDCA 的 Plan 阶段可以配合 `fishbone-diagram`；一次性计划只需要 5W2H 时，参考 fishbone-diagram 的 5W2H reference，不把它当作独立 skill 链接。",
     },
   ],
   antiPatterns: [

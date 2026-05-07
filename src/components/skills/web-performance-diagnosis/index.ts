@@ -69,20 +69,6 @@ export const webPerformanceDiagnosisSkill = defineSkill({
     },
     {
       get id() {
-        return responsiveDesignSkill.id;
-      },
-      label: "`responsive-design`",
-      reason: "``responsive-design``：响应式布局与图片尺寸策略",
-    },
-    {
-      get id() {
-        return frontendDesignReviewSkill.id;
-      },
-      label: "`frontend-design-review`",
-      reason: "``frontend-design-review``：前端界面与交互评审",
-    },
-    {
-      get id() {
         return reactPerformanceSkill.id;
       },
       reason: "React 渲染优化：`react-performance`。",

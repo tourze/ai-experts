@@ -18,7 +18,7 @@ describe("component source conventions", () => {
       join(repoRoot, "src/components/agents/typescript-reviewer/index.ts"),
       "utf-8",
     );
-    assert.match(agentSource, /typescriptTypeSafety\.id/);
+    assert.match(agentSource, /typescriptTypeSafetySkill\.id/);
     assert.doesNotMatch(agentSource, /id: "typescript-type-safety"/);
 
     const generatedRegistrySource = readFileSync(

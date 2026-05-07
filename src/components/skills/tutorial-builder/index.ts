@@ -67,14 +67,7 @@ export const tutorialBuilderSkill = defineSkill({
       get id() {
         return docCoauthoringSkill.id;
       },
-      reason: "只写终端用户的产品操作指南时，转 `user-guide-writing`；只协作文档结构时，先用 `doc-coauthoring`。",
-    },
-    {
-      get id() {
-        return docCoauthoringSkill.id;
-      },
-      label: "docx",
-      reason: "5. 以 Markdown 为源规划 DOCX/PDF/HTML 导出；具体转换分别衔接 `docx`、`md-to-pdf`。",
+      reason: "只写终端用户的产品操作指南时，转 `user-guide-writing`；只协作文档结构或 DOCX 交付边界时，先用 `doc-coauthoring`。",
     },
   ],
   antiPatterns: [

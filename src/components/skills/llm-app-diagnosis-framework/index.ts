@@ -52,27 +52,6 @@ export const llmAppDiagnosisFrameworkSkill = defineSkill({
       label: "`llm-app-design-pipeline`",
       reason: "``llm-app-design-pipeline``：LLM 应用五步设计流程",
     },
-    {
-      get id() {
-        return promptEngineeringPatternsSkill.id;
-      },
-      label: "`prompt-engineering-patterns`",
-      reason: "``prompt-engineering-patterns``：prompt 模板与约束设计",
-    },
-    {
-      get id() {
-        return llmEvaluationSkill.id;
-      },
-      label: "`llm-evaluation`",
-      reason: "``llm-evaluation``：离线 eval 设计与评测方法",
-    },
-    {
-      get id() {
-        return ragAuditorSkill.id;
-      },
-      label: "`rag-auditor`",
-      reason: "``rag-auditor``：RAG 管线审计与故障分类",
-    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

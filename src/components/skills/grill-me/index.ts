@@ -38,14 +38,7 @@ export const grillMeSkill = defineSkill({
       get id() {
         return thinkingPartnerSkill.id;
       },
-      label: "socratic-teaching",
-      reason: "如果用户想通过被提问来学习而非验证方案，转到 `socratic-teaching`。",
-    },
-    {
-      get id() {
-        return thinkingPartnerSkill.id;
-      },
-      reason: "如果用户连问题本身都还没说清，先用 `thinking-partner` 收敛。",
+      reason: "如果用户连问题本身都还没说清，先用 `thinking-partner` 收敛；如果用户想通过被提问来学习而非验证方案，使用其中的 Socratic teaching 方法。",
     },
   ],
   antiPatterns: [

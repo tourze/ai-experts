@@ -5,6 +5,7 @@ import type {
   AntiPatternDefinition,
   Platform as PlatformType,
   ProcedureDefinition,
+  RelatedSkillDefinition,
   SkillDefinition,
   SkillParameter,
   SkillReferenceDefinition,
@@ -236,13 +237,24 @@ function renderUserInput(skill: SkillDefinition, platform: PlatformType): string
 }
 
 function renderRelatedSkills(skill: SkillDefinition): string {
-  const relatedSkills = skill.relatedSkills ?? [];
+  const relatedSkills = uniqueRelatedSkills(skill.relatedSkills ?? []);
   if (relatedSkills.length === 0) return "";
   const rows = relatedSkills.map((related) => {
     const label = related.label ?? related.id;
     return `- [${label}](../${related.id}/SKILL.md) — ${related.reason}`;
   });
   return `## 相关 Skill\n\n${rows.join("\n")}\n`;
+}
+
+function uniqueRelatedSkills(relatedSkills: readonly RelatedSkillDefinition[]): RelatedSkillDefinition[] {
+  const seen = new Set<string>();
+  const unique: RelatedSkillDefinition[] = [];
+  for (const related of relatedSkills) {
+    if (seen.has(related.id)) continue;
+    seen.add(related.id);
+    unique.push(related);
+  }
+  return unique;
 }
 
 function renderBodyWithGeneratedSections(skill: SkillDefinition, body: string): string {

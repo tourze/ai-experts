@@ -33,14 +33,7 @@ export const memoryForensicsSkill = defineSkill({
       get id() {
         return binaryAnalysisPatternsSkill.id;
       },
-      label: "anti-reversing-techniques",
-      reason: "面对反调试或壳层样本时，可结合 `anti-reversing-techniques` 解释运行时差异。",
-    },
-    {
-      get id() {
-        return binaryAnalysisPatternsSkill.id;
-      },
-      reason: "需要与 `binary-analysis-patterns` 联动定位可疑模块。",
+      reason: "需要与 `binary-analysis-patterns` 联动定位可疑模块；面对反调试或壳层样本时，结合其中的 anti-reversing 资料解释运行时差异。",
     },
   ],
   antiPatterns: [

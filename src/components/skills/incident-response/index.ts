@@ -70,27 +70,6 @@ export const incidentResponseSkill = defineSkill({
       label: "`log-analyzer`",
       reason: "``log-analyzer``：日志对齐与错误上下文关联",
     },
-    {
-      get id() {
-        return monitoringObservabilitySkill.id;
-      },
-      label: "`monitoring-observability`",
-      reason: "``monitoring-observability``：指标/日志/告警设计",
-    },
-    {
-      get id() {
-        return systemDiagnosticsSkill.id;
-      },
-      label: "`system-diagnostics`",
-      reason: "``system-diagnostics``：Linux 主机健康检查",
-    },
-    {
-      get id() {
-        return networkTroubleshooterSkill.id;
-      },
-      label: "`network-troubleshooter`",
-      reason: "``network-troubleshooter``：网络排障",
-    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

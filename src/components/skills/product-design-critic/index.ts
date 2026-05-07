@@ -33,14 +33,6 @@ export const productDesignCriticSkill = defineSkill({
       get id() {
         return competitiveIntelligenceSkill.id;
       },
-      label: "obviously-awesome",
-      reason: "需要结合用户路径和竞争上下文时，可配合 `customer-journey-map`、`obviously-awesome` 与 `competitive-teardown`。",
-    },
-    {
-      get id() {
-        return competitiveIntelligenceSkill.id;
-      },
-      label: "competitive-teardown",
       reason: "需要结合用户路径和竞争上下文时，可配合 `customer-journey-map`、`obviously-awesome` 与 `competitive-teardown`。",
     },
     {

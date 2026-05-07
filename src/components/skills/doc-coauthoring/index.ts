@@ -35,13 +35,6 @@ export const docCoauthoringSkill = defineSkill({
       get id() {
         return proposalWriterSkill.id;
       },
-      label: "proposal-review",
-      reason: "若文档偏正式提案，可接续 `proposal-review` 或 `proposal-writer`。",
-    },
-    {
-      get id() {
-        return proposalWriterSkill.id;
-      },
       reason: "若文档偏正式提案，可接续 `proposal-review` 或 `proposal-writer`。",
     },
     {
