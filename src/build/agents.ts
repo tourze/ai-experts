@@ -592,16 +592,16 @@ function renderClaudeAgent(agent: AgentDefinition): string {
   const skillRoutes = (agent.skills ?? [])
     .map((skill) => `- \`${skill.id}\` (${skill.mode}): ${skill.reason}`)
     .join("\n");
-  return [
+  const sections = [
     lines.join("\n"),
     agent.role.trimEnd(),
     "",
     body,
-    "",
-    "## 技能编排",
-    skillRoutes,
-    "",
-  ].join("\n");
+  ];
+  if (skillRoutes) {
+    sections.push("", "## 技能编排", skillRoutes, "");
+  }
+  return sections.join("\n");
 }
 
 function renderCodexSkillConfig(agent: AgentDefinition): string[] {
@@ -628,16 +628,21 @@ function renderCodexAgent(agent: AgentDefinition): string {
   const skillRoutes = (agent.skills ?? [])
     .map((skill) => `- ${skill.id} (${skill.mode}): ${skill.reason}`)
     .join("\n");
-  const developerInstructions = [
+  const developerInstructionSections = [
     agent.role.trimEnd(),
     "",
     body,
-    "",
-    "## 技能编排",
-    skillRoutes,
-    "",
-    "When a listed skill is relevant, explicitly route the work through that skill's workflow.",
-  ].join("\n");
+  ];
+  if (skillRoutes) {
+    developerInstructionSections.push(
+      "",
+      "## 技能编排",
+      skillRoutes,
+      "",
+      "When a listed skill is relevant, explicitly route the work through that skill's workflow.",
+    );
+  }
+  const developerInstructions = developerInstructionSections.join("\n");
 
   const lines = [
     `name = ${tomlString(agent.id)}`,

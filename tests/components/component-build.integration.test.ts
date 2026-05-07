@@ -184,19 +184,30 @@ describe("component build integration", () => {
       assert.equal(parsed.root.name, agentId, `${label} name should match filename`);
       assert.equal(typeof parsed.root.description, "string", `${label} description should be a string`);
       assert.equal(typeof parsed.root.developer_instructions, "string", `${label} instructions should be a string`);
-      assert.match(String(parsed.root.developer_instructions), /## /, `${label} instructions should include sections`);
+      const developerInstructions = String(parsed.root.developer_instructions);
+      assert.match(developerInstructions, /## /, `${label} instructions should include sections`);
       assert.deepEqual(Object.keys(parsed.sections), [], `${label} should not emit unexpected TOML sections`);
       for (const key of Object.keys(parsed.root)) {
         assert.equal(allowedTopLevelKeys.has(key), true, `${label} should not emit unsupported top-level key ${key}`);
       }
 
       const arrayKeys = Object.keys(parsed.arrays).sort();
+      const skillConfigs = parsed.arrays["skills.config"] ?? [];
       assert.deepEqual(
         arrayKeys,
         arrayKeys.length === 0 ? [] : ["skills.config"],
         `${label} should only emit skills.config arrays`,
       );
-      for (const skillConfig of parsed.arrays["skills.config"] ?? []) {
+      if (skillConfigs.length === 0) {
+        assert.doesNotMatch(
+          developerInstructions,
+          /## 技能编排|When a listed skill is relevant/,
+          `${label} should not describe skill routing without configured skills`,
+        );
+      } else {
+        assert.match(developerInstructions, /## 技能编排/, `${label} should describe configured skill routing`);
+      }
+      for (const skillConfig of skillConfigs) {
         assert.deepEqual(Object.keys(skillConfig).sort(), ["enabled", "path"], `${label} skill config shape`);
         assert.equal(skillConfig.enabled, true, `${label} skill config should be enabled`);
         assert.equal(typeof skillConfig.path, "string", `${label} skill path should be a string`);
@@ -355,6 +366,7 @@ describe("component build integration", () => {
     assert.doesNotMatch(claudeAgent, /## 输出格式/, "agents without outputFormat should not emit output format instructions");
     const analyzerAgent = readFileSync(join(tmpDistDir, "claude/agents/eval-post-hoc-analyzer.md"), "utf-8");
     assert.doesNotMatch(analyzerAgent, /Analyzing Benchmark Results/, "analyzer should keep a single output format and one responsibility");
+    assert.doesNotMatch(analyzerAgent, /## 技能编排/, "agents without skills should not emit empty skill routing");
 
     const goReviewerAgent = readFileSync(join(tmpDistDir, "claude/agents/go-reviewer.md"), "utf-8");
     assert.match(goReviewerAgent, /## 工作流/);
