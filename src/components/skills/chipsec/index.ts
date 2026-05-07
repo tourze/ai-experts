@@ -2,8 +2,12 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { binaryAnalysisPatternsSkill } from "../binary-analysis-patterns/index";
 
@@ -48,6 +52,35 @@ export const chipsecSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "用 CHIPSEC 对 UEFI / BIOS 固件 dump 做离线只读分析，生成 EFI 模块清单、威胁扫描、结构解码和 NVRAM 线索。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认固件来源、采集方式、哈希、平台信息和文件格式，所有分析基于副本进行。",
+      "优先执行离线只读命令：EFI inventory、blocked threat scan、UEFI decode 和 NVRAM 提取。",
+      "把 CHIPSEC 的 WARNING / FAILED / module error 与真实安全结论分开记录。",
+      "需要深挖 EFI 可执行模块时联动 `binary-analysis-patterns`，不要直接进入 live system 写操作。",
+      "命令、flag、exit code、workflow、威胁库和排错方式读取 `offline-analysis-guide` reference。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "固件来源、哈希、平台信息、文件格式和分析目录。",
+      "EFI inventory、blocked scan、decode、NVRAM 提取的结果摘要和原始输出位置。",
+      "安全发现、误报 / 不适用说明、受影响模块 GUID / SHA256 和后续逆向建议。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "offline-analysis-guide",
+      source: new URL("./references/offline-analysis-guide.md", import.meta.url),
+      target: "references/offline-analysis-guide.md",
+      title: "CHIPSEC 离线固件分析指南",
+      summary: "离线 CHIPSEC 模块、常用 flag、扫描 workflow、结果解释、威胁库和排错方式。",
+      loadWhen: "需要实际运行 CHIPSEC 固件 dump 分析或解释扫描输出时读取。",
+    }),
+  ],
 });

@@ -2,8 +2,12 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { binaryAnalysisPatternsSkill } from "../binary-analysis-patterns/index";
 import { wiresharkAnalysisSkill } from "../wireshark-analysis/index";
@@ -55,6 +59,35 @@ export const protocolReverseEngineeringSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "从 PCAP、串口、USB、TCP/UDP 报文或二进制实现中还原私有协议的帧边界、字段语义、状态机和编码规则。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先整理多个请求 / 响应样本，标注方向、时间、端点、会话状态和采集点。",
+      "拆分传输层、帧边界、长度字段、消息类型、序号、校验和、压缩或加密层。",
+      "用多样本差异推字段含义，不确定字段标置信度，避免单包命名。",
+      "把状态转换、错误码和重传 / 心跳 / 握手流程单独建表。",
+      "常用 tshark / xxd 初筛命令读取 `frame-triage`；字段需要实现证据时联动 `binary-analysis-patterns`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "样本来源、方向、端点、时间线和帧边界判断。",
+      "字段表：offset、长度、候选含义、证据、置信度和样本覆盖范围。",
+      "状态机、错误码、校验 / 编码规则和需要更多样本的未知项。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "frame-triage",
+      source: new URL("./references/frame-triage.md", import.meta.url),
+      target: "references/frame-triage.md",
+      title: "协议帧初筛命令",
+      summary: "tshark、xxd 和字段提取命令，用于从 PCAP 或二进制帧样本整理协议证据。",
+      loadWhen: "需要从抓包或样本帧中提取十六进制、方向、frame number 或 data 字段时读取。",
+    }),
+  ],
 });

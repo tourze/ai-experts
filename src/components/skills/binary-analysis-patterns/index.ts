@@ -5,6 +5,9 @@ import {
   defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { protocolReverseEngineeringSkill } from "../protocol-reverse-engineering/index";
 
@@ -49,9 +52,36 @@ export const binaryAnalysisPatternsSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "对可执行文件、库和固件模块做静态二进制分析，恢复架构、入口、字符串、符号、控制流和关键数据结构。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先识别文件格式、架构、位数、编译器痕迹、入口点和导入导出表。",
+      "用字符串、交叉引用、反汇编和反编译结果建立候选业务函数清单。",
+      "对关键分支回到汇编验证，避免把伪代码、编译器模板或初始化噪声当作事实。",
+      "遇到结构体、符号恢复或反逆向保护时读取对应 reference；常用初筛命令读取 `triage-commands`。",
+      "协议编解码或加密路径不清晰时，把流量或帧样本交给 `protocol-reverse-engineering` 交叉验证。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "文件格式、架构、入口点、导入表、关键字符串和候选函数清单。",
+      "函数 / 偏移 / 字符串级证据链，区分已确认和待动态验证结论。",
+      "结构恢复、符号恢复、反逆向保护或协议路径的后续分析建议。",
+    ],
+  }),
   tools: [],
   references: [
+    defineReference({
+      id: "triage-commands",
+      source: new URL("./references/triage-commands.md", import.meta.url),
+      target: "references/triage-commands.md",
+      title: "二进制初筛命令",
+      summary: "file、strings、objdump/readelf/otool/rizin 等静态初筛命令和适用场景。",
+      loadWhen: "需要快速确认二进制格式、架构、字符串、导入表或入口点时读取。",
+    }),
     defineReference({
       id: "anti-reversing-techniques",
       source: new URL("./references/anti-reversing-techniques.md", import.meta.url),

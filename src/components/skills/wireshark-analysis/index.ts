@@ -2,8 +2,12 @@ import {
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineReference,
   defineAntiPattern,
   defineSkill,
+  defineSkillGoal,
+  defineSkillOutputs,
+  defineSkillWorkflow,
 } from "../../sdk";
 import { ethicalHackingMethodologySkill } from "../ethical-hacking-methodology/index";
 import { protocolReverseEngineeringSkill } from "../protocol-reverse-engineering/index";
@@ -60,6 +64,35 @@ export const wiresharkAnalysisSkill = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
+  goal: defineSkillGoal({
+    body: "分析 PCAP 中的端点、会话、协议层、异常连接和时间线，提取可复现的网络流量证据。",
+  }),
+  workflow: defineSkillWorkflow({
+    steps: [
+      "先确认抓包点、时间窗口、时区、过滤目标和是否存在采样 / 丢包。",
+      "用协议、端点、端口、会话和时间过滤器逐步收窄流量，不在全量包里盲看。",
+      "对关键连接跟流、导出字段表和原始 packet number，保留显示过滤表达式。",
+      "区分基线流量、异常流量、重传 / 握手失败和应用层错误。",
+      "常用 tshark 过滤、conversation 和 verbose 命令读取 `tshark-triage`；私有协议样本交给 `protocol-reverse-engineering`。",
+    ],
+  }),
+  outputs: defineSkillOutputs({
+    items: [
+      "抓包范围、过滤条件、端点、协议分布和时间线。",
+      "异常流、关键 packet number、跟流证据、导出字段和可复现命令。",
+      "基线与异常对比、剩余未知项和需要进一步协议逆向的样本。",
+    ],
+  }),
   tools: [],
+  references: [
+    defineReference({
+      id: "tshark-triage",
+      source: new URL("./references/tshark-triage.md", import.meta.url),
+      target: "references/tshark-triage.md",
+      title: "tshark 流量分析初筛命令",
+      summary: "协议过滤、TCP conversation、端点过滤、verbose 展开和字段导出命令。",
+      loadWhen: "需要对 PCAP 做快速过滤、会话统计、跟流定位或字段导出时读取。",
+    }),
+  ],
 });
