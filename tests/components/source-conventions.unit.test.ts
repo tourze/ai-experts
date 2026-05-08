@@ -104,7 +104,6 @@ describe("component source conventions", () => {
     const proceduresIndexSource = readFileSync(join(repoRoot, "src/components/procedures/index.ts"), "utf-8");
     const registrySource = readFileSync(join(repoRoot, "src/components/registry.ts"), "utf-8");
     const buildRoot = join(repoRoot, "src/build");
-    const coreSource = readFileSync(join(buildRoot, "core.ts"), "utf-8");
     const buildSources = collectFiles(buildRoot, (file) => file.endsWith(".ts"))
       .map((file) => readFileSync(file, "utf-8"))
       .join("\n");
@@ -118,11 +117,18 @@ describe("component source conventions", () => {
     assert.equal(existsSync(join(buildRoot, "scripts.ts")), false);
     assert.equal(existsSync(join(buildRoot, "script-uses.ts")), false);
     assert.doesNotMatch(readFileSync(join(buildRoot, "procedures.ts"), "utf-8"), /__aiExpertsScriptDir/);
-    assert.match(coreSource, /export const sourceRoot = join\(repoRoot, "src\/components"\);/);
+    const canonicalSourceRootDeclarations = buildSources.match(
+      /\bexport const sourceRoot = join\(repoRoot, "src\/components"\);/g,
+    );
+    assert.equal(
+      canonicalSourceRootDeclarations?.length,
+      1,
+      "build code should expose exactly one canonical component source root",
+    );
     assert.doesNotMatch(
       buildSources,
-      /\b(?:isLegacyPluginsRoot|legacyPluginsRoot|pluginsRoot|sourceRoots|componentSourceRoots)\b/,
-      "build code should use the single canonical src/components root instead of legacy plugins-root routing",
+      /\b(?:sourceRoots|componentSourceRoots)\b|["']src\/plugins["']|join\(repoRoot, "plugins"\)/,
+      "build code should not route component sources through alternate roots",
     );
     assert.equal(
       existsSync(join(repoRoot, "plugins")),
