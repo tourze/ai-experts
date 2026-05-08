@@ -413,6 +413,7 @@ describe("component source conventions", () => {
   test("component workflow declarations use the shared workflow API", () => {
     const legacyWorkflowHelpers: string[] = [];
     const legacyWorkflowTableMentions: string[] = [];
+    const legacyExecutionStepTerms: string[] = [];
     const componentSources = collectFiles(join(repoRoot, "src/components"), (file) =>
       file.endsWith(".ts") && !file.endsWith("sdk.ts"),
     );
@@ -425,6 +426,12 @@ describe("component source conventions", () => {
       if (/门禁表|场景路由表|分场景路由/u.test(source)) {
         legacyWorkflowTableMentions.push(relative(repoRoot, sourceFile));
       }
+      if (
+        /[\\/]src[\\/]components[\\/](?:skills|agents)[\\/][^\\/]+[\\/]index\.ts$/u.test(sourceFile) &&
+        /执行步骤/u.test(source)
+      ) {
+        legacyExecutionStepTerms.push(relative(repoRoot, sourceFile));
+      }
     }
 
     assert.deepEqual(
@@ -436,6 +443,11 @@ describe("component source conventions", () => {
       legacyWorkflowTableMentions,
       [],
       "component sources should model gates and routes through workflow nodes instead of describing legacy tables",
+    );
+    assert.deepEqual(
+      legacyExecutionStepTerms,
+      [],
+      "skill and agent structured metadata should use shared workflow terminology instead of legacy execution-step wording",
     );
   });
 

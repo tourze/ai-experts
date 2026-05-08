@@ -89,7 +89,7 @@ export const skillEvaluatorSkill = defineSkill({
       source: new URL("./references/evaluation-protocol.md", import.meta.url),
       target: "references/evaluation-protocol.md",
       title: "evaluation-protocol.md",
-      summary: "Skill 评估的标准化协议和执行步骤，包含闭卷验证和对比评估流程。",
+      summary: "Skill 评估的标准化协议和执行流程，包含闭卷验证和对比评估流程。",
       loadWhen: "需要按照标准化流程执行 skill 评估时读取。",
     }),
     defineReference({

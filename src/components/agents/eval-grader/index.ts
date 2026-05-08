@@ -23,7 +23,7 @@ export const evalGraderAgent = defineAgent({
   ],
   workflow: defineWorkflow({
     steps: [
-      defineWorkflowStep({ id: "read-transcript", label: "完整读取 transcript，记录 eval prompt、执行步骤、错误和最终结果" }),
+      defineWorkflowStep({ id: "read-transcript", label: "完整读取 transcript，记录 eval prompt、执行过程、错误和最终结果" }),
       defineWorkflowStep({ id: "inspect-outputs", label: "列出并读取 outputs_dir 中与 expectations 相关的文件" }),
       defineWorkflowStep({ id: "grade-expectations", label: "为每条 expectation 搜索证据并判定 PASS/FAIL" }),
       defineWorkflowStep({ id: "verify-claims", label: "抽取并验证输出中的事实、过程和质量 claims" }),
