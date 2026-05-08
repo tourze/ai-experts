@@ -718,6 +718,22 @@ describe("component build integration", () => {
     assert.equal(passthroughArgs.ok, true);
     assert.equal(passthroughArgs.procedureId, "debug-methodology-debug-checklist");
     assert.match(passthroughArgs.result.stdout, /Debug Checklist: passthrough-mode/);
+
+    const rewrittenHelp = JSON.parse(execFileSync(process.execPath, [
+      proceduresPath,
+      "--procedure-id",
+      "screenshot-take-screenshot",
+      "--trigger-skill",
+      "screenshot",
+      "--",
+      "--help",
+    ], { encoding: "utf-8" }));
+    assert.equal(rewrittenHelp.ok, true);
+    assert.match(
+      rewrittenHelp.result.stdout,
+      /Usage: node procedures\.js --procedure-id screenshot-take-screenshot --trigger-skill screenshot -- \[options\]/,
+    );
+    assert.doesNotMatch(rewrittenHelp.result.stdout, /node scripts\/take_screenshot\.mjs/);
   });
 
   test("executes representative bundled procedures with real fixtures", () => {
@@ -1225,7 +1241,7 @@ describe("component build integration", () => {
     assert.doesNotMatch(procedureRegistrySource, /bundle:\s*false/);
     assert.match(proceduresSource, /^#!\/usr\/bin\/env node/);
     assert.match(proceduresSource, /__webpack_modules__/);
-    assert.match(proceduresSource, /\bnode procedures\.js --procedure-id md-to-pdf-setup -- --install\b/);
+    assert.match(proceduresSource, /\bnode procedures\.js --procedure-id md-to-pdf-setup --trigger-skill md-to-pdf -- --install\b/);
     assert.match(codexProceduresSource, /const platform = "codex-cli"/);
     assert.match(
       codexProceduresSource,

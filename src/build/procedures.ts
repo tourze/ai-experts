@@ -450,16 +450,17 @@ module.exports = function aiExpertsProcedurePathLoader(source) {
   if (!context) return source;
   const replacement = "globalThis.__aiExpertsProcedureDir(" + JSON.stringify(context.target) + ")";
   const moduleFile = "globalThis.__aiExpertsModuleFile(" + JSON.stringify(context.target) + ")";
-  const runtimeCommand = (procedureId) => "node procedures.js --procedure-id " + procedureId + " --";
+  const runtimeCommand = (procedureId, skillId) =>
+    "node procedures.js --procedure-id " + procedureId + (skillId ? " --trigger-skill " + skillId : "") + " --";
   const rewriteScriptCommand = (match) => {
     const target = match.replace(/^node\\s+(?:\\.\\/)?/, "");
-    if (target === context.target) return runtimeCommand(context.id);
+    if (target === context.target) return runtimeCommand(context.id, (context.ownerSkillIds || [])[0]);
     for (const skillId of context.ownerSkillIds || []) {
       const ownerRewrite = commandRewrites[JSON.stringify([skillId, target])];
-      if (ownerRewrite) return runtimeCommand(ownerRewrite);
+      if (ownerRewrite) return runtimeCommand(ownerRewrite, skillId);
     }
     const globalRewrite = commandRewrites[JSON.stringify(["", target])];
-    return globalRewrite ? runtimeCommand(globalRewrite) : match;
+    return globalRewrite ? runtimeCommand(globalRewrite, "") : match;
   };
   return source
     .replace(/\\bpath\\.dirname\\s*\\(\\s*fileURLToPath\\s*\\(\\s*import\\.meta\\.url\\s*\\)\\s*\\)/g, replacement)
