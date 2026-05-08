@@ -897,9 +897,19 @@ describe("component build integration", () => {
     assert.equal(rewrittenHelp.ok, true);
     assert.match(
       rewrittenHelp.result.stdout,
-      /Usage: node procedures\.js --procedure-id screenshot-take-screenshot --trigger-skill screenshot -- \[options\]/,
+      /Usage: node ~\/\.claude\/procedures\.js --procedure-id screenshot-take-screenshot --trigger-skill screenshot -- \[options\]/,
     );
     assert.doesNotMatch(rewrittenHelp.result.stdout, /node scripts\/take_screenshot\.mjs/);
+
+    const runtimeHelp = JSON.parse(execFileSync(process.execPath, [
+      proceduresPath,
+      "--help",
+    ], { encoding: "utf-8" }));
+    assert.equal(runtimeHelp.ok, true);
+    assert.match(
+      runtimeHelp.result.usage,
+      /node ~\/\.claude\/procedures\.js --procedure-id <id>/,
+    );
   });
 
   test("executes representative bundled procedures with real fixtures", () => {
@@ -1431,9 +1441,10 @@ describe("component build integration", () => {
     assert.doesNotMatch(procedureRegistrySource, /bundle:\s*false/);
     assert.match(proceduresSource, /^#!\/usr\/bin\/env node/);
     assert.match(proceduresSource, /__webpack_modules__/);
-    assert.match(proceduresSource, /\bnode procedures\.js --procedure-id md-to-pdf-setup --trigger-skill md-to-pdf -- --install\b/);
-    assert.doesNotMatch(proceduresSource, /\bnode procedures\.js --procedure-id [a-z0-9-]+ -- --/);
-    assert.doesNotMatch(codexProceduresSource, /\bnode procedures\.js --procedure-id [a-z0-9-]+ -- --/);
+    assert.match(proceduresSource, /\bnode ~\/\.claude\/procedures\.js --procedure-id md-to-pdf-setup --trigger-skill md-to-pdf -- --install\b/);
+    assert.match(codexProceduresSource, /\bnode ~\/\.codex\/procedures\.js --procedure-id screenshot-take-screenshot --trigger-skill screenshot --/);
+    assert.doesNotMatch(proceduresSource, /\bnode \S*procedures\.js --procedure-id [a-z0-9-]+ -- --/);
+    assert.doesNotMatch(codexProceduresSource, /\bnode \S*procedures\.js --procedure-id [a-z0-9-]+ -- --/);
     assert.match(codexProceduresSource, /const platform = "codex-cli"/);
     assert.match(
       codexProceduresSource,

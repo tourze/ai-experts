@@ -52,6 +52,10 @@ export type ProcedureRuntimeBuildResult = {
 
 const runtimeEntryId = "virtual:ai-experts-procedures";
 
+function procedureRuntimePath(platform: PlatformType): string {
+  return platform === "claude-code" ? "~/.claude/procedures.js" : "~/.codex/procedures.js";
+}
+
 function normalizeSeparators(path: string): string {
   return path.replaceAll("\\", "/");
 }
@@ -138,6 +142,7 @@ const procedures = ${JSON.stringify(procedureMap)};
 ${renderProcedureLoaders(procedures)}
 const version = "procedure-runtime-v3";
 const platform = ${JSON.stringify(platform)};
+const procedureRuntimePath = ${JSON.stringify(procedureRuntimePath(platform))};
 const runtimeFile = realpathSync(resolve(process.argv[1] || "."));
 const runtimeRoot = dirname(runtimeFile);
 
@@ -300,7 +305,7 @@ function printHelp() {
     sessionId: null,
     trigger: {},
     result: {
-      usage: "node procedures.js --procedure-id <id> [--request-json <json>] [--session-id <id>] [--trigger-skill <skill-id>] [--trigger-agent <agent-id>] [-- <procedure-args...>]",
+      usage: "node " + procedureRuntimePath + " --procedure-id <id> [--request-json <json>] [--session-id <id>] [--trigger-skill <skill-id>] [--trigger-agent <agent-id>] [-- <procedure-args...>]",
       procedures: Object.keys(procedures).sort(),
     },
     error: null,
@@ -458,13 +463,14 @@ module.exports = function aiExpertsProcedurePathLoader(source) {
   const options = this.getOptions() || {};
   const contexts = options.contexts || {};
   const commandRewrites = options.commandRewrites || {};
+  const procedureRuntimePath = options.procedureRuntimePath || "procedures.js";
   const file = String(this.resourcePath || "").replaceAll("\\\\", "/");
   const context = contexts[file];
   if (!context) return source;
   const replacement = "globalThis.__aiExpertsProcedureDir(" + JSON.stringify(context.target) + ")";
   const moduleFile = "globalThis.__aiExpertsModuleFile(" + JSON.stringify(context.target) + ")";
   const runtimeCommand = (rewrite) =>
-    "node procedures.js --procedure-id " + rewrite.id + " --trigger-" + rewrite.triggerKind + " " + rewrite.triggerId + " --";
+    "node " + procedureRuntimePath + " --procedure-id " + rewrite.id + " --trigger-" + rewrite.triggerKind + " " + rewrite.triggerId + " --";
   const rewriteScriptCommand = (match) => {
     const target = match.replace(/^node\\s+(?:\\.\\/)?/, "");
     if (target === context.target) {
@@ -660,6 +666,7 @@ async function emitBundledProceduresFile(
                 options: {
                   contexts: Object.fromEntries(transformContexts),
                   commandRewrites,
+                  procedureRuntimePath: procedureRuntimePath(platform),
                 },
               },
             ],
