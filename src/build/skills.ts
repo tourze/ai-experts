@@ -24,9 +24,9 @@ import {
   InvocationPolicy,
   Platform,
   renderToolMatcher,
+  renderYamlFrontmatter,
   toAbsolutePath,
   writeText,
-  yamlScalar,
 } from "./core";
 import { listProcedureUses, procedureUseAppliesToPlatform } from "./procedure-uses";
 import type { ResolvedProcedureUse } from "./procedure-uses";
@@ -45,32 +45,30 @@ export function skillSourceRoot(skill: SkillDefinition): string {
 }
 
 function renderSkillFrontmatter(skill: SkillDefinition, platform: PlatformType): string {
-  const lines = ["---", `name: ${skill.id}`, `description: ${yamlScalar(skill.description)}`];
+  const frontmatter: Record<string, unknown> = {
+    name: skill.id,
+    description: skill.description,
+  };
   if (platform === Platform.Claude) {
     if (skill.invocation === InvocationPolicy.ExplicitOnly) {
-      lines.push("disable-model-invocation: true");
+      frontmatter["disable-model-invocation"] = true;
     }
     if (skill.invocation === InvocationPolicy.ModelOnly) {
-      lines.push("user-invocable: false");
+      frontmatter["user-invocable"] = false;
     }
     const tools = (skill.tools ?? []).map(renderToolMatcher);
     if (tools.length > 0) {
-      lines.push("allowed-tools:");
-      for (const tool of tools) lines.push(`  - ${tool}`);
+      frontmatter["allowed-tools"] = tools;
     }
     if (skill.argumentHint) {
-      lines.push(`argument-hint: ${yamlScalar(skill.argumentHint)}`);
+      frontmatter["argument-hint"] = skill.argumentHint;
     }
     const params = skill.parameters ?? [];
     if (params.length > 0) {
-      lines.push("arguments:");
-      for (const param of params) {
-        lines.push(`  - ${param.name}`);
-      }
+      frontmatter.arguments = params.map((param) => param.name);
     }
   }
-  lines.push("---", "");
-  return lines.join("\n");
+  return `${renderYamlFrontmatter(frontmatter)}\n`;
 }
 
 function renderProcedureRegistry(

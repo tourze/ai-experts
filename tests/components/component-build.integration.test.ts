@@ -92,6 +92,13 @@ function parseGeneratedToml(source: string, label: string): ParsedGeneratedToml 
   return parsed;
 }
 
+function parseMarkdownFrontmatter(file: string): any {
+  const source = readFileSync(file, "utf-8");
+  const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n/);
+  assert.ok(match, `${relative(tmpDistDir, file)} should start with YAML frontmatter`);
+  return parseYaml(match[1] ?? "");
+}
+
 function buildComponents(outDir: string): void {
   execFileSync(
     process.execPath,
@@ -339,6 +346,27 @@ describe("component build integration", () => {
       [],
       "generated skills and agents should not emit legacy execution-step headings",
     );
+  });
+
+  test("generated markdown frontmatter parses as YAML", () => {
+    const markdownFiles = [
+      ...collectFiles(join(tmpDistDir, "claude/skills"), (file) => file.endsWith("SKILL.md")),
+      ...collectFiles(join(tmpDistDir, "codex/skills"), (file) => file.endsWith("SKILL.md")),
+      ...collectFiles(join(tmpDistDir, "claude/agents"), (file) => file.endsWith(".md")),
+    ];
+
+    for (const markdownFile of markdownFiles) {
+      const label = relative(tmpDistDir, markdownFile);
+      const frontmatter = parseMarkdownFrontmatter(markdownFile);
+      assert.equal(typeof frontmatter.name, "string", `${label} frontmatter should include name`);
+      assert.equal(typeof frontmatter.description, "string", `${label} frontmatter should include description`);
+      if (Object.hasOwn(frontmatter, "allowed-tools")) {
+        assert.equal(Array.isArray(frontmatter["allowed-tools"]), true, `${label} allowed-tools should be a YAML list`);
+      }
+      if (Object.hasOwn(frontmatter, "skills")) {
+        assert.equal(Array.isArray(frontmatter.skills), true, `${label} skills should be a YAML list`);
+      }
+    }
   });
 
   test("manifest file checksums cover every generated file", () => {

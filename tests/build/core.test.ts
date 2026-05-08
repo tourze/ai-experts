@@ -16,6 +16,7 @@ import {
   removeFiles,
   renderHookMatcher,
   renderToolMatcher,
+  renderYamlFrontmatter,
   repoRoot,
   rewriteCompiledJsImports,
   rewriteRelativeImportSpecifiers,
@@ -27,7 +28,6 @@ import {
   tomlMultiline,
   tomlString,
   writeText,
-  yamlScalar,
 } from "../../src/build/core.ts";
 import { KnownTool } from "../../src/components/sdk";
 import { JS_LINT_EXTENSIONS, pathContains } from "../../src/components/hooks/_shared/hook-edit-write-utils";
@@ -114,7 +114,7 @@ describe("build/core", () => {
     writeFileSync(join(root, "with-shebang.ts"), "#!/usr/bin/env node\nconsole.log(1)\n");
     expect(nodeScriptBanner(join(root, "with-shebang.ts"))).toBeUndefined();
 
-    expect(yamlScalar("v")).toBe("\"v\"");
+    expect(renderYamlFrontmatter({ name: "v", enabled: true })).toBe("---\nname: v\nenabled: true\n---\n");
     expect(tomlString("v")).toBe("\"v\"");
     expect(tomlBoolean(true)).toBe("true");
     expect(tomlMultiline("a\nb")).toContain("'''");

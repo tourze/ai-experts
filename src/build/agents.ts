@@ -11,11 +11,11 @@ import type {
 import {
   Platform,
   renderToolMatcher,
+  renderYamlFrontmatter,
   tomlBoolean,
   tomlMultiline,
   tomlString,
   writeText,
-  yamlScalar,
 } from "./core";
 import { renderMarkdownBulletList } from "./markdown";
 import { validateMermaidSyntax } from "./mermaid";
@@ -327,26 +327,25 @@ function platformAgentSkills(agent: AgentDefinition, platformSkillIds: ReadonlyS
 }
 
 function renderClaudeAgent(agent: AgentDefinition, platformSkillIds: ReadonlySet<string>): string {
-  const lines = ["---", `name: ${agent.id}`, `description: ${yamlScalar(agent.description)}`];
+  const frontmatter: Record<string, unknown> = {
+    name: agent.id,
+    description: agent.description,
+  };
   const tools = (agent.tools ?? []).map(renderToolMatcher);
-  if (tools.length > 0) lines.push(`tools: ${tools.join(", ")}`);
+  if (tools.length > 0) frontmatter.tools = tools.join(", ");
   const skills = platformAgentSkills(agent, platformSkillIds);
   const claudeSkills = skills.map((skill) => skill.id);
-  if (claudeSkills.length > 0) {
-    lines.push("skills:");
-    for (const skill of claudeSkills) lines.push(`  - ${skill}`);
-  }
+  if (claudeSkills.length > 0) frontmatter.skills = claudeSkills;
   const model = agent.claudeModel ?? agent.model;
-  if (model) lines.push(`model: ${model}`);
-  if (agent.reasoningEffort) lines.push(`effort: ${agent.reasoningEffort}`);
-  lines.push("---", "");
+  if (model) frontmatter.model = model;
+  if (agent.reasoningEffort) frontmatter.effort = agent.reasoningEffort;
 
   const body = renderAgentBodyWithGeneratedSections(agent);
   const skillRoutes = skills
     .map((skill) => `- \`${skill.id}\` (${skill.mode}): ${skill.reason}`)
     .join("\n");
   const sections = [
-    lines.join("\n"),
+    renderYamlFrontmatter(frontmatter),
     agent.role.trimEnd(),
     "",
     body,

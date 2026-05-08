@@ -9,6 +9,7 @@ import {
 } from "node:fs";
 import { basename, dirname, extname, isAbsolute, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { stringify as stringifyYaml } from "yaml";
 import { InvocationPolicy, Platform } from "../components/sdk";
 import type {
   ComponentFile,
@@ -181,8 +182,9 @@ export function nodeScriptBanner(sourcePath: string): { js: string } | undefined
   return source.startsWith("#!") ? undefined : { js: "#!/usr/bin/env node" };
 }
 
-export function yamlScalar(value: unknown): string {
-  return JSON.stringify(String(value));
+export function renderYamlFrontmatter(fields: Record<string, unknown>): string {
+  const frontmatter = stringifyYaml(fields, { lineWidth: 0 }).trimEnd();
+  return `---\n${frontmatter}\n---\n`;
 }
 
 export function tomlString(value: unknown): string {
