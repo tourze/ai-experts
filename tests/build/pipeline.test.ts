@@ -431,6 +431,46 @@ describe("build/pipeline modules", () => {
     };
     expect(() => validateRegistry(missingOwnerRegistry)).toThrow("missing owner skill");
 
+    const duplicateOwnerRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      procedures: [{
+        ...fixture.procedure,
+        owners: { skillIds: [fixture.skill.id, fixture.skill.id] },
+      }],
+    };
+    expect(() => validateRegistry(duplicateOwnerRegistry)).toThrow(
+      "Procedure fixture-procedure contains duplicate owner skill(s): fixture-skill",
+    );
+
+    const extraOwnerSkill = {
+      ...fixture.skill,
+      id: "extra-owner-skill",
+      fullName: "Extra Owner Skill",
+      procedures: [],
+    };
+    const unreciprocatedOwnerRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [fixture.skill, extraOwnerSkill],
+      procedures: [{
+        ...fixture.procedure,
+        owners: { skillIds: [fixture.skill.id, extraOwnerSkill.id] },
+      }],
+    };
+    expect(() => validateRegistry(unreciprocatedOwnerRegistry)).toThrow(
+      "Procedure fixture-procedure lists owner skill extra-owner-skill but that skill does not reference the procedure",
+    );
+
+    const unreciprocatedAgentOwnerRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      procedures: [{
+        ...fixture.procedure,
+        owners: { skillIds: [fixture.skill.id], agentIds: [fixture.agent.id] },
+      }],
+    };
+    expect(() => validateRegistry(unreciprocatedAgentOwnerRegistry)).toThrow(
+      "Procedure fixture-procedure lists owner agent fixture-agent but that agent does not reference the procedure",
+    );
+
     const missingProcedureReferenceRegistry: ComponentRegistry = {
       ...fixture.registry,
       skills: [{ ...fixture.skill, procedures: ["missing-procedure"] }],

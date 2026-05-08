@@ -135,12 +135,20 @@ function validatePlatformList(
     );
   }
 
-  const duplicatePlatforms = platforms.filter((platform, index) => platforms.indexOf(platform) !== index);
+  const duplicatePlatforms = duplicateValues(platforms as string[]);
   if (duplicatePlatforms.length > 0) {
     throw new Error(
-      `${context} platforms contain duplicate platform(s): ${[...new Set(duplicatePlatforms)].join(", ")}`,
+      `${context} platforms contain duplicate platform(s): ${duplicatePlatforms.join(", ")}`,
     );
   }
+}
+
+function duplicateValues(values: readonly string[]): string[] {
+  return [...new Set(values.filter((value, index) => values.indexOf(value) !== index))];
+}
+
+function procedureOwnerKey(ownerId: string, procedureId: string): string {
+  return `${ownerId}\0${procedureId}`;
 }
 
 function validateSkillBodyCrossSkillLinks(skill: SkillDefinition, bodySource: string, skillIds: ReadonlySet<string>): void {
@@ -221,6 +229,8 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
   const proceduresById = new Map<string, ProcedureDefinition>();
   const procedures = registry.procedures;
   const surfaceProcedureIds = new Set(surface.procedures.map((procedure) => procedure.id));
+  const skillProcedureUseOwners = new Set<string>();
+  const agentProcedureUseOwners = new Set<string>();
 
   for (const procedure of procedures) {
     validateId(procedure.id, "procedure");
@@ -240,6 +250,18 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     const ownerAgentIds = procedure.owners.agentIds ?? [];
     if (ownerSkillIds.length === 0 && ownerAgentIds.length === 0) {
       throw new Error(`Procedure ${procedure.id} must define at least one owner`);
+    }
+    const duplicateOwnerSkillIds = duplicateValues(ownerSkillIds);
+    if (duplicateOwnerSkillIds.length > 0) {
+      throw new Error(
+        `Procedure ${procedure.id} contains duplicate owner skill(s): ${duplicateOwnerSkillIds.join(", ")}`,
+      );
+    }
+    const duplicateOwnerAgentIds = duplicateValues(ownerAgentIds);
+    if (duplicateOwnerAgentIds.length > 0) {
+      throw new Error(
+        `Procedure ${procedure.id} contains duplicate owner agent(s): ${duplicateOwnerAgentIds.join(", ")}`,
+      );
     }
     for (const ownerSkillId of ownerSkillIds) {
       validateId(ownerSkillId, `procedure owner skill in ${procedure.id}`);
@@ -369,6 +391,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
       if (!ownerSkills.includes(skill.id)) {
         throw new Error(`Skill ${skill.id} references procedure ${procedureId} without skill ownership`);
       }
+      skillProcedureUseOwners.add(procedureOwnerKey(skill.id, procedureId));
       validateProcedureUsePlatforms(skill, procedureUse, procedure);
     }
     if (existsSync(join(sourceRoot, "scripts"))) {
@@ -467,7 +490,25 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
       if (!ownerAgents.includes(agent.id)) {
         throw new Error(`Agent ${agent.id} references procedure ${procedureId} without agent ownership`);
       }
+      agentProcedureUseOwners.add(procedureOwnerKey(agent.id, procedureId));
       validateProcedureUsePlatforms(agent, procedureUse, procedure);
+    }
+  }
+
+  for (const procedure of procedures) {
+    for (const ownerSkillId of procedure.owners.skillIds ?? []) {
+      if (!skillProcedureUseOwners.has(procedureOwnerKey(ownerSkillId, procedure.id))) {
+        throw new Error(
+          `Procedure ${procedure.id} lists owner skill ${ownerSkillId} but that skill does not reference the procedure`,
+        );
+      }
+    }
+    for (const ownerAgentId of procedure.owners.agentIds ?? []) {
+      if (!agentProcedureUseOwners.has(procedureOwnerKey(ownerAgentId, procedure.id))) {
+        throw new Error(
+          `Procedure ${procedure.id} lists owner agent ${ownerAgentId} but that agent does not reference the procedure`,
+        );
+      }
     }
   }
 
