@@ -189,10 +189,21 @@ function normalize(raw, event) {
 function normalizeHookResult(result) {
   if (!result) return null;
   if (result.kind) return result;
+  const output = result.hookSpecificOutput;
+  const permissionDecision = output?.decision ?? output?.permissionDecision;
+  if (permissionDecision?.behavior === "deny" || permissionDecision === "deny") {
+    return {
+      kind: "deny",
+      message: permissionDecision.message || output?.permissionDecisionReason || result.reason || result.message || "Denied by hook",
+    };
+  }
+  if (permissionDecision?.behavior === "allow" || permissionDecision === "allow") {
+    return { kind: "allow" };
+  }
   if (result.decision === "block") {
     return { kind: "deny", message: result.reason || result.message || "Blocked by hook" };
   }
-  const additionalContext = result.hookSpecificOutput?.additionalContext || result.additionalContext;
+  const additionalContext = output?.additionalContext || result.additionalContext;
   if (additionalContext) return { kind: "add-context", message: additionalContext };
   if (result.decision === "context") {
     return { kind: "add-context", message: result.reason || result.message || "" };
@@ -231,6 +242,24 @@ function payloadsForHook(payload) {
 
 function mergeResults(results, event) {
   const deny = results.find((result) => result.kind === "deny");
+  if (event === "PermissionRequest") {
+    if (deny) {
+      return {
+        hookSpecificOutput: {
+          hookEventName: event,
+          decision: { behavior: "deny", message: deny.message },
+        },
+      };
+    }
+    if (results.some((result) => result.kind === "allow")) {
+      return {
+        hookSpecificOutput: {
+          hookEventName: event,
+          decision: { behavior: "allow" },
+        },
+      };
+    }
+  }
   if (deny) return { decision: "block", reason: deny.message };
   const contexts = results
     .filter((result) => result.kind === "add-context")
@@ -260,7 +289,7 @@ async function main() {
     if (typeof run !== "function") continue;
     for (const hookPayload of payloadsForHook(payload)) {
       const result = normalizeHookResult(await run(hookPayload));
-      if (result && result.kind !== "allow" && result.kind !== "audit") results.push(result);
+      if (result && result.kind !== "audit") results.push(result);
     }
   }
 

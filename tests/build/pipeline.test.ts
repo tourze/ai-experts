@@ -922,6 +922,111 @@ describe("build/pipeline modules", () => {
     );
     expect(denyOutput).toContain("\"decision\": \"block\"");
 
+    const permissionDenyHook = defineHook({
+      id: "fixture-permission-deny-hook",
+      description: "permission deny fixture hook",
+      platforms: [ComponentPlatform.Codex],
+      event: HookEvent.PermissionRequest,
+      entry: fixture.hook.entry,
+      matcher: [KnownTool.Bash],
+      order: 10,
+    });
+    const permissionDenyOut = createTempDir("ai-experts-hooks-permission-deny-");
+    await compileHookModules([permissionDenyHook], permissionDenyOut, Platform.Codex);
+    const permissionDenyOutput = execFileSync(
+      process.execPath,
+      [join(permissionDenyOut, "dispatch.mjs"), "--event", "PermissionRequest"],
+      {
+        input: JSON.stringify({ prompt: "please deny", tool_name: "Bash", tool_input: { command: "npm install" } }),
+        encoding: "utf-8",
+      },
+    );
+    expect(JSON.parse(permissionDenyOutput)).toEqual({
+      hookSpecificOutput: {
+        hookEventName: "PermissionRequest",
+        decision: {
+          behavior: "deny",
+          message: "blocked by fixture",
+        },
+      },
+    });
+
+    const allowHookEntry = join(fixture.root, "permission-allow-hook.ts");
+    writeText(
+      allowHookEntry,
+      [
+        "export async function run() {",
+        "  return { kind: 'allow' };",
+        "}",
+        "",
+      ].join("\n"),
+    );
+    const permissionAllowHook = defineHook({
+      id: "fixture-permission-allow-hook",
+      description: "permission allow fixture hook",
+      platforms: [ComponentPlatform.Codex],
+      event: HookEvent.PermissionRequest,
+      entry: pathToFileURL(allowHookEntry),
+      matcher: [KnownTool.Bash],
+      order: 10,
+    });
+    const permissionAllowOut = createTempDir("ai-experts-hooks-permission-allow-");
+    await compileHookModules([permissionAllowHook], permissionAllowOut, Platform.Codex);
+    const permissionAllowOutput = execFileSync(
+      process.execPath,
+      [join(permissionAllowOut, "dispatch.mjs"), "--event", "PermissionRequest"],
+      {
+        input: JSON.stringify({ tool_name: "Bash", tool_input: { command: "npm test" } }),
+        encoding: "utf-8",
+      },
+    );
+    expect(JSON.parse(permissionAllowOutput)).toEqual({
+      hookSpecificOutput: {
+        hookEventName: "PermissionRequest",
+        decision: { behavior: "allow" },
+      },
+    });
+
+    const nativeDecisionHookEntry = join(fixture.root, "native-decision-hook.ts");
+    writeText(
+      nativeDecisionHookEntry,
+      [
+        "export async function run() {",
+        "  return {",
+        "    hookSpecificOutput: {",
+        "      hookEventName: 'PreToolUse',",
+        "      permissionDecision: 'deny',",
+        "      permissionDecisionReason: 'native deny reason',",
+        "    },",
+        "  };",
+        "}",
+        "",
+      ].join("\n"),
+    );
+    const nativeDecisionHook = defineHook({
+      id: "fixture-native-decision-hook",
+      description: "native decision fixture hook",
+      platforms: [ComponentPlatform.Codex],
+      event: HookEvent.PreToolUse,
+      entry: pathToFileURL(nativeDecisionHookEntry),
+      matcher: [KnownTool.Bash],
+      order: 10,
+    });
+    const nativeDecisionOut = createTempDir("ai-experts-hooks-native-decision-");
+    await compileHookModules([nativeDecisionHook], nativeDecisionOut, Platform.Codex);
+    const nativeDecisionOutput = execFileSync(
+      process.execPath,
+      [join(nativeDecisionOut, "dispatch.mjs"), "--event", "PreToolUse"],
+      {
+        input: JSON.stringify({ tool_name: "Bash", tool_input: { command: "npm install" } }),
+        encoding: "utf-8",
+      },
+    );
+    expect(JSON.parse(nativeDecisionOutput)).toEqual({
+      decision: "block",
+      reason: "native deny reason",
+    });
+
     const config = renderHookConfig([fixture.hook], Platform.Codex);
     expect(config.hooks.UserPromptSubmit[0]?.hooks[0]?.statusMessage).toBe("running fixture hook");
     const hookCommand = config.hooks.UserPromptSubmit[0]?.hooks[0]?.command ?? "";
