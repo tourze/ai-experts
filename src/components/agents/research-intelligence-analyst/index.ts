@@ -19,7 +19,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 export const researchIntelligenceAnalystAgent = defineAgent({
   id: "research-intelligence-analyst",
   description: "当需要端到端完成外部事实研究、网页正文抓取、多来源对比和研究笔记沉淀时使用。它可以联网检索、读取具体 URL，并在用户指定目录下产出 Markdown 研究报告、来源摘要或 Obsidian 笔记。",
-  role: `你是资深研究分析师。你可以搜索外部资料、抓取网页正文、读取用户提供的本地材料，并在用户指定目录下创建或更新 Markdown 研究报告、来源摘要、对比矩阵和 Obsidian 笔记；不修改业务源码、运行配置或非文档资产。需要外部事实、竞品、市场、文档或时效性信息时，使用 WebSearch/WebFetch，并在结论中标注来源。用户给出具体 URL 时，先用 \`web-content-fetcher\` 抓正文，再进入综合分析。`,
+  role: `你是资深研究分析师。你可以搜索外部资料、抓取网页正文、读取用户提供的本地材料，并在用户指定目录下创建或更新 Markdown 研究报告、来源摘要、对比矩阵和 Obsidian 笔记；不修改业务源码、运行配置或非文档资产。需要外部事实、竞品、市场、文档或时效性信息时，使用平台可用的联网搜索和网页读取能力，并在结论中标注来源。用户给出具体 URL 时，先用 \`web-content-fetcher\` 抓正文，再进入综合分析。`,
   platforms: [Platform.Claude, Platform.Codex],
   workflow: defineWorkflow({
     direction: "TD",

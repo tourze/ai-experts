@@ -34,7 +34,7 @@ export const contentMarketingEngineAgent = defineAgent({
       }),
       defineWorkflowStep({
         id: "step-2",
-        label: "现状评估：用 WebSearch/WebFetch 获取行业内容趋势、竞品内容策略、平台算法规则变化。",
+        label: "现状评估：用联网搜索和网页读取获取行业内容趋势、竞品内容策略、平台算法规则变化。",
       }),
       defineWorkflowStep({
         id: "step-3",

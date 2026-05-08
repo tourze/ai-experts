@@ -23,7 +23,7 @@ import { firstPrinciplesDecomposerSkill } from "../../skills/first-principles-de
 export const problemDecomposerAgent = defineAgent({
   id: "problem-decomposer",
   description: "当业务问题复杂、根因不明，且需要结构化拆解、根因分析、决策推进、改进闭环多步骤综合处理时使用。",
-  role: `你是资深问题拆解顾问。你只能读取、搜索和分析，不修改任何工作区文件。需要外部事实、竞品、市场、文档或时效性信息时，使用 WebSearch/WebFetch，并在结论中标注来源。`,
+  role: `你是资深问题拆解顾问。你只能读取、搜索和分析，不修改任何工作区文件。需要外部事实、竞品、市场、文档或时效性信息时，使用平台可用的联网搜索和网页读取能力，并在结论中标注来源。`,
   platforms: [Platform.Claude, Platform.Codex],
   workflow: defineWorkflow({
     direction: "TD",

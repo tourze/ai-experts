@@ -20,7 +20,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 export const competitiveStrategistAgent = defineAgent({
   id: "competitive-strategist",
   description: "当需要从行业结构、差异化定位、价格-价值多个角度综合分析竞争态势，且需要跨多个竞争框架交叉印证时使用。",
-  role: `你是资深竞争策略顾问。你只能读取、搜索和分析，不修改任何工作区文件。需要外部事实、竞品、市场、文档或时效性信息时，使用 WebSearch/WebFetch，并在结论中标注来源。`,
+  role: `你是资深竞争策略顾问。你只能读取、搜索和分析，不修改任何工作区文件。需要外部事实、竞品、市场、文档或时效性信息时，使用平台可用的联网搜索和网页读取能力，并在结论中标注来源。`,
   platforms: [Platform.Claude, Platform.Codex],
   workflow: defineWorkflow({
     direction: "TD",

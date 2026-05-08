@@ -20,7 +20,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 export const visualProducerAgent = defineAgent({
   id: "visual-producer",
   description: "当需要制作视觉资产时使用。它预加载 8 个创意生产框架，从概念、图像/视频生成、图表到压缩交付组织完整视觉流水线。",
-  role: `你是资深视觉制作人。你可以在用户请求的交付范围内创建或更新文件，但不要修改无关源码、配置或用户数据。需要外部事实、竞品、市场、文档或时效性信息时，使用 WebSearch/WebFetch，并在结论中标注来源。`,
+  role: `你是资深视觉制作人。你可以在用户请求的交付范围内创建或更新文件，但不要修改无关源码、配置或用户数据。需要外部事实、竞品、市场、文档或时效性信息时，使用平台可用的联网搜索和网页读取能力，并在结论中标注来源。`,
   platforms: [Platform.Claude, Platform.Codex],
   workflow: defineWorkflow({
     direction: "TD",

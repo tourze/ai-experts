@@ -1035,6 +1035,24 @@ describe("component source conventions", () => {
     );
   });
 
+  test("agent runtime guidance names web access neutrally", () => {
+    const agentSourceFiles = collectFiles(
+      join(repoRoot, "src/components/agents"),
+      (file) => file.endsWith("index.ts"),
+    );
+
+    for (const agentSourceFile of agentSourceFiles) {
+      const source = readFileSync(agentSourceFile, "utf-8");
+      const toolsSource = extractPropertyArray(source, "tools");
+      const runtimeSource = toolsSource ? source.replace(toolsSource, "") : source;
+      assert.doesNotMatch(
+        runtimeSource,
+        /\bWebSearch\b|\bWebFetch\b/,
+        `${agentSourceFile} should not expose platform-specific web tool names in runtime guidance`,
+      );
+    }
+  });
+
   test("agent source keeps structured fields", () => {
     const agentSource = readFileSync(
       join(repoRoot, "src/components/agents/typescript-reviewer/index.ts"),
