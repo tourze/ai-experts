@@ -1549,7 +1549,7 @@ describe("component build integration", () => {
       );
       assert.doesNotMatch(
         platformProceduresSource,
-        /\bnode\s+(?:\.\/)?scripts\/[A-Za-z0-9._/-]+\.mjs\b/,
+        /\bnode\s+(?:\.\/)?scripts\//,
         `${platform} bundled procedures.js should not suggest removed repository-local scripts`,
       );
       assert.deepEqual(

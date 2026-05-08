@@ -31,7 +31,7 @@ export function resolveUdid(udid: any = null): any {
     throw new Error("No device UDID provided and no simulator is currently booted.\n" +
         "Boot a simulator or provide --udid explicitly:\n" +
         "  xcrun simctl boot <device-name>\n" +
-        "  node scripts/<tool>.mjs --udid <device-udid>");
+        "  Re-run this procedure with --udid <device-udid> in its argv.");
 }
 export function getAccessibilityTree(udid: any = null, { nested = true }: any = {}): any {
     const command = buildIdbCommand("ui describe-all", udid, "--json", ...(nested ? ["--nested"] : []));
