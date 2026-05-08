@@ -6,11 +6,12 @@ import { tmpdir } from "node:os";
 import { basename, dirname, join, relative, resolve } from "node:path";
 import { parse as parseYaml } from "yaml";
 import { afterAll, beforeAll, describe, test } from "vitest";
+import { defaultReferenceTarget, toAbsolutePath } from "../../src/build/core.ts";
 import { resolveHookTimeoutSeconds } from "../../src/build/hooks.ts";
 import { codexSystemSkillIds } from "../../src/build/platform.ts";
 import { listProcedureUses, procedureUseAppliesToPlatform } from "../../src/build/procedure-uses.ts";
 import { registry } from "../../src/components/registry.ts";
-import { InvocationPolicy, Platform } from "../../src/components/sdk.ts";
+import { InvocationPolicy, Platform, type SkillReferenceDefinition } from "../../src/components/sdk.ts";
 import {
   assertSingleDispatcherHookGroups,
   collectFiles,
@@ -44,6 +45,11 @@ function isLikelyLocalDefinitionPath(href: string): boolean {
     || href.startsWith("../")
     || href.includes("/")
     || /\.[A-Za-z0-9]+$/u.test(href);
+}
+
+function referenceDirectoryIndexTarget(reference: SkillReferenceDefinition): string {
+  const target = defaultReferenceTarget(reference).replace(/\/+$/u, "");
+  return `${target}/index.md`;
 }
 
 function parseGeneratedToml(source: string, label: string): ParsedGeneratedToml {
@@ -2007,6 +2013,44 @@ describe("component build integration", () => {
     );
     assert.notEqual(stalePlatformArgResult.status, 0);
     assert.match(stalePlatformArgResult.stderr, /Unknown argument: --platform/);
+  });
+
+  test("renders directory references through generated index.md entry files", () => {
+    for (const platform of [Platform.Claude, Platform.Codex]) {
+      for (const skill of registry.skills.filter((entry) => entry.platforms.includes(platform))) {
+        const directoryReferences = (skill.references ?? []).filter((reference) =>
+          statSync(toAbsolutePath(reference.source)).isDirectory()
+        );
+        if (directoryReferences.length === 0) continue;
+
+        const platformDir = platform === Platform.Claude ? "claude" : "codex";
+        const skillRoot = join(tmpDistDir, platformDir, "skills", skill.id);
+        const skillMarkdown = readFileSync(join(skillRoot, "SKILL.md"), "utf-8");
+        const referencesIndex = readFileSync(join(skillRoot, "references", "index.md"), "utf-8");
+
+        for (const reference of directoryReferences) {
+          const entryTarget = referenceDirectoryIndexTarget(reference);
+          const referenceIndexLink = entryTarget.startsWith("references/")
+            ? entryTarget.slice("references/".length)
+            : entryTarget;
+          assert.match(
+            skillMarkdown,
+            new RegExp(`\\[${escapeRegExp(reference.id)}\\]\\(${escapeRegExp(entryTarget)}\\)`, "u"),
+            `${platformDir}/${skill.id} should link directory reference ${reference.id} to ${entryTarget}`,
+          );
+          assert.match(
+            referencesIndex,
+            new RegExp(`\\[${escapeRegExp(reference.id)}\\]\\(${escapeRegExp(referenceIndexLink)}\\)`, "u"),
+            `${platformDir}/${skill.id} references/index.md should link ${reference.id} to ${referenceIndexLink}`,
+          );
+          assert.equal(
+            existsSync(join(skillRoot, entryTarget)),
+            true,
+            `${platformDir}/${skill.id} should emit directory reference entry file ${entryTarget}`,
+          );
+        }
+      }
+    }
   });
 
   test("renders generated skill markdown sections and excludes eval references", () => {

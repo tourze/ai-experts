@@ -1,4 +1,4 @@
-import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, relative } from "node:path";
 import { pathToFileURL } from "node:url";
 import { stringify as stringifyYaml } from "yaml";
@@ -169,16 +169,47 @@ function renderReferenceMap(skill: SkillDefinition): string {
   return `\n## Reference Map\n\n${rows.join("\n")}\n`;
 }
 
-function renderReferenceLinkTarget(reference: SkillReferenceDefinition): string {
-  const target = defaultReferenceTarget(reference);
-  if (target.endsWith("/")) return target;
+function normalizeReferenceTarget(target: string): string {
+  return target.replace(/\/+$/u, "");
+}
+
+function isDirectoryReference(reference: SkillReferenceDefinition): boolean {
   const sourcePath = toAbsolutePath(reference.source);
-  try {
-    readdirSync(sourcePath, { withFileTypes: true });
-    return `${target}/`;
-  } catch {
-    return target;
-  }
+  return statSync(sourcePath).isDirectory();
+}
+
+function referenceDirectoryIndexTarget(reference: SkillReferenceDefinition): string {
+  return `${normalizeReferenceTarget(defaultReferenceTarget(reference))}/index.md`;
+}
+
+function renderReferenceLinkTarget(reference: SkillReferenceDefinition): string {
+  if (!isDirectoryReference(reference)) return defaultReferenceTarget(reference);
+  return referenceDirectoryIndexTarget(reference);
+}
+
+function renderReferenceDirectoryIndex(
+  reference: SkillReferenceDefinition,
+  referenceRoot: string,
+): string {
+  const indexFile = join(referenceRoot, "index.md");
+  const entries = collectFiles(referenceRoot)
+    .filter((file) => file !== indexFile)
+    .map((file) => relative(referenceRoot, file).split("\\").join("/"));
+  const filesSection = entries.length > 0
+    ? entries.map((entry) => `- [${entry}](${entry})`).join("\n")
+    : "- （当前目录暂无可索引文件）";
+  const header = `# ${reference.title}\n\n${reference.summary}`;
+  return `${header}\n\n## Files\n\n${filesSection}\n`;
+}
+
+function writeReferenceDirectoryIndex(
+  reference: SkillReferenceDefinition,
+  skillRoot: string,
+): void {
+  const referenceRoot = join(skillRoot, normalizeReferenceTarget(defaultReferenceTarget(reference)));
+  const indexFile = join(referenceRoot, "index.md");
+  if (existsSync(indexFile)) return;
+  writeText(indexFile, renderReferenceDirectoryIndex(reference, referenceRoot));
 }
 
 export function validateTextList(
@@ -717,6 +748,9 @@ export async function emitSkill(
     for (const reference of skill.references) {
       const target = join(skillRoot, defaultReferenceTarget(reference));
       copyComponentPath(reference.source, target);
+      if (isDirectoryReference(reference)) {
+        writeReferenceDirectoryIndex(reference, skillRoot);
+      }
     }
     writeText(join(skillRoot, "references", "index.md"), renderReferencesIndex(skill));
   }
