@@ -97,6 +97,54 @@ function buildComponents(outDir: string): void {
   );
 }
 
+function assertInstallManifestEntriesExist(platformRoot: string, manifest: any, label: string): void {
+  const install = manifest.install as {
+    rootEntries: string[];
+    skillSourceRoot: string;
+    skillEntries: string[];
+    forbiddenRootEntries: string[];
+  };
+
+  assert.equal(
+    install.rootEntries.includes(install.skillSourceRoot),
+    false,
+    `${label} rootEntries should not duplicate skillEntries`,
+  );
+
+  for (const rootEntry of install.rootEntries) {
+    assert.equal(
+      existsSync(join(platformRoot, rootEntry)),
+      true,
+      `${label} install root entry should exist: ${rootEntry}`,
+    );
+  }
+
+  const skillSourceRoot = join(platformRoot, install.skillSourceRoot);
+  assert.equal(existsSync(skillSourceRoot), true, `${label} skillSourceRoot should exist`);
+  for (const skillEntry of install.skillEntries) {
+    assert.equal(
+      existsSync(join(skillSourceRoot, skillEntry)),
+      true,
+      `${label} install skill entry should exist: ${skillEntry}`,
+    );
+  }
+
+  for (const forbiddenRootEntry of install.forbiddenRootEntries) {
+    assert.equal(
+      install.rootEntries.includes(forbiddenRootEntry),
+      false,
+      `${label} forbidden root entry should not be installed as a config root entry: ${forbiddenRootEntry}`,
+    );
+    if (forbiddenRootEntry === install.skillSourceRoot) continue;
+
+    assert.equal(
+      existsSync(join(platformRoot, forbiddenRootEntry)),
+      false,
+      `${label} forbidden runtime entry should not be generated: ${forbiddenRootEntry}`,
+    );
+  }
+}
+
 beforeAll(() => {
   tmpDistDir = mkdtempSync(join(tmpdir(), "ai-experts-component-build-"));
 
@@ -227,6 +275,9 @@ describe("component build integration", () => {
       (codexManifest.skills as string[]).map((skillId) => `${skillId}/`),
       "Codex install manifest should map target-relative skill directories to ~/.agents/skills",
     );
+
+    assertInstallManifestEntriesExist(join(tmpDistDir, "claude"), claudeManifest, "Claude");
+    assertInstallManifestEntriesExist(join(tmpDistDir, "codex"), codexManifest, "Codex");
   });
 
   test("manifest file checksums cover every generated file", () => {
