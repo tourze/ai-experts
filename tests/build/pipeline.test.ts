@@ -320,6 +320,7 @@ describe("build/pipeline modules", () => {
         ],
         finalSteps: [defineWorkflowStep({ id: "finalize", label: "收束结论。" })],
       }),
+      relatedSkills: [{ id: workflowHelperSkill.id, reason: "workflow gate and route helper" }],
     });
     expect(() =>
       validateRegistry({
@@ -327,6 +328,12 @@ describe("build/pipeline modules", () => {
         skills: [fixture.skill, workflowHelperSkill, complexWorkflowSkill],
       })
     ).not.toThrow();
+    expect(() =>
+      validateRegistry({
+        ...fixture.registry,
+        skills: [fixture.skill, workflowHelperSkill, { ...complexWorkflowSkill, relatedSkills: [] }],
+      })
+    ).toThrow("workflow references skill workflow-helper-skill but relatedSkills does not include it");
     const complexRendered = renderSkillMd(complexWorkflowSkill, Platform.Claude, procedureMap);
     expect(complexRendered).toContain("## 工作流\n\n```mermaid\nflowchart TD");
     expect(complexRendered).toContain('evidence_gate["workflow-helper-skill');

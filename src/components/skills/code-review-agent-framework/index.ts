@@ -93,4 +93,24 @@ export const codeReviewAgentFrameworkSkill = defineSkill({
       "Reviewer agent 扩展：在统一 workflow 中声明 evidence gate、专项 route 和收尾报告要求。",
     ],
   }),
+  relatedSkills: [
+    {
+      get id() {
+        return codeReviewSkill.id;
+      },
+      reason: "核心代码审查 route 复用其四要素、严重度和证据纪律。",
+    },
+    {
+      get id() {
+        return complexityReducerSkill.id;
+      },
+      reason: "复杂度 route 需要定位长函数、嵌套和职责边界问题时联动。",
+    },
+    {
+      get id() {
+        return testQualityReviewSkill.id;
+      },
+      reason: "测试、mock、fixture 或 flaky 风险 route 需要测试质量审查时联动。",
+    },
+  ],
 });

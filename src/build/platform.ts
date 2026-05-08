@@ -447,6 +447,15 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
       }
       seenRelatedSkills.add(related.id);
     }
+    for (const workflowSkillId of new Set([
+      ...(skillWorkflow?.gates ?? []).map((gate) => gate.skill),
+      ...(skillWorkflow?.routes ?? []).map((route) => route.skill),
+    ])) {
+      if (workflowSkillId === skill.id) continue;
+      if (!seenRelatedSkills.has(workflowSkillId)) {
+        throw new Error(`Skill ${skill.id} workflow references skill ${workflowSkillId} but relatedSkills does not include it`);
+      }
+    }
 
     const sourceRoot = skillSourceRoot(skill);
     const procedureUses = listProcedureUses(skill);
