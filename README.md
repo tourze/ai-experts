@@ -16,6 +16,8 @@
 
 ## 快速开始
 
+需要 Node.js >= 20.19.0。
+
 ```bash
 npm install
 npm run check:components

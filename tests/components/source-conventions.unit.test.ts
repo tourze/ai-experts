@@ -97,6 +97,7 @@ describe("component source conventions", () => {
     assert.match(readme, /`forbiddenRootEntries` 与 `forbiddenSkillEntries`/);
     assert.match(readme, /Codex 的 `configRoot` 是 `~\/\.codex`、`skillRoot` 是 `~\/\.agents\/skills`/);
     assert.match(readme, /Codex 的 `rootEntries` 不包含 `skills\/`/);
+    assert.match(readme, /需要 Node\.js >= 20\.19\.0/);
     assert.doesNotMatch(readme, /^\s+rules\/$/m);
     assert.match(readme, /procedureUse\(procedureDefinition\)/);
     assert.match(readme, /构建器会生成 `## 检查清单`，并放在生成的 `## 反模式` 之后/);
