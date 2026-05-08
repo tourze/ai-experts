@@ -83,6 +83,14 @@ export const customerJourneyMapSkill = defineSkill({
         "需要设计用户调研问卷或验证现有问卷设计质量时读取。",
     }),
     defineReference({
+      id: "guest-insights",
+      source: new URL("./references/guest-insights.md", import.meta.url),
+      target: "references/guest-insights.md",
+      title: "guest-insights.md",
+      summary: "问卷和访谈结合使用的实践洞察：样本偏差、触发时机和结果解释。",
+      loadWhen: "需要审查问卷样本、发送时机或把问卷结果转成后续访谈时读取。",
+    }),
+    defineReference({
       id: "mom-test",
       source: new URL("./references/mom-test.md", import.meta.url),
       target: "references/mom-test.md",
@@ -90,6 +98,30 @@ export const customerJourneyMapSkill = defineSkill({
       summary: "Mom Test 用户访谈法：避免虚假正面反馈、挖掘真实需求的提问技巧。",
       loadWhen:
         "需要开展客户访谈或验证需求假设时读取。",
+    }),
+    defineReference({
+      id: "question-patterns",
+      source: new URL("./references/question-patterns.md", import.meta.url),
+      target: "references/question-patterns.md",
+      title: "question-patterns.md",
+      summary: "Mom Test 访谈中的过去式、事实型、追问型问题模式。",
+      loadWhen: "需要准备客户访谈问题或把假设改写成事实型问题时读取。",
+    }),
+    defineReference({
+      id: "avoiding-bad-data",
+      source: new URL("./references/avoiding-bad-data.md", import.meta.url),
+      target: "references/avoiding-bad-data.md",
+      title: "avoiding-bad-data.md",
+      summary: "识别和避免礼貌性反馈、假设题、意见题等坏数据来源。",
+      loadWhen: "访谈结果看似积极但缺乏行为证据，或需要过滤无效反馈时读取。",
+    }),
+    defineReference({
+      id: "commitment-advancement",
+      source: new URL("./references/commitment-advancement.md", import.meta.url),
+      target: "references/commitment-advancement.md",
+      title: "commitment-advancement.md",
+      summary: "区分口头兴趣、轻承诺和强承诺，判断需求真实性。",
+      loadWhen: "需要从访谈中判断用户是否真的愿意推进、付费或投入资源时读取。",
     }),
   ],
 });
