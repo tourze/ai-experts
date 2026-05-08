@@ -8,6 +8,7 @@ import type {
   ProcedureDefinition,
   SkillDefinition,
 } from "../components/sdk";
+import { HookEvent } from "../components/sdk";
 import {
   collectFiles,
   defaultReferenceTarget,
@@ -212,6 +213,21 @@ function validateProcedureUsePlatforms(
       `${component.kind} ${component.id} references procedure ${procedureUse.id} unavailable on platform(s): ${missingPlatforms.join(", ")}`,
     );
   }
+}
+
+const hookEventsWithToolMatcher = new Set<HookEvent>([
+  HookEvent.PermissionRequest,
+  HookEvent.PostToolUse,
+  HookEvent.PreToolUse,
+]);
+
+function validateHookMatcher(hook: HookDefinition): void {
+  if (!hook.matcher || hook.matcher.length === 0) return;
+  if (hookEventsWithToolMatcher.has(hook.event)) return;
+  throw new Error(
+    `Hook ${hook.id} defines matcher for ${hook.event}; matcher is only supported for tool events: ` +
+    "PermissionRequest, PostToolUse, PreToolUse",
+  );
 }
 
 export function validateRegistry(registry: ComponentRegistry): ComponentSurface {
@@ -515,6 +531,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
   for (const hook of registry.hooks) {
     validateId(hook.id, "hook");
     validatePlatformList(hook.platforms, `Hook ${hook.id}`);
+    validateHookMatcher(hook);
     const hookEntryPath = toAbsolutePath(hook.entry);
     if (!existsSync(hookEntryPath)) {
       throw new Error(`Hook ${hook.id} entry is missing: ${displayPath(hook.entry)}`);

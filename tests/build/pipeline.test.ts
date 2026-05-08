@@ -178,7 +178,6 @@ function createFixture() {
     platforms: [ComponentPlatform.Claude, ComponentPlatform.Codex],
     event: HookEvent.UserPromptSubmit,
     entry: pathToFileURL(hookEntry),
-    matcher: [KnownTool.Read],
     order: 10,
     timeoutSeconds: 12,
     statusMessage: "running fixture hook",
@@ -348,6 +347,14 @@ describe("build/pipeline modules", () => {
     };
     expect(() => validateRegistry(invalidHookPlatformRegistry)).toThrow(
       "Hook fixture-hook platforms contain unsupported platform(s): unsupported-hook-cli",
+    );
+
+    const invalidHookMatcherRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      hooks: [{ ...fixture.hook, matcher: [KnownTool.Read] }],
+    };
+    expect(() => validateRegistry(invalidHookMatcherRegistry)).toThrow(
+      "Hook fixture-hook defines matcher for UserPromptSubmit",
     );
 
     const disabledInvocationRegistry: ComponentRegistry = {
@@ -789,11 +796,22 @@ describe("build/pipeline modules", () => {
     expect(hookCommand).not.toContain("--platform");
     expect(hookCommand).not.toContain(":-");
 
+    const firstToolHook = defineHook({
+      id: "fixture-first-tool-hook",
+      description: "first fixture tool hook",
+      platforms: [ComponentPlatform.Claude, ComponentPlatform.Codex],
+      event: HookEvent.PreToolUse,
+      entry: fixture.hook.entry,
+      matcher: [KnownTool.Read],
+      order: 10,
+      timeoutSeconds: 12,
+      statusMessage: "running fixture hook",
+    });
     const secondHook = defineHook({
       id: "fixture-second-hook",
       description: "second fixture hook",
       platforms: [ComponentPlatform.Claude, ComponentPlatform.Codex],
-      event: HookEvent.UserPromptSubmit,
+      event: HookEvent.PreToolUse,
       entry: fixture.hook.entry,
       matcher: [KnownTool.Read],
       order: 20,
@@ -804,22 +822,22 @@ describe("build/pipeline modules", () => {
       id: "fixture-default-timeout-hook",
       description: "default timeout fixture hook",
       platforms: [ComponentPlatform.Claude, ComponentPlatform.Codex],
-      event: HookEvent.UserPromptSubmit,
+      event: HookEvent.PreToolUse,
       entry: fixture.hook.entry,
       matcher: [KnownTool.Read],
       order: 30,
     });
     const defaultOnlyConfig = renderHookConfig([defaultTimeoutHook], Platform.Claude);
-    expect(defaultOnlyConfig.hooks.UserPromptSubmit[0]?.hooks[0]?.timeout).toBe(
+    expect(defaultOnlyConfig.hooks.PreToolUse[0]?.hooks[0]?.timeout).toBe(
       DEFAULT_COMMAND_HOOK_TIMEOUT_SECONDS,
     );
 
-    const groupedConfig = renderHookConfig([fixture.hook, secondHook, defaultTimeoutHook], Platform.Codex);
-    expect(groupedConfig.hooks.UserPromptSubmit).toHaveLength(1);
-    expect(groupedConfig.hooks.UserPromptSubmit[0]?.hooks[0]?.timeout).toBe(
+    const groupedConfig = renderHookConfig([firstToolHook, secondHook, defaultTimeoutHook], Platform.Codex);
+    expect(groupedConfig.hooks.PreToolUse).toHaveLength(1);
+    expect(groupedConfig.hooks.PreToolUse[0]?.hooks[0]?.timeout).toBe(
       19 + DEFAULT_COMMAND_HOOK_TIMEOUT_SECONDS,
     );
-    expect(groupedConfig.hooks.UserPromptSubmit[0]?.hooks[0]?.statusMessage).toBeUndefined();
+    expect(groupedConfig.hooks.PreToolUse[0]?.hooks[0]?.statusMessage).toBeUndefined();
 
     expect(renderCodexConfig()).toContain("codex_hooks = true");
   });
