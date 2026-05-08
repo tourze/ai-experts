@@ -1,12 +1,13 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, rmSync } from "node:fs";
-import { join, relative } from "node:path";
+import { basename, join, relative } from "node:path";
 import type {
   AgentDefinition,
   HookDefinition,
   InstructionDefinition,
   ProcedureDefinition,
   RelatedSkillDefinition,
+  SkillAssetDefinition,
   SkillDefinition,
   ToolMatcher,
 } from "../components/sdk";
@@ -304,6 +305,36 @@ function validateRuntimeToolMatchers(
   }
 }
 
+function defaultAssetTarget(asset: SkillAssetDefinition): string {
+  return asset.target ?? `assets/${basename(toAbsolutePath(asset.source))}`;
+}
+
+function validateSkillAssets(skill: SkillDefinition): void {
+  const seenAssetIds = new Set<string>();
+  const seenAssetTargets = new Set<string>();
+  for (const asset of skill.assets ?? []) {
+    validateId(asset.id, `asset in ${skill.id}`);
+    if (seenAssetIds.has(asset.id)) {
+      throw new Error(`Duplicate asset id in ${skill.id}: ${asset.id}`);
+    }
+    seenAssetIds.add(asset.id);
+
+    const source = toAbsolutePath(asset.source);
+    if (!existsSync(source)) {
+      throw new Error(`Skill ${skill.id} asset is missing: ${displayPath(asset.source)}`);
+    }
+
+    const target = defaultAssetTarget(asset);
+    if (!target.startsWith("assets/") || target.includes("..") || target.startsWith("/")) {
+      throw new Error(`Skill ${skill.id} asset ${asset.id} target must stay under assets/: ${target}`);
+    }
+    if (seenAssetTargets.has(target)) {
+      throw new Error(`Duplicate asset target in ${skill.id}: ${target}`);
+    }
+    seenAssetTargets.add(target);
+  }
+}
+
 export function validateRegistry(registry: ComponentRegistry): ComponentSurface {
   if (!registry || !Array.isArray(registry.skills)) throw new Error("registry.skills must be an array");
   if (!Array.isArray(registry.instructions)) throw new Error("registry.instructions must be an array");
@@ -499,6 +530,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
         throw new Error(`Skill ${skill.id} reference is missing: ${displayPath(reference.source)}`);
       }
     }
+    validateSkillAssets(skill);
   }
 
   for (const agent of registry.agents) {

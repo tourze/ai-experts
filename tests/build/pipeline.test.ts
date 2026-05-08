@@ -434,6 +434,37 @@ describe("build/pipeline modules", () => {
       "Skill fixture-skill tools[0] must not use regex matcher",
     );
 
+    const missingSkillAssetRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        assets: [
+          defineAsset({
+            id: "missing-asset",
+            source: pathToFileURL(join(fixture.root, "skill", "assets", "missing.txt")),
+          }),
+        ],
+      }],
+    };
+    expect(() => validateRegistry(missingSkillAssetRegistry)).toThrow("Skill fixture-skill asset is missing");
+
+    const invalidSkillAssetTargetRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        assets: [
+          defineAsset({
+            id: "bad-asset-target",
+            source: pathToFileURL(join(fixture.root, "skill", "assets", "asset.txt")),
+            target: "../asset.txt",
+          }),
+        ],
+      }],
+    };
+    expect(() => validateRegistry(invalidSkillAssetTargetRegistry)).toThrow(
+      "Skill fixture-skill asset bad-asset-target target must stay under assets/",
+    );
+
     const invalidInstructionPlatformRegistry: ComponentRegistry = {
       ...fixture.registry,
       instructions: [{ ...fixture.instruction, platforms: ["unsupported-instruction-cli"] as any }],

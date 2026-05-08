@@ -1,6 +1,7 @@
 import {
   InvocationPolicy,
   Platform,
+  defineAsset,
   defineReference,
   defineAntiPattern,
   defineSkill,
@@ -118,6 +119,13 @@ export const deepCodeReadSkill = defineSkill({
       title: "workflow.md",
       summary: "深度代码阅读的整体工作流步骤，包括 A-B-C 三 agent 协作流程。",
       loadWhen: "需要了解或初始化深度代码阅读的完整工作流和 agent 编排时读取。",
+    }),
+  ],
+  assets: [
+    defineAsset({
+      id: "report-template",
+      source: new URL("./assets/report_template.md", import.meta.url),
+      target: "assets/report_template.md",
     }),
   ],
 });

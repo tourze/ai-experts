@@ -1,6 +1,7 @@
 import {
   InvocationPolicy,
   Platform,
+  defineAsset,
   defineReference,
   defineAntiPattern,
   defineSkill,
@@ -105,6 +106,13 @@ export const analyticsTrackingSkill = defineSkill({
       title: "gtm-patterns.md",
       summary: "Google Tag Manager 最佳实践：触发器、变量与标签组织模式。",
       loadWhen: "需要设计或优化 GTM 容器架构、排查事件不触发问题时读取。",
+    }),
+  ],
+  assets: [
+    defineAsset({
+      id: "sample-campaign-data",
+      source: new URL("./assets/sample_campaign_data.json", import.meta.url),
+      target: "assets/sample_campaign_data.json",
     }),
   ],
 });

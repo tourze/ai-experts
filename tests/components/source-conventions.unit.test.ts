@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { existsSync, lstatSync, readdirSync, readFileSync, readlinkSync } from "node:fs";
-import { dirname, join, relative, resolve } from "node:path";
+import { basename, dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, test } from "vitest";
 import { validateRegistry } from "../../src/build/platform.ts";
@@ -664,6 +664,51 @@ describe("component source conventions", () => {
       [],
       "reference Markdown should not link to legacy sub-skill/plugin SKILL.md paths; link the real reference file or use plain text",
     );
+  });
+
+  test("skill reference markdown links to packaged assets only when the asset is registered", () => {
+    const skillSourceRoot = join(repoRoot, "src/components/skills");
+    const missingAssetLinks: string[] = [];
+    const unregisteredAssetLinks: string[] = [];
+    const assetTargetsBySkill = new Map<string, Set<string>>();
+
+    for (const skill of registry.skills) {
+      const targets = new Set<string>();
+      for (const asset of skill.assets ?? []) {
+        const target = asset.target ?? `assets/${basename(asset.source instanceof URL ? fileURLToPath(asset.source) : asset.source)}`;
+        targets.add(target);
+      }
+      assetTargetsBySkill.set(skill.id, targets);
+    }
+
+    const referenceMarkdownSources = collectFiles(skillSourceRoot, (file) =>
+      file.endsWith(".md") && file.split(/[\\/]/).includes("references"),
+    );
+
+    for (const sourceFile of referenceMarkdownSources) {
+      const source = stripMarkdownCode(readFileSync(sourceFile, "utf-8"));
+      const relativeSource = relative(skillSourceRoot, sourceFile);
+      const skillId = relativeSource.split(/[\\/]/)[0];
+      const assetTargets = assetTargetsBySkill.get(skillId) ?? new Set<string>();
+
+      for (const match of source.matchAll(/(!?)\[[^\]\n]+\]\(([^)\n]+)\)/gu)) {
+        if (match[1] === "!") continue;
+        const targetPath = localMarkdownPath(markdownDestination(match[2] ?? ""));
+        if (!targetPath || !targetPath.startsWith("../assets/")) continue;
+
+        const absoluteTarget = resolve(dirname(sourceFile), targetPath);
+        const packagedTarget = targetPath.replace(/^\.\.\/assets\//u, "assets/");
+        if (!existsSync(absoluteTarget)) {
+          missingAssetLinks.push(`${relative(repoRoot, sourceFile)}: ${targetPath}`);
+        }
+        if (!assetTargets.has(packagedTarget)) {
+          unregisteredAssetLinks.push(`${relative(repoRoot, sourceFile)}: ${targetPath}`);
+        }
+      }
+    }
+
+    assert.deepEqual(missingAssetLinks, [], "reference Markdown should not link to missing skill assets");
+    assert.deepEqual(unregisteredAssetLinks, [], "linked skill assets must be registered through defineAsset");
   });
 
   test("skill markdown sources keep same-file heading anchors valid", () => {

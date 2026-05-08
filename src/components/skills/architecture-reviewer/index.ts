@@ -203,6 +203,11 @@ export const architectureReviewerSkill = defineSkill({
       id: "report-template",
       source: new URL("./assets/report-template.md", import.meta.url),
       target: "assets/report-template.md",
-    })
+    }),
+    defineAsset({
+      id: "diagram-template",
+      source: new URL("./assets/template.html", import.meta.url),
+      target: "assets/template.html",
+    }),
   ],
 });

@@ -1,0 +1,67 @@
+{
+  "campaign": {
+    "id": "spring-launch-2026",
+    "name": "Spring Launch 2026",
+    "currency": "USD",
+    "timezone": "UTC",
+    "attribution_window_days": 30
+  },
+  "channels": [
+    {
+      "channel": "paid_search",
+      "spend": 4200,
+      "impressions": 83000,
+      "clicks": 4100
+    },
+    {
+      "channel": "paid_social",
+      "spend": 3600,
+      "impressions": 125000,
+      "clicks": 5200
+    },
+    {
+      "channel": "organic_content",
+      "spend": 900,
+      "impressions": 47000,
+      "clicks": 1800
+    }
+  ],
+  "funnel": [
+    {
+      "stage": "visit",
+      "events": 11100
+    },
+    {
+      "stage": "signup",
+      "events": 1640
+    },
+    {
+      "stage": "activation",
+      "events": 820
+    },
+    {
+      "stage": "paid",
+      "events": 214
+    }
+  ],
+  "conversions": [
+    {
+      "conversion_id": "conv-001",
+      "revenue": 240,
+      "first_touch": "organic_content",
+      "last_touch": "paid_search"
+    },
+    {
+      "conversion_id": "conv-002",
+      "revenue": 180,
+      "first_touch": "paid_social",
+      "last_touch": "paid_social"
+    },
+    {
+      "conversion_id": "conv-003",
+      "revenue": 320,
+      "first_touch": "paid_search",
+      "last_touch": "paid_search"
+    }
+  ]
+}
