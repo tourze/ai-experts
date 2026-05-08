@@ -1053,6 +1053,28 @@ describe("component source conventions", () => {
     }
   });
 
+  test("skill runtime guidance names web access neutrally", () => {
+    const skillRuntimeFiles = collectFiles(
+      join(repoRoot, "src/components/skills"),
+      (file) =>
+        (file.endsWith(".md") || file.endsWith("index.ts")) &&
+        !file.split(/[\\/]/).includes("evals"),
+    );
+
+    for (const skillRuntimeFile of skillRuntimeFiles) {
+      const source = readFileSync(skillRuntimeFile, "utf-8");
+      const toolsSource = skillRuntimeFile.endsWith("index.ts")
+        ? extractPropertyArray(source, "tools")
+        : null;
+      const runtimeSource = toolsSource ? source.replace(toolsSource, "") : source;
+      assert.doesNotMatch(
+        runtimeSource,
+        /\bWebSearch\b|\bWebFetch\b/,
+        `${skillRuntimeFile} should not expose platform-specific web tool names in runtime guidance`,
+      );
+    }
+  });
+
   test("agent source keeps structured fields", () => {
     const agentSource = readFileSync(
       join(repoRoot, "src/components/agents/typescript-reviewer/index.ts"),

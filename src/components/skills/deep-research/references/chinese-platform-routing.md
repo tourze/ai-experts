@@ -4,7 +4,7 @@ Source: github.com/minsight-ai-info/AI-Search-Hub (MIT, snapshot 2026-04)
 
 # 中文数据世界路由参考
 
-通用 WebSearch 对中文平台内部内容（微信公众号、抖音、大众点评、B 站、微博等）覆盖薄弱：这些平台对外搜索引擎做了不同程度的封禁、降权或反爬。要拿到第一手数据，正确做法是把问题路由给「拥有该数据的母公司自家 AI 入口」，再回收结果。
+通用网页搜索对中文平台内部内容（微信公众号、抖音、大众点评、B 站、微博等）覆盖薄弱：这些平台对外搜索引擎做了不同程度的封禁、降权或反爬。要拿到第一手数据，正确做法是把问题路由给「拥有该数据的母公司自家 AI 入口」，再回收结果。
 
 本参考给出三套路由表，按 **数据生态归属 → 主源 → 调用方式** 三层判断。
 
@@ -25,11 +25,11 @@ Source: github.com/minsight-ai-info/AI-Search-Hub (MIT, snapshot 2026-04)
 | B 站 / bilibili 视频内容 | B 站生态 | bilibili | doubao 或 qwen | `site:bilibili.com` |
 | 小红书 / 种草 / 美妆消费 | 小红书生态 | 小红书 | doubao | `site:xiaohongshu.com` |
 
-**未来可达入口**（当前 AI Search Hub 上游标记为 Future，本仓库目前只能通过 WebSearch + site: 间接到达）：
+**未来可达入口**（当前 AI Search Hub 上游标记为 Future，本仓库目前只能通过网页搜索 + `site:` 间接到达）：
 
 | 信号 | 平台 | 母公司 | 当前到达方式 |
 |------|------|--------|--------------|
-| 网页原生答案、引用充分 | Perplexity | Perplexity AI | WebSearch + `site:perplexity.ai` 看公开 share 链接 |
+| 网页原生答案、引用充分 | Perplexity | Perplexity AI | 网页搜索 + `site:perplexity.ai` 看公开 share 链接 |
 | 复杂推理 / 长文综合 / 多源整理 | Claude.ai | Anthropic | 直接由当前 agent 完成，无需路由 |
 | 百度系内容 / 百度搜索结果 | 文心一言 | 百度 Baidu | `site:baidu.com` `site:baijiahao.baidu.com` |
 
@@ -61,9 +61,9 @@ Source: github.com/minsight-ai-info/AI-Search-Hub (MIT, snapshot 2026-04)
 本仓库当前没有内置 fan-out 到上述 native AI 入口的运行时桥（用户可参考上游 [AI-Search-Hub](https://github.com/minsight-ai-info/AI-Search-Hub) 自行架设）。在没有外接执行能力时，按以下顺序降级：
 
 1. **判断生态归属**：用第 1 节关键词或第 2 节 URL 域名，确定主源是哪家。
-2. **首选 WebSearch + site: 限定**：把限定符叠加到搜索词，例如 `site:mp.weixin.qq.com 新能源汽车 深度分析 2026`。
+2. **首选网页搜索 + `site:` 限定**：把限定符叠加到搜索词，例如 `site:mp.weixin.qq.com 新能源汽车 深度分析 2026`。
 3. **抓正文**：命中目标 URL 后转 [web-content-fetcher](../../web-content-fetcher/SKILL.md) 提正文。
-4. **无 site 命中时回退**：泛中文话题回退 `qwen` 风格泛中文搜索（即不加 site: 的 Chinese WebSearch），泛英文话题回退原 deep-research 全景流程。
+4. **无 site 命中时回退**：泛中文话题回退 `qwen` 风格泛中文搜索（即不加 `site:` 的中文网页搜索），泛英文话题回退原 deep-research 全景流程。
 5. **明确告知局限**：当结果明显是搜索引擎缓存而非平台 native 数据时，在结论里标注"未触达平台 native 内容，仅基于搜索引擎可见摘要"。
 
 ---
@@ -80,6 +80,6 @@ Source: github.com/minsight-ai-info/AI-Search-Hub (MIT, snapshot 2026-04)
 
 ## 5. 不适用场景
 
-- 国际 / 英文研究：保持原 deep-research 流程（WebSearch 全景 + chain-of-verification），不要强行套中文路由。
+- 国际 / 英文研究：保持原 deep-research 流程（网页搜索全景 + chain-of-verification），不要强行套中文路由。
 - 代码库内部问题：转 `wiki-researcher`，不要走任何外部搜索路由。
 - 单 URL 正文抓取：先转 `web-content-fetcher`，本路由表只在抓不下或需要平台 native 补充时用。
