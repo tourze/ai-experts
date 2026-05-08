@@ -14,7 +14,7 @@ export const sedInplaceGuardHook = defineHook({
 /**
  * sed -i 原地修改拦截 hook（PreToolUse — Bash）
  *
- * sed -i 不创建备份、不可回滚，且 Claude Code 有专用 Edit 工具可替代。
+ * sed -i 不创建备份、不可回滚，且当前 agent 环境有专用文件编辑工具可替代。
  * 允许带备份后缀的用法：sed -i.bak / sed -i'.bak' / sed -i".bak"
  * 也允许 macOS 兼容写法：sed -i '' (空字符串后缀)
  *

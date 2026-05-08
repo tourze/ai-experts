@@ -28,11 +28,11 @@ export const markdownBudgetGuardHook = defineHook({
  *   其他 *.md                 静默放行      避免误伤 README / changelog / 日志
  *
  * 选择“按路径分级”而不是“对所有 md 统一阈值”的原因：
- *   SKILL.md 会被加载到每一次 agent 调用的提示里，500 tokens 是 Anthropic
- *   官方建议的软上限；普通 README / docs 是给人读的，用同样标准会误伤。
+ *   SKILL.md 会进入 agent 的技能发现与执行上下文，预算需要明显小于
+ *   普通 README / docs；后者主要给人读，用同样标准会误伤。
  *
  * token 估算口径（无外部依赖）：
- *   ASCII 每 4 char ≈ 1 token（与 Anthropic 经验值和 ANTI-PATTERNS.md 一致）
+ *   ASCII 每 4 char ≈ 1 token（通用保守估算）
  *   非 ASCII（含 CJK）每字符 ≈ 1 token（对中文更接近真实 tokenizer 的开销）
  *   这是一个保守估算：它不会过报，但可能少报（真实 tokenizer 会把
  *   CJK 字符拆成 1–3 token 不等），所以不会错误 block 实际上合规的文件。

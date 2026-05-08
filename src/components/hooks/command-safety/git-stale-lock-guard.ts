@@ -20,7 +20,7 @@ export const gitStaleLockGuardHook = defineHook({
 /**
  * git-stale-lock-guard — 检测并清理 stale 的 .git/index.lock
  *
- * 场景：多个 Claude Code 进程/subagent 并行操作同一仓库，
+ * 场景：多个 agent 进程或 subagent 并行操作同一仓库，
  *       某进程被杀（Ctrl+C / 超时 / 崩溃）后留下 index.lock。
  *       后续所有 git 写操作都会失败。
  *

@@ -268,6 +268,24 @@ describe("component source conventions", () => {
     }
   });
 
+  test("cross-platform hook source comments use platform-neutral rationale", () => {
+    const platformSpecificRationale: string[] = [];
+
+    for (const sourceFile of collectFiles(join(repoRoot, "src/components/hooks"), (file) => file.endsWith(".ts"))) {
+      const source = readFileSync(sourceFile, "utf-8");
+      if (!/platforms:\s*\[Platform\.Claude,\s*Platform\.Codex\]/.test(source)) continue;
+      if (/\bClaude Code\b|\bAnthropic\b/u.test(source)) {
+        platformSpecificRationale.push(relative(repoRoot, sourceFile));
+      }
+    }
+
+    assert.deepEqual(
+      platformSpecificRationale,
+      [],
+      "cross-platform hooks should justify behavior in platform-neutral terms",
+    );
+  });
+
   test("component guidance only names registered skills as standalone skills", () => {
     const registeredSkillIds = new Set(registry.skills.map((skill) => skill.id));
     const unknownSkillMentions: string[] = [];
