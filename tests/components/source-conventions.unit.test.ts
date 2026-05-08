@@ -300,6 +300,7 @@ describe("component source conventions", () => {
 
   test("cross-platform hook source comments use platform-neutral rationale", () => {
     const platformSpecificRationale: string[] = [];
+    const legacyHookRuntimeTerms: string[] = [];
 
     for (const sourceFile of collectFiles(join(repoRoot, "src/components/hooks"), (file) => file.endsWith(".ts"))) {
       const source = readFileSync(sourceFile, "utf-8");
@@ -307,12 +308,20 @@ describe("component source conventions", () => {
       if (/\bClaude Code\b|\bAnthropic\b/u.test(source)) {
         platformSpecificRationale.push(relative(repoRoot, sourceFile));
       }
+      if (/(?:向|让|强制|要求)\s*Claude|Claude (?:在|判断|根本|收到|拿到|完成)|Claude 自觉|原 skills\/|原 skill 文件已删除|── 执行步骤 ──/u.test(source)) {
+        legacyHookRuntimeTerms.push(relative(repoRoot, sourceFile));
+      }
     }
 
     assert.deepEqual(
       platformSpecificRationale,
       [],
       "cross-platform hooks should justify behavior in platform-neutral terms",
+    );
+    assert.deepEqual(
+      legacyHookRuntimeTerms,
+      [],
+      "cross-platform hooks should not expose Claude-only or migrated skill workflow wording in runtime guidance",
     );
   });
 

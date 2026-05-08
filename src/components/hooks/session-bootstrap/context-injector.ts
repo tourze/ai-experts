@@ -19,7 +19,7 @@ export const contextInjectorHook = defineHook({
  *
  * 行为:
  *   会话启动时(startup / resume / clear / compact)读取 cwd 的 git 状态 +
- *   本地记忆文件存在性,通过 additionalContext 一次性注入 Claude,
+ *   本地记忆文件存在性,通过 additionalContext 一次性注入当前代理,
  *   省去每次起手重复执行 `git status` / `ls <记忆文件>` 的探测成本。
  *
  * 为什么要这么做:
@@ -33,13 +33,13 @@ export const contextInjectorHook = defineHook({
  *   • 与 prompt-guidance/* 是正交维度:本 hook 在会话启动时触发一次,
  *     prompt-submit hooks 在每次 prompt 时触发。两者注入到不同的 context 段。
  *   • 与 command-safety/* 是正交维度:那些 hook 在执行命令前拦截,本 hook
- *     在命令执行前就把状态告诉 Claude,减少不必要的探测命令。
+ *     在命令执行前就把状态告诉当前代理,减少不必要的探测命令。
  *
  * 非目标:
  *   - 不 block(SessionStart 没有 block 概念,只能注入 context)
  *   - 不执行任何写入操作
  *   - 不依赖任何项目特定约定;非 git 仓库 / cwd 缺失直接放行
- *   - 不解析记忆文件内容,只报告存在性,让 Claude 自己读
+ *   - 不解析记忆文件内容,只报告存在性,让当前代理自己读
  *   - 不打印 git diff 全文(可能很长),只给文件级摘要
  *
  * 失败策略:

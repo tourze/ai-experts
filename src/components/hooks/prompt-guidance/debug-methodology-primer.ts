@@ -17,14 +17,13 @@ export const debugMethodologyPrimerHook = defineHook({
  * 行为:
  *   当用户消息中出现明确的错误现象(crash / 报错 / 挂了 / timeout / 5xx)、
  *   调查动作(debug / 排查 / reproduce / root cause / 为什么会…)、或间歇性
- *   现象(flaky / 偶发 / 诡异 / regression)时,本 hook 向 Claude 注入一段
- *   additionalContext,内容合并了原 skills/debug-investigator(假设驱动 5 步)
- *   与原 skills/root-cause-finder(症状/根因分离 + canonical source +
- *   hidden writes 审计)的核心原则,让 Claude 在动手改代码前先走方法论。
+ *   现象(flaky / 偶发 / 诡异 / regression)时,本 hook 注入一段
+ *   additionalContext，内容合并假设驱动调查、症状/根因分离、canonical
+ *   source 与 hidden writes 审计的核心原则，让当前代理在动手改代码前先走方法论。
  *
  * 为什么要这么做:
- *   原两个 skill 都被标注为 "Use when bug…",但这是写给 LLM 的自律,实际
- *   大量调试场景 Claude 拿到 prompt 就开始 "让我试试改这里 → 没好 → 再试",
+ *   只靠模型自律容易漏触发。实际大量调试场景里，当前代理拿到 prompt
+ *   就开始 "让我试试改这里 → 没好 → 再试",
  *   完全不走假设驱动。参照 investigation-primer / feedback-detector 的
  *   模式:把触发时机从 "LLM 自觉" 改成 "UserPromptSubmit 机械匹配",
  *   方法论原样注入 prompt,强制在改代码前思考。
@@ -36,7 +35,7 @@ export const debugMethodologyPrimerHook = defineHook({
  *
  * 非目标:
  *   - 不 block,只注入 context(false positive 的代价仅为多读一段文字)
- *   - 不替代记忆文件或原 skill 文件,而是把触发时机机械化
+ *   - 不替代记忆文件或 runtime skill,而是把触发时机机械化
  *   - 不对所有 "修复" 类 prompt 触发 —— 只对明确的 bug 调查场景触发。
  *     "修一下命名"、"修改注释"、"修复格式" 这类非运行时错误的 "修",
  *     不触发本 hook(investigation-primer 会覆盖它们)

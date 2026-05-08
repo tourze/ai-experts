@@ -19,7 +19,7 @@ export const skillRoutingReminderHook = defineHook({
  * skill-routing-reminder (UserPromptSubmit) — 每轮注入轻量路由提醒
  *
  * 行为:
- *   每次用户发送消息时注入一段简短提醒,要求 Claude 在回复开头输出
+ *   每次用户发送消息时注入一段简短提醒,要求当前代理在回复开头输出
  *   📌 Skill 路由声明,在结尾输出 📌 下一步推荐。
  *
  * 为什么要这么做:

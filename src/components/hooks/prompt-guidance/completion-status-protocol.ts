@@ -17,11 +17,11 @@ export const completionStatusProtocolHook = defineHook({
  * 行为:
  *   当用户消息中出现编码任务信号(与 investigation-primer 相同的触发词)时,
  *   注入「完成时必须报告 DONE / DONE_WITH_CONCERNS / BLOCKED / NEEDS_CONTEXT」
- *   的协议。让 Claude 在任务结束时给出结构化的退出状态,而不是模糊的
+ *   的协议。让当前代理在任务结束时给出结构化的退出状态,而不是模糊的
  *   "完成了"/"搞定了"。
  *
  * 为什么要这么做:
- *   Claude 完成任务后的报告质量参差不齐:有时给出详细的变更清单,有时
+ *   当前代理完成任务后的报告质量参差不齐:有时给出详细的变更清单,有时
  *   只说"已完成",有时甚至在遇到阻塞时不明确说明。标准化退出状态让用户
  *   在扫一眼就能判断:任务真的做完了吗?有没有留尾巴?是不是被卡住了?
  *
@@ -33,7 +33,7 @@ export const completionStatusProtocolHook = defineHook({
  *
  * 非目标:
  *   - 不 block,只注入 context
- *   - 不强制 Claude 写冗长的报告 —— 小任务用一行状态即可
+ *   - 不强制当前代理写冗长的报告 —— 小任务用一行状态即可
  *   - 不替代 skill 自身的输出格式 —— 本协议是兜底,skill 有自己的输出规范时
  *     以 skill 为准,但状态行仍应出现
  *   - 不做任何仓库特定维护动作

@@ -15,14 +15,14 @@ export const investigationPrimerHook = defineHook({
  *
  * 行为:
  *   当用户消息中出现「实现 / 修复 / 重构 / 改 / 优化 / add / fix / refactor /
- *   change / implement…」等编码任务动词时,本 hook 向 Claude 注入一段
+ *   change / implement…」等编码任务动词时,本 hook 注入一段
  *   additionalContext,内容是记忆文件中的「工程思维框架 → 调查先行」硬规则
- *   的战术四步(定位 → 依赖 → 测试 → 风格),强制 Claude 在 Edit/Write 之前
+ *   的战术四步(定位 → 依赖 → 测试 → 风格)，要求当前代理在 Edit/Write 之前
  *   先用 Grep/Glob/Read 摸清家底。
  *
  * 为什么要这么做:
  *   记忆文件已经明令「没有调查就没有发言权」,但写在系统提示里的硬规则
- *   会被后续对话和工具结果稀释 —— 大量任务里 Claude 拿到 prompt 就直接
+ *   会被后续对话和工具结果稀释 —— 大量任务里当前代理拿到 prompt 就直接
  *   开 Edit/Write,根本没 Grep 过项目。参照 feedback-detector 的模式:把
  *   触发时机从「靠 LLM 自觉」改为「UserPromptSubmit 事件机械匹配」,让
  *   「先搜索再动手」的四步方法论在用户 prompt 抵达的同一时刻出现,降低
@@ -31,7 +31,7 @@ export const investigationPrimerHook = defineHook({
  * 非目标:
  *   - 不 block,只注入 context(false positive 的代价仅为多读一段文字)
  *   - 不替代记忆文件的原规则,而是把那条规则实例化为可执行的四步
- *   - 不指定必须 Grep 哪些关键词;关键词从 prompt 里由 Claude 自行抽取
+ *   - 不指定必须 Grep 哪些关键词;关键词从 prompt 里由当前代理自行抽取
  *   - 不在 hook 内部自动跑 Grep —— hook 拿不到项目根,也不应阻塞 prompt
  *   - 不做任何本仓库特定的维护动作(例如写盘到特定目录)
  *

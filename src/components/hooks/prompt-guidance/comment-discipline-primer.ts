@@ -18,8 +18,8 @@ export const commentDisciplinePrimerHook = defineHook({
  *   当用户消息中出现注释请求（注释/comment/docstring）、临时绕过
  *   （HACK/workaround/临时方案）、外部契约（前置条件/假设/副作用/契约）、
  *   或并发语义（并发/锁/mutex/channel/atomic/race）等信号时，
- *   本 hook 向 Claude 注入一段 additionalContext，把原记忆文件中的
- *   里的「代码注释规范」细化为可执行的检查清单。
+ *   本 hook 注入一段 additionalContext，把记忆文件中的「代码注释规范」
+ *   细化为可执行的检查清单。
  *
  * 为什么要这么做:
  *   代码注释规范属于通用编码纪律，但直接长期塞在全局 memory 中太长，

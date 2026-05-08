@@ -17,8 +17,8 @@ export const overEngineeringPrimerHook = defineHook({
  * 行为:
  *   当用户消息中出现「兼容/向后兼容/双轨/降级/回退/feature flag/抽一层/
  *   基类/工厂模式/策略模式/防御式/吞掉异常/backward compat/fallback…」等
- *   **可能诱发过度设计**的关键词时,本 hook 向 Claude 注入一段 additionalContext,
- *   强制 Claude 在动手写代码前先按「动手前三连自问」做一次克制检查,再决定
+ *   **可能诱发过度设计**的关键词时,本 hook 注入一段 additionalContext,
+ *   要求当前代理在动手写代码前先按「动手前三连自问」做一次克制检查,再决定
  *   是否真的要加这层抽象 / 兼容 / 防御。
  *
  * 为什么要这么做:
@@ -28,7 +28,7 @@ export const overEngineeringPrimerHook = defineHook({
  *   报告话题第 4 大),典型场景是:用户让 AI 新增一个功能,AI 自作主张加了
  *   feature flag + 新旧路径双轨 + fallback 兜底,用户「别降级、别兼容」
  *   纠正一次,下一个会话又犯。参照 investigation-primer / debug-methodology-primer
- *   的模式:把触发时机从「Claude 自觉」改成「UserPromptSubmit 机械匹配」,
+ *   的模式:把触发时机从「模型自觉」改成「UserPromptSubmit 机械匹配」,
  *   让克制原则在 prompt 抵达的同一时刻就出现。
  *
  *   与 feedback-detector 的关系:**正交**。feedback-detector 在用户**已经给出

@@ -16,21 +16,19 @@ export const feedbackDetectorHook = defineHook({
  * 行为:
  *   当用户消息中出现"不要 / 别 / 不对 / 错了 / 为什么你又…"或
  *   "以后 / 下次 / 记住 / from now on / next time / please always…"
- *   等反馈信号时,本 hook 向 Claude 注入一段 additionalContext,
- *   内容就是原 skills/reflection 的 5 步工作流 + 原则,让 Claude
+ *   等反馈信号时,本 hook 注入一段 additionalContext,
+ *   内容是反思五步工作流 + 原则，让当前代理
  *   在处理当前请求前先按 reflection 流程反思。
  *
  * 为什么要这么做:
- *   原 skills/reflection/SKILL.md 被标注为"MUST use ... when user provides
- *   feedback",但 MUST 是写给 LLM 的自律规则,实际上大量反馈场景 Claude 根本
- *   没触发该 skill,反馈就这么蒸发了。本 hook 把触发时机从"Claude 自觉"
- *   改为"UserPromptSubmit 事件机械匹配",skill 的方法论则**原样**注入为
- *   prompt 的一部分,确保 Claude 收到提示就按五步走。
+ *   反馈反思只靠模型自觉容易漏触发。本 hook 把触发时机改为
+ *   "UserPromptSubmit 事件机械匹配"，把方法论作为 prompt 的一部分注入，
+ *   确保当前代理收到提示就按五步走。
  *
  * 非目标:
  *   - 不做任何本仓库特定的维护动作(例如 auto memory 写盘、特定目录写入)
  *   - 不指定必须修改哪个文件;目标媒介(skill / 记忆文件 / hook)
- *     由 Claude 按反思结论决定,符合原 skill 的"一次只提一条精简改动"原则
+ *     由当前代理按反思结论决定，遵循“一次只提一条精简改动”原则
  *   - 不跳过 Propose → Confirm → Apply 的确认环节;禁止擅自落盘
  *
  * 放行条件:
@@ -119,8 +117,8 @@ export async function run(payload: NormalizedHookPayload) {
       "[Feedback Detector] Reflection 触发",
       "",
       "检测到用户消息中出现反馈/纠正信号。在处理当前请求之前,请先按以下",
-      "Reflection 工作流反思,再继续。(本段注入内容等价于原 skills/reflection 的",
-      "提示词,已脱离本仓库上下文,适用于任何工程场景。)",
+      "Reflection 工作流反思,再继续。(本段注入内容是平台中立的反馈反思协议,",
+      "适用于任何工程场景。)",
       "",
       `  信号类型:${kinds}`,
       `  命中片段:${snippets.map((s) => `"${s}"`).join("、")}`,
@@ -163,9 +161,8 @@ export async function run(payload: NormalizedHookPayload) {
       "  • 保持中立简洁,不自辩,不掩饰错误",
       "  • 不确定就问,不要擅自固化为永久规则",
       "",
-      "依据:原 skills/reflection/SKILL.md 的 Analyze → Identify → Propose →",
-      "     Confirm → Apply 工作流已由本 hook 自动注入。原 skill 文件已删除,",
-      "     职责由 hook 接管。",
+      "依据:Analyze → Identify → Propose → Confirm → Apply 工作流由本 hook 自动注入,",
+      "     反馈反思职责由 hook 接管。",
     ].join("\n"),
   };
 }
