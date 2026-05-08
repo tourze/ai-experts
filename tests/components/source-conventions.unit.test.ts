@@ -315,9 +315,12 @@ describe("component source conventions", () => {
       ...collectFiles(join(repoRoot, "src/components/skills/skill-evolver/references"), (file) =>
         file.endsWith(".md"),
       ),
+      ...collectFiles(join(repoRoot, "src/components/skills/skill-evaluator/references"), (file) =>
+        file.endsWith(".md"),
+      ),
     ];
     const legacyAuthoringScriptRefs: string[] = [];
-    const legacyScriptPackagePattern = /scripts\/\*|`scripts\/`|references\/scripts|scripts\/references|scripts、|脚手架资产（scripts/u;
+    const legacyScriptPackagePattern = /scripts\/\*|`scripts\/`|scripts\/、|references\/scripts|scripts\/references|scripts、|脚手架资产（scripts/u;
 
     for (const sourceFile of authoringSources) {
       const source = readFileSync(sourceFile, "utf-8");

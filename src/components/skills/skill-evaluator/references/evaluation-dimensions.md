@@ -71,7 +71,7 @@ Skill 是否提供了基础模型不具备的专家知识？
 ```
 第 1 层：元数据（始终在内存）—— name + description ~100 token
 第 2 层：SKILL.md 正文（触发后加载）—— < 500 行
-第 3 层：资源（按需加载）—— scripts/、references/、assets/
+第 3 层：资源（按需加载）—— procedures、references/、assets/
 ```
 
 | 分数 | 标准 |
