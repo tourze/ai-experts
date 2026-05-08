@@ -37,6 +37,12 @@ type HookConfigGroup = {
   matcher?: string;
 };
 
+export const DEFAULT_COMMAND_HOOK_TIMEOUT_SECONDS = 600;
+
+export function resolveHookTimeoutSeconds(hook: Pick<HookDefinition, "timeoutSeconds">): number {
+  return hook.timeoutSeconds ?? DEFAULT_COMMAND_HOOK_TIMEOUT_SECONDS;
+}
+
 function relativeImportSpecifier(fromDir: string, targetPath: string): string {
   if (isAbsolute(targetPath)) return targetPath.split("\\").join("/");
   const specifier = relative(fromDir, targetPath).split("\\").join("/");
@@ -289,7 +295,7 @@ export function renderHookConfig(
       groupsByKey.set(key, group);
       groups.push(group);
     }
-    group.timeout += hook.timeoutSeconds ?? 10;
+    group.timeout += resolveHookTimeoutSeconds(hook);
     group.hookCount += 1;
     if (hook.statusMessage) group.statusMessages.add(hook.statusMessage);
   }

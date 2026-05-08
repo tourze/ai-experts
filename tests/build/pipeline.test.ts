@@ -6,7 +6,12 @@ import { pathToFileURL } from "node:url";
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { emitAgent, hasStringTool, validateAgentBashBoundary, validateAgentOutputFormat, validateAgentQualityStandards, validateAgentWorkflow } from "../../src/build/agents.ts";
 import { Platform, ensureDir, writeText } from "../../src/build/core.ts";
-import { compileHookModules, renderCodexConfig, renderHookConfig } from "../../src/build/hooks.ts";
+import {
+  DEFAULT_COMMAND_HOOK_TIMEOUT_SECONDS,
+  compileHookModules,
+  renderCodexConfig,
+  renderHookConfig,
+} from "../../src/build/hooks.ts";
 import { main } from "../../src/build/main.ts";
 import { emitPlatform, renderInstruction, validateId, validateRegistry } from "../../src/build/platform.ts";
 import { byId, compileRegistry, materializeRegistry } from "../../src/build/registry.ts";
@@ -795,9 +800,25 @@ describe("build/pipeline modules", () => {
       timeoutSeconds: 7,
       statusMessage: "running second fixture hook",
     });
-    const groupedConfig = renderHookConfig([fixture.hook, secondHook], Platform.Codex);
+    const defaultTimeoutHook = defineHook({
+      id: "fixture-default-timeout-hook",
+      description: "default timeout fixture hook",
+      platforms: [ComponentPlatform.Claude, ComponentPlatform.Codex],
+      event: HookEvent.UserPromptSubmit,
+      entry: fixture.hook.entry,
+      matcher: [KnownTool.Read],
+      order: 30,
+    });
+    const defaultOnlyConfig = renderHookConfig([defaultTimeoutHook], Platform.Claude);
+    expect(defaultOnlyConfig.hooks.UserPromptSubmit[0]?.hooks[0]?.timeout).toBe(
+      DEFAULT_COMMAND_HOOK_TIMEOUT_SECONDS,
+    );
+
+    const groupedConfig = renderHookConfig([fixture.hook, secondHook, defaultTimeoutHook], Platform.Codex);
     expect(groupedConfig.hooks.UserPromptSubmit).toHaveLength(1);
-    expect(groupedConfig.hooks.UserPromptSubmit[0]?.hooks[0]?.timeout).toBe(19);
+    expect(groupedConfig.hooks.UserPromptSubmit[0]?.hooks[0]?.timeout).toBe(
+      19 + DEFAULT_COMMAND_HOOK_TIMEOUT_SECONDS,
+    );
     expect(groupedConfig.hooks.UserPromptSubmit[0]?.hooks[0]?.statusMessage).toBeUndefined();
 
     expect(renderCodexConfig()).toContain("codex_hooks = true");

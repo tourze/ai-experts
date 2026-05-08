@@ -5,6 +5,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync,
 import { tmpdir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
 import { afterAll, beforeAll, describe, test } from "vitest";
+import { resolveHookTimeoutSeconds } from "../../src/build/hooks.ts";
 import { listProcedureUses, procedureUseAppliesToPlatform } from "../../src/build/procedure-uses.ts";
 import { registry } from "../../src/components/registry.ts";
 import { InvocationPolicy, Platform } from "../../src/components/sdk.ts";
@@ -129,7 +130,7 @@ function collectExpectedHookGroupTimeouts(manifest: any): Record<string, number>
   const timeouts: Record<string, number> = {};
   for (const hook of manifest.hooks as any[]) {
     const key = `${hook.event}\0${hook.matcher ?? ""}`;
-    timeouts[key] = (timeouts[key] ?? 0) + (hook.timeoutSeconds ?? 10);
+    timeouts[key] = (timeouts[key] ?? 0) + resolveHookTimeoutSeconds(hook);
   }
   return timeouts;
 }
