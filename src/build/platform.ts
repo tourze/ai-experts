@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { existsSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, readFileSync, rmSync, statSync } from "node:fs";
 import { basename, join, relative } from "node:path";
 import type {
   AgentDefinition,
@@ -529,6 +529,19 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
       }
       if (!existsSync(referenceSource)) {
         throw new Error(`Skill ${skill.id} reference is missing: ${displayPath(reference.source)}`);
+      }
+      const sourceStat = statSync(referenceSource);
+      const normalizedTarget = referenceTarget.replace(/\/+$/u, "");
+      const targetLooksFile = /\.[^/]+$/u.test(normalizedTarget);
+      if (sourceStat.isDirectory() && targetLooksFile) {
+        throw new Error(
+          `Skill ${skill.id} reference ${reference.id} source is a directory but target looks like a file: ${referenceTarget}`,
+        );
+      }
+      if (sourceStat.isFile() && referenceTarget.endsWith("/")) {
+        throw new Error(
+          `Skill ${skill.id} reference ${reference.id} source is a file but target must not end with /: ${referenceTarget}`,
+        );
       }
     }
     validateSkillAssets(skill);

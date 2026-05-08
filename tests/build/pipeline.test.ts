@@ -465,6 +465,46 @@ describe("build/pipeline modules", () => {
       "Skill fixture-skill asset bad-asset-target target must stay under assets/",
     );
 
+    const invalidDirectoryReferenceTargetRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        references: [
+          defineReference({
+            id: "bad-directory-reference-target",
+            source: pathToFileURL(join(fixture.root, "skill", "references")),
+            target: "references/rules.md",
+            title: "Bad Directory Ref",
+            summary: "invalid directory target",
+            loadWhen: "never",
+          }),
+        ],
+      }],
+    };
+    expect(() => validateRegistry(invalidDirectoryReferenceTargetRegistry)).toThrow(
+      "source is a directory but target looks like a file: references/rules.md",
+    );
+
+    const invalidFileReferenceTargetRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        references: [
+          defineReference({
+            id: "bad-file-reference-target",
+            source: pathToFileURL(join(fixture.root, "skill", "references", "reference.md")),
+            target: "references/reference/",
+            title: "Bad File Ref",
+            summary: "invalid file target",
+            loadWhen: "never",
+          }),
+        ],
+      }],
+    };
+    expect(() => validateRegistry(invalidFileReferenceTargetRegistry)).toThrow(
+      "source is a file but target must not end with /: references/reference/",
+    );
+
     const invalidInstructionPlatformRegistry: ComponentRegistry = {
       ...fixture.registry,
       instructions: [{ ...fixture.instruction, platforms: ["unsupported-instruction-cli"] as any }],
