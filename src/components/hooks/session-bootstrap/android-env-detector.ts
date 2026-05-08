@@ -18,7 +18,7 @@ export const androidEnvDetectorHook = defineHook({
  *
  * 检测 build.gradle(.kts) 中的 compileSdk / minSdk / targetSdk、
  * AGP 版本、Kotlin 版本与关键依赖，
- * 帮助 Claude 从第一条消息起就使用正确的 API Level 和构建约定。
+ * 帮助当前代理从第一条消息起就使用正确的 API Level 和构建约定。
  */
 
 

@@ -17,7 +17,7 @@ export const phpWebmanEnvDetectorHook = defineHook({
  * env-detector (SessionStart) — Webman 项目环境探测
  *
  * 检测 webman 框架版本、Workerman 版本、已安装扩展与 PHP 版本约束，
- * 帮助 Claude 从第一条消息起就使用正确的 Webman 约定和 Workerman API。
+ * 帮助当前代理从第一条消息起就使用正确的 Webman 约定和 Workerman API。
  */
 
 

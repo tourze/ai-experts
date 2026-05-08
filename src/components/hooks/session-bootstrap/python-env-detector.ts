@@ -17,7 +17,7 @@ export const pythonEnvDetectorHook = defineHook({
  * env-detector (SessionStart) — 探测 Python 项目环境
  *
  * 检测包管理器、Python 版本、框架与虚拟环境，
- * 帮助 Claude 从第一条消息起就使用正确的工具链。
+ * 帮助当前代理从第一条消息起就使用正确的工具链。
  */
 
 

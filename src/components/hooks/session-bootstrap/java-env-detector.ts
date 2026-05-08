@@ -17,7 +17,7 @@ export const javaEnvDetectorHook = defineHook({
  * env-detector (SessionStart) — 探测 Java 项目环境
  *
  * 检测构建工具 (Maven/Gradle)、JDK 版本约束与 Spring Boot 版本，
- * 帮助 Claude 从第一条消息起就使用正确的构建命令和语言特性。
+ * 帮助当前代理从第一条消息起就使用正确的构建命令和语言特性。
  */
 
 

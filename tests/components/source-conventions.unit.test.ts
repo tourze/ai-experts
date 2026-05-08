@@ -359,7 +359,7 @@ describe("component source conventions", () => {
       if (/\bClaude Code\b|\bAnthropic\b/u.test(source)) {
         platformSpecificRationale.push(relative(repoRoot, sourceFile));
       }
-      if (/(?:向|让|强制|要求)\s*Claude|Claude (?:在|判断|根本|收到|拿到|完成)|Claude 自觉|原 skills\/|原 skill 文件已删除|── 执行步骤 ──/u.test(source)) {
+      if (/(?:向|让|强制|要求)\s*Claude|帮助 Claude|Claude (?:在|判断|根本|收到|拿到|完成)|Claude 自觉|原 skills\/|原 skill 文件已删除|── 执行步骤 ──/u.test(source)) {
         legacyHookRuntimeTerms.push(relative(repoRoot, sourceFile));
       }
     }

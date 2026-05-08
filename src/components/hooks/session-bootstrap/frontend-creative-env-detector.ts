@@ -17,7 +17,7 @@ export const frontendCreativeEnvDetectorHook = defineHook({
  * env-detector (SessionStart) — Godot 项目环境探测
  *
  * 检测 project.godot 中的引擎版本、项目名、渲染器与脚本语言，
- * 帮助 Claude 从第一条消息起就使用正确的 Godot 3 / 4 API。
+ * 帮助当前代理从第一条消息起就使用正确的 Godot 3 / 4 API。
  */
 
 

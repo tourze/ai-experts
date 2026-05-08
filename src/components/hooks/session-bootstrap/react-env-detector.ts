@@ -17,7 +17,7 @@ export const reactEnvDetectorHook = defineHook({
  * env-detector (SessionStart) — React / React Native 项目环境探测
  *
  * 检测 React 版本、渲染目标（DOM / Native / Expo）、状态管理与构建工具，
- * 帮助 Claude 从第一条消息起就使用正确的 API 风格和平台约束。
+ * 帮助当前代理从第一条消息起就使用正确的 API 风格和平台约束。
  */
 
 

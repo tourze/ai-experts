@@ -17,7 +17,7 @@ export const rustEnvDetectorHook = defineHook({
  * env-detector (SessionStart) — 探测 Rust 项目环境
  *
  * 检测 Cargo.toml 的 edition、workspace 结构与工具链，
- * 帮助 Claude 从第一条消息起就使用正确的 Rust 版本和项目布局。
+ * 帮助当前代理从第一条消息起就使用正确的 Rust 版本和项目布局。
  */
 
 

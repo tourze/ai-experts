@@ -17,7 +17,7 @@ export const tauriEnvDetectorHook = defineHook({
  * env-detector (SessionStart) — Tauri 项目环境探测
  *
  * 检测 Tauri 版本（v1 / v2）、应用标识、前端框架与 Rust 依赖，
- * 帮助 Claude 从第一条消息起就使用正确的 Tauri API 和配置路径。
+ * 帮助当前代理从第一条消息起就使用正确的 Tauri API 和配置路径。
  */
 
 

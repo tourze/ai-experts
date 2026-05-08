@@ -17,7 +17,7 @@ export const javascriptEnvDetectorHook = defineHook({
  * env-detector (SessionStart) — 探测 JavaScript 项目环境
  *
  * 检测包管理器、Node 版本约束与主要框架，
- * 帮助 Claude 从第一条消息起就使用正确的工具链。
+ * 帮助当前代理从第一条消息起就使用正确的工具链。
  */
 
 

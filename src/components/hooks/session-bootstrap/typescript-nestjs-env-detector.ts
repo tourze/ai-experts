@@ -17,7 +17,7 @@ export const typescriptNestjsEnvDetectorHook = defineHook({
  * env-detector (SessionStart) — NestJS 项目环境探测
  *
  * 检测 @nestjs/core 版本、ORM 选择、已安装的 @nestjs/* 模块与构建工具，
- * 帮助 Claude 从第一条消息起就使用正确的 NestJS 模块和装饰器。
+ * 帮助当前代理从第一条消息起就使用正确的 NestJS 模块和装饰器。
  */
 
 

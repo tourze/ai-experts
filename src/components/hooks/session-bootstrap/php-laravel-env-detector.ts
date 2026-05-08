@@ -18,7 +18,7 @@ export const phpLaravelEnvDetectorHook = defineHook({
  *
  * 在 PHP hooks 的 PHP 基础环境之上，深入检测 Laravel 版本、
  * 关键包（Sanctum/Horizon/Nova）、队列驱动和 .env 环境标识，
- * 帮助 Claude 从第一条消息起就使用正确的 Laravel 约定。
+ * 帮助当前代理从第一条消息起就使用正确的 Laravel 约定。
  */
 
 

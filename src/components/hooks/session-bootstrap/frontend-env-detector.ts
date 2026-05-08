@@ -17,7 +17,7 @@ export const frontendEnvDetectorHook = defineHook({
  * env-detector (SessionStart) — 前端项目环境探测
  *
  * 检测构建工具（Vite/Webpack/Turbopack）、CSS 框架、测试工具与包管理器，
- * 帮助 Claude 从第一条消息起就使用正确的前端工具链和配置方式。
+ * 帮助当前代理从第一条消息起就使用正确的前端工具链和配置方式。
  */
 
 

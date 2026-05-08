@@ -17,7 +17,7 @@ export const goEnvDetectorHook = defineHook({
  * env-detector (SessionStart) — 探测 Go 项目环境
  *
  * 检测 go.mod 的 Go 版本、module path 与 workspace 结构，
- * 帮助 Claude 从第一条消息起就使用正确的 Go 版本和模块路径。
+ * 帮助当前代理从第一条消息起就使用正确的 Go 版本和模块路径。
  */
 
 

@@ -17,7 +17,7 @@ export const typescriptEnvDetectorHook = defineHook({
  * env-detector (SessionStart) — 探测 TypeScript 项目配置
  *
  * 检测 tsconfig 的 strict/target/module 设置与 monorepo 结构，
- * 帮助 Claude 从第一条消息起就使用正确的类型约束和编译选项。
+ * 帮助当前代理从第一条消息起就使用正确的类型约束和编译选项。
  */
 
 

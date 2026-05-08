@@ -17,7 +17,7 @@ export const javascriptVueEnvDetectorHook = defineHook({
  * env-detector (SessionStart) — Vue 项目环境探测
  *
  * 检测 Vue 版本（2 / 3）、构建工具、状态管理与 UI 框架，
- * 帮助 Claude 从第一条消息起就使用正确的 Composition API / Options API 和工具链。
+ * 帮助当前代理从第一条消息起就使用正确的 Composition API / Options API 和工具链。
  */
 
 

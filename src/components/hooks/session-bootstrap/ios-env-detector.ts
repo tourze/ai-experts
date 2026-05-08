@@ -17,7 +17,7 @@ export const iosEnvDetectorHook = defineHook({
  * env-detector (SessionStart) — 探测 Apple 客户端项目环境
  *
  * 检测 Xcode 项目、SPM/CocoaPods、Swift 版本与 Apple 平台目标，
- * 帮助 Claude 从第一条消息起就使用正确的构建方式和平台约束。
+ * 帮助当前代理从第一条消息起就使用正确的构建方式和平台约束。
  */
 
 

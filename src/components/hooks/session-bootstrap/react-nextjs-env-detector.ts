@@ -17,7 +17,7 @@ export const reactNextjsEnvDetectorHook = defineHook({
  * env-detector (SessionStart) — Next.js 项目环境探测
  *
  * 检测 Next.js 版本、路由模式（App Router / Pages Router）、部署目标与关键配置，
- * 帮助 Claude 从第一条消息起就使用正确的 API 和约定。
+ * 帮助当前代理从第一条消息起就使用正确的 API 和约定。
  */
 
 

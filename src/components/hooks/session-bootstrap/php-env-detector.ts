@@ -17,7 +17,7 @@ export const phpEnvDetectorHook = defineHook({
  * env-detector (SessionStart) — 探测 PHP 项目环境
  *
  * 检测 composer.json 的 PHP 版本约束、框架与包管理器配置，
- * 帮助 Claude 从第一条消息起就使用正确的 PHP 版本特性和框架约定。
+ * 帮助当前代理从第一条消息起就使用正确的 PHP 版本特性和框架约定。
  */
 
 
