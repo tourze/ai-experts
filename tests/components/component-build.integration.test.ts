@@ -862,9 +862,9 @@ describe("component build integration", () => {
     assert.equal(existsSync(join(tmpDistDir, "codex/skills/skill-creator/assets/eval-viewer/viewer.html")), false);
     for (const systemSkillId of codexSystemSkillIds) {
       assert.equal(
-        existsSync(join(tmpDistDir, "codex/skills", systemSkillId, "SKILL.md")),
+        existsSync(join(tmpDistDir, "codex/skills", systemSkillId)),
         false,
-        `Codex dist should not emit user skill docs for system skill ${systemSkillId}`,
+        `Codex dist should not emit user skill directories for system skill ${systemSkillId}`,
       );
     }
     const codexSkillAuthor = readFileSync(join(tmpDistDir, "codex/agents/skill-author.toml"), "utf-8");
