@@ -46,7 +46,7 @@ export const tauriReactIntegrationSkill = defineSkill({
     }),
     defineAntiPattern({
       fail: "假设状态自动同步",
-      pass: "显式 emit + listen：详见 [references/](references/)。",
+      pass: "显式 emit + listen：详见 [react-integration-patterns](references/react-integration-patterns.md)。",
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,

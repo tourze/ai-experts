@@ -634,6 +634,26 @@ describe("component source conventions", () => {
     }
   });
 
+  test("component sources avoid references root directory links", () => {
+    const componentRuntimeDocs = [
+      ...collectFiles(
+        join(repoRoot, "src/components/skills"),
+        (file) => (file.endsWith(".ts") || file.endsWith(".md")) && !file.split(/[\\/]/).includes("evals"),
+      ),
+      ...collectFiles(join(repoRoot, "src/components/agents"), (file) => file.endsWith(".ts")),
+      ...collectFiles(join(repoRoot, "src/components/hooks"), (file) => file.endsWith(".ts")),
+    ];
+
+    for (const sourceFile of componentRuntimeDocs) {
+      const source = readFileSync(sourceFile, "utf-8");
+      assert.doesNotMatch(
+        source,
+        /\]\((?:\.\/)?references\/\)/u,
+        `${sourceFile} should link concrete reference files instead of references/ directory roots`,
+      );
+    }
+  });
+
   test("skill markdown sources define every used reference-style label", () => {
     const missingDefinitions: string[] = [];
     const skillMarkdownSources = collectFiles(join(repoRoot, "src/components/skills"), (file) =>

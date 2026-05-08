@@ -47,7 +47,7 @@ export const tauriBuildPackagingSkill = defineSkill({
     }),
     defineAntiPattern({
       fail: "Sidecar 不加 target triple",
-      pass: "命名按 target_triple：详见 [references/](references/)。",
+      pass: "命名按 target_triple：详见 [build-packaging-patterns](references/build-packaging-patterns.md)。",
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,

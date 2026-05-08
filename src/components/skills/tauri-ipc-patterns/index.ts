@@ -41,7 +41,7 @@ export const tauriIpcPatternsSkill = defineSkill({
     }),
     defineAntiPattern({
       fail: "emit 广播隐私数据",
-      pass: "emit_to 精确路由：详见 [references/](references/)。",
+      pass: "emit_to 精确路由：详见 [ipc-advanced-patterns](references/ipc-advanced-patterns.md)。",
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,

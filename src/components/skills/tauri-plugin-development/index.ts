@@ -41,7 +41,7 @@ export const tauriPluginDevelopmentSkill = defineSkill({
     }),
     defineAntiPattern({
       fail: "JS invoke 无 plugin: 前缀",
-      pass: "plugin:name|cmd：详见 [references/](references/)。",
+      pass: "plugin:name|cmd：详见 [plugin-dev-patterns](references/plugin-dev-patterns.md)。",
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
