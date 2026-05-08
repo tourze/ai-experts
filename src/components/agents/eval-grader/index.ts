@@ -29,7 +29,7 @@ export const evalGraderAgent = defineAgent({
       defineWorkflowStep({ id: "verify-claims", label: "抽取并验证输出中的事实、过程和质量 claims" }),
       defineWorkflowStep({ id: "read-notes", label: "如存在 user_notes.md，纳入不确定性、需复核事项和绕路方案" }),
       defineWorkflowStep({ id: "assess-eval", label: "评估 assertion 是否太弱或漏掉重要结果" }),
-      defineWorkflowStep({ id: "write-grading", label: "写出 grading.json 到 outputs_dir 的同级目录" }),
+      defineWorkflowStep({ id: "return-grading", label: "返回 grading JSON；调用方负责保存到 outputs_dir 的同级目录" }),
       defineWorkflowStep({ id: "include-metrics", label: "如存在 metrics.json 或 timing.json，合并执行指标和耗时" }),
     ],
   }),
@@ -116,7 +116,7 @@ export const evalGraderAgent = defineAgent({
       },
     },
   }),
-  tools: [],
+  tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob],
   sandbox: AgentSandbox.ReadOnly,
   skills: [
 

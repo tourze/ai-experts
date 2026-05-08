@@ -23,7 +23,7 @@ export const evalPostHocAnalyzerAgent = defineAgent({
     defineAgentInput({ name: "loser_skill_path", description: "产出败者结果的 skill 路径。" }),
     defineAgentInput({ name: "loser_transcript_path", description: "败者执行 transcript 路径。" }),
     defineAgentInput({ name: "comparison_result_path", description: "Blind Comparator 输出 JSON 路径。" }),
-    defineAgentInput({ name: "output_path", description: "分析结果保存路径。" }),
+    defineAgentInput({ name: "output_path", description: "调用方保存分析结果的目标路径；agent 只在输出中回显该路径。" }),
   ],
   workflow: defineWorkflow({
     steps: [
@@ -34,7 +34,7 @@ export const evalPostHocAnalyzerAgent = defineAgent({
       defineWorkflowStep({ id: "identify-strengths", label: "识别胜者优势及其因果证据" }),
       defineWorkflowStep({ id: "identify-weaknesses", label: "识别败者弱点及其对结果的影响" }),
       defineWorkflowStep({ id: "suggest-improvements", label: "按影响优先级生成可执行改进建议" }),
-      defineWorkflowStep({ id: "write-analysis", label: "将结构化分析保存到 output_path" }),
+      defineWorkflowStep({ id: "return-analysis", label: "返回结构化分析，并标注 output_path 供调用方保存" }),
     ],
   }),
   qualityStandards: [
@@ -53,6 +53,7 @@ export const evalPostHocAnalyzerAgent = defineAgent({
         loser_skill: "path/to/loser/skill",
         comparator_reasoning: "简述 comparator 为什么选择胜者",
       },
+      output_path: "path/to/analysis.json",
       winner_strengths: [
         "多页文档处理步骤清晰",
         "包含 validation script，能发现格式错误",
@@ -105,7 +106,7 @@ export const evalPostHocAnalyzerAgent = defineAgent({
       },
     },
   }),
-  tools: [],
+  tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob],
   sandbox: AgentSandbox.ReadOnly,
   skills: [
 

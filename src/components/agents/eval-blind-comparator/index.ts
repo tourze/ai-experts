@@ -30,7 +30,7 @@ export const evalBlindComparatorAgent = defineAgent({
       defineWorkflowStep({ id: "score-outputs", label: "分别给 A/B 逐项评分并计算 overall_score" }),
       defineWorkflowStep({ id: "check-expectations", label: "如提供 expectations，统计通过率作为次要证据" }),
       defineWorkflowStep({ id: "choose-winner", label: "按 rubric 优先、expectations 次之判定 A/B/TIE" }),
-      defineWorkflowStep({ id: "write-result", label: "写出 comparison JSON 到指定路径或 comparison.json" }),
+      defineWorkflowStep({ id: "return-result", label: "返回 comparison JSON；调用方负责保存到目标路径或 comparison.json" }),
     ],
   }),
   qualityStandards: [
@@ -118,7 +118,7 @@ export const evalBlindComparatorAgent = defineAgent({
     },
     notes: ["如果没有提供 expectations，完全省略 `expectation_results` 字段。"],
   }),
-  tools: [],
+  tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob],
   sandbox: AgentSandbox.ReadOnly,
   skills: [
 

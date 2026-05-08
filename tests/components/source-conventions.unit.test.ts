@@ -1072,6 +1072,11 @@ describe("component source conventions", () => {
       );
       assert.doesNotMatch(
         source,
+        /\n\s*tools:\s*\[\s*\]/,
+        `${agentSourceFile} should omit tools or declare explicit tools instead of emitting an empty tools list`,
+      );
+      assert.doesNotMatch(
+        source,
         /单个 plugin|未覆盖的 plugin/,
         `${agentSourceFile} should describe ai-experts audit scope with current component terms`,
       );
