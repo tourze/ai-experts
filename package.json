@@ -4,7 +4,7 @@
   "type": "module",
   "description": "Claude Code 与 Codex CLI 的本地 AI 能力组件库；src/components 编译到 dist/claude 与 dist/codex。",
   "engines": {
-    "node": ">=20"
+    "node": ">=20.19.0"
   },
   "scripts": {
     "test": "vitest run",
