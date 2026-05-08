@@ -35,6 +35,10 @@ function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function normalizeMarkdownReferenceLabel(label: string): string {
+  return label.trim().replace(/\s+/gu, " ").toLowerCase();
+}
+
 function isLikelyLocalDefinitionPath(href: string): boolean {
   return href.startsWith("./")
     || href.startsWith("../")
@@ -2017,11 +2021,27 @@ describe("component build integration", () => {
       );
 
       const brokenLocalLinks: string[] = [];
+      const missingReferenceDefinitions: string[] = [];
       const runtimeMarkdownFiles = collectFiles(join(tmpDistDir, platform, "skills"), (file) =>
         file.endsWith(".md"),
       );
       for (const markdownFile of runtimeMarkdownFiles) {
         const markdown = stripMarkdownCode(readFileSync(markdownFile, "utf-8"));
+        const definedLabels = new Set<string>();
+        const usedLabels = new Set<string>();
+
+        for (const match of markdown.matchAll(/^\s*\[([^\]\n]+)\]:\s+([^\n]+)$/gmu)) {
+          definedLabels.add(normalizeMarkdownReferenceLabel(match[1] ?? ""));
+        }
+
+        for (const match of markdown.matchAll(/(?<!!)\[[^\]\n]+\]\[([^\]\n]+)\]/gu)) {
+          usedLabels.add(normalizeMarkdownReferenceLabel(match[1] ?? ""));
+        }
+
+        for (const match of markdown.matchAll(/(?<!!)\[([^\]\n]+)\]\[\]/gu)) {
+          usedLabels.add(normalizeMarkdownReferenceLabel(match[1] ?? ""));
+        }
+
         for (const match of markdown.matchAll(/!?\[[^\]\n]*\]\(([^)\n]+)\)/gu)) {
           const href = markdownDestination(match[1] as string);
           if (/^[a-z][a-z0-9+.-]*:|^#|^\//iu.test(href)) continue;
@@ -2040,8 +2060,20 @@ describe("component build integration", () => {
             brokenLocalLinks.push(`${markdownFile}: [${label}] -> ${href}`);
           }
         }
+
+        for (const label of usedLabels) {
+          if (!label || label.startsWith("^")) continue;
+          if (!definedLabels.has(label)) {
+            missingReferenceDefinitions.push(`${markdownFile}: [${label}]`);
+          }
+        }
       }
       assert.deepEqual(brokenLocalLinks, [], `${platform} generated Markdown should not contain broken local links`);
+      assert.deepEqual(
+        missingReferenceDefinitions,
+        [],
+        `${platform} generated Markdown should define every used reference-style link label`,
+      );
 
       for (const skillFile of collectFiles(join(tmpDistDir, platform, "skills"), (file) => file.endsWith("SKILL.md"))) {
         const source = stripFrontmatter(readFileSync(skillFile, "utf-8")).trimStart();

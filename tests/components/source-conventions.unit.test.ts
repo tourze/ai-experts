@@ -33,6 +33,10 @@ function decodeMarkdownAnchor(anchor: string): string {
   }
 }
 
+function normalizeMarkdownReferenceLabel(label: string): string {
+  return label.trim().replace(/\s+/gu, " ").toLowerCase();
+}
+
 function localMarkdownPath(destination: string): string | null {
   const path = destination.split("#", 1)[0] ?? "";
   if (!path || path.startsWith("//") || /^[a-z][a-z0-9+.-]*:/iu.test(path)) {
@@ -628,6 +632,44 @@ describe("component source conventions", () => {
         `${sourceFile} should avoid bare (.) links; use a concrete file path or plain text`,
       );
     }
+  });
+
+  test("skill markdown sources define every used reference-style label", () => {
+    const missingDefinitions: string[] = [];
+    const skillMarkdownSources = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
+      file.endsWith(".md"),
+    );
+
+    for (const sourceFile of skillMarkdownSources) {
+      const source = stripMarkdownCode(readFileSync(sourceFile, "utf-8"));
+      const definedLabels = new Set<string>();
+      const usedLabels = new Set<string>();
+
+      for (const match of source.matchAll(/^\s*\[([^\]\n]+)\]:\s+(\S+)/gmu)) {
+        definedLabels.add(normalizeMarkdownReferenceLabel(match[1] ?? ""));
+      }
+
+      for (const match of source.matchAll(/(?<!!)\[[^\]\n]+\]\[([^\]\n]+)\]/gu)) {
+        usedLabels.add(normalizeMarkdownReferenceLabel(match[1] ?? ""));
+      }
+
+      for (const match of source.matchAll(/(?<!!)\[([^\]\n]+)\]\[\]/gu)) {
+        usedLabels.add(normalizeMarkdownReferenceLabel(match[1] ?? ""));
+      }
+
+      for (const label of usedLabels) {
+        if (!label || label.startsWith("^")) continue;
+        if (!definedLabels.has(label)) {
+          missingDefinitions.push(`${relative(repoRoot, sourceFile)}: [${label}]`);
+        }
+      }
+    }
+
+    assert.deepEqual(
+      missingDefinitions,
+      [],
+      "skill markdown reference-style links should define every used label",
+    );
   });
 
   test("skill root readme/license links stay within skill root", () => {
