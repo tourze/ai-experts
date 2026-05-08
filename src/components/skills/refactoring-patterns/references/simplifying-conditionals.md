@@ -1,27 +1,27 @@
-# Simplifying Conditional Logic
+# 简化条件逻辑
 
-Detailed reference for refactorings that tame complex conditional structures. Conditionals are the hardest code to read and the most likely to harbor bugs. These refactorings decompose, consolidate, and replace conditionals with clearer alternatives.
+驯服复杂条件结构的重构详解。条件语句是最难阅读的代码，也是最可能隐藏 bug 的地方。这些重构将条件分解、合并，并用更清晰的替代方案替换条件语句。
 
 ---
 
-## Decompose Conditional
+## 分解条件表达式（Decompose Conditional）
 
-Extract the condition, the then-branch, and the else-branch of a complex conditional into well-named methods.
+将复杂条件语句的条件判断、then 分支和 else 分支提取为命名恰当的方法。
 
-### Motivation
+### 动机
 
-A long `if` statement with a compound condition and multi-line branches forces the reader to simulate every path mentally. By naming each part, you turn the conditional into readable prose.
+一个带有复合条件和多行分支的长 `if` 语句迫使读者在脑海中模拟每条路径。通过命名每个部分，你将条件语句转化为可读的散文。
 
-### Mechanics
+### 操作步骤
 
-1. Extract the condition into a method whose name describes the meaning (not the mechanics)
-2. Extract the then-body into a method whose name describes what happens
-3. Extract the else-body into a method whose name describes what happens
-4. Run tests
+1. 将条件判断提取为一个以含义命名的方法（而非机制）
+2. 将 then 体提取为一个描述其作用的方法
+3. 将 else 体提取为一个描述其作用的方法
+4. 运行测试
 
-### Example
+### 示例
 
-**Before:**
+**之前：**
 ```javascript
 function calculateCharge(date, quantity, plan) {
   let charge;
@@ -34,7 +34,7 @@ function calculateCharge(date, quantity, plan) {
 }
 ```
 
-**After:**
+**之后：**
 ```javascript
 function calculateCharge(date, quantity, plan) {
   if (isSummer(date)) {
@@ -57,9 +57,9 @@ function regularCharge(quantity, plan) {
 }
 ```
 
-### Naming the Condition
+### 命名条件判断
 
-| Condition Expression | Good Name |
+| 条件表达式 | 好的命名 |
 |---------------------|-----------|
 | `date.getMonth() >= 6 && date.getMonth() <= 8` | `isSummer(date)` |
 | `user.age >= 18 && user.hasConsent` | `isEligible(user)` |
@@ -67,28 +67,28 @@ function regularCharge(quantity, plan) {
 | `retries < MAX && !response.ok` | `shouldRetry(retries, response)` |
 | `file.size > 0 && file.ext === '.csv'` | `isValidUpload(file)` |
 
-The condition name should answer a yes/no question using the domain vocabulary.
+条件名应使用领域术语回答一个是/否问题。
 
 ---
 
-## Consolidate Conditional Expression
+## 合并条件表达式（Consolidate Conditional Expression）
 
-Combine a series of conditional checks that all lead to the same result into a single conditional with a descriptive name.
+将一系列指向相同结果的条件检查组合为一个具有描述性名称的单一条件。
 
-### Motivation
+### 动机
 
-When multiple conditions return the same value, combining them into one named check makes the logic clearer: "All of these mean the same thing -- this situation is X."
+当多个条件返回相同的值时，将它们组合成一个有名称的检查会使逻辑更清晰："所有这些都意味着同一件事——这种情况是 X。"
 
-### Mechanics
+### 操作步骤
 
-1. Verify that all the conditionals have no side effects
-2. Combine using logical operators (`&&`, `||`)
-3. Extract the combined condition into a named method
-4. Run tests
+1. 确认所有条件表达式都没有副作用
+2. 使用逻辑运算符（`&&`、`||`）进行组合
+3. 将组合后的条件提取为一个命名方法
+4. 运行测试
 
-### Example
+### 示例
 
-**Before:**
+**之前：**
 ```python
 def disability_amount(employee):
     if employee.seniority < 2:
@@ -101,7 +101,7 @@ def disability_amount(employee):
     return base_amount * 1.5
 ```
 
-**After:**
+**之后：**
 ```python
 def disability_amount(employee):
     if is_not_eligible_for_disability(employee):
@@ -114,34 +114,34 @@ def is_not_eligible_for_disability(employee):
             or employee.is_part_time)
 ```
 
-### When to Consolidate vs. Keep Separate
+### 何时合并 vs. 保持分离
 
-| Situation | Action |
+| 场景 | 操作 |
 |-----------|--------|
-| All conditions mean the same business concept | Consolidate into one named check |
-| Conditions are independent with different reasons | Keep separate (each deserves its own name) |
-| Conditions should be evaluated in sequence for performance | Keep separate for short-circuit clarity |
+| 所有条件意味着相同的业务概念 | 合并为一个命名检查 |
+| 条件独立且有不同的原因 | 保持分离（每个值得有自己的名字） |
+| 条件应按顺序评估以优化性能 | 为短路清晰性保持分离 |
 
 ---
 
-## Replace Nested Conditional with Guard Clauses
+## 以卫语句取代嵌套条件表达式（Replace Nested Conditional with Guard Clauses）
 
-Handle special cases and edge conditions at the top of the method and return early, leaving the main path of execution flat and unindented.
+将特殊情况或边缘条件放在方法顶部并使用提前返回，使主要执行路径保持扁平且无缩进。
 
-### Motivation
+### 动机
 
-Deeply nested `if/else` structures obscure the normal path. Guard clauses make it clear: "These are the edge cases. Now here's the main logic." The main path runs at the lowest indentation level.
+深度嵌套的 `if/else` 结构掩盖了正常路径。卫语句清楚地表明："这些是边缘情况。现在这是主要逻辑。" 主路径以最低的缩进级别运行。
 
-### Mechanics
+### 操作步骤
 
-1. Identify each edge case or special condition
-2. Move it to the top of the method as an `if (condition) return earlyValue;`
-3. Remove the corresponding `else` and reduce indentation
-4. Run tests
+1. 识别每个边缘情况或特殊条件
+2. 将其移到方法顶部，作为 `if (condition) return earlyValue;`
+3. 移除对应的 `else` 并减少缩进
+4. 运行测试
 
-### Example
+### 示例
 
-**Before:**
+**之前：**
 ```javascript
 function payAmount(employee) {
   let result;
@@ -162,7 +162,7 @@ function payAmount(employee) {
 }
 ```
 
-**After:**
+**之后：**
 ```javascript
 function payAmount(employee) {
   if (employee.isSeparated) return { amount: 0, reasonCode: 'SEP' };
@@ -175,41 +175,41 @@ function payAmount(employee) {
 }
 ```
 
-### Guard Clause Patterns
+### 卫语句模式
 
-| Pattern | Example |
+| 模式 | 示例 |
 |---------|---------|
-| Null check | `if (input == null) return defaultValue;` |
-| Empty check | `if (items.length === 0) return [];` |
-| Permission check | `if (!user.canEdit) throw new ForbiddenError();` |
-| Boundary check | `if (index < 0 \|\| index >= size) throw new RangeError();` |
-| Status check | `if (order.isCancelled) return zeroPay();` |
+| 空值检查 | `if (input == null) return defaultValue;` |
+| 空集合检查 | `if (items.length === 0) return [];` |
+| 权限检查 | `if (!user.canEdit) throw new ForbiddenError();` |
+| 边界检查 | `if (index < 0 || index >= size) throw new RangeError();` |
+| 状态检查 | `if (order.isCancelled) return zeroPay();` |
 
-### "One return" vs. Guard Clauses
+### "单一返回" vs. 卫语句
 
-Some coding standards mandate a single return statement per method. This leads to deeply nested conditionals and temporary result variables. Guard clauses with early returns produce clearer, flatter code. Fowler explicitly recommends guard clauses over single-return for methods with special cases.
+一些编码规范要求每个方法只有一个 return 语句。这导致了深层嵌套的条件和临时结果变量。卫语句配合提前返回能产生更清晰、更扁平的代码。Fowler 明确推荐在处理特殊情况的场景中使用卫语句而非单一返回。
 
 ---
 
-## Replace Conditional with Polymorphism
+## 以多态取代条件表达式（Replace Conditional with Polymorphism）
 
-Replace a conditional that checks a type, status, or category and branches to different behavior with polymorphic classes where each type provides its own implementation.
+将检查类型、状态或类别并分支到不同行为的条件语句替换为多态类，其中每个类型提供自己的实现。
 
-### Motivation
+### 动机
 
-This is the gold standard for eliminating type-based conditionals. Instead of one function that knows about every type, each type knows about itself. Adding a new type means adding a new class -- not editing existing conditionals in multiple places (Open/Closed Principle).
+这是消除基于类型的条件语句的黄金标准。不是让一个函数了解每种类型，而是让每种类型了解自身。添加新类型意味着添加一个新类——而不是在多个地方编辑现有条件语句（开闭原则）。
 
-### Mechanics
+### 操作步骤
 
-1. If the conditional is based on a type code, apply Replace Type Code with Subclasses first
-2. Create a base method (possibly abstract) in the superclass
-3. Copy each branch of the conditional into the corresponding subclass as an override
-4. Remove the conditional from the superclass (or make it the default case)
-5. Run tests
+1. 如果条件判断基于类型码，先应用将类型码替换为子类
+2. 在父类中创建一个基方法（可能是抽象的）
+3. 将条件语句的每个分支复制到对应的子类中作为覆盖实现
+4. 从父类中移除条件语句（或使其成为默认情况）
+5. 运行测试
 
-### Example
+### 示例
 
-**Before:**
+**之前：**
 ```python
 class Bird:
     def __init__(self, bird_type, voltage=0, coconut_count=0):
@@ -228,7 +228,7 @@ class Bird:
             raise ValueError(f"Unknown bird type: {self.type}")
 ```
 
-**After:**
+**之后：**
 ```python
 class Bird:
     def speed(self):
@@ -247,38 +247,38 @@ class NorwegianBlueParrot(Bird):
         return 0 if self.voltage > 100 else 10 + (self.voltage / 10)
 ```
 
-### When to Use Polymorphism vs. Keep the Conditional
+### 何时使用多态 vs. 保留条件
 
-| Situation | Recommendation |
-|-----------|---------------|
-| Conditional appears in multiple methods | Polymorphism -- types know their own behavior |
-| Only one method has the conditional | May be overkill -- Decompose Conditional may suffice |
-| New types are added frequently | Polymorphism -- Open/Closed Principle |
-| The set of types is fixed and small (e.g., 2-3) | Conditional may be simpler |
-| Behavior varies by a code that changes at runtime | Use Strategy pattern instead of inheritance |
+| 场景 | 建议 |
+|-----------|-------------|
+| 条件语句出现在多个方法中 | 多态——类型知道自己的行为 |
+| 只有一个方法包含条件语句 | 可能过度设计——分解条件表达式可能就足够了 |
+| 新类型频繁添加 | 多态——开闭原则 |
+| 类型集固定且很小（例如 2-3 个） | 条件语句可能更简单 |
+| 行为由运行时变化的码值决定 | 使用策略模式而非继承 |
 
 ---
 
-## Introduce Special Case (Null Object)
+## 引入特例模式（Introduce Special Case / Null Object）
 
-Instead of checking for a special case (usually null) in every caller, create a class that encapsulates the special-case behavior.
+不在每个调用者中检查特例（通常为空值），而是创建一个封装特例行为的类。
 
-### Motivation
+### 动机
 
-`if (customer == null)` checks scattered through the codebase add noise and are easy to forget. A `NullCustomer` or `UnknownCustomer` object responds to all the same methods with safe default behavior.
+散布在整个代码库中的 `if (customer == null)` 检查增加了噪音且容易被遗忘。一个 `NullCustomer` 或 `UnknownCustomer` 对象以安全的默认行为响应所有相同的方法。
 
-### Mechanics
+### 操作步骤
 
-1. Create a subclass or separate class for the special case
-2. Add a method to the superclass or factory that creates the special case (e.g., `Customer.unknown()`)
-3. Implement each method in the special case with the default behavior that callers currently use after their null checks
-4. Change callers to use the special case object instead of null
-5. Remove the null checks from callers
-6. Run tests
+1. 为特例创建一个子类或单独的类
+2. 在父类或工厂中添加一个创建特例的方法（例如 `Customer.unknown()`）
+3. 在特例类中使用调用者当前在空值检查后使用的默认行为实现每个方法
+4. 将调用者改为使用特例对象而不是 null
+5. 从调用者中移除空值检查
+6. 运行测试
 
-### Example
+### 示例
 
-**Before:**
+**之前：**
 ```javascript
 // Scattered throughout the codebase:
 const customerName = (customer !== null) ? customer.name : 'Occupant';
@@ -286,7 +286,7 @@ const billingPlan = (customer !== null) ? customer.billingPlan : BillingPlan.bas
 const paymentHistory = (customer !== null) ? customer.paymentHistory : new NullPaymentHistory();
 ```
 
-**After:**
+**之后：**
 ```javascript
 class UnknownCustomer {
   get name() { return 'Occupant'; }
@@ -305,37 +305,37 @@ const customerName = customer.name;
 const billingPlan = customer.billingPlan;
 ```
 
-### Common Special Cases
+### 常见特例
 
-| Domain | Special Case Object | Default Behavior |
+| 领域 | 特例对象 | 默认行为 |
 |--------|-------------------|------------------|
-| Customer | `UnknownCustomer` | Returns "Occupant", basic plan |
-| Currency | `NullMoney` | Zero amount, no currency |
-| Logger | `NullLogger` | Silently discards all messages |
-| Permission | `DeniedPermission` | Returns false for all checks |
-| Config | `DefaultConfig` | Returns sensible defaults |
-| User | `AnonymousUser` | Read-only, no privileges |
+| 客户 | `UnknownCustomer` | 返回"Occupant"，基础方案 |
+| 货币 | `NullMoney` | 零金额，无货币 |
+| 日志 | `NullLogger` | 静默丢弃所有消息 |
+| 权限 | `DeniedPermission` | 所有检查返回 false |
+| 配置 | `DefaultConfig` | 返回合理的默认值 |
+| 用户 | `AnonymousUser` | 只读，无权限 |
 
 ---
 
-## Introduce Assertion
+## 引入断言（Introduce Assertion）
 
-Make an assumption explicit by inserting an assertion that will fail fast if the assumption is violated.
+通过插入一个断言使假设变得明确，如果假设被违反，断言将快速失败。
 
-### Motivation
+### 动机
 
-Assertions document what the code expects to be true. They are executable documentation that catches bugs during development. Unlike comments, assertions are verified by the runtime.
+断言记录了代码期望为真的内容。它们是可在开发期间捕获 bug 的可执行文档。与注释不同，断言会在运行时被验证。
 
-### Mechanics
+### 操作步骤
 
-1. Identify an assumption in the code (a condition that should always be true)
-2. Insert an assertion at the point where the assumption is made
-3. Ensure the assertion does not have side effects
-4. Run tests (they should still pass -- if an assertion fails, you found a bug)
+1. 识别代码中的一个假设（一个应该始终为真的条件）
+2. 在该假设被做出的位置插入断言
+3. 确保断言没有副作用
+4. 运行测试（它们应该仍然通过——如果断言失败，你发现了一个 bug）
 
-### Example
+### 示例
 
-**Before:**
+**之前：**
 ```python
 def apply_discount(product, discount_rate):
     # discount should be between 0 and 1
@@ -343,7 +343,7 @@ def apply_discount(product, discount_rate):
     return price
 ```
 
-**After:**
+**之后：**
 ```python
 def apply_discount(product, discount_rate):
     assert 0 <= discount_rate <= 1, f"Discount rate must be 0-1, got {discount_rate}"
@@ -351,26 +351,26 @@ def apply_discount(product, discount_rate):
     return price
 ```
 
-### Assertion Guidelines
+### 断言指南
 
-| Guideline | Rationale |
+| 指南 | 理由 |
 |-----------|-----------|
-| Never use assertions for input validation | Assertions can be disabled in production; use exceptions for untrusted input |
-| Use assertions for programmer errors | Conditions that should never occur if the code is correct |
-| Keep assertion messages descriptive | Include the actual value and the expected constraint |
-| Don't put side effects in assertions | `assert items.remove(x)` breaks when assertions are disabled |
+| 决不用断言做输入验证 | 断言可以在生产环境中禁用；对不受信任的输入使用异常 |
+| 对程序员错误使用断言 | 如果代码正确则绝不应发生的条件 |
+| 保持断言消息的描述性 | 包含实际值和期望的约束 |
+| 不要在断言中放置副作用 | `assert items.remove(x)` 在断言被禁用时失效 |
 
 ---
 
-## Decision Guide: Which Conditional Refactoring to Use
+## 决策指南：使用哪种条件重构
 
-| Situation | Refactoring |
+| 场景 | 重构手法 |
 |-----------|-------------|
-| Long, complex condition expression | Decompose Conditional |
-| Multiple conditions lead to same result | Consolidate Conditional Expression |
-| Nested if/else with special cases | Replace Nested Conditional with Guard Clauses |
-| Switch/if on type code in multiple places | Replace Conditional with Polymorphism |
-| Null checks scattered everywhere | Introduce Special Case (Null Object) |
-| Hidden assumption in code logic | Introduce Assertion |
-| Condition appears once, set of types is small | Keep the conditional, but Decompose it |
-| Condition varies at runtime | Use Strategy pattern |
+| 长而复杂的条件表达式 | 分解条件表达式（Decompose Conditional） |
+| 多个条件指向相同结果 | 合并条件表达式（Consolidate Conditional Expression） |
+| 嵌套 if/else 包含特殊情况 | 以卫语句取代嵌套条件表达式（Replace Nested Conditional with Guard Clauses） |
+| 在多个地方对类型码使用 switch/if | 以多态取代条件表达式（Replace Conditional with Polymorphism） |
+| 空值检查散布各处 | 引入特例模式（Introduce Special Case / Null Object） |
+| 代码逻辑中的隐藏假设 | 引入断言（Introduce Assertion） |
+| 条件只出现一次，类型集很小 | 保留条件，但进行分解（Decompose） |
+| 条件在运行时变化 | 使用策略模式 |

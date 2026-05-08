@@ -1,11 +1,11 @@
-# OpenAPI Code-First Generation and Tooling
+# OpenAPI Code-First 生成与工具链
 
-Advanced patterns for generating OpenAPI specs from code (Python/FastAPI, TypeScript/tsoa), validation, linting, and SDK generation.
+从代码生成 OpenAPI 规范（Python/FastAPI、TypeScript/tsoa）、验证、linting 和 SDK 生成的高级模式。
 
-## Template 2: Code-First Generation (Python/FastAPI)
+## 模板 2：Code-First 生成（Python/FastAPI）
 
 ```python
-# FastAPI with automatic OpenAPI generation
+# FastAPI 自动生成 OpenAPI
 from fastapi import FastAPI, HTTPException, Query, Path, Depends
 from pydantic import BaseModel, Field, EmailStr
 from typing import Optional, List
@@ -192,7 +192,7 @@ if __name__ == "__main__":
     print(json.dumps(app.openapi(), indent=2))
 ```
 
-## Template 3: Code-First (TypeScript/Express with tsoa)
+## 模板 3：Code-First（TypeScript/Express 与 tsoa）
 
 ```typescript
 // tsoa generates OpenAPI from TypeScript decorators
@@ -378,7 +378,7 @@ export class UsersController extends Controller {
 }
 ```
 
-## Template 4: Validation & Linting
+## 模板 4：验证与 Linting
 
 ```bash
 # Install validation tools
@@ -463,7 +463,7 @@ redocly bundle openapi.yaml -o bundled.yaml
 redocly preview-docs openapi.yaml
 ```
 
-## SDK Generation
+## SDK 生成
 
 ```bash
 # OpenAPI Generator

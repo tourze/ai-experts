@@ -1,6 +1,6 @@
-# React Server Components Advanced Patterns
+# React Server Components 高级模式
 
-## Streaming with Suspense
+## 使用 Suspense 的流式渲染
 
 ```tsx
 // app/dashboard/page.tsx
@@ -10,13 +10,13 @@ import { RevenueChart, LatestOrders, Stats } from './components';
 export default function DashboardPage() {
   return (
     <div className="dashboard">
-      {/* Stats load first - fast query */}
+      {/* Stats 最先加载——快速查询 */}
       <Suspense fallback={<StatsSkeleton />}>
         <Stats />
       </Suspense>
 
       <div className="grid grid-cols-2 gap-4">
-        {/* Chart and orders stream independently */}
+        {/* Chart 和 orders 独立流式加载 */}
         <Suspense fallback={<ChartSkeleton />}>
           <RevenueChart />
         </Suspense>
@@ -29,7 +29,7 @@ export default function DashboardPage() {
   );
 }
 
-// Each component fetches its own data
+// 每个组件自行获取数据
 async function Stats() {
   const stats = await fetchStats(); // 100ms
   return <StatsDisplay stats={stats} />;
@@ -48,13 +48,13 @@ async function LatestOrders() {
 
 ---
 
-## Caching Strategies
+## 缓存策略
 
 ```tsx
 // app/products/page.tsx
 import { unstable_cache } from 'next/cache';
 
-// Cache database query
+// 缓存数据库查询
 const getProducts = unstable_cache(
   async (category: string) => {
     return db.product.findMany({
@@ -64,7 +64,7 @@ const getProducts = unstable_cache(
   },
   ['products'],
   {
-    revalidate: 60, // Revalidate every 60 seconds
+    revalidate: 60, // 每 60 秒重新验证
     tags: ['products'],
   }
 );
@@ -78,7 +78,7 @@ export default async function ProductsPage({
   return <ProductGrid products={products} />;
 }
 
-// Revalidate cache from Server Action
+// 从 Server Action 重新验证缓存
 'use server';
 
 import { revalidateTag } from 'next/cache';
@@ -86,48 +86,48 @@ import { revalidateTag } from 'next/cache';
 export async function createProduct(formData: FormData) {
   await db.product.create({ ... });
 
-  // Invalidate products cache
+  // 使 products 缓存失效
   revalidateTag('products');
 }
 ```
 
-### Route Segment Config
+### 路由段配置
 
 ```tsx
-// Force dynamic rendering
+// 强制动态渲染
 export const dynamic = 'force-dynamic';
 
-// Force static rendering
+// 强制静态渲染
 export const dynamic = 'force-static';
 
-// Revalidation interval
+// 重新验证间隔
 export const revalidate = 60;
 
-// Runtime
-export const runtime = 'edge'; // or 'nodejs'
+// 运行时
+export const runtime = 'edge'; // 或 'nodejs'
 ```
 
 ---
 
-## Patterns
+## 模式
 
-### Passing Server Data to Client Components
+### 将服务端数据传递给客户端组件
 
 ```tsx
-// ✅ Good: Pass data as props (serializable)
+// ✅ 好：将数据作为 props 传递（可序列化）
 async function ProductPage({ id }: { id: string }) {
   const product = await getProduct(id);
   return <AddToCartButton product={product} />;
 }
 
-// ❌ Bad: Cannot pass functions
+// ❌ 不好：不能传递函数
 async function ProductPage({ id }: { id: string }) {
   const addToCart = async () => { ... };
   // Error: Functions cannot be passed to Client Components
   return <AddToCartButton onAdd={addToCart} />;
 }
 
-// ✅ Good: Use Server Actions instead
+// ✅ 好：改用 Server Actions
 // actions.ts
 'use server';
 export async function addToCart(productId: string) { ... }
@@ -145,7 +145,7 @@ export function AddToCartButton({ productId }: { productId: string }) {
 }
 ```
 
-### Interleaving Server and Client Components
+### 服务端与客户端组件的交错使用
 
 ```tsx
 // Server Component
@@ -155,7 +155,7 @@ async function ProductList() {
   return (
     <div>
       {products.map(product => (
-        // Server Component can render Client Component
+        // Server Component 可以渲染 Client Component
         <ProductCard key={product.id} product={product} />
       ))}
     </div>
@@ -179,10 +179,10 @@ function ProductCard({ product }: { product: Product }) {
 }
 ```
 
-### Children Pattern for Server Components in Client
+### 客户端中使用服务端组件的 Children 模式
 
 ```tsx
-// ✅ Pattern: Pass Server Components as children
+// ✅ 模式：将 Server Components 作为 children 传递
 'use client';
 
 function ClientWrapper({ children }: { children: ReactNode }) {
@@ -191,12 +191,12 @@ function ClientWrapper({ children }: { children: ReactNode }) {
   return (
     <div>
       <button onClick={() => setIsOpen(true)}>Open</button>
-      {isOpen && children}  {/* Server Component works here! */}
+      {isOpen && children}  {/* Server Component 可在此工作！ */}
     </div>
   );
 }
 
-// Usage in Server Component
+// 在 Server Component 中使用
 async function Page() {
   const data = await fetchData();
 
@@ -210,7 +210,7 @@ async function Page() {
 
 ---
 
-## Error Handling
+## 错误处理
 
 ```tsx
 // app/products/error.tsx
@@ -250,29 +250,29 @@ export default function NotFound() {
 
 ---
 
-## Parallel and Sequential Data Fetching
+## 并行与顺序数据获取
 
 ```tsx
-// Sequential (slower) - default
+// 顺序（较慢）——默认方式
 async function Page() {
-  const user = await getUser();      // Wait...
-  const posts = await getPosts();    // Then wait...
+  const user = await getUser();      // 等待...
+  const posts = await getPosts();    // 再等待...
   return <div>...</div>;
 }
 
-// Parallel (faster)
+// 并行（更快）
 async function Page() {
-  // Start both fetches simultaneously
+  // 同时启动两个请求
   const userPromise = getUser();
   const postsPromise = getPosts();
 
-  // Wait for both
+  // 等待两者完成
   const [user, posts] = await Promise.all([userPromise, postsPromise]);
 
   return <div>...</div>;
 }
 
-// Streaming (best UX)
+// 流式渲染（最佳用户体验）
 async function Page() {
   return (
     <div>

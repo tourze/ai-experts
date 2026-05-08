@@ -1,25 +1,25 @@
-# Helm Chart Structure Reference
+# Helm Chart 结构参考
 
-Complete guide to Helm chart organization, file conventions, and best practices.
+Helm Chart 组织编排、文件约定和最佳实践的完整指南。
 
-## Standard Chart Directory Structure
+## 标准 Chart 目录结构
 
 ```
 my-app/
-├── Chart.yaml              # Chart metadata (required)
-├── Chart.lock              # Dependency lock file (generated)
-├── values.yaml             # Default configuration values (required)
-├── values.schema.json      # JSON schema for values validation
-├── .helmignore             # Patterns to ignore when packaging
-├── README.md               # Chart documentation
-├── LICENSE                 # Chart license
-├── charts/                 # Chart dependencies (bundled)
+├── Chart.yaml              # Chart 元数据（必需）
+├── Chart.lock              # 依赖锁定文件（生成）
+├── values.yaml             # 默认配置值（必需）
+├── values.schema.json      # value 校验的 JSON Schema
+├── .helmignore             # 打包时忽略的模式
+├── README.md               # Chart 文档
+├── LICENSE                 # Chart 许可证
+├── charts/                 # Chart 依赖（打包）
 │   └── postgresql-12.0.0.tgz
-├── crds/                   # Custom Resource Definitions
+├── crds/                   # 自定义资源定义
 │   └── my-crd.yaml
-├── templates/              # Kubernetes manifest templates (required)
-│   ├── NOTES.txt          # Post-install instructions
-│   ├── _helpers.tpl       # Template helper functions
+├── templates/              # Kubernetes 清单模板（必需）
+│   ├── NOTES.txt          # 安装后指引
+│   ├── _helpers.tpl       # 模板辅助函数
 │   ├── deployment.yaml
 │   ├── service.yaml
 │   ├── ingress.yaml
@@ -31,39 +31,39 @@ my-app/
 │   ├── networkpolicy.yaml
 │   └── tests/
 │       └── test-connection.yaml
-└── files/                  # Additional files to include
+└── files/                  # 额外包含的文件
     └── config/
         └── app.conf
 ```
 
-## Chart.yaml Specification
+## Chart.yaml 规范
 
-### API Version v2 (Helm 3+)
+### API 版本 v2（Helm 3+）
 
 ```yaml
-apiVersion: v2 # Required: API version
-name: my-application # Required: Chart name
-version: 1.2.3 # Required: Chart version (SemVer)
-appVersion: "2.5.0" # Application version
-description: A Helm chart for my application # Required
-type: application # Chart type: application or library
-keywords: # Search keywords
+apiVersion: v2 # 必需：API 版本
+name: my-application # 必需：Chart 名称
+version: 1.2.3 # 必需：Chart 版本（SemVer）
+appVersion: "2.5.0" # 应用版本
+description: A Helm chart for my application # 必需
+type: application # Chart 类型：application 或 library
+keywords: # 搜索关键词
   - web
   - api
   - backend
-home: https://example.com # Project home page
-sources: # Source code URLs
+home: https://example.com # 项目主页
+sources: # 源码 URL
   - https://github.com/example/my-app
-maintainers: # Maintainer list
+maintainers: # 维护者列表
   - name: John Doe
     email: john@example.com
     url: https://github.com/johndoe
-icon: https://example.com/icon.png # Chart icon URL
-kubeVersion: ">=1.24.0" # Compatible Kubernetes versions
-deprecated: false # Mark chart as deprecated
-annotations: # Arbitrary annotations
+icon: https://example.com/icon.png # Chart 图标 URL
+kubeVersion: ">=1.24.0" # 兼容的 Kubernetes 版本
+deprecated: false # 标记为已废弃
+annotations: # 任意注解
   example.com/release-notes: https://example.com/releases/v1.2.3
-dependencies: # Chart dependencies
+dependencies: # Chart 依赖
   - name: postgresql
     version: "12.0.0"
     repository: "https://charts.bitnami.com/bitnami"
@@ -76,7 +76,7 @@ dependencies: # Chart dependencies
     alias: db
 ```
 
-## Chart Types
+## Chart 类型
 
 ### Application Chart
 
@@ -84,9 +84,9 @@ dependencies: # Chart dependencies
 type: application
 ```
 
-- Standard Kubernetes applications
-- Can be installed and managed
-- Contains templates for K8s resources
+- 标准 Kubernetes 应用
+- 可安装和管理
+- 包含 K8s 资源模板
 
 ### Library Chart
 
@@ -94,40 +94,40 @@ type: application
 type: library
 ```
 
-- Shared template helpers
-- Cannot be installed directly
-- Used as dependency by other charts
-- No templates/ directory
+- 共享模板辅助函数
+- 不能直接安装
+- 作为其他 chart 的依赖使用
+- 无 templates/ 目录
 
-## Values Files Organization
+## Values 文件组织
 
-### values.yaml (defaults)
+### values.yaml（默认值）
 
 ```yaml
-# Global values (shared with subcharts)
+# 全局值（与子 chart 共享）
 global:
   imageRegistry: docker.io
   imagePullSecrets: []
 
-# Image configuration
+# 镜像配置
 image:
   registry: docker.io
   repository: myapp/web
-  tag: "" # Defaults to .Chart.AppVersion
+  tag: "" # 默认为 .Chart.AppVersion
   pullPolicy: IfNotPresent
 
-# Deployment settings
+# 部署设置
 replicaCount: 1
 revisionHistoryLimit: 10
 
-# Pod configuration
+# Pod 配置
 podAnnotations: {}
 podSecurityContext:
   runAsNonRoot: true
   runAsUser: 1000
   fsGroup: 1000
 
-# Container security
+# 容器安全
 securityContext:
   allowPrivilegeEscalation: false
   readOnlyRootFilesystem: true
@@ -135,14 +135,14 @@ securityContext:
     drop:
       - ALL
 
-# Service
+# 服务
 service:
   type: ClusterIP
   port: 80
   targetPort: http
   annotations: {}
 
-# Resources
+# 资源
 resources:
   limits:
     cpu: 100m
@@ -151,25 +151,25 @@ resources:
     cpu: 100m
     memory: 128Mi
 
-# Autoscaling
+# 自动扩缩容
 autoscaling:
   enabled: false
   minReplicas: 1
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
 
-# Node selection
+# 节点选择
 nodeSelector: {}
 tolerations: []
 affinity: {}
 
-# Monitoring
+# 监控
 serviceMonitor:
   enabled: false
   interval: 30s
 ```
 
-### values.schema.json (validation)
+### values.schema.json（校验）
 
 ```json
 {
@@ -201,22 +201,22 @@ serviceMonitor:
 }
 ```
 
-## Template Files
+## 模板文件
 
-### Template Naming Conventions
+### 模板命名约定
 
-- **Lowercase with hyphens**: `deployment.yaml`, `service-account.yaml`
-- **Partial templates**: Prefix with underscore `_helpers.tpl`
-- **Tests**: Place in `templates/tests/`
-- **CRDs**: Place in `crds/` (not templated)
+- **小写加连字符**：`deployment.yaml`、`service-account.yaml`
+- **局部模板**：以下划线开头 `_helpers.tpl`
+- **测试**：放在 `templates/tests/`
+- **CRD**：放在 `crds/`（不经过模板化）
 
-### Common Templates
+### 常见模板
 
 #### \_helpers.tpl
 
 ```yaml
 {{/*
-Standard naming helpers
+标准命名辅助函数
 */}}
 {{- define "my-app.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
@@ -240,7 +240,7 @@ Standard naming helpers
 {{- end -}}
 
 {{/*
-Common labels
+通用标签
 */}}
 {{- define "my-app.labels" -}}
 helm.sh/chart: {{ include "my-app.chart" . }}
@@ -257,7 +257,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
-Image name helper
+镜像名称辅助函数
 */}}
 {{- define "my-app.image" -}}
 {{- $registry := .Values.global.imageRegistry | default .Values.image.registry -}}
@@ -270,33 +270,33 @@ Image name helper
 #### NOTES.txt
 
 ```
-Thank you for installing {{ .Chart.Name }}.
+感谢安装 {{ .Chart.Name }}。
 
-Your release is named {{ .Release.Name }}.
+您的 release 名为 {{ .Release.Name }}。
 
-To learn more about the release, try:
+想了解更多关于此 release 的信息，请尝试：
 
   $ helm status {{ .Release.Name }}
   $ helm get all {{ .Release.Name }}
 
 {{- if .Values.ingress.enabled }}
 
-Application URL:
+应用 URL：
 {{- range .Values.ingress.hosts }}
   http{{ if $.Values.ingress.tls }}s{{ end }}://{{ .host }}{{ .path }}
 {{- end }}
 {{- else }}
 
-Get the application URL by running:
+通过以下命令获取应用 URL：
   export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "my-app.name" . }}" -o jsonpath="{.items[0].metadata.name}")
   kubectl port-forward $POD_NAME 8080:80
-  echo "Visit http://127.0.0.1:8080"
+  echo "访问 http://127.0.0.1:8080"
 {{- end }}
 ```
 
-## Dependencies Management
+## 依赖管理
 
-### Declaring Dependencies
+### 声明依赖
 
 ```yaml
 # Chart.yaml
@@ -304,31 +304,31 @@ dependencies:
   - name: postgresql
     version: "12.0.0"
     repository: "https://charts.bitnami.com/bitnami"
-    condition: postgresql.enabled # Enable/disable via values
-    tags: # Group dependencies
+    condition: postgresql.enabled # 通过 values 启用/禁用
+    tags: # 依赖分组
       - database
-    import-values: # Import values from subchart
+    import-values: # 从子 chart 导入值
       - child: database
         parent: database
-    alias: db # Reference as .Values.db
+    alias: db # 引用为 .Values.db
 ```
 
-### Managing Dependencies
+### 管理依赖
 
 ```bash
-# Update dependencies
+# 更新依赖
 helm dependency update
 
-# List dependencies
+# 列出依赖
 helm dependency list
 
-# Build dependencies
+# 构建依赖
 helm dependency build
 ```
 
 ### Chart.lock
 
-Generated automatically by `helm dependency update`:
+由 `helm dependency update` 自动生成：
 
 ```yaml
 dependencies:
@@ -341,16 +341,16 @@ generated: "2024-01-01T00:00:00Z"
 
 ## .helmignore
 
-Exclude files from chart package:
+从 chart 包中排除的文件：
 
 ```
-# Development files
+# 开发文件
 .git/
 .gitignore
 *.md
 docs/
 
-# Build artifacts
+# 构建产物
 *.swp
 *.bak
 *.tmp
@@ -361,7 +361,7 @@ docs/
 .gitlab-ci.yml
 Jenkinsfile
 
-# Testing
+# 测试
 test/
 *.test
 
@@ -371,9 +371,9 @@ test/
 *.iml
 ```
 
-## Custom Resource Definitions (CRDs)
+## 自定义资源定义（CRD）
 
-Place CRDs in `crds/` directory:
+将 CRD 放在 `crds/` 目录：
 
 ```
 crds/
@@ -381,34 +381,34 @@ crds/
 └── another-crd.yaml
 ```
 
-**Important CRD notes:**
+**重要 CRD 说明：**
 
-- CRDs are installed before any templates
-- CRDs are NOT templated (no `{{ }}` syntax)
-- CRDs are NOT upgraded or deleted with chart
-- Use `helm install --skip-crds` to skip installation
+- CRD 在任何模板之前安装
+- CRD 不经过模板化（无 `{{ }}` 语法）
+- CRD 不会随 chart 升级或删除
+- 使用 `helm install --skip-crds` 跳过安装
 
-## Chart Versioning
+## Chart 版本管理
 
-### Semantic Versioning
+### 语义化版本
 
-- **Chart Version**: Increment when chart changes
-  - MAJOR: Breaking changes
-  - MINOR: New features, backward compatible
-  - PATCH: Bug fixes
+- **Chart 版本**：Chart 变化时递增
+  - MAJOR：破坏性变更
+  - MINOR：新功能，向后兼容
+  - PATCH：Bug 修复
 
-- **App Version**: Application version being deployed
-  - Can be any string
-  - Not required to follow SemVer
+- **App 版本**：部署的应用版本
+  - 可以是任意字符串
+  - 不要求遵循 SemVer
 
 ```yaml
-version: 2.3.1 # Chart version
-appVersion: "1.5.0" # Application version
+version: 2.3.1 # Chart 版本
+appVersion: "1.5.0" # 应用版本
 ```
 
-## Chart Testing
+## Chart 测试
 
-### Test Files
+### 测试文件
 
 ```yaml
 # templates/tests/test-connection.yaml
@@ -428,7 +428,7 @@ spec:
   restartPolicy: Never
 ```
 
-### Running Tests
+### 运行测试
 
 ```bash
 helm test my-release
@@ -437,7 +437,7 @@ helm test my-release --logs
 
 ## Hooks
 
-Helm hooks allow intervention at specific points:
+Helm hooks 允许在特定点进行干预：
 
 ```yaml
 apiVersion: batch/v1
@@ -450,42 +450,42 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 ```
 
-### Hook Types
+### Hook 类型
 
-- `pre-install`: Before templates rendered
-- `post-install`: After all resources loaded
-- `pre-delete`: Before any resources deleted
-- `post-delete`: After all resources deleted
-- `pre-upgrade`: Before upgrade
-- `post-upgrade`: After upgrade
-- `pre-rollback`: Before rollback
-- `post-rollback`: After rollback
-- `test`: Run with `helm test`
+- `pre-install`：模板渲染前
+- `post-install`：所有资源加载后
+- `pre-delete`：任何资源删除前
+- `post-delete`：所有资源删除后
+- `pre-upgrade`：升级前
+- `post-upgrade`：升级后
+- `pre-rollback`：回滚前
+- `post-rollback`：回滚后
+- `test`：通过 `helm test` 运行
 
-### Hook Weight
+### Hook 权重
 
-Controls hook execution order (-5 to 5, lower runs first)
+控制 hook 执行顺序（-5 到 5，越小越先执行）
 
-### Hook Deletion Policies
+### Hook 删除策略
 
-- `before-hook-creation`: Delete previous hook before new one
-- `hook-succeeded`: Delete after successful execution
-- `hook-failed`: Delete if hook fails
+- `before-hook-creation`：创建新 hook 前删除旧 hook
+- `hook-succeeded`：成功执行后删除
+- `hook-failed`：hook 失败时删除
 
-## Best Practices
+## 最佳实践
 
-1. **Use helpers** for repeated template logic
-2. **Quote strings** in templates: `{{ .Values.name | quote }}`
-3. **Validate values** with values.schema.json
-4. **Document all values** in values.yaml
-5. **Use semantic versioning** for chart versions
-6. **Pin dependency versions** exactly
-7. **Include NOTES.txt** with usage instructions
-8. **Add tests** for critical functionality
-9. **Use hooks** for database migrations
-10. **Keep charts focused** - one application per chart
+1. **使用辅助函数**处理重复模板逻辑
+2. **在模板中对字符串加引号**：`{{ .Values.name | quote }}`
+3. **使用 values.schema.json 校验值**
+4. **在 values.yaml 中记录所有值**
+5. **对 chart 版本使用语义化版本**
+6. **精确锁定依赖版本**
+7. **包含 NOTES.txt**并提供使用说明
+8. **为关键功能添加测试**
+9. **使用 hooks 处理数据库迁移**
+10. **保持 chart 聚焦**——每个 chart 对应一个应用
 
-## Chart Repository Structure
+## Chart 仓库结构
 
 ```
 helm-charts/
@@ -496,14 +496,14 @@ helm-charts/
 └── another-chart-2.0.0.tgz
 ```
 
-### Creating Repository Index
+### 创建仓库索引
 
 ```bash
 helm repo index . --url https://charts.example.com
 ```
 
-## Related Resources
+## 相关资源
 
-- [Helm Documentation](https://helm.sh/docs/)
-- [Chart Template Guide](https://helm.sh/docs/chart_template_guide/)
-- [Best Practices](https://helm.sh/docs/chart_best_practices/)
+- [Helm 文档](https://helm.sh/docs/)
+- [Chart 模板指南](https://helm.sh/docs/chart_template_guide/)
+- [最佳实践](https://helm.sh/docs/chart_best_practices/)

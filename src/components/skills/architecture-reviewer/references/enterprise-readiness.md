@@ -1,362 +1,353 @@
-# Enterprise Readiness
+# 企业就绪度
 
-**Dimension Weight: 15%**
+**维度权重：15%**
 
-Evaluates whether the system is fit for enterprise deployment, operations, and compliance.
-Includes deep compliance framework checklists.
+评估系统是否适合企业部署、运维和合规要求。包含深入的合规框架检查清单。
 
-## Table of Contents
+## 目录
 
-1. Sub-Criteria Checklist
-2. Compliance Framework Deep Dives
-3. Multi-Tenancy Patterns
-4. HA/DR Patterns
-5. Evaluation Guidance by Mode
-
----
-
-## 1. Sub-Criteria Checklist
-
-### 1.1 Multi-Tenancy
-
-- Is tenant isolation implemented at the data layer? (Separate databases, schemas, or
-  row-level security.)
-- Is tenant isolation implemented at the compute layer? (Separate containers, namespaces,
-  or resource quotas.)
-- Is network isolation in place between tenants?
-- **Noisy neighbor protection:** Can one tenant's workload degrade another's experience?
-  Are resource limits enforced per tenant?
-- Is tenant context propagated correctly through all layers (API → service → database → logs)?
-
-### 1.2 Authorization Model
-
-- What authorization model is used? RBAC / ABAC / ReBAC / custom?
-- Is authorization enforced at every layer, or only at the API gateway?
-- Is the principle of least privilege applied? Are default permissions minimal?
-- Are authorization policies centralized or scattered across services?
-- **Policy enforcement points:** Where are authorization checks performed? Can they be bypassed?
-
-### 1.3 Audit Logging
-
-- Are security-relevant events logged? (Login, logout, failed auth, permission changes,
-  data access, data modifications, admin actions.)
-- Are audit logs tamper-proof? (Append-only, signed, separate storage from application data.)
-- Is there a retention policy compliant with regulatory requirements?
-- Are logs searchable and correlatable across services?
-- Is PII handled appropriately in audit logs? (Masked, encrypted, or excluded.)
-
-### 1.4 Data Sovereignty & Residency
-
-- Can data be stored and processed in required jurisdictions?
-- Is cross-border data transfer addressed? (Standard contractual clauses, adequacy decisions.)
-- Are data residency requirements configurable per tenant?
-- Is data routing aware of geographic constraints?
-
-### 1.5 SLA Architecture
-
-- Are SLA targets defined? (Availability, latency, throughput, recovery time.)
-- Are SLOs (Service Level Objectives) defined per service/endpoint?
-- Are error budgets tracked?
-- Is the architecture designed to meet stated SLAs? (Redundancy, failover, monitoring.)
-- **Composite SLA:** Is the composite SLA calculated from individual component SLAs?
-  (99.9% × 99.9% × 99.9% = 99.7%, not 99.9%.)
-
-### 1.6 High Availability (HA)
-
-- Is the deployment active-active or active-passive?
-- Is there redundancy at every tier? (Load balancer, application, database, cache, queue.)
-- Are health checks implemented and used for automatic failover?
-- What is the expected failover time? Is it tested?
-- Are there no single points of failure in the HA design?
-
-### 1.7 Disaster Recovery (DR)
-
-- Are RPO (Recovery Point Objective) and RTO (Recovery Time Objective) defined?
-- Is there a backup strategy with verified restores?
-- Is cross-region or cross-AZ replication in place?
-- Are DR runbooks documented and tested? When was the last DR drill?
-- Can the system be rebuilt from scratch using IaC?
-
-### 1.8 Deployment Strategy
-
-- Is zero-downtime deployment supported? (Blue-green, canary, rolling.)
-- Is rollback automated and tested?
-- Are database migrations forward-only and backward-compatible?
-- Is there a deployment pipeline with staged environments?
-- **Feature flags:** Can new features be deployed but disabled?
-
-### 1.9 Configuration Management
-
-- Are configurations externalized from code? (Environment variables, config services, vaults.)
-- Are per-environment configurations managed?
-- Is there config drift detection?
-- Are feature flags used for runtime configuration changes?
-- Can configuration changes be applied without restarts?
-
-### 1.10 API Versioning & Compatibility
-
-- Is API versioning in place? (Path-based, header-based, content-type-based.)
-- Are breaking changes managed with a deprecation policy?
-- Is backward compatibility maintained for at least one previous version?
-- Is there a consumer migration path for breaking changes?
-- **Contract testing:** Are consumer-driven contract tests in place?
-
-### 1.11 Integration Patterns
-
-- Is there an API gateway for external integrations?
-- Are integration patterns standardized? (REST, GraphQL, gRPC, event-based.)
-- Is there a partner/vendor integration strategy?
-- Are integration retries, circuit breakers, and timeouts in place?
-- **Event mesh:** For event-driven integrations, is there a schema registry and versioning?
-
-### 1.12 Compliance Alignment
-
-- Which compliance frameworks apply? (See Section 2 for deep dives.)
-- Are compliance requirements mapped to architectural controls?
-- Is there a compliance monitoring and reporting capability?
-- Are compliance controls automated where possible?
-
-### 1.13 Vendor Lock-in Assessment
-
-- How portable is the system? Can it move to a different cloud provider?
-- What are the switching costs for key dependencies?
-- Are cloud-specific services abstracted behind interfaces?
-- **Lock-in severity:** Categorize dependencies as (a) easily replaceable, (b) moderately
-  coupled, or (c) deeply entrenched.
-
-### 1.14 Team Topology Alignment
-
-- Does the architecture respect Conway's Law? (System structure mirrors team structure.)
-- Are service ownership boundaries clear? Does each service have a responsible team?
-- Can teams deploy independently?
-- Are shared services owned by a platform team?
-- Are cross-team dependencies minimized?
+1. 子标准检查清单
+2. 合规框架深度分析
+3. 多租户模式
+4. HA/DR 模式
+5. 按模式的评估指南
 
 ---
 
-## 2. Compliance Framework Deep Dives
+## 1. 子标准检查清单
 
-Evaluate only the frameworks the user identifies as applicable. For each applicable framework,
-check the architectural controls below.
+### 1.1 多租户
+
+- 数据层是否实现了租户隔离？（独立数据库、schema 或行级安全。）
+- 计算层是否实现了租户隔离？（独立容器、命名空间或资源配额。）
+- 租户之间是否有网络隔离？
+- **吵闹邻居保护：** 一个租户的工作负载是否会降低其他租户的体验？是否按租户实施了资源限制？
+- 租户上下文是否在所有层正确传播（API → 服务 → 数据库 → 日志）？
+
+### 1.2 授权模型
+
+- 使用什么授权模型？RBAC / ABAC / ReBAC / 自定义？
+- 授权是在每一层都执行，还是仅在 API 网关执行？
+- 是否应用了最小权限原则？默认权限是否最小？
+- 授权策略是集中管理还是分散在各服务中？
+- **策略执行点：** 在哪里执行授权检查？能否被绕过？
+
+### 1.3 审计日志
+
+- 安全相关事件是否记录日志？（登录、登出、认证失败、权限变更、数据访问、数据修改、管理员操作。）
+- 审计日志是否防篡改？（仅追加、签名、与应用数据分开存储。）
+- 是否制定了符合监管要求的保留策略？
+- 日志是否可搜索且可跨服务关联？
+- PII 在审计日志中是否得到适当处理？（脱敏、加密或排除。）
+
+### 1.4 数据主权与数据驻留
+
+- 数据能否在所需司法管辖区内存储和处理？
+- 跨境数据传输问题是否已解决？（标准合同条款、充分性认定。）
+- 数据驻留要求是否可按租户配置？
+- 数据路由是否感知地理约束？
+
+### 1.5 SLA 架构
+
+- 是否定义了 SLA 目标？（可用性、延迟、吞吐量、恢复时间。）
+- 是否按服务/端点定义了 SLO（服务等级目标）？
+- 是否有错误预算追踪？
+- 架构是否设计为能满足声明的 SLA？（冗余、故障转移、监控。）
+- **复合 SLA：** 是否从单个组件的 SLA 计算了复合 SLA？（99.9% × 99.9% × 99.9% = 99.7%，不是 99.9%。）
+
+### 1.6 高可用性（HA）
+
+- 部署是主主动-主动还是主动-被动？
+- 是否每一层都有冗余？（负载均衡器、应用、数据库、缓存、队列。）
+- 是否实施了健康检查并用于自动故障转移？
+- 预期的故障转移时间是多少？是否经过测试？
+- HA 设计中是否有单点故障？
+
+### 1.7 灾难恢复（DR）
+
+- 是否定义了 RPO（恢复点目标）和 RTO（恢复时间目标）？
+- 是否有经过验证恢复的备份策略？
+- 是否配置了跨区域或跨可用区复制？
+- DR 手册是否记录并测试？上次 DR 演练是什么时候？
+- 能否使用 IaC 从头重建系统？
+
+### 1.8 部署策略
+
+- 是否支持零停机部署？（蓝绿、金丝雀、滚动。）
+- 回滚是否自动化并经过测试？
+- 数据库迁移是否仅向前且向后兼容？
+- 是否有带阶段环境的部署流水线？
+- **功能开关：** 新功能是否可以被部署但禁用？
+
+### 1.9 配置管理
+
+- 配置是否从代码中外部化？（环境变量、配置服务、密钥仓库。）
+- 是否管理了按环境的配置？
+- 是否有配置漂移检测？
+- 是否使用功能开关进行运行时配置变更？
+- 配置变更能否不重启就应用？
+
+### 1.10 API 版本控制与兼容性
+
+- 是否实施了 API 版本控制？（基于路径、基于头部、基于 content-type。）
+- 破坏性变更是否通过弃用策略管理？
+- 是否至少维护一个先前版本的向后兼容性？
+- 是否有消费者迁移路径来处理破坏性变更？
+- **契约测试：** 是否实施了消费者驱动的契约测试？
+
+### 1.11 集成模式
+
+- 是否有用于外部集成的 API 网关？
+- 集成模式是否标准化？（REST、GraphQL、gRPC、事件驱动。）
+- 是否有合作伙伴/供应商集成策略？
+- 是否配置了集成重试、熔断和超时？
+- **事件网格：** 对于事件驱动的集成，是否有 schema registry 和版本控制？
+
+### 1.12 合规对齐
+
+- 哪些合规框架适用？（参见第 2 节深入了解。）
+- 合规要求是否映射到架构控制措施？
+- 是否有合规监控和报告能力？
+- 合规控制措施是否尽可能自动化？
+
+### 1.13 供应商锁定评估
+
+- 系统的可移植性如何？能否迁移到不同的云供应商？
+- 关键依赖的切换成本是多少？
+- 云特定服务是否通过接口抽象？
+- **锁定严重程度：** 将依赖分类为（a）易于替换、（b）中度耦合或（c）深度绑定。
+
+### 1.14 团队拓扑对齐
+
+- 架构是否遵循康威定律？（系统结构镜像团队结构。）
+- 服务所有权边界是否清晰？每个服务是否有负责团队？
+- 团队能否独立部署？
+- 共享服务是否由平台团队拥有？
+- 跨团队依赖是否最小化？
+
+---
+
+## 2. 合规框架深度分析
+
+仅评估用户确认为适用的框架。对于每个适用的框架，检查以下架构控制措施。
 
 ### 2.1 SOC 2 Type II
 
-SOC 2 is organized around five Trust Service Criteria. Architectural relevance:
+SOC 2 围绕五个信任服务标准组织。架构相关性：
 
-**Security (Common Criteria — CC)**
+**安全（通用标准 — CC）**
 
-- CC6.1: Logical access controls — role-based access, MFA, SSO integration
-- CC6.2: Credentials management — password policies, API key rotation, secret management
-- CC6.3: Encryption — TLS for transit, AES-256 for rest, KMS for key management
-- CC6.6: System boundaries — network segmentation, firewall rules, ingress/egress controls
-- CC6.7: Change management — deployment pipelines, approval gates, rollback capability
-- CC6.8: Vulnerability management — dependency scanning, penetration testing, patch management
-- CC7.1: Monitoring — intrusion detection, anomaly detection, real-time alerting
-- CC7.2: Incident response — defined procedures, escalation paths, post-mortem process
+- CC6.1：逻辑访问控制 —— 基于角色的访问、MFA、SSO 集成
+- CC6.2：凭证管理 —— 密码策略、API 密钥轮换、密钥管理
+- CC6.3：加密 —— 传输使用 TLS，静态使用 AES-256，密钥管理使用 KMS
+- CC6.6：系统边界 —— 网络分段、防火墙规则、入站/出站控制
+- CC6.7：变更管理 —— 部署流水线、审批闸门、回滚能力
+- CC6.8：漏洞管理 —— 依赖扫描、渗透测试、补丁管理
+- CC7.1：监控 —— 入侵检测、异常检测、实时告警
+- CC7.2：事件响应 —— 已定义流程、升级路径、事后分析流程
 
-**Availability (A)**
+**可用性（A）**
 
-- A1.1: Capacity management — auto-scaling, capacity planning, performance baselines
-- A1.2: Recovery — DR plan, backup strategy, tested failover, defined RTO/RPO
+- A1.1：容量管理 —— 自动扩展、容量规划、性能基线
+- A1.2：恢复 —— 灾难恢复计划、备份策略、经过测试的故障转移、定义的 RTO/RPO
 
-**Processing Integrity (PI)**
+**处理完整性（PI）**
 
-- PI1.1: Input validation — server-side validation, type checking, boundary checks
-- PI1.2: Processing accuracy — idempotency, transaction integrity, reconciliation
-- PI1.3: Output completeness — data validation, checksum verification
+- PI1.1：输入验证 —— 服务端验证、类型检查、边界检查
+- PI1.2：处理准确性 —— 幂等性、事务完整性、对账
+- PI1.3：输出完整性 —— 数据验证、校验和验证
 
-**Confidentiality (C)**
+**机密性（C）**
 
-- C1.1: Data classification — PII identification, sensitivity levels, handling procedures
-- C1.2: Data protection — encryption, tokenization, masking, access logging
+- C1.1：数据分类 —— PII 识别、敏感级别、处理流程
+- C1.2：数据保护 —— 加密、令牌化、脱敏、访问日志
 
-**Privacy (P)**
+**隐私（P）**
 
-- P1.1: Privacy notice — data collection disclosure, purpose limitation
-- P3.1: Data collection — consent management, data minimization
-- P4.1: Data use — purpose limitation enforcement, secondary use controls
-- P6.1: Data retention — retention policies, automated deletion, archival
+- P1.1：隐私通知 —— 数据收集披露、目的限制
+- P3.1：数据收集 —— 同意管理、数据最小化
+- P4.1：数据使用 —— 目的限制执行、二次使用控制
+- P6.1：数据保留 —— 保留策略、自动删除、归档
 
-### 2.2 HIPAA (Health Insurance Portability and Accountability Act)
+### 2.2 HIPAA（健康保险可携性和责任法案）
 
-Applicable when the system processes Protected Health Information (PHI).
+适用于系统处理受保护健康信息（PHI）时。
 
-**Technical Safeguards (§ 164.312)**
+**技术保障措施（§ 164.312）**
 
-- Access control: Unique user identification, emergency access procedure, automatic logoff,
-  encryption/decryption of ePHI
-- Audit controls: Hardware/software/procedural mechanisms to record and examine access to ePHI
-- Integrity controls: Mechanisms to authenticate ePHI, protect from improper alteration
-- Transmission security: Encryption for ePHI in transit, integrity controls for transmitted data
+- 访问控制：唯一用户标识、紧急访问流程、自动注销、ePHI 加密/解密
+- 审计控制：硬件/软件/流程机制，用于记录和检查对 ePHI 的访问
+- 完整性控制：验证 ePHI、防止不当篡改的机制
+- 传输安全：ePHI 传输加密、传输数据的完整性控制
 
-**Administrative Safeguards (§ 164.308) — Architectural Impact**
+**行政保障措施（§ 164.308）—— 架构影响**
 
-- Risk analysis: Documented threat model, vulnerability assessment
-- Access management: Role-based access to ePHI, minimum necessary standard
-- Contingency plan: Data backup, disaster recovery, emergency mode operation
-- Audit logging: Audit trail of all ePHI access with 6-year retention minimum
+- 风险分析：记录在案的威胁模型、漏洞评估
+- 访问管理：基于角色的 ePHI 访问、最低必要标准
+- 应急计划：数据备份、灾难恢复、紧急模式操作
+- 审计日志：所有 ePHI 访问的审计轨迹，至少保留 6 年
 
-**Physical Safeguards (§ 164.310) — Cloud Architecture Impact**
+**物理保障措施（§ 164.310）—— 云架构影响**
 
-- Facility access: Data center security (verify cloud provider compliance)
-- Workstation security: Endpoint controls for systems accessing ePHI
-- Device controls: Media disposal procedures, encryption for portable devices
+- 设施访问：数据中心安全（验证云供应商合规性）
+- 工作站安全：访问 ePHI 系统的端点控制
+- 设备控制：介质销毁程序、便携设备加密
 
-**Breach Notification (§ 164.404-410)**
+**违规通知（§ 164.404-410）**
 
-- Detection capability: Automated breach detection, monitoring for unauthorized access
-- Notification infrastructure: Ability to identify affected individuals, notification workflows
+- 检测能力：自动违规检测、未授权访问监控
+- 通知基础设施：识别受影响个人、通知工作流的能力
 
-### 2.3 GDPR (General Data Protection Regulation)
+### 2.3 GDPR（通用数据保护条例）
 
-Applicable when processing personal data of EU/EEA residents.
+适用于处理欧盟/欧洲经济区居民个人数据时。
 
-**Data Protection by Design and Default (Art. 25)**
+**设计默认数据保护（第 25 条）**
 
-- Data minimization: Collect only what's necessary
-- Purpose limitation: Process data only for stated purposes
-- Storage limitation: Automated retention enforcement
-- Pseudonymization/encryption as default measures
+- 数据最小化：仅收集必要数据
+- 目的限制：仅按声明目的处理数据
+- 存储限制：自动执行保留策略
+- 假名化/加密作为默认措施
 
-**Lawful Basis & Consent (Art. 6, 7)**
+**合法基础与同意（第 6、7 条）**
 
-- Consent management: Granular consent collection, withdrawal mechanism
-- Lawful basis tracking: Record which legal basis applies per processing activity
-- Purpose binding: Enforcement that data isn't used beyond consented purposes
+- 同意管理：粒状同意收集、撤回机制
+- 合法基础追踪：记录每项处理活动适用的法律依据
+- 目的绑定：确保数据不超出同意目的使用
 
-**Data Subject Rights (Art. 15-22) — Architectural Requirements**
+**数据主体权利（第 15-22 条）—— 架构要求**
 
-- Right of access (Art. 15): Ability to export all personal data for a data subject
-- Right to rectification (Art. 16): Ability to update personal data across all stores
-- Right to erasure (Art. 17): Cascade deletion across all data stores, backups, logs, caches
-- Right to portability (Art. 20): Machine-readable data export capability
-- Right to restrict processing (Art. 18): Ability to flag and restrict specific data processing
-- Right to object (Art. 21): Opt-out mechanism for profiling and automated decisions
+- 访问权（第 15 条）：能够导出一位数据主体的所有个人数据
+- 更正权（第 16 条）：能够更新所有存储中的个人数据
+- 删除权（第 17 条）：在所有数据存储、备份、日志、缓存中级联删除
+- 可携带权（第 20 条）：机器可读的数据导出能力
+- 限制处理权（第 18 条）：能够标记和限制特定数据处理
+- 拒绝权（第 21 条）：针对画像和自动化决策的退出机制
 
-**Data Protection Impact Assessment (Art. 35)**
+**数据保护影响评估（第 35 条）**
 
-- Risk assessment capability for new processing activities
-- Documentation of processing activities (Art. 30)
+- 新处理活动的风险评估能力
+- 处理活动记录（第 30 条）
 
-**International Transfers (Art. 44-49)**
+**国际数据传输（第 44-49 条）**
 
-- Adequacy decisions, Standard Contractual Clauses, Binding Corporate Rules
-- Data routing controls to enforce geographic restrictions
+- 充分性认定、标准合同条款、有约束力的公司规则
+- 强制地理限制的数据路由控制
 
-**Data Breach Notification (Art. 33-34)**
+**数据泄露通知（第 33-34 条）**
 
-- 72-hour notification capability to supervisory authority
-- Breach detection, classification, and impact assessment mechanisms
+- 72 小时内通知监管机构的能力
+- 泄露检测、分类和影响评估机制
 
-### 2.4 PCI-DSS (Payment Card Industry Data Security Standard)
+### 2.4 PCI-DSS（支付卡行业数据安全标准）
 
-Applicable when storing, processing, or transmitting cardholder data.
+适用于存储、处理或传输持卡人数据时。
 
-**Network Security (Req. 1-2)**
+**网络安全（要求 1-2）**
 
-- Firewall/security group rules between CDE (Cardholder Data Environment) and untrusted networks
-- No default passwords or vendor-supplied security parameters
-- Network segmentation to minimize CDE scope
+- CDE（持卡人数据环境）与不可信网络之间的防火墙/安全组规则
+- 无默认密码或供应商提供的安全参数
+- 网络分段以最小化 CDE 范围
 
-**Data Protection (Req. 3-4)**
+**数据保护（要求 3-4）**
 
-- Stored cardholder data encryption (AES-256), key management procedures
-- PAN masking (show only last 4 digits), PAN truncation
-- TLS 1.2+ for all transmissions of cardholder data
+- 存储的持卡人数据加密（AES-256）、密钥管理流程
+- PAN 脱敏（仅显示后 4 位）、PAN 截断
+- 所有持卡人数据传输使用 TLS 1.2+
 
-**Vulnerability Management (Req. 5-6)**
+**漏洞管理（要求 5-6）**
 
-- Anti-malware on all CDE systems, secure development lifecycle
-- Patch management (critical patches within 30 days)
-- Web application firewall (WAF) for public-facing applications
+- 所有 CDE 系统上的反恶意软件、安全开发生命周期
+- 补丁管理（关键补丁 30 天内）
+- 面向公众的应用的 Web 应用防火墙（WAF）
 
-**Access Control (Req. 7-9)**
+**访问控制（要求 7-9）**
 
-- Restrict access to cardholder data by business need-to-know
-- Unique ID for each person with computer access
-- Multi-factor authentication for administrative access to CDE
+- 按业务需要知悉原则限制对持卡人数据的访问
+- 每个有计算机访问权限的人员有唯一 ID
+- 对 CDE 管理访问的多因素认证
 
-**Monitoring & Testing (Req. 10-11)**
+**监控与测试（要求 10-11）**
 
-- Audit trails for all access to network resources and cardholder data
-- Regular vulnerability scans and penetration testing
-- Intrusion detection/prevention systems
-- File integrity monitoring for critical system files
+- 所有网络资源和持卡人数据访问的审计轨迹
+- 定期漏洞扫描和渗透测试
+- 入侵检测/防御系统
+- 关键系统文件的完整性监控
 
-**Security Policy (Req. 12)**
+**安全策略（要求 12）**
 
-- Information security policy, risk assessment process
-- Incident response plan with defined roles and procedures
+- 信息安全策略、风险评估流程
+- 具有明确定义的岗位和流程的事件响应计划
 
-### 2.5 FedRAMP (Federal Risk and Authorization Management Program)
+### 2.5 FedRAMP（联邦风险与授权管理计划）
 
-Applicable for cloud services used by US federal agencies.
+适用于美国联邦机构使用的云服务。
 
-**Architectural Controls (Selected High-Impact)**
+**架构控制措施（精选高影响项）**
 
-- FIPS 140-2 validated cryptographic modules
-- Continuous monitoring program (ConMon)
-- Boundary protection (managed interfaces, deny by default)
-- Multi-factor authentication for all privileged access
-- Audit logging with centralized SIEM integration
-- Incident response within 1 hour for high-impact systems
-- Data sovereignty: US-only data storage and processing
-- Background checks for personnel with system access
-- Configuration baseline and deviation monitoring
-- Vulnerability scanning monthly + after changes, annual penetration testing
+- FIPS 140-2 验证的加密模块
+- 持续监控计划（ConMon）
+- 边界保护（托管接口、默认拒绝）
+- 所有特权访问的多因素认证
+- 带集中 SIEM 集成的审计日志
+- 高影响系统 1 小时内的事件响应
+- 数据主权：仅在美国境内存储和处理数据
+- 有系统访问权限的人员的背景调查
+- 配置基线和偏差监控
+- 每月 + 变更后漏洞扫描、年度渗透测试
 
 ---
 
-## 3. Multi-Tenancy Patterns
+## 3. 多租户模式
 
-Evaluate which pattern is in use and whether it's appropriate:
+评估正在使用的模式及其是否适当：
 
-| Pattern                     | Isolation | Cost     | Complexity | When Appropriate                                               |
+| 模式 | 隔离性 | 成本 | 复杂度 | 适用场景 |
 | --------------------------- | --------- | -------- | ---------- | -------------------------------------------------------------- |
-| Shared everything           | Low       | Low      | Low        | Early-stage SaaS, low compliance requirements                  |
-| Shared app, separate DB     | Medium    | Medium   | Medium     | Moderate compliance, data isolation required                   |
-| Shared app, separate schema | Medium    | Low-Med  | Medium     | PostgreSQL/MySQL multi-schema approach                         |
-| Separate deployments        | High      | High     | High       | Strict compliance (HIPAA, FedRAMP), large enterprise customers |
-| Hybrid (pool + silo)        | Variable  | Variable | High       | Mix of SMB and enterprise customers                            |
+| 完全共享 | 低 | 低 | 低 | 早期 SaaS、低合规要求 |
+| 共享应用、独立数据库 | 中 | 中 | 中 | 中等合规、需要数据隔离 |
+| 共享应用、独立 schema | 中 | 低-中 | 中 | PostgreSQL/MySQL 多 schema 方案 |
+| 独立部署 | 高 | 高 | 高 | 严格合规（HIPAA、FedRAMP）、大型企业客户 |
+| 混合（池 + 隔离） | 可变 | 可变 | 高 | 中小企业和企业客户的混合 |
 
 ---
 
-## 4. HA/DR Patterns
+## 4. HA/DR 模式
 
-| Pattern                     | Availability Target | RPO       | RTO             | Cost        |
+| 模式 | 可用性目标 | RPO | RTO | 成本 |
 | --------------------------- | ------------------- | --------- | --------------- | ----------- |
-| Single AZ, no DR            | 99.0-99.5%          | Hours     | Hours-Days      | Low         |
-| Multi-AZ active-passive     | 99.9%               | Minutes   | Minutes         | Medium      |
-| Multi-AZ active-active      | 99.95%              | Near-zero | Seconds-Minutes | Medium-High |
-| Multi-region active-passive | 99.95-99.99%        | Minutes   | Minutes         | High        |
-| Multi-region active-active  | 99.99%+             | Near-zero | Seconds         | Very High   |
+| 单可用区、无灾备 | 99.0-99.5% | 小时级 | 小时-天级 | 低 |
+| 多可用区主动-被动 | 99.9% | 分钟级 | 分钟级 | 中 |
+| 多可用区主动-主动 | 99.95% | 接近零 | 秒-分钟级 | 中高 |
+| 多区域主动-被动 | 99.95-99.99% | 分钟级 | 分钟级 | 高 |
+| 多区域主动-主动 | 99.99%+ | 接近零 | 秒级 | 很高 |
 
 ---
 
-## 5. Evaluation Guidance by Mode
+## 5. 按模式的评估指南
 
-### Mode A (Codebase)
+### 模式 A（代码库）
 
-- Check for tenant ID propagation in middleware/interceptors
-- Inspect database queries for tenant scoping (WHERE tenant_id = ?)
-- Look for RBAC/ABAC middleware and policy definitions
-- Check audit log implementations and what events are captured
-- Inspect deployment manifests for HA configuration (replicas, anti-affinity)
-- Review CI/CD pipeline for staged deployments and rollback capability
-- Check for compliance-related code: encryption, data masking, consent tracking
+- 检查中间件/拦截器中的租户 ID 传播
+- 检查数据库查询中的租户范围限定（WHERE tenant_id = ?）
+- 查找 RBAC/ABAC 中间件和策略定义
+- 检查审计日志实现及捕获的事件
+- 检查部署清单中的 HA 配置（副本数、反亲和性）
+- 审查 CI/CD 流水线中的阶段部署和回滚能力
+- 检查合规相关代码：加密、数据脱敏、同意追踪
 
-### Mode B (Document)
+### 模式 B（文档）
 
-- Verify multi-tenancy strategy is explicitly stated
-- Check if compliance requirements are identified and mapped to controls
-- Look for HA/DR architecture with specific RPO/RTO targets
-- Verify deployment strategy addresses zero-downtime
-- Check if data sovereignty requirements are addressed
-- Look for API versioning and backward compatibility strategy
+- 验证多租户策略是否明确声明
+- 检查合规要求是否已识别并映射到控制措施
+- 查找带有具体 RPO/RTO 目标的 HA/DR 架构
+- 验证部署策略是否涉及零停机
+- 检查数据主权要求是否已解决
+- 查找 API 版本控制和向后兼容策略
 
-### Mode C (Hybrid)
+### 模式 C（混合）
 
-- Compare stated compliance controls against actual implementation
-- Verify documented HA/DR strategy matches infrastructure code
-- Check if claimed multi-tenancy isolation is actually enforced in code
-- Cross-reference stated SLAs against monitoring/alerting implementations
+- 将声明的合规控制措施与实际实现进行比较
+- 验证记录的 HA/DR 策略是否与基础设施代码一致
+- 检查声称的多租户隔离是否在代码中实际执行
+- 交叉对照声明的 SLA 与监控/告警实现

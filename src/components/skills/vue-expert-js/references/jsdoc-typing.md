@@ -1,10 +1,10 @@
-# JSDoc Typing for Vue
+# Vue JSDoc 类型标注
 
 ---
 
-## Basic JSDoc with Vue
+## 基本 JSDoc 与 Vue
 
-### Typing Refs
+### 标注 Refs
 
 ```vue
 <script setup>
@@ -15,7 +15,7 @@ import { ref, computed } from 'vue'
  * @property {number} id
  * @property {string} name
  * @property {string} email
- * @property {boolean} [isActive] - Optional property
+ * @property {boolean} [isActive] - 可选属性
  */
 
 /** @type {import('vue').Ref<User | null>} */
@@ -32,7 +32,7 @@ const count = ref(0)
 </script>
 ```
 
-### Typing Computed
+### 标注 Computed
 
 ```vue
 <script setup>
@@ -54,7 +54,7 @@ const activeUsers = computed(() =>
 </script>
 ```
 
-### Typing Reactive
+### 标注 Reactive
 
 ```vue
 <script setup>
@@ -80,18 +80,18 @@ const form = reactive({
 
 ---
 
-## Props with JSDoc
+## Props 与 JSDoc
 
-### Basic Props
+### 基本 Props
 
 ```vue
 <script setup>
 /**
  * @typedef {Object} Props
- * @property {string} title - The card title
- * @property {string} [subtitle] - Optional subtitle
- * @property {number} [count=0] - Counter with default value
- * @property {boolean} [disabled=false] - Disabled state
+ * @property {string} title - 卡片标题
+ * @property {string} [subtitle] - 可选副标题
+ * @property {number} [count=0] - 带默认值的计数器
+ * @property {boolean} [disabled=false] - 禁用状态
  */
 
 /** @type {Props} */
@@ -116,7 +116,7 @@ const props = defineProps({
 </script>
 ```
 
-### Complex Props
+### 复杂 Props
 
 ```vue
 <script setup>
@@ -134,9 +134,9 @@ const props = defineProps({
 
 /**
  * @typedef {Object} Props
- * @property {MenuItem[]} items - Menu items
- * @property {ButtonVariant} [variant='primary'] - Button style
- * @property {(item: MenuItem) => void} [onSelect] - Selection callback
+ * @property {MenuItem[]} items - 菜单项
+ * @property {ButtonVariant} [variant='primary'] - 按钮样式
+ * @property {(item: MenuItem) => void} [onSelect] - 选择回调
  */
 
 const props = defineProps({
@@ -162,32 +162,32 @@ const props = defineProps({
 
 ---
 
-## Emits with JSDoc
+## Emits 与 JSDoc
 
-### Basic Emits
+### 基本 Emits
 
 ```vue
 <script setup>
 /**
  * @typedef {Object} Emits
- * @property {(value: string) => void} update - Emitted on value change
- * @property {(id: number) => void} delete - Emitted on delete
- * @property {() => void} close - Emitted on close
+ * @property {(value: string) => void} update - 值变化时触发
+ * @property {(id: number) => void} delete - 删除时触发
+ * @property {() => void} close - 关闭时触发
  */
 
 const emit = defineEmits(['update', 'delete', 'close'])
 
 /**
- * Handle input change
- * @param {string} value - The new value
+ * 处理输入变化
+ * @param {string} value - 新值
  */
 function handleChange(value) {
   emit('update', value)
 }
 
 /**
- * Handle delete action
- * @param {number} id - The item ID to delete
+ * 处理删除操作
+ * @param {number} id - 要删除的项 ID
  */
 function handleDelete(id) {
   emit('delete', id)
@@ -199,7 +199,7 @@ function handleClose() {
 </script>
 ```
 
-### With Validation
+### 带验证
 
 ```vue
 <script setup>
@@ -221,9 +221,9 @@ const emit = defineEmits({
 
 ---
 
-## Composables with JSDoc
+## Composables 与 JSDoc
 
-### Basic Composable
+### 基本 Composable
 
 ```javascript
 // composables/useCounter.js
@@ -231,16 +231,16 @@ import { ref, computed } from 'vue'
 
 /**
  * @typedef {Object} UseCounterReturn
- * @property {import('vue').Ref<number>} count - Current count
- * @property {import('vue').ComputedRef<number>} doubled - Doubled value
- * @property {() => void} increment - Increment count
- * @property {() => void} decrement - Decrement count
- * @property {(value: number) => void} set - Set count to value
+ * @property {import('vue').Ref<number>} count - 当前计数
+ * @property {import('vue').ComputedRef<number>} doubled - 双倍值
+ * @property {() => void} increment - 递增计数
+ * @property {() => void} decrement - 递减计数
+ * @property {(value: number) => void} set - 设置计数为指定值
  */
 
 /**
- * Counter composable with increment/decrement
- * @param {number} [initialValue=0] - Starting value
+ * 带递增/递减的计数器 composable
+ * @param {number} [initialValue=0] - 初始值
  * @returns {UseCounterReturn}
  */
 export function useCounter(initialValue = 0) {
@@ -268,7 +268,7 @@ export function useCounter(initialValue = 0) {
 }
 ```
 
-### Async Composable
+### 异步 Composable
 
 ```javascript
 // composables/useFetch.js
@@ -277,17 +277,17 @@ import { ref, watchEffect, toValue } from 'vue'
 /**
  * @template T
  * @typedef {Object} UseFetchReturn
- * @property {import('vue').Ref<T | null>} data - Fetched data
- * @property {import('vue').Ref<Error | null>} error - Error if any
- * @property {import('vue').Ref<boolean>} loading - Loading state
- * @property {() => Promise<void>} refresh - Refetch data
+ * @property {import('vue').Ref<T | null>} data - 获取的数据
+ * @property {import('vue').Ref<Error | null>} error - 错误（如果有）
+ * @property {import('vue').Ref<boolean>} loading - 加载状态
+ * @property {() => Promise<void>} refresh - 重新获取数据
  */
 
 /**
- * Composable for fetching data
+ * 用于获取数据的 composable
  * @template T
- * @param {string | import('vue').Ref<string>} url - URL to fetch
- * @param {RequestInit} [options] - Fetch options
+ * @param {string | import('vue').Ref<string>} url - 要请求的 URL
+ * @param {RequestInit} [options] - 请求选项
  * @returns {UseFetchReturn<T>}
  */
 export function useFetch(url, options = {}) {
@@ -325,7 +325,7 @@ export function useFetch(url, options = {}) {
 }
 ```
 
-### Composable with Options
+### 带选项的 Composable
 
 ```javascript
 // composables/useLocalStorage.js
@@ -334,16 +334,16 @@ import { ref, watch } from 'vue'
 /**
  * @template T
  * @typedef {Object} UseLocalStorageOptions
- * @property {(value: T) => string} [serialize] - Custom serializer
- * @property {(value: string) => T} [deserialize] - Custom deserializer
+ * @property {(value: T) => string} [serialize] - 自定义序列化器
+ * @property {(value: string) => T} [deserialize] - 自定义反序列化器
  */
 
 /**
- * Reactive localStorage composable
+ * 响应式 localStorage composable
  * @template T
- * @param {string} key - Storage key
- * @param {T} defaultValue - Default value if key not found
- * @param {UseLocalStorageOptions<T>} [options] - Options
+ * @param {string} key - 存储键名
+ * @param {T} defaultValue - 键不存在时的默认值
+ * @param {UseLocalStorageOptions<T>} [options] - 选项
  * @returns {import('vue').Ref<T>}
  */
 export function useLocalStorage(key, defaultValue, options = {}) {
@@ -353,7 +353,7 @@ export function useLocalStorage(key, defaultValue, options = {}) {
   /** @type {import('vue').Ref<T>} */
   const data = ref(defaultValue)
 
-  // Load from storage
+  // 从存储中加载
   const stored = localStorage.getItem(key)
   if (stored) {
     try {
@@ -363,7 +363,7 @@ export function useLocalStorage(key, defaultValue, options = {}) {
     }
   }
 
-  // Persist on change
+  // 变化时持久化
   watch(data, (value) => {
     localStorage.setItem(key, serialize(value))
   }, { deep: true })
@@ -374,12 +374,12 @@ export function useLocalStorage(key, defaultValue, options = {}) {
 
 ---
 
-## Type Imports and Shared Types
+## 类型导入与共享类型
 
-### Shared Type Definitions
+### 共享类型定义
 
 ```javascript
-// types.js - Shared type definitions
+// types.js - 共享类型定义
 /**
  * @typedef {Object} User
  * @property {number} id
@@ -410,11 +410,11 @@ export function useLocalStorage(key, defaultValue, options = {}) {
  * @property {number} pageSize
  */
 
-// Export empty object for IDE import support
+// 导出空对象以支持 IDE 导入
 export const Types = {}
 ```
 
-### Importing Types
+### 导入类型
 
 ```vue
 <script setup>
@@ -431,10 +431,10 @@ const posts = ref([])
 </script>
 ```
 
-### Global Type Definitions
+### 全局类型定义
 
 ```javascript
-// types/global.d.js (for IDE support)
+// types/global.d.js（用于 IDE 支持）
 /**
  * @typedef {Object} ApiResponse
  * @template T
@@ -452,7 +452,7 @@ const posts = ref([])
 
 ---
 
-## Pinia Stores with JSDoc
+## Pinia Stores 与 JSDoc
 
 ```javascript
 // stores/user.js
@@ -478,7 +478,7 @@ export const useUserStore = defineStore('user', () => {
   const userName = computed(() => currentUser.value?.name ?? 'Guest')
 
   /**
-   * Login user
+   * 用户登录
    * @param {string} email
    * @param {string} password
    * @returns {Promise<boolean>}
@@ -517,19 +517,19 @@ export const useUserStore = defineStore('user', () => {
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Pattern | Syntax | Use Case |
-|---------|--------|----------|
-| `@typedef` | `@typedef {Object} Name` | Define object shapes |
-| `@property` | `@property {type} name` | Object properties |
-| `@type` | `@type {Type}` | Annotate variables |
-| `@param` | `@param {type} name` | Function parameters |
-| `@returns` | `@returns {type}` | Function return type |
-| `@template` | `@template T` | Generic types |
-| Optional | `{type} [name]` | Optional property |
-| Default | `{type} [name=value]` | With default value |
-| Union | `{type1 \| type2}` | Multiple types |
-| Import | `import('./file').Type` | Import from file |
-| Vue Ref | `import('vue').Ref<T>` | Typed ref |
-| Vue Computed | `import('vue').ComputedRef<T>` | Typed computed |
+| 模式 | 语法 | 使用场景 |
+|------|------|----------|
+| `@typedef` | `@typedef {Object} Name` | 定义对象形状 |
+| `@property` | `@property {type} name` | 对象属性 |
+| `@type` | `@type {Type}` | 标注变量 |
+| `@param` | `@param {type} name` | 函数参数 |
+| `@returns` | `@returns {type}` | 函数返回类型 |
+| `@template` | `@template T` | 泛型 |
+| 可选 | `{type} [name]` | 可选属性 |
+| 默认值 | `{type} [name=value]` | 带默认值 |
+| 联合类型 | `{type1 \| type2}` | 多种类型 |
+| 导入 | `import('./file').Type` | 从文件导入 |
+| Vue Ref | `import('vue').Ref<T>` | 类型化的 ref |
+| Vue Computed | `import('vue').ComputedRef<T>` | 类型化的 computed |

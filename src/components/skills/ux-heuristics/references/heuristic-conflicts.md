@@ -1,296 +1,296 @@
-# Resolving Heuristic Conflicts
+# 解决启发式冲突
 
-When usability principles contradict each other—frameworks for making trade-off decisions.
+当可用性原则相互矛盾时——用于做出权衡决策的框架。
 
-## The Nature of Conflicts
+## 冲突的本质
 
-Usability heuristics are guidelines, not laws. In real design, they often pull in opposite directions. Good UX design requires recognizing these tensions and making thoughtful trade-offs.
+可用性启发式是指导原则，而非法律。在实际设计中，它们常常将设计推向相反方向。好的 UX 设计需要识别这些张力并做出深思熟虑的权衡。
 
-**Common tension patterns:**
-- Simplicity vs. Power
-- Consistency vs. Optimal for context
-- Efficiency vs. Error prevention
-- User control vs. Guidance
-- Discoverability vs. Clean interface
+**常见的张力模式：**
+- 简洁性 vs 强大性
+- 一致性 vs 上下文最优性
+- 效率 vs 错误预防
+- 用户控制 vs 引导
+- 可发现性 vs 界面清爽
 
 ---
 
-## Major Heuristic Conflicts
+## 主要的启发式冲突
 
-### 1. Simplicity vs. Flexibility
+### 1. 简洁性 vs 灵活性
 
-**The tension:**
-- "Keep it simple" (Krug, Nielsen)
-- "Support user control and freedom" (Nielsen #3)
-- "Flexibility and efficiency of use" (Nielsen #7)
+**张力：**
+- "保持简洁"（Krug、Nielsen）
+- "支持用户控制和自由"（Nielsen #3）
+- "使用的灵活性和效率"（Nielsen #7）
 
-**Example:** Photo editing app
-- Simple: Few options, quick editing
-- Flexible: Many controls, professional results
+**示例：** 照片编辑应用
+- 简洁：选项少，快速编辑
+- 灵活：控件多，专业效果
 
-**Resolution framework:**
+**解决框架：**
 
-| Factor | Lean Simple | Lean Flexible |
+| 因素 | 倾向简洁 | 倾向灵活 |
 |--------|-------------|---------------|
-| User expertise | Novice | Expert |
-| Task frequency | Occasional | Daily |
-| Consequences of error | Low | High |
-| Time pressure | High | Low |
+| 用户专业度 | 新手 | 专家 |
+| 任务频率 | 偶尔 | 每天 |
+| 错误后果 | 低 | 高 |
+| 时间压力 | 高 | 低 |
 
-**Design patterns:**
-- Progressive disclosure (simple default, power underneath)
-- Personas-based modes (Basic/Advanced)
-- Contextual features (show when relevant)
+**设计模式：**
+- 渐进式披露（简单默认，高级能力隐藏在下面）
+- 基于角色的模式（基础/高级）
+- 上下文功能（在相关时显示）
 
-### 2. Consistency vs. Context Optimization
+### 2. 一致性 vs 上下文优化
 
-**The tension:**
-- "Consistency and standards" (Nielsen #4)
-- "Match between system and real world" (Nielsen #2)
+**张力：**
+- "一致性和标准"（Nielsen #4）
+- "系统与真实世界匹配"（Nielsen #2）
 
-**Example:** Destructive actions
-- Consistent: Red "Delete" button everywhere
-- Context-optimized: Prominent delete for items that should be deleted, hidden for critical data
+**示例：** 破坏性操作
+- 一致：在所有位置使用红色"删除"按钮
+- 上下文优化：对于应删除的项突出删除按钮，对关键数据隐藏
 
-**Resolution framework:**
+**解决框架：**
 
-| Factor | Lean Consistent | Lean Contextual |
+| 因素 | 倾向一致 | 倾向上下文 |
 |--------|-----------------|-----------------|
-| User base diversity | High | Low |
-| Learning curve concern | Yes | No |
-| Action frequency | Common | Rare |
-| Mental model strength | Established | Forming |
+| 用户群体多样性 | 高 | 低 |
+| 学习曲线关注 | 是 | 否 |
+| 操作频率 | 常见 | 罕见 |
+| 心智模型强度 | 已建立 | 正在形成 |
 
-**Design patterns:**
-- Consistent patterns, contextual prominence
-- Same actions, different emphasis
-- Gradual introduction of contextual variations
+**设计模式：**
+- 模式一致，突出程度因上下文而异
+- 相同操作，不同强调程度
+- 逐步引入上下文变化
 
-### 3. Efficiency vs. Error Prevention
+### 3. 效率 vs 错误预防
 
-**The tension:**
-- "Error prevention" (Nielsen #5)
-- "Flexibility and efficiency of use" (Nielsen #7)
+**张力：**
+- "错误预防"（Nielsen #5）
+- "使用的灵活性和效率"（Nielsen #7）
 
-**Example:** Checkout flow
-- Error prevention: Confirmation at every step
-- Efficiency: One-click purchase
+**示例：** 结账流程
+- 错误预防：每一步都要确认
+- 效率：一键购买
 
-**Resolution framework:**
+**解决框架：**
 
-| Factor | Lean Error Prevention | Lean Efficiency |
+| 因素 | 倾向错误预防 | 倾向效率 |
 |--------|----------------------|-----------------|
-| Reversibility | Irreversible | Easily undone |
-| Cost of error | High (money, data) | Low |
-| User familiarity | New users | Power users |
-| Frequency | Rare | Very frequent |
+| 可逆性 | 不可逆 | 可轻松撤销 |
+| 错误成本 | 高（金钱、数据） | 低 |
+| 用户熟悉度 | 新用户 | 高级用户 |
+| 频率 | 罕见 | 非常频繁 |
 
-**Design patterns:**
-- Undo instead of confirm (efficient + safe)
-- Confidence-based friction (add steps for risky actions)
-- User-controlled safety level
+**设计模式：**
+- 用撤销替代确认（高效 + 安全）
+- 基于可信度的摩擦（对高风险操作增加步骤）
+- 用户控制的安全级别
 
-### 4. Discoverability vs. Clean Interface
+### 4. 可发现性 vs 界面清爽
 
-**The tension:**
-- "Recognition rather than recall" (Nielsen #6)
-- "Aesthetic and minimalist design" (Nielsen #8)
+**张力：**
+- "识别而非回忆"（Nielsen #6）
+- "美学与极简设计"（Nielsen #8）
 
-**Example:** Feature-rich application
-- Discoverable: Show all options visibly
-- Clean: Hide features until needed
+**示例：** 功能丰富的应用
+- 可发现：所有选项可见展示
+- 清爽：直到需要时才显示功能
 
-**Resolution framework:**
+**解决框架：**
 
-| Factor | Lean Discoverable | Lean Clean |
+| 因素 | 倾向可发现 | 倾向清爽 |
 |--------|-------------------|------------|
-| Feature frequency | Core features | Edge cases |
-| User expertise | Beginner | Expert |
-| Task complexity | Simple | Complex |
-| Screen real estate | Generous | Limited |
+| 功能频率 | 核心功能 | 边缘情况 |
+| 用户专业度 | 初学者 | 专家 |
+| 任务复杂性 | 简单 | 复杂 |
+| 屏幕空间 | 充裕 | 有限 |
 
-**Design patterns:**
-- Primary actions visible, secondary in menus
-- Progressive disclosure
-- Contextual menus
-- Search/command palettes for power users
+**设计模式：**
+- 主要操作可见，次要操作在菜单中
+- 渐进式披露
+- 上下文菜单
+- 面向高级用户的搜索/命令面板
 
-### 5. Guidance vs. User Control
+### 5. 引导 vs 用户控制
 
-**The tension:**
-- Help users avoid errors
-- Respect user autonomy
+**张力：**
+- 帮助用户避免错误
+- 尊重用户自主权
 
-**Example:** Form validation
-- Guidance: Prevent submission until valid
-- Control: Let users submit and see what happens
+**示例：** 表单验证
+- 引导：在验证通过前阻止提交
+- 控制：让用户提交并看到结果
 
-**Resolution framework:**
+**解决框架：**
 
-| Factor | Lean Guidance | Lean Control |
+| 因素 | 倾向引导 | 倾向控制 |
 |--------|---------------|--------------|
-| User expertise | Novice | Expert |
-| Error recovery | Difficult | Easy |
-| System tolerance | Low (strict rules) | High (flexible) |
-| User frustration with restrictions | Low | High |
+| 用户专业度 | 新手 | 专家 |
+| 错误恢复 | 困难 | 简单 |
+| 系统容忍度 | 低（严格规则） | 高（灵活） |
+| 用户对限制的挫败感 | 低 | 高 |
 
-**Design patterns:**
-- Inline guidance (not blocking)
-- Warnings vs. blockers
-- "Are you sure?" rather than "You can't"
+**设计模式：**
+- 内联引导（不阻断）
+- 警告 vs 阻止
+- "你确定吗？"而非"你不能"
 
 ---
 
-## Resolution Framework
+## 解决框架
 
-### Step 1: Identify the Conflict
+### 步骤 1：识别冲突
 
-Name the specific heuristics in tension:
-- Which principle says do A?
-- Which principle says do B?
-- Why can't we fully satisfy both?
+指出互相冲突的具体启发式原则：
+- 哪条原则说要做 A？
+- 哪条原则说要做 B？
+- 为什么不能同时满足两者？
 
-### Step 2: Assess the Context
+### 步骤 2：评估上下文
 
-Consider:
-- **User type:** Novice vs. expert
-- **Task criticality:** Browsing vs. financial transaction
-- **Frequency:** One-time vs. daily
-- **Reversibility:** Can they undo?
-- **Consequence:** What happens if wrong?
+考虑：
+- **用户类型：** 新手 vs 专家
+- **任务关键性：** 浏览 vs 金融交易
+- **频率：** 一次性 vs 每天
+- **可逆性：** 能否撤销？
+- **后果：** 出错会发生什么？
 
-### Step 3: Prioritize for This Context
+### 步骤 3：针对该上下文确定优先级
 
-| Context | Usually Prioritize |
+| 上下文 | 通常优先考虑 |
 |---------|-------------------|
-| Critical data, irreversible | Error prevention > Efficiency |
-| Frequent actions, low stakes | Efficiency > Error prevention |
-| New users, unfamiliar domain | Guidance > Control |
-| Expert users, familiar domain | Flexibility > Simplicity |
-| Limited screen, focused task | Minimalism > Discoverability |
-| Learning interface | Discoverability > Minimalism |
+| 关键数据，不可逆 | 错误预防 > 效率 |
+| 频繁操作，低风险 | 效率 > 错误预防 |
+| 新用户，不熟悉领域 | 引导 > 控制 |
+| 专家用户，熟悉领域 | 灵活性 > 简洁性 |
+| 屏幕有限，任务聚焦 | 极简主义 > 可发现性 |
+| 正在学习界面 | 可发现性 > 极简主义 |
 
-### Step 4: Design for Both When Possible
+### 步骤 4：尽可能兼顾设计
 
-Often, clever design satisfies both:
+通常，巧妙的设计可以同时满足两者：
 
-| Conflict | Both-And Solution |
+| 冲突 | 兼顾解决方案 |
 |----------|-------------------|
-| Simple vs. Powerful | Progressive disclosure |
-| Efficient vs. Safe | Undo instead of confirm |
-| Clean vs. Discoverable | Contextual reveal |
-| Consistent vs. Optimal | Consistent patterns, variable emphasis |
-| Guided vs. Controlled | Warnings, not blockers |
+| 简洁 vs 强大 | 渐进式披露 |
+| 高效 vs 安全 | 用撤销替代确认 |
+| 清爽 vs 可发现 | 上下文揭示 |
+| 一致 vs 最优 | 一致模式，变化强调程度 |
+| 引导 vs 控制 | 警告，而非阻止 |
 
-### Step 5: Test the Trade-off
+### 步骤 5：测试权衡方案
 
-Validate with real users:
-- Does the chosen priority work for target users?
-- Are edge cases handled acceptably?
-- Do users understand why limitations exist?
-
----
-
-## Common Conflict Scenarios
-
-### Scenario: Onboarding Flow
-
-**Conflict:** Efficiency (skip it) vs. Guidance (require it)
-
-**Resolution:**
-- Allow skip but show value
-- Defer to contextual moments
-- Progressive onboarding during natural use
-
-### Scenario: Mobile Navigation
-
-**Conflict:** Discoverability (show all options) vs. Minimalism (hamburger menu)
-
-**Resolution:**
-- Bottom navigation for 3-5 key items
-- Hamburger for secondary items
-- Tab bar > hamburger for primary navigation
-
-### Scenario: Form Validation
-
-**Conflict:** Error prevention (validate immediately) vs. Efficiency (let them type)
-
-**Resolution:**
-- Validate on blur (not on keystroke)
-- Show errors inline, not modal
-- Allow submission, show all errors
-
-### Scenario: Confirmation Dialogs
-
-**Conflict:** Error prevention (confirm everything) vs. Efficiency (just do it)
-
-**Resolution:**
-- Confirm only irreversible/high-cost actions
-- Provide undo instead of confirm
-- Use clear language about consequences
-
-### Scenario: Default Settings
-
-**Conflict:** User control (let them configure) vs. Simplicity (sensible defaults)
-
-**Resolution:**
-- Smart defaults that work for 80%
-- Easy access to change settings
-- Don't require configuration to start
+与真实用户验证：
+- 所选优先级是否适合目标用户？
+- 边缘情况是否得到可接受的处理？
+- 用户是否理解为何存在限制？
 
 ---
 
-## Decision Documentation
+## 常见冲突场景
 
-When making trade-off decisions, document:
+### 场景：引导流程
+
+**冲突：** 效率（跳过它）vs 引导（要求完成）
+
+**解决方案：**
+- 允许跳过但展示价值
+- 推迟到上下文时机
+- 在自然使用过程中进行渐进式引导
+
+### 场景：移动端导航
+
+**冲突：** 可发现性（显示所有选项）vs 极简主义（汉堡菜单）
+
+**解决方案：**
+- 底部导航栏放置 3-5 个关键项
+- 次要项使用汉堡菜单
+- 主导航使用标签栏优于汉堡菜单
+
+### 场景：表单验证
+
+**冲突：** 错误预防（立即验证）vs 效率（让用户输入）
+
+**解决方案：**
+- 在失焦时验证（而非每次按键）
+- 内联显示错误，而非弹窗
+- 允许提交，显示所有错误
+
+### 场景：确认对话框
+
+**冲突：** 错误预防（确认所有操作）vs 效率（直接执行）
+
+**解决方案：**
+- 仅对不可逆/高成本操作进行确认
+- 提供撤销而非确认
+- 关于后果使用清晰的语言说明
+
+### 场景：默认设置
+
+**冲突：** 用户控制（让用户配置）vs 简洁性（合理默认值）
+
+**解决方案：**
+- 适用于 80% 用户的智能默认值
+- 轻松访问更改设置
+- 不需要配置即可开始使用
+
+---
+
+## 决策文档
+
+在做出权衡决策时，记录：
 
 ```markdown
-## Design Decision: [Feature]
+## 设计决策：[功能]
 
-### Conflict
-[Heuristic A] suggests we should...
-[Heuristic B] suggests we should...
+### 冲突
+[启发式 A] 建议我们应该...
+[启发式 B] 建议我们应该...
 
-### Context
-- User type: [Novice/Expert]
-- Task: [Critical/Casual]
-- Frequency: [Daily/Occasional]
-- Reversibility: [Yes/No]
+### 上下文
+- 用户类型：[新手/专家]
+- 任务：[关键/普通]
+- 频率：[每天/偶尔]
+- 可逆性：[是/否]
 
-### Decision
-We chose to prioritize [Heuristic] because...
+### 决策
+我们选择优先考虑 [启发式] 因为...
 
-### Mitigation
-We addressed the other concern by...
+### 缓解措施
+我们通过以下方式处理了另一个关注点...
 
-### Validation
-We'll know this is right when...
+### 验证
+当以下情况发生时，我们知道这个决定是正确的...
 ```
 
 ---
 
-## Key Principles
+## 关键原则
 
-### 1. Context Is King
+### 1. 上下文至上
 
-The same conflict should be resolved differently in different contexts. A banking app and a social media app may reach opposite conclusions.
+相同的冲突在不同上下文中应以不同方式解决。银行应用和社交媒体应用可能得出相反的结论。
 
-### 2. Know Your Users
+### 2. 了解你的用户
 
-The trade-off depends heavily on user expertise and expectations. Test with real users, not assumptions.
+权衡方案在很大程度上取决于用户的专业水平和期望。用真实用户测试，而非凭假设。
 
-### 3. Design for Both When Possible
+### 3. 尽可能兼顾设计
 
-Often, the conflict is artificial and clever design can satisfy both principles.
+通常，冲突是人为的，巧妙的设计可以同时满足两个原则。
 
-### 4. Make Conscious Trade-offs
+### 4. 有意识地做出权衡
 
-Don't accidentally violate a heuristic. Violate it consciously with reasoning.
+不要偶然违反启发式原则。有意识地违反并有充分理由。
 
-### 5. Document Decisions
+### 5. 记录决策
 
-Future you (and your team) will want to know why choices were made.
+未来的你（和你的团队）会想知道为什么做出这样的选择。
 
-### 6. Revisit Trade-offs
+### 6. 重新审视权衡
 
-As products and users evolve, optimal trade-offs may shift. Periodically review past decisions.
+随着产品和用户的发展，最优权衡方案可能发生变化。定期回顾过去的决策。

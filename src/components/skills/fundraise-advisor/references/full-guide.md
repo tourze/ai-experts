@@ -1,425 +1,425 @@
-# Fundraise Advisor - Full Guide
+# 融资顾问 - 完整指南
 
-## The Framework: Fundraising Funnel
+## 框架：融资漏斗
 
 ```
 +----------------------------------------+
-|           INVESTOR UNIVERSE             |
-|            (1000+ investors)            |
+|           投资者宇宙                      |
+|            (1000+ 位投资者)              |
 +----------------------------------------+
-|           TARGET LIST                   |
-|            (100-150 investors)          |
+|           目标清单                       |
+|            (100-150 位投资者)            |
 +----------------------------------------+
-|           OUTREACH                      |
-|            (50-80 conversations)        |
+|           外联活动                       |
+|            (50-80 次对话)               |
 +----------------------------------------+
-|           MEETINGS                      |
-|            (20-40 first meetings)       |
+|           会议                          |
+|            (20-40 次首次会面)           |
 +----------------------------------------+
-|           INTERESTED                    |
-|            (5-15 interested)            |
+|           有兴趣                         |
+|            (5-15 位有兴趣)              |
 +----------------------------------------+
-|           TERM SHEETS                   |
-|            (1-3 offers)                 |
+|           投资意向书                     |
+|            (1-3 个报价)                 |
 +----------------------------------------+
-|           CLOSED                        |
-|            (1 lead + others)            |
+|           完成交割                       |
+|            (1 个领投 + 其他)            |
 +----------------------------------------+
 ```
 
-## Execution Workflow
+## 执行工作流
 
-### Step 1: Fundraising Readiness Check
+### 步骤 1：融资就绪检查
 
-**Before raising, verify you're ready.**
+**在融资前，确认你已准备就绪。**
 
-| Criterion | Status | If No |
+| 标准 | 状态 | 如果否 |
 |-----------|--------|-------|
-| Product exists | [Y/N] | Build MVP first |
-| Some traction | [Y/N] | Get early users first |
-| Clear narrative | [Y/N] | Refine story first |
-| Time to dedicate | [Y/N] | Wait until you can focus |
-| 6+ months runway | [Y/N] | Extend runway first |
+| 产品存在 | [是/否] | 先构建 MVP |
+| 有一定的牵引力 | [是/否] | 先获取早期用户 |
+| 清晰的故事线 | [是/否] | 先完善故事 |
+| 有时间投入 | [是/否] | 等到能专注时再行动 |
+| 6 个月以上现金流 | [是/否] | 先延长现金流 |
 
-**If 3+ "No":** Consider waiting or bootstrapping further.
+**如果 3 个以上"否"：** 考虑等待或进一步自举发展。
 
-### Step 2: Round Parameters
+### 步骤 2：轮次参数
 
-**Round Framework:**
+**轮次框架：**
 
-| Parameter | Your Target |
+| 参数 | 你的目标 |
 |-----------|-------------|
-| Round Type | [Pre-seed / Seed / Seed Extension] |
-| Amount | $[X]K - $[Y]K |
-| Use of Funds | [Primary uses] |
-| Key Milestone | [What you'll achieve] |
-| Target Valuation | $[X]M - $[Y]M |
-| Dilution | [X]% - [Y]% |
+| 轮次类型 | [种子前 / 种子轮 / 种子扩展] |
+| 金额 | $[X]K - $[Y]K |
+| 资金用途 | [主要用途] |
+| 关键里程碑 | [你将取得的成就] |
+| 目标估值 | $[X]M - $[Y]M |
+| 稀释比例 | [X]% - [Y]% |
 
-**Typical Seed Ranges (2024-2025):**
+**典型种子轮范围（2024-2025）：**
 
-| Stage | Raise Amount | Valuation | Dilution |
+| 阶段 | 融资金额 | 估值 | 稀释比例 |
 |-------|--------------|-----------|----------|
-| Pre-seed | $250K-$1M | $3M-$8M | 10-20% |
-| Seed | $1M-$4M | $8M-$20M | 15-25% |
-| Seed Extension | $2M-$6M | $15M-$30M | 10-20% |
+| 种子前 | $250K-$1M | $3M-$8M | 10-20% |
+| 种子轮 | $1M-$4M | $8M-$20M | 15-25% |
+| 种子扩展 | $2M-$6M | $15M-$30M | 10-20% |
 
-### Step 3: Pitch Deck Structure
+### 步骤 3：路演幻灯片结构
 
-**Standard seed deck: 10-15 slides.**
+**标准种子轮路演：10-15 页幻灯片。**
 
-| Slide | Purpose | Time (Pitch) |
+| 幻灯片 | 目的 | 时间（演讲） |
 |-------|---------|--------------|
-| 1. Title | Hook + one-liner | 10 sec |
-| 2. Problem | Pain you're solving | 1 min |
-| 3. Solution | How you solve it | 1 min |
-| 4. Demo/Product | Show don't tell | 2 min |
-| 5. Market | Size + opportunity | 1 min |
-| 6. Business Model | How you make money | 1 min |
-| 7. Traction | Proof it's working | 1 min |
-| 8. Competition | Why you win | 1 min |
-| 9. Team | Why you'll execute | 1 min |
-| 10. Ask | What you need | 30 sec |
-| 11-15. Appendix | Backup slides | As needed |
+| 1. 标题 | 钩子 + 一句话描述 | 10 秒 |
+| 2. 问题 | 你正在解决的痛点 | 1 分钟 |
+| 3. 解决方案 | 你如何解决它 | 1 分钟 |
+| 4. 演示/产品 | 展示而非讲述 | 2 分钟 |
+| 5. 市场 | 规模 + 机会 | 1 分钟 |
+| 6. 商业模式 | 你如何赚钱 | 1 分钟 |
+| 7. 牵引力 | 证明它有效 | 1 分钟 |
+| 8. 竞争 | 为什么你能赢 | 1 分钟 |
+| 9. 团队 | 为什么你们能执行 | 1 分钟 |
+| 10. 融资需求 | 你需要什么 | 30 秒 |
+| 11-15. 附录 | 备用幻灯片 | 根据需要 |
 
-### Step 4: Slide-by-Slide Content
+### 步骤 4：逐页内容
 
-**Slide 1: Title**
+**幻灯片 1：标题**
 
-- Company name and logo
-- One-line description
-- Your name/role
-- Contact info
+- 公司名称和标志
+- 一句话描述
+- 你的姓名/角色
+- 联系方式
 
-**Slide 2: Problem**
+**幻灯片 2：问题**
 
-- Specific pain point (not vague)
-- Who experiences it
-- Why it matters
-- Current state (how bad it is)
+- 具体的痛点（不要模糊）
+- 谁在经历这个问题
+- 为什么它重要
+- 当前状态（有多糟糕）
 
-**Slide 3: Solution**
+**幻灯片 3：解决方案**
 
-- Your approach in simple terms
-- The transformation you deliver
-- Key insight/innovation
-- Why this works
+- 用简单的话说明你的方法
+- 你带来的转变
+- 关键洞察/创新
+- 为什么这有效
 
-**Slide 4: Product/Demo**
+**幻灯片 4：产品/演示**
 
-- Screenshots or demo video
-- Key features (3-5 max)
-- User workflow
-- "Aha" moment
+- 截图或演示视频
+- 关键功能（最多 3-5 个）
+- 用户工作流
+- "顿悟"时刻
 
-**Slide 5: Market**
+**幻灯片 5：市场**
 
 - TAM / SAM / SOM
-- Market growth rate
-- Why now (timing)
-- Your wedge/entry point
+- 市场增长率
+- 为什么是现在（时机）
+- 你的切入点
 
-**Slide 6: Business Model**
+**幻灯片 6：商业模式**
 
-- Pricing model
-- Unit economics (LTV, CAC, margins)
-- Revenue streams
-- Path to profitability
+- 定价模式
+- 单位经济（LTV、CAC、利润率）
+- 收入来源
+- 盈利路径
 
-**Slide 7: Traction**
+**幻灯片 7：牵引力**
 
-- Key metrics (up and to the right)
-- User/revenue growth
-- Key milestones achieved
-- Notable customers/logos
+- 关键指标（向上向右的曲线）
+- 用户/收入增长
+- 已实现的关键里程碑
+- 知名客户/标志
 
-**Slide 8: Competition**
+**幻灯片 8：竞争**
 
-- Competitive landscape
-- Your positioning
-- Sustainable advantages
-- Why you win
+- 竞争格局
+- 你的定位
+- 可持续优势
+- 为什么你能赢
 
-**Slide 9: Team**
+**幻灯片 9：团队**
 
-- Founders + key team
-- Relevant experience
-- Why this team for this problem
-- Key advisors/backers
+- 创始人 + 关键团队成员
+- 相关经验
+- 为什么这个团队适合解决这个问题
+- 关键顾问/支持者
 
-**Slide 10: Ask**
+**幻灯片 10：融资需求**
 
-- Amount raising
-- Use of funds (high level)
-- Key milestones this achieves
-- Timeline
+- 融资金额
+- 资金用途（高层次）
+- 这将实现的关键里程碑
+- 时间线
 
-### Step 5: Investor Targeting
+### 步骤 5：投资者定位
 
-**Investor Categories:**
+**投资者类别：**
 
-| Type | Typical Check | Best For |
+| 类型 | 典型金额 | 最适合 |
 |------|---------------|----------|
-| Angel investors | $10K-$100K | Pre-seed, first checks |
-| Angel syndicates | $100K-$500K | Pre-seed, seed |
-| Micro VCs | $250K-$1M | Seed, first institutional |
-| Seed VCs | $500K-$3M | Seed rounds |
-| Multi-stage VCs | $1M-$5M | Larger seeds |
+| 天使投资人 | $10K-$100K | 种子前，首张支票 |
+| 天使联合体 | $100K-$500K | 种子前，种子轮 |
+| 微型 VC | $250K-$1M | 种子轮，首次机构融资 |
+| 种子轮 VC | $500K-$3M | 种子轮 |
+| 多阶段 VC | $1M-$5M | 较大的种子轮 |
 
-**Investor Fit Checklist:**
+**投资者匹配检查清单：**
 
-| Criterion | Check |
+| 标准 | 检查 |
 |-----------|-------|
-| Stage matches | [Y/N] |
-| Check size matches | [Y/N] |
-| Sector focus matches | [Y/N] |
-| Geography matches | [Y/N] |
-| Not competitive with portfolio | [Y/N] |
-| Thesis aligns | [Y/N] |
+| 阶段匹配 | [是/否] |
+| 金额匹配 | [是/否] |
+| 行业关注匹配 | [是/否] |
+| 地理区域匹配 | [是/否] |
+| 不与投资组合竞争 | [是/否] |
+| 投资理念一致 | [是/否] |
 
-### Step 6: Outreach Strategy
+### 步骤 6：外联策略
 
-**Outreach Hierarchy:**
+**外联优先级：**
 
-| Priority | Method | Success Rate |
+| 优先级 | 方式 | 成功率 |
 |----------|--------|--------------|
-| 1 | Warm intro from portfolio founder | 30-50% |
-| 2 | Warm intro from mutual connection | 20-40% |
-| 3 | Cold email with strong hook | 5-15% |
-| 4 | Cold LinkedIn | 2-10% |
-| 5 | Twitter/X DM | 1-5% |
+| 1 | 投资组合创始人的热情介绍 | 30-50% |
+| 2 | 共同联系人的热情介绍 | 20-40% |
+| 3 | 带有强钩子的冷邮件 | 5-15% |
+| 4 | LinkedIn 冷联系 | 2-10% |
+| 5 | Twitter/X 私信 | 1-5% |
 
-**Cold Email Template:**
+**冷邮件模板：**
 
 ```
-Subject: [Company Name] - [One compelling metric/hook]
+主题：[公司名称] - [一个令人信服的指标/钩子]
 
-Hi [Name],
+你好[姓名]，
 
-I'm building [Company] - [one-liner].
+我正在建立[公司] - [一句话描述]。
 
-[One sentence on traction/credibility.]
+[一句关于牵引力/可信度的话]。
 
-We're raising a $[X] seed round to [milestone].
+我们正在筹集一轮 $[X] 的种子轮融资，用于[里程碑]。
 
-Would love 20 minutes to share what we're building.
+希望能有 20 分钟分享我们在做什么。
 
-[Your name]
-[Link to deck or one-pager]
+[你的姓名]
+[路演材料或一页纸的链接]
 ```
 
-### Step 7: Meeting Preparation
+### 步骤 7：会议准备
 
-**Meeting Prep Checklist:**
+**会议准备检查清单：**
 
-- [ ] Research investor's recent investments
-- [ ] Read their blog posts/tweets
-- [ ] Know their fund size and check size
-- [ ] Prepare for common questions (below)
-- [ ] Have data room ready if they ask
-- [ ] Know your ask (next meeting, decision timeline)
+- [ ] 研究投资者最近的投资
+- [ ] 阅读他们的博客文章/推文
+- [ ] 了解他们的基金规模和支票金额
+- [ ] 准备常见问题（见下方）
+- [ ] 如果他们要求，准备好数据室
+- [ ] 知道你的要求（下次会议、决策时间线）
 
-**Common Investor Questions:**
+**常见投资者问题：**
 
-| Category | Questions to Prepare |
+| 类别 | 要准备的问题 |
 |----------|---------------------|
-| **Problem** | Why does this problem exist? Why hasn't it been solved? |
-| **Solution** | What's the insight? Why will this work? |
-| **Market** | How big is this? How did you size it? |
-| **Competition** | Who else is doing this? Why will you win? |
-| **Traction** | What are your metrics? What's the growth rate? |
-| **Team** | Why you? What's your unfair advantage? |
-| **Model** | What are unit economics? Path to profitability? |
-| **Ask** | How much? What milestones? Who else is in? |
+| **问题** | 为什么这个问题存在？为什么之前没有人解决？ |
+| **解决方案** | 洞察是什么？为什么这有效？ |
+| **市场** | 这个市场有多大？你是如何估算的？ |
+| **竞争** | 还有谁在做这个？为什么你会赢？ |
+| **牵引力** | 你的指标是什么？增长率是多少？ |
+| **团队** | 为什么是你们？你们的不对称优势是什么？ |
+| **模式** | 单位经济是怎样的？盈利路径？ |
+| **融资需求** | 要多少钱？达到什么里程碑？还有谁参与？ |
 
-### Step 8: Process Management
+### 步骤 8：流程管理
 
-**Process Framework:**
+**流程框架：**
 
-| Week | Activity |
+| 周次 | 活动 |
 |------|----------|
-| 1-2 | Build list, start outreach |
-| 3-4 | First meetings, refine pitch |
-| 5-6 | Second meetings, data room |
-| 7-8 | Partner meetings, diligence |
-| 9-10 | Term sheet negotiations |
-| 11-12 | Close round |
+| 1-2 | 建立清单，开始外联 |
+| 3-4 | 首次会面，完善路演 |
+| 5-6 | 二次会面，数据室 |
+| 7-8 | 合伙人会议，尽职调查 |
+| 9-10 | 投资意向书谈判 |
+| 11-12 | 完成轮次 |
 
-**Tracking Template:**
+**追踪模板：**
 
-| Investor | Stage | Last Contact | Next Step | Notes |
+| 投资者 | 阶段 | 最后联系 | 下一步 | 备注 |
 |----------|-------|--------------|-----------|-------|
-| [Name] | [Intro/Meeting 1/Meeting 2/DD/TS] | [Date] | [Action] | [Notes] |
+| [姓名] | [介绍/会议1/会议2/DD/TS] | [日期] | [行动] | [备注] |
 
-### Step 9: Term Sheet Basics
+### 步骤 9：投资意向书基础
 
-**Key Terms to Understand:**
+**需要理解的关键条款：**
 
-| Term | What It Means | Standard Range |
+| 条款 | 含义 | 标准范围 |
 |------|---------------|----------------|
-| **Pre-money valuation** | Company value before investment | $5M-$20M (seed) |
-| **Post-money valuation** | Pre-money + investment amount | |
-| **Dilution** | % of company sold | 15-25% |
-| **Pro-rata rights** | Right to invest in future rounds | Standard |
-| **Board seat** | Investor gets a board seat | Often at seed |
-| **Liquidation preference** | Who gets paid first in exit | 1x non-participating |
-| **Anti-dilution** | Protection from down rounds | Broad-based weighted average |
-| **Information rights** | Right to financial info | Standard |
+| **投前估值** | 投资前的公司价值 | $5M-$20M（种子轮） |
+| **投后估值** | 投前估值 + 投资金额 | |
+| **稀释比例** | 出售的公司百分比 | 15-25% |
+| **跟投权** | 在后续轮次投资的权利 | 标准 |
+| **董事会席位** | 投资者获得董事会席位 | 种子轮常见 |
+| **清算优先权** | 退出时谁先获得偿付 | 1 倍不参与分配 |
+| **反稀释条款** | 防止下轮融资稀释 | 广义加权平均 |
+| **信息权** | 获取财务信息的权利 | 标准 |
 
-**Red Flags in Terms:**
+**条款中的红旗：**
 
-| Red Flag | Why It's Bad |
+| 红旗 | 为什么不好 |
 |----------|--------------|
-| > 2x liquidation preference | Misaligned incentives |
-| Full ratchet anti-dilution | Punitive in down round |
-| Participating preferred | Double dipping on returns |
-| Extensive control provisions | Loss of founder control |
-| Aggressive vesting on founders | Risk of losing your equity |
+| > 2 倍清算优先权 | 激励错位 |
+| 完全棘轮反稀释 | 在下轮融资中具有惩罚性 |
+| 参与分配的优先股 | 在回报上双重获益 |
+| 广泛的控制条款 | 创始人失去控制权 |
+| 创始人的激进归属条款 | 面临失去股权的风险 |
 
-### Step 10: Closing & Post-Close
+### 步骤 10：交割与交割后
 
-**Closing Checklist:**
+**交割检查清单：**
 
-- [ ] Cap table finalized
-- [ ] Legal counsel engaged
-- [ ] Term sheet signed
-- [ ] Due diligence materials ready
-- [ ] Incorporation documents in order
-- [ ] Bank account set up
-- [ ] Investor updates plan ready
+- [ ] 股东结构表最终确定
+- [ ] 法律顾问已聘用
+- [ ] 投资意向书已签署
+- [ ] 尽职调查材料已准备
+- [ ] 公司注册文件完整
+- [ ] 银行账户已开设
+- [ ] 投资者更新计划已准备
 
-## Output Format Template
+## 输出格式模板
 
 ```markdown
-# Fundraise Strategy: [Company Name]
+# 融资策略：[公司名称]
 
-## Executive Summary
+## 执行摘要
 
-**Round:** [Pre-seed / Seed]
-**Target Amount:** $[X]
-**Target Valuation:** $[X]M pre-money
-**Timeline:** [X weeks]
-**Lead Investor Type:** [Angel / Micro VC / Seed VC]
+**轮次：** [种子前 / 种子轮]
+**目标金额：** $[X]
+**目标估值：** $[X]M 投前
+**时间线：** [X 周]
+**领投投资者类型：** [天使 / 微型 VC / 种子轮 VC]
 
-## Readiness Assessment
+## 就绪度评估
 
-| Criterion | Status | Notes |
+| 标准 | 状态 | 备注 |
 |-----------|--------|-------|
-| Product exists | [Y/N] | [Details] |
-| Traction present | [Y/N] | [Metrics] |
-| Clear narrative | [Y/N] | [Details] |
-| Time available | [Y/N] | [Details] |
-| Runway sufficient | [Y/N] | [Months remaining] |
+| 产品存在 | [是/否] | [详情] |
+| 有牵引力 | [是/否] | [指标] |
+| 清晰的故事线 | [是/否] | [详情] |
+| 有时间投入 | [是/否] | [详情] |
+| 现金流充足 | [是/否] | [剩余月数] |
 
-**Readiness Score:** [X/5]
-**Recommendation:** [Ready / Wait / Address gaps]
+**就绪度评分：** [X/5]
+**建议：** [准备就绪 / 等待 / 弥补差距]
 
-## Round Parameters
+## 轮次参数
 
-| Parameter | Target |
+| 参数 | 目标 |
 |-----------|--------|
-| Round Type | [Pre-seed/Seed] |
-| Amount | $[X] - $[Y] |
-| Pre-money Valuation | $[X]M - $[Y]M |
-| Dilution | [X]% - [Y]% |
-| Use of Funds | [Summary] |
-| Key Milestone | [What you'll achieve] |
+| 轮次类型 | [种子前/种子轮] |
+| 金额 | $[X] - $[Y] |
+| 投前估值 | $[X]M - $[Y]M |
+| 稀释比例 | [X]% - [Y]% |
+| 资金用途 | [摘要] |
+| 关键里程碑 | [你将取得的成就] |
 
-### Use of Funds Breakdown
+### 资金用途细分
 
-| Category | % | Amount | Purpose |
+| 类别 | % | 金额 | 用途 |
 |----------|---|--------|---------|
-| Engineering | [X]% | $[X] | [Details] |
-| Sales/Marketing | [X]% | $[X] | [Details] |
-| Operations | [X]% | $[X] | [Details] |
-| Buffer | [X]% | $[X] | [Details] |
+| 工程 | [X]% | $[X] | [详情] |
+| 销售/市场 | [X]% | $[X] | [详情] |
+| 运营 | [X]% | $[X] | [详情] |
+| 缓冲 | [X]% | $[X] | [详情] |
 
-## Investor Target List
+## 投资者目标清单
 
-### Tier 1 (Top Priority)
-| Investor | Type | Check Size | Fit Score | Connection |
+### 第一梯队（最高优先级）
+| 投资者 | 类型 | 金额 | 匹配度 | 联系 |
 |----------|------|------------|-----------|------------|
-| [Name] | [Type] | $[X] | [High/Med] | [Warm/Cold] |
+| [姓名] | [类型] | $[X] | [高/中] | [热情/冷] |
 
-### Tier 2 (Strong Fit)
-| Investor | Type | Check Size | Fit Score | Connection |
+### 第二梯队（良好匹配）
+| 投资者 | 类型 | 金额 | 匹配度 | 联系 |
 |----------|------|------------|-----------|------------|
-| [Name] | [Type] | $[X] | [High/Med] | [Warm/Cold] |
+| [姓名] | [类型] | $[X] | [高/中] | [热情/冷] |
 
-## Outreach Plan
+## 外联计划
 
-### Week 1-2: Launch
-- [ ] Finalize deck
-- [ ] Build target list (100+ names)
-- [ ] Map warm intro paths
-- [ ] Begin outreach (20 investors)
+### 第 1-2 周：启动
+- [ ] 最终确定路演材料
+- [ ] 建立目标清单（100 个以上）
+- [ ] 规划热情介绍路径
+- [ ] 开始外联（20 位投资者）
 
-### Week 3-4: Meetings
-- [ ] First meetings (target: 10-15)
-- [ ] Refine pitch based on feedback
-- [ ] Follow up on warm intros
-- [ ] Continue outreach
+### 第 3-4 周：会议
+- [ ] 首次会议（目标：10-15 次）
+- [ ] 根据反馈完善路演
+- [ ] 跟进热情介绍
+- [ ] 继续外联
 
-### Week 5-6: Momentum
-- [ ] Second meetings with interested parties
-- [ ] Share data room with serious prospects
-- [ ] Begin DD conversations
+### 第 5-6 周：建立势头
+- [ ] 与有兴趣方举行二次会议
+- [ ] 向严肃候选者分享数据室
+- [ ] 开始尽职调查对话
 
-### Week 7-8: Close
-- [ ] Partner meetings
-- [ ] Term sheet negotiations
-- [ ] Select lead investor
+### 第 7-8 周：完成
+- [ ] 合伙人会议
+- [ ] 投资意向书谈判
+- [ ] 选择领投投资者
 
-## Data Room Contents
+## 数据室内容
 
-- [ ] Pitch deck (PDF)
-- [ ] Financial model
-- [ ] Cap table
-- [ ] Product demo / screenshots
-- [ ] Customer references (if available)
-- [ ] Founder bios
-- [ ] Market research / sizing
-- [ ] Legal (incorporation docs)
+- [ ] 路演材料（PDF）
+- [ ] 财务模型
+- [ ] 股东结构表
+- [ ] 产品演示/截图
+- [ ] 客户推荐信（如有）
+- [ ] 创始人简介
+- [ ] 市场研究/规模估算
+- [ ] 法律文件（公司注册文件）
 ```
 
-## The Fundraising Reality Check
+## 融资现实检验
 
-1. **Would you invest?** If you had $500K, would you put it in your company?
-2. **Is now the time?** Or would 6 more months of growth make this easier?
-3. **Do you need VC?** Would bootstrapping or a small angel round work?
-4. **Can you handle rejection?** You'll hear "no" 50+ times.
-5. **Is your story compelling?** Would a stranger want to hear more?
+1. **你会投资吗？** 如果你有 50 万美元，你会把它投到自己的公司吗？
+2. **现在是时候吗？** 还是再等 6 个月的增长会让这更容易？
+3. **你需要 VC 吗？** 自举或小型天使轮融资是否可行？
+4. **你能承受拒绝吗？** 你会听到 50 次以上的"不"。
+5. **你的故事有说服力吗？** 一个陌生人会想了解更多吗？
 
-## Common Mistakes to Avoid
+## 要避免的常见错误
 
-1. **Raising too early:** No traction = hard raise
-2. **Wrong investors:** Targeting VCs for a $300K raise
-3. **No warm intros:** Relying only on cold outreach
-4. **Slow process:** Taking 6+ months drains energy
-5. **Bad terms:** Accepting terms you'll regret
-6. **No momentum:** Talking to investors one at a time
-7. **Overvaluing:** High valuation = harder raise
-8. **Underprepared:** Not knowing your numbers cold
-9. **Ignoring nos:** Not learning from rejections
-10. **Celebrating too early:** Deal isn't done until money is in bank
+1. **融资过早：** 没有牵引力 = 艰难融资
+2. **投资者不对：** 为 30 万美元融资却找 VC
+3. **没有热情介绍：** 仅依赖冷外联
+4. **流程缓慢：** 耗时 6 个月以上消耗精力
+5. **条款糟糕：** 接受会让你后悔的条款
+6. **没有势头：** 一次只跟一位投资者谈
+7. **估值过高：** 高估值 = 更难融资
+8. **准备不足：** 对自己的数据不熟悉
+9. **忽视拒绝：** 不从拒绝中学习
+10. **庆祝过早：** 钱到账才算完成
 
-## The "First 48 Hours" Rule
+## "48 小时内"规则
 
-After every investor meeting:
+每次投资者会议后：
 
-1. **Within 2 hours:** Send thank you email
-2. **Within 24 hours:** Send any requested materials
-3. **Within 48 hours:** Follow up with next steps
+1. **2 小时内：** 发送感谢邮件
+2. **24 小时内：** 发送所有要求的材料
+3. **48 小时内：** 跟进下一步行动
 
-Speed signals seriousness.
+速度代表认真程度。
 
-## Integration with Other Skills
+## 与其他技能的整合
 
-| Skill | How It Works Together |
+| 技能 | 如何协同工作 |
 |-------|----------------------|
-| `market-sizer` | Size the market for your deck |
-| `brand-architect` | Ensure deck reflects brand |
-| `financial-operations-expert` | Build financial model |
-| `idea-validator` | Validate before raising |
-| `startup-icp-definer` | Define customer for deck |
-| `copywriter` | Write compelling deck copy |
+| `market-sizer` | 为你的路演估算市场规模 |
+| `brand-architect` | 确保路演反映品牌 |
+| `financial-operations-expert` | 构建财务模型 |
+| `idea-validator` | 在融资前验证想法 |
+| `startup-icp-definer` | 为路演定义客户画像 |
+| `copywriter` | 撰写有说服力的路演文案 |

@@ -1,133 +1,133 @@
-# Design by Contract and Assertive Programming
+# 契约设计与断言式编程
 
-Deep reference for making assumptions explicit through contracts and assertions. Load when guidance is needed on defensive programming, crash-early strategies, or formal precondition/postcondition patterns.
+通过契约和断言使假设显式化的深度参考。当需要关于防御性编程、尽早崩溃策略或形式化的前置条件/后置条件模式方面的指导时加载。
 
-## Table of Contents
-1. [Design by Contract (DBC)](#design-by-contract-dbc)
-2. [Preconditions](#preconditions)
-3. [Postconditions](#postconditions)
-4. [Class Invariants](#class-invariants)
-5. [DBC in Dynamic Languages](#dbc-in-dynamic-languages)
-6. [Assertive Programming](#assertive-programming)
-7. [Dead Programs Don't Lie](#dead-programs-dont-lie)
-8. [Assertions vs. Error Handling](#assertions-vs-error-handling)
+## 目录
+1. [契约设计（DBC）](#契约设计dbc)
+2. [前置条件](#前置条件)
+3. [后置条件](#后置条件)
+4. [类不变量](#类不变量)
+5. [动态语言中的 DBC](#动态语言中的-dbc)
+6. [断言式编程](#断言式编程)
+7. [死程序不说谎](#死程序不说谎)
+8. [断言 vs 错误处理](#断言-vs-错误处理)
 
 ---
 
-## Design by Contract (DBC)
+## 契约设计（DBC）
 
-Design by Contract was formalized by Bertrand Meyer for the Eiffel programming language, but the principle applies universally. Every function or method has a contract:
+契约设计由 Bertrand Meyer 为 Eiffel 编程语言形式化，但该原则普遍适用。每个函数或方法都有一个契约：
 
-- **Preconditions:** What must be true before the routine is called (caller's responsibility)
-- **Postconditions:** What the routine guarantees will be true when it finishes (routine's responsibility)
-- **Class invariants:** What is always true about the object's state between method calls
+- **前置条件：** 在调用该例程前必须为真的条件（调用者的责任）
+- **后置条件：** 该例程保证在完成后将为真的条件（例程的责任）
+- **类不变量：** 在方法调用之间对象的始终为真的状态条件
 
-### The Contract Metaphor
+### 契约隐喻
 
-Think of a function like a business contract:
+把函数想象成一份商业合同：
 
-> "If you provide me with valid input (precondition), I guarantee I'll produce correct output (postcondition) and leave everything in a consistent state (invariant)."
+> "如果你向我提供有效的输入（前置条件），我保证产生正确的输出（后置条件），并将所有内容保持在一致的状态（不变量）。"
 
-If the caller violates the precondition, the contract is void -- the routine owes nothing. If the routine violates the postcondition, it's a bug in the routine. If an invariant is violated, the system is in an invalid state and should halt.
+如果调用者违反了前置条件，契约就失效了——例程不承担任何责任。如果例程违反了后置条件，那是例程中的 bug。如果不变量被违反，系统处于无效状态，应停止。
 
-### Why Contracts Matter
+### 契约为何重要
 
-| Without Contracts | With Contracts |
+| 没有契约 | 有契约 |
 |------------------|---------------|
-| Functions silently accept bad input | Bad input is caught immediately at the boundary |
-| Bugs propagate far from their source | Bugs are detected at the point of violation |
-| Debugging requires tracing through layers | Stack trace points directly to the violated contract |
-| Assumptions are implicit and undocumented | Assumptions are explicit and enforced |
-| Tests must guess at valid input ranges | Contracts document valid input ranges |
+| 函数静默接受错误输入 | 错误输入在边界处被立即捕获 |
+| Bug 从其源头远处传播 | Bug 在违反点被检测到 |
+| 调试需要层层追踪 | 堆栈跟踪直接指向违反的契约 |
+| 假设是隐式的且未记录 | 假设是显式的且被强制执行 |
+| 测试必须猜测有效的输入范围 | 契约记录了有效的输入范围 |
 
 ---
 
-## Preconditions
+## 前置条件
 
-A precondition defines what must be true when a function is called. It is the **caller's responsibility** to satisfy the precondition.
+前置条件定义了调用函数时必须为真的条件。满足前置条件是**调用者的责任**。
 
-### Examples Across Languages
+### 跨语言示例
 
-**Python:**
+**Python：**
 ```python
 def transfer_funds(from_account, to_account, amount):
-    # Preconditions
-    assert amount > 0, f"Transfer amount must be positive, got {amount}"
+    # 前置条件
+    assert amount > 0, f"转账金额必须为正数，实际为 {amount}"
     assert from_account.balance >= amount, (
-        f"Insufficient funds: balance={from_account.balance}, amount={amount}"
+        f"余额不足：balance={from_account.balance}, amount={amount}"
     )
-    assert from_account.id != to_account.id, "Cannot transfer to same account"
+    assert from_account.id != to_account.id, "不能转账到同一账户"
 
-    # Implementation
+    # 实现
     from_account.balance -= amount
     to_account.balance += amount
 ```
 
-**TypeScript:**
+**TypeScript：**
 ```typescript
 function transferFunds(from: Account, to: Account, amount: number): void {
-  // Preconditions
-  if (amount <= 0) throw new PreconditionError(`Amount must be positive: ${amount}`);
-  if (from.balance < amount) throw new PreconditionError(`Insufficient funds`);
-  if (from.id === to.id) throw new PreconditionError(`Cannot self-transfer`);
+  // 前置条件
+  if (amount <= 0) throw new PreconditionError(`金额必须为正数：${amount}`);
+  if (from.balance < amount) throw new PreconditionError(`余额不足`);
+  if (from.id === to.id) throw new PreconditionError(`不能自我转账`);
 
   from.balance -= amount;
   to.balance += amount;
 }
 ```
 
-### Precondition Guidelines
+### 前置条件指南
 
-| Guideline | Rationale |
+| 指南 | 理由 |
 |-----------|-----------|
-| Check preconditions at the start of the function | Fail fast before any side effects |
-| Use descriptive error messages | Include actual values so debugging is immediate |
-| Don't correct bad input silently | If amount is negative, don't negate it -- crash |
-| Document preconditions in the function's docstring | Callers need to know what's expected |
-| Preconditions should be cheap to check | If validation is expensive, it's a design smell |
+| 在函数开头检查前置条件 | 在任何副作用前快速失败 |
+| 使用描述性错误消息 | 包含实际值以便立即调试 |
+| 不要静默修正错误输入 | 如果金额为负，不要取反——直接崩溃 |
+| 在函数的文档字符串中记录前置条件 | 调用者需要知道要求是什么 |
+| 前置条件应该廉价检查 | 如果验证代价高，说明设计有问题 |
 
-### What Makes a Good Precondition?
+### 好的前置条件的特点
 
-A precondition should be:
-- **Verifiable:** Can be checked programmatically
-- **Documented:** Callers can read and understand it
-- **Minimal:** Only what's truly necessary, not overly restrictive
-- **Stable:** Doesn't change between versions (it's part of the contract)
+前置条件应该是：
+- **可验证：** 可以通过程序检查
+- **已记录：** 调用者可以阅读并理解
+- **最小化：** 仅包含真正必要的条件，不过度限制
+- **稳定：** 在版本间不改变（它是契约的一部分）
 
 ---
 
-## Postconditions
+## 后置条件
 
-A postcondition defines what the function guarantees upon successful completion. It is the **routine's responsibility** to satisfy the postcondition.
+后置条件定义了函数在成功完成后保证什么。满足后置条件是**例程的责任**。
 
-### Examples
+### 示例
 
-**Python:**
+**Python：**
 ```python
 def sort_list(items: list) -> list:
     result = sorted(items)
 
-    # Postconditions
-    assert len(result) == len(items), "Sort must preserve length"
+    # 后置条件
+    assert len(result) == len(items), "排序必须保持长度不变"
     assert all(result[i] <= result[i+1] for i in range(len(result)-1)), (
-        "Result must be sorted"
+        "结果必须已排序"
     )
-    assert set(result) == set(items), "Sort must preserve elements"
+    assert set(result) == set(items), "排序必须保持元素不变"
 
     return result
 ```
 
-**Go:**
+**Go：**
 ```go
 func Divide(a, b float64) float64 {
-    // Precondition
+    // 前置条件
     if b == 0 {
         panic("division by zero")
     }
 
     result := a / b
 
-    // Postcondition
+    // 后置条件
     if math.Abs(result*b - a) > 1e-10 {
         panic(fmt.Sprintf("postcondition failed: %f * %f != %f", result, b, a))
     }
@@ -136,46 +136,46 @@ func Divide(a, b float64) float64 {
 }
 ```
 
-### Postcondition Patterns
+### 后置条件模式
 
-| Pattern | What It Checks | Example |
+| 模式 | 检查项 | 示例 |
 |---------|---------------|---------|
-| **Preservation** | Output preserves a property of input | Sorted list has same length as input |
-| **Computation** | Result satisfies a mathematical relationship | `sqrt(x) * sqrt(x) ≈ x` |
-| **State change** | Object state changed correctly | Account balance decreased by exact transfer amount |
-| **No side effects** | Nothing unexpected changed | Other accounts' balances unchanged after transfer |
-| **Return type** | Result has expected structure | API response contains required fields |
+| **保持性** | 输出保持了输入的某种属性 | 排序后的列表与输入长度相同 |
+| **计算性** | 结果满足数学关系 | `sqrt(x) * sqrt(x) ≈ x` |
+| **状态变化** | 对象状态正确变化 | 账户余额减少了确切的转账金额 |
+| **无副作用** | 未发生非预期的变化 | 转账后其他账户余额不变 |
+| **返回类型** | 结果具有预期的结构 | API 响应包含必填字段 |
 
 ---
 
-## Class Invariants
+## 类不变量
 
-An invariant is a condition that must be true for every instance of a class at all times between method calls (it may temporarily be false during a method's execution).
+不变量是在方法调用之间类每个实例都必须始终为真的条件（在方法执行期间可能暂时为假）。
 
-### Examples
+### 示例
 
 ```python
 class BankAccount:
     def __init__(self, owner: str, initial_balance: float = 0):
-        assert initial_balance >= 0, "Initial balance cannot be negative"
+        assert initial_balance >= 0, "初始余额不能为负"
         self.owner = owner
         self._balance = initial_balance
         self._check_invariant()
 
     def _check_invariant(self):
-        """Class invariant: balance is never negative."""
+        """类不变量：余额永远不为负。"""
         assert self._balance >= 0, (
-            f"Invariant violated: balance={self._balance} for account {self.owner}"
+            f"不变量违反：balance={self._balance} for account {self.owner}"
         )
 
     def deposit(self, amount: float):
-        assert amount > 0, f"Deposit must be positive: {amount}"  # precondition
+        assert amount > 0, f"存款必须为正数：{amount}"  # 前置条件
         self._balance += amount
         self._check_invariant()
 
     def withdraw(self, amount: float):
-        assert 0 < amount <= self._balance, (  # precondition
-            f"Invalid withdrawal: amount={amount}, balance={self._balance}"
+        assert 0 < amount <= self._balance, (  # 前置条件
+            f"无效取款：amount={amount}, balance={self._balance}"
         )
         self._balance -= amount
         self._check_invariant()
@@ -185,40 +185,40 @@ class BankAccount:
         return self._balance
 ```
 
-### Common Invariant Patterns
+### 常见不变量模式
 
-| Domain | Invariant |
+| 领域 | 不变量 |
 |--------|-----------|
-| **Financial** | Balance >= 0 (or >= overdraft limit) |
-| **Collection** | Size >= 0 and matches actual element count |
-| **Connection pool** | Active + idle = total allocated |
-| **State machine** | Current state is one of the defined states |
-| **Tree structure** | Every child has exactly one parent (except root) |
-| **Sorted container** | Elements are in order after every mutation |
+| **金融** | 余额 >= 0（或 >= 透支限额） |
+| **集合** | 大小 >= 0 且与实际元素计数匹配 |
+| **连接池** | 活跃 + 空闲 = 总分配数 |
+| **状态机** | 当前状态是已定义状态之一 |
+| **树结构** | 每个子节点恰好有一个父节点（根节点除外） |
+| **排序容器** | 每次变异后元素有序 |
 
 ---
 
-## DBC in Dynamic Languages
+## 动态语言中的 DBC
 
-Languages like Python, JavaScript, and Ruby lack built-in contract support but can implement it through patterns:
+Python、JavaScript 和 Ruby 等语言缺乏内置契约支持，但可以通过模式实现：
 
-### Guard Clauses
+### 守卫子句
 
-The most common pattern -- check preconditions at the top of every function:
+最常见的模式——在每个函数顶部检查前置条件：
 
 ```python
 def process_order(order):
     if not order:
-        raise ValueError("Order cannot be None")
+        raise ValueError("订单不能为 None")
     if not order.items:
-        raise ValueError("Order must have at least one item")
+        raise ValueError("订单必须至少有一个商品")
     if order.total <= 0:
-        raise ValueError(f"Order total must be positive: {order.total}")
+        raise ValueError(f"订单总额必须为正数：{order.total}")
 
-    # Happy path follows...
+    # 后续正常路径...
 ```
 
-### Decorator-Based Contracts (Python)
+### 基于装饰器的契约（Python）
 
 ```python
 from functools import wraps
@@ -244,13 +244,13 @@ def ensures(condition_fn, message):
         return wrapper
     return decorator
 
-@requires(lambda x: x >= 0, "Input must be non-negative")
-@ensures(lambda r: r >= 0, "Result must be non-negative")
+@requires(lambda x: x >= 0, "输入必须非负")
+@ensures(lambda r: r >= 0, "结果必须非负")
 def sqrt(x):
     return x ** 0.5
 ```
 
-### TypeScript Runtime Validation
+### TypeScript 运行时验证
 
 ```typescript
 import { z } from 'zod';
@@ -262,22 +262,22 @@ const TransferInput = z.object({
 });
 
 function transferFunds(input: unknown) {
-  // Precondition via schema validation
+  // 通过 schema 验证的前置条件
   const { fromAccountId, toAccountId, amount } = TransferInput.parse(input);
 
-  // ...implementation
+  // ...实现
 }
 ```
 
 ---
 
-## Assertive Programming
+## 断言式编程
 
-Assertive programming extends DBC into a general philosophy: **if it can't happen, use assertions to ensure it doesn't.**
+断言式编程将 DBC 扩展为通用哲学：**如果某事"不可能发生"，用断言来确保它不会发生。**
 
-### The "It Can't Happen" Principle
+### "不可能发生"原则
 
-Every time you think "this can't happen," add an assertion:
+每次你认为"这不可能发生"时，添加一条断言：
 
 ```python
 def get_day_name(day_number):
@@ -290,98 +290,98 @@ def get_day_name(day_number):
         case 6: return "Saturday"
         case 7: return "Sunday"
         case _:
-            assert False, f"Invalid day number: {day_number}"  # "can't happen"
+            assert False, f"无效天数编号：{day_number}"  # "不可能发生"
 ```
 
-### Assertion Placement Guide
+### 断言放置指南
 
-| Location | What to Assert |
+| 位置 | 断言什么 |
 |----------|---------------|
-| **Function entry** | Preconditions on parameters |
-| **Function exit** | Postconditions on return value |
-| **After external call** | Response is in expected format |
-| **Switch/match default** | "Impossible" cases |
-| **After complex computation** | Sanity check on intermediate results |
-| **After state mutation** | Class invariant still holds |
+| **函数入口** | 参数的前置条件 |
+| **函数出口** | 返回值的后置条件 |
+| **外部调用后** | 响应符合预期格式 |
+| **switch/match 默认分支** | "不可能"的情况 |
+| **复杂计算后** | 中间结果的合理性检查 |
+| **状态变更后** | 类不变量仍然成立 |
 
-### Should Assertions Stay in Production?
+### 断言应该留在生产环境中吗？
 
-**Yes, with caveats.** The pragmatic approach:
+**是的，但有注意事项。** 实用主义方法：
 
-1. **Keep assertions that catch corruption** -- a negative bank balance, an invalid state transition, data integrity violations
-2. **Remove assertions that are performance-critical** -- only after benchmarking proves they matter
-3. **Never remove assertions just because "they slow things down"** -- measure first
-4. **Replace expensive assertions with cheaper approximations** if performance is genuinely impacted
+1. **保留捕获损坏问题的断言** —— 负的银行余额、无效状态转换、数据完整性违规
+2. **移除对性能关键的断言** —— 仅在对基准测试证明它们确实重要之后
+3. **永远不要仅仅因为"它们拖慢速度"而移除断言** —— 先测量
+4. **如果性能确实受影响，用更廉价的近似值替换昂贵的断言**
 
 ---
 
-## Dead Programs Don't Lie
+## 死程序不说谎
 
-One of the most important pragmatic principles: **a program that crashes at the point of failure is far safer than one that limps along in an invalid state.**
+最重要的实用主义原则之一：**在故障点崩溃的程序远比在无效状态下苟延残喘的程序安全得多。**
 
-### Why Crashing Is Better Than Continuing
+### 为什么崩溃比继续运行更好
 
-| Behavior | Consequence |
+| 行为 | 后果 |
 |----------|------------|
-| Crash on invalid state | Bug found at the source, stack trace points to the problem |
-| Log a warning and continue | Invalid state propagates, corrupts data, discovered hours later |
-| Silently ignore the error | Data loss, security vulnerabilities, mysterious downstream failures |
-| Return a default value | Caller doesn't know something went wrong, makes decisions on bad data |
+| 在无效状态时崩溃 | Bug 在源头被找到，堆栈跟踪指向问题 |
+| 记录警告并继续 | 无效状态传播、损坏数据、数小时后才发现 |
+| 静默忽略错误 | 数据丢失、安全漏洞、神秘的下游故障 |
+| 返回默认值 | 调用者不知道出了问题，基于错误数据做出决策 |
 
-### Example: The Silent Corruption Problem
+### 示例：静默损坏问题
 
 ```python
-# DANGEROUS: silently handles bad data
+# 危险：静默处理错误数据
 def get_user_age(user_data):
     try:
         return int(user_data.get("age", 0))
     except (ValueError, TypeError):
-        return 0  # Silently returns 0 for invalid data
+        return 0  # 对无效数据静默返回 0
 
-# BETTER: crashes on bad data
+# 更好：对错误数据崩溃
 def get_user_age(user_data):
-    age = user_data["age"]  # KeyError if missing
+    age = user_data["age"]  # 如缺失则 KeyError
     if not isinstance(age, int) or age < 0:
-        raise ValueError(f"Invalid age: {age}")
+        raise ValueError(f"无效年龄：{age}")
     return age
 ```
 
-The first version will happily process users with age 0, making them ineligible for age-restricted features, because the data was silently corrupted. The second version surfaces the problem immediately.
+第一个版本会愉快地处理年龄为 0 的用户，使他们不符合年龄限制功能的资格，因为数据被静默损坏了。第二个版本立即暴露问题。
 
 ---
 
-## Assertions vs. Error Handling
+## 断言 vs 错误处理
 
-This is a crucial distinction that many developers conflate:
+这是一个许多开发人员混淆的关键区别：
 
-| Aspect | Assertions | Error Handling |
+| 方面 | 断言 | 错误处理 |
 |--------|-----------|---------------|
-| **For** | Things that should NEVER happen | Things that MIGHT happen |
-| **Examples** | Null pointer in non-nullable field, negative array index | Network timeout, file not found, invalid user input |
-| **Response** | Crash immediately | Recover gracefully |
-| **In production** | Keep (they indicate bugs) | Required (they handle expected failures) |
-| **Message audience** | Developers (debugging) | Users or calling code (error recovery) |
+| **用于** | 应该 NEVER 发生的事 | 可能 MIGHT 发生的事 |
+| **示例** | 非空字段中的空指针、负数数组索引 | 网络超时、文件未找到、无效用户输入 |
+| **响应** | 立即崩溃 | 优雅恢复 |
+| **在生产环境** | 保留（它们表示 bug） | 必需（它们处理预期的故障） |
+| **消息受众** | 开发人员（调试） | 用户或调用代码（错误恢复） |
 
-### Decision Guide
+### 决策指南
 
 ```
-Can the user cause this condition through normal use?
-  → Error handling (validate input, show friendly message)
+用户能否通过正常使用导致此情况？
+  → 错误处理（验证输入，显示友好消息）
 
-Is this a bug in the code if it happens?
-  → Assertion (crash with developer-friendly message)
+如果发生，这是代码中的 bug？
+  → 断言（以开发人员友好的消息崩溃）
 
-Can the system recover meaningfully?
-  → Error handling (retry, fallback, degrade)
+系统能否有意义地恢复？
+  → 错误处理（重试、回退、降级）
 
-Is recovery just "pretend it didn't happen"?
-  → Assertion (don't hide bugs behind error handling)
+恢复是否只是"假装没发生过"？
+  → 断言（不要用错误处理隐藏 bug）
 
-Is this an external system failure (network, disk, API)?
-  → Error handling (these are expected in production)
+这是外部系统故障（网络、磁盘、API）？
+  → 错误处理（这些在生产环境中是预期的）
 
-Is this a violation of an internal invariant?
-  → Assertion (the system is in an invalid state)
+这是内部不变量的违反吗？
+  → 断言（系统处于无效状态）
 ```
 
-The pragmatic programmer uses both tools appropriately: assertions for "this should never happen" and error handling for "this might happen." The worst approach is using neither -- silently ignoring problems and hoping for the best.
+实用主义程序员恰当地使用两种工具：断言用于"这永远不该发生"，错误处理用于"这可能会发生。"最糟糕的方法是什么都不做——静默忽略问题并寄希望于最好。

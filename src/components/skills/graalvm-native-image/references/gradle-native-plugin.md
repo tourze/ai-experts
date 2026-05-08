@@ -1,20 +1,20 @@
-# Gradle GraalVM Native Build Tools Plugin
+# Gradle GraalVM Native Build Tools 插件
 
-Complete Gradle configuration for building GraalVM native images using the Native Build Tools plugin.
+使用 Native Build Tools 插件构建 GraalVM native image 的完整 Gradle 配置。
 
-## Table of Contents
+## 目录
 
-1. [Plugin Setup](#plugin-setup)
-2. [Configuration Options](#configuration-options)
-3. [Spring Boot Gradle Integration](#spring-boot-gradle-integration)
-4. [Testing in Native Mode](#testing-in-native-mode)
-5. [Multi-Project Builds](#multi-project-builds)
+1. [插件设置](#插件设置)
+2. [配置选项](#配置选项)
+3. [Spring Boot Gradle 集成](#spring-boot-gradle-集成)
+4. [在 Native 模式下测试](#在-native-模式下测试)
+5. [多项目构建](#多项目构建)
 
 ---
 
-## Plugin Setup
+## 插件设置
 
-### Kotlin DSL (`build.gradle.kts`)
+### Kotlin DSL（`build.gradle.kts`）
 
 ```kotlin
 plugins {
@@ -38,7 +38,7 @@ graalvmNative {
 }
 ```
 
-### Groovy DSL (`build.gradle`)
+### Groovy DSL（`build.gradle`）
 
 ```groovy
 plugins {
@@ -58,17 +58,17 @@ graalvmNative {
 }
 ```
 
-Build with:
+使用以下命令构建：
 
 ```bash
 ./gradlew nativeCompile
 ```
 
-The native executable is produced in `build/native/nativeCompile/`.
+原生可执行文件生成在 `build/native/nativeCompile/` 目录中。
 
-## Configuration Options
+## 配置选项
 
-### Binary Configuration
+### Binary 配置
 
 ```kotlin
 graalvmNative {
@@ -77,7 +77,7 @@ graalvmNative {
             imageName.set(project.name)
             mainClass.set("com.example.Application")
 
-            // Build arguments
+            // 构建参数
             buildArgs.addAll(
                 "--no-fallback",
                 "-H:+ReportExceptionStackTraces",
@@ -85,16 +85,16 @@ graalvmNative {
                 "-J-Xmx8g"
             )
 
-            // Quick build mode (faster build, slower runtime — dev only)
+            // 快速构建模式（构建更快，运行时更慢——仅开发用）
             quickBuild.set(false)
 
-            // Rich output during build
+            // 构建时输出富文本
             richOutput.set(true)
 
-            // Verbose output
+            // 详细输出
             verbose.set(true)
 
-            // Resource includes
+            // 资源包含
             resources {
                 autodetect()
                 includedPatterns.add("application.*")
@@ -103,18 +103,18 @@ graalvmNative {
         }
     }
 
-    // GraalVM metadata repository
+    // GraalVM metadata 仓库
     metadataRepository {
         enabled.set(true)
         version.set("0.3.14")
     }
 
-    // Toolchain detection
+    // 工具链检测
     toolchainDetection.set(true)
 }
 ```
 
-### Java Toolchain Configuration
+### Java 工具链配置
 
 ```kotlin
 java {
@@ -135,9 +135,9 @@ graalvmNative {
 }
 ```
 
-## Spring Boot Gradle Integration
+## Spring Boot Gradle 集成
 
-For Spring Boot 3.x projects with Gradle:
+对于使用 Gradle 的 Spring Boot 3.x 项目：
 
 ```kotlin
 plugins {
@@ -147,27 +147,27 @@ plugins {
     id("org.graalvm.buildtools.native") version "0.10.6"
 }
 
-// Spring Boot plugin automatically configures AOT processing
-// when GraalVM Native Image plugin is detected
+// 当检测到 GraalVM Native Image 插件时，
+// Spring Boot 插件会自动配置 AOT 处理
 ```
 
-Build commands:
+构建命令：
 
 ```bash
-# Compile to native executable
+# 编译为原生可执行文件
 ./gradlew nativeCompile
 
-# Build OCI image with Cloud Native Buildpacks
+# 使用 Cloud Native Buildpacks 构建 OCI 镜像
 ./gradlew bootBuildImage
 
-# Run the native executable
+# 运行原生可执行文件
 ./build/native/nativeCompile/<app-name>
 
-# Run AOT processing only
+# 仅运行 AOT 处理
 ./gradlew processAot
 ```
 
-### Custom AOT Configuration
+### 自定义 AOT 配置
 
 ```kotlin
 tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessAot>().configureEach {
@@ -186,15 +186,15 @@ graalvmNative {
 }
 ```
 
-## Testing in Native Mode
+## 在 Native 模式下测试
 
-Run JUnit tests compiled as a native executable:
+运行编译为原生可执行文件的 JUnit 测试：
 
 ```bash
 ./gradlew nativeTest
 ```
 
-Configure test binary:
+配置 test binary：
 
 ```kotlin
 graalvmNative {
@@ -207,14 +207,14 @@ graalvmNative {
         }
     }
 
-    // Configure test support
+    // 配置测试支持
     testSupport.set(true)
 }
 ```
 
-## Multi-Project Builds
+## 多项目构建
 
-For multi-project Gradle builds, apply the plugin only in the executable subproject:
+对于多项目 Gradle 构建，仅在可执行子项目中应用插件：
 
 ```kotlin
 // settings.gradle.kts
@@ -224,7 +224,7 @@ pluginManagement {
     }
 }
 
-// app/build.gradle.kts (executable subproject)
+// app/build.gradle.kts（可执行子项目）
 plugins {
     id("org.graalvm.buildtools.native")
 }

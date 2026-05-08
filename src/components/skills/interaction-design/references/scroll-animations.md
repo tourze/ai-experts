@@ -1,4 +1,4 @@
-# Scroll Animations Reference
+# 滚动动画参考
 
 ## Intersection Observer Hook
 
@@ -41,7 +41,7 @@ function useInView<T extends HTMLElement>({
   return [ref, isInView];
 }
 
-// Usage
+// 使用
 function FadeInSection({ children }) {
   const [ref, isInView] = useInView({ threshold: 0.2, triggerOnce: true });
 
@@ -58,7 +58,7 @@ function FadeInSection({ children }) {
 }
 ```
 
-## Scroll Progress Indicator
+## 滚动进度指示器
 
 ```tsx
 import { motion, useScroll, useSpring } from "framer-motion";
@@ -80,9 +80,9 @@ function ScrollProgress() {
 }
 ```
 
-## Parallax Scrolling
+## 视差滚动
 
-### Simple CSS Parallax
+### 简单 CSS 视差
 
 ```css
 .parallax-container {
@@ -101,7 +101,7 @@ function ScrollProgress() {
 }
 ```
 
-### Framer Motion Parallax
+### Framer Motion 视差
 
 ```tsx
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -119,12 +119,12 @@ function ParallaxHero() {
 
   return (
     <section ref={ref} className="relative h-screen overflow-hidden">
-      {/* Background image with parallax */}
+      {/* 带视差效果的背景图 */}
       <motion.div style={{ y, scale }} className="absolute inset-0">
         <img src="/hero-bg.jpg" alt="" className="w-full h-full object-cover" />
       </motion.div>
 
-      {/* Content fades out on scroll */}
+      {/* 内容随滚动淡出 */}
       <motion.div
         style={{ opacity }}
         className="relative z-10 flex items-center justify-center h-full"
@@ -136,9 +136,9 @@ function ParallaxHero() {
 }
 ```
 
-## Scroll-Linked Animations
+## 滚动关联动画
 
-### Progress-Based Animation
+### 基于进度的动画
 
 ```tsx
 function ScrollAnimation() {
@@ -148,7 +148,7 @@ function ScrollAnimation() {
     offset: ["start end", "end start"],
   });
 
-  // Different transformations based on scroll progress
+  // 基于滚动进度的不同变换
   const x = useTransform(scrollYProgress, [0, 1], [-200, 200]);
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
   const backgroundColor = useTransform(
@@ -170,7 +170,7 @@ function ScrollAnimation() {
 }
 ```
 
-### Horizontal Scroll Section
+### 水平滚动区块
 
 ```tsx
 function HorizontalScroll({ items }) {
@@ -205,9 +205,9 @@ function HorizontalScroll({ items }) {
 }
 ```
 
-## Reveal Animations
+## 揭示动画
 
-### Staggered List Reveal
+### 交错列表揭示
 
 ```tsx
 function StaggeredList({ items }) {
@@ -231,7 +231,7 @@ function StaggeredList({ items }) {
 }
 ```
 
-### Text Reveal
+### 文字揭示
 
 ```tsx
 function TextReveal({ text }) {
@@ -256,7 +256,7 @@ function TextReveal({ text }) {
 }
 ```
 
-### Clip Path Reveal
+### 裁剪路径揭示
 
 ```tsx
 function ClipReveal({ children }) {
@@ -275,7 +275,7 @@ function ClipReveal({ children }) {
 }
 ```
 
-## Sticky Scroll Sections
+## 粘性滚动区块
 
 ```tsx
 function StickySection({ title, content, image }) {
@@ -309,15 +309,15 @@ function StickySection({ title, content, image }) {
 }
 ```
 
-## Smooth Scroll
+## 平滑滚动
 
 ```tsx
-// Using CSS
+// 使用 CSS
 html {
   scroll-behavior: smooth;
 }
 
-// Using Lenis for butter-smooth scrolling
+// 使用 Lenis 实现极其流畅的滚动
 import Lenis from '@studio-freight/lenis';
 
 function SmoothScrollProvider({ children }) {
@@ -342,10 +342,10 @@ function SmoothScrollProvider({ children }) {
 }
 ```
 
-## Scroll Snap
+## 滚动吸附
 
 ```css
-/* Scroll snap container */
+/* 滚动吸附容器 */
 .snap-container {
   scroll-snap-type: y mandatory;
   overflow-y: scroll;
@@ -357,7 +357,7 @@ function SmoothScrollProvider({ children }) {
   height: 100vh;
 }
 
-/* Smooth scrolling with snap */
+/* 带吸附的平滑滚动 */
 @supports (scroll-snap-type: y mandatory) {
   .snap-container {
     scroll-behavior: smooth;
@@ -382,15 +382,15 @@ function FullPageScroll({ sections }) {
 }
 ```
 
-## Performance Optimization
+## 性能优化
 
 ```tsx
-// Use will-change sparingly
+// 谨慎使用 will-change
 const AnimatedElement = styled(motion.div)`
   will-change: transform;
 `;
 
-// Debounce scroll handlers
+// 对滚动处理器进行节流
 function useThrottledScroll(callback, delay = 16) {
   const lastRun = useRef(0);
 
@@ -408,9 +408,9 @@ function useThrottledScroll(callback, delay = 16) {
   }, [callback, delay]);
 }
 
-// Use transform instead of top/left
-// Good
+// 使用 transform 而不是 top/left
+// 好
 const goodAnimation = { transform: "translateY(100px)" };
-// Bad (causes reflow)
+// 不好（导致重排）
 const badAnimation = { top: "100px" };
 ```

@@ -1,103 +1,103 @@
-# Industry Adaptations
+# 行业适应
 
-Sector-specific metrics, benchmarks, and considerations for financial analysis.
+用于财务分析的特定行业指标、基准和考量因素。
 
-## SaaS / Software
+## SaaS / 软件
 
-**Key Metrics:**
-- ARR / MRR growth rate
-- Net Revenue Retention (NRR) — target >110%
-- CAC Payback Period — target <18 months
-- Rule of 40 (growth rate + profit margin ≥ 40%)
-- LTV:CAC ratio — target >3:1
-- Gross margin — target >70%
+**关键指标：**
+- ARR / MRR 增长率
+- 净收入留存 (NRR) — 目标 >110%
+- CAC 回收期 — 目标 <18 个月
+- 40 法则（增长率 + 利润率 ≥ 40%）
+- LTV:CAC 比率 — 目标 >3:1
+- 毛利率 — 目标 >70%
 
-**Valuation Multiples:**
-- Revenue multiple: 5-15x ARR (growth-adjusted)
-- High-growth (>50%): 15-25x ARR
-- Moderate growth (20-50%): 8-15x ARR
-- Low growth (<20%): 3-8x ARR
+**估值倍数：**
+- 收入倍数：5-15x ARR（增长调整后）
+- 高增长 (>50%)：15-25x ARR
+- 中增长 (20-50%)：8-15x ARR
+- 低增长 (<20%)：3-8x ARR
 
-**Considerations:**
-- Deferred revenue recognition (ASC 606)
-- Stock-based compensation impact on margins
-- Cohort analysis critical for retention metrics
+**考量因素：**
+- 递延收入确认 (ASC 606)
+- 股权激励对利润率的影响
+- 群组分析对留存指标至关重要
 
-## Retail / E-Commerce
+## 零售 / 电商
 
-**Key Metrics:**
-- Same-store sales growth (SSS)
-- Gross margin by category
-- Inventory turnover — target varies by segment (grocery: 14-20x, fashion: 4-6x)
-- Revenue per square foot (physical)
-- Customer acquisition cost vs. AOV
-- Return rate impact on unit economics
+**关键指标：**
+- 同店销售增长 (SSS)
+- 按类别的毛利率
+- 存货周转率 — 目标因细分而异（食品杂货：14-20x，时尚：4-6x）
+- 每平方英尺收入（实体店）
+- 客户获取成本 vs 平均订单价值
+- 退货率对单位经济的影响
 
-**Valuation Multiples:**
-- EV/EBITDA: 8-15x (premium brands higher)
-- P/E: 15-25x
+**估值倍数：**
+- EV/EBITDA：8-15x（高端品牌更高）
+- P/E：15-25x
 
-**Considerations:**
-- Seasonal revenue concentration (Q4 holiday)
-- Working capital intensity (inventory cycles)
-- Omnichannel attribution complexity
+**考量因素：**
+- 季节性收入集中（Q4 假日）
+- 营运资本密集度（库存周期）
+- 全渠道归因复杂性
 
-## Manufacturing
+## 制造业
 
-**Key Metrics:**
-- Gross margin by product line
-- Capacity utilization rate — target >80%
-- Days Inventory Outstanding (DIO)
-- Warranty reserve as % of revenue
-- Capex as % of revenue (maintenance vs. growth)
-- Order backlog / book-to-bill ratio
+**关键指标：**
+- 按产品线的毛利率
+- 产能利用率 — 目标 >80%
+- 存货周转天数 (DIO)
+- 保修准备金占收入百分比
+- 资本支出占收入百分比（维护 vs 增长）
+- 订单积压 / 订单出货比
 
-**Valuation Multiples:**
-- EV/EBITDA: 6-12x
-- P/E: 12-20x
+**估值倍数：**
+- EV/EBITDA：6-12x
+- P/E：12-20x
 
-**Considerations:**
-- Raw material cost volatility
-- Currency exposure in supply chain
-- Depreciation schedules (straight-line vs. accelerated)
-- Regulatory compliance costs (environmental, safety)
+**考量因素：**
+- 原材料价格波动
+- 供应链中的汇率风险
+- 折旧方法（直线法 vs 加速法）
+- 法规合规成本（环保、安全）
 
-## Financial Services
+## 金融服务
 
-**Key Metrics:**
-- Net Interest Margin (NIM)
-- Return on Equity (ROE) — target >12%
-- Cost-to-Income Ratio — target <60%
-- Non-Performing Loan (NPL) ratio
-- Tier 1 Capital Ratio — regulatory minimum varies
-- Assets Under Management (AUM) growth
+**关键指标：**
+- 净息差 (NIM)
+- 净资产收益率 (ROE) — 目标 >12%
+- 成本收入比 — 目标 <60%
+- 不良贷款率 (NPL)
+- 一级资本充足率 — 监管最低要求因情况而异
+- 资产管理规模 (AUM) 增长
 
-**Valuation Multiples:**
-- Price-to-Book (P/B): 1.0-2.5x
-- P/E: 10-18x
+**估值倍数：**
+- 市净率 (P/B)：1.0-2.5x
+- P/E：10-18x
 
-**Considerations:**
-- Regulatory capital requirements (Basel III/IV)
-- Interest rate sensitivity analysis
-- Credit risk provisioning (CECL / IFRS 9)
-- Mark-to-market vs. held-to-maturity accounting
+**考量因素：**
+- 监管资本要求 (Basel III/IV)
+- 利率敏感性分析
+- 信用风险拨备 (CECL / IFRS 9)
+- 按市值计价 vs 持有至到期会计
 
-## Healthcare
+## 医疗健康
 
-**Key Metrics:**
-- Revenue per patient / per bed
-- Payor mix (Medicare/Medicaid vs. commercial)
-- EBITDAR margin (rent-adjusted for facilities)
-- Clinical trial pipeline value (biotech/pharma)
-- Patent cliff exposure
-- R&D as % of revenue — benchmark 15-25% (pharma)
+**关键指标：**
+- 每患者/每床位收入
+- 支付方组合（Medicare/Medicaid vs 商业保险）
+- EBITDAR 利润率（设施调整后的租金）
+- 临床试验管线价值（生物技术/制药）
+- 专利悬崖风险
+- 研发占收入百分比 — 基准 15-25%（制药）
 
-**Valuation Multiples:**
-- EV/EBITDA: 10-18x (medtech), 12-20x (pharma)
-- EV/Revenue: 3-8x (services), 5-15x (devices)
+**估值倍数：**
+- EV/EBITDA：10-18x（医疗技术），12-20x（制药）
+- EV/收入：3-8x（服务），5-15x（设备）
 
-**Considerations:**
-- Reimbursement rate changes (regulatory risk)
-- FDA approval timelines and probability-weighted pipeline
-- 340B pricing program impact
-- Medical device regulation (MDR, QSR compliance)
+**考量因素：**
+- 报销费率变化（监管风险）
+- FDA 批准时间和概率加权管线
+- 340B 定价计划影响
+- 医疗器械监管 (MDR, QSR 合规)

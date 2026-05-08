@@ -1,70 +1,70 @@
-# iOS Navigation Patterns
+# iOS 导航模式
 
-## Tab Bar (Primary Navigation)
+## 标签栏（主导航）
 
-The tab bar provides access to main app destinations.
+标签栏提供对主要应用目标的访问。
 
-- **Position**: Bottom of screen, always visible (except modals/keyboards)
-- **Items**: 2-5 tabs maximum
-- **Overflow**: Use "More" tab if >5 destinations needed
-- **Selected state**: Fill color indicates active tab
-- **Labels**: 10-11pt SF text
-- **Background**: Slightly translucent with background blur ("frosted glass")
+- **位置**：屏幕底部，始终可见（模态框/键盘除外）
+- **项目**：最多 2-5 个标签页
+- **溢出**：如需超过 5 个目标，使用"更多"标签页
+- **选中状态**：填充颜色表示活动标签页
+- **标签**：10-11pt SF 文本
+- **背景**：略微半透明带背景模糊（"磨砂玻璃"）
 
-**Behavior**:
-- Each tab remembers its navigation state
-- Tapping active tab returns to root screen of that tab
-- Tab bar hidden during modals and keyboard display
+**行为**：
+- 每个标签页记住其导航状态
+- 点击活动标签页返回该标签页的根界面
+- 在模态框和键盘显示时隐藏标签栏
 
-## Navigation Bar (Contextual Navigation)
+## 导航栏（上下文导航）
 
-- **Back button**: Top-left, allows return to previous screen
-- **Actions**: Top-right, context-specific actions
-- **Title**: Center (scrolled state) or left-aligned large title (unscrolled)
+- **返回按钮**：左上角，允许返回到上一个界面
+- **操作**：右上角，上下文相关操作
+- **标题**：居中（滚动状态）或左对齐大标题（未滚动）
 
-**Scroll Behavior**:
-- Large title collapses to compact centered title on scroll
-- Search bar can move or hide on scroll
-- Smooth animated transitions between states
+**滚动行为**：
+- 大标题在滚动时折叠为紧凑的居中标题
+- 搜索栏可以在滚动时移动或隐藏
+- 状态之间的平滑动画过渡
 
-## Navigating Back
+## 导航返回
 
-| Method | Context |
-|--------|---------|
-| "Back" button (top-left) | Standard navigation |
-| Swipe right from left edge | Standard navigation |
-| "Cancel" / "Done" button | Modal views |
-| Swipe down on content | Modals, fullscreen media |
+| 方式 | 上下文 |
+|------|--------|
+| "返回"按钮（左上角） | 标准导航 |
+| 从左边缘右滑 | 标准导航 |
+| "取消"/"完成"按钮 | 模态视图 |
+| 在内容上向下滑动 | 模态框、全屏媒体 |
 
-## Modal Sheets
+## 模态 Sheet
 
-Use modals for focused tasks that shouldn't interrupt context completely.
+使用模态框处理不应该完全打断上下文的聚焦任务。
 
-- Slides up from bottom
-- Previous screen visible (recessed) in background
-- Dismiss via: close button, swipe down, or completing task
+- 从底部滑入
+- 上一个界面在背景中可见（凹入）
+- 可通过关闭按钮、向下滑动或完成任务关闭
 
 ---
 
-## Search UI Patterns
+## 搜索 UI 模式
 
-### Search Bar Placement
+### 搜索栏位置
 
-| Context | Placement |
-|---------|-----------|
-| Primary search (core feature) | Navigation bar, persistent |
-| Secondary search | Below nav, hidden on scroll |
-| List filtering | Above list, inline |
+| 上下文 | 位置 |
+|--------|------|
+| 主要搜索（核心功能） | 导航栏，始终显示 |
+| 次要搜索 | 导航栏下方，滚动时隐藏 |
+| 列表筛选 | 列表上方，内联 |
 
-### Search Behavior
+### 搜索行为
 
-**States:**
-1. **Inactive:** Placeholder text, magnifying glass icon
-2. **Active/Focused:** Keyboard appears, cancel button shows
-3. **Typing:** Results update (instant or debounced)
-4. **Results:** Displayed in list below
+**状态：**
+1. **非活动：** 占位符文本，放大镜图标
+2. **活动/聚焦：** 键盘出现，取消按钮显示
+3. **输入中：** 结果更新（即时或防抖）
+4. **结果：** 在下方列表中显示
 
-**SwiftUI implementation:**
+**SwiftUI 实现：**
 ```swift
 .searchable(
     text: $searchText,
@@ -73,12 +73,12 @@ Use modals for focused tasks that shouldn't interrupt context completely.
 )
 ```
 
-### Search Suggestions
+### 搜索建议
 
-- Recent searches
-- Trending/popular searches
-- Autocomplete suggestions
-- Scoped suggestions (filter by category)
+- 最近搜索
+- 热门/趋势搜索
+- 自动完成建议
+- 范围建议（按类别筛选）
 
 ```swift
 .searchable(text: $searchText) {
@@ -91,41 +91,41 @@ Use modals for focused tasks that shouldn't interrupt context completely.
 
 ---
 
-## Split View Navigation (iPad)
+## 分割视图导航（iPad）
 
-### Two-Column Layout
+### 两列布局
 
 ```
 ┌──────────────────┬────────────────────────────────┐
 │                  │                                │
-│  Primary List    │     Detail View                │
-│  (Sidebar)       │                                │
+│  主列表          │     详情视图                   │
+│  （侧边栏）      │                                │
 │                  │                                │
-│  Item 1          │     Selected item details      │
+│  Item 1          │     选中项目详情               │
 │  Item 2 ←        │                                │
 │  Item 3          │                                │
 │                  │                                │
 └──────────────────┴────────────────────────────────┘
 ```
 
-**Behavior:**
-- Primary column: 320pt default width
-- Detail column: Fills remaining space
-- Collapse to single column on compact width
+**行为：**
+- 主列：默认宽度 320pt
+- 详情列：填充剩余空间
+- 在紧凑宽度下折叠为单列
 
-### Three-Column Layout
+### 三列布局
 
 ```
 ┌────────────┬────────────┬──────────────────────────┐
-│  Sidebar   │ Content    │    Detail                │
+│  侧边栏    │ 内容       │    详情                 │
 │            │            │                          │
-│  Section 1 │  Item A    │    Item details here     │
-│  Section 2 │  Item B ←  │                          │
-│  Section 3 │  Item C    │                          │
+│  Section 1 │ Item A     │     此处显示项目详情     │
+│  Section 2 │ Item B ←   │                          │
+│  Section 3 │ Item C     │                          │
 └────────────┴────────────┴──────────────────────────┘
 ```
 
-**SwiftUI:**
+**SwiftUI：**
 ```swift
 NavigationSplitView {
     Sidebar()
@@ -136,15 +136,15 @@ NavigationSplitView {
 }
 ```
 
-### Responsive Behavior
+### 响应式行为
 
-| Width | Behavior |
-|-------|----------|
-| Compact (iPhone) | Stack navigation |
-| Regular (iPad portrait) | Two-column or overlay |
-| Regular (iPad landscape) | Three-column available |
+| 宽度 | 行为 |
+|------|------|
+| 紧凑（iPhone） | 堆栈导航 |
+| 常规（iPad 竖屏） | 两列或覆盖 |
+| 常规（iPad 横屏） | 三列可用 |
 
-**Best practices:**
-- Show placeholder in detail when nothing selected
-- Remember selection across rotation
-- Support column resizing (where appropriate)
+**最佳实践：**
+- 未选择任何内容时在详情中显示占位符
+- 在旋转后记住选择
+- 支持列大小调整（在适当时）

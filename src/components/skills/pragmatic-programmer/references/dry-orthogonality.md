@@ -1,37 +1,37 @@
-# DRY and Orthogonality
+# DRY 和正交性
 
-Deep reference for the two most foundational principles of pragmatic programming. Load when deeper guidance is needed on eliminating duplication and designing decoupled systems.
+实用主义编程两个最基础原则的深度参考。当需要关于消除重复和设计解耦系统方面的更深入指导时加载。
 
-## Table of Contents
-1. [DRY: Knowledge, Not Code](#dry-knowledge-not-code)
-2. [The Four Types of Duplication](#the-four-types-of-duplication)
-3. [Detecting DRY Violations](#detecting-dry-violations)
-4. [Orthogonality Defined](#orthogonality-defined)
-5. [Orthogonality in Design](#orthogonality-in-design)
-6. [Orthogonality in Coding](#orthogonality-in-coding)
-7. [Measuring Orthogonality](#measuring-orthogonality)
-8. [Benefits of Orthogonal Systems](#benefits-of-orthogonal-systems)
+## 目录
+1. [DRY：知识，而非代码](#dry知识而非代码)
+2. [四种类型的重复](#四种类型的重复)
+3. [检测 DRY 违规](#检测-dry-违规)
+4. [正交性定义](#正交性定义)
+5. [设计中的正交性](#设计中的正交性)
+6. [编码中的正交性](#编码中的正交性)
+7. [衡量正交性](#衡量正交性)
+8. [正交系统的优势](#正交系统的优势)
 
 ---
 
-## DRY: Knowledge, Not Code
+## DRY：知识，而非代码
 
-The most common misunderstanding of DRY is treating it as "don't have similar-looking code." DRY is about **knowledge** -- every piece of knowledge must have a single, unambiguous, authoritative representation in the system.
+对 DRY 最常见的误解是将其视为"不要有看起来相似的代码。"DRY 是关于**知识**的——每一条知识在系统中必须具有单一、明确、权威的表示。
 
-### What Counts as Knowledge?
+### 什么算作知识？
 
-- **Business rules**: "Users get 3 free trials" should exist in one place
-- **Data schemas**: The shape of a user record should be defined once
-- **Algorithms**: A discount calculation should have one implementation
-- **Configuration**: Database connection strings should come from one source
-- **API contracts**: The interface between systems should be defined once
+- **业务规则：** "用户有 3 次免费试用"应该存在于一个地方
+- **数据 schema：** 用户记录的形状应该定义一次
+- **算法：** 折扣计算应该有一个实现
+- **配置：** 数据库连接字符串应该来自单一来源
+- **API 契约：** 系统之间的接口应该定义一次
 
-### What Does NOT Count as Duplication?
+### 什么不算重复？
 
-Two pieces of code may look identical but represent different knowledge:
+两段代码可能看起来相同，但代表不同的知识：
 
 ```python
-# These are NOT DRY violations -- they serve different business rules
+# 这些不是 DRY 违规——它们服务于不同的业务规则
 
 def validate_billing_address(address):
     return len(address.zip_code) == 5
@@ -40,172 +40,172 @@ def validate_shipping_address(address):
     return len(address.zip_code) == 5
 ```
 
-Today these look the same, but billing validation and shipping validation are governed by different business rules. When shipping starts supporting international addresses, they'll diverge. Merging them would create coupling between unrelated concepts.
+今天它们看起来一样，但账单地址验证和收货地址验证受不同的业务规则支配。当收货开始支持国际地址时，它们会分化。合并它们会在不相关的概念之间产生耦合。
 
-**The test:** If one changes, must the other change? If yes, it's duplication. If they could diverge independently, it's coincidence.
-
----
-
-## The Four Types of Duplication
-
-### 1. Imposed Duplication
-
-The environment or tooling forces duplication.
-
-**Examples:**
-- Language requires header files that repeat function signatures
-- Multiple platforms need the same validation (iOS, Android, web)
-- API documentation must match the implementation
-
-**Mitigations:**
-- Generate code from a single source (OpenAPI -> client + server + docs)
-- Use code generation for cross-platform shared logic
-- Keep documentation in code (docstrings, annotations) and generate external docs
-- Use database migrations as the single source of schema truth
-
-### 2. Inadvertent Duplication
-
-Developers don't realize they're duplicating knowledge.
-
-**Examples:**
-- A `Line` class stores `start`, `end`, AND `length` -- length is derivable
-- The same business rule exists in the frontend form validation and the backend API
-- Configuration defaults are hard-coded in multiple services
-
-**Mitigations:**
-- Derive values instead of storing them: `@property def length(self): return self.end - self.start`
-- Share validation schemas between frontend and backend (e.g., Zod, JSON Schema)
-- Centralize configuration with a config service or shared env files
-
-### 3. Impatient Duplication
-
-"I'll clean it up later." Developers know they're duplicating but choose speed.
-
-**Examples:**
-- Copy-pasting a utility function into a new service instead of extracting a shared library
-- Duplicating a SQL query with slight modifications instead of parameterizing
-- Hardcoding a value that already exists in a config file
-
-**Mitigations:**
-- Make the right thing easy: invest in shared libraries, package registries, and templates
-- Time-box the "right way" -- often it takes only 10 minutes more than copy-paste
-- Code review: flag copy-paste duplication as a blocker, not a nit
-
-### 4. Inter-Developer Duplication
-
-Multiple developers or teams unknowingly build the same thing.
-
-**Examples:**
-- Two teams build their own date-formatting utility
-- Three microservices each implement user authentication logic
-- Frontend and backend teams both build a currency formatter
-
-**Mitigations:**
-- Establish shared libraries and make them discoverable (internal package registry)
-- Regular cross-team architecture reviews
-- Appoint a "librarian" or use a tech radar to track shared concerns
-- Use a monorepo or shared packages to make duplication visible
+**检验标准：** 如果一个发生变化，另一个是否也必须变化？如果是，就是重复。如果它们可以独立分化，那就是巧合。
 
 ---
 
-## Detecting DRY Violations
+## 四种类型的重复
 
-### Code-Level Signals
+### 1. 强加式重复
 
-| Signal | What It Suggests |
+环境或工具强制导致的重复。
+
+**示例：**
+- 语言要求头文件重复函数签名
+- 多个平台需要相同的验证（iOS、Android、Web）
+- API 文档必须与实现匹配
+
+**缓解措施：**
+- 从单一来源生成代码（OpenAPI -> 客户端 + 服务端 + 文档）
+- 对跨平台共享逻辑使用代码生成
+- 将文档保留在代码中（docstring、注解）并生成外部文档
+- 将数据库迁移作为 schema 真相的单一来源
+
+### 2. 无意式重复
+
+开发人员没有意识到他们在重复知识。
+
+**示例：**
+- 一个 `Line` 类存储了 `start`、`end` 和 `length`——length 是可推导的
+- 相同业务规则同时存在于前端表单验证和后端 API
+- 配置默认值在多个服务中被硬编码
+
+**缓解措施：**
+- 推导值而非存储：`@property def length(self): return self.end - self.start`
+- 在前端和后端之间共享验证 schema（例如 Zod、JSON Schema）
+- 通过配置服务或共享环境文件集中管理配置
+
+### 3. 急躁式重复
+
+"我稍后再清理。"开发人员知道他们在重复，但选择了速度。
+
+**示例：**
+- 将工具函数复制粘贴到新服务中，而不是提取为共享库
+- 复制 SQL 查询并略作修改，而不是参数化
+- 硬编码本已存在于配置文件中的值
+
+**缓解措施：**
+- 让正确的方式变得容易：投资共享库、包注册中心和模板
+- 为"正确方式"设定时间限制——通常只比复制粘贴多花 10 分钟
+- 代码审查：将复制粘贴的重复标记为阻塞项，而非小问题
+
+### 4. 开发者间重复
+
+多个开发者或团队在不知情的情况下构建了相同的东西。
+
+**示例：**
+- 两个团队各自构建了自己的日期格式化工具
+- 三个微服务各自实现了用户认证逻辑
+- 前端和后端团队都构建了货币格式化器
+
+**缓解措施：**
+- 建立共享库并使其可被发现（内部包注册中心）
+- 定期的跨团队架构评审
+- 指定"图书管理员"或使用技术雷达跟踪共享关注点
+- 使用 monorepo 或共享包使重复可见
+
+---
+
+## 检测 DRY 违规
+
+### 代码层面的信号
+
+| 信号 | 暗示什么 |
 |--------|-----------------|
-| Shotgun surgery (changing one thing requires touching 5+ files) | Knowledge is scattered |
-| "Find and replace" is your refactoring strategy | Same knowledge in multiple places |
-| Bug fix in one place doesn't fix it everywhere | Duplicated logic |
-| New developer asks "which one is the real one?" | Multiple sources of truth |
-| Enum values are defined in both code and database | Schema duplication |
+| 霰弹式修改（改一个东西要碰 5+ 个文件） | 知识分散在各处 |
+| "查找并替换"就是你的重构策略 | 同一知识在多个地方 |
+| 一处的 bug 修复没有在所有地方修复 | 逻辑重复 |
+| 新开发者问"哪一个是真正正确的？" | 多个真相来源 |
+| 枚举值在代码和数据库中都定义了 | schema 重复 |
 
-### Architecture-Level Signals
+### 架构层面的信号
 
-| Signal | What It Suggests |
+| 信号 | 暗示什么 |
 |--------|-----------------|
-| Multiple services validate the same business rule differently | Inter-service duplication |
-| Config values are hard-coded in multiple deployment scripts | Imposed duplication |
-| API documentation regularly drifts from implementation | Docs/code duplication |
-| "We need to update this in 3 places" | Knowledge not centralized |
+| 多个服务以不同方式验证同一业务规则 | 服务间重复 |
+| 配置值在多个部署脚本中被硬编码 | 强加式重复 |
+| API 文档经常偏离实现 | 文档/代码重复 |
+| "我们需要在 3 个地方更新这个" | 知识未集中 |
 
 ---
 
-## Orthogonality Defined
+## 正交性定义
 
-In geometry, orthogonal lines meet at right angles -- moving along one axis doesn't affect your position on the other. In software, two components are orthogonal if changes in one have no effect on the other.
+在几何学中，正交线以直角相交——沿一个轴移动不影响你在另一个轴上的位置。在软件中，如果两个组件在一个组件中的更改不影响另一个，则它们是正交的。
 
-**The helicopter analogy:** A traditional helicopter has four controls, all coupled -- changing collective pitch affects yaw, which requires compensating with the tail rotor, which changes roll. Flying a helicopter is hard because nothing is orthogonal. Good software should be the opposite: each control affects exactly one thing.
+**直升机类比：** 传统直升机有四个控制器，全部耦合——改变总距会影响偏航，需要尾桨补偿，这又改变了横滚。驾驶直升机之所以难，就是因为没有任何东西是正交的。好的软件应该相反：每个控制器精确影响一件事。
 
 ---
 
-## Orthogonality in Design
+## 设计中的正交性
 
-### Layered Architecture
+### 分层架构
 
-The most common way to achieve orthogonality is through layers:
+实现正交性最常用的方式是通过分层：
 
 ```
 ┌─────────────────────┐
-│   Presentation      │  (UI, API endpoints, CLI)
+│   表现层            │  (UI、API 端点、CLI)
 ├─────────────────────┤
-│   Application       │  (Use cases, workflows)
+│   应用层            │  (用例、工作流)
 ├─────────────────────┤
-│   Domain            │  (Business rules, entities)
+│   领域层            │  (业务规则、实体)
 ├─────────────────────┤
-│   Infrastructure    │  (DB, external APIs, filesystem)
+│   基础设施层        │  (DB、外部 API、文件系统)
 └─────────────────────┘
 ```
 
-**Test:** If you dramatically change the UI framework, how many layers need to change? Ideally, only the presentation layer. If domain logic lives in UI components, you have a coupling problem.
+**测试：** 如果你大幅改变 UI 框架，有多少层需要改变？理想情况下，只有表现层。如果领域逻辑存在于 UI 组件中，你就有了耦合问题。
 
-### Component Independence Checklist
+### 组件独立性检查清单
 
-| Question | Good Answer |
+| 问题 | 好的回答 |
 |----------|-------------|
-| Can I test this component in isolation? | Yes, with mocked dependencies |
-| If I remove this component, what breaks? | Only things that directly depend on it |
-| Does this component know about the deployment environment? | No, it receives config via injection |
-| Can two developers work on separate components without conflicts? | Yes, interfaces are stable |
-| Does this component import from more than one architectural layer? | No, it depends only on the layer below |
+| 我能单独测试这个组件吗？ | 是的，使用模拟依赖 |
+| 如果移除这个组件，什么东西会坏？ | 只有直接依赖它的东西 |
+| 这个组件知道部署环境吗？ | 不知道，它通过注入接收配置 |
+| 两个开发者能互不干扰地处理不同组件吗？ | 是的，接口是稳定的 |
+| 这个组件从多个架构层导入吗？ | 不会，它只依赖下一层 |
 
 ---
 
-## Orthogonality in Coding
+## 编码中的正交性
 
-### Strategies for Keeping Code Orthogonal
+### 保持代码正交的策略
 
-**1. Avoid global state.** Every piece of global state is a coupling point. Every module that reads or writes it is coupled to every other module that does the same.
+**1. 避免全局状态。** 每一块全局状态都是一个耦合点。每个读取或写入它的模块都与同样做法的其他模块耦合。
 
 ```python
-# Bad: global coupling
-CURRENT_USER = None  # every module reads/writes this
+# 差：全局耦合
+CURRENT_USER = None  # 每个模块都读/写这个
 
-# Good: explicit parameter
+# 好：显式参数
 def process_order(order, user):
     ...
 ```
 
-**2. Avoid similar functions.** If two functions share significant structure, extract the commonality into a third function and have both call it.
+**2. 避免相似函数。** 如果两个函数共享显著的结构，将共性提取到第三个函数中，让两者都调用它。
 
-**3. Use the Shy Code rule.** Modules should not reveal anything unnecessary about themselves and should not rely on the implementation details of other modules.
+**3. 使用害羞代码规则。** 模块不应暴露任何不必要的自身信息，也不应依赖其他模块的实现细节。
 
 ```python
-# Bad: reaching through objects (Law of Demeter violation)
+# 差：透过对象访问（迪米特法则违反）
 user.address.city.zip_code
 
-# Good: ask, don't tell
+# 好：询问，不要告知
 user.shipping_zip_code()
 ```
 
-**4. Prefer composition over inheritance.** Inheritance creates tight coupling between parent and child. Composition (using interfaces and delegation) keeps components independent.
+**4. 优先使用组合而非继承。** 继承在父类和子类之间创建了紧密耦合。组合（使用接口和委托）使组件保持独立。
 
 ```python
-# Inheritance: tightly coupled
+# 继承：紧密耦合
 class AdminUser(User):
     def can_delete(self): return True
 
-# Composition: loosely coupled
+# 组合：松散耦合
 class User:
     def __init__(self, permissions: Permissions):
         self.permissions = permissions
@@ -215,50 +215,50 @@ class User:
 
 ---
 
-## Measuring Orthogonality
+## 衡量正交性
 
-### The Change Impact Test
+### 变更影响测试
 
-For any proposed change, count the number of modules affected:
+对于任何提议的变更，计算受影响的模块数量：
 
-| Change Scope | Modules Affected | Assessment |
+| 变更范围 | 受影响的模块 | 评估结果 |
 |-------------|------------------|------------|
-| Fix a bug in tax calculation | 1 (tax module) | Excellent orthogonality |
-| Change database from Postgres to MySQL | 1-2 (data layer) | Good orthogonality |
-| Add a new field to user profile | 3-5 (model, API, UI, migration, tests) | Acceptable (vertical feature) |
-| Change the logging library | 15+ modules | Poor orthogonality -- logging is coupled everywhere |
+| 修复税费计算中的 bug | 1（税费模块） | 极好的正交性 |
+| 将数据库从 Postgres 改为 MySQL | 1-2（数据层） | 良好的正交性 |
+| 为用户资料添加新字段 | 3-5（模型、API、UI、迁移、测试） | 可接受（垂直功能） |
+| 更换日志库 | 15+ 个模块 | 正交性差——日志到处耦合 |
 
-### The "Stranger" Test
+### "陌生人"测试
 
-Could a developer unfamiliar with the codebase change one component without breaking others? If yes, your system is orthogonal. If they need to understand the full system to make any change, it is not.
+一个不熟悉代码库的开发人员能否更改一个组件而不破坏其他组件？如果能，你的系统是正交的。如果他们需要理解整个系统才能做出任何更改，则不是。
 
 ---
 
-## Benefits of Orthogonal Systems
+## 正交系统的优势
 
-### Productivity Gains
+### 生产力提升
 
-- **Changes are localized:** fixing a bug in one component doesn't cause regressions elsewhere
-- **Reuse is easier:** self-contained components can be extracted and used in other projects
-- **Parallel development:** teams can work independently on different components
-- **Testing is simpler:** unit tests cover isolated components without elaborate setup
+- **变更是局部的：** 修复一个组件中的 bug 不会在其他地方引起回归
+- **复用更容易：** 自包含的组件可以被提取出来并在其他项目中使用
+- **并行开发：** 团队可以独立处理不同组件
+- **测试更简单：** 单元测试覆盖隔离的组件，无需复杂的设置
 
-### Risk Reduction
+### 风险降低
 
-- **Diseased sections are isolated:** a poorly-written module doesn't infect neighboring code
-- **Less fragile:** the system doesn't shatter when one thing changes
-- **Better tested:** orthogonal components are inherently easier to test, so they get tested more
-- **Not tied to a vendor:** when the database is behind an interface, switching vendors is a bounded task
+- **有问题的部分被隔离：** 一个编写糟糕的模块不会感染邻近代码
+- **更不脆弱：** 系统不会因为一件事变化就崩溃
+- **测试更好：** 正交组件天生更容易测试，因此获得更多测试
+- **不绑定供应商：** 当数据库在接口后面时，切换供应商是一个有边界的任务
 
-### The Compound Effect
+### 复合效应
 
-Orthogonality and DRY are multiplicative. A system that is both DRY and orthogonal sees dramatic improvements:
+正交性和 DRY 是乘法关系。同时具备 DRY 和正交性的系统会看到巨大改善：
 
-| Property | Without DRY/Orthogonality | With Both |
+| 属性 | 没有 DRY/正交性 | 两者兼备 |
 |----------|--------------------------|-----------|
-| Bug fix time | Hours (find all duplicates, test all couplings) | Minutes (one change, one test) |
-| Feature addition | High risk of regressions | Localized, predictable impact |
-| Onboarding time | Weeks to understand dependencies | Days to become productive |
-| Deployment confidence | "Deploy and pray" | "Deploy and verify" |
+| Bug 修复时间 | 数小时（找到所有重复、测试所有耦合） | 数分钟（一次更改、一次测试） |
+| 添加功能 | 高回归风险 | 局部化、可预测的影响 |
+| 上手时间 | 数周理解依赖关系 | 数天即可高效工作 |
+| 部署信心 | "部署并祈祷" | "部署并验证" |
 
-The pragmatic programmer pursues both relentlessly -- not for theoretical purity, but because the compound effect saves enormous amounts of time and pain over the life of a project.
+实用主义程序员不懈追求两者——不是为了理论上的纯粹，而是因为在项目的生命周期中，复合效应节省了巨大的时间和痛苦。

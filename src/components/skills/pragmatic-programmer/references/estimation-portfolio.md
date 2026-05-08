@@ -1,326 +1,326 @@
-# Estimation and Knowledge Portfolio
+# 估算与知识投资组合
 
-Deep reference for reliable estimation techniques and continuous learning strategies. Load when guidance is needed on project estimation, PERT analysis, or managing a developer's knowledge portfolio.
+关于可靠估算技术和持续学习策略的深度参考。当需要关于项目估算、PERT 分析或管理开发人员知识投资组合方面的指导时加载。
 
-## Table of Contents
-1. [How to Estimate](#how-to-estimate)
-2. [Understanding Scope](#understanding-scope)
-3. [Building a Model](#building-a-model)
-4. [PERT Estimation](#pert-estimation)
-5. [Decomposition Strategies](#decomposition-strategies)
-6. [Estimation Calibration](#estimation-calibration)
-7. [Knowledge Portfolio Management](#knowledge-portfolio-management)
-8. [Critical Thinking](#critical-thinking)
+## 目录
+1. [如何估算](#如何估算)
+2. [理解范围](#理解范围)
+3. [建立模型](#建立模型)
+4. [PERT 估算](#pert-估算)
+5. [分解策略](#分解策略)
+6. [估算校准](#估算校准)
+7. [知识投资组合管理](#知识投资组合管理)
+8. [批判性思维](#批判性思维)
 
 ---
 
-## How to Estimate
+## 如何估算
 
-Estimation is the pragmatic programmer's most valuable communication skill. A good estimate sets appropriate expectations. A bad estimate destroys trust.
+估算是实用主义程序员最有价值的沟通技能。一个好的估算设定适当的期望。一个差的估算破坏信任。
 
-### The Context Question
+### 上下文问题
 
-Before estimating anything, ask: **"What is this estimate for?"** The answer determines the precision required:
+在估算任何东西之前，先问：**"这个估算为了什么？"** 答案决定了所需的精度：
 
-| Context | Precision Needed | Appropriate Format |
+| 上下文 | 所需精度 | 适当格式 |
 |---------|-----------------|-------------------|
-| Budget planning (next year) | Order of magnitude | "6 months, give or take 3" |
-| Quarterly planning | Weeks | "4-8 weeks" |
-| Sprint planning | Days | "3-5 days" |
-| Daily standup | Hours | "About 4 hours remaining" |
-| Production incident | Minutes | "ETA: 30-60 minutes" |
+| 预算规划（明年） | 数量级 | "6 个月，上下浮动 3" |
+| 季度规划 | 周 | "4-8 周" |
+| Sprint 规划 | 天 | "3-5 天" |
+| 每日站会 | 小时 | "大约还剩 4 小时" |
+| 生产事故 | 分钟 | "预计：30-60 分钟" |
 
-**Key insight:** Stating "it'll take 2 weeks" for a quarterly planning exercise implies false precision. Stating "1-3 weeks" is more honest and more useful.
+**关键见解：** 为季度规划活动说"需要 2 周"暗示了错误精度。说"1-3 周"更诚实，也更有用。
 
-### The Units Tell a Story
+### 单位讲述故事
 
-Choose units that convey the right level of uncertainty:
+选择传达正确不确定程度的单位：
 
-| Estimate | What the Listener Hears |
+| 估算 | 听者听到的 |
 |----------|------------------------|
-| "128 hours" | "They calculated this precisely; it should be exactly 128 hours" |
-| "About 3 weeks" | "Roughly 3 weeks, could be 2-4" |
-| "1-2 months" | "It's a big effort with meaningful uncertainty" |
-| "6 months, give or take" | "We're really not sure; this is a rough order of magnitude" |
+| "128 小时" | "他们精确计算过了；应该正好 128 小时" |
+| "大约 3 周" | "大致 3 周，可能是 2-4" |
+| "1-2 个月" | "工作量很大，有相当的不确定性" |
+| "6 个月，上下浮动" | "我们真的不确定；这是一个粗略的数量级" |
 
-Use the roughest unit that matches your actual confidence level.
+使用与你实际置信水平匹配的最粗略的单位。
 
 ---
 
-## Understanding Scope
+## 理解范围
 
-The first step in any estimate is understanding what you're estimating. This sounds obvious but is the most common source of estimation failure.
+任何估算的第一步是理解你正在估算什么。这听起来显而易见，但这是估算失败最常见的来源。
 
-### Scope Clarification Questions
+### 范围澄清问题
 
-| Question | Why It Matters |
+| 问题 | 为什么重要 |
 |----------|---------------|
-| What's included? | "Build a login page" -- does that include password reset? OAuth? 2FA? |
-| What's excluded? | Explicit exclusions prevent scope creep after estimation |
-| What can I assume? | "Can I use an existing component library or build from scratch?" |
-| What's the quality bar? | MVP vs. production-hardened vs. enterprise-grade |
-| Who's the audience? | Internal tool vs. public-facing vs. API for partners |
-| What are the dependencies? | "I need the design team to deliver mocks first" |
+| 包含什么？ | "构建登录页面"——这包括密码重置吗？OAuth？双因素认证？ |
+| 排除什么？ | 明确排除可防止估算后的范围蔓延 |
+| 我可以假设什么？ | "我可以使用现有的组件库还是从头构建？" |
+| 质量标准是什么？ | MVP vs 生产级 vs 企业级 |
+| 受众是谁？ | 内部工具 vs 面向公众 vs 合作伙伴 API |
+| 依赖项是什么？ | "我需要设计团队先交付原型" |
 
-### The Scope Multiplier Table
+### 范围乘数表
 
-The same feature at different quality levels:
+同一功能在不同质量级别：
 
-| Quality Level | Multiplier | Includes |
+| 质量级别 | 乘数 | 包含内容 |
 |--------------|-----------|----------|
-| **Spike/Prototype** | 1x | Happy path only, no tests, no error handling |
-| **MVP** | 2-3x | Happy path + basic error handling + basic tests |
-| **Production-ready** | 4-6x | Full error handling, monitoring, tests, documentation |
-| **Enterprise-grade** | 8-12x | Security audit, compliance, HA, disaster recovery, SLA |
+| **Spike/原型** | 1x | 仅快乐路径，无测试，无错误处理 |
+| **MVP** | 2-3x | 快乐路径 + 基本错误处理 + 基本测试 |
+| **生产级** | 4-6x | 完整错误处理、监控、测试、文档 |
+| **企业级** | 8-12x | 安全审计、合规、高可用、灾难恢复、SLA |
 
-A "login page" that takes 2 days as a prototype takes 8-12 days as production-ready. Make sure you and the stakeholder agree on the quality level before estimating.
+一个"登录页面"作为原型需要 2 天，作为生产级需要 8-12 天。确保你与利益相关者在估算前就质量级别达成一致。
 
 ---
 
-## Building a Model
+## 建立模型
 
-Good estimates come from models, not gut feelings. A model breaks the work into components whose effort you can reason about.
+好的估算来自模型，而非直觉。模型将工作分解为你可以推断工作量的组件。
 
-### Types of Models
+### 模型类型
 
-**Analogy-based:** "This is similar to the payment integration we built last quarter, which took 3 weeks. This is simpler, so 2 weeks."
+**基于类比：** "这类似于我们上季度做的支付集成，花了 3 周。这个更简单，所以 2 周。"
 
-**Decomposition-based:** Break into tasks, estimate each, sum with a buffer. (See Decomposition Strategies below.)
+**基于分解：** 分解为任务，分别估算，加总并留缓冲。（参见下方的分解策略。）
 
-**Historical data-based:** "Our team averages 8 story points per sprint. This epic is ~40 points, so 5 sprints."
+**基于历史数据：** "我们团队每个 sprint 平均完成 8 个 story point。这个 epic 大约 40 点，所以 5 个 sprint。"
 
-**Three-point (PERT):** Estimate optimistic, most likely, and pessimistic. Calculate expected value. (See PERT Estimation below.)
+**三点法（PERT）：** 估算乐观、最可能和悲观值。计算期望值。（参见下方的 PERT 估算。）
 
-### Model Validation
+### 模型验证
 
-After building a model, sanity-check it:
+建立模型后，进行合理性检查：
 
-| Check | How |
+| 检查项 | 方式 |
 |-------|-----|
-| **Comparison** | "Is this estimate in the same ballpark as similar past work?" |
-| **Gut check** | "Does this feel right based on my experience?" |
-| **Peer review** | "Does another senior engineer agree with this estimate?" |
-| **Boundary test** | "What's the absolute minimum time? What's the longest it could possibly take?" |
+| **对比** | "这个估算与过去类似工作在同一量级吗？" |
+| **直觉** | "基于我的经验，这个感觉对吗？" |
+| **同行评审** | "另一位资深工程师同意这个估算吗？" |
+| **边界测试** | "绝对最短时间是多少？最长可能需要多久？" |
 
 ---
 
-## PERT Estimation
+## PERT 估算
 
-Program Evaluation and Review Technique (PERT) uses three estimates to produce a weighted average:
+计划评审技术（PERT）使用三个估算值产生加权平均值：
 
-### The Formula
+### 公式
 
 ```
-Expected = (Optimistic + 4 × Most Likely + Pessimistic) / 6
-Standard Deviation = (Pessimistic - Optimistic) / 6
+期望值 = (乐观值 + 4 × 最可能值 + 悲观值) / 6
+标准差 = (悲观值 - 乐观值) / 6
 ```
 
-### Example
+### 示例
 
-Estimating a database migration:
+估算数据库迁移：
 
-| Scenario | Value | Reasoning |
+| 场景 | 值 | 理由 |
 |----------|-------|-----------|
-| **Optimistic (O)** | 3 days | Schema is simple, no data transformation needed |
-| **Most Likely (M)** | 7 days | Some data transformation, testing in staging |
-| **Pessimistic (P)** | 15 days | Complex data issues, rollback needed, multiple attempts |
+| **乐观（O）** | 3 天 | Schema 简单，无需数据转换 |
+| **最可能（M）** | 7 天 | 一些数据转换，在 staging 环境中测试 |
+| **悲观（P）** | 15 天 | 复杂数据问题，需要回滚，多次尝试 |
 
 ```
-Expected = (3 + 4×7 + 15) / 6 = (3 + 28 + 15) / 6 = 46 / 6 ≈ 7.7 days
-Std Dev = (15 - 3) / 6 = 2 days
+期望值 = (3 + 4×7 + 15) / 6 = (3 + 28 + 15) / 6 = 46 / 6 ≈ 7.7 天
+标准差 = (15 - 3) / 6 = 2 天
 ```
 
-Communicate: **"About 8 days, with a range of 6-10 days (one standard deviation). Worst case: 15 days."**
+沟通方式：**"大约 8 天，范围 6-10 天（一个标准差）。最坏情况：15 天。"**
 
-### PERT for Multiple Tasks
+### 多任务的 PERT
 
-When estimating a project with multiple tasks, PERT each task separately, then sum:
+当估算包含多个任务的项目时，分别对每个任务使用 PERT，然后求和：
 
-| Task | O | M | P | Expected | Std Dev |
+| 任务 | O | M | P | 期望值 | 标准差 |
 |------|---|---|---|----------|---------|
-| Schema design | 1 | 2 | 5 | 2.3 | 0.7 |
-| Migration script | 2 | 4 | 8 | 4.3 | 1.0 |
-| Testing | 1 | 3 | 7 | 3.3 | 1.0 |
-| Rollback plan | 0.5 | 1 | 3 | 1.3 | 0.4 |
-| **Total** | | | | **11.2** | **1.6** |
+| Schema 设计 | 1 | 2 | 5 | 2.3 | 0.7 |
+| 迁移脚本 | 2 | 4 | 8 | 4.3 | 1.0 |
+| 测试 | 1 | 3 | 7 | 3.3 | 1.0 |
+| 回滚计划 | 0.5 | 1 | 3 | 1.3 | 0.4 |
+| **总计** | | | | **11.2** | **1.6** |
 
-Total standard deviation for independent tasks: `sqrt(0.7² + 1.0² + 1.0² + 0.4²) = sqrt(0.49 + 1.0 + 1.0 + 0.16) = sqrt(2.65) ≈ 1.6 days`
+独立任务的总标准差：`sqrt(0.7² + 1.0² + 1.0² + 0.4²) = sqrt(0.49 + 1.0 + 1.0 + 0.16) = sqrt(2.65) ≈ 1.6 天`
 
-Communicate: **"About 11 days, likely 10-13. Worst case: 23 days."**
+沟通方式：**"大约 11 天，可能 10-13 天。最坏情况：23 天。"**
 
 ---
 
-## Decomposition Strategies
+## 分解策略
 
-### Work Breakdown Structure (WBS)
+### 工作分解结构（WBS）
 
-Break work into progressively smaller pieces until each piece is estimable:
+将工作逐步分解为更小的部分，直到每个部分都可估算：
 
 ```
-Feature: User Authentication
-├── Design
-│   ├── API design (0.5 days)
-│   └── Database schema (0.5 days)
-├── Implementation
-│   ├── Registration endpoint (1 day)
-│   ├── Login endpoint (1 day)
-│   ├── Password hashing (0.5 days)
-│   ├── JWT token generation (0.5 days)
-│   ├── Token refresh (1 day)
-│   └── Password reset (1.5 days)
-├── Testing
-│   ├── Unit tests (1 day)
-│   ├── Integration tests (1 day)
-│   └── Security testing (0.5 days)
-├── Infrastructure
-│   ├── Database migration (0.5 days)
-│   └── Environment config (0.5 days)
-└── Documentation
-    └── API docs (0.5 days)
+功能：用户认证
+├── 设计
+│   ├── API 设计（0.5 天）
+│   └── 数据库 schema（0.5 天）
+├── 实现
+│   ├── 注册端点（1 天）
+│   ├── 登录端点（1 天）
+│   ├── 密码哈希（0.5 天）
+│   ├── JWT 令牌生成（0.5 天）
+│   ├── 令牌刷新（1 天）
+│   └── 密码重置（1.5 天）
+├── 测试
+│   ├── 单元测试（1 天）
+│   ├── 集成测试（1 天）
+│   └── 安全测试（0.5 天）
+├── 基础设施
+│   ├── 数据库迁移（0.5 天）
+│   └── 环境配置（0.5 天）
+└── 文档
+    └── API 文档（0.5 天）
 
-Subtotal: 10 days
-Buffer (20%): 2 days
-Total estimate: 12 days
+小计：10 天
+缓冲（20%）：2 天
+总估算：12 天
 ```
 
-### The Rule of Small Tasks
+### 小任务规则
 
-- Break tasks until each is **1 day or less**
-- Tasks larger than 2 days are too vague to estimate reliably
-- If you can't break a task down, you don't understand it well enough to estimate it
+- 分解任务直到每个任务**1 天或更少**
+- 超过 2 天的任务太模糊，无法可靠估算
+- 如果你无法分解一个任务，说明你对它的了解不足，无法估算它
 
-### Buffer Strategy
+### 缓冲策略
 
-| Buffer Type | Amount | Rationale |
+| 缓冲类型 | 数量 | 理由 |
 |-------------|--------|-----------|
-| **Task buffer** | +20% per task | Unknown unknowns within the task |
-| **Integration buffer** | +10-20% of total | Time to connect components |
-| **Risk buffer** | +10-30% based on novelty | New tech, new domain, new team |
-| **Communication buffer** | +10% | Meetings, reviews, decisions |
+| **任务缓冲** | 每个任务 +20% | 任务内的未知未知因素 |
+| **集成缓冲** | 总量的 +10-20% | 连接组件所需时间 |
+| **风险缓冲** | 基于新颖性的 +10-30% | 新技术、新领域、新团队 |
+| **沟通缓冲** | +10% | 会议、评审、决策 |
 
-**Total project buffer** typically ranges from 30-50% on top of raw task estimates. This isn't padding -- it's realism.
+**项目总缓冲**通常在原始任务估算之上 30-50%。这不是 padding——这是现实。
 
 ---
 
-## Estimation Calibration
+## 估算校准
 
-The secret to getting better at estimation: **track your accuracy and adjust.**
+提高估算能力的秘诀：**跟踪你的准确性并进行调整。**
 
-### The Estimation Log
+### 估算日志
 
-Keep a simple log:
+保持一个简单的日志：
 
-| Date | Task | Estimate | Actual | Ratio | Notes |
+| 日期 | 任务 | 估算 | 实际 | 比率 | 备注 |
 |------|------|----------|--------|-------|-------|
-| Jan 5 | Payment integration | 5 days | 8 days | 1.6x | Underestimated API complexity |
-| Jan 15 | User dashboard | 3 days | 2.5 days | 0.8x | Reused more components than expected |
-| Jan 22 | Data migration | 2 days | 6 days | 3.0x | Unexpected data quality issues |
+| 1 月 5 日 | 支付集成 | 5 天 | 8 天 | 1.6x | 低估了 API 复杂度 |
+| 1 月 15 日 | 用户仪表盘 | 3 天 | 2.5 天 | 0.8x | 复用了超出预期的组件 |
+| 1 月 22 日 | 数据迁移 | 2 天 | 6 天 | 3.0x | 意外的数据质量问题 |
 
-### Calibration Metrics
+### 校准指标
 
-After 20+ entries, calculate:
+在 20+ 个条目后，计算：
 
-| Metric | What It Tells You |
+| 指标 | 告诉你什么 |
 |--------|------------------|
-| **Average ratio** | Your systematic bias (>1 = underestimate, <1 = overestimate) |
-| **Standard deviation** | Your consistency (lower = more reliable) |
-| **Pattern by task type** | Where you're consistently wrong (always underestimate infra work?) |
-| **Trend over time** | Are you getting better? |
+| **平均比率** | 你的系统偏差（>1 = 低估，<1 = 高估） |
+| **标准差** | 你的一致性（越低 = 越可靠） |
+| **按任务类型的模式** | 你持续出错的地方（总是低估基础设施工作？） |
+| **随时间趋势** | 你在进步吗？ |
 
-If your average ratio is 1.5x, multiply all future estimates by 1.5 until you recalibrate.
+如果你的平均比率是 1.5x，将所有未来的估算乘以 1.5，直到你重新校准。
 
-### Common Estimation Biases
+### 常见估算偏差
 
-| Bias | Description | Fix |
+| 偏差 | 描述 | 修复方案 |
 |------|-------------|-----|
-| **Optimism** | Assuming best case | Use PERT to force pessimistic thinking |
-| **Anchoring** | First number heard dominates | Estimate independently before discussing |
-| **Planning fallacy** | Ignoring past overruns | Consult your estimation log |
-| **Scope neglect** | Forgetting testing, deployment, documentation | Use a checklist of "hidden" work |
-| **Confidence bias** | Being too sure of your estimate | Always provide ranges |
+| **乐观** | 假设最好情况 | 使用 PERT 强制进行悲观思考 |
+| **锚定** | 听到的第一个数字主导一切 | 在讨论前独立估算 |
+| **规划谬误** | 忽略过去的超支 | 查阅你的估算日志 |
+| **范围忽视** | 忘记测试、部署、文档 | 使用"隐藏"工作的检查清单 |
+| **信心偏差** | 对自己的估算过于确定 | 始终提供范围 |
 
 ---
 
-## Knowledge Portfolio Management
+## 知识投资组合管理
 
-Hunt and Thomas argue that your knowledge and experience are your most important professional assets -- and they're *expiring* assets. Technology changes. What you know today becomes obsolete.
+Hunt 和 Thomas 认为，你的知识和经验是你最重要的专业资产——而且是**会过期**的资产。技术在变化。你今天知道的东西会过时。
 
-### The Portfolio Analogy
+### 投资组合类比
 
-Manage your knowledge like a financial portfolio:
+像管理金融投资组合一样管理你的知识：
 
-| Financial Principle | Knowledge Equivalent |
+| 金融原则 | 知识对应项 |
 |--------------------|---------------------|
-| **Invest regularly** | Learn something every week, even when busy |
-| **Diversify** | Don't only learn your current stack; explore adjacent areas |
-| **Manage risk** | Mix safe investments (deepen expertise) with speculative ones (learn something wild) |
-| **Buy low, sell high** | Learn emerging technologies early, before they're mainstream |
-| **Review and rebalance** | Periodically assess what you know and identify gaps |
+| **定期投资** | 每周学习新东西，即使很忙 |
+| **多元化** | 不仅要学当前技术栈；探索相邻领域 |
+| **管理风险** | 混合安全投资（加深专业技能）与投机性投资（学习新奇事物） |
+| **低买高卖** | 在新兴技术成为主流之前尽早学习 |
+| **审视与再平衡** | 定期评估你已知的内容并识别差距 |
 
-### Practical Investment Strategies
+### 实用投资策略
 
-| Strategy | Time Commitment | Example |
+| 策略 | 时间投入 | 示例 |
 |----------|----------------|---------|
-| **Learn a new language every year** | 2 hours/week for 3 months | Learn Rust if you're a Python developer |
-| **Read a technical book every quarter** | 30 min/day | One book on architecture, one on a new domain |
-| **Take a course or workshop** | 1 day/quarter | Online course, conference workshop |
-| **Participate in open source** | 2 hours/week | Contribute to a project outside your comfort zone |
-| **Attend user groups or meetups** | 2 hours/month | Learn what other people are building and how |
-| **Experiment with different environments** | 1 day/quarter | Try Windows if you use macOS; try Linux if you use Windows |
-| **Stay current** | 15 min/day | Read technical newsletters, blogs, papers |
+| **每年学习一门新语言** | 每周 2 小时，持续 3 个月 | 如果你是 Python 开发者，学习 Rust |
+| **每季度阅读一本技术书籍** | 每天 30 分钟 | 一本关于架构的书，一本关于新领域的书 |
+| **参加课程或工作坊** | 每季度 1 天 | 在线课程、会议工作坊 |
+| **参与开源** | 每周 2 小时 | 为你舒适区外的项目做贡献 |
+| **参加用户组或 meetup** | 每月 2 小时 | 了解别人在构建什么以及如何构建 |
+| **尝试不同环境** | 每季度 1 天 | 如果你用 macOS，试试 Windows；如果你用 Windows，试试 Linux |
+| **保持最新** | 每天 15 分钟 | 阅读技术通讯、博客、论文 |
 
-### The Portfolio Balance
+### 投资组合平衡
 
-| Category | Investment | Examples |
+| 类别 | 投资方向 | 示例 |
 |----------|-----------|---------|
-| **Core expertise (50%)** | Deepen what you do daily | Advanced patterns in your primary language, deep database knowledge |
-| **Adjacent skills (30%)** | Expand your range | DevOps if you're a developer, UX if you're backend, security for everyone |
-| **Speculative bets (20%)** | Explore the frontier | New paradigms (functional, AI/ML, blockchain), new languages, new domains |
+| **核心专长（50%）** | 深化日常工作 | 主要语言的高级模式、深度数据库知识 |
+| **相邻技能（30%）** | 扩展你的范围 | DevOps（如果你是开发者）、UX（如果你是后端）、安全（对每个人都适用） |
+| **投机性赌注（20%）** | 探索前沿 | 新范式（函数式、AI/ML、区块链）、新语言、新领域 |
 
 ---
 
-## Critical Thinking
+## 批判性思维
 
-The pragmatic programmer doesn't just consume knowledge -- they evaluate it critically.
+实用主义程序员不仅仅是消费知识——他们还批判性地评估它。
 
-### Questions to Ask About What You Read and Hear
+### 关于你所读所听要问的问题
 
-| Question | Why It Matters |
+| 问题 | 为什么重要 |
 |----------|---------------|
-| **Who's saying it?** | A vendor promoting their own product has different motivations than an independent researcher |
-| **What's their context?** | "Microservices are the answer" -- at Google's scale, maybe. At your 5-person startup, probably not |
-| **When was it written?** | A 2015 article about JavaScript best practices may be obsolete |
-| **Why are they telling me this?** | Conference talks often promote the speaker's product or approach |
-| **What are the trade-offs?** | Every technique has downsides. If the source doesn't mention any, be skeptical |
+| **谁在说？** | 推广自家产品的供应商与独立研究人员的动机不同 |
+| **他们的背景是什么？** | "微服务是答案"——在 Google 的规模下，也许。在你的 5 人创业公司，很可能不是 |
+| **它是什么时候写的？** | 一篇关于 JavaScript 最佳实践的 2015 年文章可能已经过时 |
+| **他们为什么告诉我这个？** | 会议演讲通常推广演讲者的产品或方法 |
+| **权衡是什么？** | 每种技术都有缺点。如果来源没有提到任何缺点，要保持怀疑 |
 
-### The "Works for Us" Fallacy
+### "对他们有效"谬误
 
-Just because Netflix uses microservices doesn't mean you should. Critical thinking means understanding:
+仅仅因为 Netflix 使用微服务并不意味着你也应该。批判性思维意味着理解：
 
-- **Scale:** Their problems are not your problems
-- **Resources:** Their engineering team is not your engineering team
-- **Context:** Their domain constraints are not your domain constraints
-- **Survivorship bias:** You hear about the successes, not the failures
+- **规模：** 他们的问题不是你的问题
+- **资源：** 他们的工程团队不是你的工程团队
+- **背景：** 他们的领域约束不是你的领域约束
+- **幸存者偏差：** 你听到的是成功案例，而非失败案例
 
-### Building a Bullshit Filter
+### 建立废话过滤器
 
-| Claim | Red Flag | Better Question |
+| 论断 | 红旗 | 更好的问题 |
 |-------|----------|----------------|
-| "X is dead" | Absolutism | "In what contexts is X still appropriate?" |
-| "Everyone is using Y" | Bandwagon | "What problem does Y solve that we actually have?" |
-| "Z scales to millions" | Irrelevant scale | "Does Z work well at our scale of thousands?" |
-| "You should always do W" | No nuance | "What are the trade-offs of W vs. alternatives?" |
-| "This is best practice" | Appeal to authority | "Best for whom, in what context, measured how?" |
+| "X 已死" | 绝对化 | "在什么情况下 X 仍然适用？" |
+| "每个人都在用 Y" | 跟风 | "Y 解决了我们实际遇到的什么问题？" |
+| "Z 可扩展到百万级" | 不相关的规模 | "Z 在我们数千级的规模上表现好吗？" |
+| "你应该总是做 W" | 无差别化 | "W 与替代方案的权衡是什么？" |
+| "这是最佳实践" | 诉诸权威 | "对谁来说是最好、在什么上下文中、用什么衡量？" |
 
-### The Pragmatic Evaluation Framework
+### 实用主义评估框架
 
-When evaluating a new technology, methodology, or approach:
+在评估新技术、方法论或方法时：
 
-1. **Understand the problem it solves** -- What pain does it address?
-2. **Understand the trade-offs** -- What does it cost (complexity, performance, learning curve)?
-3. **Consider your context** -- Does it solve a problem you actually have?
-4. **Try it small** -- Prototype or spike before committing
-5. **Measure the results** -- Did it actually help, or just feel modern?
-6. **Re-evaluate periodically** -- Is it still the right choice?
+1. **理解它解决的问题** —— 它解决了什么痛点？
+2. **理解权衡** —— 它的成本是什么（复杂性、性能、学习曲线）？
+3. **考虑你的上下文** —— 它解决了你实际遇到的问题吗？
+4. **小范围尝试** —— 在承诺前先做原型或 spike
+5. **衡量结果** —— 它真的帮助了，还是只是感觉现代化？
+6. **定期重新评估** —— 它还是正确的选择吗？
 
-The pragmatic programmer's goal is not to use the newest technology. It's to use the **most appropriate** technology for their specific context. Sometimes that's cutting-edge; sometimes it's boring and well-proven. The critical thinker knows the difference.
+实用主义程序员的目标不是使用最新的技术。而是在其特定上下文中使用**最合适的**技术。有时那是前沿技术；有时那是枯燥但经过充分验证的技术。批判性思考者知道区别。

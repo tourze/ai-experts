@@ -1,62 +1,62 @@
-# First Principles Framework - Detailed Methodology
+# 第一性原理框架 — 详细方法论
 
-## The Elon Musk Method (Physics Thinking)
+## 伊隆·马斯克方法（物理学思维）
 
-"Boil things down to the most fundamental truths and then reason up from there."
+"把事物归结为最基本的真理，然后从那里向上推理。"
 
-### The Battery Example
-- **Conventional**: "Batteries are expensive ($600/kWh), always have been"
-- **First Principles**: What are batteries made of? Carbon, nickel, aluminum, polymers
-- **Atomic Question**: What do those materials cost on the London Metal Exchange?
-- **Discovery**: Raw materials = $80/kWh
-- **Rebuild**: Engineer better manufacturing → Tesla's cost breakthrough
+### 电池示例
+- **传统思维**："电池很贵（600 美元/kWh），一直如此"
+- **第一性原理**：电池由什么组成？碳、镍、铝、聚合物
+- **原子级问题**：这些材料在伦敦金属交易所的价格是多少？
+- **发现**：原材料成本 = 80 美元/kWh
+- **重构**：设计更好的制造工艺 → 特斯拉的成本突破
 
-## The Decomposition Ladder
+## 分解阶梯
 
-### Level 1: Surface Problem
-"We need better parent engagement"
+### 第 1 层：表面问题
+"我们需要更好的家长互动"
 
-### Level 2: Functional Need
-"Parents need to feel connected to their child's day"
+### 第 2 层：功能需求
+"家长需要感觉与孩子的日常有联系"
 
-### Level 3: Emotional Core
-"Parents feel guilt about not being present"
+### 第 3 层：情感核心
+"家长对无法陪伴感到内疚"
 
-### Level 4: Fundamental Truth
-"Humans need proof of wellbeing for those they love"
+### 第 4 层：基本事实
+"人类需要他们所爱之人安好的证据"
 
-### Level 5: Atomic Solution
-Photo + timestamp + child's face = proof of wellbeing
-Everything else is decoration.
+### 第 5 层：原子级解决方案
+照片 + 时间戳 + 孩子的脸 = 安好证明
+其他都是装饰。
 
-## Common Assumption Traps
+## 常见假设陷阱
 
-### The "Industry Standard" Trap
-"Everyone does it this way" → WHY does everyone do it this way?
-Often: legacy, not logic
+### "行业标准"陷阱
+"大家都这么做" → 为什么大家都这么做？
+通常是：惯性，而非逻辑
 
-### The "Customer Said" Trap
-"Customers asked for X" → What PROBLEM were they trying to solve?
-Often: they're describing solutions, not needs
+### "客户说"陷阱
+"客户要求 X" → 他们试图解决什么_问题_？
+通常是：他们在描述方案，而非需求
 
-### The "Technology Exists" Trap
-"We should use [tech] because it exists" → What fundamental need does this serve?
-Often: solution seeking a problem
+### "技术存在"陷阱
+"我们应该用 [技术] 因为它存在" → 这满足了什么基本需求？
+通常是：方案在寻找问题
 
-### The "Competitor Does It" Trap
-"Competitor has this feature" → Does it actually solve a real problem?
-Often: feature bloat, not value
+### "竞争对手这么做"陷阱
+"对手有这个功能" → 它真的解决实际问题吗？
+通常是：功能膨胀，而非价值
 
-## Questions That Cut Through
+## 能切中要害的问题
 
-1. "If we were starting from scratch today, would we build it this way?"
-2. "What would a complete outsider think is weird about this?"
-3. "If this cost 10x more, would we still do it?"
-4. "If this was illegal, what would we do instead?"
-5. "What's the version of this that a child could understand?"
+1. "如果今天从零开始，我们会这样构建吗？"
+2. "一个完全不了解情况的人会觉得这里面有什么奇怪的地方？"
+3. "如果这个成本贵 10 倍，我们还会做吗？"
+4. "如果这是非法的，我们会怎么做？"
+5. "这个的版本能让一个孩子理解吗？"
 
-## Integration with Other Skills
+## 与其他技能的结合
 
-- Use **Inversion** to validate: "How would this fundamental solution fail?"
-- Use **Second-Order Consequences** to project: "What happens after we implement this?"
-- Use **Pre-Mortem** before building: "Imagine this failed. Why?"
+- 使用**逆向思维**来验证："这个基础方案会如何失败？"
+- 使用**二阶后果**来推演："我们实施之后会发生什么？"
+- 使用**事前验尸**在构建前："想象这个已经失败了。为什么？"

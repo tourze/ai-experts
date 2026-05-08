@@ -1,154 +1,151 @@
-# Calibration Tips
+# 校准技巧
 
-Cognitive biases in estimation, historical calibration, and buffer strategies.
-
----
-
-## Cognitive Biases
-
-### Planning Fallacy
-
-**What:** People systematically underestimate how long tasks will take, even when
-they know they've underestimated in the past.
-
-**Magnitude:** 25-50% underestimation is typical.
-
-**Counteraction:**
-
-- Reference class forecasting: "How long did similar tasks take last time?"
-- Multiply your gut estimate by 1.5x
-- Ask: "If I had to bet money on finishing by this date, would I?"
-
-### Anchoring
-
-**What:** The first number heard becomes the reference point, even if irrelevant.
-
-**Counteraction:**
-
-- Estimate independently before hearing others' estimates
-- Use bottom-up estimation (sum of parts) instead of top-down
-- Avoid leading with a number: "How long do you think?" not "Would 3 days be enough?"
-
-### Optimism Bias
-
-**What:** "It'll be straightforward" — imagining the happy path only.
-
-**Counteraction:**
-
-- Pre-mortem: "Imagine it took twice as long. What went wrong?"
-- List specific things that could go wrong for each task
-- Review past estimates: were you usually optimistic?
-
-### Dunning-Kruger Effect
-
-**What:** Low familiarity leads to confidence ("How hard can it be?").
-
-**Counteraction:**
-
-- For unfamiliar technology, assume L or XL until proven otherwise
-- Spike before estimating
-- Add "unfamiliarity tax" to estimate
-
-### Sunk Cost Fallacy
-
-**What:** "We've already spent 3 days, it must be almost done."
-
-**Counteraction:**
-
-- Re-estimate remaining work from scratch, ignoring time already spent
-- Ask: "If we were starting today, how long would the remaining work take?"
+评估中的认知偏差、历史校准和缓冲策略。
 
 ---
 
-## Historical Calibration
+## 认知偏差
 
-### Track Actuals
+### 计划谬误
 
-For every estimate, record:
+**是什么：** 人们系统性地低估任务所需时间，即使他们知道自己过去曾低估过。
 
-1. Original estimate (best/likely/worst)
-2. Actual time taken
-3. What was different from expectations
+**幅度：** 典型低估幅度为 25-50%。
 
-### Calibration Ratio
+**对策：**
+
+- 参考类预测："类似任务上次花了多长时间？"
+- 将直觉估算乘以 1.5 倍
+- 问自己："如果我要为在这个日期前完成下注，我会吗？"
+
+### 锚定效应
+
+**是什么：** 听到的第一个数字成为参考点，即使它毫不相关。
+
+**对策：**
+
+- 在听到他人估算之前独立估算
+- 使用自底向上估算（各部分之和）而非自顶向下
+- 避免以数字开头："你觉得需要多久？"而不是"3 天够吗？"
+
+### 乐观偏差
+
+**是什么：** "这很简单"——只想象顺利路径。
+
+**对策：**
+
+- 事后诸葛："假设花了 2 倍的时间，哪里出了问题？"
+- 列出每项任务可能出问题的具体事项
+- 回顾过去的估算：你通常过于乐观吗？
+
+### 邓宁-克鲁格效应
+
+**是什么：** 低熟悉度导致自信（"这能有多难？"）。
+
+**对策：**
+
+- 对于不熟悉的技术，除非经过验证，否则假设为 L 或 XL
+- 先做 spike 再估算
+- 在估算中增加"不熟悉税"
+
+### 沉没成本谬误
+
+**是什么：** "我们已经花了 3 天，肯定快完成了。"
+
+**对策：**
+
+- 从头重新估算剩余工作量，忽略已花费的时间
+- 问："如果我们今天开始，剩余工作需要多久？"
+
+---
+
+## 历史校准
+
+### 追踪实际值
+
+对于每个估算，记录：
+
+1. 原始估算（最佳/可能/最差）
+2. 实际耗时
+3. 与预期有何不同
+
+### 校准比率
 
 ```text
-Calibration Ratio = Actual / Estimated (Likely)
+校准比率 = 实际值 / 估算值（可能值）
 
-If ratio > 1.0: You underestimate (most people)
-If ratio < 1.0: You overestimate
-If ratio = 1.0: You're calibrated (rare)
+如果比率 > 1.0：你低估了（大多数人如此）
+如果比率 < 1.0：你高估了
+如果比率 = 1.0：你很准确（罕见）
 ```
 
-### Apply Your Ratio
+### 应用你的比率
 
-If your historical calibration ratio is 1.4:
+如果你的历史校准比率为 1.4：
 
 ```text
-Adjusted Estimate = Raw Estimate × 1.4
+调整后估算 = 原始估算 × 1.4
 ```
 
-### Team Calibration
+### 团队校准
 
-Track the ratio per team member. Some people are consistent 2x underestimators;
-others are well-calibrated. Use individual ratios for accuracy.
+按团队成员跟踪比率。有些人是稳定的 2 倍低估者；其他人则校准良好。使用个体比率以提高准确性。
 
 ---
 
-## Buffer Strategies
+## 缓冲策略
 
-### Fixed Buffer
+### 固定缓冲
 
-Add a flat percentage based on confidence:
+根据置信度添加固定百分比：
 
-| Confidence | Buffer | Use When                                            |
-| ---------- | ------ | --------------------------------------------------- |
-| High       | +20%   | Familiar task, clear requirements, done it before   |
-| Medium     | +50%   | Some unknowns, new elements, moderate familiarity   |
-| Low        | +100%  | Many unknowns, new technology, unclear requirements |
+| 置信度   | 缓冲   | 使用时机                                      |
+| -------- | ------ | --------------------------------------------- |
+| 高       | +20%   | 熟悉的任务、明确的需求、做过多次              |
+| 中等     | +50%   | 有一些未知因素、新元素、中等熟悉度            |
+| 低       | +100%  | 许多未知因素、新技术、需求不明确              |
 
-### Per-Task Buffer
+### 逐任务缓冲
 
-Add buffer at the task level based on individual uncertainty, then aggregate.
-This is more accurate than a flat project-level buffer.
+根据个体不确定性在任务级别添加缓冲，然后汇总。这比项目级别的扁平缓冲更准确。
 
-### Risk-Based Buffer
+### 基于风险的缓冲
 
-Add buffer for specific identified risks:
+为特定识别出的风险添加缓冲：
 
 ```text
-Risk buffer = Σ (probability × impact) for each risk
+风险缓冲 = Σ（每个风险的概率 × 影响）
 
-Example:
-- External API delay: 30% chance × 3 days = 0.9 days
-- Unclear requirements: 50% chance × 2 days = 1.0 day
-- Total risk buffer: 1.9 days
+示例：
+- 外部 API 延迟：30% 概率 × 3 天 = 0.9 天
+- 需求不明确：50% 概率 × 2 天 = 1.0 天
+- 总风险缓冲：1.9 天
 ```
 
 ---
 
-## Communication Strategies
+## 沟通策略
 
-### For Stakeholders
+### 面向利益相关者
 
-| Bad                 | Good                                                                                                     |
-| ------------------- | -------------------------------------------------------------------------------------------------------- |
-| "It'll take 5 days" | "Likely 5 days, could range from 3 to 10 depending on X"                                                 |
-| "I'm not sure"      | "3-10 days. The range is wide because we haven't validated X yet. A 2-day spike would narrow it to 4-6." |
-| "Done by Friday"    | "80% confident it's done by Friday. 95% by next Wednesday."                                              |
+| 不好                   | 好                                                                                                     |
+| ---------------------- | ------------------------------------------------------------------------------------------------------ |
+| "需要 5 天"            | "可能需要 5 天，范围从 3 到 10 天，取决于 X"                                                           |
+| "我不确定"             | "3-10 天。范围宽是因为我们还没有验证 X。花 2 天做个 spike 可以缩小到 4-6。"                            |
+| "周五前完成"           | "80% 把握周五前完成。95% 把握下周三前完成。"                                                           |
 
-### When Asked for a Single Number
+### 当被要求给出一个数字时
 
-If forced to give one number:
+如果被迫给出一个数字：
 
-- Use PERT expected + buffer matching confidence level
-- State the confidence explicitly: "5 days, assuming X and Y. If those don't hold, up to 10."
+- 使用 PERT 期望值 + 匹配置信度水平的缓冲
+- 明确说明置信度："5 天，假设 X 和 Y。如果这些不成立，最多 10 天。"
 
-### When the Estimate Is "Too High"
+### 当估算"太高"时
 
-Do NOT reduce the estimate to match expectations. Instead:
+不要降低估算以匹配预期。而是：
 
-1. Identify which tasks could be descoped
-2. Identify which unknowns could be spiked first
-3. Offer a smaller scope with a smaller estimate
-4. "We can do X by Friday or X+Y+Z by next Wednesday"
+1. 确定哪些任务可以缩减范围
+2. 确定哪些未知项可以先做 spike
+3. 提供更小范围搭配更小估算的选项
+4. "我们可以在周五前完成 X，或者在下周三前完成 X+Y+Z"

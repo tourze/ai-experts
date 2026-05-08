@@ -1,127 +1,125 @@
-# Dependency Mapping
+# 依赖映射
 
-Constructing dependency graphs for task sequences, identifying the critical path,
-and maximizing parallelization.
-
----
-
-## Dependency Types
-
-| Type | Symbol | Meaning                              | Example                             |
-| ---- | ------ | ------------------------------------ | ----------------------------------- |
-| Hard | →      | B cannot start until A completes     | DB table → queries                  |
-| Soft | ⇢      | B benefits from A but can use a stub | API endpoint ⇢ frontend integration |
-| None | ∥      | Independent, can run in parallel     | Endpoint A ∥ Endpoint B             |
-
-### Identifying Hard Dependencies
-
-A task has a hard dependency when:
-
-- It needs the output artifact of another task (table, interface, module)
-- It modifies the same file (only one person should edit a file at a time)
-- It requires a specific system state (auth must work before authorization)
-
-### Identifying Soft Dependencies
-
-A task has a soft dependency when:
-
-- It could use a mock or stub instead of the real implementation
-- It could use a simplified version and upgrade later
-- The integration point has a defined contract (interface, API spec)
+构建任务序列的依赖图、识别关键路径以及最大化并行度。
 
 ---
 
-## Critical Path
+## 依赖类型
 
-The critical path is the longest chain of dependent tasks. It determines the
-minimum duration of the entire feature.
+| 类型 | 符号 | 含义                              | 示例                             |
+| ---- | ---- | --------------------------------- | -------------------------------- |
+| 硬   | →    | B 在 A 完成之前无法开始           | 数据库表 → 查询                  |
+| 软   | ⇢    | B 受益于 A 但可以使用 stub        | API 端点 ⇢ 前端集成              |
+| 无   | ∥    | 独立，可以并行运行                | 端点 A ∥ 端点 B                  |
 
-### Calculation
+### 识别硬依赖
 
-1. List all dependency chains from start to end
-2. Sum the effort estimates for each chain
-3. The longest chain is the critical path
+任务存在硬依赖的情况：
+
+- 需要另一个任务的输出产物（表、接口、模块）
+- 修改相同的文件（同一时间只能一人编辑文件）
+- 需要特定的系统状态（认证必须在授权之前完成）
+
+### 识别软依赖
+
+任务存在软依赖的情况：
+
+- 可以使用 mock 或 stub 替代真实实现
+- 可以使用简化版本并在后续升级
+- 集成点有定义的契约（接口、API 规范）
+
+---
+
+## 关键路径
+
+关键路径是最长的依赖任务链。它决定了整个功能的最短工期。
+
+### 计算
+
+1. 列出从开始到结束的所有依赖链
+2. 汇总每条链的工作量估算值
+3. 最长的链就是关键路径
 
 ```text
-Example:
-Chain 1: Task 1.1 (M) → Task 2.1 (L) → Task 3.1 (M) = M+L+M
-Chain 2: Task 1.2 (S) → Task 2.2 (M) → Task 3.1 (M) = S+M+M
-Chain 3: Task 1.1 (M) → Task 2.3 (S) → Task 3.1 (M) = M+S+M
+示例：
+链 1：任务 1.1 (M) → 任务 2.1 (L) → 任务 3.1 (M) = M+L+M
+链 2：任务 1.2 (S) → 任务 2.2 (M) → 任务 3.1 (M) = S+M+M
+链 3：任务 1.1 (M) → 任务 2.3 (S) → 任务 3.1 (M) = M+S+M
 
-Critical path: Chain 1 (longest)
+关键路径：链 1（最长）
 ```
 
-### Optimizing the Critical Path
+### 优化关键路径
 
-1. **Break down the largest task on the critical path** — Can it be parallelized?
-2. **Move work off the critical path** — Can tasks be resequenced?
-3. **Stub dependencies** — Convert hard dependencies to soft by defining interfaces early
-4. **Start the critical path first** — Don't delay critical path tasks
+1. **拆分关键路径上的最大任务** — 能否并行化？
+2. **将工作移出关键路径** — 能否重新排序任务？
+3. **Stub 依赖** — 通过尽早定义接口将硬依赖转为软依赖
+4. **最先启动关键路径** — 不要延迟关键路径任务
 
 ---
 
-## Parallelization
+## 并行化
 
-### Maximum Parallelism
+### 最大并行度
 
-Count the maximum number of tasks that can execute simultaneously at any point.
+统计在任何时间点可以同时执行的最大任务数。
 
 ```text
-Phase 1: [1.1] [1.2] [1.3]        → 3 parallel
-Phase 2: [2.1→1.1] [2.2→1.2]      → 2 parallel
-Phase 3: [3.1→2.1,2.2]            → 1 (convergence point)
+阶段 1：[1.1] [1.2] [1.3]        → 3 个并行
+阶段 2：[2.1→1.1] [2.2→1.2]      → 2 个并行
+阶段 3：[3.1→2.1,2.2]            → 1（汇聚点）
 ```
 
-### Parallelization Opportunities
+### 并行化机会
 
-| Opportunity            | Description                                      |
-| ---------------------- | ------------------------------------------------ |
-| Independent features   | Two features with no shared state                |
-| Frontend + Backend     | Same feature, both work against defined contract |
-| Data + Logic           | Schema design ∥ algorithm prototyping            |
-| Tests + Implementation | Test structure ∥ implementation (TDD)            |
-| Documentation + Code   | If API contract is defined                       |
+| 机会                | 描述                                      |
+| ------------------- | ----------------------------------------- |
+| 独立功能            | 没有共享状态的两个功能                    |
+| 前端 + 后端         | 同一功能，双方都按已定义契约工作          |
+| 数据 + 逻辑         | Schema 设计 ∥ 算法原型                    |
+| 测试 + 实现         | 测试结构 ∥ 实现 (TDD)                    |
+| 文档 + 代码         | 如果 API 契约已定义                       |
 
 ---
 
-## Visualization
+## 可视化
 
-### Simple Text Format
+### 简单文本格式
 
 ```text
-1.1 Database schema [M] ────────────────┐
-1.2 API types/interfaces [S] ─────┐     │
-1.3 Auth middleware [M] ─────┐    │     │
-                             │    │     │
-2.1 Business logic [L] ──────┼────┼─────┤ (depends on 1.1)
-2.2 API endpoints [M] ───────┼────┘     │ (depends on 1.2)
-2.3 Frontend components [M] ─┘          │ (depends on 1.2)
-                                        │
-3.1 Integration testing [M] ────────────┘ (depends on 2.1, 2.2)
-3.2 Error handling [S] ────────────────── (depends on 2.2, 2.3)
+1.1 数据库 schema [M] ────────────────┐
+1.2 API 类型/接口 [S] ─────┐          │
+1.3 认证中间件 [M] ─────┐   │          │
+                        │   │          │
+2.1 业务逻辑 [L] ───────┼───┼──────────┤（依赖于 1.1）
+2.2 API 端点 [M] ───────┼───┘          │（依赖于 1.2）
+2.3 前端组件 [M] ───────┘              │（依赖于 1.2）
+                                       │
+3.1 集成测试 [M] ──────────────────────┘（依赖于 2.1, 2.2）
+3.2 错误处理 [S] ───────────────────────（依赖于 2.2, 2.3）
 ```
 
-### Mermaid Diagram
+### Mermaid 图
 
 ```mermaid
 graph TD
-    A[1.1 Schema - M] --> D[2.1 Logic - L]
-    B[1.2 Types - S] --> E[2.2 API - M]
-    B --> F[2.3 Frontend - M]
-    C[1.3 Auth - M] --> E
-    D --> G[3.1 Integration - M]
+    A[1.1 Schema - M] --> D[2.1 逻辑 - L]
+    B[1.2 类型 - S] --> E[2.2 API - M]
+    B --> F[2.3 前端 - M]
+    C[1.3 认证 - M] --> E
+    D --> G[3.1 集成 - M]
     E --> G
-    E --> H[3.2 Error Handling - S]
+    E --> H[3.2 错误处理 - S]
     F --> H
 ```
 
 ---
 
-## Dependency Anti-Patterns
+## 依赖反模式
 
-| Anti-Pattern                     | Problem                                              | Fix                                                     |
-| -------------------------------- | ---------------------------------------------------- | ------------------------------------------------------- |
-| Everything depends on everything | No parallelism, single-threaded execution            | Find and break unnecessary dependencies                 |
-| Hidden dependency                | Task fails because unstated prerequisite wasn't done | Make all dependencies explicit                          |
-| Circular dependency              | A→B→C→A, can't start anywhere                        | Break the cycle with an interface                       |
-| Over-serialization               | Tasks marked dependent when they could be parallel   | Challenge each dependency: "Could B start with a stub?" |
+| 反模式                           | 问题                                              | 修复                                                     |
+| -------------------------------- | ------------------------------------------------- | -------------------------------------------------------- |
+| 一切依赖一切                     | 无并行，单线程执行                                | 发现并打破不必要的依赖                                   |
+| 隐藏依赖                         | 任务失败因为未声明的先决条件未完成                | 使所有依赖显式化                                         |
+| 循环依赖                         | A→B→C→A，无从开始                                | 使用接口打破循环                                         |
+| 过度序列化                       | 可以并行的任务被标记为依赖                        | 质疑每个依赖："B 能用 stub 开始吗？"                     |

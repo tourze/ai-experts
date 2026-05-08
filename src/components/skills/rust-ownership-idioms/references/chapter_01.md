@@ -1,40 +1,40 @@
-# Chapter 1 - Coding Styles and Idioms
+# 第 1 章 - 编码风格与惯用法
 
-## 1.1 Borrowing Over Cloning
+## 1.1 优先借用而非克隆
 
-Rust's ownership system encourages **borrow** (`&T`) instead of **cloning** (`T.clone()`). 
-> ❗ Performance recommendation
+Rust 的所有权系统鼓励**借用**（`&T`）而不是**克隆**（`T.clone()`）。
+> ❗ 性能建议
 
-### ✅ When to `Clone`:
+### ✅ 何时使用 `Clone`：
 
-* You need to change the object AND preserve the original object (immutable snapshots).
-* When you have `Arc` or `Rc` pointers.
-* When data is shared across threads, usually `Arc`.
-* Avoid massive refactoring of non performance critical code.
-* When caching results (dummy example below):
+* 你需要修改对象同时保留原始对象（不可变快照）。
+* 当你使用 `Arc` 或 `Rc` 指针时。
+* 当数据在线程间共享时，通常是 `Arc`。
+* 避免对非性能关键代码进行大规模重构。
+* 当缓存结果时（下面的简单示例）：
 ```rust
 fn get_config(&self) -> Config {
     self.cached_config.clone()
 }
 ```
-* When the underlying API expects Owned Data.
+* 当底层 API 期望所有权数据时。
 
-### 🚨 `Clone` traps to avoid:
+### 🚨 要避免的 `Clone` 陷阱：
 
-* Auto-cloning inside loops `.map(|x| x.clone)`, prefer to call `.cloned()` or `.copied()` at the end of the iterator.
-* Cloning large data structures like `Vec<T>` or `HashMap<K, V>`.
-* Clone because of bad API design instead of adjusting lifetimes.
-* Prefer `&[T]` instead of `Vec<T>` or `&Vec<T>`.
-* Prefer `&str` or `&String` instead of `String`.
-* Prefer `&T` instead of `T`.
-* Clone a reference argument, if you need ownership, make it explicit in the arguments for the caller. Example:
+* 在循环内自动克隆 `.map(|x| x.clone)`，优先在迭代器末尾调用 `.cloned()` 或 `.copied()`。
+* 克隆大型数据结构如 `Vec<T>` 或 `HashMap<K, V>`。
+* 因为 API 设计不佳而克隆，而不是调整生命周期。
+* 优先使用 `&[T]` 而不是 `Vec<T>` 或 `&Vec<T>`。
+* 优先使用 `&str` 或 `&String` 而不是 `String`。
+* 优先使用 `&T` 而不是 `T`。
+* 克隆引用参数，如果你需要所有权，应在参数中显式声明以供调用者了解。示例：
 ```rust
 fn take_a_borrow(thing: &Thing) {
-    let thing_cloned = thing.clone(); // the caller should have passed ownership instead
+    let thing_cloned = thing.clone(); // 调用者本应该传递所有权
 }
 ```
 
-### ✅ Prefer borrowing:
+### ✅ 优先借用：
 ```rust
 fn process(name: &str) {
     println!("Hello {name}");
@@ -44,23 +44,23 @@ let user = String::from("foo");
 process(&user);
 ```
 
-### ❌ Avoid redundant cloning:
+### ❌ 避免冗余克隆：
 ```rust
 fn process_string(name: String) {
     println!("Hello {name}");
 }
 
 let user = String::from("foo");
-process(user.clone()); // Unnecessary clone
+process(user.clone()); // 不必要的克隆
 ```
 
-## 1.2 When to pass by value? (Copy trait)
+## 1.2 何时传值？（Copy trait）
 
-Not all types should be passed by reference (`&T`). If a type is **small** and it is **cheap to copy**, it is often better to **pass it by value**. Rust makes it explicit via the `Copy` trait.
+并非所有类型都应该通过引用（`&T`）传递。如果一个类型**很小**且**复制成本很低**，通常最好**传值**。Rust 通过 `Copy` trait 使其显式化。
 
-### ✅ When to pass by value, `Copy`:
-* The type **implements** `Copy` (`u32`, `bool`, `f32`, small structs).
-* The cost of moving the value is negligible.
+### ✅ 何时传值（使用 `Copy`）：
+* 类型**实现了** `Copy`（`u32`、`bool`、`f32`、小型 struct）。
+* 移动值的成本可以忽略不计。
 
 ```rust
 fn increment(x: u32) -> u32 {
@@ -68,47 +68,45 @@ fn increment(x: u32) -> u32 {
 }
 
 let num = 1;
-let new_num = increment(num); // `num` still usable after this point
+let new_num = increment(num); // 此后 `num` 仍然可用
 ```
 
-### ❓ Which structs should be `Copy`?
-* When to consider declaring `Copy` on your own types:
-* All fields are `Copy` themselves.
-* The struct is `small`, up to 2 (maybe 3) words of memory or 24 bytes (each word is 64 bits/8bytes).
-* The struct **represents a "plain data object"**, without resourcing to ownership (no heap allocations. Example: `Vec` and `Strings`).
+### ❓ 哪些 struct 应该是 `Copy`？
+* 考虑在自己的类型上声明 `Copy` 的情况：
+* 所有字段本身都是 `Copy`。
+* struct **很小**，最多 2（也许 3）个字或 24 字节（每个字 64 位/8 字节）。
+* struct **表示"纯数据对象"**，不涉及所有权的资源（无堆分配。例如：`Vec` 和 `String`）。
 
-❗**Rust Arrays are stack allocated.** Which means they can be copied if their underlying type is `Copy`, but this will be allocated in the program stack which can easily become a stack overflow. More on [Chapter 3 - Stack vs Heap](./chapter_03.md#33-stack-vs-heap-be-size-smart)
+❗**Rust 数组是栈分配的。** 这意味着如果其底层类型是 `Copy`，它们可以被复制，但这会在程序栈上分配，很容易导致栈溢出。更多信息见[第 3 章 - 栈 vs 堆](./chapter_03.md#33-栈-vs-堆-大小要明智)
 
-For reference, each primitive type size in bytes:
+供参考，每个基本类型的大小（字节）：
 
-#### Integers:
+#### 整数：
 
-| Type | Size |
+| 类型 | 大小 |
 |------------- |---------- |
-| i8 u8 | 1 byte |
-| i16 u16 | 2 bytes |
-| i32 u32 | 4 bytes |
-| i64 u64 | 8 bytes |
-| isize usize | Arch |
-| i128 u128 | 16 bytes |
+| i8 u8 | 1 字节 |
+| i16 u16 | 2 字节 |
+| i32 u32 | 4 字节 |
+| i64 u64 | 8 字节 |
+| isize usize | 架构相关 |
+| i128 u128 | 16 字节 |
 
-#### Floating Point:
+#### 浮点：
 
-| Type | Size |
+| 类型 | 大小 |
 |---------- |---------- |
-| f32 | 4 bytes |
-| f64 | 8 bytes |
+| f32 | 4 字节 |
+| f64 | 8 字节 |
 
+#### 其他：
 
-#### Other:
-
-| Type | Size |
+| 类型 | 大小 |
 |---------- |---------- |
-| bool | 1 byte |
-| char | 4 bytes |
+| bool | 1 字节 |
+| char | 4 字节 |
 
-
-### ✅ Good struct to derive `Copy`:
+### ✅ 适合派生 `Copy` 的 struct：
 ```rust
 #[derive(Debug, Copy, Clone)]
 struct Point {
@@ -118,21 +116,21 @@ struct Point {
 }
 ```
 
-### ❌ Bad struct to derive `Copy`:
+### ❌ 不适合派生 `Copy` 的 struct：
 ```rust
 #[derive(Debug, Clone)]
 struct BadIdea {
     age: i32,
-    name: String, // String is not `Copy`
+    name: String, // String 不是 `Copy`
 }
 ```
 
-### ❓Which Enums should be `Copy`?
-* If your enum acts like tags and atoms.
-* The enum payloads are all `Copy`.
-* **❗Enums size are based on their largest element.**
+### ❓ 哪些 Enum 应该是 `Copy`？
+* 如果你的 enum 像标签和原子一样使用。
+* enum 的所有负载都是 `Copy`。
+* **❗Enum 的大小取决于其最大元素。**
 
-### ✅ Good Enum to derive
+### ✅ 适合派生 `Copy` 的 Enum：
 ```rust
 #[derive(Debug, Copy, Clone)]
 enum Direction {
@@ -143,11 +141,12 @@ enum Direction {
 }
 ```
 
-## 1.3 Handling `Option<T>` and `Result<T, E>`
-Rust 1.65 introduced a better way to safely unpack Option and Result types with the `let Some(x) = … else { … }` or `let Ok(x) = … else { … }` when you have a default `return` value, `continue` or `break` default else case. It allows early returns when the missing case is **expected and normal**, not exceptional.
+## 1.3 处理 `Option<T>` 和 `Result<T, E>`
+Rust 1.65 引入了更安全的方式来解包 Option 和 Result 类型，使用 `let Some(x) = … else { … }` 或 `let Ok(x) = … else { … }` 模式。当你有一个默认的 `return` 值、`continue` 或 `break` 的默认 else 情况时非常有用。它允许在缺失情况是**预期且正常的**、而非异常时提前返回。
 
-### ✅ Cases to use each pattern matching for Option and Return
-* Use `match` when you want to pattern match against the inner types `T` and `E`
+### ✅ 每种模式匹配的使用场景：
+
+* 当你想要对内部类型 `T` 和 `E` 进行模式匹配时使用 `match`：
 ```rust
 match self {
     Ok(Direction::South) => { … },
@@ -166,7 +165,7 @@ match self {
 }
 ```
 
-* Use `match` when your type is transformed into something more complex Like `Result<T, E>` becoming `Result<Option<T>, E>`.
+* 当你的类型被转换为更复杂的内容时（如 `Result<T, E>` 变为 `Result<Option<T>, E>`）使用 `match`：
 ```rust
 match self {
     Ok(t) => Ok(Some(t)),
@@ -175,14 +174,14 @@ match self {
 }
 ```
 
-* Use `let PATTERN = EXPRESSION else { DIVERGING_CODE; }` when the divergent code doesn't need to know about the failed pattern matches or doesn't need extra computation:
+* 当发散代码不需要知道失败的模式匹配或不需要额外计算时，使用 `let PATTERN = EXPRESSION else { DIVERGING_CODE; }`：
 ```rust
 let Some(&Direction::North) = self.direction.as_ref() else {
     return Err(DirectionNotAvailable(self.direction));
 }
 ```
 
-* Use `let PATTERN = EXPRESSION else { DIVERGING_CODE; }` when you want to break or continue a pattern match
+* 当你想在模式匹配中 `break` 或 `continue` 时，使用 `let PATTERN = EXPRESSION else { DIVERGING_CODE; }`：
 ```rust
 for x in self {
     let Some(x) = x else {
@@ -191,20 +190,20 @@ for x in self {
 }
 ```
 
-* Use `if let PATTERN = EXPRESSION else { DIVERGING_CODE; }` when `DIVERGING_CODE` needs extra computation:
+* 当 `DIVERGING_CODE` 需要额外计算时，使用 `if let PATTERN = EXPRESSION else { DIVERGING_CODE; }`：
 ```rust
 if let Some(x) = self.next() {
-    // computation
+    // 计算
 } else {
-    // computation when `None/Err` or not matched
+    // 当 `None/Err` 或不匹配时的计算
 }
 ```
 
-❗**If you don't care about the value of the `Err` case, please use `?` to propagate the `Err` to the caller.**
+❗**如果你不关心 `Err` 情况的值，请使用 `?` 将 `Err` 传播给调用者。**
 
-### ❌ Bad Option/Return pattern matching:
+### ❌ 不恰当的 Option/Result 模式匹配：
 
-* Conversion between Result and Option (prefer `.ok()`,`.ok_or()`, and `ok_or_else()`)
+* Result 和 Option 之间的转换（优先使用 `.ok()`、`.ok_or()` 和 `ok_or_else()`）：
 ```rust
 match self {
     Ok(t) => Some(t),
@@ -212,26 +211,26 @@ match self {
 }
 ```
 
-* `if let PATTERN = EXPRESSION else { DIVERGING_CODE; }` when divergent code is a default or pre-computed value (prefer `let PATTERN = EXPRESSION else { DIVERGING_CODE; }`):
+* 当发散代码是默认值或预计算值时使用 `if let PATTERN = EXPRESSION else { DIVERGING_CODE; }`（优先使用 `let PATTERN = EXPRESSION else { DIVERGING_CODE; }`）：
 ```rust
 if let Some(values) = self.next() {
-    // computation
+    // 计算
     (Some(..), values)
 } else {
     (None, Vec::new())
 }
 ```
 
-* Using `unwrap` or `expect` outside tests:
+* 在测试之外使用 `unwrap` 或 `expect`：
 ```rust
 let port = config.port.unwrap();
 ```
 
-## 1.4 Prevent Early Allocation
+## 1.4 防止过早分配
 
-When dealing with functions like `or`, `map_or`, `unwrap_or`, `ok_or`, consider that they have special cases for when memory allocation is required, like creating a new string, creating a collection or even calling functions that manage some state, so they can be replaced with their `_else` counter-part:
+当处理诸如 `or`、`map_or`、`unwrap_or`、`ok_or` 等函数时，考虑它们有需要内存分配的特殊情况，比如创建新字符串、创建集合甚至调用管理状态的函数，因此它们可以使用对应的 `_else` 版本替代：
 
-### ✅ Good cases
+### ✅ 好的情况
 
 ```rust
 let x = None;
@@ -240,10 +239,8 @@ assert_eq!(x.ok_or(ParseError::ValueAbsent), Err(ParseError::ValueAbsent));
 let x = None;
 assert_eq!(x.ok_or_else(|| ParseError::ValueAbsent(format!("this is a value {x}"))), Err(ParseError::ValueAbsent));
 
-
 let x: Result<_, &str> = Ok("foo");
 assert_eq!(x.map_or(42, |v| v.len()), 3);
-
 
 let x : Result<_, String> = Ok("foo");
 assert_eq!(x.map_or_else(|e|format!("Error: {e}"), |v| v.len()), 3);
@@ -252,22 +249,22 @@ let x = "1,2,3,4";
 assert_eq!(x.parse_to_option_vec.unwrap_or_else(Vec::new), Ok(vec![1, 2, 3, 4]));
 ```
 
-### ❌ Bad cases
+### ❌ 不好的情况
 
 ```rust
 let x : Result<_, String> = Ok("foo");
 assert_eq!(x.map_or(format!("Error with uninformed content"), |v| v.len()), 3);
 
 let x = "1,2,3,4";
-assert_eq!(x.parse_to_option_vec.unwrap_or(Vec::new()), Ok(vec![1, 2, 3, 4])); // could be replaced with `.unwrap_or_default`
+assert_eq!(x.parse_to_option_vec.unwrap_or(Vec::new()), Ok(vec![1, 2, 3, 4])); // 可以用 `.unwrap_or_default` 替代
 
 let x = None;
 assert_eq!(x.ok_or(ParseError::ValueAbsent(format!("this is a value {x}"))), Err(ParseError::ValueAbsent));
 ```
 
-### Mapping Err
+### 映射 Err
 
-When dealing with Result::Err, sometimes is necessary to log and transform the Err into a more abstract or more detailed error, this can be done with `inspect_err` and `map_err`:
+当处理 Result::Err 时，有时需要记录并将 Err 转换为更抽象或更详细的错误，这可以通过 `inspect_err` 和 `map_err` 完成：
 
 ```rust
 let x = Err(ParseError::InvalidContent(...));
@@ -277,11 +274,11 @@ x
     .map_err(|err| GeneralError::from(("function_name", err)))?;
 ```
 
-## 1.5 Iterator, `.iter` vs `for`
+## 1.5 迭代器：`.iter` vs `for`
 
-First we need to understand a basic loop with each one of them. Let's consider the following problem, we need to sum all even numbers between 0 and 10 incremented by 1:
+首先我们需要了解每种方式的基本循环。考虑以下问题，我们需要对 0 到 10 之间的所有偶数加 1 后求和：
 
-* `for`:
+* `for`：
 ```rust
 let mut sum = 0;
 for x in 0..=10 {
@@ -291,7 +288,7 @@ for x in 0..=10 {
 }
 ```
 
-* `iter`:
+* `iter`：
 ```rust
 let sum: i32 = (0..=10)
     .filter(|x| x % 2 == 0)
@@ -299,15 +296,15 @@ let sum: i32 = (0..=10)
     .sum();
 ```
 
-> Both versions do the same thing and are correct and idiomatic, but each shines in different contexts.
+> 两种版本实现相同功能，都是正确且符合惯用法的，但各自在不同场景下表现更佳。
 
-### When to prefer `for` loops
-* When you need **early exits** (`break`, `continue`, `return`).
-* **Simple iteration** with side-effects (e.g., logging, IO)
-    * logging can be done correctly in `Iterators` using `inspect` and `inspect_err` functions.
-* When readability matters more than simplicity or chaining.
+### 何时优先使用 `for` 循环
+* 当你需要**提前退出**（`break`、`continue`、`return`）时。
+* **简单迭代**带副作用（例如日志、IO）
+    * 日志可以在 `Iterator` 中使用 `inspect` 和 `inspect_err` 函数正确完成。
+* 当可读性比简洁性或链式调用更重要时。
 
-#### Example:
+#### 示例：
 ```rust
 for value in &mut value {
     if *value == 0 {
@@ -317,11 +314,11 @@ for value in &mut value {
 }
 ```
 
-### When to prefer `iterators` loops (`.iter()` and `.into_iter()`)
-* When you are `transforming collections` or `Option/Results`.
-* You can **compose multiple steps** elegantly.
-* No need for early exits.
-* You need support for indexed values with `.enumerate`.
+### 何时优先使用 `iterator` 循环（`.iter()` 和 `.into_iter()`）
+* 当你**转换集合**或 `Option/Result` 时。
+* 你可以优雅地**组合多个步骤**。
+* 不需要提前退出。
+* 你需要通过 `.enumerate` 支持索引值。
 ```rust
 let values: Vec<_> = vec.into_iter()
     .enumerate()
@@ -329,9 +326,9 @@ let values: Vec<_> = vec.into_iter()
     .map(|(index, value)| value % index)
     .collect()
 ```
-* You need to use collections functions like `.windows` or `chunks`.
-* You need to combine data from multiple sources and don't want to allocate multiple collections.
-* Iterators can be combined with `for` loops:
+* 你需要使用集合的函数如 `.windows` 或 `chunks`。
+* 你需要合并来自多个源的数据且不想分配多个集合。
+* 迭代器可以与 `for` 循环结合：
 ```rust
 for value in vec.iter().enumerate()
     .filter(|(index, value)| value % index == 0) {
@@ -339,39 +336,39 @@ for value in vec.iter().enumerate()
 }
 ```
 
-> #### ❗REMEMBER: Iterators are Lazy
+> #### ❗记住：迭代器是惰性的
 >
-> * `.iter`, `.map`, `.filter` don't do anything until you call its consumer, e.g. `.collect`, `.sum`, `.for_each`.
-> * **Lazy Evaluation** means that iterator chains are fused into one loop at compile time.
+> * `.iter`、`.map`、`.filter` 在你调用其消费者之前不会做任何事情，例如 `.collect`、`.sum`、`.for_each`。
+> * **惰性求值**意味着迭代器链在编译时被融合成一个循环。
 
-### 🚨 Anti-patterns to AVOID
+### 🚨 要避免的反模式
 
-* Don't chain without formatting. Prefer each chained function on its own line with the correct indentation (`rustfmt` should take care of this).
-* Don't chain if it makes the code unreadable.
-* Avoid needlessly collect/allocate of a collection (e.g. vector) just to throw it away later by some larger operation or by another iteration.
-* Prefer `iter` over `into_iter` unless you don't need the ownership of the collection.
-* Prefer `iter` over `into_iter` for collections that inner type implements `Copy`, e.g. `Vec<i32>`.
-* For summing numbers prefer `.sum` over `.fold`. `.sum` is specialized for summing values, so the compiler knows it can make optimizations on that front, while fold has a blackbox closure that needs to be applied at every step. If you need to sum by an initial value, just added in the expression `let my_sum = [1, 2, 3].sum() + 3`.
+* 不要链式调用不格式化。优先每个链式函数单独一行，使用正确的缩进（`rustfmt` 应该处理这个问题）。
+* 不要链式调用使代码不可读。
+* 避免不必要地收集/分配一个集合（例如 vector）只是为了在稍后更大的操作或另一次迭代中丢弃它。
+* 优先使用 `iter` 而不是 `into_iter`，除非你不需要集合的所有权。
+* 对于内部类型实现 `Copy` 的集合（如 `Vec<i32>`），优先使用 `iter` 而不是 `into_iter`。
+* 对于求和，优先使用 `.sum` 而不是 `.fold`。`.sum` 专门用于求和值，编译器知道可以在该方面进行优化，而 fold 有一个黑盒闭包需要在每一步应用。如果你需要加上一个初始值，只需在表达式中添加 `let my_sum = [1, 2, 3].sum() + 3`。
 
-## 1.6 Comments: Context, not Clutter
+## 1.6 注释：上下文而非杂乱
 
-> "Context are for why, not what or how"
+> "上下文解释为什么，而非什么或如何"
 
-Well-written Rust code, with expressive types and good naming, often speaks for itself. Many high-quality codebases thrive on **few or no comments**. And that's a good thing.
+编写良好的 Rust 代码，配合表达力强的类型和良好的命名，通常不言自明。许多高质量代码库依靠**很少或没有注释**也能良好运作。这是件好事。
 
-Still, there are **moments where code alone isn't enough** - when there are performance quirks, external constraints, or non-obvious tradeoffs that require a nudge to the reader. In those cases, a concise comment can prevent hours of head-scratching or searching git history.
+尽管如此，**有些时候仅靠代码是不够的**——当存在性能怪癖、外部约束或非明显的权衡时，需要给读者一个提示。在这些情况下，一个简洁的注释可以节省数小时的困惑或搜索 git 历史的时间。
 
-### ✅ Good comments 
+### ✅ 好的注释
 
-* Safety concerns:
+* 安全问题：
 ```rust
-// SAFETY: We have checked that the pointer is valid and non-null. @Function xyz.
+// SAFETY: 我们已经检查过指针有效且非空。@Function xyz。
 unsafe { std::ptr::copy_nonoverlapping(src, dst, len); }
 ```
 
-* Performance quirks:
+* 性能怪癖：
 ```rust
-// This algorithm is a fast square root approximation
+// 此算法是快速平方根近似
 const THREE_HALVES: f32 = 1.5;
 fn q_rsqrt(number: f32 ) -> f32 {
     let mut i: i32 = number.to_bits() as i32;
@@ -381,10 +378,10 @@ fn q_rsqrt(number: f32 ) -> f32 {
 }
 ```
 
-* Clear code beats comments. However, when the why isn't obvious, say it plainly - or link to where:
+* 清晰的代码胜过注释。然而，当原因不明显时，直接说明——或链接到出处：
 ```rust
-// PERF: Generating the root store per subgraph caused high TLS startup latency on MacOS
-// This works as a caching alternative. See: [ADR-123](link/to/adr-123)
+// PERF: 为每个子图生成根存储导致 MacOS 上 TLS 启动延迟高
+// 此方案作为缓存替代。参见：[ADR-123](link/to/adr-123)
 let subgraph_tls_root_store: RootCertStore = configuration
     .tls
     .subgraph
@@ -394,9 +391,9 @@ let subgraph_tls_root_store: RootCertStore = configuration
     .unwrap_or_else(crate::services::http::HttpClientService::native_roots_store);
 ```
 
-### ❌ Bad comments
+### ❌ 不好的注释
 
-* Wall-of-text explanations: long comments and multiline comments
+* 长篇文字解释：长注释和多行注释
 ```rust
 // Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
 // Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
@@ -405,31 +402,31 @@ fn do_something_odd() {
     …
 }
 ```
-> Prefer `/// doc` comment if it's describing the function.
+> 如果是在描述函数，优先使用 `/// doc` 注释。
 
-* Comments that could be better represented as functions or are plain obvious
+* 可以更好地表示为函数或显而易见的内容
 ```rust
 fn computation() {
-    // increment i by 1
+    // 将 i 加 1
     i += 1;
 }
 ```
 
-### ✅ Breaking up long functions over commenting them
+### ✅ 拆分长函数而非加长注释
 
-If you find yourself writing a long comment explaining "what", "how" or "each step" in a function, it might be time to split it. So the suggestion is to refactor. This can be beneficial not only for readability, but testability:
+如果你发现自己在函数中写了很长的注释来解释"什么"、"如何"或"每个步骤"，可能是时候拆分了。因此建议重构。这不仅有利于可读性，也有利于可测试性：
 
-#### ❌ Instead of:
+#### ❌ 与其：
 ```rust
 fn process_request(request: T) {
-    // We first need to validate request, because of corner case x, y, z
-    // As the payload can only be decoded when they are valid
-    // Then we can perform authorization on the payload
-    // lastly with the authorized payload we can dispatch to handler
+    // 我们需要先验证请求，因为边界情况 x, y, z
+    // 因为 payload 只有在有效时才能被解码
+    // 然后我们可以在 payload 上执行授权
+    // 最后，使用经过授权的 payload 分派给处理器
 }
 ```
 
-#### ✅ Prefer
+#### ✅ 优先：
 ```rust
 fn process_request(request: T) -> Result<(), Error> {
     validate_request_headers(&request)?;
@@ -457,59 +454,59 @@ mod tests {
 }
 ```
 
-Let **structure** and **naming** replace commentary, and enhance its documentation with **tests as living documentation**.
+让**结构**和**命名**取代注释，并用**测试作为活文档**增强文档质量。
 
-### 📝 TODOs are not comments - track them properly
+### 📝 TODO 不是注释——正确跟踪它们
 
-Avoid leaving lingering `// TODO: Lorem Ipsum` comments in the code. Instead:
-* Turn them into Jira or Github Issues.
-* If needed, to avoid future confusion, reference the issue in the code and the code in the issue.
+避免在代码中留下挥之不去的 `// TODO: Lorem Ipsum` 注释。相反：
+* 将它们转化为 Jira 或 GitHub Issues。
+* 如果需要，在代码中引用该 issue，在 issue 中引用代码，以避免将来的混淆。
 
 ```rust
-// See issue #123: support hyper 2.0
+// 参见 issue #123：支持 hyper 2.0
 ```
 
-This helps keeping the code clean and making sure tasks are not forgotten.
+这有助于保持代码整洁，确保任务不被遗忘。
 
-### Comments as Living Documentation
+### 注释作为活文档
 
-There are a few gotchas when calling comments "living documentation":
-* Code evolves.
-* Context changes.
-* Comments get stale.
-* Many large comments make people avoid reading them.
-* Team becomes fearful of delete irrelevant comments.
+将注释称为"活文档"时有几个陷阱：
+* 代码在演进。
+* 上下文在变化。
+* 注释会过时。
+* 大量长注释让人不想阅读。
+* 团队变得不敢删除无关的注释。
 
-If you find a comment, **don't trust it blindly**. Read it in context. If it's wrong or outdated, fix or remove it. A misleading comment is worse than no comments at all. 
+如果你找到一个注释，**不要盲目相信它**。在上下文中阅读它。如果它是错误或过时的，修复或删除它。误导性的注释比没有注释更糟糕。
 
-> Comments should bother you - they demand re-verification, just like stale tests.
+> 注释应该让你在意——它们需要重新验证，就像过时的测试一样。
 
-When deeper justification is needed, prefer to:
-* **Link to a Design Doc or an ADR**, business logic lives well in design docs while performance tradeoffs live well in ADRs.
-* Move runtime example and usage docs into Rust Docs, `/// doc comment`, where they can be tested and kept up-to-date by tools like `cargo doc`.
+当需要更深入的论证时，优先：
+* **链接到设计文档或 ADR**，业务逻辑适合放在设计文档中，而性能权衡适合放在 ADR 中。
+* 将运行时示例和用法文档移入 Rust 文档中，`/// doc comment`，它们可以在那里被测试并通过 `cargo doc` 等工具保持最新。
 
-> Doc-comments and Doc-testing, `///` and `//!` in [Chapter 8 - Comments vs Documentation](./chapter_08.md)
+> 文档注释和文档测试，`///` 和 `//!` 参见[第 8 章 - 注释 vs 文档](./chapter_08.md)
 
-## 1.7 Use Declarations - "imports"
+## 1.7 导入声明
 
-Different languages have different ways of sorting their imports, in the Rust ecosystem the [standard way](https://github.com/rust-lang/rustfmt/issues/4107) is:
+不同的语言有不同的 import 排序方式，在 Rust 生态系统中，[标准方式](https://github.com/rust-lang/rustfmt/issues/4107)是：
 
-- `std` (`core`, `alloc` would also fit here).
-- External crates (what is in your Cargo.toml `[dependencies]`).
-- Workspace crates (workspace member crates).
-- This module `super::`.
-- This module `crate::`.
+- `std`（`core`、`alloc` 也属此类）。
+- 外部 crate（在你的 Cargo.toml `[dependencies]` 中的内容）。
+- 工作空间 crate（工作空间成员 crate）。
+- 本模块 `super::`。
+- 本模块 `crate::`。
 
 ```rust
 // std
 use std::sync::Arc;
 
-// external crates
+// 外部 crate
 use chrono::Utc;
 use juniper::{FieldError, FieldResult};
 use uuid::Uuid;
 
-// crate code lives in workspace
+// crate 代码位于工作空间中
 use broker::database::PooledConnection;
 
 // super:: / crate::
@@ -518,21 +515,21 @@ use super::update::convert_publish_payload;
 use crate::models::Event;
 ```
 
-Some enterprise solutions opt to include their core packages after `std`, so all external packages that start with enterprise name are located before the others:
+一些企业方案选择在 `std` 之后包含其核心包，因此所有以企业名称开头的外部包位于其他包之前：
 
 ```rust
 // std
 use std::sync::Arc;
 
-// enterprise external crates
+// 企业外部 crate
 use enterprise_crate_name::some_module::SomeThing;
 
-// external crates
+// 外部 crate
 use chrono::Utc;
 use juniper::{FieldError, FieldResult};
 use uuid::Uuid;
 
-// crate code lives in workspace
+// crate 代码位于工作空间中
 use broker::database::PooledConnection;
 
 // super:: / crate::
@@ -541,7 +538,7 @@ use super::update::convert_publish_payload;
 use crate::models::Event;
 ```
 
-One way of not having to manually control this is using the following arguments in your `rustfmt.toml`:
+避免手动控制的一种方法是使用 `rustfmt.toml` 中的以下参数：
 
 ```toml
 reorder_imports = true
@@ -549,4 +546,4 @@ imports_granularity = "Crate"
 group_imports = "StdExternalCrate"
 ```
 
-> As of Rust version 1.88, it is necessary to execute rustfmt in nightly to correctly reorder code `cargo +nightly fmt`.
+> 从 Rust 版本 1.88 开始，需要使用 nightly 版本的 rustfmt 来正确重新排序代码：`cargo +nightly fmt`。

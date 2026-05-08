@@ -1,67 +1,67 @@
-# Aesthetic directions (pick one fast)
+# 审美方向（快速选定一个）
 
-Pick a direction that fits the brand and audience, then commit.
+选择一个适合品牌和受众的方向，然后坚定执行。
 
-## 1) Editorial magazine
-- Vibe: confident, information-dense, premium
-- Layout: big headline, narrow body column, pull quotes, rule lines
-- Type pairing: display serif + neutral sans
-- Details: subtle paper texture, crisp separators, minimal shadows
+## 1) 编辑杂志风
+- 氛围：自信、信息密集、高端
+- 布局：大标题、窄正文栏、引用引用块、分隔线
+- 字体搭配：展示衬线体 + 中性无衬线体
+- 细节：微妙的纸张纹理、清晰的分隔线、极少的阴影
 
-## 2) Retro utilitarian
-- Vibe: 'old web that still converts'
-- Layout: simple columns, strong hierarchy, obvious buttons
-- Type pairing: system-like mono + bold grotesk
-- Details: flat color blocks, pixel-ish icons, zero fluff
+## 2) 复古实用风
+- 氛围：'仍然能转化的旧网络'
+- 布局：简单列、强层次、明显的按钮
+- 字体搭配：类系统等宽体 + 粗体 grotesk
+- 细节：扁平色块、类像素图标、零废话
 
-## 3) Luxury minimal
-- Vibe: quiet, expensive, high intent
-- Layout: generous negative space, few words, one hero image
-- Type pairing: high-contrast serif + light sans
-- Details: hairline borders, soft gradients, slow fades
+## 3) 奢华极简风
+- 氛围：安静、昂贵、高意图
+- 布局：大量留白、寥寥文字、一张主图
+- 字体搭配：高对比度衬线体 + 细无衬线体
+- 细节：发丝边框、柔和渐变、缓慢淡入淡出
 
-## 4) Playful product
-- Vibe: friendly, approachable, modern
-- Layout: chunky cards, rounded shapes, illustrated accents
-- Type pairing: quirky display + clean body
-- Details: bouncy hover states, tiny microcopy jokes (sparingly)
+## 4) 活泼产品风
+- 氛围：友好、亲切、现代
+- 布局：厚实卡片、圆角形状、插画点缀
+- 字体搭配：俏皮展示体 + 干净的正文体
+- 细节：弹跳悬停状态、小型微文案笑点（适度使用）
 
-## 5) Brutalist
-- Vibe: raw, direct, anti-marketing
-- Layout: hard grid, oversized type, stark color accents
-- Type pairing: heavy sans + mono for details
-- Details: minimal animation, high contrast, loud CTA
+## 5) 粗野主义风
+- 氛围：原始、直接、反营销
+- 布局：硬网格、超大字体、强烈色彩点缀
+- 字体搭配：厚重无衬线体 + 细节用等宽体
+- 细节：极简动画、高对比度、醒目的 CTA
 
-## 6) Techno-futurist
-- Vibe: sharp, fast, high-performance
-- Layout: diagonal cuts, layered panels, glow accents
-- Type pairing: condensed display + readable sans
-- Details: subtle scanlines/noise, kinetic hero entrance
+## 6) 科技未来风
+- 氛围：锐利、快速、高性能
+- 布局：对角线切割、分层面板、发光点缀
+- 字体搭配：紧凑展示体 + 可读无衬线体
+- 细节：微妙的扫描线/噪点、动力学英雄区入场
 
-## 7) Organic natural
-- Vibe: human, calm, sustainable
-- Layout: soft shapes, warm imagery, breathing room
-- Type pairing: warm serif + friendly sans
-- Details: grain, organic gradients, gentle parallax
+## 7) 有机自然风
+- 氛围：人性、平静、可持续
+- 布局：柔和形状、温暖图像、呼吸空间
+- 字体搭配：温暖衬线体 + 友好无衬线体
+- 细节：颗粒感、有机渐变、温和视差
 
-## 8) Industrial dashboard
-- Vibe: serious B2B, operational clarity
-- Layout: metric chips, mini charts, structured sections
-- Type pairing: crisp sans + mono for numbers
-- Details: hover tooltips, sticky CTA rail
+## 8) 工业仪表盘风
+- 氛围：严肃 B2B、运营清晰度
+- 布局：指标芯片、迷你图表、结构化区块
+- 字体搭配：清晰无衬线体 + 数字用等宽体
+- 细节：悬停工具提示、粘性 CTA 条
 
-## 9) Art deco geometric
-- Vibe: bold, geometric, memorable
-- Layout: symmetric frames, patterned borders, iconography
-- Type pairing: geometric display + understated body
-- Details: gold accents, stepped animations
+## 9) 装饰几何风
+- 氛围：大胆、几何、令人难忘
+- 布局：对称框架、图案边框、图标装饰
+- 字体搭配：几何展示体 + 低调正文体
+- 细节：金色点缀、阶梯式动画
 
-## 10) Cozy handmade
-- Vibe: personal, creator-led, community
-- Layout: scrapbook vibe, stickers, annotations
-- Type pairing: handwritten accent + simple body
-- Details: subtle wobble animations, imperfect edges
+## 10) 温馨手工风
+- 氛围：个人、创作者导向、社区
+- 布局：剪贴簿感、贴纸、手写注释
+- 字体搭配：手写点缀 + 简单正文体
+- 细节：微妙的摇摆动画、不完美边缘
 
-### Implementation tip
+### 实现提示
 
-Use CSS variables for palette and spacing. If importing web fonts, load only the weights you use and include a system-font fallback.
+对调色板和间距使用 CSS 变量。如果导入网页字体，仅加载你使用的字重，并包含系统字体后备方案。

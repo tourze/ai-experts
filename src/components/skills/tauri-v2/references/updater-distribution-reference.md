@@ -1,21 +1,21 @@
-# Tauri v2+ Updater & Distribution Reference
+# Tauri v2+ 更新器与分发参考
 
-## Contents
+## 目录
 
-- Part 1: Updater (tauri-plugin-updater)
-- Part 2: Distribution and Signing
-- Part 3: Bundle Configuration
+- 第 1 部分：更新器（tauri-plugin-updater）
+- 第 2 部分：分发与签名
+- 第 3 部分：打包配置
 
-> ⚠️ **Signing is MANDATORY for production updates.** Unsigned artifacts will be rejected by the Tauri updater. Production update endpoints MUST use HTTPS.
+> **签名对于生产环境更新是强制性的。** 未签名的工件将被 Tauri 更新器拒绝。生产环境更新端点必须使用 HTTPS。
 
-## Part 1: Updater (tauri-plugin-updater)
+## 第 1 部分：更新器（tauri-plugin-updater）
 
-### Install
+### 安装
 ```bash
 cargo tauri add updater
 ```
 
-### Configuration (tauri.conf.json)
+### 配置（tauri.conf.json）
 ```json
 {
   "plugins": {
@@ -28,30 +28,30 @@ cargo tauri add updater
   }
 }
 ```
-- **Endpoints:** Array of HTTPS URLs.
-- **Pubkey:** Base64 encoded public key.
-- **Dialog:** Boolean to show built-in update dialog.
-- **HTTPS:** Endpoints MUST be HTTPS in production.
+- **Endpoints：** HTTPS URL 数组。
+- **Pubkey：** Base64 编码的公钥。
+- **Dialog：** 布尔值，是否显示内置更新对话框。
+- **HTTPS：** 生产环境中端点必须使用 HTTPS。
 
-### Key Generation
+### 密钥生成
 ```bash
 cargo tauri signer generate -w ~/.tauri/myapp.key
 ```
-Outputs: private key file + public key string.
-- Store private key SECURELY. Never commit to repo.
-- Set `TAURI_SIGNING_PRIVATE_KEY` env var for CI/CD.
-- Set `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` if key is encrypted.
-- Add pubkey to `tauri.conf.json` `plugins.updater.pubkey`.
+输出：私钥文件 + 公钥字符串。
+- 安全存储私钥。切勿提交到仓库。
+- 为 CI/CD 设置 `TAURI_SIGNING_PRIVATE_KEY` 环境变量。
+- 如果密钥已加密，设置 `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`。
+- 将公钥添加到 `tauri.conf.json` 的 `plugins.updater.pubkey`。
 
-### Signed Build
+### 签名构建
 ```bash
 TAURI_SIGNING_PRIVATE_KEY=... cargo tauri build
 ```
-Produces: installer file + `.sig` signature file.
-Both files must be served from your update server.
+生成：安装程序文件 + `.sig` 签名文件。
+两个文件都必须从你的更新服务器提供。
 
-### Update Server Response Format
-The update endpoint must return this JSON format:
+### 更新服务器响应格式
+更新端点必须返回以下 JSON 格式：
 ```json
 {
   "version": "1.0.1",
@@ -70,10 +70,10 @@ The update endpoint must return this JSON format:
 }
 ```
 
-### Capability Permission
-The updater plugin requires capability permission: `updater:default`
+### 能力权限
+updater 插件需要能力权限：`updater:default`
 
-### Checking for Updates in Code
+### 在代码中检查更新
 ```rust
 use tauri_plugin_updater::UpdaterExt;
 
@@ -92,32 +92,32 @@ async fn check_for_updates(app: tauri::AppHandle) -> Result<String, String> {
 }
 ```
 
-## Part 2: Distribution and Signing
+## 第 2 部分：分发与签名
 
 ### macOS
-- Code signing requires Apple Developer certificate.
-- Notarization required for distribution outside Mac App Store.
-- **Environment vars:** `APPLE_CERTIFICATE`, `APPLE_CERTIFICATE_PASSWORD`, `APPLE_SIGNING_IDENTITY`, `APPLE_ID`, `APPLE_PASSWORD`, `APPLE_TEAM_ID`.
-- Command: `cargo tauri build` handles signing/notarization with env vars set.
-- **Bundle type:** `.dmg`, `.app`.
-- macOS bundles for arm64 (Apple Silicon) and x86_64 are separate.
+- 代码签名需要 Apple Developer 证书。
+- 在 Mac App Store 之外分发需要公证。
+- **环境变量：** `APPLE_CERTIFICATE`、`APPLE_CERTIFICATE_PASSWORD`、`APPLE_SIGNING_IDENTITY`、`APPLE_ID`、`APPLE_PASSWORD`、`APPLE_TEAM_ID`。
+- 命令：设置环境变量后，`cargo tauri build` 处理签名/公证。
+- **包类型：** `.dmg`、`.app`。
+- macOS 的 arm64（Apple Silicon）和 x86_64 包是分开的。
 
 ### Windows
-- Code signing requires a code signing certificate (EV or OV).
-- Without signing, SmartScreen warnings appear for users.
-- Self-signed certs are only suitable for development.
-- **Env vars for signing:** via `TAURI_WINDOWS_SIGNING_CERTIFICATE` or custom script.
-- **Bundle types:** `.msi` (WiX), `.exe` (NSIS).
-- `bundle.windows.certificateThumbprint` in `tauri.conf.json` for direct cert config.
+- 代码签名需要代码签名证书（EV 或 OV）。
+- 不签名时，用户会看到 SmartScreen 警告。
+- 自签名证书仅适用于开发。
+- **签名的环境变量：** 通过 `TAURI_WINDOWS_SIGNING_CERTIFICATE` 或自定义脚本。
+- **包类型：** `.msi`（WiX）、`.exe`（NSIS）。
+- 在 `tauri.conf.json` 中设置 `bundle.windows.certificateThumbprint` 以直接配置证书。
 
 ### Linux
-- No mandatory code signing, but packaging for distros matters.
-- **Bundle types:** `.deb` (Debian/Ubuntu), `.rpm` (Fedora/RHEL), `.AppImage` (universal).
-- AppImage is portable but unsigned.
-- For store distribution: use appropriate store SDK.
+- 没有强制性的代码签名，但发行版打包很重要。
+- **包类型：** `.deb`（Debian/Ubuntu）、`.rpm`（Fedora/RHEL）、`.AppImage`（通用）。
+- AppImage 可移植但未签名。
+- 对于商店分发：使用相应的商店 SDK。
 
-## Part 3: Bundle Configuration
-Key `bundle` section in `tauri.conf.json`:
+## 第 3 部分：打包配置
+`tauri.conf.json` 中的关键 `bundle` 部分：
 ```json
 {
   "bundle": {
@@ -134,4 +134,4 @@ Key `bundle` section in `tauri.conf.json`:
 }
 ```
 
-> *Last verified: 2026-04-02. Check the [updater plugin changelog](https://github.com/tauri-apps/plugins-workspace/blob/v2/plugins/updater/CHANGELOG.md) for any updates to the signing/key format.*
+> *最后验证日期：2026-04-02。查看 [updater 插件更新日志](https://github.com/tauri-apps/plugins-workspace/blob/v2/plugins/updater/CHANGELOG.md)了解签名/密钥格式的任何更新。*

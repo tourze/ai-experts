@@ -1,31 +1,31 @@
-# Review Type Modifiers
+# 审查类型修饰符
 
-Adjust focus based on review context:
+根据审查上下文调整关注点：
 
-## PR Review
-- **Focus**: Code implementation, design system component usage, design token usage, accessibility in code
-- **Check**: Proper imports, design tokens used (not hardcoded), ARIA attributes present
-- **Verify**: Component matches Figma specs using Dev Mode
+## PR 审查
+- **关注点**：代码实现、设计系统组件使用、设计 token 使用、代码层面的无障碍
+- **检查**：正确的导入、使用设计 token（非硬编码）、ARIA 属性存在
+- **验证**：组件使用 Dev Mode 匹配 Figma 规范
 
-## Creative Frontend Review
-- **Focus**: Aesthetic direction, typography choices, visual distinctiveness, motion design
-- **Check**: Clear conceptual intent, avoiding generic AI patterns, cohesive execution
-- **Verify**: Implementation complexity matches vision (maximalist needs elaborate code, minimalist needs precision)
+## 创意前端审查
+- **关注点**：美学方向、字体选择、视觉独特性、动效设计
+- **检查**：清晰的概念意图、避免通用 AI 模式、协调的执行
+- **验证**：实现复杂度与愿景匹配（极繁需要精细代码，极简需要精确）
 
-## Design Review
-- **Focus**: User flows, interaction patterns, visual hierarchy, navigation, design system alignment
-- **Check**: Task completion path, action hierarchy, progressive disclosure
-- **Verify**: All components exist in design system or have documented exceptions
+## 设计审查
+- **关注点**：用户流程、交互模式、视觉层次、导航、设计系统对齐
+- **检查**：任务完成路径、操作层次、渐进式披露
+- **验证**：所有组件存在于设计系统中或有记录的例外情况
 
-## Accessibility Audit
-- **Focus**: Deep dive Quality Craft pillar
-- **Check**: Keyboard testing, screen reader testing, contrast ratios, ARIA patterns
-- **Test with**: Screen readers (NVDA, JAWS, Narrator), keyboard only, 200% zoom
-- **Verify**: Design system accessibility features are properly implemented
+## 无障碍审计
+- **关注点**：深入审查高质量工艺支柱
+- **检查**：键盘测试、屏幕阅读器测试、对比度比率、ARIA 模式
+- **用以下工具测试**：屏幕阅读器（NVDA、JAWS、Narrator）、仅键盘、200% 缩放
+- **验证**：设计系统无障碍功能已正确实现
 
-## Design System Compliance Audit
-- **Focus**: Deep dive design system usage
-- **Check**: All components match Figma specs, design tokens used throughout, no hardcoded values
-- **Test**: Compare implementation side-by-side with Figma using Dev Mode
-- **Verify**: Component variants, spacing, colors, typography all match design system
-- **Document**: Any deviations with rationale and plan to align
+## 设计系统合规审计
+- **关注点**：深入审查设计系统使用情况
+- **检查**：所有组件匹配 Figma 规范、全程使用设计 token、无硬编码值
+- **测试**：使用 Dev Mode 将实现与 Figma 逐项比较
+- **验证**：组件变体、间距、颜色、字体均匹配设计系统
+- **记录**：任何偏离及其理由和对齐计划

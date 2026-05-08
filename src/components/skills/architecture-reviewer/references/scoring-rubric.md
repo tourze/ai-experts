@@ -1,246 +1,234 @@
-# Scoring Rubric
+# 评分标准
 
-Detailed scoring criteria for each dimension, weight justification, grade boundaries,
-and calibration rules.
+每个维度的详细评分标准、权重理由、等级界限和校准规则。
 
-## Table of Contents
+## 目录
 
-1. Dimension Score Scale (1-5)
-2. Per-Dimension Scoring Criteria
-3. Weight Justification
-4. Overall Score Calculation
-5. Grade Boundaries
-6. Calibration Rules
+1. 维度评分标准（1-5 分）
+2. 各维度评分标准
+3. 权重理由
+4. 总分计算
+5. 等级界限
+6. 校准规则
 
 ---
 
-## 1. Dimension Score Scale
+## 1. 维度评分标准
 
-| Score | Label          | General Criteria                                                                                                                                               |
+| 分数 | 标签 | 通用标准 |
 | ----- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 5     | **Exemplary**  | Best-in-class. All sub-criteria met or exceeded. Could serve as a reference architecture. No S1/S2 findings. At most a few S4/S5 findings.                     |
-| 4     | **Strong**     | Well-designed. Most sub-criteria met. No S1 findings. At most 1-2 S2 findings. Minor improvements possible.                                                    |
-| 3     | **Adequate**   | Meets basic requirements. Several sub-criteria partially met. No S1 findings. Multiple S2/S3 findings. Notable gaps exist but system can function.             |
-| 2     | **Concerning** | Significant issues. Multiple sub-criteria unmet. May have S1 findings. Many S2/S3 findings. System will encounter serious problems under realistic conditions. |
-| 1     | **Critical**   | Fundamentally flawed. Most sub-criteria unmet or absent. Multiple S1 findings. Requires significant redesign before production use.                            |
+| 5 | **优秀** | 同类最佳。所有子标准达到或超越。可作为参考架构。无 S1/S2 问题。至多几个 S4/S5 问题。 |
+| 4 | **强** | 设计良好。大部分子标准达到。无 S1 问题。至多 1-2 个 S2 问题。有小改进空间。 |
+| 3 | **合格** | 满足基本需求。若干子标准部分达到。无 S1 问题。多个 S2/S3 问题。存在明显差距但系统可运行。 |
+| 2 | **堪忧** | 存在重大问题。多个子标准未达到。可能有 S1 问题。多个 S2/S3 问题。在现实条件下系统会遇到严重问题。 |
+| 1 | **危急** | 存在根本性缺陷。大部分子标准未达到或缺失。多个 S1 问题。需要在上线前进行重大重新设计。 |
 
-### Half-Score Policy
+### 半分政策
 
-**Half-scores (e.g., 3.5) are permitted** when a dimension falls clearly between two levels.
-Use half-scores when:
+**半分（如 3.5 分）是允许的**，当一个维度明显介于两个级别之间时。在以下情况下使用半分：
 
-- The architecture meets most criteria for the higher score but has 1-2 notable gaps
-- The architecture exceeds the lower score criteria but doesn't fully meet the higher level
-- Evidence supports a nuanced assessment rather than forcing into a whole number
+- 架构满足较高分数的大部分标准但有 1-2 个明显差距
+- 架构超过较低分数标准但未完全达到较高水平
+- 证据支持更细致的评估而非强行归入整数
 
-**Do not use half-scores** to avoid making a decision. If uncertain, gather more evidence or
-document the uncertainty and round down (conservative scoring).
+**不要使用半分**来避免做出决定。如果不确定，收集更多证据或记录不确定性并向下取整（保守评分）。
 
 ---
 
-## 2. Per-Dimension Scoring Criteria
+## 2. 各维度评分标准
 
-### Structural Integrity (20%)
+### 结构完整性（20%）
 
-| Score | Criteria                                                                                                                                                                                                                                    |
+| 分数 | 标准 |
 | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 5     | Clear separation of concerns, loose coupling, clean dependency direction, no SPOFs, comprehensive fault tolerance, well-defined service boundaries, explicit consistency model, idempotent critical operations, high-quality API contracts. |
-| 4     | Good separation with minor coupling issues. No SPOFs in critical path. Most fault tolerance patterns present. API contracts well-defined. 1-2 areas for improvement.                                                                        |
-| 3     | Recognizable architecture but some tight coupling. 1-2 SPOFs identified. Basic error handling but inconsistent. API contracts exist but incomplete.                                                                                         |
-| 2     | High coupling between components. Multiple SPOFs. No fault tolerance patterns. Inconsistent error handling. Unclear service boundaries.                                                                                                     |
-| 1     | No discernible architecture. Circular dependencies. Everything is tightly coupled. No error handling strategy. God classes/services.                                                                                                        |
+| 5 | 清晰的关注点分离、松耦合、清晰的依赖方向、无 SPOF、全面的容错能力、明确的服务边界、显式的一致性模型、关键操作幂等、高质量的 API 契约。 |
+| 4 | 良好的分离，存在轻微耦合问题。关键路径中无 SPOF。大部分容错模式存在。API 契约定义良好。1-2 个改进领域。 |
+| 3 | 可识别的架构但存在一些紧耦合。识别出 1-2 个 SPOF。基本的错误处理但不一致。API 契约存在但不完整。 |
+| 2 | 组件间高度耦合。多个 SPOF。无容错模式。错误处理不一致。服务边界不清晰。 |
+| 1 | 无可识别的架构。循环依赖。一切紧耦合。无错误处理策略。上帝类/服务。 |
 
-### Scalability (18%)
+### 可扩展性（18%）
 
-| Score | Criteria                                                                                                                                                                                                                |
+| 分数 | 标准 |
 | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 5     | Stateless services, well-designed multi-layer caching, effective async processing, auto-scaling configured, load distribution optimized, capacity planning documented with projections, no scaling bottlenecks visible. |
-| 4     | Services are mostly stateless. Caching layer present. Async processing for most long tasks. Auto-scaling configured. Minor bottleneck risks identified.                                                                 |
-| 3     | Some stateful components identified. Basic caching present. Some async processing. Manual scaling or basic auto-scaling. Capacity planning absent or vague.                                                             |
-| 2     | Significant stateful components. No or ineffective caching. Most processing synchronous. No auto-scaling. Multiple scaling bottlenecks.                                                                                 |
-| 1     | Fundamentally cannot scale horizontally. In-memory state everywhere. No caching. No async processing. Single-instance design.                                                                                           |
+| 5 | 无状态服务、设计良好的多层缓存、有效的异步处理、配置了自动扩展、负载分发优化、容量规划有文档和预测、无可见的扩展瓶颈。 |
+| 4 | 服务基本无状态。缓存层存在。大部分长时间任务使用异步处理。配置了自动扩展。识别出轻微的瓶颈风险。 |
+| 3 | 识别出一些有状态组件。存在基本缓存。部分异步处理。手动扩展或基本自动扩展。容量规划缺失或模糊。 |
+| 2 | 存在显著的有状态组件。无缓存或缓存无效。大部分处理为同步。无自动扩展。多个扩展瓶颈。 |
+| 1 | 从根本上无法水平扩展。到处都是内存状态。无缓存。无异步处理。单实例设计。 |
 
-### Enterprise Readiness (15%)
+### 企业就绪度（15%）
 
-| Score | Criteria                                                                                                                                                                                                                                                       |
+| 分数 | 标准 |
 | ----- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 5     | Full multi-tenancy with isolation, comprehensive RBAC/ABAC, tamper-proof audit logging, compliance controls implemented and verified, HA with tested failover, DR with tested recovery, zero-downtime deployments, API versioning with backward compatibility. |
-| 4     | Multi-tenancy with adequate isolation. Role-based access control. Audit logging present. Compliance addressed for applicable frameworks. HA configured. DR plan exists.                                                                                        |
-| 3     | Basic multi-tenancy (shared everything with tenant ID filtering). Basic auth model. Some audit logging. Compliance partially addressed. HA planned but not fully implemented.                                                                                  |
-| 2     | No multi-tenancy consideration. Minimal authorization. No audit logging. Compliance not addressed despite requirements. No HA/DR.                                                                                                                              |
-| 1     | Single-tenant design for a multi-tenant requirement. No authorization model. No compliance consideration despite regulatory requirements. No deployment strategy.                                                                                              |
+| 5 | 完全多租户带隔离、全面的 RBAC/ABAC、防篡改审计日志、合规控制已实施和验证、高可用带经过测试的故障转移、灾备带经过测试的恢复、零停机部署、API 版本控制带向后兼容。 |
+| 4 | 多租户带适当隔离。基于角色的访问控制。存在审计日志。适用框架的合规已解决。高可用已配置。灾备计划存在。 |
+| 3 | 基本多租户（完全共享加租户 ID 过滤）。基本认证模型。部分审计日志。合规部分解决。高已有计划但未完全实施。 |
+| 2 | 无多租户考量。最小授权。无审计日志。有要求但未解决合规。无高可用/灾备。 |
+| 1 | 对多租户需求采用单租户设计。无授权模型。有监管要求但无合规考量。无部署策略。 |
 
-### Performance (17%)
+### 性能（17%）
 
-| Score | Criteria                                                                                                                                                                                                                                             |
+| 分数 | 标准 |
 | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 5     | P50/P95/P99 targets defined and achievable. Critical path optimized with latency budgets. Efficient queries with proper indexing. Multi-layer caching with proven invalidation. Async processing where appropriate. Connection management optimized. |
-| 4     | Performance targets defined. Critical path identified. Most queries efficient. Caching present. Some async processing. Minor optimization opportunities.                                                                                             |
-| 3     | Performance targets vague or absent. Some query efficiency issues (N+1, missing indexes). Basic caching. Mixed sync/async patterns. Performance acceptable but unoptimized.                                                                          |
-| 2     | No performance targets. Multiple N+1 patterns. No caching. Synchronous heavy operations in critical path. Connection management issues.                                                                                                              |
-| 1     | Fundamental performance problems. Unbounded queries. No caching. All processing synchronous. No connection pooling. System will be unacceptably slow under normal load.                                                                              |
+| 5 | P50/P95/P99 目标已定义且可实现。关键路径已优化并带有延迟预算。查询高效且有适当索引。多层缓存带经过验证的失效策略。在适当处使用异步处理。连接管理已优化。 |
+| 4 | 性能目标已定义。关键路径已识别。大部分查询高效。存在缓存。部分异步处理。有小的优化机会。 |
+| 3 | 性能目标模糊或缺失。存在一些查询效率问题（N+1、缺少索引）。基本缓存。同步/异步模式混合。性能可接受但未优化。 |
+| 2 | 无性能目标。多个 N+1 模式。无缓存。关键路径中有同步重操作。连接管理问题。 |
+| 1 | 根本性的性能问题。无界查询。无缓存。所有处理为同步。无连接池。系统在正常负载下会不可接受地缓慢。 |
 
-### Security (18%)
+### 安全（18%）
 
-| Score | Criteria                                                                                                                                                                                                                                                                              |
+| 分数 | 标准 |
 | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 5     | Strong authentication (OAuth2/OIDC + MFA). Fine-grained authorization. TLS everywhere (including internal). KMS-managed encryption at rest. Secrets in vault with rotation. Input validation comprehensive. OWASP Top 10 mitigated. Dependency scanning automated. Network segmented. |
-| 4     | Strong authentication. Role-based authorization. TLS for external, encryption at rest. Secrets managed (not hardcoded). Input validation present. Most OWASP concerns addressed. Dependency scanning in place.                                                                        |
-| 3     | Authentication present but basic. Authorization coarse-grained. TLS for external only. Some encryption at rest. Secrets in environment variables (not committed). Input validation inconsistent. Some OWASP gaps.                                                                     |
-| 2     | Weak authentication. Minimal authorization. No encryption at rest. Some secrets in code or config files. Input validation missing in places. Multiple OWASP vulnerabilities likely.                                                                                                   |
-| 1     | No authentication or trivially bypassable. No authorization. No encryption. Hardcoded secrets in source code. No input validation. System is actively exploitable.                                                                                                                    |
+| 5 | 强认证（OAuth2/OIDC + MFA）。细粒度授权。全面使用 TLS（包括内部）。KMS 管理的静态加密。Vault 中的密钥带轮换。全面的输入验证。缓解 OWASP Top 10。自动化依赖扫描。网络分段。 |
+| 4 | 强认证。基于角色的授权。外部使用 TLS，静态加密。密钥得到管理（非硬编码）。存在输入验证。大部分 OWASP 问题已解决。依赖扫描已实施。 |
+| 3 | 认证存在但基础。授权粗粒度。仅外部使用 TLS。部分静态加密。密钥在环境变量中（未提交）。输入验证不一致。存在一些 OWASP 漏洞。 |
+| 2 | 弱认证。最小授权。无静态加密。部分密钥在代码或配置文件中。输入验证在某些地方缺失。可能存在多个 OWASP 漏洞。 |
+| 1 | 无认证或可轻易绕过。无授权。无加密。源代码中有硬编码密钥。无输入验证。系统可被主动利用。 |
 
-### Operational Excellence (7%)
+### 运维卓越（7%）
 
-| Score | Criteria                                                                                                                                                                                                                                                               |
+| 分数 | 标准 |
 | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 5     | Full CI/CD with progressive delivery. Complete IaC. Three-pillar observability (structured logs, RED/USE metrics, distributed tracing). SLO-based alerting. Tested runbooks. Incident response process with post-mortems. Feature flags. Chaos engineering capability. |
-| 4     | Automated CI/CD to production. IaC for most infrastructure. Centralized logging + metrics. Alerting configured. Some runbooks. Incident response process defined.                                                                                                      |
-| 3     | CI with automated tests. Some IaC. Centralized logging but limited metrics/tracing. Basic alerting. Minimal documentation. Informal incident response.                                                                                                                 |
-| 2     | Basic CI (build only). Manual deployments. Local/scattered logging. No metrics. No alerting. No runbooks. No incident process.                                                                                                                                         |
-| 1     | No CI/CD. No IaC. No centralized logging. No monitoring. Manual everything. No documentation.                                                                                                                                                                          |
+| 5 | 完整的 CI/CD 带渐进式交付。全面的 IaC。三大支柱可观测性（结构化日志、RED/USE 指标、分布式追踪）。基于 SLO 的告警。经过测试的运维手册。带事后分析的事件响应流程。功能开关。混沌工程能力。 |
+| 4 | 自动化 CI/CD 到生产。大部分基础设施的 IaC。集中式日志 + 指标。告警已配置。部分运维手册。事件响应流程已定义。 |
+| 3 | CI 带自动化测试。部分 IaC。集中式日志但有限的指标/追踪。基本告警。最小文档。非正式的事件响应。 |
+| 2 | 基本 CI（仅构建）。手动部署。本地/分散的日志。无指标。无告警。无运维手册。无事件流程。 |
+| 1 | 无 CI/CD。无 IaC。无集中式日志。无监控。一切手动。无文档。 |
 
-### Data Architecture (5%)
+### 数据架构（5%）
 
-| Score | Criteria                                                                                                                                                                                                                                                                            |
+| 分数 | 标准 |
 | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 5     | Database choice justified by access patterns. Schema well-designed with constraints enforced. Migration tooling with tested rollback. Automated backups with tested restores. Data lifecycle managed. Event architecture (if used) with versioned schemas and dead-letter handling. |
-| 4     | Database choice reasonable. Schema generally well-designed. Migration tool in use. Backups configured. Basic lifecycle management. Event handling mostly reliable.                                                                                                                  |
-| 3     | Database choice adequate but not justified. Schema has some design issues. Migrations exist but untested. Backups configured but never tested. No lifecycle management.                                                                                                             |
-| 2     | Database choice questionable for the access patterns. Schema issues (missing constraints, poor normalization). No migration strategy. Backups uncertain. No event schema management.                                                                                                |
-| 1     | Database fundamentally wrong for the use case. No schema management. No migrations. No backups. No data lifecycle consideration.                                                                                                                                                    |
+| 5 | 数据库选择由访问模式证实。Schema 设计良好且约束已执行。迁移工具带经过测试的回滚。自动备份带经过测试的恢复。数据生命周期已管理。事件架构（如果使用）带版本化 schema 和死信处理。 |
+| 4 | 数据库选择合理。Schema 总体设计良好。迁移工具在使用。备份已配置。基础生命周期管理。事件处理总体可靠。 |
+| 3 | 数据库选择合格但无理由。Schema 存在一些设计问题。迁移存在但未测试。备份已配置但从未测试。无生命周期管理。 |
+| 2 | 数据库选择对访问模式存在疑问。Schema 问题（缺少约束、规范化不佳）。无迁移策略。备份不确定。无事件 schema 管理。 |
+| 1 | 数据库对用例根本性错误。无 schema 管理。无迁移。无备份。无数据生命周期考量。 |
 
 ---
 
-## 3. Weight Justification
+## 3. 权重理由
 
-| Dimension              | Weight | Rationale                                                                                                                     |
+| 维度 | 权重 | 理由 |
 | ---------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------- |
-| Structural Integrity   | 20%    | Foundation of everything. Bad structure affects all other dimensions. Highest blast radius for defects.                       |
-| Security               | 18%    | A single security failure can be catastrophic (data breach, compliance violation). Cannot be retrofitted easily.              |
-| Scalability            | 18%    | Scaling failures are expensive to fix after the fact. Architectural decisions constrain scaling options.                      |
-| Performance            | 17%    | Directly impacts user experience and cost. Many performance issues are architectural, not just code-level.                    |
-| Enterprise Readiness   | 15%    | Critical for B2B/enterprise but less universally applicable. Weight adjusts based on stated requirements.                     |
-| Operational Excellence | 7%     | Important but lower blast radius. Operational gaps cause pain but rarely catastrophic failure. Can be improved incrementally. |
-| Data Architecture      | 5%     | Critical when wrong but narrower in scope. Often a subset of structural integrity concerns.                                   |
+| 结构完整性 | 20% | 一切的基础。糟糕的结构影响所有其他维度。缺陷的爆炸半径最大。 |
+| 安全 | 18% | 单次安全失败可能是灾难性的（数据泄露、合规违规）。不容易事后改造。 |
+| 可扩展性 | 18% | 扩展失败事后修复成本高昂。架构决策约束了扩展选项。 |
+| 性能 | 17% | 直接影响用户体验和成本。许多性能问题属于架构层面，而不仅仅是代码层面。 |
+| 企业就绪度 | 15% | 对 B2B/企业至关重要，但通用性较低。权重基于声明的要求动态调整。 |
+| 运维卓越 | 7% | 重要但爆炸半径较小。运维缺口会造成痛苦但很少导致灾难性失败。可以增量改进。 |
+| 数据架构 | 5% | 错误时至关重要但范围较窄。通常是结构完整性问题的子集。 |
 
-**Dynamic weight adjustment:** If the system is purely internal tooling with no enterprise
-customers, reduce Enterprise Readiness weight and redistribute to other dimensions. Document
-any weight adjustments in the report.
+**动态权重调整：** 如果系统是纯粹的内部工具且没有企业客户，降低企业就绪度权重并重新分配给其他维度。在报告中记录任何权重调整。
 
 ---
 
-## 4. Overall Score Calculation
+## 4. 总分计算
 
-### Formula
+### 公式
 
 ```text
-Overall Score (%) = Σ(dimension_score × weight) / 5 × 100
+总分（%）= Σ（维度分数 × 权重）/ 5 × 100
 ```
 
-### Calculation Steps (MUST follow in report)
+### 计算步骤（报告中必须遵循）
 
-1. **Calculate each weighted contribution:**
-
-   ```
-   weighted_contribution = dimension_score × weight
-   ```
-
-2. **Sum all weighted contributions:**
+1. **计算每项加权贡献：**
 
    ```
-   weighted_sum = Σ(weighted_contribution)
+   加权贡献 = 维度分数 × 权重
    ```
 
-3. **Convert to percentage:**
+2. **求和所有加权贡献：**
 
    ```
-   overall_percentage = weighted_sum / 5 × 100
+   加权和 = Σ（加权贡献）
    ```
 
-4. **Assign grade** based on percentage (see Grade Boundaries below)
+3. **转换为百分比：**
 
-### Worked Example
+   ```
+   总百分比 = 加权和 / 5 × 100
+   ```
 
-| Dimension              | Score | Weight   | Calculation | Weighted  |
+4. **基于百分比分配等级**（见下方等级界限）
+
+### 计算示例
+
+| 维度 | 分数 | 权重 | 计算 | 加权值 |
 | ---------------------- | ----- | -------- | ----------- | --------- |
-| Structural Integrity   | 4     | 20%      | 4 × 0.20    | 0.800     |
-| Scalability            | 3     | 18%      | 3 × 0.18    | 0.540     |
-| Security               | 3     | 18%      | 3 × 0.18    | 0.540     |
-| Performance            | 4     | 17%      | 4 × 0.17    | 0.680     |
-| Enterprise Readiness   | 2     | 15%      | 2 × 0.15    | 0.300     |
-| Operational Excellence | 3     | 7%       | 3 × 0.07    | 0.210     |
-| Data Architecture      | 3     | 5%       | 3 × 0.05    | 0.150     |
-| **Total**              |       | **100%** |             | **3.220** |
+| 结构完整性 | 4 | 20% | 4 × 0.20 | 0.800 |
+| 可扩展性 | 3 | 18% | 3 × 0.18 | 0.540 |
+| 安全 | 3 | 18% | 3 × 0.18 | 0.540 |
+| 性能 | 4 | 17% | 4 × 0.17 | 0.680 |
+| 企业就绪度 | 2 | 15% | 2 × 0.15 | 0.300 |
+| 运维卓越 | 3 | 7% | 3 × 0.07 | 0.210 |
+| 数据架构 | 3 | 5% | 3 × 0.05 | 0.150 |
+| **合计** | | **100%** | | **3.220** |
 
 ```text
-Overall = 3.220 / 5 × 100 = 64.4%
-Grade: D (60-69 range)
+总分 = 3.220 / 5 × 100 = 64.4%
+等级：D（60-69 范围）
 ```
 
-### Arithmetic Verification (REQUIRED)
+### 算术验证（必需）
 
-Before finalizing the report, verify the calculation:
+在定稿报告之前，验证计算：
 
-1. **Check weights sum to 100%:** 20 + 18 + 18 + 17 + 15 + 7 + 5 = 100% ✓
-2. **Recalculate weighted sum:** Multiply each score × weight, sum results
-3. **Verify grade matches range:** Cross-reference percentage with Grade Boundaries table
-4. **Sanity check:** If all scores are 3, weighted sum = 3.0, percentage = 60% (D grade)
-   If all scores are 4, weighted sum = 4.0, percentage = 80% (B grade)
+1. **检查权重之和为 100%：** 20 + 18 + 18 + 17 + 15 + 7 + 5 = 100% ✓
+2. **重新计算加权和：** 每项分数 × 权重，求和结果
+3. **验证等级与范围匹配：** 对照等级界限表交叉参考百分比
+4. **合理性检查：** 如果所有分数为 3，加权和 = 3.0，百分比 = 60%（D 等级）
+   如果所有分数为 4，加权和 = 4.0，百分比 = 80%（B 等级）
 
-**Common errors to avoid:**
+**应避免的常见错误：**
 
-- Rounding individual weighted contributions before summing (keep 3 decimal places)
-- Using wrong weights (check for weight adjustments documented in report)
-- Misreading the grade boundary (70-79 is C, not 60-69)
+- 在求和前对各项加权贡献进行四舍五入（保留 3 位小数）
+- 使用了错误的权重（检查报告中记录的权重调整）
+- 错误读取等级界限（70-79 是 C，不是 60-69）
 
 ---
 
-## 5. Grade Boundaries
+## 5. 等级界限
 
-| Range  | Grade | Interpretation                     | Recommended Action                                              |
+| 范围 | 等级 | 解释 | 建议行动 |
 | ------ | ----- | ---------------------------------- | --------------------------------------------------------------- |
-| 90-100 | **A** | Production-ready, enterprise-grade | Maintain and iterate                                            |
-| 80-89  | **B** | Solid architecture                 | Address S2 findings before scaling                              |
-| 70-79  | **C** | Acceptable with improvement needed | Prioritize S1/S2 findings, create improvement roadmap           |
-| 60-69  | **D** | Major rework required              | Address S1 findings immediately, significant refactoring needed |
-| <60    | **F** | Fundamental redesign recommended   | Consider architecture reset for most problematic dimensions     |
+| 90-100 | **A** | 生产就绪，企业级 | 维护并迭代 |
+| 80-89 | **B** | 稳健架构 | 扩展前解决 S2 问题 |
+| 70-79 | **C** | 可接受，需要改进 | 优先处理 S1/S2 问题，制定改进路线图 |
+| 60-69 | **D** | 需要重大改造 | 立即处理 S1 问题，需要重大重构 |
+| <60 | **F** | 建议根本性重新设计 | 考虑对最问题的维度进行架构重置 |
 
 ---
 
-## 6. Calibration Rules
+## 6. 校准规则
 
-### Stage-Based Expectations
+### 基于阶段的期望
 
-| Stage             | Expected Minimum Grade | Scoring Adjustments                                                             |
+| 阶段 | 预期最低等级 | 评分调整 |
 | ----------------- | ---------------------- | ------------------------------------------------------------------------------- |
-| Greenfield Design | C+                     | Don't penalize for missing implementation. Score the plan, not the code.        |
-| Early Development | C                      | Expect foundations to be right. Operational gaps acceptable.                    |
-| Growth            | B-                     | Most dimensions should be addressed. Operational excellence becoming important. |
-| Mature Production | B+                     | All dimensions should be strong. S1/S2 findings are serious at this stage.      |
+| 绿场设计 | C+ | 不要因缺少实现而扣分。评分的是计划，而非代码。 |
+| 早期开发 | C | 期望基础正确。运营缺口可接受。 |
+| 增长期 | B- | 大部分维度应已解决。运维卓越变得重要。 |
+| 成熟生产 | B+ | 所有维度应强劲。S1/S2 问题在此阶段是严重的。 |
 
-### Scale-Based Expectations
+### 基于规模的期望
 
-| Scale                   | Enterprise Readiness Expectation        | Operational Excellence Expectation |
+| 规模 | 企业就绪度期望 | 运维卓越期望 |
 | ----------------------- | --------------------------------------- | ---------------------------------- |
-| Solo dev / side project | Basic auth and deployment sufficient    | CI and basic logging sufficient    |
-| Small team (2-5)        | Standard auth, basic monitoring         | CI/CD, centralized logging         |
-| Multiple teams (5-20)   | RBAC, audit logging, staged deployments | Full CI/CD, metrics, alerting      |
-| Org-wide (20+)          | Full enterprise readiness expected      | Full operational maturity expected |
+| 独立开发者/副项目 | 基本认证和部署足够 | CI 和基本日志足够 |
+| 小团队（2-5 人） | 标准认证、基础监控 | CI/CD、集中式日志 |
+| 多团队（5-20 人） | RBAC、审计日志、阶段部署 | 完整 CI/CD、指标、告警 |
+| 组织级（20+ 人） | 完全企业就绪期望 | 完全运维成熟度期望 |
 
-### Scoring Integrity Rules
+### 评分完整性规则
 
-1. **Never score N/A as zero.** If a sub-criterion is genuinely not applicable, exclude it
-   from the dimension score calculation.
-2. **Never inflate scores to be nice.** A 3 that should be a 2 helps no one.
-3. **Ground every score in evidence.** "This feels like a 4" is not acceptable. Cite specific
-   findings.
-4. **Score the architecture, not the team.** Don't give a higher score because the team is
-   talented. Score what's in front of you.
-5. **Consistency check:** A dimension with multiple S2 findings cannot score above 3. A
-   dimension with any S1 finding cannot score above 2.
-6. **Minimum one strength per dimension.** Every dimension must have at least one positive
-   finding (S5 strength) unless the dimension is truly catastrophic (score 1). Architecture
-   reviews that are 100% negative are demoralizing and miss genuine strengths.
-7. **Verify arithmetic before finalizing.** Recalculate the weighted sum and percentage
-   independently. Grade must match the calculated percentage per Grade Boundaries table.
+1. **永远不要将不适用评分为零。** 如果某项子标准确实不适用，将其从维度评分计算中排除。
+2. **永远不要为了友好而虚高分数。** 本应是 2 的 3 分对任何人都没有帮助。
+3. **每项评分都要有证据依据。** "感觉像是 4 分"是不可接受的。引用具体的发现。
+4. **评分的应是架构，而非团队。** 不要因为团队有才华而给更高的分数。评分的是你面前的东西。
+5. **一致性检查：** 如果一个维度有多个 S2 问题，评分不能高于 3。如果一个维度有任何 S1 问题，评分不能高于 2。
+6. **每个维度至少有一个优点。** 每个维度必须至少有一个正面发现（S5 优点），除非该维度确实灾难性的（评分 1）。100% 负面的架构评审令人沮丧且忽略了真正的优点。
+7. **最终确定前验证算术计算。** 独立重新计算加权和与百分比。等级必须与根据等级界限表计算的百分比一致。

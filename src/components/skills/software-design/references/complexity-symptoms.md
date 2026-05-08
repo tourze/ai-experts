@@ -1,209 +1,209 @@
-# Complexity: Symptoms, Causes, and Measurement
+# 复杂性：症状、成因与度量
 
-The single greatest challenge in software engineering is managing complexity. This reference details how to recognize complexity, understand its causes, and measure it informally to guide design decisions.
+软件工程中最大的挑战是管理复杂性。本参考资料详细说明了如何识别复杂性、理解其成因，并对其进行非正式度量以指导设计决策。
 
-## Definition of Complexity
+## 复杂性的定义
 
-Complexity is anything related to the structure of a software system that makes it hard to understand and modify. It is not about the size of the system or the sophistication of its features. A large system with clean abstractions can be less complex than a small system with tangled dependencies.
+复杂性与软件系统结构相关的、使其难以理解和修改的任何事物。它不是关于系统的规模或功能的复杂程度。一个具有清晰抽象的大型系统可能比一个具有混乱依赖关系的小型系统更简单。
 
-Ousterhout defines it with a practical formula:
+Ousterhout 用一个实用公式来定义它：
 
 ```
 C = sum(cp * tp) for each part p
 ```
 
-Where:
-- `cp` is the complexity of part `p`
-- `tp` is the fraction of time developers spend working on part `p`
+其中：
+- `cp` 是部分 `p` 的复杂性
+- `tp` 是开发者花费在部分 `p` 上的时间比例
 
-A module that is extremely complex but never touched contributes little overall complexity. A module that is moderately complex but modified constantly dominates the system's effective complexity.
+一个极度复杂但从不会被触及的模块对整个复杂性的贡献很小。一个中等复杂但被频繁修改的模块主导着系统的有效复杂性。
 
-## The Three Symptoms of Complexity
+## 复杂性的三种症状
 
-### 1. Change Amplification
+### 1. 变更放大（Change Amplification）
 
-**Definition:** A seemingly simple change requires modifications in many different places.
+**定义：** 一个看似简单的变更需要在许多不同的地方进行修改。
 
-**How to recognize it:**
-- Adding a new field to a data model requires changes in 8+ files
-- Changing a color scheme means updating dozens of components
-- Adding a new API endpoint requires modifications in routing, validation, serialization, testing, and documentation files that all repeat similar patterns
+**如何识别：**
+- 向数据模型添加一个新字段需要在 8 个以上文件中修改
+- 更改配色方案意味着更新数十个组件
+- 添加一个新的 API 端点需要在路由、验证、序列化、测试和文档文件中都进行修改，而这些文件重复着相似的模式
 
-**Examples:**
+**示例：**
 
-| Symptom | Root Cause | Better Design |
+| 症状 | 根本原因 | 更好的设计 |
 |---------|-----------|---------------|
-| Adding a database column touches 12 files | Schema knowledge is scattered across ORM, API, serialization, validation layers | Use a single source of truth for schema that generates other artifacts |
-| Changing error message format requires editing every handler | Error formatting is duplicated in each endpoint | Centralize error formatting in middleware |
-| Adding a new event type requires changes in producer, consumer, schema, and 3 processors | Event structure knowledge is not encapsulated | Define event schemas in one place; processors discover structure from schema |
-| Renaming a field touches API, database, frontend, tests | The same concept is named differently in each layer | Use consistent naming conventions and code generation where possible |
+| 添加数据库列涉及 12 个文件 | Schema 知识分散在 ORM、API、序列化、验证层中 | 使用单一事实来源生成其他工件 |
+| 修改错误消息格式需要编辑每个处理器 | 错误格式化在每个端点重复 | 在中间件中集中处理错误格式化 |
+| 添加新事件类型需要修改生产者、消费者、schema 和 3 个处理器 | 事件结构知识未被封装 | 在一个地方定义事件 schema；处理器从 schema 发现结构 |
+| 重命名字段涉及 API、数据库、前端、测试 | 同一概念在每个层中命名不同 | 使用一致的命名约定，尽可能使用代码生成 |
 
-**The test:** Ask "If I need to make this change, how many files do I need to touch?" If the answer is more than 2-3 for a conceptually simple change, you have change amplification.
+**测试：** 问"如果我要做这个变更，需要触碰多少个文件？"如果一个概念上简单的变更答案超过 2-3 个，你就遇到了变更放大。
 
-### 2. Cognitive Load
+### 2. 认知负荷（Cognitive Load）
 
-**Definition:** A developer must know too much to complete a task safely.
+**定义：** 开发者需要了解太多信息才能安全地完成任务。
 
-**How to recognize it:**
-- You need to read 5 files to understand what one function does
-- A function has 8 parameters, each with non-obvious constraints
-- Understanding the order of operations requires knowing implementation details of 3 other modules
-- Global state means any function could have side effects that affect your code
+**如何识别：**
+- 你需要阅读 5 个文件才能理解一个函数的功能
+- 一个函数有 8 个参数，每个都有不明显的约束
+- 理解操作的顺序需要了解其他 3 个模块的实现细节
+- 全局状态意味着任何函数都可能具有影响你代码的副作用
 
-**Examples:**
+**示例：**
 
-| Symptom | Root Cause | Better Design |
+| 症状 | 根本原因 | 更好的设计 |
 |---------|-----------|---------------|
-| Must understand memory allocation to use an API | Interface leaks implementation details | Hide allocation behind the API; manage memory internally |
-| Must configure 6 parameters before calling a function | Module pushes decisions to callers | Provide sensible defaults; auto-detect where possible |
-| Must hold 4 invariants in mind when modifying a data structure | Invariants are not enforced by the module | Encapsulate invariants inside the module; enforce them automatically |
-| Must read all callers before changing a shared utility | Utility has implicit contracts with each caller | Define explicit interfaces; use type systems to enforce contracts |
+| 必须理解内存分配才能使用 API | 接口泄露实现细节 | 在 API 背后隐藏分配；内部管理内存 |
+| 调用函数前必须配置 6 个参数 | 模块将决策推给调用者 | 提供合理的默认值；尽可能自动检测 |
+| 修改数据结构时必须记住 4 个不变量 | 不变量不由模块强制执行 | 将不变量封装在模块内部；自动强制执行 |
+| 修改共享工具前必须阅读所有调用者 | 工具与每个调用者都有隐式契约 | 定义显式接口；使用类型系统强制执行契约 |
 
-**The test:** Ask "How much does a developer need to know to use this module correctly?" If the answer involves understanding the implementation, the interface is too complex.
+**测试：** 问"开发者需要了解多少才能正确使用此模块？"如果答案涉及理解实现，则接口太复杂了。
 
-**Important nuance:** Lines of code can be misleading. An approach with more lines but less cognitive load is preferable. A 10-line function that requires understanding 5 external systems is more complex than a 30-line function that is self-contained.
+**重要细微差别：** 代码行数可能具有误导性。行数更多但认知负荷更低的方法更可取。一个需要理解 5 个外部系统的 10 行函数，比一个没有外部依赖的 30 行自包含函数更复杂。
 
-### 3. Unknown Unknowns
+### 3. 未知的未知（Unknown Unknowns）
 
-**Definition:** It is not obvious which pieces of code must be changed, or what information is needed to make a change. This is the worst symptom because you don't even know what you don't know.
+**定义：** 不清楚哪些代码片段必须被修改，或者需要什么信息来进行修改。这是最糟糕的症状，因为你甚至不知道你不知道什么。
 
-**How to recognize it:**
-- A change seems to work in testing but breaks something unrelated in production
-- A developer makes a reasonable change but violates an undocumented assumption
-- The only way to learn about a constraint is to break it
-- Knowledge exists only in one developer's head
+**如何识别：**
+- 变更在测试中似乎有效，但在生产中破坏了无关的东西
+- 开发者做出了合理的变更，但违反了未文档化的假设
+- 了解某个约束的唯一方法是通过破坏它
+- 知识只存在于一个开发者的头脑中
 
-**Examples:**
+**示例：**
 
-| Symptom | Root Cause | Better Design |
+| 症状 | 根本原因 | 更好的设计 |
 |---------|-----------|---------------|
-| Changing module A breaks module C through a hidden dependency via B | Implicit dependency chain | Make dependencies explicit through interfaces and type systems |
-| A race condition only surfaces under load | Concurrency assumptions are undocumented | Document threading model; use constructs that make concurrency visible |
-| Reordering initialization steps causes silent data corruption | Initialization order dependency is implicit | Make ordering explicit through dependency injection or builder patterns |
-| Modifying a "private" helper breaks an external system that depends on its behavior | Internal implementation has undocumented external consumers | Define clear public APIs; use access control to enforce boundaries |
+| 修改模块 A 通过模块 B 的隐藏依赖破坏了模块 C | 隐式依赖链 | 通过接口和类型系统使依赖关系显式化 |
+| 竞态条件只在负载下暴露 | 并发假设未记录 | 记录线程模型；使用使并发可见的结构 |
+| 重新排序初始化步骤导致静默数据损坏 | 初始化顺序依赖是隐式的 | 通过依赖注入或 builder 模式使排序显式 |
+| 修改"私有"辅助方法破坏了一个依赖其行为的外部系统 | 内部实现有未记录的外部消费者 | 定义清晰的公共 API；使用访问控制强制边界 |
 
-**The test:** Ask "Can a new developer make changes to this module confidently without talking to someone?" If the answer is no, you have unknown unknowns.
+**测试：** 问"新开发者能否自信地修改此模块而不需要与任何人交谈？"如果答案是否定的，你就遇到了未知的未知。
 
-## The Two Causes of Complexity
+## 复杂性的两种成因
 
-### Dependencies
+### 依赖
 
-A dependency exists when code cannot be understood or modified in isolation -- the code relates to other code in some way.
+当代码不能孤立地被理解或修改时——代码以某种方式与其他代码相关联——就存在依赖。
 
-**Types of dependencies:**
+**依赖类型：**
 
-| Type | Description | Example |
+| 类型 | 描述 | 示例 |
 |------|-------------|---------|
-| **Syntactic** | Compiler/linter will catch if broken | Function signature changes; import errors |
-| **Semantic** | Compiler cannot catch; behavior depends on understanding | Two modules must agree on a data format not enforced by types |
-| **Temporal** | Code must execute in a specific order | Init must happen before use; close must happen after all writes |
-| **Hidden** | No visible indication of the relationship | Module A's behavior depends on global state set by module B |
+| **语法性** | 编译器/linter 会在破坏时捕获 | 函数签名变更；导入错误 |
+| **语义性** | 编译器无法捕获；行为依赖于理解 | 两个模块必须就一个不由类型强制执行的数据格式达成一致 |
+| **时序性** | 代码必须以特定顺序执行 | 初始化必须在使用前发生；关闭必须在所有写入后发生 |
+| **隐藏性** | 没有关系存在的可见指示 | 模块 A 的行为依赖于模块 B 设置的全局状态 |
 
-**Goal:** You cannot eliminate dependencies entirely (software is interconnected), but you can:
-1. Minimize the number of dependencies
-2. Make remaining dependencies obvious and simple
-3. Prefer syntactic dependencies over semantic ones (the compiler helps you)
+**目标：** 你无法完全消除依赖（软件是互连的），但你可以：
+1. 尽量减少依赖的数量
+2. 使剩余依赖变得明显和简单
+3. 优先选择语法性依赖而非语义性依赖（编译器会帮助你）
 
-### Obscurity
+### 模糊性
 
-Obscurity occurs when important information is not obvious.
+当重要信息不明显时，就会发生模糊性。
 
-**Common sources:**
+**常见来源：**
 
-- Generic variable names: `data`, `temp`, `result`, `info`, `manager`
-- Inconsistent naming: the same concept called `user` in one module and `account` in another
-- Missing documentation: no explanation of why a design decision was made
-- Non-obvious side effects: a function named `getUser()` that also updates a cache
-- Magic numbers: `if retries > 3` without explaining why 3
-- Implicit conventions: "All timestamps are UTC" but it is never stated
+- 泛型变量名：`data`、`temp`、`result`、`info`、`manager`
+- 不一致的命名：同一个概念在一个模块中叫 `user`，在另一个模块中叫 `account`
+- 缺少文档：没有解释为什么做出某个设计决策
+- 不明显的副作用：名为 `getUser()` 的函数同时更新了缓存
+- 魔法数字：`if retries > 3` 没有解释为什么是 3
+- 隐式约定："所有时间戳都是 UTC"但从未明确说明
 
-**The fix:** Make things obvious through:
-1. Precise naming that conveys meaning
-2. Comments that explain why, not what
-3. Consistent conventions applied everywhere
-4. Type systems that encode constraints
-5. Explicit rather than implicit behavior
+**修复方法：** 通过以下方式使事物变得明显：
+1. 传达含义的精确命名
+2. 解释为什么而不是做什么的注释
+3. 各处一致的约定
+4. 编码约束的类型系统
+5. 显式而非隐式的行为
 
-## Complexity Is Incremental
+## 复杂性是递增的
 
-This is one of Ousterhout's most important observations: complexity rarely arrives as a single large problem. Instead, it accumulates from hundreds of small decisions.
+这是 Ousterhout 最重要的观察之一：复杂性很少作为一个单一的大问题出现。相反，它来自数百个小决策的积累。
 
-**The pattern:**
-1. A developer takes a small shortcut: "This one special case won't matter"
-2. Another developer adds a small workaround: "It's just one extra parameter"
-3. A third developer duplicates some logic: "Refactoring would take too long right now"
-4. After a year, the system is difficult to work with, but no single change caused it
+**模式：**
+1. 一个开发者采取了小的捷径："这一个特例不会有什么影响"
+2. 另一个开发者添加了一个小的变通方案："只是一个额外参数而已"
+3. 第三个开发者复制了一些逻辑："现在重构太花时间了"
+4. 一年后，系统变得难以工作了，但没有任何一个单一的变更导致了这个问题
 
-**Why this matters:**
-- There is no single big fix for incremental complexity
-- You cannot "refactor away" complexity in a weekend -- it must be managed continuously
-- Every small decision matters: each shortcut contributes its small fraction
-- The "broken windows" effect applies: once a module is messy, developers stop trying to keep it clean
+**为什么这很重要：**
+- 没有单一的"大修复"能解决递增的复杂性
+- 你不能在一个周末就"重构掉"复杂性——必须持续管理
+- 每个小决策都很重要：每个捷径都贡献了它的一小部分
+- "破窗"效应适用：一旦一个模块变得混乱，开发者就不再努力保持其整洁
 
-**The discipline:**
-- Adopt a zero-tolerance policy for complexity growth
-- Every PR should leave the code at least as clean as it found it
-- Small design improvements in every change compound into a great codebase over time
-- Think of complexity like financial debt: each shortcut is a small loan with interest
+**纪律：**
+- 对复杂性增长采取零容忍政策
+- 每个 PR 都应至少让代码保持与发现时一样整洁
+- 每个变更中的小设计改进会随时间累积成一个优秀的代码库
+- 把复杂性想象成金融债务：每个捷径都是一笔小贷款，附带着利息
 
-## Measuring Complexity Informally
+## 非正式度量复杂性
 
-There is no precise metric for complexity, but you can measure it through proxies:
+没有精确的复杂性度量指标，但你可以通过代理指标来度量：
 
-### Developer Experience Questions
+### 开发者体验问题
 
-| Question | Good Answer | Bad Answer |
+| 问题 | 好的回答 | 不好的回答 |
 |----------|------------|------------|
-| "How long does it take a new team member to make their first meaningful change?" | Days | Weeks or months |
-| "When you make a change, how confident are you that nothing else breaks?" | Very confident | Nervous; need extensive testing |
-| "How many files do you typically touch for a feature?" | 1-3 | 5+ |
-| "Can you explain what module X does in one sentence?" | Yes, clearly | It does... a lot of things |
-| "When was the last time a change had unexpected side effects?" | Rarely | Last week |
+| "新团队成员需要多久才能做出第一个有意义的变更？" | 几天 | 几周或几个月 |
+| "当你做变更时，你对不会破坏其他东西有多自信？" | 非常有信心 | 紧张；需要大量测试 |
+| "为一个功能你通常要触碰多少个文件？" | 1-3 | 5+ |
+| "你能用一句话解释模块 X 的功能吗？" | 是的，清楚地 | 它做了……很多事情 |
+| "上次变更出现意外副作用是什么时候？" | 很少 | 上周 |
 
-### Code-Level Signals
+### 代码层面的信号
 
-| Signal | Low Complexity | High Complexity |
+| 信号 | 低复杂性 | 高复杂性 |
 |--------|---------------|-----------------|
-| Interface size (parameters, methods) | Few, cohesive | Many, unrelated |
-| Module size | Varies (depth matters more) | Very large with intertwined concerns |
-| Change locality | Changes are local to 1-2 modules | Changes ripple across many modules |
-| Test fragility | Tests break only when behavior changes | Tests break when implementations change |
-| Onboarding time | New developers productive in days | New developers need weeks of mentoring |
+| 接口大小（参数、方法） | 少，内聚 | 多，无关联 |
+| 模块大小 | 各异（深度更重要） | 非常大，关注点交织 |
+| 变更局部性 | 变更限于 1-2 个模块 | 变更波及多个模块 |
+| 测试脆弱性 | 仅在行为变化时测试才失败 | 实现变化时测试也失败 |
+| 入职时间 | 新开发者在几天内高效工作 | 新开发者需要数周的辅导 |
 
-### The "What Is the Simplest Interface?" Test
+### "最简单的接口是什么？"测试
 
-For any module, ask: "What is the simplest interface that would meet all the current use cases?"
+对任何模块，问："满足所有当前用例的最简单接口是什么？"
 
-Compare the current interface to this ideal:
-- If they match, the module is well-designed
-- If the current interface is significantly more complex, there is unnecessary complexity
-- If you cannot define a simple interface, the module may be doing too much
+将当前接口与这个理想进行比较：
+- 如果它们匹配，模块设计良好
+- 如果当前接口明显更复杂，存在不必要的复杂性
+- 如果你无法定义一个简单的接口，模块可能做得太多了
 
-## Red Flags for Complexity
+## 复杂性的红旗信号
 
-Ousterhout identifies several "red flags" -- patterns that signal complexity problems:
+Ousterhout 识别了几个"红旗"——表明复杂性问题的模式：
 
-| Red Flag | What It Signals |
+| 红旗 | 它意味着什么 |
 |----------|----------------|
-| Shallow module | Interface is not much simpler than implementation |
-| Information leakage | Same knowledge in multiple modules |
-| Temporal decomposition | Modules split by time rather than knowledge |
-| Overexposure | API exposes internal state that callers shouldn't need |
-| Pass-through method | Method does nothing except call another method with same arguments |
-| Repetition | Same code pattern appears in multiple places |
-| Special-general mixture | General-purpose module has special-case code for specific callers |
-| Conjoined methods | You can't understand method A without reading method B |
-| Comment repeats code | Comment says the same thing as the code, adding no information |
-| Vague name | Name does not convey what the thing does |
+| 浅模块 | 接口并不比实现简单多少 |
+| 信息泄露 | 相同的知识存在于多个模块中 |
+| 时序分解 | 模块按时间而非知识拆分 |
+| 过度暴露 | API 暴露了调用者不应该需要的内部状态 |
+| 透传方法 | 方法只调用具有相同参数的另一个方法，别无其他 |
+| 重复 | 相同的代码模式出现在多个地方 |
+| 特例-通用混合 | 通用模块包含针对特定调用者的特例代码 |
+| 关联方法 | 你无法在没有阅读方法 B 的情况下理解方法 A |
+| 注释重复代码 | 注释与代码说法相同，没有增加信息 |
+| 模糊名称 | 名称不传达该事物做什么 |
 
-## Applying the Framework
+## 应用框架
 
-When designing a new module or reviewing existing code:
+在设计新模块或审查现有代码时：
 
-1. **Identify the symptoms:** Is there change amplification? Cognitive load? Unknown unknowns?
-2. **Trace the causes:** Are there unnecessary dependencies? Is important information obscure?
-3. **Apply the simplest interface test:** What is the simplest interface that meets current needs?
-4. **Check for red flags:** Does the design exhibit any of the patterns above?
-5. **Decide on action:** Does the complexity warrant a redesign, or is it manageable?
+1. **识别症状：** 是否存在变更放大？认知负荷？未知的未知？
+2. **追踪成因：** 是否存在不必要的依赖？重要信息是否模糊？
+3. **应用最简单的接口测试：** 满足当前需求的最简单接口是什么？
+4. **检查红旗：** 设计是否出现了上述任何模式？
+5. **决定行动：** 复杂性是否值得重新设计，还是可以管理的？
 
-The goal is not perfection but continuous improvement. Each design decision that reduces complexity, even slightly, contributes to a system that remains manageable over time.
+目标不是完美，而是持续改进。每个降低复杂性的设计决策，即使只是略微降低，都有助于系统随着时间的推移保持可管理性。

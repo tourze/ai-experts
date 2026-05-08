@@ -1,18 +1,18 @@
-# Menu Bar
+# 菜单栏
 
-## Intent
+## 意图
 
-Use this when adding or customizing the macOS/iPadOS menu bar with SwiftUI commands.
+使用 SwiftUI 命令添加或自定义 macOS/iPadOS 菜单栏时使用此模式。
 
-## Core patterns
+## 核心模式
 
-- Add commands at the `Scene` level with `.commands { ... }`.
-- Use `SidebarCommands()` when your UI includes a navigation sidebar.
-- Use `CommandMenu` for app-specific menus and group related actions.
-- Use `CommandGroup` to insert items before/after system groups or replace them.
-- Use `FocusedValue` for context-sensitive menu items that depend on the active scene.
+- 在 `Scene` 级别使用 `.commands { ... }` 添加命令。
+- 当 UI 包含导航侧边栏时使用 `SidebarCommands()`。
+- 使用 `CommandMenu` 创建应用特定菜单并对相关操作进行分组。
+- 使用 `CommandGroup` 在系统组之前/之后插入项目或替换它们。
+- 使用 `FocusedValue` 实现依赖活动场景的上下文相关菜单项。
 
-## Example: basic command menu
+## 示例：基本命令菜单
 
 ```swift
 @main
@@ -36,7 +36,7 @@ struct MyApp: App {
 }
 ```
 
-## Example: insert and replace groups
+## 示例：插入和替换分组
 
 ```swift
 WindowGroup {
@@ -57,7 +57,7 @@ WindowGroup {
 }
 ```
 
-## Example: focused menu state
+## 示例：聚焦菜单状态
 
 ```swift
 @Observable
@@ -90,12 +90,12 @@ struct ItemCommands: Commands {
 }
 ```
 
-## Menu bar and Settings
+## 菜单栏和设置
 
-- Defining a `Settings` scene adds the Settings menu item on macOS automatically.
-- If you need a custom entry point inside the app, use `OpenSettingsAction` or `SettingsLink`.
+- 定义 `Settings` 场景会自动在 macOS 上添加 Settings 菜单项。
+- 如果需要在应用内部使用自定义入口点，使用 `OpenSettingsAction` 或 `SettingsLink`。
 
-## Pitfalls
+## 陷阱
 
-- Avoid registering the same keyboard shortcut in multiple command groups.
-- Don’t use menu items as the only discoverable entry point for critical features.
+- 避免在多个命令组中注册相同的键盘快捷键。
+- 不要将菜单项作为关键功能的唯一可发现入口点。

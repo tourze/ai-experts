@@ -1,52 +1,52 @@
-# Understanding and Improving SwiftUI Performance (Summary)
+# 理解和改进 SwiftUI 性能（摘要）
 
-Context: Apple guidance on diagnosing SwiftUI performance with Instruments and applying design patterns to reduce long or frequent updates.
+背景：苹果关于使用 Instruments 诊断 SwiftUI 性能以及应用设计模式减少长时间或频繁更新的指南。
 
-## Core concepts
+## 核心概念
 
-- SwiftUI is declarative; view updates are driven by state, environment, and observable data dependencies.
-- View bodies must compute quickly to meet frame deadlines; slow or frequent updates lead to hitches.
-- Instruments is the primary tool to find long-running updates and excessive update frequency.
+- SwiftUI 是声明式的；视图更新由状态、环境和可观察数据依赖驱动。
+- 视图主体必须快速计算以满足帧截止时间；缓慢或频繁的更新导致卡顿。
+- Instruments 是查找长时间运行更新和过度更新频率的主要工具。
 
-## Instruments workflow
+## Instruments 工作流
 
-1. Profile via Product > Profile.
-2. Choose the SwiftUI template and record.
-3. Exercise the target interaction.
-4. Stop recording and inspect the SwiftUI track + Time Profiler.
+1. 通过 Product > Profile 进行 profiling。
+2. 选择 SwiftUI 模板并记录。
+3. 执行目标交互。
+4. 停止记录并检查 SwiftUI 轨道 + Time Profiler。
 
-## SwiftUI timeline lanes
+## SwiftUI 时间线轨道
 
-- Update Groups: overview of time SwiftUI spends calculating updates.
-- Long View Body Updates: orange >500us, red >1000us.
-- Long Platform View Updates: AppKit/UIKit hosting in SwiftUI.
-- Other Long Updates: geometry/text/layout and other SwiftUI work.
-- Hitches: frame misses where UI wasn’t ready in time.
+- Update Groups：SwiftUI 计算更新所花费的时间概览。
+- Long View Body Updates：橙色 >500us，红色 >1000us。
+- Long Platform View Updates：SwiftUI 中托管的 AppKit/UIKit。
+- Other Long Updates：geometry/text/layout 和其他 SwiftUI 工作。
+- Hitches：UI 未能及时准备好的帧缺失。
 
-## Diagnose long view body updates
+## 诊断长视图主体更新
 
-- Expand the SwiftUI track; inspect module-specific subtracks.
-- Set Inspection Range and correlate with Time Profiler.
-- Use call tree or flame graph to identify expensive frames.
-- Repeat the update to gather enough samples for analysis.
-- Filter to a specific update (Show Calls Made by `MySwiftUIView.body`).
+- 展开 SwiftUI 轨道；检查模块特定的子轨道。
+- 设置 Inspection Range 并与 Time Profiler 关联。
+- 使用调用树或火焰图识别昂贵的帧。
+- 重复更新以收集足够样本用于分析。
+- 过滤到特定更新（Show Calls Made by `MySwiftUIView.body`）。
 
-## Diagnose frequent updates
+## 诊断频繁更新
 
-- Use Update Groups to find long active groups without long updates.
-- Set inspection range on the group and analyze update counts.
-- Use Cause graph ("Show Causes") to see what triggers updates.
-- Compare causes with expected data flow; prioritize the highest-frequency causes.
+- 使用 Update Groups 查找长时间活跃但无长时间更新的组。
+- 在组上设置检查范围并分析更新计数。
+- 使用 Cause 图（"Show Causes"）查看触发更新的原因。
+- 比较原因与预期的数据流；优先处理最高频的原因。
 
-## Remediation patterns
+## 修复模式
 
-- Move expensive work out of `body` and cache results.
-- Use `Observable()` macro to scope dependencies to properties actually read.
-- Avoid broad dependencies that fan out updates to many views.
-- Reduce layout churn; isolate state-dependent subtrees from layout readers.
-- Avoid storing closures that capture parent state; precompute child views.
-- Gate frequent updates (e.g., geometry changes) by thresholds.
+- 将昂贵的工作移出 `body` 并缓存结果。
+- 使用 `Observable()` 宏将依赖范围限定为实际读取的属性。
+- 避免将更新扇出到许多视图的宽泛依赖。
+- 减少布局震荡；将依赖状态的子树与布局读取器隔离。
+- 避免存储捕获父状态的闭包；预计算子视图。
+- 使用阈值门控频繁更新（例如，geometry 变化）。
 
-## Verification
+## 验证
 
-- Re-record after changes to confirm reduced update counts and fewer hitches.
+- 更改后重新记录，以确认更新计数减少和卡顿减少。

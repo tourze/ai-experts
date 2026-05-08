@@ -1,280 +1,279 @@
-# Tracer Bullets and Prototypes
+# 追踪子弹与原型
 
-Deep reference for two distinct approaches to uncertainty: tracer bullets (keep the code) and prototypes (throw it away). Load when guidance is needed on which approach to use and how to execute each.
+关于应对不确定性的两种不同方法的深度参考：追踪子弹（保留代码）和原型（丢弃代码）。当需要关于使用哪种方法以及如何执行每种方法的指导时加载。
 
-## Table of Contents
-1. [The Tracer Bullet Metaphor](#the-tracer-bullet-metaphor)
-2. [Tracer Bullet Development](#tracer-bullet-development)
-3. [Prototyping](#prototyping)
-4. [Tracer Bullets vs. Prototypes](#tracer-bullets-vs-prototypes)
-5. [Shooting in the Dark](#shooting-in-the-dark)
-6. [Iterating on Tracer Code](#iterating-on-tracer-code)
-7. [Walking Skeletons](#walking-skeletons)
-8. [Common Pitfalls](#common-pitfalls)
-
----
-
-## The Tracer Bullet Metaphor
-
-In military usage, tracer bullets are loaded at regular intervals alongside regular ammunition. When fired in the dark, they leave a visible trail showing the path of fire. If the tracer misses, you adjust your aim and fire again. The feedback loop is immediate.
-
-In software, tracer bullet development serves the same purpose: you build something thin but real that travels through all the layers of the system, giving you immediate feedback on whether you're hitting the target.
+## 目录
+1. [追踪子弹隐喻](#追踪子弹隐喻)
+2. [追踪子弹开发](#追踪子弹开发)
+3. [原型制作](#原型制作)
+4. [追踪子弹 vs 原型](#追踪子弹-vs-原型)
+5. [在黑暗中射击](#在黑暗中射击)
+6. [迭代追踪子弹代码](#迭代追踪子弹代码)
+7. [行走骨架](#行走骨架)
+8. [常见陷阱](#常见陷阱)
 
 ---
 
-## Tracer Bullet Development
+## 追踪子弹隐喻
 
-### What It Is
+在军事用途中，追踪子弹以固定间隔与普通弹药一起装填。在黑暗中射击时，它们会留下可见的弹道轨迹。如果追踪子弹脱靶，你会调整瞄准再次射击。反馈循环是即时的。
 
-A tracer bullet is a thin, end-to-end implementation that connects all the major components of the system. It is **production code** -- not throwaway. It may be minimal, but it is real.
+在软件中，追踪子弹开发用于同样的目的：你构建一个薄薄但真实的端到端系统，穿过所有层次，给你即时的反馈——你是否击中了目标。
 
-### Characteristics of Tracer Bullet Code
+---
 
-| Property | Description |
+## 追踪子弹开发
+
+### 它是什么
+
+追踪子弹是一个贯穿系统所有主要组件的薄端到端实现。它是**生产代码**——不是一次性的。它可能最小化，但它是真实的。
+
+### 追踪子弹代码的特征
+
+| 属性 | 描述 |
 |----------|-------------|
-| **End-to-end** | Touches every layer: UI, API, business logic, data store |
-| **Functional** | Actually works, even if only for one scenario |
-| **Production quality** | Written with proper error handling, tests, and structure |
-| **Incomplete** | Handles one path through the system, not all edge cases |
-| **Extensible** | Built as a framework that other features can fill in |
+| **端到端** | 触及每一层：UI、API、业务逻辑、数据存储 |
+| **可运行的** | 实际可用，即使仅针对一个场景 |
+| **生产质量** | 使用适当的错误处理、测试和结构编写 |
+| **不完整** | 处理系统中的一个路径，而非所有边缘情况 |
+| **可扩展** | 构建为其他功能可以填充的框架 |
 
-### Example: Building a New Web Application
+### 示例：构建一个新的 Web 应用
 
-Instead of building the full database schema, then all the API endpoints, then the full UI, a tracer bullet approach:
+与其先构建完整的数据库 schema，然后所有 API 端点，再构建完整 UI，追踪子弹方法的做法是：
 
-1. **Pick one feature** (e.g., "user creates an account")
-2. **Build the UI** -- a single form with email and password
-3. **Build the API** -- one `POST /users` endpoint
-4. **Build the data layer** -- one `users` table with two columns
-5. **Connect them** -- form submits to API, API writes to DB, response confirms success
-6. **Deploy** -- to the real production environment (or staging)
+1. **选择一个功能**（例如"用户创建账户"）
+2. **构建 UI** —— 一个包含邮箱和密码的简单表单
+3. **构建 API** —— 一个 `POST /users` 端点
+4. **构建数据层** —— 一个两列的 `users` 表
+5. **连接它们** —— 表单提交到 API，API 写入数据库，响应确认成功
+6. **部署** —— 到真实的生产环境（或 staging）
 
-You now have a working system. It only does one thing, but all the layers are connected, the deployment pipeline works, and you can see the real behavior. Every subsequent feature fills in more of the skeleton.
+你现在有一个可工作的系统。它只做一件事，但所有层次都已连接，部署流水线正常工作，你可以看到真实行为。每个后续功能填充更多骨架。
 
-### When to Use Tracer Bullets
+### 何时使用追踪子弹
 
-- Requirements are vague or rapidly changing
-- You're using a new technology stack you haven't worked with before
-- The architecture involves multiple integrated components (services, queues, databases)
-- Stakeholders need to see something real early
-- You want to validate that all the pieces connect before investing in each individually
+- 需求模糊或快速变化
+- 你正在使用以前没接触过的新技术栈
+- 架构涉及多个集成的组件（服务、队列、数据库）
+- 利益相关者需要尽早看到真实的东西
+- 你想在分别投入每个组件之前验证所有部分能否连接起来
 
 ---
 
-## Prototyping
+## 原型制作
 
-### What It Is
+### 它是什么
 
-A prototype is a focused investigation of one specific aspect of the system. Unlike tracer bullets, prototypes are **disposable** -- they are built to learn, not to keep.
+原型是对系统某一特定方面的集中调查。与追踪子弹不同，原型是**可丢弃的**——它们是为学习而构建，而非保留。
 
-### What to Prototype
+### 原型制作什么
 
-| Aspect | Question It Answers |
+| 方面 | 它回答的问题 |
 |--------|-------------------|
-| **Algorithm** | Is this approach fast enough? Does it produce correct results? |
-| **UI/UX** | Does this interaction model make sense to users? |
-| **Architecture** | Can these components communicate at the required scale? |
-| **Third-party tool** | Does this library/service meet our requirements? |
-| **Performance** | Can this database handle our query patterns at load? |
+| **算法** | 这种方法足够快吗？产生正确结果吗？ |
+| **UI/UX** | 这个交互模型对用户有意义吗？ |
+| **架构** | 这些组件能在所需规模下通信吗？ |
+| **第三方工具** | 这个库/服务满足我们的需求吗？ |
+| **性能** | 这个数据库能在负载下处理我们的查询模式吗？ |
 
-### Characteristics of Prototype Code
+### 原型代码的特征
 
-| Property | Description |
+| 属性 | 描述 |
 |----------|-------------|
-| **Focused** | Explores one question, ignores everything else |
-| **Incomplete** | No error handling, no edge cases, no tests |
-| **Disposable** | Will be thrown away -- this must be explicit and agreed upon |
-| **Fast** | Built to answer a question quickly, not to last |
-| **Unrestricted** | Can use any language, tool, or shortcut |
+| **聚焦** | 探索一个问题，忽略其他所有内容 |
+| **不完整** | 无错误处理、无边角情况、无测试 |
+| **可丢弃** | 将被丢弃——这必须明确并达成共识 |
+| **快速** | 为快速回答问题而构建，非持久使用 |
+| **不受限制** | 可以使用任何语言、工具或捷径 |
 
-### What to Ignore When Prototyping
+### 原型制作时可以忽略的内容
 
-When building a prototype, you can and should ignore:
+在构建原型时，你可以且应该忽略：
 
-- **Correctness:** Dummy data and hard-coded values are fine
-- **Completeness:** Handle the happy path only
-- **Robustness:** No error handling or recovery
-- **Style:** No need for clean code, proper naming, or documentation
-- **Performance:** Unless performance IS the question being investigated
+- **正确性：** 假数据和硬编码值没问题
+- **完整性：** 仅处理快乐路径
+- **健壮性：** 无需错误处理或恢复机制
+- **风格：** 不需要干净的代码、正确的命名或文档
+- **性能：** 除非性能正是你要调查的问题
 
-### Example: Prototyping a Recommendation Engine
+### 示例：原型化推荐引擎
 
-Before building a real recommendation system, prototype:
+在构建真正的推荐系统之前，先做原型：
 
 ```python
-# PROTOTYPE - DO NOT SHIP
-# Question: Does collaborative filtering produce useful recommendations
-# from our dataset?
+# 原型——不要发布
+# 问题：协同过滤能从我们的数据集产生有用的推荐吗？
 
 import pandas as pd
 from scipy.sparse import csr_matrix
 from sklearn.neighbors import NearestNeighbors
 
-# Load raw data (no proper ETL pipeline)
+# 加载原始数据（无适当的 ETL 流水线）
 df = pd.read_csv("raw_purchases.csv")
 
-# Quick and dirty pivot
+# 快速粗糙的数据透视
 matrix = df.pivot(index='user_id', columns='product_id', values='purchased').fillna(0)
 
-# Fit nearest neighbors
+# 拟合最近邻
 model = NearestNeighbors(metric='cosine')
 model.fit(csr_matrix(matrix.values))
 
-# Test with one user
+# 测试一个用户
 distances, indices = model.kneighbors(matrix.iloc[0:1], n_neighbors=5)
-print("Similar users:", indices)
-print("Their top products:", matrix.iloc[indices[0]].sum().nlargest(10))
+print("相似用户：", indices)
+print("他们的热门产品：", matrix.iloc[indices[0]].sum().nlargest(10))
 ```
 
-This prototype answers: "Does collaborative filtering work with our data?" The code is not production-quality and should never ship. But the *learning* it produces guides the real implementation.
+这个原型回答了："协过滤对我们的数据有效吗？"代码不是生产质量的，绝不应发布。但它产生的**学习结果**指导了真正的实现。
 
 ---
 
-## Tracer Bullets vs. Prototypes
+## 追踪子弹 vs 原型
 
-This is the critical distinction:
+这是关键的区别：
 
-| Aspect | Tracer Bullet | Prototype |
+| 方面 | 追踪子弹 | 原型 |
 |--------|--------------|-----------|
-| **Purpose** | Build the real framework, thin but complete | Explore a specific risk or question |
-| **Code quality** | Production quality | Throwaway quality |
-| **Scope** | End-to-end across all layers | Focused on one aspect or component |
-| **After completion** | Keep and extend | Throw away completely |
-| **Team visibility** | Shows real progress | Shows research findings |
-| **Risk addressed** | Integration risk, architectural unknowns | Technical feasibility, design questions |
-| **Deliverable** | Working (minimal) system | Knowledge and a decision |
+| **目的** | 构建真实框架，薄但完整 | 探索特定风险或问题 |
+| **代码质量** | 生产质量 | 一次性质量 |
+| **范围** | 端到端覆盖所有层 | 聚焦在一个方面或组件 |
+| **完成后** | 保留并扩展 | 完全丢弃 |
+| **团队可见性** | 展示真实进展 | 展示研究发现 |
+| **应对的风险** | 集成风险、架构未知项 | 技术可行性、设计问题 |
+| **可交付物** | 可工作的（最小）系统 | 知识和一个决策 |
 
-### Decision Guide
+### 决策指南
 
 ```
-Is the question about whether the pieces fit together?
-  → Tracer Bullet
+问题是关于各个部分是否可以组合在一起？
+  → 追踪子弹
 
-Is the question about whether one piece works at all?
-  → Prototype
+问题是关于一个部分是否根本能工作？
+  → 原型
 
-Are you building a new feature in an existing system?
-  → Tracer Bullet (add the feature end-to-end, then iterate)
+你是在现有系统中构建新功能？
+  → 追踪子弹（端到端添加功能，然后迭代）
 
-Are you evaluating a new technology or algorithm?
-  → Prototype (test it in isolation, then decide)
+你是在评估新技术或算法？
+  → 原型（隔离测试，然后决策）
 
-Do stakeholders need to see/use something?
-  → Tracer Bullet (it's real, they can interact with it)
+利益相关者需要看到/使用某些东西？
+  → 追踪子弹（它是真实的，他们可以与之交互）
 
-Do you need to answer a technical question quickly?
-  → Prototype (optimize for speed of learning)
+你需要快速回答一个技术问题？
+  → 原型（优化学习速度）
 ```
 
 ---
 
-## Shooting in the Dark
+## 在黑暗中射击
 
-Tracer bullets are most valuable when you can't see the target clearly:
+追踪子弹在你无法清楚看到目标时最有价值：
 
-### Unclear Requirements
+### 不清晰的需求
 
-Users say "I want a dashboard." What does that mean? Build a tracer: one chart, one data source, deployed and accessible. Show it to users. Their reaction tells you more than any requirements document.
+用户说"我想要一个仪表盘。"这意味着什么？构建一个追踪子弹：一个图表、一个数据源、可部署且可访问。展示给用户。他们的反应比任何需求文档告诉你的更多。
 
-### New Technology Stack
+### 新技术栈
 
-Team is adopting Rust for the first time. Don't spend three months building the data layer in isolation. Build a tracer: one request, from HTTP endpoint through business logic to database response, in Rust. You'll discover the pain points (borrow checker, async runtime, ORM maturity) immediately.
+团队首次采用 Rust。不要花费三个月孤立地构建数据层。构建一个追踪子弹：一个请求，从 HTTP 端点经过业务逻辑到数据库响应，全部用 Rust。你会立即发现痛点（借用检查器、异步运行时、ORM 成熟度）。
 
-### Complex Integration
+### 复杂集成
 
-Your system needs to coordinate five microservices, two queues, and a third-party API. Build a tracer: one transaction that flows through all of them. Integration problems surface immediately, not three months into development.
+你的系统需要协调五个微服务、两个队列和一个第三方 API。构建一个追踪子弹：一个贯穿所有它们的交易。集成问题会立即浮出水面，而不是等到开发进行了三个月。
 
 ---
 
-## Iterating on Tracer Code
+## 迭代追踪子弹代码
 
-When a tracer bullet misses the target (stakeholders don't like what they see, performance is wrong, the architecture doesn't work), you adjust and fire again:
+当追踪子弹脱靶时（利益相关者不喜欢他们看到的、性能不对、架构不工作），你调整并再次射击：
 
-### The Iteration Cycle
+### 迭代周期
 
-1. **Build** -- thin end-to-end implementation
-2. **Show** -- demonstrate to stakeholders and the team
-3. **Learn** -- collect feedback, observe behavior, measure performance
-4. **Adjust** -- modify the implementation based on learnings
-5. **Repeat** -- fire again with improved aim
+1. **构建** —— 薄端到端实现
+2. **展示** —— 向利益相关者和团队演示
+3. **学习** —— 收集反馈、观察行为、测量性能
+4. **调整** —— 基于学到的内容修改实现
+5. **重复** —— 用改进后的瞄准再次射击
 
-### What "Missing" Looks Like
+### "脱靶"是什么样的
 
-| Miss Type | Symptom | Adjustment |
+| 脱靶类型 | 症状 | 调整措施 |
 |-----------|---------|------------|
-| Wrong feature | Users don't use it | Pivot to a different feature |
-| Wrong UX | Users are confused | Redesign the interaction model |
-| Wrong architecture | Performance is unacceptable | Restructure the layers |
-| Wrong technology | Library doesn't scale | Swap the component (orthogonality helps here) |
-| Wrong integration | Services don't coordinate well | Redesign the communication pattern |
+| 功能不对 | 用户不使用它 | 转向不同功能 |
+| UX 不对 | 用户感到困惑 | 重新设计交互模型 |
+| 架构不对 | 性能不可接受 | 重新构建层次结构 |
+| 技术不对 | 库无法扩展 | 替换组件（正交性在此处有帮助） |
+| 集成不对 | 服务协调不佳 | 重新设计通信模式 |
 
-The cost of each adjustment is low because you only built a thin slice. Compare this to building the full system and discovering at the end that the architecture is wrong.
+每次调整的成本很低，因为你只构建了一个薄切片。相比之下，构建完整系统后才发现架构是错误的，代价要大得多。
 
 ---
 
-## Walking Skeletons
+## 行走骨架
 
-A walking skeleton is a special case of tracer bullet development applied to the project's infrastructure:
+行走骨架是追踪子弹开发应用到项目基础设施的一个特例：
 
-### What It Includes
+### 包含什么
 
-- Source control repository setup
-- Build pipeline (compile, lint, test)
-- Deployment pipeline (staging, production)
-- Monitoring and logging
-- One trivial feature (health check endpoint, hello world page)
+- 源码控制仓库设置
+- 构建流水线（编译、lint、测试）
+- 部署流水线（staging、production）
+- 监控和日志记录
+- 一个简单的功能（健康检查端点、hello world 页面）
 
-### Why It Matters
+### 为什么重要
 
-The walking skeleton proves that your entire delivery pipeline works before you write any real features. This is enormously valuable because:
+行走骨架证明了你整个交付流水线在你编写任何真实功能之前就能工作。这非常有价值，因为：
 
-- Infrastructure problems are the most painful to fix when discovered late
-- CI/CD pipeline issues block the entire team
-- Deployment automation is complex and error-prone
-- Monitoring gaps are invisible until production incidents
+- 基础设施问题最痛苦——在发现时已为时已晚
+- CI/CD 流水线问题阻塞整个团队
+- 部署自动化复杂且容易出错
+- 监控盲区在生产事故前是不可见的
 
-### Walking Skeleton Checklist
+### 行走骨架检查清单
 
-| Component | Verification |
+| 组件 | 验证方式 |
 |-----------|-------------|
-| Source control | Code is tracked, branches work, PRs are reviewed |
-| Build | `make build` (or equivalent) produces an artifact |
-| Unit tests | `make test` runs and passes (even with one trivial test) |
-| Integration tests | At least one test hits a real dependency |
-| Linting | Code style is enforced automatically |
-| Staging deploy | One command deploys to a staging environment |
-| Production deploy | Same pipeline deploys to production |
-| Monitoring | Logs are collected, metrics are reported |
-| Alerting | At least one alert fires on failure (health check) |
+| 源码控制 | 代码被跟踪、分支工作、PR 被审查 |
+| 构建 | `make build`（或等效）产生构建产物 |
+| 单元测试 | `make test` 运行且通过（即使只有一个简单测试） |
+| 集成测试 | 至少一个测试触及真实依赖 |
+| Linting | 代码风格自动强制执行 |
+| Staging 部署 | 一条命令部署到 staging 环境 |
+| 生产部署 | 相同流水线部署到生产环境 |
+| 监控 | 日志被收集、指标被报告 |
+| 告警 | 至少有一条告警在失败时触发（健康检查） |
 
 ---
 
-## Common Pitfalls
+## 常见陷阱
 
-### Pitfall 1: Prototype Becomes Production
+### 陷阱 1：原型变成生产代码
 
-The most dangerous mistake. A prototype is built quickly, stakeholders see it, love it, and demand it ship. The throwaway code becomes permanent.
+最危险的错误。原型快速构建，利益相关者看到它，喜欢它，并要求它发布。一次性代码变成永久代码。
 
-**Prevention:**
-- Write "PROTOTYPE - NOT FOR PRODUCTION" in the README, code comments, and PR description
-- Use a different repository or branch for prototypes
-- Present findings, not the code -- show screenshots, not live demos when possible
-- Make it ugly on purpose -- if it looks polished, people will want to ship it
+**预防措施：**
+- 在 README、代码注释和 PR 描述中写上"原型——不可用于生产"
+- 为原型使用不同的仓库或分支
+- 展示发现结果，而非代码——展示截图，尽可能不做现场演示
+- 故意让它看起来丑——如果看起来很精致，人们会想发布它
 
-### Pitfall 2: Tracer Bullet Becomes Big Design Up Front
+### 陷阱 2：追踪子弹变成预先的大设计
 
-Teams sometimes use "tracer bullet" as justification for spending months on architecture before writing any features.
+团队有时以"追踪子弹"为理由，花数月时间进行架构设计之后再编写任何功能。
 
-**Prevention:** A true tracer bullet should be deployable within days, not weeks. If it's taking longer, you're building too much. Narrow the scope to the thinnest possible slice.
+**预防措施：** 真正的追踪子弹应在数天内可部署，而非数周。如果需要更长时间，说明你构建了太多。将范围缩小到最薄的可能切片。
 
-### Pitfall 3: Confusing the Two Approaches
+### 陷阱 3：混淆两种方法
 
-Using tracer bullet code quality for a prototype (wasting time on production quality for throwaway code) or prototype quality for a tracer bullet (shipping hack code as the foundation of the system).
+对原型使用追踪子弹代码质量（在一次性代码上浪费时间进行生产质量），或对追踪子弹使用原型质量（把 hack 代码作为系统的基础发布）。
 
-**Prevention:** Decide upfront which approach you're using and communicate it clearly to the team. The choice determines code quality expectations, review standards, and what happens to the code afterward.
+**预防措施：** 事先决定使用哪种方法，并清晰地向团队沟通。选择决定了代码质量期望、审查标准以及事后代码的去向。
 
-### Pitfall 4: Never Iterating on the Tracer
+### 陷阱 4：从未迭代追踪子弹
 
-Building a tracer bullet and then treating it as the final architecture. The whole point is to iterate -- if you're not adjusting based on feedback, you're not using the technique correctly.
+构建了追踪子弹，然后将其视为最终架构。重点是迭代——如果你没有基于反馈进行调整，你就没有正确使用这项技术。
 
-**Prevention:** Plan for at least 2-3 iterations. Budget time for adjustment after each demonstration. Expect the first tracer to miss.
+**预防措施：** 计划至少 2-3 次迭代。为每次演示后的调整预留时间。期望第一个追踪子弹脱靶。

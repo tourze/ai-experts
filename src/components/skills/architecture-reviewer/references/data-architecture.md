@@ -1,180 +1,165 @@
-# Data Architecture
+# 数据架构
 
-**Dimension Weight: 5%**
+**维度权重：5%**
 
-Evaluates the data layer's design, integrity, lifecycle management, and fitness for the
-system's access patterns. The data layer is often the silent constraint.
+评估数据层的设计、完整性、生命周期管理及其对系统访问模式的适配程度。数据层往往是隐藏的约束条件。
 
-## Table of Contents
+## 目录
 
-1. Sub-Criteria Checklist
-2. Data Model Fitness Evaluation
-3. Event Architecture Patterns
-4. Evaluation Guidance by Mode
+1. 子标准检查清单
+2. 数据模型适配度评估
+3. 事件架构模式
+4. 按模式的评估指南
 
 ---
 
-## 1. Sub-Criteria Checklist
+## 1. 子标准检查清单
 
-### 1.1 Schema Design Quality
+### 1.1 模式设计质量
 
-- Is normalization level appropriate? (3NF for OLTP, denormalized for read-heavy/analytics.)
-- Is denormalization intentional and documented, or accidental?
-- Are naming conventions consistent? (snake_case, camelCase — pick one.)
-- Are data types appropriate? (No VARCHAR for timestamps, no TEXT for booleans.)
-- Are constraints enforced at the database level? (NOT NULL, UNIQUE, FOREIGN KEY, CHECK.)
-- Is referential integrity maintained? Or is it "enforced by the application"? (Fragile.)
+- 规范化程度是否适当？（OLTP 用 3NF，读密集/分析场景用反规范化。）
+- 反规范化是有意设计并有文档记录，还是意外造成的？
+- 命名约定是否一致？（snake_case、camelCase —— 选择一种。）
+- 数据类型是否合适？（时间戳不用 VARCHAR，布尔值不用 TEXT。）
+- 数据库层面是否实施了约束？（NOT NULL、UNIQUE、FOREIGN KEY、CHECK。）
+- 引用完整性是否得到维护？还是仅由"应用程序来保证"？（脆弱。）
 
-### 1.2 Data Model Fitness
+### 1.2 数据模型适配度
 
-- Is the database engine appropriate for the access patterns?
+- 数据库引擎是否适合访问模式？
 
-| Access Pattern                | Best Fit                                   | Poor Fit                             |
+| 访问模式 | 最佳选择 | 较差选择 |
 | ----------------------------- | ------------------------------------------ | ------------------------------------ |
-| Transactional CRUD            | Relational (PostgreSQL, MySQL)             | Document DB for complex transactions |
-| Hierarchical/nested documents | Document (MongoDB, DynamoDB)               | Relational with deep JOINs           |
-| Relationship traversal        | Graph (Neo4j, Neptune)                     | Relational with recursive CTEs       |
-| Time-series metrics           | Time-series (TimescaleDB, InfluxDB)        | Relational without partitioning      |
-| Full-text search              | Search engine (Elasticsearch, Meilisearch) | LIKE queries on relational           |
-| Key-value lookups             | KV store (Redis, DynamoDB)                 | Relational for simple lookups        |
-| Wide-column analytics         | Columnar (ClickHouse, BigQuery)            | Row-oriented for OLAP                |
-| Vector similarity             | Vector DB (Pinecone, pgvector, FAISS)      | Relational without extensions        |
+| 事务性 CRUD | 关系型（PostgreSQL、MySQL） | 针对复杂事务的文档型数据库 |
+| 层级/嵌套文档 | 文档型（MongoDB、DynamoDB） | 含深层 JOIN 的关系型数据库 |
+| 关系遍历 | 图数据库（Neo4j、Neptune） | 含递归 CTE 的关系型数据库 |
+| 时序指标 | 时序数据库（TimescaleDB、InfluxDB） | 无分区的的关系型数据库 |
+| 全文搜索 | 搜索引擎（Elasticsearch、Meilisearch） | 关系型数据库上的 LIKE 查询 |
+| 键值查找 | KV 存储（Redis、DynamoDB） | 针对简单查找的关系型数据库 |
+| 宽列分析 | 列式存储（ClickHouse、BigQuery） | 面向行的 OLAP 数据库 |
+| 向量相似度 | 向量数据库（Pinecone、pgvector、FAISS） | 无扩展的关系型数据库 |
 
-- Is polyglot persistence justified? (Multiple databases for different access patterns is
-  valid, but adds operational complexity. Is the trade-off worth it?)
+- 多语言持久化是否有充分理由？（为不同访问模式使用多种数据库是合理的，但会增加运维复杂度。值得吗？）
 
-### 1.3 Migration Strategy
+### 1.3 迁移策略
 
-- Is a schema migration tool in place? (Flyway, Alembic, Knex, Prisma Migrate, Atlas.)
-- Are migrations version-controlled and sequential?
-- Are migrations forward-only or reversible? (Forward-only is safer for production.)
-- Can migrations run without downtime? (No exclusive locks on large tables.)
-- Is there a strategy for blue-green data migrations?
-- Are data migrations tested in staging with production-like data volumes?
+- 是否使用了 schema 迁移工具？（Flyway、Alembic、Knex、Prisma Migrate、Atlas。）
+- 迁移脚本是否受版本控制且有序？
+- 迁移是仅向前还是可逆的？（生产环境向前更安全。）
+- 迁移能否无停机执行？（大表上无排它锁。）
+- 是否制定了蓝绿数据迁移策略？
+- 数据迁移是否在接近生产数据量的预发布环境中测试过？
 
-### 1.4 Backup & Recovery
+### 1.4 备份与恢复
 
-- Are automated backups configured? (Daily minimum for production.)
-- Is point-in-time recovery (PITR) available?
-- Are backup restores tested regularly? (Untested backups are not backups.)
-- Is cross-region backup replication in place for DR?
-- Are backups encrypted?
-- What is the backup retention period? Is it compliant with regulatory requirements?
-- **RTO/RPO alignment:** Can the backup strategy meet the stated RPO?
+- 是否配置了自动备份？（生产环境至少每日一次。）
+- 是否支持时间点恢复（PITR）？
+- 备份恢复是否定期测试？（未经测试的备份不算备份。）
+- 灾备方面是否配置了跨区域备份复制？
+- 备份是否加密？
+- 备份保留期是多长？是否符合监管要求？
+- **RTO/RPO 对齐：** 备份策略能否满足声明的 RPO？
 
-### 1.5 Data Lifecycle Management
+### 1.5 数据生命周期管理
 
-- Are data retention policies defined per data type?
-- Is there an automated archival strategy for old data?
-- Is TTL configured for ephemeral data? (Sessions, caches, temporary tokens.)
-- Is there a data purge mechanism for GDPR right-to-erasure compliance?
-- Is data growth projected? What is the storage scaling plan?
+- 是否按数据类型定义了数据保留策略？
+- 是否有旧数据自动归档策略？
+- 临时数据（会话、缓存、临时令牌）是否配置了 TTL？
+- 是否有数据清除机制以符合 GDPR 的删除权？
+- 数据增长是否已做预测？存储扩展计划是什么？
 
-### 1.6 Event Architecture
+### 1.6 事件架构
 
-- **Event sourcing:** If used, are events the source of truth? Are projections
-  well-defined? Is replay capability implemented?
-- **CQRS:** If used, is the read model kept in sync reliably? What is the sync lag?
-- **Event schema:** Are event schemas versioned? Is there a schema registry?
-- **Dead letter queues:** What happens to unprocessable events?
-- **Ordering guarantees:** Is event ordering guaranteed where needed? (Partition-based
-  ordering in Kafka, FIFO queues in SQS.)
-- **Idempotent consumers:** Can events be safely reprocessed?
+- **事件溯源：** 如果使用，事件是否是事实源？投影是否定义良好？是否实现了重放能力？
+- **CQRS：** 如果使用，读模型是否可靠同步？同步延迟是多少？
+- **事件模式：** 事件模式是否版本化？是否有 schema registry？
+- **死信队列：** 无法处理的事件如何处理？
+- **排序保证：** 需要时是否保证了事件排序？（Kafka 的分区内排序，SQS 的 FIFO 队列。）
+- **幂等消费者：** 事件能否安全地重新处理？
 
-### 1.7 Data Pipeline Reliability
+### 1.7 数据管道可靠性
 
-- Is pipeline processing idempotent?
-- What delivery semantics are used? (Exactly-once, at-least-once, at-most-once.)
-- Is there replay capability for failed or corrupted pipeline runs?
-- Are checkpoints/offsets managed reliably?
-- Is there data validation at pipeline boundaries? (Schema validation on ingest.)
-- Are pipeline failures alerted and automatically retried?
+- 管道处理是否幂等？
+- 使用什么投递语义？（精确一次、至少一次、至多一次。）
+- 对于失败或损坏的管道运行，是否有重放能力？
+- 检查点/偏移量管理是否可靠？
+- 管道边界是否有数据验证？（数据摄入时的 schema 验证。）
+- 管道失败是否触发告警并自动重试？
 
-### 1.8 Schema Versioning & Compatibility
+### 1.8 Schema 版本控制与兼容性
 
-- Are schema changes backward-compatible? (Adding columns with defaults, not renaming.)
-- Are forward-compatible changes planned? (New consumers can handle old data.)
-- Is there contract testing between producers and consumers of shared data?
-- For event schemas: is there a compatibility mode? (BACKWARD, FORWARD, FULL in
-  schema registries.)
-- Are breaking schema changes managed with a migration plan?
+- Schema 变更是否向后兼容？（增加带默认值的列，不重命名。）
+- 是否考虑了向前兼容的变更？（新消费者能处理旧数据。）
+- 共享数据的生产者和消费者之间是否有契约测试？
+- 对于事件 schema：是否有兼容性模式？（schema registry 中的 BACKWARD、FORWARD、FULL。）
+- 破坏性 schema 变更是否通过迁移计划进行管理？
 
 ---
 
-## 2. Data Model Fitness Evaluation
+## 2. 数据模型适配度评估
 
-When evaluating data model fitness, consider:
+在评估数据模型适配度时，考虑以下因素：
 
-**Read-to-write ratio:** High read ratios suggest caching, read replicas, or denormalized
-read models. High write ratios suggest write-optimized storage, append-only patterns, or
-event sourcing.
+**读写比：** 高读比例建议使用缓存、只读副本或反规范化的读模型。高写比例建议使用写入优化的存储、仅追加模式或事件溯源。
 
-**Query patterns:** If most queries are by a single key → KV store. If queries involve
-complex JOINs → relational. If queries traverse relationships → graph. If queries are
-full-text search → search engine. If queries are aggregations over time → time-series.
+**查询模式：** 如果大多数查询按单个键查找 → KV 存储。如果查询涉及复杂 JOIN → 关系型。如果查询遍历关系 → 图数据库。如果查询是全文搜索 → 搜索引擎。如果查询是按时间聚合 → 时序数据库。
 
-**Data volume trajectory:** Current volume may fit in a single database, but projected
-growth may require partitioning, sharding, or a different engine entirely. Flag this early.
+**数据量轨迹：** 当前数据量可能适合单个数据库，但预期增长可能需要分区、分片或完全不同的引擎。请尽早标记这一点。
 
-**Consistency requirements:** Financial and transactional data typically needs strong
-consistency (relational with ACID). Social feeds, analytics, and caching can tolerate
-eventual consistency.
+**一致性要求：** 金融和事务数据通常需要强一致性（支持 ACID 的关系型数据库）。社交信息流、分析和缓存可以容忍最终一致性。
 
-**Access locality:** Is data accessed together stored together? If a query always needs
-user + orders + recent activity, a document model or denormalized relational model may be
-more efficient than normalizing across 5 tables.
+**访问局部性：** 是否将一起访问的数据存储在一起？如果查询总是需要用户 + 订单 + 近期活动，文档模型或反规范化的关系模型可能比跨 5 张表的规范化更高效。
 
 ---
 
-## 3. Event Architecture Patterns
+## 3. 事件架构模式
 
-| Pattern                      | Use When                                                  | Complexity  | Consistency                |
+| 模式 | 适用场景 | 复杂度 | 一致性 |
 | ---------------------------- | --------------------------------------------------------- | ----------- | -------------------------- |
-| Event Notification           | Loose coupling between services, eventual consistency OK  | Low         | Eventual                   |
-| Event-Carried State Transfer | Consumers need data without calling back to source        | Medium      | Eventual                   |
-| Event Sourcing               | Full audit trail needed, complex domain, temporal queries | High        | Strong (within aggregate)  |
-| CQRS                         | Read and write models diverge significantly               | Medium-High | Eventual (read model)      |
-| Saga (Orchestration)         | Distributed transactions with centralized coordinator     | High        | Eventual with compensation |
-| Saga (Choreography)          | Distributed transactions with event-driven coordination   | High        | Eventual with compensation |
+| 事件通知 | 服务间松耦合，可接受最终一致性 | 低 | 最终 |
+| 事件携带状态传输 | 消费者需要数据但无需回调源服务 | 中 | 最终 |
+| 事件溯源 | 需要完整审计轨迹、复杂领域、时序查询 | 高 | 强（聚合内） |
+| CQRS | 读写模型差异显著 | 中高 | 最终（读模型） |
+| Saga（编排型） | 带中央协调器的分布式事务 | 高 | 最终 + 补偿 |
+| Saga（编舞型） | 事件驱动的协调分布式事务 | 高 | 最终 + 补偿 |
 
-When event architecture is present, verify:
+当存在事件架构时，验证以下内容：
 
-- Events are immutable (never modified after publishing)
-- Event schemas are versioned
-- Dead-letter handling exists
-- Consumer idempotency is implemented
-- Ordering guarantees match requirements
+- 事件是不可变的（发布后不得修改）
+- 事件 schema 已版本化
+- 死信处理已存在
+- 消费者幂等性已实现
+- 排序保证满足需求
 
 ---
 
-## 4. Evaluation Guidance by Mode
+## 4. 按模式的评估指南
 
-### Mode A (Codebase)
+### 模式 A（代码库）
 
-- Inspect database migration files for schema design quality
-- Check ORM model definitions for constraint enforcement
-- Look for multiple database configurations (polyglot persistence)
-- Check for migration tools and their configuration
-- Inspect backup configurations in IaC files
-- Look for event schema definitions and versioning
-- Check queue/event handler code for idempotency patterns
-- Review database index definitions against query patterns
+- 检查数据库迁移文件以评估 schema 设计质量
+- 检查 ORM 模型定义中的约束实施情况
+- 查找多个数据库配置（多语言持久化）
+- 检查迁移工具及其配置
+- 检查 IaC 文件中的备份配置
+- 查找事件 schema 定义和版本化
+- 检查队列/事件处理者代码中的幂等性模式
+- 对照查询模式审查数据库索引定义
 
-### Mode B (Document)
+### 模式 B（文档）
 
-- Verify data model choice is justified against stated access patterns
-- Check if migration strategy is addressed
-- Look for backup/recovery strategy with specific RPO/RTO
-- Verify data lifecycle policies are defined
-- Check if event architecture (if planned) addresses ordering, idempotency, dead letters
-- Look for data volume projections and storage scaling plan
-- Identify any unstated assumptions about data model ("we'll use PostgreSQL" without
-  justifying why)
+- 验证数据模型选择是否对照声明的访问模式有充分理由
+- 检查迁移策略是否涉及
+- 查找包含具体 RPO/RTO 的备份/恢复策略
+- 验证数据生命周期策略是否已定义
+- 检查事件架构（如果计划使用）是否涉及排序、幂等性、死信
+- 查找数据量预测和存储扩展计划
+- 识别有关数据模型的任何未声明的假设（"我们将使用 PostgreSQL"而未说明原因）
 
-### Mode C (Hybrid)
+### 模式 C（混合）
 
-- Compare documented data model against actual schema definitions
-- Check if stated backup strategy matches actual backup configurations
-- Verify documented event schemas match actual event definitions in code
-- Cross-reference data lifecycle policies against actual TTL/archival implementations
-- Check if planned indexes exist in actual database schema
+- 将文档化的数据模型与实际 schema 定义进行比较
+- 检查声明的备份策略是否与实际备份配置一致
+- 验证已记录的 event schema 是否与代码中的实际事件定义一致
+- 交叉对照数据生命周期策略与实际 TTL/归档实现
+- 检查计划中的索引是否存在于实际数据库 schema 中

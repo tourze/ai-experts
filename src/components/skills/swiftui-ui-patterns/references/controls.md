@@ -1,18 +1,18 @@
-# Controls (Toggle, Slider, Picker)
+# 控件（Toggle、Slider、Picker）
 
-## Intent
+## 意图
 
-Use native controls for settings and configuration screens, keeping labels accessible and state bindings clear.
+在设置和配置界面中使用原生控件，保持标签的可无障碍访问性和状态绑定的清晰性。
 
-## Core patterns
+## 核心模式
 
-- Bind controls directly to `@State`, `@Binding`, or `@AppStorage`.
-- Prefer `Toggle` for boolean preferences.
-- Use `Slider` for numeric ranges and show the current value in a label.
-- Use `Picker` for discrete choices; use `.pickerStyle(.segmented)` only for 2–4 options.
-- Keep labels visible and descriptive; avoid embedding buttons inside controls.
+- 直接将控件绑定到 `@State`、`@Binding` 或 `@AppStorage`。
+- 布尔偏好设置优先使用 `Toggle`。
+- 数值范围使用 `Slider`，并在标签中显示当前值。
+- 离散选项使用 `Picker`；仅对 2-4 个选项使用 `.pickerStyle(.segmented)`。
+- 保持标签可见且具有描述性；避免在控件内部嵌入按钮。
 
-## Example: toggles with sections
+## 示例：带 Section 的 Toggle
 
 ```swift
 Form {
@@ -24,7 +24,7 @@ Form {
 }
 ```
 
-## Example: slider with value text
+## 示例：带数值文本的 Slider
 
 ```swift
 Section("Font Size") {
@@ -34,7 +34,7 @@ Section("Font Size") {
 }
 ```
 
-## Example: picker for enums
+## 示例：枚举的 Picker
 
 ```swift
 Picker("Default Visibility", selection: $visibility) {
@@ -44,14 +44,14 @@ Picker("Default Visibility", selection: $visibility) {
 }
 ```
 
-## Design choices to keep
+## 要保留的设计选择
 
-- Group related controls in a `Form` section.
-- Use `.disabled(...)` to reflect locked or inherited settings.
-- Use `Label` inside toggles to combine icon + text when it adds clarity.
+- 在 `Form` 的 Section 中对相关控件进行分组。
+- 使用 `.disabled(...)` 反映锁定或继承的设置。
+- 在 Toggle 内部使用 `Label` 组合图标和文本，当这有助于清晰度时使用。
 
-## Pitfalls
+## 陷阱
 
-- Avoid `.pickerStyle(.segmented)` for large sets; use menu or inline styles instead.
-- Don’t hide labels for sliders; always show context.
-- Avoid hard-coding colors for controls; use theme tint sparingly.
+- 避免对大量选项使用 `.pickerStyle(.segmented)`；改用菜单或内联样式。
+- 不要为 slider 隐藏标签；始终显示上下文。
+- 避免在控件中硬编码颜色；谨慎使用主题强调色。

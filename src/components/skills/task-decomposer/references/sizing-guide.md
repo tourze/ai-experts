@@ -1,109 +1,109 @@
-# Sizing Guide
+# 规模估算指南
 
-Effort estimation heuristics for task sizing during decomposition.
-
----
-
-## T-Shirt Sizes
-
-| Size             | Duration    | Lines of Code | Complexity                          |
-| ---------------- | ----------- | ------------- | ----------------------------------- |
-| S (Small)        | < 4 hours   | < 100         | Single function, clear requirements |
-| M (Medium)       | 4-16 hours  | 100-500       | Multiple functions, some decisions  |
-| L (Large)        | 16-40 hours | 500-2000      | Multiple files, design decisions    |
-| XL (Extra Large) | > 40 hours  | > 2000        | MUST decompose further              |
+用于任务分解期间工作量估算的启发式方法。
 
 ---
 
-## Complexity Indicators
+## T 恤尺码
 
-### Factors That Increase Size
-
-| Factor                   | Impact     | Example                         |
-| ------------------------ | ---------- | ------------------------------- |
-| New technology           | +1 size    | First time using WebSockets     |
-| External API integration | +1 size    | Third-party payment API         |
-| Data migration           | +1 size    | Transforming existing data      |
-| Security requirements    | +1 size    | Auth, encryption, audit logging |
-| Backward compatibility   | +1 size    | Must support old and new format |
-| Multiple edge cases      | +1 size    | Complex validation rules        |
-| Concurrency              | +1-2 sizes | Race conditions, locks          |
-
-### Factors That Decrease Size
-
-| Factor                     | Impact  | Example                              |
-| -------------------------- | ------- | ------------------------------------ |
-| Existing pattern           | -1 size | CRUD endpoint matching existing ones |
-| Library handles complexity | -1 size | Using ORM instead of raw SQL         |
-| Clear specification        | -1 size | Detailed requirements with examples  |
-| Team familiarity           | -1 size | Done something similar recently      |
+| 规模             | 工期        | 代码行数     | 复杂度                          |
+| ---------------- | ----------- | ------------ | ------------------------------- |
+| S（小）          | < 4 小时    | < 100        | 单个函数，需求清晰              |
+| M（中）          | 4-16 小时   | 100-500      | 多个函数，需做决策              |
+| L（大）          | 16-40 小时  | 500-2000     | 多个文件，设计决策              |
+| XL（特大）       | > 40 小时   | > 2000       | 必须进一步拆分                  |
 
 ---
 
-## Reference Tasks
+## 复杂度指标
 
-Use known-complexity tasks as anchors:
+### 增加规模的因素
 
-| Reference Task                        | Typical Size |
-| ------------------------------------- | ------------ |
-| Add a new field to an existing model  | S            |
-| New CRUD endpoint (standard pattern)  | M            |
-| New API endpoint with business logic  | M-L          |
-| Database migration with data backfill | M-L          |
-| Third-party API integration           | L            |
-| Authentication system                 | L-XL         |
-| Search functionality                  | L            |
-| File upload with validation           | M            |
-| Email notification system             | M-L          |
-| Caching layer                         | M            |
-| Rate limiting                         | M            |
-| Pagination                            | S-M          |
+| 因素                     | 影响     | 示例                         |
+| ------------------------ | -------- | ---------------------------- |
+| 新技术                   | +1 级    | 首次使用 WebSocket            |
+| 外部 API 集成            | +1 级    | 第三方支付 API               |
+| 数据迁移                 | +1 级    | 转换现有数据                 |
+| 安全要求                 | +1 级    | 认证、加密、审计日志         |
+| 向后兼容                 | +1 级    | 必须支持新旧两种格式         |
+| 多个边界情况             | +1 级    | 复杂的验证规则               |
+| 并发                     | +1-2 级  | 竞态条件、锁                 |
 
----
+### 降低规模的因素
 
-## Estimation Biases
-
-### Planning Fallacy
-
-People consistently underestimate by 25-50%. Counteract by:
-
-- Comparing to similar past tasks (reference class forecasting)
-- Using three-point estimation (best/likely/worst)
-- Adding buffer for unknowns (20% minimum)
-
-### Anchoring
-
-First estimate heard becomes the anchor. Counteract by:
-
-- Estimate independently before discussing
-- Use bottom-up (task-level) estimation, not top-down
-
-### Optimism Bias
-
-"It'll be straightforward" → it rarely is. Counteract by:
-
-- List specific unknowns for each task
-- Ask: "What could go wrong?"
-- Check: "What took longer than expected last time?"
+| 因素                     | 影响     | 示例                              |
+| ------------------------ | -------- | --------------------------------- |
+| 现有模式                 | -1 级    | 与现有 CRUD 端点匹配的 CRUD 端点    |
+| 库处理了复杂度           | -1 级    | 使用 ORM 替代原始 SQL             |
+| 明确的需求说明           | -1 级    | 带有示例的详细需求                |
+| 团队熟悉                 | -1 级    | 最近做过类似的事情                |
 
 ---
 
-## From Size to Duration
+## 参考任务
 
-### Solo Developer
+使用已知复杂度的任务作为锚点：
 
-| Size | Calendar Days | Working Hours |
-| ---- | ------------- | ------------- |
-| S    | 0.5-1         | 2-4           |
-| M    | 1-2           | 4-16          |
-| L    | 2-5           | 16-40         |
+| 参考任务                            | 典型规模 |
+| ----------------------------------- | -------- |
+| 向现有模型添加新字段                | S        |
+| 新 CRUD 端点（标准模式）            | M        |
+| 带业务逻辑的新 API 端点             | M-L      |
+| 带数据回填的数据库迁移              | M-L      |
+| 第三方 API 集成                     | L        |
+| 认证系统                            | L-XL     |
+| 搜索功能                            | L        |
+| 带验证的文件上传                    | M        |
+| 邮件通知系统                        | M-L      |
+| 缓存层                              | M        |
+| 速率限制                            | M        |
+| 分页                                | S-M      |
 
-### Team (with review/communication overhead)
+---
 
-| Size | Calendar Days | Notes                         |
-| ---- | ------------- | ----------------------------- |
-| S    | 1             | Including code review         |
-| M    | 2-3           | Including review and revision |
-| L    | 3-5           | Including design discussion   |
+## 估算偏差
 
-Add 20% for context switching if working on multiple tasks.
+### 计划谬误
+
+人们持续低估 25-50%。应对方法：
+
+- 与类似的过去任务进行比较（参考类预测）
+- 使用三点估算（最佳/可能/最差）
+- 为未知因素添加缓冲（至少 20%）
+
+### 锚定效应
+
+听到的第一个估算值成为锚点。应对方法：
+
+- 在讨论之前独立估算
+- 使用自底向上（任务级别）估算，而非自顶向下
+
+### 乐观偏差
+
+"这很简单"——很少如此。应对方法：
+
+- 列出每个任务的具体未知因素
+- 问："什么可能出错？"
+- 检查："上次什么花了比预期更长的时间？"
+
+---
+
+## 从规模到工期
+
+### 独立开发者
+
+| 规模 | 日历天数   | 工作小时数 |
+| ---- | ---------- | ---------- |
+| S    | 0.5-1      | 2-4        |
+| M    | 1-2        | 4-16       |
+| L    | 2-5        | 16-40      |
+
+### 团队（含审查/沟通开销）
+
+| 规模 | 日历天数   | 备注                    |
+| ---- | ---------- | ----------------------- |
+| S    | 1          | 包括代码审查            |
+| M    | 2-3        | 包括审查和修订          |
+| L    | 3-5        | 包括设计讨论            |
+
+如果同时处理多个任务，增加 20% 的上下文切换开销。

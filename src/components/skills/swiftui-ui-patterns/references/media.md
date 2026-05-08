@@ -1,17 +1,17 @@
-# Media (images, video, viewer)
+# 媒体（图片、视频、查看器）
 
-## Intent
+## 意图
 
-Use consistent patterns for loading images, previewing media, and presenting a full-screen viewer.
+使用一致的模式加载图片、预览媒体和呈现全屏查看器。
 
-## Core patterns
+## 核心模式
 
-- Use `LazyImage` (or `AsyncImage`) for remote images with loading states.
-- Prefer a lightweight preview component for inline media.
-- Use a shared viewer state (e.g., `QuickLook`) to present a full-screen media viewer.
-- Use `openWindow` for desktop/visionOS and a sheet for iOS.
+- 使用 `LazyImage`（或 `AsyncImage`）加载远程图片并附带加载状态。
+- 优先使用轻量级预览组件进行内联媒体展示。
+- 使用共享的查看器状态（例如 `QuickLook`）呈现全屏媒体查看器。
+- 在桌面端/visionOS 上使用 `openWindow`，在 iOS 上使用 sheet。
 
-## Example: inline media preview
+## 示例：内联媒体预览
 
 ```swift
 struct MediaPreviewRow: View {
@@ -45,7 +45,7 @@ struct MediaPreviewRow: View {
 }
 ```
 
-## Example: global media viewer sheet
+## 示例：全局媒体查看器 sheet
 
 ```swift
 struct AppRoot: View {
@@ -61,13 +61,13 @@ struct AppRoot: View {
 }
 ```
 
-## Design choices to keep
+## 要保留的设计选择
 
-- Keep previews lightweight; load full media in the viewer.
-- Use shared viewer state so any view can open media without prop-drilling.
-- Use a single entry point for the viewer (sheet/window) to avoid duplicates.
+- 保持预览轻量；在查看器中加载全尺寸媒体。
+- 使用共享查看器状态，使任何视图都可以打开媒体而无需逐层传递属性。
+- 为查看器使用单一入口点（sheet/窗口），避免重复实例。
 
-## Pitfalls
+## 陷阱
 
-- Avoid loading full-size images in list rows; use resized previews.
-- Don’t present multiple viewer sheets at once; keep a single source of truth.
+- 避免在列表行中加载全尺寸图片；使用调整大小的预览。
+- 不要同时展示多个查看器 sheet；保持单一事实源。

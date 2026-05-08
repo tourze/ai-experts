@@ -1,64 +1,64 @@
-# Health, Wellness & Lifestyle Presets
+# 健康、养生与生活方式预设
 
-## 18. Medical Clinic / Hospital
-- Style: Accessible & Ethical + Minimalism
-- Colors: `#0891B2` / `#10B981` / bg `#F0FDF4`
-- Fonts: Source Serif 4 / Source Sans 3
-- Effects: 大留白、清晰层级
-- AVOID: 深色默认、时髦酷炫、AI 渐变
+## 18. 医疗诊所 / 医院
+- 风格：无障碍可及 + 伦理 + 极简
+- 配色：`#0891B2` / `#10B981` / 背景 `#F0FDF4`
+- 字体：Source Serif 4 / Source Sans 3
+- 效果：大留白、清晰层级
+- 避免：深色默认、时髦酷炫、AI 渐变
 
-## 19. Mental Health / Meditation
-- Style: Organic Biophilic + Nature Distilled
-- Colors: `#A8D5BA` / `#E8B4B8` / bg `#FFF5F5`
-- Fonts: Cormorant Garamond / Montserrat
-- Effects: 缓慢过渡 300-400ms、呼吸动画
-- AVOID: 高饱和、锐利动效、紧张节奏
+## 19. 心理健康 / 冥想
+- 风格：有机自然 + 自然提炼
+- 配色：`#A8D5BA` / `#E8B4B8` / 背景 `#FFF5F5`
+- 字体：Cormorant Garamond / Montserrat
+- 效果：缓慢过渡 300-400ms、呼吸动画
+- 避免：高饱和、锐利动效、紧张节奏
 
-## 20. Pharmacy / Dental / Veterinary
-- Style: Flat + Soft UI Evolution
-- Colors: `#2563EB` / `#059669` / bg `#FFFFFF`
-- Fonts: DM Sans / Inter
-- Effects: 轻微卡片阴影、平和配色
-- AVOID: 临床冷感、暗黑默认
+## 20. 药房 / 牙科 / 兽医
+- 风格：扁平 + 柔和 UI 演化
+- 配色：`#2563EB` / `#059669` / 背景 `#FFFFFF`
+- 字体：DM Sans / Inter
+- 效果：轻微卡片阴影、平和配色
+- 避免：临床冷感、暗黑默认
 
-## 21. Fitness / Sports
-- Style: Bold + Vibrant & Block-based
-- Colors: `#000000` / `#FBBF24` / bg `#FAFAFA`
-- Fonts: Archivo Black / Archivo
-- Effects: 大字体、运动感动效、1:1 图片
-- AVOID: 柔和粉嫩、细字体
+## 21. 健身 / 运动
+- 风格：粗体 + 鲜艳色块
+- 配色：`#000000` / `#FBBF24` / 背景 `#FAFAFA`
+- 字体：Archivo Black / Archivo
+- 效果：大字体、运动感动效、1:1 图片
+- 避免：柔和粉嫩、细字体
 
-## 22. Habit Tracker / Productivity
-- Style: Bento Grid + Friendly
-- Colors: `#10B981` / `#6366F1` / bg `#FFFFFF`
-- Fonts: Plus Jakarta Sans / Inter
-- Effects: 卡片 + 动画计数、成就徽章
-- AVOID: 企业严肃、密集
+## 22. 习惯追踪 / 效率工具
+- 风格：Bento 网格 + 友好
+- 配色：`#10B981` / `#6366F1` / 背景 `#FFFFFF`
+- 字体：Plus Jakarta Sans / Inter
+- 效果：卡片 + 动画计数、成就徽章
+- 避免：企业严肃、密集
 
-## 23. Recipe / Cooking
-- Style: Claymorphism + Large Imagery
-- Colors: `#EA580C` / `#84CC16` / bg `#FFFBEB`
-- Fonts: Caprasimo / DM Sans
-- Effects: 食物特写、手绘插画
-- AVOID: 冷感极简、数据风
+## 23. 食谱 / 烹饪
+- 风格：泥塑造 + 大图
+- 配色：`#EA580C` / `#84CC16` / 背景 `#FFFBEB`
+- 字体：Caprasimo / DM Sans
+- 效果：食物特写、手绘插画
+- 避免：冷感极简、数据风
 
-## 24. Weather / Utility
-- Style: Glassmorphism + Minimal
-- Colors: 随天气变 / 基底 `#0C4A6E`
-- Fonts: Inter / Inter
-- Effects: 动画天气图、实时数据
-- AVOID: 密集信息、多配色
+## 24. 天气 / 工具
+- 风格：玻璃拟态 + 极简
+- 配色：随天气变 / 基底 `#0C4A6E`
+- 字体：Inter / Inter
+- 效果：动画天气图、实时数据
+- 避免：密集信息、多配色
 
-## 25. Meditation / Sleep App
-- Style: Organic Biophilic + Dark OLED
-- Colors: `#1E293B` / `#C4B5FD` / bg `#0F172A`
-- Fonts: Literata / Inter
-- Effects: 缓慢呼吸动画、低饱和
-- AVOID: 高饱和、活跃动效
+## 25. 冥想 / 睡眠应用
+- 风格：有机自然 + 深色 OLED
+- 配色：`#1E293B` / `#C4B5FD` / 背景 `#0F172A`
+- 字体：Literata / Inter
+- 效果：缓慢呼吸动画、低饱和
+- 避免：高饱和、活跃动效
 
-## 26. Dating App
-- Style: Vibrant & Block + Motion-Driven
-- Colors: `#EC4899` / `#8B5CF6` / bg `#FFFFFF`
-- Fonts: Poppins / Inter
-- Effects: 卡片滑动、动画反馈
-- AVOID: 企业冷感、Serif
+## 26. 约会应用
+- 风格：鲜艳色块 + 动感驱动
+- 配色：`#EC4899` / `#8B5CF6` / 背景 `#FFFFFF`
+- 字体：Poppins / Inter
+- 效果：卡片滑动、动画反馈
+- 避免：企业冷感、衬线体

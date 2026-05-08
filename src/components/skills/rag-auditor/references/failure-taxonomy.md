@@ -1,111 +1,110 @@
-# Failure Taxonomy
+# 故障分类法
 
-Categories of RAG pipeline failures with diagnostic indicators and root causes.
-
----
-
-## Failure Classification
-
-### Level 1: Retrieval Failures
-
-The retriever fails to find the relevant information.
-
-| Failure             | Indicator                               | Root Cause                          | Fix                                                |
-| ------------------- | --------------------------------------- | ----------------------------------- | -------------------------------------------------- |
-| Total miss          | Relevant chunk not in top-K at all      | Embedding mismatch, vocabulary gap  | Try different embedding model, add query expansion |
-| Rank failure        | Relevant chunk retrieved but ranked low | Similarity score not discriminating | Add reranking stage, increase K                    |
-| Partial miss        | Part of answer retrieved, part missing  | Chunk boundary split the answer     | Increase overlap, try semantic chunking            |
-| Duplicate retrieval | Same info retrieved multiple times      | Overlapping chunks, dedup needed    | Deduplicate by content similarity                  |
-
-### Level 2: Chunking Failures
-
-The chunking strategy corrupts the information.
-
-| Failure      | Indicator                             | Root Cause                            | Fix                                        |
-| ------------ | ------------------------------------- | ------------------------------------- | ------------------------------------------ |
-| Split entity | Named entity split across chunks      | Fixed-size chunking ignores semantics | Use semantic chunking, sentence boundaries |
-| Lost context | Chunk lacks necessary context         | No overlap, no metadata               | Add overlap, prepend section headers       |
-| Too large    | Chunk contains irrelevant information | Chunk size too big                    | Reduce chunk size                          |
-| Too small    | Chunk lacks sufficient context        | Chunk size too small                  | Increase chunk size                        |
-
-### Level 3: Embedding Failures
-
-The embedding model fails to capture the right semantics.
-
-| Failure            | Indicator                           | Root Cause                  | Fix                                 |
-| ------------------ | ----------------------------------- | --------------------------- | ----------------------------------- |
-| Vocabulary gap     | Domain terms not embedded well      | Model not trained on domain | Use domain-specific embedding model |
-| Synonym miss       | Query uses different words than doc | Lexical mismatch            | Add hybrid search (BM25 + semantic) |
-| Negation blindness | "Not X" retrieves docs about X      | Embeddings poor at negation | Add keyword filter, reranking       |
-
-### Level 4: Generation Failures
-
-The generator produces incorrect output despite correct retrieval.
-
-| Failure           | Indicator                               | Root Cause                           | Fix                                                |
-| ----------------- | --------------------------------------- | ------------------------------------ | -------------------------------------------------- |
-| Hallucination     | Claims not in context                   | Model relies on parametric knowledge | Strengthen grounding instruction                   |
-| Incomplete answer | Misses relevant context                 | Model doesn't process all chunks     | Reduce context length, highlight relevant sections |
-| Wrong emphasis    | Focuses on irrelevant detail            | No guidance on what matters          | Add focus instruction: "Focus on X"                |
-| Refusal           | Won't answer despite sufficient context | Over-cautious prompt                 | Soften abstention criteria                         |
-| Contradiction     | Answer contradicts context              | Conflicting information in chunks    | Add conflict resolution instruction                |
+RAG 流水线故障类别及诊断指标和根因。
 
 ---
 
-## Diagnostic Flowchart
+## 故障分类
+
+### 第 1 级：检索失败
+
+检索器未能找到相关信息。
+
+| 故障             | 指标                               | 根因                              | 修复                                                |
+| ---------------- | ---------------------------------- | --------------------------------- | --------------------------------------------------- |
+| 完全未命中       | 相关块完全不在 top-K 中            | 嵌入不匹配、词汇差距              | 尝试不同的嵌入模型、添加查询扩展                    |
+| 排名失败         | 相关块已检索但排名过低             | 相似度分数区分度不足              | 添加重排序阶段、增加 K                              |
+| 部分未命中       | 部分答案已检索，部分缺失           | 块边界分割了答案                  | 增加重叠、尝试语义分块                              |
+| 重复检索         | 相同信息被多次检索                 | 块重叠、需要去重                  | 按内容相似度去重                                    |
+
+### 第 2 级：分块失败
+
+分块策略破坏了信息。
+
+| 故障           | 指标                             | 根因                                | 修复                                        |
+| -------------- | -------------------------------- | ----------------------------------- | ------------------------------------------- |
+| 分割实体       | 命名实体被分割到不同块中         | 固定大小分块忽略语义                | 使用语义分块、基于句子边界                  |
+| 上下文丢失     | 块缺少必要的上下文               | 无重叠、无元数据                    | 添加重叠、添加章节标题前缀                  |
+| 块过大         | 块包含不相关信息                 | 块大小太大                          | 减小块大小                                  |
+| 块过小         | 块缺乏足够的上下文               | 块大小太小                          | 增大块大小                                  |
+
+### 第 3 级：嵌入失败
+
+嵌入模型未能捕获正确的语义。
+
+| 故障             | 指标                           | 根因                      | 修复                                 |
+| ---------------- | ------------------------------ | ------------------------- | ------------------------------------ |
+| 词汇差距         | 领域术语嵌入效果不佳           | 模型未在领域上训练        | 使用领域特定嵌入模型                 |
+| 同义词未命中     | 查询使用与文档不同的词         | 词汇不匹配                | 添加混合搜索 (BM25 + 语义)          |
+| 否定盲区         | "不是 X" 检索出关于 X 的文档   | 嵌入在否定方面表现不佳    | 添加关键词过滤、重排序               |
+
+### 第 4 级：生成失败
+
+尽管检索正确，生成器仍产生错误输出。
+
+| 故障             | 指标                               | 根因                               | 修复                                                |
+| ---------------- | ---------------------------------- | ---------------------------------- | --------------------------------------------------- |
+| 幻觉             | 声称内容不在上下文中               | 模型依赖参数化知识                 | 加强接地指令                                        |
+| 答案不完整       | 遗漏相关上下文                     | 模型未处理所有块                   | 减少上下文长度、高亮相关章节                        |
+| 重点错误         | 关注不相关的细节                   | 没有关于重要性的指导               | 添加重点指令："关注 X"                              |
+| 拒绝回答         | 尽管上下文充分仍拒绝回答           | 过于谨慎的提示                     | 放宽弃权标准                                        |
+| 矛盾             | 答案与上下文矛盾                   | 块中包含冲突信息                   | 添加冲突解决指令                                    |
+
+---
+
+## 诊断流程图
 
 ```text
-Query → Correct Answer?
-  ├── Yes → Pipeline working (for this query)
-  └── No → Was relevant info retrieved?
-        ├── No → RETRIEVAL FAILURE
-        │    └── Was it in the corpus at all?
-        │         ├── No → CORPUS GAP (need more documents)
-        │         └── Yes → Was the chunk well-formed?
-        │              ├── No → CHUNKING FAILURE
-        │              └── Yes → EMBEDDING/RANKING FAILURE
-        └── Yes → GENERATION FAILURE
-             └── Was the answer hallucinated?
-                  ├── Yes → HALLUCINATION
-                  └── No → Was it incomplete?
-                       ├── Yes → CONTEXT UTILIZATION FAILURE
-                       └── No → REASONING FAILURE
+查询 → 答案正确？
+  ├── 是 → 流水线正常（针对此查询）
+  └── 否 → 是否检索到相关信息？
+        ├── 否 → 检索失败
+        │    └── 信息是否在语料库中？
+        │         ├── 否 → 语料库缺口（需要更多文档）
+        │         └── 是 → 块是否结构良好？
+        │              ├── 否 → 分块失败
+        │              └── 是 → 嵌入/排序失败
+        └── 是 → 生成失败
+             └── 答案是否被幻觉？
+                  ├── 是 → 幻觉
+                  └── 否 → 是否不完整？
+                       ├── 是 → 上下文利用失败
+                       └── 否 → 推理失败
 ```
 
 ---
 
-## Failure Distribution (Typical RAG Pipelines)
+## 故障分布（典型 RAG 流水线）
 
-Based on common patterns across RAG audits:
+基于 RAG 审计中的常见模式：
 
-| Failure Category    | Typical Prevalence | Priority   |
-| ------------------- | ------------------ | ---------- |
-| Retrieval failures  | 40-60% of errors   | Fix first  |
-| Chunking issues     | 15-25%             | Fix second |
-| Generation failures | 15-25%             | Fix third  |
-| Corpus gaps         | 10-20%             | Ongoing    |
+| 故障类别           | 典型发生率      | 优先级      |
+| ------------------ | --------------- | ----------- |
+| 检索失败           | 40-60% 的错误   | 优先修复    |
+| 分块问题           | 15-25%          | 二度修复    |
+| 生成失败           | 15-25%          | 三度修复    |
+| 语料库缺口         | 10-20%          | 持续进行    |
 
-**Key insight:** Most RAG failures are retrieval failures, not generation failures.
-Improving retrieval has the highest ROI.
+**关键洞察：** 大多数 RAG 故障是检索失败，而非生成失败。改进检索的 ROI 最高。
 
 ---
 
-## Per-Query Failure Report Template
+## 逐查询故障报告模板
 
 ```markdown
-### Query #{N}: "{query text}"
+### 查询 #{N}："{查询文本}"
 
-**Expected answer:** {correct answer}
-**Generated answer:** {model output}
-**Verdict:** {Correct | Incorrect}
+**预期答案：** {正确答案}
+**生成答案：** {模型输出}
+**裁定：** {正确 | 不正确}
 
-**Retrieval analysis:**
+**检索分析：**
 
-- Chunk 1 (score: 0.85): {chunk summary} — Relevant: {Yes/Partial/No}
-- Chunk 2 (score: 0.72): {chunk summary} — Relevant: {Yes/Partial/No}
-- Chunk 3 (score: 0.65): {chunk summary} — Relevant: {Yes/Partial/No}
+- 块 1（分数：0.85）：{块摘要} — 相关：{是/部分/否}
+- 块 2（分数：0.72）：{块摘要} — 相关：{是/部分/否}
+- 块 3（分数：0.65）：{块摘要} — 相关：{是/部分/否}
 
-**Failure classification:** {Retrieval | Chunking | Generation | Hallucination}
-**Root cause:** {specific diagnosis}
-**Recommendation:** {specific fix for this failure type}
+**故障分类：** {检索 | 分块 | 生成 | 幻觉}
+**根因：** {具体诊断}
+**建议：** {针对此故障类型的具体修复}
 ```

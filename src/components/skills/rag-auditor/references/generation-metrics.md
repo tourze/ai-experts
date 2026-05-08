@@ -1,151 +1,146 @@
-# Generation Metrics
+# 生成指标
 
-Metrics for evaluating the generation stage of a RAG pipeline: groundedness,
-completeness, hallucination detection, and abstention accuracy.
+评估 RAG 流水线生成阶段的指标：接地性、完整性、幻觉检测和弃权准确性。
 
 ---
 
-## Groundedness
+## 接地性
 
-**What it measures:** Is every claim in the generated response supported by the
-retrieved context?
+**衡量什么：** 生成响应中的每个声明是否都有检索到的上下文支持？
 
-### Scoring
+### 评分
 
-| Score | Meaning                                                  |
-| ----- | -------------------------------------------------------- |
-| 1.0   | Every claim is traceable to the retrieved context        |
-| 0.8   | Most claims grounded, minor unsupported details          |
-| 0.5   | Significant mixing of grounded and ungrounded claims     |
-| 0.2   | Mostly ungrounded — model relied on parametric knowledge |
+| 分数   | 含义                                                    |
+| ------ | ------------------------------------------------------- |
+| 1.0    | 每个声明都可追溯到检索到的上下文                        |
+| 0.8    | 大多数声明有依据，少量未支持细节                        |
+| 0.5    | 有依据和未依据的声明显著混合                            |
+| 0.2    | 大部分无依据——模型依赖参数化知识                        |
 
-### Evaluation Method
+### 评估方法
 
-For each claim in the response:
+对响应中的每个声明：
 
-1. Can it be directly found in the retrieved context? → Grounded
-2. Can it be reasonably inferred from context? → Partially grounded
-3. Is it not in the context at all? → Ungrounded (potential hallucination)
+1. 能否在检索到的上下文中直接找到？→ 有依据
+2. 能否从上下文中合理推断？→ 部分有依据
+3. 是否完全不在上下文中？→ 无依据（潜在幻觉）
 
 ```text
-Groundedness = (grounded claims + 0.5 × partially grounded) / total claims
+接地性 = (有依据的声明 + 0.5 × 部分有依据的声明) / 总声明数
 ```
 
-### LLM-as-Judge Template
+### 大模型即评判者模板
 
 ```text
-Given the following context and response, evaluate whether each claim in the
-response is supported by the context.
+给定以下上下文和响应，评估响应中的每个声明是否得到上下文支持。
 
-Context:
-{retrieved chunks}
+上下文：
+{检索到的块}
 
-Response:
-{generated response}
+响应：
+{生成的响应}
 
-For each claim in the response, mark it as:
-- SUPPORTED: Directly stated or clearly implied by the context
-- PARTIAL: Loosely related to context but not directly stated
-- UNSUPPORTED: Not found in the context
+对于响应中的每个声明，标记为：
+- SUPPORTED（支持）：上下文中直接陈述或明确暗示
+- PARTIAL（部分）：与上下文松散相关但未直接陈述
+- UNSUPPORTED（不支持）：未在上下文中找到
 
-Output as JSON: {"claims": [{"text": "...", "status": "SUPPORTED/PARTIAL/UNSUPPORTED"}]}
+以 JSON 格式输出：{"claims": [{"text": "...", "status": "SUPPORTED/PARTIAL/UNSUPPORTED"}]}
 ```
 
 ---
 
-## Completeness
+## 完整性
 
-**What it measures:** Does the response use all relevant information from the context?
+**衡量什么：** 响应是否使用了上下文中的所有相关信息？
 
-### Scoring
+### 评分
 
-| Score | Meaning                                         |
-| ----- | ----------------------------------------------- |
-| 1.0   | All relevant information from context is used   |
-| 0.7   | Most relevant information used, minor omissions |
-| 0.5   | Significant relevant information missed         |
-| 0.2   | Response barely uses the provided context       |
+| 分数   | 含义                                           |
+| ------ | ---------------------------------------------- |
+| 1.0    | 使用了上下文中所有相关信息                     |
+| 0.7    | 使用了大多数相关信息，有少量遗漏               |
+| 0.5    | 遗漏了重要相关信息                             |
+| 0.2    | 响应几乎未使用提供的上下文                     |
 
-### Evaluation Method
+### 评估方法
 
-1. Identify key facts in the retrieved context that are relevant to the query
-2. Check which facts appear in the response
-3. Score: facts_used / relevant_facts
-
----
-
-## Hallucination Rate
-
-**What it measures:** Fraction of claims in the response that are not supported
-by any source.
-
-```text
-Hallucination Rate = unsupported claims / total claims
-```
-
-### Types of Hallucination
-
-| Type                  | Description                    | Example                                            |
-| --------------------- | ------------------------------ | -------------------------------------------------- |
-| Factual fabrication   | Inventing facts not in context | "The company was founded in 1998" (not in context) |
-| Numerical fabrication | Inventing statistics           | "95% of users prefer X" (no data in context)       |
-| Source fabrication    | Citing non-existent sources    | "According to Smith et al." (no such reference)    |
-| Extrapolation         | Extending beyond context       | Context says "revenue grew" → "revenue doubled"    |
-
-### Target Hallucination Rates
-
-| Application       | Target |
-| ----------------- | ------ |
-| Medical/legal     | < 1%   |
-| Financial         | < 2%   |
-| Customer support  | < 5%   |
-| General knowledge | < 10%  |
+1. 识别检索到的上下文中与查询相关的关键事实
+2. 检查哪些事实出现在响应中
+3. 评分：已用事实数 / 相关事实数
 
 ---
 
-## Abstention Accuracy
+## 幻觉率
 
-**What it measures:** When the answer is not in the context, does the model
-correctly say "I don't know"?
-
-### Evaluation
-
-Test with queries whose answers are NOT in the corpus:
-
-| Model Behavior                               | Correct?                                               |
-| -------------------------------------------- | ------------------------------------------------------ |
-| "I don't have information about X"           | Yes (correct abstention)                               |
-| Provides an answer from context              | Yes (if answer was actually there — test design error) |
-| Makes up an answer                           | No (false confidence — hallucination)                  |
-| Refuses to answer when context IS sufficient | No (over-abstention)                                   |
+**衡量什么：** 响应中不受任何来源支持的声明占比。
 
 ```text
-Abstention Accuracy = correct abstentions / (unanswerable queries)
-Over-Abstention Rate = false abstentions / (answerable queries)
+幻觉率 = 未受支持的声明数 / 总声明数
+```
+
+### 幻觉类型
+
+| 类型               | 描述                     | 示例                                               |
+| ------------------ | ------------------------ | -------------------------------------------------- |
+| 事实编造           | 编造上下文中不存在的事实 | "该公司成立于 1998 年"（不在上下文中）             |
+| 数字编造           | 编造统计数据             | "95% 的用户更喜欢 X"（上下文中无数据）            |
+| 来源编造           | 引用不存在的来源         | "根据 Smith 等人的研究"（无此参考文献）           |
+| 过度推断           | 超出上下文范围           | 上下文说"收入增长"→"收入翻倍"                     |
+
+### 目标幻觉率
+
+| 应用           | 目标    |
+| -------------- | ------- |
+| 医疗/法律      | < 1%    |
+| 金融           | < 2%    |
+| 客户支持       | < 5%    |
+| 通用知识       | < 10%   |
+
+---
+
+## 弃权准确性
+
+**衡量什么：** 当答案不在上下文中时，模型是否正确地说"不知道"？
+
+### 评估
+
+使用答案不在语料库中的查询进行测试：
+
+| 模型行为                                   | 是否正确？                                               |
+| ------------------------------------------ | -------------------------------------------------------- |
+| "我没有关于 X 的信息"                      | 是（正确弃权）                                           |
+| 从上下文中给出了一个答案                   | 是（如果答案确实存在——测试设计错误）                     |
+| 编造了一个答案                             | 否（虚假自信——幻觉）                                     |
+| 上下文充分时拒绝回答                       | 否（过度弃权）                                           |
+
+```text
+弃权准确性 = 正确弃权数 / （不可回答的查询数）
+过度弃权率 = 错误弃权数 / （可回答的查询数）
 ```
 
 ---
 
-## End-to-End Quality
+## 端到端质量
 
-### Answer Correctness (for known-answer queries)
+### 答案正确性（针对已知答案查询）
 
 ```text
-Correctness = correct answers / total queries
+正确率 = 正确答案数 / 总查询数
 ```
 
-Combine with component metrics to diagnose WHERE failures occur:
+结合组件指标诊断故障发生的位置：
 
-| Retrieval   | Generation   | Diagnosis                               |
-| ----------- | ------------ | --------------------------------------- |
-| Good chunks | Wrong answer | Generation failure                      |
-| Bad chunks  | Wrong answer | Retrieval failure (fix retrieval first) |
-| Good chunks | Right answer | Working correctly                       |
-| Bad chunks  | Right answer | Lucky — model used parametric knowledge |
+| 检索         | 生成         | 诊断                             |
+| ------------ | ------------ | -------------------------------- |
+| 好块         | 错误答案     | 生成失败                         |
+| 差块         | 错误答案     | 检索失败（先修复检索）           |
+| 好块         | 正确答案     | 工作正常                         |
+| 差块         | 正确答案     | 侥幸——模型使用了参数化知识       |
 
-### F1 Token Overlap
+### F1 Token 重叠
 
-For open-ended answers, measure token overlap with reference answer:
+对于开放式答案，测量与参考答案的 token 重叠：
 
 ```python
 def token_f1(prediction: str, reference: str) -> float:

@@ -1,283 +1,281 @@
-# Managing Tech Debt - All Guest Insights
+# 管理技术债 - 所有嘉宾洞见
 
-*18 guests, 20 mentions*
+*18 位嘉宾，20 次提及*
 
 ---
 
 ## Adriel Frederick
 *Adriel Frederick*
 
-> "The answer was like, Yo, we got to rebuild it. There was no answer where we couldn't have a product like this. We needed some ability to be able to influence prices so that we could actually run an effective marketplace. The current solution didn't work. It wasn't as operationally flexible as we needed it to be."
+> "答案是，哟，我们得重建它。没有别的答案能够让我们拥有这样的产品。我们需要一定的能力来影响价格，这样才能真正运营一个有效的市场。当前的解决方案不行，它的操作灵活性达不到我们的要求。"
 
-**Insight:** When a technical solution lacks the operational flexibility required by the business, a full rebuild is often necessary despite the emotional and resource cost.
+**洞见：** 当技术解决方案缺乏业务所需的操作灵活性时，全面重建往往是必要的，尽管要付出情感和资源代价。
 
-**Tactical advice:**
-- Evaluate if current technical debt is preventing necessary operational control.
-- Be willing to admit when a complex algorithmic approach has failed and pivot to a more flexible architecture.
+**战术建议：**
+- 评估当前的技术债是否阻碍了必要的操作控制
+- 愿意承认复杂的算法方法已经失败，并转向更灵活的架构
 
-*Timestamp: 00:32:15*
+*时间戳：00:32:15*
 
 
 ## Austin Hay
 *Austin Hay*
 
-> "The job of a marketing technologist is to think often one to two years down the road about what we're going to need to solve for and design systems in an elegant way, not to break the bank, but to at least be the minimum viable product to actually get there. And a lot of my job, and I think the job of marketing technologists is trying to preserve that future state in the most minimally invasive engineering and resource way possible."
+> "营销技术专家的职责是经常考虑未来一到两年需要解决什么问题，并以优雅的方式设计系统——不是要花大价钱，但至少是最低可行产品，能让我们到达那里。我的很多工作，我认为也是营销技术专家的职责，就是尽可能以最小侵入性的工程和资源方式来维护那个未来状态。"
 
-**Insight:** Preventing future technical debt requires architecting systems that are 'minimally invasive' today but scalable for needs 1-2 years out.
+**洞见：** 预防未来的技术债需要设计今天"最小侵入性"但可扩展到未来 1-2 年需求的系统。
 
-**Tactical advice:**
-- When setting up tools, ask: 'What happens a year from now if I don't change anything?'
-- Implement foundational elements like SSO or proper data schemas early to avoid catastrophic migrations later.
+**战术建议：**
+- 在设置工具时问：'如果我现在什么都不改变，一年后会怎样？'
+- 尽早实施 SSO 或正确数据 schema 等基础元素，避免日后灾难性迁移
 
-*Timestamp: 00:50:07*
+*时间戳：00:50:07*
 
 
 ## Camille Fournier
 *Camille Fournier*
 
-> "Engineers notoriously, notoriously, notoriously, massively underestimate the migration time for old system to new system and that causes a lot of problems. By the way, you still have to support the old system while you're working on the new system."
+> "工程师们，众所周知，严重低估了从旧系统迁移到新系统所需的时间，这导致了大量问题。顺便说一下，你在开发新系统时还必须支持旧系统。"
 
-**Insight:** Full system rewrites are often traps because teams underestimate migration time and the burden of supporting two systems simultaneously.
+**洞见：** 全面系统重写往往是陷阱，因为团队低估了迁移时间和同时支持两个系统的负担。
 
-**Tactical advice:**
-- Account for significant migration time when planning system updates
-- Plan for the resource cost of supporting the legacy system during a transition
+**战术建议：**
+- 在规划系统更新时考虑大量的迁移时间
+- 为过渡期间支持旧系统的资源成本做好计划
 
-*Timestamp: 00:16:24*
+*时间戳：00:16:24*
 
 ---
 
-> "Take pieces potentially of the old system, uplift them, make them more scalable, make them easier to work with, clean up the tech debt, but trying to say we're going to just go away. We're going to rewrite, we're going to build something brand new and it's going to solve all our problems, it just very rarely works."
+> "取旧系统的部分，进行升级，让它们更具可扩展性，更容易使用，清理技术债，但试图说我们要直接走人。我们要重写，要构建全新的东西，它要解决我们所有的问题——这很少奏效。"
 
-**Insight:** Incremental evolution and targeted tech debt cleanup are more successful than 'big bang' rewrites.
+**洞见：** 渐进式演进和有针对性的技术债清理比"大爆炸式"重写更成功。
 
-**Tactical advice:**
-- Uplift specific APIs or components rather than the whole framework
-- Create a staged plan for system evolution
+**战术建议：**
+- 升级特定的 API 或组件，而不是整个框架
+- 创建系统演进的阶段性计划
 
-*Timestamp: 00:19:14*
+*时间戳：00:19:14*
 
 
 ## Casey Winters
 *Casey Winters*
 
-> "The idea is that some of the most impactful projects that product teams can work on at scale... are the hardest to measure. And because of that, they just get chronically underfunded... I walk through some examples of a few tactics that work to get around this problem, building custom metrics to show the value, being able to run small tests that prove the worthwhile-ness of the investment."
+> "关键是，产品团队在大规模运营时能做的一些最有影响力的项目……是最难衡量的。正因为如此，它们总是资金不足……我讲几个解决这个问题有效的策略的例子：构建自定义指标来展示价值，能够运行小型测试来证明投资的价值。"
 
-**Insight:** Securing investment for non-sexy technical improvements requires quantifying their value through custom metrics and small-scale experiments.
+**洞见：** 为不性感的技改项目争取投资，需要通过自定义指标和小规模实验来量化其价值。
 
-**Tactical advice:**
-- Build custom metrics to demonstrate the business value of performance or stability
-- Run small tests to prove that technical investments will yield long-term results
-- Align with engineering and design peers to present a unified front for technical investments
+**战术建议：**
+- 构建自定义指标来展示性能或稳定性方面的业务价值
+- 运行小型测试来证明技术投资将产生长期回报
+- 与工程和设计同事协调，为技术投资建立统一战线
 
-*Timestamp: 24:49*
+*时间戳：24:49*
 
 
 ## Dylan Field
-*Dylan Field 2.0*
+*Dylan Field*
 
-> "You always have to keep in mind tech debt and there might be, when you're moving slow, systematic reasons for that. How do you make sure that you're not grinding to a halt because things are built the wrong way or you rush to get something out, and you need to go and fix the underlying infrastructure or way that you built it in some form?"
+> "你必须始终记住技术债，当你进展缓慢时，背后可能有系统性的原因。你如何确保不会因为某些东西构建方式错误，或者为了赶时间而匆忙交付，然后需要以某种形式修复底层基础设施或构建方式，而导致停滞不前？"
 
-**Insight:** Systematic slowness is often a symptom of technical debt that requires pausing feature work to fix underlying infrastructure.
+**洞见：** 系统性缓慢通常是技术债的症状，需要暂停功能工作来修复底层基础设施。
 
-**Tactical advice:**
-- Investigate systematic reasons for slow development pace
-- Balance infrastructure fixes with feature development to maintain long-term speed
+**战术建议：**
+- 调查开发速度慢的系统性原因
+- 平衡基础设施修复和功能开发，以保持长期速度
 
-*Timestamp: 00:11:15*
+*时间戳：00:11:15*
 
 
 ## Eeke de Milliano
 *Eeke de Milliano*
 
-> "Sometimes teams are just getting bogged down by really urgent work. There's too much tech debt. There's too much product debt. Bugs, instability... There's just no way that they're going to be able to focus on the enlightened, bigger, creative stuff if they're just heads-down dealing with incidents all day."
+> "有时团队只是因为非常紧急的工作而陷入困境。技术债太多了。产品债太多了。Bug、不稳定……如果他们整天埋头处理事故，根本没有办法专注于有启发性的、更大的创造性工作。"
 
-**Insight:** Unaddressed tech and product debt acts as a ceiling on a team's ability to innovate.
+**洞见：** 未解决的技术债和产品债是团队创新能力的天花板。
 
-**Tactical advice:**
-- Diagnose when a team is stuck in a 'hierarchy of needs' trap due to instability
-- Prioritize debt reduction to free up headspace for creative work
+**战术建议：**
+- 诊断团队是否因不稳定而陷入"需求层次"陷阱
+- 优先减少债务，为创造性工作腾出空间
 
-*Timestamp: 00:24:18*
+*时间戳：00:24:18*
 
 
 ## Gaurav Misra
 *Gaurav Misra*
 
-> "I actually think as a startup your job is to take on technical debt because that is how you operate faster than a bigger company."
+> "我其实认为作为创业公司，你的工作就是承担技术债，因为这是你比大公司运营得更快的方式。"
 
-**Insight:** Technical debt is a strategic tool for leverage, allowing startups to move faster by deferring non-critical infrastructure work to future hires.
+**洞见：** 技术债是一种战略性杠杆工具，允许创业公司通过将非关键基础设施工作推迟给未来的员工来更快地行动。
 
-**Tactical advice:**
-- Evaluate if a problem can be solved by a future hire (e.g., the 500th engineer) rather than solving it today.
-- Monitor the 'interest' paid on debt—if maintenance takes up 80-90% of time, you have run out of technical debt runway.
-- Dedicate specific periods (like Q4) to paying down accumulated debt when product cycles slow down.
+**战术建议：**
+- 评估一个问题是否可以由未来的员工（例如第 500 位工程师）解决，而不是今天就解决
+- 监控债务的"利息"——如果维护占用了 80-90% 的时间，说明技术债的信用额度已经耗尽
+- 在产品周期放缓时，留出特定时期（例如 Q4）来偿还累积的债务
 
-*Timestamp: 00:20:31*
+*时间戳：00:20:31*
 
 
 ## Geoff Charles
 *Geoff Charles*
 
-> "We don't have a bug backlog. We fix every bug once they're surfaced almost."
+> "我们没有 bug 积压。几乎每个 bug 一出现我们就修复。"
 
-**Insight:** Maintain high product quality and velocity by addressing bugs immediately rather than allowing them to accumulate in a backlog.
+**洞见：** 通过立即处理 bug 而不是让它们累积在积压中，来保持高质量的产品和速度。
 
-**Tactical advice:**
-- Assign bugs directly to the engineer on call to ensure immediate pain awareness.
-- Use a rotational production engineering program to protect core teams from escalations.
+**战术建议：**
+- 将 bug 直接分配给当班工程师，确保即时感知问题
+- 使用轮值生产工程计划来保护核心团队免受升级问题的影响
 
-*Timestamp: 00:23:13*
+*时间戳：00:23:13*
 
 
 ## Julia Schottenstein
 *Julia Schottenstein*
 
-> "I try to remind the engineers, we would be so lucky to have tech debt because that means people are using the product... what we didn't need at launch was a distributed scheduler with coworkers and RabbitMQ. We just didn't need it because we had no users."
+> "我试着提醒工程师们，如果有技术债，我们真是太幸运了，因为这意味着有人在用这个产品……我们上线时不需要分布式调度器、coworkers 和 RabbitMQ。我们就是不需要，因为我们没有用户。"
 
-**Insight:** Technical debt is a 'champagne problem' that indicates product usage; avoid over-engineering at launch before demand is proven.
+**洞见：** 技术债是一种"香槟问题"，表明产品有人使用；在需求被证明之前，避免在上线时过度工程化。
 
-**Tactical advice:**
-- Build the simplest, most 'naive' version of a feature first (e.g., a simple for-loop) to validate demand.
-- Accept technical debt as a trade-off for getting the product into users' hands faster.
+**战术建议：**
+- 先构建最简单、最"朴素"的功能版本（例如简单的 for 循环）来验证需求
+- 接受技术债作为让产品更快交付给用户手中的权衡
 
-*Timestamp: 00:53:02*
+*时间戳：00:53:02*
 
 
 ## Keith Coleman & Jay Baxter
 *Keith Coleman & Jay Baxter*
 
-> "deleting code is more important than writing it a lot of the time... engineers have a tendency to add these little incremental wins that actually add more of a long-term maintenance cost than is clear... you get forced to do this, by the way, when you have such a small team."
+> "很多时候，删除代码比编写代码更重要……工程师们倾向于添加那些微小的增量胜利，实际上增加了比预期更多的长期维护成本……顺便说一句，当你的团队非常小时，你不得不这样做。"
 
-**Insight:** Small teams must prioritize deleting code over adding features to avoid an unsustainable maintenance burden.
+**洞见：** 小团队必须优先删除代码而不是添加功能，以避免不可持续的维护负担。
 
-**Tactical advice:**
-- Audit systems regularly to delete 'incremental wins' that have high long-term maintenance costs
-- Aggressively remove 'cruft' to keep the core system manageable by a small number of people
+**战术建议：**
+- 定期审计系统，删除那些具有高长期维护成本的"增量胜利"
+- 激进地移除"冗余物"，使核心系统保持在少数人可管理的规模
 
-*Timestamp: 01:03:53*
+*时间戳：01:03:53*
 
 
 ## Maggie Crowley
 *Maggie Crowley*
 
-> "Where are your technical hurdles? What are the big pieces of tech debt? What are your engineering and technical teams always harping on that they want to invest in?"
+> "你的技术障碍在哪里？技术债的大块是什么？你的工程和技术团队一直唠叨想投资的是什么？"
 
-**Insight:** A comprehensive product strategy must account for the technical constraints and maintenance needs identified by engineering.
+**洞见：** 全面的产品策略必须考虑工程团队识别的技术约束和维护需求。
 
-**Tactical advice:**
-- Interview engineering teams to identify critical technical hurdles
-- Include technical debt investments as a core part of the product strategy
+**战术建议：**
+- 采访工程团队，识别关键的技术障碍
+- 将技术债投资作为产品策略的核心组成部分
 
-*Timestamp: 00:37:34*
+*时间戳：00:37:34*
 
 
 ## Matt Mullenweg
 *Matt Mullenweg*
 
-> "Well, that's why I think technical debt is one of the most interesting concepts. There's so many companies as well that maybe have big market caps, but I feel like they might have billions or tens of billions of dollars of technical debt. You can see in the interface or how their products integrate with themselves through things."
+> "嗯，这就是为什么我认为技术债是最有趣的概念之一。很多公司，也许有高市值，但我感觉它们可能有数十亿甚至数百亿美元的技术债。你可以在界面中看到，或者通过它们产品之间如何整合来看出来。"
 
-**Insight:** Technical debt is often visible to the end-user through fragmented interfaces and poor product integration.
+**洞见：** 技术债通常通过碎片化的界面和糟糕的产品整合对最终用户可见。
 
-**Tactical advice:**
-- Identify technical debt by looking for inconsistencies in the user interface and product silos
+**战术建议：**
+- 通过观察用户界面不一致和产品孤岛来识别技术债
 
-*Timestamp: 00:34:09*
+*时间戳：00:34:09*
 
 ---
 
-> "And it's a big focus for us this year, is actually kind of going back to basics, back to core, and improving all of those kind of nooks and crannies of the user experience, and also ruthlessly editing and cutting as much as possible, because we just launched a lot of stuff over the past 21 years that maybe is not as relevant today or it doesn't need to be there."
+> "今年我们的一个重点就是回归基础，回归核心，改善用户体验中所有那些边边角角，同时无情地编辑和删减尽可能多的东西，因为我们在过去 21 年里发布了很多东西，其中一些可能今天已经不那么相关了，或者根本不需要存在。"
 
-**Insight:** Managing long-term debt requires 'ruthlessly editing' and removing features that are no longer relevant to the core mission.
+**洞见：** 管理长期债务需要"无情地编辑"和移除那些不再与核心使命相关的功能。
 
-**Tactical advice:**
-- Perform a 'back to basics' audit to identify and remove features that no longer serve the primary user goal
-- Focus on the 'nooks and crannies' of the UX to resolve accumulated friction
+**战术建议：**
+- 执行"回归基础"审计，识别并移除那些不再服务于主要用户目标的功能
+- 关注 UX 的"边边角角"，解决累积的摩擦
 
-*Timestamp: 00:34:52*
+*时间戳：00:34:52*
 
 
 ## Melanie Perkins
 *Melanie Perkins*
 
-> "We were doing a front-end rewrite and we thought it would take about six months... and then it took two years and it was two years of not shipping any product, two years of a product company not being able to ship product."
+> "我们在做前端重写，以为需要大约六个月……结果花了两年，那是两年没有发布任何产品，两年一个产品公司无法发布产品。"
 
-**Insight:** Major technical rewrites are 'dark tunnels' that can stall product shipping for years but are necessary for long-term scalability.
+**洞见：** 重大的技术重写是"黑暗隧道"，可能使产品发布停滞数年，但对长期可扩展性是必要的。
 
-**Tactical advice:**
-- Gamify long-term technical projects (e.g., using a game board with rubber ducks) to maintain team momentum during 'dark' periods
-- Accept that foundational rewrites are necessary to enable future features like cross-platform collaboration
+**战术建议：**
+- 将长期技术项目游戏化（例如使用带橡皮鸭的游戏板），在"黑暗"时期保持团队动力
+- 接受奠基性的重写对于实现跨平台协作等未来功能是必要的
 
-*Timestamp: 00:24:14*
+*时间戳：00:24:14*
 
 
 ## Tomer Cohen
-*Tomer Cohen 2.0*
+*Tomer Cohen*
 
-> "We have the maintenance agent when you have a failed build, it will do it for you. In fact, I think we're close to 50% of all those builds being done by the maintenance agent and a QA agent."
+> "我们有一个维护 agent，当构建失败时，它会为你处理。事实上，我认为所有构建中近 50% 是由维护 agent 和 QA agent 完成的。"
 
-**Insight:** AI can significantly reduce engineering 'toil' by automatically diagnosing and fixing failed builds and handling routine QA tasks.
+**洞见：** AI 可以通过自动诊断和修复失败的构建以及处理常规 QA 任务，显著减少工程"苦力工"。
 
-**Tactical advice:**
-- Deploy 'Maintenance Agents' to automatically resolve failed software builds
-- Use AI agents to pick up and fix bugs directly from Jira tickets
+**战术建议：**
+- 部署"维护 Agent"来自动解决失败的软件构建
+- 使用 AI agent 直接从 Jira 工单中捡取并修复 bug
 
-*Timestamp: 00:27:19*
+*时间戳：00:27:19*
 
 
 ## Upasna Gautam
 *Upasna Gautam*
 
-> "One sprint might be high-priority feature development, in another sprint maybe we're focused on medium-priority optimizations and bug fixes. But we know that any time there's a critical incident in production, it also takes critical priority over everything else."
+> "一个 sprint 可能是高优先级的功能开发，另一个 sprint 我们可能专注于中优先级的优化和 bug 修复。但我们知道，任何时候生产环境出现关键事故，它的优先级都会超过其他一切。"
 
-**Insight:** Balancing maintenance and new features requires a flexible sprint model that can shift priority based on production stability.
+**洞见：** 平衡维护和新功能需要一个灵活的 sprint 模型，可以根据生产稳定性调整优先级。
 
-**Tactical advice:**
-- Establish a clear escalation protocol for critical incidents to protect the team's focus
-- Rotate sprint focus between new features and optimizations based on current platform health
+**战术建议：**
+- 建立清晰的关键事故升级协议，保护团队专注力
+- 根据当前平台健康状况，在功能开发和优化之间轮换 sprint 重点
 
-*Timestamp: 27:45*
+*时间戳：27:45*
 
 
 ## Ebi Atawodi
 *Ebi Atawodi*
 
-> "infrastructure is the product. Period. People are like, 'Oh, tech debt.' I'm like, 'Yeah, it's a product debt.' I cannot build a skyscraper on a shaky foundation. So it is your problem too. It's not for the engineer to be barging on the door and be like, 'Oh, there's a problem.'"
+> "基础设施就是产品。句号。人们说，'哦，技术债。'我说，'是的，那是产品债。'我不能在摇晃的地基上建摩天大楼。所以这也是你的问题。不应该是工程师来敲门说，'哦，有个问题。'"
 
-**Insight:** Technical debt should be viewed as 'product debt,' making it a core responsibility of the PM rather than just an engineering concern.
+**洞见：** 技术债应被视为"产品债"，使其成为 PM 的核心职责，而不仅仅是工程问题。
 
-**Tactical advice:**
-- Include infrastructure and tech debt in your 'Top 10 Problems' list
-- Treat foundational stability as a prerequisite for building new features
+**战术建议：**
+- 将基础设施和技术债列入你的"十大问题"清单
+- 将基础稳定性视为构建新功能的前提条件
 
-*Timestamp: 00:55:22*
+*时间戳：00:55:22*
 
 
 ## Farhan Thawar
 *Farhan Thawar*
 
-> "We have a Delete Code Club. We can always almost find a million-plus lines of code to delete, which is insane. ... Everything gets easier, right? Codelets loads faster. It's easier to understand."
+> "我们有一个'删除代码俱乐部'。我们总能找到一百万行以上的代码来删除，这太疯狂了。……一切都变得更简单了，对吧？代码加载更快了。更容易理解了。"
 
-**Insight:** Actively incentivize the deletion of redundant code to improve system maintainability, performance, and developer clarity.
+**洞见：** 主动激励删除冗余代码，以提高系统的可维护性、性能和开发者清晰度。
 
-**Tactical advice:**
-- Create a 'Delete Code Club' or dedicated hack day teams focused solely on removing code
-- Provide a manual or guide for engineers on how to identify and safely delete unused code
+**战术建议：**
+- 创建"删除代码俱乐部"或专门的黑客日团队，专注于删除代码
+- 为工程师提供手册或指南，教他们如何识别和 safely 删除未使用的代码
 
-*Timestamp: 00:48:04*
+*时间戳：00:48:04*
 
 
 ## Will Larson
 *Will Larson*
 
-> "The decision that was done... they needed to do a complete rewrite in order to get there. This is a decision that never works out for anyone... We try to bring the site up and just keeps crashing. And so it basically takes us a month to get it fully functional again."
+> "所做的决定……他们需要进行完全重写才能达到目标。这是一个从来不会对任何人有利的决定……我们试图让网站上线，但它一直崩溃。结果花了我们一个月才让它完全恢复功能。"
 
-**Insight:** Full system rewrites are extremely high-risk and rarely succeed as intended, often leading to significant downtime and business instability.
+**洞见：** 全面系统重写风险极高，很少如预期成功，往往导致严重的停机时间和业务不稳定性。
 
-**Tactical advice:**
-- Be wary of 'death march' rewrites intended to solve social or architectural problems
-- Expect significant debugging periods (e.g., 30 days) when launching major architectural shifts
+**战术建议：**
+- 警惕旨在解决社交或架构问题的"死亡行军"式重写
+- 在启动重大架构变更时，预计会有显著的调试期（例如 30 天）
 
-*Timestamp: 01:04:37*
-
-
+*时间戳：01:04:37*

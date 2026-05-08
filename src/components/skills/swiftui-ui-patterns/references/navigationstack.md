@@ -1,18 +1,18 @@
 # NavigationStack
 
-## Intent
+## 意图
 
-Use this pattern for programmatic navigation and deep links, especially when each tab needs an independent navigation history. The key idea is one `NavigationStack` per tab, each with its own path binding and router object.
+使用此模式实现编程式导航和深度链接，特别是当每个标签页需要独立的导航历史时。核心思想是每个标签页一个 `NavigationStack`，每个都有自己的路径绑定和路由器对象。
 
-## Core architecture
+## 核心架构
 
-- Define a route enum that is `Hashable` and represents all destinations.
-- Create a lightweight router (or use a library such as `https://github.com/Dimillian/AppRouter`) that owns the `path` and any sheet state.
-- Each tab owns its own router instance and binds `NavigationStack(path:)` to it.
-- Inject the router into the environment so child views can navigate programmatically.
-- Centralize destination mapping with a single `navigationDestination(for:)` block (or a `withAppRouter()` modifier).
+- 定义一个 `Hashable` 的路由枚举，代表所有目标。
+- 创建一个轻量级路由器（或使用类似 `https://github.com/Dimillian/AppRouter` 的库），拥有 `path` 和任何 sheet 状态。
+- 每个标签页拥有自己的路由器实例，并将 `NavigationStack(path:)` 绑定到它。
+- 将路由器注入环境，使子视图可以编程式导航。
+- 使用单个 `navigationDestination(for:)` 块（或 `withAppRouter()` 修饰符）集中化目标映射。
 
-## Example: custom router with per-tab stack
+## 示例：带每标签页堆栈的自定义路由器
 
 ```swift
 @MainActor
@@ -54,9 +54,9 @@ struct TimelineTab: View {
 }
 ```
 
-## Example: centralized destination mapping
+## 示例：集中式目标映射
 
-Use a shared view modifier to avoid duplicating route switches across screens.
+使用共享的视图修饰符避免在各界面间重复路由切换。
 
 ```swift
 extension View {
@@ -73,7 +73,7 @@ extension View {
 }
 ```
 
-Then apply it once per stack:
+然后每个堆栈应用一次：
 
 ```swift
 NavigationStack(path: $routerPath.path) {
@@ -82,7 +82,7 @@ NavigationStack(path: $routerPath.path) {
 }
 ```
 
-## Example: binding per tab (tabs with independent history)
+## 示例：每标签页绑定（具有独立历史的标签页）
 
 ```swift
 @MainActor
@@ -99,9 +99,9 @@ struct TabsView: View {
 }
 ```
 
-## Example: generic tabs with per-tab NavigationStack
+## 示例：带每标签页 NavigationStack 的通用标签页
 
-Use this when tabs are built from data and each needs its own path without hard-coded names.
+当标签页由数据构建且每个需要自己的路径而无需硬编码名称时使用。
 
 ```swift
 @MainActor
@@ -122,7 +122,6 @@ struct TabsView: View {
     }
   }
 }
-```
 
 @MainActor
 @Observable
@@ -142,18 +141,18 @@ final class TabRouter {
   }
 }
 
-## Design choices to keep
+## 要保留的设计选择
 
-- One `NavigationStack` per tab to preserve independent history.
-- A single source of truth for navigation state (`RouterPath` or library router).
-- Use `navigationDestination(for:)` to map routes to views.
-- Reset the path when app context changes (account switch, logout, etc.).
-- Inject the router into the environment so child views can navigate and present sheets without prop-drilling.
-- Keep sheet presentation state on the router if you want a single place to manage modals.
+- 每个标签页一个 `NavigationStack` 以保留独立历史。
+- 导航状态的单一事实源（`RouterPath` 或库路由器）。
+- 使用 `navigationDestination(for:)` 将路由映射到视图。
+- 在应用上下文变化时重置路径（账户切换、登出等）。
+- 将路由器注入环境，使子视图无需逐层传递属性即可导航和展示 sheets。
+- 如果希望在一个地方管理模态框，将 sheet 展示状态保留在路由器上。
 
-## Pitfalls
+## 陷阱
 
-- Do not share one path across all tabs unless you want global history.
-- Ensure route identifiers are stable and `Hashable`.
-- Avoid storing view instances in the path; store lightweight route data instead.
-- If using a router object, keep it outside other `@Observable` objects to avoid nested observation.
+- 除非想要全局历史，否则不要在所有标签页间共享一个路径。
+- 确保路由标识符稳定且是 `Hashable`。
+- 避免在路径中存储视图实例；而是存储轻量级路由数据。
+- 如果使用路由器对象，使其不受其他 `@Observable` 对象的影响，避免嵌套观察。

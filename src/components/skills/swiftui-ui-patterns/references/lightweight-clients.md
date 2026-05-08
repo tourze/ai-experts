@@ -1,13 +1,13 @@
-# Lightweight Clients (Closure-Based)
+# 轻量级客户端（闭包式）
 
-Use this pattern to keep networking or service dependencies simple and testable without introducing a full view model or heavy DI framework. It works well for SwiftUI apps where you want a small, composable API surface that can be swapped in previews/tests.
+使用此模式保持网络或服务依赖简单且可测试，无需引入完整的视图模型或重量级 DI 框架。它非常适合 SwiftUI 应用，在需要小型、可组合的 API 接口且可在预览/测试中替换的场景下使用。
 
-## Intent
-- Provide a tiny "client" type made of async closures.
-- Keep business logic in a store or feature layer, not the view.
-- Enable easy stubbing in previews/tests.
+## 意图
+- 提供一个由异步闭包组成的微型"客户端"类型。
+- 将业务逻辑保留在 store 或功能层中，而非视图。
+- 便于在预览/测试中进行桩替换。
 
-## Minimal shape
+## 最小结构
 ```swift
 struct SomeClient {
     var fetchItems: (_ limit: Int) async throws -> [Item]
@@ -19,17 +19,17 @@ extension SomeClient {
         let session = URLSession.shared
         return SomeClient(
             fetchItems: { limit in
-                // build URL, call session, decode
+                // 构建 URL，调用 session，解码
             },
             search: { query, limit in
-                // build URL, call session, decode
+                // 构建 URL，调用 session，解码
             }
         )
     }
 }
 ```
 
-## Usage pattern
+## 使用模式
 ```swift
 @MainActor
 @Observable final class ItemsStore {
@@ -82,12 +82,12 @@ struct MyApp: App {
 }
 ```
 
-## Guidance
-- Keep decoding and URL-building in the client; keep state changes in the store.
-- Make the store accept the client in `init` and keep it private.
-- Avoid global singletons; use `.environment` for store injection.
-- If you need multiple variants (mock/stub), add `static func mock(...)`.
+## 指导原则
+- 将解码和 URL 构建保留在客户端中；将状态变化保留在 store 中。
+- 使 store 在 `init` 中接受客户端并保持其为私有的。
+- 避免全局单例；使用 `.environment` 进行 store 注入。
+- 如果需要多个变体（mock/stub），添加 `static func mock(...)`。
 
-## Pitfalls
-- Don’t put UI state in the client; keep state in the store.
-- Don’t capture `self` or view state in the client closures.
+## 陷阱
+- 不要将 UI 状态放在客户端中；将状态保持在 store 中。
+- 不要在客户端闭包中捕获 `self` 或视图状态。

@@ -1,22 +1,22 @@
 # TabView
 
-## Intent
+## 意图
 
-Use this pattern for a scalable, multi-platform tab architecture with:
-- a single source of truth for tab identity and content,
-- platform-specific tab sets and sidebar sections,
-- dynamic tabs sourced from data,
-- an interception hook for special tabs (e.g., compose).
+使用此模式实现可扩展的多平台标签架构，具备：
+- 标签标识和内容的单一事实源，
+- 平台特定的标签集和侧边栏 Section，
+- 源自数据的动态标签，
+- 特殊标签的拦截钩子（例如编辑）。
 
-## Core architecture
+## 核心架构
 
-- `AppTab` enum defines identity, labels, icons, and content builder.
-- `SidebarSections` enum groups tabs for sidebar sections.
-- `AppView` owns the `TabView` and selection binding, and routes tab changes through `updateTab`.
+- `AppTab` 枚举定义标识、标签、图标和内容构建器。
+- `SidebarSections` 枚举为侧边栏 Section 对标签进行分组。
+- `AppView` 拥有 `TabView` 和选择绑定，并通过 `updateTab` 路由标签变化。
 
-## Example: custom binding with side effects
+## 示例：带副作用的自定义绑定
 
-Use this when tab selection needs side effects, like intercepting a special tab to perform an action instead of changing selection.
+当标签选择需要副作用，如拦截特殊标签以执行操作而非更改选择时使用。
 
 ```swift
 @MainActor
@@ -50,7 +50,7 @@ struct AppView: View {
 
   private func updateTab(with newTab: AppTab) {
     if newTab == .post {
-      // Intercept special tabs (compose) instead of changing selection.
+      // 拦截特殊标签（编辑）而不是更改选择。
       presentComposer()
       return
     }
@@ -59,9 +59,9 @@ struct AppView: View {
 }
 ```
 
-## Example: direct binding without side effects
+## 示例：无副作用的直接绑定
 
-Use this when selection is purely state-driven.
+当选择纯粹由状态驱动时使用。
 
 ```swift
 @MainActor
@@ -92,23 +92,23 @@ struct AppView: View {
 }
 ```
 
-## Design choices to keep
+## 要保留的设计选择
 
-- Centralize tab identity and content in `AppTab` with `makeContentView(...)`.
-- Use `Tab(value:)` with `selection` binding for state-driven tab selection.
-- Route selection changes through `updateTab` to handle special tabs and scroll-to-top behavior.
-- Use `TabSection` + `.tabPlacement(.sidebarOnly)` for sidebar structure.
-- Use `.tabPlacement(.pinned)` in `AppTab.tabPlacement` for a single pinned tab; this is commonly used for iOS 26 `.searchable` tab content, but can be used for any tab.
+- 使用 `makeContentView(...)` 在 `AppTab` 中集中管理标签标识和内容。
+- 使用 `Tab(value:)` 与 `selection` 绑定实现状态驱动的标签选择。
+- 通过 `updateTab` 路由选择变化，以处理特殊标签和滚动到顶部的行为。
+- 使用 `TabSection` + `.tabPlacement(.sidebarOnly)` 实现侧边栏结构。
+- 在 `AppTab.tabPlacement` 中使用 `.tabPlacement(.pinned)` 实现单个固定标签；这通常用于 iOS 26 的 `.searchable` 标签内容，但也可用于任何标签。
 
-## Dynamic tabs pattern
+## 动态标签模式
 
-- `SidebarSections` handles dynamic data tabs.
-- `AppTab.anyTimelineFilter(filter:)` wraps dynamic tabs in a single enum case.
-- The enum provides label/icon/title for dynamic tabs via the filter type.
+- `SidebarSections` 处理动态数据标签。
+- `AppTab.anyTimelineFilter(filter:)` 将动态标签包装在单个枚举 case 中。
+- 枚举通过过滤器类型为动态标签提供标签/图标/标题。
 
-## Pitfalls
+## 陷阱
 
-- Avoid adding ViewModels for tabs; keep state local or in `@Observable` services.
-- Do not nest `@Observable` objects inside other `@Observable` objects.
-- Ensure `AppTab.id` values are stable; dynamic cases should hash on stable IDs.
-- Special tabs (compose) should not change selection.
+- 避免为标签添加 ViewModel；保持状态本地化或在 `@Observable` 服务中。
+- 不要在其他 `@Observable` 对象内部嵌套 `@Observable` 对象。
+- 确保 `AppTab.id` 值稳定；动态 case 应在稳定 ID 上哈希。
+- 特殊标签（编辑）不应更改选择。

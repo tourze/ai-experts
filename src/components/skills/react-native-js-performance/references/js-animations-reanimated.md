@@ -1,23 +1,23 @@
 ---
-title: High-Performance Animations
+title: 高性能动画
 impact: MEDIUM
 tags: reanimated, animations, worklets, ui-thread
 ---
 
-# Skill: High-Performance Animations
+# 技能：高性能动画
 
-Use React Native Reanimated for smooth 60+ FPS animations.
+使用 React Native Reanimated 实现流畅的 60+ FPS 动画。
 
-## Quick Pattern
+## 快速模式
 
-**Incorrect (JS thread - blocks on heavy work):**
+**错误做法（JS 线程 - 在繁重工作时阻塞）：**
 
 ```jsx
 const opacity = useRef(new Animated.Value(0)).current;
 Animated.timing(opacity, { toValue: 1 }).start();
 ```
 
-**Correct (UI thread - smooth even during JS work):**
+**正确做法（UI 线程 - 即使 JS 忙碌也流畅）：**
 
 ```jsx
 const opacity = useSharedValue(0);
@@ -25,45 +25,45 @@ const style = useAnimatedStyle(() => ({ opacity: opacity.value }));
 opacity.value = withTiming(1);
 ```
 
-## When to Use
+## 适用场景
 
-- Animations drop frames or feel janky
-- UI freezes during animations
-- Need gesture-driven animations
-- Want animations to run during heavy JS work
+- 动画掉帧或感觉卡顿
+- UI 在动画期间卡死
+- 需要手势驱动动画
+- 希望在 JS 繁重工作时动画仍能运行
 
-## Prerequisites
+## 前置条件
 
-- `react-native-reanimated` (v4+) and `react-native-worklets` installed
+- 已安装 `react-native-reanimated`（v4+）和 `react-native-worklets`
 
 ```bash
 npm install react-native-reanimated react-native-worklets
 ```
 
-Add to `babel.config.js`:
+添加到 `babel.config.js`：
 
 ```javascript
 module.exports = {
-  plugins: ['react-native-worklets/plugin'],  // Must be last
+  plugins: ['react-native-worklets/plugin'],  // 必须放在最后
 };
 ```
 
-> **Note**: Reanimated 4 requires React Native's **New Architecture** (Fabric + TurboModules). The Legacy Architecture is no longer supported. If upgrading from v3, see the migration notes at the end of this document.
+> **注意**：Reanimated 4 需要 React Native 的**新架构**（Fabric + TurboModules）。旧架构不再支持。如果从 v3 升级，请参阅本文档末尾的迁移说明。
 
-## Key Concepts
+## 关键概念
 
-### Main Thread vs JS Thread
+### 主线程 vs JS 线程
 
-- **Main/UI Thread**: Handles native rendering (60+ FPS target)
-- **JS Thread**: Runs React and your JavaScript
+- **主/UI 线程**：处理原生渲染（目标 60+ FPS）
+- **JS 线程**：运行 React 和你的 JavaScript
 
-**Problem**: Heavy JS work blocks animations running on JS thread.
+**问题**：繁重的 JS 工作会阻塞在 JS 线程上运行的动画。
 
-**Solution**: Run animations on UI thread with Reanimated worklets.
+**解决方案**：使用 Reanimated worklets 在 UI 线程上运行动画。
 
-## Step-by-Step Instructions
+## 分步说明
 
-### 1. Basic Animated Style (UI Thread)
+### 1. 基础动画样式（UI 线程）
 
 ```jsx
 import Animated, {
@@ -75,7 +75,7 @@ import Animated, {
 const FadeInView = () => {
   const opacity = useSharedValue(0);
 
-  // This runs on UI thread - won't be blocked by JS
+  // 这在 UI 线程上运行 - 不会被 JS 阻塞
   const animatedStyle = useAnimatedStyle(() => {
     return { opacity: opacity.value };
   });
@@ -88,7 +88,7 @@ const FadeInView = () => {
 };
 ```
 
-### 2. Run Code on UI Thread with `scheduleOnUI`
+### 2. 使用 `scheduleOnUI` 在 UI 线程上运行代码
 
 ```jsx
 import { scheduleOnUI } from 'react-native-worklets';
@@ -97,17 +97,17 @@ const triggerAnimation = () => {
   scheduleOnUI(() => {
     'worklet';
     console.log('Running on UI thread');
-    // Direct UI manipulations here
+    // 在此进行直接的 UI 操作
   });
 };
 ```
 
-### 3. Call JS from UI Thread with `scheduleOnRN`
+### 3. 使用 `scheduleOnRN` 从 UI 线程调用 JS
 
 ```jsx
 import { scheduleOnRN } from 'react-native-worklets';
 
-// Regular JS function
+// 常规 JS 函数
 const trackAnalytics = (value) => {
   analytics.track('animation_complete', { value });
 };
@@ -116,7 +116,7 @@ const AnimatedComponent = () => {
   const progress = useSharedValue(0);
 
   const animatedStyle = useAnimatedStyle(() => {
-    // When animation completes, call JS function
+    // 当动画完成时，调用 JS 函数
     if (progress.value === 1) {
       scheduleOnRN(trackAnalytics, progress.value);
     }
@@ -127,7 +127,7 @@ const AnimatedComponent = () => {
 };
 ```
 
-### 4. Animation with Callback
+### 4. 带回调的动画
 
 ```jsx
 import { scheduleOnRN } from 'react-native-worklets';
@@ -165,91 +165,91 @@ const AnimatedButton = () => {
 };
 ```
 
-## When to Use What
+## 何时使用什么
 
-| Thread | Best For |
+| 线程 | 最适合 |
 |--------|----------|
-| **UI Thread** (worklets) | Visual animations, transforms, gestures |
-| **JS Thread** | State updates, data processing, API calls |
+| **UI 线程**（worklets） | 视觉动画、变换、手势 |
+| **JS 线程** | 状态更新、数据处理、API 调用 |
 
-| Hook/API | Use Case |
+| Hook/API | 用例 |
 |----------|----------|
-| `useAnimatedStyle` | Animated styles (auto UI thread) |
-| `scheduleOnUI` | Manual UI thread execution (from `react-native-worklets`) |
-| `scheduleOnRN` | Call JS functions from worklets (from `react-native-worklets`) |
-| `useTransition` | Alternative for React state-driven delays |
+| `useAnimatedStyle` | 动画样式（自动在 UI 线程） |
+| `scheduleOnUI` | 手动 UI 线程执行（来自 `react-native-worklets`） |
+| `scheduleOnRN` | 从 worklet 调用 JS 函数（来自 `react-native-worklets`） |
+| `useTransition` | React 状态驱动延迟的替代方案 |
 
-## Common Pitfalls
+## 常见陷阱
 
-- **Accessing React state in worklets**: Use `useSharedValue` instead of `useState` for animated values
-- **Not using Animated components**: Must use `Animated.View`, `Animated.Text`, etc.
-- **Heavy computation in useAnimatedStyle**: Keep worklets fast
-- **Forgetting 'worklet' directive**: Required for inline worklet functions
+- **在 worklet 中访问 React 状态**：使用 `useSharedValue` 代替 `useState` 作为动画值
+- **未使用 Animated 组件**：必须使用 `Animated.View`、`Animated.Text` 等
+- **在 useAnimatedStyle 中做重计算**：保持 worklet 轻量快速
+- **忘记 'worklet' 指令**：内联 worklet 函数需要此指令
 
 ```jsx
-// BAD: Regular function in useAnimatedStyle
+// 错误：在 useAnimatedStyle 中使用普通函数
 const style = useAnimatedStyle(() => {
-  heavyComputation();  // Blocks UI thread!
+  heavyComputation();  // 阻塞 UI 线程！
   return { opacity: 1 };
 });
 
-// GOOD: Keep worklets fast
+// 正确：保持 worklet 轻量
 const style = useAnimatedStyle(() => {
-  return { opacity: opacity.value };  // Just read value
+  return { opacity: opacity.value };  // 只读取值
 });
 ```
 
-## Migrating from Reanimated 3.x to 4.x
+## 从 Reanimated 3.x 迁移到 4.x
 
-If you're upgrading from Reanimated 3.x, here are the key changes.
+如果你正在从 Reanimated 3.x 升级，以下是主要变更。
 
-> **Can't upgrade to v4?** If your project is blocked from migrating to New Architecture (e.g., incompatible native libraries, complex native code, or timeline constraints), keep using existing APIs and leverage native drivers where applicable. Avoid introducing legacy Reanimated 3.x or older to reduce future migration complexity.
+> **无法升级到 v4？** 如果你的项目因某些原因无法迁移到新架构（例如原生库不兼容、复杂的原生代码或时间线限制），请继续使用现有 API，并在适用处利用原生驱动。避免引入旧版 Reanimated 3.x 或更早版本，以减少未来的迁移复杂度。
 
-### Breaking Changes
+### 破坏性变更
 
-| Old API (v3) | New API (v4) | Package |
+| 旧 API（v3） | 新 API（v4） | 包 |
 |--------------|--------------|---------|
 | `runOnUI(() => {...})()` | `scheduleOnUI(() => {...})` | `react-native-worklets` |
 | `runOnJS(fn)(args)` | `scheduleOnRN(fn, args)` | `react-native-worklets` |
 | `executeOnUIRuntimeSync` | `runOnUISync` | `react-native-worklets` |
 | `runOnRuntime` | `scheduleOnRuntime` | `react-native-worklets` |
 | `useScrollViewOffset` | `useScrollOffset` | `react-native-reanimated` |
-| `useWorkletCallback` | Use `useCallback` with `'worklet';` directive | React |
+| `useWorkletCallback` | 使用带 `'worklet';` 指令的 `useCallback` | React |
 
-### Removed APIs
+### 已移除的 API
 
-- `useAnimatedGestureHandler` - Migrate to the Gesture API from `react-native-gesture-handler` v2+
-- `addWhitelistedNativeProps` / `addWhitelistedUIProps` - No longer needed
-- `combineTransition` - Use `EntryExitTransition.entering(...).exiting(...)` instead
+- `useAnimatedGestureHandler` —— 迁移到 `react-native-gesture-handler` v2+ 的手势 API
+- `addWhitelistedNativeProps` / `addWhitelistedUIProps` —— 不再需要
+- `combineTransition` —— 改用 `EntryExitTransition.entering(...).exiting(...)`
 
-### withSpring Changes
+### withSpring 变更
 
 ```jsx
-// Before (v3)
+// 之前（v3）
 withSpring(value, {
   restDisplacementThreshold: 0.01,
   restSpeedThreshold: 0.01,
   duration: 300,
 });
 
-// After (v4)
+// 之后（v4）
 withSpring(value, {
-  energyThreshold: 0.01,  // Replaces both threshold parameters
-  duration: 200,          // Duration is now "perceptual" (~1.5x actual time)
+  energyThreshold: 0.01,  // 替代两个阈值参数
+  duration: 200,          // 持续时间现在是"感知性"（约 1.5 倍实际时间）
 });
 ```
 
-### Migration Checklist
+### 迁移检查清单
 
-1. **Enable New Architecture** - Reanimated 4 only supports Fabric + TurboModules
-2. **Install `react-native-worklets`** - Required new dependency
-3. **Update Babel plugin** - Change `'react-native-reanimated/plugin'` to `'react-native-worklets/plugin'`
-4. **Update imports** - Move worklet functions to `react-native-worklets`
-5. **Update API calls** - New functions take callback + args directly (not curried)
-6. **Rebuild native apps** - Required after adding `react-native-worklets`
+1. **启用新架构** —— Reanimated 4 仅支持 Fabric + TurboModules
+2. **安装 `react-native-worklets`** —— 必需的新依赖
+3. **更新 Babel 插件** —— 将 `'react-native-reanimated/plugin'` 改为 `'react-native-worklets/plugin'`
+4. **更新导入** —— 将 worklet 函数移至 `react-native-worklets`
+5. **更新 API 调用** —— 新函数直接接受回调 + 参数（非柯里化）
+6. **重建原生应用** —— 添加 `react-native-worklets` 后需要
 
-## Related Skills
+## 相关技能
 
-- [js-measure-fps.md](./js-measure-fps.md) - Verify animation frame rate
-- [js-bottomsheet.md](./js-bottomsheet.md) - Keep bottom sheet visual state on the UI thread
-- [js-concurrent-react.md](./js-concurrent-react.md) - React-level deferral with useTransition
+- [js-measure-fps.md](./js-measure-fps.md) —— 验证动画帧率
+- [js-bottomsheet.md](./js-bottomsheet.md) —— 保持底部面板视觉状态在 UI 线程上
+- [js-concurrent-react.md](./js-concurrent-react.md) —— 使用 useTransition 进行 React 级别延迟

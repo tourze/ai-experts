@@ -1,215 +1,214 @@
-# Algorithm Decision Guide
+# 算法决策指南
 
-Use this flowchart to select the appropriate matching algorithm. Answer each question in order.
+使用此流程图选择合适的匹配算法。按顺序回答每个问题。
 
 ---
 
-## Decision Flowchart
+## 决策流程图
 
 ```
-START
+开始
   │
   ▼
 ┌─────────────────────────────────────┐
-│ Q1: Do BOTH sides have preferences? │
+│ Q1：双方都有偏好？                   │
 └─────────────────────────────────────┘
   │
-  ├─► YES ──► Q2 (Two-Sided)
+  ├─► 是 ──► Q2（双边）
   │
-  └─► NO ───► Q5 (One-Sided)
+  └─► 否 ───► Q5（单边）
 
 
-TWO-SIDED PATH
+双边路径
 ══════════════
 
 ┌────────────────────────────────────────┐
-│ Q2: Is STABILITY required?             │
-│ (No pair should prefer each other      │
-│  over their assigned matches)          │
+│ Q2：是否需要稳定性？                    │
+│ （没有任何一对应更偏好对方               │
+│   而非当前分配）                        │
 └────────────────────────────────────────┘
   │
-  ├─► YES ──► Q3 (Stable Matching)
+  ├─► 是 ──► Q3（稳定匹配）
   │
-  └─► NO ───► Q4 (Optimization)
+  └─► 否 ───► Q4（优化）
 
 ┌────────────────────────────────────────┐
-│ Q3: One-to-one or many-to-one?         │
+│ Q3：一对一还是多对一？                   │
 └────────────────────────────────────────┘
   │
-  ├─► ONE-TO-ONE ──► GALE-SHAPLEY
+  ├─► 一对一 ──► GALE-SHAPLEY
   │
-  └─► MANY-TO-ONE ─► HOSPITAL-RESIDENT (Gale-Shapley variant)
+  └─► 多对一 ───► 医院-住院医师（Gale-Shapley 变体）
 
 ┌────────────────────────────────────────┐
-│ Q4: Do matches have weights/costs?     │
+│ Q4：匹配是否有权重/成本？               │
 └────────────────────────────────────────┘
   │
-  ├─► YES ──► Q6 (Weighted)
+  ├─► 是 ──► Q6（加权）
   │
-  └─► NO ───► HOPCROFT-KARP (maximum cardinality)
+  └─► 否 ───► HOPCROFT-KARP（最大基数）
 
 
-ONE-SIDED PATH
+单边路径
 ══════════════
 
 ┌────────────────────────────────────────┐
-│ Q5: Can ANY entity match ANY other?    │
-│ (Non-bipartite graph)                  │
+│ Q5：任何实体能否与任何其他实体匹配？     │
+│ （非二分图）                            │
 └────────────────────────────────────────┘
   │
-  ├─► YES ──► BLOSSOM ALGORITHM
+  ├─► 是 ──► BLOSSOM 算法
   │
-  └─► NO ───► Q4 (Optimization)
+  └─► 否 ───► Q4（优化）
 
 
-WEIGHTED PATH
+加权路径
 ═════════════
 
 ┌────────────────────────────────────────┐
-│ Q6: Is the preference graph sparse?    │
-│ (Each entity prefers << n others)      │
+│ Q6：偏好图是否稀疏？                    │
+│ （每个实体偏好 << n 个其他实体）         │
 └────────────────────────────────────────┘
   │
-  ├─► YES (sparse) ──► AUCTION ALGORITHM
+  ├─► 是（稀疏）──► 拍卖算法
   │
-  └─► NO (dense) ────► HUNGARIAN ALGORITHM
+  └─► 否（密集）────► 匈牙利算法
 
 
-HIERARCHY PATH (applies to any above)
+层次化路径（适用于上述任何情况）
 ═════════════════════════════════════
 
 ┌────────────────────────────────────────┐
-│ Q7: Is matching hierarchical/nested?   │
+│ Q7：匹配是否是层次化/嵌套的？            │
 └────────────────────────────────────────┘
   │
-  ├─► YES ──► Q8
+  ├─► 是 ──► Q8
   │
-  └─► NO ───► Use algorithm from above directly
+  └─► 否 ───► 直接使用上述算法
 
 ┌────────────────────────────────────────┐
-│ Q8: Do parent decisions constrain      │
-│     children, or do children inform    │
-│     parent decisions?                  │
+│ Q8：是父决策约束子决策，                 │
+│     还是子决策信息影响父决策？            │
 └────────────────────────────────────────┘
   │
-  ├─► PARENT CONSTRAINS CHILDREN ──► TOP-DOWN + chosen algorithm per level
+  ├─► 父约束子 ──► 自顶向下 + 每层选定算法
   │
-  └─► CHILDREN INFORM PARENT ──────► BOTTOM-UP aggregation + match at root
+  └─► 子影响父 ──────► 自底向上聚合 + 在根层匹配
 
 
-ENTITY RESOLUTION PATH
+实体解析路径
 ══════════════════════
 
 ┌────────────────────────────────────────┐
-│ Q9: Is this fuzzy/probabilistic        │
-│     matching (entity resolution)?      │
+│ Q9：这是模糊/概率匹配                   │
+│     （实体解析）？                       │
 └────────────────────────────────────────┘
   │
-  ├─► YES ──► BLOCKING + SCORING pipeline
-  │           (optionally Fellegi-Sunter for probabilistic)
+  ├─► 是 ──► 分块 + 评分流程
+  │           （可选 Fellegi-Sunter 用于概率匹配）
   │
-  └─► NO ───► Use decision tree above
+  └─► 否 ───► 使用上述决策树
 ```
 
 ---
 
-## Quick Reference Table
+## 快速参考表
 
-| Requirement | Algorithm | Notes |
+| 需求 | 算法 | 说明 |
 |-------------|-----------|-------|
-| Two-sided, stable, 1:1 | Gale-Shapley | Proposer-optimal |
-| Two-sided, stable, n:1 | Hospital-Resident | Capacity on one side |
-| Weighted, optimal | Hungarian | O(n³), exact |
-| Weighted, sparse | Auction | Better for sparse graphs |
-| Max pairs, no weights | Hopcroft-Karp | Cardinality only |
-| Non-bipartite | Blossom | General graphs |
-| Fuzzy/probabilistic | Blocking + Scoring | Entity resolution |
-| Hierarchical | Wrap any above | Add level traversal |
+| 双边、稳定、1:1 | Gale-Shapley | 提议方最优 |
+| 双边、稳定、n:1 | 医院-住院医师 | 一方有容量 |
+| 加权、最优 | 匈牙利算法 | O(n³)，精确 |
+| 加权、稀疏 | 拍卖算法 | 更适合稀疏图 |
+| 最大对数、无权重 | Hopcroft-Karp | 仅基数 |
+| 非二分图 | Blossom | 一般图 |
+| 模糊/概率 | 分块 + 评分 | 实体解析 |
+| 层次化 | 包装上述任何算法 | 添加层级遍历 |
 
 ---
 
-## Constraint Compatibility Matrix
+## 约束兼容性矩阵
 
-Check that your constraints are compatible with the chosen algorithm:
+检查您的约束是否与所选算法兼容：
 
-| Constraint Type | Gale-Shapley | Hungarian | Hopcroft-Karp | Auction |
+| 约束类型 | Gale-Shapley | 匈牙利算法 | Hopcroft-Karp | 拍卖算法 |
 |-----------------|--------------|-----------|---------------|---------|
-| Capacity (n:1) | ✓ (variant) | ✓ (expand) | ✓ (expand) | ✓ |
-| Exclusions | ✓ (remove from list) | ✓ (∞ cost) | ✓ (remove edge) | ✓ |
-| Required pairs | Partial¹ | ✓ (pre-assign) | ✓ (pre-assign) | ✓ |
-| Coupling | Manual² | ✓ (composite) | Manual² | Manual² |
-| Soft preferences | ✗ | ✓ (weights) | ✗ | ✓ |
+| 容量 (n:1) | ✓（变体） | ✓（扩展） | ✓（扩展） | ✓ |
+| 排除项 | ✓（从列表中移除） | ✓（∞ 成本） | ✓（移除边） | ✓ |
+| 必需配对 | 部分¹ | ✓（预分配） | ✓（预分配） | ✓ |
+| 耦合 | 手动² | ✓（复合） | 手动² | 手动² |
+| 软偏好 | ✗ | ✓（权重） | ✗ | ✓ |
 
-¹ Can force by truncating preference lists, but may cause instability
-² Requires creating composite entities or post-processing
-
----
-
-## Decision Examples
-
-### Example 1: School Choice
-
-> Students rank schools, schools have capacities, want stable assignment
-
-- Q1: Both sides have preferences? **YES**
-- Q2: Stability required? **YES** (no student-school pair should want to deviate)
-- Q3: One-to-one or many-to-one? **MANY-TO-ONE** (schools take multiple students)
-
-**→ HOSPITAL-RESIDENT (student-proposing Gale-Shapley)**
-
-### Example 2: Task Assignment
-
-> Assign tasks to workers to minimize total cost, workers have capacity
-
-- Q1: Both sides have preferences? **NO** (tasks don't prefer workers)
-- Q5: Non-bipartite? **NO** (workers and tasks are distinct sets)
-- Q4: Weighted? **YES** (minimizing cost)
-- Q6: Sparse? **NO** (any worker can do any task)
-
-**→ HUNGARIAN ALGORITHM** (expand workers to capacity)
-
-### Example 3: Org Restructuring
-
-> Match employees to new positions across department hierarchy
-
-- Q7: Hierarchical? **YES** (org → dept → team → position)
-- Q8: Direction? **PARENT CONSTRAINS** (dept capacity limits teams)
-- Q1: Both sides have preferences? **YES** (employees rank positions, managers rank employees)
-- Q2: Stability required? **YES**
-
-**→ TOP-DOWN hierarchical Gale-Shapley**
-
-### Example 4: Customer Deduplication
-
-> Identify same customer across databases with fuzzy name/address matching
-
-- Q9: Entity resolution? **YES**
-
-**→ BLOCKING (by zip + name prefix) + SCORING (Jaro-Winkler on names) + threshold clustering**
+¹ 可通过截断偏好列表强制实现，但可能造成不稳定
+² 需要创建复合实体或后处理
 
 ---
 
-## Red Flags: Wrong Algorithm Indicators
+## 决策示例
 
-| Symptom | Likely Problem | Correct Choice |
+### 示例 1：学校选择
+
+> 学生对学校排名，学校有容量，需要稳定分配
+
+- Q1：双方都有偏好？**是**
+- Q2：需要稳定性？**是**（没有学生-学校对应想要偏离）
+- Q3：一对一还是多对一？**多对一**（学校接收多名学生）
+
+**→ 医院-住院医师（学生提议的 Gale-Shapley）**
+
+### 示例 2：任务分配
+
+> 将任务分配给工人以最小化总成本，工人有容量
+
+- Q1：双方都有偏好？**否**（任务不偏好工人）
+- Q5：非二分图？**否**（工人和任务是不同的集合）
+- Q4：加权？**是**（最小化成本）
+- Q6：稀疏？**否**（任何工人都可以做任何任务）
+
+**→ 匈牙利算法**（扩展工人至容量）
+
+### 示例 3：组织重组
+
+> 将员工匹配到部门层级中的新职位
+
+- Q7：层次化？**是**（组织 → 部门 → 团队 → 职位）
+- Q8：方向？**父约束子**（部门容量限制团队）
+- Q1：双方都有偏好？**是**（员工对职位排名，管理者对员工排名）
+- Q2：需要稳定性？**是**
+
+**→ 自顶向下层次化 Gale-Shapley**
+
+### 示例 4：客户去重
+
+> 通过模糊名称/地址匹配识别跨数据库的同一客户
+
+- Q9：实体解析？**是**
+
+**→ 分块（按邮政编码 + 名称前缀）+ 评分（Jaro-Winkler 对名称）+ 阈值聚类**
+
+---
+
+## 红色警报：错误算法指示器
+
+| 症状 | 可能的问题 | 正确选择 |
 |---------|----------------|----------------|
-| "Optimal" but pairs defect | Used optimization when needed stability | Gale-Shapley family |
-| Slow at scale (n > 5000) | Hungarian O(n³) too slow | Auction or Hopcroft-Karp |
-| Matches feel "random" | Using max cardinality when need weights | Hungarian/Auction |
-| Can't express preference strength | Using stable matching when need optimization | Hungarian/Auction |
-| Blocking pairs exist | Wrong proposer side or incomplete lists | Check Gale-Shapley setup |
+| 结果"最优"但对子方有缺陷 | 在需要稳定时使用了优化 | Gale-Shapley 系列 |
+| 规模大时慢 (n > 5000) | 匈牙利算法 O(n³) 太慢 | 拍卖算法或 Hopcroft-Karp |
+| 匹配感觉"随机" | 在需要权重时使用了最大基数 | 匈牙利算法/拍卖算法 |
+| 无法表达偏好强度 | 在需要优化时使用了稳定匹配 | 匈牙利算法/拍卖算法 |
+| 存在阻塞对 | 错误的提议方或列表不完整 | 检查 Gale-Shapley 设置 |
 
 ---
 
-## Algorithm Selection Checklist
+## 算法选择检查清单
 
-Before finalizing choice:
+在最终确定选择前：
 
 ```
-□ Algorithm handles all HARD constraints
-□ Algorithm complexity acceptable for data size
-□ Stability vs optimality tradeoff understood
-□ Hierarchy traversal direction determined (if applicable)
-□ Tie-breaking strategy compatible with algorithm
-□ Edge cases documented (what happens with empty/single/tied?)
+□ 算法处理所有硬约束
+□ 算法复杂度对于数据规模可接受
+□ 理解稳定性与最优性的权衡
+□ 确定层级遍历方向（如适用）
+□ 破平策略与算法兼容
+□ 边界情况已记录（空/单一/平局时会发生什么？）
 ```

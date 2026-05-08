@@ -1,360 +1,360 @@
-# Nielsen's 10 Usability Heuristics
+# Nielsen 的 10 项可用性启发式
 
-Jakob Nielsen's 10 general principles for interaction design, with practical examples and common violations.
+Jakob Nielsen 的 10 条交互设计通用原则，附实际示例和常见违规案例。
 
 ---
 
-## 1. Visibility of System Status
+## 1. 系统状态可见性
 
-**Principle:** The system should always keep users informed about what is going on, through appropriate feedback within reasonable time.
+**原则：** 系统应始终通过适当的反馈在合理时间内告知用户正在发生的事情。
 
-### Examples of Good Implementation
+### 良好实现的示例
 
-| Situation | Good Feedback |
+| 情况 | 良好的反馈 |
 |-----------|---------------|
-| File uploading | Progress bar with percentage |
-| Form submitted | "Your message has been sent" |
-| Action processing | Loading spinner |
-| Background task | "Syncing 3 files..." notification |
-| Successful action | Green checkmark confirmation |
+| 文件上传 | 带百分比的进度条 |
+| 表单提交 | "您的消息已发送" |
+| 操作处理中 | 加载动画 |
+| 后台任务 | "正在同步 3 个文件..."通知 |
+| 操作成功 | 绿色勾选确认 |
 
-### Common Violations
+### 常见违规
 
-| Violation | Problem | Fix |
+| 违规行为 | 问题 | 修复方案 |
 |-----------|---------|-----|
-| No loading indicator | User thinks it's broken | Add spinner/progress |
-| Silent failures | User thinks action worked | Show error message |
-| Delayed feedback | User clicks again | Immediate visual response |
-| No confirmation | "Did that work?" | Confirm successful actions |
-| Hidden status | User can't find progress | Surface status prominently |
+| 无加载指示器 | 用户认为出故障了 | 添加动画/进度条 |
+| 静默失败 | 用户以为操作成功了 | 显示错误消息 |
+| 延迟反馈 | 用户再次点击 | 即时视觉响应 |
+| 无确认提示 | "成功了吗？" | 确认成功操作 |
+| 状态隐藏 | 用户找不到进度 | 突出显示状态信息 |
 
-### Severity Examples
+### 严重程度示例
 
-- **Minor (1):** Save button has no "saved" confirmation
-- **Major (3):** Payment processing with no indicator
-- **Catastrophic (4):** Form submit shows nothing, user submits multiple times
+- **轻微（1）：** 保存按钮没有"已保存"确认
+- **重大（3）：** 支付处理无指示器
+- **灾难性（4）：** 表单提交无反应，用户多次提交
 
 ---
 
-## 2. Match Between System and Real World
+## 2. 系统与真实世界匹配
 
-**Principle:** The system should speak the users' language, with words, phrases, and concepts familiar to the user, rather than system-oriented terms.
+**原则：** 系统应使用用户熟悉的词汇、短语和概念，而非面向系统的术语。
 
-### Examples of Good Implementation
+### 良好实现的示例
 
-| System Term | User-Friendly Term |
+| 系统术语 | 友好术语 |
 |-------------|-------------------|
-| Authenticate | Sign in |
-| Terminate | Cancel / End |
-| Query | Search |
-| Repository | Folder |
-| Navigate to | Go to |
-| Initiate | Start |
+| Authenticate | 登录 |
+| Terminate | 取消 / 结束 |
+| Query | 搜索 |
+| Repository | 文件夹 |
+| Navigate to | 前往 |
+| Initiate | 开始 |
 
-### Real-World Metaphors
+### 现实世界中的比喻
 
-| Digital Element | Real-World Match |
+| 数字元素 | 现实世界对应物 |
 |-----------------|------------------|
-| Trash/Recycle bin | Waste basket |
-| Folder | File folder |
-| Desktop | Physical desk |
-| Shopping cart | Store cart |
-| Bookmark | Physical bookmark |
+| 回收站/垃圾桶 | 废纸篓 |
+| 文件夹 | 文件袋 |
+| 桌面 | 物理桌面 |
+| 购物车 | 商店手推车 |
+| 书签 | 物理书签 |
 
-### Common Violations
+### 常见违规
 
-| Violation | Problem | Fix |
+| 违规行为 | 问题 | 修复方案 |
 |-----------|---------|-----|
-| Technical jargon | Confusion | Use plain language |
-| Internal names | Meaningless to users | User-tested labels |
-| Inconsistent terms | Same thing, different names | One term per concept |
-| Unfamiliar icons | Users guess wrong | Add labels or tooltips |
-| Illogical order | Not matching expectations | Follow real-world sequences |
+| 技术术语 | 困惑 | 使用通俗语言 |
+| 内部名称 | 对用户毫无意义 | 经用户测试的标签 |
+| 术语不一致 | 同一事物不同名称 | 一个概念一个术语 |
+| 不熟悉的图标 | 用户猜错意思 | 添加标签或工具提示 |
+| 不合逻辑的顺序 | 不符合预期 | 遵循现实世界的顺序 |
 
 ---
 
-## 3. User Control and Freedom
+## 3. 用户控制与自由
 
-**Principle:** Users often choose system functions by mistake and need a clearly marked "emergency exit" to leave the unwanted state without having to go through an extended dialogue.
+**原则：** 用户经常误选系统功能，需要一个明确标记的"紧急出口"来离开非预期的状态，无需进行冗长的对话流程。
 
-### Examples of Good Implementation
+### 良好实现的示例
 
-| Action | Escape Route |
+| 操作 | 逃生路线 |
 |--------|--------------|
-| Accidentally deleted email | Undo button (Gmail) |
-| Wrong menu opened | Click outside to close |
-| Filled form incorrectly | Clear form / Reset |
-| Navigated wrong | Back button works |
-| Started wrong workflow | Cancel / Exit anytime |
+| 意外删除邮件 | 撤销按钮（Gmail） |
+| 打开了错误菜单 | 点击外部关闭 |
+| 填写的表单有误 | 清空表单 / 重置 |
+| 导航错误 | 返回按钮可用 |
+| 开始错误流程 | 随时取消 / 退出 |
 
-### Common Violations
+### 常见违规
 
-| Violation | Problem | Fix |
+| 违规行为 | 问题 | 修复方案 |
 |-----------|---------|-----|
-| No undo | Users afraid to act | Add undo for all actions |
-| Forced wizards | Can't skip or go back | Allow non-linear navigation |
-| Modal traps | Can't escape | Clear close/cancel buttons |
-| Broken back button | Frustration | Never hijack browser history |
-| Immediate deletion | No recovery | Soft delete + undo option |
+| 无撤销功能 | 用户害怕操作 | 为所有操作添加撤销 |
+| 强制向导 | 无法跳过或返回 | 允许非线性导航 |
+| 弹窗陷阱 | 无法退出 | 清晰的关闭/取消按钮 |
+| 返回按钮失效 | 挫败感 | 绝不劫持浏览器历史 |
+| 立即删除 | 无法恢复 | 软删除 + 撤销选项 |
 
-### Key Principle
+### 关键原则
 
-**Undo > Confirmation dialogs**
+**撤销 > 确认对话框**
 
-Users click through "Are you sure?" without reading. Undo lets them act confidently.
+用户不看内容就点过"你确定吗？"。撤销让用户自信地操作。
 
 ---
 
-## 4. Consistency and Standards
+## 4. 一致性与标准
 
-**Principle:** Users should not have to wonder whether different words, situations, or actions mean the same thing. Follow platform conventions.
+**原则：** 用户不必猜测不同的词、情况或操作是否意味着同一件事。遵循平台惯例。
 
-### Types of Consistency
+### 一致性类型
 
-| Type | Example |
+| 类型 | 示例 |
 |------|---------|
-| **Internal** | Same button style throughout your app |
-| **External** | Same patterns as other apps |
-| **Visual** | Same colors mean same things |
-| **Functional** | Same action = same result |
-| **Linguistic** | Same terms for same concepts |
+| **内部一致性** | 整个应用中按钮样式统一 |
+| **外部一致性** | 与其他应用模式一致 |
+| **视觉一致性** | 相同颜色表示相同含义 |
+| **功能一致性** | 相同操作 = 相同结果 |
+| **语言一致性** | 相同概念使用相同术语 |
 
-### Platform Conventions
+### 平台惯例
 
-| Element | Convention |
+| 元素 | 惯例 |
 |---------|------------|
-| Logo | Top left, links to home |
-| Search | Top right, magnifying glass |
-| Cart | Top right, shopping cart icon |
-| Menu (mobile) | Hamburger icon |
-| Primary action | Right side or bottom of form |
-| Cancel | Left of primary action (or text link) |
+| 标志 | 左上角，链接到首页 |
+| 搜索 | 右上角，放大镜图标 |
+| 购物车 | 右上角，购物车图标 |
+| 菜单（移动端） | 汉堡图标 |
+| 主要操作 | 表单右侧或底部 |
+| 取消 | 主要操作左侧（或文本链接） |
 
-### Common Violations
+### 常见违规
 
-| Violation | Problem | Fix |
+| 违规行为 | 问题 | 修复方案 |
 |-----------|---------|-----|
-| Different button styles | Confusion about importance | Consistent button hierarchy |
-| Same word, different meanings | Misunderstanding | One term per concept |
-| Unexpected link behavior | New tab when expecting same tab | Follow conventions |
-| Non-standard icons | Guessing game | Use recognized icons |
-| Inconsistent layouts | Relearning each page | Template-based layouts |
+| 按钮样式不统一 | 对重要程度感到困惑 | 一致的按钮层级 |
+| 同一词语不同含义 | 误解 | 一个概念一个术语 |
+| 意外的链接行为 | 想要同标签页却打开新标签页 | 遵循惯例 |
+| 非标准图标 | 猜谜游戏 | 使用公认图标 |
+| 布局不一致 | 每个页面重新学习 | 基于模板的布局 |
 
 ---
 
-## 5. Error Prevention
+## 5. 错误预防
 
-**Principle:** Even better than good error messages is a careful design which prevents a problem from occurring in the first place.
+**原则：** 比好的错误消息更好的是精心设计以防止问题首先发生。
 
-### Prevention Strategies
+### 预防策略
 
-| Strategy | Example |
+| 策略 | 示例 |
 |----------|---------|
-| **Constraints** | Date picker instead of text field |
-| **Suggestions** | Autocomplete |
-| **Defaults** | Pre-fill common values |
-| **Confirmation** | "Delete permanently?" for destructive actions |
-| **Warnings** | "Unsaved changes" before leaving |
+| **约束** | 日期选择器替代文本输入 |
+| **建议** | 自动补全 |
+| **默认值** | 预填常见值 |
+| **确认** | "永久删除？"用于破坏性操作 |
+| **警告** | 离开前的"未保存更改"提示 |
 
-### Types of Errors to Prevent
+### 需要预防的错误类型
 
-| Error Type | Prevention |
+| 错误类型 | 预防措施 |
 |------------|------------|
-| **Slips** (accidental) | Confirmation, undo, large targets |
-| **Mistakes** (wrong intention) | Clear instructions, better defaults |
-| **Data errors** | Validation, formatting help |
-| **Navigation errors** | Clear labels, undo |
+| **失误（意外）** | 确认、撤销、大触摸目标 |
+| **错误（意图错误）** | 清晰说明、更好的默认值 |
+| **数据错误** | 验证、格式帮助 |
+| **导航错误** | 清晰标签、撤销 |
 
-### Common Violations
+### 常见违规
 
-| Violation | Problem | Fix |
+| 违规行为 | 问题 | 修复方案 |
 |-----------|---------|-----|
-| Free text for constrained data | Invalid entries | Dropdowns, pickers |
-| No save warning | Lost work | "Unsaved changes" prompt |
-| Easy destructive actions | Accidental deletion | Require confirmation |
-| Accepting bad input | Garbage data | Inline validation |
-| Ambiguous choices | Wrong selection | Clear differentiation |
+| 约束数据用自由文本 | 无效输入 | 下拉框、选择器 |
+| 无保存警告 | 工作丢失 | "未保存更改"提示 |
+| 破坏性操作太容易 | 意外删除 | 要求确认 |
+| 接受错误输入 | 垃圾数据 | 内联验证 |
+| 模糊的选择 | 错选 | 清晰区分 |
 
 ---
 
-## 6. Recognition Rather Than Recall
+## 6. 识别而非回忆
 
-**Principle:** Minimize the user's memory load by making objects, actions, and options visible. Don't require users to remember information.
+**原则：** 通过使对象、操作和选项可见来最小化用户的记忆负担。不要要求用户记住信息。
 
-### Recognition Techniques
+### 识别技巧
 
-| Instead of | Do This |
+| 替代方案 | 这样做 |
 |------------|---------|
-| User remembers command | Show menu of options |
-| User types from memory | Dropdown/autocomplete |
-| User remembers where they were | Breadcrumbs, recent history |
-| User remembers codes | Show decoded values |
-| User recalls previous info | Show previous entries |
+| 用户记住命令 | 显示菜单选项 |
+| 用户凭记忆输入 | 下拉框/自动补全 |
+| 用户记住位置 | 面包屑、最近历史 |
+| 用户记住编码 | 显示解码后值 |
+| 用户回忆之前的信息 | 显示之前的输入 |
 
-### Examples
+### 示例
 
-| Bad (Recall) | Good (Recognition) |
+| 差（回忆） | 好（识别） |
 |--------------|-------------------|
-| "Enter country code" | Dropdown with country names |
-| Command-line interface | Graphical menus |
-| "See page 47 for options" | Options shown in context |
-| "Re-enter your email" | Pre-filled from previous step |
-| Complex keyboard shortcuts | Visible toolbar buttons |
+| "输入国家代码" | 带国家名称的下拉框 |
+| 命令行界面 | 图形菜单 |
+| "参见第 47 页选项" | 选项在上下文中显示 |
+| "重新输入邮箱" | 从上一步预填 |
+| 复杂快捷键 | 可见工具栏按钮 |
 
-### Common Violations
+### 常见违规
 
-| Violation | Problem | Fix |
+| 违规行为 | 问题 | 修复方案 |
 |-----------|---------|-----|
-| Empty form fields | User must remember format | Placeholder examples |
-| Hidden actions | User forgets they exist | Keep visible or in menus |
-| No recent items | User re-searches | Show search history |
-| Unlabeled icons | User guesses meaning | Add text labels |
-| Disconnected workflows | User loses context | Show progress, breadcrumbs |
+| 空表单字段 | 用户必须记住格式 | 占位示例 |
+| 隐藏操作 | 用户忘记它们存在 | 保持可见或在菜单中 |
+| 无最近项 | 用户重新搜索 | 显示搜索历史 |
+| 无标签图标 | 用户猜测含义 | 添加文字标签 |
+| 断开的流程 | 用户失去上下文 | 显示进度、面包屑 |
 
 ---
 
-## 7. Flexibility and Efficiency of Use
+## 7. 使用的灵活性与效率
 
-**Principle:** Accelerators—unseen by the novice user—may often speed up the interaction for the expert user. Allow users to tailor frequent actions.
+**原则：** 新手用户看不到的加速器可以加快专家用户的交互速度。允许用户定制频繁操作。
 
-### Accelerators for Experts
+### 面向专家的加速器
 
-| Feature | Example |
+| 功能 | 示例 |
 |---------|---------|
-| **Keyboard shortcuts** | Ctrl+S to save |
-| **Touch gestures** | Swipe to archive |
-| **Recent/Favorites** | Quick access to common items |
-| **Saved searches** | One-click complex queries |
-| **Customization** | Personalized dashboard |
-| **Bulk actions** | Select all + action |
+| **快捷键** | Ctrl+S 保存 |
+| **触摸手势** | 滑动归档 |
+| **最近/收藏** | 快速访问常用项目 |
+| **保存的搜索** | 一键完成复杂查询 |
+| **自定义** | 个性化仪表盘 |
+| **批量操作** | 全选 + 操作 |
 
-### Progressive Disclosure
+### 渐进式披露
 
-| User Level | What They See |
+| 用户级别 | 他们看到的内容 |
 |------------|---------------|
-| Novice | Essential features only |
-| Intermediate | Common advanced options |
-| Expert | Full power (shortcuts, customization) |
+| 新手 | 仅基础功能 |
+| 中级 | 常见高级选项 |
+| 专家 | 全部能力（快捷键、自定义） |
 
-### Common Violations
+### 常见违规
 
-| Violation | Problem | Fix |
+| 违规行为 | 问题 | 修复方案 |
 |-----------|---------|-----|
-| No shortcuts | Experts slowed down | Add keyboard shortcuts |
-| No bulk operations | Tedious repetition | Add multi-select |
-| Required tutorials | Experts frustrated | Allow skipping |
-| Hidden power features | Experts don't find them | Discoverable advanced mode |
-| No customization | Forced workflows | Allow personalization |
+| 无快捷键 | 专家被拖慢 | 添加快捷键 |
+| 无批量操作 | 单调重复 | 添加多选功能 |
+| 强制教程 | 专家感到厌烦 | 允许跳过 |
+| 高级功能隐藏 | 专家找不到 | 可发现的高级模式 |
+| 无自定义 | 被迫按固定流程操作 | 允许个性化 |
 
 ---
 
-## 8. Aesthetic and Minimalist Design
+## 8. 美学与极简设计
 
-**Principle:** Dialogues should not contain information which is irrelevant or rarely needed. Every extra unit of information competes with the relevant units.
+**原则：** 对话框不应包含无关或很少需要的信息。每多一个信息单元都会与相关单元竞争。
 
-### Principles
+### 原则
 
-| Principle | Application |
+| 原则 | 应用 |
 |-----------|-------------|
-| **Signal/Noise** | Increase signal, reduce noise |
-| **Visual hierarchy** | Important things stand out |
-| **Whitespace** | Give elements room to breathe |
-| **Content priority** | Show what matters, hide what doesn't |
-| **Progressive disclosure** | Complexity on demand |
+| **信号/噪声** | 增加信号，减少噪声 |
+| **视觉层次** | 重要内容突出 |
+| **空白区域** | 给元素呼吸空间 |
+| **内容优先级** | 显示重要的，隐藏不重要的 |
+| **渐进式披露** | 按需展示复杂性 |
 
-### What to Remove
+### 应移除的内容
 
-| Remove | Why |
+| 移除内容 | 原因 |
 |--------|-----|
-| Rarely-used features | Clutter |
-| Decorative elements | Distraction |
-| Redundant text | Noise |
-| Unnecessary options | Decision fatigue |
-| Instructions users skip | Wasted space |
+| 不常用的功能 | 杂乱 |
+| 装饰性元素 | 干扰 |
+| 冗余文本 | 噪声 |
+| 不必要的选项 | 决策疲劳 |
+| 用户跳过的说明 | 浪费空间 |
 
-### Common Violations
+### 常见违规
 
-| Violation | Problem | Fix |
+| 违规行为 | 问题 | 修复方案 |
 |-----------|---------|-----|
-| Cluttered screens | Overwhelming | Remove/hide secondary |
-| Everything is "important" | Nothing stands out | Create hierarchy |
-| Long blocks of text | Nobody reads | Break up, summarize |
-| Too many colors | Visual noise | Limit palette |
-| Dense layouts | Hard to scan | Add whitespace |
+| 屏幕拥挤 | 令人不知所措 | 移除/隐藏次要内容 |
+| 所有内容都"重要" | 没有东西突出 | 创建层次结构 |
+| 大段文本 | 没人阅读 | 拆分、总结 |
+| 颜色过多 | 视觉噪声 | 限制调色板 |
+| 布局密集 | 难以扫描 | 增加空白 |
 
 ---
 
-## 9. Help Users Recognize, Diagnose, and Recover from Errors
+## 9. 帮助用户识别、诊断和从错误中恢复
 
-**Principle:** Error messages should be expressed in plain language (no codes), precisely indicate the problem, and constructively suggest a solution.
+**原则：** 错误消息应以通俗语言表达（无代码），准确指出问题，并建设性地提出解决方案。
 
-### Good Error Message Components
+### 好的错误消息要素
 
-1. **What happened** (plain language)
-2. **Why it happened** (if helpful)
-3. **How to fix it** (specific action)
+1. **发生了什么**（通俗语言）
+2. **为什么会发生**（如有助于理解）
+3. **如何修复**（具体操作）
 
-### Examples
+### 示例
 
-| Bad Error | Good Error |
+| 差的错误 | 好的错误 |
 |-----------|------------|
-| "Error 500" | "Something went wrong. Please try again." |
-| "Invalid input" | "Email must include @" |
-| "Failed" | "Payment declined. Check card number or try different card." |
-| "Null reference exception" | "We couldn't load your data. Refresh the page." |
+| "错误 500" | "出了点问题。请重试。" |
+| "无效输入" | "Email 必须包含 @" |
+| "失败" | "支付被拒绝。检查卡号或尝试其他卡。" |
+| "空引用异常" | "无法加载数据。刷新页面。" |
 
-### Error Message Guidelines
+### 错误消息指南
 
-| Guideline | Example |
+| 指南 | 示例 |
 |-----------|---------|
-| Use plain language | "Connection failed" not "ECONNREFUSED" |
-| Be specific | "Password too short" not "Invalid password" |
-| Provide action | "Try again" button visible |
-| Don't blame user | "Card declined" not "You entered wrong info" |
-| Maintain context | Keep filled data, highlight error field |
+| 使用通俗语言 | "连接失败"而非"ECONNREFUSED" |
+| 具体明确 | "密码太短"而非"无效密码" |
+| 提供操作 | "重试"按钮可见 |
+| 不责备用户 | "卡被拒绝"而非"您输入了错误信息" |
+| 保持上下文 | 保留已填数据，高亮错误字段 |
 
-### Common Violations
+### 常见违规
 
-| Violation | Problem | Fix |
+| 违规行为 | 问题 | 修复方案 |
 |-----------|---------|-----|
-| Technical jargon | Confusion | Translate to plain English |
-| No solution | User stuck | Include next steps |
-| Generic messages | Not helpful | Be specific |
-| Blaming language | Defensive users | Neutral, helpful tone |
-| Clearing form on error | Punishment | Preserve user input |
+| 技术术语 | 困惑 | 翻译成通俗语言 |
+| 无解决方案 | 用户卡住 | 包含后续步骤 |
+| 通用消息 | 无帮助 | 具体明确 |
+| 责备语气 | 用户产生防御心理 | 中立、有帮助的语气 |
+| 出错时清空表单 | 惩罚用户 | 保留用户输入 |
 
 ---
 
-## 10. Help and Documentation
+## 10. 帮助与文档
 
-**Principle:** Even though it's better if the system can be used without documentation, it may be necessary to provide help and documentation. Such information should be easy to search, focused on the user's task, and not be too large.
+**原则：** 虽然最好系统无需文档即可使用，但在必要时可能需要提供帮助和文档。此类信息应易于搜索，聚焦于用户的任务，且体积不宜过大。
 
-### Characteristics of Good Help
+### 良好帮助的特征
 
-| Characteristic | Implementation |
+| 特征 | 实现方式 |
 |----------------|----------------|
-| **Searchable** | Full-text search |
-| **Task-focused** | "How to..." format |
-| **Contextual** | In-page tooltips |
-| **Scannable** | Short paragraphs, lists |
-| **Actionable** | Step-by-step instructions |
+| **可搜索** | 全文搜索 |
+| **以任务为中心** | "如何..."格式 |
+| **上下文相关** | 页面内工具提示 |
+| **可扫描** | 简短段落、列表 |
+| **可操作** | 分步骤说明 |
 
-### Types of Help
+### 帮助类型
 
-| Type | When to Use |
+| 类型 | 何时使用 |
 |------|-------------|
-| **Inline help** | Tooltips, hints | Next to complex fields |
-| **Contextual help** | "?" icons | For non-obvious features |
-| **Searchable docs** | Knowledge base | For detailed questions |
-| **Guided tours** | Onboarding | First-time users |
-| **Chat/Support** | Complex issues | When self-service fails |
+| **内联帮助** | 工具提示、提示 | 在复杂字段旁边 |
+| **上下文帮助** | "?"图标 | 针对不明显的功能 |
+| **可搜索文档** | 知识库 | 针对详细问题 |
+| **引导式教程** | 入门引导 | 首次使用用户 |
+| **聊天/支持** | 复杂问题 | 自助服务失败时 |
 
-### Common Violations
+### 常见违规
 
-| Violation | Problem | Fix |
+| 违规行为 | 问题 | 修复方案 |
 |-----------|---------|-----|
-| No search in docs | Can't find answers | Add search |
-| Long documentation | Nobody reads | Concise, task-focused |
-| Generic help | Doesn't answer question | Specific to feature/page |
-| Hidden help | Users can't find it | Visible help links |
-| No contextual help | Users leave page | Inline tooltips |
+| 文档中无搜索 | 找不到答案 | 添加搜索 |
+| 文档太长 | 没人阅读 | 简洁、以任务为中心 |
+| 通用帮助 | 不能解答问题 | 针对功能/页面定制 |
+| 帮助隐藏 | 用户找不到 | 可见的帮助链接 |
+| 无上下文帮助 | 用户离开页面 | 内联工具提示 |

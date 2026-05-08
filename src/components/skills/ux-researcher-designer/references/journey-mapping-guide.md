@@ -1,497 +1,494 @@
-# Journey Mapping Guide
+# 旅程地图绘制指南
 
-Step-by-step reference for creating user journey maps that drive design decisions.
-
----
-
-## Table of Contents
-
-- [Journey Map Fundamentals](#journey-map-fundamentals)
-- [Mapping Process](#mapping-process)
-- [Journey Stages](#journey-stages)
-- [Touchpoint Analysis](#touchpoint-analysis)
-- [Emotion Mapping](#emotion-mapping)
-- [Opportunity Identification](#opportunity-identification)
-- [Templates](#templates)
+用于创建推动设计决策的用户旅程地图的逐步参考。
 
 ---
 
-## Journey Map Fundamentals
+## 目录
 
-### What Is a Journey Map?
+- [旅程地图基础](#旅程地图基础)
+- [绘制流程](#绘制流程)
+- [旅程阶段](#旅程阶段)
+- [触点点分析](#触点点分析)
+- [情感映射](#情感映射)
+- [机会识别](#机会识别)
+- [模板](#模板)
 
-A journey map visualizes the end-to-end experience a user has while trying to accomplish a goal with your product or service.
+---
+
+## 旅程地图基础
+
+### 什么是旅程地图？
+
+旅程地图将用户在使用你的产品或服务试图完成某个目标时的端到端体验可视化。
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    JOURNEY MAP STRUCTURE                    │
+│                    旅程地图结构                              │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  STAGES:    Awareness → Consideration → Acquisition →      │
-│             Onboarding → Regular Use → Advocacy            │
+│  阶段：    认知 → 考虑 → 获取 →                           │
+│            引导 → 常规使用 → 推荐                           │
 │                                                             │
-│  LAYERS:    ┌─────────────────────────────────────────┐    │
-│             │ Actions: What user does                 │    │
-│             ├─────────────────────────────────────────┤    │
-│             │ Touchpoints: Where interaction happens  │    │
-│             ├─────────────────────────────────────────┤    │
-│             │ Emotions: How user feels                │    │
-│             ├─────────────────────────────────────────┤    │
-│             │ Pain Points: What frustrates            │    │
-│             ├─────────────────────────────────────────┤    │
-│             │ Opportunities: Where to improve         │    │
-│             └─────────────────────────────────────────┘    │
+│  层：      ┌─────────────────────────────────────────┐      │
+│            │ 操作：用户做什么                        │      │
+│            ├─────────────────────────────────────────┤      │
+│            │ 触点：交互发生的地方                    │      │
+│            ├─────────────────────────────────────────┤      │
+│            │ 情感：用户的感受                        │      │
+│            ├─────────────────────────────────────────┤      │
+│            │ 痛点：什么令用户沮丧                    │      │
+│            ├─────────────────────────────────────────┤      │
+│            │ 机会：可在何处改进                      │      │
+│            └─────────────────────────────────────────┘      │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Journey Map Types
+### 旅程地图类型
 
-| Type | Focus | Best For |
-|------|-------|----------|
-| Current State | How things are today | Identifying pain points |
-| Future State | Ideal experience | Design vision |
-| Day-in-the-Life | Beyond your product | Context understanding |
-| Service Blueprint | Backend processes | Operations alignment |
+| 类型           | 关注点             | 最适合                     |
+| -------------- | ------------------ | -------------------------- |
+| 当前状态       | 今天的实际情况     | 识别痛点                   |
+| 未来状态       | 理想体验           | 设计愿景                   |
+| 日常全览       | 产品之外的生活     | 理解上下文                 |
+| 服务蓝图       | 后端流程           | 运营对齐                   |
 
-### When to Create Journey Maps
+### 何时创建旅程地图
 
-| Scenario | Map Type | Outcome |
-|----------|----------|---------|
-| New product | Future state | Design direction |
-| Redesign | Current + Future | Gap analysis |
-| Churn investigation | Current state | Pain point diagnosis |
-| Cross-team alignment | Service blueprint | Process optimization |
-
----
-
-## Mapping Process
-
-### Step 1: Define Scope
-
-**Questions to Answer:**
-- Which persona is this journey for?
-- What goal are they trying to achieve?
-- Where does the journey start and end?
-- What timeframe does it cover?
-
-**Scope Template:**
-```
-Persona: [Name from persona library]
-Goal: [Specific outcome they want]
-Start: [Trigger that begins journey]
-End: [Success criteria or exit point]
-Timeframe: [Hours/Days/Weeks]
-```
-
-**Example:**
-```
-Persona: Alex the Power User
-Goal: Set up automated weekly reports
-Start: Realizes manual reporting is unsustainable
-End: First automated report runs successfully
-Timeframe: 1-2 days
-```
-
-### Step 2: Gather Data
-
-**Data Sources for Journey Mapping:**
-
-| Source | Insights Gained |
-|--------|-----------------|
-| User interviews | Actions, emotions, quotes |
-| Session recordings | Actual behavior patterns |
-| Support tickets | Common pain points |
-| Analytics | Drop-off points, time spent |
-| Surveys | Satisfaction at stages |
-
-**Interview Questions for Journey Mapping:**
-
-1. "Walk me through how you first discovered [product]"
-2. "What made you decide to try it?"
-3. "Describe your first day using it"
-4. "What was the hardest part?"
-5. "When did you feel confident using it?"
-6. "What would you change about that experience?"
-
-### Step 3: Map the Stages
-
-**Identify Natural Breakpoints:**
-
-Look for moments where:
-- User's mindset changes
-- Channels shift (web → app → email)
-- Time passes (hours, days)
-- Goals evolve
-
-**Stage Validation:**
-
-Each stage should have:
-- Clear entry criteria
-- Distinct user actions
-- Measurable outcomes
-- Exit to next stage
-
-### Step 4: Fill in Layers
-
-For each stage, document:
-
-1. **Actions**: What does the user do?
-2. **Touchpoints**: Where do they interact?
-3. **Thoughts**: What are they thinking?
-4. **Emotions**: How do they feel?
-5. **Pain Points**: What's frustrating?
-6. **Opportunities**: Where can we improve?
-
-### Step 5: Validate and Iterate
-
-**Validation Methods:**
-
-| Method | Effort | Confidence |
-|--------|--------|------------|
-| Team review | Low | Medium |
-| User walkthrough | Medium | High |
-| Data correlation | Medium | High |
-| A/B test interventions | High | Very High |
+| 场景           | 地图类型             | 产出               |
+| -------------- | -------------------- | ------------------ |
+| 新产品         | 未来状态             | 设计方向           |
+| 重新设计       | 当前 + 未来          | 差距分析           |
+| 流失调查       | 当前状态             | 痛点诊断           |
+| 跨团队对齐     | 服务蓝图             | 流程优化           |
 
 ---
 
-## Journey Stages
+## 绘制流程
 
-### Common B2B SaaS Stages
+### 步骤 1：定义范围
+
+**需要回答的问题：**
+- 此旅程是为哪个人物画像创建的？
+- 他们试图实现什么目标？
+- 旅程从哪里开始和结束？
+- 覆盖什么时间范围？
+
+**范围模板：**
+```
+人物画像：[人物画像库中的名称]
+目标：[他们想要的具体结果]
+起点：[触发旅程的事件]
+终点：[成功标准或退出点]
+时间范围：[小时/天/周]
+```
+
+**示例：**
+```
+人物画像：Alex 高级用户
+目标：设置自动每周报告
+起点：意识到手动报告不可持续
+终点：第一份自动报告成功运行
+时间范围：1-2 天
+```
+
+### 步骤 2：收集数据
+
+**旅程地图的数据来源：**
+
+| 来源           | 可获得的洞察             |
+| -------------- | ------------------------ |
+| 用户访谈       | 操作、情感、语录         |
+| 会话录制       | 实际行为模式             |
+| 支持工单       | 常见痛点                 |
+| 分析数据       | 流失点、花费时间         |
+| 问卷调查       | 各个阶段的满意度         |
+
+**用于旅程地图的访谈问题：**
+
+1. "带我回顾一下你最初是如何发现[产品]的"
+2. "是什么让你决定尝试的？"
+3. "描述一下你使用它的第一天"
+4. "最难的部分是什么？"
+5. "你什么时候开始有自信使用它？"
+6. "你会改变那个体验中的什么？"
+
+### 步骤 3：映射阶段
+
+**识别自然断点：**
+
+寻找以下时刻：
+- 用户心态发生变化
+- 渠道切换（网页 → 应用 → 邮件）
+- 时间流逝（小时、天）
+- 目标演变
+
+**阶段验证：**
+
+每个阶段应有：
+- 明确的进入标准
+- 不同的用户操作
+- 可衡量的结果
+- 进入下一阶段的出口
+
+### 步骤 4：填充各层
+
+对于每个阶段，记录：
+
+1. **操作**：用户做什么？
+2. **触点**：他们在哪里交互？
+3. **想法**：他们在想什么？
+4. **情感**：他们的感受如何？
+5. **痛点**：什么令他们沮丧？
+6. **机会**：我们可以在何处改进？
+
+### 步骤 5：验证和迭代
+
+**验证方法：**
+
+| 方法             | 工作量 | 置信度 |
+| ---------------- | ------ | ------ |
+| 团队评审         | 低     | 中     |
+| 用户走查         | 中     | 高     |
+| 数据相关性分析   | 中     | 高     |
+| A/B 测试干预    | 高     | 非常高 |
+
+---
+
+## 旅程阶段
+
+### 常见 B2B SaaS 阶段
 
 ```
 ┌────────────┬────────────┬────────────┬────────────┬────────────┐
-│ AWARENESS  │ EVALUATION │ ONBOARDING │ ADOPTION   │ ADVOCACY   │
+│ 认知       │ 评估       │ 引导       │ 采用       │ 推荐       │
 ├────────────┼────────────┼────────────┼────────────┼────────────┤
-│ Discovers  │ Compares   │ Signs up   │ Regular    │ Recommends │
-│ problem    │ solutions  │ Sets up    │ usage      │ to others  │
-│ exists     │            │ First win  │ Integrates │            │
+│ 发现       │ 比较       │ 注册       │ 常规       │ 向他人     │
+│ 问题       │ 解决方案   │ 设置       │ 使用       │ 推荐       │
+│ 存在       │            │ 首次成功   │ 集成       │            │
 └────────────┴────────────┴────────────┴────────────┴────────────┘
 ```
 
-### Stage Detail Template
+### 阶段详细模板
 
-**Stage: Onboarding**
+**阶段：引导**
 
-| Element | Description |
-|---------|-------------|
-| Goal | Complete setup, achieve first success |
-| Duration | 1-7 days |
-| Entry | User creates account |
-| Exit | First meaningful action completed |
-| Success Metric | Activation rate |
+| 要素       | 描述                           |
+| ---------- | ------------------------------ |
+| 目标       | 完成设置，实现首次成功         |
+| 时长       | 1-7 天                         |
+| 进入       | 用户创建账户                   |
+| 退出       | 完成第一个有意义的操作         |
+| 成功指标   | 激活率                         |
 
-**Substages:**
-1. Account creation
-2. Profile setup
-3. First feature use
-4. Integration (if applicable)
-5. First value moment
+**子阶段：**
+1. 账户创建
+2. 个人资料设置
+3. 首次功能使用
+4. 集成（如适用）
+5. 首次价值时刻
 
-### B2C vs. B2B Stages
+### B2C vs. B2B 阶段
 
-| B2C Stages | B2B Stages |
-|------------|------------|
-| Discover | Awareness |
-| Browse | Evaluation |
-| Purchase | Procurement |
-| Use | Implementation |
-| Return/Loyalty | Renewal |
-
----
-
-## Touchpoint Analysis
-
-### Touchpoint Categories
-
-| Category | Examples | Owner |
-|----------|----------|-------|
-| Marketing | Ads, content, social | Marketing |
-| Sales | Demos, calls, proposals | Sales |
-| Product | App, features, UI | Product |
-| Support | Help center, chat, tickets | Support |
-| Transactional | Emails, notifications | Varies |
-
-### Touchpoint Mapping Template
-
-```
-Stage: [Name]
-Touchpoint: [Where interaction happens]
-Channel: [Web/Mobile/Email/Phone/In-person]
-Action: [What user does]
-Owner: [Team responsible]
-Current Experience: [1-5 rating]
-Improvement Priority: [High/Medium/Low]
-```
-
-### Cross-Channel Consistency
-
-**Check for:**
-- Information consistency across channels
-- Seamless handoffs (web → mobile)
-- Context preservation (user doesn't repeat info)
-- Brand voice alignment
-
-**Red Flags:**
-- User has to re-enter information
-- Different answers from different channels
-- Can't continue task on different device
-- Inconsistent terminology
+| B2C 阶段   | B2B 阶段     |
+| ---------- | ------------ |
+| 发现       | 认知         |
+| 浏览       | 评估         |
+| 购买       | 采购         |
+| 使用       | 实施         |
+| 回头/忠诚  | 续约         |
 
 ---
 
-## Emotion Mapping
+## 触点点分析
 
-### Emotion Scale
+### 触点点类别
+
+| 类别       | 示例                         | 负责人   |
+| ---------- | ---------------------------- | -------- |
+| 营销       | 广告、内容、社交媒体         | 营销     |
+| 销售       | 演示、电话、提案             | 销售     |
+| 产品       | 应用、功能、UI               | 产品     |
+| 支持       | 帮助中心、聊天、工单         | 支持     |
+| 交易       | 邮件、通知                   | 不定     |
+
+### 触点点映射模板
 
 ```
-                    POSITIVE
-                       │
-        Delighted  ────┤──── 😄 5
-        Pleased    ────┤──── 🙂 4
-        Neutral    ────┤──── 😐 3
-        Frustrated ────┤──── 😕 2
-        Angry      ────┤──── 😠 1
-                       │
-                    NEGATIVE
+阶段：[名称]
+触点点：[交互发生的地方]
+渠道：[Web/移动/邮件/电话/面对面]
+操作：[用户做什么]
+负责人：[负责团队]
+当前体验：[1-5 评分]
+改进优先级：[高/中/低]
 ```
 
-### Emotional Triggers
+### 跨渠道一致性
 
-| Trigger | Positive Emotion | Negative Emotion |
-|---------|------------------|------------------|
-| Speed | Delight | Frustration |
-| Clarity | Confidence | Confusion |
-| Control | Empowerment | Helplessness |
-| Progress | Satisfaction | Anxiety |
-| Recognition | Validation | Neglect |
+**检查内容：**
+- 各渠道信息一致
+- 无缝切换（网页 → 移动端）
+- 上下文保留（用户无需重复信息）
+- 品牌声音对齐
 
-### Emotion Data Sources
+**危险信号：**
+- 用户需要重新输入信息
+- 不同渠道给出不同答案
+- 无法在不同设备上继续任务
+- 术语不一致
 
-**Direct Signals:**
-- Interview quotes: "I felt so relieved when..."
-- Survey scores: NPS, CSAT, CES
-- Support sentiment: Angry vs. grateful tickets
+---
 
-**Inferred Signals:**
-- Rage clicks (frustration)
-- Quick completion (satisfaction)
-- Abandonment (frustration or confusion)
-- Return visits (interest or necessity)
+## 情感映射
 
-### Emotion Curve Patterns
+### 情感量表
 
-**The Valley of Death:**
+```
+                    积极
+                       │
+        愉悦     ────┤──── 😄 5
+        满意     ────┤──── 🙂 4
+        中性     ────┤──── 😐 3
+        沮丧     ────┤──── 😕 2
+        愤怒     ────┤──── 😠 1
+                       │
+                    消极
+```
+
+### 情感触发因素
+
+| 触发因素     | 积极情感       | 消极情感     |
+| ------------ | -------------- | ------------ |
+| 速度         | 愉悦           | 沮丧         |
+| 清晰度       | 自信           | 困惑         |
+| 控制感       | 赋能           | 无助         |
+| 进展         | 满意           | 焦虑         |
+| 认可         | 认同           | 忽视         |
+
+### 情感数据来源
+
+**直接信号：**
+- 访谈语录："我当时感到如释重负..."
+- 调查评分：NPS, CSAT, CES
+- 支持情感：愤怒 vs 感激的工单
+
+**推断信号：**
+- 愤怒点击（沮丧）
+- 快速完成（满意）
+- 放弃（沮丧或困惑）
+- 回访（兴趣或必要性）
+
+### 情感曲线模式
+
+**死亡谷：**
 ```
 😄 ─┐
     │     ╱
     │    ╱
 😐 ─│───╱────────
     │╲ ╱
-    │ ╳  ← Critical drop-off point
+    │ ╳  ← 关键流失点
 😠 ─│╱ ╲─────────
     │
-    Onboarding  First Use  Regular
+    引导    首次使用    常规
 ```
 
-**The Aha Moment:**
+**顿悟时刻：**
 ```
 😄 ─┐         ╱──
     │        ╱
     │       ╱
-😐 ─│──────╱────── ← Before: neutral
+😐 ─│──────╱────── ← 之前：中性
     │     ↑
-😠 ─│     Aha!
+😠 ─│     顿悟！
     │
-    Stage 1  Stage 2  Stage 3
+    阶段 1    阶段 2    阶段 3
 ```
 
 ---
 
-## Opportunity Identification
+## 机会识别
 
-### Pain Point Prioritization
+### 痛点优先级排序
 
-| Factor | Score (1-5) |
-|--------|-------------|
-| Frequency | How often does this occur? |
-| Severity | How much does it hurt? |
-| Breadth | How many users affected? |
-| Solvability | Can we fix this? |
+| 因素       | 评分（1-5） |
+| ---------- | ----------- |
+| 频率       | 这种情况发生的频率？ |
+| 严重程度   | 它有多痛苦？ |
+| 影响范围   | 影响多少用户？ |
+| 可解决性   | 我们能修复吗？ |
 
-**Priority Score = (Frequency + Severity + Breadth) × Solvability**
+**优先级分数 = (频率 + 严重程度 + 影响范围) × 可解决性**
 
-### Opportunity Types
+### 机会类型
 
-| Type | Description | Example |
-|------|-------------|---------|
-| Friction Reduction | Remove obstacles | Fewer form fields |
-| Moment of Delight | Exceed expectations | Personalized welcome |
-| Channel Addition | New touchpoint | Mobile app for on-the-go |
-| Proactive Support | Anticipate needs | Tutorial at right moment |
-| Personalization | Tailored experience | Role-based onboarding |
+| 类型           | 描述             | 示例               |
+| -------------- | ---------------- | ------------------ |
+| 减少摩擦       | 消除障碍         | 减少表单字段       |
+| 惊喜时刻       | 超出预期         | 个性化欢迎         |
+| 增加渠道       | 新的触点点       | 随时随地可用的移动应用 |
+| 主动支持       | 预判需求         | 在正确时机提供教程 |
+| 个性化         | 定制体验         | 基于角色的引导     |
 
-### Opportunity Canvas
+### 机会画布
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ OPPORTUNITY: [Name]                                         │
+│ 机会：[名称]                                                │
 ├─────────────────────────────────────────────────────────────┤
-│ Stage: [Where in journey]                                   │
-│ Current Pain: [What's broken]                               │
-│ Desired Outcome: [What should happen]                       │
-│ Proposed Solution: [How to fix]                             │
-│ Success Metric: [How to measure]                            │
-│ Effort: [High/Medium/Low]                                   │
-│ Impact: [High/Medium/Low]                                   │
-│ Priority: [Calculated]                                      │
+│ 阶段：[旅程中的位置]                                        │
+│ 当前痛点：[什么问题]                                        │
+│ 期望结果：[应该发生什么]                                    │
+│ 建议方案：[如何修复]                                        │
+│ 成功指标：[如何衡量]                                        │
+│ 工作量：[高/中/低]                                          │
+│ 影响：[高/中/低]                                            │
+│ 优先级：[计算结果]                                          │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Quick Wins vs. Strategic Bets
+### 快速取胜 vs 战略押注
 
-| Criteria | Quick Win | Strategic Bet |
-|----------|-----------|---------------|
-| Effort | Low | High |
-| Impact | Medium | High |
-| Timeline | Weeks | Quarters |
-| Risk | Low | Medium-High |
-| Requires | Small team | Cross-functional |
+| 标准       | 快速取胜       | 战略押注     |
+| ---------- | -------------- | ------------ |
+| 工作量     | 低             | 高           |
+| 影响       | 中             | 高           |
+| 时间线     | 数周           | 数月         |
+| 风险       | 低             | 中-高        |
+| 需要资源   | 小型团队       | 跨职能团队   |
 
 ---
 
-## Templates
+## 模板
 
-### Basic Journey Map Template
+### 基本旅程地图模板
 
 ```
-PERSONA: _______________
-GOAL: _______________
+人物画像：_______________
+目标：_______________
 
 ┌──────────┬──────────┬──────────┬──────────┬──────────┐
-│ STAGE 1  │ STAGE 2  │ STAGE 3  │ STAGE 4  │ STAGE 5  │
+│ 阶段 1   │ 阶段 2   │ 阶段 3   │ 阶段 4   │ 阶段 5   │
 ├──────────┼──────────┼──────────┼──────────┼──────────┤
-│ Actions  │          │          │          │          │
+│ 操作     │          │          │          │          │
 │          │          │          │          │          │
 ├──────────┼──────────┼──────────┼──────────┼──────────┤
-│ Touch-   │          │          │          │          │
-│ points   │          │          │          │          │
+│ 触点     │          │          │          │          │
 ├──────────┼──────────┼──────────┼──────────┼──────────┤
-│ Emotions │          │          │          │          │
+│ 情感     │          │          │          │          │
 │ (1-5)    │          │          │          │          │
 ├──────────┼──────────┼──────────┼──────────┼──────────┤
-│ Pain     │          │          │          │          │
-│ Points   │          │          │          │          │
+│ 痛点     │          │          │          │          │
 ├──────────┼──────────┼──────────┼──────────┼──────────┤
-│ Opport-  │          │          │          │          │
-│ unities  │          │          │          │          │
+│ 机会     │          │          │          │          │
 └──────────┴──────────┴──────────┴──────────┴──────────┘
 ```
 
-### Detailed Stage Template
+### 详细阶段模板
 
 ```
-STAGE: _______________
-DURATION: _______________
-ENTRY CRITERIA: _______________
-EXIT CRITERIA: _______________
+阶段：_______________
+时长：_______________
+进入标准：_______________
+退出标准：_______________
 
-USER ACTIONS:
+用户操作：
 1. _______________
 2. _______________
 3. _______________
 
-TOUCHPOINTS:
-• Channel: _____ | Owner: _____
-• Channel: _____ | Owner: _____
+触点：
+• 渠道：_____ | 负责人：_____
+• 渠道：_____ | 负责人：_____
 
-THOUGHTS:
+想法：
 "_______________"
 "_______________"
 
-EMOTIONAL STATE: [1-5] ___
+情感状态：[1-5] ___
 
-PAIN POINTS:
-• _______________
-• _______________
-
-OPPORTUNITIES:
+痛点：
 • _______________
 • _______________
 
-METRICS:
-• Completion rate: ___%
-• Time spent: ___
-• Drop-off: ___%
+机会：
+• _______________
+• _______________
+
+指标：
+• 完成率：___%
+• 花费时间：___
+• 流失率：___%
 ```
 
-### Service Blueprint Extension
+### 服务蓝图扩展
 
-Add backstage layers:
+添加后台层：
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ FRONTSTAGE (User sees)                                      │
+│ 前台（用户可见）                                            │
 ├─────────────────────────────────────────────────────────────┤
-│ User actions, touchpoints, emotions                         │
+│ 用户操作、触点、情感                                        │
 ├─────────────────────────────────────────────────────────────┤
-│ LINE OF VISIBILITY                                          │
+│ 可见性界限                                                  │
 ├─────────────────────────────────────────────────────────────┤
-│ BACKSTAGE (User doesn't see)                                │
+│ 后台（用户不可见）                                          │
 ├─────────────────────────────────────────────────────────────┤
-│ • Employee actions                                          │
-│ • Systems/tools used                                        │
-│ • Data flows                                                │
+│ • 员工操作                                                  │
+│ • 使用的系统/工具                                           │
+│ • 数据流                                                    │
 ├─────────────────────────────────────────────────────────────┤
-│ SUPPORT PROCESSES                                           │
+│ 支持流程                                                    │
 ├─────────────────────────────────────────────────────────────┤
-│ • Backend systems                                           │
-│ • Third-party integrations                                  │
-│ • Policies/procedures                                       │
+│ • 后端系统                                                  │
+│ • 第三方集成                                                │
+│ • 政策/程序                                                 │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Quick Reference
+## 快速参考
 
-### Journey Mapping Checklist
+### 旅程地图检查清单
 
-**Preparation:**
-- [ ] Persona selected
-- [ ] Goal defined
-- [ ] Scope bounded
-- [ ] Data gathered (interviews, analytics)
+**准备：**
+- [ ] 已选择人物画像
+- [ ] 已定义目标
+- [ ] 已限定范围
+- [ ] 已收集数据（访谈、分析数据）
 
-**Mapping:**
-- [ ] Stages identified
-- [ ] Actions documented
-- [ ] Touchpoints mapped
-- [ ] Emotions captured
-- [ ] Pain points identified
+**绘制：**
+- [ ] 已确定阶段
+- [ ] 已记录操作
+- [ ] 已映射触点
+- [ ] 已捕获情感
+- [ ] 已识别痛点
 
-**Analysis:**
-- [ ] Opportunities prioritized
-- [ ] Quick wins identified
-- [ ] Strategic bets proposed
-- [ ] Metrics defined
+**分析：**
+- [ ] 已确定机会优先级
+- [ ] 已识别快速取胜
+- [ ] 已提出战略押注
+- [ ] 已定义指标
 
-**Validation:**
-- [ ] Team reviewed
-- [ ] User validated
-- [ ] Data correlated
+**验证：**
+- [ ] 已由团队评审
+- [ ] 已由用户验证
+- [ ] 已关联数据
 
-### Common Mistakes
+### 常见错误
 
-| Mistake | Impact | Fix |
-|---------|--------|-----|
-| Too many stages | Overwhelming | Limit to 5-7 |
-| No data | Assumptions | Interview users |
-| Single session | Bias | Multiple sources |
-| No emotions | Misses human element | Add feeling layer |
-| No follow-through | Wasted effort | Create action plan |
+| 错误               | 影响         | 修复                   |
+| ------------------ | ------------ | ---------------------- |
+| 阶段过多           | 让人不知所措 | 限制在 5-7 个          |
+| 没有数据           | 基于假设     | 访谈用户               |
+| 单次会话           | 有偏见       | 多种来源               |
+| 没有情感           | 缺少人性化   | 添加感受层             |
+| 没有后续行动       | 白费努力     | 创建行动计划           |
 
 ---
 
-*See also: `persona-methodology.md` for persona creation*
+*参见：`persona-methodology.md` 了解人物画像创建*

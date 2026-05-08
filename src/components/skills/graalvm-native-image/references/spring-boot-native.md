@@ -1,44 +1,44 @@
-# Spring Boot Native Image Support
+# Spring Boot Native Image 支持
 
-Complete guide for building Spring Boot 3.x applications as GraalVM native images with AOT processing.
+将 Spring Boot 3.x 应用程序构建为 GraalVM native image 的完整指南，包括 AOT 处理。
 
-## Table of Contents
+## 目录
 
-1. [Prerequisites](#prerequisites)
-2. [AOT Processing](#aot-processing)
-3. [RuntimeHints Registration](#runtimehints-registration)
-4. [Common Annotations](#common-annotations)
-5. [Conditional Beans in Native](#conditional-beans-in-native)
-6. [Testing Native Applications](#testing-native-applications)
+1. [前提条件](#前提条件)
+2. [AOT 处理](#aot-处理)
+3. [RuntimeHints 注册](#runtimehints-注册)
+4. [常用注解](#常用注解)
+5. [原生环境中的条件 Bean](#原生环境中的条件-bean)
+6. [测试原生应用](#测试原生应用)
 7. [Cloud Native Buildpacks](#cloud-native-buildpacks)
 
 ---
 
-## Prerequisites
+## 前提条件
 
-- Spring Boot 3.0+ (recommended: 3.4+)
-- GraalVM JDK 21+ or GraalVM CE with `native-image` installed
-- Native Build Tools plugin (Maven or Gradle)
+- Spring Boot 3.0+（推荐：3.4+）
+- GraalVM JDK 21+ 或安装了 `native-image` 的 GraalVM CE
+- Native Build Tools 插件（Maven 或 Gradle）
 
-Spring Boot 3.x provides first-class GraalVM Native Image support. The `spring-boot-starter-parent` includes a `native` profile with all necessary configurations.
+Spring Boot 3.x 提供了一流的 GraalVM Native Image 支持。`spring-boot-starter-parent` 包含一个 `native` profile，带有所有必要配置。
 
-## AOT Processing
+## AOT 处理
 
-Spring Boot AOT processing generates optimized code at build time that replaces runtime reflection:
+Spring Boot AOT 处理在构建时生成优化代码，替代运行时反射：
 
-**What AOT does:**
-- Evaluates `@Conditional` annotations at build time
-- Generates bean definitions as source code
-- Creates reflection hints for the remaining dynamic access
-- Pre-computes component scanning and auto-configuration
+**AOT 的作用：**
+- 在构建时评估 `@Conditional` 注解
+- 将 Bean 定义生成为源代码
+- 为剩余的动态访问创建反射提示
+- 预先计算组件扫描和自动配置
 
-**Important constraints:**
-- Bean definitions must be fixed at build time
-- `@Profile` conditions are evaluated during AOT — active profiles must be specified at build time
-- `@ConditionalOnProperty` is evaluated at build time
-- Classpath must remain the same between AOT processing and runtime
+**重要约束：**
+- Bean 定义必须在构建时固定
+- `@Profile` 条件在 AOT 期间评估——活动 profile 必须在构建时指定
+- `@ConditionalOnProperty` 在构建时评估
+- 类路径在 AOT 处理和运行时之间必须保持一致
 
-### Configuring Active Profiles at Build Time
+### 在构建时配置活动 Profile
 
 ```xml
 <!-- Maven -->
@@ -63,11 +63,11 @@ tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessAot>().configure
 }
 ```
 
-## RuntimeHints Registration
+## RuntimeHints 注册
 
-When Spring Boot's automatic hint detection is insufficient, register hints manually:
+当 Spring Boot 的自动提示检测不足时，手动注册提示：
 
-### Using `RuntimeHintsRegistrar`
+### 使用 `RuntimeHintsRegistrar`
 
 ```java
 import org.springframework.aot.hint.RuntimeHints;
@@ -84,7 +84,7 @@ public class MyRuntimeHints implements RuntimeHintsRegistrar {
 
     @Override
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
-        // Register reflection
+        // 注册反射
         hints.reflection()
             .registerType(MyDto.class,
                 builder -> builder
@@ -92,25 +92,25 @@ public class MyRuntimeHints implements RuntimeHintsRegistrar {
                                  MemberCategory.INVOKE_DECLARED_METHODS,
                                  MemberCategory.DECLARED_FIELDS));
 
-        // Register resources
+        // 注册资源
         hints.resources()
             .registerPattern("templates/*.html")
             .registerPattern("static/**");
 
-        // Register serialization
+        // 注册序列化
         hints.serialization()
             .registerType(MySerializableClass.class);
 
-        // Register proxies
+        // 注册代理
         hints.proxies()
             .registerJdkProxy(MyInterface.class);
     }
 }
 ```
 
-### Using `@RegisterReflectionForBinding`
+### 使用 `@RegisterReflectionForBinding`
 
-A convenience annotation to register reflection hints for DTOs and data classes:
+一种便利注解，用于为 DTO 和数据类注册反射提示：
 
 ```java
 @RestController
@@ -124,34 +124,34 @@ public class UserController {
 }
 ```
 
-### Using `@Reflective`
+### 使用 `@Reflective`
 
-Mark individual classes for reflection registration:
+标记单个类以注册反射：
 
 ```java
 @Reflective
 public class MyDto {
     private String name;
     private int age;
-    // getters, setters, constructors
+    // getter、setter、构造器
 }
 ```
 
-## Common Annotations
+## 常用注解
 
-| Annotation | Purpose |
+| 注解 | 用途 |
 |-----------|---------|
-| `@RegisterReflectionForBinding` | Register DTOs for reflection (constructors, methods, fields) |
-| `@Reflective` | Mark a class for reflection registration |
-| `@ImportRuntimeHints` | Import a `RuntimeHintsRegistrar` implementation |
-| `@AotTestAttributes` | Provide test attributes during AOT processing |
+| `@RegisterReflectionForBinding` | 注册 DTO 的反射（构造器、方法、字段） |
+| `@Reflective` | 标记一个类进行反射注册 |
+| `@ImportRuntimeHints` | 导入 `RuntimeHintsRegistrar` 实现 |
+| `@AotTestAttributes` | 在 AOT 处理期间提供测试属性 |
 
-## Conditional Beans in Native
+## 原生环境中的条件 Bean
 
-Beans using `@Conditional` annotations are evaluated at build time during AOT:
+使用 `@Conditional` 注解的 Bean 在 AOT 处理期间于构建时评估：
 
 ```java
-// This works — condition is resolved at build time
+// 这个有效——条件在构建时解析
 @Configuration
 @Profile("prod")
 public class ProdConfig {
@@ -159,7 +159,7 @@ public class ProdConfig {
     public DataSource dataSource() { /* ... */ }
 }
 
-// This requires the property to be available at build time
+// 这要求属性在构建时可用
 @Configuration
 @ConditionalOnProperty(name = "feature.enabled", havingValue = "true")
 public class FeatureConfig {
@@ -168,13 +168,13 @@ public class FeatureConfig {
 }
 ```
 
-**Best practice**: For native images, prefer environment variables over properties for runtime-switchable configuration.
+**最佳实践：** 对于原生镜像，优先使用环境变量而非属性进行运行时切换的配置。
 
-## Testing Native Applications
+## 测试原生应用
 
-### Native Test Execution
+### 原生测试执行
 
-Run JUnit tests in native mode to verify AOT-compiled tests:
+在原生模式下运行 JUnit 测试以验证 AOT 编译的测试：
 
 ```bash
 # Maven
@@ -184,7 +184,7 @@ Run JUnit tests in native mode to verify AOT-compiled tests:
 ./gradlew nativeTest
 ```
 
-### Test-Specific AOT Processing
+### 测试特定的 AOT 处理
 
 ```bash
 # Maven
@@ -194,9 +194,9 @@ Run JUnit tests in native mode to verify AOT-compiled tests:
 ./gradlew processTestAot
 ```
 
-### RuntimeHints Testing
+### RuntimeHints 测试
 
-Verify that runtime hints are correctly registered without building a native image:
+在不构建原生镜像的情况下验证 RuntimeHints 是否正确注册：
 
 ```java
 import org.springframework.aot.hint.RuntimeHints;
@@ -220,7 +220,7 @@ void shouldRegisterHints() {
 
 ## Cloud Native Buildpacks
 
-Build OCI images with Paketo Buildpacks (no local GraalVM installation needed):
+使用 Paketo Buildpacks 构建 OCI 镜像（无需本地 GraalVM 安装）：
 
 ```bash
 # Maven
@@ -232,7 +232,7 @@ Build OCI images with Paketo Buildpacks (no local GraalVM installation needed):
     --imageName=myapp:native
 ```
 
-Configure the builder in `pom.xml`:
+在 `pom.xml` 中配置构建器：
 
 ```xml
 <plugin>

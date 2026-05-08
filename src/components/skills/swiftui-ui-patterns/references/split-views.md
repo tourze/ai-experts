@@ -1,12 +1,12 @@
-# Split views and columns
+# 分割视图和列
 
-## Intent
+## 意图
 
-Provide a lightweight, customizable multi-column layout for iPad/macOS without relying on `NavigationSplitView`.
+为 iPad/macOS 提供轻量级、可定制的多列布局，而不依赖 `NavigationSplitView`。
 
-## Custom split column pattern (manual HStack)
+## 自定义分割列模式（手动 HStack）
 
-Use this when you want full control over column sizing, behavior, and environment tweaks.
+当需要对列尺寸、行为和环境调整拥有完全控制时使用此模式。
 
 ```swift
 @MainActor
@@ -41,15 +41,18 @@ struct AppView: View {
 }
 ```
 
-## Notes on the custom approach
+## 关于自定义方法的说明
 
-- Use a shared preference or setting to toggle the secondary column.
-- Inject an environment flag (e.g., `isSecondaryColumn`) so child views can adapt behavior.
-- Prefer a fixed or capped width for the secondary column to avoid layout thrash.
+- 使用共享的偏好设置或配置来切换副列。
+- 注入环境标志（例如 `isSecondaryColumn`），使子视图可以调整行为。
+- 为副列使用固定或带上限的宽度，避免布局抖动。
 
-## Alternative: NavigationSplitView
+## 替代方案：NavigationSplitView
 
-`NavigationSplitView` can handle sidebar + detail + supplementary columns for you, but is harder to customize in cases like:\n- a dedicated notification column independent of selection,\n- custom sizing, or\n- different toolbar behaviors per column.
+`NavigationSplitView` 可以帮你处理侧边栏 + 详情 + 补充列，但在以下情况下难以自定义：
+- 独立于选择的专用通知列，
+- 自定义尺寸，或
+- 每列不同的工具栏行为。
 
 ```swift
 @MainActor
@@ -66,7 +69,7 @@ struct AppView: View {
 }
 ```
 
-## When to choose which
+## 何时选择哪种方案
 
-- Use the manual HStack split when you need full control or a non-standard secondary column.
-- Use `NavigationSplitView` when you want a standard system layout with minimal customization.
+- 当需要完全控制或非标准副列时，使用手动 HStack 分割。
+- 当需要标准系统布局且只需最小自定义时，使用 `NavigationSplitView`。

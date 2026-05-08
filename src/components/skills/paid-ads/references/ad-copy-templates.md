@@ -1,207 +1,207 @@
-# Ad Copy Templates Reference
+# 广告文案模板参考
 
-Detailed formulas and templates for writing high-converting ad copy.
+编写高转化广告文案的详细公式和模板。
 
-## Contents
-- Primary Text Formulas (Problem-Agitate-Solve, Before-After-Bridge, Social Proof Lead, Feature-Benefit Bridge, Direct Response)
-- Headline Formulas (For Search Ads, For Social Ads)
-- CTA Variations (Soft CTAs, Hard CTAs, Urgency CTAs, Action-Oriented CTAs)
-- Platform-Specific Copy Guidelines (Google Search Ads, Meta Ads, LinkedIn Ads)
-- Copy Testing Priority
+## 目录
+- 主文案公式（问题-激化-解决、之前-之后-桥梁、社交证明引导、功能-利益桥接、直接响应）
+- 标题公式（搜索广告、社交广告）
+- CTA 变体（软性 CTA、硬性 CTA、紧迫性 CTA、行动导向 CTA）
+- 平台特定文案指南（Google 搜索广告、Meta 广告、LinkedIn 广告）
+- 文案测试优先级
 
-## Primary Text Formulas
+## 主文案公式
 
-### Problem-Agitate-Solve (PAS)
+### 问题-激化-解决（PAS）
 
 ```
-[Problem statement]
-[Agitate the pain]
-[Introduce solution]
+[问题陈述]
+[激化痛点]
+[引入方案]
 [CTA]
 ```
 
-**Example:**
-> Spending hours on manual reporting every week?
-> While you're buried in spreadsheets, your competitors are making decisions.
-> [Product] automates your reports in minutes.
-> Start your free trial →
+**示例：**
+> 每周花数小时做手动报表？
+> 当你埋头在表格中时，你的竞争对手正在做决策。
+> [产品] 在几分钟内自动生成你的报表。
+> 开始免费试用 →
 
 ---
 
-### Before-After-Bridge (BAB)
+### 之前-之后-桥梁（BAB）
 
 ```
-[Current painful state]
-[Desired future state]
-[Your product as the bridge]
+[当前痛苦状态]
+[期望的未来状态]
+[你的产品作为桥梁]
 ```
 
-**Example:**
-> Before: Chasing down approvals across email, Slack, and spreadsheets.
-> After: Every approval tracked, automated, and on time.
-> [Product] connects your tools and keeps projects moving.
+**示例：**
+> 之前：在邮件、Slack 和表格中追着审批跑。
+> 之后：每次审批可追踪、自动化且准时。
+> [产品] 连接你的工具，让项目持续推进。
 
 ---
 
-### Social Proof Lead
+### 社交证明引导
 
 ```
-[Impressive stat or testimonial]
-[What you do]
+[令人印象深刻的统计数据或推荐语]
+[你做什么]
 [CTA]
 ```
 
-**Example:**
-> "We cut our reporting time by 75%." — Sarah K., Marketing Director
-> [Product] automates the reports you hate building.
-> See how it works →
+**示例：**
+> "我们将报表时间缩短了 75%。" — Sarah K.，市场总监
+> [产品] 自动生成你讨厌构建的报表。
+> 看看它是怎么工作的 →
 
 ---
 
-### Feature-Benefit Bridge
+### 功能-利益桥接
 
 ```
-[Feature]
-[So that...]
-[Which means...]
+[功能]
+[从而...]
+[这意味着...]
 ```
 
-**Example:**
-> Real-time collaboration on documents
-> So your team always works from the latest version
-> Which means no more version confusion or lost work
+**示例：**
+> 文档实时协作
+> 让你的团队始终使用最新版本
+> 这意味着不再有版本混乱或工作丢失
 
 ---
 
-### Direct Response
+### 直接响应
 
 ```
-[Bold claim/outcome]
-[Proof point]
-[CTA with urgency if genuine]
+[大胆的声明/结果]
+[证明点]
+[带有紧迫感的 CTA（如果真实）]
 ```
 
-**Example:**
-> Cut your reporting time by 80%
-> Join 5,000+ marketing teams already using [Product]
-> Start free → First month 50% off
+**示例：**
+> 将你的报表时间缩短 80%
+> 加入 5,000+ 已经在使用 [产品] 的营销团队
+> 免费开始 → 首月 5 折
 
 ---
 
-## Headline Formulas
+## 标题公式
 
-### For Search Ads
+### 搜索广告
 
-| Formula | Example |
-|---------|---------|
-| [Keyword] + [Benefit] | "Project Management That Teams Actually Use" |
-| [Action] + [Outcome] | "Automate Reports \| Save 10 Hours Weekly" |
-| [Question] | "Tired of Manual Data Entry?" |
-| [Number] + [Benefit] | "500+ Teams Trust [Product] for [Outcome]" |
-| [Keyword] + [Differentiator] | "CRM Built for Small Teams" |
-| [Price/Offer] + [Keyword] | "Free Project Management \| No Credit Card" |
+| 公式 | 示例 |
+|------|------|
+| [关键词] + [利益] | "团队真正在用的项目管理" |
+| [行动] + [结果] | "自动化报表 \| 每周节省 10 小时" |
+| [提问] | "厌倦了手动数据录入？" |
+| [数字] + [利益] | "500+ 团队信赖 [产品] 实现 [结果]" |
+| [关键词] + [差异化] | "为小团队打造的 CRM" |
+| [价格/优惠] + [关键词] | "免费项目管理 \| 无需信用卡" |
 
-### For Social Ads
+### 社交广告
 
-| Type | Example |
-|------|---------|
-| Outcome hook | "How we 3x'd our conversion rate" |
-| Curiosity hook | "The reporting hack no one talks about" |
-| Contrarian hook | "Why we stopped using [common tool]" |
-| Specificity hook | "The exact template we use for..." |
-| Question hook | "What if you could cut your admin time in half?" |
-| Number hook | "7 ways to improve your workflow today" |
-| Story hook | "We almost gave up. Then we found..." |
-
----
-
-## CTA Variations
-
-### Soft CTAs (awareness/consideration)
-
-Best for: Top of funnel, cold audiences, complex products
-
-- Learn More
-- See How It Works
-- Watch Demo
-- Get the Guide
-- Explore Features
-- See Examples
-- Read the Case Study
-
-### Hard CTAs (conversion)
-
-Best for: Bottom of funnel, warm audiences, clear offers
-
-- Start Free Trial
-- Get Started Free
-- Book a Demo
-- Claim Your Discount
-- Buy Now
-- Sign Up Free
-- Get Instant Access
-
-### Urgency CTAs (use when genuine)
-
-Best for: Limited-time offers, scarcity situations
-
-- Limited Time: 30% Off
-- Offer Ends [Date]
-- Only X Spots Left
-- Last Chance
-- Early Bird Pricing Ends Soon
-
-### Action-Oriented CTAs
-
-Best for: Active voice, clear next step
-
-- Start Saving Time Today
-- Get Your Free Report
-- See Your Score
-- Calculate Your ROI
-- Build Your First Project
+| 类型 | 示例 |
+|------|------|
+| 结果钩子 | "我们如何将转化率提升了 3 倍" |
+| 好奇心钩子 | "没人谈论的报表技巧" |
+| 反直觉钩子 | "为什么我们不再使用 [常见工具]" |
+| 具体化钩子 | "我们用来...的确切模板" |
+| 提问钩子 | "如果你能把行政时间减少一半呢？" |
+| 数字钩子 | "今天改善工作流程的 7 种方法" |
+| 故事钩子 | "我们差点放弃。然后我们发现了..." |
 
 ---
 
-## Platform-Specific Copy Guidelines
+## CTA 变体
 
-### Google Search Ads
+### 软性 CTA（认知/考虑阶段）
 
-- **Headline limits:** 30 characters each (up to 15 headlines)
-- **Description limits:** 90 characters each (up to 4 descriptions)
-- Include keywords naturally
-- Use all available headline slots
-- Include numbers and stats when possible
-- Test dynamic keyword insertion
+最适合：漏斗顶部、冷受众、复杂产品
 
-### Meta Ads (Facebook/Instagram)
+- 了解更多
+- 查看它是如何工作的
+- 观看演示
+- 获取指南
+- 探索功能
+- 查看示例
+- 阅读案例研究
 
-- **Primary text:** 125 characters visible (can be longer, gets truncated)
-- **Headline:** 40 characters recommended
-- Front-load the hook (first line matters most)
-- Emojis can work but test
-- Questions perform well
-- Keep image text under 20%
+### 硬性 CTA（转化阶段）
 
-### LinkedIn Ads
+最适合：漏斗底部、温受众、明确 offer
 
-- **Intro text:** 600 characters max (150 recommended)
-- **Headline:** 200 characters max (70 recommended)
-- Professional tone (but not boring)
-- Specific job outcomes resonate
-- Stats and social proof important
-- Avoid consumer-style hype
+- 开始免费试用
+- 免费开始
+- 预约演示
+- 领取折扣
+- 立即购买
+- 免费注册
+- 立即获取访问权限
+
+### 紧迫性 CTA（真实时使用）
+
+最适合：限时优惠、稀缺情境
+
+- 限时：7 折
+- 优惠截止 [日期]
+- 仅剩 X 个名额
+- 最后机会
+- 早鸟价即将结束
+
+### 行动导向 CTA
+
+最适合：主动语态、明确下一步
+
+- 立即节省时间
+- 获取免费报告
+- 查看你的分数
+- 计算你的 ROI
+- 构建你的第一个项目
 
 ---
 
-## Copy Testing Priority
+## 平台特定文案指南
 
-When testing ad copy, focus on these elements in order of impact:
+### Google 搜索广告
 
-1. **Hook/angle** (biggest impact on performance)
-2. **Headline**
-3. **Primary benefit**
+- **标题限制：** 每条 30 个字符（最多 15 条标题）
+- **描述限制：** 每条 90 个字符（最多 4 条描述）
+- 自然融入关键词
+- 使用所有可用的标题位置
+- 尽可能包含数字和统计数据
+- 测试动态关键词插入
+
+### Meta 广告（Facebook/Instagram）
+
+- **主文案：** 可见 125 字符（可更长，会被截断）
+- **标题：** 建议 40 字符
+- 将钩子放在开头（第一行最重要）
+- Emoji 可以使用但需测试
+- 提问效果不错
+- 图片文字控制在 20% 以内
+
+### LinkedIn 广告
+
+- **介绍文字：** 最多 600 字符（建议 150）
+- **标题：** 最多 200 字符（建议 70）
+- 专业语气（但不要无聊）
+- 具体的工作成果更有共鸣
+- 统计数据和社交证明很重要
+- 避免消费类风格的夸张
+
+---
+
+## 文案测试优先级
+
+测试广告文案时，按影响程度优先关注以下元素：
+
+1. **钩子/角度**（对性能影响最大）
+2. **标题**
+3. **主要利益点**
 4. **CTA**
-5. **Supporting proof points**
+5. **支撑证明点**
 
-Test one element at a time for clean data.
+每次只测试一个元素以获得清晰的数据。

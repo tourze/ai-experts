@@ -1,40 +1,40 @@
-# Information Hiding and Information Leakage
+# 信息隐藏与信息泄露
 
-Information hiding is the most important technique for achieving deep modules. It was first articulated by David Parnas in 1971 and remains the foundation of good software design. Information leakage is its opposite -- and one of the most common sources of unnecessary complexity.
+信息隐藏是实现深层模块的最重要技术。它由 David Parnas 于 1971 年首次提出，至今仍是良好软件设计的基础。信息泄露是其反面——也是最常见的不必要复杂性来源之一。
 
-## The Information Hiding Principle
+## 信息隐藏原则
 
-**Each module should encapsulate a few design decisions, and its interface should reveal as little as possible about those decisions.**
+**每个模块应封装一些设计决策，其接口应尽可能少地揭示关于这些决策的信息。**
 
-The "information" being hidden includes:
-- Data representations and storage formats
-- Algorithms and implementation strategies
-- Communication protocols and wire formats
-- Caching strategies and performance optimizations
-- Error handling details and recovery mechanisms
-- Hardware and OS-specific details
-- Concurrency and synchronization strategies
-- Configuration and default values
+被隐藏的"信息"包括：
+- 数据表示和存储格式
+- 算法和实现策略
+- 通信协议和传输格式
+- 缓存策略和性能优化
+- 错误处理细节和恢复机制
+- 硬件和操作系统特定细节
+- 并发和同步策略
+- 配置和默认值
 
-### Why Information Hiding Reduces Complexity
+### 为什么信息隐藏能降低复杂性
 
-1. **Reduces dependencies:** If callers don't know about an implementation detail, they can't depend on it. Changes to hidden information affect only the module that owns it.
+1. **减少依赖：** 如果调用者不知道实现细节，它们就不能依赖它。对隐藏信息的更改只影响拥有该信息的模块。
 
-2. **Reduces cognitive load:** Developers using the module need to understand only its interface, not its internals. The hidden information is complexity that is removed from their mental model.
+2. **降低认知负荷：** 使用模块的开发者只需要理解其接口，而不是其内部实现。隐藏的信息是从他们的心智模型中移除的复杂性。
 
-3. **Eliminates unknown unknowns:** When information is properly hidden, there is nothing hidden that callers need to know. The interface is the complete contract.
+3. **消除未知的未知：** 当信息被适当隐藏时，没有调用者需要知道但被隐藏的内容。接口就是完整的契约。
 
-4. **Enables independent evolution:** Hidden implementations can be changed, optimized, or replaced without affecting any caller.
+4. **实现独立演化：** 隐藏的实现可以被更改、优化或替换，而不影响任何调用者。
 
-## Information Leakage
+## 信息泄露
 
-**Information leakage occurs when a design decision is reflected in multiple modules.** It creates a dependency on that decision: if it changes, all modules that know about it must change too.
+**当设计决策在多个模块中被反映出来时，就发生了信息泄露。** 它创建了对该决策的依赖：如果决策改变，所有知道它的模块也必须改变。
 
-### Forms of Information Leakage
+### 信息泄露的形式
 
-#### 1. Interface Leakage (Most Obvious)
+#### 1. 接口泄露（最明显）
 
-The module's interface directly exposes implementation details.
+模块的接口直接暴露实现细节。
 
 ```python
 # Leaking: interface exposes file format details
@@ -52,11 +52,11 @@ class UserStore:
         ...
 ```
 
-In the leaking version, every caller knows the storage format is JSON. Switching to a database requires changing every caller. In the hiding version, the storage mechanism is an internal decision.
+在泄露版本中，每个调用者都知道存储格式是 JSON。切换到数据库需要更改每个调用者。在隐藏版本中，存储机制是内部决策。
 
-#### 2. Back-Door Leakage (Most Subtle)
+#### 2. 后门泄露（最微妙）
 
-Two modules share knowledge that is not part of either interface, often through shared data formats, file conventions, or implicit protocols.
+两个模块共享既不属于任何一个接口的知识，通常通过共享数据格式、文件约定或隐式协议。
 
 ```python
 # Module A writes:
@@ -69,9 +69,9 @@ with open("data.csv") as f:
         id, name, email = line.strip().split(",")
 ```
 
-Both modules know the CSV format (comma-separated, field order: id, name, email). This knowledge is not in either module's interface. If the format changes, both must change, but there is no compiler error or type check to guide you. This is a classic unknown unknown.
+两个模块都知道 CSV 格式（逗号分隔，字段顺序：id、name、email）。这种知识不在任何一个模块的接口中。如果格式改变，两者都必须改变，但没有编译器错误或类型检查来指导你。这是一个经典的未知未知。
 
-**Fix:** Create a single module that owns the data format:
+**修复：** 创建一个拥有数据格式的单一模块：
 
 ```python
 class UserCsvStore:
@@ -81,9 +81,9 @@ class UserCsvStore:
         ...
 ```
 
-#### 3. Temporal Leakage
+#### 3. 时序泄露
 
-Code is split based on when things happen rather than what knowledge they share.
+代码根据事情发生的时间而不是它们共享的知识进行拆分。
 
 ```python
 # Temporal decomposition: split by time
@@ -103,9 +103,9 @@ class HttpResponseWriter:
         ...
 ```
 
-All three modules know the HTTP format, even though they are split into "read," "parse," and "write" phases. The temporal decomposition forces shared knowledge across module boundaries.
+所有三个模块都知道 HTTP 格式，即使它们被拆分为"读取"、"解析"和"写入"阶段。时序分解迫使共享知识跨越模块边界。
 
-**Fix:** Organize by knowledge, not by time:
+**修复：** 按知识组织，而不是按时间：
 
 ```python
 class HttpConnection:
@@ -117,9 +117,9 @@ class HttpConnection:
         ...
 ```
 
-#### 4. Decorator Leakage
+#### 4. 装饰器泄露
 
-The Decorator pattern is a frequent source of leakage because the decorator must understand the full interface of the object it wraps.
+装饰器模式是泄露的常见来源，因为装饰器必须理解它所包装对象的完整接口。
 
 ```java
 // The decorator knows everything about InputStream's interface
@@ -145,31 +145,31 @@ class LoggingInputStream extends InputStream {
 }
 ```
 
-The decorator is shallow: it adds minimal functionality (logging) but must duplicate the entire interface. Every change to `InputStream` propagates to every decorator.
+装饰器是浅层的：它增加了最小的功能（日志），但必须复制整个接口。对 `InputStream` 的每次更改都会传播到每个装饰器。
 
-**Better alternatives:**
-- Add logging inside the original class (flag-controlled)
-- Use aspect-oriented approaches that don't require interface duplication
-- Add a hook/callback mechanism inside the deep module
+**更好的替代方案：**
+- 在原始类内部添加日志（通过标志控制）
+- 使用不需要接口复制的面向方面的方案
+- 在深层模块内部添加钩子/回调机制
 
-### How to Detect Information Leakage
+### 如何检测信息泄露
 
-| Signal | What It Means |
+| 信号 | 它意味着什么 |
 |--------|--------------|
-| Two modules that "always change together" | They share knowledge that should be in one place |
-| A data format or protocol mentioned in multiple files | Format knowledge has leaked |
-| Tests that break when internal implementation changes | Test code has leaked knowledge about internals |
-| Comments like "must match format in module X" | Explicit acknowledgment of leakage |
-| Global constants shared across modules | Shared knowledge that may indicate coupling |
-| Similar parsing/formatting code in multiple modules | Format knowledge is duplicated |
+| "总是一起更改"的两个模块 | 它们共享应放在一处的知识 |
+| 在多个文件中提及的数据格式或协议 | 格式知识已经泄露 |
+| 内部实现更改时失败的测试 | 测试代码泄露了关于内部的知识 |
+| "必须与模块 X 中的格式匹配"之类的注释 | 对泄露的明确承认 |
+| 跨模块共享的全局常量 | 可能表明耦合的共享知识 |
+| 多个模块中类似的解析/格式化代码 | 格式知识被重复 |
 
-## Reducing Information Leakage
+## 减少信息泄露
 
-### Strategy 1: Merge Modules That Share Knowledge
+### 策略 1：合并共享知识的模块
 
-If two modules share knowledge about a design decision, consider merging them. The result is one module that encapsulates the decision, with a single interface for the rest of the system.
+如果两个模块共享关于设计决策的知识，考虑合并它们。结果是一个封装了该决策的模块，为系统其余部分提供单一接口。
 
-**Before:**
+**之前：**
 ```python
 class ConfigReader:
     def read(self, path) -> dict:
@@ -182,7 +182,7 @@ class ConfigApplier:
         ...
 ```
 
-**After:**
+**之后：**
 ```python
 class ConfigManager:
     def load_and_apply(self, path):
@@ -190,11 +190,11 @@ class ConfigManager:
         ...
 ```
 
-### Strategy 2: Create a New Module for Shared Knowledge
+### 策略 2：为共享知识创建一个新模块
 
-If merging is not practical (the modules are genuinely different concerns), extract the shared knowledge into a new module that both depend on.
+如果合并不切实际（这些模块是真正不同的关注点），将共享知识提取到两者都依赖的新模块中。
 
-**Before:**
+**之前：**
 ```python
 # In api_handler.py:
 def format_error(code, message):
@@ -205,7 +205,7 @@ def format_error(code, message):
     return {"error": {"code": code, "message": message, "timestamp": now()}}
 ```
 
-**After:**
+**之后：**
 ```python
 # In error_format.py:
 def format_error(code, message):
@@ -214,11 +214,11 @@ def format_error(code, message):
 # Both api_handler and webhook_handler import from error_format
 ```
 
-### Strategy 3: Push Knowledge Downward
+### 策略 3：将知识向下推
 
-Move knowledge from callers into the module they call. This deepens the module and simplifies its interface.
+将知识从调用者移到它们调用的模块中。这深化了模块并简化了其接口。
 
-**Before:**
+**之前：**
 ```python
 # Caller must know about retry strategy
 for attempt in range(3):
@@ -229,28 +229,28 @@ for attempt in range(3):
         time.sleep(2 ** attempt)
 ```
 
-**After:**
+**之后：**
 ```python
 # Module handles retries internally
 result = api_client.call(endpoint, data)
 # Retries, backoff, and error classification are hidden inside api_client
 ```
 
-### Strategy 4: Separate Interface from Implementation Physically
+### 策略 4：通过物理方式分离接口与实现
 
-Use language mechanisms to enforce information hiding:
+使用语言机制来强制执行信息隐藏：
 
-| Language | Mechanism | Effect |
+| 语言 | 机制 | 效果 |
 |----------|----------|--------|
-| Python | Underscore prefix (`_private_method`) | Convention-based hiding |
-| Java/C# | `private`/`protected` keywords | Compiler-enforced hiding |
-| Go | Lowercase names (unexported) | Package-level hiding |
-| Rust | `pub` vs non-`pub` | Module-level hiding |
-| TypeScript | `private`, `#field`, module scope | Multiple levels of hiding |
+| Python | 下划线前缀（`_private_method`） | 基于约定的隐藏 |
+| Java/C# | `private`/`protected` 关键字 | 编译器强制隐藏 |
+| Go | 小写名称（未导出） | 包级隐藏 |
+| Rust | `pub` vs 非 `pub` | 模块级隐藏 |
+| TypeScript | `private`、`#field`、模块作用域 | 多级隐藏 |
 
-### Strategy 5: Design Interfaces Around Abstractions
+### 策略 5：围绕抽象设计接口
 
-An interface should describe **what** the module does at an abstract level, not **how** it does it.
+接口应在抽象层面描述模块**做什么**，而不是描述模块**怎么做**。
 
 ```python
 # Leaking (how):
@@ -266,11 +266,11 @@ class Cache:
     # LRU policy, TTL, eviction are internal decisions
 ```
 
-## Case Study: HTTP Request Handling
+## 案例研究：HTTP 请求处理
 
-A web server must read an HTTP request (headers and body), route it to a handler, process it, and send a response. Here is how temporal decomposition causes leakage versus how information-based decomposition avoids it.
+Web 服务器必须读取 HTTP 请求（头部和主体），将其路由到处理器，处理它，并发送响应。以下是时序分解如何导致泄露，以及基于信息的分解如何避免它。
 
-### Temporal Decomposition (Problematic)
+### 时序分解（有问题的）
 
 ```
 Phase 1: Read raw bytes from socket → knows HTTP header format
@@ -281,9 +281,9 @@ Phase 5: Build response → knows HTTP response format
 Phase 6: Write response to socket → knows HTTP format
 ```
 
-HTTP format knowledge is spread across 6 phases. Changing anything about the HTTP handling requires touching all of them.
+HTTP 格式知识散布在 6 个阶段中。更改 HTTP 处理的任何内容都需要接触所有阶段。
 
-### Information-Based Decomposition (Better)
+### 基于信息的分解（更好的）
 
 ```
 HttpProtocol module:
@@ -300,26 +300,26 @@ Handler modules:
   - Know nothing about raw HTTP format
 ```
 
-Now HTTP format knowledge lives in one place. The router knows only about URL patterns. Handlers know only about request/response objects. Each module hides its specific knowledge.
+现在 HTTP 格式知识存在于一个地方。路由器只知道 URL 模式。处理器只知道请求/响应对象。每个模块隐藏其特定知识。
 
-## Information Hiding Checklist
+## 信息隐藏检查清单
 
-For each module in your system, ask:
+对系统中的每个模块，问：
 
-| Question | Desired Answer |
+| 问题 | 期望的答案 |
 |----------|---------------|
-| What design decisions does this module hide? | At least one significant decision |
-| Could the implementation be replaced without changing callers? | Yes |
-| Does the interface mention implementation-specific concepts? | No |
-| Do tests verify behavior or implementation? | Behavior |
-| Are there other modules that share knowledge about the same implementation detail? | No |
-| If this module's internal format changes, how many other modules must change? | Zero |
+| 该模块隐藏了什么设计决策？ | 至少一个重要的决策 |
+| 能否在不更改调用者的情况下替换实现？ | 是的 |
+| 接口是否提及了实现特定的概念？ | 否 |
+| 测试验证的是行为还是实现？ | 行为 |
+| 是否还有其他模块共享关于同一实现细节的知识？ | 否 |
+| 如果此模块的内部格式更改，有多少其他模块必须更改？ | 零 |
 
-If any answer is unsatisfactory, information is leaking and the design should be reconsidered.
+如果任何答案不令人满意，信息正在泄露，应重新考虑设计。
 
-## Relationship to Other Principles
+## 与其他原则的关系
 
-- **Deep modules** achieve depth primarily through information hiding -- the hidden information is what makes them deep
-- **General-purpose interfaces** hide specific use cases, which is a form of information hiding
-- **Comments** should describe the interface (what is visible) without revealing hidden implementation details
-- **Strategic programming** is the mindset that makes developers willing to invest effort in proper information hiding rather than taking shortcuts that leak
+- **深层模块**主要通过信息隐藏来实现深度——隐藏的信息是使它们深层的因素
+- **通用接口**隐藏特定用例，这是信息隐藏的一种形式
+- **注释**应描述接口（可见的内容），而不揭示隐藏的实现细节
+- **战略式编程**是一种心态，使开发者愿意投入精力进行适当的信息隐藏，而不是采取导致泄露的捷径

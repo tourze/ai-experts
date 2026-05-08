@@ -1,412 +1,412 @@
-# Usability Testing Frameworks
+# 可用性测试框架
 
-Reference for planning and conducting usability tests that produce actionable insights.
-
----
-
-## Table of Contents
-
-- [Testing Methods Overview](#testing-methods-overview)
-- [Test Planning](#test-planning)
-- [Task Design](#task-design)
-- [Moderation Techniques](#moderation-techniques)
-- [Analysis Framework](#analysis-framework)
-- [Reporting Template](#reporting-template)
+用于规划和执行可用性测试以产生可操作洞察的参考。
 
 ---
 
-## Testing Methods Overview
+## 目录
 
-### Method Selection Matrix
+- [测试方法概述](#测试方法概述)
+- [测试规划](#测试规划)
+- [任务设计](#任务设计)
+- [主持技巧](#主持技巧)
+- [分析框架](#分析框架)
+- [报告模板](#报告模板)
 
-| Method | When to Use | Participants | Time | Output |
-|--------|-------------|--------------|------|--------|
-| Moderated remote | Deep insights, complex flows | 5-8 | 45-60 min | Rich qualitative |
-| Unmoderated remote | Quick validation, simple tasks | 10-20 | 15-20 min | Quantitative + video |
-| In-person | Physical products, context matters | 5-10 | 60-90 min | Very rich qualitative |
-| Guerrilla | Quick feedback, public spaces | 3-5 | 5-10 min | Rapid insights |
-| A/B testing | Comparing two designs | 100+ | Varies | Statistical data |
+---
 
-### Participant Count Guidelines
+## 测试方法概述
+
+### 方法选择矩阵
+
+| 方法               | 何时使用                 | 参与者   | 时间       | 产出                 |
+| ------------------ | ------------------------ | -------- | ---------- | -------------------- |
+| 主持远程测试       | 深度洞察、复杂流程       | 5-8      | 45-60 分钟 | 丰富的定性数据       |
+| 非主持远程测试     | 快速验证、简单任务       | 10-20    | 15-20 分钟 | 定量 + 视频          |
+| 面对面测试         | 实体产品、上下文重要     | 5-10     | 60-90 分钟 | 非常丰富的定性数据   |
+| 游击测试           | 快速反馈、公共场所       | 3-5      | 5-10 分钟  | 快速洞察             |
+| A/B 测试           | 比较两个设计             | 100+     | 不定       | 统计数据             |
+
+### 参与者数量指南
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    FINDING USABILITY ISSUES                 │
+│                    发现可用性问题                            │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  % Issues Found                                             │
+│  发现问题百分比                                            │
 │  100% ┤                          ●────●────●                │
 │   90% ┤                    ●─────                           │
 │   80% ┤              ●─────                                 │
-│   75% ┤         ●────                 ← 5 users: 75-80%     │
+│   75% ┤         ●────                 ← 5 名用户：75-80%    │
 │   50% ┤    ●────                                            │
 │   25% ┤ ●──                                                 │
 │    0% ┼────┬────┬────┬────┬────┬────                       │
-│        1    2    3    4    5    6+   Users                  │
+│        1    2    3    4    5    6+    用户数                 │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-**Nielsen's Rule:** 5 users find ~75-80% of usability issues
+**Nielsen 法则：** 5 名用户可发现约 75-80% 的可用性问题
 
-| Goal | Participants | Reasoning |
-|------|--------------|-----------|
-| Find major issues | 5 | 80% coverage, diminishing returns |
-| Validate fix | 3 | Confirm specific issue resolved |
-| Compare designs | 8-10 per design | Need comparison data |
-| Quantitative metrics | 20+ | Statistical significance |
+| 目标               | 参与者 | 理由                   |
+| ------------------ | ------ | ---------------------- |
+| 发现主要问题       | 5      | 80% 覆盖率，收益递减  |
+| 验证修复           | 3      | 确认具体问题已解决    |
+| 比较设计           | 每组 8-10 | 需要比较数据       |
+| 定量指标           | 20+    | 统计显著性            |
 
 ---
 
-## Test Planning
+## 测试规划
 
-### Research Questions
+### 研究问题
 
-Transform vague goals into testable questions:
+将模糊的目标转化为可测试的问题：
 
-| Vague Goal | Testable Question |
-|------------|-------------------|
-| "Is it easy to use?" | "Can users complete checkout in under 3 minutes?" |
-| "Do users like it?" | "Will users choose Design A or B for this task?" |
-| "Does it make sense?" | "Can users find the settings without hints?" |
+| 模糊目标                   | 可测试问题                               |
+| -------------------------- | ---------------------------------------- |
+| "它容易用吗？"             | "用户能在 3 分钟内完成结账吗？"          |
+| "用户喜欢它吗？"           | "用户会为此任务选择设计 A 还是 B？"      |
+| "它合理吗？"               | "用户能在没有提示的情况下找到设置吗？"   |
 
-### Test Plan Template
+### 测试计划模板
 
 ```
-PROJECT: _______________
-DATE: _______________
-RESEARCHER: _______________
+项目：_______________
+日期：_______________
+研究员：_______________
 
-RESEARCH QUESTIONS:
+研究问题：
 1. _______________
 2. _______________
 3. _______________
 
-PARTICIPANTS:
-• Target: [Persona or user type]
-• Count: [Number]
-• Recruitment: [Source]
-• Incentive: [Amount/type]
+参与者：
+• 目标：[人物画像或用户类型]
+• 数量：[数字]
+• 招募：[来源]
+• 激励：[金额/类型]
 
-METHOD:
-• Type: [Moderated/Unmoderated/Remote/In-person]
-• Duration: [Minutes per session]
-• Environment: [Tool/Location]
+方法：
+• 类型：[主持/非主持/远程/面对面]
+• 时长：[每场分钟数]
+• 环境：[工具/地点]
 
-TASKS:
-1. [Task description + success criteria]
-2. [Task description + success criteria]
-3. [Task description + success criteria]
+任务：
+1. [任务描述 + 成功标准]
+2. [任务描述 + 成功标准]
+3. [任务描述 + 成功标准]
 
-METRICS:
-• Completion rate (target: __%)
-• Time on task (target: __ min)
-• Error rate (target: __%)
-• Satisfaction (target: __/5)
+指标：
+• 完成率（目标：__%）
+• 任务用时（目标：__ 分钟）
+• 错误率（目标：__%）
+• 满意度（目标：__/5）
 
-SCHEDULE:
-• Pilot: [Date]
-• Sessions: [Date range]
-• Analysis: [Date]
-• Report: [Date]
+时间表：
+• 试点：[日期]
+• 测试场次：[日期范围]
+• 分析：[日期]
+• 报告：[日期]
 ```
 
-### Pilot Testing
+### 试点测试
 
-**Always pilot before real sessions:**
+**在实际测试之前务必进行试点：**
 
-- Run 1-2 test sessions with team members
-- Check task clarity and timing
-- Test recording/screen sharing
-- Adjust based on pilot feedback
+- 与团队成员进行 1-2 场测试
+- 检查任务清晰度和时间安排
+- 测试录制/屏幕共享
+- 根据试点反馈调整
 
-**Pilot Checklist:**
-- [ ] Tasks understood without clarification
-- [ ] Session fits in time slot
-- [ ] Recording captures screen + audio
-- [ ] Post-test questions make sense
+**试点检查清单：**
+- [ ] 任务无需解释即可理解
+- [ ] 测试时间适合时间槽
+- [ ] 录制能捕获屏幕 + 音频
+- [ ] 测试后问题合理
 
 ---
 
-## Task Design
+## 任务设计
 
-### Good vs. Bad Tasks
+### 好任务 vs 坏任务
 
-| Bad Task | Why Bad | Good Task |
-|----------|---------|-----------|
-| "Find the settings" | Leading | "Change your notification preferences" |
-| "Use the dashboard" | Vague | "Find how many sales you made last month" |
-| "Click the blue button" | Prescriptive | "Submit your order" |
-| "Do you like this?" | Opinion-based | "Rate how easy it was (1-5)" |
+| 坏任务                     | 为什么不好     | 好任务                           |
+| -------------------------- | -------------- | -------------------------------- |
+| "找到设置"                 | 引导性         | "更改你的通知偏好"               |
+| "使用仪表盘"               | 模糊           | "查找上个月的销售数量"           |
+| "点击蓝色按钮"             | 指令性         | "提交你的订单"                   |
+| "你喜欢这个吗？"           | 基于观点       | "评价它的容易程度（1-5 分）"     |
 
-### Task Construction Formula
-
-```
-SCENARIO + GOAL + SUCCESS CRITERIA
-
-Scenario: Context that makes task realistic
-Goal: What user needs to accomplish
-Success: How we know they succeeded
-
-Example:
-"Imagine you're planning a trip to Paris next month. [SCENARIO]
-Book a hotel for 3 nights in your budget. [GOAL]
-You've succeeded when you see the confirmation page. [SUCCESS]"
-```
-
-### Task Types
-
-| Type | Purpose | Example |
-|------|---------|---------|
-| Exploration | First impressions | "Look around and tell me what you think this does" |
-| Specific | Core functionality | "Add item to cart and checkout" |
-| Comparison | Design validation | "Which of these two menus would you use to..." |
-| Stress | Edge cases | "What would you do if your payment failed?" |
-
-### Task Difficulty Progression
-
-Start easy, increase difficulty:
+### 任务构建公式
 
 ```
-Task 1: Warm-up (easy, builds confidence)
-Task 2: Core flow (main functionality)
-Task 3: Secondary flow (important but less common)
-Task 4: Edge case (stress test)
-Task 5: Free exploration (open-ended)
+场景 + 目标 + 成功标准
+
+场景：使任务更逼真的上下文
+目标：用户需要完成什么
+成功：我们如何知道他们成功了
+
+示例：
+"假设你计划下个月去巴黎旅行。[场景]
+在你的预算范围内预订 3 晚酒店。[目标]
+当你看到确认页面时即为成功。[成功]"
+```
+
+### 任务类型
+
+| 类型         | 目的             | 示例                           |
+| ------------ | ---------------- | ------------------------------ |
+| 探索         | 第一印象         | "看看周围，告诉我你认为这是做什么的" |
+| 具体         | 核心功能         | "添加商品到购物车并结账"       |
+| 比较         | 设计验证         | "这两个菜单中你会用哪个来..."  |
+| 压力测试     | 边界情况         | "如果你的支付失败了你怎么办？" |
+
+### 任务难度递进
+
+从简单开始，逐步增加难度：
+
+```
+任务 1：热身（简单，建立信心）
+任务 2：核心流程（主要功能）
+任务 3：次要流程（重要但不常见）
+任务 4：边界情况（压力测试）
+任务 5：自由探索（开放式）
 ```
 
 ---
 
-## Moderation Techniques
+## 主持技巧
 
-### The Think-Aloud Protocol
+### 出声思维法
 
-**Instruction Script:**
-"As you work through the tasks, please think out loud. Tell me what you're looking at, what you're thinking, and what you're trying to do. There are no wrong answers - we're testing the design, not you."
+**指导语：**
+"在执行任务时，请边做边说出来。告诉我你在看什么、在想什么、在试图做什么。没有错误答案——我们在测试设计，不是测试你。"
 
-**Prompts When Silent:**
-- "What are you thinking right now?"
-- "What do you expect to happen?"
-- "What are you looking for?"
-- "Tell me more about that"
+**沉默时的提示：**
+- "你现在在想什么？"
+- "你期望发生什么？"
+- "你在找什么？"
+- "详细说说"
 
-### Handling Common Situations
+### 处理常见情况
 
-| Situation | What to Say |
-|-----------|-------------|
-| User asks for help | "What would you do if I weren't here?" |
-| User is stuck | "What are your options?" (wait 30 sec before hint) |
-| User apologizes | "You're doing great. We're testing the design." |
-| User goes off-task | "That's interesting. Let's come back to [task]." |
-| User criticizes | "Tell me more about that." (neutral, don't defend) |
+| 情况           | 怎么说                                         |
+| -------------- | ---------------------------------------------- |
+| 用户请求帮助   | "如果我不在这里，你会怎么做？"                 |
+| 用户卡住       | "你有什么选择？"（等待 30 秒再给提示）         |
+| 用户道歉       | "你做得很好。我们在测试设计。"                  |
+| 用户偏离任务   | "这很有趣。让我们回到[任务]。                   |
+| 用户批评       | "详细说说。"（保持中立，不要辩护）              |
 
-### Non-Leading Question Techniques
+### 非引导性问题技巧
 
-| Leading (Don't) | Neutral (Do) |
-|-----------------|--------------|
-| "Did you find that confusing?" | "How was that experience?" |
-| "The search is over here" | "What do you think you should do?" |
-| "Don't you think X is easier?" | "Which do you prefer and why?" |
-| "Did you notice the tooltip?" | "What happened there?" |
+| 引导性（不要用）             | 中立（使用）                     |
+| ---------------------------- | -------------------------------- |
+| "你觉得这个令人困惑吗？"     | "这个体验怎么样？"               |
+| "搜索在这里"                 | "你觉得你该怎么做？"             |
+| "你不觉得 X 更容易吗？"      | "你更喜欢哪个，为什么？"         |
+| "你注意到 tooltip 了吗？"    | "那里发生了什么？"               |
 
-### Post-Task Questions
+### 任务后问题
 
-After each task:
-1. "How difficult was that?" (1-5 scale)
-2. "What, if anything, was confusing?"
-3. "What would you improve?"
+每个任务之后：
+1. "这件事难度如何？"（1-5 分）
+2. "有什么令人困惑的地方吗？"
+3. "你会改进什么？"
 
-After all tasks:
-1. "What stood out to you?"
-2. "What was the best/worst part?"
-3. "Would you use this? Why/why not?"
+所有任务之后：
+1. "什么给你留下了深刻印象？"
+2. "最好/最差的部分是什么？"
+3. "你会使用这个吗？为什么/为什么不？"
 
 ---
 
-## Analysis Framework
+## 分析框架
 
-### Severity Rating Scale
+### 严重程度评级量表
 
-| Severity | Definition | Criteria |
-|----------|------------|----------|
-| 4 - Critical | Prevents task completion | User cannot proceed |
-| 3 - Major | Significant difficulty | User struggles, considers giving up |
-| 2 - Minor | Causes hesitation | User recovers independently |
-| 1 - Cosmetic | Noticed but not problematic | User comments but unaffected |
+| 严重程度 | 定义           | 标准                     |
+| -------- | -------------- | ------------------------ |
+| 4 - 严重 | 阻止任务完成   | 用户无法继续             |
+| 3 - 主要 | 显著困难       | 用户挣扎，考虑放弃       |
+| 2 - 次要 | 导致犹豫       | 用户可独立恢复           |
+| 1 - 外观 | 被注意到但不影响 | 用户评论但不受影响       |
 
-### Issue Documentation Template
+### 问题记录模板
 
 ```
-ISSUE ID: ___
-SEVERITY: [1-4]
-FREQUENCY: [X/Y participants]
+问题 ID：___
+严重程度：[1-4]
+频率：[X/Y 名参与者]
 
-TASK: [Which task]
-TIMESTAMP: [When in session]
+任务：[哪个任务]
+时间戳：[何时在会话中]
 
-OBSERVATION:
-[What happened - factual description]
+观察：
+[发生了什么——事实描述]
 
-USER QUOTE:
-"[Direct quote if available]"
+用户语录：
+"[可用时的直接引用]"
 
-HYPOTHESIS:
-[Why this might be happening]
+假设：
+[为什么会发生]
 
-RECOMMENDATION:
-[Proposed solution]
+建议：
+[建议的解决方案]
 
-AFFECTED PERSONA:
-[Which user types]
+受影响的人物画像：
+[哪些用户类型]
 ```
 
-### Pattern Recognition
+### 模式识别
 
-**Quantitative Signals:**
-- Task completion rate < 80%
-- Time on task > 2x expected
-- Error rate > 20%
-- Satisfaction < 3/5
+**定量信号：**
+- 任务完成率 < 80%
+- 任务用时 > 预期的 2 倍
+- 错误率 > 20%
+- 满意度 < 3/5
 
-**Qualitative Signals:**
-- Same confusion point across 3+ users
-- Repeated verbal frustration
-- Workaround attempts
-- Feature requests during task
+**定性信号：**
+- 3+ 名用户出现相同的困惑点
+- 反复的口头沮丧表达
+- 尝试变通方法
+- 测试期间的特性请求
 
-### Analysis Matrix
+### 分析矩阵
 
 ```
 ┌─────────────────┬───────────┬───────────┬───────────┐
-│ Issue           │ Frequency │ Severity  │ Priority  │
+│ 问题            │ 频率      │ 严重程度  │ 优先级    │
 ├─────────────────┼───────────┼───────────┼───────────┤
-│ Can't find X    │ 4/5       │ Critical  │ HIGH      │
-│ Confusing label │ 3/5       │ Major     │ HIGH      │
-│ Slow loading    │ 2/5       │ Minor     │ MEDIUM    │
-│ Typo in text    │ 1/5       │ Cosmetic  │ LOW       │
+│ 找不到 X        │ 4/5       │ 严重      │ 高        │
+│ 标签令人困惑    │ 3/5       │ 主要      │ 高        │
+│ 加载缓慢        │ 2/5       │ 次要      │ 中        │
+│ 文本有错别字    │ 1/5       │ 外观      │ 低        │
 └─────────────────┴───────────┴───────────┴───────────┘
 
-Priority = Frequency × Severity
+优先级 = 频率 × 严重程度
 ```
 
 ---
 
-## Reporting Template
+## 报告模板
 
-### Executive Summary
-
-```
-USABILITY TEST REPORT
-[Project Name] | [Date]
-
-OVERVIEW
-• Participants: [N] users matching [persona]
-• Method: [Type of test]
-• Tasks: [N] tasks covering [scope]
-
-KEY FINDINGS
-1. [Most critical issue + impact]
-2. [Second issue]
-3. [Third issue]
-
-SUCCESS METRICS
-• Completion rate: [X]% (target: Y%)
-• Avg. time on task: [X] min (target: Y min)
-• Satisfaction: [X]/5 (target: Y/5)
-
-TOP RECOMMENDATIONS
-1. [Highest priority fix]
-2. [Second priority]
-3. [Third priority]
-```
-
-### Detailed Findings Section
+### 执行摘要
 
 ```
-FINDING 1: [Title]
+可用性测试报告
+[项目名称] | [日期]
 
-Severity: [Critical/Major/Minor/Cosmetic]
-Frequency: [X/Y participants]
-Affected Tasks: [List]
+概述
+• 参与者：[N] 名符合[人物画像]的用户
+• 方法：[测试类型]
+• 任务：[N] 个任务覆盖[范围]
 
-What Happened:
-[Description of the problem]
+关键发现
+1. [最关键的问题 + 影响]
+2. [第二个问题]
+3. [第三个问题]
 
-Evidence:
-• P1: "[Quote]"
-• P3: "[Quote]"
-• [Video timestamp if available]
+成功指标
+• 完成率：[X]%（目标：Y%）
+• 平均任务用时：[X] 分钟（目标：Y 分钟）
+• 满意度：[X]/5（目标：Y/5）
 
-Impact:
-[How this affects users and business]
-
-Recommendation:
-[Proposed solution with rationale]
-
-Design Mockup:
-[Optional: before/after if applicable]
+首要建议
+1. [最高优先级的修复]
+2. [第二优先级]
+3. [第三优先级]
 ```
 
-### Metrics Dashboard
+### 详细发现部分
 
 ```
-TASK PERFORMANCE SUMMARY
+发现 1：[标题]
 
-Task 1: [Name]
-├─ Completion: ████████░░ 80%
-├─ Avg. Time: 2:15 (target: 2:00)
-├─ Errors: 1.2 avg
-└─ Satisfaction: ★★★★☆ 4.2/5
+严重程度：[严重/主要/次要/外观]
+频率：[X/Y 名参与者]
+受影响的任务：[列表]
 
-Task 2: [Name]
-├─ Completion: ██████░░░░ 60% ⚠️
-├─ Avg. Time: 4:30 (target: 3:00) ⚠️
-├─ Errors: 3.1 avg ⚠️
-└─ Satisfaction: ★★★☆☆ 3.1/5
+发生了什么：
+[问题描述]
 
-[Continue for all tasks]
+证据：
+• P1："[语录]"
+• P3："[语录]"
+• [如可用，附视频时间戳]
+
+影响：
+[对用户和业务的影响]
+
+建议：
+[建议的解决方案及理由]
+
+设计草图：
+[可选：如适用，附之前/之后对比]
+```
+
+### 指标仪表盘
+
+```
+任务表现总结
+
+任务 1：[名称]
+├─ 完成率：████████░░ 80%
+├─ 平均用时：2:15（目标：2:00）
+├─ 错误量：平均 1.2
+└─ 满意度：★★★★☆ 4.2/5
+
+任务 2：[名称]
+├─ 完成率：██████░░░░ 60% ⚠️
+├─ 平均用时：4:30（目标：3:00）⚠️
+├─ 错误量：平均 3.1 ⚠️
+└─ 满意度：★★★☆☆ 3.1/5
+
+[继续所有任务]
 ```
 
 ---
 
-## Quick Reference
+## 快速参考
 
-### Session Checklist
+### 测试场次检查清单
 
-**Before Session:**
-- [ ] Test plan finalized
-- [ ] Tasks written and piloted
-- [ ] Recording set up and tested
-- [ ] Consent form ready
-- [ ] Prototype/product accessible
-- [ ] Note-taking template ready
+**测试前：**
+- [ ] 测试计划已定稿
+- [ ] 任务已编写并经过试点
+- [ ] 录制已设置并测试
+- [ ] 同意书已准备
+- [ ] 原型/产品可访问
+- [ ] 笔记模板已准备
 
-**During Session:**
-- [ ] Consent obtained
-- [ ] Think-aloud explained
-- [ ] Recording started
-- [ ] Tasks presented one at a time
-- [ ] Post-task ratings collected
-- [ ] Debrief questions asked
-- [ ] Thanks and incentive
+**测试期间：**
+- [ ] 已获取同意
+- [ ] 已解释出声思维法
+- [ ] 已开始录制
+- [ ] 任务逐一呈现
+- [ ] 已收集任务后评分
+- [ ] 已提问总结问题
+- [ ] 感谢和激励
 
-**After Session:**
-- [ ] Notes organized
-- [ ] Recording saved
-- [ ] Initial impressions captured
-- [ ] Issues logged
+**测试后：**
+- [ ] 笔记已整理
+- [ ] 录制已保存
+- [ ] 已记录初步印象
+- [ ] 问题已登记
 
-### Common Metrics
+### 常用指标
 
-| Metric | Formula | Target |
-|--------|---------|--------|
-| Completion rate | Successful / Total × 100 | >80% |
-| Time on task | Average seconds | <2x expected |
-| Error rate | Errors / Attempts × 100 | <15% |
-| Task-level satisfaction | Average rating | >4/5 |
-| SUS score | Standard formula | >68 |
-| NPS | Promoters - Detractors | >0 |
+| 指标           | 公式                   | 目标      |
+| -------------- | ---------------------- | --------- |
+| 完成率         | 成功数 / 总数 × 100    | >80%      |
+| 任务用时       | 平均秒数               | <预期的 2 倍 |
+| 错误率         | 错误数 / 尝试数 × 100  | <15%      |
+| 任务级满意度   | 平均评分               | >4/5      |
+| SUS 得分       | 标准公式               | >68       |
+| NPS            | 推荐者 - 批评者        | >0        |
 
 ---
 
-*See also: `journey-mapping-guide.md` for contextual research*
+*参见：`journey-mapping-guide.md` 了解情境研究*

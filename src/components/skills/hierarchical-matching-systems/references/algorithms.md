@@ -1,193 +1,193 @@
-# Algorithm Reference
+# 算法参考
 
-Concise summaries of core matching algorithms. Use with [decision-guide.md](decision-guide.md) for selection.
+核心匹配算法的简洁总结。配合[决策指南](decision-guide.md)使用以选择算法。
 
 ---
 
-## Two-Sided Stable Matching
+## 双边稳定匹配
 
-### Gale-Shapley (Deferred Acceptance)
+### Gale-Shapley（延迟接受算法）
 
-**Problem**: Match two groups where both sides have preferences. Find stable matching (no blocking pairs).
+**问题**：匹配两个群体，双方都有偏好。找到稳定匹配（无阻塞对）。
 
-**Complexity**: O(n²) time, O(n) space
+**复杂度**：O(n²) 时间，O(n) 空间
 
-**Mechanism**:
+**机制**：
 ```
-while unmatched proposers exist:
-    proposer proposes to highest-ranked unproposed receiver
-    receiver tentatively accepts if:
-        - unmatched, OR
-        - prefers proposer over current match
-    rejected proposers continue to next choice
+while 存在未匹配的提议方：
+    提议方向排名最高且尚未提议的接收方提出匹配
+    接收方暂时接受条件：
+        - 未匹配，或者
+        - 更偏好该提议方而非当前匹配
+    被拒绝的提议方继续尝试下一个选择
 ```
 
-**Properties**:
-- Proposer-optimal: proposers get best stable partner
-- Receiver-pessimal: receivers get worst stable partner
-- Strategy-proof for proposers (not receivers)
+**特性**：
+- 提议方最优：提议方获得最佳稳定匹配
+- 接收方最差：接收方获得最差稳定匹配
+- 提议方策略证明（接收方不适用）
 
-**Variants**:
-| Variant | Use Case |
+**变体**：
+| 变体 | 用例 |
 |---------|----------|
-| Hospital-Resident | Many-to-one (capacity > 1 on one side) |
-| College Admissions | Hospital-Resident with quotas |
-| Stable Roommates | One-sided (everyone can match anyone) |
+| 医院-住院医师 | 多对一（一方容量 > 1） |
+| 大学招生 | 带配额的医院-住院医师模式 |
+| 稳定室友 | 单边（任何人都可与任何人匹配） |
 
-**Pitfalls**:
-- Tie-breaking affects outcome—document method
-- Incomplete preferences need explicit handling
-- Proposer/receiver role assignment matters
-
----
-
-## Assignment/Optimization
-
-### Hungarian Algorithm (Kuhn-Munkres)
-
-**Problem**: Bipartite weighted matching. Minimize total cost (or maximize total value).
-
-**Complexity**: O(n³) time, O(n²) space
-
-**Mechanism**:
-```
-1. Subtract row minima, then column minima
-2. Cover all zeros with minimum lines
-3. If lines < n: adjust matrix, repeat
-4. If lines = n: find perfect matching through zeros
-```
-
-**Properties**:
-- Finds globally optimal assignment
-- Works with any real-valued weights
-- Handles maximization by negating weights
-
-**Pitfalls**:
-- Requires complete bipartite graph (add dummy nodes if needed)
-- Equal-sized partitions (pad smaller side)
-- O(n³) may be slow for n > 10,000
-
-### Auction Algorithm
-
-**Problem**: Same as Hungarian, but better for sparse graphs.
-
-**Complexity**: O(nm log(nC)) where C = max weight, m = edges
-
-**When to prefer over Hungarian**:
-- Sparse preference graphs
-- Parallel/distributed implementation needed
-- Approximate solution acceptable (with early stopping)
+**陷阱**：
+- 破平方式影响结果——需记录方法
+- 不完整的偏好需显式处理
+- 提议方/接收方角色分配很重要
 
 ---
 
-## Maximum Matching (Unweighted)
+## 分配/优化
+
+### 匈牙利算法（Kuhn-Munkres）
+
+**问题**：二分加权匹配。最小化总成本（或最大化总价值）。
+
+**复杂度**：O(n³) 时间，O(n²) 空间
+
+**机制**：
+```
+1. 减去行最小值，然后减去列最小值
+2. 用最少的线覆盖所有零
+3. 如果线数 < n：调整矩阵，重复
+4. 如果线数 = n：通过零找到完美匹配
+```
+
+**特性**：
+- 找到全局最优分配
+- 适用于任意实数值权重
+- 通过取反权重处理最大化问题
+
+**陷阱**：
+- 需要完整的二分图（必要时添加虚拟节点）
+- 分区大小相等（补全较小一侧）
+- O(n³) 对于 n > 10,000 可能较慢
+
+### 拍卖算法
+
+**问题**：与匈牙利算法相同，但更适合稀疏图。
+
+**复杂度**：O(nm log(nC)) 其中 C = 最大权重，m = 边数
+
+**何时优于匈牙利算法**：
+- 稀疏偏好图
+- 需要并行/分布式实现
+- 可接受近似解（带提前停止）
+
+---
+
+## 最大匹配（无权重）
 
 ### Hopcroft-Karp
 
-**Problem**: Maximum cardinality bipartite matching (most pairs, no weights).
+**问题**：最大基数二分匹配（最多对数，无权重）。
 
-**Complexity**: O(E√V) time
+**复杂度**：O(E√V) 时间
 
-**Use when**: Only care about match count, not quality/cost.
+**适用场景**：只关心匹配数量，不关心质量/成本。
 
-### Blossom Algorithm (Edmonds)
+### Blossom 算法（Edmonds）
 
-**Problem**: Maximum matching in general (non-bipartite) graphs.
+**问题**：一般图（非二分图）的最大匹配。
 
-**Complexity**: O(V²E) time
+**复杂度**：O(V²E) 时间
 
-**Use when**: Entities can match any other entity (not strictly two-sided).
-
----
-
-## Multi-Level / Hierarchical
-
-### Top-Down Propagation
-
-**Mechanism**:
-```
-for each level from root to leaf:
-    match at current level
-    propagate constraints to children
-    children inherit parent assignments
-```
-
-**Use when**: Parent decisions constrain children.
-
-### Bottom-Up Aggregation
-
-**Mechanism**:
-```
-for each level from leaf to root:
-    compute preferences at current level
-    aggregate to parent level
-    match at root, then assign downward
-```
-
-**Use when**: Leaf-level preferences determine parent matching.
-
-### Hierarchical Stable Matching
-
-**Extension of Gale-Shapley for nested structures**:
-- Match at each level respecting parent constraints
-- Children can only match within parent's match scope
-- Requires clear inheritance rules
+**适用场景**：实体可以与任何其他实体匹配（不严格是双边）。
 
 ---
 
-## Entity Resolution
+## 多层/层次化
 
-### Blocking + Scoring Pipeline
+### 自顶向下传播
 
-**Mechanism**:
+**机制**：
 ```
-1. BLOCKING: Reduce comparison space
-   - Group by key attributes (name prefix, zip code)
-   - Compare only within blocks
-
-2. SCORING: Compute similarity
-   - String similarity (Jaro-Winkler, Levenshtein)
-   - Attribute-weighted combination
-
-3. CLUSTERING: Group matches
-   - Threshold-based pairing
-   - Transitive closure for groups
+for 从根到叶的每一层：
+    在当前层匹配
+    将约束传播给孩子
+    孩子继承父级的分配
 ```
 
-**Complexity**: O(b × n²/b) = O(n²/b) where b = block count
+**适用场景**：父级决策约束子级。
 
-### Fellegi-Sunter Model
+### 自底向上聚合
 
-**Probabilistic record linkage**:
-- Model match vs non-match probability per attribute
-- Compute likelihood ratio
-- Classify: match / non-match / review
+**机制**：
+```
+for 从叶到根的每一层：
+    计算当前层的偏好
+    聚合到父级
+    在根层匹配，然后向下分配
+```
 
-**Use when**: Training data available for probability estimation.
+**适用场景**：叶级偏好决定父级匹配。
+
+### 层次化稳定匹配
+
+**Gale-Shapley 对嵌套结构的扩展**：
+- 在每一层匹配，同时尊重父级约束
+- 孩子只能在父级匹配范围内匹配
+- 需要清晰的继承规则
 
 ---
 
-## Complexity Comparison
+## 实体解析
 
-| Algorithm | Time | Space | Best For |
+### 分块 + 评分流程
+
+**机制**：
+```
+1. 分块：减少比较空间
+   - 按关键属性分组（名称前缀、邮政编码）
+   - 仅在同一块内比较
+
+2. 评分：计算相似度
+   - 字符串相似度（Jaro-Winkler、Levenshtein）
+   - 属性加权组合
+
+3. 聚类：对匹配进行分组
+   - 基于阈值的配对
+   - 传递闭包分组
+```
+
+**复杂度**：O(b × n²/b) = O(n²/b) 其中 b = 块数
+
+### Fellegi-Sunter 模型
+
+**概率记录链接**：
+- 对每个属性建模匹配 vs 非匹配概率
+- 计算似然比
+- 分类：匹配 / 非匹配 / 需审查
+
+**适用场景**：有训练数据可用于概率估计。
+
+---
+
+## 复杂度对比
+
+| 算法 | 时间 | 空间 | 最适合 |
 |-----------|------|-------|----------|
-| Gale-Shapley | O(n²) | O(n) | Two-sided stability |
-| Hungarian | O(n³) | O(n²) | Optimal weighted assignment |
-| Auction | O(nm log nC) | O(n+m) | Sparse weighted |
-| Hopcroft-Karp | O(E√V) | O(V+E) | Max cardinality |
-| Blossom | O(V²E) | O(V+E) | Non-bipartite |
+| Gale-Shapley | O(n²) | O(n) | 双边稳定性 |
+| 匈牙利算法 | O(n³) | O(n²) | 最优加权分配 |
+| 拍卖算法 | O(nm log nC) | O(n+m) | 稀疏加权 |
+| Hopcroft-Karp | O(E√V) | O(V+E) | 最大基数 |
+| Blossom | O(V²E) | O(V+E) | 非二分图 |
 
 ---
 
-## Implementation Checklist
+## 实现检查清单
 
-For any algorithm implementation:
+对于任何算法实现：
 
 ```
-□ Tie-breaking documented and deterministic
-□ Incomplete preferences handled (reject/default/exclude)
-□ Input validation before algorithm runs
-□ Intermediate state inspectable for debugging
-□ Output includes match metadata (scores, iterations, unmatched)
-□ Edge cases tested (empty, single, all-tied)
+□ 破平方式已记录且确定性
+□ 不完整偏好已处理（拒绝/默认/排除）
+□ 算法运行前进行输入验证
+□ 中间状态可检查以进行调试
+□ 输出包含匹配元数据（分数、迭代次数、未匹配项）
+□ 边界情况已测试（空、单一、全部平局）
 ```

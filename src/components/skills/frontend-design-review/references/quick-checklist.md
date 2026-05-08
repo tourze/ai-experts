@@ -1,38 +1,38 @@
-# Quick Checklist
+# 快速检查清单
 
-Before approving any UI work:
+在批准任何 UI 工作之前：
 
-## Design System Compliance
-- [ ] Component verified in your Figma Design System
-- [ ] Component implementation checked in your Component Library
-- [ ] Figma Dev Mode specs followed (spacing, tokens, typography)
-- [ ] Design tokens used (no hardcoded hex colors or pixel values)
-- [ ] Token imports verified in code
-- [ ] All variants/states implemented as designed in Figma
-- [ ] Spacing measurements match Figma Dev Mode exactly
-- [ ] Deviations documented with design approval
+## 设计系统合规
+- [ ] 组件已在你团队的 Figma 设计系统中确认
+- [ ] 组件实现已在你的组件库中检查
+- [ ] 遵循 Figma Dev Mode 规范（间距、token、字体）
+- [ ] 使用设计 token（无硬编码十六进制颜色或像素值）
+- [ ] 代码中已验证 token 导入
+- [ ] 所有变体/状态按 Figma 设计实现
+- [ ] 间距测量与 Figma Dev Mode 完全一致
+- [ ] 偏离已记录并获设计批准
 
-## Aesthetic Quality (especially for new designs)
-- [ ] Clear conceptual direction (not generic overused fonts and cliched schemes)
-- [ ] Distinctive typography (avoid overused fonts)
-- [ ] Cohesive color palette with CSS variables
-- [ ] Intentional motion (staggered reveals, hover states)
-- [ ] Visual interest through composition (asymmetry, overlap, grid-breaking)
-- [ ] Atmosphere through backgrounds (gradients, textures, patterns)
-- [ ] Implementation complexity matches vision
+## 美学质量（尤其适用于新设计）
+- [ ] 清晰的概念方向（非通用过度使用的字体和陈旧方案）
+- [ ] 独特的字体选择（避免过度使用的字体）
+- [ ] 使用 CSS 变量的协调调色板
+- [ ] 有意图的动效（交错显示、悬停状态）
+- [ ] 通过构图产生视觉趣味（不对称、重叠、打破网格）
+- [ ] 通过背景营造氛围（渐变、纹理、图案）
+- [ ] 实现复杂度与愿景匹配
 
-## Frictionless
-- [ ] Core task completable efficiently (≤3 interactions)
-- [ ] Single clear primary action per view
+## 无摩擦
+- [ ] 核心任务高效完成（≤3 次交互）
+- [ ] 每个视图有单一明确的主操作
 
-## Quality Craft
-- [ ] Uses design system components (verified in Figma)
-- [ ] Design tokens used (no hardcoded values)
-- [ ] Distinctive aesthetic (not generic overused fonts/cliched schemes)
-- [ ] Accessible (Grade C minimum, Grade B ideal)
-- [ ] Keyboard navigation complete
-- [ ] Tested in light/dark/high contrast modes
+## 高质量工艺
+- [ ] 使用设计系统组件（在 Figma 中验证）
+- [ ] 使用设计 token（无硬编码值）
+- [ ] 独特的美学（非通用的过度使用字体/陈旧方案）
+- [ ] 无障碍（最低 C 级，B 级为理想）
+- [ ] 键盘导航完整
+- [ ] 在明亮/暗色/高对比度模式下测试
 
-## Trustworthy
-- [ ] AI-generated content has disclaimer
-- [ ] Error messages are actionable
+## 可信赖
+- [ ] AI 生成的内容有免责声明
+- [ ] 错误消息可操作

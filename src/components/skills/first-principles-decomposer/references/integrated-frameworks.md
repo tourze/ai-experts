@@ -1,139 +1,139 @@
-# Integrated Thinking Frameworks
+# 集成思维框架
 
-## Combined Approach: First Principles + Design Thinking + Systems Engineering
+## 组合方法：第一性原理 + 设计思维 + 系统工程
 
-For deep problem solving, combine three complementary frameworks:
-
----
-
-## 1. First Principles (Musk Method)
-
-**Core Question**: What is fundamentally true?
-
-### Process
-1. Identify assumptions
-2. Break to atomic truths
-3. Rebuild from fundamentals
-
-### Best For
-- Challenging conventional wisdom
-- Finding non-obvious solutions
-- Cost reduction / efficiency
+对于深度问题解决，结合三种互补框架：
 
 ---
 
-## 2. Stanford Design Thinking (IDEO Method)
+## 1. 第一性原理（马斯克方法）
 
-**Core Question**: What do humans actually need?
+**核心问题**：什么是根本正确的？
 
-### The Five Stages
-1. **Empathize** - Deeply understand user needs, pain, context
-2. **Define** - Frame the real problem (often different from stated problem)
-3. **Ideate** - Generate many solutions without judgment
-4. **Prototype** - Build quick, cheap versions to test
-5. **Test** - Learn from real user feedback, iterate
+### 过程
+1. 识别假设
+2. 拆解到原子级真相
+3. 从基础重新构建
 
-### Key Practices
-- **Beginner's Mind**: Approach without assumptions
-- **How Might We**: Reframe problems as opportunities
-- **Rapid Prototyping**: Learn fast, fail cheap
-- **User-Centered**: Always return to user needs
-
-### Best For
-- User-facing products
-- Innovation and new concepts
-- Understanding unmet needs
+### 最适合
+- 挑战传统智慧
+- 发现非显而易见的方案
+- 成本降低 / 效率提升
 
 ---
 
-## 3. MIT Systems Engineering
+## 2. 斯坦福设计思维（IDEO 方法）
 
-**Core Question**: How do the parts interact?
+**核心问题**：人类实际需要什么？
 
-### Systems Thinking Principles
-1. **Holistic View**: System behavior emerges from interactions
-2. **Feedback Loops**: Outputs affect inputs (positive/negative)
-3. **Boundaries**: Define system vs environment
-4. **Hierarchy**: Systems contain subsystems
-5. **Emergence**: Whole > sum of parts
+### 五个阶段
+1. **共情** - 深入了解用户需求、痛点、上下文
+2. **定义** - 确定真正的问题（通常与被陈述的问题不同）
+3. **构思** - 不受评判地生成多个方案
+4. **原型** - 快速构建廉价的测试版本
+5. **测试** - 从真实用户反馈中学习，迭代
 
-### Analysis Framework
-```
-INPUTS → PROCESSES → OUTPUTS → FEEDBACK
-         ↑                      ↓
-         ←─────────────────────←
-```
+### 关键实践
+- **初学者心态**：不带假设地接近
+- **我们可以如何**：将问题重新描述为机会
+- **快速原型**：快速学习，廉價试错
+- **用户中心**：始终回归用户需求
 
-### Key Questions
-- What are the system boundaries?
-- Where are the feedback loops?
-- What are the leverage points?
-- What are the unintended consequences?
-
-### Best For
-- Complex multi-component problems
-- Long-term strategic thinking
-- Avoiding unintended consequences
+### 最适合
+- 面向用户的产品
+- 创新和新概念
+- 理解未满足的需求
 
 ---
 
-## The Integrated Method
+## 3. MIT 系统工程
 
-Use all three in sequence:
+**核心问题**：各部分如何相互作用？
+
+### 系统思维原则
+1. **全局视角**：系统行为从交互中涌现
+2. **反馈回路**：输出影响输入（正/负）
+3. **边界**：定义系统与环境的分界
+4. **层级**：系统包含子系统
+5. **涌现**：整体 > 部分之和
+
+### 分析框架
+```
+输入 → 过程 → 输出 → 反馈
+        ↑              ↓
+        ←─────────────←
+```
+
+### 关键问题
+- 系统的边界在哪里？
+- 反馈回路在哪里？
+- 杠杆点在哪里？
+- 有哪些意外后果？
+
+### 最适合
+- 复杂的多组件问题
+- 长期战略思考
+- 避免意外后果
+
+---
+
+## 集成方法
+
+按顺序使用全部三种：
 
 ```
-PHASE 1: First Principles
-"What is fundamentally true about this problem?"
-→ Strip away assumptions, find atomic truths
+第一阶段：第一性原理
+"关于这个问题，什么是根本正确的？"
+→ 剥离假设，找到原子级真相
 
-PHASE 2: Design Thinking
-"What do users actually need?"
-→ Empathize, define real problem, ideate solutions
+第二阶段：设计思维
+"用户实际需要什么？"
+→ 共情、定义真正的问题、构思方案
 
-PHASE 3: Systems Engineering
-"How will this solution interact with its environment?"
-→ Map feedback loops, identify leverage points, predict consequences
+第三阶段：系统工程
+"这个方案将如何与其环境互动？"
+→ 绘制反馈回路、识别杠杆点、预测后果
 ```
 
-## When to Use Which
+## 何时使用哪种
 
-| Situation | Primary | Supporting |
-|-----------|---------|------------|
-| Challenging industry norms | First Principles | Design Thinking |
-| New product/feature | Design Thinking | Systems |
-| Complex org problem | Systems | First Principles |
-| Optimization task | First Principles | Systems |
-| Innovation sprint | Design Thinking | First Principles |
+| 情境 | 主要方法 | 辅助方法 |
+|------|---------|----------|
+| 挑战行业惯例 | 第一性原理 | 设计思维 |
+| 新产品/功能 | 设计思维 | 系统工程 |
+| 复杂组织问题 | 系统工程 | 第一性原理 |
+| 优化任务 | 第一性原理 | 系统工程 |
+| 创新冲刺 | 设计思维 | 第一性原理 |
 
-## Combined Output Format
+## 组合输出格式
 
 ```markdown
-## First Principles Analysis
-**Assumptions Challenged:**
-- [assumption] → [fundamental truth]
+## 第一性原理分析
+**被挑战的假设：**
+- [假设] → [基本事实]
 
-## Design Thinking Synthesis
-**User Need:** [What they really need]
-**How Might We:** [Reframed problem]
-**Solution Concepts:** [Top 3 ideas]
+## 设计思维综合
+**用户需求：** [他们真正需要的]
+**我们可以如何：** [重新定义的问题]
+**方案概念：** [前 3 个想法]
 
-## Systems View
-**Key Feedback Loops:**
-- [loop 1]
-- [loop 2]
+## 系统视角
+**关键反馈回路：**
+- [回路 1]
+- [回路 2]
 
-**Leverage Points:**
-- [where small changes have big effects]
+**杠杆点：**
+- [小变化产生大影响的地方]
 
-**Potential Unintended Consequences:**
-- [second-order effects to monitor]
+**潜在意外后果：**
+- [需要监控的二阶影响]
 ```
 
 ---
 
-## Integration with Other Skills
+## 与其他技能的结合
 
-This combined framework feeds into:
-- **inversion-strategist** - Invert the systems view to find failure modes
-- **what-if-oracle** - Map ripple effects and alternate branches after implementation
-- **grill-me** - Stress-test the rebuilt plan before implementation
+此综合框架可输入：
+- **逆向策略师** - 反转系统视角以发现失败模式
+- **假设预言家** - 实施后绘制连锁效应和替代分支
+- **压力测试** - 在实施前对重构方案进行压力测试

@@ -1,145 +1,145 @@
-# iOS Widgets & App Extensions
+# iOS 小组件与应用扩展
 
-Design guidelines for widgets, App Clips, and system extensions.
+小组件、App Clips 和系统扩展的设计指南。
 
-## Widget Design
+## 小组件设计
 
-### Widget Philosophy
+### 小组件理念
 
-Widgets provide **glanceable information** on the Home Screen, Lock Screen, and StandBy mode. They are not mini-apps—they're windows into your app's most useful content.
+小组件在主屏幕、锁定屏幕和 StandBy 模式上提供**一目了然的信息**。它们不是迷你应用——它们是进入应用最有用的内容的窗口。
 
-**Key principles:**
-- Show immediately useful information
-- Update content thoughtfully (not constantly)
-- Respect the user's Home Screen aesthetic
-- Drive users to the app for deeper engagement
+**关键原则：**
+- 显示立即可用的信息
+- 有思考地更新内容（不是持续更新）
+- 尊重用户的主屏幕美学
+- 引导用户进入应用以进行更深度的交互
 
-### Widget Sizes
+### 小组件尺寸
 
-**Home Screen widgets:**
+**主屏幕小组件：**
 
-| Size | Name | Grid Units | Use Case |
-|------|------|------------|----------|
-| Small | `systemSmall` | 2×2 | Single piece of information |
-| Medium | `systemMedium` | 4×2 | Key content + one interaction |
-| Large | `systemLarge` | 4×4 | Rich content, multiple items |
-| Extra Large | `systemExtraLarge` | 8×4 | iPad only, dashboard view |
+| 尺寸 | 名称 | 网格单位 | 使用场景 |
+|------|------|---------|---------|
+| 小型 | `systemSmall` | 2×2 | 单一信息 |
+| 中型 | `systemMedium` | 4×2 | 关键内容 + 一次交互 |
+| 大型 | `systemLarge` | 4×4 | 丰富内容、多个项目 |
+| 超大 | `systemExtraLarge` | 8×4 | 仅 iPad，仪表板视图 |
 
-**Lock Screen widgets (iOS 16+):**
+**锁定屏幕小组件（iOS 16+）：**
 
-| Size | Name | Characteristics |
-|------|------|-----------------|
-| Circular | `accessoryCircular` | Small icon or gauge |
-| Rectangular | `accessoryRectangular` | Text + small visual |
-| Inline | `accessoryInline` | Text only, above time |
+| 尺寸 | 名称 | 特点 |
+|------|------|------|
+| 圆形 | `accessoryCircular` | 小图标或量表 |
+| 矩形 | `accessoryRectangular` | 文本 + 小型视觉 |
+| 内联 | `accessoryInline` | 纯文本，时间上方 |
 
-### Widget Content Guidelines
+### 小组件内容指南
 
-**Do:**
-- Show the most important information
-- Update content at meaningful intervals
-- Use the app's visual style
-- Support multiple sizes (let users choose)
-- Provide multiple widget types if you have different use cases
+**应做：**
+- 展示最重要的信息
+- 在有意义的间隔更新内容
+- 使用应用的视觉风格
+- 支持多种尺寸（让用户选择）
+- 如果有不同的使用场景，提供多个小组件类型
 
-**Don't:**
-- Cram too much information
-- Show stale data
-- Use widgets for advertising
-- Require interaction to see content
-- Update too frequently (drains battery)
+**不应做：**
+- 塞入太多信息
+- 显示过时数据
+- 使用小组件做广告
+- 需要交互才能看到内容
+- 更新过于频繁（消耗电量）
 
-### Small Widget Design
+### 小型小组件设计
 
 ```
 ┌─────────────────────┐
 │                     │
-│    [Icon/Image]     │
+│    [图标/图片]      │
 │                     │
-│    Primary Info     │
-│    Secondary        │
+│    主要信息         │
+│    次要信息         │
 │                     │
 └─────────────────────┘
 ```
 
-**Guidelines:**
-- One tap target (entire widget)
-- Essential info only
-- Clear visual hierarchy
-- No buttons or complex interactions
+**指南：**
+- 一个点击目标（整个小组件）
+- 仅包含必要信息
+- 清晰的视觉层次
+- 无按钮或复杂交互
 
-### Medium Widget Design
+### 中型小组件设计
 
 ```
 ┌─────────────────────────────────────────┐
-│  [Icon]                                 │
-│  Title               ┌─────────────┐    │
-│  Subtitle            │   Action    │    │
+│  [图标]                                 │
+│  标题               ┌─────────────┐    │
+│  副标题             │   操作      │    │
 │                      └─────────────┘    │
-│  Additional context                     │
+│  额外上下文                             │
 └─────────────────────────────────────────┘
 ```
 
-**Guidelines:**
-- Can have multiple tap targets
-- Show 2-4 pieces of information
-- Actions should be quick (open to specific view)
+**指南：**
+- 可以有多个点击目标
+- 显示 2-4 条信息
+- 操作应快捷（打开到特定视图）
 
-### Large Widget Design
+### 大型小组件设计
 
 ```
 ┌─────────────────────────────────────────┐
-│  Header                          Edit   │
+│  标题                            编辑    │
 ├─────────────────────────────────────────┤
 │  ┌─────────┐ ┌─────────┐ ┌─────────┐   │
-│  │ Item 1  │ │ Item 2  │ │ Item 3  │   │
+│  │ 项目 1  │ │ 项目 2  │ │ 项目 3  │   │
 │  └─────────┘ └─────────┘ └─────────┘   │
 │                                         │
 │  ┌─────────┐ ┌─────────┐ ┌─────────┐   │
-│  │ Item 4  │ │ Item 5  │ │ Item 6  │   │
+│  │ 项目 4  │ │ 项目 5  │ │ 项目 6  │   │
 │  └─────────┘ └─────────┘ └─────────┘   │
 └─────────────────────────────────────────┘
 ```
 
-**Guidelines:**
-- Multiple tap targets allowed
-- Show a collection or dashboard
-- Include clear visual grouping
-- Optional: Edit configuration
+**指南：**
+- 允许多个点击目标
+- 显示一个集合或仪表盘
+- 包含清晰的视觉分组
+- 可选：编辑配置
 
-### Lock Screen Widget Design
+### 锁定屏幕小组件设计
 
-Lock Screen widgets have limited space and no color.
+锁定屏幕小组件空间有限且没有颜色。
 
-**Circular:**
+**圆形：**
 ```
 ┌─────┐
-│ 73° │  Temperature
-│ ☀️  │  Weather icon
+│ 73° │  温度
+│ ☀️  │  天气图标
 └─────┘
 ```
 
-**Rectangular:**
+**矩形：**
 ```
 ┌─────────────────────┐
-│ Next Event          │
-│ Team Meeting @ 2pm  │
+│ 下一个事件           │
+│ 团队会议 @ 下午 2 点 │
 └─────────────────────┘
 ```
 
-**Best practices:**
-- Design for small size
-- Use SF Symbols (render well)
-- Test in Light and Dark modes
-- Consider StandBy mode (larger display)
+**最佳实践：**
+- 为小尺寸设计
+- 使用 SF Symbols（渲染效果好）
+- 在浅色和深色模式下测试
+- 考虑 StandBy 模式（更大的显示）
 
 ---
 
-## Widget Configuration
+## 小组件配置
 
-### User-Configurable Widgets
+### 用户可配置的小组件
 
-Allow users to customize what the widget shows:
+允许用户自定义小组件显示的内容：
 
 ```swift
 struct ConfigurationIntent: WidgetConfigurationIntent {
@@ -153,14 +153,14 @@ struct ConfigurationIntent: WidgetConfigurationIntent {
 }
 ```
 
-**Configuration UI:**
-- Keep options simple (few parameters)
-- Provide sensible defaults
-- Preview changes before confirming
+**配置 UI：**
+- 保持选项简单（少参数）
+- 提供合理的默认值
+- 在确认前预览更改
 
-### Widget Families
+### 小组件家族
 
-Support multiple sizes:
+支持多种尺寸：
 
 ```swift
 struct MyWidget: Widget {
@@ -177,196 +177,196 @@ struct MyWidget: Widget {
 
 ## App Clips
 
-### What App Clips Are
+### App Clips 是什么
 
-App Clips are lightweight versions of your app (<10MB) for quick, focused tasks without full installation.
+App Clips 是应用的轻量版本（<10MB），用于快速、聚焦的任务，无需完整安装。
 
-**Invocation points:**
-- NFC tags
-- QR codes
-- App Clip codes
-- Safari Smart App Banner
-- Maps
-- Messages
+**启动点：**
+- NFC 标签
+- 二维码
+- App Clip 码
+- Safari 智能应用横幅
+- 地图
+- 信息
 
-### App Clip Design Principles
+### App Clip 设计原则
 
-**1. Focus on one task**
-- Rent a bike
-- Order food
-- Pay for parking
+**1. 专注于一个任务**
+- 租用自行车
+- 订餐
+- 支付停车费
 
-**2. Minimize required information**
-- Only ask for what's essential
-- Use Sign in with Apple
-- Use Apple Pay
+**2. 最小化所需信息**
+- 只询问必要信息
+- 使用 Sign in with Apple
+- 使用 Apple Pay
 
-**3. Fast experience**
-- User expects to finish in under a minute
-- No lengthy onboarding
-- Minimal UI, maximum function
+**3. 快速体验**
+- 用户期望在一分钟内完成
+- 没有冗长的入门引导
+- 最小化 UI，最大化功能
 
-**4. Encourage full app download**
-- Show value of full app
-- Make download easy (banner)
-- Don't block functionality to force download
+**4. 鼓励下载完整应用**
+- 展示完整应用的价值
+- 使下载变简单（横幅）
+- 不要阻止功能以强制下载
 
-### App Clip UI Guidelines
+### App Clip UI 指南
 
 ```
 ┌─────────────────────────────────────────┐
-│  [Header: What you can do]              │
+│  [头部：你可以做什么]                    │
 ├─────────────────────────────────────────┤
 │                                         │
-│  [Primary action UI]                    │
+│  [主要操作 UI]                          │
 │                                         │
 │  ┌─────────────────────────────────┐    │
 │  │        [Apple Pay]              │    │
 │  └─────────────────────────────────┘    │
 │                                         │
 ├─────────────────────────────────────────┤
-│  Get the full app for more features     │
+│  获取完整应用以获得更多功能              │
 │  ┌─────────────────────────────────┐    │
-│  │        Download App             │    │
+│  │        下载应用                 │    │
 │  └─────────────────────────────────┘    │
 └─────────────────────────────────────────┘
 ```
 
-### App Clip Code Design
+### App Clip 码设计
 
-App Clip Codes are scannable codes that launch App Clips:
+App Clip 码是可扫描的码，用于启动 App Clips：
 
 ```
        ┌─────────────────┐
       ╱                   ╲
-     │   [App Clip Code]   │
-     │   Circular pattern  │
-     │   with NFC chip     │
+     │   [App Clip 码]     │
+     │   圆形图案          │
+     │   带 NFC 芯片       │
       ╲                   ╱
        └─────────────────┘
-         Scan or tap to
-         rent a scooter
+         扫描或点击以
+         租用滑板车
 ```
 
-**Placement guidelines:**
-- Clear call to action below code
-- Explain what will happen
-- Accessible height (3.5-5 feet)
-- Well-lit, clean surface
+**放置指南：**
+- 码下方放置清晰的操作指引
+- 解释将会发生什么
+- 可触及的高度（3.5-5 英尺）
+- 光线充足、清洁的表面
 
 ---
 
-## Share Extensions
+## 分享扩展
 
-### Share Extension Design
+### 分享扩展设计
 
 ```
 ┌─────────────────────────────────────────┐
-│  Post to [App Name]                 ✕   │
+│  发布到 [应用名称]                  ✕   │
 ├─────────────────────────────────────────┤
 │  ┌─────────────────────────────────┐    │
-│  │ [Preview of content]            │    │
+│  │ [内容预览]                      │    │
 │  └─────────────────────────────────┘    │
 │                                         │
-│  Add a comment...                       │
+│  添加评论...                            │
 │                                         │
 │  ┌─────────────────────────────────┐    │
-│  │           Share               │    │
+│  │           分享                   │    │
 │  └─────────────────────────────────┘    │
 └─────────────────────────────────────────┘
 ```
 
-**Guidelines:**
-- Show preview of shared content
-- Minimal configuration options
-- Quick completion (< 10 seconds ideal)
-- Clear success/error feedback
+**指南：**
+- 显示分享内容的预览
+- 最少的配置选项
+- 快速完成（理想情况下 < 10 秒）
+- 清晰的成功/错误反馈
 
 ---
 
-## Action Extensions
+## 操作扩展
 
-### Action Extension Design
+### 操作扩展设计
 
-Action extensions process content in place:
+操作扩展在原地处理内容：
 
 ```
 ┌─────────────────────────────────────────┐
-│  Markup                             Done │
+│  标记                              完成 │
 ├─────────────────────────────────────────┤
 │                                         │
-│  [Modified content preview]             │
+│  [修改后的内容预览]                      │
 │                                         │
 ├─────────────────────────────────────────┤
-│  [Tools for modification]               │
+│  [修改工具]                             │
 └─────────────────────────────────────────┘
 ```
 
-**Guidelines:**
-- Focus on specific task
-- Return modified content to host app
-- Match system UI conventions
-- Support undo/cancel
+**指南：**
+- 专注于特定任务
+- 将修改后的内容返回给宿主应用
+- 匹配系统 UI 约定
+- 支持撤销/取消
 
 ---
 
 ## Live Activities
 
-### What Live Activities Are
+### Live Activities 是什么
 
-Real-time updates on Lock Screen and Dynamic Island for ongoing events:
-- Sports scores
-- Delivery tracking
-- Timers
-- Ride sharing
+在锁定屏幕和灵动岛上实时更新进行中的事件：
+- 体育比分
+- 配送追踪
+- 计时器
+- 共享出行
 
-### Live Activity Design
+### Live Activity 设计
 
-**Lock Screen (expanded):**
+**锁定屏幕（展开）：**
 ```
 ┌─────────────────────────────────────────┐
-│  [Leading]     [Center]      [Trailing] │
-│  Team A           vs           Team B   │
-│    24            Q3             21      │
+│  [左侧]     [中间]         [右侧]       │
+│  主队          vs          客队         │
+│  24          Q3             21          │
 └─────────────────────────────────────────┘
 ```
 
-**Dynamic Island (compact):**
+**灵动岛（紧凑）：**
 ```
 ┌──────────────────────────────────────┐
 │  🏀  24 - 21  Q3                     │
 └──────────────────────────────────────┘
 ```
 
-**Dynamic Island (expanded):**
+**灵动岛（展开）：**
 ```
 ┌────────────────────────────────────────┐
-│  Lakers          vs          Celtics   │
+│  湖人队          vs          凯尔特人  │
 │    24                          21      │
 │  ────────────────────────────────────  │
-│       Q3  •  4:32 remaining            │
+│      第三节  •  剩余 4:32              │
 └────────────────────────────────────────┘
 ```
 
-### Live Activity Guidelines
+### Live Activity 指南
 
-**Do:**
-- Update only when meaningful changes occur
-- Design for all Dynamic Island states
-- Provide clear end states
-- Respect 8-hour maximum duration
+**应做：**
+- 仅在发生有意义的变化时更新
+- 为所有灵动岛状态进行设计
+- 提供明确的结束状态
+- 遵守 8 小时最长持续时间
 
-**Don't:**
-- Update every second (unless timer)
-- Show static content
-- Use for notifications
-- Require interaction to see status
+**不应做：**
+- 每秒更新（除非是计时器）
+- 显示静态内容
+- 用于通知
+- 需要交互才能查看状态
 
 ---
 
-## Widget Development Tips
+## 小组件开发技巧
 
-### Timeline Updates
+### 时间线更新
 
 ```swift
 func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
@@ -380,14 +380,14 @@ func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) ->
 }
 ```
 
-**Update policies:**
-- `.atEnd` - Update when all entries displayed
-- `.after(date)` - Update at specific time
-- `.never` - Only update on user action
+**更新策略：**
+- `.atEnd` - 所有条目显示后更新
+- `.after(date)` - 在特定时间更新
+- `.never` - 仅在用户操作时更新
 
-### Deep Links
+### 深度链接
 
-Widgets should link to specific content:
+小组件应链接到特定内容：
 
 ```swift
 Link(destination: URL(string: "myapp://item/\(item.id)")!) {
@@ -395,9 +395,9 @@ Link(destination: URL(string: "myapp://item/\(item.id)")!) {
 }
 ```
 
-### Placeholder Design
+### 占位符设计
 
-Show meaningful placeholder while loading:
+在加载时显示有意义的占位符：
 
 ```swift
 struct PlaceholderView: View {

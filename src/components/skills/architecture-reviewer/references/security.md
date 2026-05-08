@@ -1,239 +1,231 @@
-# Security
+# 安全
 
-**Dimension Weight: 18%**
+**维度权重：18%**
 
-Evaluates the system's security posture across all layers — authentication, authorization,
-data protection, network security, and vulnerability management.
+评估系统在所有层面的安全态势 —— 认证、授权、数据保护、网络安全和漏洞管理。
 
-## Table of Contents
+## 目录
 
-1. Sub-Criteria Checklist
-2. OWASP Top 10 Architectural Checklist
-3. Threat Modeling Guidance
-4. Common Security Anti-Patterns
-5. Evaluation Guidance by Mode
-
----
-
-## 1. Sub-Criteria Checklist
-
-### 1.1 Authentication
-
-- What mechanism is used? (OAuth2/OIDC, SAML, mTLS, API keys, session-based, JWT.)
-- Is MFA supported and enforced for privileged access?
-- Is there a centralized identity provider, or is auth implemented per-service?
-- For API authentication: are tokens short-lived? Is refresh token rotation in place?
-- Is passwordless authentication supported? (WebAuthn, magic links.)
-- **Service-to-service auth:** Is there mutual authentication between services? (mTLS,
-  service accounts, JWT with service identity.)
-
-### 1.2 Authorization
-
-- Is authorization enforced at every layer? (API gateway AND service layer, not just one.)
-- What model is used? RBAC (Role-Based), ABAC (Attribute-Based), ReBAC (Relationship-Based)?
-- Is the principle of least privilege applied?
-- Are authorization policies centralized (OPA, Cedar, Casbin) or scattered in code?
-- Is there fine-grained resource-level authorization? (Not just "can access the API" but
-  "can access THIS specific resource.")
-- **Broken access control test:** Can a user access another user's resources by changing IDs
-  in the request?
-
-### 1.3 Encryption in Transit
-
-- Is TLS enforced for all external communication? (HTTPS, no mixed content.)
-- What TLS version? (1.2 minimum, 1.3 preferred. TLS 1.0/1.1 is a finding.)
-- Is HTTP Strict Transport Security (HSTS) enabled?
-- For service-to-service: is mTLS or TLS used for internal communication?
-- Is certificate management automated? (Let's Encrypt, AWS ACM, cert-manager.)
-- Are weak cipher suites disabled?
-
-### 1.4 Encryption at Rest
-
-- Is database encryption enabled? (Transparent Data Encryption, volume encryption.)
-- Is object/file storage encryption enabled?
-- Is encryption managed via KMS with proper key rotation?
-- Are encryption keys stored separately from encrypted data?
-- Is application-level encryption used for sensitive fields? (Beyond volume-level encryption.)
-- Are backups encrypted?
-
-### 1.5 Secret Management
-
-- How are secrets stored? (Vault, AWS Secrets Manager, Azure Key Vault, GCP Secret Manager.)
-- Are secrets NEVER in source code, environment files committed to git, or container images?
-- Is there a secret rotation policy? Are rotations automated?
-- Are secrets scoped to the services that need them? (Principle of least privilege for secrets.)
-- Are secret access events audited?
-- **Critical check:** Search for hardcoded secrets, API keys, passwords, tokens in code.
-
-### 1.6 Input Validation
-
-- Is all user input validated server-side? (Never trust client-side validation alone.)
-- Are inputs validated for type, length, range, and format?
-- Are parameterized queries / prepared statements used for ALL database interactions?
-  (No string concatenation of SQL.)
-- Is content-type enforcement in place? (Reject unexpected content types.)
-- Are file uploads validated? (Type, size, content scanning.)
-- Is output encoding applied to prevent XSS? (HTML encoding, JSON encoding.)
-
-### 1.7 OWASP Top 10 Exposure
-
-See Section 2 for detailed checklist.
-
-### 1.8 Rate Limiting & DDoS Protection
-
-- Is per-user and per-IP rate limiting implemented?
-- Is rate limiting applied at the edge before requests reach backend services?
-- Is there a WAF (Web Application Firewall) in place?
-- Is DDoS mitigation configured? (CloudFlare, AWS Shield, Akamai.)
-- Are rate limit responses informative? (429 with Retry-After header.)
-- Is there protection against brute-force attacks? (Login throttling, account lockout.)
-
-### 1.9 Network Security
-
-- Is network segmentation in place? (Public subnet for LB, private subnet for services,
-  isolated subnet for databases.)
-- Are security groups / firewall rules following least-privilege? (Not 0.0.0.0/0 for ingress.)
-- Is there a zero-trust network model? (Verify every request, not just perimeter.)
-- Is egress traffic restricted and monitored?
-- Are bastion hosts / VPNs used for administrative access?
-
-### 1.10 CORS & CSP
-
-- Is CORS configured with specific origins? (Not `*` for authenticated endpoints.)
-- Is Content Security Policy (CSP) header set? (Prevents XSS, data injection.)
-- Is X-Frame-Options set? (Prevents clickjacking.)
-- Is X-Content-Type-Options set to nosniff?
-- Are Referrer-Policy and Permissions-Policy headers configured?
-
-### 1.11 Dependency Security
-
-- Are dependencies scanned for known CVEs? (Dependabot, Snyk, Trivy, OWASP Dependency Check.)
-- Is scanning automated in CI/CD?
-- Is there a policy for addressing critical CVEs? (Time SLA for remediation.)
-- Are lock files used and committed? (Prevents supply chain attacks via version drift.)
-- Is there an SBOM (Software Bill of Materials) capability?
-
-### 1.12 Supply Chain Security
-
-- Are commits signed? (GPG-signed commits.)
-- Are container base images from trusted registries? Pinned to specific digests?
-- Are container images scanned for vulnerabilities?
-- Is there image provenance tracking? (SLSA framework, Sigstore.)
-- Are CI/CD pipelines protected from injection? (No untrusted code execution in pipelines.)
-
-### 1.13 API Security
-
-- Are JWT tokens validated correctly? (Signature, expiration, issuer, audience.)
-- Is token rotation and revocation supported?
-- Are API scopes / permissions enforced per endpoint?
-- Are API keys treated as secrets? (Not exposed in URLs, logs, or client-side code.)
-- Is there API abuse detection? (Anomalous usage patterns.)
-
-### 1.14 Data Privacy
-
-- Is PII identified and classified across all data stores?
-- Is data anonymization or pseudonymization applied where possible?
-- Is the right to erasure (GDPR Art. 17) architecturally supported?
-  (Cascade deletion across all stores, backups, caches.)
-- Is data masking used for non-production environments?
-- Is there data access logging for sensitive data?
-
-### 1.15 Logging Security
-
-- Are secrets, tokens, and passwords excluded from logs?
-- Is PII handled appropriately in logs? (Masked, hashed, or excluded.)
-- Are logs stored securely? (Encrypted, access-controlled.)
-- Is there log injection prevention? (User input not directly interpolated into log messages.)
-- Are log retention policies defined and enforced?
+1. 子标准检查清单
+2. OWASP Top 10 架构检查清单
+3. 威胁建模指南
+4. 常见安全反模式
+5. 按模式的评估指南
 
 ---
 
-## 2. OWASP Top 10 Architectural Checklist
+## 1. 子标准检查清单
 
-For each OWASP Top 10 category, evaluate architectural defenses:
+### 1.1 认证
 
-| #   | Vulnerability                 | Architectural Defense                                          | What to Check                                                     |
+- 使用什么机制？（OAuth2/OIDC、SAML、mTLS、API 密钥、基于会话、JWT。）
+- 是否支持 MFA 并对特权访问强制执行？
+- 是否有集中式身份提供商，还是各服务自行实现认证？
+- 对于 API 认证：令牌是否短期有效？是否实施了刷新令牌轮换？
+- 是否支持无密码认证？（WebAuthn、魔法链接。）
+- **服务间认证：** 服务之间是否有双向认证？（mTLS、服务账户、带服务身份的 JWT。）
+
+### 1.2 授权
+
+- 授权是否在每一层都执行？（API 网关 AND 服务层，不只是一个。）
+- 使用什么模型？RBAC（基于角色的）、ABAC（基于属性的）、ReBAC（基于关系的）？
+- 是否应用了最小权限原则？
+- 授权策略是集中管理（OPA、Cedar、Casbin）还是分散在代码中？
+- 是否有细粒度的资源级授权？（不仅是"可以访问 API"，而且是"可以访问这个特定资源"。）
+- **损坏的访问控制测试：** 用户能否通过更改请求中的 ID 来访问其他用户的资源？
+
+### 1.3 传输中加密
+
+- 所有外部通信是否强制执行 TLS？（HTTPS，无混合内容。）
+- 使用什么 TLS 版本？（最低 1.2，首选 1.3。TLS 1.0/1.1 是问题。）
+- 是否启用了 HTTP 严格传输安全（HSTS）？
+- 服务间通信是否使用了 mTLS 或 TLS？
+- 证书管理是否自动化？（Let's Encrypt、AWS ACM、cert-manager。）
+- 弱加密套件是否已禁用？
+
+### 1.4 静态加密
+
+- 是否启用了数据库加密？（透明数据加密、卷加密。）
+- 是否启用了对象/文件存储加密？
+- 加密是否通过 KMS 管理并带有适当的密钥轮换？
+- 加密密钥是否与加密数据分开存储？
+- 敏感字段是否使用了应用级加密？（超出卷级加密。）
+- 备份是否加密？
+
+### 1.5 密钥管理
+
+- 密钥如何存储？（Vault、AWS Secrets Manager、Azure Key Vault、GCP Secret Manager。）
+- 密钥是否从不放在源代码、提交到 git 的环境文件或容器镜像中？
+- 是否有密钥轮换策略？轮换是否自动化？
+- 密钥是否限定在需要的服务范围内？（密钥的最小权限原则。）
+- 密钥访问事件是否被审计？
+- **关键检查：** 搜索代码中的硬编码密钥、API 密钥、密码、令牌。
+
+### 1.6 输入验证
+
+- 所有用户输入是否在服务端验证？（绝不只依赖客户端验证。）
+- 输入是否验证了类型、长度、范围和格式？
+- 所有数据库交互是否使用参数化查询 / 预编译语句？（无 SQL 字符串拼接。）
+- 是否实施了 content-type 强制？（拒绝意外的内容类型。）
+- 文件上传是否经过验证？（类型、大小、内容扫描。）
+- 是否应用了输出编码以防止 XSS？（HTML 编码、JSON 编码。）
+
+### 1.7 OWASP Top 10 暴露
+
+详见第 2 节的详细检查清单。
+
+### 1.8 速率限制与 DDoS 防护
+
+- 是否实施了按用户和按 IP 的速率限制？
+- 速率限制是否在到达后端服务之前在边缘层应用？
+- 是否有 WAF（Web 应用防火墙）？
+- 是否配置了 DDoS 缓解？（CloudFlare、AWS Shield、Akamai。）
+- 速率限制响应是否提供有用信息？（429 带 Retry-After 头部。）
+- 是否有暴力攻击防护？（登录节流、账户锁定。）
+
+### 1.9 网络安全
+
+- 是否实施了网络分段？（公有子网给负载均衡器、私有子网给服务、隔离子网给数据库。）
+- 安全组/防火墙规则是否遵循最小权限？（入站不使用 0.0.0.0/0。）
+- 是否有零信任网络模型？（验证每个请求，而不仅仅是边界。）
+- 出站流量是否受限制和监控？
+- 管理访问是否使用堡垒主机 / VPN？
+
+### 1.10 CORS 与 CSP
+
+- CORS 是否配置了特定的源？（认证端点不使用 `*`。）
+- 是否设置了内容安全策略（CSP）头部？（防止 XSS、数据注入。）
+- 是否设置了 X-Frame-Options？（防止点击劫持。）
+- 是否设置了 X-Content-Type-Options 为 nosniff？
+- Referrer-Policy 和 Permissions-Policy 头部是否已配置？
+
+### 1.11 依赖安全
+
+- 是否扫描了依赖中的已知 CVE？（Dependabot、Snyk、Trivy、OWASP Dependency Check。）
+- 扫描是否在 CI/CD 中自动化？
+- 是否有处理关键 CVE 的策略？（修复的时间 SLA。）
+- 是否使用并提交了 lock 文件？（防止版本漂移的供应链攻击。）
+- 是否有 SBOM（软件物料清单）能力？
+
+### 1.12 供应链安全
+
+- 提交是否签名？（GPG 签名提交。）
+- 容器基础镜像是否来自可信注册表？是否锁定到特定摘要？
+- 容器镜像是否扫描了漏洞？
+- 是否有镜像来源追踪？（SLSA 框架、Sigstore。）
+- CI/CD 流水线是否受到注入保护？（流水线中不执行不可信代码。）
+
+### 1.13 API 安全
+
+- JWT 令牌是否正确验证？（签名、过期时间、签发者、受众。）
+- 是否支持令牌轮换和吊销？
+- 是否按端点了执行 API 范围/权限？
+- API 密钥是否当作机密处理？（不暴露在 URL、日志或客户端代码中。）
+- 是否有 API 滥用检测？（异常使用模式。）
+
+### 1.14 数据隐私
+
+- PII 是否在所有数据存储中被识别和分类？
+- 是否在可能处应用了数据匿名化或假名化？
+- 删除权（GDPR 第 17 条）是否在架构上得到支持？（跨所有存储、备份、缓存的级联删除。）
+- 非生产环境是否使用了数据脱敏？
+- 敏感数据是否有数据访问日志？
+
+### 1.15 日志安全
+
+- 密钥、令牌和密码是否从日志中排除？
+- PII 在日志中是否得到适当处理？（脱敏、哈希或排除。）
+- 日志是否安全存储？（加密、访问控制。）
+- 是否有日志注入防护？（用户输入不直接插到日志消息中。）
+- 日志保留策略是否已定义并执行？
+
+---
+
+## 2. OWASP Top 10 架构检查清单
+
+对于每个 OWASP Top 10 类别，评估架构防御措施：
+
+| # | 漏洞 | 架构防御 | 需要检查的内容 |
 | --- | ----------------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------- |
-| A01 | Broken Access Control         | Centralized authz policy engine, resource-level checks         | Can users access others' data by manipulating IDs?                |
-| A02 | Cryptographic Failures        | TLS everywhere, KMS for keys, no custom crypto                 | Is sensitive data encrypted in transit and at rest?               |
-| A03 | Injection                     | Parameterized queries, input validation layer, ORM             | Any string concatenation in queries?                              |
-| A04 | Insecure Design               | Threat modeling, abuse case analysis, security requirements    | Is security a design consideration, not an afterthought?          |
-| A05 | Security Misconfiguration     | Hardened defaults, automated config scanning, no debug in prod | Default credentials? Unnecessary features enabled?                |
-| A06 | Vulnerable Components         | Dependency scanning, SBOM, automated patching                  | Known CVEs in dependencies?                                       |
-| A07 | Auth Failures                 | Centralized auth, MFA, session management                      | Weak passwords accepted? No brute-force protection?               |
-| A08 | Data Integrity Failures       | Code signing, CI/CD integrity, update verification             | Can untrusted code enter the pipeline?                            |
-| A09 | Logging & Monitoring Failures | Centralized logging, SIEM, alerting on security events         | Would a breach be detected? How quickly?                          |
-| A10 | SSRF                          | Allowlist for outbound requests, network segmentation          | Can user input trigger server-side requests to internal services? |
+| A01 | 损坏的访问控制 | 集中式授权策略引擎、资源级检查 | 用户能否通过操纵 ID 访问他人数据？ |
+| A02 | 加密失败 | 全面使用 TLS、KMS 管理密钥、无自定义加密 | 敏感数据在传输中和静态时是否加密？ |
+| A03 | 注入 | 参数化查询、输入验证层、ORM | 查询中是否有任何字符串拼接？ |
+| A04 | 不安全的设计 | 威胁建模、滥用案例分析、安全需求 | 安全是设计考虑因素而非事后补救吗？ |
+| A05 | 安全配置错误 | 加固的默认配置、自动配置扫描、生产环境无调试 | 默认凭据？启用了不必要的功能？ |
+| A06 | 脆弱的组件 | 依赖扫描、SBOM、自动打补丁 | 依赖中存在已知 CVE？ |
+| A07 | 认证失败 | 集中式认证、MFA、会话管理 | 接受弱密码？无暴力攻击防护？ |
+| A08 | 数据完整性失败 | 代码签名、CI/CD 完整性、更新验证 | 不可信代码能否进入流水线？ |
+| A09 | 日志与监控失败 | 集中式日志、SIEM、安全事件告警 | 入侵是否会被发现？多快？ |
+| A10 | SSRF | 出站请求白名单、网络分段 | 用户输入能否触发对内部服务的服务端请求？ |
 
 ---
 
-## 3. Threat Modeling Guidance
+## 3. 威胁建模指南
 
-When reviewing, implicitly apply the STRIDE model:
+在审查时，隐式应用 STRIDE 模型：
 
-| Threat                     | Question                                       | Architectural Mitigation                         |
+| 威胁 | 问题 | 架构缓解措施 |
 | -------------------------- | ---------------------------------------------- | ------------------------------------------------ |
-| **S**poofing               | Can an attacker impersonate a user or service? | Strong authentication, mTLS                      |
-| **T**ampering              | Can data be modified in transit or at rest?    | Integrity checks, signed payloads, TLS           |
-| **R**epudiation            | Can an actor deny performing an action?        | Audit logging, signed events                     |
-| **I**nformation Disclosure | Can sensitive data leak?                       | Encryption, access controls, data classification |
-| **D**enial of Service      | Can the system be overwhelmed?                 | Rate limiting, auto-scaling, DDoS protection     |
-| **E**levation of Privilege | Can a user gain unauthorized capabilities?     | Least privilege, authorization enforcement       |
+| **S**poofing（欺骗） | 攻击者能否冒充用户或服务？ | 强认证、mTLS |
+| **T**ampering（篡改） | 数据能否在传输中或静态时被修改？ | 完整性检查、签名响应体、TLS |
+| **R**epudiation（否认） | 行为者能否否认执行了操作？ | 审计日志、签名事件 |
+| **I**nformation Disclosure（信息泄露） | 敏感数据能否泄露？ | 加密、访问控制、数据分类 |
+| **D**enial of Service（拒绝服务） | 系统能否被压垮？ | 速率限制、自动扩展、DDoS 防护 |
+| **E**levation of Privilege（权限提升） | 用户能否获得未授权能力？ | 最小权限、授权执行 |
 
-For each component and data flow in the architecture, consider which STRIDE threats apply.
+对于架构中的每个组件和数据流，考虑哪些 STRIDE 威胁适用。
 
 ---
 
-## 4. Common Security Anti-Patterns
+## 4. 常见安全反模式
 
-| Anti-Pattern                 | Description                                                 | Severity |
+| 反模式 | 描述 | 严重程度 |
 | ---------------------------- | ----------------------------------------------------------- | -------- |
-| Hardcoded Secrets            | API keys, passwords, tokens in source code                  | S1       |
-| SQL String Concatenation     | Building queries by concatenating user input                | S1       |
-| Trust-All CORS               | `Access-Control-Allow-Origin: *` on authenticated endpoints | S2       |
-| JWT Without Validation       | Accepting JWTs without verifying signature/expiry           | S1       |
-| No Rate Limiting             | Endpoints open to unlimited requests                        | S2       |
-| Debug Mode in Production     | Verbose errors, stack traces, debug endpoints exposed       | S2       |
-| Overly Broad IAM Roles       | `*:*` or `Admin` for application service accounts           | S2       |
-| Sensitive Data in URLs       | PII, tokens, or secrets in query parameters                 | S2       |
-| Shared Service Accounts      | Multiple services using the same credentials                | S3       |
-| No Egress Controls           | Application can make outbound requests to any destination   | S3       |
-| Client-Side Only Validation  | Server trusts client-validated input                        | S2       |
-| Unencrypted Internal Traffic | Plain HTTP between services in the same VPC                 | S3       |
+| 硬编码密钥 | 源代码中的 API 密钥、密码、令牌 | S1 |
+| SQL 字符串拼接 | 通过拼接用户输入构建查询 | S1 |
+| 信任所有 CORS | 在认证端点上使用 `Access-Control-Allow-Origin: *` | S2 |
+| JWT 未验证 | 接受 JWT 而不验证签名/过期时间 | S1 |
+| 无速率限制 | 端点开放给无限制的请求 | S2 |
+| 生产环境调试模式 | 暴露详细错误、堆栈跟踪、调试端点 | S2 |
+| IAM 角色过于宽泛 | 应用服务账户使用 `*:*` 或 `Admin` | S2 |
+| URL 中的敏感数据 | 查询参数中的 PII、令牌或密钥 | S2 |
+| 共享服务账户 | 多个服务使用相同的凭据 | S3 |
+| 无出站控制 | 应用可向任何目标发起出站请求 | S3 |
+| 仅客户端验证 | 服务器信任客户端验证的输入 | S2 |
+| 内部流量未加密 | 同一 VPC 内服务之间的纯 HTTP 通信 | S3 |
 
 ---
 
-## 5. Evaluation Guidance by Mode
+## 5. 按模式的评估指南
 
-### Mode A (Codebase)
+### 模式 A（代码库）
 
-- Search for hardcoded secrets: `grep -r` for patterns like `password=`, `api_key=`,
-  `secret=`, `token=`, base64-encoded strings, high-entropy strings
-- Check .gitignore for .env exclusion
-- Inspect auth middleware: What is validated? What is skipped?
-- Check SQL/query construction for parameterization
-- Inspect CORS configuration for overly permissive origins
-- Check dependency manifests for known vulnerable versions
-- Look for input validation middleware/decorators
-- Inspect network configs (security groups, Kubernetes NetworkPolicies)
-- Check for security headers in server configuration
-- Review Dockerfile for base image provenance and running as non-root
+- 搜索硬编码密钥：`grep -r` 搜索 `password=`、`api_key=`、`secret=`、`token=`、base64 编码字符串、高熵字符串等模式
+- 检查 .gitignore 中是否排除了 .env
+- 检查认证中间件：验证了什么？跳过了什么？
+- 检查 SQL/查询构建是否参数化
+- 检查 CORS 配置是否过于宽松
+- 检查依赖清单中是否有已知的易受攻击版本
+- 查找输入验证中间件/装饰器
+- 检查网络配置（安全组、Kubernetes NetworkPolicy）
+- 检查服务器配置中的安全头部
+- 审查 Dockerfile 的基础镜像来源和是否以非 root 运行
 
-### Mode B (Document)
+### 模式 B（文档）
 
-- Check if authentication mechanism is specified with sufficient detail
-- Look for authorization model description (not just "we'll add auth")
-- Verify encryption strategy is stated for transit AND rest
-- Check for secret management strategy
-- Look for threat model or security analysis
-- Check if network security architecture is defined
-- Look for compliance-driven security requirements
-- Identify "TBD" security items — these are high-severity findings
+- 检查认证机制是否以足够详细的方式指定
+- 查找授权模型描述（不只是"我们会加认证"）
+- 验证加密策略是否说明了传输中 AND 静态加密
+- 检查密钥管理策略
+- 查找威胁模型或安全分析
+- 检查网络安全架构是否已定义
+- 查找合规驱动的安全需求
+- 识别"待定"的安全项 —— 这些是高严重性发现
 
-### Mode C (Hybrid)
+### 模式 C（混合）
 
-- Compare stated security controls against actual implementation
-- Check if documented auth model matches code implementation
-- Verify stated encryption is actually configured
-- Cross-reference threat model (if exists) against actual mitigations
-- Check if documented network segmentation matches actual security groups/network policies
+- 将声明的安全控制措施与实际实现进行比较
+- 检查文档中的认证模型是否与代码实现一致
+- 验证声明的加密是否实际已配置
+- 交叉对照威胁模型（如果存在）与实际缓解措施
+- 检查文档中的网络分段是否与实际安全组/网络策略一致

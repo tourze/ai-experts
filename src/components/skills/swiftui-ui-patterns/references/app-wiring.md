@@ -1,16 +1,16 @@
-# App wiring and dependency graph
+# App 连接与依赖图
 
-## Intent
+## 意图
 
-Show how to wire the app shell (TabView + NavigationStack + sheets) and install a global dependency graph (environment objects, services, streaming clients, SwiftData ModelContainer) in one place.
+展示如何连接应用外壳（TabView + NavigationStack + sheets）并在一个位置安装全局依赖图（环境对象、服务、流客户端、SwiftData ModelContainer）。
 
-## Recommended structure
+## 推荐结构
 
-1) Root view sets up tabs, per-tab routers, and sheets.
-2) A dedicated view modifier installs global dependencies and lifecycle tasks (auth state, streaming watchers, push tokens, data containers).
-3) Feature views pull only what they need from the environment; feature-specific state stays local.
+1) 根视图设置标签页、每标签路由器和 sheets。
+2) 一个专用的视图修饰符安装全局依赖和生命周期任务（认证状态、流观察者、推送令牌、数据容器）。
+3) 功能视图仅从环境中获取所需内容；功能特定状态保持本地。
 
-## Root shell example (generic)
+## 根外壳示例（通用）
 
 ```swift
 @MainActor
@@ -39,7 +39,7 @@ struct AppView: View {
 }
 ```
 
-Minimal `AppTab` example:
+最小化 `AppTab` 示例：
 
 ```swift
 @MainActor
@@ -67,7 +67,7 @@ enum AppTab: Identifiable, Hashable, CaseIterable {
 }
 ```
 
-Router skeleton:
+路由器骨架：
 
 ```swift
 @MainActor
@@ -82,9 +82,9 @@ enum Route: Hashable {
 }
 ```
 
-## Dependency graph modifier (generic)
+## 依赖图修饰符（通用）
 
-Use a single modifier to install environment objects and handle lifecycle hooks when the active account/client changes. This keeps wiring consistent and avoids forgetting a dependency in call sites.
+使用单一修饰符来安装环境对象并在活动账户/客户端变化时处理生命周期钩子。这样可以保持连接的一致性，并避免在调用点遗漏依赖。
 
 ```swift
 extension View {
@@ -135,14 +135,14 @@ extension View {
 }
 ```
 
-Notes:
-- The `.task(id:)` hooks respond to account/client changes, re-seeding services and watcher state.
-- Keep the modifier focused on global wiring; feature-specific state stays within features.
-- Adjust types (AccountManager, StreamWatcher, etc.) to match your project.
+注意：
+- `.task(id:)` 钩子响应账户/客户端变化，重新注入服务和观察者状态。
+- 保持修饰符专注于全局连接；功能特定状态保留在功能内部。
+- 根据项目调整类型（AccountManager、StreamWatcher 等）。
 
 ## SwiftData / ModelContainer
 
-Install your `ModelContainer` at the root so all feature views share the same store. Keep the list minimal to the models that need persistence.
+在根视图安装 `ModelContainer`，以便所有功能视图共享同一存储。只包含需要持久化的模型。
 
 ```swift
 extension View {
@@ -152,11 +152,11 @@ extension View {
 }
 ```
 
-Why: a single container avoids duplicated stores per sheet or tab and keeps data consistent.
+原因：单一容器避免每个 sheet 或标签页出现重复的存储，并保持数据一致性。
 
-## Sheet routing (enum-driven)
+## Sheet 路由（枚举驱动）
 
-Centralize sheets with a small enum and a helper modifier.
+使用小型枚举和辅助修饰符集中管理 sheets。
 
 ```swift
 enum SheetDestination: Identifiable {
@@ -179,16 +179,16 @@ extension View {
 }
 ```
 
-Why: enum-driven sheets keep presentation centralized and testable; adding a new sheet means adding one enum case and one switch branch.
+原因：枚举驱动的 sheets 使展示集中化且可测试；添加新 sheet 只需添加一个枚举 case 和一个 switch 分支。
 
-## When to use
+## 何时使用
 
-- Apps with multiple packages/modules that share environment objects and services.
-- Apps that need to react to account/client changes and rewire streaming/push safely.
-- Any app that wants consistent TabView + NavigationStack + sheet wiring without repeating environment setup.
+- 具有多个包/模块且共享环境对象和服务的应用。
+- 需要响应账户/客户端变化并安全地重新连接流/推送的应用。
+- 任何希望保持一致的 TabView + NavigationStack + sheet 连接，而不重复环境设置的应用。
 
-## Caveats
+## 注意事项
 
-- Keep the dependency modifier slim; do not put feature state or heavy logic there.
-- Ensure `.task(id:)` work is lightweight or cancelled appropriately; long-running work belongs in services.
-- If unauthenticated clients exist, gate streaming/watch calls to avoid reconnect spam.
+- 保持依赖修饰符精简；不要在其中放置功能状态或重量级逻辑。
+- 确保 `.task(id:)` 的工作量轻量或可适当取消；长时间运行的工作应归属于服务。
+- 如果存在未认证客户端，请限制流/观察调用以避免重复连接。

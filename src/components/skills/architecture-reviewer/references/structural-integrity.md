@@ -1,213 +1,174 @@
-# Structural Integrity & Design Principles
+# 结构完整性与设计原则
 
-**Dimension Weight: 20%**
+**维度权重：20%**
 
-Evaluates whether the system's foundational design is sound — its bones, not its skin.
+评估系统的基础设计是否健全 —— 其骨架，而非表面。
 
-## Table of Contents
+## 目录
 
-1. Sub-Criteria Checklist
-2. Anti-Pattern Catalog
-3. Architecture Pattern Fitness Evaluation
-4. Evaluation Guidance by Mode
-
----
-
-## 1. Sub-Criteria Checklist
-
-### 1.1 Separation of Concerns
-
-- Are responsibilities clearly divided across modules/services/layers?
-- Does each component have a single, well-defined purpose?
-- Are cross-cutting concerns (logging, auth, config) handled via shared infrastructure,
-  not duplicated in every component?
-- **Red flag:** A single module handling user auth, business logic, database queries, and
-  external API calls.
-
-### 1.2 Coupling & Cohesion
-
-- **Coupling (want: LOW):** Can you change component A without cascading changes to B, C, D?
-  Are interfaces narrow and well-defined? Are components communicating through contracts, not
-  internals?
-- **Cohesion (want: HIGH):** Are related functions grouped together? Does each module contain
-  only things that change for the same reason?
-- **Measure:** Count the number of files that must change for a typical feature addition. More
-  than 3-4 modules for a simple feature signals high coupling.
-
-### 1.3 Dependency Direction
-
-- Do dependencies point inward (toward domain/business logic), not outward (toward infra)?
-- Is the domain layer free from framework imports, HTTP concepts, database specifics?
-- Can you swap the database, queue, or API framework without touching business logic?
-- **Architectural principle:** Clean Architecture / Hexagonal / Ports-and-Adapters — the
-  domain should be the center, infrastructure on the periphery.
-
-### 1.4 Single Points of Failure (SPOF)
-
-- Is there ANY component whose failure brings down the entire system?
-- Common SPOFs: single database instance, single load balancer, single DNS, single auth
-  service, single queue, hardcoded external service endpoints.
-- For each SPOF found: what is the blast radius? Is there a fallback path?
-
-### 1.5 Fault Tolerance Patterns
-
-- **Circuit breakers:** Are external dependencies wrapped in circuit breakers to prevent
-  cascading failures?
-- **Bulkheads:** Are failure domains isolated? Can a failing component be contained?
-- **Retries with exponential backoff:** Are transient failures retried with backoff and jitter?
-  Are there retry limits?
-- **Timeouts:** Are all external calls configured with explicit timeouts? Are there no
-  infinite-wait patterns?
-- **Graceful degradation:** Can the system operate in a reduced-functionality mode when
-  dependencies are unavailable?
-
-### 1.6 Service Boundary Correctness
-
-- Are service boundaries aligned with business domains / bounded contexts?
-- **Distributed monolith test:** Do services deploy independently? Can you deploy service A
-  without deploying service B? Do services share a database? Do they require coordinated
-  releases?
-- **Chatty services test:** Are there high-frequency synchronous calls between services that
-  suggest they should be one service?
-- **Data ownership:** Does each service own its data, or do multiple services write to the
-  same tables?
-
-### 1.7 Data Consistency Model
-
-- Is the consistency model (strong / eventual / causal) explicitly chosen?
-- Is the choice appropriate for the domain? (Financial transactions need stronger guarantees
-  than social media feeds.)
-- Are CAP theorem trade-offs acknowledged and designed for?
-- For eventual consistency: is the window of inconsistency acceptable? Are compensating
-  transactions defined?
-- **Saga pattern assessment:** For distributed transactions, are sagas implemented? Are
-  compensation steps defined for each step?
-
-### 1.8 Idempotency
-
-- Are state-changing operations (payments, writes, external API calls) idempotent?
-- Is there an idempotency key mechanism?
-- What happens on retry? On duplicate submission? On network partition recovery?
-- **Critical for:** payment processing, order placement, email sending, external webhooks.
-
-### 1.9 Error Handling Strategy
-
-- Is there a coherent error classification? (Retryable vs non-retryable, user-facing vs
-  internal, expected vs unexpected.)
-- Are errors handled at the appropriate level? (Not caught-and-swallowed at the bottom,
-  not all bubbled to the top.)
-- Is error propagation across service boundaries well-defined?
-- Are error responses consistent in format and information disclosure?
-- **Dead letter handling:** What happens to unprocessable messages/events?
-
-### 1.10 API Contract Quality
-
-- Are APIs designed contract-first (schema defined before implementation)?
-- Is versioning present? (URL path, header, or content-type based)
-- Are APIs paginated for list endpoints?
-- Are request/response schemas documented (OpenAPI, GraphQL schema, proto files)?
-- Are error responses standardized?
-- **Breaking change management:** Is there a deprecation policy? Consumer notification?
-
-### 1.11 Technology Fitness
-
-- Are technology choices appropriate for the problem domain and scale?
-- **Over-engineering signs:** Kubernetes for a single-service app, microservices for a team
-  of 2, event sourcing for a CRUD app, Kafka for 10 messages/minute.
-- **Under-engineering signs:** SQLite for a multi-user production API, no queue for
-  long-running tasks, polling where webhooks/events are needed.
-- Is there technology sprawl? (5 different languages, 3 databases, 2 queue systems without
-  clear justification.)
-
-### 1.12 Abstraction Quality
-
-- Are abstractions at the right level? Too high (everything is generic, nothing is clear)?
-  Too low (implementation details leak through interfaces)?
-- Are there leaky abstractions? (ORM that requires raw SQL knowledge, "REST" API that
-  exposes database structure.)
-- Are there missing abstractions? (Duplicate patterns that should be extracted.)
-- Are there premature abstractions? (Generic frameworks for one use case.)
+1. 子标准检查清单
+2. 反模式目录
+3. 架构模式适配性评估
+4. 按模式的评估指南
 
 ---
 
-## 2. Anti-Pattern Catalog
+## 1. 子标准检查清单
 
-Flag these patterns with at minimum S3 severity:
+### 1.1 关注点分离
 
-| Anti-Pattern               | Description                                                                              | Typical Severity |
+- 职责是否在模块/服务/层之间清晰划分？
+- 每个组件是否有单一、明确定义的目的？
+- 横切关注点（日志、认证、配置）是否通过共享基础设施处理，而非在每个组件中重复？
+- **红旗：** 单个模块处理用户认证、业务逻辑、数据库查询和外部 API 调用。
+
+### 1.2 耦合度与内聚性
+
+- **耦合度（期望：低）：** 能否更改组件 A 而不会级联影响 B、C、D？接口是否窄且定义良好？组件是否通过契约而非内部实现进行通信？
+- **内聚性（期望：高）：** 相关功能是否分组在一起？每个模块是否只包含因相同原因而变化的内容？
+- **度量：** 计算典型功能添加时需要更改的文件数量。简单的功能超过 3-4 个模块表明高耦合。
+
+### 1.3 依赖方向
+
+- 依赖是否指向内（朝向领域/业务逻辑），而非指向外（朝向下层基础设施）？
+- 领域层是否没有框架导入、HTTP 概念、数据库细节？
+- 能否在不触及业务逻辑的情况下更换数据库、队列或 API 框架？
+- **架构原则：** 整洁架构 / 六边形架构 / 端口与适配器 —— 领域应在中心，基础设施在周边。
+
+### 1.4 单点故障（SPOF）
+
+- 是否存在任何组件，其故障会导致整个系统崩溃？
+- 常见 SPOF：单个数据库实例、单个负载均衡器、单个 DNS、单个认证服务、单个队列、硬编码的外部服务端点。
+- 对于每个发现的 SPOF：爆炸半径是多少？是否有降级方案路径？
+
+### 1.5 容错模式
+
+- **熔断器：** 外部依赖是否包裹在熔断器中以防止级联故障？
+- **隔舱：** 故障域是否隔离？故障组件能否被隔离？
+- **带指数退避的重试：** 临时故障是否使用退避和抖动重试？是否有重试限制？
+- **超时：** 所有外部调用是否配置了显式超时？是否有无限等待模式？
+- **优雅降级：** 系统能否在依赖不可用时以功能降级模式运行？
+
+### 1.6 服务边界正确性
+
+- 服务边界是否与业务领域/有界上下文对齐？
+- **分布式单体测试：** 服务能否独立部署？能否部署服务 A 而不部署服务 B？服务是否共享数据库？是否需要协调发布？
+- **高开销服务测试：** 服务之间是否有高频同步调用，表明它们应合并为一个服务？
+- **数据所有权：** 每个服务是否拥有自己的数据，还是多个服务写入同一张表？
+
+### 1.7 数据一致性模型
+
+- 一致性模型（强/最终/因果）是否明确选择？
+- 选择是否适合领域？（金融交易需要比社交媒体信息流更强的保证。）
+- CAP 定理的权衡是否承认并已针对设计？
+- 对于最终一致性：不一致的时间窗口是否可接受？是否定义了补偿事务？
+- **Saga 模式评估：** 对于分布式事务，是否实施了 saga？是否每一步都定义了补偿步骤？
+
+### 1.8 幂等性
+
+- 状态变更操作（支付、写入、外部 API 调用）是否幂等？
+- 是否有幂等性键机制？
+- 重试时会发生什么？重复提交呢？网络分区恢复后呢？
+- **关键于：** 支付处理、订单下单、邮件发送、外部 webhook。
+
+### 1.9 错误处理策略
+
+- 是否有连贯的错误分类？（可重试 vs 不可重试、面向用户 vs 内部、预期 vs 非预期。）
+- 错误是否在适当层级处理？（不是在底层捕获并吞没，也不是全部冒泡到顶层。）
+- 跨服务边界的错误传播是否定义良好？
+- 错误响应在格式和信息披露上是否一致？
+- **死信处理：** 无法处理的消息/事件会怎样？
+
+### 1.10 API 契约质量
+
+- API 是否契约优先设计？（在实现之前定义 schema。）
+- 是否有版本控制？（基于 URL 路径、头部或 content-type。）
+- 列表端点是否带分页？
+- 请求/响应 schema 是否有文档（OpenAPI、GraphQL schema、proto 文件）？
+- 错误响应是否标准化？
+- **破坏性变更管理：** 是否有弃用策略？消费者通知机制？
+
+### 1.11 技术适配性
+
+- 技术选择是否适合问题领域和规模？
+- **过度工程迹象：** 单服务应用用 Kubernetes、2 人团队用微服务、CRUD 应用用事件溯源、每分钟 10 条消息用 Kafka。
+- **工程不足迹象：** 多用户生产 API 用 SQLite、长时间运行任务无队列、需要 webhook/事件却用轮询。
+- 是否存在技术泛滥？（5 种不同语言、3 种数据库、2 种队列系统，无明显理由。）
+
+### 1.12 抽象质量
+
+- 抽象级别是否适当？过高（一切都是泛型，什么都不清晰）？过低（实现细节通过接口泄露）？
+- 是否存在泄露的抽象？（需要原始 SQL 知识的 ORM、"REST" API 暴露了数据库结构。）
+- 是否存在缺失的抽象？（本应提取的重复模式。）
+- 是否存在过早的抽象？（为单一用例构建的通用框架。）
+
+---
+
+## 2. 反模式目录
+
+至少以 S3 严重程度标记这些模式：
+
+| 反模式 | 描述 | 典型严重程度 |
 | -------------------------- | ---------------------------------------------------------------------------------------- | ---------------- |
-| Distributed Monolith       | Microservices that must deploy together, share databases, or require coordinated changes | S2               |
-| Big Ball of Mud            | No discernible architecture; everything depends on everything                            | S1               |
-| Golden Hammer              | One technology used for everything regardless of fit                                     | S3               |
-| God Service/Class          | One component does everything; too many responsibilities                                 | S2               |
-| Circular Dependencies      | A depends on B depends on C depends on A                                                 | S2               |
-| Shared Database            | Multiple services writing to the same database tables                                    | S2               |
-| Chatty Interfaces          | Excessive fine-grained calls between components                                          | S3               |
-| Anemic Domain Model        | Business logic scattered outside domain objects                                          | S4               |
-| Spaghetti Integration      | Point-to-point connections without standardized patterns                                 | S2               |
-| Config in Code             | Hardcoded values that should be externalized                                             | S3               |
-| Implicit Dependencies      | Hidden runtime dependencies not visible in interface contracts                           | S3               |
-| Vendor Lock-in by Accident | Deep coupling to vendor APIs without abstraction layers                                  | S3               |
+| 分布式单体 | 必须一起部署、共享数据库或需要协调变更的微服务 | S2 |
+| 泥球架构 | 无可识别的架构；一切依赖一切 | S1 |
+| 金锤子 | 一种技术用于所有事情，不考虑适配性 | S3 |
+| 上帝服务/类 | 一个组件做所有事情；职责过多 | S2 |
+| 循环依赖 | A 依赖 B 依赖 C 依赖 A | S2 |
+| 共享数据库 | 多个服务写入同一张数据库表 | S2 |
+| 高开销接口 | 组件之间过度细粒度的调用 | S3 |
+| 贫血领域模型 | 业务逻辑分散在领域对象之外 | S4 |
+| 意大利面式集成 | 点对点连接，没有标准化模式 | S2 |
+| 代码中的配置 | 应外部化的硬编码值 | S3 |
+| 隐式依赖 | 隐藏的运行时依赖，在接口契约中不可见 | S3 |
+| 意外供应商锁定 | 没有抽象层的情况下深度耦合到供应商 API | S3 |
 
 ---
 
-## 3. Architecture Pattern Fitness Evaluation
+## 3. 架构模式适配性评估
 
-When evaluating whether the chosen architecture pattern fits, consider:
+在评估所选架构模式是否适当时，考虑以下因素：
 
-**Monolith** — Good fit when: small team (<8), early stage, domain boundaries unclear, low
-operational complexity budget. Bad fit when: multiple teams needing independent deployments,
-different scaling requirements per component, polyglot requirements.
+**单体** —— 适合：小团队（<8 人）、早期阶段、领域边界不清晰、运维复杂度预算低。不适合：多个团队需要独立部署、每个组件有不同的扩展需求、多语言要求。
 
-**Microservices** — Good fit when: multiple teams, independent deployment needed, different
-scaling profiles per service, clear domain boundaries. Bad fit when: small team, shared
-database, coordinated deployments required, domain boundaries still unclear.
+**微服务** —— 适合：多个团队、需要独立部署、每个服务有不同的扩展配置、清晰的领域边界。不适合：小团队、共享数据库、需要协调部署、领域边界仍不清晰。
 
-**Serverless / FaaS** — Good fit when: event-driven workloads, variable/spiky traffic,
-cost-sensitive low-traffic services, rapid prototyping. Bad fit when: long-running processes,
-latency-sensitive critical paths, high sustained throughput, complex stateful workflows.
+**Serverless / FaaS** —— 适合：事件驱动工作负载、可变/突发流量、成本敏感的流量低服务、快速原型。不适合：长时间运行进程、延迟敏感的关键路径、高持续吞吐量、复杂的有状态工作流。
 
-**Event-Driven / EDA** — Good fit when: loose coupling needed, eventual consistency acceptable,
-complex workflows with multiple consumers, audit requirements. Bad fit when: strong consistency
-required, simple request-response patterns, small team without event infrastructure experience.
+**事件驱动 / EDA** —— 适合：需要松耦合、可接受最终一致性、含多个消费者的复杂工作流、审计需求。不适合：需要强一致性、简单的请求-响应模式、无事件基础设施经验的小团队。
 
-**CQRS** — Good fit when: read and write patterns diverge significantly, complex domain with
-rich queries, event sourcing desired. Bad fit when: simple CRUD, read/write patterns similar,
-small data volume.
+**CQRS** —— 适合：读写模式差异显著、含丰富查询的复杂领域、需要事件溯源。不适合：简单 CRUD、读写模式相似、小数据量。
 
-**Modular Monolith** — Good fit when: need monolith simplicity with service-like boundaries,
-preparing for future decomposition, moderate team size. Bad fit when: truly independent
-scaling is needed now, polyglot requirements.
+**模块化单体** —— 适合：需要单体简单性及类似服务的边界、为未来分解做准备、中等等团队规模。不适合：现在就需要真正独立的扩展、多语言要求。
 
-Do not recommend a pattern switch lightly. Include effort/risk assessment and suggest phased
-migration when applicable.
+不要轻易建议更换模式。包含工作量/风险评估，并在适用时建议分阶段迁移。
 
 ---
 
-## 4. Evaluation Guidance by Mode
+## 4. 按模式的评估指南
 
-### Mode A (Codebase)
+### 模式 A（代码库）
 
-- Map the actual dependency graph (import analysis)
-- Check for circular dependencies between top-level modules
-- Identify the largest files/classes (likely god objects)
-- Check configuration patterns (hardcoded vs externalized)
-- Look for interface/contract definitions at module boundaries
-- Count cross-module imports to assess coupling
+- 映射实际依赖图（导入分析）
+- 检查顶层模块之间的循环依赖
+- 识别最大的文件/类（很可能是上帝对象）
+- 检查配置模式（硬编码 vs 外部化）
+- 查找模块边界的接口/契约定义
+- 统计跨模块导入以评估耦合度
 
-### Mode B (Document)
+### 模式 B（文档）
 
-- Check if component responsibilities are clearly stated
-- Look for overlapping responsibilities between components
-- Verify data ownership is defined per component
-- Check if failure scenarios are addressed
-- Look for stated consistency model
-- Identify any assumed infrastructure not explicitly designed
+- 检查组件职责是否清晰声明
+- 查找组件之间的重叠职责
+- 验证每个组件的数据所有权是否定义
+- 检查故障场景是否已处理
+- 查找声明的一致性模型
+- 识别任何假定的但未显式设计的基础设施
 
-### Mode C (Hybrid)
+### 模式 C（混合）
 
-- Cross-reference stated boundaries against actual code structure
-- Check if documented APIs match implementation
-- Verify stated patterns (e.g., "we use CQRS") against actual code
-- Identify undocumented components that exist in code
-- Flag documented components not yet implemented
+- 交叉对照声明的边界与实际代码结构
+- 检查文档中的 API 是否与实现一致
+- 验证声明的模式（如"我们使用 CQRS"）与实际代码
+- 识别代码中存在但未文档化的组件
+- 标记已文档化但尚未实现的组件

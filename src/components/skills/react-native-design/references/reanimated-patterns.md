@@ -1,8 +1,8 @@
-# React Native Reanimated 3 Patterns
+# React Native Reanimated 3 模式
 
-## Core Concepts
+## 核心概念
 
-### Shared Values and Animated Styles
+### 共享值和动画样式
 
 ```typescript
 import Animated, {
@@ -17,12 +17,12 @@ import Animated, {
 } from 'react-native-reanimated';
 
 function BasicAnimations() {
-  // Shared value - can be modified from JS or UI thread
+  // 共享值 - 可在 JS 或 UI 线程中修改
   const opacity = useSharedValue(0);
   const scale = useSharedValue(1);
   const rotation = useSharedValue(0);
 
-  // Animated style - runs on UI thread
+  // 动画样式 - 在 UI 线程运行
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
     transform: [
@@ -32,19 +32,19 @@ function BasicAnimations() {
   }));
 
   const animate = () => {
-    // Spring animation
+    // Spring 动画
     scale.value = withSpring(1.2, {
       damping: 10,
       stiffness: 100,
     });
 
-    // Timing animation with easing
+    // 带缓动的 Timing 动画
     opacity.value = withTiming(1, {
       duration: 500,
       easing: Easing.bezier(0.25, 0.1, 0.25, 1),
     });
 
-    // Sequence of animations
+    // 动画序列
     rotation.value = withSequence(
       withTiming(15, { duration: 100 }),
       withTiming(-15, { duration: 100 }),
@@ -58,7 +58,7 @@ function BasicAnimations() {
 }
 ```
 
-### Animation Callbacks
+### 动画回调
 
 ```typescript
 import { runOnJS, runOnUI } from 'react-native-reanimated';
@@ -78,7 +78,7 @@ function AnimationWithCallbacks() {
       (finished) => {
         'worklet';
         if (finished) {
-          // Call JS function from worklet
+          // 从 worklet 调用 JS 函数
           runOnJS(updateStatus)('completed');
         }
       }
@@ -98,9 +98,9 @@ function AnimationWithCallbacks() {
 }
 ```
 
-## Gesture Handler Integration
+## Gesture Handler 集成
 
-### Pan Gesture
+### 拖拽手势
 
 ```typescript
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
@@ -125,7 +125,7 @@ function DraggableBox() {
       translateY.value = event.translationY + context.value.y;
     })
     .onEnd((event) => {
-      // Apply velocity decay
+      // 应用速度衰减
       translateX.value = withSpring(
         clamp(translateX.value + event.velocityX / 10, -100, 100)
       );
@@ -149,7 +149,7 @@ function DraggableBox() {
 }
 ```
 
-### Pinch and Rotate Gestures
+### 捏合和旋转手势
 
 ```typescript
 function ZoomableImage() {
@@ -164,7 +164,7 @@ function ZoomableImage() {
     })
     .onEnd(() => {
       savedScale.value = scale.value;
-      // Snap back if too small
+      // 如果太小则弹回
       if (scale.value < 1) {
         scale.value = withSpring(1);
         savedScale.value = 1;
@@ -199,7 +199,7 @@ function ZoomableImage() {
 }
 ```
 
-### Tap Gesture with Feedback
+### 带反馈的点击手势
 
 ```typescript
 function TappableCard({ onPress, children }: TappableCardProps) {
@@ -234,9 +234,9 @@ function TappableCard({ onPress, children }: TappableCardProps) {
 }
 ```
 
-## Common Animation Patterns
+## 常见动画模式
 
-### Fade In/Out
+### 淡入/淡出
 
 ```typescript
 function FadeInView({ visible, children }: FadeInViewProps) {
@@ -259,7 +259,7 @@ function FadeInView({ visible, children }: FadeInViewProps) {
 }
 ```
 
-### Slide In/Out
+### 滑入/滑出
 
 ```typescript
 function SlideInView({ visible, direction = 'right', children }) {
@@ -289,7 +289,7 @@ function SlideInView({ visible, direction = 'right', children }) {
 }
 ```
 
-### Staggered List Animation
+### 交错列表动画
 
 ```typescript
 function StaggeredList({ items }: { items: Item[] }) {
@@ -332,7 +332,7 @@ function StaggeredItem({ item, index }: { item: Item; index: number }) {
 }
 ```
 
-### Pulse Animation
+### 脉冲动画
 
 ```typescript
 function PulseView({ children }: { children: React.ReactNode }) {
@@ -344,8 +344,8 @@ function PulseView({ children }: { children: React.ReactNode }) {
         withTiming(1.05, { duration: 500 }),
         withTiming(1, { duration: 500 })
       ),
-      -1, // infinite
-      false // no reverse
+      -1, // 无限循环
+      false // 不反转
     );
 
     return () => {
@@ -365,7 +365,7 @@ function PulseView({ children }: { children: React.ReactNode }) {
 }
 ```
 
-### Shake Animation
+### 抖动动画
 
 ```typescript
 function ShakeView({ trigger, children }) {
@@ -395,9 +395,9 @@ function ShakeView({ trigger, children }) {
 }
 ```
 
-## Advanced Patterns
+## 高级模式
 
-### Interpolation
+### 插值
 
 ```typescript
 import { interpolate, Extrapolation } from 'react-native-reanimated';
@@ -447,14 +447,14 @@ function ParallaxHeader() {
         })}
         scrollEventThrottle={16}
       >
-        {/* Content */}
+        {/* 内容 */}
       </Animated.ScrollView>
     </View>
   );
 }
 ```
 
-### Color Interpolation
+### 颜色插值
 
 ```typescript
 import { interpolateColor } from 'react-native-reanimated';
@@ -486,7 +486,7 @@ function ColorTransition() {
 }
 ```
 
-### Derived Values
+### 派生值
 
 ```typescript
 import { useDerivedValue } from 'react-native-reanimated';
@@ -495,7 +495,7 @@ function DerivedValueExample() {
   const x = useSharedValue(0);
   const y = useSharedValue(0);
 
-  // Derived value computed from other shared values
+  // 从其他共享值计算派生值
   const distance = useDerivedValue(() => {
     return Math.sqrt(x.value ** 2 + y.value ** 2);
   });
@@ -519,7 +519,7 @@ function DerivedValueExample() {
 }
 ```
 
-### Layout Animations
+### 布局动画
 
 ```typescript
 import Animated, {
@@ -565,7 +565,7 @@ function AnimatedList() {
 }
 ```
 
-### Swipeable Card
+### 可滑动卡片
 
 ```typescript
 function SwipeableCard({ onSwipeLeft, onSwipeRight }) {
@@ -636,14 +636,14 @@ function SwipeableCard({ onSwipeLeft, onSwipeRight }) {
         <Animated.View style={[styles.nopeIndicator, rightIndicatorStyle]}>
           <Text>NOPE</Text>
         </Animated.View>
-        {/* Card content */}
+        {/* 卡片内容 */}
       </Animated.View>
     </GestureDetector>
   );
 }
 ```
 
-### Bottom Sheet
+### 底部弹窗
 
 ```typescript
 const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 50;
@@ -666,7 +666,7 @@ function BottomSheet({ children }) {
       );
     })
     .onEnd((event) => {
-      // Find closest snap point
+      // 找到最近的吸附点
       const destination = SNAP_POINTS.reduce((prev, curr) =>
         Math.abs(curr - translateY.value) < Math.abs(prev - translateY.value)
           ? curr
@@ -706,36 +706,36 @@ function BottomSheet({ children }) {
 }
 ```
 
-## Performance Tips
+## 性能提示
 
-### Memoization
+### 记忆化
 
 ```typescript
-// Memoize animated style when dependencies don't change
+// 当依赖不变化时记忆动画样式
 const animatedStyle = useAnimatedStyle(
   () => ({
     transform: [{ translateX: translateX.value }],
   }),
   [],
-); // Empty deps if no external dependencies
+); // 无外部依赖时为空数组
 
-// Use useMemo for complex calculations outside worklets
+// 对 worklet 外的复杂计算使用 useMemo
 const threshold = useMemo(() => calculateThreshold(screenWidth), [screenWidth]);
 ```
 
-### Worklet Best Practices
+### Worklet 最佳实践
 
 ```typescript
-// Do: Keep worklets simple
+// 推荐：保持 worklet 简单
 const simpleWorklet = () => {
   "worklet";
   return scale.value * 2;
 };
 
-// Don't: Complex logic in worklets
-// Move complex logic to JS with runOnJS
+// 不推荐：在 worklet 中写复杂逻辑
+// 将复杂逻辑移到 JS 中，使用 runOnJS
 
-// Do: Use runOnJS for callbacks
+// 推荐：对回调使用 runOnJS
 const onComplete = () => {
   setIsAnimating(false);
 };
@@ -748,7 +748,7 @@ opacity.value = withTiming(1, {}, (finished) => {
 });
 ```
 
-### Cancel Animations
+### 取消动画
 
 ```typescript
 import { cancelAnimation } from 'react-native-reanimated';
@@ -757,14 +757,14 @@ function AnimatedComponent() {
   const translateX = useSharedValue(0);
 
   useEffect(() => {
-    // Start animation
+    // 启动动画
     translateX.value = withRepeat(
       withTiming(100, { duration: 1000 }),
       -1,
       true
     );
 
-    // Cleanup: cancel animation on unmount
+    // 清理：在卸载时取消动画
     return () => {
       cancelAnimation(translateX);
     };

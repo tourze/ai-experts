@@ -1,137 +1,137 @@
-# What-If Oracle — Scenario Templates
+# What-If Oracle — 场景模板
 
-Reference guide for domain-specific scenario analysis configurations.
+针对特定领域场景分析配置的参考指南。
 
-## Startup / Business Decision
+## 创业 / 商业决策
 
-**Variables to test:**
+**要测试的变量：**
 
-- Market entry timing
-- Pricing strategy
-- Partnership terms
-- Hiring decisions
-- Funding rounds
+- 市场进入时机
+- 定价策略
+- 合作伙伴条款
+- 招聘决策
+- 融资轮次
 
-**Branch emphasis:** Likely Case + Contrarian + Second Order
-**Key tension:** Speed vs. thoroughness — startups can't afford to analyze forever
+**分支重点：** 可能情况 + 逆向观点 + 二阶效应
+**关键张力：** 速度 vs. 全面性——创业公司不能永远分析下去
 
-**Template prompt:**
+**模板提示：**
 
-> "What if we [specific action] in [timeframe]? Our current state: [revenue, team size, runway]. Key constraint: [the limiting factor]."
+> "如果我们[具体行动]在[时间范围]内？我们当前状态：[收入、团队规模、现金流]。关键约束：[限制因素]。"
 
-## Technology Architecture
+## 技术架构
 
-**Variables to test:**
+**要测试的变量：**
 
-- Tech stack choice
-- Build vs. buy
-- Scaling approach
-- Security model
-- Migration path
+- 技术栈选择
+- 构建 vs. 购买
+- 扩展方法
+- 安全模型
+- 迁移路径
 
-**Branch emphasis:** Worst Case + Wild Card + Second Order
-**Key tension:** Engineering elegance vs. shipping speed
+**分支重点：** 最坏情况 + 未知因素 + 二阶效应
+**关键张力：** 工程优雅 vs. 交付速度
 
-**Template prompt:**
+**模板提示：**
 
-> "What if we choose [technology/approach] for [system]? Current architecture: [brief description]. Team capability: [relevant skills]. Timeline: [deadline]."
+> "如果我们选择[技术/方法]用于[系统]？当前架构：[简要描述]。团队能力：[相关技能]。时间线：[截止日期]。"
 
-## Investment / Financial
+## 投资 / 财务
 
-**Variables to test:**
+**要测试的变量：**
 
-- Market conditions
-- Valuation scenarios
-- Exit timing
-- Capital allocation
-- Revenue model changes
+- 市场条件
+- 估值场景
+- 退出时机
+- 资本配置
+- 收入模式变化
 
-**Branch emphasis:** All 6 branches — money decisions deserve full analysis
-**Key tension:** Risk tolerance vs. opportunity cost
+**分支重点：** 所有 6 个分支——金钱决定值得全面分析
+**关键张力：** 风险承受 vs. 机会成本
 
-**Template prompt:**
+**模板提示：**
 
-> "What if [market condition / financial event] happens? Our exposure: [amount/percentage]. Current position: [financial state]. Time horizon: [investment period]."
+> "如果[市场条件/金融事件]发生？我们的敞口：[金额/百分比]。当前位置：[财务状态]。时间范围：[投资周期]。"
 
-## Career / Personal
+## 职业 / 个人
 
-**Variables to test:**
+**要测试的变量：**
 
-- Job change
-- Skill development path
-- Relocation
-- Relationship decisions
-- Health changes
+- 工作变动
+- 技能发展路径
+- 搬迁
+- 关系决策
+- 健康变化
 
-**Branch emphasis:** Likely Case + Best Case + Contrarian
-**Key tension:** Security vs. growth — comfort zone vs. expansion
+**分支重点：** 可能情况 + 最佳情况 + 逆向观点
+**关键张力：** 安全 vs. 成长——舒适区 vs. 扩展
 
-**Template prompt:**
+**模板提示：**
 
-> "What if I [personal decision]? My current situation: [brief]. What I value most: [1-3 values]. What I'm afraid of: [honest answer]."
+> "如果我[个人决定]？我目前的情况：[简要]。我最重视的：[1-3 个价值观]。我害怕的：[诚实回答]。"
 
-## Geopolitical / Macro
+## 地缘政治 / 宏观
 
-**Variables to test:**
+**要测试的变量：**
 
-- Policy changes
-- Regulatory shifts
-- Market disruptions
-- Technology breakthroughs
-- Social movements
+- 政策变化
+- 监管转变
+- 市场颠覆
+- 技术突破
+- 社会运动
 
-**Branch emphasis:** Wild Card + Second Order + Contrarian
-**Key tension:** Local impact vs. systemic effects
+**分支重点：** 未知因素 + 二阶效应 + 逆向观点
+**关键张力：** 局部影响 vs. 系统性效应
 
-**Template prompt:**
+**模板提示：**
 
-> "What if [geopolitical event] happens? My exposure: [how it affects me/my organization]. Time horizon: [relevant period]."
+> "如果[地缘政治事件]发生？我的敞口：[它如何影响我/我的组织]。时间范围：[相关时期]。"
 
-## Crisis Response
+## 危机响应
 
-**Variables to test:**
+**要测试的变量：**
 
-- Severity escalation
-- Communication strategy
-- Resource allocation
-- Recovery timeline
-- Reputation impact
+- 严重程度升级
+- 沟通策略
+- 资源分配
+- 恢复时间线
+- 声誉影响
 
-**Branch emphasis:** Worst Case (detailed) + Likely Case + Second Order
-**Key tension:** Immediate triage vs. root cause resolution
+**分支重点：** 最坏情况（详细）+ 可能情况 + 二阶效应
+**关键张力：** 即时分类 vs. 根因解决
 
-**Template prompt:**
+**模板提示：**
 
-> "We're facing [crisis/incident]. Current impact: [what's broken]. Stakeholders affected: [who]. Resources available: [what we can deploy]. What if [specific escalation scenario]?"
+> "我们正面临[危机/事故]。当前影响：[出了什么问题]。利益相关者受影响：[谁]。可用资源：[我们可以部署什么]。如果[具体升级场景]？"
 
-## The Recursive Template
+## 递归模板
 
-For complex, multi-layered analysis:
+用于复杂的多层分析：
 
 ```
-ROUND 1: "What if X?"
-  → Identify the most likely branch (α)
+第一轮："如果 X 呢？"
+  → 识别最可能的分支 (α)
 
-ROUND 2: "Given α is happening, what if Y?"
-  → Identify the most likely sub-branch
+第二轮："假设 α 正在发生，如果 Y 呢？"
+  → 识别最可能的子分支
 
-ROUND 3: "Given α+Y, what if Z?"
-  → Map the deepest consequences
+第三轮："假设 α+Y，如果 Z 呢？"
+  → 映射最深的后果
 
-Each round narrows the possibility space while deepening understanding.
-Maximum recommended depth: 3 rounds.
+每一轮都缩小可能性空间，同时加深理解。
+推荐最大深度：3 轮。
 ```
 
-## Probability Calibration Guide
+## 概率校准指南
 
-When assigning probabilities to branches:
+为分支分配概率时：
 
-| Confidence Level | Probability Range | Evidence Required                                          |
+| 置信水平 | 概率范围 | 所需证据 |
 | ---------------- | ----------------- | ---------------------------------------------------------- |
-| **Very High**    | >80%              | Strong historical precedent + current data alignment       |
-| **High**         | 60-80%            | Multiple converging signals, some historical support       |
-| **Medium**       | 30-60%            | Mixed signals, could go either way                         |
-| **Low**          | 10-30%            | Plausible but requires several things to go a specific way |
-| **Very Low**     | <10%              | Black swan territory — possible but unlikely               |
+| **非常高** | >80% | 强烈的历史先例 + 当前数据一致 |
+| **高** | 60-80% | 多个汇聚信号，有一定历史支持 |
+| **中** | 30-60% | 混合信号，可能走向任一边 |
+| **低** | 10-30% | 可能但需要多个条件按特定方向发展 |
+| **非常低** | <10% | 黑天鹅领域——可能但可能性小 |
 
-**Rule:** All branch probabilities in a single analysis should sum to approximately 100%. If they don't, there's a missing branch.
+**规则：** 单次分析中所有分支的概率应总和约 100%。如果不，说明缺少某个分支。

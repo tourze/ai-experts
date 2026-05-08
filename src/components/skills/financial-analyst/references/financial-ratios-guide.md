@@ -1,376 +1,376 @@
-# Financial Ratios Guide
+# 财务比率指南
 
-Comprehensive reference for financial ratio analysis covering formulas, interpretation, and industry benchmarks across five categories.
+涵盖五大类财务比率分析的综合性参考，包括公式、解释和行业基准。
 
-## 1. Profitability Ratios
+## 1. 盈利能力比率
 
-Measure a company's ability to generate earnings relative to revenue, assets, or equity.
+衡量公司相对于收入、资产或权益创造收益的能力。
 
-### Return on Equity (ROE)
+### 净资产收益率 (ROE)
 
-**Formula:** Net Income / Total Shareholders' Equity
+**公式：** 净利润 / 股东权益总额
 
-**Interpretation:**
-- Measures how effectively management uses equity to generate profits
-- Higher ROE indicates more efficient use of equity capital
-- Compare against cost of equity - ROE should exceed it
+**解释：**
+- 衡量管理层利用权益资本创造利润的效率
+- 较高的 ROE 表示权益资本使用效率更高
+- 与权益成本比较——ROE 应超过权益成本
 
-**Benchmarks:**
-| Rating | Range |
-|--------|-------|
-| Below Average | < 8% |
-| Acceptable | 8% - 15% |
-| Good | 15% - 25% |
-| Excellent | > 25% |
+**基准：**
+| 评级       | 范围      |
+| ---------- | --------- |
+| 低于平均水平 | < 8%      |
+| 可接受       | 8% - 15%  |
+| 良好         | 15% - 25% |
+| 优秀         | > 25%     |
 
-**Caveats:** High leverage can inflate ROE. Use DuPont decomposition (ROE = Margin x Turnover x Leverage) for deeper analysis.
+**注意事项：** 高杠杆会虚增 ROE。使用杜邦分解（ROE = 利润率 x 周转率 x 杠杆率）进行深入分析。
 
-### Return on Assets (ROA)
+### 总资产收益率 (ROA)
 
-**Formula:** Net Income / Total Assets
+**公式：** 净利润 / 总资产
 
-**Interpretation:**
-- Measures how efficiently assets generate profit
-- Asset-light businesses naturally have higher ROA
-- Compare within industry only
+**解释：**
+- 衡量资产创造利润的效率
+- 轻资产公司自然拥有更高的 ROA
+- 仅在同行业内比较
 
-**Benchmarks:**
-| Rating | Range |
-|--------|-------|
-| Below Average | < 3% |
-| Acceptable | 3% - 6% |
-| Good | 6% - 12% |
-| Excellent | > 12% |
+**基准：**
+| 评级       | 范围     |
+| ---------- | -------- |
+| 低于平均水平 | < 3%     |
+| 可接受       | 3% - 6%  |
+| 良好         | 6% - 12% |
+| 优秀         | > 12%    |
 
-### Gross Margin
+### 毛利率
 
-**Formula:** (Revenue - COGS) / Revenue
+**公式：** (收入 - 销售成本) / 收入
 
-**Interpretation:**
-- Measures production efficiency and pricing power
-- Declining gross margin may signal competitive pressure or cost inflation
-- Critical for evaluating business model sustainability
+**解释：**
+- 衡量生产效率和定价能力
+- 毛利率下降可能表明竞争压力或成本上涨
+- 对评估商业模式可持续性至关重要
 
-**Benchmarks by Industry:**
-| Industry | Typical Range |
-|----------|--------------|
-| Software/SaaS | 70% - 85% |
-| Financial Services | 50% - 70% |
-| Retail | 25% - 45% |
-| Manufacturing | 20% - 40% |
-| Grocery | 25% - 30% |
+**行业基准：**
+| 行业               | 典型范围   |
+| ------------------ | ---------- |
+| 软件/SaaS          | 70% - 85%  |
+| 金融服务           | 50% - 70%  |
+| 零售               | 25% - 45%  |
+| 制造业             | 20% - 40%  |
+| 食品杂货           | 25% - 30%  |
 
-### Operating Margin
+### 营业利润率
 
-**Formula:** Operating Income / Revenue
+**公式：** 营业利润 / 收入
 
-**Interpretation:**
-- Measures operational efficiency after all operating expenses
-- Excludes interest and taxes for better operational comparison
-- Indicates management effectiveness in controlling costs
+**解释：**
+- 衡量扣除所有营业费用后的运营效率
+- 排除利息和税费，便于更佳的运营比较
+- 反映管理层控制成本的有效性
 
-**Benchmarks:**
-| Rating | Range |
-|--------|-------|
-| Below Average | < 5% |
-| Acceptable | 5% - 15% |
-| Good | 15% - 25% |
-| Excellent | > 25% |
+**基准：**
+| 评级       | 范围     |
+| ---------- | -------- |
+| 低于平均水平 | < 5%     |
+| 可接受       | 5% - 15% |
+| 良好         | 15% - 25% |
+| 优秀         | > 25%    |
 
-### Net Margin
+### 净利润率
 
-**Formula:** Net Income / Revenue
+**公式：** 净利润 / 收入
 
-**Interpretation:**
-- Bottom-line profitability after all expenses
-- Affected by tax strategy, capital structure, and one-time items
-- Most comprehensive profitability measure
+**解释：**
+- 扣除所有费用后的最终盈利能力
+- 受税收策略、资本结构和一次性项目影响
+- 最全面的盈利指标
 
-**Benchmarks:**
-| Rating | Range |
-|--------|-------|
-| Below Average | < 3% |
-| Acceptable | 3% - 10% |
-| Good | 10% - 20% |
-| Excellent | > 20% |
+**基准：**
+| 评级       | 范围      |
+| ---------- | --------- |
+| 低于平均水平 | < 3%      |
+| 可接受       | 3% - 10%  |
+| 良好         | 10% - 20% |
+| 优秀         | > 20%     |
 
-## 2. Liquidity Ratios
+## 2. 流动性比率
 
-Measure a company's ability to meet short-term obligations.
+衡量公司履行短期债务的能力。
 
-### Current Ratio
-
-**Formula:** Current Assets / Current Liabilities
-
-**Interpretation:**
-- Measures short-term solvency
-- Too high may indicate inefficient asset use
-- Too low signals potential liquidity risk
+### 流动比率
+
+**公式：** 流动资产 / 流动负债
+
+**解释：**
+- 衡量短期偿债能力
+- 过高可能表明资产使用效率低下
+- 过低则预示潜在的流动性风险
 
-**Benchmarks:**
-| Rating | Range |
-|--------|-------|
-| Concern | < 1.0 |
-| Acceptable | 1.0 - 1.5 |
-| Healthy | 1.5 - 3.0 |
-| Excessive | > 3.0 |
+**基准：**
+| 评级       | 范围       |
+| ---------- | ---------- |
+| 担忧       | < 1.0      |
+| 可接受     | 1.0 - 1.5  |
+| 健康       | 1.5 - 3.0  |
+| 过高       | > 3.0      |
 
-### Quick Ratio (Acid Test)
+### 速动比率（酸性测试）
 
-**Formula:** (Current Assets - Inventory) / Current Liabilities
+**公式：** (流动资产 - 存货) / 流动负债
 
-**Interpretation:**
-- More conservative than current ratio
-- Excludes inventory (least liquid current asset)
-- Critical for businesses with slow-moving inventory
-
-**Benchmarks:**
-| Rating | Range |
-|--------|-------|
-| Concern | < 0.8 |
-| Acceptable | 0.8 - 1.0 |
-| Healthy | 1.0 - 2.0 |
-| Excessive | > 2.0 |
+**解释：**
+- 比流动比率更保守
+- 排除存货（流动性最低的流动资产）
+- 对存货周转慢的企业至关重要
+
+**基准：**
+| 评级       | 范围       |
+| ---------- | ---------- |
+| 担忧       | < 0.8      |
+| 可接受     | 0.8 - 1.0  |
+| 健康       | 1.0 - 2.0  |
+| 过高       | > 2.0      |
 
-### Cash Ratio
+### 现金比率
 
-**Formula:** Cash & Equivalents / Current Liabilities
+**公式：** 现金及现金等价物 / 流动负债
 
-**Interpretation:**
-- Most conservative liquidity measure
-- Indicates ability to pay obligations with cash on hand
-- Particularly important during credit crunches
-
-**Benchmarks:**
-| Rating | Range |
-|--------|-------|
-| Low | < 0.2 |
-| Adequate | 0.2 - 0.5 |
-| Strong | 0.5 - 1.0 |
-| Excessive | > 1.0 |
+**解释：**
+- 最保守的流动性指标
+- 表明用现有现金偿还债务的能力
+- 在信贷紧缩时尤为重要
+
+**基准：**
+| 评级   | 范围       |
+| ------ | ---------- |
+| 低     | < 0.2      |
+| 充足   | 0.2 - 0.5  |
+| 强劲   | 0.5 - 1.0  |
+| 过高   | > 1.0      |
 
-## 3. Leverage Ratios
+## 3. 杠杆比率
 
-Measure the extent to which a company uses debt financing.
+衡量公司使用债务融资的程度。
 
-### Debt-to-Equity Ratio
+### 资产负债率
 
-**Formula:** Total Debt / Total Shareholders' Equity
-
-**Interpretation:**
-- Measures financial leverage and risk
-- Higher ratio = more reliance on debt financing
-- Industry norms vary significantly (utilities vs tech)
+**公式：** 总负债 / 股东权益总额
+
+**解释：**
+- 衡量财务杠杆和风险
+- 比率越高 = 越依赖债务融资
+- 行业标准差异显著（公用事业 vs 科技）
 
-**Benchmarks:**
-| Rating | Range |
-|--------|-------|
-| Conservative | < 0.3 |
-| Moderate | 0.3 - 0.8 |
-| Elevated | 0.8 - 2.0 |
-| High Risk | > 2.0 |
+**基准：**
+| 评级       | 范围       |
+| ---------- | ---------- |
+| 保守       | < 0.3      |
+| 适中       | 0.3 - 0.8  |
+| 偏高       | 0.8 - 2.0  |
+| 高风险     | > 2.0      |
 
-### Interest Coverage Ratio
-
-**Formula:** Operating Income (EBIT) / Interest Expense
-
-**Interpretation:**
-- Measures ability to service debt from operating earnings
-- Below 1.5x is a red flag for lenders
-- Critical for credit analysis
+### 利息保障倍数
+
+**公式：** 营业利润 (EBIT) / 利息费用
+
+**解释：**
+- 衡量用营业利润偿还债务的能力
+- 低于 1.5 倍是贷方的危险信号
+- 对信用分析至关重要
 
-**Benchmarks:**
-| Rating | Range |
-|--------|-------|
-| Distressed | < 2.0 |
-| Adequate | 2.0 - 5.0 |
-| Strong | 5.0 - 10.0 |
-| Very Strong | > 10.0 |
+**基准：**
+| 评级       | 范围         |
+| ---------- | ------------ |
+| 困境       | < 2.0        |
+| 充足       | 2.0 - 5.0    |
+| 强劲       | 5.0 - 10.0   |
+| 非常强劲   | > 10.0       |
 
-### Debt Service Coverage Ratio (DSCR)
+### 偿债覆盖率 (DSCR)
 
-**Formula:** Operating Cash Flow / Total Debt Service
+**公式：** 经营活动现金流 / 总偿债额
 
-**Interpretation:**
-- Cash-based measure of debt servicing capacity
-- Includes principal repayments (unlike interest coverage)
-- Required by many loan covenants
-
-**Benchmarks:**
-| Rating | Range |
-|--------|-------|
-| Default Risk | < 1.0 |
-| Minimum | 1.0 - 1.5 |
-| Comfortable | 1.5 - 2.5 |
-| Strong | > 2.5 |
+**解释：**
+- 基于现金的偿债能力指标
+- 包含本金偿还（不同于利息保障倍数）
+- 许多贷款协议要求此项
+
+**基准：**
+| 评级       | 范围         |
+| ---------- | ------------ |
+| 违约风险   | < 1.0        |
+| 最低       | 1.0 - 1.5    |
+| 舒适       | 1.5 - 2.5    |
+| 强劲       | > 2.5        |
 
-## 4. Efficiency Ratios
+## 4. 效率比率
 
-Measure how effectively a company uses its assets and manages operations.
+衡量公司运用资产和管理运营的有效性。
 
-### Asset Turnover
+### 资产周转率
 
-**Formula:** Revenue / Total Assets
-
-**Interpretation:**
-- Measures revenue generated per dollar of assets
-- Higher indicates more efficient asset utilization
-- Inversely related to profit margins (DuPont)
+**公式：** 收入 / 总资产
+
+**解释：**
+- 衡量每元资产产生的收入
+- 越高表示资产利用率越有效
+- 与利润率呈反向关系（杜邦分析）
 
-**Benchmarks:**
-| Industry | Typical Range |
-|----------|--------------|
-| Retail | 2.0 - 3.0 |
-| Manufacturing | 0.8 - 1.5 |
-| Utilities | 0.3 - 0.5 |
-| Technology | 0.5 - 1.0 |
+**基准：**
+| 行业       | 典型范围   |
+| ---------- | ---------- |
+| 零售       | 2.0 - 3.0  |
+| 制造业     | 0.8 - 1.5  |
+| 公用事业   | 0.3 - 0.5  |
+| 科技       | 0.5 - 1.0  |
 
-### Inventory Turnover
+### 存货周转率
 
-**Formula:** COGS / Average Inventory
-
-**Interpretation:**
-- Measures how quickly inventory is sold
-- Low turnover suggests overstock or obsolescence risk
-- High turnover may indicate strong sales or thin inventory
+**公式：** 销售成本 / 平均存货
+
+**解释：**
+- 衡量存货销售的速度
+- 低周转率表明库存积压或陈旧风险
+- 高周转率可能表明销售强劲或库存不足
 
-**Benchmarks:**
-| Rating | Range |
-|--------|-------|
-| Slow | < 4x |
-| Average | 4x - 8x |
-| Efficient | 8x - 12x |
-| Very Efficient | > 12x |
+**基准：**
+| 评级           | 范围     |
+| -------------- | -------- |
+| 慢             | < 4x     |
+| 平均           | 4x - 8x  |
+| 高效           | 8x - 12x |
+| 非常高效       | > 12x    |
 
-### Receivables Turnover
-
-**Formula:** Revenue / Accounts Receivable
-
-**Interpretation:**
-- Measures efficiency of credit and collections
-- Higher turnover means faster collections
-- Monitor trends for credit policy changes
+### 应收账款周转率
+
+**公式：** 收入 / 应收账款
+
+**解释：**
+- 衡量信用和收款效率
+- 周转率越高表示收款越快
+- 监控趋势以发现信用政策变化
 
-**Benchmarks:**
-| Rating | Range |
-|--------|-------|
-| Slow | < 6x |
-| Average | 6x - 10x |
-| Efficient | 10x - 15x |
-| Very Efficient | > 15x |
+**基准：**
+| 评级           | 范围      |
+| -------------- | --------- |
+| 慢             | < 6x      |
+| 平均           | 6x - 10x  |
+| 高效           | 10x - 15x |
+| 非常高效       | > 15x     |
 
-### Days Sales Outstanding (DSO)
-
-**Formula:** 365 / Receivables Turnover
-
-**Interpretation:**
-- Average days to collect payment after a sale
-- Lower DSO = faster cash conversion
-- Compare against payment terms
-
-**Benchmarks:**
-| Rating | Range |
-|--------|-------|
-| Excellent | < 30 days |
-| Good | 30 - 45 days |
-| Acceptable | 45 - 60 days |
-| Concern | > 60 days |
-
-## 5. Valuation Ratios
-
-Measure a company's market value relative to financial metrics.
-
-### Price-to-Earnings (P/E) Ratio
-
-**Formula:** Share Price / Earnings Per Share
-
-**Interpretation:**
-- Most widely used valuation metric
-- High P/E suggests growth expectations or overvaluation
-- Use trailing (TTM) and forward P/E for comparison
-
-**Benchmarks:**
-| Rating | Range |
-|--------|-------|
-| Value | < 10x |
-| Fair | 10x - 20x |
-| Growth | 20x - 35x |
-| Premium | > 35x |
-
-### Price-to-Book (P/B) Ratio
-
-**Formula:** Share Price / Book Value Per Share
-
-**Interpretation:**
-- Compares market value to accounting value
-- Below 1.0 may indicate undervaluation or distress
-- Most useful for asset-heavy industries
-
-**Benchmarks:**
-| Rating | Range |
-|--------|-------|
-| Undervalued | < 1.0 |
-| Fair | 1.0 - 2.5 |
-| Premium | 2.5 - 5.0 |
-| Rich | > 5.0 |
-
-### Price-to-Sales (P/S) Ratio
-
-**Formula:** Market Cap / Revenue
-
-**Interpretation:**
-- Useful for companies without positive earnings
-- Compare within industry only
-- Lower = potentially better value
-
-**Benchmarks:**
-| Rating | Range |
-|--------|-------|
-| Value | < 1.0 |
-| Fair | 1.0 - 3.0 |
-| Growth | 3.0 - 8.0 |
-| Premium | > 8.0 |
-
-### EV/EBITDA
-
-**Formula:** Enterprise Value / EBITDA
-
-**Interpretation:**
-- Capital-structure-neutral valuation metric
-- Preferred for M&A analysis and leveraged buyouts
-- More comparable across capital structures than P/E
-
-**Benchmarks:**
-| Rating | Range |
-|--------|-------|
-| Value | < 6x |
-| Fair | 6x - 12x |
-| Growth | 12x - 20x |
-| Premium | > 20x |
-
-### PEG Ratio
-
-**Formula:** P/E Ratio / Earnings Growth Rate (%)
-
-**Interpretation:**
-- Growth-adjusted P/E ratio
-- PEG of 1.0 suggests fair valuation relative to growth
-- Below 1.0 may indicate undervaluation
-
-**Benchmarks:**
-| Rating | Range |
-|--------|-------|
-| Undervalued | < 0.5 |
-| Fair | 0.5 - 1.0 |
-| Fully Valued | 1.0 - 2.0 |
-| Overvalued | > 2.0 |
-
-## Ratio Analysis Best Practices
-
-1. **Compare within industry** - Ratios vary significantly across sectors
-2. **Analyze trends** - A single period snapshot is insufficient; look at 3-5 year trends
-3. **Use multiple ratios** - No single ratio tells the complete story
-4. **Consider context** - Accounting policies, business cycle, and company stage matter
-5. **DuPont decomposition** - Break ROE into margin, turnover, and leverage components
-6. **Peer comparison** - Compare against direct competitors, not just broad benchmarks
-7. **Watch for manipulation** - Revenue recognition changes, off-balance-sheet items, and one-time adjustments can distort ratios
+### 应收账款周转天数 (DSO)
+
+**公式：** 365 / 应收账款周转率
+
+**解释：**
+- 销售后收款的平均天数
+- DSO 越低 = 现金转换越快
+- 与付款条件进行比较
+
+**基准：**
+| 评级       | 范围         |
+| ---------- | ------------ |
+| 优秀       | < 30 天      |
+| 良好       | 30 - 45 天   |
+| 可接受     | 45 - 60 天   |
+| 担忧       | > 60 天      |
+
+## 5. 估值比率
+
+衡量公司市值相对于财务指标的关系。
+
+### 市盈率 (P/E)
+
+**公式：** 股价 / 每股收益
+
+**解释：**
+- 最广泛使用的估值指标
+- 高 P/E 表明增长预期或高估
+- 使用滚动（TTM）和远期 P/E 进行比较
+
+**基准：**
+| 评级     | 范围      |
+| -------- | --------- |
+| 价值     | < 10x     |
+| 合理     | 10x - 20x |
+| 增长     | 20x - 35x |
+| 溢价     | > 35x     |
+
+### 市净率 (P/B)
+
+**公式：** 股价 / 每股净资产
+
+**解释：**
+- 比较市场价值与会计价值
+- 低于 1.0 可能表明被低估或陷入困境
+- 对重资产行业最有用
+
+**基准：**
+| 评级       | 范围        |
+| ---------- | ----------- |
+| 低估       | < 1.0       |
+| 合理       | 1.0 - 2.5   |
+| 溢价       | 2.5 - 5.0   |
+| 昂贵       | > 5.0       |
+
+### 市销率 (P/S)
+
+**公式：** 市值 / 收入
+
+**解释：**
+- 适用于盈利为负的公司
+- 仅在同行业内比较
+- 越低 = 可能越有价值
+
+**基准：**
+| 评级     | 范围      |
+| -------- | --------- |
+| 价值     | < 1.0     |
+| 合理     | 1.0 - 3.0 |
+| 增长     | 3.0 - 8.0 |
+| 溢价     | > 8.0     |
+
+### 企业价值倍数 (EV/EBITDA)
+
+**公式：** 企业价值 / EBITDA
+
+**解释：**
+- 资本结构中立的估值指标
+- 并购分析和杠杆收购首选
+- 跨资本结构可比性优于 P/E
+
+**基准：**
+| 评级     | 范围       |
+| -------- | ---------- |
+| 价值     | < 6x       |
+| 合理     | 6x - 12x   |
+| 增长     | 12x - 20x  |
+| 溢价     | > 20x      |
+
+### PEG 比率
+
+**公式：** 市盈率 / 盈利增长率 (%)
+
+**解释：**
+- 增长调整后的市盈率
+- PEG 为 1.0 表示相对于增长估值合理
+- 低于 1.0 可能表明被低估
+
+**基准：**
+| 评级       | 范围        |
+| ---------- | ----------- |
+| 低估       | < 0.5       |
+| 合理       | 0.5 - 1.0   |
+| 充分估值   | 1.0 - 2.0   |
+| 高估       | > 2.0       |
+
+## 比率分析最佳实践
+
+1. **同行业比较** - 比率在各行业间差异显著
+2. **分析趋势** - 单期快照不够；查看 3-5 年趋势
+3. **使用多种比率** - 没有单一比率能讲述完整故事
+4. **考虑上下文** - 会计政策、商业周期和公司阶段都很重要
+5. **杜邦分解** - 将 ROE 分解为利润率、周转率和杠杆率
+6. **同行比较** - 与直接竞争对手比较，而不仅是宽泛的基准
+7. **警惕操纵** - 收入确认变更、表外项目和一次性调整可能扭曲比率

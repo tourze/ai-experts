@@ -1,14 +1,14 @@
-# Chapter 4 - Errors Handling
+# 第 4 章 - 错误处理
 
-Rust enforces a strict error handling approach, but *how* you handle them defines where your code feels ergonomic, consistent and safe - as opposing cryptic and painful. This chapter dives into best practices for modeling and managing fallible operations across libraries and binaries.
+Rust 强制执行严格的错误处理方法，但*如何*处理错误决定了你的代码是感觉符合人体工程学、一致且安全——还是晦涩且痛苦。本章深入探讨了在库和二进制可执行文件中建模和管理可失败操作的最佳实践。
 
-> Even if you decide to crash you application with `unwrap` or `expect`, Rust forces you to declare that intentionally.
+> 即使你决定使用 `unwrap` 或 `expect` 让应用崩溃，Rust 也迫使你显式声明这一点。
 
-## 4.1 Prefer `Result`, avoid panic 🫨
+## 4.1 优先使用 `Result`，避免 panic 🫨
 
-Rust has a powerful type that wraps fallible data, [`Result<T, E>`](https://doc.rust-lang.org/std/result/), this allows us to handle Error cases according to our needs and manage the state of the application based on that.
+Rust 有一个强大的类型来包裹可失败数据：[`Result<T, E>`](https://doc.rust-lang.org/std/result/)，这允许我们根据需求处理错误情况并据此管理应用状态。
 
-* If your function can fail, prefer to return a `Result`:
+* 如果你的函数可能失败，优先返回一个 `Result`：
 ```rust
 fn divide(x: f64, y: f64) -> Result<f64, DivisionError> {
     if y == 0.0 {
@@ -19,28 +19,28 @@ fn divide(x: f64, y: f64) -> Result<f64, DivisionError> {
 }
 ```
 
-* Use `panic!` only in unrecoverable conditions - typically tests, assertions, bugs or a need to crash the application for some explicit reason.
-* There are 3 relevant macros that can replace `panic!` in appropriate conditions:
-    * `todo!`, similar to panic, but alerts the compiler that you are aware that there is code missing.
-    * `unreachable!`, you have reasoned about the code block and are sure that condition `xyz` is not possible and if ever becomes possible you want to be alerted.
-    * `unimplemented!`, specially useful for alerting that a block is not yet implement with a reason.
+* 仅在不可恢复条件下使用 `panic!`——通常是测试、断言、缺陷或因某些明确原因需要崩溃应用的情况。
+* 有 3 个相关宏可以在适当条件下替代 `panic!`：
+    * `todo!`，类似于 panic，但提示编译器你已意识到存在缺失代码。
+    * `unreachable!`，你已经推理过代码块并确信条件 `xyz` 是不可能的，如果它变得可能，你希望被提示。
+    * `unimplemented!`，特别适用于提示某个块尚未实现及其原因。
 
-## 4.2 Avoid `unwrap`/`expect` in Production
+## 4.2 在生产环境中避免 `unwrap`/`expect`
 
-Although `expect` is preferred to `unwrap`, as it can have context, they should be avoided in production code as there are smarter alternatives to them. Considering that, they should be used in the following scenarios:
-- In tests, assertions or test helper functions.
-- When failure is impossible.
-- When the smarter options can't handle the specific case.
+虽然 `expect` 优于 `unwrap`，因为它可以包含上下文，但应避免在生产代码中使用，因为有更智能的替代方案。考虑到这一点，它们应在以下场景中使用：
+- 在测试、断言或测试辅助函数中。
+- 当失败不可能时。
+- 当更智能的选项无法处理特定情况时。
 
-### 🚨 Alternative ways of handling `unwrap`/`expect`:
+### 🚨 处理 `unwrap`/`expect` 的替代方法：
 
-* If your `Result` (or `Option`) can have a predefined early return value in case of `Result::Err`, that doesn't need to know the `Err` value, use `let Ok(..) = else { return ... }` pattern, as it helps with flatten functions:
+* 如果你的 `Result`（或 `Option`）在 `Result::Err` 的情况下可以有一个预定义的提前返回值，且不需要知道 `Err` 的值，使用 `let Ok(..) = else { return ... }` 模式，因为它有助于展平函数：
 ```rust
 let Ok(json) = serde_json::from_str(&input) else {
     return Err(MyError::InvalidJson);
 }
 ```
-* If your `Result` (or `Option`) needs error recovery in case of `Result::Err`, that doesn't need to know the `Err` value, use `if let Ok(..) else { ... }` pattern:
+* 如果你的 `Result`（或 `Option`）在 `Result::Err` 的情况下需要错误恢复，且不需要知道 `Err` 的值，使用 `if let Ok(..) else { ... }` 模式：
 ```rust
 if let Ok(json) = serde_json::from_str(&input) else {
     ...
@@ -48,12 +48,12 @@ if let Ok(json) = serde_json::from_str(&input) else {
     Err(do_something_with_input(&input))
 }
 ```
-* Functions that can have to handle `Option::None` values are recommended to return `Result<T, E>`, where `E` is a crate or module level error, like the examples above.
-* Lastly `unwrap_or`, `unwrap_or_else` or `unwrap_or_default`, these functions help you create alternative exits to unwrap that manage the uninitialized values.
+* 需要处理 `Option::None` 值的函数建议返回 `Result<T, E>`，其中 `E` 是 crate 或模块级别的错误，如上面的示例所示。
+* 最后，`unwrap_or`、`unwrap_or_else` 或 `unwrap_or_default`，这些函数帮助您创建处理未初始化值的退出替代方案。
 
-## 4.3 `thiserror` for Crate level errors
+## 4.3 使用 `thiserror` 处理 Crate 级别错误
 
-Deriving Error manually is verbose and error prone, the rust ecosystem has a really good crate to help with this, `thiserror`. It allows you to create error types that easily implement `From` trait as well as easy error message (`Display`), improving developer experience while working seamlessly with `?` and integrating with `std::error::Error`:
+手动派生 Error 是冗长且容易出错的，Rust 生态系统有一个非常好的 crate 来帮助解决这个问题，`thiserror`。它允许您轻松创建实现 `From` trait 以及简单错误消息（`Display`）的错误类型，改善开发者体验，同时与 `?` 无缝协作并集成 `std::error::Error`：
 
 ```rust
 #[derive(Debug, thiserror::Error)]
@@ -72,9 +72,9 @@ pub enum MyError {
 }
 ```
 
-### Error Hierarchies and Wrapping
+### 错误层次结构和包装
 
-For layered systems the best practice is to use nested `enum/struct` errors with `#[from]`:
+对于分层系统，最佳实践是使用带有 `#[from]` 的嵌套 `enum/struct` 错误：
 
 ```rust
 use crate::database::DbError;
@@ -89,9 +89,9 @@ pub enum ServiceError {
 }
 ```
 
-## 4.4 Reserve `anyhow` for Binaries
+## 4.4 为二进制可执行文件保留 `anyhow`
 
-`anyhow` is an amazing crate, and quite useful for projects that are beginning and need accelerated speed. However, there is a turning point where it just painfully propagates through your code, considering this, `anyhow` is recommended only for **binaries**, where ergonomic error handling is needed and there is no need for precise error types:
+`anyhow` 是一个出色的 crate，对于刚开始并需要加速的项目非常有用。然而，存在一个转折点，它只是痛苦地通过你的代码传播，考虑到这一点，`anyhow` 仅推荐用于**二进制可执行文件**，在需要符合人体工程学的错误处理且不需要精确的错误类型时：
 
 ```rust
 use anyhow::{Context, Result, anyhow};
@@ -104,15 +104,15 @@ fn main() -> Result<()> {
 }
 ```
 
-### 🚨 `Anyhow` Gotchas
+### 🚨 `Anyhow` 陷阱
 
-* Keeping the `context` and `anyhow` strings up-to-date in all code base is harder than keeping `thiserror` messages as you don't have a single point of entry.
-* `anyhow::Result` erases context that a caller might need, so avoid using it in a library.
-* test helper functions can use `anyhow` with little to no issues.
+* 在整个代码库中保持 `context` 和 `anyhow` 字符串最新比保持 `thiserror` 消息更难，因为你没有一个单一的入口点。
+* `anyhow::Result` 会擦除调用者可能需要的上下文，因此避免在库中使用它。
+* 测试辅助函数可以使用 `anyhow`，几乎没有问题。
 
-## 4.5 Use `?` to Bubble Errors
+## 4.5 使用 `?` 传播错误
 
-Prefer using `?` over verbose alternatives like `match` chains:
+优先使用 `?` 而非冗长的替代方案，如 `match` 链：
 ```rust
 fn handle_request(req: &Request) -> Result<ValidatedRequest, MyError> {
     validate_headers(req)?;
@@ -124,11 +124,11 @@ fn handle_request(req: &Request) -> Result<ValidatedRequest, MyError> {
 }
 ```
 
-> In case error recovery is needed, use `or_else`, `map_err`, `if let Ok(..) else`. To **inspect or log your error**, use `inspect_err`.
+> 如果需要错误恢复，使用 `or_else`、`map_err`、`if let Ok(..) else`。要**检查或记录错误**，使用 `inspect_err`。
 
-## 4.6 Unit Test should exercise errors
+## 4.6 单元测试应练习错误处理
 
-While many errors don't implement PartialEq and Eq, making it hard to do direct assertions between them, it is possible to check the error messages with `format!` or `to_string()`, making the errors meaningful and test validated:
+虽然许多错误不实现 PartialEq 和 Eq，这使得直接进行断言变得困难，但可以通过 `format!` 或 `to_string()` 检查错误消息，使错误有意义并通过测试验证：
 
 ```rust
 #[test]
@@ -150,11 +150,11 @@ fn error_implements_partial_eq() {
 }
 ```
 
-## 4.7 Important Topics
+## 4.7 重要主题
 
-### Custom Error Structs
+### 自定义错误 Struct
 
-Sometimes you don't need an enum to handle your errors, as there is only one type of error that your module can have. This can be solved with `struct Errors`:
+有时你不需要 enum 来处理错误，因为你的模块只有一种错误类型。这可以通过 `struct Errors` 解决：
 
 ```rust
 #[derive(Debug, thiserror::Error, PartialEq)]
@@ -165,9 +165,9 @@ struct HttpError {
 }
 ```
 
-### Async Errors
+### 异步错误
 
-When using async runtimes, like Tokio, make sure that your errors implement `Send + Sync + 'static` where needed, specially in tasks or across `.await` boundaries:
+当使用异步运行时（如 Tokio）时，确保你的错误在需要时实现 `Send + Sync + 'static`，特别是在任务中或跨 `.await` 边界时：
 
 ```rust
 #[tokio::main]
@@ -177,4 +177,4 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
 }
 ```
 
-> Avoid `Box<dyn std::error::Error>` in libraries unless it is really needed
+> 避免在库中使用 `Box<dyn std::error::Error>`，除非确实需要

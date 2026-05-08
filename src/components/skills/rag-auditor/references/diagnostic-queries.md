@@ -1,161 +1,161 @@
-# Diagnostic Queries
+# 诊断查询
 
-Designing evaluation query sets for RAG pipeline assessment.
-
----
-
-## Query Types
-
-### Factoid (Known-Answer)
-
-Single-fact questions with unambiguous answers directly in the corpus.
-
-```text
-Query: "What is the maximum file upload size?"
-Expected: "100MB" (from docs/configuration.md)
-Source chunk: "The maximum file upload size is 100MB by default..."
-```
-
-**Purpose:** Baseline retrieval and generation accuracy.
-**Minimum count:** 10 queries.
-
-### Multi-Hop
-
-Questions requiring information from multiple chunks to answer.
-
-```text
-Query: "Can admin users upload files larger than the default limit?"
-Expected: "Yes, admin users can set custom limits up to 1GB"
-Source chunks:
-  - "Admin users have elevated permissions..." (users.md)
-  - "Custom upload limits can be set per role, up to 1GB" (configuration.md)
-```
-
-**Purpose:** Tests chunk retrieval breadth and generation reasoning.
-**Minimum count:** 5 queries.
-
-### Unanswerable
-
-Questions whose answers are NOT in the corpus.
-
-```text
-Query: "What is the pricing for the enterprise tier?"
-Expected: "This information is not available in the documentation."
-Source: No relevant chunk exists
-```
-
-**Purpose:** Tests abstention capability and hallucination tendency.
-**Minimum count:** 3 queries.
-
-### Ambiguous
-
-Questions with multiple valid interpretations.
-
-```text
-Query: "How do I reset?"
-Could mean: Reset password, reset configuration, factory reset
-```
-
-**Purpose:** Tests retrieval robustness and generation disambiguation.
-**Minimum count:** 3 queries.
-
-### Temporal / Updated
-
-Questions about information that may have changed.
-
-```text
-Query: "What version of Python is required?"
-Expected: "3.12+" (updated from "3.10+" in older docs)
-```
-
-**Purpose:** Tests freshness and correct version retrieval.
-**Minimum count:** 2 queries.
+为 RAG 流水线评估设计评估查询集。
 
 ---
 
-## Query Design Guidelines
+## 查询类型
 
-### Good Queries
+### 事实型（已知答案）
 
-| Characteristic    | Example                                                           |
-| ----------------- | ----------------------------------------------------------------- |
-| Specific          | "What HTTP status code does /api/users return for invalid email?" |
-| Verifiable        | Answer can be checked against source                              |
-| Realistic         | Represents actual user questions                                  |
-| Varied vocabulary | Uses different words than the source document                     |
+在语料库中有明确答案的单事实问题。
 
-### Bad Queries
+```text
+查询："最大文件上传大小是多少？"
+预期答案："100MB"（来自 docs/configuration.md）
+来源块："默认最大文件上传大小为 100MB..."
+```
 
-| Characteristic         | Example                                          | Problem                                   |
-| ---------------------- | ------------------------------------------------ | ----------------------------------------- |
-| Too broad              | "Tell me about the system"                       | No clear expected answer                  |
-| Uses exact source text | "What is the maximum file upload size of 100MB?" | Tests keyword matching, not understanding |
-| Subjective             | "Is the API well-designed?"                      | No objective answer                       |
-| Multiple questions     | "What are the limits and how do I change them?"  | Unclear evaluation criteria               |
+**目的：** 检索和生成准确性的基线。
+**最少数量：** 10 个查询。
+
+### 多跳
+
+需要来自多个块的信息才能回答的问题。
+
+```text
+查询："管理员用户可以上传超过默认限制的文件吗？"
+预期答案："是的，管理员用户可以设置最高 1GB 的自定义限制"
+来源块：
+  - "管理员用户拥有提升的权限..." (users.md)
+  - "可针对每个角色设置自定义上传限制，最高 1GB" (configuration.md)
+```
+
+**目的：** 测试块检索广度和生成推理能力。
+**最少数量：** 5 个查询。
+
+### 不可回答
+
+答案不在语料库中的问题。
+
+```text
+查询："企业版定价是多少？"
+预期答案："文档中没有此信息。"
+来源：不存在相关块
+```
+
+**目的：** 测试弃权能力和幻觉倾向。
+**最少数量：** 3 个查询。
+
+### 歧义
+
+有多个合理解释的问题。
+
+```text
+查询："如何重置？"
+可能含义：重置密码、重置配置、恢复出厂设置
+```
+
+**目的：** 测试检索鲁棒性和生成消歧能力。
+**最少数量：** 3 个查询。
+
+### 时序 / 已更新
+
+关于可能已变更的信息的问题。
+
+```text
+查询："需要什么版本的 Python？"
+预期答案："3.12+"（旧版文档中为 "3.10+"）
+```
+
+**目的：** 测试信息新鲜度和正确版本的检索。
+**最少数量：** 2 个查询。
 
 ---
 
-## Query Generation from Corpus
+## 查询设计指南
 
-### Method 1: Fact Extraction
+### 好的查询
 
-1. Read a document section
-2. Identify key facts (numbers, names, procedures, rules)
-3. Formulate a question for each fact
-4. Rephrase using different vocabulary
+| 特征           | 示例                                                           |
+| -------------- | -------------------------------------------------------------- |
+| 具体           | "/api/users 对无效邮箱返回什么 HTTP 状态码？"                   |
+| 可验证         | 答案可与来源核对                                               |
+| 真实           | 代表用户实际提问                                               |
+| 词汇多样化     | 使用与源文档不同的措辞                                         |
+
+### 不好的查询
+
+| 特征                 | 示例                                             | 问题                                     |
+| -------------------- | ------------------------------------------------ | ---------------------------------------- |
+| 过于宽泛             | "说说这个系统"                                   | 没有明确的预期答案                       |
+| 使用精确源文本       | "最大文件上传大小是 100MB 吗？"                   | 测试关键词匹配，而非理解                 |
+| 主观                 | "这个 API 设计得好吗？"                           | 没有客观答案                             |
+| 多个问题             | "限制是什么以及如何更改？"                         | 评估标准不明确                           |
+
+---
+
+## 从语料库生成查询
+
+### 方法 1：事实提取
+
+1. 阅读文档章节
+2. 识别关键事实（数字、名称、过程、规则）
+3. 为每个事实制定一个问题
+4. 使用不同的词汇重新表述
 
 ```text
-Source: "Rate limiting is set to 100 requests per minute per API key."
-Query: "How many API calls can I make per minute?"
-Expected: "100 requests per minute per API key"
+来源："每个 API 密钥每分钟限制为 100 个请求。"
+查询："我每分钟可以发起多少次 API 调用？"
+预期答案："每个 API 密钥每分钟 100 个请求"
 ```
 
-### Method 2: Scenario-Based
+### 方法 2：基于场景
 
-1. Imagine a user scenario
-2. Formulate the question they would ask
-3. Locate the answer in the corpus
+1. 想象一个用户场景
+2. 制定他们会问的问题
+3. 在语料库中定位答案
 
 ```text
-Scenario: User wants to deploy to production
-Query: "What are the prerequisites for production deployment?"
-Expected: (from deployment guide)
+场景：用户想要部署到生产环境
+查询："生产环境部署的前提条件是什么？"
+预期答案：（来自部署指南）
 ```
 
-### Method 3: Cross-Document
+### 方法 3：跨文档
 
-1. Find information split across documents
-2. Design a question requiring both pieces
+1. 查找分布在多个文档中的信息
+2. 设计需要结合两者的查询
 
 ```text
-Doc A: "OAuth tokens expire after 1 hour"
-Doc B: "Use refresh tokens to get new access tokens"
-Query: "What happens when my OAuth token expires?"
-Expected: "It expires after 1 hour; use a refresh token to get a new one"
+文档 A："OAuth 令牌在 1 小时后过期"
+文档 B："使用刷新令牌获取新的访问令牌"
+查询："我的 OAuth 令牌过期了会发生什么？"
+预期答案："1 小时后过期；使用刷新令牌获取新令牌"
 ```
 
 ---
 
-## Evaluation Dataset Template
+## 评估数据集模板
 
 ```markdown
-| #   | Query   | Type         | Expected Answer | Source Chunks | Difficulty |
-| --- | ------- | ------------ | --------------- | ------------- | ---------- |
-| 1   | {query} | Factoid      | {answer}        | {doc:section} | Easy       |
-| 2   | {query} | Factoid      | {answer}        | {doc:section} | Easy       |
-| 3   | {query} | Multi-hop    | {answer}        | {doc1, doc2}  | Medium     |
-| 4   | {query} | Ambiguous    | {answer(s)}     | {docs}        | Hard       |
-| 5   | {query} | Unanswerable | "Not in docs"   | None          | Medium     |
+| #   | 查询     | 类型         | 预期答案          | 来源块           | 难度   |
+| --- | -------- | ------------ | ----------------- | ---------------- | ------ |
+| 1   | {查询}   | 事实型       | {答案}            | {文档:章节}      | 简单   |
+| 2   | {查询}   | 事实型       | {答案}            | {文档:章节}      | 简单   |
+| 3   | {查询}   | 多跳         | {答案}            | {文档1, 文档2}   | 中等   |
+| 4   | {查询}   | 歧义         | {答案}            | {文档}           | 困难   |
+| 5   | {查询}   | 不可回答     | "文档中没有"      | 无               | 中等   |
 ```
 
 ---
 
-## Difficulty Calibration
+## 难度校准
 
-| Difficulty | Characteristics                                                              |
-| ---------- | ---------------------------------------------------------------------------- |
-| Easy       | Single chunk, exact phrasing match, common topic                             |
-| Medium     | Single chunk but vocabulary differs, or multi-chunk with obvious connection  |
-| Hard       | Multi-hop, ambiguous, requires inference, rare topic, or paraphrased heavily |
+| 难度   | 特征                                                                     |
+| ------ | ------------------------------------------------------------------------ |
+| 简单   | 单个块、精确措辞匹配、常见主题                                           |
+| 中等   | 单个块但词汇不同，或多块之间有明显联系                                   |
+| 困难   | 多跳、歧义、需要推理、罕见主题、或大量改写                               |
 
-Aim for distribution: 40% Easy, 40% Medium, 20% Hard.
+目标分布：40% 简单、40% 中等、20% 困难。

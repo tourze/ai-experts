@@ -1,24 +1,24 @@
-# Breakpoint Strategies
+# 断点策略
 
-## Overview
+## 概述
 
-Effective breakpoint strategies focus on content needs rather than device sizes. Modern responsive design uses fewer, content-driven breakpoints combined with fluid techniques.
+有效的断点策略关注内容需求而非设备尺寸。现代响应式设计使用更少、内容驱动的断点，并结合流体技术。
 
-## Mobile-First Approach
+## 移动优先方法
 
-### Core Philosophy
+### 核心理念
 
-Start with the smallest screen, then progressively enhance for larger screens.
+从最小屏幕开始，然后逐渐为更大屏幕增强。
 
 ```css
-/* Base styles (mobile first) */
+/* 基础样式（移动优先） */
 .component {
   display: flex;
   flex-direction: column;
   padding: 1rem;
 }
 
-/* Enhance for larger screens */
+/* 为更大屏幕增强 */
 @media (min-width: 640px) {
   .component {
     flex-direction: row;
@@ -33,24 +33,24 @@ Start with the smallest screen, then progressively enhance for larger screens.
 }
 ```
 
-### Benefits
+### 好处
 
-1. **Performance**: Mobile devices load only necessary CSS
-2. **Progressive Enhancement**: Features add rather than subtract
-3. **Content Priority**: Forces focus on essential content first
-4. **Simplicity**: Easier to reason about cascading styles
+1. **性能**：移动设备仅加载必要的 CSS
+2. **渐进增强**：功能是添加而非削减
+3. **内容优先**：强制关注首先聚焦于基本内容
+4. **简洁性**：更容易推理级联样式
 
-## Common Breakpoint Scales
+## 常见断点尺度
 
-### Tailwind CSS Default
+### Tailwind CSS 默认值
 
 ```css
-/* Tailwind breakpoints */
-/* sm: 640px  - Landscape phones */
-/* md: 768px  - Tablets */
-/* lg: 1024px - Laptops */
-/* xl: 1280px - Desktops */
-/* 2xl: 1536px - Large desktops */
+/* Tailwind 断点 */
+/* sm: 640px  - 横屏手机 */
+/* md: 768px  - 平板 */
+/* lg: 1024px - 笔记本电脑 */
+/* xl: 1280px - 桌面显示器 */
+/* 2xl: 1536px - 大桌面显示器 */
 
 @media (min-width: 640px) {
   /* sm */
@@ -72,7 +72,7 @@ Start with the smallest screen, then progressively enhance for larger screens.
 ### Bootstrap 5
 
 ```css
-/* Bootstrap breakpoints */
+/* Bootstrap 断点 */
 /* sm: 576px */
 /* md: 768px */
 /* lg: 992px */
@@ -96,13 +96,13 @@ Start with the smallest screen, then progressively enhance for larger screens.
 }
 ```
 
-### Minimalist Scale
+### 极简尺度
 
 ```css
-/* Simplified 3-breakpoint system */
-/* Base: Mobile (< 600px) */
-/* Medium: Tablets and small laptops (600px - 1024px) */
-/* Large: Desktops (> 1024px) */
+/* 简化的 3 断点系统 */
+/* 基础：移动端 (< 600px) */
+/* 中等：平板和小型笔记本 (600px - 1024px) */
+/* 大：桌面端 (> 1024px) */
 
 :root {
   --bp-md: 600px;
@@ -110,27 +110,27 @@ Start with the smallest screen, then progressively enhance for larger screens.
 }
 
 @media (min-width: 600px) {
-  /* Medium */
+  /* 中等 */
 }
 @media (min-width: 1024px) {
-  /* Large */
+  /* 大 */
 }
 ```
 
-## Content-Based Breakpoints
+## 基于内容的断点
 
-### Finding Natural Breakpoints
+### 寻找自然断点
 
-Instead of using device-based breakpoints, identify where your content naturally needs to change.
+使用基于设备的断点，而是识别你的内容在何处自然地需要变化。
 
 ```css
-/* Bad: Device-based thinking */
+/* 不好：基于设备的思维 */
 @media (min-width: 768px) {
-  /* iPad breakpoint */
+  /* iPad 断点 */
 }
 
-/* Good: Content-based thinking */
-/* Breakpoint where sidebar fits comfortably next to content */
+/* 好：基于内容的思维 */
+/* 侧边栏可以舒适地放在内容旁边的断点 */
 @media (min-width: 50rem) {
   .layout {
     display: grid;
@@ -138,7 +138,7 @@ Instead of using device-based breakpoints, identify where your content naturally
   }
 }
 
-/* Breakpoint where cards can show 3 across without crowding */
+/* 卡片可以在不拥挤的情况下显示 3 列时的断点 */
 @media (min-width: 65rem) {
   .card-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -146,10 +146,10 @@ Instead of using device-based breakpoints, identify where your content naturally
 }
 ```
 
-### Testing Content Breakpoints
+### 测试内容断点
 
 ```javascript
-// Find where content breaks
+// 查找内容断裂的位置
 function findBreakpoints(selector) {
   const element = document.querySelector(selector);
   const breakpoints = [];
@@ -157,7 +157,7 @@ function findBreakpoints(selector) {
   for (let width = 320; width <= 1920; width += 10) {
     element.style.width = `${width}px`;
 
-    // Check for overflow, wrapping, or layout issues
+    // 检查溢出、换行或布局问题
     if (element.scrollWidth > element.clientWidth) {
       breakpoints.push({ width, issue: "overflow" });
     }
@@ -167,20 +167,20 @@ function findBreakpoints(selector) {
 }
 ```
 
-## Design Token Integration
+## 设计令牌集成
 
-### Breakpoint Tokens
+### 断点令牌
 
 ```css
 :root {
-  /* Breakpoint values */
+  /* 断点值 */
   --breakpoint-sm: 640px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1536px;
 
-  /* Container widths for each breakpoint */
+  /* 每个断点的容器宽度 */
   --container-sm: 640px;
   --container-md: 768px;
   --container-lg: 1024px;
@@ -196,10 +196,10 @@ function findBreakpoints(selector) {
 }
 ```
 
-### JavaScript Integration
+### JavaScript 集成
 
 ```typescript
-// Breakpoint constants
+// 断点常量
 export const breakpoints = {
   sm: 640,
   md: 768,
@@ -208,7 +208,7 @@ export const breakpoints = {
   "2xl": 1536,
 } as const;
 
-// Media query hook
+// 媒体查询钩子
 function useMediaQuery(query: string): boolean {
   const [matches, setMatches] = useState(false);
 
@@ -224,7 +224,7 @@ function useMediaQuery(query: string): boolean {
   return matches;
 }
 
-// Breakpoint hook
+// 断点钩子
 function useBreakpoint() {
   const isSmall = useMediaQuery(`(min-width: ${breakpoints.sm}px)`);
   const isMedium = useMediaQuery(`(min-width: ${breakpoints.md}px)`);
@@ -248,12 +248,12 @@ function useBreakpoint() {
 }
 ```
 
-## Feature Queries
+## 特性查询
 
-### @supports for Progressive Enhancement
+### @supports 用于渐进增强
 
 ```css
-/* Feature detection instead of browser detection */
+/* 特性检测而非浏览器检测 */
 @supports (display: grid) {
   .layout {
     display: grid;
@@ -279,7 +279,7 @@ function useBreakpoint() {
   }
 }
 
-/* Fallback for older browsers */
+/* 旧浏览器的降级方案 */
 @supports not (gap: 1rem) {
   .flex-container > * + * {
     margin-left: 1rem;
@@ -287,10 +287,10 @@ function useBreakpoint() {
 }
 ```
 
-### Combining Feature and Size Queries
+### 组合特性与尺寸查询
 
 ```css
-/* Only apply grid layout if supported and screen is large enough */
+/* 仅在支持且屏幕足够大时应用网格布局 */
 @supports (display: grid) {
   @media (min-width: 768px) {
     .layout {
@@ -301,26 +301,26 @@ function useBreakpoint() {
 }
 ```
 
-## Responsive Patterns by Component
+## 按组件的响应式模式
 
-### Navigation
+### 导航
 
 ```css
 .nav {
-  /* Mobile: vertical stack */
+  /* 移动端：垂直堆叠 */
   display: flex;
   flex-direction: column;
 }
 
 @media (min-width: 768px) {
   .nav {
-    /* Tablet+: horizontal */
+    /* 平板+：水平 */
     flex-direction: row;
     align-items: center;
   }
 }
 
-/* Or with container queries */
+/* 或使用容器查询 */
 .nav-container {
   container-type: inline-size;
 }
@@ -332,7 +332,7 @@ function useBreakpoint() {
 }
 ```
 
-### Cards Grid
+### 卡片网格
 
 ```css
 .cards {
@@ -359,7 +359,7 @@ function useBreakpoint() {
   }
 }
 
-/* Better: auto-fit with minimum size */
+/* 更好：auto-fit + 最小尺寸 */
 .cards-auto {
   display: grid;
   gap: 1.5rem;
@@ -367,7 +367,7 @@ function useBreakpoint() {
 }
 ```
 
-### Hero Section
+### 英雄区域
 
 ```css
 .hero {
@@ -408,10 +408,10 @@ function useBreakpoint() {
 }
 ```
 
-### Tables
+### 表格
 
 ```css
-/* Mobile: cards or horizontal scroll */
+/* 移动端：卡片或水平滚动 */
 .table-container {
   overflow-x: auto;
 }
@@ -420,7 +420,7 @@ function useBreakpoint() {
   min-width: 600px;
 }
 
-/* Alternative: transform to cards on mobile */
+/* 替代方案：在移动端转换为卡片 */
 @media (max-width: 639px) {
   .responsive-table {
     min-width: 0;
@@ -452,11 +452,11 @@ function useBreakpoint() {
 }
 ```
 
-## Print Styles
+## 打印样式
 
 ```css
 @media print {
-  /* Remove non-essential elements */
+  /* 移除非必要元素 */
   .nav,
   .sidebar,
   .footer,
@@ -464,20 +464,20 @@ function useBreakpoint() {
     display: none;
   }
 
-  /* Reset colors and backgrounds */
+  /* 重置颜色和背景 */
   * {
     background: white !important;
     color: black !important;
     box-shadow: none !important;
   }
 
-  /* Ensure content fits on page */
+  /* 确保内容适合页面 */
   .container {
     max-width: 100%;
     padding: 0;
   }
 
-  /* Handle page breaks */
+  /* 处理分页 */
   h1,
   h2,
   h3 {
@@ -489,7 +489,7 @@ function useBreakpoint() {
     page-break-inside: avoid;
   }
 
-  /* Show URLs for links */
+  /* 显示链接 URL */
   a[href^="http"]::after {
     content: " (" attr(href) ")";
     font-size: 0.8em;
@@ -497,10 +497,10 @@ function useBreakpoint() {
 }
 ```
 
-## Preference Queries
+## 偏好查询
 
 ```css
-/* Dark mode preference */
+/* 深色模式偏好 */
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #1a1a1a;
@@ -508,7 +508,7 @@ function useBreakpoint() {
   }
 }
 
-/* Reduced motion preference */
+/* 减少动画偏好 */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -519,7 +519,7 @@ function useBreakpoint() {
   }
 }
 
-/* High contrast preference */
+/* 高对比度偏好 */
 @media (prefers-contrast: high) {
   :root {
     --text: #000;
@@ -532,7 +532,7 @@ function useBreakpoint() {
   }
 }
 
-/* Reduced data preference */
+/* 减少数据偏好 */
 @media (prefers-reduced-data: reduce) {
   .hero-video {
     display: none;
@@ -544,17 +544,17 @@ function useBreakpoint() {
 }
 ```
 
-## Testing Breakpoints
+## 测试断点
 
 ```javascript
-// Automated breakpoint testing
+// 自动化断点测试
 async function testBreakpoints(page, breakpoints) {
   const results = [];
 
   for (const [name, width] of Object.entries(breakpoints)) {
     await page.setViewportSize({ width, height: 800 });
 
-    // Check for horizontal overflow
+    // 检查水平溢出
     const hasOverflow = await page.evaluate(() => {
       return (
         document.documentElement.scrollWidth >
@@ -562,7 +562,7 @@ async function testBreakpoints(page, breakpoints) {
       );
     });
 
-    // Check for elements going off-screen
+    // 检查脱离屏幕的元素
     const offscreenElements = await page.evaluate(() => {
       const elements = document.querySelectorAll("*");
       return Array.from(elements).filter((el) => {
@@ -583,7 +583,7 @@ async function testBreakpoints(page, breakpoints) {
 }
 ```
 
-## Resources
+## 资源
 
 - [Tailwind CSS Breakpoints](https://tailwindcss.com/docs/responsive-design)
 - [The 100% Correct Way to Do CSS Breakpoints](https://www.freecodecamp.org/news/the-100-correct-way-to-do-css-breakpoints-88d6a5ba1862/)

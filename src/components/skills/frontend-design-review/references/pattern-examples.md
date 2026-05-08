@@ -1,21 +1,21 @@
-# Pattern Examples
+# 模式示例
 
-## Creative Frontend (New Interfaces)
+## 创意前端（新界面）
 
-### Good: Clear Aesthetic Direction
-- Landing page with brutalist aesthetic: Raw typography (Neue Haas Grotesk), stark black and white, asymmetric layouts
-- Dashboard with organic theme: Rounded forms, earth tones, flowing animations, textured backgrounds
+### 良好：清晰的美学方向
+- 采用粗野主义美学的着陆页：原始字体（Neue Haas Grotesk）、鲜明黑白色、非对称布局
+- 采用有机主题的仪表盘：圆润形态、大地色系、流畅动画、纹理背景
 
-### Bad: Generic AI Aesthetic
-- Overused fonts, cliched color schemes, centered content, generic card layouts
+### 不佳：通用 AI 美学
+- 过度使用的字体、陈旧的配色方案、居中内容、通用卡片布局
 
-## Design System Review (Existing Work)
+## 设计系统审查（现有工作）
 
-### Good: Frictionless
-- Single primary button, clear task completion path
+### 良好：无摩擦
+- 单一主按钮、清晰的任务完成路径
 
-### Good: Quality Craft
-- Uses design system with tokens, distinctive typography, keyboard accessible, tested in themes
+### 良好：高质量工艺
+- 使用带有 token 的设计系统、独特的字体、支持键盘无障碍、在各主题中测试通过
 
-### Bad: Quality Craft
-- Hardcoded values, generic overused fonts, poor contrast in dark mode
+### 不佳：高质量工艺
+- 硬编码值、通用的过度使用字体、暗色模式下对比度差

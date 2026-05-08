@@ -1,83 +1,81 @@
-# Codebase Signals Guide
+# 代码库信号指南
 
-Reference for Mode A (Codebase Review) and Mode C (Hybrid). Details what files to locate,
-patterns to grep for, and red flags to detect — language-agnostic.
+用于模式 A（代码库审查）和模式 C（混合审查）的参考。详细说明需要定位的文件、需要 grep 搜索的模式以及需要检测的红旗信号——语言无关。
 
-## Table of Contents
+## 目录
 
-1. Priority File Locations
-2. Red Flag Patterns to Search For
-3. Structural Analysis Approach
-4. Per-Dimension Codebase Signals
+1. 优先文件定位
+2. 需搜索的红旗模式
+3. 结构分析方法
+4. 各维度的代码库信号
 
 ---
 
-## 1. Priority File Locations
+## 1. 优先文件定位
 
-Locate and inspect these categories of files first. The scan_codebase.mjs script will identify
-most of these, but verify manually for anything missed.
+优先定位并检查以下几类文件。`scan_codebase.mjs` 脚本会识别其中大部分，但需手动验证是否有遗漏。
 
-### Infrastructure & Deployment
+### 基础设施与部署
 
-- `Dockerfile`, `docker-compose.yml` / `docker-compose.yaml`
-- `kubernetes/`, `k8s/`, `deploy/`, `infra/` directories
-- `*.tf`, `*.tfvars` (Terraform)
-- `template.yaml`, `serverless.yml` (SAM / Serverless Framework)
-- `pulumi/`, `cdk/` directories
-- `nginx.conf`, `caddy`, `traefik.yml` (Reverse proxy configs)
-- `Procfile`, `app.yaml`, `render.yaml` (PaaS configs)
+- `Dockerfile`、`docker-compose.yml` / `docker-compose.yaml`
+- `kubernetes/`、`k8s/`、`deploy/`、`infra/` 目录
+- `*.tf`、`*.tfvars`（Terraform）
+- `template.yaml`、`serverless.yml`（SAM / Serverless Framework）
+- `pulumi/`、`cdk/` 目录
+- `nginx.conf`、`caddy`、`traefik.yml`（反向代理配置）
+- `Procfile`、`app.yaml`、`render.yaml`（PaaS 配置）
 
-### CI/CD Pipeline
+### CI/CD 流水线
 
-- `.github/workflows/*.yml` (GitHub Actions)
-- `Jenkinsfile`, `.gitlab-ci.yml`, `buildspec.yml` (Jenkins, GitLab, CodeBuild)
-- `bitbucket-pipelines.yml`, `.circleci/config.yml`
+- `.github/workflows/*.yml`（GitHub Actions）
+- `Jenkinsfile`、`.gitlab-ci.yml`、`buildspec.yml`（Jenkins、GitLab、CodeBuild）
+- `bitbucket-pipelines.yml`、`.circleci/config.yml`
 - `.pre-commit-config.yaml`
 
-### Dependency Manifests
+### 依赖清单
 
-- `package.json` + `package-lock.json` / `yarn.lock` / `pnpm-lock.yaml` (Node.js)
-- `requirements.txt` / `pyproject.toml` / `Pipfile` / `poetry.lock` (Python)
-- `go.mod` + `go.sum` (Go)
-- `Cargo.toml` + `Cargo.lock` (Rust)
-- `pom.xml` / `build.gradle` / `build.gradle.kts` (Java/Kotlin)
-- `Gemfile` + `Gemfile.lock` (Ruby)
-- `composer.json` + `composer.lock` (PHP)
+- `package.json` + `package-lock.json` / `yarn.lock` / `pnpm-lock.yaml`（Node.js）
+- `requirements.txt` / `pyproject.toml` / `Pipfile` / `poetry.lock`（Python）
+- `go.mod` + `go.sum`（Go）
+- `Cargo.toml` + `Cargo.lock`（Rust）
+- `pom.xml` / `build.gradle` / `build.gradle.kts`（Java/Kotlin）
+- `Gemfile` + `Gemfile.lock`（Ruby）
+- `composer.json` + `composer.lock`（PHP）
 
-### API Definitions
+### API 定义
 
 - `openapi.yaml` / `swagger.json` / `*.openapi.yml`
 - `schema.graphql` / `*.graphql`
-- `*.proto` (Protocol Buffers / gRPC)
-- Route definition files (framework-specific)
+- `*.proto`（Protocol Buffers / gRPC）
+- 路由定义文件（框架相关）
 
-### Database & Data
+### 数据库与数据
 
-- `migrations/`, `db/migrate/`, `alembic/` directories
-- Schema definition files (ORM models, SQL DDL files)
-- Seed files, fixtures
-- `.env`, `.env.example`, `.env.local`
+- `migrations/`、`db/migrate/`、`alembic/` 目录
+- 模式定义文件（ORM 模型、SQL DDL 文件）
+- 种子文件、fixture
+- `.env`、`.env.example`、`.env.local`
 
-### Testing
+### 测试
 
-- `tests/`, `test/`, `__tests__/`, `spec/` directories
-- Test configuration (jest.config.js, pytest.ini, phpunit.xml)
-- `.codecov.yml`, `.coveragerc`
+- `tests/`、`test/`、`__tests__/`、`spec/` 目录
+- 测试配置（jest.config.js、pytest.ini、phpunit.xml）
+- `.codecov.yml`、`.coveragerc`
 
-### Documentation
+### 文档
 
-- `README.md`, `CONTRIBUTING.md`, `ARCHITECTURE.md`
-- `adr/`, `docs/`, `wiki/` directories
-- `CHANGELOG.md`, `SECURITY.md`
+- `README.md`、`CONTRIBUTING.md`、`ARCHITECTURE.md`
+- `adr/`、`docs/`、`wiki/` 目录
+- `CHANGELOG.md`、`SECURITY.md`
 
 ---
 
-## 2. Red Flag Patterns to Search For
+## 2. 需搜索的红旗模式
 
-### Security Red Flags (CRITICAL — always check)
+### 安全红旗（关键——务必检查）
 
 ```text
-# Hardcoded secrets (search recursively, exclude lock files and node_modules)
+# 硬编码密钥（递归搜索，排除 lock 文件和 node_modules）
 password\s*=\s*["\']
 api_key\s*=\s*["\']
 secret\s*=\s*["\']
@@ -87,96 +85,96 @@ PRIVATE.KEY
 -----BEGIN RSA PRIVATE KEY-----
 -----BEGIN OPENSSH PRIVATE KEY-----
 
-# SQL injection vectors
-"SELECT.*\+.*"       # String concatenation in queries
-f"SELECT              # f-string SQL (Python)
-`SELECT.*\$\{`        # Template literal SQL (JavaScript)
-".*" \+ .*WHERE       # Concatenated WHERE clauses
+# SQL 注入向量
+"SELECT.*\+.*"       # 查询中的字符串拼接
+f"SELECT              # f-string SQL（Python）
+`SELECT.*\$\{`        # 模板字面量 SQL（JavaScript）
+".*" \+ .*WHERE       # 拼接的 WHERE 子句
 
-# Debug/dev in production
+# 生产环境中的调试/开发配置
 DEBUG\s*=\s*[Tt]rue
-NODE_ENV\s*=\s*development  (in non-.env files)
+NODE_ENV\s*=\s*development  （在非 .env 文件中）
 ```
 
-### Architecture Red Flags
+### 架构红旗
 
 ```text
-# In-memory state (prevents horizontal scaling)
+# 内存状态（阻止水平扩展）
 session_store.*memory
 InMemoryCache
-new Map().*session   # Session stored in local Map
-global.*state        # Global mutable state
+new Map().*session   # 存储在本地 Map 中的会话
+global.*state        # 全局可变状态
 
-# Missing error handling
-catch.*\{\s*\}       # Empty catch blocks
-\.catch\(\)          # Empty promise catch
-except:\s*pass       # Python bare except pass
+# 缺少错误处理
+catch.*\{\s*\}       # 空 catch 块
+\.catch\(\)          # 空的 Promise catch
+except:\s*pass       # Python 裸 except pass
 
-# Tight coupling indicators
-import.*from.*\.\.\/\.\.\/  # Deep relative imports
-require\(.*\.\.\/\.\.\/     # Deep relative requires (Node.js)
+# 紧耦合指示器
+import.*from.*\.\.\/\.\.\/  # 深层相对导入
+require\(.*\.\.\/\.\.\/     # 深层相对 require（Node.js）
 ```
 
-### Performance Red Flags
+### 性能红旗
 
 ```text
-# N+1 query patterns
-for.*\{.*\.find\(    # Query inside loop
-for.*\{.*\.get\(     # DB get inside loop
-for.*\{.*SELECT      # SQL inside loop
-\.map\(.*await       # Async query in map without Promise.all
+# N+1 查询模式
+for.*\{.*\.find\(    # 循环内的查询
+for.*\{.*\.get\(     # 循环内的数据库 get
+for.*\{.*SELECT      # 循环内的 SQL
+\.map\(.*await       # 未使用 Promise.all 的 async 查询
 
-# Missing pagination
-findAll\(\)          # Unbounded queries
-SELECT.*FROM.*(?!.*LIMIT)  # SELECT without LIMIT
-.find\(\{\}\)        # MongoDB find-all
+# 缺少分页
+findAll\(\)          # 无边界的查询
+SELECT.*FROM.*(?!.*LIMIT)  # 不带 LIMIT 的 SELECT
+\.find\(\{\}\)        # MongoDB 全量查询
 ```
 
 ---
 
-## 3. Structural Analysis Approach
+## 3. 结构分析方法
 
-After the scan script runs, perform this manual analysis:
+扫描脚本运行后，执行以下手动分析：
 
-### Step 1: Map Service Boundaries
+### 步骤 1：映射服务边界
 
-- Identify top-level directories or separate packages/modules
-- For monorepos: identify service directories
-- Map the dependency graph between services/modules
-- Check for shared libraries and their scope
+- 识别顶层目录或独立的包/模块
+- 对于 monorepo：识别服务目录
+- 映射服务/模块之间的依赖图
+- 检查共享库及其范围
 
-### Step 2: Identify the Critical Path
+### 步骤 2：识别关键路径
 
-- Trace the primary user flow from entry point to response
-- Count the number of network hops, database queries, and external calls
-- Identify synchronous chains that could be parallelized or made async
+- 从入口点到响应追踪主要用户流
+- 统计网络跳数、数据库查询和外部调用次数
+- 识别可并行化或异步化处理的同步链
 
-### Step 3: Assess Configuration Hygiene
+### 步骤 3：评估配置规范性
 
-- Check .gitignore for .env exclusion
-- Verify no secrets in committed configuration files
-- Check for environment-specific configuration patterns
-- Look for hardcoded URLs, ports, or environment-specific values
+- 检查 .gitignore 是否排除了 .env
+- 确认已提交的配置文件中没有密钥
+- 检查环境特定配置模式
+- 查找硬编码的 URL、端口或环境特定值
 
-### Step 4: Evaluate Test Coverage Indicators
+### 步骤 4：评估测试覆盖指标
 
-- Ratio of test files to source files
-- Presence of integration and E2E tests (not just unit tests)
-- Test configuration indicating coverage thresholds
-- CI pipeline test execution steps
+- 测试文件与源文件的比例
+- 集成测试和端到端测试的存在性（不仅是单元测试）
+- 指示覆盖阈值的测试配置
+- CI 流水线中的测试执行步骤
 
 ---
 
-## 4. Per-Dimension Codebase Signals
+## 4. 各维度的代码库信号
 
-Quick reference for what to inspect per dimension:
+各维度检查内容的快速参考：
 
-| Dimension              | Key Files to Inspect                                                    | Key Patterns to Search                                                           |
+| 维度 | 需检查的关键文件 | 需搜索的关键模式 |
 | ---------------------- | ----------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| Structural Integrity   | Module boundaries, interfaces, import graphs                            | Circular imports, god classes (files >500 LOC), shared DB schemas                |
-| Scalability            | Session stores, cache configs, queue configs, auto-scaling rules        | In-memory state, local file deps, connection pool settings                       |
-| Enterprise Readiness   | Auth middleware, tenant ID propagation, audit logging, RBAC policies    | Tenant scoping in queries, compliance-related code, deployment configs           |
-| Performance            | ORM queries, cache implementations, async patterns, connection pools    | N+1 queries, unbounded selects, synchronous external calls in hot path           |
-| Security               | Auth/authz middleware, input validation, CORS config, secret references | Hardcoded secrets, SQL concatenation, overly permissive CORS, missing validation |
-| Operational Excellence | CI/CD configs, IaC files, logging code, health endpoints, metrics       | Unstructured logs, missing health checks, no tracing instrumentation             |
-| Data Architecture      | Migration files, schema definitions, event schemas, backup configs      | Missing constraints, no migration tool, no index definitions                     |
+| 结构完整性 | 模块边界、接口、导入图 | 循环导入、上帝类（>500 LOC 的文件）、共享数据库 schema |
+| 可扩展性 | 会话存储、缓存配置、队列配置、自动扩缩规则 | 内存状态、本地文件依赖、连接池设置 |
+| 企业就绪度 | 认证中间件、租户 ID 传播、审计日志、RBAC 策略 | 查询中的租户范围限定、合规相关代码、部署配置 |
+| 性能 | ORM 查询、缓存实现、异步模式、连接池 | N+1 查询、无限制的 SELECT、热路径中的同步外部调用 |
+| 安全 | 认证/授权中间件、输入验证、CORS 配置、密钥引用 | 硬编码密钥、SQL 拼接、过度宽松的 CORS、缺少验证 |
+| 运维卓越 | CI/CD 配置、IaC 文件、日志代码、健康端点、指标 | 非结构化日志、缺少健康检查、无追踪埋点 |
+| 数据架构 | 迁移文件、模式定义、事件模式、备份配置 | 缺少约束、无迁移工具、无索引定义 |

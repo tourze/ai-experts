@@ -1,4 +1,4 @@
-# Skill Creator Schemas
+# Skill Creator 数据结构
 
 本文记录 skill-creator 生成和读取的结构。字段名是程序契约，必须保持英文原样。
 

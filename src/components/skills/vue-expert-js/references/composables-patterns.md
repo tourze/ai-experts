@@ -1,8 +1,8 @@
-# Composables Patterns
+# Composables 模式
 
 ---
 
-## Basic Composable Structure
+## 基本 Composable 结构
 
 ```javascript
 // composables/useToggle.js
@@ -32,18 +32,18 @@ export function useToggle(initialValue = false) {
 ```javascript
 import { ref, reactive, toRefs, toValue } from 'vue'
 
-// Use ref for: primitives, reassignable values, composable returns
+// 对基本类型、可重新赋值值、composable 返回值使用 ref
 /** @type {import('vue').Ref<number>} */
 const count = ref(0)
 
-// Use reactive for: complex objects with nested properties
+// 对具有嵌套属性的复杂对象使用 reactive
 /** @type {{ email: string, password: string }} */
 const form = reactive({ email: '', password: '' })
 
-// Convert reactive to refs for destructuring
+// 将 reactive 转换为 refs 以便解构
 const { email, password } = toRefs(form)
 
-// Unwrap ref or return plain value
+// 解包 ref 或返回普通值
 /** @param {number | import('vue').Ref<number>} maybeRef */
 function double(maybeRef) {
   return toValue(maybeRef) * 2
@@ -52,7 +52,7 @@ function double(maybeRef) {
 
 ---
 
-## Lifecycle Hooks
+## 生命周期 Hooks
 
 ```javascript
 // composables/useEventListener.js
@@ -71,7 +71,7 @@ export function useEventListener(event, handler, target = window) {
 ```
 
 ```javascript
-// Lifecycle-aware async (prevents state updates after unmount)
+// 生命周期感知的异步（防止卸载后更新状态）
 import { ref, onUnmounted } from 'vue'
 
 export function useAsyncState(fn) {
@@ -97,13 +97,13 @@ export function useAsyncState(fn) {
 
 ---
 
-## Shared State (Singleton)
+## 共享状态（单例）
 
 ```javascript
 // composables/useNotifications.js
 import { ref, readonly } from 'vue'
 
-// Module-level state = singleton shared across all components
+// 模块级状态 = 跨所有组件共享的单例
 /** @type {import('vue').Ref<Array<{id: string, message: string}>>} */
 const notifications = ref([])
 
@@ -130,7 +130,7 @@ export function useNotifications() {
 
 ---
 
-## Async with Cancellation
+## 可取消的异步
 
 ```javascript
 // composables/useCancellableFetch.js
@@ -170,14 +170,14 @@ export function useCancellableFetch() {
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Pattern | Use Case |
-|---------|----------|
-| `ref()` | Primitives, values passed to/from composables |
-| `reactive()` | Objects with nested reactivity |
-| `toRefs()` | Destructure reactive while keeping reactivity |
-| `toValue()` | Unwrap ref or return plain value |
-| Module-level ref | Singleton shared state |
-| Factory function | New instance per component |
-| `onUnmounted` | Cleanup timers, listeners, abort controllers |
+| 模式 | 使用场景 |
+|------|----------|
+| `ref()` | 基本类型、传给/来自 composable 的值 |
+| `reactive()` | 具有嵌套响应式的对象 |
+| `toRefs()` | 解构 reactive 时保持响应式 |
+| `toValue()` | 解包 ref 或返回普通值 |
+| 模块级 ref | 单例共享状态 |
+| 工厂函数 | 每个组件的新实例 |
+| `onUnmounted` | 清理定时器、监听器、AbortController |

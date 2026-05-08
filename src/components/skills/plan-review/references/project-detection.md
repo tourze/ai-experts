@@ -1,180 +1,180 @@
-# Project Detection Reference
+# 项目检测参考
 
-Stack-agnostic project detection patterns for identifying test commands, package managers, version strategies, frameworks, monorepo configurations, and CI/CD systems.
+与框架无关的项目检测模式，用于识别测试命令、包管理器、版本策略、框架、monorepo 配置和 CI/CD 系统。
 
 ---
 
-## Test Command Resolution
+## 测试命令解析
 
-Detect the project's test command by checking these files in order:
+按顺序检查以下文件来检测项目的测试命令：
 
-| Check | File                                | Condition                                  | Command                                                                          |
+| 检查 | 文件 | 条件 | 命令 |
 | ----- | ----------------------------------- | ------------------------------------------ | -------------------------------------------------------------------------------- |
-| 1     | `Makefile`                          | Has `test:` target                         | `make test`                                                                      |
-| 2     | `package.json`                      | Has `scripts.test`                         | `{pkg-manager} run test`                                                         |
-| 3     | `pyproject.toml`                    | Has `[tool.pytest]` or `pytest` dependency | `uv run pytest` (if `uv.lock`), `poetry run pytest` (if `poetry.lock`), `pytest` |
-| 4     | `Cargo.toml`                        | Exists                                     | `cargo test`                                                                     |
-| 5     | `go.mod`                            | Exists                                     | `go test ./...`                                                                  |
-| 6     | `Gemfile` + `Rakefile`              | Has `test` task                            | `bundle exec rake test`                                                          |
-| 7     | `mix.exs`                           | Exists                                     | `mix test`                                                                       |
-| 8     | `build.gradle` / `build.gradle.kts` | Exists                                     | `./gradlew test`                                                                 |
-| 9     | `pom.xml`                           | Exists                                     | `mvn test`                                                                       |
+| 1 | `Makefile` | 有 `test:` 目标 | `make test` |
+| 2 | `package.json` | 有 `scripts.test` | `{pkg-manager} run test` |
+| 3 | `pyproject.toml` | 有 `[tool.pytest]` 或 `pytest` 依赖 | `uv run pytest`（如果有 `uv.lock`），`poetry run pytest`（如果有 `poetry.lock`），`pytest` |
+| 4 | `Cargo.toml` | 存在 | `cargo test` |
+| 5 | `go.mod` | 存在 | `go test ./...` |
+| 6 | `Gemfile` + `Rakefile` | 有 `test` 任务 | `bundle exec rake test` |
+| 7 | `mix.exs` | 存在 | `mix test` |
+| 8 | `build.gradle` / `build.gradle.kts` | 存在 | `./gradlew test` |
+| 9 | `pom.xml` | 存在 | `mvn test` |
 
-If multiple match, prefer the first in order. If `Makefile` exists with a `test` target, it is always authoritative — projects use Makefiles to wrap their actual test commands.
+如果多个匹配，优先选择排序靠前的。如果 `Makefile` 存在且包含 `test` 目标，则始终以它为准——项目使用 Makefile 来包装实际的测试命令。
 
 ---
 
-## Package Manager Detection
+## 包管理器检测
 
-Detect from lock files (most specific wins):
+根据锁定文件检测（最具体的优先）：
 
-| Lock File           | Package Manager | Run Command   |
+| 锁定文件 | 包管理器 | 运行命令 |
 | ------------------- | --------------- | ------------- |
-| `pnpm-lock.yaml`    | pnpm            | `pnpm run`    |
-| `bun.lockb`         | bun             | `bun run`     |
-| `yarn.lock`         | yarn            | `yarn run`    |
-| `package-lock.json` | npm             | `npm run`     |
-| `uv.lock`           | uv              | `uv run`      |
-| `poetry.lock`       | poetry          | `poetry run`  |
-| `Pipfile.lock`      | pipenv          | `pipenv run`  |
-| `Cargo.lock`        | cargo           | `cargo`       |
-| `go.sum`            | go modules      | `go`          |
-| `Gemfile.lock`      | bundler         | `bundle exec` |
-| `mix.lock`          | mix             | `mix`         |
+| `pnpm-lock.yaml` | pnpm | `pnpm run` |
+| `bun.lockb` | bun | `bun run` |
+| `yarn.lock` | yarn | `yarn run` |
+| `package-lock.json` | npm | `npm run` |
+| `uv.lock` | uv | `uv run` |
+| `poetry.lock` | poetry | `poetry run` |
+| `Pipfile.lock` | pipenv | `pipenv run` |
+| `Cargo.lock` | cargo | `cargo` |
+| `go.sum` | go modules | `go` |
+| `Gemfile.lock` | bundler | `bundle exec` |
+| `mix.lock` | mix | `mix` |
 
-If no lock file: fall back to manifest file detection (`package.json` → npm, `pyproject.toml` → check for `[tool.poetry]` or default to uv).
+如果没有锁定文件：回退到清单文件检测（`package.json` → npm，`pyproject.toml` → 检查 `[tool.poetry]` 或默认使用 uv）。
 
 ---
 
-## Version Strategy Detection
+## 版本策略检测
 
-Check in order:
+按顺序检查：
 
-| Strategy         | Detection                                          | Read                             | Write                                  |
+| 策略 | 检测方式 | 读取 | 写入 |
 | ---------------- | -------------------------------------------------- | -------------------------------- | -------------------------------------- |
-| `VERSION` file   | File named `VERSION` at repo root                  | Read contents                    | Write new version                      |
-| `package.json`   | Has `version` field                                | `jq -r .version package.json`    | `jq '.version = "X.Y.Z"' package.json` |
-| `pyproject.toml` | Has `[project] version` or `[tool.poetry] version` | Parse TOML                       | Update TOML                            |
-| `Cargo.toml`     | Has `[package] version`                            | Parse TOML                       | Update TOML (+ `Cargo.lock`)           |
-| `mix.exs`        | Has `version:` in project config                   | Regex extract                    | Regex replace                          |
-| Git tags only    | No version file, but `v*` tags exist               | `git describe --tags --abbrev=0` | `git tag vX.Y.Z`                       |
+| `VERSION` 文件 | 仓库根目录下名为 `VERSION` 的文件 | 读取内容 | 写入新版本 |
+| `package.json` | 有 `version` 字段 | `jq -r .version package.json` | `jq '.version = "X.Y.Z"' package.json` |
+| `pyproject.toml` | 有 `[project] version` 或 `[tool.poetry] version` | 解析 TOML | 更新 TOML |
+| `Cargo.toml` | 有 `[package] version` | 解析 TOML | 更新 TOML（+ `Cargo.lock`） |
+| `mix.exs` | 项目配置中有 `version:` | 正则提取 | 正则替换 |
+| 仅 Git 标签 | 无版本文件，但存在 `v*` 标签 | `git describe --tags --abbrev=0` | `git tag vX.Y.Z` |
 
-For PATCH bumps: increment automatically. For MINOR or MAJOR: require explicit confirmation.
+对于 PATCH 版本更新：自动增加。对于 MINOR 或 MAJOR 更新：需要明确确认。
 
 ---
 
-## Framework Detection
+## 框架检测
 
-Detect by analyzing dependencies and configuration files:
+通过分析依赖和配置文件来检测：
 
 ### Python
 
-| Framework | Detection                                     |
+| 框架 | 检测方式 |
 | --------- | --------------------------------------------- |
-| Django    | `django` in dependencies, `manage.py` exists  |
-| FastAPI   | `fastapi` in dependencies                     |
-| Flask     | `flask` in dependencies                       |
-| Starlette | `starlette` in dependencies (without FastAPI) |
+| Django | `django` 在依赖中，`manage.py` 存在 |
+| FastAPI | `fastapi` 在依赖中 |
+| Flask | `flask` 在依赖中 |
+| Starlette | `starlette` 在依赖中（不含 FastAPI） |
 
 ### JavaScript/TypeScript
 
-| Framework      | Detection                                          |
+| 框架 | 检测方式 |
 | -------------- | -------------------------------------------------- |
-| Next.js        | `next` in dependencies, `next.config.*` exists     |
-| Remix          | `@remix-run/node` in dependencies                  |
-| SvelteKit      | `@sveltejs/kit` in dependencies                    |
-| Nuxt           | `nuxt` in dependencies                             |
-| Express        | `express` in dependencies (without meta-framework) |
-| Astro          | `astro` in dependencies                            |
-| Vite (library) | `vite` in dependencies (without meta-framework)    |
+| Next.js | `next` 在依赖中，`next.config.*` 存在 |
+| Remix | `@remix-run/node` 在依赖中 |
+| SvelteKit | `@sveltejs/kit` 在依赖中 |
+| Nuxt | `nuxt` 在依赖中 |
+| Express | `express` 在依赖中（不含元框架） |
+| Astro | `astro` 在依赖中 |
+| Vite（库） | `vite` 在依赖中（不含元框架） |
 
 ### Ruby
 
-| Framework | Detection                                     |
+| 框架 | 检测方式 |
 | --------- | --------------------------------------------- |
-| Rails     | `rails` in Gemfile, `config/routes.rb` exists |
-| Sinatra   | `sinatra` in Gemfile                          |
+| Rails | `rails` 在 Gemfile 中，`config/routes.rb` 存在 |
+| Sinatra | `sinatra` 在 Gemfile 中 |
 
 ### Go
 
-| Framework        | Detection                              |
+| 框架 | 检测方式 |
 | ---------------- | -------------------------------------- |
-| Gin              | `github.com/gin-gonic/gin` in `go.mod` |
-| Echo             | `github.com/labstack/echo` in `go.mod` |
-| Chi              | `github.com/go-chi/chi` in `go.mod`    |
-| Standard library | No framework dependency                |
+| Gin | `github.com/gin-gonic/gin` 在 `go.mod` 中 |
+| Echo | `github.com/labstack/echo` 在 `go.mod` 中 |
+| Chi | `github.com/go-chi/chi` 在 `go.mod` 中 |
+| 标准库 | 无框架依赖 |
 
 ### Rust
 
-| Framework | Detection                   |
+| 框架 | 检测方式 |
 | --------- | --------------------------- |
-| Actix-web | `actix-web` in `Cargo.toml` |
-| Axum      | `axum` in `Cargo.toml`      |
-| Rocket    | `rocket` in `Cargo.toml`    |
+| Actix-web | `actix-web` 在 `Cargo.toml` 中 |
+| Axum | `axum` 在 `Cargo.toml` 中 |
+| Rocket | `rocket` 在 `Cargo.toml` 中 |
 
-### Default Ports by Framework
+### 框架默认端口
 
-| Framework     | Default Port |
+| 框架 | 默认端口 |
 | ------------- | ------------ |
-| Next.js       | 3000         |
-| Remix         | 3000         |
-| SvelteKit     | 5173         |
-| Nuxt          | 3000         |
-| Vite          | 5173         |
-| Express       | 3000         |
-| Django        | 8000         |
-| FastAPI       | 8000         |
-| Flask         | 5000         |
-| Rails         | 3000         |
-| Phoenix       | 4000         |
-| Go (common)   | 8080         |
-| Rust (common) | 8080         |
+| Next.js | 3000 |
+| Remix | 3000 |
+| SvelteKit | 5173 |
+| Nuxt | 3000 |
+| Vite | 5173 |
+| Express | 3000 |
+| Django | 8000 |
+| FastAPI | 8000 |
+| Flask | 5000 |
+| Rails | 3000 |
+| Phoenix | 4000 |
+| Go（常见） | 8080 |
+| Rust（常见） | 8080 |
 
 ---
 
-## Monorepo Detection
+## Monorepo 检测
 
-| Signal                                    | Tool                 | Configuration                             |
+| 信号 | 工具 | 配置 |
 | ----------------------------------------- | -------------------- | ----------------------------------------- |
-| `pnpm-workspace.yaml`                     | pnpm workspaces      | `packages:` array lists workspace globs   |
-| `turbo.json`                              | Turborepo            | `pipeline:` defines task dependencies     |
-| `nx.json`                                 | Nx                   | `targetDefaults:` defines build graph     |
-| `lerna.json`                              | Lerna                | `packages:` array lists package locations |
-| `[workspace]` in `Cargo.toml`             | Cargo workspaces     | `members:` array lists crate paths        |
-| `go.work`                                 | Go workspaces        | `use` directives list module paths        |
-| `settings.gradle` / `settings.gradle.kts` | Gradle multi-project | `include` statements list subprojects     |
+| `pnpm-workspace.yaml` | pnpm workspaces | `packages:` 数组列出工作区通配符 |
+| `turbo.json` | Turborepo | `pipeline:` 定义任务依赖 |
+| `nx.json` | Nx | `targetDefaults:` 定义构建图 |
+| `lerna.json` | Lerna | `packages:` 数组列出包位置 |
+| `[workspace]` 在 `Cargo.toml` 中 | Cargo workspaces | `members:` 数组列出 crate 路径 |
+| `go.work` | Go workspaces | `use` 指令列出模块路径 |
+| `settings.gradle` / `settings.gradle.kts` | Gradle 多项目 | `include` 语句列出子项目 |
 
-For monorepos, scope operations to the relevant workspace/package when a path is specified.
+对于 monorepo，当指定了路径时，将操作范围限定到相关工作区/包。
 
 ---
 
-## CI/CD Detection
+## CI/CD 检测
 
-| Path                      | System                         |
+| 路径 | 系统 |
 | ------------------------- | ------------------------------ |
-| `.github/workflows/*.yml` | GitHub Actions                 |
-| `.gitlab-ci.yml`          | GitLab CI                      |
-| `Jenkinsfile`             | Jenkins                        |
-| `.circleci/config.yml`    | CircleCI                       |
-| `bitbucket-pipelines.yml` | Bitbucket Pipelines            |
-| `.travis.yml`             | Travis CI                      |
-| `azure-pipelines.yml`     | Azure DevOps                   |
-| `.buildkite/pipeline.yml` | Buildkite                      |
-| `Taskfile.yml`            | Task (not CI, but task runner) |
+| `.github/workflows/*.yml` | GitHub Actions |
+| `.gitlab-ci.yml` | GitLab CI |
+| `Jenkinsfile` | Jenkins |
+| `.circleci/config.yml` | CircleCI |
+| `bitbucket-pipelines.yml` | Bitbucket Pipelines |
+| `.travis.yml` | Travis CI |
+| `azure-pipelines.yml` | Azure DevOps |
+| `.buildkite/pipeline.yml` | Buildkite |
+| `Taskfile.yml` | Task（非 CI，是任务运行器） |
 
 ---
 
-## Changelog Detection
+## 更新日志检测
 
-| File           | Format                         |
+| 文件 | 格式 |
 | -------------- | ------------------------------ |
-| `CHANGELOG.md` | Keep a Changelog (most common) |
-| `CHANGES.md`   | Variant naming                 |
-| `HISTORY.md`   | Variant naming                 |
-| `NEWS.md`      | GNU-style                      |
-| None           | Skip changelog updates         |
+| `CHANGELOG.md` | Keep a Changelog（最常见） |
+| `CHANGES.md` | 变体命名 |
+| `HISTORY.md` | 变体命名 |
+| `NEWS.md` | GNU 风格 |
+| 无 | 跳过更新日志更新 |
 
-Keep a Changelog format:
+Keep a Changelog 格式：
 
 ```markdown
 ## [X.Y.Z] - YYYY-MM-DD

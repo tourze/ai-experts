@@ -1,68 +1,68 @@
-# Review Output Format
+# 审查输出格式
 
 ```
-## Frontend Design Review: [Component/Feature Name]
+## 前端设计审查：[组件/功能名称]
 
-### Context
-- **Purpose**: What problem does this solve? Who uses it?
-- **Aesthetic Direction**: [If new design: describe the bold conceptual direction]
-- **User Task**: What is the user trying to accomplish?
+### 上下文
+- **目的**：解决什么问题？谁在使用？
+- **美学方向**：[如果是新设计：描述大胆的概念方向]
+- **用户任务**：用户试图完成什么？
 
-### Summary
-[Pass/Needs Work/Blocked] - [One-line assessment]
+### 总结
+[通过/需要改进/阻塞] - [一行评估]
 
-### Design System Compliance (if applicable)
-- [ ] Component exists in [Your Figma Design System]
-- [ ] Component usage verified in [Your Component Library]
-- [ ] Implementation matches Figma specs (spacing, colors, typography)
-- [ ] Uses design tokens (not hardcoded values) - verified in code
-- [ ] All variants match design system options
-- [ ] Spacing verified against Figma Dev Mode
-- [ ] Documented exception if deviating from design system
+### 设计系统合规（如适用）
+- [ ] 组件存在于[你的 Figma 设计系统]中
+- [ ] 组件使用已在[你的组件库]中验证
+- [ ] 实现符合 Figma 规范（间距、颜色、字体）
+- [ ] 使用设计 token（非硬编码值）- 代码中已验证
+- [ ] 所有变体与设计系统选项匹配
+- [ ] 间距已对照 Figma Dev Mode 验证
+- [ ] 偏离设计系统时记录了例外情况
 
-### Aesthetic Quality (especially for new designs)
-- [ ] Clear conceptual direction (not generic AI aesthetic)
-- [ ] Distinctive typography choices
-- [ ] Cohesive color palette with CSS variables
-- [ ] Intentional motion and micro-interactions
-- [ ] Spatial composition creates visual interest
-- [ ] Backgrounds and visual details add atmosphere
+### 美学质量（尤其适用于新设计）
+- [ ] 清晰的概念方向（非通用 AI 美学）
+- [ ] 独特的字体选择
+- [ ] 使用 CSS 变量的协调调色板
+- [ ] 有意图的动效和微交互
+- [ ] 空间构图创造视觉趣味
+- [ ] 背景和视觉细节增添氛围
 
-### Pillar Assessment
+### 支柱评估
 
-| Pillar | Status | Notes |
-|--------|--------|-------|
-| Frictionless | 🟢/🟠/⚫ | Task completion efficient, primary action clear |
-| Quality Craft | 🟢/🟠/⚫ | Design system compliant, aesthetic distinctive, accessible |
-| Trustworthy | 🟢/🟠/⚫ | AI disclaimers present, errors actionable |
+| 支柱       | 状态        | 备注                           |
+| ---------- | ----------- | ------------------------------ |
+| 无摩擦     | 🟢/🟠/⚫     | 任务完成高效，主要操作清晰     |
+| 高质量工艺 | 🟢/🟠/⚫     | 设计系统合规、美学独特、无障碍 |
+| 可信赖     | 🟢/🟠/⚫     | AI 免责声明存在，错误可操作    |
 
-**Legend:** 🟢 Pass | 🟠 Needs attention | ⚫ Blocking issue
+**图例：** 🟢 通过 | 🟠 需要注意 | ⚫ 阻塞问题
 
-### Design Critique
-**Verdict:** [Pass / Needs work / Reach out to design for more support]
+### 设计评审
+**裁定：** [通过 / 需要改进 / 联系设计团队寻求更多支持]
 
-**Rationale:** [Brief explanation based on pillar assessment, design system compliance, and aesthetic direction]
+**理由：** [基于支柱评估、设计系统合规和美学方向的简要说明]
 
-**Criteria:**
-- **Pass**: All pillars 🟢 or minor 🟠 that don't block user tasks, design system compliant, clear aesthetic direction
-- **Needs work**: Multiple 🟠 or any critical workflow issues, design system deviations, or generic aesthetic choices
-- **Reach out to design for more support**: Any ⚫ blocking issues, fundamental pattern problems, major design system violations, or need for aesthetic direction
+**标准：**
+- **通过**：所有支柱 🟢 或轻微的 🟠 不阻塞用户任务、设计系统合规、美学方向清晰
+- **需要改进**：多个 🟠 或任何关键工作流问题、设计系统偏离、或通用美学选择
+- **联系设计团队寻求更多支持**：任何 ⚫ 阻塞问题、基础模式问题、重大设计系统违规、或需要美学方向
 
-### Issues
+### 问题
 
-**Blocking (must fix before merge):**
-1. [Pillar/Design System/Aesthetic] Issue description + recommendation with link
+**阻塞（合并前必须修复）：**
+1. [支柱/设计系统/美学] 问题描述 + 建议及链接
 
-**Major (should fix):**
-1. [Pillar/Design System/Aesthetic] Issue description + pattern suggestion with reference
+**主要（应修复）：**
+1. [支柱/设计系统/美学] 问题描述 + 模式建议及参考
 
-**Minor (consider for refinement):**
-1. [Pillar/Design System/Aesthetic] Issue description + optional improvement
+**次要（考虑改进）：**
+1. [支柱/设计系统/美学] 问题描述 + 可选改进
 
-### Recommendations
-- [Design system component to use with link]
-- [Specific code change with design token reference]
-- [Typography recommendation for better aesthetic direction]
-- [Motion/animation suggestion]
-- [Link to design system in Figma]
+### 建议
+- [要使用的设计系统组件及链接]
+- [带有设计 token 参考的具体代码更改]
+- [为更好美学方向提供的字体建议]
+- [动效/动画建议]
+- [Figma 设计系统链接]
 ```

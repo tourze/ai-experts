@@ -1,215 +1,207 @@
-# Document Review Guide
+# 文档审查指南
 
-Reference for Mode B (Document Review) and Mode C (Hybrid). Provides completeness checklists,
-common gaps in architecture documents, and questions to surface unstated assumptions.
+用于模式 B（文档审查）和模式 C（混合审查）的参考。提供完整性检查清单、架构文档中的常见遗漏以及用于揭示未声明假设的问题。
 
-## Table of Contents
+## 目录
 
-1. Architecture Document Completeness Checklist
-2. Common Gaps & Missing Concerns
-3. Questions to Ask for Greenfield Projects
-4. Questions to Ask for Existing Systems
-5. Document Quality Assessment
-
----
-
-## 1. Architecture Document Completeness Checklist
-
-Rate each section as: ✅ Addressed, ⚠️ Partially Addressed, ❌ Missing, N/A Not Applicable.
-
-### System Overview
-
-- [ ] System purpose and business context
-- [ ] Target users and personas
-- [ ] Key use cases / user flows
-- [ ] System scope (what's included and excluded)
-- [ ] Key assumptions and constraints
-- [ ] Success metrics / KPIs
-
-### Functional Architecture
-
-- [ ] Component inventory with responsibilities
-- [ ] Component interaction diagram
-- [ ] Data flows between components
-- [ ] API contracts (at least interface-level)
-- [ ] External system integrations
-- [ ] Asynchronous workflows identified
-
-### Non-Functional Requirements
-
-- [ ] Performance targets (latency, throughput)
-- [ ] Availability target (SLA / uptime percentage)
-- [ ] Scalability requirements (current + projected)
-- [ ] Security requirements
-- [ ] Compliance requirements
-- [ ] Data retention and privacy requirements
-
-### Infrastructure Architecture
-
-- [ ] Deployment topology (cloud, region, AZ)
-- [ ] Compute strategy (containers, serverless, VMs)
-- [ ] Networking (VPC, subnets, load balancers)
-- [ ] Storage strategy (databases, object storage, caches)
-- [ ] CDN / edge strategy
-- [ ] Environment strategy (dev, staging, production)
-
-### Data Architecture
-
-- [ ] Data model (at least ER diagram level)
-- [ ] Database technology selection with justification
-- [ ] Data lifecycle (retention, archival, deletion)
-- [ ] Backup and recovery strategy
-- [ ] Migration strategy
-
-### Security Architecture
-
-- [ ] Authentication mechanism
-- [ ] Authorization model
-- [ ] Encryption (transit + rest)
-- [ ] Secret management
-- [ ] Network security
-- [ ] Threat model or security considerations
-
-### Operational Architecture
-
-- [ ] CI/CD pipeline design
-- [ ] Monitoring and alerting strategy
-- [ ] Logging strategy
-- [ ] Incident response process
-- [ ] Deployment strategy (rollout, rollback)
-- [ ] Disaster recovery plan
-
-### Decision Records
-
-- [ ] Technology choices justified
-- [ ] Trade-offs documented
-- [ ] Alternatives considered and reasons for rejection
-- [ ] Known risks acknowledged
+1. 架构文档完整性检查清单
+2. 常见遗漏与缺失关注点
+3. 绿场项目需问的问题
+4. 现有系统需问的问题
+5. 文档质量评估
 
 ---
 
-## 2. Common Gaps & Missing Concerns
+## 1. 架构文档完整性检查清单
 
-These are the concerns most frequently absent from architecture documents. Each missing
-concern is a potential finding.
+每项评分为：✅ 已解决、⚠️ 部分解决、❌ 缺失、N/A 不适用。
 
-### Frequently Missing (High Impact)
+### 系统概述
 
-1. **Error handling strategy** — What happens when things fail? Most docs describe the
-   happy path only.
-2. **Data consistency model** — Is it strong or eventual? Most docs never state this
-   explicitly, leading to incorrect assumptions.
-3. **Capacity planning** — "Millions of users" is not a plan. Specific numbers for current,
-   6-month, 12-month, and peak scenarios are needed.
-4. **Cache invalidation** — "We'll cache it" appears often. How the cache is invalidated
-   appears rarely.
-5. **Secret management** — Where do credentials live? How are they rotated?
-6. **Migration path** — For existing systems: how do you get from here to there? For new
-   systems: what's the schema migration strategy?
-7. **Backup restore testing** — Backups are mentioned, testing restores is not.
-8. **Cost model** — What does this architecture cost at 1x, 10x, 100x scale?
+- [ ] 系统目的和业务背景
+- [ ] 目标用户和角色
+- [ ] 关键用例/用户流程
+- [ ] 系统范围（包含和不包含的内容）
+- [ ] 关键假设和约束
+- [ ] 成功指标 / KPI
 
-### Frequently Understated (Medium Impact)
+### 功能架构
 
-9. **Cross-cutting concerns** — Logging, tracing, metrics are "assumed" but not designed.
-10. **API versioning** — Mentioned as "we'll version the API" without specifying how.
-11. **Database connection management** — Pool sizes, connection limits, failover.
-12. **Rate limiting** — Often absent for internal APIs between services.
-13. **Idempotency** — Retry behavior is undefined for state-changing operations.
-14. **Feature flagging** — Progressive rollout capability is assumed but not designed.
+- [ ] 组件清单及职责
+- [ ] 组件交互图
+- [ ] 组件间的数据流
+- [ ] API 契约（至少接口级别）
+- [ ] 外部系统集成
+- [ ] 已识别的异步工作流
 
-### Frequently Overlooked (Lower Impact but Important)
+### 非功能性需求
 
-15. **Team topology alignment** — Architecture designed without considering who builds/owns it.
-16. **Vendor lock-in** — Cloud-specific services used without abstraction layer discussion.
-17. **Developer experience** — Local development, onboarding, contribution workflow.
-18. **Data sovereignty** — Where is data stored? Does it cross borders?
-19. **Composite SLA** — Individual component SLAs stated but composite SLA not calculated.
+- [ ] 性能目标（延迟、吞吐量）
+- [ ] 可用性目标（SLA / 正常运行时间百分比）
+- [ ] 可扩展性需求（当前 + 预期）
+- [ ] 安全需求
+- [ ] 合规需求
+- [ ] 数据保留和隐私需求
 
----
+### 基础设施架构
 
-## 3. Questions to Ask for Greenfield Projects
+- [ ] 部署拓扑（云、区域、可用区）
+- [ ] 计算策略（容器、Serverless、VM）
+- [ ] 网络（VPC、子网、负载均衡器）
+- [ ] 存储策略（数据库、对象存储、缓存）
+- [ ] CDN / 边缘策略
+- [ ] 环境策略（开发、预发布、生产）
 
-When reviewing a design that has not yet been built:
+### 数据架构
 
-**Viability Questions:**
+- [ ] 数据模型（至少 ER 图级别）
+- [ ] 数据库技术选择及理由
+- [ ] 数据生命周期（保留、归档、删除）
+- [ ] 备份和恢复策略
+- [ ] 迁移策略
 
-- Has the team built systems of this complexity before?
-- Is the timeline realistic for the proposed architecture complexity?
-- Are there simpler alternatives that would meet the same requirements?
-- What is the minimum viable architecture? Can complexity be added iteratively?
+### 安全架构
 
-**Assumption Challenges:**
+- [ ] 认证机制
+- [ ] 授权模型
+- [ ] 加密（传输中 + 静态）
+- [ ] 密钥管理
+- [ ] 网络安全
+- [ ] 威胁模型或安全考量
 
-- What are the three things most likely to be wrong in this design?
-- What happens if the scale estimate is 10x higher? 10x lower?
-- What happens if a key technology choice turns out to be wrong? How expensive is the pivot?
-- Which components are the team least experienced with?
+### 运维架构
 
-**Prioritization Questions:**
+- [ ] CI/CD 流水线设计
+- [ ] 监控和告警策略
+- [ ] 日志策略
+- [ ] 事件响应流程
+- [ ] 部署策略（回滚、回退）
+- [ ] 灾难恢复计划
 
-- If you could only build 3 of the 10 planned components, which 3 would you build?
-- What is the simplest possible version that could go to production?
-- Which non-functional requirements are day-1 must-haves vs can-be-added-later?
+### 决策记录
 
-**Risk Questions:**
-
-- What is the single most likely cause of project failure?
-- What is the single most likely cause of production incident?
-- Which external dependency poses the biggest risk? (Vendor, API, library.)
-
----
-
-## 4. Questions to Ask for Existing Systems
-
-When reviewing an architecture document for a system already in production:
-
-**Reality Check Questions:**
-
-- How closely does this document match the actual running system?
-- What has been built but is not documented here?
-- What is documented here but has not been built?
-- When was this document last updated?
-
-**Operational History Questions:**
-
-- What are the most frequent production incidents?
-- What is the most common developer complaint about the architecture?
-- Which component is the most fragile?
-- Where does the team spend the most unplanned maintenance time?
-
-**Evolution Questions:**
-
-- What architectural decisions would you reverse if you could?
-- What is the biggest scaling concern in the next 12 months?
-- What technical debt is actively causing problems?
+- [ ] 技术选择有理由
+- [ ] 权衡已记录
+- [ ] 考虑的替代方案及拒绝理由
+- [ ] 已知风险已说明
 
 ---
 
-## 5. Document Quality Assessment
+## 2. 常见遗漏与缺失关注点
 
-Beyond content completeness, assess document quality:
+以下是架构文档中最常缺失的关注点。每个遗漏都是一个潜在的问题发现。
 
-**Specificity:** Replace vague statements with specific questions.
+### 高频缺失（高影响）
 
-- ❌ "The system will be scalable" → What does "scalable" mean specifically?
-- ❌ "We will use caching" → What caching strategy? What data? What TTL?
-- ❌ "The API will be secure" → What authentication? What authorization model?
-- ❌ "High availability" → What availability percentage? What's the failover strategy?
+1. **错误处理策略** —— 出问题时怎么办？大多数文档只描述正常路径。
+2. **数据一致性模型** —— 强一致性还是最终一致性？大多数文档从未明确说明，导致错误的假设。
+3. **容量规划** —— "百万用户"不是计划。需要当前、6 个月、12 个月和峰值场景的具体数字。
+4. **缓存失效** —— "我们会缓存"很常见。缓存如何失效却很少见。
+5. **密钥管理** —— 凭证存在哪里？如何轮换？
+6. **迁移路径** —— 对于现有系统：如何从现状达到目标？对于新系统：schema 迁移策略是什么？
+7. **备份恢复测试** —— 备份会被提到，但测试恢复却不会。
+8. **成本模型** —— 该架构在 1 倍、10 倍、100 倍规模下各花费多少？
 
-**Consistency:** Check for internal contradictions.
+### 常被低估（中等影响）
 
-- Does the stated consistency model match the database choice?
-- Does the stated availability target match the infrastructure design?
-- Do stated scale targets match the infrastructure sizing?
+9. **横切关注点** —— 日志、追踪、指标被认为是"理所当然"但未经过设计。
+10. **API 版本控制** —— 提到"我们会做 API 版本管理"但没有说明具体方式。
+11. **数据库连接管理** —— 池大小、连接限制、故障转移。
+12. **速率限制** —— 服务之间的内部 API 常常缺少。
+13. **幂等性** —— 状态变更操作的重试行为未定义。
+14. **功能开关** —— 渐进式上线能力被认为是当然的但没有设计。
 
-**Completeness of Trade-offs:** Every architectural decision should acknowledge what was
-given up. If a document presents only benefits, the trade-offs are unstated, not absent.
+### 常被忽视（影响较低但重要）
 
-**Diagram Quality:** Architecture diagrams should show:
+15. **团队拓扑对齐** —— 架构设计未考虑谁构建/拥有它。
+16. **供应商锁定** —— 使用云特定服务但未讨论抽象层。
+17. **开发者体验** —— 本地开发、入职、贡献工作流。
+18. **数据主权** —— 数据存储在哪里？是否会跨境传输？
+19. **复合 SLA** —— 声明了单个组件的 SLA 但未计算复合 SLA。
 
-- Component boundaries (what's inside vs outside)
-- Data flows (arrows with labels, not just boxes)
-- Synchronous vs asynchronous communication
-- External system boundaries
-- Network boundaries (public, private, data tier)
+---
+
+## 3. 绿场项目需问的问题
+
+在审查尚未构建的设计时：
+
+**可行性问题：**
+
+- 团队以前是否构建过这种复杂度的系统？
+- 时间表对于提议的架构复杂度是否现实？
+- 是否有更简单的替代方案能满足同样的需求？
+- 最小可行架构是什么？复杂度能否迭代添加？
+
+**假设质疑：**
+
+- 这个设计中最可能出错的三个事情是什么？
+- 如果规模估计值高 10 倍或低 10 倍会怎样？
+- 如果关键技术选择被证明是错的会怎样？转向的成本有多高？
+- 团队对哪些组件最不熟悉？
+
+**优先级问题：**
+
+- 如果只能构建 10 个计划组件中的 3 个，你会选哪 3 个？
+- 能上线的最简版本是什么？
+- 哪些非功能性需求是第一天必需的，哪些可以后续添加？
+
+**风险问题：**
+
+- 项目失败最可能的原因是什么？
+- 生产事故最可能的原因是什么？
+- 哪个外部依赖构成最大风险？（供应商、API、库。）
+
+---
+
+## 4. 现有系统需问的问题
+
+在审查已投入生产的系统的架构文档时：
+
+**现实核查问题：**
+
+- 这份文档与实际运行的系统有多接近？
+- 哪些已经构建但没有记录在这里？
+- 哪些在这里记录了但尚未构建？
+- 这份文档上次更新是什么时候？
+
+**运维历史问题：**
+
+- 最频繁的生产事故是什么？
+- 开发者对架构最常见的抱怨是什么？
+- 哪个组件最脆弱？
+- 团队在哪方面花费的计划外维护时间最多？
+
+**演进问题：**
+
+- 如果可以，你会撤销哪些架构决策？
+- 未来 12 个月最大的扩展担忧是什么？
+- 哪些技术债务正在积极造成问题？
+
+---
+
+## 5. 文档质量评估
+
+除了内容完整性，还要评估文档质量：
+
+**具体性：** 将模糊的陈述替换为具体问题。
+
+- ❌ "系统将可扩展" —— "可扩展"具体指什么？
+- ❌ "我们将使用缓存" —— 什么缓存策略？缓存哪些数据？TTL 是多少？
+- ❌ "API 将是安全的" —— 使用什么认证方式？什么授权模型？
+- ❌ "高可用性" —— 可用性百分比是多少？故障转移策略是什么？
+
+**一致性：** 检查内部矛盾。
+
+- 声明的一致性模型与数据库选择是否匹配？
+- 声明的可用性目标与基础设施设计是否一致？
+- 声明的规模目标与基础设施规模是否一致？
+
+**权衡的完整性：** 每个架构决策都应说明放弃了什么。如果文档只呈现好处，那么权衡只是未说明，而非不存在。
+
+**图表质量：** 架构图应展示：
+
+- 组件边界（内部 vs 外部）
+- 数据流（带标签的箭头，不只是方框）
+- 同步与异步通信
+- 外部系统边界
+- 网络边界（公共、私有、数据层）

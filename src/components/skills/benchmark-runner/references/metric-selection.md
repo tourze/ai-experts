@@ -1,122 +1,117 @@
-# Metric Selection
+# 指标选择
 
-Catalog of benchmark metrics organized by category, with guidance on which metrics
-to select for different comparison types.
-
----
-
-## Latency Metrics
-
-| Metric        | What It Measures                      | When to Use                                  |
-| ------------- | ------------------------------------- | -------------------------------------------- |
-| P50 (median)  | Typical latency                       | Always — baseline user experience            |
-| P95           | Tail latency affecting 5% of requests | User-facing services                         |
-| P99           | Worst-case latency for 1%             | SLA-sensitive services                       |
-| Mean          | Average across all measurements       | General comparison (but hides outliers)      |
-| Std deviation | Consistency of latency                | When consistency matters more than raw speed |
-| Min/Max       | Absolute best/worst case              | Identifying outliers, warmup effects         |
-
-### Latency Guidelines
-
-- **Always report P50 + P95 at minimum.** Mean alone hides bimodal distributions.
-- **Report P99 for user-facing systems.** 1% of 10M requests = 100K affected users.
-- **Report std deviation when comparing similar candidates.** If P50 is close, the
-  more consistent candidate may be preferable.
-
-### Measurement Units
-
-| Scale        | Unit              | Context                             |
-| ------------ | ----------------- | ----------------------------------- |
-| < 1ms        | microseconds (μs) | In-memory operations, cache lookups |
-| 1ms - 1000ms | milliseconds (ms) | API calls, database queries         |
-| > 1s         | seconds (s)       | Batch processing, file operations   |
+按类别组织的基准测试指标目录，以及针对不同比较类型选择指标的指南。
 
 ---
 
-## Throughput Metrics
+## 延迟指标
 
-| Metric                    | What It Measures               | When to Use                |
-| ------------------------- | ------------------------------ | -------------------------- |
-| Operations/second (ops/s) | Discrete operation throughput  | API endpoints, DB queries  |
-| Tokens/second (tok/s)     | LLM generation speed           | Language model comparison  |
-| MB/second                 | Data transfer rate             | File processing, streaming |
-| Requests/second (RPS)     | HTTP request handling capacity | Web server comparison      |
-| Items/second              | Processing pipeline throughput | ETL, data pipeline         |
+| 指标             | 测量内容                            | 何时使用                                      |
+| ---------------- | ----------------------------------- | --------------------------------------------- |
+| P50（中位数）    | 典型延迟                            | 始终——用户体验基线                            |
+| P95              | 影响 5% 请求的尾部延迟               | 面向用户的服务                                |
+| P99              | 影响 1% 请求的最差延迟               | 有 SLA 要求的服务                             |
+| 均值             | 所有测量的平均值                     | 一般比较（但会隐藏异常值）                    |
+| 标准差           | 延迟的一致性                         | 一致性比原始速度更重要时                      |
+| 最小值/最大值    | 绝对最佳/最差情况                    | 识别异常值、预热效果                          |
 
-### Throughput Guidelines
+### 延迟指南
 
-- **Measure at saturation.** Throughput at 10% load tells nothing. Measure at the
-  point where adding more load doesn't increase throughput.
-- **Report with concurrency level.** "10K ops/s at 100 concurrent connections" is
-  meaningful. "10K ops/s" alone is not.
+- **至少报告 P50 + P95。** 仅均值会隐藏双峰分布。
+- **面向用户系统报告 P99。** 1000 万请求中的 1% 就是 10 万受影响用户。
+- **比较相似候选时报告标准差。** 如果 P50 接近，更一致的候选可能更优。
 
----
+### 测量单位
 
-## Memory Metrics
-
-| Metric             | What It Measures              | When to Use                       |
-| ------------------ | ----------------------------- | --------------------------------- |
-| Peak RSS           | Maximum resident memory       | Resource-constrained environments |
-| Average RSS        | Typical memory usage          | Long-running processes            |
-| Allocation rate    | Memory allocations per second | GC pressure comparison            |
-| Peak heap          | Maximum heap usage            | JVM/managed runtime comparison    |
-| Memory growth rate | Memory increase over time     | Leak detection                    |
-
-### Memory Guidelines
-
-- **Peak RSS is the most actionable metric.** It determines if the process fits in
-  available memory.
-- **Measure under realistic load.** Idle memory usage is irrelevant.
+| 量级         | 单位              | 场景                             |
+| ------------ | ----------------- | -------------------------------- |
+| < 1ms        | 微秒 (μs)         | 内存操作、缓存查找               |
+| 1ms - 1000ms | 毫秒 (ms)         | API 调用、数据库查询             |
+| > 1s         | 秒 (s)            | 批处理、文件操作                 |
 
 ---
 
-## Accuracy Metrics
+## 吞吐量指标
 
-| Metric      | What It Measures                       | When to Use                          |
-| ----------- | -------------------------------------- | ------------------------------------ |
-| F1 score    | Harmonic mean of precision/recall      | Classification tasks                 |
-| Precision   | Fraction of positives that are correct | When false positives are costly      |
-| Recall      | Fraction of actual positives found     | When false negatives are costly      |
-| Exact match | Binary correct/incorrect               | QA tasks, code generation            |
-| BLEU        | N-gram overlap with reference          | Machine translation, text generation |
-| ROUGE       | Recall-oriented text overlap           | Summarization                        |
-| Accuracy    | Fraction of correct predictions        | Balanced classification              |
+| 指标                        | 测量内容               | 何时使用                   |
+| --------------------------- | ---------------------- | -------------------------- |
+| 操作/秒 (ops/s)             | 离散操作吞吐量         | API 端点、数据库查询        |
+| Token/秒 (tok/s)            | LLM 生成速度           | 语言模型比较               |
+| MB/秒                       | 数据传输速率           | 文件处理、流式传输         |
+| 请求/秒 (RPS)               | HTTP 请求处理能力      | Web 服务器比较             |
+| 项/秒                        | 处理流水线吞吐量       | ETL、数据流水线            |
 
----
+### 吞吐量指南
 
-## Cost Metrics
-
-| Metric                  | What It Measures           | When to Use                         |
-| ----------------------- | -------------------------- | ----------------------------------- |
-| $/1K operations         | Cost per unit of work      | API service comparison              |
-| $/hour                  | Hourly infrastructure cost | Compute resource comparison         |
-| $/GB stored             | Storage cost               | Database, object storage comparison |
-| $/GB transferred        | Data transfer cost         | CDN, API comparison                 |
-| Total cost of ownership | All-in cost over time      | Long-term infrastructure decisions  |
+- **在饱和状态下测量。** 10% 负载下的吞吐量说明不了什么。在增加更多负载不会提高吞吐量的临界点测量。
+- **同时报告并发级别。** "10K ops/s 在 100 个并发连接下"才有意义。仅"10K ops/s"则没有。
 
 ---
 
-## Metric Selection by Task Type
+## 内存指标
 
-| Task Type                | Primary Metrics                         | Secondary Metrics     |
-| ------------------------ | --------------------------------------- | --------------------- |
-| API endpoint comparison  | Latency (P50, P95), RPS                 | Memory, cost          |
-| Database query           | Latency (P50, P99), rows/sec            | Memory, CPU           |
-| ML model inference       | Latency, accuracy (F1 or task-specific) | Memory, cost          |
-| Data processing pipeline | Throughput (items/sec)                  | Memory, latency       |
-| File format comparison   | Parse speed, serialize speed            | File size, memory     |
-| Caching solution         | Read latency, hit rate                  | Memory, write latency |
-| Search engine            | Latency (P50, P95), precision/recall    | Index size, memory    |
+| 指标                 | 测量内容                | 何时使用                          |
+| -------------------- | ----------------------- | --------------------------------- |
+| 峰值 RSS            | 最大驻留内存            | 资源受限环境                      |
+| 平均 RSS            | 典型内存使用            | 长时间运行进程                    |
+| 分配速率            | 每秒内存分配次数        | GC 压力比较                       |
+| 峰值堆内存          | 最大堆使用量            | JVM/托管运行时比较                |
+| 内存增长率          | 内存随时间增长          | 泄漏检测                          |
+
+### 内存指南
+
+- **峰值 RSS 是最具可操作性的指标。** 它决定进程是否能容纳在可用内存中。
+- **在真实负载下测量。** 空闲内存使用量不相关。
 
 ---
 
-## Anti-Patterns
+## 准确性指标
 
-| Anti-Pattern                   | Problem                                   | Fix                                          |
-| ------------------------------ | ----------------------------------------- | -------------------------------------------- |
-| Reporting only mean            | Hides tail latency, bimodal distributions | Report P50 + P95 at minimum                  |
-| Single measurement             | No statistical confidence                 | Run N iterations, report mean ± std dev      |
-| Best-case input only           | Misleading optimistic results             | Test with representative + worst-case inputs |
-| Ignoring warmup                | First-run includes JIT, caching overhead  | Discard first N iterations                   |
-| Different hardware             | Results not comparable                    | Run all candidates on same hardware          |
-| Throughput without concurrency | Unclear load conditions                   | State concurrency level with throughput      |
+| 指标           | 测量内容                            | 何时使用                            |
+| -------------- | ----------------------------------- | ----------------------------------- |
+| F1 分数        | 精确率和召回率的调和均值             | 分类任务                            |
+| 精确率         | 正确识别的正类比例                  | 误报代价高时                        |
+| 召回率         | 实际正类中被发现的比例              | 漏报代价高时                        |
+| 精确匹配       | 二分正确/错误                       | QA 任务、代码生成                   |
+| BLEU           | 与参考的 N-gram 重叠度              | 机器翻译、文本生成                  |
+| ROUGE          | 面向召回的文本重叠度                | 摘要                                |
+| 准确率         | 正确预测的比例                      | 平衡分类                            |
+
+---
+
+## 成本指标
+
+| 指标                      | 测量内容             | 何时使用                        |
+| ------------------------- | -------------------- | ------------------------------- |
+| $/千次操作                | 单位工作量成本       | API 服务比较                    |
+| $/小时                    | 每小时基础设施成本   | 计算资源比较                    |
+| $/GB 存储                 | 存储成本             | 数据库、对象存储比较            |
+| $/GB 传输                 | 数据传输成本         | CDN、API 比较                   |
+| 总拥有成本                | 随时间计算的全成本   | 长期基础设施决策                |
+
+---
+
+## 按任务类型选择指标
+
+| 任务类型                      | 主要指标                            | 次要指标           |
+| ----------------------------- | ----------------------------------- | ------------------ |
+| API 端点比较                  | 延迟 (P50, P95), RPS                | 内存、成本         |
+| 数据库查询                    | 延迟 (P50, P99), 行/秒              | 内存、CPU          |
+| ML 模型推理                   | 延迟、准确性 (F1 或任务特定)         | 内存、成本         |
+| 数据处理流水线                | 吞吐量 (项/秒)                      | 内存、延迟         |
+| 文件格式比较                  | 解析速度、序列化速度                | 文件大小、内存     |
+| 缓存方案                      | 读取延迟、命中率                    | 内存、写入延迟     |
+| 搜索引擎                      | 延迟 (P50, P95), 精确率/召回率      | 索引大小、内存     |
+
+---
+
+## 反模式
+
+| 反模式                           | 问题                                       | 修复                                          |
+| -------------------------------- | ------------------------------------------ | --------------------------------------------- |
+| 仅报告均值                       | 隐藏尾部延迟、双峰分布                     | 至少报告 P50 + P95                           |
+| 单次测量                         | 无统计置信度                               | 运行 N 次迭代，报告均值 ± 标准差              |
+| 仅使用最佳输入                   | 结果过于乐观，具有误导性                   | 使用代表性输入 + 最差情况输入                |
+| 忽略预热                         | 首次运行包含 JIT、缓存开销                 | 丢弃前 N 次迭代                              |
+| 不同硬件                         | 结果不可比                                 | 所有候选在相同硬件上运行                     |
+| 吞吐量不带并发信息               | 负载条件不明确                             | 报告吞吐量时注明并发级别                     |

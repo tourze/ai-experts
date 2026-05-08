@@ -1,108 +1,108 @@
-# Reversibility and Flexible Architecture
+# 可逆性与灵活架构
 
-Deep reference for building systems where decisions can be changed without rewrites. Load when guidance is needed on decoupling, vendor abstraction, and keeping architectural options open.
+构建无需重写即可更改决策的系统的深度参考。当需要关于解耦、供应商抽象和保持架构选项开放方面的指导时加载。
 
-## Table of Contents
-1. [There Are No Final Decisions](#there-are-no-final-decisions)
-2. [The Cost of Irreversibility](#the-cost-of-irreversibility)
-3. [Decoupling Strategies](#decoupling-strategies)
-4. [Vendor Lock-In Thinking](#vendor-lock-in-thinking)
-5. [The Forking Road](#the-forking-road)
-6. [Metadata-Driven Systems](#metadata-driven-systems)
-7. [Reversibility Patterns by Layer](#reversibility-patterns-by-layer)
-8. [When NOT to Optimize for Reversibility](#when-not-to-optimize-for-reversibility)
+## 目录
+1. [没有最终决定](#没有最终决定)
+2. [不可逆性的成本](#不可逆性的成本)
+3. [解耦策略](#解耦策略)
+4. [供应商锁定思维](#供应商锁定思维)
+5. [分叉之路](#分叉之路)
+6. [元数据驱动系统](#元数据驱动系统)
+7. [按层次的可逆性模式](#按层次的可逆性模式)
+8. [何时不优化可逆性](#何时不优化可逆性)
 
 ---
 
-## There Are No Final Decisions
+## 没有最终决定
 
-The pragmatic programmer treats every architectural decision as temporary. Not because you expect to change everything, but because you acknowledge that you might be wrong -- and the cost of being wrong should be proportional to the size of the mistake, not the age of the codebase.
+实用主义程序员将每个架构决策视为临时的。不是因为你会改变一切，而是因为你承认你可能是错的——而且犯错成本应该与错误的大小成正比，而不是与代码库的年龄成正比。
 
-### Decisions That Often Change
+### 经常变化的决策
 
-| Decision | Why It Changes | Frequency |
+| 决策 | 为什么变化 | 频率 |
 |----------|---------------|-----------|
-| Database engine | Scale requirements change, licensing changes, team expertise shifts | Every 3-5 years |
-| Cloud provider | Pricing changes, new features elsewhere, compliance requirements | Every 2-5 years |
-| Frontend framework | Ecosystem evolves, hiring requirements shift, performance needs change | Every 2-4 years |
-| Authentication provider | Security requirements evolve, pricing changes, features needed | Every 2-3 years |
-| Payment processor | Better rates, geographic expansion, feature requirements | Every 1-3 years |
-| Message queue | Scale requirements, latency needs, operational complexity | Every 3-5 years |
-| Deployment model | Monolith to microservices, containers, serverless | Every 3-5 years |
+| 数据库引擎 | 规模需求变化、许可变更、团队专长转移 | 每 3-5 年 |
+| 云服务商 | 定价变化、他处的新功能、合规要求 | 每 2-5 年 |
+| 前端框架 | 生态系统发展、招聘需求变化、性能需求改变 | 每 2-4 年 |
+| 认证服务商 | 安全需求演进、定价变化、所需功能 | 每 2-3 年 |
+| 支付处理器 | 更优惠的费率、地理扩张、功能需求 | 每 1-3 年 |
+| 消息队列 | 规模需求、延迟要求、运维复杂度 | 每 3-5 年 |
+| 部署模式 | 单体到微服务、容器、Serverless | 每 3-5 年 |
 
-### The Time Horizon Test
+### 时间范围测试
 
-Before embedding a decision into your architecture, ask: "How long will this decision be valid?"
+在将决策嵌入到你的架构之前，问："这个决策的有效期是多长？"
 
-| Answer | Strategy |
+| 答案 | 策略 |
 |--------|----------|
-| **Forever** (laws of physics, math) | Embed directly -- these don't change |
-| **Years** (language choice, core domain model) | Invest in the decision but maintain boundaries |
-| **Months** (vendor choice, specific library) | Abstract behind an interface |
-| **Weeks** (feature flags, A/B tests) | Make configurable at runtime |
-| **Unknown** | Default to abstraction |
+| **永远**（物理定律、数学） | 直接嵌入——这些不会改变 |
+| **数年**（语言选择、核心领域模型） | 对决策进行投资但保持边界 |
+| **数月**（供应商选择、特定库） | 在接口后面抽象 |
+| **数周**（功能开关、A/B 测试） | 使其在运行时可配置 |
+| **未知** | 默认使用抽象 |
 
 ---
 
-## The Cost of Irreversibility
+## 不可逆性的成本
 
-When a decision is embedded throughout the codebase, the cost of changing it grows with every line of code that depends on it:
+当一个决策嵌入到整个代码库中时，改变它的成本随着依赖它的每一行代码而增长：
 
-### The Dependency Fan-Out Problem
-
-```
-Decision: Use MongoDB
-
-Direct dependencies:
-  → 5 repository classes (manageable)
-
-Indirect dependencies:
-  → 20 services that use MongoDB query syntax in their logic
-  → 15 tests that depend on MongoDB-specific behavior
-  → 3 scripts that use MongoDB CLI tools
-  → 2 monitoring dashboards with MongoDB-specific metrics
-
-Total cost to change: Weeks of work, high risk of regressions
-```
-
-Compare to:
+### 依赖扇出问题
 
 ```
-Decision: Use MongoDB, behind Repository interface
+决策：使用 MongoDB
 
-Direct dependencies:
-  → 5 repository implementations (change these)
+直接依赖：
+  → 5 个仓库类（可管理）
 
-Indirect dependencies:
-  → None (everything uses the Repository interface)
+间接依赖：
+  → 20 个在其逻辑中使用 MongoDB 查询语法的服务
+  → 15 个依赖 MongoDB 特定行为的测试
+  → 3 个使用 MongoDB CLI 工具的脚本
+  → 2 个使用 MongoDB 特定指标的监控仪表盘
 
-Total cost to change: Days of work, low risk
+变更总成本：数周工作，高回归风险
 ```
 
-### Measuring Irreversibility
+对比：
 
-| Metric | How to Measure | What It Means |
+```
+决策：在 Repository 接口后面使用 MongoDB
+
+直接依赖：
+  → 5 个仓库实现（更改这些）
+
+间接依赖：
+  → 无（所有内容都使用 Repository 接口）
+
+变更总成本：数天工作，低风险
+```
+
+### 衡量不可逆性
+
+| 指标 | 如何衡量 | 含义 |
 |--------|---------------|---------------|
-| **Fan-out** | Count files that import the dependency directly | Higher = harder to change |
-| **Coupling depth** | How many layers does the dependency penetrate? | Deeper = more expensive |
-| **Test dependence** | How many tests break if you swap the dependency? | More broken tests = more risk |
-| **Config surface** | How many config values reference the dependency? | More config = more places to update |
+| **扇出数** | 计数直接导入依赖的文件数 | 越高 = 越难改变 |
+| **耦合深度** | 依赖穿透了多少层？ | 越深 = 成本越高 |
+| **测试依赖** | 如果交换依赖，有多少测试会失败？ | 失败的测试越多 = 风险越大 |
+| **配置面** | 有多少配置值引用了该依赖？ | 配置越多 = 需要更新的地方越多 |
 
 ---
 
-## Decoupling Strategies
+## 解耦策略
 
-### The Adapter Pattern
+### 适配器模式
 
-The primary tool for reversibility. Place your own interface between your code and any external dependency:
+可逆性的主要工具。在你的代码和任何外部依赖之间放置你自己的接口：
 
 ```python
-# Your interface (never changes)
+# 你的接口（永不改变）
 class MessageBroker(Protocol):
     def publish(self, topic: str, message: dict) -> None: ...
     def subscribe(self, topic: str, handler: Callable) -> None: ...
 
-# Current implementation (swappable)
+# 当前实现（可替换）
 class KafkaMessageBroker:
     def __init__(self, bootstrap_servers: list[str]):
         self.producer = KafkaProducer(bootstrap_servers=bootstrap_servers)
@@ -115,19 +115,19 @@ class KafkaMessageBroker:
         for msg in consumer:
             handler(json.loads(msg.value))
 
-# Future implementation (just implement the same interface)
+# 未来实现（只需实现相同接口）
 class RabbitMQMessageBroker:
     def publish(self, topic: str, message: dict) -> None:
-        # RabbitMQ-specific implementation
+        # RabbitMQ 特定实现
         ...
 ```
 
-### The Repository Pattern
+### 仓库模式
 
-Separate data access logic from business logic:
+将数据访问逻辑与业务逻辑分离：
 
 ```python
-# Business logic knows nothing about the database
+# 业务逻辑不知道数据库
 class OrderService:
     def __init__(self, order_repo: OrderRepository):
         self.order_repo = order_repo
@@ -138,7 +138,7 @@ class OrderService:
         self.order_repo.save(order)
         return order
 
-# Database-specific implementation
+# 数据库特定实现
 class PostgresOrderRepository(OrderRepository):
     def save(self, order: Order) -> None:
         self.db.execute(
@@ -146,7 +146,7 @@ class PostgresOrderRepository(OrderRepository):
             (order.id, order.customer_id, order.total)
         )
 
-# Alternative implementation
+# 替代实现
 class DynamoDBOrderRepository(OrderRepository):
     def save(self, order: Order) -> None:
         self.table.put_item(Item={
@@ -156,188 +156,188 @@ class DynamoDBOrderRepository(OrderRepository):
         })
 ```
 
-### Event-Driven Decoupling
+### 事件驱动解耦
 
-Services communicate through events rather than direct calls:
+服务通过事件而非直接调用进行通信：
 
 ```
-Direct coupling (hard to reverse):
-  OrderService → calls → InventoryService.reserve()
-  OrderService → calls → NotificationService.sendEmail()
-  OrderService → calls → AnalyticsService.track()
+直接耦合（难以逆转）：
+  OrderService → 调用 → InventoryService.reserve()
+  OrderService → 调用 → NotificationService.sendEmail()
+  OrderService → 调用 → AnalyticsService.track()
 
-Event-driven decoupling (easy to reverse):
-  OrderService → publishes → "order.placed" event
-  InventoryService → subscribes → "order.placed" (reserves inventory)
-  NotificationService → subscribes → "order.placed" (sends email)
-  AnalyticsService → subscribes → "order.placed" (tracks event)
+事件驱动解耦（容易逆转）：
+  OrderService → 发布 → "order.placed" 事件
+  InventoryService → 订阅 → "order.placed"（预留库存）
+  NotificationService → 订阅 → "order.placed"（发送邮件）
+  AnalyticsService → 订阅 → "order.placed"（跟踪事件）
 ```
 
-With events, OrderService doesn't know or care who's listening. You can add, remove, or replace subscribers without touching the publisher.
+使用事件，OrderService 不知道也不关心谁在监听。你可以添加、移除或替换订阅者而无需触及发布者。
 
 ---
 
-## Vendor Lock-In Thinking
+## 供应商锁定思维
 
-### The "Vendor Lock-In" Trap
+### "供应商锁定"陷阱
 
-Many developers fear vendor lock-in, but the response is often worse than the problem:
+许多开发者害怕供应商锁定，但反应往往比问题本身更糟糕：
 
-| Overreaction | Problem |
+| 过度反应 | 问题 |
 |-------------|---------|
-| Build everything yourself to avoid dependencies | Reinventing the wheel, maintenance burden |
-| Abstract everything from day one | Over-engineering, YAGNI violation |
-| Never commit to any vendor | Analysis paralysis, delayed delivery |
-| Use the lowest common denominator across all vendors | Miss out on the best features of each |
+| 为避免依赖全部自己建 | 重复造轮子、维护负担 |
+| 从第一天起什么都抽象 | 过度工程化、YAGNI 违犯 |
+| 从不对任何供应商做承诺 | 分析瘫痪、交付延迟 |
+| 在所有供应商中选最低共同标准 | 错过每个供应商的最佳功能 |
 
-### The Pragmatic Approach
+### 实用主义方法
 
-Not all vendor coupling is equal. Evaluate based on switching cost:
+并非所有供应商耦合都是平等的。根据切换成本评估：
 
-| Coupling Level | Example | Switching Cost | Strategy |
+| 耦合水平 | 示例 | 切换成本 | 策略 |
 |---------------|---------|---------------|----------|
-| **Low** | Logging library | Hours | Use directly, don't abstract |
-| **Medium** | Payment processor | Days | Thin adapter, abstract the interface |
-| **High** | Database engine | Weeks | Repository pattern, avoid vendor-specific SQL |
-| **Very high** | Cloud provider (using 10+ services) | Months | Accept the coupling, negotiate contracts |
-| **Extreme** | Custom hardware, proprietary protocols | Quarters | Strategic decision, not a technical one |
+| **低** | 日志库 | 数小时 | 直接使用，不抽象 |
+| **中** | 支付处理器 | 数天 | 薄适配器，抽象接口 |
+| **高** | 数据库引擎 | 数周 | 仓库模式，避免供应商特定 SQL |
+| **非常高** | 云服务商（使用 10+ 个服务） | 数月 | 接受耦合，谈判合同 |
+| **极端** | 定制硬件、专有协议 | 数个季度 | 战略决策，非技术决策 |
 
-### The 80/20 Rule of Abstraction
+### 抽象的 80/20 法则
 
-Abstract the 20% of vendor features that, if changed, would require touching 80% of your code. Don't abstract everything -- that's expensive and often unnecessary.
+抽象那 20% 的供应商功能，这些功能如果改变会需要触及 80% 的代码。不要什么都抽象——那很昂贵且通常不必要。
 
 ```
-Abstract (high fan-out):
-  ✓ Database queries (used everywhere)
-  ✓ Authentication (used in every request)
-  ✓ Message publishing (used by many services)
+需要抽象（高扇出）：
+  ✓ 数据库查询（到处使用）
+  ✓ 身份认证（每个请求都使用）
+  ✓ 消息发布（多个服务使用）
 
-Don't abstract (low fan-out):
-  ✗ Monitoring dashboard configuration (one place)
-  ✗ CI/CD pipeline scripts (one place)
-  ✗ Infrastructure-as-code templates (one place)
+不需要抽象（低扇出）：
+  ✗ 监控仪表盘配置（一个地方）
+  ✗ CI/CD 流水线脚本（一个地方）
+  ✗ 基础设施即代码模板（一个地方）
 ```
 
 ---
 
-## The Forking Road
+## 分叉之路
 
-Every decision point is a fork in the road. The pragmatic programmer's goal is to keep as many roads open as possible, for as long as possible, without paying too much for the optionality.
+每个决策点都是道路的分叉。实用主义程序员的目标是尽可能长地保持尽可能多的道路开放，且不因可选择性而付出过多代价。
 
-### The Decision Framework
+### 决策框架
 
 ```
-                         ┌─ Low cost to reverse?
-                         │   → Make the decision and move on
-Is this decision         │
-reversible? ────────────┤
-                         │   → High cost to reverse?
-                         │     ├─ Is the evidence clear?
-                         │     │   → Commit but build an abstraction layer
+                         ┌─ 逆转成本低？
+                         │   → 做决定，继续前进
+这个决策                 │
+可逆转吗？ ────────────┤
+                         │   → 逆转成本高？
+                         │     ├─ 证据是否清晰？
+                         │     │   → 承诺但构建抽象层
                          │     │
-                         │     └─ Is the evidence unclear?
-                         │         → Delay the decision (tracer bullet first)
+                         │     └─ 证据是否不清晰？
+                         │         → 推迟决策（先用追踪子弹）
                          └
 ```
 
-### Strategies for Keeping Roads Open
+### 保持道路开放的策略
 
-| Strategy | When to Use | Example |
+| 策略 | 何时使用 | 示例 |
 |----------|------------|---------|
-| **Delay the decision** | Evidence is insufficient | "We'll choose between Kafka and RabbitMQ after the tracer bullet" |
-| **Make it configurable** | Decision might change at runtime | Feature flags, A/B tests, runtime config |
-| **Build an abstraction** | Decision will eventually change | Repository pattern for database, adapter for vendor API |
-| **Prototype both options** | Two options seem equally valid | Spend 2 days prototyping each, then decide with data |
-| **Accept the coupling** | Cost of abstraction exceeds cost of future change | Using 15 AWS services? Accept AWS coupling |
+| **推迟决策** | 证据不足 | "我们在追踪子弹之后选择 Kafka 还是 RabbitMQ" |
+| **使其可配置** | 决策可能在运行时改变 | 功能开关、A/B 测试、运行时配置 |
+| **构建抽象** | 决策最终会变化 | 数据库的仓库模式、供应商 API 的适配器 |
+| **两种都做原型** | 两种选项似乎同样有效 | 每种花 2 天做原型，然后用数据决策 |
+| **接受耦合** | 抽象成本超过未来变更成本 | 使用 15 个 AWS 服务？接受 AWS 耦合 |
 
 ---
 
-## Metadata-Driven Systems
+## 元数据驱动系统
 
-One of the most powerful reversibility tools: drive behavior from metadata (configuration) rather than code.
+最强大的可逆性工具之一：通过元数据（配置）而非代码驱动行为。
 
-### What Can Be Metadata
+### 什么可以作为元数据
 
-| Aspect | Hard-Coded | Metadata-Driven |
+| 方面 | 硬编码 | 元数据驱动 |
 |--------|-----------|-----------------|
-| **Feature availability** | `if (isAdmin) { showFeature() }` | Feature flag in config service |
-| **Validation rules** | `if (age < 18) throw Error` | Rule engine reads rules from config |
-| **Workflow steps** | Hard-coded state machine | State transitions defined in YAML/JSON |
-| **UI layout** | Components in JSX | Layout defined in a CMS or config |
-| **Business rules** | `if (total > 100) applyDiscount(10)` | Rules engine with configurable thresholds |
-| **API endpoints** | Hard-coded URLs | Service discovery or config file |
+| **功能可用性** | `if (isAdmin) { showFeature() }` | 配置服务中的功能开关 |
+| **验证规则** | `if (age < 18) throw Error` | 规则引擎从配置读取规则 |
+| **工作流步骤** | 硬编码状态机 | YAML/JSON 定义的状态转换 |
+| **UI 布局** | JSX 中的组件 | CMS 或配置中的布局 |
+| **业务规则** | `if (total > 100) applyDiscount(10)` | 具有可配置阈值的规则引擎 |
+| **API 端点** | 硬编码 URL | 服务发现或配置文件 |
 
-### Benefits of Metadata-Driven Design
+### 元数据驱动设计的好处
 
-- **No redeployment** for business rule changes
-- **Non-engineers can make changes** through admin interfaces
-- **A/B testing** becomes configuration, not code
-- **Rollback** is changing a config value, not deploying old code
-- **Auditing** is straightforward -- config changes are logged
+- **业务规则变更无需重新部署**
+- **非工程师可通过管理界面做变更**
+- **A/B 测试成为配置，而非代码**
+- **回滚**是更改配置值，而非部署旧代码
+- **审计**很简单——配置变更被记录
 
-### Risks of Over-Doing It
+### 过度使用的风险
 
-- **Complexity:** A metadata-driven rules engine is itself complex software that needs testing and maintenance
-- **Debugging:** "Why did the system do X?" requires tracing through config values, not just reading code
-- **Validation:** Bad config can cause outages just like bad code
-- **Testing:** Config combinations create a large test surface
+- **复杂性：** 元数据驱动的规则引擎本身就是需要测试和维护的复杂软件
+- **调试：** "系统为什么做了 X？"需要追踪配置值，而不仅仅是阅读代码
+- **验证：** 错误的配置可能像错误代码一样导致停机
+- **测试：** 配置组合创造了庞大的测试面
 
-**Rule of thumb:** Use metadata for values that change more frequently than deployments. Use code for values that change at the same pace as deployments.
-
----
-
-## Reversibility Patterns by Layer
-
-### Presentation Layer
-
-| Pattern | Reversibility Benefit |
-|---------|----------------------|
-| Component library | Swap styling framework without rewriting components |
-| BFF (Backend for Frontend) | Change frontend without changing APIs |
-| Design tokens | Change visual design via token updates, not code changes |
-| Server-driven UI | Change UI layout without app store deployments |
-
-### Application Layer
-
-| Pattern | Reversibility Benefit |
-|---------|----------------------|
-| Use case classes | Swap one workflow implementation for another |
-| Event sourcing | Rebuild state from events if model changes |
-| CQRS | Optimize reads and writes independently |
-| Saga pattern | Change transaction coordination strategy |
-
-### Infrastructure Layer
-
-| Pattern | Reversibility Benefit |
-|---------|----------------------|
-| Containers | Run on any orchestrator (ECS, K8s, bare metal) |
-| Infrastructure as Code | Reproduce or modify environment from declarations |
-| Service mesh | Change networking/security policies without code changes |
-| Blue-green deployment | Roll back in seconds |
+**经验法则：** 对于比部署更频繁变更的值使用元数据。对于与部署同频率变更的值使用代码。
 
 ---
 
-## When NOT to Optimize for Reversibility
+## 按层次的可逆性模式
 
-Reversibility has a cost. The pragmatic programmer knows when it's not worth it:
+### 表现层
 
-### Skip Abstraction When
+| 模式 | 可逆性优势 |
+|---------|----------------------|
+| 组件库 | 无需重写组件即可切换样式框架 |
+| BFF（Backend for Frontend） | 无需更改 API 即可更改前端 |
+| 设计令牌 | 通过令牌更新改变视觉设计，无需代码变更 |
+| 服务端驱动 UI | 无需应用商店部署即可更改 UI 布局 |
 
-- **The project is a prototype** that will be thrown away
-- **The dependency is trivially replaceable** (swapping one JSON library for another takes 30 minutes)
-- **The abstraction costs more than the future switch** (building a database abstraction layer for a weekend project)
-- **You have strong evidence the decision won't change** (using HTTP for a web server)
-- **YAGNI applies** -- you're abstracting against a change you have no reason to expect
+### 应用层
 
-### The Pragmatic Test
+| 模式 | 可逆性优势 |
+|---------|----------------------|
+| 用例类 | 将一个工作流实现替换为另一个 |
+| 事件溯源 | 如果模型变化，从事件重建状态 |
+| CQRS | 独立优化读写 |
+| Saga 模式 | 更改事务协调策略 |
 
-Before adding an abstraction layer for reversibility, ask:
+### 基础设施层
 
-1. **How likely is this to change?** (Be honest, not paranoid)
-2. **What would it cost to change without the abstraction?** (Often less than you think)
-3. **What does the abstraction cost now?** (Design, implementation, testing, maintenance)
-4. **Does the abstraction actually provide reversibility?** (Sometimes abstractions are leaky and don't help)
+| 模式 | 可逆性优势 |
+|---------|----------------------|
+| 容器 | 在任何编排器上运行（ECS、K8s、裸金属） |
+| 基础设施即代码 | 从声明重现或修改环境 |
+| 服务网格 | 无需代码更改即可改变网络/安全策略 |
+| 蓝绿部署 | 数秒内回滚 |
 
-If (1) is low and (2) is moderate while (3) is high -- skip the abstraction. Build it when you actually need it.
+---
 
-The goal is not perfect reversibility everywhere. The goal is proportional reversibility: invest in flexibility where change is likely and expensive, and accept coupling where change is unlikely or cheap.
+## 何时不优化可逆性
+
+可逆性是有成本的。实用主义程序员知道何时不值得：
+
+### 跳过抽象的情况
+
+- **项目是原型**，将被丢弃
+- **依赖关系极易替代**（将一个 JSON 库换成另一个只需 30 分钟）
+- **抽象成本超过未来切换成本**（为一个周末项目构建数据库抽象层）
+- **你有强力证据表明决策不会改变**（为 Web 服务器使用 HTTP）
+- **YAGNI 适用**——你在为一个没有理由预期的变化做抽象
+
+### 实用主义测试
+
+在添加可逆性抽象层之前，问：
+
+1. **这有多可能改变？**（诚实点，不要偏执）
+2. **没有抽象的情况下改变的成本是多少？**（通常比你认为的少）
+3. **抽象现在花多少钱？**（设计、实现、测试、维护）
+4. **这个抽象是否真正提供了可逆性？**（有时抽象的泄漏并没有帮助）
+
+如果（1）低且（2）适中而（3）高——跳过抽象。在你真正需要的时候才构建它。
+
+目标不是在所有地方实现完美的可逆性。目标是按比例的可逆性：在变化可能且昂贵的地方投资灵活性，在变化不可能或便宜的地方接受耦合。

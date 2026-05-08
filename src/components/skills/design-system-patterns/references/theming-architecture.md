@@ -1,30 +1,30 @@
-# Theming Architecture
+# 主题架构
 
-## Overview
+## 概述
 
-A robust theming system enables applications to support multiple visual appearances (light/dark modes, brand themes) while maintaining consistency and developer experience.
+一个健壮的主题系统使应用程序能够支持多种视觉外观（亮色/暗色模式、品牌主题），同时保持一致性和开发者体验。
 
-## CSS Custom Properties Architecture
+## CSS 自定义属性架构
 
-### Base Setup
+### 基础设置
 
 ```css
-/* 1. Define the token contract */
+/* 1. 定义 token 契约 */
 :root {
-  /* Color scheme */
+  /* 配色方案 */
   color-scheme: light dark;
 
-  /* Base tokens that don't change */
+  /* 不随主题变化的基础 token */
   --font-sans: Inter, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 
-  /* Animation tokens */
+  /* 动画 token */
   --duration-fast: 150ms;
   --duration-normal: 250ms;
   --duration-slow: 400ms;
   --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Z-index scale */
+  /* Z-index 层级 */
   --z-dropdown: 100;
   --z-sticky: 200;
   --z-modal: 300;
@@ -32,7 +32,7 @@ A robust theming system enables applications to support multiple visual appearan
   --z-tooltip: 500;
 }
 
-/* 2. Light theme (default) */
+/* 2. 亮色主题（默认） */
 :root,
 [data-theme="light"] {
   --color-bg: #ffffff;
@@ -56,7 +56,7 @@ A robust theming system enables applications to support multiple visual appearan
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
 }
 
-/* 3. Dark theme */
+/* 3. 暗色主题 */
 [data-theme="dark"] {
   --color-bg: #0f172a;
   --color-bg-subtle: #1e293b;
@@ -79,17 +79,17 @@ A robust theming system enables applications to support multiple visual appearan
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5);
 }
 
-/* 4. System preference detection */
+/* 4. 系统偏好检测 */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    /* Inherit dark theme values */
+    /* 继承暗色主题值 */
     --color-bg: #0f172a;
-    /* ... other dark values */
+    /* ... 其他暗色值 */
   }
 }
 ```
 
-### Using Tokens in Components
+### 在组件中使用 Token
 
 ```css
 .card {
@@ -123,9 +123,9 @@ A robust theming system enables applications to support multiple visual appearan
 }
 ```
 
-## React Theme Provider
+## React 主题提供器
 
-### Complete Implementation
+### 完整实现
 
 ```tsx
 // theme-provider.tsx
@@ -170,7 +170,7 @@ export function ThemeProvider({
   const [resolvedTheme, setResolvedTheme] =
     React.useState<ResolvedTheme>("light");
 
-  // Get system preference
+  // 获取系统偏好
   const getSystemTheme = React.useCallback((): ResolvedTheme => {
     if (typeof window === "undefined") return "light";
     return window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -178,12 +178,12 @@ export function ThemeProvider({
       : "light";
   }, []);
 
-  // Apply theme to DOM
+  // 应用主题到 DOM
   const applyTheme = React.useCallback(
     (newTheme: ResolvedTheme) => {
       const root = document.documentElement;
 
-      // Disable transitions temporarily
+      // 临时禁用过渡
       if (disableTransitionOnChange) {
         const css = document.createElement("style");
         css.appendChild(
@@ -193,16 +193,16 @@ export function ThemeProvider({
         );
         document.head.appendChild(css);
 
-        // Force repaint
+        // 强制重绘
         (() => window.getComputedStyle(document.body))();
 
-        // Remove after a tick
+        // 一个 tick 后移除
         setTimeout(() => {
           document.head.removeChild(css);
         }, 1);
       }
 
-      // Apply attribute
+      // 应用属性
       if (attribute === "class") {
         root.classList.remove("light", "dark");
         root.classList.add(newTheme);
@@ -210,7 +210,7 @@ export function ThemeProvider({
         root.setAttribute(attribute, newTheme);
       }
 
-      // Update color-scheme for native elements
+      // 更新原生元素的 color-scheme
       root.style.colorScheme = newTheme;
 
       setResolvedTheme(newTheme);
@@ -218,13 +218,13 @@ export function ThemeProvider({
     [attribute, disableTransitionOnChange],
   );
 
-  // Handle theme changes
+  // 处理主题变更
   React.useEffect(() => {
     const resolved = theme === "system" ? getSystemTheme() : theme;
     applyTheme(resolved);
   }, [theme, applyTheme, getSystemTheme]);
 
-  // Listen for system theme changes
+  // 监听系统主题变化
   React.useEffect(() => {
     if (!enableSystem || theme !== "system") return;
 
@@ -238,7 +238,7 @@ export function ThemeProvider({
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, [theme, enableSystem, applyTheme, getSystemTheme]);
 
-  // Persist to localStorage
+  // 持久化到 localStorage
   const setTheme = React.useCallback(
     (newTheme: Theme) => {
       localStorage.setItem(storageKey, newTheme);
@@ -277,7 +277,7 @@ export function useTheme() {
 }
 ```
 
-### Theme Toggle Component
+### 主题切换组件
 
 ```tsx
 // theme-toggle.tsx
@@ -294,7 +294,7 @@ export function ThemeToggle() {
         className={`rounded-md p-2 ${
           theme === "light" ? "bg-background shadow-sm" : ""
         }`}
-        aria-label="Light theme"
+        aria-label="亮色主题"
       >
         <Sun className="h-4 w-4" />
       </button>
@@ -303,7 +303,7 @@ export function ThemeToggle() {
         className={`rounded-md p-2 ${
           theme === "dark" ? "bg-background shadow-sm" : ""
         }`}
-        aria-label="Dark theme"
+        aria-label="暗色主题"
       >
         <Moon className="h-4 w-4" />
       </button>
@@ -312,7 +312,7 @@ export function ThemeToggle() {
         className={`rounded-md p-2 ${
           theme === "system" ? "bg-background shadow-sm" : ""
         }`}
-        aria-label="System theme"
+        aria-label="系统主题"
       >
         <Monitor className="h-4 w-4" />
       </button>
@@ -321,12 +321,12 @@ export function ThemeToggle() {
 }
 ```
 
-## Multi-Brand Theming
+## 多品牌主题
 
-### Brand Token Structure
+### 品牌 Token 结构
 
 ```css
-/* Brand A - Corporate Blue */
+/* 品牌 A - 企业蓝 */
 [data-brand="corporate"] {
   --brand-primary: #0066cc;
   --brand-primary-hover: #0052a3;
@@ -340,7 +340,7 @@ export function ThemeToggle() {
   --brand-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Brand B - Modern Startup */
+/* 品牌 B - 现代初创 */
 [data-brand="startup"] {
   --brand-primary: #7c3aed;
   --brand-primary-hover: #6d28d9;
@@ -354,7 +354,7 @@ export function ThemeToggle() {
   --brand-shadow: 0 4px 12px rgba(124, 58, 237, 0.15);
 }
 
-/* Brand C - Minimal */
+/* 品牌 C - 极简 */
 [data-brand="minimal"] {
   --brand-primary: #171717;
   --brand-primary-hover: #404040;
@@ -369,9 +369,9 @@ export function ThemeToggle() {
 }
 ```
 
-## Accessibility Considerations
+## 无障碍考量
 
-### Reduced Motion
+### 减少动效
 
 ```css
 @media (prefers-reduced-motion: reduce) {
@@ -391,7 +391,7 @@ export function ThemeToggle() {
 }
 ```
 
-### High Contrast Mode
+### 高对比度模式
 
 ```css
 @media (prefers-contrast: high) {
@@ -413,7 +413,7 @@ export function ThemeToggle() {
 }
 ```
 
-### Forced Colors
+### 强制颜色
 
 ```css
 @media (forced-colors: active) {
@@ -431,12 +431,12 @@ export function ThemeToggle() {
 }
 ```
 
-## Server-Side Rendering
+## 服务端渲染
 
-### Preventing Flash of Unstyled Content
+### 防止未样式内容的闪烁
 
 ```tsx
-// Inline script to prevent FOUC
+// 内联脚本以防止 FOUC
 const themeScript = `
   (function() {
     const theme = localStorage.getItem('theme') || 'system';
@@ -448,14 +448,14 @@ const themeScript = `
   })();
 `;
 
-// In Next.js layout - note: inline scripts should be properly sanitized in production
+// 在 Next.js layout 中 - 注意：生产环境中内联脚本应适当清理
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="zh-CN" suppressHydrationWarning>
       <head>
         <script
-          // Only use for trusted, static content
-          // For dynamic content, use a sanitization library
+          // 仅用于可信的静态内容
+          // 对于动态内容，使用清理库
           dangerouslySetInnerHTML={{ __html: themeScript }}
         />
       </head>
@@ -467,7 +467,7 @@ export default function RootLayout({ children }) {
 }
 ```
 
-## Testing Themes
+## 测试主题
 
 ```tsx
 // theme.test.tsx
@@ -481,13 +481,13 @@ function TestComponent() {
     <div>
       <span data-testid="theme">{theme}</span>
       <span data-testid="resolved">{resolvedTheme}</span>
-      <button onClick={() => setTheme("dark")}>Set Dark</button>
+      <button onClick={() => setTheme("dark")}>设置为暗色</button>
     </div>
   );
 }
 
 describe("ThemeProvider", () => {
-  it("should default to system theme", () => {
+  it("应默认为系统主题", () => {
     render(
       <ThemeProvider>
         <TestComponent />
@@ -497,7 +497,7 @@ describe("ThemeProvider", () => {
     expect(screen.getByTestId("theme")).toHaveTextContent("system");
   });
 
-  it("should switch to dark theme", async () => {
+  it("应切换到暗色主题", async () => {
     const user = userEvent.setup();
 
     render(
@@ -506,14 +506,14 @@ describe("ThemeProvider", () => {
       </ThemeProvider>,
     );
 
-    await user.click(screen.getByText("Set Dark"));
+    await user.click(screen.getByText("设置为暗色"));
     expect(screen.getByTestId("theme")).toHaveTextContent("dark");
     expect(document.documentElement).toHaveAttribute("data-theme", "dark");
   });
 });
 ```
 
-## Resources
+## 资源
 
 - [Web.dev: prefers-color-scheme](https://web.dev/prefers-color-scheme/)
 - [CSS Color Scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme)

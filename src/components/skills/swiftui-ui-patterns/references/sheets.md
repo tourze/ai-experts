@@ -1,17 +1,17 @@
 # Sheets
 
-## Intent
+## 意图
 
-Use a centralized sheet routing pattern so any view can present modals without prop-drilling. This keeps sheet state in one place and scales as the app grows.
+使用集中式 sheet 路由模式，使任何视图都可以呈现模态框，而无需逐层传递属性。这使 sheet 状态集中在一处，并随应用增长而扩展。
 
-## Core architecture
+## 核心架构
 
-- Define a `SheetDestination` enum that describes every modal and is `Identifiable`.
-- Store the current sheet in a router object (`presentedSheet: SheetDestination?`).
-- Create a view modifier like `withSheetDestinations(...)` that maps the enum to concrete sheet views.
-- Inject the router into the environment so child views can set `presentedSheet` directly.
+- 定义一个 `SheetDestination` 枚举，描述每个模态框，并实现 `Identifiable`。
+- 将当前 sheet 存储在路由器对象中（`presentedSheet: SheetDestination?`）。
+- 创建一个类似 `withSheetDestinations(...)` 的视图修饰符，将枚举映射到具体的 sheet 视图。
+- 将路由器注入环境，使子视图可以直接设置 `presentedSheet`。
 
-## Example: SheetDestination enum
+## 示例：SheetDestination 枚举
 
 ```swift
 enum SheetDestination: Identifiable, Hashable {
@@ -23,7 +23,7 @@ enum SheetDestination: Identifiable, Hashable {
   var id: String {
     switch self {
     case .composer, .editProfile:
-      // Use the same id to ensure only one editor-like sheet is active at a time.
+      // 使用相同的 id 确保一次只有一个编辑器类 sheet 处于活动状态。
       return "editor"
     case .settings:
       return "settings"
@@ -34,7 +34,7 @@ enum SheetDestination: Identifiable, Hashable {
 }
 ```
 
-## Example: withSheetDestinations modifier
+## 示例：withSheetDestinations 修饰符
 
 ```swift
 extension View {
@@ -59,7 +59,7 @@ extension View {
 }
 ```
 
-## Example: presenting from a child view
+## 示例：从子视图展示
 
 ```swift
 struct StatusRow: View {
@@ -73,18 +73,18 @@ struct StatusRow: View {
 }
 ```
 
-## Required wiring
+## 必需的连接
 
-For the child view to work, a parent view must:
-- own the router instance,
-- attach `withSheetDestinations(sheet: $router.presentedSheet)` (or an equivalent `sheet(item:)` handler), and
-- inject it with `.environment(router)` after the sheet modifier so the modal content inherits it.
+为了使子视图工作，父视图必须：
+- 拥有路由器实例，
+- 附加 `withSheetDestinations(sheet: $router.presentedSheet)`（或等效的 `sheet(item:)` 处理器），以及
+- 在 sheet 修饰符之后用 `.environment(router)` 注入，以便模态内容继承它。
 
-This makes the child assignment to `router.presentedSheet` drive presentation at the root.
+这使得子视图对 `router.presentedSheet` 的赋值能够驱动根视图的展示。
 
-## Example: sheets that need their own navigation
+## 示例：需要自己导航的 sheets
 
-Wrap sheet content in a `NavigationStack` so it can push within the modal.
+将 sheet 内容包裹在 `NavigationStack` 中，以便在模态框内推送。
 
 ```swift
 struct NavigationSheet<Content: View>: View {
@@ -99,15 +99,16 @@ struct NavigationSheet<Content: View>: View {
 }
 ```
 
-## Design choices to keep
+## 要保留的设计选择
 
-- Centralize sheet routing so features can present modals without wiring bindings through many layers.
-- Use `sheet(item:)` to guarantee a single sheet is active and to drive presentation from the enum.
-- Group related sheets under the same `id` when they are mutually exclusive (e.g., editor flows).
-- Keep sheet views lightweight and composed from smaller views; avoid large monoliths.
+- 集中化 sheet 路由，使功能可以呈现模态框而无需通过许多层连接绑定。
+- 使用 `sheet(item:)` 确保只有一个 sheet 处于活动状态，并从枚举驱动展示。
+- 当相关 sheets 互斥时（例如编辑器流程），将其归入相同的 `id` 下。
+- 保持 sheet 视图轻量并由较小的视图组成；避免大型单体。
+- 将路由器注入环境，使子视图可以设置 `presentedSheet` 而无需直接绑定。
 
-## Pitfalls
+## 陷阱
 
-- Avoid mixing `sheet(isPresented:)` and `sheet(item:)` for the same concern; prefer a single enum.
-- Do not store heavy state inside `SheetDestination`; pass lightweight identifiers or models.
-- If multiple sheets can appear from the same screen, give them distinct `id` values.
+- 避免为同一关注点混合使用 `sheet(isPresented:)` 和 `sheet(item:)`；优先使用单一枚举。
+- 不要在 `SheetDestination` 中存储重型状态；传递轻量级标识符或模型。
+- 如果同一界面可能弹出多个 sheet，为它们分配不同的 `id` 值。

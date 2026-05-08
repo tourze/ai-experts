@@ -1,46 +1,46 @@
-# Demystify SwiftUI Performance (WWDC23) (Summary)
+# 揭开 SwiftUI 性能的神秘面纱 (WWDC23)（摘要）
 
-Context: WWDC23 session on building a mental model for SwiftUI performance and triaging hangs/hitches.
+背景：WWDC23 关于构建 SwiftUI 性能心智模型以及诊断卡死/卡顿的会议。
 
-## Performance loop
+## 性能循环
 
-- Measure -> Identify -> Optimize -> Re-measure.
-- Focus on concrete symptoms (slow navigation, broken animations, spinning cursor).
+- 测量 -> 识别 -> 优化 -> 重新测量。
+- 关注具体症状（导航缓慢、动画损坏、旋转光标）。
 
-## Dependencies and updates
+## 依赖和更新
 
-- Views form a dependency graph; dynamic properties are a frequent source of updates.
-- Use `Self._printChanges()` in debug only to inspect extra dependencies.
-- Eliminate unnecessary dependencies by extracting views or narrowing state.
-- Consider `@Observable` for more granular property tracking.
+- 视图构成依赖图；动态属性是频繁的更新来源。
+- 在调试中使用 `Self._printChanges()` 检查多余的依赖。
+- 通过提取视图或缩小状态范围来消除不必要的依赖。
+- 考虑使用 `@Observable` 实现更细粒度的属性追踪。
 
-## Common causes of slow updates
+## 更新缓慢的常见原因
 
-- Expensive view bodies (string interpolation, filtering, formatting).
-- Dynamic property instantiation and state initialization in `body`.
-- Slow identity resolution in lists/tables.
-- Hidden work: bundle lookups, heap allocations, repeated string construction.
+- 昂贵的视图主体（字符串插值、过滤、格式化）。
+- 在 `body` 中实例化动态属性和初始化状态。
+- 列表/表格中缓慢的身份解析。
+- 隐藏的工作：bundle 查找、堆分配、重复的字符串构建。
 
-## Avoid slow initialization in view bodies
+## 避免在视图主体中进行缓慢的初始化
 
-- Don’t create heavy models synchronously in view bodies.
-- Use `.task` to fetch async data and keep `init` lightweight.
+- 不要在视图主体中同步创建重型模型。
+- 使用 `.task` 获取异步数据，保持 `init` 轻量。
 
-## Lists and tables identity rules
+## 列表和表格身份规则
 
-- Stable identity is critical for performance and animation.
-- Ensure a constant number of views per element in `ForEach`.
-- Avoid inline filtering in `ForEach`; pre-filter and cache collections.
-- Avoid `AnyView` in list rows; it hides identity and increases cost.
-- Flatten nested `ForEach` when possible to reduce overhead.
+- 稳定的身份对性能和动画至关重要。
+- 确保 `ForEach` 中每个元素有恒定数量的视图。
+- 避免在 `ForEach` 中内联过滤；预先过滤并缓存集合。
+- 避免在列表行中使用 `AnyView`；它隐藏身份并增加成本。
+- 尽可能展平嵌套的 `ForEach` 以减少开销。
 
-## Table specifics
+## 表格细节
 
-- `TableRow` resolves to a single row; row count must be constant.
-- Prefer the streamlined `Table` initializer to enforce constant rows.
-- Use explicit IDs for back deployment when needed.
+- `TableRow` 解析为单行；行数必须恒定。
+- 优先使用简化的 `Table` 初始化器以强制恒定行。
+- 在需要向后部署时使用显式 ID。
 
-## Debugging aids
+## 调试辅助
 
-- Use Instruments for hangs and hitches.
-- Use `_printChanges` to validate dependency assumptions during debug.
+- 使用 Instruments 诊断卡死和卡顿。
+- 在调试期间使用 `_printChanges` 验证依赖假设。

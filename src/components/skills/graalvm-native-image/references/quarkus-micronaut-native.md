@@ -1,47 +1,47 @@
-# Quarkus & Micronaut Native Image Support
+# Quarkus & Micronaut Native Image 支持
 
-Configuration patterns for native-first Java frameworks with GraalVM Native Image.
+原生优先的 Java 框架与 GraalVM Native Image 的配置模式。
 
-## Table of Contents
+## 目录
 
-1. [Quarkus Native Build](#quarkus-native-build)
-2. [Quarkus Configuration](#quarkus-configuration)
-3. [Micronaut Native Build](#micronaut-native-build)
-4. [Micronaut Configuration](#micronaut-configuration)
-5. [Comparison](#comparison)
+1. [Quarkus 原生构建](#quarkus-原生构建)
+2. [Quarkus 配置](#quarkus-配置)
+3. [Micronaut 原生构建](#micronaut-原生构建)
+4. [Micronaut 配置](#micronaut-配置)
+5. [对比](#对比)
 
 ---
 
-## Quarkus Native Build
+## Quarkus 原生构建
 
-Quarkus is designed native-first and requires minimal GraalVM-specific configuration.
+Quarkus 设计为原生优先，几乎不需要 GraalVM 特定配置。
 
-### Building a Native Executable
+### 构建原生可执行文件
 
 ```bash
-# Using Maven (Quarkus Maven plugin handles native build)
+# 使用 Maven（Quarkus Maven 插件处理原生构建）
 ./mvnw package -Dnative
 
-# Using Gradle
+# 使用 Gradle
 ./gradlew build -Dquarkus.native.enabled=true
 
-# Using Quarkus CLI
+# 使用 Quarkus CLI
 quarkus build --native
 ```
 
-### Container Build (no local GraalVM needed)
+### 容器构建（无需本地 GraalVM）
 
 ```bash
-# Build in a container (uses Mandrel/GraalVM image)
+# 在容器中构建（使用 Mandrel/GraalVM 镜像）
 ./mvnw package -Dnative -Dquarkus.native.container-build=true
 
-# Specify custom builder image
+# 指定自定义构建器镜像
 ./mvnw package -Dnative \
     -Dquarkus.native.container-build=true \
     -Dquarkus.native.builder-image=quay.io/quarkus/ubi-quarkus-mandrel-builder-image:jdk-21
 ```
 
-### Multi-Stage Dockerfile
+### 多阶段 Dockerfile
 
 ```dockerfile
 FROM quay.io/quarkus/ubi-quarkus-mandrel-builder-image:jdk-21 AS builder
@@ -61,27 +61,27 @@ EXPOSE 8080
 CMD ["./application", "-Dquarkus.http.host=0.0.0.0"]
 ```
 
-## Quarkus Configuration
+## Quarkus 配置
 
 ### application.properties
 
 ```properties
-# Native image build options
+# 原生镜像构建选项
 quarkus.native.additional-build-args=--no-fallback,-H:+ReportExceptionStackTraces
 
-# Resource inclusion
+# 资源包含
 quarkus.native.resources.includes=templates/**,META-INF/resources/**
 
-# Enable HTTPS support
+# 启用 HTTPS 支持
 quarkus.native.enable-https-url-handler=true
 
-# Build memory
+# 构建内存
 quarkus.native.native-image-xmx=8g
 ```
 
-### Registering Reflection
+### 注册反射
 
-Quarkus provides annotations to register classes for reflection:
+Quarkus 提供了注册反射类的注解：
 
 ```java
 import io.quarkus.runtime.annotations.RegisterForReflection;
@@ -90,17 +90,17 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 public class MyDto {
     private String name;
     private int age;
-    // constructors, getters, setters
+    // 构造器、getter、setter
 }
 
-// Register multiple classes including nested types
+// 注册多个类（包含嵌套类型）
 @RegisterForReflection(targets = {MyDto.class, OrderDto.class},
                        serialization = true)
 public class ReflectionConfig {
 }
 ```
 
-### Testing Native Builds
+### 测试原生构建
 
 ```java
 import io.quarkus.test.junit.QuarkusIntegrationTest;
@@ -119,7 +119,7 @@ public class NativeMyResourceIT {
 }
 ```
 
-Run native integration tests:
+运行原生集成测试：
 
 ```bash
 ./mvnw verify -Dnative
@@ -127,24 +127,24 @@ Run native integration tests:
 
 ---
 
-## Micronaut Native Build
+## Micronaut 原生构建
 
-Micronaut uses compile-time dependency injection and AOT processing, making it highly compatible with GraalVM.
+Micronaut 使用编译时依赖注入和 AOT 处理，与 GraalVM 高度兼容。
 
-### Building a Native Executable
+### 构建原生可执行文件
 
 ```bash
-# Using Maven
+# 使用 Maven
 ./mvnw package -Dpackaging=native-image
 
-# Using Gradle
+# 使用 Gradle
 ./gradlew nativeCompile
 
-# Using Micronaut CLI
+# 使用 Micronaut CLI
 mn create-app --build=gradle --jdk=21 --features=graalvm myapp
 ```
 
-### Gradle Configuration
+### Gradle 配置
 
 ```kotlin
 plugins {
@@ -170,7 +170,7 @@ graalvmNative {
 }
 ```
 
-### Maven Configuration
+### Maven 配置
 
 ```xml
 <plugin>
@@ -192,11 +192,11 @@ graalvmNative {
 </profiles>
 ```
 
-## Micronaut Configuration
+## Micronaut 配置
 
-### Registering Reflection
+### 注册反射
 
-Micronaut minimizes reflection, but when needed:
+Micronaut 最小化反射使用，但在需要时：
 
 ```java
 import io.micronaut.core.annotation.ReflectiveAccess;
@@ -207,7 +207,7 @@ public class MyDto {
     private int age;
 }
 
-// Or use @Introspected for bean introspection (preferred)
+// 或使用 @Introspected 进行 Bean 内省（推荐）
 import io.micronaut.core.annotation.Introspected;
 
 @Introspected
@@ -217,9 +217,9 @@ public class MyDto {
 }
 ```
 
-### Resource Inclusion
+### 资源包含
 
-In `src/main/resources/META-INF/native-image/resource-config.json`:
+在 `src/main/resources/META-INF/native-image/resource-config.json` 中：
 
 ```json
 {
@@ -233,13 +233,13 @@ In `src/main/resources/META-INF/native-image/resource-config.json`:
 }
 ```
 
-### Docker Build
+### Docker 构建
 
 ```bash
-# Using Micronaut Gradle plugin
+# 使用 Micronaut Gradle 插件
 ./gradlew dockerBuildNative
 
-# Multi-stage Dockerfile
+# 多阶段 Dockerfile
 FROM ghcr.io/graalvm/native-image-community:21 AS builder
 WORKDIR /app
 COPY . .
@@ -253,15 +253,15 @@ ENTRYPOINT ["/app/myapp"]
 
 ---
 
-## Comparison
+## 对比
 
-| Feature | Quarkus | Micronaut |
+| 特性 | Quarkus | Micronaut |
 |---------|---------|-----------|
-| DI approach | Build-time with ArC | Compile-time with annotation processors |
-| Native build command | `./mvnw package -Dnative` | `./gradlew nativeCompile` |
-| Reflection annotation | `@RegisterForReflection` | `@Introspected` / `@ReflectiveAccess` |
-| Container build | Built-in container build support | Docker plugin |
-| Dev mode | `quarkus dev` (live reload) | `mn run` with restart |
-| Startup time (native) | ~10-50ms | ~10-50ms |
-| Typical RSS | ~20-50MB | ~20-50MB |
-| GraalVM version | Mandrel (Red Hat distribution) | GraalVM CE/EE |
+| DI 方式 | 构建时 ArC | 编译时注解处理器 |
+| 原生构建命令 | `./mvnw package -Dnative` | `./gradlew nativeCompile` |
+| 反射注解 | `@RegisterForReflection` | `@Introspected` / `@ReflectiveAccess` |
+| 容器构建 | 内置容器构建支持 | Docker 插件 |
+| 开发模式 | `quarkus dev`（热重载） | `mn run` + 重启 |
+| 原生启动时间 | ~10-50ms | ~10-50ms |
+| 典型 RSS | ~20-50MB | ~20-50MB |
+| GraalVM 版本 | Mandrel（Red Hat 发行版） | GraalVM CE/EE |

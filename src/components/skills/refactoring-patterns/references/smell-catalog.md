@@ -1,41 +1,41 @@
-# Code Smell Catalog
+# 代码坏味道目录
 
-A comprehensive catalog of code smells organized by family. Each smell includes a description, detection heuristics, and the named refactorings that fix it.
+按系列组织的代码坏味道综合目录。每种坏味道包括描述、检测启发法以及修复它的命名重构手法。
 
-## What Is a Code Smell?
+## 什么是代码坏味道？
 
-A code smell is a surface indication that usually corresponds to a deeper structural problem. Smells are not bugs -- the code works correctly -- but they make the code harder to understand, extend, and maintain. The term was coined by Kent Beck and popularized by Martin Fowler.
+代码坏味道是一种表面迹象，通常对应更深层次的结构性问题。坏味道不是 bug——代码可以正确工作——但它们使代码更难理解、扩展和维护。这个术语由 Kent Beck 创造，并由 Martin Fowler 推广。
 
-**Key principles:**
-- Smells are heuristics, not rules -- use judgment
-- A smell that causes no real problem in context can be left alone
-- Smells cluster: fixing one often reveals others nearby
-- The "smell → refactoring" mapping is many-to-many; one smell may require several refactorings
+**关键原则：**
+- 坏味道是启发式的，不是规则——需运用判断
+- 在特定上下文中没有造成实际问题的坏味道可以置之不理
+- 坏味道成群出现：修复一个经常会暴露附近的其他坏味道
+- "坏味道→重构"映射是多对多的；一种坏味道可能需要多种重构手法
 
 ---
 
-## Family 1: Bloaters
+## 系列 1：臃肿（Bloaters）
 
-Smells where code grows too large to work with effectively.
+代码变得过于庞大而无法有效处理的坏味道。
 
-### Long Method
+### 过长方法（Long Method）
 
-**Description:** A method that tries to do too much. The longer a method is, the harder it is to understand, test, and reuse.
+**描述：** 一个试图做得太多的函数。方法越长，就越难理解、测试和复用。
 
-**Detection heuristics:**
-- More than 10-15 lines of executable code
-- Multiple levels of indentation
-- Comments separating "sections" within the method
-- Multiple responsibilities visible in one scan
-- Difficulty naming the method because it does several things
+**检测启发法：**
+- 超过 10-15 行可执行代码
+- 多层缩进
+- 注释在方法内分隔"段落"
+- 一眼看去可见多个职责
+- 难以命名该方法，因为它做了好几件事
 
-**Typical fixes:**
-- Extract Method -- pull each logical section into a named method
-- Replace Temp with Query -- eliminate temporaries that block extraction
-- Replace Method with Method Object -- when extraction is blocked by tangled local variables
-- Decompose Conditional -- when the length comes from complex branching
+**典型修复：**
+- 提炼方法——将每个逻辑段落提取为命名方法
+- 以查询取代临时变量——消除阻碍提取的临时变量
+- 以方法对象取代方法——当提取被纠缠的局部变量阻碍时
+- 分解条件表达式——当长度来自复杂的分支时
 
-**Example smell:**
+**示例坏味道：**
 ```
 function processOrder(order) {
   // validate order
@@ -55,90 +55,90 @@ function processOrder(order) {
 }
 ```
 
-Each comment block should be its own method: `validateOrder()`, `calculateTotals()`, `applyDiscounts()`, `saveOrder()`, `sendConfirmation()`.
+每个注释块应该是自己的方法：`validateOrder()`、`calculateTotals()`、`applyDiscounts()`、`saveOrder()`、`sendConfirmation()`。
 
-### Large Class
+### 过大类（Large Class）
 
-**Description:** A class that has too many fields, too many methods, or too many responsibilities. Often called a "God Class" or "Blob."
+**描述：** 拥有过多字段、过多方法或过多职责的类。常被称为"上帝类"或"Blob"。
 
-**Detection heuristics:**
-- More than 200-300 lines
-- More than 10-15 fields
-- Fields that cluster into subgroups (e.g., address fields, billing fields)
-- Methods that only use a subset of the fields
-- The class name is vague (`Manager`, `Handler`, `Processor`, `Utils`)
+**检测启发法：**
+- 超过 200-300 行
+- 超过 10-15 个字段
+- 可聚成子组的字段（例如地址字段、账单字段）
+- 只使用字段子集的方法
+- 类名模糊（`Manager`、`Handler`、`Processor`、`Utils`）
 
-**Typical fixes:**
-- Extract Class -- split along the axis of change
-- Extract Subclass -- when behavior varies by type
-- Replace Data Value with Object -- when field clusters represent a concept
+**典型修复：**
+- 提炼类——沿变化轴线拆分
+- 提炼子类——当行为按类型变化时
+- 将数据值替换为对象——当字段簇代表一个概念时
 
-### Long Parameter List
+### 过长参数列表（Long Parameter List）
 
-**Description:** A method that takes more than three or four parameters, making calls confusing and error-prone.
+**描述：** 一个方法接受的参数超过三或四个，使调用令人困惑且容易出错。
 
-**Detection heuristics:**
-- More than 3-4 parameters
-- Boolean parameters that switch behavior
-- Parameters that always travel together
-- Callers passing `null` for unused parameters
+**检测启发法：**
+- 超过 3-4 个参数
+- 切换行为的布尔参数
+- 总是成对出现的参数
+- 调用者为未使用的参数传递 `null`
 
-**Typical fixes:**
-- Introduce Parameter Object -- group related params into `DateRange`, `Address`, `Options`
-- Preserve Whole Object -- pass the object instead of extracting its fields
-- Replace Parameter with Method -- have the method fetch data it needs
+**典型修复：**
+- 引入参数对象——将相关参数分组为 `DateRange`、`Address`、`Options`
+- 保持对象完整——传递对象而不是提取其字段
+- 以方法取代参数——让方法自己获取所需数据
 
-### Data Clumps
+### 数据泥团（Data Clumps）
 
-**Description:** Groups of variables that appear together in multiple places -- method parameters, field declarations, or local variables.
+**描述：** 在多个地方成组出现的变量——方法参数、字段声明或局部变量。
 
-**Detection heuristics:**
-- Same three or more fields appear together in multiple classes
-- Same group of parameters appears in multiple method signatures
-- Deleting one member of the group would make no sense without the others
+**检测启发法：**
+- 相同的三个或更多字段在多个类中一起出现
+- 相同的参数组在多个方法签名中出现
+- 删除组中的一个成员而没有其他成员就没有意义
 
-**Typical fixes:**
-- Extract Class -- create a new class for the clump (`Address`, `DateRange`, `Coordinates`)
-- Introduce Parameter Object -- replace parameter groups with the new class
-- Preserve Whole Object -- pass the object instead of its decomposed fields
+**典型修复：**
+- 提炼类——为数据泥团创建新类（`Address`、`DateRange`、`Coordinates`）
+- 引入参数对象——将参数组替换为新类
+- 保持对象完整——传递对象而不是其分解的字段
 
-### Primitive Obsession
+### 基本类型偏执（Primitive Obsession）
 
-**Description:** Using primitive types (strings, ints, arrays) to represent domain concepts instead of small objects.
+**描述：** 使用原始类型（字符串、整数、数组）来表示领域概念，而不是使用小对象。
 
-**Detection heuristics:**
-- Constants or magic numbers used to represent types (`int ADMIN = 1`)
-- Strings used for structured data (phone numbers, zip codes, currencies)
-- Arrays or tuples used instead of named structures
-- Validation logic for the same type scattered across multiple locations
+**检测启发法：**
+- 用于表示类型的常量或魔法数字（`int ADMIN = 1`）
+- 用于结构化数据的字符串（电话号码、邮编、货币）
+- 使用数组或元组替代命名结构
+- 同一类型的验证逻辑散布在多个位置
 
-**Typical fixes:**
-- Replace Data Value with Object -- `String email` becomes `EmailAddress`
-- Replace Type Code with Subclasses -- when the type code drives behavior
-- Replace Type Code with Strategy -- when subclassing is impractical
-- Replace Magic Number with Symbolic Constant -- names instead of numbers
+**典型修复：**
+- 将数据值替换为对象——`String email` 变为 `EmailAddress`
+- 将类型码替换为子类——当类型码驱动行为时
+- 将类型码替换为策略模式——当子类化不可行时
+- 将魔法数字替换为符号常量——用名称替代数字
 
 ---
 
-## Family 2: Object-Orientation Abusers
+## 系列 2：面向对象滥用（Object-Orientation Abusers）
 
-Smells where object-oriented features are used incorrectly or not at all.
+面向对象特性被错误使用或根本未被使用的坏味道。
 
-### Switch Statements
+### Switch 语句（Switch Statements）
 
-**Description:** The same switch/case or if/else chain on a type code appears in multiple places. When a new type is added, every switch must be updated.
+**描述：** 相同的 switch/case 或 if/else 链在多个地方出现。当添加新类型时，每个 switch 都必须更新。
 
-**Detection heuristics:**
-- `switch` on a type or status field that appears in more than one place
-- `if/else if` chain checking `instanceof` or type strings
-- Adding a new type requires editing multiple files
+**检测启发法：**
+- 在多个地方对类型或状态字段使用 `switch`
+- 检查 `instanceof` 或类型字符串的 `if/else if` 链
+- 添加新类型需要编辑多个文件
 
-**Typical fixes:**
-- Replace Conditional with Polymorphism -- each type implements its own behavior
-- Replace Type Code with Subclasses + Replace Conditional with Polymorphism
-- Replace Type Code with Strategy when the type can change at runtime
+**典型修复：**
+- 以多态取代条件表达式——每个类型实现自己的行为
+- 将类型码替换为子类 + 以多态取代条件表达式
+- 当类型可在运行时改变时，将类型码替换为策略模式
 
-**Example:**
+**示例：**
 ```
 // SMELL: same switch in calculatePay(), generateReport(), getPermissions()
 switch (employee.type) {
@@ -156,180 +156,180 @@ class Manager extends Employee {
 }
 ```
 
-### Refused Bequest
+### 被拒绝的遗赠（Refused Bequest）
 
-**Description:** A subclass inherits methods or data it does not want. It overrides parent methods to do nothing or throws "not supported" exceptions.
+**描述：** 子类继承了它不想要的方法或数据。它覆盖父方法使其什么都不做，或抛出"不支持"异常。
 
-**Detection heuristics:**
-- Subclass overrides a method to do nothing or throw
-- Subclass uses only a small fraction of inherited methods
-- The "is-a" relationship feels forced
+**检测启发法：**
+- 子类覆盖方法使其什么都不做或抛出异常
+- 子类只使用了继承方法的一小部分
+- "is-a"关系感觉牵强
 
-**Typical fixes:**
-- Push Down Method / Push Down Field -- move unwanted members to the sibling that actually uses them
-- Replace Inheritance with Delegation -- the child holds a reference to the parent instead of extending it
+**典型修复：**
+- 下移方法/下移字段——将不需要的成员移到实际使用它们的兄弟类
+- 以委托取代继承——子类持有父类的引用而不是继承它
 
-### Alternative Classes with Different Interfaces
+### 具有不同接口的替代类（Alternative Classes with Different Interfaces）
 
-**Description:** Two classes do essentially the same job but have different method names and signatures, preventing interchangeability.
+**描述：** 两个类本质上是做同样的工作，但具有不同的方法名和签名，妨碍了互换性。
 
-**Detection heuristics:**
-- Two classes with similar purpose but different method names
-- Callers choose between them but can't treat them polymorphically
-- Duplication of logic because no shared interface exists
+**检测启发法：**
+- 两个类具有相似的目的但方法名不同
+- 调用者在它们之间选择但无法多态地使用它们
+- 因为没有共享接口而导致的逻辑重复
 
-**Typical fixes:**
-- Rename Method -- align names across both classes
-- Extract Superclass or Extract Interface -- define a shared contract
-- Move Method -- equalize what each class offers
-
----
-
-## Family 3: Change Preventers
-
-Smells that make changes expensive by scattering related logic.
-
-### Divergent Change
-
-**Description:** One class changes for multiple unrelated reasons. It is the opposite of the Single Responsibility Principle.
-
-**Detection heuristics:**
-- You edit the same class for different kinds of changes (new database, new report format, new business rule)
-- The class has methods that cluster into groups with no interaction between them
-- Different team members edit the same file for different features
-
-**Typical fixes:**
-- Extract Class -- split the class along its axes of change
-- Each resulting class should change for exactly one reason
-
-### Shotgun Surgery
-
-**Description:** A single logical change requires edits in many different classes. It is the opposite of Divergent Change.
-
-**Detection heuristics:**
-- A small functional change touches 5+ files
-- A new field must be added to multiple classes
-- A format change requires edits in scattered locations
-
-**Typical fixes:**
-- Move Method / Move Field -- consolidate related logic into one class
-- Inline Class -- if scattered pieces are too small, merge them into the class that should own the responsibility
+**典型修复：**
+- 重命名方法——使两个类的方法名一致
+- 提炼父类或提炼接口——定义共享契约
+- 搬移方法——平衡每个类提供的功能
 
 ---
 
-## Family 4: Dispensables
+## 系列 3：变更阻碍者（Change Preventers）
 
-Smells where something exists but shouldn't.
+通过分散相关逻辑使变更加昂贵的坏味道。
 
-### Lazy Class
+### 发散式变化（Divergent Change）
 
-**Description:** A class that does too little to justify its existence. Each class costs complexity; if it doesn't carry its weight, merge it.
+**描述：** 一个类因多种不相关的原因而变更。这是单一职责原则的反面。
 
-**Typical fixes:** Inline Class, Collapse Hierarchy
+**检测启发法：**
+- 你因不同类型的变更（新数据库、新报告格式、新业务规则）而编辑同一个类
+- 该类的方法聚集成互不交互的组
+- 不同的团队成员因不同的功能而编辑同一个文件
 
-### Dead Code
+**典型修复：**
+- 提炼类——沿变化轴线拆分
+- 每个结果类应恰好因一个原因而变更
 
-**Description:** Code that is never executed -- unreachable branches, unused variables, unneeded parameters, methods no one calls.
+### 霰弹式修改（Shotgun Surgery）
 
-**Typical fixes:** Delete it. Version control remembers.
+**描述：** 单个逻辑变更需要在许多不同的类中进行编辑。这是发散式变化的反面。
 
-### Speculative Generality
+**检测启发法：**
+- 一个小功能变更触及 5 个以上文件
+- 一个新字段必须添加到多个类中
+- 格式变更要求在分散的位置进行编辑
 
-**Description:** Abstractions, parameters, hooks, or classes created "in case we need them someday." YAGNI -- You Aren't Gonna Need It.
-
-**Detection heuristics:**
-- Abstract classes with only one subclass
-- Parameters that are always passed the same value
-- Methods that are only called by tests
-- Framework infrastructure with no current use
-
-**Typical fixes:**
-- Collapse Hierarchy -- remove unneeded abstract class
-- Remove Parameter -- delete unused params
-- Inline Class / Inline Method -- collapse unneeded indirection
-
-### Duplicate Code
-
-**Description:** The same or nearly identical code structure appears in more than one place. The most common and most expensive smell.
-
-**Detection heuristics:**
-- Copy-pasted blocks with minor variations
-- Methods in different classes that do the same thing
-- Conditional branches with identical bodies
-
-**Typical fixes:**
-- Extract Method -- share the common code
-- Pull Up Method -- move shared method to a common base class
-- Extract Superclass / Extract Class -- when duplication spans classes
-- Form Template Method -- when method structure is identical but details differ
+**典型修复：**
+- 搬移方法/搬移字段——将相关逻辑整合到一个类中
+- 内联类——如果分散的碎片太小，将它们合并到应该拥有该职责的类中
 
 ---
 
-## Family 5: Couplers
+## 系列 4：冗余（Dispensables）
 
-Smells where classes are too tightly bound to each other.
+存在但不应该存在的东西。
 
-### Feature Envy
+### 冗赘类（Lazy Class）
 
-**Description:** A method that uses more features (fields and methods) of another class than its own. It "envies" the other class's data.
+**描述：** 一个做得太少而无法证明其存在合理性的类。每个类都会增加复杂性；如果它不承担足够的重量，就合并它。
 
-**Detection heuristics:**
-- A method that calls 3+ getters on one foreign object
-- A method that could be moved to the other class and would need fewer parameters
+**典型修复：** 内联类，折叠继承体系
 
-**Typical fixes:**
-- Move Method -- relocate the method to the class it envies
-- Extract Method + Move Method -- extract the envious part, then move it
+### 死代码（Dead Code）
 
-### Inappropriate Intimacy
+**描述：** 从未执行过的代码——无法到达的分支、未使用的变量、不需要的参数、没人调用的方法。
 
-**Description:** Two classes are overly entangled -- accessing each other's private details, forming a bidirectional dependency.
+**典型修复：** 删除它。版本控制会记住。
 
-**Typical fixes:**
-- Move Method / Move Field to reduce the cross-boundary traffic
-- Extract Class to put the shared concern in a neutral place
-- Replace Inheritance with Delegation when subclass accesses too many parent internals
+### 夸夸其谈的未来性（Speculative Generality）
 
-### Message Chains
+**描述：** "以防万一将来需要"而创建的抽象、参数、钩子或类。YAGNI——你不需要它。
 
-**Description:** A client asks object A for B, then asks B for C, then asks C for D: `a.getB().getC().getD()`. The client is coupled to the entire navigation structure.
+**检测启发法：**
+- 只有一个子类的抽象类
+- 总是传递相同值的参数
+- 只被测试调用的方法
+- 当前没有用途的框架基础设施
 
-**Typical fixes:**
-- Hide Delegate -- have A provide the answer directly
-- Extract Method + Move Method -- push the chain into the object that should know the answer
+**典型修复：**
+- 折叠继承体系——移除不需要的抽象类
+- 移除参数——删除未使用的参数
+- 内联类/内联方法——折叠不必要的间接层
 
-### Middle Man
+### 重复代码（Duplicate Code）
 
-**Description:** A class whose methods do nothing but delegate to another class. It adds indirection without value.
+**描述：** 相同或几乎相同的代码结构出现在多个地方。最常见也最昂贵的坏味道。
 
-**Detection heuristics:**
-- More than half of a class's methods are one-line delegations
-- The class has no logic of its own
+**检测启发法：**
+- 带有微小差异的复制粘贴代码块
+- 不同类中做同样事情的方法
+- 具有相同体的条件分支
 
-**Typical fixes:**
-- Remove Middle Man -- let the client call the delegate directly
-- Inline Method -- merge the trivial forwarding methods into the caller
+**典型修复：**
+- 提炼方法——共享公共代码
+- 上移方法——将共享方法移到公共基类
+- 提炼父类/提炼类——当重复跨越多个类时
+- 塑造模板方法——当方法结构相同但细节不同时
 
 ---
 
-## Smell-to-Refactoring Quick Reference
+## 系列 5：耦合（Couplers）
 
-| Smell | Primary Refactoring | Secondary Refactoring |
+类之间过度绑定的坏味道。
+
+### 依恋情结（Feature Envy）
+
+**描述：** 一个方法使用另一个类的特性（字段和方法）多于自己的。它"嫉妒"其他类的数据。
+
+**检测启发法：**
+- 一个方法在单个外部对象上调用 3 个以上 getter
+- 一个方法可以移到其他类并且需要更少的参数
+
+**典型修复：**
+- 搬移方法——将方法重新定位到它所嫉妒的类
+- 提炼方法 + 搬移方法——提取嫉妒的部分，然后搬移
+
+### 过度亲密（Inappropriate Intimacy）
+
+**描述：** 两个类过度纠缠——访问彼此的私有细节，形成双向依赖。
+
+**典型修复：**
+- 搬移方法/搬移字段——减少跨边界流量
+- 提炼类——将共享关注点放在中立位置
+- 以委托取代继承——当子类访问太多父类内部细节时
+
+### 消息链（Message Chains）
+
+**描述：** 客户端向对象 A 请求 B，然后向 B 请求 C，然后向 C 请求 D：`a.getB().getC().getD()`。客户端耦合到整个导航结构。
+
+**典型修复：**
+- 隐藏委托关系——让 A 直接提供答案
+- 提炼方法 + 搬移方法——将链条推入应该知道答案的对象中
+
+### 中间人（Middle Man）
+
+**描述：** 一个方法除了委托给另一个类外什么也不做的类。它增加间接层却没有价值。
+
+**检测启发法：**
+- 一个类超过一半的方法是一行委托
+- 该类没有自己的逻辑
+
+**典型修复：**
+- 移除中间人——让客户端直接调用委托对象
+- 内联方法——将琐碎的转发方法合并到调用者中
+
+---
+
+## 坏味道到重构快速参考
+
+| 坏味道 | 主要重构手法 | 辅助重构手法 |
 |-------|--------------------|-----------------------|
-| Long Method | Extract Method | Replace Temp with Query |
-| Large Class | Extract Class | Extract Subclass |
-| Long Parameter List | Introduce Parameter Object | Preserve Whole Object |
-| Data Clumps | Extract Class | Introduce Parameter Object |
-| Primitive Obsession | Replace Data Value with Object | Replace Type Code with Subclasses |
-| Switch Statements | Replace Conditional with Polymorphism | Replace Type Code with Strategy |
-| Refused Bequest | Replace Inheritance with Delegation | Push Down Method |
-| Divergent Change | Extract Class | -- |
-| Shotgun Surgery | Move Method / Move Field | Inline Class |
-| Lazy Class | Inline Class | Collapse Hierarchy |
-| Dead Code | Delete it | -- |
-| Speculative Generality | Collapse Hierarchy | Inline Class |
-| Duplicate Code | Extract Method | Pull Up Method |
-| Feature Envy | Move Method | Extract Method + Move Method |
-| Inappropriate Intimacy | Move Method / Move Field | Extract Class |
-| Message Chains | Hide Delegate | Extract Method |
-| Middle Man | Remove Middle Man | Inline Method |
+| 过长方法 | 提炼方法 | 以查询取代临时变量 |
+| 过大类 | 提炼类 | 提炼子类 |
+| 过长参数列表 | 引入参数对象 | 保持对象完整 |
+| 数据泥团 | 提炼类 | 引入参数对象 |
+| 基本类型偏执 | 将数据值替换为对象 | 将类型码替换为子类 |
+| Switch 语句 | 以多态取代条件表达式 | 将类型码替换为策略模式 |
+| 被拒绝的遗赠 | 以委托取代继承 | 下移方法 |
+| 发散式变化 | 提炼类 | -- |
+| 霰弹式修改 | 搬移方法/搬移字段 | 内联类 |
+| 冗赘类 | 内联类 | 折叠继承体系 |
+| 死代码 | 删除它 | -- |
+| 夸夸其谈的未来性 | 折叠继承体系 | 内联类 |
+| 重复代码 | 提炼方法 | 上移方法 |
+| 依恋情结 | 搬移方法 | 提炼方法 + 搬移方法 |
+| 过度亲密 | 搬移方法/搬移字段 | 提炼类 |
+| 消息链 | 隐藏委托关系 | 提炼方法 |
+| 中间人 | 移除中间人 | 内联方法 |

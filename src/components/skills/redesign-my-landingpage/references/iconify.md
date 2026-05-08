@@ -1,19 +1,19 @@
-# Iconify icons (Iconify icon sets)
+# Iconify 图标（Iconify 图标集）
 
-Use icons from https://icon-sets.iconify.design/.
+使用 https://icon-sets.iconify.design/ 上的图标。
 
-## Recommended approach for React + Vite
+## React + Vite 的推荐方式
 
-Use `@iconify/react`.
-It loads icon data on demand from the Iconify API, so you only pay for icons you actually use.
+使用 `@iconify/react`。
+它按需从 Iconify API 加载图标数据，因此你只需为实际使用的图标付费。
 
-### Install
+### 安装
 
 ```bash
 pnpm add @iconify/react
 ```
 
-### Basic usage
+### 基本用法
 
 ```tsx
 import { Icon } from "@iconify/react"
@@ -23,15 +23,15 @@ export function Example() {
 }
 ```
 
-## App-wide rules
+## 全应用规则
 
-- Use 1 icon collection per page (2 max). Example collections: `mdi:`, `tabler:`, `ph:`, `lucide:`.
-- Match style to the aesthetic direction (outline vs filled, rounded vs sharp).
-- Do not sprinkle icons everywhere. If it does not add meaning, remove it.
+- 每个页面使用 1 个图标集（最多 2 个）。示例集合：`mdi:`、`tabler:`、`ph:`、`lucide:`。
+- 样式与审美方向匹配（轮廓 vs 填充、圆角 vs 尖锐）。
+- 不要到处撒播图标。如果它不增加意义，就删除它。
 
-## Wrapper component (recommended)
+## 包装组件（推荐）
 
-Create `src/components/app-icon.tsx`:
+创建 `src/components/app-icon.tsx`：
 
 ```tsx
 import { Icon, type IconProps } from "@iconify/react"
@@ -49,7 +49,7 @@ export function AppIcon({ decorative = true, label, ...props }: AppIconProps) {
 }
 ```
 
-### Example in a shadcn Button
+### 在 shadcn Button 中的示例
 
 ```tsx
 import { Button } from "@/components/ui/button"
@@ -65,13 +65,13 @@ export function PrimaryCTA() {
 }
 ```
 
-## Picking icons fast
+## 快速选取图标
 
-- Search by concept, then lock a prefix.
-- Prefer simple shapes for small sizes.
-- For feature lists, reuse a consistent style: all outline or all filled.
+- 按概念搜索，然后锁定一个前缀。
+- 小尺寸优先选择简单形状。
+- 对于功能列表，复用一致的样式：全部轮廓或全部填充。
 
-## If you must avoid a third-party API
+## 如果需要避免第三方 API
 
-Use Iconify offline mode (bundle specific icons) or host an Iconify API.
-Only do this if the user asks for it.
+使用 Iconify 离线模式（打包特定图标）或自托管 Iconify API。
+仅在用户要求时才这样做。

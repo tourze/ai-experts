@@ -1,44 +1,44 @@
-# shadcn/ui + Vite setup (React + TypeScript)
+# shadcn/ui + Vite 搭建（React + TypeScript）
 
-Use this when the user wants a full Vite project scaffold, not just a component.
+当用户需要完整的 Vite 项目脚手架（而不仅仅是单个组件）时使用。
 
-## Notes on Tailwind versions
+## Tailwind 版本说明
 
-- Default: Tailwind v4 setup.
-- If the project is on Tailwind v3, pin the shadcn CLI version compatible with that stack (the shadcn docs call this out).
+- 默认：Tailwind v4 安装。
+- 如果项目使用 Tailwind v3，请将 shadcn CLI 版本锁定为与该技术栈兼容的版本（shadcn 文档中有说明）。
 
-## 1) Create the Vite project
+## 1) 创建 Vite 项目
 
-Create a new React + TypeScript app:
+创建一个新的 React + TypeScript 应用：
 
 ```bash
 pnpm create vite@latest
 ```
 
-Then install deps and run dev:
+然后安装依赖并运行开发服务器：
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-## 2) Add Tailwind CSS (Tailwind v4)
+## 2) 添加 Tailwind CSS（Tailwind v4）
 
-Install Tailwind and the Vite plugin:
+安装 Tailwind 和 Vite 插件：
 
 ```bash
 pnpm add tailwindcss @tailwindcss/vite
 ```
 
-Replace `src/index.css` with:
+将 `src/index.css` 替换为：
 
 ```css
 @import "tailwindcss";
 ```
 
-## 3) Configure path aliases for `@/...`
+## 3) 配置 `@/...` 路径别名
 
-Edit `tsconfig.json` and add:
+编辑 `tsconfig.json` 并添加：
 
 ```json
 {
@@ -51,17 +51,17 @@ Edit `tsconfig.json` and add:
 }
 ```
 
-Also edit `tsconfig.app.json` and add the same `baseUrl` + `paths` mapping under `compilerOptions`.
+同时编辑 `tsconfig.app.json`，在 `compilerOptions` 下添加相同的 `baseUrl` + `paths` 映射。
 
-## 4) Update `vite.config.ts`
+## 4) 更新 `vite.config.ts`
 
-Install Node types:
+安装 Node 类型定义：
 
 ```bash
 pnpm add -D @types/node
 ```
 
-Update `vite.config.ts` to include Tailwind and the alias:
+更新 `vite.config.ts` 以包含 Tailwind 和别名：
 
 ```ts
 import path from "path"
@@ -79,19 +79,19 @@ export default defineConfig({
 })
 ```
 
-## 5) Initialize shadcn/ui
+## 5) 初始化 shadcn/ui
 
-Run the init command:
+运行初始化命令：
 
 ```bash
 pnpm dlx shadcn@latest init
 ```
 
-This creates `components.json` and sets up shadcn theme tokens.
+这将创建 `components.json` 并设置 shadcn 主题标记。
 
-## 6) Add the components you will use
+## 6) 添加你将使用的组件
 
-For a typical landing page, add a small set:
+对于一个典型的落地页，添加一个较小的集合：
 
 ```bash
 pnpm dlx shadcn@latest add button
@@ -104,21 +104,21 @@ pnpm dlx shadcn@latest add avatar
 pnpm dlx shadcn@latest add input
 ```
 
-Then import like:
+然后像这样导入：
 
 ```ts
 import { Button } from "@/components/ui/button"
 ```
 
-## 7) Iconify (icons)
+## 7) Iconify（图标）
 
-Install:
+安装：
 
 ```bash
 pnpm add @iconify/react
 ```
 
-Use icons by name (on demand):
+按名称使用图标（按需加载）：
 
 ```tsx
 import { Icon } from "@iconify/react"
@@ -126,6 +126,6 @@ import { Icon } from "@iconify/react"
 <Icon icon="lucide:arrow-right" aria-hidden="true" />
 ```
 
-## Optional: dark mode
+## 可选：深色模式
 
-If the user asks for dark mode, follow the shadcn dark mode guide for Vite and implement a theme toggle.
+如果用户要求深色模式，请遵循 shadcn 的 Vite 深色模式指南，并实现主题切换功能。

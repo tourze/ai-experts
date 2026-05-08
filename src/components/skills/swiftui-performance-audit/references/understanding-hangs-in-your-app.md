@@ -1,33 +1,33 @@
-# Understanding Hangs in Your App (Summary)
+# 理解应用中的卡死（摘要）
 
-Context: Apple guidance on identifying hangs caused by long-running main-thread work and understanding the main run loop.
+背景：苹果关于识别由主线程长时间运行工作引起的卡死以及理解主运行循环的指南。
 
-## Key concepts
+## 关键概念
 
-- A hang is a noticeable delay in a discrete interaction (typically >100 ms).
-- Hangs almost always come from long-running work on the main thread.
-- The main run loop processes UI events, timers, and main-queue work sequentially.
+- 卡死是指离散交互中可察觉的延迟（通常 >100 ms）。
+- 卡死几乎总是由主线程上的长时间运行工作引起。
+- 主运行循环顺序处理 UI 事件、计时器和主队列工作。
 
-## Main-thread work stages
+## 主线程工作阶段
 
-- Event delivery to the correct view/handler.
-- Your code: state updates, data fetch, UI changes.
-- Core Animation commit to the render server.
+- 事件传递到正确的视图/处理器。
+- 你的代码：状态更新、数据获取、UI 更改。
+- Core Animation 提交到渲染服务器。
 
-## Why the main run loop matters
+## 为什么主运行循环很重要
 
-- Only the main thread can update UI safely.
-- The run loop is the foundation that executes main-queue work.
-- If the run loop is busy, it can’t handle new events; this causes hangs.
+- 只有主线程可以安全地更新 UI。
+- 运行循环是执行主队列工作的基础。
+- 如果运行循环忙碌，则无法处理新事件；这会导致卡死。
 
-## Diagnosing hangs
+## 诊断卡死
 
-- Observe the main run loop’s busy periods: healthy loops sleep most of the time.
-- Hang detection typically flags busy periods >250 ms.
-- The Hangs instrument can be configured to lower thresholds.
+- 观察主运行循环的忙碌时段：健康循环大部分时间处于休眠状态。
+- 卡死检测通常标记 >250 ms 的忙碌时段。
+- Hangs instrument 可配置为降低阈值。
 
-## Practical takeaways
+## 实用要点
 
-- Keep main-thread work short; offload heavy work from event handlers.
-- Avoid long-running tasks on the main dispatch queue or main actor.
-- Use run loop behavior as a proxy for user-perceived responsiveness.
+- 保持主线程工作简短；从事件处理器中卸载繁重工作。
+- 避免在主调度队列或主 actor 上运行长时间任务。
+- 将运行循环行为用作用户感知响应能力的代理。

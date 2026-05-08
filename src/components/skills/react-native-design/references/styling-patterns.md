@@ -1,13 +1,13 @@
-# React Native Styling Patterns
+# React Native 样式模式
 
-## StyleSheet Fundamentals
+## StyleSheet 基础
 
-### Creating Styles
+### 创建样式
 
 ```typescript
 import { StyleSheet, ViewStyle, TextStyle, ImageStyle } from "react-native";
 
-// Typed styles for better IDE support
+// 类型化样式以获得更好的 IDE 支持
 interface Styles {
   container: ViewStyle;
   title: TextStyle;
@@ -33,7 +33,7 @@ const styles = StyleSheet.create<Styles>({
 });
 ```
 
-### Combining Styles
+### 组合样式
 
 ```typescript
 import { StyleProp, ViewStyle } from 'react-native';
@@ -50,7 +50,7 @@ function Box({ style, variant = 'default' }: BoxProps) {
         styles.base,
         variant === 'primary' && styles.primary,
         variant === 'danger' && styles.danger,
-        style, // Allow external style overrides
+        style, // 允许外部样式覆盖
       ]}
     />
   );
@@ -71,9 +71,9 @@ const styles = StyleSheet.create({
 });
 ```
 
-## Theme System
+## 主题系统
 
-### Theme Context
+### 主题上下文
 
 ```typescript
 import React, { createContext, useContext, useMemo } from 'react';
@@ -181,7 +181,7 @@ export function useTheme() {
 }
 ```
 
-### Using Theme
+### 使用主题
 
 ```typescript
 import { useTheme } from './theme';
@@ -221,17 +221,17 @@ function ThemedCard() {
 }
 ```
 
-## Responsive Design
+## 响应式设计
 
-### Screen Dimensions
+### 屏幕尺寸
 
 ```typescript
 import { Dimensions, useWindowDimensions, PixelRatio } from 'react-native';
 
-// Get dimensions once (may be stale after rotation)
+// 一次性获取尺寸（旋转后可能过时）
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-// Responsive scaling
+// 响应式缩放
 const guidelineBaseWidth = 375;
 const guidelineBaseHeight = 812;
 
@@ -244,7 +244,7 @@ export const verticalScale = (size: number) =>
 export const moderateScale = (size: number, factor = 0.5) =>
   size + (scale(size) - size) * factor;
 
-// Hook for dynamic dimensions (handles rotation)
+// 动态尺寸 Hook（处理旋转）
 function ResponsiveComponent() {
   const { width, height } = useWindowDimensions();
   const isLandscape = width > height;
@@ -252,13 +252,13 @@ function ResponsiveComponent() {
 
   return (
     <View style={{ flexDirection: isLandscape ? 'row' : 'column' }}>
-      {/* Content */}
+      {/* 内容 */}
     </View>
   );
 }
 ```
 
-### Breakpoint System
+### 断点系统
 
 ```typescript
 import { useWindowDimensions } from 'react-native';
@@ -296,7 +296,7 @@ export function useResponsiveValue<T>(values: Partial<Record<Breakpoint, T>>): T
   return undefined;
 }
 
-// Usage
+// 使用
 function ResponsiveGrid() {
   const columns = useResponsiveValue({ sm: 1, md: 2, lg: 3, xl: 4 }) ?? 1;
 
@@ -312,9 +312,9 @@ function ResponsiveGrid() {
 }
 ```
 
-## Layout Components
+## 布局组件
 
-### Container
+### 容器
 
 ```typescript
 import { View, ViewStyle, StyleProp } from 'react-native';
@@ -351,7 +351,7 @@ export function Container({ children, style, edges = ['top', 'bottom'] }: Contai
 }
 ```
 
-### Stack Components
+### Stack 组件
 
 ```typescript
 import { View, ViewStyle, StyleProp } from 'react-native';
@@ -378,7 +378,7 @@ export function HStack({ children, spacing = 8, style }: StackProps) {
   );
 }
 
-// Usage
+// 使用
 function Example() {
   return (
     <VStack spacing={16}>
@@ -395,7 +395,7 @@ function Example() {
 }
 ```
 
-### Spacer
+### 间距组件
 
 ```typescript
 import { View } from 'react-native';
@@ -412,7 +412,7 @@ export function Spacer({ size, flex }: SpacerProps) {
   return <View style={{ height: size, width: size }} />;
 }
 
-// Usage
+// 使用
 <HStack>
   <Text>Left</Text>
   <Spacer flex={1} />
@@ -420,9 +420,9 @@ export function Spacer({ size, flex }: SpacerProps) {
 </HStack>
 ```
 
-## Shadow Styles
+## 阴影样式
 
-### Cross-Platform Shadows
+### 跨平台阴影
 
 ```typescript
 import { Platform, ViewStyle } from "react-native";
@@ -432,7 +432,7 @@ export function createShadow(elevation: number, color = "#000000"): ViewStyle {
     return { elevation };
   }
 
-  // iOS shadow mapping based on elevation
+  // 基于 elevation 的 iOS 阴影映射
   const shadowMap: Record<number, ViewStyle> = {
     1: {
       shadowColor: color,
@@ -469,7 +469,7 @@ export function createShadow(elevation: number, color = "#000000"): ViewStyle {
   return shadowMap[elevation] || shadowMap[4];
 }
 
-// Predefined shadow styles
+// 预定义的阴影样式
 export const shadows = {
   sm: createShadow(2),
   md: createShadow(4),
@@ -477,7 +477,7 @@ export const shadows = {
   xl: createShadow(16),
 };
 
-// Usage
+// 使用
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#ffffff",
@@ -488,9 +488,9 @@ const styles = StyleSheet.create({
 });
 ```
 
-## Typography System
+## 排版系统
 
-### Text Components
+### 文字组件
 
 ```typescript
 import { Text as RNText, TextStyle, StyleProp, TextProps as RNTextProps } from 'react-native';
@@ -547,15 +547,15 @@ export function Text({
   );
 }
 
-// Usage
+// 使用
 <Text variant="h1">Heading</Text>
 <Text variant="body" color="textSecondary">Body text</Text>
 <Text variant="label" weight="semibold">Label</Text>
 ```
 
-## Button Styles
+## 按钮样式
 
-### Customizable Button
+### 可自定义按钮
 
 ```typescript
 import { Pressable, StyleSheet, ActivityIndicator } from 'react-native';
@@ -676,9 +676,9 @@ const styles = StyleSheet.create({
 });
 ```
 
-## Form Styles
+## 表单样式
 
-### Input Component
+### 输入组件
 
 ```typescript
 import { useState } from 'react';
@@ -785,9 +785,9 @@ const styles = StyleSheet.create({
 });
 ```
 
-## List Styles
+## 列表样式
 
-### FlatList with Styling
+### 带样式的 FlatList
 
 ```typescript
 import { FlatList, View, StyleSheet } from 'react-native';

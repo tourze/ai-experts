@@ -1,421 +1,421 @@
-# Market Sizing Data Sources
+# 市场规模数据来源
 
-Curated list of credible sources for market research and sizing analysis.
+经过筛选的可信市场调研和规模分析来源清单。
 
-## Industry Research Reports
+## 行业研究报告
 
-### Premium Research Firms
+### 高端研究机构
 
 **Gartner** (https://www.gartner.com)
 
-- Technology market forecasts and sizing
-- Magic Quadrants for competitive positioning
-- Typical cost: $5K-$50K per report
-- Best for: Enterprise software, IT services, emerging tech
+- 技术市场预测和规模估算
+- 竞争定位的魔力象限
+- 典型价格：每份报告 $5K-$50K
+- 最适合：企业软件、IT 服务、新兴技术
 
 **Forrester** (https://www.forrester.com)
 
-- Business technology and digital transformation
-- Wave evaluations for vendor comparison
-- Typical cost: $3K-$30K per report
-- Best for: Marketing tech, customer experience, B2B
+- 业务技术和数字化转型
+- 供应商对比的 Wave 评估
+- 典型价格：每份报告 $3K-$30K
+- 最适合：营销技术、客户体验、B2B
 
 **IDC** (https://www.idc.com)
 
-- IT market intelligence and sizing
-- Detailed segment breakdowns
-- Typical cost: $4K-$40K per report
-- Best for: Hardware, software, IT services
+- IT 市场情报和规模估算
+- 详细的细分市场拆分
+- 典型价格：每份报告 $4K-$40K
+- 最适合：硬件、软件、IT 服务
 
 **McKinsey** (https://www.mckinsey.com/featured-insights)
 
-- Free insights and reports
-- Strategic industry analysis
-- Best for: Industry trends, macroeconomic context
+- 免费洞见和报告
+- 战略性行业分析
+- 最适合：行业趋势、宏观经济背景
 
-### Accessible Research
+### 可获取的调研资源
 
 **Statista** (https://www.statista.com)
 
-- Cost: $39/month individual, $199/month business
-- Coverage: 80,000+ topics across industries
-- Best for: Quick market size estimates, charts, trends
+- 价格：个人 $39/月，企业 $199/月
+- 覆盖范围：跨行业的 80,000+ 个主题
+- 最适合：快速市场规模估算、图表、趋势
 
 **CB Insights** (https://www.cbinsights.com)
 
-- Cost: Custom pricing (typically $10K+/year)
-- Coverage: Venture capital, startup markets
-- Best for: Emerging markets, competitive intelligence
+- 价格：定制价格（通常 $10K+/年）
+- 覆盖范围：风险投资、创业公司市场
+- 最适合：新兴市场、竞争情报
 
 **PitchBook** (https://pitchbook.com)
 
-- Cost: Institutional pricing
-- Coverage: Private company valuations, M&A, VC
-- Best for: Startup valuations, funding trends
+- 价格：机构定价
+- 覆盖范围：私人公司估值、并购、VC
+- 最适合：创业公司估值、融资趋势
 
 **Grand View Research** (https://www.grandviewresearch.com)
 
-- Cost: $2K-$5K per report
-- Coverage: B2C and emerging markets
-- Best for: Consumer markets, healthcare, cleantech
+- 价格：每份报告 $2K-$5K
+- 覆盖范围：B2C 和新兴市场
+- 最适合：消费市场、医疗保健、清洁技术
 
-## Government and Public Data
+## 政府和公共数据
 
-### U.S. Government Sources
+### 美国政府来源
 
-**U.S. Census Bureau** (https://www.census.gov)
+**美国人口普查局** (https://www.census.gov)
 
-- Free, authoritative demographic data
-- Economic census every 5 years
-- Best for: Business counts, demographics, spending
+- 免费、权威的人口统计数据
+- 每 5 年的经济普查
+- 最适合：企业数量、人口统计、支出
 
-**Bureau of Labor Statistics** (https://www.bls.gov)
+**劳工统计局** (https://www.bls.gov)
 
-- Free employment and economic data
-- Industry-specific statistics
-- Best for: Employment trends, wages, productivity
+- 免费的就业和经济数据
+- 特定行业统计数据
+- 最适合：就业趋势、工资、生产率
 
 **SEC EDGAR** (https://www.sec.gov/edgar)
 
-- Free public company filings
-- 10-K, 10-Q reports with segment revenue
-- Best for: Validating market size with public company data
+- 免费的上市公司文件
+- 10-K、10-Q 报告，含细分市场收入
+- 最适合：用上市公司数据验证市场规模
 
 **Data.gov** (https://www.data.gov)
 
-- Free government datasets
-- Aggregates across agencies
-- Best for: Specialized industry data
+- 免费的政府数据集
+- 跨机构汇总
+- 最适合：特定行业数据
 
-### International Sources
+### 国际来源
 
 **OECD** (https://data.oecd.org)
 
-- Free international economic data
-- Best for: Cross-country comparisons
+- 免费的国际经济数据
+- 最适合：跨国比较
 
-**World Bank** (https://data.worldbank.org)
+**世界银行** (https://data.worldbank.org)
 
-- Free global development data
-- Best for: Emerging markets, macro trends
+- 免费的全球发展数据
+- 最适合：新兴市场、宏观趋势
 
-**Eurostat** (https://ec.europa.eu/eurostat)
+**欧盟统计局** (https://ec.europa.eu/eurostat)
 
-- Free European Union statistics
-- Best for: European market sizing
+- 免费的欧盟统计数据
+- 最适合：欧洲市场规模估算
 
-## Trade Associations
+## 行业协会
 
-Industry associations often publish market research:
+行业协会经常发布市场调研报告：
 
-**Software & SaaS**
+**软件与 SaaS**
 
-- Software & Information Industry Association (SIIA)
-- Cloud Security Alliance (CSA)
+- 软件与信息产业协会 (SIIA)
+- 云安全联盟 (CSA)
 
-**E-commerce & Retail**
+**电商与零售**
 
-- National Retail Federation (NRF)
+- 全美零售联合会 (NRF)
 - Digital Commerce 360
 
-**Financial Services**
+**金融服务**
 
-- American Bankers Association (ABA)
-- Financial Technology Association (FTA)
+- 美国银行家协会 (ABA)
+- 金融技术协会 (FTA)
 
-**Healthcare**
+**医疗保健**
 
-- Healthcare Information and Management Systems Society (HIMSS)
-- American Hospital Association (AHA)
+- 医疗保健信息与管理系统协会 (HIMSS)
+- 美国医院协会 (AHA)
 
-**Manufacturing**
+**制造业**
 
-- National Association of Manufacturers (NAM)
-- Industrial Internet Consortium (IIC)
+- 全美制造商协会 (NAM)
+- 工业互联网联盟 (IIC)
 
-## Company and Customer Data
+## 公司和客户数据
 
-### B2B Databases
+### B2B 数据库
 
-**LinkedIn Sales Navigator** ($99/month)
+**LinkedIn Sales Navigator** ($99/月)
 
-- Company and employee counts
-- Industry filters
-- Best for: B2B customer counting
+- 公司和员工数量
+- 行业筛选
+- 最适合：B2B 客户计数
 
-**ZoomInfo** (Custom pricing)
+**ZoomInfo**（定制价格）
 
-- Company databases with firmographics
-- Contact data
-- Best for: B2B TAM calculations
+- 公司数据库，含企业画像信息
+- 联系人数据
+- 最适合：B2B TAM 计算
 
-**Crunchbase** ($29-$99/month)
+**Crunchbase** ($29-$99/月)
 
-- Startup company data
-- Funding and employee information
-- Best for: Tech startup markets
+- 创业公司数据
+- 融资和员工信息
+- 最适合：科技创业公司市场
 
-**BuiltWith** ($295-$995/month)
+**BuiltWith** ($295-$995/月)
 
-- Technology usage data
-- Website analytics
-- Best for: Technology adoption sizing
+- 技术使用数据
+- 网站分析
+- 最适合：技术采用规模估算
 
-### Consumer Data
+### 消费者数据
 
-**Euromonitor** (Custom pricing)
+**Euromonitor**（定制价格）
 
-- Consumer market research
-- Best for: B2C product markets
+- 消费市场调研
+- 最适合：B2C 产品市场
 
-**Nielsen** (Custom pricing)
+**Nielsen**（定制价格）
 
-- Consumer behavior and media
-- Best for: CPG, retail, media markets
+- 消费者行为和媒体
+- 最适合：CPG、零售、媒体市场
 
-**Mintel** (Custom pricing)
+**Mintel**（定制价格）
 
-- Consumer trends and insights
-- Best for: B2C products and services
+- 消费趋势和洞见
+- 最适合：B2C 产品和服务
 
-## Search and Discovery Tools
+## 搜索和发现工具
 
-### Market Research Aggregators
+### 市场调研聚合器
 
 **Research and Markets** (https://www.researchandmarkets.com)
 
-- Aggregates reports from 100+ publishers
-- $500-$10K per report
-- Search across all major research firms
+- 聚合 100+ 家出版商的报告
+- $500-$10K 每份报告
+- 跨所有主要研究机构搜索
 
 **MarketsandMarkets** (https://www.marketsandmarkets.com)
 
-- Custom and syndicated research
-- $4K-$10K per report
-- Good for niche B2B markets
+- 定制和联合研究
+- $4K-$10K 每份报告
+- 适合利基 B2B 市场
 
-### Free Search Tools
+### 免费搜索工具
 
 **Google Scholar** (https://scholar.google.com)
 
-- Free academic research
-- Best for: Emerging technologies, academic validation
+- 免费的学术研究
+- 最适合：新兴技术、学术验证
 
 **SSRN** (https://www.ssrn.com)
 
-- Free working papers
-- Best for: Financial services, economics
+- 免费的工作论文
+- 最适合：金融服务、经济学
 
 **arXiv** (https://arxiv.org)
 
-- Free preprints in CS, physics, etc.
-- Best for: AI/ML, scientific markets
+- 计算机科学、物理等领域的免费预印本
+- 最适合：AI/ML、科学市场
 
-## Competitive Intelligence
+## 竞争情报
 
-### Public Company Analysis
+### 上市公司分析
 
-**Yahoo Finance** (Free)
+**Yahoo Finance**（免费）
 
-- Public company financials
-- Segment revenue from earnings
+- 上市公司财务数据
+- 财报中的细分市场收入
 
-**Seeking Alpha** (Free + Premium)
+**Seeking Alpha**（免费 + 高级版）
 
-- Earnings transcripts
-- Analyst estimates
+- 业绩会记录
+- 分析师预估
 
-**Public company investor relations**
+**上市公司投资者关系**
 
-- Annual reports (10-K)
-- Investor presentations
+- 年度报告 (10-K)
+- 投资者演示
 
-### Private Company Intelligence
+### 私人公司情报
 
-**PrivCo** (Custom pricing)
+**PrivCo**（定制价格）
 
-- Private company financials
-- M&A transaction data
+- 私人公司财务数据
+- 并购交易数据
 
-**Owler** (Free + Premium)
+**Owler**（免费 + 高级版）
 
-- Company profiles and news
-- Revenue estimates
+- 公司简介和新闻
+- 收入估算
 
-**SimilarWeb** (Free + Premium)
+**SimilarWeb**（免费 + 高级版）
 
-- Website traffic analytics
-- Best for: Online business sizing
+- 网站流量分析
+- 最适合：在线业务规模估算
 
-## Survey and Primary Research
+## 调查和一手研究
 
-### Survey Tools
+### 调查工具
 
-**SurveyMonkey** ($25-$75/month)
+**SurveyMonkey** ($25-$75/月)
 
-- DIY surveys
-- Best for: Customer willingness to pay
+- DIY 调查
+- 最适合：客户支付意愿
 
-**Typeform** ($25-$83/month)
+**Typeform** ($25-$83/月)
 
-- Conversational surveys
-- Best for: User research
+- 对话式调查
+- 最适合：用户研究
 
-**Qualtrics** (Enterprise pricing)
+**Qualtrics**（企业定价）
 
-- Professional research platform
-- Best for: Large-scale studies
+- 专业研究平台
+- 最适合：大规模研究
 
-### Panel Providers
+### 样本提供方
 
-**Respondent.io** ($100-$200 per response)
+**Respondent.io**（每次回复 $100-$200）
 
-- Recruit professionals for interviews
-- Best for: B2B customer research
+- 招募专业人士进行访谈
+- 最适合：B2B 客户研究
 
-**UserTesting** ($49 per participant)
+**UserTesting**（每位参与者 $49）
 
-- User research and testing
-- Best for: Product validation
+- 用户研究和测试
+- 最适合：产品验证
 
-**Google Surveys** ($0.10-$3.50 per response)
+**Google Surveys**（每次回复 $0.10-$3.50）
 
-- Quick consumer surveys
-- Best for: Basic consumer insights
+- 快速消费者调查
+- 最适合：基础消费者洞察
 
-## Data Quality Checklist
+## 数据质量检查清单
 
-When evaluating sources:
+评估来源时：
 
-**Authority**
+**权威性**
 
-- [ ] Who published the research?
-- [ ] What's their reputation?
-- [ ] Do they have industry expertise?
+- [ ] 谁发布了这项研究？
+- [ ] 他们的声誉如何？
+- [ ] 他们有行业专业知识吗？
 
-**Methodology**
+**方法论**
 
-- [ ] How was data collected?
-- [ ] What's the sample size?
-- [ ] When was research conducted?
+- [ ] 数据是如何收集的？
+- [ ] 样本量是多少？
+- [ ] 研究是什么时候进行的？
 
-**Recency**
+**时效性**
 
-- [ ] Is data current (< 2 years old)?
-- [ ] Has market changed significantly?
-- [ ] Are growth rates still applicable?
+- [ ] 数据是否是最新的（2 年以内）？
+- [ ] 市场是否发生了重大变化？
+- [ ] 增长率是否仍然适用？
 
-**Consistency**
+**一致性**
 
-- [ ] Do multiple sources agree?
-- [ ] Are definitions consistent?
-- [ ] Do numbers triangulate?
+- [ ] 多个来源是否一致？
+- [ ] 定义是否一致？
+- [ ] 数据能否三角验证？
 
-**Relevance**
+**相关性**
 
-- [ ] Does it match your market definition?
-- [ ] Is geography appropriate?
-- [ ] Are segments aligned?
+- [ ] 是否符合你的市场定义？
+- [ ] 地理范围是否合适？
+- [ ] 细分是否对齐？
 
-## Free vs. Paid Strategy
+## 免费与付费策略
 
-**Start with free sources:**
+**从免费来源开始：**
 
-1. Government data for customer counts
-2. Public company filings for segment revenue
-3. Trade associations for industry trends
-4. Google Scholar for academic research
+1. 政府数据用于客户计数
+2. 上市公司文件用于细分市场收入
+3. 行业协会用于行业趋势
+4. Google Scholar 用于学术研究
 
-**Upgrade to paid when:**
+**在以下情况升级到付费：**
 
-- Raising institutional funding (investors expect premium sources)
-- Need detailed segment breakdowns
-- Market is niche or emerging
-- Free sources are outdated or insufficient
+- 筹集机构融资（投资者期望高端来源）
+- 需要详细的细分市场拆分
+- 市场属于利基或新兴领域
+- 免费来源过时或不足
 
-**Cost-effective approach:**
+**经济有效的方法：**
 
-- Buy 1-2 key reports that cover your core market
-- Use free sources for triangulation
-- Supplement with primary research (customer interviews)
-- Cite mix of free and paid sources
+- 购买 1-2 份覆盖核心市场的关键报告
+- 使用免费来源进行三角验证
+- 用一手研究补充（客户访谈）
+- 混合引用免费和付费来源
 
-## Citation Best Practices
+## 引用最佳实践
 
-Always cite sources in market sizing:
+在市场分析中始终注明来源：
 
-**Format:**
-
-```
-Market Size: $X.XB
-Source: [Publisher], [Report Name], [Date]
-URL: [link if available]
-```
-
-**Example:**
+**格式：**
 
 ```
-Email Marketing Software TAM: $7.5B (2024)
-Source: Gartner, "Market Share: Email Marketing Software, Worldwide, 2024"
-Note: Includes all email marketing software revenue globally
+市场规模：$X.XB
+来源：[出版商], [报告名称], [日期]
+URL：[如有链接]
 ```
 
-**Include:**
+**示例：**
 
-- Publisher and report name
-- Publication date
-- Geography and scope
-- Any adjustments made
-- Link to source (if public)
+```
+邮件营销软件 TAM：$7.5B (2024)
+来源：Gartner, "Market Share: Email Marketing Software, Worldwide, 2024"
+注：包括全球所有邮件营销软件收入
+```
 
-## Keeping Research Current
+**需包括：**
 
-**Set Google Alerts**
+- 出版商和报告名称
+- 出版日期
+- 地理范围和覆盖范围
+- 所做的任何调整
+- 来源链接（如公开）
 
-- Industry keywords
-- Company names
-- Market terms
+## 保持研究时效
 
-**Follow Research Firms**
+**设置 Google 快讯**
 
-- Twitter accounts
-- LinkedIn updates
-- Free newsletter summaries
+- 行业关键词
+- 公司名称
+- 市场术语
 
-**Track Public Companies**
+**关注研究机构**
 
-- Earnings calendars
-- Investor relations pages
-- Annual reports
+- Twitter 账号
+- LinkedIn 更新
+- 免费新闻通讯摘要
 
-**Join Industry Groups**
+**追踪上市公司**
 
-- LinkedIn groups
-- Slack communities
-- Trade associations
+- 财报日历
+- 投资者关系页面
+- 年度报告
 
-**Review Annually**
+**加入行业群组**
 
-- Update market size with new data
-- Adjust growth assumptions
-- Revisit methodology if market changed
+- LinkedIn 群组
+- Slack 社区
+- 行业协会
 
-## Emergency Research Guide
+**每年审查**
 
-**Need market size in < 2 hours?**
+- 用新数据更新市场规模
+- 调整增长假设
+- 如果市场发生变化，重新审视方法论
 
-1. **Check Statista** (15 min) - Quick industry overview
-2. **Find public companies** (30 min) - Get segment revenue from 10-Ks
-3. **LinkedIn search** (20 min) - Count potential B2B customers
-4. **Google Scholar** (20 min) - Find academic papers
-5. **Calculate bottom-up** (30 min) - Customers × Price
-6. **Triangulate** (15 min) - Compare sources
+## 紧急研究指南
 
-**Document everything:**
+**需要在 2 小时内获得市场规模？**
 
-- Write down all sources
-- Note all assumptions
-- Show your methodology
-- Caveat data quality
+1. **查看 Statista**（15 分钟）- 快速行业概览
+2. **查找上市公司**（30 分钟）- 从 10-K 获取细分市场收入
+3. **LinkedIn 搜索**（20 分钟）- 统计潜在 B2B 客户数量
+4. **Google Scholar**（20 分钟）- 查找学术论文
+5. **自下而上计算**（30 分钟）- 客户数 × 价格
+6. **三角验证**（15 分钟）- 比较来源
 
-Better to have a defensible estimate with clear limitations than no data at all.
+**记录一切：**
+
+- 写下所有来源
+- 注明所有假设
+- 展示你的方法论
+- 对数据质量给出说明
+
+有一个带有明确局限性的可辩护估算，总比完全没有数据要好。

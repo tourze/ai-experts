@@ -1,20 +1,20 @@
 ---
-title: Bottom Sheet
+title: 底部面板
 impact: HIGH
 tags: bottom-sheet, gorhom, re-renders, shared-values, gestures, context, scrollable, modal, keyboard
 ---
 
-# Skill: Bottom Sheet Best Practices
+# 技能：底部面板最佳实践
 
-Optimize `@gorhom/bottom-sheet` for smooth 60 FPS by keeping gesture/scroll-driven state on the UI thread.
+优化 `@gorhom/bottom-sheet` 以实现流畅的 60 FPS，将手势/滚动驱动的状态保持在 UI 线程上。
 
-## Quick Pattern
+## 快速模式
 
-**Incorrect (can re-enter JS repeatedly during interaction — full subtree re-render):**
+**错误做法（交互期间可能反复进入 JS —— 完整子树重新渲染）：**
 
 ```jsx
 const handleAnimate = useCallback((fromIndex, toIndex) => {
-  setIsExpanded(toIndex > 0); // re-renders entire tree
+  setIsExpanded(toIndex > 0); // 重新渲染整棵树
 }, []);
 
 <BottomSheet onAnimate={handleAnimate}>
@@ -22,7 +22,7 @@ const handleAnimate = useCallback((fromIndex, toIndex) => {
 </BottomSheet>
 ```
 
-**Correct (stays on UI thread — zero re-renders):**
+**正确做法（保持在 UI 线程 —— 零重新渲染）：**
 
 ```jsx
 const animatedIndex = useSharedValue(0);
@@ -37,42 +37,42 @@ const overlayStyle = useAnimatedStyle(() => ({
 <Animated.View style={[styles.overlay, overlayStyle]} />
 ```
 
-## When to Use
+## 适用场景
 
-- Implementing or optimizing a bottom sheet with `@gorhom/bottom-sheet`
-- Bottom sheet gestures cause jank or dropped frames
-- Scroll inside bottom sheet triggers excessive re-renders
-- Context provider wrapping bottom sheet re-renders the entire subtree
-- Visual-only state (shadow, opacity, footer visibility) managed with `useState`
-- Need to choose between `BottomSheet` and `BottomSheetModal`
-- Scrollable content inside bottom sheet doesn't coordinate with gestures
-- Keyboard doesn't interact properly with the sheet
+- 实现或优化使用 `@gorhom/bottom-sheet` 的底部面板
+- 底部面板手势导致卡顿或掉帧
+- 底部面板内的滚动触发过多重新渲染
+- 包裹底部面板的 Context provider 重新渲染整个子树
+- 仅视觉状态（阴影、透明度、底部可见性）使用 `useState` 管理
+- 需要在 `BottomSheet` 和 `BottomSheetModal` 之间选择
+- 底部面板内的可滚动内容未与手势协调
+- 键盘未与面板正确交互
 
-## Prerequisites
+## 前置条件
 
-- Check the official [`@gorhom/bottom-sheet` versioning / compatibility table](https://github.com/gorhom/react-native-bottom-sheet#versioning) first.
-- If your app is on `@gorhom/bottom-sheet` below v5, upgrade to v5 before applying the patterns in this skill.
-- `@gorhom/bottom-sheet` v5 is the current maintained line and is built for `react-native-reanimated` v3.
-- `react-native-reanimated` v4 may work in some apps, but the bottom-sheet docs do not officially guarantee it. Decide explicitly whether to stay on v3 or try v4 and validate thoroughly on device.
+- 先查看官方 [`@gorhom/bottom-sheet` 版本/兼容性表](https://github.com/gorhom/react-native-bottom-sheet#versioning)。
+- 如果你的应用使用低于 v5 的 `@gorhom/bottom-sheet`，在应用本技能中的模式之前先升级到 v5。
+- `@gorhom/bottom-sheet` v5 是当前维护的版本线，专为 `react-native-reanimated` v3 构建。
+- `react-native-reanimated` v4 可能在某些应用中可用，但 bottom-sheet 文档未正式保证。明确决定是留在 v3 还是尝试 v4，并在设备上彻底验证。
 - `react-native-gesture-handler` v2+
 
 ```bash
 npm install @gorhom/bottom-sheet@^5 react-native-reanimated@^3 react-native-gesture-handler
 ```
 
-> **Note**: In v5, `enableDynamicSizing` defaults to `true`. If you need fixed snap-point indexing or do not want the library to insert a dynamic snap point based on content height, set `enableDynamicSizing={false}` explicitly.
+> **注意**：在 v5 中，`enableDynamicSizing` 默认为 `true`。如果你需要固定的吸附点索引，或不希望库根据内容高度插入动态吸附点，请显式设置 `enableDynamicSizing={false}`。
 
-## Problem Description
+## 问题描述
 
-Bottom-sheet gesture, animation, and scroll callbacks that update React state can re-render the sheet subtree during interaction. In practice, callbacks like `onAnimate` may run repeatedly as the sheet retargets animations, which can cause visible jank if they drive expensive React updates.
+底部面板的手势、动画和滚动回调如果更新 React 状态，会重新渲染面板子树。在实践中，像 `onAnimate` 这样的回调可能在面板重新定位动画时反复运行，如果驱动昂贵的 React 更新，可能导致可见的卡顿。
 
-## Step-by-Step Instructions
+## 分步说明
 
-### 1. Convert Gesture-Driven State to SharedValue
+### 1. 将手势驱动的状态转换为 SharedValue
 
-Avoid React state for gesture-driven visual state. Update a shared value and consume it via `useAnimatedStyle`.
+避免为手势驱动的视觉状态使用 React 状态。更新一个共享值并通过 `useAnimatedStyle` 消费它。
 
-**Before:**
+**之前：**
 
 ```jsx
 const [shadowOpacity, setShadowOpacity] = useState(0);
@@ -88,7 +88,7 @@ const handleAnimate = useCallback((fromIndex, toIndex) => {
 </BottomSheet>
 ```
 
-**After:**
+**之后：**
 
 ```jsx
 const animatedIndex = useSharedValue(0);
@@ -104,20 +104,20 @@ const shadowStyle = useAnimatedStyle(() => ({
 </BottomSheet>
 ```
 
-### 2. Drive Sheet-Index Visibility via `useAnimatedReaction`
+### 2. 通过 `useAnimatedReaction` 驱动面板索引可见性
 
-Toggling content based on sheet index via `{showFooter && <Footer/>}` causes mount/unmount cycles on every snap. Instead, always mount, animate visibility from `animatedIndex`, and bridge only the minimal boolean needed for `pointerEvents`/accessibility — scoped to a wrapper so the full tree doesn't re-render.
+通过 `{showFooter && <Footer/>}` 基于面板索引切换内容会导致每次吸附时触发挂载/卸载循环。相反，始终挂载，通过 `animatedIndex` 驱动可见性动画，并将最小的布尔值通过 `pointerEvents`/无障碍属性桥接到一个包裹组件，使整棵树不会重新渲染。
 
-**Before:**
+**之前：**
 
 ```jsx
 const [showFooter, setShowFooter] = useState(false);
 
-// re-mounts footer on every toggle
+// 每次切换时重新挂载 footer
 {showFooter && <Footer />}
 ```
 
-**After:**
+**之后：**
 
 ```jsx
 const SheetVisibilityWrapper = ({ animatedIndex, threshold = 1, children }) => {
@@ -147,15 +147,15 @@ const SheetVisibilityWrapper = ({ animatedIndex, threshold = 1, children }) => {
   );
 };
 
-// Usage:
+// 使用：
 <SheetVisibilityWrapper animatedIndex={animatedIndex}>
   <Footer />
 </SheetVisibilityWrapper>
 ```
 
-### 3. Keep Scroll-Driven Logic off the JS Thread
+### 3. 将滚动驱动的逻辑保持在 JS 线程之外
 
-`BottomSheetScrollView` ignores `scrollEventThrottle`, so setting it is not an optimization. Keep JS `onScroll` work minimal, or move scroll-driven logic to `useAnimatedScrollHandler` (see [js-animations-reanimated.md](./js-animations-reanimated.md)) so it stays on the UI thread:
+`BottomSheetScrollView` 忽略 `scrollEventThrottle`，因此设置它不是优化。保持 JS `onScroll` 工作最少，或将滚动驱动的逻辑移至 `useAnimatedScrollHandler`（见 [js-animations-reanimated.md](./js-animations-reanimated.md)），使其保持在 UI 线程上：
 
 ```jsx
 const scrollHandler = useAnimatedScrollHandler((event) => {
@@ -167,9 +167,9 @@ const scrollHandler = useAnimatedScrollHandler((event) => {
 </BottomSheetScrollView>
 ```
 
-### 4. Use Library-Provided Components and Props
+### 4. 使用库提供的组件和属性
 
-**Scrollables** — always use these instead of React Native built-ins inside a bottom sheet:
+**可滚动组件** —— 在底部面板内始终使用这些而非 React Native 内置组件：
 
 ```jsx
 import {
@@ -178,8 +178,8 @@ import {
   BottomSheetSectionList,
 } from '@gorhom/bottom-sheet';
 
-// FlashList v2: BottomSheetFlashList is deprecated.
-// Create the scroll component, then pass it to FlashList.
+// FlashList v2：BottomSheetFlashList 已弃用。
+// 创建滚动组件，然后传递给 FlashList。
 import { useBottomSheetScrollableCreator } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 
@@ -195,18 +195,18 @@ const BottomSheetFlashListScrollComponent = useBottomSheetScrollableCreator();
 </BottomSheet>
 ```
 
-**Key props:**
+**关键属性：**
 
-| Prop | Purpose |
+| 属性 | 用途 |
 |------|---------|
-| `containerHeight` | Provide to skip extra measurement re-render on mount |
-| `enableDynamicSizing={false}` | Use when you want fixed snap-point indexing and do not want a dynamic content-height snap point inserted |
-| `animatedIndex` | SharedValue for continuous index tracking on UI thread |
-| `animatedPosition` | SharedValue for continuous position tracking on UI thread |
-| `onChange` | Fires on snap **completion** only (discrete) — use for analytics/side effects |
-| `onAnimate` | Fires before each animation start/retarget — use sparingly, because it can run repeatedly during interaction |
+| `containerHeight` | 提供以跳过挂载时的额外测量重新渲染 |
+| `enableDynamicSizing={false}` | 当需要固定吸附点索引且不希望插入动态内容高度吸附点时使用 |
+| `animatedIndex` | 用于在 UI 线程上连续追踪索引的 SharedValue |
+| `animatedPosition` | 用于在 UI 线程上连续追踪位置的 SharedValue |
+| `onChange` | 仅在吸附**完成**时触发（离散的）—— 用于分析/副作用 |
+| `onAnimate` | 在每次动画开始/重新定位前触发 —— 谨慎使用，因为可能在交互期间反复运行 |
 
-### 5. BottomSheetModal Setup
+### 5. BottomSheetModal 设置
 
 ```jsx
 import {
@@ -227,7 +227,7 @@ const App = () => (
 );
 ```
 
-**iOS layering fix** — use `FullWindowOverlay` to render above native navigation:
+**iOS 层级修复** —— 使用 `FullWindowOverlay` 渲染在原生导航之上：
 
 ```jsx
 import { FullWindowOverlay } from 'react-native-screens';
@@ -237,34 +237,34 @@ import { FullWindowOverlay } from 'react-native-screens';
 >
 ```
 
-### 6. Keyboard Handling
+### 6. 键盘处理
 
 ```jsx
 <BottomSheet
   snapPoints={snapPoints}
   enableDynamicSizing={false}
   keyboardBehavior="interactive"    // 'extend' | 'fillParent' | 'interactive'
-  keyboardBlurBehavior="restore"    // reset sheet position when keyboard dismisses
-  enableBlurKeyboardOnGesture={true} // dismiss keyboard on drag
+  keyboardBlurBehavior="restore"    // 键盘关闭时重置面板位置
+  enableBlurKeyboardOnGesture={true} // 拖拽时关闭键盘
 >
   <BottomSheetTextInput
-    placeholder="Type here..."
+    placeholder="在此输入..."
     style={styles.input}
   />
 </BottomSheet>
 ```
 
-| `keyboardBehavior` | Effect |
+| `keyboardBehavior` | 效果 |
 |--------------------|--------|
-| `extend` | Sheet grows to accommodate keyboard |
-| `fillParent` | Sheet fills parent when keyboard appears |
-| `interactive` | Sheet follows keyboard position interactively |
+| `extend` | 面板扩展以容纳键盘 |
+| `fillParent` | 键盘出现时面板填满父容器 |
+| `interactive` | 面板跟随键盘位置交互 |
 
-> Prefer `BottomSheetTextInput` inside a bottom sheet. If you need a custom input, copy the focus/blur handlers from the library's `BottomSheetTextInput` implementation so keyboard handling still works correctly.
+> 优先在底部面板内使用 `BottomSheetTextInput`。如果需要自定义输入，复制库 `BottomSheetTextInput` 实现中的焦点/失焦处理器，以确保键盘处理仍能正常运行。
 
-## Derived Animations with `animatedPosition`
+## 使用 `animatedPosition` 的派生动画
 
-Use the `animatedPosition` shared value for smooth derived UI that stays on the UI thread:
+使用 `animatedPosition` 共享值实现流畅的派生 UI，保持在 UI 线程上：
 
 ```jsx
 const animatedPosition = useSharedValue(0);
@@ -284,42 +284,42 @@ const backdropStyle = useAnimatedStyle(() => ({
 <Animated.View style={[StyleSheet.absoluteFill, backdropStyle]} pointerEvents="none" />
 ```
 
-## Native Alternative: react-native-true-sheet
+## 原生替代方案：react-native-true-sheet
 
-If your app already runs on **New Architecture (Fabric)**, consider `@lodev09/react-native-true-sheet` — a fully native bottom sheet that sidesteps JS re-render problems entirely.
+如果你的应用已运行在**新架构（Fabric）**上，考虑 `@lodev09/react-native-true-sheet` —— 完全原生的底部面板，完全规避 JS 重新渲染问题。
 
-| Scenario | Recommendation |
+| 场景 | 推荐 |
 |----------|---------------|
-| Need deep JS customization (custom gestures, animated derived UI) | `@gorhom/bottom-sheet` |
-| Standard sheet with native feel + accessibility | `react-native-true-sheet` |
-| Legacy Architecture (no Fabric) | `@gorhom/bottom-sheet` (true-sheet v3+ requires Fabric) |
-| Web support needed | Either (true-sheet uses `@gorhom/bottom-sheet` on web internally) |
+| 需要深入的 JS 自定义（自定义手势、动画派生 UI） | `@gorhom/bottom-sheet` |
+| 标准面板，原生体验 + 无障碍 | `react-native-true-sheet` |
+| 旧架构（无 Fabric） | `@gorhom/bottom-sheet`（true-sheet v3+ 需要 Fabric） |
+| 需要 Web 支持 | 两者均可（true-sheet 在 Web 内部使用 `@gorhom/bottom-sheet`） |
 
-**Advantages**: zero JS overhead (sheet lives in native land — no SharedValue plumbing needed), built-in keyboard handling, native screen reader support, side sheet on tablets, iOS 26+ Liquid Glass support, React Navigation sheet navigator integration.
+**优势**：零 JS 开销（面板位于原生侧 —— 无需 SharedValue 管道）、内置键盘处理、原生屏幕阅读器支持、平板上的侧面板、iOS 26+ Liquid Glass 支持、React Navigation 面板导航器集成。
 
-**Requirements**: New Architecture (Fabric) for v3+, use v2.x for Legacy Architecture.
+**要求**：v3+ 需要新架构（Fabric），旧架构使用 v2.x。
 
 ```bash
 npm install @lodev09/react-native-true-sheet
 ```
 
-> If requirements are met and you don't need the fine-grained Reanimated-driven customization described in this skill, `react-native-true-sheet` is the simpler and more performant choice.
+> 如果满足要求且不需要本技能中描述的精细 Reanimated 驱动自定义，`react-native-true-sheet` 是更简单和高性能的选择。
 
-## Common Pitfalls
+## 常见陷阱
 
-- **Using `onChange` for continuous position tracking** — it fires on snap completion only (discrete). Use `animatedPosition` or `animatedIndex` shared values instead.
-- **Forgetting `pointerEvents='none'` on always-mounted hidden elements** — invisible elements still capture touches.
-- **Missing accessibility attributes on hidden elements** — add `accessibilityElementsHidden` and `importantForAccessibility='no-hide-descendants'`.
-- **Bundling independent state values in one context** — see [js-atomic-state.md](./js-atomic-state.md) for splitting patterns.
-- **Assuming `enableDynamicSizing` must be disabled whenever you pass `snapPoints`** — it does not have to be, but leaving it enabled can insert an additional snap point and change indexing.
-- **Using React Native `ScrollView`/`FlatList` inside bottom sheet** — gestures won't coordinate. Use `BottomSheetScrollView`, `BottomSheetFlatList`, etc.
-- **Using React Native touchables on Android** — import `TouchableOpacity`, `TouchableHighlight`, or `TouchableWithoutFeedback` from `@gorhom/bottom-sheet`.
-- **Not providing `containerHeight`** — causes an extra re-render on mount for measurement.
-- **Using a custom `TextInput` without porting the library's focus/blur handlers** — keyboard handling will be incomplete. Prefer `BottomSheetTextInput` unless you need a custom input.
+- **使用 `onChange` 进行连续位置追踪** —— 它仅在吸附完成时触发（离散的）。改用 `animatedPosition` 或 `animatedIndex` 共享值。
+- **始终挂载的隐藏元素忘记 `pointerEvents='none'`** —— 不可见元素仍然捕获触摸。
+- **隐藏元素缺少无障碍属性** —— 添加 `accessibilityElementsHidden` 和 `importantForAccessibility='no-hide-descendants'`。
+- **将独立状态值捆绑在一个 context 中** —— 参见 [js-atomic-state.md](./js-atomic-state.md) 了解拆分模式。
+- **认为传递 `snapPoints` 时必须禁用 `enableDynamicSizing`** —— 并非必须，但保持启用可能插入额外的吸附点并改变索引。
+- **在底部面板内使用 React Native `ScrollView`/`FlatList`** —— 手势无法协调。使用 `BottomSheetScrollView`、`BottomSheetFlatList` 等。
+- **在 Android 上使用 React Native 触摸组件** —— 从 `@gorhom/bottom-sheet` 导入 `TouchableOpacity`、`TouchableHighlight` 或 `TouchableWithoutFeedback`。
+- **未提供 `containerHeight`** —— 导致挂载时进行额外测量重新渲染。
+- **使用自定义 `TextInput` 但未移植库的焦点/失焦处理器** —— 键盘处理将不完整。除非需要自定义输入，否则优先使用 `BottomSheetTextInput`。
 
-## Related Skills
+## 相关技能
 
-- [js-animations-reanimated.md](./js-animations-reanimated.md) — SharedValue and useAnimatedStyle fundamentals
-- [js-atomic-state.md](./js-atomic-state.md) — Context splitting and atomic state patterns
-- [js-profile-react.md](./js-profile-react.md) — Profiling to measure re-render reduction
-- [js-measure-fps.md](./js-measure-fps.md) — Verify FPS improvement after optimization
+- [js-animations-reanimated.md](./js-animations-reanimated.md) —— SharedValue 和 useAnimatedStyle 基础
+- [js-atomic-state.md](./js-atomic-state.md) —— Context 拆分和原子化状态模式
+- [js-profile-react.md](./js-profile-react.md) —— 性能分析以测量重新渲染减少
+- [js-measure-fps.md](./js-measure-fps.md) —— 验证优化后的 FPS 改进

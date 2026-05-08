@@ -1,122 +1,122 @@
-# Unknown Categories
+# 未知因素分类
 
-Types of unknowns that affect estimates, with identification techniques and mitigation strategies.
-
----
-
-## Technical Unknowns
-
-Things we don't know how to do or whether they'll work.
-
-| Unknown                | Impact                                       | Mitigation                                 |
-| ---------------------- | -------------------------------------------- | ------------------------------------------ |
-| New technology         | Learning curve, unexpected limitations       | Spike: prototype for 1-2 days first        |
-| Performance at scale   | Code works but may be slow                   | Define threshold, build benchmark early    |
-| Integration complexity | Third-party API may not behave as documented | Test integration earliest possible         |
-| Data quality           | Input data may be messier than expected      | Sample and analyze data before estimating  |
-| Algorithm suitability  | Chosen approach may not work                 | Prototype with real data before committing |
-
-### Detection Questions
-
-- "Have we used this technology before?"
-- "Does this depend on undocumented behavior?"
-- "Are we making assumptions about data quality?"
-- "Will this work at production scale?"
+影响估算的未知因素类型，以及识别技术和缓解策略。
 
 ---
 
-## Scope Unknowns
+## 技术未知因素
 
-Things that may change what we're building.
+我们不知道如何做或能否成功的事情。
 
-| Unknown                       | Impact                                        | Mitigation                                      |
-| ----------------------------- | --------------------------------------------- | ----------------------------------------------- |
-| Requirements may change       | Rework, wasted effort                         | Implement core first, defer details             |
-| Edge cases not yet identified | Additional work discovered mid-implementation | Edge case brainstorm session upfront            |
-| Design not finalized          | UI/UX changes after implementation starts     | Get design approval before starting             |
-| Acceptance criteria unclear   | "Done" is ambiguous                           | Define testable criteria before starting        |
-| Feature creep                 | Scope grows during implementation             | Freeze scope, defer additions to next iteration |
+| 未知因素                    | 影响                                         | 缓解措施                                 |
+| --------------------------- | -------------------------------------------- | ---------------------------------------- |
+| 新技术                      | 学习曲线、预期外的限制                       | Spike：先做原型 1-2 天                   |
+| 大规模性能                  | 代码可用但可能慢                             | 定义阈值、尽早构建基准                   |
+| 集成复杂度                  | 第三方 API 可能不如文档所述                    | 尽早测试集成                             |
+| 数据质量                    | 输入数据可能比预期更乱                       | 在估算前抽样和分析数据                   |
+| 算法适用性                  | 所选方法可能行不通                           | 在确定之前用真实数据做原型               |
 
-### Detection Questions
+### 检测问题
 
-- "Is the specification complete?"
-- "Have all stakeholders agreed on the scope?"
-- "What would the user say if we showed them this spec?"
-- "What's explicitly out of scope?"
-
----
-
-## External Unknowns
-
-Things outside our control.
-
-| Unknown                     | Impact                                      | Mitigation                               |
-| --------------------------- | ------------------------------------------- | ---------------------------------------- |
-| External API availability   | Blocked if API is down or access delayed    | Request access early, mock while waiting |
-| Dependency release          | Waiting for a library fix/feature           | Use workaround, contribute fix upstream  |
-| Third-party approval        | Waiting for partner/vendor action           | Start early, have alternative plan       |
-| Infrastructure provisioning | Waiting for servers, databases, permissions | Request infrastructure in Phase 1        |
-| Legal/compliance review     | Waiting for approval                        | Submit for review as early as possible   |
-
-### Detection Questions
-
-- "Does this depend on anyone outside the team?"
-- "Are we waiting for any external input?"
-- "What happens if the external dependency is delayed by 2 weeks?"
+- "我们以前用过这个技术吗？"
+- "这是否依赖于未记录的行为？"
+- "我们是否在对数据质量做假设？"
+- "这在生产规模下能工作吗？"
 
 ---
 
-## Integration Unknowns
+## 范围未知因素
 
-Things that emerge when components connect.
+可能改变我们正在构建的内容的事情。
 
-| Unknown                 | Impact                                 | Mitigation                              |
-| ----------------------- | -------------------------------------- | --------------------------------------- |
-| Interface mismatch      | Components don't connect as expected   | Define interfaces in Foundation phase   |
-| Data format differences | Serialization/deserialization issues   | Test integration points early           |
-| Performance interaction | Components fast alone, slow together   | Integration test with realistic data    |
-| Error propagation       | Error in A causes cascade through B, C | Design error handling across boundaries |
-| State management        | Shared state between components        | Define state ownership early            |
+| 未知因素                        | 影响                                        | 缓解措施                                      |
+| -----------------------------   | ------------------------------------------- | --------------------------------------------- |
+| 需求可能变化                    | 返工、浪费精力                              | 先实现核心，推迟细节                          |
+| 边界情况尚未识别                | 实现过程中发现额外工作                      | 事先进行边界情况讨论                          |
+| 设计未定稿                      | 实现开始后 UI/UX 发生变化                   | 在开始前获得设计批准                          |
+| 验收标准不明确                  | "完成"的定义模糊                            | 在开始前定义可测试的标准                      |
+| 功能蔓延                        | 范围在实现过程中扩大                        | 冻结范围，将新增功能推迟到下一个迭代          |
 
-### Detection Questions
+### 检测问题
 
-- "Where do components communicate?"
-- "Have we tested the interfaces between components?"
-- "What happens when one component fails?"
-
----
-
-## Organizational Unknowns
-
-Things about people and process.
-
-| Unknown           | Impact                                                   | Mitigation                                    |
-| ----------------- | -------------------------------------------------------- | --------------------------------------------- |
-| Team availability | Key person on vacation, sick, pulled to another project  | Identify backup, document everything          |
-| Review bottleneck | Code review takes days, not hours                        | Set review SLA, pair program instead          |
-| Decision delay    | Architecture decision needed, no one available to decide | Identify decisions upfront, escalate early    |
-| Knowledge gap     | Only one person understands the system                   | Pair sessions, documentation                  |
-| Priority shift    | Project deprioritized mid-sprint                         | Accept risk, plan for minimum viable delivery |
+- "规格说明完整吗？"
+- "所有利益相关者都同意了范围吗？"
+- "如果用户看到这个规格说明会怎么说？"
+- "哪些内容明确不在范围内？"
 
 ---
 
-## Unknown Impact Matrix
+## 外部未知因素
 
-| Category       | Typical Impact on Worst Case | Frequency           |
-| -------------- | ---------------------------- | ------------------- |
-| Technical      | 2-5x the likely estimate     | Common              |
-| Scope          | 1.5-3x                       | Common              |
-| External       | 0 or complete block          | Uncommon but severe |
-| Integration    | 1.5-2x                       | Common              |
-| Organizational | 1.2-2x                       | Moderate            |
+我们无法控制的事情。
+
+| 未知因素                     | 影响                                      | 缓解措施                               |
+| ---------------------------- | ----------------------------------------- | -------------------------------------- |
+| 外部 API 可用性              | 如果 API 宕机或访问延迟则受阻               | 尽早请求访问，等待时使用 mock          |
+| 依赖发布                     | 等待库修复/功能                            | 使用变通方案，向上游贡献修复           |
+| 第三方批准                   | 等待合作伙伴/供应商行动                     | 尽早启动，准备替代方案                 |
+| 基础设施部署                 | 等待服务器、数据库、权限                   | 在第一阶段请求基础设施                 |
+| 法律/合规审查                | 等待批准                                   | 尽早提交审查                           |
+
+### 检测问题
+
+- "这是否依赖于团队外部的任何人？"
+- "我们在等任何外部输入吗？"
+- "如果外部依赖延迟 2 周会怎样？"
 
 ---
 
-## When Unknowns Dominate
+## 集成未知因素
 
-If unknowns dominate the estimate (worst case > 3x best case):
+组件连接时出现的问题。
 
-1. **Spike first** — Invest 1-2 days investigating the biggest unknown
-2. **Re-estimate after spike** — New information narrows the range
-3. **Timebox** — If you can't reduce uncertainty, timebox: "We'll work on this for 5 days and see where we are"
-4. **Accept uncertainty** — Communicate the wide range honestly rather than pretending certainty
+| 未知因素                 | 影响                                   | 缓解措施                              |
+| ------------------------ | -------------------------------------- | ------------------------------------- |
+| 接口不匹配               | 组件连接不如预期                       | 在基础阶段定义接口                    |
+| 数据格式差异             | 序列化/反序列化问题                    | 尽早测试集成点                        |
+| 性能交互                 | 各组件单独快，合在一起慢               | 使用真实数据进行集成测试              |
+| 错误传播                 | A 中的错误导致 B、C 中的级联问题        | 设计跨边界的错误处理                  |
+| 状态管理                 | 组件间的共享状态                       | 尽早定义状态所有权                    |
+
+### 检测问题
+
+- "组件在哪里通信？"
+- "我们测试过组件之间的接口吗？"
+- "当一个组件失败时会发生什么？"
+
+---
+
+## 组织未知因素
+
+关于人员和流程的事情。
+
+| 未知因素           | 影响                                                     | 缓解措施                                    |
+| ------------------ | -------------------------------------------------------- | ------------------------------------------- |
+| 团队可用性         | 关键人员休假、生病、被抽调到其他项目                      | 确定备份、记录一切                          |
+| 审查瓶颈           | 代码审查耗时数天而非数小时                                | 设定审查 SLA，改用结对编程                  |
+| 决策延迟           | 需要架构决策，无人可及时做出决定                          | 提前识别决策，尽早升级                      |
+| 知识差距           | 只有一个人了解系统                                       | 结对会话、文档化                            |
+| 优先级变化         | 项目在迭代中期被降级                                     | 接受风险，规划最小可交付版本                |
+
+---
+
+## 未知因素影响矩阵
+
+| 类别           | 对最差情况的典型影响         | 频率             |
+| -------------- | ---------------------------- | ---------------- |
+| 技术           | 可能估算的 2-5 倍            | 常见             |
+| 范围           | 1.5-3 倍                     | 常见             |
+| 外部           | 0 或完全阻塞                 | 不常见但严重     |
+| 集成           | 1.5-2 倍                     | 常见             |
+| 组织           | 1.2-2 倍                     | 中等             |
+
+---
+
+## 当未知因素占主导时
+
+如果未知因素主导了估算（最差情况 > 最佳情况的 3 倍）：
+
+1. **先做 Spike**——花 1-2 天调查最大的未知因素
+2. **Spike 后重新估算**——新信息会缩窄范围
+3. **设置时间盒**——如果无法减少不确定性，设定时间盒："我们会为此工作 5 天，然后评估进展"
+4. **接受不确定性**——诚实传达较宽的范围，而不是假装确定

@@ -1,62 +1,62 @@
-# macOS Design Guidelines Reference
+# macOS 设计指南参考
 
-## Purpose
+## 目的
 
-This reference provides Apple Human Interface Guidelines for macOS. Apply these rules when building, reviewing, or designing Mac apps using SwiftUI or AppKit.
+本参考提供 Apple Human Interface Guidelines for macOS。在构建、审查或设计使用 SwiftUI 或 AppKit 的 Mac 应用时应用这些规则。
 
-## When to Apply
+## 适用时机
 
-- Building any macOS application
-- Reviewing Mac UI code or designs
-- Implementing menu bars, toolbars, sidebars, or window management
-- Adding keyboard shortcuts or pointer interactions
-- Porting iOS apps to Mac via Catalyst or Designed for iPad
-- Evaluating desktop app usability
+- 构建任何 macOS 应用
+- 审查 Mac UI 代码或设计
+- 实现菜单栏、工具栏、侧边栏或窗口管理
+- 添加键盘快捷键或指针交互
+- 通过 Catalyst 或 Designed for iPad 将 iOS 应用移植到 Mac
+- 评估桌面应用可用性
 
-## How to Use
+## 使用方法
 
-1. Read `../SKILL.md` for the generated workflow and checklist
-2. Read `rules/_sections.md` for the categorized quick-reference
-3. Use the evaluation checklist in SKILL.md before shipping
+1. 阅读 `../SKILL.md` 获取生成的工作流和检查清单
+2. 阅读 `rules/_sections.md` 获取分类快速参考
+3. 在发布前使用 SKILL.md 中的评估检查清单
 
-## Priority
+## 优先级
 
-Rules marked CRITICAL must never be skipped. Rules marked HIGH should be followed unless there is a documented reason. Rules marked MEDIUM are strong recommendations.
+标记为 CRITICAL 的规则绝不能跳过。标记为 HIGH 的规则应遵循，除非有书面记录的原因。标记为 MEDIUM 的规则是强烈推荐。
 
-## Rule Categories
+## 规则分类
 
-| # | Category | Impact |
-|---|----------|--------|
-| 1 | Menu Bar | CRITICAL |
-| 2 | Windows | CRITICAL |
-| 3 | Toolbars | HIGH |
-| 4 | Sidebars | HIGH |
-| 5 | Keyboard | CRITICAL |
-| 6 | Pointer and Mouse | HIGH |
-| 7 | Notifications and Alerts | MEDIUM |
-| 8 | System Integration | MEDIUM |
-| 9 | Visual Design | HIGH |
-| 10 | Popovers | MEDIUM |
-| 11 | Accessibility | CRITICAL |
+| # | 分类 | 影响 |
+|---|------|------|
+| 1 | 菜单栏 | CRITICAL |
+| 2 | 窗口 | CRITICAL |
+| 3 | 工具栏 | HIGH |
+| 4 | 侧边栏 | HIGH |
+| 5 | 键盘 | CRITICAL |
+| 6 | 指针与鼠标 | HIGH |
+| 7 | 通知与警告 | MEDIUM |
+| 8 | 系统集成 | MEDIUM |
+| 9 | 视觉设计 | HIGH |
+| 10 | 弹出框 | MEDIUM |
+| 11 | 无障碍 | CRITICAL |
 
-## Key Principles
+## 关键原则
 
-- Mac users expect menu bars, keyboard shortcuts, and multi-window support
-- Every destructive action needs Cmd+Z undo
-- Toolbars and sidebars should be user-customizable
-- Respect system appearance (Dark Mode, accent color, font size)
-- Support drag and drop everywhere it makes sense
-- Desktop apps are power-user tools — don't hide functionality behind discoverability walls
+- Mac 用户期望菜单栏、键盘快捷键和多窗口支持
+- 每个破坏性操作都需要 Cmd+Z 撤销
+- 工具栏和侧边栏应可由用户自定义
+- 尊重系统外观（深色模式、强调色、字体大小）
+- 在所有合理的地方支持拖放
+- 桌面应用是高级用户工具——不要将功能隐藏在可发现性屏障之后
 
-## Never Do
+## 绝对不应做
 
-- Never ship without a menu bar
-- Never use hamburger menus — use the menu bar or a sidebar
-- Never place a tab bar at the bottom of the screen
-- Never hardcode colors — use semantic system colors for Dark Mode compatibility
-- Never build non-resizable main windows
-- Never omit keyboard shortcuts for common actions
-- Never block full keyboard navigation — no keyboard traps
-- Never override traffic light buttons or window chrome
-- Never use floating action buttons — use toolbar and menu bar actions
-- Never ignore VoiceOver — every control needs an accessibility label
+- 绝不能在没有菜单栏的情况下发布
+- 绝不要使用汉堡菜单——使用菜单栏或侧边栏
+- 绝不要将标签栏放在屏幕底部
+- 绝不要硬编码颜色——使用语义系统颜色以获得深色模式兼容性
+- 绝不要构建不可调整大小的主窗口
+- 绝不要省略常见操作的键盘快捷键
+- 绝不要阻止完整的键盘导航——没有键盘陷阱
+- 绝不要覆盖交通灯按钮或窗口装饰
+- 绝不要使用浮动操作按钮——使用工具栏和菜单栏操作
+- 绝不要忽略 VoiceOver——每个控件都需要无障碍标签

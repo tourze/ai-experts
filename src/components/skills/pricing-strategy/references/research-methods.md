@@ -1,152 +1,152 @@
-# Pricing Research Methods
+# 定价研究方法
 
-## Contents
-- Van Westendorp Price Sensitivity Meter (The Four Questions, How to Analyze, Survey Tips, Sample Output)
-- MaxDiff Analysis (How It Works, Example Survey Question, Analyzing Results, Using MaxDiff for Packaging)
-- Willingness to Pay Surveys
-- Usage-Value Correlation Analysis
+## 目录
+- Van Westendorp 价格敏感度测量（四个问题、如何分析、调查技巧、示例输出）
+- MaxDiff 分析（工作原理、示例调查问题、结果分析、使用 MaxDiff 进行套餐设计）
+- 支付意愿调查
+- 使用-价值相关性分析
 
-## Van Westendorp Price Sensitivity Meter
+## Van Westendorp 价格敏感度测量
 
-The Van Westendorp survey identifies the acceptable price range for your product.
+Van Westendorp 调查识别产品的可接受价格范围。
 
-### The Four Questions
+### 四个问题
 
-Ask each respondent:
-1. "At what price would you consider [product] to be so expensive that you would not consider buying it?" (Too expensive)
-2. "At what price would you consider [product] to be priced so low that you would question its quality?" (Too cheap)
-3. "At what price would you consider [product] to be starting to get expensive, but you still might consider it?" (Expensive/high side)
-4. "At what price would you consider [product] to be a bargain—a great buy for the money?" (Cheap/good value)
+向每位受访者提问：
+1. "在什么价格下，您会认为 [产品] 太贵以至于不会考虑购买？"（太贵）
+2. "在什么价格下，您会认为 [产品] 定价过低以至于怀疑其质量？"（太便宜）
+3. "在什么价格下，您会认为 [产品] 开始变贵，但您可能仍然会考虑？"（贵/高价端）
+4. "在什么价格下，您会认为 [产品] 很划算——物超所值？"（便宜/物有所值）
 
-### How to Analyze
+### 如何分析
 
-1. Plot cumulative distributions for each question
-2. Find the intersections:
-   - **Point of Marginal Cheapness (PMC):** "Too cheap" crosses "Expensive"
-   - **Point of Marginal Expensiveness (PME):** "Too expensive" crosses "Cheap"
-   - **Optimal Price Point (OPP):** "Too cheap" crosses "Too expensive"
-   - **Indifference Price Point (IDP):** "Expensive" crosses "Cheap"
+1. 为每个问题绘制累积分布曲线
+2. 找到交叉点：
+   - **边际便宜点（PMC）：**"太便宜"与"贵"相交
+   - **边际昂贵点（PME）：**"太贵"与"便宜"相交
+   - **最优价格点（OPP）：**"太便宜"与"太贵"相交
+   - **无差异价格点（IDP）：**"贵"与"便宜"相交
 
-**The acceptable price range:** PMC to PME
-**Optimal pricing zone:** Between OPP and IDP
+**可接受价格范围：** PMC 到 PME
+**最优定价区域：** OPP 到 IDP 之间
 
-### Survey Tips
-- Need 100-300 respondents for reliable data
-- Segment by persona (different willingness to pay)
-- Use realistic product descriptions
-- Consider adding purchase intent questions
+### 调查技巧
+- 需要 100-300 名受访者以获得可靠数据
+- 按角色细分（不同的支付意愿）
+- 使用实际的产品描述
+- 考虑添加购买意向问题
 
-### Sample Output
+### 示例输出
 
 ```
-Price Sensitivity Analysis Results:
+价格敏感度分析结果：
 ─────────────────────────────────
-Point of Marginal Cheapness:  $29/mo
-Optimal Price Point:          $49/mo
-Indifference Price Point:     $59/mo
-Point of Marginal Expensiveness: $79/mo
+边际便宜点：         $29/月
+最优价格点：           $49/月
+无差异价格点：         $59/月
+边际昂贵点：         $79/月
 
-Recommended range: $49-59/mo
-Current price: $39/mo (below optimal)
-Opportunity: 25-50% price increase without significant demand impact
+建议范围：$49-59/月
+当前价格：$39/月（低于最优）
+机会：价格上涨 25-50% 而不会显著影响需求
 ```
 
 ---
 
-## MaxDiff Analysis (Best-Worst Scaling)
+## MaxDiff 分析（最佳-最差缩放）
 
-MaxDiff identifies which features customers value most, informing packaging decisions.
+MaxDiff 识别客户最看重的功能，为套餐设计提供依据。
 
-### How It Works
+### 工作原理
 
-1. List 8-15 features you could include
-2. Show respondents sets of 4-5 features at a time
-3. Ask: "Which is MOST important? Which is LEAST important?"
-4. Repeat across multiple sets until all features compared
-5. Statistical analysis produces importance scores
+1. 列出你可以包含的 8-15 个功能
+2. 每次向受访者展示 4-5 个功能的组合
+3. 提问："哪个最重要？哪个最不重要？"
+4. 多次重复，直到所有功能都被比较
+5. 统计分析生成重要性分数
 
-### Example Survey Question
+### 示例调查问题
 
 ```
-Which feature is MOST important to you?
-Which feature is LEAST important to you?
+哪个功能对您最重要？
+哪个功能对您最不重要？
 
-□ Unlimited projects
-□ Custom branding
-□ Priority support
-□ API access
-□ Advanced analytics
+□ 无限项目
+□ 自定义品牌
+□ 优先支持
+□ API 访问
+□ 高级分析
 ```
 
-### Analyzing Results
+### 结果分析
 
-Features are ranked by utility score:
-- High utility = Must-have (include in base tier)
-- Medium utility = Differentiator (use for tier separation)
-- Low utility = Nice-to-have (premium tier or cut)
+功能按效用分数排序：
+- 高效用 = 必备功能（包含在基础套餐中）
+- 中效用 = 差异化功能（用于套餐分层）
+- 低效用 = 锦上添花（高级套餐或删除）
 
-### Using MaxDiff for Packaging
+### 使用 MaxDiff 进行套餐设计
 
-| Utility Score | Packaging Decision |
+| 效用分数 | 套餐决策 |
 |---------------|-------------------|
-| Top 20% | Include in all tiers (table stakes) |
-| 20-50% | Use to differentiate tiers |
-| 50-80% | Higher tiers only |
-| Bottom 20% | Consider cutting or premium add-on |
+| 前 20% | 包含在所有套餐中（准入门槛） |
+| 20-50% | 用于区分套餐层级 |
+| 50-80% | 仅限高级套餐 |
+| 后 20% | 考虑删除或作为高级附加功能 |
 
 ---
 
-## Willingness to Pay Surveys
+## 支付意愿调查
 
-**Direct method (simple but biased):**
-"How much would you pay for [product]?"
+**直接方法（简单但有偏差）：**
+"您愿意为 [产品] 支付多少钱？"
 
-**Better: Gabor-Granger method:**
-"Would you buy [product] at [$X]?" (Yes/No)
-Vary price across respondents to build demand curve.
+**更好的方法：Gabor-Granger 方法：**
+"您会在 [$X] 的价格购买 [产品] 吗？"（是/否）
+在不同受访者之间变动价格以构建需求曲线。
 
-**Even better: Conjoint analysis:**
-Show product bundles at different prices
-Respondents choose preferred option
-Statistical analysis reveals price sensitivity per feature
+**更好的方法：联合分析：**
+以不同价格展示产品组合
+受访者选择偏好的选项
+统计分析揭示每项功能的价格敏感度
 
 ---
 
-## Usage-Value Correlation Analysis
+## 使用-价值相关性分析
 
-### 1. Instrument usage data
-Track how customers use your product:
-- Feature usage frequency
-- Volume metrics (users, records, API calls)
-- Outcome metrics (revenue generated, time saved)
+### 1. 使用数据检测
+跟踪客户如何使用您的产品：
+- 功能使用频率
+- 量指标（用户数、记录数、API 调用数）
+- 结果指标（产生的收入、节省的时间）
 
-### 2. Correlate with customer success
-- Which usage patterns predict retention?
-- Which usage patterns predict expansion?
-- Which customers pay the most, and why?
+### 2. 与客户成功相关性分析
+- 哪些使用模式预测留存？
+- 哪些使用模式预测扩展？
+- 哪些客户支付最多，为什么？
 
-### 3. Identify value thresholds
-- At what usage level do customers "get it"?
-- At what usage level do they expand?
-- At what usage level should price increase?
+### 3. 识别价值阈值
+- 在什么使用水平下客户"领悟"？
+- 在什么使用水平下他们扩展？
+- 在什么使用水平下价格应该提高？
 
-### Example Analysis
+### 示例分析
 
 ```
-Usage-Value Correlation Analysis:
+使用-价值相关性分析：
 ─────────────────────────────────
-Segment: High-LTV customers (>$10k ARR)
-Average monthly active users: 15
-Average projects: 8
-Average integrations: 4
+细分：高 LTV 客户（>$10k ARR）
+平均月活跃用户数：15
+平均项目数：8
+平均集成数：4
 
-Segment: Churned customers
-Average monthly active users: 3
-Average projects: 2
-Average integrations: 0
+细分：流失客户
+平均月活跃用户数：3
+平均项目数：2
+平均集成数：0
 
-Insight: Value correlates with team adoption (users)
-        and depth of use (integrations)
+洞察：价值与团队采用（用户数）
+        和使用深度（集成数）相关
 
-Recommendation: Price per user, gate integrations to higher tiers
+建议：按用户定价，将集成限制在更高层级
 ```

@@ -1,8 +1,8 @@
-# Testing Patterns
+# 测试模式
 
 ---
 
-## Setup
+## 设置
 
 ```javascript
 // vitest.config.js
@@ -33,7 +33,7 @@ config.global.stubs = {
 
 ---
 
-## Component Testing Basics
+## 组件测试基础
 
 ```javascript
 // Button.test.js
@@ -67,7 +67,7 @@ describe('Button', () => {
 
 ---
 
-## Testing v-model
+## 测试 v-model
 
 ```javascript
 // TextInput.test.js
@@ -86,7 +86,7 @@ describe('TextInput', () => {
 
 ---
 
-## Testing Async
+## 测试异步
 
 ```javascript
 // UserList.test.js
@@ -161,7 +161,7 @@ describe('Header', () => {
 
 ---
 
-## Testing with Pinia
+## 使用 Pinia 测试
 
 ```javascript
 // CartSummary.test.js
@@ -199,7 +199,7 @@ describe('CartSummary', () => {
 
 ---
 
-## Testing Provide/Inject
+## 测试 Provide/Inject
 
 ```javascript
 // ChildComponent.test.js
@@ -220,18 +220,18 @@ describe('ChildComponent', () => {
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Task | Code |
+| 任务 | 代码 |
 |------|------|
-| Mount | `mount(Component, { props, slots, global })` |
-| Find | `wrapper.find('[data-test="x"]')` |
-| Trigger | `await wrapper.trigger('click')` |
-| Check emitted | `wrapper.emitted('event')` |
-| Set input | `await wrapper.find('input').setValue('x')` |
-| Wait async | `await flushPromises()` |
+| 挂载 | `mount(Component, { props, slots, global })` |
+| 查找 | `wrapper.find('[data-test="x"]')` |
+| 触发 | `await wrapper.trigger('click')` |
+| 检查事件 | `wrapper.emitted('event')` |
+| 设置输入 | `await wrapper.find('input').setValue('x')` |
+| 等待异步 | `await flushPromises()` |
 | Mock composable | `vi.spyOn(module, 'fn').mockReturnValue()` |
 | Mock fetch | `global.fetch = vi.fn().mockResolvedValue()` |
-| Test Pinia | `createTestingPinia({ initialState })` |
+| 测试 Pinia | `createTestingPinia({ initialState })` |
 | Provide | `global: { provide: { key: value } }` |
-| Stub component | `global: { stubs: { Comp: true } }` |
+| Stub 组件 | `global: { stubs: { Comp: true } }` |

@@ -1,16 +1,16 @@
 ---
-title: Higher-Order Lists
+title: 高阶列表
 impact: CRITICAL
 tags: lists, flatlist, flashlist, scrollview, virtualization
 ---
 
-# Skill: Higher-Order Lists
+# 技能：高阶列表
 
-Replace ScrollView with FlatList or FlashList for performant large list rendering.
+用 FlatList 或 FlashList 替换 ScrollView，实现高性能的大列表渲染。
 
-## Quick Pattern
+## 快速模式
 
-**Incorrect:**
+**错误做法：**
 
 ```jsx
 <ScrollView>
@@ -18,7 +18,7 @@ Replace ScrollView with FlatList or FlashList for performant large list renderin
 </ScrollView>
 ```
 
-**Correct:**
+**正确做法：**
 
 ```jsx
 <FlashList
@@ -29,31 +29,31 @@ Replace ScrollView with FlatList or FlashList for performant large list renderin
 />
 ```
 
-## When to Use
+## 适用场景
 
-- Rendering more than 10-20 items in a list
-- List scrolling is choppy or laggy
-- App freezes when loading list data
-- Memory usage spikes with long lists
+- 渲染超过 10-20 个列表项
+- 列表滚动卡顿或延迟
+- 加载列表数据时应用卡死
+- 长列表导致内存使用激增
 
-## Prerequisites
+## 前置条件
 
-- `@shopify/flash-list` for FlashList (recommended)
-- Understanding of list virtualization
+- 安装了 `@shopify/flash-list`（推荐）
+- 了解列表虚拟化
 
-## Step-by-Step Instructions
+## 分步说明
 
-### 1. Identify the Problem
+### 1. 识别问题
 
-![FPS Drop Graph](images/fps-drop-graph.png)
+![FPS 下降图](images/fps-drop-graph.png)
 
-The FPS graph shows a severe performance problem during list rendering:
-- FPS starts at ~60 (smooth)
-- Drops to ~3 FPS during heavy list operation
-- Recovers after rendering completes
+FPS 图显示了列表渲染期间的严重性能问题：
+- FPS 从 ~60 开始（流畅）
+- 在繁重列表操作期间降至 ~3 FPS
+- 渲染完成后恢复
 
 ```jsx
-// BAD: ScrollView renders ALL items at once
+// 错误：ScrollView 一次性渲染所有项目
 const BadList = ({ items }) => (
   <ScrollView>
     {items.map((item, index) => (
@@ -65,12 +65,12 @@ const BadList = ({ items }) => (
 );
 ```
 
-With 5000 items, this creates 5000 views immediately, causing:
-- Multi-second freeze
-- FPS drop to 0
-- High memory usage
+有 5000 个项目时，这立即创建了 5000 个视图，导致：
+- 多秒卡死
+- FPS 降至 0
+- 高内存使用
 
-### 2. Replace with FlatList
+### 2. 替换为 FlatList
 
 ```jsx
 import { FlatList } from 'react-native';
@@ -92,11 +92,11 @@ const BetterList = ({ items }) => {
 };
 ```
 
-FlatList only renders visible items + buffer (windowing).
+FlatList 仅渲染可见项 + 缓冲区（窗口化）。
 
-### 3. Optimize FlatList with getItemLayout
+### 3. 使用 getItemLayout 优化 FlatList
 
-For fixed-height items, skip layout measurement:
+对于固定高度项，跳过布局测量：
 
 ```jsx
 const ITEM_HEIGHT = 50;
@@ -125,7 +125,7 @@ const OptimizedList = ({ items }) => {
 };
 ```
 
-### 4. Upgrade to FlashList (Best Performance)
+### 4. 升级到 FlashList（最佳性能）
 
 ```bash
 npm install @shopify/flash-list
@@ -145,25 +145,25 @@ const BestList = ({ items }) => {
     <FlashList
       data={items}
       renderItem={renderItem}
-      estimatedItemSize={50}  // Required for FlashList
+      estimatedItemSize={50}  // FlashList 需要
     />
   );
 };
 ```
 
-**FlashList advantages:**
-- Recycles views instead of creating new ones
-- 78/100 vs 25/100 performance score in benchmarks
-- Smoother scrolling at ~54 FPS vs lower for FlatList
+**FlashList 优势：**
+- 回收视图而非创建新视图
+- 基准测试中性能评分 78/100 vs 25/100
+- 更流畅的滚动 ~54 FPS vs FlatList 较低
 
-## Code Examples
+## 代码示例
 
-### Variable Height Items
+### 可变高度项
 
 ```jsx
-// Calculate average for estimatedItemSize
-// Items are 50px, 100px, 150px
-// Average: (50 + 100 + 150) / 3 = 100px
+// 为 estimatedItemSize 计算平均值
+// 项高度 50px、100px、150px
+// 平均值：(50 + 100 + 150) / 3 = 100px
 
 <FlashList
   data={items}
@@ -172,7 +172,7 @@ const BestList = ({ items }) => {
 />
 ```
 
-### Mixed Item Types
+### 混合项类型
 
 ```jsx
 <FlashList
@@ -182,55 +182,55 @@ const BestList = ({ items }) => {
     if (item.type === 'product') return <Product {...item} />;
     return <DefaultItem {...item} />;
   }}
-  getItemType={(item) => item.type}  // Helps recycling
+  getItemType={(item) => item.type}  // 有助于回收
   estimatedItemSize={80}
 />
 ```
 
-### FlatList Optimizations (if not using FlashList)
+### FlatList 优化（如果不使用 FlashList）
 
 ```jsx
 <FlatList
   data={items}
   renderItem={renderItem}
-  // Performance props
+  // 性能属性
   removeClippedSubviews={true}
   maxToRenderPerBatch={10}
   updateCellsBatchingPeriod={50}
   initialNumToRender={10}
   windowSize={5}
-  // Avoid re-renders
+  // 避免重新渲染
   keyExtractor={(item) => item.id}
-  extraData={selectedId}  // Only when selection changes
+  extraData={selectedId}  // 仅在选择变化时
 />
 ```
 
-## Performance Comparison
+## 性能对比
 
-| Component | 5000 Items Load | Scroll FPS | Memory |
+| 组件 | 加载 5000 项 | 滚动 FPS | 内存 |
 |-----------|-----------------|------------|--------|
-| ScrollView | 1-3 seconds freeze | < 30 | High |
-| FlatList | ~100ms | ~45 | Medium |
-| FlashList | ~50ms | ~54 | Low |
+| ScrollView | 卡死 1-3 秒 | < 30 | 高 |
+| FlatList | ~100ms | ~45 | 中 |
+| FlashList | ~50ms | ~54 | 低 |
 
-## Decision Matrix
+## 决策矩阵
 
-| Scenario | Recommendation |
+| 场景 | 推荐 |
 |----------|---------------|
-| < 20 static items | ScrollView OK |
-| 20-100 items | FlatList minimum |
-| > 100 items | FlashList |
-| Complex item layouts | FlashList with `getItemType` |
-| Fixed height items | Add `getItemLayout` or `estimatedItemSize` |
+| < 20 个静态项 | ScrollView 可以 |
+| 20-100 项 | 至少 FlatList |
+| > 100 项 | FlashList |
+| 复杂项布局 | FlashList 带 `getItemType` |
+| 固定高度项 | 添加 `getItemLayout` 或 `estimatedItemSize` |
 
-## Common Pitfalls
+## 常见陷阱
 
-- **Inline renderItem functions**: Causes re-renders. Define outside or use `useCallback`.
-- **Missing keyExtractor**: Use unique IDs, not array index when possible.
-- **Ignoring estimatedItemSize warning**: FlashList warns if not set. Always provide it.
-- **Heavy item components**: Keep list items light. Move side effects out.
+- **内联 renderItem 函数**：导致重新渲染。在外部定义或使用 `useCallback`。
+- **缺少 keyExtractor**：尽可能使用唯一 ID，而非数组索引。
+- **忽略 estimatedItemSize 警告**：FlashList 如果未设置会发出警告。始终提供。
+- **重型项组件**：保持列表项轻量。将副作用移出。
 
-## Related Skills
+## 相关技能
 
-- [js-profile-react.md](./js-profile-react.md) - Profile list rendering
-- [js-measure-fps.md](./js-measure-fps.md) - Measure scroll performance
+- [js-profile-react.md](./js-profile-react.md) —— 分析列表渲染
+- [js-measure-fps.md](./js-measure-fps.md) —— 测量滚动性能

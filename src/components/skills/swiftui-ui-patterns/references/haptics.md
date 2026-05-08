@@ -1,16 +1,16 @@
-# Haptics
+# 触觉反馈
 
-## Intent
+## 意图
 
-Use haptics sparingly to reinforce user actions (tab selection, refresh, success/error) and respect user preferences.
+适度使用触觉反馈来强化用户操作（标签选择、刷新、成功/错误），并尊重用户偏好。
 
-## Core patterns
+## 核心模式
 
-- Centralize haptic triggers in a `HapticManager` or similar utility.
-- Gate haptics behind user preferences and hardware support.
-- Use distinct types for different UX moments (selection vs. notification vs. refresh).
+- 将触觉触发集中在 `HapticManager` 或类似的工具中。
+- 根据用户偏好和硬件支持来控制触觉反馈。
+- 对不同 UX 场景使用不同类型（选择 vs. 通知 vs. 刷新）。
 
-## Example: simple haptic manager
+## 示例：简单的触觉管理器
 
 ```swift
 @MainActor
@@ -46,7 +46,7 @@ final class HapticManager {
 }
 ```
 
-## Example: usage
+## 示例：使用方式
 
 ```swift
 Button("Save") {
@@ -59,13 +59,13 @@ TabView(selection: $selectedTab) { /* tabs */ }
   }
 ```
 
-## Design choices to keep
+## 要保留的设计选择
 
-- Haptics should be subtle and not fire on every tiny interaction.
-- Respect user preferences (toggle to disable).
-- Keep haptic triggers close to the user action, not deep in data layers.
+- 触觉反馈应保持微妙，不在每次微小交互时触发。
+- 尊重用户偏好（提供关闭的开关）。
+- 保持触觉触发器靠近用户操作，不要深入数据层。
 
-## Pitfalls
+## 陷阱
 
-- Avoid firing multiple haptics in quick succession.
-- Do not assume haptics are available; check support.
+- 避免在快速连续触发多个触觉反馈。
+- 不要假设触觉反馈可用；检查是否支持。

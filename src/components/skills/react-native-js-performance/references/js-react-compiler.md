@@ -4,69 +4,69 @@ impact: HIGH
 tags: memoization, react-compiler, memo, useMemo, useCallback
 ---
 
-# Skill: React Compiler
+# 技能：React Compiler
 
-Set up React Compiler to automatically memoize components and eliminate unnecessary re-renders.
+设置 React Compiler 以自动对组件进行 memoization 并消除不必要的重新渲染。
 
-## Quick Pattern
+## 快速模式
 
-**Before (manual memoization):**
+**之前（手动 memoization）：**
 
 ```jsx
 const MemoizedButton = memo(({ onPress }) => <Pressable onPress={onPress} />);
 const handler = useCallback(() => doSomething(), []);
 ```
 
-**After (automatic with React Compiler):**
+**之后（使用 React Compiler 自动处理）：**
 
 ```jsx
-// No memo/useCallback needed - compiler handles it
+// 无需 memo/useCallback —— 编译器处理
 const Button = ({ onPress }) => <Pressable onPress={onPress} />;
 const handler = () => doSomething();
 ```
 
-## When to Use
+## 适用场景
 
-- Want automatic performance optimization without manual `memo`/`useMemo`/`useCallback`
-- Codebase follows Rules of React
-- React Native 0.76+ or Expo SDK 52+
-- Ready to remove boilerplate memoization code
+- 希望自动优化性能，无需手动 `memo`/`useMemo`/`useCallback`
+- 代码库遵循 React 规则
+- React Native 0.76+ 或 Expo SDK 52+
+- 准备移除模板化的 memoization 代码
 
-## Prerequisites
+## 前置条件
 
-- React 17+ (React 19 recommended for best compatibility)
-- Babel-based build system
-- Code follows [Rules of React](https://react.dev/reference/rules)
+- React 17+（推荐 React 19 以获得最佳兼容性）
+- 基于 Babel 的构建系统
+- 代码遵循 [React 规则](https://react.dev/reference/rules)
 
-## Step-by-Step Instructions
+## 分步说明
 
-### Step 1: Check Compatibility
+### 步骤 1：检查兼容性
 
-Before enabling the compiler, verify your project is compatible:
+在启用编译器之前，验证你的项目是否兼容：
 
 ```bash
 npx react-compiler-healthcheck@latest
 ```
 
-This checks if your app follows the Rules of React and identifies potential issues.
+这检查你的应用是否遵循 React 规则并识别潜在问题。
 
-### Step 2: Install React Compiler
+### 步骤 2：安装 React Compiler
 
-#### Expo Projects
+#### Expo 项目
 
-**SDK 54 and later** (simplified setup):
+**SDK 54 及更新版本**（简化的设置）：
 
 ```bash
 npx expo install babel-plugin-react-compiler
 ```
 
-**SDK 52-53**:
+**SDK 52-53**：
 
 ```bash
 npx expo install babel-plugin-react-compiler@beta react-compiler-runtime@beta
 ```
 
-Then enable in your app config:
+然后在应用配置中启用：
 
 ```json
 // app.json
@@ -79,26 +79,26 @@ Then enable in your app config:
 }
 ```
 
-#### React Native (without Expo)
+#### React Native（无 Expo）
 
 ```bash
 npm install -D babel-plugin-react-compiler@latest
 ```
 
-For React Native < 0.78 (React < 19), also install the runtime:
+对于 React Native < 0.78（React < 19），同时安装 runtime：
 
 ```bash
 npm install react-compiler-runtime@beta
 ```
 
-### Step 3: Configure Babel (React Native without Expo)
+### 步骤 3：配置 Babel（非 Expo 的 React Native）
 
-For non-Expo React Native projects, configure Babel manually:
+对于非 Expo 的 React Native 项目，手动配置 Babel：
 
 ```javascript
 // babel.config.js
 const ReactCompilerConfig = {
-  target: '19', // Use '18' for React Native < 0.78
+  target: '19', // React Native < 0.78 使用 '18'
 };
 
 module.exports = function (api) {
@@ -106,27 +106,27 @@ module.exports = function (api) {
   return {
     presets: ['module:@react-native/babel-preset'],
     plugins: [
-      ['babel-plugin-react-compiler', ReactCompilerConfig], // Must run first!
-      // ... other plugins
+      ['babel-plugin-react-compiler', ReactCompilerConfig], // 必须首先运行！
+      // ... 其他插件
     ],
   };
 };
 ```
 
-> **Important**: React Compiler must run **first** in your Babel plugin pipeline. The compiler needs the original source information for proper analysis.
+> **重要**：React Compiler 必须在 Babel 插件流水线中**首先**运行。编译器需要原始源代码信息以进行正确分析。
 
-### Step 4: Set Up ESLint (Recommended)
+### 步骤 4：设置 ESLint（推荐）
 
-The ESLint plugin helps identify code that can't be optimized and enforces the Rules of React.
+ESLint 插件帮助识别无法优化的代码并强制执行 React 规则。
 
-#### Expo Projects
+#### Expo 项目
 
 ```bash
-npx expo lint  # Ensures ESLint is set up
+npx expo lint  # 确保 ESLint 已设置
 npx expo install eslint-plugin-react-compiler -- -D
 ```
 
-Configure ESLint:
+配置 ESLint：
 
 ```javascript
 // .eslintrc.js
@@ -143,19 +143,19 @@ module.exports = defineConfig([
 ]);
 ```
 
-#### React Native (without Expo)
+#### React Native（无 Expo）
 
 ```bash
 npm install -D eslint-plugin-react-hooks@latest
 ```
 
-The compiler rules are available in the `recommended-latest` preset. Follow the [eslint-plugin-react-hooks installation instructions](https://github.com/facebook/react/tree/main/packages/eslint-plugin-react-hooks).
+编译器规则包含在 `recommended-latest` 预设中。请遵循 [eslint-plugin-react-hooks 安装说明](https://github.com/facebook/react/tree/main/packages/eslint-plugin-react-hooks)。
 
-### Step 5: Verify Optimizations
+### 步骤 5：验证优化
 
-Open React DevTools. Optimized components show a `Memo ✨` badge.
+打开 React DevTools。优化后的组件会显示 `Memo ✨` 徽章。
 
-You can also verify by checking build output—compiled code includes automatic memoization:
+你也可以通过检查构建输出来验证 —— 编译后的代码包括自动 memoization：
 
 ```javascript
 import { c as _c } from 'react/compiler-runtime';
@@ -173,17 +173,17 @@ export default function MyApp() {
 }
 ```
 
-**Note**: React Native 0.76+ includes DevTools with Memo badge support by default. For older versions or third-party debuggers with version mismatches, you may need to override `react-devtools-core` in `package.json`.
+**注意**：React Native 0.76+ 默认包含带 Memo 徽章支持的 DevTools。对于旧版本或版本不匹配的第三方调试器，你可能需要在 `package.json` 中覆盖 `react-devtools-core`。
 
-## Incremental Adoption
+## 增量采用
 
-You can incrementally adopt React Compiler using two strategies:
+你可以使用两种策略增量采用 React Compiler：
 
-### Strategy 1: Limit to Specific Directories
+### 策略 1：限制到特定目录
 
-Configure the Babel plugin to only run on specific files, e.g. `src/path/to/dir` in the following examples:
+配置 Babel 插件仅对特定文件运行，例如以下示例中的 `src/path/to/dir`：
 
-**Expo** (create `babel.config.js` with `npx expo customize babel.config.js`):
+**Expo**（使用 `npx expo customize babel.config.js` 创建 `babel.config.js`）：
 
 ```javascript
 // babel.config.js
@@ -206,7 +206,7 @@ module.exports = function (api) {
 };
 ```
 
-**React Native (without Expo)**:
+**React Native（无 Expo）**：
 
 ```javascript
 // babel.config.js
@@ -226,7 +226,7 @@ module.exports = function (api) {
 };
 ```
 
-After changing `babel.config.js`, restart Metro with cache cleared:
+更改 `babel.config.js` 后，清除缓存重新启动 Metro：
 
 ```bash
 # Expo
@@ -236,9 +236,9 @@ npx expo start --clear
 npx react-native start --reset-cache
 ```
 
-### Strategy 2: Opt Out Specific Components
+### 策略 2：选择退出特定组件
 
-Use the `"use no memo"` directive to skip optimization for specific components or files:
+使用 `"use no memo"` 指令跳过特定组件或文件的优化：
 
 ```jsx
 function ProblematicComponent() {
@@ -248,13 +248,13 @@ function ProblematicComponent() {
 }
 ```
 
-This is useful for temporarily opting out components that cause issues. Fix the underlying problem and remove the directive once resolved.
+这对于临时退出导致问题的组件很有用。修复底层问题后移除该指令。
 
-## How It Works
+## 工作原理
 
-The compiler transforms your code to automatically cache values:
+编译器转换你的代码以自动缓存值：
 
-**Before (your code):**
+**之前（你的代码）：**
 
 ```jsx
 export default function MyApp() {
@@ -265,13 +265,13 @@ export default function MyApp() {
 }
 ```
 
-**After (compiled output):**
+**之后（编译后的输出）：**
 
 ```jsx
 import { c as _c } from 'react/compiler-runtime';
 
 export default function MyApp() {
-  const $ = _c(2); // Cache with 2 slots
+  const $ = _c(2); // 2 个槽位的缓存
   const [value, setValue] = useState('');
 
   let t0;
@@ -282,87 +282,87 @@ export default function MyApp() {
     $[0] = value;
     $[1] = t0;
   } else {
-    t0 = $[1]; // Return cached JSX
+    t0 = $[1]; // 返回缓存的 JSX
   }
   return t0;
 }
 ```
 
-## Code Examples
+## 代码示例
 
-### React Compiler Playground
+### React Compiler 游乐场
 
-Test transformations at [React Playground](https://playground.react.dev/).
+在 [React Playground](https://playground.react.dev/) 测试转换。
 
-### What Gets Optimized
+### 哪些会被优化
 
 ```jsx
-// Components - auto-memoized
+// 组件 —— 自动 memoize
 const Button = ({ onPress, label }) => (
   <Pressable onPress={onPress}>
     <Text>{label}</Text>
   </Pressable>
 );
 
-// Callbacks - auto-cached (no useCallback needed)
+// 回调 —— 自动缓存（无需 useCallback）
 const handlePress = () => {
   console.log('pressed');
 };
 
-// Expensive computations - auto-cached (no useMemo needed)
+// 昂贵计算 —— 自动缓存（无需 useMemo）
 const filtered = items.filter((item) => item.active);
 ```
 
-### What Breaks Compilation
+### 哪些会破坏编译
 
 ```jsx
-// BAD: Mutating props
+// 错误：修改 props
 const BadComponent = ({ items }) => {
-  items.push('new item'); // Mutation!
+  items.push('new item'); // 修改！
   return <List data={items} />;
 };
 
-// BAD: Mutating during render
+// 错误：渲染期间修改
 const BadMutation = () => {
   const [items, setItems] = useState([]);
-  items.push('new'); // Mutation during render!
+  items.push('new'); // 渲染期间修改！
   return <List data={items} />;
 };
 
-// BAD: Non-idempotent render
+// 错误：非幂等渲染
 let counter = 0;
 const BadRender = () => {
-  counter++; // Side effect during render!
+  counter++; // 渲染期间的副作用！
   return <Text>{counter}</Text>;
 };
 ```
 
-## Should You Remove Manual Memoization?
+## 应该移除手动 Memoization 吗？
 
-Improvements are primarily automatic. You can remove instances of `useCallback`, `useMemo`, and `React.memo` in favor of automatic memoization once the compiler is working correctly in your project.
+改进主要是自动的。一旦编译器在你的项目中正常运行，可以移除 `useCallback`、`useMemo` 和 `React.memo` 的实例，转而使用自动 memoization。
 
-**Note**: Class components will not be optimized. Migrate to function components for full benefits.
+**注意**：类组件不会被优化。迁移到函数组件以获得全部好处。
 
-Expo's implementation only runs on application code (not node_modules), and only when bundling for the client (disabled in server rendering).
+Expo 的实现仅在应用代码上运行（不在 node_modules 中），且仅在捆绑到客户端时运行（服务端渲染时禁用）。
 
-## Expected Performance Improvements
+## 预期性能改进
 
-Testing on Expensify app showed:
+在 Expensify 应用上的测试显示：
 
-- **4.3% improvement** in Chat Finder TTI
-- Significant reduction in cascading re-renders
-- Most impact on apps without existing manual optimization
+- **Chat Finder TTI 改善 4.3%**
+- 级联重新渲染显著减少
+- 对没有现有手动优化的应用影响最大
 
-Already heavily optimized apps may see marginal gains.
+已重度优化的应用可能收益有限。
 
-## Common Pitfalls
+## 常见陷阱
 
-- **Not fixing ESLint errors first**: When ESLint reports an error, the compiler skips that component—this is safe but means you miss optimization
-- **Expecting it to fix bad patterns**: Compiler optimizes good code, doesn't fix bad code
-- **Forgetting shallow comparison**: Like `memo`, compiler uses shallow comparison for objects/arrays
-- **Not running healthcheck**: Always run `npx react-compiler-healthcheck@latest` before enabling
+- **未先修复 ESLint 错误**：ESLint 报告错误时，编译器会跳过该组件 —— 这是安全的，但意味着你错过了优化
+- **期望它能修复不良模式**：编译器优化好的代码，不修复坏的代码
+- **忘记浅比较**：与 `memo` 一样，编译器对对象/数组使用浅比较
+- **未运行健康检查**：在启用前始终运行 `npx react-compiler-healthcheck@latest`
 
-## Related Skills
+## 相关技能
 
-- [js-profile-react.md](./js-profile-react.md) - Verify optimization impact
-- [js-atomic-state.md](./js-atomic-state.md) - Alternative for state-related re-renders
+- [js-profile-react.md](./js-profile-react.md) —— 验证优化影响
+- [js-atomic-state.md](./js-atomic-state.md) —— 状态相关重新渲染的替代方案

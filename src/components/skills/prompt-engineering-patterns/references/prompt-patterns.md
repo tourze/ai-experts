@@ -1,12 +1,12 @@
-# Prompt Patterns
+# 提示模式
 
-Catalog of prompt structures organized by strategy, with templates and usage guidance.
+按策略组织的提示结构目录，附带模板和使用指南。
 
 ---
 
-## Zero-Shot
+## 零样本
 
-No examples. Direct instruction only.
+无示例。仅有直接指令。
 
 ```text
 {Role/persona statement — optional}
@@ -20,15 +20,15 @@ No examples. Direct instruction only.
 {Constraints}
 ```
 
-**When to use:** Simple tasks, capable models (GPT-4, Claude), well-defined output format.
+**使用场景：** 简单任务、能力强的模型（GPT-4、Claude）、定义良好的输出格式。
 
-**Risk:** Model may interpret the task differently than intended without examples.
+**风险：** 模型可能以与预期不同的方式解释任务（无示例时）。
 
 ---
 
-## Few-Shot
+## 少样本
 
-Provide examples of input → output pairs before the actual task.
+在实际任务之前提供输入 → 输出对的示例。
 
 ```text
 {Task instruction}
@@ -46,20 +46,20 @@ Input: {actual input}
 Output:
 ```
 
-**When to use:** Pattern-following tasks, classification, formatting, extraction.
+**使用场景：** 模式跟随任务、分类、格式化、提取。
 
-**Guidelines:**
+**指南：**
 
-- 2-5 examples is typical. More is not always better.
-- Examples should cover the range of expected inputs (not all similar).
-- Include at least one edge case example.
-- Keep examples consistent in format — the model mirrors what it sees.
+- 2-5 个示例为典型。更多不一定更好。
+- 示例应覆盖预期的输入范围（不要全部相似）。
+- 至少包含一个边界情况示例。
+- 保持示例格式一致 —— 模型会模仿它所看到的。
 
 ---
 
-## Chain-of-Thought (CoT)
+## Chain-of-Thought（CoT / 思维链）
 
-Ask the model to reason step by step before giving the final answer.
+要求模型在给出最终答案之前逐步推理。
 
 ```text
 {Task instruction}
@@ -72,19 +72,19 @@ Think through this step by step:
 {Input}
 ```
 
-**When to use:** Multi-step reasoning, math, logical deduction, complex analysis.
+**使用场景：** 多步推理、数学、逻辑推导、复杂分析。
 
-**Variants:**
+**变体：**
 
-- **Explicit CoT:** "Think step by step" in the instruction
-- **Few-shot CoT:** Examples include the reasoning steps
-- **Zero-shot CoT:** Just append "Let's think step by step" (surprisingly effective)
+- **显式 CoT：** 在指令中加上"逐步思考"
+- **少样本 CoT：** 示例包含推理步骤
+- **零样本 CoT：** 仅附加"让我们逐步思考"（出乎意料地有效）
 
 ---
 
-## Persona/Role
+## 角色 / 身份
 
-Frame the model as an expert in a specific domain.
+将模型设定为特定领域的专家。
 
 ```text
 You are a {role} with expertise in {domain}. You have {years} of experience
@@ -95,18 +95,18 @@ Your task is to {instruction}.
 {Input}
 ```
 
-**When to use:** Domain-specific tasks where expertise framing improves output quality.
+**使用场景：** 领域特定任务，身份框架能提升输出质量。
 
-**Caution:** Personas should be specific and relevant, not generic.
-"You are a senior PostgreSQL DBA" > "You are a helpful assistant."
+**注意：** 身份应具体且相关，而非泛泛而谈。
+"你是一名资深 PostgreSQL DBA" > "你是一个有用的助手。"
 
 ---
 
-## Structured Output
+## 结构化输出
 
-Specify the exact output format the model must follow.
+指定模型必须遵循的确切输出格式。
 
-````
+```
 {Task instruction}
 
 Respond in the following JSON format:
@@ -118,22 +118,20 @@ Respond in the following JSON format:
     "nested": "object"
   }
 }
-````
+```
 
 {Input}
+```
 
-```text
+**使用场景：** 输出必须是机器可解析的（JSON、CSV、YAML）。
 
-**When to use:** When output must be machine-parseable (JSON, CSV, YAML).
-
-**Enhancement:** Use JSON mode / structured output API features when available
-(OpenAI `response_format`, Anthropic tool use).
+**增强：** 在可用时使用 JSON 模式 / 结构化输出 API 特性（OpenAI `response_format`、Anthropic 工具调用）。
 
 ---
 
-## Decomposition
+## 分解
 
-Break a complex task into explicit subtasks within the prompt.
+在提示中将复杂任务分解为明确的子任务。
 
 ```text
 
@@ -146,16 +144,15 @@ Step 3: Based on Steps 1 and 2, {subtask 3}
 Present each step's result before moving to the next.
 
 {Input}
+```
 
-```text
-
-**When to use:** Complex tasks that benefit from intermediate checkpoints.
+**使用场景：** 从中间检查点受益的复杂任务。
 
 ---
 
-## Constraint-Based
+## 基于约束
 
-Define what the output must and must not contain.
+定义输出必须和不能包含的内容。
 
 ```text
 
@@ -170,14 +167,13 @@ Rules:
 - IF {condition} THEN {behavior}
 
 {Input}
+```
 
-```text
-
-**When to use:** Tasks with strict requirements or common failure modes to prevent.
+**使用场景：** 有严格要求的任务或需要防止常见故障模式。
 
 ---
 
-## Comparison / Selection Pattern
+## 比较 / 选择模式
 
 ```text
 
@@ -194,21 +190,19 @@ Evaluation criteria (in order of importance):
 
 For each option, evaluate against each criterion. Then provide your recommendation
 with justification.
-
-```text
+```
 
 ---
 
-## Pattern Selection Guide
+## 模式选择指南
 
-| Task Type | Recommended Pattern | Fallback |
+| 任务类型 | 推荐模式 | 后备方案 |
 |-----------|-------------------|----------|
-| Classification | Few-shot | Zero-shot with examples in description |
-| Extraction | Few-shot + Structured output | Zero-shot with JSON mode |
-| Analysis | Chain-of-thought | Decomposition |
-| Generation (creative) | Persona + Constraints | Zero-shot with tone guidance |
-| Generation (technical) | Persona + Structured output | Few-shot + Template |
-| Summarization | Zero-shot with length constraint | Few-shot with length examples |
-| Translation/formatting | Few-shot | Zero-shot with format specification |
-| Decision/recommendation | Comparison pattern | Chain-of-thought |
-```
+| 分类 | 少样本 | 在描述中包含示例的零样本 |
+| 提取 | 少样本 + 结构化输出 | 带 JSON 模式的零样本 |
+| 分析 | 思维链 | 分解 |
+| 生成（创意） | 身份 + 约束 | 带语气指导的零样本 |
+| 生成（技术） | 身份 + 结构化输出 | 少样本 + 模板 |
+| 摘要 | 带长度约束的零样本 | 带长度示例的少样本 |
+| 翻译/格式化 | 少样本 | 带格式规范的零样本 |
+| 决策/推荐 | 比较模式 | 思维链 |

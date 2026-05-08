@@ -1,71 +1,71 @@
-# Mobility / Real Estate / Industry Presets
+# 出行 / 房地产 / 行业预设
 
-## 46. Real Estate / Property Listing
-- Style: Editorial Grid + Large Imagery
-- Colors: `#0C4A6E` / `#F59E0B` / bg `#FFFFFF`
-- Fonts: Playfair Display / Source Sans 3
-- Effects: 房源大图、地图侧栏、price 对齐
-- AVOID: 拥挤列表、小图、弹窗 spam
+## 46. 房地产 / 房源列表
+- 风格：编辑网格 + 大图
+- 配色：`#0C4A6E` / `#F59E0B` / 背景 `#FFFFFF`
+- 字体：Playfair Display / Source Sans 3
+- 效果：房源大图、地图侧栏、价格对齐
+- 避免：拥挤列表、小图、弹窗 spam
 
-## 47. Logistics / Shipping
-- Style: Flat + Data-Dense
-- Colors: `#1E40AF` / `#F97316` / bg `#F8FAFC`
-- Fonts: Inter / Inter
-- Effects: 追踪步骤可视化、地图路径
-- AVOID: 装饰、慢动效（物流页要"快"）
+## 47. 物流 / 运输
+- 风格：扁平 + 数据密集
+- 配色：`#1E40AF` / `#F97316` / 背景 `#F8FAFC`
+- 字体：Inter / Inter
+- 效果：追踪步骤可视化、地图路径
+- 避免：装饰、慢动效（物流页要"快"）
 
-## 48. Automotive / Car Dealer
-- Style: Exaggerated Minimalism + Full-bleed
-- Colors: `#0A0A0A` / 金 `#B08D57` / bg `#FAFAFA`
-- Fonts: Unbounded / Inter
-- Effects: 1:1 车辆大图、360 预览、性能数据
-- AVOID: 密集列表、小图、多广告位
+## 48. 汽车 / 经销商
+- 风格：夸张极简 + 全屏铺满
+- 配色：`#0A0A0A` / 金 `#B08D57` / 背景 `#FAFAFA`
+- 字体：Unbounded / Inter
+- 效果：1:1 车辆大图、360 预览、性能数据
+- 避免：密集列表、小图、多广告位
 
-## 49. Airlines / Flight Booking
-- Style: Minimalism + Trust Blue
-- Colors: `#0369A1` / `#F59E0B` / bg `#FFFFFF`
-- Fonts: Inter / Inter
-- Effects: 日期选择器突出、价格透明、进度条
-- AVOID: 隐藏费用、过多弹窗
+## 49. 航空公司 / 机票预订
+- 风格：极简 + 信任蓝
+- 配色：`#0369A1` / `#F59E0B` / 背景 `#FFFFFF`
+- 字体：Inter / Inter
+- 效果：日期选择器突出、价格透明、进度条
+- 避免：隐藏费用、过多弹窗
 
-## 50. Transit / Public Transport App
-- Style: Flat + Accessible
-- Colors: 按线路色 / bg `#FFFFFF` / 高对比
-- Fonts: Inter / Inter
-- Effects: 实时到站、路线色编码 + 图标
-- AVOID: 颜色单独编码（需配图标）、密集小字
+## 50. 公共交通 / 公交应用
+- 风格：扁平 + 无障碍可及
+- 配色：按线路色 / 背景 `#FFFFFF` / 高对比
+- 字体：Inter / Inter
+- 效果：实时到站、路线色编码 + 图标
+- 避免：颜色单独编码（需配图标）、密集小字
 
-## 51. Parking App
-- Style: Flat + Map-Centric
-- Colors: `#0EA5E9` / `#10B981` avail / `#EF4444` full / bg `#FFFFFF`
-- Fonts: Inter / Inter
-- Effects: 地图 pin + 实时可用、价格卡
-- AVOID: 多层菜单、隐藏剩余位
+## 51. 停车应用
+- 风格：扁平 + 地图中心
+- 配色：`#0EA5E9` / `#10B981` 可用 / `#EF4444` 满 / 背景 `#FFFFFF`
+- 字体：Inter / Inter
+- 效果：地图 pin + 实时可用、价格卡
+- 避免：多层菜单、隐藏剩余位
 
-## 52. Construction / Contractor
-- Style: Flat + Trust Signals
-- Colors: `#F59E0B` / `#0F172A` / bg `#FAFAFA`
-- Fonts: Archivo / Inter
-- Effects: 案例前后对比图、客户证言、资质
-- AVOID: 酷炫动效、过精致（破坏"实在"感）
+## 52. 建筑 / 承包商
+- 风格：扁平 + 信任信号
+- 配色：`#F59E0B` / `#0F172A` / 背景 `#FAFAFA`
+- 字体：Archivo / Inter
+- 效果：案例前后对比图、客户证言、资质
+- 避免：酷炫动效、过精致（破坏"实在"感）
 
-## 53. Agriculture / AgTech
-- Style: Organic Biophilic + Data
-- Colors: `#65A30D` / `#A16207` / bg `#F7FEE7`
-- Fonts: Fraunces / Inter
-- Effects: 田间图 + 数据叠加、季节色
-- AVOID: Cyberpunk、过科技感
+## 53. 农业 / 农业科技
+- 风格：有机自然 + 数据
+- 配色：`#65A30D` / `#A16207` / 背景 `#F7FEE7`
+- 字体：Fraunces / Inter
+- 效果：田间图 + 数据叠加、季节色
+- 避免：赛博朋克、过科技感
 
-## 54. Auto Repair / Workshop
-- Style: Brutalism + Trust
-- Colors: `#0A0A0A` / `#EAB308` / bg `#FFFFFF`
-- Fonts: Archivo Black / Inter
-- Effects: 粗边框、大字号、师傅照片、价格表
-- AVOID: 柔和企业蓝、过精致
+## 54. 汽车维修 / 修理厂
+- 风格：粗野主义 + 信任
+- 配色：`#0A0A0A` / `#EAB308` / 背景 `#FFFFFF`
+- 字体：Archivo Black / Inter
+- 效果：粗边框、大字号、师傅照片、价格表
+- 避免：柔和企业蓝、过精致
 
-## 55. Moving / Relocation Services
-- Style: Flat + Friendly
-- Colors: `#F97316` / `#0284C7` / bg `#FFFFFF`
-- Fonts: Poppins / Inter
-- Effects: 流程步骤图、报价计算器突出
-- AVOID: 严肃企业感、隐藏报价
+## 55. 搬家 / 搬迁服务
+- 风格：扁平 + 友好
+- 配色：`#F97316` / `#0284C7` / 背景 `#FFFFFF`
+- 字体：Poppins / Inter
+- 效果：流程步骤图、报价计算器突出
+- 避免：严肃企业感、隐藏报价

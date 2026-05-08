@@ -1,224 +1,224 @@
-# Tracking Debug Playbook
+# 埋点调试手册
 
-Step-by-step methodology for diagnosing and fixing analytics tracking issues.
-
----
-
-## The Debug Mindset
-
-Analytics bugs are harder than code bugs because:
-1. They fail silently — no error thrown, just missing data
-2. They often only appear in production
-3. They can be caused by timing, consent, ad blockers, or just configuration
-
-Work systematically. Don't guess. Verify at each layer before moving to the next.
+诊断和修复埋点跟踪问题的步骤化方法论。
 
 ---
 
-## The Debug Stack (Bottom-Up)
+## 调试思维
+
+埋点 bug 比代码 bug 更难排查，因为：
+1. 静默失败——不抛错误，只是数据缺失
+2. 往往只出现在生产环境
+3. 可能由时序、用户同意、广告拦截器或配置导致
+
+按系统化步骤排查。不要猜测。在进入下一层之前先验证每一层。
+
+---
+
+## 调试栈（自下而上）
 
 ```
-Layer 5: GA4 Reports / DebugView      ← what you see
-Layer 4: GA4 Data Processing          ← where it lands
-Layer 3: Network Request              ← what was sent
-Layer 2: GTM / Tag firing             ← what GTM did
-Layer 1: dataLayer / App code         ← what your app pushed
+第 5 层：GA4 报表 / DebugView      ← 你看到的内容
+第 4 层：GA4 数据处理              ← 数据落点
+第 3 层：网络请求                  ← 发送了什么
+第 2 层：GTM / 标签触发            ← GTM 做了什么
+第 1 层：dataLayer / 应用代码      ← 应用推送了什么
 ```
 
-When something's missing at Layer 5, start at Layer 1 and verify each layer before going up.
+当第 5 层数据缺失时，从第 1 层开始，逐层验证后再往上排查。
 
 ---
 
-## Tool Setup
+## 工具设置
 
-### GTM Preview Mode
+### GTM 预览模式
 
-1. GTM → Preview (top right)
-2. Enter your site URL → Connect
-3. A blue bar appears at the bottom of your site: "Google Tag Manager"
-4. GTM Preview panel opens in a separate tab
-5. Perform the action you're debugging
-6. Check: did the expected tag fire?
+1. GTM → 预览（右上角）
+2. 输入站点 URL → 连接
+3. 站点底部出现蓝色条："Google Tag Manager"
+4. GTM 预览面板在新标签页打开
+5. 执行你要调试的操作
+6. 检查：期望的标签是否触发了？
 
-**Reading GTM Preview:**
-- Left panel: events as they occur (Page View, Click, Custom Event, etc.)
-- Middle panel: Tags fired / Tags NOT fired for selected event
-- Right panel: Variables values at the time of the event
+**查看 GTM 预览：**
+- 左侧面板：事件发生顺序（页面浏览、点击、自定义事件等）
+- 中间面板：选定事件的已触发 / 未触发标签
+- 右侧面板：事件发生时的变量值
 
 ### GA4 DebugView
 
-1. GA4 → Admin → DebugView
-2. Enable debug mode via:
-   - GTM: add `debug_mode: true` to your GA4 Event tag parameters
-   - Extension: install "GA Debugger" Chrome extension
-   - URL parameter: add `?_gl=` or use GA4 debug parameter
-3. Perform actions on your site
-4. Watch events appear in real-time (10-15 second delay)
+1. GA4 → 管理 → DebugView
+2. 通过以下方式启用调试模式：
+   - GTM：在 GA4 Event 标签参数中添加 `debug_mode: true`
+   - 扩展：安装 "GA Debugger" Chrome 扩展
+   - URL 参数：添加 `?_gl=` 或使用 GA4 调试参数
+3. 在站点上执行操作
+4. 实时观察事件出现（10-15 秒延迟）
 
-### Chrome DevTools — Network Tab
+### Chrome DevTools — 网络标签
 
-1. Open DevTools → Network
-2. Filter by: `collect` or `google-analytics` or `analytics`
-3. Perform the action
-4. Look for requests to `https://www.google-analytics.com/g/collect`
-5. Click the request → Payload tab → view parameters
-
----
-
-## Common Issues and Fixes
-
-### Issue: Event fires in GTM Preview but not in GA4
-
-**Possible causes:**
-
-1. **Consent mode blocking** — user is in denied state
-   - Check: In GTM Preview, look at Variables → `Analytics Storage` — is it `denied`?
-   - Fix: Test with consent granted, or implement Advanced Consent Mode
-
-2. **Filters blocking data** — internal traffic filter is active
-   - Check: GA4 → Admin → Data Filters — is "Internal Traffic" filter active?
-   - Fix: Disable filter temporarily, test, then re-enable and exclude your IP correctly
-
-3. **Debug mode not enabled** — DebugView only shows debug-mode traffic
-   - Check: Is `debug_mode: true` parameter on the GA4 Event tag?
-   - Fix: Add it, or use the GA4 Debugger Chrome extension
-
-4. **Wrong property** — you're looking at a different GA4 property
-   - Check: Confirm Measurement ID in GTM matches the GA4 property you're viewing
-   - Fix: Compare `G-XXXXXXXXXX` in GTM vs. GA4 Data Stream settings
-
-5. **Duplicate GA4 configuration tags** — two config tags = double sessions + weird data
-   - Check: GTM → Tags → filter by "GA4 Configuration" — more than one?
-   - Fix: Delete duplicates, keep one with All Pages trigger
+1. 打开 DevTools → 网络
+2. 过滤条件：`collect` 或 `google-analytics` 或 `analytics`
+3. 执行操作
+4. 查找发往 `https://www.google-analytics.com/g/collect` 的请求
+5. 点击请求 → 负载标签 → 查看参数
 
 ---
 
-### Issue: Event not firing in GTM Preview at all
+## 常见问题与修复
 
-**Diagnosis path:**
+### 问题：GTM 预览中事件触发，但 GA4 看不到
 
-**Step 1:** Check the trigger
-- Is the trigger for this tag listed under the action in GTM Preview?
-- If not: the trigger didn't fire
+**可能原因：**
 
-**Step 2:** Check trigger conditions
-- Open the trigger in GTM
-- Reproduce the exact scenario step by step
-- In GTM Preview, check Variables at the moment the action happened
-- Do the variable values match your trigger conditions?
+1. **同意模式阻止** — 用户处于拒绝状态
+   - 检查：GTM 预览中 → 变量 → `Analytics Storage` — 是否为 `denied`？
+   - 修复：在同意状态下测试，或实施增强版同意模式
 
-**Step 3:** dataLayer issue (for Custom Event triggers)
-- In GTM Preview → select the relevant event in left panel → Variables tab
-- Scroll to find `event` — what's the value?
-- If event name doesn't match trigger exactly: it won't fire (case-sensitive, exact match)
+2. **过滤器阻止数据** — 内部流量过滤器激活
+   - 检查：GA4 → 管理 → 数据过滤器 — 是否激活了"内部流量"过滤器？
+   - 修复：临时禁用过滤器，测试后重新启用并正确排除你的 IP
 
-**Step 4:** Timing issue
-- If using "Page View" trigger and element doesn't exist yet: switch to "DOM Ready" or "Window Loaded"
-- If SPA: route changes may not trigger "Page View" — use History Change instead
+3. **未启用调试模式** — DebugView 只显示调试模式流量
+   - 检查：GA4 Event 标签上是否有 `debug_mode: true` 参数？
+   - 修复：添加该参数，或使用 GA4 Debugger Chrome 扩展
 
----
+4. **错误的媒体资源** — 你查看的是不同的 GA4 媒体资源
+   - 检查：确认 GTM 中的 Measurement ID 与你查看的 GA4 媒体资源匹配
+   - 修复：对比 GTM 中的 `G-XXXXXXXXXX` 与 GA4 数据流设置
 
-### Issue: Parameters showing as (not set) or undefined in GA4
-
-**Step 1:** Verify parameter is in the network request
-- DevTools → Network → find GA4 collect request → Payload
-- Search for the parameter name (e.g., `plan_name`)
-- If not there: GTM variable isn't resolving correctly
-
-**Step 2:** Check the GTM variable
-- GTM Preview → find the event → Variables tab
-- Find the variable for this parameter (e.g., `DLV - plan_name`)
-- What's its value? If `undefined`: the dataLayer push didn't include this key, or key name is wrong
-
-**Step 3:** Check dataLayer push in your app code
-- DevTools → Console → type: `dataLayer.filter(e => e.event === 'your_event_name')`
-- Inspect the object — is the parameter key present and spelled correctly?
-
-**Step 4:** Check GA4 custom dimension registration
-- Some parameters require a registered custom dimension in GA4 to appear in reports
-- GA4 → Admin → Custom Definitions → Custom Dimensions
-- If parameter isn't registered here: it'll exist in raw data but won't show in Explore reports
+5. **重复的 GA4 配置标签** — 两个配置标签 = 双倍会话 + 异常数据
+   - 检查：GTM → 标签 → 筛选 "GA4 Configuration" — 超过一个？
+   - 修复：删除重复的，保留一个使用 All Pages 触发器
 
 ---
 
-### Issue: Duplicate events (event fires 2x per action)
+### 问题：GTM 预览中根本没有触发事件
 
-**Find the duplicates:**
-- GTM Preview → find the action → how many tags with the same name fired?
-- DevTools → Network → filter by `collect` → count hits for the action
+**诊断路径：**
 
-**Common causes:**
+**第 1 步：** 检查触发器
+- GTMPreview 中该标签的触发器是否列在操作下方？
+- 如果不是：触发器没有触发
 
-1. **Enhanced Measurement + manual GTM tag**
-   - e.g., Enhanced Measurement tracks outbound clicks, GTM also has an outbound click tag
-   - Fix: disable the Enhanced Measurement setting OR remove the GTM tag
+**第 2 步：** 检查触发条件
+- 在 GTM 中打开触发器
+- 逐步重现确切场景
+- 在 GTM 预览中，检查操作发生时的变量值
+- 变量值是否匹配你的触发条件？
 
-2. **Two GTM Configuration tags**
-   - Each sends its own hits
-   - Fix: delete one, keep one
+**第 3 步：** dataLayer 问题（适用于自定义事件触发器）
+- 在 GTM 预览中 → 在左侧面板选择相关事件 → 变量标签
+- 滚动找到 `event` — 值是什么？
+- 如果事件名与触发器不完全匹配：不会触发（区分大小写，精确匹配）
 
-3. **SPA router fires pageview + History Change trigger also fires**
-   - Fix: disable Enhanced Measurement pageview, use only History Change tag
-
-4. **Event fires on multiple triggers that both match**
-   - Fix: make triggers more specific — add exclusion conditions
-
----
-
-### Issue: Sessions/users look wrong (too high or too low)
-
-**Too many sessions:**
-- Multiple GA4 Configuration tags
-- History Change trigger firing + Enhanced Measurement pageview on SPA
-- Client ID not persisting (cookie being blocked or cleared)
-
-**Too few sessions / users:**
-- Consent blocking analytics for non-consenting users (expected under strict consent mode)
-- Bot filtering too aggressive
-- GA4 tags firing on wrong pages only
-
-**Sessions reset unexpectedly (user shows as new on every page):**
-- Cross-domain tracking not configured
-- Cookie domain mismatch
-- GTM cookie settings incorrect
+**第 4 步：** 时序问题
+- 如果使用"Page View"触发器且元素尚不存在：切换到"DOM Ready"或"Window Loaded"
+- 如果是 SPA：路由变化可能不会触发"Page View"——改用 History Change
 
 ---
 
-### Issue: Conversions not matching between GA4 and Google Ads
+### 问题：GA4 中参数显示为（未设置）或 undefined
 
-**Check 1: Attribution window mismatch**
-- GA4 default: 30-day last click
-- Google Ads: check conversion action settings for window
-- These legitimately produce different numbers
+**第 1 步：** 验证参数是否存在于网络请求中
+- DevTools → 网络 → 找到 GA4 collect 请求 → 负载
+- 搜索参数名（例如 `plan_name`）
+- 如果不在：GTM 变量未能正确解析
 
-**Check 2: Conversion event names**
-- In Google Ads → Tools → Conversions → imported from GA4
-- Does the linked event name exactly match the GA4 event?
+**第 2 步：** 检查 GTM 变量
+- GTM 预览 → 找到事件 → 变量标签
+- 找到该参数的变量（例如 `DLV - plan_name`）
+- 值是什么？如果是 `undefined`：dataLayer push 未包含此键，或键名错误
 
-**Check 3: Import is linked**
-- Google Ads → Tools → Linked Accounts → Google Analytics 4
-- Is the correct GA4 property linked and synced?
-- Sync can take 24-48 hours after changes
+**第 3 步：** 检查应用代码中的 dataLayer push
+- DevTools → 控制台 → 输入：`dataLayer.filter(e => e.event === 'your_event_name')`
+- 检查对象——参数字段是否存在且拼写正确？
 
-**Check 4: Enhanced Conversions**
-- If GA4 uses a user_id or email parameter, Enhanced Conversions can improve matching
-- Google Ads → Conversions → Enhanced Conversions for Web → Enable
+**第 4 步：** 检查 GA4 自定义维度注册
+- 某些参数需要在 GA4 中注册自定义维度才能在报表中出现
+- GA4 → 管理 → 自定义定义 → 自定义维度
+- 如果参数未在此注册：它会存在于原始数据中，但不会显示在探索报表中
 
 ---
 
-## Debug Checklist Template
+### 问题：重复事件（每次操作触发 2 次）
 
-Use this for any new tracking issue:
+**查找重复原因：**
+- GTM 预览 → 找到操作 → 有多少同名标签触发了？
+- DevTools → 网络 → 筛选 `collect` → 统计该操作的请求次数
+
+**常见原因：**
+
+1. **增强型测量 + 手动 GTM 标签**
+   - 例如，增强型测量跟踪出站点击，GTM 也有出站点击标签
+   - 修复：禁用增强型测量设置，或删除 GTM 标签
+
+2. **两个 GTM 配置标签**
+   - 每个都会发送自己的请求
+   - 修复：删除一个，保留一个
+
+3. **SPA 路由触发 pageview + History Change 触发器也触发**
+   - 修复：禁用 Enhanced Measurement pageview，只使用 History Change 标签
+
+4. **事件在多个匹配的触发器上都触发**
+   - 修复：让触发器更具体——添加排除条件
+
+---
+
+### 问题：会话/用户数异常（过高或过低）
+
+**会话过多：**
+- 多个 GA4 配置标签
+- History Change 触发器 + SPA 上的 Enhanced Measurement pageview
+- Client ID 未持久化（cookie 被屏蔽或清除）
+
+**会话/用户数过少：**
+- 同意设置对未同意用户阻止分析（严格同意模式下符合预期）
+- 爬虫过滤过于激进
+- GA4 标签仅在错误页面上触发
+
+**会话意外重置（每次页面都显示为新用户）：**
+- 跨域跟踪未配置
+- Cookie 域名不匹配
+- GTM cookie 设置不正确
+
+---
+
+### 问题：GA4 和 Google Ads 之间的转化不匹配
+
+**检查 1：归因窗口不匹配**
+- GA4 默认：30 天末次点击
+- Google Ads：查看转化操作设置的窗口
+- 这两者产生不同数字是正常的
+
+**检查 2：转化事件名称**
+- 在 Google Ads → 工具 → 转化 → 从 GA4 导入
+- 链接的事件名是否与 GA4 事件完全匹配？
+
+**检查 3：导入链接状态**
+- Google Ads → 工具 → 关联的账号 → Google Analytics 4
+- 正确的 GA4 媒体资源是否已关联并同步？
+- 变更后同步可能需要 24-48 小时
+
+**检查 4：增强型转化**
+- 如果 GA4 使用 user_id 或 email 参数，增强型转化可以改善匹配
+- Google Ads → 转化 → 网站增强型转化 → 启用
+
+---
+
+## 调试清单模板
+
+用于任何新的埋点问题：
 
 ```
-[ ] Confirmed exact event name and parameters expected
-[ ] Verified app code is pushing to dataLayer (console: dataLayer)
-[ ] GTM Preview: trigger fires at correct moment
-[ ] GTM Preview: parameters resolve to correct values (not undefined)
-[ ] Network: GA4 collect request appears with correct payload
-[ ] GA4 DebugView: event appears within 30 seconds
-[ ] GA4 DebugView: parameters present and correct
-[ ] GA4 Reports: event appears (24-48h delay for standard reports)
-[ ] Consent check: tested with analytics consent granted
-[ ] Filter check: internal traffic filter not blocking test traffic
+[ ] 确认期望的确切事件名和参数
+[ ] 验证应用代码正在推送 dataLayer（控制台：dataLayer）
+[ ] GTM 预览：触发器在正确时机触发
+[ ] GTM 预览：参数解析为正确值（非 undefined）
+[ ] 网络：GA4 collect 请求出现且负载正确
+[ ] GA4 DebugView：事件在 30 秒内出现
+[ ] GA4 DebugView：参数存在且正确
+[ ] GA4 报表：事件出现（标准报表延迟 24-48 小时）
+[ ] 同意检查：已授予分析 tracking 同意状态下测试
+[ ] 过滤器检查：内部流量过滤器未阻止测试流量
 ```

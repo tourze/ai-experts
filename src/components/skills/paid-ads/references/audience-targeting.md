@@ -1,243 +1,243 @@
-# Audience Targeting Reference
+# 受众定向参考
 
-Detailed targeting strategies for each major ad platform.
+每个主要广告平台的详细定向策略。
 
-## Contents
-- Google Ads Audiences (Search Campaign Targeting, Display/YouTube Targeting)
-- Meta Audiences (Core Audiences, Custom Audiences, Lookalike Audiences)
-- LinkedIn Audiences (Job-Based Targeting, Company-Based Targeting, High-Performing Combinations)
-- Twitter/X Audiences
-- TikTok Audiences
-- Audience Size Guidelines
-- Exclusion Strategy
+## 目录
+- Google Ads 受众（搜索广告定向、展示/YouTube 定向）
+- Meta 受众（核心受众、自定义受众、类似受众）
+- LinkedIn 受众（职位定向、公司定向、高表现组合）
+- Twitter/X 受众
+- TikTok 受众
+- 受众规模指南
+- 排除策略
 
-## Google Ads Audiences
+## Google Ads 受众
 
-### Search Campaign Targeting
+### 搜索广告定向
 
-**Keywords:**
-- Exact match: [keyword] — most precise, lower volume
-- Phrase match: "keyword" — moderate precision and volume
-- Broad match: keyword — highest volume, use with smart bidding
+**关键词：**
+- 完全匹配：[keyword] — 最精确，量较少
+- 词组匹配："keyword" — 精确度和量适中
+- 广泛匹配：keyword — 量最大，结合智能出价使用
 
-**Audience layering:**
-- Add audiences in "observation" mode first
-- Analyze performance by audience
-- Switch to "targeting" mode for high performers
+**受众分层：**
+- 先以"观察"模式添加受众
+- 按受众分析表现
+- 为高表现者切换到"定向"模式
 
-**RLSA (Remarketing Lists for Search Ads):**
-- Bid higher on past visitors searching your terms
-- Show different ads to returning searchers
-- Exclude converters from prospecting campaigns
+**RLSA（搜索广告再营销列表）：**
+- 对搜索你关键词的过往访客提高出价
+- 向回访搜索者展示不同广告
+- 从拉新广告系列中排除已转化用户
 
-### Display/YouTube Targeting
+### 展示/YouTube 定向
 
-**Custom intent audiences:**
-- Based on recent search behavior
-- Create from your converting keywords
-- High intent, good for prospecting
+**自定义意向受众：**
+- 基于近期搜索行为
+- 从你的转化关键词创建
+- 意向高，适合拉新
 
-**In-market audiences:**
-- People actively researching solutions
-- Pre-built by Google
-- Layer with demographics for precision
+**有购买意向的受众：**
+- 正在积极研究方案的人
+- 由 Google 预建
+- 与人口统计条件叠加以提高精确度
 
-**Affinity audiences:**
-- Based on interests and habits
-- Better for awareness
-- Broad but can exclude irrelevant
+**兴趣相似的受众：**
+- 基于兴趣和习惯
+- 更适合品牌认知
+- 范围广但可排除不相关人群
 
-**Customer match:**
-- Upload email lists
-- Retarget existing customers
-- Create lookalikes from best customers
+**客户匹配：**
+- 上传邮件列表
+- 再营销现有客户
+- 从最佳客户创建类似受众
 
-**Similar/lookalike audiences:**
-- Based on your customer match lists
-- Expand reach while maintaining relevance
-- Best when source list is high-quality customers
-
----
-
-## Meta Audiences
-
-### Core Audiences (Interest/Demographic)
-
-**Interest targeting tips:**
-- Layer interests with AND logic for precision
-- Use Audience Insights to research interests
-- Start broad, let algorithm optimize
-- Exclude existing customers always
-
-**Demographic targeting:**
-- Age and gender (if product-specific)
-- Location (down to zip/postal code)
-- Language
-- Education and work (limited data now)
-
-**Behavior targeting:**
-- Purchase behavior
-- Device usage
-- Travel patterns
-- Life events
-
-### Custom Audiences
-
-**Website visitors:**
-- All visitors (last 180 days max)
-- Specific page visitors
-- Time on site thresholds
-- Frequency (visited X times)
-
-**Customer list:**
-- Upload emails/phone numbers
-- Match rate typically 30-70%
-- Refresh regularly for accuracy
-
-**Engagement audiences:**
-- Video viewers (25%, 50%, 75%, 95%)
-- Page/profile engagers
-- Form openers
-- Instagram engagers
-
-**App activity:**
-- App installers
-- In-app events
-- Purchase events
-
-### Lookalike Audiences
-
-**Source audience quality matters:**
-- Use high-LTV customers, not all customers
-- Purchasers > leads > all visitors
-- Minimum 100 source users, ideally 1,000+
-
-**Size recommendations:**
-- 1% — most similar, smallest reach
-- 1-3% — good balance for most
-- 3-5% — broader, good for scale
-- 5-10% — very broad, awareness only
-
-**Layering strategies:**
-- Lookalike + interest = more precision early
-- Test lookalike-only as you scale
-- Exclude the source audience
+**类似/相似受众：**
+- 基于你的客户匹配列表
+- 扩大覆盖范围同时保持相关性
+- 源列表质量为高价值客户时效果最佳
 
 ---
 
-## LinkedIn Audiences
+## Meta 受众
 
-### Job-Based Targeting
+### 核心受众（兴趣/人口统计）
 
-**Job titles:**
-- Be specific (CMO vs. "Marketing")
-- LinkedIn normalizes titles, but verify
-- Stack related titles
-- Exclude irrelevant titles
+**兴趣定向技巧：**
+- 使用 AND 逻辑叠加兴趣以提高精确度
+- 使用 Audience Insights 研究兴趣
+- 从广泛开始，让算法优化
+- 始终排除现有客户
 
-**Job functions:**
-- Broader than titles
-- Combine with seniority level
-- Good for awareness campaigns
+**人口统计定向：**
+- 年龄和性别（如果产品特定）
+- 位置（精确到邮编）
+- 语言
+- 教育和职业（现在数据有限）
 
-**Seniority levels:**
-- Entry, Senior, Manager, Director, VP, CXO, Partner
-- Layer with function for precision
+**行为定向：**
+- 购买行为
+- 设备使用
+- 旅行模式
+- 人生事件
 
-**Skills:**
-- Self-reported, less reliable
-- Good for technical roles
-- Use as expansion layer
+### 自定义受众
 
-### Company-Based Targeting
+**网站访客：**
+- 所有访客（最多过去 180 天）
+- 特定页面访客
+- 页面停留时间阈值
+- 访问频率（访问了 X 次）
 
-**Company size:**
-- 1-10, 11-50, 51-200, 201-500, 501-1000, 1001-5000, 5000+
-- Key filter for B2B
+**客户列表：**
+- 上传邮箱/手机号
+- 匹配率通常为 30-70%
+- 定期更新以保持准确
 
-**Industry:**
-- Based on company classification
-- Can be broad, layer with other criteria
+**互动受众：**
+- 视频观众（25%、50%、75%、95%）
+- 主页/个人资料互动者
+- 表单打开者
+- Instagram 互动者
 
-**Company names (ABM):**
-- Upload target account list
-- Minimum 300 companies recommended
-- Match rate varies
+**应用活动：**
+- 应用安装者
+- 应用内事件
+- 购买事件
 
-**Company growth rate:**
-- Hiring rapidly = budget available
-- Good signal for timing
+### 类似受众
 
-### High-Performing Combinations
+**源受众质量很重要：**
+- 使用高 LTV 客户，不要用所有客户
+- 购买者 > 线索 > 所有访客
+- 最少 100 个源用户，理想 1,000+
 
-| Use Case | Targeting Combination |
-|----------|----------------------|
-| Enterprise sales | Company size 1000+ + VP/CXO + Industry |
-| SMB sales | Company size 11-200 + Manager/Director + Function |
-| Developer tools | Skills + Job function + Company type |
-| ABM campaigns | Company list + Decision-maker titles |
-| Broad awareness | Industry + Seniority + Geography |
+**规模建议：**
+- 1% — 最相似，覆盖范围最小
+- 1-3% — 对大多数来说平衡良好
+- 3-5% — 更广泛，适合扩量
+- 5-10% — 非常广泛，仅用于品牌认知
 
----
-
-## Twitter/X Audiences
-
-### Targeting options:
-- Follower lookalikes (accounts similar to followers of X)
-- Interest categories
-- Keywords (in tweets)
-- Conversation topics
-- Events
-- Tailored audiences (your lists)
-
-### Best practices:
-- Follower lookalikes of relevant accounts work well
-- Keyword targeting catches active conversations
-- Lower CPMs than LinkedIn/Meta
-- Less precise, better for awareness
+**叠加策略：**
+- 类似 + 兴趣 = 早期更精确
+- 随扩量测试仅类似受众
+- 排除源受众
 
 ---
 
-## TikTok Audiences
+## LinkedIn 受众
 
-### Targeting options:
-- Demographics (age, gender, location)
-- Interests (TikTok's categories)
-- Behaviors (video interactions)
-- Device (iOS/Android, connection type)
-- Custom audiences (pixel, customer file)
-- Lookalike audiences
+### 职位定向
 
-### Best practices:
-- Younger skew (18-34 primarily)
-- Interest targeting is broad
-- Creative matters more than targeting
-- Let algorithm optimize with broad targeting
+**职位名称：**
+- 要具体（CMO vs. "Marketing"）
+- LinkedIn 会归一化职位名称，但需验证
+- 叠加相关职位
+- 排除不相关职位
+
+**职能：**
+- 比职位名称更广泛
+- 与职级结合使用
+- 适合品牌认知广告系列
+
+**职级：**
+- 初级、高级、经理、总监、VP、CXO、合伙人
+- 与职能叠加以提高精确度
+
+**技能：**
+- 用户自行申报，可靠性较低
+- 适合技术岗位
+- 作为扩展层使用
+
+### 公司定向
+
+**公司规模：**
+- 1-10、11-50、51-200、201-500、501-1000、1001-5000、5000+
+- B2B 的关键筛选条件
+
+**行业：**
+- 基于公司分类
+- 可能较宽泛，需与其他条件叠加
+
+**公司名称（ABM）：**
+- 上传定向账户列表
+- 建议至少 300 家公司
+- 匹配率因情况而异
+
+**公司增长率：**
+- 快速招聘 = 有预算
+- 是判断时机的好信号
+
+### 高表现组合
+
+| 使用场景 | 定向组合 |
+|----------|----------|
+| 企业销售 | 公司规模 1000+ + VP/CXO + 行业 |
+| 中小企业销售 | 公司规模 11-200 + 经理/总监 + 职能 |
+| 开发者工具 | 技能 + 职能 + 公司类型 |
+| ABM 广告系列 | 公司列表 + 决策者职位 |
+| 广泛认知 | 行业 + 职级 + 地理位置 |
 
 ---
 
-## Audience Size Guidelines
+## Twitter/X 受众
 
-| Platform | Minimum Recommended | Ideal Range |
-|----------|-------------------|-------------|
-| Google Search | 1,000+ searches/mo | 5,000-50,000 |
-| Google Display | 100,000+ | 500K-5M |
-| Meta | 100,000+ | 500K-10M |
-| LinkedIn | 50,000+ | 100K-500K |
-| Twitter/X | 50,000+ | 100K-1M |
-| TikTok | 100,000+ | 1M+ |
+### 定向选项：
+- 关注者类似（与 X 的关注者相似的用户）
+- 兴趣类别
+- 关键词（在推文中）
+- 话题
+- 活动
+- 定制受众（你的列表）
 
-Too narrow = expensive, slow learning
-Too broad = wasted spend, poor relevance
+### 最佳实践：
+- 相关账户的关注者类似效果不错
+- 关键词定向可捕获活跃讨论
+- CPM 低于 LinkedIn/Meta
+- 不够精确，更适合品牌认知
 
 ---
 
-## Exclusion Strategy
+## TikTok 受众
 
-Always exclude:
-- Existing customers (unless upsell)
-- Recent converters (7-14 days)
-- Bounced visitors (<10 sec)
-- Employees (by company or email list)
-- Irrelevant page visitors (careers, support)
-- Competitors (if identifiable)
+### 定向选项：
+- 人口统计（年龄、性别、位置）
+- 兴趣（TikTok 的分类）
+- 行为（视频互动）
+- 设备（iOS/Android、连接类型）
+- 自定义受众（像素、客户文件）
+- 类似受众
+
+### 最佳实践：
+- 年龄偏年轻（主要为 18-34 岁）
+- 兴趣定向较宽泛
+- 创意比定向更重要
+- 让算法通过广泛定向进行优化
+
+---
+
+## 受众规模指南
+
+| 平台 | 最低建议 | 理想范围 |
+|------|---------|----------|
+| Google 搜索 | 1,000+ 搜索/月 | 5,000-50,000 |
+| Google 展示 | 100,000+ | 50 万-500 万 |
+| Meta | 100,000+ | 50 万-1000 万 |
+| LinkedIn | 50,000+ | 10 万-50 万 |
+| Twitter/X | 50,000+ | 10 万-100 万 |
+| TikTok | 100,000+ | 100 万+ |
+
+过于狭窄 = 成本高，学习慢
+过于宽泛 = 预算浪费，相关性差
+
+---
+
+## 排除策略
+
+始终排除：
+- 现有客户（除非是向上销售）
+- 近期转化者（7-14 天）
+- 跳出访客（<10 秒）
+- 员工（按公司或邮件列表）
+- 不相关页面访客（招聘、支持）
+- 竞争对手（如果可以识别）

@@ -1,145 +1,144 @@
-# Edge Case Checklist
+# 边界情况检查清单
 
-Common edge cases organized by domain. Use as a prompt when identifying edge cases
-during task decomposition.
+按领域组织的常见边界情况。在任务分解过程中识别边界情况时作为提示使用。
 
 ---
 
-## Input Edge Cases
+## 输入边界情况
 
-### Strings
+### 字符串
 
-| Edge Case          | Test                                  |
+| 边界情况           | 测试                                  |
 | ------------------ | ------------------------------------- |
-| Empty string       | `""`                                  |
-| Whitespace only    | `"   "`, `"\t\n"`                     |
-| Very long string   | 10K+ characters                       |
-| Unicode            | Emoji, CJK, RTL, combining characters |
-| Special characters | `<script>`, `'; DROP TABLE`, `../`    |
+| 空字符串           | `""`                                  |
+| 仅空白字符         | `"   "`, `"\t\n"`                     |
+| 超长字符串         | 10K+ 字符                             |
+| Unicode            | Emoji, CJK, RTL, 组合字符             |
+| 特殊字符           | `<script>`, `'; DROP TABLE`, `../`    |
 | Null/None          | `None`, `null`                        |
-| HTML entities      | `&amp;`, `&lt;`                       |
-| Control characters | `\0`, `\x00`                          |
+| HTML 实体          | `&amp;`, `&lt;`                       |
+| 控制字符           | `\0`, `\x00`                          |
 
-### Numbers
+### 数字
 
-| Edge Case       | Test                                     |
-| --------------- | ---------------------------------------- |
-| Zero            | `0`, `0.0`                               |
-| Negative        | `-1`, `-0.0`                             |
-| Maximum         | `sys.maxsize`, `Number.MAX_SAFE_INTEGER` |
-| Float precision | `0.1 + 0.2`                              |
-| NaN / Infinity  | `float('nan')`, `float('inf')`           |
-| Very small      | `0.000001`                               |
-| Boundary ±1     | Off-by-one at every boundary             |
+| 边界情况       | 测试                                     |
+| -------------- | ---------------------------------------- |
+| 零             | `0`, `0.0`                               |
+| 负数           | `-1`, `-0.0`                             |
+| 最大值         | `sys.maxsize`, `Number.MAX_SAFE_INTEGER` |
+| 浮点精度       | `0.1 + 0.2`                              |
+| NaN / Infinity | `float('nan')`, `float('inf')`           |
+| 极小值         | `0.000001`                               |
+| 边界 ±1        | 每个边界处的差一错误                     |
 
-### Collections
+### 集合
 
-| Edge Case          | Test                     |
+| 边界情况           | 测试                     |
 | ------------------ | ------------------------ |
-| Empty              | `[]`, `{}`               |
-| Single element     | `[1]`, `{"a": 1}`        |
-| Duplicate elements | `[1, 1, 1]`              |
-| Very large         | 100K+ elements           |
-| Nested             | Deeply nested structures |
-| Mixed types        | `[1, "two", None, 3.0]`  |
+| 空                 | `[]`, `{}`               |
+| 单元素             | `[1]`, `{"a": 1}`        |
+| 重复元素           | `[1, 1, 1]`              |
+| 非常大             | 10 万+ 个元素            |
+| 嵌套               | 深度嵌套结构             |
+| 混合类型           | `[1, "two", None, 3.0]`  |
 
-### Dates and Times
+### 日期和时间
 
-| Edge Case        | Test                 |
+| 边界情况         | 测试                 |
 | ---------------- | -------------------- |
-| Midnight         | `00:00:00`           |
-| End of day       | `23:59:59`           |
-| Leap year        | Feb 29               |
-| Timezone changes | DST transitions      |
-| Epoch            | `1970-01-01`         |
-| Far future       | Year 2038, year 9999 |
-| Invalid dates    | Feb 30, month 13     |
+| 午夜             | `00:00:00`           |
+| 日终             | `23:59:59`           |
+| 闰年             | 2 月 29 日           |
+| 时区变化         | DST 切换             |
+| 纪元             | `1970-01-01`         |
+| 遥远未来         | 2038 年, 9999 年     |
+| 无效日期         | 2 月 30 日, 第 13 月 |
 
 ---
 
-## State Edge Cases
+## 状态边界情况
 
-### Concurrency
+### 并发
 
-| Edge Case           | Scenario                            |
-| ------------------- | ----------------------------------- |
-| Simultaneous writes | Two users edit the same record      |
-| Read during write   | Query returns partial update        |
-| Double submit       | Form submitted twice quickly        |
-| Stale data          | Data changed between read and write |
-| Lost update         | Last write wins, first write lost   |
+| 边界情况           | 场景                            |
+| ------------------ | ------------------------------- |
+| 同时写入           | 两个用户编辑同一条记录          |
+| 写入时读取         | 查询返回部分更新                |
+| 重复提交           | 表单被快速提交两次              |
+| 过期数据           | 数据在读写之间发生变更          |
+| 更新丢失           | 最后一次写入获胜，首次写入丢失  |
 
-### Lifecycle
+### 生命周期
 
-| Edge Case          | Scenario                                  |
-| ------------------ | ----------------------------------------- |
-| First use          | No data exists yet (empty state)          |
-| Re-initialization  | System restarted mid-operation            |
-| Migration          | Old data format meets new code            |
-| Rollback           | Feature disabled after some users used it |
-| Partial completion | Operation interrupted midway              |
+| 边界情况           | 场景                                  |
+| ------------------ | ------------------------------------- |
+| 首次使用           | 尚无数据存在（空状态）                |
+| 重新初始化         | 系统在操作中重启                      |
+| 迁移               | 旧数据格式遇到新代码                  |
+| 回滚               | 功能在使用后被禁用                    |
+| 部分完成           | 操作中途被中断                        |
 
 ---
 
-## Web/API Edge Cases
+## Web/API 边界情况
 
 ### HTTP
 
-| Edge Case           | Scenario                                 |
-| ------------------- | ---------------------------------------- |
-| Timeout             | Request takes > configured timeout       |
-| 4xx response        | Client error from downstream service     |
-| 5xx response        | Server error from downstream service     |
-| Empty response body | 200 OK but no content                    |
-| Large payload       | Request/response exceeds size limits     |
-| Slow response       | Connection established but data trickles |
-| DNS failure         | Cannot resolve hostname                  |
-| Certificate error   | Expired/invalid TLS cert                 |
+| 边界情况           | 场景                                 |
+| ------------------ | ------------------------------------ |
+| 超时               | 请求超过配置的超时时间               |
+| 4xx 响应           | 下游服务返回客户端错误               |
+| 5xx 响应           | 下游服务返回服务端错误               |
+| 空响应体           | 200 OK 但无内容                      |
+| 大负载             | 请求/响应超过大小限制                |
+| 慢响应             | 连接已建立但数据缓慢传输             |
+| DNS 失败           | 无法解析主机名                       |
+| 证书错误           | TLS 证书过期/无效                     |
 
-### Authentication
+### 认证
 
-| Edge Case       | Scenario                                      |
-| --------------- | --------------------------------------------- |
-| Expired token   | Valid but expired                             |
-| Revoked token   | Was valid, now revoked                        |
-| No token        | Request without auth header                   |
-| Malformed token | Random string, wrong format                   |
-| Different user  | Token for user A used to access user B's data |
+| 边界情况       | 场景                                      |
+| -------------- | ----------------------------------------- |
+| 过期令牌       | 有效但已过期                              |
+| 撤销令牌       | 曾经有效，现已撤销                        |
+| 无令牌         | 无认证头部的请求                          |
+| 格式错误令牌   | 随机字符串、错误格式                      |
+| 不同用户       | 用用户 A 的令牌访问用户 B 的数据           |
 
-### Pagination
+### 分页
 
-| Edge Case                  | Scenario                                  |
-| -------------------------- | ----------------------------------------- |
-| Page 0                     | Some APIs are 0-indexed, some 1-indexed   |
-| Last page                  | Partial page, fewer items than per_page   |
-| Beyond last page           | Page number exceeds total pages           |
-| Data changes between pages | New items added/removed during pagination |
-| Very large per_page        | Per_page=1000000                          |
-
----
-
-## Database Edge Cases
-
-| Edge Case                  | Scenario                                   |
-| -------------------------- | ------------------------------------------ |
-| NULL values                | Column allows NULL, code doesn't handle it |
-| Foreign key violation      | Referenced row doesn't exist               |
-| Unique constraint          | Duplicate insert                           |
-| Deadlock                   | Two transactions lock each other           |
-| Connection pool exhaustion | All connections in use                     |
-| Long-running query         | Query blocks other operations              |
+| 边界情况                  | 场景                                  |
+| ------------------------- | ------------------------------------- |
+| 第 0 页                   | 某些 API 从 0 开始索引，某些从 1 开始  |
+| 最后一页                  | 部分页，项目少于每页数量              |
+| 超出最后一页              | 页号超过总页数                        |
+| 分页期间数据变化          | 分页期间项目被添加/删除               |
+| 每页数量过大              | Per_page=1000000                      |
 
 ---
 
-## File System Edge Cases
+## 数据库边界情况
 
-| Edge Case         | Scenario                           |
-| ----------------- | ---------------------------------- |
-| File not found    | Expected file doesn't exist        |
-| Permission denied | File exists but not readable       |
-| Empty file        | File exists but has zero bytes     |
-| Very large file   | Exceeds available memory           |
-| Symbolic link     | File is a symlink (follow or not?) |
-| Concurrent access | Another process modifying the file |
-| Disk full         | Write fails mid-operation          |
-| Path traversal    | `../../etc/passwd` in filename     |
+| 边界情况                  | 场景                                   |
+| ------------------------- | -------------------------------------- |
+| NULL 值                   | 列允许 NULL，代码未处理                |
+| 外键违规                  | 引用的行不存在                         |
+| 唯一约束                  | 重复插入                               |
+| 死锁                      | 两个事务相互锁定                       |
+| 连接池耗尽                | 所有连接均在使用中                     |
+| 长查询                    | 查询阻塞其他操作                       |
+
+---
+
+## 文件系统边界情况
+
+| 边界情况         | 场景                           |
+| ---------------- | ------------------------------ |
+| 文件未找到       | 预期文件不存在                 |
+| 权限被拒绝       | 文件存在但不可读               |
+| 空文件           | 文件存在但字节数为零           |
+| 超大文件         | 超过可用内存                   |
+| 符号链接         | 文件是符号链接（是否跟随？）   |
+| 并发访问         | 另一个进程正在修改文件         |
+| 磁盘满           | 写入在操作中途失败             |
+| 路径遍历         | 文件名中的 `../../etc/passwd`  |

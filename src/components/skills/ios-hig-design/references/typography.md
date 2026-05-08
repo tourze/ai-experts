@@ -1,31 +1,31 @@
-# iOS Typography Guidelines
+# iOS 排版指南
 
-## System Font: San Francisco
+## 系统字体：San Francisco
 
-iOS uses San Francisco (SF Pro) as the default typeface. Use system text styles for automatic Dynamic Type support.
+iOS 使用 San Francisco（SF Pro）作为默认字体。使用系统文本样式以获得自动Dynamic Type支持。
 
-## Standard Text Styles
+## 标准文本样式
 
-| Element | Size | Weight | Color |
-|---------|------|--------|-------|
-| Large Title (unscrolled) | 34pt | Bold | #000000 |
-| Title (scrolled) | 17pt | Medium | #000000 |
-| Body text, List items | 17pt | Regular | #000000 |
-| Secondary text | 15pt | Regular | #3C3C43 @ 60% |
-| Caption, Tertiary | 12-13pt | Regular | #3C3C43 @ 60% |
-| Tab bar labels | 10pt | Regular | #8A8A8E |
+| 元素 | 字号 | 字重 | 颜色 |
+|------|------|------|------|
+| 大标题（未滚动） | 34pt | Bold | #000000 |
+| 标题（滚动后） | 17pt | Medium | #000000 |
+| 正文、列表项 | 17pt | Regular | #000000 |
+| 次要文本 | 15pt | Regular | #3C3C43 @ 60% |
+| 说明、第三级 | 12-13pt | Regular | #3C3C43 @ 60% |
+| 标签栏标签 | 10pt | Regular | #8A8A8E |
 
-## Typography Rules
+## 排版规则
 
-1. **Minimum text size**: 11pt (for captions/secondary info)
-2. **Line height**: Minimum 1.3× font size for paragraphs
-3. **Line length**: 35-50 characters per line for mobile
-4. **Alignment**: Left-aligned, non-justified text
-5. **Hierarchy**: Use weight and color variation, not size extremes
-6. **Contrast**: Minimum 4.5:1 ratio (WCAG AA standard)
+1. **最小文本尺寸**：11pt（用于说明/次要信息）
+2. **行高**：段落最小为字体大小的 1.3 倍
+3. **行长**：移动端每行 35-50 个字符
+4. **对齐**：左对齐，非两端对齐文本
+5. **层次**：使用字重和颜色变化，而非极端尺寸
+6. **对比度**：最低 4.5:1 比例（WCAG AA 标准）
 
 ```swift
-// Use semantic text styles for Dynamic Type support
+// 使用语义文本样式以获得 Dynamic Type 支持
 Text("Title")
     .font(.title)
 
@@ -37,8 +37,8 @@ Text("Caption")
     .foregroundColor(.secondary)
 ```
 
-## Dark Mode Typography
+## 深色模式排版
 
-- Black text (#000) → White (#FFF)
-- Dark gray text → Light gray text
-- Background colors shift darker (maintain relative hierarchy)
+- 黑色文本（#000）→ 白色（#FFF）
+- 深灰色文本 → 浅灰色文本
+- 背景颜色转向更深色（保持相对层次）

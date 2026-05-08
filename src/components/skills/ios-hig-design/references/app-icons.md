@@ -1,27 +1,27 @@
-# iOS App Icons
+# iOS 应用图标
 
-## Required Sizes
+## 所需尺寸
 
-| Size | Usage |
-|------|-------|
+| 尺寸 | 用途 |
+|------|------|
 | 1024 × 1024px | App Store |
-| 180 × 180px | iPhone home screen (@3x) |
-| 120 × 120px | iPhone home screen (@2x), Spotlight |
+| 180 × 180px | iPhone 主屏幕（@3x） |
+| 120 × 120px | iPhone 主屏幕（@2x）、Spotlight |
 | 167 × 167px | iPad Pro |
-| 152 × 152px | iPad (@2x) |
-| 87 × 87px | Settings |
+| 152 × 152px | iPad（@2x） |
+| 87 × 87px | 设置 |
 
-## Icon Shape
+## 图标形状
 
-iOS applies a **superellipse** ("squircle") mask automatically. Export icons as squares.
+iOS 会自动应用**超椭圆**（"圆角正方形"）遮罩。导出图标为正方形。
 
-For custom border matching the shape:
-- Corner radius = side length × 0.222
-- Corner smoothing = 61% (iOS preset in Figma)
+如需匹配形状的自定义边框：
+- 圆角半径 = 边长 × 0.222
+- 圆角平滑度 = 61%（Figma 中的 iOS 预设）
 
-## Icon Guidelines
+## 图标指南
 
-- Simple, recognizable silhouette
-- Works at all sizes (remove fine details for small sizes)
-- Consider light, dark, and tinted variants (iOS 18+)
-- Avoid text in icons
+- 简单、可识别的轮廓
+- 在所有尺寸下都有效（为小尺寸移除精细细节）
+- 考虑浅色、深色和着色变体（iOS 18+）
+- 避免在图标中使用文字

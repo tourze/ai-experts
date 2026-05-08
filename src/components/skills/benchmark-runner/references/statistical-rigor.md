@@ -1,48 +1,47 @@
-# Statistical Rigor
+# 统计严谨性
 
-Sample sizing, variance measurement, significance testing, and outlier handling
-for benchmark results.
-
----
-
-## Why Statistics Matter in Benchmarks
-
-A single measurement tells nothing. Performance varies due to:
-
-- CPU scheduling, context switches
-- Cache state (hot vs cold)
-- Background processes
-- GC pauses
-- Thermal throttling
-
-Without statistical analysis, you cannot distinguish real differences from noise.
+基准测试结果的样本量规划、方差测量、显著性检验和异常值处理。
 
 ---
 
-## Sample Size
+## 为什么统计在基准测试中很重要
 
-### Minimum Samples
+单次测量说明不了任何问题。性能因以下因素而波动：
 
-| Confidence Level           | Minimum Samples |
-| -------------------------- | --------------- |
-| Basic comparison           | 30              |
-| Percentile reporting (P95) | 100             |
-| Percentile reporting (P99) | 1,000           |
-| Publication-quality        | 1,000+          |
+- CPU 调度、上下文切换
+- 缓存状态（热 vs 冷）
+- 后台进程
+- GC 暂停
+- 热降频
 
-### Rule of Thumb
-
-For percentile P_k, collect at least `100 / (100 - k)` × 10 samples:
-
-- P50 → 20 samples minimum
-- P95 → 200 samples minimum
-- P99 → 1,000 samples minimum
+没有统计分析，你就无法区分真实差异和噪声。
 
 ---
 
-## Variance Measurement
+## 样本量
 
-### Standard Deviation
+### 最少样本数
+
+| 置信水平                     | 最少样本数 |
+| ---------------------------- | ---------- |
+| 基本比较                     | 30         |
+| 百分位报告 (P95)             | 100        |
+| 百分位报告 (P99)             | 1,000      |
+| 可发表质量                   | 1,000+     |
+
+### 经验法则
+
+对于百分位 P_k，至少收集 `100 / (100 - k)` × 10 个样本：
+
+- P50 → 至少 20 个样本
+- P95 → 至少 200 个样本
+- P99 → 至少 1,000 个样本
+
+---
+
+## 方差测量
+
+### 标准差
 
 ```python
 import statistics
@@ -53,22 +52,22 @@ stdev = statistics.stdev(times)
 print(f"{mean:.2f} ± {stdev:.2f} ms")
 ```
 
-### Coefficient of Variation (CV)
+### 变异系数 (CV)
 
 ```text
 CV = stdev / mean × 100%
 ```
 
-| CV     | Interpretation                                                         |
-| ------ | ---------------------------------------------------------------------- |
-| < 5%   | Low variance — results are stable                                      |
-| 5-15%  | Moderate variance — acceptable for most comparisons                    |
-| 15-30% | High variance — increase iterations or improve isolation               |
-| > 30%  | Very high variance — results are unreliable, fix the measurement setup |
+| CV      | 解释                                                               |
+| ------- | ------------------------------------------------------------------ |
+| < 5%    | 低方差——结果稳定                                                   |
+| 5-15%   | 中等方差——大多数比较可接受                                         |
+| 15-30%  | 高方差——增加迭代次数或改善隔离                                     |
+| > 30%   | 方差极高——结果不可靠，修复测量设置                                 |
 
-### Inter-Quartile Range (IQR)
+### 四分位距 (IQR)
 
-More robust than standard deviation for skewed distributions:
+对于偏态分布，比标准差更稳健：
 
 ```python
 import numpy as np
@@ -81,17 +80,15 @@ print(f"Median: {q50:.2f} ms, IQR: {iqr:.2f} ms")
 
 ---
 
-## Significance Testing
+## 显著性检验
 
-### When Two Candidates Are "Close"
+### 当两个候选"很接近"时
 
-If Candidate A has mean 50ms and B has mean 52ms, is A really faster? It depends
-on variance.
+如果候选 A 均值为 50ms，B 均值为 52ms，A 真的更快吗？取决于方差。
 
-### Mann-Whitney U Test
+### Mann-Whitney U 检验
 
-Non-parametric test — does not assume normal distribution (benchmark times are
-often skewed). Tests whether one distribution tends to have larger values.
+非参数检验——不假设正态分布（基准测试时间通常是偏态的）。检验一个分布是否倾向于有更大的值。
 
 ```python
 from scipy import stats
@@ -102,36 +99,35 @@ times_b = [measure_b() for _ in range(100)]
 statistic, p_value = stats.mannwhitneyu(times_a, times_b, alternative='two-sided')
 
 if p_value < 0.05:
-    print(f"Significant difference (p={p_value:.4f})")
+    print(f"存在显著差异 (p={p_value:.4f})")
 else:
-    print(f"No significant difference (p={p_value:.4f})")
+    print(f"无显著差异 (p={p_value:.4f})")
 ```
 
-### Effect Size
+### 效应量
 
-Statistical significance alone is insufficient. A 0.1ms difference might be
-statistically significant with enough samples but practically irrelevant.
+仅统计显著性是不够的。0.1ms 的差异在有足够样本量时可能具有统计显著性，但在实际中毫无意义。
 
-Report effect size alongside significance:
+将效应量与显著性一起报告：
 
 ```python
-# Relative difference
+# 相对差异
 effect = (mean_b - mean_a) / mean_a * 100
-print(f"B is {effect:.1f}% {'slower' if effect > 0 else 'faster'} than A")
+print(f"B 比 A {effect:.1f}%{' 慢' if effect > 0 else ' 快'}")
 ```
 
-| Effect Size | Interpretation                     |
-| ----------- | ---------------------------------- |
-| < 1%        | Negligible — practically identical |
-| 1-5%        | Small — may matter at scale        |
-| 5-20%       | Medium — meaningful difference     |
-| > 20%       | Large — clear winner               |
+| 效应量     | 解释                           |
+| ----------- | ------------------------------ |
+| < 1%        | 可忽略——实际相同               |
+| 1-5%        | 微小——大规模时可能重要         |
+| 5-20%       | 中等——有意义的差异             |
+| > 20%       | 大——明显胜出                   |
 
 ---
 
-## Outlier Handling
+## 异常值处理
 
-### Detection
+### 检测
 
 ```python
 import numpy as np
@@ -143,49 +139,47 @@ lower_bound = q25 - 1.5 * iqr
 upper_bound = q75 + 1.5 * iqr
 
 outliers = times[(times < lower_bound) | (times > upper_bound)]
-print(f"Found {len(outliers)} outliers out of {len(times)} measurements")
+print(f"在 {len(times)} 次测量中发现 {len(outliers)} 个异常值")
 ```
 
-### What to Do with Outliers
+### 如何处理异常值
 
-| Approach                | When to Use                                                                                 |
-| ----------------------- | ------------------------------------------------------------------------------------------- |
-| Keep all data           | Default — outliers represent real-world behavior                                            |
-| Report with and without | When outliers significantly affect mean                                                     |
-| Remove and document     | Only if outliers have a known, irrelevant cause (e.g., GC pause during unrelated operation) |
-| Use robust statistics   | Report median + IQR instead of mean + stdev                                                 |
+| 方法                     | 何时使用                                                                                    |
+| ------------------------ | ------------------------------------------------------------------------------------------- |
+| 保留所有数据             | 默认——异常值代表真实世界的行为                                                              |
+| 报告含和不含两种情况     | 当异常值显著影响均值时                                                                      |
+| 移除并记录               | 仅在异常值有已知的、不相关的原因时（例如，不相关操作期间的 GC 暂停）                         |
+| 使用稳健统计             | 报告中位数 + IQR 替代均值 + 标准差                                                          |
 
-**Never silently remove outliers.** Always report what was removed and why.
+**永远不要静默移除异常值。** 始终报告移除了什么以及为什么。
 
 ---
 
-## Reporting Format
+## 报告格式
 
-### Compact Table Format
-
-```markdown
-| Candidate  | P50  | P95  | P99  | Mean ± StdDev | N    |
-| ---------- | ---- | ---- | ---- | ------------- | ---- |
-| A          | 12ms | 18ms | 25ms | 13.2 ± 3.1ms  | 1000 |
-| B          | 15ms | 22ms | 35ms | 16.8 ± 5.2ms  | 1000 |
-| Difference | -20% | -18% | -29% | p < 0.001     |      |
-```
-
-### Interpretation Template
+### 紧凑表格格式
 
 ```markdown
-**Candidate A is {X}% faster than B** (P50: 12ms vs 15ms, p < 0.001, N=1000).
-The difference is statistically significant and practically meaningful (>5% effect
-size). A also shows lower variance (CV=23% vs 31%), indicating more consistent
-performance.
+| 候选方案    | P50   | P95   | P99   | 均值 ± 标准差   | N     |
+| ----------- | ----- | ----- | ----- | --------------- | ----- |
+| A           | 12ms  | 18ms  | 25ms  | 13.2 ± 3.1ms    | 1000  |
+| B           | 15ms  | 22ms  | 35ms  | 16.8 ± 5.2ms    | 1000  |
+| 差异        | -20%  | -18%  | -29%  | p < 0.001       |       |
 ```
 
-### What to Include
+### 解释模板
 
-- [ ] Sample size (N)
-- [ ] Central tendency (median or mean)
-- [ ] Spread (stdev, IQR, or CV)
-- [ ] Percentiles (P50, P95, P99 as appropriate)
-- [ ] Statistical significance (p-value)
-- [ ] Effect size (relative difference)
-- [ ] Outlier count and handling
+```markdown
+**候选 A 比 B 快 {X}%**（P50: 12ms vs 15ms, p < 0.001, N=1000）。
+该差异具有统计显著性和实际意义（效应量 >5%）。A 还显示出更低的方差（CV=23% vs 31%），表明性能更加一致。
+```
+
+### 应包含的内容
+
+- [ ] 样本量 (N)
+- [ ] 集中趋势（中位数或均值）
+- [ ] 离散度（标准差、IQR 或 CV）
+- [ ] 百分位数（酌情包含 P50, P95, P99）
+- [ ] 统计显著性 (p 值)
+- [ ] 效应量（相对差异）
+- [ ] 异常值计数和处理方式

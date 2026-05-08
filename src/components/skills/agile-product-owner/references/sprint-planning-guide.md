@@ -1,324 +1,324 @@
-# Sprint Planning Guide
+# Sprint 规划指南
 
-Sprint planning workflows, capacity calculation, and backlog management.
-
----
-
-## Table of Contents
-
-- [Sprint Planning Workflow](#sprint-planning-workflow)
-- [Capacity Planning](#capacity-planning)
-- [Backlog Prioritization](#backlog-prioritization)
-- [Sprint Ceremonies](#sprint-ceremonies)
-- [Metrics and Tracking](#metrics-and-tracking)
+Sprint 规划工作流、容量计算和待办事项管理。
 
 ---
 
-## Sprint Planning Workflow
+## 目录
 
-### Pre-Planning (1-2 Days Before)
+- [Sprint 规划工作流](#sprint-规划工作流)
+- [容量规划](#容量规划)
+- [待办事项优先级排序](#待办事项优先级排序)
+- [Sprint 仪式](#sprint-仪式)
+- [指标与跟踪](#指标与跟踪)
 
-1. Review and refine backlog items for upcoming sprint
-2. Ensure top items have acceptance criteria
-3. Validate story point estimates with team
-4. Identify dependencies between stories
-5. Confirm team availability for sprint
-6. **Validation:** Top 1.5x capacity of stories are refined and estimated
+---
 
-### Sprint Planning Meeting
+## Sprint 规划工作流
 
-**Duration:** 2 hours for 2-week sprint
+### 规划前（1-2 天前）
 
-**Agenda:**
+1. 审查并精简下一个 Sprint 的待办事项
+2. 确保顶部事项有验收标准
+3. 与团队验证故事点估算
+4. 识别故事之间的依赖关系
+5. 确认团队在 Sprint 期间的可用性
+6. **验证：** 顶部 1.5 倍容量的故事已精炼和估算
 
-| Time | Activity | Participants |
+### Sprint 规划会议
+
+**时长：** 2 周 Sprint 为 2 小时
+
+**议程：**
+
+| 时间 | 活动 | 参与者 |
 |------|----------|--------------|
-| 0:00-0:15 | Review sprint goal and priorities | PO presents |
-| 0:15-0:45 | Discuss top backlog items | Team asks questions |
-| 0:45-1:15 | Team selects stories for sprint | Team decides |
-| 1:15-1:45 | Break down stories into tasks | Team collaborates |
-| 1:45-2:00 | Confirm commitment and identify risks | All |
+| 0:00-0:15 | 审查 Sprint 目标和优先级 | 产品负责人介绍 |
+| 0:15-0:45 | 讨论顶部待办事项 | 团队提问 |
+| 0:45-1:15 | 团队选择 Sprint 故事 | 团队决定 |
+| 1:15-1:45 | 将故事拆分为任务 | 团队协作 |
+| 1:45-2:00 | 确认承诺并识别风险 | 全员 |
 
-### Planning Checklist
+### 规划检查清单
 
-**Before Planning:**
-- [ ] Backlog groomed with top items refined
-- [ ] Previous sprint retrospective actions reviewed
-- [ ] Team capacity calculated
-- [ ] Dependencies identified
-- [ ] Sprint goal drafted
+**规划前：**
+- [ ] 待办事项已整理，顶部事项已精炼
+- [ ] 审查了上一 Sprint 回顾行动
+- [ ] 已计算团队容量
+- [ ] 已识别依赖关系
+- [ ] 草拟了 Sprint 目标
 
-**During Planning:**
-- [ ] Sprint goal agreed
-- [ ] Stories selected fit within capacity
-- [ ] Acceptance criteria reviewed for each story
-- [ ] Tasks identified for complex stories
-- [ ] Risks and blockers discussed
+**规划期间：**
+- [ ] Sprint 目标已达成一致
+- [ ] 选定的故事在容量范围内
+- [ ] 每个故事的验收标准已审查
+- [ ] 复杂故事的任务已识别
+- [ ] 已讨论风险和阻塞项
 
-**After Planning:**
-- [ ] Sprint backlog visible to all
-- [ ] Sprint goal communicated
-- [ ] Calendar blocked for ceremonies
-- [ ] Dependencies communicated to other teams
+**规划后：**
+- [ ] Sprint 待办事项对全员可见
+- [ ] Sprint 目标已传达
+- [ ] 日历已为仪式预留时间
+- [ ] 依赖关系已传达给其他团队
 
 ---
 
-## Capacity Planning
+## 容量规划
 
-### Team Capacity Calculation
+### 团队容量计算
 
 ```
-Sprint Capacity = (Team Members × Sprint Days × Hours/Day × Focus Factor)
-                  ÷ Hours per Story Point
+Sprint 容量 = (团队成员数 × Sprint 天数 × 每天小时数 × 专注系数)
+              ÷ 每个故事点的小时数
 
-Simplified Version:
-Sprint Capacity = Average Velocity × Availability Factor
+简化版本：
+Sprint 容量 = 平均速度 × 可用性系数
 ```
 
-### Availability Factors
+### 可用性系数
 
-| Scenario | Factor | Example |
+| 场景 | 系数 | 示例 |
 |----------|--------|---------|
-| Full sprint, no PTO | 1.0 | 30 points if velocity = 30 |
-| 1 team member out 50% | 0.9 | 27 points |
-| Holiday during sprint | 0.8 | 24 points |
-| Multiple team members out | 0.7 | 21 points |
-| Major release/on-call | 0.75 | 22-23 points |
+| 完整 Sprint，无休假 | 1.0 | 速度 = 30 时为 30 点 |
+| 1 名成员 50% 不在位 | 0.9 | 27 点 |
+| Sprint 期间有假期 | 0.8 | 24 点 |
+| 多名成员不在位 | 0.7 | 21 点 |
+| 重大发布/值班 | 0.75 | 22-23 点 |
 
-### Capacity Buffer Rules
+### 容量缓冲规则
 
-| Commitment Level | % of Velocity | Purpose |
+| 承诺级别 | 速度百分比 | 目的 |
 |------------------|---------------|---------|
-| Committed | 80-85% | High confidence delivery |
-| Stretch | 10-15% | Optional if things go well |
-| Buffer | 5-10% | Unplanned work, bugs |
+| 承诺 | 80-85% | 高信心交付 |
+| 延伸 | 10-15% | 可选，顺利时执行 |
+| 缓冲 | 5-10% | 计划外工作、缺陷 |
 
-### Sprint Loading Example
+### Sprint 加载示例
 
 ```
-Team Velocity: 30 points/sprint
-Availability: 90% (one team member partially out)
-Adjusted Velocity: 27 points
+团队速度：30 点/Sprint
+可用性：90%（一名成员部分不在位）
+调整后速度：27 点
 
-Sprint Loading:
-- Committed work: 23 points (85% of 27)
-- Stretch goals: 4 points (15% of 27)
-- Buffer: Remaining capacity for bugs/support
+Sprint 加载：
+- 承诺工作：23 点（27 的 85%）
+- 延伸目标：4 点（27 的 15%）
+- 缓冲：剩余容量用于缺陷/支持
 
-Story Selection:
-[H] US-001: User dashboard (5 pts) ← Committed
-[H] US-002: Export feature (3 pts) ← Committed
-[H] US-003: Search filter (5 pts) ← Committed
-[M] US-004: Settings page (5 pts) ← Committed
-[M] US-005: Help tooltips (3 pts) ← Committed
-[L] US-006: Theme options (2 pts) ← Committed
+故事选择：
+[H] US-001：用户仪表盘（5 点）← 承诺
+[H] US-002：导出功能（3 点）← 承诺
+[H] US-003：搜索筛选（5 点）← 承诺
+[M] US-004：设置页面（5 点）← 承诺
+[M] US-005：帮助提示（3 点）← 承诺
+[L] US-006：主题选项（2 点）← 承诺
 ------------------------
-Committed Total: 23 points
+承诺总计：23 点
 
-[L] US-007: Sort options (2 pts) ← Stretch
-[L] US-008: Print view (2 pts) ← Stretch
+[L] US-007：排序选项（2 点）← 延伸
+[L] US-008：打印视图（2 点）← 延伸
 ------------------------
-Stretch Total: 4 points
+延伸总计：4 点
 ```
 
 ---
 
-## Backlog Prioritization
+## 待办事项优先级排序
 
-### Priority Framework
+### 优先级框架
 
-| Priority | Definition | SLA |
+| 优先级 | 定义 | SLA |
 |----------|------------|-----|
-| Critical | Blocking users, security, data loss | Immediate |
-| High | Core functionality, key user needs | This sprint |
-| Medium | Improvements, enhancements | Next 2-3 sprints |
-| Low | Nice-to-have, minor improvements | Backlog |
+| 关键 | 阻塞用户、安全、数据丢失 | 立即 |
+| 高 | 核心功能、关键用户需求 | 本 Sprint |
+| 中 | 改进、增强 | 接下来 2-3 个 Sprint |
+| 低 | 锦上添花、微小改进 | 待办事项 |
 
-### Prioritization Factors
+### 优先级因素
 
-| Factor | Weight | Questions |
+| 因素 | 权重 | 问题 |
 |--------|--------|-----------|
-| Business Value | 40% | Revenue impact? User demand? Strategic? |
-| User Impact | 30% | How many users? How often used? |
-| Risk/Dependencies | 15% | Technical risk? External dependencies? |
-| Effort | 15% | Size? Complexity? Uncertainty? |
+| 商业价值 | 40% | 收入影响？用户需求？战略意义？ |
+| 用户影响 | 30% | 影响多少用户？使用频率？ |
+| 风险/依赖 | 15% | 技术风险？外部依赖？ |
+| 工作量 | 15% | 规模？复杂度？不确定性？ |
 
-### WSJF (Weighted Shortest Job First)
+### WSJF（加权最短作业优先）
 
-For larger items, use SAFe's WSJF:
+对于较大事项，使用 SAFe 的 WSJF：
 
 ```
-WSJF = Cost of Delay / Job Duration
+WSJF = 延迟成本 / 作业时长
 
-Cost of Delay = User Value + Time Criticality + Risk Reduction
+延迟成本 = 用户价值 + 时间紧迫性 + 风险降低
 
-Scale: 1, 2, 3, 5, 8, 13, 20
+评分标准：1, 2, 3, 5, 8, 13, 20
 
-Example:
-Feature A: CoD = 13, Duration = 5 → WSJF = 2.6
-Feature B: CoD = 8, Duration = 2 → WSJF = 4.0 ← Higher priority
+示例：
+功能 A：CoD = 13, 时长 = 5 → WSJF = 2.6
+功能 B：CoD = 8, 时长 = 2 → WSJF = 4.0 ← 更高优先级
 ```
 
-### Backlog Organization
+### 待办事项组织
 
-| Section | Content | Review Frequency |
+| 分区 | 内容 | 审查频率 |
 |---------|---------|------------------|
-| Sprint Backlog | Committed for current sprint | Daily |
-| Ready | Refined, estimated, prioritized | Each planning |
-| Grooming | Needs refinement | Weekly |
-| Icebox | Future consideration | Monthly |
-| Archive | Completed or obsolete | Quarterly |
+| Sprint 待办事项 | 当前 Sprint 承诺的任务 | 每日 |
+| 就绪 | 已精炼、估算、排序 | 每次规划 |
+| 精炼中 | 需要进一步精炼 | 每周 |
+| 冷藏区 | 未来考虑 | 每月 |
+| 归档 | 已完成或废弃 | 每季度 |
 
 ---
 
-## Sprint Ceremonies
+## Sprint 仪式
 
-### Daily Standup
+### 每日站会
 
-**Duration:** 15 minutes max
-**Format:** Each team member answers:
+**时长：** 最多 15 分钟
+**格式：** 每位团队成员回答：
 
-1. What did I complete yesterday?
-2. What will I work on today?
-3. What blockers do I have?
+1. 我昨天完成了什么？
+2. 我今天要做什么？
+3. 我有什么阻塞项？
 
-**Product Owner Role:**
-- Listen for blockers needing PO action
-- Answer clarifying questions
-- Note scope concerns for offline discussion
-- Update stakeholders on progress
+**产品负责人角色：**
+- 倾听需要产品负责人行动的阻塞项
+- 回答澄清问题
+- 记录范围问题，会下讨论
+- 向利益相关者更新进度
 
-### Backlog Refinement (Grooming)
+### 待办事项精炼
 
-**Duration:** 1-2 hours per week
-**Timing:** Mid-sprint
+**时长：** 每周 1-2 小时
+**时间：** Sprint 中期
 
-**Agenda:**
+**议程：**
 
-| Time | Activity |
+| 时间 | 活动 |
 |------|----------|
-| 0:00-0:15 | Review upcoming priorities |
-| 0:15-0:45 | Detail acceptance criteria for top items |
-| 0:45-1:15 | Estimate new stories |
-| 1:15-1:30 | Split large stories |
+| 0:00-0:15 | 审查即将到来的优先级 |
+| 0:15-0:45 | 详细说明顶部事项的验收标准 |
+| 0:45-1:15 | 估算新故事 |
+| 1:15-1:30 | 拆分大型故事 |
 
-**Readiness Criteria:**
-- [ ] Clear user story format (As a... I want... So that...)
-- [ ] Acceptance criteria defined (Given-When-Then)
-- [ ] Story point estimate agreed
-- [ ] Dependencies identified
-- [ ] Fits in one sprint (≤8 points)
+**就绪标准：**
+- [ ] 清晰的用户故事格式（作为... 我想要... 以便...）
+- [ ] 已定义验收标准（Given-When-Then）
+- [ ] 故事点估算已达成一致
+- [ ] 已识别依赖关系
+- [ ] 可在一个 Sprint 内完成（≤8 点）
 
-### Sprint Review (Demo)
+### Sprint 评审（演示）
 
-**Duration:** 1 hour for 2-week sprint
+**时长：** 2 周 Sprint 为 1 小时
 
-**Agenda:**
+**议程：**
 
-| Time | Activity | Lead |
+| 时间 | 活动 | 负责人 |
 |------|----------|------|
-| 0:00-0:05 | Sprint goal recap | PO |
-| 0:05-0:40 | Demo completed work | Team |
-| 0:40-0:50 | Stakeholder feedback | Stakeholders |
-| 0:50-1:00 | Roadmap update | PO |
+| 0:00-0:05 | 回顾 Sprint 目标 | 产品负责人 |
+| 0:05-0:40 | 演示已完成工作 | 团队 |
+| 0:40-0:50 | 利益相关者反馈 | 利益相关者 |
+| 0:50-1:00 | 路线图更新 | 产品负责人 |
 
-**Demo Checklist:**
-- [ ] Only demo completed (done-done) stories
-- [ ] Use production or production-like environment
-- [ ] Show user perspective, not technical details
-- [ ] Collect feedback for backlog items
-- [ ] Thank team for accomplishments
+**演示检查清单：**
+- [ ] 仅演示已完成（完成-完成）的故事
+- [ ] 使用生产环境或类似生产的环境
+- [ ] 展示用户视角，而非技术细节
+- [ ] 收集待办事项的反馈
+- [ ] 感谢团队的成就
 
-### Sprint Retrospective
+### Sprint 回顾
 
-**Duration:** 1.5 hours for 2-week sprint
+**时长：** 2 周 Sprint 为 1.5 小时
 
-**Format Options:**
+**格式选项：**
 
-| Format | Structure |
+| 格式 | 结构 |
 |--------|-----------|
-| Start-Stop-Continue | What to begin, end, keep doing |
-| 4Ls | Liked, Learned, Lacked, Longed for |
-| Sailboat | Wind (helpers), Anchors (blockers), Rocks (risks) |
-| Mad-Sad-Glad | Emotional state about sprint events |
+| 开始-停止-继续 | 要开始、结束、继续做的事情 |
+| 4L | 喜欢、学到、缺乏、渴望 |
+| 帆船 | 风（助力）、锚（阻塞）、礁石（风险） |
+| 生气-悲伤-高兴 | 对 Sprint 事件的情绪状态 |
 
-**Action Items:**
-- Maximum 2-3 improvement actions per retro
-- Assign owner and due date
-- Review previous actions at start of next retro
+**行动项：**
+- 每次回顾最多 2-3 个改进行动
+- 指定负责人和截止日期
+- 下次回顾开始时审查上次行动
 
 ---
 
-## Metrics and Tracking
+## 指标与跟踪
 
-### Sprint Metrics
+### Sprint 指标
 
-| Metric | Formula | Target |
+| 指标 | 公式 | 目标 |
 |--------|---------|--------|
-| Velocity | Points completed / sprint | Stable ±10% |
-| Commitment Reliability | Completed / Committed | >85% |
-| Scope Change | Points added or removed | <10% |
-| Carryover | Points not completed | <15% |
-| Bug Ratio | Bug points / Total points | <20% |
+| 速度 | 完成的点数 / Sprint | 稳定 ±10% |
+| 承诺可靠性 | 完成 / 承诺 | >85% |
+| 范围变更 | 增加或移除的点数 | <10% |
+| 结转 | 未完成的点数 | <15% |
+| 缺陷率 | 缺陷点数 / 总点数 | <20% |
 
-### Velocity Tracking
+### 速度跟踪
 
 ```
-Sprint Velocity Trend:
-Sprint 1: 25 points
-Sprint 2: 28 points
-Sprint 3: 30 points
-Sprint 4: 32 points
-Sprint 5: 29 points
+Sprint 速度趋势：
+Sprint 1：25 点
+Sprint 2：28 点
+Sprint 3：30 点
+Sprint 4：32 点
+Sprint 5：29 点
 ------------------------
-Average: 28.8 points
-Trend: Stable (±10%)
+平均：28.8 点
+趋势：稳定（±10%）
 
-Planning Recommendation: Plan for 26-29 points committed
+规划建议：计划承诺 26-29 点
 ```
 
-### Burndown Chart
+### 燃尽图
 
-Track progress within sprint:
+跟踪 Sprint 内进度：
 
 ```
-Day   Ideal    Actual   Status
----   -----    ------   ------
- 0     30       30      On track
- 2     24       26      Slightly behind
- 4     18       20      Behind
- 6     12       14      Recovering
- 8      6        6      On track
-10      0        2      Minor carryover
+天    理想    实际    状态
+---   -----   ------   ------
+ 0     30      30      正常
+ 2     24      26      稍落后
+ 4     18      20      落后
+ 6     12      14      恢复中
+ 8      6       6      正常
+10      0       2      少量结转
 ```
 
-**Burndown Patterns:**
+**燃尽模式：**
 
-| Pattern | Meaning | Action |
+| 模式 | 含义 | 行动 |
 |---------|---------|--------|
-| Flat start | No progress early | Check blockers |
-| Late drop | Last-minute completion | Improve WIP limits |
-| Scope increase | Line moves up | Address scope creep |
-| Early completion | Done before sprint end | Pull stretch items |
+| 初期平缓 | 早期无进展 | 检查阻塞项 |
+| 后期骤降 | 最后一刻完成 | 改善 WIP 限制 |
+| 范围增加 | 线条上移 | 处理范围蔓延 |
+| 提前完成 | Sprint 结束前完成 | 拉取延伸事项 |
 
-### Definition of Done
+### 完成定义
 
-Story is complete when:
+故事在以下条件满足时视为完成：
 
-- [ ] Code complete and reviewed
-- [ ] Unit tests written and passing
-- [ ] Integration tests passing
-- [ ] Acceptance criteria verified
-- [ ] Documentation updated
-- [ ] Deployed to staging
-- [ ] PO accepted
-- [ ] No critical bugs
+- [ ] 代码完成并审查通过
+- [ ] 单元测试编写并通过
+- [ ] 集成测试通过
+- [ ] 验收标准已验证
+- [ ] 文档已更新
+- [ ] 已部署到测试环境
+- [ ] 产品负责人已验收
+- [ ] 无严重缺陷
 
-### Release Metrics
+### 发布指标
 
-| Metric | Definition | Target |
+| 指标 | 定义 | 目标 |
 |--------|------------|--------|
-| Lead Time | Idea to production | <2 sprints |
-| Cycle Time | Development start to done | <1 sprint |
-| Throughput | Stories completed/sprint | Increasing |
-| Defect Escape | Bugs found in production | Decreasing |
+| 前置时间 | 从想法到生产 | <2 个 Sprint |
+| 周期时间 | 从开发开始到完成 | <1 个 Sprint |
+| 吞吐量 | 完成的故事数/Sprint | 持续增长 |
+| 缺陷逃逸 | 生产环境发现的缺陷 | 持续下降 |

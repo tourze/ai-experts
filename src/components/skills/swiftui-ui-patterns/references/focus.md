@@ -1,17 +1,17 @@
-# Focus handling and field chaining
+# 焦点处理与字段链
 
-## Intent
+## 意图
 
-Use `@FocusState` to control keyboard focus, chain fields, and coordinate focus across complex forms.
+使用 `@FocusState` 控制键盘焦点，链式处理字段，并在复杂表单中协调焦点。
 
-## Core patterns
+## 核心模式
 
-- Use an enum to represent focusable fields.
-- Set initial focus in `onAppear`.
-- Use `.onSubmit` to move focus to the next field.
-- For dynamic lists of fields, use an enum with associated values (e.g., `.option(Int)`).
+- 使用枚举表示可聚焦字段。
+- 在 `onAppear` 中设置初始焦点。
+- 使用 `.onSubmit` 将焦点移动到下一个字段。
+- 对于动态字段列表，使用带关联值的枚举（例如 `.option(Int)`）。
 
-## Example: single field focus
+## 示例：单个字段焦点
 
 ```swift
 struct AddServerView: View {
@@ -28,7 +28,7 @@ struct AddServerView: View {
 }
 ```
 
-## Example: chained focus with enum
+## 示例：带枚举的链式焦点
 
 ```swift
 struct EditTagView: View {
@@ -50,7 +50,7 @@ struct EditTagView: View {
 }
 ```
 
-## Example: dynamic focus for variable fields
+## 示例：可变字段的动态焦点
 
 ```swift
 struct PollView: View {
@@ -78,13 +78,13 @@ struct PollView: View {
 }
 ```
 
-## Design choices to keep
+## 要保留的设计选择
 
-- Keep focus state local to the view that owns the fields.
-- Use focus changes to drive UX (validation messages, helper UI).
-- Pair with `.scrollDismissesKeyboard(...)` when using ScrollView/Form.
+- 保持焦点状态位于拥有该字段的视图本地。
+- 使用焦点变化驱动 UX（验证消息、辅助 UI）。
+- 在使用 ScrollView/Form 时配合 `.scrollDismissesKeyboard(...)` 使用。
 
-## Pitfalls
+## 陷阱
 
-- Don’t store focus state in shared objects; it is view-local.
-- Avoid aggressive focus changes during animation; delay if needed.
+- 不要将焦点状态存储在共享对象中；它是视图本地的。
+- 避免在动画期间进行激进的焦点变化；如有需要请延迟。

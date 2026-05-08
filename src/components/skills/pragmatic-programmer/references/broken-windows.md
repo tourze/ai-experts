@@ -1,46 +1,46 @@
-# The Broken Window Theory in Software
+# 软件中的破窗理论
 
-Deep reference for understanding and combating software entropy. Load when guidance is needed on technical debt, code quality culture, and strategies for maintaining clean codebases.
+理解和对抗软件熵的深度参考。当需要关于技术债务、代码质量文化和维护干净代码库的策略方面的指导时加载。
 
-## Table of Contents
-1. [The Original Theory](#the-original-theory)
-2. [Software Entropy](#software-entropy)
-3. [Don't Live with Broken Windows](#dont-live-with-broken-windows)
-4. [Stone Soup and Boiled Frogs](#stone-soup-and-boiled-frogs)
-5. [Being a Catalyst for Change](#being-a-catalyst-for-change)
-6. [Identifying Broken Windows](#identifying-broken-windows)
-7. [Repair Strategies](#repair-strategies)
-8. [Building a Culture of Quality](#building-a-culture-of-quality)
-
----
-
-## The Original Theory
-
-In 1982, criminologists James Q. Wilson and George L. Kelling published "Broken Windows," arguing that visible signs of disorder (a broken window left unrepaired) signal that nobody cares, which invites further disorder and eventually serious crime. The key insight: **neglect accelerates decay.**
-
-A building with one broken window will soon have all its windows broken. Not because criminals target buildings with broken windows, but because the broken window sends a signal: "Nobody cares about this building."
+## 目录
+1. [原始理论](#原始理论)
+2. [软件熵](#软件熵)
+3. [不要容忍破窗](#不要容忍破窗)
+4. [石头汤和温水煮青蛙](#石头汤和温水煮青蛙)
+5. [成为变革的催化剂](#成为变革的催化剂)
+6. [识别破窗](#识别破窗)
+7. [修复策略](#修复策略)
+8. [建立质量文化](#建立质量文化)
 
 ---
 
-## Software Entropy
+## 原始理论
 
-Entropy is the tendency of systems toward disorder. In physics, it's a law. In software, it's a choice -- but it takes constant effort to resist.
+1982 年，犯罪学家 James Q. Wilson 和 George L. Kelling 发表了"破窗理论"，认为可见的混乱迹象（一扇未修复的破窗）表明没人关心，这会引发更多混乱，最终导致严重犯罪。关键见解：**忽视加速衰退。**
 
-### How Entropy Manifests in Code
+一扇破窗的建筑物很快就会所有窗户都被打破。不是因为犯罪分子瞄准有破窗的建筑物，而是因为破窗发出了一个信号："没人关心这栋建筑。"
 
-| Stage | Signs | Severity |
+---
+
+## 软件熵
+
+熵是系统趋向无序的趋势。在物理学中，这是定律。在软件中，这是一个选择——但需要持续的努力来抵抗。
+
+### 熵在代码中的表现
+
+| 阶段 | 迹象 | 严重程度 |
 |-------|-------|----------|
-| **Early decay** | A few TODO comments, one skipped test, a "temporary" workaround | Low -- easy to fix |
-| **Spreading neglect** | Growing list of known bugs, inconsistent naming, unused imports everywhere | Medium -- needs dedicated effort |
-| **Normalized deviance** | "That's just how this codebase is," copy-paste as standard practice, no code review standards | High -- requires culture change |
-| **Terminal entropy** | Nobody dares touch core modules, every change causes regressions, new features take 10x longer than expected | Critical -- rewrite may be cheaper |
+| **早期衰退** | 一些 TODO 注释、一个跳过的测试、"临时"变通方案 | 低——易于修复 |
+| **蔓延的忽视** | 越来越多的已知 bug、不一致的命名、到处是无用的 import | 中——需要专门投入 |
+| **正常化的偏差** | "这个代码库就是这样"，复制粘贴成为标准做法，没有代码审查标准 | 高——需要文化变革 |
+| **终端熵** | 没人敢动核心模块，每次更改都引起回归，新功能耗时 10 倍于预期 | 关键——重写可能更划算 |
 
-### The Entropy Acceleration Curve
+### 熵加速曲线
 
-Entropy doesn't increase linearly -- it accelerates:
+熵不是线性增长的——它会加速：
 
 ```
-Quality
+质量
   ^
   |*
   | *
@@ -50,208 +50,208 @@ Quality
   |        ****
   |            ********
   |                    ****************
-  +----------------------------------------> Time
+  +----------------------------------------> 时间
 
-  First broken window
+  第一扇破窗
       ↓
-  Each subsequent one is easier to create
+  后续破窗越来越容易产生
 ```
 
-The first broken window is the hardest to create because the codebase is clean. Every subsequent one is easier because the bar has already been lowered. This is why the first hack matters disproportionately.
+第一扇破窗是最难产生的，因为代码库是干净的。后续每一扇都更容易，因为标准已经被降低了。这就是为什么第一次草率的行为具有不成比例的影响。
 
 ---
 
-## Don't Live with Broken Windows
+## 不要容忍破窗
 
-The pragmatic programmer's prime directive for code quality: **don't leave broken windows unrepaired.** Fix each one as soon as you discover it.
+实用主义程序员关于代码质量的首要指令：**不要让破窗未修复。** 发现一扇就尽快修复一扇。
 
-### What Counts as a Broken Window?
+### 哪些算作破窗？
 
-- **Bad designs or architecture:** A module that grew beyond its original purpose and now has 15 responsibilities
-- **Wrong decisions left in place:** Using a SQL database for a graph problem because "we already have Postgres"
-- **Poor code:** Functions that are 200+ lines, nested ternaries, magic numbers, misleading variable names
-- **Disabled or ignored tests:** `@skip("fails sometimes")` or `// TODO: fix this test`
-- **Dead code:** Functions nobody calls, imports nobody uses, feature flags for features launched two years ago
-- **Missing error handling:** Bare except clauses, swallowed errors, TODO error handling
-- **Workarounds:** Code that exists solely to compensate for a bug elsewhere
+- **糟糕的设计或架构：** 一个超出原始用途的模块，现在有 15 个职责
+- **遗留的错误决策：** 因为"我们已经用了 Postgres"而用 SQL 数据库解决图问题
+- **糟糕的代码：** 200+行的函数、嵌套三元运算符、魔法数字、误导性的变量名
+- **禁用或忽略的测试：** `@skip("偶尔失败")` 或 `// TODO: 修复此测试`
+- **死代码：** 没人调用的函数、没人使用的 import、两年前就发布的功能还在用的 feature flag
+- **缺少错误处理：** 裸 except 子句、吞掉的错误、TODO 错误处理
+- **变通方案：** 仅仅为弥补他处 bug 而存在的代码
 
-### If You Can't Fix It Now: Board It Up
+### 如果现在无法修复：先用木板封上
 
-Sometimes you genuinely can't fix a broken window immediately. In that case, **board it up** -- take some visible action to show it's being managed:
+有时你确实无法立即修复一扇破窗。在这种情况下，**用木板把它封上**——采取一些可见的措施表明它正在被处理：
 
-| Action | How |
+| 措施 | 方法 |
 |--------|-----|
-| **Create a ticket** | File a tracked issue with clear description and severity |
-| **Add a clear comment** | `# TECH-DEBT(JIRA-123): This needs refactoring because...` |
-| **Wrap it in a clean interface** | Put a well-designed adapter around the messy code |
-| **Disable the feature** | If it's broken, turn it off rather than shipping broken functionality |
-| **Add a failing test** | Document the expected behavior even if the implementation is wrong |
+| **创建工单** | 提交一个已跟踪的问题，附上清晰描述和严重程度 |
+| **添加清晰的注释** | `# TECH-DEBT(JIRA-123): 需要重构，因为...` |
+| **用干净的接口包装** | 在混乱的代码周围放置一个设计良好的适配器 |
+| **禁用该功能** | 如果出故障了，先关闭它，而不是发布有问题的功能 |
+| **添加一个失败的测试** | 即使实现有误，也要记录预期的行为 |
 
-The critical difference between a broken window and a boarded-up window: **visibility and intent.** A boarded-up window says "we know this is broken and we have a plan."
+破窗和封上的窗户之间的关键区别：**可见性和意图。** 封上的窗户表明"我们知道这出了问题，我们有计划。"
 
 ---
 
-## Stone Soup and Boiled Frogs
+## 石头汤和温水煮青蛙
 
-Two related parables from the pragmatic programmer:
+来自《实用主义程序员》的两个相关寓言：
 
-### Stone Soup: Be a Catalyst
+### 石头汤：成为催化剂
 
-In the folk tale, soldiers convince villagers to contribute ingredients to a pot of "stone soup." Each villager adds a little, and the result is better than anyone expected.
+在民间故事中，士兵说服村民往一锅"石头汤"里添加食材。每个村民加一点，结果超出所有人的预期。
 
-**In software:** When you want to improve the codebase but face resistance ("we don't have time for refactoring"), use the stone soup strategy:
+**在软件中：** 当你想要改进代码库但遇到阻力时（"我们没有时间重构"），使用石头汤策略：
 
-1. Start small -- fix one broken window yourself
-2. Show the result -- "look, this module is now 50% simpler and fully tested"
-3. People join in -- others see the improvement and want to contribute
-4. The codebase improves incrementally -- without anyone approving a "big refactoring project"
+1. 从小处着手——自己修复一扇破窗
+2. 展示结果——"看，这个模块现在简单了 50%，并且完全测试了"
+3. 人们加入进来——其他人看到改进，也想要贡献
+4. 代码库逐步改进——无需任何人批准"大型重构项目"
 
-**Key insight:** It's easier to ask forgiveness than permission. Don't ask for a refactoring sprint -- just start improving code in every PR you touch.
+**关键见解：** 请求原谅比请求许可更容易。不要要求重构冲刺——只需在你接触的每个 PR 中开始改进代码。
 
-### Boiled Frog: Watch for Gradual Decay
+### 温水煮青蛙：警惕逐渐衰退
 
-A frog placed in boiling water jumps out immediately. A frog placed in slowly heating water doesn't notice the danger until it's too late.
+把青蛙放在沸水中，它会立即跳出来。把青蛙放在慢慢加热的水中，它直到为时已晚才会注意到危险。
 
-**In software:** Codebases rarely go from good to bad overnight. The decay is gradual:
+**在软件中：** 代码库很少在一夜之间从好变差。衰退是渐进的：
 
-- Sprint 1: "Let's skip tests for this one ticket -- we're behind schedule"
-- Sprint 3: "Tests are too hard to write for this module -- just do manual QA"
-- Sprint 10: "We don't really write tests for this service"
-- Sprint 20: "Testing? We do production monitoring instead"
+- Sprint 1："这个工单就先跳过测试吧——我们进度落后了"
+- Sprint 3："这个模块写测试太难了——做手动 QA 就行"
+- Sprint 10："我们其实不太写这个服务的测试"
+- Sprint 20："测试？我们改做生产监控了"
 
-**Prevention:** Track quality metrics over time and set alerts for negative trends:
+**预防措施：** 持续跟踪质量指标，为负面趋势设置警报：
 
-| Metric | Healthy Trend | Alarm |
+| 指标 | 健康趋势 | 警报阈值 |
 |--------|---------------|-------|
-| Test coverage | Stable or increasing | Dropped 5%+ in a quarter |
-| Build time | Stable or decreasing | Increased 50%+ in 6 months |
-| Linting violations | Decreasing | Increasing quarter over quarter |
-| Cyclomatic complexity | Stable per module | New modules starting above threshold |
-| Deployment frequency | Stable or increasing | Decreasing (fear of deploying) |
-| Time to resolve incidents | Stable or decreasing | Increasing (system is harder to debug) |
+| 测试覆盖率 | 稳定或增长 | 一个季度内下降 5%+ |
+| 构建时间 | 稳定或减少 | 6 个月内增长 50%+ |
+| Lint 违规 | 减少 | 逐季度增长 |
+| 圈复杂度 | 每个模块稳定 | 新模块起始即超过阈值 |
+| 部署频率 | 稳定或增长 | 下降（害怕部署） |
+| 事件解决时间 | 稳定或减少 | 增长（系统越来越难调试） |
 
 ---
 
-## Being a Catalyst for Change
+## 成为变革的催化剂
 
-You don't need permission to improve code quality. Strategies for pragmatic programmers who want to raise the bar:
+你不需要许可来改进代码质量。想要提升标准的实用主义程序员策略：
 
-### The Boy Scout Rule
+### 童子军规则
 
-"Leave the campground cleaner than you found it." Every time you touch a file:
+"让营地比你发现时更干净。"每次你接触一个文件：
 
-- Fix one naming issue
-- Extract one magic number into a named constant
-- Add one missing type annotation
-- Remove one unused import
-- Improve one error message
+- 修复一个命名问题
+- 将一个魔法数字提取为命名常量
+- 添加一条缺失的类型注解
+- 移除一个未使用的 import
+- 改进一条错误消息
 
-These micro-improvements compound. In a team of 5 developers each making 3 PRs per week, that's 15 micro-improvements per week, 780 per year.
+这些微改进会累积。在一个 5 人团队中，每人每周提交 3 个 PR，那就是每周 15 个微改进，每年 780 个。
 
-### The Strangler Pattern for Legacy Code
+### 遗留代码的绞杀者模式
 
-Don't rewrite the old system. Strangle it gradually:
+不要重写旧系统。逐步绞杀它：
 
-1. Put a clean facade in front of the legacy module
-2. Route new features through the facade to new, clean implementations
-3. Gradually migrate old functionality behind the facade
-4. Eventually, the legacy module has no direct consumers and can be removed
+1. 在遗留模块前面放一个干净的 facade
+2. 通过 facade 将新功能路由到新的、干净的实现
+3. 逐步将旧功能迁移到 facade 后面
+4. 最终，遗留模块没有直接消费者，可以移除
 
-### Leading by Example
+### 以身作则
 
-| Action | Impact |
+| 行动 | 影响 |
 |--------|--------|
-| Write thorough tests in your PRs | Others see the standard and follow |
-| Add clear commit messages | Raises the bar for the whole team |
-| Document your architectural decisions | Creates a culture of documentation |
-| Refactor one thing in every PR | Normalizes continuous improvement |
-| Respond to broken windows in code review | Makes quality everyone's job |
+| 在你的 PR 中编写充分的测试 | 其他人看到标准并效仿 |
+| 添加清晰的提交消息 | 提升整个团队的基准 |
+| 记录你的架构决策 | 创建文档文化 |
+| 在每个 PR 中重构一件事 | 常态化持续改进 |
+| 在代码审查中回应破窗 | 让质量成为每个人的工作 |
 
 ---
 
-## Identifying Broken Windows
+## 识别破窗
 
-### Code Review Checklist
+### 代码审查检查清单
 
-When reviewing code, look for these broken windows:
+审查代码时，寻找这些破窗：
 
-| Category | Broken Window Signs |
+| 类别 | 破窗迹象 |
 |----------|-------------------|
-| **Naming** | Variables named `x`, `temp`, `data`, `stuff`; misleading names; inconsistent conventions |
-| **Structure** | Functions > 50 lines; deeply nested logic; God classes with 20+ methods |
-| **Error handling** | Empty catch blocks; generic exception handling; errors swallowed silently |
-| **Tests** | No tests for new code; skipped tests; tests that test nothing meaningful |
-| **Dependencies** | Unused imports; outdated dependencies with known vulnerabilities |
-| **Duplication** | Copy-pasted blocks; same logic in multiple places |
-| **Comments** | Commented-out code; comments that contradict the code; "temporary" hacks from 2019 |
+| **命名** | 变量名为 `x`、`temp`、`data`、`stuff`；误导性名称；不一致的惯例 |
+| **结构** | 函数超过 50 行；深度嵌套的逻辑；有 20+ 方法的上帝类 |
+| **错误处理** | 空的 catch 块；通用的异常处理；静默吞掉的错误 |
+| **测试** | 新代码没有测试；跳过的测试；没有测试有意义的内容 |
+| **依赖** | 未使用的 import；有已知漏洞的过时依赖 |
+| **重复** | 复制粘贴的代码块；多处相同的逻辑 |
+| **注释** | 注释掉的代码；与代码矛盾的注释；来自 2019 年的"临时"hack |
 
-### Automated Detection
+### 自动化检测
 
-Use tools to find broken windows automatically:
+使用工具自动发现破窗：
 
-| Tool Category | What It Catches |
+| 工具类别 | 能发现的问题 |
 |---------------|----------------|
-| **Linters** (ESLint, Pylint, Clippy) | Style violations, unused variables, complexity |
-| **Static analysis** (SonarQube, CodeClimate) | Duplication, cognitive complexity, security issues |
-| **Dependency scanners** (Dependabot, Snyk) | Outdated or vulnerable dependencies |
-| **Test coverage** (Istanbul, Coverage.py) | Untested code paths |
-| **Dead code detectors** (knip, vulture) | Unused exports, unreachable code |
+| **Linter**（ESLint、Pylint、Clippy） | 风格违规、未使用的变量、复杂度 |
+| **静态分析**（SonarQube、CodeClimate） | 重复、认知复杂度、安全问题 |
+| **依赖扫描器**（Dependabot、Snyk） | 过时或有漏洞的依赖 |
+| **测试覆盖率**（Istanbul、Coverage.py） | 未测试的代码路径 |
+| **死代码检测器**（knip、vulture） | 未使用的导出、不可达代码 |
 
 ---
 
-## Repair Strategies
+## 修复策略
 
-### Triage: Which Windows to Fix First
+### 分类：先修哪些窗
 
-Not all broken windows are equally damaging. Prioritize:
+并非所有破窗的危害都相同。优先级排序：
 
-| Priority | Category | Rationale |
+| 优先级 | 类别 | 理由 |
 |----------|----------|-----------|
-| **P0** | Security vulnerabilities | Active risk of exploitation |
-| **P1** | Data integrity issues | Silent corruption is worse than crashes |
-| **P2** | High-traffic code with poor error handling | Most likely to cause incidents |
-| **P3** | Core domain logic that's hard to understand | Slows down every feature |
-| **P4** | Cosmetic issues in rarely-touched code | Low impact, fix opportunistically |
+| **P0** | 安全漏洞 | 存在被利用的主动风险 |
+| **P1** | 数据完整性问题 | 静默损坏比崩溃更糟糕 |
+| **P2** | 错误处理不足的高流量代码 | 最可能导致事故 |
+| **P3** | 难以理解的核心领域逻辑 | 拖慢每个功能 |
+| **P4** | 很少接触的代码中的外观问题 | 影响低，机会主义修复 |
 
-### The 20% Rule
+### 20% 规则
 
-Allocate approximately 20% of engineering capacity to fixing broken windows. This isn't a luxury -- it's maintenance:
+将大约 20% 的工程能力用于修复破窗。这不是奢侈——这是维护：
 
-- 2 engineers out of 10 work on tech debt each sprint
-- Or: every engineer spends 1 day per week on cleanup
-- Or: one "cleanup sprint" every 5 sprints
+- 每 10 名工程师中有 2 名在每个 sprint 中处理技术债务
+- 或者：每位工程师每周花 1 天做清理工作
+- 或者：每 5 个 sprint 安排一个"清理 sprint"
 
-The exact model doesn't matter as much as the commitment. Teams that spend 0% on maintenance accumulate debt exponentially. Teams that spend 20% maintain a sustainable velocity.
+具体的模式不如承诺本身重要。在维护上投入 0% 的团队，债务呈指数增长。投入 20% 的团队保持可持续的速度。
 
 ---
 
-## Building a Culture of Quality
+## 建立质量文化
 
-### Team Practices
+### 团队实践
 
-| Practice | How It Helps |
+| 实践 | 如何助力 |
 |----------|-------------|
-| **"No broken windows" as a team value** | Gives everyone permission and responsibility to maintain quality |
-| **Tech debt tracking** | Makes broken windows visible to management and the team |
-| **Quality gates in CI** | Prevents new broken windows from merging |
-| **Blameless postmortems** | Focus on the system (the broken window), not the person |
-| **Celebrate cleanup** | Recognize engineers who fix broken windows, not just those who ship features |
+| **"不允许破窗"作为团队价值观** | 给予每个人维护质量的责任和权限 |
+| **技术债务跟踪** | 使破窗对管理层和团队可见 |
+| **CI 中的质量门禁** | 防止新的破窗被合并 |
+| **无指责事后复盘** | 关注系统（破窗本身），而非个人 |
+| **庆祝清理工作** | 认可修复破窗的工程师，而不仅仅是交付功能的人 |
 
-### Definition of Done
+### 完成定义
 
-A feature is not "done" when the code works. It's done when:
+一个功能在代码能工作时并不算"完成"。它完成时：
 
-- Code is clean and follows conventions
-- Tests are written and passing
-- Error handling is appropriate
-- Documentation is updated (if applicable)
-- No new broken windows were introduced
-- At least one existing broken window in the area was fixed
+- 代码干净且遵循惯例
+- 测试已编写并通过
+- 错误处理适当
+- 文档已更新（如适用）
+- 没有引入新的破窗
+- 至少修复了该区域的一个现有破窗
 
-### The Social Contract
+### 社会契约
 
-Quality is a team decision. One person maintaining high standards while the team ignores broken windows is a losing battle. The conversation must happen:
+质量是团队的决定。一个人维持高标准而团队忽略破窗，这是一场必败之战。必须进行对话：
 
-> "As a team, we agree: no new broken windows. If we find one, we fix it or board it up immediately. We allocate 20% of our capacity to this. This is not optional -- it's how we maintain our ability to ship quickly."
+> "作为团队，我们同意：不允许新的破窗。如果发现一个，我们立即修复或者用木板封上。我们为此分配 20% 的能力。这不是可选的——这是我们维持快速交付能力的方式。"
 
-When the whole team commits, the social pressure shifts from "don't slow us down with your cleanup" to "don't leave broken windows in your PRs." That shift is the turning point.
+当整个团队做出承诺时，社会压力从"别让你的清理工作拖慢我们"转变为"别在你的 PR 里留下破窗。"这个转变就是转折点。

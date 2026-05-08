@@ -1,498 +1,498 @@
-# Startup ICP Definer - Full Guide
+# Startup ICP Definer — 完整指南
 
-## The Framework: ICP Stack
+## 框架：ICP Stack
 
 ```
 ┌─────────────────────────────────────────┐
-│         BUYING CENTER                    │
-│    (All people in the decision)          │
+│         购买中心（BUYING CENTER）         │
+│     （决策中的所有人员）                    │
 ├─────────────────────────────────────────┤
-│         USER PERSONA                     │
-│    (Who uses it daily)                   │
+│         用户画像（USER PERSONA）           │
+│     （日常使用者）                         │
 ├─────────────────────────────────────────┤
-│         BUYER PERSONA                    │
-│    (Who signs the check)                 │
+│         买家画像（BUYER PERSONA）          │
+│     （签字付款的人）                       │
 ├─────────────────────────────────────────┤
-│         COMPANY PROFILE                  │
-│    (The organization)                    │
+│         公司画像（COMPANY PROFILE）        │
+│     （组织）                              │
 └─────────────────────────────────────────┘
 ```
 
-Build from bottom up. Define the company first, then the buyer, then the user, then the full buying center.
+从下往上构建。先定义公司，然后定义买家，再定义用户，最后定义完整的购买中心。
 
-## Detailed Execution Workflow
+## 详细执行工作流
 
-### Step 1: Company Profile Definition
+### 步骤 1：公司画像定义
 
-Ask the user:
+问用户：
 
-> **What type of company is your ideal customer?**
+> **你的理想客户是什么样的公司？**
 >
-> 1. What industry or vertical?
-> 2. What company size? (Employees or revenue)
-> 3. What company stage? (Startup, growth, enterprise)
-> 4. What geography?
-> 5. What technology stack or tools do they use?
-> 6. What business model? (B2B, B2C, marketplace)
+> 1. 属于什么行业或垂直领域？
+> 2. 公司规模多大？（员工数或营收）
+> 3. 公司处于什么阶段？（初创、成长、企业）
+> 4. 在哪些地区？
+> 5. 他们使用什么技术栈或工具？
+> 6. 什么商业模式？（B2B、B2C、marketplace）
 
-**Company Profile Template:**
+**公司画像模板：**
 
-| Attribute | Definition | Rationale |
-|-----------|------------|-----------|
-| **Industry** | [Specific vertical] | [Why this industry] |
-| **Size** | [X-Y employees OR $X-$Y revenue] | [Why this size] |
-| **Stage** | [Startup/Growth/Enterprise] | [Why this stage] |
-| **Geography** | [Regions/Countries] | [Why this geography] |
-| **Tech Stack** | [Key tools they use] | [Why this matters] |
-| **Business Model** | [B2B/B2C/etc.] | [Why this model] |
+| 属性 | 定义 | 理由 |
+|------|------|------|
+| **行业** | [具体垂直领域] | [为什么是这个行业] |
+| **规模** | [X-Y 员工 或 $X-$Y 营收] | [为什么是这个规模] |
+| **阶段** | [初创/成长/企业] | [为什么是这个阶段] |
+| **地区** | [区域/国家] | [为什么是这个地区] |
+| **技术栈** | [他们使用的关键工具] | [为什么这很重要] |
+| **商业模式** | [B2B/B2C/等] | [为什么是这个模式] |
 
-**Example:**
+**示例：**
 
 ```
-Industry: B2B SaaS companies
-Size: 50-500 employees
-Stage: Series A to Series C
-Geography: US, UK, Western Europe
-Tech Stack: Salesforce, HubSpot, Slack
-Business Model: Recurring revenue software
+行业：B2B SaaS 公司
+规模：50-500 名员工
+阶段：A 轮到 C 轮
+地区：美国、英国、西欧
+技术栈：Salesforce、HubSpot、Slack
+商业模式：经常性收入软件
 ```
 
-### Step 2: Problem Segmentation
+### 步骤 2：问题细分
 
-**Not all companies in your profile have the same pain intensity.**
+**并非你画像中的所有公司都有相同的痛点强度。**
 
-Ask the user:
+问用户：
 
-> **What triggers a company to seek your solution?**
+> **什么情况会促使公司寻找你的解决方案？**
 >
-> 1. What event creates urgency? (Growth, pain, mandate)
-> 2. What symptoms indicate they need you?
-> 3. What makes some companies better fits than others?
-> 4. What situations make them NOT a fit?
+> 1. 什么事件会创造紧迫性？（增长、痛点、强制要求）
+> 2. 哪些症状表明他们需要你？
+> 3. 什么让一些公司比其他公司更适合？
+> 4. 什么情况下他们不适合？
 
-**Trigger Events:**
+**触发事件：**
 
-| Trigger | What It Means | Urgency Level |
-|---------|---------------|---------------|
-| [Trigger 1] | [Situation] | [High/Med/Low] |
-| [Trigger 2] | [Situation] | [High/Med/Low] |
-| [Trigger 3] | [Situation] | [High/Med/Low] |
+| 触发事件 | 含义 | 紧迫程度 |
+|----------|------|----------|
+| [触发事件 1] | [情况] | [高/中/低] |
+| [触发事件 2] | [情况] | [高/中/低] |
+| [触发事件 3] | [情况] | [高/中/低] |
 
-**Common B2B Triggers:**
+**常见 B2B 触发事件：**
 
-- Rapid headcount growth
-- New executive hire
-- Failed with competitor product
-- Compliance/regulatory requirement
-- Major customer demand
-- Funding event (just raised)
-- Manual process breaking down
-- Integration with new tool
+- 员工快速增长
+- 新高管入职
+- 竞争对手产品失败
+- 合规/监管要求
+- 大客户需求
+- 融资事件（刚融资）
+- 手工流程崩溃
+- 与新的工具集成
 
-### Step 3: Buyer Persona Definition
+### 步骤 3：买家画像定义
 
-**The buyer = the person who signs the check.**
+**买家 = 签字付款的人。**
 
-Ask the user:
+问用户：
 
-> **Who is the buyer in your ICP?**
+> **你 ICP 中的买家是谁？**
 >
-> 1. What's their title/role?
-> 2. What's their seniority level?
-> 3. What are their goals and KPIs?
-> 4. What are their frustrations?
-> 5. What's their decision-making authority?
-> 6. What do they care about most? (Cost, time, risk, outcomes)
+> 1. 他们的职位/角色是什么？
+> 2. 他们的资历级别是什么？
+> 3. 他们的目标和 KPI 是什么？
+> 4. 他们的痛点是什么？
+> 5. 他们的决策权是什么？
+> 6. 他们最关心什么？（成本、时间、风险、结果）
 
-**Buyer Persona Canvas:**
+**买家画像画布：**
 
 ```
 ┌─────────────────────────────────────────────────┐
-│ BUYER PERSONA: [Title]                          │
+│ 买家画像（BUYER PERSONA）：[职位]                  │
 ├─────────────────────────────────────────────────┤
-│ Title: [Exact title]                            │
-│ Reports to: [Boss's role]                       │
-│ Team size: [X people]                           │
+│ 职位：[确切职位]                                    │
+│ 汇报对象：[上级角色]                                │
+│ 团队规模：[X 人]                                   │
 ├─────────────────────────────────────────────────┤
-│ Goals:                                          │
-│ • [Goal 1]                                      │
-│ • [Goal 2]                                      │
-│ • [Goal 3]                                      │
+│ 目标：                                            │
+│ • [目标 1]                                       │
+│ • [目标 2]                                       │
+│ • [目标 3]                                       │
 ├─────────────────────────────────────────────────┤
-│ Frustrations:                                   │
-│ • [Frustration 1]                               │
-│ • [Frustration 2]                               │
-│ • [Frustration 3]                               │
+│ 痛点：                                            │
+│ • [痛点 1]                                       │
+│ • [痛点 2]                                       │
+│ • [痛点 3]                                       │
 ├─────────────────────────────────────────────────┤
-│ Success Metrics:                                │
-│ • [KPI 1]                                       │
-│ • [KPI 2]                                       │
+│ 成功指标：                                         │
+│ • [KPI 1]                                        │
+│ • [KPI 2]                                        │
 ├─────────────────────────────────────────────────┤
-│ Decision Authority: [Budget they can approve]   │
-│ Decision Process: [How they buy]                │
+│ 决策权：[可批准的预算]                               │
+│ 决策流程：[他们如何购买]                             │
 └─────────────────────────────────────────────────┘
 ```
 
-### Step 4: User Persona Definition
+### 步骤 4：用户画像定义
 
-**The user = the person who uses it daily (may differ from buyer).**
+**用户 = 日常使用者（可能与买家不同）。**
 
-Ask the user:
+问用户：
 
-> **Who actually uses your product day-to-day?**
+> **谁在实际日常使用你的产品？**
 >
-> 1. What's their title/role?
-> 2. What's their daily workflow?
-> 3. What tasks do they do that involve your product?
-> 4. What frustrates them about current process?
-> 5. What would make their day easier?
-> 6. How tech-savvy are they?
+> 1. 他们的职位/角色是什么？
+> 2. 他们的日常工作流程是什么？
+> 3. 他们用产品完成什么任务？
+> 4. 当前流程中什么让他们感到困扰？
+> 5. 什么能让他们的工作更轻松？
+> 6. 他们的技术水平如何？
 
-**User Persona Canvas:**
+**用户画像画布：**
 
 ```
 ┌─────────────────────────────────────────────────┐
-│ USER PERSONA: [Title]                           │
+│ 用户画像（USER PERSONA）：[职位]                    │
 ├─────────────────────────────────────────────────┤
-│ Title: [Exact title]                            │
-│ Reports to: [Usually the buyer]                 │
-│ Daily tasks: [What they do]                     │
+│ 职位：[确切职位]                                    │
+│ 汇报对象：[通常是买家]                              │
+│ 日常任务：[他们做什么]                              │
 ├─────────────────────────────────────────────────┤
-│ Current Process:                                │
-│ • [Step 1 of how they do it today]              │
-│ • [Step 2]                                      │
-│ • [Step 3]                                      │
+│ 当前流程：                                         │
+│ • [他们今天如何做的步骤 1]                          │
+│ • [步骤 2]                                        │
+│ • [步骤 3]                                        │
 ├─────────────────────────────────────────────────┤
-│ Pain Points:                                    │
-│ • [Pain 1 - What's broken]                      │
-│ • [Pain 2 - What's slow]                        │
-│ • [Pain 3 - What's frustrating]                 │
+│ 痛点：                                            │
+│ • [痛点 1 — 什么出了问题]                          │
+│ • [痛点 2 — 什么很慢]                             │
+│ • [痛点 3 — 什么令人沮丧]                          │
 ├─────────────────────────────────────────────────┤
-│ Desired Outcome:                                │
-│ [What would make their life better]             │
+│ 期望结果：                                         │
+│ [什么能让他们的生活更好]                            │
 ├─────────────────────────────────────────────────┤
-│ Tech Comfort: [Low/Medium/High]                 │
-│ Adoption Pattern: [Early adopter/Mainstream]    │
+│ 技术熟悉度：[低/中/高]                              │
+│ 采纳模式：[早期采纳者/主流]                          │
 └─────────────────────────────────────────────────┘
 ```
 
-### Step 5: Buying Center Mapping
+### 步骤 5：购买中心映射
 
-**In B2B, multiple people influence the decision.**
+**在 B2B 中，有多人影响决策。**
 
-Ask the user:
+问用户：
 
-> **Who else is involved in the buying decision?**
+> **还有谁参与购买决策？**
 >
-> 1. Who initiates the search for a solution?
-> 2. Who evaluates options?
-> 3. Who influences the decision?
-> 4. Who can block or veto?
-> 5. Who approves the budget?
-> 6. Who implements/onboards?
+> 1. 谁发起解决方案搜索？
+> 2. 谁评估方案？
+> 3. 谁影响决策？
+> 4. 谁可以阻止或否决？
+> 5. 谁批准预算？
+> 6. 谁实施/导入？
 
-**Buying Center Roles:**
+**购买中心角色：**
 
-| Role | Title | Power | How to Win Them |
-|------|-------|-------|-----------------|
-| **Champion** | [Title] | Drives internally | [Strategy] |
-| **Economic Buyer** | [Title] | Approves budget | [Strategy] |
-| **Technical Evaluator** | [Title] | Validates solution | [Strategy] |
-| **End User** | [Title] | Uses daily | [Strategy] |
-| **Influencer** | [Title] | Advises decision | [Strategy] |
-| **Blocker** | [Title] | Can veto | [Strategy] |
+| 角色 | 职位 | 影响力 | 如何赢得他们 |
+|------|------|--------|--------------|
+| **倡导者** | [职位] | 内部推动 | [策略] |
+| **经济买家** | [职位] | 批准预算 | [策略] |
+| **技术评估者** | [职位] | 验证方案 | [策略] |
+| **最终用户** | [职位] | 日常使用 | [策略] |
+| **影响者** | [职位] | 提供建议 | [策略] |
+| **阻止者** | [职位] | 可以否决 | [策略] |
 
-**Buying Center Map:**
+**购买中心地图：**
 
 ```
                     ┌──────────────┐
-                    │   CEO/CFO    │ ← Final approval
-                    │ (Eco. Buyer) │   for large deals
+                    │   CEO/CFO    │ ← 最终批准
+                    │ (经济买家)   │   大额交易
                     └──────┬───────┘
                            │
               ┌────────────┼────────────┐
               │            │            │
        ┌──────┴──────┐  ┌──┴───┐  ┌────┴─────┐
        │  VP Sales   │  │  IT  │  │  Legal   │
-       │ (Champion)  │  │(Tech │  │(Blocker) │
-       └──────┬──────┘  │Eval) │  └──────────┘
+       │ (倡导者)    │  │(技术 │  │(阻止者)  │
+       └──────┬──────┘  │评估) │  └──────────┘
               │         └──────┘
        ┌──────┴──────┐
        │  Sales Rep  │
-       │ (End User)  │
+       │ (最终用户)  │
        └─────────────┘
 ```
 
-### Step 6: Pain Point Hierarchy
+### 步骤 6：痛点层级
 
-**Not all pains are created equal.**
+**并非所有痛点都是同等的。**
 
-Ask the user:
+问用户：
 
-> **Rank your customer's pain points:**
+> **对客户的痛点进行排序：**
 >
-> 1. What pain is most urgent?
-> 2. What pain costs them the most money?
-> 3. What pain is most frequent?
-> 4. What pain are they actively trying to solve?
+> 1. 哪个痛点最紧急？
+> 2. 哪个痛点花费他们最多钱？
+> 3. 哪个痛点最频繁？
+> 4. 哪个痛点他们正在积极解决？
 
-**Pain Hierarchy Framework:**
+**痛点层级框架：**
 
-| Pain | Urgency | Cost | Frequency | Actively Solving? | Score |
-|------|---------|------|-----------|-------------------|-------|
-| [Pain 1] | [H/M/L] | [H/M/L] | [H/M/L] | [Y/N] | [Sum] |
-| [Pain 2] | [H/M/L] | [H/M/L] | [H/M/L] | [Y/N] | [Sum] |
-| [Pain 3] | [H/M/L] | [H/M/L] | [H/M/L] | [Y/N] | [Sum] |
+| 痛点 | 紧急度 | 成本 | 频率 | 正在积极解决？ | 分数 |
+|------|--------|------|------|----------------|------|
+| [痛点 1] | [高/中/低] | [高/中/低] | [高/中/低] | [是/否] | [合计] |
+| [痛点 2] | [高/中/低] | [高/中/低] | [高/中/低] | [是/否] | [合计] |
+| [痛点 3] | [高/中/低] | [高/中/低] | [高/中/低] | [是/否] | [合计] |
 
-**Scoring:** H=3, M=2, L=1, Y=+2, N=0
-**Focus on pains scoring 8+ first.**
+**评分：** 高=3、中=2、低=1、是=+2、否=0
+**优先关注得分 8 分以上的痛点。**
 
-### Step 7: ICP Validation Interview Guide
+### 步骤 7：ICP 验证访谈指南
 
-**Validate your ICP with real conversations.**
+**通过真实对话验证你的 ICP。**
 
-Ask the user:
+问用户：
 
-> **How will you validate this ICP?**
+> **你将如何验证这个 ICP？**
 >
-> 1. Do you have access to people matching this profile?
-> 2. Have you talked to 10+ people in this segment?
-> 3. What questions will you ask to validate?
+> 1. 你能接触到符合此画像的人吗？
+> 2. 你是否已与 10 位以上此细分领域的人交谈过？
+> 3. 你会问什么问题来验证？
 
-**Interview Question Bank:**
+**面试问题库：**
 
-| Category | Question | What You Learn |
-|----------|----------|----------------|
-| **Problem** | "Walk me through how you currently handle [X]" | Current process |
-| **Pain** | "What's the most frustrating part of that?" | Pain intensity |
-| **Impact** | "What does that cost you? (Time/money/stress)" | Pain magnitude |
-| **Solutions** | "What have you tried to solve this?" | Competition |
-| **Budget** | "Do you have budget allocated for this?" | Buying intent |
-| **Timeline** | "When do you need to solve this by?" | Urgency |
-| **Decision** | "How do you typically evaluate tools like this?" | Buying process |
+| 类别 | 问题 | 你能学到什么 |
+|------|------|--------------|
+| **问题** | "请告诉我你目前如何处理[X]" | 当前流程 |
+| **痛点** | "其中最有挫败感的部分是什么？" | 痛点强度 |
+| **影响** | "这让你付出了什么代价？（时间/金钱/压力）" | 痛点量级 |
+| **方案** | "你尝试过什么来解决这个问题？" | 竞争对手 |
+| **预算** | "你是否有为此分配的预算？" | 购买意向 |
+| **时间线** | "你需要在什么时候之前解决这个问题？" | 紧迫性 |
+| **决策** | "你通常如何评估这样的工具？" | 购买流程 |
 
-### Step 8: ICP Narrowing Criteria
+### 步骤 8：ICP 收窄标准
 
-**Start narrow, expand later.**
+**从窄开始，再扩展。**
 
-Ask the user:
+问用户：
 
-> **Which constraints help you focus?**
+> **哪些约束能帮助你聚焦？**
 >
-> 1. What makes a company a PERFECT fit?
-> 2. What makes them a GOOD fit?
-> 3. What makes them a BAD fit?
-> 4. What's a disqualifier?
+> 1. 什么让公司成为完美的匹配？
+> 2. 什么让公司成为好的匹配？
+> 3. 什么让公司成为差的匹配？
+> 4. 什么是一票否决条件？
 
-**Fit Scoring Framework:**
+**匹配度评分框架：**
 
-| Criterion | Perfect Fit | Good Fit | Bad Fit | Disqualifier |
-|-----------|-------------|----------|---------|--------------|
-| Company Size | [Exact] | [Range] | [Outside] | [Never] |
-| Industry | [Exact] | [Adjacent] | [Far] | [Never] |
-| Tech Stack | [Uses X] | [Uses Y] | [No Y] | [Uses Z] |
-| Budget | [Has budget] | [Can find] | [No budget] | [Never pay] |
-| Pain | [Acute] | [Moderate] | [Mild] | [None] |
-| Timeline | [Now] | [3 months] | [6 months] | [No timeline] |
+| 标准 | 完美匹配 | 好匹配 | 差匹配 | 否决条件 |
+|------|----------|--------|--------|----------|
+| 公司规模 | [确切] | [范围] | [以外] | [绝不] |
+| 行业 | [确切] | [相邻] | [远] | [绝不] |
+| 技术栈 | [使用 X] | [使用 Y] | [无 Y] | [使用 Z] |
+| 预算 | [有预算] | [能找到] | [无预算] | [绝不付费] |
+| 痛点 | [严重] | [中等] | [轻微] | [无] |
+| 时间线 | [现在] | [3 个月] | [6 个月] | [无时间线] |
 
-## Output Format Template
+## 输出格式模板
 
 ```markdown
-# ICP Definition: [Product Name]
+# ICP 定义：[产品名称]
 
-## Executive Summary
+## 执行摘要
 
-**Target Company:** [One-line description]
-**Primary Buyer:** [Title]
-**Primary User:** [Title]
-**Key Pain:** [Core problem]
-**Urgency Level:** [High/Medium/Low]
+**目标公司：** [一句话描述]
+**主要买家：** [职位]
+**主要用户：** [职位]
+**关键痛点：** [核心问题]
+**紧迫程度：** [高/中/低]
 
-## Company Profile
+## 公司画像
 
-### Ideal Company
+### 理想公司
 
-| Attribute | Definition | Rationale |
-|-----------|------------|-----------|
-| Industry | [Vertical] | [Why] |
-| Size | [Range] | [Why] |
-| Stage | [Stage] | [Why] |
-| Geography | [Regions] | [Why] |
-| Tech Stack | [Tools] | [Why] |
-| Business Model | [Type] | [Why] |
+| 属性 | 定义 | 理由 |
+|------|------|------|
+| 行业 | [垂直领域] | [原因] |
+| 规模 | [范围] | [原因] |
+| 阶段 | [阶段] | [原因] |
+| 地区 | [区域] | [原因] |
+| 技术栈 | [工具] | [原因] |
+| 商业模式 | [类型] | [原因] |
 
-### Trigger Events
+### 触发事件
 
-| Trigger | Description | Urgency |
-|---------|-------------|---------|
-| [Trigger 1] | [What happens] | [High/Med/Low] |
-| [Trigger 2] | [What happens] | [High/Med/Low] |
-| [Trigger 3] | [What happens] | [High/Med/Low] |
+| 触发事件 | 描述 | 紧迫程度 |
+|----------|------|----------|
+| [触发事件 1] | [发生了什么] | [高/中/低] |
+| [触发事件 2] | [发生了什么] | [高/中/低] |
+| [触发事件 3] | [发生了什么] | [高/中/低] |
 
-### Fit Criteria
+### 匹配标准
 
-| Criterion | Perfect Fit | Good Fit | Disqualifier |
-|-----------|-------------|----------|--------------|
-| [Criterion 1] | [Definition] | [Definition] | [Definition] |
-| [Criterion 2] | [Definition] | [Definition] | [Definition] |
-| [Criterion 3] | [Definition] | [Definition] | [Definition] |
+| 标准 | 完美匹配 | 好匹配 | 否决条件 |
+|------|----------|--------|----------|
+| [标准 1] | [定义] | [定义] | [定义] |
+| [标准 2] | [定义] | [定义] | [定义] |
+| [标准 3] | [定义] | [定义] | [定义] |
 
-## Buyer Persona
+## 买家画像
 
-### [Title] - The Economic Buyer
+### [职位] - 经济买家
 
-**Profile:**
-- Title: [Exact title]
-- Reports to: [Boss role]
-- Team size: [X people]
-- Decision authority: $[X] - $[Y]
+**画像：**
+- 职位：[确切职位]
+- 汇报对象：[上级角色]
+- 团队规模：[X 人]
+- 决策权：$[X] - $[Y]
 
-**Goals:**
-1. [Goal 1]
-2. [Goal 2]
-3. [Goal 3]
+**目标：**
+1. [目标 1]
+2. [目标 2]
+3. [目标 3]
 
-**Frustrations:**
-1. [Frustration 1]
-2. [Frustration 2]
-3. [Frustration 3]
+**痛点：**
+1. [痛点 1]
+2. [痛点 2]
+3. [痛点 3]
 
-**Success Metrics:**
+**成功指标：**
 - [KPI 1]
 - [KPI 2]
 
-**How They Buy:**
-- [Step 1 in their process]
-- [Step 2]
-- [Step 3]
+**他们如何购买：**
+- [流程步骤 1]
+- [步骤 2]
+- [步骤 3]
 
-**What Matters Most:**
-- [ ] Cost savings
-- [ ] Time savings
-- [ ] Risk reduction
-- [ ] Revenue growth
-- [ ] Team efficiency
+**他们最看重什么：**
+- [ ] 成本节约
+- [ ] 时间节省
+- [ ] 风险降低
+- [ ] 收入增长
+- [ ] 团队效率
 
-## User Persona
+## 用户画像
 
-### [Title] - The Daily User
+### [职位] - 日常用户
 
-**Profile:**
-- Title: [Exact title]
-- Reports to: [Buyer usually]
-- Tech comfort: [Low/Medium/High]
+**画像：**
+- 职位：[确切职位]
+- 汇报对象：[通常是买家]
+- 技术熟悉度：[低/中/高]
 
-**Daily Workflow:**
-1. [Task 1]
-2. [Task 2]
-3. [Task 3]
+**日常工作流程：**
+1. [任务 1]
+2. [任务 2]
+3. [任务 3]
 
-**Current Process (Without Your Product):**
-1. [How they do it now - Step 1]
-2. [Step 2]
-3. [Step 3]
-4. [Where it breaks down]
+**当前流程（没有你的产品）：**
+1. [他们现在如何做 — 步骤 1]
+2. [步骤 2]
+3. [步骤 3]
+4. [在哪里出现问题]
 
-**Pain Points:**
-1. [Pain 1] — [Impact]
-2. [Pain 2] — [Impact]
-3. [Pain 3] — [Impact]
+**痛点：**
+1. [痛点 1] — [影响]
+2. [痛点 2] — [影响]
+3. [痛点 3] — [影响]
 
-**Desired Outcome:**
-[What success looks like for them]
+**期望结果：**
+[对他们来说成功是什么样子]
 
-## Buying Center
+## 购买中心
 
-### Stakeholder Map
+### 利益相关者地图
 
-| Role | Typical Title | Power Level | How to Win Them |
-|------|---------------|-------------|-----------------|
-| Champion | [Title] | [High/Med/Low] | [Strategy] |
-| Economic Buyer | [Title] | [High] | [Strategy] |
-| Technical Evaluator | [Title] | [Medium] | [Strategy] |
-| End User | [Title] | [Low-Med] | [Strategy] |
-| Potential Blocker | [Title] | [Medium] | [Strategy] |
+| 角色 | 典型职位 | 影响力水平 | 如何赢得他们 |
+|------|----------|------------|--------------|
+| 倡导者 | [职位] | [高/中/低] | [策略] |
+| 经济买家 | [职位] | [高] | [策略] |
+| 技术评估者 | [职位] | [中] | [策略] |
+| 最终用户 | [职位] | [低-中] | [策略] |
+| 潜在阻止者 | [职位] | [中] | [策略] |
 
-### Decision Process
+### 决策流程
 
-**Typical buying journey:**
-1. [Step 1 - How they discover]
-2. [Step 2 - How they evaluate]
-3. [Step 3 - How they decide]
-4. [Step 4 - How they implement]
+**典型的购买旅程：**
+1. [步骤 1 — 他们如何发现]
+2. [步骤 2 — 他们如何评估]
+3. [步骤 3 — 他们如何决定]
+4. [步骤 4 — 他们如何实施]
 
-**Average sales cycle:** [X weeks/months]
+**平均销售周期：** [X 周/月]
 
-## Pain Hierarchy
+## 痛点层级
 
-| Rank | Pain | Urgency | Cost | Frequency | Score |
-|------|------|---------|------|-----------|-------|
-| 1 | [Pain] | [H/M/L] | [H/M/L] | [H/M/L] | [X] |
-| 2 | [Pain] | [H/M/L] | [H/M/L] | [H/M/L] | [X] |
-| 3 | [Pain] | [H/M/L] | [H/M/L] | [H/M/L] | [X] |
+| 排名 | 痛点 | 紧急度 | 成本 | 频率 | 分数 |
+|------|------|--------|------|------|------|
+| 1 | [痛点] | [高/中/低] | [高/中/低] | [高/中/低] | [X] |
+| 2 | [痛点] | [高/中/低] | [高/中/低] | [高/中/低] | [X] |
+| 3 | [痛点] | [高/中/低] | [高/中/低] | [高/中/低] | [X] |
 
-**Primary pain to lead with:** [#1 Pain]
+**首要痛点引导：** [#1 痛点]
 
-## Validation Status
+## 验证状态
 
-| Validation | Status | Notes |
-|------------|--------|-------|
-| 10+ interviews completed | [✓/✗] | [Count] |
-| Pain confirmed | [✓/✗] | [Evidence] |
-| Budget confirmed | [✓/✗] | [Evidence] |
-| Buying process understood | [✓/✗] | [Evidence] |
-| Design partners identified | [✓/✗] | [Names] |
+| 验证项 | 状态 | 备注 |
+|--------|------|------|
+| 已完成 10 次以上访谈 | [是/否] | [数量] |
+| 痛点已确认 | [是/否] | [证据] |
+| 预算已确认 | [是/否] | [证据] |
+| 购买流程已了解 | [是/否] | [证据] |
+| 已确定设计合作伙伴 | [是/否] | [姓名] |
 
-## How to Find Them
+## 如何找到他们
 
-### Where They Hang Out
-- [Platform/community 1]
-- [Platform/community 2]
-- [Events/conferences]
+### 他们聚集的地方
+- [平台/社区 1]
+- [平台/社区 2]
+- [活动/会议]
 
-### How to Identify Them
-- [Signal 1 - Job posting, tech stack, etc.]
-- [Signal 2]
-- [Signal 3]
+### 如何识别他们
+- [信号 1 — 招聘帖子、技术栈等]
+- [信号 2]
+- [信号 3]
 
-### Outreach Angles
-- [Message angle 1]
-- [Message angle 2]
+### 外联角度
+- [信息角度 1]
+- [信息角度 2]
 
-## Anti-Personas (Who NOT to Target)
+## 反画像（不要瞄准谁）
 
-| Type | Why They're Bad Fits |
-|------|---------------------|
-| [Type 1] | [Reason - no budget, wrong problem, etc.] |
-| [Type 2] | [Reason] |
-| [Type 3] | [Reason] |
+| 类型 | 为什么他们不适合 |
+|------|-----------------|
+| [类型 1] | [原因 — 无预算、错误问题等] |
+| [类型 2] | [原因] |
+| [类型 3] | [原因] |
 
-## ICP Evolution Plan
+## ICP 演进计划
 
-**Current Focus (Now):**
-- [Narrow segment to win first]
+**当前重点（现在）：**
+- [首先赢得的窄细分领域]
 
-**Phase 2 (After PMF):**
-- [Adjacent segment to expand into]
+**第二阶段（PMF 之后）：**
+- [扩展进入的相邻细分领域]
 
-**Phase 3 (Scale):**
-- [Broader market]
+**第三阶段（规模化）：**
+- [更广泛的市场]
 
-## Next Steps
+## 下一步行动
 
-- [ ] Validate with 10 more interviews
-- [ ] Identify 5 design partners from this ICP
-- [ ] Build outreach list of 100 matching companies
-- [ ] Create messaging for each persona
+- [ ] 通过 10 次以上访谈进行验证
+- [ ] 从此 ICP 中确定 5 个设计合作伙伴
+- [ ] 建立 100 家匹配公司的外联名单
+- [ ] 为每个画像创作信息
 ```
 
-## Common Mistakes to Avoid
+## 常见错误避免
 
-1. **Too broad:** "All companies" is not an ICP
-2. **Too narrow:** "Left-handed CEOs in Iowa" is too small
-3. **Buyer/User confusion:** They're often different people
-4. **Ignoring buying center:** Multiple people matter
-5. **Assuming, not validating:** Talk to real customers
-6. **Static ICP:** It should evolve with learnings
-7. **Feature-led personas:** Define by problems, not features
-8. **Skipping anti-personas:** Know who NOT to target
+1. **过于宽泛：** "所有公司"不是一个 ICP
+2. **过于狭窄：** "爱荷华州的左撇子 CEO"范围太小
+3. **买家/用户混淆：** 他们通常是不同的人
+4. **忽略购买中心：** 多人起作用
+5. **假设而非验证：** 与真实客户交谈
+6. **静态 ICP：** 它应随着学习而演进
+7. **功能导向的画像：** 按问题定义，不是按功能
+8. **跳过反画像：** 知道不要瞄准谁

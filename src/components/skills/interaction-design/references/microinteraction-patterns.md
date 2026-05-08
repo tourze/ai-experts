@@ -1,8 +1,8 @@
-# Microinteraction Patterns Reference
+# 微交互模式参考
 
-## Button States
+## 按钮状态
 
-### Loading Button
+### 加载按钮
 
 ```tsx
 import { motion, AnimatePresence } from "framer-motion";
@@ -47,7 +47,7 @@ function LoadingButton({ isLoading, children, onClick }: LoadingButtonProps) {
   );
 }
 
-// Spinner component
+// Spinner 组件
 function Spinner({ className }: { className?: string }) {
   return (
     <svg className={`animate-spin ${className}`} viewBox="0 0 24 24">
@@ -67,7 +67,7 @@ function Spinner({ className }: { className?: string }) {
 }
 ```
 
-### Success/Error State
+### 成功/错误状态
 
 ```tsx
 function SubmitButton({ onSubmit }: { onSubmit: () => Promise<void> }) {
@@ -131,9 +131,9 @@ function SubmitButton({ onSubmit }: { onSubmit: () => Promise<void> }) {
 }
 ```
 
-## Form Interactions
+## 表单交互
 
-### Floating Label Input
+### 浮动标签输入框
 
 ```tsx
 import { useState, useId } from "react";
@@ -179,7 +179,7 @@ function FloatingInput({
 }
 ```
 
-### Shake on Error
+### 错误时抖动
 
 ```tsx
 import { motion, useAnimation } from "framer-motion";
@@ -218,7 +218,7 @@ function ShakeInput({ error, ...props }: InputProps & { error?: string }) {
 }
 ```
 
-### Character Count
+### 字数统计
 
 ```tsx
 function TextareaWithCount({ maxLength = 280 }: { maxLength?: number }) {
@@ -253,9 +253,9 @@ function TextareaWithCount({ maxLength = 280 }: { maxLength?: number }) {
 }
 ```
 
-## Feedback Patterns
+## 反馈模式
 
-### Toast Notifications
+### Toast 通知
 
 ```tsx
 import { motion, AnimatePresence } from "framer-motion";
@@ -317,7 +317,7 @@ export function useToast() {
 }
 ```
 
-### Confirmation Dialog
+### 确认对话框
 
 ```tsx
 function ConfirmButton({
@@ -370,9 +370,9 @@ function ConfirmButton({
 }
 ```
 
-## Navigation Patterns
+## 导航模式
 
-### Active Link Indicator
+### 活动链接指示器
 
 ```tsx
 import { motion } from "framer-motion";
@@ -409,7 +409,7 @@ function Navigation({ items }: { items: { href: string; label: string }[] }) {
 }
 ```
 
-### Hamburger Menu Icon
+### 汉堡菜单图标
 
 ```tsx
 function MenuIcon({ isOpen }: { isOpen: boolean }) {
@@ -443,9 +443,9 @@ function MenuIcon({ isOpen }: { isOpen: boolean }) {
 }
 ```
 
-## Data Interactions
+## 数据交互
 
-### Optimistic Updates
+### 乐观更新
 
 ```tsx
 function LikeButton({ postId, initialLiked, initialCount }) {
@@ -453,7 +453,7 @@ function LikeButton({ postId, initialLiked, initialCount }) {
   const [count, setCount] = useState(initialCount);
 
   const handleLike = async () => {
-    // Optimistic update
+    // 乐观更新
     const newLiked = !liked;
     setLiked(newLiked);
     setCount((c) => c + (newLiked ? 1 : -1));
@@ -461,7 +461,7 @@ function LikeButton({ postId, initialLiked, initialCount }) {
     try {
       await api.toggleLike(postId);
     } catch {
-      // Rollback on error
+      // 出错时回滚
       setLiked(!newLiked);
       setCount((c) => c + (newLiked ? -1 : 1));
     }
@@ -494,7 +494,7 @@ function LikeButton({ postId, initialLiked, initialCount }) {
 }
 ```
 
-### Pull to Refresh
+### 下拉刷新
 
 ```tsx
 import { motion, useMotionValue, useTransform } from "framer-motion";

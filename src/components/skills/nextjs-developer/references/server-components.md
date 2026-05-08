@@ -1,13 +1,13 @@
 # React Server Components
 
-## Server Components (Default)
+## Server Components（默认）
 
 ```tsx
-// app/page.tsx - Server Component by default
+// app/page.tsx - 默认为 Server Component
 import { db } from '@/lib/db'
 
 export default async function Page() {
-  // Data fetching in Server Component
+  // 在 Server Component 中获取数据
   const users = await db.user.findMany()
 
   return (
@@ -23,19 +23,19 @@ export default async function Page() {
 }
 ```
 
-## Benefits of Server Components
+## Server Components 的优势
 
-- **Zero bundle size** - Server Components don't add JavaScript to client bundle
-- **Direct backend access** - Query databases, read files, use secrets
-- **Automatic code splitting** - Only Client Components add to bundle
-- **Streaming** - Send UI progressively as data loads
-- **No client-side waterfalls** - Fetch all data in parallel on server
+- **零 bundle 大小** - Server Components 不向客户端 bundle 添加 JavaScript
+- **直接后端访问** - 查询数据库、读取文件、使用密钥
+- **自动代码分割** - 只有 Client Components 会添加到 bundle 中
+- **流式渲染** - 随着数据加载逐步发送 UI
+- **无客户端瀑布流** - 在服务器端并行获取所有数据
 
 ## Client Components
 
 ```tsx
 // components/counter.tsx
-'use client' // Required directive
+'use client' // 必需指令
 
 import { useState } from 'react'
 
@@ -50,17 +50,17 @@ export function Counter() {
 }
 ```
 
-## When to Use Client Components
+## 何时使用 Client Components
 
-Use `'use client'` when you need:
-- **Interactivity** - onClick, onChange, event handlers
-- **State** - useState, useReducer
-- **Effects** - useEffect, useLayoutEffect
-- **Browser APIs** - localStorage, window, document
-- **Custom hooks** - Any hook using client-only features
-- **Class components** - Component lifecycle methods
+在需要以下功能时使用 `'use client'`：
+- **交互性** - onClick、onChange、事件处理器
+- **状态** - useState、useReducer
+- **副作用** - useEffect、useLayoutEffect
+- **浏览器 API** - localStorage、window、document
+- **自定义 hooks** - 任何使用客户端特有功能的 hook
+- **类组件** - 组件生命周期方法
 
-## Composition Pattern
+## 组合模式
 
 ```tsx
 // app/page.tsx - Server Component
@@ -79,10 +79,10 @@ export default async function Page() {
 
   return (
     <div>
-      {/* Server Component content */}
+      {/* Server Component 内容 */}
       <h1>Server Content</h1>
 
-      {/* Pass data to Client Component */}
+      {/* 将数据传给 Client Component */}
       <ClientWrapper initialData={data}>
         <aside>Server-rendered sidebar</aside>
       </ClientWrapper>
@@ -111,14 +111,14 @@ export function ClientWrapper({
       {/* Client Component UI */}
       <button onClick={() => router.refresh()}>Refresh</button>
       <p>{data.greeting}</p>
-      {/* Server Component children */}
+      {/* Server Component 子元素 */}
       {children}
     </div>
   )
 }
 ```
 
-## Streaming with Suspense
+## 使用 Suspense 进行流式渲染
 
 ```tsx
 // app/page.tsx
@@ -129,10 +129,10 @@ import { FastComponent } from './fast-component'
 export default function Page() {
   return (
     <div>
-      {/* Renders immediately */}
+      {/* 立即渲染 */}
       <FastComponent />
 
-      {/* Shows fallback while loading */}
+      {/* 加载时显示回退内容 */}
       <Suspense fallback={<div>Loading...</div>}>
         <SlowComponent />
       </Suspense>
@@ -152,7 +152,7 @@ export async function SlowComponent() {
 }
 ```
 
-## Parallel Data Fetching
+## 并行数据获取
 
 ```tsx
 // app/dashboard/page.tsx
@@ -167,7 +167,7 @@ async function getPosts() {
 }
 
 export default async function Dashboard() {
-  // Fetch in parallel
+  // 并行获取
   const [user, posts] = await Promise.all([
     getUser(),
     getPosts(),
@@ -182,7 +182,7 @@ export default async function Dashboard() {
 }
 ```
 
-## Sequential Data Fetching
+## 顺序数据获取
 
 ```tsx
 // app/artist/[id]/page.tsx
@@ -202,7 +202,7 @@ export default async function ArtistPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  // Sequential: albums depends on artist
+  // 顺序执行：专辑依赖艺术家信息
   const artist = await getArtist(id)
   const albums = await getAlbums(artist.id)
 
@@ -215,7 +215,7 @@ export default async function ArtistPage({
 }
 ```
 
-## Preloading Data
+## 预加载数据
 
 ```tsx
 // lib/data.ts
@@ -236,21 +236,21 @@ import { getUser } from '@/lib/data'
 import { UserProfile } from '@/components/user-profile'
 
 export default async function Page() {
-  // Preload
+  // 预加载
   getUser('123')
 
   return (
     <div>
-      {/* This will use cached result */}
+      {/* 这里将使用缓存结果 */}
       <UserProfile userId="123" />
     </div>
   )
 }
 ```
 
-## Server Component Patterns
+## Server Component 模式
 
-### Pattern: Layout with Data Fetching
+### 模式：带数据获取的布局
 
 ```tsx
 // app/dashboard/layout.tsx
@@ -274,7 +274,7 @@ export default async function DashboardLayout({
 }
 ```
 
-### Pattern: Conditional Client Components
+### 模式：条件性 Client Component
 
 ```tsx
 // app/page.tsx
@@ -283,7 +283,7 @@ import { ClientComponent } from './client-component'
 export default async function Page() {
   const data = await fetchData()
 
-  // Only render Client Component when needed
+  // 仅在需要时渲染 Client Component
   if (data.requiresInteractivity) {
     return <ClientComponent data={data} />
   }
@@ -292,7 +292,7 @@ export default async function Page() {
 }
 ```
 
-### Pattern: Server Component with Client Island
+### 模式：带客户端孤岛的 Server Component
 
 ```tsx
 // app/blog/[slug]/page.tsx
@@ -308,18 +308,18 @@ export default async function BlogPost({
 
   return (
     <article>
-      {/* Server-rendered content */}
+      {/* 服务端渲染的内容 */}
       <h1>{post.title}</h1>
       <div dangerouslySetInnerHTML={{ __html: post.content }} />
 
-      {/* Client island for interactivity */}
+      {/* 用于交互的客户端孤岛 */}
       <LikeButton postId={post.id} initialLikes={post.likes} />
     </article>
   )
 }
 ```
 
-## Context in Server/Client Components
+## Server/Client 组件中的 Context
 
 ```tsx
 // app/providers.tsx
@@ -349,7 +349,7 @@ export default function RootLayout({
 }
 ```
 
-## Third-Party Components
+## 第三方组件
 
 ```tsx
 // components/carousel-wrapper.tsx
@@ -388,22 +388,22 @@ export default async function Page() {
 }
 ```
 
-## Quick Reference
+## 快速参考
 
-| Capability | Server Component | Client Component |
-|------------|------------------|------------------|
-| Data fetching | ✅ Yes | ⚠️ Use SWR/React Query |
-| Backend access | ✅ Yes (DB, files) | ❌ No |
-| Event handlers | ❌ No | ✅ Yes |
-| State/Effects | ❌ No | ✅ Yes |
-| Browser APIs | ❌ No | ✅ Yes |
-| Bundle size | 0 KB | Adds to bundle |
-| Streaming | ✅ Yes | ❌ No |
+| 能力 | Server Component | Client Component |
+|------|------------------|------------------|
+| 数据获取 | ✅ 是 | ⚠️ 使用 SWR/React Query |
+| 后端访问 | ✅ 是（数据库、文件） | ❌ 否 |
+| 事件处理器 | ❌ 否 | ✅ 是 |
+| 状态/副作用 | ❌ 否 | ✅ 是 |
+| 浏览器 API | ❌ 否 | ✅ 是 |
+| Bundle 大小 | 0 KB | 添加到 bundle |
+| 流式渲染 | ✅ 是 | ❌ 否 |
 
-## Best Practices
+## 最佳实践
 
-1. **Default to Server Components** - Only use 'use client' when needed
-2. **Move Client Components down** - Push them to leaves of component tree
-3. **Pass data down** - Fetch in Server Components, pass to Client Components
-4. **Use composition** - Nest Server Components inside Client Components via children
-5. **Cache expensive operations** - Use React cache() for deduplication
+1. **默认使用 Server Components** - 仅在需要时使用 'use client'
+2. **将 Client Components 下移** - 推到组件树的叶子节点
+3. **向下传递数据** - 在 Server Components 中获取数据，传给 Client Components
+4. **使用组合** - 通过 children 在 Client Components 中嵌套 Server Components
+5. **缓存昂贵操作** - 使用 React cache() 进行去重

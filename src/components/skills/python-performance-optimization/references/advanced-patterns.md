@@ -1,10 +1,10 @@
-# Python Performance Optimization — Advanced Reference
+# Python 性能优化——高级参考
 
-Advanced optimization techniques including NumPy vectorization, caching, memory management, parallelization, async I/O, database optimization, and benchmarking tools.
+涵盖 NumPy 向量化、缓存、内存管理、并行化、异步 I/O、数据库优化和基准测试工具的高级优化技术。
 
-## Advanced Optimization
+## 高级优化
 
-### Pattern 11: NumPy for Numerical Operations
+### 模式 11：NumPy 数值运算
 
 ```python
 import timeit
@@ -48,7 +48,7 @@ print(f"NumPy multiply: {np_time:.4f}s")
 print(f"Speedup: {py_time/np_time:.2f}x")
 ```
 
-### Pattern 12: Caching with functools.lru_cache
+### 模式 12：使用 functools.lru_cache 缓存
 
 ```python
 from functools import lru_cache
@@ -80,7 +80,7 @@ print(f"With cache (1000 runs): {fast_time:.4f}s")
 print(f"Cache info: {fibonacci_fast.cache_info()}")
 ```
 
-### Pattern 13: Using __slots__ for Memory
+### 模式 13：使用 __slots__ 优化内存
 
 ```python
 import sys
@@ -116,7 +116,7 @@ print(f"\nMemory for 10000 regular objects: ~{sys.getsizeof(regular) * 10000} by
 print(f"Memory for 10000 slotted objects: ~{sys.getsizeof(slotted) * 10000} bytes")
 ```
 
-### Pattern 14: Multiprocessing for CPU-Bound Tasks
+### 模式 14：多进程处理 CPU 密集型任务
 
 ```python
 import multiprocessing as mp
@@ -150,7 +150,7 @@ if __name__ == "__main__":
     print(f"Speedup: {seq_time/par_time:.2f}x")
 ```
 
-### Pattern 15: Async I/O for I/O-Bound Tasks
+### 模式 15：异步 I/O 处理 I/O 密集型任务
 
 ```python
 import asyncio
@@ -198,9 +198,9 @@ print(f"Asynchronous: {async_time:.2f}s")
 print(f"Speedup: {sync_time/async_time:.2f}x")
 ```
 
-## Database Optimization
+## 数据库优化
 
-### Pattern 16: Batch Database Operations
+### 模式 16：批量数据库操作
 
 ```python
 import sqlite3
@@ -244,7 +244,7 @@ print(f"Batch insert: {fast_time:.4f}s")
 print(f"Speedup: {slow_time/fast_time:.2f}x")
 ```
 
-### Pattern 17: Query Optimization
+### 模式 17：查询优化
 
 ```python
 # Use indexes for frequently queried columns
@@ -272,9 +272,9 @@ print(cursor.fetchall())
 # Fast: SELECT id, name
 ```
 
-## Memory Optimization
+## 内存优化
 
-### Pattern 18: Detecting Memory Leaks
+### 模式 18：检测内存泄漏
 
 ```python
 import tracemalloc
@@ -319,7 +319,7 @@ track_memory_usage()
 gc.collect()
 ```
 
-### Pattern 19: Iterators vs Lists
+### 模式 19：迭代器 vs 列表
 
 ```python
 import sys
@@ -339,7 +339,7 @@ def process_file_iterator(filename):
 # List loads entire file into memory
 ```
 
-### Pattern 20: Weakref for Caches
+### 模式 20：使用 Weakref 做缓存
 
 ```python
 import weakref
@@ -372,9 +372,9 @@ def get_resource_weak(key):
 # When no strong references exist, objects can be GC'd
 ```
 
-## Benchmarking Tools
+## 基准测试工具
 
-### Custom Benchmark Decorator
+### 自定义基准测试装饰器
 
 ```python
 import time
@@ -400,7 +400,7 @@ def slow_function():
 result = slow_function()
 ```
 
-### Performance Testing with pytest-benchmark
+### 使用 pytest-benchmark 进行性能测试
 
 ```python
 # Install: pip install pytest-benchmark

@@ -1,64 +1,64 @@
-# Finance & Commerce Presets
+# 金融与电商预设
 
-## 9. Fintech / Banking
-- Style: Minimalism + Trust Blue
-- Colors: `#1E3A8A` / `#059669` growth green / bg `#F8FAFC`
-- Fonts: Inter / Inter
-- Effects: 大数字 + 细微涨跌箭头
-- AVOID: AI 紫粉、深色炫技、卡通图标
+## 9. 金融科技 / 银行
+- 风格：极简 + 信任蓝
+- 配色：`#1E3A8A` / `#059669` 增长绿 / 背景 `#F8FAFC`
+- 字体：Inter / Inter
+- 效果：大数字 + 细微涨跌箭头
+- 避免：AI 紫粉、深色炫技、卡通图标
 
-## 10. Crypto / Web3
-- Style: Cyberpunk + Glassmorphism
-- Colors: `#0F172A` / `#8B5CF6` / 强 `#22D3EE` / bg `#020617`
-- Fonts: Space Grotesk / Space Mono
-- Effects: 粒子背景、Mono 数字、发光按钮
-- AVOID: 传统银行蓝、安心老年人感
+## 10. 加密货币 / Web3
+- 风格：赛博朋克 + 玻璃拟态
+- 配色：`#0F172A` / `#8B5CF6` / 强 `#22D3EE` / 背景 `#020617`
+- 字体：Space Grotesk / Space Mono
+- 效果：粒子背景、等宽数字、发光按钮
+- 避免：传统银行蓝、安心老年人感
 
-## 11. Insurance
-- Style: Accessible & Ethical + Flat
-- Colors: `#0284C7` / `#14532D` / bg `#F8FAFC`
-- Fonts: Source Serif 4 / Source Sans 3
-- Effects: 文档感、图表 + 注释
-- AVOID: 酷炫、游戏化、年轻色调
+## 11. 保险
+- 风格：无障碍可及 + 伦理 + 扁平
+- 配色：`#0284C7` / `#14532D` / 背景 `#F8FAFC`
+- 字体：Source Serif 4 / Source Sans 3
+- 效果：文档感、图表 + 注释
+- 避免：酷炫、游戏化、年轻色调
 
-## 12. Personal Finance Tracker
-- Style: Bento Grid + Friendly Sans
-- Colors: `#10B981` / `#3B82F6` / bg `#FFFFFF`
-- Fonts: Manrope / Inter
-- Effects: 卡片堆叠、动画计数器
-- AVOID: 企业感、过度严肃
+## 12. 个人财务追踪
+- 风格：Bento 网格 + 友好无衬线
+- 配色：`#10B981` / `#3B82F6` / 背景 `#FFFFFF`
+- 字体：Manrope / Inter
+- 效果：卡片堆叠、动画计数器
+- 避免：企业感、过度严肃
 
-## 13. E-commerce (General)
-- Style: Minimalism + Product-forward
-- Colors: `#000000` / CTA `#EF4444` / bg `#FFFFFF`
-- Fonts: Inter / Inter
-- Effects: 产品图网格、hover zoom
-- AVOID: 噪音装饰、遮挡商品
+## 13. 电商（通用）
+- 风格：极简 + 产品优先
+- 配色：`#000000` / CTA `#EF4444` / 背景 `#FFFFFF`
+- 字体：Inter / Inter
+- 效果：产品图网格、hover zoom
+- 避免：噪音装饰、遮挡商品
 
-## 14. Luxury E-commerce
-- Style: Exaggerated Minimalism + Editorial Grid
-- Colors: `#18181B` / 金 `#D4AF37`（克制） / bg `#FAFAFA`
-- Fonts: Bodoni Moda / Inter
-- Effects: 大留白、细线、隐约 parallax
-- AVOID: 降价感红、密集网格
+## 14. 奢侈品电商
+- 风格：夸张极简 + 编辑网格
+- 配色：`#18181B` / 金 `#D4AF37`（克制） / 背景 `#FAFAFA`
+- 字体：Bodoni Moda / Inter
+- 效果：大留白、细线、隐约视差
+- 避免：降价感红、密集网格
 
-## 15. Subscription Box / DTC
-- Style: Claymorphism + Friendly
-- Colors: `#F97316` / `#84CC16` / bg `#FFFBEB`
-- Fonts: Fraunces / Inter
-- Effects: 3D 产品渲染、温暖插画
-- AVOID: 企业感、严肃蓝
+## 15. 订阅盒 / DTC
+- 风格：泥塑造 + 友好
+- 配色：`#F97316` / `#84CC16` / 背景 `#FFFBEB`
+- 字体：Fraunces / Inter
+- 效果：3D 产品渲染、温暖插画
+- 避免：企业感、严肃蓝
 
-## 16. Marketplace (P2P/C2C)
-- Style: Flat + Social Proof Heavy
-- Colors: `#EF4444` / `#0284C7` / bg `#FFFFFF`
-- Fonts: Inter / Inter
-- Effects: 搜索栏突出、评分/评论可见
-- AVOID: 过度精致、隐藏筛选器
+## 16. 交易市场（P2P/C2C）
+- 风格：扁平 + 重社交证明
+- 配色：`#EF4444` / `#0284C7` / 背景 `#FFFFFF`
+- 字体：Inter / Inter
+- 效果：搜索栏突出、评分/评论可见
+- 避免：过度精致、隐藏筛选器
 
-## 17. Food Delivery
-- Style: Vibrant & Block-based
-- Colors: `#EF4444` / `#FBBF24` / bg `#FFFFFF`
-- Fonts: Poppins / Inter
-- Effects: 大图食物、价格突出
-- AVOID: 冷色调、文字型 hero
+## 17. 外卖配送
+- 风格：鲜艳色块
+- 配色：`#EF4444` / `#FBBF24` / 背景 `#FFFFFF`
+- 字体：Poppins / Inter
+- 效果：大图食物、价格突出
+- 避免：冷色调、文字型 hero

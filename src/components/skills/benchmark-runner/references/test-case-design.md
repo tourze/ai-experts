@@ -1,87 +1,83 @@
-# Test Case Design
+# 测试用例设计
 
-Designing representative benchmark inputs that reveal meaningful performance
-characteristics across candidates.
-
----
-
-## Input Scale Matrix
-
-Every benchmark should test at multiple scales. Performance characteristics often
-change non-linearly with input size.
-
-### Standard Scale Tiers
-
-| Tier   | Purpose              | Typical Size   | Reveals                               |
-| ------ | -------------------- | -------------- | ------------------------------------- |
-| Tiny   | Overhead measurement | 1-10 items     | Startup cost, minimum latency         |
-| Small  | Typical light load   | 100-1K items   | Normal operation performance          |
-| Medium | Typical heavy load   | 10K-100K items | Scaling behavior                      |
-| Large  | Stress test          | 1M+ items      | Algorithmic complexity, memory limits |
-
-### Choosing Scales
-
-1. **Anchor to production data.** If production handles 50K items, test at 5K, 50K, and 500K.
-2. **Cross the threshold.** If a candidate claims "fast up to 100K items," test at
-   50K, 100K, and 200K.
-3. **Find the crossover.** Two candidates often trade positions at a certain scale.
-   Finding that crossover point is valuable.
+设计具有代表性的基准测试输入，以揭示各候选方案之间有意义的性能特征。
 
 ---
 
-## Input Type Coverage
+## 输入规模矩阵
 
-### Representative Data
+每个基准测试都应在多种规模下进行测试。性能特征通常随输入规模呈非线性变化。
 
-Use inputs that resemble production workloads:
+### 标准规模层级
 
-| If Testing       | Use                                     | Not                     |
-| ---------------- | --------------------------------------- | ----------------------- |
-| Text processing  | Real documents, varied lengths          | Single repeated word    |
-| JSON parsing     | Real API responses, nested objects      | Flat `{"key": "value"}` |
-| Database queries | Realistic table sizes and distributions | Empty tables            |
-| ML inference     | Real-world samples from test set        | Random noise            |
-| Image processing | Varied sizes, formats, content          | Single test image       |
+| 层级     | 目的                 | 典型规模          | 可揭示                               |
+| -------- | -------------------- | ----------------- | ------------------------------------ |
+| 微小     | 开销测量             | 1-10 项           | 启动成本、最小延迟                   |
+| 小       | 典型轻负载           | 100-1K 项         | 正常操作性能                         |
+| 中等     | 典型重负载           | 10K-100K 项       | 扩展行为                             |
+| 大       | 压力测试             | 100 万+ 项        | 算法复杂度、内存限制                 |
 
-### Worst-Case Inputs
+### 选择规模
 
-Include inputs designed to expose weaknesses:
-
-| Category     | Example                                             |
-| ------------ | --------------------------------------------------- |
-| Pathological | Sorted input for quicksort, all-hash-collision keys |
-| Adversarial  | Deeply nested JSON, regex backtracking patterns     |
-| Empty        | Zero-length input, null, missing fields             |
-| Maximum      | Largest possible input, max integer, longest string |
-| Unicode      | Multi-byte characters, emoji, RTL text              |
+1. **以生产数据为锚点。** 如果生产环境处理 50K 项，则在 5K、50K 和 500K 下测试。
+2. **跨越阈值。** 如果某候选声称"在 10 万项以内快速"，则在 5 万、10 万和 20 万下测试。
+3. **找到交叉点。** 两个候选在某个规模下通常会出现位置互换。找到该交叉点非常有价值。
 
 ---
 
-## Warmup Strategy
+## 输入类型覆盖
 
-### Why Warmup Matters
+### 代表性数据
 
-First-run measurements include:
+使用类似生产工作负载的输入：
 
-- JIT compilation (JVM, V8)
-- Cache population (CPU cache, application cache)
-- Connection establishment (database, HTTP)
-- Module loading (Python imports, dynamic libraries)
+| 如果测试           | 应使用                                     | 不应使用                     |
+| ----------------   | ------------------------------------------ | ---------------------------- |
+| 文本处理           | 真实文档，不同长度                         | 单个重复单词                 |
+| JSON 解析          | 真实 API 响应，嵌套对象                    | 扁平化的 `{"key": "value"}`  |
+| 数据库查询         | 真实表大小和分布                           | 空表                         |
+| ML 推理            | 测试集中的真实样本                         | 随机噪声                     |
+| 图像处理           | 不同大小、格式、内容                       | 单张测试图像                 |
 
-These are one-time costs that don't reflect steady-state performance.
+### 最差情况输入
 
-### Warmup Protocol
+包含旨在暴露弱点的输入：
+
+| 类别         | 示例                                               |
+| ------------ | -------------------------------------------------- |
+| 病态情况     | 排序输入用于快速排序，全哈希冲突键                    |
+| 对抗性输入   | 深度嵌套 JSON，正则回溯模式                           |
+| 空输入       | 零长度输入、null、缺少字段                            |
+| 最大输入     | 最大可能输入、最大整数、最长字符串                    |
+| Unicode      | 多字节字符、emoji、RTL 文本                          |
+
+---
+
+## 预热策略
+
+### 为什么预热很重要
+
+首次运行测量包含：
+
+- JIT 编译 (JVM, V8)
+- 缓存填充（CPU 缓存、应用缓存）
+- 连接建立（数据库、HTTP）
+- 模块加载（Python import、动态库）
+
+这些是一次性成本，不能反映稳态性能。
+
+### 预热协议
 
 ```python
-# Standard warmup pattern
+# 标准预热模式
 WARMUP_ITERATIONS = 10
 MEASUREMENT_ITERATIONS = 100
 
-# Warmup — discard results
+# 预热——丢弃结果
 for _ in range(WARMUP_ITERATIONS):
     run_benchmark(input_data)
 
-# Measurement — record results
+# 测量——记录结果
 results = []
 for _ in range(MEASUREMENT_ITERATIONS):
     start = time.perf_counter()
@@ -90,61 +86,61 @@ for _ in range(MEASUREMENT_ITERATIONS):
     results.append(elapsed)
 ```
 
-### How Many Warmup Iterations
+### 需要多少次预热迭代
 
-| Environment            | Recommended Warmup                 |
-| ---------------------- | ---------------------------------- |
-| Python (CPython)       | 3-5 iterations                     |
-| JVM (Java, Kotlin)     | 50-100 iterations (JIT)            |
-| JavaScript (V8)        | 10-20 iterations                   |
-| Compiled (Rust, Go, C) | 1-3 iterations (cache only)        |
-| Database queries       | 5-10 iterations (query plan cache) |
+| 环境                     | 推荐预热次数                        |
+| ------------------------ | ----------------------------------- |
+| Python (CPython)         | 3-5 次迭代                          |
+| JVM (Java, Kotlin)       | 50-100 次迭代 (JIT)                 |
+| JavaScript (V8)          | 10-20 次迭代                        |
+| 编译语言 (Rust, Go, C)   | 1-3 次迭代（仅缓存）                |
+| 数据库查询               | 5-10 次迭代（查询计划缓存）         |
 
 ---
 
-## Iteration Count
+## 迭代次数
 
-### Minimum Iterations
+### 最少迭代次数
 
 ```text
-Minimum = 30 (for basic statistical confidence)
-Recommended = 100+ (for percentile accuracy)
-For P99 accuracy = 1000+ (need 10x the percentile denominator)
+最少 = 30（基本统计置信度）
+推荐 = 100+（百分位准确性）
+P99 准确性 = 1000+（需要百分位分母的 10 倍）
 ```
 
-### When to Increase Iterations
+### 何时增加迭代次数
 
-- High variance in results → increase iterations
-- P99 measurement needed → at least 1000 iterations
-- Candidates are close in performance → more iterations for discrimination
+- 结果方差高 → 增加迭代次数
+- 需要 P99 测量 → 至少 1000 次迭代
+- 候选方案性能接近 → 需要更多迭代以区分
 
 ---
 
-## Isolation Strategies
+## 隔离策略
 
-### Process Isolation
+### 进程隔离
 
-Run each candidate in a separate process to prevent:
+在独立进程中运行每个候选方案，以防止：
 
-- Shared memory pollution
-- GC interference
-- Thread contention
+- 共享内存污染
+- GC 干扰
+- 线程争用
 
 ```bash
-# Run candidates in separate processes
+# 在独立进程中运行候选方案
 python benchmark_candidate_a.py > results_a.json
 python benchmark_candidate_b.py > results_b.json
 ```
 
-### Interleaved Execution
+### 交错执行
 
-Alternate between candidates to control for system-level drift:
+在候选方案之间交替执行，以控制系统级别的漂移：
 
 ```python
-# BAD: Run all of A, then all of B
-# System temperature, background processes may differ
+# 错误做法：先全部运行 A，再全部运行 B
+# 系统温度、后台进程可能不同
 
-# GOOD: Interleave
+# 正确做法：交错执行
 for i in range(iterations):
     time_a = measure(candidate_a, input_data)
     time_b = measure(candidate_b, input_data)
@@ -152,11 +148,11 @@ for i in range(iterations):
     results_b.append(time_b)
 ```
 
-### System Isolation
+### 系统隔离
 
-For rigorous benchmarks:
+对于严格的基准测试：
 
-- Close unnecessary applications
-- Disable CPU frequency scaling: `sudo cpupower frequency-set --governor performance`
-- Pin processes to specific CPU cores: `taskset -c 0 python benchmark.py`
-- Disable turbo boost for consistent results
+- 关闭不必要的应用程序
+- 禁用 CPU 频率缩放：`sudo cpupower frequency-set --governor performance`
+- 将进程固定到特定 CPU 核心：`taskset -c 0 python benchmark.py`
+- 禁用睿频以获得一致的结果

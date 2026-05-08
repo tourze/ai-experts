@@ -1,71 +1,71 @@
-# Skill Creation Guidelines
+# Skill 创建指南
 
-## Intent Capture
+## 意图捕获
 
-When the user asks to create or improve a skill, first determine where they are in the flow:
+当用户要求创建或改进一个 skill 时，首先确定他们处于流程的哪个阶段：
 
-- New skill idea
-- Existing skill draft
-- Existing skill with source material or failures
-- Eval/benchmark iteration
-- Description trigger optimization
+- 新的 skill 想法
+- 已有的 skill 草稿
+- 已有 skill 附带源材料或失败案例
+- Eval/基准测试迭代
+- 描述触发优化
 
-If the current conversation already contains the workflow, extract tools used, step order, user corrections, input/output formats, and failure cases before asking new questions.
+如果当前对话已包含工作流，在提出新问题之前，先提取使用的工具、步骤顺序、用户纠正、输入/输出格式和失败案例。
 
-Ask only for missing decisions:
+只询问缺失的决策：
 
-1. What should the skill let the agent do?
-2. When should it trigger? Include user wording and context, not only a category label.
-3. What output shape should it produce?
-4. Should it have evals? Default to yes when outputs can be checked by diff, parser, script, command, or fixed workflow. Default to qualitative review for subjective writing, creative, or strategic tasks unless the user asks otherwise.
+1. 这个 skill 应该让 agent 做什么？
+2. 应该在什么情况下触发？包括用户措辞和上下文，而不仅仅是类别标签。
+3. 应该产生什么样的输出形式？
+4. 是否需要 evals？当输出可以通过 diff、解析器、脚本、命令或固定工作流检查时，默认需要。对于主观写作、创意或策略性任务，除非用户另有要求，默认使用定性审查。
 
-## Source-Based Improvement
+## 基于源的改进
 
-Before editing an existing skill, do a short source check:
+在编辑已有的 skill 之前，做一个简短的源检查：
 
-- Identify sources: official docs, code, telemetry, failed transcripts, user feedback, examples, Procedure output, helper code, or eval results.
-- Write one acceptance target: "the agent should reliably do X and avoid Y."
-- Separate source facts from inference.
-- If testable, preserve the old skill as the baseline.
+- 识别来源：官方文档、代码、遥测、失败记录、用户反馈、示例、Procedure 输出、辅助代码或 eval 结果。
+- 写一个验收目标："agent 应可靠地做到 X 并避免 Y。"
+- 将源事实与推断分开。
+- 如果可测试，保留旧 skill 作为基线。
 
-Do not transfer background wholesale. Keep only knowledge that changes agent behavior: triggers, workflow, constraints, examples, anti-patterns, references, assets, evals, and procedures.
+不要整体搬运背景信息。只保留能改变 agent 行为的知识：触发条件、工作流、约束、示例、反模式、references、assets、evals 和 procedures。
 
-## User Communication
+## 用户沟通
 
-Use clear, direct language. "Evaluation" and "benchmark" are acceptable, but define them briefly the first time if the user may not know them. Explain JSON, assertions, or schemas only as much as needed to move the task forward.
+使用清晰、直接的语言。"Evaluation"和"benchmark"是可以接受的，但如果用户可能不熟悉，首次使用时简要说明。根据需要解释 JSON、断言或 schema，以推进任务即可。
 
-## Writing The Skill
+## 编写 Skill
 
-The generated skill should have:
+生成的 skill 应包含：
 
-- `name`: stable skill id.
-- `description`: what the skill does and when to use it. This is the main trigger surface; include trigger keywords and contexts here, not only in the body.
-- Workflow: concrete process and decision rules.
-- Constraints and anti-patterns: behavior-changing boundaries and common failure modes.
-- Bundled resources: references for large context, assets for templates or output material, and procedures for deterministic repeated work.
+- `name`：稳定的 skill id。
+- `description`：skill 做什么及何时使用。这是主要的触发面；在此处包含触发关键词和上下文，而不仅仅在正文中。
+- 工作流：具体流程和决策规则。
+- 约束和反模式：改变行为边界和常见失败模式。
+- 捆绑资源：大资料用 references，模板或输出材料用 assets，确定性的重复工作用 procedures。
 
-Use progressive disclosure:
+使用渐进式披露：
 
-1. Metadata: name + description.
-2. Main skill instructions: short, actionable, ideally under 500 lines.
-3. Bundled resources: loaded only when needed.
+1. 元数据：名称 + 描述。
+2. 主要 skill 指令：简短、可操作，理想情况下不超过 500 行。
+3. 捆绑资源：仅在需要时加载。
 
-When a skill supports variants, split references by variant, such as `aws.md`, `gcp.md`, and `azure.md`.
+当 skill 支持变体时，按变体拆分 references，例如 `aws.md`、`gcp.md` 和 `azure.md`。
 
-## Writing Style
+## 写作风格
 
-Prefer imperative instructions and reasons over rigid MUST/NEVER walls. Explain why a rule exists so the model can adapt in new cases. Remove instructions that do not change behavior.
+优先使用祈使指令和理由，而不是死板的 MUST/NEVER 壁垒。解释规则存在的理由，以便模型在新场景中能够适应。移除不会改变行为的指令。
 
-Security and surprise boundaries:
+安全和意外边界：
 
-- Skill contents must match the description.
-- Do not create skills for unauthorized access, data exfiltration, malware, or deceptive behavior.
-- Role-play skills are acceptable only within normal safety and authorization boundaries.
+- Skill 内容必须与描述匹配。
+- 不要创建用于未授权访问、数据泄露、恶意软件或欺骗行为的 skill。
+- 角色扮演 skill 仅在正常安全和授权边界内可接受。
 
-## Initial Eval Prompts
+## 初始 Eval 提示
 
-Write 2-3 realistic prompts the user might actually send. Show them to the user before running if the user is collaborating on the skill.
+编写 2-3 个用户可能实际发送的真实提示。如果用户正在协作开发 skill，在运行之前向他们展示。
 
-For pressure-sensitive skills, include at least one prompt that tries to make the agent skip rules, such as time pressure, authority pressure, "just do it quickly," or "we already agreed."
+对于敏感性 skill，至少包含一个试图让 agent 跳过规则的提示，例如时间压力、权威压力、"赶紧做完"或"我们已经同意了"。
 
-Save initial evals in `evals/cases.yaml` with prompts first. Add assertions during the run once outputs and objective checks are clear. Refer to `schemas.md` for the exact schema.
+将初始 evals 保存在 `evals/cases.yaml` 中，先写提示。在运行过程中，一旦输出和客观检查明确后再添加断言。具体 schema 请参考 `schemas.md`。

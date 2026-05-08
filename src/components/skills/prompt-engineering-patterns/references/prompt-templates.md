@@ -1,8 +1,8 @@
-# Prompt Template Systems
+# 提示模板系统
 
-## Template Architecture
+## 模板架构
 
-### Basic Template Structure
+### 基础模板结构
 
 ```python
 class PromptTemplate:
@@ -17,7 +17,7 @@ class PromptTemplate:
 
         return self.template.format(**kwargs)
 
-# Usage
+# 使用
 template = PromptTemplate(
     template_string="Translate {text} from {source_lang} to {target_lang}",
     variables=['text', 'source_lang', 'target_lang']
@@ -30,15 +30,15 @@ prompt = template.render(
 )
 ```
 
-### Conditional Templates
+### 条件模板
 
 ```python
 class ConditionalTemplate(PromptTemplate):
     def render(self, **kwargs):
-        # Process conditional blocks
+        # 处理条件块
         result = self.template
 
-        # Handle if-blocks: {{#if variable}}content{{/if}}
+        # 处理 if 块：{{#if variable}}content{{/if}}
         import re
         if_pattern = r'\{\{#if (\w+)\}\}(.*?)\{\{/if\}\}'
 
@@ -49,21 +49,21 @@ class ConditionalTemplate(PromptTemplate):
 
         result = re.sub(if_pattern, replace_if, result, flags=re.DOTALL)
 
-        # Handle for-loops: {{#each items}}{{this}}{{/each}}
+        # 处理 for 循环：{{#each items}}{{this}}{{/each}}
         each_pattern = r'\{\{#each (\w+)\}\}(.*?)\{\{/each\}\}'
 
         def replace_each(match):
             var_name = match.group(1)
             content = match.group(2)
             items = kwargs.get(var_name, [])
-            return '\\n'.join(content.replace('{{this}}', str(item)) for item in items)
+            return '\n'.join(content.replace('{{this}}', str(item)) for item in items)
 
         result = re.sub(each_pattern, replace_each, result, flags=re.DOTALL)
 
-        # Finally, render remaining variables
+        # 最后，渲染剩余变量
         return result.format(**kwargs)
 
-# Usage
+# 使用
 template = ConditionalTemplate("""
 Analyze the following text:
 {text}
@@ -85,7 +85,7 @@ Reference examples:
 """)
 ```
 
-### Modular Template Composition
+### 模块化模板组合
 
 ```python
 class ModularTemplate:
@@ -102,19 +102,19 @@ class ModularTemplate:
                 component = self.components[component_name]
                 parts.append(component.format(**kwargs))
 
-        return '\\n\\n'.join(parts)
+        return '\n\n'.join(parts)
 
-# Usage
+# 使用
 builder = ModularTemplate()
 
 builder.register_component('system', "You are a {role}.")
 builder.register_component('context', "Context: {context}")
 builder.register_component('instruction', "Task: {task}")
-builder.register_component('examples', "Examples:\\n{examples}")
+builder.register_component('examples', "Examples:\n{examples}")
 builder.register_component('input', "Input: {input}")
 builder.register_component('format', "Output format: {format}")
 
-# Compose different templates for different scenarios
+# 为不同场景组合不同模板
 basic_prompt = builder.render(
     ['system', 'instruction', 'input'],
     role='helpful assistant',
@@ -133,9 +133,9 @@ advanced_prompt = builder.render(
 )
 ```
 
-## Common Template Patterns
+## 常见模板模式
 
-### Classification Template
+### 分类模板
 
 ```python
 CLASSIFICATION_TEMPLATE = """
@@ -156,7 +156,7 @@ Examples:
 Category:"""
 ```
 
-### Extraction Template
+### 提取模板
 
 ```python
 EXTRACTION_TEMPLATE = """
@@ -175,7 +175,7 @@ Example extraction:
 Extracted information (JSON):"""
 ```
 
-### Generation Template
+### 生成模板
 
 ```python
 GENERATION_TEMPLATE = """
@@ -203,7 +203,7 @@ Examples:
 {output_type}:"""
 ```
 
-### Transformation Template
+### 转换模板
 
 ```python
 TRANSFORMATION_TEMPLATE = """
@@ -223,9 +223,9 @@ Input {source_format}:
 Output {target_format}:"""
 ```
 
-## Advanced Features
+## 高级特性
 
-### Template Inheritance
+### 模板继承
 
 ```python
 class TemplateRegistry:
@@ -234,17 +234,17 @@ class TemplateRegistry:
 
     def register(self, name, template, parent=None):
         if parent and parent in self.templates:
-            # Inherit from parent
+            # 从父模板继承
             base = self.templates[parent]
             template = self.merge_templates(base, template)
 
         self.templates[name] = template
 
     def merge_templates(self, parent, child):
-        # Child overwrites parent sections
+        # 子模板覆盖父模板的节
         return {**parent, **child}
 
-# Usage
+# 使用
 registry = TemplateRegistry()
 
 registry.register('base_analysis', {
@@ -258,7 +258,7 @@ registry.register('sentiment_analysis', {
 }, parent='base_analysis')
 ```
 
-### Variable Validation
+### 变量验证
 
 ```python
 class ValidatedTemplate:
@@ -271,20 +271,20 @@ class ValidatedTemplate:
             if var_name in kwargs:
                 value = kwargs[var_name]
 
-                # Type validation
+                # 类型验证
                 if 'type' in var_schema:
                     expected_type = var_schema['type']
                     if not isinstance(value, expected_type):
                         raise TypeError(f"{var_name} must be {expected_type}")
 
-                # Range validation
+                # 范围验证
                 if 'min' in var_schema and value < var_schema['min']:
                     raise ValueError(f"{var_name} must be >= {var_schema['min']}")
 
                 if 'max' in var_schema and value > var_schema['max']:
                     raise ValueError(f"{var_name} must be <= {var_schema['max']}")
 
-                # Enum validation
+                # 枚举验证
                 if 'choices' in var_schema and value not in var_schema['choices']:
                     raise ValueError(f"{var_name} must be one of {var_schema['choices']}")
 
@@ -292,7 +292,7 @@ class ValidatedTemplate:
         self.validate_vars(**kwargs)
         return self.template.format(**kwargs)
 
-# Usage
+# 使用
 template = ValidatedTemplate(
     template="Summarize in {length} words with {tone} tone",
     schema={
@@ -302,7 +302,7 @@ template = ValidatedTemplate(
 )
 ```
 
-### Template Caching
+### 模板缓存
 
 ```python
 class CachedTemplate:
@@ -330,9 +330,9 @@ class CachedTemplate:
         self.cache = {}
 ```
 
-## Multi-Turn Templates
+## 多轮模板
 
-### Conversation Template
+### 对话模板
 
 ```python
 class ConversationTemplate:
@@ -352,14 +352,14 @@ class ConversationTemplate:
         return messages
 
     def render_as_text(self):
-        result = f"System: {self.system_prompt}\\n\\n"
+        result = f"System: {self.system_prompt}\n\n"
         for msg in self.history:
             role = msg['role'].capitalize()
-            result += f"{role}: {msg['content']}\\n\\n"
+            result += f"{role}: {msg['content']}\n\n"
         return result
 ```
 
-### State-Based Templates
+### 基于状态的模板
 
 ```python
 class StatefulTemplate:
@@ -382,7 +382,7 @@ class StatefulTemplate:
 
         return template.format(**self.state)
 
-# Usage for multi-step workflows
+# 多步工作流的使用
 workflow = StatefulTemplate()
 
 workflow.register_state_template('init', """
@@ -404,20 +404,20 @@ Here's the result: {result}
 """)
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Keep It DRY**: Use templates to avoid repetition
-2. **Validate Early**: Check variables before rendering
-3. **Version Templates**: Track changes like code
-4. **Test Variations**: Ensure templates work with diverse inputs
-5. **Document Variables**: Clearly specify required/optional variables
-6. **Use Type Hints**: Make variable types explicit
-7. **Provide Defaults**: Set sensible default values where appropriate
-8. **Cache Wisely**: Cache static templates, not dynamic ones
+1. **保持 DRY**：使用模板避免重复
+2. **尽早验证**：在渲染前检查变量
+3. **版本化模板**：像代码一样追踪变更
+4. **测试变体**：确保模板能处理不同的输入
+5. **文档化变量**：清晰指定必需/可选变量
+6. **使用类型提示**：使变量类型明确
+7. **提供默认值**：在适当处设置合理的默认值
+8. **明智缓存**：缓存静态模板，而非动态模板
 
-## Template Libraries
+## 模板库
 
-### Question Answering
+### 问答
 
 ```python
 QA_TEMPLATES = {
@@ -444,7 +444,7 @@ Assistant:"""
 }
 ```
 
-### Content Generation
+### 内容生成
 
 ```python
 GENERATION_TEMPLATES = {
@@ -475,10 +475,10 @@ Email:"""
 }
 ```
 
-## Performance Considerations
+## 性能考量
 
-- Pre-compile templates for repeated use
-- Cache rendered templates when variables are static
-- Minimize string concatenation in loops
-- Use efficient string formatting (f-strings, .format())
-- Profile template rendering for bottlenecks
+- 预编译模板以供重复使用
+- 变量静态时缓存已渲染的模板
+- 最小化循环中的字符串拼接
+- 使用高效的字符串格式化（f-strings、.format()）
+- 分析模板渲染以发现瓶颈

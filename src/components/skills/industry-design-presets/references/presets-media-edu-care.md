@@ -1,64 +1,64 @@
-# Media, Education & Care Presets
+# 媒体、教育与关护预设
 
-## 87. Podcast Hosting / Player
-- Style: Dark OLED + Editorial
-- Colors: `#0F172A` / `#EC4899` / bg `#020617`
-- Fonts: Fraunces / Inter
-- Effects: 波形动画、封面大图、播放控件突出
-- AVOID: 白亮主题（听众常夜用）
+## 87. 播客托管 / 播放器
+- 风格：深色 OLED + 编辑风
+- 配色：`#0F172A` / `#EC4899` / 背景 `#020617`
+- 字体：Fraunces / Inter
+- 效果：波形动画、封面大图、播放控件突出
+- 避免：白亮主题（听众常夜用）
 
-## 88. Newsletter / Substack-like
-- Style: Editorial + Serif
-- Colors: `#0A0A0A` / `#F59E0B` / bg `#FFFFFF`
-- Fonts: Newsreader / Inter
-- Effects: 长文阅读、作者区、订阅 CTA
-- AVOID: 多弹窗、高密度广告
+## 88. Newsletter / Substack 风格
+- 风格：编辑风 + 衬线体
+- 配色：`#0A0A0A` / `#F59E0B` / 背景 `#FFFFFF`
+- 字体：Newsreader / Inter
+- 效果：长文阅读、作者区、订阅 CTA
+- 避免：多弹窗、高密度广告
 
-## 89. Language Learning App
-- Style: Claymorphism + Playful
-- Colors: `#F97316` / `#22D3EE` / bg `#FFFBEB`
-- Fonts: Fredoka / Nunito
-- Effects: 进度条、成就徽章、吉祥物
-- AVOID: 严肃企业、小字号
+## 89. 语言学习应用
+- 风格：泥塑造 + 趣味
+- 配色：`#F97316` / `#22D3EE` / 背景 `#FFFBEB`
+- 字体：Fredoka / Nunito
+- 效果：进度条、成就徽章、吉祥物
+- 避免：严肃企业、小字号
 
-## 90. Coding Bootcamp / Online Course
-- Style: Minimalism + Mono Code
-- Colors: `#0F172A` / `#10B981` / bg `#FFFFFF`
-- Fonts: Geist / Geist Mono
-- Effects: 代码块、课程进度、师资卡
-- AVOID: 儿童 EdTech 风
+## 90. 编程训练营 / 在线课程
+- 风格：极简 + 等宽代码
+- 配色：`#0F172A` / `#10B981` / 背景 `#FFFFFF`
+- 字体：Geist / Geist Mono
+- 效果：代码块、课程进度、师资卡
+- 避免：儿童 EdTech 风
 
-## 91. Online Course Platform (General)
-- Style: Bento Grid + Modern Sans
-- Colors: `#2563EB` / `#F59E0B` / bg `#F8FAFC`
-- Fonts: Plus Jakarta Sans / Inter
-- Effects: 课程网格、讲师头像、进度
-- AVOID: 密集列表、弱层级
+## 91. 在线课程平台（通用）
+- 风格：Bento 网格 + 现代无衬线
+- 配色：`#2563EB` / `#F59E0B` / 背景 `#F8FAFC`
+- 字体：Plus Jakarta Sans / Inter
+- 效果：课程网格、讲师头像、进度
+- 避免：密集列表、弱层级
 
-## 92. Kindergarten / Preschool
-- Style: Claymorphism + Bright Playful
-- Colors: `#F97316` / `#84CC16` / `#22D3EE` / bg `#FFFBEB`
-- Fonts: Fredoka / Nunito
-- Effects: 3D 插画、大圆角、笑脸元素
-- AVOID: 黑色、严肃企业、小字
+## 92. 幼儿园 / 学前班
+- 风格：泥塑造 + 明亮趣味
+- 配色：`#F97316` / `#84CC16` / `#22D3EE` / 背景 `#FFFBEB`
+- 字体：Fredoka / Nunito
+- 效果：3D 插画、大圆角、笑脸元素
+- 避免：黑色、严肃企业、小字
 
-## 93. Daycare / Childcare
-- Style: Soft UI + Warm
-- Colors: `#F97316` / `#FBBF24` / bg `#FFFBEB`
-- Fonts: Caprasimo / DM Sans
-- Effects: 真实儿童照片（合规授权）、课程表、接送流程
-- AVOID: 冷工业感
+## 93. 日托 / 儿童看护
+- 风格：柔和 UI + 温暖
+- 配色：`#F97316` / `#FBBF24` / 背景 `#FFFBEB`
+- 字体：Caprasimo / DM Sans
+- 效果：真实儿童照片（合规授权）、课程表、接送流程
+- 避免：冷工业感
 
-## 94. Senior Care / Elder Care
-- Style: Accessible & Ethical + Large Type
-- Colors: `#0284C7` / `#16A34A` / bg `#FFFFFF`
-- Fonts: Source Serif 4 / Source Sans 3
-- Effects: 大字号 ≥ 18px、高对比、简化流程
-- AVOID: 小字、装饰动效、色彩单独编码
+## 94. 老年护理 / 养老
+- 风格：无障碍可及 + 伦理 + 大字体
+- 配色：`#0284C7` / `#16A34A` / 背景 `#FFFFFF`
+- 字体：Source Serif 4 / Source Sans 3
+- 效果：大字号 ≥ 18px、高对比、简化流程
+- 避免：小字、装饰动效、色彩单独编码
 
-## 95. Veterinary Clinic
-- Style: Soft UI + Friendly
-- Colors: `#0284C7` / `#F97316` / bg `#FFFFFF`
-- Fonts: Nunito / Inter
-- Effects: 宠物照片、预约日历、医生介绍
-- AVOID: 冷临床感、严肃企业风
+## 95. 兽医诊所
+- 风格：柔和 UI + 友好
+- 配色：`#0284C7` / `#F97316` / 背景 `#FFFFFF`
+- 字体：Nunito / Inter
+- 效果：宠物照片、预约日历、医生介绍
+- 避免：冷临床感、严肃企业风

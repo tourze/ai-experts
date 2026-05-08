@@ -1,19 +1,19 @@
-# App Router Architecture
+# App Router 架构
 
-## File-Based Routing
+## 文件路由
 
 > Next.js 15+ 将动态路由的 `params` 作为 Promise 传入 `page`、`layout`、`route` 和 `generateMetadata`。下面的示例默认使用这种写法；如果维护 Next.js 14 项目，可在确认版本后退回同步签名。
 
 ```
 app/
-├── layout.tsx              # Root layout (required)
-├── page.tsx               # Home page (/)
-├── loading.tsx            # Loading UI
-├── error.tsx              # Error boundary
-├── not-found.tsx          # 404 page
-├── template.tsx           # Re-mounted layout
+├── layout.tsx              # 根布局（必需）
+├── page.tsx               # 首页（/）
+├── loading.tsx            # 加载状态 UI
+├── error.tsx              # 错误边界
+├── not-found.tsx          # 404 页面
+├── template.tsx           # 重新挂载的布局
 │
-├── (marketing)/           # Route group (no URL segment)
+├── (marketing)/           # 路由组（无 URL 段）
 │   ├── layout.tsx
 │   ├── about/
 │   │   └── page.tsx      # /about
@@ -21,25 +21,25 @@ app/
 │       └── page.tsx      # /contact
 │
 ├── dashboard/
-│   ├── layout.tsx        # Shared dashboard layout
+│   ├── layout.tsx        # 共享仪表板布局
 │   ├── page.tsx          # /dashboard
 │   ├── settings/
 │   │   └── page.tsx      # /dashboard/settings
-│   └── @analytics/       # Parallel route (slot)
+│   └── @analytics/       # 并行路由（插槽）
 │       └── page.tsx
 │
 ├── blog/
 │   ├── [slug]/
-│   │   └── page.tsx      # /blog/my-post (dynamic)
+│   │   └── page.tsx      # /blog/my-post（动态）
 │   └── [...slug]/
-│       └── page.tsx      # /blog/a/b/c (catch-all)
+│       └── page.tsx      # /blog/a/b/c（全匹配）
 │
 └── api/
     └── users/
-        └── route.ts      # API route handler
+        └── route.ts      # API 路由处理
 ```
 
-## Root Layout (Required)
+## 根布局（必需）
 
 ```tsx
 // app/layout.tsx
@@ -72,7 +72,7 @@ export default function RootLayout({
 }
 ```
 
-## Nested Layouts
+## 嵌套布局
 
 ```tsx
 // app/dashboard/layout.tsx
@@ -100,7 +100,7 @@ export default async function DashboardLayout({
 }
 ```
 
-## Templates (Re-mount on Navigation)
+## 模板（导航时重新挂载）
 
 ```tsx
 // app/template.tsx
@@ -110,7 +110,7 @@ import { useEffect } from 'react'
 
 export default function Template({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    // Runs on every navigation
+    // 每次导航时执行
     console.log('Template mounted')
   }, [])
 
@@ -118,7 +118,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
 }
 ```
 
-## Loading States
+## 加载状态
 
 ```tsx
 // app/dashboard/loading.tsx
@@ -131,7 +131,7 @@ export default function Loading() {
 }
 ```
 
-## Error Boundaries
+## 错误边界
 
 ```tsx
 // app/error.tsx
@@ -153,22 +153,22 @@ export default function Error({
 }
 ```
 
-## Route Groups
+## 路由组
 
 ```tsx
-// (marketing) and (shop) share the same URL level
+// (marketing) 和 (shop) 共享同一 URL 层级
 app/
 ├── (marketing)/
-│   ├── layout.tsx      # Marketing layout
+│   ├── layout.tsx      # 营销布局
 │   └── about/
 │       └── page.tsx    # /about
 └── (shop)/
-    ├── layout.tsx      # Shop layout
+    ├── layout.tsx      # 商城布局
     └── products/
         └── page.tsx    # /products
 ```
 
-## Parallel Routes
+## 并行路由
 
 ```tsx
 // app/dashboard/layout.tsx
@@ -196,30 +196,30 @@ export default function Analytics() {
 }
 ```
 
-## Intercepting Routes
+## 拦截路由
 
 ```tsx
-// Show modal when navigating from same app
-// but show full page on direct navigation
+// 从同一应用内导航时显示弹窗
+// 直接导航时显示完整页面
 
 type PhotoPageProps = {
   params: Promise<{ id: string }>
 }
 
-// app/photos/[id]/page.tsx (full page)
+// app/photos/[id]/page.tsx（完整页面）
 export default async function PhotoPage({ params }: PhotoPageProps) {
   const { id } = await params
   return <div>Photo {id} - Full Page</div>
 }
 
-// app/@modal/(.)photos/[id]/page.tsx (modal)
+// app/@modal/(.)photos/[id]/page.tsx（弹窗）
 export default async function PhotoModal({ params }: PhotoPageProps) {
   const { id } = await params
   return <div>Photo {id} - Modal</div>
 }
 ```
 
-## Dynamic Routes
+## 动态路由
 
 ```tsx
 // app/blog/[slug]/page.tsx
@@ -232,7 +232,7 @@ export default async function BlogPost({
   return <h1>Post: {slug}</h1>
 }
 
-// Generate static params at build time
+// 构建时生成静态参数
 export async function generateStaticParams() {
   const posts = await fetch('https://api.example.com/posts').then(res => res.json())
 
@@ -241,18 +241,18 @@ export async function generateStaticParams() {
   }))
 }
 
-// Opt out of static generation
+// 退出静态生成
 export const dynamic = 'force-dynamic'
 
-// Revalidate every 60 seconds
+// 每 60 秒重新验证
 export const revalidate = 60
 ```
 
-## Catch-All Routes
+## 全匹配路由
 
 ```tsx
 // app/docs/[...slug]/page.tsx
-// Matches: /docs/a, /docs/a/b, /docs/a/b/c
+// 匹配：/docs/a, /docs/a/b, /docs/a/b/c
 export default async function Docs({
   params,
 }: {
@@ -262,11 +262,11 @@ export default async function Docs({
   return <div>Docs: {slug.join('/')}</div>
 }
 
-// Optional catch-all: [[...slug]]
-// Also matches: /docs
+// 可选全匹配：[[...slug]]
+// 也匹配：/docs
 ```
 
-## Route Handlers (API Routes)
+## 路由处理器（API 路由）
 
 ```tsx
 // app/api/users/route.ts
@@ -283,7 +283,7 @@ export async function POST(request: NextRequest) {
   return NextResponse.json(user, { status: 201 })
 }
 
-// Dynamic routes: app/api/users/[id]/route.ts
+// 动态路由：app/api/users/[id]/route.ts
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -318,14 +318,14 @@ export async function generateMetadata(
 }
 ```
 
-## Quick Reference
+## 快速参考
 
-| File | Purpose | Use Case |
-|------|---------|----------|
-| `layout.tsx` | Persistent UI across routes | Shared navigation, auth wrapper |
-| `page.tsx` | Route UI | Actual page content |
-| `loading.tsx` | Loading fallback | Automatic Suspense boundary |
-| `error.tsx` | Error boundary | Handle errors gracefully |
-| `template.tsx` | Re-mounted layout | Analytics, animations |
-| `not-found.tsx` | 404 page | Custom not found UI |
-| `route.ts` | API handler | Backend API endpoints |
+| 文件 | 用途 | 使用场景 |
+|------|------|----------|
+| `layout.tsx` | 跨路由持久 UI | 共享导航、权限包装 |
+| `page.tsx` | 路由 UI | 实际页面内容 |
+| `loading.tsx` | 加载回退 | 自动 Suspense 边界 |
+| `error.tsx` | 错误边界 | 优雅处理错误 |
+| `template.tsx` | 重新挂载布局 | 分析、动画 |
+| `not-found.tsx` | 404 页面 | 自定义未找到 UI |
+| `route.ts` | API 处理器 | 后端 API 端点 |

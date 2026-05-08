@@ -1,273 +1,273 @@
-# Analysis Patterns by Video Type
+# 按视频类型分类的分析模式
 
-Reference document for structuring transcript analysis based on video format.
-Claude reads this to calibrate extraction strategy per video type.
+基于视频格式组织转写分析的参考文档。
+Claude 阅读此文以根据不同视频类型校准提取策略。
 
 ---
 
-## Lecture
+## 讲座
 
-**Focus areas:** Core thesis, supporting arguments, cited works, key definitions, logical flow
+**关注领域：** 核心论点、支撑论据、引用作品、关键定义、逻辑脉络
 
-**What to extract:**
+**提取内容：**
 
-- Central thesis or claim (state in one sentence)
-- Supporting arguments with evidence cited
-- Definitions of domain-specific terms (quote or paraphrase)
-- Logical structure: premise → reasoning → conclusion
-- References to papers, books, researchers, or prior work
-- Counterarguments the speaker addresses
+- 中心论点或主张（用一句话表述）
+- 带有引用证据的支撑论据
+- 领域特定术语的定义（引用或转述）
+- 逻辑结构：前提 → 推理 → 结论
+- 论文、书籍、研究者或相关工作引用
+- 演讲者回应的反驳论点
 
-**What to skip:** Housekeeping remarks, repeated summaries, audience Q&A tangents
+**跳过内容：** 事务性提示语、重复总结、观众 QA 环节的离题内容
 
-**Output structure:**
+**输出结构：**
 
 ```
 ## TL;DR
-[One-sentence thesis]
+[一句话论点]
 
-## Key Concepts
-- **[Term]**: [Definition as presented]
+## 关键概念
+- **[术语]**：[如所述的定义]
 - ...
 
-## Detailed Analysis
-### Thesis
-### Supporting Arguments
-### Counterarguments Addressed
-### Cited Works
+## 详细分析
+### 论点
+### 支撑论据
+### 回应的反驳论点
+### 引用作品
 
-## Notable Quotes / Statements
-- "[Quote]" — on [topic] ([timestamp])
+## 值得注意的引述 / 陈述
+- "[引述]" — 关于[主题]（[时间戳]）
 
-## Actionable Takeaways
-[What the audience should do or investigate next]
+## 可执行的要点
+[观众下一步应该做什么或研究什么]
 ```
 
 ---
 
-## Tutorial
+## 教程
 
-**Focus areas:** Steps, tools/technologies, prerequisites, gotchas, versions
+**关注领域：** 步骤、工具/技术、前置条件、注意事项、版本
 
-**What to extract:**
+**提取内容：**
 
-- Prerequisites (tools, accounts, prior knowledge)
-- Exact steps in order, with commands/code when spoken
-- Tools and their versions mentioned
-- Common pitfalls the presenter warns about
-- Alternatives mentioned but not chosen (and why)
-- Final result or expected output
+- 前置条件（工具、账号、前置知识）
+- 按顺序的精确步骤，含口述的命令/代码
+- 提及的工具及其版本
+- 演示者警告的常见陷阱
+- 提及但未选择的替代方案（及原因）
+- 最终结果或预期输出
 
-**What to skip:** Setup troubleshooting for specific OSes (unless the tutorial is OS-specific), sponsor segments
+**跳过内容：** 特定操作系统的安装排错（除非教程是针对特定 OS）、赞助商段落
 
-**Output structure:**
+**输出结构：**
 
 ```
 ## TL;DR
-[What you'll build/achieve]
+[你将构建/实现什么]
 
-## Key Concepts
-- **Prerequisites**: [list]
-- **Stack**: [tools and versions]
+## 关键概念
+- **前置条件**：[列表]
+- **技术栈**：[工具和版本]
 
-## Detailed Analysis
-### Step 1: [Action] ([timestamp])
-### Step 2: [Action] ([timestamp])
+## 详细分析
+### 步骤 1：[操作]（[时间戳]）
+### 步骤 2：[操作]（[时间戳]）
 ...
 
-## Notable Quotes / Statements
-- Warnings or gotchas the presenter emphasizes
+## 值得注意的引述 / 陈述
+- 演示者强调的警告或注意事项
 
-## Technical Terms & Definitions
-[Terms introduced during the tutorial]
+## 技术术语与定义
+[教程中介绍的术语]
 
-## Actionable Takeaways
-- Step-by-step checklist to reproduce
+## 可执行的要点
+- 用于复现的逐步检查清单
 ```
 
 ---
 
-## Interview
+## 访谈
 
-**Focus areas:** Key perspectives, disagreements, unique insights, background context
+**关注领域：** 关键观点、分歧点、独特见解、背景信息
 
-**What to extract:**
+**提取内容：**
 
-- Each speaker's core positions (attributed)
-- Points of agreement and disagreement
-- Anecdotes or examples that illustrate key points
-- Paraphrased notable statements (with timestamps)
-- Background context the interviewer provides
-- Recommendations (books, tools, practices) each person makes
+- 每位发言人的核心立场（标明归属）
+- 一致与分歧的要点
+- 说明关键观点的轶事或例子
+- 转述的重要陈述（含时间戳）
+- 采访者提供的背景信息
+- 每人推荐的书籍、工具、实践
 
-**What to skip:** Small talk, repeated questions, filler conversation
+**跳过内容：** 闲聊、重复提问、填充性对话
 
-**Output structure:**
+**输出结构：**
 
 ```
 ## TL;DR
-[Core topic and main takeaway]
+[核心主题与主要收获]
 
-## Key Concepts
-- **[Speaker A]'s position**: [summary]
-- **[Speaker B]'s position**: [summary]
+## 关键概念
+- **[发言人 A] 的立场**：[总结]
+- **[发言人 B] 的立场**：[总结]
 
-## Detailed Analysis
-### Topic 1: [Theme]
-- [Speaker A]: [position]
-- [Speaker B]: [position]
-### Topic 2: [Theme]
+## 详细分析
+### 主题 1：[话题]
+- [发言人 A]：[立场]
+- [发言人 B]：[立场]
+### 主题 2：[话题]
 ...
 
-## Notable Quotes / Statements
-- "[Paraphrased quote]" — [Speaker], on [topic] ([timestamp])
+## 值得注意的引述 / 陈述
+- "[转述引文]" — [发言人]，关于[主题]（[时间戳]）
 
-## Actionable Takeaways
-[Synthesized advice from all speakers]
+## 可执行的要点
+[来自所有发言人的综合建议]
 ```
 
 ---
 
-## Podcast
+## 播客
 
-**Focus areas:** Topics covered, opinions, recommendations, tangents worth noting
+**关注领域：** 涵盖的主题、观点、推荐内容、值得关注的离题内容
 
-**What to extract:**
+**提取内容：**
 
-- Topic thread progression (what was discussed, in what order)
-- Opinions expressed (attributed to speaker)
-- Recommendations: books, tools, services, people, content
-- Anecdotes that illustrate points
-- Running jokes or references (for context)
-- Disagreements between hosts/guests
+- 话题线索的推进过程（讨论了什么、以什么顺序）
+- 表达的观点（标明发言人）
+- 推荐内容：书籍、工具、服务、人物、资料
+- 说明观点的轶事
+- 反复出现的笑点或引用（为语境）
+- 主持人与嘉宾之间的分歧
 
-**What to skip:** Ad reads, repeated self-promotion, extensive inside jokes without substance
+**跳过内容：** 广告朗读、重复自我推广、缺乏实质内容的冗长内部笑话
 
-**Output structure:**
+**输出结构：**
 
 ```
 ## TL;DR
-[Main topics and one key insight]
+[主要主题和一个关键见解]
 
-## Key Concepts
-### Topic Thread: [Theme 1]
-### Topic Thread: [Theme 2]
+## 关键概念
+### 话题线索：[主题 1]
+### 话题线索：[主题 2]
 ...
 
-## Detailed Analysis
-[Topic-by-topic breakdown with speaker attributions]
+## 详细分析
+[逐话题分解，注明发言人]
 
-## Notable Quotes / Statements
-[Memorable or insightful statements]
+## 值得注意的引述 / 陈述
+[令人印象深刻或有深意的陈述]
 
-## Actionable Takeaways
-- Recommendations mentioned:
-  - Books: [list]
-  - Tools: [list]
-  - People to follow: [list]
+## 可执行的要点
+- 被提及的推荐内容：
+  - 书籍：[列表]
+  - 工具：[列表]
+  - 值得关注的人：[列表]
 ```
 
 ---
 
-## Tech Talk
+## 技术演讲
 
-**Focus areas:** Architecture decisions, trade-offs, benchmarks, lessons learned, production experience
+**关注领域：** 架构决策、权衡取舍、基准测试、经验教训、生产环境经验
 
-**What to extract:**
+**提取内容：**
 
-- Problem statement and constraints
-- Architecture or system design described
-- Trade-offs explicitly discussed (chose X over Y because Z)
-- Performance numbers, benchmarks, scale metrics
-- Lessons learned from production
-- Technologies and versions mentioned
-- What they'd do differently
+- 问题陈述与约束条件
+- 描述的架构或系统设计
+- 明确讨论的权衡取舍（因 Z 选了 X 而非 Y）
+- 性能数据、基准测试、规模指标
+- 生产环境中学到的经验教训
+- 提及的技术和版本
+- 他们下次会采取的不同做法
 
-**What to skip:** Company recruiting pitches, overly basic background for the audience level
+**跳过内容：** 公司招聘宣传、对受众水平而言过于基础的背景介绍
 
-**Output structure:**
+**输出结构：**
 
 ```
 ## TL;DR
-[Problem solved and approach taken]
+[解决的问题与采用的方法]
 
-## Key Concepts
-- **Problem**: [statement]
-- **Solution**: [approach]
-- **Scale**: [numbers if mentioned]
+## 关键概念
+- **问题**：[陈述]
+- **解决方案**：[方法]
+- **规模**：[提及的数据]
 
-## Detailed Analysis
-### Problem & Constraints
-### Architecture / Design
-### Trade-offs
-| Decision | Chose | Over | Rationale |
+## 详细分析
+### 问题与约束
+### 架构 / 设计
+### 权衡取舍
+| 决策 | 选择 | 舍弃 | 理由 |
 |----------|-------|------|-----------|
-### Performance / Results
-### Lessons Learned
+### 性能 / 结果
+### 经验教训
 
-## Technical Terms & Definitions
-[Domain-specific terms defined in context]
+## 技术术语与定义
+[在上下文中定义的领域特定术语]
 
-## Actionable Takeaways
-[What to apply in your own systems]
+## 可执行的要点
+[可以在自己的系统中应用的内容]
 ```
 
 ---
 
-## Panel
+## 圆桌讨论
 
-**Focus areas:** Consensus vs. disagreement, unique perspectives per speaker, emerging themes
+**关注领域：** 共识与分歧、每位发言人的独特视角、涌现主题
 
-**What to extract:**
+**提取内容：**
 
-- Each panelist's background (as introduced)
-- Consensus points (what everyone agrees on)
-- Disagreement points (attributed positions)
-- Unique perspectives only one panelist holds
-- Moderator's framing questions
-- Audience questions that shifted discussion
+- 每位嘉宾的背景（按介绍）
+- 共识点（所有人达成一致的内容）
+- 分歧点（标明立场的归属）
+- 仅有一位嘉宾持有的独特视角
+- 主持人的引导性问题
+- 改变讨论方向的观众提问
 
-**What to skip:** Introductions beyond establishing expertise, repeated moderator summaries
+**跳过内容：** 超出身份介绍之外的寒暄、主持人重复总结
 
-**Output structure:**
+**输出结构：**
 
 ```
 ## TL;DR
-[Panel topic and the one thing that emerged]
+[圆桌主题与突出的核心观点]
 
-## Key Concepts
-### Panelists
-- **[Name]**: [role/background], key position: [summary]
+## 关键概念
+### 嘉宾
+- **[姓名]**：[角色/背景]，关键立场：[总结]
 ...
 
-## Detailed Analysis
-### Theme 1: [Topic]
-- **Consensus**: [what all agree on]
-- **[Panelist A]**: [unique angle]
-- **[Panelist B]**: [contrasting view]
-### Theme 2: [Topic]
+## 详细分析
+### 主题 1：[话题]
+- **共识**：[所有人一致同意的内容]
+- **[嘉宾 A]**：[独特视角]
+- **[嘉宾 B]**：[对立观点]
+### 主题 2：[话题]
 ...
 
-## Notable Quotes / Statements
-- "[Quote]" — [Speaker] ([timestamp])
+## 值得注意的引述 / 陈述
+- "[引述]" — [发言人]（[时间戳]）
 
-## Actionable Takeaways
-[Synthesized wisdom across all panelists]
+## 可执行的要点
+[来自所有嘉宾的综合智慧]
 ```
 
 ---
 
-## Auto-Detection Heuristics
+## 自动检测启发式规则
 
-When `--type auto`, Claude should infer the video type from:
+当使用 `--type auto` 时，Claude 应根据以下信号推断视频类型：
 
-| Signal                                                | Likely Type |
+| 信号                                                | 可能的类型 |
 | ----------------------------------------------------- | ----------- |
-| Single speaker, academic tone, citations              | Lecture     |
-| "Let me show you how to..." / screen share references | Tutorial    |
-| Two speakers, question-answer pattern                 | Interview   |
-| Casual conversation, multiple topics, recurring hosts | Podcast     |
-| Conference stage, system/architecture focus           | Tech Talk   |
-| 3+ speakers, moderator, topic rotation                | Panel       |
+| 单人演讲、学术语气、引用文献                           | 讲座        |
+| "让我演示如何..." / 提到屏幕共享                      | 教程        |
+| 两人对话、问答模式                                     | 访谈        |
+| 闲聊风格、多个话题、常驻主持人                         | 播客        |
+| 会议舞台、系统/架构重点                               | 技术演讲    |
+| 3 位以上参与者、有主持人、话题轮换                     | 圆桌讨论    |
 
-If uncertain, default to a generic analysis that pulls from all patterns.
+若不确定，默认使用通用分析模式，从所有类型中提取内容。

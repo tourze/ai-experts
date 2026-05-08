@@ -1,60 +1,60 @@
-# iOS System Integration
+# iOS 系统集成
 
-Siri, Shortcuts, Handoff, drag and drop, and other system-level integrations.
+Siri、Shortcuts、Handoff、拖放和其他系统级集成。
 
-## Siri Integration
+## Siri 集成
 
-### SiriKit Domains
+### SiriKit 领域
 
-Your app can integrate with Siri through predefined domains:
+您的应用可以通过预定义领域与 Siri 集成：
 
-| Domain | Example Intents |
-|--------|-----------------|
-| Messaging | Send message, search messages |
-| Lists & Notes | Create note, add to list |
-| Payments | Send payment, request payment |
-| Workouts | Start workout, end workout |
-| Media | Play media, add to library |
-| Ride booking | Request ride, get ride status |
-| Car commands | Lock car, get car status |
-| Visual codes | Look up barcode, QR code |
+| 领域 | 示例意图 |
+|------|---------|
+| 消息 | 发送消息、搜索消息 |
+| 列表与笔记 | 创建笔记、添加到列表 |
+| 支付 | 发送付款、请求付款 |
+| 锻炼 | 开始锻炼、结束锻炼 |
+| 媒体 | 播放媒体、添加到库 |
+| 乘车预订 | 请求乘车、获取乘车状态 |
+| 汽车命令 | 锁车、获取车辆状态 |
+| 视觉码 | 查找条码、二维码 |
 
-### Designing for Voice
+### 语音设计
 
-**Confirmation dialogs:**
+**确认对话框：**
 ```
-Siri: "Send $50 to Sarah for dinner?"
-User: "Yes" / "Change amount" / "Cancel"
+Siri："向 Sarah 发送 50 美元用于晚餐？"
+用户："是" / "更改金额" / "取消"
 ```
 
-**Guidelines:**
-- Confirm significant actions
-- Allow easy correction
-- Provide visual feedback alongside voice
-- Handle ambiguity gracefully
+**指南：**
+- 确认重要操作
+- 允许轻松纠正
+- 在语音之外提供视觉反馈
+- 优雅地处理歧义
 
-### Custom Intents
+### 自定义意图
 
-For actions not in predefined domains:
+用于不在预定义领域中的操作：
 
 ```swift
-// Define in Intents.intentdefinition
+// 在 Intents.intentdefinition 中定义
 Intent: OrderCoffee
 Parameters: coffeeType, size, location
 ```
 
-**Best practices:**
-- Use descriptive parameter names
-- Provide good examples
-- Support synonyms
-- Test with various phrasings
+**最佳实践：**
+- 使用描述性参数名称
+- 提供好的示例
+- 支持同义词
+- 用不同的措辞进行测试
 
-### Siri Shortcuts
+### Siri 快捷指令
 
-Allow users to create custom voice triggers:
+允许用户创建自定义语音触发器：
 
 ```swift
-// Donate shortcut when user completes action
+// 在用户完成操作时捐赠快捷指令
 let activity = NSUserActivity(activityType: "com.app.order-favorite")
 activity.title = "Order my usual coffee"
 activity.isEligibleForSearch = true
@@ -64,19 +64,19 @@ activity.suggestedInvocationPhrase = "Order my usual"
 view.userActivity = activity
 ```
 
-**Guidelines:**
-- Donate shortcuts for repeated actions
-- Suggest clear invocation phrases
-- Provide relevant parameters
-- Test in Shortcuts app
+**指南：**
+- 为重复操作捐赠快捷指令
+- 建议清晰的调用短语
+- 提供相关参数
+- 在 Shortcuts 应用中测试
 
 ---
 
-## Shortcuts App Integration
+## Shortcuts 应用集成
 
-### App Shortcuts (iOS 16+)
+### 应用快捷指令（iOS 16+）
 
-Pre-built shortcuts that appear automatically:
+自动出现的预构建快捷指令：
 
 ```swift
 struct MyAppShortcuts: AppShortcutsProvider {
@@ -94,29 +94,29 @@ struct MyAppShortcuts: AppShortcutsProvider {
 }
 ```
 
-### Shortcut Actions
+### 快捷指令操作
 
-Expose app functionality as Shortcuts actions:
+将应用功能暴露为 Shortcuts 操作：
 
-**Good candidates:**
-- Actions users repeat frequently
-- Actions that can run without UI
-- Data that can be passed to other apps
-- Automatable workflows
+**好的候选：**
+- 用户频繁重复的操作
+- 可以在没有 UI 的情况下运行的操作
+- 可以传递给其他应用的数据
+- 可自动化的工作流
 
-**Design considerations:**
-- Clear action names (verb + object)
-- Meaningful parameters with defaults
-- Useful outputs for chaining
-- Error messages that explain what went wrong
+**设计考虑：**
+- 清晰的操作名称（动词 + 对象）
+- 有默认值的有意义的参数
+- 用于链式操作的有用输出
+- 解释出了什么问题的错误消息
 
 ---
 
 ## Handoff
 
-### Enabling Handoff
+### 启用 Handoff
 
-Allow users to continue activities across Apple devices:
+允许用户跨 Apple 设备继续活动：
 
 ```swift
 let activity = NSUserActivity(activityType: "com.app.viewing-item")
@@ -128,80 +128,80 @@ activity.webpageURL = URL(string: "https://myapp.com/product/\(product.id)")
 userActivity = activity
 ```
 
-### Handoff Guidelines
+### Handoff 指南
 
-**Do:**
-- Continue at exactly where user left off
-- Restore scroll position, form state, etc.
-- Support universal links as fallback
-- Update activity as context changes
+**应做：**
+- 精确地从用户离开的地方继续
+- 恢复滚动位置、表单状态等
+- 支持通用链接作为降级方案
+- 随上下文变化更新活动
 
-**Don't:**
-- Require re-authentication
-- Lose user's work
-- Show significantly different content
+**不应做：**
+- 要求重新认证
+- 丢失用户的工作
+- 显示显著不同的内容
 
-### Web Fallback
+### Web 降级方案
 
-If app isn't installed on receiving device:
+如果接收设备上未安装应用：
 ```swift
 activity.webpageURL = URL(string: "https://myapp.com/activity/\(id)")
 ```
 
 ---
 
-## Drag and Drop
+## 拖放
 
-### Supporting Drag
+### 支持拖拽
 
 ```swift
 .draggable(item) {
-    // Drag preview
+    // 拖拽预览
     ItemPreview(item: item)
 }
 ```
 
-### Supporting Drop
+### 支持放置
 
 ```swift
 .dropDestination(for: ItemType.self) { items, location in
-    // Handle dropped items
+    // 处理放置的项目
     return true
 }
 ```
 
-### Drag and Drop Guidelines
+### 拖放指南
 
-**Visual feedback:**
-- Show clear drag preview
-- Indicate valid drop targets
-- Animate transitions smoothly
+**视觉反馈：**
+- 显示清晰的拖拽预览
+- 指示有效的放置目标
+- 平滑地动画化过渡
 
-**Multi-item:**
-- Support selecting multiple items
-- Stack preview for multiple items
-- Handle batch operations
+**多项：**
+- 支持选择多个项目
+- 为多个项目堆叠预览
+- 处理批量操作
 
-**Cross-app:**
-- Export standard data types (images, text, URLs)
-- Accept common formats
-- Maintain quality during transfer
+**跨应用：**
+- 导出标准数据类型（图片、文本、URL）
+- 接受常见格式
+- 在传输期间保持质量
 
-### Platform Considerations
+### 平台考虑
 
-| Platform | Drag Initiation |
-|----------|-----------------|
-| iPhone | Long press + drag (within app) |
-| iPad | Long press or tap + drag |
-| Mac (Catalyst) | Click + drag |
+| 平台 | 拖拽启动 |
+|------|---------|
+| iPhone | 长按 + 拖拽（应用内） |
+| iPad | 长按或点击 + 拖拽 |
+| Mac（Catalyst） | 点击 + 拖拽 |
 
 ---
 
-## Universal Links
+## 通用链接
 
-### Setting Up
+### 设置
 
-1. Configure `apple-app-site-association` on your server:
+1. 在服务器上配置 `apple-app-site-association`：
 ```json
 {
   "applinks": {
@@ -214,12 +214,12 @@ activity.webpageURL = URL(string: "https://myapp.com/activity/\(id)")
 }
 ```
 
-2. Add Associated Domains capability:
+2. 添加关联域功能：
 ```
 applinks:example.com
 ```
 
-### Handling Links
+### 处理链接
 
 ```swift
 func application(_ application: UIApplication,
@@ -233,18 +233,18 @@ func application(_ application: UIApplication,
 }
 ```
 
-### Best Practices
+### 最佳实践
 
-- Parse URLs robustly (handle malformed links)
-- Navigate to appropriate screen
-- Show content immediately (don't require login first)
-- Fall back gracefully if content unavailable
+- 稳健地解析 URL（处理格式错误的链接）
+- 导航到适当的界面
+- 立即显示内容（不要先要求登录）
+- 在内容不可用时优雅降级
 
 ---
 
-## Spotlight Search
+## Spotlight 搜索
 
-### Indexing Content
+### 索引内容
 
 ```swift
 let attributeSet = CSSearchableItemAttributeSet(contentType: .text)
@@ -261,54 +261,54 @@ let searchableItem = CSSearchableItem(
 CSSearchableIndex.default().indexSearchableItems([searchableItem])
 ```
 
-### What to Index
+### 索引什么
 
-**Good candidates:**
-- User content (notes, documents)
-- Saved items (favorites, history)
-- Frequently accessed items
+**好的候选：**
+- 用户内容（笔记、文档）
+- 保存的项目（收藏夹、历史）
+- 频繁访问的项目
 
-**Avoid:**
-- Sensitive data
-- Transient content
-- Every possible item (be selective)
+**避免：**
+- 敏感数据
+- 临时内容
+- 每个可能的项目（要有选择性）
 
-### Search Result Design
+### 搜索结果设计
 
-Results appear in Spotlight:
+结果出现在 Spotlight 中：
 ```
 ┌─────────────────────────────────────────┐
-│ 🔲 My Note Title                        │
-│    Preview of note content...           │
+│ 🔲 我的笔记标题                         │
+│    笔记内容预览...                      │
 │    MyApp                                │
 └─────────────────────────────────────────┘
 ```
 
-**Include:**
-- Clear title
-- Helpful description
-- Thumbnail if visual
-- Accurate metadata
+**包含：**
+- 清晰的标题
+- 有帮助的描述
+- 如果是视觉内容则带缩略图
+- 准确的元数据
 
 ---
 
-## Focus & Notifications
+## 专注与通知
 
-### Focus Awareness
+### 专注感知
 
-Respect user's Focus mode:
+尊重用户的专注模式：
 
 ```swift
 UNUserNotificationCenter.current().getNotificationSettings { settings in
     if settings.notificationCenterSetting == .disabled {
-        // User has notifications silenced
+        // 用户已静音通知
     }
 }
 ```
 
-### Time Sensitive Notifications
+### 时效性通知
 
-For truly urgent notifications:
+用于真正紧急的通知：
 
 ```swift
 let content = UNMutableNotificationContent()
@@ -316,24 +316,24 @@ content.title = "Your ride is here"
 content.interruptionLevel = .timeSensitive
 ```
 
-**Use only when:**
-- Immediate action required
-- User explicitly opted in
-- Content is genuinely time-sensitive
+**仅在以下情况使用：**
+- 需要立即操作
+- 用户明确选择加入
+- 内容真正具有时效性
 
 ---
 
-## Quick Note Integration
+## 快速笔记集成
 
-### Adding Quick Note Capability
+### 添加快速笔记功能
 
-Allow highlighting content for Quick Note:
+允许为快速笔记高亮内容：
 
 ```swift
 Text(content)
     .contextMenu {
         Button("Add to Quick Note") {
-            // System handles this
+            // 系统处理此操作
         }
     }
 ```
@@ -342,52 +342,52 @@ Text(content)
 
 ## SharePlay
 
-### When to Use SharePlay
+### 何时使用 SharePlay
 
-- Watching content together
-- Collaborative activities
-- Shared experiences
+- 一起观看内容
+- 协作活动
+- 共享体验
 
-### SharePlay Guidelines
+### SharePlay 指南
 
-**Sync state:**
-- Keep all participants in sync
-- Handle network latency gracefully
-- Provide individual controls where appropriate
+**同步状态：**
+- 保持所有参与者同步
+- 优雅地处理网络延迟
+- 在适当时提供个人控制
 
-**Visual design:**
-- Show who's in the session
-- Indicate when others interact
-- Provide easy leave option
+**视觉设计：**
+- 显示会话中的参与者
+- 在他人互动时指示
+- 提供轻松的退出选项
 
 ---
 
-## System Appearance
+## 系统外观
 
-### Supporting Dark Mode
+### 支持深色模式
 
 ```swift
-// Adaptive colors
-Color.primary      // Auto light/dark
-Color.secondary    // Auto light/dark
+// 自适应颜色
+Color.primary      // 自动浅色/深色
+Color.secondary    // 自动浅色/深色
 
-// Custom adaptive colors
+// 自定义自适应颜色
 extension Color {
-    static let background = Color("Background") // From asset catalog
+    static let background = Color("Background") // 从资源目录
 }
 ```
 
-### Supporting Dynamic Type
+### 支持动态类型
 
 ```swift
 Text("Title")
-    .font(.title)      // Scales with Dynamic Type
+    .font(.title)      // 随动态类型缩放
 
-// Custom scalable fonts
+// 自定义可缩放字体
 .font(.custom("MyFont", size: 17, relativeTo: .body))
 ```
 
-### Supporting Accessibility
+### 支持无障碍
 
 ```swift
 Text("Content")
@@ -397,16 +397,16 @@ Text("Content")
 
 ---
 
-## Best Practices Summary
+## 最佳实践总结
 
-| Integration | Key Consideration |
-|-------------|-------------------|
-| Siri | Clear confirmation, handle ambiguity |
-| Shortcuts | Expose repeatable, automatable actions |
-| Handoff | Preserve exact state across devices |
-| Drag & Drop | Clear previews, multi-item support |
-| Universal Links | Deep link to specific content |
-| Spotlight | Index valuable, non-sensitive content |
-| Focus | Respect user's notification preferences |
+| 集成 | 关键考虑 |
+|------|---------|
+| Siri | 清晰的确认，处理歧义 |
+| Shortcuts | 暴露可重复、可自动化的操作 |
+| Handoff | 跨设备保持精确状态 |
+| 拖放 | 清晰的预览，多项支持 |
+| 通用链接 | 深度链接到特定内容 |
+| Spotlight | 索引有价值的、非敏感内容 |
+| 专注 | 尊重用户的通知偏好 |
 
-**Universal principle:** System integrations should feel seamless—users shouldn't think about which device or app they're using.
+**通用原则：** 系统集成应感觉无缝——用户不应思考他们在使用哪个设备或应用。

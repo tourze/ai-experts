@@ -1,12 +1,12 @@
-# Advanced Modern JavaScript Patterns
+# 高级现代 JavaScript 模式
 
-Advanced patterns covering functional programming, modern class features, ES6 modules, iterators, generators, modern operators, and performance optimization.
+涵盖函数式编程、现代类特性、ES6 模块、迭代器、生成器、现代运算符和性能优化的高级模式。
 
-## Functional Programming Patterns
+## 函数式编程模式
 
-### 1. Array Methods
+### 1. 数组方法
 
-**Map, Filter, Reduce:**
+**Map、Filter、Reduce：**
 
 ```javascript
 const users = [
@@ -15,19 +15,19 @@ const users = [
   { id: 3, name: "Bob", age: 35, active: true },
 ];
 
-// Map - Transform array
+// Map - 转换数组
 const names = users.map((user) => user.name);
 const upperNames = users.map((user) => user.name.toUpperCase());
 
-// Filter - Select elements
+// Filter - 筛选元素
 const activeUsers = users.filter((user) => user.active);
 const adults = users.filter((user) => user.age >= 18);
 
-// Reduce - Aggregate data
+// Reduce - 聚合数据
 const totalAge = users.reduce((sum, user) => sum + user.age, 0);
 const avgAge = totalAge / users.length;
 
-// Group by property
+// 按属性分组
 const byActive = users.reduce((groups, user) => {
   const key = user.active ? "active" : "inactive";
   return {
@@ -36,7 +36,7 @@ const byActive = users.reduce((groups, user) => {
   };
 }, {});
 
-// Chaining methods
+// 链式调用
 const result = users
   .filter((user) => user.active)
   .map((user) => user.name)
@@ -44,50 +44,50 @@ const result = users
   .join(", ");
 ```
 
-**Advanced Array Methods:**
+**高级数组方法：**
 
 ```javascript
-// Find - First matching element
+// Find - 第一个匹配元素
 const user = users.find((u) => u.id === 2);
 
-// FindIndex - Index of first match
+// FindIndex - 第一个匹配的索引
 const index = users.findIndex((u) => u.name === "Jane");
 
-// Some - At least one matches
+// Some - 至少一个匹配
 const hasActive = users.some((u) => u.active);
 
-// Every - All match
+// Every - 全部匹配
 const allAdults = users.every((u) => u.age >= 18);
 
-// FlatMap - Map and flatten
+// FlatMap - 映射并展平
 const userTags = [
   { name: "John", tags: ["admin", "user"] },
   { name: "Jane", tags: ["user"] },
 ];
 const allTags = userTags.flatMap((u) => u.tags);
 
-// From - Create array from iterable
+// From - 从可迭代对象创建数组
 const str = "hello";
 const chars = Array.from(str);
 const numbers = Array.from({ length: 5 }, (_, i) => i + 1);
 
-// Of - Create array from arguments
+// Of - 从参数创建数组
 const arr = Array.of(1, 2, 3);
 ```
 
-### 2. Higher-Order Functions
+### 2. 高阶函数
 
-**Functions as Arguments:**
+**函数作为参数：**
 
 ```javascript
-// Custom forEach
+// 自定义 forEach
 function forEach(array, callback) {
   for (let i = 0; i < array.length; i++) {
     callback(array[i], i, array);
   }
 }
 
-// Custom map
+// 自定义 map
 function map(array, transform) {
   const result = [];
   for (const item of array) {
@@ -96,7 +96,7 @@ function map(array, transform) {
   return result;
 }
 
-// Custom filter
+// 自定义 filter
 function filter(array, predicate) {
   const result = [];
   for (const item of array) {
@@ -108,10 +108,10 @@ function filter(array, predicate) {
 }
 ```
 
-**Functions Returning Functions:**
+**函数返回函数：**
 
 ```javascript
-// Currying
+// 柯里化
 const multiply = (a) => (b) => a * b;
 const double = multiply(2);
 const triple = multiply(3);
@@ -119,7 +119,7 @@ const triple = multiply(3);
 console.log(double(5)); // 10
 console.log(triple(5)); // 15
 
-// Partial application
+// 偏函数应用
 function partial(fn, ...args) {
   return (...moreArgs) => fn(...args, ...moreArgs);
 }
@@ -128,7 +128,7 @@ const add = (a, b, c) => a + b + c;
 const add5 = partial(add, 5);
 console.log(add5(3, 2)); // 10
 
-// Memoization
+// 记忆化
 function memoize(fn) {
   const cache = new Map();
   return (...args) => {
@@ -148,10 +148,10 @@ const fibonacci = memoize((n) => {
 });
 ```
 
-### 3. Composition and Piping
+### 3. 组合与管道
 
 ```javascript
-// Function composition
+// 函数组合
 const compose =
   (...fns) =>
   (x) =>
@@ -162,7 +162,7 @@ const pipe =
   (x) =>
     fns.reduce((acc, fn) => fn(acc), x);
 
-// Example usage
+// 示例用法
 const addOne = (x) => x + 1;
 const double = (x) => x * 2;
 const square = (x) => x * x;
@@ -173,7 +173,7 @@ console.log(composed(3)); // ((3 + 1) * 2)^2 = 64
 const piped = pipe(addOne, double, square);
 console.log(piped(3)); // ((3 + 1) * 2)^2 = 64
 
-// Practical example
+// 实际示例
 const processUser = pipe(
   (user) => ({ ...user, name: user.name.trim() }),
   (user) => ({ ...user, email: user.email.toLowerCase() }),
@@ -187,17 +187,17 @@ const user = processUser({
 });
 ```
 
-### 4. Pure Functions and Immutability
+### 4. 纯函数与不可变性
 
 ```javascript
-// Impure function (modifies input)
+// 不纯的函数（修改输入）
 function addItemImpure(cart, item) {
   cart.items.push(item);
   cart.total += item.price;
   return cart;
 }
 
-// Pure function (no side effects)
+// 纯函数（无副作用）
 function addItemPure(cart, item) {
   return {
     ...cart,
@@ -206,50 +206,50 @@ function addItemPure(cart, item) {
   };
 }
 
-// Immutable array operations
+// 不可变数组操作
 const numbers = [1, 2, 3, 4, 5];
 
-// Add to array
+// 添加到数组
 const withSix = [...numbers, 6];
 
-// Remove from array
+// 从数组移除
 const withoutThree = numbers.filter((n) => n !== 3);
 
-// Update array element
+// 更新数组元素
 const doubled = numbers.map((n) => (n === 3 ? n * 2 : n));
 
-// Immutable object operations
+// 不可变对象操作
 const user = { name: "John", age: 30 };
 
-// Update property
+// 更新属性
 const olderUser = { ...user, age: 31 };
 
-// Add property
+// 添加属性
 const withEmail = { ...user, email: "john@example.com" };
 
-// Remove property
+// 删除属性
 const { age, ...withoutAge } = user;
 
-// Deep cloning (simple approach)
+// 深拷贝（简单方法）
 const deepClone = (obj) => JSON.parse(JSON.stringify(obj));
 
-// Better deep cloning
+// 更好的深拷贝
 const structuredClone = (obj) => globalThis.structuredClone(obj);
 ```
 
-## Modern Class Features
+## 现代类特性
 
 ```javascript
-// Class syntax
+// 类语法
 class User {
-  // Private fields
+  // 私有字段
   #password;
 
-  // Public fields
+  // 公有字段
   id;
   name;
 
-  // Static field
+  // 静态字段
   static count = 0;
 
   constructor(id, name, password) {
@@ -259,12 +259,12 @@ class User {
     User.count++;
   }
 
-  // Public method
+  // 公有方法
   greet() {
     return `Hello, ${this.name}`;
   }
 
-  // Private method
+  // 私有方法
   #hashPassword(password) {
     return `hashed_${password}`;
   }
@@ -279,13 +279,13 @@ class User {
     this.#password = this.#hashPassword(newPassword);
   }
 
-  // Static method
+  // 静态方法
   static create(id, name, password) {
     return new User(id, name, password);
   }
 }
 
-// Inheritance
+// 继承
 class Admin extends User {
   constructor(id, name, password, role) {
     super(id, name, password);
@@ -298,10 +298,10 @@ class Admin extends User {
 }
 ```
 
-## Modules (ES6)
+## 模块（ES6）
 
 ```javascript
-// Exporting
+// 导出
 // math.js
 export const PI = 3.14159;
 export function add(a, b) {
@@ -311,36 +311,36 @@ export class Calculator {
   // ...
 }
 
-// Default export
+// 默认导出
 export default function multiply(a, b) {
   return a * b;
 }
 
-// Importing
+// 导入
 // app.js
 import multiply, { PI, add, Calculator } from "./math.js";
 
-// Rename imports
+// 重命名导入
 import { add as sum } from "./math.js";
 
-// Import all
+// 全部导入
 import * as Math from "./math.js";
 
-// Dynamic imports
+// 动态导入
 const module = await import("./math.js");
 const { add } = await import("./math.js");
 
-// Conditional loading
+// 条件加载
 if (condition) {
   const module = await import("./feature.js");
   module.init();
 }
 ```
 
-## Iterators and Generators
+## 迭代器和生成器
 
 ```javascript
-// Custom iterator
+// 自定义迭代器
 const range = {
   from: 1,
   to: 5,
@@ -365,7 +365,7 @@ for (const num of range) {
   console.log(num); // 1, 2, 3, 4, 5
 }
 
-// Generator function
+// 生成器函数
 function* rangeGenerator(from, to) {
   for (let i = from; i <= to; i++) {
     yield i;
@@ -376,7 +376,7 @@ for (const num of rangeGenerator(1, 5)) {
   console.log(num);
 }
 
-// Infinite generator
+// 无限生成器
 function* fibonacci() {
   let [prev, curr] = [0, 1];
   while (true) {
@@ -385,7 +385,7 @@ function* fibonacci() {
   }
 }
 
-// Async generator
+// 异步生成器
 async function* fetchPages(url) {
   let page = 1;
   while (true) {
@@ -402,42 +402,42 @@ for await (const page of fetchPages("/api/users")) {
 }
 ```
 
-## Modern Operators
+## 现代运算符
 
 ```javascript
-// Optional chaining
+// 可选链
 const user = { name: "John", address: { city: "NYC" } };
 const city = user?.address?.city;
 const zipCode = user?.address?.zipCode; // undefined
 
-// Function call
+// 函数调用
 const result = obj.method?.();
 
-// Array access
+// 数组访问
 const first = arr?.[0];
 
-// Nullish coalescing
+// 空值合并
 const value = null ?? "default"; // 'default'
 const value = undefined ?? "default"; // 'default'
-const value = 0 ?? "default"; // 0 (not 'default')
-const value = "" ?? "default"; // '' (not 'default')
+const value = 0 ?? "default"; // 0（不是 'default'）
+const value = "" ?? "default"; // ''（不是 'default'）
 
-// Logical assignment
+// 逻辑赋值
 let a = null;
 a ??= "default"; // a = 'default'
 
 let b = 5;
-b ??= 10; // b = 5 (unchanged)
+b ??= 10; // b = 5（不变）
 
 let obj = { count: 0 };
 obj.count ||= 1; // obj.count = 1
 obj.count &&= 2; // obj.count = 2
 ```
 
-## Performance Optimization
+## 性能优化
 
 ```javascript
-// Debounce
+// 防抖
 function debounce(fn, delay) {
   let timeoutId;
   return (...args) => {
@@ -448,7 +448,7 @@ function debounce(fn, delay) {
 
 const searchDebounced = debounce(search, 300);
 
-// Throttle
+// 节流
 function throttle(fn, limit) {
   let inThrottle;
   return (...args) => {
@@ -462,26 +462,26 @@ function throttle(fn, limit) {
 
 const scrollThrottled = throttle(handleScroll, 100);
 
-// Lazy evaluation
+// 惰性求值
 function* lazyMap(iterable, transform) {
   for (const item of iterable) {
     yield transform(item);
   }
 }
 
-// Use only what you need
+// 只使用所需内容
 const numbers = [1, 2, 3, 4, 5];
 const doubled = lazyMap(numbers, (x) => x * 2);
-const first = doubled.next().value; // Only computes first value
+const first = doubled.next().value; // 仅计算第一个值
 ```
 
-## Common Pitfalls
+## 常见陷阱
 
-1. **this binding confusion**: Use arrow functions or bind()
-2. **Async/await without error handling**: Always use try/catch
-3. **Promise creation unnecessary**: Don't wrap already async functions
-4. **Mutation of objects**: Use spread operator or Object.assign()
-5. **Forgetting await**: Async functions return promises
-6. **Blocking event loop**: Avoid synchronous operations
-7. **Memory leaks**: Clean up event listeners and timers
-8. **Not handling promise rejections**: Use catch() or try/catch
+1. **this 绑定混淆**：使用箭头函数或 bind()
+2. **Async/await 缺少错误处理**：始终使用 try/catch
+3. **不必要的 Promise 创建**：不要包装已经是异步的函数
+4. **对象突变**：使用展开运算符或 Object.assign()
+5. **忘记 await**：异步函数返回 promise
+6. **阻塞事件循环**：避免同步操作
+7. **内存泄漏**：清理事件监听器和定时器
+8. **未处理 promise 拒绝**：使用 catch() 或 try/catch

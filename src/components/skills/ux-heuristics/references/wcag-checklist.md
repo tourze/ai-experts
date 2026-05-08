@@ -1,306 +1,306 @@
-# WCAG 2.1 AA Checklist
+# WCAG 2.1 AA 检查清单
 
-Complete checklist for WCAG 2.1 Level AA compliance with testing guidance.
+用于 WCAG 2.1 Level AA 合规的完整检查清单，附测试指南。
 
-## Perceivable
+## 可感知（Perceivable）
 
-Content must be presentable in ways users can perceive.
+内容必须以用户可以感知的方式呈现。
 
-### 1.1 Text Alternatives
+### 1.1 文本替代
 
-| Criterion | Requirement | How to Test |
+| 标准 | 要求 | 测试方法 |
 |-----------|-------------|-------------|
-| 1.1.1 Non-text Content | All images, icons, and visual content have text alternatives | Inspect alt attributes; use screen reader |
+| 1.1.1 非文本内容 | 所有图片、图标和视觉内容都有文本替代 | 检查 alt 属性；使用屏幕阅读器 |
 
-**Pass criteria:**
-- [ ] Informative images have descriptive alt text
-- [ ] Decorative images have empty alt (`alt=""`)
-- [ ] Complex images (charts, diagrams) have extended descriptions
-- [ ] Icons have accessible names
-- [ ] CAPTCHA provides audio alternative
+**通过标准：**
+- [ ] 信息性图片有描述性 alt 文本
+- [ ] 装饰性图片有空 alt（`alt=""`）
+- [ ] 复杂图片（图表、示意图）有扩展描述
+- [ ] 图标有可访问名称
+- [ ] CAPTCHA 提供音频替代方案
 
-### 1.2 Time-based Media
+### 1.2 基于时间的媒体
 
-| Criterion | Requirement | How to Test |
+| 标准 | 要求 | 测试方法 |
 |-----------|-------------|-------------|
-| 1.2.1 Audio/Video (prerecorded) | Captions and/or transcripts | Check video player for captions |
-| 1.2.2 Captions | Synchronized captions for video | Watch with captions on |
-| 1.2.3 Audio Description | Description of visual content | Check for AD track |
-| 1.2.5 Audio Description (AA) | Audio description for all video | Verify AD available |
+| 1.2.1 音频/视频（预录制） | 字幕和/或文字稿 | 检查视频播放器是否有字幕 |
+| 1.2.2 字幕 | 视频的同步字幕 | 开启字幕观看 |
+| 1.2.3 音频描述 | 视觉内容的描述 | 检查是否有 AD 轨道 |
+| 1.2.5 音频描述（AA） | 所有视频的音频描述 | 验证 AD 可用 |
 
-**Pass criteria:**
-- [ ] Videos have synchronized captions
-- [ ] Captions are accurate and complete
-- [ ] Audio descriptions available for important visual content
-- [ ] Transcripts available for audio-only content
+**通过标准：**
+- [ ] 视频有同步字幕
+- [ ] 字幕准确且完整
+- [ ] 重要视觉内容有音频描述
+- [ ] 纯音频内容有文字稿
 
-### 1.3 Adaptable
+### 1.3 可适配
 
-| Criterion | Requirement | How to Test |
+| 标准 | 要求 | 测试方法 |
 |-----------|-------------|-------------|
-| 1.3.1 Info and Relationships | Semantic structure preserved | Inspect HTML; use screen reader |
-| 1.3.2 Meaningful Sequence | Content order makes sense | Disable CSS; read in DOM order |
-| 1.3.3 Sensory Characteristics | Don't rely on shape/color/position alone | Check instructions |
-| 1.3.4 Orientation (AA) | Works in portrait and landscape | Rotate device |
-| 1.3.5 Identify Input Purpose (AA) | Input fields have autocomplete | Check `autocomplete` attributes |
+| 1.3.1 信息和关系 | 语义结构保留 | 检查 HTML；使用屏幕阅读器 |
+| 1.3.2 有意义的顺序 | 内容顺序合理 | 禁用 CSS；按 DOM 顺序阅读 |
+| 1.3.3 感官特征 | 不依赖形状/颜色/位置 | 检查说明文字 |
+| 1.3.4 方向（AA） | 在竖屏和横屏下均可用 | 旋转设备 |
+| 1.3.5 识别输入目的（AA） | 输入字段有自动补全 | 检查 `autocomplete` 属性 |
 
-**Pass criteria:**
-- [ ] Headings use proper h1-h6 hierarchy
-- [ ] Lists use `<ul>`, `<ol>`, `<dl>` elements
-- [ ] Forms have proper labels associated with inputs
-- [ ] Tables have headers marked with `<th>`
-- [ ] Reading order is logical without CSS
-- [ ] Works in both orientations
-- [ ] Input fields have appropriate autocomplete values
+**通过标准：**
+- [ ] 标题使用正确的 h1-h6 层级
+- [ ] 列表使用 `<ul>`、`<ol>`、`<dl>` 元素
+- [ ] 表单有与输入关联的正确标签
+- [ ] 表格标题使用 `<th>` 标记
+- [ ] 无 CSS 时阅读顺序仍合理
+- [ ] 两种方向均可使用
+- [ ] 输入字段有适当的 autocomplete 值
 
-### 1.4 Distinguishable
+### 1.4 可区分
 
-| Criterion | Requirement | How to Test |
+| 标准 | 要求 | 测试方法 |
 |-----------|-------------|-------------|
-| 1.4.1 Use of Color | Color not sole means of info | View in grayscale |
-| 1.4.2 Audio Control | Auto-playing audio can be stopped | Check for controls |
-| 1.4.3 Contrast (Minimum) | 4.5:1 text, 3:1 large text | Use contrast checker |
-| 1.4.4 Resize Text | Readable at 200% zoom | Zoom browser |
-| 1.4.5 Images of Text | Use real text, not images | Inspect for text images |
-| 1.4.10 Reflow (AA) | No horizontal scroll at 320px | Test at narrow width |
-| 1.4.11 Non-text Contrast (AA) | 3:1 for UI components | Check buttons, inputs |
-| 1.4.12 Text Spacing (AA) | Survives increased text spacing | Apply spacing override |
-| 1.4.13 Content on Hover/Focus (AA) | Hoverable, dismissible, persistent | Test tooltips, menus |
+| 1.4.1 颜色的使用 | 颜色不是信息的唯一传达方式 | 以灰度模式查看 |
+| 1.4.2 音频控制 | 自动播放的音频可以停止 | 检查控制按钮 |
+| 1.4.3 对比度（最低） | 文本 4.5:1，大文本 3:1 | 使用对比度检查工具 |
+| 1.4.4 调整文本大小 | 200% 缩放时可读 | 浏览器缩放 |
+| 1.4.5 文本图像 | 使用真实文本而非图片中的文字 | 检查文字图片 |
+| 1.4.10 回流（AA） | 320px 宽度时无水平滚动 | 在窄宽度下测试 |
+| 1.4.11 非文本对比度（AA） | UI 组件 3:1 | 检查按钮、输入框 |
+| 1.4.12 文本间距（AA） | 可承受增加的文本间距 | 应用间距覆盖 |
+| 1.4.13 悬停/焦点内容（AA） | 可悬停、可关闭、持久 | 测试工具提示、菜单 |
 
-**Pass criteria:**
-- [ ] Normal text has 4.5:1 contrast ratio minimum
-- [ ] Large text (18pt+) has 3:1 contrast ratio minimum
-- [ ] UI components have 3:1 contrast
-- [ ] Text resizes to 200% without loss
-- [ ] No horizontal scrolling at 320px width
-- [ ] Tooltips are dismissible, hoverable, persistent
-- [ ] Color alone doesn't convey meaning
+**通过标准：**
+- [ ] 普通文本最低对比度 4.5:1
+- [ ] 大文本（18pt+）最低对比度 3:1
+- [ ] UI 组件对比度 3:1
+- [ ] 文本缩放至 200% 无内容丢失
+- [ ] 320px 宽度时无水平滚动
+- [ ] 工具提示可关闭、可悬停、持久
+- [ ] 颜色本身不传达含义
 
 ---
 
-## Operable
+## 可操作（Operable）
 
-Users must be able to operate the interface.
+用户必须能够操作界面。
 
-### 2.1 Keyboard Accessible
+### 2.1 键盘可访问
 
-| Criterion | Requirement | How to Test |
+| 标准 | 要求 | 测试方法 |
 |-----------|-------------|-------------|
-| 2.1.1 Keyboard | All functionality works with keyboard | Navigate with Tab, Enter, Space |
-| 2.1.2 No Keyboard Trap | Focus can always move away | Tab through everything |
-| 2.1.4 Character Key Shortcuts (AA) | Single-key shortcuts can be disabled | Check for shortcut conflicts |
+| 2.1.1 键盘 | 所有功能均可通过键盘使用 | 使用 Tab、Enter、Space 导航 |
+| 2.1.2 无键盘陷阱 | 焦点始终可以移离 | Tab 遍历所有内容 |
+| 2.1.4 字符键快捷键（AA） | 单键快捷键可禁用 | 检查快捷键冲突 |
 
-**Pass criteria:**
-- [ ] All interactive elements are focusable
-- [ ] All actions can be performed via keyboard
-- [ ] Focus is never trapped
-- [ ] Single-key shortcuts can be disabled or remapped
-- [ ] Tab order follows logical sequence
+**通过标准：**
+- [ ] 所有交互元素可聚焦
+- [ ] 所有操作可通过键盘执行
+- [ ] 焦点永远不会被困住
+- [ ] 单键快捷键可禁用或重新映射
+- [ ] Tab 顺序符合逻辑顺序
 
-### 2.2 Enough Time
+### 2.2 足够时间
 
-| Criterion | Requirement | How to Test |
+| 标准 | 要求 | 测试方法 |
 |-----------|-------------|-------------|
-| 2.2.1 Timing Adjustable | Users can extend/disable time limits | Check for timeouts |
-| 2.2.2 Pause, Stop, Hide | Auto-updating content can be controlled | Check carousels, animations |
+| 2.2.1 时间可调 | 用户可延长/禁用时间限制 | 检查超时设置 |
+| 2.2.2 暂停、停止、隐藏 | 自动更新内容可控制 | 检查轮播、动画 |
 
-**Pass criteria:**
-- [ ] Session timeouts have 20-second warning
-- [ ] Users can extend time limits
-- [ ] Auto-playing content has pause control
-- [ ] Animations can be stopped
+**通过标准：**
+- [ ] 会话超时有 20 秒警告
+- [ ] 用户可以延长时限
+- [ ] 自动播放内容有暂停控制
+- [ ] 动画可以停止
 
-### 2.3 Seizures
+### 2.3 癫痫
 
-| Criterion | Requirement | How to Test |
+| 标准 | 要求 | 测试方法 |
 |-----------|-------------|-------------|
-| 2.3.1 Three Flashes | No content flashes >3 times/second | Measure flash rate |
+| 2.3.1 三次闪烁 | 内容闪烁不超过每秒 3 次 | 测量闪烁频率 |
 
-**Pass criteria:**
-- [ ] No flashing content above threshold
-- [ ] Animations don't cause seizure risk
+**通过标准：**
+- [ ] 没有超过阈值的闪烁内容
+- [ ] 动画不会引发癫痫风险
 
-### 2.4 Navigable
+### 2.4 可导航
 
-| Criterion | Requirement | How to Test |
+| 标准 | 要求 | 测试方法 |
 |-----------|-------------|-------------|
-| 2.4.1 Bypass Blocks | Skip links to bypass repeated content | Check for skip link |
-| 2.4.2 Page Titled | Pages have descriptive titles | Check `<title>` element |
-| 2.4.3 Focus Order | Focus sequence is logical | Tab through page |
-| 2.4.4 Link Purpose | Link text describes destination | Read links out of context |
-| 2.4.5 Multiple Ways (AA) | Multiple ways to find pages | Check nav, search, sitemap |
-| 2.4.6 Headings and Labels (AA) | Headings and labels are descriptive | Review all headings |
-| 2.4.7 Focus Visible (AA) | Focus indicator is visible | Tab through interface |
+| 2.4.1 跳过模块 | 跳过链接以绕过重复内容 | 检查跳过链接 |
+| 2.4.2 页面标题 | 页面有描述性标题 | 检查 `<title>` 元素 |
+| 2.4.3 焦点顺序 | 焦点序列符合逻辑 | Tab 遍历页面 |
+| 2.4.4 链接目的 | 链接文本描述目的地 | 脱离上下文阅读链接 |
+| 2.4.5 多种方式（AA） | 多种找到页面的方式 | 检查导航、搜索、站点地图 |
+| 2.4.6 标题和标签（AA） | 标题和标签具有描述性 | 检查所有标题 |
+| 2.4.7 焦点可见（AA） | 焦点指示器可见 | Tab 遍历界面 |
 
-**Pass criteria:**
-- [ ] Skip link present at top of page
-- [ ] Page titles are unique and descriptive
-- [ ] Tab order follows visual order
-- [ ] Link text is meaningful ("Read more about X" not "Click here")
-- [ ] Multiple navigation methods available
-- [ ] All headings are descriptive
-- [ ] Focus indicator is clearly visible
+**通过标准：**
+- [ ] 跳过链接位于页面顶部
+- [ ] 页面标题唯一且具有描述性
+- [ ] Tab 顺序符合视觉顺序
+- [ ] 链接文本有意义（"关于 X 的更多信息"而非"点击这里"）
+- [ ] 多种导航方式可用
+- [ ] 所有标题具有描述性
+- [ ] 焦点指示器清晰可见
 
-### 2.5 Input Modalities
+### 2.5 输入方式
 
-| Criterion | Requirement | How to Test |
+| 标准 | 要求 | 测试方法 |
 |-----------|-------------|-------------|
-| 2.5.1 Pointer Gestures (AA) | Complex gestures have simple alternatives | Check for alternatives |
-| 2.5.2 Pointer Cancellation (AA) | Actions on up-event, cancelable | Test click/drag behavior |
-| 2.5.3 Label in Name (AA) | Accessible name contains visible label | Compare visible/accessible names |
-| 2.5.4 Motion Actuation (AA) | Motion-based actions have alternatives | Check for non-motion options |
+| 2.5.1 指针手势（AA） | 复杂手势有简单替代方案 | 检查替代方案 |
+| 2.5.2 指针取消（AA） | 操作在 up 事件发生，可取消 | 测试点击/拖拽行为 |
+| 2.5.3 标签中的名称（AA） | 可访问名称包含可见标签 | 比较可见名称和可访问名称 |
+| 2.5.4 运动驱动（AA） | 基于运动的操作有替代方案 | 检查非运动选项 |
 
-**Pass criteria:**
-- [ ] Pinch, swipe have tap alternatives
-- [ ] Click actions happen on release (up-event)
-- [ ] Dragging outside target cancels action
-- [ ] Accessible names include visible text
-- [ ] Shake/tilt actions have button alternatives
+**通过标准：**
+- [ ] 捏合、滑动有点击替代方案
+- [ ] 点击操作在释放时执行（up 事件）
+- [ ] 拖拽至目标外取消操作
+- [ ] 可访问名称包含可见文本
+- [ ] 摇动/倾斜操作有按钮替代方案
 
 ---
 
-## Understandable
+## 可理解（Understandable）
 
-Content must be understandable to users.
+内容必须对用户可理解。
 
-### 3.1 Readable
+### 3.1 可读
 
-| Criterion | Requirement | How to Test |
+| 标准 | 要求 | 测试方法 |
 |-----------|-------------|-------------|
-| 3.1.1 Language of Page | Page language specified | Check `<html lang="">` |
-| 3.1.2 Language of Parts (AA) | Foreign text marked with lang | Check multilingual content |
+| 3.1.1 页面语言 | 页面语言已指定 | 检查 `<html lang="">` |
+| 3.1.2 局部语言（AA） | 外语文本用 lang 标记 | 检查多语言内容 |
 
-**Pass criteria:**
-- [ ] HTML has lang attribute
-- [ ] Foreign language passages have lang attribute
+**通过标准：**
+- [ ] HTML 有 lang 属性
+- [ ] 外文段落有 lang 属性
 
-### 3.2 Predictable
+### 3.2 可预测
 
-| Criterion | Requirement | How to Test |
+| 标准 | 要求 | 测试方法 |
 |-----------|-------------|-------------|
-| 3.2.1 On Focus | Focus doesn't cause unexpected changes | Tab through all elements |
-| 3.2.2 On Input | Input doesn't cause unexpected changes | Fill forms without submitting |
-| 3.2.3 Consistent Navigation (AA) | Navigation is consistent across pages | Compare pages |
-| 3.2.4 Consistent Identification (AA) | Same functions have same labels | Compare repeated elements |
+| 3.2.1 聚焦时 | 聚焦不会引起意外变化 | Tab 遍历所有元素 |
+| 3.2.2 输入时 | 输入不会引起意外变化 | 填写表单而不提交 |
+| 3.2.3 一致导航（AA） | 导航在不同页面间保持一致 | 比较页面 |
+| 3.2.4 一致标识（AA） | 相同功能有相同标签 | 比较重复元素 |
 
-**Pass criteria:**
-- [ ] Focus doesn't trigger context changes
-- [ ] Selecting options doesn't submit forms
-- [ ] Navigation is in same location on all pages
-- [ ] Same icons/labels used for same functions
+**通过标准：**
+- [ ] 聚焦不触发上下文变化
+- [ ] 选择选项不提交表单
+- [ ] 导航在所有页面中位置相同
+- [ ] 相同图标/标签用于相同功能
 
-### 3.3 Input Assistance
+### 3.3 输入辅助
 
-| Criterion | Requirement | How to Test |
+| 标准 | 要求 | 测试方法 |
 |-----------|-------------|-------------|
-| 3.3.1 Error Identification | Errors clearly identified | Submit invalid forms |
-| 3.3.2 Labels or Instructions | Labels and instructions provided | Review all forms |
-| 3.3.3 Error Suggestion (AA) | Suggestions for fixing errors | Trigger errors |
-| 3.3.4 Error Prevention (AA) | Confirmation for legal/financial actions | Test critical submissions |
+| 3.3.1 错误识别 | 错误清晰标识 | 提交无效表单 |
+| 3.3.2 标签或说明 | 提供了标签和说明 | 检查所有表单 |
+| 3.3.3 错误建议（AA） | 修复错误的建议 | 触发错误 |
+| 3.3.4 错误预防（AA） | 法律/财务操作需确认 | 测试关键提交 |
 
-**Pass criteria:**
-- [ ] Errors are clearly described in text
-- [ ] Error messages explain how to fix
-- [ ] All inputs have visible labels
-- [ ] Required fields are indicated
-- [ ] Legal/financial submissions are reversible or confirmed
+**通过标准：**
+- [ ] 错误以文本形式清晰描述
+- [ ] 错误消息解释如何修复
+- [ ] 所有输入都有可见标签
+- [ ] 必填字段已标识
+- [ ] 法律/财务提交可逆或需要确认
 
 ---
 
-## Robust
+## 健壮（Robust）
 
-Content must work with assistive technologies.
+内容必须能与辅助技术协同工作。
 
-### 4.1 Compatible
+### 4.1 兼容
 
-| Criterion | Requirement | How to Test |
+| 标准 | 要求 | 测试方法 |
 |-----------|-------------|-------------|
-| 4.1.1 Parsing | Valid HTML | Run HTML validator |
-| 4.1.2 Name, Role, Value | ARIA used correctly | Inspect with accessibility tools |
-| 4.1.3 Status Messages (AA) | Status updates announced | Test with screen reader |
+| 4.1.1 解析 | 有效的 HTML | 运行 HTML 验证器 |
+| 4.1.2 名称、角色、值 | ARIA 使用正确 | 使用可访问性工具检查 |
+| 4.1.3 状态消息（AA） | 状态更新可播报 | 使用屏幕阅读器测试 |
 
-**Pass criteria:**
-- [ ] HTML is valid (no duplicate IDs, proper nesting)
-- [ ] Custom controls have appropriate roles
-- [ ] States (expanded, selected) are programmatically set
-- [ ] Status messages use aria-live regions
+**通过标准：**
+- [ ] HTML 有效（无重复 ID、正确嵌套）
+- [ ] 自定义控件有适当的角色
+- [ ] 状态（展开、选中）通过编程方式设置
+- [ ] 状态消息使用 aria-live 区域
 
 ---
 
-## Testing Tools
+## 测试工具
 
-### Automated Testing
+### 自动化测试
 
-| Tool | What It Catches | Use For |
+| 工具 | 能发现的问题 | 用途 |
 |------|-----------------|---------|
-| axe DevTools | ~30% of issues | Quick scan |
-| WAVE | Similar to axe | Visual overlay |
-| Lighthouse | Basic accessibility | CI/CD integration |
-| Pa11y | CLI-based | Automated testing |
+| axe DevTools | 约 30% 的问题 | 快速扫描 |
+| WAVE | 与 axe 类似 | 视觉叠加 |
+| Lighthouse | 基础可访问性 | CI/CD 集成 |
+| Pa11y | 基于 CLI | 自动化测试 |
 
-### Manual Testing Required
+### 需要手动测试
 
-| Area | How to Test |
+| 领域 | 测试方法 |
 |------|-------------|
-| Keyboard navigation | Unplug mouse, use only keyboard |
-| Screen reader | VoiceOver (Mac), NVDA (Windows) |
-| Zoom | Browser zoom to 200%, 400% |
-| Color contrast | WebAIM Contrast Checker |
-| Color blindness | Sim Daltonism, Chrome DevTools |
+| 键盘导航 | 拔掉鼠标，仅使用键盘 |
+| 屏幕阅读器 | VoiceOver（Mac）、NVDA（Windows） |
+| 缩放 | 浏览器缩放至 200%、400% |
+| 颜色对比度 | WebAIM Contrast Checker |
+| 色盲 | Sim Daltonism、Chrome DevTools |
 
-### Screen Reader Testing
+### 屏幕阅读器测试
 
-**VoiceOver (Mac):**
-1. Enable: Cmd + F5
-2. Navigate: VO (Ctrl + Opt) + arrows
-3. Rotor: VO + U (headings, links, forms)
+**VoiceOver（Mac）：**
+1. 启用：Cmd + F5
+2. 导航：VO（Ctrl + Opt）+ 方向键
+3. 转子：VO + U（标题、链接、表单）
 
-**NVDA (Windows):**
-1. Download free from nvaccess.org
-2. Navigate: Arrow keys, Tab
-3. Elements list: NVDA + F7
+**NVDA（Windows）：**
+1. 从 nvaccess.org 免费下载
+2. 导航：方向键、Tab
+3. 元素列表：NVDA + F7
 
 ---
 
-## Quick Reference: Common Failures
+## 快速参考：常见失败
 
-| Issue | Failure | Fix |
+| 问题 | 失败项 | 修复方案 |
 |-------|---------|-----|
-| Missing alt text | 1.1.1 | Add descriptive alt or `alt=""` |
-| Low contrast | 1.4.3 | Increase to 4.5:1 (text) or 3:1 (large/UI) |
-| No focus indicator | 2.4.7 | Add visible :focus-visible styles |
-| Keyboard inaccessible | 2.1.1 | Make interactive, add tabindex=0 |
-| Missing form labels | 1.3.1, 3.3.2 | Add `<label>` with `for` attribute |
-| No skip link | 2.4.1 | Add "Skip to content" link |
-| Missing page title | 2.4.2 | Add descriptive `<title>` |
-| Color-only meaning | 1.4.1 | Add icon or text alongside |
-| No lang attribute | 3.1.1 | Add `<html lang="en">` |
-| Ambiguous links | 2.4.4 | Use descriptive link text |
+| 缺少 alt 文本 | 1.1.1 | 添加描述性 alt 或 `alt=""` |
+| 对比度不足 | 1.4.3 | 提升至 4.5:1（文本）或 3:1（大文本/UI） |
+| 无焦点指示器 | 2.4.7 | 添加可见的 :focus-visible 样式 |
+| 键盘无法访问 | 2.1.1 | 使其可交互，添加 tabindex=0 |
+| 缺少表单标签 | 1.3.1、3.3.2 | 添加带 `for` 属性的 `<label>` |
+| 无跳过链接 | 2.4.1 | 添加"跳转到内容"链接 |
+| 缺少页面标题 | 2.4.2 | 添加描述性 `<title>` |
+| 仅靠颜色传达含义 | 1.4.1 | 同时添加图标或文字 |
+| 无 lang 属性 | 3.1.1 | 添加 `<html lang="en">` |
+| 模糊的链接 | 2.4.4 | 使用描述性链接文本 |
 
 ---
 
-## Testing Checklist Summary
+## 测试清单总结
 
-Before launch, verify:
+发布前验证：
 
-**Automated scan:**
-- [ ] axe DevTools shows 0 issues
-- [ ] Lighthouse accessibility score >90
+**自动化扫描：**
+- [ ] axe DevTools 显示 0 个问题
+- [ ] Lighthouse 可访问性评分 >90
 
-**Keyboard:**
-- [ ] All functionality works with keyboard
-- [ ] Focus visible on all elements
-- [ ] No keyboard traps
-- [ ] Skip link works
+**键盘：**
+- [ ] 所有功能可通过键盘使用
+- [ ] 所有元素焦点可见
+- [ ] 无键盘陷阱
+- [ ] 跳过链接可用
 
-**Screen reader:**
-- [ ] All content announced correctly
-- [ ] Form fields have labels
-- [ ] Images have alt text
-- [ ] Headings create logical outline
+**屏幕阅读器：**
+- [ ] 所有内容正确播报
+- [ ] 表单字段有标签
+- [ ] 图片有 alt 文本
+- [ ] 标题创建符合逻辑的大纲
 
-**Visual:**
-- [ ] All text meets contrast requirements
-- [ ] Works at 200% zoom
-- [ ] Works at 320px width (mobile)
-- [ ] Color not sole indicator
+**视觉：**
+- [ ] 所有文本满足对比度要求
+- [ ] 在 200% 缩放下正常工作
+- [ ] 在 320px 宽度（移动端）下正常工作
+- [ ] 颜色不是唯一指示方式

@@ -1,187 +1,185 @@
-# Operational Excellence
+# 运维卓越
 
-**Dimension Weight: 7%**
+**维度权重：7%**
 
-Evaluates whether the system is operable, observable, and maintainable in production.
-An architecturally sound system can still fail operationally.
+评估系统在生产环境中是否可运维、可观测和可维护。架构上合理的系统仍可能在运维上失败。
 
-## Table of Contents
+## 目录
 
-1. Sub-Criteria Checklist
-2. Observability Maturity Model
-3. CI/CD Maturity Assessment
-4. Evaluation Guidance by Mode
-
----
-
-## 1. Sub-Criteria Checklist
-
-### 1.1 CI/CD Maturity
-
-- Is there an automated build pipeline? (Triggered on commit, not manual.)
-- Are tests run automatically in the pipeline? (Unit, integration, and/or E2E.)
-- Is deployment automated to at least staging/pre-production?
-- Are there staged environments? (dev → staging → production, minimum.)
-- Is there artifact management? (Versioned build artifacts, container registry.)
-- Is the pipeline fast enough for team productivity? (<15 min is good, >30 min is a finding.)
-- Are pipeline failures blocking? (Broken builds prevent deployment.)
-- Is there branch protection? (PR reviews required, status checks must pass.)
-
-### 1.2 Infrastructure as Code (IaC)
-
-- Is all infrastructure defined in code? (Terraform, CloudFormation, Pulumi, CDK.)
-- Can the entire environment be reproduced from code? (No manual console changes.)
-- Is IaC version-controlled and reviewed?
-- Is there drift detection? (Alerts when actual infra diverges from defined state.)
-- Are infrastructure changes applied through the same CI/CD pipeline?
-- Is state management handled securely? (Remote state, state locking, encrypted state.)
-
-### 1.3 Observability — Three Pillars
-
-**Logging:**
-
-- Is structured logging used? (JSON, not plain text.)
-- Are log levels used appropriately? (DEBUG, INFO, WARN, ERROR — not all INFO.)
-- Is there a centralized log aggregation platform? (ELK, Loki, CloudWatch, Datadog.)
-- Are logs correlated with request/trace IDs?
-- Is log volume managed? (Sampling, level configuration, retention policies.)
-
-**Metrics:**
-
-- Are RED metrics captured for every service? (Rate, Errors, Duration.)
-- Are USE metrics captured for infrastructure? (Utilization, Saturation, Errors.)
-- Are business metrics captured? (Orders/min, signups, revenue-impacting metrics.)
-- Are custom application metrics exposed? (Prometheus, StatsD, CloudWatch custom metrics.)
-- Are metric dashboards defined and maintained?
-
-**Distributed Tracing:**
-
-- Is distributed tracing implemented? (OpenTelemetry, Jaeger, Zipkin, X-Ray.)
-- Is trace context propagated across service boundaries?
-- Are trace IDs included in error responses for debugging?
-- Is sampling configured appropriately? (100% for errors, 1-10% for normal traffic.)
-- Can a single user request be traced end-to-end across all services?
-
-### 1.4 Alerting Strategy
-
-- Are alerts defined for critical failures? (Service down, error rate spike, latency spike.)
-- Are alerts actionable? (Each alert has a clear response action.)
-- Are severity tiers defined? (P1-Critical, P2-High, P3-Medium — not everything is critical.)
-- Are escalation paths defined? (Who gets paged, when does it escalate.)
-- Is there alert fatigue management? (Deduplication, suppression, aggregation.)
-- Are alerts based on SLO burn rates rather than raw thresholds where appropriate?
-
-### 1.5 Runbooks & Playbooks
-
-- Are there documented procedures for common incidents?
-- Are runbooks linked from alerts? (Alert fires → runbook link in notification.)
-- Are runbooks tested and updated? (Not 2 years stale.)
-- Do runbooks include: symptoms, diagnosis steps, resolution steps, escalation criteria?
-- Are emergency procedures documented? (Database restore, service rollback, incident
-  communication.)
-
-### 1.6 Incident Response
-
-- Is there a defined incident response process?
-- Are on-call rotations established?
-- Is there a post-mortem/retrospective culture? (Blameless post-mortems for every P1/P2.)
-- Are Mean-Time-To-Detect (MTTD) and Mean-Time-To-Recovery (MTTR) tracked?
-- Is there an incident communication plan? (Status page, stakeholder notifications.)
-
-### 1.7 Chaos Engineering Readiness
-
-- Is graceful degradation tested? (What happens when dependencies fail?)
-- Is there capability for failure injection? (Chaos Monkey, Litmus, Gremlin.)
-- Have game day exercises been conducted?
-- Are circuit breakers and fallbacks verified under actual failure conditions?
-- Is there a blast radius understanding for each component failure?
-
-### 1.8 Feature Management
-
-- Are feature flags used for progressive rollout?
-- Can features be disabled in production without a deployment?
-- Is there A/B testing infrastructure?
-- Are feature flags cleaned up after full rollout? (Flag debt management.)
-- Is there per-tenant or per-user feature targeting?
-
-### 1.9 Documentation
-
-- Are Architecture Decision Records (ADRs) maintained?
-- Is system documentation up-to-date? (Architecture diagrams, data flows, API docs.)
-- Are onboarding guides available for new team members?
-- Is there operational documentation? (Runbooks, deployment guides, troubleshooting.)
-- Is documentation co-located with code or in a discoverable location?
-
-### 1.10 Developer Experience
-
-- Is local development setup documented and functional? (<30 min to first local run.)
-- Is the feedback loop fast? (Local test → result in under 5 minutes.)
-- Are contribution guidelines clear?
-- Is there a consistent development environment? (Docker, devcontainers, Nix.)
-- Are code quality tools in place? (Linting, formatting, type checking.)
+1. 子标准检查清单
+2. 可观测性成熟度模型
+3. CI/CD 成熟度评估
+4. 按模式的评估指南
 
 ---
 
-## 2. Observability Maturity Model
+## 1. 子标准检查清单
 
-| Level         | Description                    | Indicators                                          |
+### 1.1 CI/CD 成熟度
+
+- 是否有自动化构建流水线？（提交时触发，非手动。）
+- 流水线中是否自动运行测试？（单元测试、集成测试和/或端到端测试。）
+- 是否至少自动化部署到预发布/预生产环境？
+- 是否有阶段环境？（开发 → 预发布 → 生产，至少三级。）
+- 是否有制品管理？（版本化的构建制品、容器镜像仓库。）
+- 流水线是否足够快以保障团队生产力？（<15 分钟良好，>30 分钟是问题。）
+- 流水线失败是否阻塞？（构建失败阻止部署。）
+- 是否有分支保护？（需要 PR 审查、状态检查必须通过。）
+
+### 1.2 基础设施即代码（IaC）
+
+- 所有基础设施是否都通过代码定义？（Terraform、CloudFormation、Pulumi、CDK。）
+- 整个环境能否从代码重现？（无手动控制台变更。）
+- IaC 是否受版本控制和审查？
+- 是否有漂移检测？（当实际基础设施偏离定义状态时告警。）
+- 基础设施变更是否通过同一套 CI/CD 流水线应用？
+- 状态管理是否安全处理？（远程状态、状态锁、加密状态。）
+
+### 1.3 可观测性 —— 三大支柱
+
+**日志：**
+
+- 是否使用结构化日志？（JSON，非纯文本。）
+- 日志级别是否使用得当？（DEBUG、INFO、WARN、ERROR —— 不全是 INFO。）
+- 是否有集中式日志聚合平台？（ELK、Loki、CloudWatch、Datadog。）
+- 日志是否与请求/追踪 ID 关联？
+- 日志量是否得到管理？（采样、级别配置、保留策略。）
+
+**指标：**
+
+- 是否每个服务都采集了 RED 指标？（速率、错误、持续时间。）
+- 是否采集了基础设施的 USE 指标？（利用率、饱和度、错误。）
+- 是否采集了业务指标？（订单/分钟、注册量、影响收入的指标。）
+- 是否暴露了自定义应用指标？（Prometheus、StatsD、CloudWatch 自定义指标。）
+- 指标仪表板是否定义并维护？
+
+**分布式追踪：**
+
+- 是否实施了分布式追踪？（OpenTelemetry、Jaeger、Zipkin、X-Ray。）
+- 追踪上下文是否跨服务边界传播？
+- 追踪 ID 是否包含在错误响应中以便调试？
+- 采样是否配置得当？（错误 100%，正常流量 1-10%。）
+- 能否端到端追踪单个用户请求跨所有服务的完整路径？
+
+### 1.4 告警策略
+
+- 是否定义了关键故障的告警？（服务宕机、错误率飙升、延迟飙升。）
+- 告警是否可操作？（每条告警都有明确的响应操作。）
+- 是否定义了严重等级？（P1-关键、P2-高、P3-中 —— 并非所有都是关键的。）
+- 是否定义了升级路径？（谁会收到通知，何时升级。）
+- 是否有告警疲劳管理？（去重、抑制、聚合。）
+- 告警是否基于 SLO 燃烧率而非原始阈值（在适当的情况下）？
+
+### 1.5 运维手册与剧本
+
+- 是否有常见事故的文档化流程？
+- 运维手册是否从告警中链接？（告警触发 → 通知中的手册链接。）
+- 运维手册是否经过测试和更新？（未过时 2 年。）
+- 运维手册是否包含：症状、诊断步骤、解决步骤、升级标准？
+- 紧急流程是否有文档？（数据库恢复、服务回滚、事件沟通。）
+
+### 1.6 事件响应
+
+- 是否有定义的事件响应流程？
+- 是否建立了轮值制度？
+- 是否有事后分析/回顾文化？（每次 P1/P2 进行无指责事后分析。）
+- 是否追踪了 MTTD（平均检测时间）和 MTTR（平均恢复时间）？
+- 是否有事件沟通计划？（状态页面、干系人通知。）
+
+### 1.7 混沌工程就绪度
+
+- 优雅降级是否经过测试？（依赖失败时会发生什么？）
+- 是否有故障注入能力？（Chaos Monkey、Litmus、Gremlin。）
+- 是否进行过演习？
+- 熔断器和降级方案是否在实际故障条件下经过验证？
+- 是否了解每个组件故障的爆炸半径？
+
+### 1.8 功能管理
+
+- 是否使用功能开关进行渐进式上线？
+- 能否在不部署的情况下在生产环境禁用功能？
+- 是否有 A/B 测试基础设施？
+- 功能开关是否在完全上线后被清理？（开关债务管理。）
+- 是否支持按租户或按用户的功能定位？
+
+### 1.9 文档
+
+- 架构决策记录（ADR）是否得到维护？
+- 系统文档是否及时更新？（架构图、数据流、API 文档。）
+- 新团队成员是否有入职指南？
+- 是否有运维文档？（运维手册、部署指南、故障排查。）
+- 文档是否与代码共存或在可发现的位置？
+
+### 1.10 开发者体验
+
+- 本地开发环境搭建是否有文档且可用？（<30 分钟完成首次本地运行。）
+- 反馈循环是否快速？（本地测试 → 5 分钟内出结果。）
+- 贡献指南是否清晰？
+- 开发环境是否一致？（Docker、devcontainers、Nix。）
+- 是否配置了代码质量工具？（Linting、格式化、类型检查。）
+
+---
+
+## 2. 可观测性成熟度模型
+
+| 级别 | 描述 | 指标 |
 | ------------- | ------------------------------ | --------------------------------------------------- |
-| 0 — None      | No observability               | No logging, no metrics, no tracing                  |
-| 1 — Basic     | Logs exist but unstructured    | Plain text logs, no centralization, no metrics      |
-| 2 — Reactive  | Can investigate known issues   | Centralized logs, basic metrics, no tracing         |
-| 3 — Proactive | Alerts for known failure modes | Structured logging, RED/USE metrics, basic alerting |
-| 4 — Advanced  | End-to-end visibility          | Distributed tracing, SLO-based alerting, dashboards |
-| 5 — Exemplary | Predictive and self-healing    | Anomaly detection, auto-remediation, chaos testing  |
+| 0 — 无 | 无可观测性 | 无日志、无指标、无追踪 |
+| 1 — 基础 | 有日志但非结构化 | 纯文本日志、无集中化、无指标 |
+| 2 — 被动 | 能调查已知问题 | 集中化日志、基础指标、无追踪 |
+| 3 — 主动 | 已知故障模式有告警 | 结构化日志、RED/USE 指标、基础告警 |
+| 4 — 先进 | 端到端可见性 | 分布式追踪、基于 SLO 的告警、仪表板 |
+| 5 — 典范 | 可预测和自愈 | 异常检测、自动修复、混沌测试 |
 
-Target level depends on system stage:
+目标级别取决于系统阶段：
 
-- Greenfield design: Plan for Level 3+
-- Early development: Implement Level 2-3
-- Growth: Achieve Level 3-4
-- Mature production: Target Level 4-5
+- 绿场设计：计划达到 3 级以上
+- 早期开发：实施 2-3 级
+- 增长期：达到 3-4 级
+- 成熟生产：目标 4-5 级
 
 ---
 
-## 3. CI/CD Maturity Assessment
+## 3. CI/CD 成熟度评估
 
-| Level                    | Description                          | Indicators                                             |
+| 级别 | 描述 | 指标 |
 | ------------------------ | ------------------------------------ | ------------------------------------------------------ |
-| 0 — Manual               | Everything is manual                 | Manual builds, FTP deployments, no version control     |
-| 1 — Basic                | Version control, some automation     | Git, manual builds, scripted deployment                |
-| 2 — CI                   | Automated build and test             | CI pipeline, automated tests, manual deployment        |
-| 3 — CD to Staging        | Automated deploy to staging          | Pipeline deploys to staging, manual prod promotion     |
-| 4 — CD to Production     | Automated deploy to production       | Full pipeline with staged rollout, rollback capability |
-| 5 — Progressive Delivery | Canary, feature flags, auto-rollback | Canary deployments, automated rollback on error spike  |
+| 0 — 手动 | 一切手动 | 手动构建、FTP 部署、无版本控制 |
+| 1 — 基础 | 有版本控制，部分自动化 | Git、手动构建、脚本化部署 |
+| 2 — CI | 自动化构建和测试 | CI 流水线、自动化测试、手动部署 |
+| 3 — CD 到预发布 | 自动化部署到预发布 | 流水线部署到预发布、手动推广到生产 |
+| 4 — CD 到生产 | 自动化部署到生产 | 全流水线含阶段上线、回滚能力 |
+| 5 — 渐进式交付 | 金丝雀、功能开关、自动回滚 | 金丝雀部署、错误率飙升时自动回滚 |
 
 ---
 
-## 4. Evaluation Guidance by Mode
+## 4. 按模式的评估指南
 
-### Mode A (Codebase)
+### 模式 A（代码库）
 
-- Check for CI/CD configuration files (.github/workflows, Jenkinsfile, .gitlab-ci.yml)
-- Inspect pipeline stages (build, test, lint, security scan, deploy)
-- Look for IaC files (Terraform, CloudFormation, Pulumi)
-- Check logging patterns in code (structured vs unstructured, log levels)
-- Look for metrics instrumentation (Prometheus client, StatsD, custom metrics)
-- Check for tracing instrumentation (OpenTelemetry, middleware)
-- Look for health check endpoints (/health, /ready, /live)
-- Check for feature flag implementations
-- Inspect Dockerfiles for best practices (multi-stage builds, non-root, small images)
-- Look for ADR directories or decision documentation
+- 检查 CI/CD 配置文件（.github/workflows、Jenkinsfile、.gitlab-ci.yml）
+- 检查流水线阶段（构建、测试、lint、安全扫描、部署）
+- 查找 IaC 文件（Terraform、CloudFormation、Pulumi）
+- 检查代码中的日志模式（结构化 vs 非结构化、日志级别）
+- 查找指标埋点（Prometheus 客户端、StatsD、自定义指标）
+- 检查追踪埋点（OpenTelemetry、中间件）
+- 查找健康检查端点（/health、/ready、/live）
+- 检查功能开关实现
+- 检查 Dockerfile 最佳实践（多阶段构建、非 root、小镜像）
+- 查找 ADR 目录或决策文档
 
-### Mode B (Document)
+### 模式 B（文档）
 
-- Check if CI/CD strategy is described
-- Look for observability architecture (logging, metrics, tracing strategy)
-- Verify alerting and incident response processes are documented
-- Check if DR procedures are described
-- Look for deployment strategy (blue-green, canary, rolling)
-- Verify operational responsibilities are assigned
+- 检查 CI/CD 策略是否描述
+- 查找可观测性架构（日志、指标、追踪策略）
+- 验证告警和事件响应流程是否已文档化
+- 检查灾难恢复流程是否描述
+- 查找部署策略（蓝绿、金丝雀、滚动）
+- 验证运维职责是否已分配
 
-### Mode C (Hybrid)
+### 模式 C（混合）
 
-- Compare documented operational procedures against actual pipeline implementations
-- Check if stated observability strategy matches actual instrumentation
-- Verify documented alerting strategy has corresponding alert definitions
-- Cross-reference stated deployment strategy against actual pipeline configuration
+- 将记录的运维流程与实际流水线实现进行比较
+- 检查声明的可观测性策略是否与实际埋点一致
+- 验证记录的告警策略是否有对应的告警定义
+- 交叉对照声明的部署策略与实际流水线配置

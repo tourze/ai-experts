@@ -1,152 +1,152 @@
-# Refactoring Workflow
+# 重构工作流
 
-Detailed reference for when and how to refactor safely. The discipline of refactoring is as important as knowing the individual transformations. This reference covers the refactoring cycle, timing, safety techniques, and strategies for large-scale refactoring in production systems.
+关于何时以及如何安全重构的详解。重构的纪律与了解单个转换操作同样重要。本参考资料涵盖了重构周期、时机、安全技术以及生产系统中大规模重构的策略。
 
 ---
 
-## The Refactoring Cycle
+## 重构周期
 
-Every refactoring follows the same four-step loop:
+每次重构都遵循相同的四步循环：
 
 ```
-1. Run tests → GREEN
-2. Apply one small structural change
-3. Run tests → GREEN
-4. Commit
+1. 运行测试 → 绿色（全部通过）
+2. 应用一个小的结构性更改
+3. 运行测试 → 绿色（全部通过）
+4. 提交
 ```
 
-**Then repeat.**
+**然后重复。**
 
-### Why Small Steps Matter
+### 为什么小步骤很重要
 
-| Approach | Risk | Recovery Time |
+| 方式 | 风险 | 恢复时间 |
 |----------|------|---------------|
-| One refactoring at a time | Minimal -- if tests fail, the cause is obvious | Seconds (revert one change) |
-| Several refactorings between tests | Medium -- must debug to find which one broke | Minutes |
-| Big-bang rewrite | Maximum -- structural and behavioral changes mixed | Hours to days (or never) |
+| 一次只做一次重构 | 最小——如果测试失败，原因显而易见 | 秒（回滚一个变更） |
+| 在测试之间做多次重构 | 中——需要调试才能找出哪个破坏了 | 分钟 |
+| 大规模重写 | 最大——结构性变更和行为变更混在一起 | 数小时到数天（或永远） |
 
-**Rule:** If a test fails after a refactoring step, **revert immediately**. Don't debug. The step was too big or wrong. Revert, think, try a smaller step.
+**规则：** 如果在重构步骤后测试失败，**立即回滚**。不要调试。该步骤太大或有问题。回滚，思考，尝试更小的步骤。
 
-### The Two Hats
+### 两顶帽子
 
-Martin Fowler describes two distinct modes of work. You wear only one "hat" at a time:
+Martin Fowler 描述了两种不同的工作模式。你一次只戴一顶"帽子"：
 
-| Hat | What You Do | What You Don't Do |
+| 帽子 | 你做什么 | 你不做什么 |
 |-----|-------------|-------------------|
-| **Refactoring** | Change structure, keep behavior identical | Add features, fix bugs, change tests |
-| **Adding Function** | Add new behavior, write new tests | Change existing code structure |
+| **重构** | 改变结构，保持行为不变 | 添加功能、修复 bug、修改测试 |
+| **添加功能** | 添加新行为，编写新测试 | 修改现有代码结构 |
 
-**Switching hats:** You may alternate frequently, but never wear both at once. A typical sequence:
+**切换帽子：** 你可以频繁交替，但永远不要同时戴两顶。一个典型的顺序：
 
-1. Refactoring hat: restructure to make the new feature easy to add. Commit.
-2. Adding-function hat: add the feature and its tests. Commit.
-3. Refactoring hat: clean up any mess the new feature introduced. Commit.
-
----
-
-## When to Refactor
-
-### Preparatory Refactoring (Refactor to Make the Change Easy)
-
-**Trigger:** You're about to add a feature, and the code isn't structured to accommodate it easily.
-
-**Example:** You need to add a new payment method. The payment logic is in a long if/else chain. Before adding the new branch, refactor to Replace Conditional with Polymorphism. Now adding the new payment method means creating one new class.
-
-**Kent Beck's quote:** "Make the change easy (warning: this may be hard), then make the easy change."
-
-**The payoff:** The feature is faster to add, less likely to contain bugs, and the refactoring improves the code for all future changes, not just this one.
-
-### Comprehension Refactoring (Refactor to Understand)
-
-**Trigger:** You're reading code and struggling to understand it. Rename variables, extract methods, and reorganize to make the code express its intent.
-
-**Example:** You encounter a function called `calc` with variables named `a`, `b`, and `temp`. As you figure out what each does, rename them: `calculateMonthlyPayment`, `principal`, `interestRate`, `monthlyAmount`. The understanding you gain is encoded in the code itself.
-
-**Ward Cunningham's insight:** "By refactoring, I move the understanding from my head into the code itself."
-
-### Litter-Pickup Refactoring (Boy Scout Rule)
-
-**Trigger:** You touch a file for any reason and notice a small improvement you can make. Do it.
-
-**Examples:**
-- Rename a misleading variable name
-- Extract a method from a long function
-- Remove dead code
-- Add a missing guard clause
-
-**The rule:** Leave the code cleaner than you found it. Each small improvement compounds over time. A codebase that is consistently cleaned by every developer who touches it stays healthy.
-
-### Rule of Three
-
-**Trigger:** The third time you see duplicated code or a repeated pattern.
-
-**The progression:**
-1. First time: Write it
-2. Second time: Wince at the duplication but tolerate it
-3. Third time: Refactor -- extract the common pattern
-
-**Why three, not two:** Premature abstraction is as dangerous as duplication. Two occurrences might be coincidental. Three confirms the pattern.
-
-### Long-Term Refactoring
-
-**Trigger:** A large structural problem that can't be fixed in one session.
-
-**Examples:**
-- Replacing a library or framework
-- Splitting a monolith into modules
-- Changing a pervasive data representation
-
-**Approach:** The team agrees on a target architecture. Everyone makes small changes toward it during regular work. No one stops feature development for a "refactoring sprint."
+1. 重构帽子：重组代码，使新功能易于添加。提交。
+2. 添加功能帽子：添加功能及其测试。提交。
+3. 重构帽子：清理新功能引入的任何混乱。提交。
 
 ---
 
-## When NOT to Refactor
+## 何时重构
 
-Not every piece of code deserves refactoring. Save your effort for code that justifies it.
+### 预备性重构（先重构使其更容易）
 
-### Code You Should Leave Alone
+**触发点：** 你即将添加一个功能，但代码结构不适合容纳它。
 
-| Situation | Why |
+**示例：** 你需要添加一种新的支付方式。支付逻辑在一个长长的 if/else 链中。在添加新分支之前，先用多态取代条件表达式进行重构。现在添加新支付方式意味着创建一个新类。
+
+**Kent Beck 的名言：** "让变更变得容易（警告：这可能很难），然后进行简单的变更。"
+
+**回报：** 功能添加更快，更少可能包含 bug，并且重构不仅为此变更提升了代码质量，也为所有未来的变更。
+
+### 理解性重构（通过重构来理解）
+
+**触发点：** 你正在阅读代码，但难以理解。重命名变量、提炼方法并重新组织，使代码表达其意图。
+
+**示例：** 你遇到一个名为 `calc` 的函数，变量名为 `a`、`b` 和 `temp`。当你弄清楚每个变量的作用时，重命名它们：`calculateMonthlyPayment`、`principal`、`interestRate`、`monthlyAmount`。你获得的理解决策被编码在代码本身中。
+
+**Ward Cunningham 的洞见：** "通过重构，我将理解从我的头脑转移到代码本身。"
+
+### 捡垃圾式重构（童子军规则）
+
+**触发点：** 你因任何原因接触一个文件，并注意到可以做出的小改进。去做。
+
+**示例：**
+- 重命名一个误导性的变量名
+- 从一个长函数中提炼一个方法
+- 删除死代码
+- 添加缺失的卫语句
+
+**规则：** 让代码比你发现时更干净。每一个小的改进都会随时间累积。一个被每个接触它的开发者持续清理的代码库保持健康。
+
+### 三次法则
+
+**触发点：** 第三次看到重复代码或重复模式时。
+
+**递进：**
+1. 第一次：写出来
+2. 第二次：对重复感到不快，但容忍它
+3. 第三次：重构——提取公共模式
+
+**为什么是三次，不是两次：** 过早抽象与重复一样危险。两次出现可能只是巧合。三次确认了模式。
+
+### 长期重构
+
+**触发点：** 无法在单次会话中修复的大型结构性问题。
+
+**示例：**
+- 替换一个库或框架
+- 将单体拆分为模块
+- 更改一个普遍存在的数据表示
+
+**方法：** 团队同意一个目标架构。每个人在日常工作中朝着该目标做出小的变更。没有人为了"重构冲刺"而停止功能开发。
+
+---
+
+## 何时不应重构
+
+不是每段代码都值得重构。将精力花在值得的代码上。
+
+### 应该置之不理的代码
+
+| 场景 | 原因 |
 |-----------|-----|
-| The code works and nobody needs to modify it | If it's behind a clean interface, its internal messiness costs nothing |
-| It's easier to rewrite from scratch | If the code is small and the rewrite is straightforward, don't polish what you'll replace |
-| There are no tests and adding them is impractical | Refactoring without tests is too risky; consider characterization tests first |
-| The code will be deleted soon | Don't beautify code with a known end-of-life |
-| You're exploring or prototyping | Throwaway code benefits from speed, not structure |
+| 代码能工作，且没有人需要修改它 | 如果它藏在一个干净的接口后面，内部的混乱不会带来成本 |
+| 从头重写更容易 | 如果代码很小且重写直接了当，不要打磨你将替换的东西 |
+| 没有测试且添加测试不切实际 | 没有测试就重构风险太大；首先考虑特征测试 |
+| 代码很快会被删除 | 不要美化已知生命周期的代码 |
+| 你正在探索或原型开发 | 一次性代码受益于速度，而非结构 |
 
-### The "Messy Middle" Trap
+### "混乱中间地带"陷阱
 
-Some teams swing between two extremes:
-- **Never refactor:** Technical debt accumulates until development grinds to a halt
-- **Always refactor:** Gold-plating code that doesn't need it, shipping features slowly
+一些团队在两个极端之间摇摆：
+- **从不重构：** 技术债务积累，直到开发陷入停滞
+- **总是重构：** 对不需要的代码过度优化，功能上线缓慢
 
-The right balance: **Refactor code that you're about to change, or code that's actively hurting velocity.** Don't refactor code just because it's not beautiful.
+正确的平衡：**重构你即将要修改的代码，或者正在主动拖慢开发速度的代码。** 不要仅仅因为代码不美观就重构。
 
 ---
 
-## Testing and Refactoring
+## 测试与重构
 
-### The Safety Net
+### 安全网
 
-Tests are not optional for refactoring. Without them, you cannot verify that behavior is preserved.
+测试对于重构不是可选的。没有测试，你无法验证行为是否被保留。
 
-| Test Type | Role in Refactoring |
+| 测试类型 | 在重构中的角色 |
 |-----------|-------------------|
-| Unit tests | Fast feedback on individual method behavior |
-| Integration tests | Verify behavior across collaborating objects |
-| Characterization tests | Capture existing behavior of legacy code (the starting point) |
-| Regression tests | Ensure the entire system still works after changes |
+| 单元测试 | 对单个方法行为的快速反馈 |
+| 集成测试 | 验证跨协作对象的行为 |
+| 特征测试 | 捕获遗留代码的现有行为（起点） |
+| 回归测试 | 确保整个系统在变更后仍能工作 |
 
-### Characterization Tests
+### 特征测试
 
-When you encounter code without tests that you need to refactor:
+当你遇到没有测试但需要重构的代码时：
 
-1. Run the code with known inputs
-2. Observe the actual outputs (even if you think they're "wrong")
-3. Write tests that assert the actual current behavior
-4. Now you have a safety net -- refactor freely
+1. 用已知输入运行代码
+2. 观察实际输出（即使你认为它们是"错误"的）
+3. 编写断言实际当前行为的测试
+4. 现在你有了安全网——自由重构
 
-**Example:**
+**示例：**
 ```python
 def test_weird_edge_case():
     # This behavior may be "wrong" but it's what exists.
@@ -155,72 +155,72 @@ def test_weird_edge_case():
     assert result == 5.99  # Captures existing behavior
 ```
 
-### Test-Driven Refactoring Steps
+### 测试驱动的重构步骤
 
-1. **Before starting:** Run all tests. If any fail, fix them first.
-2. **After each refactoring step:** Run tests. All must pass.
-3. **If a test fails:** Revert immediately. Don't debug.
-4. **After completing a logical group of refactorings:** Commit.
-5. **If you discover a bug during refactoring:** Stop refactoring. Fix the bug (adding-function hat). Then resume refactoring.
+1. **开始之前：** 运行所有测试。如果有任何失败，先修复它们。
+2. **每次重构步骤之后：** 运行测试。所有测试必须通过。
+3. **如果测试失败：** 立即回滚。不要调试。
+4. **完成逻辑上的一组重构后：** 提交。
+5. **如果在重构过程中发现 bug：** 停止重构。修复 bug（戴上添加功能帽子）。然后继续重构。
 
 ---
 
-## Refactoring and Performance
+## 重构与性能
 
-### The Common Fear
+### 常见的担忧
 
-"Won't all these small methods and indirection make the code slower?"
+"所有这些小方法和间接层不会让代码变慢吗？"
 
-### The Reality
+### 现实情况
 
-1. Most performance concerns about refactored code are unfounded. Modern compilers and runtimes inline small methods.
-2. Performance bottlenecks are almost never where you think they are. Profile first.
-3. Well-structured code is **easier** to optimize because the hot path is isolated.
+1. 大多数关于重构后代码的性能担忧是毫无根据的。现代编译器和运行时会对小方法进行内联。
+2. 性能瓶颈几乎从不在你认为的地方。先做性能分析。
+3. 结构良好的代码**更容易**优化，因为热点路径被隔离了。
 
-### The Three-Step Performance Strategy
+### 三步性能策略
 
-1. **Write clear code first.** Don't optimize during refactoring.
-2. **Profile the running system.** Find the actual bottleneck (usually 10% of the code causes 90% of the performance issue).
-3. **Optimize only the measured hot path.** Well-refactored code makes this easy because the hot path is in a small, isolated method.
+1. **首先编写清晰的代码。** 不要在重构过程中优化。
+2. **对运行中的系统做性能分析。** 找到真正的瓶颈（通常 10% 的代码导致了 90% 的性能问题）。
+3. **仅优化已测量的热点路径。** 良好重构的代码使这变得容易，因为热点路径在一个小的、隔离的方法中。
 
-### When Refactoring Genuinely Hurts Performance
+### 重构确实影响性能时
 
-| Refactoring | Potential Cost | Mitigation |
+| 重构手法 | 潜在开销 | 缓解措施 |
 |-------------|---------------|------------|
-| Replace Temp with Query | Method called multiple times instead of cached once | Cache if profiling shows impact |
-| Extract Method | Additional method call overhead | Usually inlined by the compiler/JIT |
-| Replace Conditional with Polymorphism | Virtual dispatch instead of branch | Negligible in most cases; profile if in doubt |
-| Introduce Parameter Object | Object allocation for each call | Often optimized away; pool if necessary |
+| 以查询取代临时变量 | 方法多次调用而不是缓存一次 | 如果性能分析显示有影响则缓存 |
+| 提炼方法 | 额外的方法调用开销 | 通常由编译器/JIT 内联 |
+| 用多态取代条件表达式 | 虚函数分派替代分支 | 大多数情况可忽略；如有疑问做性能分析 |
+| 引入参数对象 | 每次调用分配对象 | 通常被优化掉；必要时使用对象池 |
 
-**Key insight:** Optimization and refactoring are separate concerns. Refactor first for clarity, then optimize the measured bottleneck.
+**关键洞见：** 优化和重构是独立的问题。首先重构以提高清晰度，然后优化已测量的瓶颈。
 
 ---
 
-## Branch by Abstraction
+## 通过抽象分支（Branch by Abstraction）
 
-A technique for making large-scale changes to a widely-used component without creating a long-lived feature branch.
+一种在不创建长寿功能分支的情况下对广泛使用的组件进行大规模变更的技术。
 
-### When to Use
+### 使用时机
 
-- Replacing a framework, library, or major internal component
-- The replacement will take weeks or months
-- You need to keep shipping features during the transition
-- Feature branches would become stale and cause merge conflicts
+- 替换框架、库或主要内部组件
+- 替换工作需要数周或数月
+- 在过渡期间需要持续发布功能
+- 功能分支会变得陈旧并引起合并冲突
 
-### How It Works
+### 工作原理
 
 ```
-Step 1: Identify the component to replace (OldComponent)
-Step 2: Create an abstraction layer (interface) that wraps OldComponent
-Step 3: Change all callers to use the abstraction (deploy incrementally)
-Step 4: Create NewComponent that implements the same abstraction
-Step 5: Switch the abstraction to point to NewComponent (one change, deploy)
-Step 6: Remove OldComponent and the abstraction layer (clean up)
+Step 1: 识别要替换的组件（OldComponent）
+Step 2: 创建一个包装 OldComponent 的抽象层（接口）
+Step 3: 将所有调用者改为使用该抽象（增量部署）
+Step 4: 创建实现相同抽象的新组件 NewComponent
+Step 5: 将抽象切换到指向 NewComponent（一次变更，部署）
+Step 6: 删除 OldComponent 和抽象层（清理）
 ```
 
-### Example
+### 示例
 
-**Step 1-2:** Introduce the abstraction
+**Step 1-2:** 引入抽象
 ```python
 # Before: callers use OldPaymentGateway directly
 class OldPaymentGateway:
@@ -235,34 +235,34 @@ class OldPaymentGateway(PaymentGateway):
     def charge(self, amount, card): ...  # existing implementation
 ```
 
-**Step 3:** Migrate callers to use `PaymentGateway` (the abstraction). Deploy.
+**Step 3:** 将调用者迁移到使用 `PaymentGateway`（抽象层）。部署。
 
-**Step 4:** Build `NewPaymentGateway(PaymentGateway)`. Test thoroughly.
+**Step 4:** 构建 `NewPaymentGateway(PaymentGateway)`。彻底测试。
 
-**Step 5:** Switch the wiring:
+**Step 5:** 切换连接：
 ```python
 # In configuration:
 # gateway = OldPaymentGateway()  # old
 gateway = NewPaymentGateway()    # new
 ```
 
-**Step 6:** Delete `OldPaymentGateway`. Optionally inline the abstraction if only one implementation remains.
+**Step 6:** 删除 `OldPaymentGateway`。如果只有一个实现保留，可选择将抽象层内联。
 
 ---
 
-## Parallel Change (Expand-Migrate-Contract)
+## 并行变更（展开-迁移-收缩）
 
-A technique for making breaking API changes safely by running old and new versions side by side.
+一种通过让新旧版本并行运行来安全进行破坏性 API 变更的技术。
 
-### When to Use
+### 使用时机
 
-- Renaming a widely-used method or changing its signature
-- Changing a data format while consumers still read the old format
-- Migrating from one API to another when you can't update all consumers at once
+- 重命名广泛使用的方法或更改其签名
+- 在消费者仍读取旧格式时更改数据格式
+- 从一个 API 迁移到另一个 API，但无法同时更新所有消费者
 
-### The Three Phases
+### 三个阶段
 
-**1. Expand:** Add the new version alongside the old one.
+**1. 展开（Expand）：** 在旧版本旁边添加新版本。
 ```python
 class User:
     def get_full_name(self):     # new name
@@ -272,52 +272,52 @@ class User:
         return self.get_full_name()  # delegates to new
 ```
 
-**2. Migrate:** Update all callers to use the new version. This can happen incrementally across multiple deployments.
+**2. 迁移（Migrate）：** 更新所有调用者使用新版本。可以跨多个部署增量进行。
 
-**3. Contract:** Remove the old version once all callers have migrated.
+**3. 收缩（Contract）：** 一旦所有调用者迁移完成，删除旧版本。
 ```python
 class User:
     def get_full_name(self):     # only the new version remains
         return f"{self.first} {self.last}"
 ```
 
-### Parallel Change for Data
+### 数据的并行变更
 
 ```
-1. Expand: Write to both old and new columns/formats
-2. Migrate: Update all readers to use the new format
-3. Contract: Stop writing the old format, remove old column
+1. 展开：同时写入旧列/旧格式和新列/新格式
+2. 迁移：更新所有读取者使用新格式
+3. 收缩：停止写入旧格式，删除旧列
 ```
 
 ---
 
-## Large-Scale Refactoring Strategies
+## 大规模重构策略
 
-### The Strangler Fig Pattern
+### 绞杀者模式（Strangler Fig Pattern）
 
-Gradually replace a legacy system by building new functionality around it, routing more and more traffic to the new system until the old one can be decommissioned.
+通过围绕遗留系统构建新功能来逐步替换它，将越来越多的流量路由到新系统，直到旧系统可以被淘汰。
 
-| Phase | Action |
+| 阶段 | 操作 |
 |-------|--------|
-| 1. Intercept | Place a routing layer in front of the legacy system |
-| 2. Build new | Implement new components behind the router |
-| 3. Redirect | Route requests to new components as they're ready |
-| 4. Retire | Decommission old components once no traffic reaches them |
+| 1. 拦截 | 在遗留系统前面放置路由层 |
+| 2. 构建新系统 | 在路由器后面实现新组件 |
+| 3. 重定向 | 在新组件就绪后路由请求到它们 |
+| 4. 退役 | 一旦没有流量到达，淘汰旧组件 |
 
-### Mikado Method
+### Mikado 方法
 
-For complex refactorings with many interdependencies:
+用于具有许多相互依赖关系的复杂重构：
 
-1. Try the refactoring you want to make
-2. If it breaks, note what needs to change first (the prerequisites)
-3. Revert your change
-4. Recursively fix the prerequisites (each may have its own prerequisites)
-5. Build a dependency graph (the "Mikado Graph")
-6. Solve the graph from the leaves (no-dependency tasks) toward the root
+1. 尝试你想要做的重构
+2. 如果它破坏了什么，记下需要先更改的内容（前置条件）
+3. 撤销你的变更
+4. 递归地修复前置条件（每个前置条件可能还有自己的前置条件）
+5. 构建依赖关系图（"Mikado Graph"）
+6. 从叶子节点（无依赖任务）开始向根节点求解
 
-### Feature Toggles During Refactoring
+### 重构期间的功能切换
 
-Use feature flags to gradually roll out a refactored component:
+使用功能开关逐步推出重构后的组件：
 
 ```python
 if feature_flag('new_pricing_engine'):
@@ -326,37 +326,37 @@ else:
     return old_pricing_engine.calculate(order)
 ```
 
-This allows:
-- Incremental rollout (10% of traffic, then 50%, then 100%)
-- Instant rollback by toggling the flag
-- A/B comparison of old vs. new behavior
+这允许：
+- 增量发布（10% 流量，然后 50%，然后 100%）
+- 通过切换开关即时回滚
+- 新旧行为的 A/B 对比
 
 ---
 
-## Refactoring Checklist
+## 重构检查清单
 
-Use this checklist before, during, and after refactoring sessions:
+在重构前后使用此检查清单：
 
-### Before Starting
+### 开始之前
 
-- [ ] All existing tests pass (green)
-- [ ] You've identified the specific smell or improvement target
-- [ ] You can name the refactoring(s) you'll apply
-- [ ] The code has test coverage for the area you'll change (add characterization tests if not)
+- [ ] 所有现有测试通过（绿色）
+- [ ] 已经识别出具体的坏味道或改进目标
+- [ ] 能说出你要应用的重构手法
+- [ ] 要变更的代码区域有测试覆盖（如果没有则添加特征测试）
 
-### During Refactoring
+### 重构期间
 
-- [ ] Each step is the smallest possible transformation
-- [ ] Tests run after every step
-- [ ] You revert immediately if tests fail (don't debug)
-- [ ] You're wearing only the refactoring hat (no new features)
-- [ ] You commit after each logical group of steps
+- [ ] 每一步都是最小的转换
+- [ ] 每一步之后运行测试
+- [ ] 如果测试失败则立即回滚（不要调试）
+- [ ] 只戴重构帽子（不添加新功能）
+- [ ] 完成每组逻辑步骤后提交
 
-### After Completing
+### 完成之后
 
-- [ ] All tests still pass
-- [ ] The code is easier to read than before
-- [ ] Variable and method names reveal intent
-- [ ] No unnecessary comments remain (the code explains itself)
-- [ ] No new smells were introduced
-- [ ] Changes are committed with a clear message describing the refactoring
+- [ ] 所有测试仍然通过
+- [ ] 代码比之前更易读
+- [ ] 变量和方法名揭示意图
+- [ ] 没有保留不必要的注释（代码解释自身）
+- [ ] 没有引入新的坏味道
+- [ ] 变更已提交，并附有清晰的描述重构的消息

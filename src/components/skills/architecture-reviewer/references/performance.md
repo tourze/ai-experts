@@ -1,212 +1,195 @@
-# Performance
+# 性能
 
-**Dimension Weight: 17%**
+**维度权重：17%**
 
-Evaluates whether the system will meet latency, throughput, and resource efficiency targets
-under expected and peak conditions.
+评估系统在预期和峰值条件下是否能达到延迟、吞吐量和资源效率目标。
 
-## Table of Contents
+## 目录
 
-1. Sub-Criteria Checklist
-2. Critical Path Analysis Framework
-3. Common Performance Anti-Patterns
-4. Evaluation Guidance by Mode
-
----
-
-## 1. Sub-Criteria Checklist
-
-### 1.1 Latency Targets
-
-- Are P50, P95, and P99 latency targets defined for critical endpoints?
-- Is the critical path (request → response) mapped with per-hop latency budgets?
-- Are latency targets realistic given the architecture? (e.g., 3 synchronous service calls
-  plus a database query cannot achieve <50ms P99.)
-- Is tail latency (P99.9) considered for user-facing paths?
-
-### 1.2 Throughput Bottlenecks
-
-- Where are the narrowest pipes in the system?
-- For each component in the critical path: what is its throughput ceiling?
-- Are throughput requirements stated in specific terms? (requests/sec, messages/sec,
-  MB/sec, transactions/sec.)
-- Under load, which component will saturate first?
-
-### 1.3 Query Efficiency
-
-- **N+1 query detection:** Are there loops that execute one query per iteration instead of
-  batch/join queries?
-- **Index coverage:** Do frequent queries have supporting indexes? Are there full table scans
-  on large tables?
-- **Unbounded result sets:** Are queries always paginated/limited? Can a single query return
-  millions of rows?
-- **Query complexity:** Are there expensive JOINs, subqueries, or aggregations in the
-  hot path?
-- **ORM overhead:** Is the ORM generating efficient queries? Are there cases where raw queries
-  would be significantly better?
-
-### 1.4 Payload Optimization
-
-- Are response payloads sized appropriately? (No returning 100 fields when 5 are needed.)
-- Is compression enabled? (gzip, Brotli for HTTP; compression for message queues.)
-- Is field selection / sparse fieldsets supported? (GraphQL fields, REST field parameters.)
-- Is pagination implemented for all list endpoints? (Cursor-based preferred over offset for
-  large datasets.)
-- Are large binary payloads (images, files) served via CDN/object storage, not through the
-  application?
-
-### 1.5 Connection Efficiency
-
-- Are connection pools configured for all external dependencies? (Database, Redis, HTTP clients.)
-- Is HTTP/2 or gRPC used for multiplexed connections between services?
-- Are TCP keep-alive settings appropriate?
-- Is connection establishment overhead minimized? (Pre-warming, connection reuse.)
-- Are TLS session resumption / 0-RTT configured where applicable?
-
-### 1.6 Resource Utilization
-
-- Are compute resources right-sized? (Not 8 vCPUs for a service using 0.5.)
-- Are memory limits set appropriately? (Headroom for GC, but not wasting 80% of allocation.)
-- Is I/O the bottleneck? (Disk IOPS, network bandwidth.)
-- Is there resource contention between co-located workloads?
-- Are resource requests and limits defined? (Kubernetes resource specs, Cloud Run limits.)
-
-### 1.7 Cold Start Impact
-
-- **Serverless:** What is the cold start latency? Is it acceptable for the use case?
-  Provisioned concurrency used for critical paths?
-- **JVM-based services:** Is JVM warm-up accounted for? GraalVM native image considered?
-- **Container startup:** How long from container start to serving traffic? Are readiness
-  probes configured correctly?
-- **Cache cold starts:** After a deployment or cache flush, what is the performance impact?
-  Is there a warming strategy?
-
-### 1.8 Caching Effectiveness
-
-- What is the expected cache hit rate? Is it measured?
-- Are TTL values appropriate? (Too short → low hit rate; too long → stale data.)
-- Is the caching strategy appropriate? (Cache-aside, read-through, write-through,
-  write-behind.)
-- Are cache keys well-designed? (Avoiding collisions, supporting invalidation patterns.)
-- Is cache size bounded? What happens when the cache is full?
-
-### 1.9 Async vs Sync Decisions
-
-- Are synchronous calls used where async would be more appropriate?
-- **Candidates for async:** email sending, webhook delivery, report generation, image
-  processing, notification dispatch, third-party API calls not in critical path.
-- Are fire-and-forget patterns used safely? (With durability guarantees from a queue.)
-- For async operations: is there a way for users to check status?
-
-### 1.10 Batch Processing Efficiency
-
-- Are batch jobs optimized with appropriate chunk sizing?
-- Is parallelism used for independent batch operations?
-- Is progress tracking implemented for long-running batches?
-- Do batch jobs compete with live traffic for resources?
-- Is there backfill capability? Can failed batches be retried partially?
-
-### 1.11 Network Hops
-
-- How many network hops are in the critical request path?
-- Are there cross-AZ or cross-region calls in the critical path? (Each adds 1-5ms minimum.)
-- Is DNS resolution cached? Are DNS TTLs appropriate?
-- Is TLS handshake overhead minimized? (Session resumption, 0-RTT.)
-- Are service-to-service calls within the same network segment where possible?
-
-### 1.12 Database Performance
-
-- Is the database engine appropriate for the access patterns? (OLTP vs OLAP, relational vs
-  document vs graph vs time-series.)
-- Are read replicas used for read-heavy workloads?
-- Is read/write splitting implemented? Are queries routed correctly?
-- Are materialized views used for expensive aggregations?
-- Is database connection overhead managed? (Connection pooling, persistent connections.)
-- Are slow query logs enabled and monitored?
+1. 子标准检查清单
+2. 关键路径分析框架
+3. 常见性能反模式
+4. 按模式的评估指南
 
 ---
 
-## 2. Critical Path Analysis Framework
+## 1. 子标准检查清单
 
-For each critical user flow, trace the request path:
+### 1.1 延迟目标
+
+- 是否为关键端点定义了 P50、P95 和 P99 延迟目标？
+- 是否映射了关键路径（请求 → 响应）并设定了每跳延迟预算？
+- 延迟目标在给定架构下是否现实？（例如，3 次同步服务调用加一次数据库查询不可能实现 <50ms P99。）
+- 面向用户的路径是否考虑了尾延迟（P99.9）？
+
+### 1.2 吞吐量瓶颈
+
+- 系统中最窄的管道在哪里？
+- 对于关键路径中的每个组件：其吞吐量上限是多少？
+- 吞吐量要求是否以具体术语声明？（请求/秒、消息/秒、MB/秒、事务/秒。）
+- 在负载下，哪个组件会最先饱和？
+
+### 1.3 查询效率
+
+- **N+1 查询检测：** 是否存在循环内每次迭代执行一次查询而非批量/连接查询的情况？
+- **索引覆盖：** 频繁查询是否有支持的索引？大表上是否发生了全表扫描？
+- **无界结果集：** 查询是否总是带分页/限制？单次查询是否会返回数百万行？
+- **查询复杂度：** 热路径中是否存在昂贵的 JOIN、子查询或聚合？
+- **ORM 开销：** ORM 是否生成了高效的查询？是否存在原始查询会显著更好的情况？
+
+### 1.4 响应体优化
+
+- 响应体大小是否适当？（不返回 100 个字段而实际只需要 5 个。）
+- 是否启用了压缩？（HTTP 用 gzip、Brotli；消息队列用压缩。）
+- 是否支持字段选择/稀疏字段集？（GraphQL 字段、REST 字段参数。）
+- 所有列表端点是否实施了分页？（大数据集建议使用基于游标的分页而非偏移量分页。）
+- 大型二进制响应体（图片、文件）是否通过 CDN/对象存储提供，而非通过应用？
+
+### 1.5 连接效率
+
+- 所有外部依赖是否配置了连接池？（数据库、Redis、HTTP 客户端。）
+- 服务间是否使用 HTTP/2 或 gRPC 进行多路复用连接？
+- TCP keep-alive 设置是否适当？
+- 连接建立开销是否最小化？（预热、连接复用。）
+- 是否在适用处配置了 TLS 会话恢复 / 0-RTT？
+
+### 1.6 资源利用
+
+- 计算资源是否适当规模？（不是为只用了 0.5 的服务分配 8 个 vCPU。）
+- 内存限制是否设置合理？（为 GC 留余量，但不浪费 80% 的分配。）
+- I/O 是否是瓶颈？（磁盘 IOPS、网络带宽。）
+- 共置工作负载之间是否存在资源争用？
+- 是否定义了资源请求和限制？（Kubernetes 资源规格、Cloud Run 限制。）
+
+### 1.7 冷启动影响
+
+- **Serverless：** 冷启动延迟是多少？对用例是否可接受？关键路径是否使用了预置并发？
+- **JVM 相关服务：** 是否考虑了 JVM 预热？是否考虑了 GraalVM 原生镜像？
+- **容器启动：** 从容器启动到服务流量需要多长时间？就绪探针配置是否正确？
+- **缓存冷启动：** 部署或缓存刷新后，性能影响是什么？是否有预热策略？
+
+### 1.8 缓存有效性
+
+- 预期缓存命中率是多少？是否已测量？
+- TTL 值是否适当？（太短 → 命中率低；太长 → 数据陈旧。）
+- 缓存策略是否合适？（cache-aside、read-through、write-through、write-behind。）
+- 缓存键设计是否良好？（避免冲突、支持失效模式。）
+- 缓存大小是否有上限？缓存满了怎么办？
+
+### 1.9 异步与同步决策
+
+- 是否存在应使用异步但实际使用了同步调用的情况？
+- **适合异步的场景：** 邮件发送、webhook 投递、报告生成、图片处理、通知分发、不在关键路径中的第三方 API 调用。
+- 即发即弃模式是否安全使用？（通过队列提供持久性保证。）
+- 对于异步操作：用户是否有办法查看状态？
+
+### 1.10 批处理效率
+
+- 批处理作业是否使用适当的分块大小进行了优化？
+- 独立的批处理操作是否使用并行处理？
+- 长时间运行的批处理是否实施了进度追踪？
+- 批处理作业是否与实时流量争抢资源？
+- 是否有回填能力？失败的批次能否部分重试？
+
+### 1.11 网络跳数
+
+- 关键请求路径中有多少次网络跳？
+- 关键路径中是否有跨可用区或跨区域调用？（每次至少增加 1-5ms。）
+- DNS 解析是否缓存？DNS TTL 是否适当？
+- TLS 握手开销是否最小化？（会话恢复、0-RTT。）
+- 服务间调用是否尽可能在同一个网络段内？
+
+### 1.12 数据库性能
+
+- 数据库引擎是否适合访问模式？（OLTP vs OLAP、关系型 vs 文档 vs 图 vs 时序。）
+- 读密集工作负载是否使用只读副本？
+- 是否实施了读写分离？查询是否正确路由？
+- 昂贵的聚合是否使用了物化视图？
+- 数据库连接开销是否得到管理？（连接池、持久连接。）
+- 慢查询日志是否启用并监控？
+
+---
+
+## 2. 关键路径分析框架
+
+对于每个关键用户流程，追踪请求路径：
 
 ```text
-User Request
-  → CDN / Edge (static content, edge rules)
-    → Load Balancer (TLS termination, routing)
-      → API Gateway (auth, rate limiting)
-        → Service A (business logic)
-          → Cache Check (Redis/Memcached)
-          → Database Query (if cache miss)
-          → External API Call (if needed)
-        → Service B (if needed, additional hop)
-      → Response Assembly
-    → Load Balancer
+用户请求
+  → CDN / 边缘（静态内容、边缘规则）
+    → 负载均衡器（TLS 终止、路由）
+      → API 网关（认证、速率限制）
+        → 服务 A（业务逻辑）
+          → 缓存检查（Redis/Memcached）
+          → 数据库查询（缓存未命中时）
+          → 外部 API 调用（如果需要）
+        → 服务 B（如果需要，额外一跳）
+      → 响应组装
+    → 负载均衡器
   → CDN
-→ User Response
+→ 用户响应
 ```
 
-For each hop, document:
+对于每一跳，记录：
 
-- Expected latency (P50 and P99)
-- Whether the call is synchronous or async
-- What happens on failure (retry, fallback, error)
-- Can this hop be eliminated or parallelized?
+- 预期延迟（P50 和 P99）
+- 调用是同步还是异步
+- 失败时如何处理（重试、降级方案、错误）
+- 这一跳能否被消除或并行化？
 
-**Latency budget:** The sum of per-hop P99 latencies must not exceed the overall P99 target.
-Account for serialization/deserialization, network overhead, and queue wait times.
+**延迟预算：** 每跳 P99 延迟之和不得超过整体 P99 目标。考虑序列化/反序列化、网络开销和队列等待时间。
 
 ---
 
-## 3. Common Performance Anti-Patterns
+## 3. 常见性能反模式
 
-| Anti-Pattern             | Description                                        | Severity |
+| 反模式 | 描述 | 严重程度 |
 | ------------------------ | -------------------------------------------------- | -------- |
-| N+1 Queries              | Loop executing one query per item instead of batch | S2       |
-| Synchronous Waterfalls   | Serial calls that could be parallel                | S2       |
-| Missing Indexes          | Frequent queries without supporting indexes        | S2       |
-| Unbounded Queries        | No LIMIT/pagination on list queries                | S2       |
-| Over-fetching            | Returning far more data than needed                | S3       |
-| In-process Heavy Compute | CPU-intensive work blocking request threads        | S2       |
-| Cross-region in Hot Path | Synchronous cross-region calls in critical path    | S2       |
-| GC Pressure              | Excessive object allocation causing GC pauses      | S3       |
-| Connection Churn         | Creating new connections per request               | S2       |
-| Logging in Hot Path      | Synchronous verbose logging in critical path       | S3       |
-| Uncompressed Payloads    | Large responses without compression                | S4       |
-| Missing Cache            | Repeatedly computing/fetching identical data       | S3       |
-| Lock Contention          | Coarse-grained locks serializing concurrent work   | S2       |
-| Chatty Protocols         | Many small requests instead of batched requests    | S3       |
+| N+1 查询 | 循环逐一执行查询而非批量处理 | S2 |
+| 同步瀑布 | 可并行但串行执行的调用 | S2 |
+| 缺少索引 | 频繁查询没有支持的索引 | S2 |
+| 无界查询 | 列表查询无 LIMIT/分页 | S2 |
+| 过度获取 | 返回远超所需的数据 | S3 |
+| 进程内重计算 | CPU 密集型工作阻塞请求线程 | S2 |
+| 热路径中的跨区域调用 | 关键路径中的同步跨区域调用 | S2 |
+| GC 压力 | 过多对象分配导致 GC 暂停 | S3 |
+| 连接频繁创建 | 每次请求创建新连接 | S2 |
+| 热路径中记录日志 | 关键路径中的同步冗长日志记录 | S3 |
+| 未压缩的响应体 | 大响应未压缩 | S4 |
+| 缺少缓存 | 重复计算/获取相同数据 | S3 |
+| 锁竞争 | 粗粒度锁串行化并发工作 | S2 |
+| 高开销协议 | 多次小请求而非批量请求 | S3 |
 
 ---
 
-## 4. Evaluation Guidance by Mode
+## 4. 按模式的评估指南
 
-### Mode A (Codebase)
+### 模式 A（代码库）
 
-- Trace the critical request path through the code
-- Check ORM query patterns for N+1 and unbounded results
-- Inspect database schemas for index definitions
-- Look for synchronous external API calls in the request path
-- Check connection pool configurations (size, timeout, idle settings)
-- Review caching implementations (TTL, invalidation, key design)
-- Look for async patterns (queue producers, workers, event handlers)
-- Check response payload construction (field selection, serialization)
-- Inspect resource configurations (CPU/memory limits, instance sizing)
+- 通过代码追踪关键请求路径
+- 检查 ORM 查询模式中的 N+1 和无界结果
+- 检查数据库 schema 中的索引定义
+- 查找请求路径中的同步外部 API 调用
+- 检查连接池配置（大小、超时、空闲设置）
+- 审查缓存实现（TTL、失效、键设计）
+- 查找异步模式（队列生产者、工作者、事件处理者）
+- 检查响应体构建（字段选择、序列化）
+- 检查资源配置（CPU/内存限制、实例大小）
 
-### Mode B (Document)
+### 模式 B（文档）
 
-- Verify latency and throughput targets are stated with specific numbers
-- Check if the critical path is mapped and analyzed
-- Look for caching strategy specifics (not just "we'll add caching")
-- Verify async processing is planned for identifiable long-running operations
-- Check if database choice is justified against access patterns
-- Look for performance testing plans
-- Identify any "TBD" or "will optimize later" notes — these are findings
+- 验证延迟和吞吐量目标是否以具体数字声明
+- 检查关键路径是否已映射和分析
+- 查找缓存策略的具体内容（不只是"我们会加缓存"）
+- 验证是否计划为可识别的长时间运行操作使用异步处理
+- 检查数据库选择是否对照访问模式有理由
+- 查找性能测试计划
+- 识别任何"待定"或"后续优化"的注释 —— 这些都是问题发现
 
-### Mode C (Hybrid)
+### 模式 C（混合）
 
-- Compare stated performance targets against actual implementation evidence
-- Check if documented caching strategy is actually implemented
-- Verify async patterns in docs match queue/worker implementations in code
-- Cross-reference planned indexes against actual database schema
-- Check if performance monitoring (documented) is actually instrumented in code
+- 将声明的性能目标与实际实现证据进行比较
+- 检查文档中的缓存策略是否实际已实现
+- 验证文档中的异步模式是否与代码中的队列/工作者实现一致
+- 交叉对照计划中的索引与实际数据库 schema
+- 检查性能监控（文档中的）是否在代码中实际埋点

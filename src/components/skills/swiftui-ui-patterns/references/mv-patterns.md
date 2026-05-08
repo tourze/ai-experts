@@ -1,63 +1,63 @@
-# MV Patterns Reference
+# MV 模式参考
 
-Source provided by user: "SwiftUI in 2025: Forget MVVM" (Thomas Ricouard).
+来源由用户提供："SwiftUI in 2025: Forget MVVM"（Thomas Ricouard）。
 
-Use this as guidance when deciding whether to introduce a view model.
+在决定是否引入视图模型时使用此参考。
 
-Key points:
-- Default to MV: views are lightweight state expressions and orchestration points.
-- Prefer `@State`, `@Environment`, `@Query`, `task`, and `onChange` over view models.
-- Inject services and shared models via `@Environment`; keep logic in services/models.
-- Split large views into smaller views instead of moving logic into a view model.
-- Avoid manual data fetching that duplicates SwiftUI/SwiftData mechanisms.
-- Test models/services and business logic; views should stay simple and declarative.
+关键点：
+- 默认使用 MV：视图是轻量级状态表达式和编排点。
+- 优先使用 `@State`、`@Environment`、`@Query`、`task` 和 `onChange` 而非视图模型。
+- 通过 `@Environment` 注入服务和共享模型；将逻辑保留在服务/模型中。
+- 将大型视图拆分为较小的视图，而不是将逻辑移入视图模型。
+- 避免重复 SwiftUI/SwiftData 机制的手动数据获取。
+- 测试模型/服务和业务逻辑；视图应保持简单和声明式。
 
 # SwiftUI in 2025: Forget MVVM
 
-*Let me tell you why*
+*让我告诉你为什么*
 
 **Thomas Ricouard**
-10 min read · Jun 2, 2025
+阅读时间约 10 分钟 · 2025 年 6 月 2 日
 
 ---
 
-It’s 2025, and I’m still getting asked the same question:
+现在是 2025 年，我仍然被问到同样的问题：
 
-> “Where are your ViewModels?”
+> "你的 ViewModel 在哪里？"
 
-Every time I share this opinion or code from my open-source projects like my BlueSky client **IcySky**, or even the Medium iOS app, developers are surprised to see clean, simple views without a single ViewModel in sight.
+每当我分享这个观点或来自我的开源项目（如我的 BlueSky 客户端 **IcySky**，甚至 Medium iOS 应用）的代码时，开发者们都很惊讶于看到没有 ViewModel 的干净、简单的视图。
 
-Let me be clear:
+让我说清楚：
 
-You don’t need ViewModels in SwiftUI.
-You never did.
-You never will.
+你在 SwiftUI 中不需要 ViewModels。
+你从来都不需要。
+你永远不会需要。
 
 ---
 
-## The MVVM Trap
+## MVVM 陷阱
 
-When SwiftUI launched in 2019, many developers brought their UIKit baggage with them. We were so used to the *Massive View Controller* problem that we immediately reached for MVVM as our savior.
+当 SwiftUI 在 2019 年推出时，许多开发者带着他们的 UIKit 包袱过来。我们太习惯 *Massive View Controller* 的问题了，于是立即将 MVVM 视为救星。
 
-But SwiftUI isn’t UIKit.
+但 SwiftUI 不是 UIKit。
 
-It was designed from the ground up with a different philosophy, highlighted in multiple WWDC sessions like:
+它从一开始就采用了不同的设计理念，在多个 WWDC 讲座中都有强调：
 
 - *Data Flow Through SwiftUI (WWDC19)*
 - *Data Essentials in SwiftUI (WWDC20)*
 - *Discover Observation in SwiftUI (WWDC23)*
 
-Those sessions barely mention ViewModels.
+这些讲座几乎不提及 ViewModel。
 
-Why? Because ViewModels are almost alien to SwiftUI’s data flow model.
+为什么？因为 ViewModel 与 SwiftUI 的数据流模型几乎是格格不入的。
 
-SwiftUI views are **structs**, not classes. They are lightweight, disposable, and recreated frequently. Adding a ViewModel means fighting the framework’s core design.
+SwiftUI 视图是**结构体**，而不是类。它们是轻量级、可丢弃且经常重新创建的。添加 ViewModel 意味着与框架的核心设计对抗。
 
 ---
 
-## Views as Pure State Expressions
+## 视图作为纯状态表达式
 
-In my latest IcySky app, every view follows the same pattern I’ve advocated for years.
+在我最新的 IcySky 应用中，每个视图都遵循我多年来一直倡导的相同模式。
 
 ```swift
 struct FeedView: View {
@@ -105,15 +105,15 @@ struct FeedView: View {
 }
 ```
 
-The state is defined inside the view, using an enum.
+状态在视图内部定义，使用枚举。
 
-No ViewModel.
-No indirection.
-The view is a direct expression of state.
+没有 ViewModel。
+没有间接层。
+视图是状态的直接表达。
 
-## The Magic of Environment
+## Environment 的魔力
 
-Instead of dependency injection through ViewModels, SwiftUI gives us @Environment.
+SwiftUI 没有通过 ViewModel 进行依赖注入，而是给了我们 `@Environment`。
 
 ```swift
 @Environment(BlueSkyClient.self) private var client
@@ -128,24 +128,24 @@ private func loadFeed() async {
 }
 ```
 
-Your services live in the environment, are testable in isolation, and encapsulate complexity.
+你的服务存在于环境中，可以独立测试，并封装了复杂性。
 
-The view orchestrates UI flow — nothing else.
+视图编排 UI 流程 — 仅此而已。
 
-Real-World Complexity
-“This only works for simple apps.”
+现实世界的复杂性
+"这只适用于简单的应用。"
 
-No.
+不。
 
-IcySky handles authentication, complex feeds, navigation, and user interaction — without ViewModels.
+IcySky 处理认证、复杂 Feed、导航和用户交互 — 都没有 ViewModel。
 
-The Medium iOS app (millions of users) is now mostly SwiftUI and uses very few ViewModels, most of them legacy from 2019.
+Medium iOS 应用（数百万用户）现在大部分是 SwiftUI，使用的 ViewModel 非常少，大多数是从 2019 年遗留的。
 
-For new features, we inject services into the environment and build lightweight views with local state.
+对于新功能，我们将服务注入环境，并用本地状态构建轻量级视图。
 
-Using `.task(id:)` and `.onChange()`
+## 使用 `.task(id:)` 和 `.onChange()`
 
-## SwiftUI’s modifiers act as small state reducers.
+SwiftUI 的修饰符充当小型状态缩减器。
 
 ```swift
 .task(id: searchText) {
@@ -158,9 +158,9 @@ Using `.task(id:)` and `.onChange()`
 }
 ```
 
-Readable. Local. Explicit.
+可读。本地。显式。
 
-## App-Level Environment Setup
+## 应用级环境设置
 
 ```swift
 @main
@@ -196,10 +196,10 @@ struct IcySkyApp: App {
 }
 ```
 
-All dependencies are injected once and available everywhere.
+所有依赖一次性注入并随处可用。
 
-## SwiftData: The Perfect Example
-SwiftData was built to work directly in views.
+## SwiftData：完美示例
+SwiftData 被设计为直接在视图中使用。
 
 ```swift
 struct BookListView: View {
@@ -222,7 +222,7 @@ struct BookListView: View {
 }
 ```
 
-Now compare that to forcing a ViewModel:
+现在与强制使用 ViewModel 的版本对比：
 
 ```swift
 @Observable
@@ -242,54 +242,54 @@ class BookListViewModel {
 }
 ```
 
-Manual fetching. Manual refresh. Boilerplate everywhere.
+手动获取。手动刷新。到处都是样板代码。
 
-You’re fighting the framework.
+你在对抗框架。
 
-## Testing Reality
-Testing SwiftUI views provides minimal value.
+## 测试的现实情况
+测试 SwiftUI 视图提供的价值很小。
 
-Instead:
+相反：
 
-* Unit test services and business logic
+* 对服务和业务逻辑进行单元测试
 
-* Test models and transformations
+* 测试模型和转换
 
-* Use SwiftUI previews for visual regression
+* 使用 SwiftUI Preview 进行视觉回归测试
 
-* Use UI automation for E2E tests
+* 使用 UI 自动化进行端到端测试
 
-* If needed, use `ViewInspector` for view introspection.
+* 如果需要，使用 `ViewInspector` 进行视图内省。
 
-## The 2025 Reality
+## 2025 年的现实
 
-SwiftUI is mature:
+SwiftUI 已经成熟：
 
 * `@Observable`
 
-* Better Environment
+* 更好的 Environment
 
-* Improved async & task lifecycle
+* 改进的异步和任务生命周期
 
-* Almost everything you need lives inside the view.
+* 几乎所有你需要的东西都存在于视图内部。
 
-I’ll reconsider ViewModels when Apple lets us access Environment outside views.
+当 Apple 允许我们在视图外部访问 Environment 时，我会重新考虑 ViewModel。
 
-Until then, vanilla SwiftUI is the canon.
+在此之前，原生 SwiftUI 就是权威。
 
-## Why This Matters
+## 为什么这很重要
 
-Every ViewModel adds:
+每个 ViewModel 都会增加：
 
-* More complexity
+* 更多复杂性
 
-* More objects to sync
+* 更多需要同步的对象
 
-* More indirection
+* 更多间接层
 
-* More cognitive overhead
+* 更多认知负担
 
-SwiftUI gives you:
+SwiftUI 给你：
 
 * `@State`
 
@@ -299,16 +299,16 @@ SwiftUI gives you:
 
 * Binding
 
-Use them. Trust the framework.
+使用它们。相信这个框架。
 
-## The Bottom Line
-In 2025, there’s no excuse for cluttering SwiftUI apps with unnecessary ViewModels.
+## 总结
+在 2025 年，没有任何借口用不必要的 ViewModel 来混乱 SwiftUI 应用。
 
-Let views be pure expressions of state.
+让视图成为状态的纯表达。
 
-Focus complexity where it belongs: services and business logic.
+将复杂性集中在它该在的地方：服务和业务逻辑。
 
-Goodbye MVVM 🚮
-Long live the View 👑
+再见 MVVM
+万岁 View
 
-Happy coding 🚀
+Happy coding

@@ -1,30 +1,30 @@
-# Organizing Data
+# 组织数据
 
-Detailed reference for refactorings that improve how data is represented. Raw primitives, magic numbers, exposed fields, and mutable collections create subtle bugs and scatter domain knowledge. These refactorings replace primitive representations with objects that encapsulate behavior and enforce invariants.
+改进数据表示方式的重构详解。原始类型、魔法数字、暴露的字段和可变集合会产生微妙的错误并分散领域知识。这些重构用封装行为和强制执行不变量的对象来替代原始表示。
 
 ---
 
-## Replace Data Value with Object
+## 将数据值替换为对象（Replace Data Value with Object）
 
-Wrap a primitive data item in a class when it has behavior or validation associated with it. This is the cure for Primitive Obsession.
+当原始数据项有关联的行为或验证时，将其包装在一个类中。这是治愈基本类型偏执（Primitive Obsession）的方法。
 
-### Motivation
+### 动机
 
-A data value starts life as a simple string or number. Then you add validation. Then formatting. Then comparison logic. Then the same validation appears in three places. At that point, the value deserves to be an object.
+一个数据值最初只是简单的字符串或数字。然后你添加了验证。接着是格式化。然后是比较逻辑。接着同样的验证出现在三个地方。此时，该值值得成为一个对象。
 
-### Mechanics
+### 操作步骤
 
-1. Create a class for the value with a constructor that takes the primitive
-2. Add validation in the constructor
-3. Add any behavior methods (formatting, comparison, etc.)
-4. Change the field type from primitive to the new class
-5. Update all code that sets the field to create an instance of the new class
-6. Update all code that reads the field to use the object's methods
-7. Run tests
+1. 为这个值创建一个类，构造函数接收原始类型
+2. 在构造函数中添加验证
+3. 添加任何行为方法（格式化、比较等）
+4. 将字段类型从原始类型改为新类
+5. 更新所有设置该字段的代码，使其创建新类的实例
+6. 更新所有读取该字段的代码，使用对象的方法
+7. 运行测试
 
-### Example
+### 示例
 
-**Before:**
+**之前：**
 ```javascript
 class Order {
   constructor(customer) {
@@ -37,7 +37,7 @@ if (order.customer === '') throw new Error('no customer');
 if (otherOrder.customer === '') throw new Error('no customer');
 ```
 
-**After:**
+**之后：**
 ```javascript
 class Customer {
   constructor(name) {
@@ -61,38 +61,38 @@ class Order {
 }
 ```
 
-### Common Primitive-to-Object Upgrades
+### 常见的基本类型到对象升级
 
-| Primitive | Object | Behavior It Gains |
+| 原始类型 | 对象 | 获得的行为 |
 |-----------|--------|-------------------|
-| `String email` | `EmailAddress` | Format validation, domain extraction |
-| `number cents` | `Money` | Currency, rounding rules, arithmetic |
-| `String phone` | `PhoneNumber` | Formatting, country code parsing |
-| `number lat, number lng` | `Coordinates` | Distance calculation, validation |
-| `String startDate, String endDate` | `DateRange` | Contains, overlaps, duration |
-| `number celsius` | `Temperature` | Unit conversion, comparison |
-| `String hex` | `Color` | Parsing, lightness, contrast |
-| `number status` | `OrderStatus` | Valid transitions, display name |
+| `String email` | `EmailAddress` | 格式验证、域提取 |
+| `number cents` | `Money` | 货币、舍入规则、算术运算 |
+| `String phone` | `PhoneNumber` | 格式化、国家代码解析 |
+| `number lat, number lng` | `Coordinates` | 距离计算、验证 |
+| `String startDate, String endDate` | `DateRange` | 包含、重叠、时长 |
+| `number celsius` | `Temperature` | 单位转换、比较 |
+| `String hex` | `Color` | 解析、明度、对比度 |
+| `number status` | `OrderStatus` | 有效转换、显示名称 |
 
 ---
 
-## Change Value to Reference
+## 将值改为引用（Change Value to Reference）
 
-Convert a value object into a reference object when you need identity semantics -- when changes to one instance should be visible everywhere that instance is used.
+当需要同一性语义时——对一个实例的修改应在所有使用该实例的地方可见——将值对象转换为引用对象。
 
-### Motivation
+### 动机
 
-When you have multiple copies of the same customer, changing the phone number on one doesn't change it on the others. If business rules require a single shared instance, convert value to reference using a registry or repository.
+当你有多个同一客户的副本时，修改一个的电话号码不会影响其他的。如果业务规则要求共享同一个实例，使用注册表或仓库将值转换为引用。
 
-### Mechanics
+### 操作步骤
 
-1. Determine or create a factory method for the object
-2. Set up a registry (map, repository, or lookup service) to store instances
-3. Change the factory to check the registry before creating new instances
-4. Change client code to use the factory instead of the constructor
-5. Run tests
+1. 确定或创建一个该对象的工厂方法
+2. 建立一个注册表（map、repository 或 lookup service）来存储实例
+3. 修改工厂方法，在创建新实例之前先检查注册表
+4. 修改客户端代码，使用工厂方法替代构造函数
+5. 运行测试
 
-### Example
+### 示例
 
 ```javascript
 // Registry pattern:
@@ -116,36 +116,36 @@ const order2 = new Order(repo.get(123));
 // order1.customer === order2.customer  // true (same reference)
 ```
 
-### Value vs. Reference: Decision Guide
+### 值 vs. 引用：决策指南
 
-| Question | Value | Reference |
+| 问题 | 值 | 引用 |
 |----------|-------|-----------|
-| Do you need identity (same object everywhere)? | No | Yes |
-| Is the object immutable? | Typically | May be mutable |
-| Do you compare by content? | Yes (`equals()`) | No (identity `===`) |
-| Examples | Money, DateRange, Color | Customer, Account, Product |
+| 是否需要同一性（处处是同一个对象）？ | 否 | 是 |
+| 对象是否不可变？ | 通常是 | 可能可变 |
+| 是否按内容比较？ | 是（`equals()`） | 否（同一性 `===`） |
+| 示例 | Money, DateRange, Color | Customer, Account, Product |
 
 ---
 
-## Replace Array with Object
+## 将数组替换为对象（Replace Array with Object）
 
-Replace an array used as a record (where each position has a different meaning) with an object with named fields.
+将用作记录的数组（其中每个位置含义不同）替换为具有命名字段的对象。
 
-### Motivation
+### 动机
 
-`row[0]` is the name, `row[1]` is the age, `row[2]` is the department. This is fragile, unreadable, and type-unsafe. Named fields make the structure self-documenting.
+`row[0]` 是姓名，`row[1]` 是年龄，`row[2]` 是部门。这很脆弱、不可读且类型不安全。命名字段使结构具有自文档能力。
 
-### Mechanics
+### 操作步骤
 
-1. Create a class with a field for each array position
-2. Add getters and setters for each field
-3. Replace array creation with object construction
-4. Replace positional access with named access
-5. Run tests
+1. 创建一个类，为每个数组位置设置一个字段
+2. 为每个字段添加 getter 和 setter
+3. 将数组创建替换为对象构造
+4. 将位置索引访问替换为命名访问
+5. 运行测试
 
-### Example
+### 示例
 
-**Before:**
+**之前：**
 ```python
 performance = ["Liverpool", 15, 2]
 name = performance[0]
@@ -153,7 +153,7 @@ wins = performance[1]
 losses = performance[2]
 ```
 
-**After:**
+**之后：**
 ```python
 class Performance:
     def __init__(self, name, wins, losses):
@@ -169,59 +169,59 @@ losses = performance.losses
 
 ---
 
-## Replace Magic Number with Symbolic Constant
+## 将魔法数字替换为符号常量（Replace Magic Number with Symbolic Constant）
 
-Replace a literal number that has a particular meaning with a named constant.
+将具有特定含义的字面量数字替换为命名常量。
 
-### Motivation
+### 动机
 
-`9.81` means nothing in code. `GRAVITATIONAL_ACCELERATION = 9.81` communicates intent, prevents typos (the constant name is checked by the compiler), and centralizes the value for easy change.
+代码中的 `9.81` 毫无意义。`GRAVITATIONAL_ACCELERATION = 9.81` 传达了意图，防止了拼写错误（常量名由编译器检查），并将值集中以便于修改。
 
-### Mechanics
+### 操作步骤
 
-1. Declare a constant and set it to the magic number
-2. Find all occurrences of the magic number
-3. Replace each occurrence with the constant (check that each occurrence represents the same concept -- the number `100` might mean "percentage" in one place and "max items" in another)
-4. Run tests
+1. 声明一个常量，并将其设置为魔法数字
+2. 找到该魔法数字的所有出现位置
+3. 将每次出现替换为常量（检查每次出现是否代表相同的概念——数字 `100` 可能在一个地方表示"百分比"，在另一个地方表示"最大数量"）
+4. 运行测试
 
-### Common Magic Number Categories
+### 常见的魔法数字分类
 
-| Category | Before | After |
+| 类别 | 之前 | 之后 |
 |----------|--------|-------|
-| Physics | `9.81` | `GRAVITATIONAL_ACCELERATION` |
-| Business rules | `0.08` | `SALES_TAX_RATE` |
-| Limits | `255` | `MAX_RGB_VALUE` |
+| 物理常量 | `9.81` | `GRAVITATIONAL_ACCELERATION` |
+| 业务规则 | `0.08` | `SALES_TAX_RATE` |
+| 限制 | `255` | `MAX_RGB_VALUE` |
 | HTTP | `404` | `HTTP_NOT_FOUND` |
-| Time | `86400` | `SECONDS_PER_DAY` |
-| Retry | `3` | `MAX_RETRY_ATTEMPTS` |
-| Thresholds | `100` | `FREE_SHIPPING_THRESHOLD` |
+| 时间 | `86400` | `SECONDS_PER_DAY` |
+| 重试 | `3` | `MAX_RETRY_ATTEMPTS` |
+| 阈值 | `100` | `FREE_SHIPPING_THRESHOLD` |
 
-### When NOT to Replace
+### 何时不应替换
 
-- `0` and `1` in arithmetic are usually fine as literals
-- Loop counters (`for i in range(10)`) are obvious from context
-- Array index `[0]` for "first element" is idiomatic
+- 算术中的 `0` 和 `1` 通常可以直接使用字面量
+- 循环计数器（`for i in range(10)`）在上下文中显而易见
+- 数组索引 `[0]` 表示"第一个元素"是惯用写法
 
 ---
 
-## Encapsulate Field
+## 封装字段（Encapsulate Field）
 
-Replace direct access to a public field with getter and setter methods.
+将对公有字段的直接访问替换为 getter 和 setter 方法。
 
-### Motivation
+### 动机
 
-A public field gives you no control over reads and writes. You can't add validation, logging, lazy initialization, or computed values later without changing every caller. Encapsulation creates a seam for future change.
+公有字段让你无法控制读写操作。你无法在不改动每个调用者的前提下添加验证、日志记录、懒加载或计算值。封装为将来的更改创建了一个接缝。
 
-### Mechanics
+### 操作步骤
 
-1. Create getter and setter methods for the field
-2. Find all references to the field and replace reads with the getter, writes with the setter
-3. Make the field private
-4. Run tests
+1. 为该字段创建 getter 和 setter 方法
+2. 找到所有对该字段的引用，将读取替换为 getter，写入替换为 setter
+3. 将字段设为私有
+4. 运行测试
 
-### Example
+### 示例
 
-**Before:**
+**之前：**
 ```python
 class Person:
     def __init__(self, name):
@@ -231,7 +231,7 @@ class Person:
 person.name = "   Bob   "  # no validation, no trimming
 ```
 
-**After:**
+**之后：**
 ```python
 class Person:
     def __init__(self, name):
@@ -251,24 +251,24 @@ class Person:
 
 ---
 
-## Encapsulate Collection
+## 封装集合（Encapsulate Collection）
 
-Don't return a raw mutable collection from a getter. Instead, return an unmodifiable view or a copy, and provide explicit add/remove methods.
+不要从 getter 返回原始的可变集合。相反，返回一个不可修改的视图或副本，并提供显式的 add/remove 方法。
 
-### Motivation
+### 动机
 
-When a getter returns a mutable list, callers can add, remove, or clear items without the owning object knowing. This breaks encapsulation -- the object can't enforce invariants, fire events, or validate changes.
+当 getter 返回一个可变列表时，调用者可以在拥有对象不知情的情况下添加、删除或清空元素。这破坏了封装——对象无法强制执行不变量、触发事件或验证更改。
 
-### Mechanics
+### 操作步骤
 
-1. Add `addItem()` and `removeItem()` methods on the owning class
-2. Change the getter to return an unmodifiable view (or a copy)
-3. Find all callers that mutate the collection through the getter and change them to use the add/remove methods
-4. Run tests
+1. 在拥有类上添加 `addItem()` 和 `removeItem()` 方法
+2. 将 getter 改为返回不可修改的视图（或副本）
+3. 找到所有通过 getter 修改集合的调用者，将它们改为使用 add/remove 方法
+4. 运行测试
 
-### Example
+### 示例
 
-**Before:**
+**之前：**
 ```javascript
 class Course {}
 
@@ -283,7 +283,7 @@ person.courses.splice(0, 1);           // bypasses Person
 person.courses = [];                   // replaces internal state
 ```
 
-**After:**
+**之后：**
 ```javascript
 class Person {
   get courses() {
@@ -306,36 +306,36 @@ class Person {
 }
 ```
 
-### Language-Specific Patterns
+### 特定语言的模式
 
-| Language | Unmodifiable Return |
+| 语言 | 不可修改的返回 |
 |----------|-------------------|
 | Java | `Collections.unmodifiableList(list)` |
-| JavaScript | `[...this._items]` or `Object.freeze([...this._items])` |
-| Python | `tuple(self._items)` or `list(self._items)` (return a copy) |
+| JavaScript | `[...this._items]` 或 `Object.freeze([...this._items])` |
+| Python | `tuple(self._items)` 或 `list(self._items)`（返回副本） |
 | C# | `items.AsReadOnly()` |
-| Go | Return a slice copy: `append([]T{}, items...)` |
+| Go | 返回切片副本：`append([]T{}, items...)` |
 
 ---
 
-## Replace Type Code with Class
+## 将类型码替换为类（Replace Type Code with Class）
 
-Replace a type code (integer or string constant) that does not affect behavior with a proper class. Use when the type code is used for categorization but doesn't drive conditional logic.
+将不影响行为的类型码（整数或字符串常量）替换为适当的类。当类型码仅用于分类而不驱动条件逻辑时使用。
 
-### When to Use Which
+### 何时使用哪种方式
 
-| Situation | Refactoring |
+| 场景 | 重构手法 |
 |-----------|-------------|
-| Type code is informational only (no behavior change) | Replace Type Code with Class |
-| Type code drives behavior via conditionals | Replace Type Code with Subclasses |
-| Type code can change at runtime | Replace Type Code with Strategy/State |
-| Type code has few values and language supports it | Use an Enum |
+| 类型码仅为信息性（不改变行为） | 将类型码替换为类 |
+| 类型码通过条件语句驱动行为 | 将类型码替换为子类 |
+| 类型码可以在运行时改变 | 将类型码替换为策略/状态模式 |
+| 类型码值很少且语言支持 | 使用枚举（Enum） |
 
-### Replace Type Code with Subclasses
+### 将类型码替换为子类
 
-Used when the type code determines behavior through conditionals.
+当类型码通过条件语句决定行为时使用。
 
-**Before:**
+**之前：**
 ```javascript
 class Employee {
   constructor(type) {
@@ -356,7 +356,7 @@ class Employee {
 }
 ```
 
-**After:**
+**之后：**
 ```javascript
 class Employee {
   calculatePay() { throw new Error('abstract'); }
@@ -377,11 +377,11 @@ class Salesperson extends Employee {
 }
 ```
 
-### Replace Type Code with Strategy/State
+### 将类型码替换为策略/状态模式
 
-Used when the type code can change at runtime (an employee can be promoted from engineer to manager), so subclassing the employee itself is not possible.
+当类型码可以在运行时改变时使用（例如，员工可以从工程师晋升为经理），因此不能通过子类化员工本身来实现。
 
-**After (Strategy):**
+**之后（策略模式）：**
 ```javascript
 class Employee {
   constructor(type) {
@@ -408,16 +408,16 @@ class ManagerType {
 
 ---
 
-## Decision Guide: Which Data Refactoring to Use
+## 决策指南：使用哪种数据重构
 
-| Situation | Refactoring |
+| 场景 | 重构手法 |
 |-----------|-------------|
-| Primitive value has associated behavior | Replace Data Value with Object |
-| Need one shared instance across the system | Change Value to Reference |
-| Array positions have different meanings | Replace Array with Object |
-| Literal number has domain meaning | Replace Magic Number with Symbolic Constant |
-| Public field needs future flexibility | Encapsulate Field |
-| Getter returns mutable collection | Encapsulate Collection |
-| Type code is informational | Replace Type Code with Class / Enum |
-| Type code drives behavior | Replace Type Code with Subclasses |
-| Type code changes at runtime | Replace Type Code with Strategy |
+| 原始值有关联的行为 | 将数据值替换为对象（Replace Data Value with Object） |
+| 需要全系统共享一个实例 | 将值改为引用（Change Value to Reference） |
+| 数组位置具有不同含义 | 将数组替换为对象（Replace Array with Object） |
+| 字面量数字有领域含义 | 将魔法数字替换为符号常量（Replace Magic Number with Symbolic Constant） |
+| 公有字段需要未来的灵活性 | 封装字段（Encapsulate Field） |
+| Getter 返回可变集合 | 封装集合（Encapsulate Collection） |
+| 类型码为信息性 | 将类型码替换为类/枚举（Replace Type Code with Class/Enum） |
+| 类型码驱动行为 | 将类型码替换为子类（Replace Type Code with Subclasses） |
+| 类型码在运行时变化 | 将类型码替换为策略模式（Replace Type Code with Strategy） |

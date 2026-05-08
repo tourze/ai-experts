@@ -1,198 +1,185 @@
-# Scalability
+# 可扩展性
 
-**Dimension Weight: 18%**
+**维度权重：18%**
 
-Evaluates whether the system can grow to meet demand without architectural rework.
+评估系统是否能在无需架构改造的情况下增长以满足需求。
 
-## Table of Contents
+## 目录
 
-1. Sub-Criteria Checklist
-2. Scaling Pattern Analysis
-3. Bottleneck Identification Framework
-4. Capacity Planning Guide
-5. Evaluation Guidance by Mode
-
----
-
-## 1. Sub-Criteria Checklist
-
-### 1.1 Horizontal Scaling Capability
-
-- Can the system scale out (add instances) rather than only scale up (bigger machines)?
-- Are there components that inherently prevent horizontal scaling? (In-memory state, local
-  file storage, singleton processes, machine-specific cron jobs.)
-- Is the system designed for multiple instances from day one, or is horizontal scaling a
-  future retrofit?
-
-### 1.2 Statelessness
-
-- Are application-tier services stateless?
-- Is session state externalized (Redis, database, JWT) or stored in-process?
-- Are there any in-memory caches that would cause inconsistency across instances?
-- Can a request be served by any instance, or is session affinity required?
-- **Test:** If you kill an instance mid-request, does the user lose state?
-
-### 1.3 Database Scaling Strategy
-
-- **Read scaling:** Read replicas configured? Query routing (writes to primary, reads to
-  replicas)? Replica lag tolerance defined?
-- **Write scaling:** Sharding strategy? Partition key selection? Cross-shard query handling?
-- **Connection management:** Connection pooling (PgBouncer, ProxySQL)? Pool sizing relative
-  to instance count? Connection limits per service?
-- **Vertical limits:** What is the current database instance size? Is there a clear ceiling?
-  What's the plan when you hit it?
-
-### 1.4 Caching Architecture
-
-- **Multi-layer caching:** CDN (static assets) → Application cache (Redis/Memcached) →
-  Database query cache → Connection pooling. Which layers exist?
-- **Cache invalidation strategy:** Time-based TTL, event-driven invalidation, or
-  write-through? Is invalidation reliable?
-- **Cache consistency:** What happens when cached data is stale? Is the staleness window
-  acceptable for the use case?
-- **Cache warming:** Is there a pre-warming strategy for cold starts or cache flushes?
-- **Thundering herd:** Are cache stampede / thundering herd scenarios addressed? (Lock-based
-  refresh, stale-while-revalidate, probabilistic early expiration.)
-
-### 1.5 Asynchronous Processing
-
-- Are long-running tasks offloaded to background workers / queues?
-- Is there backpressure handling? What happens when the queue grows faster than consumers
-  can process?
-- Are there dead-letter queues for failed messages?
-- Is message processing idempotent? (At-least-once delivery means duplicates are possible.)
-- **Queue scaling:** Can consumers auto-scale based on queue depth?
-
-### 1.6 Connection Management
-
-- Are connection pools properly sized? (Too few → bottleneck; too many → resource exhaustion.)
-- Are connections reused (keep-alive, multiplexing)?
-- Are timeout configurations explicit for all external connections?
-- **Connection math:** instances × connections_per_instance ≤ database max_connections.
-  Does this hold at maximum scale?
-
-### 1.7 Auto-Scaling Policies
-
-- Are scaling triggers defined? (CPU, memory, request rate, queue depth, custom metrics.)
-- Are scale-up and scale-down thresholds different? (Prevents flapping.)
-- Are cool-down periods configured?
-- Are minimum and maximum instance counts set?
-- **Predictive scaling:** For known traffic patterns (daily peaks, events), is pre-scaling used?
-
-### 1.8 CDN & Edge Strategy
-
-- Are static assets served from a CDN?
-- Are API responses cacheable at the CDN level where appropriate?
-- Is geographic distribution addressed for global users?
-- **Edge computing:** Are there computations that should run at the edge (auth validation,
-  content personalization, A/B testing)?
-
-### 1.9 Hot Spot Analysis
-
-- Are there data partitions, keys, or services that will receive disproportionate traffic?
-- **Database hot spots:** Is the partition key well-distributed? Are there "celebrity" rows
-  with extreme read/write frequency?
-- **Service hot spots:** Is there one service in the critical path of every request?
-- **Time-based hot spots:** Do batch jobs, reports, or cron tasks compete with live traffic?
-
-### 1.10 Load Distribution
-
-- What load balancing algorithm is used? (Round-robin, least-connections, weighted, IP-hash.)
-- Is session affinity used? If so, does it prevent effective distribution?
-- For multi-region: is geographic load balancing in place?
-- Is there a service mesh or API gateway handling inter-service traffic distribution?
-
-### 1.11 Rate Limiting & Backpressure
-
-- Are consumers protected from overwhelming producers?
-- Are producers protected from slow consumers?
-- Is there per-user/per-tenant rate limiting?
-- Are rate limits applied at the edge (API gateway) before reaching backend services?
-- What happens when limits are hit? (429 responses, queue buffering, graceful degradation.)
-
-### 1.12 Capacity Planning
-
-- Are throughput estimates documented? (Current, 6-month, 12-month, peak.)
-- Is data volume growth projected?
-- What is the theoretical ceiling of the current architecture?
-- At what scale does the architecture require fundamental changes?
-- **Cost scaling:** Does cost scale linearly or super-linearly with load?
+1. 子标准检查清单
+2. 扩展模式分析
+3. 瓶颈识别框架
+4. 容量规划指南
+5. 按模式的评估指南
 
 ---
 
-## 2. Scaling Pattern Analysis
+## 1. 子标准检查清单
 
-Evaluate which patterns are present and whether they're appropriate:
+### 1.1 水平扩展能力
 
-| Pattern                 | When Needed                                       | Red Flag If Missing                           |
+- 系统能否横向扩展（增加实例）而不仅仅是纵向扩展（更大的机器）？
+- 是否存在固有地阻止水平扩展的组件？（内存状态、本地文件存储、单例进程、特定机器的 cron 任务。）
+- 系统是从第一天就设计为支持多实例，还是水平扩展是未来的改造？
+
+### 1.2 无状态性
+
+- 应用层服务是否无状态？
+- 会话状态是否外部化（Redis、数据库、JWT）还是存储在进程中？
+- 是否存在会导致实例间不一致的内存缓存？
+- 请求能否由任何实例处理，还是需要会话亲和性？
+- **测试：** 如果在请求中途杀掉一个实例，用户会丢失状态吗？
+
+### 1.3 数据库扩展策略
+
+- **读扩展：** 是否配置了只读副本？查询路由（写主库、读副本）？是否定义了副本滞后容忍度？
+- **写扩展：** 分片策略？分区键选择？跨分片查询处理？
+- **连接管理：** 连接池（PgBouncer、ProxySQL）？相对于实例数的连接池大小？每个服务的连接限制？
+- **垂直限制：** 当前数据库实例大小是多少？是否有明确的上限？达到上限后的计划是什么？
+
+### 1.4 缓存架构
+
+- **多层缓存：** CDN（静态资产）→ 应用缓存（Redis/Memcached）→ 数据库查询缓存 → 连接池。存在哪些层？
+- **缓存失效策略：** 基于时间的 TTL、事件驱动的失效还是写穿透？失效是否可靠？
+- **缓存一致性：** 缓存数据过期时会发生什么？过期窗口对用例是否可接受？
+- **缓存预热：** 是否有冷启动或缓存刷新的预热策略？
+- **惊群效应：** 是否解决了缓存雪崩/惊群场景？（基于锁的刷新、stale-while-revalidate、概率性提前过期。）
+
+### 1.5 异步处理
+
+- 长时间运行的任务是否卸载到后台工作者/队列？
+- 是否有背压处理？队列增长快于消费者处理速度时怎么办？
+- 失败消息是否有死信队列？
+- 消息处理是否幂等？（至少一次投递意味着可能存在重复。）
+- **队列扩展：** 消费者能否基于队列深度自动扩展？
+
+### 1.6 连接管理
+
+- 连接池是否适当调整？（太少 → 瓶颈；太多 → 资源耗尽。）
+- 连接是否复用（keep-alive、多路复用）？
+- 所有外部连接是否有显式超时配置？
+- **连接数学：** 实例数 × 每实例连接数 ≤ 数据库最大连接数。在最大规模时这个等式是否成立？
+
+### 1.7 自动扩展策略
+
+- 是否定义了扩展触发器？（CPU、内存、请求速率、队列深度、自定义指标。）
+- 扩容和缩容阈值是否不同？（防止抖动。）
+- 是否配置了冷却期？
+- 是否设置了最小和最大实例数？
+- **预测性扩展：** 对于已知流量模式（每日峰值、活动），是否使用预扩展？
+
+### 1.8 CDN 与边缘策略
+
+- 静态资产是否通过 CDN 提供？
+- API 响应在适当情况下是否可在 CDN 级别缓存？
+- 是否针对全球用户解决了地理分布问题？
+- **边缘计算：** 是否有计算应运行在边缘（认证验证、内容个性化、A/B 测试）？
+
+### 1.9 热点分析
+
+- 是否存在将接收不成比例流量的数据分区、键或服务？
+- **数据库热点：** 分区键是否分布均匀？是否存在读写频率极高的"明星"行？
+- **服务热点：** 是否存在每个请求关键路径中的单一服务？
+- **基于时间的热点：** 批处理作业、报告或 cron 任务是否与实时流量争抢资源？
+
+### 1.10 负载分发
+
+- 使用什么负载均衡算法？（轮询、最少连接、加权、IP-hash。）
+- 是否使用会话亲和性？如果是，它是否阻止了有效的分发？
+- 对于多区域：是否实施了地理负载均衡？
+- 是否有服务网格或 API 网关处理服务间流量分发？
+
+### 1.11 速率限制与背压
+
+- 消费者是否受到保护以防生产者压垮？
+- 生产者是否受到保护以防慢消费者？
+- 是否有按用户/按租户的速率限制？
+- 速率限制是否在边缘（API 网关）就应用，然后才到达后端服务？
+- 达到限制时会发生什么？（429 响应、队列缓冲、优雅降级。）
+
+### 1.12 容量规划
+
+- 吞吐量估算是否有文档？（当前、6 个月、12 个月、峰值。）
+- 数据量增长是否已预测？
+- 当前架构的理论上限是多少？
+- 在什么规模下架构需要根本性变更？
+- **成本扩展：** 成本是线性增长还是超线性增长？
+
+---
+
+## 2. 扩展模式分析
+
+评估哪些模式存在及其是否适当：
+
+| 模式 | 何时需要 | 缺少时的红旗 |
 | ----------------------- | ------------------------------------------------- | --------------------------------------------- |
-| Horizontal app scaling  | >1 instance needed for availability or throughput | Always needed for production systems          |
-| Read replicas           | Read-heavy workloads, reporting queries           | High read:write ratio without replicas        |
-| Database sharding       | Single-node write capacity exceeded               | Premature if current load is manageable       |
-| Message queues          | Async processing, workload buffering              | Synchronous long-running operations           |
-| Caching layer           | Repeated expensive computations or queries        | Hot data queried repeatedly from source       |
-| CDN                     | Static assets, global user base                   | Serving static files from application servers |
-| CQRS                    | Read/write patterns diverge significantly         | Premature for simple CRUD                     |
-| Event-driven decoupling | Multiple consumers, loose coupling needed         | Tight synchronous chains across services      |
+| 水平应用扩展 | 可用性或吞吐量需要 >1 个实例 | 生产系统始终需要 |
+| 只读副本 | 读密集工作负载、报表查询 | 高读写比但没有副本 |
+| 数据库分片 | 单节点写入容量超限 | 当前负载可管理时过早使用 |
+| 消息队列 | 异步处理、工作负载缓冲 | 同步长时间运行操作 |
+| 缓存层 | 重复的昂贵计算或查询 | 热数据反复从源查询 |
+| CDN | 静态资产、全球用户群 | 从应用服务器提供静态文件 |
+| CQRS | 读写模式差异显著 | 简单 CRUD 时过早使用 |
+| 事件驱动解耦 | 多消费者、需要松耦合 | 跨服务的紧密同步链 |
 
 ---
 
-## 3. Bottleneck Identification Framework
+## 3. 瓶颈识别框架
 
-For each component in the critical path, evaluate:
+对于关键路径中的每个组件，评估：
 
 ```text
-Component → Throughput Limit → What Happens at Limit → Mitigation
+组件 → 吞吐量限制 → 达到限制时的情况 → 缓解措施
 ```
 
-Common bottleneck locations (in order of frequency):
+常见瓶颈位置（按频率排序）：
 
-1. **Database** — Connection limits, query throughput, lock contention, disk I/O
-2. **External APIs** — Rate limits, latency, availability, no circuit breaker
-3. **Network** — Bandwidth, cross-AZ latency, DNS resolution, TLS handshake overhead
-4. **Compute** — CPU-bound processing, memory pressure, GC pauses
-5. **Storage** — Disk I/O, file descriptor limits, storage IOPS limits
-6. **Queues** — Consumer throughput, message size, queue depth limits
-
----
-
-## 4. Capacity Planning Guide
-
-When reviewing capacity, verify:
-
-- **Current baseline:** What is the current load? (requests/sec, data volume, concurrent users)
-- **Growth trajectory:** What is the growth rate? (Monthly, quarterly, annual projections)
-- **Peak-to-average ratio:** How much does peak load exceed average? (2x? 10x? 100x?)
-- **Headroom:** How much capacity headroom exists before the next scaling tier?
-- **Breaking points:** At what scale does each component need redesign?
-- **Cost model:** How does infrastructure cost grow relative to load?
+1. **数据库** —— 连接限制、查询吞吐量、锁争用、磁盘 I/O
+2. **外部 API** —— 速率限制、延迟、可用性、无熔断器
+3. **网络** —— 带宽、跨可用区延迟、DNS 解析、TLS 握手开销
+4. **计算** —— CPU 密集型处理、内存压力、GC 暂停
+5. **存储** —— 磁盘 I/O、文件描述符限制、存储 IOPS 限制
+6. **队列** —— 消费方吞吐量、消息大小、队列深度限制
 
 ---
 
-## 5. Evaluation Guidance by Mode
+## 4. 容量规划指南
 
-### Mode A (Codebase)
+在审查容量时，验证以下内容：
 
-- Check for in-memory state (session stores, local caches, singletons with state)
-- Inspect database connection pool configurations
-- Look for queue/worker implementations
-- Check auto-scaling configs (HPA, ASG, Cloud Run settings)
-- Review load balancer configurations
-- Identify synchronous blocking calls in the critical path
-- Check for file system dependencies (local uploads, temp files, logs written locally)
+- **当前基线：** 当前负载是多少？（请求/秒、数据量、并发用户数。）
+- **增长轨迹：** 增长率是多少？（月度、季度、年度预测。）
+- **峰值与平均比：** 峰值负载超过平均负载多少？（2 倍？10 倍？100 倍？）
+- **余量：** 在达到下一个扩展层级之前还有多少容量余量？
+- **突破点：** 每个组件在什么规模下需要重新设计？
+- **成本模型：** 基础设施成本相对于负载如何增长？
 
-### Mode B (Document)
+---
 
-- Verify stated scale targets are realistic and specific (not "millions of users")
-- Check if the design addresses database scaling beyond single node
-- Look for caching strategy presence and specificity
-- Verify async processing is planned for long-running operations
-- Check if capacity planning is addressed with concrete numbers
-- Identify any component described as "single instance" without justification
+## 5. 按模式的评估指南
 
-### Mode C (Hybrid)
+### 模式 A（代码库）
 
-- Compare stated scale targets against actual infrastructure sizing
-- Check if documented scaling strategy matches implemented auto-scaling rules
-- Verify caching strategy in docs matches caching code in implementation
-- Look for implemented scaling patterns not mentioned in docs (and vice versa)
+- 检查内存状态（会话存储、本地缓存、带状态单例）
+- 检查数据库连接池配置
+- 查找队列/工作者实现
+- 检查自动扩展配置（HPA、ASG、Cloud Run 设置）
+- 审查负载均衡器配置
+- 识别关键路径中的同步阻塞调用
+- 检查文件系统依赖（本地上传、临时文件、本地写入的日志）
+
+### 模式 B（文档）
+
+- 验证声明的规模目标是否现实和具体（不是"百万用户"）
+- 检查设计是否涉及超越单节点的数据库扩展
+- 查找缓存策略的存在性和具体性
+- 验证是否为长时间运行的操作计划了异步处理
+- 检查容量规划是否以具体数字呈现
+- 识别任何被描述为"单实例"但无理由的组件
+
+### 模式 C（混合）
+
+- 将声明的规模目标与实际基础设施规模进行比较
+- 检查文档中的扩展策略是否与实现的自动扩展规则一致
+- 验证文档中的缓存策略是否与实现中的缓存代码一致
+- 查找文档中未提及但已实现的扩展模式（反之亦然）

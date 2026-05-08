@@ -1,18 +1,18 @@
-# Chapter 5 - Automated Testing
+# 第 5 章 - 自动化测试
 
-> Tests are not just for correctness. They are the first place people look to understand how your code works.
+> 测试不仅是为了正确性。它们是人们首先查看以了解你的代码如何工作的地方。
 
-* Tests in rust are declared with the attribute macro `#[test]`. Most code editors can compile and run the functions declared under the macro individually or blocks of them.
-* Test can have special compilation flags with `#[cfg(test)]`. Also executable in code editors if it contained `#[test]`, it is a good way to mock complicated functions or override traits.
+* Rust 中的测试使用属性宏 `#[test]` 声明。大多数代码编辑器可以单独编译和运行在宏下声明的函数或函数块。
+* 测试可以使用 `#[cfg(test)]` 具有特殊的编译标志。如果包含 `#[test]`，也可以在代码编辑器中执行，这是模拟复杂函数或覆盖 trait 的好方法。
 
-## 5.1 Tests as Living Documentation
+## 5.1 测试作为活文档
 
-In Rust, as in many other languages, tests often show how the functions are meant to be used. If a test is clear and targeted, it's often more helpful than reading the function body, when combined with other tests, they serve as living documentation.
+在 Rust 中，如同许多其他语言一样，测试通常展示函数是如何被使用的。如果一个测试清晰且有针对性的，它通常比阅读函数体更有帮助，当与其他测试结合时，它们作为活文档。
 
-### Use descriptive names
+### 使用描述性名称
 
-> In the unit test name we should see the following:
-> * `unit_of_work`: which *function* we are calling. The **action** that will be executed. This is often be the name of the the test `mod` where the function is being tested.
+> 在单元测试名称中，我们应该看到以下内容：
+> * `unit_of_work`：我们调用的*函数*。将要执行的**操作**。这通常是测试 `mod` 的名称，其中被测函数所在。
 ```rust
 #[cfg(test)] 
 mod test { 
@@ -22,21 +22,21 @@ mod test {
     } 
 }
 ```
-> * `expected_behavior`: the set of **assertions** that we need to verify that the test works.
-> * `state_that_the_test_will_check`: the general **arrangement**, or setup, of the specific test case.
+> * `expected_behavior`：我们需要验证测试正常工作的一组**断言**。
+> * `state_that_the_test_will_check`：特定测试用例的总体**安排**或设置。
 
-#### ❌ Don't use a generic name for a test
+#### ❌ 不要使用通用名称作为测试名称
 ```rust
 #[test]
 fn test_add_happy_path() {
     assert_eq!(add(2, 2), 4);
 }
 ```
-#### ✅ Use a name which reads like a sentence, describing the desired behavior
-> Alternatively, if you function has too many tests, you can blob them together in a `mod`, it makes it easier to read and navigate.
+#### ✅ 使用像句子一样可读的名称，描述所需行为
+> 另外，如果你的函数有太多测试，你可以将它们分组在一个 `mod` 中，使其更易于阅读和导航。
 
 ```rust
-// OPTION 1
+// 选项 1
 #[test]
 fn process_should_return_blob_when_larger_than_b() {
     let a = setup_a_to_be_xyz();
@@ -48,7 +48,7 @@ fn process_should_return_blob_when_larger_than_b() {
     assert_eq!(result, expected);
 }
 
-// OPTION 2
+// 选项 2
 mod process {
     #[test]
     fn should_return_blob_when_larger_than_b() {
@@ -63,22 +63,22 @@ mod process {
 }
 ```
 
-> When executing `cargo test` the test output for each option will look like:
-> Option 1: `process_should_return_blob_when_larger_than_b`.
-> Option 2: `process::should_return_blob_when_larger_than_b`.
+> 执行 `cargo test` 时，每个选项的测试输出将如下所示：
+> 选项 1：`process_should_return_blob_when_larger_than_b`。
+> 选项 2：`process::should_return_blob_when_larger_than_b`。
 
-### Use modules for organization
+### 使用模块组织
 
-Most IDEs can run a single module of tests all together.
-The test name in the output will also contain the name of the module.
-Together, that means you can use the module name to group related tests together:
+大多数 IDE 可以一起运行单个模块的所有测试。
+输出中的测试名称也将包含模块的名称。
+总的来说，这意味着你可以使用模块名称将相关测试分组在一起：
 
 ```rust
 #[cfg(test)]
-mod test { // IDEs will provide a ▶️ button here
+mod test { // IDE 将在此处提供 ▶️ 按钮
 
     mod process {
-        #[test] // IDEs will provide a ▶️ button here
+        #[test] // IDE 将在此处提供 ▶️ 按钮
         fn returns_error_xyz_when_b_is_negative() {
             let a = setup_a_to_be_xyz();
             let b = Some(-5);
@@ -89,7 +89,7 @@ mod test { // IDEs will provide a ▶️ button here
             assert_eq!(result, expected);
         }
 
-        #[test] // IDEs will provide a ▶️ button here
+        #[test] // IDE 将在此处提供 ▶️ 按钮
         fn returns_invalid_input_error_when_a_and_b_not_present() {
             let a = None;
             let b = None;
@@ -103,12 +103,12 @@ mod test { // IDEs will provide a ▶️ button here
 }
 ```
 
-### Only test one behavior per function
+### 每个函数只测试一个行为
 
-To keep tests clear, they should describe _one_ thing that the unit does.
-This makes it easier to understand why a test is failing.
+为了保持测试清晰，它们应该描述该单元所做的*一件*事情。
+这使得更容易理解为什么测试失败。
 
-#### ❌ Don't test multiple things in the same test
+#### ❌ 不要在同一测试中测试多个事项
 ```rust
 fn test_thing_parser(...) {
     assert!(Thing::parse("abcd").is_ok());
@@ -116,7 +116,7 @@ fn test_thing_parser(...) {
 }
 ```
 
-#### ✅ Test one thing per test
+#### ✅ 每个测试测试一件事
 ```rust
 #[cfg(test)]
 mod test_thing_parser {
@@ -124,7 +124,7 @@ mod test_thing_parser {
     fn lowercase_letters_are_valid() {
         assert!(
             Thing::parse("abcd").is_ok(),
-            // Works like `eprintln`, `format` and `println` macros
+            // 像 `eprintln`、`format` 和 `println` 宏一样工作
             "Thing parse error: {:?}", 
             Thing::parse("abcd").unwrap_err()
         );
@@ -137,14 +137,14 @@ mod test_thing_parser {
 }
 ```
 
-> `Ok` scenarios should have an `eprintln` of the `Err` case.
+> `Ok` 场景应该有 `Err` 情况的 `eprintln`。
 
-### Use very few, ideally one, assertion per test
+### 每个测试使用很少的（理想情况是一个）断言
 
-When there are multiple assertions per test, it's both harder to understand the intended behavior and 
-often requires many iterations to fix a broken test, as you work through assertions one by one.
+当每个测试有多个断言时，更难理解预期行为，并且
+通常需要多次迭代来修复失败的测试，因为你需要逐个处理断言。
 
-❌ Don't include many assertions in one test:
+❌ 不要在一个测试中包含多个断言：
 
 ```rust
 #[test]
@@ -156,8 +156,8 @@ fn test_valid_inputs() {
 }
 ```
 
-If you are testing separate behaviors, make multiple tests each with descriptive names.
-To avoid boilerplate, either use a shared setup function or [rstest](https://crates.io/crates/rstest) cases *with descriptive test names*:
+如果你在测试不同的行为，创建多个测试，每个带有描述性名称。
+为了避免样板代码，使用共享设置函数或 [rstest](https://crates.io/crates/rstest) 用例，*并带有描述性测试名称*：
 ```rust
 #[rstest]
 #[case::single("a")]
@@ -169,24 +169,23 @@ fn the_function_accepts_all_strings_with_a(#[case] input: &str) {
 }
 ```
 
-> Considerations when using `rstest`
+> 使用 `rstest` 时的注意事项
 >
-> * It's harder for both IDEs and humans to run/locate specific tests.
-> * Expectation vs condition naming is now visually inverted (expectation first).
+> * 对于 IDE 和人类来说，运行/定位特定测试都更难。
+> * 期望与条件命名的视觉顺序颠倒（期望在前）。
 
-## 5.2 Add Test Examples to your Docs
+## 5.2 在文档中添加测试示例
 
-We will deep dive into docs at a later stage, so in this section we will just briefly go over how to add tests to you docs. Rustdoc can turn examples into executable tests using `///` with a few advantages:
+我们将在后面深入探讨文档，因此在本节中，我们只是简要介绍如何在文档中添加测试。Rustdoc 可以使用 `///` 将示例转换为可执行的测试，这有几个优点：
 
-* These tests run with `cargo test` **BUT NOT** `cargo nextest run`. If using `nextest`, make sure to run `cargo t --doc` separately.
-* They serve both as documentation and correctness checks, and are kept up to date by changes, due to the fact that the compiler checks them.
-* No extra testing boilerplate. You can easily hide test sections by prefixing the line with `#`.
-* ❗ There is no issue if you have test duplication between doc-tests and other non-public facing tests.
+* 这些测试通过 `cargo test` 运行，**但不会**通过 `cargo nextest run` 运行。如果使用 `nextest`，确保单独运行 `cargo t --doc`。
+* 它们既作为文档又作为正确性检查，并且由于编译器检查它们，它们会随着变更保持更新。
+* 没有额外的测试样板代码。你可以通过在行前添加 `#` 来轻松隐藏测试部分。
+* ❗ 文档测试和其他非面向公众的测试之间存在重复没有关系。
 
 ```rust
-/// Helper function that adds any two numeric values together.
-/// This function reasons about which would be the correct type to parse based on the type
-/// and the size of the numeric value.
+/// 将任意两个数值相加的辅助函数。
+/// 此函数根据类型和数值的大小推断出正确的解析类型。
 /// 
 /// # Examples
 /// 
@@ -204,7 +203,7 @@ We will deep dive into docs at a later stage, so in this section we will just br
 /// ```
 ```
 
-This documentation code would look like:
+这段文档代码看起来像：
 ```rust
 use num::numeric;
 
@@ -212,20 +211,20 @@ generic_add(5.2, 4) // => 9.2
 generic_add(2, 2.0) // => 4
 ```
 
-## 5.3 Unit Test vs Integration Tests vs Doc tests
+## 5.3 单元测试 vs 集成测试 vs 文档测试
 
-As a general rule, without delving into *test pyramid naming*, rust has 3 sets of tests:
+一般来说，在不深入*测试金字塔命名*的情况下，Rust 有 3 组测试：
 
-### Unit Test
+### 单元测试
 
-Tests that go in the **same module** as the **tested unit** was declared, this allows the test runner to have visibility over private functions and parent `use` declarations. They can also consume `pub(crate)` functions from other modules if needed. Unit tests can be more focused on **implementation and edge-cases checks**.
+与被测单元在同一**模块**中的测试，这允许测试运行器访问私有函数和父级 `use` 声明。如果需要，它们也可以从其他模块消费 `pub(crate)` 函数。单元测试可以更专注于**实现和边界情况检查**。
 
-* They should be as simple as possible, testing one state and one behavior of the unit. KISS.
-* They should test for errors and edge cases.
-* Different tests of the same unit can be combined under a single `#[cfg(test)] mod test_unit_of_work {...}`, allowing multiple submodules for different `units_of_work`.
-* Try to keep external states/side effects to your API to minimum and focus those tests on the `mod.rs` files.
-* Tests that are not yet fully implemented can be ignored with the `#[ignore = "optional message"]` attribute.
-* Tests that intentionally panic should be annotated with the attribute `#[should_panic]`.
+* 它们应该尽可能简单，测试一个状态和一个行为。KISS 原则。
+* 它们应该测试错误和边界情况。
+* 同一单元的不同测试可以合并到单个 `#[cfg(test)] mod test_unit_of_work {...}` 下，允许为不同的 `units_of_work` 设置多个子模块。
+* 尽量将外部状态/副作用保持在对 API 的最小范围内，并将这些测试集中在 `mod.rs` 文件中。
+* 尚未完全实现的测试可以使用 `#[ignore = "optional message"]` 属性忽略。
+* 故意 panic 的测试应使用属性 `#[should_panic]` 注释。
 
 ```rust
 #[cfg(test)]
@@ -236,20 +235,20 @@ mod unit_of_work_tests {
     fn unit_state_behavior() {
         let expected = ...;
         let result = ...;
-        assert_eq!(result, expected, "Failed because {}", result - expected);
+        assert_eq!(result, expected, "由于 {} 而失败", result - expected);
     }
 }
 ```
 
-### Integration Tests
+### 集成测试
 
-Tests that go under the `tests/` directory, they are entirely external to your library and use the same code as any other code would use, not have access to private and crate level functions, which means they can **only test** functions on your **public API**. 
+放在 `tests/` 目录下的测试，它们完全外部于你的库，并使用与任何其他代码相同的代码，无法访问私有和 crate 级别函数，这意味着它们**只能测试**你的**公共 API** 上的函数。
 
-> Their purpose is to test whether many parts of the code work together correctly, units of code that work correctly on their own could have problems when integrated.
+> 它们的目的是测试代码的多个部分是否能够正确协同工作，独立正确工作的代码单元在集成时可能出现问题。
 
-* Test for happy paths and common use cases.
-* Allow external states and side effects, [testcontainers](https://rust.testcontainers.org/) might help.
-* if testing binaries, try to break **executable** and **functions** into `src/main.rs` and `src/lib.rs`, respectively.
+* 测试正常路径和常见用例。
+* 允许外部状态和副作用，[testcontainers](https://rust.testcontainers.org/) 可能有帮助。
+* 如果测试二进制文件，尝试将**可执行文件**和**函数**分别拆分到 `src/main.rs` 和 `src/lib.rs` 中。
 
 ```
 ├── Cargo.lock 
@@ -263,47 +262,47 @@ Tests that go under the `tests/` directory, they are entirely external to your l
     └── integration_test.rs
 ```
 
-### Doc Testing
+### 文档测试
 
-As mentioned in section [5.2](#52-add-test-examples-to-your-docs), doc tests should have happy paths, general public API usage and more powerful attributes that improve documentation, like custom CSS for the code blocks.
+如[第 5.2 节](#52-在文档中添加测试示例)所述，文档测试应有正常路径、一般公共 API 用法以及改进文档的更强大属性，如用于代码块的自定义 CSS。
 
-### Attributes:
+### 属性：
 
-* `ignore`: tells rust to ignore the code, usually not recommended, if you want just a code formatted text, use `text`.
-* `should_panic`: tells the rust compiler that this example block will panic.
-* `no_run`: compiles but doesn't execute the code, similar to `cargo check`. Very useful when dealing with side-effects for documentation.
-* `compile_fail`: Test rustdoc that this block should cause a compilation fail, important when you want to demonstrate wrong use cases.
+* `ignore`：告诉 Rust 忽略代码，通常不推荐，如果你只想要代码格式化的文本，使用 `text`。
+* `should_panic`：告诉 Rust 编译器此示例块将 panic。
+* `no_run`：编译但不执行代码，类似于 `cargo check`。在处理用于文档的副作用时非常有用。
+* `compile_fail`：测试 rustdoc 此块应导致编译失败，在你想展示错误用例时很重要。
 
-## 5.4 How to `assert!`
+## 5.4 如何使用 `assert!`
 
-Rust comes with 2 macros to make assertions:
-* `assert!` for asserting boolean values like `assert!(value.is_ok(), "'value' is not Ok: {value:?}")`
-* `assert_eq!` for checking equality between two different values, `assert_eq!(result, expected, "'result' differs from 'expected': {}", result.diff(expected))`.
+Rust 提供了 2 个用于断言的宏：
+* `assert!` 用于断言布尔值，如 `assert!(value.is_ok(), "'value' is not Ok: {value:?}")`
+* `assert_eq!` 用于检查两个不同值之间的相等性：`assert_eq!(result, expected, "'result' differs from 'expected': {}", result.diff(expected))`。
 
-### 🚨 `assert!` reminders
-* Rust asserts support formatted strings, like the previous examples, those strings will be printed in case of failure, so it is a good practice to add what the actual state was and how it differs from the expected.
-* If you don't care about the exact pattern matching value, using `matches!` combined with `assert!` might be a good alternative.
+### 🚨 `assert!` 提醒
+* Rust 断言支持格式化字符串，如前面的示例，这些字符串会在失败时打印，因此添加实际状态及其与预期的差异是一个好习惯。
+* 如果你不关心精确的模式匹配值，使用 `matches!` 结合 `assert!` 可能是一个不错的替代方案。
 ```rust
 assert!(matches!(error, MyError::BadInput(_), "Expected `BadInput`, found {error}"));
 ```
-* Use `#[should_panic]` wisely. It should only be used when panic is the desired behavior, prefer result instead of panic.
-* There are some other that can enhance your testing experience like:
-    * [`rstest`](https://crates.io/crates/rstest): fixture based test framework with procedural macros.
-    * [`pretty_assertions`](https://crates.io/crates/pretty_assertions): overrides `assert_eq` and `assert_ne`, and creates colorful diffs between them.
+* 明智地使用 `#[should_panic]`。仅当 panic 是预期行为时才应使用，优先使用 Result 而非 panic。
+* 还有其他可以增强测试体验的工具，如：
+    * [`rstest`](https://crates.io/crates/rstest)：基于 fixture 的测试框架，使用过程宏。
+    * [`pretty_assertions`](https://crates.io/crates/pretty_assertions)：覆盖 `assert_eq` 和 `assert_ne`，并创建它们之间的彩色差异。
 
-## 5.5 Snapshot Testing with `cargo insta`
+## 5.5 使用 `cargo insta` 进行快照测试
 
-> When correctness is visual or structural, snapshots tell the story better than asserts.
+> 当正确性是视觉或结构性的时，快照比断言更能说明问题。
 
-1. Add to your dependencies:
+1. 添加到你的依赖项：
 ```toml
 insta = { version = "1.42.2", features = ["yaml"] }
 ```
-> For most real world applications the recommendation is to use YAML snapshots of serializable values. This is because they look best under version control and the diff viewer and support redaction. To use this enable the yaml feature of insta.
+> 对于大多数实际应用，建议使用可序列化值的 YAML 快照。这是因为它们在版本控制和差异查看器中看起来最好，并支持编辑。要使用此功能，请启用 insta 的 yaml 功能。
 
-2. For a better review experience, add the CLI `cargo install cargo-insta`.
+2. 为了获得更好的审查体验，添加 CLI `cargo install cargo-insta`。
 
-3. Writing a simple test:
+3. 编写一个简单的测试：
 ```rust
 fn split_words(s: &str) -> Vec<&str> {
     s.split_whitespace().collect()
@@ -316,53 +315,53 @@ fn test_split_words() {
 }
 ```
 
-4. Run `cargo insta test` to execute, and `cargo insta review` to review conflicts.
+4. 运行 `cargo insta test` 执行，`cargo insta review` 审查冲突。
 
-To learn more about `cargo insta` check out its [documentation](https://insta.rs/docs/quickstart/) as it is a very complete and well documented tool.
+要了解更多关于 `cargo insta` 的信息，请查看其[文档](https://insta.rs/docs/quickstart/)，因为它是一个非常完整且文档齐全的工具。
 
-### What is snapshot testing?
+### 什么是快照测试？
 
-Snapshot testing compares your output (text, Json, HTML, YAML, etc) against a saved "golden" version. On future runs, the test fails if the output changes, unless humanly approved. It is perfect for:
-* Generate code.
-* Serializing complex data.
-* Rendered HTML.
-* CLI output.
+快照测试将你的输出（文本、Json、HTML、YAML 等）与保存的"黄金"版本进行比较。在未来的运行中，如果输出发生变化，测试将失败，除非经过人工批准。它非常适合：
+* 生成代码。
+* 序列化复杂数据。
+* 渲染的 HTML。
+* CLI 输出。
 
-#### ❌ What not to test with snapshot
-* Very stable, numeric-only or small structured data associated logic (prefer `assert_eq!`).
-* Critical path logic (prefer precise unit tests).
-* Flaky tests, randomly generated output, unless redacted.
-* Snapshots of external resources, use mocks and stubs.
+#### ❌ 不适合快照测试的内容
+* 非常稳定、仅涉及数值或小型结构化数据的相关逻辑（优先使用 `assert_eq!`）。
+* 关键路径逻辑（优先使用精确的单元测试）。
+* 不稳定的测试、随机生成的输出，除非经过编辑。
+* 外部资源的快照，使用 mock 和 stub。
 
-## 5.6 ✅ Snapshot Best Practices
+## 5.6 ✅ 快照最佳实践
 
-* Named snapshots, it gives meaningful snapshot files names, e.g. `snapshots/this_is_a_named_snapshot.snap`
+* 命名快照，它会给快照文件有意义的名称，例如 `snapshots/this_is_a_named_snapshot.snap`
 ```rust
 assert_snapshot!("this_is_a_named_snapshot", output);
 ```
 
-* Keep snapshots small and clear. 
+* 保持快照小巧清晰。
 ```rust
-// ✅ Best case:
+// ✅ 最佳情况：
 assert_snapshot!("app_config/http", whole_app_config.http);
 
-// ❌ Worst case:
-assert_snapshot!("app_config", whole_app_config); // Huge object
+// ❌ 最坏情况：
+assert_snapshot!("app_config", whole_app_config); // 巨大的对象
 ```
 
-> #### 🚨 Avoid snapshotting huge objects 
-> Huge objects become hard to review and reason about.
+> #### 🚨 避免对巨大对象进行快照
+> 巨大的对象变得难以审查和推理。
 
-* Avoid snapshotting simple types (primitives, flat enums, small structs):
+* 避免对简单类型（原始类型、扁平 enum、小型 struct）进行快照：
 ```rust
-// ✅ Better:
+// ✅ 更好：
 assert_eq!(meaning_of_life, 42);
 
-// ❌ OVERKILL:
+// ❌ 过度杀伤：
 assert_snapshot!("the_meaning_of_life", meaning_of_life); // meaning_of_life == 42
 ```
 
-* Use [redactions](https://insta.rs/docs/redactions/) for unstable fields (randomly generated, timestamps, uuid, etc):
+* 对不稳定的字段使用[编辑](https://insta.rs/docs/redactions/)（随机生成、时间戳、uuid 等）：
 ```rust
 use insta::assert_json_snapshot;
 
@@ -377,5 +376,5 @@ fn endpoint_get_user_data() {
     );
 }
 ```
-* Commit your snapshots into git. They will be stored in `snapshots/` alongside your tests.
-* Review changes carefully before accepting.
+* 将快照提交到 git。它们将存储在 `snapshots/` 中，与你的测试一起。
+* 在接受之前仔细审查变更。

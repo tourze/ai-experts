@@ -1,94 +1,94 @@
 ---
-title: Uncontrolled Components
+title: 非受控组件
 impact: HIGH
 tags: textinput, forms, controlled, uncontrolled
 ---
 
-# Skill: Uncontrolled Components
+# 技能：非受控组件
 
-Fix TextInput synchronization and flickering issues by using uncontrolled component pattern.
+使用非受控组件模式修复 TextInput 同步和闪烁问题。
 
-## Quick Pattern
+## 快速模式
 
-**Before (controlled - may flicker on legacy arch):**
+**之前（受控 —— 在旧架构上可能闪烁）：**
 
 ```jsx
 <TextInput value={text} onChangeText={setText} />
 ```
 
-**After (uncontrolled - native owns state):**
+**之后（非受控 —— 原生拥有状态）：**
 
 ```jsx
 <TextInput defaultValue={text} onChangeText={setText} />
 ```
 
-## When to Use
+## 适用场景
 
-- TextInput flickers or shows wrong characters during fast typing
-- Text input lags behind user input on low-end devices
-- Using legacy (non-New Architecture) React Native
-- Need maximum input responsiveness
+- TextInput 在快速输入时闪烁或显示错误字符
+- 在低端设备上文本输入滞后于用户输入
+- 使用传统（非新架构）React Native
+- 需要最大的输入响应性
 
-## Prerequisites
+## 前置条件
 
-- Understanding of React controlled vs uncontrolled components
-- TextInput component in use
+- 了解 React 受控与非受控组件
+- 使用了 TextInput 组件
 
-## Problem Description
+## 问题描述
 
-![Controlled TextInput Ping-Pong Communication](images/controlled-textinput-pingpong.png)
+![受控 TextInput 乒乓通信](images/controlled-textinput-pingpong.png)
 
-The diagram shows what happens when typing "TEST" with a controlled `TextInput`:
+该图显示了使用受控 `TextInput` 输入"TEST"时发生的情况：
 
-1. User types "T" → `onChangeText('T')` fires
-2. React calls `setValue('T')` → native updates to "T"
-3. User types "E" → `onChangeText('TE')` fires
-4. React calls `setValue('TE')` → native updates to "TE"
-5. ...continues for each character
+1. 用户输入"T" → 触发 `onChangeText('T')`
+2. React 调用 `setValue('T')` → 原生更新为"T"
+3. 用户输入"E" → 触发 `onChangeText('TE')`
+4. React 调用 `setValue('TE')` → 原生更新为"TE"
+5. ...对每个字符继续
 
-**The problem**: Each character requires a round-trip between native and JavaScript. On legacy architecture, if React state update is slow, native may show intermediate states (flicker).
+**问题**：每个字符都需要在原生和 JavaScript 之间往返。在旧架构上，如果 React 状态更新较慢，原生可能显示中间状态（闪烁）。
 
-**New Architecture note:** This issue is largely resolved in New Architecture, but uncontrolled pattern still provides best performance.
+**新架构说明**：此问题在新架构中基本解决，但非受控模式仍提供最佳性能。
 
-## Step-by-Step Instructions
+## 分步说明
 
-### 1. Identify Controlled TextInput
+### 1. 识别受控 TextInput
 
 ```jsx
-// Controlled - value prop syncs state to native
+// 受控 —— value prop 将状态同步到原生
 const ControlledInput = () => {
   const [value, setValue] = useState('');
   
   return (
     <TextInput
-      value={value}           // This causes sync issues
+      value={value}           // 这导致同步问题
       onChangeText={setValue}
     />
   );
 };
 ```
 
-### 2. Convert to Uncontrolled
+### 2. 转换为非受控
 
-Remove the `value` prop to make it uncontrolled:
+移除 `value` prop 使其变为非受控：
 
 ```jsx
-// Uncontrolled - native owns the state
+// 非受控 —— 原生拥有状态
 const UncontrolledInput = () => {
   const [value, setValue] = useState('');
   
   return (
     <TextInput
-      defaultValue={value}     // Only sets initial value
-      onChangeText={setValue}  // Still updates React state
+      defaultValue={value}     // 仅设置初始值
+      onChangeText={setValue}  // 仍更新 React 状态
     />
   );
 };
 ```
 
-### 3. Use Ref for Programmatic Control
+### 3. 使用 Ref 进行程序化控制
 
-If you need to read/set value programmatically:
+如果需要以编程方式读取/设置值：
 
 ```jsx
 const UncontrolledWithRef = () => {
@@ -99,7 +99,7 @@ const UncontrolledWithRef = () => {
   };
   
   const getValue = () => {
-    // Use onChangeText to track value, or native methods
+    // 使用 onChangeText 追踪值，或使用原生方法
   };
   
   return (
@@ -112,36 +112,11 @@ const UncontrolledWithRef = () => {
 };
 ```
 
-## Code Examples
+## 代码示例
 
-### Full Migration Example
+### 完整迁移示例
 
-**Before (Controlled):**
-
-```jsx
-const SearchInput = () => {
-  const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
-  
-  const handleChange = (text) => {
-    setQuery(text);
-    fetchResults(text).then(setResults);
-  };
-  
-  return (
-    <View>
-      <TextInput
-        value={query}              // Remove this
-        onChangeText={handleChange}
-        placeholder="Search..."
-      />
-      <ResultsList data={results} />
-    </View>
-  );
-};
-```
-
-**After (Uncontrolled):**
+**之前（受控）：**
 
 ```jsx
 const SearchInput = () => {
@@ -156,9 +131,9 @@ const SearchInput = () => {
   return (
     <View>
       <TextInput
-        defaultValue=""           // Initial value only
+        value={query}              // 移除这个
         onChangeText={handleChange}
-        placeholder="Search..."
+        placeholder="搜索..."
       />
       <ResultsList data={results} />
     </View>
@@ -166,51 +141,76 @@ const SearchInput = () => {
 };
 ```
 
-### When You Need Value Control
-
-For input masking or validation that modifies input:
+**之后（非受控）：**
 
 ```jsx
-// Option 1: Accept the controlled behavior (may flicker)
+const SearchInput = () => {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+  
+  const handleChange = (text) => {
+    setQuery(text);
+    fetchResults(text).then(setResults);
+  };
+  
+  return (
+    <View>
+      <TextInput
+        defaultValue=""           // 仅初始值
+        onChangeText={handleChange}
+        placeholder="搜索..."
+      />
+      <ResultsList data={results} />
+    </View>
+  );
+};
+```
+
+### 何时需要值控制
+
+对于修改输入的输入掩码或验证：
+
+```jsx
+// 选项 1：接受受控行为（可能闪烁）
 const MaskedInput = () => {
   const [value, setValue] = useState('');
   
   const handleChange = (text) => {
-    // Phone mask: (123) 456-7890
+    // 电话号码掩码：(123) 456-7890
     const masked = maskPhone(text);
     setValue(masked);
   };
   
   return (
     <TextInput
-      value={value}  // Necessary for masking
+      value={value}  // 掩码必需
       onChangeText={handleChange}
     />
   );
 };
 
-// Option 2: Use a native masked input library
-// react-native-masked-text handles this natively
+// 选项 2：使用原生掩码输入库
+// react-native-masked-text 原生处理
 ```
 
-## Decision Matrix
+## 决策矩阵
 
-| Scenario | Recommendation |
+| 场景 | 推荐 |
 |----------|---------------|
-| Simple text input | Uncontrolled |
-| Search/filter input | Uncontrolled |
-| Form with validation on submit | Uncontrolled |
-| Input masking (phone, credit card) | Controlled or native library |
-| Character-by-character validation | Controlled |
-| New Architecture app | Either works well |
+| 简单文本输入 | 非受控 |
+| 搜索/筛选输入 | 非受控 |
+| 提交时验证的表单 | 非受控 |
+| 输入掩码（电话、信用卡） | 受控或原生库 |
+| 逐字符验证 | 受控 |
+| 新架构应用 | 两种均可 |
 
-## Common Pitfalls
+## 常见陷阱
 
-- **Forgetting `defaultValue`**: Without it, input starts empty
-- **Trying to clear with state**: Use `ref.current.clear()` instead
-- **Mixing patterns**: Don't use both `value` and `defaultValue`
+- **忘记 `defaultValue`**：没有它，输入从空白开始
+- **尝试用状态清空**：改用 `ref.current.clear()`
+- **混合模式**：不要同时使用 `value` 和 `defaultValue`
 
-## Related Skills
+## 相关技能
 
-- [js-profile-react.md](./js-profile-react.md) - Profile input performance
-- [js-concurrent-react.md](./js-concurrent-react.md) - Defer expensive search operations
+- [js-profile-react.md](./js-profile-react.md) —— 分析输入性能
+- [js-concurrent-react.md](./js-concurrent-react.md) —— 延迟昂贵的搜索操作

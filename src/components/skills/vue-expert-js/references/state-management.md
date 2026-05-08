@@ -1,8 +1,8 @@
-# State Management
+# 状态管理
 
 ---
 
-## Setup
+## 设置
 
 ```javascript
 // main.js
@@ -15,7 +15,7 @@ createApp(App).use(createPinia()).mount('#app')
 
 ---
 
-## Options Store Syntax
+## Options Store 语法
 
 ```javascript
 // stores/counter.js
@@ -29,7 +29,7 @@ export const useCounterStore = defineStore('counter', {
 
   getters: {
     doubleCount: (state) => state.count * 2,
-    // Getter with parameter
+    // 带参数的 Getter
     countPlusN: (state) => (n) => state.count + n
   },
 
@@ -47,7 +47,7 @@ export const useCounterStore = defineStore('counter', {
 
 ---
 
-## Setup Store Syntax (Composition API)
+## Setup Store 语法（Composition API）
 
 ```javascript
 // stores/user.js
@@ -62,7 +62,7 @@ import { ref, computed } from 'vue'
  */
 
 export const useUserStore = defineStore('user', () => {
-  // State
+  // 状态
   /** @type {import('vue').Ref<User | null>} */
   const currentUser = ref(null)
   const isLoading = ref(false)
@@ -102,7 +102,7 @@ export const useUserStore = defineStore('user', () => {
 
 ---
 
-## Using Stores
+## 使用 Stores
 
 ```vue
 <script setup>
@@ -111,10 +111,10 @@ import { storeToRefs } from 'pinia'
 
 const userStore = useUserStore()
 
-// Use storeToRefs for reactive state/getters
+// 使用 storeToRefs 获取响应式状态/getters
 const { currentUser, isLoggedIn, isLoading } = storeToRefs(userStore)
 
-// Actions can be destructured directly
+// Actions 可以直接解构
 const { login, logout } = userStore
 </script>
 
@@ -129,7 +129,7 @@ const { login, logout } = userStore
 
 ---
 
-## Store Composition
+## Store 组合
 
 ```javascript
 // stores/cart.js
@@ -141,7 +141,7 @@ import { useUserStore } from './user'
 export const useCartStore = defineStore('cart', () => {
   const items = ref([]) // [{ productId, quantity }]
 
-  // Access other stores
+  // 访问其他 stores
   const productsStore = useProductsStore()
   const userStore = useUserStore()
 
@@ -173,7 +173,7 @@ export const useCartStore = defineStore('cart', () => {
 
 ---
 
-## Persistence
+## 持久化
 
 ```javascript
 // stores/settings.js
@@ -209,7 +209,7 @@ export const useSettingsStore = defineStore('settings', () => {
 
 ---
 
-## Testing Stores
+## 测试 Stores
 
 ```javascript
 // stores/__tests__/counter.test.js
@@ -236,14 +236,14 @@ describe('Counter Store', () => {
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Feature | Options Syntax | Setup Syntax |
-|---------|---------------|--------------|
-| State | `state: () => ({})` | `const x = ref()` |
+| 功能 | Options 语法 | Setup 语法 |
+|------|-------------|------------|
+| 状态 | `state: () => ({})` | `const x = ref()` |
 | Getter | `getters: { x: (state) => }` | `const x = computed()` |
 | Action | `actions: { fn() {} }` | `function fn() {}` |
-| Use in component | `storeToRefs()` for state | Same |
-| Reset state | `store.$reset()` | Manual reset function |
-| Subscribe | `store.$subscribe((mutation, state) => {})` | Same |
-| Other stores | Use in actions | Call at setup top level |
+| 在组件中使用 | `storeToRefs()` 获取状态 | 相同 |
+| 重置状态 | `store.$reset()` | 手动重置函数 |
+| 订阅 | `store.$subscribe((mutation, state) => {})` | 相同 |
+| 其他 store | 在 actions 中使用 | 在 setup 顶层调用 |

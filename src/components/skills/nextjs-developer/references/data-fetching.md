@@ -1,14 +1,14 @@
-# Data Fetching & Caching
+# 数据获取与缓存
 
-## Extended fetch API
+## 扩展 fetch API
 
-Next.js extends the native fetch with caching and revalidation options:
+Next.js 扩展了原生 fetch，支持缓存和重新验证选项：
 
 ```tsx
 // app/page.tsx
 async function getData() {
   const res = await fetch('https://api.example.com/posts', {
-    cache: 'force-cache', // Default: cache forever (SSG)
+    cache: 'force-cache', // 默认：永久缓存（SSG）
   })
 
   if (!res.ok) {
@@ -20,40 +20,40 @@ async function getData() {
 
 export default async function Page() {
   const data = await getData()
-  return <div>{/* render data */}</div>
+  return <div>{/* 渲染数据 */}</div>
 }
 ```
 
-## Cache Options
+## 缓存选项
 
 ```tsx
-// 1. Force cache (Static Site Generation)
+// 1. 强制缓存（静态站点生成）
 fetch('https://api.example.com/data', {
-  cache: 'force-cache' // Default behavior
+  cache: 'force-cache' // 默认行为
 })
 
-// 2. No cache (Server-Side Rendering)
+// 2. 不缓存（服务端渲染）
 fetch('https://api.example.com/data', {
-  cache: 'no-store' // Always fetch fresh data
+  cache: 'no-store' // 始终获取最新数据
 })
 
-// 3. Revalidate (Incremental Static Regeneration)
+// 3. 按时间重新验证（增量静态再生成）
 fetch('https://api.example.com/data', {
-  next: { revalidate: 3600 } // Revalidate every hour
+  next: { revalidate: 3600 } // 每小时重新验证
 })
 
-// 4. Revalidate with tags
+// 4. 按标签重新验证
 fetch('https://api.example.com/data', {
   next: { tags: ['posts'] }
 })
 ```
 
-## Revalidation Methods
+## 重新验证方法
 
-### Time-based Revalidation (ISR)
+### 基于时间的重新验证（ISR）
 
 ```tsx
-// Revalidate every 60 seconds
+// 每 60 秒重新验证
 async function getPosts() {
   const res = await fetch('https://api.example.com/posts', {
     next: { revalidate: 60 }
@@ -61,8 +61,8 @@ async function getPosts() {
   return res.json()
 }
 
-// Route segment config
-export const revalidate = 60 // seconds
+// 路由段配置
+export const revalidate = 60 // 秒
 
 export default async function Page() {
   const posts = await getPosts()
@@ -70,7 +70,7 @@ export default async function Page() {
 }
 ```
 
-### On-Demand Revalidation
+### 按需重新验证
 
 ```tsx
 // app/api/revalidate/route.ts
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
   return Response.json({ revalidated: false })
 }
 
-// Usage in Server Action
+// 在 Server Action 中使用
 'use server'
 
 import { revalidatePath } from 'next/cache'
@@ -96,20 +96,20 @@ import { revalidatePath } from 'next/cache'
 export async function createPost(data: FormData) {
   await savePost(data)
 
-  // Revalidate specific path
+  // 重新验证特定路径
   revalidatePath('/posts')
 
-  // Revalidate entire layout
+  // 重新验证整个布局
   revalidatePath('/posts', 'layout')
 }
 
 async function savePost(_data: FormData) {}
 ```
 
-### Tag-based Revalidation
+### 基于标签的重新验证
 
 ```tsx
-// Fetch with tags
+// 使用标签获取数据
 async function getPosts() {
   const res = await fetch('https://api.example.com/posts', {
     next: { tags: ['posts'] }
@@ -124,33 +124,33 @@ async function getAuthors() {
   return res.json()
 }
 
-// Revalidate by tag
+// 按标签重新验证
 import { revalidateTag } from 'next/cache'
 
 export async function createPost() {
-  // Revalidate all fetches tagged with 'posts'
+  // 重新验证所有标记为 'posts' 的请求
   revalidateTag('posts', 'max')
 }
 ```
 
-## Route Segment Config
+## 路由段配置
 
 ```tsx
 // app/posts/page.tsx
 
-// Force dynamic rendering
+// 强制动态渲染
 export const dynamic = 'force-dynamic' // 'auto' | 'force-dynamic' | 'error' | 'force-static'
 
-// Revalidation interval
-export const revalidate = 3600 // false | 0 | number (seconds)
+// 重新验证间隔
+export const revalidate = 3600 // false | 0 | number（秒）
 
-// Fetch cache
+// 请求缓存
 export const fetchCache = 'auto' // 'auto' | 'default-cache' | 'only-cache' | 'force-cache' | 'force-no-store' | 'default-no-store' | 'only-no-store'
 
-// Runtime
+// 运行时
 export const runtime = 'nodejs' // 'nodejs' | 'edge'
 
-// Preferred region
+// 首选区域
 export const preferredRegion = 'auto' // 'auto' | 'home' | 'edge' | string | string[]
 
 export default async function Page() {
@@ -158,7 +158,7 @@ export default async function Page() {
 }
 ```
 
-## Parallel Data Fetching
+## 并行数据获取
 
 ```tsx
 async function getUser() {
@@ -177,7 +177,7 @@ async function getComments() {
 }
 
 export default async function Page() {
-  // Fetch in parallel with Promise.all
+  // 使用 Promise.all 并行获取
   const [user, posts, comments] = await Promise.all([
     getUser(),
     getPosts(),
@@ -194,21 +194,21 @@ export default async function Page() {
 }
 ```
 
-## Sequential Data Fetching
+## 顺序数据获取
 
 ```tsx
-// When one fetch depends on another
+// 当一个请求依赖另一个请求时
 export default async function Page({
   params,
 }: {
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  // First fetch
+  // 第一次请求
   const user = await fetch(`https://api.example.com/users/${id}`)
     .then(res => res.json())
 
-  // Second fetch depends on first
+  // 第二次请求依赖第一次的结果
   const posts = await fetch(`https://api.example.com/users/${user.id}/posts`)
     .then(res => res.json())
 
@@ -221,7 +221,7 @@ export default async function Page({
 }
 ```
 
-## Streaming with Suspense
+## 使用 Suspense 进行流式渲染
 
 ```tsx
 // app/page.tsx
@@ -253,7 +253,7 @@ export default function Page() {
 }
 ```
 
-## React cache for Deduplication
+## React cache 去重
 
 ```tsx
 // lib/data.ts
@@ -266,13 +266,13 @@ export const getUser = cache(async (id: string) => {
 
 // components/user-profile.tsx
 export async function UserProfile({ userId }: { userId: string }) {
-  const user = await getUser(userId) // Cached
+  const user = await getUser(userId) // 缓存命中
   return <div>{user.name}</div>
 }
 
 // components/user-posts.tsx
 export async function UserPosts({ userId }: { userId: string }) {
-  const user = await getUser(userId) // Uses cached result
+  const user = await getUser(userId) // 使用缓存结果
   return <div>{user.posts.length} posts</div>
 }
 
@@ -281,13 +281,13 @@ export default function Page() {
   return (
     <>
       <UserProfile userId="123" />
-      <UserPosts userId="123" /> {/* Same fetch, deduplicated */}
+      <UserPosts userId="123" /> {/* 相同请求，已去重 */}
     </>
   )
 }
 ```
 
-## Database Queries
+## 数据库查询
 
 ```tsx
 // lib/db.ts
@@ -302,7 +302,7 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db
 // app/posts/page.tsx
 import { db } from '@/lib/db'
 
-export const revalidate = 60 // Revalidate every 60 seconds
+export const revalidate = 60 // 每 60 秒重新验证
 
 export default async function PostsPage() {
   const posts = await db.post.findMany({
@@ -323,14 +323,14 @@ export default async function PostsPage() {
 }
 ```
 
-## Error Handling
+## 错误处理
 
 ```tsx
 async function getData() {
   const res = await fetch('https://api.example.com/data')
 
   if (!res.ok) {
-    // This will activate the closest error.tsx
+    // 这将触发最近的 error.tsx
     throw new Error('Failed to fetch data')
   }
 
@@ -361,7 +361,7 @@ export default function Error({
 }
 ```
 
-## Loading States
+## 加载状态
 
 ```tsx
 // app/posts/loading.tsx
@@ -374,14 +374,14 @@ export default async function PostsPage() {
   const posts = await fetch('https://api.example.com/posts')
     .then(res => res.json())
 
-  return <div>{/* render posts */}</div>
+  return <div>{/* 渲染文章 */}</div>
 }
 ```
 
-## Client-Side Data Fetching
+## 客户端数据获取
 
 ```tsx
-// When you need client-side fetching
+// 需要客户端获取数据时
 'use client'
 
 import useSWR from 'swr'
@@ -390,7 +390,7 @@ const fetcher = (url: string) => fetch(url).then(res => res.json())
 
 export function Posts() {
   const { data, error, isLoading } = useSWR('/api/posts', fetcher, {
-    refreshInterval: 3000, // Refresh every 3 seconds
+    refreshInterval: 3000, // 每 3 秒刷新
   })
 
   if (error) return <div>Failed to load</div>
@@ -406,14 +406,14 @@ export function Posts() {
 }
 ```
 
-## Preloading Data
+## 预加载数据
 
 ```tsx
 // lib/data.ts
 import { cache } from 'react'
 
 export const preload = (id: string) => {
-  void getUser(id) // Trigger fetch without awaiting
+  void getUser(id) // 触发请求但不等待
 }
 
 export const getUser = cache(async (id: string) => {
@@ -434,12 +434,12 @@ import { User } from '@/components/user'
 import { preload } from '@/lib/data'
 
 export default async function Page() {
-  preload('123') // Start loading immediately
+  preload('123') // 立即开始加载
   return <User id="123" />
 }
 ```
 
-## Static Generation with Dynamic Routes
+## 带动态路由的静态生成
 
 ```tsx
 // app/posts/[slug]/page.tsx
@@ -476,22 +476,22 @@ export default async function Post({
 }
 ```
 
-## Quick Reference
+## 快速参考
 
-| Strategy | Config | Use Case |
-|----------|--------|----------|
-| **SSG** | `cache: 'force-cache'` | Static content |
-| **SSR** | `cache: 'no-store'` | Always fresh data |
-| **ISR** | `next: { revalidate: 60 }` | Periodic updates |
-| **Tag-based** | `next: { tags: ['posts'] }` | On-demand revalidation |
-| **Dynamic** | `export const dynamic = 'force-dynamic'` | Per-request data |
+| 策略 | 配置 | 使用场景 |
+|------|------|----------|
+| **SSG** | `cache: 'force-cache'` | 静态内容 |
+| **SSR** | `cache: 'no-store'` | 始终最新数据 |
+| **ISR** | `next: { revalidate: 60 }` | 定期更新 |
+| **基于标签** | `next: { tags: ['posts'] }` | 按需重新验证 |
+| **动态** | `export const dynamic = 'force-dynamic'` | 每次请求的数据 |
 
-## Best Practices
+## 最佳实践
 
-1. **Default to caching** - Use force-cache for static content
-2. **Use ISR** - Revalidate periodically for semi-dynamic content
-3. **Parallel fetching** - Use Promise.all for independent requests
-4. **Deduplicate** - Use React cache() for repeated calls
-5. **Stream with Suspense** - Show content progressively
-6. **Tag your fetches** - Enable granular revalidation
-7. **Handle errors** - Use error.tsx for graceful degradation
+1. **默认启用缓存** - 对静态内容使用 force-cache
+2. **使用 ISR** - 对半动态内容定期重新验证
+3. **并行获取** - 对独立请求使用 Promise.all
+4. **去重** - 对重复调用使用 React cache()
+5. **使用 Suspense 流式传输** - 逐步展示内容
+6. **标记请求** - 启用精细化的重新验证
+7. **处理错误** - 使用 error.tsx 进行优雅降级

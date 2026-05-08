@@ -1,103 +1,103 @@
-# Strategic vs Tactical Programming
+# 战略式编程 vs. 战术式编程
 
-The distinction between strategic and tactical programming is not about specific techniques -- it is about mindset. It determines whether a codebase improves or degrades over time, and it is the single biggest factor in long-term software quality.
+战略式编程和战术式编程之间的区别不在于具体技术——而在于心态。它决定了一个代码库是否会随时间改善或退化，也是长期软件质量中最重要的单一因素。
 
-## Two Mindsets
+## 两种心态
 
-### Tactical Programming
+### 战术式编程
 
-**Goal:** Get the current feature working as quickly as possible.
+**目标：** 尽快让当前功能工作。
 
-**Characteristics:**
-- The primary metric is "does it work?"
-- Design happens incidentally (or not at all)
-- Shortcuts are acceptable because "we'll fix it later"
-- Each change introduces a small amount of complexity
-- The codebase gradually degrades over months and years
+**特征：**
+- 主要衡量标准是"它能工作吗？"
+- 设计是附带发生的（或根本不发生）
+- 捷径可以接受，因为"我们以后会修复"
+- 每次更改引入少量复杂性
+- 代码库在数月和数年内逐渐退化
 
-**The inner monologue:**
-- "This is a little hacky but it works"
-- "I'll clean this up in the next sprint"
-- "It's just one extra parameter, no big deal"
-- "We don't have time for a proper abstraction"
-- "It's technical debt but we'll pay it down later"
+**内心独白：**
+- "这有点 hacky，但它能工作"
+- "我将在下一个 sprint 中清理它"
+- "只是一个额外参数而已，没什么大不了的"
+- "我们没有时间做适当的抽象"
+- "这是技术债务，但我们以后会偿还的"
 
-### Strategic Programming
+### 战略式编程
 
-**Goal:** Produce a great design that also happens to work.
+**目标：** 产生一个碰巧也能工作的优秀设计。
 
-**Characteristics:**
-- The primary metric is "does this make the system simpler?"
-- Design is deliberate and happens before implementation
-- Working code is necessary but not sufficient
-- Each change is an investment opportunity -- leave the code better than you found it
-- The codebase gradually improves over months and years
+**特征：**
+- 主要衡量标准是"这会让系统更简单吗？"
+- 设计是有意的，发生在实现之前
+- 工作代码是必要的但不足够
+- 每次更改都是一个投资机会——让代码比你发现时更好
+- 代码库在数月和数年内逐渐改善
 
-**The inner monologue:**
-- "This works, but is there a simpler way to express this interface?"
-- "Before I add this feature, let me improve the module structure"
-- "This parameter feels wrong -- the module should decide this internally"
-- "Let me write the interface comment first to clarify the abstraction"
-- "This will take an extra hour now but save many hours later"
+**内心独白：**
+- "这能工作，但是否有更简单的方式来表达这个接口？"
+- "在添加这个功能之前，让我先改进模块结构"
+- "这个参数感觉不对——模块应该在内部决定这个"
+- "让我先写接口注释来澄清抽象"
+- "这将多花一小时，但以后会节省很多小时"
 
-## The Tactical Tornado
+## 战术龙卷风
 
-Ousterhout's most vivid concept: the **tactical tornado** is a developer who produces features at extraordinary speed, leaving a trail of complexity in their wake.
+Ousterhout 最生动的概念：**战术龙卷风**是一种以非凡速度交付功能，但身后留下一片复杂性足迹的开发者。
 
-### Profile of a Tactical Tornado
+### 战术龙卷风的特征
 
-| Trait | Description |
+| 特质 | 描述 |
 |-------|-------------|
-| **Speed** | Ships features faster than anyone else on the team |
-| **Heroics** | Often praised by management for delivering quickly |
-| **Trail of wreckage** | Every module they touch becomes harder for others to work with |
-| **Special cases everywhere** | Adds boolean parameters, flags, and one-off workarounds |
-| **No refactoring** | Never goes back to clean up; always moving to the next thing |
-| **Knowledge hoarding** | Often the only one who can work on their code (because it's incomprehensible to others) |
+| **速度** | 比团队中任何人都更快交付功能 |
+| **英雄主义** | 经常因快速交付而受到管理层表扬 |
+| **破坏痕迹** | 他们触碰的每个模块都变得更难与他人合作 |
+| **到处是特例** | 添加布尔参数、标志和一次性变通方案 |
+| **从不重构** | 从不会去清理；总是转移到下一件事 |
+| **知识囤积** | 通常是唯一能处理他们代码的人（因为对他人来说难以理解） |
 
-### The Damage
+### 造成的损害
 
-A tactical tornado produces code that:
-1. **Works today** (they are often technically skilled)
-2. **Is hard to understand** (optimized for writing speed, not reading speed)
-3. **Is hard to modify** (full of implicit assumptions and hidden dependencies)
-4. **Slows the entire team** (others spend hours understanding and working around the tornado's code)
-5. **Cannot be safely changed** (unknown unknowns abound)
+战术龙卷风产生的代码：
+1. **今天能工作**（他们通常技术熟练）
+2. **难以理解**（为编写速度而非阅读速度优化）
+3. **难以修改**（充满隐式假设和隐藏依赖）
+4. **拖慢整个团队**（他人花费数小时理解和绕过龙卷风的代码工作）
+5. **无法安全更改**（未知的未知比比皆是）
 
-### The Math
+### 数学
 
-If a tactical tornado produces features at 2x speed but creates code that is 3x harder to maintain, the team loses productivity as soon as anyone else touches that code. Over a year, the tornado's output is a net negative because the maintenance cost exceeds the development speed gain.
+如果一个战术龙卷风以 2 倍速度交付功能，但创造的代码维护难度是 3 倍，那么一旦其他人接触这些代码，团队就会损失生产力。一年下来，龙卷风的输出是净负面的，因为维护成本超过了开发速度的提升。
 
-### How to Handle Tactical Tornados
+### 如何处理战术龙卷风
 
-| Approach | Details |
+| 方法 | 详情 |
 |----------|---------|
-| **Code reviews** | Require design quality, not just correctness; reject PRs that add unnecessary complexity |
-| **Design discussions** | Require interface design before implementation |
-| **Complexity budgets** | Set explicit limits on interface size and module coupling |
-| **Team metrics** | Measure team velocity over time, not individual output |
-| **Mentoring** | Help the tornado see long-term impact; often they genuinely don't realize the cost |
+| **代码审查** | 要求设计质量，而不仅仅是正确性；拒绝增加不必要复杂性的 PR |
+| **设计讨论** | 要求在实现之前进行接口设计 |
+| **复杂性预算** | 设定接口大小和模块耦合的显式限制 |
+| **团队指标** | 衡量团队随时间推移的速度，而非个人产出 |
+| **指导** | 帮助龙卷风看到长期影响；他们通常真的没有意识到成本 |
 
-## The Investment Mindset
+## 投资心态
 
-### The 10-20% Rule
+### 10-20% 规则
 
-Ousterhout recommends spending roughly 10-20% of development time on design improvement. This is not a separate "refactoring phase" -- it is part of every feature's development.
+Ousterhout 建议将大约 10-20% 的开发时间用于设计改进。这不是一个单独的"重构阶段"——它是每个功能开发的一部分。
 
-**What the investment looks like:**
+**投资的样子：**
 
-| Investment | Time | Payoff |
+| 投资 | 时间 | 回报 |
 |-----------|------|--------|
-| Write interface comments before code | 15-30 minutes | Catches bad designs before implementation |
-| Improve a module's interface while adding a feature | 1-2 hours | Simplifies the module for all future changes |
-| Refactor a function that has become too complex | 30-60 minutes | Reduces cognitive load for the next developer |
-| Add missing comments to code you had to study | 15 minutes | Saves the next developer hours of reverse-engineering |
-| Rename variables and functions for clarity | 15 minutes | Reduces obscurity throughout the module |
-| Eliminate a configuration parameter by auto-detecting | 1-2 hours | Removes complexity for every caller |
+| 在代码之前编写接口注释 | 15-30 分钟 | 在实现之前捕获糟糕的设计 |
+| 在添加功能时改进模块接口 | 1-2 小时 | 为该模块的所有未来更改简化 |
+| 重构一个变得过于复杂的函数 | 30-60 分钟 | 降低下一个开发者的认知负荷 |
+| 为你必须研究的代码添加缺失的注释 | 15 分钟 | 为未来开发者节省数小时的逆向工程时间 |
+| 重命名变量和函数以提高清晰度 | 15 分钟 | 减少整个模块的模糊性 |
+| 通过自动检测消除一个配置参数 | 1-2 小时 | 为每个调用者移除复杂性 |
 
-### Why 10-20% Is Enough
+### 为什么 10-20% 就足够了
 
-You don't need massive refactoring projects. Small, continuous improvements compound:
+你不需要大规模的重构项目。小而持续的改进会累积：
 
 ```
 Month 1:  Codebase quality: ████████░░ (80%)
@@ -106,7 +106,7 @@ Month 6:  Codebase quality: █████████░ (90%)  -- improvement
 Month 12: Codebase quality: ██████████ (95%)  -- team is highly productive
 ```
 
-Compare with tactical programming:
+对比战术式编程：
 
 ```
 Month 1:  Codebase quality: ████████░░ (80%)
@@ -115,155 +115,155 @@ Month 6:  Codebase quality: ██████░░░░ (65%)  -- velocity dr
 Month 12: Codebase quality: ████░░░░░░ (45%)  -- team spends more time fighting code than building features
 ```
 
-### Investment Opportunities in Every PR
+### 每个 PR 中的投资机会
 
-Every pull request is an opportunity to improve the system. Some investments:
+每个拉取请求都是改进系统的机会。一些投资：
 
-| Opportunity | Example |
+| 机会 | 示例 |
 |------------|---------|
-| **Improve naming** | Rename `process()` to `validateAndPersistOrder()` |
-| **Simplify an interface** | Remove a parameter that can be auto-detected |
-| **Add missing comments** | Document the interface of a function you had to study |
-| **Merge shallow classes** | Combine `OrderValidator` and `OrderService` |
-| **Extract hidden information** | Move format knowledge from three modules into one |
-| **Remove dead code** | Delete unused methods, parameters, or configuration options |
-| **Fix temporal decomposition** | Merge `readConfig()` and `applyConfig()` into `loadConfig()` |
+| **改进命名** | 将 `process()` 重命名为 `validateAndPersistOrder()` |
+| **简化接口** | 移除一个可以自动检测的参数 |
+| **添加缺失的注释** | 记录你不得不研究过的函数的接口 |
+| **合并浅层类** | 合并 `OrderValidator` 和 `OrderService` |
+| **提取隐藏的信息** | 将格式知识从三个模块移到一处 |
+| **移除死代码** | 删除未使用的方法、参数或配置选项 |
+| **修复时序分解** | 将 `readConfig()` 和 `applyConfig()` 合并为 `loadConfig()` |
 
-### The Boy Scout Rule with Teeth
+### 具有实质的童子军规则
 
-"Leave the code better than you found it" is a common principle, but Ousterhout gives it teeth: every change should include at least one design improvement. Not every change needs a major refactoring, but every change should make some small improvement to the system's design.
+"让代码比你发现时更好"是一个常见原则，但 Ousterhout 给了它实质内容：每次变更都应该包含至少一个设计改进。不是每次变更都需要重大重构，但每次变更都应该对系统的设计做出一项小的改进。
 
-## How Startups Should Approach Design
+## 初创公司应如何处理设计
 
-### The Myth: "We'll Fix It Later"
+### 神话："我们以后会修复"
 
-Many startups believe that design quality is a luxury they will invest in once they have product-market fit. This is almost always wrong.
+许多初创公司相信设计质量是一种奢侈品，一旦他们有了产品-市场匹配就会投入。这几乎总是错误的。
 
-**Why:**
-1. "Later" never comes -- there is always another urgent feature
-2. Technical debt compounds -- the cost of fixing grows exponentially
-3. Early design decisions become architectural constraints that are extremely expensive to change
-4. As the team grows, bad abstractions slow everyone down (not just the original author)
-5. Velocity problems from poor design often look like "we need more engineers" problems
+**原因：**
+1. "以后"永远不会来——总是有另一个紧急功能
+2. 技术债务会复利——修复成本呈指数增长
+3. 早期的设计决策会成为架构约束，变更成本极高
+4. 随着团队增长，糟糕的抽象会让每个人都慢下来（而不仅仅是原始作者）
+5. 糟糕设计导致的速度问题通常看起来像是"我们需要更多工程师"的问题
 
-### The Reality
+### 现实
 
-Startups that invest in design from day one:
-- Ship features faster after the first few months (clean code is faster to modify)
-- Onboard new developers faster (clear abstractions reduce ramp-up time)
-- Have fewer production incidents (fewer unknown unknowns)
-- Can pivot more easily (well-abstracted code adapts to new requirements)
+从第一天起就投入设计的初创公司：
+- 在最初几个月后更快地交付功能（干净的代码修改更快）
+- 更快地入职新开发者（清晰的抽象减少上手时间）
+- 生产事故更少（未知的未知更少）
+- 更容易转型（良好抽象的代码适应新需求）
 
-Startups that take tactical shortcuts from day one:
-- Ship features fast for the first few weeks
-- Gradually slow down as complexity accumulates
-- Spend increasing time debugging, not building
-- Eventually face a "rewrite or die" decision (and rewrites usually fail)
+从第一天起就采取战术性捷径的初创公司：
+- 在前几周快速交付功能
+- 随着复杂性积累逐渐减慢
+- 花越来越多的时间调试而非构建
+- 最终面临"重写或死亡"的抉择（而重写通常失败）
 
-### The Startup Investment
+### 初创公司的投资
 
-The 10-20% investment is even more affordable for startups because:
-- The codebase is small, so improvements have outsized impact
-- Early design decisions propagate through all future code
-- The team is small, so design discussions are fast
-- There is no legacy code to work around
+10-20% 的投资对初创公司来说更加可负担，因为：
+- 代码库很小，所以改进有超大的影响
+- 早期设计决策会传播到所有未来的代码
+- 团队很小，所以设计讨论很快
+- 没有遗留代码需要绕过
 
-**Practical startup approach:**
-1. Spend 10% of time on design improvement -- not 0%, not 50%
-2. Write interface comments for all public APIs
-3. Don't create shallow classes "because that's how enterprise code works"
-4. Refactor aggressively while the codebase is small and the cost is low
-5. Establish code review norms that include design quality
+**实用的初创公司方法：**
+1. 花 10% 的时间在设计改进上——不是 0%，不是 50%
+2. 为所有公共 API 编写接口注释
+3. 不要因为"企业代码就是这么写的"而创建浅层类
+4. 在代码库还很小、成本很低时积极重构
+5. 建立包含设计质量的代码审查规范
 
-## Culture: Facebook vs Google
+## 文化：Facebook vs Google
 
-Ousterhout contrasts two engineering cultures to illustrate the strategic vs tactical distinction.
+Ousterhout 对比了两种工程文化来说明战略与战术的区别。
 
-### Facebook's "Move Fast and Break Things" (Tactical Culture)
+### Facebook 的"快速行动，打破常规"（战术文化）
 
-| Aspect | Details |
+| 方面 | 详情 |
 |--------|---------|
-| **Motto** | "Move fast and break things" (later changed to "Move fast with stable infrastructure") |
-| **Incentive** | Ship features quickly; promotions based on launch velocity |
-| **Design investment** | Minimal; design happens incidentally during implementation |
-| **Result** | Large codebase with significant complexity; Facebook eventually had to invest heavily in infrastructure to manage the mess |
-| **Lesson** | Tactical culture produces speed early but creates compounding problems |
+| **格言** | "快速行动，打破常规"（后来改为"在稳定基础设施上快速行动"） |
+| **激励** | 快速交付功能；晋升基于发布速度 |
+| **设计投入** | 最小；设计在实现过程中附带发生 |
+| **结果** | 庞大的代码库，显著的复杂性；Facebook 最终不得不大力投入基础设施来管理混乱 |
+| **教训** | 战术文化早期产生速度，但会创造复合问题 |
 
-Note: Facebook later changed their motto because the approach became unsustainable at scale. The "break things" philosophy worked for a small team but created enormous costs as the organization grew.
+注意：Facebook 后来改变了他们的格言，因为这种方法在规模上变得不可持续。"打破常规"的理念在小型团队中有效，但随着组织增长创造了巨大的成本。
 
-### Google's Design Culture (Strategic Culture)
+### Google 的设计文化（战略文化）
 
-| Aspect | Details |
+| 方面 | 详情 |
 |--------|---------|
-| **Emphasis** | Design quality, readability reviews, code health |
-| **Incentive** | Readability reviewers, design documents for significant changes |
-| **Design investment** | Substantial; design documents and reviews before implementation |
-| **Result** | Engineers reported being more productive on complex systems; easier to understand and modify unfamiliar code |
-| **Lesson** | Strategic culture costs more upfront but compounds into higher long-term productivity |
+| **强调** | 设计质量、可读性审查、代码健康 |
+| **激励** | 可读性审查者、重大变更的设计文档 |
+| **设计投入** | 实质性；实现之前的设计文档和审查 |
+| **结果** | 工程师报告在复杂系统上更高效；更容易理解和修改不熟悉的代码 |
+| **教训** | 战略文化前期成本更高，但会复利为更高的长期生产力 |
 
-### The Lesson
+### 启示
 
-Neither extreme is right for every organization. But the evidence suggests that investing in design produces better outcomes over any timeframe longer than a few weeks. The key is not to choose between speed and quality but to recognize that strategic design **is** the fastest path when measured over months, not days.
+没有一种极端适合每个组织。但有证据表明，在超过几周的任何时间框架内，投资设计会产生更好的结果。关键不是选择速度还是质量，而是认识到战略设计在数月而非数天的尺度上衡量时，**就是**最快的路径。
 
-## When to Invest Strategically
+## 何时进行战略投资
 
-### Always Invest When:
+### 务必投资时：
 
-| Situation | Why |
+| 场景 | 原因 |
 |-----------|-----|
-| **Designing a new module interface** | Interface decisions are the hardest to change later |
-| **A module's complexity is growing** | Small interventions now prevent major rewrites later |
-| **Onboarding new team members** | Clear abstractions and comments dramatically reduce ramp-up time |
-| **Multiple teams will use the code** | Interface quality multiplies across consumers |
-| **The code is on a critical path** | Complexity in critical paths causes production incidents |
+| **设计新模块接口** | 接口决策是后期最难改变的 |
+| **模块复杂性正在增长** | 现在的小干预可以防止日后的大规模重写 |
+| **入职新团队成员** | 清晰的抽象和注释显著减少上手时间 |
+| **多个团队将使用该代码** | 接口质量在消费者之间倍增 |
+| **代码在关键路径上** | 关键路径上的复杂性会导致生产事故 |
 
-### Accept Tactical Approach When:
+### 可以接受战术方法时：
 
-| Situation | Why | Caveat |
+| 场景 | 原因 | 注意事项 |
 |-----------|-----|--------|
-| **True prototype/throwaway code** | Code that will genuinely be deleted | Be honest -- most "prototypes" ship to production |
-| **Tight deadline with defined scope** | The tactical code will be immediately followed by a design pass | Actually schedule the design pass; put it on the calendar |
-| **Exploring an unfamiliar domain** | You don't know enough to design well yet | Plan to redesign once you understand the domain |
+| **真正的原型/一次性代码** | 将真正被删除的代码 | 诚实面对——大多数"原型"最终会上线 |
+| **有时间限制的明确范围** | 战术性代码之后将立即进行设计审查 | 实际安排设计审查；放在日历上 |
+| **探索不熟悉的领域** | 你还不够了解以进行良好的设计 | 计划在了解领域后重新设计 |
 
-The critical discipline: if you take a tactical shortcut, acknowledge the debt and plan to repay it. Don't pretend the shortcut has no cost.
+关键纪律：如果你采取了战术性捷径，承认债务并计划偿还。不要假装捷径没有成本。
 
-## Practical Exercises
+## 实践练习
 
-### Exercise 1: Interface Audit
+### 练习 1：接口审计
 
-Pick a module you work with frequently. For each public method:
-1. Write the interface comment you wish existed
-2. Compare it to the actual interface
-3. Identify unnecessary parameters, missing defaults, and leaked implementation details
-4. Propose a simpler interface that covers all current use cases
+选一个你经常使用的模块。对每个公共方法：
+1. 编写你希望存在的接口注释
+2. 将其与实际接口进行比较
+3. 识别不必要的参数、缺失的默认值和泄露的实现细节
+4. 提出一个覆盖所有当前用例的更简单接口
 
-### Exercise 2: Complexity Budget
+### 练习 2：复杂性预算
 
-For your next feature:
-1. Before starting, write down the current complexity of the affected modules (interface size, number of dependencies, known pain points)
-2. After finishing, measure again
-3. Goal: the feature adds functionality without increasing complexity, or even reduces it
+对你的下一个功能：
+1. 开始之前，记录受影响模块的当前复杂性（接口大小、依赖数量、已知痛点）
+2. 完成后，再次测量
+3. 目标：功能在不增加复杂性的情况下添加功能，甚至降低它
 
-### Exercise 3: Tactical Tornado Detection
+### 练习 3：战术龙卷风检测
 
-Review the last 10 PRs on your team:
-1. Which PRs added new parameters to existing interfaces?
-2. Which PRs added special-case handling?
-3. Which PRs included comments explaining design decisions?
-4. Which PRs simplified existing code while adding new features?
+回顾你团队最近 10 个 PR：
+1. 哪些 PR 向现有接口添加了新参数？
+2. 哪些 PR 添加了特例处理？
+3. 哪些 PR 包含了解释设计决策的注释？
+4. 哪些 PR 在添加新功能的同时简化了现有代码？
 
-PRs that score poorly on these questions may indicate tactical programming.
+在这些问题上得分低的 PR 可能表明战术式编程。
 
-### Exercise 4: Design Review
+### 练习 4：设计审查
 
-For your next code review, add these questions:
-1. Does this change make the system simpler or more complex?
-2. Is the interface simpler than the implementation?
-3. Is information properly hidden?
-4. Are there interface comments that describe the abstraction?
-5. Could any configuration parameters be eliminated?
-6. Are there pass-through methods that should be merged?
+针对你的下一次代码审查，添加这些问题：
+1. 此变更使系统更简单还是更复杂？
+2. 接口是否比实现简单？
+3. 信息是否被适当隐藏？
+4. 是否有描述抽象的接口注释？
+5. 是否有任何配置参数可以被消除？
+6. 是否有应合并的透传方法？
 
-## Summary
+## 总结
 
-The strategic vs tactical distinction is ultimately about whether you view design as an investment or a cost. Tactical programmers see design as overhead that slows them down. Strategic programmers see design as an investment that speeds them up. The evidence -- from individual careers, team productivity, and company outcomes -- overwhelmingly favors the strategic approach. The 10-20% investment in design is the highest-return activity in software engineering.
+战略与战术的区别最终归结为你是否将设计视为投资还是成本。战术式程序员认为设计是拖慢他们的开销。战略式程序员认为设计是加速他们的投资。证据——来自个人职业生涯、团队生产力和公司成果——压倒性地支持战略式方法。10-20% 的设计投入是软件工程中回报率最高的活动。

@@ -1,58 +1,58 @@
-# Tauri v2+ IPC Patterns Reference
+# Tauri v2+ IPC 模式参考
 
-## Contents
+## 目录
 
-- Overview
-- IPC Decision Framework
-- Commands (invoke)
+- 概述
+- IPC 决策框架
+- Commands（invoke）
 - Events
-- Typed Streaming Channels
-- State Management
-- Error Handling Across IPC
-- Window Access and App Handles
-- IPC Selection Guide
+- 类型化流式 Channels
+- 状态管理
+- 跨 IPC 的错误处理
+- 窗口访问和应用句柄
+- IPC 选择指南
 
-## Overview
+## 概述
 
-Tauri v2+ provides three IPC primitives:
-1. **Commands**: Request-response (most common)
-2. **Events**: Fire-and-forget notifications
-3. **Channels**: High-frequency streaming
+Tauri v2+ 提供三种 IPC 原语：
+1. **Commands**：请求-响应（最常用）
+2. **Events**：即发即弃的通知
+3. **Channels**：高频流式传输
 
-**See also:** [Capabilities Reference](capabilities-reference.md) for permission setup | [Plugin Reference](plugin-reference.md) for plugin-specific IPC
+**另见：** [能力参考](capabilities-reference.md)查看权限设置 | [插件参考](plugin-reference.md)查看插件特定 IPC
 
-*Last verified: 2026-04-02. Check the official Tauri changelog when IPC API timing matters.*
+*最后验证日期：2026-04-02。当 IPC API 时序至关重要时，请查看官方 Tauri 更新日志。*
 
-## IPC Decision Framework
+## IPC 决策框架
 
-### Commands: Request-Response
-Use `invoke()` when:
-- Frontend needs data from Rust (fetch, compute, query)
-- Frontend triggers an action and needs a result
-- Error handling is needed (returns `Result<T, E>`)
-- **Direction: Frontend → Rust → Frontend** (request/response)
+### Commands：请求-响应
+在以下情况下使用 `invoke()`：
+- 前端需要从 Rust 获取数据（获取、计算、查询）
+- 前端触发操作并需要结果
+- 需要错误处理（返回 `Result<T, E>`）
+- **方向：前端 → Rust → 前端**（请求/响应）
 
-### Events: Fire-and-Forget Notifications
-Use `emit()`/`listen()` when:
-- Rust needs to notify frontend of a background event
-- Multiple windows need to receive the same notification
-- Broadcasting state changes that don't require acknowledgment
-- **Direction: Bidirectional** (but one-way per emit)
-- **Important:** Events are fire-and-forget — there is NO acknowledgment or response channel
+### Events：即发即弃的通知
+在以下情况下使用 `emit()`/`listen()`：
+- Rust 需要通知前端后台事件
+- 多个窗口需要接收相同通知
+- 广播不需要确认的状态变化
+- **方向：双向**（但每次 emit 是单向的）
+- **重要：** Events 是即发即弃的——没有确认或响应通道
 
-### Channels: Typed Streaming
-Use `Channel<T>` when:
-- High-frequency progress updates from a long-running operation
-- Streaming data from Rust to frontend
-- Strongly typed discriminated message streams
-- **Direction: Rust → Frontend** (streaming only)
-- **Key difference from Events:** Channels are scoped to a single command invocation; events are global
+### Channels：类型化流式传输
+在以下情况下使用 `Channel<T>`：
+- 长时间运行操作的高频进度更新
+- 从 Rust 向前端流式传输数据
+- 强类型判别消息流
+- **方向：Rust → 前端**（仅流式）
+- **与 Events 的关键区别：** Channels 限定在单个命令调用内；events 是全局的
 
-## Commands (invoke)
+## Commands（invoke）
 
-### Basic Command
+### 基本 Command
 
-**Rust:**
+**Rust：**
 ```rust
 #[tauri::command]
 fn greet(name: String) -> String {
@@ -64,16 +64,16 @@ tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![greet])
 ```
 
-**Frontend:**
+**前端：**
 ```typescript
 import { invoke } from '@tauri-apps/api/core';
 
 const result = await invoke<string>('greet', { name: 'World' });
 ```
 
-### Command with Multiple Arguments
+### 带多个参数的 Command
 
-**Rust:**
+**Rust：**
 ```rust
 #[tauri::command]
 fn calculate(a: i32, b: i32, operation: String) -> i32 {
@@ -87,7 +87,7 @@ fn calculate(a: i32, b: i32, operation: String) -> i32 {
 }
 ```
 
-**Frontend:**
+**前端：**
 ```typescript
 const result = await invoke<number>('calculate', {
     a: 10,
@@ -96,9 +96,9 @@ const result = await invoke<number>('calculate', {
 });
 ```
 
-### Async Command
+### 异步 Command
 
-**Rust:**
+**Rust：**
 ```rust
 #[tauri::command]
 async fn fetch_data(url: String) -> Result<String, String> {
@@ -113,7 +113,7 @@ async fn fetch_data(url: String) -> Result<String, String> {
 }
 ```
 
-**Frontend:**
+**前端：**
 ```typescript
 try {
     const data = await invoke<string>('fetch_data', { url: 'https://api.example.com' });
@@ -122,9 +122,9 @@ try {
 }
 ```
 
-### Command with Result Error Handling
+### 带 Result 错误处理的 Command
 
-**Rust:**
+**Rust：**
 ```rust
 use thiserror::Error;
 
@@ -154,7 +154,7 @@ fn read_config(path: String) -> Result<Config, AppError> {
 }
 ```
 
-**Frontend:**
+**前端：**
 ```typescript
 try {
     const config = await invoke<Config>('read_config', { path: '/config.json' });
@@ -164,9 +164,9 @@ try {
 }
 ```
 
-### Command with State
+### 带状态的 Command
 
-**Rust:**
+**Rust：**
 ```rust
 use std::sync::Mutex;
 use tauri::State;
@@ -199,9 +199,9 @@ tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![get_count, increment, add_item])
 ```
 
-### Command with Window Access
+### 带窗口访问的 Command
 
-**Rust:**
+**Rust：**
 ```rust
 use tauri::{WebviewWindow, AppHandle};
 
@@ -224,9 +224,9 @@ fn create_window(app: AppHandle) -> Result<(), String> {
 }
 ```
 
-### Command with Raw Binary Data
+### 带原始二进制数据的 Command
 
-**Rust:**
+**Rust：**
 ```rust
 use tauri::ipc::Response;
 
@@ -245,7 +245,7 @@ fn upload_file(request: tauri::ipc::Request) -> Result<(), String> {
 }
 ```
 
-**Frontend:**
+**前端：**
 ```typescript
 // Reading binary
 const data = await invoke<ArrayBuffer>('read_binary_file', { path: '/file.bin' });
@@ -259,11 +259,11 @@ await invoke('upload_file', fileData);
 
 ## Events
 
-> **Trait imports required:** `use tauri::Emitter;` to call `.emit()` on `AppHandle`/`WebviewWindow`. `use tauri::Listener;` to call `.listen()` on `App`/`AppHandle`. These traits must be in scope.
+> **需要导入 trait：** `use tauri::Emitter;` 以在 `AppHandle`/`WebviewWindow` 上调用 `.emit()`。`use tauri::Listener;` 以在 `App`/`AppHandle` 上调用 `.listen()`。这些 trait 必须在作用域内。
 
-### Emit from Rust to Frontend
+### 从 Rust 向前端 Emit
 
-**Rust:**
+**Rust：**
 ```rust
 use tauri::Emitter;
 
@@ -285,7 +285,7 @@ fn notify_window(app: tauri::AppHandle, window_label: String, message: String) {
 }
 ```
 
-**Frontend:**
+**前端：**
 ```typescript
 import { listen, once } from '@tauri-apps/api/event';
 
@@ -303,16 +303,16 @@ await once<string>('complete', (event) => {
 unlisten();
 ```
 
-### Emit from Frontend to Rust
+### 从前端向 Rust Emit
 
-**Frontend:**
+**前端：**
 ```typescript
 import { emit } from '@tauri-apps/api/event';
 
 await emit('user-action', { action: 'click', target: 'button' });
 ```
 
-**Rust (in setup or command):**
+**Rust（在 setup 或 command 中）：**
 ```rust
 use tauri::Listener;
 
@@ -323,9 +323,9 @@ fn setup_listeners(app: &tauri::App) {
 }
 ```
 
-### Window-Specific Events
+### 窗口特定 Events
 
-**Rust:**
+**Rust：**
 ```rust
 use tauri::{Emitter, WebviewWindow};
 
@@ -337,14 +337,14 @@ fn emit_to_window(window: WebviewWindow, message: String) {
 
 ---
 
-## Typed Streaming Channels
+## 类型化流式 Channels
 
-`Channel<TSend>` is a typed streaming primitive. The type parameter `TSend` defines what messages can be sent. Both Rust and TypeScript must agree on the shape:
-- Rust: `Channel<MyEvent>` where `MyEvent: serde::Serialize + Clone`
-- Frontend: `new Channel<MyEvent>()` with matching TypeScript type
-- Use `#[serde(tag = "event", content = "data")]` on enums for discriminated union patterns.
+`Channel<TSend>` 是一个类型化流式原语。类型参数 `TSend` 定义了可以发送的消息。Rust 和 TypeScript 必须在形状上保持一致：
+- Rust：`Channel<MyEvent>` 其中 `MyEvent: serde::Serialize + Clone`
+- 前端：`new Channel<MyEvent>()` 带有匹配的 TypeScript 类型
+- 在 enum 上使用 `#[serde(tag = "event", content = "data")]` 实现判别联合模式。
 
-**Rust:**
+**Rust：**
 ```rust
 use tauri::ipc::Channel;
 
@@ -375,7 +375,7 @@ async fn process_files(
 }
 ```
 
-**Frontend:**
+**前端：**
 ```typescript
 import { invoke, Channel } from '@tauri-apps/api/core';
 
@@ -397,9 +397,9 @@ await invoke('process_files', {
 });
 ```
 
-### Tagged Union Events (Discriminated)
+### 标签联合 Events（判别式）
 
-**Rust:**
+**Rust：**
 ```rust
 use tauri::ipc::Channel;
 
@@ -439,7 +439,7 @@ async fn download_file(
 }
 ```
 
-**Frontend:**
+**前端：**
 ```typescript
 import { invoke, Channel } from '@tauri-apps/api/core';
 
@@ -476,30 +476,30 @@ const path = await invoke<string>('download_file', {
 
 ---
 
-## IPC Selection Guide
+## IPC 选择指南
 
-| Pattern | Use Case | Direction | Frequency |
-|---------|----------|-----------|-----------|
-| **Commands** | Request-response, data fetching | Frontend → Rust | One-time |
-| **Events** | Notifications, state changes | Bidirectional | Low-medium |
-| **Channels** | Progress updates, streaming data | Rust → Frontend | High |
+| 模式 | 用例 | 方向 | 频率 |
+|------|------|------|------|
+| **Commands** | 请求-响应、数据获取 | 前端 → Rust | 一次性 |
+| **Events** | 通知、状态变更 | 双向 | 低-中 |
+| **Channels** | 进度更新、流式数据 | Rust → 前端 | 高 |
 
-### When to Use Each
+### 何时使用每种方式
 
-**Commands (invoke)**
-- Fetching data from Rust
-- Performing actions that return results
-- CRUD operations
-- Most common pattern
+**Commands（invoke）**
+- 从 Rust 获取数据
+- 执行操作并返回结果
+- CRUD 操作
+- 最常见的模式
 
-**Events (emit/listen)**
-- Notifying UI of background changes
-- Broadcasting to multiple windows
-- Fire-and-forget notifications
-- System events (window close, minimize)
+**Events（emit/listen）**
+- 通知 UI 后台变更
+- 广播到多个窗口
+- 即发即弃的通知
+- 系统事件（窗口关闭、最小化）
 
 **Channels**
-- File download/upload progress
-- Long-running operations with updates
-- Streaming log output
-- Real-time data feeds
+- 文件下载/上传进度
+- 带更新的长时间运行操作
+- 流式日志输出
+- 实时数据推送

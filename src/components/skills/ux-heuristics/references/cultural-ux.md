@@ -1,295 +1,295 @@
-# Cultural UX Considerations
+# 文化 UX 考量
 
-Designing for global audiences: RTL languages, color meanings, form conventions, and localization.
+面向全球受众的设计：RTL 语言、色彩含义、表单惯例和本地化。
 
-## Right-to-Left (RTL) Languages
+## 从右到左（RTL）语言
 
-### Languages That Use RTL
+### 使用 RTL 的语言
 
-- Arabic
-- Hebrew
-- Persian (Farsi)
-- Urdu
+- 阿拉伯语
+- 希伯来语
+- 波斯语（Farsi）
+- 乌尔都语
 
-### What to Mirror
+### 需要镜像的元素
 
-| Element | LTR | RTL |
+| 元素 | LTR | RTL |
 |---------|-----|-----|
-| Text alignment | Left | Right |
-| Navigation | Left side | Right side |
-| Progress indicators | Left to right | Right to left |
-| Icons with direction | → | ← |
-| Checkmarks | ✓ on right | ✓ on left |
-| Back buttons | ← | → |
-| Carousels/sliders | Swipe left for next | Swipe right for next |
+| 文本对齐 | 左对齐 | 右对齐 |
+| 导航栏 | 左侧 | 右侧 |
+| 进度指示器 | 从左到右 | 从右到左 |
+| 带方向的图标 | → | ← |
+| 勾选标记 | ✓ 在右侧 | ✓ 在左侧 |
+| 返回按钮 | ← | → |
+| 轮播/滑块 | 向左滑动进入下一页 | 向右滑动进入下一页 |
 
-### What NOT to Mirror
+### 不需要镜像的元素
 
-| Element | Reason |
+| 元素 | 原因 |
 |---------|--------|
-| Numbers | Always LTR (123, not ٣٢١) |
-| Phone numbers | Universal format |
-| Clocks | Universal format |
-| Video player controls | Universal convention |
-| Brand logos | Design integrity |
-| Math equations | Universal notation |
+| 数字 | 始终 LTR（123，而非 ٣٢١） |
+| 电话号码 | 通用格式 |
+| 时钟 | 通用格式 |
+| 视频播放器控件 | 通用惯例 |
+| 品牌标志 | 设计完整性 |
+| 数学公式 | 通用记法 |
 
-### CSS for RTL
+### RTL 的 CSS
 
 ```css
-/* Modern approach using logical properties */
+/* 使用逻辑属性的现代方法 */
 .element {
-  /* Instead of margin-left: 16px */
+  /* 替代 margin-left: 16px */
   margin-inline-start: 16px;
 
-  /* Instead of padding-right: 8px */
+  /* 替代 padding-right: 8px */
   padding-inline-end: 8px;
 
-  /* Instead of text-align: left */
+  /* 替代 text-align: left */
   text-align: start;
 
-  /* Instead of float: left */
+  /* 替代 float: left */
   float: inline-start;
 }
 
-/* Or use dir attribute */
+/* 或使用 dir 属性 */
 [dir="rtl"] .element {
-  /* RTL-specific overrides */
+  /* RTL 特定覆盖 */
 }
 ```
 
-### RTL Icons
+### RTL 图标
 
-Icons with inherent direction need mirroring:
+带有方向性的图标需要进行镜像处理：
 
-| Icon | Mirror? | Reason |
+| 图标 | 镜像？ | 原因 |
 |------|---------|--------|
-| Back arrow | Yes | Directional navigation |
-| Forward arrow | Yes | Directional navigation |
-| Reply icon | Yes | Shows direction of response |
-| Search icon | No | Magnifying glass is universal |
-| Home icon | No | House has no direction |
-| Settings gear | No | Symmetric |
-| Play button | No | Universal media convention |
+| 返回箭头 | 是 | 方向性导航 |
+| 前进箭头 | 是 | 方向性导航 |
+| 回复图标 | 是 | 表示响应方向 |
+| 搜索图标 | 否 | 放大镜具有通用性 |
+| 首页图标 | 否 | 房屋没有方向性 |
+| 设置齿轮 | 否 | 对称图形 |
+| 播放按钮 | 否 | 通用媒体惯例 |
 
 ---
 
-## Color Meanings Across Cultures
+## 跨文化色彩含义
 
-### Red
+### 红色
 
-| Culture | Meaning |
+| 文化 | 含义 |
 |---------|---------|
-| Western | Danger, stop, error, love |
-| China | Good luck, prosperity, happiness |
-| India | Purity, fertility |
-| South Africa | Mourning |
-| Japan | Life, anger |
+| 西方 | 危险、停止、错误、爱情 |
+| 中国 | 好运、繁荣、幸福 |
+| 印度 | 纯洁、生育 |
+| 南非 | 哀悼 |
+| 日本 | 生命、愤怒 |
 
-**Design implication:** Don't use red for error states in apps targeting Chinese markets without context.
+**设计影响：** 针对中文市场的应用中，不要使用红色表示错误状态而不加上下文说明。
 
-### White
+### 白色
 
-| Culture | Meaning |
+| 文化 | 含义 |
 |---------|---------|
-| Western | Purity, cleanliness, peace |
-| China/Japan | Death, mourning |
-| India | Unhappiness, mourning |
+| 西方 | 纯洁、洁净、和平 |
+| 中国/日本 | 死亡、哀悼 |
+| 印度 | 不幸、哀悼 |
 
-**Design implication:** White space may have different connotations; "clean" design may feel empty or cold.
+**设计影响：** 空白区域可能具有不同含义；"干净"的设计可能让人感觉空旷或冷淡。
 
-### Green
+### 绿色
 
-| Culture | Meaning |
+| 文化 | 含义 |
 |---------|---------|
-| Western | Go, success, nature, money |
-| Islamic | Sacred, paradise |
-| China | Infidelity (green hat = cuckold) |
-| Ireland | National identity |
+| 西方 | 通行、成功、自然、金钱 |
+| 伊斯兰 | 神圣、天堂 |
+| 中国 | 不忠（绿帽子） |
+| 爱尔兰 | 民族身份 |
 
-**Design implication:** Green success states work globally, but be careful with green accessories or hats in Chinese contexts.
+**设计影响：** 绿色成功状态在全球范围内适用，但在中文语境中需谨慎使用绿色配饰或帽子。
 
-### Yellow
+### 黄色
 
-| Culture | Meaning |
+| 文化 | 含义 |
 |---------|---------|
-| Western | Caution, happiness |
-| Japan | Courage, royalty |
-| Egypt | Mourning |
-| Latin America | Death, mourning |
+| 西方 | 谨慎、幸福 |
+| 日本 | 勇气、皇室 |
+| 埃及 | 哀悼 |
+| 拉丁美洲 | 死亡、哀悼 |
 
-### Blue
+### 蓝色
 
-| Culture | Meaning |
+| 文化 | 含义 |
 |---------|---------|
-| Most cultures | Trust, calm, professionalism |
-| Iran | Mourning, spirituality |
+| 大多数文化 | 信任、冷静、专业 |
+| 伊朗 | 哀悼、灵性 |
 
-**Design implication:** Blue is relatively safe globally; commonly used for links and primary actions.
+**设计影响：** 蓝色在全球范围内相对安全；常用于链接和主要操作按钮。
 
-### General Guidelines
+### 通用指南
 
-1. **Test with local users** - Color perception varies
-2. **Don't rely on color alone** - Add icons and text
-3. **Provide customization** - Let users choose colors where possible
-4. **Research target markets** - Specific meanings in your target regions
+1. **与当地用户进行测试** - 色彩感知因文化而异
+2. **不要仅依赖色彩** - 同时使用图标和文字
+3. **提供自定义选项** - 在可能情况下让用户选择颜色
+4. **研究目标市场** - 了解目标地区的特定色彩含义
 
 ---
 
-## Form Conventions
+## 表单惯例
 
-### Name Fields
+### 姓名字段
 
-| Culture | Name Structure |
+| 文化 | 姓名结构 |
 |---------|----------------|
-| Western | First + Last (given + family) |
-| China/Japan/Korea | Family + Given |
-| Iceland | Given + Patronymic |
-| Spanish | Given + Father's surname + Mother's surname |
-| Arabic | Given + Father's + Grandfather's + Family |
+| 西方 | 名 + 姓（given + family） |
+| 中国/日本/韩国 | 姓 + 名 |
+| 冰岛 | 名 + 父名 |
+| 西班牙语 | 名 + 父姓 + 母姓 |
+| 阿拉伯语 | 名 + 父名 + 祖父名 + 家族名 |
 
-**Best practices:**
-- Use single "Full Name" field when possible
-- If splitting, use "Given Name" and "Family Name" (not First/Last)
-- Don't assume first/last order
-- Allow long names (>50 characters)
+**最佳实践：**
+- 尽可能使用单一的"全名"字段
+- 如需拆分，使用"given name（名）"和"family name（姓）"（而非 first/last）
+- 不要假定名/姓的先后顺序
+- 允许长姓名（超过 50 个字符）
 
-### Address Fields
+### 地址字段
 
-| Region | Considerations |
+| 地区 | 注意事项 |
 |--------|----------------|
-| US | State, ZIP code (5 or 9 digits) |
-| UK | County optional, postcode format varies |
-| Japan | Prefecture, address reads large→small |
-| Brazil | CEP codes |
-| Countries without postal codes | 50+ countries don't use them |
+| 美国 | 州、ZIP 码（5 位或 9 位） |
+| 英国 | 郡（可选），邮编格式各不相同 |
+| 日本 | 都道府县，地址从大到小 |
+| 巴西 | CEP 编码 |
+| 无邮编国家 | 50+ 个国家不使用邮政编码 |
 
-**Best practices:**
-- Don't require postal code universally
-- Use country-appropriate field labels
-- Allow flexible formats
-- Consider address autocomplete services
+**最佳实践：**
+- 不要在全球范围内强制要求邮政编码
+- 使用符合当地习惯的字段标签
+- 允许灵活的格式
+- 考虑使用地址自动补全服务
 
-### Phone Numbers
+### 电话号码
 
-| Consideration | Approach |
+| 考量项 | 处理方式 |
 |---------------|----------|
-| Country codes | Allow input or select separately |
-| Length | Varies widely (7-15 digits) |
-| Format | Don't enforce specific format |
-| Mobile vs landline | Labels may not translate |
+| 国家代码 | 允许输入或单独选择 |
+| 长度 | 差异很大（7-15 位） |
+| 格式 | 不要强制特定格式 |
+| 手机 vs 座机 | 标签可能无法直接翻译 |
 
-**Best practices:**
-- Accept multiple formats
-- Store in E.164 format internally (+1234567890)
-- Display in local format
-- Don't validate too strictly
+**最佳实践：**
+- 接受多种格式
+- 内部存储为 E.164 格式（+1234567890）
+- 按当地格式显示
+- 不要验证过于严格
 
-### Dates
+### 日期
 
-| Region | Format |
+| 地区 | 格式 |
 |--------|--------|
-| US | MM/DD/YYYY |
-| Most of world | DD/MM/YYYY |
-| Japan, China, Korea | YYYY/MM/DD |
-| ISO standard | YYYY-MM-DD |
+| 美国 | MM/DD/YYYY |
+| 世界大部分地区 | DD/MM/YYYY |
+| 日本、中国、韩国 | YYYY/MM/DD |
+| ISO 标准 | YYYY-MM-DD |
 
-**Best practices:**
-- Use date pickers instead of text input
-- Show month names (not numbers) to avoid confusion
-- Store in ISO format (YYYY-MM-DD)
-- Display in user's locale
+**最佳实践：**
+- 使用日期选择器而非文本输入
+- 显示月份名称（而非数字）以避免混淆
+- 以 ISO 格式（YYYY-MM-DD）存储
+- 按用户 locale 显示
 
-### Currency
+### 货币
 
-| Consideration | Examples |
+| 考量项 | 示例 |
 |---------------|----------|
-| Symbol position | $100 vs 100€ vs 100 kr |
-| Decimal separator | $1,234.56 vs €1.234,56 |
-| Thousands separator | 1,000 vs 1.000 vs 1 000 |
-| Currency names | Dollar, Yuan, Rupee |
+| 符号位置 | 100¥ vs €100 vs 100 kr |
+| 小数分隔符 | 1,234.56¥ vs €1.234,56 |
+| 千位分隔符 | 1,000 vs 1.000 vs 1 000 |
+| 货币名称 | 人民币、美元、卢比 |
 
-**Best practices:**
-- Format according to user locale
-- Always show currency symbol/code
-- Be clear about which currency
-- Handle conversion if multi-currency
+**最佳实践：**
+- 根据用户 locale 进行格式化
+- 始终显示货币符号/代码
+- 明确使用哪种货币
+- 如为多币种，处理兑换逻辑
 
 ---
 
-## Text Considerations
+## 文本考量
 
-### Text Expansion
+### 文本扩展
 
-Translated text is often longer than English:
+翻译后的文本通常比英文更长：
 
-| Language | Expansion Factor |
+| 语言 | 扩展系数 |
 |----------|------------------|
-| German | 1.3x |
-| French | 1.2x |
-| Russian | 1.2x |
-| Spanish | 1.2x |
-| Chinese | 0.8x |
-| Japanese | 0.9x |
+| 德语 | 1.3x |
+| 法语 | 1.2x |
+| 俄语 | 1.2x |
+| 西班牙语 | 1.2x |
+| 中文 | 0.8x |
+| 日语 | 0.9x |
 
-**Design implications:**
-- Don't design to exact English text length
-- Allow buttons and labels to expand
-- Test layouts with longest expected translations
-- Use flexible grid/flexbox layouts
+**设计影响：**
+- 不要按照精确的英文文本长度进行设计
+- 允许按钮和标签扩展
+- 用最长的预期翻译结果测试布局
+- 使用灵活的 grid/flexbox 布局
 
-### Text in Images
+### 图片中的文字
 
-Avoid text in images because:
-- Can't be translated easily
-- Not accessible to screen readers
-- Doesn't scale with user preferences
-- Complicates localization workflow
+避免在图片中使用文字，原因如下：
+- 难以翻译
+- 屏幕阅读器无法访问
+- 无法随用户偏好缩放
+- 使本地化流程复杂化
 
-**Alternative:** Use CSS text over images.
+**替代方案：** 使用 CSS 文本覆盖图片。
 
-### Numbers and Units
+### 数字与单位
 
-| Element | Consideration |
+| 元素 | 考量项 |
 |---------|---------------|
-| Measurement | Metric (most world) vs Imperial (US) |
-| Paper size | A4 (most world) vs Letter (US, Canada) |
-| Temperature | Celsius vs Fahrenheit |
-| Time | 24-hour vs 12-hour (AM/PM) |
+| 度量衡 | 公制（世界大部分地区）vs 英制（美国） |
+| 纸张大小 | A4（世界大部分地区）vs Letter（美国、加拿大） |
+| 温度 | 摄氏度 vs 华氏度 |
+| 时间 | 24 小时制 vs 12 小时制（AM/PM） |
 
 ---
 
-## Icons and Imagery
+## 图标与图像
 
-### Potentially Problematic Icons
+### 可能存在问题的图标
 
-| Icon | Issue | Alternative |
+| 图标 | 问题 | 替代方案 |
 |------|-------|-------------|
-| Mailbox | US-specific design | Envelope |
-| Check mark | Means "wrong" in some cultures | Consider context |
-| Thumbs up | Offensive in some cultures | Hearts, stars |
-| Hand gestures | Vary widely in meaning | Avoid gestures |
-| Animals | Religious/cultural sensitivities | Research target market |
-| Religious symbols | May exclude or offend | Use neutral symbols |
+| 信箱 | 美国特定设计 | 信封 |
+| 对勾 | 在某些文化中表示"错误" | 根据上下文判断 |
+| 竖拇指 | 在某些文化中具有冒犯性 | 爱心、星星 |
+| 手势 | 含义因文化差异很大 | 避免使用手势 |
+| 动物 | 宗教/文化敏感性 | 研究目标市场 |
+| 宗教符号 | 可能排斥或冒犯 | 使用中性符号 |
 
-### Photography
+### 摄影图片
 
-| Consideration | Approach |
+| 考量项 | 处理方式 |
 |---------------|----------|
-| Diversity | Represent target audience |
-| Gestures | Avoid culture-specific gestures |
-| Clothing | Consider cultural norms |
-| Settings | Use locally relevant contexts |
-| Food | Be aware of dietary restrictions |
+| 多样性 | 代表目标受众 |
+| 手势 | 避免特定文化的手势 |
+| 服装 | 考虑文化规范 |
+| 场景 | 使用当地相关场景 |
+| 食物 | 注意饮食限制 |
 
 ---
 
-## Localization Best Practices
+## 本地化最佳实践
 
-### Technical
+### 技术层面
 
 ```javascript
-// Use internationalization libraries
+// 使用国际化库
 const formatter = new Intl.DateTimeFormat('de-DE');
 const date = formatter.format(new Date());
 
@@ -300,47 +300,47 @@ const currencyFormatter = new Intl.NumberFormat('ja-JP', {
 const price = currencyFormatter.format(1000);
 ```
 
-### Content
+### 内容层面
 
-- Use simple, clear language (easier to translate)
-- Avoid idioms and colloquialisms
-- Don't hardcode strings (use translation keys)
-- Provide context for translators
-- Test with pseudo-localization during development
+- 使用简单清晰的语言（便于翻译）
+- 避免习语和口语表达
+- 不要硬编码字符串（使用翻译 key）
+- 为翻译人员提供上下文说明
+- 在开发过程中使用伪本地化进行测试
 
-### Design
+### 设计层面
 
-- Design for flexibility (expanding text)
-- Use icons with text (not alone)
-- Test layouts in RTL and longest languages
-- Consider reading order in complex layouts
+- 设计时考虑灵活性（文本扩展）
+- 图标搭配文字使用（不要单独使用）
+- 在 RTL 和最长的语言下测试布局
+- 在复杂布局中考虑阅读顺序
 
 ---
 
-## Quick Reference Checklist
+## 快速参考清单
 
-Before launching internationally:
+在国际化发布前：
 
-**Layout:**
-- [ ] Supports RTL if targeting Arabic, Hebrew, Persian
-- [ ] Text can expand 30% without breaking
-- [ ] No text in images
-- [ ] Icons are culturally neutral
+**布局：**
+- [ ] 如果面向阿拉伯语、希伯来语、波斯语，需支持 RTL
+- [ ] 文本可扩展 30% 而不破坏布局
+- [ ] 图片中不含文字
+- [ ] 图标具有文化中立性
 
-**Forms:**
-- [ ] Name fields are flexible
-- [ ] Addresses work without postal codes
-- [ ] Phone numbers accept various formats
-- [ ] Dates use pickers or clear formats
+**表单：**
+- [ ] 姓名字段灵活处理
+- [ ] 地址在没有邮政编码时也可正常工作
+- [ ] 电话号码接受多种格式
+- [ ] 日期使用选择器或清晰格式
 
-**Content:**
-- [ ] Colors don't carry unintended meaning
-- [ ] Images represent target audience
-- [ ] No culture-specific idioms
-- [ ] Units match target region
+**内容：**
+- [ ] 颜色不传递非预期的含义
+- [ ] 图片代表目标受众
+- [ ] 没有特定文化的习语
+- [ ] 单位与目标地区匹配
 
-**Technical:**
-- [ ] Dates, numbers, currency use locale formatting
-- [ ] All strings externalized for translation
-- [ ] Character encoding supports target languages
-- [ ] Font supports required character sets
+**技术：**
+- [ ] 日期、数字、货币使用 locale 格式化
+- [ ] 所有字符串已外部化以待翻译
+- [ ] 字符编码支持目标语言
+- [ ] 字体支持所需字符集

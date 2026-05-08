@@ -1,20 +1,20 @@
-# React Navigation Patterns
+# React Navigation 模式
 
-## Setup and Configuration
+## 设置与配置
 
-### Installation
+### 安装
 
 ```bash
-# Core packages
+# 核心包
 npm install @react-navigation/native
 npm install @react-navigation/native-stack
 npm install @react-navigation/bottom-tabs
 
-# Required peer dependencies
+# 必需的 peer dependencies
 npm install react-native-screens react-native-safe-area-context
 ```
 
-### Type-Safe Navigation Setup
+### 类型安全导航设置
 
 ```typescript
 // navigation/types.ts
@@ -25,7 +25,7 @@ import {
   NavigatorScreenParams,
 } from "@react-navigation/native";
 
-// Define param lists for each navigator
+// 定义每个导航器的参数列表
 export type RootStackParamList = {
   Main: NavigatorScreenParams<MainTabParamList>;
   Modal: { title: string };
@@ -44,7 +44,7 @@ export type AuthStackParamList = {
   ForgotPassword: { email?: string };
 };
 
-// Screen props helpers
+// 屏幕 props 辅助类型
 export type RootStackScreenProps<T extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, T>;
 
@@ -54,7 +54,7 @@ export type MainTabScreenProps<T extends keyof MainTabParamList> =
     RootStackScreenProps<keyof RootStackParamList>
   >;
 
-// Global type declaration
+// 全局类型声明
 declare global {
   namespace ReactNavigation {
     interface RootParamList extends RootStackParamList {}
@@ -62,7 +62,7 @@ declare global {
 }
 ```
 
-### Navigation Hooks
+### 导航 Hooks
 
 ```typescript
 // hooks/useAppNavigation.ts
@@ -79,9 +79,9 @@ export function useTypedRoute<T extends keyof RootStackParamList>() {
 }
 ```
 
-## Stack Navigation
+## Stack 导航
 
-### Basic Stack Navigator
+### 基本 Stack 导航器
 
 ```typescript
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -126,7 +126,7 @@ function RootNavigator() {
 }
 ```
 
-### Screen with Dynamic Options
+### 带动态选项的屏幕
 
 ```typescript
 function DetailScreen({ route, navigation }: DetailScreenProps) {
@@ -134,7 +134,7 @@ function DetailScreen({ route, navigation }: DetailScreenProps) {
   const [item, setItem] = useState<Item | null>(null);
 
   useEffect(() => {
-    // Update header when data loads
+    // 数据加载时更新头部
     if (item) {
       navigation.setOptions({
         title: item.title,
@@ -147,7 +147,7 @@ function DetailScreen({ route, navigation }: DetailScreenProps) {
     }
   }, [item, navigation]);
 
-  // Prevent going back with unsaved changes
+  // 防止未保存更改时返回
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (e) => {
       if (!hasUnsavedChanges) return;
@@ -170,13 +170,13 @@ function DetailScreen({ route, navigation }: DetailScreenProps) {
     return unsubscribe;
   }, [navigation, hasUnsavedChanges]);
 
-  return <View>{/* Content */}</View>;
+  return <View>{/* 内容 */}</View>;
 }
 ```
 
-## Tab Navigation
+## Tab 导航
 
-### Bottom Tab Navigator
+### 底部 Tab 导航器
 
 ```typescript
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -244,7 +244,7 @@ function MainTabNavigator() {
 }
 ```
 
-### Custom Tab Bar
+### 自定义 Tab Bar
 
 ```typescript
 import { View, Pressable, StyleSheet } from 'react-native';
@@ -342,13 +342,13 @@ const styles = StyleSheet.create({
   },
 });
 
-// Usage
+// 使用
 <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}>
   {/* screens */}
 </Tab.Navigator>
 ```
 
-## Drawer Navigation
+## Drawer 导航
 
 ```typescript
 import {
@@ -417,9 +417,9 @@ function DrawerNavigator() {
 }
 ```
 
-## Deep Linking
+## 深度链接
 
-### Configuration
+### 配置
 
 ```typescript
 // navigation/linking.ts
@@ -447,9 +447,9 @@ export const linking: LinkingOptions<RootStackParamList> = {
       },
     },
   },
-  // Custom URL parsing
+  // 自定义 URL 解析
   getStateFromPath: (path, config) => {
-    // Handle custom URL patterns
+    // 处理自定义 URL 模式
     return getStateFromPath(path, config);
   },
 };
@@ -464,7 +464,7 @@ function App() {
 }
 ```
 
-### Handling Deep Links
+### 处理深度链接
 
 ```typescript
 import { useEffect } from "react";
@@ -475,7 +475,7 @@ function useDeepLinkHandler() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    // Handle initial URL
+    // 处理初始 URL
     const handleInitialUrl = async () => {
       const url = await Linking.getInitialURL();
       if (url) {
@@ -483,7 +483,7 @@ function useDeepLinkHandler() {
       }
     };
 
-    // Handle URL changes
+    // 处理 URL 变化
     const subscription = Linking.addEventListener("url", ({ url }) => {
       handleDeepLink(url);
     });
@@ -494,7 +494,7 @@ function useDeepLinkHandler() {
   }, []);
 
   const handleDeepLink = (url: string) => {
-    // Parse URL and navigate
+    // 解析 URL 并导航
     const route = parseUrl(url);
     if (route) {
       navigation.navigate(route.name, route.params);
@@ -503,9 +503,9 @@ function useDeepLinkHandler() {
 }
 ```
 
-## Navigation State Management
+## 导航状态管理
 
-### Auth Flow
+### 认证流程
 
 ```typescript
 import { createContext, useContext, useState, useEffect } from 'react';
@@ -524,7 +524,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check for existing session
+    // 检查现有会话
     checkAuthState();
   }, []);
 
@@ -579,7 +579,7 @@ function RootNavigator() {
 }
 ```
 
-### Navigation State Persistence
+### 导航状态持久化
 
 ```typescript
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -627,9 +627,9 @@ function App() {
 }
 ```
 
-## Screen Transitions
+## 屏幕过渡
 
-### Custom Animations
+### 自定义动画
 
 ```typescript
 import { TransitionPresets } from '@react-navigation/native-stack';
@@ -641,10 +641,10 @@ import { TransitionPresets } from '@react-navigation/native-stack';
     gestureDirection: 'horizontal',
   }}
 >
-  {/* Standard slide transition */}
+  {/* 标准滑动过渡 */}
   <Stack.Screen name="List" component={ListScreen} />
 
-  {/* Modal with custom animation */}
+  {/* 自定义动画弹窗 */}
   <Stack.Screen
     name="Modal"
     component={ModalScreen}
@@ -655,7 +655,7 @@ import { TransitionPresets } from '@react-navigation/native-stack';
     }}
   />
 
-  {/* Full screen modal */}
+  {/* 全屏弹窗 */}
   <Stack.Screen
     name="FullScreenModal"
     component={FullScreenModalScreen}
@@ -667,7 +667,7 @@ import { TransitionPresets } from '@react-navigation/native-stack';
 </Stack.Navigator>
 ```
 
-### Shared Element Transitions
+### 共享元素过渡
 
 ```typescript
 import { SharedElement } from 'react-navigation-shared-element';
@@ -708,7 +708,7 @@ function DetailScreen({ route }) {
   );
 }
 
-// Navigator configuration
+// 导航器配置
 <Stack.Navigator>
   <Stack.Screen name="List" component={ListScreen} />
   <Stack.Screen
@@ -725,9 +725,9 @@ function DetailScreen({ route }) {
 </Stack.Navigator>
 ```
 
-## Header Customization
+## 头部自定义
 
-### Custom Header Component
+### 自定义头部组件
 
 ```typescript
 import { getHeaderTitle } from '@react-navigation/elements';
@@ -756,7 +756,7 @@ function CustomHeader({ navigation, route, options, back }: NativeStackHeaderPro
   );
 }
 
-// Usage
+// 使用
 <Stack.Navigator
   screenOptions={{
     header: (props) => <CustomHeader {...props} />,
@@ -766,7 +766,7 @@ function CustomHeader({ navigation, route, options, back }: NativeStackHeaderPro
 </Stack.Navigator>
 ```
 
-### Collapsible Header
+### 可折叠头部
 
 ```typescript
 import Animated, {
@@ -824,7 +824,7 @@ function CollapsibleHeaderScreen() {
         scrollEventThrottle={16}
         contentContainerStyle={{ paddingTop: HEADER_HEIGHT }}
       >
-        {/* Content */}
+        {/* 内容 */}
       </Animated.ScrollView>
     </View>
   );

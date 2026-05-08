@@ -1,1138 +1,1136 @@
-# Running Decision Processes - All Guest Insights
+# 运行决策流程 - 所有嘉宾洞见
 
-*65 guests, 82 mentions*
+*65 位嘉宾，82 次提及*
 
 ---
 
 ## Ada Chen Rekhi
 *Ada Chen Rekhi*
 
-> "A curiosity loop is essentially going to a whole bunch of people. In this case, I sent out an email very quickly to about 10 or 11 people and asking them, 'Hey, here are nine topics for Lenny's Podcast. What are two or three of the topics that resonate with you and why?'"
+> "好奇心循环基本上就是去找一群人。在这种情况下，我很快发了一封邮件给大约 10 或 11 个人，问他们，'嘿，这里有 Lenny's Podcast 的九个主题，哪些主题对你来说有共鸣，为什么？'"
 
-**Insight:** Use a structured 'Curiosity Loop' to gather contextual advice from a curated group to fight the bias of generic, non-contextual advice.
+**洞见：** 使用结构化的"好奇心循环"从精选群体收集情境化建议，以对抗泛泛的非情境化建议的偏差。
 
-**Tactical advice:**
-- Ask specific questions that solicit rationale rather than biased 'yes/no' answers.
-- Curate a mix of subject matter experts and people who know you personally.
-- Make the ask lightweight (e.g., 'pick top 2 of 9') to ensure a high response rate from busy people.
-- Close the loop by processing the info and thanking participants for their impact on your decision.
+**战术建议：**
+- 提出引导对方给出理由的具体问题，而不是有偏差的"是/否"答案
+- 精选主题专家和了解你个人的人混搭
+- 使请求轻量化（例如"从 9 个中选前 2 个"），确保忙碌人群的高回复率
+- 闭环处理信息，并感谢参与者对你决策的影响
 
-*Timestamp: 00:04:08*
+*时间戳：00:04:08*
 
 ---
 
-> "I looked at those values and I said, 'Well, if I draw a straight line from where I am right now and just extend it forward and play the rest of the movie as it plays out, given the current plot line, how well does that optimize for those values?'"
+> "我看着那些价值观，然后说，'好吧，如果我从我现在的位置画一条直线，直接向前延伸，按照当前的剧情线把剩下的戏演完，它在多大程度上优化了这些价值观？'"
 
-**Insight:** Use a personal values stack-rank as an 'internal scorecard' to evaluate if major life and career decisions align with your core identity.
+**洞见：** 使用个人价值观排序作为"内部记分卡"，评估重大生活和职业决策是否与你的核心身份一致。
 
-**Tactical advice:**
-- Filter a broad list of value words down to a top 3-5 list.
-- Apply these values to specific opportunities to see if they pass or fail your internal criteria.
-- Prioritize the 'inner scorecard' (personal fulfillment) over the 'outer scorecard' (status, wealth, titles).
+**战术建议：**
+- 将一长串价值观词汇过滤到前 3-5 个
+- 将这些价值观应用于具体机会，看它们是否通过或失败你的内部标准
+- 优先考虑"内部记分卡"（个人成就感）胜过"外部记分卡"（地位、财富、头衔）
 
-*Timestamp: 00:37:12*
+*时间戳：00:37:12*
 
 
 ## Alisa Cohn
 *Alisa Cohn*
 
-> "How do we decide when we disagree? And that is a very good thing to explore because there's actually a lot of different ways to decide when you disagree... let's assume that the person who cares the most can win that argument. It might be, the person who's got the best perspective and the most expertise can win that argument."
+> "当我们不同意时，我们如何决定？这是一个很好的探索方向，因为实际上有很多不同的方式来决定你不同意时怎么办……让我们假设最关心的人可以赢得那个争论。或者，拥有最佳视角和最多专业知识的人可以赢得那个争论。"
 
-**Insight:** Establishing a 'tie-breaking' protocol in advance prevents stalemates and resentment during disagreements.
+**洞见：** 提前建立"打破平局"的协议，可以防止分歧中的僵局和积怨。
 
-**Tactical advice:**
-- Decide if the 'most passionate' person wins or the 'most expert' person wins
-- Consider a 'back and forth' system where partners take turns making the final call
+**战术建议：**
+- 决定是"最热情"的人赢还是"最专业"的人赢
+- 考虑"来回"系统，合伙人轮流做最终决定
 
-*Timestamp: 01:05:57*
+*时间戳：01:05:57*
 
 
 ## Ami Vora
 *Ami Vora*
 
-> "As you get senior, the only problems you'll see are ones that are fundamentally unsolvable because otherwise, someone would've solved it before they got to you. And so all you're doing is choosing which branch of suboptimal you're going to put your name on and describing the principles you're using."
+> "随着你级别升高，你只会看到那些根本上无法解决的问题，否则在你之前就会有人解决它。所以你做的只是选择你要把名字签在哪个次优分支上，并描述你使用的原则。"
 
-**Insight:** Senior leadership decisions are often about choosing the best possible 'suboptimal' path among difficult trade-offs.
+**洞见：** 高级领导决策通常是在困难的权衡中，选择最佳可能的"次优"路径。
 
-**Tactical advice:**
-- Acknowledge when a decision is suboptimal but necessary.
-- Clearly communicate the principles and context used to arrive at a difficult choice.
+**战术建议：**
+- 当一个决定是次优但必要时，承认这点
+- 清晰沟通用于做出困难选择的原则和背景
 
-*Timestamp: 01:01:59*
+*时间戳：01:01:59*
 
 
 ## Annie Duke
 *Annie Duke*
 
-> "It's so incredibly necessary in improving decision quality to take what's implicit and make it explicit. It's not that intuition is crap, your intuition is sometimes right. If you don't make it explicit, then you don't get to find out when it's wrong."
+> "要提高决策质量，把隐含的东西变得明确，这是绝对必要的。不是说直觉是垃圾，你的直觉有时是对的。但如果你不把它变得明确，你就无法发现它什么时候是错的。"
 
-**Insight:** High-quality decision-making requires moving from 'gut feel' to explicit models that can be tested and refined.
+**洞见：** 高质量决策需要从"直觉"转向可测试和可改进的明确模型。
 
-**Tactical advice:**
-- Document the implicit assumptions behind a 'gut' feeling.
-- Review these explicit assumptions later to see where your intuition was right or wrong.
+**战术建议：**
+- 记录直觉背后的隐含假设
+- 之后审查这些明确的假设，看你的直觉哪些是对的，哪些是错的
 
-*Timestamp: 00:00:00*
-
----
-
-> "There is no such thing as a long feedback loop. And the way you choose to shorten the feedback loop is to say, what are the things that are correlated with the outcome that I eventually desire?"
-
-**Insight:** You can shorten any feedback loop by identifying and tracking leading indicators that are necessary for the final desired outcome.
-
-**Tactical advice:**
-- Identify 'necessary but not sufficient' milestones (e.g., funding at Series A as a proxy for a 10-year exit).
-- Track these intermediate signals to evaluate decision quality in real-time.
-
-*Timestamp: 00:00:40*
+*时间戳：00:00:00*
 
 ---
 
-> "The word alignment is stupid... because it doesn't exist. You have 10 people in a room and they're all really different people with different opinions, and they're never going to come out of the room agreeing with each other. And it's really bad if the expectation is that they're supposed to... the meeting becomes coercive."
+> "没有所谓的长时间反馈循环。你缩短反馈循环的方式是说，哪些东西与我最终渴望的结果相关？"
 
-**Insight:** Seeking 'alignment' often leads to coercion; instead, aim for a process where everyone is heard, even if they don't agree with the final decision.
+**洞见：** 你可以通过识别和跟踪对最终期望结果必要的领先指标来缩短任何反馈循环。
 
-**Tactical advice:**
-- Shift the goal from 'agreement' to 'conveying information.'
-- Use the 'Nevertheless' framework: acknowledge the input, then state the decision path.
+**战术建议：**
+- 识别"必要但不充分"的里程碑（例如 A 轮融资作为 10 年退出的代理指标）
+- 跟踪这些中间信号来实时评估决策质量
 
-*Timestamp: 00:31:39*
+*时间戳：00:00:40*
+
+---
+
+> "'对齐'这个词很愚蠢……因为它不存在。房间里 10 个人，他们是非常不同的人，有不同的意见，他们永远不会在离开房间时彼此同意。如果期望他们应该同意，那就非常糟糕……会议会变成强制性的。"
+
+**洞见：** 寻求"对齐"常常导致强制；相反，目标是每个人都被听到的过程，即使他们不同意最终决定。
+
+**战术建议：**
+- 将目标从"达成一致"转向"传达信息"
+- 使用"尽管如此"框架：承认输入，然后说明决策路径
+
+*时间戳：00:31:39*
 
 
 ## Anneka Gupta
 *Anneka Gupta*
 
-> "I try to construct this past knowledge of what had happened and what were the decisions that were made and why were those decisions made, whether they were good or bad it didn't matter, so that I could better understand how to make decisions going forward and to learn from the mistakes that I didn't personally live through."
+> "我尝试构建过去发生的事情的知识——做了什么决定，为什么做那些决定，不管好坏——这样我能更好地理解如何做出未来的决策，并从我没有亲身经历过的错误中学习。"
 
-**Insight:** Acting as a 'historian' helps leaders avoid past mistakes and navigate the emotional 'baggage' teams may have regarding certain strategies.
+**洞见：** 扮演"历史学家"有助于领导者避免过去的错误，并驾驭团队对某些策略可能有的情感"包袱"。
 
-**Tactical advice:**
-- Research past failed products or projects to understand the context of previous decisions.
-- Ask long-tenured employees about the history of specific initiatives to understand current resistance.
+**战术建议：**
+- 研究过去失败的产品或项目，了解先前决策的背景
+- 询问长期员工关于特定举措的历史，以理解当前的阻力
 
-*Timestamp: 00:29:07*
+*时间戳：00:29:07*
 
 ---
 
-> "It's not about making the right decision, it's about making the decision. ... as long as your decision is like 70% right, you can iterate on that 20, 30% in either direction, but if you don't commit, then you don't actually get any new information that is high fidelity and high quality."
+> "重点不在于做出正确的决定，而在于做出决定。……只要你的决定大约 70% 正确，你就可以在 20%、30% 的方向上迭代，但如果你不承诺，你就得不到高保真、高质量的新信息。"
 
-**Insight:** Decisiveness with imperfect information is superior to analysis paralysis because it generates real-world data for iteration.
+**洞见：** 在不完美信息下的果断决策优于分析瘫痪，因为它产生真实世界的数据进行迭代。
 
-**Tactical advice:**
-- Commit to a decision once you have roughly 70% of the necessary information.
-- Reward the 'learning' from a decision rather than just the outcome to encourage risk-taking.
+**战术建议：**
+- 一旦你拥有大约 70% 的必要信息，就承诺一个决定
+- 奖励从决策中获得的"学习"而非仅仅是结果，以鼓励冒险
 
-*Timestamp: 00:30:42*
+*时间戳：00:30:42*
 
 
 ## Austin Hay
 *Austin Hay*
 
-> "This concept of thinking gray is so often in life and in our jobs, we are forced to make decisions very quickly. We have to think black or white about a problem set or a solution, and then decide. One of his tactics is this concept of thinking gray, which is actually to not decide for as long as you possibly can before you have to decide."
+> "'灰度思考'这个概念，在生活中和工作中我们经常被迫快速做决定。我们必须非黑即白地思考一个问题集或解决方案，然后决定。他的策略之一是灰度思考的概念，实际上就是尽可能久地不做决定，直到你必须做决定为止。"
 
-**Insight:** Delaying a decision until the last possible moment ('Thinking Gray') allows for more information gathering and better outcomes.
+**洞见：** 将决定推迟到最后一刻（"灰度思考"）允许收集更多信息并获得更好的结果。
 
-**Tactical advice:**
-- Resist the urge to make immediate binary decisions when faced with pressure from stakeholders.
-- Use the extra time to see if the problem evolves or if better solutions emerge.
+**战术建议：**
+- 在面对利益相关者的压力时，抵制立即做出二元决定的冲动
+- 利用额外的时间观察问题是否演化，或是否有更好的解决方案出现
 
-*Timestamp: 01:12:26*
+*时间戳：01:12:26*
 
 
 ## Archie Abrams
 *Archie Abrams*
 
-> "Every single project that goes out has a few minute video with Figmas and everything, and everything that shipped. Needs to be okay-toed, so approved by the group lead. There's nothing that can ship without that okay-to approval. And that okay-to approval has to be Glen, Carl, myself with different groups."
+> "每个出去的项目都有一个几分钟的视频，包含 Figma 等所有内容，以及所有已发布的内容。需要得到小组负责人的批准。没有任何东西可以在没有那个批准的情况下发布。那个批准必须来自不同组的 Glen、Carl 和我。"
 
-**Insight:** A centralized 'okay-to' approval process ensures a consistent bar for quality and taste across a large, decentralized organization.
+**洞见：** 集中的"批准发布"流程确保在大型、去中心化的组织中保持一致的质量和品味标准。
 
-**Tactical advice:**
-- Require a short video demo and design walkthrough for every project before it can be released.
-- Designate specific 'taste-makers' or group leads who must personally approve all shipments to maintain a high quality bar.
+**战术建议：**
+- 每个项目在发布前都需要简短的视频演示和设计说明
+- 指定特定的"品味制定者"或小组负责人，他们必须亲自批准所有发布，以维持高质量标准
 
-*Timestamp: 00:52:12*
+*时间戳：00:52:12*
 
 
 ## Ben Horowitz
 *Ben Horowitz*
 
-> "The worst thing that you do as a leader is you hesitate on the next decision. The thing that causes you to hesitate is both decisions are horrible."
+> "作为领导者，你做的最糟糕的事情就是在下一个决定上犹豫不决。导致你犹豫的原因是两种选择都很糟糕。"
 
-**Insight:** Hesitation is the most destructive leadership trait, often caused by having to choose between two poor options.
+**洞见：** 犹豫是最具破坏性的领导特质，通常由必须在两个糟糕选项之间选择引起。
 
-**Tactical advice:**
-- Avoid the trap of avoiding a subject because both outcomes are bad
-- Recognize that failing to make an explicit decision causes organizational anxiety
+**战术建议：**
+- 避免因为两个结果都很糟糕而回避某个主题
+- 认识到未能做出明确决定会导致组织焦虑
 
-*Timestamp: 00:00:00*
-
----
-
-> "The psychological muscle you have to build to be a great leader is to be able to click in the abyss and go, 'Okay, that way's slightly better. We're going to go that way. If everybody agrees with the decision, then you didn't add any value because they would've done that without you.' So the only value you ever add is when you make a decision that most people don't like."
-
-**Insight:** True leadership value is created when making difficult, unpopular decisions that the organization wouldn't reach on its own.
-
-**Tactical advice:**
-- Build the psychological strength to choose the 'slightly better' path even in dire situations
-- Measure your value by the decisions you make that lack consensus
-
-*Timestamp: 00:00:29*
+*时间戳：00:00:00*
 
 ---
 
-> "really, it's like all plane crashes are a series of bad decisions. And none of the decisions by themselves is that bad, but when you add them up, it's bad... if you can break psychologically, you can take the sunk cost, then that gets you out of a lot of bad paths."
+> "要成为伟大领导者，你必须建立的心理肌肉是能够在深渊中按下按钮，说，'好吧，那条路稍微好一点。我们走那条路。'如果每个人都同意这个决定，那你就没有增加任何价值，因为他们没有你也会这样做。所以你增加价值的唯一时刻是当你做出大多数人不喜欢的决定时。"
 
-**Insight:** Failure is often a cumulative result of small bad decisions; success requires the ability to ignore sunk costs and pivot.
+**洞见：** 真正的领导力价值是在做出困难的、不受欢迎的决定时创造的，那些组织自己不会做出的决定。
 
-**Tactical advice:**
-- Identify and break the chain of small bad decisions before they accumulate
-- Willingly accept sunk costs to exit a failing path
+**战术建议：**
+- 建立即使在严峻情况下也能选择"稍微好一点"路径的心理力量
+- 通过你做出的缺乏共识的决定来衡量你的价值
 
-*Timestamp: 00:06:14*
+*时间戳：00:00:29*
 
 ---
 
-> "What happens to as CEO, it's like, 'Okay, if we rearchitect, this product, the architecture is not actually get us to where we need to go. I kind of know that. But if we rearchitect it, we're going to probably miss all the features, miss the quarter, have trouble raising money, shudder, et cetera. So that's really bad. And then not rearchitecting is really bad, and so I'm just going to try to and avoid this subject because I don't even want to deal with either of those.' And that's the worst thing, because if action is the better choice and that's good."
+> "实际上，所有飞机失事都是一系列糟糕的决定。没有一个决定本身那么糟糕，但当它们加起来时，就很糟糕了……如果你能在心理上打破，接受沉没成本，那就能让你摆脱很多糟糕的路径。"
 
-**Insight:** Avoiding a 'lose-lose' decision is worse than picking the slightly better of two bad options.
+**洞见：** 失败往往是糟糕小决定的累积结果；成功需要忽略沉没成本并转向的能力。
 
-**Tactical advice:**
-- Run towards the 'pain in the darkness' rather than avoiding difficult trade-offs
-- Trust your eyes and act on what you see rather than waiting for a perfect option
+**战术建议：**
+- 在糟糕的小决定累积之前识别并打破它们的链条
+- 心甘情愿接受沉没成本，以退出失败路径
 
-*Timestamp: 00:11:16*
+*时间戳：00:06:14*
+
+---
+
+> "作为 CEO，情况是这样的，'好吧，如果我们重新架构这个产品，架构实际上无法让我们到达我们需要去的地方。我基本知道这点。但如果我们重新架构，我们可能会错过所有功能，错过季度，融资困难，等等。那真的很糟糕。而不重新架构也非常糟糕，所以我打算尽量回避这个话题，因为我不想处理任何一个。'这是最糟糕的，因为如果行动是更好的选择，那就该行动。"
+
+**洞见：** 回避"双输"决定比在两个糟糕选项中选一个稍微好点的更糟糕。
+
+**战术建议：**
+- 奔向"黑暗中的痛苦"而不是回避困难的权衡
+- 相信你的眼睛，根据你所看到的行动，而不是等待完美选项
+
+*时间戳：00:11:16*
 
 
 ## Bill Carr
 *Bill Carr*
 
-> "The data rarely makes the decision for you. What is happening is then a lot of judgment and interpretation of the data, weighing that, weighing various factors to then come to a decision. That is sort of the right a lot part. The right a lot part comes from having what we call sort of sound judgment, which generally come... Some people maybe are born with this, not a lot of them, mostly they get it through experience."
+> "数据很少为你做决定。实际发生的是大量的判断和数据的解读，权衡各种因素，然后做出决定。这就是所谓正确判断的很大一部分。正确判断来自我们所谓的合理判断力——有些人可能是天生的，但不多，大多是通过经验获得的。"
 
-**Insight:** Decision-making is an exercise in judgment and data interpretation, not just following raw numbers.
+**洞见：** 决策是判断力和数据解读的练习，而不仅仅是追随原始数字。
 
-**Tactical advice:**
-- Develop sound judgment by observing others and learning from past mistakes
-- Acknowledge that data informs but rarely dictates the final decision
+**战术建议：**
+- 通过观察他人和从过去错误中学习来培养合理判断力
+- 承认数据提供信息但很少决定最终决策
 
-*Timestamp: 00:33:03*
+*时间戳：00:33:03*
 
 
 ## Brandon Chu
 *Brandon Chu*
 
-> "know how to make really, really hard high conviction decisions that actually can't be solved. You got to take a leap of faith and how to do that and bring teams through that type of ambiguity and then how to lead by example and have accountability when you make those choices."
+> "知道如何做出真正困难、高信念的决定，这些决定实际上无法被解决。你必须跃入信仰，并知道如何做，带领团队穿越那种模糊性，然后知道如何以身作则，为自己做出的选择负责。"
 
-**Insight:** High-level leadership requires the ability to make high-conviction decisions in the face of unsolvable ambiguity.
+**洞见：** 高级领导力需要能够在面对无法解决的模糊性时做出高信念的决定。
 
-**Tactical advice:**
-- Take leaps of faith when data cannot solve the problem
-- Maintain high accountability for the choices made
+**战术建议：**
+- 当数据无法解决问题时跃入信仰
+- 对所做的选择保持高度负责
 
-*Timestamp: 08:05*
+*时间戳：08:05*
 
 ---
 
-> "the first thing it argues is that the most important thing to figure out when you're dealing with any decision is actually figuring out how important that decision is. Since we're faced with hundreds of decisions in any given moment around the product or whatever, and that we're only human and we can only prioritize a few, you got to figure out the importance of them so you can prioritize. And so it talks about things like either decision reversible or not."
+> "它首先主张的是，在处理任何决定时，最重要的弄清楚的事情实际上是弄清楚那个决定有多重要。因为我们每时每刻都面临着数百个关于产品或其他事情的决定，而我们只是人类，只能优先处理少数几个，你必须弄清楚它们的重要性以便排序。所以它讨论了诸如决定是可逆的还是不可逆的之类的事情。"
 
-**Insight:** The most important part of decision-making is categorizing the importance and reversibility of the decision to manage your own cognitive load.
+**洞见：** 决策的最重要部分是分类决策的重要性和可逆性，以管理你自身的认知负荷。
 
-**Tactical advice:**
-- Evaluate if a decision is reversible or one-way before committing deep analysis
-- Spend the vast majority of your time on the 1% of decisions that are truly critical
-- Delegate or use gut instinct for low-importance, reversible decisions to maintain team velocity
+**战术建议：**
+- 在进行深入分析之前，评估一个决定是可逆的还是单向的
+- 把绝大部分时间花在那 1% 真正关键的决定上
+- 对低重要性、可逆的决定委派或使用直觉，以保持团队速度
 
-*Timestamp: 36:36*
+*时间戳：36:36*
 
 
 ## Brian Chesky
 *Brian Chesky*
 
-> "If you want to improve the speed of a company, then make faster decisions. And fast decisions come from a bias of action. If we're in a meeting, we don't just say, 'Okay, let's circle back on this next week.' No, we'll have it done by next week. Let's stay in this meeting until it's done."
+> "如果你想提高公司的速度，那就做更快的决定。快的决定来自行动倾向。如果我们在开会，我们不只是说，'好的，我们下周再回来看这个。'不，我们下周前就搞定。我们在这个会议室里待到它完成为止。"
 
-**Insight:** Organizational speed is a direct result of decision-making velocity and a bias for immediate action.
+**洞见：** 组织速度是决策速度和立即行动倾向的直接结果。
 
-**Tactical advice:**
-- Avoid 'circling back' by making decisions in the room
-- Set a high tempo for follow-ups (e.g., check-ins within hours or the next morning)
+**战术建议：**
+- 避免"再回来跟进"，在当场做决定
+- 为跟进设定高节奏（例如数小时内或次日早上检查）
 
-*Timestamp: 00:47:22*
+*时间戳：00:47:22*
 
 
 ## Claire Hughes Johnson
 *Claire Hughes Johnson*
 
-> "If you're not sure who the decision maker is, one, it's probably you. And I'd rather you act that way than not because you're going to like slow the whole company down. Follow a process and get it done, and don't forget to actually make a decision."
+> "如果你不确定谁是决策者，第一，很可能就是你。我宁愿你那样做，而不是不那样做，因为你会拖慢整个公司的速度。遵循一个流程，完成它，别忘了真正做出决定。"
 
-**Insight:** In high-growth environments, individuals should default to ownership of decisions when the owner is unclear to maintain organizational momentum.
+**洞见：** 在高增长环境中，当决策者不明确时，个人应默认拥有决策权，以保持组织动力。
 
-**Tactical advice:**
-- Assume you are the decision maker if it's unclear to avoid slowing down the company
-- Ask explicitly who the decision maker is if you are worried it is not you
+**战术建议：**
+- 如果决策者不明确，假设你就是决策者，以免拖慢公司
+- 如果你担心不是你，明确询问谁是决策者
 
-*Timestamp: 00:00:00*
+*时间戳：00:00:00*
 
 ---
 
-> "In the book, I talk about this framework that Bezos uses, type one, type two decisions. Is it high impact? Is it irreversible? Is it not? Really evaluate, what kind of decision is this? How hard is it? And then follow a process and get it done."
+> "在书中，我谈到了 Bezos 使用的框架，一类决定、二类决定。是高影响吗？是不可逆的吗？还是不是？真正评估，这是什么类型的决定？它有多难？然后遵循一个流程，完成它。"
 
-**Insight:** Categorizing decisions by their impact and reversibility helps determine the appropriate speed and process for making them.
+**洞见：** 根据影响和可逆性对决定进行分类，有助于确定做出决定的合适速度和流程。
 
-**Tactical advice:**
-- Evaluate if a decision is Type 1 (high impact, irreversible) or Type 2 (reversible)
-- Use frameworks like SPADE to make the decision criteria and owner explicit
+**战术建议：**
+- 评估一个决定是第一类（高影响、不可逆）还是第二类（可逆）
+- 使用 SPADE 等框架使决策标准和决策者明确
 
-*Timestamp: 01:18:52*
+*时间戳：01:18:52*
 
 
 ## Dharmesh Shah
 *Dharmesh Shah*
 
-> "the calories you spend on a decision should be proportional to the consequences of that decision... He calls them one-way doors versus two-way doors... I'm taking it one level further, which is, it literally should be proportional."
+> "你在一个决定上消耗的热量应该与该决定的后果成正比……他称之为单扇门 vs. 双扇门……我要再进一步，它字面上应该是成比例的。"
 
-**Insight:** Decision-making effort should be mathematically proportional to the impact and reversibility of the outcome.
+**洞见：** 决策付出的努力应与结果的影响和可逆性在数学上成比例。
 
-**Tactical advice:**
-- Identify the factors/variables that should impact a decision before choosing an option.
-- Stack-rank the importance of those factors to guide the final choice.
+**战术建议：**
+- 在选择选项之前，确定应影响决策的因素/变量
+- 对这些因素的重要性进行排序，以指导最终选择
 
-*Timestamp: 01:07:21*
+*时间戳：01:07:21*
 
 ---
 
-> "ours is debate, decide, unite. That's our kind of phrase that we use in HubSpot culture... once you make a decision, getting alignment around that decision... is extremely important"
+> "我们的是辩论、决定、团结。这是我们在 HubSpot 文化中的用语……一旦你做了决定，围绕那个决定达成一致……极其重要。"
 
-**Insight:** A successful decision process requires open debate followed by total commitment from all parties, even those who disagreed.
+**洞见：** 一个成功的决策过程需要公开辩论，然后所有各方完全承诺，即使那些不同意的。
 
-**Tactical advice:**
-- Designate a single person to make the final decision (DRI).
-- Use the 'Unite' phase to ensure the team moves forward without lingering dissent.
+**战术建议：**
+- 指定一个人做最终决定（DRI）
+- 使用"团结"阶段确保团队向前推进，没有遗留的分歧
 
-*Timestamp: 01:04:42*
+*时间戳：01:04:42*
 
 
 ## Eeke de Milliano
 *Eeke de Milliano*
 
-> "Is it a trapdoor decision? Which I think is an Amazon concept. One-way door, or two-way door... Stripe was actually really good at being rigorous... about what actually was a trapdoor decision."
+> "这是一个陷阱门决定吗？我认为这是亚马逊的概念。单扇门，或双扇门……Stripe 实际上非常严谨……关于什么实际上是陷阱门决定。"
 
-**Insight:** Distinguish between reversible (two-way door) and irreversible (one-way door) decisions to maintain velocity.
+**洞见：** 区分可逆（双扇门）和不可逆（单扇门）决定以保持速度。
 
-**Tactical advice:**
-- Categorize decisions as 'trapdoor' or 'reversible' before debating them
-- Move faster on reversible decisions like pricing by grandfathering existing users
+**战术建议：**
+- 在争论之前将决定分类为"陷阱门"或"可逆"
+- 对可逆的决定（如定价，通过给现有用户祖父条款）加快速度
 
-*Timestamp: 00:16:01*
+*时间戳：00:16:01*
 
 
 ## Eoghan McCabe
 *Eoghan McCabe*
 
-> "It is the responsibility of the CEO to make brave and hard decisions unilaterally, yes, using their experts as inputs and be responsible for the outcome. If I make decisions that propel the company in the way that thankfully my decisions have, I get rewards and kudos... If I don't, I get fired."
+> "CEO 的责任是单方面做出勇敢和困难的决定——是的，使用专家作为输入并对结果负责。如果我做出的决定以我幸运的方式推动公司前进，我得到奖励和赞誉……如果没有，我被解雇。"
 
-**Insight:** High-stakes transformation requires a top-down, founder-led decision model rather than a democratic committee approach.
+**洞见：** 高风险转型需要自上而下的、创始人主导的决策模式，而非民主委员会方式。
 
-**Tactical advice:**
-- Use experts for input but avoid 'decision by committee.'
-- Take full personal responsibility for the results of unilateral decisions.
+**战术建议：**
+- 使用专家输入但避免"委员会决策"
+- 对单方面决定的结果承担全部个人责任
 
-*Timestamp: 00:31:50*
+*时间戳：00:31:50*
 
 
 ## Eric Ries
 *Eric Ries*
 
-> "If you're asking whether you should pivot or not you probably know the answer already... give yourself a fixed period of time to take some decisive action and see if it feels better."
+> "如果你在问自己是否应该转向，你可能已经知道答案了……给自己一段固定的时间去采取一些果断的行动，看看感觉是否更好。"
 
-**Insight:** The need for a pivot is usually felt before it is admitted; use time-boxed experiments to force a decision.
+**洞见：** 对转向的需求通常在被承认之前就已经被感觉到；使用时间盒实验来强制做出决定。
 
-**Tactical advice:**
-- Set a fixed period (e.g., six weeks) to move the needle
-- Focus 100% on the one thing that matters
-- Have everyone state what they would do if they could start over
+**战术建议：**
+- 设定固定期限（例如六周）来推动改进
+- 100% 专注于最重要的一件事
+- 让每个人都说如果他们可以重新开始他们会怎么做
 
-*Timestamp: 01:13:49*
+*时间戳：01:13:49*
 
 
 ## Ethan Evans
-*Ethan Evans 2.0*
+*Ethan Evans*
 
-> "Bias for action says speed matters in business and many decisions are reversible. And so it's important to go faster. And I think people don't understand that in a competitive environment, being right is good, but being quick is necessary."
+> "行动倾向认为速度在商业中很重要，许多决定是可逆的。因此，走得更快很重要。我认为人们不理解的是，在竞争环境中，正确是好的，但快速是必要的。"
 
-**Insight:** Speed is a competitive necessity, particularly for reversible decisions where the cost of delay outweighs the cost of a mistake.
+**洞见：** 速度是一种竞争必需品，特别是对于可逆的决定，延迟的代价超过了错误的代价。
 
-**Tactical advice:**
-- Distinguish between reversible and irreversible decisions to determine appropriate speed
-- Actively work to disconfirm your own beliefs to remain open to new evidence
-- Seek diverse perspectives to ensure decisions aren't limited by a narrow viewpoint
+**战术建议：**
+- 区分可逆和不可逆的决定以确定适当的速度
+- 主动努力否定自己的信念，对新证据保持开放
+- 寻求多元化的视角，确保决策不受狭隘观点限制
 
-*Timestamp: 01:03:28*
+*时间戳：01:03:28*
 
 
 ## Gaurav Misra
 *Gaurav Misra*
 
-> "As long as it's possible for wherever it's like a two-way door, you can do whatever you want... If it's A one-way door, it's worth thinking about and sort of doing correctly."
+> "只要可能，只要它是双扇门，你可以做任何你想做的事……如果是单扇门，就值得思考并正确地去做。"
 
-**Insight:** Use the one-way/two-way door framework to determine the appropriate level of rigor for technical and product decisions.
+**洞见：** 使用单扇门/双扇门框架来确定对技术和产品决策的适当严谨程度。
 
-**Tactical advice:**
-- Move fast on two-way door decisions that are easily reversible.
-- Slow down and apply more thought to one-way door decisions that impact long-term architecture.
+**战术建议：**
+- 对容易可逆的双扇门决定快速行动
+- 对影响长期架构的单扇门决定放慢速度，投入更多思考
 
-*Timestamp: 00:23:54*
+*时间戳：00:23:54*
 
 
 ## Gibson Biddle
 *Gibson Biddle*
 
-> "Is this a high stakes decision or a low stakes decision? ... magnitude ... and then, is it reversible? Amazon calls those, this was a two-way door decision. It's reversible. The one way door, those are the bigger deal."
+> "这是一个高风险的决策还是低风险的决策？……量级……然后，它是可逆的吗？亚马逊称之为双扇门决策。它是可逆的。单扇门，那些是更大的事。"
 
-**Insight:** Categorize decisions by their magnitude and reversibility to determine the appropriate level of speed and caution.
+**洞见：** 根据决策的量级和可逆性进行分类，以确定适当的速度和谨慎程度。
 
-**Tactical advice:**
-- Determine if a decision is a 'one-way door' (irreversible) or 'two-way door' (reversible)
-- Assess the magnitude of the decision relative to the total business revenue
-- Empower teams to move faster on reversible, low-magnitude decisions
+**战术建议：**
+- 确定一个决定是"单扇门"（不可逆）还是"双扇门"（可逆）
+- 评估决策相对于总业务收入的量级
+- 授权团队在可逆、低量级的决定上更快行动
 
-*Timestamp: 28:04*
+*时间戳：28:04*
 
 
 ## Heidi Helfand
 *Heidi Helfand*
 
-> "She taught us the RIDE framework for decision making clarity and it's who's requesting the change, who can give input to the change, who's the decider on the change, and who's going to execute on the change? So it's like R-I-D-E."
+> "她教给我们 RIDE 框架用于决策清晰度：谁请求变更，谁可以提供变更的输入，谁是变更的决策者，谁将执行变更？就是 R-I-D-E。"
 
-**Insight:** The RIDE framework provides clarity by defining specific roles for requesting, informing, deciding, and executing a change.
+**洞见：** RIDE 框架通过定义请求、通知、决策和执行变更的具体角色来提供清晰度。
 
-**Tactical advice:**
-- Identify the Requester (R) who initiates the change
-- Identify those who provide Input (I) to the process
-- Clearly designate the Decider (D) who has final authority
-- Assign the Executor (E) responsible for the rollout
+**战术建议：**
+- 识别发起变更的请求者（R）
+- 识别提供输入（I）的人员
+- 明确指定具有最终权力的决策者（D）
+- 分配负责执行的执行者（E）
 
-*Timestamp: 00:14:11*
+*时间戳：00:14:11*
 
 
 ## Gustaf Alstromer
 *Gustaf Alstromer*
 
-> "Small startups agree on how they decide together. So after that, everyone just follow the process. That's usually how things work out... I think you just have to have a process so you don't rehash every decision after you made them a million times."
+> "小创业公司就如何共同做决定达成一致。之后，每个人都遵循流程。这通常是事情的运作方式……我认为你只需要一个流程，这样你就不必在做完决定后反复重新讨论。"
 
-**Insight:** The specific decision-making style matters less than having a consistent, agreed-upon process that prevents rehashing.
+**洞见：** 具体的决策风格不重要，重要的是有一个一致的、达成共识的流程来防止反复讨论。
 
-**Tactical advice:**
-- Define clear areas of expertise where individual founders have final say
-- Commit to a decision once the process is complete to maintain velocity
+**战术建议：**
+- 定义明确的专业领域，由各个创始人有最终决定权
+- 一旦流程完成，承诺决定以保持速度
 
-*Timestamp: 00:55:42*
+*时间戳：00:55:42*
 
 
 ## Hari Srinivasan
 *Hari Srinivasan*
 
-> "We've put in things like we have something called RAPID, which is a really easy way to know who the decision-maker is... The R is for who's recommending it. The A, who has to agree. The I is for other people who may be able to be putting in an input. It's basically a list of people who need to be in the decision chain."
+> "我们引入了类似 RAPID 的东西，这是一种很容易知道谁是决策者的方式……R 代表推荐人。A，必须同意的人。I 是可能提供输入的其他人的清单。基本上是一份需要出现在决策链中的人的清单。"
 
-**Insight:** Use structured frameworks like RAPID to clarify roles and prevent bottlenecks in complex organizations.
+**洞见：** 使用 RAPID 等结构化框架来明确角色，防止复杂组织中的瓶颈。
 
-**Tactical advice:**
-- Ensure every decision has a single person named as the 'D' (Decision-maker)
-- Implement a five-day escalation rule to resolve misalignments quickly
-- If you have three back-and-forth emails, pick up the phone to reach a decision
+**战术建议：**
+- 确保每个决定都有一个人被指定为"决策者"
+- 实施五天升级规则以快速解决失调
+- 如果有三封来回邮件，拿起电话做决定
 
-*Timestamp: 00:37:35*
+*时间戳：00:37:35*
 
 
 ## Jackson Shuttleworth
 *Jackson Shuttleworth*
 
-> "Duolingo has very much, has a strong test it philosophy, we're willing to test a lot of different... Honestly, we'd much rather test it than debate it for days and days."
+> "Duolingo 非常强调测试理念，我们愿意测试很多不同的……老实说，我们宁愿测试它也不愿争论好几天。"
 
-**Insight:** High-velocity experimentation is more efficient than prolonged internal debate.
+**洞见：** 高速度实验比长时间的内部辩论更有效率。
 
-**Tactical advice:**
-- Default to A/B testing rather than long meetings when the cost of the test is low.
+**战术建议：**
+- 当测试成本低时，默认使用 A/B 测试而不是长时间会议
 
-*Timestamp: 00:15:03*
+*时间戳：00:15:03*
 
 
 ## Jake Knapp + John Zeratsky
-*Jake Knapp + John Zeratsky 2.0*
+*Jake Knapp + John Zeratsky*
 
-> "We're using this tactic that we call work alone together. And specifically the note and vote is this method where everyone's in silence... writing down their own answers to this question... then the team's going to vote on those. And then one person who's designated as the decider... is going to say, 'Okay, this is our decision for now.'"
+> "我们在用'独自一起工作'这个策略。具体来说，'记和投'是一种方法，每个人都保持沉默……写下自己对问题的答案……然后团队对这些答案投票。然后一个被指定为决策者的人……会说，'好吧，这就是我们现在的决定。'"
 
-**Insight:** Using structured silence and a designated decider allows teams to move through complex strategic choices at high velocity without groupthink.
+**洞见：** 使用结构化沉默和指定的决策者，可以让团队以高速度推进复杂的战略选择，而不陷入群体思维。
 
-**Tactical advice:**
-- Use 'Note and Vote': individuals write ideas in silence, then the team votes.
-- Designate a 'Decider' (usually the CEO or CPO) to make the final call after seeing the team's input.
+**战术建议：**
+- 使用"记和投"：个人在沉默中写下想法，然后团队投票
+- 指定一个"决策者"（通常是 CEO 或 CPO）在看到团队输入后做最终决定
 
-*Timestamp: 00:21:38*
+*时间戳：00:21:38*
 
 
 ## Jason Fried
 *Jason Fried*
 
-> "I don't know how to make decisions by numbers or I don't find any joy in it, frankly. I've always been intuition driven and gut driven. And frankly, to be honest, I think everyone actually is... I think everything's a judgment call."
+> "我不知道如何用数字做决定，坦白说，我也从其中找不到乐趣。我一直是直觉驱动和感觉驱动。坦率地说，老实说，我认为实际上每个人都是……我认为所有事情都是判断。"
 
-**Insight:** Acknowledge that most business decisions are ultimately judgment calls based on experience and intuition rather than purely rational data analysis.
+**洞见：** 承认大多数商业决策最终是基于经验和直觉的判断，而不是纯粹理性的数据分析。
 
-**Tactical advice:**
-- Value 'judgment and experience' as the primary criteria for executive decision-making
-- Use data as one input among many, rather than the sole decider
-- Ask 'How does this feel?' to tap into the team's collective intuition
+**战术建议：**
+- 将"判断和经验"作为高管决策的主要标准
+- 将数据作为众多输入之一，而非唯一的决策者
+- 问"感觉如何？"来挖掘团队的集体直觉
 
-*Timestamp: 00:44:15*
+*时间戳：00:44:15*
 
 
 ## Jerry Colonna
 *Jerry Colonna*
 
-> "Why is it that nobody on my team can make a decision without me? ... How does it make you feel when they make a decision that you disagree with? She said, 'I'm furious.' ... That's your growth edge. How can I be with the people in my life making boneheaded decisions about something that I care so much about?"
+> "为什么我的团队里没有人能在我不知情的情况下做决定？……当他们做出你不同意的决定时，你感觉如何？她说，'我暴怒。'……那就是你的成长边缘。我如何与生活中那些在我关心的事情上做出愚蠢决定的人相处？"
 
-**Insight:** Decision-making bottlenecks are often emotional issues for the leader rather than process issues for the team.
+**洞见：** 决策瓶颈往往是领导者的情感问题，而非团队的流程问题。
 
-**Tactical advice:**
-- Examine your emotional reaction to team members making 'wrong' decisions.
-- Shift from controlling decisions to managing the relationship and the 'growth edge' of allowing others to lead.
+**战术建议：**
+- 审视你对团队成员做出"错误"决定的情感反应
+- 从控制决策转向管理关系，以及允许他人领导的"成长边缘"
 
-*Timestamp: 01:17:28*
+*时间戳：01:17:28*
 
 
 ## Jeremy Henrickson
 *Jeremy Henrickson*
 
-> "We're in the middle of a meeting, we need to make a decision. Let's either make the decision or if we can't, let's Slack call in the person that we need in order to make that decision. And we'll be done with the decision today."
+> "我们在开会，需要做一个决定。要么我们做决定，要么如果不能，我们 Slack 电话给需要的人来做决定。我们今天就把决定做完。"
 
-**Insight:** High-velocity organizations prioritize immediate decision-making over scheduling future meetings.
+**洞见：** 高速度组织优先考虑立即决策，而不是安排未来会议。
 
-**Tactical advice:**
-- Pull necessary stakeholders into current meetings via Slack or calls to resolve blockers immediately
-- Value the tempo of decision-making as a core cultural differentiator
+**战术建议：**
+- 通过 Slack 或电话将必要的利益相关者拉入当前会议，立即解决阻塞
+- 将决策节奏视为核心文化差异化因素
 
-*Timestamp: 00:27:15*
+*时间戳：00:27:15*
 
 ---
 
-> "I am anti-process as a substitution for deep product thinking... I like to have just enough process to create a frame so that the right decisions can happen and no more."
+> "我反对用流程取代深度产品思考……我喜欢有刚好足够的流程来创建一个框架，使正确的决策能够发生，而不再多。"
 
-**Insight:** Process should facilitate thinking rather than replace it; the right amount of process depends on the team's specific lifecycle.
+**洞见：** 流程应促进思考而不是取代它；适量的流程取决于团队的具体生命周期。
 
-**Tactical advice:**
-- Avoid dogmatically applying frameworks like Scrum or Kanban if they don't fit the team's context
-- Use process only to create a frame for decision-making
+**战术建议：**
+- 避免教条地应用 Scrum 或 Kanban 等框架，如果它们不适合团队的情境
+- 仅使用流程来创建一个决策框架
 
-*Timestamp: 00:45:54*
+*时间戳：00:45:54*
 
 
 ## Jessica Hische
 *Jessica Hische*
 
-> "I feel like my strength with the work that I do in general is just being incredibly decisive and understanding that there's 10 good answers to every one question... I feel like I can look at 10 gray sofas and go, it feels like there's two or three categories of sofa here, and then within those categories, there's a couple of good options. Here's a brand that I recognize is known for being of high quality. That one's good enough. I can get to it really quickly."
+> "我觉得我的强项在于我通常所做的工作是极其果断的，并且理解每个问题都有 10 个好的答案……我觉得我可以看十个灰色沙发，然后说，感觉这里有两三类沙发，在这些类别中，有几个好的选项。这是一个我认识的高品质品牌。那个就够了。我可以很快搞定。"
 
-**Insight:** Decisiveness comes from recognizing that multiple 'good' paths exist and choosing the most intuitive one rather than seeking a single 'perfect' answer.
+**洞见：** 果断来自于认识到多个"好"路径存在，并选择最直观的一个，而不是寻找单一的"完美"答案。
 
-**Tactical advice:**
-- Categorize options into 2-3 buckets to simplify complex decision-making.
-- Accept 'good enough' quickly to maintain momentum rather than over-analyzing every possible variation.
+**战术建议：**
+- 将选项分为 2-3 个桶，以简化复杂决策
+- 快速接受"足够好"，以保持动力，而不是过度分析每种可能的变体
 
-*Timestamp: 01:18:09*
+*时间戳：01:18:09*
 
 ---
 
-> "Nothing is ever 100% perfect, and the most you can aspire and get to is 99.8 or whatever. That last 0.2%, you could spend your whole life trying to do that, or you could move on and do other things and understand that it's nearly perfect."
+> "没有什么是 100% 完美的，你能追求和达到的最多是 99.8 或其他什么。最后那 0.2%，你可以花一辈子的时间去追求，或者你可以继续做其他事情，接受它几乎完美了。"
 
-**Insight:** The final 0.2% of perfection often yields diminishing returns; recognize when a project is 'nearly perfect' and move on.
+**洞见：** 最后的 0.2% 完美往往产生递减的回报；认识到一个项目何时"几乎完美"并继续前进。
 
-**Tactical advice:**
-- Identify the point of diminishing returns in creative or technical work.
-- Prioritize moving on to new projects over the exhaustive pursuit of absolute perfection.
+**战术建议：**
+- 在创造性或技术性工作中识别回报递减的点
+- 优先推进新项目，而不是穷尽追求绝对完美
 
-*Timestamp: 01:18:09*
+*时间戳：01:18:09*
 
 
 ## Joe Hudson
 *Joe Hudson*
 
-> "What it tells us, and this is not exact, I'm paraphrasing for a podcast, but we make decisions in the emotional center of our brain. We use logic to try to figure out how we're going to feel. ... There's no such thing as a logical decision. That idea is like, I'm just going to be logical and just make a logical decision, it doesn't. Neurologically, it's just untrue."
+> "它告诉我们，——这不精确，我是在为播客概括——但我们在大脑的情感中心做决策。我们用逻辑来试图弄清楚我们将如何感受。……没有所谓的逻辑决策。那个想法是，'我就要逻辑地做个逻辑的决定'——在神经学上，这根本不是真的。"
 
-**Insight:** Decisions are fundamentally emotional; logic is merely a tool used to predict future emotional states.
+**洞见：** 决定从根本上来说是感性的；逻辑仅仅是用以预测未来情感状态的工具。
 
-**Tactical advice:**
-- Acknowledge the emotional drivers behind a decision rather than pretending it is purely logical.
-- Increase your 'emotional fluidity' to access a wider range of solution sets that are otherwise blocked by emotional resistance.
+**战术建议：**
+- 承认决策背后的情感驱动因素，而不是假装它纯粹是逻辑的
+- 增加你的"情感流动性"，以接触到更广泛的、被情感阻力阻挡的解决方案集
 
-*Timestamp: 00:13:31*
+*时间戳：00:13:31*
 
 ---
 
-> "The other one that I find really, really useful and very hard to execute on until you really understand it is creating a set of principles to live by. ... if you really take a look at what it is you're making your decisions on and then really think about, well, what would be the five or six things that if I made decisions with these principles, I'm guaranteed success?"
+> "我发现另一个非常非常有用、但在你真正理解之前很难执行的是，建立一套生活的原则。……如果你真的审视你做出决定的依据，然后真正思考，如果我用这些原则做决定，有哪五六件事能保证我成功？"
 
-**Insight:** Living by a small set of core principles automates effective decision-making and ensures consistency even during difficult times.
+**洞见：** 遵循一小套核心原则可以自动化有效的决策，并确保即使在困难时期也能保持一致性。
 
-**Tactical advice:**
-- Define a set of no more than five simple principles (e.g., 'Embrace intensity' or 'Connection first').
-- Test each principle for five days to see if it produces the desired life or business outcomes.
-- Define what each principle is NOT to provide clearer boundaries for action.
+**战术建议：**
+- 定义不超过五个简单的原则（例如"拥抱强度"或"连接第一"）
+- 每个原则测试五天，看它是否产生期望的生活或业务结果
+- 定义每个原则不是什么，为行动提供更清晰的边界
 
-*Timestamp: 00:58:06*
+*时间戳：00:58:06*
 
 
 ## John Cutler
 *John Cutler*
 
-> "The better teams make high, better decisions faster... Company A buys into the whole idea of an extremely rigorous decision-making process. It's very process driven... Company B, maybe they're just all about this kind of mushy, diverse perspectives thing... Company C... very top down CEO driven."
+> "更好的团队更快地做出更好、更高的决策……A 公司完全接受极度严谨的决策流程理念。它非常流程驱动……B 公司，也许他们全部关于这种模糊的多元化视角……C 公司……非常自上而下的 CEO 驱动。"
 
-**Insight:** There is no single 'best' decision process; high-performing teams succeed by choosing a process (rigorous, collaborative, or top-down) that is coherent with their leadership and culture.
+**洞见：** 没有单一的"最佳"决策流程；高绩效团队通过选择一个与其领导力和文化一致的流程（严谨、协作或自上而下）来取得成功。
 
-**Tactical advice:**
-- Identify if your company's decision-making style is process-driven, collaborative, or visionary-led, and align your team's workflow to match it.
+**战术建议：**
+- 识别你公司的决策风格是流程驱动、协作还是愿景驱动，并使团队的工作流与之匹配
 
-*Timestamp: 00:31:21*
+*时间戳：00:31:21*
 
 ---
 
-> "There's things like that out there. There's this thing Cynefin, which is a way to understand the systems and decision-making problems have, are you dealing with a clear system, a complicated system, a complex system, or a chaotic system?"
+> "外面有这种东西叫 Cynefin，它是一种理解系统和决策问题的方式：你是在处理一个清晰系统、复杂系统、复合系统，还是混乱系统？"
 
-**Insight:** Effective decision-making requires first identifying the type of system you are operating in (clear, complicated, complex, or chaotic).
+**洞见：** 有效的决策需要首先识别你正在运作的系统类型（清晰、复杂、复合或混乱）。
 
-**Tactical advice:**
-- Use the Cynefin framework to categorize a problem before choosing a decision-making approach.
+**战术建议：**
+- 在决定决策方法之前，使用 Cynefin 框架对问题进行分类
 
-*Timestamp: 01:23:57*
+*时间戳：01:23:57*
 
 
 ## Jonny Miller
 *Jonny Miller*
 
-> "The best decision-making is emotional... if you are on the other hand able to just welcome and be with whatever emotions would arise on the other side of a decision, you're able to decide clearly instead of being skewed one way or the other."
+> "最好的决策是情感化的……如果你另一方面能够欢迎并接纳任何做决定后出现的情感，你就能清晰做决定，而不是被某种情绪偏向一边或另一边。"
 
-**Insight:** Effective decision-making requires the ability to process emotional data rather than suppressing it to avoid discomfort.
+**洞见：** 有效的决策需要处理情感数据的能力，而不是压制它以避免不适。
 
-**Tactical advice:**
-- Identify if you are making a decision primarily to avoid a specific feeling like conflict or anger
-- Track 'somatic markers'—physical sensations in the body—as intuitive data points when evaluating options
+**战术建议：**
+- 识别你是否在做决定主要是为了避免某种特定感受，如冲突或愤怒
+- 跟踪"躯体标记"——身体中的物理感觉——作为评估选项时的直觉数据点
 
-*Timestamp: 00:50:16*
+*时间戳：00:50:16*
 
 
 ## Judd Antin
 *Judd Antin*
 
-> "The wisdom of the crowd works when the people involved with the decision are bringing diverse sources of information and judgment to the table... If you want to check your gut, get a bunch of different guts together, get a bunch of different people in the room who can bring evidence and intuition to bear."
+> "群体的智慧只在参与决策的人带来多样化的信息源和判断力时起作用……如果你想检查你的直觉，把一堆不同的直觉放在一起，让一群不同的人带着证据和直觉进到房间里。"
 
-**Insight:** Effective decision-making requires aggregating diverse sources of information to counteract individual cognitive biases.
+**洞见：** 有效的决策需要聚合多样化的信息源，以抵消个体认知偏差。
 
-**Tactical advice:**
-- Engage 'System 2' (slow, analytical thinking) to check gut reactions.
-- Facilitate decision meetings that include diverse perspectives and evidence types.
+**战术建议：**
+- 使用"系统 2"（缓慢的分析性思维）来检查直觉反应
+- 促进包含多元视角和证据类型的决策会议
 
-*Timestamp: 00:30:54*
+*时间戳：00:30:54*
 
 
 ## Kenneth Berger
 *Kenneth Berger*
 
-> "I think often the dangers of people saying, 'Oh, I don't have data to back this up. It's just what I think. And I'm not sure people are going to agree with me, so I'm just not going to say it.' So we don't have the data of all those gut opinions of these subject matter experts in the room, even though that gut information to me is just as important as anything we could get from the SQL database."
+> "我认为危险常常在于人们说，'哦，我没有数据支持这个。这只是我的想法。而且我不确定人们会同意我，所以我就不说了。'所以我们没有那些房间里主题专家的直觉意见的数据，尽管那些直觉信息对我来说和从 SQL 数据库获取的任何东西一样重要。"
 
-**Insight:** Expert intuition and 'gut data' are critical inputs to the decision-making process that are often suppressed in data-driven cultures.
+**洞见：** 专家直觉和"直觉数据"是决策过程中的关键输入，在数据驱动文化中常常被压制。
 
-**Tactical advice:**
-- Encourage team members to share gut opinions even without supporting metrics
-- Treat subjective opinions as valuable data points in the decision-making loop
+**战术建议：**
+- 鼓励团队成员在没有支持指标的情况下分享直觉意见
+- 将主观意见视为决策循环中的有价值数据点
 
-*Timestamp: 00:33:50*
+*时间戳：00:33:50*
 
 
 ## Keith Coleman & Jay Baxter
 *Keith Coleman & Jay Baxter*
 
-> "One key attribute is there's one clear driver of the project, who's effectively a founder... and also there's one clear decision-maker that they go to... I think that's a big reason we're able to make decisions effectively, quickly, in a simple way."
+> "一个关键属性是有一个明确的项目驱动者，他本质上是一个创始人……并且有一个明确的决策者可以向其汇报……我认为这是我们能以简单有效的方式快速做决定的重要原因。"
 
-**Insight:** The 'Thermal' model accelerates decision-making by isolating a team from corporate bureaucracy and giving them a single senior sponsor.
+**洞见：** "Thermal"模式通过将团队从企业官僚主义中隔离出来并给予他们一个单一的高级赞助者，来加速决策。
 
-**Tactical advice:**
-- Assign a single 'driver' (founder-equivalent) to the project
-- Establish a 'Thermal' structure where the team is 100% focused and uses its own decision-making process
+**战术建议：**
+- 为项目分配一个单一的"驱动者"（相当于创始人）
+- 建立"Thermal"结构，团队 100% 专注并使用自己的决策流程
 
-*Timestamp: 00:42:43*
+*时间戳：00:42:43*
 
 
 ## Kevin Aluwi
 *Kevin Aluwi*
 
-> "One relatively minor thing that I thought had a lot of impact with execution is being very clear that whoever is accountable for the results should also be the decider. I found that a lot of literature out there says that product teams should be this communal best ideas come from everywhere group... but I think not having it be super clear who is accountable and who is deciding often slows down execution a lot."
+> "一件相对微小但我觉得对执行有很大影响的事是，非常清楚谁对结果负责，谁就应该是决策者。我发现很多文献说产品团队应该是这种集体性的、最佳想法来自任何地方的组织……但我认为不让谁负责和谁决策变得超级清晰，通常会大大拖慢执行。"
 
-**Insight:** Clear individual accountability for decisions is superior to communal decision-making for maintaining execution speed.
+**洞见：** 清晰的个人决策责任优于集体决策，以保持执行速度。
 
-**Tactical advice:**
-- Ensure the person accountable for the results is the final decider for the project
-- Avoid overly communal decision-making processes that obscure accountability and slow down progress
+**战术建议：**
+- 确保对结果负责的人也是项目的最终决策者
+- 避免过于集体化的决策流程，这模糊了责任并拖慢进度
 
-*Timestamp: 01:00:53*
+*时间戳：01:00:53*
 
 
 ## Kevin Yien
 *Kevin Yien*
 
-> "PMs need as many reps as possible in making decisions, documenting the rationale behind those decisions, and then crucially seeing the outcome of them... Look around you. There's other teams that are making decisions. What would you do if you were in that position with the information you have? Great, write it down."
+> "PM 需要尽可能多地进行决策实践，记录这些决策背后的理由，然后关键的是看到它们的结果……看看你周围。有其他团队在做决定。如果你在他们那个位置，拥有你拥有的信息，你会怎么做？好，把它写下来。"
 
-**Insight:** Product sense is developed by making high-volume decision reps, documenting them, and reviewing the outcomes.
+**洞见：** 产品感觉是通过高频率的决策实践、记录和审查结果来发展的。
 
-**Tactical advice:**
-- Keep a decision log where you document the rationale for your choices.
-- Simulate decisions for other teams or companies to get 'free' reps.
-- Set calendar reminders to review the outcomes of your documented decisions months later.
+**战术建议：**
+- 保持决策日志，记录你选择的理由
+- 模拟其他团队或公司的决策，获得"免费"的实践机会
+- 设置日历提醒，数月后审查你记录在案的决策结果
 
-*Timestamp: 00:35:32*
+*时间戳：00:35:32*
 
 
 ## Lane Shackleton
 *Lane Shackleton*
 
-> "Dharmesh Shah has this ritual from HubSpot called flash tags... It ranges from ... I think it's FYI, suggestion, recommendation, plea. FYI is basically like I had a thought, take it or leave it kind of thing. Suggestion is ... is this a hill I'm going to die on? And FYI is there's no hill in sight. Suggestion is there's a hill. I'm not going to die on it but this is what I would do if I were you. Recommendation is I'm climbing the hill. I'm not going to die here, but I've thought about this a lot, so don't ignore this. And then the fourth one, plea, is hopefully rarely used in the organization. It's like, I don't like dying on hills. That's not what we do here. But this is a pretty good candidate for it. You should really trust me."
+> "Dharmesh Shah 有 HubSpot 的一种仪式，叫做闪标签……范围从……我想是 FYI、建议、推荐、恳请。FYI 基本就是我有想法，你自己看着办。建议是……这是我愿意捍卫的山头吗？FYI 是根本看不到山头。建议是有一个山头。我不会死在那里，但如果我是你，我会这么做。推荐是我在爬这座山。我不会死在这里，但我考虑了很多，所以不要忽略这个。第四个，恳请，希望组织中很少用到。这就像，我不喜欢死在山头上。那不是我们这里的做法。但这很可能值得。你真的应该相信我。"
 
-**Insight:** Use standardized 'flash tags' to calibrate the weight and urgency of feedback.
+**洞见：** 使用标准化的"闪标签"来校准反馈的权重和紧急性。
 
-**Tactical advice:**
-- Label feedback as FYI, Suggestion, Recommendation, or Plea.
-- Use these tags in shared documents or verbal meetings to clarify if a leader is mandating a change or just offering a thought.
+**战术建议：**
+- 将反馈标记为 FYI、建议、推荐或恳请
+- 在共享文档或口头会议中使用这些标签，澄清领导是在要求更改还是只是提供一个想法
 
-*Timestamp: 00:36:24*
+*时间戳：00:36:24*
 
 ---
 
-> "A very simple thing that he did probably in the last six months was he had a table of all the upcoming decisions and then at a tag-up ... he had all the upcoming decisions and then he let people hit a little reaction and say, "Oh, I don't need to be involved. Just notify me of the decision after." Or, "Hey, I have some opinions, but you can keep going." Or, "No, I really want to be heavily involved in this decision.""
+> "他过去半年里做的一个非常简单的事情是，他有一个所有即将到来的决定的表格，然后在一次交流中……他列出了所有即将到来的决定，让人们点一个反应，说，'哦，我不需要参与。只是决定后通知我。'或者，'嘿，我有一些意见，但你可以继续。'或者，'不，我真的想深入参与这个决定。'"
 
-**Insight:** Pre-qualify stakeholder involvement in decisions to prevent unnecessary bottlenecks.
+**洞见：** 预先确定利益相关者在决策中的参与程度，可以防止不必要的瓶颈。
 
-**Tactical advice:**
-- Create a table of upcoming decisions and let stakeholders opt-in to their level of involvement.
-- Use 'notify me after' as a default for low-impact decisions to increase velocity.
+**战术建议：**
+- 创建即将到来的决定表格，让利益相关者选择参与程度
+- 对低影响决定默认使用"决定后通知我"，以提高速度
 
-*Timestamp: 00:51:30*
+*时间戳：00:51:30*
 
 
 ## Laura Schaffer
 *Laura Schaffer*
 
-> "I will definitely think that I would be described as someone who's going more by their gut when looking at date end results... I'm very comfortable and very common in using qualitative responses and things like that and supplement to quantitative data to make a decision."
+> "我肯定觉得在查看最终数据时，我会被描述为一个更依赖直觉的人……我在使用定性反馈之类的东西来补充定量数据做出决定时非常自在和常见。"
 
-**Insight:** Effective decision-making in growth requires balancing hard data with qualitative insights to move faster than statistical significance allows.
+**洞见：** 增长中的有效决策需要平衡硬数据和定性洞察，以在统计显著性允许之前更快地行动。
 
-**Tactical advice:**
-- Set the decision game plan and risk tolerance before running an experiment
-- Use qualitative feedback to corroborate quantitative trends when confidence intervals are low
-- Educate stakeholders on why a high volume of experiments is safer than a few high-confidence tests
+**战术建议：**
+- 在运行实验之前设置决策游戏计划和风险承受度
+- 在置信区间较低时使用定性反馈来佐证定量趋势
+- 教育利益相关者为什么大量实验比少数高置信度测试更安全
 
-*Timestamp: 00:42:51*
+*时间戳：00:42:51*
 
 
 ## Matt Mullenweg
 *Matt Mullenweg*
 
-> "If we had voted for whether we should do that or not, everyone would've voted against it or the majority would have. It was really a few core people of us in the community... that said, 'Hey, this is the future and it's going to take 10 years to do and it's going to be a long bet.'"
+> "如果我们投票决定是否应该这样做，每个人都会投票反对，或者多数人会。实际上只是社区里的少数核心人物……说，'嘿，这是未来，需要花 10 年来实现，这是一个长期赌注。'"
 
-**Insight:** Critical long-term bets often require leaders to override majority consensus, especially when the transition period is expected to be difficult.
+**洞见：** 关键的长期赌注通常需要领导者推翻多数共识，特别是当过渡期预期会很困难时。
 
-**Tactical advice:**
-- Identify 'long bets' that may be unpopular in the short term but are necessary for future relevance
-- Be prepared to endure years of negative feedback during major product transitions
+**战术建议：**
+- 识别可能在短期内不受欢迎但对未来相关性必要的"长期赌注"
+- 在重大产品转型期间准备好承受数年的负面反馈
 
-*Timestamp: 01:03:12*
+*时间戳：01:03:12*
 
 
 ## Maya Prohovnik
 *Maya Prohovnik*
 
-> "I think where people get into trouble is when they think that they can rely solely on the data... I would think of your gut actually as a type of data and I think it's a totally valid one and it's just I think you need to be clear that that's what you're working with, but then it should be taken as seriously as any other data point."
+> "我认为人们陷入麻烦的地方是他们认为可以完全依靠数据……我会把你的直觉实际上看作一种数据类型，我认为它是一种完全有效的数据，只是你需要清楚这就是你在使用的东西，但它应该像任何其他数据点一样被认真对待。"
 
-**Insight:** Effective decision-making treats intuition as a valid data point that must be objectively explained to stakeholders.
+**洞见：** 有效的决策把直觉当作一个有效的数据点，必须客观地向利益相关者解释。
 
-**Tactical advice:**
-- Treat 'gut feeling' as accumulated experience-based data
-- Objectively explain the reasoning behind a gut feeling to influence others
-- Use data to form and test hypotheses rather than as a sole decision-maker
+**战术建议：**
+- 将"直觉"视为积累的经验数据
+- 客观地解释直觉背后的推理，以影响他人
+- 使用数据来形成和测试假设，而不是作为唯一的决策者
 
-*Timestamp: 00:18:21*
+*时间戳：00:18:21*
 
 
 ## Mayur Kamat
 *Mayur Kamat*
 
-> "There's no right or wrong decision. There's just low and fast decisions... for anything that's reversible, anything that's not going to get you in jail or kill your company, no right or wrong decisions, just slow or fast decisions."
+> "没有正确或错误的决定。只有慢和快的决定……对任何可逆的、不会让你进监狱或毁掉公司的事情，没有正确或错误的决定，只有慢或快的决定。"
 
-**Insight:** Speed is the primary variable in decision-making for reversible actions.
+**洞见：** 对于可逆的行动来说，速度是决策中的主要变量。
 
-**Tactical advice:**
-- Categorize decisions as reversible or irreversible.
-- Optimize for speed in all reversible decisions to gather data faster.
+**战术建议：**
+- 将决定分类为可逆或不可逆
+- 在所有可逆决定中优化速度，以便更快收集数据
 
-*Timestamp: 01:33:35*
+*时间戳：01:33:35*
 
 
 ## Melissa Tan
 *Melissa Tan*
 
-> "A DACI is a framework to think about the different roles on the team on a project or an area. So D stands for Driver... A is Accountable... C is Contributor... And I is informed. And so it's a nice simple framework for when you are working across teams and it needs to be clear who is in what role."
+> "DACI 是一个框架，用于思考团队中在一个项目或领域上的不同角色。所以 D 代表驱动者……A 代表负责人……C 代表贡献者……I 代表被告知者。这是一个很好的简单框架，当你在跨团队工作时，需要清楚每个人是什么角色。"
 
-**Insight:** The DACI framework clarifies accountability and prevents decision-making bottlenecks in cross-functional projects.
+**洞见：** DACI 框架阐明了责任并防止跨职能项目中的决策瓶颈。
 
-**Tactical advice:**
-- Assign one 'Driver' to push the project forward
-- Identify one 'Accountable' person as the final decision-maker
-- Explicitly list 'Contributors' and those who only need to be 'Informed'
+**战术建议：**
+- 分配一个"驱动者"推动项目前进
+- 确定一个"负责人"作为最终决策者
+- 明确列出"贡献者"和只需要"被告知"的人
 
-*Timestamp: 00:54:36*
+*时间戳：00:54:36*
 
 
 ## Mihika Kapoor
 *Mihika Kapoor*
 
-> "I think that putting out an idea, even if it's totally wrong, is a much better catalyst for getting to a good solution because people are much more likely to react to an idea than to nothing."
+> "我认为提出一个想法，即使完全是错的，也是达到好解决方案的更好催化剂，因为人们更可能对一个想法做出反应，而不是对什么都没有。"
 
-**Insight:** Proposing a specific, even flawed, hypothesis is more effective at generating momentum and high-quality feedback than starting from a blank slate.
+**洞见：** 提出一个具体的、甚至有缺陷的假设，比从空白开始更能有效地产生动力和高质量的反馈。
 
-**Tactical advice:**
-- Use the 'one-way doors vs. two-way doors' framework to maintain decision speed
-- Enter research with an 'A-' idea to refine it rather than starting at zero
-- Adopt a 'strong opinions, weakly held' mindset to remain agile when external signals change
+**战术建议：**
+- 使用"单扇门 vs. 双扇门"框架保持决策速度
+- 用一个"A-"的想法进入研究，进行优化，而不是从零开始
+- 采用"强观点，弱坚持"的心态，当外部信号变化时保持敏捷
 
-*Timestamp: 00:25:11*
+*时间戳：00:25:11*
 
 
 ## Nabeel S. Qureshi
 *Nabeel S. Qureshi*
 
-> "When you started a new project, you basically had to organize what they called a murder board for it... the idea is, basically, you write up a two-page plan for the project. You invite three or four smart folks who don't know anything about the project and their job is just to tear apart your plan."
+> "当你开始一个新项目时，你基本上必须为它组织一个所谓的谋杀委员会……想法是，你写一个两页的项目计划。你邀请三四个对该项目一无所知的聪明人，他们的工作就是把你的计划撕碎。"
 
-**Insight:** Use 'murder boards' to stress-test new project plans by inviting objective critics to find every possible flaw.
+**洞见：** 使用"谋杀委员会"来压力测试新项目计划，邀请客观的批评者找出每一个可能的缺陷。
 
-**Tactical advice:**
-- Write a concise two-page plan covering vision, goals, tactics, and principles.
-- Invite 'outsiders' to the project specifically to tear the plan apart.
-- Include principles that are specific enough to be disagreed with (avoid platitudes like 'move fast').
+**战术建议：**
+- 写一个简洁的两页计划，涵盖愿景、目标、策略和原则
+- 专门邀请项目的"局外人"来撕碎计划
+- 包括足够具体以至于可以被反驳的原则（避免"快速行动"之类的套话）
 
-*Timestamp: 00:12:30*
+*时间戳：00:12:30*
 
 
 ## Noah Weiss
 *Noah Weiss*
 
-> "Your job as to facilitate the pace and quality of decision making. That is very different than you are the person who makes all the decisions. In fact, I think one of the things that PM struggled with early on is how do you actually get the team to be able to make high quality decisions quickly without you arbitrarily playing tiebreaker all the time."
+> "你的工作是促进决策的速度和质量。这与你是做出所有决定的人非常不同。事实上，我认为 PM 早期挣扎的一件事是，如何真正让团队能够快速做出高质量的决定，而不需要你一直随意地打破平局。"
 
-**Insight:** The PM's role is to facilitate the decision-making process, not to be the sole decision-maker or arbitrary tiebreaker.
+**洞见：** PM 的角色是促进决策过程，而不是成为唯一的决策者或随意的平局打破者。
 
-**Tactical advice:**
-- Focus on the *pace* and *quality* of the team's decisions rather than making them yourself.
-- Avoid acting like a 'mini-CEO' or dictator; act as a facilitator.
+**战术建议：**
+- 关注团队决策的*速度*和*质量*，而不是自己来做决定
+- 避免像"迷你 CEO"或独裁者那样行事；扮演推动者的角色
 
-*Timestamp: 01:06:30*
+*时间戳：01:06:30*
 
 
 ## Nilan Peiris
 *Nilan Peiris*
 
-> "You can't split test your way to love. ... This thing of building conviction on what matters, and I watch how teams slowly build this and you need the data there to make sure it doesn't become a hubris, right? That enables you to make much bigger changes than just experimenting away, and it forces you to get clear on what actually is the problem to solve here, and how do I solve it really, really well?"
+> "你不能通过分割测试得到爱。……这种建立信念的过程——我观察团队如何慢慢构建它——你需要数据确保它不会变成傲慢，对吧？这使你能够做出比仅仅做实验大得多的改变，并迫使你明确这里实际需要解决的问题，以及如何真正、真正地解决好它。"
 
-**Insight:** High-impact product development requires building conviction through qualitative and quantitative insights rather than relying solely on incremental A/B testing.
+**洞见：** 高影响力的产品开发需要通过定性和定量洞察来建立信念，而不是仅仅依赖增量式的 A/B 测试。
 
-**Tactical advice:**
-- Use data to build long-term conviction rather than just validating small, isolated changes
-- Encourage PMs to develop a 'gut feel' by talking to customers before deciding what to build
-- Prioritize solving core problems 'really, really well' over running high volumes of low-conviction experiments
+**战术建议：**
+- 使用数据建立长期信念，而不仅仅是验证小的、孤立的变更
+- 鼓励 PM 在决定构建什么之前，先通过与客户交谈来培养"直觉"
+- 优先"真正、真正地解决好"核心问题，而不是运行大量低信念的实验
 
-*Timestamp: 00:38:13*
+*时间戳：00:38:13*
 
 
 ## Patrick Campbell
 *Patrick Campbell*
 
-> "I found the model that people who aren't great at first principal thinking... is this thing called problem, cause, solution. So I learned this in debate in college and high school, and it basically is you have a problem that you're trying to solve. Well, you can't actually solve a problem... you want to break down what are all the causes."
+> "我找到了一个模式，给那些不擅长第一性原理思考的人……叫做问题、原因、解决方案。我是在大学和高中的辩论中学到的，基本上是你有一个要解决的问题。嗯，你不能真正解决一个问题……你想要分解出所有原因。"
 
-**Insight:** First principles thinking can be operationalized by breaking a symptom (the problem) into its root causes and ranking them by magnitude before designing solutions.
+**洞见：** 第一性原理思考可以通过将症状（问题）分解为其根本原因，在设计解决方案之前按量级排序来操作化。
 
-**Tactical advice:**
-- Use the 'Problem, Cause, Solution' framework to move from symptoms to root issues
-- Rank causes by magnitude to ensure you are solving the most impactful part of the problem
-- Apply this framework to everything from high-level strategy to individual support tickets
+**战术建议：**
+- 使用"问题、原因、解决方案"框架，从症状转向根本问题
+- 按量级对原因进行排序，确保你在解决问题中最有影响力的部分
+- 将这一框架应用于从高层次策略到单个支持工单的一切事务
 
-*Timestamp: 00:36:06*
+*时间戳：00:36:06*
 
 
 ## Paul Millerd
 *Paul Millerd*
 
-> "Tim Ferriss' fear setting, and he basically forces you to write down what are your fears, how could you mitigate these. But more powerfully, the second part is... And you're framing them around action. And so he reframes, what is the cost of inaction?"
+> "Tim Ferriss 的恐惧设定，他基本上强迫你写下你的恐惧是什么，你如何可以减轻它们。但更有力的是第二部分……你围绕行动来框定它们。他重新框架：不行动的代价是什么？"
 
-**Insight:** Effective decision-making in career pivots requires weighing the cost of staying in a soul-crushing job against the risks of leaving.
+**洞见：** 职业转折中的有效决策需要权衡留在一个令你痛苦的工作中的代价与离开的风险。
 
-**Tactical advice:**
-- Write down specific fears and mitigation strategies
-- Explicitly calculate the 'cost of inaction' over 6 months, 1 year, and 3 years
+**战术建议：**
+- 写下具体的恐惧和缓解策略
+- 明确计算 6 个月、1 年和 3 年内的"不行动的代价"
 
-*Timestamp: 00:40:45*
+*时间戳：00:40:45*
 
 
 ## Rahul Vohra
 *Rahul Vohra*
 
-> "The idea here is that for important decisions, you should be able to identify one, one reason that on its own supports the decision. It's based on the observation that all too often we rely on a collection of weak reasons to justify decisions."
+> "这里的想法是，对重要决定，你应该能够找出一个——单独一个理由——单独就能支持这个决定。它基于这样的观察：我们太经常依赖一堆微弱的理由来证明决定。"
 
-**Insight:** The 'Single Decisive Reason' (SDR) framework prevents teams from justifying poor decisions with a stack of weak arguments.
+**洞见：** "单一决定性理由"（SDR）框架防止团队用一堆薄弱的论据来证明糟糕的决定。
 
-**Tactical advice:**
-- Ask: 'If only one of these reasons was true, would we still make this decision?'
-- Avoid 'pro/con' lists where a high volume of weak points outweighs a single critical factor.
+**战术建议：**
+- 问：'如果这些理由中只有一个是真的，我们还会做这个决定吗？'
+- 避免使用"赞成/反对"清单，其中大量微弱论点压过一个关键因素
 
-*Timestamp: 01:19:35*
+*时间戳：01:19:35*
 
 
 ## Roger Martin
 *Roger Martin*
 
-> "Betterment is making that gap go away. And guess what happens if you make that gap go away? You can turn your attention to the next gap, and the next gap, and the next gap."
+> "改进就是让那个差距消失。猜猜如果你让那个差距消失会发生什么？你可以把注意力转向下一个差距，再下一个，再下一个。"
 
-**Insight:** Strategy should be viewed as a problem-solving tool focused on 'betterment'—closing the gap between current and desired outcomes—rather than seeking perfection.
+**洞见：** 策略应被视为一个专注于"改进"的问题解决工具——缩小当前结果和期望结果之间的差距——而不是寻求完美。
 
-**Tactical advice:**
-- Identify the single most painful gap between current results and aspirations.
-- Apply the strategy cascade specifically to solve that one gap rather than trying to solve everything at once.
-- Iterate by continuously identifying and closing the next most significant gap.
+**战术建议：**
+- 识别当前结果和期望之间最痛苦的一个差距
+- 应用策略级联专门解决那一个差距，而不是试图一次解决所有问题
+- 通过持续识别并关闭下一个最重要的差距来迭代
 
-*Timestamp: 01:16:28*
+*时间戳：01:16:28*
 
 
 ## Shreyas Doshi
-*Shreyas Doshi Live*
+*Shreyas Doshi*
 
-> "I guess what I'm saying, Lenny, is one of my other tactical tips would be sometimes it is useful to pause for two minutes, or two days, or two weeks before making that decision, right? Because frankly, most doors that look like two-way doors are actually one-way doors. They are two-way doors at Bezos' level, but as a PM leader, for you, they are a one-way door, and that's making you busy."
+> "我想说的是，Lenny，我的另一个战术技巧是，有时在做决定之前暂停两分钟、两天或两周是很有用的，对吧？因为坦率地说，大多数看起来是双扇门的门实际上是单扇门。在 Bezos 的层面它们是双扇门，但作为 PM 领导者，对你来说，它们是单扇门，这让你变得忙碌。"
 
-**Insight:** Many decisions framed as reversible 'two-way doors' are effectively irreversible for PM leaders due to the organizational debt and momentum they create.
+**洞见：** 许多被框定为可逆"双扇门"的决定，由于组织债务和它们创造的动力，对 PM 领导者来说实际上是不可逆的。
 
-**Tactical advice:**
-- Pause before making decisions to think through customer motivation, differentiation, and distribution.
-- Be wary of using 'two-way door' logic as an excuse for shallow thinking.
-- Evaluate ideas separate from social proof, authority bias, or catchy metaphors.
+**战术建议：**
+- 在做决定之前暂停，思考客户动机、差异化和分发
+- 警惕使用"双扇门"逻辑作为浅层思考的借口
+- 将想法与社会证明、权威偏差或 catchy 隐喻分开评估
 
-*Timestamp: 23:55*
+*时间戳：23:55*
 
 
 ## Shishir Mehrotra
 *Shishir Mehrotra*
 
-> "Dory/Pulse... Everybody writes down what they think and we hide everybody else's until you're done writing. So you force yourself to be eloquent about your opinion, on the record about it, and unbiased. And then the second thing we do is called Dory, which is instead of randomly asking questions, we ask people to put the questions on the table and then we take a round of up quoting and down voting them"
+> "Dory/Pulse……每个人都写下他们的想法，在写完之前我们隐藏其他人的。所以你强迫自己在记录上清晰表达你的意见，没有偏见。然后我们做的第二件事叫 Dory，不是随机提问，而是让人们把问题放在桌面上，然后我们进行一轮点赞和点踩排名。"
 
-**Insight:** Effective decision-making requires unbiasing input through 'pulsing' (private writing) and prioritizing discussion through upvoted questions.
+**洞见：** 有效的决策需要通过"pulsing"（私下写作）去偏倚输入，并通过点赞排序问题来优先讨论。
 
-**Tactical advice:**
-- Use 'Pulse' to have everyone write their opinions simultaneously and hidden to avoid groupthink.
-- Use 'Dory' to crowdsource and rank questions for meetings to ensure the most important topics are addressed.
+**战术建议：**
+- 使用"Pulse"让所有人同时写下意见并隐藏，以避免群体思维
+- 使用"Dory"来众包和排序会议问题，确保最重要的主题得到处理
 
-*Timestamp: 00:27:26*
+*时间戳：00:27:26*
 
 ---
 
-> "Coinbase has a ritual... they have this subtle nudge thing... the person running the meeting pre-fills that with what they want from that person. You are an approver... I need you to tell me do we have the budget or not? Or I need you to tell me am I authorized to make this change"
+> "Coinbase 有一个仪式……他们有这个微妙的推动机制……主持会议的人预先填好他们想要从那个人那里得到什么。你是一个批准人……我需要你告诉我有还是没有预算？或者我需要你告诉我我是否被授权做这个改变。"
 
-**Insight:** Clarifying specific roles (Approver, Decider, etc.) and the exact input needed from each person prevents consensus-seeking from slowing down decisions.
+**洞见：** 明确具体的角色（批准人、决策者等）以及每个人所需的具体输入，可以防止寻求共识拖慢决策。
 
-**Tactical advice:**
-- Pre-fill decision documents with specific roles for each stakeholder.
-- Explicitly state what specific answer or authorization is needed from each 'approver'.
+**战术建议：**
+- 预先填写决策文档，为每个利益相关者指定具体角色
+- 明确说明每个"批准人"需要提供什么具体答案或授权
 
-*Timestamp: 00:36:44*
+*时间戳：00:36:44*
 
 
 ## Shaun Clowes
 *Shaun Clowes*
 
-> "We get paid in product management to make decisions, good decisions, paid to make good decisions that will deliver business benefit. And a decision with too little data is fatal. A decision that takes too long and collects too much data is also fatal."
+> "我们在产品管理中的报酬是做决定——好的决定——为做出能带来业务利益的好决定而获得报酬。数据太少的决定是致命的。花太长时间收集太多数据的决定也是致命的。"
 
-**Insight:** The core value of a product manager is the ability to make timely, high-quality decisions that balance speed and information.
+**洞见：** 产品经理的核心价值是做出及时、高质量的决策，平衡速度和信息。
 
-**Tactical advice:**
-- Evaluate your performance based on the quality and speed of your decisions rather than just the volume of your activity.
+**战术建议：**
+- 根据决策的质量和速度来评估你的表现，而不仅仅是活动的数量
 
-*Timestamp: 01:14:07*
+*时间戳：01:14:07*
 
 
 ## Tanguy Crusson
 *Tanguy Crusson*
 
-> "Point A... had four stages called Wonder, Explore, Make and Impact... we basically write a six pager that looks at all the different aspects of all the questions that we're going to answer. And then we are in a meeting with the Point A stakeholders and the founders of Atlassian. And everyone reads that page for about 15 minutes and then question, answers, comments."
+> "Point A……有四个阶段，叫做 Wonder、Explore、Make 和 Impact……我们基本上写一个六页纸，审视我们要回答的问题的所有不同方面。然后我们与 Point A 的利益相关者和 Atlassian 的创始人开会。每个人阅读那页纸大约 15 分钟，然后提问、回答、评论。"
 
-**Insight:** Use a structured lifecycle (Wonder/Explore/Make/Impact) and silent reading of 6-pagers for high-stakes product decisions.
+**洞见：** 对高风险产品决策使用结构化生命周期（Wonder/Explore/Make/Impact）和六页纸的静默阅读。
 
-**Tactical advice:**
-- Implement a staged gate process for internal incubation
-- Use 15 minutes of silent reading at the start of decision meetings to ensure everyone is informed
+**战术建议：**
+- 为内部孵化实施阶段性关口流程
+- 在决策会议开始时使用 15 分钟的默读，确保每个人都被充分告知
 
-*Timestamp: 01:04:27*
+*时间戳：01:04:27*
 
 
 ## Tim Holley
 *Tim Holley*
 
-> "Nick, our CPO like to say you don't have to have the best ideas, but you have to choose the best ideas. And so really figuring out how you're selecting what you're going to build and then living with the consequences... when we need to move forward, it is the PM that is on the hook for those things."
+> "Nick，我们的 CPO 喜欢说，你不一定要有最好的想法，但你必须选择最好的想法。所以真正弄清楚你如何选择要构建什么，然后承担后果……当我们需要推进时，PM 要对这些事情负责。"
 
-**Insight:** The PM's primary role is to be the accountable decision-maker who selects the best path forward, even if they didn't generate the idea.
+**洞见：** PM 的主要角色是成为负责任的决策者，即使他们没有产生这个想法，也要选择最佳的前进路径。
 
-**Tactical advice:**
-- Clarify who is ultimately accountable for the decision when consensus is unclear.
-- Focus on selecting the best ideas from the team rather than generating them all yourself.
+**战术建议：**
+- 当共识不明确时，澄清谁最终对决定负责
+- 专注于从团队中选择最佳想法，而不是自己生成所有想法
 
-*Timestamp: 00:57:35*
+*时间戳：00:57:35*
 
 
 ## Tomer Cohen
 *Tomer Cohen*
 
-> "We might be wrong but we're not confused. It's a simple phrase, but it has in my opinion, so much depth into that and ultimately something I really believe in. It's rooted in clarity and principles that ultimately lead to leadership."
+> "我们可能错了，但我们不困惑。这是一个简单的短语，但我认为它有很深的含义，最终是我真正相信的东西。它植根于清晰度和原则，最终导向领导力。"
 
-**Insight:** Prioritize clarity of thought and alignment over the fear of being wrong to ensure the entire organization moves in the same direction.
+**洞见：** 优先考虑思想的清晰度和一致性，而不是害怕犯错，以确保整个组织朝同一个方向前进。
 
-**Tactical advice:**
-- Distinguish between 'clarity of thought' (problem definition) and 'clarity of execution' (resourcing).
-- Avoid hedging; once a path is decided, ensure the entire team pulls in that direction to give the project a chance at success.
+**战术建议：**
+- 区分"思想清晰度"（问题定义）和"执行清晰度"（资源配置）
+- 避免骑墙；一旦决定了路径，确保整个团队朝着那个方向努力，给项目成功的机会
 
-*Timestamp: 00:03:17*
+*时间戳：00:03:17*
 
 
 ## Varun Mohan
 *Varun Mohan*
 
-> "I wish I had... this idea of just being okay with being wrong faster. I always think about things on when we make decisions... I wish we had made the decision to do this a couple months earlier... re-evaluate your hypotheses and get into an uncomfortable space way more frequently."
+> "我希望我早就……接受更快犯错的想法。我在做决定时总是考虑……我希望我们早几个月做了决定……更频繁地重新评估你的假设，进入不舒适的境地。"
 
-**Insight:** The speed of re-evaluating wrong hypotheses is more important than being right initially.
+**洞见：** 重新评估错误假设的速度比最初做对更重要。
 
-**Tactical advice:**
-- Set regular intervals to challenge and potentially kill existing company beliefs
-- Optimize for the speed of the 'pivot' once new information contradicts initial assumptions
+**战术建议：**
+- 设置定期间隔来挑战并可能废除现有的公司信念
+- 一旦新信息与初始假设矛盾，优化"转向"的速度
 
-*Timestamp: 01:09:04*
+*时间戳：01:09:04*
 
 
 ## Ebi Atawodi
 *Ebi Atawodi*
 
-> "I'm in too many conversations where I'm like, 'Who is on the hook for this decision? Who cares if this decision is made?' It's not like six people with consensus. Who is the person? And I'm very big on people on count... There's one person who owns this decision and that's the person that we're going to empower to get all the context, get all the input, to make the decision."
+> "我参与了太多对话，我说，'谁对这个决定负责？谁在乎这个决定是否做出？'不是六个人达成共识。那是谁？我非常看重人来计数……有一个人拥有这个决定，那个人是我们授权的，去获取所有背景、所有输入，然后做出决定。"
 
-**Insight:** Effective decision-making requires a single 'informed captain' rather than seeking group consensus, which often leads to delays and lack of accountability.
+**洞见：** 有效的决策需要一个单一的"知情船长"，而不是寻求群体共识，后者常常导致延迟和缺乏责任。
 
-**Tactical advice:**
-- Identify a single 'informed captain' for every major decision
-- Empower the decider to gather input but ultimately make the final call independently
+**战术建议：**
+- 对每个重大决定确定一个单一的"知情船长"
+- 授权决策者收集输入，但最终独立做出最终决定
 
-*Timestamp: 01:20:45*
+*时间戳：01:20:45*
 
 
 ## Keith Yandell
 *Keith Yandell*
 
-> "There needs to be someone that says, 'All right. We got to be clear on who the decision maker is here. If we haven't reached a consensus, who's the tiebreaker?'"
+> "需要有一个人说，'好吧。我们必须清楚这里的决策者是谁。如果我们没有达成共识，谁是打破平局的人？'"
 
-**Insight:** Speed in decision-making requires clear ownership and a pre-defined tie-breaker for when consensus cannot be reached.
+**洞见：** 决策速度需要明确的归属和一个预定义的平局打破者，以便在无法达成共识时使用。
 
-**Tactical advice:**
-- Explicitly name the tie-breaker (CEO, GM, or Head of Product) before the debate begins
-- Set a strict time horizon for when the final decision must be made
+**战术建议：**
+- 在辩论开始前明确指定平局打破者（CEO、GM 或产品负责人）
+- 设定严格的时间界限，必须在期限内做出最终决定
 
-*Timestamp: 29:32*
+*时间戳：29:32*
 
 
 ## Naomi Gleit
 *Naomi Gleit*
 
-> "Usually a meeting can be and hopefully a meeting is really either is a decision meeting. So if there is a decision, I need three options and I need a recommendation that should hopefully help focus the meeting."
+> "通常一个会议可以是——也希望是——一个决策会议。所以如果有一个决定，我需要三个选项和一个建议，这应该有助于聚焦会议。"
 
-**Insight:** Structure decision meetings around a set of three distinct options and a clear recommendation to drive focus.
+**洞见：** 围绕三个不同的选项和一个清晰的建议来结构决策会议，以驱动聚焦。
 
-**Tactical advice:**
-- Always present three options and one recommendation for any major decision
+**战术建议：**
+- 对任何重大决定，始终呈现三个选项和一个建议
 
-*Timestamp: 01:08:28*
+*时间戳：01:08:28*
 
 
 ## Nickey Skarstad
 *Nickey Skarstad*
 
-> "I love the concept of one way versus two way door decision making... If your team is making a really critical long-term decision that's going to be limiting to a lot of the future things that you could want or need to do, that is a one way door decision. And you should spend time really thinking about discussing it... If it is a two-way door decision, it's not going to make a huge impact, you can change it later if you need to, let your team cruise on those things."
+> "我喜欢单扇门 vs. 双扇门决策的概念……如果你的团队在做非常关键的长期决定，会限制你未来可能想做或需要做的很多事情，那就是一个单扇门决定。你应该花时间真正思考讨论它……如果是一个双扇门决定，它不会产生巨大影响，你以后如果需要可以改变，那就让你的团队在这方面自由行事。"
 
-**Insight:** Distinguishing between reversible and irreversible decisions allows teams to maintain high velocity while protecting long-term strategy.
+**洞见：** 区分可逆和不可逆的决定使团队能够保持高速度，同时保护长期战略。
 
-**Tactical advice:**
-- Identify 'one-way door' decisions (e.g., marketplace standards) and slow down for deep review
-- Empower teams to 'cruise' on 'two-way door' decisions to maintain autonomy
+**战术建议：**
+- 识别"单扇门"决定（例如市场标准）并放慢进行深入审查
+- 授权团队在"双扇门"决定上"自由行事"，以保持自主性
 
-*Timestamp: 00:39:28*
+*时间戳：00:39:28*
 
 ---
 
-> "If you can get teams to align on first principles early on, it saves you a lot of heartache later because you've got people to align way early days before you even got into the design process, or before you had to start thinking about how do we actually technically implement this."
+> "如果你能让团队在早期就在第一性原理上达成一致，它为你省去很多后来的心痛，因为你让人们在早期就达成了一致，甚至在进入设计流程之前，或在你开始考虑如何实际技术实现之前。"
 
-**Insight:** Aligning on first principles at the start of a project prevents fundamental disagreements during the later design or technical phases.
+**洞见：** 在项目开始时在第一性原理上达成一致，可以防止在后期设计或技术阶段出现根本性的分歧。
 
-**Tactical advice:**
-- Write out first principles for every major feature or strategy
-- Get alignment on these principles before starting design or technical implementation
+**战术建议：**
+- 为每个重大功能或策略写出第一性原理
+- 在开始设计或技术实现之前就这些原则达成一致
 
-*Timestamp: 00:45:36*
+*时间戳：00:45:36*
 
 
 ## Paige Costello
 *Paige Costello*
 
-> "We actually don't care. We don't want a daisy chain of approvals. We just want one person with whom the buck can stop with them, and they can be responsible for how the work moves forward."
+> "我们实际上不在乎。我们不想要一串审批链。我们只想有一个人，责任到他为止，他对工作如何推进负责。"
 
-**Insight:** Avoid 'daisy chains' of approvals by designating a single person responsible for the final decision to maintain momentum.
+**洞见：** 通过指定单一责任人做出最终决定，避免"一串审批"，以保持动力。
 
-**Tactical advice:**
-- Limit the number of formal reviewers to no more than three per piece of work.
-- Ensure only one person is designated as the final 'blocker' or approver.
+**战术建议：**
+- 将正式审阅人数量限制在每项工作不超过三人
+- 确保只有一个人被指定为最终的"阻塞者"或批准人
 
-*Timestamp: 00:59:18*
+*时间戳：00:59:18*
 
 
 ## Sanchan Saxena
 *Sanchan Saxena*
 
-> "The idea that we have... is the idea of a directly responsible individual or DRI. For every project, we'll establish a DRI... DRI's job is to take all that input and make a decision. Not take all that input and do necessarily what's right by everybody, right? Still do what's right by the customer."
+> "我们的想法是……直接负责人或 DRI。对每个项目，我们会建立一个 DRI……DRI 的工作是接收所有输入并做出决定。不是接收所有输入并做对每个人都正确的事，对吧？仍然做对客户正确的事。"
 
-**Insight:** A DRI model prevents 'design by committee' by empowering one person to make the final call after hearing all cross-functional input.
+**洞见：** DRI 模式通过在听取所有跨职能输入后授权一个人做最终决定，防止"委员会设计"。
 
-**Tactical advice:**
-- Assign a single DRI for every project to avoid convoluted decision-making
-- Use a written 'RAPID' format for cross-functional input to ensure clarity
-- Practice 'disagree and champion'—once a decision is made, everyone must evangelize it
+**战术建议：**
+- 为每个项目分配一个单一的 DRI，避免复杂的决策
+- 使用书面的"RAPID"格式进行跨职能输入，以确保清晰度
+- 实践"不同意但拥护"——一旦做出决定，每个人都必须拥护它
 
-*Timestamp: 00:44:26*
+*时间戳：00:44:26*
 
 
 ## Tobi Lutke
 *Tobi Lutke*
 
-> "You make you re-derive literally every decision that is valuable, every foundational assumption, every foundational ABC direction. And you want to see the observation you've made in the meantime since you last derived the next step. Re-running the entire function over the state that is now updated, the higher fidelity information, would you come to the very same thing?"
+> "你重新推导每一个有价值的决定，每一个基本假设，每一个基本的 ABC 方向。你想看看自你上次推导下一步以来，你在此期间所做的观察。在整个函数上重新运行最新的状态——更高保真度的信息——你会得出完全相同的东西吗？"
 
-**Insight:** Treat decision-making as a pure function that should be re-evaluated whenever new high-fidelity information updates the 'state' of the problem.
+**洞见：** 将决策视为一个纯函数，每当新的高保真信息更新了问题的"状态"时，就应该重新评估。
 
-**Tactical advice:**
-- Re-run the decision function periodically to see if foundational assumptions still hold
-- Identify the specific 'Boolean' or input that has changed to justify a pivot
-- Avoid the sunk cost fallacy by being willing to land in a completely different 'landing zone' after re-evaluating facts
+**战术建议：**
+- 定期重新运行决策函数，看基本假设是否仍然成立
+- 识别已变更的具体"布尔值"或输入，以证明转向的合理性
+- 避免沉没成本谬误，在重新评估事实后愿意落在一个完全不同的"着陆区"
 
-*Timestamp: 00:37:25*
+*时间戳：00:37:25*
 
 
 ## Will Larson
 *Will Larson*
 
-> "Will anyone remember what we decided in six months? Because I think people stress out about a lot of decisions, but I increasingly believe most decisions people stress out about just aren't that important."
+> "六个月内还会有人记得我们做了什么决定吗？因为我认为人们对很多决定感到压力，但我越来越相信，大多数让人感到压力的决定其实并不那么重要。"
 
-**Insight:** Most decisions are not as critical as they feel in the moment; use the 'six-month rule' to calibrate the time spent on them.
+**洞见：** 大多数决定并没有当时感觉的那么关键；使用"六个月法则"来校准花费在上面的时间。
 
-**Tactical advice:**
-- Ask 'Will anyone care in six months what we did here?' to decide how much time to invest in a decision
+**战术建议：**
+- 问'六个月内还会有人在乎我们在这里做了什么吗？'以决定在某个决定上投入多少时间
 
-*Timestamp: 01:14:11*
-
-
+*时间戳：01:14:11*

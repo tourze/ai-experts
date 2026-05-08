@@ -1,35 +1,35 @@
-# Comments as Design Documentation
+# 注释作为设计文档
 
-Comments are one of the most debated topics in software engineering. Ousterhout argues that comments are not merely helpful -- they are essential design documentation that captures information that cannot be expressed in code. The belief that "good code is self-documenting" is partially true for implementation details, but dangerously wrong for abstractions, design decisions, and cross-cutting concerns.
+注释是软件工程中争议最大的话题之一。Ousterhout 认为注释不仅仅是辅助性的——它们是至关重要的设计文档，捕获了代码无法表达的信息。认为"好的代码是自文档的"这一观点对于实现细节而言部分正确，但对于抽象、设计决策和横切关注点来说，是危险的错误。
 
-## Why Comments Matter
+## 为什么注释很重要
 
-Code tells you **what** the program does. Comments tell you:
-- **Why** it does it that way
-- **What** the abstraction promises (the contract)
-- **What** assumptions the code makes
-- **What** alternatives were considered and rejected
-- **What** constraints link this code to other modules
-- **What** is not obvious from reading the code
+代码告诉你程序**做什么**。注释告诉你：
+- **为什么**要这样实现
+- **什么**是抽象的承诺（契约）
+- **什么**是代码做出的假设
+- **什么**是曾被考虑但被拒绝的替代方案
+- **什么**约束将这个代码链接到其他模块
+- **什么**是阅读代码时不易察觉的信息
 
-Without comments, this information exists only in the original developer's head. When that developer moves on, the information is lost. Future developers must reverse-engineer intent from implementation -- an error-prone process that leads to incorrect changes and accumulated complexity.
+没有注释，这些信息只存在于原始开发者的头脑中。当该开发者离开时，信息就丢失了。未来的开发者必须从实现中逆向工程意图——这是一个容易出错的过程，会导致错误的变更和不断累积的复杂性。
 
-## The Four Types of Comments
+## 四种注释类型
 
-### 1. Interface Comments
+### 1. 接口注释
 
-**Purpose:** Define the abstraction that a module, class, or function presents to its users.
+**目的：** 定义模块、类或函数向其使用者呈现的抽象。
 
-**This is the most important type of comment.** Interface comments form the contract between a module and its callers. They should describe:
-- What the function/method does (at an abstract level)
-- What each parameter means and its constraints
-- What the return value represents
-- What side effects occur
-- What exceptions can be thrown and under what conditions
-- What the caller must ensure before calling (preconditions)
-- What the caller can assume after the call (postconditions)
+**这是最重要的注释类型。** 接口注释构成了模块与其调用者之间的契约。它们应描述：
+- 函数/方法做什么（在抽象层面）
+- 每个参数的含义及约束
+- 返回值的含义
+- 会发生的副作用
+- 可能抛出的异常及条件
+- 调用者必须确保的前提条件
+- 调用者可以假设的后置条件
 
-**Examples:**
+**示例：**
 
 ```python
 def find_nearest(target: Point, candidates: list[Point],
@@ -74,24 +74,24 @@ def find_nearest(target: Point, candidates: list[Point],
 public Connection acquire(Duration timeout)
 ```
 
-**Key rules for interface comments:**
-- Describe the abstraction, not the implementation
-- If the comment mentions implementation details (algorithms, data structures, internal variables), it is too detailed
-- A developer should be able to use the module correctly by reading only the interface comment, without reading any implementation code
-- If you cannot write a clear interface comment, the interface may be poorly designed
+**接口注释的关键规则：**
+- 描述抽象，而不是实现
+- 如果注释提到了实现细节（算法、数据结构、内部变量），说明太详细了
+- 开发者应该只通过阅读接口注释就能正确使用模块，无需阅读任何实现代码
+- 如果你无法写出清晰的接口注释，接口设计可能有问题
 
-### 2. Data Structure Member Comments
+### 2. 数据结构成员注释
 
-**Purpose:** Explain the meaning, constraints, and invariants of fields in a class or data structure.
+**目的：** 解释类或数据结构中字段的含义、约束和不变量。
 
-Field names alone rarely convey all the information a developer needs. Comments should clarify:
-- What the field represents (especially if the name is ambiguous)
-- Units and encoding (milliseconds? seconds? UTC? local time?)
-- Valid ranges and boundary conditions
-- Relationships with other fields
-- When the field is set and when it may be null/zero
+字段名本身很少能传达开发者需要的所有信息。注释应阐明：
+- 字段代表什么（尤其是名称有歧义时）
+- 单位和编码（毫秒？秒？UTC？本地时间？）
+- 有效范围和边界条件
+- 与其他字段的关系
+- 何时设置该字段以及何时可能为 null/零
 
-**Examples:**
+**示例：**
 
 ```python
 class RetryConfig:
@@ -131,17 +131,17 @@ class PageCache {
 }
 ```
 
-### 3. Implementation Comments
+### 3. 实现注释
 
-**Purpose:** Explain **why** the code does something a particular way, or clarify non-obvious logic.
+**目的：** 解释**为什么**代码以某种特定方式实现，或澄清不明显的逻辑。
 
-Implementation comments should not describe **what** the code does -- that should be clear from reading the code itself. They should explain:
-- Why this approach was chosen over alternatives
-- What non-obvious constraint or edge case the code handles
-- What would go wrong if the code were changed in an obvious-seeming way
-- Performance considerations that drove the implementation choice
+实现注释不应描述代码**做什么**——这应该从阅读代码本身就能看出。它们应解释：
+- 为什么选择了这种方法而非其他替代方案
+- 代码处理了什么不明显的约束或边缘情况
+- 如果以看似显而易见的方式修改代码会出什么问题
+- 驱动实现选择的性能考量
 
-**Good implementation comments:**
+**好的实现注释：**
 
 ```python
 # Use binary search instead of linear scan because the list is sorted
@@ -171,7 +171,7 @@ except Exception as e:
     result = default_result()
 ```
 
-**Bad implementation comments (just repeat the code):**
+**不好的实现注释（只是复述代码）：**
 
 ```python
 # Increment counter
@@ -187,15 +187,15 @@ for item in items:
 return result
 ```
 
-These comments add no information. The code already says what it does. Remove them.
+这些注释没有添加任何信息。代码已经说出了它的功能。删除它们。
 
-### 4. Cross-Module Comments
+### 4. 跨模块注释
 
-**Purpose:** Document dependencies and design decisions that span multiple modules.
+**目的：** 记录跨多个模块的依赖关系和设计决策。
 
-These are the hardest comments to maintain but often the most critical, because cross-module relationships are the biggest source of unknown unknowns.
+这些是最难维护但通常最关键的注释，因为跨模块关系是最大的未知未知来源。
 
-**Examples:**
+**示例：**
 
 ```python
 # This timeout value must be longer than the retry timeout in
@@ -230,39 +230,39 @@ class ServerMessage:
 public void onOrderCompleted(OrderCompletedEvent event) {
 ```
 
-**Best practices for cross-module comments:**
-- Place the comment in the most likely place a developer would look
-- Reference the other module explicitly (file path, class name)
-- Explain what would go wrong if the relationship were violated
-- Consider using a shared constants file for values that must stay in sync
+**跨模块注释的最佳实践：**
+- 将注释放在开发者最可能查找的位置
+- 明确引用其他模块（文件路径、类名）
+- 解释如果关系被违反会出什么问题
+- 考虑对必须保持同步的值使用共享常量文件
 
-## Comment-Driven Design
+## 注释驱动设计
 
-**Write the comments before writing the code.**
+**在编写代码之前先编写注释。**
 
-This is one of Ousterhout's most practical recommendations. The process:
+这是 Ousterhout 最实用的建议之一。过程如下：
 
-1. **Write the interface comment first:** Before writing any implementation, write the comment that describes what the function/class/module does, what its parameters mean, and what it returns.
+1. **先写接口注释：** 在写任何实现代码之前，先写描述函数/类/模块功能、参数含义和返回值的注释。
 
-2. **Evaluate the design:** If the interface comment is hard to write, unclear, or requires mentioning implementation details, the interface design is probably wrong. Redesign the interface until the comment is clean and simple.
+2. **评估设计：** 如果接口注释难以写出、不清楚或需要提及实现细节，接口设计可能有问题。重新设计接口，直到注释干净简洁。
 
-3. **Write the implementation:** With a clear interface comment as your guide, the implementation has a clear target.
+3. **实现代码：** 以清晰的接口注释作为指导，实现就有了明确的目标。
 
-4. **Add implementation comments:** As you write code, add comments for any non-obvious decisions.
+4. **添加实现注释：** 在写代码时，为任何不明显的决策添加注释。
 
-### Why Comment-Driven Design Works
+### 为什么注释驱动设计有效
 
-| Benefit | Explanation |
+| 好处 | 解释 |
 |---------|-------------|
-| Forces clear thinking | Writing what something does before how reveals confusion early |
-| Catches bad abstractions | If you can't describe the interface simply, it's too complex |
-| Produces better interfaces | The act of writing clarifies what callers actually need |
-| Comments stay accurate | Written alongside the design, not retrofitted later |
-| Saves time | Avoids implementing a design that turns out to be wrong |
+| 迫使清晰思考 | 在一个东西做什么之前先写它做什么，能及早揭示混淆 |
+| 捕获错误的抽象 | 如果你不能简单地描述接口，说明它太复杂了 |
+| 产生更好的接口 | 写注释的行为能澄清调用者真正需要什么 |
+| 注释保持准确 | 与设计同时编写，而不是事后补充 |
+| 节省时间 | 避免实现一个最终被证明是错误的方案 |
 
-### Example
+### 示例
 
-**Step 1:** Write the interface comment.
+**第 1 步：** 编写接口注释。
 
 ```python
 def merge_sorted_streams(*streams: Iterator[T],
@@ -279,17 +279,17 @@ def merge_sorted_streams(*streams: Iterator[T],
     """
 ```
 
-**Step 2:** Evaluate. Is this clear? Can a caller use this without reading the implementation? What about edge cases -- empty streams, single stream, duplicate elements? Add those details if needed.
+**第 2 步：** 评估。这清晰吗？调用者能否在不阅读实现的情况下使用它？边缘情况呢——空流、单个流、重复元素？如果需要，添加那些细节。
 
-**Step 3:** Implement. The comment now serves as the specification.
+**第 3 步：** 实现。注释现在就是规范。
 
-## The "Self-Documenting Code" Myth
+## "自文档化代码"的神话
 
-The claim that "good code doesn't need comments" contains a kernel of truth but is dangerously incomplete.
+"好的代码不需要注释"这种说法包含了一点真理，但危险地不完整。
 
-### Where Self-Documenting Code Works
+### 自文档化代码有效的地方
 
-Code **can** document itself for low-level implementation details:
+代码**可以**为底层实现细节自文档化：
 
 ```python
 # This is self-documenting -- no comment needed:
@@ -298,37 +298,37 @@ is_eligible = user.age >= 18 and user.has_valid_id
 filtered = [x for x in data if x.is_active and x.score > threshold]
 ```
 
-Good variable names, clear control flow, and simple expressions make the **what** obvious. Comments that restate this are noise.
+好的变量名、清晰的控制流程和简单的表达式使**做什么**显而易见。复述这些的注释是噪音。
 
-### Where Self-Documenting Code Fails
+### 自文档化代码失败的地方
 
-Code **cannot** document:
+代码**无法**记录：
 
-| Information | Why Code Can't Express It | Example |
+| 信息 | 为什么代码无法表达 | 示例 |
 |------------|--------------------------|---------|
-| **Abstractions** | Code shows implementation, not the promise | An interface's contract and guarantees |
-| **Why** | Code shows what happens, not why this approach | Why binary search instead of hash lookup |
-| **Constraints** | Code enforces constraints but doesn't explain them | Why a timeout is set to 120 seconds |
-| **Design alternatives** | Code shows the choice made, not choices rejected | Why we chose polling over webhooks |
-| **Cross-module relationships** | Code in one module can't describe its relationship to another | This timeout must match the retry config |
-| **Performance rationale** | Optimized code is often less readable | Why we denormalized this data structure |
-| **Assumptions** | Code operates on assumptions it cannot state | "This list is always sorted by the caller" |
+| **抽象** | 代码显示实现，而不是承诺 | 接口的契约和保证 |
+| **为什么** | 代码显示发生了什么，而不是为什么选择这种方法 | 为什么用二分搜索而不是哈希查找 |
+| **约束** | 代码强制执行约束但不解释它们 | 为什么超时设置为 120 秒 |
+| **设计替代方案** | 代码显示做出的选择，而不是被拒绝的选择 | 为什么选择轮询而不是 webhook |
+| **跨模块关系** | 一个模块中的代码无法描述与另一个模块的关系 | 此超时必须与重试配置匹配 |
+| **性能理由** | 优化后的代码往往可读性较差 | 为什么我们反规范化了此数据结构 |
+| **假设** | 代码在它无法声明的假设上运行 | "此列表总是由调用者排序" |
 
-### The Practical Rule
+### 实用规则
 
-**Use self-documenting code for the "what" (implementation). Use comments for the "why" (design decisions), the "what" at a higher level (abstractions/interfaces), and the "beware" (non-obvious constraints and relationships).**
+**使用自文档化代码来表达"做什么"（实现）。使用注释来表达"为什么"（设计决策）、更高层次的"做什么"（抽象/接口）以及"注意"（不明显的约束和关系）。**
 
-## Maintaining Comments
+## 维护注释
 
-Comments that are wrong are worse than no comments. Here are strategies for keeping them accurate:
+错误的注释比没有注释更糟糕。以下是保持其准确性的策略：
 
-### 1. Place Comments Near the Code
+### 1. 将注释放在代码附近
 
-The closer a comment is to the code it describes, the more likely it will be updated when the code changes. Interface comments in the function signature are better than comments in a separate documentation file.
+注释越靠近它描述的代码，在代码变更时就越有可能被更新。函数签名中的接口注释比单独的文档文件中的注释更好。
 
-### 2. Avoid Duplicating Information
+### 2. 避免重复信息
 
-If the same information is stated in a comment and enforced in code, one will eventually become stale. State each fact once.
+如果相同的信息既在注释中陈述又在代码中强制执行，其中一条最终会过时。每条信息只陈述一次。
 
 ```python
 # Bad: duplicates the type annotation
@@ -341,35 +341,35 @@ max_retries: int  # The type already says it's an int
 max_retries: int
 ```
 
-### 3. Update Comments in the Same Commit
+### 3. 在同一个提交中更新注释
 
-Make it a code review norm: if you change a function's behavior, you must update its interface comment in the same commit. Stale comments are a code review finding.
+将其作为代码审查规范：如果你改变了函数的行为，必须在同一个提交中更新其接口注释。过时的注释是代码审查的发现项。
 
-### 4. Use Comments as a Design Smell Detector
+### 4. 将注释用作设计坏味道检测器
 
-If a comment is hard to write, the code may be too complex. If a comment needs to be very long, the interface may be doing too much. If a comment keeps going out of date, the module's boundaries may be wrong. Difficult comments are a signal, not just a chore.
+如果注释难以写出，代码可能太复杂了。如果注释需要非常长，接口可能做得太多。如果注释不断过时，模块的边界可能有问题。困难的注释是一个信号，而不仅仅是麻烦事。
 
-### 5. Treat Comment Quality as a Review Criterion
+### 5. 将注释质量作为审查标准
 
-In code reviews, evaluate comments alongside code:
-- Are interface comments complete and accurate?
-- Do implementation comments explain why, not what?
-- Are cross-module comments present where needed?
-- Are there missing comments on non-obvious code?
+在代码审查中，像评估代码一样评估注释：
+- 接口注释是否完整准确？
+- 实现注释是否解释为什么，而不是做什么？
+- 跨模块注释是否在需要的地方出现？
+- 不明显的代码上是否缺少注释？
 
-## Comments Anti-Patterns
+## 注释反模式
 
-| Anti-Pattern | Problem | Fix |
+| 反模式 | 问题 | 修复 |
 |-------------|---------|-----|
-| **Comment repeats the code** | Adds noise, no information | Delete it; let the code speak for implementation details |
-| **Comment describes what, not why** | Misses the valuable information | Rewrite to explain the reasoning or design decision |
-| **Comment on every line** | Obscures code, hard to maintain | Comment only non-obvious sections; trust clear code |
-| **TODO without context** | "TODO: fix this" is useless months later | Include the issue number, the problem, and the fix direction |
-| **Commented-out code** | Dead code that confuses readers | Delete it; version control preserves history |
-| **Banner comments** | `/////// SECTION ///////` adds structure without information | Use meaningful function/class boundaries instead |
-| **Apology comments** | "Sorry, this is a hack" acknowledges but doesn't fix | Fix the hack or add context on why it is necessary and when it can be fixed |
-| **Stale comments** | Describe behavior that no longer exists | Update or remove in the same commit as the code change |
+| **注释重复代码** | 增加噪音，无信息 | 删除；让代码自己表达实现细节 |
+| **注释描述做什么，而不是为什么** | 错过了有价值的信息 | 重写以解释理由或设计决策 |
+| **每行都有注释** | 遮蔽代码，难以维护 | 只注释不明显的段落；信任清晰代码 |
+| **无上下文的 TODO** | "TODO: fix this" 数月后无用处 | 包含问题编号、问题和修复方向 |
+| **注释掉的代码** | 死代码混淆读者 | 删除；版本控制保留了历史 |
+| **横幅注释** | `/////// SECTION ///////` 添加结构但不添加信息 | 改用有意义的函数/类边界 |
+| **道歉注释** | "抱歉，这是个 hack" 承认问题但不修复 | 修复 hack 或添加上下文说明其必要性和修复时机 |
+| **过时注释** | 描述不再存在的行为 | 在与代码变更相同的提交中更新或移除 |
 
-## Summary
+## 总结
 
-Comments are not a sign of bad code. They are design documentation that captures the most valuable and perishable information in a system: the designer's intent, the abstraction's contract, and the non-obvious relationships between components. Write interface comments first, maintain them alongside code, and use them as a tool for thinking clearly about design.
+注释不是坏代码的标志。它们是设计文档，捕获了系统中最有价值也最易消失的信息：设计者的意图、抽象的契约以及组件之间不明显的关联。先写接口注释，与代码一起维护，并将注释作为清晰思考设计的工具。

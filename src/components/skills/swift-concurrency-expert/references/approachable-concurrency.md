@@ -1,63 +1,55 @@
-## Approachable Concurrency (Swift 6.2) - project mode quick guide
+## 平易近人的并发 (Swift 6.2) - 项目模式快速指南
 
-Use this reference when the project has opted into the Swift 6.2 approachable
-concurrency settings (default actor isolation / main-actor-by-default).
+当项目已选择使用 Swift 6.2 平易近人的并发设置（默认 actor 隔离 / 主 actor 默认）时，使用此参考。
 
-## Detect the mode
+## 检测模式
 
-Check Xcode build settings under "Swift Compiler - Concurrency":
-- Swift language version (must be 6.2+).
-- Default actor isolation / Main Actor by default.
-- Strict concurrency checking level (Complete/Targeted/Minimal).
+检查 Xcode 构建设置中的 "Swift Compiler - Concurrency"：
+- Swift 语言版本（必须是 6.2+）。
+- 默认 actor 隔离 / 主 actor 默认。
+- 严格并发检查级别（Complete/Targeted/Minimal）。
 
-For SwiftPM, inspect Package.swift swiftSettings for the same flags.
+对于 SwiftPM，检查 Package.swift 中的 swiftSettings 以获取相同的标志。
 
-## Behavior changes to expect
+## 预期的行为变化
 
-- Async functions stay on the caller's actor by default; they don't hop to a
-  global concurrent executor unless the implementation chooses to.
-- Main-actor-by-default reduces data race errors for UI-bound code and global
-  state, because mutable state is implicitly protected.
-- Protocol conformances can be isolated (e.g., `extension Foo: @MainActor Bar`).
+- 异步函数默认停留在调用方的 actor 上；除非实现选择，否则不会跳到全局并发执行器。
+- 主 actor 默认减少 UI 绑定代码和全局状态的数据竞争错误，因为可变状态受到隐式保护。
+- 协议遵循可以隔离（例如，`extension Foo: @MainActor Bar`）。
 
-## How to apply fixes in this mode
+## 如何在此模式下应用修复
 
-- Prefer minimal annotations; let main-actor-by-default do the work when the
-  code is UI-bound.
-- Use isolated conformances instead of forcing `nonisolated` workarounds.
-- Keep global or shared mutable state on the main actor unless there is a clear
-  performance need to offload it.
+- 优先使用最小的注解；当代码是 UI 绑定时，让主 actor 默认为你工作。
+- 使用隔离遵循而非强制使用 `nonisolated` 变通方法。
+- 将全局或共享的可变状态保留在主 actor 上，除非有明确的性能需求需要卸载。
 
-## When to opt out or offload work
+## 何时选择退出或卸载工作
 
-- Use `@concurrent` on async functions that must run on the concurrent pool.
-- Make types or members `nonisolated` only when they are truly thread-safe and
-  used off the main actor.
-- Continue to respect Sendable boundaries when values cross actors or tasks.
+- 在必须在并发池上运行的异步函数上使用 `@concurrent`。
+- 仅当类型或成员真正线程安全且不在主 actor 上使用时，才将其设为 `nonisolated`。
+- 当值跨越 actor 或任务时，继续尊重 Sendable 边界。
 
-## Common pitfalls
+## 常见陷阱
 
-- `Task.detached` ignores inherited actor context; avoid it unless you truly
-  need to break isolation.
-- Main-actor-by-default can hide performance issues if CPU-heavy work stays on
-  the main actor; move that work into `@concurrent` async functions.
+- `Task.detached` 忽略继承的 actor 上下文；除非确实需要打破隔离，否则避免使用。
+- 如果 CPU 密集型工作停留在主 actor 上，主 actor 默认可能隐藏性能问题；将该工作移到 `@concurrent` 异步函数中。
 
-## Keywords (from source cheat sheet)
+## 关键词（源自速查表）
 
-| Keyword | What it does |
+| 关键词 | 作用 |
 | --- | --- |
-| `async` | Function can pause |
-| `await` | Pause here until done |
-| `Task { }` | Start async work, inherits context |
-| `Task.detached { }` | Start async work, no inherited context |
-| `@MainActor` | Runs on main thread |
-| `actor` | Type with isolated mutable state |
-| `nonisolated` | Opts out of actor isolation |
-| `Sendable` | Safe to pass between isolation domains |
-| `@concurrent` | Always run on background (Swift 6.2+) |
-| `async let` | Start parallel work |
-| `TaskGroup` | Dynamic parallel work |
+| `async` | 函数可以暂停 |
+| `await` | 在此处暂停直到完成 |
+| `Task { }` | 启动异步工作，继承上下文 |
+| `Task.detached { }` | 启动异步工作，不继承上下文 |
+| `@MainActor` | 在主线程上运行 |
+| `actor` | 具有隔离可变状态的类型 |
+| `nonisolated` | 选择退出 actor 隔离 |
+| `Sendable` | 可在隔离域之间安全传递 |
+| `@concurrent` | 始终在后台运行（Swift 6.2+） |
+| `async let` | 启动并行工作 |
+| `TaskGroup` | 动态并行工作 |
 
-## Source
+## 来源
 
 https://fuckingapproachableswiftconcurrency.com/en/

@@ -1,10 +1,10 @@
-# Skill Evaluation Loop
+# Skill 评估循环
 
-## Workspace Layout
+## 工作区布局
 
-Put eval results next to the skill directory in `<skill-name>-workspace/`.
+将评估结果放在 skill 目录旁边的 `<skill-name>-workspace/` 下。
 
-Use iteration directories:
+使用迭代目录：
 
 ```text
 <skill-name>-workspace/
@@ -15,19 +15,19 @@ Use iteration directories:
       eval_metadata.json
 ```
 
-Create directories as runs start, not all upfront. Use descriptive eval names rather than `eval-0`.
+在运行开始时创建目录，而不是一次性全部创建。使用描述性的 eval 名称，而不是 `eval-0`。
 
-## Start With-Skill And Baseline Together
+## 同时启动 With-Skill 和基线
 
-For every eval, start both runs in the same round:
+对于每个 eval，在同一轮中同时启动两个运行：
 
-- `with_skill`: points at the current skill.
-- `without_skill`: for a newly created skill.
-- `old_skill`: for improving an existing skill. Snapshot the old skill before editing.
+- `with_skill`：指向当前 skill。
+- `without_skill`：用于新创建的 skill。
+- `old_skill`：用于改进已有的 skill。在编辑前对旧 skill 进行快照。
 
-Do not run with-skill first and baseline later. Same-round launch reduces timing and context skew.
+不要先运行 with-skill 再运行基线。同轮启动可以减少时间和上下文偏差。
 
-Each `eval_metadata.json` starts with:
+每个 `eval_metadata.json` 以以下内容开始：
 
 ```json
 {
@@ -38,17 +38,17 @@ Each `eval_metadata.json` starts with:
 }
 ```
 
-## Draft Assertions During Runs
+## 在运行期间起草断言
 
-Do not idle while runs execute. Draft objective assertions and explain to the user what they check. Good assertions are scriptable, clearly named, and understandable in the benchmark viewer.
+不要在运行执行时空闲。起草客观断言并向用户解释它们检查什么。好的断言是可脚本化的、命名清晰的，并且在基准测试浏览器中可理解。
 
-Subjective skills may use qualitative review rather than forced numeric assertions.
+主观 skill 可以使用定性审查而不是强制性的数值断言。
 
-Update both `eval_metadata.json` and `evals/cases.yaml` when assertions are ready.
+当断言准备就绪时，同时更新 `eval_metadata.json` 和 `evals/cases.yaml`。
 
-## Record Timing Immediately
+## 立即记录时间
 
-When a run completes, capture notification timing immediately:
+当运行完成时，立即捕获通知时间：
 
 ```json
 {
@@ -58,19 +58,19 @@ When a run completes, capture notification timing immediately:
 }
 ```
 
-Write this to the run directory as `timing.json`. These values are not recoverable later.
+将其写入运行目录作为 `timing.json`。这些值之后无法恢复。
 
-## Grade And Aggregate
+## 评分与聚合
 
-For every run, produce `grading.json`. The viewer expects exact fields:
+对于每次运行，生成 `grading.json`。浏览器期望确切的字段：
 
 - `text`
 - `passed`
 - `evidence`
 
-Do not use `name`, `met`, `details`, or other variants. If an assertion can be checked by script, use a script rather than manual inspection.
+不要使用 `name`、`met`、`details` 或其他变体。如果断言可以通过脚本检查，使用脚本而不是人工检查。
 
-Aggregate by calling the `skill-creator-aggregate-benchmark` procedure command shown in `SKILL.md`, replacing the default empty args with:
+通过调用 `SKILL.md` 中显示的 `skill-creator-aggregate-benchmark` Procedure 命令进行聚合，将默认空参数替换为：
 
 ```json
 {
@@ -78,20 +78,20 @@ Aggregate by calling the `skill-creator-aggregate-benchmark` procedure command s
 }
 ```
 
-This creates `benchmark.json` and `benchmark.md` with pass rate, time, tokens, mean/stddev, and deltas. When hand-writing or inspecting benchmark data, use `schemas.md`.
+这会创建 `benchmark.json` 和 `benchmark.md`，包含通过率、时间、token、均值/标准差和变化量。当手写或检查基准数据时，使用 `schemas.md`。
 
-Run an analyst pass on the aggregate:
+对聚合结果运行分析：
 
-- Assertions that always pass and do not distinguish skill value.
-- High-variance evals.
-- Time/token tradeoffs.
-- Cases where summary stats hide repeated qualitative failure.
+- 始终通过且不能区分 skill 价值的断言。
+- 高方差的 eval。
+- 时间/token 权衡。
+- 摘要统计隐藏了重复定性失败的情况。
 
-## Review Viewer
+## 审查浏览器
 
-Use the provided procedure instead of building custom HTML:
+使用提供的 Procedure，而不是构建自定义 HTML：
 
-Call the `skill-creator-generate-review` procedure command shown in `SKILL.md`, replacing the default empty args with:
+调用 `SKILL.md` 中显示的 `skill-creator-generate-review` Procedure 命令，将默认空参数替换为：
 
 ```json
 {
@@ -105,31 +105,31 @@ Call the `skill-creator-generate-review` procedure command shown in `SKILL.md`, 
 }
 ```
 
-If the viewer should keep running in the background, wrap that platform-specific procedure command with `nohup ... > /dev/null 2>&1 &`.
+如果浏览器应保持在后台运行，使用 `nohup ... > /dev/null 2>&1 &` 包装该平台特定的 Procedure 命令。
 
-For iteration 2+, also pass `--previous-workspace <workspace>/iteration-<N-1>`.
+对于第 2+ 次迭代，还要传入 `--previous-workspace <workspace>/iteration-<N-1>`。
 
-In headless or Cowork environments, use `--static <output_path>` and have the user export `feedback.json`.
+在 headless 或 Cowork 环境中，使用 `--static <output_path>` 并让用户导出 `feedback.json`。
 
-Tell the user the viewer has two areas:
+告诉用户浏览器有两个区域：
 
-- Outputs for qualitative review.
-- Benchmark for quantitative comparison.
+- Outputs 用于定性审查。
+- Benchmark 用于定量比较。
 
-When the user finishes review, read `feedback.json`. Empty feedback means the user accepted that run. Prioritize concrete feedback over vague preference.
+当用户完成审查时，读取 `feedback.json`。空的反馈意味着用户接受了该次运行。优先处理具体反馈而不是模糊偏好。
 
-## Improvement Loop
+## 改进循环
 
-After feedback:
+收到反馈后：
 
-1. Generalize from failures. Do not patch only the example.
-2. Remove instructions that wasted tokens or induced unhelpful actions.
-3. Add eval-local helper code or a reusable Procedure when repeated deterministic helper code appears across evals.
-4. Explain why new constraints exist.
-5. Re-run all evals into `iteration-N+1`, including the appropriate baseline.
+1. 从失败中归纳。不要只修补示例。
+2. 移除浪费 token 或引发无帮助行为的指令。
+3. 当跨 eval 出现重复的确定性辅助代码时，添加 eval 本地辅助代码或可重用的 Procedure。
+4. 解释新约束存在的原因。
+5. 将所有 eval 重新运行到 `iteration-N+1`，包括适当的基线。
 
-Stop when the user is satisfied, feedback is empty, or additional iterations no longer produce meaningful improvement.
+当用户满意、反馈为空或额外迭代不再产生有意义的改进时停止。
 
-## Blind Comparison
+## 盲比较
 
-For stricter A/B comparison, compare two outputs without revealing which skill produced them. Use this only when the user needs stronger evidence than normal review and benchmark results.
+为了更严格的 A/B 比较，比较两个输出而不揭示哪个 skill 产生了它们。仅在用户需要比常规审查和基准测试结果更强的证据时使用此方法。

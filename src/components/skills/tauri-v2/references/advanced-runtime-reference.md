@@ -1,25 +1,25 @@
-# Tauri v2+ Advanced Runtime Reference
+# Tauri v2+ 高级运行时参考
 
-## Contents
+## 目录
 
-- System Tray (`TrayIconBuilder`)
-- Sidecars (External Binaries)
-- Deep Links (`tauri-plugin-deep-link`)
-- Custom Protocols
+- 系统托盘（`TrayIconBuilder`）
+- Sidecar（外部二进制文件）
+- Deep Links（`tauri-plugin-deep-link`）
+- 自定义协议
 
-> Covers system tray integration, sidecar processes, deep links, and custom protocols.
-> *Last verified: 2026-04-02. Check official Tauri v2+ docs for updates.*
+> 涵盖系统托盘集成、sidecar 进程、deep links 和自定义协议。
+> *最后验证日期：2026-04-02。查看官方 Tauri v2+ 文档了解更新。*
 
-**See also:**
-- [plugin-reference.md](plugin-reference.md) — plugin installation and permissions
-- [capabilities-reference.md](capabilities-reference.md) — capability/permission model
+**另见：**
+- [plugin-reference.md](plugin-reference.md) — 插件安装和权限
+- [capabilities-reference.md](capabilities-reference.md) — 能力/权限模型
 
-## Section 1: System Tray (`TrayIconBuilder`)
+## 第一节：系统托盘（`TrayIconBuilder`）
 
-> **v2 Change:** `SystemTray` from v1 is replaced by `TrayIconBuilder` in v2. Do NOT use `SystemTray`.
+> **v2 变更：** v1 中的 `SystemTray` 在 v2 中被 `TrayIconBuilder` 取代。不要使用 `SystemTray`。
 
 ```rust
-// In lib.rs run() function, in setup hook:
+// 在 lib.rs 的 run() 函数中，setup hook 内：
 use tauri::{
     tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
     Manager,
@@ -49,7 +49,7 @@ tauri::Builder::default()
     })
 ```
 
-Show tray menu example:
+显示托盘菜单示例：
 
 ```rust
 use tauri::menu::{Menu, MenuItem};
@@ -66,14 +66,14 @@ let tray = TrayIconBuilder::new()
     .build(app)?;
 ```
 
-Platform notes:
-- **macOS:** tray icon appears in menu bar; supports template images
-- **Windows:** tray icon in system tray; click events differ from macOS
-- **Linux:** tray support varies by desktop environment (requires `libappindicator` or `libayatana-appindicator`)
+平台说明：
+- **macOS：** 托盘图标出现在菜单栏；支持模板图像
+- **Windows：** 托盘图标在系统托盘中；点击事件与 macOS 不同
+- **Linux：** 托盘支持因桌面环境而异（需要 `libappindicator` 或 `libayatana-appindicator`）
 
-## Section 2: Sidecars (External Binaries)
+## 第二节：Sidecar（外部二进制文件）
 
-Show config and usage for bundled executables:
+显示捆绑可执行文件的配置和用法：
 
 ```json
 // tauri.conf.json
@@ -86,7 +86,7 @@ Show config and usage for bundled executables:
 }
 ```
 
-Capability permission required:
+所需的能力权限：
 
 ```json
 {
@@ -101,7 +101,7 @@ Capability permission required:
 }
 ```
 
-Rust code to execute sidecar:
+执行 sidecar 的 Rust 代码：
 
 ```rust
 use tauri_plugin_shell::ShellExt;
@@ -120,19 +120,19 @@ async fn run_sidecar(app: tauri::AppHandle) -> Result<String, String> {
 }
 ```
 
-Binary naming convention (for cross-platform bundling):
-- **macOS (Intel):** `my-sidecar-x86_64-apple-darwin`
-- **macOS (ARM):** `my-sidecar-aarch64-apple-darwin`
-- **Windows:** `my-sidecar-x86_64-pc-windows-msvc.exe`
-- **Linux:** `my-sidecar-x86_64-unknown-linux-gnu`
+二进制文件命名约定（用于跨平台打包）：
+- **macOS（Intel）：** `my-sidecar-x86_64-apple-darwin`
+- **macOS（ARM）：** `my-sidecar-aarch64-apple-darwin`
+- **Windows：** `my-sidecar-x86_64-pc-windows-msvc.exe`
+- **Linux：** `my-sidecar-x86_64-unknown-linux-gnu`
 
-## Section 3: Deep Links (`tauri-plugin-deep-link`)
+## 第三节：Deep Links（`tauri-plugin-deep-link`）
 
 ```bash
 cargo tauri add deep-link
 ```
 
-Config in tauri.conf.json:
+tauri.conf.json 中的配置：
 
 ```json
 {
@@ -149,13 +149,13 @@ Config in tauri.conf.json:
 }
 ```
 
-Capability:
+能力：
 
 ```json
 { "permissions": ["deep-link:default"] }
 ```
 
-Handling deep links in Rust:
+在 Rust 中处理 deep links：
 
 ```rust
 use tauri_plugin_deep_link::DeepLinkExt;
@@ -165,17 +165,17 @@ app.deep_link().on_open_url(|event| {
 });
 ```
 
-Platform notes:
-- **macOS:** registers URL scheme in Info.plist automatically
-- **Windows:** registry entry created during install
-- **Linux:** .desktop file update required
-- **iOS/Android:** configure in respective platform files (AndroidManifest.xml or Info.plist)
+平台说明：
+- **macOS：** 自动在 Info.plist 中注册 URL scheme
+- **Windows：** 安装时创建注册表项
+- **Linux：** 需要更新 .desktop 文件
+- **iOS/Android：** 分别在各自的平台文件中配置（AndroidManifest.xml 或 Info.plist）
 
-## Section 4: Custom Protocols
+## 第四节：自定义协议
 
-> **Scope note:** Custom protocol (`tauri://` and custom schemes via `invoke_filter` or `asset_protocol`) is a more advanced feature. The primary official pattern is the built-in `asset` protocol for serving local files. Custom protocol handlers require careful security consideration.
+> **适用范围说明：** 自定义协议（`tauri://` 以及通过 `invoke_filter` 或 `asset_protocol` 实现的自定义 scheme）是更高级的功能。主要的官方模式是用于提供本地文件的内置 `asset` 协议。自定义协议处理器需要仔细考虑安全性。
 
-Show asset protocol access (most common use case):
+显示 asset 协议访问（最常见的用例）：
 
 ```json
 // tauri.conf.json
@@ -189,8 +189,8 @@ Show asset protocol access (most common use case):
 ```
 
 ```typescript
-// Access local file via asset protocol
+// 通过 asset 协议访问本地文件
 const imgSrc = convertFileSrc('/path/to/image.png');
 ```
 
-Note: Full custom protocol registration (`tauri::Builder::register_uri_scheme_protocol`) is available but underdocumented in official v2+ docs as of 2026-04-02. Prefer asset protocol for local file serving.
+注意：完整的自定义协议注册（`tauri::Builder::register_uri_scheme_protocol`）是可用的，但截至 2026-04-02，在官方 v2+ 文档中记载不完整。提供本地文件时优先使用 asset 协议。

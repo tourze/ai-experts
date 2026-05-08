@@ -1,387 +1,386 @@
-# Persona Methodology Guide
+# 人物画像方法论指南
 
-Reference for creating research-backed, data-driven user personas.
-
----
-
-## Table of Contents
-
-- [What Makes a Valid Persona](#what-makes-a-valid-persona)
-- [Data Collection Methods](#data-collection-methods)
-- [Analysis Framework](#analysis-framework)
-- [Persona Components](#persona-components)
-- [Validation Criteria](#validation-criteria)
-- [Anti-Patterns](#anti-patterns)
+创建基于研究、数据驱动的用户人物画像的参考。
 
 ---
 
-## What Makes a Valid Persona
+## 目录
 
-### Research-Backed vs. Assumption-Based
+- [什么构成有效的人物画像](#什么构成有效的人物画像)
+- [数据收集方法](#数据收集方法)
+- [分析框架](#分析框架)
+- [人物画像构成要素](#人物画像构成要素)
+- [验证标准](#验证标准)
+- [反模式](#反模式)
+
+---
+
+## 什么构成有效的人物画像
+
+### 基于研究 vs 基于假设
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    PERSONA VALIDITY SPECTRUM                │
+│                    人物画像有效性光谱                        │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  ASSUMPTION-BASED          HYBRID          RESEARCH-BACKED  │
+│  基于假设                  混合            基于研究         │
 │  │───────────────────────────────────────────────────────│  │
-│  ❌ Invalid               ⚠️ Limited         ✅ Valid        │
+│  ❌ 无效                  ⚠️ 有限          ✅ 有效          │
 │                                                             │
-│  • "Our users are..."    • Some interviews   • 20+ users    │
-│  • No data               • 5-10 data points  • Quant + Qual │
-│  • Team opinions         • Partial patterns  • Validated    │
+│  • "我们的用户是..."     • 一些访谈       • 20+ 用户        │
+│  • 没有数据             • 5-10 个数据点   • 定量 + 定性     │
+│  • 团队意见             • 部分模式       • 经过验证        │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Minimum Viability Requirements
+### 最低可行性要求
 
-| Requirement | Threshold | Confidence Level |
-|-------------|-----------|------------------|
-| Sample size | 5 users | Low (exploratory) |
-| Sample size | 20 users | Medium (directional) |
-| Sample size | 50+ users | High (reliable) |
-| Data types | 2+ sources | Required |
-| Interview depth | 30+ min | Recommended |
-| Behavioral data | 1 week+ | Recommended |
+| 要求         | 阈值           | 置信度           |
+| ------------ | -------------- | ---------------- |
+| 样本量       | 5 名用户       | 低（探索性）     |
+| 样本量       | 20 名用户      | 中（方向性）     |
+| 样本量       | 50+ 名用户     | 高（可靠）       |
+| 数据类型     | 2+ 种来源      | 必需             |
+| 访谈深度     | 30+ 分钟        | 推荐             |
+| 行为数据     | 1 周+           | 推荐             |
 
-### The Persona Validity Test
+### 人物画像有效性测试
 
-A valid persona must pass these checks:
+有效的人物画像必须通过以下检查：
 
-1. **Grounded in Data**
-   - Can you point to specific user quotes?
-   - Can you show behavioral data supporting claims?
-   - Are demographics from actual user profiles?
+1. **基于数据**
+   - 你能指出具体的用户语录吗？
+   - 你能展示支持说法的行为数据吗？
+   - 人口统计数据来自真实的用户资料吗？
 
-2. **Represents a Segment**
-   - Does this persona represent 15%+ of your user base?
-   - Are there other users who fit this pattern?
-   - Is it a real cluster, not an outlier?
+2. **代表一个细分群体**
+   - 此画像代表 15%+ 的用户基数吗？
+   - 还有其他符合此模式的用户吗？
+   - 是真实的聚类，而非异常值吗？
 
-3. **Actionable for Design**
-   - Can designers make decisions from this persona?
-   - Does it reveal unmet needs?
-   - Does it clarify feature priorities?
+3. **对设计可操作**
+   - 设计师能根据此画像做决策吗？
+   - 它揭示了未满足的需求吗？
+   - 它明确了功能优先级吗？
 
 ---
 
-## Data Collection Methods
+## 数据收集方法
 
-### Quantitative Sources
+### 定量来源
 
-| Source | Data Type | Use For |
-|--------|-----------|---------|
-| Analytics | Behavior | Usage patterns, feature adoption |
-| Surveys | Demographics, preferences | Segmentation, satisfaction |
-| Support tickets | Pain points | Frustration patterns |
-| Product logs | Actions | Feature usage, workflows |
-| CRM data | Profile | Job roles, company size |
+| 来源         | 数据类型         | 用途                 |
+| ------------ | ---------------- | -------------------- |
+| 分析数据     | 行为             | 使用模式、功能采纳   |
+| 问卷调查     | 人口统计、偏好   | 细分、满意度         |
+| 支持工单     | 痛点             | 挫折模式             |
+| 产品日志     | 操作             | 功能使用、工作流     |
+| CRM 数据     | 画像             | 职位、公司规模       |
 
-### Qualitative Sources
+### 定性来源
 
-| Source | Data Type | Use For |
-|--------|-----------|---------|
-| User interviews | Motivations, goals | Deep understanding |
-| Contextual inquiry | Environment | Real-world context |
-| Diary studies | Longitudinal | Behavior over time |
-| Usability tests | Pain points | Specific frustrations |
-| Customer calls | Quotes | Authentic voice |
+| 来源           | 数据类型         | 用途                 |
+| -------------- | ---------------- | -------------------- |
+| 用户访谈       | 动机、目标       | 深度理解             |
+| 情境调查       | 环境             | 真实世界上下文       |
+| 日记研究       | 纵向数据         | 随时间的行为         |
+| 可用性测试     | 痛点             | 具体挫折             |
+| 客户通话       | 语录             | 真实声音             |
 
-### Data Collection Matrix
+### 数据收集矩阵
 
 ```
-                    QUICK              DEEP
-                    (1-2 weeks)        (4+ weeks)
+                    快速              深入
+                    (1-2 周)          (4 周以上)
                     │                  │
           ┌─────────┼──────────────────┼─────────┐
-  QUANT   │ Survey  │                  │ Product │
-          │ + CRM   │                  │ Logs +  │
+  定量    │ 问卷调查 │                  │ 产品    │
+          │ + CRM   │                  │ 日志 +  │
           │         │                  │ A/B     │
           ├─────────┼──────────────────┼─────────┤
-  QUAL    │ 5       │                  │ 15+     │
-          │ Quick   │                  │ Deep    │
-          │ Calls   │                  │ Inter-  │
-          │         │                  │ views   │
+  定性    │ 5 次    │                  │ 15 次+  │
+          │ 快速    │                  │ 深度    │
+          │ 通话    │                  │ 访谈    │
           └─────────┴──────────────────┴─────────┘
 ```
 
-### Interview Protocol
+### 访谈协议
 
-**Pre-Interview:**
-- Review user's analytics data
-- Note usage patterns to explore
-- Prepare open-ended questions
+**访谈前：**
+- 查看用户的分析数据
+- 记录需探索的使用模式
+- 准备开放式问题
 
-**Interview Structure (45-60 min):**
+**访谈结构（45-60 分钟）：**
 
-1. **Context (10 min)**
-   - "Walk me through your typical day"
-   - "When do you use [product]?"
-   - "What were you doing before you found us?"
+1. **背景（10 分钟）**
+   - "带我回顾一下你的典型一天"
+   - "你什么时候使用[产品]？"
+   - "在找到我们之前你在做什么？"
 
-2. **Behaviors (15 min)**
-   - "Show me how you use [feature]"
-   - "What do you do when [scenario]?"
-   - "What's your workaround for [pain point]?"
+2. **行为（15 分钟）**
+   - "演示一下你是如何使用[功能]的"
+   - "当[场景]发生时你会怎么做？"
+   - "你对[痛点]有什么变通方法？"
 
-3. **Goals & Frustrations (15 min)**
-   - "What are you ultimately trying to achieve?"
-   - "What's the hardest part about [task]?"
-   - "If you had a magic wand, what would you change?"
+3. **目标与挫折（15 分钟）**
+   - "你最终想达到什么目的？"
+   - "[任务]中最难的部分是什么？"
+   - "如果你有一根魔法棒，你会改变什么？"
 
-4. **Reflection (10 min)**
-   - "What would make you recommend us?"
-   - "What almost made you quit?"
-   - "What's missing that you need?"
-
----
-
-## Analysis Framework
-
-### Pattern Identification
-
-**Step 1: Code Data Points**
-
-Tag each insight with:
-- `[GOAL]` - What they want to achieve
-- `[PAIN]` - What frustrates them
-- `[BEHAVIOR]` - What they actually do
-- `[CONTEXT]` - When/where they use product
-- `[QUOTE]` - Direct user words
-
-**Step 2: Cluster Similar Patterns**
-
-```
-User A: Uses daily, advanced features, keyboard shortcuts
-User B: Uses daily, complex workflows, automation
-User C: Uses weekly, basic needs, occasional
-User D: Uses daily, power features, API access
-
-Cluster 1: A, B, D (Power Users - daily, advanced)
-Cluster 2: C (Casual User - weekly, basic)
-```
-
-**Step 3: Calculate Cluster Size**
-
-| Cluster | Users | % of Sample | Viability |
-|---------|-------|-------------|-----------|
-| Power Users | 18 | 36% | Primary persona |
-| Business Users | 15 | 30% | Primary persona |
-| Casual Users | 12 | 24% | Secondary persona |
-| Mobile-First | 5 | 10% | Consider merging |
-
-### Archetype Classification
-
-| Archetype | Identifying Signals | Design Focus |
-|-----------|--------------------| -------------|
-| Power User | Daily use, 10+ features, shortcuts | Efficiency, customization |
-| Casual User | Weekly use, 3-5 features, simple | Simplicity, guidance |
-| Business User | Work context, team features, ROI | Collaboration, reporting |
-| Mobile-First | Mobile primary, quick actions | Touch, offline, speed |
-
-### Confidence Scoring
-
-Calculate confidence based on data quality:
-
-```
-Confidence = (Sample Size Score + Data Quality Score + Consistency Score) / 3
-
-Sample Size Score:
-  5-10 users  = 1 (Low)
-  11-30 users = 2 (Medium)
-  31+ users   = 3 (High)
-
-Data Quality Score:
-  Survey only         = 1 (Low)
-  Survey + Analytics  = 2 (Medium)
-  Quant + Qual + Logs = 3 (High)
-
-Consistency Score:
-  Contradicting data = 1 (Low)
-  Some alignment     = 2 (Medium)
-  Strong alignment   = 3 (High)
-```
+4. **反思（10 分钟）**
+   - "什么会让你推荐我们？"
+   - "什么差点让你放弃？"
+   - "你还需要什么但我们没有提供？"
 
 ---
 
-## Persona Components
+## 分析框架
 
-### Required Elements
+### 模式识别
 
-| Component | Description | Source |
-|-----------|-------------|--------|
-| Name & Photo | Memorable identifier | Stock photo, AI-generated |
-| Tagline | One-line summary | Synthesized from data |
-| Quote | Authentic voice | Direct from interviews |
-| Demographics | Age, role, location | CRM, surveys |
-| Goals | What they want | Interviews |
-| Frustrations | Pain points | Interviews, support |
-| Behaviors | How they act | Analytics, observation |
-| Scenarios | Usage contexts | Interviews, logs |
+**步骤 1：编码数据点**
 
-### Optional Enhancements
+为每个洞察打标签：
+- `[GOAL]` - 他们想实现什么
+- `[PAIN]` - 什么让他们沮丧
+- `[BEHAVIOR]` - 他们实际做了什么
+- `[CONTEXT]` - 他们在何时/何处使用产品
+- `[QUOTE]` - 用户的原话
 
-| Component | When to Include |
-|-----------|-----------------|
-| Day-in-the-life | Complex workflows |
-| Empathy map | Design workshops |
-| Technology stack | B2B products |
-| Influences | Consumer products |
-| Brands they love | Marketing-heavy |
+**步骤 2：聚类相似模式**
 
-### Component Depth Guide
-
-**Demographics (Keep Brief):**
 ```
-❌ Too detailed:
-   Age: 34, Lives: Seattle, Education: MBA from Stanford
+用户 A：每日使用、高级功能、键盘快捷键
+用户 B：每日使用、复杂工作流、自动化
+用户 C：每周使用、基本需求、偶尔
+用户 D：每日使用、高级功能、API 访问
 
-✅ Right level:
-   Age: 30-40, Urban professional, Graduate degree
+聚类 1：A, B, D（高级用户 - 每日、高级）
+聚类 2：C（普通用户 - 每周、基本）
 ```
 
-**Goals (Be Specific):**
-```
-❌ Too vague:
-   "Wants to be productive"
+**步骤 3：计算聚类规模**
 
-✅ Actionable:
-   "Needs to process 50+ items daily without repetitive tasks"
-```
+| 聚类         | 用户数 | 样本占比 | 可行性     |
+| ------------ | ------ | -------- | ---------- |
+| 高级用户     | 18     | 36%      | 主要画像   |
+| 业务用户     | 15     | 30%      | 主要画像   |
+| 普通用户     | 12     | 24%      | 次要画像   |
+| 移动优先     | 5      | 10%      | 考虑合并   |
 
-**Frustrations (Include Evidence):**
-```
-❌ Generic:
-   "Finds the interface confusing"
+### 原型分类
 
-✅ With evidence:
-   "Can't find export function (mentioned by 8/12 users)"
+| 原型         | 识别信号                     | 设计重点           |
+| ------------ | ---------------------------- | ------------------ |
+| 高级用户     | 每日使用、10+ 功能、快捷键   | 效率、自定义       |
+| 普通用户     | 每周使用、3-5 功能、简单     | 简洁、引导         |
+| 业务用户     | 工作场景、团队功能、ROI      | 协作、报告         |
+| 移动优先     | 移动端为主、快速操作         | 触摸、离线、速度   |
+
+### 置信度评分
+
+根据数据质量计算置信度：
+
+```
+置信度 = (样本量评分 + 数据质量评分 + 一致性评分) / 3
+
+样本量评分：
+  5-10 名用户  = 1（低）
+  11-30 名用户 = 2（中）
+  31+ 名用户   = 3（高）
+
+数据质量评分：
+  仅问卷调查         = 1（低）
+  问卷调查 + 分析    = 2（中）
+  定量 + 定性 + 日志 = 3（高）
+
+一致性评分：
+  数据矛盾     = 1（低）
+  部分一致     = 2（中）
+  高度一致     = 3（高）
 ```
 
 ---
 
-## Validation Criteria
+## 人物画像构成要素
 
-### Internal Validation
+### 必需要素
 
-**Team Check:**
-- [ ] Does sales recognize this user type?
-- [ ] Does support see these pain points?
-- [ ] Does product know these workflows?
+| 构成要素       | 描述             | 来源                 |
+| -------------- | ---------------- | -------------------- |
+| 名称与照片     | 令人印象深刻的标识 | 库存照片、AI 生成    |
+| 标语           | 一行总结         | 从数据中综合         |
+| 语录           | 真实声音         | 直接来自访谈         |
+| 人口统计数据   | 年龄、角色、地点  | CRM、问卷调查        |
+| 目标           | 他们想要什么     | 访谈                 |
+| 挫折           | 痛点             | 访谈、支持           |
+| 行为           | 他们如何行动     | 分析、观察           |
+| 场景           | 使用情境         | 访谈、日志           |
 
-**Data Check:**
-- [ ] Can we quantify this segment's size?
-- [ ] Do behaviors match analytics?
-- [ ] Are quotes from real users?
+### 可选增强
 
-### External Validation
+| 构成要素       | 何时包含                 |
+| -------------- | ------------------------ |
+| 日常全览       | 复杂工作流               |
+| 同理心地图     | 设计工作坊               |
+| 技术栈         | B2B 产品                 |
+| 影响力来源     | 消费类产品               |
+| 他们喜爱的品牌 | 营销密集型               |
 
-**User Validation (recommended):**
-- Show persona to 3-5 users from segment
-- Ask: "Does this sound like you?"
-- Iterate based on feedback
+### 构成要素深度指南
 
-**A/B Design Test:**
-- Design for persona A vs. persona B
-- Test with actual users
-- Measure if persona-driven design wins
+**人口统计（保持简洁）：**
+```
+❌ 过于详细：
+   年龄：34，居住地：西雅图，教育：斯坦福 MBA
 
-### Red Flags
+✅ 适当程度：
+   年龄：30-40，城市专业人士，研究生学历
+```
 
-Watch for these persona validity problems:
+**目标（要具体）：**
+```
+❌ 过于模糊：
+   "想要高效"
 
-| Red Flag | What It Means | Fix |
-|----------|---------------|-----|
-| "Everyone" persona | Too broad to be useful | Split into segments |
-| Contradicting data | Forcing a narrative | Re-analyze clusters |
-| No frustrations | Sanitized or incomplete | Dig deeper in interviews |
-| Assumptions labeled as data | No real research | Conduct actual research |
-| Single data source | Fragile foundation | Add another data type |
+✅ 可操作：
+   "需要每天处理 50+ 项且无需重复操作"
+```
+
+**挫折（包含证据）：**
+```
+❌ 通用：
+   "觉得界面令人困惑"
+
+✅ 有证据：
+   "找不到导出功能（8/12 用户提及）"
+```
 
 ---
 
-## Anti-Patterns
+## 验证标准
 
-### 1. The Elastic Persona
+### 内部验证
 
-**Problem:** Persona stretches to include everyone
+**团队检查：**
+- [ ] 销售团队认识这种用户类型吗？
+- [ ] 支持团队看到这些痛点了吗？
+- [ ] 产品团队了解这些工作流吗？
 
-```
-❌ "Sarah is 25-55, uses mobile and desktop, wants simplicity
-    but also advanced features, works alone and in teams..."
-```
+**数据检查：**
+- [ ] 我们能量化此细分群体的规模吗？
+- [ ] 行为与分析数据一致吗？
+- [ ] 语录来自真实用户吗？
 
-**Fix:** Create separate personas for distinct segments
+### 外部验证
 
-### 2. The Demographic Persona
+**用户验证（推荐）：**
+- 将画像展示给细分群体中的 3-5 名用户
+- 问："这听起来像你吗？"
+- 根据反馈迭代
 
-**Problem:** All demographics, no psychographics
+**A/B 设计测试：**
+- 为画像 A vs 画像 B 设计
+- 用真实用户测试
+- 衡量画像驱动的设计是否胜出
 
-```
-❌ "John is 35, male, $80k income, urban, MBA..."
-   (Nothing about goals, frustrations, behaviors)
-```
+### 危险信号
 
-**Fix:** Lead with goals and frustrations, add minimal demographics
+注意这些人人物像有效性问题：
 
-### 3. The Ideal User Persona
-
-**Problem:** Describes who you want, not who you have
-
-```
-❌ "Emma is a passionate advocate who tells everyone
-    about our product and uses every feature daily..."
-```
-
-**Fix:** Base on real user data, include realistic limitations
-
-### 4. The Committee Persona
-
-**Problem:** Each stakeholder added their opinions
-
-```
-❌ CEO added "enterprise-focused"
-   Sales added "loves demos"
-   Support added "never calls support"
-```
-
-**Fix:** Single owner, data-driven only
-
-### 5. The Stale Persona
-
-**Problem:** Created once, never updated
-
-```
-❌ "Last updated: 2019"
-   Product has changed completely since then
-```
-
-**Fix:** Review quarterly, update with new data
+| 危险信号           | 含义               | 修复                   |
+| ------------------ | ------------------ | ---------------------- |
+| "每个人"画像       | 过于宽泛无实用价值 | 拆分为多个细分         |
+| 数据矛盾           | 强行叙述           | 重新分析聚类           |
+| 没有挫折           | 被美化或不完整     | 在访谈中深入挖掘       |
+| 假设被标称为数据   | 没有真正的研究     | 进行实际研究           |
+| 单一数据来源       | 基础薄弱           | 添加另一种数据类型     |
 
 ---
 
-## Quick Reference
+## 反模式
 
-### Persona Creation Checklist
+### 1. 弹性画像
 
-- [ ] Minimum 20 users in data set
-- [ ] At least 2 data sources (quant + qual)
-- [ ] Clear segment boundaries
-- [ ] Actionable for design decisions
-- [ ] Validated with team and users
-- [ ] Documented data sources
-- [ ] Confidence level stated
+**问题：** 画像范围延伸到包括所有人
 
-### Time Investment Guide
+```
+❌ "Sarah 年龄 25-55，使用移动端和桌面端，想要简洁
+    但也需要高级功能，既独自工作也团队协作..."
+```
 
-| Persona Type | Time | Team | Output |
-|--------------|------|------|--------|
-| Quick & Dirty | 1 week | 1 | Directional |
-| Standard | 2-4 weeks | 2 | Production |
-| Comprehensive | 6-8 weeks | 3+ | Strategic |
+**修复：** 为不同的细分群体创建独立画像
+
+### 2. 人口统计画像
+
+**问题：** 全是人口统计，没有心理特征
+
+```
+❌ "John 35 岁，男性，收入 8 万美元，城市居民，MBA..."
+   （没有关于目标、挫折、行为的信息）
+```
+
+**修复：** 以目标和挫折为先导，添加最少的人口统计信息
+
+### 3. 理想用户画像
+
+**问题：** 描述你想要的人，而不是你实际拥有的人
+
+```
+❌ "Emma 是一位热情的倡导者，她向每个人
+    推荐我们的产品，并每天使用所有功能..."
+```
+
+**修复：** 基于真实用户数据，包含现实限制
+
+### 4. 委员会画像
+
+**问题：** 每个利益相关者都添加了自己的意见
+
+```
+❌ CEO 添加了"面向企业"
+   销售添加了"喜欢演示"
+   支持添加了"从不打电话给支持"
+```
+
+**修复：** 单一负责人，仅基于数据
+
+### 5. 过时画像
+
+**问题：** 创建一次，从未更新
+
+```
+❌ "上次更新：2019"
+   此后产品已完全改变
+```
+
+**修复：** 每季度评审，用新数据更新
 
 ---
 
-*See also: `example-personas.md` for output examples*
+## 快速参考
+
+### 人物画像创建检查清单
+
+- [ ] 数据集中至少 20 名用户
+- [ ] 至少 2 个数据来源（定量 + 定性）
+- [ ] 清晰的细分边界
+- [ ] 对设计决策可操作
+- [ ] 经过团队和用户验证
+- [ ] 已记录数据来源
+- [ ] 已声明置信度
+
+### 时间投入指南
+
+| 画像类型       | 时间       | 团队 | 产出       |
+| -------------- | ---------- | ---- | ---------- |
+| 快速粗略       | 1 周       | 1    | 方向性     |
+| 标准           | 2-4 周     | 2    | 可生产     |
+| 全面           | 6-8 周     | 3+   | 战略性     |
+
+---
+
+*参见：`example-personas.md` 了解输出示例*

@@ -1,26 +1,26 @@
-# iOS Keyboard & Input Patterns
+# iOS 键盘与输入模式
 
-Comprehensive guide to keyboard handling, text input, and hardware keyboard support.
+键盘处理、文本输入和硬件键盘支持的全面指南。
 
-## Software Keyboard Types
+## 软件键盘类型
 
-### Choosing the Right Keyboard
+### 选择合适的键盘
 
-Match the keyboard to the expected input:
+将键盘与预期输入匹配：
 
-| Input Type | Keyboard | UIKeyboardType |
-|------------|----------|----------------|
-| General text | Default | `.default` |
-| Email | Email-optimized (@ and . prominent) | `.emailAddress` |
-| URL | URL-optimized (/, .com) | `.URL` |
-| Phone number | Number pad | `.phonePad` |
-| Numeric (with punctuation) | Numbers + punctuation | `.numbersAndPunctuation` |
-| Numeric only | Decimal pad | `.decimalPad` |
-| Twitter handle | Twitter keyboard | `.twitter` |
-| Web search | Search keyboard | `.webSearch` |
-| ASCII only | ASCII-capable | `.asciiCapable` |
+| 输入类型 | 键盘 | UIKeyboardType |
+|---------|------|----------------|
+| 常规文本 | 默认 | `.default` |
+| 邮箱 | 邮箱优化（@ 和 . 突出） | `.emailAddress` |
+| URL | URL 优化（/, .com） | `.URL` |
+| 电话号码 | 数字键盘 | `.phonePad` |
+| 数字（带标点） | 数字 + 标点 | `.numbersAndPunctuation` |
+| 仅数字 | 十进制键盘 | `.decimalPad` |
+| Twitter 账号 | Twitter 键盘 | `.twitter` |
+| 网页搜索 | 搜索键盘 | `.webSearch` |
+| 仅 ASCII | ASCII 键盘 | `.asciiCapable` |
 
-### SwiftUI Implementation
+### SwiftUI 实现
 
 ```swift
 TextField("Email", text: $email)
@@ -30,7 +30,7 @@ TextField("Email", text: $email)
     .disableAutocorrection(true)
 ```
 
-### UIKit Implementation
+### UIKit 实现
 
 ```swift
 textField.keyboardType = .emailAddress
@@ -41,32 +41,32 @@ textField.autocorrectionType = .no
 
 ---
 
-## Text Content Types
+## 文本内容类型
 
-Enable autofill by specifying content types:
+通过指定内容类型启用自动填充：
 
-| Content | textContentType | Enables |
-|---------|-----------------|---------|
-| Name | `.name` | Contact autofill |
-| Given name | `.givenName` | |
-| Family name | `.familyName` | |
-| Email | `.emailAddress` | Email autofill |
-| Phone | `.telephoneNumber` | Phone autofill |
-| Address | `.streetAddressLine1` | Address autofill |
-| City | `.addressCity` | |
-| State | `.addressState` | |
-| ZIP | `.postalCode` | |
-| Country | `.countryName` | |
-| Credit card | `.creditCardNumber` | Camera card scanning |
-| Username | `.username` | Keychain autofill |
-| Password | `.password` | Keychain autofill |
-| New password | `.newPassword` | Password generation |
-| One-time code | `.oneTimeCode` | SMS autofill |
+| 内容 | textContentType | 启用功能 |
+|------|-----------------|---------|
+| 姓名 | `.name` | 联系人自动填充 |
+| 名 | `.givenName` | |
+| 姓 | `.familyName` | |
+| 邮箱 | `.emailAddress` | 邮箱自动填充 |
+| 电话 | `.telephoneNumber` | 电话自动填充 |
+| 地址 | `.streetAddressLine1` | 地址自动填充 |
+| 城市 | `.addressCity` | |
+| 州 | `.addressState` | |
+| 邮编 | `.postalCode` | |
+| 国家 | `.countryName` | |
+| 信用卡 | `.creditCardNumber` | 摄像头扫描卡片 |
+| 用户名 | `.username` | 钥匙串自动填充 |
+| 密码 | `.password` | 钥匙串自动填充 |
+| 新密码 | `.newPassword` | 密码生成 |
+| 一次性验证码 | `.oneTimeCode` | 短信自动填充 |
 
-### Password and Login Fields
+### 密码和登录字段
 
 ```swift
-// Login form
+// 登录表单
 TextField("Email", text: $email)
     .textContentType(.username)
     .keyboardType(.emailAddress)
@@ -74,12 +74,12 @@ TextField("Email", text: $email)
 SecureField("Password", text: $password)
     .textContentType(.password)
 
-// Registration form
+// 注册表单
 SecureField("Create Password", text: $newPassword)
     .textContentType(.newPassword)
 ```
 
-### One-Time Code (2FA)
+### 一次性验证码（双因素认证）
 
 ```swift
 TextField("Verification Code", text: $code)
@@ -87,20 +87,20 @@ TextField("Verification Code", text: $code)
     .keyboardType(.numberPad)
 ```
 
-iOS automatically suggests codes from SMS messages when this content type is set.
+当设置此内容类型时，iOS 会自动从短信中建议验证码。
 
 ---
 
-## Input Accessory Views
+## 输入辅助视图
 
-### When to Use
+### 何时使用
 
-Input accessory views appear above the keyboard for:
-- Navigation between fields (Previous/Next)
-- Custom actions (Done, formatting buttons)
-- Context-specific tools
+输入辅助视图出现在键盘上方，用于：
+- 字段间导航（上一个/下一个）
+- 自定义操作（完成、格式化按钮）
+- 上下文相关工具
 
-### Standard Toolbar Pattern
+### 标准工具栏模式
 
 ```swift
 struct FormTextField: View {
@@ -122,7 +122,7 @@ struct FormTextField: View {
 }
 ```
 
-### Multi-Field Navigation
+### 多字段导航
 
 ```swift
 struct FormView: View {
@@ -168,15 +168,15 @@ struct FormView: View {
 
 ---
 
-## Keyboard Avoidance
+## 键盘避让
 
-### Automatic Behavior (SwiftUI)
+### 自动行为（SwiftUI）
 
-SwiftUI automatically adjusts for keyboard in most cases:
-- ScrollViews scroll to keep focused field visible
-- Safe area adjusts for keyboard height
+SwiftUI 在大多数情况下会自动适应键盘：
+- ScrollViews 滚动以保持聚焦字段可见
+- 安全区域会根据键盘高度调整
 
-### Manual Keyboard Handling
+### 手动键盘处理
 
 ```swift
 struct KeyboardAdaptive: ViewModifier {
@@ -194,43 +194,43 @@ struct KeyboardAdaptive: ViewModifier {
 }
 ```
 
-### Best Practices
+### 最佳实践
 
-1. **Scroll to show field** - Focused field should be visible
-2. **Don't cover important actions** - Submit buttons should remain accessible
-3. **Animate adjustments** - Match keyboard animation (0.25s ease-out)
-4. **Test on different devices** - Keyboard heights vary
+1. **滚动以显示字段** - 聚焦字段应可见
+2. **不要遮盖重要操作** - 提交按钮应保持可访问
+3. **对调整进行动画** - 匹配键盘动画（0.25 秒缓出）
+4. **在不同设备上测试** - 键盘高度各不相同
 
 ---
 
-## Hardware Keyboard Support
+## 硬件键盘支持
 
-### Why It Matters
+### 为何重要
 
-iPads commonly use hardware keyboards. Apps should:
-- Support standard keyboard shortcuts
-- Provide discoverability
-- Not break when hardware keyboard is attached
+iPad 通常使用硬件键盘。应用应：
+- 支持标准键盘快捷键
+- 提供可发现性
+- 在连接硬件键盘时不损坏功能
 
-### Standard Shortcuts to Support
+### 应支持的标准快捷键
 
-| Shortcut | Action | Notes |
-|----------|--------|-------|
-| ⌘N | New item | Standard creation |
-| ⌘S | Save | |
-| ⌘⌫ | Delete | With confirmation |
-| ⌘F | Find/Search | |
-| ⌘Z | Undo | |
-| ⌘⇧Z | Redo | |
-| ⌘C/⌘V/⌘X | Copy/Paste/Cut | |
-| ⌘, | Settings/Preferences | |
-| ⌘W | Close window/modal | |
-| Escape | Cancel/dismiss | |
-| Tab | Next field | |
-| ⇧Tab | Previous field | |
-| Return | Submit form | When appropriate |
+| 快捷键 | 操作 | 备注 |
+|-------|------|------|
+| ⌘N | 新建 | 标准创建 |
+| ⌘S | 保存 | |
+| ⌘⌫ | 删除 | 带确认 |
+| ⌘F | 查找/搜索 | |
+| ⌘Z | 撤销 | |
+| ⌘⇧Z | 重做 | |
+| ⌘C/⌘V/⌘X | 复制/粘贴/剪切 | |
+| ⌘, | 设置/偏好 | |
+| ⌘W | 关闭窗口/模态 | |
+| Escape | 取消/关闭 | |
+| Tab | 下一个字段 | |
+| ⇧Tab | 上一个字段 | |
+| Return | 提交表单 | 适当时 |
 
-### SwiftUI Keyboard Shortcuts
+### SwiftUI 键盘快捷键
 
 ```swift
 struct ContentView: View {
@@ -245,7 +245,7 @@ struct ContentView: View {
     }
 }
 
-// For custom shortcuts in list items
+// 列表项的自定义快捷键
 List {
     ForEach(items) { item in
         ItemRow(item: item)
@@ -254,35 +254,35 @@ List {
 .onDeleteCommand(perform: deleteSelected)  // ⌘⌫
 ```
 
-### Keyboard Shortcut Discoverability
+### 键盘快捷键可发现性
 
-Hold ⌘ to show available shortcuts. Ensure your shortcuts appear:
+按住 ⌘ 显示可用快捷键。确保快捷键出现：
 
 ```swift
 Button("Save", action: save)
     .keyboardShortcut("s", modifiers: .command)
-    // Appears in keyboard shortcut overlay
+    // 出现在键盘快捷键覆盖层中
 ```
 
 ---
 
-## Text Editing
+## 文本编辑
 
-### Autocapitalization
+### 自动大写
 
-| Style | Use For |
-|-------|---------|
-| `.sentences` | General text, messages |
-| `.words` | Names, titles |
-| `.allCharacters` | Codes, abbreviations |
-| `.none` | Email, usernames, URLs |
+| 样式 | 用途 |
+|------|------|
+| `.sentences` | 常规文本、消息 |
+| `.words` | 姓名、标题 |
+| `.allCharacters` | 代码、缩写 |
+| `.none` | 邮箱、用户名、URL |
 
-### Autocorrection
+### 自动纠正
 
-| Setting | Use For |
-|---------|---------|
-| Enabled (default) | Prose, messages |
-| Disabled | Code, usernames, specific values |
+| 设置 | 用途 |
+|------|------|
+| 启用（默认） | 散文、消息 |
+| 禁用 | 代码、用户名、特定值 |
 
 ```swift
 TextField("Username", text: $username)
@@ -290,29 +290,29 @@ TextField("Username", text: $username)
     .disableAutocorrection(true)
 ```
 
-### Text Input Traits Summary
+### 文本输入特性总结
 
 ```swift
 TextField("Email", text: $email)
-    .keyboardType(.emailAddress)      // Keyboard layout
-    .textContentType(.emailAddress)   // Autofill hint
-    .autocapitalization(.none)        // No auto-caps
-    .disableAutocorrection(true)      // No autocorrect
+    .keyboardType(.emailAddress)      // 键盘布局
+    .textContentType(.emailAddress)   // 自动填充提示
+    .autocapitalization(.none)        // 无自动大写
+    .disableAutocorrection(true)      // 无自动纠正
     .textInputAutocapitalization(.never) // iOS 15+
 ```
 
 ---
 
-## Secure Text Entry
+## 安全文本输入
 
-### Password Fields
+### 密码字段
 
 ```swift
 SecureField("Password", text: $password)
     .textContentType(.password)
 ```
 
-### Show/Hide Toggle Pattern
+### 显示/隐藏切换模式
 
 ```swift
 struct PasswordField: View {
@@ -339,9 +339,9 @@ struct PasswordField: View {
 
 ---
 
-## Search Input
+## 搜索输入
 
-### Search Field Behavior
+### 搜索字段行为
 
 ```swift
 struct SearchView: View {
@@ -362,7 +362,7 @@ struct SearchView: View {
 }
 ```
 
-### Search Suggestions
+### 搜索建议
 
 ```swift
 .searchable(text: $searchText) {
@@ -375,9 +375,9 @@ struct SearchView: View {
 
 ---
 
-## Common Patterns
+## 常见模式
 
-### Form with All Best Practices
+### 应用所有最佳实践的表单
 
 ```swift
 struct RegistrationForm: View {
@@ -431,19 +431,19 @@ struct RegistrationForm: View {
 }
 ```
 
-### Submit Label Options
+### SubmitLabel 选项
 
-| Label | Use For |
-|-------|---------|
-| `.done` | Final field, closes keyboard |
-| `.go` | Triggers action (search, navigate) |
-| `.next` | Moves to next field |
-| `.return` | Inserts newline (text areas) |
-| `.search` | Search field |
-| `.send` | Message composition |
-| `.continue` | Multi-step forms |
-| `.join` | Joining/connecting |
-| `.route` | Navigation apps |
+| 标签 | 用途 |
+|------|------|
+| `.done` | 最后一个字段，关闭键盘 |
+| `.go` | 触发操作（搜索、导航） |
+| `.next` | 移动到下一个字段 |
+| `.return` | 插入换行（文本区域） |
+| `.search` | 搜索字段 |
+| `.send` | 消息撰写 |
+| `.continue` | 多步骤表单 |
+| `.join` | 加入/连接 |
+| `.route` | 导航应用 |
 
 ```swift
 TextField("Search", text: $query)

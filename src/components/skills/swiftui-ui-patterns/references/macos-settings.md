@@ -1,18 +1,18 @@
-# macOS Settings
+# macOS 设置
 
-## Intent
+## 意图
 
-Use this when building a macOS Settings window backed by SwiftUI's `Settings` scene.
+使用此模式构建由 SwiftUI 的 `Settings` 场景支持的 macOS 设置窗口。
 
-## Core patterns
+## 核心模式
 
-- Declare the Settings scene in the `App` and compile it only for macOS.
-- Keep settings content in a dedicated root view (`SettingsView`) and drive values with `@AppStorage`.
-- Use `TabView` to group settings sections when you have more than one category.
-- Use `Form` inside each tab to keep controls aligned and accessible.
-- Use `OpenSettingsAction` or `SettingsLink` for in-app entry points to the Settings window.
+- 在 `App` 中声明 Settings 场景，并仅针对 macOS 编译。
+- 将设置内容放在专用的根视图（`SettingsView`）中，并使用 `@AppStorage` 驱动值。
+- 当有多个类别时，使用 `TabView` 对设置 Section 进行分组。
+- 在每个标签内使用 `Form` 保持控件对齐和可访问。
+- 使用 `OpenSettingsAction` 或 `SettingsLink` 作为应用内入口点进入 Settings 窗口。
 
-## Example: settings scene
+## 示例：设置场景
 
 ```swift
 @main
@@ -30,7 +30,7 @@ struct MyApp: App {
 }
 ```
 
-## Example: tabbed settings view
+## 示例：标签式设置视图
 
 ```swift
 @MainActor
@@ -59,13 +59,13 @@ struct SettingsView: View {
 }
 ```
 
-## Skip navigation
+## 跳过导航
 
-- Avoid wrapping `SettingsView` in a `NavigationStack` unless you truly need deep push navigation.
-- Prefer tabs or sections; Settings is already presented as a separate window and should feel flat.
-- If you must show hierarchical settings, use a single `NavigationSplitView` with a sidebar list of categories.
+- 除非确实需要深层推送导航，否则避免将 `SettingsView` 包裹在 `NavigationStack` 中。
+- 优先使用标签页或 Section；Settings 已经作为独立窗口呈现，应该感觉扁平。
+- 如果必须显示分层设置，使用单个 `NavigationSplitView` 配合侧边栏类别列表。
 
-## Pitfalls
+## 陷阱
 
-- Don’t reuse iOS-only settings layouts (full-screen stacks, toolbar-heavy flows).
-- Avoid large custom view hierarchies inside `Form`; keep rows focused and accessible.
+- 不要重复使用仅 iOS 的设置布局（全屏堆栈、大量工具栏的流程）。
+- 避免在 `Form` 内部使用大型自定义视图层次；保持行聚焦且可无障碍访问。

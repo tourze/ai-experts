@@ -1,139 +1,138 @@
-# Retrieval Metrics
+# 检索指标
 
-Definitions, formulas, and interpretation for RAG retrieval evaluation metrics.
+RAG 检索评估指标的定义、公式和解释。
 
 ---
 
 ## Precision@K
 
-**What it measures:** Of the K retrieved documents, how many are relevant?
+**衡量什么：** 在 K 个检索到的文档中，有多少是相关的？
 
 ```text
-Precision@K = (Number of relevant documents in top K) / K
+Precision@K = (前 K 个中相关文档数) / K
 ```
 
-| Score | Interpretation                                            |
-| ----- | --------------------------------------------------------- |
-| 1.0   | All K documents are relevant                              |
-| 0.5   | Half the documents are irrelevant (wasted context window) |
-| 0.2   | Most documents are noise                                  |
+| 分数   | 解释                                                    |
+| ------ | ------------------------------------------------------- |
+| 1.0    | 所有 K 个文档都相关                                     |
+| 0.5    | 一半文档不相关（浪费上下文窗口）                        |
+| 0.2    | 大多数文档是噪声                                        |
 
-**Target:** >= 0.6 for most RAG applications.
+**目标：** 大多数 RAG 应用 >= 0.6。
 
 ---
 
 ## Recall@K
 
-**What it measures:** Of all relevant documents in the corpus, how many were retrieved?
+**衡量什么：** 语料库中所有相关文档中，有多少被检索到了？
 
 ```text
-Recall@K = (Number of relevant documents in top K) / (Total relevant documents in corpus)
+Recall@K = (前 K 个中相关文档数) / (语料库中总相关文档数)
 ```
 
-| Score | Interpretation                           |
-| ----- | ---------------------------------------- |
-| 1.0   | All relevant information retrieved       |
-| 0.5   | Half the relevant information is missing |
-| 0.2   | Most relevant information not retrieved  |
+| 分数   | 解释                             |
+| ------ | -------------------------------- |
+| 1.0    | 所有相关信息已检索               |
+| 0.5    | 一半相关信息缺失                 |
+| 0.2    | 大多数相关信息未被检索           |
 
-**Target:** >= 0.8 for knowledge-intensive applications.
+**目标：** 知识密集型应用 >= 0.8。
 
-**Trade-off with Precision:** Increasing K improves Recall but may decrease Precision.
-Find the K that balances both.
+**与 Precision 的权衡：** 增加 K 会提高 Recall 但可能降低 Precision。找到平衡两者的 K。
 
 ---
 
-## Mean Reciprocal Rank (MRR)
+## 平均倒数排名 (MRR)
 
-**What it measures:** How high is the first relevant document ranked?
+**衡量什么：** 第一个相关文档排得有多高？
 
 ```text
 MRR = (1 / N) × Σ (1 / rank_i)
 ```
 
-Where `rank_i` is the position of the first relevant document for query i.
+其中 `rank_i` 是查询 i 第一个相关文档的位置。
 
-| MRR  | Interpretation                                   |
-| ---- | ------------------------------------------------ |
-| 1.0  | First result is always relevant                  |
-| 0.5  | First relevant result is typically at position 2 |
-| 0.33 | First relevant result is typically at position 3 |
+| MRR   | 解释                                     |
+| ----- | ---------------------------------------- |
+| 1.0   | 第一个结果总是相关                       |
+| 0.5   | 第一个相关结果通常在第 2 位              |
+| 0.33  | 第一个相关结果通常在第 3 位              |
 
-**Target:** >= 0.7 for user-facing applications.
+**目标：** 面向用户的应用 >= 0.7。
 
 ---
 
-## NDCG@K (Normalized Discounted Cumulative Gain)
+## NDCG@K（归一化折损累计增益）
 
-**What it measures:** Are highly relevant documents ranked higher than marginally relevant ones?
+**衡量什么：** 高度相关的文档是否排在边际相关文档之前？
 
-Useful when relevance is graded (0-3) rather than binary (relevant/not).
+当相关性是分级的（0-3）而非二分的（相关/不相关）时很有用。
 
 ```text
 DCG@K = Σ (relevance_i / log2(i + 1))
 NDCG@K = DCG@K / IDCG@K
 ```
 
-Where IDCG is the ideal (perfect ranking) DCG.
+其中 IDCG 是理想（完美排序）的 DCG。
 
 ---
 
-## Hit Rate (Hit@K)
+## 命中率 (Hit@K)
 
-**What it measures:** Does at least one relevant document appear in the top K?
+**衡量什么：** 前 K 个中是否至少出现一个相关文档？
 
 ```text
-Hit@K = 1 if any relevant document in top K, else 0
-Average Hit@K = (queries with hit) / (total queries)
+Hit@K = 如果前 K 个中有任何相关文档则为 1，否则为 0
+平均 Hit@K = (有命中的查询数) / (总查询数)
 ```
 
-Simpler than MRR. Useful as a baseline metric.
+比 MRR 更简单。作为基线指标很有用。
 
-**Target:** >= 0.9 for critical applications.
+**目标：** 关键应用 >= 0.9。
 
 ---
 
-## Scoring Relevance
+## 相关性评分
 
-### Binary Relevance
+### 二分相关性
 
-Each document is either relevant (1) or not (0).
+每个文档要么相关 (1)，要么不相关 (0)。
 
 ```text
-Relevant: Document contains information that helps answer the query
-Not relevant: Document does not help answer the query
+相关：文档包含有助于回答查询的信息
+不相关：文档无助于回答查询
 ```
 
-### Graded Relevance
+### 分级相关性
 
-| Score | Label               | Definition                           |
-| ----- | ------------------- | ------------------------------------ |
-| 3     | Highly relevant     | Directly answers the query           |
-| 2     | Relevant            | Contains supporting information      |
-| 1     | Marginally relevant | Tangentially related                 |
-| 0     | Not relevant        | No useful information for this query |
+| 分数   | 标签               | 定义                             |
+| ------ | ------------------ | -------------------------------- |
+| 3      | 高度相关           | 直接回答查询                     |
+| 2      | 相关               | 包含支持信息                     |
+| 1      | 边际相关           | 间接相关                         |
+| 0      | 不相关             | 对该查询无有用信息               |
 
 ---
 
-## Evaluation Protocol
+## 评估协议
 
-1. For each test query, record:
-   - The K retrieved chunks (in order)
-   - The relevance score for each chunk
-   - The expected relevant chunk(s)
+1. 针对每个测试查询，记录：
+   - 检索到的 K 个块（按顺序）
+   - 每个块的相关性分数
+   - 预期的相关块
 
-2. Calculate per-query metrics:
+2. 计算每个查询的指标：
    - Precision@K, Recall@K, MRR, Hit@K
 
-3. Aggregate across all queries:
-   - Mean and std dev for each metric
+3. 汇总所有查询：
+   - 每个指标的均值和标准差
 
-4. Report format:
+4. 报告格式：
    ```
-   | Metric | Mean | Std Dev | Min | Target |
-   |--------|------|---------|-----|--------|
-   | Precision@5 | 0.72 | 0.15 | 0.40 | 0.60 |
-   | Recall@10 | 0.85 | 0.12 | 0.50 | 0.80 |
-   | MRR | 0.78 | 0.20 | 0.25 | 0.70 |
-   | Hit@5 | 0.92 | - | - | 0.90 |
+   | 指标          | 均值     | 标准差   | 最小值   | 目标     |
+   | ------------- | -------- | -------- | -------- | -------- |
+   | Precision@5   | 0.72     | 0.15     | 0.40     | 0.60     |
+   | Recall@10     | 0.85     | 0.12     | 0.50     | 0.80     |
+   | MRR           | 0.78     | 0.20     | 0.25     | 0.70     |
+   | Hit@5         | 0.92     | -        | -        | 0.90     |
    ```

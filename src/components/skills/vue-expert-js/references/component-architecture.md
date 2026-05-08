@@ -1,4 +1,4 @@
-# Component Architecture
+# 组件架构
 
 ---
 
@@ -8,19 +8,19 @@
 <script setup>
 /**
  * @typedef {Object} Props
- * @property {string} title - Required
- * @property {string} [subtitle] - Optional
- * @property {number} [count=0] - With default
+ * @property {string} title - 必需
+ * @property {string} [subtitle] - 可选
+ * @property {number} [count=0] - 带默认值
  */
 
 const props = defineProps({
   title: { type: String, required: true },
   subtitle: { type: String, default: '' },
   count: { type: Number, default: 0 },
-  // Complex types
+  // 复杂类型
   items: { type: Array, default: () => [] },
   user: { type: Object, required: true },
-  // Validator
+  // 验证器
   size: {
     type: String,
     default: 'medium',
@@ -38,7 +38,7 @@ const props = defineProps({
 <script setup>
 const emit = defineEmits(['update', 'delete', 'close'])
 
-// With validation
+// 带验证
 const emit = defineEmits({
   /** @param {string} value */
   update: (value) => typeof value === 'string',
@@ -47,7 +47,7 @@ const emit = defineEmits({
   close: null
 })
 
-// Usage
+// 使用
 emit('update', 'new value')
 emit('delete', { id: 1 })
 </script>
@@ -58,7 +58,7 @@ emit('delete', { id: 1 })
 ## v-model
 
 ```vue
-<!-- Single v-model -->
+<!-- 单个 v-model -->
 <script setup>
 const props = defineProps({ modelValue: { type: String, required: true } })
 const emit = defineEmits(['update:modelValue'])
@@ -70,7 +70,7 @@ const emit = defineEmits(['update:modelValue'])
 ```
 
 ```vue
-<!-- Multiple v-models: v-model:firstName, v-model:lastName -->
+<!-- 多个 v-model：v-model:firstName, v-model:lastName -->
 <script setup>
 defineProps({ firstName: String, lastName: String })
 defineEmits(['update:firstName', 'update:lastName'])
@@ -93,7 +93,7 @@ defineEmits(['update:firstName', 'update:lastName'])
 ```
 
 ```vue
-<!-- Scoped slot -->
+<!-- 作用域插槽 -->
 <template>
   <ul>
     <li v-for="(item, index) in items" :key="item.id">
@@ -104,7 +104,7 @@ defineEmits(['update:firstName', 'update:lastName'])
   </ul>
 </template>
 
-<!-- Usage -->
+<!-- 使用 -->
 <DataList :items="users">
   <template #item="{ item, index }">
     {{ index + 1 }}. {{ item.name }}
@@ -138,7 +138,7 @@ const setTheme = inject('setTheme', () => {})
 ```
 
 ```javascript
-// Composable pattern
+// Composable 模式
 // composables/useTheme.js
 import { ref, provide, inject, readonly, computed } from 'vue'
 
@@ -162,7 +162,7 @@ export function useTheme() {
 
 ---
 
-## Dynamic Components
+## 动态组件
 
 ```vue
 <script setup>
@@ -189,7 +189,7 @@ const currentTab = shallowRef(tabs[0].component)
 ```
 
 ```javascript
-// Async component
+// 异步组件
 import { defineAsyncComponent } from 'vue'
 
 const AsyncModal = defineAsyncComponent({
@@ -201,19 +201,19 @@ const AsyncModal = defineAsyncComponent({
 
 ---
 
-## Quick Reference
+## 快速参考
 
-| Feature | Syntax |
-|---------|--------|
-| Required prop | `{ type: String, required: true }` |
-| Default prop | `{ type: Number, default: 0 }` |
-| Array/Object default | `{ type: Array, default: () => [] }` |
-| Emit event | `emit('eventName', payload)` |
+| 功能 | 语法 |
+|------|------|
+| 必需 prop | `{ type: String, required: true }` |
+| 默认 prop | `{ type: Number, default: 0 }` |
+| 数组/对象默认值 | `{ type: Array, default: () => [] }` |
+| 触发事件 | `emit('eventName', payload)` |
 | v-model | `modelValue` prop + `update:modelValue` emit |
-| Named v-model | `v-model:name` → `name` prop + `update:name` emit |
-| Default slot | `<slot />` |
-| Named slot | `<slot name="header" />` → `#header` |
-| Scoped slot | `<slot :item="item" />` → `#default="{ item }"` |
+| 命名 v-model | `v-model:name` → `name` prop + `update:name` emit |
+| 默认插槽 | `<slot />` |
+| 命名插槽 | `<slot name="header" />` → `#header` |
+| 作用域插槽 | `<slot :item="item" />` → `#default="{ item }"` |
 | Provide | `provide('key', value)` |
 | Inject | `inject('key', defaultValue)` |
-| Dynamic component | `<component :is="comp" />` |
+| 动态组件 | `<component :is="comp" />` |

@@ -1,15 +1,15 @@
-# Component Architecture Patterns
+# 组件架构模式
 
-## Overview
+## 概述
 
-Well-architected components are reusable, composable, and maintainable. This guide covers patterns for building flexible component APIs that scale across design systems.
+架构良好的组件是可复用、可组合且可维护的。本指南涵盖构建可跨设计系统扩展的灵活组件 API 的模式。
 
-## Compound Components
+## 复合组件
 
-Compound components share implicit state through React context, allowing flexible composition.
+复合组件通过 React context 共享隐式状态，允许灵活组合。
 
 ```tsx
-// Compound component pattern
+// 复合组件模式
 import * as React from "react";
 
 interface AccordionContextValue {
@@ -30,7 +30,7 @@ function useAccordionContext() {
   return context;
 }
 
-// Root component
+// 根组件
 interface AccordionProps {
   children: React.ReactNode;
   type?: "single" | "multiple";
@@ -71,7 +71,7 @@ function Accordion({
   );
 }
 
-// Item component
+// 项目组件
 interface AccordionItemProps {
   children: React.ReactNode;
   id: string;
@@ -85,7 +85,7 @@ function AccordionItem({ children, id }: AccordionItemProps) {
   );
 }
 
-// Trigger component
+// 触发器组件
 function AccordionTrigger({ children }: { children: React.ReactNode }) {
   const { toggle, openItems } = useAccordionContext();
   const { id } = useAccordionItemContext();
@@ -105,7 +105,7 @@ function AccordionTrigger({ children }: { children: React.ReactNode }) {
   );
 }
 
-// Content component
+// 内容组件
 function AccordionContent({ children }: { children: React.ReactNode }) {
   const { openItems } = useAccordionContext();
   const { id } = useAccordionItemContext();
@@ -116,27 +116,27 @@ function AccordionContent({ children }: { children: React.ReactNode }) {
   return <div className="pb-4 text-muted-foreground">{children}</div>;
 }
 
-// Export compound component
+// 导出复合组件
 export const AccordionCompound = Object.assign(Accordion, {
   Item: AccordionItem,
   Trigger: AccordionTrigger,
   Content: AccordionContent,
 });
 
-// Usage
+// 使用示例
 function Example() {
   return (
     <AccordionCompound type="single" defaultOpen={["item-1"]}>
       <AccordionCompound.Item id="item-1">
-        <AccordionCompound.Trigger>Is it accessible?</AccordionCompound.Trigger>
+        <AccordionCompound.Trigger>它无障碍吗？</AccordionCompound.Trigger>
         <AccordionCompound.Content>
-          Yes. It follows WAI-ARIA patterns.
+          是的。它遵循 WAI-ARIA 模式。
         </AccordionCompound.Content>
       </AccordionCompound.Item>
       <AccordionCompound.Item id="item-2">
-        <AccordionCompound.Trigger>Is it styled?</AccordionCompound.Trigger>
+        <AccordionCompound.Trigger>它有样式吗？</AccordionCompound.Trigger>
         <AccordionCompound.Content>
-          Yes. It uses Tailwind CSS.
+          是的。它使用 Tailwind CSS。
         </AccordionCompound.Content>
       </AccordionCompound.Item>
     </AccordionCompound>
@@ -144,12 +144,12 @@ function Example() {
 }
 ```
 
-## Polymorphic Components
+## 多态组件
 
-Polymorphic components can render as different HTML elements or other components.
+多态组件可以渲染为不同的 HTML 元素或其他组件。
 
 ```tsx
-// Polymorphic component with proper TypeScript support
+// 具有正确 TypeScript 支持的多态组件
 import * as React from "react";
 
 type AsProp<C extends React.ElementType> = {
@@ -172,7 +172,7 @@ type PolymorphicComponentPropWithRef<
   Props = {},
 > = PolymorphicComponentProp<C, Props> & { ref?: PolymorphicRef<C> };
 
-// Button component
+// Button 组件
 interface ButtonOwnProps {
   variant?: "default" | "outline" | "ghost";
   size?: "sm" | "md" | "lg";
@@ -226,35 +226,35 @@ const Button = React.forwardRef(
 
 Button.displayName = "Button";
 
-// Usage
+// 使用示例
 function Example() {
   return (
     <>
-      {/* As button (default) */}
+      {/* 作为 button（默认） */}
       <Button variant="default" onClick={() => {}}>
-        Click me
+        点击我
       </Button>
 
-      {/* As anchor link */}
+      {/* 作为 anchor 链接 */}
       <Button as="a" href="/page" variant="outline">
-        Go to page
+        前往页面
       </Button>
 
-      {/* As Next.js Link */}
+      {/* 作为 Next.js Link */}
       <Button as={Link} href="/dashboard" variant="ghost">
-        Dashboard
+        仪表盘
       </Button>
     </>
   );
 }
 ```
 
-## Slot Pattern
+## Slot 模式
 
-Slots allow users to replace default elements with custom implementations.
+Slot 允许用户将默认元素替换为自定义实现。
 
 ```tsx
-// Slot pattern for customizable components
+// 可自定义组件的 Slot 模式
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 
@@ -282,19 +282,19 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   },
 );
 
-// Usage - Button styles applied to child element
+// 使用示例 - Button 样式应用于子元素
 function Example() {
   return (
     <Button asChild variant="outline">
-      <a href="/link">I'm a link that looks like a button</a>
+      <a href="/link">我是看起来像按钮的链接</a>
     </Button>
   );
 }
 ```
 
-## Headless Components
+## Headless 组件
 
-Headless components provide behavior without styling, enabling complete visual customization.
+Headless 组件提供行为而不包含样式，实现完全的视觉自定义。
 
 ```tsx
 // Headless toggle hook
@@ -412,17 +412,17 @@ function useListbox<T>({
 }
 ```
 
-## Variant System with CVA
+## 使用 CVA 的变体系统
 
-Class Variance Authority (CVA) provides type-safe variant management.
+Class Variance Authority (CVA) 提供类型安全的变体管理。
 
 ```tsx
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
-// Define variants
+// 定义变体
 const badgeVariants = cva(
-  // Base classes
+  // 基础类
   'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors',
   {
     variants: {
@@ -441,7 +441,7 @@ const badgeVariants = cva(
       },
     },
     compoundVariants: [
-      // Outline variant with sizes
+      // 带尺寸的 Outline 变体
       {
         variant: 'outline',
         size: 'lg',
@@ -455,7 +455,7 @@ const badgeVariants = cva(
   }
 );
 
-// Component with variants
+// 带变体的组件
 interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
@@ -466,18 +466,18 @@ function Badge({ className, variant, size, ...props }: BadgeProps) {
   );
 }
 
-// Usage
-<Badge variant="success" size="lg">Active</Badge>
-<Badge variant="destructive">Error</Badge>
-<Badge variant="outline">Draft</Badge>
+// 使用示例
+<Badge variant="success" size="lg">活跃</Badge>
+<Badge variant="destructive">错误</Badge>
+<Badge variant="outline">草稿</Badge>
 ```
 
-## Responsive Variants
+## 响应式变体
 
 ```tsx
 import { cva } from "class-variance-authority";
 
-// Responsive variant configuration
+// 响应式变体配置
 const containerVariants = cva("mx-auto w-full px-4", {
   variants: {
     size: {
@@ -500,7 +500,7 @@ const containerVariants = cva("mx-auto w-full px-4", {
   },
 });
 
-// Responsive prop pattern
+// 响应式 prop 模式
 interface ResponsiveValue<T> {
   base?: T;
   sm?: T;
@@ -532,7 +532,7 @@ function getResponsiveClasses<T extends string>(
 }
 ```
 
-## Composition Patterns
+## 组合模式
 
 ### Render Props
 
@@ -563,16 +563,16 @@ function DataList<T>({
   );
 }
 
-// Usage
+// 使用示例
 <DataList
   items={users}
   keyExtractor={(user) => user.id}
   renderItem={(user) => <UserCard user={user} />}
-  renderEmpty={() => <EmptyState message="No users found" />}
+  renderEmpty={() => <EmptyState message="未找到用户" />}
 />;
 ```
 
-### Children as Function
+### Children 作为函数
 
 ```tsx
 interface DisclosureProps {
@@ -587,29 +587,29 @@ function Disclosure({ children, defaultOpen = false }: DisclosureProps) {
   return <>{children({ isOpen, toggle })}</>;
 }
 
-// Usage
+// 使用示例
 <Disclosure>
   {({ isOpen, toggle }) => (
     <>
-      <button onClick={toggle}>{isOpen ? "Close" : "Open"}</button>
-      {isOpen && <div>Content</div>}
+      <button onClick={toggle}>{isOpen ? "关闭" : "打开"}</button>
+      {isOpen && <div>内容</div>}
     </>
   )}
 </Disclosure>;
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Prefer Composition**: Build complex components from simple primitives
-2. **Use Controlled/Uncontrolled Pattern**: Support both modes for flexibility
-3. **Forward Refs**: Always forward refs to root elements
-4. **Spread Props**: Allow custom props to pass through
-5. **Provide Defaults**: Set sensible defaults for optional props
-6. **Type Everything**: Use TypeScript for prop validation
-7. **Document Variants**: Show all variant combinations in Storybook
-8. **Test Accessibility**: Verify keyboard navigation and screen reader support
+1. **优先使用组合**：从简单原语构建复杂组件
+2. **使用受控/非受控模式**：支持两种模式以获得灵活性
+3. **转发 Refs**：始终将 refs 转发到根元素
+4. **展开 Props**：允许自定义 props 通过
+5. **提供默认值**：为可选 props 设置合理的默认值
+6. **为所有内容添加类型**：使用 TypeScript 进行 prop 验证
+7. **记录变体**：在 Storybook 中展示所有变体组合
+8. **测试无障碍**：验证键盘导航和屏幕阅读器支持
 
-## Resources
+## 资源
 
 - [Radix UI Primitives](https://www.radix-ui.com/primitives)
 - [Headless UI](https://headlessui.com/)

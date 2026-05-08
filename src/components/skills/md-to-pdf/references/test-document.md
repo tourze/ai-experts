@@ -1,17 +1,17 @@
 ---
-title: md-to-pdf Feature Test Document
+title: md-to-pdf 功能测试文档
 ---
 
-# md-to-pdf Feature Test Document
+# md-to-pdf 功能测试文档
 
-This document exercises every rendering feature supported by the `md-to-pdf` skill.
-A successful conversion produces a multi-page PDF with all elements rendered correctly.
+本文档练习了 `md-to-pdf` skill 支持的每一个渲染功能。
+成功转换将生成一份包含所有元素正确渲染的多页 PDF。
 
 ---
 
-## 1. Mermaid Diagrams
+## 1. Mermaid 图表
 
-### 1.1 Flowchart
+### 1.1 流程图
 
 ```mermaid
 graph TD
@@ -27,7 +27,7 @@ graph TD
     style D fill:#ffebee,stroke:#c62828
 ```
 
-### 1.2 Sequence Diagram
+### 1.2 时序图
 
 ```mermaid
 sequenceDiagram
@@ -41,7 +41,7 @@ sequenceDiagram
     Note over U,S: Cached for 60s
 ```
 
-### 1.3 State Diagram
+### 1.3 状态图
 
 ```mermaid
 stateDiagram-v2
@@ -53,7 +53,7 @@ stateDiagram-v2
     Success --> [*]
 ```
 
-### 1.4 Pie Chart
+### 1.4 饼图
 
 ```mermaid
 pie title Traffic Distribution
@@ -63,54 +63,54 @@ pie title Traffic Distribution
     "Other" : 5
 ```
 
-## 2. LaTeX Mathematics
+## 2. LaTeX 数学公式
 
-### 2.1 Inline Math
+### 2.1 行内公式
 
-The quadratic formula gives $x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$ for any $ax^2 + bx + c = 0$.
+一元二次方程求根公式为 $x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$，其中 $ax^2 + bx + c = 0$。
 
-Einstein's famous equation: $E = mc^2$. Euler's identity: $e^{i\pi} + 1 = 0$.
+爱因斯坦著名公式：$E = mc^2$。欧拉恒等式：$e^{i\pi} + 1 = 0$。
 
-### 2.2 Display Math
+### 2.2 展示公式
 
-The Gaussian integral:
+高斯积分：
 
 $$\int_{-\infty}^{\infty} e^{-x^2} \, dx = \sqrt{\pi}$$
 
-Maxwell's equations in differential form:
+麦克斯韦方程组的微分形式：
 
 $$\nabla \cdot \mathbf{E} = \frac{\rho}{\epsilon_0}$$
 
 $$\nabla \times \mathbf{B} = \mu_0 \mathbf{J} + \mu_0 \epsilon_0 \frac{\partial \mathbf{E}}{\partial t}$$
 
-A matrix equation:
+矩阵方程：
 
 $$\begin{pmatrix} a & b \\ c & d \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} ax + by \\ cx + dy \end{pmatrix}$$
 
-The Fourier transform:
+傅里叶变换：
 
 $$\hat{f}(\xi) = \int_{-\infty}^{\infty} f(x) \, e^{-2\pi i x \xi} \, dx$$
 
-## 3. Tables
+## 3. 表格
 
-### 3.1 Standard Table
+### 3.1 标准表格
 
-| Feature | Status       | Notes              |
+| 功能 | 状态 | 备注 |
 | ------- | ------------ | ------------------ |
-| Mermaid | ✅ Supported | All diagram types  |
-| LaTeX   | ✅ Supported | Inline and display |
-| Tables  | ✅ Supported | GFM pipe tables    |
-| Code    | ✅ Supported | Syntax highlighted |
+| Mermaid | 支持 | 所有图表类型 |
+| LaTeX | 支持 | 行内和展示 |
+| 表格 | 支持 | GFM 管道表格 |
+| 代码 | 支持 | 语法高亮 |
 
-### 3.2 Numeric Table
+### 3.2 数值表格
 
-| Metric       |   Q1 |   Q2 |   Q3 |   Q4 | Annual |
+| 指标 |  Q1 |  Q2 |  Q3 |  Q4 | 年度 |
 | ------------ | ---: | ---: | ---: | ---: | -----: |
-| Revenue ($M) | 12.4 | 15.1 | 18.7 | 22.3 |   68.5 |
-| Users (K)    |  340 |  412 |  520 |  681 |    681 |
-| Latency (ms) |   45 |   38 |   32 |   28 |     36 |
+| 收入 ($M) | 12.4 | 15.1 | 18.7 | 22.3 | 68.5 |
+| 用户 (K) | 340 | 412 | 520 | 681 | 681 |
+| 延迟 (ms) | 45 | 38 | 32 | 28 | 36 |
 
-## 4. Code Blocks
+## 4. 代码块
 
 ### 4.1 Python
 
@@ -179,59 +179,56 @@ FROM ranked
 WHERE rn = 1;
 ```
 
-## 5. Text Formatting
+## 5. 文本格式
 
-**Bold text**, _italic text_, **_bold and italic_**, ~~strikethrough~~, and `inline code`.
+**加粗文本**，*斜体文本*，***粗斜体***，~~删除线~~，以及 `行内代码`。
 
-### 5.1 Blockquote
+### 5.1 块引用
 
-> "The purpose of abstraction is not to be vague, but to create a new semantic
-> level in which one can be absolutely precise."
+> "抽象的目的不是为了模糊，而是为了创建一个新的语义层次，在其中可以做到绝对精确。"
 >
 > — Edsger W. Dijkstra
 
-### 5.2 Nested Lists
+### 5.2 嵌套列表
 
-1. First level ordered
-   - Second level unordered
-   - Another item
-     1. Third level ordered
-     2. Another ordered
-2. Back to first level
-   - Mixed nesting works
+1. 第一级有序
+   - 第二级无序
+   - 另一个项目
+     1. 第三级有序
+     2. 另一个有序项
+2. 回到第一级
+   - 混合嵌套有效
 
-### 5.3 Definition List
+### 5.3 定义列表
 
-Term One
-: Definition of the first term with some explanation.
+术语一
+: 第一个术语的定义，附带一些解释。
 
-Term Two
-: Definition of the second term. Can include `code` and **formatting**.
+术语二
+: 第二个术语的定义。可以包含 `代码` 和 **格式**。
 
-### 5.4 Footnotes
+### 5.4 脚注
 
-This claim requires a citation[^1]. Another reference here[^2].
+这个声明需要引用[^1]。另一个引用在这里[^2]。
 
-[^1]: First footnote with supporting evidence.
+[^1]: 第一个脚注，附带支持证据。
 
-[^2]: Second footnote providing additional context.
+[^2]: 第二个脚注，提供额外上下文。
 
-## 6. Horizontal Rule
+## 6. 水平线
 
-Content above the rule.
+上方内容。
 
 ---
 
-Content below the rule.
+下方内容。
 
-## 7. Links and Images
+## 7. 链接和图片
 
-Visit [example.com](https://example.com) for more information.
+访问 [example.com](https://example.com) 获取更多信息。
 
-## 8. Conclusion
+## 8. 结论
 
-If all sections above render correctly in the output PDF — diagrams as vector SVG,
-math as properly typeset equations, tables with alternating row colors, and code with
-syntax highlighting — the skill is functioning as designed.
+如果上述所有部分在输出的 PDF 中都能正确渲染——图表为矢量 SVG，数学公式为正确排版的方程，表格带有交替行颜色，代码带有语法高亮——则该 skill 功能正常。
 
-Inline math verification: The area of a circle is $A = \pi r^2$ and its circumference is $C = 2\pi r$.
+行内公式验证：圆的面积为 $A = \pi r^2$，周长为 $C = 2\pi r$。

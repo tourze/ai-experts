@@ -1,31 +1,31 @@
-# Moving Features Between Objects
+# 在对象之间搬移特性
 
-Detailed reference for refactorings that redistribute responsibilities between classes. The fundamental question of object-oriented design is: where should this behavior live? These refactorings provide the mechanical steps to move things to the right place.
+在类之间重新分配职责的重构详解。面向对象设计的根本问题是：这个行为应该放在哪里？这些重构提供了将行为移动到正确位置的操作步骤。
 
 ---
 
-## Move Method
+## 搬移方法（Move Method）
 
-Move a method to the class it uses most. A method that accesses more features of another class than its own has Feature Envy and belongs somewhere else.
+将方法移动到它使用最多的类中。如果一个方法访问另一个类的特性比访问自身更多，则存在依恋情结（Feature Envy），应当归属于其他地方。
 
-### Motivation
+### 动机
 
-The most common reason for moving a method is Feature Envy -- when a method spends most of its time talking to another object. Moving the method reduces coupling: the method now lives where its data lives, so changes to that data don't ripple outward.
+搬移方法最常见的原因是依恋情结——当一个方法大部分时间都在与另一个对象交互时。搬移方法可以降低耦合：方法现在位于数据所在的地方，因此对这些数据的修改不会向外波及。
 
-### Mechanics
+### 操作步骤
 
-1. Examine all features (fields and methods) used by the method. Determine which class has the most features used by the method.
-2. Check for related methods in the source class. If other methods also use the same target class, consider moving them together.
-3. Check superclasses and subclasses for overrides or related declarations.
-4. Declare the method in the target class. Copy the body and adjust references -- `this` now refers to the target; the source object may need to be passed as a parameter.
-5. Turn the source method into a delegating method (call the target).
-6. Run tests.
-7. Consider removing the delegating method if no other callers need it.
-8. Run tests.
+1. 检查该方法使用的所有特性（字段和方法）。确定该方法使用了哪个类最多的特性。
+2. 检查源类中相关的方法。如果其他方法也使用了同一个目标类，考虑一起搬移。
+3. 检查父类和子类是否存在覆盖或相关声明。
+4. 在目标类中声明该方法。复制方法体并调整引用——`this` 现在指向目标；源对象可能需要作为参数传递。
+5. 将源方法转变为委托方法（调用目标方法）。
+6. 运行测试。
+7. 如果没有其他调用者需要该委托方法，考虑将其移除。
+8. 运行测试。
 
-### Example
+### 示例
 
-**Before:**
+**之前：**
 ```javascript
 class Account {
   overdraftCharge() {
@@ -42,9 +42,9 @@ class Account {
 }
 ```
 
-The method depends heavily on `this.type` (an `AccountType` object). Move it there.
+该方法严重依赖 `this.type`（一个 `AccountType` 对象）。将其搬移到那里。
 
-**After:**
+**之后：**
 ```javascript
 class AccountType {
   overdraftCharge(daysOverdrawn) {
@@ -67,40 +67,40 @@ class Account {
 }
 ```
 
-### Decision Criteria
+### 决策标准
 
-Move a method when:
-- It uses more fields/methods of another class than its own
-- The target class is likely to change in ways that affect this method
-- Related methods already live in the target class
+以下情况应搬移方法：
+- 它使用了另一个类的字段/方法多于自己的
+- 目标类可能以影响此方法的方式发生变化
+- 相关方法已经存在于目标类中
 
-Don't move when:
-- The method uses features from multiple classes equally (keep it in the most stable location)
-- Polymorphism on the source class is needed
+以下情况不应搬移：
+- 该方法同等地使用来自多个类的特性（将其保持在最稳定的位置）
+- 需要在源类上使用多态性
 
 ---
 
-## Move Field
+## 搬移字段（Move Field）
 
-Move a field to the class that uses it more. Similar to Move Method but for data.
+将字段移动到使用它更多的类中。类似于搬移方法，但针对数据。
 
-### Motivation
+### 动机
 
-A field used more by another class signals that the data model is out of alignment with the behavior model. Moving the field keeps data and behavior together.
+一个字段被另一个类使用得更多，表明数据模型与行为模型不一致。搬移字段使数据和行为保持在一起。
 
-### Mechanics
+### 操作步骤
 
-1. If the field is public, encapsulate it first (Encapsulate Field)
-2. Create the field in the target class with a getter and setter
-3. Determine how to reference the target from the source (usually an existing association)
-4. Update the source getter to delegate to the target
-5. Run tests
-6. Remove the field from the source class
-7. Run tests
+1. 如果字段是公有的，先封装它（封装字段）
+2. 在目标类中创建该字段，并附带 getter 和 setter
+3. 确定如何从源类引用目标类（通常是已有的关联关系）
+4. 更新源类的 getter 以委托给目标类
+5. 运行测试
+6. 从源类中移除该字段
+7. 运行测试
 
-### Example
+### 示例
 
-**Before:**
+**之前：**
 ```python
 class Customer:
     def __init__(self):
@@ -111,32 +111,32 @@ class Order:
         return self.base_total() - (self.base_total() * self.customer.discount_rate)
 ```
 
-`discount_rate` is only read by `Order` through `Customer`. If most logic involving `discount_rate` lives in the customer's pricing context, keep it in `Customer`. But if `Order` is the primary consumer and `discount_rate` is really about order pricing policy, consider moving it.
+`discount_rate` 仅被 `Order` 通过 `Customer` 读取。如果涉及 `discount_rate` 的大多数逻辑都存在于客户的定价上下文中，则保留在 `Customer` 中。但如果 `Order` 是主要消费者，且 `discount_rate` 实际上与订单定价策略相关，考虑搬移它。
 
 ---
 
-## Extract Class
+## 提炼类（Extract Class）
 
-Split a class that does two things into two classes that each do one thing.
+将一个承担两件事的类拆分为两个各做一件事的类。
 
-### Motivation
+### 动机
 
-A class with too many responsibilities grows too large and becomes hard to understand. If you can identify a coherent subset of fields and methods that relate to each other more than to the rest of the class, that subset deserves its own class.
+职责过多的类会变得过于臃肿，难以理解。如果你能识别出一组相互之间比与类的其他部分关系更密切的字段和方法子集，那么该子集就值得拥有自己的类。
 
-### Mechanics
+### 操作步骤
 
-1. Identify the subset of responsibilities to split out
-2. Create a new class named after the split-out responsibility
-3. Add a link from the old class to the new class
-4. Use Move Field for each field in the subset
-5. Use Move Method for each method in the subset
-6. Review the interfaces of both classes. Remove unneeded methods, rename as appropriate.
-7. Decide whether to expose the new class or hide it behind the original
-8. Run tests
+1. 识别要拆分出去的职责子集
+2. 创建一个以拆分出去职责命名的新类
+3. 从旧类到新类添加一个链接
+4. 对子集中的每个字段使用搬移字段
+5. 对子集中的每个方法使用搬移方法
+6. 审查两个类的接口。删除不需要的方法，视情况进行重命名。
+7. 决定公开新类还是将其隐藏在原始类后面
+8. 运行测试
 
-### Example
+### 示例
 
-**Before:**
+**之前：**
 ```javascript
 class Person {
   constructor() {
@@ -151,7 +151,7 @@ class Person {
 }
 ```
 
-**After:**
+**之后：**
 ```javascript
 class TelephoneNumber {
   constructor() {
@@ -176,65 +176,65 @@ class Person {
 }
 ```
 
-### Signals That Suggest Extraction
+### 提示需要提炼的信号
 
-| Signal | What to Extract |
+| 信号 | 需提炼的内容 |
 |--------|----------------|
-| Field name prefix groups (e.g., `shippingStreet`, `shippingCity`) | `ShippingAddress` class |
-| Methods that only use a subset of fields | The subset + its methods = new class |
-| Subsets change at different rates | The faster-changing subset deserves its own class |
-| Subsets have different collaborators | Each collaborator relationship = potential class boundary |
+| 字段名前缀分组（例如 `shippingStreet`、`shippingCity`） | `ShippingAddress` 类 |
+| 方法只使用字段子集 | 字段子集 + 其方法 = 新类 |
+| 子集以不同速率变化 | 变化较快的子集值得拥有自己的类 |
+| 子集有不同的协作者 | 每个协作者关系 = 潜在的类边界 |
 
 ---
 
-## Inline Class
+## 内联类（Inline Class）
 
-The inverse of Extract Class. Merge a class that no longer carries its weight back into another class.
+提炼类的逆操作。将一个不再承担足够职责的类合并回另一个类中。
 
-### Motivation
+### 动机
 
-A class that does too little -- perhaps after previous refactorings moved its responsibilities elsewhere -- adds complexity without value. Fold it back into the class that uses it.
+一个做得太少的类——也许经过之前的重构将其职责移到了别处——增加了复杂性却没有带来价值。将其合并回使用它的类中。
 
-### Mechanics
+### 操作步骤
 
-1. For each public method and field of the source class, create a corresponding member in the target class
-2. Change all references to the source class to use the target class instead
-3. Run tests
-4. Delete the source class
-5. Run tests
+1. 对源类的每个公有方法和字段，在目标类中创建对应的成员
+2. 将所有对源类的引用改为使用目标类
+3. 运行测试
+4. 删除源类
+5. 运行测试
 
-### When to Use
+### 使用时机
 
-- The class has only one or two trivial methods
-- The class was created by Extract Class but subsequent refactorings emptied it
-- The class adds indirection without any logic, validation, or behavior of its own
+- 该类只有一两个琐碎方法
+- 该类由提炼类创建，但后续重构使其内容变空
+- 该类只增加了间接层，本身没有任何逻辑、验证或行为
 
 ---
 
-## Hide Delegate
+## 隐藏委托关系（Hide Delegate）
 
-Encapsulate the fact that one object delegates to another. Create a method on the server that hides the delegate from the client, enforcing the Law of Demeter.
+封装一个对象委托给另一个对象的事实。在服务端创建一个方法，对客户端隐藏委托对象，贯彻迪米特法则（Law of Demeter）。
 
-### Motivation
+### 动机
 
-When a client calls `person.getDepartment().getManager()`, the client knows about the `Department` class -- it's coupled to the navigation structure. If `Department` changes its interface, the client breaks. By adding `person.getManager()` (which internally calls `department.getManager()`), the client only knows about `Person`.
+当客户端调用 `person.getDepartment().getManager()` 时，客户端知道了 `Department` 类——它耦合到了导航结构。如果 `Department` 修改了接口，客户端就会出错。通过添加 `person.getManager()`（内部调用 `department.getManager()`），客户端只知道 `Person`。
 
-### Mechanics
+### 操作步骤
 
-1. For each method the client calls on the delegate, create a simple delegating method on the server
-2. Change the client to call the server method instead
-3. If no client needs the delegate accessor anymore, remove it
-4. Run tests
+1. 对客户端在委托对象上调用的每个方法，在服务端创建一个简单的委托方法
+2. 将客户端改为调用服务端方法
+3. 如果没有客户端再需要委托对象的访问器，将其移除
+4. 运行测试
 
-### Example
+### 示例
 
-**Before:**
+**之前：**
 ```python
 # Client code:
 manager = person.department.manager
 ```
 
-**After:**
+**之后：**
 ```python
 class Person:
     @property
@@ -245,37 +245,37 @@ class Person:
 manager = person.manager
 ```
 
-### The Trade-Off
+### 权衡
 
-Hiding every delegate leads to the Middle Man smell -- a class that does nothing but forward calls. The right balance:
+隐藏每个委托会导致中间人（Middle Man）坏味道——一个除了转发调用外什么都不做的类。正确的平衡：
 
-| Situation | Action |
+| 场景 | 操作 |
 |-----------|--------|
-| Delegate's interface is unstable | Hide it (protect callers from change) |
-| Client uses many delegate methods | Consider Hide Delegate for each |
-| Server is becoming pure forwarding | Remove Middle Man |
-| Chain is deep (a.b.c.d) | Definitely hide |
+| 委托的接口不稳定 | 隐藏（保护调用者免受变化影响） |
+| 客户端使用多个委托方法 | 考虑对每个方法进行隐藏委托 |
+| 服务端变成了纯粹的转发 | 移除中间人 |
+| 调用链很深（a.b.c.d） | 必须隐藏 |
 
 ---
 
-## Remove Middle Man
+## 移除中间人（Remove Middle Man）
 
-The inverse of Hide Delegate. When a class consists primarily of methods that delegate to another class, let the client call the delegate directly.
+隐藏委托关系的逆操作。当一个类主要由委托给另一个类的方法组成时，让客户端直接调用委托对象。
 
-### Motivation
+### 动机
 
-As a system evolves, more and more delegating methods accumulate until the "server" class adds no value -- it's just a pass-through. At that point, remove the indirection.
+随着系统演化，越来越多的委托方法不断累积，直到"服务端"类不再增加价值——它只是一个透传。此时，移除间接层。
 
-### Mechanics
+### 操作步骤
 
-1. Create a getter for the delegate on the server (if one doesn't exist)
-2. For each delegating method that adds no value, redirect the client to call the delegate directly
-3. Remove the delegating method from the server
-4. Run tests
+1. 在服务端为委托对象创建一个 getter（如果不存在）
+2. 对每个不增加价值的委托方法，将客户端重定向为直接调用委托对象
+3. 从服务端移除该委托方法
+4. 运行测试
 
-### Example
+### 示例
 
-**Before:**
+**之前：**
 ```javascript
 class Person {
   get manager() { return this.department.manager; }
@@ -286,7 +286,7 @@ class Person {
 }
 ```
 
-**After:**
+**之后：**
 ```javascript
 class Person {
   get department() { return this._department; }
@@ -298,15 +298,15 @@ const manager = person.department.manager;
 
 ---
 
-## Introduce Foreign Method
+## 引入外加函数（Introduce Foreign Method）
 
-When a server class needs an additional method but you can't modify it (third-party library, frozen module), create the method in the client class and pass the server object as the first argument.
+当服务端类需要一个额外的方法但你无法修改它（第三方库、冻结的模块）时，在客户端类中创建该方法，并将服务端对象作为第一个参数传入。
 
-### Motivation
+### 动机
 
-A utility method that "should" be on the server class but can't be added there. The foreign method is a workaround -- mark it as such, so if the server class is ever opened for modification, the method can be moved.
+一个"本应"存在于服务端类中但无法添加的实用方法。外加函数是一种变通方案——标记它，以便将来服务端类开放修改时可以将该方法迁移过去。
 
-### Example
+### 示例
 
 ```python
 # Server class (third-party, can't modify):
@@ -320,18 +320,18 @@ def next_day(date):
 
 ---
 
-## Introduce Local Extension
+## 引入本地扩展（Introduce Local Extension）
 
-When you need several foreign methods on a server class you can't modify, create a new class -- either a subclass or a wrapper -- that adds the missing methods.
+当需要在无法修改的服务端类上添加多个外加函数时，创建一个新类——可以是子类或包装器——来添加缺失的方法。
 
-### Subclass vs. Wrapper
+### 子类 vs. 包装器
 
-| Approach | When to Use |
+| 方式 | 使用时机 |
 |----------|-------------|
-| Subclass | When you can subclass the server; simplest approach |
-| Wrapper (Decorator) | When you can't subclass (final class); forward all original methods |
+| 子类（Subclass） | 当你可以继承服务端类时；最简单的方式 |
+| 包装器（Wrapper/Decorator） | 当你无法继承时（final 类）；转发所有原始方法 |
 
-### Example (Wrapper)
+### 示例（包装器）
 
 ```javascript
 class EnhancedDate {
@@ -359,20 +359,20 @@ class EnhancedDate {
 
 ---
 
-## Decision Guide: Where Does This Behavior Belong?
+## 决策指南：这个行为属于哪里？
 
-Use these questions to decide whether and where to move code:
+使用这些问题来决定是否以及在哪里搬移代码：
 
-| Question | If Yes | Action |
+| 问题 | 如果是 | 操作 |
 |----------|--------|--------|
-| Does this method use more of another class's features? | Feature Envy | Move Method to that class |
-| Is this field used more by another class? | Misplaced data | Move Field to that class |
-| Does this class have two groups of fields that don't interact? | Multiple responsibilities | Extract Class |
-| Is this class just a thin wrapper with no logic? | Unnecessary indirection | Inline Class |
-| Is the client navigating through an object chain? | Tight coupling | Hide Delegate |
-| Is this class just forwarding calls? | Middle Man smell | Remove Middle Man |
-| Need to add a method to a class you can't modify? | Missing feature | Introduce Foreign Method or Local Extension |
+| 此方法是否使用了另一个类更多的特性？ | 依恋情结 | 搬移方法到该类 |
+| 此字段是否被另一个类用得更多？ | 数据放置不当 | 搬移字段到该类 |
+| 此类是否有两组互不交互的字段？ | 多重职责 | 提炼类 |
+| 此类是否只是一个没有逻辑的薄包装？ | 不必要的间接层 | 内联类 |
+| 客户端是否通过对象链导航？ | 紧耦合 | 隐藏委托关系 |
+| 此类是否只是转发调用？ | 中间人坏味道 | 移除中间人 |
+| 需要给无法修改的类添加方法？ | 缺失功能 | 引入外加函数或本地扩展 |
 
-### The Responsibility Placement Heuristic
+### 职责放置启发法
 
-When unsure where to put a method, ask: **"If the data this method uses changes, which class should need to be updated?"** The method belongs in that class. This keeps data and behavior together, minimizing the ripple effect of change.
+当不确定将方法放在哪里时，问：**"如果此方法使用的数据发生变化，哪个类需要被更新？"** 该方法应属于那个类。这使数据和行为保持在一起，最大限度地减少变化的涟漪效应。

@@ -1,21 +1,21 @@
-# Deployment & Production
+# 部署与生产
 
-## Vercel Deployment (Recommended)
+## Vercel 部署（推荐）
 
-### Quick Deploy
+### 快速部署
 
 ```bash
-# Install Vercel CLI
+# 安装 Vercel CLI
 npm i -g vercel
 
-# Deploy
+# 部署
 vercel
 
-# Production deployment
+# 生产环境部署
 vercel --prod
 ```
 
-### vercel.json Configuration
+### vercel.json 配置
 
 ```json
 {
@@ -53,28 +53,28 @@ vercel --prod
 }
 ```
 
-### Environment Variables
+### 环境变量
 
 ```bash
-# .env.local (not committed)
+# .env.local（不提交）
 DATABASE_URL="postgresql://user:pass@localhost:5432/db"
 NEXTAUTH_SECRET="your-secret"
 
-# .env.production (committed, public vars only)
+# .env.production（提交，仅公共变量）
 NEXT_PUBLIC_API_URL="https://api.example.com"
 ```
 
 ```tsx
-// Access in Server Components
+// 在 Server Components 中访问
 const dbUrl = process.env.DATABASE_URL
 
-// Access in Client Components (must be prefixed with NEXT_PUBLIC_)
+// 在 Client Components 中访问（必须以 NEXT_PUBLIC_ 开头）
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
 ```
 
-## Self-Hosting
+## 自托管
 
-### Standalone Output
+### 独立输出
 
 ```js
 // next.config.js
@@ -87,40 +87,40 @@ module.exports = nextConfig
 ```
 
 ```bash
-# Build
+# 构建
 npm run build
 
-# The standalone folder contains everything needed
-# Copy these to your server:
+# standalone 文件夹包含所有必需内容
+# 复制以下内容到服务器：
 # - .next/standalone/
 # - .next/static/
 # - public/
 
-# Run on server
+# 在服务器上运行
 node .next/standalone/server.js
 ```
 
-### Node.js Server
+### Node.js 服务器
 
 ```bash
-# Build
+# 构建
 npm run build
 
-# Start production server
+# 启动生产服务器
 npm start
 
-# With PM2 for process management
+# 使用 PM2 进行进程管理
 pm2 start npm --name "nextjs" -- start
 pm2 startup
 pm2 save
 ```
 
-## Docker Deployment
+## Docker 部署
 
-### Dockerfile (Multi-stage)
+### Dockerfile（多阶段构建）
 
 ```dockerfile
-# Stage 1: Dependencies
+# 阶段 1：依赖
 FROM node:20-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
@@ -128,7 +128,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
-# Stage 2: Builder
+# 阶段 2：构建
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
@@ -138,7 +138,7 @@ ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN npm run build
 
-# Stage 3: Runner
+# 阶段 3：运行
 FROM node:20-alpine AS runner
 WORKDIR /app
 
@@ -197,27 +197,27 @@ volumes:
 ```
 
 ```bash
-# Build and run
+# 构建并运行
 docker-compose up -d
 
-# View logs
+# 查看日志
 docker-compose logs -f nextjs
 
-# Rebuild
+# 重新构建
 docker-compose up -d --build
 ```
 
-## Production Optimization
+## 生产优化
 
 ### next.config.js
 
 ```js
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Standalone for self-hosting
+  // 自托管使用独立输出
   output: 'standalone',
 
-  // Image optimization
+  // 图片优化
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
@@ -231,10 +231,10 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
 
-  // Compression
+  // 压缩
   compress: true,
 
-  // Security headers
+  // 安全头部
   async headers() {
     return [
       {
@@ -269,12 +269,12 @@ const nextConfig = {
     ]
   },
 
-  // Experimental features
+  // 实验性功能
   experimental: {
     optimizePackageImports: ['@mui/material', 'lodash'],
   },
 
-  // Bundle analyzer
+  // 打包分析
   webpack: (config, { isServer }) => {
     if (process.env.ANALYZE === 'true') {
       const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
@@ -294,20 +294,20 @@ const nextConfig = {
 module.exports = nextConfig
 ```
 
-### Bundle Analysis
+### 打包分析
 
 ```bash
-# Install analyzer
+# 安装分析器
 npm install -D @next/bundle-analyzer
 
-# Analyze
+# 分析
 ANALYZE=true npm run build
 
-# Or use built-in
+# 或使用内置功能
 npm run build -- --experimental-build-mode=compile
 ```
 
-### Performance Monitoring
+### 性能监控
 
 ```tsx
 // app/layout.tsx
@@ -331,9 +331,9 @@ export default function RootLayout({
 }
 ```
 
-## CDN & Edge
+## CDN 与 Edge
 
-### Static Asset CDN
+### 静态资源 CDN
 
 ```js
 // next.config.js
@@ -367,13 +367,13 @@ export default async function Page() {
 }
 ```
 
-## Caching Strategy
+## 缓存策略
 
-### ISR (Incremental Static Regeneration)
+### ISR（增量静态再生成）
 
 ```tsx
 // app/blog/[slug]/page.tsx
-export const revalidate = 3600 // Revalidate every hour
+export const revalidate = 3600 // 每小时重新验证
 
 export default async function BlogPost({
   params,
@@ -386,7 +386,7 @@ export default async function BlogPost({
 }
 ```
 
-### On-Demand Revalidation
+### 按需重新验证
 
 ```tsx
 // app/api/revalidate/route.ts
@@ -408,7 +408,7 @@ export async function POST(request: NextRequest) {
 }
 ```
 
-## Database Connection Pooling
+## 数据库连接池
 
 ```ts
 // lib/db.ts
@@ -427,7 +427,7 @@ export const db =
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db
 ```
 
-## Health Check Endpoint
+## 健康检查端点
 
 ```tsx
 // app/api/health/route.ts
@@ -435,7 +435,7 @@ import { db } from '@/lib/db'
 
 export async function GET() {
   try {
-    // Check database connection
+    // 检查数据库连接
     await db.$queryRaw`SELECT 1`
 
     return Response.json({
@@ -455,7 +455,7 @@ export async function GET() {
 }
 ```
 
-## CI/CD with GitHub Actions
+## CI/CD 与 GitHub Actions
 
 ```yaml
 # .github/workflows/deploy.yml
@@ -499,7 +499,7 @@ jobs:
           vercel-args: '--prod'
 ```
 
-## Monitoring & Logging
+## 监控与日志
 
 ```tsx
 // app/error.tsx
@@ -521,30 +521,30 @@ export default function Error({
 }
 ```
 
-## Quick Reference
+## 快速参考
 
-| Platform | Best For | Effort |
-|----------|----------|--------|
-| **Vercel** | Zero-config, optimal performance | Low |
-| **Netlify** | Alternative to Vercel | Low |
-| **Railway** | Simple hosting with databases | Medium |
-| **AWS/GCP** | Enterprise, custom needs | High |
-| **Docker** | Self-hosting, full control | High |
+| 平台 | 最适合 | 投入 |
+|------|--------|------|
+| **Vercel** | 零配置，最佳性能 | 低 |
+| **Netlify** | Vercel 替代方案 | 低 |
+| **Railway** | 带数据库的简单托管 | 中 |
+| **AWS/GCP** | 企业级，自定义需求 | 高 |
+| **Docker** | 自托管，完全控制 | 高 |
 
-## Production Checklist
+## 生产清单
 
-- [ ] Enable TypeScript strict mode
-- [ ] Configure CSP headers
-- [ ] Setup error monitoring (Sentry)
-- [ ] Configure analytics (Vercel/GA)
-- [ ] Optimize images (next/image)
-- [ ] Enable compression
-- [ ] Setup CDN for static assets
-- [ ] Configure database connection pooling
-- [ ] Add health check endpoint
-- [ ] Setup CI/CD pipeline
-- [ ] Configure environment variables
-- [ ] Enable ISR/SSG where possible
-- [ ] Test Core Web Vitals
-- [ ] Setup logging (Datadog/LogRocket)
-- [ ] Configure backup strategy
+- [ ] 启用 TypeScript 严格模式
+- [ ] 配置 CSP 头部
+- [ ] 设置错误监控（Sentry）
+- [ ] 配置分析工具（Vercel/GA）
+- [ ] 优化图片（next/image）
+- [ ] 启用压缩
+- [ ] 为静态资源设置 CDN
+- [ ] 配置数据库连接池
+- [ ] 添加健康检查端点
+- [ ] 设置 CI/CD 流水线
+- [ ] 配置环境变量
+- [ ] 尽可能启用 ISR/SSG
+- [ ] 测试 Core Web Vitals
+- [ ] 设置日志（Datadog/LogRocket）
+- [ ] 配置备份策略

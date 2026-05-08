@@ -1,187 +1,187 @@
-# UX Heuristic Audit Template
+# UX 启发式审计模板
 
-Structured template for conducting heuristic evaluations. Use this to systematically audit any interface.
-
----
-
-## Audit Information
-
-**Product/Feature:** ________________
-**Auditor:** ________________
-**Date:** ________________
-**Page/Screen:** ________________
-**User Context:** ________________ (who is using this, what's their goal?)
+用于开展启发式评估的结构化模板。使用此模板系统化审计任意界面。
 
 ---
 
-## Severity Scale Reference
+## 审计信息
 
-| Rating | Severity | Priority | Description |
+**产品/功能：** ________________
+**审计人：** ________________
+**日期：** ________________
+**页面/屏幕：** ________________
+**用户场景：** ________________（谁在使用，目标是什么？）
+
+---
+
+## 严重程度参考
+
+| 评级 | 严重程度 | 优先级 | 描述 |
 |--------|----------|----------|-------------|
-| 0 | Not a problem | — | Cosmetic or disagreement |
-| 1 | Cosmetic | Low | Minor annoyance |
-| 2 | Minor | Medium | Delays or frustrates |
-| 3 | Major | High | Significant task failure |
-| 4 | Catastrophic | Critical | Prevents task completion |
+| 0 | 非问题 | — | 外观或分歧 |
+| 1 | 外观性 | 低 | 轻微困扰 |
+| 2 | 轻微 | 中 | 造成延迟或挫败感 |
+| 3 | 重大 | 高 | 显著任务失败 |
+| 4 | 灾难性 | 关键 | 阻止任务完成 |
 
 ---
 
-## Heuristic Checklist
+## 启发式检查清单
 
-### 1. Visibility of System Status
+### 1. 系统状态可见性
 
-| Check | Pass? | Issue | Severity |
+| 检查项 | 通过？ | 问题 | 严重程度 |
 |-------|-------|-------|----------|
-| Loading states are shown | [ ] | | |
-| Actions provide immediate feedback | [ ] | | |
-| Errors are communicated clearly | [ ] | | |
-| Success is confirmed | [ ] | | |
-| Progress is visible for long tasks | [ ] | | |
+| 显示加载状态 | [ ] | | |
+| 操作提供即时反馈 | [ ] | | |
+| 错误信息清晰传达 | [ ] | | |
+| 成功操作有确认提示 | [ ] | | |
+| 长时间任务显示进度 | [ ] | | |
 
-**Notes:**
+**备注：**
 
 ---
 
-### 2. Match Between System and Real World
+### 2. 系统与真实世界匹配
 
-| Check | Pass? | Issue | Severity |
+| 检查项 | 通过？ | 问题 | 严重程度 |
 |-------|-------|-------|----------|
-| Uses user's language (not jargon) | [ ] | | |
-| Icons are recognizable | [ ] | | |
-| Order follows real-world logic | [ ] | | |
-| Metaphors are appropriate | [ ] | | |
-| Terms are consistent with industry | [ ] | | |
+| 使用用户语言（而非专业术语） | [ ] | | |
+| 图标易于辨识 | [ ] | | |
+| 顺序遵循现实世界逻辑 | [ ] | | |
+| 比喻恰当合理 | [ ] | | |
+| 术语与行业一致 | [ ] | | |
 
-**Notes:**
+**备注：**
 
 ---
 
-### 3. User Control and Freedom
+### 3. 用户控制与自由
 
-| Check | Pass? | Issue | Severity |
+| 检查项 | 通过？ | 问题 | 严重程度 |
 |-------|-------|-------|----------|
-| Undo is available | [ ] | | |
-| Cancel/Exit is always accessible | [ ] | | |
-| Back button works as expected | [ ] | | |
-| Users can skip optional steps | [ ] | | |
-| Modals have clear close options | [ ] | | |
+| 撤销功能可用 | [ ] | | |
+| 取消/退出始终可访问 | [ ] | | |
+| 返回按钮按预期工作 | [ ] | | |
+| 用户可跳过可选步骤 | [ ] | | |
+| 弹窗有明确关闭选项 | [ ] | | |
 
-**Notes:**
+**备注：**
 
 ---
 
-### 4. Consistency and Standards
+### 4. 一致性与标准
 
-| Check | Pass? | Issue | Severity |
+| 检查项 | 通过？ | 问题 | 严重程度 |
 |-------|-------|-------|----------|
-| Same terms for same concepts | [ ] | | |
-| Buttons/links styled consistently | [ ] | | |
-| Follows platform conventions | [ ] | | |
-| Layout is predictable | [ ] | | |
-| Same actions work the same way | [ ] | | |
+| 相同概念使用相同术语 | [ ] | | |
+| 按钮/链接样式一致 | [ ] | | |
+| 遵循平台惯例 | [ ] | | |
+| 布局可预测 | [ ] | | |
+| 相同操作以相同方式工作 | [ ] | | |
 
-**Notes:**
+**备注：**
 
 ---
 
-### 5. Error Prevention
+### 5. 错误预防
 
-| Check | Pass? | Issue | Severity |
+| 检查项 | 通过？ | 问题 | 严重程度 |
 |-------|-------|-------|----------|
-| Destructive actions require confirmation | [ ] | | |
-| Inline validation prevents bad submissions | [ ] | | |
-| Constrained inputs prevent errors | [ ] | | |
-| Defaults are sensible | [ ] | | |
-| "Unsaved changes" warning exists | [ ] | | |
+| 破坏性操作需要确认 | [ ] | | |
+| 内联验证防止错误提交 | [ ] | | |
+| 受限输入防止错误 | [ ] | | |
+| 默认值合理 | [ ] | | |
+| "未保存更改"提示存在 | [ ] | | |
 
-**Notes:**
+**备注：**
 
 ---
 
-### 6. Recognition Rather Than Recall
+### 6. 识别而非回忆
 
-| Check | Pass? | Issue | Severity |
+| 检查项 | 通过？ | 问题 | 严重程度 |
 |-------|-------|-------|----------|
-| Options are visible (not hidden) | [ ] | | |
-| Recent items/history is accessible | [ ] | | |
-| Icons have labels | [ ] | | |
-| Instructions are in context | [ ] | | |
-| Previous input is remembered | [ ] | | |
+| 选项可见（而非隐藏） | [ ] | | |
+| 最近项/历史记录可访问 | [ ] | | |
+| 图标配有标签 | [ ] | | |
+| 说明出现在上下文中 | [ ] | | |
+| 记住之前的输入 | [ ] | | |
 
-**Notes:**
+**备注：**
 
 ---
 
-### 7. Flexibility and Efficiency
+### 7. 灵活性与效率
 
-| Check | Pass? | Issue | Severity |
+| 检查项 | 通过？ | 问题 | 严重程度 |
 |-------|-------|-------|----------|
-| Keyboard shortcuts for power users | [ ] | | |
-| Bulk actions available | [ ] | | |
-| Customization options exist | [ ] | | |
-| Frequent tasks are quick | [ ] | | |
-| Advanced features don't clutter basics | [ ] | | |
+| 面向高级用户的键盘快捷键 | [ ] | | |
+| 批量操作可用 | [ ] | | |
+| 自定义选项存在 | [ ] | | |
+| 频繁操作响应快速 | [ ] | | |
+| 高级功能不干扰基础功能 | [ ] | | |
 
-**Notes:**
+**备注：**
 
 ---
 
-### 8. Aesthetic and Minimalist Design
+### 8. 美学与极简设计
 
-| Check | Pass? | Issue | Severity |
+| 检查项 | 通过？ | 问题 | 严重程度 |
 |-------|-------|-------|----------|
-| Only essential info is shown | [ ] | | |
-| Visual hierarchy is clear | [ ] | | |
-| Whitespace is used effectively | [ ] | | |
-| No unnecessary decoration | [ ] | | |
-| Primary action is obvious | [ ] | | |
+| 仅展示必要信息 | [ ] | | |
+| 视觉层次清晰 | [ ] | | |
+| 空白区域使用有效 | [ ] | | |
+| 无多余装饰 | [ ] | | |
+| 主要操作一目了然 | [ ] | | |
 
-**Notes:**
+**备注：**
 
 ---
 
-### 9. Error Recovery
+### 9. 错误恢复
 
-| Check | Pass? | Issue | Severity |
+| 检查项 | 通过？ | 问题 | 严重程度 |
 |-------|-------|-------|----------|
-| Error messages are in plain language | [ ] | | |
-| Errors explain what went wrong | [ ] | | |
-| Errors suggest how to fix | [ ] | | |
-| User input is preserved on error | [ ] | | |
-| Error location is highlighted | [ ] | | |
+| 错误信息使用通俗语言 | [ ] | | |
+| 错误说明哪里出了问题 | [ ] | | |
+| 错误提示如何修复 | [ ] | | |
+| 出错时保留用户输入 | [ ] | | |
+| 错误位置被高亮标记 | [ ] | | |
 
-**Notes:**
+**备注：**
 
 ---
 
-### 10. Help and Documentation
+### 10. 帮助与文档
 
-| Check | Pass? | Issue | Severity |
+| 检查项 | 通过？ | 问题 | 严重程度 |
 |-------|-------|-------|----------|
-| Help is searchable | [ ] | | |
-| Contextual help is available | [ ] | | |
-| Documentation is task-focused | [ ] | | |
-| Tooltips explain non-obvious features | [ ] | | |
-| Support is accessible | [ ] | | |
+| 帮助内容可搜索 | [ ] | | |
+| 上下文帮助可用 | [ ] | | |
+| 文档以任务为中心 | [ ] | | |
+| 工具提示解释不明显的功能 | [ ] | | |
+| 支持渠道可访问 | [ ] | | |
 
-**Notes:**
+**备注：**
 
 ---
 
-## Summary
+## 总结
 
-### Issue Count by Severity
+### 按严重程度统计问题数量
 
-| Severity | Count |
+| 严重程度 | 数量 |
 |----------|-------|
-| 4 (Catastrophic) | |
-| 3 (Major) | |
-| 2 (Minor) | |
-| 1 (Cosmetic) | |
+| 4（灾难性） | |
+| 3（重大） | |
+| 2（轻微） | |
+| 1（外观性） | |
 
-### Top Issues (Severity 3-4)
+### 首要问题（严重程度 3-4）
 
-| # | Issue | Heuristic | Severity | Recommendation |
+| # | 问题 | 启发式原则 | 严重程度 | 建议 |
 |---|-------|-----------|----------|----------------|
 | 1 | | | | |
 | 2 | | | | |
@@ -189,9 +189,9 @@ Structured template for conducting heuristic evaluations. Use this to systematic
 | 4 | | | | |
 | 5 | | | | |
 
-### Quick Wins (Low effort, high impact)
+### 速赢项（低投入，高影响）
 
-| Issue | Fix | Effort |
+| 问题 | 修复方案 | 投入 |
 |-------|-----|--------|
 | | | |
 | | | |
@@ -199,21 +199,21 @@ Structured template for conducting heuristic evaluations. Use this to systematic
 
 ---
 
-## Task-Based Audit (Optional)
+## 基于任务审计（可选）
 
-Test specific user tasks and note where issues occur.
+测试特定用户任务并记录出现问题的位置。
 
-### Task 1: ________________
+### 任务 1：________________
 
-| Step | Expected | Actual | Issue | Severity |
+| 步骤 | 期望结果 | 实际结果 | 问题 | 严重程度 |
 |------|----------|--------|-------|----------|
 | 1 | | | | |
 | 2 | | | | |
 | 3 | | | | |
 
-### Task 2: ________________
+### 任务 2：________________
 
-| Step | Expected | Actual | Issue | Severity |
+| 步骤 | 期望结果 | 实际结果 | 问题 | 严重程度 |
 |------|----------|--------|-------|----------|
 | 1 | | | | |
 | 2 | | | | |
@@ -221,37 +221,37 @@ Test specific user tasks and note where issues occur.
 
 ---
 
-## Navigation/Trunk Test
+## 导航/主干测试
 
-Can users answer these questions immediately?
+用户能否立即回答这些问题？
 
-| Question | Can Answer? | Notes |
+| 问题 | 能否回答？ | 备注 |
 |----------|-------------|-------|
-| What site is this? | [ ] Yes [ ] No | |
-| What page am I on? | [ ] Yes [ ] No | |
-| What are the major sections? | [ ] Yes [ ] No | |
-| What are my options here? | [ ] Yes [ ] No | |
-| Where am I in the site structure? | [ ] Yes [ ] No | |
-| How can I search? | [ ] Yes [ ] No | |
+| 这是什么网站？ | [ ] 能 [ ] 不能 | |
+| 我在哪个页面？ | [ ] 能 [ ] 不能 | |
+| 主要栏目有哪些？ | [ ] 能 [ ] 不能 | |
+| 我在这里有哪些选项？ | [ ] 能 [ ] 不能 | |
+| 我在网站结构中的位置？ | [ ] 能 [ ] 不能 | |
+| 如何进行搜索？ | [ ] 能 [ ] 不能 | |
 
 ---
 
-## Recommendations Summary
+## 建议总结
 
-### Immediate (Severity 4)
+### 立即处理（严重程度 4）
 1.
 2.
 
-### Short-term (Severity 3)
-1.
-2.
-3.
-
-### Medium-term (Severity 2)
+### 短期处理（严重程度 3）
 1.
 2.
 3.
 
-### Low Priority (Severity 1)
+### 中期处理（严重程度 2）
+1.
+2.
+3.
+
+### 低优先级（严重程度 1）
 1.
 2.

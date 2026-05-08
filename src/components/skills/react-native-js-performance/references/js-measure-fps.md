@@ -1,178 +1,178 @@
 ---
-title: Measure JS FPS
+title: 测量 JS FPS
 impact: HIGH
 tags: fps, performance, monitoring, flashlight
 ---
 
-# Skill: Measure JS FPS
+# 技能：测量 JS FPS
 
-Monitor and measure JavaScript frame rate to quantify app smoothness and identify performance regressions.
+监控和测量 JavaScript 帧率以量化应用流畅度并识别性能回归。
 
-## Quick Command
+## 快速命令
 
 ```bash
-# Method 1: Built-in Perf Monitor
-# Shake device → Dev Menu → "Perf Monitor"
+# 方法 1：内置性能监控
+# 摇动设备 → 开发者菜单 → "性能监控"
 
-# Method 2: Flashlight (Android, detailed reports)
-# Install Flashlight from an official, verified release channel first.
+# 方法 2：Flashlight（Android，详细报告）
+# 首先从官方、经过验证的发布渠道安装 Flashlight。
 flashlight measure
 ```
 
-## When to Use
+## 适用场景
 
-- Animations feel choppy or janky
-- Scrolling is not smooth
-- Need baseline FPS metrics before/after optimization
-- Want to compare performance across builds
+- 动画感觉卡顿或掉帧
+- 滚动不流畅
+- 需要优化前后的 FPS 基线指标
+- 希望跨构建比较性能
 
-## Prerequisites
+## 前置条件
 
-- React Native app running on device/simulator
-- For Flashlight: Android device (iOS not supported)
+- 在设备/模拟器上运行 React Native 应用
+- Flashlight 需要 Android 设备（不支持 iOS）
 
-> **Note**: This skill involves interpreting visual output (FPS graphs, performance overlays). AI agents cannot yet process screenshots autonomously. Use this as a guide while reviewing metrics manually, or await MCP-based visual feedback integration (see roadmap).
+> **注意**：本技能涉及解读视觉输出（FPS 图、性能覆盖层）。AI 代理尚无法自主处理截图。请将此作为手动审查指标时的指南，或等待基于 MCP 的视觉反馈集成（见路线图）。
 
-## Step-by-Step Instructions
+## 分步说明
 
-### Method 1: React Perf Monitor (Quick Check)
+### 方法 1：React 性能监控（快速检查）
 
-1. Open Dev Menu:
-   - iOS Simulator: `Ctrl + Cmd + Z` or Device > Shake
-   - Android Emulator: `Cmd + M` (Mac) / `Ctrl + M` (Windows)
+1. 打开开发者菜单：
+   - iOS 模拟器：`Ctrl + Cmd + Z` 或 设备 > 摇动
+   - Android 模拟器：`Cmd + M`（Mac）/ `Ctrl + M`（Windows）
 
-2. Select **"Perf Monitor"**
+2. 选择 **"性能监控"**
 
-3. Observe the overlay showing:
-   - **UI (Main) thread FPS** - Native rendering
-   - **JS thread FPS** - JavaScript execution
-   - **RAM usage**
+3. 观察覆盖层显示：
+   - **UI（主）线程 FPS** —— 原生渲染
+   - **JS 线程 FPS** —— JavaScript 执行
+   - **RAM 使用量**
 
-4. Hide with "Hide Perf Monitor" from Dev Menu
+4. 从开发者菜单选择"隐藏性能监控"来隐藏
 
-**Interpretation:**
-- **60 FPS** = Smooth (16.6ms per frame)
-- **< 60 FPS** = Dropping frames
-- **120 FPS** target for high refresh rate devices (8.3ms per frame)
+**解读：**
+- **60 FPS** = 流畅（每帧 16.6ms）
+- **< 60 FPS** = 掉帧
+- **120 FPS** 目标用于高刷新率设备（每帧 8.3ms）
 
-### Method 2: Flashlight (Automated Benchmarking)
+### 方法 2：Flashlight（自动化基准测试）
 
-> Android only. Provides detailed reports and JSON export.
+> 仅限 Android。提供详细报告和 JSON 导出。
 
-![Flashlight FlatList vs FlashList Comparison](images/flashlight-flatlist-vs-flashlist.png)
+![Flashlight FlatList vs FlashList 对比](images/flashlight-flatlist-vs-flashlist.png)
 
-Flashlight shows comparative performance data:
-- **Score** (0-100): Overall performance rating (higher is better)
-- **Average FPS**: Target 60 FPS for smooth scrolling
-- **FPS Graph**: Real-time frame rate over test duration
-- **CPU/RAM metrics**: Resource consumption
+Flashlight 显示对比性能数据：
+- **评分**（0-100）：总体性能评级（越高越好）
+- **平均 FPS**：流畅滚动的目标为 60 FPS
+- **FPS 图**：测试期间的实时帧率
+- **CPU/RAM 指标**：资源消耗
 
-The image shows FlatList (score: 3) vs FlashList (score: 67) - a dramatic difference visible in both the score and FPS graph.
+图中显示 FlatList（评分：3）vs FlashList（评分：67）—— 评分和 FPS 图都呈现出显著差异。
 
-**Installation:**
+**安装：**
 
-Install Flashlight from the vendor's official release channel before using it. Prefer a package manager or a version-pinned binary with checksum/signature verification. Do not pipe a remote install script directly into a shell.
+在安装前，从供应商的官方发布渠道获取 Flashlight。优先使用包管理器或带校验和/签名验证的版本固定二进制文件。不要将远程安装脚本直接通过管道传给 shell。
 
-**Usage:**
+**使用：**
 
 ```bash
-# Start measuring (app must be running on Android)
+# 开始测量（应用必须在 Android 上运行）
 flashlight measure
 ```
 
-**Features:**
-- Real-time FPS graph
-- Average FPS calculation
-- CPU and RAM metrics
-- Overall performance score
-- JSON export for CI comparison
+**功能：**
+- 实时 FPS 图
+- 平均 FPS 计算
+- CPU 和 RAM 指标
+- 总体性能评分
+- JSON 导出用于 CI 对比
 
-### Important: Disable Dev Mode
+### 重要：禁用开发者模式
 
-**Always disable development mode for accurate measurements:**
+**始终禁用开发模式以获得准确测量：**
 
-**Android:**
-1. Open Dev Menu
-2. Settings > JS Dev Mode → **OFF**
+**Android：**
+1. 打开开发者菜单
+2. 设置 > JS Dev Mode → **关闭**
 
-**iOS (React Native CLI):**
+**iOS（React Native CLI）：**
 ```bash
-# Run Metro in production mode
+# 以生产模式运行 Metro
 npx react-native start --reset-cache
-# Then build release variant
+# 然后构建 release 变体
 ```
 
-**Expo:**
+**Expo：**
 ```bash
-# Start Metro without dev mode
+# 无开发模式启动 Metro
 npx expo start --no-dev --minify
-# For accurate measurements, use EAS Build for release testing
+# 为获得准确测量，使用 EAS Build 进行 release 测试
 ```
 
-## Code Examples
+## 代码示例
 
-### Identify FPS Drop Source
+### 识别 FPS 下降来源
 
-If **UI FPS drops but JS FPS is fine:**
-- Native rendering issue
-- Too many views/complex layouts
-- Heavy native animations
+如果 **UI FPS 下降但 JS FPS 正常：**
+- 原生渲染问题
+- 过多视图/复杂布局
+- 繁重的原生动画
 
-If **JS FPS drops but UI FPS is fine:**
-- JavaScript computation blocking
-- Expensive React re-renders
-- Look for `longRunningFunction` patterns
+如果 **JS FPS 下降但 UI FPS 正常：**
+- JavaScript 计算阻塞
+- 昂贵的 React 重新渲染
+- 查找 `longRunningFunction` 模式
 
-If **Both drop:**
-- Mixed issue, start with JS profiling
+如果 **两者都下降：**
+- 混合问题，从 JS 性能分析开始
 
-### Target Frame Budgets
+### 目标帧预算
 
 ```javascript
-// 60 FPS = 16.6ms per frame
+// 60 FPS = 每帧 16.6ms
 const FRAME_BUDGET_60 = 16.6;
 
-// 120 FPS = 8.3ms per frame  
+// 120 FPS = 每帧 8.3ms
 const FRAME_BUDGET_120 = 8.3;
 
-// If your function takes longer, it will drop frames
+// 如果函数执行时间更长，将掉帧
 const longRunningFunction = () => {
   let i = 0;
-  while (i < 1000000000) { // This blocks for seconds!
+  while (i < 1000000000) { // 这会阻塞数秒！
     i++;
   }
 };
 ```
 
-## Interpreting Results
+## 结果解读
 
-| FPS Range | User Perception | Action |
+| FPS 范围 | 用户感知 | 行动 |
 |-----------|-----------------|--------|
-| 55-60 | Smooth | Acceptable |
-| 45-55 | Slight stutter | Investigate |
-| 30-45 | Noticeable jank | Optimize required |
-| < 30 | Very choppy | Critical fix needed |
+| 55-60 | 流畅 | 可接受 |
+| 45-55 | 轻微卡顿 | 调查 |
+| 30-45 | 明显卡顿 | 需要优化 |
+| < 30 | 非常卡顿 | 需要关键修复 |
 
-## Flashlight CI Integration
+## Flashlight CI 集成
 
 ```bash
-# Export measurements to JSON
+# 导出测量结果到 JSON
 flashlight measure --output results.json
 
-# Compare builds
+# 比较构建
 flashlight compare baseline.json current.json
 ```
 
-## Common Pitfalls
+## 常见陷阱
 
-- **Measuring in dev mode**: Results will be artificially slow
-- **Not using real device**: Simulators don't reflect real performance
-- **Ignoring UI thread**: React Native has two threads - JS issues don't always show on UI thread
-- **Single measurement**: Run multiple times, FPS varies
+- **在开发者模式下测量**：结果会人为变慢
+- **不使用真实设备**：模拟器不反映真实性能
+- **忽略 UI 线程**：React Native 有两个线程 —— JS 问题不一定在 UI 线程上显现
+- **单次测量**：运行多次，FPS 会波动
 
-## Related Skills
+## 相关技能
 
-- [js-profile-react.md](./js-profile-react.md) - Find what's causing FPS drops
-- [js-animations-reanimated.md](./js-animations-reanimated.md) - Fix animation-related drops
-- [js-bottomsheet.md](./js-bottomsheet.md) - Measure bottom sheet gesture and snap performance
-- [js-lists-flatlist-flashlist.md](./js-lists-flatlist-flashlist.md) - Fix scroll-related drops
+- [js-profile-react.md](./js-profile-react.md) —— 查找导致 FPS 下降的原因
+- [js-animations-reanimated.md](./js-animations-reanimated.md) —— 修复动画相关掉帧
+- [js-bottomsheet.md](./js-bottomsheet.md) —— 测量底部面板手势和吸附性能
+- [js-lists-flatlist-flashlist.md](./js-lists-flatlist-flashlist.md) —— 修复滚动相关掉帧

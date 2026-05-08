@@ -1,50 +1,50 @@
-# Container Queries Deep Dive
+# 容器查询深入解析
 
-## Overview
+## 概述
 
-Container queries enable component-based responsive design by allowing elements to respond to their container's size rather than the viewport. This paradigm shift makes truly reusable components possible.
+容器查询通过允许元素响应其容器的大小而非视口，实现了基于组件的响应式设计。这种范式转变使得真正可复用的组件成为可能。
 
-## Browser Support
+## 浏览器支持
 
-Container queries have excellent modern browser support (Chrome 105+, Firefox 110+, Safari 16+). For older browsers, provide graceful fallbacks.
+容器查询在现代浏览器中支持良好（Chrome 105+、Firefox 110+、Safari 16+）。对于旧版浏览器，提供优雅的降级方案。
 
-## Containment Basics
+## 包含基础
 
-### Container Types
+### 容器类型
 
 ```css
-/* Size containment - queries based on inline and block size */
+/* 尺寸包含 - 基于内联和块尺寸的查询 */
 .container {
   container-type: size;
 }
 
-/* Inline-size containment - queries based on inline (width) size only */
-/* Most common and recommended */
+/* 内联尺寸包含 - 仅基于内联（宽度）尺寸的查询 */
+/* 最常见且推荐使用 */
 .container {
   container-type: inline-size;
 }
 
-/* Normal - style queries only, no size queries */
+/* 普通 - 仅样式查询，无尺寸查询 */
 .container {
   container-type: normal;
 }
 ```
 
-### Named Containers
+### 命名容器
 
 ```css
-/* Named container for targeted queries */
+/* 用于定向查询的命名容器 */
 .card-wrapper {
   container-type: inline-size;
   container-name: card;
 }
 
-/* Shorthand */
+/* 简写 */
 .card-wrapper {
   container: card / inline-size;
 }
 
-/* Query specific container */
+/* 查询特定容器 */
 @container card (min-width: 400px) {
   .card-content {
     display: flex;
@@ -52,73 +52,73 @@ Container queries have excellent modern browser support (Chrome 105+, Firefox 11
 }
 ```
 
-## Container Query Syntax
+## 容器查询语法
 
-### Width-Based Queries
+### 基于宽度的查询
 
 ```css
 .container {
   container-type: inline-size;
 }
 
-/* Minimum width */
+/* 最小宽度 */
 @container (min-width: 300px) {
   .element {
-    /* styles */
+    /* 样式 */
   }
 }
 
-/* Maximum width */
+/* 最大宽度 */
 @container (max-width: 500px) {
   .element {
-    /* styles */
+    /* 样式 */
   }
 }
 
-/* Range syntax */
+/* 范围语法 */
 @container (300px <= width <= 600px) {
   .element {
-    /* styles */
+    /* 样式 */
   }
 }
 
-/* Exact width */
+/* 精确宽度 */
 @container (width: 400px) {
   .element {
-    /* styles */
+    /* 样式 */
   }
 }
 ```
 
-### Combining Conditions
+### 组合条件
 
 ```css
-/* AND condition */
+/* AND 条件 */
 @container (min-width: 400px) and (max-width: 800px) {
   .element {
-    /* styles */
+    /* 样式 */
   }
 }
 
-/* OR condition */
+/* OR 条件 */
 @container (max-width: 300px) or (min-width: 800px) {
   .element {
-    /* styles */
+    /* 样式 */
   }
 }
 
-/* NOT condition */
+/* NOT 条件 */
 @container not (min-width: 400px) {
   .element {
-    /* styles */
+    /* 样式 */
   }
 }
 ```
 
-### Named Container Queries
+### 命名容器查询
 
 ```css
-/* Multiple named containers */
+/* 多个命名容器 */
 .page-wrapper {
   container: page / inline-size;
 }
@@ -127,7 +127,7 @@ Container queries have excellent modern browser support (Chrome 105+, Firefox 11
   container: sidebar / inline-size;
 }
 
-/* Target specific containers */
+/* 定向到特定容器 */
 @container page (min-width: 1024px) {
   .main-content {
     max-width: 800px;
@@ -142,31 +142,31 @@ Container queries have excellent modern browser support (Chrome 105+, Firefox 11
 }
 ```
 
-## Container Query Units
+## 容器查询单位
 
 ```css
-/* Container query length units */
+/* 容器查询长度单位 */
 .element {
-  /* Container query width - 1cqw = 1% of container width */
+  /* 容器查询宽度 - 1cqw = 容器宽度的 1% */
   width: 50cqw;
 
-  /* Container query height - 1cqh = 1% of container height */
+  /* 容器查询高度 - 1cqh = 容器高度的 1% */
   height: 50cqh;
 
-  /* Container query inline - 1cqi = 1% of container inline size */
+  /* 容器查询内联 - 1cqi = 容器内联尺寸的 1% */
   padding-inline: 5cqi;
 
-  /* Container query block - 1cqb = 1% of container block size */
+  /* 容器查询块 - 1cqb = 容器块尺寸的 1% */
   padding-block: 3cqb;
 
-  /* Container query min - smaller of cqi and cqb */
+  /* 容器查询最小值 - cqi 和 cqb 中的较小值 */
   font-size: 5cqmin;
 
-  /* Container query max - larger of cqi and cqb */
+  /* 容器查询最大值 - cqi 和 cqb 中的较大值 */
   margin: 2cqmax;
 }
 
-/* Practical example: fluid typography based on container */
+/* 实用示例：基于容器的流体排版 */
 .card-title {
   font-size: clamp(1rem, 4cqi, 2rem);
 }
@@ -176,17 +176,17 @@ Container queries have excellent modern browser support (Chrome 105+, Firefox 11
 }
 ```
 
-## Style Queries
+## 样式查询
 
-Style queries allow querying CSS custom property values. Currently limited support.
+样式查询允许查询 CSS 自定义属性值。目前支持有限。
 
 ```css
-/* Define a custom property */
+/* 定义自定义属性 */
 .card {
   --layout: stack;
 }
 
-/* Query the property value */
+/* 查询属性值 */
 @container style(--layout: stack) {
   .card-content {
     display: flex;
@@ -201,15 +201,15 @@ Style queries allow querying CSS custom property values. Currently limited suppo
   }
 }
 
-/* Toggle layout via custom property */
+/* 通过自定义属性切换布局 */
 .card.horizontal {
   --layout: inline;
 }
 ```
 
-## Practical Patterns
+## 实用模式
 
-### Responsive Card Component
+### 响应式卡片组件
 
 ```css
 .card-container {
@@ -235,7 +235,7 @@ Style queries allow querying CSS custom property values. Currently limited suppo
   font-weight: 600;
 }
 
-/* Medium container: side-by-side layout */
+/* 中等容器：并排布局 */
 @container card (min-width: 400px) {
   .card {
     flex-direction: row;
@@ -252,7 +252,7 @@ Style queries allow querying CSS custom property values. Currently limited suppo
   }
 }
 
-/* Large container: enhanced layout */
+/* 大容器：增强布局 */
 @container card (min-width: 600px) {
   .card-image {
     width: 250px;
@@ -269,7 +269,7 @@ Style queries allow querying CSS custom property values. Currently limited suppo
 }
 ```
 
-### Responsive Grid Items
+### 响应式网格项
 
 ```css
 .grid {
@@ -286,7 +286,7 @@ Style queries allow querying CSS custom property values. Currently limited suppo
   padding: 1rem;
 }
 
-/* Item adapts to its own size, not the viewport */
+/* 项目根据自身尺寸调整，而非视口 */
 @container (min-width: 350px) {
   .item-content {
     padding: 1.5rem;
@@ -306,7 +306,7 @@ Style queries allow querying CSS custom property values. Currently limited suppo
 }
 ```
 
-### Dashboard Widget
+### 仪表盘小组件
 
 ```css
 .widget-container {
@@ -362,7 +362,7 @@ Style queries allow querying CSS custom property values. Currently limited suppo
 }
 ```
 
-### Navigation Component
+### 导航组件
 
 ```css
 .nav-container {
@@ -392,14 +392,14 @@ Style queries allow querying CSS custom property values. Currently limited suppo
   height: 1.5rem;
 }
 
-/* Show text when container is wide enough */
+/* 容器足够宽时显示文本 */
 @container nav (min-width: 200px) {
   .nav-link-text {
     display: block;
   }
 }
 
-/* Horizontal layout for wider containers */
+/* 更宽容器的水平布局 */
 @container nav (min-width: 600px) {
   .nav {
     flex-direction: row;
@@ -411,19 +411,19 @@ Style queries allow querying CSS custom property values. Currently limited suppo
 }
 ```
 
-## Tailwind CSS Integration
+## Tailwind CSS 集成
 
 ```tsx
-// Tailwind v3.2+ supports container queries
+// Tailwind v3.2+ 支持容器查询
 // tailwind.config.js
 module.exports = {
   plugins: [require("@tailwindcss/container-queries")],
 };
 
-// Component usage
+// 组件使用
 function Card({ title, image, description }) {
   return (
-    // @container creates containment context
+    // @container 创建包含上下文
     <div className="@container">
       <article className="flex flex-col @md:flex-row @md:gap-4">
         <img
@@ -444,7 +444,7 @@ function Card({ title, image, description }) {
   );
 }
 
-// Named containers
+// 命名容器
 function Dashboard() {
   return (
     <div className="@container/main">
@@ -457,17 +457,17 @@ function Dashboard() {
 }
 ```
 
-## Fallback Strategies
+## 降级策略
 
 ```css
-/* Provide fallbacks for browsers without support */
+/* 为不支持容器查询的浏览器提供降级方案 */
 .card {
-  /* Default (fallback) styles */
+  /* 默认（降级）样式 */
   display: flex;
   flex-direction: column;
 }
 
-/* Feature query for container support */
+/* 容器支持的特性查询 */
 @supports (container-type: inline-size) {
   .card-container {
     container-type: inline-size;
@@ -480,24 +480,24 @@ function Dashboard() {
   }
 }
 
-/* Alternative: media query fallback */
+/* 替代方案：媒体查询降级 */
 .card {
   display: flex;
   flex-direction: column;
 }
 
-/* Viewport-based fallback */
+/* 基于视口的降级 */
 @media (min-width: 768px) {
   .card {
     flex-direction: row;
   }
 }
 
-/* Enhanced with container queries when supported */
+/* 支持时使用容器查询增强 */
 @supports (container-type: inline-size) {
   @media (min-width: 768px) {
     .card {
-      flex-direction: column; /* Reset */
+      flex-direction: column; /* 重置 */
     }
   }
 
@@ -509,11 +509,11 @@ function Dashboard() {
 }
 ```
 
-## Performance Considerations
+## 性能考虑
 
 ```css
-/* Avoid over-nesting containers */
-/* Bad: Too many nested containers */
+/* 避免过度嵌套容器 */
+/* 不好：太多嵌套容器 */
 .level-1 {
   container-type: inline-size;
 }
@@ -527,26 +527,26 @@ function Dashboard() {
   container-type: inline-size;
 }
 
-/* Good: Strategic container placement */
+/* 好：策略性容器放置 */
 .component-wrapper {
   container-type: inline-size;
 }
 
-/* Use inline-size instead of size when possible */
-/* size containment is more expensive */
+/* 尽可能使用 inline-size 而非 size */
+/* size 包含更昂贵 */
 .container {
-  container-type: inline-size; /* Preferred */
-  /* container-type: size; */ /* Only when needed */
+  container-type: inline-size; /* 推荐 */
+  /* container-type: size; */ /* 仅在需要时 */
 }
 ```
 
-## Testing Container Queries
+## 测试容器查询
 
 ```javascript
-// Test container query support
+// 测试容器查询支持
 const supportsContainerQueries = CSS.supports("container-type", "inline-size");
 
-// Resize observer for testing
+// 用于测试的 ResizeObserver
 const observer = new ResizeObserver((entries) => {
   for (const entry of entries) {
     console.log("Container width:", entry.contentRect.width);
@@ -556,7 +556,7 @@ const observer = new ResizeObserver((entries) => {
 observer.observe(document.querySelector(".container"));
 ```
 
-## Resources
+## 资源
 
 - [MDN Container Queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_container_queries)
 - [CSS Container Queries Spec](https://www.w3.org/TR/css-contain-3/)

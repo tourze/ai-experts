@@ -1,371 +1,370 @@
-# Evaluating New Technology - All Guest Insights
+# 评估新技术 - 所有嘉宾洞见
 
-*22 guests, 27 mentions*
+*22 位嘉宾，27 次提及*
 
 ---
 
 ## Aishwarya Naresh Reganti + Kiriti Badam
 *Aishwarya Naresh Reganti + Kiriti Badam*
 
-> "When someone comes up to me and says, 'We have this one click agent, it's going to be deployed in your system.' ... I would almost be skeptical because it's just not possible. And that's not because the models aren't there, but because enterprise data and infrastructure is very messy... I would rather go with a company that says, 'We're going to build this pipeline for you,' and that will learn over time."
+> "当有人来找我说，'我们有一个一键 agent，它将被部署到你的系统中。'……我几乎会持怀疑态度，因为这是不可能的。不是因为模型不行，而是因为企业数据和基础设施非常混乱……我更愿意选择一家说'我们将为你构建这个管道'的公司，并且它会随着时间学习。"
 
-**Insight:** Be skeptical of 'out-of-the-box' AI solutions for enterprises; real ROI requires a pipeline that accounts for messy data and infrastructure.
+**洞见：** 对企业"开箱即用"的 AI 解决方案持怀疑态度；真正的 ROI 需要一个能处理混乱数据和基础设施的管道。
 
-**Tactical advice:**
-- Evaluate AI vendors based on their ability to build a learning pipeline rather than a static 'one-click' agent.
-- Assess the readiness of your internal data layer before attempting to deploy autonomous agents.
+**战术建议：**
+- 根据 AI 供应商构建学习管道的能力进行评估，而不是评估静态的"一键"agent
+- 在尝试部署自主 agent 之前，评估内部数据层的就绪程度
 
-*Timestamp: 00:30:31*
+*时间戳：00:30:31*
 
 
 ## Aparna Chennapragada
 *Aparna Chennapragada*
 
-> "The models couldn't do some things one year ago. I mean, image generation was full of spellings or reasoning. You just couldn't have deeper and smarter answers. You couldn't do data analysis. So my impression of it from change, trying it a few months ago, that prior needs to be updated. And it's hard to do that, right? You have to do something almost counterintuitive and against the grain to say, 'No, no, ignore what you learned about what this can or cannot do.' The baby just grew up to be a 15-year-old in a month."
+> "模型一年前还做不了某些事情。我的意思是，图像生成充满了拼写错误或推理问题。你无法得到更深入、更智能的答案。你无法做数据分析。所以我对它的印象来自于几个月前的试用，那个先验需要更新。这很难做到，对吧？你必须做一些几乎反直觉、违背常规的事情，说，'不，不，忽略你学到的关于它能做什么或不能做什么的东西。'那个婴儿在一个月内长成了 15 岁的少年。"
 
-**Insight:** To effectively build with AI, product leaders must constantly update their 'priors' because technology capabilities evolve faster than human habits or 'scar tissue' from past failures.
+**洞见：** 要有效地使用 AI 构建产品，产品领导者必须不断更新他们的"先验认知"，因为技术能力的发展速度超过了人类的习惯或过去失败的"伤疤"。
 
-**Tactical advice:**
-- Actively work to ignore 'scar tissue' from previous technical limitations
-- Regularly re-test assumptions about what AI can and cannot do every few months
-- Demand more from current technology rather than relying on old benchmarks
+**战术建议：**
+- 主动克服之前技术限制带来的"伤疤"
+- 每隔几个月定期重新测试对 AI 能做什么和不能做什么的假设
+- 对当前技术提出更高要求，而不是依赖旧的基准
 
-*Timestamp: 00:31:17*
+*时间戳：00:31:17*
 
 
 ## Asha Sharma
 *Asha Sharma*
 
-> "you really need to bet on a platform or some app server type layer that allows you to swap things in and out and not really be beholden to anything, any one technology or any one tool because the reality is the whole thing is going to change."
+> "你真的需要押注于一个平台或某种应用服务器层，允许你换入换出组件，而不受任何单一技术或任何单一工具的束缚，因为现实是整个局面都会变化。"
 
-**Insight:** Avoid vendor or tool lock-in by investing in an abstraction layer that allows for modularity as the AI stack evolves.
+**洞见：** 投资于一个允许模块化的抽象层，避免供应商或工具锁定，因为 AI 技术栈会不断演进。
 
-**Tactical advice:**
-- Bet on platforms that support model diversity and easy swapping of components
-- Prioritize tools that offer high observability and evaluation capabilities
+**战术建议：**
+- 押注于支持模型多样性和易于组件更换的平台
+- 优先选择具有高可观测性和评估能力的工具
 
-*Timestamp: 11:24*
+*时间戳：11:24*
 
 
 ## Austin Hay
 *Austin Hay*
 
-> "I have this adage I always say, which is tools are just meant to solve problems. And the problem set for marketing technologists and business technologists is you focus on the tools."
+> "我常说的一个格言是，工具只是为了解决问题。而营销技术专家和商业技术专家的问题集是，你只关注了工具本身。"
 
-**Insight:** Technology should always be viewed as a means to solve a specific problem rather than an end in itself.
+**洞见：** 技术应始终被视为解决特定问题的手段，而不是目的本身。
 
-**Tactical advice:**
-- Always define the problem and the people involved before selecting a system or tool.
-- Avoid 'tool bias'—picking a tool just because you've used it before.
+**战术建议：**
+- 在选择系统或工具之前，始终先定义问题和涉及的人员
+- 避免"工具偏见"——仅仅因为以前用过就选择某个工具
 
-*Timestamp: 00:10:11*
+*时间戳：00:10:11*
 
 ---
 
-> "It's B and B as opposed to BVB. So, build and buy as opposed to build versus buy. People all the time just think the second that you're talking about implementing a tool or procuring a solution, it's, Hey, I want to build this thing or I want to buy this really expensive thing. Build versus buy is a very narrowly constricting decision tree. If it's only build versus buy, then you've already made the decision that you can only do one or the other... Build and buy means that both of you can win"
+> "是 B 和 B，而不是 B 对 B。也就是构建和购买，而不是构建对购买。人们总是认为，当谈到实施工具或采购解决方案时，就是'嘿，我要构建这个'或'我要买这个非常贵的东西'。构建对购买是一个非常狭窄的限制性决策树。如果只有构建对购买，那么你已经做出了只能做其中之一的决定……构建和购买意味着双方都可以赢"
 
-**Insight:** The most effective technology strategy often involves buying a core tool and building custom layers on top of it.
+**洞见：** 最有效的技术策略通常是购买一个核心工具，然后在其上构建自定义层。
 
-**Tactical advice:**
-- Buy tools to handle 90% of the standard functionality and build the 'cool' 10% that is unique to your business.
-- Use a financial model to show that building on top of a third-party tool often yields higher ROI than building from scratch.
+**战术建议：**
+- 购买工具来处理 90% 的标准功能，构建对你的业务独特的"酷"的 10%
+- 使用财务模型来证明，在第三方工具之上构建通常比从头开始构建获得更高的 ROI
 
-*Timestamp: 01:07:52*
+*时间戳：01:07:52*
 
 
 ## Brandon Chu
 *Brandon Chu*
 
-> "if you're not technical, really lean into it and build something simple, learn how to build something simple for yourself, demystify the technology. That experience will take you far. I love telling people that literally don't even know what HTML is... you could build a clone of Twitter using a tutorial on Rails"
+> "如果你不是技术出身，那就深入其中，构建一些简单的东西，为自己学点东西，去神秘化技术。那种体验会让你走得很远。我喜欢告诉那些甚至不知道 HTML 是什么的人……你可以用 Rails 教程构建一个 Twitter 克隆版"
 
-**Insight:** PMs should demystify technology by building simple applications themselves to break down the 'wall of obscurity' between product and engineering.
+**洞见：** 产品经理应通过自己构建简单的应用来去神秘化技术，打破产品和工程之间的"隔阂墙"。
 
-**Tactical advice:**
-- Build a simple clone of a popular app using a tutorial to understand basic architecture
-- Focus on demystifying how data flows rather than mastering the code
+**战术建议：**
+- 使用教程构建一个流行应用的简单克隆，以理解基本架构
+- 专注于理解数据流如何运作，而不是精通代码本身
 
-*Timestamp: 48:03*
+*时间戳：48:03*
 
 
 ## Camille Fournier
 *Camille Fournier*
 
-> "GraphQL... is one of the things that is both popular and thought relatively poorly of by most of the senior people that I know... if you're seriously thinking about it and you're not Facebook, you may really want to make sure you know what problem you're trying to solve because the impression that I have... is that GraphQL is kind of trying to promise front-end engineers that they don't really have to collaborate with backend engineers."
+> "GraphQL……是那种既受欢迎又被我认识的大多数资深人士认为相对不好的东西……如果你真的在认真考虑它，而且你不是 Facebook，你可能真的需要确保你知道自己在解决什么问题，因为我的印象是……GraphQL 有点像是在试图向前端工程师承诺他们不需要真正与后端工程师协作。"
 
-**Insight:** Popular technologies (like GraphQL) can be 'fads' that solve specific problems for giant companies but create unnecessary complexity for others.
+**洞见：** 流行的技术（如 GraphQL）可能是"时尚"，它们为大型公司解决特定问题，但为其他公司创造了不必要的复杂性。
 
-**Tactical advice:**
-- Identify the specific problem a new framework is intended to solve before adopting it
-- Be wary of frameworks backed by VC-funded startups whose goal is adoption over utility
+**战术建议：**
+- 在采用新框架之前，确定它要解决的特定问题
+- 警惕由 VC 投资的初创公司支持的框架，这些公司的目标是采用率而非实用性
 
-*Timestamp: 00:28:52*
+*时间戳：00:28:52*
 
 
 ## Bret Taylor
 *Bret Taylor*
 
-> "I do still think studying computer science is a different answer than learning to code... computer science is a wonderful major to learn systems thinking."
+> "我仍然认为学习计算机科学和学编程是不同的答案……计算机科学是学习系统思维的极好专业。"
 
-**Insight:** When evaluating emerging tech like AI, focus on systems thinking and foundational principles rather than just current tools.
+**洞见：** 在评估 AI 等新兴技术时，关注系统思维和基本原理，而不仅仅是当前的工具。
 
-**Tactical advice:**
-- Prioritize understanding 'systems thinking' and complexity over learning specific syntax
+**战术建议：**
+- 优先理解"系统思维"和复杂性，而不是学习特定语法
 
-*Timestamp: 00:31:47*
+*时间戳：00:31:47*
 
 
 ## Christine Itwaru
 *Christine Itwaru*
 
-> "We had someone at one point handle whatever tools connected to Pendo and make sure that those systems are set up for maximum outcomes for the product manager. So, Pendo's connected to Salesforce. We're connected to Looker. We're connected to all these different."
+> "我们曾经有一个人负责处理连接到 Pendo 的任何工具，并确保这些系统设置为产品经理带来最大成果。所以，Pendo 连接到 Salesforce。我们连接到 Looker。我们连接到所有这些不同的系统。"
 
-**Insight:** Managing the product team's internal tech stack ensures that data flows correctly between CRM, analytics, and product tools.
+**洞见：** 管理产品团队的内部技术栈，确保 CRM、分析工具和产品工具之间的数据正确流动。
 
-**Tactical advice:**
-- Audit the product manager's tool stack to ensure maximum data integration
-- Connect product analytics tools (like Pendo) to CRM systems (like Salesforce) to provide a complete customer picture
+**战术建议：**
+- 审计产品经理的工具栈，确保最大的数据集成
+- 将产品分析工具（如 Pendo）连接到 CRM 系统（如 Salesforce），以提供完整的客户视图
 
-*Timestamp: 00:13:45*
+*时间戳：00:13:45*
 
 
 ## Dan Shipper
 *Dan Shipper*
 
-> "My first thing that I open is o3. I'm a ChatGPT boy... it has memory. And I just love that... I think Claude Opus is... Claude Code, everyone inside Every, that's basically what we use... Gemini... It's incredibly powerful and it's incredibly cheap, which is great."
+> "我打开的第一个是 o3。我是个 ChatGPT 男孩……它有记忆功能。我超喜欢这个……我觉得 Claude Opus 是……Claude Code，Every 内部的每个人，基本上都在用……Gemini……它非常强大，而且非常便宜，这很棒。"
 
-**Insight:** A modern AI stack should be diversified based on specific model strengths like memory, coding autonomy, or cost-effectiveness.
+**洞见：** 现代 AI 技术栈应根据特定模型优势进行多样化，如记忆能力、编码自主性或成本效益。
 
-**Tactical advice:**
-- Use ChatGPT (o3) for tasks requiring long-term memory and personal style consistency
-- Use a coding-agent CLI such as Claude Code or Codex for autonomous engineering tasks, and Gemini for high-volume, low-cost API applications
+**战术建议：**
+- 对需要长期记忆和个人风格一致性的任务使用 ChatGPT (o3)
+- 对自主工程任务使用编码 agent CLI（如 Claude Code 或 Codex），对高容量、低成本 API 应用使用 Gemini
 
-*Timestamp: 00:35:51*
+*时间戳：00:35:51*
 
 
 ## Dhanji R. Prasanna
 *Dhanji R. Prasanna*
 
-> "The savings and costs that there might be in replacing a vendor tool by something you build in-house is probably not worth it in the mental bandwidth that you've lost and the amount of the team's technical focus that's being taken away. ... I would always come back to what is the reason we're doing this? Why does it matter to us and to our customers?"
+> "用内部构建的东西替换供应商工具可能节省的成本，很可能不值得你失去的心智带宽和团队被占用的技术关注度。……我总是回到我们为什么要这样做？这对我们和我们的客户有什么意义？"
 
-**Insight:** Avoid the trap of building internal tools just because AI makes it easy; focus technical bandwidth on core competencies.
+**洞见：** 避免仅仅因为 AI 使其变得容易就陷入构建内部工具的陷阱；将技术带宽集中在核心竞争力上。
 
-**Tactical advice:**
-- Evaluate build vs. buy decisions based on 'mental bandwidth' lost rather than just direct dollar costs
-- Question if a process is even necessary before deciding to automate it or buy a tool for it
+**战术建议：**
+- 根据失去的"心智带宽"而不仅仅是直接的金钱成本来评估构建与购买的决策
+- 在决定自动化或为某个流程购买工具之前，先质疑这个流程是否必要
 
-*Timestamp: 00:40:31*
+*时间戳：00:40:31*
 
 ---
 
-> "I would say really try and use these tools yourself. ... we learn a lot about how our own workflow can change, and that's going to tell you so much more about how are you going to change your organization's workflow than if you're reading a bunch of think pieces on LinkedIn."
+> "我真的建议你自己使用这些工具。……我们能学到很多关于自己的工作流如何改变，这比你在 LinkedIn 上读一堆观点文章能告诉你更多关于如何改变组织工作流的信息。"
 
-**Insight:** Leaders must personally use and experiment with new technology to understand its ergonomics and potential organizational impact.
+**洞见：** 领导者必须亲自使用和试验新技术，以理解其人体工程学和潜在的组织影响。
 
-**Tactical advice:**
-- Solve a specific, personal, real-world problem with a new tool to understand its true strengths and weaknesses
-- Encourage the executive team to use the product daily to drive authentic adoption
+**战术建议：**
+- 用新工具解决一个具体的、个人的、真实世界的问题，以理解其真正的优势和劣势
+- 鼓励高管团队每天使用产品，推动真正的采用
 
-*Timestamp: 00:54:04*
+*时间戳：00:54:04*
 
 
 ## Howie Liu
 *Howie Liu*
 
-> "I try to use as many different AI products, including not Airtable, as I can... I try to invent little, almost like side projects of my own, to have a real reason to use these products."
+> "我尽量使用尽可能多的不同 AI 产品，包括非 Airtable 的产品……我试着发明一些几乎像副项目之类的东西，给自己一个真正的理由去使用这些产品。"
 
-**Insight:** Deeply understand emerging tech by creating personal 'weekend projects' that force you to use the tools beyond a superficial level.
+**洞见：** 通过创建个人"周末项目"来深入理解新兴技术，迫使你超越表面层次使用工具。
 
-**Tactical advice:**
-- Invent personal side projects to force deep usage of new AI tools
-- Study the 'prior art' of AI products to understand emerging UX patterns and form factors
+**战术建议：**
+- 发明个人副项目，强迫自己深度使用新的 AI 工具
+- 研究 AI 产品的"先例艺术"，以理解新兴的 UX 模式和形态
 
-*Timestamp: 00:40:38*
+*时间戳：00:40:38*
 
 
 ## Ivan Zhao
 *Ivan Zhao*
 
-> "Before React wins, there's a competing technology called Web Component from Google... we're betting on that technology. And then we realize because it's so new, it's just so unstable. It don't know where the bug come from. It's from your source code or from the underlying libraries? Then we have to restart the company, rebuild the whole thing."
+> "在 React 获胜之前，有一个来自 Google 的竞争技术叫做 Web Component……我们押注了那个技术。然后我们意识到，因为它太新了，它太不稳定了。你不知道 bug 来自哪里。是你源代码的问题还是底层库的问题？然后我们不得不重新启动公司，重建整个东西。"
 
-**Insight:** Betting on unproven, unstable technical foundations can force a total company reset if the technology fails to mature.
+**洞见：** 押注未经验证、不稳定的技术基础，如果该技术未能成熟，可能迫使公司全面重置。
 
-**Tactical advice:**
-- Distinguish between 'orthodox' technology foundations and experimental ones.
-- Be willing to 'throw away the code' and rebuild on a more stable foundation if the current stack is hindering progress.
+**战术建议：**
+- 区分"正统"技术基础和实验性技术基础
+- 如果当前技术栈阻碍了进展，愿意"丢弃代码"并在更稳定的基础上重建
 
-*Timestamp: 00:14:03*
+*时间戳：00:14:03*
 
 
 ## Manik Gupta
 *Manik Gupta*
 
-> "One of the things that we used to talk about all the time at Google on Maps was how would we design a navigation product when people are in self-driving cars?... It's going to take years, but it is just such a different paradigm. It's like computers talking to computers, algorithms talking to other algorithms. Then there's a human in the mix in terms of serving the human at the end, but it's like the human is not initiating that much."
+> "我们在 Google Maps 上经常讨论的一件事是，当人们在自动驾驶汽车中时，我们会如何设计导航产品？……这需要很多年，但这是一个完全不同的范式。就像计算机与计算机对话，算法与其他算法对话。虽然最终端仍然有一个人类需要服务，但人类不再主动发起那么多事情。"
 
-**Insight:** Evaluating emerging technologies like autonomous driving requires reimagining user experiences for a paradigm where the human is a passive recipient rather than an active initiator.
+**洞见：** 评估自动驾驶等新兴技术需要重新构想用户体验，在这种范式中，人类是被动接收者而非主动发起者。
 
-**Tactical advice:**
-- Analyze how a new technology shifts the user from an 'initiator' to a 'passenger' or 'consumer'.
-- Consider the 'computer-to-computer' interaction layer when designing for future tech stacks.
+**战术建议：**
+- 分析新技术如何将用户从"发起者"转变为"乘客"或"消费者"
+- 在设计未来技术栈时，考虑"计算机到计算机"的交互层
 
-*Timestamp: 01:01:35*
+*时间戳：01:01:35*
 
 
 ## Naomi Ionita
 *Naomi Ionita*
 
-> "The modern growth stack... is the evolution of what you do with the data. So these are the workflows that the data enables to drive the business forward for product growth and revenue teams like I used to run. It's the modern replacement for infrastructure that teams like mine built or bought."
+> "现代增长技术栈……是你用数据做什么的演进。这些是数据驱动的工作流，推动产品增长和收入团队的业务发展，就像我以前负责的那样。它是像我这样的团队以前构建或购买的基础设施的现代替代品。"
 
-**Insight:** The 'Modern Growth Stack' consists of tools that automate growth workflows (experimentation, billing, reverse ETL) previously built in-house.
+**洞见：** "现代增长技术栈"由自动化增长工作流（实验、计费、反向 ETL）的工具组成，这些以前是内部构建的。
 
-**Tactical advice:**
-- Evaluate tools like Hightouch or Census (Reverse ETL) to break down data silos
-- Look for tools that offer 'hard ROI' through either cost reduction or revenue generation
+**战术建议：**
+- 评估像 Hightouch 或 Census（反向 ETL）这样的工具，打破数据孤岛
+- 寻找能通过成本降低或收入增长提供"硬 ROI"的工具
 
-*Timestamp: 35:37*
+*时间戳：35:37*
 
 ---
 
-> "Eppo, which offers experimentation for the modern data stack. So unlike Optimizely, which focused on more kind of click through metrics, Eppo ties directly to the metrics in your data warehouse. So tying an experiment result to things like subscriptions or revenue or margins, really like board level metrics that you're trying to move."
+> "Eppo，为现代数据栈提供实验功能。与 Optimizely 更关注点击率等指标不同，Eppo 直接连接到你的数据仓库中的指标。因此，它将实验结果直接关联到订阅、收入、利润率等董事会级别的指标。"
 
-**Insight:** Modern experimentation tools should tie directly to warehouse data and business-level KPIs rather than just surface-level clicks.
+**洞见：** 现代实验工具应直接连接到数据仓库数据和业务级 KPI，而不仅仅是表面点击。
 
-**Tactical advice:**
-- Prioritize experimentation tools that integrate with the data warehouse (e.g., Snowflake, Redshift)
+**战术建议：**
+- 优先选择与数据仓库（如 Snowflake、Redshift）集成的实验工具
 
-*Timestamp: 43:29*
+*时间戳：43:29*
 
 
 ## Ronny Kohavi
 *Ronny Kohavi*
 
-> "I think the key decision is whether you want to build or buy. ... It's usually not a zero one, it's usually both. You build some and you buy some, and it's a question of do you build 10% or do you build in 90%? I think for people starting, the third party products that are available today are pretty good."
+> "我认为关键的决定是你想构建还是购买。……通常不是零和一的，通常是两者兼有。你构建一些，购买一些，问题是你构建 10% 还是构建 90%。我认为对于刚开始的人来说，目前可用的第三方产品已经相当不错了。"
 
-**Insight:** For experimentation infrastructure, a hybrid 'build and buy' approach is often best, starting with third-party tools to establish trust.
+**洞见：** 对于实验基础设施，"构建和购买"混合方法通常是最好的，从第三方工具开始建立信任。
 
-**Tactical advice:**
-- Start with third-party experimentation vendors to avoid the high initial cost of building a platform
-- Evaluate the build vs. buy decision based on the maturity of the organization's experimentation culture
+**战术建议：**
+- 从第三方实验供应商开始，避免构建平台的初始高成本
+- 根据组织实验文化的成熟度评估构建与购买的决策
 
-*Timestamp: 01:07:17*
+*时间戳：01:07:17*
 
 
 ## Ryan J. Salva
 *Ryan J. Salva*
 
-> "This product in particular, I probably spent more time with legal than any other products that I've ever kind of been responsible for. ... It is also privacy and security champions. It is, frankly, developers, like the people who are using it, listening to them. ... We're actually at a place now where we're able to partner with the Azure Department of a Responsible AI, and they've created some really extraordinary models that help detect I'll call it sentiment for lack of a better word, but basically when there is something that is patently offensive."
+> "这个产品，我可能在法务上花的时间比任何其他产品都要多。……它也是隐私和安全方面的挑战。坦率地说，开发者，也就是使用它的人，需要倾听他们的意见。……我们现在实际上能够与 Azure 的负责任 AI 部门合作，他们创建了一些非常出色的模型，帮助检测——我称之为情感，因为没有更好的词——但基本上就是当存在明显冒犯性的内容时。"
 
-**Insight:** Evaluating high-stakes emerging tech like AI requires deep cross-functional collaboration with legal, privacy, and 'Responsible AI' teams to mitigate ethical and safety risks.
+**洞见：** 评估高风险的 AI 等新兴技术需要与法务、隐私和"负责任 AI"团队进行深度跨职能协作，以降低伦理和安全风险。
 
-**Tactical advice:**
-- Engage legal and privacy teams early when dealing with novel technology like LLMs
-- Use secondary AI models to monitor and filter the outputs of primary generative models for safety
+**战术建议：**
+- 在处理 LLM 等新技术时，尽早让法务和隐私团队参与
+- 使用辅助 AI 模型来监控和过滤主要生成式模型的输出，以确保安全
 
-*Timestamp: 00:41:09*
+*时间戳：00:41:09*
 
 
 ## Sander Schulhoff
-*Sander Schulhoff 2.0*
+*Sander Schulhoff*
 
-> "AI guardrails do not work. I'm going to say that one more time. Guardrails do not work. If someone is determined enough to trick GPT-5, they're going to deal with that guardrail. No problem. When these guardrail providers say, 'We catch everything,' that's a complete lie."
+> "AI 护栏不起作用。我要再说一遍。护栏不起作用。如果一个人足够坚定要欺骗 GPT-5，他们就能搞定那个护栏，没问题。当这些护栏供应商说，'我们捕获一切'时，那完全是谎言。"
 
-**Insight:** Current AI guardrail products are often ineffective against determined attackers and marketed with misleading security claims.
+**洞见：** 当前的 AI 护栏产品通常对坚定攻击者无效，并带有误导性的安全声称。
 
-**Tactical advice:**
-- Do not rely on third-party guardrails as a primary security layer
-- Be skeptical of '100% catch rate' claims from AI security vendors
+**战术建议：**
+- 不要依赖第三方护栏作为主要安全层
+- 对 AI 安全供应商的"100% 捕获率"声称持怀疑态度
 
-*Timestamp: 00:00:00*
+*时间戳：00:00:00*
 
 ---
 
-> "AI red teaming works too well. It's very easy to build these systems and they always work against all platforms... these automated red teaming systems are not showing anything novel. It's plainly obvious to anyone that knows what they're talking about that these models can be tricked into saying whatever very easily."
+> "AI 红队测试效果太好了。构建这些系统非常容易，它们总是对所有的平台都有效……这些自动红队测试系统并没有展示出任何新东西。对任何懂行的人来说都显而易见，这些模型很容易被诱骗说出任何内容。"
 
-**Insight:** Automated red teaming tools often provide redundant information because all current transformer-based models are fundamentally vulnerable to trickery.
+**洞见：** 自动红队测试工具通常提供冗余信息，因为所有当前的基于 transformer 的模型在本质上都容易受到诱骗。
 
-**Tactical advice:**
-- Recognize that automated red teaming results against off-the-shelf models are expected and not necessarily a unique flaw in your implementation
+**战术建议：**
+- 认识到针对现成模型的自动红队测试结果是预期的，不一定是你实现中的独特缺陷
 
-*Timestamp: 00:28:33*
+*时间戳：00:28:33*
 
 
 ## Yuriy Timen
 *Yuriy Timen*
 
-> "Media Mix Modeling is now making a comeback... the company that's leading the charge of bringing the Media Mix Modeling methodology of the traditional advertising era and ushering it into the digital world is a company called the Recast."
+> "媒体组合建模正在回归……引领将传统广告时代的媒体组合建模方法论引入数字世界的公司叫做 Recast。"
 
-**Insight:** Privacy changes (iOS 14) are reviving older attribution technologies like Media Mix Modeling (MMM) for digital spend.
+**洞见：** 隐私变化（iOS 14）正在复兴媒体组合建模（MMM）等旧归因技术，用于数字支出。
 
-**Tactical advice:**
-- Consider MMM tools like Recast if spending over $100k/month across 3+ channels.
-- Use incrementality testing (randomized control experiments) to determine true causality in ad spend.
+**战术建议：**
+- 如果在 3 个以上渠道每月支出超过 10 万美元，考虑使用 Recast 等 MMM 工具
+- 使用增量测试（随机对照实验）来确定广告支出的真正因果关系
 
-*Timestamp: 00:29:03*
+*时间戳：00:29:03*
 
 
 ## Andrew Wilkinson
 *Andrew Wilkinson*
 
-> "I finally got one that actually works. It's called the Matic Vacuum... basically, I think it's like former Google Engineers basically built like a mini Waymo car. So it has machine vision and it will avoid absolutely everything."
+> "我终于弄到了一个真正好用的。它叫 Matic Vacuum……基本上，我觉得是前 Google 工程师造了一个迷你 Waymo 车。所以它有机器视觉，几乎能避开一切东西。"
 
-**Insight:** When evaluating consumer robotics or hardware, look for products that utilize advanced machine vision and 'Waymo-style' engineering rather than basic sensors.
+**洞见：** 在评估消费机器人或硬件时，寻找使用先进机器视觉和"Waymo 风格"工程的产品，而不是基础传感器。
 
-**Tactical advice:**
-- Prioritize hardware built by engineers with backgrounds in autonomous vehicles or high-end computer vision.
-- Look for 'machine vision' as a key differentiator in robotics to ensure reliability.
+**战术建议：**
+- 优先选择由具有自动驾驶车辆或高端计算机视觉背景的工程师构建的硬件
+- 寻找"机器视觉"作为机器人的关键差异化因素，以确保可靠性
 
-*Timestamp: 01:23:16*
+*时间戳：01:23:16*
 
 
 ## Hila Qu
 *Hila Qu*
 
-> "From infrastructure perspective, on data tool, my first tool usually, one is some sort of data hub segment, right? This next one is some sort of a product analytics tool. Think about Amplitude. I know PostHog is actually a pretty popular one... The third piece I think that's pretty essential, I counted in the infra, is some sort of a lifecycle marketing tool."
+> "从基础设施角度来看，在数据工具方面，我的第一个工具通常是某种数据枢纽，比如 Segment。接下来是某种产品分析工具。想想 Amplitude。我知道 PostHog 其实也挺流行的……第三个我认为非常重要的部分，我把它算作基础设施，是某种生命周期营销工具。"
 
-**Insight:** A robust PLG motion requires a specific data stack: a data hub, product analytics, and lifecycle marketing tools.
+**洞见：** 一个稳健的 PLG 运动需要特定的数据栈：数据枢纽、产品分析和生命周期营销工具。
 
-**Tactical advice:**
-- Implement a data hub like Segment to allow for flexible tool integration
-- Use lifecycle marketing tools that trigger based on in-product behavior rather than just email opens
+**战术建议：**
+- 实施像 Segment 这样的数据枢纽，允许灵活的工具集成
+- 使用基于产品内行为而非仅仅邮件打开触发的生命周期营销工具
 
-*Timestamp: 01:05:08*
+*时间戳：01:05:08*
 
 ---
 
-> "The success of this is you identify the gaps and eventually you want to establish something called the data dictionary... The data dictionary will include, here are all the key actions, what's the event name for each of those, and what are the property and things like that."
+> "成功的做法是，你识别出差距，最终想要建立所谓的数据字典……数据字典会包括：所有关键操作是什么，每个操作的事件名称是什么，以及属性是什么等等。"
 
-**Insight:** Data integrity depends on a shared data dictionary that defines all key events and properties.
+**洞见：** 数据完整性依赖于一个共享的数据字典，定义所有关键事件和属性。
 
-**Tactical advice:**
-- Perform a data instrumentation audit to identify gaps
-- Create a centralized data dictionary for the entire team to reference
+**战术建议：**
+- 进行数据埋点审计，以识别差距
+- 创建集中的数据字典，供整个团队参考
 
-*Timestamp: 01:12:00*
+*时间戳：01:12:00*
 
 
 ## Jeanne Grosser
 *Jeanne Grosser*
 
-> "I think the calculus on build versus buy is changing... because this whole space is so nascent, often your own esoteric context, your content, your workflow is really key to unlocking the power of the agent. And so I think there's value in experimenting with your own internal agent development."
+> "我认为构建与购买的权衡正在改变……因为整个领域还处于初期，通常你自己特定的上下文、你的内容、你的工作流才是释放 agent 能力的关键。所以我认为在内部 agent 开发方面进行实验是有价值的。"
 
-**Insight:** For AI agents, building internally is often better than buying because internal context and specific workflows are the primary value drivers.
+**洞见：** 对于 AI agent，内部构建通常优于购买，因为内部上下文和特定工作流是主要的价值驱动因素。
 
-**Tactical advice:**
-- Experiment with building internal agents for specific workflows before procuring fragmented AI tools.
+**战术建议：**
+- 在采购零散的 AI 工具之前，先尝试为特定工作流构建内部 agent
 
-*Timestamp: 00:41:00*
+*时间戳：00:41:00*
 
 
 ## Tobi Lutke
 *Tobi Lutke*
 
-> "Monorepo, now for companies, it's a very much one of those door A, door B kind of things. It's a very consequential choice that is incorrect to go say yes to at a certain size, and then it becomes very correct in my mind to say yes to, but at that point it's an enormous amount of effort. So, it's a kind of thing that actually is something I'm uniquely positioned to be involved with because it's actually a business strategy thing as well."
+> "Monorepo，对于公司来说，这非常像是那种门 A、门 B 的选择。这是一个后果严重的选择，在某个规模时说是错误的，然后到某个时刻在我看来又变成非常正确的选择，但到那时已经需要付出巨大的努力。所以，这种决策实际上是我特别适合参与的，因为它也涉及业务战略。"
 
-**Insight:** Major technical architecture shifts are strategic business decisions that impact how a company builds and scales.
+**洞见：** 重大的技术架构转变是战略性的业务决策，影响公司构建和扩展的方式。
 
-**Tactical advice:**
-- Evaluate technical infrastructure choices (like monorepos) as business strategy investments
-- Recognize that technical choices that were 'incorrect' at one size may become 'correct' at another
-- Use leadership influence to compress the time spent on contentious technical change management
+**战术建议：**
+- 将技术基础设施选择（如 monorepo）评估为业务战略投资
+- 认识到在某个规模"错误"的技术选择在另一个规模可能变成"正确"
+- 利用领导力影响来压缩有争议的技术变更管理所花费的时间
 
-*Timestamp: 00:52:00*
-
+*时间戳：00:52:00*

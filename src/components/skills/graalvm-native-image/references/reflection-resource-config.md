@@ -1,41 +1,41 @@
-# GraalVM Reflection & Resource Configuration
+# GraalVM 反射与资源配置
 
-Complete guide for GraalVM metadata files that enable reflection, resources, proxies, and serialization in native images.
+在原生镜像中启用反射、资源、代理和序列化的 GraalVM metadata 文件完整指南。
 
-## Table of Contents
+## 目录
 
-1. [Configuration File Location](#configuration-file-location)
-2. [Unified Reachability Metadata](#unified-reachability-metadata)
-3. [Reflection Configuration](#reflection-configuration)
-4. [Resource Configuration](#resource-configuration)
-5. [Proxy Configuration](#proxy-configuration)
-6. [Serialization Configuration](#serialization-configuration)
+1. [配置文件位置](#配置文件位置)
+2. [统一可达性元数据](#统一可达性元数据)
+3. [反射配置](#反射配置)
+4. [资源配置](#资源配置)
+5. [代理配置](#代理配置)
+6. [序列化配置](#序列化配置)
 
 ---
 
-## Configuration File Location
+## 配置文件位置
 
-Place metadata files in:
+将 metadata 文件放置在：
 
 ```
 src/main/resources/
   META-INF/native-image/
     <group.id>/
       <artifact.id>/
-        reachability-metadata.json    # Unified format (recommended)
-        reflect-config.json           # Legacy: reflection only
-        resource-config.json          # Legacy: resources only
-        proxy-config.json             # Legacy: dynamic proxies
-        serialization-config.json     # Legacy: serialization
-        jni-config.json               # Legacy: JNI access
-        native-image.properties       # Build arguments
+        reachability-metadata.json    # 统一格式（推荐）
+        reflect-config.json           # 旧版：仅反射
+        resource-config.json          # 旧版：仅资源
+        proxy-config.json             # 旧版：动态代理
+        serialization-config.json     # 旧版：序列化
+        jni-config.json               # 旧版：JNI 访问
+        native-image.properties       # 构建参数
 ```
 
-GraalVM automatically discovers files in the `META-INF/native-image/` directory.
+GraalVM 会自动发现 `META-INF/native-image/` 目录中的文件。
 
-## Unified Reachability Metadata
+## 统一可达性元数据
 
-The unified `reachability-metadata.json` format (recommended for GraalVM 23+) combines all metadata:
+统一的 `reachability-metadata.json` 格式（推荐 GraalVM 23+ 使用）合并所有 metadata：
 
 ```json
 {
@@ -83,9 +83,9 @@ The unified `reachability-metadata.json` format (recommended for GraalVM 23+) co
 }
 ```
 
-## Reflection Configuration
+## 反射配置
 
-### Legacy `reflect-config.json`
+### 旧版 `reflect-config.json`
 
 ```json
 [
@@ -121,21 +121,21 @@ The unified `reachability-metadata.json` format (recommended for GraalVM 23+) co
 ]
 ```
 
-### Common Reflection Flags
+### 常用反射标志
 
-| Flag | Description |
+| 标志 | 描述 |
 |------|-------------|
-| `allDeclaredConstructors` | Register all constructors (public and private) |
-| `allPublicConstructors` | Register only public constructors |
-| `allDeclaredMethods` | Register all methods (public and private) |
-| `allPublicMethods` | Register only public methods |
-| `allDeclaredFields` | Register all fields (public and private) |
-| `allPublicFields` | Register only public fields |
-| `unsafeAllocated` | Allow `Unsafe.allocateInstance()` |
+| `allDeclaredConstructors` | 注册所有构造器（公共和私有） |
+| `allPublicConstructors` | 仅注册公共构造器 |
+| `allDeclaredMethods` | 注册所有方法（公共和私有） |
+| `allPublicMethods` | 仅注册公共方法 |
+| `allDeclaredFields` | 注册所有字段（公共和私有） |
+| `allPublicFields` | 仅注册公共字段 |
+| `unsafeAllocated` | 允许 `Unsafe.allocateInstance()` |
 
-## Resource Configuration
+## 资源配置
 
-### Legacy `resource-config.json`
+### 旧版 `resource-config.json`
 
 ```json
 {
@@ -161,11 +161,11 @@ The unified `reachability-metadata.json` format (recommended for GraalVM 23+) co
 }
 ```
 
-## Proxy Configuration
+## 代理配置
 
-### Legacy `proxy-config.json`
+### 旧版 `proxy-config.json`
 
-Register interfaces for JDK dynamic proxy generation:
+注册用于 JDK 动态代理生成的接口：
 
 ```json
 [
@@ -186,9 +186,9 @@ Register interfaces for JDK dynamic proxy generation:
 ]
 ```
 
-## Serialization Configuration
+## 序列化配置
 
-### Legacy `serialization-config.json`
+### 旧版 `serialization-config.json`
 
 ```json
 {
@@ -206,7 +206,7 @@ Register interfaces for JDK dynamic proxy generation:
 
 ## `native-image.properties`
 
-Configure default build arguments:
+配置默认构建参数：
 
 ```properties
 Args = --no-fallback \

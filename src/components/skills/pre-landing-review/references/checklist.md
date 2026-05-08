@@ -1,93 +1,93 @@
-# Pre-Landing Review Checklist
+# 上线前复查检查清单
 
-## Pass 1 — CRITICAL (blocking)
+## 第一遍 — 关键（阻止上线）
 
-### SQL & Data Safety
+### SQL 与数据安全
 
-- [ ] No raw SQL without parameterized queries
-- [ ] Schema migrations use lock timeouts and are reversible
-- [ ] Bulk updates/deletes have verified WHERE clauses
-- [ ] Column updates go through model validations, not direct DB writes
-- [ ] No N+1 queries introduced in hot paths
-- [ ] Indexes exist for new query patterns
+- [ ] 没有未使用参数化查询的原始 SQL
+- [ ] Schema 迁移使用锁超时并且是可逆的
+- [ ] 批量更新/删除有已验证的 WHERE 子句
+- [ ] 列更新通过模型验证进行，而不是直接写入数据库
+- [ ] 热路径中没有引入 N+1 查询
+- [ ] 新的查询模式存在索引
 
-### Race Conditions & Concurrency
+### 竞态条件与并发
 
-- [ ] No read-then-write without optimistic locking or database locks
-- [ ] Unique constraints enforced at database level, not just application
-- [ ] Shared mutable state properly synchronized
-- [ ] Background jobs are idempotent (safe to retry)
-- [ ] No TOCTOU (time-of-check-to-time-of-use) vulnerabilities
+- [ ] 没有不经过乐观锁或数据库锁的读后写操作
+- [ ] 唯一约束在数据库层面而非仅应用层面强制执行
+- [ ] 共享可变状态已正确同步
+- [ ] 后台任务是幂等的（可安全重试）
+- [ ] 没有 TOCTOU（检查时间到使用时间）漏洞
 
-### Trust Boundaries
+### 信任边界
 
-- [ ] LLM/AI output sanitized before use in SQL, shell, or HTML
-- [ ] User input validated before reaching privileged operations
-- [ ] External API responses validated against expected schema
-- [ ] No deserialization of untrusted data without schema validation
-- [ ] Authentication/authorization checks on all new endpoints
-- [ ] Secrets not hardcoded or logged
+- [ ] LLM/AI 输出在用于 SQL、shell 或 HTML 之前已清理
+- [ ] 用户输入在到达特权操作之前已验证
+- [ ] 外部 API 响应已对照预期 schema 验证
+- [ ] 没有对不可信数据进行无 schema 验证的反序列化
+- [ ] 所有新端点都有身份验证/授权检查
+- [ ] 密钥未硬编码或记录
 
-## Pass 2 — INFORMATIONAL (non-blocking)
+## 第二遍 — 信息性（非阻止上线）
 
-### Conditional Side Effects
+### 条件副作用
 
-- [ ] Side effects not hidden in conditional branches
-- [ ] State-change callbacks documented and intentional
-- [ ] Error handlers don't silently swallow failures
+- [ ] 副作用未隐藏在条件分支中
+- [ ] 状态变更回调已文档化且有意为之
+- [ ] 错误处理器不会静默吞异常
 
-### Magic Numbers
+### 魔法数字
 
-- [ ] Numeric literals extracted to named constants
-- [ ] Thresholds and limits documented with rationale
-- [ ] Timeout values appropriate and configurable
+- [ ] 数字字面量已提取为命名常量
+- [ ] 阈值和限制已文档化并附有理由说明
+- [ ] 超时值适当且可配置
 
-### Dead Code
+### 死代码
 
-- [ ] No unreachable branches
-- [ ] No unused imports or variables
-- [ ] No commented-out code without explanation
+- [ ] 没有不可达的分支
+- [ ] 没有未使用的导入或变量
+- [ ] 没有无解释的注释代码
 
-### Test Gaps
+### 测试缺口
 
-- [ ] New code paths have test coverage
-- [ ] Modified behavior has updated tests
-- [ ] Edge cases and error paths tested
-- [ ] Integration points have contract tests
+- [ ] 新的代码路径有测试覆盖
+- [ ] 修改的行为有更新的测试
+- [ ] 边界情况和错误路径已测试
+- [ ] 集成点有契约测试
 
-### Crypto & Entropy
+### 加密与熵
 
-- [ ] Cryptographically secure random for security contexts
-- [ ] No hardcoded secrets or API keys
-- [ ] TLS/encryption for sensitive data in transit
+- [ ] 安全场景使用加密安全的随机数
+- [ ] 没有硬编码的密钥或 API 密钥
+- [ ] 传输中的敏感数据使用 TLS/加密
 
-### Time Window Safety
+### 时间窗口安全
 
-- [ ] Timezone-aware datetime comparisons
-- [ ] Daylight saving transitions handled
-- [ ] Cron expressions account for clock skew
+- [ ] 使用时区感知的日期时间比较
+- [ ] 夏令时转换已处理
+- [ ] Cron 表达式考虑了时钟偏差
 
-### Type Coercion
+### 类型强制转换
 
-- [ ] No implicit type conversions that lose data
-- [ ] Numeric precision maintained across boundaries
-- [ ] String encoding explicit at I/O boundaries
+- [ ] 没有导致数据丢失的隐式类型转换
+- [ ] 跨边界维护了数值精度
+- [ ] 在 I/O 边界明确指定字符串编码
 
-## Gate Classification
+## 关卡分类
 
-| Category              | Severity      | Blocking? |
+| 类别 | 严重程度 | 阻止上线？ |
 | --------------------- | ------------- | --------- |
-| SQL & Data Safety     | CRITICAL      | Yes       |
-| Race Conditions       | CRITICAL      | Yes       |
-| Trust Boundaries      | CRITICAL      | Yes       |
-| All Pass 2 categories | INFORMATIONAL | No        |
+| SQL 与数据安全 | 关键 | 是 |
+| 竞态条件 | 关键 | 是 |
+| 信任边界 | 关键 | 是 |
+| 所有第二遍类别 | 信息性 | 否 |
 
-## Suppressions
+## 抑制规则
 
-Do NOT flag:
+以下情况不要标记：
 
-- Test files using test fixtures or factories
-- Migration files following framework conventions
-- Code with inline comments explaining why a flagged pattern is intentional
-- Configuration files with documented values
-- Type stubs or interface definitions
+- 使用测试夹具或工厂的测试文件
+- 遵循框架约定的迁移文件
+- 有行内注释解释为什么某个被标记的模式是有意为之的代码
+- 带有文档化值的配置文件
+- 类型存根或接口定义

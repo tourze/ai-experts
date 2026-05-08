@@ -1,134 +1,134 @@
-# Evaluation Metrics
+# 评估指标
 
-Metrics for measuring prompt quality, rubric design, and scoring methodology.
+用于衡量提示质量、评分标准设计和评分方法的指标。
 
 ---
 
-## Core Metrics
+## 核心指标
 
-### Correctness
+### 正确性
 
-Does the output contain the right answer/information?
+输出是否包含正确的答案/信息？
 
-| Score | Meaning                         |
+| 分数 | 含义 |
 | ----- | ------------------------------- |
-| 0     | Completely wrong or irrelevant  |
-| 1     | Partially correct, major errors |
-| 2     | Mostly correct, minor errors    |
-| 3     | Fully correct                   |
+| 0 | 完全错误或不相关 |
+| 1 | 部分正确，有重大错误 |
+| 2 | 基本正确，有轻微错误 |
+| 3 | 完全正确 |
 
-### Format Compliance
+### 格式合规性
 
-Does the output follow the specified format?
+输出是否遵循指定的格式？
 
-| Score | Meaning                              |
+| 分数 | 含义 |
 | ----- | ------------------------------------ |
-| 0     | Wrong format entirely                |
-| 1     | Right format, significant deviations |
-| 2     | Right format, minor deviations       |
-| 3     | Perfect format compliance            |
+| 0 | 格式完全错误 |
+| 1 | 格式正确但有显著偏差 |
+| 2 | 格式正确有轻微偏差 |
+| 3 | 完美符合格式 |
 
-### Completeness
+### 完整性
 
-Does the output include all required elements?
+输出是否包含所有必需的元素？
 
-| Score | Meaning                         |
+| 分数 | 含义 |
 | ----- | ------------------------------- |
-| 0     | Missing most required elements  |
-| 1     | Includes some required elements |
-| 2     | Includes most required elements |
-| 3     | All required elements present   |
+| 0 | 缺少大部分必需元素 |
+| 1 | 包含部分必需元素 |
+| 2 | 包含大部分必需元素 |
+| 3 | 所有必需元素均存在 |
 
-### Conciseness
+### 简洁性
 
-Is the output free of unnecessary content?
+输出是否无多余内容？
 
-| Score | Meaning                            |
+| 分数 | 含义 |
 | ----- | ---------------------------------- |
-| 0     | Extremely verbose, mostly filler   |
-| 1     | Significant unnecessary content    |
-| 2     | Slightly verbose                   |
-| 3     | Concise, every sentence adds value |
+| 0 | 极度冗长，大部分为填充内容 |
+| 1 | 有显著的不必要内容 |
+| 2 | 略微冗长 |
+| 3 | 简洁，每句话都有价值 |
 
-### Groundedness
+### 基于事实程度
 
-Are all claims supported by provided context? (For RAG/grounded tasks)
+所有声明是否都有提供的上下文支持？（适用于 RAG/有依据的任务）
 
-| Score | Meaning                                         |
+| 分数 | 含义 |
 | ----- | ----------------------------------------------- |
-| 0     | Mostly hallucinated                             |
-| 1     | Mix of grounded and hallucinated claims         |
-| 2     | Almost fully grounded, minor unsupported claims |
-| 3     | Every claim traceable to context                |
+| 0 | 大部分为幻觉 |
+| 1 | 混合了有依据和幻觉的声明 |
+| 2 | 几乎完全有依据，少量无支持的声明 |
+| 3 | 每个声明都能追溯到上下文 |
 
 ---
 
-## Rubric Design
+## 评分标准设计
 
-### Weighting by Task Type
+### 按任务类型加权
 
-| Task Type      | Correctness | Format | Completeness | Conciseness |
+| 任务类型 | 正确性 | 格式 | 完整性 | 简洁性 |
 | -------------- | ----------- | ------ | ------------ | ----------- |
-| Classification | 50%         | 20%    | 10%          | 20%         |
-| Extraction     | 40%         | 25%    | 25%          | 10%         |
-| Analysis       | 35%         | 15%    | 30%          | 20%         |
-| Summarization  | 30%         | 15%    | 25%          | 30%         |
-| Generation     | 30%         | 20%    | 25%          | 25%         |
+| 分类 | 50% | 20% | 10% | 20% |
+| 提取 | 40% | 25% | 25% | 10% |
+| 分析 | 35% | 15% | 30% | 20% |
+| 摘要 | 30% | 15% | 25% | 30% |
+| 生成 | 30% | 20% | 25% | 25% |
 
-### Custom Criteria
+### 自定义标准
 
-Add task-specific criteria when core metrics are insufficient:
+当核心指标不足时，添加任务特定标准：
 
-| Custom Criterion | When to Use                                |
+| 自定义标准 | 使用时机 |
 | ---------------- | ------------------------------------------ |
-| Tone/voice       | Brand-specific or audience-specific output |
-| Specificity      | Answers should be concrete, not generic    |
-| Actionability    | Recommendations should be actionable       |
-| Safety           | Output must not contain harmful content    |
-| Creativity       | Output should be novel or engaging         |
+| 语气/声音 | 品牌特定或受众特定的输出 |
+| 具体性 | 答案应具体而非泛泛 |
+| 可操作性 | 建议应具有可操作性 |
+| 安全性 | 输出不得包含有害内容 |
+| 创造力 | 输出应新颖或引人入胜 |
 
 ---
 
-## Scoring Methodology
+## 评分方法
 
-### Per-Query Scoring
+### 逐查询评分
 
-For each test query × variant:
+对于每个测试查询 × 变体：
 
-1. Score each criterion (0-3)
-2. Apply weights
-3. Calculate weighted sum
-4. Normalize to 0-100%
+1. 对每个标准评分（0-3）
+2. 应用权重
+3. 计算加权和
+4. 归一化为 0-100%
 
 ```text
-Score = Σ(criterion_score × weight) / (3 × Σ weights) × 100
+分数 = Σ（标准分数 × 权重）/（3 × Σ 权重）× 100
 ```
 
-### Aggregate Scoring
+### 聚合评分
 
-For each variant across all test queries:
+对于所有测试查询的每个变体：
 
-- **Mean score** — Overall quality
-- **Min score** — Worst-case performance (important for reliability)
-- **Std deviation** — Consistency
-- **Pass rate** — % of queries scoring above threshold
+- **平均分** —— 总体质量
+- **最低分** —— 最差性能（对可靠性重要）
+- **标准差** —— 一致性
+- **通过率** —— 高于阈值的查询百分比
 
-### Comparison
+### 比较
 
-| Metric                | Variant A | Variant B | Winner |
+| 指标 | 变体 A | 变体 B | 胜者 |
 | --------------------- | --------- | --------- | ------ |
-| Mean score            | 85%       | 78%       | A      |
-| Min score             | 60%       | 45%       | A      |
-| Consistency (std dev) | 8%        | 15%       | A      |
-| Pass rate (>70%)      | 95%       | 80%       | A      |
+| 平均分 | 85% | 78% | A |
+| 最低分 | 60% | 45% | A |
+| 一致性（标准差） | 8% | 15% | A |
+| 通过率（>70%） | 95% | 80% | A |
 
 ---
 
-## Automated Evaluation
+## 自动评估
 
-### LLM-as-Judge
+### LLM 作为评判者
 
-Use a separate LLM call to evaluate outputs:
+使用独立的 LLM 调用来评估输出：
 
 ```text
 You are an evaluation judge. Score the following output on a 0-3 scale for each criterion.
@@ -145,20 +145,20 @@ Provide scores as JSON:
 {"correctness": N, "format": N, "completeness": N, "reasoning": "..."}
 ```
 
-**Limitations:** LLM judges have their own biases. Use as a signal, not ground truth.
-Human evaluation is more reliable for subjective criteria.
+**局限性：** LLM 评判者有自身的偏见。将其作为信号而非事实依据。
+对于主观标准，人类评估更可靠。
 
-### Exact Match
+### 精确匹配
 
-For tasks with unambiguous correct answers:
+对于答案明确无歧义的任务：
 
 ```python
 score = 1.0 if output.strip() == expected.strip() else 0.0
 ```
 
-### Partial Match (Recall)
+### 部分匹配（召回率）
 
-For extraction tasks:
+对于提取任务：
 
 ```python
 expected_items = set(expected)

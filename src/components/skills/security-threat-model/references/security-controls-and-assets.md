@@ -1,32 +1,32 @@
-# Security Controls and Asset Categories
+# 安全控制措施与资产类别
 
-Use this as a lightweight checklist to keep outputs consistent across teams. Prefer concrete, system-specific items over generic text.
+使用此作为轻量级检查清单，以保持输出在团队间一致。优先使用具体、系统特定的项目，而非通用文本。
 
-## Asset categories (pick only what applies)
-- User data (PII, content, uploads)
-- Authentication artifacts (passwords, tokens, sessions, cookies)
-- Authorization state (roles, policies, ACLs)
-- Secrets and keys (API keys, signing keys, encryption keys)
-- Configuration and feature flags
-- Models and weights (if ML systems)
-- Source code and build artifacts
-- Audit logs and telemetry
-- Availability-critical resources (queues, caches, rate limits, compute budgets)
-- Tenant isolation boundaries and metadata
+## 资产类别（仅选择适用的）
+- 用户数据（PII、内容、上传文件）
+- 认证制品（密码、令牌、会话、cookie）
+- 授权状态（角色、策略、ACL）
+- 秘密和密钥（API 密钥、签名密钥、加密密钥）
+- 配置和功能标志
+- 模型和权重（如果是 ML 系统）
+- 源代码和构建制品
+- 审计日志和遥测
+- 可用性关键资源（队列、缓存、速率限制、计算预算）
+- 租户隔离边界和元数据
 
-## Security control categories
-- Identity and access: authN, authZ, session handling, mTLS, key rotation
-- Input protection: schema validation, parsing hardening, upload scanning, sandboxing
-- Network safeguards: TLS, network policies, WAF, rate limiting, DoS controls
-- Data protection: encryption at rest/in transit, tokenization, redaction
-- Isolation: process sandboxing, container boundaries, tenant isolation, seccomp
-- Observability: audit logs, alerting, anomaly detection, tamper resistance
-- Supply chain: dependency pinning, SBOMs, provenance, signing
-- Change control: CI checks, deployment approvals, config guardrails
+## 安全控制措施类别
+- 身份和访问：authN、authZ、会话处理、mTLS、密钥轮换
+- 输入保护：schema 验证、解析加固、上传扫描、沙箱
+- 网络安全保障：TLS、网络策略、WAF、速率限制、DoS 控制
+- 数据保护：静态/传输中加密、令牌化、编辑
+- 隔离：进程沙箱、容器边界、租户隔离、seccomp
+- 可观测性：审计日志、告警、异常检测、防篡改
+- 供应链：依赖锁定、SBOM、来源、签名
+- 变更控制：CI 检查、部署审批、配置护栏
 
-## Mitigation phrasing patterns
-- "Enforce schema at <boundary> for <payload> before <component>."
-- "Require authZ check for <action> on <resource> in <service>."
-- "Isolate <parser/component> in a sandbox with <resource limits>."
-- "Rate limit <endpoint> by <key> and apply burst caps."
-- "Encrypt <data> at rest using <key management> and rotate <keys>."
+## 缓解措施措辞模式
+- "在 <boundary> 为 <payload> 在进入 <component> 之前强制执行 schema。"
+- "要求在 <service> 中对 <resource> 上的 <action> 进行 authZ 检查。"
+- "将 <parser/component> 隔离在带有 <resource limits> 的沙箱中。"
+- "按 <key> 对 <endpoint> 进行速率限制，并应用爆发上限。"
+- "使用 <key management> 对 <data> 进行静态加密，并轮换 <keys>。"

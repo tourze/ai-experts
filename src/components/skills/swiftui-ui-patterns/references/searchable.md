@@ -1,17 +1,17 @@
-# Searchable
+# 可搜索
 
-## Intent
+## 意图
 
-Use `searchable` to add native search UI with optional scopes and async results.
+使用 `searchable` 添加带有可选范围和异步结果的原生搜索 UI。
 
-## Core patterns
+## 核心模式
 
-- Bind `searchable(text:)` to local state.
-- Use `.searchScopes` for multiple search modes.
-- Use `.task(id: searchQuery)` or debounced tasks to avoid overfetching.
-- Show placeholders or progress states while results load.
+- 将 `searchable(text:)` 绑定到本地状态。
+- 使用 `.searchScopes` 实现多种搜索模式。
+- 使用 `.task(id: searchQuery)` 或防抖任务避免过度请求。
+- 在结果加载时显示占位符或进度状态。
 
-## Example: searchable with scopes
+## 示例：带范围的可搜索
 
 ```swift
 @MainActor
@@ -59,13 +59,13 @@ struct ExploreView: View {
 }
 ```
 
-## Design choices to keep
+## 要保留的设计选择
 
-- Show a placeholder when search is empty or has no results.
-- Debounce input to avoid spamming the network.
-- Keep search state local to the view.
+- 当搜索为空或没有结果时显示占位符。
+- 对输入进行防抖处理，避免频繁请求网络。
+- 保持搜索状态为视图本地。
 
-## Pitfalls
+## 陷阱
 
-- Avoid running searches for empty strings.
-- Don’t block the main thread during fetch.
+- 避免对空字符串运行搜索。
+- 不要在获取期间阻塞主线程。

@@ -1,246 +1,246 @@
-# Valuation Methodology Guide
+# 估值方法论指南
 
-Comprehensive reference for business valuation approaches including DCF analysis, comparable company analysis, and precedent transactions.
+涵盖 DCF 分析、可比公司分析和先例交易的企业估值方法综合性参考。
 
-## 1. Discounted Cash Flow (DCF) Methodology
+## 1. 折现现金流 (DCF) 方法论
 
-### Overview
+### 概述
 
-DCF is an intrinsic valuation method that estimates the present value of a company's expected future free cash flows, discounted at an appropriate rate reflecting the risk of those cash flows.
+DCF 是一种内在估值方法，估算公司预期未来自由现金流以反映这些现金流风险的适当折现率折现的现值。
 
-**Core Principle:** The value of a business equals the present value of all future cash flows it will generate.
+**核心原则：** 企业价值等于其将产生的所有未来现金流的现值。
 
-**Formula:**
-
-```
-Enterprise Value = Sum of [FCF_t / (1 + WACC)^t] + Terminal Value / (1 + WACC)^n
-```
-
-Where:
-- FCF_t = Free Cash Flow in year t
-- WACC = Weighted Average Cost of Capital
-- n = number of projection years
-
-### Step 1: Historical Analysis
-
-Before projecting, analyze 3-5 years of historical financials:
-
-- **Revenue growth rates** - Identify organic vs acquisition-driven growth
-- **Margin trends** - Gross, operating, and net margin trajectories
-- **Capital intensity** - CapEx as % of revenue
-- **Working capital** - Cash conversion cycle trends
-- **Free cash flow conversion** - FCF / Net Income ratio
-
-### Step 2: Revenue Projections
-
-**Approaches:**
-1. **Top-down:** Market size x Market share x Pricing
-2. **Bottom-up:** Units x Price, or Customers x ARPU
-3. **Growth rate extrapolation:** Historical growth with decay
-
-**Revenue Projection Best Practices:**
-- Use 5-7 year explicit projection period
-- Growth should converge toward GDP growth by terminal year
-- Support assumptions with market data and management guidance
-- Model revenue by segment/product line when possible
-
-### Step 3: Free Cash Flow Calculation
-
-**Unlevered Free Cash Flow (UFCF):**
+**公式：**
 
 ```
-UFCF = EBIT x (1 - Tax Rate)
-     + Depreciation & Amortization
-     - Capital Expenditures
-     - Changes in Net Working Capital
+企业价值 = Σ [FCF_t / (1 + WACC)^t] + 终值 / (1 + WACC)^n
 ```
 
-**Key Drivers:**
-- Operating margin trajectory
-- CapEx as % of revenue (maintenance vs growth)
-- Working capital requirements (DSO, DIO, DPO)
-- Tax rate (effective vs marginal)
+其中：
+- FCF_t = 第 t 年的自由现金流
+- WACC = 加权平均资本成本
+- n = 预测年数
 
-### Step 4: WACC Calculation
+### 步骤 1：历史分析
 
-**Weighted Average Cost of Capital:**
+在预测之前，分析 3-5 年的历史财务数据：
+
+- **收入增长率** - 识别有机增长与并购驱动增长
+- **利润率趋势** - 毛利率、营业利润率和净利润率轨迹
+- **资本密集度** - 资本支出占收入百分比
+- **营运资本** - 现金转换周期趋势
+- **自由现金流转换率** - FCF / 净利润比率
+
+### 步骤 2：收入预测
+
+**方法：**
+1. **自顶向下：** 市场规模 x 市场份额 x 定价
+2. **自底向上：** 数量 x 价格，或客户数 x ARPU
+3. **增长率外推：** 历史增长率随衰减
+
+**收入预测最佳实践：**
+- 使用 5-7 年明确预测期
+- 增长率在终期年应趋近 GDP 增长率
+- 以市场数据和管理层指引支撑假设
+- 尽可能按业务线/产品线建模收入
+
+### 步骤 3：自由现金流计算
+
+**无杠杆自由现金流 (UFCF)：**
+
+```
+UFCF = EBIT x (1 - 税率)
+     + 折旧与摊销
+     - 资本支出
+     - 净营运资本变动
+```
+
+**关键驱动因素：**
+- 营业利润率轨迹
+- 资本支出占收入百分比（维护 vs 增长）
+- 营运资本需求 (DSO, DIO, DPO)
+- 税率（实际 vs 边际）
+
+### 步骤 4：WACC 计算
+
+**加权平均资本成本：**
 
 ```
 WACC = (E/V x Re) + (D/V x Rd x (1 - T))
 ```
 
-Where:
-- E/V = Equity weight (market value)
-- D/V = Debt weight (market value)
-- Re = Cost of equity
-- Rd = Cost of debt (pre-tax)
-- T = Marginal tax rate
+其中：
+- E/V = 权益权重（市值）
+- D/V = 债务权重（市值）
+- Re = 权益成本
+- Rd = 债务成本（税前）
+- T = 边际税率
 
-#### Cost of Equity (CAPM)
-
-```
-Re = Rf + Beta x (Rm - Rf) + Size Premium + Company-Specific Risk
-```
-
-| Component | Description | Typical Range |
-|-----------|-------------|---------------|
-| Risk-Free Rate (Rf) | 10-year Treasury yield | 3.5% - 5.0% |
-| Equity Risk Premium (ERP) | Market return above risk-free | 5.0% - 7.0% |
-| Beta | Systematic risk relative to market | 0.5 - 2.0 |
-| Size Premium | Small-cap additional risk | 0% - 5% |
-| Company-Specific Risk | Unique risk factors | 0% - 5% |
-
-**Beta Estimation:**
-- Use 2-5 year weekly returns against broad market index
-- Unlevered betas for comparability, then re-lever to target capital structure
-- Consider industry median beta for stability
-
-#### Cost of Debt
+#### 权益成本 (CAPM)
 
 ```
-Rd = Yield on comparable-maturity corporate bonds
-   OR
-Rd = Risk-Free Rate + Credit Spread
+Re = Rf + Beta x (Rm - Rf) + 规模溢价 + 公司特定风险
 ```
 
-**Credit Spread by Rating:**
-| Rating | Typical Spread |
-|--------|---------------|
-| AAA | 0.5% - 1.0% |
-| AA | 1.0% - 1.5% |
-| A | 1.5% - 2.0% |
-| BBB | 2.0% - 3.0% |
-| BB | 3.0% - 5.0% |
-| B | 5.0% - 8.0% |
+| 组成部分               | 描述               | 典型范围   |
+| ---------------------- | ------------------ | ---------- |
+| 无风险利率 (Rf)        | 10 年期国债收益率   | 3.5% - 5.0% |
+| 股权风险溢价 (ERP)     | 市场收益高于无风险利率 | 5.0% - 7.0% |
+| Beta                   | 相对于市场的系统性风险 | 0.5 - 2.0  |
+| 规模溢价               | 小盘股额外风险      | 0% - 5%    |
+| 公司特定风险           | 独特风险因素       | 0% - 5%    |
 
-### Step 5: Terminal Value
+**Beta 估算：**
+- 使用 2-5 年周收益率与大盘指数对比
+- 先使用无杠杆 Beta 以获得可比性，再按目标资本结构重新杠杆化
+- 考虑行业平均 Beta 以获得稳定性
 
-Terminal value typically represents 60-80% of total enterprise value. Use two methods and cross-check.
+#### 债务成本
 
-#### Perpetuity Growth Method
+```
+Rd = 同类期限公司债券的收益率
+   或
+Rd = 无风险利率 + 信用利差
+```
+
+**按评级的信用利差：**
+| 评级     | 典型利差     |
+| -------- | ------------ |
+| AAA      | 0.5% - 1.0%  |
+| AA       | 1.0% - 1.5%  |
+| A        | 1.5% - 2.0%  |
+| BBB      | 2.0% - 3.0%  |
+| BB       | 3.0% - 5.0%  |
+| B        | 5.0% - 8.0%  |
+
+### 步骤 5：终值
+
+终值通常占企业总价值的 60-80%。使用两种方法交叉验证。
+
+#### 永续增长法
 
 ```
 TV = FCF_n x (1 + g) / (WACC - g)
 ```
 
-Where g = terminal growth rate (typically 2.0% - 3.0%, should not exceed long-term GDP growth)
+其中 g = 终期增长率（通常为 2.0% - 3.0%，不应超过长期 GDP 增长）
 
-**Sensitivity:** Terminal value is highly sensitive to g. A 0.5% change in g can move enterprise value by 15-25%.
+**敏感性：** 终值对 g 高度敏感。g 变化 0.5% 可使企业价值变动 15-25%。
 
-#### Exit Multiple Method
-
-```
-TV = Terminal Year EBITDA x Exit EV/EBITDA Multiple
-```
-
-**Exit Multiple Selection:**
-- Use current trading multiples of comparable companies
-- Consider whether current multiples are at historical highs/lows
-- Apply a discount for lack of marketability if private
-
-**Cross-Check:** Both methods should yield similar results. Large discrepancies signal inconsistent assumptions.
-
-### Step 6: Enterprise to Equity Bridge
+#### 退出倍数法
 
 ```
-Enterprise Value
-- Net Debt (Total Debt - Cash)
-- Minority Interest
-- Preferred Equity
-+ Equity Method Investments
-= Equity Value
-
-Equity Value / Diluted Shares Outstanding = Value Per Share
+TV = 终期年 EBITDA x 退出 EV/EBITDA 倍数
 ```
 
-### Step 7: Sensitivity Analysis
+**退出倍数选择：**
+- 使用可比公司当前的交易倍数
+- 考虑当前倍数是否处于历史高点/低点
+- 如为私有公司，对缺乏市场流动性应用折价
 
-Always present results as a range, not a single point estimate.
+**交叉验证：** 两种方法应得出相似结果。较大差异表明假设不一致。
 
-**Standard Sensitivity Tables:**
-1. WACC vs Terminal Growth Rate
-2. WACC vs Exit Multiple
-3. Revenue Growth vs Operating Margin
+### 步骤 6：企业价值到股权价值桥接
 
-**Scenario Analysis:**
-- Base case: Management guidance / consensus estimates
-- Bull case: Upside scenario with faster growth or margin expansion
-- Bear case: Downside scenario with slower growth or margin compression
+```
+企业价值
+- 净负债（总负债 - 现金）
+- 少数股东权益
+- 优先股
++ 权益法投资
+= 股权价值
 
-## 2. Comparable Company Analysis
+股权价值 / 稀释后流通股数 = 每股价值
+```
 
-### Methodology
+### 步骤 7：敏感性分析
 
-1. **Select peer group** - Similar size, industry, growth profile, and margins
-2. **Calculate trading multiples** for each peer
-3. **Determine appropriate multiple range**
-4. **Apply to target company's metrics**
+始终将结果呈现为范围，而非单一点估计。
 
-### Common Multiples
+**标准敏感性表：**
+1. WACC vs 终期增长率
+2. WACC vs 退出倍数
+3. 收入增长 vs 营业利润率
 
-| Multiple | When to Use |
-|----------|-------------|
-| EV/Revenue | Pre-profit companies, high-growth tech |
-| EV/EBITDA | Most common for mature companies |
-| EV/EBIT | When D&A differs significantly across peers |
-| P/E | Stable earnings, financial services |
-| P/B | Banks, insurance, asset-heavy industries |
-| EV/FCF | Capital-light businesses with clean FCF |
+**情景分析：**
+- 基准情景：管理层指引 / 共识预测
+- 乐观情景：更快增长或利润率扩张的上行情景
+- 悲观情景：增长放缓或利润率压缩的下行情景
 
-### Peer Selection Criteria
+## 2. 可比公司分析
 
-- **Industry:** Same or closely adjacent sectors
-- **Size:** Within 0.5x to 2x of target revenue/market cap
-- **Geography:** Same primary markets
-- **Growth profile:** Similar revenue growth rates (within 5-10%)
-- **Margin profile:** Similar operating margin structure
-- **Business model:** Comparable revenue mix and customer base
+### 方法论
 
-### Premium/Discount Adjustments
+1. **选择同行群体** - 规模、行业、增长概况和利润率相似
+2. **计算每个同行的交易倍数**
+3. **确定适当的倍数范围**
+4. **应用于目标公司指标**
 
-| Factor | Adjustment |
-|--------|-----------|
-| Higher growth | Premium of 1-3x on EV/EBITDA |
-| Lower margins | Discount of 1-2x |
-| Smaller scale | Discount of 10-20% |
-| Private company | Discount of 15-30% (illiquidity) |
-| Control premium | Premium of 20-40% (for acquisitions) |
+### 常见倍数
 
-## 3. Precedent Transaction Analysis
+| 倍数         | 何时使用                         |
+| ------------ | -------------------------------- |
+| EV/收入      | 尚未盈利的公司、高增长科技       |
+| EV/EBITDA    | 成熟公司最常用                   |
+| EV/EBIT      | 同行间折旧摊销差异显著时         |
+| P/E          | 盈利稳定、金融服务               |
+| P/B          | 银行、保险、重资产行业           |
+| EV/FCF       | 轻资产、现金流清晰的业务         |
 
-### Methodology
+### 同行选择标准
 
-1. **Identify comparable transactions** in same industry
-2. **Calculate transaction multiples** (EV/Revenue, EV/EBITDA)
-3. **Adjust for market conditions** and deal-specific factors
-4. **Apply adjusted multiples** to target
+- **行业：** 相同或密切相关的行业
+- **规模：** 目标公司收入/市值的 0.5 倍到 2 倍以内
+- **地域：** 相同的首要市场
+- **增长概况：** 类似的收入增长率（5-10% 以内）
+- **利润率概况：** 类似的营业利润率结构
+- **商业模式：** 可比的收入构成和客户基础
 
-### Key Considerations
+### 溢价/折价调整
 
-- Transactions include control premiums (typically 20-40%)
-- Market conditions at time of deal affect multiples
-- Strategic vs financial buyer valuations differ
-- Consider synergy expectations embedded in price
-- More recent transactions carry greater relevance
+| 因素       | 调整                         |
+| ---------- | ---------------------------- |
+| 增长更快   | EV/EBITDA 溢价 1-3x          |
+| 利润率更低 | 折价 1-2x                    |
+| 规模更小   | 折价 10-20%                  |
+| 私有公司   | 折价 15-30%（缺乏流动性）    |
+| 控制权溢价 | 溢价 20-40%（用于收购）      |
 
-## 4. Valuation Framework Selection
+## 3. 先例交易分析
 
-| Situation | Primary Method | Secondary Method |
-|-----------|---------------|-----------------|
-| Profitable, stable | DCF | Comparable companies |
-| High growth, pre-profit | Comparable companies (EV/Revenue) | DCF with scenario analysis |
-| M&A target | Precedent transactions | DCF |
-| Asset-heavy, cyclical | Asset-based valuation | Normalized DCF |
-| Financial institution | Dividend discount model | P/B, P/E comps |
-| Distressed | Liquidation value | Restructured DCF |
+### 方法论
 
-## 5. Common Pitfalls
+1. **识别同行业中的可比交易**
+2. **计算交易倍数** (EV/收入, EV/EBITDA)
+3. **根据市场条件和交易特定因素调整**
+4. **将调整后的倍数应用于目标公司**
 
-1. **Hockey stick projections** - Unrealistic growth acceleration in later years
-2. **Terminal value dominance** - If TV > 80% of EV, shorten projection period or question assumptions
-3. **Circular references** - WACC depends on equity value which depends on WACC
-4. **Ignoring working capital** - Can significantly affect FCF
-5. **Single-point estimates** - Always present as a range
-6. **Stale comparables** - Market conditions change; update regularly
-7. **Confirmation bias** - Don't work backward from a desired conclusion
-8. **Ignoring dilution** - Use fully diluted shares (treasury stock method for options)
+### 关键考量因素
+
+- 交易包含控制权溢价（通常为 20-40%）
+- 交易时的市场条件影响倍数
+- 战略买家与财务买家的估值不同
+- 考虑价格中嵌入的协同效应预期
+- 越近期的交易相关性越高
+
+## 4. 估值框架选择
+
+| 情况                       | 主要方法               | 次要方法           |
+| -------------------------- | ---------------------- | ------------------ |
+| 盈利、稳定                 | DCF                    | 可比公司           |
+| 高增长、尚未盈利           | 可比公司 (EV/收入)     | 含情景分析的 DCF   |
+| 并购目标                   | 先例交易               | DCF                |
+| 重资产、周期性             | 资产基础估值           | 标准化 DCF         |
+| 金融机构                   | 股息贴现模型           | P/B, P/E 可比      |
+| 陷入困境                   | 清算价值               | 重组后 DCF         |
+
+## 5. 常见陷阱
+
+1. **曲线球预测** - 后期年份不切实际的增长加速
+2. **终值主导** - 如果 TV > EV 的 80%，缩短预测期或质疑假设
+3. **循环引用** - WACC 取决于股权价值，而股权价值又取决于 WACC
+4. **忽略营运资本** - 可能显著影响 FCF
+5. **单点估计** - 始终呈现为范围
+6. **过时的可比数据** - 市场条件变化；定期更新
+7. **确认偏差** - 不要从期望结论倒推
+8. **忽略稀释** - 使用完全稀释股份数（期权使用库存股法）

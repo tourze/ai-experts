@@ -1,87 +1,87 @@
-# Copy and content templates
+# 文案与内容模板
 
-Use these patterns to draft fast, then tailor to the product and audience.
+使用这些模式快速起草，然后针对产品和受众进行调整。
 
-## Hero title formulas (pick 1)
+## 主标题公式（选 1 个）
 
-1. Outcome + audience
-   - "<Outcome> for <Audience>."
-2. Outcome + time
-   - "Get <Outcome> in <Timeframe>."
-3. Remove a pain
-   - "Stop <Pain>. Start <Better State>."
-4. Do X without Y
-   - "<Do X> without <Common Friction>."
-5. Category + differentiator
-   - "The <Category> built for <Differentiator>."
+1. 成果 + 受众
+   - "<成果> for <受众>。"
+2. 成果 + 时间
+   - "在 <时间> 内获得 <成果>。"
+3. 消除一个痛点
+   - "告别 <痛点>。迎接 <更好状态>。"
+4. 做 X 无需 Y
+   - "<做 X>，无需 <常见摩擦>。"
+5. 品类 + 差异化优势
+   - "为 <差异化优势> 而打造的 <品类>。"
 
-## Subheadline formulas
+## 副标题公式
 
-- "<How it works> so you can <Outcome>."
-- "<Approach>, <feature>, and <proof> in one <category>."
-- "Built for <audience> who need <job-to-be-done> without <tradeoff>."
+- "<工作原理>，从而 <成果>。"
+- "<方法>、<功能> 以及 <证明>，汇聚于一个 <品类>。"
+- "专为需要 <要做的工作> 的 <受众> 而建，无需 <权衡>。"
 
-## CTA patterns
+## CTA 模式
 
-Primary CTA labels (keep it specific):
-- "Start free"
-- "Get the template"
-- "Book a demo"
-- "Generate my report"
-- "See pricing"
+主要 CTA 标签（保持具体）：
+- "免费开始"
+- "获取模板"
+- "预约演示"
+- "生成我的报告"
+- "查看定价"
 
-CTA microcopy (1 short line under the button):
-- "No credit card required"
-- "Takes 60 seconds"
-- "Cancel anytime"
-- "Join <N> teams"
+CTA 微文案（按钮下方一行简短文字）：
+- "无需信用卡"
+- "仅需 60 秒"
+- "随时取消"
+- "已有 <N> 个团队加入"
 
-Rules:
-- Match the CTA promise to what happens next.
-- Avoid multiple competing CTAs above the fold.
+规则：
+- 确保 CTA 承诺与实际后续操作一致。
+- 避免在首屏出现多个互相竞争的 CTA。
 
-## Social proof menu
+## 社会证明菜单
 
-Place at least one proof element above the fold.
+在首屏至少放置一个证明元素。
 
-Options:
-- Customer logos (5 to 8 max)
-- One short testimonial (name, role, company)
-- Metric proof ("Trusted by 12,000 teams")
-- Credibility badges (awards, press)
+选项：
+- 客户标志（最多 5 到 8 个）
+- 一条简短的推荐语（姓名、职位、公司）
+- 指标证明（"已获 12,000 个团队信任"）
+- 信誉徽章（奖项、媒体报道）
 
-## Features section template
+## 功能区块模板
 
-Use outcome-first cards (not feature-first):
+使用结果优先的卡片（而非功能优先）：
 
-- Headline: "<Outcome>"
-- Body: "<How> in <1 sentence>"
-- Proof: small stat, quote, or screenshot label
+- 标题："<成果>"
+- 正文："<方式>，用 <一句话> 描述"
+- 证明：小型统计数据、引用或截图标签
 
-Recommended count:
-- 3 to 6 feature blocks, grouped into 2 themes max.
+推荐数量：
+- 3 到 6 个功能块，最多分为 2 个主题组。
 
-## FAQ template (answer objections)
+## FAQ 模板（解答异议）
 
-Pick the 5 to 8 questions that most reduce friction.
+挑选最能减少摩擦的 5 到 8 个问题。
 
-Common prompts:
-- "How does it work?"
-- "Who is this for?"
-- "What do I get right away?"
-- "Do I need a credit card?"
-- "Can I cancel?"
-- "How do you handle security/privacy?"
-- "What if I'm not satisfied?"
-- "How is this different from <alternative>?"
+常见问题提示：
+- "它是如何工作的？"
+- "这是为谁准备的？"
+- "我马上能得到什么？"
+- "我需要信用卡吗？"
+- "我可以取消吗？"
+- "你们如何处理安全/隐私？"
+- "如果我不满意怎么办？"
+- "这与 <竞争对手> 有什么不同？"
 
-Guidelines:
-- Keep each answer 2 to 4 sentences.
-- End 1 to 2 answers with a gentle CTA (link or button).
+指南：
+- 每个答案保持 2 到 4 句话。
+- 在 1 到 2 个答案结尾处添加温和的 CTA（链接或按钮）。
 
-## Conversion copy checklist
+## 转化文案检查清单
 
-- Make the promise concrete (avoid vague words like "best" or "next-gen").
-- Use the visitor's language (jobs, pains, outcomes).
-- Reduce risk with specifics (time, steps, requirements).
-- Repeat the CTA after each major persuasion section.
+- 让承诺具体化（避免"最佳"或"下一代"等模糊词汇）。
+- 使用访客的语言（任务、痛点、成果）。
+- 用具体信息降低风险（时间、步骤、要求）。
+- 在每个主要说服版块之后重复 CTA。

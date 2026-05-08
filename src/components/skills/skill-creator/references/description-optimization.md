@@ -1,49 +1,49 @@
-# Description Optimization And Packaging
+# 描述优化与打包
 
-## Trigger Eval Queries
+## 触发 Eval 查询
 
-The `description` field is the primary trigger surface. After creating or improving a skill, offer description optimization when trigger accuracy matters.
+`description` 字段是主要的触发面。在创建或改进 skill 后，当触发准确性重要时，提供描述优化。
 
-Create about 20 eval queries:
+创建约 20 条 eval 查询：
 
-- 8-10 `should_trigger`
-- 8-10 `should_not_trigger`
+- 8-10 条 `should_trigger`
+- 8-10 条 `should_not_trigger`
 
-Queries must look like real user prompts. Include concrete files, context, URLs, data columns, task wording, abbreviations, typos, and casual phrasing. Avoid obvious toy prompts.
+查询必须看起来像真实的用户提示。包含具体的文件、上下文、URL、数据列、任务措辞、缩写、拼写错误和随意用语。避免明显的玩具提示。
 
-Good negative examples are near-misses: shared keywords or concepts that should route to another skill. Avoid unrelated negatives that are too easy.
+好的反面例子是接近命中的情况：共享关键词或概念，但应路由到其他 skill。避免过于简单的无关反面例子。
 
-## User Review Of Eval Set
+## 用户审查 Eval 集
 
-Use `assets/eval_review.html`:
+使用 `assets/eval_review.html`：
 
-1. Replace `__EVAL_DATA_PLACEHOLDER__` with the JSON array, not as a quoted string.
-2. Replace `__SKILL_NAME_PLACEHOLDER__`.
-3. Replace `__SKILL_DESCRIPTION_PLACEHOLDER__`.
-4. Write a temporary HTML file and open it when a browser is available.
-5. After export, read the newest `eval_set.json` from Downloads if needed.
+1. 将 `__EVAL_DATA_PLACEHOLDER__` 替换为 JSON 数组，不要作为引用字符串。
+2. 替换 `__SKILL_NAME_PLACEHOLDER__`。
+3. 替换 `__SKILL_DESCRIPTION_PLACEHOLDER__`。
+4. 写入临时 HTML 文件，在有浏览器可用时打开。
+5. 导出后，如果需要，从下载目录读取最新的 `eval_set.json`。
 
-Bad eval queries directly damage optimization quality, so let the user review before running the loop.
+糟糕的 eval 查询会直接损害优化质量，因此在运行优化循环前让用户审查。
 
-## Run Optimization
+## 运行优化
 
-Save the reviewed eval set. If the generated Procedure table includes an automatic optimization loop, use that generated command with the eval set, skill path, current model, five max iterations, and verbose progress.
+保存审查后的 eval 集。如果生成的 Procedure 表中包含自动优化循环，使用该生成命令，传入 eval 集、skill 路径、当前模型、最大五次迭代和详细进度。
 
-Use the actual model powering the current session so trigger behavior matches user experience.
+使用当前会话实际使用的模型，以使触发行为匹配用户体验。
 
-The loop splits data into train and held-out test, runs each query multiple times for stability, proposes improved descriptions, and picks `best_description` by held-out test score rather than train score.
+循环将数据拆分为训练集和保留测试集，多次运行每个查询以确保稳定性，提出改进的描述，并根据保留测试集分数（而非训练集分数）选择 `best_description`。
 
-When no automatic loop procedure is available in the current platform, call `skill-creator-improve-description` for a candidate description and manually verify the held-out queries before applying it. Report whether the result came from the automatic loop or a manual held-out verification.
+当当前平台没有可用的自动循环 Procedure 时，调用 `skill-creator-improve-description` 获取候选描述，并在应用前手动验证保留测试集查询。报告结果来自自动循环还是手动保留测试集验证。
 
-## Apply Result
+## 应用结果
 
-Read the JSON output, extract `best_description`, update the skill frontmatter or structured source field, and show before/after plus score changes.
+读取 JSON 输出，提取 `best_description`，更新 skill 的前置元数据或结构化源字段，并显示前后对比及分数变化。
 
-Remember the trigger mechanism: the model sees available skill names and descriptions, and asks for a skill only when the task appears to require extra capability. Very simple one-step prompts may not trigger any skill even if keywords match.
+记住触发机制：模型会看到可用的 skill 名称和描述，并且仅在任务看起来需要额外能力时才请求 skill。非常简单的一步式提示可能不会触发任何 skill，即使关键词匹配。
 
-## Packaging
+## 打包
 
-If file presentation tooling is available, package by calling the `skill-creator-package-skill` procedure command shown in `SKILL.md`, replacing the default empty args with:
+如果文件展示工具可用，通过调用 `SKILL.md` 中显示的 `skill-creator-package-skill` Procedure 命令进行打包，将默认空参数替换为：
 
 ```json
 {
@@ -51,25 +51,25 @@ If file presentation tooling is available, package by calling the `skill-creator
 }
 ```
 
-Report the generated `.skill` path and installation instructions appropriate to the environment.
+报告生成的 `.skill` 路径和适合环境的安装说明。
 
-## Environment Adaptation
+## 环境适配
 
-Claude.ai:
+Claude.ai：
 
-- No subagents.
-- Run eval cases sequentially yourself.
-- Skip baselines, blind comparison, and CLI-based description optimization.
-- Show results inline.
+- 没有 subagent。
+- 自己顺序运行 eval 案例。
+- 跳过基线、盲比较和基于 CLI 的描述优化。
+- 内联显示结果。
 
-Cowork/headless:
+Cowork/headless：
 
-- Use static viewer output.
-- Ask the user to export `feedback.json`.
-- Generate the viewer before self-grading when the workflow expects user review.
+- 使用静态浏览器输出。
+- 要求用户导出 `feedback.json`。
+- 在工作流期望用户审查时，在自评分之前生成浏览器。
 
-Updating installed skills:
+更新已安装的 skill：
 
-- Preserve the existing name.
-- Copy to `/tmp/<skill-name>/` before editing if the install path is read-only.
-- Package from the temporary editable copy.
+- 保留现有名称。
+- 如果安装路径是只读的，在编辑前复制到 `/tmp/<skill-name>/`。
+- 从临时可编辑副本进行打包。

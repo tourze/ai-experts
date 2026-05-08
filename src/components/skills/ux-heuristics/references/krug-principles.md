@@ -1,289 +1,289 @@
-# Krug's Usability Principles
+# Krug 可用性原则
 
-Full methodology from "Don't Make Me Think" for creating intuitive, usable interfaces.
+来自《Don't Make Me Think》的完整方法论，用于创建直观、可用的界面。
 
-## The Reality of How Users Use the Web
+## 用户如何使用网站的现实
 
-### Fact 1: We Don't Read, We Scan
+### 事实 1：我们不阅读，我们扫描
 
-**Why users scan:**
-- They're on a mission (have a goal)
-- They know they don't need to read everything
-- They're good at scanning from years of practice
+**用户为什么要扫描：**
+- 他们有任务在身（有目标）
+- 他们知道自己不需要阅读所有内容
+- 他们从多年实践中擅长扫描
 
-**Design implications:**
-- Create visual hierarchy (important things bigger, bolder)
-- Use headings and subheadings liberally
-- Keep paragraphs short
-- Use bulleted lists
-- Highlight key terms
+**设计影响：**
+- 创建视觉层次（重要的内容更大、更粗）
+- 大量使用标题和副标题
+- 保持段落简短
+- 使用项目符号列表
+- 突出关键术语
 
-### Fact 2: We Don't Make Optimal Choices, We Satisfice
+### 事实 2：我们不做出最优选择，我们满意即可
 
-**Satisficing** = "satisfying" + "sufficing"
+**满意即可（Satisficing）** = "satisfying（满意）" + "sufficing（足够）"
 
-Users click the first reasonable option, not the best option.
+用户点击第一个合理的选项，而非最佳选项。
 
-**Why satisficing:**
-- Optimizing is hard and takes time
-- The penalty for guessing wrong is low (back button)
-- Weighing options doesn't improve results much
-- Guessing is more fun
+**为什么满意即可：**
+- 优化很困难且耗时
+- 猜错的代价很小（返回按钮）
+- 权衡各个选项对结果改善不大
+- 猜测更有趣
 
-**Design implications:**
-- Make the right choice obvious
-- Don't rely on users reading all options
-- Make consequences clear before clicking
+**设计影响：**
+- 让正确选项一目了然
+- 不要指望用户阅读所有选项
+- 在点击前让后果清晰可见
 
-### Fact 3: We Don't Figure Out How Things Work, We Muddle Through
+### 事实 3：我们不计算工作原理，我们凑合使用
 
-Users don't read instructions. They try things until something works.
+用户不阅读说明。他们尝试各种操作，直到某个操作生效。
 
-**Why muddling through:**
-- It's not important to them to know how it works
-- If they find something that works, they stick with it
-- It rarely matters if they don't use something optimally
+**为什么凑合使用：**
+- 他们并不在意了解工作原理
+- 如果找到能用的方法，他们会坚持下去
+- 即使没有最优地使用，通常也没关系
 
-**Design implications:**
-- Make things obvious so "figuring out" isn't needed
-- Expect users to use things "wrong"
-- Design for recovery from mistakes
+**设计影响：**
+- 让一切显而易见，"计算"不再需要
+- 预期用户会"错误地"使用
+- 为从错误中恢复而设计
 
 ---
 
-## Things You Should Never Do
+## 你永远不该做的事
 
-### Don't Make Users Think
+### 不要让用户思考
 
-Signs that your page makes users think:
+表明页面让用户思考的迹象：
 
-| Symptom | Example |
+| 症状 | 示例 |
 |---------|---------|
-| Puzzling labels | "Solutions" (solutions to what?) |
-| Links that could go anywhere | "Click here" |
-| Unexplained options | Checkboxes without context |
-| Unfamiliar terminology | Industry jargon |
-| Gratuitous cleverness | Puns, wordplay in navigation |
+| 令人困惑的标签 | "解决方案"（解决什么？） |
+| 可能指向任何地方的链接 | "点击这里" |
+| 未经解释的选项 | 没有上下文的复选框 |
+| 不熟悉的术语 | 行业术语 |
+| 不必要的俏皮话 | 导航中的双关语、文字游戏 |
 
-### Don't Waste Users' Goodwill
+### 不要浪费用户的好感
 
-Users have a finite reservoir of goodwill:
+用户的好感是有限的：
 
-**Things that diminish goodwill:**
-- Hiding info they need (phone numbers, prices)
-- Punishing them for not doing things your way
-- Asking for unnecessary information
-- Making them feel stupid
-- Making them repeat themselves
-- Sites that look like an afterthought
-- Amateur errors (broken links, typos)
+**削弱好感的行为：**
+- 隐藏他们需要的信息（电话号码、价格）
+- 因未按你的方式操作而惩罚用户
+- 询问不必要的信息
+- 让用户感到愚蠢
+- 让用户重复输入
+- 看起来像是事后才做的网站
+- 业余错误（断链、拼写错误）
 
-**Things that increase goodwill:**
-- Know what questions they have and answer them
-- Minimize steps
-- Put effort into UI quality
-- Know what they're likely to struggle with
-- Make it easy to recover from errors
-- Apologize when things go wrong
+**增强好感的行为：**
+- 知道他们有什么问题并回答它们
+- 最小化步骤数量
+- 在 UI 质量上投入精力
+- 了解他们可能在哪些方面遇到困难
+- 让他们容易从错误中恢复
+- 当出问题时道歉
 
-### Don't Make Words Seem Important If They're Not
+### 不要让不重要的词显得重要
 
-**Happy talk example:**
-> "Welcome to our website! We're excited to help you find exactly what you're looking for. Our team of dedicated professionals is committed to providing you with the best possible experience."
+**高兴话示例：**
+> "欢迎访问我们的网站！我们很高兴帮助您准确找到您想要的内容。我们由专业人员组成的团队致力于为您提供最佳体验。"
 
-**Reality:** Users skip this. It says nothing.
+**现实：** 用户跳过这段内容。它什么也没说。
 
-**Rule:** If users will skip it, remove it.
+**规则：** 如果用户会跳过它，就删除它。
 
 ---
 
-## Navigation Must-Haves
+## 导航必备要素
 
-### The Permanent Navigation
+### 永久导航
 
-Every page needs:
+每个页面都需要：
 
-1. **Site ID** (logo/name) - Top left corner
-2. **Page name** - Prominent, matches link that brought them
-3. **Sections** - Major site areas
-4. **Local navigation** - What's in this section
-5. **Utilities** - Sign in, Search, Help, Cart
-6. **"You are here" indicator** - Highlighted nav item
+1. **站点 ID**（标志/名称） - 左上角
+2. **页面名称** - 突出显示，与引导链接匹配
+3. **栏目** - 网站主要区域
+4. **本地导航** - 当前栏目中的内容
+5. **实用工具** - 登录、搜索、帮助、购物车
+6. **"你在这里"指示器** - 高亮的导航项
 
-### The Trunk Test
+### 主干测试
 
-Can users answer these on any random page?
+用户能否在任何随机页面上回答这些问题？
 
-| Question | Element That Answers It |
+| 问题 | 回答该问题的元素 |
 |----------|------------------------|
-| What site is this? | Logo/Site ID |
-| What page am I on? | Page title |
-| What major sections exist? | Main navigation |
-| What are my options here? | Local navigation |
-| Where am I in the structure? | Breadcrumbs, highlighted nav |
-| How can I search? | Search box |
+| 这是什么网站？ | 标志/站点 ID |
+| 我在哪个页面？ | 页面标题 |
+| 有哪些主要栏目？ | 主导航 |
+| 我在这里有哪些选项？ | 本地导航 |
+| 我在结构中的什么位置？ | 面包屑、高亮导航 |
+| 如何搜索？ | 搜索框 |
 
-### Breadcrumbs
+### 面包屑导航
 
-**Good breadcrumbs:**
+**好的面包屑：**
 ```
-Home > Products > Shoes > Running > Men's Trail Runners
+首页 > 产品 > 鞋类 > 跑步鞋 > 男士越野跑鞋
 ```
 
-**Rules:**
-- Put them at the top
-- Use ">" between levels
-- Make the current page name visible but not a link
-- Use small text (secondary importance)
+**规则：**
+- 放在顶部
+- 在层级之间使用">"
+- 使当前页面名称可见但不可点击
+- 使用小号字体（次要重要性）
 
 ---
 
-## Homepage Guidelines
+## 首页指南
 
-The homepage has to do too many things:
+首页需要做太多事情：
 
-1. Site identity and mission
-2. Site hierarchy (navigation)
-3. Search
-4. Teases (content, features)
-5. Timely content
-6. Deals
-7. Shortcuts (popular items)
-8. Registration/Sign in
+1. 站点标识和使命
+2. 站点层级结构（导航）
+3. 搜索
+4. 预告（内容、功能）
+5. 及时内容
+6. 促销
+7. 快捷方式（热门项）
+8. 注册/登录
 
-### Homepage Priorities
+### 首页优先级
 
-**Must do:**
-- Tell me what this site is
-- Tell me what I can do here
-- Tell me why I should be here (and not somewhere else)
-- Start me on my way
+**必须做：**
+- 告诉我这个网站是什么
+- 告诉我可以在这里做什么
+- 告诉我为什么应该在这里（而不是别处）
+- 让我开始行动
 
-**Should do:**
-- Show me what I'm looking for
-- Show me where to start
-- Establish credibility and trust
+**应该做：**
+- 向我展示我在寻找的内容
+- 告诉我从哪里开始
+- 建立可信度和信任
 
-### The Big Bang Theory of Web Design
+### 网页设计的大爆炸理论
 
-**You have 3-4 seconds to answer:**
-1. What is this?
-2. What can I do here?
-3. Why should I be here?
+**你有 3-4 秒时间来回答：**
+1. 这是什么？
+2. 我可以在这里做什么？
+3. 我为什么应该在这里？
 
-### Tagline Guidelines
+### 标语指南
 
-| Good Tagline | Bad Tagline |
+| 好的标语 | 差的标语 |
 |--------------|-------------|
-| Conveys unique value | Generic platitude |
-| Specific and informative | Vague and fluffy |
-| 6-8 words | Too long or too short |
-| Instantly understandable | Requires thought |
+| 传达独特价值 | 通用套话 |
+| 具体且信息丰富 | 模糊且空洞 |
+| 6-8 个词 | 太长或太短 |
+| 立即可理解 | 需要思考 |
 
-Examples:
-- Good: "Find anything from thousands of stores"
-- Bad: "Welcome to the future of shopping"
+示例：
+- 好："从数千家商店找到任何商品"
+- 差："欢迎来到购物的未来"
 
 ---
 
-## Mobile Usability
+## 移动端可用性
 
-### Mobile Considerations
+### 移动端考量
 
-**Constraints:**
-- Smaller viewport
-- Fat fingers (need bigger targets)
-- Single-column layout
-- No hover states
-- Variable attention and context
+**限制条件：**
+- 更小的视口
+- 粗手指（需要更大的触摸目标）
+- 单列布局
+- 无悬停状态
+- 注意力和使用场景多变
 
-### Mobile Specifics
+### 移动端具体建议
 
-| Issue | Solution |
+| 问题 | 解决方案 |
 |-------|----------|
-| Tiny tap targets | Minimum 44×44 px |
-| Crowded nav | Hamburger or bottom nav |
-| Long forms | Break into steps |
-| Hover-dependent UI | Alternative for touch |
-| Text too small | 16px minimum body text |
+| 触摸目标太小 | 最小 44×44 像素 |
+| 导航拥挤 | 汉堡菜单或底部导航 |
+| 长表单 | 分成多个步骤 |
+| 依赖悬停的 UI | 触摸替代方案 |
+| 文本太小 | 正文最小 16 像素 |
 
-### Mobile Trade-offs
+### 移动端权衡
 
-**What to prioritize:**
-- Primary tasks front and center
-- Essential content visible
-- Fast load times
-- Easy to tap, hard to mis-tap
+**优先考虑：**
+- 主要任务放在核心位置
+- 必要内容可见
+- 快速加载
+- 易于点击，难以误触
 
-**What to hide/remove:**
-- Secondary navigation
-- Non-essential images
-- Decorative elements
-- Long-form content
+**隐藏/移除：**
+- 次要导航
+- 非必要图片
+- 装饰性元素
+- 长篇幅内容
 
 ---
 
-## Usability Testing on $0
+## 零成本可用性测试
 
-### How Many Users?
+### 需要多少用户？
 
-**3-4 users catches most issues.**
+**3-4 个用户能发现大部分问题。**
 
-Testing with more users has diminishing returns. Better to test with 3, fix issues, then test again with 3.
+与更多用户进行测试的收益递减。最好先用 3 个用户测试，修复问题，再用 3 个用户重新测试。
 
-### What to Test
+### 测试什么
 
-1. Can they complete core tasks?
-2. Where do they get stuck?
-3. What do they say out loud?
-4. What did they expect vs. what happened?
+1. 他们能否完成核心任务？
+2. 他们在哪里卡住？
+3. 他们大声说了什么？
+4. 他们的预期 vs 实际发生了什么？
 
-### Test Protocol
+### 测试流程
 
-**Before:**
-- "I'm testing the site, not you"
-- "Think out loud as you go"
-- "There are no wrong answers"
+**测试前：**
+- "我在测试这个网站，不是测试你"
+- "请在操作过程中大声说出想法"
+- "没有错误答案"
 
-**During:**
-- Don't help. Don't explain. Just watch.
-- Note hesitations and confusions
-- Write down what they say
+**测试中：**
+- 不要帮忙。不要解释。只观察。
+- 记录犹豫和困惑
+- 写下他们说的话
 
-**After:**
-- Ask what was confusing
-- Ask what they expected
-- Ask how they'd describe the site
+**测试后：**
+- 问什么让人困惑
+- 问他们预期的是什么
+- 问他们如何描述这个网站
 
-### Common Findings
+### 常见发现
 
-| What Users Do | What It Means |
+| 用户的反应 | 这意味着什么 |
 |---------------|---------------|
-| Click wrong thing | Label is confusing |
-| Hesitate | Decision isn't obvious |
-| Look around lost | "You are here" is unclear |
-| Read everything | Design isn't self-evident |
-| Use search immediately | Navigation is failing |
-| Express confusion | Copy is unclear |
+| 点错了东西 | 标签令人困惑 |
+| 犹豫 | 决策不够明确 |
+| 茫然四顾 | "你在这里"指示不清 |
+| 阅读所有内容 | 设计不够一目了然 |
+| 立即使用搜索 | 导航功能不足 |
+| 表达困惑 | 文案不够清晰 |
 
 ---
 
-## Accessibility Basics
+## 无障碍基础知识
 
-### Why It Matters
+### 为什么重要
 
-- 15-20% of population has some disability
-- Accessible sites are better for everyone
-- It's often required by law
-- It's the right thing to do
+- 15-20% 的人口有某种残疾
+- 无障碍网站对所有人都更好
+- 通常法律要求
+- 这是正确的事情
 
-### Quick Wins
+### 速效改进
 
-| Fix | Benefit |
+| 修复措施 | 好处 |
 |-----|---------|
-| Add alt text to images | Screen readers can describe |
-| Use sufficient contrast | Low-vision users can read |
-| Allow keyboard navigation | Motor-impaired users can navigate |
-| Use semantic HTML | Assistive tech understands structure |
-| Add focus indicators | Keyboard users know where they are |
-| Make touch targets large | Everyone benefits |
+| 为图片添加 alt 文本 | 屏幕阅读器可描述 |
+| 使用足够的对比度 | 低视力用户可阅读 |
+| 允许键盘导航 | 运动障碍用户可操作 |
+| 使用语义化 HTML | 辅助技术理解结构 |
+| 添加焦点指示器 | 键盘用户知道位置 |
+| 使触摸目标足够大 | 每个人受益 |

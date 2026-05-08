@@ -1,15 +1,15 @@
-# Animation Libraries Reference
+# 动画库参考
 
 ## Framer Motion
 
-The most popular React animation library with declarative API.
+最流行的 React 动画库，采用声明式 API。
 
-### Basic Animations
+### 基本动画
 
 ```tsx
 import { motion, AnimatePresence } from "framer-motion";
 
-// Simple animation
+// 简单动画
 function FadeIn({ children }) {
   return (
     <motion.div
@@ -23,7 +23,7 @@ function FadeIn({ children }) {
   );
 }
 
-// Gesture animations
+// 手势动画
 function InteractiveCard() {
   return (
     <motion.div
@@ -37,7 +37,7 @@ function InteractiveCard() {
   );
 }
 
-// Keyframes animation
+// 关键帧动画
 function PulseButton() {
   return (
     <motion.button
@@ -58,12 +58,12 @@ function PulseButton() {
 }
 ```
 
-### Layout Animations
+### 布局动画
 
 ```tsx
 import { motion, LayoutGroup } from "framer-motion";
 
-// Shared layout animation
+// 共享布局动画
 function TabIndicator({ activeTab, tabs }) {
   return (
     <div className="flex border-b">
@@ -87,7 +87,7 @@ function TabIndicator({ activeTab, tabs }) {
   );
 }
 
-// Auto-layout reordering
+// 自动布局重排
 function ReorderableList({ items, setItems }) {
   return (
     <Reorder.Group axis="y" values={items} onReorder={setItems}>
@@ -105,10 +105,10 @@ function ReorderableList({ items, setItems }) {
 }
 ```
 
-### Orchestration
+### 编排
 
 ```tsx
-// Staggered children
+// 交错子元素
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -142,7 +142,7 @@ function StaggeredList({ items }) {
 }
 ```
 
-### Page Transitions
+### 页面过渡
 
 ```tsx
 import { AnimatePresence, motion } from "framer-motion";
@@ -174,11 +174,11 @@ function PageTransition({ children }) {
 }
 ```
 
-## GSAP (GreenSock)
+## GSAP（GreenSock）
 
-Industry-standard animation library for complex, performant animations.
+用于复杂、高性能动画的行业标准动画库。
 
-### Basic Timeline
+### 基本时间线
 
 ```tsx
 import { useRef, useLayoutEffect } from "react";
@@ -205,7 +205,7 @@ function AnimatedHero() {
             opacity: 0,
             duration: 0.6,
           },
-          "-=0.4", // Start 0.4s before previous ends
+          "-=0.4", // 在前一个结束前 0.4 秒开始
         )
         .from(".cta-button", {
           scale: 0.8,
@@ -214,7 +214,7 @@ function AnimatedHero() {
         });
     }, containerRef);
 
-    return () => ctx.revert(); // Cleanup
+    return () => ctx.revert(); // 清理
   }, []);
 
   return (
@@ -242,7 +242,7 @@ function ParallaxSection() {
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      // Parallax image
+      // 视差背景图
       gsap.to(imageRef.current, {
         yPercent: -20,
         ease: "none",
@@ -254,7 +254,7 @@ function ParallaxSection() {
         },
       });
 
-      // Fade in content
+      // 内容淡入
       gsap.from(".content-block", {
         opacity: 0,
         y: 50,
@@ -283,7 +283,7 @@ function ParallaxSection() {
 }
 ```
 
-### Text Animation
+### 文字动画
 
 ```tsx
 import { useLayoutEffect, useRef } from "react";
@@ -317,13 +317,13 @@ function AnimatedHeadline({ text }) {
 }
 ```
 
-## CSS Spring Physics
+## CSS 弹性物理
 
 ```tsx
-// spring.ts - Custom spring physics
+// spring.ts - 自定义弹性物理
 interface SpringConfig {
-  stiffness: number; // Higher = snappier
-  damping: number; // Higher = less bouncy
+  stiffness: number; // 越高 = 越灵敏
+  damping: number;   // 越高 = 越少弹跳
   mass: number;
 }
 
@@ -337,12 +337,12 @@ const presets: Record<string, SpringConfig> = {
 };
 
 function springToCss(config: SpringConfig): string {
-  // Convert spring parameters to CSS timing function approximation
+  // 将弹性参数转换为 CSS 时间函数近似
   const { stiffness, damping } = config;
   const duration = Math.sqrt(stiffness) / damping;
   const bounce = 1 - damping / (2 * Math.sqrt(stiffness));
 
-  // Map to cubic-bezier (approximation)
+  // 映射到 cubic-bezier（近似）
   if (bounce <= 0) {
     return `cubic-bezier(0.25, 0.1, 0.25, 1)`;
   }
@@ -352,7 +352,7 @@ function springToCss(config: SpringConfig): string {
 
 ## Web Animations API
 
-Native browser animation API for simple animations.
+用于简单动画的原生浏览器动画 API。
 
 ```tsx
 function useWebAnimation(
@@ -369,7 +369,7 @@ function useWebAnimation(
   }, [ref, keyframes, options]);
 }
 
-// Usage
+// 使用
 function SlideIn({ children }) {
   const elementRef = useRef<HTMLDivElement>(null);
 
@@ -392,13 +392,13 @@ function SlideIn({ children }) {
 
 ## View Transitions API
 
-Native browser API for page transitions.
+用于页面过渡的原生浏览器 API。
 
 ```tsx
-// Check support
+// 检查支持情况
 const supportsViewTransitions = "startViewTransition" in document;
 
-// Simple page transition
+// 简单页面过渡
 async function navigateTo(url: string) {
   if (!document.startViewTransition) {
     window.location.href = url;
@@ -407,11 +407,11 @@ async function navigateTo(url: string) {
 
   document.startViewTransition(async () => {
     await fetch(url);
-    // Update DOM
+    // 更新 DOM
   });
 }
 
-// Named elements for morphing
+// 用于变形的命名元素
 function ProductCard({ product }) {
   return (
     <Link href={`/product/${product.id}`}>
@@ -423,7 +423,7 @@ function ProductCard({ product }) {
   );
 }
 
-// CSS for view transitions
+// View Transitions 的 CSS
 /*
 ::view-transition-old(root) {
   animation: fade-out 0.25s ease-out;
@@ -439,31 +439,31 @@ function ProductCard({ product }) {
 */
 ```
 
-## Performance Tips
+## 性能提示
 
-### GPU Acceleration
+### GPU 加速
 
 ```css
-/* Properties that trigger GPU acceleration */
+/* 触发 GPU 加速的属性 */
 .animated-element {
-  transform: translateZ(0); /* Force GPU layer */
-  will-change: transform, opacity; /* Hint to browser */
+  transform: translateZ(0); /* 强制 GPU 层 */
+  will-change: transform, opacity; /* 向浏览器提示 */
 }
 
-/* Only animate transform and opacity for 60fps */
+/* 只对 transform 和 opacity 做动画以保持 60fps */
 .smooth {
   transition:
     transform 0.3s ease,
     opacity 0.3s ease;
 }
 
-/* Avoid animating these (cause reflow) */
+/* 避免对这些属性做动画（导致重排） */
 .avoid {
-  /* Don't animate: width, height, top, left, margin, padding */
+  /* 不要动画：width、height、top、left、margin、padding */
 }
 ```
 
-### Reduced Motion
+### 减少动画
 
 ```tsx
 function useReducedMotion() {
@@ -481,7 +481,7 @@ function useReducedMotion() {
   return prefersReduced;
 }
 
-// Usage
+// 使用
 function AnimatedComponent() {
   const prefersReduced = useReducedMotion();
 

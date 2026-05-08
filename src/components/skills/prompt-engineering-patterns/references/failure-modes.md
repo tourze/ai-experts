@@ -1,116 +1,116 @@
-# Failure Modes
+# 故障模式
 
-Common prompt failure taxonomy with detection strategies and mitigations.
+常见提示故障分类法，包含检测策略和缓解措施。
 
 ---
 
-## Failure Taxonomy
+## 故障分类
 
-### 1. Instruction Misinterpretation
+### 1. 指令误解
 
-**Symptom:** Model does something different from what was intended.
+**症状：** 模型执行了与预期不同的操作。
 
-| Cause                  | Example                                                     | Mitigation                                   |
+| 原因 | 示例 | 缓解措施 |
 | ---------------------- | ----------------------------------------------------------- | -------------------------------------------- |
-| Ambiguous instruction  | "Summarize this" — model writes 3 sentences vs 3 paragraphs | Specify length: "Summarize in 2-3 sentences" |
-| Overloaded instruction | "Analyze and fix this code" — model does both poorly        | Split into two prompts                       |
-| Implicit assumption    | "Fix the bug" without specifying which bug                  | Be explicit about the target                 |
+| 模糊指令 | "总结这个" —— 模型写了 3 句话 vs 3 段 | 明确长度："用 2-3 句话总结" |
+| 过载指令 | "分析和修复这段代码" —— 模型两者都做不好 | 拆分为两个提示 |
+| 隐含假设 | "修复 bug" 未指定是哪个 bug | 明确指定目标 |
 
-### 2. Format Violation
+### 2. 格式违规
 
-**Symptom:** Output is correct but in the wrong format.
+**症状：** 输出正确但格式错误。
 
-| Cause                       | Example                                              | Mitigation                                       |
+| 原因 | 示例 | 缓解措施 |
 | --------------------------- | ---------------------------------------------------- | ------------------------------------------------ |
-| No format specified         | Asked for JSON, got prose                            | Specify format explicitly with example           |
-| Format specified but buried | Format instruction in the middle of a long prompt    | Put format instruction at the end (recency bias) |
-| Conflicting format signals  | Examples in one format, instruction asks for another | Ensure examples match requested format           |
+| 未指定格式 | 要求 JSON，得到了散文 | 用示例明确指定格式 |
+| 格式指定但被埋没 | 格式要求在长提示中间 | 把格式要求放末尾（近因效应） |
+| 格式信号冲突 | 示例用一种格式，指令要求另一种 | 确保示例与要求的格式一致 |
 
-### 3. Hallucination
+### 3. 幻觉
 
-**Symptom:** Model states false information as fact.
+**症状：** 模型将虚假信息陈述为事实。
 
-| Type                    | Example                                      | Mitigation                                               |
+| 类型 | 示例 | 缓解措施 |
 | ----------------------- | -------------------------------------------- | -------------------------------------------------------- |
-| Fabricated facts        | Invents statistics, citations                | Add "Only state facts supported by the provided context" |
-| Fabricated reasoning    | Plausible-sounding but incorrect logic       | Use CoT to make reasoning visible and checkable          |
-| Confident wrong answers | States incorrect answer with high confidence | Add "If unsure, say so explicitly"                       |
+| 捏造事实 | 编造统计数据、引用 | 添加"仅陈述提供的上下文支持的事实" |
+| 捏造推理 | 听起来合理但错误的逻辑 | 使用 CoT 使推理可见并可检查 |
+| 自信的错误答案 | 以高置信度陈述错误答案 | 添加"如果不确定，请明确说明" |
 
-### 4. Refusal / Over-Caution
+### 4. 拒绝 / 过度谨慎
 
-**Symptom:** Model refuses to answer or adds excessive caveats.
+**症状：** 模型拒绝回答或添加过多的附加说明。
 
-| Cause                     | Mitigation                                                |
+| 原因 | 缓解措施 |
 | ------------------------- | --------------------------------------------------------- |
-| Safety filter triggered   | Reframe the task to be clearly benign                     |
-| Task seems risky to model | Provide context explaining the legitimate use             |
-| Model uncertain           | Explicitly allow uncertainty: "It's OK to be approximate" |
+| 安全过滤器触发 | 重构任务使其明确无害 |
+| 任务对模型来说看似有风险 | 提供上下文解释合法用途 |
+| 模型不确定 | 明确允许不确定性："可以近似" |
 
-### 5. Repetition / Verbosity
+### 5. 重复 / 冗长
 
-**Symptom:** Model repeats itself or generates unnecessary content.
+**症状：** 模型重复自身或生成不必要的内容。
 
-| Cause                              | Mitigation                               |
+| 原因 | 缓解措施 |
 | ---------------------------------- | ---------------------------------------- |
-| No length constraint               | Add: "Maximum 200 words" or "Be concise" |
-| Instruction encourages elaboration | Remove "explain in detail" if not needed |
-| Few-shot examples are verbose      | Use concise examples                     |
+| 无长度约束 | 添加"最多 200 字"或"保持简洁" |
+| 指令鼓励阐述 | 如不需要，移除"详细解释" |
+| 少样本示例冗长 | 使用简洁的示例 |
 
-### 6. Anchoring to Examples
+### 6. 示例锚定
 
-**Symptom:** Model copies patterns from examples too literally.
+**症状：** 模型过于字面地复制示例中的模式。
 
-| Cause                                | Mitigation                                            |
+| 原因 | 缓解措施 |
 | ------------------------------------ | ----------------------------------------------------- |
-| Examples too similar                 | Diversify examples across different cases             |
-| Examples contain irrelevant patterns | Model copies format details, not the underlying logic |
-| Too many examples                    | Reduce to 2-3 diverse examples                        |
+| 示例过于相似 | 在不同案例中多样化示例 |
+| 示例包含不相关的模式 | 模型复制格式细节而非底层逻辑 |
+| 示例过多 | 减少到 2-3 个多样化示例 |
 
-### 7. Ignoring Context
+### 7. 忽略上下文
 
-**Symptom:** Model doesn't use provided context/information.
+**症状：** 模型不使用提供的上下文/信息。
 
-| Cause                                 | Mitigation                                                 |
+| 原因 | 缓解措施 |
 | ------------------------------------- | ---------------------------------------------------------- |
-| Context too long                      | Highlight relevant sections: "Pay special attention to..." |
-| Context placement                     | Move context closer to the question (recency effect)       |
-| Instruction doesn't reference context | Explicitly: "Using ONLY the information above, answer..."  |
+| 上下文过长 | 高亮相关部分："特别注意..." |
+| 上下文位置不当 | 将上下文移近问题（近因效应） |
+| 指令未引用上下文 | 明确说明："仅使用上述信息回答..." |
 
-### 8. Sycophancy / Agreement Bias
+### 8. 迎合 / 认同偏见
 
-**Symptom:** Model agrees with the user's stated opinion instead of giving an honest answer.
+**症状：** 模型同意用户陈述的意见，而非给出诚实回答。
 
-| Cause                              | Mitigation                                  |
+| 原因 | 缓解措施 |
 | ---------------------------------- | ------------------------------------------- |
-| User states opinion before asking  | Ask the question before revealing your view |
-| Prompt frames one option favorably | Present options neutrally                   |
-| "Do you agree?" framing            | Ask "Evaluate the pros and cons" instead    |
+| 用户在提问前陈述意见 | 在揭示你的观点之前先提问 |
+| 提示偏向某个选项 | 中立呈现选项 |
+| "你同意吗？"的提问方式 | 改为"评估利弊" |
 
 ---
 
-## Detection Strategies
+## 检测策略
 
-| Failure Mode      | Detection Method                                 |
+| 故障模式 | 检测方法 |
 | ----------------- | ------------------------------------------------ |
-| Misinterpretation | Compare output structure to expected structure   |
-| Format violation  | Parse output with expected format parser         |
-| Hallucination     | Cross-reference claims against source material   |
-| Refusal           | Check for "I cannot", "I'm sorry", "As an AI"    |
-| Verbosity         | Word count comparison against target length      |
-| Example anchoring | Run without examples, compare output diversity   |
-| Context ignoring  | Check if key facts from context appear in output |
-| Sycophancy        | Ask the same question with opposite framing      |
+| 误解 | 将输出结构与预期结构进行比较 |
+| 格式违规 | 用预期格式解析器解析输出 |
+| 幻觉 | 对照来源材料的交叉引用声明 |
+| 拒绝 | 检查"我不能"、"抱歉"、"作为 AI"等短语 |
+| 冗长 | 词数与目标长度对比 |
+| 示例锚定 | 无示例时运行，比较输出多样性 |
+| 忽略上下文 | 检查关键上下文事实是否出现在输出中 |
+| 迎合 | 用相反的框架问同一个问题 |
 
 ---
 
-## Failure Mode by Task Type
+## 按任务类型的故障模式
 
-| Task Type         | Most Common Failures                       |
+| 任务类型 | 最常见的故障 |
 | ----------------- | ------------------------------------------ |
-| Classification    | Misinterpretation, anchoring to examples   |
-| Extraction        | Incomplete extraction, hallucinated fields |
-| Summarization     | Verbosity, missing key points              |
-| Analysis          | Hallucination, sycophancy                  |
-| Code generation   | Format violation, subtle logic errors      |
-| Creative writing  | Verbosity, generic output                  |
-| RAG / grounded QA | Hallucination, context ignoring            |
+| 分类 | 误解、示例锚定 |
+| 提取 | 提取不完整、幻数字段 |
+| 摘要 | 冗长、遗漏关键点 |
+| 分析 | 幻觉、迎合 |
+| 代码生成 | 格式违规、细微逻辑错误 |
+| 创意写作 | 冗长、泛泛输出 |
+| RAG / 有依据问答 | 幻觉、忽略上下文 |

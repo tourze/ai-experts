@@ -1,17 +1,17 @@
-# Matched transitions
+# 匹配过渡
 
-## Intent
+## 意图
 
-Use matched transitions to create smooth continuity between a source view (thumbnail, avatar) and a destination view (sheet, detail, viewer).
+使用匹配过渡在源视图（缩略图、头像）和目标视图（sheet、详情、查看器）之间创建平滑的连续性。
 
-## Core patterns
+## 核心模式
 
-- Use a shared `Namespace` and a stable ID for the source.
-- Use `matchedTransitionSource` + `navigationTransition(.zoom(...))` on iOS 26+.
-- Use `matchedGeometryEffect` for in-place transitions within a view hierarchy.
-- Keep IDs stable across view updates (avoid random UUIDs).
+- 使用共享的 `Namespace` 和源视图的稳定 ID。
+- 在 iOS 26+ 上使用 `matchedTransitionSource` + `navigationTransition(.zoom(...))`。
+- 在视图层次内使用 `matchedGeometryEffect` 实现原地过渡。
+- 在视图更新期间保持 ID 稳定（避免随机 UUID）。
 
-## Example: media preview to full-screen viewer (iOS 26+)
+## 示例：媒体预览到全屏查看器（iOS 26+）
 
 ```swift
 struct MediaPreview: View {
@@ -29,7 +29,7 @@ struct MediaPreview: View {
 }
 ```
 
-## Example: matched geometry within a view
+## 示例：视图内的匹配几何
 
 ```swift
 struct ToggleBadge: View {
@@ -47,13 +47,13 @@ struct ToggleBadge: View {
 }
 ```
 
-## Design choices to keep
+## 要保留的设计选择
 
-- Prefer `matchedTransitionSource` for cross-screen transitions.
-- Keep source and destination sizes reasonable to avoid jarring scale changes.
-- Use `withAnimation` for state-driven transitions.
+- 跨屏过渡优先使用 `matchedTransitionSource`。
+- 保持源和目标尺寸合理，避免突兀的缩放变化。
+- 对状态驱动的过渡使用 `withAnimation`。
 
-## Pitfalls
+## 陷阱
 
-- Don’t use unstable IDs; it breaks the transition.
-- Avoid mismatched shapes (e.g., square to circle) unless the design expects it.
+- 不要使用不稳定的 ID；这会破坏过渡效果。
+- 除非设计需要，避免形状不匹配（例如方形到圆形）。

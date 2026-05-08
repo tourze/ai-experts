@@ -1,42 +1,42 @@
-# Fluid Layouts and Typography
+# 流体布局与排版
 
-## Overview
+## 概述
 
-Fluid design creates smooth scaling experiences by using relative units and mathematical functions instead of fixed breakpoints. This approach reduces the need for media queries and creates more natural-feeling interfaces.
+流体设计通过使用相对单位和数学函数替代固定断点，创建平滑的缩放体验。这种方法减少了对媒体查询的需求，并创造了更自然感觉的界面。
 
-## Fluid Typography
+## 流体排版
 
-### The clamp() Function
+### clamp() 函数
 
 ```css
-/* clamp(minimum, preferred, maximum) */
+/* clamp(最小值, 首选值, 最大值) */
 .heading {
-  /* Never smaller than 1.5rem, never larger than 3rem */
-  /* Scales at 5vw between those values */
+  /* 不小于 1.5rem，不大于 3rem */
+  /* 在这些值之间以 5vw 缩放 */
   font-size: clamp(1.5rem, 5vw, 3rem);
 }
 ```
 
-### Calculating Fluid Values
+### 计算流体值
 
-The preferred value in `clamp()` typically combines a base size with a viewport-relative portion:
+`clamp()` 中的首选值通常将基础大小与视口相对部分结合：
 
 ```css
-/* Formula: clamp(min, base + scale * vw, max) */
+/* 公式：clamp(最小值, 基础 + 比例 * vw, 最大值) */
 
-/* For text that scales from 16px (320px viewport) to 24px (1200px viewport): */
-/* slope = (24 - 16) / (1200 - 320) = 8 / 880 = 0.00909 */
-/* y-intercept = 16 - 0.00909 * 320 = 13.09px = 0.818rem */
+/* 对于从 16px（320px 视口）缩放到 24px（1200px 视口）的文本： */
+/* 斜率 = (24 - 16) / (1200 - 320) = 8 / 880 = 0.00909 */
+/* y 轴截距 = 16 - 0.00909 * 320 = 13.09px = 0.818rem */
 
 .text {
   font-size: clamp(1rem, 0.818rem + 0.909vw, 1.5rem);
 }
 ```
 
-### Type Scale Generator
+### 类型尺度生成器
 
 ```javascript
-// Generate a fluid type scale
+// 生成流体类型尺度
 function fluidType({
   minFontSize,
   maxFontSize,
@@ -54,7 +54,7 @@ function fluidType({
   return `clamp(${minFontRem}rem, ${yAxisIntersection.toFixed(4)}rem + ${(slope * 100).toFixed(4)}vw, ${maxFontRem}rem)`;
 }
 
-// Usage
+// 用法
 const typeScale = {
   xs: fluidType({ minFontSize: 12, maxFontSize: 14 }),
   sm: fluidType({ minFontSize: 14, maxFontSize: 16 }),
@@ -67,18 +67,18 @@ const typeScale = {
 };
 ```
 
-### Complete Type Scale
+### 完整类型尺度
 
 ```css
 :root {
-  /* Base: 16-18px */
+  /* 基础：16-18px */
   --text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
 
-  /* Smaller sizes */
+  /* 较小尺寸 */
   --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
   --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
 
-  /* Larger sizes */
+  /* 较大尺寸 */
   --text-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
   --text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
   --text-2xl: clamp(1.5rem, 1.2rem + 1.5vw, 2rem);
@@ -86,13 +86,13 @@ const typeScale = {
   --text-4xl: clamp(2.25rem, 1.5rem + 3.75vw, 3.5rem);
   --text-5xl: clamp(3rem, 1.8rem + 6vw, 5rem);
 
-  /* Line heights scale inversely */
+  /* 行高反向缩放 */
   --leading-tight: 1.25;
   --leading-normal: 1.5;
   --leading-relaxed: 1.75;
 }
 
-/* Apply to elements */
+/* 应用到元素 */
 body {
   font-size: var(--text-base);
   line-height: var(--leading-normal);
@@ -128,13 +128,13 @@ small {
 }
 ```
 
-## Fluid Spacing
+## 流体间距
 
-### Spacing Scale
+### 间距尺度
 
 ```css
 :root {
-  /* Spacing tokens that scale with viewport */
+  /* 随视口缩放的间距令牌 */
   --space-3xs: clamp(0.25rem, 0.2rem + 0.25vw, 0.375rem);
   --space-2xs: clamp(0.375rem, 0.3rem + 0.375vw, 0.5rem);
   --space-xs: clamp(0.5rem, 0.4rem + 0.5vw, 0.75rem);
@@ -145,14 +145,14 @@ small {
   --space-2xl: clamp(3rem, 2rem + 5vw, 5rem);
   --space-3xl: clamp(4rem, 2.5rem + 7.5vw, 8rem);
 
-  /* One-up pairs (for asymmetric spacing) */
+  /* 升级配对（用于非对称间距） */
   --space-xs-sm: clamp(0.5rem, 0.3rem + 1vw, 1rem);
   --space-sm-md: clamp(0.75rem, 0.5rem + 1.25vw, 1.5rem);
   --space-md-lg: clamp(1rem, 0.6rem + 2vw, 2rem);
   --space-lg-xl: clamp(1.5rem, 1rem + 2.5vw, 3rem);
 }
 
-/* Usage examples */
+/* 使用示例 */
 .section {
   padding-block: var(--space-xl);
   padding-inline: var(--space-md);
@@ -168,11 +168,11 @@ small {
 }
 ```
 
-### Container Widths
+### 容器宽度
 
 ```css
 :root {
-  /* Fluid max-widths */
+  /* 流体最大宽度 */
   --container-xs: min(100% - 2rem, 20rem);
   --container-sm: min(100% - 2rem, 30rem);
   --container-md: min(100% - 2rem, 45rem);
@@ -196,19 +196,19 @@ small {
 }
 ```
 
-## CSS Grid Fluid Layouts
+## CSS Grid 流体布局
 
-### Auto-fit Grid
+### Auto-fit 网格
 
 ```css
-/* Grid that fills available space */
+/* 填充可用空间的网格 */
 .auto-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
   gap: var(--space-md);
 }
 
-/* With maximum columns */
+/* 带最大列数 */
 .auto-grid-max-4 {
   display: grid;
   grid-template-columns: repeat(
@@ -219,7 +219,7 @@ small {
 }
 ```
 
-### Responsive Grid Areas
+### 响应式网格区域
 
 ```css
 .page-grid {
@@ -239,7 +239,7 @@ small {
   grid-column: 1 / -1;
 }
 
-/* Content with sidebar */
+/* 带侧边栏的内容 */
 .content-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -253,10 +253,10 @@ small {
 }
 ```
 
-### Fluid Aspect Ratios
+### 流体宽高比
 
 ```css
-/* Maintain aspect ratio fluidly */
+/* 流体地保持宽高比 */
 .aspect-video {
   aspect-ratio: 16 / 9;
 }
@@ -265,9 +265,9 @@ small {
   aspect-ratio: 1;
 }
 
-/* Fluid aspect ratio that changes */
+/* 变化的流体宽高比 */
 .hero-image {
-  aspect-ratio: 1; /* Mobile: square */
+  aspect-ratio: 1; /* 移动端：方形 */
 }
 
 @media (min-width: 640px) {
@@ -283,12 +283,12 @@ small {
 }
 ```
 
-## Flexbox Fluid Patterns
+## Flexbox 流体模式
 
-### Flexible Sidebar
+### 灵活侧边栏
 
 ```css
-/* Sidebar that collapses when too narrow */
+/* 在太窄时折叠的侧边栏 */
 .with-sidebar {
   display: flex;
   flex-wrap: wrap;
@@ -307,10 +307,10 @@ small {
 }
 ```
 
-### Cluster Layout
+### 簇布局
 
 ```css
-/* Items cluster and wrap naturally */
+/* 项目自然簇状换行 */
 .cluster {
   display: flex;
   flex-wrap: wrap;
@@ -319,7 +319,7 @@ small {
   align-items: center;
 }
 
-/* Center-aligned cluster */
+/* 居中对齐的簇 */
 .cluster-center {
   display: flex;
   flex-wrap: wrap;
@@ -328,7 +328,7 @@ small {
   align-items: center;
 }
 
-/* Space-between cluster */
+/* 两端对齐的簇 */
 .cluster-spread {
   display: flex;
   flex-wrap: wrap;
@@ -338,10 +338,10 @@ small {
 }
 ```
 
-### Switcher Layout
+### 切换器布局
 
 ```css
-/* Switches from horizontal to vertical based on container */
+/* 基于容器从水平切换到垂直 */
 .switcher {
   display: flex;
   flex-wrap: wrap;
@@ -349,43 +349,43 @@ small {
 }
 
 .switcher > * {
-  /* Items go vertical when container is narrower than threshold */
+  /* 当容器窄于阈值时项目变为垂直 */
   flex-grow: 1;
   flex-basis: calc((30rem - 100%) * 999);
 }
 
-/* Limit columns */
+/* 限制列数 */
 .switcher > :nth-last-child(n + 4),
 .switcher > :nth-last-child(n + 4) ~ * {
   flex-basis: 100%;
 }
 ```
 
-## Intrinsic Sizing
+## 内在尺寸
 
-### Content-Based Widths
+### 基于内容的宽度
 
 ```css
-/* Size based on content */
+/* 基于内容的尺寸 */
 .fit-content {
   width: fit-content;
   max-width: 100%;
 }
 
-/* Minimum content size */
+/* 最小内容尺寸 */
 .min-content {
   width: min-content;
 }
 
-/* Maximum content size */
+/* 最大内容尺寸 */
 .max-content {
   width: max-content;
 }
 
-/* Practical examples */
+/* 实用示例 */
 .button {
   width: fit-content;
-  min-width: 8rem; /* Prevent too-narrow buttons */
+  min-width: 8rem; /* 防止按钮过窄 */
   padding-inline: var(--space-md);
 }
 
@@ -400,53 +400,53 @@ small {
 }
 ```
 
-### min() and max() Functions
+### min() 和 max() 函数
 
 ```css
-/* Responsive sizing without media queries */
+/* 无需媒体查询的响应式尺寸 */
 .container {
-  /* 90% of viewport or 1200px, whichever is smaller */
+  /* 视口的 90% 或 1200px，取较小值 */
   width: min(90%, 1200px);
   margin-inline: auto;
 }
 
 .hero-text {
-  /* At least 2rem, at most 4rem */
+  /* 至少 2rem，最多 4rem */
   font-size: max(2rem, min(5vw, 4rem));
 }
 
 .sidebar {
-  /* At least 200px, at most 25% of parent */
+  /* 至少 200px，最多父元素的 25% */
   width: max(200px, min(300px, 25%));
 }
 
 .card-grid {
-  /* Each card at least 200px, fill available space */
+  /* 每张卡片至少 200px，填充可用空间 */
   grid-template-columns: repeat(auto-fit, minmax(max(200px, 100%/4), 1fr));
 }
 ```
 
-## Viewport Units
+## 视口单位
 
-### Modern Viewport Units
+### 现代视口单位
 
 ```css
-/* Dynamic viewport height - accounts for mobile browser UI */
+/* 动态视口高度 - 考虑移动端浏览器 UI */
 .full-height {
   min-height: 100dvh;
 }
 
-/* Small viewport - minimum size when UI is visible */
+/* 小视口 - UI 可见时的最小尺寸 */
 .hero {
   min-height: 100svh;
 }
 
-/* Large viewport - maximum size when UI is hidden */
+/* 大视口 - UI 隐藏时的最大尺寸 */
 .backdrop {
   height: 100lvh;
 }
 
-/* Viewport-relative positioning */
+/* 视口相对定位 */
 .fixed-nav {
   position: fixed;
   inset-inline: 0;
@@ -454,7 +454,7 @@ small {
   height: max(60px, 8vh);
 }
 
-/* Safe area insets for notched devices */
+/* 带凹口设备的安全区域内边距 */
 .safe-area {
   padding-top: env(safe-area-inset-top);
   padding-right: env(safe-area-inset-right);
@@ -463,16 +463,16 @@ small {
 }
 ```
 
-### Combining Viewport and Container Units
+### 结合视口和容器单位
 
 ```css
-/* Responsive based on both viewport and container */
+/* 基于视口和容器的响应式 */
 .component {
   container-type: inline-size;
 }
 
 .component-text {
-  /* Uses viewport when small, container when in container */
+  /* 在容器外使用视口，在容器内使用容器 */
   font-size: clamp(1rem, 2vw + 0.5rem, 1.5rem);
 }
 
@@ -483,10 +483,10 @@ small {
 }
 ```
 
-## Utility Classes
+## 工具类
 
 ```css
-/* Tailwind-style fluid utilities */
+/* Tailwind 风格的流体工具 */
 .text-fluid-sm {
   font-size: var(--text-sm);
 }
@@ -530,7 +530,7 @@ small {
 }
 ```
 
-## Resources
+## 资源
 
 - [Utopia Fluid Type Calculator](https://utopia.fyi/)
 - [Modern Fluid Typography](https://www.smashingmagazine.com/2022/01/modern-fluid-typography-css-clamp/)

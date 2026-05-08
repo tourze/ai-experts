@@ -1,142 +1,142 @@
-# Estimation Methods
+# 估算方法
 
-PERT formula, three-point estimation, and aggregation techniques.
-
----
-
-## Three-Point Estimation
-
-### The Three Scenarios
-
-| Scenario        | Definition                                 | Probability      |
-| --------------- | ------------------------------------------ | ---------------- |
-| Optimistic (O)  | Best realistic case — minimal friction     | ~10th percentile |
-| Most Likely (M) | Normal friction, typical obstacles         | ~50th percentile |
-| Pessimistic (P) | Significant problems, but not catastrophic | ~90th percentile |
-
-### Key Rules
-
-1. **O is not zero.** Even the simplest task takes some time.
-2. **P is not infinity.** It's the realistic bad case, not the apocalypse.
-3. **M is not the average of O and P.** It's the mode (most common outcome).
-4. **All three must be estimated independently.** Don't calculate one from the others.
+PERT 公式、三点估算和汇总技术。
 
 ---
 
-## PERT Formula
+## 三点估算
 
-PERT (Program Evaluation and Review Technique) weights the most likely estimate:
+### 三种情景
 
-```text
-Expected = (O + 4M + P) / 6
-Standard Deviation = (P - O) / 6
-Variance = ((P - O) / 6)²
-```
+| 情景           | 定义                                   | 概率            |
+| -------------- | -------------------------------------- | --------------- |
+| 乐观 (O)       | 最佳现实情况——最小摩擦                 | 约第 10 百分位  |
+| 最可能 (M)     | 正常摩擦、典型障碍                     | 约第 50 百分位  |
+| 悲观 (P)       | 显著问题，但不至于灾难性               | 约第 90 百分位  |
 
-### Example
+### 关键规则
 
-```text
-Task: Implement user search
-O = 2 days
-M = 4 days
-P = 10 days
-
-Expected = (2 + 4×4 + 10) / 6 = 28 / 6 = 4.67 days
-Std Dev = (10 - 2) / 6 = 1.33 days
-```
-
-### Confidence Intervals
-
-| Confidence | Range                |
-| ---------- | -------------------- |
-| 68%        | Expected ± 1 std dev |
-| 95%        | Expected ± 2 std dev |
-| 99.7%      | Expected ± 3 std dev |
-
-For the example:
-
-- 68% confident: 3.3 to 6.0 days
-- 95% confident: 2.0 to 7.3 days
+1. **O 不是零。** 即使最简单的任务也需要一些时间。
+2. **P 不是无穷大。** 它是现实中的糟糕情况，不是世界末日。
+3. **M 不是 O 和 P 的平均值。** 它是众数（最常见的结果）。
+4. **三者必须独立估算。** 不要从一个推导另一个。
 
 ---
 
-## Aggregating Estimates
+## PERT 公式
 
-### Sum of Expected Values
-
-For multiple tasks, the total expected duration:
+PERT（计划评审技术）对最可能估算进行加权：
 
 ```text
-Total Expected = Σ Expected_i
+期望值 = (O + 4M + P) / 6
+标准差 = (P - O) / 6
+方差 = ((P - O) / 6)²
 ```
 
-### Aggregate Uncertainty
-
-Standard deviations do NOT sum linearly. Use root sum of squares:
+### 示例
 
 ```text
-Total Std Dev = √(Σ Variance_i) = √(Σ ((P_i - O_i) / 6)²)
+任务：实现用户搜索
+O = 2 天
+M = 4 天
+P = 10 天
+
+期望值 = (2 + 4×4 + 10) / 6 = 28 / 6 = 4.67 天
+标准差 = (10 - 2) / 6 = 1.33 天
 ```
 
-### Example: 3-Task Project
+### 置信区间
 
-| Task      | O   | M   | P   | Expected | Std Dev  | Variance |
-| --------- | --- | --- | --- | -------- | -------- | -------- |
-| Task 1    | 1   | 2   | 5   | 2.3      | 0.67     | 0.44     |
-| Task 2    | 2   | 4   | 10  | 4.7      | 1.33     | 1.78     |
-| Task 3    | 1   | 3   | 7   | 3.3      | 1.00     | 1.00     |
-| **Total** |     |     |     | **10.3** | **1.80** | **3.22** |
+| 置信度   | 范围                    |
+| -------- | ----------------------- |
+| 68%      | 期望值 ± 1 个标准差     |
+| 95%      | 期望值 ± 2 个标准差     |
+| 99.7%    | 期望值 ± 3 个标准差     |
 
-Total Std Dev = √3.22 = 1.80 days
+示例结果：
 
-95% confident: 10.3 ± 3.6 = 6.7 to 13.9 days
+- 68% 置信：3.3 到 6.0 天
+- 95% 置信：2.0 到 7.3 天
 
 ---
 
-## Simplified Three-Point (Quick Sizing)
+## 汇总估算
 
-When full PERT is overkill:
+### 期望值之和
+
+对于多项任务，总期望工期：
 
 ```text
-Quick Estimate = M + Buffer
-
-Buffer:
-  High confidence (done this before): +20%
-  Medium confidence (some unknowns): +50%
-  Low confidence (many unknowns): +100%
+总期望值 = Σ 期望值_i
 ```
+
+### 聚合不确定性
+
+标准差不会线性累加。使用平方和的平方根：
+
+```text
+总标准差 = √(Σ 方差_i) = √(Σ ((P_i - O_i) / 6)²)
+```
+
+### 示例：3 任务项目
+
+| 任务     | O   | M   | P   | 期望值   | 标准差   | 方差     |
+| -------- | --- | --- | --- | -------- | -------- | -------- |
+| 任务 1   | 1   | 2   | 5   | 2.3      | 0.67     | 0.44     |
+| 任务 2   | 2   | 4   | 10  | 4.7      | 1.33     | 1.78     |
+| 任务 3   | 1   | 3   | 7   | 3.3      | 1.00     | 1.00     |
+| **总计** |     |     |     | **10.3** | **1.80** | **3.22** |
+
+总标准差 = √3.22 = 1.80 天
+
+95% 置信：10.3 ± 3.6 = 6.7 到 13.9 天
 
 ---
 
-## Sequential vs Parallel Duration
+## 简化三点法（快速估算）
 
-### Sequential Tasks
-
-```text
-Duration = Σ Expected_i
-```
-
-### Parallel Tasks
+当完整 PERT 过于繁琐时：
 
 ```text
-Duration = max(Expected_i)  for tasks running simultaneously
-```
+快速估算 = M + 缓冲
 
-### Mixed (Critical Path)
-
-```text
-Total = Σ (max of each parallel group on the critical path)
+缓冲：
+  高置信度（之前做过）：+20%
+  中等置信度（有一些未知）：+50%
+  低置信度（许多未知）：+100%
 ```
 
 ---
 
-## Common Estimation Pitfalls
+## 顺序 vs 并行工期
 
-| Pitfall                    | Problem                                               | Fix                                                 |
-| -------------------------- | ----------------------------------------------------- | --------------------------------------------------- |
-| Single-point estimate      | No uncertainty communicated                           | Always give ranges                                  |
-| Calendar time vs work time | 5 days of work ≠ 1 week (meetings, context switching) | Specify: "5 working days at 6 productive hours/day" |
-| Forgetting testing time    | Implementation estimate doesn't include tests         | Add 20-40% for tests                                |
-| Forgetting review time     | Code review adds calendar time                        | Add 1-2 days per task for review cycle              |
-| Ignoring dependencies      | Total = sum of individual estimates                   | Must account for blocking dependencies              |
-| Scope creep                | Original estimate for original scope                  | Re-estimate when scope changes                      |
+### 顺序任务
+
+```text
+工期 = Σ 期望值_i
+```
+
+### 并行任务
+
+```text
+工期 = max(期望值_i)  对于同时运行的任务
+```
+
+### 混合（关键路径）
+
+```text
+总工期 = Σ（关键路径上每个并行组的最大值）
+```
+
+---
+
+## 常见估算陷阱
+
+| 陷阱                       | 问题                                                   | 修复                                                 |
+| -------------------------- | ------------------------------------------------------ | ---------------------------------------------------- |
+| 单点估算                   | 未传达不确定性                                         | 始终给出范围                                         |
+| 日历时间 vs 工作时间       | 5 天的工作 ≠ 1 周（会议、上下文切换）                   | 明确："5 个工作日，每天 6 个有效工时"                |
+| 忘记测试时间               | 实现估算不包含测试                                     | 加 20-40% 用于测试                                   |
+| 忘记审查时间               | 代码审查增加日历时间                                   | 每项任务加 1-2 天用于审查周期                        |
+| 忽略依赖关系               | 总和 = 各估算值相加                                    | 必须考虑阻塞依赖                                     |
+| 范围蔓延                   | 原先的估算针对原先的范围                               | 范围变化时重新估算                                   |

@@ -1,20 +1,20 @@
-# General-Purpose vs Special-Purpose Modules
+# 通用 vs. 专用模块
 
-One of the most important design decisions is how general-purpose or special-purpose a module's interface should be. Ousterhout advocates for a "somewhat general-purpose" approach: general enough to avoid special cases, specific enough to avoid over-engineering.
+最重要的设计决策之一是模块的接口应该是通用的还是专用的。Ousterhout 主张采用"一定程度通用"的方法：足够通用以避免特例，足够具体以避免过度工程。
 
-## The Spectrum
+## 谱系
 
 ```
-Too Special ←————————————————————————→ Too General
-  (bloated     (sweet spot:              (wasted effort,
-  with         "somewhat                  unnecessary
-  special      general-purpose")          abstraction)
-  cases)
+太专用 ←————————————————————————→ 太通用
+  （臃肿     （最佳点：                  （浪费精力、
+   充满        "一定程度               不必要的
+   特例        通用"）                   抽象）
+   案例）
 ```
 
-### Too Special-Purpose
+### 太专用
 
-A module designed for one specific use case. Its interface includes details that tie it to a particular caller or scenario.
+为特定用例设计的模块。其接口包含将其绑定到特定调用者或场景的细节。
 
 ```python
 # Too special: designed for one specific email use case
@@ -31,11 +31,11 @@ class InvoiceEmailSender:
         ...
 ```
 
-Three classes doing essentially the same thing (sending email) with interfaces tied to specific use cases. Adding a fourth email type requires creating another class.
+三个类做本质上相同的事情（发送邮件），接口绑定到特定用例。添加第四种邮件类型需要创建另一个类。
 
-### Too General-Purpose
+### 太通用
 
-A module designed for every conceivable use case, including ones that may never arise.
+为每个可能的用例而设计的模块，包括可能永远不会出现的用例。
 
 ```python
 # Too general: anticipates every possible need
@@ -47,9 +47,9 @@ class UniversalMessageDispatcher:
         ...
 ```
 
-The interface is so general that using it requires understanding 13 parameters. Most callers will use only a fraction of them.
+接口如此通用，使用它需理解 13 个参数。大多数调用者只会使用其中的一小部分。
 
-### Somewhat General-Purpose (The Sweet Spot)
+### 一定程度通用（最佳点）
 
 ```python
 # Somewhat general: covers current needs with a simple interface
@@ -59,36 +59,36 @@ class EmailService:
         ...
 ```
 
-This covers welcome emails, password resets, invoices, and any future email type with a single, simple interface. It is general enough to handle all current use cases without special-case methods, but it does not try to handle SMS, push notifications, or A/B testing.
+这涵盖了欢迎邮件、密码重置、发票以及任何未来邮件类型，使用单个简单接口。它足够通用以处理所有当前用例而不需要特例方法，但它不试图处理 SMS、推送通知或 A/B 测试。
 
-## The Key Question
+## 关键问题
 
-> **"What is the simplest interface that will cover all my current needs?"**
+> **"满足我所有当前需求的最简单接口是什么？"**
 
-This question is the practical tool for finding the sweet spot. It has three important parts:
+这个问题是找到最佳点的实用工具。它有三个重要的部分：
 
-1. **Simplest interface:** Minimize the number of methods, parameters, and concepts
-2. **All current needs:** Do not design for hypothetical future requirements
-3. **Cover:** The interface must actually work for every current use case without workarounds
+1. **最简单的接口：** 最小化方法、参数和概念的数量
+2. **所有当前需求：** 不为假设的未来需求设计
+3. **覆盖：** 接口必须实际适用于每个当前用例，而不需要变通方案
 
-### Applying the Question
+### 应用该问题
 
-**Step 1:** List all current use cases for the module.
+**第 1 步：** 列出模块的所有当前用例。
 
-**Step 2:** For each use case, identify what the caller needs from the module.
+**第 2 步：** 对每个用例，确定调用者需要从模块获得什么。
 
-**Step 3:** Find the minimal set of methods and parameters that satisfies all callers.
+**第 3 步：** 找到满足所有调用者的最小方法集和参数集。
 
-**Step 4:** Check that no use case requires awkward workarounds.
+**第 4 步：** 检查没有用例需要笨拙的变通方案。
 
-**Example:**
+**示例：**
 
-A text editor needs to support:
-- Inserting text at a position
-- Deleting a range of text
-- Replacing a range of text
+一个文本编辑器需要支持：
+- 在某个位置插入文本
+- 删除一段范围的文本
+- 替换一段范围的文本
 
-Special-purpose approach:
+专用方法：
 ```python
 class TextEditor:
     def insert_text(self, position, text): ...
@@ -100,33 +100,33 @@ class TextEditor:
     def replace_word(self, position, new_word): ...
 ```
 
-Somewhat general-purpose approach:
+一定程度通用的方法：
 ```python
 class TextEditor:
     def insert(self, position, text): ...
     def delete(self, start, end): ...
 ```
 
-The general-purpose approach covers all cases with two methods. `replace` is just `delete` followed by `insert`. Headings and bullet points are just text with formatting characters. The interface is simpler and covers all current needs.
+通用的方法用两个方法覆盖了所有情况。`replace` 就是 `delete` 后跟 `insert`。标题和要点只是带有格式字符的文本。接口更简单，覆盖了所有当前需求。
 
-## Push Complexity Downward
+## 将复杂性向下推
 
-**Principle:** It is more important for a module to have a simple interface than a simple implementation.
+**原则：** 让模块有简单的接口比简单的实现更重要。
 
-When complexity must exist somewhere in the system, it is better to put it inside a module (deepening it) than in the module's interface (burdening all callers).
+当系统中必须存在复杂性时，最好将其放在模块内部（深化它），而不是放在模块的接口中（给所有调用者增加负担）。
 
-### Why Downward, Not Upward?
+### 为什么向下而不是向上？
 
-| Complexity Location | Who Bears the Cost | Multiplier Effect |
+| 复杂性位置 | 谁承担成本 | 乘数效应 |
 |--------------------|-------------------|-------------------|
-| Inside the module | The module's developer, once | 1x |
-| In the interface | Every caller, every time they use it | Nx (where N = number of callers) |
+| 模块内部 | 模块的开发者，一次 | 1x |
+| 在接口中 | 每个调用者，每次使用 | Nx（N = 调用者数量） |
 
-A module with a complex implementation but simple interface imposes complexity on one developer (the module author). A module with a simple implementation but complex interface imposes complexity on every developer who uses it.
+一个具有复杂实现但简单接口的模块只对一位开发者（模块作者）施加了复杂性。一个具有简单实现但复杂接口的模块对每个使用它的开发者都施加了复杂性。
 
-### Example: Connection Pooling
+### 示例：连接池
 
-**Complexity pushed up (to callers):**
+**复杂性向上推（给调用者）：**
 ```python
 # Every caller must manage pool lifecycle
 pool = ConnectionPool(host, port, min_size=5, max_size=20)
@@ -138,7 +138,7 @@ finally:
 # Must also handle pool exhaustion, stale connections, reconnection...
 ```
 
-**Complexity pushed down (into the module):**
+**复杂性向下推（进入模块）：**
 ```python
 # Caller just makes queries; pooling is internal
 db = Database(connection_string)
@@ -146,9 +146,9 @@ result = db.query(sql, params)
 # Pool management, connection lifecycle, retries all handled internally
 ```
 
-### Example: Error Handling
+### 示例：错误处理
 
-**Complexity pushed up:**
+**复杂性向上推：**
 ```python
 result = parser.parse(input)
 if result.has_syntax_error:
@@ -161,7 +161,7 @@ else:
     process(result.value)
 ```
 
-**Complexity pushed down:**
+**复杂性向下推：**
 ```python
 try:
     result = parser.parse(input)
@@ -171,11 +171,11 @@ except ParseError as e:
     show_error(e.message, e.location)
 ```
 
-## Configuration Parameters: Complexity Amplifiers
+## 配置参数：复杂性放大器
 
-Configuration parameters are one of the most common ways modules push complexity upward to callers. Each parameter represents a decision the module is refusing to make.
+配置参数是模块将复杂性向上推给调用者的最常见方式之一。每个参数代表模块拒绝做出的一个决策。
 
-### The Problem
+### 问题
 
 ```python
 # 11 decisions pushed to the caller
@@ -194,40 +194,40 @@ cache = Cache(
 )
 ```
 
-Every parameter is a question the caller must answer. Most callers don't know the right answer and will either copy values from examples or guess. Wrong values cause subtle performance problems or bugs that are hard to diagnose.
+每个参数都是调用者必须回答的一个问题。大多数调用者不知道正确答案，会从示例复制值或猜测。错误的值会导致难以诊断的细微性能问题或 bug。
 
-### Better Approaches
+### 更好的方法
 
-| Strategy | How It Helps | Example |
+| 策略 | 如何帮助 | 示例 |
 |----------|-------------|---------|
-| **Sensible defaults** | Module makes the decision unless overridden | `Cache()` works with reasonable defaults; override only what you need |
-| **Auto-detection** | Module determines the right value at runtime | Auto-size based on available memory; auto-select compression based on data characteristics |
-| **Progressive disclosure** | Simple API for simple use; options for advanced use | `Cache()` for basic use; `Cache.builder().with_eviction(lru).build()` for custom |
-| **Convention over configuration** | Follow well-known patterns | Database connection reads from `DATABASE_URL` environment variable; no parameter needed |
-| **Elimination** | Remove the parameter entirely | Instead of `thread_safe` parameter, always be thread-safe (the cost is usually negligible) |
+| **合理的默认值** | 模块做出决策，除非被覆盖 | `Cache()` 以合理的默认值工作；只覆盖你需要的 |
+| **自动检测** | 模块在运行时确定正确的值 | 根据可用内存自动调整大小；根据数据特征自动选择压缩 |
+| **渐进式披露** | 简单用途用简单 API；高级用途用选项 | `Cache()` 用于基本使用；`Cache.builder().with_eviction(lru).build()` 用于自定义 |
+| **约定优于配置** | 遵循众所周知的模式 | 数据库连接从 `DATABASE_URL` 环境变量读取；不需要参数 |
+| **消除** | 完全移除参数 | 不是 `thread_safe` 参数，而是一直保持线程安全（成本通常可以忽略） |
 
-### When Configuration Is Justified
+### 配置何时合理
 
-Configuration parameters are justified when:
-1. **Different callers genuinely need different values** (not just "might someday need")
-2. **The module cannot determine the right value** (it lacks the information)
-3. **The wrong default would cause real harm** (not just suboptimal performance)
-4. **The decision changes between deployments** (environment-specific settings)
+配置参数在以下情况下是合理的：
+1. **不同的调用者确实需要不同的值**（不仅仅是"将来可能需要"）
+2. **模块无法确定正确的值**（它缺少信息）
+3. **错误的默认值会造成真正的损害**（而不仅仅是次优性能）
+4. **决策在不同部署之间变化**（特定于环境的设置）
 
-### The Test
+### 测试
 
-For each configuration parameter, ask:
-- "Can the module figure this out on its own?" If yes, remove the parameter.
-- "Do most callers use the same value?" If yes, make it the default.
-- "Will the caller know the right value?" If no, the parameter is shifting complexity, not simplifying.
+对每个配置参数，问：
+- "模块自己能解决这个问题吗？"如果是，移除该参数。
+- "大多数调用者使用相同的值吗？"如果是，将其设为默认值。
+- "调用者知道正确的值吗？"如果不是，该参数正在转移复杂性，而不是简化。
 
-## When Specialization Is Justified
+## 何时专用是合理的
 
-Despite the general preference for general-purpose design, specialization is appropriate in certain situations:
+尽管总体上倾向于通用设计，但在某些情况下专用是合适的：
 
-### 1. Domain-Specific Modules
+### 1. 领域专用模块
 
-When a module embodies domain-specific knowledge that does not generalize.
+当模块体现不适合泛化的领域特定知识时。
 
 ```python
 # Justified specialization: tax rules are inherently domain-specific
@@ -238,11 +238,11 @@ class USTaxCalculator:
         ...
 ```
 
-A "general-purpose tax calculator" would need to know about every country's tax system. Specialization to US taxes hides substantial domain complexity behind a focused interface.
+一个"通用税务计算器"需要了解每个国家的税务系统。专用于美国税务在一个聚焦的接口背后隐藏了巨大的领域复杂性。
 
-### 2. Performance-Critical Paths
+### 2. 性能关键路径
 
-When general-purpose abstractions introduce unacceptable overhead.
+当通用抽象引入不可接受的开销时。
 
 ```python
 # General-purpose: flexible but slow for the hot path
@@ -257,9 +257,9 @@ def transform_pixel_rgb_to_hsv(pixels: np.ndarray) -> np.ndarray:
     ...
 ```
 
-### 3. User-Facing Interfaces
+### 3. 面向用户的接口
 
-When the interface is used by end users (not developers), specialized vocabulary improves usability.
+当接口由最终用户（而非开发者）使用时，专门的词汇可以提高可用性。
 
 ```python
 # General-purpose API: flexible but requires domain knowledge
@@ -273,9 +273,9 @@ scheduler.create_recurring_task(
 scheduler.send_weekly_report(day="monday", time="09:00")
 ```
 
-### 4. Adapters and Bridges
+### 4. 适配器和桥接
 
-When connecting two systems with incompatible interfaces, the adapter is inherently specific to both.
+当连接两个具有不兼容接口的系统时，适配器本质上特定于两者。
 
 ```python
 class StripeToInternalPaymentAdapter:
@@ -283,47 +283,47 @@ class StripeToInternalPaymentAdapter:
         ...
 ```
 
-## Practical Guidelines
+## 实用指南
 
-### When Designing a New Module
+### 设计新模块时
 
-1. List all current use cases
-2. Ask: "What is the simplest interface that covers all of these?"
-3. Resist adding methods for hypothetical future use cases
-4. Push complexity into the implementation, away from the interface
-5. Default to slightly more general than you think you need -- it is usually simpler
+1. 列出所有当前用例
+2. 问："覆盖所有这些用例的最简单接口是什么？"
+3. 抵制为假设的未来用例添加方法的冲动
+4. 将复杂性推入实现，远离接口
+5. 默认比你认为需要的稍微通用一些——通常更简单
 
-### When Reviewing an Existing Module
+### 审查现有模块时
 
-| Signal | Problem | Action |
+| 信号 | 问题 | 操作 |
 |--------|---------|--------|
-| Many methods that differ only in parameters | Over-specialization | Merge into fewer, more general methods |
-| Methods named after specific callers | Coupling to use cases | Rename around the concept, not the caller |
-| Long parameter lists | Complexity pushed upward | Add defaults, auto-detect, or absorb decisions |
-| Multiple modules with similar functionality | Opportunity for generalization | Extract a shared general-purpose module |
-| Configuration that "nobody touches" | Parameters that should be defaults | Make them defaults or remove them |
+| 许多仅在参数上不同的方法 | 过度专用 | 合并为更少、更通用的方法 |
+| 以特定调用者命名的方法 | 耦合到用例 | 围绕概念重命名，而非调用者 |
+| 长参数列表 | 复杂性向上推 | 添加默认值、自动检测或吸收决策 |
+| 多个相似功能的模块 | 泛化机会 | 提取一个共享的通用模块 |
+| "没人碰的"配置 | 应为默认值的参数 | 将它们设为默认值或移除 |
 
-### When Adding a Feature
+### 添加功能时
 
-Before adding a new method or parameter:
-1. Can an existing method handle this with its current interface?
-2. Can a slight generalization of an existing method handle this?
-3. Does the new method introduce a special case that could be avoided?
+在添加新方法或参数之前：
+1. 现有方法能否通过其当前接口处理这个？
+2. 对现有方法进行轻微泛化能否处理这个？
+3. 新方法是否引入了可以避免的特例？
 
-The best features are those that require no interface changes because the existing abstraction already supports them.
+最好的功能是那些不需要修改接口的，因为现有的抽象已经支持它们。
 
-## The Relationship to Information Hiding
+## 与信息隐藏的关系
 
-General-purpose interfaces hide **use-case-specific knowledge**. When an interface is general, callers don't need to know about other callers' use cases. This is a form of information hiding that reduces dependencies between callers.
+通用的接口隐藏了**特定用例的知识**。当接口是通用的时，调用者不需要了解其他调用者的用例。这是信息隐藏的一种形式，可以减少调用者之间的依赖。
 
-A special-purpose interface like `sendWelcomeEmail()` creates a dependency: every developer who sees it must understand the welcome email use case. A general-purpose interface like `send(to, subject, body)` hides all specific use cases, reducing the information each developer must hold in mind.
+像 `sendWelcomeEmail()` 这样的专用接口创建了一个依赖：每个看到它的开发者都必须理解欢迎邮件的用例。像 `send(to, subject, body)` 这样的通用接口隐藏了所有特定用例，减少了每个开发者必须记在心中的信息量。
 
-## Summary
+## 总结
 
-The goal is not the most general-purpose design possible. It is the **simplest interface that covers all current needs**. This sweet spot produces modules that are:
-- Simple to use (few methods, few parameters)
-- Flexible enough for current needs (no workarounds required)
-- Future-friendly (new use cases often fit the existing abstraction)
-- Deep (general interfaces tend to hide more implementation complexity)
+目标不是尽可能最通用的设计。而是**满足所有当前需求的最简单接口**。这个最佳点产生的模块：
+- 易于使用（方法少、参数少）
+- 足够灵活以应对当前需求（不需要变通方案）
+- 面向未来（新用例通常符合现有的抽象）
+- 深层（通用接口往往隐藏更多的实现复杂性）
 
-When in doubt, lean slightly toward more general -- it is usually simpler. But stop well before building a framework for every conceivable future need.
+当有疑问时，稍微倾向于更通用——它通常更简单。但在构建一个能应对每个可想象的未来需求的框架之前停下来。

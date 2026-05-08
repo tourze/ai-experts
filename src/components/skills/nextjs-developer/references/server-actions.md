@@ -1,6 +1,6 @@
 # Server Actions
 
-## Basic Server Action
+## 基本 Server Action
 
 ```tsx
 // app/actions.ts
@@ -21,7 +21,7 @@ export async function createPost(formData: FormData) {
 }
 ```
 
-## Form with Server Action
+## 带 Server Action 的表单
 
 ```tsx
 // app/posts/new/page.tsx
@@ -38,7 +38,7 @@ export default function NewPost() {
 }
 ```
 
-## Server Action with Validation
+## 带验证的 Server Action
 
 ```tsx
 // app/actions.ts
@@ -76,7 +76,7 @@ export async function createPost(formData: FormData) {
 }
 ```
 
-## Client Component with Server Action
+## 客户端组件中的 Server Action
 
 ```tsx
 // app/actions.ts
@@ -156,7 +156,7 @@ export function CreatePostForm() {
 }
 ```
 
-## Server Action with Redirect
+## 带重定向的 Server Action
 
 ```tsx
 // app/actions.ts
@@ -179,7 +179,7 @@ export async function createPost(formData: FormData) {
 }
 ```
 
-## Optimistic Updates
+## 乐观更新
 
 ```tsx
 // components/todo-list.tsx
@@ -205,10 +205,10 @@ export function TodoList({ todos }: { todos: Todo[] }) {
     const title = formData.get('title') as string
     const newTodo = { id: crypto.randomUUID(), title, completed: false }
 
-    // Optimistically update UI
+    // 乐观更新 UI
     addOptimisticTodo(newTodo)
 
-    // Send to server
+    // 发送到服务器
     await createTodo(formData)
   }
 
@@ -229,7 +229,7 @@ export function TodoList({ todos }: { todos: Todo[] }) {
 }
 ```
 
-## Server Action with Authentication
+## 带身份验证的 Server Action
 
 ```tsx
 // app/actions.ts
@@ -259,7 +259,7 @@ export async function createPost(formData: FormData) {
 }
 ```
 
-## Inline Server Action
+## 内联 Server Action
 
 ```tsx
 // app/posts/page.tsx
@@ -293,7 +293,7 @@ export default async function Posts() {
 }
 ```
 
-## Programmatic Server Action Call
+## 程序化调用 Server Action
 
 ```tsx
 // components/delete-button.tsx
@@ -327,7 +327,7 @@ export async function deletePost(postId: string) {
 }
 ```
 
-## Revalidation Strategies
+## 重新验证策略
 
 ```tsx
 // app/actions.ts
@@ -339,19 +339,19 @@ import { revalidatePath, revalidateTag } from 'next/cache'
 export async function updatePost(id: string, data: UpdatePostData) {
   await db.post.update({ where: { id }, data })
 
-  // Revalidate specific path
+  // 重新验证特定路径
   revalidatePath('/posts')
   revalidatePath(`/posts/${id}`)
 
-  // Revalidate all paths in a layout
+  // 重新验证布局中的所有路径
   revalidatePath('/posts', 'layout')
 
-  // Revalidate by cache tag
+  // 按缓存标签重新验证
   revalidateTag('posts', 'max')
 }
 ```
 
-## Server Action with File Upload
+## 带文件上传的 Server Action
 
 ```tsx
 // app/actions.ts
@@ -398,7 +398,7 @@ export function UploadForm() {
 }
 ```
 
-## Error Handling
+## 错误处理
 
 ```tsx
 // app/actions.ts
@@ -442,7 +442,7 @@ export function CreatePostForm() {
     if (result.error) {
       setError(result.error)
     } else {
-      // Success
+      // 成功
       router.push('/posts')
     }
   }
@@ -450,13 +450,13 @@ export function CreatePostForm() {
   return (
     <form action={handleSubmit}>
       {error && <div className="error">{error}</div>}
-      {/* form fields */}
+      {/* 表单字段 */}
     </form>
   )
 }
 ```
 
-## Server Action with Cookies
+## 带 Cookie 的 Server Action
 
 ```tsx
 // app/actions.ts
@@ -470,7 +470,7 @@ export async function setTheme(theme: 'light' | 'dark') {
   cookieStore.set('theme', theme, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    maxAge: 60 * 60 * 24 * 365, // 1 year
+    maxAge: 60 * 60 * 24 * 365, // 1 年
     path: '/',
   })
 }
@@ -481,7 +481,7 @@ export async function getTheme() {
 }
 ```
 
-## Rate Limiting
+## 速率限制
 
 ```tsx
 // app/actions.ts
@@ -502,29 +502,29 @@ export async function createPost(formData: FormData) {
     return { error: 'Rate limit exceeded' }
   }
 
-  // Create post...
+  // 创建文章...
 }
 ```
 
-## Quick Reference
+## 快速参考
 
-| Capability | Usage |
-|------------|-------|
-| **Define** | Add 'use server' at top of file or function |
-| **Form** | Pass action to `<form action={serverAction}>` |
-| **Programmatic** | Call directly: `await serverAction(data)` |
-| **Validation** | Use Zod/TypeBox before mutations |
-| **Revalidate** | `revalidatePath()` or `revalidateTag('tag', 'max')` |
-| **Redirect** | `redirect()` after mutation |
-| **Errors** | Return error objects, handle in client |
-| **Files** | Access via `formData.get()` as File |
+| 能力 | 用法 |
+|------|------|
+| **定义** | 在文件或函数顶部添加 'use server' |
+| **表单** | 将 action 传给 `<form action={serverAction}>` |
+| **程序化** | 直接调用：`await serverAction(data)` |
+| **验证** | 在变更前使用 Zod/TypeBox |
+| **重新验证** | `revalidatePath()` 或 `revalidateTag('tag', 'max')` |
+| **重定向** | 变更后调用 `redirect()` |
+| **错误** | 返回错误对象，在客户端处理 |
+| **文件** | 通过 `formData.get()` 以 File 类型访问 |
 
-## Best Practices
+## 最佳实践
 
-1. **Always validate** - Use Zod/TypeBox for type-safe validation
-2. **Revalidate** - Call revalidatePath() after mutations
-3. **Handle errors** - Return error objects instead of throwing
-4. **Auth checks** - Verify session before mutations
-5. **Rate limiting** - Protect against abuse
-6. **Type safety** - Define input/output types
-7. **Optimistic updates** - Use useOptimistic for better UX
+1. **始终验证** - 使用 Zod/TypeBox 进行类型安全验证
+2. **重新验证** - 变更后调用 revalidatePath()
+3. **处理错误** - 返回错误对象而不是抛出异常
+4. **身份验证检查** - 在变更前验证会话
+5. **速率限制** - 防止滥用
+6. **类型安全** - 定义输入/输出类型
+7. **乐观更新** - 使用 useOptimistic 改善用户体验

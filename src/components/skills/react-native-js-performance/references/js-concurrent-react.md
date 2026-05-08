@@ -1,57 +1,57 @@
 ---
-title: Concurrent React
+title: 并发 React
 impact: HIGH
 tags: useDeferredValue, useTransition, suspense, concurrent
 ---
 
-# Skill: Concurrent React
+# 技能：并发 React
 
-Use `useDeferredValue` and `useTransition` to improve perceived performance by prioritizing critical updates.
+使用 `useDeferredValue` 和 `useTransition` 通过优先处理关键更新来改善感知性能。
 
-## Quick Pattern
+## 快速模式
 
-**Incorrect (blocks input on every keystroke):**
+**错误做法（每次按键都阻塞输入）：**
 
 ```jsx
 const [query, setQuery] = useState('');
 <TextInput value={query} onChangeText={setQuery} />
-<ExpensiveList query={query} />  // Blocks typing
+<ExpensiveList query={query} />  // 阻塞输入
 ```
 
-**Correct (input stays responsive):**
+**正确做法（输入保持响应）：**
 
 ```jsx
 const [query, setQuery] = useState('');
 const deferredQuery = useDeferredValue(query);
 <TextInput value={query} onChangeText={setQuery} />
-<ExpensiveList query={deferredQuery} />  // Deferred update
+<ExpensiveList query={deferredQuery} />  // 延迟更新
 ```
 
-## When to Use
+## 适用场景
 
-- Search/filter inputs feel laggy with large result sets
-- Expensive computations block UI interactions
-- Loading states appear too frequently
-- Want to show stale content while loading new content
-- Need to prioritize user input over background updates
+- 搜索/筛选输入在大结果集下感觉迟钝
+- 昂贵的计算阻塞了 UI 交互
+- 加载状态出现过于频繁
+- 希望在加载新内容时仍显示旧内容
+- 需要优先处理用户输入而非后台更新
 
-## Prerequisites
+## 前置条件
 
-- React Native with New Architecture enabled (default in RN 0.76+)
-- React 18+ features (`useDeferredValue`, `useTransition`, `Suspense`)
+- 启用新架构的 React Native（RN 0.76+ 默认）
+- React 18+ 特性（`useDeferredValue`、`useTransition`、`Suspense`）
 
-## Concept Overview
+## 概念概述
 
-**Concurrent React** allows updates to be:
-- **Paused**: Low-priority work can wait
-- **Interrupted**: User input takes priority
-- **Abandoned**: Outdated updates can be skipped
+**并发 React** 允许更新被：
+- **暂停**：低优先级工作可以等待
+- **中断**：用户输入优先处理
+- **放弃**：过时的更新可以被跳过
 
-## Step-by-Step Instructions
+## 分步说明
 
-### Pattern 1: Defer Expensive Rendering with `useDeferredValue`
+### 模式 1：使用 `useDeferredValue` 延迟昂贵的渲染
 
-Use when a value drives expensive computation but you want input to stay responsive.
+当某个值驱动昂贵计算但希望输入保持响应时使用。
 
 ```jsx
 import { useState, useDeferredValue } from 'react';
@@ -60,24 +60,24 @@ const SearchScreen = () => {
   const [query, setQuery] = useState('');
   const deferredQuery = useDeferredValue(query);
   
-  // query updates immediately (input stays responsive)
-  // deferredQuery updates when React has time
+  // query 立即更新（输入保持响应）
+  // deferredQuery 在 React 有空时更新
   
   return (
     <View>
       <TextInput
         value={query}
         onChangeText={setQuery}
-        placeholder="Search..."
+        placeholder="搜索..."
       />
-      {/* ExpensiveList receives deferred value */}
+      {/* ExpensiveList 接收延迟值 */}
       <ExpensiveList query={deferredQuery} />
     </View>
   );
 };
 ```
 
-### Pattern 2: Show Stale Content While Loading
+### 模式 2：加载时显示旧内容
 
 ```jsx
 const SearchWithStaleIndicator = () => {
@@ -97,9 +97,9 @@ const SearchWithStaleIndicator = () => {
 };
 ```
 
-### Pattern 3: Transition Non-Critical Updates with `useTransition`
+### 模式 3：使用 `useTransition` 处理非关键更新
 
-Use when you have multiple state updates and want to mark some as low-priority.
+当有多个状态更新且希望将某些标记为低优先级时使用。
 
 ```jsx
 import { useState, useTransition } from 'react';
@@ -110,10 +110,10 @@ const TransitionExample = () => {
   const [isPending, startTransition] = useTransition();
   
   const handleIncrement = () => {
-    // High priority - updates immediately
+    // 高优先级 —— 立即更新
     setCount(c => c + 1);
     
-    // Low priority - can be interrupted
+    // 低优先级 —— 可被中断
     startTransition(() => {
       setHeavyData(computeExpensiveData());
     });
@@ -129,7 +129,7 @@ const TransitionExample = () => {
 };
 ```
 
-### Pattern 4: Suspense for Data Fetching
+### 模式 4：Suspense 用于数据获取
 
 ```jsx
 import { Suspense, useDeferredValue } from 'react';
@@ -149,24 +149,24 @@ const DataScreen = () => {
 };
 ```
 
-## Code Examples
+## 代码示例
 
-### Slow Component Optimization
+### 慢组件优化
 
 ```jsx
-// Without Concurrent React - UI freezes
+// 无并发 React —— UI 卡死
 const SlowSearch = () => {
   const [query, setQuery] = useState('');
   
   return (
     <>
       <TextInput value={query} onChangeText={setQuery} />
-      <SlowComponent query={query} /> {/* Blocks every keystroke */}
+      <SlowComponent query={query} /> {/* 阻塞每次按键 */}
     </>
   );
 };
 
-// With Concurrent React - UI stays responsive  
+// 有并发 React —— UI 保持响应
 const FastSearch = () => {
   const [query, setQuery] = useState('');
   const deferredQuery = useDeferredValue(query);
@@ -179,58 +179,58 @@ const FastSearch = () => {
   );
 };
 
-// Important: Wrap SlowComponent in memo to prevent re-renders from parent
+// 重要：将 SlowComponent 包裹在 memo 中，防止来自父组件的重新渲染
 const SlowComponent = memo(({ query }) => {
-  // Expensive computation here
+  // 在这里执行昂贵计算
 });
 ```
 
-### Automatic Batching (React 18+)
+### 自动批处理（React 18+）
 
-React 18 automatically batches state updates:
+React 18 自动批处理状态更新：
 
 ```jsx
-// Before React 18 - 2 re-renders
+// React 18 之前 —— 2 次重新渲染
 setTimeout(() => {
   setCount(c => c + 1);
   setFlag(f => !f);
-  // Rendered twice
+  // 渲染了两次
 }, 1000);
 
-// React 18+ - 1 re-render (automatic batching)
+// React 18+ —— 1 次重新渲染（自动批处理）
 setTimeout(() => {
   setCount(c => c + 1);
   setFlag(f => !f);
-  // Rendered once!
+  // 只渲染一次！
 }, 1000);
 ```
 
-## When to Use Which
+## 何时使用哪个
 
-| Scenario | Solution |
+| 场景 | 解决方案 |
 |----------|----------|
-| Single value drives expensive render | `useDeferredValue` |
-| Multiple state updates, some non-critical | `useTransition` |
-| Need loading indicator for transition | `useTransition` (has `isPending`) |
-| Data fetching with loading states | `Suspense` + `useDeferredValue` |
-| Simple parent-to-child value deferral | `useDeferredValue` |
+| 单个值驱动昂贵渲染 | `useDeferredValue` |
+| 多个状态更新，部分非关键 | `useTransition` |
+| 需要转换的加载指示器 | `useTransition`（有 `isPending`） |
+| 数据获取带加载状态 | `Suspense` + `useDeferredValue` |
+| 简单的父到子值延迟 | `useDeferredValue` |
 
-## Important Considerations
+## 重要考量
 
-1. **Wrap expensive components in `memo()`**: Without memoization, the component re-renders from parent anyway.
+1. **将昂贵的组件包裹在 `memo()` 中**：没有 memoization，组件无论如何会因父组件重新渲染。
 
-2. **Use with New Architecture**: Concurrent features require New Architecture in React Native.
+2. **与新架构一起使用**：并发特性需要 React Native 的新架构。
 
-3. **Don't overuse**: Only defer truly expensive work. Adding complexity for fast components is counterproductive.
+3. **不要过度使用**：仅延迟真正昂贵的工作。为快速组件增加复杂度是适得其反的。
 
-## Common Pitfalls
+## 常见陷阱
 
-- **Forgetting memo()**: `useDeferredValue` is useless if child re-renders from parent
-- **Using for simple state**: Overhead isn't worth it for cheap updates
-- **Expecting faster computation**: These hooks don't make code faster, they prioritize what runs when
+- **忘记 memo()**：如果子组件因父组件重新渲染，`useDeferredValue` 毫无用处
+- **对简单状态使用**：对廉价更新来说，开销不值得
+- **期望更快计算**：这些 hooks 不会让代码更快，它们优先安排运行时机
 
-## Related Skills
+## 相关技能
 
-- [js-profile-react.md](./js-profile-react.md) - Identify slow components
-- [js-react-compiler.md](./js-react-compiler.md) - Automatic memoization
-- [js-lists-flatlist-flashlist.md](./js-lists-flatlist-flashlist.md) - For list-specific optimizations
+- [js-profile-react.md](./js-profile-react.md) —— 识别慢组件
+- [js-react-compiler.md](./js-react-compiler.md) —— 自动 memoization
+- [js-lists-flatlist-flashlist.md](./js-lists-flatlist-flashlist.md) —— 列表特定优化

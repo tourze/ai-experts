@@ -1,282 +1,282 @@
-# Example Personas
+# 示例人物画像
 
-Real output examples showing what good personas look like.
-
----
-
-## Table of Contents
-
-- [Example 1: Power User Persona](#example-1-power-user-persona)
-- [Example 2: Business User Persona](#example-2-business-user-persona)
-- [Example 3: Casual User Persona](#example-3-casual-user-persona)
-- [JSON Output Format](#json-output-format)
-- [Quality Checklist](#quality-checklist)
+展示优质人物画像样式的真实输出示例。
 
 ---
 
-## Example 1: Power User Persona
+## 目录
 
-### Script Output
-
-```
-============================================================
-PERSONA: Alex the Power User
-============================================================
-
-📝 A daily user who primarily uses the product for work purposes
-
-Archetype: Power User
-Quote: "I need tools that can keep up with my workflow"
-
-👤 Demographics:
-  • Age Range: 25-34
-  • Location Type: Urban
-  • Occupation Category: Software Engineer
-  • Education Level: Bachelor's degree
-  • Tech Proficiency: Advanced
-
-🧠 Psychographics:
-  Motivations: Efficiency, Control, Mastery
-  Values: Time-saving, Flexibility, Reliability
-  Lifestyle: Fast-paced, optimization-focused
-
-🎯 Goals & Needs:
-  • Complete tasks efficiently without repetitive work
-  • Automate recurring workflows
-  • Access advanced features and shortcuts
-
-😤 Frustrations:
-  • Slow loading times (mentioned by 14/20 users)
-  • No keyboard shortcuts for common actions
-  • Limited API access for automation
-
-📊 Behaviors:
-  • Frequently uses: Dashboard, Reports, Export, API
-  • Usage pattern: 5+ sessions per day
-  • Interaction style: Exploratory - uses many features
-
-💡 Design Implications:
-  → Optimize for speed and efficiency
-  → Provide keyboard shortcuts and power features
-  → Expose API and automation capabilities
-  → Allow UI customization
-
-📈 Data: Based on 45 users
-    Confidence: High
-    Method: Quantitative analysis + 12 qualitative interviews
-```
-
-### Data Behind This Persona
-
-**Quantitative Data (n=45):**
-- 78% use product daily
-- Average session: 23 minutes
-- Average features used: 12
-- 84% access via desktop
-- Support tickets: 0.2 per month (low)
-
-**Qualitative Insights (12 interviews):**
-
-| Theme | Frequency | Sample Quote |
-|-------|-----------|--------------|
-| Speed matters | 10/12 | "Every second counts when I'm in flow" |
-| Shortcuts wanted | 8/12 | "Why can't I Cmd+K to search?" |
-| Automation need | 9/12 | "I wrote a script to work around..." |
-| Customization | 7/12 | "Let me hide features I don't use" |
+- [示例 1：高级用户画像](#示例-1高级用户画像)
+- [示例 2：业务用户画像](#示例-2业务用户画像)
+- [示例 3：普通用户画像](#示例-3普通用户画像)
+- [JSON 输出格式](#json-输出格式)
+- [质量检查清单](#质量检查清单)
 
 ---
 
-## Example 2: Business User Persona
+## 示例 1：高级用户画像
 
-### Script Output
+### 脚本输出
 
 ```
 ============================================================
-PERSONA: Taylor the Business Professional
+人物画像：Alex 高级用户
 ============================================================
 
-📝 A weekly user who primarily uses the product for team collaboration
+📝 日常使用，主要出于工作目的使用该产品
 
-Archetype: Business User
-Quote: "I need to show clear value to my stakeholders"
+原型：高级用户
+语录："我需要能跟上我工作流的工具"
 
-👤 Demographics:
-  • Age Range: 35-44
-  • Location Type: Urban/Suburban
-  • Occupation Category: Product Manager
-  • Education Level: MBA
-  • Tech Proficiency: Intermediate
+👤 人口统计数据：
+  • 年龄范围：25-34
+  • 地点类型：城市
+  • 职业类别：软件工程师
+  • 教育水平：学士学位
+  • 技术熟练度：高级
 
-🧠 Psychographics:
-  Motivations: Team success, Visibility, Recognition
-  Values: Collaboration, Measurable outcomes, Professional growth
-  Lifestyle: Meeting-heavy, cross-functional work
+🧠 心理特征：
+  动机：效率、控制、精通
+  价值观：节省时间、灵活性、可靠性
+  生活方式：快节奏、以优化为目标
 
-🎯 Goals & Needs:
-  • Improve team efficiency and coordination
-  • Generate reports for stakeholders
-  • Integrate with existing work tools (Slack, Jira)
+🎯 目标与需求：
+  • 高效完成任务，无需重复工作
+  • 自动化重复工作流
+  • 访问高级功能和快捷键
 
-😤 Frustrations:
-  • No way to share views with team (11/18 users)
-  • Can't generate executive summaries
-  • No SSO - team has to manage passwords
+😤 挫折：
+  • 加载缓慢（14/20 用户提及）
+  • 常用操作没有键盘快捷键
+  • 用于自动化的 API 访问有限
 
-📊 Behaviors:
-  • Frequently uses: Sharing, Reports, Team Dashboard
-  • Usage pattern: 3-4 sessions per week
-  • Interaction style: Goal-oriented, feature-specific
+📊 行为：
+  • 常用功能：仪表盘、报告、导出、API
+  • 使用模式：每天 5 次以上
+  • 交互风格：探索型——使用多种功能
 
-💡 Design Implications:
-  → Add collaboration and sharing features
-  → Build executive reporting and dashboards
-  → Integrate with enterprise tools (SSO, Slack)
-  → Provide permission and access controls
+💡 设计启示：
+  → 优化速度和效率
+  → 提供键盘快捷键和高级功能
+  → 开放 API 和自动化能力
+  → 允许 UI 自定义
 
-📈 Data: Based on 38 users
-    Confidence: High
-    Method: Survey (n=200) + 18 interviews
+📈 数据：基于 45 名用户
+    置信度：高
+    方法：定量分析 + 12 次定性访谈
 ```
 
-### Data Behind This Persona
+### 该画像背后的数据
 
-**Survey Data (n=200):**
-- 19% of total user base fits this profile
-- Average company size: 50-500 employees
-- 72% need to share outputs with non-users
-- Top request: Team collaboration features
+**定量数据 (n=45)：**
+- 78% 每天使用产品
+- 平均会话时长：23 分钟
+- 平均使用功能数：12
+- 84% 通过桌面端访问
+- 支持工单：每月 0.2 张（低）
 
-**Interview Insights (18 interviews):**
+**定性洞察（12 次访谈）：**
 
-| Need | Frequency | Business Impact |
-|------|-----------|-----------------|
-| Reporting | 16/18 | "I spend 2hrs/week making slides" |
-| Team access | 14/18 | "Can't show my team what I see" |
-| Integration | 12/18 | "Copy-paste into Confluence..." |
-| SSO | 11/18 | "IT won't approve without SSO" |
-
-### Scenario: Quarterly Review Prep
-
-```
-Context: End of quarter, needs to present metrics to leadership
-Goal: Create compelling data story in 30 minutes
-Current Journey:
-  1. Export raw data (works)
-  2. Open Excel, make charts (manual)
-  3. Copy to PowerPoint (manual)
-  4. Share with team for feedback (via email)
-
-Pain Points:
-  • No built-in presentation view
-  • Charts don't match brand guidelines
-  • Can't collaborate on narrative
-
-Opportunity:
-  • One-click executive summary
-  • Brand-compliant templates
-  • In-app commenting on reports
-```
+| 主题           | 频率    | 示例语录                                |
+| -------------- | ------- | --------------------------------------- |
+| 速度很重要     | 10/12   | "当我进入状态时，每秒都很关键"           |
+| 想要快捷键     | 8/12    | "为什么我不能用 Cmd+K 搜索？"            |
+| 自动化需求     | 9/12    | "我写了个脚本绕过了..."                  |
+| 自定义         | 7/12    | "让我隐藏我不用的功能"                   |
 
 ---
 
-## Example 3: Casual User Persona
+## 示例 2：业务用户画像
 
-### Script Output
+### 脚本输出
 
 ```
 ============================================================
-PERSONA: Casey the Casual User
+人物画像：Taylor 业务专业人士
 ============================================================
 
-📝 A monthly user who uses the product for occasional personal tasks
+📝 每周使用，主要出于团队协作目的使用该产品
 
-Archetype: Casual User
-Quote: "I just want it to work without having to think about it"
+原型：业务用户
+语录："我需要向利益相关者展示明确的价值"
 
-👤 Demographics:
-  • Age Range: 25-44
-  • Location Type: Mixed
-  • Occupation Category: Various
-  • Education Level: Bachelor's degree
-  • Tech Proficiency: Beginner-Intermediate
+👤 人口统计数据：
+  • 年龄范围：35-44
+  • 地点类型：城市/郊区
+  • 职业类别：产品经理
+  • 教育水平：MBA
+  • 技术熟练度：中级
 
-🧠 Psychographics:
-  Motivations: Task completion, Simplicity
-  Values: Ease of use, Quick results
-  Lifestyle: Busy, product is means to end
+🧠 心理特征：
+  动机：团队成功、可见性、认可
+  价值观：协作、可衡量成果、职业成长
+  生活方式：会议频繁、跨职能工作
 
-🎯 Goals & Needs:
-  • Complete specific task quickly
-  • Minimal learning curve
-  • Don't have to remember how it works between uses
+🎯 目标与需求：
+  • 提升团队效率和协调
+  • 为利益相关者生成报告
+  • 与现有工作工具集成（Slack, Jira）
 
-😤 Frustrations:
-  • Too many options, don't know where to start (18/25)
-  • Forgot how to do X since last time (15/25)
-  • Feels like it's designed for experts (12/25)
+😤 挫折：
+  • 无法与团队共享视图（11/18 用户）
+  • 无法生成执行摘要
+  • 没有 SSO——团队需要管理密码
 
-📊 Behaviors:
-  • Frequently uses: 2-3 core features only
-  • Usage pattern: 1-2 sessions per month
-  • Interaction style: Focused - uses minimal features
+📊 行为：
+  • 常用功能：共享、报告、团队仪表盘
+  • 使用模式：每周 3-4 次
+  • 交互风格：目标导向、功能特定
 
-💡 Design Implications:
-  → Simplify onboarding and main navigation
-  → Provide contextual help and reminders
-  → Don't require memorization between sessions
-  → Progressive disclosure - hide advanced features
+💡 设计启示：
+  → 添加协作和共享功能
+  → 构建执行报告和仪表盘
+  → 集成企业工具（SSO, Slack）
+  → 提供权限和访问控制
 
-📈 Data: Based on 52 users
-    Confidence: High
-    Method: Analytics analysis + 25 intercept interviews
+📈 数据：基于 38 名用户
+    置信度：高
+    方法：问卷调查 (n=200) + 18 次访谈
 ```
 
-### Data Behind This Persona
+### 该画像背后的数据
 
-**Analytics Data (n=1,200 casual segment):**
-- 65% of users are casual (< 1 session/week)
-- Average features used: 2.3
-- Return rate after 30 days: 34%
-- Session duration: 4.2 minutes
+**问卷调查数据 (n=200)：**
+- 19% 的总用户群符合此画像
+- 平均公司规模：50-500 名员工
+- 72% 需要向非用户共享输出
+- 首要请求：团队协作功能
 
-**Intercept Interview Insights (25 quick interviews):**
+**访谈洞察（18 次访谈）：**
 
-| Quote | Count | Implication |
-|-------|-------|-------------|
-| "Where's the thing I used last time?" | 18 | Need breadcrumbs/history |
-| "There's so much here" | 15 | Simplify main view |
-| "I only need to do X" | 22 | Surface common tasks |
-| "Is there a tutorial?" | 11 | Better help system |
+| 需求         | 频率    | 业务影响                      |
+| ------------ | ------- | ----------------------------- |
+| 报告         | 16/18   | "我每周花 2 小时做幻灯片"     |
+| 团队访问     | 14/18   | "无法让团队看到我看到的内容"   |
+| 集成         | 12/18   | "复制粘贴到 Confluence..."    |
+| SSO          | 11/18   | "没有 SSO，IT 不会批准"       |
 
-### Journey: Infrequent Task Completion
+### 场景：季度评审准备
 
 ```
-Stage 1: Return After Absence
-  Action: Opens app, doesn't recognize interface
-  Emotion: 😕 Confused
-  Thought: "This looks different, where do I start?"
+上下文：季度末，需要向管理层展示指标
+目标：30 分钟内创建引人入胜的数据故事
+当前旅程：
+  1. 导出原始数据（可用）
+  2. 打开 Excel，制作图表（手动）
+  3. 复制到 PowerPoint（手动）
+  4. 与团队分享以获取反馈（通过电子邮件）
 
-Stage 2: Feature Hunt
-  Action: Clicks around looking for needed feature
-  Emotion: 😕 Frustrated
-  Thought: "I know I did this before..."
+痛点：
+  • 没有内置展示视图
+  • 图表不符合品牌指南
+  • 无法协作制作叙述
 
-Stage 3: Discovery
-  Action: Finds feature (or gives up)
-  Emotion: 😐 Relief or 😠 Abandonment
-  Thought: "Finally!" or "I'll try something else"
-
-Stage 4: Task Completion
-  Action: Uses feature, accomplishes goal
-  Emotion: 🙂 Satisfied
-  Thought: "That worked, hope I remember next time"
+机会：
+  • 一键生成执行摘要
+  • 品牌合规模板
+  • 报告中的应用内评论
 ```
 
 ---
 
-## JSON Output Format
+## 示例 3：普通用户画像
 
-### persona_generator.mjs JSON Output
+### 脚本输出
+
+```
+============================================================
+人物画像：Casey 普通用户
+============================================================
+
+📝 每月使用，用于偶尔的个人任务
+
+原型：普通用户
+语录："我只希望它能用，不需要我去思考"
+
+👤 人口统计数据：
+  • 年龄范围：25-44
+  • 地点类型：混合
+  • 职业类别：多样化
+  • 教育水平：学士学位
+  • 技术熟练度：初学者-中级
+
+🧠 心理特征：
+  动机：完成任务、简单
+  价值观：易用性、快速结果
+  生活方式：忙碌，产品是达到目的的手段
+
+🎯 目标与需求：
+  • 快速完成特定任务
+  • 最小的学习曲线
+  • 不需要在两次使用之间记住如何操作
+
+😤 挫折：
+  • 选项太多，不知从何开始（18/25）
+  • 上次怎么做的忘了（15/25）
+  • 感觉是为专家设计的（12/25）
+
+📊 行为：
+  • 常用功能：仅 2-3 个核心功能
+  • 使用模式：每月 1-2 次
+  • 交互风格：专注——使用最少的功能
+
+💡 设计启示：
+  → 简化引导和主导航
+  → 提供上下文帮助和提醒
+  → 无需在会话之间记忆
+  → 渐进式披露——隐藏高级功能
+
+📈 数据：基于 52 名用户
+    置信度：高
+    方法：分析数据分析 + 25 次拦截访谈
+```
+
+### 该画像背后的数据
+
+**分析数据 (n=1,200 普通用户群)：**
+- 65% 的用户是普通用户（< 1 次会话/周）
+- 平均使用功能数：2.3
+- 30 天后回访率：34%
+- 会话时长：4.2 分钟
+
+**拦截访谈洞察（25 次快速访谈）：**
+
+| 语录                           | 次数 | 启示                   |
+| ------------------------------ | ---- | ---------------------- |
+| "我上次用的东西在哪？"         | 18   | 需要面包屑/历史记录    |
+| "这里东西太多了"               | 15   | 简化主视图             |
+| "我只需要做 X"                 | 22   | 突出常见任务           |
+| "有教程吗？"                   | 11   | 更好的帮助系统         |
+
+### 历程：不频繁的任务完成
+
+```
+阶段 1：缺席后回归
+  操作：打开应用，不认识界面
+  情感：😕 困惑
+  想法："看起来不一样了，我从哪开始？"
+
+阶段 2：功能搜索
+  操作：点击寻找所需功能
+  情感：😕 沮丧
+  想法："我记得之前做过..."
+
+阶段 3：发现
+  操作：找到功能（或放弃）
+  情感：😐 宽慰 或 😠 放弃
+  想法："终于找到了！"或"我试试别的"
+
+阶段 4：任务完成
+  操作：使用功能，达成目标
+  情感：🙂 满意
+  想法："成功了，希望下次还记得"
+```
+
+---
+
+## JSON 输出格式
+
+### persona_generator.mjs JSON 输出
 
 ```json
 {
@@ -370,57 +370,57 @@ Stage 4: Task Completion
 }
 ```
 
-### Using JSON Output
+### 使用 JSON 输出
 
 ```bash
-# Generate JSON for integration
+# 生成 JSON 用于集成
 node scripts/persona_generator.mjs --input ./users.json --interviews ./interviews.json --output-format json > persona_power_user.json
 
-# Use with other tools
+# 与其他工具一起使用
 cat persona_power_user.json | jq '.design_implications'
 ```
 
 ---
 
-## Quality Checklist
+## 质量检查清单
 
-### What Makes a Good Persona
+### 优质人物画像的特征
 
-| Criterion | Bad Example | Good Example |
-|-----------|-------------|--------------|
-| **Specificity** | "Wants to be productive" | "Needs to process 50+ items daily" |
-| **Evidence** | "Users want simplicity" | "18/25 users said 'too many options'" |
-| **Actionable** | "Likes easy things" | "Hide advanced features by default" |
-| **Memorable** | Generic descriptions | Distinctive quote and archetype |
-| **Validated** | Team assumptions | User interviews + analytics |
+| 标准       | 不好示例             | 好示例                           |
+| ---------- | -------------------- | -------------------------------- |
+| **具体性** | "想要高效"           | "需要每天处理 50+ 项"            |
+| **证据**   | "用户想要简单"       | "18/25 用户说'选项太多'"         |
+| **可操作** | "喜欢简单的东西"     | "默认隐藏高级功能"               |
+| **难忘**   | 通用描述             | 独特的语录和原型                 |
+| **经过验证**| 团队假设             | 用户访谈 + 分析数据              |
 
-### Persona Quality Rubric
+### 人物画像质量评分
 
-| Element | Points | Criteria |
-|---------|--------|----------|
-| Data-backed demographics | /5 | From real user data |
-| Specific goals | /5 | Actionable, measurable |
-| Evidenced frustrations | /5 | With frequency counts |
-| Design implications | /5 | Directly usable by designers |
-| Authentic quote | /5 | From actual user |
-| Confidence stated | /5 | Sample size and method |
+| 要素               | 分数 | 标准             |
+| ------------------ | ---- | ---------------- |
+| 数据驱动的人口统计 | /5   | 来自真实用户数据 |
+| 具体目标           | /5   | 可操作、可衡量   |
+| 有证据的挫折       | /5   | 包含频次统计     |
+| 设计启示           | /5   | 设计师可直接使用 |
+| 真实语录           | /5   | 来自实际用户     |
+| 声明置信度         | /5   | 样本量和方法     |
 
-**Score:**
-- 25-30: Production-ready persona
-- 18-24: Needs refinement
-- Below 18: Requires more research
+**评分：**
+- 25-30：可生产的人物画像
+- 18-24：需要改进
+- 18 以下：需要更多研究
 
-### Red Flags in Persona Output
+### 人物画像输出的危险信号
 
-| Red Flag | What It Means |
-|----------|---------------|
-| No sample size | Ungrounded assumptions |
-| Generic frustrations | Didn't do user research |
-| All positive | Missing real pain points |
-| No quotes | No qualitative research |
-| Contradicting behaviors | Forced archetype |
-| "Everyone" language | Too broad to be useful |
+| 危险信号           | 含义                     |
+| ------------------ | ------------------------ |
+| 无样本量           | 无根据的假设             |
+| 通用挫折           | 未进行用户研究           |
+| 全是正面           | 缺少真实的痛点           |
+| 无语录             | 未进行定性研究           |
+| 行为矛盾           | 强行归入原型             |
+| "每个人"措辞       | 过于宽泛，没有实用价值   |
 
 ---
 
-*See also: `persona-methodology.md` for creation process*
+*参见：`persona-methodology.md` 了解创建流程*

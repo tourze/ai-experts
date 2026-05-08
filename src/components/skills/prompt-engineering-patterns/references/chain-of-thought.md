@@ -1,14 +1,14 @@
-# Chain-of-Thought Prompting
+# Chain-of-Thought（思维链）提示
 
-## Overview
+## 概述
 
-Chain-of-Thought (CoT) prompting elicits step-by-step reasoning from LLMs, dramatically improving performance on complex reasoning, math, and logic tasks.
+Chain-of-Thought（CoT）提示引导 LLM 进行逐步推理，显著提高在复杂推理、数学和逻辑任务上的表现。
 
-## Core Techniques
+## 核心技巧
 
-### Zero-Shot CoT
+### 零样本 CoT
 
-Add a simple trigger phrase to elicit reasoning:
+添加简单的触发短语以引发推理：
 
 ```python
 def zero_shot_cot(query):
@@ -16,11 +16,11 @@ def zero_shot_cot(query):
 
 Let's think step by step:"""
 
-# Example
+# 示例
 query = "If a train travels 60 mph for 2.5 hours, how far does it go?"
 prompt = zero_shot_cot(query)
 
-# Model output:
+# 模型输出：
 # "Let's think step by step:
 # 1. Speed = 60 miles per hour
 # 2. Time = 2.5 hours
@@ -29,9 +29,9 @@ prompt = zero_shot_cot(query)
 # Answer: 150 miles"
 ```
 
-### Few-Shot CoT
+### 少样本 CoT
 
-Provide examples with explicit reasoning chains:
+提供带有显式推理链的示例：
 
 ```python
 few_shot_examples = """
@@ -54,9 +54,9 @@ Q: {user_query}
 A: Let's think step by step:"""
 ```
 
-### Self-Consistency
+### 自洽性
 
-Generate multiple reasoning paths and take the majority vote:
+生成多个推理路径并采用多数投票：
 
 ```python
 import openai
@@ -74,7 +74,7 @@ def self_consistency_cot(query, n=5, temperature=0.7):
         )
         responses.append(extract_final_answer(response))
 
-    # Take majority vote
+    # 采用多数投票
     answer_counts = Counter(responses)
     final_answer = answer_counts.most_common(1)[0][0]
 
@@ -85,15 +85,15 @@ def self_consistency_cot(query, n=5, temperature=0.7):
     }
 ```
 
-## Advanced Patterns
+## 高级模式
 
-### Least-to-Most Prompting
+### 由易到难提示
 
-Break complex problems into simpler subproblems:
+将复杂问题分解为更简单的子问题：
 
 ```python
 def least_to_most_prompt(complex_query):
-    # Stage 1: Decomposition
+    # 阶段 1：分解
     decomp_prompt = f"""Break down this complex problem into simpler subproblems:
 
 Problem: {complex_query}
@@ -102,7 +102,7 @@ Subproblems:"""
 
     subproblems = get_llm_response(decomp_prompt)
 
-    # Stage 2: Sequential solving
+    # 阶段 2：顺序求解
     solutions = []
     context = ""
 
@@ -117,7 +117,7 @@ Solution:"""
         solutions.append(solution)
         context += f"\n\nPreviously solved: {subproblem}\nSolution: {solution}"
 
-    # Stage 3: Final integration
+    # 阶段 3：最终整合
     final_prompt = f"""Given these solutions to subproblems:
 {context}
 
@@ -128,9 +128,9 @@ Final Answer:"""
     return get_llm_response(final_prompt)
 ```
 
-### Tree-of-Thought (ToT)
+### 思维树（ToT）
 
-Explore multiple reasoning branches:
+探索多个推理分支：
 
 ```python
 class TreeOfThought:
@@ -140,10 +140,10 @@ class TreeOfThought:
         self.branches_per_step = branches_per_step
 
     def solve(self, problem):
-        # Generate initial thought branches
+        # 生成初始思维分支
         initial_thoughts = self.generate_thoughts(problem, depth=0)
 
-        # Evaluate each branch
+        # 评估每个分支
         best_path = None
         best_score = -1
 
@@ -180,20 +180,20 @@ Score:"""
         return float(self.client.complete(prompt))
 ```
 
-### Verification Step
+### 验证步骤
 
-Add explicit verification to catch errors:
+添加显式验证以捕获错误：
 
 ```python
 def cot_with_verification(query):
-    # Step 1: Generate reasoning and answer
+    # 步骤 1：生成推理和答案
     reasoning_prompt = f"""{query}
 
 Let's solve this step by step:"""
 
     reasoning_response = get_llm_response(reasoning_prompt)
 
-    # Step 2: Verify the reasoning
+    # 步骤 2：验证推理
     verification_prompt = f"""Original problem: {query}
 
 Proposed solution:
@@ -210,7 +210,7 @@ Verification:"""
 
     verification = get_llm_response(verification_prompt)
 
-    # Step 3: Revise if needed
+    # 步骤 3：必要时修改
     if "incorrect" in verification.lower() or "error" in verification.lower():
         revision_prompt = f"""The previous solution had errors:
 {verification}
@@ -223,9 +223,9 @@ Corrected solution:"""
     return reasoning_response
 ```
 
-## Domain-Specific CoT
+## 领域特定 CoT
 
-### Math Problems
+### 数学问题
 
 ```python
 math_cot_template = """
@@ -254,7 +254,7 @@ Answer: {final_answer}
 """
 ```
 
-### Code Debugging
+### 代码调试
 
 ```python
 debug_cot_template = """
@@ -285,7 +285,7 @@ Fixed code:
 """
 ```
 
-### Logical Reasoning
+### 逻辑推理
 
 ```python
 logic_cot_template = """
@@ -311,9 +311,9 @@ Answer: {final_answer}
 """
 ```
 
-## Performance Optimization
+## 性能优化
 
-### Caching Reasoning Patterns
+### 缓存推理模式
 
 ```python
 class ReasoningCache:
@@ -337,25 +337,25 @@ class ReasoningCache:
         self.cache[problem] = reasoning
 ```
 
-### Adaptive Reasoning Depth
+### 自适应推理深度
 
 ```python
 def adaptive_cot(problem, initial_depth=3):
     depth = initial_depth
 
-    while depth <= 10:  # Max depth
+    while depth <= 10:  # 最大深度
         response = generate_cot(problem, num_steps=depth)
 
-        # Check if solution seems complete
+        # 检查解是否看起来完整
         if is_solution_complete(response):
             return response
 
-        depth += 2  # Increase reasoning depth
+        depth += 2  # 增加推理深度
 
-    return response  # Return best attempt
+    return response  # 返回最佳尝试
 ```
 
-## Evaluation Metrics
+## 评估指标
 
 ```python
 def evaluate_cot_quality(reasoning_chain):
@@ -369,44 +369,44 @@ def evaluate_cot_quality(reasoning_chain):
     return metrics
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Clear Step Markers**: Use numbered steps or clear delimiters
-2. **Show All Work**: Don't skip steps, even obvious ones
-3. **Verify Calculations**: Add explicit verification steps
-4. **State Assumptions**: Make implicit assumptions explicit
-5. **Check Edge Cases**: Consider boundary conditions
-6. **Use Examples**: Show the reasoning pattern with examples first
+1. **清晰的步骤标记**：使用编号步骤或明确的分隔符
+2. **展示所有过程**：不跳过步骤，即使是显而易见的
+3. **验证计算**：添加显式的验证步骤
+4. **陈述假设**：将隐含假设变为显式
+5. **检查边界情况**：考虑边界条件
+6. **使用示例**：先用示例展示推理模式
 
-## Common Pitfalls
+## 常见陷阱
 
-- **Premature Conclusions**: Jumping to answer without full reasoning
-- **Circular Logic**: Using the conclusion to justify the reasoning
-- **Missing Steps**: Skipping intermediate calculations
-- **Overcomplicated**: Adding unnecessary steps that confuse
-- **Inconsistent Format**: Changing step structure mid-reasoning
+- **过早结论**：未完成完整推理就跳到答案
+- **循环逻辑**：用结论来证明推理
+- **缺少步骤**：跳过中间计算
+- **过度复杂化**：添加不必要的步骤造成混淆
+- **格式不一致**：在推理中途更改步骤结构
 
-## When to Use CoT
+## 何时使用 CoT
 
-**Use CoT for:**
+**使用 CoT 的场景：**
 
-- Math and arithmetic problems
-- Logical reasoning tasks
-- Multi-step planning
-- Code generation and debugging
-- Complex decision making
+- 数学和算术问题
+- 逻辑推理任务
+- 多步骤规划
+- 代码生成和调试
+- 复杂决策
 
-**Skip CoT for:**
+**跳过 CoT 的场景：**
 
-- Simple factual queries
-- Direct lookups
-- Creative writing
-- Tasks requiring conciseness
-- Real-time, latency-sensitive applications
+- 简单的事实性查询
+- 直接查找
+- 创意写作
+- 需要简洁的任务
+- 实时、延迟敏感的应用
 
-## Resources
+## 资源
 
-- Benchmark datasets for CoT evaluation
-- Pre-built CoT prompt templates
-- Reasoning verification tools
-- Step extraction and parsing utilities
+- CoT 评估的基准数据集
+- 预构建的 CoT 提示模板
+- 推理验证工具
+- 步骤提取和解析工具

@@ -1,12 +1,12 @@
-# Section templates (shadcn + Iconify)
+# 区块模板（shadcn + Iconify）
 
-Use these as a starting point, then adapt to the product, copy, and aesthetic.
+以此作为起点，然后根据产品、文案和审美进行调整。
 
-Assumptions:
-- shadcn components live in `src/components/ui/*`
-- You have `AppIcon` from `references/iconify.md`
+假设：
+- shadcn 组件位于 `src/components/ui/*`
+- 你已从 `references/iconify.md` 获得 `AppIcon`
 
-## File structure
+## 文件结构
 
 ```txt
 src/
@@ -26,7 +26,7 @@ src/
   App.tsx
 ```
 
-## Navbar
+## 导航栏
 
 ```tsx
 import { Button } from "@/components/ui/button";
@@ -56,7 +56,7 @@ export function Navbar() {
 }
 ```
 
-## Hero
+## 主视觉区
 
 ```tsx
 import { Button } from "@/components/ui/button";
@@ -127,7 +127,7 @@ export function Hero() {
 }
 ```
 
-## Social proof
+## 社会证明
 
 ```tsx
 import { Card, CardContent } from "@/components/ui/card";
@@ -176,7 +176,7 @@ export function SocialProof() {
 }
 ```
 
-## Features
+## 功能展示
 
 ```tsx
 import { Card, CardContent } from "@/components/ui/card";
@@ -230,7 +230,7 @@ export function Features() {
 }
 ```
 
-## FAQ (Accordion)
+## FAQ（手风琴）
 
 ```tsx
 import {
@@ -269,7 +269,7 @@ export function FAQ() {
 }
 ```
 
-## CTA band
+## CTA 区块
 
 ```tsx
 import { Button } from "@/components/ui/button";
@@ -296,7 +296,7 @@ export function CTABand() {
 }
 ```
 
-## Footer
+## 页脚
 
 ```tsx
 export function Footer() {
@@ -315,7 +315,7 @@ export function Footer() {
 }
 ```
 
-## Compose the page
+## 组合页面
 
 `src/pages/LandingPage.tsx`
 

@@ -1,17 +1,17 @@
-# Input toolbar (bottom anchored)
+# 输入工具栏（底部固定）
 
-## Intent
+## 意图
 
-Use a bottom-anchored input bar for chat, composer, or quick actions without fighting the keyboard.
+为聊天、编辑器或快速操作使用底部固定的输入栏，而无需与键盘抗争。
 
-## Core patterns
+## 核心模式
 
-- Use `.safeAreaInset(edge: .bottom)` to anchor the toolbar above the keyboard.
-- Keep the main content in a `ScrollView` or `List`.
-- Drive focus with `@FocusState` and set initial focus when needed.
-- Avoid embedding the input bar inside the scroll content; keep it separate.
+- 使用 `.safeAreaInset(edge: .bottom)` 在键盘上方固定工具栏。
+- 将主要内容放在 `ScrollView` 或 `List` 中。
+- 使用 `@FocusState` 驱动焦点，并在需要时设置初始焦点。
+- 避免将输入栏嵌入滚动内容中；保持其独立。
 
-## Example: scroll view + bottom input
+## 示例：滚动视图 + 底部输入
 
 ```swift
 @MainActor
@@ -39,13 +39,13 @@ struct ConversationView: View {
 }
 ```
 
-## Design choices to keep
+## 要保留的设计选择
 
-- Keep the input bar visually separated from the scrollable content.
-- Use `.scrollDismissesKeyboard(.interactively)` for chat-like screens.
-- Ensure send actions are reachable via keyboard return or a clear button.
+- 保持输入栏与可滚动内容视觉上分离。
+- 对于聊天类界面使用 `.scrollDismissesKeyboard(.interactively)`。
+- 确保发送操作可通过键盘回车或清晰的按钮到达。
 
-## Pitfalls
+## 陷阱
 
-- Avoid placing the input view inside the scroll stack; it will jump with content.
-- Avoid nested scroll views that fight for drag gestures.
+- 避免将输入视图放在滚动堆栈内部；它会随内容跳动。
+- 避免争夺拖拽手势的嵌套滚动视图。

@@ -1,12 +1,12 @@
-# Design Tokens Deep Dive
+# 设计 Token 深入探讨
 
-## Overview
+## 概述
 
-Design tokens are the atomic values of a design system - the smallest pieces that define visual style. They bridge the gap between design and development by providing a single source of truth for colors, typography, spacing, and other design decisions.
+设计 token 是设计系统的原子值——定义视觉风格的最小部件。它们通过为颜色、字体、间距和其他设计决策提供单一事实来源，弥合设计与开发之间的差距。
 
-## Token Categories
+## Token 类别
 
-### Color Tokens
+### 颜色 Token
 
 ```json
 {
@@ -55,7 +55,7 @@ Design tokens are the atomic values of a design system - the smallest pieces tha
 }
 ```
 
-### Typography Tokens
+### 字体 Token
 
 ```json
 {
@@ -94,7 +94,7 @@ Design tokens are the atomic values of a design system - the smallest pieces tha
 }
 ```
 
-### Spacing Tokens
+### 间距 Token
 
 ```json
 {
@@ -123,7 +123,7 @@ Design tokens are the atomic values of a design system - the smallest pieces tha
 }
 ```
 
-### Effects Tokens
+### 效果 Token
 
 ```json
 {
@@ -158,9 +158,9 @@ Design tokens are the atomic values of a design system - the smallest pieces tha
 }
 ```
 
-## Semantic Token Mapping
+## 语义 Token 映射
 
-### Light Theme
+### 亮色主题
 
 ```json
 {
@@ -206,7 +206,7 @@ Design tokens are the atomic values of a design system - the smallest pieces tha
 }
 ```
 
-### Dark Theme
+### 暗色主题
 
 ```json
 {
@@ -240,14 +240,14 @@ Design tokens are the atomic values of a design system - the smallest pieces tha
 }
 ```
 
-## Token Naming Conventions
+## Token 命名约定
 
-### Recommended Structure
+### 推荐结构
 
 ```
-[category]-[property]-[variant]-[state]
+[类别]-[属性]-[变体]-[状态]
 
-Examples:
+示例：
 - color-background-default
 - color-text-primary
 - color-border-input-focus
@@ -255,19 +255,19 @@ Examples:
 - typography-heading-lg
 ```
 
-### Naming Guidelines
+### 命名指南
 
-1. **Use kebab-case**: `text-primary` not `textPrimary`
-2. **Be descriptive**: `button-padding-horizontal` not `btn-px`
-3. **Use semantic names**: `danger` not `red`
-4. **Include scale info**: `spacing-4` or `font-size-lg`
-5. **State suffixes**: `-hover`, `-focus`, `-active`, `-disabled`
+1. **使用小写连字符**：`text-primary` 而非 `textPrimary`
+2. **描述性**：`button-padding-horizontal` 而非 `btn-px`
+3. **使用语义名称**：`danger` 而非 `red`
+4. **包含规模信息**：`spacing-4` 或 `font-size-lg`
+5. **状态后缀**：`-hover`、`-focus`、`-active`、`-disabled`
 
-## CSS Custom Properties Output
+## CSS 自定义属性输出
 
 ```css
 :root {
-  /* Primitives */
+  /* 原始值 */
   --color-gray-50: #fafafa;
   --color-gray-100: #f5f5f5;
   --color-gray-900: #171717;
@@ -283,7 +283,7 @@ Examples:
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 
-  /* Semantic - Light Theme */
+  /* 语义 - 亮色主题 */
   --background-default: var(--color-white);
   --background-subtle: var(--color-gray-50);
   --foreground-default: var(--color-gray-900);
@@ -293,7 +293,7 @@ Examples:
 }
 
 .dark {
-  /* Semantic - Dark Theme Overrides */
+  /* 语义 - 暗色主题覆盖 */
   --background-default: var(--color-gray-950);
   --background-subtle: var(--color-gray-900);
   --foreground-default: var(--color-gray-50);
@@ -303,14 +303,14 @@ Examples:
 }
 ```
 
-## Token Transformations
+## Token 转换
 
-### Style Dictionary Transforms
+### Style Dictionary 转换
 
 ```javascript
 const StyleDictionary = require("style-dictionary");
 
-// Custom transform for px to rem
+// 自定义 px 转 rem 转换
 StyleDictionary.registerTransform({
   name: "size/pxToRem",
   type: "value",
@@ -321,7 +321,7 @@ StyleDictionary.registerTransform({
   },
 });
 
-// Custom format for CSS custom properties
+// 自定义 CSS 自定义属性格式
 StyleDictionary.registerFormat({
   name: "css/customProperties",
   formatter: function ({ dictionary, options }) {
@@ -335,10 +335,10 @@ StyleDictionary.registerFormat({
 });
 ```
 
-### Platform-Specific Outputs
+### 平台特定输出
 
 ```javascript
-// iOS Swift output
+// iOS Swift 输出
 public enum DesignTokens {
     public enum Color {
         public static let gray50 = UIColor(hex: "#fafafa")
@@ -353,7 +353,7 @@ public enum DesignTokens {
     }
 }
 
-// Android XML output
+// Android XML 输出
 <resources>
     <color name="gray_50">#fafafa</color>
     <color name="gray_900">#171717</color>
@@ -365,18 +365,18 @@ public enum DesignTokens {
 </resources>
 ```
 
-## Token Governance
+## Token 治理
 
-### Change Management
+### 变更管理
 
-1. **Propose**: Document the change and rationale
-2. **Review**: Design and engineering review
-3. **Test**: Validate across all platforms
-4. **Communicate**: Announce changes to consumers
-5. **Deprecate**: Mark old tokens, provide migration path
-6. **Remove**: After deprecation period
+1. **提议**：记录变更内容和理由
+2. **评审**：设计和工程评审
+3. **测试**：在所有平台上验证
+4. **沟通**：向消费者宣布变更
+5. **弃用**：标记旧 token，提供迁移路径
+6. **移除**：在弃用期之后
 
-### Deprecation Pattern
+### 弃用模式
 
 ```json
 {
@@ -384,14 +384,14 @@ public enum DesignTokens {
     "primary": {
       "value": "{color.primitive.blue.500}",
       "deprecated": true,
-      "deprecatedMessage": "Use accent.default instead",
+      "deprecatedMessage": "请改用 accent.default",
       "replacedBy": "semantic.accent.default"
     }
   }
 }
 ```
 
-## Token Validation
+## Token 验证
 
 ```typescript
 interface TokenValidation {
@@ -401,7 +401,7 @@ interface TokenValidation {
   auditNaming(): NamingReport;
 }
 
-// Contrast validation
+// 对比度验证
 function validateContrast(
   foreground: string,
   background: string,
@@ -412,7 +412,7 @@ function validateContrast(
 }
 ```
 
-## Resources
+## 资源
 
 - [Design Tokens W3C Community Group](https://design-tokens.github.io/community-group/)
 - [Style Dictionary](https://amzn.github.io/style-dictionary/)

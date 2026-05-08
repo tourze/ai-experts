@@ -1,26 +1,26 @@
-# Chapter 7 - Type State Pattern
+# 第 7 章 - 类型状态模式
 
-Models state at compile time, preventing bugs by making illegal states unrepresentable. It takes advantage of the Rust generics and type system to create sub-types that can only be reached if a certain condition is achieved, making some operations illegal at compile time. 
+在编译时对状态建模，通过使非法状态不可表示来防止错误。它利用 Rust 的泛型和类型系统创建子类型，这些子类型只有在满足特定条件时才能达到，使得某些操作在编译时就非法。
 
-> Recently it became the standard design pattern of Rust programming. However, it is not exclusive to Rust, as it is achievable and has inspired other languages to do the same [swift](https://swiftology.io/articles/typestate/) and [typescript](https://catchts.com/type-state).
+> 最近它已成为 Rust 编程的标准设计模式。然而，它并非 Rust 独有，因为它也是可实现的，并且启发了其他语言：[swift](https://swiftology.io/articles/typestate/) 和 [typescript](https://catchts.com/type-state)。
 
-## 7.1 What is Type State Pattern?
+## 7.1 什么是类型状态模式？
 
-**Type State Pattern** is a design pattern where you encode different **states** of the system as **types**, not as runtime flags or enums. This allows the compiler to enforce state transitions and prevent illegal actions at compile time. It also improves the developer experience, as developers only have access to certain functions based on the state of the type.
+**类型状态模式**是一种设计模式，它将系统的不同**状态**编码为**类型**，而不是运行时标志或 enum。这使得编译器能够强制状态转换，并在编译时防止非法操作。它还改善了开发者体验，因为开发者只能根据类型的状态访问某些函数。
 
-> Invalid states become compile errors instead of runtime bugs.
+> 无效状态成为编译错误，而非运行时缺陷。
 
-## 7.2 Why use it?
+## 7.2 为什么要使用它？
 
-* Avoids runtime checks for state validity. If you reach certain states, you can make certain assumptions of the data you have.
-* Models state transitions as type transitions. This is similar to a state machine, but in compile time.
-* Prevents data misuse, e.g. using uninitialized objects.
-* Improves API safety and correctness.
-* The phantom data field is removed after compilation so no extra memory is allocated.
+* 避免运行时检查状态有效性。如果你达到某些状态，可以对拥有的数据做出某些假设。
+* 将状态转换建模为类型转换。这类似于状态机，但在编译时。
+* 防止数据误用，例如使用未初始化的对象。
+* 提高 API 安全性和正确性。
+* phantom data 字段在编译后被移除，因此不会分配额外内存。
 
-## 7.3 Simple Example: File State
+## 7.3 简单示例：文件状态
 
-[Github Example](https://github.com/apollographql/rust-best-practices/tree/main/examples/simple-type-state)
+[Github 示例](https://github.com/apollographql/rust-best-practices/tree/main/examples/simple-type-state)
 ```rust
 use std::{io, path::{Path, PathBuf}};
 
@@ -29,25 +29,25 @@ struct FileOpened;
 
 #[derive(Debug)]
 struct File<State> {
-    /// Path to the opened file
+    /// 打开文件的路径
     path: PathBuf,
-    /// Open `File` handler
+    /// 打开的 `File` 处理器
     handle: Option<std::fs::File>,
-    /// Type state manager
+    /// 类型状态管理器
     _state: std::marker::PhantomData<State>
 }
 
 impl File<FileNotOpened> {
-    /// `open` is the only entry point for this struct.
-    /// * When called with a valid path, it will return a `File<FileOpened>` with a valid `handler` and `path`
-    /// * `open` serves as an alternative to `new` and `defaults` methods (usable when your struct needs valid data to exist).
+    /// `open` 是该 struct 的唯一入口点。
+    /// * 当使用有效路径调用时，它将返回一个带有有效 `handler` 和 `path` 的 `File<FileOpened>`
+    /// * `open` 作为 `new` 和 `defaults` 方法的替代（当你的 struct 需要有效数据才能存在时使用）。
     fn open(path: &Path) -> io::Result<File<FileOpened>> {
-        // If file is invalid, it will return `std::io::Error`
+        // 如果文件无效，将返回 `std::io::Error`
         let file = std::fs::File::open(path)?;
         Ok(
             File {
                 path: path.to_path_buf(),
-                // Always valid
+                // 始终有效
                 handle: Some(file),
                 _state: std::marker::PhantomData::<FileOpened>
             }
@@ -56,8 +56,8 @@ impl File<FileNotOpened> {
 }
 
 impl File<FileOpened> {
-    /// Reads the content of the `File` as a `String`.
-    /// `read` can only be called by state `File<FileOpened>`
+    /// 将 `File` 的内容读取为 `String`。
+    /// `read` 只能由状态 `File<FileOpened>` 调用
     fn read(&mut self) -> io::Result<String> {
         use io::Read;
 
@@ -69,22 +69,22 @@ impl File<FileOpened> {
         Ok(content)
     }
 
-    /// Returns the valid path buffer.
+    /// 返回有效的路径缓冲区。
     fn path(&self) -> &PathBuf {
         &self.path
     }
 }
 ```
 
-## 7.4 Real-World Examples
+## 7.4 真实世界示例
 
-### Builder Pattern with Compile-Time Guarantees
+### 带编译时保证的构建器模式
 
-> Forces the user to **set required fields** before calling `.build()`.
+> 强制用户在调用 `.build()` 之前**设置必填字段**。
 
-[Github Example](https://github.com/apollographql/rust-best-practices/tree/main/examples/type-state-builder)
+[Github 示例](https://github.com/apollographql/rust-best-practices/tree/main/examples/type-state-builder)
 
-A type-state pattern can have more than one associated states:
+类型状态模式可以有多个关联状态：
 
 ```rust
 use std::marker::PhantomData;
@@ -150,28 +150,28 @@ impl Builder<NameSet, AgeSet> {
 }
 ```
 
-Although a bit more verbose than a usual builder, this guarantees that all necessary fields are present (note that e-mail is optional field only present in the final builder).
+虽然比普通的构建器冗长一些，但这保证了所有必要字段都存在（注意 email 是仅在最终构建器中存在的可选字段）。
 
-#### Usage:
+#### 用法：
 ```rust
-// ✅ Valid cases
+// ✅ 有效情况
 let person: Person = Builder::new().name("name".to_string()).age(30).build();
 let person: Person = Builder::new().age(30).name("name".to_string()).build();
 let person: Person = Builder::new().age(30).name("name".to_string()).email("myself@email.com".to_string()).build();
 
-// ❌ Invalid cases
-let person: Person = Builder::new().name("name".to_string()).build(); // ❌ Compile error: Age required to `build`
-let person: Person = Builder::new().age(30).build(); // ❌ Compile error: Name required to `build`
-let person: Person = Builder::new().age(30).email("myself@email.com".to_string()).build(); // ❌ Compile error: Name required to `build`
-let person: Person = Builder::new().build();// ❌ Compile error: Name and Age required to `build`
+// ❌ 无效情况
+let person: Person = Builder::new().name("name".to_string()).build(); // ❌ 编译错误：`build` 需要 Age
+let person: Person = Builder::new().age(30).build(); // ❌ 编译错误：`build` 需要 Name
+let person: Person = Builder::new().age(30).email("myself@email.com".to_string()).build(); // ❌ 编译错误：`build` 需要 Name
+let person: Person = Builder::new().build();// ❌ 编译错误：`build` 需要 Name 和 Age
 ```
 
-### Network Protocol State Machine
+### 网络协议状态机
 
-Illegal transitions like sending a message before connecting **simply don't compile**:
+非法的转换，如在连接之前发送消息，**根本不会编译**：
 
 ```rust
-// Mock example
+// Mock 示例
 struct Disconnected;
 struct Connected;
 
@@ -201,26 +201,26 @@ impl Client<Connected> {
 }
 ```
 
-## 7.5 Pros and Cons
+## 7.5 优缺点
 
-### ✅ Use Type-State Pattern When:
-* Your want **compile-time state safety**.
-* You need to enforce **API constraints**.
-* You are writing a library/crate that is heavy dependent on variants.
-* Your want to replace runtime booleans or enums with **type-safe code paths**.
-* You need compile time correctness.
+### ✅ 使用类型状态模式当：
+* 你想要**编译时状态安全**。
+* 你需要强制**API 约束**。
+* 你在编写一个严重依赖变体的库/crate。
+* 你想用**类型安全的代码路径**替换运行时布尔值或 enum。
+* 你需要编译时正确性。
 
-### ❌ Avoid it when:
-* Writing trivial states like enums.
-* Don't need type-safety.
-* When it leads to overcomplicated generics.
-* When runtime flexibility is required.
+### ❌ 避免它当：
+* 处理琐碎的状态，如 enum。
+* 不需要类型安全。
+* 当它导致过度复杂的泛型时。
+* 当需要运行时灵活性时。
 
-### 🚨 Downsides and Cautions
-* Can lead to more **verbose solutions**.
-* Can lead to **complex type signatures**.
-* May require **unsafe** to return **variant outputs** based on different states.
-* May required a bunch of duplication (e.g. same struct field reused).
-* PhantomData is not intuitive for beginners and can feel a bit hacky.
+### 🚨 缺点和注意事项
+* 可能导致更**冗长的解决方案**。
+* 可能导致**复杂的类型签名**。
+* 可能需要**unsafe**来根据不同状态返回**变体输出**。
+* 可能需要大量重复（例如，重复使用相同的 struct 字段）。
+* PhantomData 对初学者不直观，可能感觉有点 hacky。
 
-> Use this pattern when it **saves bugs, increases safety or simplifies logic**, not just for cleverness.
+> 当这个模式**节省缺陷、增加安全性或简化逻辑**时使用它，而不是仅仅为了炫技。

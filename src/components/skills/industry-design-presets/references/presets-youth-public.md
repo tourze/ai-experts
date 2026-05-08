@@ -1,57 +1,57 @@
-# Youth, Emerging Tech & Public Sector Presets
+# 青年、新兴科技与公共部门预设
 
-## 38. Gen-Z / Youth Lifestyle
-- Style: Neubrutalism + Chaos/Maximalism
-- Colors: bg `#FAFAFA` / 强 `#FBBF24` + `#EF4444` + `#8B5CF6`
-- Fonts: Syne / Inter
-- Effects: 大阴影 4-8px solid、歪斜、贴纸
-- AVOID: 企业圆角、温和渐变
+## 38. Gen-Z / 青年生活方式
+- 风格：新粗野主义 + 混沌/极繁
+- 配色：背景 `#FAFAFA` / 强 `#FBBF24` + `#EF4444` + `#8B5CF6`
+- 字体：Syne / Inter
+- 效果：大阴影 4-8px solid、歪斜、贴纸
+- 避免：企业圆角、温和渐变
 
-## 39. Indie Creator / Personal Brand
-- Style: Anti-Polish / Raw Aesthetic
-- Colors: `#0A0A0A` / bg `#FAFAFA` / 偶尔强色
-- Fonts: Crimson Pro / Inter
-- Effects: 手写注释、低保真装饰
-- AVOID: 过模板 SaaS 感
+## 39. 独立创作者 / 个人品牌
+- 风格：反精致 / 原始美学
+- 配色：`#0A0A0A` / 背景 `#FAFAFA` / 偶尔强色
+- 字体：Crimson Pro / Inter
+- 效果：手写注释、低保真装饰
+- 避免：过模板 SaaS 感
 
 ## 40. Web3 / DAO / NFT
-- Style: Cyberpunk + Glassmorphism
-- Colors: `#0F172A` / `#22D3EE` / bg `#020617`
-- Fonts: Unbounded / Space Mono
-- Effects: 3D 渲染、光晕、动态背景
-- AVOID: Web2 企业蓝、温和感
+- 风格：赛博朋克 + 玻璃拟态
+- 配色：`#0F172A` / `#22D3EE` / 背景 `#020617`
+- 字体：Unbounded / Space Mono
+- 效果：3D 渲染、光晕、动态背景
+- 避免：Web2 企业蓝、温和感
 
-## 41. EdTech (Kids)
-- Style: Claymorphism + Playful
-- Colors: `#F97316` / `#22D3EE` / bg `#FFFBEB`
-- Fonts: Fredoka / Nunito
-- Effects: 3D 物件、大圆角、插画
-- AVOID: 企业深蓝、小字
+## 41. 教育科技（儿童）
+- 风格：泥塑造 + 趣味
+- 配色：`#F97316` / `#22D3EE` / 背景 `#FFFBEB`
+- 字体：Fredoka / Nunito
+- 效果：3D 物件、大圆角、插画
+- 避免：企业深蓝、小字
 
-## 42. EdTech (Adult)
-- Style: Minimalism + Accessible
-- Colors: `#2563EB` / `#059669` / bg `#FFFFFF`
-- Fonts: DM Sans / Inter
-- Effects: 清晰层级、进度可视化
-- AVOID: 儿童气质、卡通
+## 42. 教育科技（成人）
+- 风格：极简 + 无障碍可及
+- 配色：`#2563EB` / `#059669` / 背景 `#FFFFFF`
+- 字体：DM Sans / Inter
+- 效果：清晰层级、进度可视化
+- 避免：儿童气质、卡通
 
-## 43. Government / Public Service
-- Style: Accessible & Ethical + Plain Flat
-- Colors: `#1E40AF` / bg `#FFFFFF`
-- Fonts: Public Sans / Public Sans
-- Effects: 最小动效、高对比
-- AVOID: 品牌营销感、装饰
+## 43. 政府 / 公共服务
+- 风格：无障碍可及 + 伦理 + 纯扁平
+- 配色：`#1E40AF` / 背景 `#FFFFFF`
+- 字体：Public Sans / Public Sans
+- 效果：最小动效、高对比
+- 避免：品牌营销感、装饰
 
-## 44. Nonprofit / Charity
-- Style: Humanist + Warm
-- Colors: `#B45309` / `#0891B2` / bg `#FEF3C7`
-- Fonts: Newsreader / Inter
-- Effects: 真人照片、故事叙述
-- AVOID: 企业冷感、炫技
+## 44. 非营利 / 慈善
+- 风格：人本 + 温暖
+- 配色：`#B45309` / `#0891B2` / 背景 `#FEF3C7`
+- 字体：Newsreader / Inter
+- 效果：真人照片、故事叙述
+- 避免：企业冷感、炫技
 
-## 45. Religious / Community
-- Style: Humanist Warm Serif
-- Colors: `#78350F` / `#B08D57` / bg `#FFFBEB`
-- Fonts: EB Garamond / Inter
-- Effects: 低调、庄重、大留白
-- AVOID: 时髦感、科技感
+## 45. 宗教 / 社区
+- 风格：人本温暖衬线
+- 配色：`#78350F` / `#B08D57` / 背景 `#FFFBEB`
+- 字体：EB Garamond / Inter
+- 效果：低调、庄重、大留白
+- 避免：时髦感、科技感

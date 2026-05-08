@@ -1,120 +1,118 @@
-# Sizing Heuristics
+# 规模估算启发式
 
-Quick sizing patterns, complexity indicators, and reference class data for
-rapid estimation.
-
----
-
-## Quick Sizing Rules
-
-### The "Lines of Integration" Heuristic
-
-Count the number of external integration points:
-
-| Integration Points  | Typical Size |
-| ------------------- | ------------ |
-| 0 (pure logic)      | S-M          |
-| 1 (one API, one DB) | M            |
-| 2-3                 | M-L          |
-| 4+                  | L-XL         |
-
-Each integration adds:
-
-- Error handling
-- Retry logic
-- Configuration
-- Testing with mocks
-
-### The "Decision Count" Heuristic
-
-Count the number of design decisions required:
-
-| Decisions                   | Typical Size |
-| --------------------------- | ------------ |
-| 0 (follow existing pattern) | S            |
-| 1-2 (minor choices)         | M            |
-| 3-5 (architectural choices) | L            |
-| 5+ (many unknowns)          | XL           |
-
-### The "File Count" Heuristic
-
-Count the number of files that need to change:
-
-| Files | Typical Size                     |
-| ----- | -------------------------------- |
-| 1-2   | S                                |
-| 3-5   | M                                |
-| 5-10  | L                                |
-| 10+   | XL (or should be multiple tasks) |
+用于快速估算的规模模式、复杂度指标和参考类数据。
 
 ---
 
-## Reference Class Estimates
+## 快速规模估算规则
 
-### Backend Tasks
+### "集成点数量"启发式
 
-| Task Type               | Typical Size | Notes                                          |
-| ----------------------- | ------------ | ---------------------------------------------- |
-| Add field to model      | S (2h)       | Schema + migration + API                       |
-| New CRUD endpoint       | M (8h)       | Route + handler + validation + tests           |
-| New endpoint with logic | M-L (12h)    | Above + business logic + edge cases            |
-| Authentication system   | L (24h+)     | Multiple endpoints, token management, security |
-| File upload             | M (8h)       | Validation, storage, cleanup                   |
-| Email/notification      | M (8h)       | Template, provider integration, queue          |
-| Search feature          | L (20h)      | Indexing, query parsing, ranking               |
-| Caching layer           | M (8h)       | Cache strategy, invalidation, testing          |
-| Rate limiting           | M (6h)       | Storage, middleware, headers                   |
-| Webhook integration     | M (8h)       | Endpoint, verification, retry                  |
+统计外部集成点的数量：
 
-### Frontend Tasks
+| 集成点数            | 典型规模 |
+| ------------------- | -------- |
+| 0（纯逻辑）         | S-M      |
+| 1（一个 API、一个 DB） | M        |
+| 2-3                 | M-L      |
+| 4+                  | L-XL     |
 
-| Task Type                   | Typical Size | Notes                                   |
-| --------------------------- | ------------ | --------------------------------------- |
-| Static page                 | S (2h)       | Layout, styling                         |
-| Form with validation        | M (8h)       | Fields, validation, submission, errors  |
-| Data table with sort/filter | M-L (12h)    | Table, sorting, filtering, pagination   |
-| Modal/dialog                | S (3h)       | Component, open/close, content          |
-| Dashboard with charts       | L (16h)      | Data fetching, chart components, layout |
-| Responsive redesign         | L (20h)      | Breakpoints, layout changes, testing    |
+每个集成增加：
 
-### Infrastructure Tasks
+- 错误处理
+- 重试逻辑
+- 配置
+- 使用 mock 进行测试
 
-| Task Type                        | Typical Size | Notes                            |
-| -------------------------------- | ------------ | -------------------------------- |
-| CI pipeline setup                | M (8h)       | Build, test, deploy stages       |
-| Docker containerization          | M (8h)       | Dockerfile, compose, testing     |
-| Database migration (schema only) | S (2h)       | ALTER statements                 |
-| Database migration (with data)   | M-L (12h)    | Data transformation, validation  |
-| Monitoring/alerting setup        | M (8h)       | Metrics, dashboards, alert rules |
-| Secret management                | M (8h)       | Vault/KMS integration, rotation  |
+### "决策数量"启发式
 
----
+统计所需的设计决策数量：
 
-## Effort Multipliers
+| 决策数                     | 典型规模 |
+| -------------------------- | -------- |
+| 0（遵循现有模式）          | S        |
+| 1-2（小选择）              | M        |
+| 3-5（架构选择）            | L        |
+| 5+（许多未知）             | XL       |
 
-Apply these to the base estimate:
+### "文件数量"启发式
 
-| Factor                         | Multiplier | When                                  |
-| ------------------------------ | ---------- | ------------------------------------- |
-| First time with technology     | 2.0x       | Never used this library/framework     |
-| Second time                    | 1.3x       | Used once before                      |
-| Third+ time                    | 1.0x       | Familiar pattern                      |
-| Security-sensitive             | 1.5x       | Auth, crypto, PII handling            |
-| Cross-team coordination        | 1.3x       | Need input/approval from another team |
-| Legacy codebase                | 1.3-2.0x   | Poor documentation, no tests          |
-| High test coverage requirement | 1.3x       | 90%+ coverage target                  |
-| Accessibility requirements     | 1.2x       | WCAG compliance                       |
+统计需要变更的文件数量：
+
+| 文件数   | 典型规模                           |
+| -------- | ---------------------------------- |
+| 1-2      | S                                  |
+| 3-5      | M                                  |
+| 5-10     | L                                  |
+| 10+      | XL（或应拆分为多个任务）            |
 
 ---
 
-## "Should I Estimate or Spike?"
+## 参考类估算
 
-| Condition                            | Action                                |
-| ------------------------------------ | ------------------------------------- |
-| Less than 2 unknowns, familiar stack | Estimate directly                     |
-| 2-3 unknowns, partial familiarity    | Estimate with wide range (3x spread)  |
-| 4+ unknowns, new technology          | Spike first (1-2 days), then estimate |
-| "I have no idea"                     | Definitely spike first                |
+### 后端任务
 
-A spike is a timeboxed investigation to reduce uncertainty. The output is information
-(and a narrower estimate), not code.
+| 任务类型                      | 典型规模       | 备注                                            |
+| ----------------------------- | -------------- | ----------------------------------------------- |
+| 向模型添加字段                | S (2h)         | Schema + 迁移 + API                             |
+| 新增 CRUD 端点                | M (8h)         | 路由 + 处理器 + 验证 + 测试                     |
+| 带逻辑的新端点                | M-L (12h)      | 上述内容 + 业务逻辑 + 边界情况                  |
+| 认证系统                      | L (24h+)       | 多个端点、令牌管理、安全                         |
+| 文件上传                      | M (8h)         | 验证、存储、清理                                 |
+| 邮件/通知                     | M (8h)         | 模板、供应商集成、队列                           |
+| 搜索功能                      | L (20h)        | 索引、查询解析、排序                             |
+| 缓存层                        | M (8h)         | 缓存策略、失效、测试                             |
+| 速率限制                      | M (6h)         | 存储、中间件、头部                               |
+| Webhook 集成                  | M (8h)         | 端点、验证、重试                                 |
+
+### 前端任务
+
+| 任务类型                      | 典型规模       | 备注                                    |
+| ----------------------------- | -------------- | --------------------------------------- |
+| 静态页面                      | S (2h)         | 布局、样式                              |
+| 带验证的表单                  | M (8h)         | 字段、验证、提交、错误                  |
+| 带排序/过滤的数据表格         | M-L (12h)      | 表格、排序、过滤、分页                  |
+| 模态框/对话框                | S (3h)         | 组件、打开/关闭、内容                   |
+| 带图表的仪表盘                | L (16h)        | 数据获取、图表组件、布局                |
+| 响应式重新设计                | L (20h)        | 断点、布局变更、测试                    |
+
+### 基础设施任务
+
+| 任务类型                        | 典型规模 | 备注                            |
+| ------------------------------- | -------- | ------------------------------- |
+| CI 流水线搭建                   | M (8h)   | 构建、测试、部署阶段            |
+| Docker 容器化                   | M (8h)   | Dockerfile, compose, 测试       |
+| 数据库迁移（仅 schema）          | S (2h)   | ALTER 语句                      |
+| 数据库迁移（含数据）            | M-L (12h)| 数据转换、验证                  |
+| 监控/告警设置                   | M (8h)   | 指标、仪表盘、告警规则          |
+| 密钥管理                        | M (8h)   | Vault/KMS 集成、轮换            |
+
+---
+
+## 工作量乘数
+
+将这些应用于基础估算：
+
+| 因素                           | 乘数       | 时机                                    |
+| ------------------------------ | ---------- | --------------------------------------- |
+| 首次使用该技术                 | 2.0x       | 从未使用过该库/框架                     |
+| 第二次使用                     | 1.3x       | 之前用过一次                            |
+| 第三次及以上                   | 1.0x       | 熟悉的模式                              |
+| 安全敏感                       | 1.5x       | 认证、加密、PII 处理                    |
+| 跨团队协调                     | 1.3x       | 需要其他团队的输入/批准                  |
+| 遗留代码库                     | 1.3-2.0x   | 文档差、无测试                          |
+| 高测试覆盖率要求               | 1.3x       | 90%+ 覆盖目标                           |
+| 无障碍要求                     | 1.2x       | WCAG 合规                               |
+
+---
+
+## "应该估算还是做 Spike？"
+
+| 条件                                  | 行动                                |
+| ------------------------------------- | ----------------------------------- |
+| 少于 2 个未知因素，熟悉的栈            | 直接估算                            |
+| 2-3 个未知因素，部分熟悉               | 用宽范围估算（3 倍跨度）            |
+| 4+ 个未知因素，新技术                  | 先做 spike（1-2 天），再估算        |
+| "我完全不知道"                        | 一定要先做 spike                    |
+
+Spike 是限时调查，以减少不确定性。其输出是信息（以及更窄的估算范围），而不是代码。

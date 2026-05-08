@@ -1,20 +1,20 @@
-# Maven Native Build Tools Configuration
+# Maven Native Build Tools 配置
 
-Complete Maven configuration for building GraalVM native images using the Native Build Tools plugin.
+使用 Native Build Tools 插件构建 GraalVM native image 的完整 Maven 配置。
 
-## Table of Contents
+## 目录
 
-1. [Native Profile Setup](#native-profile-setup)
-2. [Plugin Configuration Options](#plugin-configuration-options)
-3. [Spring Boot Maven Integration](#spring-boot-maven-integration)
-4. [Testing in Native Mode](#testing-in-native-mode)
-5. [Multi-Module Projects](#multi-module-projects)
+1. [Native Profile 设置](#native-profile-设置)
+2. [插件配置选项](#插件配置选项)
+3. [Spring Boot Maven 集成](#spring-boot-maven-集成)
+4. [在 Native 模式下测试](#在-native-模式下测试)
+5. [多模块项目](#多模块项目)
 
 ---
 
-## Native Profile Setup
+## Native Profile 设置
 
-Add a `native` profile to your `pom.xml` to keep native-specific configuration separate:
+在 `pom.xml` 中添加 `native` profile，将原生特定配置分离出来：
 
 ```xml
 <profiles>
@@ -58,9 +58,9 @@ Add a `native` profile to your `pom.xml` to keep native-specific configuration s
 </profiles>
 ```
 
-## Plugin Configuration Options
+## 插件配置选项
 
-### Common Build Arguments
+### 常见构建参数
 
 ```xml
 <configuration>
@@ -69,29 +69,29 @@ Add a `native` profile to your `pom.xml` to keep native-specific configuration s
   <fallback>false</fallback>
   <verbose>true</verbose>
   <buildArgs>
-    <!-- Disable fallback to JVM -->
+    <!-- 禁用回退到 JVM -->
     <buildArg>--no-fallback</buildArg>
-    <!-- Report exception stack traces -->
+    <!-- 报告异常堆栈跟踪 -->
     <buildArg>-H:+ReportExceptionStackTraces</buildArg>
-    <!-- Increase build memory -->
+    <!-- 增加构建内存 -->
     <buildArg>-J-Xmx8g</buildArg>
-    <!-- Enable HTTPS support -->
+    <!-- 启用 HTTPS 支持 -->
     <buildArg>--enable-https</buildArg>
-    <!-- Quick build mode (dev only, slower runtime) -->
+    <!-- 快速构建模式（仅开发，运行时更慢） -->
     <buildArg>-Ob</buildArg>
-    <!-- Include all resources matching pattern -->
+    <!-- 包含所有匹配模式的资源 -->
     <buildArg>-H:IncludeResources=application.*</buildArg>
   </buildArgs>
-  <!-- GraalVM metadata repository support -->
+  <!-- GraalVM metadata 仓库支持 -->
   <metadataRepository>
     <enabled>true</enabled>
   </metadataRepository>
 </configuration>
 ```
 
-### Metadata Repository Integration
+### Metadata 仓库集成
 
-The GraalVM Reachability Metadata Repository provides pre-built metadata for popular libraries:
+GraalVM Reachability Metadata Repository 为流行库提供预构建的 metadata：
 
 ```xml
 <configuration>
@@ -102,9 +102,9 @@ The GraalVM Reachability Metadata Repository provides pre-built metadata for pop
 </configuration>
 ```
 
-## Spring Boot Maven Integration
+## Spring Boot Maven 集成
 
-For Spring Boot 3.x projects, the parent POM includes a `native` profile. Combine with the Spring Boot Maven Plugin:
+对于 Spring Boot 3.x 项目，父 POM 包含一个 `native` profile。与 Spring Boot Maven Plugin 结合使用：
 
 ```xml
 <profiles>
@@ -134,32 +134,32 @@ For Spring Boot 3.x projects, the parent POM includes a `native` profile. Combin
 </profiles>
 ```
 
-Build commands:
+构建命令：
 
 ```bash
-# Compile to native executable
+# 编译为原生可执行文件
 ./mvnw -Pnative native:compile
 
-# Build OCI image with Cloud Native Buildpacks
+# 使用 Cloud Native Buildpacks 构建 OCI 镜像
 ./mvnw -Pnative spring-boot:build-image
 
-# Run AOT processing only (for debugging)
+# 仅运行 AOT 处理（用于调试）
 ./mvnw -Pnative process-aot
 ```
 
-## Testing in Native Mode
+## 在 Native 模式下测试
 
-Run JUnit tests compiled as a native executable:
+运行编译为原生可执行文件的 JUnit 测试：
 
 ```bash
-# Run native tests
+# 运行原生测试
 ./mvnw -Pnative test
 
-# Or explicitly
+# 或显式指定
 ./mvnw -Pnative native:test
 ```
 
-Configure test-specific settings:
+配置测试特定设置：
 
 ```xml
 <execution>
@@ -177,12 +177,12 @@ Configure test-specific settings:
 </execution>
 ```
 
-## Multi-Module Projects
+## 多模块项目
 
-For multi-module Maven projects, configure the native plugin in the module that produces the executable:
+对于多模块 Maven 项目，在生成可执行文件的模块中配置原生插件：
 
 ```xml
-<!-- parent pom.xml -->
+<!-- 父级 pom.xml -->
 <pluginManagement>
   <plugins>
     <plugin>
@@ -193,7 +193,7 @@ For multi-module Maven projects, configure the native plugin in the module that 
   </plugins>
 </pluginManagement>
 
-<!-- child module pom.xml (the executable module) -->
+<!-- 子模块 pom.xml（可执行模块） -->
 <profiles>
   <profile>
     <id>native</id>

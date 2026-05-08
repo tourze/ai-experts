@@ -1,16 +1,16 @@
-# System Prompt Design
+# 系统提示设计
 
-## Core Principles
+## 核心原则
 
-System prompts set the foundation for LLM behavior. They define role, expertise, constraints, and output expectations.
+系统提示为 LLM 行为奠定基础。它们定义角色、专长、约束和输出期望。
 
-## Effective System Prompt Structure
+## 有效的系统提示结构
 
 ```
 [Role Definition] + [Expertise Areas] + [Behavioral Guidelines] + [Output Format] + [Constraints]
 ```
 
-### Example: Code Assistant
+### 示例：代码助手
 
 ```
 You are an expert software engineer with deep knowledge of Python, JavaScript, and system design.
@@ -34,9 +34,9 @@ Output format:
 - Explain key decisions after code blocks
 ```
 
-## Pattern Library
+## 模式库
 
-### 1. Customer Support Agent
+### 1. 客户支持代理
 
 ```
 You are a friendly, empathetic customer support representative for {company_name}.
@@ -60,7 +60,7 @@ Constraints:
 - Don't process refunds over $100 (escalate instead)
 ```
 
-### 2. Data Analyst
+### 2. 数据分析师
 
 ```
 You are an experienced data analyst specializing in business intelligence.
@@ -87,7 +87,7 @@ Output:
 - Suggest next steps
 ```
 
-### 3. Content Editor
+### 3. 内容编辑
 
 ```
 You are a professional editor with expertise in {content_type}.
@@ -113,9 +113,9 @@ Format your feedback as:
 - Positive elements to preserve
 ```
 
-## Advanced Techniques
+## 高级技巧
 
-### Dynamic Role Adaptation
+### 动态角色适配
 
 ```python
 def build_adaptive_system_prompt(task_type, difficulty):
@@ -140,7 +140,7 @@ Expertise level: {difficulty}
 """
 ```
 
-### Constraint Specification
+### 约束指定
 
 ```
 Hard constraints (MUST follow):
@@ -154,24 +154,24 @@ Soft constraints (SHOULD follow):
 - Acknowledge uncertainty rather than guessing
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Be Specific**: Vague roles produce inconsistent behavior
-2. **Set Boundaries**: Clearly define what the model should/shouldn't do
-3. **Provide Examples**: Show desired behavior in the system prompt
-4. **Test Thoroughly**: Verify system prompt works across diverse inputs
-5. **Iterate**: Refine based on actual usage patterns
-6. **Version Control**: Track system prompt changes and performance
+1. **具体明确**：模糊的角色会产生不一致的行为
+2. **设定界限**：清晰定义模型应该/不应该做的事
+3. **提供示例**：在系统提示中展示期望行为
+4. **彻底测试**：验证系统提示在多种输入下工作
+5. **迭代优化**：基于实际使用模式进行改进
+6. **版本控制**：追踪系统提示变更和性能
 
-## Common Pitfalls
+## 常见陷阱
 
-- **Too Long**: Excessive system prompts waste tokens and dilute focus
-- **Too Vague**: Generic instructions don't shape behavior effectively
-- **Conflicting Instructions**: Contradictory guidelines confuse the model
-- **Over-Constraining**: Too many rules can make responses rigid
-- **Under-Specifying Format**: Missing output structure leads to inconsistency
+- **过长**：过多的系统提示浪费 token 并稀释焦点
+- **过于模糊**：泛泛的指令无法有效塑造行为
+- **矛盾指令**：矛盾的准则使模型困惑
+- **过度约束**：太多规则会使响应变得僵化
+- **格式指定不足**：缺少输出结构导致不一致
 
-## Testing System Prompts
+## 测试系统提示
 
 ```python
 def test_system_prompt(system_prompt, test_cases):

@@ -1,13 +1,12 @@
-# Output Constraints
+# 输出约束
 
-Techniques for constraining LLM output format, enforcing structure, and ensuring
-parseable responses.
+约束 LLM 输出格式、强制结构并确保可解析响应的技术。
 
 ---
 
-## Prompt-Level Constraints
+## 提示级约束
 
-### Length Constraints
+### 长度约束
 
 ```text
 Respond in exactly 3 bullet points.
@@ -16,7 +15,7 @@ One sentence only.
 Between 2 and 5 paragraphs.
 ```
 
-### Format Constraints
+### 格式约束
 
 ```text
 Respond in valid JSON matching this schema:
@@ -27,7 +26,7 @@ Respond as a markdown table with columns: Feature, Pros, Cons
 Respond as a numbered list. Each item must start with an action verb.
 ```
 
-### Content Constraints
+### 内容约束
 
 ```text
 ONLY use information from the provided context. Do not add external knowledge.
@@ -38,9 +37,9 @@ Do not use technical jargon. Write for a non-technical audience.
 
 ---
 
-## API-Level Constraints
+## API 级约束
 
-### JSON Mode (OpenAI)
+### JSON 模式（OpenAI）
 
 ```python
 response = client.chat.completions.create(
@@ -50,12 +49,12 @@ response = client.chat.completions.create(
 )
 ```
 
-Guarantees valid JSON output. Still need to specify the schema in the prompt.
+保证有效的 JSON 输出。仍需要在提示中指定 schema。
 
-### Tool Use / Function Calling (Claude, OpenAI)
+### 工具调用 / 函数调用（Claude、OpenAI）
 
 ```python
-# Define the expected output schema as a tool
+# 将预期输出 schema 定义为工具
 tools = [{
     "name": "classify_ticket",
     "description": "Classify a support ticket",
@@ -71,9 +70,9 @@ tools = [{
 }]
 ```
 
-Forces the model to respond with a structured object matching the schema.
+强制模型响应符合 schema 的结构化对象。
 
-### Structured Output (OpenAI)
+### 结构化输出（OpenAI）
 
 ```python
 from pydantic import BaseModel
@@ -92,12 +91,11 @@ response = client.beta.chat.completions.parse(
 
 ---
 
-## Constraint Placement
+## 约束定位
 
-### Position Matters
+### 位置很重要
 
-Models have recency bias — instructions at the end of the prompt are followed more
-reliably than those at the beginning.
+模型有近因偏差 —— 提示末尾的指令比开头的更可靠地被遵循。
 
 ```text
 {Context / input data}
@@ -107,9 +105,9 @@ reliably than those at the beginning.
 {Format constraint — place last for best compliance}
 ```
 
-### Repetition Reinforces
+### 重复加强
 
-For critical constraints, state them twice:
+对于关键约束，声明两次：
 
 ```text
 Important: Respond ONLY in valid JSON.
@@ -123,27 +121,27 @@ Remember: Your response must be valid JSON. No text outside the JSON object.
 
 ---
 
-## Common Constraint Failures
+## 常见约束失败
 
-| Constraint                  | Failure Mode                             | Fix                                                                    |
+| 约束 | 故障模式 | 修复 |
 | --------------------------- | ---------------------------------------- | ---------------------------------------------------------------------- |
-| "Respond in JSON"           | Model wraps JSON in markdown code blocks | "Respond with raw JSON only. No markdown, no code blocks."             |
-| "Maximum 3 sentences"       | Model writes 3 long sentences            | "Maximum 3 sentences, each under 30 words"                             |
-| "Only use provided context" | Model adds common knowledge              | "If you add ANY information not in the context, mark it as [inferred]" |
-| "No opinions"               | Model hedges with "some might say"       | "State each point as a factual observation"                            |
-| "Use this template"         | Model modifies the template structure    | Provide the template with clear markers: `{FILL THIS}`                 |
+| "以 JSON 格式响应" | 模型将 JSON 包裹在 markdown 代码块中 | "仅输出原始 JSON。无 markdown，无代码块。" |
+| "最多 3 句话" | 模型写了 3 个长句 | "最多 3 句话，每句不超过 30 词" |
+| "仅使用提供的上下文" | 模型添加了常识 | "如果你添加了任何不在上下文中的信息，请标记为 [推断]" |
+| "无观点" | 模型用"有人可能会说"来回避 | "将每个点作为事实性观察陈述" |
+| "使用此模板" | 模型修改了模板结构 | 提供带清晰标记的模板：`{FILL THIS}` |
 
 ---
 
-## Validation After Generation
+## 生成后验证
 
-Even with constraints, validate the output programmatically:
+即使有约束，也要以编程方式验证输出：
 
 ```python
 import json
 
 def validate_output(text: str, expected_keys: list[str]) -> bool:
-    """Validate that output is valid JSON with expected keys."""
+    """验证输出是否为带有预期键的有效 JSON。"""
     try:
         data = json.loads(text)
     except json.JSONDecodeError:
@@ -152,14 +150,14 @@ def validate_output(text: str, expected_keys: list[str]) -> bool:
     return all(key in data for key in expected_keys)
 ```
 
-### Retry Strategy
+### 重试策略
 
-If validation fails:
+如果验证失败：
 
-1. Parse the error
-2. Include the error in a follow-up prompt
-3. Ask the model to fix its output
-4. Maximum 2 retries before failing
+1. 解析错误
+2. 在后续提示中包含错误
+3. 要求模型修复其输出
+4. 最多重试 2 次，之后失败
 
 ```python
 for attempt in range(3):

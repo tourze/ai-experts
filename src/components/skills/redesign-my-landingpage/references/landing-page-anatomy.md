@@ -1,67 +1,66 @@
-# Landing page anatomy and checklists
+# 落地页结构与检查清单
 
-## Definitions
+## 定义
 
-- Above-the-fold: the part of a web page shown before scrolling.
-- Below-the-fold: the portion of a webpage a user must scroll to see.
+- 首屏（Above-the-fold）：滚动前可见的网页部分。
+- 折页以下（Below-the-fold）：用户需滚动才能看到的网页部分。
 
-Use the fold concept to improve engagement, retention, conversions, UX, and SEO.
+使用折叠概念来改进参与度、留存、转化、UX 和 SEO。
 
-## Proven landing page anatomy
+## 经过验证的落地页结构
 
-Default section order:
+默认区块顺序：
 
-1. Navigation
-2. Hero
-3. Social proof
-4. CTA block
-5. Features
-6. CTA repeated 1 to 2 times
-7. Footer
+1. 导航栏
+2. 主视觉区
+3. 社会证明
+4. CTA 区块
+5. 功能展示
+6. CTA 重复 1 到 2 次
+7. 页脚
 
-Notes:
-- Keep navigation minimal. Avoid sending attention to competing destinations.
-- Consider a fixed or sticky CTA (especially on mobile) when it reduces friction.
+备注：
+- 保持导航最小化。避免将注意力引向竞争性目的地。
+- 考虑固定或粘性 CTA（尤其在移动端上），当它能减少摩擦时。
 
-## Above-the-fold: 5-step checklist
+## 首屏：5 步检查清单
 
-1. Define the value you offer (title)
-2. Detail your approach (supporting subheadline)
-3. Help the user envision it (visual)
-4. Establish credibility (social proof)
-5. Simplify the next step (call to action)
+1. 定义你提供的价值（标题）
+2. 详细说明你的方法（支持的副标题）
+3. 帮助用户想象它（视觉元素）
+4. 建立可信度（社会证明）
+5. 简化下一步（行动号召）
 
-Fast validation questions:
-- Can a first-time visitor explain the offer in 5 seconds?
-- Is the CTA's outcome obvious (what happens after I click)?
-- Does the visual match the promise (not just decoration)?
+快速验证问题：
+- 首次访问者能否在 5 秒内解释清楚提供的价值？
+- CTA 的成果是否显而易见（点击后会发生什么）？
+- 视觉元素是否与承诺匹配（不纯为装饰）？
 
-## Below-the-fold: persuasion sequence
+## 折页以下：说服序列
 
-1. Show clear value (features)
-2. Motivate to action (social proof)
-3. Clarify questions (FAQ)
-4. Repeat your call to action (CTA)
+1. 展示清晰价值（功能）
+2. 激发行动（社会证明）
+3. 澄清问题（FAQ）
+4. 重复你的行动号召（CTA）
 
-Add optional sections only when needed:
-- Pricing and plans
-- Security/compliance
-- Comparisons
-- Case studies
-- Integrations
+仅在需要时添加可选区块：
+- 定价与方案
+- 安全/合规
+- 对比
+- 案例研究
+- 集成
 
-## Annotated examples to learn from
+## 值得学习的标注示例
 
-### Notion (patterns)
+### Notion（模式）
 
-- Supporting subheadline clarifies the promise.
-- Strong product visual helps users know what to expect.
-- CTA microcopy reduces risk ("Use for free").
-- Fixed CTA in the header keeps the action available.
+- 支持性副标题澄清了承诺。
+- 强大的产品视觉帮助用户知道期望什么。
+- CTA 微文案降低风险（"免费使用"）。
+- 页眉中的固定 CTA 保持操作可用。
 
-### Semrush (patterns)
+### Semrush（模式）
 
-- Outcome-driven headline.
-- Single, focused conversion path (enter domain/keyword -> start now).
-- Social proof logos placed close to the hero to establish trust.
-
+- 成果驱动的标题。
+- 单一、专注的转化路径（输入域名/关键词 -> 立即开始）。
+- 社会证明标志靠近主视觉区放置以建立信任。

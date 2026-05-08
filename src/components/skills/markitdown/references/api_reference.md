@@ -1,10 +1,10 @@
-# MarkItDown API Reference
+# MarkItDown API 参考
 
-## Core Classes
+## 核心类
 
 ### MarkItDown
 
-The main class for converting files to Markdown.
+将文件转换为 Markdown 的主要类。
 
 ```python
 from markitdown import MarkItDown
@@ -18,21 +18,21 @@ md = MarkItDown(
 )
 ```
 
-#### Parameters
+#### 参数
 
-| Parameter | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 描述 |
 |-----------|------|---------|-------------|
-| `llm_client` | OpenAI client | `None` | OpenAI-compatible client for AI image descriptions |
-| `llm_model` | str | `None` | Model name (e.g., "anthropic/claude-opus-4.5") for image descriptions |
-| `llm_prompt` | str | `None` | Custom prompt for image description |
-| `docintel_endpoint` | str | `None` | Azure Document Intelligence endpoint |
-| `enable_plugins` | bool | `False` | Enable 3rd-party plugins |
+| `llm_client` | OpenAI 客户端 | `None` | 用于 AI 图片描述的 OpenAI 兼容客户端 |
+| `llm_model` | str | `None` | 用于图片描述的模型名称（例如 "anthropic/claude-opus-4.5"） |
+| `llm_prompt` | str | `None` | 图片描述的自定义提示词 |
+| `docintel_endpoint` | str | `None` | Azure 文档智能端点 |
+| `enable_plugins` | bool | `False` | 启用第三方插件 |
 
-#### Methods
+#### 方法
 
 ##### convert()
 
-Convert a file to Markdown.
+将文件转换为 Markdown。
 
 ```python
 result = md.convert(
@@ -41,13 +41,13 @@ result = md.convert(
 )
 ```
 
-**Parameters**:
-- `source` (str): Path to the file to convert
-- `file_extension` (str, optional): Override file extension detection
+**参数**：
+- `source` (str)：要转换的文件路径
+- `file_extension` (str, 可选)：覆盖文件扩展名检测
 
-**Returns**: `DocumentConverterResult` object
+**返回**：`DocumentConverterResult` 对象
 
-**Example**:
+**示例**：
 ```python
 result = md.convert("document.pdf")
 print(result.text_content)
@@ -55,7 +55,7 @@ print(result.text_content)
 
 ##### convert_stream()
 
-Convert from a file-like binary stream.
+从文件类二进制流进行转换。
 
 ```python
 result = md.convert_stream(
@@ -64,51 +64,51 @@ result = md.convert_stream(
 )
 ```
 
-**Parameters**:
-- `stream` (BinaryIO): Binary file-like object (e.g., file opened in `"rb"` mode)
-- `file_extension` (str): File extension to determine conversion method (e.g., ".pdf")
+**参数**：
+- `stream` (BinaryIO)：二进制文件类对象（例如以 `"rb"` 模式打开的文件）
+- `file_extension` (str)：用于确定转换方法的文件扩展名（例如 ".pdf"）
 
-**Returns**: `DocumentConverterResult` object
+**返回**：`DocumentConverterResult` 对象
 
-**Example**:
+**示例**：
 ```python
 with open("document.pdf", "rb") as f:
     result = md.convert_stream(f, file_extension=".pdf")
     print(result.text_content)
 ```
 
-**Important**: The stream must be opened in binary mode (`"rb"`), not text mode.
+**重要提示**：流必须以二进制模式（`"rb"`）打开，而非文本模式。
 
-## Result Object
+## 结果对象
 
 ### DocumentConverterResult
 
-The result of a conversion operation.
+转换操作的结果。
 
-#### Attributes
+#### 属性
 
-| Attribute | Type | Description |
+| 属性 | 类型 | 描述 |
 |-----------|------|-------------|
-| `text_content` | str | The converted Markdown text |
-| `title` | str | Document title (if available) |
+| `text_content` | str | 转换后的 Markdown 文本 |
+| `title` | str | 文档标题（如有） |
 
-#### Example
+#### 示例
 
 ```python
 result = md.convert("paper.pdf")
 
-# Access content
+# 访问内容
 content = result.text_content
 
-# Access title (if available)
+# 访问标题（如有）
 title = result.title
 ```
 
-## Custom Converters
+## 自定义转换器
 
-You can create custom document converters by implementing the `DocumentConverter` interface.
+您可以通过实现 `DocumentConverter` 接口来创建自定义文档转换器。
 
-### DocumentConverter Interface
+### DocumentConverter 接口
 
 ```python
 from markitdown import DocumentConverter
@@ -116,20 +116,20 @@ from markitdown import DocumentConverter
 class CustomConverter(DocumentConverter):
     def convert(self, stream, file_extension):
         """
-        Convert a document from a binary stream.
+        从二进制流转换文档。
         
-        Parameters:
-            stream (BinaryIO): Binary file-like object
-            file_extension (str): File extension (e.g., ".custom")
+        参数：
+            stream (BinaryIO)：二进制文件类对象
+            file_extension (str)：文件扩展名（例如 ".custom"）
             
-        Returns:
-            DocumentConverterResult: Conversion result
+        返回：
+            DocumentConverterResult：转换结果
         """
-        # Your conversion logic here
+        # 在这里编写您的转换逻辑
         pass
 ```
 
-### Registering Custom Converters
+### 注册自定义转换器
 
 ```python
 from markitdown import MarkItDown, DocumentConverter, DocumentConverterResult
@@ -137,43 +137,43 @@ from markitdown import MarkItDown, DocumentConverter, DocumentConverterResult
 class MyCustomConverter(DocumentConverter):
     def convert(self, stream, file_extension):
         content = stream.read().decode('utf-8')
-        markdown_text = f"# Custom Format\n\n{content}"
+        markdown_text = f"# 自定义格式\n\n{content}"
         return DocumentConverterResult(
             text_content=markdown_text,
-            title="Custom Document"
+            title="自定义文档"
         )
 
-# Create MarkItDown instance
+# 创建 MarkItDown 实例
 md = MarkItDown()
 
-# Register custom converter for .custom files
+# 为 .custom 文件注册自定义转换器
 md.register_converter(".custom", MyCustomConverter())
 
-# Use it
+# 使用它
 result = md.convert("myfile.custom")
 ```
 
-## Plugin System
+## 插件系统
 
-### Finding Plugins
+### 查找插件
 
-Search GitHub for `#markitdown-plugin` tag.
+在 GitHub 上搜索 `#markitdown-plugin` 标签。
 
-### Using Plugins
+### 使用插件
 
 ```python
 from markitdown import MarkItDown
 
-# Enable plugins
+# 启用插件
 md = MarkItDown(enable_plugins=True)
 result = md.convert("document.pdf")
 ```
 
-### Creating Plugins
+### 创建插件
 
-Plugins are Python packages that register converters with MarkItDown.
+插件是向 MarkItDown 注册转换器的 Python 包。
 
-**Plugin Structure**:
+**插件结构**：
 ```
 my-markitdown-plugin/
 ├── setup.py
@@ -183,7 +183,7 @@ my-markitdown-plugin/
 └── README.md
 ```
 
-**setup.py**:
+**setup.py**：
 ```python
 from setuptools import setup
 
@@ -199,69 +199,69 @@ setup(
 )
 ```
 
-**converter.py**:
+**converter.py**：
 ```python
 from markitdown import DocumentConverter, DocumentConverterResult
 
 class MyConverter(DocumentConverter):
     def convert(self, stream, file_extension):
-        # Your conversion logic
+        # 您的转换逻辑
         content = stream.read()
         markdown = self.process(content)
         return DocumentConverterResult(
             text_content=markdown,
-            title="My Document"
+            title="我的文档"
         )
     
     def process(self, content):
-        # Process content
-        return "# Converted Content\n\n..."
+        # 处理内容
+        return "# 转换后的内容\n\n..."
 ```
 
-## AI-Enhanced Conversions
+## AI 增强转换
 
-### Using OpenRouter for Image Descriptions
+### 使用 OpenRouter 进行图片描述
 
 ```python
 from markitdown import MarkItDown
 from openai import OpenAI
 
-# Initialize OpenRouter client (OpenAI-compatible API)
+# 初始化 OpenRouter 客户端（兼容 OpenAI API）
 client = OpenAI(
     api_key="your-openrouter-api-key",
     base_url="https://openrouter.ai/api/v1"
 )
 
-# Create MarkItDown with AI support
+# 创建带 AI 支持的 MarkItDown
 md = MarkItDown(
     llm_client=client,
-    llm_model="anthropic/claude-opus-4.5",  # recommended for scientific vision
-    llm_prompt="Describe this image in detail for scientific documentation"
+    llm_model="anthropic/claude-opus-4.5",  # 科学视觉推荐
+    llm_prompt="详细描述此图片，用于科学文档"
 )
 
-# Convert files with images
+# 转换带图片的文件
 result = md.convert("presentation.pptx")
 ```
 
-### Available Models via OpenRouter
+### 通过 OpenRouter 可用的模型
 
-Popular models with vision support:
-- `anthropic/claude-opus-4.5` - **Recommended for scientific vision**
+支持视觉功能的流行模型：
+- `anthropic/claude-opus-4.5` - **科学视觉推荐**
 - `google/gemini-3-pro-preview` - Gemini Pro Vision
 
-See https://openrouter.ai/models for the complete list.
+参见 https://openrouter.ai/models 获取完整列表。
 
-### Custom Prompts
+### 自定义提示词
 
 ```python
-# For scientific diagrams
+# 用于科学图表
 scientific_prompt = """
-Analyze this scientific diagram or chart. Describe:
-1. The type of visualization (graph, chart, diagram, etc.)
-2. Key data points or trends
-3. Labels and axes
-4. Scientific significance
-Be precise and technical.
+分析此科学图表或图形。描述：
+1. 可视化类型（图表、图形、图示等）
+2. 关键数据点或趋势
+3. 标签和坐标轴
+4. 科学意义
+请精确且专业。
 """
 
 md = MarkItDown(
@@ -271,15 +271,15 @@ md = MarkItDown(
 )
 ```
 
-## Azure Document Intelligence
+## Azure 文档智能
 
-### Setup
+### 设置
 
-1. Create Azure Document Intelligence resource
-2. Get endpoint URL
-3. Set authentication
+1. 创建 Azure 文档智能资源
+2. 获取端点 URL
+3. 设置认证
 
-### Usage
+### 用法
 
 ```python
 from markitdown import MarkItDown
@@ -291,16 +291,16 @@ md = MarkItDown(
 result = md.convert("complex_document.pdf")
 ```
 
-### Authentication
+### 认证
 
-Set environment variables:
+设置环境变量：
 ```bash
 export AZURE_DOCUMENT_INTELLIGENCE_KEY="your-key"
 ```
 
-Or pass credentials programmatically.
+或以编程方式传递凭证。
 
-## Error Handling
+## 错误处理
 
 ```python
 from markitdown import MarkItDown
@@ -311,19 +311,19 @@ try:
     result = md.convert("document.pdf")
     print(result.text_content)
 except FileNotFoundError:
-    print("File not found")
+    print("文件未找到")
 except ValueError as e:
-    print(f"Invalid file format: {e}")
+    print(f"无效的文件格式：{e}")
 except Exception as e:
-    print(f"Conversion error: {e}")
+    print(f"转换错误：{e}")
 ```
 
-## Performance Tips
+## 性能技巧
 
-### 1. Reuse MarkItDown Instance
+### 1. 复用 MarkItDown 实例
 
 ```python
-# Good: Create once, use many times
+# 好：创建一次，多次使用
 md = MarkItDown()
 
 for file in files:
@@ -331,15 +331,15 @@ for file in files:
     process(result)
 ```
 
-### 2. Use Streaming for Large Files
+### 2. 对大文件使用流式转换
 
 ```python
-# For large files
+# 对于大文件
 with open("large_file.pdf", "rb") as f:
     result = md.convert_stream(f, file_extension=".pdf")
 ```
 
-### 3. Batch Processing
+### 3. 批量处理
 
 ```python
 from concurrent.futures import ThreadPoolExecutor
@@ -353,44 +353,43 @@ with ThreadPoolExecutor(max_workers=4) as executor:
     results = executor.map(convert_file, file_list)
 ```
 
-## Breaking Changes (v0.0.1 to v0.1.0)
+## 破坏性变更（v0.0.1 到 v0.1.0）
 
-1. **Dependencies**: Now organized into optional feature groups
+1. **依赖项**：现在组织为可选功能组
    ```bash
-   # Old
+   # 旧
    pip install markitdown
    
-   # New
+   # 新
    pip install 'markitdown[all]'
    ```
 
-2. **convert_stream()**: Now requires binary file-like object
+2. **convert_stream()**：现在需要二进制文件类对象
    ```python
-   # Old (also accepted text)
-   with open("file.pdf", "r") as f:  # text mode
+   # 旧（也接受文本）
+   with open("file.pdf", "r") as f:  # 文本模式
        result = md.convert_stream(f)
    
-   # New (binary only)
-   with open("file.pdf", "rb") as f:  # binary mode
+   # 新（仅二进制）
+   with open("file.pdf", "rb") as f:  # 二进制模式
        result = md.convert_stream(f, file_extension=".pdf")
    ```
 
-3. **DocumentConverter Interface**: Changed to read from streams instead of file paths
-   - No temporary files created
-   - More memory efficient
-   - Plugins need updating
+3. **DocumentConverter 接口**：改为从流而非文件路径读取
+   - 不创建临时文件
+   - 内存效率更高
+   - 插件需要更新
 
-## Version Compatibility
+## 版本兼容性
 
-- **Python**: 3.10 or higher required
-- **Dependencies**: Check `setup.py` for version constraints
-- **OpenAI**: Compatible with OpenAI Python SDK v1.0+
+- **Python**：需要 3.10 或更高版本
+- **依赖项**：查看 `setup.py` 了解版本约束
+- **OpenAI**：兼容 OpenAI Python SDK v1.0+
 
-## Environment Variables
+## 环境变量
 
-| Variable | Description | Example |
+| 变量 | 描述 | 示例 |
 |----------|-------------|---------|
-| `OPENROUTER_API_KEY` | OpenRouter API key for image descriptions | `sk-or-v1-...` |
-| `AZURE_DOCUMENT_INTELLIGENCE_KEY` | Azure DI authentication | `key123...` |
-| `AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT` | Azure DI endpoint | `https://...` |
-
+| `OPENROUTER_API_KEY` | OpenRouter API 密钥，用于图片描述 | `sk-or-v1-...` |
+| `AZURE_DOCUMENT_INTELLIGENCE_KEY` | Azure 文档智能认证 | `key123...` |
+| `AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT` | Azure 文档智能端点 | `https://...` |

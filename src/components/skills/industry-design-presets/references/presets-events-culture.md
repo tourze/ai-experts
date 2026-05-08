@@ -1,71 +1,71 @@
-# Events, Culture & Leisure Presets
+# 活动、文化与休闲预设
 
-## 66. Museum / Gallery
-- Style: Exaggerated Minimalism + Editorial
-- Colors: `#18181B` / `#F8F5EF` / bg `#FFFFFF`
-- Fonts: Tenor Sans / Lora
-- Effects: 大图作品、展览时间线、票务清晰
-- AVOID: 活泼动效、密集信息
+## 66. 博物馆 / 美术馆
+- 风格：夸张极简 + 编辑风
+- 配色：`#18181B` / `#F8F5EF` / 背景 `#FFFFFF`
+- 字体：Tenor Sans / Lora
+- 效果：大图作品、展览时间线、票务清晰
+- 避免：活泼动效、密集信息
 
-## 67. Theater / Performing Arts
-- Style: Editorial + Parallax
-- Colors: `#7F1D1D` / `#D4AF37` / bg `#0A0A0A`
-- Fonts: Playfair Display / Source Sans 3
-- Effects: 剧照大图、票价对比、演员介绍
-- AVOID: 现代极简（失去戏剧感）
+## 67. 剧院 / 表演艺术
+- 风格：编辑风 + 视差滚动
+- 配色：`#7F1D1D` / `#D4AF37` / 背景 `#0A0A0A`
+- 字体：Playfair Display / Source Sans 3
+- 效果：剧照大图、票价对比、演员介绍
+- 避免：现代极简（失去戏剧感）
 
-## 68. Conference / Event Landing
-- Style: Bento Grid + Bold Display
-- Colors: `#0F172A` / `#FBBF24` / bg `#FFFFFF`
-- Fonts: Unbounded / Inter
-- Effects: 倒计时、讲者网格、议程时间线、地点地图
-- AVOID: 缺失时间/地点、CTA 不明确
+## 68. 会议 / 活动落地页
+- 风格：Bento 网格 + 粗体展示字
+- 配色：`#0F172A` / `#FBBF24` / 背景 `#FFFFFF`
+- 字体：Unbounded / Inter
+- 效果：倒计时、讲者网格、议程时间线、地点地图
+- 避免：缺失时间/地点、CTA 不明确
 
-## 69. Festival / Music Event
-- Style: Vibrant & Block + Maximalism
-- Colors: 撞色 `#EC4899` + `#FBBF24` + `#8B5CF6` / bg 图片
-- Fonts: Monoton / Inter
-- Effects: 海报风 hero、艺人 lineup、倒计时
-- AVOID: 企业感、保守
+## 69. 音乐节 / 音乐活动
+- 风格：鲜艳色块 + 极繁主义
+- 配色：撞色 `#EC4899` + `#FBBF24` + `#8B5CF6` / 背景 图片
+- 字体：Monoton / Inter
+- 效果：海报风 hero、艺人 lineup、倒计时
+- 避免：企业感、保守
 
-## 70. Arcade / Entertainment Venue
-- Style: Retro-Futurism + Neon
-- Colors: `#0F172A` / `#EC4899` / `#22D3EE` / bg `#020617`
-- Fonts: Monoton / Inter
-- Effects: 霓虹发光、80s 网格
-- AVOID: 温和企业感
+## 70. 游戏厅 / 娱乐场所
+- 风格：复古未来 + 霓虹
+- 配色：`#0F172A` / `#EC4899` / `#22D3EE` / 背景 `#020617`
+- 字体：Monoton / Inter
+- 效果：霓虹发光、80s 网格
+- 避免：温和企业感
 
-## 71. Gym / Fitness Studio
-- Style: Bold + Block
-- Colors: `#0A0A0A` / `#FBBF24` / bg `#FFFFFF`
-- Fonts: Archivo Black / Archivo
-- Effects: 人物动作图、时间表、预约
-- AVOID: 柔和粉嫩
+## 71. 健身房 / 健身工作室
+- 风格：粗体 + 色块
+- 配色：`#0A0A0A` / `#FBBF24` / 背景 `#FFFFFF`
+- 字体：Archivo Black / Archivo
+- 效果：人物动作图、时间表、预约
+- 避免：柔和粉嫩
 
-## 72. Dance Studio / Yoga Studio
-- Style: Organic Biophilic + Movement
-- Colors: `#F59E0B` / `#78350F` / bg `#FFFBEB`
-- Fonts: Cormorant Garamond / Inter
-- Effects: 动作抓拍、课程表、温暖色调
-- AVOID: 冷工业感
+## 72. 舞蹈工作室 / 瑜伽工作室
+- 风格：有机自然 + 动感
+- 配色：`#F59E0B` / `#78350F` / 背景 `#FFFBEB`
+- 字体：Cormorant Garamond / Inter
+- 效果：动作抓拍、课程表、温暖色调
+- 避免：冷工业感
 
-## 73. Library / Reading Club
-- Style: Editorial + Serif
-- Colors: `#78350F` / `#16A34A` / bg `#FFFBEB`
-- Fonts: EB Garamond / Inter
-- Effects: 书架视觉、作者专栏、搜索突出
-- AVOID: 科技感 SaaS 模板
+## 73. 图书馆 / 读书俱乐部
+- 风格：编辑风 + 衬线体
+- 配色：`#78350F` / `#16A34A` / 背景 `#FFFBEB`
+- 字体：EB Garamond / Inter
+- 效果：书架视觉、作者专栏、搜索突出
+- 避免：科技感 SaaS 模板
 
-## 74. Tourism Board / Destination
-- Style: Parallax Storytelling + Full-bleed
-- Colors: `#0C4A6E` / `#F59E0B` / bg `#FFFFFF`
-- Fonts: Newsreader / Inter
-- Effects: 沉浸滚动、地图探索、摄影作品
-- AVOID: 密集列表、弱视觉
+## 74. 旅游局 / 目的地推广
+- 风格：视差叙事 + 全屏铺满
+- 配色：`#0C4A6E` / `#F59E0B` / 背景 `#FFFFFF`
+- 字体：Newsreader / Inter
+- 效果：沉浸滚动、地图探索、摄影作品
+- 避免：密集列表、弱视觉
 
-## 75. Nightlife / Club
-- Style: Cyberpunk + Vaporwave
-- Colors: `#7F1D1D` / `#EC4899` / `#22D3EE` / bg `#020617`
-- Fonts: Monoton / Space Mono
-- Effects: 霓虹、动态背景、LineUp
-- AVOID: 企业感、保守
+## 75. 夜店 / 俱乐部
+- 风格：赛博朋克 + Vaporwave
+- 配色：`#7F1D1D` / `#EC4899` / `#22D3EE` / 背景 `#020617`
+- 字体：Monoton / Space Mono
+- 效果：霓虹、动态背景、LineUp
+- 避免：企业感、保守

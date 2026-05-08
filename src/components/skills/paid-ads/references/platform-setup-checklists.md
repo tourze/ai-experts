@@ -1,277 +1,277 @@
-# Platform Setup Checklists
+# 平台设置清单
 
-Complete setup checklists for major ad platforms.
+主要广告平台的完整设置清单。
 
-## Contents
-- Google Ads Setup (Account Foundation, Conversion Tracking, Analytics Integration, Audience Setup, Campaign Readiness, Ad Extensions, Brand Protection)
-- Meta Ads Setup (Business Manager Foundation, Pixel & Tracking, Domain & Aggregated Events, Audience Setup, Catalog, Creative Assets, Compliance)
-- LinkedIn Ads Setup (Campaign Manager Foundation, Insight Tag & Tracking, Audience Setup, Lead Gen Forms, Document Ads, Creative Assets, Budget Considerations)
-- Twitter/X Ads Setup (Account Foundation, Tracking, Audience Setup, Creative)
-- TikTok Ads Setup (Account Foundation, Pixel & Tracking, Audience Setup, Creative)
-- Universal Pre-Launch Checklist
+## 目录
+- Google Ads 设置（账户基础、转化跟踪、分析集成、受众设置、广告系列就绪、广告扩展、品牌保护）
+- Meta Ads 设置（商务管理平台基础、Pixel 与跟踪、域名与汇总事件、受众设置、目录、创意素材、合规）
+- LinkedIn Ads 设置（广告管理器基础、Insight Tag 与跟踪、受众设置、线索生成表单、文档广告、创意素材、预算考虑）
+- Twitter/X Ads 设置（账户基础、跟踪、受众设置、创意）
+- TikTok Ads 设置（账户基础、Pixel 与跟踪、受众设置、创意）
+- 通用上线前清单
 
-## Google Ads Setup
+## Google Ads 设置
 
-### Account Foundation
+### 账户基础
 
-- [ ] Google Ads account created and verified
-- [ ] Billing information added
-- [ ] Time zone and currency set correctly
-- [ ] Account access granted to team members
+- [ ] Google Ads 账户已创建并验证
+- [ ] 已添加结算信息
+- [ ] 时区和货币设置正确
+- [ ] 团队成员已获得账户访问权限
 
-### Conversion Tracking
+### 转化跟踪
 
-- [ ] Google tag installed on all pages
-- [ ] Conversion actions created (purchase, lead, signup)
-- [ ] Conversion values assigned (if applicable)
-- [ ] Enhanced conversions enabled
-- [ ] Test conversions firing correctly
-- [ ] Import conversions from GA4 (optional)
+- [ ] Google 标签已安装在所有页面上
+- [ ] 已创建转化操作（购买、线索、注册）
+- [ ] 已分配转化价值（如适用）
+- [ ] 已启用增强型转化
+- [ ] 测试转化正确触发
+- [ ] 从 GA4 导入转化（可选）
 
-### Analytics Integration
+### 分析集成
 
-- [ ] Google Analytics 4 linked
-- [ ] Auto-tagging enabled
-- [ ] GA4 audiences available in Google Ads
-- [ ] Cross-domain tracking set up (if multiple domains)
+- [ ] Google Analytics 4 已关联
+- [ ] 已启用自动标记
+- [ ] GA4 受众在 Google Ads 中可用
+- [ ] 已设置跨域跟踪（如有多个域名）
 
-### Audience Setup
+### 受众设置
 
-- [ ] Remarketing tag verified
-- [ ] Website visitor audiences created:
-  - All visitors (180 days)
-  - Key page visitors (pricing, demo, features)
-  - Converters (for exclusion)
-- [ ] Customer match lists uploaded
-- [ ] Similar audiences enabled
+- [ ] 再营销标签已验证
+- [ ] 已创建网站访客受众：
+  - 所有访客（180 天）
+  - 关键页面访客（定价、演示、功能）
+  - 已转化用户（用于排除）
+- [ ] 已上传客户匹配列表
+- [ ] 已启用类似受众
 
-### Campaign Readiness
+### 广告系列就绪
 
-- [ ] Negative keyword lists created:
-  - Universal negatives (free, jobs, careers, reviews, complaints)
-  - Competitor negatives (if needed)
-  - Irrelevant industry terms
-- [ ] Location targeting set (include/exclude)
-- [ ] Language targeting set
-- [ ] Ad schedule configured (if B2B, business hours)
-- [ ] Device bid adjustments considered
+- [ ] 已创建否定关键词列表：
+  - 通用否定（免费、工作、招聘、评价、投诉）
+  - 竞争对手否定（如需）
+  - 不相关行业词
+- [ ] 已设置位置定向（包含/排除）
+- [ ] 已设置语言定向
+- [ ] 已配置广告时间表（如 B2B，工作时间）
+- [ ] 已考虑设备出价调整
 
-### Ad Extensions
+### 广告扩展
 
-- [ ] Sitelinks (4-6 relevant pages)
-- [ ] Callouts (key benefits, offers)
-- [ ] Structured snippets (features, types, services)
-- [ ] Call extension (if phone leads valuable)
-- [ ] Lead form extension (if using)
-- [ ] Price extensions (if applicable)
-- [ ] Image extensions (where available)
+- [ ] 站内链接（4-6 个相关页面）
+- [ ] 标注（关键利益点、优惠）
+- [ ] 结构化摘要（功能、类型、服务）
+- [ ] 电话扩展（如果电话线索有价值）
+- [ ] 线索表单扩展（如使用）
+- [ ] 价格扩展（如适用）
+- [ ] 图片扩展（在可用处）
 
-### Brand Protection
+### 品牌保护
 
-- [ ] Brand campaign running (protect branded terms)
-- [ ] Competitor campaigns considered
-- [ ] Brand terms in negative lists for non-brand campaigns
-
----
-
-## Meta Ads Setup
-
-### Business Manager Foundation
-
-- [ ] Business Manager created
-- [ ] Business verified (if running certain ad types)
-- [ ] Ad account created within Business Manager
-- [ ] Payment method added
-- [ ] Team access configured with proper roles
-
-### Pixel & Tracking
-
-- [ ] Meta Pixel installed on all pages
-- [ ] Standard events configured:
-  - PageView (automatic)
-  - ViewContent (product/feature pages)
-  - Lead (form submissions)
-  - Purchase (conversions)
-  - AddToCart (if e-commerce)
-  - InitiateCheckout (if e-commerce)
-- [ ] Conversions API (CAPI) set up for server-side tracking
-- [ ] Event Match Quality score > 6
-- [ ] Test events in Events Manager
-
-### Domain & Aggregated Events
-
-- [ ] Domain verified in Business Manager
-- [ ] Aggregated Event Measurement configured
-- [ ] Top 8 events prioritized in order of importance
-- [ ] Web events prioritized for iOS 14+ tracking
-
-### Audience Setup
-
-- [ ] Custom audiences created:
-  - Website visitors (all, 30/60/90/180 days)
-  - Key page visitors
-  - Video viewers (25%, 50%, 75%, 95%)
-  - Page/Instagram engagers
-  - Customer list uploaded
-- [ ] Lookalike audiences created (1%, 1-3%)
-- [ ] Saved audiences for common targeting
-
-### Catalog (E-commerce)
-
-- [ ] Product catalog connected
-- [ ] Product feed updating correctly
-- [ ] Catalog sales campaigns enabled
-- [ ] Dynamic product ads configured
-
-### Creative Assets
-
-- [ ] Images in correct sizes:
-  - Feed: 1080x1080 (1:1)
-  - Stories/Reels: 1080x1920 (9:16)
-  - Landscape: 1200x628 (1.91:1)
-- [ ] Videos in correct formats
-- [ ] Ad copy variations ready
-- [ ] UTM parameters in all destination URLs
-
-### Compliance
-
-- [ ] Special Ad Categories declared (if housing, credit, employment, politics)
-- [ ] Landing page complies with Meta policies
-- [ ] No prohibited content in ads
+- [ ] 品牌广告系列已运行（保护品牌词）
+- [ ] 已考虑竞争对手广告系列
+- [ ] 非品牌广告系列的否定列表中包含品牌词
 
 ---
 
-## LinkedIn Ads Setup
+## Meta Ads 设置
 
-### Campaign Manager Foundation
+### 商务管理平台基础
 
-- [ ] Campaign Manager account created
-- [ ] Company Page connected
-- [ ] Billing information added
-- [ ] Team access configured
+- [ ] 商务管理平台已创建
+- [ ] 商家已验证（如运行特定广告类型）
+- [ ] 已在商务管理平台内创建广告账户
+- [ ] 已添加支付方式
+- [ ] 团队成员已配置适当角色
 
-### Insight Tag & Tracking
+### Pixel 与跟踪
 
-- [ ] LinkedIn Insight Tag installed on all pages
-- [ ] Tag verified and firing
-- [ ] Conversion tracking configured:
-  - URL-based conversions
-  - Event-specific conversions
-- [ ] Conversion values set (if applicable)
+- [ ] Meta Pixel 已安装在所有页面上
+- [ ] 已配置标准事件：
+  - PageView（自动）
+  - ViewContent（产品/功能页）
+  - Lead（表单提交）
+  - Purchase（转化）
+  - AddToCart（如电商）
+  - InitiateCheckout（如电商）
+- [ ] 已设置 Conversions API（CAPI）用于服务端跟踪
+- [ ] 事件匹配质量评分 > 6
+- [ ] 在 Events Manager 中测试事件
 
-### Audience Setup
+### 域名与汇总事件
 
-- [ ] Matched Audiences created:
-  - Website retargeting audiences
-  - Company list uploaded (for ABM)
-  - Contact list uploaded
-- [ ] Lookalike audiences created
-- [ ] Saved audiences for common targeting
+- [ ] 域名已在商务管理平台验证
+- [ ] 已配置汇总事件测量
+- [ ] 前 8 个事件已按重要性排序
+- [ ] Web 事件已为 iOS 14+ 跟踪设置优先级
 
-### Lead Gen Forms (if using)
+### 受众设置
 
-- [ ] Lead gen form templates created
-- [ ] Form fields selected (minimize for conversion)
-- [ ] Privacy policy URL added
-- [ ] Thank you message configured
-- [ ] CRM integration set up (or CSV export process)
+- [ ] 已创建自定义受众：
+  - 网站访客（全部，30/60/90/180 天）
+  - 关键页面访客
+  - 视频观众（25%、50%、75%、95%）
+  - 主页/Instagram 互动者
+  - 已上传客户列表
+- [ ] 已创建类似受众（1%、1-3%）
+- [ ] 为常见的定向条件保存了受众
 
-### Document Ads (if using)
+### 目录（电商）
 
-- [ ] Documents uploaded (PDF, PowerPoint)
-- [ ] Gating configured (full gate or preview)
-- [ ] Lead gen form connected
+- [ ] 产品目录已关联
+- [ ] 产品信息更新正常
+- [ ] 目录销售广告系列已启用
+- [ ] 已配置动态产品广告
 
-### Creative Assets
+### 创意素材
 
-- [ ] Single image ads: 1200x627 (1.91:1) or 1080x1080 (1:1)
-- [ ] Carousel images ready
-- [ ] Video specs met (if using)
-- [ ] Ad copy within character limits:
-  - Intro text: 600 max, 150 recommended
-  - Headline: 200 max, 70 recommended
+- [ ] 图片尺寸正确：
+  - 信息流：1080x1080（1:1）
+  - 快拍/Reels：1080x1920（9:16）
+  - 横版：1200x628（1.91:1）
+- [ ] 视频格式正确
+- [ ] 广告文案变体已准备就绪
+- [ ] 所有目标网址中包含 UTM 参数
 
-### Budget Considerations
+### 合规
 
-- [ ] Budget realistic for LinkedIn CPCs ($8-15+ typical)
-- [ ] Audience size validated (50K+ recommended)
-- [ ] Daily vs. lifetime budget decided
-- [ ] Bid strategy selected
-
----
-
-## Twitter/X Ads Setup
-
-### Account Foundation
-
-- [ ] Ads account created
-- [ ] Payment method added
-- [ ] Account verified (if required)
-
-### Tracking
-
-- [ ] Twitter Pixel installed
-- [ ] Conversion events created
-- [ ] Website tag verified
-
-### Audience Setup
-
-- [ ] Tailored audiences created:
-  - Website visitors
-  - Customer lists
-- [ ] Follower lookalikes identified
-- [ ] Interest and keyword targets researched
-
-### Creative
-
-- [ ] Tweet copy within 280 characters
-- [ ] Images: 1200x675 (1.91:1) or 1200x1200 (1:1)
-- [ ] Video specs met (if using)
-- [ ] Cards configured (website, app, etc.)
+- [ ] 已声明特殊广告类别（如涉及住房、信贷、就业、政治）
+- [ ] 落地页符合 Meta 政策
+- [ ] 广告中没有违禁内容
 
 ---
 
-## TikTok Ads Setup
+## LinkedIn Ads 设置
 
-### Account Foundation
+### 广告管理器基础
 
-- [ ] TikTok Ads Manager account created
-- [ ] Business verification completed
-- [ ] Payment method added
+- [ ] 广告管理器账户已创建
+- [ ] 公司主页已关联
+- [ ] 已添加结算信息
+- [ ] 团队成员访问权限已配置
 
-### Pixel & Tracking
+### Insight Tag 与跟踪
 
-- [ ] TikTok Pixel installed
-- [ ] Events configured (ViewContent, Purchase, etc.)
-- [ ] Events API set up (recommended)
+- [ ] LinkedIn Insight Tag 已安装在所有页面上
+- [ ] 标签已验证并正常触发
+- [ ] 已配置转化跟踪：
+  - 基于 URL 的转化
+  - 特定事件转化
+- [ ] 已设置转化价值（如适用）
 
-### Audience Setup
+### 受众设置
 
-- [ ] Custom audiences created
-- [ ] Lookalike audiences created
-- [ ] Interest categories identified
+- [ ] 已创建匹配受众：
+  - 网站再营销受众
+  - 已上传公司列表（用于 ABM）
+  - 已上传联系人列表
+- [ ] 已创建类似受众
+- [ ] 为常见定向条件保存了受众
 
-### Creative
+### 线索生成表单（如使用）
 
-- [ ] Vertical video (9:16) ready
-- [ ] Native-feeling content (not too polished)
-- [ ] First 3 seconds are compelling hooks
-- [ ] Captions added (most watch without sound)
-- [ ] Music/sounds selected (licensed if needed)
+- [ ] 线索生成表单模板已创建
+- [ ] 已选择表单字段（为转化最小化）
+- [ ] 已添加隐私政策 URL
+- [ ] 已配置感谢信息
+- [ ] 已设置 CRM 集成（或 CSV 导出流程）
+
+### 文档广告（如使用）
+
+- [ ] 文档已上传（PDF、PowerPoint）
+- [ ] 已配置门槛（完全门槛或预览）
+- [ ] 线索生成表单已关联
+
+### 创意素材
+
+- [ ] 单图广告：1200x627（1.91:1）或 1080x1080（1:1）
+- [ ] 轮播图已准备就绪
+- [ ] 视频规格达标（如使用）
+- [ ] 广告文案在字符限制内：
+  - 介绍文字：最多 600，建议 150
+  - 标题：最多 200，建议 70
+
+### 预算考虑
+
+- [ ] 预算对 LinkedIn CPC 现实（通常 $8-15+）
+- [ ] 受众规模已验证（建议 5 万+）
+- [ ] 已决定每日 vs. 总预算
+- [ ] 已选择出价策略
 
 ---
 
-## Universal Pre-Launch Checklist
+## Twitter/X Ads 设置
 
-Before launching any campaign:
+### 账户基础
 
-- [ ] Conversion tracking tested with real conversion
-- [ ] Landing page loads fast (<3 sec)
-- [ ] Landing page mobile-friendly
-- [ ] UTM parameters working
-- [ ] Budget set correctly (daily vs. lifetime)
-- [ ] Start/end dates correct
-- [ ] Targeting matches intended audience
-- [ ] Ad creative approved
-- [ ] Team notified of launch
-- [ ] Reporting dashboard ready
+- [ ] 广告账户已创建
+- [ ] 已添加支付方式
+- [ ] 账户已验证（如需要）
+
+### 跟踪
+
+- [ ] Twitter Pixel 已安装
+- [ ] 转化事件已创建
+- [ ] 网站标签已验证
+
+### 受众设置
+
+- [ ] 已创建定制受众：
+  - 网站访客
+  - 客户列表
+- [ ] 关注者类似已识别
+- [ ] 兴趣和关键词目标已研究
+
+### 创意
+
+- [ ] 推文文案在 280 字符内
+- [ ] 图片：1200x675（1.91:1）或 1200x1200（1:1）
+- [ ] 视频规格已达标（如使用）
+- [ ] 已配置卡片（网站、应用等）
+
+---
+
+## TikTok Ads 设置
+
+### 账户基础
+
+- [ ] TikTok Ads Manager 账户已创建
+- [ ] 商家验证已完成
+- [ ] 已添加支付方式
+
+### Pixel 与跟踪
+
+- [ ] TikTok Pixel 已安装
+- [ ] 已配置事件（ViewContent、Purchase 等）
+- [ ] 已设置 Events API（推荐）
+
+### 受众设置
+
+- [ ] 自定义受众已创建
+- [ ] 类似受众已创建
+- [ ] 兴趣类别已识别
+
+### 创意
+
+- [ ] 竖屏视频（9:16）已准备就绪
+- [ ] 原生感内容（不要太精致）
+- [ ] 前 3 秒是引人入胜的钩子
+- [ ] 已添加字幕（大多数用户关声音观看）
+- [ ] 已选择音乐/音效（如需授权）
+
+---
+
+## 通用上线前清单
+
+在任何广告系列上线前：
+
+- [ ] 已用真实转化测试转化跟踪
+- [ ] 落地页加载速度快（<3 秒）
+- [ ] 落地页移动端友好
+- [ ] UTM 参数工作正常
+- [ ] 预算设置正确（每日 vs. 总预算）
+- [ ] 开始/结束日期正确
+- [ ] 定向条件匹配目标受众
+- [ ] 广告创意已审批
+- [ ] 团队已收到上线通知
+- [ ] 报表看板已准备就绪

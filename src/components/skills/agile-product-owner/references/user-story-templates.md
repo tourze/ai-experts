@@ -1,291 +1,291 @@
-# User Story Templates
+# 用户故事模板
 
-Standard templates, acceptance criteria patterns, and INVEST validation for user stories.
-
----
-
-## Table of Contents
-
-- [Story Templates](#story-templates)
-- [Acceptance Criteria Patterns](#acceptance-criteria-patterns)
-- [INVEST Criteria](#invest-criteria)
-- [Story Point Estimation](#story-point-estimation)
-- [Common Antipatterns](#common-antipatterns)
+标准模板、验收标准模式和用户故事的 INVEST 验证。
 
 ---
 
-## Story Templates
+## 目录
 
-### Standard User Story Format
+- [故事模板](#故事模板)
+- [验收标准模式](#验收标准模式)
+- [INVEST 标准](#invest-标准)
+- [故事点估算](#故事点估算)
+- [常见反模式](#常见反模式)
+
+---
+
+## 故事模板
+
+### 标准用户故事格式
 
 ```
-As a [persona],
-I want to [action/capability],
-So that [benefit/value].
+作为 [角色]，
+我想要 [行动/能力]，
+以便 [收益/价值]。
 ```
 
-### Template by Story Type
+### 按故事类型的模板
 
-**Feature Story:**
+**功能故事：**
 ```
-As a [persona],
-I want to [perform action]
-So that [I achieve benefit].
+作为 [角色]，
+我想要 [执行某个操作]
+以便 [获得收益]。
 
-Example:
-As a marketing manager,
-I want to export campaign reports to PDF
-So that I can share results with stakeholders who don't have system access.
-```
-
-**Improvement Story:**
-```
-As a [persona],
-I need [capability/improvement]
-To [achieve goal more effectively].
-
-Example:
-As a sales rep,
-I need faster search results
-To find customer records without interrupting calls.
+示例：
+作为市场经理，
+我想要将活动报告导出为 PDF
+以便与没有系统访问权限的利益相关者分享结果。
 ```
 
-**Bug Fix Story:**
+**改进故事：**
 ```
-As a [persona],
-I expect [correct behavior]
-When [specific condition].
+作为 [角色]，
+我需要 [能力/改进]
+以 [更有效地达成目标]。
 
-Example:
-As a user,
-I expect my session to remain active
-When navigating between dashboard tabs.
-```
-
-**Integration Story:**
-```
-As a [persona],
-I want to [integrate/connect with system]
-So that [workflow improvement].
-
-Example:
-As an admin,
-I want to sync user data with our LDAP server
-So that employees are automatically provisioned.
+示例：
+作为销售代表，
+我需要更快的搜索结果
+以便在不中断通话的情况下查找客户记录。
 ```
 
-**Enabler Story (Technical):**
+**缺陷修复故事：**
 ```
-As a developer,
-I need to [technical requirement]
-To enable [user-facing capability].
+作为 [角色]，
+我期望 [正确行为]
+当 [特定条件] 时。
 
-Example:
-As a developer,
-I need to implement caching layer
-To enable sub-second dashboard load times.
+示例：
+作为用户，
+我期望在导航仪表盘标签页之间时
+我的会话保持活动状态。
 ```
 
-### Persona Library
+**集成故事：**
+```
+作为 [角色]，
+我想要 [集成/连接系统]
+以便 [改进工作流]。
 
-| Persona | Typical Needs | Context |
+示例：
+作为管理员，
+我想要将用户数据与我们的 LDAP 服务器同步
+以便员工能够自动配置。
+```
+
+**技术赋能故事：**
+```
+作为开发者，
+我需要 [技术要求]
+以支持 [面向用户的能力]。
+
+示例：
+作为开发者，
+我需要实现缓存层
+以实现亚秒级的仪表盘加载时间。
+```
+
+### 角色库
+
+| 角色 | 典型需求 | 上下文 |
 |---------|--------------|---------|
-| End User | Efficiency, simplicity, reliability | Daily core feature usage |
-| Administrator | Control, visibility, security | System management |
-| Power User | Automation, customization, shortcuts | Expert workflows |
-| New User | Guidance, learning, safety | Onboarding experience |
-| Manager | Reporting, oversight, delegation | Team coordination |
-| External User | Access, security, documentation | Customer/partner usage |
+| 终端用户 | 效率、简洁、可靠 | 日常核心功能使用 |
+| 管理员 | 控制、可见性、安全 | 系统管理 |
+| 高级用户 | 自动化、自定义、快捷方式 | 专家工作流 |
+| 新用户 | 引导、学习、安全 | 入职体验 |
+| 管理者 | 报告、监督、委派 | 团队协调 |
+| 外部用户 | 访问、安全、文档 | 客户/合作伙伴使用 |
 
 ---
 
-## Acceptance Criteria Patterns
+## 验收标准模式
 
-### Given-When-Then (Gherkin)
+### Given-When-Then（Gherkin）
 
-Preferred format for testable acceptance criteria:
-
-```
-Given [precondition/context],
-When [action/trigger],
-Then [expected outcome].
-```
-
-**Examples:**
+可测试验收标准的首选格式：
 
 ```
-Given the user is logged in with valid credentials,
-When they click the "Export" button,
-Then a PDF download starts within 2 seconds.
-
-Given the user has entered invalid email format,
-When they submit the registration form,
-Then an inline error message displays "Please enter a valid email address."
-
-Given the daily sync job has not run in 24 hours,
-When the scheduler triggers at midnight,
-Then all pending records are synchronized and logged.
+Given [前提条件/上下文]，
+When [操作/触发]，
+Then [预期结果]。
 ```
 
-### Should/Must/Can Patterns
+**示例：**
 
-**Should (Expected Behavior):**
 ```
-Should [behavior] when [condition].
+Given 用户使用有效凭证登录，
+When 他们点击"导出"按钮，
+Then PDF 下载在 2 秒内开始。
 
-Example:
-Should display loading spinner when API call exceeds 500ms.
-```
+Given 用户输入了无效的邮箱格式，
+When 他们提交注册表单，
+Then 内联错误消息显示"请输入有效的邮箱地址。"
 
-**Must (Hard Requirement):**
-```
-Must [requirement] to [achieve outcome].
-
-Example:
-Must encrypt all data at rest to meet compliance requirements.
+Given 每日同步任务已超过 24 小时未运行，
+When 调度程序在午夜触发，
+Then 所有待处理记录被同步并记录。
 ```
 
-**Can (Capability):**
+### Should/Must/Can 模式
+
+**Should（预期行为）：**
 ```
-Can [capability] without [negative outcome].
+Should [行为] when [条件]。
 
-Example:
-Can undo last action without losing other changes.
+示例：
+Should 在 API 调用超过 500ms 时显示加载动画。
 ```
 
-### Acceptance Criteria Checklist
+**Must（硬性要求）：**
+```
+Must [要求] to [达成结果]。
 
-Each story should have acceptance criteria covering:
+示例：
+Must 对所有静态数据进行加密，以满足合规要求。
+```
 
-| Category | Example Criterion |
+**Can（能力）：**
+```
+Can [能力] without [负面结果]。
+
+示例：
+Can 撤销上次操作而不丢失其他更改。
+```
+
+### 验收标准检查清单
+
+每个故事应包含以下类别的验收标准：
+
+| 类别 | 示例标准 |
 |----------|-------------------|
-| Happy Path | Given valid input, When submitted, Then success message displayed |
-| Validation | Should reject input when required field is empty |
-| Error Handling | Must show user-friendly message when API fails |
-| Performance | Should complete operation within 2 seconds |
-| Accessibility | Must be navigable via keyboard only |
-| Security | Should not expose sensitive data in URL parameters |
+| 正常路径 | Given 有效输入，When 提交，Then 显示成功消息 |
+| 验证 | Should 在必填字段为空时拒绝输入 |
+| 错误处理 | Must 在 API 失败时显示用户友好的消息 |
+| 性能 | Should 在 2 秒内完成操作 |
+| 可访问性 | Must 可仅通过键盘导航 |
+| 安全 | Should 不在 URL 参数中暴露敏感数据 |
 
-### Minimum Acceptance Criteria Count
+### 最低验收标准数量
 
-| Story Size (Points) | Minimum AC Count |
+| 故事规模（点数） | 最低验收标准数 |
 |--------------------|------------------|
 | 1-2 | 3-4 |
 | 3-5 | 4-6 |
 | 8 | 5-8 |
-| 13+ | Split the story |
+| 13+ | 拆分故事 |
 
 ---
 
-## INVEST Criteria
+## INVEST 标准
 
-### INVEST Validation Checklist
+### INVEST 验证检查清单
 
-| Criterion | Question | Pass If... |
+| 标准 | 问题 | 通过条件为... |
 |-----------|----------|------------|
-| **I**ndependent | Can this story be developed without depending on another story? | No blocking dependencies on uncommitted work |
-| **N**egotiable | Is the implementation approach flexible? | Multiple ways to deliver the value |
-| **V**aluable | Does this deliver value to users or business? | Clear benefit statement in "so that" |
-| **E**stimable | Can the team estimate this story? | Understood well enough to size |
-| **S**mall | Can this be completed in one sprint? | ≤8 story points typically |
-| **T**estable | Can we verify this story is done? | Clear, measurable acceptance criteria |
+| **I**ndependent（独立） | 这个故事能否不依赖其他故事进行开发？ | 没有阻塞对未承诺工作的依赖 |
+| **N**egotiable（可协商） | 实现方法是否灵活？ | 多种交付价值的方式 |
+| **V**aluable（有价值） | 这是否为用户或业务交付价值？ | "以便"中有明确的收益声明 |
+| **E**stimable（可估算） | 团队能否估算这个故事？ | 足够理解以确定规模 |
+| **S**mall（小巧） | 能否在一个 Sprint 内完成？ | 通常 ≤8 个故事点 |
+| **T**estable（可测试） | 我们能否验证这个故事的完成？ | 清晰、可衡量的验收标准 |
 
-### INVEST Failure Patterns
+### INVEST 失败模式
 
-| Criterion | Red Flag | Fix |
+| 标准 | 红灯 | 修复 |
 |-----------|----------|-----|
-| Independent | "After story X is done..." | Combine stories or resequence |
-| Negotiable | Specific implementation in story | Focus on outcome, not solution |
-| Valuable | No "so that" clause | Add benefit statement |
-| Estimable | Team says "no idea" | Spike first, then story |
-| Small | >8 points | Split into smaller stories |
-| Testable | "System should be better" | Add measurable criteria |
+| Independent | "等故事 X 完成后..." | 合并故事或重新排序 |
+| Negotiable | 故事中包含具体实现 | 关注结果，而非解决方案 |
+| Valuable | 没有"以便"子句 | 添加收益声明 |
+| Estimable | 团队说"不知道" | 先做技术调研，再写故事 |
+| Small | >8 点 | 拆分为更小的故事 |
+| Testable | "系统应该更好" | 添加可衡量标准 |
 
-### Story Splitting Techniques
+### 故事拆分技巧
 
-When stories are too large (>8 points), split using:
+当故事过大（>8 点）时，使用以下方法拆分：
 
-| Technique | Example |
+| 技巧 | 示例 |
 |-----------|---------|
-| By workflow step | "Create order" → "Add items" + "Apply discount" + "Submit order" |
-| By persona | "User dashboard" → "Admin dashboard" + "Member dashboard" |
-| By data type | "Import data" → "Import CSV" + "Import Excel" |
-| By operation | "Manage users" → "Add user" + "Edit user" + "Delete user" |
-| By platform | "Mobile support" → "iOS support" + "Android support" |
-| Happy path first | "Full feature" → "Basic feature" + "Error handling" + "Edge cases" |
+| 按工作流步骤 | "创建订单"→"添加商品"+"应用折扣"+"提交订单" |
+| 按角色 | "用户仪表盘"→"管理员仪表盘"+"成员仪表盘" |
+| 按数据类型 | "导入数据"→"导入 CSV"+"导入 Excel" |
+| 按操作 | "管理用户"→"添加用户"+"编辑用户"+"删除用户" |
+| 按平台 | "移动支持"→"iOS 支持"+"Android 支持" |
+| 先做正常路径 | "完整功能"→"基础功能"+"错误处理"+"边界情况" |
 
 ---
 
-## Story Point Estimation
+## 故事点估算
 
-### Fibonacci Scale Reference
+### 斐波那契数列参考
 
-| Points | Complexity | Example |
+| 点数 | 复杂度 | 示例 |
 |--------|------------|---------|
-| 1 | Trivial | Fix typo, change label |
-| 2 | Simple | Add field, simple validation |
-| 3 | Small | New form, basic CRUD operation |
-| 5 | Medium | Feature with multiple components |
-| 8 | Large | Complex feature, multiple integrations |
-| 13 | Very Large | Consider splitting |
-| 21+ | Epic | Must split |
+| 1 | 微不足道 | 修复拼写错误、更改标签 |
+| 2 | 简单 | 添加字段、简单验证 |
+| 3 | 小 | 新表单、基本 CRUD 操作 |
+| 5 | 中 | 含多个组件的功能 |
+| 8 | 大 | 复杂功能、多个集成 |
+| 13 | 非常大 | 考虑拆分 |
+| 21+ | 史诗级 | 必须拆分 |
 
-### Estimation Factors
+### 估算因素
 
-| Factor | Low Complexity | High Complexity |
+| 因素 | 低复杂度 | 高复杂度 |
 |--------|---------------|-----------------|
-| Unknowns | Well understood | Many unknowns |
-| Dependencies | None | Multiple systems |
-| Testing | Simple unit tests | Complex integration tests |
-| Data | Simple structure | Complex transformations |
-| UI | Minor changes | New components |
+| 未知因素 | 充分理解 | 许多未知因素 |
+| 依赖关系 | 无 | 多个系统 |
+| 测试 | 简单单元测试 | 复杂集成测试 |
+| 数据 | 简单结构 | 复杂转换 |
+| UI | 微小更改 | 新组件 |
 
-### Velocity Calculation
+### 速度计算
 
 ```
-Velocity = Total points completed / Number of sprints
+速度 = 完成的点总数 / Sprint 数
 
-Example:
-Sprint 1: 28 points
-Sprint 2: 32 points
-Sprint 3: 30 points
-Average Velocity: (28 + 32 + 30) / 3 = 30 points/sprint
+示例：
+Sprint 1：28 点
+Sprint 2：32 点
+Sprint 3：30 点
+平均速度：(28 + 32 + 30) / 3 = 30 点/Sprint
 
-Sprint Capacity Planning:
-- Committed: 80-90% of velocity (24-27 points)
-- Stretch goals: 10-20% additional (3-6 points)
+Sprint 容量规划：
+- 承诺：速度的 80-90%（24-27 点）
+- 延伸目标：额外 10-20%（3-6 点）
 ```
 
 ---
 
-## Common Antipatterns
+## 常见反模式
 
-### Story Antipatterns
+### 故事反模式
 
-| Antipattern | Example | Fix |
+| 反模式 | 示例 | 修复 |
 |-------------|---------|-----|
-| Solution story | "Implement React component" | "Display user profile information" |
-| Compound story | "Create, edit, and delete users" | Split into three stories |
-| Missing persona | "The system will..." | "As an admin, I want to..." |
-| No benefit | "I want to see a button" | Add "so that [benefit]" |
-| Too vague | "Improve performance" | "Reduce page load to <2 seconds" |
-| Technical jargon | "Implement Redis caching" | "Enable instant search results" |
+| 解决方案故事 | "实现 React 组件" | "显示用户档案信息" |
+| 复合故事 | "创建、编辑和删除用户" | 拆分为三个故事 |
+| 缺少角色 | "系统将..." | "作为管理员，我想要..." |
+| 无收益 | "我想看到一个按钮" | 添加"以便 [收益]" |
+| 过于模糊 | "改进性能" | "将页面加载时间减少至 <2 秒" |
+| 技术术语 | "实现 Redis 缓存" | "实现即时搜索结果" |
 
-### Acceptance Criteria Antipatterns
+### 验收标准反模式
 
-| Antipattern | Example | Fix |
+| 反模式 | 示例 | 修复 |
 |-------------|---------|-----|
-| Too vague | "Works correctly" | Specific Given-When-Then |
-| Implementation details | "Use PostgreSQL query" | Focus on outcome |
-| Missing unhappy path | Only success scenario | Add error cases |
-| Untestable | "User is happy" | Measurable behavior |
-| Too many | 15+ criteria | Split the story |
+| 过于模糊 | "正确工作" | 具体的 Given-When-Then |
+| 实现细节 | "使用 PostgreSQL 查询" | 关注结果 |
+| 缺少异常路径 | 只有成功场景 | 添加错误情况 |
+| 不可测试 | "用户满意" | 可衡量的行为 |
+| 过多 | 15+ 条标准 | 拆分故事 |
 
-### Sprint Planning Antipatterns
+### Sprint 规划反模式
 
-| Antipattern | Impact | Fix |
+| 反模式 | 影响 | 修复 |
 |-------------|--------|-----|
-| 100% capacity | No buffer for unknowns | Plan 80-85% |
-| All large stories | Risk of incomplete sprint | Mix sizes |
-| No dependencies mapped | Blocked work | Identify dependencies upfront |
-| Stretch = overflow | Hiding overcommitment | Stretch should be optional |
+| 100% 容量 | 无应对未知的缓冲 | 计划 80-85% |
+| 全部是大型故事 | Sprint 未完成的风险 | 混合规模 |
+| 未映射依赖关系 | 工作被阻塞 | 提前识别依赖关系 |
+| 延伸 = 溢出 | 隐藏过度承诺 | 延伸应为可选项 |

@@ -1,37 +1,37 @@
-# Tauri v2+ Capabilities & Permissions Reference
+# Tauri v2+ 能力与权限参考
 
-## Contents
+## 目录
 
-- Security Model: v1 vs v2
-- Overview
-- Capability File Structure
-- Core Permissions
-- Plugin Permissions
-- Scopes
-- Permission Sets
-- Window and Webview Targeting
-- Capability Best Practices
-- Common Capability Patterns
-- Anti-Patterns
+- 安全模型：v1 vs v2
+- 概述
+- 能力文件结构
+- 核心权限
+- 插件权限
+- 作用域
+- 权限集
+- 窗口和 Webview 定位
+- 能力最佳实践
+- 常见能力模式
+- 反模式
 
-## Security Model: v1 vs v2
+## 安全模型：v1 vs v2
 
-Tauri v2 replaces the v1 `allowlist` with a capabilities-first security model. In v1, you listed allowed API calls in `tauri.conf.json`'s `allowlist`. In v2, permissions must be explicitly granted via capability files in `src-tauri/capabilities/`.
+Tauri v2 用基于能力的安全模型取代了 v1 的 `allowlist`。在 v1 中，你在 `tauri.conf.json` 的 `allowlist` 中列出允许的 API 调用。在 v2 中，必须通过 `src-tauri/capabilities/` 中的能力文件显式授予权限。
 
-**Three-layer security model:**
-- **Capability**: A named collection of permissions, scoped to specific windows/webviews. Lives in `src-tauri/capabilities/*.json`.
-- **Permission**: An identifier that grants access to a specific command or feature (e.g., `fs:allow-read-file`). Defined per-plugin.
-- **Scope**: Optional constraint on a permission that limits what it can access (e.g., only `$APPDATA/*` paths). Part of a permission object.
+**三层安全模型：**
+- **能力（Capability）**：一个命名的权限集合，作用于特定的窗口/webview。位于 `src-tauri/capabilities/*.json`。
+- **权限（Permission）**：授予访问特定命令或功能的标识符（例如 `fs:allow-read-file`）。按插件定义。
+- **作用域（Scope）**：权限的可选约束，限制其可以访问的内容（例如仅允许 `$APPDATA/*` 路径）。是权限对象的一部分。
 
-## Overview
+## 概述
 
-Tauri v2+ uses a capabilities-based security model. Capabilities gate access to core APIs, plugin permissions, remote URLs, and any command set that you explicitly scope. Plain `#[tauri::command]` functions registered in `generate_handler![]` remain callable unless you narrow them through permissions or remote access rules.
+Tauri v2+ 使用基于能力的安全模型。能力控制对核心 API、插件权限、远程 URL 以及你显式限定的任何命令集的访问。在 `generate_handler![]` 中注册的普通 `#[tauri::command]` 函数仍然可调用，除非你通过权限或远程访问规则进行限制。
 
-*Last verified: 2026-04-02. Check the official Tauri changelog when capability semantics or permission names change.*
+*最后验证日期：2026-04-02。当能力语义或权限名称发生变化时，请查看官方 Tauri 更新日志。*
 
-## Capability File Structure
+## 能力文件结构
 
-Location: `src-tauri/capabilities/`
+位置：`src-tauri/capabilities/`
 
 ```json
 {
@@ -47,9 +47,9 @@ Location: `src-tauri/capabilities/`
 }
 ```
 
-## Core Permissions
+## 核心权限
 
-### Common When Frontend Uses Core APIs
+### 前端使用核心 API 时的常见权限
 
 ```json
 {
@@ -61,30 +61,30 @@ Location: `src-tauri/capabilities/`
 }
 ```
 
-### Window Permissions
+### 窗口权限
 
-| Permission | Description |
-|------------|-------------|
-| `core:window:default` | Basic window operations |
-| `core:window:allow-close` | Allow closing windows |
-| `core:window:allow-set-title` | Allow changing window title |
-| `core:window:allow-minimize` | Allow minimizing |
-| `core:window:allow-maximize` | Allow maximizing |
-| `core:window:allow-set-size` | Allow resizing |
-| `core:window:allow-set-position` | Allow repositioning |
-| `core:window:allow-set-fullscreen` | Allow fullscreen toggle |
+| 权限 | 描述 |
+|------|------|
+| `core:window:default` | 基本窗口操作 |
+| `core:window:allow-close` | 允许关闭窗口 |
+| `core:window:allow-set-title` | 允许更改窗口标题 |
+| `core:window:allow-minimize` | 允许最小化 |
+| `core:window:allow-maximize` | 允许最大化 |
+| `core:window:allow-set-size` | 允许调整大小 |
+| `core:window:allow-set-position` | 允许重新定位 |
+| `core:window:allow-set-fullscreen` | 允许切换全屏 |
 
-### Event Permissions
+### 事件权限
 
-| Permission | Description |
-|------------|-------------|
-| `core:event:default` | Basic event listening |
-| `core:event:allow-emit` | Allow emitting events |
-| `core:event:allow-listen` | Allow listening to events |
+| 权限 | 描述 |
+|------|------|
+| `core:event:default` | 基本事件监听 |
+| `core:event:allow-emit` | 允许发出事件 |
+| `core:event:allow-listen` | 允许监听事件 |
 
-## Plugin Permissions
+## 插件权限
 
-### File System (`tauri-plugin-fs`)
+### 文件系统（`tauri-plugin-fs`）
 
 ```json
 {
@@ -100,7 +100,7 @@ Location: `src-tauri/capabilities/`
 }
 ```
 
-**With Scopes:**
+**带作用域：**
 ```json
 {
     "permissions": [
@@ -115,7 +115,7 @@ Location: `src-tauri/capabilities/`
 }
 ```
 
-### Dialog (`tauri-plugin-dialog`)
+### 对话框（`tauri-plugin-dialog`）
 
 ```json
 {
@@ -130,7 +130,7 @@ Location: `src-tauri/capabilities/`
 }
 ```
 
-### Shell (`tauri-plugin-shell`)
+### Shell（`tauri-plugin-shell`）
 
 ```json
 {
@@ -142,7 +142,7 @@ Location: `src-tauri/capabilities/`
 }
 ```
 
-**Scoped Execute:**
+**带作用域的 Execute：**
 ```json
 {
     "permissions": [
@@ -157,7 +157,7 @@ Location: `src-tauri/capabilities/`
 }
 ```
 
-### HTTP (`tauri-plugin-http`)
+### HTTP（`tauri-plugin-http`）
 
 ```json
 {
@@ -167,7 +167,7 @@ Location: `src-tauri/capabilities/`
 }
 ```
 
-**With URL Scopes:**
+**带 URL 作用域：**
 ```json
 {
     "permissions": [
@@ -182,7 +182,7 @@ Location: `src-tauri/capabilities/`
 }
 ```
 
-### Store (`tauri-plugin-store`)
+### Store（`tauri-plugin-store`）
 
 ```json
 {
@@ -197,7 +197,7 @@ Location: `src-tauri/capabilities/`
 }
 ```
 
-### Clipboard (`tauri-plugin-clipboard-manager`)
+### 剪贴板（`tauri-plugin-clipboard-manager`）
 
 ```json
 {
@@ -209,7 +209,7 @@ Location: `src-tauri/capabilities/`
 }
 ```
 
-### Notification (`tauri-plugin-notification`)
+### 通知（`tauri-plugin-notification`）
 
 ```json
 {
@@ -221,7 +221,7 @@ Location: `src-tauri/capabilities/`
 }
 ```
 
-### Global Shortcut (`tauri-plugin-global-shortcut`)
+### 全局快捷键（`tauri-plugin-global-shortcut`）
 
 ```json
 {
@@ -233,24 +233,24 @@ Location: `src-tauri/capabilities/`
 }
 ```
 
-## Permission Sets
+## 权限集
 
-Permission sets allow grouping multiple permissions into a single reusable identifier. You can use preset permission sets provided by plugins (like `fs:default`) or define your own in `src-tauri/permissions/`.
+权限集允许将多个权限分组为一个可重用的标识符。你可以使用插件提供的预设权限集（如 `fs:default`），或在 `src-tauri/permissions/` 中定义自己的权限集。
 
 ```json
 {
   "permissions": [
-    "fs:default",          // Permission set: includes common fs operations
-    "fs:allow-read-file",  // Individual permission: specific operation
+    "fs:default",          // 权限集：包含常见 fs 操作
+    "fs:allow-read-file",  // 单个权限：特定操作
     {
-      "identifier": "fs:allow-read-file",  // Permission with scope
+      "identifier": "fs:allow-read-file",  // 带作用域的权限
       "allow": [{ "path": "$APPDATA/*" }]
     }
   ]
 }
 ```
 
-## Platform-Specific Capabilities
+## 平台特定能力
 
 ```json
 {
@@ -268,22 +268,22 @@ Permission sets allow grouping multiple permissions into a single reusable ident
 }
 ```
 
-## Windows and Webviews Targeting
+## 窗口和 Webview 定位
 
-Capabilities are applied to specific windows and webviews by their labels. A window or webview can be part of multiple capabilities, in which case their permissions are merged.
+能力通过标签应用到特定的窗口和 webview。一个窗口或 webview 可以属于多个能力，此时它们的权限会合并。
 
 ```json
 {
   "identifier": "main-window-cap",
-  "windows": ["main"],        // Target by window label
-  "webviews": [],             // Or target specific webviews
+  "windows": ["main"],        // 按窗口标签定位
+  "webviews": [],             // 或者定位特定 webview
   "permissions": ["core:default", "fs:default"]
 }
 ```
 
-## Remote URL Access
+## 远程 URL 访问
 
-Allow Tauri commands from remote URLs:
+允许从远程 URL 调用 Tauri 命令：
 
 ```json
 {
@@ -295,11 +295,11 @@ Allow Tauri commands from remote URLs:
 }
 ```
 
-## Custom Permission Files
+## 自定义权限文件
 
-Create custom permissions in `src-tauri/permissions/`:
+在 `src-tauri/permissions/` 中创建自定义权限：
 
-**`custom.toml`:**
+**`custom.toml`：**
 ```toml
 [[permission]]
 identifier = "allow-home-documents"
@@ -310,30 +310,30 @@ commands.allow = ["read_file", "write_file"]
 path = "$HOME/Documents/**"
 ```
 
-Reference in capability:
+在能力中引用：
 ```json
 {
     "permissions": ["custom:allow-home-documents"]
 }
 ```
 
-## Capability Best Practices
+## 能力最佳实践
 
-1. **Principle of Least Privilege**: Only grant what's needed
-2. **Use Scopes**: Limit file/URL access to specific paths
-3. **Separate Capabilities**: Create focused capability files for different features
-4. **Platform-Specific**: Use platform filtering for platform-specific features
-5. **Document**: Add descriptions to explain why permissions are needed
+1. **最小权限原则**：只授予所需权限
+2. **使用作用域**：将文件/URL 访问限制到特定路径
+3. **分离能力**：为不同功能创建聚焦的能力文件
+4. **平台特定**：对平台特定功能使用平台过滤
+5. **记录说明**：添加描述解释为什么需要权限
 
-**See also:** [Plugin Reference](plugin-reference.md) for plugin-specific permission strings | [Advanced Runtime](advanced-runtime-reference.md) for tray/sidecar capabilities
+**另见：** [插件参考](plugin-reference.md)查看插件特定的权限字符串 | [高级运行时](advanced-runtime-reference.md)查看 tray/sidecar 能力
 
-## Anti-Pattern: Blindly Trusting Default Permissions
+## 反模式：盲目信任默认权限
 
-`cargo tauri add <plugin>` often adds the plugin's default permission automatically, but that does **not** cover non-default permissions, custom scopes, remote URLs, or window-specific capability targeting. Always re-open the generated capability files before assuming a plugin is ready.
+`cargo tauri add <plugin>` 通常会自动添加插件的默认权限，但这 **不包括** 非默认权限、自定义作用域、远程 URL 或窗口特定的能力定位。在假设插件已就绪之前，始终重新检查生成的能力文件。
 
-## Common Capability Patterns
+## 常见能力模式
 
-### Minimal App Using Frontend Core APIs
+### 使用前端核心 API 的最小应用
 
 ```json
 {
@@ -343,7 +343,7 @@ Reference in capability:
 }
 ```
 
-### File Manager
+### 文件管理器
 
 ```json
 {
@@ -358,7 +358,7 @@ Reference in capability:
 }
 ```
 
-### Web-Connected App
+### 联网应用
 
 ```json
 {
@@ -372,7 +372,7 @@ Reference in capability:
 }
 ```
 
-### Full Desktop App
+### 完整桌面应用
 
 ```json
 {

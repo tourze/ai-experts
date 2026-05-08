@@ -1,163 +1,163 @@
-# Decomposition Patterns
+# 分解模式
 
-Strategies for breaking features into implementable tasks at the right granularity.
-
----
-
-## Decomposition Strategies
-
-### By Layer (Vertical Slicing)
-
-Break by architectural layer:
-
-```text
-Feature: User search
-├── Data layer: Add search index, write query function
-├── Logic layer: Search ranking, filtering, pagination
-├── API layer: GET /search endpoint, query params
-└── UI layer: Search bar, results list, loading state
-```
-
-**When to use:** Full-stack features touching multiple layers.
-
-### By Capability (Horizontal Slicing)
-
-Break by user-visible capability, implementing thin vertical slices:
-
-```text
-Feature: User search
-├── Slice 1: Basic exact-match search (all layers, minimal)
-├── Slice 2: Add fuzzy matching
-├── Slice 3: Add filters (date, category)
-└── Slice 4: Add pagination
-```
-
-**When to use:** When incremental delivery is valuable. Each slice is deployable.
-
-### By Component
-
-Break by independent system components:
-
-```text
-Feature: Notification system
-├── Component: Email provider integration
-├── Component: SMS provider integration
-├── Component: Notification preferences storage
-├── Component: Notification dispatch service
-└── Component: Delivery tracking
-```
-
-**When to use:** Multiple independent components that connect together.
-
-### By Data Flow
-
-Follow the data through the system:
-
-```text
-Feature: CSV import
-├── Step 1: File upload and validation
-├── Step 2: CSV parsing and schema detection
-├── Step 3: Data transformation and mapping
-├── Step 4: Batch database insertion
-├── Step 5: Import result reporting
-└── Step 6: Error handling and retry
-```
-
-**When to use:** Data processing pipelines, ETL features.
+将功能拆分为可实现任务并以适当粒度划分的策略。
 
 ---
 
-## Granularity Guide
+## 分解策略
 
-### Right-Sized Tasks
+### 按层（垂直切片）
 
-Each task should be:
+按架构层拆分：
 
-- **Completable in 1-3 days** (not weeks, not hours)
-- **Independently testable** (can verify it works alone)
-- **Single PR** (one review, one merge)
-- **Describable in one sentence** (clear scope)
+```text
+功能：用户搜索
+├── 数据层：添加搜索索引、编写查询函数
+├── 逻辑层：搜索排序、过滤、分页
+├── API 层：GET /search 端点、查询参数
+└── UI 层：搜索栏、结果列表、加载状态
+```
 
-### Size Indicators
+**使用时机：** 触及多个层的全栈功能。
 
-| Size             | Description                | Task Count                  |
-| ---------------- | -------------------------- | --------------------------- |
-| S (Small)        | < 4 hours, straightforward | Combined with other S tasks |
-| M (Medium)       | 4-16 hours, some decisions | Ideal task size             |
-| L (Large)        | 16-40 hours, complex       | Break down further          |
-| XL (Extra Large) | > 40 hours                 | Must break down further     |
+### 按能力（水平切片）
 
-### When to Break Down Further
+按用户可见的能力拆分，实现薄垂直切片：
 
-A task needs decomposition if:
+```text
+功能：用户搜索
+├── 切片 1：基本精确匹配搜索（所有层，最小化）
+├── 切片 2：添加模糊匹配
+├── 切片 3：添加过滤（日期、类别）
+└── 切片 4：添加分页
+```
 
-- It touches more than 3 files
-- It requires more than one design decision
-- You can't explain it in one sentence
-- It has sub-tasks with different dependencies
-- Different people could work on different parts
+**使用时机：** 当增量交付有价值时。每个切片都可部署。
 
-### When to Merge
+### 按组件
 
-Tasks should be merged if:
+按独立系统组件拆分：
 
-- Both take < 2 hours
-- They modify the same file(s)
-- One is meaningless without the other
-- Testing them separately is artificial
+```text
+功能：通知系统
+├── 组件：邮件供应商集成
+├── 组件：短信供应商集成
+├── 组件：通知偏好存储
+├── 组件：通知分发服务
+└── 组件：投递跟踪
+```
 
----
+**使用时机：** 多个独立组件需要连接在一起。
 
-## Phase Organization
+### 按数据流
 
-### Standard 4-Phase Model
+跟踪数据在系统中的流动：
 
-| Phase       | Purpose                          | Characteristics                            |
-| ----------- | -------------------------------- | ------------------------------------------ |
-| Foundation  | Data models, schemas, interfaces | No business logic, defines contracts       |
-| Core        | Business logic, algorithms       | Implements the actual feature              |
-| Integration | Connecting pieces, endpoints     | Wiring, API routes, event handlers         |
-| Polish      | Edge cases, UX, error handling   | Validation, error messages, loading states |
+```text
+功能：CSV 导入
+├── 步骤 1：文件上传和验证
+├── 步骤 2：CSV 解析和 schema 检测
+├── 步骤 3：数据转换和映射
+├── 步骤 4：批量数据库插入
+├── 步骤 5：导入结果报告
+└── 步骤 6：错误处理和重试
+```
 
-### When to Collapse Phases
-
-For small features (< 5 tasks), 2 phases are sufficient:
-
-1. **Build** — All implementation
-2. **Polish** — Edge cases, error handling, tests
-
-### When to Expand Phases
-
-For large features (> 15 tasks), add phases:
-
-1. **Research / Spike** — Investigate unknowns
-2. **Foundation** — Data layer
-3. **Core** — Business logic
-4. **Integration** — API + connectivity
-5. **Testing** — Integration tests, load tests
-6. **Polish** — UX, error handling, documentation
+**使用时机：** 数据处理流水线、ETL 功能。
 
 ---
 
-## Dependency Rules
+## 粒度指南
 
-### Hard Dependencies (Must Respect)
+### 规模合适的任务
 
-- Database table must exist before queries can be written
-- API contract must be defined before frontend integration
-- Authentication must work before authorization logic
-- Data model must be stable before business logic
+每个任务应该：
 
-### Soft Dependencies (Can Work Around)
+- **可在 1-3 天内完成**（不是数周也不是数小时）
+- **可独立测试**（可以单独验证）
+- **单个 PR**（一次审查、一次合并）
+- **可用一句话描述**（范围清晰）
 
-- Backend API not ready → frontend can use mocks/stubs
-- Design not finalized → implement with placeholder UI
-- External API not available → use recorded responses
+### 规模指标
 
-### No Dependency (Parallel)
+| 规模            | 描述                 | 任务数量                     |
+| --------------- | -------------------- | ---------------------------- |
+| S（小）         | < 4 小时，直接明确    | 与其他 S 任务合并            |
+| M（中）         | 4-16 小时，需做决策   | 理想任务规模                 |
+| L（大）         | 16-40 小时，复杂      | 需要进一步拆分               |
+| XL（特大）      | > 40 小时             | 必须进一步拆分               |
 
-Tasks with no shared state, files, or contracts can be done simultaneously:
+### 何时进一步拆分
 
-- Two independent API endpoints
-- Backend and frontend working against a defined contract
-- Documentation and implementation (if spec is stable)
+如果出现以下情况，任务需要分解：
+
+- 触及超过 3 个文件
+- 需要超过一个设计决策
+- 无法用一句话解释
+- 有不同的依赖关系的子任务
+- 不同的人可以处理不同的部分
+
+### 何时合并
+
+如果出现以下情况，应合并任务：
+
+- 两者都需要 < 2 小时
+- 修改相同的文件
+- 一个任务在没有另一个任务的情况下毫无意义
+- 分开测试是人为的
+
+---
+
+## 阶段组织
+
+### 标准 4 阶段模型
+
+| 阶段         | 目的                         | 特征                           |
+| ------------ | ---------------------------- | ------------------------------ |
+| 基础阶段     | 数据模型、schema、接口       | 无业务逻辑，定义契约           |
+| 核心阶段     | 业务逻辑、算法               | 实现实际功能                   |
+| 集成阶段     | 连接各部分、端点             | 接线、API 路由、事件处理器     |
+| 打磨阶段     | 边界情况、用户体验、错误处理 | 验证、错误消息、加载状态       |
+
+### 何时合并阶段
+
+对于小功能（< 5 个任务），2 个阶段就足够了：
+
+1. **构建** — 所有实现
+2. **打磨** — 边界情况、错误处理、测试
+
+### 何时扩展阶段
+
+对于大功能（> 15 个任务），添加阶段：
+
+1. **研究 / Spike** — 调查未知因素
+2. **基础阶段** — 数据层
+3. **核心阶段** — 业务逻辑
+4. **集成阶段** — API + 连接
+5. **测试阶段** — 集成测试、负载测试
+6. **打磨阶段** — UX、错误处理、文档
+
+---
+
+## 依赖规则
+
+### 硬依赖（必须遵循）
+
+- 数据库表必须存在，然后才能编写查询
+- API 契约必须在前后端集成之前定义
+- 认证必须在授权逻辑之前正常工作
+- 数据模型必须在业务逻辑之前稳定下来
+
+### 软依赖（可以绕开）
+
+- 后端 API 未就绪 → 前端可以使用 mock/stub
+- 设计未定稿 → 使用占位 UI 实现
+- 外部 API 不可用 → 使用录制的响应
+
+### 无依赖（并行）
+
+没有共享状态、文件或契约的任务可以同时完成：
+
+- 两个独立的 API 端点
+- 后端和前端根据已定义的契约工作
+- 文档和实现（如果 spec 稳定）
