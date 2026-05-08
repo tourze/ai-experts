@@ -7,6 +7,7 @@ import { basename, dirname, join, relative, resolve } from "node:path";
 import { parse as parseYaml } from "yaml";
 import { afterAll, beforeAll, describe, test } from "vitest";
 import { resolveHookTimeoutSeconds } from "../../src/build/hooks.ts";
+import { codexSystemSkillIds } from "../../src/build/platform.ts";
 import { listProcedureUses, procedureUseAppliesToPlatform } from "../../src/build/procedure-uses.ts";
 import { registry } from "../../src/components/registry.ts";
 import { InvocationPolicy, Platform } from "../../src/components/sdk.ts";
@@ -21,6 +22,7 @@ import {
 } from "./test-helpers";
 
 let tmpDistDir = "";
+const codexSystemSkillIdSet = new Set<string>(codexSystemSkillIds);
 
 type ParsedTomlScalar = string | boolean | number;
 type ParsedGeneratedToml = {
@@ -243,9 +245,7 @@ describe("component build integration", () => {
       registry.skills.filter((skill) => skill.platforms.includes(Platform.Codex)).length,
     );
     assert.deepEqual(
-      (codexManifest.skills as string[]).filter((skillId) =>
-        ["imagegen", "openai-docs", "plugin-creator", "skill-creator", "skill-installer"].includes(skillId)
-      ),
+      (codexManifest.skills as string[]).filter((skillId) => codexSystemSkillIdSet.has(skillId)),
       [],
       "Codex user skill dist should not emit skills that collide with Codex system skill names",
     );

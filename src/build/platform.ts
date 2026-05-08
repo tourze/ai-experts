@@ -135,7 +135,8 @@ function validateUniqueProcedureUses(componentId: string, procedureUses: readonl
 }
 
 const validPlatformValues = new Set<string>(Object.values(Platform));
-const codexSystemSkillIds = new Set(["imagegen", "openai-docs", "plugin-creator", "skill-creator", "skill-installer"]);
+export const codexSystemSkillIds = ["imagegen", "openai-docs", "plugin-creator", "skill-creator", "skill-installer"] as const;
+const codexSystemSkillIdSet = new Set<string>(codexSystemSkillIds);
 
 function validatePlatformList(
   platforms: readonly unknown[] | undefined,
@@ -424,7 +425,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     if (skill.invocation === InvocationPolicy.ModelOnly && skill.platforms.includes(Platform.Codex)) {
       throw new Error(`Skill ${skill.id} uses model-only invocation on Codex, which cannot hide explicit skill invocation`);
     }
-    if (skill.platforms.includes(Platform.Codex) && codexSystemSkillIds.has(skill.id)) {
+    if (skill.platforms.includes(Platform.Codex) && codexSystemSkillIdSet.has(skill.id)) {
       throw new Error(`Skill ${skill.id} collides with a Codex system skill name; do not emit it as a Codex user skill`);
     }
     validateRuntimeToolMatchers(skill);
