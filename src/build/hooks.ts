@@ -214,6 +214,20 @@ function hookMatchesPayload(hook, payload) {
   return matcherMatchesTool(hook.matcher, payload.tool?.name);
 }
 
+function payloadsForHook(payload) {
+  const targets = payload.tool?.fileTargets ?? [];
+  const filePath = payload.tool?.input?.file_path;
+  if (filePath || targets.length === 0) return [payload];
+  return targets.map((target) => ({
+    ...payload,
+    tool: {
+      ...payload.tool,
+      input: { ...(payload.tool?.input ?? {}), file_path: target },
+      fileTargets: [target],
+    },
+  }));
+}
+
 function mergeResults(results, event) {
   const deny = results.find((result) => result.kind === "deny");
   if (deny) return { decision: "block", reason: deny.message };
@@ -243,8 +257,10 @@ async function main() {
   for (const hook of hooks.filter((item) => item.event === event && hookMatchesPayload(item, payload))) {
     const run = hookRunners.get(hook.id);
     if (typeof run !== "function") continue;
-    const result = normalizeHookResult(await run(payload));
-    if (result && result.kind !== "allow" && result.kind !== "audit") results.push(result);
+    for (const hookPayload of payloadsForHook(payload)) {
+      const result = normalizeHookResult(await run(hookPayload));
+      if (result && result.kind !== "allow" && result.kind !== "audit") results.push(result);
+    }
   }
 
   const output = mergeResults(results, event);

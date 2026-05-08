@@ -1635,6 +1635,28 @@ describe("component build integration", () => {
     assert.match(codexSecretWriteOutput, /"decision": "block"/);
     assert.match(codexSecretWriteOutput, /Secret Write Guard/);
 
+    const patchSecretWriteOutput = execFileSync(
+      process.execPath,
+      [join(tmpDistDir, "codex/hooks/dispatch.mjs"), "--event", "PreToolUse"],
+      {
+        cwd: repoRoot,
+        input: JSON.stringify({
+          tool_name: "apply_patch",
+          tool_input: {
+            command: [
+              "*** Begin Patch",
+              "*** Add File: .env",
+              "+API_KEY=test",
+              "*** End Patch",
+            ].join("\n"),
+          },
+        }),
+        encoding: "utf-8",
+      },
+    );
+    assert.match(patchSecretWriteOutput, /"decision": "block"/);
+    assert.match(patchSecretWriteOutput, /Secret Write Guard/);
+
     const dangerousCommandOutput = execFileSync(
       process.execPath,
       [join(tmpDistDir, "codex/hooks/dispatch.mjs"), "--event", "PreToolUse"],

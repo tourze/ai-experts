@@ -865,6 +865,59 @@ describe("build/pipeline modules", () => {
     expect(renderCodexConfig()).toContain("codex_hooks = true");
   });
 
+  test("hook dispatcher fans out patch file targets to single-file hook payloads", async () => {
+    const root = createTempDir("ai-experts-hooks-fanout-");
+    const hookEntry = join(root, "fanout-hook.ts");
+    writeText(
+      hookEntry,
+      [
+        "export async function run(payload) {",
+        "  const filePath = payload?.tool?.input?.file_path;",
+        "  if (!filePath) return null;",
+        "  return { kind: 'report', message: `target=${filePath}; targets=${(payload.tool.fileTargets || []).join(',')}` };",
+        "}",
+        "",
+      ].join("\n"),
+    );
+
+    const hook = defineHook({
+      id: "fixture-fanout-hook",
+      description: "fanout fixture hook",
+      platforms: [ComponentPlatform.Claude, ComponentPlatform.Codex],
+      event: HookEvent.PreToolUse,
+      entry: pathToFileURL(hookEntry),
+      matcher: [KnownTool.ApplyPatch],
+      order: 10,
+    });
+    const hooksOut = createTempDir("ai-experts-hooks-fanout-out-");
+    await compileHookModules([hook], hooksOut, Platform.Codex);
+
+    const output = execFileSync(
+      process.execPath,
+      [join(hooksOut, "dispatch.mjs"), "--event", "PreToolUse"],
+      {
+        input: JSON.stringify({
+          tool_name: "apply_patch",
+          tool_input: {
+            command: [
+              "*** Begin Patch",
+              "*** Add File: .env",
+              "+API_KEY=test",
+              "*** Update File: src/app.ts",
+              "@@",
+              "+const value = 1;",
+              "*** End Patch",
+            ].join("\n"),
+          },
+        }),
+        encoding: "utf-8",
+      },
+    );
+
+    expect(output).toContain("target=.env; targets=.env");
+    expect(output).toContain("target=src/app.ts; targets=src/app.ts");
+  });
+
   test("platform renderer validates and emits platform outputs", async () => {
     const fixture = createFixture();
     expect(() => validateId("bad_id", "skill")).toThrow();
