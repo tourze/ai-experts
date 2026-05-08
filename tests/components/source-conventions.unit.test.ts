@@ -600,6 +600,21 @@ describe("component source conventions", () => {
     }
   });
 
+  test("skill markdown sources avoid angle-bracket TODO placeholders", () => {
+    const skillMarkdownSources = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
+      file.endsWith(".md"),
+    );
+
+    for (const sourceFile of skillMarkdownSources) {
+      const source = readFileSync(sourceFile, "utf-8");
+      assert.doesNotMatch(
+        source,
+        /<TODO\b/iu,
+        `${sourceFile} should avoid shipping raw <TODO ...> placeholders in runtime guidance`,
+      );
+    }
+  });
+
   test("skill root readme/license links stay within skill root", () => {
     const skillRoot = join(repoRoot, "src/components/skills");
     const escapedRootLinks: string[] = [];
