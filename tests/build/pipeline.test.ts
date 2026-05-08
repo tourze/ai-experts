@@ -871,7 +871,11 @@ describe("build/pipeline modules", () => {
     const surface = validateRegistry(fixture.registry);
     expect(surface.skills.length).toBe(1);
     expect(renderInstruction(surface, Platform.Claude)).not.toContain("可用能力索引");
-    expect(renderInstruction(surface, Platform.Codex)).toContain("可用能力索引");
+    const codexInstruction = renderInstruction(surface, Platform.Codex);
+    expect(codexInstruction).toContain("Agent 索引");
+    expect(codexInstruction).toContain("fixture-agent");
+    expect(codexInstruction).not.toContain("Skill 索引");
+    expect(codexInstruction).not.toContain("fixture-skill");
 
     const out = createTempDir("ai-experts-platform-out-");
     await emitPlatform(surface, out, Platform.Claude);

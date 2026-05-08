@@ -65,24 +65,19 @@ export function renderInstruction(componentSurface: ComponentSurface, platform: 
 
   type ListedItem = SkillDefinition | AgentDefinition | HookDefinition | InstructionDefinition;
   const describeItem = (item: ListedItem): string => ("description" in item ? item.description : item.title);
-  const list = (
-    label: string,
-    items: readonly ListedItem[],
-  ): string => [
-    `### ${label}`,
-    ...(items.length > 0 ? items.map((item) => `- ${item.id}: ${describeItem(item)}`) : ["- none"]),
-  ].join("\n");
+  const platformAgents = componentSurface.agents.filter((item) => item.platforms.includes(platform));
+  const agentRows = platformAgents.length > 0
+    ? platformAgents.map((item) => `- ${item.id}: ${describeItem(item)}`)
+    : ["- none"];
 
   return [
     body,
     "",
-    "## 可用能力索引",
+    "## Agent 索引",
     "",
-    "以下索引用于帮助模型识别当前安装的可用能力；具体执行规则以对应 Skill / Agent 文件为准。",
+    "Codex 原生 Skill discovery 会注入可用 Skill 列表；本节只补充当前安装的自定义 Agent，用于需要隔离上下文时选择角色。",
     "",
-    list("Skill 索引", componentSurface.skills.filter((item) => item.platforms.includes(platform))),
-    "",
-    list("Agent 索引", componentSurface.agents.filter((item) => item.platforms.includes(platform))),
+    ...agentRows,
     "",
   ].join("\n");
 }
