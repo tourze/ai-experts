@@ -669,6 +669,16 @@ describe("component build integration", () => {
     assert.match(structuredProblemSkill, /pdca-cycle/);
     assert.match(structuredProblemSkill, /join --> compose_result/);
 
+    const codeReviewAgentFrameworkSkill = readFileSync(
+      join(tmpDistDir, "claude/skills/code-review-agent-framework/SKILL.md"),
+      "utf-8",
+    );
+    assert.match(codeReviewAgentFrameworkSkill, /evidence_gate\["code-review/);
+    assert.match(codeReviewAgentFrameworkSkill, /route\{"匹配场景路由"\}/);
+    assert.match(codeReviewAgentFrameworkSkill, /complexity-reducer/);
+    assert.match(codeReviewAgentFrameworkSkill, /test-quality-review/);
+    assert.doesNotMatch(codeReviewAgentFrameworkSkill, /门禁表和按 diff 内容触发的场景路由表/);
+
     const codexMetadata = readFileSync(
       join(tmpDistDir, "codex/skills/typescript-type-safety/agents/openai.yaml"),
       "utf-8",

@@ -4,8 +4,13 @@ import {
   defineSkill,
   defineSkillOutputs,
   defineWorkflow,
+  defineWorkflowGate,
+  defineWorkflowRoute,
   defineWorkflowStep,
 } from "../../sdk";
+import { codeReviewSkill } from "../code-review/index";
+import { complexityReducerSkill } from "../complexity-reducer/index";
+import { testQualityReviewSkill } from "../test-quality-review/index";
 
 export const codeReviewAgentFrameworkSkill = defineSkill({
   id: "code-review-agent-framework",
@@ -42,12 +47,41 @@ export const codeReviewAgentFrameworkSkill = defineSkill({
         id: "step-4",
         label: "只读 Bash 可用于版本查询、git 历史、文件统计、lint/typecheck 和测试执行。",
       }),
-      defineWorkflowStep({
-        id: "step-5",
-        label: "专项审计按触发信号路由：静态检查/lint、安全红线、证据标注是每次必经门禁。",
+    ],
+    gates: [
+      defineWorkflowGate({
+        id: "evidence-gate",
+        skill: codeReviewSkill.id,
+        label: "审查证据门禁",
+        checks: "每条发现必须绑定文件:行、关键代码片段、严重级别和证据强度；命令和测试结果必须真实执行过。",
       }),
+    ],
+    routes: [
+      defineWorkflowRoute({
+        id: "core-review",
+        triggers: ["业务逻辑、错误处理、边界条件、抽象质量"],
+        skill: codeReviewSkill.id,
+        checks: "用 Symptom / Source / Consequence / Remedy 四要素验证每条发现。",
+        output: "按严重度排序的代码审查发现。",
+      }),
+      defineWorkflowRoute({
+        id: "complexity-review",
+        triggers: ["长函数、嵌套过深、条件组合复杂、职责边界混乱"],
+        skill: complexityReducerSkill.id,
+        checks: "先定位主要复杂度来源，再判断是重构建议还是阻断风险。",
+        output: "复杂度来源、风险和最小化简方向。",
+      }),
+      defineWorkflowRoute({
+        id: "test-review",
+        triggers: ["测试、mock、fixture、覆盖率断言或 flaky 风险"],
+        skill: testQualityReviewSkill.id,
+        checks: "按测试质量风险维度扫描，不把风格偏好当成缺陷。",
+        output: "测试质量风险、证据和修复方向。",
+      }),
+    ],
+    finalSteps: [
       defineWorkflowStep({
-        id: "step-6",
+        id: "final-report",
         label: "最终按阻断、高风险、建议、信息排序，并明确范围限制和未覆盖路径。",
       }),
     ],
@@ -56,7 +90,7 @@ export const codeReviewAgentFrameworkSkill = defineSkill({
     items: [
       "代码审查报告：摘要、环境、发现、专项审计、正向观察、优先行动、范围限制。",
       "发现格式：文件:行、代码片段、严重级别、证据强度、影响范围和验证方式。",
-      "Reviewer agent 扩展：必经门禁表和按 diff 内容触发的场景路由表。",
+      "Reviewer agent 扩展：在统一 workflow 中声明 evidence gate、专项 route 和收尾报告要求。",
     ],
   }),
 });
