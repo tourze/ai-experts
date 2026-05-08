@@ -1,7 +1,7 @@
 import { defineHook, HookEvent, KnownTool, Platform, type NormalizedHookPayload } from "../../sdk";
 
 import { existsSync, readFileSync } from "fs";
-import { extname } from "path";
+import { extname, resolve } from "path";
 
 export const mergeConflictGuardHook = defineHook({
   id: "merge-conflict-guard",
@@ -34,37 +34,47 @@ const SKIP_EXTENSIONS = new Set([
 ]);
 
 export async function run(payload: NormalizedHookPayload) {
-  const filePath = payload?.tool?.input?.file_path;
-  if (!filePath || !existsSync(filePath)) return null;
+  const fileTargets = [
+    payload?.tool?.input?.file_path,
+    ...(payload?.tool?.fileTargets ?? []),
+  ].filter((target): target is string => typeof target === "string" && target.length > 0);
+  const uniqueTargets = [...new Set(fileTargets)];
+  if (uniqueTargets.length === 0) return null;
 
-  // 跳过二进制文件
-  const ext = extname(filePath).toLowerCase();
-  if (SKIP_EXTENSIONS.has(ext)) return null;
+  const markers: Array<{ file: string; line: number; type: string }> = [];
 
-  const content = readFileSync(filePath, "utf-8");
-  const lines = content.split("\n");
-  const markers = [];
+  for (const filePath of uniqueTargets) {
+    const resolvedPath = resolve(payload.cwd, filePath);
+    if (!existsSync(resolvedPath)) continue;
 
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    if (/^<{7}\s/.test(line)) {
-      markers.push({ line: i + 1, type: "<<<<<<< (冲突开始)" });
-    } else if (/^={7}$/.test(line)) {
-      markers.push({ line: i + 1, type: "======= (冲突分隔)" });
-    } else if (/^>{7}\s/.test(line)) {
-      markers.push({ line: i + 1, type: ">>>>>>> (冲突结束)" });
+    // 跳过二进制文件
+    const ext = extname(resolvedPath).toLowerCase();
+    if (SKIP_EXTENSIONS.has(ext)) continue;
+
+    const content = readFileSync(resolvedPath, "utf-8");
+    const lines = content.split("\n");
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      if (/^<{7}\s/.test(line)) {
+        markers.push({ file: filePath, line: i + 1, type: "<<<<<<< (冲突开始)" });
+      } else if (/^={7}$/.test(line)) {
+        markers.push({ file: filePath, line: i + 1, type: "======= (冲突分隔)" });
+      } else if (/^>{7}\s/.test(line)) {
+        markers.push({ file: filePath, line: i + 1, type: ">>>>>>> (冲突结束)" });
+      }
     }
   }
 
   if (markers.length > 0) {
     const detail = markers
-      .map((m) => `  行 ${m.line}: ${m.type}`)
+      .map((m) => `  ${m.file}:${m.line}: ${m.type}`)
       .join("\n");
 
     return {
       decision: "block",
       reason: [
-        `[Merge Conflict] ${filePath} 包含 ${markers.length} 处合并冲突标记：`,
+        `[Merge Conflict] 检测到 ${markers.length} 处合并冲突标记：`,
         "",
         detail,
         "",

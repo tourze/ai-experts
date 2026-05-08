@@ -12,6 +12,7 @@ import { run as runGitDestructiveGuard } from "../../src/components/hooks/comman
 import { run as runCatWriteGuard } from "../../src/components/hooks/command-safety/cat-write-guard";
 import { run as runSyntaxJson } from "../../src/components/hooks/edit-safety/syntax-json";
 import { run as runGeneratedDistGuard } from "../../src/components/hooks/edit-safety/generated-dist-guard";
+import { run as runMergeConflictGuard } from "../../src/components/hooks/edit-safety/merge-conflict-guard";
 import { run as runJavascriptEnvDetector } from "../../src/components/hooks/session-bootstrap/javascript-env-detector";
 import { run as runComponentRoutingReminder } from "../../src/components/hooks/skill-routing/component-routing-reminder";
 
@@ -155,6 +156,50 @@ describe("hooks implementation coverage", () => {
     const skipped = await runGeneratedDistGuard(
       makeNormalizedPayload(HookEvent.PostToolUse, {
         tool: { fileTargets: ["src/components/hooks/index.ts"] },
+      }),
+    );
+    expect(skipped).toBeNull();
+  });
+
+  test("merge-conflict-guard checks dispatcher file targets from apply_patch", async () => {
+    const root = createTempDir("ai-experts-hook-conflict-");
+    const cleanFile = join(root, "clean.ts");
+    const conflictedFile = join(root, "conflicted.ts");
+    writeFileSync(cleanFile, "const value = 1;\n", "utf-8");
+    writeFileSync(
+      conflictedFile,
+      [
+        "<<<<<<< HEAD",
+        "const value = 1;",
+        "=======",
+        "const value = 2;",
+        ">>>>>>> branch",
+        "",
+      ].join("\n"),
+      "utf-8",
+    );
+
+    const blocked = await runMergeConflictGuard(
+      makeNormalizedPayload(HookEvent.PostToolUse, {
+        cwd: root,
+        tool: {
+          input: {},
+          fileTargets: ["clean.ts", "conflicted.ts"],
+        },
+      }),
+    );
+    expect(blocked?.decision).toBe("block");
+    expect(blocked?.reason).toContain("conflicted.ts:1");
+    expect(blocked?.reason).toContain("conflicted.ts:3");
+    expect(blocked?.reason).toContain("conflicted.ts:5");
+
+    const skipped = await runMergeConflictGuard(
+      makeNormalizedPayload(HookEvent.PostToolUse, {
+        cwd: root,
+        tool: {
+          input: {},
+          fileTargets: ["clean.ts"],
+        },
       }),
     );
     expect(skipped).toBeNull();
