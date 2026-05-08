@@ -14,7 +14,9 @@ import {
   extractPropertyArray,
   firstNonEmptyLine,
   hasTopLevelHeadingOutsideCodeFence,
+  markdownDestination,
   repoRoot,
+  stripMarkdownCode,
 } from "./test-helpers";
 
 function githubStyleHeadingSlug(text: string): string {
@@ -33,22 +35,6 @@ function decodeMarkdownAnchor(anchor: string): string {
   } catch {
     return anchor;
   }
-}
-
-function stripMarkdownCode(source: string): string {
-  return source
-    .replace(/```[\s\S]*?```/gu, "")
-    .replace(/~~~[\s\S]*?~~~/gu, "")
-    .replace(/`[^`\n]*`/gu, "");
-}
-
-function markdownDestination(raw: string): string {
-  const trimmed = raw.trim();
-  if (trimmed.startsWith("<")) {
-    const closeIndex = trimmed.indexOf(">");
-    return closeIndex === -1 ? trimmed.slice(1) : trimmed.slice(1, closeIndex);
-  }
-  return trimmed.split(/\s+/, 1)[0] ?? "";
 }
 
 function localMarkdownPath(destination: string): string | null {

@@ -13,8 +13,10 @@ import {
   assertSingleDispatcherHookGroups,
   collectFiles,
   countH2OutsideCodeFence,
+  markdownDestination,
   repoRoot,
   stripFrontmatter,
+  stripMarkdownCode,
 } from "./test-helpers";
 
 let tmpDistDir = "";
@@ -1717,9 +1719,9 @@ describe("component build integration", () => {
         file.endsWith(".md"),
       );
       for (const markdownFile of runtimeMarkdownFiles) {
-        const markdown = readFileSync(markdownFile, "utf-8");
-        for (const match of markdown.matchAll(/(?<!!)\[[^\]]+\]\(([^)\s]+)\)/gu)) {
-          const href = match[1] as string;
+        const markdown = stripMarkdownCode(readFileSync(markdownFile, "utf-8"));
+        for (const match of markdown.matchAll(/!?\[[^\]\n]*\]\(([^)\n]+)\)/gu)) {
+          const href = markdownDestination(match[1] as string);
           if (/^[a-z][a-z0-9+.-]*:|^#|^\//iu.test(href)) continue;
           const [pathWithoutAnchor] = href.split("#", 1);
           if (pathWithoutAnchor && !existsSync(resolve(dirname(markdownFile), pathWithoutAnchor))) {

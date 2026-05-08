@@ -70,6 +70,22 @@ export function stripFrontmatter(source: string): string {
   return source.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n+/, "");
 }
 
+export function stripMarkdownCode(source: string): string {
+  return source
+    .replace(/```[\s\S]*?```/gu, "")
+    .replace(/~~~[\s\S]*?~~~/gu, "")
+    .replace(/`[^`\n]*`/gu, "");
+}
+
+export function markdownDestination(raw: string): string {
+  const trimmed = raw.trim();
+  if (trimmed.startsWith("<")) {
+    const closeIndex = trimmed.indexOf(">");
+    return closeIndex === -1 ? trimmed.slice(1) : trimmed.slice(1, closeIndex);
+  }
+  return trimmed.split(/\s+/, 1)[0] ?? "";
+}
+
 export function extractRelativeRuntimeSpecifiers(source: string): string[] {
   const specifiers: string[] = [];
   for (const match of source.matchAll(/^\s*(?:import|export|})[^\n]*\bfrom\s+["'](\.[^"']+)["']/gm)) {
