@@ -125,7 +125,12 @@ describe("component source conventions", () => {
 
   test("component check script runs every typecheck gate", () => {
     const packageJson = JSON.parse(readFileSync(join(repoRoot, "package.json"), "utf-8"));
-    const buildTsconfig = JSON.parse(readFileSync(join(repoRoot, "tsconfig.build.json"), "utf-8"));
+    const sourceTsconfigNames = [
+      "tsconfig.build.json",
+      "tsconfig.components.json",
+      "tsconfig.hooks.json",
+      "tsconfig.procedures.json",
+    ];
     const scripts = packageJson.scripts as Record<string, string>;
     const checkComponents = scripts["check:components"] ?? "";
     const typecheckScripts = Object.keys(scripts)
@@ -141,11 +146,15 @@ describe("component source conventions", () => {
       "`check:components` should run every dedicated typecheck script",
     );
     assert.match(checkComponents, /tsx src\/build\.ts --check/);
-    assert.equal(
-      Object.hasOwn(buildTsconfig.compilerOptions ?? {}, "allowImportingTsExtensions"),
-      false,
-      "build source should not opt back into .ts extension imports",
-    );
+    assert.equal(existsSync(join(repoRoot, "tsconfig.src.strict.tmp.json")), false);
+    for (const tsconfigName of sourceTsconfigNames) {
+      const tsconfig = JSON.parse(readFileSync(join(repoRoot, tsconfigName), "utf-8"));
+      assert.equal(
+        Object.hasOwn(tsconfig.compilerOptions ?? {}, "allowImportingTsExtensions"),
+        false,
+        `${tsconfigName} should not opt source code back into .ts extension imports`,
+      );
+    }
   });
 
   test("component API exposes procedures through the single component layout", () => {
