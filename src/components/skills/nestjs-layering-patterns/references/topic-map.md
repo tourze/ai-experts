@@ -13,8 +13,8 @@
 
 ### 2. 交付顺序固定，先骨架再细节
 
-交付顺序、DTO/Module/Controller/Service 完整骨架见 [references/basic-scaffold.md](references/basic-scaffold.md)。
+交付顺序、DTO/Module/Controller/Service 完整骨架见 [references/basic-scaffold.md](./basic-scaffold.md)。
 
 ### 3. 测试至少覆盖"成功路径 + 失败路径"
 
-单测示例见 [references/testing-patterns.md](references/testing-patterns.md)：用 `Test.createTestingModule` 注入 mock Repository，分别断言创建成功与 `ConflictException` 抛出。
+单测示例见 [references/testing-patterns.md](./testing-patterns.md)：用 `Test.createTestingModule` 注入 mock Repository，分别断言创建成功与 `ConflictException` 抛出。

@@ -13,7 +13,7 @@
 - 尽量基于访问模式选模型，而不是基于团队习惯拍脑袋。
 
 ## 代码模式
-- 按需读取 [存储引擎](references/storage-engines.md)、[复制](references/replication.md)、[分区](references/partitioning.md)、[事务](references/transactions.md)、[容错](references/fault-tolerance.md)、[批流处理](references/batch-stream.md)。
+- 按需读取 [存储引擎](./storage-engines.md)、[复制](./replication.md)、[分区](./partitioning.md)、[事务](./transactions.md)、[容错](./fault-tolerance.md)、[批流处理](./batch-stream.md)。
 - 决策顺序推荐：数据模型 → 存储引擎 → 复制/分区 → 一致性/事务 → 故障恢复。
 - 输出中必须把 CAP、延迟、成本、运维复杂度写清楚。
 

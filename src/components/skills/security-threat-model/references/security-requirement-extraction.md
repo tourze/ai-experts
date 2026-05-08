@@ -3,8 +3,8 @@
 
 ## 适用场景
 - 已经有威胁、控制缺口或合规约束，需要整理为需求、验收标准和测试点。
-- 如果还没有威胁基础，先用 [security-threat-model](../security-threat-model/SKILL.md) 或 [stride-analysis-patterns](../stride-analysis-patterns/SKILL.md)。
-- 需求落地前，可与 [threat-mitigation-mapping](../threat-mitigation-mapping/SKILL.md) 对齐控制选择。
+- 如果还没有威胁基础，先用 [security-threat-model](../SKILL.md) 或 [stride-analysis-patterns](./stride-analysis-patterns.md)。
+- 需求落地前，可与 [threat-mitigation-mapping](./threat-mitigation-mapping.md) 对齐控制选择。
 
 ## 核心约束
 - 每条需求只表达一个控制意图，并绑定具体威胁或风险。

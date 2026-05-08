@@ -9,7 +9,7 @@
 - 一次聚焦 1-2 个原则，避免六个原则同时上场导致过度包装。
 - 所有说服要有真实证据，不允许伪造评价、权威或稀缺性。
 - 先判断场景再选原则，例如首屏常用权威/社会证明，结账页常用风险逆转/稀缺。
-- 若任务是文案逐句编辑，配合 [copy-editing](copy-editing.md) reference；若任务是推荐裂变机制，配合 `designing-growth-loops` skill。
+- 若任务是文案逐句编辑，配合 [copy-editing](./copy-editing.md) reference；若任务是推荐裂变机制，配合 `designing-growth-loops` skill。
 
 ## 代码模式
 - 推荐输出模板：
@@ -21,7 +21,7 @@
 替代表达：把“很多客户喜欢”改成“127 家付费团队在用”
 ```
 
-- 各原则详解参考 [reciprocity](references/reciprocity.md)、[authority](references/authority.md)、[social-proof](references/social-proof.md)、[scarcity](references/scarcity.md)。
+- 各原则详解参考 [reciprocity](./reciprocity.md)、[authority](./authority.md)、[social-proof](./social-proof.md)、[scarcity](./scarcity.md)。
 
 ## 检查清单
 - 是否说清楚当前页面最缺哪一种心理驱动。

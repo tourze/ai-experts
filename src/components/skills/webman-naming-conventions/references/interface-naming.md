@@ -166,5 +166,5 @@ parameters:
 ```
 
 ## 相关规则
-- [repository-implementation-naming](repository-implementation-naming.md) - 实现的命名方式
-- [service-naming-pattern](service-naming-pattern.md) - Service 命名规范
+- [repository-implementation-naming](./repository-implementation-naming.md) - 实现的命名方式
+- [service-naming-pattern](./service-naming-pattern.md) - Service 命名规范

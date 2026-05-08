@@ -10,7 +10,7 @@
 - 先定义弹窗目标与触发条件，再谈文案和视觉。
 - 触发必须服务上下文；不同流量来源、页面类型和设备不应共用同一策略。
 - 弹窗要易于关闭、可频控、可记忆用户选择，不能靠遮挡和误触强收集。
-- 若任务变成整页转化诊断，切到 [cro-methodology](../cro-methodology/SKILL.md)；若需要代码实现，切到 [redesign-my-landingpage](../redesign-my-landingpage/SKILL.md)。
+- 若任务变成整页转化诊断，切到 [cro-methodology](../SKILL.md)；若需要代码实现，切到 [redesign-my-landingpage](../../redesign-my-landingpage/SKILL.md)。
 
 ## 代码模式
 - 推荐输出模板：

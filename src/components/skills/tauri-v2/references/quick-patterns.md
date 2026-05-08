@@ -62,5 +62,5 @@ fn focus_main_window(app: tauri::AppHandle) -> Result<(), String> {
 
 ## 继续展开
 
-- 插件 + capability 注册：见 [plugin-reference.md](plugin-reference.md) 和 [capabilities-reference.md](capabilities-reference.md)。
-- `Channel<T>` 流式消息、`State<T>` 共享状态、窗口访问：见 [ipc-patterns.md](ipc-patterns.md) 和 [advanced-runtime-reference.md](advanced-runtime-reference.md)。
+- 插件 + capability 注册：见 [plugin-reference.md](./plugin-reference.md) 和 [capabilities-reference.md](./capabilities-reference.md)。
+- `Channel<T>` 流式消息、`State<T>` 共享状态、窗口访问：见 [ipc-patterns.md](./ipc-patterns.md) 和 [advanced-runtime-reference.md](./advanced-runtime-reference.md)。

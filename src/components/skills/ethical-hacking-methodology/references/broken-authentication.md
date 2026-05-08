@@ -3,8 +3,8 @@
 
 ## 适用场景
 - 需要验证登录、注册、找回密码、MFA、session、JWT 等认证链路。
-- 需要与 [api-fuzzing-bug-bounty](../api-fuzzing-bug-bounty/SKILL.md) 联动验证 API 侧权限边界。
-- 需要用 [top-web-vulnerabilities](../top-web-vulnerabilities/SKILL.md) 将问题归类并补齐修复建议。
+- 需要与 [api-fuzzing-bug-bounty](./api-fuzzing-bug-bounty.md) 联动验证 API 侧权限边界。
+- 需要用 [top-web-vulnerabilities](./top-web-vulnerabilities.md) 将问题归类并补齐修复建议。
 
 ## 核心约束
 - 优先使用测试账号和受控密码字典，避免影响真实用户。

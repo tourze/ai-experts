@@ -3,7 +3,7 @@
 
 ## 适用场景
 - 新品定位、品类重构、对外叙事重写、销售话术统一。
-- 需要参考 [references/positioning-canvas.md](references/positioning-canvas.md)、[references/competitive-alternatives.md](references/competitive-alternatives.md)、[references/unique-attributes.md](references/unique-attributes.md)、[references/value-mapping.md](references/value-mapping.md)。
+- 需要参考 [references/positioning-canvas.md](./positioning-canvas.md)、[references/competitive-alternatives.md](./competitive-alternatives.md)、[references/unique-attributes.md](./unique-attributes.md)、[references/value-mapping.md](./value-mapping.md)。
 - 讨论 GTM 时可配合 [crossing-the-chasm](../crossing-the-chasm/SKILL.md)，讨论新市场时可配合 [blue-ocean-strategy](../blue-ocean-strategy/SKILL.md)。
 
 ## 核心约束

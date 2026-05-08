@@ -10,7 +10,7 @@
 - 评分必须基于 5 个维度，每个维度有明确的量化标准。
 - 评分结果必须附优先修复项，不能只给分数。
 - ≥70 分可发布；<70 分最多自动修订 2 轮，仍不达标则标记为待人工审核。
-- 技术 SEO 问题用 [seo](../seo/SKILL.md)；AI 腔问题用 [copywriting](../copywriting/SKILL.md) 的 copy-editing reference。
+- 技术 SEO 问题用 [seo](../../seo/SKILL.md)；AI 腔问题用 [copywriting](../../copywriting/SKILL.md) 的 copy-editing reference。
 
 ## 代码模式
 
@@ -47,7 +47,7 @@
 
 ### 评分细则
 
-详见 [scoring-rubrics](references/scoring-rubrics.md)。
+详见 [scoring-rubrics](./scoring-rubrics.md)。
 
 ## 检查清单
 - 是否对 5 个维度都给出了分数和依据。

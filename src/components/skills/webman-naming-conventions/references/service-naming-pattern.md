@@ -201,5 +201,5 @@ Service 应有单个公共方法：
 - [ ] Service 在正确的命名空间中（`app\service\{context}\`）？
 
 ## 相关规则
-- [interface-naming](interface-naming.md) - 接口命名规范
-- [directory-lowercase](directory-lowercase.md) - 目录命名
+- [interface-naming](./interface-naming.md) - 接口命名规范
+- [directory-lowercase](./directory-lowercase.md) - 目录命名

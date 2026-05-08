@@ -3,7 +3,7 @@
 ## 适用场景
 - 战略变革前的内部能力评估、并购后组织整合诊断。
 - 判断"战略很好但执行不下去"的根因——检查 7S 之间的匹配性。
-- 与 [swot-analysis](../swot-analysis/SKILL.md) 配合：SWOT 看内外部全景，7S 深挖内部。
+- 与 [swot-analysis](../../swot-analysis/SKILL.md) 配合：SWOT 看内外部全景，7S 深挖内部。
 
 ## 核心约束
 - 核心不是给每个 S 打分，而是找出 **S 之间的不匹配**——那才是变革杠杆点。
@@ -13,7 +13,7 @@
 
 ## 不适用场景
 - 单人创业 / 5 人以下团队：7S 针对有组织复杂度的企业，小团队用 7S 是杀鸡用牛刀。
-- 只看外部环境：7S 是内部诊断工具，外部分析用 [pestel-analysis](../pestel-analysis/SKILL.md) 或 [porters-five-forces](../porters-five-forces/SKILL.md)。
+- 只看外部环境：7S 是内部诊断工具，外部分析用 [pestel-analysis](../../pestel-analysis/SKILL.md) 或 [porters-five-forces](../../porters-five-forces/SKILL.md)。
 
 ## 代码模式
 

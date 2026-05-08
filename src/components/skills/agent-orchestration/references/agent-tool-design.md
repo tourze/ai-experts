@@ -5,7 +5,7 @@
 - 为 AI Agent 设计新工具的接口、权限声明和输入/输出契约。
 - 优化 Agent 的 token 开销：工具延迟加载、结果截断、prompt 缓存。
 - 审查现有 Agent 工具集的安全元数据和职责划分。
-- 需要与 [agent-permission-safety](../agent-permission-safety/SKILL.md) 联动做权限管道设计。
+- 需要与 [agent-permission-safety](./agent-permission-safety.md) 联动做权限管道设计。
 
 ## 核心约束
 
@@ -19,15 +19,15 @@
 
 ### 步骤 1：定义工具规格对象
 
-为每个工具填充完整规格，详见 [references/tool-specification.md](references/tool-specification.md)。
+为每个工具填充完整规格，详见 [references/tool-specification.md](./tool-specification.md)。
 
 ### 步骤 2：划分加载层级
 
-按使用频率将工具分为 always-load（≤10 个）和 deferred（其余），详见 [references/token-economy.md](references/token-economy.md)。
+按使用频率将工具分为 always-load（≤10 个）和 deferred（其余），详见 [references/token-economy.md](./token-economy.md)。
 
 ### 步骤 3：设计结果预算
 
-为每个工具设 `max_result_size`，选择截断策略（头部保留 / 落盘引用 / 分页），详见 [references/token-economy.md](references/token-economy.md)。
+为每个工具设 `max_result_size`，选择截断策略（头部保留 / 落盘引用 / 分页），详见 [references/token-economy.md](./token-economy.md)。
 
 ## 代码模式
 

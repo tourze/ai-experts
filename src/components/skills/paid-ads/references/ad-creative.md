@@ -7,9 +7,9 @@
 
 ## 核心约束
 - 先确认平台、版位、受众、转化目标，再写创意；不同渠道不能混用同一套文案假设。
-- 所有输出必须遵守 [platform-specs](references/platform-specs.md) 中的字符与组合限制。
+- 所有输出必须遵守 [platform-specs](./platform-specs.md) 中的字符与组合限制。
 - 创意迭代要基于角度、利益点、痛点、CTA 变量拆分，不能只做同义词改写。
-- 若任务转向预算、出价、受众分层，切到 [paid-ads](../paid-ads/SKILL.md)；若转向落地页文案，切到 [copywriting](../copywriting/SKILL.md) 的 copy-editing reference。
+- 若任务转向预算、出价、受众分层，切到 [paid-ads](../SKILL.md)；若转向落地页文案，切到 [copywriting](../../copywriting/SKILL.md) 的 copy-editing reference。
 
 ## 代码模式
 - 产出模板：
@@ -31,7 +31,7 @@
 - 不建议触碰的表达 5 条
 ```
 
-- 需要补充平台约束或生成思路时，优先查阅 [platform-specs](references/platform-specs.md) 和 [generative-tools](references/generative-tools.md)。
+- 需要补充平台约束或生成思路时，优先查阅 [platform-specs](./platform-specs.md) 和 [generative-tools](./generative-tools.md)。
 
 ## 检查清单
 - 是否明确了平台、版位、受众、CTA 和禁用词。

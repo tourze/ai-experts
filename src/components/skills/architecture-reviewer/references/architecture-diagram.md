@@ -13,8 +13,8 @@
 - 区域嵌套最多到 4 层，超过时要合并或拆图，不要硬塞。
 
 ## 代码模式
-- 从 [模板骨架](assets/template.html) 起步，不要重新发明渲染骨架。
-- 图标、布局和连线语义分别参考 [图标说明](references/icons.md)、[布局模式](references/layout-patterns.md)、[连接语义](references/connections.md)。
+- 从 [模板骨架](../assets/template.html) 起步，不要重新发明渲染骨架。
+- 图标、布局和连线语义分别参考 [图标说明](./icons.md)、[布局模式](./layout-patterns.md)、[连接语义](./connections.md)。
 - 优先先整理“区域 → 节点 → 连接”三张表，再落到 HTML。
 
 ```bash

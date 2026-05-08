@@ -3,8 +3,8 @@
 
 ## 适用场景
 - 需要对 REST 或 GraphQL 接口做字段探测、越权测试、批量枚举和错误处理验证。
-- 需要和 [broken-authentication](../broken-authentication/SKILL.md) 一起检查 token、session 与权限边界。
-- 需要用 [top-web-vulnerabilities](../top-web-vulnerabilities/SKILL.md) 做漏洞分类和修复映射。
+- 需要和 [broken-authentication](./broken-authentication.md) 一起检查 token、session 与权限边界。
+- 需要用 [top-web-vulnerabilities](./top-web-vulnerabilities.md) 做漏洞分类和修复映射。
 
 ## 核心约束
 - 仅限授权目标；生产环境默认只做只读或可回滚探测。

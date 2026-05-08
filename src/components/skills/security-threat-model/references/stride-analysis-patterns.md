@@ -3,8 +3,8 @@
 
 ## 适用场景
 - 需要对系统、模块或数据流做结构化威胁枚举。
-- 需要给 [security-threat-model](../security-threat-model/SKILL.md) 提供覆盖式分析骨架。
-- 需要用 [attack-tree-construction](../attack-tree-construction/SKILL.md) 继续展开重点路径。
+- 需要给 [security-threat-model](../SKILL.md) 提供覆盖式分析骨架。
+- 需要用 [attack-tree-construction](./attack-tree-construction.md) 继续展开重点路径。
 
 ## 核心约束
 - 按组件、边界或数据流逐一过 STRIDE，不要整系统一锅端。

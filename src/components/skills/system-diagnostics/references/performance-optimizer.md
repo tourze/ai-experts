@@ -3,8 +3,8 @@
 ## 适用场景
 
 - 用户反馈系统变慢、负载飙高、构建变卡、内存不足、磁盘 IO 打满或想释放资源。
-- 需要基线采样时，先运行 [system-diagnostics](../system-diagnostics/SKILL.md)。
-- 若瓶颈来自磁盘占满或缓存垃圾，联动 [disk-cleanup](../disk-cleanup/SKILL.md)。
+- 需要基线采样时，先运行 [system-diagnostics](../SKILL.md)。
+- 若瓶颈来自磁盘占满或缓存垃圾，联动 [disk-cleanup](./disk-cleanup.md)。
 
 ## 核心约束
 
@@ -44,7 +44,7 @@ sudo journalctl -u "$service_name" -n 50 --no-pager
 - [ ] 分清“一次性尖峰”和“持续高压”，避免对瞬时采样过拟合。
 - [ ] 每个优化动作都带验证命令和回退方式。
 - [ ] 清理缓存或日志后重新采样，确认指标真的下降。
-- [ ] 若是端口或 DNS 导致的“假卡顿”，切到 [network-troubleshooter](../network-troubleshooter/SKILL.md)。
+- [ ] 若是端口或 DNS 导致的“假卡顿”，切到 [network-troubleshooter](../../network-troubleshooter/SKILL.md)。
 
 ## 反模式
 

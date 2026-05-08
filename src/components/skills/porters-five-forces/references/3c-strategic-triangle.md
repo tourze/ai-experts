@@ -3,7 +3,7 @@
 ## 适用场景
 - 产品定位决策：该服务谁、凭什么赢、对手怎么应对。
 - 比 SWOT 更聚焦于竞争关系的快速战略诊断。
-- 与 [competitive-teardown](../competitive-intelligence/SKILL.md) 配合：3C 做框架，teardown 做深度拆解。
+- 与 [competitive-teardown](../../competitive-intelligence/SKILL.md) 配合：3C 做框架，teardown 做深度拆解。
 
 ## 核心约束
 - 三个 C 必须**相互关联**分析，不能独立罗列。核心问题：我们能为客户做什么竞争对手做不到的事？
@@ -12,7 +12,7 @@
 - 优势必须有可持续性论证（技术壁垒/网络效应/数据飞轮），不是临时的价格优势。
 
 ## 不适用场景
-- 需要量化决策：3C 是定性框架，需要数字精度时用 [bcg-matrix](../bcg-matrix/SKILL.md)（GE 模式）或 [space-matrix](../space-matrix/SKILL.md)。
+- 需要量化决策：3C 是定性框架，需要数字精度时用 [bcg-matrix](../../bcg-matrix/SKILL.md)（GE 模式）或 [space-matrix](../space-matrix/SKILL.md)。
 - 内部组织诊断：3C 聚焦外部竞争关系，内部问题用 [mckinsey-7s](../mckinsey-7s/SKILL.md)。
 
 ## 代码模式

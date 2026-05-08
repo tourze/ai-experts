@@ -6,7 +6,7 @@
 
 **Syntax keyword:** `gitGraph`
 **Best for:** Branching strategies, merge workflows, release processes, git-flow visualization
-**When NOT to use:** General processes (use [Flowchart](flowchart.md)), project timelines (use [Gantt](gantt.md))
+**When NOT to use:** General processes (use [Flowchart](./flowchart.md)), project timelines (use [Gantt](./gantt.md))
 
 ---
 

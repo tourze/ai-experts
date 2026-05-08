@@ -51,7 +51,7 @@ owner: DevOps Team
   2. `jobs` 拓扑与 `needs`
   3. `env`、`secrets`、`outputs`
   4. 质量门与审批点
-- 如果工作流里包含 API 契约生成或校验，顺带关联 [openapi-spec-generation](../openapi-spec-generation/SKILL.md)。
+- 如果工作流里包含 API 契约生成或校验，顺带关联 [openapi-spec-generation](../../openapi-spec-generation/SKILL.md)。
 
 ## 检查清单
 - 是否写清所有触发器、分支过滤和路径过滤。
@@ -59,7 +59,7 @@ owner: DevOps Team
 - 是否记录 `permissions`、`environment`、`concurrency`、`timeout-minutes`。
 - 是否说明制品、缓存、部署目标与回滚路径。
 - 是否标出人工审批、环境保护规则和失败通知。
-- 如果规范来自故障复盘，是否补充 [gh-fix-ci](../gh-fix-ci/SKILL.md) 提取出的失败场景。
+- 如果规范来自故障复盘，是否补充 [gh-fix-ci](../SKILL.md) 提取出的失败场景。
 
 ## 反模式
 

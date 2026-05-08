@@ -10,7 +10,7 @@ description: 当用户要审查 SQL 查询、迁移脚本、存储过程或 ORM 
 - 审查手写 SQL、迁移脚本、报表查询、存储过程、触发器和 ORM 生成语句。
 - 排查 SQL 注入、权限过宽、误删误更新、联表错误、索引误用、迁移锁表风险等问题。
 - 需要把安全、正确性、性能和可运维性拆开评估，而不是只盯单条慢 SQL。
-- 如果主要矛盾是性能，联动 [sql-optimization](../sql-optimization/SKILL.md)；如果 SQL 依赖具体数据库特性，联动 mysql-expert 或 pgsql-expert 的对应技能。
+- 如果主要矛盾是性能，联动 [sql-optimization](./sql-optimization.md)；如果 SQL 依赖具体数据库特性，联动 mysql-expert 或 pgsql-expert 的对应技能。
 
 ## 核心约束
 

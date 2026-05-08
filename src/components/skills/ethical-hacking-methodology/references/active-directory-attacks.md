@@ -3,8 +3,8 @@
 
 ## 适用场景
 - 已获得书面授权，需要对域控、域成员、信任关系和高权限路径做系统性评估。
-- 需要把前期枚举与后续凭据利用串起来时，可结合 [nmap](../nmap/SKILL.md) 做端口确认。
-- 发现 LSASS、票据或转储痕迹后，需要与 [memory-forensics](../memory-forensics/SKILL.md) 联动还原证据链。
+- 需要把前期枚举与后续凭据利用串起来时，可结合 [nmap](./nmap.md) 做端口确认。
+- 发现 LSASS、票据或转储痕迹后，需要与 [memory-forensics](../../memory-forensics/SKILL.md) 联动还原证据链。
 
 ## 核心约束
 - 只在明确授权范围内操作，禁止对未知生产域做喷洒、relay 或复制类实验。

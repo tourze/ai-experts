@@ -10,7 +10,7 @@ description: "当用户要设计或审查 PostgreSQL 表结构、原生类型、
 - 新建业务表或审查已有表结构，需要选择 PostgreSQL 原生类型
 - 定义主键策略、外键关系、唯一约束与 CHECK 约束
 - 建立或统一 snake_case 无引号命名规范
-- 需要为 JSONB 列预留位置 — 深入使用参见 [pgsql-jsonb-patterns](../pgsql-jsonb-patterns/SKILL.md)
+- 需要为 JSONB 列预留位置 — 深入使用参见 [pgsql-jsonb-patterns](./pgsql-jsonb-patterns.md)
 - 表建好后需要覆盖索引 — 参见 [pgsql-index-strategy](../pgsql-index-strategy/SKILL.md)
 
 ## 核心约束
@@ -23,7 +23,7 @@ description: "当用户要设计或审查 PostgreSQL 表结构、原生类型、
 
 ## 代码模式
 
-详细示例参见 [references/code-patterns.md](./references/code-patterns.md)。核心模板：
+详细示例参见 [references/code-patterns.md](./code-patterns.md)。核心模板：
 
 ```sql
 CREATE TABLE order_item (

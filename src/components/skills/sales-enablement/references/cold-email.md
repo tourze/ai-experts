@@ -45,7 +45,7 @@
 ## 跟进序列
 - 3-5 封，间隔递增（+3d → +5d → +7d → +14d）。
 - 每封新增一个信息点，跟进比首封更短。
-- 详见 [followup-patterns](references/followup-patterns.md)。
+- 详见 [followup-patterns](./followup-patterns.md)。
 
 ## 质量检查
 - [ ] 词数在限制内？
@@ -56,4 +56,4 @@
 - [ ] 主题行短、小写、内部感？
 
 ## 反模式
-详见 [anti-patterns](references/anti-patterns.md)。关键禁区：`I hope this finds you well`、功能列表、HTML排版、假Re:/Fwd:、首封要求30分钟通话、跟进只说 checking in。
+详见 [anti-patterns](./anti-patterns.md)。关键禁区：`I hope this finds you well`、功能列表、HTML排版、假Re:/Fwd:、首封要求30分钟通话、跟进只说 checking in。

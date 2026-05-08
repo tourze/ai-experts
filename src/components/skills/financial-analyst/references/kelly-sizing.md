@@ -5,7 +5,7 @@
 - 用户问“这个机会该不该投 / 下多少 / 分配多少预算或资源”。
 - 机会可以是投注、投资、营销预算、工程人力、实验名额或其他有上限资源池。
 - 已知或可估算胜率、赔率、情景收益、亏损边界、资金池和风险约束。
-- 只要组合风险指标如 VaR / Sharpe / 回撤，转 [risk-metrics-calculation](../risk-metrics-calculation/SKILL.md)；要做 DCF 或财务模型，转 [creating-financial-models](../creating-financial-models/SKILL.md)。
+- 只要组合风险指标如 VaR / Sharpe / 回撤，转 [risk-metrics-calculation](./risk-metrics-calculation.md)；要做 DCF 或财务模型，转 [creating-financial-models](./creating-financial-models.md)。
 
 ## 核心约束
 
@@ -20,7 +20,7 @@
 
 ## 执行流程
 
-1. 先把自然语言整理成 brief，字段见 [sizing playbook](references/sizing-playbook.md)。
+1. 先把自然语言整理成 brief，字段见 [sizing playbook](./sizing-playbook.md)。
 2. 判断路径：`binary-bet`、`scenario-sizing` 或 `multi-opportunity-allocation`。
 3. 有结构化输入时按公式复核；没有完整输入时先列缺口，不要凭感觉给仓位。
 4. 计算 full Kelly；二元机会必须先确认赢时收益倍数 `b` 和输时损失倍数 `a`，再应用 fractional Kelly、相关性 haircut、单机会 cap 和总暴露 cap。
@@ -61,7 +61,7 @@
 }
 ```
 
-情景机会与多机会输入格式见 [references/sizing-playbook.md](references/sizing-playbook.md)。
+情景机会与多机会输入格式见 [references/sizing-playbook.md](./sizing-playbook.md)。
 
 ## 公式复核
 

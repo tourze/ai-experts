@@ -36,7 +36,7 @@ WHERE user_id = 12345 AND status = 1 AND created_at >= '2025-03-01'
 ORDER BY created_at DESC LIMIT 20;
 ```
 
-- 覆盖索引、前缀索引区分度评估和冗余索引检测查询见 [index-patterns.md](index-patterns.md)。
+- 覆盖索引、前缀索引区分度评估和冗余索引检测查询见 [index-patterns.md](./index-patterns.md)。
 
 ## 检查清单
 

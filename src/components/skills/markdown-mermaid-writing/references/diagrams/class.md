@@ -6,7 +6,7 @@
 
 **Syntax keyword:** `classDiagram`
 **Best for:** Object-oriented design, type hierarchies, interface contracts, domain models
-**When NOT to use:** Database schemas (use [ER](er.md)), runtime behavior (use [Sequence](sequence.md))
+**When NOT to use:** Database schemas (use [ER](./er.md)), runtime behavior (use [Sequence](./sequence.md))
 
 ---
 

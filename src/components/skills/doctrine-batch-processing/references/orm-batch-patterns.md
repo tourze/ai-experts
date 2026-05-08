@@ -21,4 +21,4 @@ $entityManager->flush();
 $entityManager->clear();
 ```
 
-DBAL 批量更新、Migration 模式的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。
+DBAL 批量更新、Migration 模式的完整代码见 [references/advanced-patterns.md](./advanced-patterns.md)。

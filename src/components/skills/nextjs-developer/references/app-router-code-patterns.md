@@ -145,4 +145,4 @@ export default async function ProductPage({ params }: PageProps) {
 
 ### 模式 4：Route Handler
 
-异步 `params: Promise<{ id: string }>` + `await params`，详见 [references/app-router.md](references/app-router.md)。
+异步 `params: Promise<{ id: string }>` + `await params`，详见 [references/app-router.md](./app-router.md)。

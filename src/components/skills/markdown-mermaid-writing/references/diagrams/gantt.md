@@ -6,7 +6,7 @@
 
 **Syntax keyword:** `gantt`
 **Best for:** Project timelines, roadmaps, phase planning, milestone tracking, task dependencies
-**When NOT to use:** Simple chronological events (use [Timeline](timeline.md)), process logic (use [Flowchart](flowchart.md))
+**When NOT to use:** Simple chronological events (use [Timeline](./timeline.md)), process logic (use [Flowchart](./flowchart.md))
 
 ---
 

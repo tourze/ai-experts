@@ -9,7 +9,7 @@
 - 先确认业务场景和用户决策阶段，再选模型；不能把所有偏差都套一遍。
 - 心理学模型用于解释和设计，不用于伪造紧迫感或操纵用户。
 - 输出必须从“心理机制 → 设计动作 → 风险提示”三层展开。
-- 若要落地到具体说服手法，配合 [influence-psychology](../influence-psychology/SKILL.md)；若要规划内容主题，配合 [content-strategy](../content-strategy/SKILL.md)。
+- 若要落地到具体说服手法，配合 [influence-psychology](./influence-psychology.md)；若要规划内容主题，配合 [content-strategy](../../content-strategy/SKILL.md)。
 
 ## 代码模式
 - 推荐输出模板：

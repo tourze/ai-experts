@@ -5,7 +5,7 @@
 - exported 组件从外部 Intent、deep link、URI 参数或 extras 接收输入。
 - 代码出现 `getParcelableExtra`、nested `Intent`、`startActivity`、`startService`、`sendBroadcast`、`setResult`、`grantUriPermission`。
 - 需要验证 custom scheme、App Link、intent:// URL、FileProvider grant、PendingIntent mutable 是否可被利用。
-- 作为 [android-manifest-security](../android-manifest-security/SKILL.md) 的组件可达性下钻，或 [android-apk-audit](../android-apk-audit/SKILL.md) 的 IPC 阶段。
+- 作为 [android-manifest-security](../android-manifest-security/SKILL.md) 的组件可达性下钻，或 [android-apk-audit](../../android-apk-audit/SKILL.md) 的 IPC 阶段。
 
 ## 核心约束
 - 先证明入口外部可达，再证明攻击者控制的数据到达 IPC 或 WebView/file/native sink。

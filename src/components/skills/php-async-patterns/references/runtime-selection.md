@@ -8,8 +8,8 @@
 | 扩展要求 | 需要 C 扩展 | 不需要 | 不需要 | PHP 8.1+ |
 | 适合 | 高性能服务器 | 事件驱动应用 | 现代异步框架 | 底层控制 |
 
-代码示例见 [patterns.md](references/patterns.md)。
+代码示例见 [patterns.md](./patterns.md)。
 
 ## 代码模式
 
-代码示例见 [patterns.md](references/patterns.md)。
+代码示例见 [patterns.md](./patterns.md)。

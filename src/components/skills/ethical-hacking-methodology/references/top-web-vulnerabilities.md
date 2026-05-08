@@ -3,7 +3,7 @@
 
 ## 适用场景
 - 需要给发现的问题做统一分类、影响说明和修复建议。
-- 需要为 [broken-authentication](../broken-authentication/SKILL.md)、[file-path-traversal](../file-path-traversal/SKILL.md)、[api-fuzzing-bug-bounty](../api-fuzzing-bug-bounty/SKILL.md) 提供公共术语。
+- 需要为 [broken-authentication](./broken-authentication.md)、[file-path-traversal](./file-path-traversal.md)、[api-fuzzing-bug-bounty](./api-fuzzing-bug-bounty.md) 提供公共术语。
 - 需要把“现象”提升到“根因类别”。
 
 ## 核心约束

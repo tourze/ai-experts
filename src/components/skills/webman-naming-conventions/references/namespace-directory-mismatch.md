@@ -194,5 +194,5 @@ composer validate
 ```
 
 ## 相关规则
-- [directory-lowercase](directory-lowercase.md)
-- [interface-naming](interface-naming.md)
+- [directory-lowercase](./directory-lowercase.md)
+- [interface-naming](./interface-naming.md)

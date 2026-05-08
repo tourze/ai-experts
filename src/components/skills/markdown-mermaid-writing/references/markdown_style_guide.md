@@ -17,7 +17,7 @@
 2. **先构建结构** → 标题层级，然后是内容
 3. **应用本指南中的格式** → 标题、文本、列表、表格、图片、链接
 4. **添加引用** → 所有声明和来源使用脚注引用
-5. **考虑图表** → [Mermaid 图表](mermaid_style_guide.md)是否比纯文本更能传达信息？
+5. **考虑图表** → [Mermaid 图表](./mermaid_style_guide.md)是否比纯文本更能传达信息？
 6. **添加可折叠部分** → 用于补充细节、演讲者备注或较长的上下文
 7. **验证** → 运行[质量检查清单](#质量检查清单)
 
@@ -30,7 +30,7 @@
 | 1   | **在他们提问之前先回答**        | 预测读者的问题并内联解答。优秀的文档在疑问产生时就予以解决——读者读完时不会留下"但是……呢？"的疑问。                            |
 | 2   | **首先确保可扫描**               | 读者在阅读之前会先扫读。使用标题、粗体和列表使结构一目了然。                                                                                    |
 | 3   | **引用一切**               | 每个声明、统计数字或外部参考都应有带完整 URL 的脚注引用。没有孤立的声明。                                                                                  |
-| 4   | **图表优于文字墙**   | 如果概念涉及流程、关系或结构，请在文本旁边使用 [Mermaid 图表](mermaid_style_guide.md)。                                                               |
+| 4   | **图表优于文字墙**   | 如果概念涉及流程、关系或结构，请在文本旁边使用 [Mermaid 图表](./mermaid_style_guide.md)。                                                               |
 | 5   | **慷慨提供信息**     | 不要隐藏细节——把它们展示出来。使用可折叠部分来增加深度而不造成杂乱，但绝不要因为"他们可能不需要"而省略信息。如果相关，就包含它。 |
 | 6   | **一致的结构**          | 每个文档使用相同的标题层级、相同的格式模式、相同的 emoji 放置方式。                                                                                              |
 | 7   | **每节一个主题**     | 每个标题应涵盖一个主题。如果您在涵盖两个想法，请拆分为两个标题。                                                                                                |
@@ -63,8 +63,8 @@
 
 ### 跟踪文档的模板
 
-- [Pull request 记录](templates/pull_request.md) — PR 描述就是这个文件
-- [Issue 记录](templates/issue.md) — 作为仓库文件的缺陷报告和功能请求
+- [Pull request 记录](./templates/pull_request.md) — PR 描述就是这个文件
+- [Issue 记录](./templates/issue.md) — 作为仓库文件的缺陷报告和功能请求
 - [看板 (Kanban)](templates/kanban.md) — 与代码合并的 Sprint/项目看板
 
 参见[文件约定](#跟踪文档的文件约定)了解目录结构和命名规则。
@@ -281,7 +281,7 @@ _图 1：显示三层部署模型的系统架构_
 | 照片/真实世界图片   | 图片                                      |
 | 复杂数据可视化 | 图片或 Mermaid `xychart-beta`            |
 
-参见 [Mermaid 样式指南](mermaid_style_guide.md) 了解图表类型选择与样式。
+参见 [Mermaid 样式指南](./mermaid_style_guide.md) 了解图表类型选择与样式。
 
 ---
 
@@ -484,33 +484,33 @@ def calculate_average(values: list[float]) -> float:
 
 **每当您的文本描述流程、结构、关系、时间或比较时，都有一种 Mermaid 图表能更好地传达信息。** 扫描下表以确定正确的类型，然后按照此工作流操作：
 
-1. **先阅读 [Mermaid 样式指南](mermaid_style_guide.md)** — emoji、调色板、可访问性、复杂度管理
+1. **先阅读 [Mermaid 样式指南](./mermaid_style_guide.md)** — emoji、调色板、可访问性、复杂度管理
 2. **然后打开特定类型文件** — 范例、技巧、模板、复杂示例
 
 | 您的内容描述...                            | 添加...                 | 类型文件                                           |
 | ---------------------------------------------------- | ------------------------ | --------------------------------------------------- |
-| 流程步骤、工作流、决策逻辑         | **流程图**            | [flowchart.md](mermaid_diagrams/flowchart.md)       |
-| 谁与谁在何时通信（API 调用、消息）     | **序列图**     | [sequence.md](mermaid_diagrams/sequence.md)         |
-| 类层次结构、类型关系、接口      | **类图**        | [class.md](mermaid_diagrams/class.md)               |
-| 状态转换、实体生命周期、状态机  | **状态图**        | [state.md](mermaid_diagrams/state.md)               |
-| 数据库 schema、数据模型、实体关系    | **ER 图**           | [er.md](mermaid_diagrams/er.md)                     |
-| 项目时间线、路线图、任务依赖关系         | **甘特图**          | [gantt.md](mermaid_diagrams/gantt.md)               |
-| 整体的部分、比例、分布          | **饼图**            | [pie.md](mermaid_diagrams/pie.md)                   |
-| Git 分支策略、合并/发布流程           | **Git 图**    | [git_graph.md](mermaid_diagrams/git_graph.md)       |
-| 概念层次、头脑风暴、主题图             | **思维导图**              | [mindmap.md](mermaid_diagrams/mindmap.md)           |
-| 按时间顺序的事件、里程碑、历史            | **时间线**             | [timeline.md](mermaid_diagrams/timeline.md)         |
-| 用户体验、满意度评分、旅程        | **用户旅程图**         | [user_journey.md](mermaid_diagrams/user_journey.md) |
-| 双轴比较、优先级排序矩阵           | **象限图**       | [quadrant.md](mermaid_diagrams/quadrant.md)         |
-| 需求追溯、合规映射        | **需求图**  | [requirement.md](mermaid_diagrams/requirement.md)   |
-| 不同缩放级别的系统架构           | **C4 图**           | [c4.md](mermaid_diagrams/c4.md)                     |
-| 流量大小、资源分布、预算       | **桑基图**       | [sankey.md](mermaid_diagrams/sankey.md)             |
-| 数值趋势、柱状图、折线图              | **XY 图**             | [xy_chart.md](mermaid_diagrams/xy_chart.md)         |
-| 组件布局、空间排列、图层        | **框图**        | [block.md](mermaid_diagrams/block.md)               |
-| 工作项跟踪、状态面板、任务列       | **看板图**         | [kanban.md](mermaid_diagrams/kanban.md)             |
-| 二进制协议布局、数据包格式           | **数据包图**       | [packet.md](mermaid_diagrams/packet.md)             |
-| 云基础设施、服务拓扑、网络   | **架构图** | [architecture.md](mermaid_diagrams/architecture.md) |
-| 多维比较、技能、雷达分析 | **雷达图**          | [radar.md](mermaid_diagrams/radar.md)               |
-| 层级比例、预算分解           | **矩形树图**              | [treemap.md](mermaid_diagrams/treemap.md)           |
+| 流程步骤、工作流、决策逻辑         | **流程图**            | [flowchart.md](./diagrams/flowchart.md)       |
+| 谁与谁在何时通信（API 调用、消息）     | **序列图**     | [sequence.md](./diagrams/sequence.md)         |
+| 类层次结构、类型关系、接口      | **类图**        | [class.md](./diagrams/class.md)               |
+| 状态转换、实体生命周期、状态机  | **状态图**        | [state.md](./diagrams/state.md)               |
+| 数据库 schema、数据模型、实体关系    | **ER 图**           | [er.md](./diagrams/er.md)                     |
+| 项目时间线、路线图、任务依赖关系         | **甘特图**          | [gantt.md](./diagrams/gantt.md)               |
+| 整体的部分、比例、分布          | **饼图**            | [pie.md](./diagrams/pie.md)                   |
+| Git 分支策略、合并/发布流程           | **Git 图**    | [git_graph.md](./diagrams/git_graph.md)       |
+| 概念层次、头脑风暴、主题图             | **思维导图**              | [mindmap.md](./diagrams/mindmap.md)           |
+| 按时间顺序的事件、里程碑、历史            | **时间线**             | [timeline.md](./diagrams/timeline.md)         |
+| 用户体验、满意度评分、旅程        | **用户旅程图**         | [user_journey.md](./diagrams/user_journey.md) |
+| 双轴比较、优先级排序矩阵           | **象限图**       | [quadrant.md](./diagrams/quadrant.md)         |
+| 需求追溯、合规映射        | **需求图**  | [requirement.md](./diagrams/requirement.md)   |
+| 不同缩放级别的系统架构           | **C4 图**           | [c4.md](./diagrams/c4.md)                     |
+| 流量大小、资源分布、预算       | **桑基图**       | [sankey.md](./diagrams/sankey.md)             |
+| 数值趋势、柱状图、折线图              | **XY 图**             | [xy_chart.md](./diagrams/xy_chart.md)         |
+| 组件布局、空间排列、图层        | **框图**        | [block.md](./diagrams/block.md)               |
+| 工作项跟踪、状态面板、任务列       | **看板图**         | [kanban.md](./diagrams/kanban.md)             |
+| 二进制协议布局、数据包格式           | **数据包图**       | [packet.md](./diagrams/packet.md)             |
+| 云基础设施、服务拓扑、网络   | **架构图** | [architecture.md](./diagrams/architecture.md) |
+| 多维比较、技能、雷达分析 | **雷达图**          | [radar.md](./diagrams/radar.md)               |
+| 层级比例、预算分解           | **矩形树图**              | [treemap.md](./diagrams/treemap.md)           |
 
 > 💡 **选择正确的类型，而不是简单的类型。** 不要对所有内容都默认使用流程图——时间线对于按时间顺序的事件更好，序列图对于服务交互更好，ER 图对于数据模型更好。扫描上表并将您的内容与最具体的类型匹配。**如果您发现自己正在写一段描述视觉概念的段落，停下来，用图表表示它。**
 
@@ -545,7 +545,7 @@ accDescr: 用户通过 API 和认证服务的登录序列
 了解刷新令牌的详细信息。
 ````
 
-**始终遵循 [Mermaid 样式指南](mermaid_style_guide.md)** 进行图表样式设置——emoji、颜色类、可访问性（`accTitle`/`accDescr`）和特定类型约定。
+**始终遵循 [Mermaid 样式指南](./mermaid_style_guide.md)** 进行图表样式设置——emoji、颜色类、可访问性（`accTitle`/`accDescr`）和特定类型约定。
 
 ---
 
@@ -611,14 +611,14 @@ accDescr: 用户通过 API 和认证服务的登录序列
 
 | 文档类型                   | 模板                                                                | 最适合                                                                                              |
 | ------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| 演示文稿/简报         | [presentation.md](templates/presentation.md)                   | 幻灯片风格文档，带演讲者备注、结构化章节和视觉流程                   |
-| 研究论文/分析       | [research_paper.md](templates/research_paper.md)               | 数据驱动分析、文献综述、方法论 + 发现，带大量引用                 |
-| 项目文档           | [project_documentation.md](templates/project_documentation.md) | 软件/产品文档——架构、快速入门、API 参考、贡献指南              |
-| 决策记录 (ADR/RFC)       | [decision_record.md](templates/decision_record.md)             | 记录决策原因——上下文、评估选项、结果、后果                 |
-| 操作指南/教程         | [how_to_guide.md](templates/how_to_guide.md)                   | 分步说明，带先决条件、验证步骤和故障排除                 |
-| 状态报告/高管简报 | [status_report.md](templates/status_report.md)                 | 进度更新、风险摘要、需要做出的决策——供领导层和利益相关者使用                  |
-| Pull request 记录             | [pull_request.md](templates/pull_request.md)                   | PR 文档，带变更清单、测试证据、回滚计划和审查备注             |
-| Issue 记录                    | [issue.md](templates/issue.md)                                 | 缺陷报告（复现步骤、根因）和功能请求（验收标准、用户故事） |
+| 演示文稿/简报         | [presentation.md](./templates/presentation.md)                   | 幻灯片风格文档，带演讲者备注、结构化章节和视觉流程                   |
+| 研究论文/分析       | [research_paper.md](./templates/research_paper.md)               | 数据驱动分析、文献综述、方法论 + 发现，带大量引用                 |
+| 项目文档           | [project_documentation.md](./templates/project_documentation.md) | 软件/产品文档——架构、快速入门、API 参考、贡献指南              |
+| 决策记录 (ADR/RFC)       | [decision_record.md](./templates/decision_record.md)             | 记录决策原因——上下文、评估选项、结果、后果                 |
+| 操作指南/教程         | [how_to_guide.md](./templates/how_to_guide.md)                   | 分步说明，带先决条件、验证步骤和故障排除                 |
+| 状态报告/高管简报 | [status_report.md](./templates/status_report.md)                 | 进度更新、风险摘要、需要做出的决策——供领导层和利益相关者使用                  |
+| Pull request 记录             | [pull_request.md](./templates/pull_request.md)                   | PR 文档，带变更清单、测试证据、回滚计划和审查备注             |
+| Issue 记录                    | [issue.md](./templates/issue.md)                                 | 缺陷报告（复现步骤、根因）和功能请求（验收标准、用户故事） |
 | 看板                    | [kanban.md](templates/kanban.md)                               | Sprint/发布/项目工作跟踪，带可视化看板、WIP 限制、指标和阻塞项        |
 
 ### 跟踪文档的文件约定
@@ -728,4 +728,4 @@ accDescr: 用户通过 API 和认证服务的登录序列
 
 ## 资源
 
-- [GitHub Flavored Markdown Spec](https://github.github.com/gfm/) · [Mermaid 样式指南](mermaid_style_guide.md) · [GitHub 基本格式化](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
+- [GitHub Flavored Markdown Spec](https://github.github.com/gfm/) · [Mermaid 样式指南](./mermaid_style_guide.md) · [GitHub 基本格式化](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)

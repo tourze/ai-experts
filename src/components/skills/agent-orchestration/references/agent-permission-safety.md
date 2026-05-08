@@ -5,13 +5,13 @@
 - 为 AI Agent 设计权限模型：信任谱系、权限模式、检查管道。
 - 实现 fail-closed 原则：不确定时拒绝而非放行。
 - 设计规则预分类 + AI 分类器的两阶段权限判断。
-- 需要与 [agent-tool-design](../agent-tool-design/SKILL.md) 联动做工具级权限声明。
+- 需要与 [agent-tool-design](./agent-tool-design.md) 联动做工具级权限声明。
 
 ## 核心约束
 
 - **铁律：Fail-Closed**——不确定时默认 `ask` 或 `deny`，永远不能默认 `allow`。分类器异常 = deny。
 - 权限是用户可调的**谱系**（spectrum），不是二元开关。用户控制信任级别，不是开发者硬编码。
-- 每次工具调用必须过三阶段管道：输入校验 → 工具自检 → 外层引擎，详见 [references/permission-pipeline.md](references/permission-pipeline.md)。
+- 每次工具调用必须过三阶段管道：输入校验 → 工具自检 → 外层引擎，详见 [references/permission-pipeline.md](./permission-pipeline.md)。
 - 规则检查在 AI 分类之前——规则是 O(1) 确定性的，AI 推理是昂贵且概率性的。
 - 必须存在 bypass-immune 操作——即使用户开启全自动模式，某些操作仍需人工确认。
 
@@ -19,7 +19,7 @@
 
 ### 步骤 1：定义权限模式谱系
 
-设计 3-4 个权限级别，从保守到自主递进，详见 [references/permission-pipeline.md](references/permission-pipeline.md)。
+设计 3-4 个权限级别，从保守到自主递进，详见 [references/permission-pipeline.md](./permission-pipeline.md)。
 
 ### 步骤 2：实现三阶段检查管道
 
@@ -27,7 +27,7 @@
 
 ### 步骤 3：配置规则层 + AI 分类器
 
-规则层处理 80%+ 明确场景，AI 分类器只处理歧义场景，详见 [references/classification.md](references/classification.md)。
+规则层处理 80%+ 明确场景，AI 分类器只处理歧义场景，详见 [references/classification.md](./classification.md)。
 
 ## 代码模式
 

@@ -142,5 +142,5 @@ return [
 
 ## 相关规则
 
-- [connection-lifecycle](connection-lifecycle.md) — 连接握手与认证
-- [channel-subscription](channel-subscription.md) — 频道与跨进程广播
+- [connection-lifecycle](./connection-lifecycle.md) — 连接握手与认证
+- [channel-subscription](./channel-subscription.md) — 频道与跨进程广播

@@ -3,7 +3,7 @@
 ## 适用场景
 - 重要产品/品牌命名，需要从定位、用户心智和竞品环境共同推导名字。
 - 需要快速拿到 5 个可讨论的名字，用于功能、产品或品牌初筛。
-- 需要定位依据时可配合 [obviously-awesome](../competitive-intelligence/SKILL.md)。
+- 需要定位依据时可配合 [obviously-awesome](../../competitive-intelligence/SKILL.md)。
 
 ## 核心约束
 - 先理解产品本质和命名边界，再进入候选名发散。

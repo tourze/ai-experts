@@ -213,6 +213,6 @@ onClose
 
 ## 相关规则
 
-- [websocket-server-setup](websocket-server-setup.md) — 进程声明与配置
-- [channel-subscription](channel-subscription.md) — 频道订阅与清理
-- [reconnect-strategy](reconnect-strategy.md) — 客户端侧的重连
+- [websocket-server-setup](./websocket-server-setup.md) — 进程声明与配置
+- [channel-subscription](./channel-subscription.md) — 频道订阅与清理
+- [reconnect-strategy](./reconnect-strategy.md) — 客户端侧的重连

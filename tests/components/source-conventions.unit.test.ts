@@ -35,6 +35,30 @@ function decodeMarkdownAnchor(anchor: string): string {
   }
 }
 
+function stripMarkdownCode(source: string): string {
+  return source
+    .replace(/```[\s\S]*?```/gu, "")
+    .replace(/~~~[\s\S]*?~~~/gu, "")
+    .replace(/`[^`\n]*`/gu, "");
+}
+
+function markdownDestination(raw: string): string {
+  const trimmed = raw.trim();
+  if (trimmed.startsWith("<")) {
+    const closeIndex = trimmed.indexOf(">");
+    return closeIndex === -1 ? trimmed.slice(1) : trimmed.slice(1, closeIndex);
+  }
+  return trimmed.split(/\s+/, 1)[0] ?? "";
+}
+
+function localMarkdownPath(destination: string): string | null {
+  const path = destination.split("#", 1)[0] ?? "";
+  if (!path || path.startsWith("//") || /^[a-z][a-z0-9+.-]*:/iu.test(path)) {
+    return null;
+  }
+  return path.replace(/\\/gu, "/");
+}
+
 describe("component source conventions", () => {
   test("root platform memory files stay linked to README", () => {
     for (const fileName of ["AGENTS.md", "CLAUDE.md"]) {
@@ -432,6 +456,45 @@ describe("component source conventions", () => {
         `${sourceFile} should render placeholder URLs as plain text instead of broken local markdown links`,
       );
     }
+  });
+
+  test("skill reference markdown links are relative to their file location", () => {
+    const rootRelativeLinks: string[] = [];
+    const referenceMarkdownSources = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
+      file.endsWith(".md") && file.split(/[\\/]/).includes("references"),
+    );
+
+    for (const sourceFile of referenceMarkdownSources) {
+      const source = stripMarkdownCode(readFileSync(sourceFile, "utf-8"));
+      for (const match of source.matchAll(/(!?)\[[^\]\n]+\]\(([^)\n]+)\)/gu)) {
+        if (match[1] === "!") continue;
+        const targetPath = localMarkdownPath(markdownDestination(match[2] ?? ""));
+        if (!targetPath) continue;
+        if (
+          /^(?:\.\/)?(?:references|assets)\//u.test(targetPath) ||
+          /(?:^|\/)mermaid_diagrams\//u.test(targetPath)
+        ) {
+          rootRelativeLinks.push(`${relative(repoRoot, sourceFile)}: ${targetPath}`);
+        }
+      }
+
+      for (const match of source.matchAll(/^\s*\[[^\]\n]+\]:\s+(\S+)/gmu)) {
+        const targetPath = localMarkdownPath(markdownDestination(match[1] ?? ""));
+        if (!targetPath) continue;
+        if (
+          /^(?:\.\/)?(?:references|assets)\//u.test(targetPath) ||
+          /(?:^|\/)mermaid_diagrams\//u.test(targetPath)
+        ) {
+          rootRelativeLinks.push(`${relative(repoRoot, sourceFile)}: ${targetPath}`);
+        }
+      }
+    }
+
+    assert.deepEqual(
+      rootRelativeLinks,
+      [],
+      "reference Markdown is copied into references/, so links to packaged references/assets must be relative from the current file",
+    );
   });
 
   test("skill markdown sources keep same-file heading anchors valid", () => {

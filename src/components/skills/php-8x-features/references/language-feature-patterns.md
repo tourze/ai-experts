@@ -71,7 +71,7 @@ function calculateShipping(int $weightGrams, string $zone): float
 
 ### 联合/交叉/DNF 类型、一等可调用对象、`never`、Attributes
 
-详见 [references/advanced-types-and-attributes.md](references/advanced-types-and-attributes.md)。
+详见 [references/advanced-types-and-attributes.md](./advanced-types-and-attributes.md)。
 
 ## 快速参考
 

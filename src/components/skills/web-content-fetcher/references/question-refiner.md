@@ -3,7 +3,7 @@
 ## 适用场景
 
 - 用户说"研究一下 X" / "帮我比较 A 和 B" / "调研下行业现状"，但没讲输出形式、地域、时间窗口、受众。
-- [deep-research](../deep-research/SKILL.md) / deep-researcher agent 启动前，把原始问题打磨成可执行 prompt。
+- [deep-research](../../deep-research/SKILL.md) / deep-researcher agent 启动前，把原始问题打磨成可执行 prompt。
 - 用户信息散落多轮对话，需要收敛成单一 prompt。
 - 不适用：已给出结构化 prompt；简短事实查询；用户明确说"你决定"。
 
@@ -36,7 +36,7 @@
 6. 完成后提示用 citation-validator 做发布前把关
 ```
 
-完整 7 段 prompt 模板与质量检查见 [references/prompt-template.md](references/prompt-template.md)。
+完整 7 段 prompt 模板与质量检查见 [references/prompt-template.md](./prompt-template.md)。
 
 ## 检查清单
 
@@ -95,4 +95,4 @@ Q：输出形式：
   D. 其他，请描述
 ```
 
-完整交互示例与更多反模式见 [references/patterns.md](references/patterns.md)。
+完整交互示例与更多反模式见 [references/patterns.md](./patterns.md)。

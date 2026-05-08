@@ -3,8 +3,8 @@
 
 ## 适用场景
 - 需要把“攻击者如何达成目标”拆成 AND/OR 路径。
-- 需要把 [security-threat-model](../security-threat-model/SKILL.md) 中的威胁进一步展开成可执行路径。
-- 需要和 [stride-analysis-patterns](../stride-analysis-patterns/SKILL.md) 互补，覆盖系统性威胁枚举。
+- 需要把 [security-threat-model](../SKILL.md) 中的威胁进一步展开成可执行路径。
+- 需要和 [stride-analysis-patterns](./stride-analysis-patterns.md) 互补，覆盖系统性威胁枚举。
 
 ## 核心约束
 - 根节点必须是攻击者目标，不要把控制措施写成根节点。

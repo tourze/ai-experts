@@ -3,7 +3,7 @@
 
 ## 适用场景
 - 需要建立资产清单、开放端口和服务版本基线。
-- 需要为 [wireshark-analysis](../wireshark-analysis/SKILL.md) 和 [protocol-reverse-engineering](../protocol-reverse-engineering/SKILL.md) 提供后续切入点。
+- 需要为 [wireshark-analysis](../../wireshark-analysis/SKILL.md) 和 [protocol-reverse-engineering](../../protocol-reverse-engineering/SKILL.md) 提供后续切入点。
 - 需要做低噪声扫描或对比多轮结果的变化。
 
 ## 核心约束

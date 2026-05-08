@@ -29,4 +29,4 @@ components:
           format: email
 ```
 
-- 需要代码优先实践时，查看 [references/code-first-and-tooling.md](references/code-first-and-tooling.md)。
+- 需要代码优先实践时，查看 [references/code-first-and-tooling.md](./code-first-and-tooling.md)。

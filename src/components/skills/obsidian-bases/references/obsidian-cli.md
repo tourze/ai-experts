@@ -6,7 +6,7 @@
 - 用户要操作 daily note、任务、属性、标签、反向链接或文件历史。
 - 用户要从命令行查询 `.base` 文件、列出视图或在 Base 中创建条目。
 - 用户在开发或调试 Obsidian 社区插件 / 主题，需要 `plugin:reload`、`dev:*`、`eval` 一类开发命令。
-- 如果用户要直接编辑 `.base` YAML 结构，优先配合 [obsidian-bases](../obsidian-bases/SKILL.md)。
+- 如果用户要直接编辑 `.base` YAML 结构，优先配合 [obsidian-bases](../SKILL.md)。
 
 ## 核心约束
 

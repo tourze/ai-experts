@@ -6,8 +6,8 @@
 - 需要评估 tree shaking、barrel exports 消除、R8 代码缩减等优化手段。
 - 需要区分 JS bundle、原生二进制和图片/字体资源三类体积问题。
 - 要评估某个第三方库引入后的体积代价。
-- 版本升级相关任务优先联动 [upgrading-react-native](../upgrading-react-native/SKILL.md)。
-- JS 线程性能问题优先联动 [react-native-js-performance](../react-native-js-performance/SKILL.md)。
+- 版本升级相关任务优先联动 [upgrading-react-native](./upgrading-react-native.md)。
+- JS 线程性能问题优先联动 [react-native-js-performance](../../react-native-js-performance/SKILL.md)。
 - 原生层性能问题优先联动 [react-native-native-performance](../react-native-native-performance/SKILL.md)。
 
 ## 核心约束
@@ -23,11 +23,11 @@
 
 | 症状 | 首选参考 | 次选 | 说明 |
 |------|---------|------|------|
-| 总包 > 30MB 且 JS bundle 占比 > 50% | [bundle-analyze-js](references/bundle-analyze-js.md) | [bundle-barrel-exports](references/bundle-barrel-exports.md) → [bundle-tree-shaking](references/bundle-tree-shaking.md) | JS 层是主要问题，先看哪个依赖占了空间 |
-| 总包 > 30MB 但 JS bundle 占比 < 30% | [bundle-analyze-app](references/bundle-analyze-app.md) | [bundle-native-assets](references/bundle-native-assets.md) → [bundle-r8-android](references/bundle-r8-android.md) | 原生层或资源是主要问题 |
-| 某个库占比异常大 | [bundle-library-size](references/bundle-library-size.md) | [bundle-barrel-exports](references/bundle-barrel-exports.md) | 评估替代方案或按需导入 |
-| 启动时 JS 解析耗时长 | [bundle-hermes-mmap](references/bundle-hermes-mmap.md) | [bundle-code-splitting](references/bundle-code-splitting.md) | Hermes bytecode mmap 可减少解析开销 |
-| 版本升级后包体积突增 | [bundle-analyze-js](references/bundle-analyze-js.md) | [bundle-tree-shaking](references/bundle-tree-shaking.md) | diff 前后 source map 找新增 |
+| 总包 > 30MB 且 JS bundle 占比 > 50% | [bundle-analyze-js](./bundle-analyze-js.md) | [bundle-barrel-exports](./bundle-barrel-exports.md) → [bundle-tree-shaking](./bundle-tree-shaking.md) | JS 层是主要问题，先看哪个依赖占了空间 |
+| 总包 > 30MB 但 JS bundle 占比 < 30% | [bundle-analyze-app](./bundle-analyze-app.md) | [bundle-native-assets](./bundle-native-assets.md) → [bundle-r8-android](./bundle-r8-android.md) | 原生层或资源是主要问题 |
+| 某个库占比异常大 | [bundle-library-size](./bundle-library-size.md) | [bundle-barrel-exports](./bundle-barrel-exports.md) | 评估替代方案或按需导入 |
+| 启动时 JS 解析耗时长 | [bundle-hermes-mmap](./bundle-hermes-mmap.md) | [bundle-code-splitting](./bundle-code-splitting.md) | Hermes bytecode mmap 可减少解析开销 |
+| 版本升级后包体积突增 | [bundle-analyze-js](./bundle-analyze-js.md) | [bundle-tree-shaking](./bundle-tree-shaking.md) | diff 前后 source map 找新增 |
 
 不确定瓶颈在哪一层时，先跑下面的命令拿到 JS bundle 大小和总包大小：
 

@@ -4,7 +4,7 @@
 ## 适用场景
 - 决定产品增长模式（PLG vs SLG vs 混合），需要系统化评估适用性。
 - 已决定做 PLG，需要设计激活框架、衡量 Time-to-Value 或计算病毒系数。
-- 与 [designing-growth-loops](../designing-growth-loops/SKILL.md) 配合设计增长飞轮，与 [pricing-strategy](../pricing-strategy/SKILL.md) 配合设计 freemium/free trial 策略。
+- 与 [designing-growth-loops](../SKILL.md) 配合设计增长飞轮，与 [pricing-strategy](../../pricing-strategy/SKILL.md) 配合设计 freemium/free trial 策略。
 - 需要诊断 PLG 漏斗哪个环节漏人最多。
 
 ## 核心约束

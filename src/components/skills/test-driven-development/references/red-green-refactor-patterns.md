@@ -1,6 +1,6 @@
 ## 代码模式
 
-循环流程图见 [references/tdd-cycle.dot](./references/tdd-cycle.dot)。
+循环流程图见 [references/tdd-cycle.dot](./tdd-cycle.dot)。
 
 ### 模式 1：RED
 
@@ -60,4 +60,4 @@ async function retryOperation(fn: () => Promise<string>): Promise<string> {
 | "我手动测过了，能跑" | 手动测试不可重复、不可回归。下次改代码你还手测一遍？ |
 | "测试第一次就通过了" | 这意味着你在测试已有行为，不是新行为。重新检查测试。 |
 
-**执行前必须读取** [references/discipline-guard.md](./references/discipline-guard.md)——包含完整 Red Flags 表和 Rationalizations 对照表。跳过 = 违反 Iron Law。
+**执行前必须读取** [references/discipline-guard.md](./discipline-guard.md)——包含完整 Red Flags 表和 Rationalizations 对照表。跳过 = 违反 Iron Law。

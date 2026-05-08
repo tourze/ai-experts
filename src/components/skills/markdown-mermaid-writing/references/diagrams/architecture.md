@@ -6,7 +6,7 @@
 
 **Syntax keyword:** `architecture-beta`
 **Best for:** Cloud infrastructure, service topology, deployment architecture, network layout
-**When NOT to use:** Logical system boundaries (use [C4](c4.md)), component layout without cloud semantics (use [Block](block.md))
+**When NOT to use:** Logical system boundaries (use [C4](./c4.md)), component layout without cloud semantics (use [Block](./block.md))
 
 > ⚠️ **Accessibility:** Architecture diagrams do **not** support `accTitle`/`accDescr`. Always place a descriptive _italic_ Markdown paragraph directly above the code block.
 

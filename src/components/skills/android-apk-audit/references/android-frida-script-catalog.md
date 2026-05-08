@@ -29,7 +29,7 @@
 | Keystore/biometric | `keystore-inspector`, `biometric-bypass` | CryptoObject 与 auth-bound key 验证 |
 | crypto | `crypto-intercept` | `Cipher`, `Mac`, `MessageDigest`, `SecretKeySpec` 定点 trace |
 | JNI/native | `jni-tracer`, `native-hook` | by-offset hook、Ghidra/IDA 交叉验证 |
-| 加壳/动态 DEX | `dexdump`, `packer-unpacker` | dump 后用 [jadx](jadx.md) 反编译 |
+| 加壳/动态 DEX | `dexdump`, `packer-unpacker` | dump 后用 [jadx](./jadx.md) 反编译 |
 
 ## 加载顺序
 

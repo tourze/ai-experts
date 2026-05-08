@@ -123,6 +123,6 @@ return [
 
 ## 相关规则
 
-- [timer-management](timer-management.md) — Timer 必须在 `onWorkerStart` 中创建
-- [event-loop-blocking](event-loop-blocking.md) — `onWorkerStart` 回调中也不可阻塞
-- [crash-recovery](crash-recovery.md) — 进程异常退出后的重启策略
+- [timer-management](./timer-management.md) — Timer 必须在 `onWorkerStart` 中创建
+- [event-loop-blocking](./event-loop-blocking.md) — `onWorkerStart` 回调中也不可阻塞
+- [crash-recovery](./crash-recovery.md) — 进程异常退出后的重启策略

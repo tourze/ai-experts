@@ -20,9 +20,9 @@
 
 按任务加载参考文件：
 
-- [HostObject 模式](references/host-object-pattern.md)
-- [CallInvoker 异步](references/call-invoker-async.md)
-- [ArrayBuffer 零拷贝](references/arraybuffer-zero-copy.md)
+- [HostObject 模式](./host-object-pattern.md)
+- [CallInvoker 异步](./call-invoker-async.md)
+- [ArrayBuffer 零拷贝](./arraybuffer-zero-copy.md)
 
 ## 检查清单
 

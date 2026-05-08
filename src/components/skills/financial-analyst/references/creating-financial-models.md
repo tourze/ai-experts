@@ -5,8 +5,8 @@
 - 需要把估值逻辑封装成可复用 Python 模型，而不只是执行一次性 CLI 分析。
 - 需要处理 DCF 现金流投影、WACC、终值、双变量敏感性、情景分析或盈亏平衡搜索。
 - 需要把财务假设拉成参数矩阵，输出 DataFrame、估值表或摘要文本。
-- 若只是快速做经营分析、预算偏差和基础估值，先用 [financial-analyst](../financial-analyst/SKILL.md)。
-- 若需求转向投资组合风险与市场回撤指标，转到 [risk-metrics-calculation](../risk-metrics-calculation/SKILL.md)。
+- 若只是快速做经营分析、预算偏差和基础估值，先用 [financial-analyst](../SKILL.md)。
+- 若需求转向投资组合风险与市场回撤指标，转到 [risk-metrics-calculation](./risk-metrics-calculation.md)。
 
 ## 核心约束
 
@@ -51,7 +51,7 @@ model.calculate_equity_value(net_debt=200, shares_outstanding=50)
 print(model.generate_summary())
 ```
 
-敏感性分析与场景分析的完整代码模式见 [references/advanced-patterns.md](references/advanced-patterns.md)。
+敏感性分析与场景分析的完整代码模式见 [references/advanced-patterns.md](./advanced-patterns.md)。
 
 ## 检查清单
 
@@ -60,7 +60,7 @@ print(model.generate_summary())
 - 假设数组长度是否覆盖全部 `projection_years`，或接受自动补齐末值。
 - 使用增长法算终值时，是否确认 `WACC > terminal_growth`。
 - 做情景分析时，是否确保每轮场景前模型状态会回到基准值。
-- 输出结果进入报告前，是否与 [financial-analyst](../financial-analyst/SKILL.md) 的基础分析相互校验。
+- 输出结果进入报告前，是否与 [financial-analyst](../SKILL.md) 的基础分析相互校验。
 
 ## 反模式
 
@@ -82,4 +82,4 @@ if model.wacc <= model.terminal_growth:
 # 或切到退出倍数法终值，而不是增长法
 ```
 
-场景分析不回滚的反模式与修复见 [references/advanced-patterns.md](references/advanced-patterns.md)。
+场景分析不回滚的反模式与修复见 [references/advanced-patterns.md](./advanced-patterns.md)。

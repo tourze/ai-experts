@@ -6,7 +6,7 @@
 
 **Syntax keyword:** `journey`
 **Best for:** User experience mapping, customer journey, process satisfaction scoring, onboarding flows
-**When NOT to use:** Simple processes without satisfaction data (use [Flowchart](flowchart.md)), chronological events (use [Timeline](timeline.md))
+**When NOT to use:** Simple processes without satisfaction data (use [Flowchart](./flowchart.md)), chronological events (use [Timeline](./timeline.md))
 
 ---
 

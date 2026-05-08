@@ -9,7 +9,7 @@
 - 先确定用户最终只需要记住的一句话，再考虑细节扩展。
 - SUCCESs 六项不是逐条打卡，而是围绕核心信息做取舍。
 - 把“可信”“具体”“情绪”建立在真实证据上，不能靠夸张修辞硬堆。
-- 若任务进入逐句编辑或要去除机器腔，配合 [copy-editing](copy-editing.md) reference。
+- 若任务进入逐句编辑或要去除机器腔，配合 [copy-editing](./copy-editing.md) reference。
 
 ## 代码模式
 - 结构化改写模板：
@@ -23,7 +23,7 @@ Credible：案例或数据来源
 Emotional / Stories：用真实场景收尾
 ```
 
-- 参考资料： [simple](references/simple.md)、[unexpected](references/unexpected.md)、[concrete](references/concrete.md)、[credible](references/credible.md)、[emotional](references/emotional.md)、[stories](references/stories.md)。
+- 参考资料： [simple](./simple.md)、[unexpected](./unexpected.md)、[concrete](./concrete.md)、[credible](./credible.md)、[emotional](./emotional.md)、[stories](./stories.md)。
 
 ## 检查清单
 - 是否明确了一句核心信息。

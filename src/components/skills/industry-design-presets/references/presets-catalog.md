@@ -6,19 +6,19 @@
 
 ## 核心 45（#1-45）
 
-- [presets-tech-saas.md](presets-tech-saas.md) — SaaS / DevTool / AI / Cybersecurity / Enterprise（#1-8）
-- [presets-finance-commerce.md](presets-finance-commerce.md) — Fintech / Crypto / Insurance / E-commerce（#9-17）
-- [presets-health-lifestyle.md](presets-health-lifestyle.md) — Healthcare / Wellness / Fitness / Lifestyle（#18-26）
-- [presets-services-creative.md](presets-services-creative.md) — Services / Hospitality / Portfolio / Editorial（#27-37）
-- [presets-youth-public.md](presets-youth-public.md) — Gen-Z / Web3 / EdTech / Gov / Nonprofit（#38-45）
+- [presets-tech-saas.md](./presets-tech-saas.md) — SaaS / DevTool / AI / Cybersecurity / Enterprise（#1-8）
+- [presets-finance-commerce.md](./presets-finance-commerce.md) — Fintech / Crypto / Insurance / E-commerce（#9-17）
+- [presets-health-lifestyle.md](./presets-health-lifestyle.md) — Healthcare / Wellness / Fitness / Lifestyle（#18-26）
+- [presets-services-creative.md](./presets-services-creative.md) — Services / Hospitality / Portfolio / Editorial（#27-37）
+- [presets-youth-public.md](./presets-youth-public.md) — Gen-Z / Web3 / EdTech / Gov / Nonprofit（#38-45）
 
 ## 扩充 50（#46-95）
 
-- [presets-mobility-realestate.md](presets-mobility-realestate.md) — Real Estate / Logistics / Automotive / Airlines / Transit / Parking / Construction / Agriculture / Auto Repair / Moving（#46-55）
-- [presets-local-services.md](presets-local-services.md) — Florist / Bakery / Brewery / Cafe / Barber / Beauty Salon / Coworking / Wedding / Event Planner / Photography Studio（#56-65）
-- [presets-events-culture.md](presets-events-culture.md) — Museum / Theater / Conference / Festival / Arcade / Gym / Dance-Yoga / Library / Tourism / Nightlife（#66-75）
-- [presets-productivity-consumer.md](presets-productivity-consumer.md) — CRM / Invoice / VPN / Scheduling / Notes / Tasks / Alarm-Sleep / Grocery / Recipe / Pet Care / Plant Care（#76-86）
-- [presets-media-edu-care.md](presets-media-edu-care.md) — Podcast / Newsletter / Language Learning / Coding Bootcamp / Online Course / Kindergarten / Daycare / Senior Care / Veterinary（#87-95）
+- [presets-mobility-realestate.md](./presets-mobility-realestate.md) — Real Estate / Logistics / Automotive / Airlines / Transit / Parking / Construction / Agriculture / Auto Repair / Moving（#46-55）
+- [presets-local-services.md](./presets-local-services.md) — Florist / Bakery / Brewery / Cafe / Barber / Beauty Salon / Coworking / Wedding / Event Planner / Photography Studio（#56-65）
+- [presets-events-culture.md](./presets-events-culture.md) — Museum / Theater / Conference / Festival / Arcade / Gym / Dance-Yoga / Library / Tourism / Nightlife（#66-75）
+- [presets-productivity-consumer.md](./presets-productivity-consumer.md) — CRM / Invoice / VPN / Scheduling / Notes / Tasks / Alarm-Sleep / Grocery / Recipe / Pet Care / Plant Care（#76-86）
+- [presets-media-edu-care.md](./presets-media-edu-care.md) — Podcast / Newsletter / Language Learning / Coding Bootcamp / Online Course / Kindergarten / Daycare / Senior Care / Veterinary（#87-95）
 
 ## 使用建议
 

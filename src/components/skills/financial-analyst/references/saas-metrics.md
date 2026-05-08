@@ -3,7 +3,7 @@
 ## 适用场景
 - 准备融资材料、董事会汇报或季度复盘，需要快速查 SaaS 指标定义和公式。
 - 评估订阅业务健康度，需要对照行业基准判断好坏。
-- 与 [market-sizing-analysis](../market-sizing-analysis/SKILL.md) 配合做市场规模估算，与 [fundraise-advisor](../fundraise-advisor/SKILL.md) 配合准备融资故事。
+- 与 [market-sizing-analysis](../../market-sizing-analysis/SKILL.md) 配合做市场规模估算，与 [fundraise-advisor](../../fundraise-advisor/SKILL.md) 配合准备融资故事。
 - 给工程或产品团队解释为什么要关注留存、扩展收入或获客效率。
 
 ## 核心约束

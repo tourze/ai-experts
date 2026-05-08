@@ -6,7 +6,7 @@
 
 **Syntax keyword:** `flowchart`
 **Best for:** Sequential processes, workflows, decision logic, troubleshooting trees
-**When NOT to use:** Complex timing between actors (use [Sequence](sequence.md)), state machines (use [State](state.md))
+**When NOT to use:** Complex timing between actors (use [Sequence](./sequence.md)), state machines (use [State](./state.md))
 
 ---
 

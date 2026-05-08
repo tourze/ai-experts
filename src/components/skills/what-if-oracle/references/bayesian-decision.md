@@ -6,7 +6,7 @@
 - 用户在“要不要做 / 先做哪个 / 投多少资源 / 是否进入下一阶段”之间犹豫，并且风险、证据和行动代价都不确定。
 - 需要把松散信息转成 `intake -> evidence -> update -> action -> sensitivity -> report` 的可审计闭环。
 - 输入不完整但仍要先给弱先验、最小追问和下一步信息收集动作。
-- 如果只是轻量待办排序，转 [priority-judge](../priority-judge/SKILL.md)；如果只做未来分支推演，先用 [what-if-oracle](../what-if-oracle/SKILL.md)。
+- 如果只是轻量待办排序，转 [priority-judge](../../priority-judge/SKILL.md)；如果只做未来分支推演，先用 [what-if-oracle](../SKILL.md)。
 - 如果只要求解释贝叶斯定理、解概率作业、泛泛发散想法，或要求最终持牌医疗/法律/投资建议，不使用本 skill。
 
 ## 核心约束
@@ -22,12 +22,12 @@
 
 ## 执行流程
 
-1. 读取 [decision contract](references/decision-contract.md)，先把用户请求压成一个 decision brief。
+1. 读取 [decision contract](./decision-contract.md)，先把用户请求压成一个 decision brief。
 2. 建立 prior：写参考类、来源强度、置信层级和最可能出错的地方。
 3. 建 evidence map：按证据等级、方向、独立性和观测/估计/假设分类。
 4. 做 update：用自然语言、区间或轻量数字说明 prior 如何变成 posterior。
 5. 做 action mapping：比较候选行动、阈值、下行和可逆性，给当前建议。
-6. 读取 [prior hygiene](references/prior-hygiene.md)，只选本案最相关的 `3-5` 条判断卫生检查。
+6. 读取 [prior hygiene](./prior-hygiene.md)，只选本案最相关的 `3-5` 条判断卫生检查。
 7. 输出 report：结论、行动、证据、信念变化、敏感性、下一步信息和重开条件。
 
 ## 代码模式

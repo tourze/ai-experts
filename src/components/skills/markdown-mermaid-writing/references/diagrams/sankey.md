@@ -6,7 +6,7 @@
 
 **Syntax keyword:** `sankey-beta`
 **Best for:** Flow magnitude visualization, resource distribution, budget allocation, traffic routing
-**When NOT to use:** Simple proportions (use [Pie](pie.md)), process steps (use [Flowchart](flowchart.md))
+**When NOT to use:** Simple proportions (use [Pie](./pie.md)), process steps (use [Flowchart](./flowchart.md))
 
 > ⚠️ **Accessibility:** Sankey diagrams do **not** support `accTitle`/`accDescr`. Always place a descriptive _italic_ Markdown paragraph directly above the code block.
 

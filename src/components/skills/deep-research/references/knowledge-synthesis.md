@@ -5,7 +5,7 @@
 - 已经完成检索，但结果分散在多个来源，需要整理成一个可读答案。
 - 同一事实在不同来源里重复出现，需要去重并保留来源证据。
 - 用户想要“结论 + 依据 + 置信度”，而不是原始搜索结果堆砌。
-- 常与 [deep-research](../deep-research/SKILL.md) 和 [web-content-fetcher](../web-content-fetcher/SKILL.md) 连用。
+- 常与 [deep-research](../SKILL.md) 和 [web-content-fetcher](../../web-content-fetcher/SKILL.md) 连用。
 
 ## 核心约束
 

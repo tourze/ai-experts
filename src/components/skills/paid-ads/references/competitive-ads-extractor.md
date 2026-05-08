@@ -8,7 +8,7 @@
 ## 核心约束
 - 先定义竞品范围、平台范围和时间范围，不要把所有广告混成一锅。
 - 重点提炼“他们在卖什么判断”，而不是机械罗列文案截图。
-- 竞品研究结论要能回流到 [ad-creative](../ad-creative/SKILL.md) 或 [competitor-alternatives](../competitor-alternatives/SKILL.md) 的输出中。
+- 竞品研究结论要能回流到 [ad-creative](./ad-creative.md) 或 [competitor-alternatives](../competitor-alternatives/SKILL.md) 的输出中。
 - 不杜撰投放效果；没有公开数据时只说“采用了什么表达/结构”，不说“因此一定高转化”。
 
 ## 代码模式

@@ -3,7 +3,7 @@
 ## 适用场景
 - 需要在调试进程的同时保持 agent 可响应（不被 breakpoint 阻塞）。
 - 需要对长时间运行的进程做条件化 trace 而不暂停。
-- 需要与 [debug-lldb](../debug-lldb/SKILL.md) 区分：本 skill 用 GDB（Linux），LLDB 用于 macOS/iOS。
+- 需要与 [debug-lldb](./debug-lldb.md) 区分：本 skill 用 GDB（Linux），LLDB 用于 macOS/iOS。
 
 ## 核心约束
 - **仅 Linux**：依赖 POSIX signal 和 named pipe。

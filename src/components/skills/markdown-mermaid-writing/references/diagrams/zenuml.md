@@ -6,7 +6,7 @@
 
 **Syntax keyword:** `zenuml`
 **Best for:** Code-like sequence diagrams, method-call-style interactions, developers familiar with programming syntax
-**When NOT to use:** Prefer standard [Sequence Diagrams](sequence.md) for most use cases — ZenUML requires an external plugin and has limited GitHub support.
+**When NOT to use:** Prefer standard [Sequence Diagrams](./sequence.md) for most use cases — ZenUML requires an external plugin and has limited GitHub support.
 
 > ⚠️ **GitHub support:** ZenUML requires the `@mermaid-js/mermaid-zenuml` external module. It may **not render** on GitHub natively. Use standard `sequenceDiagram` syntax for GitHub compatibility.
 >

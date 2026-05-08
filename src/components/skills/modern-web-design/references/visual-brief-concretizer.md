@@ -5,7 +5,7 @@
 - 甲方、产品、市场或团队只给出抽象审美词，需要转成可执行视觉 brief。
 - 设计争议来自“好看/大气/高级/有感觉”，而不是明确任务流问题。
 - 需要为网页、PPT、海报、品牌物料或产品界面定义视觉方向和避坑清单。
-- 如果已经进入 token 落地，转到 [visual-design-foundations](../visual-design-foundations/SKILL.md)；如果是行业视觉方向，联动 `industry-design-presets`；如果是已实现 UI 审查，联动 `frontend-design-review`。
+- 如果已经进入 token 落地，转到 [visual-design-foundations](./visual-design-foundations.md)；如果是行业视觉方向，联动 `industry-design-presets`；如果是已实现 UI 审查，联动 `frontend-design-review`。
 
 ## 核心约束
 

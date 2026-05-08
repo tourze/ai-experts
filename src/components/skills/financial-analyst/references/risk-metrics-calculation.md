@@ -5,8 +5,8 @@
 - 需要衡量收益波动、尾部风险、最大回撤和风险调整后收益。
 - 需要构建投组级风险监控，而不是公司经营分析或企业估值。
 - 需要把日收益率序列转换成 Sharpe、Sortino、VaR、CVaR、Max Drawdown 等指标。
-- 若问题是公司经营质量、预算偏差或滚动预测，转到 [financial-analyst](../financial-analyst/SKILL.md)。
-- 若问题是企业估值模型与假设敏感性，转到 [creating-financial-models](../creating-financial-models/SKILL.md)。
+- 若问题是公司经营质量、预算偏差或滚动预测，转到 [financial-analyst](../SKILL.md)。
+- 若问题是企业估值模型与假设敏感性，转到 [creating-financial-models](./creating-financial-models.md)。
 
 ## 核心约束
 
@@ -45,7 +45,7 @@
 }
 ```
 
-投资组合与滚动风险输入格式见 [references/advanced-patterns.md](references/advanced-patterns.md)。
+投资组合与滚动风险输入格式见 [references/advanced-patterns.md](./advanced-patterns.md)。
 
 ## 检查清单
 
@@ -55,7 +55,7 @@
 - 计算 CVaR 时是否基于同一个 VaR 阈值样本集。
 - 做滚动窗口时是否确认窗口长度足以覆盖一个完整风险观察周期。
 - 输出出现 `sample_size_below_60_directional_only` 时，是否降低结论强度。
-- 需要把风险结论放回企业经营上下文时，是否回到 [financial-analyst](../financial-analyst/SKILL.md) 或 [creating-financial-models](../creating-financial-models/SKILL.md) 联动解释。
+- 需要把风险结论放回企业经营上下文时，是否回到 [financial-analyst](../SKILL.md) 或 [creating-financial-models](./creating-financial-models.md) 联动解释。
 
 ## 反模式
 

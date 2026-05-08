@@ -4,8 +4,8 @@
 
 - 内部周会、站会、设计评审、排障复盘、计划会等 60 分钟以内会议，需要一份正式、可流转的纪要。
 - 输入可能来自录音转写、会议记录、议程文档或会后补记。
-- 如果用户只想把粗糙笔记整理成轻量摘要与行动项，优先使用 [meeting-notes-and-actions](../meeting-notes-and-actions/SKILL.md)。
-- 如果用户要分析发言习惯、引导风格或冲突处理方式，切换到 [meeting-insights-analyzer](../meeting-insights-analyzer/SKILL.md)。
+- 如果用户只想把粗糙笔记整理成轻量摘要与行动项，优先使用 [meeting-notes-and-actions](./meeting-notes-and-actions.md)。
+- 如果用户要分析发言习惯、引导风格或冲突处理方式，切换到 [meeting-insights-analyzer](../SKILL.md)。
 
 ## 核心约束
 
@@ -55,7 +55,7 @@ rg --files . -g '*.md' -g '*.txt' -g '*.srt' -g '*.vtt' -g '*.docx'
 - [ ] 每个关键决策都带有责任主体或背景理由，不把开放讨论误写成已决策事项。
 - [ ] 每个行动项都有负责人和截止日期；若只能给建议，明确写成 `待补充`。
 - [ ] 风险、阻塞、搁置项与正式行动项分栏展示，没有混写。
-- [ ] 当用户真正要的是轻量摘要或沟通洞察时，已改用 [meeting-notes-and-actions](../meeting-notes-and-actions/SKILL.md) 或 [meeting-insights-analyzer](../meeting-insights-analyzer/SKILL.md)。
+- [ ] 当用户真正要的是轻量摘要或沟通洞察时，已改用 [meeting-notes-and-actions](./meeting-notes-and-actions.md) 或 [meeting-insights-analyzer](../SKILL.md)。
 
 ## 反模式
 

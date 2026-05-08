@@ -351,7 +351,7 @@ package --> stage
 
 ### 组合多个图表
 
-当单个图表不够用时——多个受众、概览 + 详情需求，或迁移前后文档——参见**[组合复杂图表集](mermaid_diagrams/complex_examples.md)**，了解如何将流程图、序列图、ER 图等组合成连贯文档的模式和生产质量示例。
+当单个图表不够用时——多个受众、概览 + 详情需求，或迁移前后文档——参见**[组合复杂图表集](./diagrams/complex_examples.md)**，了解如何将流程图、序列图、ER 图等组合成连贯文档的模式和生产质量示例。
 
 ---
 
@@ -361,29 +361,29 @@ package --> stage
 
 | 您想展示...                      | 类型             | 文件                                                |
 | ---------------------------------------- | ---------------- | --------------------------------------------------- |
-| 流程步骤 / 决策           | **流程图**    | [flowchart.md](mermaid_diagrams/flowchart.md)       |
-| 谁在何时与谁通信                  | **序列图**     | [sequence.md](mermaid_diagrams/sequence.md)         |
-| 类层次结构 / 类型关系     | **类图**        | [class.md](mermaid_diagrams/class.md)               |
-| 状态转换 / 生命周期           | **状态图**        | [state.md](mermaid_diagrams/state.md)               |
-| 数据库 schema / 数据模型             | **ER 图**           | [er.md](mermaid_diagrams/er.md)                     |
-| 项目时间线 / 路线图               | **甘特图**        | [gantt.md](mermaid_diagrams/gantt.md)               |
-| 整体的部分（比例）           | **饼图**          | [pie.md](mermaid_diagrams/pie.md)                   |
-| Git 分支 / 合并策略           | **Git 图**    | [git_graph.md](mermaid_diagrams/git_graph.md)       |
-| 概念层次 / 头脑风暴           | **思维导图**      | [mindmap.md](mermaid_diagrams/mindmap.md)           |
-| 随时间的事件（按时间顺序）         | **时间线**     | [timeline.md](mermaid_diagrams/timeline.md)         |
-| 用户体验 / 满意度图       | **用户旅程图** | [user_journey.md](mermaid_diagrams/user_journey.md) |
-| 双轴优先级排序 / 比较     | **象限图**     | [quadrant.md](mermaid_diagrams/quadrant.md)         |
-| 需求追溯                | **需求图**  | [requirement.md](mermaid_diagrams/requirement.md)   |
-| 系统架构（缩放级别）        | **C4 图**           | [c4.md](mermaid_diagrams/c4.md)                     |
-| 流量大小 / 资源分布   | **桑基图**       | [sankey.md](mermaid_diagrams/sankey.md)             |
-| 数值趋势（柱状图 + 折线图）       | **XY 图**     | [xy_chart.md](mermaid_diagrams/xy_chart.md)         |
-| 组件布局 / 空间排列   | **框图**        | [block.md](mermaid_diagrams/block.md)               |
-| 工作项状态面板                   | **看板图**       | [kanban.md](mermaid_diagrams/kanban.md)             |
-| 二进制协议 / 数据格式            | **数据包图**       | [packet.md](mermaid_diagrams/packet.md)             |
-| 基础设施拓扑                  | **架构图** | [architecture.md](mermaid_diagrams/architecture.md) |
-| 多维比较 / 技能    | **雷达图**          | [radar.md](mermaid_diagrams/radar.md)               |
-| 层级比例 / 预算        | **矩形树图**      | [treemap.md](mermaid_diagrams/treemap.md)           |
-| 代码风格序列（编程语法） | **ZenUML**       | [zenuml.md](mermaid_diagrams/zenuml.md)             |
+| 流程步骤 / 决策           | **流程图**    | [flowchart.md](./diagrams/flowchart.md)       |
+| 谁在何时与谁通信                  | **序列图**     | [sequence.md](./diagrams/sequence.md)         |
+| 类层次结构 / 类型关系     | **类图**        | [class.md](./diagrams/class.md)               |
+| 状态转换 / 生命周期           | **状态图**        | [state.md](./diagrams/state.md)               |
+| 数据库 schema / 数据模型             | **ER 图**           | [er.md](./diagrams/er.md)                     |
+| 项目时间线 / 路线图               | **甘特图**        | [gantt.md](./diagrams/gantt.md)               |
+| 整体的部分（比例）           | **饼图**          | [pie.md](./diagrams/pie.md)                   |
+| Git 分支 / 合并策略           | **Git 图**    | [git_graph.md](./diagrams/git_graph.md)       |
+| 概念层次 / 头脑风暴           | **思维导图**      | [mindmap.md](./diagrams/mindmap.md)           |
+| 随时间的事件（按时间顺序）         | **时间线**     | [timeline.md](./diagrams/timeline.md)         |
+| 用户体验 / 满意度图       | **用户旅程图** | [user_journey.md](./diagrams/user_journey.md) |
+| 双轴优先级排序 / 比较     | **象限图**     | [quadrant.md](./diagrams/quadrant.md)         |
+| 需求追溯                | **需求图**  | [requirement.md](./diagrams/requirement.md)   |
+| 系统架构（缩放级别）        | **C4 图**           | [c4.md](./diagrams/c4.md)                     |
+| 流量大小 / 资源分布   | **桑基图**       | [sankey.md](./diagrams/sankey.md)             |
+| 数值趋势（柱状图 + 折线图）       | **XY 图**     | [xy_chart.md](./diagrams/xy_chart.md)         |
+| 组件布局 / 空间排列   | **框图**        | [block.md](./diagrams/block.md)               |
+| 工作项状态面板                   | **看板图**       | [kanban.md](./diagrams/kanban.md)             |
+| 二进制协议 / 数据格式            | **数据包图**       | [packet.md](./diagrams/packet.md)             |
+| 基础设施拓扑                  | **架构图** | [architecture.md](./diagrams/architecture.md) |
+| 多维比较 / 技能    | **雷达图**          | [radar.md](./diagrams/radar.md)               |
+| 层级比例 / 预算        | **矩形树图**      | [treemap.md](./diagrams/treemap.md)           |
+| 代码风格序列（编程语法） | **ZenUML**       | [zenuml.md](./diagrams/zenuml.md)             |
 
 **选择最具体的类型。** 不要默认使用流程图——将您的内容匹配到为其设计的图表类型。序列图在传达服务交互方面比流程图好得多。
 
@@ -454,5 +454,5 @@ package --> stage
 
 ## 资源
 
-- [Markdown 样式指南](markdown_style_guide.md) — 包裹图表的 markdown 的格式、引用和文档结构
+- [Markdown 样式指南](./markdown_style_guide.md) — 包裹图表的 markdown 的格式、引用和文档结构
 - [Mermaid 文档](https://mermaid.js.org/) · [在线编辑器](https://mermaid.live/) · [可访问性](https://mermaid.js.org/config/accessibility.html) · [GitHub 支持](https://github.blog/2022-02-14-include-diagrams-markdown-files-mermaid/) · [VS Code 扩展](https://marketplace.visualstudio.com/items?itemName=vstirbu.vscode-mermaid-preview)

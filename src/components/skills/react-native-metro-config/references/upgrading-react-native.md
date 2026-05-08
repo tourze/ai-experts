@@ -5,9 +5,9 @@
 - 需要把 React Native 从一个 minor 版本升级到另一个 minor 版本。
 - 需要同步 Expo SDK、React、CocoaPods、Gradle 或测试依赖。
 - 需要评估 Upgrade Helper diff 对原生工程的影响。
-- 升级后的 JS 性能回归，可联动 [react-native-js-performance](../react-native-js-performance/SKILL.md)。
+- 升级后的 JS 性能回归，可联动 [react-native-js-performance](../../react-native-js-performance/SKILL.md)。
 - 升级后的原生层性能回归，可联动 [react-native-native-performance](../react-native-native-performance/SKILL.md)。
-- 关键流程回归，可联动 [detox-mobile-test](../detox-mobile-test/SKILL.md)。
+- 关键流程回归，可联动 [detox-mobile-test](../../detox-mobile-test/SKILL.md)。
 
 ## 核心约束
 

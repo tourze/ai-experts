@@ -5,8 +5,8 @@
 - 用户贴来 Zoom、Meet、Teams、飞书会议或电话沟通的转写文本，希望快速提炼重点。
 - 原始材料杂乱、存在口头禅、时间戳、说话人标签或聊天穿插，需要先降噪再结构化。
 - 适合“先把内容整理出来”的轻量输出，不要求完整纪要格式。
-- 如果用户要求正式会议纪要、带固定章节和发文规范，切换到 [meeting-minutes](../meeting-minutes/SKILL.md)。
-- 如果用户关注沟通风格、冲突回避、发言占比等行为模式，切换到 [meeting-insights-analyzer](../meeting-insights-analyzer/SKILL.md)。
+- 如果用户要求正式会议纪要、带固定章节和发文规范，切换到 [meeting-minutes](./meeting-minutes.md)。
+- 如果用户关注沟通风格、冲突回避、发言占比等行为模式，切换到 [meeting-insights-analyzer](../SKILL.md)。
 
 ## 核心约束
 
@@ -46,7 +46,7 @@ rg --files . -g '*.md' -g '*.txt' -g '*.srt' -g '*.vtt' -g '*.docx'
 - [ ] 每个行动项都注明负责人、截止日期与“已确认 / 建议”状态。
 - [ ] 若原文包含时间戳，已抽取关键时刻而不是把全部时间戳搬运出来。
 - [ ] 输出中的姓名、团队名、项目名保持前后一致，没有把同一人写成多个称呼。
-- [ ] 当用户需要正式纪要或行为分析时，已改用 [meeting-minutes](../meeting-minutes/SKILL.md) 或 [meeting-insights-analyzer](../meeting-insights-analyzer/SKILL.md)。
+- [ ] 当用户需要正式纪要或行为分析时，已改用 [meeting-minutes](./meeting-minutes.md) 或 [meeting-insights-analyzer](../SKILL.md)。
 
 ## 反模式
 

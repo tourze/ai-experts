@@ -3,8 +3,8 @@
 ## 适用场景
 
 - 用户反馈磁盘占满、构建失败提示 `No space left on device`、系统日志写不进或 inode 用尽。
-- 需要先确认整体资源状态时，先运行 [system-diagnostics](../system-diagnostics/SKILL.md)。
-- 若目标是释放空间后继续提速，可与 [performance-optimizer](../performance-optimizer/SKILL.md) 联动。
+- 需要先确认整体资源状态时，先运行 [system-diagnostics](../SKILL.md)。
+- 若目标是释放空间后继续提速，可与 [performance-optimizer](./performance-optimizer.md) 联动。
 
 ## 核心约束
 
@@ -43,7 +43,7 @@ docker system df 2>/dev/null || true
 - [ ] 若有 Docker/Podman，检查 `docker system df` 或 `podman system df`。
 - [ ] 清理前先列出具体删除对象与预估回收空间。
 - [ ] 删除后重新执行 `df -hT` 与关键业务验证。
-- [ ] 若根因是日志暴涨或进程泄漏，切到 [performance-optimizer](../performance-optimizer/SKILL.md)。
+- [ ] 若根因是日志暴涨或进程泄漏，切到 [performance-optimizer](./performance-optimizer.md)。
 
 ## 反模式
 

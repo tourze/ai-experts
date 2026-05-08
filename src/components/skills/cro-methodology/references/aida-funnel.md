@@ -13,7 +13,7 @@
 - 99% 的预算花在 Attention 而后续阶段全漏 = 最常见的浪费。
 
 ## 不适用场景
-- 已有详细漏斗数据需要深度优化：AIDA 是阶段框架，具体转化优化用 [cro-methodology](../cro-methodology/SKILL.md) 或 [page-cro](../page-cro/SKILL.md)。
+- 已有详细漏斗数据需要深度优化：AIDA 是阶段框架，具体转化优化用 [cro-methodology](../SKILL.md) 或 [page-cro](./page-cro.md)。
 - 冲动消费品（决策周期小于 30 秒）：AIDA 假设有认知到考虑的过程，便利店零食不需要 Desire 阶段。
 
 ## 检查清单

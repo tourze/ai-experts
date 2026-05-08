@@ -5,8 +5,8 @@
 - 账号已经有稳定输出，想从“会发内容”升级为“有清晰品牌识别”。
 - 创始人、顾问、知识博主或垂类达人需要建立长期可复用的个人 IP。
 - 用户想统一定位、视觉、表达方式和商业边界。
-- 需要把内容定位反推到增长策略时，配合 [xiaohongshu-commercial-growth](../xiaohongshu-commercial-growth/SKILL.md)。
-- 需要把品牌语气落到评论区和社群运营时，配合 [fan-operations](../fan-operations/SKILL.md)。
+- 需要把内容定位反推到增长策略时，配合 [xiaohongshu-commercial-growth](../../xiaohongshu-commercial-growth/SKILL.md)。
+- 需要把品牌语气落到评论区和社群运营时，配合 [fan-operations](../SKILL.md)。
 
 ## 核心约束
 
@@ -60,8 +60,8 @@
 - 表达风格、封面风格和互动语气彼此一致。
 - 品牌定位能反推出 3-5 个固定内容栏目。
 - 品牌主张不会和当前变现路径冲突。
-- 评论区、私域话术与 [fan-operations](../fan-operations/SKILL.md) 保持同一语气。
-- 如果品牌目标是增长或变现，已同步给 [xiaohongshu-commercial-growth](../xiaohongshu-commercial-growth/SKILL.md)。
+- 评论区、私域话术与 [fan-operations](../SKILL.md) 保持同一语气。
+- 如果品牌目标是增长或变现，已同步给 [xiaohongshu-commercial-growth](../../xiaohongshu-commercial-growth/SKILL.md)。
 
 ## 反模式
 

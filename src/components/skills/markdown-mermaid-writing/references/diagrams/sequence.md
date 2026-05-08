@@ -6,7 +6,7 @@
 
 **Syntax keyword:** `sequenceDiagram`
 **Best for:** API interactions, temporal flows, multi-actor communication, request/response patterns
-**When NOT to use:** Simple linear processes (use [Flowchart](flowchart.md)), static relationships (use [Class](class.md) or [ER](er.md))
+**When NOT to use:** Simple linear processes (use [Flowchart](./flowchart.md)), static relationships (use [Class](./class.md) or [ER](./er.md))
 
 ---
 

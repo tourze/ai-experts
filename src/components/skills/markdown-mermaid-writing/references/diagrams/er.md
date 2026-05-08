@@ -6,7 +6,7 @@
 
 **Syntax keyword:** `erDiagram`
 **Best for:** Database schemas, data models, entity relationships, API data structures
-**When NOT to use:** Class hierarchies with methods (use [Class](class.md)), process flows (use [Flowchart](flowchart.md))
+**When NOT to use:** Class hierarchies with methods (use [Class](./class.md)), process flows (use [Flowchart](./flowchart.md))
 
 ---
 

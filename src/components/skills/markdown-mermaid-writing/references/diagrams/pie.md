@@ -6,7 +6,7 @@
 
 **Syntax keyword:** `pie`
 **Best for:** Simple proportional breakdowns, budget allocation, composition, survey results
-**When NOT to use:** Trends over time (use [XY Chart](xy_chart.md)), exact comparisons (use a table), more than 7 categories
+**When NOT to use:** Trends over time (use [XY Chart](./xy_chart.md)), exact comparisons (use a table), more than 7 categories
 
 ---
 

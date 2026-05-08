@@ -6,7 +6,7 @@
 
 **Syntax keyword:** `block-beta`
 **Best for:** System block composition, layered architectures, component topology where spatial layout matters
-**When NOT to use:** Process flows (use [Flowchart](flowchart.md)), infrastructure with cloud icons (use [Architecture](architecture.md))
+**When NOT to use:** Process flows (use [Flowchart](./flowchart.md)), infrastructure with cloud icons (use [Architecture](./architecture.md))
 
 > ⚠️ **Accessibility:** Block diagrams do **not** support `accTitle`/`accDescr`. Always place a descriptive _italic_ Markdown paragraph directly above the code block.
 

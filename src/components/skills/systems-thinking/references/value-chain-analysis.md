@@ -3,7 +3,7 @@
 ## 适用场景
 - 识别竞争优势具体来自哪个环节（不是笼统的"技术优势"）。
 - 决定哪些环节该自建、哪些该外包。
-- 与 [porters-five-forces](../porters-five-forces/SKILL.md) 配合：五力看行业，价值链看自己。
+- 与 [porters-five-forces](../../porters-five-forces/SKILL.md) 配合：五力看行业，价值链看自己。
 
 ## 核心约束
 - 主要活动和支持活动都要分析，不能只看"做产品"忽略"做管理"。
@@ -12,7 +12,7 @@
 - 找到核心优势环节后，要论证其**不可复制性**。
 
 ## 不适用场景
-- 评估行业结构：价值链看自己内部，行业结构用 [porters-five-forces](../porters-five-forces/SKILL.md)。
+- 评估行业结构：价值链看自己内部，行业结构用 [porters-five-forces](../../porters-five-forces/SKILL.md)。
 - 纯互联网/平台业务：传统价值链（入站物流->生产->出站物流）不完全适用，需要改造为数字化价值链（获取->激活->留存->变现->推荐）。
 
 ## 代码模式

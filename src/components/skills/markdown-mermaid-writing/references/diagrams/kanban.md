@@ -6,7 +6,7 @@
 
 **Syntax keyword:** `kanban`
 **Best for:** Task status boards, workflow columns, work-in-progress visualization, sprint status
-**When NOT to use:** Task timelines/dependencies (use [Gantt](gantt.md)), process logic (use [Flowchart](flowchart.md))
+**When NOT to use:** Task timelines/dependencies (use [Gantt](./gantt.md)), process logic (use [Flowchart](./flowchart.md))
 
 > ⚠️ **Accessibility:** Kanban boards do **not** support `accTitle`/`accDescr`. Always place a descriptive _italic_ Markdown paragraph directly above the code block.
 

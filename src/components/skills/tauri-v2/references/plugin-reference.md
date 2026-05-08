@@ -64,7 +64,7 @@ cargo tauri add fs
 
 **作用域：**
 路径访问受作用域限制。常用变量：`$APPDATA`、`$HOME`、`$DOCUMENTS`、`$DOWNLOADS`。
-**交叉参考：** 查看 [capabilities-reference.md](capabilities-reference.md) 了解作用域示例。
+**交叉参考：** 查看 [capabilities-reference.md](./capabilities-reference.md) 了解作用域示例。
 
 ## 2. 对话框（`tauri-plugin-dialog`）
 
@@ -124,7 +124,7 @@ cargo tauri add shell
 
 **作用域：**
 `allow-execute` 需要在能力文件中定义特定的程序和允许的参数。
-**交叉参考：** 查看 [capabilities-reference.md](capabilities-reference.md) 了解 shell 作用域示例。
+**交叉参考：** 查看 [capabilities-reference.md](./capabilities-reference.md) 了解 shell 作用域示例。
 
 ## 4. HTTP（`tauri-plugin-http`）
 
@@ -154,7 +154,7 @@ cargo tauri add http
 
 **作用域：**
 访问可以限制到特定域或 URL 模式。
-**交叉参考：** 查看 [capabilities-reference.md](capabilities-reference.md) 了解 URL 作用域示例。
+**交叉参考：** 查看 [capabilities-reference.md](./capabilities-reference.md) 了解 URL 作用域示例。
 
 ## 5. Store（`tauri-plugin-store`）
 
@@ -295,7 +295,7 @@ cargo tauri add updater
 - `updater:allow-download-and-install`：执行更新。
 
 **注意：** 需要代码签名和更新服务器/静态 JSON。
-**交叉参考：** 查看 [updater-distribution-reference.md](updater-distribution-reference.md) 了解签名要求。
+**交叉参考：** 查看 [updater-distribution-reference.md](./updater-distribution-reference.md) 了解签名要求。
 
 ## 10. Deep Link（`tauri-plugin-deep-link`）
 
@@ -379,4 +379,4 @@ cargo tauri add process
 
 ---
 
-**另见：** [能力参考](capabilities-reference.md)了解安全模型 | [更新器/分发](updater-distribution-reference.md)了解 updater 插件部署 | [高级运行时](advanced-runtime-reference.md)了解 tray、sidecar 和 deep-link 插件
+**另见：** [能力参考](./capabilities-reference.md)了解安全模型 | [更新器/分发](./updater-distribution-reference.md)了解 updater 插件部署 | [高级运行时](./advanced-runtime-reference.md)了解 tray、sidecar 和 deep-link 插件

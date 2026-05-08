@@ -136,5 +136,5 @@ return [
 
 ## 相关规则
 
-- [process-lifecycle](process-lifecycle.md) — 所有初始化在 onWorkerStart 中
-- [event-loop-blocking](event-loop-blocking.md) — Crontab 回调同样不可阻塞
+- [process-lifecycle](./process-lifecycle.md) — 所有初始化在 onWorkerStart 中
+- [event-loop-blocking](./event-loop-blocking.md) — Crontab 回调同样不可阻塞

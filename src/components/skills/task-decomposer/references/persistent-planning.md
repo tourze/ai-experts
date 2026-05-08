@@ -8,7 +8,7 @@
 
 ## 核心约束
 - 产出必须落到仓库文件，不依赖 TodoWrite（`/clear` 后消失）。
-- 四文件职责互斥，模板见 [file-templates.md](references/file-templates.md)：
+- 四文件职责互斥，模板见 [file-templates.md](./file-templates.md)：
   - `context.md` — 意图锚点（Task Statement / Desired Outcome / Intent Hypothesis / Unknowns / Decision Boundaries / Touchpoints）
   - `task_plan.md` — 路线图与决策（5 阶段 + Errors 表）
   - `findings.md` — 外部内容与调研（隔离不可信内容）
@@ -50,7 +50,7 @@ Context snapshot 仅在用户变更目标或发现推翻假设的事实时更新
 - 新会话恢复是否先读 context.md + progress.md 尾部。
 
 ## 反模式
-正例与反例见 [examples.md](references/examples.md)，核心陷阱：
+正例与反例见 [examples.md](./examples.md)，核心陷阱：
 - 用 TodoWrite 代替文件持久化 → `/clear` 后丢失进度
 - 跳过 context snapshot 直接写计划 → 意图偏航导致返工
 - 外部内容灌进 task_plan.md → 污染注意力窗口

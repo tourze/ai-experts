@@ -4,8 +4,8 @@
 ## 适用场景
 - 决定是否在产品中引入 AI/LLM 功能，需要系统化评估适用性和投入产出比。
 - 已有 AI 功能但效果不理想，需要诊断问题出在哪里。
-- 与 [evaluating-new-technology](../evaluating-new-technology/SKILL.md) 配合做 build vs buy 决策。
-- 与 [create-prd](../create-prd/SKILL.md) 配合撰写 AI 功能的 PRD。
+- 与 [evaluating-new-technology](../SKILL.md) 配合做 build vs buy 决策。
+- 与 [create-prd](../../create-prd/SKILL.md) 配合撰写 AI 功能的 PRD。
 
 ## 核心约束
 - AI 不是功能，是能力；先问"用户要解决什么问题"，再问"AI 是不是最好的方案"。

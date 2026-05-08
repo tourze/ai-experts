@@ -11,7 +11,7 @@
 - 所有版本必须回链原文。
 - Reddit/Quora 版本绝对不能有营销语言；以真人分享经验的口吻写。
 - 先分析原文核心论点和最强数据点，再开始适配。
-- 平台适配规则详见 [platform-adaptation-rules](references/platform-adaptation-rules.md)。
+- 平台适配规则详见 [platform-adaptation-rules](./platform-adaptation-rules.md)。
 
 ## 代码模式
 

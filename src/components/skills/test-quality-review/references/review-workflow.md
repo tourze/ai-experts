@@ -1,5 +1,5 @@
 ## 审查维度
-审查时必须读取 [references/test-decay-risks.md](./references/test-decay-risks.md)，按六类风险扫描：
+审查时必须读取 [references/test-decay-risks.md](./test-decay-risks.md)，按六类风险扫描：
 - **T1 测试意图模糊** — 理解测试需要多少心智负担
 - **T2 测试脆弱性** — 重构不改行为时测试会不会断
 - **T3 测试重复** — 同一场景是否多处表达
@@ -8,7 +8,7 @@
 - **T6 架构错配** — 测试结构是否反映风险分布
 
 ## 输出格式
-读取 [references/health-score.md](./references/health-score.md)，按四要素格式输出，含 Test Health Score 和套件概览。
+读取 [references/health-score.md](./health-score.md)，按四要素格式输出，含 Test Health Score 和套件概览。
 
 ## 纪律守卫
 

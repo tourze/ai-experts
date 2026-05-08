@@ -11,7 +11,7 @@
 - 按影响力排序分析，不要从细节开始。
 - 每条建议说明预期影响和实施难度。
 - 文案建议给出原文对照和替代方案。
-- 弹窗问题切 [popup-cro](../popup-cro/SKILL.md)；实验方法论切 [cro-methodology](../cro-methodology/SKILL.md)。
+- 弹窗问题切 [popup-cro](./popup-cro.md)；实验方法论切 [cro-methodology](../SKILL.md)。
 
 ## CRO 分析框架（按影响力降序）
 
@@ -25,11 +25,11 @@
 
 ## 产出格式
 
-按 Quick Wins / High-Impact Changes / Test Ideas / Copy Alternatives 四类输出，详见 [OUTPUT-FORMAT](references/OUTPUT-FORMAT.md)。
+按 Quick Wins / High-Impact Changes / Test Ideas / Copy Alternatives 四类输出，详见 [OUTPUT-FORMAT](./OUTPUT-FORMAT.md)。
 
 ## 页面类型框架
 
-按页面类型选择对应框架：首页、落地页、定价页、功能页、博客，详见 [PAGE-TYPE-FRAMEWORKS](references/PAGE-TYPE-FRAMEWORKS.md)。
+按页面类型选择对应框架：首页、落地页、定价页、功能页、博客，详见 [PAGE-TYPE-FRAMEWORKS](./PAGE-TYPE-FRAMEWORKS.md)。
 
 ## 诊断问题
 

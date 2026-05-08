@@ -3,8 +3,8 @@
 
 ## 适用场景
 - 已经有威胁列表，需要把风险转成具体控制和实施顺序。
-- 需要把 [security-threat-model](../security-threat-model/SKILL.md) 的输出接到工程改造。
-- 需要进一步沉淀为交付项时，再切到 [security-requirement-extraction](../security-requirement-extraction/SKILL.md)。
+- 需要把 [security-threat-model](../SKILL.md) 的输出接到工程改造。
+- 需要进一步沉淀为交付项时，再切到 [security-requirement-extraction](./security-requirement-extraction.md)。
 
 ## 核心约束
 - 一条威胁映射到具体边界、入口或组件，不给抽象口号。

@@ -165,5 +165,5 @@ Timer::add(5.0, function (): void {
 
 ## 相关规则
 
-- [process-lifecycle](process-lifecycle.md) — Timer 必须在 `onWorkerStart` 中创建
-- [event-loop-blocking](event-loop-blocking.md) — Timer 回调不可阻塞
+- [process-lifecycle](./process-lifecycle.md) — Timer 必须在 `onWorkerStart` 中创建
+- [event-loop-blocking](./event-loop-blocking.md) — Timer 回调不可阻塞

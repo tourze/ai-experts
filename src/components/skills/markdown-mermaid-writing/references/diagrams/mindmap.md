@@ -6,7 +6,7 @@
 
 **Syntax keyword:** `mindmap`
 **Best for:** Brainstorming, concept organization, knowledge hierarchies, topic breakdown
-**When NOT to use:** Sequential processes (use [Flowchart](flowchart.md)), timelines (use [Timeline](timeline.md))
+**When NOT to use:** Sequential processes (use [Flowchart](./flowchart.md)), timelines (use [Timeline](./timeline.md))
 
 > ⚠️ **Accessibility:** Mindmaps do **not** support `accTitle`/`accDescr`. Always place a descriptive _italic_ Markdown paragraph directly above the code block.
 

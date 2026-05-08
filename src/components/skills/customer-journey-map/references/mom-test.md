@@ -3,8 +3,8 @@
 
 ## 适用场景
 - 创业想法验证、需求洞察、流失访谈、B2B 销售发现访谈。
-- 需要深入阅读问题设计时，可结合 [references/question-patterns.md](references/question-patterns.md)、[references/avoiding-bad-data.md](references/avoiding-bad-data.md)、[references/commitment-advancement.md](references/commitment-advancement.md)。
-- 需要把访谈发现落到旅程或问卷时，可配合 [customer-journey-map](../customer-journey-map/SKILL.md) 与 [designing-surveys](../designing-surveys/SKILL.md)。
+- 需要深入阅读问题设计时，可结合 [references/question-patterns.md](./question-patterns.md)、[references/avoiding-bad-data.md](./avoiding-bad-data.md)、[references/commitment-advancement.md](./commitment-advancement.md)。
+- 需要把访谈发现落到旅程或问卷时，可配合 [customer-journey-map](../SKILL.md) 与 [designing-surveys](./designing-surveys.md)。
 
 ## 核心约束
 - 先聊用户真实经历、当前替代方案和历史行为，再聊你的想法。

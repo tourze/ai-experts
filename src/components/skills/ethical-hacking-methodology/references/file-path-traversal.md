@@ -3,8 +3,8 @@
 
 ## 适用场景
 - 需要验证下载、导出、模板、图片、日志或调试接口是否可越界读文件。
-- 需要用 [top-web-vulnerabilities](../top-web-vulnerabilities/SKILL.md) 归类和解释根因。
-- 需要和 [broken-authentication](../broken-authentication/SKILL.md) 联动确认是否存在鉴权绕过读取。
+- 需要用 [top-web-vulnerabilities](./top-web-vulnerabilities.md) 归类和解释根因。
+- 需要和 [broken-authentication](./broken-authentication.md) 联动确认是否存在鉴权绕过读取。
 
 ## 核心约束
 - 优先使用只读且低敏的探针文件验证可达性。

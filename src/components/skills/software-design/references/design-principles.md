@@ -6,7 +6,7 @@
 - **信息隐藏**：把可能变化的知识封闭在模块内部，接口只暴露稳定抽象。
 - **战略式编程**：为长期理解投资设计；战术式编程的累积会拖垮系统。
 - **通用与专用分离**：通用模块不依赖专用模块。
-- 原则展开见：[complexity-symptoms.md](references/complexity-symptoms.md)、[deep-modules.md](references/deep-modules.md)、[information-hiding.md](references/information-hiding.md)、[strategic-programming.md](references/strategic-programming.md)、[general-vs-special.md](references/general-vs-special.md)、[comments-as-design.md](references/comments-as-design.md)。
+- 原则展开见：[complexity-symptoms.md](./complexity-symptoms.md)、[deep-modules.md](./deep-modules.md)、[information-hiding.md](./information-hiding.md)、[strategic-programming.md](./strategic-programming.md)、[general-vs-special.md](./general-vs-special.md)、[comments-as-design.md](./comments-as-design.md)。
 
 ## 架构模式
 

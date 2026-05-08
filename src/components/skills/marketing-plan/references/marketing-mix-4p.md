@@ -3,7 +3,7 @@
 ## 适用场景
 - 新产品上市前的营销策略制定。
 - 现有产品营销效果不佳时的诊断。
-- 与 [stp-segmentation](../stp-segmentation/SKILL.md) 配合：STP 定人群，4P 定策略。
+- 与 [stp-segmentation](../../stp-segmentation/SKILL.md) 配合：STP 定人群，4P 定策略。
 
 ## 核心约束
 - 4P 不是四个独立决策，而是**一组协调的组合**——产品定位决定价格范围，价格影响渠道选择，渠道影响促销方式。四个 P 互相矛盾 = 营销失败。
@@ -12,8 +12,8 @@
 - 诊断方法：对每个 P 打分（1-5），得分最低的 = 当前营销主要短板。
 
 ## 不适用场景
-- 还没确定目标客群：4P 需要先知道卖给谁，先做 [stp-segmentation](../stp-segmentation/SKILL.md)。
-- 纯品牌或定位问题：4P 是营销执行层，品牌层面用 [brand-health](../brand-health/SKILL.md) 诊断。
+- 还没确定目标客群：4P 需要先知道卖给谁，先做 [stp-segmentation](../../stp-segmentation/SKILL.md)。
+- 纯品牌或定位问题：4P 是营销执行层，品牌层面用 [brand-health](../../brand-health/SKILL.md) 诊断。
 
 ## 检查清单
 - [ ] 4P 每个维度有具体方案而非空话。

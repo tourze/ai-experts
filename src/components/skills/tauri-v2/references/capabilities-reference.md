@@ -325,7 +325,7 @@ path = "$HOME/Documents/**"
 4. **平台特定**：对平台特定功能使用平台过滤
 5. **记录说明**：添加描述解释为什么需要权限
 
-**另见：** [插件参考](plugin-reference.md)查看插件特定的权限字符串 | [高级运行时](advanced-runtime-reference.md)查看 tray/sidecar 能力
+**另见：** [插件参考](./plugin-reference.md)查看插件特定的权限字符串 | [高级运行时](./advanced-runtime-reference.md)查看 tray/sidecar 能力
 
 ## 反模式：盲目信任默认权限
 

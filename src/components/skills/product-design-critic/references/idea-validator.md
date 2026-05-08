@@ -2,8 +2,8 @@
 
 ## 适用场景
 - 创业点子初筛、需求洞察验证、方案价值判断、立项前风险筛查。
-- 需要完整框架时可阅读 [references/full-guide.md](references/full-guide.md)。
-- 做用户画像或市场规模补充时，可配合 [startup-icp-definer](../startup-icp-definer/SKILL.md) 与 [market-sizing-analysis](../market-sizing-analysis/SKILL.md)。
+- 需要完整框架时可阅读 [references/full-guide.md](./full-guide.md)。
+- 做用户画像或市场规模补充时，可配合 [startup-icp-definer](../../startup-icp-definer/SKILL.md) 与 [market-sizing-analysis](../../market-sizing-analysis/SKILL.md)。
 
 ## 核心约束
 - 先验证问题是否真实、频繁且高成本，再谈方案优雅与否。

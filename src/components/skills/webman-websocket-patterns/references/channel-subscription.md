@@ -162,5 +162,5 @@ function verifyChannelAuth(string $socketId, string $channel, string $auth, stri
 
 ## 相关规则
 
-- [websocket-server-setup](websocket-server-setup.md) — 多 Worker 进程配置
-- [connection-lifecycle](connection-lifecycle.md) — 连接关闭时的清理
+- [websocket-server-setup](./websocket-server-setup.md) — 多 Worker 进程配置
+- [connection-lifecycle](./connection-lifecycle.md) — 连接关闭时的清理

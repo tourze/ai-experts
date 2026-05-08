@@ -5,19 +5,19 @@
 - 用户给出 GitHub/GitLab URL，要求"分析这个项目""看看这个仓库"。
 - 评估开源项目是否值得采用：活跃度、架构、社区、许可证。
 - 还原项目时间线、架构演进、社区热度、发布节奏、核心贡献者与竞品对比。
-- 仓库还没锁定先用 git-expert 的 `github-repo-search`；本地代码库调用链转 [wiki-researcher](../wiki-researcher/SKILL.md)；多仓库对比转 [comparative-analysis](../comparative-analysis/SKILL.md)；深度精读生成认知型 skill 转 [deep-code-read](../deep-code-read/SKILL.md)。
+- 仓库还没锁定先用 git-expert 的 `github-repo-search`；本地代码库调用链转 [wiki-researcher](./wiki-researcher.md)；多仓库对比转 [comparative-analysis](../../comparative-analysis/SKILL.md)；深度精读生成认知型 skill 转 [deep-code-read](../SKILL.md)。
 
 ## 核心约束
 
 - 默认"本地克隆"模式：克隆到 `/tmp/` 下，`--depth=50` 浅克隆，不污染工作区。
-- 用户已锁定仓库要做"演进时间线 / 架构演进 / 竞品对比"等深度研究时切到"GitHub API 深度模式"：用 `gh api`、release/tag/issue/PR 数据和本地 git 历史建立一手基线，详见 [references/deep-research-mode.md](references/deep-research-mode.md)。
+- 用户已锁定仓库要做"演进时间线 / 架构演进 / 竞品对比"等深度研究时切到"GitHub API 深度模式"：用 `gh api`、release/tag/issue/PR 数据和本地 git 历史建立一手基线，详见 [references/deep-research-mode.md](./deep-research-mode.md)。
 - 先读 README、LICENSE、构建配置，建立全景认知。
 - 用 `git log --oneline -30` 和 `git shortlog -sn --no-merges` 判断维护状态。
 - 必须进入核心文件实际读代码，不能只凭文件名下结论。
 - 区分"文档声称的"和"代码实际做的"；事实 / 观点 / 推断之间做清晰分层。
 - 外部结论必须内联引用，且要区分"源码 / 官方事实"和"社区观点 / 推断"。
-- 输出按 [输出模板](references/output-template.md)（轻量）或 [深度报告模板](assets/report_template.md)（演进 / 架构）。
-- 如果用户指定 `--persist <dir>` 或要求"保存为 skill"，除报告外，额外在 `<dir>/<repo-name>-report/` 生成 SKILL.md，将分析结果持久化为可复用的 skill 文件。格式见 [持久化模板](references/persist-template.md)。
+- 输出按 [输出模板](./output-template.md)（轻量）或 [深度报告模板](../assets/report_template.md)（演进 / 架构）。
+- 如果用户指定 `--persist <dir>` 或要求"保存为 skill"，除报告外，额外在 `<dir>/<repo-name>-report/` 生成 SKILL.md，将分析结果持久化为可复用的 skill 文件。格式见 [持久化模板](./persist-template.md)。
 
 ## 代码模式
 
@@ -30,7 +30,7 @@
 6. 输出：结构化报告
 ```
 
-深度模式额外步骤参见 [references/deep-research-mode.md](references/deep-research-mode.md)。
+深度模式额外步骤参见 [references/deep-research-mode.md](./deep-research-mode.md)。
 
 ## 检查清单
 

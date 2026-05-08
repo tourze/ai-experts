@@ -6,17 +6,17 @@
 - 找出漏斗瓶颈、渠道差异和需要优先修复的转化阶段。
 
 ## 核心约束
-- 输入数据必须是可审计的 JSON；样例以 [sample_campaign_data.json](assets/sample_campaign_data.json) 为准。
+- 输入数据必须是可审计的 JSON；样例以 [sample_campaign_data.json](../assets/sample_campaign_data.json) 为准。
 - 归因、漏斗、ROI 是三条不同分析线，输出里要明确区分，不混在一句总结里。
 - 先确认数据口径和时间窗口，再解释结果；错误口径下的精细图表没有价值。
-- 若发现转化事件本身不可靠，先回到 [analytics-tracking](../analytics-tracking/SKILL.md) 修埋点。
+- 若发现转化事件本身不可靠，先回到 [analytics-tracking](../SKILL.md) 修埋点。
 
 ## 分析模式
 - 归因分析：用同一份事件数据分别跑 first-touch、last-touch、linear、time-decay 和 position-based 口径，列出各渠道贡献差异。
 - ROI / ROAS 计算：按渠道汇总 spend、revenue、leads、customers，分别计算 ROI、ROAS、CPA、CPL、CAC。
 - 漏斗瓶颈分析：按 visit -> signup -> activation -> paid 等阶段计算转化率和阶段损耗，找出最大绝对流失与最大相对流失。
 - 若需要自动化计算，先把计算器登记为 procedure；运行时文档不要引用未生成的本地脚本。
-- 结果解释时配合 [attribution-models-guide](references/attribution-models-guide.md)、[campaign-metrics-benchmarks](references/campaign-metrics-benchmarks.md) 和 [funnel-optimization-framework](references/funnel-optimization-framework.md)。
+- 结果解释时配合 [attribution-models-guide](./attribution-models-guide.md)、[campaign-metrics-benchmarks](./campaign-metrics-benchmarks.md) 和 [funnel-optimization-framework](./funnel-optimization-framework.md)。
 
 ## 检查清单
 - 是否说明了数据来源、时间窗、归因窗口和渠道口径。

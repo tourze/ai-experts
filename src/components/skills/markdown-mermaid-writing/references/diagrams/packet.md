@@ -6,7 +6,7 @@
 
 **Syntax keyword:** `packet-beta`
 **Best for:** Network protocol headers, data structure layouts, binary format documentation, bit-level specifications
-**When NOT to use:** General data models (use [ER](er.md)), system architecture (use [C4](c4.md) or [Architecture](architecture.md))
+**When NOT to use:** General data models (use [ER](./er.md)), system architecture (use [C4](./c4.md) or [Architecture](./architecture.md))
 
 > ⚠️ **Accessibility:** Packet diagrams do **not** support `accTitle`/`accDescr`. Always place a descriptive _italic_ Markdown paragraph directly above the code block.
 

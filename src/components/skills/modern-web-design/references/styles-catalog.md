@@ -4,18 +4,18 @@
 
 ## 核心 40
 
-- [styles-minimal-flat.md](styles-minimal-flat.md) — Minimalism / Swiss / Flat / Exaggerated Minimalism / Swiss Modernism 2.0 / Soft UI Evolution
-- [styles-depth-glass.md](styles-depth-glass.md) — Glassmorphism / Neumorphism / Claymorphism / Skeuomorphism / Dimensional Layering / Liquid Glass
-- [styles-bold-raw.md](styles-bold-raw.md) — Brutalism / Neubrutalism / Anti-Polish / Gen-Z Chaos / Kinetic Typography / Editorial Grid
-- [styles-futuristic.md](styles-futuristic.md) — Cyberpunk / HUD Sci-Fi / Retro-Futurism / Aurora / Gradient Mesh / AI-Native / Spatial UI
-- [styles-retro-playful.md](styles-retro-playful.md) — Y2K / Vaporwave / Memphis / Pixel Art / Vintage Analog / Chromatic Aberration
-- [styles-organic-natural.md](styles-organic-natural.md) — Organic Biophilic / Nature Distilled / Biomimetic / Dark OLED / E-Ink Paper / Accessible
-- [styles-interactive.md](styles-interactive.md) — Motion-Driven / Micro-interactions / Parallax Storytelling / Interactive Cursor / 3D Product / Bento / Voice-First / Tactile
+- [styles-minimal-flat.md](./styles-minimal-flat.md) — Minimalism / Swiss / Flat / Exaggerated Minimalism / Swiss Modernism 2.0 / Soft UI Evolution
+- [styles-depth-glass.md](./styles-depth-glass.md) — Glassmorphism / Neumorphism / Claymorphism / Skeuomorphism / Dimensional Layering / Liquid Glass
+- [styles-bold-raw.md](./styles-bold-raw.md) — Brutalism / Neubrutalism / Anti-Polish / Gen-Z Chaos / Kinetic Typography / Editorial Grid
+- [styles-futuristic.md](./styles-futuristic.md) — Cyberpunk / HUD Sci-Fi / Retro-Futurism / Aurora / Gradient Mesh / AI-Native / Spatial UI
+- [styles-retro-playful.md](./styles-retro-playful.md) — Y2K / Vaporwave / Memphis / Pixel Art / Vintage Analog / Chromatic Aberration
+- [styles-organic-natural.md](./styles-organic-natural.md) — Organic Biophilic / Nature Distilled / Biomimetic / Dark OLED / E-Ink Paper / Accessible
+- [styles-interactive.md](./styles-interactive.md) — Motion-Driven / Micro-interactions / Parallax Storytelling / Interactive Cursor / 3D Product / Bento / Voice-First / Tactile
 
 ## 扩充 20
 
-- [styles-cultural-heritage.md](styles-cultural-heritage.md) — Bauhaus / Art Deco / Art Nouveau / Pop Art / Nordic / Japanese Ma / Cottagecore / Dark Academia / Folk / Steampunk
-- [styles-experimental-new.md](styles-experimental-new.md) — Risograph / Collage / Duotone / Isometric / Zine / Claymation / Matrix Terminal / Zero Interface / 3D Hyperrealism / Inclusive Design / Liquid Metal / Neon Glass / Generative / Cel-Shaded / Variable Font
+- [styles-cultural-heritage.md](./styles-cultural-heritage.md) — Bauhaus / Art Deco / Art Nouveau / Pop Art / Nordic / Japanese Ma / Cottagecore / Dark Academia / Folk / Steampunk
+- [styles-experimental-new.md](./styles-experimental-new.md) — Risograph / Collage / Duotone / Isometric / Zine / Claymation / Matrix Terminal / Zero Interface / 3D Hyperrealism / Inclusive Design / Liquid Metal / Neon Glass / Generative / Cel-Shaded / Variable Font
 
 ## 风格条目结构
 

@@ -3,8 +3,8 @@
 
 ## 适用场景
 - 需要识别样本中的反调试、反虚拟机、完整性校验或控制流混淆。
-- 需要与 [binary-analysis-patterns](../binary-analysis-patterns/SKILL.md) 联动做静态结构判读。
-- 需要结合 [protocol-reverse-engineering](../protocol-reverse-engineering/SKILL.md) 验证对抗逻辑是否影响网络面。
+- 需要与 [binary-analysis-patterns](../SKILL.md) 联动做静态结构判读。
+- 需要结合 [protocol-reverse-engineering](../../protocol-reverse-engineering/SKILL.md) 验证对抗逻辑是否影响网络面。
 
 ## 核心约束
 - 先确认保护层触发点，再决定是补丁、hook 还是动态绕过。

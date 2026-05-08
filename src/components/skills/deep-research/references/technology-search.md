@@ -5,7 +5,7 @@
 - 用户要查“某项技术最近有什么新动态”“这个框架最近发布了什么”“某个 AI / 硬件话题现在有哪些报道”。
 - 主题明确属于软件、硬件、AI、基础设施、安全或开发者生态。
 - 需要从多技术媒体和社区里取回结构化结果，再由模型翻译和归纳。
-- 如果需要进一步汇总结论，转到 [knowledge-synthesis](../knowledge-synthesis/SKILL.md)；如果拿到单篇 URL 正文，转到 [web-content-fetcher](../web-content-fetcher/SKILL.md)。
+- 如果需要进一步汇总结论，转到 [knowledge-synthesis](./knowledge-synthesis.md)；如果拿到单篇 URL 正文，转到 [web-content-fetcher](../../web-content-fetcher/SKILL.md)。
 
 ## 核心约束
 
@@ -31,7 +31,7 @@
 - 是否根据用户时效要求限定了合理的发布时间范围。
 - 是否区分“精准匹配结果”和“推荐补位结果”。
 - 是否在输出里保留来源、发布时间和热度。
-- 是否在需要时把结果交给 [knowledge-synthesis](../knowledge-synthesis/SKILL.md) 做二次归纳。
+- 是否在需要时把结果交给 [knowledge-synthesis](./knowledge-synthesis.md) 做二次归纳。
 
 ## 反模式
 

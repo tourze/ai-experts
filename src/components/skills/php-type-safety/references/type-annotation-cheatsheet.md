@@ -11,6 +11,6 @@
 | 条件返回 | `@return ($throw is true ? User : User\|null)` |
 | 类型断言 | `@phpstan-assert User $value` |
 
-代码示例与配置模板见 [patterns.md](references/patterns.md)。
+代码示例与配置模板见 [patterns.md](./patterns.md)。
 
-PHPDoc 文档模式与反模式见 [advanced-patterns.md](references/advanced-patterns.md)。
+PHPDoc 文档模式与反模式见 [advanced-patterns.md](./advanced-patterns.md)。

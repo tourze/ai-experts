@@ -19,4 +19,4 @@
 
 ## Absolute Bans（CSS 模式级硬禁令）
 
-审查时有 10 条"AI 指纹"CSS 模式**必须直接 P0 阻塞**，不能改颜色或宽度绕开，要换结构重写——包括 `border-left/right ≥ 2px` 侧条、`background-clip: text` 渐变文字、紫蓝 AI 色盘、深色霓虹光晕、嵌套卡片、装饰 sparkline、全居中、modal 滥用等。详情和正确重写方案见 [references/absolute-bans.md](references/absolute-bans.md)。
+审查时有 10 条"AI 指纹"CSS 模式**必须直接 P0 阻塞**，不能改颜色或宽度绕开，要换结构重写——包括 `border-left/right ≥ 2px` 侧条、`background-clip: text` 渐变文字、紫蓝 AI 色盘、深色霓虹光晕、嵌套卡片、装饰 sparkline、全居中、modal 滥用等。详情和正确重写方案见 [references/absolute-bans.md](./absolute-bans.md)。

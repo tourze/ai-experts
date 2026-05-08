@@ -59,12 +59,12 @@ const [posts, followers] = await Promise.all([
 
 ### 规则索引
 
-- [rules-waterfall/async-parallel.md](rules-waterfall/async-parallel.md)
-- [rules-waterfall/async-defer-await.md](rules-waterfall/async-defer-await.md)
-- [rules-waterfall/async-dependencies.md](rules-waterfall/async-dependencies.md)
-- [rules-waterfall/async-cheap-condition-before-await.md](rules-waterfall/async-cheap-condition-before-await.md)
-- [rules-waterfall/async-api-routes.md](rules-waterfall/async-api-routes.md)
-- [rules-waterfall/async-suspense-boundaries.md](rules-waterfall/async-suspense-boundaries.md)
+- [rules-waterfall/async-parallel.md](./rules-waterfall/async-parallel.md)
+- [rules-waterfall/async-defer-await.md](./rules-waterfall/async-defer-await.md)
+- [rules-waterfall/async-dependencies.md](./rules-waterfall/async-dependencies.md)
+- [rules-waterfall/async-cheap-condition-before-await.md](./rules-waterfall/async-cheap-condition-before-await.md)
+- [rules-waterfall/async-api-routes.md](./rules-waterfall/async-api-routes.md)
+- [rules-waterfall/async-suspense-boundaries.md](./rules-waterfall/async-suspense-boundaries.md)
 
 ## 浏览器渲染模式
 
@@ -153,18 +153,18 @@ element.addEventListener('scroll', handler, { passive: true });
 
 ### 规则索引
 
-- [rules-rendering/rendering-hydration-no-flicker.md](rules-rendering/rendering-hydration-no-flicker.md)
-- [rules-rendering/rendering-hydration-suppress-warning.md](rules-rendering/rendering-hydration-suppress-warning.md)
-- [rules-rendering/rendering-resource-hints.md](rules-rendering/rendering-resource-hints.md)
-- [rules-rendering/rendering-content-visibility.md](rules-rendering/rendering-content-visibility.md)
-- [rules-rendering/rendering-script-defer-async.md](rules-rendering/rendering-script-defer-async.md)
-- [rules-rendering/rendering-hoist-jsx.md](rules-rendering/rendering-hoist-jsx.md)
-- [rules-rendering/rendering-conditional-render.md](rules-rendering/rendering-conditional-render.md)
-- [rules-rendering/rendering-activity.md](rules-rendering/rendering-activity.md)
-- [rules-rendering/rendering-animate-svg-wrapper.md](rules-rendering/rendering-animate-svg-wrapper.md)
-- [rules-rendering/rendering-svg-precision.md](rules-rendering/rendering-svg-precision.md)
-- [rules-rendering/rendering-usetransition-loading.md](rules-rendering/rendering-usetransition-loading.md)
-- [rules-rendering/client-event-listeners.md](rules-rendering/client-event-listeners.md)
-- [rules-rendering/client-passive-event-listeners.md](rules-rendering/client-passive-event-listeners.md)
-- [rules-rendering/client-swr-dedup.md](rules-rendering/client-swr-dedup.md)
-- [rules-rendering/client-localstorage-schema.md](rules-rendering/client-localstorage-schema.md)
+- [rules-rendering/rendering-hydration-no-flicker.md](./rules-rendering/rendering-hydration-no-flicker.md)
+- [rules-rendering/rendering-hydration-suppress-warning.md](./rules-rendering/rendering-hydration-suppress-warning.md)
+- [rules-rendering/rendering-resource-hints.md](./rules-rendering/rendering-resource-hints.md)
+- [rules-rendering/rendering-content-visibility.md](./rules-rendering/rendering-content-visibility.md)
+- [rules-rendering/rendering-script-defer-async.md](./rules-rendering/rendering-script-defer-async.md)
+- [rules-rendering/rendering-hoist-jsx.md](./rules-rendering/rendering-hoist-jsx.md)
+- [rules-rendering/rendering-conditional-render.md](./rules-rendering/rendering-conditional-render.md)
+- [rules-rendering/rendering-activity.md](./rules-rendering/rendering-activity.md)
+- [rules-rendering/rendering-animate-svg-wrapper.md](./rules-rendering/rendering-animate-svg-wrapper.md)
+- [rules-rendering/rendering-svg-precision.md](./rules-rendering/rendering-svg-precision.md)
+- [rules-rendering/rendering-usetransition-loading.md](./rules-rendering/rendering-usetransition-loading.md)
+- [rules-rendering/client-event-listeners.md](./rules-rendering/client-event-listeners.md)
+- [rules-rendering/client-passive-event-listeners.md](./rules-rendering/client-passive-event-listeners.md)
+- [rules-rendering/client-swr-dedup.md](./rules-rendering/client-swr-dedup.md)
+- [rules-rendering/client-localstorage-schema.md](./rules-rendering/client-localstorage-schema.md)

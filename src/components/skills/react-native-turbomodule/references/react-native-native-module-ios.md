@@ -18,10 +18,10 @@
 
 ## 代码模式
 
-- [ObjC++ TurboModule](references/objcpp-turbomodule.md)
-- [getTurboModule 实现](references/get-turbo-module-impl.md)
-- [Swift 桥接](references/swift-bridging.md)
-- [CocoaPods podspec](references/cocoapods-podspec.md)
+- [ObjC++ TurboModule](./objcpp-turbomodule.md)
+- [getTurboModule 实现](./get-turbo-module-impl.md)
+- [Swift 桥接](./swift-bridging.md)
+- [CocoaPods podspec](./cocoapods-podspec.md)
 
 ## 检查清单
 

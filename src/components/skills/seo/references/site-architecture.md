@@ -9,7 +9,7 @@
 - 先定义网站目标和主要受众，再讨论目录和页面命名。
 - 架构决策必须同时考虑可发现性、可扩展性和 SEO，不只看导航美观。
 - URL、导航、内链、栏目页必须成套设计，不能只改其中一层。
-- 若任务进入标题、canonical、结构化数据等页面级优化，切到 [seo](../seo/SKILL.md)；若要规划内容体系，配合 [content-strategy](../content-strategy/SKILL.md)。
+- 若任务进入标题、canonical、结构化数据等页面级优化，切到 [seo](../SKILL.md)；若要规划内容体系，配合 [content-strategy](../../content-strategy/SKILL.md)。
 
 ## 代码模式
 - 推荐输出模板：
@@ -24,7 +24,7 @@ L2: /product/analytics /blog/revenue-ops /docs/getting-started
 - 次导航：Use cases / Templates / Compare
 ```
 
-- 复杂站点可借助 [site-type-templates](references/site-type-templates.md)、[navigation-patterns](references/navigation-patterns.md) 和 [mermaid-templates](references/mermaid-templates.md) 输出结构图。
+- 复杂站点可借助 [site-type-templates](./site-type-templates.md)、[navigation-patterns](./navigation-patterns.md) 和 [mermaid-templates](./mermaid-templates.md) 输出结构图。
 
 ## 检查清单
 - 是否明确核心受众和顶层入口。

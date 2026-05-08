@@ -3,7 +3,7 @@
 ## 适用场景
 - 年度战略目标分解为可衡量的 KPI 体系。
 - 避免只看财务指标而忽略客户、流程和成长维度。
-- 与 [business-health-diagnostic](../business-health-diagnostic/SKILL.md) 配合：BSC 做系统设计，健康诊断做快速检查。
+- 与 [business-health-diagnostic](../SKILL.md) 配合：BSC 做系统设计，健康诊断做快速检查。
 
 ## 核心约束
 - 四个维度有因果链：学习与成长 → 内部流程 → 客户 → 财务。**先投入后产出**，不能倒推。

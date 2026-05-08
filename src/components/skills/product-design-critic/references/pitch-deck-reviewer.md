@@ -2,8 +2,8 @@
 
 ## 适用场景
 - 融资前审稿、路演彩排、单页重写、叙事主线梳理。
-- 开始审查前先阅读 [references/frameworks.md](references/frameworks.md)。
-- 需要联动融资策略与市场规模时，可配合 [fundraise-advisor](../fundraise-advisor/SKILL.md) 和 [market-sizing-analysis](../market-sizing-analysis/SKILL.md)。
+- 开始审查前先阅读 [references/frameworks.md](./frameworks.md)。
+- 需要联动融资策略与市场规模时，可配合 [fundraise-advisor](../../fundraise-advisor/SKILL.md) 和 [market-sizing-analysis](../../market-sizing-analysis/SKILL.md)。
 
 ## 核心约束
 - 审查重点是“投资人为什么会相信”，而不是单纯排版好不好看。

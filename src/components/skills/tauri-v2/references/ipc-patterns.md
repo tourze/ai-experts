@@ -19,7 +19,7 @@ Tauri v2+ 提供三种 IPC 原语：
 2. **Events**：即发即弃的通知
 3. **Channels**：高频流式传输
 
-**另见：** [能力参考](capabilities-reference.md)查看权限设置 | [插件参考](plugin-reference.md)查看插件特定 IPC
+**另见：** [能力参考](./capabilities-reference.md)查看权限设置 | [插件参考](./plugin-reference.md)查看插件特定 IPC
 
 *最后验证日期：2026-04-02。当 IPC API 时序至关重要时，请查看官方 Tauri 更新日志。*
 

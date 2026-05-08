@@ -2,7 +2,7 @@
 
 ## 适用场景
 - pre-seed 到 Series A 阶段的团队设计、关键岗位招聘与预算规划。
-- 需要把团队规划与融资节奏联动时，可配合 [fundraise-advisor](../fundraise-advisor/SKILL.md)；讨论不确定性缓冲时，可配合 [planning-under-uncertainty](../planning-under-uncertainty/SKILL.md)。
+- 需要把团队规划与融资节奏联动时，可配合 [fundraise-advisor](../../fundraise-advisor/SKILL.md)；讨论不确定性缓冲时，可配合 [planning-under-uncertainty](../../planning-under-uncertainty/SKILL.md)。
 
 ## 核心约束
 - 先明确当前阶段的核心瓶颈和里程碑，再决定招谁，不按“理想组织图”反推。

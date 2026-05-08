@@ -3,8 +3,8 @@
 
 ## 适用场景
 - 需要从 IDA/Ghidra 反编译输出中推断 stripped 结构体的字段布局。
-- 需要与 [binary-analysis-patterns](../binary-analysis-patterns/SKILL.md) 配合做深入逆向。
-- 需要与 [idapython-scripting](../idapython-scripting/SKILL.md) 配合批量提取内存访问模式。
+- 需要与 [binary-analysis-patterns](../SKILL.md) 配合做深入逆向。
+- 需要与 [idapython-scripting](../../idapython-scripting/SKILL.md) 配合批量提取内存访问模式。
 
 ## 核心约束
 - 先收集多个函数中的偏移访问，再推断结构体——不要只看一个函数。

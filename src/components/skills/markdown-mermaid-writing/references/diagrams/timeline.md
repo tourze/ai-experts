@@ -6,7 +6,7 @@
 
 **Syntax keyword:** `timeline`
 **Best for:** Chronological events, historical progression, milestones over time, release history
-**When NOT to use:** Task durations/dependencies (use [Gantt](gantt.md)), detailed project plans (use [Gantt](gantt.md))
+**When NOT to use:** Task durations/dependencies (use [Gantt](./gantt.md)), detailed project plans (use [Gantt](./gantt.md))
 
 > ⚠️ **Accessibility:** Timelines do **not** support `accTitle`/`accDescr`. Always place a descriptive _italic_ Markdown paragraph directly above the code block.
 

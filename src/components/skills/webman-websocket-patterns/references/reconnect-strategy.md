@@ -212,5 +212,5 @@ Timer::add(60.0, function () use (&$connection, &$lastPongTime): void {
 
 ## 相关规则
 
-- [connection-lifecycle](connection-lifecycle.md) — 服务端侧的连接管理
-- [websocket-server-setup](websocket-server-setup.md) — 服务端进程配置
+- [connection-lifecycle](./connection-lifecycle.md) — 服务端侧的连接管理
+- [websocket-server-setup](./websocket-server-setup.md) — 服务端进程配置

@@ -18,10 +18,10 @@
 
 ## 代码模式
 
-- [Kotlin TurboModule](references/kotlin-turbomodule.md)
-- [TurboReactPackage 注册](references/turbo-react-package.md)
-- [Activity 与系统服务](references/activity-system-services.md)
-- [Gradle Codegen](references/gradle-codegen.md)
+- [Kotlin TurboModule](./kotlin-turbomodule.md)
+- [TurboReactPackage 注册](./turbo-react-package.md)
+- [Activity 与系统服务](./activity-system-services.md)
+- [Gradle Codegen](./gradle-codegen.md)
 
 ## 检查清单
 

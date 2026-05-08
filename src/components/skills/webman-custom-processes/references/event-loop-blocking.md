@@ -138,6 +138,6 @@ final class MessageHandler
 
 ## 相关规则
 
-- [timer-management](timer-management.md) — 用 Timer 替代 sleep
-- [process-lifecycle](process-lifecycle.md) — onWorkerStart 中的初始化也不可阻塞
-- [crash-recovery](crash-recovery.md) — 阻塞导致的假死与进程恢复
+- [timer-management](./timer-management.md) — 用 Timer 替代 sleep
+- [process-lifecycle](./process-lifecycle.md) — onWorkerStart 中的初始化也不可阻塞
+- [crash-recovery](./crash-recovery.md) — 阻塞导致的假死与进程恢复

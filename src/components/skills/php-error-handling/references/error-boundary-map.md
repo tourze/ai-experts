@@ -7,8 +7,8 @@ DomainException (abstract, extends RuntimeException)
 └── ExternalServiceException — 第三方不可用
 ```
 
-代码示例见 [patterns.md](references/patterns.md)。
+代码示例见 [patterns.md](./patterns.md)。
 
 ## 代码模式
 
-代码示例见 [patterns.md](references/patterns.md)。
+代码示例见 [patterns.md](./patterns.md)。

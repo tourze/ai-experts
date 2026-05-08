@@ -7,7 +7,7 @@
 **Syntax keyword:** `treemap-beta`
 **Mermaid version:** v11.12.0+
 **Best for:** Hierarchical data proportions, budget breakdowns, disk usage, portfolio composition
-**When NOT to use:** Simple flat proportions (use [Pie](pie.md)), flow-based hierarchy (use [Sankey](sankey.md))
+**When NOT to use:** Simple flat proportions (use [Pie](./pie.md)), flow-based hierarchy (use [Sankey](./sankey.md))
 
 > ⚠️ **Accessibility:** Treemap diagrams do **not** support `accTitle`/`accDescr`. Always place a descriptive _italic_ Markdown paragraph directly above the code block.
 >

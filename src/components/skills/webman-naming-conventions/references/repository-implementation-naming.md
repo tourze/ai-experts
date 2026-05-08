@@ -161,5 +161,5 @@ final class EloquentOrderRepository implements OrderRepositoryInterface
 - [ ] 名称与目录结构匹配？
 
 ## 相关规则
-- [interface-naming](interface-naming.md)
-- [service-naming-pattern](service-naming-pattern.md)
+- [interface-naming](./interface-naming.md)
+- [service-naming-pattern](./service-naming-pattern.md)

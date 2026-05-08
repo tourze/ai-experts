@@ -2,7 +2,7 @@
 
 ## 适用场景
 - MVP 拆分、阶段性交付、需求排期、里程碑定义和路线图收敛。
-- 需要把需求文档落成版本时，可配合 [create-prd](../create-prd/SKILL.md)；需要进一步瘦身时，可配合 [scoping-cutting](../create-prd/SKILL.md)。
+- 需要把需求文档落成版本时，可配合 [create-prd](../../create-prd/SKILL.md)；需要进一步瘦身时，可配合 [scoping-cutting](../../create-prd/SKILL.md)。
 
 ## 核心约束
 - 先明确每个版本要验证什么，再决定功能集合；版本不是简单按时间切块。

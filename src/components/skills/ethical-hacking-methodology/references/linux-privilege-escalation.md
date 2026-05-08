@@ -4,7 +4,7 @@
 ## 适用场景
 - 需要从普通用户态分析 sudo、SUID、capabilities、计划任务、服务配置和内核暴露面。
 - 需要在渗透流程中把枚举结果按可利用性排序。
-- 需要与 [nmap](../nmap/SKILL.md) 的侦察结果或 [memory-forensics](../memory-forensics/SKILL.md) 的取证结果交叉验证。
+- 需要与 [nmap](./nmap.md) 的侦察结果或 [memory-forensics](../../memory-forensics/SKILL.md) 的取证结果交叉验证。
 
 ## 核心约束
 - 先枚举后利用；先用户态配置，再考虑高风险内核路线。

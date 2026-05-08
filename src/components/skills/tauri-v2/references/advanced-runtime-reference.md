@@ -11,8 +11,8 @@
 > *最后验证日期：2026-04-02。查看官方 Tauri v2+ 文档了解更新。*
 
 **另见：**
-- [plugin-reference.md](plugin-reference.md) — 插件安装和权限
-- [capabilities-reference.md](capabilities-reference.md) — 能力/权限模型
+- [plugin-reference.md](./plugin-reference.md) — 插件安装和权限
+- [capabilities-reference.md](./capabilities-reference.md) — 能力/权限模型
 
 ## 第一节：系统托盘（`TrayIconBuilder`）
 

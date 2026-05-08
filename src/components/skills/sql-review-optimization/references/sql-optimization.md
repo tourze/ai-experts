@@ -10,7 +10,7 @@ description: 当用户要分析 slow query、EXPLAIN 执行计划、index tuning
 - 排查慢查询、索引缺失、回表过多、排序退化、批处理低效、分页越来越慢等问题。
 - 需要基于执行计划、行数估算、锁等待和数据分布决定优化方向，而不是盲目重写 SQL。
 - 调整 ORM 生成语句、报表 SQL、批量任务或高频接口的数据库访问路径。
-- 如果主要问题是安全或正确性，联动 [sql-code-review](../sql-code-review/SKILL.md)；如果优化依赖数据库方言细节，联动 mysql-expert 或 pgsql-expert 的对应技能。
+- 如果主要问题是安全或正确性，联动 [sql-code-review](./sql-code-review.md)；如果优化依赖数据库方言细节，联动 mysql-expert 或 pgsql-expert 的对应技能。
 
 ## 核心约束
 

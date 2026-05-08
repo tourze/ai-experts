@@ -3,8 +3,8 @@
 
 ## 适用场景
 - 客户满意度、PMF、功能优先级、入门引导或流失原因调研。
-- 需要参考 [references/guest-insights.md](references/guest-insights.md) 中的经验时。
-- 想把问卷结果和访谈结论结合时，可配合 [mom-test](../mom-test/SKILL.md)。
+- 需要参考 [references/guest-insights.md](./guest-insights.md) 中的经验时。
+- 想把问卷结果和访谈结论结合时，可配合 [mom-test](./mom-test.md)。
 
 ## 核心约束
 - 先定义研究目标和决策问题，再写题目；每道题只测一件事。

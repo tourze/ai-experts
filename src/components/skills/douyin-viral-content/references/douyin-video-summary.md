@@ -5,8 +5,8 @@
 - 用户贴出抖音短链或直链，希望快速拿到文字摘要。
 - 用户需要把抖音视频内容转成可编辑文本，再继续做复盘、改写或知识整理。
 - 用户已经拿到音频直链，想直接跑本地转录流程。
-- 需要把摘要同步到飞书文档时，配合 [飞书同步说明](references/feishu-sync.md) 一起用。
-- 需要进一步把视频内容改写成文案时，切到 [douyin-viral-content](../douyin-viral-content/SKILL.md)。
+- 需要把摘要同步到飞书文档时，配合 [飞书同步说明](./feishu-sync.md) 一起用。
+- 需要进一步把视频内容改写成文案时，切到 [douyin-viral-content](../SKILL.md)。
 
 ## 核心约束
 
@@ -65,7 +65,7 @@ whisper-cli -m models/ggml-small.bin -f ./output/audio.wav -l zh -otxt -of ./out
 - 下载、转码、转录命令的输入输出路径保持一致。
 - 转录前已确认 `ffmpeg`、`ffprobe`、`whisper-cli` 和模型文件可用。
 - 摘要中区分了“视频明确说了什么”和“基于内容的整理归纳”。
-- 需要飞书落库时，已对照 [飞书同步说明](references/feishu-sync.md)。
+- 需要飞书落库时，已对照 [飞书同步说明](./feishu-sync.md)。
 
 ## 反模式
 

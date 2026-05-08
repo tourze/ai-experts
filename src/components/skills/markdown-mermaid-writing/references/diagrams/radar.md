@@ -7,7 +7,7 @@
 **Syntax keyword:** `radar-beta`
 **Mermaid version:** v11.6.0+
 **Best for:** Multi-dimensional comparisons, skill assessments, performance profiles, competitive analysis
-**When NOT to use:** Time series data (use [XY Chart](xy_chart.md)), simple proportions (use [Pie](pie.md))
+**When NOT to use:** Time series data (use [XY Chart](./xy_chart.md)), simple proportions (use [Pie](./pie.md))
 
 > ⚠️ **Accessibility:** Radar charts do **not** support `accTitle`/`accDescr`. Always place a descriptive _italic_ Markdown paragraph directly above the code block.
 

@@ -3,7 +3,7 @@
 ## 适用场景
 - 快速扩张期的人才策略规划。
 - 关键人才流失后的根因诊断。
-- 与 [team-composition-analysis](../team-composition-analysis/SKILL.md) 配合：团队分析定结构，选育用留定人才策略。
+- 与 [team-composition-analysis](./team-composition-analysis.md) 配合：团队分析定结构，选育用留定人才策略。
 
 ## 核心约束
 - 四个环节闭环：选（招聘配置）-> 育（培训发展）-> 用（绩效管理）-> 留（薪酬激励）。
@@ -12,7 +12,7 @@
 - 环节联动必须检查：招来的人是否得到培养？培养的能力是否被用上？做出贡献的人是否得到回报？留不住的人是否在招聘端补上？
 
 ## 不适用场景
-- 只需确定团队结构和 headcount：用 [team-composition-analysis](../team-composition-analysis/SKILL.md)。
+- 只需确定团队结构和 headcount：用 [team-composition-analysis](./team-composition-analysis.md)。
 - 单次招聘决策：选育用留是体系设计，单个岗位招聘不需要全框架。
 
 ## 代码模式

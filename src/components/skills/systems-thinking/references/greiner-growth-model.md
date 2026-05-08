@@ -18,7 +18,7 @@
 
 ## 不适用场景
 - 非成长型组织（政府机构、稳态企业）：Greiner 假设企业在持续成长，稳态组织无阶段跃迁。
-- 急需具体操作方案：Greiner 定诊断方向，具体组织设计用 [org-canvas](../org-canvas/SKILL.md)，人才策略用 [talent-management](../talent-management/SKILL.md)。
+- 急需具体操作方案：Greiner 定诊断方向，具体组织设计用 [org-canvas](../../org-canvas/SKILL.md)，人才策略用 [talent-management](../talent-management/SKILL.md)。
 
 ## 代码模式
 

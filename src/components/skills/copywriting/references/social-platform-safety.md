@@ -29,9 +29,9 @@
 
 配套资料：
 
-- [过滤策略说明](content-filtering-guidelines.md)
-- [使用示例](usage-examples.md)
-- [安全策略](safety-policies.md)
+- [过滤策略说明](./content-filtering-guidelines.md)
+- [使用示例](./usage-examples.md)
+- [安全策略](./safety-policies.md)
 - [默认 blocklist](../assets/blocklist.txt)
 
 ## 检查清单

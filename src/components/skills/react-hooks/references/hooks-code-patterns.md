@@ -42,4 +42,4 @@ export function Counter({ initial = 0 }: { initial?: number }) {
 }
 ```
 
-自定义 Hook 与 useMemo 派生值的完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。
+自定义 Hook 与 useMemo 派生值的完整代码见 [references/advanced-patterns.md](./advanced-patterns.md)。

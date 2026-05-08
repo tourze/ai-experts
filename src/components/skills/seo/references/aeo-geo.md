@@ -9,13 +9,13 @@
 - AEO 面向结构化答案提取；GEO 面向 AI 模型引用概率。两者互补，不可只做一个。
 - 统计和专家引言必须标注来源；AI 模型优先引用有出处的内容。
 - 不要为了 AI 可读性牺牲人类读者体验；AI 优化是叠加层，不是替代层。
-- 传统排名配合 [seo](../seo/SKILL.md)；内容主题配合 [content-strategy](../content-strategy/SKILL.md)。
+- 传统排名配合 [seo](../SKILL.md)；内容主题配合 [content-strategy](../../content-strategy/SKILL.md)。
 
 ## 代码模式
 
 ### AEO：用标准块格式化内容
 
-按 [aeo-content-blocks](references/aeo-content-blocks.md) 中的模板，常用 6 种：
+按 [aeo-content-blocks](./aeo-content-blocks.md) 中的模板，常用 6 种：
 - **Definition Block** — "什么是 X"查询
 - **Step-by-Step Block** — "怎么做 X"查询，目标列表 Snippet
 - **Comparison Table Block** — "X vs Y"查询，目标表格 Snippet
@@ -25,7 +25,7 @@
 
 ### GEO：提升被 AI 引用的概率
 
-按 [geo-citation-patterns](references/geo-citation-patterns.md) 中的模式：
+按 [geo-citation-patterns](./geo-citation-patterns.md) 中的模式：
 - **统计引用块**：数据声明附来源、年份、机构名（引用率 +15-30%）
 - **专家引言块**：具名专家 + 头衔 + 直接引语
 - **自包含答案块**：无需上下文即可理解的 2-3 句陈述

@@ -6,10 +6,10 @@
 - 用户说“反过来想”“怎么一定会失败”“我们要避免什么坑”“事前验尸”“pre-mortem”。
 - 目标清楚，但失败模式、脆弱点和不可承受代价还没被显式写出来。
 - 适合上线前、扩张前、项目启动前、关键决策前做"先别死"的思考；包含发布前风险推演与事前验尸场景。
-- 如果目标本身还没定义清楚，先用 [first-principles-decomposer](../first-principles-decomposer/SKILL.md) 收敛。
-- 如果需要把失败路径展开成未来分支，可接 [what-if-oracle](../what-if-oracle/SKILL.md)。
+- 如果目标本身还没定义清楚，先用 [first-principles-decomposer](../SKILL.md) 收敛。
+- 如果需要把失败路径展开成未来分支，可接 [what-if-oracle](../../what-if-oracle/SKILL.md)。
 - 与决策或不确定性分析联动时，可配合 `running-decision-processes` 和 `planning-under-uncertainty`。
-- 需要更多案例时参考 [inversion 示例集](references/examples.md)、[inversion 方法框架](references/framework.md)、[pre-mortem 示例集](references/pre-mortem-examples.md)、[pre-mortem 方法框架](references/pre-mortem-framework.md)。
+- 需要更多案例时参考 [inversion 示例集](./examples.md)、[inversion 方法框架](./framework.md)、[pre-mortem 示例集](./pre-mortem-examples.md)、[pre-mortem 方法框架](./pre-mortem-framework.md)。
 
 ## 核心约束
 

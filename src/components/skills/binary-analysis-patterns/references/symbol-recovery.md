@@ -4,8 +4,8 @@
 ## 适用场景
 - 二进制被 strip，所有函数名是 `sub_XXXXX`，需要恢复语义命名。
 - 需要识别标准库函数、加密算法或协议实现。
-- 需要与 [binary-analysis-patterns](../binary-analysis-patterns/SKILL.md) 配合做整体分析。
-- 需要与 [struct-recovery](../struct-recovery/SKILL.md) 配合：结构体字段用途可反推函数语义。
+- 需要与 [binary-analysis-patterns](../SKILL.md) 配合做整体分析。
+- 需要与 [struct-recovery](./struct-recovery.md) 配合：结构体字段用途可反推函数语义。
 
 ## 核心约束
 - 先用 IDA FLIRT / Ghidra signatures 自动识别库函数，手动分析仅针对未识别部分。

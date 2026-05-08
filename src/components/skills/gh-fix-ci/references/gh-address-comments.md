@@ -39,7 +39,7 @@ wc -l /tmp/pr-issue-comments.jsonl /tmp/pr-review-comments.jsonl /tmp/pr-reviews
 - 是否区分顶层评论、review 提交和 inline review thread。
 - 是否给每条评论编号，并写出最小修复动作。
 - 是否明确标出需要用户拍板的分歧点。
-- 如果评论与 CI 失败关联，先参阅 [gh-fix-ci](../gh-fix-ci/SKILL.md)。
+- 如果评论与 CI 失败关联，先参阅 [gh-fix-ci](../SKILL.md)。
 
 ## 反模式
 

@@ -4,8 +4,8 @@
 ## 适用场景
 - 季度规划或路线图细化，需要把 Epic 拆成可排期的用户故事。
 - Epic 跨越多个 Sprint，团队无法估算或承诺。
-- 与 [user-story-patterns](user-story-patterns.md) 配合写拆分后的用户故事，与 [agile-product-owner](../agile-product-owner/SKILL.md) 配合做 Sprint 规划。
-- 9 种分解模式详见 [decomposition-patterns](epic-decomposition-patterns.md)。
+- 与 [user-story-patterns](./user-story-patterns.md) 配合写拆分后的用户故事，与 [agile-product-owner](../../agile-product-owner/SKILL.md) 配合做 Sprint 规划。
+- 9 种分解模式详见 [decomposition-patterns](./epic-decomposition-patterns.md)。
 
 ## 核心约束
 - 先明确 Epic 的**用户目标和成功指标**，再决定分解策略；没有目标的 Epic 先补目标。
@@ -17,7 +17,7 @@
 
 ### 分解模式速查
 
-用户旅程 | 角色/Persona | 业务规则 | 数据/平台 | 性能/质量 | CRUD | 时间/频率 | 依赖解耦 | Walking Skeleton。详见 [decomposition-patterns](epic-decomposition-patterns.md)。
+用户旅程 | 角色/Persona | 业务规则 | 数据/平台 | 性能/质量 | CRUD | 时间/频率 | 依赖解耦 | Walking Skeleton。详见 [decomposition-patterns](./epic-decomposition-patterns.md)。
 
 ### 分解质量评估
 

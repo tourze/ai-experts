@@ -3,7 +3,7 @@
 
 ## 适用场景
 - 路线图评审、季度竞品复盘、对手发布重大功能或调价后的深度分析。
-- 需要结合 [references/data-collection-guide.md](references/data-collection-guide.md)、[references/scoring-rubric.md](references/scoring-rubric.md)、[references/analysis-templates.md](references/analysis-templates.md) 做证据化拆解。
+- 需要结合 [references/data-collection-guide.md](./data-collection-guide.md)、[references/scoring-rubric.md](./scoring-rubric.md)、[references/analysis-templates.md](./analysis-templates.md) 做证据化拆解。
 - 需要生成量化矩阵时，先用 rubric 明确维度、权重和证据来源，再按模板输出评分矩阵；不要引用未登记的本地脚本。
 
 ## 核心约束

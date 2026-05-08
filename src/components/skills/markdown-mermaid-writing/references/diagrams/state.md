@@ -6,7 +6,7 @@
 
 **Syntax keyword:** `stateDiagram-v2`
 **Best for:** State machines, lifecycle flows, status transitions, object lifecycles
-**When NOT to use:** Sequential processes with many steps (use [Flowchart](flowchart.md)), timing-critical interactions (use [Sequence](sequence.md))
+**When NOT to use:** Sequential processes with many steps (use [Flowchart](./flowchart.md)), timing-critical interactions (use [Sequence](./sequence.md))
 
 ---
 

@@ -8,7 +8,7 @@
 | DTO | 跨层数据传输、输入归一化 | 行为逻辑 |
 | Value Object | 封装业务概念、自验证、不可变 | 可变状态 |
 
-代码示例见 [patterns.md](references/patterns.md)。
+代码示例见 [patterns.md](./patterns.md)。
 
 ## 代码模式
 
@@ -34,4 +34,4 @@ class OrderService {
 }
 ```
 
-代码示例见 [patterns.md](references/patterns.md)。
+代码示例见 [patterns.md](./patterns.md)。

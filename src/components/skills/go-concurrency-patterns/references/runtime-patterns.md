@@ -28,4 +28,4 @@ for i := 0; i < workerCount; i++ {
 }
 ```
 
-fan-out/fan-in pipeline、优雅停机完整代码见 [references/advanced-patterns.md](references/advanced-patterns.md)。
+fan-out/fan-in pipeline、优雅停机完整代码见 [references/advanced-patterns.md](./advanced-patterns.md)。

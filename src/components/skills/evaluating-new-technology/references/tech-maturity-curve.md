@@ -4,7 +4,7 @@
 ## 适用场景
 - 技术投资决策：该技术现在值得投入吗？
 - 产品路线图规划：何时把新技术集成到产品中？
-- 与 [evaluating-new-technology](../evaluating-new-technology/SKILL.md) 配合：Hype Cycle 定位阶段，评估技术做深度分析。
+- 与 [evaluating-new-technology](../SKILL.md) 配合：Hype Cycle 定位阶段，评估技术做深度分析。
 
 ## 核心约束
 - 判断阶段要看**多个信号**（融资热度、媒体报道、实际案例数、创业公司存活率），不能只凭新闻热度。
@@ -21,7 +21,7 @@
 | 成熟期 | 大规模采用、标准化 | 必须采用，否则落后 |
 
 ## 不适用场景
-- 已成熟的技术选型：如果技术已在成熟期（如 PostgreSQL、React），Hype Cycle 分析没有增量价值。直接用 [evaluating-new-technology](../evaluating-new-technology/SKILL.md) 做 build-vs-buy。
+- 已成熟的技术选型：如果技术已在成熟期（如 PostgreSQL、React），Hype Cycle 分析没有增量价值。直接用 [evaluating-new-technology](../SKILL.md) 做 build-vs-buy。
 - 需要精确 ROI：Hype Cycle 是定性阶段判断，不产生数字。
 
 ## 代码模式

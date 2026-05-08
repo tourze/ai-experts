@@ -6,7 +6,7 @@
 
 **Syntax keyword:** `requirementDiagram`
 **Best for:** System requirements traceability, compliance mapping, formal requirements engineering
-**When NOT to use:** Informal task tracking (use [Kanban](kanban.md)), general relationships (use [ER](er.md))
+**When NOT to use:** Informal task tracking (use [Kanban](kanban.md)), general relationships (use [ER](./er.md))
 
 ---
 

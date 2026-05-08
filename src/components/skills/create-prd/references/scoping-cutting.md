@@ -3,8 +3,8 @@
 
 ## 适用场景
 - MVP 设计、版本瘦身、时间盒交付、资源不足下的功能取舍。
-- 需要经验参考时可阅读 [references/guest-insights.md](references/guest-insights.md)。
-- 做版本落地时可配合 [version-planner](../version-planner/SKILL.md) 与 [create-prd](../create-prd/SKILL.md)。
+- 需要经验参考时可阅读 [references/guest-insights.md](./guest-insights.md)。
+- 做版本落地时可配合 [version-planner](../version-planner/SKILL.md) 与 [create-prd](../SKILL.md)。
 
 ## 核心约束
 - 先明确本轮要验证的核心假设，再判断哪些内容是必须、可选或延后。

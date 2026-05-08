@@ -1,6 +1,6 @@
 ## 审查强度
 
-用户未指定时默认标准模式。高压模式详情见 [references/brutal-mode.md](./references/brutal-mode.md)。
+用户未指定时默认标准模式。高压模式详情见 [references/brutal-mode.md](./brutal-mode.md)。
 
 | 模式 | 触发信号 | 适用场景 |
 |------|---------|---------|
@@ -10,7 +10,7 @@
 高压模式只攻击工作产物，不攻击作者人格。无授权不对新人/低心理安全团队使用。
 
 ## 审查维度
-读取 [references/dimensions.md](./references/dimensions.md)，按六维度逐项检查：命名与语义、函数设计、错误处理、逻辑与边界、DRY 与抽象、可读性。
+读取 [references/dimensions.md](./dimensions.md)，按六维度逐项检查：命名与语义、函数设计、错误处理、逻辑与边界、DRY 与抽象、可读性。
 
 ## 纪律守卫
 
@@ -22,7 +22,7 @@
 | "没什么大问题，LGTM" | 没发现问题和没有问题是两回事 |
 | "我来重写一下更好" | 审查是指出问题，给建议不给整段代码 |
 
-完整 Red Flags 见 [references/discipline-guard.md](./references/discipline-guard.md)。
+完整 Red Flags 见 [references/discipline-guard.md](./discipline-guard.md)。
 
 ## 自动化评估工具
 

@@ -4,7 +4,7 @@
 ## 适用场景
 - 快速全面地分析任何问题或制定任何计划。
 - 需求澄清：确保方案的七个维度都考虑到了。
-- 与 [mckinsey-7-step](../mckinsey-7-step/SKILL.md) 配合：5W2H 做问题澄清，七步法做深度分析。
+- 与 [mckinsey-7-step](../../mckinsey-7-step/SKILL.md) 配合：5W2H 做问题澄清，七步法做深度分析。
 
 ## 核心约束
 - **Why 是起点**——如果 Why 不清楚，其他 6 个都可能是错的。Why 回答的是"为什么值得做"而非"老板说要做"。
@@ -15,8 +15,8 @@
 - **How Much 是最常被低估的维度**：只写预算不写范围 = 需求蔓延的温床。必须同时定义"做多少"和"花多少"。
 
 ## 不适用场景
-- 复杂模糊问题需要拆解：5W2H 假设问题已明确只需要补全维度，模糊问题先用 [mckinsey-7-step](../mckinsey-7-step/SKILL.md) 做结构化拆解。
-- 持续改进场景：5W2H 做单次计划，持续改进用 [pdca-cycle](../pdca-cycle/SKILL.md)。
+- 复杂模糊问题需要拆解：5W2H 假设问题已明确只需要补全维度，模糊问题先用 [mckinsey-7-step](../../mckinsey-7-step/SKILL.md) 做结构化拆解。
+- 持续改进场景：5W2H 做单次计划，持续改进用 [pdca-cycle](../../pdca-cycle/SKILL.md)。
 
 ## 代码模式
 

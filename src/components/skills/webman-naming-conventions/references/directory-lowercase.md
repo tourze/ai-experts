@@ -190,5 +190,5 @@ composer dump-autoload
 ```
 
 ## 相关规则
-- [namespace-directory-mismatch](namespace-directory-mismatch.md) - 命名空间必须匹配目录
-- [interface-naming](interface-naming.md) - 接口命名规范
+- [namespace-directory-mismatch](./namespace-directory-mismatch.md) - 命名空间必须匹配目录
+- [interface-naming](./interface-naming.md) - 接口命名规范

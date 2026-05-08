@@ -141,6 +141,6 @@ final class ResilientProcess
 
 ## 相关规则
 
-- [process-lifecycle](process-lifecycle.md) — 进程生命周期与初始化
-- [event-loop-blocking](event-loop-blocking.md) — sleep 在 catch 中同样阻塞事件循环
-- [timer-management](timer-management.md) — 重启前清理定时器
+- [process-lifecycle](./process-lifecycle.md) — 进程生命周期与初始化
+- [event-loop-blocking](./event-loop-blocking.md) — sleep 在 catch 中同样阻塞事件循环
+- [timer-management](./timer-management.md) — 重启前清理定时器

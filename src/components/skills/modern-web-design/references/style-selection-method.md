@@ -1,6 +1,6 @@
 ## 风格选择方法
 
-[references/styles-catalog.md](references/styles-catalog.md) 收录 60 种 UI 风格，每条含关键词、CSS 特征、适用/反适用、AI prompt 关键词、实现 checklist。
+[references/styles-catalog.md](./styles-catalog.md) 收录 60 种 UI 风格，每条含关键词、CSS 特征、适用/反适用、AI prompt 关键词、实现 checklist。
 
 ### 步骤
 
@@ -35,4 +35,4 @@
 </section>
 ```
 
-Glassmorphism 完整落地示例见 [references/styles-depth-glass.md](references/styles-depth-glass.md)。
+Glassmorphism 完整落地示例见 [references/styles-depth-glass.md](./styles-depth-glass.md)。

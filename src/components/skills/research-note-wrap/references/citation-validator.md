@@ -4,7 +4,7 @@
 
 - 研究报告、PRD、白皮书、对外发布内容交付前做"每个事实都有出处"的最后把关。
 - 面向高风险决策（医疗 / 法律 / 财务 / 合规），或接手他人研究怀疑存在编造引用。
-- [deep-research](../deep-research/SKILL.md) / [knowledge-synthesis](../knowledge-synthesis/SKILL.md) 闭环的最后一步。
+- [deep-research](../../deep-research/SKILL.md) / [knowledge-synthesis](../knowledge-synthesis/SKILL.md) 闭环的最后一步。
 - 不适用：纯主观分析、代码实现、无外部事实依赖的内部讨论。
 
 ## 核心约束
@@ -37,7 +37,7 @@
 7. 输出报告 — 问题清单 + 整改建议 + 质量分
 ```
 
-输出骨架、质量分计算、高风险场景要求详见 [references/output-template.md](references/output-template.md)。
+输出骨架、质量分计算、高风险场景要求详见 [references/output-template.md](./output-template.md)。
 
 ## 检查清单
 
@@ -79,4 +79,4 @@ WebFetch Gartner 报告 → 原文 $120B → 标为数据错误
 博客 47% 来源不明 → 改用原始数据
 ```
 
-更多反模式（模糊泛称、低质未降级等）见 [references/patterns.md](references/patterns.md)。
+更多反模式（模糊泛称、低质未降级等）见 [references/patterns.md](./patterns.md)。

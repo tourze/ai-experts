@@ -11,7 +11,7 @@
 - Pillar page 必须双向链接到所有支撑文章。
 - 先做关键词分层（pillar / supporting / long-tail），再定文章。
 - 输出必须包含蚕食检查和执行路线图。
-- 单篇选题用 [content-strategy](../content-strategy/SKILL.md)；搜索优化配合 [seo](../seo/SKILL.md)。
+- 单篇选题用 [content-strategy](../SKILL.md)；搜索优化配合 [seo](../../seo/SKILL.md)。
 
 ## 代码模式
 
@@ -33,7 +33,7 @@
 | 主关键词 | 必须唯一，不与其他文章重复 |
 | 搜索意图 | 信息型 / 教程 / 商业比较 |
 | 与 Pillar 的关系 | 展开哪个 H2 章节 |
-| 优先级评分 | 按 [优先级框架](references/cluster-prioritization.md) 计算 |
+| 优先级评分 | 按 [优先级框架](./cluster-prioritization.md) 计算 |
 
 ### 3. 内链拓扑
 
