@@ -772,6 +772,28 @@ describe("component build integration", () => {
     assert.match(codeReviewAgentFrameworkSkill, /test-quality-review/);
     assert.doesNotMatch(codeReviewAgentFrameworkSkill, /门禁表和按 diff 内容触发的场景路由表/);
 
+    for (const platform of ["claude", "codex"]) {
+      const t8Syntax = readFileSync(
+        join(tmpDistDir, `${platform}/skills/data-storytelling/references/t8-syntax.md`),
+        "utf-8",
+      );
+      assert.match(
+        t8Syntax,
+        /收入\[\+18%\]\(type=growth, unit=%\) 主要来自华东区域\[企业客户\]\(type=segment\)扩张。/,
+        `${platform} reference rewriting should preserve fenced T8 syntax examples`,
+      );
+      assert.match(
+        t8Syntax,
+        /`\[企业客户\]\(type=segment\)`/,
+        `${platform} reference rewriting should preserve inline T8 syntax examples`,
+      );
+      assert.match(
+        t8Syntax,
+        /^\[2026 Q1\]\(type=time\)\[收入\]\(type=metric\)\[\+18%\]\(type=growth\)$/m,
+        `${platform} reference rewriting should preserve dense T8 anti-pattern examples`,
+      );
+    }
+
     const codexMetadata = readFileSync(
       join(tmpDistDir, "codex/skills/typescript-type-safety/agents/openai.yaml"),
       "utf-8",

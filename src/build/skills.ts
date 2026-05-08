@@ -479,6 +479,47 @@ function markdownRelativePath(fromFile: string, toFile: string): string {
   return relative(dirname(fromFile), toFile).split("\\").join("/");
 }
 
+function replaceMarkdownOutsideCode(
+  source: string,
+  pattern: RegExp,
+  replacer: (match: string, ...captures: string[]) => string,
+): string {
+  const rewritePlainMarkdown = (plainSource: string): string => {
+    const rewriteOutsideInlineCode = (segment: string): string =>
+      segment.replace(pattern, (...args: unknown[]) => {
+        const [match, ...rest] = args;
+        const captures = rest
+          .slice(0, -2)
+          .map((capture) => capture === undefined ? "" : String(capture));
+        return replacer(String(match), ...captures);
+      });
+
+    let result = "";
+    let cursor = 0;
+    const inlineCodePattern = /`[^`\n]*`/gu;
+    for (const match of plainSource.matchAll(inlineCodePattern)) {
+      const index = match.index ?? 0;
+      result += rewriteOutsideInlineCode(plainSource.slice(cursor, index));
+      result += match[0];
+      cursor = index + match[0].length;
+    }
+    result += rewriteOutsideInlineCode(plainSource.slice(cursor));
+    return result;
+  };
+
+  let result = "";
+  let cursor = 0;
+  const fencedCodePattern = /(^|\n)[ \t]{0,3}(```+|~~~+)[^\n]*\n[\s\S]*?\n[ \t]{0,3}\2[ \t]*(?=\n|$)/gu;
+  for (const match of source.matchAll(fencedCodePattern)) {
+    const index = match.index ?? 0;
+    result += rewritePlainMarkdown(source.slice(cursor, index));
+    result += match[0];
+    cursor = index + match[0].length;
+  }
+  result += rewritePlainMarkdown(source.slice(cursor));
+  return result;
+}
+
 function rewriteReferenceSkillLinks(
   source: string,
   skill: SkillDefinition,
@@ -486,7 +527,8 @@ function rewriteReferenceSkillLinks(
   skillRoot: string,
   platformSkillIds: ReadonlySet<string>,
 ): string {
-  return source.replace(
+  return replaceMarkdownOutsideCode(
+    source,
     /\[([^\]]+)\]\((\.{1,2}\/[^)\s]+\/SKILL\.md)(#[^)]+)?\)/gu,
     (match, label: string, href: string, anchor = "") => {
       const originalTarget = join(dirname(outputFile), href);
@@ -536,7 +578,8 @@ function rewriteReferenceLocalLinks(
   outputFile: string,
   skillRoot: string,
 ): string {
-  return source.replace(
+  return replaceMarkdownOutsideCode(
+    source,
     /(?<!!)\[([^\]]+)\]\(([^)\s]+)\)/gu,
     (match, label: string, href: string) => {
       if (!isLocalMarkdownHref(href)) return match;

@@ -37,7 +37,7 @@ Negative prompts: <15-25 个约束词>
 - [内容规划](./content-planning.md)
 - [Prompt 编写](./prompt-guide.md)
 - [风格方案](./styles.md)
-- 环境变量模板：[`./.env.example`](.env.example)
+- 环境变量：按用户实际图片工具配置；如使用内部图片生成流程，先确认 `MULERUN_API_KEY`。
 
 ## 检查清单
 
