@@ -263,6 +263,26 @@ describe("component source conventions", () => {
     }
   });
 
+  test("component guidance does not promote reference aliases as standalone runtime objects", () => {
+    const mislabeledAliases: string[] = [];
+
+    for (const sourceFile of collectFiles(join(repoRoot, "src/components"))) {
+      const source = readFileSync(sourceFile, "utf-8");
+      if (
+        /`pretty-mermaid`\s+skill/u.test(source) ||
+        /脚本[^。\n]*`pretty-mermaid`|`pretty-mermaid`[^。\n]*(?:脚本|procedure|skill)/u.test(source)
+      ) {
+        mislabeledAliases.push(relative(repoRoot, sourceFile));
+      }
+    }
+
+    assert.deepEqual(
+      mislabeledAliases,
+      [],
+      "`pretty-mermaid` is a markdown-mermaid-writing reference, not a standalone skill, procedure, or script",
+    );
+  });
+
   test("skill creator viewer uses platform-neutral review wording", () => {
     const viewerSource = readFileSync(
       join(repoRoot, "src/components/skills/skill-creator/assets/eval-viewer/viewer.html"),

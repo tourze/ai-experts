@@ -85,7 +85,7 @@ export async function run(payload: NormalizedHookPayload) {
       "",
       "── 画图策略 ──",
       "  • 如果图比纯文本块更能降低理解成本，就不要停在“建议画图”；直接落 Mermaid 源码",
-      "  • 需要成品图、主题化 SVG 或终端 ASCII 预览时，主动使用 `pretty-mermaid` skill 渲染，而不是只给未落地的草图建议",
+      "  • 需要成品图、主题化 SVG 或终端 ASCII 预览时，主动使用 `markdown-mermaid-writing` skill，并读取 `pretty-mermaid` reference 渲染",
       "  • 文档编排与 Mermaid 源码组织优先参考 `markdown-mermaid-writing`",
       "",
       "通用结构化规则以全局记忆文件为准。",

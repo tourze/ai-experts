@@ -79,7 +79,7 @@ export const documentProducerAgent = defineAgent({
     ],
   }),
   bashBoundary: [
-    "Bash 用于运行用户授权的本仓库脚本（如 `markitdown`、`pretty-mermaid`、`md-to-pdf`、Office 转换工具）、读取已有文档与模板、git 历史与文件统计。禁止安装外部依赖、修改业务源码、向云端推送文档或调用收费 API（除非用户已授权）。",
+    "Bash 用于运行用户授权的文档转换 procedure（如 `markitdown`、`md-to-pdf`）、Mermaid 渲染工具、Office 转换工具，读取已有文档与模板、git 历史与文件统计。禁止安装外部依赖、修改业务源码、向云端推送文档或调用收费 API（除非用户已授权）。",
   ],
   qualityStandards: [
     "每个章节必须服务一个明确论点；可删除而不破坏结构则视为冗余。",
