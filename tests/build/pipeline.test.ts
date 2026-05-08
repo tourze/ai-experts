@@ -3,6 +3,7 @@ import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "no
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
+import { parse as parseYaml } from "yaml";
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { emitAgent, hasStringTool, validateAgentBashBoundary, validateAgentOutputFormat, validateAgentQualityStandards, validateAgentWorkflow } from "../../src/build/agents.ts";
 import { Platform, ensureDir, writeText } from "../../src/build/core.ts";
@@ -360,8 +361,15 @@ describe("build/pipeline modules", () => {
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "SKILL.md"))).toBe(true);
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "agents", "openai.yaml"))).toBe(true);
     const codexSkillMetadata = readFileSync(join(codexRoot, "skills", fixture.skill.id, "agents", "openai.yaml"), "utf-8");
-    expect(codexSkillMetadata).toContain('display_name: "Fixture Skill"');
-    expect(codexSkillMetadata).toContain("allow_implicit_invocation: false");
+    expect(parseYaml(codexSkillMetadata)).toEqual({
+      interface: {
+        display_name: fixture.skill.fullName,
+        short_description: fixture.skill.description,
+      },
+      policy: {
+        allow_implicit_invocation: false,
+      },
+    });
     const claudeSkill = renderSkillMd(fixture.skill, Platform.Claude, procedureMap);
     expect(claudeSkill).toContain("  - mcp__fixture__lookup");
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "references", "index.md"))).toBe(true);

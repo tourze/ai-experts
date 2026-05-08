@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, relative } from "node:path";
 import { pathToFileURL } from "node:url";
+import { stringify as stringifyYaml } from "yaml";
 import type {
   AntiPatternDefinition,
   Platform as PlatformType,
@@ -462,14 +463,18 @@ function renderReferencesIndex(skill: SkillDefinition): string {
 
 function renderCodexOpenAiYaml(skill: SkillDefinition): string {
   const allowImplicit = skill.invocation !== InvocationPolicy.ExplicitOnly;
-  return [
-    "interface:",
-    `  display_name: ${yamlScalar(skill.fullName)}`,
-    `  short_description: ${yamlScalar(skill.description)}`,
-    "policy:",
-    `  allow_implicit_invocation: ${allowImplicit ? "true" : "false"}`,
-    "",
-  ].join("\n");
+  return stringifyYaml(
+    {
+      interface: {
+        display_name: skill.fullName,
+        short_description: skill.description,
+      },
+      policy: {
+        allow_implicit_invocation: allowImplicit,
+      },
+    },
+    { lineWidth: 0 },
+  );
 }
 
 function markdownRelativePath(fromFile: string, toFile: string): string {

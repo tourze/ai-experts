@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
+import { parse as parseYaml } from "yaml";
 import { afterAll, beforeAll, describe, test } from "vitest";
 import { resolveHookTimeoutSeconds } from "../../src/build/hooks.ts";
 import { listProcedureUses, procedureUseAppliesToPlatform } from "../../src/build/procedure-uses.ts";
@@ -586,14 +587,19 @@ describe("component build integration", () => {
       assert.equal(existsSync(metadataPath), true, `${skillId} should emit agents/openai.yaml`);
       const metadata = readFileSync(metadataPath, "utf-8");
       const allowImplicit = skill.invocation !== InvocationPolicy.ExplicitOnly;
+      const parsedMetadata = parseYaml(metadata);
 
-      assert.match(metadata, /^interface:\n/);
-      assert.match(metadata, new RegExp(`^  display_name: "${escapeRegExp(skill.fullName)}"$`, "m"));
-      assert.match(metadata, /^  short_description: ".+"$/m);
-      assert.match(metadata, /^policy:\n/m);
-      assert.match(
-        metadata,
-        new RegExp(`^  allow_implicit_invocation: ${allowImplicit ? "true" : "false"}$`, "m"),
+      assert.deepEqual(
+        parsedMetadata,
+        {
+          interface: {
+            display_name: skill.fullName,
+            short_description: skill.description,
+          },
+          policy: {
+            allow_implicit_invocation: allowImplicit,
+          },
+        },
         `${skillId} should mirror its InvocationPolicy in openai.yaml`,
       );
     }
