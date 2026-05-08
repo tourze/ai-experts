@@ -270,6 +270,15 @@ const hookEventsWithToolMatcher = new Set<HookEvent>([
   HookEvent.PreToolUse,
 ]);
 
+const codexHookEvents = new Set<HookEvent>([
+  HookEvent.PermissionRequest,
+  HookEvent.PostToolUse,
+  HookEvent.PreToolUse,
+  HookEvent.SessionStart,
+  HookEvent.Stop,
+  HookEvent.UserPromptSubmit,
+]);
+
 function validateHookMatcher(hook: HookDefinition): void {
   if (!hook.matcher || hook.matcher.length === 0) return;
   if (hookEventsWithToolMatcher.has(hook.event)) return;
@@ -537,6 +546,9 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
   for (const hook of registry.hooks) {
     validateId(hook.id, "hook");
     validatePlatformList(hook.platforms, `Hook ${hook.id}`);
+    if (hook.platforms.includes(Platform.Codex) && !codexHookEvents.has(hook.event)) {
+      throw new Error(`Hook ${hook.id} event ${hook.event} is unavailable on platform: ${Platform.Codex}`);
+    }
     validateHookMatcher(hook);
     const hookEntryPath = toAbsolutePath(hook.entry);
     if (!existsSync(hookEntryPath)) {

@@ -411,6 +411,18 @@ describe("build/pipeline modules", () => {
       "Hook fixture-hook platforms contain unsupported platform(s): unsupported-hook-cli",
     );
 
+    const codexUnsupportedHookEventRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      hooks: [{
+        ...fixture.hook,
+        platforms: [ComponentPlatform.Codex],
+        event: HookEvent.PreCompact,
+      }],
+    };
+    expect(() => validateRegistry(codexUnsupportedHookEventRegistry)).toThrow(
+      "Hook fixture-hook event PreCompact is unavailable on platform: codex-cli",
+    );
+
     const invalidHookMatcherRegistry: ComponentRegistry = {
       ...fixture.registry,
       hooks: [{ ...fixture.hook, matcher: [KnownTool.Read] }],
