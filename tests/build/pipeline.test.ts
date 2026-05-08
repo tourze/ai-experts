@@ -337,7 +337,8 @@ describe("build/pipeline modules", () => {
     const complexRendered = renderSkillMd(complexWorkflowSkill, Platform.Claude, procedureMap);
     expect(complexRendered).toContain("## 工作流\n\n```mermaid\nflowchart TD");
     expect(complexRendered).toContain('evidence_gate["workflow-helper-skill');
-    expect(complexRendered).toContain('route{"匹配场景路由"}');
+    expect(complexRendered).toContain('route{"选择工作流分支"}');
+    expect(complexRendered).not.toContain("匹配场景路由");
     expect(complexRendered).toContain('route -->|"需要专项处理"| specialist_route');
     expect(complexRendered).toContain("specialist_route --> join");
     expect(complexRendered).toContain("join --> finalize");

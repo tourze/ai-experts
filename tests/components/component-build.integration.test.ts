@@ -663,7 +663,8 @@ describe("component build integration", () => {
     assert.match(structuredProblemSkill, /## 工作流/);
     assert.match(structuredProblemSkill, /```mermaid\nflowchart TD/);
     assert.match(structuredProblemSkill, /evidence-quality-framework/);
-    assert.match(structuredProblemSkill, /匹配场景路由/);
+    assert.match(structuredProblemSkill, /选择工作流分支/);
+    assert.doesNotMatch(structuredProblemSkill, /匹配场景路由/);
     assert.match(structuredProblemSkill, /debug-methodology/);
     assert.match(structuredProblemSkill, /fishbone-diagram/);
     assert.match(structuredProblemSkill, /pdca-cycle/);
@@ -674,7 +675,7 @@ describe("component build integration", () => {
       "utf-8",
     );
     assert.match(codeReviewAgentFrameworkSkill, /evidence_gate\["code-review/);
-    assert.match(codeReviewAgentFrameworkSkill, /route\{"匹配场景路由"\}/);
+    assert.match(codeReviewAgentFrameworkSkill, /route\{"选择工作流分支"\}/);
     assert.match(codeReviewAgentFrameworkSkill, /complexity-reducer/);
     assert.match(codeReviewAgentFrameworkSkill, /test-quality-review/);
     assert.doesNotMatch(codeReviewAgentFrameworkSkill, /门禁表和按 diff 内容触发的场景路由表/);
@@ -796,7 +797,8 @@ describe("component build integration", () => {
     const goReviewerAgent = readFileSync(join(tmpDistDir, "claude/agents/go-reviewer.md"), "utf-8");
     assert.match(goReviewerAgent, /## 工作流/);
     assert.match(goReviewerAgent, /```mermaid\nflowchart TD/);
-    assert.match(goReviewerAgent, /匹配场景路由/);
+    assert.match(goReviewerAgent, /选择工作流分支/);
+    assert.doesNotMatch(goReviewerAgent, /匹配场景路由/);
     assert.match(goReviewerAgent, /go-concurrency-patterns/);
 
     const windowsReviewerAgent = readFileSync(
@@ -804,7 +806,7 @@ describe("component build integration", () => {
       "utf-8",
     );
     assert.match(windowsReviewerAgent, /evidence-quality-framework/);
-    assert.match(windowsReviewerAgent, /route\{"匹配场景路由"\}/);
+    assert.match(windowsReviewerAgent, /route\{"选择工作流分支"\}/);
     assert.match(windowsReviewerAgent, /windows-kernel-security/);
     assert.match(windowsReviewerAgent, /windows-ui-automation/);
     assert.match(windowsReviewerAgent, /prlctl-vm-control/);

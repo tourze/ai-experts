@@ -152,7 +152,7 @@ export function renderWorkflowMermaidSource(workflow: WorkflowDefinition): strin
   }
   if (routes.length > 0) {
     const decision = "route";
-    lines.push(`  ${decision}{"匹配场景路由"}`);
+    lines.push(`  ${decision}{"选择工作流分支"}`);
     lines.push(`  ${previous} --> ${decision}`);
     const join = "join";
     lines.push(`  ${join}(("收束"))`);
