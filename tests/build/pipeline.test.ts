@@ -465,6 +465,40 @@ describe("build/pipeline modules", () => {
       "Skill fixture-skill asset bad-asset-target target must stay under assets/",
     );
 
+    const invalidDirectoryAssetTargetRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        assets: [
+          defineAsset({
+            id: "bad-directory-asset-target",
+            source: pathToFileURL(join(fixture.root, "skill", "assets")),
+            target: "assets/archive.md",
+          }),
+        ],
+      }],
+    };
+    expect(() => validateRegistry(invalidDirectoryAssetTargetRegistry)).toThrow(
+      "source is a directory but target looks like a file: assets/archive.md",
+    );
+
+    const invalidFileAssetTargetRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        assets: [
+          defineAsset({
+            id: "bad-file-asset-target",
+            source: pathToFileURL(join(fixture.root, "skill", "assets", "asset.txt")),
+            target: "assets/archive/",
+          }),
+        ],
+      }],
+    };
+    expect(() => validateRegistry(invalidFileAssetTargetRegistry)).toThrow(
+      "source is a file but target must not end with /: assets/archive/",
+    );
+
     const invalidDirectoryReferenceTargetRegistry: ComponentRegistry = {
       ...fixture.registry,
       skills: [{

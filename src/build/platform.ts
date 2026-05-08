@@ -333,6 +333,20 @@ function validateSkillAssets(skill: SkillDefinition): void {
       throw new Error(`Duplicate asset target in ${skill.id}: ${target}`);
     }
     seenAssetTargets.add(target);
+
+    const sourceStat = statSync(source);
+    const normalizedTarget = target.replace(/\/+$/u, "");
+    const targetLooksFile = /\.[^/]+$/u.test(normalizedTarget);
+    if (sourceStat.isDirectory() && targetLooksFile) {
+      throw new Error(
+        `Skill ${skill.id} asset ${asset.id} source is a directory but target looks like a file: ${target}`,
+      );
+    }
+    if (sourceStat.isFile() && target.endsWith("/")) {
+      throw new Error(
+        `Skill ${skill.id} asset ${asset.id} source is a file but target must not end with /: ${target}`,
+      );
+    }
   }
 }
 
