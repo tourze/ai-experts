@@ -6,6 +6,8 @@ import {
   defineSkill,
   defineSkillOutputs,
   defineWorkflow,
+  defineWorkflowGate,
+  defineWorkflowRoute,
   defineWorkflowStep,
 } from "../../sdk";
 import { complexityReducerSkill } from "../complexity-reducer/index";
@@ -80,16 +82,48 @@ export const refactoringPatternsSkill = defineSkill({
         id: "step-3",
         label: "按问题读取动作库：函数组合读 `composing-methods`，职责搬移读 `moving-features`，数据整理读 `organizing-data`，条件简化读 `simplifying-conditionals`。",
       }),
+    ],
+    gates: [
+      defineWorkflowGate({
+        id: "safety-gate",
+        skill: refactoringChecklistSkill.id,
+        label: "重构安全门禁",
+        checks: "确认测试基线、范围界定、行为变更隔离、回滚点和拆 commit 策略；没有验证路径的高风险重构不能一次完成。",
+      }),
+    ],
+    routes: [
+      defineWorkflowRoute({
+        id: "complexity-route",
+        triggers: [
+          "复杂函数、深层嵌套、条件组合爆炸",
+          "需要先降低复杂度再选择手法",
+        ],
+        skill: complexityReducerSkill.id,
+        checks: "先定位主要复杂度来源，判断提取、拆分、提前返回或数据结构调整是否是最小可验证路径。",
+        output: "复杂度来源、优先化简点、最小重构序列和验证点。",
+      }),
+      defineWorkflowRoute({
+        id: "design-route",
+        triggers: [
+          "职责边界不清、抽象方向不稳",
+          "模块耦合或接口形状需要先校验",
+        ],
+        skill: softwareDesignSkill.id,
+        checks: "按抽象边界、依赖方向、内聚性和替换成本校验目标结构，避免为了模式牺牲可读性。",
+        output: "目标设计边界、耦合风险、推荐重构手法和取舍理由。",
+      }),
+    ],
+    finalSteps: [
       defineWorkflowStep({
-        id: "step-4",
+        id: "sequence-actions",
         label: "需要排序完整步骤时读取 `refactoring-workflow` reference；遗留代码隔离测试时读取 `seam-ripper`。",
       }),
       defineWorkflowStep({
-        id: "step-5",
+        id: "split-changes",
         label: "把重构和行为变更拆成两步，优先选择小步、安全、可回滚的动作序列。",
       }),
       defineWorkflowStep({
-        id: "step-6",
+        id: "mark-risk",
         label: "标记需要补测试、人工验证或拆 commit 的高风险步骤。",
       }),
     ],

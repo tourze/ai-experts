@@ -1506,8 +1506,8 @@ describe("component source conventions", () => {
       `goal is a rare field for non-routing completion contracts; found ${goalDefinitionFiles.length}: ${goalDefinitionFiles.join(", ")}`,
     );
     assert.ok(
-      complexSkillWorkflowCount >= 1,
-      "at least one production skill should exercise gates/routes so complex skill workflows stay covered",
+      complexSkillWorkflowCount >= 3,
+      "several production skills should exercise gates/routes so complex skill workflows stay covered",
     );
   });
 });
