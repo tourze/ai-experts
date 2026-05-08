@@ -136,6 +136,14 @@ function validateUniqueProcedureUses(componentId: string, procedureUses: readonl
 
 const validPlatformValues = new Set<string>(Object.values(Platform));
 const codexSystemSkillIds = new Set(["imagegen", "openai-docs", "plugin-creator", "skill-creator", "skill-installer"]);
+const skillWorkflowBodySectionTitles = new Set([
+  "工作流",
+  "执行步骤",
+  "工作方式",
+  "必经门禁",
+  "场景路由",
+  "编排顺序",
+]);
 
 function validatePlatformList(
   platforms: readonly unknown[] | undefined,
@@ -395,6 +403,9 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     const bodySource = readOptionalComponentText(skill.body);
     if (bodySource.trim() !== "" && !startsWithH2Section(bodySource)) {
       throw new Error(`Skill ${skill.id} body must start with an H2 section; move intro text to index.ts fields`);
+    }
+    if (hasH2SectionMatching(bodySource, (title) => skillWorkflowBodySectionTitles.has(title))) {
+      throw new Error(`Skill ${skill.id} must move workflow sections from SKILL.body.md to workflow`);
     }
     validateSkillGoal(skill);
     const skillWorkflow = validateSkillWorkflow(skill);

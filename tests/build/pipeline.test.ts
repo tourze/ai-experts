@@ -258,6 +258,22 @@ describe("build/pipeline modules", () => {
     expect(structuredRendered).toContain('step_1["读取输入。"]\n  start --> step_1');
     expect(structuredRendered).toContain('step_2["执行检查。"]\n  step_1 --> step_2');
     expect(structuredRendered).toContain("## 输出\n\n- 结论\n- 后续动作");
+
+    const legacyWorkflowRoot = createTempDir("ai-experts-legacy-workflow-body-");
+    for (const legacyWorkflowHeading of ["执行步骤", "工作流"]) {
+      const legacyWorkflowBody = join(legacyWorkflowRoot, `legacy-${legacyWorkflowHeading}.body.md`);
+      writeText(legacyWorkflowBody, `## ${legacyWorkflowHeading}\n\n1. 旧流程。\n`);
+      expect(() =>
+        validateRegistry({
+          ...fixture.registry,
+          skills: [{
+            ...fixture.skill,
+            body: pathToFileURL(legacyWorkflowBody),
+          }],
+        })
+      ).toThrow("must move workflow sections from SKILL.body.md to workflow");
+    }
+
     expect(() =>
       validateRegistry({
         ...fixture.registry,
