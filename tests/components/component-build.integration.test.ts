@@ -859,11 +859,26 @@ describe("component build integration", () => {
       "Codex should use the system skill-creator instead of bundling custom skill-creator procedures",
     );
     assert.equal(existsSync(join(tmpDistDir, "claude/skills/skill-creator/assets/eval-viewer/viewer.html")), true);
-    assert.equal(existsSync(join(tmpDistDir, "codex/skills/skill-creator/SKILL.md")), false);
     assert.equal(existsSync(join(tmpDistDir, "codex/skills/skill-creator/assets/eval-viewer/viewer.html")), false);
+    for (const systemSkillId of codexSystemSkillIds) {
+      assert.equal(
+        existsSync(join(tmpDistDir, "codex/skills", systemSkillId, "SKILL.md")),
+        false,
+        `Codex dist should not emit user skill docs for system skill ${systemSkillId}`,
+      );
+    }
     const codexSkillAuthor = readFileSync(join(tmpDistDir, "codex/agents/skill-author.toml"), "utf-8");
     assert.doesNotMatch(codexSkillAuthor, /skill-creator-run-eval|skill-creator-run-loop/);
-    assert.doesNotMatch(codexSkillAuthor, /~\/\.agents\/skills\/skill-creator\/SKILL\.md/);
+    for (const codexAgentFile of collectFiles(join(tmpDistDir, "codex/agents"), (file) => file.endsWith(".toml"))) {
+      const source = readFileSync(codexAgentFile, "utf-8");
+      for (const systemSkillId of codexSystemSkillIds) {
+        assert.doesNotMatch(
+          source,
+          new RegExp(`~\\/\\.agents\\/skills\\/${escapeRegExp(systemSkillId)}\\/SKILL\\.md`, "u"),
+          `${relative(tmpDistDir, codexAgentFile)} should not path-link Codex system skill ${systemSkillId}`,
+        );
+      }
+    }
     const claudeSkillEvolver = readFileSync(join(tmpDistDir, "claude/skills/skill-evolver/SKILL.md"), "utf-8");
     const codexSkillEvolver = readFileSync(join(tmpDistDir, "codex/skills/skill-evolver/SKILL.md"), "utf-8");
     assert.match(claudeSkillEvolver, /\[skill-creator\]\(\.\.\/skill-creator\/SKILL\.md\)/);
