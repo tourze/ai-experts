@@ -1,32 +1,40 @@
 import { readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { basename, join } from "node:path";
-import { collectFiles, parseArgs, Platform } from "./core.ts";
+import { join } from "node:path";
+import { parseArgs, Platform } from "./core.ts";
 import { compileRegistry } from "./registry.ts";
 import { emitPlatform, validateRegistry } from "./platform.ts";
 import type { BuildStats } from "./types.ts";
 
-type HookManifest = { hooks: unknown[] };
+type PlatformManifest = {
+  skills?: unknown;
+  agents?: unknown;
+  hooks?: unknown;
+  procedures?: {
+    items?: unknown;
+  };
+};
 
-function countSkillMarkdownFiles(outDir: string, platformDir: "claude" | "codex"): number {
-  return collectFiles(join(outDir, platformDir, "skills"))
-    .filter((file) => basename(file) === "SKILL.md")
-    .length;
+function itemCount(value: unknown): number {
+  return Array.isArray(value) ? value.length : 0;
 }
 
-function readHookCount(outDir: string, platformDir: "claude" | "codex"): number {
-  const parsed = JSON.parse(readFileSync(join(outDir, platformDir, "hooks", "manifest.json"), "utf-8")) as HookManifest;
-  return Array.isArray(parsed.hooks) ? parsed.hooks.length : 0;
+function readPlatformManifest(outDir: string, platformDir: "claude" | "codex"): PlatformManifest {
+  return JSON.parse(readFileSync(join(outDir, platformDir, "manifest.json"), "utf-8")) as PlatformManifest;
 }
 
 function collectStats(outDir: string): BuildStats {
+  const claudeManifest = readPlatformManifest(outDir, "claude");
+  const codexManifest = readPlatformManifest(outDir, "codex");
   return {
-    claudeSkills: countSkillMarkdownFiles(outDir, "claude"),
-    codexSkills: countSkillMarkdownFiles(outDir, "codex"),
-    claudeAgents: collectFiles(join(outDir, "claude", "agents")).length,
-    codexAgents: collectFiles(join(outDir, "codex", "agents")).length,
-    claudeHooks: readHookCount(outDir, "claude"),
-    codexHooks: readHookCount(outDir, "codex"),
+    claudeSkills: itemCount(claudeManifest.skills),
+    codexSkills: itemCount(codexManifest.skills),
+    claudeAgents: itemCount(claudeManifest.agents),
+    codexAgents: itemCount(codexManifest.agents),
+    claudeHooks: itemCount(claudeManifest.hooks),
+    codexHooks: itemCount(codexManifest.hooks),
+    claudeProcedures: itemCount(claudeManifest.procedures?.items),
+    codexProcedures: itemCount(codexManifest.procedures?.items),
   };
 }
 
@@ -49,8 +57,10 @@ export async function main(): Promise<void> {
 
     const stats = collectStats(outDir);
     console.log(
-      `component build: claude skills=${stats.claudeSkills} agents=${stats.claudeAgents} hooks=${stats.claudeHooks} ` +
-      `codex skills=${stats.codexSkills} agents=${stats.codexAgents} hooks=${stats.codexHooks} out=${outDir}`,
+      `component build: claude skills=${stats.claudeSkills} agents=${stats.claudeAgents} ` +
+      `hooks=${stats.claudeHooks} procedures=${stats.claudeProcedures} ` +
+      `codex skills=${stats.codexSkills} agents=${stats.codexAgents} hooks=${stats.codexHooks} ` +
+      `procedures=${stats.codexProcedures} out=${outDir}`,
     );
 
     if (args.check) rmSync(outDir, { recursive: true, force: true });

@@ -789,6 +789,8 @@ describe("build/pipeline modules", () => {
       process.argv = ["node", "build.ts", "--check"];
       await main();
       expect(logSpy).toHaveBeenCalledWith(expect.stringContaining("component build: claude skills="));
+      expect(logSpy).toHaveBeenCalledWith(expect.stringMatching(/procedures=\d+ codex skills=\d+/));
+      expect(logSpy).toHaveBeenCalledWith(expect.stringMatching(/codex skills=\d+ agents=\d+ hooks=\d+ procedures=\d+ out=/));
     } finally {
       process.argv = argvBackup;
     }

@@ -30,4 +30,6 @@ export type BuildStats = {
   codexAgents: number;
   claudeHooks: number;
   codexHooks: number;
+  claudeProcedures: number;
+  codexProcedures: number;
 };
