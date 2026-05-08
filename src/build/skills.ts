@@ -163,10 +163,22 @@ function renderReferenceMap(skill: SkillDefinition): string {
     "| Reference | 内容 | 何时读取 |",
     "|-----------|------|----------|",
     ...skill.references.map((reference) =>
-      `| [${reference.id}](${defaultReferenceTarget(reference)}) | ${reference.summary} | ${reference.loadWhen} |`
+      `| [${reference.id}](${renderReferenceLinkTarget(reference)}) | ${reference.summary} | ${reference.loadWhen} |`
     ),
   ];
   return `\n## Reference Map\n\n${rows.join("\n")}\n`;
+}
+
+function renderReferenceLinkTarget(reference: SkillReferenceDefinition): string {
+  const target = defaultReferenceTarget(reference);
+  if (target.endsWith("/")) return target;
+  const sourcePath = toAbsolutePath(reference.source);
+  try {
+    readdirSync(sourcePath, { withFileTypes: true });
+    return `${target}/`;
+  } catch {
+    return target;
+  }
 }
 
 export function validateTextList(
@@ -445,7 +457,7 @@ function renderReferencesIndex(skill: SkillDefinition): string {
     "| Reference | Title | Summary | Load When |",
     "|-----------|-------|---------|-----------|",
     ...(skill.references ?? []).map((reference) => {
-      const target = defaultReferenceTarget(reference);
+      const target = renderReferenceLinkTarget(reference);
       const link = target.startsWith("references/") ? target.slice("references/".length) : target;
       const cells = [
         `[${reference.id}](${link})`,

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { basename, dirname, join, relative, resolve } from "node:path";
 import { parse as parseYaml } from "yaml";
@@ -2021,6 +2021,7 @@ describe("component build integration", () => {
       );
 
       const brokenLocalLinks: string[] = [];
+      const directoryLinksWithoutTrailingSlash: string[] = [];
       const missingReferenceDefinitions: string[] = [];
       const runtimeMarkdownFiles = collectFiles(join(tmpDistDir, platform, "skills"), (file) =>
         file.endsWith(".md"),
@@ -2048,6 +2049,11 @@ describe("component build integration", () => {
           const [pathWithoutAnchor] = href.split("#", 1);
           if (pathWithoutAnchor && !existsSync(resolve(dirname(markdownFile), pathWithoutAnchor))) {
             brokenLocalLinks.push(`${markdownFile}: ${href}`);
+          } else if (pathWithoutAnchor) {
+            const resolvedPath = resolve(dirname(markdownFile), pathWithoutAnchor);
+            if (statSync(resolvedPath).isDirectory() && !pathWithoutAnchor.endsWith("/")) {
+              directoryLinksWithoutTrailingSlash.push(`${markdownFile}: ${href}`);
+            }
           }
         }
         for (const match of markdown.matchAll(/^\s*\[([^\]\n]+)\]:\s+([^\n]+)$/gmu)) {
@@ -2058,6 +2064,11 @@ describe("component build integration", () => {
           const [pathWithoutAnchor] = href.split("#", 1);
           if (pathWithoutAnchor && !existsSync(resolve(dirname(markdownFile), pathWithoutAnchor))) {
             brokenLocalLinks.push(`${markdownFile}: [${label}] -> ${href}`);
+          } else if (pathWithoutAnchor) {
+            const resolvedPath = resolve(dirname(markdownFile), pathWithoutAnchor);
+            if (statSync(resolvedPath).isDirectory() && !pathWithoutAnchor.endsWith("/")) {
+              directoryLinksWithoutTrailingSlash.push(`${markdownFile}: [${label}] -> ${href}`);
+            }
           }
         }
 
@@ -2073,6 +2084,11 @@ describe("component build integration", () => {
         missingReferenceDefinitions,
         [],
         `${platform} generated Markdown should define every used reference-style link label`,
+      );
+      assert.deepEqual(
+        directoryLinksWithoutTrailingSlash,
+        [],
+        `${platform} generated Markdown directory links should use trailing slashes`,
       );
 
       for (const skillFile of collectFiles(join(tmpDistDir, platform, "skills"), (file) => file.endsWith("SKILL.md"))) {
