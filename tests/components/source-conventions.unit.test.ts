@@ -62,6 +62,9 @@ describe("component source conventions", () => {
       true,
       "README quality-gate summary should include procedure runtime count",
     );
+    assert.match(readme, /不要把整个 `~\/\.codex` symlink 到 `dist\/codex`/);
+    assert.match(readme, /不要把整个 `~\/\.agents\/skills` symlink 到 `dist\/codex\/skills`/);
+    assert.match(readme, /`installation_id` 和 `skills\/\.system\/`/);
     assert.doesNotMatch(readme, /^\s+rules\/$/m);
     assert.match(readme, /procedureUse\(procedureDefinition\)/);
     assert.match(readme, /构建器会生成 `## 检查清单`，并放在生成的 `## 反模式` 之后/);

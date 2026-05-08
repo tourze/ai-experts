@@ -170,6 +170,16 @@ describe("component build integration", () => {
     assert.equal(Object.hasOwn(codexManifest, "profile"), false);
     assert.equal(existsSync(join(tmpDistDir, "claude/rules")), false);
     assert.equal(existsSync(join(tmpDistDir, "codex/rules")), false);
+    assert.equal(
+      existsSync(join(tmpDistDir, "codex/installation_id")),
+      false,
+      "Codex runtime installation state should not be generated into dist",
+    );
+    assert.equal(
+      existsSync(join(tmpDistDir, "codex/skills/.system")),
+      false,
+      "Codex system skill cache should stay runtime-local, not generated into dist",
+    );
   });
 
   test("manifest file checksums cover every generated file", () => {

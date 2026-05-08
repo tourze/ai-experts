@@ -46,9 +46,11 @@ dist/
     manifest.json
 ```
 
-`dist/claude/` 直接模拟 `~/.claude/` 的目录结构；`dist/codex/` 直接模拟 Codex 用户配置根需要的结构。不要生成 `dist/claude/.claude/` 或 `dist/codex/.codex/` 这种多余嵌套层。
+`dist/claude/` 直接模拟 `~/.claude/` 的配置面；`dist/codex/` 直接模拟 Codex 用户配置根需要的配置面。不要生成 `dist/claude/.claude/` 或 `dist/codex/.codex/` 这种多余嵌套层。
 
 Codex 的用户级 skills 官方推荐安装到 `~/.agents/skills/`。因此安装器应把 `dist/codex/skills/` 映射到 `~/.agents/skills/`，而不是复制到 `~/.codex/skills/`。
+
+安装器只能逐项复制或 symlink 生成的配置文件、agent 目录、hook 目录和单个 skill 目录；不要把整个 `~/.codex` symlink 到 `dist/codex`，也不要把整个 `~/.agents/skills` symlink 到 `dist/codex/skills`。Codex 会在这些运行时目录写入 `installation_id` 和 `skills/.system/` 等本机状态，运行时状态必须留在用户 home，不能反向污染仓库里的 generated dist。
 
 ## 组件源码
 
