@@ -199,6 +199,113 @@ export async function runEval({ evalSet, skillName, description, numWorkers, tim
         },
     };
 }
+function parseYamlScalar(value: any): any {
+    const raw = String(value).trim();
+    if (raw === "true")
+        return true;
+    if (raw === "false")
+        return false;
+    if (raw === "[]")
+        return [];
+    if (raw.startsWith("\"") && raw.endsWith("\"")) {
+        try {
+            return JSON.parse(raw);
+        }
+        catch {
+            return raw.slice(1, -1);
+        }
+    }
+    if (raw.startsWith("'") && raw.endsWith("'"))
+        return raw.slice(1, -1).replace(/''/g, "'");
+    return raw;
+}
+export function parseEvalCasesYaml(source: any): any[] {
+    const cases: any[] = [];
+    let current: Record<string, any> | null = null;
+    let inCases = false;
+    let blockKey: string | null = null;
+    let blockStyle = "";
+    let blockIndent = 0;
+    let blockLines: string[] = [];
+    function finishBlock(): void {
+        if (!current || !blockKey)
+            return;
+        current[blockKey] = blockStyle === "|"
+            ? blockLines.join("\n").trim()
+            : blockLines.map((line) => line.trim()).filter(Boolean).join(" ").trim();
+        blockKey = null;
+        blockStyle = "";
+        blockIndent = 0;
+        blockLines = [];
+    }
+    function assignKey(key: string, rawValue: string, indent: number): void {
+        if (!current)
+            return;
+        const value = rawValue.trim();
+        if (value === ">" || value === "|") {
+            blockKey = key;
+            blockStyle = value;
+            blockIndent = indent + 2;
+            blockLines = [];
+            return;
+        }
+        current[key] = parseYamlScalar(value);
+    }
+    for (const line of String(source).split(/\r?\n/)) {
+        if (blockKey) {
+            const indent = line.match(/^\s*/)?.[0].length ?? 0;
+            if (line.trim() === "" || indent >= blockIndent) {
+                blockLines.push(line.slice(Math.min(indent, blockIndent)));
+                continue;
+            }
+            finishBlock();
+        }
+        if (/^\s*cases:\s*$/.test(line)) {
+            inCases = true;
+            continue;
+        }
+        if (!inCases)
+            continue;
+        const caseMatch = line.match(/^\s*-\s+id:\s*(.*)$/);
+        if (caseMatch) {
+            finishBlock();
+            current = { id: parseYamlScalar(caseMatch[1]) };
+            cases.push(current);
+            continue;
+        }
+        const fieldMatch = line.match(/^(\s+)([A-Za-z_][A-Za-z0-9_]*):\s*(.*)$/);
+        if (fieldMatch && current) {
+            assignKey(fieldMatch[2], fieldMatch[3], fieldMatch[1].length);
+        }
+    }
+    finishBlock();
+    return cases;
+}
+export function normalizeEvalSet(raw: any): any[] {
+    const items = Array.isArray(raw) ? raw : raw?.cases ?? raw?.evals;
+    if (!Array.isArray(items))
+        throw new Error("Eval set must be an array or contain cases/evals");
+    return items.map((item: any) => {
+        const query = item.query ?? item.prompt;
+        const shouldTrigger = item.should_trigger ?? item.trigger_expected;
+        if (typeof query !== "string" || query.trim() === "")
+            throw new Error("Eval item must define query or prompt");
+        if (typeof shouldTrigger !== "boolean")
+            throw new Error(`Eval item ${item.id ?? query} must define boolean should_trigger or trigger_expected`);
+        return {
+            ...item,
+            query,
+            should_trigger: shouldTrigger,
+        };
+    });
+}
+export function loadEvalSet(path: any): any[] {
+    const source = readFileSync(path, "utf8");
+    const raw = /\.(?:ya?ml)$/u.test(String(path))
+        ? { cases: parseEvalCasesYaml(source) }
+        : JSON.parse(source);
+    return normalizeEvalSet(raw);
+}
 function parseArgs(argv: any): any {
     const args: Record<string, any> = {
         description: null,
@@ -231,14 +338,14 @@ function parseArgs(argv: any): any {
             args.verbose = true;
     }
     if (!args.evalSet || !args.skillPath) {
-        throw new Error("用法：node run_eval.mjs --eval-set evals.json --skill-path skill-dir [--model model]");
+        throw new Error("用法：node run_eval.mjs --eval-set evals/cases.yaml --skill-path skill-dir [--model model]");
     }
     return args;
 }
 export async function main(argv: any = process.argv.slice(2)): Promise<any> {
     try {
         const args = parseArgs(argv);
-        const evalSet = JSON.parse(readFileSync(args.evalSet, "utf8"));
+        const evalSet = loadEvalSet(args.evalSet);
         if (!existsSync(join(args.skillPath, "SKILL.md"))) {
             console.error(`错误：${args.skillPath} 中未找到 SKILL.md`);
             return 1;

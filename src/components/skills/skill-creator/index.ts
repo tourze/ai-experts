@@ -42,7 +42,7 @@ export const skillCreatorSkill = defineSkill({
     steps: [
       "先捕获意图：skill 要让 agent 做什么、何时触发、期望输出、是否需要 eval，以及来源材料是什么。",
       "写或改 skill 时聚焦 expert-only 行为增量，把细节拆到 references/assets/procedures，保持主说明短而可执行。",
-      "设计 2-3 个真实 eval prompts，压力敏感 skill 至少包含一个诱导跳过规则的 prompt；保存到 `evals/evals.json`。",
+      "设计 2-3 个真实 eval prompts，压力敏感 skill 至少包含一个诱导跳过规则的 prompt；保存到 `evals/cases.yaml`。",
       "运行评估时为每个 eval 同轮启动 with-skill 和 baseline/old-skill，创建 workspace/iteration/eval 目录和 metadata。",
       "运行期间起草客观 assertions，完成后记录 timing，评分生成 `grading.json`，聚合 benchmark 并用 review viewer 收集用户反馈。",
       "根据反馈泛化原则、精简无效指令、补 Procedure、eval 辅助代码或 references，再进入下一轮 iteration。",

@@ -68,4 +68,4 @@ Write 2-3 realistic prompts the user might actually send. Show them to the user 
 
 For pressure-sensitive skills, include at least one prompt that tries to make the agent skip rules, such as time pressure, authority pressure, "just do it quickly," or "we already agreed."
 
-Save initial evals in `evals/evals.json` with prompts first. Add assertions during the run once outputs and objective checks are clear. Refer to `schemas.md` for the exact schema.
+Save initial evals in `evals/cases.yaml` with prompts first. Add assertions during the run once outputs and objective checks are clear. Refer to `schemas.md` for the exact schema.

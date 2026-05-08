@@ -1,34 +1,37 @@
-# JSON Schemas
+# Skill Creator Schemas
 
-本文记录 skill-creator 生成和读取的 JSON 结构。字段名是程序契约，必须保持英文原样。
+本文记录 skill-creator 生成和读取的结构。字段名是程序契约，必须保持英文原样。
 
-## evals.json
+## cases.yaml
 
-位置：`evals/evals.json`。定义某个 skill 的测试用例。
+位置：`evals/cases.yaml`。定义某个 skill 的触发测试用例。`skill-creator-run-eval` 和 `skill-creator-run-loop` 也兼容旧 JSON eval set，但源码侧默认使用 `cases.yaml`。
 
-```json
-{
-  "skill_name": "example-skill",
-  "evals": [
-    {
-      "id": 1,
-      "prompt": "User's example prompt",
-      "expected_output": "Description of expected result",
-      "files": ["evals/files/sample1.pdf"],
-      "expectations": ["The output includes X"]
-    }
-  ]
-}
+```yaml
+cases:
+  - id: should_trigger_release_check
+    prompt: "帮我检查这个发布计划是否可以上线。"
+    fixtures: []
+    rubric:
+      - "触发发布检查 skill"
+      - "输出上线风险和阻断项"
+    trigger_expected: true
+
+  - id: should_not_trigger_general_copy
+    prompt: "帮我润色这段发布公告。"
+    fixtures: []
+    rubric:
+      - "不触发发布检查 skill"
+      - "任务应交给写作或文案相关 skill"
+    trigger_expected: false
 ```
 
 | 字段 | 说明 |
 |------|------|
-| `skill_name` | 与 skill frontmatter 的 `name` 一致 |
-| `evals[].id` | 唯一整数 ID |
-| `evals[].prompt` | 要执行的任务 |
-| `evals[].expected_output` | 人类可读的成功结果说明 |
-| `evals[].files` | 可选输入文件路径，相对于 skill root |
-| `evals[].expectations` | 可验证陈述列表 |
+| `cases[].id` | 稳定用例 ID，使用小写短横线或下划线 |
+| `cases[].prompt` | 用户可能真实输入的任务 |
+| `cases[].fixtures` | 可选输入文件路径，相对于 skill root |
+| `cases[].rubric` | 人类可读的通过标准或路由期望 |
+| `cases[].trigger_expected` | 是否应该触发当前 skill |
 
 ## history.json
 

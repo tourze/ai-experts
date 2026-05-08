@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 import { spawn } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, writeFileSync, realpathSync } from "node:fs";
+import { existsSync, mkdirSync, writeFileSync, realpathSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { generateHtml } from "./generate_report";
 import { improveDescription } from "./improve_description";
-import { findProjectRoot, runEval } from "./run_eval";
+import { findProjectRoot, loadEvalSet, runEval } from "./run_eval";
 import { parseSkillMd } from "./utils";
 function seededRandom(seed: any): any {
     let value = seed >>> 0;
@@ -236,14 +236,14 @@ function parseArgs(argv: any): any {
             args.resultsDir = argv[++index];
     }
     if (!args.evalSet || !args.skillPath || !args.model) {
-        throw new Error("用法：node run_loop.mjs --eval-set evals.json --skill-path skill-dir --model model [--max-iterations 5]");
+        throw new Error("用法：node run_loop.mjs --eval-set evals/cases.yaml --skill-path skill-dir --model model [--max-iterations 5]");
     }
     return args;
 }
 export async function main(argv: any = process.argv.slice(2)): Promise<any> {
     try {
         const args = parseArgs(argv);
-        const evalSet = JSON.parse(readFileSync(args.evalSet, "utf8"));
+        const evalSet = loadEvalSet(args.evalSet);
         if (!existsSync(join(args.skillPath, "SKILL.md"))) {
             console.error(`错误：${args.skillPath} 中未找到 SKILL.md`);
             return 1;

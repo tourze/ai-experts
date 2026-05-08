@@ -44,7 +44,7 @@ Do not idle while runs execute. Draft objective assertions and explain to the us
 
 Subjective skills may use qualitative review rather than forced numeric assertions.
 
-Update both `eval_metadata.json` and `evals/evals.json` when assertions are ready.
+Update both `eval_metadata.json` and `evals/cases.yaml` when assertions are ready.
 
 ## Record Timing Immediately
 

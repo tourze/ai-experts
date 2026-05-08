@@ -396,6 +396,35 @@ describe("component source conventions", () => {
     );
   });
 
+  test("skill creator authoring guidance uses cases yaml eval files", () => {
+    const skillCreatorSources = [
+      join(repoRoot, "src/components/skills/skill-creator/index.ts"),
+      ...collectFiles(join(repoRoot, "src/components/skills/skill-creator/references"), (file) =>
+        file.endsWith(".md"),
+      ),
+      join(repoRoot, "src/components/procedures/sources/skill-creator/run_eval.ts"),
+      join(repoRoot, "src/components/procedures/sources/skill-creator/run_loop.ts"),
+    ];
+    const staleEvalSetRefs: string[] = [];
+
+    for (const sourceFile of skillCreatorSources) {
+      const source = readFileSync(sourceFile, "utf-8");
+      if (/evals\/evals\.json|--eval-set evals\.json/u.test(source)) {
+        staleEvalSetRefs.push(relative(repoRoot, sourceFile));
+      }
+    }
+
+    assert.deepEqual(staleEvalSetRefs, [], "skill creator should default to evals/cases.yaml, not evals/evals.json");
+    assert.match(
+      readFileSync(join(repoRoot, "src/components/skills/skill-creator/index.ts"), "utf-8"),
+      /evals\/cases\.yaml/,
+    );
+    assert.match(
+      readFileSync(join(repoRoot, "src/components/skills/skill-creator/references/schemas.md"), "utf-8"),
+      /cases:\n  - id:/,
+    );
+  });
+
   test("cross-platform source names project memory files neutrally", () => {
     const platformSpecificMemoryRefs: string[] = [];
     for (const sourceFile of collectFiles(join(repoRoot, "src/components"))) {
