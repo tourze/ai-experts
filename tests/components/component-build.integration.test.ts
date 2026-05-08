@@ -299,6 +299,48 @@ describe("component build integration", () => {
     assertInstallManifestEntriesExist(join(tmpDistDir, "codex"), codexManifest, "Codex");
   });
 
+  test("emits shared Mermaid workflows for every generated skill and agent", () => {
+    const generatedDocuments = [
+      ...collectFiles(join(tmpDistDir, "claude/skills"), (file) => file.endsWith("SKILL.md")),
+      ...collectFiles(join(tmpDistDir, "codex/skills"), (file) => file.endsWith("SKILL.md")),
+      ...collectFiles(join(tmpDistDir, "claude/agents"), (file) => file.endsWith(".md")),
+      ...collectFiles(join(tmpDistDir, "codex/agents"), (file) => file.endsWith(".toml")),
+    ];
+    const missingWorkflow: string[] = [];
+    const malformedWorkflow: string[] = [];
+    const legacyExecutionStepHeadings: string[] = [];
+
+    for (const documentPath of generatedDocuments) {
+      const label = relative(tmpDistDir, documentPath);
+      const source = readFileSync(documentPath, "utf-8");
+      const workflowIndex = source.indexOf("## 工作流");
+      if (workflowIndex === -1) {
+        missingWorkflow.push(label);
+      } else if (!/## 工作流\n\n```mermaid\nflowchart (?:TD|TB|BT|RL|LR)\n/u.test(source.slice(workflowIndex))) {
+        malformedWorkflow.push(label);
+      }
+      if (/## 执行步骤/u.test(source)) {
+        legacyExecutionStepHeadings.push(label);
+      }
+    }
+
+    assert.deepEqual(
+      missingWorkflow,
+      [],
+      "generated skills and agents should all expose the shared workflow section",
+    );
+    assert.deepEqual(
+      malformedWorkflow,
+      [],
+      "generated workflow sections should all render through the shared Mermaid flowchart renderer",
+    );
+    assert.deepEqual(
+      legacyExecutionStepHeadings,
+      [],
+      "generated skills and agents should not emit legacy execution-step headings",
+    );
+  });
+
   test("manifest file checksums cover every generated file", () => {
     for (const platform of ["claude", "codex"]) {
       const platformRoot = join(tmpDistDir, platform);
