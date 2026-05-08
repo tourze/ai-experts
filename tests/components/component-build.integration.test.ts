@@ -1645,7 +1645,8 @@ describe("component build integration", () => {
           tool_input: {
             command: [
               "*** Begin Patch",
-              "*** Add File: .env",
+              "*** Update File: config/example.env",
+              "*** Move to: .env",
               "+API_KEY=test",
               "*** End Patch",
             ].join("\n"),

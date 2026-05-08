@@ -137,6 +137,7 @@ function fileTargetsFromPatch(command) {
   const patterns = [
     /^\\*\\*\\* (?:Update|Delete) File: (.+)$/gm,
     /^\\*\\*\\* Add File: (.+)$/gm,
+    /^\\*\\*\\* Move to: (.+)$/gm,
     /^--- a\\/(.+)$/gm,
     /^\\+\\+\\+ b\\/(.+)$/gm,
   ];

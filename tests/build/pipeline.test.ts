@@ -904,6 +904,7 @@ describe("build/pipeline modules", () => {
               "*** Add File: .env",
               "+API_KEY=test",
               "*** Update File: src/app.ts",
+              "*** Move to: src/app.config.ts",
               "@@",
               "+const value = 1;",
               "*** End Patch",
@@ -916,6 +917,7 @@ describe("build/pipeline modules", () => {
 
     expect(output).toContain("target=.env; targets=.env");
     expect(output).toContain("target=src/app.ts; targets=src/app.ts");
+    expect(output).toContain("target=src/app.config.ts; targets=src/app.config.ts");
   });
 
   test("platform renderer validates and emits platform outputs", async () => {
