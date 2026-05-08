@@ -579,6 +579,27 @@ describe("build/pipeline modules", () => {
       "workflow route references skill fixture-skill unavailable on platform(s): codex-cli",
     );
 
+    const agentWorkflowMissingDeclaredSkillRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      agents: [{
+        ...fixture.agent,
+        workflow: defineWorkflow({
+          gates: [
+            defineWorkflowGate({
+              id: "gate-check",
+              skill: fixture.skill.id,
+              label: "门禁",
+              checks: "检查证据",
+            }),
+          ],
+        }),
+        skills: [],
+      }],
+    };
+    expect(() => validateRegistry(agentWorkflowMissingDeclaredSkillRegistry)).toThrow(
+      "Agent fixture-agent workflow references skill fixture-skill but agent.skills does not include it",
+    );
+
     const codexSkillWorkflowWithClaudeOnlySkillRegistry: ComponentRegistry = {
       ...fixture.registry,
       skills: [

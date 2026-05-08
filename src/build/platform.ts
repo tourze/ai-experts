@@ -531,11 +531,21 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     if (!hasBashTool && bashBoundary.length > 0) {
       throw new Error(`Agent ${agent.id} defines bashBoundary but does not include KnownTool.Bash`);
     }
+    const agentSkillIds = new Set<string>();
     for (const skill of agent.skills ?? []) {
       if (!skillIds.has(skill.id)) throw new Error(`Agent ${agent.id} references missing skill: ${skill.id}`);
       validateAgentSkillSharedPlatform(agent, skill.id, skillsById);
       if (typeof skill.reason !== "string" || skill.reason.trim().length === 0) {
         throw new Error(`Agent ${agent.id} skill ${skill.id} must include a non-empty reason`);
+      }
+      agentSkillIds.add(skill.id);
+    }
+    for (const workflowSkillId of new Set([
+      ...(workflow?.gates ?? []).map((gate) => gate.skill),
+      ...(workflow?.routes ?? []).map((route) => route.skill),
+    ])) {
+      if (!agentSkillIds.has(workflowSkillId)) {
+        throw new Error(`Agent ${agent.id} workflow references skill ${workflowSkillId} but agent.skills does not include it`);
       }
     }
     const procedureUses = listProcedureUses(agent);
