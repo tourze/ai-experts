@@ -18,7 +18,7 @@ cases:
     trigger_expected: true
 
   - id: evolve_existing_skill_from_external_repo
-    prompt: "我 clone 了一个外部 skill 仓库，想吸收它的评测和模式库设计来完善我们自己的 skill-expert"
+    prompt: "我 clone 了一个外部 skill 仓库，想吸收它的评测和模式库设计来完善我们自己的现有 skill"
     fixtures: []
     rubric:
       - "handles an external reference skill or skill repository as source B"

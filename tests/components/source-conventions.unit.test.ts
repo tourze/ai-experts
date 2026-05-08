@@ -470,6 +470,29 @@ describe("component source conventions", () => {
     );
   });
 
+  test("component guidance uses current skill ids instead of legacy expert routes", () => {
+    const legacyExpertRoutes: string[] = [];
+    const componentGuidanceFiles = collectFiles(join(repoRoot, "src/components"), (file) =>
+      /\.(?:ts|md|ya?ml)$/u.test(file) && !file.endsWith("registry.generated.ts"),
+    );
+    const legacyExpertRoutePattern =
+      /\b(?:android|database|mysql|pgsql|speckit|skill)-expert(?::[a-z0-9-]+|\/[a-z0-9-]+)?\b/u;
+
+    for (const sourceFile of componentGuidanceFiles) {
+      const source = readFileSync(sourceFile, "utf-8");
+      const match = source.match(legacyExpertRoutePattern);
+      if (match) {
+        legacyExpertRoutes.push(`${relative(repoRoot, sourceFile)}: ${match[0]}`);
+      }
+    }
+
+    assert.deepEqual(
+      legacyExpertRoutes,
+      [],
+      "component guidance should reference current skill ids instead of legacy expert route names",
+    );
+  });
+
   test("cross-platform skill guidance does not recommend Claude Code without Codex", () => {
     const platformBiasedAdvice: string[] = [];
 

@@ -129,7 +129,7 @@ cases:
     prompt: "帮我设计一个 Android Jetpack Compose 登录页和 MVVM 架构。"
     fixtures: []
     rubric:
-      - "Android product development should route to android-expert, not android-apk-audit"
+      - "Android product development should route to android-architecture, not android-apk-audit"
     trigger_expected: false
 
   - id: negative_general_web_security
