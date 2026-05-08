@@ -29,8 +29,8 @@ export function validateWorkflow(owner: string, workflow: WorkflowDefinition | u
   }
   const seenIds = new Set(["start", "route", "join"]);
   const checkId = (id: string, property: string, index: number): void => {
-    if (!/^[a-z][a-z0-9-]*$/i.test(id)) {
-      throw new Error(`${owner} workflow.${property}[${index}].id must use letters, numbers, or hyphens`);
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(id)) {
+      throw new Error(`${owner} workflow.${property}[${index}].id must use lowercase kebab-case`);
     }
     if (seenIds.has(id)) throw new Error(`${owner} workflow contains duplicate node id: ${id}`);
     seenIds.add(id);

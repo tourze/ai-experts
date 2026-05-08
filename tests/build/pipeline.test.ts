@@ -258,6 +258,22 @@ describe("build/pipeline modules", () => {
     const structuredWorkflow = validateSkillWorkflow(structuredSkill);
     expect(structuredWorkflow).not.toBeNull();
     if (!structuredWorkflow) throw new Error("expected structured workflow");
+    expect(() =>
+      validateSkillWorkflow({
+        ...structuredSkill,
+        workflow: defineWorkflow({
+          steps: [defineWorkflowStep({ id: "BadStep", label: "invalid id" })],
+        }),
+      })
+    ).toThrow("workflow.steps[0].id must use lowercase kebab-case");
+    expect(() =>
+      validateSkillWorkflow({
+        ...structuredSkill,
+        workflow: defineWorkflow({
+          steps: [defineWorkflowStep({ id: "step-", label: "invalid id" })],
+        }),
+      })
+    ).toThrow("workflow.steps[0].id must use lowercase kebab-case");
     await expect(
       validateMermaidSyntax("structured skill", renderWorkflowMermaidSource(structuredWorkflow)),
     ).resolves.toBeUndefined();
@@ -881,6 +897,14 @@ describe("build/pipeline modules", () => {
     expect(() => validateAgentQualityStandards({ ...fixture.agent, qualityStandards: [] })).toThrow();
     expect(() => validateAgentOutputFormat({ ...fixture.agent, outputFormat: { kind: "raw", body: "" } })).toThrow();
     expect(() => validateAgentWorkflow({ ...fixture.agent, workflow: { steps: [] } })).toThrow();
+    expect(() =>
+      validateAgentWorkflow({
+        ...fixture.agent,
+        workflow: defineWorkflow({
+          steps: [defineWorkflowStep({ id: "BadStep", label: "invalid id" })],
+        }),
+      })
+    ).toThrow("workflow.steps[0].id must use lowercase kebab-case");
     expect(() => validateRegistry({
       ...fixture.registry,
       agents: [{ ...fixture.agent, inputs: [defineAgentInput({ name: "", description: "missing name" })] }],
