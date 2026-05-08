@@ -597,7 +597,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     const normalizedHookEntryPath = hookEntryPath.replaceAll("\\", "/");
     if (/\/hooks\/(pre-tool-use|post-tool-use|session-start|user-prompt-submit|stop|pre-compact)\//.test(normalizedHookEntryPath)) {
       throw new Error(
-        `Hook ${hook.id} uses a legacy lifecycle directory: ${displayPath(hook.entry)}. ` +
+        `Hook ${hook.id} uses an unsupported lifecycle directory: ${displayPath(hook.entry)}. ` +
         "Move it to business workflow groups under src/components/hooks/.",
       );
     }

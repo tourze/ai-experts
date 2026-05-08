@@ -179,6 +179,11 @@ describe("component source conventions", () => {
       /ai-components-/,
       "build temp/runtime labels should use ai-experts naming instead of legacy ai-components prefixes",
     );
+    assert.doesNotMatch(
+      buildSources,
+      /legacy lifecycle directory/,
+      "build errors should describe canonical hook layout without exposing migration-era lifecycle wording",
+    );
     assert.equal(
       existsSync(join(repoRoot, "plugins")),
       false,
