@@ -1511,7 +1511,15 @@ describe("component build integration", () => {
     assert.match(proceduresSource, /^#!\/usr\/bin\/env node/);
     assert.match(proceduresSource, /__webpack_modules__/);
     assert.match(proceduresSource, /\bnode ~\/\.claude\/procedures\.js --procedure-id md-to-pdf-setup --trigger-skill md-to-pdf -- --install\b/);
+    assert.match(
+      proceduresSource,
+      /Run this first: node ~\/\.claude\/procedures\.js --procedure-id remote-ssh-command-install-sshpass --trigger-skill remote-ssh-command\./,
+    );
     assert.match(codexProceduresSource, /\bnode ~\/\.codex\/procedures\.js --procedure-id screenshot-take-screenshot --trigger-skill screenshot --/);
+    assert.match(
+      codexProceduresSource,
+      /Run this first: node ~\/\.codex\/procedures\.js --procedure-id remote-ssh-command-install-sshpass --trigger-skill remote-ssh-command\./,
+    );
     assert.doesNotMatch(proceduresSource, /\bnode \S*procedures\.js --procedure-id [a-z0-9-]+ -- --/);
     assert.doesNotMatch(codexProceduresSource, /\bnode \S*procedures\.js --procedure-id [a-z0-9-]+ -- --/);
     assert.match(codexProceduresSource, /const platform = "codex-cli"/);

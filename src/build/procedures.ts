@@ -463,6 +463,7 @@ module.exports = function aiExpertsProcedurePathLoader(source) {
   const options = this.getOptions() || {};
   const contexts = options.contexts || {};
   const commandRewrites = options.commandRewrites || {};
+  const commandRewritesByProcedureId = options.commandRewritesByProcedureId || {};
   const procedureRuntimePath = options.procedureRuntimePath || "procedures.js";
   const file = String(this.resourcePath || "").replaceAll("\\\\", "/");
   const context = contexts[file];
@@ -471,6 +472,8 @@ module.exports = function aiExpertsProcedurePathLoader(source) {
   const moduleFile = "globalThis.__aiExpertsModuleFile(" + JSON.stringify(context.target) + ")";
   const runtimeCommand = (rewrite) =>
     "node " + procedureRuntimePath + " --procedure-id " + rewrite.id + " --trigger-" + rewrite.triggerKind + " " + rewrite.triggerId + " --";
+  const runtimeProcedureCommand = (rewrite) =>
+    "node " + procedureRuntimePath + " --procedure-id " + rewrite.id + " --trigger-" + rewrite.triggerKind + " " + rewrite.triggerId;
   const rewriteScriptCommand = (match) => {
     const target = match.replace(/^node\\s+(?:\\.\\/)?/, "");
     if (target === context.target) {
@@ -489,12 +492,17 @@ module.exports = function aiExpertsProcedurePathLoader(source) {
     const globalRewrite = commandRewrites[JSON.stringify(["", "", target])];
     return globalRewrite ? runtimeCommand(globalRewrite) : match;
   };
+  const rewriteProcedureIdReference = (match, procedureId) => {
+    const rewrite = commandRewritesByProcedureId[procedureId];
+    return rewrite ? runtimeProcedureCommand(rewrite) : match;
+  };
   return source
     .replace(/\\bpath\\.dirname\\s*\\(\\s*fileURLToPath\\s*\\(\\s*import\\.meta\\.url\\s*\\)\\s*\\)/g, replacement)
     .replace(/(?<!\\.)\\bdirname\\s*\\(\\s*fileURLToPath\\s*\\(\\s*import\\.meta\\.url\\s*\\)\\s*\\)/g, replacement)
     .replace(/\\bpath\\.dirname\\s*\\(\\s*__filename\\s*\\)/g, replacement)
     .replace(/(?<!\\.)\\bdirname\\s*\\(\\s*__filename\\s*\\)/g, replacement)
     .replace(/\\bfileURLToPath\\s*\\(\\s*import\\.meta\\.url\\s*\\)/g, moduleFile)
+    .replace(/\\b([a-z0-9]+(?:-[a-z0-9]+)+) procedure\\b/g, rewriteProcedureIdReference)
     .replace(/\\bnode\\s+(?:\\.\\/)?scripts\\/[A-Za-z0-9._/-]+\\.mjs\\b/g, rewriteScriptCommand);
 };
 `;
@@ -616,6 +624,12 @@ async function emitBundledProceduresFile(
     ]),
   );
   const commandRewrites = buildProcedureCommandRewrites(runtimeProcedures);
+  const commandRewritesByProcedureId = Object.fromEntries(
+    runtimeProcedures.flatMap((procedure) => {
+      const primaryTrigger = primaryProcedureTrigger(procedure);
+      return primaryTrigger ? [[procedure.id, { id: procedure.id, ...primaryTrigger }]] : [];
+    }),
+  );
   writeFileSync(entryFile, renderProceduresEntrypoint(runtimeProcedures, platform), "utf-8");
   writeFileSync(loaderFile, renderProcedurePathLoader(), "utf-8");
 
@@ -666,6 +680,7 @@ async function emitBundledProceduresFile(
                 options: {
                   contexts: Object.fromEntries(transformContexts),
                   commandRewrites,
+                  commandRewritesByProcedureId,
                   procedureRuntimePath: procedureRuntimePath(platform),
                 },
               },

@@ -912,6 +912,24 @@ describe("component source conventions", () => {
     );
   });
 
+  test("procedure sources do not suggest removed local script entrypoints", () => {
+    const staleScriptSuggestions = collectFiles(
+      join(repoRoot, "src/components/procedures/sources"),
+      (file) => file.endsWith(".ts") && !file.endsWith(".test.ts"),
+    ).flatMap((file) => {
+      const source = readFileSync(file, "utf-8");
+      return [...source.matchAll(/\bRun node scripts\/[A-Za-z0-9._/-]+\.mjs\b/g)].map((match) =>
+        `${relative(repoRoot, file)}: ${match[0]}`
+      );
+    });
+
+    assert.deepEqual(
+      staleScriptSuggestions,
+      [],
+      "procedure sources should tell users to run a procedure id, not a removed repository-local script",
+    );
+  });
+
   test("agent source keeps structured fields", () => {
     const agentSource = readFileSync(
       join(repoRoot, "src/components/agents/typescript-reviewer/index.ts"),

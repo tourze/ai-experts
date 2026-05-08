@@ -208,7 +208,7 @@ export async function main(argv: any = process.argv.slice(2), streams: any = pro
     if (!commandExists("sshpass")) {
         const result: Record<string, any> = { exitCode: 1, durationMs: Date.now() - startedAt.getTime(), timedOut: false };
         appendHistory(historyPath, buildHistoryEntry(config, command, startedAt, result));
-        streams.stderr.write("Error: sshpass is not installed. Run node scripts/install-sshpass.mjs first.\n");
+        streams.stderr.write("Error: sshpass is not installed. Run this first: remote-ssh-command-install-sshpass procedure.\n");
         return 1;
     }
     let result;
