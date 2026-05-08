@@ -127,7 +127,7 @@ describe("component source conventions", () => {
     );
     assert.doesNotMatch(
       buildSources,
-      /\b(?:sourceRoots|componentSourceRoots)\b|["']src\/plugins["']|join\(repoRoot, "plugins"\)/,
+      /\b(?:isLegacyPluginsRoot|legacyPluginsRoot|pluginsRoot|sourceRoots|componentSourceRoots)\b|--plugins-dir|plugins-dir|["']src\/plugins["']|join\([^)]*["']plugins["'][^)]*\)/,
       "build code should not route component sources through alternate roots",
     );
     assert.equal(
@@ -173,6 +173,22 @@ describe("component source conventions", () => {
       [],
       "cross-platform skills should write workspace docs under neutral paths such as docs/ai/, not .claude/docs/ or .codex/docs/",
     );
+  });
+
+  test("runtime skill discovery does not support legacy plugins roots", () => {
+    const discoverySources = [
+      join(repoRoot, "src/components/procedures/sources/skill-activation-analyzer/cso_audit.ts"),
+      join(repoRoot, "src/components/procedures/sources/skills-prune-and-sync-readme/curate_skills.ts"),
+    ];
+
+    for (const sourceFile of discoverySources) {
+      const source = readFileSync(sourceFile, "utf-8");
+      assert.doesNotMatch(
+        source,
+        /\b(?:isLegacyPluginsRoot|legacyPluginsRoot|pluginsRoot)\b|--plugins-dir|plugins-dir|join\([^)]*["']plugins["'][^)]*\)/,
+        `${sourceFile} should discover only canonical component skill roots`,
+      );
+    }
   });
 
   test("runtime component sources do not leak maintainer-local absolute paths", () => {
