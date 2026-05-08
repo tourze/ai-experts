@@ -8,7 +8,6 @@ import {
   defineSkillWorkflow,
 } from "../../sdk";
 import { skillActivationAnalyzerSkill } from "../skill-activation-analyzer/index";
-import { skillCreatorSkill } from "../skill-creator/index";
 import { skillEvaluatorSkill } from "../skill-evaluator/index";
 
 export const skillEvolverSkill = defineSkill({
@@ -37,12 +36,6 @@ export const skillEvolverSkill = defineSkill({
         return skillActivationAnalyzerSkill.id;
       },
       reason: "只优化 frontmatter description、触发域和误触发问题时联动。",
-    },
-    {
-      get id() {
-        return skillCreatorSkill.id;
-      },
-      reason: "创建新 skill、改没有参考源的 skill、跑 with-skill/baseline 迭代时联动。",
     },
   ],
   antiPatterns: [

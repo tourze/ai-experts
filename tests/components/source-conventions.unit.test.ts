@@ -65,6 +65,8 @@ describe("component source conventions", () => {
     assert.match(readme, /不要把整个 `~\/\.codex` symlink 到 `dist\/codex`/);
     assert.match(readme, /不要把整个 `~\/\.agents\/skills` symlink 到 `dist\/codex\/skills`/);
     assert.match(readme, /`installation_id` 和 `skills\/\.system\/`/);
+    assert.match(readme, /Codex dist 不输出与 Codex `\.system` 内置 skill 同名的用户级 skill/);
+    assert.match(readme, /例如 `skill-creator`/);
     assert.match(readme, /`manifest\.json` 当前使用 schema 4/);
     assert.match(readme, /`install` 字段是安装器的一等事实源/);
     assert.match(readme, /`skillEntries` 从 `skillSourceRoot` 映射到 `skillRoot`/);

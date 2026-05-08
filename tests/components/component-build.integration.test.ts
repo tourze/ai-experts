@@ -170,6 +170,18 @@ describe("component build integration", () => {
       codexManifest.skills.length,
       registry.skills.filter((skill) => skill.platforms.includes(Platform.Codex)).length,
     );
+    assert.deepEqual(
+      (codexManifest.skills as string[]).filter((skillId) =>
+        ["imagegen", "openai-docs", "plugin-creator", "skill-creator", "skill-installer"].includes(skillId)
+      ),
+      [],
+      "Codex user skill dist should not emit skills that collide with Codex system skill names",
+    );
+    assert.equal(
+      (claudeManifest.skills as string[]).includes("skill-creator"),
+      true,
+      "Claude should keep the custom skill creator skill",
+    );
     assert.equal(claudeManifest.instructions.length, 6);
     assert.equal(codexManifest.instructions.length, 6);
     assert.equal(claudeManifest.agents.length, 80);
@@ -616,13 +628,19 @@ describe("component build integration", () => {
       false,
       "Codex should not expose Claude trigger-optimization loops",
     );
-    const codexSkillCreator = readFileSync(join(tmpDistDir, "codex/skills/skill-creator/SKILL.md"), "utf-8");
-    assert.doesNotMatch(codexSkillCreator, /skill-creator-run-eval|skill-creator-run-loop/);
-    assert.match(codexSkillCreator, /skill-creator-improve-description/);
+    assert.deepEqual(
+      codexManifestWithScripts.procedures.items
+        .map((procedure: any) => procedure.id)
+        .filter((procedureId: string) => procedureId.startsWith("skill-creator-")),
+      [],
+      "Codex should use the system skill-creator instead of bundling custom skill-creator procedures",
+    );
     assert.equal(existsSync(join(tmpDistDir, "claude/skills/skill-creator/assets/eval-viewer/viewer.html")), true);
-    assert.equal(existsSync(join(tmpDistDir, "codex/skills/skill-creator/assets/eval-viewer/viewer.html")), true);
+    assert.equal(existsSync(join(tmpDistDir, "codex/skills/skill-creator/SKILL.md")), false);
+    assert.equal(existsSync(join(tmpDistDir, "codex/skills/skill-creator/assets/eval-viewer/viewer.html")), false);
     const codexSkillAuthor = readFileSync(join(tmpDistDir, "codex/agents/skill-author.toml"), "utf-8");
     assert.doesNotMatch(codexSkillAuthor, /skill-creator-run-eval|skill-creator-run-loop/);
+    assert.doesNotMatch(codexSkillAuthor, /~\/\.agents\/skills\/skill-creator\/SKILL\.md/);
 
     const claudeAgent = readFileSync(join(tmpDistDir, "claude/agents/typescript-reviewer.md"), "utf-8");
     assert.match(claudeAgent, /name: typescript-reviewer/);
@@ -1383,11 +1401,19 @@ describe("component build integration", () => {
         [],
         `${platform} bundled procedures.js should only include TypeScript modules from src/components`,
       );
-      assert.match(
-        platformProceduresSource,
-        /skills\/skill-creator\/assets\/eval-viewer\/viewer\.html/,
-        `${platform} bundled procedures.js should load the registered skill-creator viewer asset`,
-      );
+      if (platform === "claude") {
+        assert.match(
+          platformProceduresSource,
+          /skills\/skill-creator\/assets\/eval-viewer\/viewer\.html/,
+          "Claude bundled procedures.js should load the registered skill-creator viewer asset",
+        );
+      } else {
+        assert.doesNotMatch(
+          platformProceduresSource,
+          /skills\/skill-creator\/assets\/eval-viewer\/viewer\.html/,
+          "Codex bundled procedures.js should not load custom skill-creator assets",
+        );
+      }
       assert.doesNotMatch(
         platformProceduresSource,
         /skills\/skill-creator\/eval-viewer\/viewer\.html/,

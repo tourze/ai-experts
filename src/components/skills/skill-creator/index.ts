@@ -36,7 +36,7 @@ export const skillCreatorSkill = defineSkill({
     }),
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
-  platforms: [Platform.Claude, Platform.Codex],
+  platforms: [Platform.Claude],
   sourceDir: new URL("./", import.meta.url),
   workflow: defineSkillWorkflow({
     steps: [
