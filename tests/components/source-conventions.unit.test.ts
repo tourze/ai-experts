@@ -783,6 +783,41 @@ describe("component source conventions", () => {
     );
   });
 
+  test("component markdown sources do not link local directories directly", () => {
+    const directoryLinks: string[] = [];
+    const markdownSources = collectFiles(join(repoRoot, "src/components"), (file) =>
+      file.endsWith(".md") && !file.split(/[\\/]/).includes("evals"),
+    );
+
+    for (const sourceFile of markdownSources) {
+      const source = stripMarkdownCode(readFileSync(sourceFile, "utf-8"));
+      for (const match of source.matchAll(/(!?)\[[^\]\n]+\]\(([^)\n]+)\)/gu)) {
+        if (match[1] === "!") continue;
+        const targetPath = localMarkdownPath(markdownDestination(match[2] ?? ""));
+        if (!targetPath) continue;
+        const resolvedTarget = resolve(dirname(sourceFile), targetPath);
+        if (existsSync(resolvedTarget) && lstatSync(resolvedTarget).isDirectory()) {
+          directoryLinks.push(`${relative(repoRoot, sourceFile)}: ${targetPath}`);
+        }
+      }
+
+      for (const match of source.matchAll(/^\s*\[[^\]\n]+\]:\s+(\S+)/gmu)) {
+        const targetPath = localMarkdownPath(markdownDestination(match[1] ?? ""));
+        if (!targetPath) continue;
+        const resolvedTarget = resolve(dirname(sourceFile), targetPath);
+        if (existsSync(resolvedTarget) && lstatSync(resolvedTarget).isDirectory()) {
+          directoryLinks.push(`${relative(repoRoot, sourceFile)}: ${targetPath}`);
+        }
+      }
+    }
+
+    assert.deepEqual(
+      directoryLinks,
+      [],
+      "component Markdown should link concrete files instead of local directories",
+    );
+  });
+
   test("skill reference markdown links to generated skills only for registered skill sources", () => {
     const missingSkillLinks: string[] = [];
     const skillSourceRoot = join(repoRoot, "src/components/skills");

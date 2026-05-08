@@ -29,4 +29,4 @@ Client Component 边界、Server Action 及进阶反模式的完整代码见 [ad
 
 更多流式与缓存模式见 [advanced](./advanced.md)。
 
-优化规则索引（请求级去重、并行获取、缓存、序列化、Server Actions 安全等）见 [rules/](rules/) 目录。
+优化规则索引（请求级去重、并行获取、缓存、序列化、Server Actions 安全等）见 [rules index](rules/index.md)。
