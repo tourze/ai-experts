@@ -1,21 +1,21 @@
-# Python Refinement Patterns
+# Python 精简模式
 
-## Table of Contents
+## 目录
 
-1. [Structural Patterns](#structural-patterns)
-2. [Anti-Patterns to Eliminate](#anti-patterns-to-eliminate)
-3. [Stdlib Replacements](#stdlib-replacements)
-4. [Type Annotation Guidance](#type-annotation-guidance)
-5. [Modern Python (3.10+)](#modern-python)
+1. [结构模式](#结构模式)
+2. [需消除的反模式](#需消除的反模式)
+3. [标准库替换](#标准库替换)
+4. [类型注解指南](#类型注解指南)
+5. [现代 Python (3.10+)](#现代-python)
 
 ---
 
-## Structural Patterns
+## 结构模式
 
-### Guard Clauses over Nested Conditionals
+### 卫语句代替嵌套条件
 
 ```python
-# Before
+# 改造前
 def process_order(order):
     if order is not None:
         if order.is_valid():
@@ -28,7 +28,7 @@ def process_order(order):
     else:
         return "no order"
 
-# After
+# 改造后
 def process_order(order):
     if order is None:
         return "no order"
@@ -39,57 +39,54 @@ def process_order(order):
     return fulfill(order)
 ```
 
-### Comprehensions over Accumulator Loops
+### 推导式代替累积循环
 
-Replace manual append loops with comprehensions when the logic is a straightforward
-filter-map. Do NOT use comprehensions for complex multi-step logic or side effects.
+当逻辑是简单的过滤-映射时，用推导式替代手工 append 循环。不要对复杂多步骤逻辑或有副作用的场景使用推导式。
 
 ```python
-# Replace: filter + transform
+# 可替换：过滤 + 转换
 results = []
 for item in items:
     if item.is_active():
         results.append(item.name.lower())
-# With:
+# 改为：
 results = [item.name.lower() for item in items if item.is_active()]
 
-# Do NOT replace: complex logic with side effects
+# 不要替换：带副作用的复杂逻辑
 for item in items:
-    validated = validate(item)  # may raise
+    validated = validate(item)  # 可能抛出异常
     cache.store(validated)
     results.append(validated.id)
 ```
 
-### Context Managers for Resource Cleanup
+### 上下文管理器管理资源清理
 
-Any open/close, acquire/release, setup/teardown pair should use a context manager.
+任何 open/close、acquire/release、setup/teardown 对都应使用上下文管理器。
 
 ```python
-# Before
+# 改造前
 f = open(path)
 try:
     data = f.read()
 finally:
     f.close()
 
-# After
+# 改造后
 with open(path) as f:
     data = f.read()
 ```
 
-For custom resources, prefer `contextlib.contextmanager` over writing `__enter__`/`__exit__`
-for simple cases.
+对于自定义资源，简单场景优先使用 `contextlib.contextmanager` 而非手写 `__enter__`/`__exit__`。
 
-### Dataclasses over Raw Dicts/Tuples
+### 数据类代替裸字典/元组
 
-When a dict has a fixed schema, replace with a dataclass. This gives you type checking,
-immutability options, and readable attribute access.
+当 dict 有固定 schema 时，替换为 dataclass。可以获得类型检查、不可变选项和可读的属性访问。
 
 ```python
-# Before
+# 改造前
 config = {"host": "localhost", "port": 8080, "debug": True}
 
-# After
+# 改造后
 @dataclass(frozen=True)
 class Config:
     host: str
@@ -99,22 +96,21 @@ class Config:
 
 ---
 
-## Anti-Patterns to Eliminate
+## 需消除的反模式
 
-### Bare `except`
+### 裸 `except`
 
-Always catch specific exceptions. `except Exception` is acceptable as a last resort
-with logging; bare `except:` catches SystemExit and KeyboardInterrupt.
+始终捕获特定异常。`except Exception` 作为带日志的最后手段可以接受；裸 `except:` 会捕获 SystemExit 和 KeyboardInterrupt。
 
-### Mutable Default Arguments
+### 可变默认参数
 
 ```python
-# Bug: shared mutable default
-def append_to(item, target=[]):  # WRONG
+# Bug：共享的可变默认值
+def append_to(item, target=[]):  # 错误
     target.append(item)
     return target
 
-# Fix:
+# 修复：
 def append_to(item, target=None):
     if target is None:
         target = []
@@ -122,68 +118,68 @@ def append_to(item, target=None):
     return target
 ```
 
-### Type Checking with `type()` instead of `isinstance()`
+### 用 `type()` 做类型检查而非 `isinstance()`
 
-`isinstance()` respects inheritance and supports union checks.
+`isinstance()` 遵循继承关系，且支持联合检查。
 
-### String Concatenation in Loops
+### 循环中的字符串拼接
 
-Use `"".join()` or f-strings. Repeated `+=` on strings creates O(n²) behavior.
+使用 `"".join()` 或 f-string。对字符串反复 `+=` 会产生 O(n²) 行为。
 
-### Redundant Boolean Comparisons
+### 冗余布尔比较
 
 ```python
-# Before
+# 改造前
 if is_valid == True:
 if len(items) > 0:
 if result is not None:
 
-# After
+# 改造后
 if is_valid:
 if items:
-if result is not None:  # Keep this one — explicit None check is intentional
+if result is not None:  # 保留这个——显式 None 检查是有意为之
 ```
 
-Note: `if x is not None` is NOT the same as `if x`. Keep explicit None checks.
+注意：`if x is not None` 和 `if x` 不同。显式 None 检查应保留。
 
 ---
 
-## Stdlib Replacements
+## 标准库替换
 
-| Pattern                                   | Replace With                                                          |
+| 模式 | 替换方案 |
 | ----------------------------------------- | --------------------------------------------------------------------- |
-| Manual dict grouping loop                 | `collections.defaultdict` or `itertools.groupby`                      |
-| `dict.get(k)` then check None             | `dict.setdefault(k, default)` or `collections.defaultdict`            |
-| Manual counter loop                       | `collections.Counter`                                                 |
-| Nested dict access with KeyError handling | `dict.get(k, {}).get(k2, default)` or a helper                        |
-| Manual LRU cache                          | `functools.lru_cache` or `functools.cache` (3.9+)                     |
-| Manual partial application                | `functools.partial`                                                   |
-| Manual chain of iterables                 | `itertools.chain`                                                     |
-| `os.path.join` + `os.path.exists`         | `pathlib.Path`                                                        |
-| `subprocess.Popen` for simple commands    | `subprocess.run`                                                      |
-| Manual retry loops                        | Consider `tenacity` if already a dependency, otherwise a small helper |
+| 手工 dict 分组循环 | `collections.defaultdict` 或 `itertools.groupby` |
+| `dict.get(k)` 后再检查 None | `dict.setdefault(k, default)` 或 `collections.defaultdict` |
+| 手工计数器循环 | `collections.Counter` |
+| 带 KeyError 处理的嵌套 dict 访问 | `dict.get(k, {}).get(k2, default)` 或辅助函数 |
+| 手工 LRU 缓存 | `functools.lru_cache` 或 `functools.cache` (3.9+) |
+| 手工偏函数 | `functools.partial` |
+| 手工可迭代对象串联 | `itertools.chain` |
+| `os.path.join` + `os.path.exists` | `pathlib.Path` |
+| `subprocess.Popen` 执行简单命令 | `subprocess.run` |
+| 手工重试循环 | 如果已是依赖可考虑 `tenacity`，否则写一个小辅助函数 |
 
 ---
 
-## Type Annotation Guidance
+## 类型注解指南
 
-- Annotate all public function signatures (parameters + return)
-- Use `X | None` (3.10+) instead of `Optional[X]`
-- Use `list[str]` (3.9+) instead of `List[str]`
-- Use `TypeAlias` for complex types used more than once
-- Use `Protocol` over ABC when you only need structural typing
-- Use `@overload` when return type depends on input type
+- 所有公开函数签名都要注解（参数 + 返回值）
+- 使用 `X | None` (3.10+) 替代 `Optional[X]`
+- 使用 `list[str]` (3.9+) 替代 `List[str]`
+- 对多次使用的复杂类型使用 `TypeAlias`
+- 仅在需要结构化类型时用 `Protocol` 而非 ABC
+- 当返回类型依赖输入类型时使用 `@overload`
 
 ---
 
-## Modern Python
+## 现代 Python
 
-### Structural Pattern Matching (3.10+)
+### 结构化模式匹配 (3.10+)
 
-Replace complex if/elif chains on type/structure with `match`:
+用 `match` 替代复杂的类型/结构 if/elif 链：
 
 ```python
-# Before
+# 改造前
 if isinstance(event, ClickEvent):
     handle_click(event.x, event.y)
 elif isinstance(event, KeyEvent) and event.key == "enter":
@@ -191,7 +187,7 @@ elif isinstance(event, KeyEvent) and event.key == "enter":
 elif isinstance(event, KeyEvent):
     handle_key(event.key)
 
-# After
+# 改造后
 match event:
     case ClickEvent(x=x, y=y):
         handle_click(x, y)
@@ -201,12 +197,12 @@ match event:
         handle_key(key)
 ```
 
-Only use when there are 3+ branches and the pattern destructuring adds clarity.
+仅在 3 个以上分支且模式解构能增加清晰度时使用。
 
-### Exception Groups (3.11+)
+### 异常组 (3.11+)
 
-For concurrent error collection, use `ExceptionGroup` and `except*`.
+对并发错误收集，使用 `ExceptionGroup` 和 `except*`。
 
 ### `tomllib` (3.11+)
 
-Don't use third-party TOML parsers if you only need reading.
+如果只需要读取 TOML，不要引入第三方解析库。

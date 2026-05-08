@@ -1,21 +1,21 @@
-# Rust Refinement Patterns
+# Rust 精简模式
 
-## Table of Contents
+## 目录
 
-1. [Error Handling](#error-handling)
-2. [Iterator Patterns](#iterator-patterns)
-3. [Ownership and Borrowing](#ownership-and-borrowing)
-4. [Type Design](#type-design)
-5. [Anti-Patterns](#anti-patterns)
+1. [错误处理](#错误处理)
+2. [迭代器模式](#迭代器模式)
+3. [所有权与借用](#所有权与借用)
+4. [类型设计](#类型设计)
+5. [反模式](#反模式)
 
 ---
 
-## Error Handling
+## 错误处理
 
-### `?` Operator over Match Chains
+### `?` 操作符代替 Match 链
 
 ```rust
-// Before
+// 改造前
 fn read_config(path: &str) -> Result<Config, Error> {
     let file = match File::open(path) {
         Ok(f) => f,
@@ -28,14 +28,14 @@ fn read_config(path: &str) -> Result<Config, Error> {
     Ok(parse(contents)?)
 }
 
-// After
+// 改造后
 fn read_config(path: &str) -> Result<Config, Error> {
     let contents = std::fs::read_to_string(path)?;
     Ok(parse(&contents)?)
 }
 ```
 
-### Custom Error Types with `thiserror`
+### 使用 `thiserror` 定义自定义错误类型
 
 ```rust
 #[derive(Debug, thiserror::Error)]
@@ -49,18 +49,18 @@ enum AppError {
 }
 ```
 
-### `anyhow` for Application Code, `thiserror` for Libraries
+### 应用级用 `anyhow`，库级用 `thiserror`
 
-Applications use `anyhow::Result` for convenience. Libraries define explicit error types.
+应用代码使用 `anyhow::Result` 以简化。库应定义明确的错误类型。
 
 ---
 
-## Iterator Patterns
+## 迭代器模式
 
-### Chain over Manual Loops
+### 链式调用代替手工循环
 
 ```rust
-// Before
+// 改造前
 let mut results = Vec::new();
 for item in items {
     if item.is_active() {
@@ -68,14 +68,14 @@ for item in items {
     }
 }
 
-// After
+// 改造后
 let results: Vec<String> = items.iter()
     .filter(|item| item.is_active())
     .map(|item| item.name().to_lowercase())
     .collect();
 ```
 
-### `flat_map` for Nested Iteration
+### 嵌套迭代用 `flat_map`
 
 ```rust
 let all_tags: Vec<&str> = posts.iter()
@@ -84,34 +84,32 @@ let all_tags: Vec<&str> = posts.iter()
     .collect();
 ```
 
-### `fold` / `reduce` for Accumulation
+### 累积用 `fold` / `reduce`
 
-Prefer `.sum()`, `.product()`, `.min()`, `.max()` when they apply directly.
-Use `.fold()` for custom accumulation.
+当 `.sum()`、`.product()`、`.min()`、`.max()` 可以直接用时优先使用。自定义累积再用 `.fold()`。
 
-### Avoid `.clone()` in Iterator Chains
+### 避免迭代器链中的 `.clone()`
 
-If you're cloning inside `.map()`, check if you can restructure to borrow instead.
-Sometimes moving the `.collect()` earlier or changing the return type eliminates the need.
+如果在 `.map()` 里 clone，检查是否可以重构为借用。有时提前 `.collect()` 或修改返回类型可以消除 clone 需求。
 
 ---
 
-## Ownership and Borrowing
+## 所有权与借用
 
-### Accept `&str` not `String` in Function Parameters
+### 函数参数接受 `&str` 而非 `String`
 
-Unless the function needs to own the string:
+除非函数需要持有字符串所有权：
 
 ```rust
-fn greet(name: &str) -> String {        // borrows
+fn greet(name: &str) -> String {        // 借用
     format!("Hello, {name}")
 }
-fn store_name(name: String) { ... }      // takes ownership — caller decides when to clone
+fn store_name(name: String) { ... }      // 获取所有权——调用方决定何时 clone
 ```
 
-### `impl Trait` in Argument Position
+### 参数位置使用 `impl Trait`
 
-Prefer `impl AsRef<Path>` over `&Path` for flexibility:
+优先使用 `impl AsRef<Path>` 而非 `&Path` 以获得更大灵活性：
 
 ```rust
 fn read_file(path: impl AsRef<Path>) -> io::Result<String> {
@@ -119,7 +117,7 @@ fn read_file(path: impl AsRef<Path>) -> io::Result<String> {
 }
 ```
 
-### Cow for Conditional Ownership
+### 条件所有权用 Cow
 
 ```rust
 fn normalize(input: &str) -> Cow<'_, str> {
@@ -133,30 +131,29 @@ fn normalize(input: &str) -> Cow<'_, str> {
 
 ---
 
-## Type Design
+## 类型设计
 
-### Newtype Pattern
+### Newtype 模式
 
-Prevent primitive obsession and make the type system work for you:
+防止原始类型痴迷，让类型系统为你工作：
 
 ```rust
 struct UserId(u64);
 struct OrderId(u64);
-// These are distinct types — can't accidentally pass UserId where OrderId expected
+// 这是不同的类型——不会意外地在需要 OrderId 的地方传入 UserId
 ```
 
-### Builder Pattern for Complex Construction
+### 复杂构造用 Builder 模式
 
-When a struct has >3 optional fields, use a builder instead of dozens of `new_with_*` variants.
+当结构体有超过 3 个可选字段时，用 builder 替代大量 `new_with_*` 变体。
 
-### `From` / `Into` for Type Conversions
+### `From` / `Into` 用于类型转换
 
-Implement `From<A> for B` to get `Into<B> for A` automatically.
-Idiomatic for error type conversion and newtype unwrapping.
+实现 `From<A> for B` 会自动获得 `Into<B> for A`。错误类型转换和 newtype 解包的习惯用法。
 
-### Enum State Machines
+### 枚举状态机
 
-Encode valid states as enum variants. Invalid transitions become compile errors:
+将合法状态编码为枚举变体。非法转换变成编译错误：
 
 ```rust
 enum Connection {
@@ -168,14 +165,14 @@ enum Connection {
 
 ---
 
-## Anti-Patterns
+## 反模式
 
-| Anti-Pattern                                                   | Fix                                                                   |
+| 反模式 | 修复方案 |
 | -------------------------------------------------------------- | --------------------------------------------------------------------- |
-| `.unwrap()` in library code                                    | Return `Result` or `Option`                                           |
-| `.clone()` to satisfy borrow checker without understanding why | Restructure lifetimes or use `Rc`/`Arc` if shared ownership is needed |
-| `String` in struct fields that are always static               | Use `&'static str` or `Cow<'static, str>`                             |
-| `Box<dyn Error>` in library error types                        | Use `thiserror` enum                                                  |
-| Manual `impl Display` + `impl Error`                           | Use `thiserror` derive                                                |
-| `Arc<Mutex<Vec<T>>>` as default concurrency pattern            | Consider channels, `dashmap`, or redesign for less sharing            |
-| Returning `impl Iterator` when the caller needs to store it    | Return a concrete type or `Box<dyn Iterator>`                         |
+| 库代码中 `.unwrap()` | 返回 `Result` 或 `Option` |
+| 不理解原因就用 `.clone()` 满足借用检查器 | 重构生命周期，或使用 `Rc`/`Arc`（如果确实需要共享所有权） |
+| 始终是静态的 struct 字段用 `String` | 使用 `&'static str` 或 `Cow<'static, str>` |
+| 库错误类型中 `Box<dyn Error>` | 使用 `thiserror` 枚举 |
+| 手工 `impl Display` + `impl Error` | 使用 `thiserror` derive |
+| 默认并发模式 `Arc<Mutex<Vec<T>>>` | 考虑 channel、`dashmap`，或重新设计减少共享 |
+| 调用方需要存储时返回 `impl Iterator` | 返回具体类型或 `Box<dyn Iterator>` |
