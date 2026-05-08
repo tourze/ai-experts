@@ -1,194 +1,194 @@
-# Headless CMS Guide
+# Headless CMS 指南
 
-Reference for choosing, modeling, and implementing a headless CMS for marketing content.
+为营销内容选择、建模和实现 headless CMS 的参考。
 
-## When to Use This Reference
+## 何时使用本参考
 
-Use this when selecting a CMS for a new project, designing content models for marketing sites, setting up editorial workflows, or connecting CMS content to programmatic pages.
+在新项目选 CMS、为营销站点设计内容模型、搭建编辑工作流，或将 CMS 内容接入程序化页面时使用。
 
 ---
 
-## Headless vs Traditional CMS
+## Headless vs 传统 CMS
 
-A headless CMS separates content management from presentation. Content is stored in a structured backend and delivered via API to any frontend.
+Headless CMS 将内容管理与展示分离。内容存储在结构化后端，通过 API 交付到任意前端。
 
-### When Headless Makes Sense
+### Headless 适用场景
 
-- Multiple frontends consume the same content (web, mobile, email)
-- Developers want full control over the frontend stack
-- Content needs to be reused across channels
-- You're building with a modern framework (Next.js, Remix, Astro)
-- Marketing needs structured, reusable content blocks
+- 同一内容被多个前端消费（Web、移动端、邮件）
+- 开发者需要完全掌控前端技术栈
+- 内容需要跨渠道复用
+- 使用现代框架构建（Next.js、Remix、Astro）
+- 营销团队需要结构化、可复用的内容块
 
-### When Traditional Works Better
+### 传统 CMS 更适合的场景
 
-- Small team with no dedicated developers
-- Simple blog or brochure site
-- WYSIWYG editing is a hard requirement
-- Budget is tight and WordPress/Webflow does the job
+- 小团队，没有专职开发者
+- 简单的博客或企业宣传站点
+- WYSIWYG 编辑是硬性需求
+- 预算有限，WordPress/Webflow 能满足需求
 
-### Decision Checklist
+### 决策清单
 
-| Factor | Headless | Traditional |
+| 考量因素 | Headless | 传统 |
 |--------|----------|-------------|
-| Multi-channel delivery | Yes | Limited |
-| Developer control | Full | Constrained |
-| Non-technical editing | Requires setup | Built-in |
-| Time to launch | Longer | Faster |
-| Content reuse | Native | Manual |
-| Hosting flexibility | Any frontend | Platform-dependent |
+| 多渠道交付 | 支持 | 有限 |
+| 开发者掌控力 | 完全 | 受限 |
+| 非技术编辑 | 需要额外配置 | 内置 |
+| 上线速度 | 较慢 | 较快 |
+| 内容复用 | 原生支持 | 手动 |
+| 托管灵活性 | 任意前端 | 依赖平台 |
 
 ---
 
-## Content Modeling for Marketing
+## 营销内容建模
 
-### Core Principles
+### 核心原则
 
-1. **Think in types, not pages.** A "Landing Page" is a content type with fields — not an HTML file. This lets you reuse components across pages.
-2. **Separate content from presentation.** Store the headline text, not the styled headline. Presentation belongs in the frontend.
-3. **Design for reuse.** If testimonials appear on 5 pages, create a Testimonial type and reference it — don't duplicate.
-4. **Keep models flat.** Deeply nested structures are hard to query and maintain. Prefer references over nesting.
+1. **按类型而非页面思考。**"落地页"是一个带字段的内容类型——不是 HTML 文件。这样可以在不同页面复用组件。
+2. **内容与展示分离。**存储标题文本，而非带样式的标题。展示层由前端负责。
+3. **为复用而设计。**如果评价模块出现在 5 个页面，创建评价类型并引用它——不要复制。
+4. **保持模型扁平。**深层嵌套结构难以查询和维护。优先使用引用而非嵌套。
 
-### Common Marketing Content Types
+### 常见营销内容类型
 
-| Type | Key Fields | Notes |
+| 类型 | 关键字段 | 备注 |
 |------|-----------|-------|
-| **Landing Page** | title, slug, hero, sections[], seo | Modular sections for flexibility |
-| **Blog Post** | title, slug, body, author, category, tags, publishedAt, seo | Rich text or Portable Text body |
-| **Case Study** | title, customer, challenge, solution, results, metrics[], logo | Link to related products/features |
-| **Testimonial** | quote, author, role, company, avatar, rating | Reference from landing pages |
-| **FAQ** | question, answer, category | Group by category for programmatic pages |
-| **Author** | name, bio, avatar, social links | Reference from blog posts |
-| **CTA Block** | heading, body, buttonText, buttonUrl, variant | Reusable across pages |
+| **落地页** | title、slug、hero、sections[]、seo | 模块化区块支持灵活组合 |
+| **博客文章** | title、slug、body、author、category、tags、publishedAt、seo | body 使用富文本或 Portable Text |
+| **案例研究** | title、customer、challenge、solution、results、metrics[]、logo | 关联相关产品或功能 |
+| **评价** | quote、author、role、company、avatar、rating | 从落地页中引用 |
+| **FAQ** | question、answer、category | 按分类归组以生成程序化页面 |
+| **作者** | name、bio、avatar、social links | 从博客文章中引用 |
+| **CTA 区块** | heading、body、buttonText、buttonUrl、variant | 跨页面复用 |
 
-### SEO Fields Checklist
+### SEO 字段清单
 
-Every page-level content type needs:
+每个页面级内容类型都需要：
 
-- `metaTitle` — 50-60 characters
-- `metaDescription` — 150-160 characters
-- `ogImage` — 1200x630px social preview
-- `slug` — URL path segment
-- `canonicalUrl` — optional override
-- `noIndex` — boolean for excluding from search
-- `structuredData` — optional JSON-LD override
+- `metaTitle` — 50-60 字符
+- `metaDescription` — 150-160 字符
+- `ogImage` — 1200x630px 社交预览图
+- `slug` — URL 路径段
+- `canonicalUrl` — 可选覆盖
+- `noIndex` — 布尔值，排除搜索引擎收录
+- `structuredData` — 可选 JSON-LD 覆盖
 
 ---
 
-## Editorial Workflows
+## 编辑工作流
 
-### Draft → Review → Publish Cycle
+### 草稿 → 审核 → 发布流程
 
-1. **Draft** — Author creates or edits content
-2. **Review** — Editor reviews for accuracy, brand voice, SEO
-3. **Approve** — Stakeholder signs off
-4. **Schedule** — Set publish date/time
-5. **Publish** — Content goes live via API
+1. **草稿** — 作者创建或编辑内容
+2. **审核** — 编辑审查准确性、品牌调性、SEO
+3. **批准** — 相关方签批
+4. **定时** — 设置发布日期/时间
+5. **发布** — 内容通过 API 上线
 
-### Preview APIs
+### 预览 API
 
-All major headless CMS platforms support draft previews:
+主流 headless CMS 平台均支持草稿预览：
 
-- **Sanity**: Real-time preview with `useLiveQuery` or Presentation tool
-- **Contentful**: Preview API (`preview.contentful.com`) with separate access token
-- **Strapi**: Draft & Publish system with `status=draft` query parameter (v5; replaces v4's `publicationState`)
+- **Sanity**：通过 `useLiveQuery` 或 Presentation 工具实现实时预览
+- **Contentful**：预览 API（`preview.contentful.com`），使用独立的访问令牌
+- **Strapi**：草稿与发布系统，通过 `status=draft` 查询参数（V5；替代 V4 的 `publicationState`）
 
-Set up a preview route in your frontend (e.g., `/api/preview`) that authenticates and renders draft content.
+在前端设置预览路由（如 `/api/preview`），认证后渲染草稿内容。
 
-### Roles and Permissions
+### 角色与权限
 
-| Role | Can Create | Can Edit | Can Publish | Can Delete |
+| 角色 | 可创建 | 可编辑 | 可发布 | 可删除 |
 |------|:----------:|:--------:|:-----------:|:----------:|
-| Author | Yes | Own | No | Own drafts |
-| Editor | Yes | All | Yes | Drafts |
-| Admin | Yes | All | Yes | All |
+| 作者 | 是 | 自己的 | 否 | 自己的草稿 |
+| 编辑 | 是 | 全部 | 是 | 草稿 |
+| 管理员 | 是 | 全部 | 是 | 全部 |
 
-Exact permission models vary by platform. Sanity uses role-based access. Contentful has space-level roles. Strapi has granular RBAC.
+具体权限模型因平台而异。Sanity 使用基于角色的访问控制。Contentful 有空间级角色。Strapi 有细粒度 RBAC。
 
 ---
 
-## Platform Comparison
+## 平台对比
 
-| Feature | Sanity | Contentful | Strapi |
+| 特性 | Sanity | Contentful | Strapi |
 |---------|--------|------------|--------|
-| Hosting | Cloud (managed) | Cloud (managed) | Self-hosted or Cloud |
-| Query Language | GROQ | REST / GraphQL | REST / GraphQL |
-| Free Tier | Generous | Limited | Open source (free) |
-| Real-time Collab | Yes (built-in) | Limited | No |
-| Best For | Developer flexibility | Enterprise multi-locale | Budget / self-hosted |
-| Content Modeling | Schema-as-code | Web UI | Web UI or code |
-| Media Handling | Built-in DAM | Built-in | Plugin-based |
+| 托管方式 | 云（托管） | 云（托管） | 自托管或云 |
+| 查询语言 | GROQ | REST / GraphQL | REST / GraphQL |
+| 免费额度 | 慷慨 | 有限 | 开源（免费） |
+| 实时协作 | 支持（内置） | 有限 | 不支持 |
+| 最佳场景 | 开发者灵活性 | 企业多区域 | 预算 / 自托管 |
+| 内容建模 | Schema 即代码 | Web 界面 | Web 界面或代码 |
+| 媒体管理 | 内置 DAM | 内置 | 插件 |
 
 ### Sanity
 
-**Strengths**: GROQ query language is powerful and flexible. Schema defined in code (version-controlled). Real-time collaborative editing. Portable Text for rich content. Generous free tier.
+**优势**：GROQ 查询语言强大灵活。Schema 以代码定义（版本可控）。实时协作编辑。Portable Text 用于富文本内容。免费额度慷慨。
 
-**Considerations**: Steeper learning curve for non-developers. Studio customization requires React knowledge. Vendor lock-in on GROQ queries.
+**考量**：非开发者学习曲线较陡。Studio 自定义需要 React 知识。GROQ 查询存在供应商锁定。
 
-**Marketing fit**: Best when developers and marketers collaborate closely. Strong for content-heavy sites with complex models.
+**营销适配**：最适合开发者与营销人员紧密协作的场景。适合内容量大、模型复杂的站点。
 
 ### Contentful
 
-**Strengths**: Mature enterprise platform. Excellent multi-locale support. Strong ecosystem of integrations. Composable content with Studio. Well-documented APIs.
+**优势**：成熟的企业级平台。出色的多区域支持。强大的集成生态。通过 Studio 实现可组合内容。API 文档完善。
 
-**Considerations**: Pricing scales with content types and locales. Two separate APIs (Delivery and Management). Rate limits can be tight on lower plans.
+**考量**：定价随内容类型和区域数量增长。两套独立 API（Delivery 和 Management）。低套餐的速率限制可能较紧。
 
-**Marketing fit**: Best for enterprises with multi-market content needs. Good when you need established vendor reliability.
+**营销适配**：最适合多市场内容需求的企业。需要可靠供应商支持时优先选择。
 
 ### Strapi
 
-**Strengths**: Open source, self-hosted option. Full control over data. No per-seat pricing. Customizable admin panel. Plugin ecosystem. REST by default, GraphQL via plugin.
+**优势**：开源、可自托管。完全掌控数据。无按人头定价。可自定义管理面板。插件生态。默认 REST，通过插件支持 GraphQL。
 
-**Considerations**: Self-hosting means you handle infrastructure. Smaller ecosystem than Sanity/Contentful. V5 migration can be significant from V4.
+**考量**：自托管意味着自行管理基础设施。生态小于 Sanity/Contentful。V4 到 V5 迁移工作量可能较大。
 
-**Marketing fit**: Best for teams with DevOps capability who want full control and no vendor lock-in. Good for budget-conscious projects.
+**营销适配**：最适合具备 DevOps 能力、希望完全掌控且无供应商锁定的团队。适合预算敏感型项目。
 
-### Others Worth Knowing
+### 其他值得关注的平台
 
-- **Hygraph** — GraphQL-native, strong for federation and multi-source content
-- **Keystatic** — Git-based, good for developer-content hybrid workflows
-- **Payload** — TypeScript-first, self-hosted, code-configured like Sanity
-- **Builder.io** — Visual editor with headless backend, good for non-technical marketers
-- **Prismic** — Slice-based content modeling, strong Next.js integration
-
----
-
-## Integration with Marketing Skills
-
-### Programmatic SEO
-
-Use CMS as the data source for scalable SEO pages. Store structured data (FAQs, comparisons, city pages) as content types and generate pages from queries. Pair this with the local `seo` skill when search visibility is the primary goal.
-
-### Copywriting
-
-CMS content models enforce consistent structure. Define fields that match your copy frameworks (headline, subheadline, social proof, CTA). Pair this with the `copywriting` skill and its copy-editing reference when the task moves from structure to line-level wording.
-
-### Site Architecture
-
-URL structure, navigation hierarchy, and internal linking all depend on how content is organized in the CMS. Plan your content model together with the `seo` skill's site-architecture reference.
-
-### Email Sequences
-
-Pull CMS content into email templates for consistent messaging across web and email. Case studies, testimonials, and blog posts can feed nurture sequences, even when email production is handled outside this plugin.
+- **Hygraph** — GraphQL 原生，联邦查询和多源内容整合能力强
+- **Keystatic** — 基于 Git，适合开发者与内容混合工作流
+- **Payload** — TypeScript 优先，自托管，像 Sanity 一样以代码配置
+- **Builder.io** — 可视化编辑器配合 headless 后端，适合非技术营销人员
+- **Prismic** — 基于 Slice 的内容建模，Next.js 集成能力强
 
 ---
 
-## Implementation Checklist
+## 与营销 Skill 的集成
 
-- [ ] Define content types based on page types and reusable blocks
-- [ ] Add SEO fields to every page-level content type
-- [ ] Set up preview/draft mode in your frontend
-- [ ] Configure roles and permissions for your team
-- [ ] Create sample content for each type before building frontend
-- [ ] Set up webhook notifications for content changes (rebuild triggers)
-- [ ] Document content guidelines for editors (field descriptions, character limits)
-- [ ] Test content delivery performance (CDN, caching, ISR)
-- [ ] Plan migration strategy if moving from existing CMS
+### 程序化 SEO
+
+将 CMS 作为可扩展 SEO 页面的数据源。将结构化数据（FAQ、对比、城市页面）存储为内容类型，并通过查询生成页面。当搜索可见性是主要目标时，配合本地 `seo` skill 使用。
+
+### 文案撰写
+
+CMS 内容模型强制执行一致的结构。定义与文案框架匹配的字段（标题、副标题、社交证明、CTA）。当工作从结构转向逐行措辞时，配合 `copywriting` skill 及其文案编辑参考使用。
+
+### 站点架构
+
+URL 结构、导航层级和内部链接都依赖于内容在 CMS 中的组织方式。与 `seo` skill 的站点架构参考一起规划内容模型。
+
+### 邮件序列
+
+将 CMS 内容拉入邮件模板，保持 Web 与邮件渠道的信息一致性。案例研究、评价和博客文章可以作为培育序列的素材，即使邮件制作在此插件之外处理。
 
 ---
 
-## Relevant Integration Notes
+## 实施清单
 
-- Sanity — GROQ queries, mutations, CLI
-- Contentful — Delivery/Management APIs, publishing
-- Strapi — REST CRUD, filters, document API
+- [ ] 基于页面类型和可复用区块定义内容类型
+- [ ] 为每个页面级内容类型添加 SEO 字段
+- [ ] 在前端设置预览/草稿模式
+- [ ] 为团队配置角色和权限
+- [ ] 在构建前端之前，为每种类型创建示例内容
+- [ ] 设置内容变更的 webhook 通知（重建触发器）
+- [ ] 为编辑者编写内容指南（字段描述、字符限制）
+- [ ] 测试内容交付性能（CDN、缓存、ISR）
+- [ ] 如从现有 CMS 迁移，规划迁移策略
+
+---
+
+## 相关集成说明
+
+- Sanity — GROQ 查询、mutations、CLI
+- Contentful — Delivery/Management API、发布
+- Strapi — REST CRUD、过滤、文档 API
