@@ -470,6 +470,30 @@ describe("component source conventions", () => {
     }
   });
 
+  test("copied skill markdown uses model-neutral actor wording", () => {
+    const actorSpecificGuidance: string[] = [];
+    const skillSources = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
+      file.endsWith(".md"),
+    );
+    const claudeActorPattern =
+      /Claude 阅读|Claude 应|Claude 会|Claude 需要|向 Claude|让 Claude|告诉 Claude|为 Claude/u;
+
+    for (const sourceFile of skillSources) {
+      const source = readFileSync(sourceFile, "utf-8");
+      source.split("\n").forEach((line, index) => {
+        if (claudeActorPattern.test(line)) {
+          actorSpecificGuidance.push(`${relative(repoRoot, sourceFile)}:${index + 1}: ${line.trim()}`);
+        }
+      });
+    }
+
+    assert.deepEqual(
+      actorSpecificGuidance,
+      [],
+      "copied skill Markdown should not use Claude as the runtime actor; use model-neutral wording",
+    );
+  });
+
   test("component workflow declarations use the shared workflow API", () => {
     const legacyWorkflowHelpers: string[] = [];
     const legacyWorkflowTableMentions: string[] = [];
