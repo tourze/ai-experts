@@ -52,7 +52,7 @@ import {
 } from "./skills.ts";
 import type { ComponentRegistry, ComponentSurface } from "./types.ts";
 
-const manifestSchemaVersion = 4;
+const manifestSchemaVersion = 5;
 
 export function renderInstruction(componentSurface: ComponentSurface, platform: Platform): string {
   const instructions = componentSurface.instructions
@@ -104,6 +104,7 @@ function renderInstallManifest(
   rootEntries: string[];
   skillEntries: string[];
   forbiddenRootEntries: string[];
+  forbiddenSkillEntries: string[];
 } {
   const isClaude = platform === Platform.Claude;
   return {
@@ -114,7 +115,8 @@ function renderInstallManifest(
       ? ["CLAUDE.md", "settings.json", "agents/", "hooks/", "procedures.js", "manifest.json"]
       : ["AGENTS.md", "config.toml", "hooks.json", "agents/", "hooks/", "procedures.js", "manifest.json"],
     skillEntries: skillIds.map((skillId) => `${skillId}/`),
-    forbiddenRootEntries: isClaude ? [] : ["skills/", "installation_id", "skills/.system/"],
+    forbiddenRootEntries: isClaude ? [] : ["skills/", "installation_id"],
+    forbiddenSkillEntries: isClaude ? [] : [".system/"],
   };
 }
 

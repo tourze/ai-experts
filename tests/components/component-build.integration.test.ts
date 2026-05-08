@@ -105,6 +105,7 @@ function assertInstallManifestEntriesExist(platformRoot: string, manifest: any, 
     skillSourceRoot: string;
     skillEntries: string[];
     forbiddenRootEntries: string[];
+    forbiddenSkillEntries: string[];
   };
 
   assert.equal(
@@ -143,6 +144,19 @@ function assertInstallManifestEntriesExist(platformRoot: string, manifest: any, 
       existsSync(join(platformRoot, forbiddenRootEntry)),
       false,
       `${label} forbidden runtime entry should not be generated: ${forbiddenRootEntry}`,
+    );
+  }
+
+  for (const forbiddenSkillEntry of install.forbiddenSkillEntries) {
+    assert.equal(
+      install.skillEntries.includes(forbiddenSkillEntry),
+      false,
+      `${label} forbidden skill entry should not be installed as a managed skill entry: ${forbiddenSkillEntry}`,
+    );
+    assert.equal(
+      existsSync(join(skillSourceRoot, forbiddenSkillEntry)),
+      false,
+      `${label} forbidden skill-root runtime entry should not be generated: ${forbiddenSkillEntry}`,
     );
   }
 }
@@ -204,12 +218,12 @@ describe("component build integration", () => {
 
     assert.equal(
       claudeManifest.schema,
-      4,
+      5,
       "Claude manifest schema should version the install contract",
     );
     assert.equal(
       codexManifest.schema,
-      4,
+      5,
       "Codex manifest schema should version the install contract",
     );
     assert.equal(
@@ -263,6 +277,7 @@ describe("component build integration", () => {
       "Claude install manifest should map target-relative skill directories",
     );
     assert.deepEqual(claudeManifest.install.forbiddenRootEntries, []);
+    assert.deepEqual(claudeManifest.install.forbiddenSkillEntries, []);
     assert.equal(codexManifest.install.configRoot, "~/.codex");
     assert.equal(codexManifest.install.skillSourceRoot, "skills/");
     assert.equal(codexManifest.install.skillRoot, "~/.agents/skills");
@@ -271,7 +286,8 @@ describe("component build integration", () => {
     assert.equal(codexManifest.install.rootEntries.includes("AGENTS.md"), true);
     assert.equal(codexManifest.install.rootEntries.includes("config.toml"), true);
     assert.equal(codexManifest.install.rootEntries.includes("procedures.js"), true);
-    assert.deepEqual(codexManifest.install.forbiddenRootEntries, ["skills/", "installation_id", "skills/.system/"]);
+    assert.deepEqual(codexManifest.install.forbiddenRootEntries, ["skills/", "installation_id"]);
+    assert.deepEqual(codexManifest.install.forbiddenSkillEntries, [".system/"]);
     assert.deepEqual(
       codexManifest.install.skillEntries,
       (codexManifest.skills as string[]).map((skillId) => `${skillId}/`),

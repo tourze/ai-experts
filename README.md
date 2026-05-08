@@ -50,11 +50,11 @@ dist/
 
 Codex 的用户级 skills 官方推荐安装到 `~/.agents/skills/`。因此安装器应把 `dist/codex/skills/` 映射到 `~/.agents/skills/`，而不是复制到 `~/.codex/skills/`。
 
-安装器只能逐项复制或 symlink 生成的配置文件、agent 目录、hook 目录和单个 skill 目录；不要把整个 `~/.codex` symlink 到 `dist/codex`，也不要把整个 `~/.agents/skills` symlink 到 `dist/codex/skills`。Codex 会在这些运行时目录写入 `installation_id` 和 `skills/.system/` 等本机状态，运行时状态必须留在用户 home，不能反向污染仓库里的 generated dist。
+安装器只能逐项复制或 symlink 生成的配置文件、agent 目录、hook 目录和单个 skill 目录；不要把整个 `~/.codex` symlink 到 `dist/codex`，也不要把整个 `~/.agents/skills` symlink 到 `dist/codex/skills`。Codex 会在这些运行时目录写入 `installation_id` 和 `~/.agents/skills/.system/` 等本机状态，运行时状态必须留在用户 home，不能反向污染仓库里的 generated dist。
 
 Codex dist 不输出与 Codex `.system` 内置 skill 同名的用户级 skill，例如 `skill-creator`；这些能力应使用 Codex 系统 skill，避免 selector 出现同名重复项。
 
-`manifest.json` 当前使用 schema 4；`install` 字段是安装器的一等事实源：`rootEntries` 从平台根映射到 `configRoot`，`skillEntries` 从 `skillSourceRoot` 映射到 `skillRoot`。Claude 的 `skillRoot` 是 `~/.claude/skills`；Codex 的 `configRoot` 是 `~/.codex`、`skillRoot` 是 `~/.agents/skills`，并且 Codex 的 `rootEntries` 不包含 `skills/`。
+`manifest.json` 当前使用 schema 5；`install` 字段是安装器的一等事实源：`rootEntries` 从平台根映射到 `configRoot`，`skillEntries` 从 `skillSourceRoot` 映射到 `skillRoot`，`forbiddenRootEntries` 与 `forbiddenSkillEntries` 分别描述不得覆盖的配置根和 skill 根运行时状态。Claude 的 `skillRoot` 是 `~/.claude/skills`；Codex 的 `configRoot` 是 `~/.codex`、`skillRoot` 是 `~/.agents/skills`，并且 Codex 的 `rootEntries` 不包含 `skills/`。
 
 ## 组件源码
 
