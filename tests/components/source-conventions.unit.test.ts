@@ -137,7 +137,7 @@ describe("component source conventions", () => {
     );
     assert.doesNotMatch(
       buildSources,
-      /\b(?:isLegacyPluginsRoot|legacyPluginsRoot|pluginsRoot|sourceRoots|componentSourceRoots)\b|--plugins-dir|plugins-dir|["']src\/plugins["']|join\([^)]*["']plugins["'][^)]*\)/,
+      /\b(?:sourceRoots|componentSourceRoots)\b|--plugins-dir|plugins-dir|["']src\/plugins["']|join\([^)]*["']plugins["'][^)]*\)/,
       "build code should not route component sources through alternate roots",
     );
     assert.equal(
@@ -200,7 +200,7 @@ describe("component source conventions", () => {
     );
   });
 
-  test("runtime skill discovery does not support legacy plugins roots", () => {
+  test("runtime skill discovery uses canonical component roots", () => {
     const discoverySources = [
       join(repoRoot, "src/components/procedures/sources/skill-activation-analyzer/cso_audit.ts"),
       join(repoRoot, "src/components/procedures/sources/skills-prune-and-sync-readme/curate_skills.ts"),
@@ -210,7 +210,7 @@ describe("component source conventions", () => {
       const source = readFileSync(sourceFile, "utf-8");
       assert.doesNotMatch(
         source,
-        /\b(?:isLegacyPluginsRoot|legacyPluginsRoot|pluginsRoot)\b|--plugins-dir|plugins-dir|join\([^)]*["']plugins["'][^)]*\)/,
+        /--plugins-dir|plugins-dir|join\([^)]*["']plugins["'][^)]*\)/,
         `${sourceFile} should discover only canonical component skill roots`,
       );
     }

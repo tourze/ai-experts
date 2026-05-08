@@ -197,9 +197,7 @@ function computeQuality(folder: any, frontmatter: any, frontmatterKeys: any, bod
     return { qualityScore: Math.max(score, 0), issues };
 }
 function readSkill(skillDir: any, options: any = {}): any {
-    const skillFile = fs.existsSync(path.join(skillDir, "SKILL.md"))
-        ? path.join(skillDir, "SKILL.md")
-        : path.join(skillDir, "index.ts");
+    const skillFile = path.join(skillDir, "index.ts");
     if (!fs.existsSync(skillFile)) {
         return null;
     }
@@ -222,7 +220,6 @@ function readSkill(skillDir: any, options: any = {}): any {
     const id = resolvedFrontmatter.name || path.basename(skillDir);
     return {
         id,
-        collection: options.collection || "components",
         folder: path.basename(skillDir),
         skillDir,
         skillFile,
@@ -258,20 +255,15 @@ function listPublicDirs(root: any): any {
 function iterPublicSkills(repoRoot: any): any {
     const records: any[] = [];
     const seen = new Set();
-    const roots: any[] = [
-        { dir: path.join(repoRoot, "src/components/skills"), collection: "components" },
-        { dir: path.join(repoRoot, "skills"), collection: "generated" },
-    ];
-    for (const root of roots) {
-        for (const name of listPublicDirs(root.dir)) {
-            const record = readSkill(path.join(root.dir, name), { repoRoot, collection: root.collection });
-            if (record) {
-                if (seen.has(record.id)) {
-                    continue;
-                }
-                seen.add(record.id);
-                records.push(record);
+    const skillsRoot = path.join(repoRoot, "src/components/skills");
+    for (const name of listPublicDirs(skillsRoot)) {
+        const record = readSkill(path.join(skillsRoot, name), { repoRoot });
+        if (record) {
+            if (seen.has(record.id)) {
+                continue;
             }
+            seen.add(record.id);
+            records.push(record);
         }
     }
     return records.sort((left: any, right: any) => left.id.localeCompare(right.id));
@@ -373,9 +365,6 @@ function detectConflicts(records: any): any {
         const left = records[index];
         const leftPrefix = left.folder.split("-", 1)[0];
         for (const right of records.slice(index + 1)) {
-            if (left.collection !== right.collection) {
-                continue;
-            }
             const rightPrefix = right.folder.split("-", 1)[0];
             if (leftPrefix !== rightPrefix) {
                 continue;
@@ -504,7 +493,7 @@ function buildSkillTable(records: any, existingSummaries: any): any {
     const lines: any[] = [
         README_SECTION_START,
         "",
-        "以下清单按仓库中实际存在的公共组件 skill 源码或生成 `skills/*/SKILL.md` 整理，不包含 `.system` 内置 skill。名称可直接跳转到对应说明文件。",
+        "以下清单按仓库中实际存在的 `src/components/skills/*/index.ts` 组件源码整理。名称可直接跳转到对应说明文件。",
         "",
         `### 公共 Skills（${records.length}）`,
         "",
@@ -563,14 +552,13 @@ function resolveSkillTarget(repoRoot: any, skill: any): any {
     const records = iterPublicSkills(repoRoot);
     const clean = skill.replaceAll("\\", "/");
     const normalized = clean
-        .replace(/\/SKILL\.md$/, "")
-        .replace(/\/SKILL\.body\.md$/, "")
+        .replace(/\/index\.ts$/, "")
         .replace(/^src\/components\/skills\//, "")
-        .replace(/^skills\//, "")
-        .replace(/\/skills\//, "/");
+        .replace(/\/$/, "");
     const matches = records.filter((record: any) => (record.id === normalized ||
         record.folder === normalized ||
-        record.link.replace(/\/SKILL\.md$/, "") === clean));
+        record.link === clean ||
+        record.link.replace(/\/index\.ts$/, "") === clean.replace(/\/$/, "")));
     if (matches.length === 0) {
         throw new Error(`未找到 skill: ${skill}`);
     }

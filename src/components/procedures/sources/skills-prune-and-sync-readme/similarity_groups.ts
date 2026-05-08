@@ -43,24 +43,17 @@ export function buildSimilarityGroups(records: any): any {
             const rightPrefix = right.folder.split("-", 1)[0];
             const nameOverlap = jaccardSimilarity(tokenize(left.folder), tokenize(right.folder));
             const descOverlap = jaccardSimilarity(tokenize(left.description), tokenize(right.description));
-            const leftCollection = left.collection || "components";
-            const rightCollection = right.collection || "components";
-            const sameCollection = leftCollection === rightCollection;
-            const crossCollection = leftCollection !== rightCollection;
             const sameFamily = leftPrefix === rightPrefix;
             const sharedPrefix = left.folder.startsWith(right.folder) || right.folder.startsWith(left.folder);
-            const sameCollectionCandidate = sameCollection && (sameFamily || sharedPrefix || nameOverlap >= 0.35);
-            const crossCollectionNear = crossCollection && nameOverlap >= 0.25 && descOverlap >= 0.24;
-            if (!sameCollectionCandidate && !crossCollectionNear)
+            const candidate = sameFamily || sharedPrefix || nameOverlap >= 0.35;
+            if (!candidate)
                 continue;
             const descRatio = levenshteinRatio(normalizeText(left.description), normalizeText(right.description));
-            const sameCollectionNear = sameCollectionCandidate && (descOverlap >= 0.16 || descRatio >= 0.42);
-            if (!sameCollectionNear && !crossCollectionNear)
+            const near = descOverlap >= 0.16 || descRatio >= 0.42;
+            if (!near)
                 continue;
-            const scope = sameCollectionNear ? "same_component_family" : "cross_component_overlap";
-            const groupKey = sameCollectionNear
-                ? `${leftCollection}/${sameFamily ? leftPrefix : "mixed"}`
-                : `cross-component/${[leftCollection, rightCollection].sort().join("+")}`;
+            const scope = "component_family";
+            const groupKey = sameFamily ? leftPrefix : "mixed";
             if (!groups.has(groupKey))
                 groups.set(groupKey, { group: groupKey, scope, skills: new Set(), pairs: [] });
             const group = groups.get(groupKey);

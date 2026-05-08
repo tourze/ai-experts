@@ -983,11 +983,24 @@ describe("component build integration", () => {
       assert.match(readFileSync(staticHtml, "utf-8"), /fixture-skill/);
 
       const curateRepo = join(runtimeTmp, "curate-repo");
-      const curateSkillDir = join(curateRepo, "skills", "stub-skill");
+      const curateSkillDir = join(curateRepo, "src", "components", "skills", "stub-skill");
       mkdirSync(curateSkillDir, { recursive: true });
       writeFileSync(
-        join(curateSkillDir, "SKILL.md"),
-        "---\nname: stub-skill\ndescription: TODO\n---\n\n# Stub Skill\n\nTODO\n",
+        join(curateSkillDir, "index.ts"),
+        [
+          'import { defineSkill, defineSkillWorkflow } from "../../sdk";',
+          "",
+          "export const stubSkill = defineSkill({",
+          '  id: "stub-skill",',
+          '  fullName: "Stub Skill",',
+          '  description: "TODO",',
+          '  useCases: ["TODO"],',
+          '  constraints: ["TODO"],',
+          '  sourceDir: new URL("./", import.meta.url),',
+          '  workflow: defineSkillWorkflow({ steps: ["TODO"] }),',
+          "});",
+          "",
+        ].join("\n"),
         "utf-8",
       );
       const curate = runProcedure("skills-prune-and-sync-readme-curate-skills", "skills-prune-and-sync-readme", [
