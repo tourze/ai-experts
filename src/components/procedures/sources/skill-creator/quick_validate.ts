@@ -7,8 +7,13 @@ const ALLOWED_PROPERTIES = new Set([
     "description",
     "license",
     "allowed-tools",
+    "argument-hint",
+    "arguments",
+    "disable-model-invocation",
     "metadata",
     "compatibility",
+    "user-invocable",
+    "user_invocable",
 ]);
 function stripQuotes(value: any): any {
     const trimmed = value.trim();
