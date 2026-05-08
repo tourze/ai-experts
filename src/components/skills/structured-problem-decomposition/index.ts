@@ -6,10 +6,13 @@ import {
   defineSkill,
   defineSkillOutputs,
   defineWorkflow,
+  defineWorkflowGate,
+  defineWorkflowRoute,
   defineWorkflowStep,
 } from "../../sdk";
 import { businessHealthDiagnosticSkill } from "../business-health-diagnostic/index";
 import { debugMethodologySkill } from "../debug-methodology/index";
+import { evidenceQualityFrameworkSkill } from "../evidence-quality-framework/index";
 import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
 import { fishboneDiagramSkill } from "../fishbone-diagram/index";
 import { mckinseyStepSkill } from "../mckinsey-7-step/index";
@@ -77,6 +80,12 @@ export const structuredProblemDecompositionSkill = defineSkill({
     },
     {
       get id() {
+        return evidenceQualityFrameworkSkill.id;
+      },
+      reason: "需要把根因、结论和建议显式标注为事实/推断/假设并绑定证据时联动。",
+    },
+    {
+      get id() {
         return processOptimizationSkill.id;
       },
       reason: "需要从流程瓶颈、交接、返工和吞吐角度解释系统动态时联动。",
@@ -128,28 +137,70 @@ export const structuredProblemDecompositionSkill = defineSkill({
   workflow: defineWorkflow({
     steps: [
       defineWorkflowStep({
-        id: "step-1",
+        id: "frame-problem",
         label: "问题界定：用一句话说明回答什么、不回答什么；说不清时先收敛范围。",
       }),
       defineWorkflowStep({
-        id: "step-2",
+        id: "structure-hypotheses",
         label: "结构化拆解：建立 MECE 假设树，确保每个 P0 假设都有验证方式。",
       }),
-      defineWorkflowStep({
-        id: "step-3",
-        label: "根因分析：用鱼骨或第一性原理展开候选根因，至少一个根因证据强度达到事实，并排除明显伪相关。",
+    ],
+    gates: [
+      defineWorkflowGate({
+        id: "evidence-gate",
+        skill: evidenceQualityFrameworkSkill.id,
+        label: "证据门禁：根因候选和阶段结论必须标注事实/推断/假设。",
+        checks: "事实有定位，推断有依据链，假设有最小验证路径；不可证伪归因不得升级为事实。",
       }),
-      defineWorkflowStep({
-        id: "step-4",
-        label: "系统动态：识别反馈回路、瓶颈、延迟和“修 A 会不会搞坏 B”的二阶风险。",
+    ],
+    routes: [
+      defineWorkflowRoute({
+        id: "debug-route",
+        triggers: ["已有日志/堆栈/复现路径", "问题本质是技术故障"],
+        skill: debugMethodologySkill.id,
+        checks: "先收敛可复现事实、观察点和最小验证，不套业务问题拆解框架。",
+        output: "复现路径、关键观察、候选根因和下一步实验。",
       }),
-      defineWorkflowStep({
-        id: "step-5",
-        label: "决策推进：给出决策人、时间窗、选项、触发条件和回退策略。",
+      defineWorkflowRoute({
+        id: "root-cause-route",
+        triggers: ["根因候选分散", "需要按人机料法环展开"],
+        skill: fishboneDiagramSkill.id,
+        checks: "根因维度不遗漏关键系统因素，每个候选都有反证方式。",
+        output: "鱼骨图维度、候选根因、证据强度和排除路径。",
       }),
+      defineWorkflowRoute({
+        id: "assumption-route",
+        triggers: ["默认假设太多", "需要挑战第一性约束"],
+        skill: firstPrinciplesDecomposerSkill.id,
+        checks: "把默认判断拆回可验证事实、约束和不可变条件。",
+        output: "关键假设、底层事实、约束和可验证推论。",
+      }),
+      defineWorkflowRoute({
+        id: "system-route",
+        triggers: ["存在反馈回路", "跨团队流程或二阶影响明显"],
+        skill: systemsThinkingSkill.id,
+        checks: "识别延迟、杠杆点、局部优化副作用和修 A 影响 B 的路径。",
+        output: "反馈回路、杠杆点、二阶风险和系统性干预点。",
+      }),
+      defineWorkflowRoute({
+        id: "decision-route",
+        triggers: ["需要形成决策", "需要责任人和时间窗"],
+        skill: runningDecisionProcessesSkill.id,
+        checks: "选项、决策人、时间窗、触发条件和回退策略明确。",
+        output: "决策建议、责任人、时间窗、触发条件和回退策略。",
+      }),
+      defineWorkflowRoute({
+        id: "pdca-route",
+        triggers: ["已选方案需要落地", "需要检查点和改进闭环"],
+        skill: pdcaCycleSkill.id,
+        checks: "行动、负责人、指标、检查频率和兜底方案可执行。",
+        output: "PDCA 行动表、检查点、指标和复盘节奏。",
+      }),
+    ],
+    finalSteps: [
       defineWorkflowStep({
-        id: "step-6",
-        label: "PDCA 闭环：定义行动、负责人、检查点、指标和兜底方案；阶段细节需要时读取 six-phases。",
+        id: "compose-result",
+        label: "收束输出：合并六阶段状态、路由产物、未验证假设、系统性风险和下一步验证计划；阶段细节需要时读取 six-phases。",
       }),
     ],
   }),

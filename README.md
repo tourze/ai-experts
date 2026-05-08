@@ -97,6 +97,8 @@ import {
   defineReference,
   defineSkill,
   defineWorkflow,
+  defineWorkflowGate,
+  defineWorkflowRoute,
   defineWorkflowStep,
   InvocationPolicy,
   KnownTool,
@@ -142,6 +144,26 @@ export const typescriptTypeSafety = defineSkill({
     steps: [
       defineWorkflowStep({ id: "collect", label: "读取完整编译错误和边界输入样例。" }),
       defineWorkflowStep({ id: "fix-contract", label: "先修上游类型合同，再处理下游症状。" }),
+    ],
+    gates: [
+      defineWorkflowGate({
+        id: "test-gate",
+        skill: testingPatternsSkill.id,
+        label: "测试门禁",
+        checks: "类型合同变化要说明测试覆盖或无需补测理由。",
+      }),
+    ],
+    routes: [
+      defineWorkflowRoute({
+        id: "test-route",
+        triggers: ["类型修复影响 fixture/mock/参数化测试"],
+        skill: testingPatternsSkill.id,
+        checks: "补齐最小测试或调整 fixture 合同。",
+        output: "测试变更或无需补测说明。",
+      }),
+    ],
+    finalSteps: [
+      defineWorkflowStep({ id: "verify", label: "运行 `tsc --noEmit` 和相关测试，报告真实结果。" }),
     ],
   }),
   tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob, KnownTool.Bash],

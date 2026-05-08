@@ -647,6 +647,19 @@ describe("component build integration", () => {
       "generated checklist should render after anti-patterns",
     );
 
+    const structuredProblemSkill = readFileSync(
+      join(tmpDistDir, "claude/skills/structured-problem-decomposition/SKILL.md"),
+      "utf-8",
+    );
+    assert.match(structuredProblemSkill, /## 工作流/);
+    assert.match(structuredProblemSkill, /```mermaid\nflowchart TD/);
+    assert.match(structuredProblemSkill, /evidence-quality-framework/);
+    assert.match(structuredProblemSkill, /匹配场景路由/);
+    assert.match(structuredProblemSkill, /debug-methodology/);
+    assert.match(structuredProblemSkill, /fishbone-diagram/);
+    assert.match(structuredProblemSkill, /pdca-cycle/);
+    assert.match(structuredProblemSkill, /join --> compose_result/);
+
     const codexMetadata = readFileSync(
       join(tmpDistDir, "codex/skills/typescript-type-safety/agents/openai.yaml"),
       "utf-8",

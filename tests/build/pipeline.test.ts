@@ -265,6 +265,60 @@ describe("build/pipeline modules", () => {
       validateMermaidSyntax("broken workflow", "flowchart TD\n  start -->"),
     ).rejects.toThrow("broken workflow generated Mermaid diagram is invalid");
 
+    const workflowHelperSkill = defineSkill({
+      ...fixture.skill,
+      id: "workflow-helper-skill",
+      fullName: "Workflow Helper Skill",
+      procedures: [],
+      references: [],
+      assets: [],
+      workflow: defineWorkflow({
+        steps: [defineWorkflowStep({ id: "assist", label: "辅助检查。" })],
+      }),
+    });
+    const complexWorkflowSkill = defineSkill({
+      ...fixture.skill,
+      id: "complex-workflow-skill",
+      fullName: "Complex Workflow Skill",
+      procedures: [],
+      references: [],
+      assets: [],
+      workflow: defineWorkflow({
+        steps: [defineWorkflowStep({ id: "collect", label: "收集上下文。" })],
+        gates: [
+          defineWorkflowGate({
+            id: "evidence-gate",
+            skill: workflowHelperSkill.id,
+            label: "证据门禁",
+            checks: "证据完整后再路由。",
+          }),
+        ],
+        routes: [
+          defineWorkflowRoute({
+            id: "specialist-route",
+            triggers: ["需要专项处理"],
+            skill: workflowHelperSkill.id,
+            checks: "专项检查完成。",
+            output: "专项结论。",
+          }),
+        ],
+        finalSteps: [defineWorkflowStep({ id: "finalize", label: "收束结论。" })],
+      }),
+    });
+    expect(() =>
+      validateRegistry({
+        ...fixture.registry,
+        skills: [fixture.skill, workflowHelperSkill, complexWorkflowSkill],
+      })
+    ).not.toThrow();
+    const complexRendered = renderSkillMd(complexWorkflowSkill, Platform.Claude, procedureMap);
+    expect(complexRendered).toContain("## 工作流\n\n```mermaid\nflowchart TD");
+    expect(complexRendered).toContain('evidence_gate["workflow-helper-skill');
+    expect(complexRendered).toContain('route{"匹配场景路由"}');
+    expect(complexRendered).toContain('route -->|"需要专项处理"| specialist_route');
+    expect(complexRendered).toContain("specialist_route --> join");
+    expect(complexRendered).toContain("join --> finalize");
+
     expect(() =>
       validateRegistry({
         ...fixture.registry,
@@ -455,6 +509,65 @@ describe("build/pipeline modules", () => {
     };
     expect(() => validateRegistry(codexAgentRouteWithClaudeOnlySkillRegistry)).toThrow(
       "workflow route references skill fixture-skill unavailable on platform(s): codex-cli",
+    );
+
+    const codexSkillWorkflowWithClaudeOnlySkillRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [
+        { ...fixture.skill, platforms: [ComponentPlatform.Claude] },
+        {
+          ...fixture.skill,
+          id: "workflow-skill",
+          fullName: "Workflow Skill",
+          procedures: [],
+          references: [],
+          assets: [],
+          workflow: defineWorkflow({
+            gates: [
+              defineWorkflowGate({
+                id: "gate-check",
+                skill: fixture.skill.id,
+                label: "门禁",
+                checks: "检查证据",
+              }),
+            ],
+          }),
+        },
+      ],
+      agents: [{ ...fixture.agent, workflow: undefined, skills: [] }],
+    };
+    expect(() => validateRegistry(codexSkillWorkflowWithClaudeOnlySkillRegistry)).toThrow(
+      "Skill workflow-skill workflow gate references skill fixture-skill unavailable on platform(s): codex-cli",
+    );
+
+    const codexSkillRouteWithClaudeOnlySkillRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [
+        { ...fixture.skill, platforms: [ComponentPlatform.Claude] },
+        {
+          ...fixture.skill,
+          id: "workflow-skill",
+          fullName: "Workflow Skill",
+          procedures: [],
+          references: [],
+          assets: [],
+          workflow: defineWorkflow({
+            routes: [
+              defineWorkflowRoute({
+                id: "route-a",
+                triggers: ["需要技能"],
+                skill: fixture.skill.id,
+                checks: "路由检查",
+                output: "产出结果",
+              }),
+            ],
+          }),
+        },
+      ],
+      agents: [{ ...fixture.agent, workflow: undefined, skills: [] }],
+    };
+    expect(() => validateRegistry(codexSkillRouteWithClaudeOnlySkillRegistry)).toThrow(
+      "Skill workflow-skill workflow route references skill fixture-skill unavailable on platform(s): codex-cli",
     );
 
     const missingOwnerRegistry: ComponentRegistry = {

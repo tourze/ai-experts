@@ -109,7 +109,7 @@ describe("component source conventions", () => {
     assert.match(readme, /defineWorkflow\(\{/);
     assert.match(
       readme,
-      /defineAntiPattern,\n  defineReference,\n  defineSkill,\n  defineWorkflow,\n  defineWorkflowStep,\n  InvocationPolicy,\n  KnownTool,\n  Platform,\n\} from "\.\.\/\.\.\/sdk"/,
+      /defineAntiPattern,\n  defineReference,\n  defineSkill,\n  defineWorkflow,\n  defineWorkflowGate,\n  defineWorkflowRoute,\n  defineWorkflowStep,\n  InvocationPolicy,\n  KnownTool,\n  Platform,\n\} from "\.\.\/\.\.\/sdk"/,
     );
     assert.match(readme, /defineAgent,\n  defineWorkflow,\n  defineWorkflowStep,\n  KnownTool,\n  Platform,\n  SkillUseMode,\n\} from "\.\.\/\.\.\/sdk"/);
     assert.match(readme, /type NormalizedHookPayload,\n  type NormalizedHookResult,\n\} from "\.\.\/\.\.\/sdk"/);
@@ -1238,9 +1238,11 @@ describe("component source conventions", () => {
       (file) => file.endsWith("index.ts") && !file.split(/[\\/]/).includes("scripts"),
     );
     const goalDefinitionFiles: string[] = [];
+    let complexSkillWorkflowCount = 0;
 
     for (const skillSourceFile of skillIndexFiles) {
       const source = readFileSync(skillSourceFile, "utf-8");
+      const hasWorkflow = /\n\s*workflow:\s*defineWorkflow\(\{/.test(source);
       assert.match(source, /\n\s*useCases:\s*\[/, `${skillSourceFile} should define useCases`);
       assert.match(source, /\n\s*constraints:\s*\[/, `${skillSourceFile} should define constraints`);
       assert.doesNotMatch(source, /\n\s*tools:\s*\[\],/, `${skillSourceFile} should omit empty tools arrays`);
@@ -1255,6 +1257,31 @@ describe("component source conventions", () => {
         /\n\s*(?:(?:goal|outputs):\s*defineSkill(?:Goal|Outputs)|workflow:\s*defineWorkflow)\(\{/,
         `${skillSourceFile} should define structured skill content`,
       );
+      if (hasWorkflow) {
+        assert.match(
+          source,
+          /defineWorkflow(?:Step|Gate|Route)\(\{/,
+          `${skillSourceFile} should define workflow nodes through shared defineWorkflow* helpers`,
+        );
+        assert.doesNotMatch(
+          source,
+          /\n\s*workflow:\s*\[/,
+          `${skillSourceFile} should define a single workflow object, not multiple workflows`,
+        );
+        if (/defineWorkflow(?:Gate|Route)\(\{/.test(source)) {
+          complexSkillWorkflowCount += 1;
+          assert.doesNotMatch(
+            source,
+            /\n\s*skill:\s*"[^"]+"/,
+            `${skillSourceFile} should reference workflow skills through imported skill definitions`,
+          );
+          assert.match(
+            source,
+            /\n\s*skill:\s*\w+Skill\.id/,
+            `${skillSourceFile} should reference workflow skills through .id`,
+          );
+        }
+      }
       if (/\n\s*goal:\s*defineSkillGoal\(\{/.test(source)) {
         goalDefinitionFiles.push(skillSourceFile);
         assert.doesNotMatch(
@@ -1355,6 +1382,10 @@ describe("component source conventions", () => {
     assert.ok(
       goalDefinitionFiles.length <= 10,
       `goal is a rare field for non-routing completion contracts; found ${goalDefinitionFiles.length}: ${goalDefinitionFiles.join(", ")}`,
+    );
+    assert.ok(
+      complexSkillWorkflowCount >= 1,
+      "at least one production skill should exercise gates/routes so complex skill workflows stay covered",
     );
   });
 });
