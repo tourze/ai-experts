@@ -37,6 +37,14 @@ function normalizeMarkdownReferenceLabel(label: string): string {
   return label.trim().replace(/\s+/gu, " ").toLowerCase();
 }
 
+function isLikelyLocalDefinitionPath(href: string): boolean {
+  if (href.includes("[") || href.includes("]")) return false;
+  return href.startsWith("./")
+    || href.startsWith("../")
+    || href.includes("/")
+    || /\.[A-Za-z0-9]+$/u.test(href);
+}
+
 function localMarkdownPath(destination: string): string | null {
   const path = destination.split("#", 1)[0] ?? "";
   if (!path || path.startsWith("//") || /^[a-z][a-z0-9+.-]*:/iu.test(path)) {
@@ -815,6 +823,45 @@ describe("component source conventions", () => {
       directoryLinks,
       [],
       "component Markdown should link concrete files instead of local directories",
+    );
+  });
+
+  test("component markdown local file links resolve in source tree", () => {
+    const missingLocalLinks: string[] = [];
+    const markdownSources = collectFiles(join(repoRoot, "src/components"), (file) =>
+      file.endsWith(".md") && !file.split(/[\\/]/).includes("evals"),
+    );
+
+    const isGeneratedSkillLink = (targetPath: string): boolean =>
+      targetPath === "SKILL.md" || targetPath.endsWith("/SKILL.md");
+
+    for (const sourceFile of markdownSources) {
+      const source = stripMarkdownCode(readFileSync(sourceFile, "utf-8"));
+
+      for (const match of source.matchAll(/(!?)\[[^\]\n]+\]\(([^)\n]+)\)/gu)) {
+        if (match[1] === "!") continue;
+        const targetPath = localMarkdownPath(markdownDestination(match[2] ?? ""));
+        if (!targetPath || isGeneratedSkillLink(targetPath)) continue;
+        if (!existsSync(resolve(dirname(sourceFile), targetPath))) {
+          missingLocalLinks.push(`${relative(repoRoot, sourceFile)}: ${targetPath}`);
+        }
+      }
+
+      for (const match of source.matchAll(/^\s*\[[^\]\n]+\]:\s+([^\n]+)$/gmu)) {
+        const destination = markdownDestination(match[1] ?? "");
+        if (!isLikelyLocalDefinitionPath(destination)) continue;
+        const targetPath = localMarkdownPath(destination);
+        if (!targetPath || isGeneratedSkillLink(targetPath)) continue;
+        if (!existsSync(resolve(dirname(sourceFile), targetPath))) {
+          missingLocalLinks.push(`${relative(repoRoot, sourceFile)}: ${targetPath}`);
+        }
+      }
+    }
+
+    assert.deepEqual(
+      missingLocalLinks,
+      [],
+      "component Markdown local file links should resolve from source files",
     );
   });
 
