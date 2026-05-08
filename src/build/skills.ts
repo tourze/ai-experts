@@ -631,16 +631,29 @@ function rewriteReferenceLocalLinks(
       if (!hrefPath) return match;
       if (hrefPath === "SKILL.md" || hrefPath.endsWith("/SKILL.md")) return match;
 
+      const rewriteDirectoryTarget = (targetPath: string): string | null => {
+        if (!statSync(targetPath).isDirectory()) return null;
+        const indexTarget = join(targetPath, "index.md");
+        if (!existsSync(indexTarget)) return null;
+        return `[${label}](${markdownRelativePath(outputFile, indexTarget)}${anchor})`;
+      };
+
       const currentTarget = join(dirname(outputFile), hrefPath);
-      if (existsSync(currentTarget)) return match;
+      if (existsSync(currentTarget)) {
+        return rewriteDirectoryTarget(currentTarget) ?? match;
+      }
 
       const skillRootTarget = join(skillRoot, hrefPath);
       if (existsSync(skillRootTarget)) {
+        const directoryRewrite = rewriteDirectoryTarget(skillRootTarget);
+        if (directoryRewrite) return directoryRewrite;
         return `[${label}](${markdownRelativePath(outputFile, skillRootTarget)}${anchor})`;
       }
 
       const referenceTarget = join(skillRoot, "references", hrefPath.replace(/^(\.\.\/)+/u, ""));
       if (existsSync(referenceTarget)) {
+        const directoryRewrite = rewriteDirectoryTarget(referenceTarget);
+        if (directoryRewrite) return directoryRewrite;
         return `[${label}](${markdownRelativePath(outputFile, referenceTarget)}${anchor})`;
       }
 

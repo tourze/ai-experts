@@ -2065,7 +2065,7 @@ describe("component build integration", () => {
       );
 
       const brokenLocalLinks: string[] = [];
-      const directoryLinksWithoutTrailingSlash: string[] = [];
+      const directoryLinks: string[] = [];
       const missingReferenceDefinitions: string[] = [];
       const runtimeMarkdownFiles = collectFiles(join(tmpDistDir, platform, "skills"), (file) =>
         file.endsWith(".md"),
@@ -2095,8 +2095,8 @@ describe("component build integration", () => {
             brokenLocalLinks.push(`${markdownFile}: ${href}`);
           } else if (pathWithoutAnchor) {
             const resolvedPath = resolve(dirname(markdownFile), pathWithoutAnchor);
-            if (statSync(resolvedPath).isDirectory() && !pathWithoutAnchor.endsWith("/")) {
-              directoryLinksWithoutTrailingSlash.push(`${markdownFile}: ${href}`);
+            if (statSync(resolvedPath).isDirectory()) {
+              directoryLinks.push(`${markdownFile}: ${href}`);
             }
           }
         }
@@ -2110,8 +2110,8 @@ describe("component build integration", () => {
             brokenLocalLinks.push(`${markdownFile}: [${label}] -> ${href}`);
           } else if (pathWithoutAnchor) {
             const resolvedPath = resolve(dirname(markdownFile), pathWithoutAnchor);
-            if (statSync(resolvedPath).isDirectory() && !pathWithoutAnchor.endsWith("/")) {
-              directoryLinksWithoutTrailingSlash.push(`${markdownFile}: [${label}] -> ${href}`);
+            if (statSync(resolvedPath).isDirectory()) {
+              directoryLinks.push(`${markdownFile}: [${label}] -> ${href}`);
             }
           }
         }
@@ -2129,11 +2129,7 @@ describe("component build integration", () => {
         [],
         `${platform} generated Markdown should define every used reference-style link label`,
       );
-      assert.deepEqual(
-        directoryLinksWithoutTrailingSlash,
-        [],
-        `${platform} generated Markdown directory links should use trailing slashes`,
-      );
+      assert.deepEqual(directoryLinks, [], `${platform} generated Markdown should not link local directories directly`);
 
       for (const skillFile of collectFiles(join(tmpDistDir, platform, "skills"), (file) => file.endsWith("SKILL.md"))) {
         const source = stripFrontmatter(readFileSync(skillFile, "utf-8")).trimStart();
