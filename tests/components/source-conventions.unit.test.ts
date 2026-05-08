@@ -1077,6 +1077,11 @@ describe("component source conventions", () => {
       );
       assert.doesNotMatch(
         source,
+        /\n\s*skills:\s*\[\s*\]/,
+        `${agentSourceFile} should omit skills instead of emitting an empty skills list`,
+      );
+      assert.doesNotMatch(
+        source,
         /单个 plugin|未覆盖的 plugin/,
         `${agentSourceFile} should describe ai-experts audit scope with current component terms`,
       );

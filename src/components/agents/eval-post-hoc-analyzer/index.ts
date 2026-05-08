@@ -108,7 +108,4 @@ export const evalPostHocAnalyzerAgent = defineAgent({
   }),
   tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob],
   sandbox: AgentSandbox.ReadOnly,
-  skills: [
-
-  ],
 });
