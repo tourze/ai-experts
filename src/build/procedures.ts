@@ -28,6 +28,16 @@ type RuntimeProcedureModule = RuntimeProcedureEntry & {
   sourcePath: string;
 };
 
+export type ProcedureCommandRewriteTriggerKind = "skill" | "agent";
+
+export type ProcedureCommandRewrite = {
+  id: string;
+  triggerKind: ProcedureCommandRewriteTriggerKind;
+  triggerId: string;
+};
+
+export type ProcedureCommandRewriteCandidate = Pick<RuntimeProcedureEntry, "id" | "target" | "owners">;
+
 type ProcedureManifestEntry = Omit<RuntimeProcedureEntry, "target"> & {
   target: string;
   bundled: true;
@@ -437,6 +447,8 @@ type ProcedureTransformContext = {
   id: string;
   target: string;
   ownerSkillIds: readonly string[];
+  ownerAgentIds: readonly string[];
+  primaryTrigger: Omit<ProcedureCommandRewrite, "id"> | null;
 };
 
 function renderProcedurePathLoader(): string {
@@ -450,17 +462,25 @@ module.exports = function aiExpertsProcedurePathLoader(source) {
   if (!context) return source;
   const replacement = "globalThis.__aiExpertsProcedureDir(" + JSON.stringify(context.target) + ")";
   const moduleFile = "globalThis.__aiExpertsModuleFile(" + JSON.stringify(context.target) + ")";
-  const runtimeCommand = (procedureId, skillId) =>
-    "node procedures.js --procedure-id " + procedureId + (skillId ? " --trigger-skill " + skillId : "") + " --";
+  const runtimeCommand = (rewrite) =>
+    "node procedures.js --procedure-id " + rewrite.id + " --trigger-" + rewrite.triggerKind + " " + rewrite.triggerId + " --";
   const rewriteScriptCommand = (match) => {
     const target = match.replace(/^node\\s+(?:\\.\\/)?/, "");
-    if (target === context.target) return runtimeCommand(context.id, (context.ownerSkillIds || [])[0]);
-    for (const skillId of context.ownerSkillIds || []) {
-      const ownerRewrite = commandRewrites[JSON.stringify([skillId, target])];
-      if (ownerRewrite) return runtimeCommand(ownerRewrite, skillId);
+    if (target === context.target) {
+      return context.primaryTrigger
+        ? runtimeCommand({ id: context.id, triggerKind: context.primaryTrigger.triggerKind, triggerId: context.primaryTrigger.triggerId })
+        : match;
     }
-    const globalRewrite = commandRewrites[JSON.stringify(["", target])];
-    return globalRewrite ? runtimeCommand(globalRewrite, "") : match;
+    for (const skillId of context.ownerSkillIds || []) {
+      const ownerRewrite = commandRewrites[JSON.stringify(["skill", skillId, target])];
+      if (ownerRewrite) return runtimeCommand(ownerRewrite);
+    }
+    for (const agentId of context.ownerAgentIds || []) {
+      const ownerRewrite = commandRewrites[JSON.stringify(["agent", agentId, target])];
+      if (ownerRewrite) return runtimeCommand(ownerRewrite);
+    }
+    const globalRewrite = commandRewrites[JSON.stringify(["", "", target])];
+    return globalRewrite ? runtimeCommand(globalRewrite) : match;
   };
   return source
     .replace(/\\bpath\\.dirname\\s*\\(\\s*fileURLToPath\\s*\\(\\s*import\\.meta\\.url\\s*\\)\\s*\\)/g, replacement)
@@ -473,28 +493,65 @@ module.exports = function aiExpertsProcedurePathLoader(source) {
 `;
 }
 
-function pushMapValue(map: Map<string, string[]>, key: string, value: string): void {
+function pushCommandRewriteValue(
+  map: Map<string, ProcedureCommandRewrite[]>,
+  key: string,
+  value: ProcedureCommandRewrite,
+): void {
   const values = map.get(key) ?? [];
-  if (!values.includes(value)) values.push(value);
+  if (!values.some((existing) =>
+    existing.id === value.id &&
+    existing.triggerKind === value.triggerKind &&
+    existing.triggerId === value.triggerId
+  )) {
+    values.push(value);
+  }
   map.set(key, values);
 }
 
-function buildProcedureCommandRewrites(
-  procedures: readonly RuntimeProcedureModule[],
-): Record<string, string> {
-  const byOwnerAndTarget = new Map<string, string[]>();
-  const byTarget = new Map<string, string[]>();
+function primaryProcedureTrigger(
+  procedure: ProcedureCommandRewriteCandidate,
+): Omit<ProcedureCommandRewrite, "id"> | null {
+  const skillId = procedure.owners.skillIds[0];
+  if (skillId) return { triggerKind: "skill", triggerId: skillId };
+  const agentId = procedure.owners.agentIds[0];
+  if (agentId) return { triggerKind: "agent", triggerId: agentId };
+  return null;
+}
+
+export function buildProcedureCommandRewrites(
+  procedures: readonly ProcedureCommandRewriteCandidate[],
+): Record<string, ProcedureCommandRewrite> {
+  const byOwnerAndTarget = new Map<string, ProcedureCommandRewrite[]>();
+  const byTarget = new Map<string, ProcedureCommandRewrite[]>();
 
   for (const procedure of procedures) {
-    pushMapValue(byTarget, JSON.stringify(["", procedure.target]), procedure.id);
+    const primaryTrigger = primaryProcedureTrigger(procedure);
+    if (primaryTrigger) {
+      pushCommandRewriteValue(byTarget, JSON.stringify(["", "", procedure.target]), {
+        id: procedure.id,
+        ...primaryTrigger,
+      });
+    }
     for (const skillId of procedure.owners.skillIds) {
-      pushMapValue(byOwnerAndTarget, JSON.stringify([skillId, procedure.target]), procedure.id);
+      pushCommandRewriteValue(byOwnerAndTarget, JSON.stringify(["skill", skillId, procedure.target]), {
+        id: procedure.id,
+        triggerKind: "skill",
+        triggerId: skillId,
+      });
+    }
+    for (const agentId of procedure.owners.agentIds) {
+      pushCommandRewriteValue(byOwnerAndTarget, JSON.stringify(["agent", agentId, procedure.target]), {
+        id: procedure.id,
+        triggerKind: "agent",
+        triggerId: agentId,
+      });
     }
   }
 
-  const rewrites: Record<string, string> = {};
-  for (const [key, procedureIds] of [...byTarget, ...byOwnerAndTarget]) {
-    if (procedureIds.length === 1) rewrites[key] = procedureIds[0]!;
+  const rewrites: Record<string, ProcedureCommandRewrite> = {};
+  for (const [key, commands] of [...byTarget, ...byOwnerAndTarget]) {
+    if (commands.length === 1) rewrites[key] = commands[0]!;
   }
   return rewrites;
 }
@@ -546,6 +603,8 @@ async function emitBundledProceduresFile(
         id: procedure.id,
         target: procedure.target,
         ownerSkillIds: procedure.owners.skillIds,
+        ownerAgentIds: procedure.owners.agentIds,
+        primaryTrigger: primaryProcedureTrigger(procedure),
       },
     ]),
   );

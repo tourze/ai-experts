@@ -1242,6 +1242,8 @@ describe("component build integration", () => {
     assert.match(proceduresSource, /^#!\/usr\/bin\/env node/);
     assert.match(proceduresSource, /__webpack_modules__/);
     assert.match(proceduresSource, /\bnode procedures\.js --procedure-id md-to-pdf-setup --trigger-skill md-to-pdf -- --install\b/);
+    assert.doesNotMatch(proceduresSource, /\bnode procedures\.js --procedure-id [a-z0-9-]+ -- --/);
+    assert.doesNotMatch(codexProceduresSource, /\bnode procedures\.js --procedure-id [a-z0-9-]+ -- --/);
     assert.match(codexProceduresSource, /const platform = "codex-cli"/);
     assert.match(
       codexProceduresSource,
