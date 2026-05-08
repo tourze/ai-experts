@@ -541,6 +541,14 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
       ) {
         throw new Error(`Skill ${skill.id} must not register evals/ as a reference`);
       }
+      if (
+        !referenceTarget.startsWith("references/") ||
+        referenceTarget.startsWith("/") ||
+        referenceTarget.includes("..") ||
+        referenceTarget.includes("\\")
+      ) {
+        throw new Error(`Skill ${skill.id} reference ${reference.id} target must stay under references/: ${referenceTarget}`);
+      }
       if (!existsSync(referenceSource)) {
         throw new Error(`Skill ${skill.id} reference is missing: ${displayPath(reference.source)}`);
       }

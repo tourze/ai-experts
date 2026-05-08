@@ -539,6 +539,46 @@ describe("build/pipeline modules", () => {
       "source is a file but target must not end with /: references/reference/",
     );
 
+    const invalidReferenceTargetRootRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        references: [
+          defineReference({
+            id: "bad-reference-target-root",
+            source: pathToFileURL(join(fixture.root, "skill", "references", "reference.md")),
+            target: "assets/reference.md",
+            title: "Bad Reference Root",
+            summary: "invalid reference target root",
+            loadWhen: "never",
+          }),
+        ],
+      }],
+    };
+    expect(() => validateRegistry(invalidReferenceTargetRootRegistry)).toThrow(
+      "target must stay under references/: assets/reference.md",
+    );
+
+    const invalidReferenceTargetTraversalRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        references: [
+          defineReference({
+            id: "bad-reference-target-traversal",
+            source: pathToFileURL(join(fixture.root, "skill", "references", "reference.md")),
+            target: "references/../reference.md",
+            title: "Bad Reference Traversal",
+            summary: "invalid reference target traversal",
+            loadWhen: "never",
+          }),
+        ],
+      }],
+    };
+    expect(() => validateRegistry(invalidReferenceTargetTraversalRegistry)).toThrow(
+      "target must stay under references/: references/../reference.md",
+    );
+
     const invalidInstructionPlatformRegistry: ComponentRegistry = {
       ...fixture.registry,
       instructions: [{ ...fixture.instruction, platforms: ["unsupported-instruction-cli"] as any }],
