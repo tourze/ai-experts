@@ -124,6 +124,49 @@ function assertInstallManifestEntriesExist(platformRoot: string, manifest: any, 
     forbiddenRootEntries: string[];
     forbiddenSkillEntries: string[];
   };
+  const assertNormalizedInstallEntry = (entry: string, context: string): void => {
+    assert.equal(entry.trim(), entry, `${label} ${context} should not contain surrounding whitespace`);
+    assert.doesNotMatch(entry, /\\/u, `${label} ${context} should use POSIX separators`);
+    assert.doesNotMatch(entry, /^(?:\/|~\/)/u, `${label} ${context} should be relative to manifest roots`);
+    assert.doesNotMatch(entry, /(?:^|\/)\.\.(?:\/|$)/u, `${label} ${context} should not traverse parent directories`);
+    assert.doesNotMatch(entry, /^\.\//u, `${label} ${context} should not use redundant ./ prefixes`);
+  };
+  const assertUniqueEntries = (entries: string[], context: string): void => {
+    assert.equal(
+      new Set(entries).size,
+      entries.length,
+      `${label} ${context} should not contain duplicate entries`,
+    );
+  };
+
+  assertNormalizedInstallEntry(install.skillSourceRoot, "install skillSourceRoot");
+  assert.equal(
+    install.skillSourceRoot.endsWith("/"),
+    true,
+    `${label} install skillSourceRoot should use a trailing slash to mark a directory`,
+  );
+  assertUniqueEntries(install.rootEntries, "install rootEntries");
+  assertUniqueEntries(install.skillEntries, "install skillEntries");
+  assertUniqueEntries(install.forbiddenRootEntries, "install forbiddenRootEntries");
+  assertUniqueEntries(install.forbiddenSkillEntries, "install forbiddenSkillEntries");
+  for (const rootEntry of install.rootEntries) {
+    assertNormalizedInstallEntry(rootEntry, `install root entry ${rootEntry}`);
+  }
+  for (const skillEntry of install.skillEntries) {
+    assertNormalizedInstallEntry(skillEntry, `install skill entry ${skillEntry}`);
+    assert.equal(skillEntry.endsWith("/"), true, `${label} install skill entry should end with /: ${skillEntry}`);
+  }
+  for (const forbiddenRootEntry of install.forbiddenRootEntries) {
+    assertNormalizedInstallEntry(forbiddenRootEntry, `install forbidden root entry ${forbiddenRootEntry}`);
+  }
+  for (const forbiddenSkillEntry of install.forbiddenSkillEntries) {
+    assertNormalizedInstallEntry(forbiddenSkillEntry, `install forbidden skill entry ${forbiddenSkillEntry}`);
+    assert.equal(
+      forbiddenSkillEntry.endsWith("/"),
+      true,
+      `${label} install forbidden skill entry should end with /: ${forbiddenSkillEntry}`,
+    );
+  }
 
   assert.equal(
     install.rootEntries.includes(install.skillSourceRoot),
