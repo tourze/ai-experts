@@ -42,7 +42,7 @@ const VIOLATIONS: Record<string, any> = {
 };
 const WORKFLOW_PATTERNS: any[] = [
     [/(?<!触发词)(?<!英文触发词)(?<!自)(?:覆盖(?!率)|包括|包含)(?!.*触发词)/u, "workflow_leak", "列举了覆盖范围"],
-    [/按.*(?:步|阶段|流程|维度).*推进/u, "workflow_leak", "描述了执行步骤"],
+    [/按.*(?:步|阶段|流程|维度).*推进/u, "workflow_leak", "描述了工作流步骤"],
     [/输出.*(?:评分|清单|文档|报告|蓝图|画像|摘要)/u, "output_leak", "包含输出产物"],
     [/(?<!若)重点(?:输出|覆盖)/u, "output_leak", "描述了重点输出"],
     [/强调.*(?:先|再|然后)/u, "workflow_leak", "描述了工作流顺序"],
