@@ -240,6 +240,10 @@ function payloadsForHook(payload) {
   }));
 }
 
+function isCodexPreToolUse(event) {
+  return platform === "codex-cli" && event === "PreToolUse";
+}
+
 function mergeResults(results, event) {
   const deny = results.find((result) => result.kind === "deny");
   if (event === "PermissionRequest") {
@@ -260,7 +264,18 @@ function mergeResults(results, event) {
       };
     }
   }
-  if (deny) return { decision: "block", reason: deny.message };
+  if (deny) {
+    if (isCodexPreToolUse(event)) {
+      return {
+        hookSpecificOutput: {
+          hookEventName: event,
+          permissionDecision: "deny",
+          permissionDecisionReason: deny.message,
+        },
+      };
+    }
+    return { decision: "block", reason: deny.message };
+  }
   const contexts = results
     .filter((result) => result.kind === "add-context")
     .map((result) => result.message);
@@ -269,6 +284,9 @@ function mergeResults(results, event) {
     .map((result) => result.message);
   contexts.push(...reports);
   if (contexts.length > 0) {
+    if (isCodexPreToolUse(event)) {
+      return { systemMessage: contexts.join("\\n\\n") };
+    }
     return {
       hookSpecificOutput: { hookEventName: event, additionalContext: contexts.join("\\n\\n") },
     };

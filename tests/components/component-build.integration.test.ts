@@ -1825,7 +1825,8 @@ describe("component build integration", () => {
         encoding: "utf-8",
       },
     );
-    assert.match(codexSecretWriteOutput, /"decision": "block"/);
+    assert.match(codexSecretWriteOutput, /"permissionDecision": "deny"/);
+    assert.match(codexSecretWriteOutput, /"permissionDecisionReason"/);
     assert.match(codexSecretWriteOutput, /Secret Write Guard/);
 
     const patchSecretWriteOutput = execFileSync(
@@ -1848,7 +1849,7 @@ describe("component build integration", () => {
         encoding: "utf-8",
       },
     );
-    assert.match(patchSecretWriteOutput, /"decision": "block"/);
+    assert.match(patchSecretWriteOutput, /"permissionDecision": "deny"/);
     assert.match(patchSecretWriteOutput, /Secret Write Guard/);
 
     const dangerousCommandOutput = execFileSync(
@@ -1863,8 +1864,26 @@ describe("component build integration", () => {
         encoding: "utf-8",
       },
     );
-    assert.match(dangerousCommandOutput, /"decision": "block"/);
+    assert.match(dangerousCommandOutput, /"permissionDecision": "deny"/);
     assert.match(dangerousCommandOutput, /Dangerous Command/);
+
+    const codexTmpCatWriteOutput = execFileSync(
+      process.execPath,
+      [join(tmpDistDir, "codex/hooks/dispatch.mjs"), "--event", "PreToolUse"],
+      {
+        cwd: repoRoot,
+        input: JSON.stringify({
+          toolName: "Bash",
+          toolInput: {
+            command: "cat > /tmp/codex-hook-test.txt <<'EOF'\nhello\nEOF",
+          },
+        }),
+        encoding: "utf-8",
+      },
+    );
+    assert.match(codexTmpCatWriteOutput, /"systemMessage"/);
+    assert.doesNotMatch(codexTmpCatWriteOutput, /additionalContext/);
+    assert.match(codexTmpCatWriteOutput, /Cat Write Guard/);
 
     const guardOutput = execFileSync(
       process.execPath,

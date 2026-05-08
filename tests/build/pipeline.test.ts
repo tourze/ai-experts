@@ -1143,8 +1143,11 @@ describe("build/pipeline modules", () => {
       },
     );
     expect(JSON.parse(nativeDecisionOutput)).toEqual({
-      decision: "block",
-      reason: "native deny reason",
+      hookSpecificOutput: {
+        hookEventName: "PreToolUse",
+        permissionDecision: "deny",
+        permissionDecisionReason: "native deny reason",
+      },
     });
 
     const config = renderHookConfig([fixture.hook], Platform.Codex);
