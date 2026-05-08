@@ -600,6 +600,46 @@ describe("component source conventions", () => {
     }
   });
 
+  test("skill root readme/license links stay within skill root", () => {
+    const skillRoot = join(repoRoot, "src/components/skills");
+    const escapedRootLinks: string[] = [];
+    const missingLocalLinks: string[] = [];
+
+    for (const skillEntry of readdirSync(skillRoot, { withFileTypes: true })) {
+      if (!skillEntry.isDirectory()) continue;
+      const skillDir = join(skillRoot, skillEntry.name);
+      for (const fileName of ["README.md", "LICENSE.txt"]) {
+        const sourceFile = join(skillDir, fileName);
+        if (!existsSync(sourceFile)) continue;
+        const source = stripMarkdownCode(readFileSync(sourceFile, "utf-8"));
+        for (const match of source.matchAll(/(!?)\[[^\]\n]+\]\(([^)\n]+)\)/gu)) {
+          if (match[1] === "!") continue;
+          const targetPath = localMarkdownPath(markdownDestination(match[2] ?? ""));
+          if (!targetPath || !/^\.\.?\//u.test(targetPath)) continue;
+          const resolvedTarget = resolve(dirname(sourceFile), targetPath);
+          if (!resolvedTarget.startsWith(`${skillDir}/`) && resolvedTarget !== skillDir) {
+            escapedRootLinks.push(`${relative(repoRoot, sourceFile)}: ${targetPath}`);
+            continue;
+          }
+          if (!existsSync(resolvedTarget)) {
+            missingLocalLinks.push(`${relative(repoRoot, sourceFile)}: ${targetPath}`);
+          }
+        }
+      }
+    }
+
+    assert.deepEqual(
+      escapedRootLinks,
+      [],
+      "skill root README/LICENSE local links should not escape the skill root; these docs are copied with the skill package",
+    );
+    assert.deepEqual(
+      missingLocalLinks,
+      [],
+      "skill root README/LICENSE local links should point to files that exist in the same skill package",
+    );
+  });
+
   test("skill reference markdown links are relative to their file location", () => {
     const rootRelativeLinks: string[] = [];
     const referenceMarkdownSources = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
