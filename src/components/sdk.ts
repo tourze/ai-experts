@@ -115,7 +115,7 @@ export type ProcedureUseDefinition<
   expectedOutput?: ProcedureExpectedOutput<TResult>;
 };
 
-export type ProcedureUseReference = string | ProcedureUseDefinition;
+export type ProcedureUseReference = ProcedureUseDefinition;
 
 export type SkillReferenceDefinition = {
   id: string;

@@ -84,7 +84,7 @@ describe("build/procedures", () => {
         {
           id: "skill-b",
           platforms: [Platform.Claude, Platform.Codex],
-          procedures: [procedure.id],
+          procedures: [{ id: procedure.id }],
         },
       ],
       agents: [
@@ -96,7 +96,7 @@ describe("build/procedures", () => {
         {
           id: "agent-b",
           platforms: [Platform.Claude],
-          procedures: [procedure.id],
+          procedures: [{ id: procedure.id }],
         },
       ],
       hooks: [],

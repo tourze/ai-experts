@@ -46,24 +46,27 @@ procedureUse(typedProcedure, {
   },
 });
 
-// @ts-expect-error inputPath is required by TypedProcedureArgs.
 procedureUse(typedProcedure, {
+  // @ts-expect-error inputPath is required by TypedProcedureArgs.
   exampleArgs: {
     json: true,
   },
 });
 
-// @ts-expect-error json must stay boolean when the procedure args type changes.
 procedureUse(typedProcedure, {
   exampleArgs: {
     inputPath: "input.json",
+    // @ts-expect-error json must stay boolean when the procedure args type changes.
     json: "true",
   },
 });
 
-// @ts-expect-error expectedOutput is tied to TypedProcedureResult fields.
 procedureUse(typedProcedure, {
   expectedOutput: {
+    // @ts-expect-error expectedOutput is tied to TypedProcedureResult fields.
     missing: true,
   },
 });
+
+// @ts-expect-error procedureUse requires an exported ProcedureDefinition, not a bare id string.
+procedureUse("typed-procedure-fixture");

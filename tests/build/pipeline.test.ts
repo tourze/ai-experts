@@ -45,7 +45,7 @@ import {
   defineSkillOutputs,
   defineSkillWorkflow,
 } from "../../src/components/sdk.ts";
-import { procedureUse } from "../../src/components/procedures/index.ts";
+import { debugMethodologyDebugChecklist, procedureUse } from "../../src/components/procedures/index.ts";
 
 const tempDirs: string[] = [];
 
@@ -123,7 +123,7 @@ function createFixture() {
     platforms: [ComponentPlatform.Claude, ComponentPlatform.Codex],
     body: pathToFileURL(skillBody),
     tools: [KnownTool.Read, KnownTool.Grep],
-    procedures: [procedure.id],
+    procedures: [defineProcedureUse({ id: procedure.id })],
     references: [
       defineReference({
         id: "fixture-ref",
@@ -485,7 +485,7 @@ describe("build/pipeline modules", () => {
 
     const missingProcedureReferenceRegistry: ComponentRegistry = {
       ...fixture.registry,
-      skills: [{ ...fixture.skill, procedures: ["missing-procedure"] }],
+      skills: [{ ...fixture.skill, procedures: [defineProcedureUse({ id: "missing-procedure" })] }],
     };
     expect(() => validateRegistry(missingProcedureReferenceRegistry)).toThrow("references missing procedure");
 
@@ -682,8 +682,13 @@ describe("build/pipeline modules", () => {
     };
     expect(() => validateRegistry(invalidReasonRegistry)).toThrow("reason must be a non-empty string");
 
-    expect(() => procedureUse("debug-methodology-debug-checklist")).not.toThrow();
-    expect(() => procedureUse("missing-procedure-id")).toThrow("Unknown component procedure id");
+    expect(() => procedureUse(debugMethodologyDebugChecklist)).not.toThrow();
+    expect(() =>
+      procedureUse({
+        ...debugMethodologyDebugChecklist,
+        id: "missing-procedure-id",
+      })
+    ).toThrow("Unknown component procedure id");
   });
 
   test("agent helpers validate and emit claude/codex agents", async () => {

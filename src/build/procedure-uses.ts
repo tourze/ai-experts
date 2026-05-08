@@ -29,11 +29,8 @@ function validateOptionalNonEmptyString(
 }
 
 export function resolveProcedureUse(procedureUse: ProcedureUseReference): ResolvedProcedureUse {
-  if (typeof procedureUse === "string") {
-    return { id: procedureUse };
-  }
   if (!procedureUse || typeof procedureUse !== "object" || Array.isArray(procedureUse)) {
-    throw new Error("procedure reference must be a string or { id, useId?, label?, when?, reason?, exampleArgs?, expectedOutput? }");
+    throw new Error("procedure reference must be { id, useId?, label?, when?, reason?, exampleArgs?, expectedOutput? }");
   }
   const id = procedureUse.id;
   if (typeof id !== "string" || id.trim() === "") {
