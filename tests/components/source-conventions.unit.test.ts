@@ -625,6 +625,18 @@ describe("component source conventions", () => {
             missingLocalLinks.push(`${relative(repoRoot, sourceFile)}: ${targetPath}`);
           }
         }
+        for (const match of source.matchAll(/^\s*\[[^\]\n]+\]:\s+(\S+)/gmu)) {
+          const targetPath = localMarkdownPath(markdownDestination(match[1] ?? ""));
+          if (!targetPath || !/^\.\.?\//u.test(targetPath)) continue;
+          const resolvedTarget = resolve(dirname(sourceFile), targetPath);
+          if (!resolvedTarget.startsWith(`${skillDir}/`) && resolvedTarget !== skillDir) {
+            escapedRootLinks.push(`${relative(repoRoot, sourceFile)}: ${targetPath}`);
+            continue;
+          }
+          if (!existsSync(resolvedTarget)) {
+            missingLocalLinks.push(`${relative(repoRoot, sourceFile)}: ${targetPath}`);
+          }
+        }
       }
     }
 
