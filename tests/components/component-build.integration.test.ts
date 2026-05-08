@@ -3,7 +3,7 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { basename, dirname, join, resolve } from "node:path";
+import { basename, dirname, join, relative, resolve } from "node:path";
 import { parse as parseYaml } from "yaml";
 import { afterAll, beforeAll, describe, test } from "vitest";
 import { resolveHookTimeoutSeconds } from "../../src/build/hooks.ts";
@@ -422,6 +422,25 @@ describe("component build integration", () => {
         `${platform} generated procedure commands should reference manifest procedures and valid owners`,
       );
     }
+  });
+
+  test("generated runtime files do not leak maintainer-local absolute paths", () => {
+    const localPathPattern = /(?:^|[\s"'`(])(?:\/Users\/[^\s"'`)]+|\/home\/[^\s"'`)]+|\/private\/var\/[^\s"'`)]+|\/var\/folders\/[^\s"'`)]+|[A-Za-z]:\\Users\\[^\s"'`)]+)/u;
+    const textFilePattern = /\.(?:css|html|js|json|md|mjs|toml|ts|tsx|txt|ya?ml)$/u;
+    const leakedPaths: string[] = [];
+
+    for (const platform of ["claude", "codex"]) {
+      const platformRoot = join(tmpDistDir, platform);
+      for (const generatedFile of collectFiles(platformRoot, (file) => textFilePattern.test(file))) {
+        const source = readFileSync(generatedFile, "utf-8");
+        const match = localPathPattern.exec(source);
+        if (match) {
+          leakedPaths.push(`${platform}/${relative(platformRoot, generatedFile).split("\\").join("/")}: ${match[0].trim()}`);
+        }
+      }
+    }
+
+    assert.deepEqual(leakedPaths, [], "generated runtime files should not leak maintainer-local absolute paths");
   });
 
   test("emits reproducible manifests and procedure bundles", () => {
