@@ -155,6 +155,11 @@ function assertInstallManifestEntriesExist(platformRoot: string, manifest: any, 
   for (const skillEntry of install.skillEntries) {
     assertNormalizedInstallEntry(skillEntry, `install skill entry ${skillEntry}`);
     assert.equal(skillEntry.endsWith("/"), true, `${label} install skill entry should end with /: ${skillEntry}`);
+    assert.match(
+      skillEntry,
+      /^[^/]+\/$/u,
+      `${label} install skill entry should be a direct skill directory under skillSourceRoot: ${skillEntry}`,
+    );
   }
   for (const forbiddenRootEntry of install.forbiddenRootEntries) {
     assertNormalizedInstallEntry(forbiddenRootEntry, `install forbidden root entry ${forbiddenRootEntry}`);
