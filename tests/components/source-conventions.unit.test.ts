@@ -269,6 +269,11 @@ describe("component source conventions", () => {
         /\bA Claude skill\b|\bClaude skill\b|目录内脚本的本地用法/u,
         `${readmeFile} should describe the component neutrally because README files are copied to both platforms`,
       );
+      assert.doesNotMatch(
+        source,
+        /\bnode\s+(?:\.\/)?scripts\/[A-Za-z0-9._/-]+\.mjs\b/u,
+        `${readmeFile} should use platform-level procedures instead of skill-local scripts because README files are copied to dist`,
+      );
     }
   });
 

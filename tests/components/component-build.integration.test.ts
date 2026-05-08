@@ -630,10 +630,21 @@ describe("component build integration", () => {
           /\n{3,}/,
           `${skillFile} should not contain repeated blank lines`,
         );
+      }
+
+      const skillMarkdownFiles = collectFiles(join(tmpDistDir, platformName, "skills"))
+        .filter((file) => file.endsWith(".md"));
+      for (const skillFile of skillMarkdownFiles) {
+        const skillSource = readFileSync(skillFile, "utf-8");
         assert.doesNotMatch(
           skillSource,
           /node \.\.\/\.\.\/procedures\.js/,
           `${skillFile} should not render invalid relative procedure runtime paths`,
+        );
+        assert.doesNotMatch(
+          skillSource,
+          /node\s+<runtime-root>\/procedures\.js/,
+          `${skillFile} should render concrete platform procedure runtime paths`,
         );
         assert.doesNotMatch(
           skillSource,

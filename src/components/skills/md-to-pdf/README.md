@@ -6,13 +6,13 @@ A local AI skill that converts Markdown files to professionally styled PDF docum
 
 ```bash
 # 1. Check dependencies
-node scripts/setup.mjs
+node <runtime-root>/procedures.js --procedure-id md-to-pdf-setup --trigger-skill md-to-pdf --request-json '{"args":[]}'
 
 # 2. Convert
-node scripts/md_to_pdf.mjs input.md output.pdf
+node <runtime-root>/procedures.js --procedure-id md-to-pdf-md-to-pdf --trigger-skill md-to-pdf --request-json '{"args":["input.md","output.pdf"]}'
 
 # 3. With options
-node scripts/md_to_pdf.mjs input.md output.pdf --format Letter --header-footer --landscape
+node <runtime-root>/procedures.js --procedure-id md-to-pdf-md-to-pdf --trigger-skill md-to-pdf --request-json '{"args":["input.md","output.pdf","--format","Letter","--header-footer","--landscape"]}'
 ```
 
 ## Runtime Layout
@@ -48,7 +48,7 @@ Each stage is independently skippable (`--no-mermaid`, `--no-math`) for speed wh
 | katex      | LaTeX → HTML  | `npm install -g katex`                                  |
 | playwright | HTML → PDF    | `npm install -g playwright && playwright install chromium` |
 
-Do not assume these tools are pre-installed. Run `node scripts/setup.mjs` before conversion and treat its output as the source of truth for the current machine.
+Do not assume these tools are pre-installed. Run the `md-to-pdf-setup` procedure before conversion and treat its output as the source of truth for the current machine.
 
 ## Options
 
@@ -66,12 +66,12 @@ Do not assume these tools are pre-installed. Run `node scripts/setup.mjs` before
 
 **Custom CSS**: `--css custom.css` injects after defaults (your rules win).
 
-**Mermaid theming**: `MERMAID_CONFIG=/path/to/.mermaidrc node scripts/md_to_pdf.mjs ...`
+**Mermaid theming**: set `MERMAID_CONFIG=/path/to/.mermaidrc` before running the `md-to-pdf-md-to-pdf` procedure.
 
 ## Testing
 
 ```bash
-node scripts/md_to_pdf.mjs references/test-document.md test_output.pdf --header-footer
+node <runtime-root>/procedures.js --procedure-id md-to-pdf-md-to-pdf --trigger-skill md-to-pdf --request-json '{"args":["references/test-document.md","test_output.pdf","--header-footer"]}'
 ```
 
 The test document exercises all supported features: 4 Mermaid diagram types, inline + display math, tables, code blocks in 3 languages, footnotes, definition lists, blockquotes, and text formatting.

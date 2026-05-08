@@ -596,8 +596,6 @@ function rewriteProcedureScriptCommands(
   platform: PlatformType,
   proceduresByTarget: ReadonlyMap<string, ProcedureDefinition>,
 ): string {
-  if (proceduresByTarget.size === 0) return source;
-
   return source.replace(
     /\bnode\s+(?:\.\/)?scripts\/([A-Za-z0-9._/-]+\.mjs)\b/gu,
     (match, scriptPath: string) => {
@@ -616,6 +614,13 @@ function rewriteProcedureScriptCommands(
   );
 }
 
+function rewriteProcedureRuntimePlaceholders(source: string, platform: PlatformType): string {
+  return source.replace(
+    /\bnode\s+<runtime-root>\/procedures\.js\b/gu,
+    `node ${procedureRuntimePath(platform)}`,
+  );
+}
+
 function rewriteGeneratedSkillMarkdown(
   skill: SkillDefinition,
   skillRoot: string,
@@ -628,11 +633,14 @@ function rewriteGeneratedSkillMarkdown(
 
   for (const file of markdownFiles) {
     const source = readFileSync(file, "utf-8");
-    const commandRewritten = rewriteProcedureScriptCommands(
-      source,
-      skill,
+    const commandRewritten = rewriteProcedureRuntimePlaceholders(
+      rewriteProcedureScriptCommands(
+        source,
+        skill,
+        platform,
+        proceduresByTarget,
+      ),
       platform,
-      proceduresByTarget,
     );
     const rewritten = rewriteReferenceLocalLinks(
       rewriteReferenceSkillLinks(commandRewritten, skill, file, skillRoot, platformSkillIds),
