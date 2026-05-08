@@ -294,6 +294,46 @@ describe("build/pipeline modules", () => {
     };
     expect(() => validateRegistry(invalidRuntimeRegistry)).toThrow("runtime must be node");
 
+    const invalidProcedurePlatformRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      procedures: [{ ...fixture.procedure, platforms: ["unknown-cli"] as any }],
+    };
+    expect(() => validateRegistry(invalidProcedurePlatformRegistry)).toThrow(
+      "Procedure fixture-procedure platforms contain unsupported platform(s): unknown-cli",
+    );
+
+    const duplicateSkillPlatformRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{ ...fixture.skill, platforms: [ComponentPlatform.Claude, ComponentPlatform.Claude] }],
+    };
+    expect(() => validateRegistry(duplicateSkillPlatformRegistry)).toThrow(
+      "Skill fixture-skill platforms contain duplicate platform(s): claude-code",
+    );
+
+    const invalidInstructionPlatformRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      instructions: [{ ...fixture.instruction, platforms: ["unsupported-instruction-cli"] as any }],
+    };
+    expect(() => validateRegistry(invalidInstructionPlatformRegistry)).toThrow(
+      "Instruction fixture-instruction platforms contain unsupported platform(s): unsupported-instruction-cli",
+    );
+
+    const invalidAgentPlatformRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      agents: [{ ...fixture.agent, platforms: ["unsupported-agent-cli"] as any }],
+    };
+    expect(() => validateRegistry(invalidAgentPlatformRegistry)).toThrow(
+      "Agent fixture-agent platforms contain unsupported platform(s): unsupported-agent-cli",
+    );
+
+    const invalidHookPlatformRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      hooks: [{ ...fixture.hook, platforms: ["unsupported-hook-cli"] as any }],
+    };
+    expect(() => validateRegistry(invalidHookPlatformRegistry)).toThrow(
+      "Hook fixture-hook platforms contain unsupported platform(s): unsupported-hook-cli",
+    );
+
     const disabledInvocationRegistry: ComponentRegistry = {
       ...fixture.registry,
       skills: [{ ...fixture.skill, invocation: InvocationPolicy.Disabled }],

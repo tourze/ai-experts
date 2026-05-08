@@ -111,6 +111,38 @@ function validateUniqueProcedureUses(componentId: string, procedureUses: readonl
   }
 }
 
+const validPlatformValues = new Set<string>(Object.values(Platform));
+
+function validatePlatformList(
+  platforms: readonly unknown[] | undefined,
+  context: string,
+  options: { optional?: boolean } = {},
+): void {
+  if (platforms === undefined) {
+    if (options.optional) return;
+    throw new Error(`${context} platforms must be a non-empty platform array`);
+  }
+  if (!Array.isArray(platforms) || platforms.length === 0) {
+    throw new Error(`${context} platforms must be a non-empty platform array`);
+  }
+
+  const invalidPlatforms = platforms.filter(
+    (platform) => typeof platform !== "string" || !validPlatformValues.has(platform),
+  );
+  if (invalidPlatforms.length > 0) {
+    throw new Error(
+      `${context} platforms contain unsupported platform(s): ${invalidPlatforms.map(String).join(", ")}`,
+    );
+  }
+
+  const duplicatePlatforms = platforms.filter((platform, index) => platforms.indexOf(platform) !== index);
+  if (duplicatePlatforms.length > 0) {
+    throw new Error(
+      `${context} platforms contain duplicate platform(s): ${[...new Set(duplicatePlatforms)].join(", ")}`,
+    );
+  }
+}
+
 function validateSkillBodyCrossSkillLinks(skill: SkillDefinition, bodySource: string, skillIds: ReadonlySet<string>): void {
   for (const match of bodySource.matchAll(/\]\(\.\.\/([a-z0-9]+(?:-[a-z0-9]+)*)\/SKILL\.md(?:#[^)]+)?\)/gu)) {
     const targetSkillId = match[1] as string;
@@ -198,9 +230,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     if (runtime !== "node") {
       throw new Error(`Procedure ${procedure.id} runtime must be node`);
     }
-    if (procedure.platforms && procedure.platforms.length === 0) {
-      throw new Error(`Procedure ${procedure.id} platforms must not be empty`);
-    }
+    validatePlatformList(procedure.platforms, `Procedure ${procedure.id}`, { optional: true });
     if (!existsSync(toAbsolutePath(procedure.entry))) {
       throw new Error(`Procedure ${procedure.id} entry is missing: ${displayPath(procedure.entry)}`);
     }
@@ -227,6 +257,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
 
   for (const instruction of registry.instructions) {
     validateId(instruction.id, "instruction");
+    validatePlatformList(instruction.platforms, `Instruction ${instruction.id}`);
     if (!existsSync(toAbsolutePath(instruction.body))) {
       throw new Error(`Instruction ${instruction.id} body is missing: ${displayPath(instruction.body)}`);
     }
@@ -234,6 +265,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
 
   for (const skill of registry.skills) {
     validateId(skill.id, "skill");
+    validatePlatformList(skill.platforms, `Skill ${skill.id}`);
     if (!skill.description || skill.description.length < 20) {
       throw new Error(`Skill ${skill.id} has a weak description`);
     }
@@ -362,6 +394,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
 
   for (const agent of registry.agents) {
     validateId(agent.id, "agent");
+    validatePlatformList(agent.platforms, `Agent ${agent.id}`);
     if (!agent.role || agent.role.trim() === "") {
       throw new Error(`Agent ${agent.id} must define a non-empty role`);
     }
@@ -434,6 +467,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
 
   for (const hook of registry.hooks) {
     validateId(hook.id, "hook");
+    validatePlatformList(hook.platforms, `Hook ${hook.id}`);
     const hookEntryPath = toAbsolutePath(hook.entry);
     if (!existsSync(hookEntryPath)) {
       throw new Error(`Hook ${hook.id} entry is missing: ${displayPath(hook.entry)}`);
