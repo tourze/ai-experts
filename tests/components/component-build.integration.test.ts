@@ -2186,4 +2186,55 @@ describe("component build integration", () => {
       }
     }
   });
+
+  test("generated dist markdown local links resolve across each platform root", () => {
+    for (const platform of ["claude", "codex"]) {
+      const markdownFiles = collectFiles(join(tmpDistDir, platform), (file) => file.endsWith(".md"));
+      const brokenLocalLinks: string[] = [];
+      const directoryLinks: string[] = [];
+
+      for (const markdownFile of markdownFiles) {
+        const markdown = stripMarkdownCode(readFileSync(markdownFile, "utf-8"));
+
+        for (const match of markdown.matchAll(/!?\[[^\]\n]*\]\(([^)\n]+)\)/gu)) {
+          const href = markdownDestination(match[1] as string);
+          if (/^[a-z][a-z0-9+.-]*:|^#|^\//iu.test(href)) continue;
+          const [pathWithoutAnchor] = href.split("#", 1);
+          if (!pathWithoutAnchor) continue;
+          const resolvedPath = resolve(dirname(markdownFile), pathWithoutAnchor);
+          if (!existsSync(resolvedPath)) {
+            brokenLocalLinks.push(`${markdownFile}: ${href}`);
+          } else if (statSync(resolvedPath).isDirectory()) {
+            directoryLinks.push(`${markdownFile}: ${href}`);
+          }
+        }
+
+        for (const match of markdown.matchAll(/^\s*\[([^\]\n]+)\]:\s+([^\n]+)$/gmu)) {
+          const label = (match[1] ?? "").trim();
+          if (label.startsWith("^")) continue;
+          const href = markdownDestination(match[2] as string);
+          if (/^[a-z][a-z0-9+.-]*:|^#|^\//iu.test(href) || !isLikelyLocalDefinitionPath(href)) continue;
+          const [pathWithoutAnchor] = href.split("#", 1);
+          if (!pathWithoutAnchor) continue;
+          const resolvedPath = resolve(dirname(markdownFile), pathWithoutAnchor);
+          if (!existsSync(resolvedPath)) {
+            brokenLocalLinks.push(`${markdownFile}: [${label}] -> ${href}`);
+          } else if (statSync(resolvedPath).isDirectory()) {
+            directoryLinks.push(`${markdownFile}: [${label}] -> ${href}`);
+          }
+        }
+      }
+
+      assert.deepEqual(
+        brokenLocalLinks,
+        [],
+        `${platform} generated Markdown should not contain broken local links`,
+      );
+      assert.deepEqual(
+        directoryLinks,
+        [],
+        `${platform} generated Markdown should not link local directories directly`,
+      );
+    }
+  });
 });
