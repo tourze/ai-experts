@@ -25,7 +25,7 @@
 
 ## 更多参考
 
-详细引擎专有模式见同层 [references/](.) 下的：
+详细引擎专有模式见同层 references/ 下的：
 - [mysql-index-strategy.md](./mysql-index-strategy.md)
 - [pgsql-index-strategy.md](./pgsql-index-strategy.md)
 - [index-patterns.md](./index-patterns.md)

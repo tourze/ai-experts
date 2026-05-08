@@ -615,6 +615,21 @@ describe("component source conventions", () => {
     }
   });
 
+  test("skill markdown sources avoid bare current-directory links", () => {
+    const skillMarkdownSources = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
+      file.endsWith(".md"),
+    );
+
+    for (const sourceFile of skillMarkdownSources) {
+      const source = readFileSync(sourceFile, "utf-8");
+      assert.doesNotMatch(
+        source,
+        /\]\(\.\)/u,
+        `${sourceFile} should avoid bare (.) links; use a concrete file path or plain text`,
+      );
+    }
+  });
+
   test("skill root readme/license links stay within skill root", () => {
     const skillRoot = join(repoRoot, "src/components/skills");
     const escapedRootLinks: string[] = [];
