@@ -144,7 +144,7 @@ export const securityAuditorAgent = defineAgent({
       }),
       defineWorkflowStep({
         id: "final-3",
-        label: "路由：按入口类型和代码模式匹配场景路由表，逐项深入",
+        label: "路由：按入口类型和代码模式匹配本 workflow 的 route 节点，逐项深入",
       }),
       defineWorkflowStep({
         id: "final-4",

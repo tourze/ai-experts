@@ -411,6 +411,7 @@ describe("component source conventions", () => {
 
   test("component workflow declarations use the shared workflow API", () => {
     const legacyWorkflowHelpers: string[] = [];
+    const legacyWorkflowTableMentions: string[] = [];
     const componentSources = collectFiles(join(repoRoot, "src/components"), (file) =>
       file.endsWith(".ts") && !file.endsWith("sdk.ts"),
     );
@@ -420,12 +421,20 @@ describe("component source conventions", () => {
       if (/\bdefine(?:Agent|Skill)Workflow(?:Step|Gate|Route)?\b/u.test(source)) {
         legacyWorkflowHelpers.push(relative(repoRoot, sourceFile));
       }
+      if (/门禁表|场景路由表/u.test(source)) {
+        legacyWorkflowTableMentions.push(relative(repoRoot, sourceFile));
+      }
     }
 
     assert.deepEqual(
       legacyWorkflowHelpers,
       [],
       "component sources should use defineWorkflow* helpers so skills and agents share one workflow model",
+    );
+    assert.deepEqual(
+      legacyWorkflowTableMentions,
+      [],
+      "component sources should model gates and routes through workflow nodes instead of describing legacy tables",
     );
   });
 

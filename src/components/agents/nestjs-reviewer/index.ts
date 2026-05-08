@@ -93,7 +93,7 @@ export const nestjsReviewerAgent = defineAgent({
       }),
       defineWorkflowStep({
         id: "final-2",
-        label: "路由：按 diff 内容匹配场景路由表，逐项深入",
+        label: "路由：按 diff 内容匹配本 workflow 的 route 节点，逐项深入",
       }),
       defineWorkflowStep({
         id: "final-3",
