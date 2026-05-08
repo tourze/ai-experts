@@ -2,7 +2,6 @@ import { join } from "node:path";
 import type {
   AgentDefinition,
   AgentInputDefinition,
-  AgentModeDefinition,
   AgentOutputFormatDefinition,
   AgentOutputSectionDefinition,
   AgentOutputTemplateDefinition,
@@ -18,7 +17,7 @@ import {
   writeText,
   yamlScalar,
 } from "./core.ts";
-import { renderMarkdownBulletList, renderMarkdownTableCell } from "./markdown.ts";
+import { renderMarkdownBulletList } from "./markdown.ts";
 import { validateMermaidSyntax } from "./mermaid.ts";
 import { renderWorkflowMermaidSource, renderWorkflowSection, validateWorkflow } from "./workflows.ts";
 
@@ -84,67 +83,6 @@ export function validateAgentInputs(agent: AgentDefinition): readonly AgentInput
     }
   }
   return inputs;
-}
-
-export function validateAgentModes(agent: AgentDefinition): readonly AgentModeDefinition[] {
-  const modes = agent.modes;
-  if (modes === undefined) return [];
-  if (!Array.isArray(modes) || modes.length === 0) {
-    throw new Error(`Agent ${agent.id} modes must be a non-empty array when defined`);
-  }
-  const seen = new Set<string>();
-  for (const [index, mode] of modes.entries()) {
-    if (!mode || typeof mode !== "object" || Array.isArray(mode)) {
-      throw new Error(`Agent ${agent.id} modes[${index}] must be an object`);
-    }
-    if (typeof mode.id !== "string" || mode.id.trim() === "") {
-      throw new Error(`Agent ${agent.id} modes[${index}].id must be a non-empty string`);
-    }
-    const modeId = mode.id.trim();
-    if (!/^[a-z][a-z0-9-]*$/.test(modeId)) {
-      throw new Error(`Agent ${agent.id} modes[${index}].id must use letters, numbers, or hyphens`);
-    }
-    if (seen.has(modeId)) throw new Error(`Agent ${agent.id} contains duplicate mode: ${modeId}`);
-    seen.add(modeId);
-    if (typeof mode.label !== "string" || mode.label.trim() === "") {
-      throw new Error(`Agent ${agent.id} modes[${index}].label must be a non-empty string`);
-    }
-    if (!Array.isArray(mode.triggers) || mode.triggers.length === 0) {
-      throw new Error(`Agent ${agent.id} modes[${index}].triggers must be a non-empty array`);
-    }
-    for (const [triggerIndex, trigger] of mode.triggers.entries()) {
-      if (typeof trigger !== "string" || trigger.trim() === "") {
-        throw new Error(`Agent ${agent.id} modes[${index}].triggers[${triggerIndex}] must be a non-empty string`);
-      }
-    }
-    if (mode.tools !== undefined) {
-      if (!Array.isArray(mode.tools)) {
-        throw new Error(`Agent ${agent.id} modes[${index}].tools must be an array when defined`);
-      }
-      for (const [toolIndex, tool] of mode.tools.entries()) {
-        if (typeof tool !== "string" || tool.trim() === "") {
-          throw new Error(`Agent ${agent.id} modes[${index}].tools[${toolIndex}] must be a non-empty string`);
-        }
-      }
-    }
-    if (typeof mode.output !== "string" || mode.output.trim() === "") {
-      throw new Error(`Agent ${agent.id} modes[${index}].output must be a non-empty string`);
-    }
-    if (mode.description !== undefined && (typeof mode.description !== "string" || mode.description.trim() === "")) {
-      throw new Error(`Agent ${agent.id} modes[${index}].description must be non-empty when defined`);
-    }
-    if (mode.steps !== undefined) {
-      if (!Array.isArray(mode.steps) || mode.steps.length === 0) {
-        throw new Error(`Agent ${agent.id} modes[${index}].steps must be a non-empty array when defined`);
-      }
-      for (const [stepIndex, step] of mode.steps.entries()) {
-        if (typeof step !== "string" || step.trim() === "") {
-          throw new Error(`Agent ${agent.id} modes[${index}].steps[${stepIndex}] must be a non-empty string`);
-        }
-      }
-    }
-  }
-  return modes;
 }
 
 function validateAgentOutputSection(
@@ -298,28 +236,6 @@ function renderAgentInputs(agent: AgentDefinition): string {
   return `## 输入\n\n${lines.join("\n")}\n`;
 }
 
-function renderAgentModes(agent: AgentDefinition): string {
-  const modes = validateAgentModes(agent);
-  if (modes.length === 0) return "";
-  const table = [
-    "| 模式 | 触发信号 | 工具 | 输出 |",
-    "|------|----------|------|------|",
-    ...modes.map((mode) =>
-      `| ${renderMarkdownTableCell(mode.label)} | ${renderMarkdownTableCell(mode.triggers.map((item) => item.trim()).join(" / "))} | ${renderMarkdownTableCell((mode.tools ?? []).map((tool) => tool.trim()).join(", ") || "-")} | ${renderMarkdownTableCell(mode.output)} |`
-    ),
-  ];
-  const sections = modes.map((mode) => {
-    const lines = [`## ${mode.label.trim()}`];
-    if (mode.description) lines.push("", mode.description.trim());
-    if (mode.steps && mode.steps.length > 0) {
-      lines.push("");
-      lines.push(...mode.steps.map((step, index) => `${index + 1}. ${step.trim()}`));
-    }
-    return lines.join("\n");
-  });
-  return [`## 模式路由`, "", table.join("\n"), "", sections.join("\n\n")].join("\n");
-}
-
 function renderAgentBashBoundary(agent: AgentDefinition): string {
   const boundary = validateAgentBashBoundary(agent);
   if (boundary.length === 0) return "";
@@ -393,7 +309,6 @@ function renderAgentQualityStandards(agent: AgentDefinition): string {
 
 function renderAgentBodyWithGeneratedSections(agent: AgentDefinition, body: string): string {
   const leadingSections = [
-    renderAgentModes(agent),
     renderAgentInputs(agent),
     renderAgentWorkflow(agent),
     body.trimEnd(),

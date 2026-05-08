@@ -28,7 +28,6 @@ import {
   hasStringTool,
   validateAgentBashBoundary,
   validateAgentInputs,
-  validateAgentModes,
   validateAgentOutputFormat,
   validateAgentQualityStandards,
   validateAgentWorkflow,
@@ -551,7 +550,6 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     }
     validateAgentOutputFormat(agent);
     validateAgentInputs(agent);
-    validateAgentModes(agent);
     const workflow = validateAgentWorkflow(agent);
     for (const gate of workflow?.gates ?? []) {
       if (!skillIds.has(gate.skill)) throw new Error(`Agent ${agent.id} workflow gate references missing skill: ${gate.skill}`);

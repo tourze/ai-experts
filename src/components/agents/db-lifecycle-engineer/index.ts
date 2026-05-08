@@ -1,10 +1,12 @@
 import {
   AgentSandbox,
   defineAgent,
-  defineAgentMode,
   defineAgentOutputFormat,
   defineAgentOutputSection,
   defineAgentOutputTemplate,
+  defineWorkflow,
+  defineWorkflowRoute,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -25,41 +27,46 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 export const dbLifecycleEngineerAgent = defineAgent({
   id: "db-lifecycle-engineer",
   description: "当需要端到端设计或审查数据库全生命周期——覆盖 schema 设计、索引策略、SQL 优化、高可用方案、分区策略、缓存模式与 Redis 数据建模时使用。它可以读取源码与配置，在用户指定目录下产出设计文档与迁移方案（工程师模式），也可以只读审查 MySQL/PostgreSQL/Redis schema、索引、SQL、缓存模式与高可用配置（审查模式）。不修改生产数据库。",
-  role: `你是资深数据库架构师，覆盖 MySQL、PostgreSQL 与 Redis。有两种工作模式，按用户意图自动选择。`,
+  role: `你是资深数据库架构师，覆盖 MySQL、PostgreSQL 与 Redis。按用户意图在工程师交付和只读审查两条工作流路由之间自动选择。`,
   platforms: [Platform.Claude, Platform.Codex],
-  modes: [
-    defineAgentMode({
-      id: "engineer",
-      label: "工程师模式",
-      triggers: ["设计", "新建", "规划", "迁移", "方案", "DDL"],
-      tools: ["Read", "Glob", "Grep", "Bash", "Write", "Edit"],
-      output: "设计文档 + DDL 草稿 + 迁移方案",
-      description:
-        "读取源码、配置与既有 schema，在用户指定目录（默认 `docs/db/`）下创建或更新数据库设计文档、索引策略、迁移方案与高可用规划；不修改生产数据库、不执行 DDL、不操作真实连接凭据。",
-      steps: [
-        "先确认范围：单库设计 / 多库协同 / 迁移规划 / 高可用方案；明确引擎（MySQL / PostgreSQL / Redis）和版本。",
-        "现状评估：读取既有 schema、索引、慢查询日志与监控数据，建立基线。",
-        "Schema 设计：表结构、列类型、约束、字符集、JSON/JSONB 与半结构化决策。",
-        "索引与查询：复合索引顺序、EXPLAIN 分析、慢查询归因与重写建议。",
-        "高可用与运维：复制拓扑、分区策略、行级安全、缓存模式与容量规划。",
-        "交付文档：设计决策 + DDL 草稿 + 迁移步骤 + 回滚方案 + 风险清单。",
-      ],
-    }),
-    defineAgentMode({
-      id: "review",
-      label: "审查模式",
-      triggers: ["审查", "review", "检查", "审计", "问题", "风险"],
-      tools: ["Read", "Glob", "Grep", "Bash（只读）"],
-      output: "审查报告",
-      description: "只读审查，不修改任何工作区文件。按安全性、正确性、影响面和执行成本排序输出。",
-      steps: [
-        "确认审查目标、输入范围、数据库类型、约束和验收标准。",
-        "读取相关文件、配置、调用点和同层模式，建立证据链。",
-        "每条发现标注事实/推断/假设（evidence-quality-framework）。",
-        "输出审查报告。",
-      ],
-    }),
-  ],
+  workflow: defineWorkflow({
+    steps: [
+      defineWorkflowStep({
+        id: "scope",
+        label: "确认范围：单库设计 / 多库协同 / 迁移规划 / 高可用方案；明确引擎、版本、输入和验收标准",
+      }),
+      defineWorkflowStep({
+        id: "baseline",
+        label: "读取源码、配置、schema、索引、慢查询日志和监控数据，建立现状基线与证据链",
+      }),
+    ],
+    routes: [
+      defineWorkflowRoute({
+        id: "engineer",
+        triggers: ["设计", "新建", "规划", "迁移", "方案", "DDL"],
+        skill: codeEngineerAgentFrameworkSkill.id,
+        checks: "产出 schema、索引、SQL、高可用、分区、缓存与迁移方案；文件写入默认落在 docs/db/<project-or-feature>/；不执行 DDL/DML、不操作真实连接凭据。",
+        output: "设计文档 + DDL 草稿 + 迁移方案",
+      }),
+      defineWorkflowRoute({
+        id: "review",
+        triggers: ["审查", "review", "检查", "审计", "问题", "风险"],
+        skill: evidenceQualityFrameworkSkill.id,
+        checks: "只读审查，不修改任何工作区文件；每条发现标注事实/推断/假设，按安全性、正确性、影响面和执行成本排序。",
+        output: "审查报告",
+      }),
+    ],
+    finalSteps: [
+      defineWorkflowStep({
+        id: "engine-specifics",
+        label: "区分 MySQL、PostgreSQL、Redis 的引擎差异，不混用结论",
+      }),
+      defineWorkflowStep({
+        id: "deliver",
+        label: "交付设计文档或审查报告，并标注锁表风险、在线变更方案、回滚步骤和验证方式",
+      }),
+    ],
+  }),
   outputFormat: defineAgentOutputFormat({
     kind: "file-set",
     introduction: "写入文件结构（默认 `docs/db/<project-or-feature>/`）：",

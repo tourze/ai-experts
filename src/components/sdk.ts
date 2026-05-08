@@ -240,16 +240,6 @@ export type AgentInputDefinition = {
   required?: boolean;
 };
 
-export type AgentModeDefinition = {
-  id: string;
-  label: string;
-  triggers: readonly string[];
-  tools?: readonly string[];
-  output: string;
-  description?: string;
-  steps?: readonly string[];
-};
-
 export type AgentBashBoundaryDefinition = readonly string[];
 
 export type AgentQualityStandardsDefinition = readonly string[];
@@ -306,7 +296,6 @@ export type AgentDefinition = {
   platforms: PlatformList;
   body?: ComponentFile;
   inputs?: readonly AgentInputDefinition[];
-  modes?: readonly AgentModeDefinition[];
   bashBoundary?: AgentBashBoundaryDefinition;
   qualityStandards?: AgentQualityStandardsDefinition;
   outputFormat?: AgentOutputFormatDefinition;
@@ -434,12 +423,6 @@ export function defineAgent(definition: Omit<AgentDefinition, "kind">): AgentDef
 export function defineAgentInput(
   definition: AgentInputDefinition,
 ): AgentInputDefinition {
-  return definition;
-}
-
-export function defineAgentMode(
-  definition: AgentModeDefinition,
-): AgentModeDefinition {
   return definition;
 }
 
