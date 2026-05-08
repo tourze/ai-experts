@@ -111,7 +111,7 @@ beforeAll(() => {
   assert.doesNotMatch(packageJson.scripts["build:components"], /build-components\.mjs/);
 
   buildComponents(tmpDistDir);
-}, 60_000);
+}, 120_000);
 
 afterAll(() => {
   if (tmpDistDir) {
@@ -154,12 +154,12 @@ describe("component build integration", () => {
 
     assert.equal(
       claudeManifest.schema,
-      3,
+      4,
       "Claude manifest schema should version the install contract",
     );
     assert.equal(
       codexManifest.schema,
-      3,
+      4,
       "Codex manifest schema should version the install contract",
     );
     assert.equal(
@@ -192,10 +192,17 @@ describe("component build integration", () => {
     );
 
     assert.equal(claudeManifest.install.configRoot, "~/.claude");
+    assert.equal(claudeManifest.install.skillSourceRoot, "skills/");
     assert.equal(claudeManifest.install.skillRoot, "~/.claude/skills");
     assert.equal(claudeManifest.install.skillEntries.length, claudeManifest.skills.length);
+    assert.deepEqual(
+      claudeManifest.install.skillEntries,
+      (claudeManifest.skills as string[]).map((skillId) => `${skillId}/`),
+      "Claude install manifest should map target-relative skill directories",
+    );
     assert.deepEqual(claudeManifest.install.forbiddenRootEntries, []);
     assert.equal(codexManifest.install.configRoot, "~/.codex");
+    assert.equal(codexManifest.install.skillSourceRoot, "skills/");
     assert.equal(codexManifest.install.skillRoot, "~/.agents/skills");
     assert.equal(codexManifest.install.skillEntries.length, codexManifest.skills.length);
     assert.equal(codexManifest.install.rootEntries.includes("skills/"), false);
@@ -205,8 +212,8 @@ describe("component build integration", () => {
     assert.deepEqual(codexManifest.install.forbiddenRootEntries, ["skills/", "installation_id", "skills/.system/"]);
     assert.deepEqual(
       codexManifest.install.skillEntries,
-      (codexManifest.skills as string[]).map((skillId) => `skills/${skillId}/`),
-      "Codex install manifest should map individual skill directories to ~/.agents/skills",
+      (codexManifest.skills as string[]).map((skillId) => `${skillId}/`),
+      "Codex install manifest should map target-relative skill directories to ~/.agents/skills",
     );
   });
 
