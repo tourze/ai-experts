@@ -90,7 +90,7 @@ curl http://localhost:[port]/health
 
 ---
 
-## 🏗️ Architecture
+## 🏗 Architecture
 
 ### System overview
 
@@ -190,7 +190,7 @@ sequenceDiagram
 
 ---
 
-## ⚙️ Configuration
+## ⚙ Configuration
 
 ### Environment variables
 

@@ -17,15 +17,15 @@
 ## 目录
 
 1. [Core Web Vitals](#core-web-vitals)
-2. [动画性能](#animation-performance)
-3. [图片优化](#image-optimization)
-4. [字体加载](#font-loading)
-5. [JavaScript 优化](#javascript-optimization)
-6. [CSS 优化](#css-optimization)
-7. [3D 与 WebGL 优化](#3d--webgl-optimization)
-8. [加载策略](#loading-strategies)
-9. [缓存与 CDN](#caching--cdn)
-10. [监控与测量](#monitoring--measurement)
+2. [动画性能](#动画性能)
+3. [图片优化](#图片优化)
+4. [字体加载](#字体加载)
+5. [JavaScript 优化](#javascript-优化)
+6. [CSS 优化](#css-优化)
+7. [3D 与 WebGL 优化](#3d-与-webgl-优化)
+8. [加载策略](#加载策略)
+9. [缓存与 CDN](#缓存与-cdn)
+10. [监控与测量](#监控与测量)
 
 ---
 

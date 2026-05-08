@@ -17,6 +17,24 @@ import {
   repoRoot,
 } from "./test-helpers";
 
+function githubStyleHeadingSlug(text: string): string {
+  return text
+    .replace(/`[^`]*`/gu, "")
+    .trim()
+    .toLowerCase()
+    .replace(/<[^>]*>/gu, "")
+    .replace(/[\t\n\r ]+/gu, "-")
+    .replace(/[^\p{Letter}\p{Number}\p{Mark}\p{Connector_Punctuation}-]/gu, "");
+}
+
+function decodeMarkdownAnchor(anchor: string): string {
+  try {
+    return decodeURIComponent(anchor);
+  } catch {
+    return anchor;
+  }
+}
+
 describe("component source conventions", () => {
   test("root platform memory files stay linked to README", () => {
     for (const fileName of ["AGENTS.md", "CLAUDE.md"]) {
@@ -414,6 +432,45 @@ describe("component source conventions", () => {
         `${sourceFile} should render placeholder URLs as plain text instead of broken local markdown links`,
       );
     }
+  });
+
+  test("skill markdown sources keep same-file heading anchors valid", () => {
+    const brokenAnchors: string[] = [];
+    const skillMarkdownSources = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
+      file.endsWith(".md") && !file.split(/[\\/]/).includes("evals"),
+    );
+
+    for (const sourceFile of skillMarkdownSources) {
+      const source = readFileSync(sourceFile, "utf-8");
+      const slugCounts = new Map<string, number>();
+      const headingSlugs = new Set<string>();
+
+      for (const line of source.split(/\r?\n/u)) {
+        const heading = /^(#{1,6})\s+(.+?)\s*#*\s*$/u.exec(line);
+        if (!heading) continue;
+
+        const baseSlug = githubStyleHeadingSlug(heading[2]);
+        if (!baseSlug) continue;
+
+        const count = slugCounts.get(baseSlug) ?? 0;
+        slugCounts.set(baseSlug, count + 1);
+        headingSlugs.add(count === 0 ? baseSlug : `${baseSlug}-${count}`);
+      }
+
+      const sourceWithoutCodeFences = source.replace(/```[\s\S]*?```/gu, "");
+      for (const match of sourceWithoutCodeFences.matchAll(/\[[^\]]+\]\((#[^)\s]+)\)/gu)) {
+        const target = decodeMarkdownAnchor(match[1].slice(1)).toLowerCase();
+        if (!headingSlugs.has(target)) {
+          brokenAnchors.push(`${relative(repoRoot, sourceFile)}: missing #${target}`);
+        }
+      }
+    }
+
+    assert.deepEqual(
+      brokenAnchors,
+      [],
+      "same-file markdown anchors should match generated heading slugs",
+    );
   });
 
   test("procedure references use generated command tables instead of pseudo shell syntax", () => {
