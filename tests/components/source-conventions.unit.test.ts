@@ -421,7 +421,7 @@ describe("component source conventions", () => {
       if (/\bdefine(?:Agent|Skill)Workflow(?:Step|Gate|Route)?\b/u.test(source)) {
         legacyWorkflowHelpers.push(relative(repoRoot, sourceFile));
       }
-      if (/门禁表|场景路由表/u.test(source)) {
+      if (/门禁表|场景路由表|分场景路由/u.test(source)) {
         legacyWorkflowTableMentions.push(relative(repoRoot, sourceFile));
       }
     }

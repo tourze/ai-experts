@@ -799,6 +799,17 @@ describe("component build integration", () => {
     assert.match(goReviewerAgent, /匹配场景路由/);
     assert.match(goReviewerAgent, /go-concurrency-patterns/);
 
+    const windowsReviewerAgent = readFileSync(
+      join(tmpDistDir, "claude/agents/windows-platform-reviewer.md"),
+      "utf-8",
+    );
+    assert.match(windowsReviewerAgent, /evidence-quality-framework/);
+    assert.match(windowsReviewerAgent, /route\{"匹配场景路由"\}/);
+    assert.match(windowsReviewerAgent, /windows-kernel-security/);
+    assert.match(windowsReviewerAgent, /windows-ui-automation/);
+    assert.match(windowsReviewerAgent, /prlctl-vm-control/);
+    assert.doesNotMatch(windowsReviewerAgent, /分场景路由/);
+
     const codexAgent = readFileSync(join(tmpDistDir, "codex/agents/frontend-engineer.toml"), "utf-8");
     assert.match(codexAgent, /name = "frontend-engineer"/);
     assert.doesNotMatch(codexAgent, /model = "sonnet"/);

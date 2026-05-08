@@ -4,6 +4,8 @@ import {
   defineAgentOutputFormat,
   defineAgentOutputSection,
   defineWorkflow,
+  defineWorkflowGate,
+  defineWorkflowRoute,
   defineWorkflowStep,
   KnownTool,
   Platform,
@@ -26,24 +28,49 @@ export const windowsPlatformReviewerAgent = defineAgent({
         id: "step-1",
         label: "先确认环境：目标 Windows 版本（10 / 11 / Server）、虚拟化场景（Hyper-V / Parallels / 物理）、目标用户权限（标准 / 管理员 / SYSTEM）、是否有合法授权（涉及驱动 / 内核分析）。",
       }),
-      defineWorkflowStep({
-        id: "step-2",
-        label: `分场景路由：
- - 内核 / 驱动相关 → windows-kernel-security
- - 桌面自动化 / 辅助功能 / 模拟输入 → windows-ui-automation
- - macOS 上 Parallels 控制 Windows 客户机 → prlctl-vm-control
- 不允许把内核结论套到 UIA 场景，反之亦然。`,
+    ],
+    gates: [
+      defineWorkflowGate({
+        id: "evidence-gate",
+        skill: evidenceQualityFrameworkSkill.id,
+        label: "证据质量门禁",
+        checks: "每条发现标注事实/推断/假设，并绑定文件、注册表键、IOCTL 编号、命令输出或 VM 状态证据。",
       }),
+    ],
+    routes: [
+      defineWorkflowRoute({
+        id: "kernel-security",
+        triggers: ["内核、驱动、IOCTL、IRP、PatchGuard、对象权限"],
+        skill: windowsKernelSecuritySkill.id,
+        checks: "引用具体 IRP / IOCTL 编号、object 类型或代码地址；不把 UIA 结论套到内核场景。",
+        output: "内核 / 驱动安全发现、触发链路和缓解建议。",
+      }),
+      defineWorkflowRoute({
+        id: "ui-automation",
+        triggers: ["桌面自动化、辅助功能、UIA、Win32 SendInput、模拟输入"],
+        skill: windowsUiAutomationSkill.id,
+        checks: "区分 UIA、Win32 SendInput、Accessibility Hooks；确认权限边界和敏感动作脱敏策略。",
+        output: "UI 自动化边界、输入注入风险和缓解建议。",
+      }),
+      defineWorkflowRoute({
+        id: "vm-control",
+        triggers: ["Parallels、prlctl、host/guest 边界、快照、虚拟机编排"],
+        skill: prlctlVmControlSkill.id,
+        checks: "显式声明 host 与 guest 边界；跨边界操作列出风险与回滚动作。",
+        output: "VM 编排风险、状态证据和可回滚建议。",
+      }),
+    ],
+    finalSteps: [
       defineWorkflowStep({
-        id: "step-3",
+        id: "static-first",
         label: "静态先行：源码、清单、注册表导出、驱动签名、组策略；动态调试只在隔离 VM。",
       }),
       defineWorkflowStep({
-        id: "step-4",
+        id: "separate-defaults",
         label: "区分 Windows 默认行为、组策略影响、第三方驱动 / 安全产品 hook 的行为；不把上游默认算成项目缺陷。",
       }),
       defineWorkflowStep({
-        id: "step-5",
+        id: "prioritize-report",
         label: "按安全性、正确性、影响面、执行成本排序输出。",
       }),
     ],
