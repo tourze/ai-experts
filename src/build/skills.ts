@@ -110,6 +110,14 @@ function procedureRuntimePath(platform: PlatformType): string {
   return platform === Platform.Claude ? "~/.claude/procedures.js" : "~/.codex/procedures.js";
 }
 
+function procedureRuntimeRoot(platform: PlatformType): string {
+  return platform === Platform.Claude ? "~/.claude" : "~/.codex";
+}
+
+function skillRuntimeRoot(platform: PlatformType): string {
+  return platform === Platform.Claude ? "~/.claude/skills" : "~/.agents/skills";
+}
+
 function renderProcedureFields<TValue>(schema: ProcedureArgsDefinition<TValue> | ProcedureOutputDefinition<TValue> | undefined): string {
   if (!schema) return "未声明";
   const fields = Object.entries(schema.fields).map(([name, definition]) => {
@@ -601,11 +609,10 @@ function rewriteProcedureScriptCommands(
   );
 }
 
-function rewriteProcedureRuntimePlaceholders(source: string, platform: PlatformType): string {
-  return source.replace(
-    /\bnode\s+<runtime-root>\/procedures\.js\b/gu,
-    `node ${procedureRuntimePath(platform)}`,
-  );
+function rewriteRuntimePlaceholders(source: string, platform: PlatformType): string {
+  return source
+    .replaceAll("<runtime-root>", procedureRuntimeRoot(platform))
+    .replaceAll("<skills-dir>", skillRuntimeRoot(platform));
 }
 
 function rewriteGeneratedSkillMarkdown(
@@ -620,7 +627,7 @@ function rewriteGeneratedSkillMarkdown(
 
   for (const file of markdownFiles) {
     const source = readFileSync(file, "utf-8");
-    const commandRewritten = rewriteProcedureRuntimePlaceholders(
+    const commandRewritten = rewriteRuntimePlaceholders(
       rewriteProcedureScriptCommands(
         source,
         skill,

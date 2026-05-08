@@ -1412,17 +1412,26 @@ describe("component build integration", () => {
 
     for (const platform of ["claude", "codex"]) {
       const legacyRuntimeScriptCommands: string[] = [];
+      const leakedRuntimePlaceholders: string[] = [];
       const skillsRoot = join(tmpDistDir, platform, "skills");
       for (const markdownFile of collectFiles(skillsRoot, (file) => file.endsWith(".md"))) {
         const markdown = readFileSync(markdownFile, "utf-8");
         for (const match of markdown.matchAll(/\bnode\s+(?:\.\/)?scripts\/[A-Za-z0-9._/-]+\.mjs\b/gu)) {
           legacyRuntimeScriptCommands.push(`${markdownFile}: ${match[0]}`);
         }
+        for (const match of markdown.matchAll(/<(?:runtime-root|skills-dir)>/gu)) {
+          leakedRuntimePlaceholders.push(`${markdownFile}: ${match[0]}`);
+        }
       }
       assert.deepEqual(
         legacyRuntimeScriptCommands,
         [],
         `${platform} Markdown should not reference legacy local scripts`,
+      );
+      assert.deepEqual(
+        leakedRuntimePlaceholders,
+        [],
+        `${platform} Markdown should rewrite generated runtime path placeholders`,
       );
 
       const sourceProcedureEntrypointReferences: string[] = [];
