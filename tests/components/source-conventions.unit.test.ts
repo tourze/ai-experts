@@ -501,6 +501,11 @@ describe("component source conventions", () => {
     const componentSources = collectFiles(join(repoRoot, "src/components"), (file) =>
       file.endsWith(".ts") && !file.endsWith("sdk.ts"),
     );
+    const workflowGuidanceSources = collectFiles(join(repoRoot, "src/components"), (file) =>
+      /\.(?:ts|md)$/u.test(file) &&
+      /[\\/]src[\\/]components[\\/](?:skills|agents)[\\/]/u.test(file) &&
+      !file.split(/[\\/]/).includes("evals"),
+    );
 
     for (const sourceFile of componentSources) {
       const source = readFileSync(sourceFile, "utf-8");
@@ -510,10 +515,11 @@ describe("component source conventions", () => {
       if (/门禁表|场景路由表|分场景路由/u.test(source)) {
         legacyWorkflowTableMentions.push(relative(repoRoot, sourceFile));
       }
-      if (
-        /[\\/]src[\\/]components[\\/](?:skills|agents)[\\/][^\\/]+[\\/]index\.ts$/u.test(sourceFile) &&
-        /执行步骤/u.test(source)
-      ) {
+    }
+
+    for (const sourceFile of workflowGuidanceSources) {
+      const source = readFileSync(sourceFile, "utf-8");
+      if (/执行步骤/u.test(source)) {
         legacyExecutionStepTerms.push(relative(repoRoot, sourceFile));
       }
     }
