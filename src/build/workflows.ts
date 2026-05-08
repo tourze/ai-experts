@@ -126,13 +126,13 @@ function mermaidEdgeLabel(value: string): string {
   return mermaidLabel(value).replaceAll("|", "&#124;");
 }
 
-export function renderWorkflowMermaid(workflow: WorkflowDefinition): string {
+export function renderWorkflowMermaidSource(workflow: WorkflowDefinition): string {
   const direction: WorkflowDirection = workflow.direction ?? "TD";
   const steps = workflow.steps ?? [];
   const gates = workflow.gates ?? [];
   const routes = workflow.routes ?? [];
   const finalSteps = workflow.finalSteps ?? [];
-  const lines: string[] = ["```mermaid", `flowchart ${direction}`];
+  const lines: string[] = [`flowchart ${direction}`];
   const start = "start";
   lines.push(`  ${start}(["开始"])`);
   let previous = start;
@@ -160,14 +160,17 @@ export function renderWorkflowMermaid(workflow: WorkflowDefinition): string {
       const id = mermaidNodeId(route.id);
       const triggerLabel = route.triggers.join(" / ");
       lines.push(`  ${id}["${mermaidLabel(`${route.skill}\n${route.checks}\n输出：${route.output}`)}"]`);
-      lines.push(`  ${decision} -->|${mermaidEdgeLabel(triggerLabel)}| ${id}`);
+      lines.push(`  ${decision} -->|"${mermaidEdgeLabel(triggerLabel)}"| ${id}`);
       lines.push(`  ${id} --> ${join}`);
     }
     previous = join;
   }
   for (const step of finalSteps) addStep(step);
-  lines.push("```");
   return lines.join("\n");
+}
+
+export function renderWorkflowMermaid(workflow: WorkflowDefinition): string {
+  return ["```mermaid", renderWorkflowMermaidSource(workflow), "```"].join("\n");
 }
 
 export function renderWorkflowSection(workflow: WorkflowDefinition, title = "工作流"): string {

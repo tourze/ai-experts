@@ -33,7 +33,8 @@ import {
   renderMarkdownBulletList,
   renderMarkdownTableCell,
 } from "./markdown.ts";
-import { renderWorkflowSection, validateWorkflow } from "./workflows.ts";
+import { validateMermaidSyntax } from "./mermaid.ts";
+import { renderWorkflowMermaidSource, renderWorkflowSection, validateWorkflow } from "./workflows.ts";
 
 type TextListProperty = "useCases" | "constraints" | "checklist";
 
@@ -646,6 +647,10 @@ export async function emitSkill(
 ): Promise<void> {
   const skillRoot = join(platformRoot, "skills", skill.id);
   ensureDir(skillRoot);
+  const workflow = validateSkillWorkflow(skill);
+  if (workflow) {
+    await validateMermaidSyntax(`Skill ${skill.id}`, renderWorkflowMermaidSource(workflow));
+  }
   writeText(join(skillRoot, "SKILL.md"), renderSkillMd(skill, platform, proceduresById));
   copySupplementalSkillRootFiles(skill, skillRoot);
 

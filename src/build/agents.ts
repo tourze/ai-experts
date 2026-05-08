@@ -19,7 +19,8 @@ import {
   yamlScalar,
 } from "./core.ts";
 import { renderMarkdownBulletList, renderMarkdownTableCell } from "./markdown.ts";
-import { renderWorkflowSection, validateWorkflow } from "./workflows.ts";
+import { validateMermaidSyntax } from "./mermaid.ts";
+import { renderWorkflowMermaidSource, renderWorkflowSection, validateWorkflow } from "./workflows.ts";
 
 export function hasStringTool(
   component: { tools?: readonly ToolMatcher[] },
@@ -503,6 +504,10 @@ export async function emitAgent(
   platformSkillIds?: ReadonlySet<string>,
 ): Promise<void> {
   const effectivePlatformSkillIds = platformSkillIds ?? new Set((agent.skills ?? []).map((skill) => skill.id));
+  const workflow = validateAgentWorkflow(agent);
+  if (workflow) {
+    await validateMermaidSyntax(`Agent ${agent.id}`, renderWorkflowMermaidSource(workflow));
+  }
   if (platform === Platform.Claude) {
     writeText(join(platformRoot, "agents", `${agent.id}.md`), renderClaudeAgent(agent, effectivePlatformSkillIds));
   } else {

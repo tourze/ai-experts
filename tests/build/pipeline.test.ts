@@ -15,8 +15,10 @@ import {
 import { main } from "../../src/build/main.ts";
 import { emitPlatform, renderInstruction, validateId, validateRegistry } from "../../src/build/platform.ts";
 import { byId, compileRegistry, materializeRegistry } from "../../src/build/registry.ts";
-import { emitSkill, renderSkillMd, validateAntiPatterns, validateTextList } from "../../src/build/skills.ts";
+import { emitSkill, renderSkillMd, validateAntiPatterns, validateSkillWorkflow, validateTextList } from "../../src/build/skills.ts";
+import { validateMermaidSyntax } from "../../src/build/mermaid.ts";
 import type { ComponentRegistry } from "../../src/build/types.ts";
+import { renderWorkflowMermaidSource } from "../../src/build/workflows.ts";
 import {
   AgentSandbox,
   ComponentKind,
@@ -258,6 +260,15 @@ describe("build/pipeline modules", () => {
     expect(structuredRendered).toContain('step_1["读取输入。"]\n  start --> step_1');
     expect(structuredRendered).toContain('step_2["执行检查。"]\n  step_1 --> step_2');
     expect(structuredRendered).toContain("## 输出\n\n- 结论\n- 后续动作");
+    const structuredWorkflow = validateSkillWorkflow(structuredSkill);
+    expect(structuredWorkflow).not.toBeNull();
+    if (!structuredWorkflow) throw new Error("expected structured workflow");
+    await expect(
+      validateMermaidSyntax("structured skill", renderWorkflowMermaidSource(structuredWorkflow)),
+    ).resolves.toBeUndefined();
+    await expect(
+      validateMermaidSyntax("broken workflow", "flowchart TD\n  start -->"),
+    ).rejects.toThrow("broken workflow generated Mermaid diagram is invalid");
 
     const legacyWorkflowRoot = createTempDir("ai-experts-legacy-workflow-body-");
     for (const legacyWorkflowHeading of ["执行步骤", "工作流"]) {
