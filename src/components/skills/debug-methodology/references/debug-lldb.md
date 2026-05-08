@@ -40,7 +40,7 @@ lldb -p 12345 -o 'thread backtrace all' -o 'detach' -o 'quit' > /tmp/hang-macos.
 gdb -q -p 12345 -ex "thread apply all bt" -ex "detach" -ex "quit" > /tmp/hang-linux.txt 2>&1
 ```
 
-- 快速判型参考 [references/triage.md](./triage.md)。
+- 快速判型参考 [references/lldb-triage.md](./lldb-triage.md)。
 - 如需封装自动化采样，先登记为 procedure；运行时参考资料不要指向未生成的本地脚本。
 
 ## 检查清单

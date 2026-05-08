@@ -68,7 +68,7 @@ cargo flamegraph --example some_example --features some_features
 
 > 克隆是廉价的……**直到它不是**
 
-在第 1 章的[优先借用而非克隆](./chapter_01.md#11-优先借用而非克隆)和第 2 章的[需要关注的重要 Clippy Lint](./chapter_02.md#23-需要关注的重要-clippy-lint)中，我们提到了克隆的影响和相关的 clippy lint [`redundant_clone`](https://rust-lang.github.io/rust-clippy/master/#redundant_clone)，因此在本节中，我们将探讨一下"何时传递所有权"。
+在第 1 章的[优先借用而非克隆](../../rust-ownership-idioms/references/chapter_01.md#11-优先借用而非克隆)和第 2 章的[需要关注的重要 Clippy Lint](../../rust-ownership-idioms/references/chapter_02.md#23-需要关注的重要-clippy-lint)中，我们提到了克隆的影响和相关的 clippy lint [`redundant_clone`](https://rust-lang.github.io/rust-clippy/master/#redundant_clone)，因此在本节中，我们将探讨一下"何时传递所有权"。
 
 * 🚨 如果你真的需要克隆，留到最后一刻。
 

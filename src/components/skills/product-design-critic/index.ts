@@ -103,6 +103,14 @@ export const productDesignCriticSkill = defineSkill({
       loadWhen: "需要评估设计方案的可行性和有效性时读取。",
     }),
     defineReference({
+      id: "full-guide",
+      source: new URL("./references/full-guide.md", import.meta.url),
+      target: "references/full-guide.md",
+      title: "full-guide.md",
+      summary: "想法验证完整指南，覆盖问题、用户、方案与商业验证四步法。",
+      loadWhen: "需要执行系统化想法验证而不是只做快速点评时读取。",
+    }),
+    defineReference({
       id: "industry-anti-patterns",
       source: new URL("./references/industry-anti-patterns.md", import.meta.url),
       target: "references/industry-anti-patterns.md",
@@ -117,6 +125,14 @@ export const productDesignCriticSkill = defineSkill({
       title: "pitch-deck-reviewer.md",
       summary: "产品提案评审指南，帮助评估产品方案的说服力和完整性。",
       loadWhen: "需要评审产品 pitch 或评估方案对外表达质量时读取。",
+    }),
+    defineReference({
+      id: "frameworks",
+      source: new URL("./references/frameworks.md", import.meta.url),
+      target: "references/frameworks.md",
+      title: "frameworks.md",
+      summary: "路演 Deck 审查框架，按页面职责检查叙事完整性与证据缺口。",
+      loadWhen: "需要对融资 deck 做结构化审查并输出逐页问题时读取。",
     }),
     defineReference({
       id: "product-naming",

@@ -96,5 +96,21 @@ export const webContentFetcherSkill = defineSkill({
       summary: "抓取前的问题优化指南，帮助明确抓取目标、筛选域和设定内容范围。",
       loadWhen: "需要在抓取网页前先精炼问题定义或筛选信息来源时读取。",
     }),
+    defineReference({
+      id: "prompt-template",
+      source: new URL("./references/prompt-template.md", import.meta.url),
+      target: "references/prompt-template.md",
+      title: "prompt-template.md",
+      summary: "抓取前结构化 prompt 模板，包含 TASK/CONTEXT/OUTPUT 等 7 段。",
+      loadWhen: "需要把模糊抓取需求转成可执行的结构化输入时读取。",
+    }),
+    defineReference({
+      id: "question-refiner-patterns",
+      source: new URL("./references/patterns.md", import.meta.url),
+      target: "references/patterns.md",
+      title: "patterns.md",
+      summary: "Question Refiner 的正反模式：批量澄清、选项化提问与常见误区。",
+      loadWhen: "需要校验澄清流程质量或避免低效问答时读取。",
+    }),
   ],
 });

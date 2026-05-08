@@ -118,5 +118,21 @@ export const firstPrinciplesDecomposerSkill = defineSkill({
       summary: "反向推理（inversion）方法的核心概念与实践指南。",
       loadWhen: "需要从失败路径反向推导解决方案或配合第一性原理使用反向思维时读取。",
     }),
+    defineReference({
+      id: "pre-mortem-examples",
+      source: new URL("./references/pre-mortem-examples.md", import.meta.url),
+      target: "references/pre-mortem-examples.md",
+      title: "pre-mortem-examples.md",
+      summary: "上线前和项目启动前的 pre-mortem 失败预演示例集合。",
+      loadWhen: "需要参考 pre-mortem 的结构化示例来快速落地失败推演时读取。",
+    }),
+    defineReference({
+      id: "pre-mortem-framework",
+      source: new URL("./references/pre-mortem-framework.md", import.meta.url),
+      target: "references/pre-mortem-framework.md",
+      title: "pre-mortem-framework.md",
+      summary: "pre-mortem 失败预演的标准步骤、输出模板和质量门槛。",
+      loadWhen: "需要系统执行 pre-mortem 风险推演并落到行动时读取。",
+    }),
   ],
 });

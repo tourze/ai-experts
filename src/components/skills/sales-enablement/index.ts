@@ -107,6 +107,22 @@ export const salesEnablementSkill = defineSkill({
       loadWhen: "需要设计冷邮件序列或外呼邮件模板时读取。",
     }),
     defineReference({
+      id: "followup-patterns",
+      source: new URL("./references/followup-patterns.md", import.meta.url),
+      target: "references/followup-patterns.md",
+      title: "followup-patterns.md",
+      summary: "冷邮件跟进节奏、每轮信息增量和收口策略。",
+      loadWhen: "需要设计 3-5 封跟进邮件并控制触达节奏时读取。",
+    }),
+    defineReference({
+      id: "cold-email-anti-patterns",
+      source: new URL("./references/anti-patterns.md", import.meta.url),
+      target: "references/anti-patterns.md",
+      title: "anti-patterns.md",
+      summary: "冷邮件常见反模式：群发感、功能堆砌、高摩擦 CTA 和无新增跟进。",
+      loadWhen: "需要快速识别和修正冷邮件质量问题时读取。",
+    }),
+    defineReference({
       id: "demo-script",
       source: new URL("./references/demo-script.md", import.meta.url),
       target: "references/demo-script.md",

@@ -108,6 +108,22 @@ export const whatIfOracleSkill = defineSkill({
       loadWhen: "需要在推演后把分支概率和证据质量转为可执行的决策报告时读取。",
     }),
     defineReference({
+      id: "decision-contract",
+      source: new URL("./references/decision-contract.md", import.meta.url),
+      target: "references/decision-contract.md",
+      title: "decision-contract.md",
+      summary: "把决策问题压缩成可执行输入的最小合同字段与示例。",
+      loadWhen: "需要先澄清决策边界、时间窗和候选行动再做概率推演时读取。",
+    }),
+    defineReference({
+      id: "prior-hygiene",
+      source: new URL("./references/prior-hygiene.md", import.meta.url),
+      target: "references/prior-hygiene.md",
+      title: "prior-hygiene.md",
+      summary: "先验卫生检查清单，避免弱证据驱动的伪精确更新。",
+      loadWhen: "需要检查 prior 可靠性并决定是否先补证据时读取。",
+    }),
+    defineReference({
       id: "scenario-templates",
       source: new URL("./references/scenario-templates.md", import.meta.url),
       target: "references/scenario-templates.md",

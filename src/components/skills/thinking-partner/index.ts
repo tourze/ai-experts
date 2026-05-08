@@ -106,5 +106,13 @@ export const thinkingPartnerSkill = defineSkill({
       summary: "苏格拉底式提问教学法指南，通过提问引导对方自己发现答案。",
       loadWhen: "需要转向提问模式引导用户自己理清思路而非直接给答案时读取。",
     }),
+    defineReference({
+      id: "socratic-anti-patterns",
+      source: new URL("./references/anti-patterns.md", import.meta.url),
+      target: "references/anti-patterns.md",
+      title: "anti-patterns.md",
+      summary: "苏格拉底式教学的典型反模式与替代做法。",
+      loadWhen: "需要避免提问式教学失效（先给答案、暗示过重、提问轰炸）时读取。",
+    }),
   ],
 });

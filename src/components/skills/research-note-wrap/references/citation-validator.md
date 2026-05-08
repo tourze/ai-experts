@@ -79,4 +79,4 @@
 博客 47% 来源不明 → 改用原始数据
 ```
 
-更多反模式（模糊泛称、低质未降级等）见 [references/patterns.md](./patterns.md)。
+更多反模式（模糊泛称、低质未降级等）见 [references/anti-patterns.md](./anti-patterns.md)。

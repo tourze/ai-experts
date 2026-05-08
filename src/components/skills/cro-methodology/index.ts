@@ -142,6 +142,22 @@ export const croMethodologySkill = defineSkill({
       loadWhen: "需要审计单个页面的转化问题或定位转化阻塞点时读取。",
     }),
     defineReference({
+      id: "output-format",
+      source: new URL("./references/OUTPUT-FORMAT.md", import.meta.url),
+      target: "references/OUTPUT-FORMAT.md",
+      title: "OUTPUT-FORMAT.md",
+      summary: "page-cro 输出格式模板，覆盖 Quick Wins、High-Impact Changes、A/B 测试与文案替换。",
+      loadWhen: "需要按统一结构交付页面转化分析结果时读取。",
+    }),
+    defineReference({
+      id: "page-type-frameworks",
+      source: new URL("./references/PAGE-TYPE-FRAMEWORKS.md", import.meta.url),
+      target: "references/PAGE-TYPE-FRAMEWORKS.md",
+      title: "PAGE-TYPE-FRAMEWORKS.md",
+      summary: "首页、落地页、定价页、功能页和博客页的分类型 CRO 审查框架。",
+      loadWhen: "需要按页面类型选择对应转化优化审查重点时读取。",
+    }),
+    defineReference({
       id: "persuasion",
       source: new URL("./references/PERSUASION.md", import.meta.url),
       target: "references/PERSUASION.md",

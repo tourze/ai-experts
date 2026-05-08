@@ -104,7 +104,7 @@
 
 **为什么**：四件套一起出现 = 无疑的 AI 生成。单独出现还能救，一起出现直接判死。
 
-**正确重写**：至少打破其中 2 件——换字体（见 [font-pairing-library/anti-reflex-protocol](../../font-pairing-library/references/anti-reflex-protocol.md)）、改色盘、调圆角（8px 方正或 32px+ 极端圆角）、或浅色 hero。
+**正确重写**：至少打破其中 2 件——换字体（见 [font-pairing-library](../../industry-design-presets/references/font-pairing-library.md)）、改色盘、调圆角（8px 方正或 32px+ 极端圆角）、或浅色 hero。
 
 ## BAN 7：乱塞装饰 sparkline / 迷你图
 

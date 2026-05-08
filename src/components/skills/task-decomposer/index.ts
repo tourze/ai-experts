@@ -145,6 +145,22 @@ export const taskDecomposerSkill = defineSkill({
       loadWhen: "需要把任务拆解结果保存到文件或传给后续流程时读取。",
     }),
     defineReference({
+      id: "file-templates",
+      source: new URL("./references/file-templates.md", import.meta.url),
+      target: "references/file-templates.md",
+      title: "file-templates.md",
+      summary: "context/task_plan/findings/progress 四文件模板与最小字段清单。",
+      loadWhen: "需要快速创建 persistent-planning 的四文件骨架时读取。",
+    }),
+    defineReference({
+      id: "persistent-planning-examples",
+      source: new URL("./references/examples.md", import.meta.url),
+      target: "references/examples.md",
+      title: "examples.md",
+      summary: "persistent-planning 的跨会话、并行子任务和完成门控示例。",
+      loadWhen: "需要参考落地案例来执行持久化任务管理时读取。",
+    }),
+    defineReference({
       id: "sizing-guide",
       source: new URL("./references/sizing-guide.md", import.meta.url),
       target: "references/sizing-guide.md",

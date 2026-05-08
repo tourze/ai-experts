@@ -87,6 +87,14 @@ export const douyinViralContentSkill = defineSkill({
       loadWhen: "需要从视频内容中提取素材用于文案二次创作或分析时读取。",
     }),
     defineReference({
+      id: "feishu-sync",
+      source: new URL("./references/feishu-sync.md", import.meta.url),
+      target: "references/feishu-sync.md",
+      title: "feishu-sync.md",
+      summary: "将抖音视频摘要同步到飞书文档或表格的字段建议与流程约束。",
+      loadWhen: "需要把摘要结果沉淀到飞书用于协作、复盘或归档时读取。",
+    }),
+    defineReference({
       id: "estimation-model",
       source: new URL("./references/estimation-model.md", import.meta.url),
       target: "references/estimation-model.md",
