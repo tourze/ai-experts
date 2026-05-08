@@ -106,6 +106,8 @@ describe("component source conventions", () => {
     assert.match(readme, /`InvocationPolicy\.ModelOnly` 只用于 Claude-only skill/);
     assert.match(readme, /`procedureUse\(procedureDefinition, \{ platforms: \[\.\.\.\] \}\)`/);
     assert.match(readme, /仅单平台可用的关系使用 `platforms` 收窄/);
+    assert.match(readme, /每个 skill 必须声明 `workflow: defineWorkflow/);
+    assert.match(readme, /Agent 必须声明 `workflow: defineWorkflow/);
     assert.match(readme, /defineWorkflow\(\{/);
     assert.match(
       readme,
@@ -972,10 +974,11 @@ describe("component source conventions", () => {
     let agentOutputFormatCount = 0;
     let agentWorkflowCount = 0;
 
-    for (const agentSourceFile of collectFiles(
+    const agentSourceFiles = collectFiles(
       join(repoRoot, "src/components/agents"),
       (file) => file.endsWith("index.ts"),
-    )) {
+    );
+    for (const agentSourceFile of agentSourceFiles) {
       const source = readFileSync(agentSourceFile, "utf-8");
       const hasBashTool = /\bKnownTool\.Bash\b/.test(source);
       const hasBashBoundary = /\n\s*bashBoundary:\s*\[/.test(source);
@@ -1048,6 +1051,7 @@ describe("component source conventions", () => {
         }
       }
 
+      assert.equal(hasWorkflow, true, `${agentSourceFile} should define workflow through defineWorkflow`);
       if (hasWorkflow) {
         agentWorkflowCount += 1;
         assert.match(
@@ -1077,7 +1081,7 @@ describe("component source conventions", () => {
 
     assert.ok(agentQualityStandardsCount >= 60);
     assert.equal(agentOutputFormatCount, 62);
-    assert.ok(agentWorkflowCount >= 76);
+    assert.equal(agentWorkflowCount, agentSourceFiles.length);
   });
 
   test("hook source tree uses canonical directories and ids", () => {
@@ -1252,6 +1256,7 @@ describe("component source conventions", () => {
       const hasSourceDir = /\n\s*sourceDir:\s*new URL\("\.\/", import\.meta\.url\)/.test(source);
       assert.doesNotMatch(source, /\n\s*body:\s*new URL\("\.\/SKILL\.body\.md", import\.meta\.url\)/);
       assert.equal(hasSourceDir, true, `${skillSourceFile} should define sourceDir`);
+      assert.equal(hasWorkflow, true, `${skillSourceFile} should define workflow through defineWorkflow`);
       assert.match(
         source,
         /\n\s*(?:(?:goal|outputs):\s*defineSkill(?:Goal|Outputs)|workflow:\s*defineWorkflow)\(\{/,

@@ -326,7 +326,6 @@ describe("build/pipeline modules", () => {
           ...structuredSkill,
           sourceDir: undefined,
           goal: undefined,
-          workflow: undefined,
           outputs: undefined,
         }],
       })
@@ -387,6 +386,12 @@ describe("build/pipeline modules", () => {
       "Skill fixture-skill platforms contain duplicate platform(s): claude-code",
     );
 
+    const missingSkillWorkflowRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{ ...fixture.skill, workflow: undefined as any }],
+    };
+    expect(() => validateRegistry(missingSkillWorkflowRegistry)).toThrow("Skill fixture-skill must define workflow");
+
     const invalidInstructionPlatformRegistry: ComponentRegistry = {
       ...fixture.registry,
       instructions: [{ ...fixture.instruction, platforms: ["unsupported-instruction-cli"] as any }],
@@ -402,6 +407,12 @@ describe("build/pipeline modules", () => {
     expect(() => validateRegistry(invalidAgentPlatformRegistry)).toThrow(
       "Agent fixture-agent platforms contain unsupported platform(s): unsupported-agent-cli",
     );
+
+    const missingAgentWorkflowRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      agents: [{ ...fixture.agent, workflow: undefined as any }],
+    };
+    expect(() => validateRegistry(missingAgentWorkflowRegistry)).toThrow("Agent fixture-agent must define workflow");
 
     const invalidHookPlatformRegistry: ComponentRegistry = {
       ...fixture.registry,
@@ -458,7 +469,9 @@ describe("build/pipeline modules", () => {
       skills: [{ ...fixture.skill, platforms: [ComponentPlatform.Claude] }],
       agents: [{
         ...fixture.agent,
-        workflow: undefined,
+        workflow: defineWorkflow({
+          steps: [defineWorkflowStep({ id: "shared-platform-check", label: "检查共享平台。" })],
+        }),
         skills: [{ id: fixture.skill.id, mode: SkillUseMode.Route, reason: "fixture routing" }],
       }],
     };
@@ -470,7 +483,9 @@ describe("build/pipeline modules", () => {
       agents: [{
         ...fixture.agent,
         platforms: [ComponentPlatform.Codex],
-        workflow: undefined,
+        workflow: defineWorkflow({
+          steps: [defineWorkflowStep({ id: "shared-platform-check", label: "检查共享平台。" })],
+        }),
         skills: [{ id: fixture.skill.id, mode: SkillUseMode.Route, reason: "fixture routing" }],
       }],
     };
@@ -546,7 +561,13 @@ describe("build/pipeline modules", () => {
           }),
         },
       ],
-      agents: [{ ...fixture.agent, workflow: undefined, skills: [] }],
+      agents: [{
+        ...fixture.agent,
+        workflow: defineWorkflow({
+          steps: [defineWorkflowStep({ id: "skill-workflow-platform-check", label: "检查 skill workflow 平台。" })],
+        }),
+        skills: [],
+      }],
     };
     expect(() => validateRegistry(codexSkillWorkflowWithClaudeOnlySkillRegistry)).toThrow(
       "Skill workflow-skill workflow gate references skill fixture-skill unavailable on platform(s): codex-cli",
@@ -576,7 +597,13 @@ describe("build/pipeline modules", () => {
           }),
         },
       ],
-      agents: [{ ...fixture.agent, workflow: undefined, skills: [] }],
+      agents: [{
+        ...fixture.agent,
+        workflow: defineWorkflow({
+          steps: [defineWorkflowStep({ id: "skill-route-platform-check", label: "检查 skill route 平台。" })],
+        }),
+        skills: [],
+      }],
     };
     expect(() => validateRegistry(codexSkillRouteWithClaudeOnlySkillRegistry)).toThrow(
       "Skill workflow-skill workflow route references skill fixture-skill unavailable on platform(s): codex-cli",

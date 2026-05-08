@@ -38,7 +38,6 @@ import type { ResolvedProcedureUse } from "./procedure-uses.ts";
 import { emitProcedureRuntime } from "./procedures.ts";
 import {
   emitSkill,
-  hasStructuredSkillContent,
   skillSourceRoot,
   validateAntiPatterns,
   validateParameters,
@@ -390,6 +389,9 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     }
     validateSkillGoal(skill);
     const skillWorkflow = validateSkillWorkflow(skill);
+    if (!skillWorkflow) {
+      throw new Error(`Skill ${skill.id} must define workflow`);
+    }
     for (const gate of skillWorkflow?.gates ?? []) {
       if (!skillIds.has(gate.skill)) throw new Error(`Skill ${skill.id} workflow gate references missing skill: ${gate.skill}`);
       validateSkillWorkflowSkillPlatform(skill, gate.skill, skillsById, "workflow gate references skill");
@@ -399,9 +401,6 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
       validateSkillWorkflowSkillPlatform(skill, route.skill, skillsById, "workflow route references skill");
     }
     validateSkillOutputs(skill);
-    if (!hasStructuredSkillContent(skill)) {
-      throw new Error(`Skill ${skill.id} must define structured skill sections`);
-    }
     if (skill.checklist !== undefined) {
       validateTextList(skill, "checklist", "checklist item");
     }
@@ -484,6 +483,9 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     validateAgentOutputFormat(agent);
     validateAgentInputs(agent);
     const workflow = validateAgentWorkflow(agent);
+    if (!workflow) {
+      throw new Error(`Agent ${agent.id} must define workflow`);
+    }
     for (const gate of workflow?.gates ?? []) {
       if (!skillIds.has(gate.skill)) throw new Error(`Agent ${agent.id} workflow gate references missing skill: ${gate.skill}`);
       validateAgentSkillPlatform(agent, gate.skill, skillsById, "workflow gate references skill");

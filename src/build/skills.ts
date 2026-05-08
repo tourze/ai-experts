@@ -369,10 +369,6 @@ function renderSkillOutputs(skill: SkillDefinition): string {
   return `## ${title}\n\n${outputs.body?.trim()}\n`;
 }
 
-export function hasStructuredSkillContent(skill: SkillDefinition): boolean {
-  return skill.goal !== undefined || skill.workflow !== undefined || skill.outputs !== undefined;
-}
-
 function renderStructuredSkillBody(skill: SkillDefinition): string {
   return [
     renderSkillGoal(skill),

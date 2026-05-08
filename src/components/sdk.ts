@@ -204,7 +204,7 @@ export type SkillDefinition = {
   platforms: PlatformList;
   sourceDir?: ComponentFile;
   goal?: SkillGoalDefinition;
-  workflow?: WorkflowDefinition;
+  workflow: WorkflowDefinition;
   outputs?: SkillOutputsDefinition;
   tools?: readonly ToolMatcher[];
   procedures?: readonly ProcedureUseReference[];
@@ -297,7 +297,7 @@ export type AgentDefinition = {
   bashBoundary?: AgentBashBoundaryDefinition;
   qualityStandards?: AgentQualityStandardsDefinition;
   outputFormat?: AgentOutputFormatDefinition;
-  workflow?: WorkflowDefinition;
+  workflow: WorkflowDefinition;
   tools?: readonly ToolMatcher[];
   skills?: readonly AgentSkillUse[];
   procedures?: readonly ProcedureUseReference[];
