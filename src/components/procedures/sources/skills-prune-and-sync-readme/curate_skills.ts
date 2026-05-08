@@ -4,7 +4,9 @@ import fs, { realpathSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildSimilarityGroups } from "./similarity_groups";
-const ALLOWED_FRONTMATTER_KEYS = new Set("acknowledgments agent allowed-tools alwaysApply compatibility context date_added dependency description license metadata name related-skills risk source tools user-invocable user_invocable version".split(" "));
+const ALLOWED_FRONTMATTER_KEYS = new Set(
+    "acknowledgments agent allowed-tools alwaysApply argument-hint arguments compatibility context date_added dependency description disable-model-invocation license metadata name related-skills risk source tools user-invocable user_invocable version".split(" "),
+);
 const README_SECTION_START = "## Skill 清单";
 const README_SECTION_END = "## 数据来源";
 const STOP_WORDS = new Set([

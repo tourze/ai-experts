@@ -73,6 +73,24 @@ function runSmokeScenario(): any {
         writeComponentSkill(path.join(componentSkillsDir, "vue-best-practices"), "vue-best-practices", "MUST be used for any Vue task. Always prefer Composition API.", "Use for any Vue task.");
         writeComponentSkill(path.join(componentSkillsDir, "vue-options-api-only"), "vue-options-api-only", "Vue 3 Options API style only.", "Use when the project explicitly requires Options API.");
         writeComponentSkill(path.join(componentSkillsDir, "stub-skill"), "stub-skill", "TODO", "TODO");
+        const argumentSkillDir = path.join(componentSkillsDir, "argument-frontmatter-skill");
+        fs.mkdirSync(argumentSkillDir, { recursive: true });
+        fs.writeFileSync(path.join(argumentSkillDir, "index.ts"), [
+            "---",
+            "name: argument-frontmatter-skill",
+            "description: \"Argument frontmatter coverage skill.\"",
+            "argument-hint: \"[用户输入]\"",
+            "arguments:",
+            "  - arguments",
+            "disable-model-invocation: true",
+            "user-invocable: false",
+            "---",
+            "",
+            "# Argument Frontmatter Skill",
+            "",
+            "TODO",
+            "",
+        ].join("\n"), "utf8");
         const readmePath = path.join(repoRoot, "README.md");
         fs.writeFileSync(readmePath, "# Demo Repo\n\n" +
             "## Skill 清单\n\n" +
@@ -88,6 +106,13 @@ function runSmokeScenario(): any {
         const report = JSON.parse(audit.stdout);
         const lowQualityNames = new Set(report.low_quality_candidates.map((item: any) => item.skill));
         assert.ok(lowQualityNames.has("stub-skill"), `stub-skill should be low quality: ${audit.stdout}`);
+        const argumentSkill = report.low_quality_candidates.find((item: any) => item.skill === "argument-frontmatter-skill");
+        assert.ok(argumentSkill, `argument-frontmatter-skill should be low quality: ${audit.stdout}`);
+        assert.equal(
+            argumentSkill.issues.some((issue: any) => issue.includes("frontmatter 包含额外字段")),
+            false,
+            `current generated frontmatter keys should not be flagged as extra fields: ${argumentSkill.issues.join("; ")}`,
+        );
         assertContainsPair(report.duplicate_candidates, "alpha-skill", "alpha-skill-audit");
         assertContainsPair(report.conflict_candidates, "vue-best-practices", "vue-options-api-only");
         const prune = runCommand("prune", "--repo-root", repoRoot, "--skills", "stub-skill", "--yes");
@@ -106,7 +131,7 @@ function runSmokeScenario(): any {
         const sync = runCommand("sync-readme", "--repo-root", repoRoot, "--write");
         assert.equal(sync.status, 0, `sync-readme failed:\nSTDOUT:\n${sync.stdout}\nSTDERR:\n${sync.stderr}`);
         const readme = fs.readFileSync(readmePath, "utf8");
-        assert.match(readme, /### 公共 Skills（5）/);
+        assert.match(readme, /### 公共 Skills（6）/);
         assert.ok(readme.includes("| [alpha-skill](src/components/skills/alpha-skill/index.ts) | 旧摘要，应被保留。 |"));
         assert.ok(readme.includes("| [beta-skill](src/components/skills/beta-skill/index.ts) |"));
         assert.equal(fs.existsSync(path.join(repoRoot, "skills")), false, "curation should not use a root skills directory");
