@@ -135,6 +135,35 @@ describe("component source conventions", () => {
     assert.doesNotMatch(readme, /优先插入到 `## 反模式`/);
   });
 
+  test("README local markdown links resolve", () => {
+    const readmePath = join(repoRoot, "README.md");
+    const readme = stripMarkdownCode(readFileSync(readmePath, "utf-8"));
+    const brokenLocalLinks: string[] = [];
+
+    const collectBrokenLink = (destination: string): void => {
+      if (!isLikelyLocalDefinitionPath(destination)) return;
+      const targetPath = localMarkdownPath(markdownDestination(destination));
+      if (!targetPath) return;
+      const resolvedTarget = resolve(dirname(readmePath), targetPath);
+      if (!existsSync(resolvedTarget)) {
+        brokenLocalLinks.push(targetPath);
+      }
+    };
+
+    for (const match of readme.matchAll(/!?\[[^\]\n]*\]\(([^)\n]+)\)/gu)) {
+      collectBrokenLink(match[1] ?? "");
+    }
+    for (const match of readme.matchAll(/^\s*\[[^\]\n]+\]:\s+([^\n]+)$/gmu)) {
+      collectBrokenLink(match[1] ?? "");
+    }
+
+    assert.deepEqual(
+      brokenLocalLinks,
+      [],
+      "README local Markdown links should resolve from repository root",
+    );
+  });
+
   test("component check script runs every typecheck gate", () => {
     const packageJson = JSON.parse(readFileSync(join(repoRoot, "package.json"), "utf-8"));
     const sourceTsconfigNames = [
