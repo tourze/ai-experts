@@ -180,6 +180,24 @@ describe("component build integration", () => {
       false,
       "Codex system skill cache should stay runtime-local, not generated into dist",
     );
+
+    assert.equal(claudeManifest.install.configRoot, "~/.claude");
+    assert.equal(claudeManifest.install.skillRoot, "~/.claude/skills");
+    assert.equal(claudeManifest.install.skillEntries.length, claudeManifest.skills.length);
+    assert.deepEqual(claudeManifest.install.forbiddenRootEntries, []);
+    assert.equal(codexManifest.install.configRoot, "~/.codex");
+    assert.equal(codexManifest.install.skillRoot, "~/.agents/skills");
+    assert.equal(codexManifest.install.skillEntries.length, codexManifest.skills.length);
+    assert.equal(codexManifest.install.rootEntries.includes("skills/"), false);
+    assert.equal(codexManifest.install.rootEntries.includes("AGENTS.md"), true);
+    assert.equal(codexManifest.install.rootEntries.includes("config.toml"), true);
+    assert.equal(codexManifest.install.rootEntries.includes("procedures.js"), true);
+    assert.deepEqual(codexManifest.install.forbiddenRootEntries, ["skills/", "installation_id", "skills/.system/"]);
+    assert.deepEqual(
+      codexManifest.install.skillEntries,
+      (codexManifest.skills as string[]).map((skillId) => `skills/${skillId}/`),
+      "Codex install manifest should map individual skill directories to ~/.agents/skills",
+    );
   });
 
   test("manifest file checksums cover every generated file", () => {

@@ -91,6 +91,28 @@ export function checksumFiles(root: string): Record<string, string> {
   );
 }
 
+function renderInstallManifest(
+  platform: Platform,
+  skillIds: readonly string[],
+): {
+  configRoot: string;
+  skillRoot: string;
+  rootEntries: string[];
+  skillEntries: string[];
+  forbiddenRootEntries: string[];
+} {
+  const isClaude = platform === Platform.Claude;
+  return {
+    configRoot: isClaude ? "~/.claude" : "~/.codex",
+    skillRoot: isClaude ? "~/.claude/skills" : "~/.agents/skills",
+    rootEntries: isClaude
+      ? ["CLAUDE.md", "settings.json", "agents/", "hooks/", "procedures.js", "manifest.json"]
+      : ["AGENTS.md", "config.toml", "hooks.json", "agents/", "hooks/", "procedures.js", "manifest.json"],
+    skillEntries: skillIds.map((skillId) => `skills/${skillId}/`),
+    forbiddenRootEntries: isClaude ? [] : ["skills/", "installation_id", "skills/.system/"],
+  };
+}
+
 export function validateId(id: string, kind: string): void {
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(id)) {
     throw new Error(`Invalid ${kind} id: ${id}`);
@@ -602,6 +624,10 @@ export async function emitPlatform(
   }
 
   const files = checksumFiles(root);
+  const skillIds = componentSurface.skills
+    .filter((item) => item.platforms.includes(platform))
+    .map((item) => item.id)
+    .sort();
   writeText(join(root, "manifest.json"), JSON.stringify({
     schema: 2,
     platform,
@@ -609,10 +635,7 @@ export async function emitPlatform(
       .filter((item) => item.platforms.includes(platform))
       .map((item) => item.id)
       .sort(),
-    skills: componentSurface.skills
-      .filter((item) => item.platforms.includes(platform))
-      .map((item) => item.id)
-      .sort(),
+    skills: skillIds,
     agents: componentSurface.agents
       .filter((item) => item.platforms.includes(platform))
       .map((item) => item.id)
@@ -635,6 +658,7 @@ export async function emitPlatform(
         outputSchema: procedure.outputSchema,
       })),
     },
+    install: renderInstallManifest(platform, skillIds),
     files,
   }, null, 2) + "\n");
 }
