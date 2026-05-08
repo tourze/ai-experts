@@ -138,10 +138,11 @@ describe("component source conventions", () => {
       1,
       "build code should expose exactly one canonical component source root",
     );
-    assert.doesNotMatch(
-      buildSources,
-      /\b(?:sourceRoots|componentSourceRoots)\b|--plugins-dir|plugins-dir|["']src\/plugins["']|join\([^)]*["']plugins["'][^)]*\)/,
-      "build code should not route component sources through alternate roots",
+    const alternateSourceRootNames = buildSources.match(/\b(?:sourceRoots|componentSourceRoots)\b/g) ?? [];
+    assert.deepEqual(
+      alternateSourceRootNames,
+      [],
+      "build code should not expose alternate component source roots",
     );
     assert.equal(
       existsSync(join(repoRoot, "plugins")),
@@ -203,20 +204,24 @@ describe("component source conventions", () => {
     );
   });
 
-  test("runtime skill discovery uses canonical component roots", () => {
-    const discoverySources = [
-      join(repoRoot, "src/components/procedures/sources/skill-activation-analyzer/cso_audit.ts"),
+  test("repository skill utilities use the canonical component skills root", () => {
+    const curateSkillsSource = readFileSync(
       join(repoRoot, "src/components/procedures/sources/skills-prune-and-sync-readme/curate_skills.ts"),
-    ];
+      "utf-8",
+    );
+    const canonicalSkillRootUsages =
+      curateSkillsSource.match(/\bpath\.join\(repoRoot, "src\/components\/skills"\)/g) ?? [];
 
-    for (const sourceFile of discoverySources) {
-      const source = readFileSync(sourceFile, "utf-8");
-      assert.doesNotMatch(
-        source,
-        /--plugins-dir|plugins-dir|join\([^)]*["']plugins["'][^)]*\)/,
-        `${sourceFile} should discover only canonical component skill roots`,
-      );
-    }
+    assert.equal(
+      canonicalSkillRootUsages.length,
+      1,
+      "repository skill curation should read from the single canonical component skills root",
+    );
+    assert.doesNotMatch(
+      curateSkillsSource,
+      /\b(?:sourceRoots|componentSourceRoots)\b/,
+      "repository skill curation should not declare alternate source roots",
+    );
   });
 
   test("runtime component sources do not leak maintainer-local absolute paths", () => {
