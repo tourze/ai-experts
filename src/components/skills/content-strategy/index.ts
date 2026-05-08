@@ -105,6 +105,14 @@ export const contentStrategySkill = defineSkill({
       loadWhen: "需要将同一内容分发到多个平台或做跨渠道改编时读取。",
     }),
     defineReference({
+      id: "platform-adaptation-rules",
+      source: new URL("./references/platform-adaptation-rules.md", import.meta.url),
+      target: "references/platform-adaptation-rules.md",
+      title: "platform-adaptation-rules.md",
+      summary: "LinkedIn、Medium、Reddit、Quora、YouTube 等平台的内容改编规则。",
+      loadWhen: "需要把同一主题适配到多个平台，并保持语气、格式和回链策略差异时读取。",
+    }),
+    defineReference({
       id: "domain-name-brainstormer",
       source: new URL("./references/domain-name-brainstormer.md", import.meta.url),
       target: "references/domain-name-brainstormer.md",
@@ -129,12 +137,28 @@ export const contentStrategySkill = defineSkill({
       loadWhen: "需要评估内容 SEO 质量或为内容评分定标时读取。",
     }),
     defineReference({
+      id: "scoring-rubrics",
+      source: new URL("./references/scoring-rubrics.md", import.meta.url),
+      target: "references/scoring-rubrics.md",
+      title: "scoring-rubrics.md",
+      summary: "SEO 内容评分细则，按人味、具体性、结构、SEO 合规和可读性拆分。",
+      loadWhen: "需要对内容质量进行 0-100 量化评分或复核评分一致性时读取。",
+    }),
+    defineReference({
       id: "topic-cluster",
       source: new URL("./references/topic-cluster.md", import.meta.url),
       target: "references/topic-cluster.md",
       title: "topic-cluster.md",
       summary: "主题集群设计方法：支柱页面、集群内容与内部链接策略。",
       loadWhen: "需要设计内容主题集群或规划 SEO 支柱页面时读取。",
+    }),
+    defineReference({
+      id: "cluster-prioritization",
+      source: new URL("./references/cluster-prioritization.md", import.meta.url),
+      target: "references/cluster-prioritization.md",
+      title: "cluster-prioritization.md",
+      summary: "主题集群内选题优先级评分框架，综合搜索量、难度、意图和商业价值。",
+      loadWhen: "需要给 pillar/supporting/long-tail 选题排序并制定执行路线图时读取。",
     }),
   ],
 });
