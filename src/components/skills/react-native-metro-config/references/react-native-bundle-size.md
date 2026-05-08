@@ -8,7 +8,7 @@
 - 要评估某个第三方库引入后的体积代价。
 - 版本升级相关任务优先联动 [upgrading-react-native](./upgrading-react-native.md)。
 - JS 线程性能问题优先联动 [react-native-js-performance](../../react-native-js-performance/SKILL.md)。
-- 原生层性能问题优先联动 [react-native-native-performance](../react-native-native-performance/SKILL.md)。
+- 原生层性能问题优先联动 [react-native-native-performance](../../react-native-js-performance/references/react-native-native-performance.md)。
 
 ## 核心约束
 

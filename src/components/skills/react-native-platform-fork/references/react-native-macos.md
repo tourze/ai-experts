@@ -13,7 +13,7 @@
 - 平台差异优先收敛到 `.macos.tsx`、边界组件或清晰的 `Platform.select` 分支。
 - 原生能力进入 AppKit 层时，要隔离在独立模块，不要把 Objective-C/Swift 细节泄漏到业务组件。
 - 文件系统、网络、沙箱权限和 entitlements 必须显式配置，不能靠硬编码路径绕过。
-- 版本选择要和 React Native minor 对齐；升级时联动 [upgrading-react-native](../upgrading-react-native/SKILL.md)。
+- 版本选择要和 React Native minor 对齐；升级时联动 [upgrading-react-native](../../react-native-metro-config/references/upgrading-react-native.md)。
 
 ## 代码模式
 

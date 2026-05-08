@@ -13,7 +13,7 @@
 - 领导力和价值观是贯穿始终的底座，不是摆设——要有具体判断。
 
 ## 不适用场景
-- 早期验证阶段（Pre-PMF）：BLM 假设已有业绩基线可以对比，没有历史数据就无法计算差距。用 [idea-validator](../idea-validator/SKILL.md)。
+- 早期验证阶段（Pre-PMF）：BLM 假设已有业绩基线可以对比，没有历史数据就无法计算差距。用 [idea-validator](../../product-design-critic/references/idea-validator.md)。
 - 纯执行问题：如果战略方向明确只需解决落地，直接用 [mckinsey-7s](./mckinsey-7s.md) 诊断组织匹配。
 
 ## 代码模式

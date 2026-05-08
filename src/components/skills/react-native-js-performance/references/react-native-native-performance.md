@@ -8,8 +8,8 @@
 - TurboModules 性能评估、View Flattening 优化。
 - Android 16KB 页面对齐合规。
 - JS 线程性能问题优先联动 [react-native-js-performance](../SKILL.md)。
-- 包体积问题优先联动 [react-native-bundle-size](../react-native-bundle-size/SKILL.md)。
-- 版本升级相关任务优先联动 [upgrading-react-native](../upgrading-react-native/SKILL.md)。
+- 包体积问题优先联动 [react-native-bundle-size](../../react-native-metro-config/references/react-native-bundle-size.md)。
+- 版本升级相关任务优先联动 [upgrading-react-native](../../react-native-metro-config/references/upgrading-react-native.md)。
 
 ## 核心约束
 

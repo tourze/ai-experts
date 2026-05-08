@@ -12,7 +12,7 @@
 - 三组交叉检查都必须做：产品 x 职能、产品 x 市场、职能 x 市场。
 
 ## 不适用场景
-- 深度商业模式分析：铁三角是快速一致性检查，完整商业模式分析用 [business-model](../SKILL.md) 或 [weizhus-six-elements](../weizhus-six-elements/SKILL.md)。
+- 深度商业模式分析：铁三角是快速一致性检查，完整商业模式分析用 [business-model](../SKILL.md) 或 weizhus-six-elements。
 
 ## 代码模式
 

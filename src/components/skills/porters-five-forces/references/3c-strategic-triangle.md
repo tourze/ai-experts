@@ -12,8 +12,8 @@
 - 优势必须有可持续性论证（技术壁垒/网络效应/数据飞轮），不是临时的价格优势。
 
 ## 不适用场景
-- 需要量化决策：3C 是定性框架，需要数字精度时用 [bcg-matrix](../../bcg-matrix/SKILL.md)（GE 模式）或 [space-matrix](../space-matrix/SKILL.md)。
-- 内部组织诊断：3C 聚焦外部竞争关系，内部问题用 [mckinsey-7s](../mckinsey-7s/SKILL.md)。
+- 需要量化决策：3C 是定性框架，需要数字精度时用 [bcg-matrix](../../bcg-matrix/SKILL.md)（GE 模式）或 [space-matrix](../../swot-analysis/references/space-matrix.md)。
+- 内部组织诊断：3C 聚焦外部竞争关系，内部问题用 [mckinsey-7s](../../business-health-diagnostic/references/mckinsey-7s.md)。
 
 ## 代码模式
 

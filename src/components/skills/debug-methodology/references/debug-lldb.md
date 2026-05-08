@@ -5,7 +5,7 @@
 - 应用无响应、切换上下文卡住、窗口冻结、命令行进程挂起，怀疑线程互锁或阻塞 I/O。
 - CPU 飙高但日志证据不足，需要靠重复采样的线程栈识别忙循环或自旋热点。
 - 需要快速抓取多次 all-thread backtrace，再用模式化方法判断是死锁、阻塞 IPC、主线程重入还是紧循环。
-- 如果问题只发生在网页上下文，优先用 [chrome-devtools](../../chrome-devtools/SKILL.md)；如果重点是浏览器自动化脚本本身，优先用 [browser-use](../browser-use/SKILL.md)。
+- 如果问题只发生在网页上下文，优先用 [chrome-devtools](../../chrome-devtools/SKILL.md)；如果重点是浏览器自动化脚本本身，优先用 browser-use。
 
 ## 核心约束
 

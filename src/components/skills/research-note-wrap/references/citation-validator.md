@@ -4,7 +4,7 @@
 
 - 研究报告、PRD、白皮书、对外发布内容交付前做"每个事实都有出处"的最后把关。
 - 面向高风险决策（医疗 / 法律 / 财务 / 合规），或接手他人研究怀疑存在编造引用。
-- [deep-research](../../deep-research/SKILL.md) / [knowledge-synthesis](../knowledge-synthesis/SKILL.md) 闭环的最后一步。
+- [deep-research](../../deep-research/SKILL.md) / [knowledge-synthesis](../../deep-research/references/knowledge-synthesis.md) 闭环的最后一步。
 - 不适用：纯主观分析、代码实现、无外部事实依赖的内部讨论。
 
 ## 核心约束

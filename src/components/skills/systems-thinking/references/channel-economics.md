@@ -4,7 +4,7 @@
 - 季度预算分配，需要决定各获客渠道的投入比例。
 - 新渠道评估：是否值得投入、预期 ROI 和达到规模化的时间。
 - 渠道效率下降诊断：为什么同样的投入带来的客户变少了。
-- 与 [saas-metrics](../saas-metrics/SKILL.md) 配合计算 CAC 和 LTV/CAC，与 [funnel-architect](../../funnel-architect/SKILL.md) 配合设计转化漏斗。
+- 与 [saas-metrics](../../financial-analyst/references/saas-metrics.md) 配合计算 CAC 和 LTV/CAC，与 [funnel-architect](../../funnel-architect/SKILL.md) 配合设计转化漏斗。
 
 ## 核心约束
 - CAC 必须**按渠道分拆**计算，不能只看混合 CAC；混合 CAC 掩盖低效渠道。

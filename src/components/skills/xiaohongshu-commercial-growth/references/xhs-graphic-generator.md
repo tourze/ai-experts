@@ -6,7 +6,7 @@
 - 只有主题、提纲或一篇长文，需要重组为 5-18 张卡片内容。
 - 需要同时产出标题、文案、标签和图片生成 Prompt。
 - 选题和内容方向不清晰时，先配合 [xiaohongshu-commercial-growth](../SKILL.md) 确认定位。
-- 想把个人风格统一进图文模板时，配合 [personal-branding-advanced](../personal-branding-advanced/SKILL.md)。
+- 想把个人风格统一进图文模板时，配合 [personal-branding-advanced](../../fan-operations/references/personal-branding-advanced.md)。
 
 ## 核心约束
 
@@ -45,7 +45,7 @@ Negative prompts: <15-25 个约束词>
 - 图文标题、正文和标签与目标人群一致。
 - Prompt 中明确写出中文文案、版式和负面约束。
 - 需要实际生成图片时，已确认 `MULERUN_API_KEY`、`curl`、`jq` 可用。
-- 生成风格与 [personal-branding-advanced](../personal-branding-advanced/SKILL.md) 的品牌表达保持一致。
+- 生成风格与 [personal-branding-advanced](../../fan-operations/references/personal-branding-advanced.md) 的品牌表达保持一致。
 - 选题和商业目标已和 [xiaohongshu-commercial-growth](../SKILL.md) 对齐。
 
 ## 反模式

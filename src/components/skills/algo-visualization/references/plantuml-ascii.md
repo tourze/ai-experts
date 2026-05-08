@@ -5,7 +5,7 @@
 - 需要在终端、邮件、纯文本 README 中展示图表。
 - 已经有 PlantUML 源码，想导出 `.atxt` 或 `.utxt`。
 - 希望图表可直接进入版本控制，而不是存成图片。
-- 如果需要 PNG/SVG 之类图像输出，改用 [concept-to-image](../concept-to-image/SKILL.md)。
+- 如果需要 PNG/SVG 之类图像输出，改用 concept-to-image。
 
 ## 核心约束
 

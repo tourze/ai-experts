@@ -4,7 +4,7 @@
 ## 适用场景
 - 科技产品从早期采用者走向主流客户时，需要重构市场进入策略。
 - 需要结合 [references/beachhead-selection.md](./beachhead-selection.md)、[references/whole-product.md](./whole-product.md)、[references/go-to-market.md](./go-to-market.md) 设计推进路径。
-- 讨论定位时可配合 [obviously-awesome](../obviously-awesome/SKILL.md)，讨论新市场时可配合 [blue-ocean-strategy](../blue-ocean-strategy/SKILL.md)。
+- 讨论定位时可配合 [obviously-awesome](../../competitive-intelligence/references/obviously-awesome.md)，讨论新市场时可配合 [blue-ocean-strategy](../../swot-analysis/references/blue-ocean-strategy.md)。
 
 ## 核心约束
 - 先选一个足够窄、痛点足够强、可被整包解决的 beachhead，再谈扩张。

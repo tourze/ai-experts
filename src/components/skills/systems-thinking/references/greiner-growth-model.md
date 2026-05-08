@@ -3,7 +3,7 @@
 ## 适用场景
 - 判断企业当前处于哪个发展阶段，预判即将到来的危机。
 - 避免"用上一阶段的成功方法解决当前阶段的问题"。
-- 与 [team-composition-analysis](../team-composition-analysis/SKILL.md) 配合：Greiner 判断阶段，团队分析定人员结构。
+- 与 [team-composition-analysis](../../org-canvas/references/team-composition-analysis.md) 配合：Greiner 判断阶段，团队分析定人员结构。
 
 ## 核心约束
 - 五阶段，每阶段以特定方式成长、以特定危机结束：
@@ -18,7 +18,7 @@
 
 ## 不适用场景
 - 非成长型组织（政府机构、稳态企业）：Greiner 假设企业在持续成长，稳态组织无阶段跃迁。
-- 急需具体操作方案：Greiner 定诊断方向，具体组织设计用 [org-canvas](../../org-canvas/SKILL.md)，人才策略用 [talent-management](../talent-management/SKILL.md)。
+- 急需具体操作方案：Greiner 定诊断方向，具体组织设计用 [org-canvas](../../org-canvas/SKILL.md)，人才策略用 [talent-management](../../org-canvas/references/talent-management.md)。
 
 ## 代码模式
 

@@ -497,6 +497,39 @@ describe("component source conventions", () => {
     );
   });
 
+  test("skill reference markdown links to generated skills only for registered skill sources", () => {
+    const missingSkillLinks: string[] = [];
+    const skillSourceRoot = join(repoRoot, "src/components/skills");
+    const referenceMarkdownSources = collectFiles(skillSourceRoot, (file) =>
+      file.endsWith(".md") && file.split(/[\\/]/).includes("references"),
+    );
+
+    for (const sourceFile of referenceMarkdownSources) {
+      const source = stripMarkdownCode(readFileSync(sourceFile, "utf-8"));
+      for (const match of source.matchAll(/(!?)\[[^\]\n]+\]\(([^)\n]+)\)/gu)) {
+        if (match[1] === "!") continue;
+        const targetPath = localMarkdownPath(markdownDestination(match[2] ?? ""));
+        if (!targetPath) continue;
+        if (targetPath !== "../SKILL.md" && targetPath !== "./SKILL.md" && !targetPath.endsWith("/SKILL.md")) {
+          continue;
+        }
+
+        const targetSkillDir = dirname(resolve(dirname(sourceFile), targetPath));
+        const relativeSkillDir = relative(skillSourceRoot, targetSkillDir);
+        if (relativeSkillDir === "" || relativeSkillDir.startsWith("..")) continue;
+        if (!existsSync(join(targetSkillDir, "index.ts"))) {
+          missingSkillLinks.push(`${relative(repoRoot, sourceFile)}: ${targetPath}`);
+        }
+      }
+    }
+
+    assert.deepEqual(
+      missingSkillLinks,
+      [],
+      "reference Markdown should not link to legacy sub-skill/plugin SKILL.md paths; link the real reference file or use plain text",
+    );
+  });
+
   test("skill markdown sources keep same-file heading anchors valid", () => {
     const brokenAnchors: string[] = [];
     const skillMarkdownSources = collectFiles(join(repoRoot, "src/components/skills"), (file) =>

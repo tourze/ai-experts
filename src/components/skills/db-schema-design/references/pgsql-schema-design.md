@@ -11,7 +11,7 @@ description: "当用户要设计或审查 PostgreSQL 表结构、原生类型、
 - 定义主键策略、外键关系、唯一约束与 CHECK 约束
 - 建立或统一 snake_case 无引号命名规范
 - 需要为 JSONB 列预留位置 — 深入使用参见 [pgsql-jsonb-patterns](./pgsql-jsonb-patterns.md)
-- 表建好后需要覆盖索引 — 参见 [pgsql-index-strategy](../pgsql-index-strategy/SKILL.md)
+- 表建好后需要覆盖索引 — 参见 [pgsql-index-strategy](../../sql-review-optimization/references/pgsql-index-strategy.md)
 
 ## 核心约束
 

@@ -4,7 +4,7 @@
 - PM 个人需要定位当前水平和下一步发展方向。
 - PM 管理者需要设计团队能力模型或做绩效评估。
 - 准备晋升答辩或面试，需要对标目标职级的能力要求。
-- 与 [team-composition-analysis](../team-composition-analysis/SKILL.md) 配合规划 PM 团队结构。
+- 与 [team-composition-analysis](../../org-canvas/references/team-composition-analysis.md) 配合规划 PM 团队结构。
 
 ## 核心约束
 - 职级评估必须基于**行为证据**而非自我感觉；每个能力项必须能举出具体事例。
