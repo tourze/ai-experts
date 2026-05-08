@@ -26,6 +26,10 @@ type ParsedGeneratedToml = {
   arrays: Record<string, Record<string, ParsedTomlScalar>[]>;
 };
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 function parseGeneratedToml(source: string, label: string): ParsedGeneratedToml {
   const parsed: ParsedGeneratedToml = { root: {}, sections: {}, arrays: {} };
   let current = parsed.root;
@@ -403,6 +407,36 @@ describe("component build integration", () => {
     });
 
     assert.deepEqual(restrictedCodexFiles, [], "Codex dist should not include Anthropic-only skill materials");
+  });
+
+  test("Codex runtime-facing materials do not mention unavailable procedures", () => {
+    const codexManifest = JSON.parse(readFileSync(join(tmpDistDir, "codex/manifest.json"), "utf-8"));
+    const codexProcedureIds = new Set((codexManifest.procedures.items as any[]).map((procedure) => procedure.id));
+    const unavailableProcedureIds = registry.procedures
+      .map((procedure) => procedure.id)
+      .filter((procedureId) => !codexProcedureIds.has(procedureId))
+      .sort();
+    if (unavailableProcedureIds.length === 0) return;
+    const unavailableProcedurePattern = new RegExp(
+      `\\b(?:${unavailableProcedureIds.map(escapeRegExp).join("|")})\\b`,
+      "u",
+    );
+    const runtimeFacingFiles = [
+      ...collectFiles(join(tmpDistDir, "codex/skills"), (file) =>
+        /\.(?:css|html|js|json|md|mjs|toml|txt|ya?ml)$/u.test(file)
+      ),
+      ...collectFiles(join(tmpDistDir, "codex/agents"), (file) => /\.(?:md|toml|txt|ya?ml)$/u.test(file)),
+    ];
+    const leaks: string[] = [];
+
+    for (const runtimeFile of runtimeFacingFiles) {
+      const match = unavailableProcedurePattern.exec(readFileSync(runtimeFile, "utf-8"));
+      if (match) {
+        leaks.push(`${runtimeFile.slice(tmpDistDir.length + 1)}:${match[0]}`);
+      }
+    }
+
+    assert.deepEqual(leaks, [], "Codex generated runtime materials should not reference unavailable procedures");
   });
 
   test("emits Codex skill metadata for every generated skill", () => {

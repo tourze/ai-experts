@@ -4,7 +4,7 @@
 
 ## cases.yaml
 
-位置：`evals/cases.yaml`。定义某个 skill 的触发测试用例。`skill-creator-run-eval` 和 `skill-creator-run-loop` 也兼容旧 JSON eval set，但源码侧默认使用 `cases.yaml`。
+位置：`evals/cases.yaml`。定义某个 skill 的触发测试用例。评估流程也兼容旧 JSON eval set，但源码侧默认使用 `cases.yaml`。
 
 ```yaml
 cases:
