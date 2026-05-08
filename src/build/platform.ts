@@ -220,6 +220,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
   const agentIds = new Set(registry.agents.map((agent) => agent.id));
   const proceduresById = new Map<string, ProcedureDefinition>();
   const procedures = registry.procedures;
+  const surfaceProcedureIds = new Set(surface.procedures.map((procedure) => procedure.id));
 
   for (const procedure of procedures) {
     validateId(procedure.id, "procedure");
@@ -253,6 +254,11 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
       }
     }
     proceduresById.set(procedure.id, procedure);
+  }
+  for (const procedure of procedures) {
+    if (!surfaceProcedureIds.has(procedure.id)) {
+      throw new Error(`Procedure ${procedure.id} is registered but not referenced by any skill or agent`);
+    }
   }
 
   for (const instruction of registry.instructions) {

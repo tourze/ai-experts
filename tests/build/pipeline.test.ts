@@ -302,6 +302,17 @@ describe("build/pipeline modules", () => {
       "Procedure fixture-procedure platforms contain unsupported platform(s): unknown-cli",
     );
 
+    const unreferencedProcedureRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      procedures: [
+        fixture.procedure,
+        { ...fixture.procedure, id: "unused-procedure" },
+      ],
+    };
+    expect(() => validateRegistry(unreferencedProcedureRegistry)).toThrow(
+      "Procedure unused-procedure is registered but not referenced by any skill or agent",
+    );
+
     const duplicateSkillPlatformRegistry: ComponentRegistry = {
       ...fixture.registry,
       skills: [{ ...fixture.skill, platforms: [ComponentPlatform.Claude, ComponentPlatform.Claude] }],
