@@ -2,6 +2,7 @@
 import { existsSync, readFileSync, realpathSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { parse as parseYaml } from "yaml";
 const ALLOWED_PROPERTIES = new Set([
     "name",
     "description",
@@ -15,55 +16,8 @@ const ALLOWED_PROPERTIES = new Set([
     "user-invocable",
     "user_invocable",
 ]);
-function stripQuotes(value: any): any {
-    const trimmed = value.trim();
-    if ((trimmed.startsWith('"') && trimmed.endsWith('"')) || (trimmed.startsWith("'") && trimmed.endsWith("'"))) {
-        return trimmed.slice(1, -1);
-    }
-    return trimmed;
-}
 export function parseFrontmatter(text: any): any {
-    const result: Record<string, any> = {};
-    const lines = text.split(/\r?\n/);
-    let currentBlockKey: any = null;
-    let currentBlockLines: any[] = [];
-    function flushBlock() {
-        if (currentBlockKey) {
-            result[currentBlockKey] = currentBlockLines.join("\n").trimEnd();
-            currentBlockKey = null;
-            currentBlockLines = [];
-        }
-    }
-    for (const line of lines) {
-        if (/^\s/.test(line) && currentBlockKey) {
-            currentBlockLines.push(line.replace(/^\s{2}/, ""));
-            continue;
-        }
-        if (/^\s/.test(line)) {
-            continue;
-        }
-        flushBlock();
-        if (!line.trim() || line.trim().startsWith("#")) {
-            continue;
-        }
-        const match = line.match(/^([A-Za-z0-9_-]+):(?:\s*(.*))?$/);
-        if (!match) {
-            throw new Error(`不支持的 YAML 行：${line}`);
-        }
-        const [, key, rawValue = ""] = match;
-        if (rawValue === "|" || rawValue === ">") {
-            currentBlockKey = key;
-            currentBlockLines = [];
-            continue;
-        }
-        if (!rawValue.trim()) {
-            result[key] = {};
-            continue;
-        }
-        result[key] = stripQuotes(rawValue);
-    }
-    flushBlock();
-    return result;
+    return parseYaml(String(text)) ?? {};
 }
 export function validateSkill(skillPath: any): any {
     const skillMd = join(skillPath, "SKILL.md");

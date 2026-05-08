@@ -3,6 +3,7 @@
 import fs, { realpathSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { parseDocument } from "yaml";
 import { buildSimilarityGroups } from "./similarity_groups";
 const ALLOWED_FRONTMATTER_KEYS = new Set(
     "acknowledgments agent allowed-tools alwaysApply argument-hint arguments compatibility context date_added dependency description disable-model-invocation license metadata name related-skills risk source tools user-invocable user_invocable version".split(" "),
@@ -48,56 +49,22 @@ const SUMMARY_SPLIT_PATTERNS: any[] = [
     " 用户提到",
     " 当用户",
 ];
-function stripQuotes(value: any): any {
-    const trimmed = value.trim();
-    if (trimmed.length >= 2 && trimmed[0] === trimmed.at(-1) && ["'", "\""].includes(trimmed[0])) {
-        return trimmed.slice(1, -1).trim();
-    }
-    return trimmed;
-}
 function parseFrontmatter(content: any): any {
-    if (!content.startsWith("---\n")) {
+    const source = String(content);
+    const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n)?/);
+    if (!match) {
         return { data: {}, keys: [], body: content };
     }
-    const closing = content.indexOf("\n---", 4);
-    if (closing === -1) {
-        return { data: {}, keys: [], body: content };
-    }
-    const rawFrontmatter = content.slice(4, closing).split(/\r?\n/);
-    const body = content.slice(closing + 4).replace(/^\n/, "");
-    const data: Record<string, any> = {};
-    const keys: any[] = [];
-    let index = 0;
-    while (index < rawFrontmatter.length) {
-        const rawLine = rawFrontmatter[index];
-        const line = rawLine.trim();
-        if (!line || line.startsWith("#") || !line.includes(":")) {
-            index += 1;
-            continue;
-        }
-        const splitIndex = line.indexOf(":");
-        const key = line.slice(0, splitIndex).trim();
-        let rawValue = line.slice(splitIndex + 1).trim();
-        keys.push(key);
-        if (["|", ">"].includes(rawValue)) {
-            const blockLines: any[] = [];
-            index += 1;
-            while (index < rawFrontmatter.length) {
-                const candidate = rawFrontmatter[index];
-                if (candidate.startsWith(" ") || candidate.startsWith("\t")) {
-                    blockLines.push(candidate.trim());
-                    index += 1;
-                    continue;
-                }
-                break;
-            }
-            data[key] = blockLines.join("\n").trim();
-            continue;
-        }
-        data[key] = stripQuotes(rawValue);
-        index += 1;
-    }
-    return { data, keys, body };
+    const doc = parseDocument(match[1]);
+    const parsed = doc.toJSON();
+    const data = parsed && typeof parsed === "object" && !Array.isArray(parsed)
+        ? parsed as Record<string, any>
+        : {};
+    const items = (doc.contents as any)?.items;
+    const keys = Array.isArray(items)
+        ? items.map((item: any) => item.key?.toJSON?.() ?? item.key?.value).filter((key: any) => typeof key === "string")
+        : Object.keys(data);
+    return { data, keys, body: source.slice(match[0].length) };
 }
 function decodeJsStringLiteral(raw: any): any {
     try {

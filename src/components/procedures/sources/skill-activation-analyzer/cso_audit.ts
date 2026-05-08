@@ -2,6 +2,7 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { parse as parseYaml } from "yaml";
 const VIOLATIONS: Record<string, any> = {
     workflow_leak: {
         severity: "critical",
@@ -133,11 +134,12 @@ function extractDescription(path: any): any {
     const match = text.match(/^---\s*\n([\s\S]*?)\n---/);
     if (!match)
         return ["", ""];
-    const frontmatter = match[1];
-    const nameMatch = frontmatter.match(/^name:\s*(.+)$/m);
-    const descMatch = frontmatter.match(/^description:\s*(.+)$/m);
-    const clean = (value: any) => (value ?? "").trim().replace(/^['"]|['"]$/g, "");
-    return [clean(nameMatch?.[1]), clean(descMatch?.[1])];
+    const frontmatter = parseYaml(match[1]) ?? {};
+    if (!frontmatter || typeof frontmatter !== "object" || Array.isArray(frontmatter))
+        return ["", ""];
+    const name = typeof frontmatter.name === "string" ? frontmatter.name.trim() : "";
+    const description = typeof frontmatter.description === "string" ? frontmatter.description.trim() : "";
+    return [name, description];
 }
 function auditDescription(desc: any): any {
     if (!desc)

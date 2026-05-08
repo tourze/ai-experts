@@ -125,6 +125,7 @@ function renderProcedureLoaders(procedures: readonly RuntimeProcedureModule[]): 
 
 function isExternalRuntimeImport(id: string | undefined): boolean {
   if (!id) return false;
+  if (id === "yaml" || id.startsWith("yaml/")) return false;
   return id.startsWith("node:") ||
     (!id.startsWith(".") && !id.startsWith("/") && !id.startsWith("\0") && id !== runtimeEntryId);
 }

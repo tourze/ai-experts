@@ -4,6 +4,7 @@ import { spawn } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync, realpathSync } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { parse as parseYaml } from "yaml";
 import { parseSkillMd, withoutNestedAgentCliEnv } from "./utils";
 export function findProjectRoot(startDir: any = process.cwd()): any {
     let current = resolve(startDir);
@@ -199,87 +200,12 @@ export async function runEval({ evalSet, skillName, description, numWorkers, tim
         },
     };
 }
-function parseYamlScalar(value: any): any {
-    const raw = String(value).trim();
-    if (raw === "true")
-        return true;
-    if (raw === "false")
-        return false;
-    if (raw === "[]")
-        return [];
-    if (raw.startsWith("\"") && raw.endsWith("\"")) {
-        try {
-            return JSON.parse(raw);
-        }
-        catch {
-            return raw.slice(1, -1);
-        }
-    }
-    if (raw.startsWith("'") && raw.endsWith("'"))
-        return raw.slice(1, -1).replace(/''/g, "'");
-    return raw;
-}
 export function parseEvalCasesYaml(source: any): any[] {
-    const cases: any[] = [];
-    let current: Record<string, any> | null = null;
-    let inCases = false;
-    let blockKey: string | null = null;
-    let blockStyle = "";
-    let blockIndent = 0;
-    let blockLines: string[] = [];
-    function finishBlock(): void {
-        if (!current || !blockKey)
-            return;
-        current[blockKey] = blockStyle === "|"
-            ? blockLines.join("\n").trim()
-            : blockLines.map((line) => line.trim()).filter(Boolean).join(" ").trim();
-        blockKey = null;
-        blockStyle = "";
-        blockIndent = 0;
-        blockLines = [];
-    }
-    function assignKey(key: string, rawValue: string, indent: number): void {
-        if (!current)
-            return;
-        const value = rawValue.trim();
-        if (value === ">" || value === "|") {
-            blockKey = key;
-            blockStyle = value;
-            blockIndent = indent + 2;
-            blockLines = [];
-            return;
-        }
-        current[key] = parseYamlScalar(value);
-    }
-    for (const line of String(source).split(/\r?\n/)) {
-        if (blockKey) {
-            const indent = line.match(/^\s*/)?.[0].length ?? 0;
-            if (line.trim() === "" || indent >= blockIndent) {
-                blockLines.push(line.slice(Math.min(indent, blockIndent)));
-                continue;
-            }
-            finishBlock();
-        }
-        if (/^\s*cases:\s*$/.test(line)) {
-            inCases = true;
-            continue;
-        }
-        if (!inCases)
-            continue;
-        const caseMatch = line.match(/^\s*-\s+id:\s*(.*)$/);
-        if (caseMatch) {
-            finishBlock();
-            current = { id: parseYamlScalar(caseMatch[1]) };
-            cases.push(current);
-            continue;
-        }
-        const fieldMatch = line.match(/^(\s+)([A-Za-z_][A-Za-z0-9_]*):\s*(.*)$/);
-        if (fieldMatch && current) {
-            assignKey(fieldMatch[2], fieldMatch[3], fieldMatch[1].length);
-        }
-    }
-    finishBlock();
-    return cases;
+    const parsed = parseYaml(String(source));
+    if (Array.isArray(parsed))
+        return parsed;
+    const cases = parsed?.cases ?? parsed?.evals;
+    return Array.isArray(cases) ? cases : [];
 }
 export function normalizeEvalSet(raw: any): any[] {
     const items = Array.isArray(raw) ? raw : raw?.cases ?? raw?.evals;
@@ -294,7 +220,7 @@ export function normalizeEvalSet(raw: any): any[] {
             throw new Error(`Eval item ${item.id ?? query} must define boolean should_trigger or trigger_expected`);
         return {
             ...item,
-            query,
+            query: query.trim(),
             should_trigger: shouldTrigger,
         };
     });
@@ -302,7 +228,7 @@ export function normalizeEvalSet(raw: any): any[] {
 export function loadEvalSet(path: any): any[] {
     const source = readFileSync(path, "utf8");
     const raw = /\.(?:ya?ml)$/u.test(String(path))
-        ? { cases: parseEvalCasesYaml(source) }
+        ? parseYaml(source)
         : JSON.parse(source);
     return normalizeEvalSet(raw);
 }

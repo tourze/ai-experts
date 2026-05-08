@@ -15,7 +15,8 @@ describe("skill creator eval set loading", () => {
 cases:
   - id: should_trigger
     prompt: "帮我把上线检查流程做成 skill。"
-    fixtures: []
+    fixtures:
+      - repo: demo
     rubric:
       - "触发 skill 创建流程"
     trigger_expected: true
@@ -43,6 +44,8 @@ cases:
         should_trigger: false,
       },
     ]);
+    assert.deepEqual(cases[0].rubric, ["触发 skill 创建流程"]);
+    assert.deepEqual(cases[0].fixtures, [{ repo: "demo" }]);
   });
 
   test("keeps legacy json eval arrays compatible", () => {
@@ -63,7 +66,9 @@ cases:
         [
           "---",
           "name: speckit-baseline",
-          "description: \"Valid skill description for generated frontmatter coverage.\"",
+          "description: >",
+          "  Valid skill description",
+          "  for generated frontmatter coverage.",
           "argument-hint: \"[用户输入]\"",
           "arguments:",
           "  - arguments",

@@ -279,6 +279,32 @@ describe("component source conventions", () => {
     );
   });
 
+  test("procedure YAML handling uses the shared yaml package", () => {
+    const yamlProcedureSources = [
+      join(repoRoot, "src/components/procedures/sources/skill-creator/quick_validate.ts"),
+      join(repoRoot, "src/components/procedures/sources/skill-creator/run_eval.ts"),
+      join(repoRoot, "src/components/procedures/sources/skill-creator/utils.ts"),
+      join(repoRoot, "src/components/procedures/sources/skills-prune-and-sync-readme/curate_skills.ts"),
+      join(repoRoot, "src/components/procedures/sources/skill-activation-analyzer/cso_audit.ts"),
+    ];
+    const procedureBuilder = readFileSync(join(repoRoot, "src/build/procedures.ts"), "utf-8");
+
+    for (const sourceFile of yamlProcedureSources) {
+      const source = readFileSync(sourceFile, "utf-8");
+      assert.match(source, /from "yaml"/, `${sourceFile} should use the yaml package`);
+      assert.doesNotMatch(
+        source,
+        /parseYamlScalar|不支持的 YAML 行|stripQuotes\(|nameMatch|descMatch|line\.startsWith\("name:"\)|line\.startsWith\("description:"\)/,
+        `${sourceFile} should not maintain an ad hoc YAML/frontmatter parser`,
+      );
+    }
+    assert.match(
+      procedureBuilder,
+      /id === "yaml" \|\| id\.startsWith\("yaml\/"\)/,
+      "procedure runtime should bundle yaml instead of requiring user-level node_modules",
+    );
+  });
+
   test("runtime component sources do not leak maintainer-local absolute paths", () => {
     const localPathPattern = /(?:^|[\s"'`(])(?:\/Users\/[^\s"'`)]+|\/home\/[^\s"'`)]+|\/private\/var\/[^\s"'`)]+|\/var\/folders\/[^\s"'`)]+|[A-Za-z]:\\Users\\[^\s"'`)]+)/u;
     const leakedPaths: string[] = [];
