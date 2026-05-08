@@ -294,7 +294,6 @@ export type AgentDefinition = {
   description: string;
   role: string;
   platforms: PlatformList;
-  body?: ComponentFile;
   inputs?: readonly AgentInputDefinition[];
   bashBoundary?: AgentBashBoundaryDefinition;
   qualityStandards?: AgentQualityStandardsDefinition;

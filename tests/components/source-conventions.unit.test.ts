@@ -958,6 +958,11 @@ describe("component source conventions", () => {
 
     const sdkSource = readFileSync(join(repoRoot, "src/components/sdk.ts"), "utf-8");
     assert.doesNotMatch(sdkSource, /defineProfile|ProfileDefinition|ComponentKind\.Profile/);
+    assert.doesNotMatch(
+      sdkSource,
+      /export type AgentDefinition = \{[\s\S]*?\n\s*body\?: ComponentFile;/,
+      "AgentDefinition should not expose AGENT.body.md as a second body authoring path",
+    );
 
     const agentBodyFiles = collectFiles(
       join(repoRoot, "src/components/agents"),

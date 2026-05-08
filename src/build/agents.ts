@@ -10,7 +10,6 @@ import type {
 } from "../components/sdk";
 import {
   Platform,
-  readOptionalComponentText,
   tomlBoolean,
   tomlMultiline,
   tomlString,
@@ -307,11 +306,10 @@ function renderAgentQualityStandards(agent: AgentDefinition): string {
   return `## 质量标准\n\n${renderMarkdownBulletList([...standards])}\n`;
 }
 
-function renderAgentBodyWithGeneratedSections(agent: AgentDefinition, body: string): string {
+function renderAgentBodyWithGeneratedSections(agent: AgentDefinition): string {
   const leadingSections = [
     renderAgentInputs(agent),
     renderAgentWorkflow(agent),
-    body.trimEnd(),
   ].filter((section) => section.trim() !== "");
   const trailingSections = [
     renderAgentBashBoundary(agent),
@@ -342,7 +340,7 @@ function renderClaudeAgent(agent: AgentDefinition, platformSkillIds: ReadonlySet
   if (agent.reasoningEffort) lines.push(`effort: ${agent.reasoningEffort}`);
   lines.push("---", "");
 
-  const body = renderAgentBodyWithGeneratedSections(agent, readOptionalComponentText(agent.body).trimEnd());
+  const body = renderAgentBodyWithGeneratedSections(agent);
   const skillRoutes = skills
     .map((skill) => `- \`${skill.id}\` (${skill.mode}): ${skill.reason}`)
     .join("\n");
@@ -378,7 +376,7 @@ function renderCodexModel(agent: AgentDefinition): string | null {
 }
 
 function renderCodexAgent(agent: AgentDefinition, platformSkillIds: ReadonlySet<string>): string {
-  const body = renderAgentBodyWithGeneratedSections(agent, readOptionalComponentText(agent.body).trimEnd());
+  const body = renderAgentBodyWithGeneratedSections(agent);
   const skills = platformAgentSkills(agent, platformSkillIds);
   const skillRoutes = skills
     .map((skill) => `- ${skill.id} (${skill.mode}): ${skill.reason}`)

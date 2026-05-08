@@ -526,28 +526,6 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     if (!agent.role || agent.role.trim() === "") {
       throw new Error(`Agent ${agent.id} must define a non-empty role`);
     }
-    if (agent.body !== undefined && !existsSync(toAbsolutePath(agent.body))) {
-      throw new Error(`Agent ${agent.id} body is missing: ${displayPath(agent.body)}`);
-    }
-    const agentBodySource = readOptionalComponentText(agent.body);
-    if (/^你是/.test(agentBodySource.trimStart())) {
-      throw new Error(`Agent ${agent.id} must move role definition from agent body to index.ts role field`);
-    }
-    if (agentBodySource.trim() !== "" && !startsWithH2Section(agentBodySource)) {
-      throw new Error(`Agent ${agent.id} body must start with an H2 section (##); move non-section content to index.ts role field`);
-    }
-    if (hasH2SectionMatching(agentBodySource, (title) => title === "Bash 使用边界")) {
-      throw new Error(`Agent ${agent.id} must move ## Bash 使用边界 from agent body to bashBoundary`);
-    }
-    if (hasH2SectionMatching(agentBodySource, (title) => title === "质量标准")) {
-      throw new Error(`Agent ${agent.id} must move ## 质量标准 from agent body to qualityStandards`);
-    }
-    if (hasH2SectionMatching(agentBodySource, (title) => title === "输出格式")) {
-      throw new Error(`Agent ${agent.id} must move ## 输出格式 from agent body to outputFormat`);
-    }
-    if (hasH2SectionMatching(agentBodySource, (title) => ["工作方式", "必经门禁", "场景路由", "编排顺序"].includes(title))) {
-      throw new Error(`Agent ${agent.id} must move workflow sections from agent body to workflow`);
-    }
     validateAgentOutputFormat(agent);
     validateAgentInputs(agent);
     const workflow = validateAgentWorkflow(agent);

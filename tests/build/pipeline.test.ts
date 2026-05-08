@@ -67,13 +67,11 @@ afterEach(() => {
 function createFixture() {
   const root = createTempDir("ai-experts-build-pipeline-");
   const skillRoot = join(root, "skill");
-  const agentRoot = join(root, "agent");
   const hooksRoot = join(root, "hooks");
   const instructionRoot = join(root, "instruction");
   ensureDir(skillRoot);
   ensureDir(join(skillRoot, "references"));
   ensureDir(join(skillRoot, "assets"));
-  ensureDir(agentRoot);
   ensureDir(hooksRoot);
   ensureDir(instructionRoot);
 
@@ -91,9 +89,6 @@ function createFixture() {
     owners: { skillIds: ["fixture-skill"] },
     runtime: "node",
   });
-
-  const agentBody = join(agentRoot, "AGENT.body.md");
-  writeText(agentBody, "## 执行策略\n\n按流程执行。\n");
 
   const hookEntry = join(hooksRoot, "hook.ts");
   writeText(
@@ -147,7 +142,6 @@ function createFixture() {
     description: "Fixture agent used for build tests.",
     role: "你是 fixture agent。",
     platforms: [ComponentPlatform.Claude, ComponentPlatform.Codex],
-    body: pathToFileURL(agentBody),
     tools: [KnownTool.Bash, KnownTool.Read],
     bashBoundary: ["禁止执行破坏性命令。"],
     qualityStandards: ["输出必须可复现。"],
