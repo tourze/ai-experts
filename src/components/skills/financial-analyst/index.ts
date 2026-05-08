@@ -99,6 +99,14 @@ export const financialAnalystSkill = defineSkill({
       loadWhen: "需要搭建财务模型或审查现有模型的架构合理性时读取。",
     }),
     defineReference({
+      id: "advanced-patterns",
+      source: new URL("./references/advanced-patterns.md", import.meta.url),
+      target: "references/advanced-patterns.md",
+      title: "advanced-patterns.md",
+      summary: "DCF 敏感性、情景分析、组合风险和滚动风险的高级输入模式。",
+      loadWhen: "需要做双变量敏感性、模型状态回滚、投资组合或滚动风险分析时读取。",
+    }),
+    defineReference({
       id: "financial-ratios-guide",
       source: new URL("./references/financial-ratios-guide.md", import.meta.url),
       target: "references/financial-ratios-guide.md",
@@ -129,6 +137,14 @@ export const financialAnalystSkill = defineSkill({
       title: "kelly-sizing.md",
       summary: "Kelly 准则在投资仓位管理中的应用方法与计算说明。",
       loadWhen: "需要计算最优投资仓位或评估风险敞口时读取。",
+    }),
+    defineReference({
+      id: "sizing-playbook",
+      source: new URL("./references/sizing-playbook.md", import.meta.url),
+      target: "references/sizing-playbook.md",
+      title: "sizing-playbook.md",
+      summary: "二元机会、情景机会和多机会 Kelly sizing 的输入 brief 与约束清单。",
+      loadWhen: "需要把自然语言机会整理成 Kelly sizing 结构化输入时读取。",
     }),
     defineReference({
       id: "risk-metrics-calculation",
@@ -200,6 +216,6 @@ export const financialAnalystSkill = defineSkill({
       id: "variance-report-template",
       source: new URL("./assets/variance_report_template.md", import.meta.url),
       target: "assets/variance_report_template.md",
-    })
+    }),
   ],
 });
