@@ -137,7 +137,7 @@
 
 **Tactical advice:**
 - Use ChatGPT (o3) for tasks requiring long-term memory and personal style consistency
-- Use Claude Code for autonomous engineering tasks and Gemini for high-volume, low-cost API applications
+- Use a coding-agent CLI such as Claude Code or Codex for autonomous engineering tasks, and Gemini for high-volume, low-cost API applications
 
 *Timestamp: 00:35:51*
 
@@ -368,5 +368,4 @@
 - Use leadership influence to compress the time spent on contentious technical change management
 
 *Timestamp: 00:52:00*
-
 

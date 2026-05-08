@@ -357,6 +357,27 @@ describe("component source conventions", () => {
     }
   });
 
+  test("cross-platform skill guidance does not recommend Claude Code without Codex", () => {
+    const platformBiasedAdvice: string[] = [];
+
+    for (const sourceFile of collectFiles(join(repoRoot, "src/components/skills"), (file) => file.endsWith(".md"))) {
+      const source = readFileSync(sourceFile, "utf-8");
+      source.split("\n").forEach((line, index) => {
+        const trimmed = line.trimStart();
+        if (trimmed.startsWith(">")) return;
+        if (/\b(?:Use|使用|优先使用)\s+Claude Code\b/u.test(line) && !/\bCodex\b/u.test(line)) {
+          platformBiasedAdvice.push(`${relative(repoRoot, sourceFile)}:${index + 1}: ${line.trim()}`);
+        }
+      });
+    }
+
+    assert.deepEqual(
+      platformBiasedAdvice,
+      [],
+      "cross-platform skill Markdown may quote Claude Code, but operational advice should include Codex or use neutral wording",
+    );
+  });
+
   test("skill markdown sources do not use placeholder markdown links", () => {
     const skillMarkdownSources = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
       file.endsWith(".md"),
