@@ -379,7 +379,7 @@ describe("build/pipeline modules", () => {
     };
     expect(() => validateRegistry(claudeModelOnlyInvocationRegistry)).not.toThrow();
 
-    const codexAgentWithClaudeOnlySkillRegistry: ComponentRegistry = {
+    const crossPlatformAgentWithClaudeOnlySkillRegistry: ComponentRegistry = {
       ...fixture.registry,
       skills: [{ ...fixture.skill, platforms: [ComponentPlatform.Claude] }],
       agents: [{
@@ -388,8 +388,20 @@ describe("build/pipeline modules", () => {
         skills: [{ id: fixture.skill.id, mode: SkillUseMode.Route, reason: "fixture routing" }],
       }],
     };
-    expect(() => validateRegistry(codexAgentWithClaudeOnlySkillRegistry)).toThrow(
-      "references skill fixture-skill unavailable on platform(s): codex-cli",
+    expect(() => validateRegistry(crossPlatformAgentWithClaudeOnlySkillRegistry)).not.toThrow();
+
+    const codexOnlyAgentWithClaudeOnlySkillRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{ ...fixture.skill, platforms: [ComponentPlatform.Claude] }],
+      agents: [{
+        ...fixture.agent,
+        platforms: [ComponentPlatform.Codex],
+        workflow: undefined,
+        skills: [{ id: fixture.skill.id, mode: SkillUseMode.Route, reason: "fixture routing" }],
+      }],
+    };
+    expect(() => validateRegistry(codexOnlyAgentWithClaudeOnlySkillRegistry)).toThrow(
+      "references skill fixture-skill without a shared platform",
     );
 
     const codexAgentWorkflowWithClaudeOnlySkillRegistry: ComponentRegistry = {
@@ -711,7 +723,13 @@ describe("build/pipeline modules", () => {
     await emitAgent(fixture.agent, out, Platform.Claude);
     await emitAgent(fixture.agent, out, Platform.Codex);
     expect(readFileSync(join(out, "agents", "fixture-agent.md"), "utf-8")).toContain("## Bash 使用边界");
-    expect(readFileSync(join(out, "agents", "fixture-agent.toml"), "utf-8")).toContain("developer_instructions");
+    const codexAgent = readFileSync(join(out, "agents", "fixture-agent.toml"), "utf-8");
+    expect(codexAgent).toContain("developer_instructions");
+    expect(codexAgent).toContain("~/.agents/skills/fixture-skill/SKILL.md");
+
+    await emitAgent(fixture.agent, out, Platform.Codex, new Set());
+    const filteredCodexAgent = readFileSync(join(out, "agents", "fixture-agent.toml"), "utf-8");
+    expect(filteredCodexAgent).not.toContain("~/.agents/skills/fixture-skill/SKILL.md");
   });
 
   test("agent output formats render structured json and file sets", async () => {

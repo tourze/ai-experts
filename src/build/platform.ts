@@ -177,6 +177,19 @@ function validateAgentSkillPlatform(
   }
 }
 
+function validateAgentSkillSharedPlatform(
+  agent: AgentDefinition,
+  skillId: string,
+  skillsById: ReadonlyMap<string, SkillDefinition>,
+): void {
+  const skill = skillsById.get(skillId);
+  if (!skill) return;
+  if (agent.platforms.some((platform) => skill.platforms.includes(platform))) return;
+  throw new Error(
+    `Agent ${agent.id} references skill ${skillId} without a shared platform`,
+  );
+}
+
 function validateRelatedSkillPlatform(
   skill: SkillDefinition,
   relatedSkillId: string,
@@ -488,7 +501,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     }
     for (const skill of agent.skills ?? []) {
       if (!skillIds.has(skill.id)) throw new Error(`Agent ${agent.id} references missing skill: ${skill.id}`);
-      validateAgentSkillPlatform(agent, skill.id, skillsById, "references skill");
+      validateAgentSkillSharedPlatform(agent, skill.id, skillsById);
       if (typeof skill.reason !== "string" || skill.reason.trim().length === 0) {
         throw new Error(`Agent ${agent.id} skill ${skill.id} must include a non-empty reason`);
       }
@@ -590,7 +603,7 @@ export async function emitPlatform(
     if (skill.platforms.includes(platform)) await emitSkill(skill, root, platform, proceduresById, platformSkillIds);
   }
   for (const agent of componentSurface.agents) {
-    if (agent.platforms.includes(platform)) await emitAgent(agent, root, platform);
+    if (agent.platforms.includes(platform)) await emitAgent(agent, root, platform, platformSkillIds);
   }
 
   const files = checksumFiles(root);

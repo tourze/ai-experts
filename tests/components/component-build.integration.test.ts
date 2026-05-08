@@ -148,8 +148,14 @@ describe("component build integration", () => {
     const claudeManifest = JSON.parse(readFileSync(join(tmpDistDir, "claude/manifest.json"), "utf-8"));
     const codexManifest = JSON.parse(readFileSync(join(tmpDistDir, "codex/manifest.json"), "utf-8"));
 
-    assert.equal(claudeManifest.skills.length, 335);
-    assert.equal(codexManifest.skills.length, 335);
+    assert.equal(
+      claudeManifest.skills.length,
+      registry.skills.filter((skill) => skill.platforms.includes(Platform.Claude)).length,
+    );
+    assert.equal(
+      codexManifest.skills.length,
+      registry.skills.filter((skill) => skill.platforms.includes(Platform.Codex)).length,
+    );
     assert.equal(claudeManifest.instructions.length, 6);
     assert.equal(codexManifest.instructions.length, 6);
     assert.equal(claudeManifest.agents.length, 80);
@@ -377,7 +383,26 @@ describe("component build integration", () => {
           `${label} should reference an emitted Codex skill`,
         );
       }
+      for (const skill of registry.skills.filter((skill) => !skill.platforms.includes(Platform.Codex))) {
+        assert.doesNotMatch(
+          developerInstructions,
+          new RegExp(`(?:^|\\n)- ${skill.id} \\(`),
+          `${label} should not route unavailable Codex skill ${skill.id}`,
+        );
+      }
     }
+  });
+
+  test("Codex dist does not include Anthropic-only skill materials", () => {
+    assert.equal(existsSync(join(tmpDistDir, "codex/skills/pdf/SKILL.md")), false);
+    const restrictedCodexFiles = collectFiles(join(tmpDistDir, "codex/skills"), (file) => {
+      if (!/\.(?:md|txt|ya?ml|json|toml)$/u.test(file)) return false;
+      return /Anthropic[\s\S]+ADDITIONAL RESTRICTIONS[\s\S]+Extract these materials from the Services/u.test(
+        readFileSync(file, "utf-8"),
+      );
+    });
+
+    assert.deepEqual(restrictedCodexFiles, [], "Codex dist should not include Anthropic-only skill materials");
   });
 
   test("emits Codex skill metadata for every generated skill", () => {
@@ -912,7 +937,10 @@ describe("component build integration", () => {
       );
       assert.equal(explicitSkillsDirActivationAudit.ok, true, explicitSkillsDirActivationAudit.result?.stderr);
       const explicitSkillsDirActivationReport = JSON.parse(explicitSkillsDirActivationAudit.result.stdout);
-      assert.equal(explicitSkillsDirActivationReport.total, 335);
+      assert.equal(
+        explicitSkillsDirActivationReport.total,
+        registry.skills.filter((skill) => skill.platforms.includes(Platform.Codex)).length,
+      );
 
       const canonicalSkillsRoot = join(runtimeTmp, "canonical-skills");
       const canonicalSkillDir = join(canonicalSkillsRoot, "alpha-skill");

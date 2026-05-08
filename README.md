@@ -291,7 +291,7 @@ npm run build:components
 
 当前门禁覆盖：
 
-- `dist/claude` 生成 335 个 skill、80 个 agent、99 个 hook 和 120 个 procedure；`dist/codex` 生成 335 个 skill、80 个 agent、98 个 hook 和 118 个 procedure（Codex 当前不输出 Claude-only `PreCompact`，也不包含 Claude-only `skill-creator-run-eval` / `skill-creator-run-loop`）；两端都生成 `procedures.js` bundle。
+- `dist/claude` 生成 335 个 skill、80 个 agent、99 个 hook 和 120 个 procedure；`dist/codex` 生成 334 个 skill、80 个 agent、98 个 hook 和 110 个 procedure（Codex 当前不输出 Claude-only `PreCompact`，也不包含 Claude-only `pdf` skill、PDF procedures、`skill-creator-run-eval` / `skill-creator-run-loop`）；两端都生成 `procedures.js` bundle。
 - 代表性 skill 的 `references/`、`assets/` 被复制并可发现；Procedure 调用说明会渲染到相关 `SKILL.md`。
 - agent 会生成 Claude Markdown 与 Codex TOML 两种格式。
 - hook dispatcher 可真实输出 `additionalContext`，并能阻断直接编辑 `dist/`。

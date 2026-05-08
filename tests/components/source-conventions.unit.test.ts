@@ -39,11 +39,13 @@ describe("component source conventions", () => {
       `${registry.hooks.length} 个 hook、${registry.procedures.length} 个 procedure`;
     const claudeHookCount = registry.hooks.filter((hook) => hook.platforms.includes(Platform.Claude)).length;
     const codexHookCount = registry.hooks.filter((hook) => hook.platforms.includes(Platform.Codex)).length;
+    const claudeSkillCount = registry.skills.filter((skill) => skill.platforms.includes(Platform.Claude)).length;
+    const codexSkillCount = registry.skills.filter((skill) => skill.platforms.includes(Platform.Codex)).length;
     const claudeProcedureCount = collectPlatformProcedures(componentSurface, Platform.Claude).length;
     const codexProcedureCount = collectPlatformProcedures(componentSurface, Platform.Codex).length;
     const gateSummary =
-      `- \`dist/claude\` 生成 ${registry.skills.length} 个 skill、${registry.agents.length} 个 agent、${claudeHookCount} 个 hook 和 ${claudeProcedureCount} 个 procedure；` +
-      `\`dist/codex\` 生成 ${registry.skills.length} 个 skill、${registry.agents.length} 个 agent、${codexHookCount} 个 hook 和 ${codexProcedureCount} 个 procedure`;
+      `- \`dist/claude\` 生成 ${claudeSkillCount} 个 skill、${registry.agents.length} 个 agent、${claudeHookCount} 个 hook 和 ${claudeProcedureCount} 个 procedure；` +
+      `\`dist/codex\` 生成 ${codexSkillCount} 个 skill、${registry.agents.length} 个 agent、${codexHookCount} 个 hook 和 ${codexProcedureCount} 个 procedure`;
 
     assert.equal(
       readme.includes(`当前组件规模：${currentCounts}。`),
@@ -157,6 +159,21 @@ describe("component source conventions", () => {
       registry.agents.map((agent) => agent.id).sort(),
       "every agent source directory should be registered and every registered agent should have a source directory",
     );
+  });
+
+  test("Codex-enabled skill sources do not carry Anthropic-only license terms", () => {
+    const restrictedLicensePattern = /Anthropic[\s\S]+ADDITIONAL RESTRICTIONS[\s\S]+may not[\s\S]+Extract these materials from the Services/u;
+
+    for (const skill of registry.skills) {
+      if (!skill.platforms.includes(Platform.Codex)) continue;
+      const licensePath = join(repoRoot, "src/components/skills", skill.id, "LICENSE.txt");
+      if (!existsSync(licensePath)) continue;
+      assert.doesNotMatch(
+        readFileSync(licensePath, "utf-8"),
+        restrictedLicensePattern,
+        `${skill.id} is Codex-enabled but carries Anthropic-only license terms`,
+      );
+    }
   });
 
   test("skill source uses platform-neutral workspace output paths", () => {

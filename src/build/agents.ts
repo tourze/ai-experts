@@ -574,11 +574,16 @@ function renderAgentBodyWithGeneratedSections(agent: AgentDefinition, body: stri
     .join("\n\n");
 }
 
-function renderClaudeAgent(agent: AgentDefinition): string {
+function platformAgentSkills(agent: AgentDefinition, platformSkillIds: ReadonlySet<string>): NonNullable<AgentDefinition["skills"]> {
+  return (agent.skills ?? []).filter((skill) => platformSkillIds.has(skill.id));
+}
+
+function renderClaudeAgent(agent: AgentDefinition, platformSkillIds: ReadonlySet<string>): string {
   const lines = ["---", `name: ${agent.id}`, `description: ${yamlScalar(agent.description)}`];
   const tools = (agent.tools ?? []).filter((tool) => typeof tool === "string").map(String);
   if (tools.length > 0) lines.push(`tools: ${tools.join(", ")}`);
-  const claudeSkills = (agent.skills ?? []).map((skill) => skill.id);
+  const skills = platformAgentSkills(agent, platformSkillIds);
+  const claudeSkills = skills.map((skill) => skill.id);
   if (claudeSkills.length > 0) {
     lines.push("skills:");
     for (const skill of claudeSkills) lines.push(`  - ${skill}`);
@@ -589,7 +594,7 @@ function renderClaudeAgent(agent: AgentDefinition): string {
   lines.push("---", "");
 
   const body = renderAgentBodyWithGeneratedSections(agent, readOptionalComponentText(agent.body).trimEnd());
-  const skillRoutes = (agent.skills ?? [])
+  const skillRoutes = skills
     .map((skill) => `- \`${skill.id}\` (${skill.mode}): ${skill.reason}`)
     .join("\n");
   const sections = [
@@ -604,8 +609,8 @@ function renderClaudeAgent(agent: AgentDefinition): string {
   return sections.join("\n");
 }
 
-function renderCodexSkillConfig(agent: AgentDefinition): string[] {
-  const skills = agent.skills ?? [];
+function renderCodexSkillConfig(agent: AgentDefinition, platformSkillIds: ReadonlySet<string>): string[] {
+  const skills = platformAgentSkills(agent, platformSkillIds);
   if (skills.length === 0) return [];
   return skills.flatMap((skill) => [
     "",
@@ -623,9 +628,10 @@ function renderCodexModel(agent: AgentDefinition): string | null {
   return claudeOnlyAliases.has(model) ? null : model;
 }
 
-function renderCodexAgent(agent: AgentDefinition): string {
+function renderCodexAgent(agent: AgentDefinition, platformSkillIds: ReadonlySet<string>): string {
   const body = renderAgentBodyWithGeneratedSections(agent, readOptionalComponentText(agent.body).trimEnd());
-  const skillRoutes = (agent.skills ?? [])
+  const skills = platformAgentSkills(agent, platformSkillIds);
+  const skillRoutes = skills
     .map((skill) => `- ${skill.id} (${skill.mode}): ${skill.reason}`)
     .join("\n");
   const developerInstructionSections = [
@@ -653,14 +659,20 @@ function renderCodexAgent(agent: AgentDefinition): string {
   if (agent.reasoningEffort) lines.push(`model_reasoning_effort = ${tomlString(agent.reasoningEffort)}`);
   if (agent.sandbox) lines.push(`sandbox_mode = ${tomlString(agent.sandbox)}`);
   lines.push(`developer_instructions = ${tomlMultiline(developerInstructions)}`);
-  lines.push(...renderCodexSkillConfig(agent));
+  lines.push(...renderCodexSkillConfig(agent, platformSkillIds));
   return `${lines.join("\n")}\n`;
 }
 
-export async function emitAgent(agent: AgentDefinition, platformRoot: string, platform: Platform): Promise<void> {
+export async function emitAgent(
+  agent: AgentDefinition,
+  platformRoot: string,
+  platform: Platform,
+  platformSkillIds?: ReadonlySet<string>,
+): Promise<void> {
+  const effectivePlatformSkillIds = platformSkillIds ?? new Set((agent.skills ?? []).map((skill) => skill.id));
   if (platform === Platform.Claude) {
-    writeText(join(platformRoot, "agents", `${agent.id}.md`), renderClaudeAgent(agent));
+    writeText(join(platformRoot, "agents", `${agent.id}.md`), renderClaudeAgent(agent, effectivePlatformSkillIds));
   } else {
-    writeText(join(platformRoot, "agents", `${agent.id}.toml`), renderCodexAgent(agent));
+    writeText(join(platformRoot, "agents", `${agent.id}.toml`), renderCodexAgent(agent, effectivePlatformSkillIds));
   }
 }
