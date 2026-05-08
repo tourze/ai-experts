@@ -263,23 +263,24 @@ describe("component source conventions", () => {
     }
   });
 
-  test("component guidance does not promote reference aliases as standalone runtime objects", () => {
-    const mislabeledAliases: string[] = [];
+  test("component guidance only names registered skills as standalone skills", () => {
+    const registeredSkillIds = new Set(registry.skills.map((skill) => skill.id));
+    const unknownSkillMentions: string[] = [];
 
     for (const sourceFile of collectFiles(join(repoRoot, "src/components"))) {
       const source = readFileSync(sourceFile, "utf-8");
-      if (
-        /`pretty-mermaid`\s+skill/u.test(source) ||
-        /脚本[^。\n]*`pretty-mermaid`|`pretty-mermaid`[^。\n]*(?:脚本|procedure|skill)/u.test(source)
-      ) {
-        mislabeledAliases.push(relative(repoRoot, sourceFile));
+      for (const match of source.matchAll(/`([a-z0-9][a-z0-9-]+)`\s+skill\b/gu)) {
+        const skillId = match[1] ?? "";
+        if (!registeredSkillIds.has(skillId)) {
+          unknownSkillMentions.push(`${relative(repoRoot, sourceFile)}: ${match[0]}`);
+        }
       }
     }
 
     assert.deepEqual(
-      mislabeledAliases,
+      unknownSkillMentions,
       [],
-      "`pretty-mermaid` is a markdown-mermaid-writing reference, not a standalone skill, procedure, or script",
+      "standalone skill mentions should point to registered skill ids; references should be named as references or flows",
     );
   });
 

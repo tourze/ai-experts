@@ -1,6 +1,6 @@
 # 会话记录
 
-原 `record-session` skill，已合并到 Step 4。
+原 record-session 流程，已合并到 Step 4。
 
 ## 核心约束
 

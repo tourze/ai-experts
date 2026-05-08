@@ -1,6 +1,6 @@
 # 完成前验证检查清单
 
-在声称任务完成、修复生效或测试通过之前，必须按此清单逐项核实。来源：已降级的 `verification-before-completion` skill。
+在声称任务完成、修复生效或测试通过之前，必须按此清单逐项核实。来源：已降级的旧 verification-before-completion 流程。
 
 ## 核心约束
 

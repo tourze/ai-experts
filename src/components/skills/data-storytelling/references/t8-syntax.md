@@ -2,7 +2,7 @@
 
 T8 是一种内联标注语法，用于在自然语言文本中嵌入机器可读的实体标注。适合文章、专题页、报告摘要的数据驱动叙事场景。
 
-> 来源：原 `narrative-text-visualization` skill，已合并到 data-storytelling。
+> 来源：旧 narrative-text-visualization 流程，已合并到 data-storytelling。
 
 ## 核心约束
 

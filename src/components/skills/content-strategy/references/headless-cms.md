@@ -161,11 +161,11 @@ Use CMS as the data source for scalable SEO pages. Store structured data (FAQs, 
 
 ### Copywriting
 
-CMS content models enforce consistent structure. Define fields that match your copy frameworks (headline, subheadline, social proof, CTA). Pair this with `copy-editing` when the task moves from structure to line-level wording.
+CMS content models enforce consistent structure. Define fields that match your copy frameworks (headline, subheadline, social proof, CTA). Pair this with the `copywriting` skill and its copy-editing reference when the task moves from structure to line-level wording.
 
 ### Site Architecture
 
-URL structure, navigation hierarchy, and internal linking all depend on how content is organized in the CMS. Plan your content model and site architecture together with the local `site-architecture` skill.
+URL structure, navigation hierarchy, and internal linking all depend on how content is organized in the CMS. Plan your content model together with the `seo` skill's site-architecture reference.
 
 ### Email Sequences
 

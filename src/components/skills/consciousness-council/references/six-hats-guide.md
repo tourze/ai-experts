@@ -1,6 +1,6 @@
 # 六顶思考帽模式
 
-原 `six-thinking-hats` skill，已合并为 consciousness-council 的子模式。
+原 six-thinking-hats 流程，已合并为 consciousness-council 的子模式。
 
 ## 适用
 - 测试策略设计卡住，需要强制换视角

@@ -1,6 +1,6 @@
 # 视图重构参考
 
-来源：合并自 `swiftui-view-refactor` skill。
+来源：合并自旧 swiftui-view-refactor 流程。
 
 ## 推荐的成员顺序
 
