@@ -94,8 +94,7 @@ export const shadcnUiSkill = defineSkill({
     ],
   }),
   tools: [
-    { kind: "regex", source: "shadcn.*:.*" },
-    { kind: "regex", source: "mcp_shadcn.*" },
+    { kind: "mcp", server: "shadcn" },
     KnownTool.Read,
     KnownTool.Write,
     KnownTool.Bash,

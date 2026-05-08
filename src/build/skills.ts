@@ -22,6 +22,7 @@ import {
   ensureDir,
   InvocationPolicy,
   Platform,
+  renderToolMatcher,
   toAbsolutePath,
   writeText,
   yamlScalar,
@@ -51,7 +52,7 @@ function renderSkillFrontmatter(skill: SkillDefinition, platform: PlatformType):
     if (skill.invocation === InvocationPolicy.ModelOnly) {
       lines.push("user-invocable: false");
     }
-    const tools = (skill.tools ?? []).filter((tool) => typeof tool === "string").map(String);
+    const tools = (skill.tools ?? []).map(renderToolMatcher);
     if (tools.length > 0) {
       lines.push("allowed-tools:");
       for (const tool of tools) lines.push(`  - ${tool}`);

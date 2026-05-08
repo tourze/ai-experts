@@ -10,6 +10,7 @@ import type {
 } from "../components/sdk";
 import {
   Platform,
+  renderToolMatcher,
   tomlBoolean,
   tomlMultiline,
   tomlString,
@@ -327,7 +328,7 @@ function platformAgentSkills(agent: AgentDefinition, platformSkillIds: ReadonlyS
 
 function renderClaudeAgent(agent: AgentDefinition, platformSkillIds: ReadonlySet<string>): string {
   const lines = ["---", `name: ${agent.id}`, `description: ${yamlScalar(agent.description)}`];
-  const tools = (agent.tools ?? []).filter((tool) => typeof tool === "string").map(String);
+  const tools = (agent.tools ?? []).map(renderToolMatcher);
   if (tools.length > 0) lines.push(`tools: ${tools.join(", ")}`);
   const skills = platformAgentSkills(agent, platformSkillIds);
   const claudeSkills = skills.map((skill) => skill.id);

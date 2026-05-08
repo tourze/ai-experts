@@ -8,6 +8,7 @@ import type {
   ProcedureDefinition,
   RelatedSkillDefinition,
   SkillDefinition,
+  ToolMatcher,
 } from "../components/sdk";
 import { HookEvent } from "../components/sdk";
 import {
@@ -287,6 +288,22 @@ function validateHookMatcher(hook: HookDefinition): void {
   );
 }
 
+function validateRuntimeToolMatchers(
+  component: SkillDefinition | AgentDefinition,
+): void {
+  const kind = component.kind === "skill" ? "Skill" : "Agent";
+  for (const [index, tool] of (component.tools ?? []).entries()) {
+    if (typeof tool === "string") continue;
+    if (!tool || typeof tool !== "object" || Array.isArray(tool)) {
+      throw new Error(`${kind} ${component.id} tools[${index}] must be a tool name or matcher object`);
+    }
+    const matcher = tool as Extract<ToolMatcher, { kind: string }>;
+    if (matcher.kind === "regex") {
+      throw new Error(`${kind} ${component.id} tools[${index}] must not use regex matcher; use a concrete tool name or MCP matcher`);
+    }
+  }
+}
+
 export function validateRegistry(registry: ComponentRegistry): ComponentSurface {
   if (!registry || !Array.isArray(registry.skills)) throw new Error("registry.skills must be an array");
   if (!Array.isArray(registry.instructions)) throw new Error("registry.instructions must be an array");
@@ -379,6 +396,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     if (skill.platforms.includes(Platform.Codex) && codexSystemSkillIds.has(skill.id)) {
       throw new Error(`Skill ${skill.id} collides with a Codex system skill name; do not emit it as a Codex user skill`);
     }
+    validateRuntimeToolMatchers(skill);
     validateTextList(skill, "useCases", "useCase");
     validateTextList(skill, "constraints", "constraint");
     if (skill.sourceDir === undefined) {
@@ -482,6 +500,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     }
     validateAgentOutputFormat(agent);
     validateAgentInputs(agent);
+    validateRuntimeToolMatchers(agent);
     const workflow = validateAgentWorkflow(agent);
     if (!workflow) {
       throw new Error(`Agent ${agent.id} must define workflow`);

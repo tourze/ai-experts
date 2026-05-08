@@ -120,7 +120,7 @@ function createFixture() {
       steps: [defineWorkflowStep({ id: "inspect", label: "执行检查。" })],
     }),
     outputs: defineSkillOutputs({ items: ["检查结论"] }),
-    tools: [KnownTool.Read, KnownTool.Grep],
+    tools: [KnownTool.Read, { kind: "mcp", server: "fixture", tool: "lookup" }, KnownTool.Grep],
     procedures: [defineProcedureUse({ id: procedure.id })],
     references: [
       defineReference({
@@ -144,7 +144,7 @@ function createFixture() {
     description: "Fixture agent used for build tests.",
     role: "你是 fixture agent。",
     platforms: [ComponentPlatform.Claude, ComponentPlatform.Codex],
-    tools: [KnownTool.Bash, KnownTool.Read],
+    tools: [KnownTool.Bash, { kind: "mcp", server: "fixture", tool: "agent" }, KnownTool.Read],
     bashBoundary: ["禁止执行破坏性命令。"],
     qualityStandards: ["输出必须可复现。"],
     outputFormat: defineAgentOutputFormat({
@@ -338,6 +338,8 @@ describe("build/pipeline modules", () => {
     const codexSkillMetadata = readFileSync(join(codexRoot, "skills", fixture.skill.id, "agents", "openai.yaml"), "utf-8");
     expect(codexSkillMetadata).toContain('display_name: "Fixture Skill"');
     expect(codexSkillMetadata).toContain("allow_implicit_invocation: false");
+    const claudeSkill = renderSkillMd(fixture.skill, Platform.Claude, procedureMap);
+    expect(claudeSkill).toContain("  - mcp__fixture__lookup");
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "references", "index.md"))).toBe(true);
     const referenceIndex = readFileSync(join(codexRoot, "skills", fixture.skill.id, "references", "index.md"), "utf-8");
     expect(referenceIndex).toContain("Fixture \\| Ref");
@@ -392,6 +394,14 @@ describe("build/pipeline modules", () => {
     };
     expect(() => validateRegistry(missingSkillWorkflowRegistry)).toThrow("Skill fixture-skill must define workflow");
 
+    const invalidSkillRegexToolRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{ ...fixture.skill, tools: [{ kind: "regex", source: "Read|Grep" }] }],
+    };
+    expect(() => validateRegistry(invalidSkillRegexToolRegistry)).toThrow(
+      "Skill fixture-skill tools[0] must not use regex matcher",
+    );
+
     const invalidInstructionPlatformRegistry: ComponentRegistry = {
       ...fixture.registry,
       instructions: [{ ...fixture.instruction, platforms: ["unsupported-instruction-cli"] as any }],
@@ -413,6 +423,14 @@ describe("build/pipeline modules", () => {
       agents: [{ ...fixture.agent, workflow: undefined as any }],
     };
     expect(() => validateRegistry(missingAgentWorkflowRegistry)).toThrow("Agent fixture-agent must define workflow");
+
+    const invalidAgentRegexToolRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      agents: [{ ...fixture.agent, tools: [{ kind: "regex", source: "Read|Grep" }] }],
+    };
+    expect(() => validateRegistry(invalidAgentRegexToolRegistry)).toThrow(
+      "Agent fixture-agent tools[0] must not use regex matcher",
+    );
 
     const invalidHookPlatformRegistry: ComponentRegistry = {
       ...fixture.registry,
@@ -871,7 +889,9 @@ describe("build/pipeline modules", () => {
     const out = createTempDir("ai-experts-agent-out-");
     await emitAgent(fixture.agent, out, Platform.Claude);
     await emitAgent(fixture.agent, out, Platform.Codex);
-    expect(readFileSync(join(out, "agents", "fixture-agent.md"), "utf-8")).toContain("## Bash 使用边界");
+    const claudeAgent = readFileSync(join(out, "agents", "fixture-agent.md"), "utf-8");
+    expect(claudeAgent).toContain("## Bash 使用边界");
+    expect(claudeAgent).toContain("tools: Bash, mcp__fixture__agent, Read");
     const codexAgent = readFileSync(join(out, "agents", "fixture-agent.toml"), "utf-8");
     expect(codexAgent).toContain("developer_instructions");
     expect(codexAgent).toContain("~/.agents/skills/fixture-skill/SKILL.md");
