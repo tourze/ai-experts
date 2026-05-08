@@ -229,6 +229,18 @@ describe("component source conventions", () => {
     assert.match(viewerSource, /回到当前 CLI 会话告诉代理/u);
   });
 
+  test("skill author agent uses source component filenames for authoring", () => {
+    const skillAuthorSource = readFileSync(join(repoRoot, "src/components/agents/skill-author/index.ts"), "utf-8");
+
+    assert.match(skillAuthorSource, /index\.ts、可选 SKILL\.body\.md/);
+    assert.match(skillAuthorSource, /registry\.generated\.ts/);
+    assert.doesNotMatch(
+      skillAuthorSource,
+      /src\/components\/skills\/<skill>\/` 下的 SKILL\.md|写 SKILL\.md 时|README 索引项|\[SKILL\.md \//u,
+      "skill author should describe source component files instead of generated SKILL.md output",
+    );
+  });
+
   test("skill evaluator uses model-neutral knowledge wording", () => {
     const evaluatorSources = [
       join(repoRoot, "src/components/skills/skill-evaluator/index.ts"),

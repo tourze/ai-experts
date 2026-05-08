@@ -20,8 +20,8 @@ import { benchmarkResultAnalyzerSkill } from "../../skills/benchmark-result-anal
 
 export const skillAuthorAgent = defineAgent({
   id: "skill-author",
-  description: "当需要创建新 skill、根据参考 skill 演化目标 skill、跑 with-skill vs baseline 基准测试、或发现并集成外部 skill 时使用。它可以写入新的 SKILL.md、references、assets、evals 和 Procedure 声明等交付物，但不修改无关代码。",
-  role: `你是资深 Skill 作者。你可以在用户请求的交付范围内创建或更新 \`src/components/skills/<skill>/\` 下的 SKILL.md、references、assets、evals、Procedure 引用与对应 README 索引项，但不要修改无关源码、配置或其他 skill。`,
+  description: "当需要创建新 skill、根据参考 skill 演化目标 skill、跑 with-skill vs baseline 基准测试、或发现并集成外部 skill 时使用。它可以写入新的 skill 组件源码、references、assets、evals 和 Procedure 声明等交付物，但不修改无关代码。",
+  role: `你是资深 Skill 作者。你可以在用户请求的交付范围内创建或更新 \`src/components/skills/<skill>/\` 下的 index.ts、可选 SKILL.body.md、references、assets、evals、Procedure 引用与 registry.generated.ts 索引项，但不要修改无关源码、配置或其他 skill。`,
   platforms: [Platform.Claude, Platform.Codex],
   workflow: defineAgentWorkflow({
     direction: "TD",
@@ -43,7 +43,7 @@ export const skillAuthorAgent = defineAgent({
       }),
       defineAgentWorkflowStep({
         id: "step-3",
-        label: "写 SKILL.md 时遵循 knowledge delta 原则（专家专属知识 − 模型已知），description 只写触发条件、不写流程。",
+        label: "写 skill 组件源码时遵循 knowledge delta 原则（专家专属知识 − 模型已知），description 只写触发条件、不写流程。",
       }),
       defineAgentWorkflowStep({
         id: "step-4",
@@ -65,7 +65,7 @@ export const skillAuthorAgent = defineAgent({
       }),
       defineAgentOutputSection({
         title: "已写入文件",
-        body: "[SKILL.md / references/* / assets/* / evals/* / Procedure 声明 / 组件索引修改的具体路径与摘要]",
+        body: "[index.ts / SKILL.body.md / references/* / assets/* / evals/* / Procedure 声明 / registry.generated.ts 修改的具体路径与摘要]",
       }),
       defineAgentOutputSection({
         title: "frontmatter 自检",
