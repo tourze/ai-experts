@@ -1,8 +1,11 @@
 import { describe, expect, test } from "vitest";
 import {
   buildProcedureCommandRewrites,
+  collectPlatformProcedureOwners,
   type ProcedureCommandRewriteCandidate,
 } from "../../src/build/procedures.ts";
+import type { ComponentSurface } from "../../src/build/types.ts";
+import { Platform, type ProcedureDefinition } from "../../src/components/sdk.ts";
 
 function candidate(
   id: string,
@@ -58,6 +61,58 @@ describe("build/procedures", () => {
       id: "second",
       triggerKind: "skill",
       triggerId: "skill-b",
+    });
+  });
+
+  test("procedure runtime owners only include platform-applicable procedure uses", () => {
+    const procedure = {
+      id: "shared-procedure",
+      owners: {
+        skillIds: ["skill-a", "skill-b"],
+        agentIds: ["agent-a", "agent-b"],
+      },
+    };
+    const surface = {
+      instructions: [],
+      procedures: [procedure],
+      skills: [
+        {
+          id: "skill-a",
+          platforms: [Platform.Claude, Platform.Codex],
+          procedures: [{ id: procedure.id, platforms: [Platform.Claude] }],
+        },
+        {
+          id: "skill-b",
+          platforms: [Platform.Claude, Platform.Codex],
+          procedures: [procedure.id],
+        },
+      ],
+      agents: [
+        {
+          id: "agent-a",
+          platforms: [Platform.Claude, Platform.Codex],
+          procedures: [{ id: procedure.id, platforms: [Platform.Codex] }],
+        },
+        {
+          id: "agent-b",
+          platforms: [Platform.Claude],
+          procedures: [procedure.id],
+        },
+      ],
+      hooks: [],
+    } as unknown as ComponentSurface;
+
+    expect(
+      collectPlatformProcedureOwners(surface, procedure as unknown as ProcedureDefinition, Platform.Claude),
+    ).toEqual({
+      skillIds: ["skill-a", "skill-b"],
+      agentIds: ["agent-b"],
+    });
+    expect(
+      collectPlatformProcedureOwners(surface, procedure as unknown as ProcedureDefinition, Platform.Codex),
+    ).toEqual({
+      skillIds: ["skill-b"],
+      agentIds: ["agent-a"],
     });
   });
 });

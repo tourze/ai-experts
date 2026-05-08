@@ -6,6 +6,7 @@ import webpack, { type Configuration, type Stats } from "webpack";
 import type {
   Platform as PlatformType,
   ProcedureDefinition,
+  ProcedureUseReference,
 } from "../components/sdk";
 import { sourceRoot, toAbsolutePath } from "./core.ts";
 import { listProcedureUses, procedureUseAppliesToPlatform } from "./procedure-uses.ts";
@@ -730,17 +731,55 @@ export function collectPlatformProcedures(componentSurface: ComponentSurface, pl
     .sort((a, b) => a.id.localeCompare(b.id));
 }
 
-function toRuntimeProcedureEntry(procedure: ProcedureDefinition): RuntimeProcedureModule {
+function componentUsesProcedureOnPlatform(
+  component: { procedures?: readonly ProcedureUseReference[] },
+  procedureId: string,
+  platform: PlatformType,
+): boolean {
+  return listProcedureUses(component)
+    .some((procedureUse) => procedureUse.id === procedureId && procedureUseAppliesToPlatform(procedureUse, platform));
+}
+
+export function collectPlatformProcedureOwners(
+  componentSurface: ComponentSurface,
+  procedure: ProcedureDefinition,
+  platform: PlatformType,
+): RuntimeProcedureEntry["owners"] {
+  const skillsById = new Map(componentSurface.skills.map((skill) => [skill.id, skill]));
+  const agentsById = new Map(componentSurface.agents.map((agent) => [agent.id, agent]));
+  return {
+    skillIds: (procedure.owners.skillIds ?? []).filter((skillId) => {
+      const skill = skillsById.get(skillId);
+      return Boolean(
+        skill &&
+        skill.platforms.includes(platform) &&
+        componentUsesProcedureOnPlatform(skill, procedure.id, platform),
+      );
+    }),
+    agentIds: (procedure.owners.agentIds ?? []).filter((agentId) => {
+      const agent = agentsById.get(agentId);
+      return Boolean(
+        agent &&
+        agent.platforms.includes(platform) &&
+        componentUsesProcedureOnPlatform(agent, procedure.id, platform),
+      );
+    }),
+  };
+}
+
+function toRuntimeProcedureEntry(
+  componentSurface: ComponentSurface,
+  procedure: ProcedureDefinition,
+  platform: PlatformType,
+): RuntimeProcedureModule {
   const sourcePath = toStableProcedureSourcePath(procedure);
+  const owners = collectPlatformProcedureOwners(componentSurface, procedure, platform);
   return {
     id: procedure.id,
     target: toProcedureTarget(procedure),
     runtime: "node",
     description: procedure.description,
-    owners: {
-      skillIds: [...(procedure.owners.skillIds ?? [])],
-      agentIds: [...(procedure.owners.agentIds ?? [])],
-    },
+    owners,
     argsSchema: schemaName(procedure.args),
     outputSchema: schemaName(procedure.output),
     sourcePath,
@@ -757,7 +796,9 @@ export async function emitProcedureRuntime(
   platform: PlatformType,
 ): Promise<ProcedureRuntimeBuildResult> {
   const platformProcedures = collectPlatformProcedures(componentSurface, platform);
-  const runtimeProcedures = platformProcedures.map(toRuntimeProcedureEntry);
+  const runtimeProcedures = platformProcedures.map((procedure) =>
+    toRuntimeProcedureEntry(componentSurface, procedure, platform),
+  );
   const proceduresSource = await emitBundledProceduresFile(root, runtimeProcedures, platform);
   const proceduresFile = "procedures.js";
 

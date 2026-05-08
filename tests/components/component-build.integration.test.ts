@@ -5,6 +5,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync,
 import { tmpdir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
 import { afterAll, beforeAll, describe, test } from "vitest";
+import { listProcedureUses, procedureUseAppliesToPlatform } from "../../src/build/procedure-uses.ts";
 import { registry } from "../../src/components/registry.ts";
 import { InvocationPolicy, Platform } from "../../src/components/sdk.ts";
 import {
@@ -163,6 +164,7 @@ describe("component build integration", () => {
   test("manifest file checksums cover every generated file", () => {
     for (const platform of ["claude", "codex"]) {
       const platformRoot = join(tmpDistDir, platform);
+      const platformValue = platform === "claude" ? Platform.Claude : Platform.Codex;
       const manifest = JSON.parse(readFileSync(join(platformRoot, "manifest.json"), "utf-8"));
       const manifestFiles = manifest.files as Record<string, string>;
       const proceduresFile = manifest.procedures.proceduresFile as string;
@@ -202,6 +204,24 @@ describe("component build integration", () => {
       );
       const platformSkillIds = new Set(manifest.skills as string[]);
       const platformAgentIds = new Set(manifest.agents as string[]);
+      const sourceSkillProcedureOwners = new Set(
+        registry.skills
+          .filter((skill) => skill.platforms.includes(platformValue))
+          .flatMap((skill) =>
+            listProcedureUses(skill)
+              .filter((procedureUse) => procedureUseAppliesToPlatform(procedureUse, platformValue))
+              .map((procedureUse) => `${skill.id}:${procedureUse.id}`)
+          ),
+      );
+      const sourceAgentProcedureOwners = new Set(
+        registry.agents
+          .filter((agent) => agent.platforms.includes(platformValue))
+          .flatMap((agent) =>
+            listProcedureUses(agent)
+              .filter((procedureUse) => procedureUseAppliesToPlatform(procedureUse, platformValue))
+              .map((procedureUse) => `${agent.id}:${procedureUse.id}`)
+          ),
+      );
       const invalidProcedureOwners: string[] = [];
       for (const procedure of manifest.procedures.items as any[]) {
         const ownerSkillIds = procedure.owners?.skillIds ?? [];
@@ -211,9 +231,15 @@ describe("component build integration", () => {
         }
         for (const skillId of ownerSkillIds) {
           if (!platformSkillIds.has(skillId)) invalidProcedureOwners.push(`${procedure.id}:skill:${skillId}`);
+          if (!sourceSkillProcedureOwners.has(`${skillId}:${procedure.id}`)) {
+            invalidProcedureOwners.push(`${procedure.id}:unused-skill-owner:${skillId}`);
+          }
         }
         for (const agentId of ownerAgentIds) {
           if (!platformAgentIds.has(agentId)) invalidProcedureOwners.push(`${procedure.id}:agent:${agentId}`);
+          if (!sourceAgentProcedureOwners.has(`${agentId}:${procedure.id}`)) {
+            invalidProcedureOwners.push(`${procedure.id}:unused-agent-owner:${agentId}`);
+          }
         }
       }
       assert.deepEqual(
