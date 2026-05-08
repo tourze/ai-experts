@@ -51,6 +51,8 @@ import {
 } from "./skills.ts";
 import type { ComponentRegistry, ComponentSurface } from "./types.ts";
 
+const manifestSchemaVersion = 3;
+
 export function renderInstruction(componentSurface: ComponentSurface, platform: Platform): string {
   const instructions = componentSurface.instructions
     .filter((instruction) => instruction.platforms.includes(platform))
@@ -629,7 +631,7 @@ export async function emitPlatform(
     .map((item) => item.id)
     .sort();
   writeText(join(root, "manifest.json"), JSON.stringify({
-    schema: 2,
+    schema: manifestSchemaVersion,
     platform,
     instructions: componentSurface.instructions
       .filter((item) => item.platforms.includes(platform))

@@ -65,7 +65,8 @@ describe("component source conventions", () => {
     assert.match(readme, /不要把整个 `~\/\.codex` symlink 到 `dist\/codex`/);
     assert.match(readme, /不要把整个 `~\/\.agents\/skills` symlink 到 `dist\/codex\/skills`/);
     assert.match(readme, /`installation_id` 和 `skills\/\.system\/`/);
-    assert.match(readme, /`manifest\.json` 的 `install` 字段是安装器的一等事实源/);
+    assert.match(readme, /`manifest\.json` 当前使用 schema 3/);
+    assert.match(readme, /`install` 字段是安装器的一等事实源/);
     assert.match(readme, /Codex 的 `configRoot` 是 `~\/\.codex`、`skillRoot` 是 `~\/\.agents\/skills`/);
     assert.match(readme, /Codex 的 `rootEntries` 不包含 `skills\/`/);
     assert.doesNotMatch(readme, /^\s+rules\/$/m);

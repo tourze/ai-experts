@@ -153,6 +153,16 @@ describe("component build integration", () => {
     const codexManifest = JSON.parse(readFileSync(join(tmpDistDir, "codex/manifest.json"), "utf-8"));
 
     assert.equal(
+      claudeManifest.schema,
+      3,
+      "Claude manifest schema should version the install contract",
+    );
+    assert.equal(
+      codexManifest.schema,
+      3,
+      "Codex manifest schema should version the install contract",
+    );
+    assert.equal(
       claudeManifest.skills.length,
       registry.skills.filter((skill) => skill.platforms.includes(Platform.Claude)).length,
     );
