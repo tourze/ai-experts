@@ -336,9 +336,9 @@ describe("build/pipeline modules", () => {
     await emitSkill(fixture.skill, codexRoot, Platform.Codex, procedureMap, new Set([fixture.skill.id]));
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "SKILL.md"))).toBe(true);
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "agents", "openai.yaml"))).toBe(true);
-    expect(readFileSync(join(codexRoot, "skills", fixture.skill.id, "agents", "openai.yaml"), "utf-8")).toContain(
-      "allow_implicit_invocation: false",
-    );
+    const codexSkillMetadata = readFileSync(join(codexRoot, "skills", fixture.skill.id, "agents", "openai.yaml"), "utf-8");
+    expect(codexSkillMetadata).toContain('display_name: "Fixture Skill"');
+    expect(codexSkillMetadata).toContain("allow_implicit_invocation: false");
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "references", "index.md"))).toBe(true);
     const referenceIndex = readFileSync(join(codexRoot, "skills", fixture.skill.id, "references", "index.md"), "utf-8");
     expect(referenceIndex).toContain("Fixture \\| Ref");

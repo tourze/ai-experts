@@ -588,7 +588,7 @@ describe("component build integration", () => {
       const allowImplicit = skill.invocation !== InvocationPolicy.ExplicitOnly;
 
       assert.match(metadata, /^interface:\n/);
-      assert.match(metadata, new RegExp(`^  display_name: "${skillId}"$`, "m"));
+      assert.match(metadata, new RegExp(`^  display_name: "${escapeRegExp(skill.fullName)}"$`, "m"));
       assert.match(metadata, /^  short_description: ".+"$/m);
       assert.match(metadata, /^policy:\n/m);
       assert.match(

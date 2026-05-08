@@ -467,7 +467,7 @@ function renderCodexOpenAiYaml(skill: SkillDefinition): string {
   const allowImplicit = skill.invocation !== InvocationPolicy.ExplicitOnly;
   return [
     "interface:",
-    `  display_name: ${yamlScalar(skill.id)}`,
+    `  display_name: ${yamlScalar(skill.fullName)}`,
     `  short_description: ${yamlScalar(skill.description)}`,
     "policy:",
     `  allow_implicit_invocation: ${allowImplicit ? "true" : "false"}`,
