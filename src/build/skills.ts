@@ -392,8 +392,10 @@ function renderStructuredSkillBody(skill: SkillDefinition): string {
     .join("\n\n");
 }
 
-function renderRelatedSkills(skill: SkillDefinition): string {
-  const relatedSkills = uniqueRelatedSkills(skill.relatedSkills ?? []);
+function renderRelatedSkills(skill: SkillDefinition, platform: PlatformType): string {
+  const relatedSkills = uniqueRelatedSkills(
+    (skill.relatedSkills ?? []).filter((related) => !related.platforms || related.platforms.includes(platform)),
+  );
   if (relatedSkills.length === 0) return "";
   const rows = relatedSkills.map((related) => {
     return `- [${related.id}](../${related.id}/SKILL.md) — ${related.reason}`;
@@ -446,7 +448,7 @@ export function renderSkillMd(
     renderChecklist(skill),
     renderProcedureRegistry(skill, platform, proceduresById),
     renderReferenceMap(skill),
-    renderRelatedSkills(skill),
+    renderRelatedSkills(skill, platform),
   ].filter((section) => section.trim() !== "")
     .map((section) => section.trimEnd());
   return normalizeMarkdownBlankLines(sections.join("\n\n"));

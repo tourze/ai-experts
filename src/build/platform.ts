@@ -6,6 +6,7 @@ import type {
   HookDefinition,
   InstructionDefinition,
   ProcedureDefinition,
+  RelatedSkillDefinition,
   SkillDefinition,
 } from "../components/sdk";
 import { HookEvent } from "../components/sdk";
@@ -214,15 +215,22 @@ function validateAgentSkillSharedPlatform(
 
 function validateRelatedSkillPlatform(
   skill: SkillDefinition,
-  relatedSkillId: string,
+  related: RelatedSkillDefinition,
   skillsById: ReadonlyMap<string, SkillDefinition>,
 ): void {
-  const relatedSkill = skillsById.get(relatedSkillId);
+  const relatedSkill = skillsById.get(related.id);
   if (!relatedSkill) return;
-  const missingPlatforms = skill.platforms.filter((platform) => !relatedSkill.platforms.includes(platform));
+  const relationPlatforms = related.platforms ?? skill.platforms;
+  const unsupportedSkillPlatforms = relationPlatforms.filter((platform) => !skill.platforms.includes(platform));
+  if (unsupportedSkillPlatforms.length > 0) {
+    throw new Error(
+      `Skill ${skill.id} related skill ${related.id} applies to unsupported platform(s): ${unsupportedSkillPlatforms.join(", ")}`,
+    );
+  }
+  const missingPlatforms = relationPlatforms.filter((platform) => !relatedSkill.platforms.includes(platform));
   if (missingPlatforms.length > 0) {
     throw new Error(
-      `Skill ${skill.id} related skill ${relatedSkillId} unavailable on platform(s): ${missingPlatforms.join(", ")}`,
+      `Skill ${skill.id} related skill ${related.id} unavailable on platform(s): ${missingPlatforms.join(", ")}`,
     );
   }
 }
@@ -415,7 +423,8 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
       if (!skillIds.has(related.id)) {
         throw new Error(`Skill ${skill.id} references missing related skill: ${related.id}`);
       }
-      validateRelatedSkillPlatform(skill, related.id, skillsById);
+      validatePlatformList(related.platforms, `Skill ${skill.id} related skill ${related.id}`, { optional: true });
+      validateRelatedSkillPlatform(skill, related, skillsById);
       if (related.id === skill.id) {
         throw new Error(`Skill ${skill.id} must not reference itself as a related skill`);
       }

@@ -165,7 +165,7 @@ export const typescriptTypeSafety = defineSkill({
 - `SKILL.body.md` 第一个非空行必须是 `## ...`，不要在正文开头写一句简介；简介类内容放进 `description`、`useCases` 或 `constraints`。
 - 检查清单使用 `checklist` 声明为普通字符串数组；构建器会生成 `## 检查清单`，并放在生成的 `## 反模式` 之后。不要在 `SKILL.body.md` 手写 `## 检查清单`，分组清单改写成 `分组：检查项`。
 - 反模式使用 `antiPatterns` 声明，每行必须通过 `defineAntiPattern({ fail, pass })` 定义；构建器会生成 `## 反模式` Markdown 表格。不要在 `SKILL.body.md` 手写 `## 反模式`，大段代码对照放进 `references/`。
-- 交叉引用其他 skill 时使用 `relatedSkills` 声明；构建器会生成 `## 相关 Skill`。`relatedSkills` 必须 import 对应 skill definition，并通过 `get id() { return otherSkill.id; }` 延迟读取，避免双向关系造成 ESM 初始化循环；不要在 `SKILL.body.md`、`useCases` 或 `constraints` 里手写 `../other-skill/SKILL.md` 或旧 `plugin:skill` 链接。
+- 交叉引用其他 skill 时使用 `relatedSkills` 声明；构建器会生成 `## 相关 Skill`。`relatedSkills` 必须 import 对应 skill definition，并通过 `get id() { return otherSkill.id; }` 延迟读取，避免双向关系造成 ESM 初始化循环；仅单平台可用的关系使用 `platforms` 收窄，不要牺牲另一个平台的输出；不要在 `SKILL.body.md`、`useCases` 或 `constraints` 里手写 `../other-skill/SKILL.md` 或旧 `plugin:skill` 链接。
 - 每个可执行过程必须在 `src/components/procedures/` 登记为 Procedure；skill/agent 通过 `procedureUse(procedureDefinition)` 引用，不手写裸 procedure id。
 - reference 必须通过 `defineReference()` 登记，asset 必须通过 `defineAsset()` 登记。
 - `evals/` 是源码侧质量验证材料，不是运行时参考资料，不能登记为 reference，也不会复制到 `dist/*/skills/*/references/`。

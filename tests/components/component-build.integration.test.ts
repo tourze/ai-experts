@@ -641,6 +641,10 @@ describe("component build integration", () => {
     const codexSkillAuthor = readFileSync(join(tmpDistDir, "codex/agents/skill-author.toml"), "utf-8");
     assert.doesNotMatch(codexSkillAuthor, /skill-creator-run-eval|skill-creator-run-loop/);
     assert.doesNotMatch(codexSkillAuthor, /~\/\.agents\/skills\/skill-creator\/SKILL\.md/);
+    const claudeSkillEvolver = readFileSync(join(tmpDistDir, "claude/skills/skill-evolver/SKILL.md"), "utf-8");
+    const codexSkillEvolver = readFileSync(join(tmpDistDir, "codex/skills/skill-evolver/SKILL.md"), "utf-8");
+    assert.match(claudeSkillEvolver, /\[skill-creator\]\(\.\.\/skill-creator\/SKILL\.md\)/);
+    assert.doesNotMatch(codexSkillEvolver, /\[skill-creator\]\(\.\.\/skill-creator\/SKILL\.md\)/);
 
     const claudeAgent = readFileSync(join(tmpDistDir, "claude/agents/typescript-reviewer.md"), "utf-8");
     assert.match(claudeAgent, /name: typescript-reviewer/);

@@ -78,6 +78,7 @@ describe("component source conventions", () => {
     assert.match(readme, /Agent 不再使用 `AGENT\.body\.md`/);
     assert.match(readme, /`InvocationPolicy\.ModelOnly` 只用于 Claude-only skill/);
     assert.match(readme, /`procedureUse\(procedureDefinition, \{ platforms: \[\.\.\.\] \}\)`/);
+    assert.match(readme, /仅单平台可用的关系使用 `platforms` 收窄/);
     assert.match(readme, /defineAgentWorkflow\(\{/);
     assert.match(
       readme,

@@ -135,6 +135,7 @@ export type SkillAssetDefinition = {
 export type RelatedSkillDefinition = {
   id: string;
   reason: string;
+  platforms?: PlatformList;
 };
 
 export type AntiPatternDefinition = {
