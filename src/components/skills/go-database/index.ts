@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { goConcurrencyPatternsSkill } from "../go-concurrency-patterns/index";
 import { goSecuritySkill } from "../go-security/index";
@@ -81,12 +82,24 @@ export const goDatabaseSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认 DB driver、上下文超时、事务范围、NULL 字段、连接池负载和测试替身。",
-      "用 Repository 隐藏数据访问，接口放消费方或业务边界，错误保留 `%w` 链。",
-      "NULLable 字段选择 `sql.Null*` 或指针，连接池参数基于 DB 和服务并发设置。",
-      "Repository / NULL / pool 示例读取 `repository-patterns`；事务细节读取 `transactions`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认 DB driver、上下文超时、事务范围、NULL 字段、连接池负载和测试替身。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "用 Repository 隐藏数据访问，接口放消费方或业务边界，错误保留 `%w` 链。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "NULLable 字段选择 `sql.Null*` 或指针，连接池参数基于 DB 和服务并发设置。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Repository / NULL / pool 示例读取 `repository-patterns`；事务细节读取 `transactions`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

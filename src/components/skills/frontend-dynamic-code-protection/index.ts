@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const frontendDynamicCodeProtectionSkill = defineSkill({
@@ -51,12 +52,24 @@ export const frontendDynamicCodeProtectionSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先明确资产、攻击者类型和成本目标，确认这是反自动化成本控制而非绝对安全承诺。",
-      "审计参数生成、签名、混淆、challenge、缓存和服务端验签入口，区分请求伪造、脚本自动化和重放攻击。",
-      "将保护逻辑独立构建、短缓存、灰度发布，signature 绑定组合标识、随机数、时间戳、版本和上下文。",
-      "完整对抗目标、动态化设计、工程约束和验证监控流程读取 `protection-framework`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先明确资产、攻击者类型和成本目标，确认这是反自动化成本控制而非绝对安全承诺。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "审计参数生成、签名、混淆、challenge、缓存和服务端验签入口，区分请求伪造、脚本自动化和重放攻击。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "将保护逻辑独立构建、短缓存、灰度发布，signature 绑定组合标识、随机数、时间戳、版本和上下文。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "完整对抗目标、动态化设计、工程约束和验证监控流程读取 `protection-framework`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

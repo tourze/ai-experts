@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const deepCodeReadSkill = defineSkill({
@@ -38,13 +39,28 @@ export const deepCodeReadSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认源码版本、分支/tag、输出目录和只读边界；执行前读取 workflow reference。",
-      "准备阶段定位仓库并检测版本；扫描阶段识别模块边界、依赖和精读顺序，必要时读取 repo-analyzer。",
-      "Agent A 逐模块读源码并写 skill，Agent B 基于源码出题，Agent C 只读生成的 skill 答题。",
-      "闭卷验证必须 100% 通过或跑满 3 轮；失败问题反向补齐 skill，99% 不算通过。",
-      "生成全局 index skill 后做用户问答验收，最后询问是否清理克隆源码。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认源码版本、分支/tag、输出目录和只读边界；执行前读取 workflow reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "准备阶段定位仓库并检测版本；扫描阶段识别模块边界、依赖和精读顺序，必要时读取 repo-analyzer。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "Agent A 逐模块读源码并写 skill，Agent B 基于源码出题，Agent C 只读生成的 skill 答题。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "闭卷验证必须 100% 通过或跑满 3 轮；失败问题反向补齐 skill，99% 不算通过。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "生成全局 index skill 后做用户问答验收，最后询问是否清理克隆源码。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

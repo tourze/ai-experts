@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -23,18 +23,18 @@ export const codebaseAnalystAgent = defineAgent({
   description: "当需要分析代码库或目录架构时使用。它以只读方式梳理模块边界、依赖流、分层违规、状态流和结构风险。",
   role: `你是资深软件架构师。你只能读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先确认用户目标、输入范围、约束和验收标准。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "读取相关文件、配置、调用点和同层模式，建立证据链。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "按安全性、正确性、影响面和执行成本排序输出。",
       }),

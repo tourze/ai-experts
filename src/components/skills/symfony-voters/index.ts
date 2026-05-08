@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { doctrineBatchProcessingSkill } from "../doctrine-batch-processing/index";
 import { symfonyMessengerSkill } from "../symfony-messenger/index";
@@ -62,12 +63,24 @@ export const symfonyVotersSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先画清操作者、资源、动作和入口，默认拒绝匿名、空 subject、不支持属性和错误资源类型。",
-      "Voter 只回答能不能做，不执行查询、状态修改或完整业务流程。",
-      "Controller、API Platform、Twig 和命令入口复用同一授权属性，避免权限漂移。",
-      "PostVoter、控制器和 Twig 示例读取 `voter-patterns`；测试与验证命令读取 `authorization-reference`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先画清操作者、资源、动作和入口，默认拒绝匿名、空 subject、不支持属性和错误资源类型。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "Voter 只回答能不能做，不执行查询、状态修改或完整业务流程。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "Controller、API Platform、Twig 和命令入口复用同一授权属性，避免权限漂移。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "PostVoter、控制器和 Twig 示例读取 `voter-patterns`；测试与验证命令读取 `authorization-reference`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

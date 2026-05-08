@@ -6,7 +6,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, ghFixCiInspectPrChecks } from "../../procedures/index";
 
@@ -49,12 +50,24 @@ export const ghFixCiSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认 `gh auth status` 成功，并定位目标 PR；用户未给 PR 时从当前分支关联 PR 入手。",
-      "优先调用 `gh-fix-ci-inspect-pr-checks` procedure 抽取 failing checks、run id、job id、run URL 和失败片段；外部 provider 只记录 `detailsUrl`。",
-      "procedure 不足时用 `gh pr checks <pr> --json ...`、`gh run view <run-id> --json ...` 和 `gh run view <run-id> --log` 手工兜底。",
-      "先输出失败上下文与聚焦修复计划，得到用户确认后再修改 workflow 或业务代码；创建或修改 GitHub Actions workflow 前读取 workflow reference。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认 `gh auth status` 成功，并定位目标 PR；用户未给 PR 时从当前分支关联 PR 入手。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "优先调用 `gh-fix-ci-inspect-pr-checks` procedure 抽取 failing checks、run id、job id、run URL 和失败片段；外部 provider 只记录 `detailsUrl`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "procedure 不足时用 `gh pr checks <pr> --json ...`、`gh run view <run-id> --json ...` 和 `gh run view <run-id> --log` 手工兜底。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "先输出失败上下文与聚焦修复计划，得到用户确认后再修改 workflow 或业务代码；创建或修改 GitHub Actions workflow 前读取 workflow reference。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { promptEngineeringPatternsSkill } from "../prompt-engineering-patterns/index";
 import { ragAuditorSkill } from "../rag-auditor/index";
@@ -60,12 +61,24 @@ export const llmEvaluationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先定义任务成功标准和目标函数，再确定数据集、指标、rubric、硬约束和软偏好。",
-      "冻结样本集，覆盖主路径、边界条件、失败样例和拒答样例；保留基线模型/prompt 分数。",
-      "至少组合两种视角：自动指标、人工评审、LLM-as-judge 或规则断言；按类别拆分而不是只看平均分。",
-      "报告区分统计显著、业务显著和可上线；RAG 检索链路问题转 rag-auditor，prompt 问题转 prompt-engineering-patterns。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先定义任务成功标准和目标函数，再确定数据集、指标、rubric、硬约束和软偏好。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "冻结样本集，覆盖主路径、边界条件、失败样例和拒答样例；保留基线模型/prompt 分数。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "至少组合两种视角：自动指标、人工评审、LLM-as-judge 或规则断言；按类别拆分而不是只看平均分。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "报告区分统计显著、业务显著和可上线；RAG 检索链路问题转 rag-auditor，prompt 问题转 prompt-engineering-patterns。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

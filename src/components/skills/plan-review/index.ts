@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { systemDesignSkill } from "../system-design/index";
 import { taskDecomposerSkill } from "../task-decomposer/index";
@@ -58,14 +59,32 @@ export const planReviewSkill = defineSkill({
       reason: "计划缺少系统边界、组件、数据流或关键架构权衡时联动。",
     },
   ],
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认评审对象是计划、方案或 RFC；没有计划时先要求补计划，不假装评审。",
-      "需要判断项目类型或审查重点时读取 `project-detection` reference。",
-      "按范围、不做什么、假设、依赖、风险、迁移/回滚、验证和回归面逐项检查。",
-      "把问题分成必须修、建议补和可接受风险三档，并说明后果而不是只给泛泛建议。",
-      "不要替作者脑补缺失信息；无法确认的内容直接标成缺口或待澄清问题。",
-      "输出建议顺序，先处理阻断性风险，再处理可并行补齐项。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认评审对象是计划、方案或 RFC；没有计划时先要求补计划，不假装评审。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "需要判断项目类型或审查重点时读取 `project-detection` reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "按范围、不做什么、假设、依赖、风险、迁移/回滚、验证和回归面逐项检查。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "把问题分成必须修、建议补和可接受风险三档，并说明后果而不是只给泛泛建议。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "不要替作者脑补缺失信息；无法确认的内容直接标成缺口或待澄清问题。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出建议顺序，先处理阻断性风险，再处理可并行补齐项。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

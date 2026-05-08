@@ -6,7 +6,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, uxResearcherDesignerPersonaGenerator } from "../../procedures/index";
 
@@ -66,15 +67,36 @@ export const uxResearcherDesignerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认研究问题、用户类型、数据来源、样本量、时间范围和输出用途。",
-      "Persona 输入优先使用稳定对象数组，字段能追溯来源；只有演示场景才使用 procedure 的 `--sample`。",
-      "基于真实 JSON 数据运行 `ux-researcher-designer-persona-generator` 时传入 `--input`、可选 `--interviews` 和输出格式。",
-      "Persona 输出必须保留样本量、访谈数、信心等级、痛点频次、行为证据和推断边界。",
-      "旅程图先定用户类型、目标、起点、终点和时间跨度，再填 stage、actions、touchpoints、emotions、pain_points、opportunities。",
-      "可用性测试任务写成场景、目标和成功条件；研究结论按发现、证据、建议、优先级交付。",
-      "方法细节按需读取 persona-methodology、journey-mapping-guide、usability-testing-frameworks 或 research-plan-template。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认研究问题、用户类型、数据来源、样本量、时间范围和输出用途。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "Persona 输入优先使用稳定对象数组，字段能追溯来源；只有演示场景才使用 procedure 的 `--sample`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "基于真实 JSON 数据运行 `ux-researcher-designer-persona-generator` 时传入 `--input`、可选 `--interviews` 和输出格式。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Persona 输出必须保留样本量、访谈数、信心等级、痛点频次、行为证据和推断边界。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "旅程图先定用户类型、目标、起点、终点和时间跨度，再填 stage、actions、touchpoints、emotions、pain_points、opportunities。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "可用性测试任务写成场景、目标和成功条件；研究结论按发现、证据、建议、优先级交付。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "方法细节按需读取 persona-methodology、journey-mapping-guide、usability-testing-frameworks 或 research-plan-template。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

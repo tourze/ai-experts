@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { pythonTestingPatternsSkill } from "../python-testing-patterns/index";
 import { pythonTypeSafetySkill } from "../python-type-safety/index";
@@ -67,12 +68,24 @@ export const uvPackageManagerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认项目边界、目标 Python 版本和是否已有 `pyproject.toml` / `uv.lock`；新项目可用 `uv init .` 起步。",
-      "用 `uv python install <version>` 和 `uv venv --python <version>` 固定解释器与虚拟环境，避免依赖本机隐式状态。",
-      "运行时依赖用 `uv add`，开发依赖用 `uv add --dev`；测试、类型检查和脚本统一通过 `uv run` 执行。",
-      "提交 `uv.lock`；CI 或可复现安装使用 `uv sync --frozen`，workspace、Docker 和缓存策略读取 advanced reference。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认项目边界、目标 Python 版本和是否已有 `pyproject.toml` / `uv.lock`；新项目可用 `uv init .` 起步。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "用 `uv python install <version>` 和 `uv venv --python <version>` 固定解释器与虚拟环境，避免依赖本机隐式状态。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "运行时依赖用 `uv add`，开发依赖用 `uv add --dev`；测试、类型检查和脚本统一通过 `uv run` 执行。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "提交 `uv.lock`；CI 或可复现安装使用 `uv sync --frozen`，workspace、Docker 和缓存策略读取 advanced reference。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

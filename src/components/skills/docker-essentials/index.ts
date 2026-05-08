@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const dockerEssentialsSkill = defineSkill({
@@ -42,12 +43,24 @@ export const dockerEssentialsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认容器名、镜像标签、端口映射、卷挂载、网络、环境变量和目标平台。",
-      "排障先看 `docker ps`、`docker logs`、`docker inspect`、退出码和 healthcheck，再决定重建或删除。",
-      "构建与发布使用固定版本标签、构建参数和目标平台；生产修复改 Dockerfile 后重建，不在容器内漂移。",
-      "Compose 环境用 `docker compose ps/logs/exec/up/down` 递进；删除镜像、卷、网络前确认影响范围。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认容器名、镜像标签、端口映射、卷挂载、网络、环境变量和目标平台。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "排障先看 `docker ps`、`docker logs`、`docker inspect`、退出码和 healthcheck，再决定重建或删除。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "构建与发布使用固定版本标签、构建参数和目标平台；生产修复改 Dockerfile 后重建，不在容器内漂移。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Compose 环境用 `docker compose ps/logs/exec/up/down` 递进；删除镜像、卷、网络前确认影响范围。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

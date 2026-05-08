@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const pythonDesignPatternsSkill = defineSkill({
@@ -41,12 +42,24 @@ export const pythonDesignPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先找主要变化原因、I/O 边界、领域对象和当前耦合点。",
-      "用 Protocol 或 ABC 描述消费方需要的最小接口，构造函数注入具体实现。",
-      "组合优先于继承；DTO 用 dataclass / NamedTuple 表达稳定数据。",
-      "Service + Repository + Protocol 代码模式读取 `service-boundary-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先找主要变化原因、I/O 边界、领域对象和当前耦合点。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "用 Protocol 或 ABC 描述消费方需要的最小接口，构造函数注入具体实现。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "组合优先于继承；DTO 用 dataclass / NamedTuple 表达稳定数据。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Service + Repository + Protocol 代码模式读取 `service-boundary-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

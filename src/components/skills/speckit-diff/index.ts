@@ -3,7 +3,8 @@ import {
   Platform,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const speckitDiffSkill = defineSkill({
@@ -20,15 +21,27 @@ export const speckitDiffSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      `参数解析：
+      defineWorkflowStep({
+        id: "step-1",
+        label: `参数解析：
    - 两个路径：直接比较
    - 一个路径：与 \`HEAD\` 比较
    - 无参数：定位当前 feature 的 \`spec.md\` 与 \`HEAD\` 比较`,
-      "读取新旧版本内容。",
-      "按章节输出语义差异：新增、删除、修改、重排。",
-      "对每项变化给出影响判断：需求范围/技术成本/测试影响。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "读取新旧版本内容。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "按章节输出语义差异：新增、删除、修改、重排。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "对每项变化给出影响判断：需求范围/技术成本/测试影响。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

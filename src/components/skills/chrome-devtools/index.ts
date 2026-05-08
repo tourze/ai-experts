@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const chromeDevtoolsSkill = defineSkill({
@@ -44,14 +45,32 @@ export const chromeDevtoolsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "交互前先 `take_snapshot` 获取最新页面结构和 uid；导航或 DOM 更新后重新取 snapshot。",
-      "多标签页先 `list_pages` 和 `select_page`，确认当前 page ID 后再点击、填写或求值。",
-      "页面排障按三方证据组合：`list_console_messages`、`list_network_requests`、`evaluate_script`。",
-      "性能排障先 `performance_start_trace`，必要时伴随 reload，再 stop 并用 `performance_analyze_insight` 看 LCP、CLS、长任务等。",
-      "怀疑泄漏或大对象驻留时补 `take_memory_snapshot`；需要整页质量基线时再跑 `lighthouse_audit`。",
-      "记录 uid、request、console、trace、复现步骤和结论，避免只凭截图或坐标猜测。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "交互前先 `take_snapshot` 获取最新页面结构和 uid；导航或 DOM 更新后重新取 snapshot。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "多标签页先 `list_pages` 和 `select_page`，确认当前 page ID 后再点击、填写或求值。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "页面排障按三方证据组合：`list_console_messages`、`list_network_requests`、`evaluate_script`。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "性能排障先 `performance_start_trace`，必要时伴随 reload，再 stop 并用 `performance_analyze_insight` 看 LCP、CLS、长任务等。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "怀疑泄漏或大对象驻留时补 `take_memory_snapshot`；需要整页质量基线时再跑 `lighthouse_audit`。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "记录 uid、request、console、trace、复现步骤和结论，避免只凭截图或坐标猜测。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

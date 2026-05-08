@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const memorySafetyPatternsSkill = defineSkill({
@@ -50,14 +51,32 @@ export const memorySafetyPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先为每个资源回答谁创建、谁释放、何时释放，区分 owner、observer 和 borrowed view。",
-      "C++ 资源优先用 RAII、栈对象、`std::unique_ptr`、`std::lock_guard`；`shared_ptr` 只用于真实多方长期持有。",
-      "只读连续数据用 `std::span`、`std::string_view` 或 `const T&`，不要用拥有型容器副本表达借用。",
-      "循环引用用 `weak_ptr` 或 observer 打断；缓存、回调和反向引用不能偷偷延长生命周期。",
-      "C 代码统一 `goto cleanup` 或单出口销毁函数，覆盖所有失败分支。",
-      "需要共享所有权、C cleanup、Rust 对照或异常安全完整示例时读取 advanced-patterns。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先为每个资源回答谁创建、谁释放、何时释放，区分 owner、observer 和 borrowed view。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "C++ 资源优先用 RAII、栈对象、`std::unique_ptr`、`std::lock_guard`；`shared_ptr` 只用于真实多方长期持有。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "只读连续数据用 `std::span`、`std::string_view` 或 `const T&`，不要用拥有型容器副本表达借用。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "循环引用用 `weak_ptr` 或 observer 打断；缓存、回调和反向引用不能偷偷延长生命周期。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "C 代码统一 `goto cleanup` 或单出口销毁函数，覆盖所有失败分支。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "需要共享所有权、C cleanup、Rust 对照或异常安全完整示例时读取 advanced-patterns。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

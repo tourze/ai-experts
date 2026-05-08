@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, prlctlVmControlPrlctlHelper } from "../../procedures/index";
 
@@ -69,12 +70,24 @@ export const prlctlVmControlSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先用 helper 的 `list` / `resolve` 把目标虚拟机解析为唯一对象，再采集 `status` / `info` 作为基线。",
-      "执行客体命令前先做小命令或 dry-run；Windows 输出优先走 PowerShell envelope，依赖登录态的任务先确认当前用户上下文。",
-      "上传和下载统一走 `prlctl-helper` 的文件传输子命令，执行前确认方向、源路径、目标路径和覆盖风险。",
-      "只有用户明确要求时才执行 reset、kill stop、snapshot 切换/删除或 `prlctl set`；常见模板读取 recipes reference。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先用 helper 的 `list` / `resolve` 把目标虚拟机解析为唯一对象，再采集 `status` / `info` 作为基线。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "执行客体命令前先做小命令或 dry-run；Windows 输出优先走 PowerShell envelope，依赖登录态的任务先确认当前用户上下文。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "上传和下载统一走 `prlctl-helper` 的文件传输子命令，执行前确认方向、源路径、目标路径和覆盖风险。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "只有用户明确要求时才执行 reset、kill stop、snapshot 切换/删除或 `prlctl set`；常见模板读取 recipes reference。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

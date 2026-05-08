@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { doctrineBatchProcessingSkill } from "../doctrine-batch-processing/index";
 import { symfonyBundleArchitectureSkill } from "../symfony-bundle-architecture/index";
@@ -60,14 +61,32 @@ export const doctrineEntityPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "读取目标 Entity、Repository、Migration、调用点和数据库约束；完整代码示例按需读取 `entity-reference`。",
-      "审查列映射、ID 策略、时间类型、nullable、索引、唯一约束和注释。",
-      "审查关联关系、归属端、反向声明、cascade、orphanRemoval 和懒加载风险。",
-      "审查 Repository 查询边界，避免无界 `findAll()`、N+1 和不可分页集合遍历。",
-      "审查 Migration 是否只做结构变更、可回滚、包含索引/外键并避免数据副作用。",
-      "输出实体设计建议、查询修复点和迁移风险。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "读取目标 Entity、Repository、Migration、调用点和数据库约束；完整代码示例按需读取 `entity-reference`。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "审查列映射、ID 策略、时间类型、nullable、索引、唯一约束和注释。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "审查关联关系、归属端、反向声明、cascade、orphanRemoval 和懒加载风险。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "审查 Repository 查询边界，避免无界 `findAll()`、N+1 和不可分页集合遍历。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "审查 Migration 是否只做结构变更、可回滚、包含索引/外键并避免数据副作用。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出实体设计建议、查询修复点和迁移风险。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

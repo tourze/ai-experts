@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { goConcurrencyPatternsSkill } from "../go-concurrency-patterns/index";
 import { goPerformanceSkill } from "../go-performance/index";
@@ -70,12 +71,24 @@ export const goDataStructuresSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认数据结构的所有权、是否跨 goroutine、是否会 append / mutate、是否暴露给调用方。",
-      "按 copy 语义判断赋值、传参和返回值是否共享底层数据。",
-      "slice / map 热路径或并发路径需要进一步读取 internals references，必要时复制防御。",
-      "快速 copy 语义表读取 `copy-semantics`；slice / map 深入行为读取对应 reference。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认数据结构的所有权、是否跨 goroutine、是否会 append / mutate、是否暴露给调用方。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按 copy 语义判断赋值、传参和返回值是否共享底层数据。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "slice / map 热路径或并发路径需要进一步读取 internals references，必要时复制防御。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "快速 copy 语义表读取 `copy-semantics`；slice / map 深入行为读取对应 reference。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

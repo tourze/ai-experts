@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { systemDiagnosticsSkill } from "../system-diagnostics/index";
 
@@ -55,12 +56,24 @@ export const networkTroubleshooterSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先采样 `ip -br addr`、`ip route`、DNS 配置和目标主机/端口，明确症状是 timeout、refused、解析失败还是 TLS/应用错误。",
-      "先用 IP 验证连通性，再用域名验证，拆开路由和 DNS；默认网关、公网 IP、目标域名依次检查。",
-      "端口层用监听状态、`ss`、`/dev/tcp` 或等效探测确认；应用层用 `curl -v`、`openssl s_client` 或日志确认。",
-      "需要改防火墙、路由或 sysctl 时先读取当前配置并征得确认；间歇问题要长时采样。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先采样 `ip -br addr`、`ip route`、DNS 配置和目标主机/端口，明确症状是 timeout、refused、解析失败还是 TLS/应用错误。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "先用 IP 验证连通性，再用域名验证，拆开路由和 DNS；默认网关、公网 IP、目标域名依次检查。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "端口层用监听状态、`ss`、`/dev/tcp` 或等效探测确认；应用层用 `curl -v`、`openssl s_client` 或日志确认。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "需要改防火墙、路由或 sysctl 时先读取当前配置并征得确认；间歇问题要长时采样。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

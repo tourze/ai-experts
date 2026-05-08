@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { redisCachingPatternsSkill } from "../redis-caching-patterns/index";
 import { redisClusterHaSkill } from "../redis-cluster-ha/index";
@@ -76,12 +77,24 @@ export const redisDataModelingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认访问模式：点查、范围、排序、聚合、队列、计数、互斥或幂等；不要只按数据形状选结构。",
-      "按 String/Hash/List/Set/ZSet/Stream 的约束选择结构，并量化单值 10KB、集合 5000 元素等阈值。",
-      "键名使用 `{service}:{object_type}:{id}`，临时键必须 TTL+jitter，永久键要登记；生产遍历用 `SCAN`。",
-      "分布式锁用 `SET key value NX EX seconds` 和唯一 owner token，释放时 Lua 校验；Redlock 需评估独立实例、时钟和多数派。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认访问模式：点查、范围、排序、聚合、队列、计数、互斥或幂等；不要只按数据形状选结构。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按 String/Hash/List/Set/ZSet/Stream 的约束选择结构，并量化单值 10KB、集合 5000 元素等阈值。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "键名使用 `{service}:{object_type}:{id}`，临时键必须 TTL+jitter，永久键要登记；生产遍历用 `SCAN`。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "分布式锁用 `SET key value NX EX seconds` 和唯一 owner token，释放时 Lua 校验；Redlock 需评估独立实例、时钟和多数派。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

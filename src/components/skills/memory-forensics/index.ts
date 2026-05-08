@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { binaryAnalysisPatternsSkill } from "../binary-analysis-patterns/index";
 
@@ -55,13 +56,28 @@ export const memoryForensicsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认镜像来源、平台、采集时间、时区、哈希和 Volatility profile / symbol 状态。",
-      "建立基线：系统信息、进程树、命令行、网络连接、模块和句柄。",
-      "围绕异常进程、网络端点、可疑模块和注入痕迹做多插件交叉验证。",
-      "导出对象前记录 offset、PID、路径、hash 和关联时间线，原始镜像只读保存。",
-      "常用 Volatility 初筛命令读取 `volatility-triage`；可疑模块再交给 `binary-analysis-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认镜像来源、平台、采集时间、时区、哈希和 Volatility profile / symbol 状态。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "建立基线：系统信息、进程树、命令行、网络连接、模块和句柄。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "围绕异常进程、网络端点、可疑模块和注入痕迹做多插件交叉验证。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "导出对象前记录 offset、PID、路径、hash 和关联时间线，原始镜像只读保存。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "常用 Volatility 初筛命令读取 `volatility-triage`；可疑模块再交给 `binary-analysis-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

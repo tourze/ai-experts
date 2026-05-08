@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { modernWebDesignSkill } from "../modern-web-design/index";
 import { responsiveDesignSkill } from "../responsive-design/index";
@@ -66,14 +67,32 @@ export const designSystemPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先审计现有颜色、字号、间距、圆角、阴影、组件变体和硬编码值，确认真实业务页面。",
-      "建立三层 token：原始值、语义值、组件值；组件只能引用 token，不直接写品牌色或硬编码值。",
-      "用 CSS 变量或等价机制做主题切换，深色、多品牌和多租户覆盖不进入组件内部判断。",
-      "稳定组件 API：variant、size、state 和业务语义先定，避免无限灵活的 props。",
-      "需要 AI 协作持久化时落三层 Markdown：BRAND、MASTER、pages/<slug> overrides，按 BRAND → MASTER → page 顺序拼上下文。",
-      "需要 Tailwind、主题架构或组件接口细节时读取对应 reference，并用至少一个真实业务页面验证 token 可复用性。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先审计现有颜色、字号、间距、圆角、阴影、组件变体和硬编码值，确认真实业务页面。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "建立三层 token：原始值、语义值、组件值；组件只能引用 token，不直接写品牌色或硬编码值。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "用 CSS 变量或等价机制做主题切换，深色、多品牌和多租户覆盖不进入组件内部判断。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "稳定组件 API：variant、size、state 和业务语义先定，避免无限灵活的 props。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "需要 AI 协作持久化时落三层 Markdown：BRAND、MASTER、pages/<slug> overrides，按 BRAND → MASTER → page 顺序拼上下文。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "需要 Tailwind、主题架构或组件接口细节时读取对应 reference，并用至少一个真实业务页面验证 token 可复用性。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

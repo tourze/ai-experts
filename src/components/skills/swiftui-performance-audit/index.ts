@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { swiftConcurrencyExpertSkill } from "../swift-concurrency-expert/index";
 import { swiftuiUiPatternsSkill } from "../swiftui-ui-patterns/index";
@@ -58,14 +59,32 @@ export const swiftuiPerformanceAuditSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先审查列表、动画和高频刷新区域，定位身份稳定性、状态扇出、主线程重活和布局链复杂度。",
-      "检查 `ForEach` 身份是否稳定，避免 `UUID()`、不稳定 `id: \\.self` 和临时排序/过滤导致树重建。",
-      "把排序、格式化、图片解码、数据库、网络副作用和其他重计算移出 `body`。",
-      "缩小状态扇出：让行视图只接收必要值，根视图持有状态，下游避免无关重绘。",
-      "代码审查不足以定案时，要求 SwiftUI template 与 Time Profiler trace，并按同一交互路径复测。",
-      "修复后比较 CPU、掉帧、hang、内存峰值和用户可感知路径，不把 `.equatable()` 或缓存当万用药。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先审查列表、动画和高频刷新区域，定位身份稳定性、状态扇出、主线程重活和布局链复杂度。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "检查 `ForEach` 身份是否稳定，避免 `UUID()`、不稳定 `id: \\.self` 和临时排序/过滤导致树重建。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "把排序、格式化、图片解码、数据库、网络副作用和其他重计算移出 `body`。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "缩小状态扇出：让行视图只接收必要值，根视图持有状态，下游避免无关重绘。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "代码审查不足以定案时，要求 SwiftUI template 与 Time Profiler trace，并按同一交互路径复测。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "修复后比较 CPU、掉帧、hang、内存峰值和用户可感知路径，不把 `.equatable()` 或缓存当万用药。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { helmChartScaffoldingSkill } from "../helm-chart-scaffolding/index";
 
@@ -51,13 +52,28 @@ export const gitlabCiPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认流水线目标、runner 类型、分支策略、制品生命周期、部署环境和失败后要保留的证据。",
-      "按 lint、test、build、deploy 拆 stage，用 needs 表达并行依赖，不把所有步骤塞进单 job。",
-      "优先使用 rules 和 needs；避免扩散 only/except；基础镜像固定版本。",
-      "区分 cache、artifacts 和部署产物：cache 用于依赖复用，artifacts 用于跨 job 传递和审计保留。",
-      "生产部署必须绑定 environment、protected branch、人工门禁或审批；Helm/Kubernetes 发布联动 helm-chart-scaffolding。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认流水线目标、runner 类型、分支策略、制品生命周期、部署环境和失败后要保留的证据。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按 lint、test、build、deploy 拆 stage，用 needs 表达并行依赖，不把所有步骤塞进单 job。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "优先使用 rules 和 needs；避免扩散 only/except；基础镜像固定版本。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "区分 cache、artifacts 和部署产物：cache 用于依赖复用，artifacts 用于跨 job 传递和审计保留。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "生产部署必须绑定 environment、protected branch、人工门禁或审批；Helm/Kubernetes 发布联动 helm-chart-scaffolding。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

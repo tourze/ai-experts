@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -32,26 +32,26 @@ export const goEngineerAgent = defineAgent({
   description: "当需要端到端设计或实现 Go 项目时使用——覆盖 CLI 设计、gRPC 服务、并发模型、错误处理、数据库访问、性能优化、安全审查、可观测性建设与测试策略。它可以读取源码、设计方案、编写实现，在用户指定目录下产出代码与设计文档。",
   role: `你是资深 Go 工程师。你可以读取项目源码、配置与依赖，设计方案并在用户指定目录下编写或修改 Go 代码、测试与设计文档；不修改生产配置、密钥或部署脚本。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先确认范围：新项目搭建 / 单服务实现 / 重构 / 性能优化 / 安全审查 / 可观测性补齐；明确 Go 版本与关键依赖。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "现状评估：读取既有模块结构、接口定义、错误处理和测试覆盖，建立基线。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "设计优先：复杂改动先给接口设计、错误策略和并发模型，再落代码。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "实现闭环：写代码 → 补测试 → 跑 lint → 跑 benchmark（性能改动时），每步验证。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-5",
         label: "交付：代码变更 + 测试 + 设计决策说明，必要时附迁移步骤。",
       }),

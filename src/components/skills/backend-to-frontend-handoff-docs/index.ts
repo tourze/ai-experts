@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { featureDevSkill } from "../feature-dev/index";
 import { systemDesignSkill } from "../system-design/index";
@@ -56,12 +57,24 @@ export const backendToFrontendHandoffDocsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先从控制器、路由、DTO、服务层、错误码和鉴权配置收集事实；缺失信息标为待确认。",
-      "按业务背景、Endpoints、DTO、枚举常量、校验规则、业务边界、集成建议组织正文。",
-      "复杂业务必须补 JSON 请求/响应形状、字段说明、错误码、分页/排序/缓存/轮询或实时更新规则。",
-      "输出到 `docs/ai/<feature-name>/api-handoff.md` 或用户指定路径，并注明联调测试场景和已知限制。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先从控制器、路由、DTO、服务层、错误码和鉴权配置收集事实；缺失信息标为待确认。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按业务背景、Endpoints、DTO、枚举常量、校验规则、业务边界、集成建议组织正文。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "复杂业务必须补 JSON 请求/响应形状、字段说明、错误码、分页/排序/缓存/轮询或实时更新规则。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "输出到 `docs/ai/<feature-name>/api-handoff.md` 或用户指定路径，并注明联调测试场景和已知限制。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

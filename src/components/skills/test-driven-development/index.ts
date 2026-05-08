@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { testingStrategySkill } from "../testing-strategy/index";
 import { testingPatternsSkill } from "../testing-patterns/index";
@@ -72,12 +73,24 @@ export const testDrivenDevelopmentSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先写一个当前行为的失败测试，并亲眼确认失败原因是功能缺失而不是环境或断言错误。",
-      "绿灯阶段只写刚好通过该测试的生产代码，不顺手实现未来需求。",
-      "测试通过后再重构命名、重复和结构，重构不改变行为并持续跑相关测试。",
-      "RED/GREEN/REFACTOR 示例读取 `red-green-refactor-patterns`；纪律和 mock 风险读取 discipline / testing anti-pattern references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先写一个当前行为的失败测试，并亲眼确认失败原因是功能缺失而不是环境或断言错误。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "绿灯阶段只写刚好通过该测试的生产代码，不顺手实现未来需求。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "测试通过后再重构命名、重复和结构，重构不改变行为并持续跑相关测试。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "RED/GREEN/REFACTOR 示例读取 `red-green-refactor-patterns`；纪律和 mock 风险读取 discipline / testing anti-pattern references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { grillMeSkill } from "../grill-me/index";
 import { whatIfOracleSkill } from "../what-if-oracle/index";
@@ -59,14 +60,32 @@ export const consciousnessCouncilSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先判断模式：用户要专家多视角、council 或角色冲突时用角色议会；要六顶帽子、复盘或团队分歧时用六顶思考帽。",
-      "角色议会选 4-6 个有真实冲突的角色，例如架构师、唱反调者、实证派、伦理派、未来派、务实派、历史派或局外人。",
-      "每个角色必须输出立场、推理、关键风险和意外洞见；不能只是换措辞赞同。",
-      "六顶思考帽模式先读取 six-hats-guide，团队或单人场景分别读取对应模板。",
-      "综合时提炼共识、核心张力、共同盲点、建议路径和信心等级，不复读每个角色。",
-      "需要行业化角色配方或复杂参数时读取 advanced-configurations。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先判断模式：用户要专家多视角、council 或角色冲突时用角色议会；要六顶帽子、复盘或团队分歧时用六顶思考帽。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "角色议会选 4-6 个有真实冲突的角色，例如架构师、唱反调者、实证派、伦理派、未来派、务实派、历史派或局外人。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "每个角色必须输出立场、推理、关键风险和意外洞见；不能只是换措辞赞同。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "六顶思考帽模式先读取 six-hats-guide，团队或单人场景分别读取对应模板。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "综合时提炼共识、核心张力、共同盲点、建议路径和信心等级，不复读每个角色。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "需要行业化角色配方或复杂参数时读取 advanced-configurations。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { rustAsyncPatternsSkill } from "../rust-async-patterns/index";
 import { rustOwnershipIdiomsSkill } from "../rust-ownership-idioms/index";
@@ -62,12 +63,24 @@ export const rustErrorHandlingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认当前 crate 是库、二进制入口、内部模块还是原型脚本。",
-      "按 API 稳定性、调用方是否需要 match、上下文补充和传播边界选择 thiserror、anyhow 或自定义类型。",
-      "消除生产路径中的 `unwrap()` / `expect()`，公共 `Result` API 同步补齐 `# Errors` 文档。",
-      "错误类型选择速查读取 `error-type-decision`，详细模式读取 `chapter-04`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认当前 crate 是库、二进制入口、内部模块还是原型脚本。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按 API 稳定性、调用方是否需要 match、上下文补充和传播边界选择 thiserror、anyhow 或自定义类型。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "消除生产路径中的 `unwrap()` / `expect()`，公共 `Result` API 同步补齐 `# Errors` 文档。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "错误类型选择速查读取 `error-type-decision`，详细模式读取 `chapter-04`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

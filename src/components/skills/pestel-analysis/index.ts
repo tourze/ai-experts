@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { portersFiveForcesSkill } from "../porters-five-forces/index";
 import { swotAnalysisSkill } from "../swot-analysis/index";
@@ -59,14 +60,32 @@ export const pestelAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认目标市场、行业、地区、时间窗口和战略问题，例如进入、投资、融资或风险评估。",
-      "读取 `pestel-template` reference，按 Political、Economic、Social、Technological、Environmental、Legal 六维扫描。",
-      "每个关键因素都标注来源、时效、影响方向、时间窗、量级和不确定性。",
-      "只展开与业务有直接因果关系的因素，不把新闻罗列当作分析。",
-      "用影响矩阵判断立即行动、制定方案、纳入路线图、情景规划或保持监测。",
-      "需要行业结构判断时联动 `porters-five-forces`；需要转成机会/威胁时联动 `swot-analysis`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认目标市场、行业、地区、时间窗口和战略问题，例如进入、投资、融资或风险评估。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "读取 `pestel-template` reference，按 Political、Economic、Social、Technological、Environmental、Legal 六维扫描。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "每个关键因素都标注来源、时效、影响方向、时间窗、量级和不确定性。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "只展开与业务有直接因果关系的因素，不把新闻罗列当作分析。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "用影响矩阵判断立即行动、制定方案、纳入路线图、情景规划或保持监测。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "需要行业结构判断时联动 `porters-five-forces`；需要转成机会/威胁时联动 `swot-analysis`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

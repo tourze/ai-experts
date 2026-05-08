@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const brainstormingBeforeCodingSkill = defineSkill({
@@ -39,15 +40,36 @@ export const brainstormingBeforeCodingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先探索相关文件、文档、最近提交和已有模式；多子系统请求先建议拆分。",
-      "一次只问一个澄清问题，优先选择题，聚焦目的、约束和成功标准。",
-      "提出 2-3 个方案，每个方案附权衡，明确推荐方案和原因，让用户选择。",
-      "分段展示设计，按复杂度控制篇幅，覆盖架构、组件、数据流、错误处理和测试策略。",
-      "每段后确认理解；用户否定时回到澄清或方案阶段修正。",
-      "只有用户明确批准设计后，才转向 feature-dev、task-decomposer 或 plan-review。",
-      "若用户 prompt 已给完整设计规格，或明确说直接做/不用讨论，确认理解后可简化。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先探索相关文件、文档、最近提交和已有模式；多子系统请求先建议拆分。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "一次只问一个澄清问题，优先选择题，聚焦目的、约束和成功标准。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "提出 2-3 个方案，每个方案附权衡，明确推荐方案和原因，让用户选择。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "分段展示设计，按复杂度控制篇幅，覆盖架构、组件、数据流、错误处理和测试策略。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "每段后确认理解；用户否定时回到澄清或方案阶段修正。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "只有用户明确批准设计后，才转向 feature-dev、task-decomposer 或 plan-review。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "若用户 prompt 已给完整设计规格，或明确说直接做/不用讨论，确认理解后可简化。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

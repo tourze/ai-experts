@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { goConcurrencyPatternsSkill } from "../go-concurrency-patterns/index";
 import { goErrorHandlingSkill } from "../go-error-handling/index";
@@ -83,12 +84,24 @@ export const goTroubleshootingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先按现象分流：crash / panic、存活但异常、性能退化或不可稳定复现。",
-      "panic 先读 stack trace；行为异常先收日志、指标和 profile；不可复现先补观测。",
-      "一次只验证一个假设，失败假设要记录，避免同时改多个变量。",
-      "调试决策树读取 `debugging-decision-tree`；工具和方法论细节读取 `diagnostic-tools` / `methodology`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先按现象分流：crash / panic、存活但异常、性能退化或不可稳定复现。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "panic 先读 stack trace；行为异常先收日志、指标和 profile；不可复现先补观测。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "一次只验证一个假设，失败假设要记录，避免同时改多个变量。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "调试决策树读取 `debugging-decision-tree`；工具和方法论细节读取 `diagnostic-tools` / `methodology`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

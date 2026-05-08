@@ -2,10 +2,11 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, debugMethodologyDebugChecklist } from "../../procedures/index";
 import { refactoringChecklistSkill } from "../refactoring-checklist/index";
@@ -53,13 +54,28 @@ export const debugMethodologySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先用一句话写下用户可观察到的问题和期望/实际差异；必要时调用 debug-checklist 生成六步骨架。",
-      "按复现、隔离、假设、验证、修复、回归测试推进，不跳过复现直接猜原因。",
-      "每轮只验证一个假设，记录命令、环境、输入、输出摘要和反证结果；假设 10 分钟未证实就换。",
-      "找到看似合理来源时先做最小复刻验证，复现或反证通过后才改代码。",
-      "修复针对根因最小化落地，补回归测试并跑现有测试；LLDB/GDB 场景按对应 reference 分诊。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先用一句话写下用户可观察到的问题和期望/实际差异；必要时调用 debug-checklist 生成六步骨架。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按复现、隔离、假设、验证、修复、回归测试推进，不跳过复现直接猜原因。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "每轮只验证一个假设，记录命令、环境、输入、输出摘要和反证结果；假设 10 分钟未证实就换。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "找到看似合理来源时先做最小复刻验证，复现或反证通过后才改代码。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "修复针对根因最小化落地，补回归测试并跑现有测试；LLDB/GDB 场景按对应 reference 分诊。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

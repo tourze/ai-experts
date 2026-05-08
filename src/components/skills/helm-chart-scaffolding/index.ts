@@ -6,7 +6,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, helmChartScaffoldingValidateChart } from "../../procedures/index";
 
@@ -56,13 +57,28 @@ export const helmChartScaffoldingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认服务类型、部署环境、镜像、网络、资源、安全、依赖项和是否需要从 Kubernetes manifest 收敛为 Chart。",
-      "默认使用 apiVersion v2 的 application chart，并保留 Chart.yaml、values.yaml、templates/ 和必要 _helpers.tpl。",
-      "values.yaml 按镜像、网络、资源、安全、依赖项分层；环境差异下沉到 values 文件，不复制模板。",
-      "Chart.yaml 和 values.yaml 最小骨架优先复用 chart-yaml 与 values-yaml assets；复杂目录和模板模式读取 chart-structure。",
-      "交付前运行 helm lint、模板渲染、dry-run 路径和 helm-chart-scaffolding-validate-chart procedure。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认服务类型、部署环境、镜像、网络、资源、安全、依赖项和是否需要从 Kubernetes manifest 收敛为 Chart。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "默认使用 apiVersion v2 的 application chart，并保留 Chart.yaml、values.yaml、templates/ 和必要 _helpers.tpl。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "values.yaml 按镜像、网络、资源、安全、依赖项分层；环境差异下沉到 values 文件，不复制模板。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Chart.yaml 和 values.yaml 最小骨架优先复用 chart-yaml 与 values-yaml assets；复杂目录和模板模式读取 chart-structure。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "交付前运行 helm lint、模板渲染、dry-run 路径和 helm-chart-scaffolding-validate-chart procedure。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

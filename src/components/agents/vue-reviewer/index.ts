@@ -1,10 +1,10 @@
 import {
   AgentSandbox,
   defineAgent,
-  defineAgentWorkflow,
-  defineAgentWorkflowGate,
-  defineAgentWorkflowRoute,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowGate,
+  defineWorkflowRoute,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -21,22 +21,22 @@ export const vueReviewerAgent = defineAgent({
   description: "当需要只读审查 Vue 3 Composition API、响应式、组件设计、Pinia、Router 和模板性能 时使用。",
   role: `你是资深 Vue.js 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     gates: [
-      defineAgentWorkflowGate({
+      defineWorkflowGate({
         id: "gate-1",
         skill: vueExpertJsSkill.id,
         label: "门禁 1",
         checks: "组件结构基线：script setup、响应式 API 使用、composable 规范",
       }),
-      defineAgentWorkflowGate({
+      defineWorkflowGate({
         id: "gate-2",
         skill: modernJavascriptPatternsSkill.id,
         label: "门禁 2",
         checks: "JS 惯用法：模块系统、解构、可选链",
       }),
-      defineAgentWorkflowGate({
+      defineWorkflowGate({
         id: "gate-3",
         skill: evidenceQualityFrameworkSkill.id,
         label: "门禁 3",
@@ -44,42 +44,42 @@ export const vueReviewerAgent = defineAgent({
       }),
     ],
     routes: [
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-vue-expert-js",
         triggers: ["ref", "reactive", "computed", "watch", "watchEffect"],
         skill: vueExpertJsSkill.id,
         checks: "响应式丢失、watch 深度监听、computed 副作用、shallowRef 误用",
         output: "响应式审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-vue-expert-js-2",
         triggers: ["use[A-Z]", "onMounted", "onUnmounted"],
         skill: vueExpertJsSkill.id,
         checks: "composable 返回契约、cleanup 注册、命名规范、职责边界",
         output: "Composable 审查",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-vue-expert-js-3",
         triggers: ["props", "emits", "defineProps", "defineEmits", "slot"],
         skill: vueExpertJsSkill.id,
         checks: "props 验证、emits 声明、组件拆分粒度、slot 类型安全",
         output: "组件接口审查",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-vue-expert-js-4",
         triggers: ["<RouterView>", "useRouter", "useRoute", "router-link"],
         skill: vueExpertJsSkill.id,
         checks: "路由 guard、lazy loading、参数传递、导航守卫",
         output: "路由审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-vue-expert-js-5",
         triggers: ["createPinia", "defineStore", "storeToRefs"],
         skill: vueExpertJsSkill.id,
         checks: "store 边界、action 异步处理、getter 计算、store 拆分",
         output: "状态管理审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-vue-expert-js-6",
         triggers: ["v-for", "v-if", "v-show", "<template>"],
         skill: vueExpertJsSkill.id,
@@ -88,23 +88,23 @@ export const vueReviewerAgent = defineAgent({
       }),
     ],
     finalSteps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-1",
         label: "门禁：vue-expert-js → modern-javascript-patterns → 确认基线",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-2",
         label: "路由：按 diff 内容匹配场景路由表，逐项深入",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-3",
         label: "证据：每条发现绑定 文件:行 + 代码片段",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-4",
         label: "标注：事实/推断/假设",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-5",
         label: "排序：安全 > 正确性 > 影响面 > 执行成本",
       }),

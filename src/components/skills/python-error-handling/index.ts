@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const pythonErrorHandlingSkill = defineSkill({
@@ -41,12 +42,24 @@ export const pythonErrorHandlingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先划清错误边界：输入验证、业务规则、外部依赖、系统故障和批处理部分失败。",
-      "只捕获能处理的异常，应用层异常向外映射为稳定 code/message，内部异常保留堆栈。",
-      "批处理要保留成功项、失败项和失败原因，不用一个布尔值盖住全部结果。",
-      "异常层级和 ErrorResponse 代码模式读取 `error-contract-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先划清错误边界：输入验证、业务规则、外部依赖、系统故障和批处理部分失败。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "只捕获能处理的异常，应用层异常向外映射为稳定 code/message，内部异常保留堆栈。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "批处理要保留成功项、失败项和失败原因，不用一个布尔值盖住全部结果。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "异常层级和 ErrorResponse 代码模式读取 `error-contract-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

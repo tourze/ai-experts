@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const rustSerdePatternsSkill = defineSkill({
@@ -48,12 +49,24 @@ export const rustSerdePatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认数据格式、兼容性要求、enum 标签策略、未知字段策略和热路径性能要求。",
-      "检查新增字段是否有 default / Option，重命名字段是否保留 alias，Deserialize 是否返回错误而非 panic。",
-      "只在 API 入口使用 `deny_unknown_fields`，热路径谨慎使用 `flatten`。",
-      "按需读取 `patterns` 中的 internally tagged enum、结构体演进、Duration 编码和校验模式。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认数据格式、兼容性要求、enum 标签策略、未知字段策略和热路径性能要求。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "检查新增字段是否有 default / Option，重命名字段是否保留 alias，Deserialize 是否返回错误而非 panic。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "只在 API 入口使用 `deny_unknown_fields`，热路径谨慎使用 `flatten`。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "按需读取 `patterns` 中的 internally tagged enum、结构体演进、Duration 编码和校验模式。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

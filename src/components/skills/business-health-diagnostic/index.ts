@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { processOptimizationSkill } from "../process-optimization/index";
 
@@ -53,14 +54,32 @@ export const businessHealthDiagnosticSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认业务类型、阶段、时间窗口、可用指标和对标基准。",
-      "读取 `health-scorecard-template` reference，按增长、留存、效率、现金四象限收集当前值、趋势和基准。",
-      "为每个指标定义红黄绿阈值，不用主观感觉替代状态判断。",
-      "判断最强象限、最弱象限和跨象限因果关系，例如增长变快但现金效率恶化。",
-      "需要专项诊断时读取 `balanced-scorecard`、`blm-model` 或 `mckinsey-7s` reference；发现流程瓶颈时联动 `process-optimization`。",
-      "把结论收敛到 Top 3 优先行动，每个行动绑定目标指标、预期变化和复诊时间。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认业务类型、阶段、时间窗口、可用指标和对标基准。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "读取 `health-scorecard-template` reference，按增长、留存、效率、现金四象限收集当前值、趋势和基准。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "为每个指标定义红黄绿阈值，不用主观感觉替代状态判断。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "判断最强象限、最弱象限和跨象限因果关系，例如增长变快但现金效率恶化。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "需要专项诊断时读取 `balanced-scorecard`、`blm-model` 或 `mckinsey-7s` reference；发现流程瓶颈时联动 `process-optimization`。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "把结论收敛到 Top 3 优先行动，每个行动绑定目标指标、预期变化和复诊时间。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

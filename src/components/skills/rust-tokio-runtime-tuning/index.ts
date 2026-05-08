@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const rustTokioRuntimeTuningSkill = defineSkill({
@@ -44,12 +45,24 @@ export const rustTokioRuntimeTuningSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认服务类型、部署资源、阻塞操作比例、runtime 生命周期和观测数据。",
-      "基于测量结果调整 worker_threads、max_blocking_threads、stack_size 和 thread_name。",
-      "同步桥接只在非 async 上下文使用 `block_on`，async 内直接 await。",
-      "按需读取 `patterns` 中的 Runtime Builder、按需创建、block_on 桥接和 runtime metrics 模式。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认服务类型、部署资源、阻塞操作比例、runtime 生命周期和观测数据。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "基于测量结果调整 worker_threads、max_blocking_threads、stack_size 和 thread_name。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "同步桥接只在非 async 上下文使用 `block_on`，async 内直接 await。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "按需读取 `patterns` 中的 Runtime Builder、按需创建、block_on 桥接和 runtime metrics 模式。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

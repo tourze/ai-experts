@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, remoteSshCommandInstallSshpass, remoteSshCommandSshExec } from "../../procedures/index";
 
@@ -40,12 +41,24 @@ export const remoteSshCommandSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先读取或创建 `~/.host/<host>.json`，字段包含 `host`、`port`、`user`、`timeoutSeconds` 和 `auth.type=password`。",
-      "如本机缺少 `sshpass`，先调用安装 procedure；不要把密码或远端命令放进 CLI 参数。",
-      "把完整远端命令经 stdin 传给 `remote-ssh-command-ssh-exec`，例如用 `printf '%s\\n' '<command>' | procedure ... ~/.host/<host>.json` 的形态执行。",
-      "根据本地退出码判断远端命令结果；需要审计时读取 `~/.host/<host>.history` 的 JSONL 记录，但不要把远端输出写入 history。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先读取或创建 `~/.host/<host>.json`，字段包含 `host`、`port`、`user`、`timeoutSeconds` 和 `auth.type=password`。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "如本机缺少 `sshpass`，先调用安装 procedure；不要把密码或远端命令放进 CLI 参数。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "把完整远端命令经 stdin 传给 `remote-ssh-command-ssh-exec`，例如用 `printf '%s\\n' '<command>' | procedure ... ~/.host/<host>.json` 的形态执行。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "根据本地退出码判断远端命令结果；需要审计时读取 `~/.host/<host>.history` 的 JSONL 记录，但不要把远端输出写入 history。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

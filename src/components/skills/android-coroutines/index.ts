@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const androidCoroutinesSkill = defineSkill({
@@ -51,14 +52,32 @@ export const androidCoroutinesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认协程运行位置：ViewModel、Repository、DataSource、Worker、Application scope 或 UI 生命周期。",
-      "检查 dispatcher 注入、main-safe suspend 函数和测试 dispatcher，避免硬编码线程池导致不可测。",
-      "检查 Flow 收集是否绑定生命周期，Fragment / Activity 使用 `repeatOnLifecycle(STARTED)`。",
-      "检查结构化并发：避免 `GlobalScope`，长任务要有明确 owner、取消传播和错误上报路径。",
-      "检查紧密循环、callbackFlow、Channel 和异常处理；代码模式读取 `advanced-patterns` reference。",
-      "修复后用 `runTest`、`advanceUntilIdle` 和泄漏 / 生命周期路径复测。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认协程运行位置：ViewModel、Repository、DataSource、Worker、Application scope 或 UI 生命周期。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "检查 dispatcher 注入、main-safe suspend 函数和测试 dispatcher，避免硬编码线程池导致不可测。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "检查 Flow 收集是否绑定生命周期，Fragment / Activity 使用 `repeatOnLifecycle(STARTED)`。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "检查结构化并发：避免 `GlobalScope`，长任务要有明确 owner、取消传播和错误上报路径。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "检查紧密循环、callbackFlow、Channel 和异常处理；代码模式读取 `advanced-patterns` reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "修复后用 `runTest`、`advanceUntilIdle` 和泄漏 / 生命周期路径复测。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

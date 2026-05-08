@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const testingPatternsSkill = defineSkill({
@@ -53,12 +54,24 @@ export const testingPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认测试目标是行为合同、边界条件、失败路径还是回归保护，不从内部实现反推测试。",
-      "按 AAA 和 FIRST 检查结构、速度、独立性、可重复性和自验证能力。",
-      "选择 fixture 与 test double 策略，优先隔离外部边界而不是 mock 内部业务逻辑。",
-      "通用示例、命名约定和反模式读取 `testing-patterns-guide`；语言语法细节转向对应语言测试 skill。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认测试目标是行为合同、边界条件、失败路径还是回归保护，不从内部实现反推测试。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按 AAA 和 FIRST 检查结构、速度、独立性、可重复性和自验证能力。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "选择 fixture 与 test double 策略，优先隔离外部边界而不是 mock 内部业务逻辑。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "通用示例、命名约定和反模式读取 `testing-patterns-guide`；语言语法细节转向对应语言测试 skill。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

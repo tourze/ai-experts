@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { testingStrategySkill } from "../testing-strategy/index";
 
@@ -58,14 +59,32 @@ export const benchmarkRunnerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先定义 benchmark scope：候选版本、配置边界、决策问题和 2-4 个核心指标。",
-      "设计测试矩阵：小/中/大输入规模、生产常见载荷、边界压力、预热次数和正式迭代次数。",
-      "固定环境：硬件、系统、运行时、依赖版本、关键配置、端口、并发度和数据集。",
-      "给出可复现执行命令；能运行时采集结果，不能运行时只输出实验设计。",
-      "报告 p50/p95/p99、吞吐、峰值 RSS、样本数、波动和异常值，不只报平均值。",
-      "按指标拆结论和取舍，并写明实验局限、不可外推条件和下一轮验证。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先定义 benchmark scope：候选版本、配置边界、决策问题和 2-4 个核心指标。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "设计测试矩阵：小/中/大输入规模、生产常见载荷、边界压力、预热次数和正式迭代次数。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "固定环境：硬件、系统、运行时、依赖版本、关键配置、端口、并发度和数据集。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "给出可复现执行命令；能运行时采集结果，不能运行时只输出实验设计。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "报告 p50/p95/p99、吞吐、峰值 RSS、样本数、波动和异常值，不只报平均值。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "按指标拆结论和取舍，并写明实验局限、不可外推条件和下一轮验证。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

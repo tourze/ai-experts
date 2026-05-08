@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const salesEnablementSkill = defineSkill({
@@ -61,12 +62,24 @@ export const salesEnablementSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先锁定买家角色、行业、购买阶段、业务结果和销售使用场景。",
-      "按需求选择材料：面对面演示读 `sales-deck`，会后留资读 `one-pager`，异议处理读 `objection-handling`，量化价值读 `roi-calculator`。",
-      "产品演示读 `demo-script`，了解买家读 `buyer-persona`，推进签约读 `proposal-template`，冷启动触达读 `cold-email`。",
-      "按买家类型定制：技术买家看架构/安全/集成，经济买家看 ROI/TCO/回收周期，内部倡导者看对比和审批材料，终端用户看日常体验。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先锁定买家角色、行业、购买阶段、业务结果和销售使用场景。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按需求选择材料：面对面演示读 `sales-deck`，会后留资读 `one-pager`，异议处理读 `objection-handling`，量化价值读 `roi-calculator`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "产品演示读 `demo-script`，了解买家读 `buyer-persona`，推进签约读 `proposal-template`，冷启动触达读 `cold-email`。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "按买家类型定制：技术买家看架构/安全/集成，经济买家看 ROI/TCO/回收周期，内部倡导者看对比和审批材料，终端用户看日常体验。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

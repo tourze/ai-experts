@@ -6,7 +6,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, copywritingContentFilter } from "../../procedures/index";
 
@@ -58,13 +59,28 @@ export const copywritingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认页面类型、目标受众、核心价值主张、主要 CTA、证明材料、反对意见和 voice & tone。",
-      "写作优先级是 Clarity、Benefits、Specificity、Customer language；风格保持 simple、specific、active、confident、honest。",
-      "页面结构按首屏、社会证明、痛点、解决方案/收益、How it works、FAQ/异议处理、最终 CTA 组合；不同页面读取 page-type-guide。",
-      "CTA 使用 action verb + what they get + qualifier，按钮控制在 5 词内，必要时加低风险说明。",
-      "引用社交平台素材或投放文案前读取 social-platform-safety，并可调用 copywriting-content-filter 做安全过滤。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认页面类型、目标受众、核心价值主张、主要 CTA、证明材料、反对意见和 voice & tone。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "写作优先级是 Clarity、Benefits、Specificity、Customer language；风格保持 simple、specific、active、confident、honest。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "页面结构按首屏、社会证明、痛点、解决方案/收益、How it works、FAQ/异议处理、最终 CTA 组合；不同页面读取 page-type-guide。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "CTA 使用 action verb + what they get + qualifier，按钮控制在 5 词内，必要时加低风险说明。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "引用社交平台素材或投放文案前读取 social-platform-safety，并可调用 copywriting-content-filter 做安全过滤。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

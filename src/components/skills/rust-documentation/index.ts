@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { rustOwnershipIdiomsSkill } from "../rust-ownership-idioms/index";
 import { rustTestingSkill } from "../rust-testing/index";
@@ -66,12 +67,24 @@ export const rustDocumentationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先区分注释、公共 API 文档和模块级 `//!` 文档的职责。",
-      "为公共函数补齐摘要、Examples、Errors、Panics 和 unsafe Safety 不变量。",
-      "确保示例代码可作为文档测试编译，注释只解释 why，不翻译代码。",
-      "段落速查读取 `doc-section-guide`，详细 rustdoc 规范读取 `chapter-08`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先区分注释、公共 API 文档和模块级 `//!` 文档的职责。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "为公共函数补齐摘要、Examples、Errors、Panics 和 unsafe Safety 不变量。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "确保示例代码可作为文档测试编译，注释只解释 why，不翻译代码。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "段落速查读取 `doc-section-guide`，详细 rustdoc 规范读取 `chapter-08`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

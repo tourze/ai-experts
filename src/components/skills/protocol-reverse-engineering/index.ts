@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { binaryAnalysisPatternsSkill } from "../binary-analysis-patterns/index";
 import { wiresharkAnalysisSkill } from "../wireshark-analysis/index";
@@ -58,13 +59,28 @@ export const protocolReverseEngineeringSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先整理多个请求 / 响应样本，标注方向、时间、端点、会话状态和采集点。",
-      "拆分传输层、帧边界、长度字段、消息类型、序号、校验和、压缩或加密层。",
-      "用多样本差异推字段含义，不确定字段标置信度，避免单包命名。",
-      "把状态转换、错误码和重传 / 心跳 / 握手流程单独建表。",
-      "常用 tshark / xxd 初筛命令读取 `frame-triage`；字段需要实现证据时联动 `binary-analysis-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先整理多个请求 / 响应样本，标注方向、时间、端点、会话状态和采集点。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "拆分传输层、帧边界、长度字段、消息类型、序号、校验和、压缩或加密层。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "用多样本差异推字段含义，不确定字段标置信度，避免单包命名。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "把状态转换、错误码和重传 / 心跳 / 握手流程单独建表。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "常用 tshark / xxd 初筛命令读取 `frame-triage`；字段需要实现证据时联动 `binary-analysis-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

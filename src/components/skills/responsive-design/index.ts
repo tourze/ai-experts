@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { modernWebDesignSkill } from "../modern-web-design/index";
 import { webPerformanceDiagnosisSkill } from "../web-performance-diagnosis/index";
@@ -69,12 +70,24 @@ export const responsiveDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认窄屏核心路径、内容长度、触控目标、图片 / 表格 / 媒体和容器边界。",
-      "基础样式服务窄屏，再逐步增强到大屏；组件级响应优先 container queries。",
-      "断点跟内容走，图片声明 width/height、srcset、sizes，字号用 clamp 但不牺牲可读性。",
-      "container query、clamp、responsive image 示例读取 `responsive-code-patterns`；策略细节读取 breakpoint / container / fluid references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认窄屏核心路径、内容长度、触控目标、图片 / 表格 / 媒体和容器边界。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "基础样式服务窄屏，再逐步增强到大屏；组件级响应优先 container queries。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "断点跟内容走，图片声明 width/height、srcset、sizes，字号用 clamp 但不牺牲可读性。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "container query、clamp、responsive image 示例读取 `responsive-code-patterns`；策略细节读取 breakpoint / container / fluid references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

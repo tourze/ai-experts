@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { asyncPythonPatternsSkill } from "../async-python-patterns/index";
 import { pythonErrorHandlingSkill } from "../python-error-handling/index";
@@ -74,12 +75,24 @@ export const pythonBackgroundJobsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认上游接单 API、任务 payload、幂等键、状态表、worker 数量、超时和重试策略。",
-      "入口只返回 `job_id`，worker 读取稳定可序列化 payload，状态机显式记录 pending/running/succeeded/failed。",
-      "瞬时错误才重试，永久错误落失败或死信；任务执行要可重放。",
-      "Job dataclass、状态枚举和 QueueBackend 协议示例读取 `job-model-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认上游接单 API、任务 payload、幂等键、状态表、worker 数量、超时和重试策略。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "入口只返回 `job_id`，worker 读取稳定可序列化 payload，状态机显式记录 pending/running/succeeded/failed。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "瞬时错误才重试，永久错误落失败或死信；任务执行要可重放。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Job dataclass、状态枚举和 QueueBackend 协议示例读取 `job-model-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

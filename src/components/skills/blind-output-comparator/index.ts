@@ -4,7 +4,8 @@ import {
   defineSkill,
   defineAntiPattern,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const blindOutputComparatorSkill = defineSkill({
@@ -45,12 +46,24 @@ export const blindOutputComparatorSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先读取原始任务、expectations 和 A/B 输出完整内容；输出是目录时检查所有相关文件。",
-      "保持盲评，不推断来源、模型、作者或实现路径；根据任务生成专属 rubric。",
-      "Rubric 同时覆盖内容正确性、完整性、准确性、结构、格式和可用性；expectations 只作为次要证据。",
-      "除非确实等价，否则选择 A 或 B，并具体说明胜者强在哪里、败者差在哪里。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先读取原始任务、expectations 和 A/B 输出完整内容；输出是目录时检查所有相关文件。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "保持盲评，不推断来源、模型、作者或实现路径；根据任务生成专属 rubric。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "Rubric 同时覆盖内容正确性、完整性、准确性、结构、格式和可用性；expectations 只作为次要证据。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "除非确实等价，否则选择 A 或 B，并具体说明胜者强在哪里、败者差在哪里。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

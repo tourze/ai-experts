@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -18,18 +18,18 @@ export const bugInvestigatorAgent = defineAgent({
   description: "当需要调查 bug、日志、stack trace 或回归原因时使用。它只读追踪执行路径、提出可证伪假设并定位根因。",
   role: `你是资深调试工程师。你只能读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先确认用户目标、输入范围、约束和验收标准。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "读取相关文件、配置、调用点和同层模式，建立证据链。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "按安全性、正确性、影响面和执行成本排序输出。",
       }),

@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { pythonDesignPatternsSkill } from "../python-design-patterns/index";
 import { pythonErrorHandlingSkill } from "../python-error-handling/index";
@@ -70,12 +71,24 @@ export const pythonTypeSafetySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先标注公共函数、类属性、跨层 DTO 和外部输入边界，再逐步收敛内部实现。",
-      "优先用 Protocol、TypedDict、TypeGuard 和泛型表达真实约束，`Any` 只允许在边界适配层有解释。",
-      "静态类型不能替代运行时校验，外部输入仍要验证后再进入核心逻辑。",
-      "TypedDict、Protocol 和 TypeGuard 代码模式读取 `type-boundary-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先标注公共函数、类属性、跨层 DTO 和外部输入边界，再逐步收敛内部实现。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "优先用 Protocol、TypedDict、TypeGuard 和泛型表达真实约束，`Any` 只允许在边界适配层有解释。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "静态类型不能替代运行时校验，外部输入仍要验证后再进入核心逻辑。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "TypedDict、Protocol 和 TypeGuard 代码模式读取 `type-boundary-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

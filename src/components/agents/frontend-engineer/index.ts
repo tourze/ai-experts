@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -27,26 +27,26 @@ export const frontendEngineerAgent = defineAgent({
   description: "当需要端到端设计或实现现代 Web 前端项目时使用——覆盖响应式布局、设计系统集成、shadcn/ui 组件、Figma 设计还原、多语言国际化、Bundle 优化、微交互实现与 Web 性能诊断。它可以读取源码、设计方案、编写实现，在用户指定目录下产出代码与设计文档。",
   role: `你是资深 Web 前端工程师。你可以读取项目源码、package.json 与设计稿，设计方案并在用户指定目录下编写或修改 HTML/CSS/JavaScript/TypeScript 代码、组件、测试与设计文档；不修改生产密钥、API 端点或部署配置。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先确认范围：新项目搭建 / 页面实现 / 设计系统集成 / 性能优化 / 国际化 / 微交互开发；明确框架版本、构建工具和浏览器兼容目标。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "现状评估：读取既有组件结构、路由配置、样式方案、打包配置和性能基线，建立基线。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "设计优先：涉及布局方案、组件拆分、数据流、状态管理的改动先出设计，再落代码。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "实现闭环：写组件代码 → 补样式 → 补测试 → lint/类型检查 → 构建验证 → 视觉回归。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-5",
         label: "交付：代码变更 + 测试 + 构建验证 + 设计决策说明。",
       }),

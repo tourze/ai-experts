@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const webmanPluginDevelopmentSkill = defineSkill({
@@ -61,14 +62,32 @@ export const webmanPluginDevelopmentSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认插件 vendor/package、Composer autoload、配置目录、进程需求和安装/卸载行为。",
-      "在 `src/Install.php` 声明 `WEBMAN_PLUGIN = true` 和 `$pathRelation`，路径指向 `config/plugin/{vendor}/{package}/`。",
-      "配置读取统一用 `config('plugin.{vendor}.{package}.{key}')`，避免直接读应用全局配置。",
-      "`mkdir` 权限使用 `0755`，`webman-framework` 放 `require-dev`。",
-      "实现 `uninstall()` 清理已发布配置、进程声明或其它安装副作用。",
-      "输出插件目录结构、Install.php 要点、配置访问方式和发布/卸载检查清单。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认插件 vendor/package、Composer autoload、配置目录、进程需求和安装/卸载行为。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "在 `src/Install.php` 声明 `WEBMAN_PLUGIN = true` 和 `$pathRelation`，路径指向 `config/plugin/{vendor}/{package}/`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "配置读取统一用 `config('plugin.{vendor}.{package}.{key}')`，避免直接读应用全局配置。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "`mkdir` 权限使用 `0755`，`webman-framework` 放 `require-dev`。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "实现 `uninstall()` 清理已发布配置、进程声明或其它安装副作用。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出插件目录结构、Install.php 要点、配置访问方式和发布/卸载检查清单。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

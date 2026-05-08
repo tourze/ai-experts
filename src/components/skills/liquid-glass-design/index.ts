@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { iosHigDesignSkill } from "../ios-hig-design/index";
 import { swiftuiUiPatternsSkill } from "../swiftui-ui-patterns/index";
@@ -54,12 +55,24 @@ export const liquidGlassDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认部署目标、API 可用性和旧系统回退；不做版本判断时不得直接使用 Liquid Glass API。",
-      "多个玻璃元素放入 `GlassEffectContainer` 并通过 spacing 验证融合效果；玻璃只用于强调层级，不铺满整页。",
-      "`interactive()` 只给真实可交互控件；纯装饰层不得伪装成交互层。",
-      "Widget 同时检查 full color 和 accented 模式；复杂变形、性能和版本兼容读取 advanced-patterns reference。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认部署目标、API 可用性和旧系统回退；不做版本判断时不得直接使用 Liquid Glass API。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "多个玻璃元素放入 `GlassEffectContainer` 并通过 spacing 验证融合效果；玻璃只用于强调层级，不铺满整页。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "`interactive()` 只给真实可交互控件；纯装饰层不得伪装成交互层。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Widget 同时检查 full color 和 accented 模式；复杂变形、性能和版本兼容读取 advanced-patterns reference。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

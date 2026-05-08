@@ -4,7 +4,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const specDrivenDeliverySkill = defineSkill({
@@ -26,15 +27,36 @@ export const specDrivenDeliverySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "Specify：按 Value、Scope、Acceptance、Boundaries、Risk 各 0/1/2 评分；低于 9 分先澄清，不进入 Plan。",
-      "Plan：拆 2-5 分钟粒度原子任务，每条带验证命令和依赖顺序，写入 `.sparv/journal.md`。",
-      "Quick 模式仅在 spec ≥9、影响文件 ≤3、无高风险时跳过详细 Plan；Review 不能跳。",
-      "Act：按 Plan 执行，每个任务结束立刻跑对应验证；每 2 次工具调用追加 journal 进度。",
-      "失败处理：1 次调整重试，2 次换角度补上下文，3 次停下问用户。",
-      "Review：对照完成承诺和 Plan 逐条核对，有新鲜证据后才收尾；顺手改动要么回退要么写进 journal。",
-      "Vault：把 Patterns、Decisions、Gotchas 写入 `.sparv/kb.md`；跨 session 状态由 `.sparv/state.yaml`、`journal.md`、`kb.md` 承载。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "Specify：按 Value、Scope、Acceptance、Boundaries、Risk 各 0/1/2 评分；低于 9 分先澄清，不进入 Plan。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "Plan：拆 2-5 分钟粒度原子任务，每条带验证命令和依赖顺序，写入 `.sparv/journal.md`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "Quick 模式仅在 spec ≥9、影响文件 ≤3、无高风险时跳过详细 Plan；Review 不能跳。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Act：按 Plan 执行，每个任务结束立刻跑对应验证；每 2 次工具调用追加 journal 进度。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "失败处理：1 次调整重试，2 次换角度补上下文，3 次停下问用户。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "Review：对照完成承诺和 Plan 逐条核对，有新鲜证据后才收尾；顺手改动要么回退要么写进 journal。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "Vault：把 Patterns、Decisions、Gotchas 写入 `.sparv/kb.md`；跨 session 状态由 `.sparv/state.yaml`、`journal.md`、`kb.md` 承载。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

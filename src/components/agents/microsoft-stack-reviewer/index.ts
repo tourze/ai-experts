@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -18,22 +18,22 @@ export const microsoftStackReviewerAgent = defineAgent({
   description: "当需要只读审查 .NET / Azure / Microsoft SDK 代码，校验 API 签名、官方文档 alignment、配额限制、retry / 异步模式或最佳实践时使用。它不修改业务代码、不调用任何需要凭据的 Azure 资源。",
   role: `你是资深 Microsoft 技术栈工程师。你只能读取、搜索和分析，不修改任何工作区文件，不调用真实的 Azure / 365 / Graph API。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先确认目标：runtime（.NET / Node / Python / Java SDK 等）、SDK 版本、Azure 服务版本、目标平台与最低支持版本。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "区分官方做法、社区惯例与项目自有约定：API 用法以 microsoft-docs 的 references/code-reference.md 为准，配置 / 配额 / 最佳实践以 microsoft-docs 主流程为准；二者来源必须显式标注。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "按\"代码 → 配置 → 运行时 → 监控\"逐层审视；不允许在配置层用代码层的结论。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "按安全性、正确性、影响面与执行成本排序输出。",
       }),

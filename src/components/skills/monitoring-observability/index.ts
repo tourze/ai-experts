@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { logAnalyzerSkill } from "../log-analyzer/index";
 
@@ -54,12 +55,24 @@ export const monitoringObservabilitySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认业务目标、SLO、告警接收人、升级路径和系统边界事件。",
-      "围绕延迟、流量、错误率、饱和度定义指标；控制标签基数，不把 user_id、订单号等放进 label。",
-      "结构化日志保留 trace/request id，生产默认 INFO；ERROR 只用于需要人工介入的事件，敏感字段必须脱敏。",
-      "健康检查区分 live、ready、依赖降级和不可用；服务探测细节读取 service-monitor reference。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认业务目标、SLO、告警接收人、升级路径和系统边界事件。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "围绕延迟、流量、错误率、饱和度定义指标；控制标签基数，不把 user_id、订单号等放进 label。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "结构化日志保留 trace/request id，生产默认 INFO；ERROR 只用于需要人工介入的事件，敏感字段必须脱敏。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "健康检查区分 live、ready、依赖降级和不可用；服务探测细节读取 service-monitor reference。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

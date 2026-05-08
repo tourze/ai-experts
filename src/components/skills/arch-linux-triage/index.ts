@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { networkTroubleshooterSkill } from "../network-troubleshooter/index";
 import { systemDiagnosticsSkill } from "../system-diagnostics/index";
@@ -58,12 +59,24 @@ export const archLinuxTriageSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先采样 `cat /etc/os-release`、`uname -a`、`systemctl --failed`、`journalctl -b -p err..alert` 和 `/var/log/pacman.log`。",
-      "确认内核包、运行内核、最近一次升级时间和失败服务状态；AUR 与官方仓库问题分开归因。",
-      "包损坏先用 `pacman -Qikk <pkg>` 验证；升级修复必须走完整 `pacman -Syu`，禁止单独 `pacman -Sy`。",
-      "引导、initramfs 或显卡驱动问题再检查 `mkinitcpio -P`、`bootctl status` 或 GRUB 生成结果。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先采样 `cat /etc/os-release`、`uname -a`、`systemctl --failed`、`journalctl -b -p err..alert` 和 `/var/log/pacman.log`。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "确认内核包、运行内核、最近一次升级时间和失败服务状态；AUR 与官方仓库问题分开归因。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "包损坏先用 `pacman -Qikk <pkg>` 验证；升级修复必须走完整 `pacman -Syu`，禁止单独 `pacman -Sy`。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "引导、initramfs 或显卡驱动问题再检查 `mkinitcpio -P`、`bootctl status` 或 GRUB 生成结果。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, analyticsTrackingTrackingPlanGenerator } from "../../procedures/index";
 
@@ -42,12 +43,24 @@ export const analyticsTrackingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先画业务漏斗、主转化、微转化、关键页面、用户属性和事件属性。",
-      "使用 generator 时，输入至少包含 business_type、key_pages、conversion_actions、paid_channels 和 consent_required。",
-      "事件命名先查 `event-taxonomy-guide`，GTM 容器设计查 `gtm-patterns`，排障查 `debugging-playbook`。",
-      "方案层一次说明 Consent、内部流量过滤、跨域追踪、广告平台回传和验证路径。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先画业务漏斗、主转化、微转化、关键页面、用户属性和事件属性。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "使用 generator 时，输入至少包含 business_type、key_pages、conversion_actions、paid_channels 和 consent_required。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "事件命名先查 `event-taxonomy-guide`，GTM 容器设计查 `gtm-patterns`，排障查 `debugging-playbook`。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "方案层一次说明 Consent、内部流量过滤、跨域追踪、广告平台回传和验证路径。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

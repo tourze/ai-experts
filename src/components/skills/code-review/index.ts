@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, codeReviewAssessCode, codeReviewAssessTests } from "../../procedures/index";
 
@@ -68,12 +69,24 @@ export const codeReviewSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认审查强度；用户未指定时使用标准模式，高压模式只在明确授权时启用。",
-      "必须先读取真实代码或 diff，再按命名语义、函数设计、错误处理、逻辑边界、抽象和可读性逐项审查。",
-      "每条发现遵循 Symptom / Source / Consequence / Remedy 四要素，并按关键、重要、建议排序。",
-      "审查强度、纪律守卫和 procedure 入口读取 `review-workflow`；严重度与 Health Score 读取对应 references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认审查强度；用户未指定时使用标准模式，高压模式只在明确授权时启用。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "必须先读取真实代码或 diff，再按命名语义、函数设计、错误处理、逻辑边界、抽象和可读性逐项审查。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "每条发现遵循 Symptom / Source / Consequence / Remedy 四要素，并按关键、重要、建议排序。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "审查强度、纪律守卫和 procedure 入口读取 `review-workflow`；严重度与 Health Score 读取对应 references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

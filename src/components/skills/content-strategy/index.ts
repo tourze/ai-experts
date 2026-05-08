@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { seoSkill } from "../seo/index";
 
@@ -55,13 +56,28 @@ export const contentStrategySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认业务目标、目标受众、差异化、发布产能、核心 CTA 和内容在获客/教育/品牌中的角色。",
-      "用选题矩阵把每个主题绑定读者、意图、主分发渠道和 CTA；避免只按关键词或内部想法排期。",
-      "内容日历读取 content-calendar-methodology，按 Quick Win、Rewrite、New Article、Trending 四类来源交叉去重后排序。",
-      "主题集群读取 topic-cluster，SEO 内容评分读取 seo-content-scoring，CMS 组织读取 headless-cms，跨平台复用读取 content-repurpose。",
-      "新产品、栏目或品牌需要域名方向时，按主品牌、活动页、实验性分组，并读取 domain-name-brainstormer。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认业务目标、目标受众、差异化、发布产能、核心 CTA 和内容在获客/教育/品牌中的角色。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "用选题矩阵把每个主题绑定读者、意图、主分发渠道和 CTA；避免只按关键词或内部想法排期。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "内容日历读取 content-calendar-methodology，按 Quick Win、Rewrite、New Article、Trending 四类来源交叉去重后排序。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "主题集群读取 topic-cluster，SEO 内容评分读取 seo-content-scoring，CMS 组织读取 headless-cms，跨平台复用读取 content-repurpose。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "新产品、栏目或品牌需要域名方向时，按主品牌、活动页、实验性分组，并读取 domain-name-brainstormer。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

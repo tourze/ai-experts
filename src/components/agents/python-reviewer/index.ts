@@ -1,10 +1,10 @@
 import {
   AgentSandbox,
   defineAgent,
-  defineAgentWorkflow,
-  defineAgentWorkflowGate,
-  defineAgentWorkflowRoute,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowGate,
+  defineWorkflowRoute,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -26,22 +26,22 @@ export const pythonReviewerAgent = defineAgent({
   description: "当需要执行 Python 专项代码审查 时使用。它以只读方式检查正确性、惯用法、配置、测试缺口和常见风险，不修改文件。",
   role: `你是资深 Python 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     gates: [
-      defineAgentWorkflowGate({
+      defineWorkflowGate({
         id: "gate-1",
         skill: pythonTypeSafetySkill.id,
         label: "门禁 1",
         checks: "类型标注完整性：mypy/pyright 配置、Any 使用、type ignore 注释",
       }),
-      defineAgentWorkflowGate({
+      defineWorkflowGate({
         id: "gate-2",
         skill: pythonErrorHandlingSkill.id,
         label: "门禁 2",
         checks: "异常边界：裸 except、吞异常、异常层级设计",
       }),
-      defineAgentWorkflowGate({
+      defineWorkflowGate({
         id: "gate-3",
         skill: evidenceQualityFrameworkSkill.id,
         label: "门禁 3",
@@ -49,42 +49,42 @@ export const pythonReviewerAgent = defineAgent({
       }),
     ],
     routes: [
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-async-python-patterns",
         triggers: ["async def", "await", "asyncio", "TaskGroup"],
         skill: asyncPythonPatternsSkill.id,
         checks: "同步阻塞混入、无界 gather、CancellationError 吞掉、Task 泄漏",
         output: "异步安全结论",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-python-design-patterns",
         triggers: ["def __init__", "Protocol", "ABC"],
         skill: pythonDesignPatternsSkill.id,
         checks: "组合 vs 继承、构造注入、God object 拆分、依赖方向",
         output: "分层建议",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-python-performance-optimization",
         triggers: ["cProfile", "timeit"],
         skill: pythonPerformanceOptimizationSkill.id,
         checks: "profiling 证据链、内存分析、优化前后对比",
         output: "性能证据验证",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-python-observability",
         triggers: ["logging", "structlog", "opentelemetry"],
         skill: pythonObservabilitySkill.id,
         checks: "结构化日志、trace 传播、指标暴露、敏感数据脱敏",
         output: "可观测性审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-python-testing-patterns",
         triggers: ["pytest", "unittest", "mock", "fixture"],
         skill: pythonTestingPatternsSkill.id,
         checks: "测试隔离、fixture 作用域、mock 滥用、参数化覆盖",
         output: "测试质量审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-python-background-jobs",
         triggers: ["celery", "RQ", "arq", "task", "queue"],
         skill: pythonBackgroundJobsSkill.id,
@@ -93,23 +93,23 @@ export const pythonReviewerAgent = defineAgent({
       }),
     ],
     finalSteps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-1",
         label: "门禁：type-safety → error-handling → 确认基线",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-2",
         label: "路由：按 diff 内容匹配场景路由表，逐项深入",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-3",
         label: "证据：每条发现绑定 文件:行 + 代码片段",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-4",
         label: "标注：事实/推断/假设",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-5",
         label: "排序：安全 > 正确性 > 影响面 > 执行成本",
       }),

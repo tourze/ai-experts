@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, skillActivationAnalyzerCsoAudit } from "../../procedures/index";
 
@@ -44,13 +45,28 @@ export const skillActivationAnalyzerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先选择模式：单次诊断、冲突检测、健康度评估或 description 静态文本审查。",
-      "单次诊断还原用户意图、模拟候选匹配、对比实际触发结果并定位根因。",
-      "冲突检测提取 skill 触发域，构建重叠矩阵，区分同层冲突、上下游分工和合理宽口径入口。",
-      "健康度评估检查覆盖度、区分度、触发词密度、排他指引和触发链路断点。",
-      "静态文本审查调用 cso-audit procedure，按 rewrite-examples 给出 before/after description 修复。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先选择模式：单次诊断、冲突检测、健康度评估或 description 静态文本审查。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "单次诊断还原用户意图、模拟候选匹配、对比实际触发结果并定位根因。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "冲突检测提取 skill 触发域，构建重叠矩阵，区分同层冲突、上下游分工和合理宽口径入口。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "健康度评估检查覆盖度、区分度、触发词密度、排他指引和触发链路断点。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "静态文本审查调用 cso-audit procedure，按 rewrite-examples 给出 before/after description 修复。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

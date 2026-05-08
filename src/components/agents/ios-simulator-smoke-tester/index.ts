@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -19,22 +19,22 @@ export const iosSimulatorSmokeTesterAgent = defineAgent({
   description: "当需要用本目录 simulator 脚本执行 iOS 模拟器冒烟测试时使用。它启动或选择模拟器、启动 app、读取无障碍树、走关键流程并报告用户可见阻断。",
   role: `你是资深 iOS QA 工程师。你只能读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先确认用户目标、输入范围、约束和验收标准。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "启动指定 app，或明确指出缺失 app artifact。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "读取相关文件、配置、调用点和同层模式，建立证据链。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "按安全性、正确性、影响面和执行成本排序输出。",
       }),

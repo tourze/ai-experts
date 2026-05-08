@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const douyinViralContentSkill = defineSkill({
@@ -45,13 +46,28 @@ export const douyinViralContentSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先判断是否有历史文案目录、表现数据、视频摘要或逐字稿；没有校准样本时使用通用基线并显式说明。",
-      "创作输出先定 20 字内钩子标题，再写 3-6 段口播，单段不超过 40 字，标签控制在 4-6 个。",
-      "评分和优化只引用 viral-factors、scoring-system、estimation-model、optimization-guide 和 learning-guide，不承诺播放量或爆款结果。",
-      "需要从视频提取内容时读取 douyin-video-summary；素材信息不足时先补问题，不硬凑长文案。",
-      "所有输出保留平台安全边界，避免违规导流、虚假收益、极端承诺和伪造历史数据。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先判断是否有历史文案目录、表现数据、视频摘要或逐字稿；没有校准样本时使用通用基线并显式说明。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "创作输出先定 20 字内钩子标题，再写 3-6 段口播，单段不超过 40 字，标签控制在 4-6 个。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "评分和优化只引用 viral-factors、scoring-system、estimation-model、optimization-guide 和 learning-guide，不承诺播放量或爆款结果。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "需要从视频提取内容时读取 douyin-video-summary；素材信息不足时先补问题，不硬凑长文案。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "所有输出保留平台安全边界，避免违规导流、虚假收益、极端承诺和伪造历史数据。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

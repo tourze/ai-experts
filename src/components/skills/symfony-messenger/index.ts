@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { doctrineBatchProcessingSkill } from "../doctrine-batch-processing/index";
 import { symfonyVotersSkill } from "../symfony-voters/index";
@@ -62,12 +63,24 @@ export const symfonyMessengerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认同步 / 异步边界、消息字段、序列化兼容性、外部副作用、失败传输和消费监控。",
-      "消息只携带稳定可序列化数据，Handler 必须有幂等键、超时、重试和外部依赖失败处理。",
-      "messenger.yaml 显式配置 routing、failure_transport 和 retry_strategy，不依赖默认值。",
-      "消息类、Handler 和配置示例读取 `message-handler-patterns`；消费命令和失败模式读取 `operations-reference`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认同步 / 异步边界、消息字段、序列化兼容性、外部副作用、失败传输和消费监控。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "消息只携带稳定可序列化数据，Handler 必须有幂等键、超时、重试和外部依赖失败处理。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "messenger.yaml 显式配置 routing、failure_transport 和 retry_strategy，不依赖默认值。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "消息类、Handler 和配置示例读取 `message-handler-patterns`；消费命令和失败模式读取 `operations-reference`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

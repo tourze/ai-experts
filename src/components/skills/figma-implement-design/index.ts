@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { designSystemPatternsSkill } from "../design-system-patterns/index";
 import { frontendDesignReviewSkill } from "../frontend-design-review/index";
@@ -74,12 +75,24 @@ export const figmaImplementDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先解析 fileKey/nodeId 或读取桌面当前选区，确认目标节点范围，避免整页和局部混淆。",
-      "先获取结构化 design context，再获取 screenshot 做视觉对照；没有设计上下文不开始实现。",
-      "下载 Figma 返回的图片/SVG 资产，并映射到项目组件、token、图标包装器、样式体系和路由约定。",
-      "先还原布局、层级、默认/hover/focus/disabled/loading/异常态，再做动效和工程抽象；完成后用 frontend-design-review 复核。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先解析 fileKey/nodeId 或读取桌面当前选区，确认目标节点范围，避免整页和局部混淆。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "先获取结构化 design context，再获取 screenshot 做视觉对照；没有设计上下文不开始实现。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "下载 Figma 返回的图片/SVG 资产，并映射到项目组件、token、图标包装器、样式体系和路由约定。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "先还原布局、层级、默认/hover/focus/disabled/loading/异常态，再做动效和工程抽象；完成后用 frontend-design-review 复核。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const asyncPythonPatternsSkill = defineSkill({
@@ -42,12 +43,24 @@ export const asyncPythonPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认调用链是全同步还是全异步，标出外部 I/O、CPU 密集步骤和可能阻塞的库。",
-      "用 TaskGroup 管理子任务生命周期，用 timeout 包住外部边界，用 Semaphore 或队列限制并发。",
-      "取消路径必须可传播，CPU 密集任务移到 `asyncio.to_thread()` 或进程池。",
-      "TaskGroup、timeout 和信号量代码模式读取 `taskgroup-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认调用链是全同步还是全异步，标出外部 I/O、CPU 密集步骤和可能阻塞的库。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "用 TaskGroup 管理子任务生命周期，用 timeout 包住外部边界，用 Semaphore 或队列限制并发。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "取消路径必须可传播，CPU 密集任务移到 `asyncio.to_thread()` 或进程池。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "TaskGroup、timeout 和信号量代码模式读取 `taskgroup-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

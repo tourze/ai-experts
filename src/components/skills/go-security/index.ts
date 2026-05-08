@@ -4,7 +4,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { goConcurrencyPatternsSkill } from "../go-concurrency-patterns/index";
 import { goErrorHandlingSkill } from "../go-error-handling/index";
@@ -59,12 +60,24 @@ export const goSecuritySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认攻击面、输入边界、认证状态、敏感数据和外部调用路径。",
-      "按 DREAD 简化严重性评级排序，先处理远程无需认证和敏感数据泄露风险。",
-      "逐项检查参数化 SQL、命令参数分离、html/template、URL allowlist、路径根限制、crypto/rand、密码哈希和 govulncheck。",
-      "严重性、漏洞速查和防御代码读取 `security-patterns`；加密和注入深入资料读取对应 references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认攻击面、输入边界、认证状态、敏感数据和外部调用路径。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按 DREAD 简化严重性评级排序，先处理远程无需认证和敏感数据泄露风险。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "逐项检查参数化 SQL、命令参数分离、html/template、URL allowlist、路径根限制、crypto/rand、密码哈希和 govulncheck。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "严重性、漏洞速查和防御代码读取 `security-patterns`；加密和注入深入资料读取对应 references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

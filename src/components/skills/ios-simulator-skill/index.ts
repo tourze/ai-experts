@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, iosSimulatorSkillAccessibilityAudit, iosSimulatorSkillAppLauncher, iosSimulatorSkillAppStateCapture, iosSimulatorSkillBuildAndTest, iosSimulatorSkillClipboard, iosSimulatorSkillGesture, iosSimulatorSkillKeyboard, iosSimulatorSkillLogMonitor, iosSimulatorSkillNavigator, iosSimulatorSkillPrivacyManager, iosSimulatorSkillPushNotification, iosSimulatorSkillScreenMapper, iosSimulatorSkillSimHealthCheck, iosSimulatorSkillSimList, iosSimulatorSkillSimctlBoot, iosSimulatorSkillSimctlCreate, iosSimulatorSkillSimctlDelete, iosSimulatorSkillSimctlErase, iosSimulatorSkillSimctlShutdown, iosSimulatorSkillSimulatorSelector, iosSimulatorSkillStatusBar, iosSimulatorSkillTestRecorder, iosSimulatorSkillVisualDiff } from "../../procedures/index";
 import { appleAppstoreReviewerSkill } from "../apple-appstore-reviewer/index";
@@ -63,14 +64,32 @@ export const iosSimulatorSkillSkill = defineSkill({
       reason: "需要把模拟器证据用于提审前审核路径复现或拒审风险审查时联动。",
     },
   ],
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先跑 `ios-simulator-skill-sim-health-check` procedure，确认 Xcode、`xcrun simctl`、Node.js 和可用 runtime。",
-      "列出或选择目标模拟器；没有 booted simulator 时先 boot，必要时创建、擦除或关闭模拟器。",
-      "构建运行走 xcode / build-and-test 相关 procedure，安装、启动、终止和状态采集走 app-launcher / app-state-capture。",
-      "交互前先用 screen-mapper 或 navigator 读取无障碍树，再通过语义节点点击、输入或导航。",
-      "需要日志、截图、状态栏、权限、剪贴板、推送或视觉 diff 时调用对应 procedure，并优先使用 `--json` 输出。",
-      "每次关键操作后保留截图、UI 树、日志或状态输出作为验证证据；完整参数以对应 procedure 的 `--help` 为准。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先跑 `ios-simulator-skill-sim-health-check` procedure，确认 Xcode、`xcrun simctl`、Node.js 和可用 runtime。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "列出或选择目标模拟器；没有 booted simulator 时先 boot，必要时创建、擦除或关闭模拟器。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "构建运行走 xcode / build-and-test 相关 procedure，安装、启动、终止和状态采集走 app-launcher / app-state-capture。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "交互前先用 screen-mapper 或 navigator 读取无障碍树，再通过语义节点点击、输入或导航。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "需要日志、截图、状态栏、权限、剪贴板、推送或视觉 diff 时调用对应 procedure，并优先使用 `--json` 输出。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "每次关键操作后保留截图、UI 树、日志或状态输出作为验证证据；完整参数以对应 procedure 的 `--help` 为准。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const findSkillsSkill = defineSkill({
@@ -40,14 +41,32 @@ export const findSkillsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先理解用户需要：领域、具体任务、是否是常见可复用工作流，以及是否已点名某个 skill。",
-      "优先查 skills.sh leaderboard，判断是否已有高安装量、常见来源或官方维护的 skill。",
-      "leaderboard 未覆盖时运行 `npx skills find <query>`，查询词包含领域和任务动词。",
-      "推荐前验证安装量、来源声誉和源仓库活跃度；<100 安装量默认谨慎。",
-      "给用户展示 skill 名称、用途、安装量、来源、安装命令和 skills.sh 链接。",
-      "用户同意后再安装，可用 `npx skills add <owner/repo@skill> -g -y`；无结果时给通用兜底或建议 `npx skills init`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先理解用户需要：领域、具体任务、是否是常见可复用工作流，以及是否已点名某个 skill。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "优先查 skills.sh leaderboard，判断是否已有高安装量、常见来源或官方维护的 skill。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "leaderboard 未覆盖时运行 `npx skills find <query>`，查询词包含领域和任务动词。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "推荐前验证安装量、来源声誉和源仓库活跃度；<100 安装量默认谨慎。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "给用户展示 skill 名称、用途、安装量、来源、安装命令和 skills.sh 链接。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "用户同意后再安装，可用 `npx skills add <owner/repo@skill> -g -y`；无结果时给通用兜底或建议 `npx skills init`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

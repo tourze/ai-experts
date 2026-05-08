@@ -1,10 +1,10 @@
 import {
   AgentSandbox,
   defineAgent,
-  defineAgentWorkflow,
-  defineAgentWorkflowGate,
-  defineAgentWorkflowRoute,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowGate,
+  defineWorkflowRoute,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -23,22 +23,22 @@ export const nextjsReviewerAgent = defineAgent({
   description: "当需要只读审查 Next.js App Router、Server Components、缓存、路由和部署风险 时使用。",
   role: `你是资深 Next.js 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     gates: [
-      defineAgentWorkflowGate({
+      defineWorkflowGate({
         id: "gate-1",
         skill: nextjsDeveloperSkill.id,
         label: "门禁 1",
         checks: "路由结构基线：App Router 布局树、loading/error 边界、middleware 配置",
       }),
-      defineAgentWorkflowGate({
+      defineWorkflowGate({
         id: "gate-2",
         skill: reactServerComponentsSkill.id,
         label: "门禁 2",
         checks: "RSC 边界基线：Server/Client Component 划分、Server Actions 安全",
       }),
-      defineAgentWorkflowGate({
+      defineWorkflowGate({
         id: "gate-3",
         skill: evidenceQualityFrameworkSkill.id,
         label: "门禁 3",
@@ -46,56 +46,56 @@ export const nextjsReviewerAgent = defineAgent({
       }),
     ],
     routes: [
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-nextjs-developer",
         triggers: ["layout.tsx", "page.tsx", "route.ts", "middleware.ts"],
         skill: nextjsDeveloperSkill.id,
         checks: "App Router 路由树、嵌套布局、parallel/intercepting routes",
         output: "路由架构审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-nextjs-developer-2",
         triggers: ["fetch", "cache", "revalidate", "unstable_cache"],
         skill: nextjsDeveloperSkill.id,
         checks: "数据获取策略、ISR、缓存分层、按路径/标签重验证",
         output: "缓存策略审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-react-server-components",
         triggers: ["\"use client\"", "\"use server\"", "server only"],
         skill: reactServerComponentsSkill.id,
         checks: "Server/Client 边界、Server Actions 安全、敏感数据泄漏",
         output: "RSC 边界审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-react-hooks",
         triggers: ["useEffect", "useState", "useCallback"],
         skill: reactHooksSkill.id,
         checks: "依赖完整性、cleanup、stale closure、条件调用",
         output: "Hooks 审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-react-performance",
         triggers: ["memo"],
         skill: reactPerformanceSkill.id,
         checks: "重渲染链、memoization 策略、bundle 分割",
         output: "性能审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-react-composable-components",
         triggers: ["大组件", "多 props", "组件拆分"],
         skill: reactComposableComponentsSkill.id,
         checks: "compound components、props 透传、职责分离",
         output: "组件架构建议",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-typescript-type-safety",
         triggers: ["any"],
         skill: typescriptTypeSafetySkill.id,
         checks: "类型安全、any 清理、边界合同",
         output: "类型审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-nextjs-developer-3",
         triggers: ["next.config", "vercel.json"],
         skill: nextjsDeveloperSkill.id,
@@ -104,23 +104,23 @@ export const nextjsReviewerAgent = defineAgent({
       }),
     ],
     finalSteps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-1",
         label: "门禁：nextjs-developer → react-server-components → 确认基线",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-2",
         label: "路由：按 diff 内容匹配场景路由表，逐项深入",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-3",
         label: "证据：每条发现绑定 文件:行 + 代码片段",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-4",
         label: "标注：事实/推断/假设",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-5",
         label: "排序：安全（Server Actions/RSC 边界） > 正确性 > 影响面 > 执行成本",
       }),

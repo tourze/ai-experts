@@ -5,7 +5,8 @@ import {
   defineSkill,
   defineSkillOutputs,
   defineSkillParameter,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, speckitBaselineBootstrapSpecify, speckitBaselineCheckPrerequisites, speckitBaselineCreateNewFeature, speckitBaselineSetupPlan } from "../../procedures/index";
 
@@ -24,20 +25,44 @@ export const speckitBaselineSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "确保 `.specify/scripts` 与 `.specify/templates` 存在；若缺失，运行本 skill 自带的 bootstrap procedure。",
-      "解析目标范围：文件路径、目录或 glob；若用户未给范围，先提一个聚焦问题再继续。",
-      `扫描并读取目标代码，提取：
+      defineWorkflowStep({
+        id: "step-1",
+        label: "确保 `.specify/scripts` 与 `.specify/templates` 存在；若缺失，运行本 skill 自带的 bootstrap procedure。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "解析目标范围：文件路径、目录或 glob；若用户未给范围，先提一个聚焦问题再继续。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: `扫描并读取目标代码，提取：
    - 入口、接口、数据模型、错误处理、用户可见行为`,
-      "生成特性短名 `slug`（2-4 词，连字符）。",
-      `创建或复用目录：\`.specify/features/<slug>/\`。
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "生成特性短名 `slug`（2-4 词，连字符）。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: `创建或复用目录：\`.specify/features/<slug>/\`。
    - 在该目录写入/更新 \`spec.md\`
    - 在该目录写入 \`checklists/requirements.md\`（完整路径：\`.specify/features/<slug>/checklists/requirements.md\`）
    - 写入 \`.specify/feature.json\` 指向该目录`,
-      "模板来源：`.specify/templates/spec-template.md`（由步骤 1 的 bootstrap 拷入）。",
-      "将技术细节抽象为需求表达：写“做什么/为什么”，避免“怎么实现”。",
-      "对不确定行为最多保留 3 个 `[待澄清]` 标记。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "模板来源：`.specify/templates/spec-template.md`（由步骤 1 的 bootstrap 拷入）。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "将技术细节抽象为需求表达：写“做什么/为什么”，避免“怎么实现”。",
+      }),
+      defineWorkflowStep({
+        id: "step-8",
+        label: "对不确定行为最多保留 3 个 `[待澄清]` 标记。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

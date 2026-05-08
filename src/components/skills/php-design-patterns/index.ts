@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { phpXFeaturesSkill } from "../php-8x-features/index";
 import { phpErrorHandlingSkill } from "../php-error-handling/index";
@@ -65,12 +66,24 @@ export const phpDesignPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先定位业务逻辑散落位置、依赖创建方式、跨层数据形态和测试替身边界。",
-      "控制器只做验证、鉴权、调服务和响应映射；Service 编排业务流程；Repository 只做数据访问。",
-      "依赖通过构造函数注入，DTO / Value Object 表达跨层数据和业务概念。",
-      "分层职责表和薄控制器示例读取 `layered-architecture`；更完整模式读取 `patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先定位业务逻辑散落位置、依赖创建方式、跨层数据形态和测试替身边界。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "控制器只做验证、鉴权、调服务和响应映射；Service 编排业务流程；Repository 只做数据访问。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "依赖通过构造函数注入，DTO / Value Object 表达跨层数据和业务概念。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "分层职责表和薄控制器示例读取 `layered-architecture`；更完整模式读取 `patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

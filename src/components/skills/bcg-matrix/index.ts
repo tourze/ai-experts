@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { designingGrowthLoopsSkill } from "../designing-growth-loops/index";
 import { portersFiveForcesSkill } from "../porters-five-forces/index";
@@ -59,14 +60,32 @@ export const bcgMatrixSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认分析对象是多产品/多业务组合，并收集每条业务的市场增长、相对份额、利润贡献、资源占用和战略价值。",
-      "默认用 BCG 2x2 分类：明星、现金牛、问题、瘦狗；相对市场份额必须对比最大竞品。",
-      "对问题业务做 Go/No-Go：给窗口期、里程碑、投入上限和到期砍掉条件。",
-      "当 2x2 太粗、需要多指标量化时读取 `ge-mckinsey-mode` reference，切到 GE-McKinsey 九宫格。",
-      "用 GE 模式时分别评估市场吸引力和竞争实力，权重必须反映行业关键成功因素，不能平均分配。",
-      "输出资源流向：现金牛支持明星和被选中的问题业务，瘦狗退出释放资源。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认分析对象是多产品/多业务组合，并收集每条业务的市场增长、相对份额、利润贡献、资源占用和战略价值。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "默认用 BCG 2x2 分类：明星、现金牛、问题、瘦狗；相对市场份额必须对比最大竞品。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "对问题业务做 Go/No-Go：给窗口期、里程碑、投入上限和到期砍掉条件。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "当 2x2 太粗、需要多指标量化时读取 `ge-mckinsey-mode` reference，切到 GE-McKinsey 九宫格。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "用 GE 模式时分别评估市场吸引力和竞争实力，权重必须反映行业关键成功因素，不能平均分配。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出资源流向：现金牛支持明星和被选中的问题业务，瘦狗退出释放资源。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

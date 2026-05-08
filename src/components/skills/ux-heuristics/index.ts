@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { uxResearcherDesignerSkill } from "../ux-researcher-designer/index";
 
@@ -63,12 +64,24 @@ export const uxHeuristicsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先明确任务目标、用户上下文、阻塞行为和要评估的页面/流程/组件范围。",
-      "每条发现必须包含 heuristic、severity(0-4)、evidence 和 recommendation；基础审计格式读取 audit-template。",
-      "导航和信息架构优先读 Krug，通用可用性读 Nielsen；冲突取舍读 heuristic-conflicts。",
-      "暗黑模式、可访问性和本地化分别读取 dark-patterns、wcag-checklist、cultural-ux；代码落地前可用关键字搜索状态、错误和导航命名。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先明确任务目标、用户上下文、阻塞行为和要评估的页面/流程/组件范围。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "每条发现必须包含 heuristic、severity(0-4)、evidence 和 recommendation；基础审计格式读取 audit-template。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "导航和信息架构优先读 Krug，通用可用性读 Nielsen；冲突取舍读 heuristic-conflicts。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "暗黑模式、可访问性和本地化分别读取 dark-patterns、wcag-checklist、cultural-ux；代码落地前可用关键字搜索状态、错误和导航命名。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

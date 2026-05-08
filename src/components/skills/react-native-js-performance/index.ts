@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { reactNativeDesignSkill } from "../react-native-design/index";
 
@@ -55,14 +56,32 @@ export const reactNativeJsPerformanceSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先在 release 构建和真机上用 Perf Monitor 或 Flashlight 记录优化前 FPS/帧耗时。",
-      "读取 `js-diagnosis-path` reference，根据症状选择首选参考和升级路径。",
-      "区分 JS 线程和 UI 线程掉帧；列表、输入、动画、页面切换、内存泄漏和首屏慢分别处理。",
-      "大列表先用 FlatList/FlashList 虚拟化并调 `windowSize`、`initialNumToRender`、`maxToRenderPerBatch`。",
-      "动画和手势优先迁移到 Reanimated/UI 线程；高频输入考虑非受控组件或 deferred value。",
-      "优化后在同一设备和场景复测，记录指标、剩余瓶颈和下一步。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先在 release 构建和真机上用 Perf Monitor 或 Flashlight 记录优化前 FPS/帧耗时。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "读取 `js-diagnosis-path` reference，根据症状选择首选参考和升级路径。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "区分 JS 线程和 UI 线程掉帧；列表、输入、动画、页面切换、内存泄漏和首屏慢分别处理。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "大列表先用 FlatList/FlashList 虚拟化并调 `windowSize`、`initialNumToRender`、`maxToRenderPerBatch`。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "动画和手势优先迁移到 Reanimated/UI 线程；高频输入考虑非受控组件或 deferred value。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "优化后在同一设备和场景复测，记录指标、剩余瓶颈和下一步。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

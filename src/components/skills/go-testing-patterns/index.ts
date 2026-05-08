@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { goConcurrencyPatternsSkill } from "../go-concurrency-patterns/index";
 import { goPerformanceSkill } from "../go-performance/index";
@@ -93,12 +94,24 @@ export const goTestingPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认测试层级、被测边界、是否并行、是否需要外部依赖和 mock 边界。",
-      "table-driven tests 要命名输入和预期，子测试中重新绑定 loop variable，能并行时显式 `t.Parallel()`。",
-      "集成测试使用 build tag 隔离，mock 接口定义在消费方。",
-      "代码模式读取 `testing-code-patterns`；HTTP、mock、testify 深入内容读取对应 references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认测试层级、被测边界、是否并行、是否需要外部依赖和 mock 边界。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "table-driven tests 要命名输入和预期，子测试中重新绑定 loop variable，能并行时显式 `t.Parallel()`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "集成测试使用 build tag 隔离，mock 接口定义在消费方。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "代码模式读取 `testing-code-patterns`；HTTP、mock、testify 深入内容读取对应 references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

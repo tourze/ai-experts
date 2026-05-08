@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { crossPollinationEngineSkill } from "../cross-pollination-engine/index";
 import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
@@ -65,12 +66,24 @@ export const scientificBrainstormingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认研究目标、已有证据、方法约束、用户已判断过的方向和不可触碰边界。",
-      "发散阶段先追求多样性，使用跨学科类比、反转假设、尺度切换、新技术切入和移除约束。",
-      "收敛阶段区分创意有趣和创意可验证，寻找共享底层机制和最小可证伪路径。",
-      "结束时给出 1-3 个最值得继续验证的方向，以及文献补洞、最小实验、资源或合作动作。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认研究目标、已有证据、方法约束、用户已判断过的方向和不可触碰边界。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "发散阶段先追求多样性，使用跨学科类比、反转假设、尺度切换、新技术切入和移除约束。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "收敛阶段区分创意有趣和创意可验证，寻找共享底层机制和最小可证伪路径。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "结束时给出 1-3 个最值得继续验证的方向，以及文献补洞、最小实验、资源或合作动作。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

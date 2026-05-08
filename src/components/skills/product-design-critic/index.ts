@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { competitiveIntelligenceSkill } from "../competitive-intelligence/index";
 import { customerJourneyMapSkill } from "../customer-journey-map/index";
@@ -56,14 +57,32 @@ export const productDesignCriticSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先明确目标用户、任务目标、产品定位、业务约束和评审对象范围。",
-      "判断主界面承担什么决策或行动，哪些状态最关键：空态、错态、加载、权限、危险操作或多角色协作。",
-      "检查信息层级、反馈、信任证据、治理暴露和流程中断点，优先讲产品体验而不是视觉风格。",
-      "需要创意验证、行业反模式、pitch、命名等专项判断时读取对应 reference。",
-      "结合用户路径和竞争上下文时联动 `customer-journey-map` 或 `competitive-intelligence`。",
-      "每条建议都说明提升了什么、牺牲了什么、为什么值得，以及预期行为变化。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先明确目标用户、任务目标、产品定位、业务约束和评审对象范围。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "判断主界面承担什么决策或行动，哪些状态最关键：空态、错态、加载、权限、危险操作或多角色协作。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "检查信息层级、反馈、信任证据、治理暴露和流程中断点，优先讲产品体验而不是视觉风格。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "需要创意验证、行业反模式、pitch、命名等专项判断时读取对应 reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "结合用户路径和竞争上下文时联动 `customer-journey-map` 或 `competitive-intelligence`。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "每条建议都说明提升了什么、牺牲了什么、为什么值得，以及预期行为变化。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

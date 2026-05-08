@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { modernWebDesignSkill } from "../modern-web-design/index";
 import { responsiveDesignSkill } from "../responsive-design/index";
@@ -66,12 +67,24 @@ export const frontendDesignReviewSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先按用户目标、主次操作、设计系统、断点 / 状态、信任细节顺序评审。",
-      "发现问题先给具体文件、组件、状态和阻塞级别，再给可执行修复方案。",
-      "对 10 条 Absolute Bans 直接 P0 阻塞，不通过改色或改宽度绕过。",
-      "评审顺序和示例读取 `review-sequence`；硬禁令、输出格式和 modifier 读取对应 references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先按用户目标、主次操作、设计系统、断点 / 状态、信任细节顺序评审。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "发现问题先给具体文件、组件、状态和阻塞级别，再给可执行修复方案。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "对 10 条 Absolute Bans 直接 P0 阻塞，不通过改色或改宽度绕过。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "评审顺序和示例读取 `review-sequence`；硬禁令、输出格式和 modifier 读取对应 references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

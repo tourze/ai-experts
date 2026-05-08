@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { customerJourneyMapSkill } from "../customer-journey-map/index";
 import { pricingStrategySkill } from "../pricing-strategy/index";
@@ -56,14 +57,32 @@ export const funnelArchitectSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认入口人群、流量来源、核心承诺、单步转化目标和成交门槛。",
-      "画出漏斗路径：流量入口 -> 诱饵/预约 -> 核心报价 -> 升级项 -> 留存/复购。",
-      "为每一级价值阶梯写清楚用户为什么现在升级，避免只用更多功能解释更高价格。",
-      "检查页面顺序、CTA、表单摩擦、异议处理、销售跟进和培育链路是否一致。",
-      "需要补用户情境时联动 `customer-journey-map`；需要定价结构时联动 `pricing-strategy`。",
-      "为每一步定义事件、转化率、掉点、归因来源和改版实验。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认入口人群、流量来源、核心承诺、单步转化目标和成交门槛。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "画出漏斗路径：流量入口 -> 诱饵/预约 -> 核心报价 -> 升级项 -> 留存/复购。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "为每一级价值阶梯写清楚用户为什么现在升级，避免只用更多功能解释更高价格。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "检查页面顺序、CTA、表单摩擦、异议处理、销售跟进和培育链路是否一致。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "需要补用户情境时联动 `customer-journey-map`；需要定价结构时联动 `pricing-strategy`。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "为每一步定义事件、转化率、掉点、归因来源和改版实验。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

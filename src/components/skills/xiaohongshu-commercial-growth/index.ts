@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { fanOperationsSkill } from "../fan-operations/index";
 
@@ -55,12 +56,24 @@ export const xiaohongshuCommercialGrowthSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先定义商业路径，再定义内容；输入至少包含主体、产品/服务、目标人群、资源、当前数据、目标和卡点。",
-      "用业务诊断区分内容定位、流量路径和变现路径；自然流量、搜索、店铺成交、直播、达人和私域承接各自说明角色。",
-      "需要完整定位、投放和复盘读取 playbook；需要阶段检查读取 checklists；需要图文笔记读取 xhs-graphic-generator。",
-      "输出必须包含首周动作，单账号模型未跑通前不默认建议矩阵；涉及最新规则、收费、处罚和工具权限时先核验。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先定义商业路径，再定义内容；输入至少包含主体、产品/服务、目标人群、资源、当前数据、目标和卡点。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "用业务诊断区分内容定位、流量路径和变现路径；自然流量、搜索、店铺成交、直播、达人和私域承接各自说明角色。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "需要完整定位、投放和复盘读取 playbook；需要阶段检查读取 checklists；需要图文笔记读取 xhs-graphic-generator。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "输出必须包含首周动作，单账号模型未跑通前不默认建议矩阵；涉及最新规则、收费、处罚和工具权限时先核验。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

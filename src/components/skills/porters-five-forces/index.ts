@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { competitiveIntelligenceSkill } from "../competitive-intelligence/index";
 import { swotAnalysisSkill } from "../swot-analysis/index";
@@ -57,13 +58,28 @@ export const portersFiveForcesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先界定行业边界、客户群、地理范围、时间尺度和分析对象。",
-      "逐一分析现有竞争、潜在进入者、替代品、供应商议价力和买方议价力。",
-      "每一力都写当前强弱、驱动因素、证据、对利润的影响和可改变性。",
-      "区分行业结构问题和单个公司的执行问题；内部能力判断可联动 `swot-analysis`。",
-      "输出行业吸引力结论、进入/防守建议和需要进一步验证的数据。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先界定行业边界、客户群、地理范围、时间尺度和分析对象。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "逐一分析现有竞争、潜在进入者、替代品、供应商议价力和买方议价力。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "每一力都写当前强弱、驱动因素、证据、对利润的影响和可改变性。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "区分行业结构问题和单个公司的执行问题；内部能力判断可联动 `swot-analysis`。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "输出行业吸引力结论、进入/防守建议和需要进一步验证的数据。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

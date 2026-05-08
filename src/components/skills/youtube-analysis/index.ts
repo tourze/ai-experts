@@ -6,7 +6,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, youtubeAnalysisAnalyzeVideo, youtubeAnalysisFetchTranscript } from "../../procedures/index";
 
@@ -56,14 +57,32 @@ export const youtubeAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认输入是合法 YouTube URL 或 11 位视频 ID；没有具体视频时转入搜索。",
-      "调用 fetch-transcript procedure 获取字幕 JSON，检查 video_id、title、channel、duration、upload_date、language、source 和 transcript。",
-      "没有字幕、私有、年龄限制或地区封锁时直接说明限制，不伪造摘要。",
-      "需要脚手架文件时调用 analyze-video procedure；如果要真实内容，必须再基于 transcript 填充占位。",
-      "深度分析按 transcript 时间戳分块，不从 dist 中 import procedure 源码。",
-      "按 lecture、tutorial、interview、podcast、tech-talk 或 panel 选择分析重点，必要时读取 analysis-patterns。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认输入是合法 YouTube URL 或 11 位视频 ID；没有具体视频时转入搜索。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "调用 fetch-transcript procedure 获取字幕 JSON，检查 video_id、title、channel、duration、upload_date、language、source 和 transcript。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "没有字幕、私有、年龄限制或地区封锁时直接说明限制，不伪造摘要。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "需要脚手架文件时调用 analyze-video procedure；如果要真实内容，必须再基于 transcript 填充占位。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "深度分析按 transcript 时间戳分块，不从 dist 中 import procedure 源码。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "按 lecture、tutorial、interview、podcast、tech-talk 或 panel 选择分析重点，必要时读取 analysis-patterns。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

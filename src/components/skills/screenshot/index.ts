@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, screenshotEnsureMacosPermissions, screenshotMacosDisplayInfo, screenshotMacosPermissions, screenshotMacosWindowInfo, screenshotTakeScreenshot, screenshotTakeScreenshotWindows } from "../../procedures/index";
 
@@ -46,13 +47,28 @@ export const screenshotSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认目标平台、截图对象、输出路径规则和截图用途；浏览器/Figma 等已有专用截图时优先使用专用工具。",
-      "macOS 截窗口、应用或屏幕前先调用 screenshot-ensure-macos-permissions，必要时再查 display/window 信息。",
-      "用 screenshot-take-screenshot 作为主入口：临时模式 `--mode temp`、指定路径 `--path output/screen.png`、region、app、list-windows、window-id 或 `--active-window` 按需互斥选择。",
-      "Windows 使用 screenshot-take-screenshot-windows，并只传支持的 mode、path 或 region 参数。",
-      "命令结束后逐个检查输出路径，明确图片实际保存位置和权限/参数失败原因。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认目标平台、截图对象、输出路径规则和截图用途；浏览器/Figma 等已有专用截图时优先使用专用工具。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "macOS 截窗口、应用或屏幕前先调用 screenshot-ensure-macos-permissions，必要时再查 display/window 信息。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "用 screenshot-take-screenshot 作为主入口：临时模式 `--mode temp`、指定路径 `--path output/screen.png`、region、app、list-windows、window-id 或 `--active-window` 按需互斥选择。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Windows 使用 screenshot-take-screenshot-windows，并只传支持的 mode、path 或 region 参数。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "命令结束后逐个检查输出路径，明确图片实际保存位置和权限/参数失败原因。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

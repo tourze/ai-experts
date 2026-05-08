@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { swiftuiPerformanceAuditSkill } from "../swiftui-performance-audit/index";
 import { swiftuiUiPatternsSkill } from "../swiftui-ui-patterns/index";
@@ -52,14 +53,32 @@ export const swiftConcurrencyExpertSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先收集完整编译诊断、运行时卡顿 / 数据竞争证据和相关类型边界，不凭单条报错泛化修法。",
-      "按职责划分隔离域：UI / SwiftUI 状态优先 MainActor，共享可变状态优先 actor，纯值数据检查 Sendable。",
-      "处理 Task 生命周期、取消传播和结构化并发，避免把长期任务藏在不受控的 detached task 里。",
-      "只有能证明底层线程安全时才接受 `@unchecked Sendable`、`nonisolated` 或 unsafe 兜底。",
-      "需要代码模式读取 `code-patterns`，需要语言机制或迁移背景读取 Swift 6.2+ references。",
-      "修复后运行编译、并发检查和相关 UI / 性能复测，记录仍需架构调整的边界。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先收集完整编译诊断、运行时卡顿 / 数据竞争证据和相关类型边界，不凭单条报错泛化修法。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按职责划分隔离域：UI / SwiftUI 状态优先 MainActor，共享可变状态优先 actor，纯值数据检查 Sendable。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "处理 Task 生命周期、取消传播和结构化并发，避免把长期任务藏在不受控的 detached task 里。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "只有能证明底层线程安全时才接受 `@unchecked Sendable`、`nonisolated` 或 unsafe 兜底。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "需要代码模式读取 `code-patterns`，需要语言机制或迁移背景读取 Swift 6.2+ references。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "修复后运行编译、并发检查和相关 UI / 性能复测，记录仍需架构调整的边界。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

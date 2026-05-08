@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const openapiSpecGenerationSkill = defineSkill({
@@ -43,12 +44,24 @@ export const openapiSpecGenerationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认目标版本、服务器地址、认证方式、路径操作、错误模型和是否需要 SDK / mock / 契约测试。",
-      "为每个 operation 写清 `operationId`、参数、请求体、成功响应、错误响应和共享 schema。",
-      "大型规范拆分 `components` 与 `paths`，示例、枚举、默认值必须与 schema 一致。",
-      "基础 OpenAPI 3.1 骨架读取 `openapi-skeleton`；代码优先和工具链读取 `code-first-and-tooling`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认目标版本、服务器地址、认证方式、路径操作、错误模型和是否需要 SDK / mock / 契约测试。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "为每个 operation 写清 `operationId`、参数、请求体、成功响应、错误响应和共享 schema。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "大型规范拆分 `components` 与 `paths`，示例、枚举、默认值必须与 schema 一致。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "基础 OpenAPI 3.1 骨架读取 `openapi-skeleton`；代码优先和工具链读取 `code-first-and-tooling`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

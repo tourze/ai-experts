@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { liquidGlassDesignSkill } from "../liquid-glass-design/index";
 import { macosDesignGuidelinesSkill } from "../macos-design-guidelines/index";
@@ -74,14 +75,32 @@ export const iosHigDesignSkill = defineSkill({
       reason: "目标平台转为 Mac、Mac Catalyst 或需要比较桌面端 HIG 差异时联动。",
     },
   ],
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认目标设备、iPhone / iPad 形态、导航层级、主要任务流和是否涉及权限、输入、Widget 或系统集成。",
-      "优先选择系统组件和系统导航模式；需要代码落地时读取 `swiftui-quick-patterns` reference。",
-      "按 safe area、Dynamic Island、Home Indicator、横竖屏和 iPad 分栏检查布局边界。",
-      "用语义字体、SF Symbols、系统色和标准控件表达层级，不用固定字号或自定义控件硬凑 iOS 外观。",
-      "权限请求先给上下文说明，再触发系统权限弹窗；隐私、导航、排版、组件等专题按需读取对应 reference。",
-      "用小屏、大字号、深浅色、横屏和辅助功能设置复测，确认关键文案、控件和导航不会失效。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认目标设备、iPhone / iPad 形态、导航层级、主要任务流和是否涉及权限、输入、Widget 或系统集成。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "优先选择系统组件和系统导航模式；需要代码落地时读取 `swiftui-quick-patterns` reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "按 safe area、Dynamic Island、Home Indicator、横竖屏和 iPad 分栏检查布局边界。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "用语义字体、SF Symbols、系统色和标准控件表达层级，不用固定字号或自定义控件硬凑 iOS 外观。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "权限请求先给上下文说明，再触发系统权限弹窗；隐私、导航、排版、组件等专题按需读取对应 reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "用小屏、大字号、深浅色、横屏和辅助功能设置复测，确认关键文案、控件和导航不会失效。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

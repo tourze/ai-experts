@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { estimateCalibratorSkill } from "../estimate-calibrator/index";
 
@@ -51,13 +52,28 @@ export const planningUnderUncertaintySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "识别不确定性来源：技术、市场、组织、外部环境或依赖链。",
-      "区分可验证未知项、不可控外部变量和当前必须下注的假设。",
-      "为每个阶段写当前最优下注、观察指标、触发条件、放弃条件和责任人。",
-      "把近期计划做实，把远期计划写成选项和决策点；估算或节奏可联动 `estimate-calibrator`。",
-      "输出对外承诺、内部不确定性说明和滚动调整机制。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "识别不确定性来源：技术、市场、组织、外部环境或依赖链。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "区分可验证未知项、不可控外部变量和当前必须下注的假设。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "为每个阶段写当前最优下注、观察指标、触发条件、放弃条件和责任人。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "把近期计划做实，把远期计划写成选项和决策点；估算或节奏可联动 `estimate-calibrator`。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "输出对外承诺、内部不确定性说明和滚动调整机制。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

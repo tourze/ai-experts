@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { taskDecomposerSkill } from "../task-decomposer/index";
 
@@ -51,14 +52,32 @@ export const systemDesignSkill = defineSkill({
       reason: "系统方案需要转成可执行任务、依赖关系或 Execution Contract 时联动。",
     },
   ],
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先澄清功能需求、非功能需求、规模、团队约束、成本边界和不可接受的失败模式。",
-      "给出高层组件和责任边界，再画清请求路径、异步路径、数据流和外部依赖。",
-      "深入关键细节：数据模型、API/协议、存储、缓存、队列、索引、一致性和幂等策略。",
-      "需要深入数据系统细节时读取 `ddia-systems` reference，并标注哪些结论来自当前规模假设。",
-      "逐项说明可靠性、扩展性、监控、容灾、迁移和安全边界。",
-      "为每个关键决策写 trade-off，并列出未来规模变化后必须复审的假设。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先澄清功能需求、非功能需求、规模、团队约束、成本边界和不可接受的失败模式。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "给出高层组件和责任边界，再画清请求路径、异步路径、数据流和外部依赖。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "深入关键细节：数据模型、API/协议、存储、缓存、队列、索引、一致性和幂等策略。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "需要深入数据系统细节时读取 `ddia-systems` reference，并标注哪些结论来自当前规模假设。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "逐项说明可靠性、扩展性、监控、容灾、迁移和安全边界。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "为每个关键决策写 trade-off，并列出未来规模变化后必须复审的假设。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

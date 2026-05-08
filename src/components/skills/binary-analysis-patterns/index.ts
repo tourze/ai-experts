@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { protocolReverseEngineeringSkill } from "../protocol-reverse-engineering/index";
 
@@ -51,13 +52,28 @@ export const binaryAnalysisPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先识别文件格式、架构、位数、编译器痕迹、入口点和导入导出表。",
-      "用字符串、交叉引用、反汇编和反编译结果建立候选业务函数清单。",
-      "对关键分支回到汇编验证，避免把伪代码、编译器模板或初始化噪声当作事实。",
-      "遇到结构体、符号恢复或反逆向保护时读取对应 reference；常用初筛命令读取 `triage-commands`。",
-      "协议编解码或加密路径不清晰时，把流量或帧样本交给 `protocol-reverse-engineering` 交叉验证。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先识别文件格式、架构、位数、编译器痕迹、入口点和导入导出表。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "用字符串、交叉引用、反汇编和反编译结果建立候选业务函数清单。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "对关键分支回到汇编验证，避免把伪代码、编译器模板或初始化噪声当作事实。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "遇到结构体、符号恢复或反逆向保护时读取对应 reference；常用初筛命令读取 `triage-commands`。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "协议编解码或加密路径不清晰时，把流量或帧样本交给 `protocol-reverse-engineering` 交叉验证。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

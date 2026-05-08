@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { complexityReducerSkill } from "../complexity-reducer/index";
 import { refactoringChecklistSkill } from "../refactoring-checklist/index";
@@ -65,13 +66,28 @@ export const refactorPlanningMethodSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先建立基线：测试覆盖、依赖拓扑、热点文件和坏味分布。",
-      "用至少两个视角交叉验证问题，避免把单一偏好当成重构理由。",
-      "标记可安全推进的边界，评估测试保护度、影响半径和回滚成本。",
-      "把计划拆成可独立验证的步骤，并列出不做的事、风险和验证命令。",
-      "四步法、输出模板和拆步示例读取 `planning-method`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先建立基线：测试覆盖、依赖拓扑、热点文件和坏味分布。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "用至少两个视角交叉验证问题，避免把单一偏好当成重构理由。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "标记可安全推进的边界，评估测试保护度、影响半径和回滚成本。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "把计划拆成可独立验证的步骤，并列出不做的事、风险和验证命令。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "四步法、输出模板和拆步示例读取 `planning-method`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

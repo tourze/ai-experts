@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { businessModelSkill } from "../business-model/index";
 import { marketSizingAnalysisSkill } from "../market-sizing-analysis/index";
@@ -61,13 +62,28 @@ export const pricingStrategySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "确认目标客群、购买流程、替代方案、核心价值和成功指标。",
-      "选择价值度量、套餐层级、限制项、免费/试用边界和升级触发点。",
-      "比较客户价值、竞品锚点、支付意愿、销售复杂度和计费实现成本。",
-      "评估涨价、折扣、免费策略和套餐变化的副作用；需要分层细节时读取 `tier-structure` reference。",
-      "输出定价建议、实验路径、风控条件和产品/销售/计费落地要求。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "确认目标客群、购买流程、替代方案、核心价值和成功指标。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "选择价值度量、套餐层级、限制项、免费/试用边界和升级触发点。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "比较客户价值、竞品锚点、支付意愿、销售复杂度和计费实现成本。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "评估涨价、折扣、免费策略和套餐变化的副作用；需要分层细节时读取 `tier-structure` reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "输出定价建议、实验路径、风控条件和产品/销售/计费落地要求。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

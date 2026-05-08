@@ -6,7 +6,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, promptEngineeringPatternsOptimizePrompt } from "../../procedures/index";
 
@@ -73,13 +74,28 @@ export const promptEngineeringPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先明确任务目标、输出契约、schema/字段、硬约束、软约束和失败样例，再写自然语言提示。",
-      "按复杂度选粒度：小变更给最小修改和验证，中等优化给 3 个候选变体，系统重构走完整诊断流程。",
-      "系统化诊断拆出目标、当前问题、失败模式、候选变体、评分维度、测试集和实验计划。",
-      "few-shot 示例必须同分布，覆盖主路径、边界和易混淆反例；示例数量以质量和覆盖为准。",
-      "调用 optimize-prompt procedure 或读取 prompt-patterns、output-constraints、failure-modes、evaluation-metrics 等 reference 支撑设计。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先明确任务目标、输出契约、schema/字段、硬约束、软约束和失败样例，再写自然语言提示。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按复杂度选粒度：小变更给最小修改和验证，中等优化给 3 个候选变体，系统重构走完整诊断流程。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "系统化诊断拆出目标、当前问题、失败模式、候选变体、评分维度、测试集和实验计划。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "few-shot 示例必须同分布，覆盖主路径、边界和易混淆反例；示例数量以质量和覆盖为准。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "调用 optimize-prompt procedure 或读取 prompt-patterns、output-constraints、failure-modes、evaluation-metrics 等 reference 支撑设计。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

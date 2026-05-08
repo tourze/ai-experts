@@ -3,7 +3,8 @@ import {
   Platform,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const speckitReviewerSkill = defineSkill({
@@ -20,22 +21,34 @@ export const speckitReviewerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      `确定审查范围：
+      defineWorkflowStep({
+        id: "step-1",
+        label: `确定审查范围：
    - 指定文件 / staged / 当前分支变更`,
-      `审查维度：
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: `审查维度：
    - 正确性
    - 安全性
    - 性能
    - 可维护性
    - 测试覆盖`,
-      `问题分级：
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: `问题分级：
    - \`CRITICAL\` / \`HIGH\` / \`MEDIUM\` / \`LOW\``,
-      `每条问题需包含：
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: `每条问题需包含：
    - 文件与位置
    - 风险说明
    - 最小修复建议`,
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

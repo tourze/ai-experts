@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -23,14 +23,14 @@ export const skillQualityAuditorAgent = defineAgent({
   description: "当需要审计仓库 skill 质量、诊断触发命中、为 SKILL 设计打分、闭卷验证知识覆盖、扫描 description 路由风险或定位重复 skill 时使用。它只读分析，不修改任何 skill 文件。",
   role: `你是资深 Skill 工程审计师。你只能读取、搜索和分析，不修改任何 skill 文件、README 或 telemetry 数据。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先确认审计范围：单个 skill / 一组 skill / 全仓库；明确用户关心的维度（结构、知识覆盖、触发、重复、telemetry）。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: `区分四类问题，分别派发对应 skill：
  - 设计评分（结构、frontmatter、knowledge delta）→ skill-evaluator Mode A
@@ -43,11 +43,11 @@ export const skillQualityAuditorAgent = defineAgent({
  - 运行时遥测（hook/skill telemetry、误触发、错误热点）→ trigger-telemetry-advisor
  - 库存治理（重复、低质量、README 同步）→ skills-prune-and-sync-readme（只读跑 audit）`,
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "把结论归入自组织、自激励、自约束、自协同四类机制，避免把治理缺口都简化成“新增 skill”。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "优先通过对应 skill 的 Procedure 调用说明运行 `skill-activation-analyzer-cso-audit`（参数 `--json`）和 `skills-prune-and-sync-readme-curate-skills`（参数 `audit --format json`）建立静态基线；运行时 telemetry 证据交给 trigger-telemetry-advisor 按本地可用数据读取。",
       }),

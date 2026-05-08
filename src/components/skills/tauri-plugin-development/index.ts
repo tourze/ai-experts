@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const tauriPluginDevelopmentSkill = defineSkill({
@@ -46,14 +47,32 @@ export const tauriPluginDevelopmentSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认插件名称、宿主配置项、目标平台、命令面、权限范围和 JS 包边界。",
-      "读取 `plugin-dev-patterns` reference，搭建插件目录、Builder 入口、生命周期钩子和权限文件。",
-      "桌面/移动平台拆成 `desktop.rs` / `mobile.rs`，公共 trait 定义统一接口。",
-      "通过 `Builder.setup()` 注入状态，命令参数保持 camelCase JS API 与 Rust 结构同步。",
-      "权限放在 `permissions/`，`default.toml` 只包含最小默认集，capability 显式引用。",
-      "输出 Rust crate、JS API、权限、宿主注册方式和测试检查点。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认插件名称、宿主配置项、目标平台、命令面、权限范围和 JS 包边界。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "读取 `plugin-dev-patterns` reference，搭建插件目录、Builder 入口、生命周期钩子和权限文件。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "桌面/移动平台拆成 `desktop.rs` / `mobile.rs`，公共 trait 定义统一接口。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "通过 `Builder.setup()` 注入状态，命令参数保持 camelCase JS API 与 Rust 结构同步。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "权限放在 `permissions/`，`default.toml` 只包含最小默认集，capability 显式引用。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出 Rust crate、JS API、权限、宿主注册方式和测试检查点。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

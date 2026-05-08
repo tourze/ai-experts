@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -25,26 +25,26 @@ export const strategicThinkerAgent = defineAgent({
   description: "当复杂决策需要多视角战略思考时使用。它结合第一性原理、反向思考、情景分析、跨域类比、优先级判断和对抗式验证。",
   role: `你是资深战略思考伙伴。你只能读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "澄清真正问题、约束、决策标准和可逆性。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "审计假设并用第一性原理拆解 framing。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "通过反向思考找失败模式和致命假设。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "用跨域类比与发散思考扩展选项空间。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-5",
         label: "用情景分析、多视角辩论和 grill-me 压测最终建议。",
       }),

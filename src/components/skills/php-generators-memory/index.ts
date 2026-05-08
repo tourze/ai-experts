@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const phpGeneratorsMemorySkill = defineSkill({
@@ -49,12 +50,24 @@ export const phpGeneratorsMemorySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认内存问题是否来自全量数组、一次性读取大文件、fetchAll、range 或上游 API 全量返回。",
-      "只有调用方能单次顺序消费且不需要随机访问 / 重复遍历时，才用生成器替代数组。",
-      "持有文件句柄、游标、锁或网络连接的生成器必须用 `try` / `finally` 清理资源。",
-      "逐行读取、分页展开和 `getReturn()` 示例读取 `generator-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认内存问题是否来自全量数组、一次性读取大文件、fetchAll、range 或上游 API 全量返回。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "只有调用方能单次顺序消费且不需要随机访问 / 重复遍历时，才用生成器替代数组。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "持有文件句柄、游标、锁或网络连接的生成器必须用 `try` / `finally` 清理资源。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "逐行读取、分页展开和 `getReturn()` 示例读取 `generator-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

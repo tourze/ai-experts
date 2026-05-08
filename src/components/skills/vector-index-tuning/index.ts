@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { embeddingStrategiesSkill } from "../embedding-strategies/index";
 import { ragAuditorSkill } from "../rag-auditor/index";
@@ -67,12 +68,24 @@ export const vectorIndexTuningSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先按优先级排序优化目标：延迟、召回、内存或写入成本；冻结 embedding、distance metric 和 benchmark query。",
-      "记录基线 recall、p95 latency、内存占用、写入成本和线上相似 workload；不要用单次查询拍板。",
-      "按 HNSW/IVF/PQ/DiskANN 等索引路线单变量调参，例如 M、efConstruction、efSearch、nlist、probe、压缩率。",
-      "每轮只改一个主要参数并做回归验证；如果召回问题来自 chunking/embedding 或 RAG 链路，转对应 skill。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先按优先级排序优化目标：延迟、召回、内存或写入成本；冻结 embedding、distance metric 和 benchmark query。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "记录基线 recall、p95 latency、内存占用、写入成本和线上相似 workload；不要用单次查询拍板。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "按 HNSW/IVF/PQ/DiskANN 等索引路线单变量调参，例如 M、efConstruction、efSearch、nlist、probe、压缩率。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "每轮只改一个主要参数并做回归验证；如果召回问题来自 chunking/embedding 或 RAG 链路，转对应 skill。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { binaryAnalysisPatternsSkill } from "../binary-analysis-patterns/index";
 
@@ -47,14 +48,32 @@ export const idapythonScriptingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认 IDA 版本、是否有 Hex-Rays、是否处于调试态，以及脚本运行在 GUI IDA 还是 IDALib。",
-      "函数遍历用 `idautils.Functions()` 搭配 `idc.get_func_name`，基本块分析用 `idaapi.FlowChart` 并按需开启前驱块。",
-      "字节搜索用 `idc.find_bytes()` 循环，命中 `ida_idaapi.BADADDR` 立即停止。",
-      "交叉引用用 `idautils.XrefsTo(target_ea)` 或字符串 xref 先缩小范围，再进入函数级分析。",
-      "Hex-Rays 结果用 `ida_hexrays.decompile()` 后转 `str(dec)` 文本；不要直接拼接反编译对象。",
-      "IDALib 批量模式必须第一行 `import idapro`，打开数据库、导出 JSON、最后 `close_database(save=False)` 或明确确认保存。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认 IDA 版本、是否有 Hex-Rays、是否处于调试态，以及脚本运行在 GUI IDA 还是 IDALib。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "函数遍历用 `idautils.Functions()` 搭配 `idc.get_func_name`，基本块分析用 `idaapi.FlowChart` 并按需开启前驱块。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "字节搜索用 `idc.find_bytes()` 循环，命中 `ida_idaapi.BADADDR` 立即停止。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "交叉引用用 `idautils.XrefsTo(target_ea)` 或字符串 xref 先缩小范围，再进入函数级分析。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "Hex-Rays 结果用 `ida_hexrays.decompile()` 后转 `str(dec)` 文本；不要直接拼接反编译对象。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "IDALib 批量模式必须第一行 `import idapro`，打开数据库、导出 JSON、最后 `close_database(save=False)` 或明确确认保存。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

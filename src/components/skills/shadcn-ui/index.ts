@@ -6,7 +6,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, shadcnUiVerifySetup } from "../../procedures/index";
 
@@ -65,12 +66,24 @@ export const shadcnUiSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先检查 `components.json`、路径别名、`cn()`、Tailwind v3/v4 配置、全局样式和包管理器状态。",
-      "优先用 shadcn CLI 或受控模板添加组件，不手抄半套源码；需要核对时调用 `shadcn-ui-verify-setup`。",
-      "把 Button、Dialog、Form、Table、Toast 等组件映射到项目 token、字体、spacing、主题和交互状态。",
-      "复杂示例优先对照 `references/examples/`、`references/resources/` 和 README；迁移或排障时区分 Radix/Base UI、Tailwind 版本和 Registry 来源。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先检查 `components.json`、路径别名、`cn()`、Tailwind v3/v4 配置、全局样式和包管理器状态。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "优先用 shadcn CLI 或受控模板添加组件，不手抄半套源码；需要核对时调用 `shadcn-ui-verify-setup`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "把 Button、Dialog、Form、Table、Toast 等组件映射到项目 token、字体、spacing、主题和交互状态。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "复杂示例优先对照 `references/examples/`、`references/resources/` 和 README；迁移或排障时区分 Radix/Base UI、Tailwind 版本和 Registry 来源。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

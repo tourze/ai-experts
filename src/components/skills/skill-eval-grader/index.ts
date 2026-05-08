@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const skillEvalGraderSkill = defineSkill({
@@ -45,13 +46,28 @@ export const skillEvalGraderSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先完整读取 transcript，记录执行错误、跳过项、自述不确定性和声称已验证的内容。",
-      "列出 outputs 并读取与每条 expectation 相关的真实文件内容；找不到证据就是 FAIL。",
-      "逐条 expectation 判定 passed、failed、evidence；PASS 必须绑定实质证据，不接受只存在文件或关键词命中。",
-      "从输出中抽取事实、过程和质量 claims，标注 process/fact/quality、verified 和 evidence。",
-      "审查 assertion 是否太弱、不可验证或漏掉关键结果，并给出可操作 eval_feedback。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先完整读取 transcript，记录执行错误、跳过项、自述不确定性和声称已验证的内容。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "列出 outputs 并读取与每条 expectation 相关的真实文件内容；找不到证据就是 FAIL。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "逐条 expectation 判定 passed、failed、evidence；PASS 必须绑定实质证据，不接受只存在文件或关键词命中。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "从输出中抽取事实、过程和质量 claims，标注 process/fact/quality、verified 和 evidence。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "审查 assertion 是否太弱、不可验证或漏掉关键结果，并给出可操作 eval_feedback。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

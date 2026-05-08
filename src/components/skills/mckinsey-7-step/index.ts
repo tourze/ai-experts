@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
 import { fishboneDiagramSkill } from "../fishbone-diagram/index";
@@ -62,15 +63,36 @@ export const mckinseyStepSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "定义问题：把宽泛诉求改写成具体、可回答、有边界的问题，并列出成功标准。",
-      "分解问题：用 MECE 结构拆成互斥且穷尽的子问题；根因型问题可联动 `fishbone-diagram`。",
-      "确定关键问题：用 80/20 聚焦 2-3 个最可能改变结论的驱动因素，不平均用力。",
-      "制定工作计划：为每个关键问题写假设、所需证据、验证方法和优先级。",
-      "展开分析：围绕假设收集数据和事实，区分证据、推断和待验证假设。",
-      "综合结论：验证或推翻初始假设，必要时回到前面步骤重新分解。",
-      "形成建议：用金字塔结构输出结论、理由、证据和可执行下一步。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "定义问题：把宽泛诉求改写成具体、可回答、有边界的问题，并列出成功标准。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "分解问题：用 MECE 结构拆成互斥且穷尽的子问题；根因型问题可联动 `fishbone-diagram`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "确定关键问题：用 80/20 聚焦 2-3 个最可能改变结论的驱动因素，不平均用力。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "制定工作计划：为每个关键问题写假设、所需证据、验证方法和优先级。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "展开分析：围绕假设收集数据和事实，区分证据、推断和待验证假设。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "综合结论：验证或推翻初始假设，必要时回到前面步骤重新分解。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "形成建议：用金字塔结构输出结论、理由、证据和可执行下一步。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

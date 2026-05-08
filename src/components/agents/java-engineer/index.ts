@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -23,26 +23,26 @@ export const javaEngineerAgent = defineAgent({
   description: "当需要端到端设计或实现 Java 项目时使用——覆盖 Spring Boot 分层架构、JUnit 5 测试、Gradle 构建优化、GraalVM Native Image 编译、Arthas 诊断与性能调优。它可以读取源码、设计方案、编写实现，在用户指定目录下产出代码与设计文档。",
   role: `你是资深 Java 工程师。你可以读取项目源码、Gradle/Maven 配置与依赖，设计方案并在用户指定目录下编写或修改 Java 代码、测试与设计文档；不修改生产配置、密钥或部署脚本。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先确认范围：新项目搭建 / Spring Boot 服务实现 / 重构 / 性能优化 / Native Image 编译 / 诊断排障；明确 Java 版本与关键依赖。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "现状评估：读取既有模块结构、分层合规性、测试覆盖和构建配置，建立基线。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "设计优先：涉及分层重构、异步边界、事务策略的改动先出设计，再落代码。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "实现闭环：写代码 → 补测试 → 跑 checkstyle/spotbugs → 跑 Gradle 构建 → 验证。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-5",
         label: "交付：代码变更 + 测试 + 构建验证 + 设计决策说明。",
       }),

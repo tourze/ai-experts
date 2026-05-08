@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const androidDesignGuidelinesSkill = defineSkill({
@@ -42,14 +43,32 @@ export const androidDesignGuidelinesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认目标 Android 版本、屏幕形态、主要导航目的地、Compose / XML 技术栈和是否涉及权限、通知或系统集成。",
-      "检查主题：动态颜色、静态回退、Light / Dark、语义 color role 和品牌定制色来源；规则读取 `rules-1-to-3`。",
-      "检查导航：Compact、Medium、Expanded 使用合适的 Navigation Bar、Rail 或 Drawer，并支持预测性返回。",
-      "检查布局：Window Size Class、网格边距、最大内容宽度、edge-to-edge、WindowInsets 和折叠屏铰链避让。",
-      "检查排版、组件、无障碍、手势、通知、权限和系统集成时读取 `rules-4-to-10`。",
-      "输出设计修复建议时同时给出设备矩阵和复测路径，不只给视觉偏好判断。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认目标 Android 版本、屏幕形态、主要导航目的地、Compose / XML 技术栈和是否涉及权限、通知或系统集成。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "检查主题：动态颜色、静态回退、Light / Dark、语义 color role 和品牌定制色来源；规则读取 `rules-1-to-3`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "检查导航：Compact、Medium、Expanded 使用合适的 Navigation Bar、Rail 或 Drawer，并支持预测性返回。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "检查布局：Window Size Class、网格边距、最大内容宽度、edge-to-edge、WindowInsets 和折叠屏铰链避让。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "检查排版、组件、无障碍、手势、通知、权限和系统集成时读取 `rules-4-to-10`。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出设计修复建议时同时给出设备矩阵和复测路径，不只给视觉偏好判断。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

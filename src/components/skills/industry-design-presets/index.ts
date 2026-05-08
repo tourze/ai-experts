@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { designSystemPatternsSkill } from "../design-system-patterns/index";
 import { modernWebDesignSkill } from "../modern-web-design/index";
@@ -62,13 +63,28 @@ export const industryDesignPresetsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确定主行业和 1-2 个氛围词，例如 trust、playful、luxury 或 technical。",
-      "读取 presets-catalog 或对应行业 reference，取出风格、主色组、字体对、关键效果和 AVOID 清单。",
-      "按 60% 行业预设、40% 品牌差异化落地，不机械套用单一 preset。",
-      "把主色组接入 design-system semantic token，字体对接 font-pairing-library，风格实现细节交给现代 Web 设计。",
-      "检查行业语义是否优先于视觉好看：例如金融首要情绪是可托付，不能用廉价 AI 渐变破坏信任。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确定主行业和 1-2 个氛围词，例如 trust、playful、luxury 或 technical。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "读取 presets-catalog 或对应行业 reference，取出风格、主色组、字体对、关键效果和 AVOID 清单。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "按 60% 行业预设、40% 品牌差异化落地，不机械套用单一 preset。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "把主色组接入 design-system semantic token，字体对接 font-pairing-library，风格实现细节交给现代 Web 设计。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "检查行业语义是否优先于视觉好看：例如金融首要情绪是可托付，不能用廉价 AI 渐变破坏信任。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

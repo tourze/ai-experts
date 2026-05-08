@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { sqlReviewOptimizationSkill } from "../sql-review-optimization/index";
 
@@ -64,12 +65,24 @@ export const mysqlTransactionLockingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认 MySQL 版本、隔离级别、`innodb_autoinc_lock_mode`、`binlog_format`、复制模式和相关 SQL。",
-      "采集 `SHOW ENGINE INNODB STATUS`、`performance_schema.data_locks` / `data_lock_waits` 和慢查询证据，区分 record、gap、next-key、AUTO-INC、MDL 等锁对象。",
-      "`SELECT ... FOR UPDATE` 必须在显式事务内且命中索引；涉及多行更新时固定加锁顺序并保持短事务。",
-      "应用层捕获 deadlock 1213 并做有限重试；死锁日志、锁模式细节和 SQL 模板读取 locking-patterns reference。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认 MySQL 版本、隔离级别、`innodb_autoinc_lock_mode`、`binlog_format`、复制模式和相关 SQL。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "采集 `SHOW ENGINE INNODB STATUS`、`performance_schema.data_locks` / `data_lock_waits` 和慢查询证据，区分 record、gap、next-key、AUTO-INC、MDL 等锁对象。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "`SELECT ... FOR UPDATE` 必须在显式事务内且命中索引；涉及多行更新时固定加锁顺序并保持短事务。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "应用层捕获 deadlock 1213 并做有限重试；死锁日志、锁模式细节和 SQL 模板读取 locking-patterns reference。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

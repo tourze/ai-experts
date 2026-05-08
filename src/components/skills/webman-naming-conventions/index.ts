@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const webmanNamingConventionsSkill = defineSkill({
@@ -47,14 +48,32 @@ export const webmanNamingConventionsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认要审查的目录、命名空间、接口、Service、Repository 和自动加载规则。",
-      "目录规则读取 `directory-lowercase`，统一小写和多词下划线。",
-      "接口规则读取 `interface-naming`，统一 `Interface` 后缀。",
-      "Service 命名读取 `service-naming-pattern`，使用表达动作的 `VerbNounService`。",
-      "命名空间与目录不一致读取 `namespace-directory-mismatch`；Repository 实现读取 `repository-implementation-naming`。",
-      "输出命名问题清单、修改建议、PSR-4 风险和分阶段重命名计划。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认要审查的目录、命名空间、接口、Service、Repository 和自动加载规则。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "目录规则读取 `directory-lowercase`，统一小写和多词下划线。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "接口规则读取 `interface-naming`，统一 `Interface` 后缀。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Service 命名读取 `service-naming-pattern`，使用表达动作的 `VerbNounService`。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "命名空间与目录不一致读取 `namespace-directory-mismatch`；Repository 实现读取 `repository-implementation-naming`。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出命名问题清单、修改建议、PSR-4 风险和分阶段重命名计划。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

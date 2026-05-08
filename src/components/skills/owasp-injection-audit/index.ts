@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const owaspInjectionAuditSkill = defineSkill({
@@ -38,14 +39,32 @@ export const owaspInjectionAuditSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先按触发信号分类：命令执行、SSRF、路径遍历；SQL 字符串拼接、ORM raw query 或模板 SQL 直接转 `sql-review-optimization`。",
-      "命令注入检查用户输入是否进入 `exec`、`spawn`、`system`、`eval`、`Runtime.exec` 或 `subprocess`，以及是否启用 shell 模式。",
-      "命令执行防护只认可参数数组、白名单参数、严格转义、最小权限用户和容器 capability/seccomp/AppArmor 控制。",
-      "SSRF 检查 URL 来源、协议白名单、内网/metadata 网段、重定向复查和 DNS rebinding 防护。",
-      "路径遍历检查用户输入路径、编码变体、绝对路径、符号链接、zip slip、上传目录和文件名策略。",
-      "每项发现评估 confirmed、likely 或 speculative，并写出攻击路径和最小修复。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先按触发信号分类：命令执行、SSRF、路径遍历；SQL 字符串拼接、ORM raw query 或模板 SQL 直接转 `sql-review-optimization`。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "命令注入检查用户输入是否进入 `exec`、`spawn`、`system`、`eval`、`Runtime.exec` 或 `subprocess`，以及是否启用 shell 模式。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "命令执行防护只认可参数数组、白名单参数、严格转义、最小权限用户和容器 capability/seccomp/AppArmor 控制。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "SSRF 检查 URL 来源、协议白名单、内网/metadata 网段、重定向复查和 DNS rebinding 防护。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "路径遍历检查用户输入路径、编码变体、绝对路径、符号链接、zip slip、上传目录和文件名策略。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "每项发现评估 confirmed、likely 或 speculative，并写出攻击路径和最小修复。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

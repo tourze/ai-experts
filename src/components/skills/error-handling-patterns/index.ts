@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const errorHandlingPatternsSkill = defineSkill({
@@ -44,13 +45,28 @@ export const errorHandlingPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先列出调用边界、外部依赖、用户可见接口和批处理单位，识别每类错误的责任方。",
-      "按验证错误、业务错误、外部系统错误和未知错误分层，定义对外错误码、用户消息和内部日志字段。",
-      "只捕获能处理的异常；可恢复错误加有界重试、退避、幂等键和熔断/降级条件。",
-      "批处理和异步任务要汇总部分失败，返回 succeeded/failed/retryable，不因单条坏数据丢整批。",
-      "最后反查调用点和测试，确认错误语义、重试边界、关联 ID 和用户消息都被覆盖。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先列出调用边界、外部依赖、用户可见接口和批处理单位，识别每类错误的责任方。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按验证错误、业务错误、外部系统错误和未知错误分层，定义对外错误码、用户消息和内部日志字段。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "只捕获能处理的异常；可恢复错误加有界重试、退避、幂等键和熔断/降级条件。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "批处理和异步任务要汇总部分失败，返回 succeeded/failed/retryable，不因单条坏数据丢整批。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "最后反查调用点和测试，确认错误语义、重试边界、关联 ID 和用户消息都被覆盖。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const androidTestingSkill = defineSkill({
@@ -47,14 +48,32 @@ export const androidTestingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先识别待测对象：ViewModel、Repository、UseCase、Room DAO、网络层、Compose UI 或截图回归。",
-      "按测试金字塔分配覆盖：逻辑层优先单元测试，组件交互用集成测试，关键页面用 UI / 截图测试。",
-      "配置依赖时读取 `dependencies`，确认 JUnit、coroutines-test、AndroidX Test、Compose、Hilt 和 Roborazzi 版本。",
-      "编写协程测试时注入 TestDispatcher，避免真实 delay、真实线程和非确定性等待。",
-      "编写 Hilt、Roborazzi 和 Compose 测试时读取 `code-patterns`，按语义节点和可复核截图路径实现。",
-      "输出 CI 命令、基准截图策略和失败定位方法，确保测试能在本地与 CI 重现。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先识别待测对象：ViewModel、Repository、UseCase、Room DAO、网络层、Compose UI 或截图回归。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按测试金字塔分配覆盖：逻辑层优先单元测试，组件交互用集成测试，关键页面用 UI / 截图测试。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "配置依赖时读取 `dependencies`，确认 JUnit、coroutines-test、AndroidX Test、Compose、Hilt 和 Roborazzi 版本。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "编写协程测试时注入 TestDispatcher，避免真实 delay、真实线程和非确定性等待。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "编写 Hilt、Roborazzi 和 Compose 测试时读取 `code-patterns`，按语义节点和可复核截图路径实现。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出 CI 命令、基准截图策略和失败定位方法，确保测试能在本地与 CI 重现。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

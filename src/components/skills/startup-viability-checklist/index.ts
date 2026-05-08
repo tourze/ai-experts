@@ -3,7 +3,8 @@ import {
   Platform,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const startupViabilityChecklistSkill = defineSkill({
@@ -26,15 +27,36 @@ export const startupViabilityChecklistSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "逐项标注状态和置信度：想法验证、ICP、市场规模、商业模式、业务健康度、定价、渠道、竞争、融资、团队、用户旅程、不确定性。",
-      "想法验证必须问真实用户、替代方案、不解决后果和 Mom Test 访谈结论。",
-      "市场规模要用至少两种方法交叉验证 TAM/SAM/SOM，不用假设 1% 市占率。",
-      "商业模式检查收入模型、单位经济、CLV/CAC ≥3、毛利率和增长投入承载能力。",
-      "渠道检查主要获客渠道、CAC、是否有 2+ 渠道和 ICP 匹配度。",
-      "竞争检查前三竞品、差异化、壁垒和一句话“为什么选你”。",
-      "最后收敛最大的 3 个不确定性、验证计划、pivot 方向和现金流跑道。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "逐项标注状态和置信度：想法验证、ICP、市场规模、商业模式、业务健康度、定价、渠道、竞争、融资、团队、用户旅程、不确定性。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "想法验证必须问真实用户、替代方案、不解决后果和 Mom Test 访谈结论。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "市场规模要用至少两种方法交叉验证 TAM/SAM/SOM，不用假设 1% 市占率。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "商业模式检查收入模型、单位经济、CLV/CAC ≥3、毛利率和增长投入承载能力。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "渠道检查主要获客渠道、CAC、是否有 2+ 渠道和 ICP 匹配度。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "竞争检查前三竞品、差异化、壁垒和一句话“为什么选你”。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "最后收敛最大的 3 个不确定性、验证计划、pivot 方向和现金流跑道。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

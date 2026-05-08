@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { incidentResponseSkill } from "../incident-response/index";
 
@@ -54,12 +55,24 @@ export const logAnalyzerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认时间范围、日志源、关键词、请求 ID / trace ID / host / service 等关联线索。",
-      "从小时间窗开始筛选，再逐步扩大；常用命令包括 `journalctl --since ... -p err`、`grep -in ... | tail`、`jq 'select(...)' ...`。",
-      "同时找第一条异常、最高频异常、上下文行和发布/配置/流量变化点；不要只贴最后一条错误。",
-      "输出前脱敏 token、密码、邮箱和完整 IP；如果影响面扩大或需要处置编排，联动 incident response。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认时间范围、日志源、关键词、请求 ID / trace ID / host / service 等关联线索。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "从小时间窗开始筛选，再逐步扩大；常用命令包括 `journalctl --since ... -p err`、`grep -in ... | tail`、`jq 'select(...)' ...`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "同时找第一条异常、最高频异常、上下文行和发布/配置/流量变化点；不要只贴最后一条错误。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "输出前脱敏 token、密码、邮箱和完整 IP；如果影响面扩大或需要处置编排，联动 incident response。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

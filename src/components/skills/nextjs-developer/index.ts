@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { reactServerComponentsSkill } from "../react-server-components/index";
 import { typescriptTypeSafetySkill } from "../typescript-type-safety/index";
@@ -68,12 +69,24 @@ export const nextjsDeveloperSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认路由树、Server / Client Component 边界、数据获取、缓存策略、写路径和部署目标。",
-      "默认使用 App Router 和 Server Component，只在交互叶子节点添加 `'use client'`。",
-      "所有 fetch 明确 cache / revalidate / tags，动态路由和 Metadata API 按当前版本处理异步 params。",
-      "RSC fetch、Server Action、Metadata 和 Route Handler 示例读取 `app-router-code-patterns`；深入主题读取对应 references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认路由树、Server / Client Component 边界、数据获取、缓存策略、写路径和部署目标。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "默认使用 App Router 和 Server Component，只在交互叶子节点添加 `'use client'`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "所有 fetch 明确 cache / revalidate / tags，动态路由和 Metadata API 按当前版本处理异步 params。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "RSC fetch、Server Action、Metadata 和 Route Handler 示例读取 `app-router-code-patterns`；深入主题读取对应 references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

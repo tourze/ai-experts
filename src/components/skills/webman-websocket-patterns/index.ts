@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const webmanWebsocketPatternsSkill = defineSkill({
@@ -42,14 +43,32 @@ export const webmanWebsocketPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认服务端监听地址、worker 数量、频道模型、认证方式、心跳和重连要求。",
-      "服务端配置读取 `websocket-server-setup`，声明 `listen => 'websocket://...'`、`reloadable => false` 和必要进程参数。",
-      "连接生命周期读取 `connection-lifecycle`，在 `onConnect` 分配 ID，`onWebSocketConnect` 做认证，`onClose` 清理资源。",
-      "多 Worker 广播读取 `channel-subscription`，跨进程使用 Redis pub/sub，不只依赖内存数组。",
-      "客户端重连读取 `reconnect-strategy`，使用指数退避、抖动和最大重试。",
-      "输出 WebSocket process 配置、认证/频道/广播设计和重连验证方案。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认服务端监听地址、worker 数量、频道模型、认证方式、心跳和重连要求。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "服务端配置读取 `websocket-server-setup`，声明 `listen => 'websocket://...'`、`reloadable => false` 和必要进程参数。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "连接生命周期读取 `connection-lifecycle`，在 `onConnect` 分配 ID，`onWebSocketConnect` 做认证，`onClose` 清理资源。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "多 Worker 广播读取 `channel-subscription`，跨进程使用 Redis pub/sub，不只依赖内存数组。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "客户端重连读取 `reconnect-strategy`，使用指数退避、抖动和最大重试。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出 WebSocket process 配置、认证/频道/广播设计和重连验证方案。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

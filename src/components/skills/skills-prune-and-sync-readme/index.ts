@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, skillsPruneAndSyncReadmeCurateSkills } from "../../procedures/index";
 
@@ -35,13 +36,28 @@ export const skillsPruneAndSyncReadmeSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先运行审计 procedure，输出低质量、重复、相似分组和冲突证据。",
-      "按证据区分低质量、重复、相似分组和强约束冲突；候选不足以直接删除时先给保留/删除理由。",
-      "只有用户明确要求删除时，按确认名单删除；专项子技能和父技能默认视为家族分层。",
-      "删除后运行 README 同步 procedure，只改 Skill 清单区块并保留现有摘要优先级。",
-      "最后运行校验 procedure，确认 README、数量统计、相对链接和组件清单一致。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先运行审计 procedure，输出低质量、重复、相似分组和冲突证据。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按证据区分低质量、重复、相似分组和强约束冲突；候选不足以直接删除时先给保留/删除理由。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "只有用户明确要求删除时，按确认名单删除；专项子技能和父技能默认视为家族分层。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "删除后运行 README 同步 procedure，只改 Skill 清单区块并保留现有摘要优先级。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "最后运行校验 procedure，确认 README、数量统计、相对链接和组件清单一致。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

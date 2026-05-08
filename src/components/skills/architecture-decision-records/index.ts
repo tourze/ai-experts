@@ -4,7 +4,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { errorHandlingPatternsSkill } from "../error-handling-patterns/index";
 import { protocolFreezingPatternsSkill } from "../protocol-freezing-patterns/index";
@@ -67,15 +68,36 @@ export const architectureDecisionRecordsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先写 ADR 三段：Context、Decision、Consequences，并列出未选方案和放弃理由。",
-      "服务边界按数据 owner、变更节奏、SLA/扩容、跨服务事务和查询代价判断拆合。",
-      "数据所有权坚持单写 owner；跨服务读用 API、事件、read model 或 materialized view，不用缓存偷换 owner。",
-      "接口契约按调用方可控性选择不版本化、URL/header 版本化或兼容过渡期。",
-      "Breaking change 先发布新接口或字段，监控旧调用量，通知迁移，降至阈值后 deprecated，再移除。",
-      "弹性四件套分别定超时、重试、熔断和降级；写清幂等前提、数值、作用域和失败时行为。",
-      "需要模板或反模式时读取 contract-templates。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先写 ADR 三段：Context、Decision、Consequences，并列出未选方案和放弃理由。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "服务边界按数据 owner、变更节奏、SLA/扩容、跨服务事务和查询代价判断拆合。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "数据所有权坚持单写 owner；跨服务读用 API、事件、read model 或 materialized view，不用缓存偷换 owner。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "接口契约按调用方可控性选择不版本化、URL/header 版本化或兼容过渡期。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "Breaking change 先发布新接口或字段，监控旧调用量，通知迁移，降至阈值后 deprecated，再移除。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "弹性四件套分别定超时、重试、熔断和降级；写清幂等前提、数值、作用域和失败时行为。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "需要模板或反模式时读取 contract-templates。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

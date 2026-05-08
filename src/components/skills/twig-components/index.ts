@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { symfonyUxSkill } from "../symfony-ux/index";
 
@@ -65,14 +66,32 @@ export const twigComponentsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先判断组件类型：静态复用 UI 用 TwigComponent；交互后需要服务端重渲染再用 LiveComponent。",
-      "定义组件职责、名称、公共 props、slots、`attributes` 合并策略和现有样式复用方式。",
-      "TwigComponent 类用 `#[AsTwigComponent]` 暴露稳定 public 属性，模板放在 `templates/components/<Name>.html.twig`。",
-      "LiveComponent 类用 `#[AsLiveComponent]` 和 `DefaultActionTrait`；只有必要状态标记 `#[LiveProp(writable: true)]`。",
-      "Live 模板输入用 `data-model`，快速输入场景加 debounce，并处理空值、重复请求和最小查询长度。",
-      "模板只展示，不读取隐式全局状态；业务判断放到组件 getter、服务或上游 use case。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先判断组件类型：静态复用 UI 用 TwigComponent；交互后需要服务端重渲染再用 LiveComponent。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "定义组件职责、名称、公共 props、slots、`attributes` 合并策略和现有样式复用方式。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "TwigComponent 类用 `#[AsTwigComponent]` 暴露稳定 public 属性，模板放在 `templates/components/<Name>.html.twig`。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "LiveComponent 类用 `#[AsLiveComponent]` 和 `DefaultActionTrait`；只有必要状态标记 `#[LiveProp(writable: true)]`。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "Live 模板输入用 `data-model`，快速输入场景加 debounce，并处理空值、重复请求和最小查询长度。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "模板只展示，不读取隐式全局状态；业务判断放到组件 getter、服务或上游 use case。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

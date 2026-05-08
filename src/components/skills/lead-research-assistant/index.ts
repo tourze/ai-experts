@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const leadResearchAssistantSkill = defineSkill({
@@ -54,12 +55,24 @@ export const leadResearchAssistantSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认产品、客单价、成交周期、目标行业、公司规模、区域、购买角色和理想客户定义。",
-      "从 ICP 到首批账号时，逐家公司说明触发信号、适配原因、建议联系人角色和首次切入角度。",
-      "已有账号深挖时读取 account-research-guide，拆分公司背景、阶段信号、岗位分布、公开项目、招聘和技术栈线索。",
-      "联系人发现与公司研究分开汇报；公开事实、公开信号、推测结论、信息日期和置信度必须分层标注。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认产品、客单价、成交周期、目标行业、公司规模、区域、购买角色和理想客户定义。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "从 ICP 到首批账号时，逐家公司说明触发信号、适配原因、建议联系人角色和首次切入角度。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "已有账号深挖时读取 account-research-guide，拆分公司背景、阶段信号、岗位分布、公开项目、招聘和技术栈线索。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "联系人发现与公司研究分开汇报；公开事实、公开信号、推测结论、信息日期和置信度必须分层标注。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

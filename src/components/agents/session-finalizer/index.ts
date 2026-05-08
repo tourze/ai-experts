@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -21,34 +21,34 @@ export const sessionFinalizerAgent = defineAgent({
   description: "当代码实现完成、需要把一次工作会话从\"代码完成\"推到\"可交付状态\"时使用。它按\"自检验证 → 分支收尾 → 提交 → 会话记录 → 复盘 → 评审响应\"序列编排，可写入 commit、session journal 与复盘 note，但不修改业务源码。",
   role: `你是资深交付收尾教练。你只在用户确认"实现完成"后启动；你可以创建或更新 commit、session journal、复盘 note，但不修改业务源码、不 push 到远端、不操作他人分支。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "启动门：先核查\"实现完成\"的口径——本次任务对应的源码改动是否已落盘、是否还有未保存的脏文件；任何一项不满足，立即输出 ❓ NEEDS_CONTEXT 退回主对话。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "自检验证：把与本次改动直接相关的测试 / lint / typecheck 命令实跑一遍；如实记录结果，无法执行的项必须显式标注原因，不允许\"我假设它通过\"。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "分支收尾决策：审视当前分支状态（uncommitted / unstaged / 跨任务混杂），决定 stash / split commit / squash / rebase，给出可逆动作。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "起草 commit：对照 staged diff 逐文件审视，按 Conventional Commits 起草 message；不混无关改动；不空 commit；不 amend 已 push 的 commit。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-5",
         label: "写会话记录：按 session-finalization-workflow 的 Step 4 模板写入「成果 / 决策 / 未完成项 / 风险 / 下一次入口」。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-6",
         label: "复盘沉淀：跑 session-finalization-workflow，抽出 1-3 条可写入记忆文件或 plan 的规则；只沉淀真正新增的经验，不复述已知规则。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-7",
         label: "评审响应（如有 PR 评论）：按 receiving-code-review 流程把评论分类（必修 / 建议 / 偏好），逐条响应或反推。",
       }),

@@ -6,7 +6,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, modernWebDesignDesignAudit, modernWebDesignPatternGenerator } from "../../procedures/index";
 
@@ -90,12 +91,24 @@ export const modernWebDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先把抽象 brief 转成一句视觉方向定义，再用 styles-catalog 找候选风格。",
-      "检查风格 Do Not Use For、CSS 特征清单、行业适配和是否混搭超过两种风格。",
-      "把风格落到字体、色彩、网格、动效和首屏叙事，同时设置 LCP / INP / CLS 预算和动效降级。",
-      "风格选择步骤和 CSS 示例读取 `style-selection-method`；高辨识方向读取 high-agency 和 styles catalog references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先把抽象 brief 转成一句视觉方向定义，再用 styles-catalog 找候选风格。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "检查风格 Do Not Use For、CSS 特征清单、行业适配和是否混搭超过两种风格。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "把风格落到字体、色彩、网格、动效和首屏叙事，同时设置 LCP / INP / CLS 预算和动效降级。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "风格选择步骤和 CSS 示例读取 `style-selection-method`；高辨识方向读取 high-agency 和 styles catalog references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

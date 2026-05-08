@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, dataAnalysisAnalyze } from "../../procedures/index";
 
@@ -66,12 +67,24 @@ export const dataAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认文件真实存在、扩展名受支持，并用 `data-analysis-analyze` procedure inspect 表名、列名、类型和空值。",
-      "基于 inspect 结果再写 query 或 summary，不引用不存在的表和列。",
-      "按问题选择筛选、聚合、排序、limit、导出格式或后续可视化 / 叙事流程。",
-      "导出前确认输出扩展名只使用 `.csv`、`.json` 或 `.md`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认文件真实存在、扩展名受支持，并用 `data-analysis-analyze` procedure inspect 表名、列名、类型和空值。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "基于 inspect 结果再写 query 或 summary，不引用不存在的表和列。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "按问题选择筛选、聚合、排序、limit、导出格式或后续可视化 / 叙事流程。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "导出前确认输出扩展名只使用 `.csv`、`.json` 或 `.md`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

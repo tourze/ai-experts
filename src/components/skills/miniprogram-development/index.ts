@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const miniprogramDevelopmentSkill = defineSkill({
@@ -48,15 +49,36 @@ export const miniprogramDevelopmentSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先读 `project.config.json`，确认 `appid`、`miniprogramRoot`、`compileType`，路径判断以 `miniprogramRoot` 为准。",
-      "新增或排查页面时检查 `.js/.ts`、`.wxml`、`.wxss`、`.json` 四件套，并同步 app.json 路由。",
-      "页面逻辑只放数据与事件，WXML 负责结构，WXSS 负责样式，页面 JSON 负责标题和组件声明。",
-      "只有看到 `wx.cloud.init`、云函数目录或云数据库调用，才进入 CloudBase 约束；初始化放 App.onLaunch 或等价入口。",
-      "检查本地资源、组件引用和分包路径是否真实存在且相对 `miniprogramRoot` 正确。",
-      "调试优先微信开发者工具；无法使用时再用 `miniprogram-ci` 做 npm 构建、预览或上传。",
-      "CloudBase 或发布链路细节按需读取 cloudbase-integration 或 devtools-debug-preview。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先读 `project.config.json`，确认 `appid`、`miniprogramRoot`、`compileType`，路径判断以 `miniprogramRoot` 为准。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "新增或排查页面时检查 `.js/.ts`、`.wxml`、`.wxss`、`.json` 四件套，并同步 app.json 路由。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "页面逻辑只放数据与事件，WXML 负责结构，WXSS 负责样式，页面 JSON 负责标题和组件声明。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "只有看到 `wx.cloud.init`、云函数目录或云数据库调用，才进入 CloudBase 约束；初始化放 App.onLaunch 或等价入口。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "检查本地资源、组件引用和分包路径是否真实存在且相对 `miniprogramRoot` 正确。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "调试优先微信开发者工具；无法使用时再用 `miniprogram-ci` 做 npm 构建、预览或上传。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "CloudBase 或发布链路细节按需读取 cloudbase-integration 或 devtools-debug-preview。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

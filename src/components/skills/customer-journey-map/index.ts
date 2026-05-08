@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const customerJourneyMapSkill = defineSkill({
@@ -41,13 +42,28 @@ export const customerJourneyMapSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认 persona、核心任务、旅程起点/终点和证据来源；访谈或问卷不足时按需读取 `mom-test` / `designing-surveys` references。",
-      "按用户视角拆阶段，不把内部组织流程写成用户旅程。",
-      "为每个阶段标注触点、用户目标、情绪/阻力、可观测指标和机会点。",
-      "把机会点按用户影响、证据强度、可执行性和业务价值排序。",
-      "输出下一步实验、调研或服务改造建议。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认 persona、核心任务、旅程起点/终点和证据来源；访谈或问卷不足时按需读取 `mom-test` / `designing-surveys` references。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按用户视角拆阶段，不把内部组织流程写成用户旅程。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "为每个阶段标注触点、用户目标、情绪/阻力、可观测指标和机会点。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "把机会点按用户影响、证据强度、可执行性和业务价值排序。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "输出下一步实验、调研或服务改造建议。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

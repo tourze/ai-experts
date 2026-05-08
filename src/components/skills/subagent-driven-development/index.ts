@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const subagentDrivenDevelopmentSkill = defineSkill({
@@ -61,16 +62,40 @@ export const subagentDrivenDevelopmentSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "一次性读取完整计划或 Execution Contract，提取 tasks、depends_on、read_scope、write_scope、acceptance_refs 和 acceptance。",
-      "将任务规整为 wave；同一 wave 只有 `write_scope` 互不重叠且依赖已完成的任务才能并行。",
-      "为每个任务创建 Todo，任务缺 `write_scope`、验收引用或 command 证据命令时先补计划。",
-      "派遣时给每个全新子代理完整任务文本、项目上下文、read/write 范围、依赖和验收详情，不让它自己读计划文件。",
-      "处理 DONE、DONE_WITH_CONCERNS、NEEDS_CONTEXT、BLOCKED 四种状态；BLOCKED 必须补上下文、换模型、拆任务或升级用户。",
-      "先做规格合规审查，确认实现匹配计划且没有 YAGNI；通过后再做代码质量审查。",
-      "按 acceptance_refs 收集 command、diff、artifact 或 manual 证据；command 必须由主会话运行。",
-      "当前 wave 全部审查通过且证据齐备后，才集成结果并进入下一 wave；全部完成后做全局审查和分支收尾。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "一次性读取完整计划或 Execution Contract，提取 tasks、depends_on、read_scope、write_scope、acceptance_refs 和 acceptance。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "将任务规整为 wave；同一 wave 只有 `write_scope` 互不重叠且依赖已完成的任务才能并行。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "为每个任务创建 Todo，任务缺 `write_scope`、验收引用或 command 证据命令时先补计划。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "派遣时给每个全新子代理完整任务文本、项目上下文、read/write 范围、依赖和验收详情，不让它自己读计划文件。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "处理 DONE、DONE_WITH_CONCERNS、NEEDS_CONTEXT、BLOCKED 四种状态；BLOCKED 必须补上下文、换模型、拆任务或升级用户。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "先做规格合规审查，确认实现匹配计划且没有 YAGNI；通过后再做代码质量审查。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "按 acceptance_refs 收集 command、diff、artifact 或 manual 证据；command 必须由主会话运行。",
+      }),
+      defineWorkflowStep({
+        id: "step-8",
+        label: "当前 wave 全部审查通过且证据齐备后，才集成结果并进入下一 wave；全部完成后做全局审查和分支收尾。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

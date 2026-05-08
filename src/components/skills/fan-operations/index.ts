@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { copywritingSkill } from "../copywriting/index";
 import { xiaohongshuCommercialGrowthSkill } from "../xiaohongshu-commercial-growth/index";
@@ -61,13 +62,28 @@ export const fanOperationsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认账号定位、粉丝类型、互动目标、高频问题、当前回复率、私信咨询和可交付承诺边界。",
-      "评论回复先给直接结论，再补场景动作，并用一个钩子问题延续对话；不得用无信息回复刷互动。",
-      "新粉欢迎语说明账号分享内容、适合解决的问题和主页置顶路径，不夸张承诺或冲动站外导流。",
-      "每周复盘新增评论、回复率、私信咨询和反复被问到的话题，沉淀 FAQ、选题和下周互动实验。",
-      "需要人设统一读取 personal-branding-advanced；公域转私域读取 private-domain；涉及安全导流联动 copywriting。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认账号定位、粉丝类型、互动目标、高频问题、当前回复率、私信咨询和可交付承诺边界。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "评论回复先给直接结论，再补场景动作，并用一个钩子问题延续对话；不得用无信息回复刷互动。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "新粉欢迎语说明账号分享内容、适合解决的问题和主页置顶路径，不夸张承诺或冲动站外导流。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "每周复盘新增评论、回复率、私信咨询和反复被问到的话题，沉淀 FAQ、选题和下周互动实验。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "需要人设统一读取 personal-branding-advanced；公域转私域读取 private-domain；涉及安全导流联动 copywriting。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

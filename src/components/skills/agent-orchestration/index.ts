@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const agentOrchestrationSkill = defineSkill({
@@ -56,14 +57,32 @@ export const agentOrchestrationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先拆 system prompt：静态角色/规则/工具说明放缓存边界前，动态环境/记忆/任务上下文放边界后。",
-      "定义每类子 Agent 的职责、输入、输出、`max_turns`、权限和失败退出条件。",
-      "逐个子 Agent 做 fork/fresh/worktree 决策；高风险写入、长任务或需要文件隔离时优先 worktree 或 fresh。",
-      "状态按 turn/session/persistent/project 四层落位，跨 Agent 只传消息和结果，不共享可变状态对象。",
-      "后台任务必须有任务 ID、状态查询、取消路径、结果持久化和审计记录。",
-      "扩展点用 MCP、Hooks、Skills 或声明式配置暴露；需要工具加载细节时读取 agent-tool-design。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先拆 system prompt：静态角色/规则/工具说明放缓存边界前，动态环境/记忆/任务上下文放边界后。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "定义每类子 Agent 的职责、输入、输出、`max_turns`、权限和失败退出条件。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "逐个子 Agent 做 fork/fresh/worktree 决策；高风险写入、长任务或需要文件隔离时优先 worktree 或 fresh。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "状态按 turn/session/persistent/project 四层落位，跨 Agent 只传消息和结果，不共享可变状态对象。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "后台任务必须有任务 ID、状态查询、取消路径、结果持久化和审计记录。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "扩展点用 MCP、Hooks、Skills 或声明式配置暴露；需要工具加载细节时读取 agent-tool-design。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

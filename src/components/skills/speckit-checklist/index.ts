@@ -3,7 +3,8 @@ import {
   Platform,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const speckitChecklistSkill = defineSkill({
@@ -22,14 +23,26 @@ export const speckitChecklistSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      `读取上下文：
+      defineWorkflowStep({
+        id: "step-1",
+        label: `读取上下文：
    - \`.specify/features/<feature>/spec.md\`
    - 若存在则读取 \`plan.md\`、\`tasks.md\``,
-      "从用户输入提取关注域：安全、性能、可用性、兼容性、合规等。",
-      "为每个关注域生成可判定条目（是/否）。",
-      "输出到当前 feature 目录：`.specify/features/<feature>/checklists/requirements.md`。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "从用户输入提取关注域：安全、性能、可用性、兼容性、合规等。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "为每个关注域生成可判定条目（是/否）。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "输出到当前 feature 目录：`.specify/features/<feature>/checklists/requirements.md`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

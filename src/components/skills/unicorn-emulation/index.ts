@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { binaryAnalysisPatternsSkill } from "../binary-analysis-patterns/index";
 import { fridaDynamicAnalysisSkill } from "../frida-dynamic-analysis/index";
@@ -48,13 +49,28 @@ export const unicornEmulationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先静态确认架构、基址、目标函数范围、调用约定、参数位置、返回寄存器和外部依赖。",
-      "裸加载目标代码并按需映射内存；不要试图完整解析和运行整个 ELF/PE。",
-      "为 libc、JNI、syscall、C++ runtime 等外部调用写 stub 或 hook，返回最小可信值。",
-      "用块级 trace 定位崩溃；未映射 fetch 补代码映射，未映射 read 补数据或 hook，命中 import stub 就补模拟实现。",
-      "死循环加计数器和超时阈值；每轮记录 crash callback、修复点、输入、输出和剩余未模拟依赖。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先静态确认架构、基址、目标函数范围、调用约定、参数位置、返回寄存器和外部依赖。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "裸加载目标代码并按需映射内存；不要试图完整解析和运行整个 ELF/PE。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "为 libc、JNI、syscall、C++ runtime 等外部调用写 stub 或 hook，返回最小可信值。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "用块级 trace 定位崩溃；未映射 fetch 补代码映射，未映射 read 补数据或 hook，命中 import stub 就补模拟实现。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "死循环加计数器和超时阈值；每轮记录 crash callback、修复点、输入、输出和剩余未模拟依赖。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

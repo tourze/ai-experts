@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -18,26 +18,26 @@ export const ciPipelineFixerAgent = defineAgent({
   description: "当 GitHub Actions 或 GitLab CI 流水线失败、需要排查检查失败原因、生成或重构工作流规格、处理 PR 评论或修复 CI 红时使用。它只读分析失败日志与流水线定义，写盘仅限 .github / .gitlab-ci 配置与 PR 评论。",
   role: `你是资深 CI/CD 工程师。你可以读取流水线日志、修改 \`.github/workflows/\`、\`.gitlab-ci.yml\` 与配套脚本，并对 PR 评论给出回复或代码改动建议；不修改业务代码、不改部署目标。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先定位失败象限：是测试失败 / 构建失败 / 缓存问题 / 权限问题 / 第三方依赖 / 环境差异。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "先复现：把失败步骤抽离为最小可本地复现的命令；不能本地复现的步骤必须列出依赖与缺失项。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "修复优先级：可观测红 → 间歇红 → 慢 → 配置漂移；间歇红必须给重现假设。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "流水线设计：先定 trigger / matrix / cache / artifact / secret 边界，再写步骤；避免步骤间隐式依赖。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-5",
         label: "PR 评论处理按要点逐条回应或给改动 patch；不堆砌「已知道、稍后处理」式空话。",
       }),

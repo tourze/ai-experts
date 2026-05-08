@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { laravelPatternsSkill } from "../laravel-patterns/index";
 import { laravelVerificationSkill } from "../laravel-verification/index";
@@ -61,12 +62,24 @@ export const laravelTddSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先写成功路径失败测试，再补授权失败、验证失败和外部依赖失败。",
-      "触库测试默认 RefreshDatabase；队列、事件、通知和 HTTP 客户端默认 fake 并断言副作用。",
-      "一个测试只覆盖一个行为边界，名称直接描述业务行为。",
-      "Pest HTTP + Queue fake 和 PHPUnit Action 示例读取 `test-code-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先写成功路径失败测试，再补授权失败、验证失败和外部依赖失败。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "触库测试默认 RefreshDatabase；队列、事件、通知和 HTTP 客户端默认 fake 并断言副作用。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "一个测试只覆盖一个行为边界，名称直接描述业务行为。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Pest HTTP + Queue fake 和 PHPUnit Action 示例读取 `test-code-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { springBootLayeringSkill } from "../spring-boot-layering/index";
 import { testingPatternsSkill } from "../testing-patterns/index";
@@ -60,13 +61,28 @@ export const javaJunitSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先判断测试层级：纯业务类直接 new，Web/Data/Spring 切片测试限定范围，只有端到端集成才用 `@SpringBootTest`。",
-      "按行为命名测试，使用 AAA 结构组织 arrange/act/assert，必要时从 `testing-patterns` 获取通用测试原则。",
-      "重复输入用参数化测试，但每组数据必须表达不同业务含义，不堆无解释样例。",
-      "Mockito 只隔离协作者；验证结果和关键参数内容，必要时用 `ArgumentCaptor`，不要只验证 `any()` 调用。",
-      "复杂断言、异步等待和反模式示例读取 advanced-patterns；异步场景优先 Awaitility，不用固定 sleep。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先判断测试层级：纯业务类直接 new，Web/Data/Spring 切片测试限定范围，只有端到端集成才用 `@SpringBootTest`。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按行为命名测试，使用 AAA 结构组织 arrange/act/assert，必要时从 `testing-patterns` 获取通用测试原则。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "重复输入用参数化测试，但每组数据必须表达不同业务含义，不堆无解释样例。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Mockito 只隔离协作者；验证结果和关键参数内容，必要时用 `ArgumentCaptor`，不要只验证 `any()` 调用。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "复杂断言、异步等待和反模式示例读取 advanced-patterns；异步场景优先 Awaitility，不用固定 sleep。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

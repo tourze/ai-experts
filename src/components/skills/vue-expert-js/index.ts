@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { javascriptTypescriptJestSkill } from "../javascript-typescript-jest/index";
 import { modernJavascriptPatternsSkill } from "../modern-javascript-patterns/index";
@@ -73,12 +74,24 @@ export const vueExpertJsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认项目保持 JavaScript，不引入 TS-only 语法，再识别组件、composable、store 或 Vite 配置边界。",
-      "组件 props / emits 同时声明运行时约束和 JSDoc 契约；复杂对象用 `@typedef` 收口。",
-      "公共 composable 和 store action 必须有 `@param` / `@returns`，跨文件共享类型用 `import('./path').TypeName`。",
-      "组件、composable、跨文件 typedef 示例读取 `jsdoc-component-patterns`；深入主题读取 JSDoc / composable / state / testing references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认项目保持 JavaScript，不引入 TS-only 语法，再识别组件、composable、store 或 Vite 配置边界。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "组件 props / emits 同时声明运行时约束和 JSDoc 契约；复杂对象用 `@typedef` 收口。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "公共 composable 和 store action 必须有 `@param` / `@returns`，跨文件共享类型用 `import('./path').TypeName`。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "组件、composable、跨文件 typedef 示例读取 `jsdoc-component-patterns`；深入主题读取 JSDoc / composable / state / testing references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

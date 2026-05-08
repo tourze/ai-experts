@@ -4,7 +4,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { bundleOptimizationSkill } from "../bundle-optimization/index";
 import { reactComposableComponentsSkill } from "../react-composable-components/index";
@@ -79,12 +80,24 @@ export const reactPerformanceSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先用 React DevTools Profiler、浏览器 Performance 或自定义计时确认热点，没有数据不动 memo。",
-      "区分渲染热点、外部 store 订阅、Context value、derived state、列表规模、懒加载和 bundle 体积问题。",
-      "按 `rules` reference 选择具体重渲染规则，通用性能和 store 订阅模式读取 `advanced`。",
-      "优化后对比 commit time、交互延迟、bundle size 或 Core Web Vitals，避免只凭感觉关闭问题。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先用 React DevTools Profiler、浏览器 Performance 或自定义计时确认热点，没有数据不动 memo。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "区分渲染热点、外部 store 订阅、Context value、derived state、列表规模、懒加载和 bundle 体积问题。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "按 `rules` reference 选择具体重渲染规则，通用性能和 store 订阅模式读取 `advanced`。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "优化后对比 commit time、交互延迟、bundle size 或 Core Web Vitals，避免只凭感觉关闭问题。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

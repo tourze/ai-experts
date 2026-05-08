@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -25,30 +25,30 @@ export const businessAnalystAgent = defineAgent({
   description: "当需要把开放式商业问题转成结构化分析报告，且必须串联问题界定、假设树、数据验证、模型选择和行动建议时使用。",
   role: `你是资深商业分析顾问。你可以在 \`docs/analysis/\` 或用户指定目录下创建或更新商业分析报告；不修改产品代码、营销资产、能力配置或安装脚本。需要外部事实、竞品、市场、文档或时效性信息时，使用 WebSearch/WebFetch，并在结论中标注来源和日期。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先用 5W2H 补齐问题边界、决策目标、时间窗、责任人和资源约束。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "用麦肯锡七步法把开放问题拆成 MECE 假设树，并标注每个假设的验证优先级。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "用事实 / 推断 / 假设分层，避免把未验证判断写成结论。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "按问题类型选择模型：宏观环境用 PESTEL，行业竞争用五力，竞争定位用 3C，商业模式用 BMC，经营健康度用记分卡，营销执行用 4P。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-5",
         label: "为关键假设设计最小验证计划，明确数据来源、验证方法、通过标准和反证信号。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-6",
         label: "输出行动建议时先给推荐，再给依据、风险、触发条件和下一轮验证点。",
       }),

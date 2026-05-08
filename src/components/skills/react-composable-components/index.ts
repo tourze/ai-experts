@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { reactPerformanceSkill } from "../react-performance/index";
 
@@ -56,15 +57,36 @@ export const reactComposableComponentsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先标出组件职责、状态来源、渲染分支、布局边界和复用场景；过浅重复不急着抽象。",
-      "优先用 `children`、slots 和 compound components 表达结构，不继续堆布尔 props 或超级配置对象。",
-      "复用型组件默认接受 `className`、`children` 和 `...props`，并继承对应原生元素属性类型。",
-      "包装 DOM 元素默认用 `forwardRef`，保留焦点、测量、滚动和表单能力。",
-      "样式合并要让调用方可预期覆盖默认样式；Tailwind 场景用 `clsx` + `tailwind-merge`。",
-      "共享状态只放在局部 compound components 的 Context 内，业务级全局状态不要塞进组件库。",
-      "需要 compound、render props、插槽或 Context 细节时读取 advanced-patterns。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先标出组件职责、状态来源、渲染分支、布局边界和复用场景；过浅重复不急着抽象。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "优先用 `children`、slots 和 compound components 表达结构，不继续堆布尔 props 或超级配置对象。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "复用型组件默认接受 `className`、`children` 和 `...props`，并继承对应原生元素属性类型。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "包装 DOM 元素默认用 `forwardRef`，保留焦点、测量、滚动和表单能力。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "样式合并要让调用方可预期覆盖默认样式；Tailwind 场景用 `clsx` + `tailwind-merge`。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "共享状态只放在局部 compound components 的 Context 内，业务级全局状态不要塞进组件库。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "需要 compound、render props、插槽或 Context 细节时读取 advanced-patterns。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

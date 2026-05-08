@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, youtubeSearchSearchYoutube } from "../../procedures/index";
 
@@ -53,13 +54,28 @@ export const youtubeSearchSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先把查询词收窄到主题本身，不把分析诉求混进搜索词；已有单条视频链接且要总结时转 youtube-analysis。",
-      "优先调用 youtube-search-search-youtube，使用 yt-dlp flat search 规范化字段。",
-      "需要最近或热门时显式传 days 或 sort；不要靠自然语言脑补时间和排序。",
-      "upload_date、duration_string 等字段可能为空，缺失时说明是 flat search 限制而不是脚本 bug。",
-      "遇到 bot challenge 或反爬失败时直接说明失败原因，不把空结果伪装成没有搜到。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先把查询词收窄到主题本身，不把分析诉求混进搜索词；已有单条视频链接且要总结时转 youtube-analysis。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "优先调用 youtube-search-search-youtube，使用 yt-dlp flat search 规范化字段。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "需要最近或热门时显式传 days 或 sort；不要靠自然语言脑补时间和排序。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "upload_date、duration_string 等字段可能为空，缺失时说明是 flat search 限制而不是脚本 bug。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "遇到 bot challenge 或反爬失败时直接说明失败原因，不把空结果伪装成没有搜到。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

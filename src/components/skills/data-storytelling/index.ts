@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { dataAnalysisSkill } from "../data-analysis/index";
 import { dataVisualizationSkill } from "../data-visualization/index";
@@ -70,12 +71,24 @@ export const dataStorytellingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认目标受众、材料用途和希望驱动的动作，再写主结论。",
-      "用主结论、支撑证据、风险边界、决策建议、下一步负责人组织叙事；一个故事只保留 1 个主结论。",
-      "每个支撑点都回指数字证据、基线、时间窗和样本边界；相关不等于因果时显式降级。",
-      "需要 T8 机读实体标注时读取 t8-syntax reference；需要图表或统计判断时联动相关 skill。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认目标受众、材料用途和希望驱动的动作，再写主结论。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "用主结论、支撑证据、风险边界、决策建议、下一步负责人组织叙事；一个故事只保留 1 个主结论。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "每个支撑点都回指数字证据、基线、时间窗和样本边界；相关不等于因果时显式降级。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "需要 T8 机读实体标注时读取 t8-syntax reference；需要图表或统计判断时联动相关 skill。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

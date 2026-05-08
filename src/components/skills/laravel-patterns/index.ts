@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const laravelPatternsSkill = defineSkill({
@@ -53,12 +54,24 @@ export const laravelPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认 HTTP 入口、授权点、校验边界、业务动作、模型关系、响应资源和副作用是否需要队列。",
-      "控制器保持薄化：授权、接收参数、调用 Action / Service、返回 JsonResource。",
-      "模型同步检查 fillable、casts、relation、scope、Policy、Resource 和 N+1 查询。",
-      "控制器 + Action + FormRequest 示例读取 `http-action-patterns`；Eloquent、routing、queues、livewire、testing 深入内容读取对应 references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认 HTTP 入口、授权点、校验边界、业务动作、模型关系、响应资源和副作用是否需要队列。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "控制器保持薄化：授权、接收参数、调用 Action / Service、返回 JsonResource。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "模型同步检查 fillable、casts、relation、scope、Policy、Resource 和 N+1 查询。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "控制器 + Action + FormRequest 示例读取 `http-action-patterns`；Eloquent、routing、queues、livewire、testing 深入内容读取对应 references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

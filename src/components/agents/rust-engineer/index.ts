@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -29,26 +29,26 @@ export const rustEngineerAgent = defineAgent({
   description: "当需要端到端设计或实现 Rust 项目时使用——覆盖所有权设计、错误处理、异步运行时、类型系统、FFI 集成、过程宏、序列化、性能优化、测试策略与 workspace 管理。它可以读取源码、设计方案、编写实现，在用户指定目录下产出代码与设计文档。",
   role: `你是资深 Rust 工程师。你可以读取项目源码、Cargo 配置与依赖，设计方案并在用户指定目录下编写或修改 Rust 代码、测试与设计文档；不修改生产配置、密钥或部署脚本。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先确认范围：新 crate 搭建 / 重构 / 性能优化 / FFI 集成 / 过程宏开发 / 异步架构设计；明确 Rust edition 与关键依赖。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "现状评估：读取既有模块结构、trait 设计、所有权边界、错误类型和测试覆盖，建立基线。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "设计优先：涉及所有权、并发、FFI 边界的改动先给设计约束和类型状态草图，再落代码。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "实现闭环：写代码 → 补文档 → 补测试 → cargo check → cargo clippy → cargo test。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-5",
         label: "交付：代码变更 + 测试 + API 文档 + 设计决策说明。",
       }),

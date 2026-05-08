@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { webContentFetcherSkill } from "../web-content-fetcher/index";
 
@@ -60,13 +61,28 @@ export const deepResearchSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先铺开全景，确认主题边界、主要分支、关键参与方和需要回答的问题，不一上来盯单个关键词。",
-      "第二轮按分支纵深检索，补齐事实、案例、数据、限制条件、反例和争议点。",
-      "第三轮做交叉验证和 Chain-of-Verification：关键事实用 2-3 个独立来源确认并记录分歧。",
-      "时效问题用 current_date 生成具体日期查询；高风险声明优先官方、论文、公告或权威媒体。",
-      "中文平台内容先按母公司/生态判断主源，必要时读取 chinese-platform-routing；关键页面交给 web-content-fetcher 抓正文。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先铺开全景，确认主题边界、主要分支、关键参与方和需要回答的问题，不一上来盯单个关键词。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "第二轮按分支纵深检索，补齐事实、案例、数据、限制条件、反例和争议点。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "第三轮做交叉验证和 Chain-of-Verification：关键事实用 2-3 个独立来源确认并记录分歧。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "时效问题用 current_date 生成具体日期查询；高风险声明优先官方、论文、公告或权威媒体。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "中文平台内容先按母公司/生态判断主源，必要时读取 chinese-platform-routing；关键页面交给 web-content-fetcher 抓正文。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

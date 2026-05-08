@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { agileProductOwnerSkill } from "../agile-product-owner/index";
 import { systemsThinkingSkill } from "../systems-thinking/index";
@@ -55,13 +56,28 @@ export const processOptimizationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先画出现状流程、参与角色、输入输出、等待点、返工点和当前指标。",
-      "区分流程问题、资源问题、能力问题和系统激励问题；系统性依赖可联动 `systems-thinking`。",
-      "找出瓶颈、无价值步骤、重复审批、信息丢失和自动化前应先消除的问题。",
-      "设计未来状态流程，明确责任人、SLA、交接标准、异常处理和验证指标。",
-      "输出变更顺序、试点范围、风险和复盘节奏。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先画出现状流程、参与角色、输入输出、等待点、返工点和当前指标。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "区分流程问题、资源问题、能力问题和系统激励问题；系统性依赖可联动 `systems-thinking`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "找出瓶颈、无价值步骤、重复审批、信息丢失和自动化前应先消除的问题。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "设计未来状态流程，明确责任人、SLA、交接标准、异常处理和验证指标。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "输出变更顺序、试点范围、风险和复盘节奏。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

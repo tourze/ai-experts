@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { iosHigDesignSkill } from "../ios-hig-design/index";
 import { swiftConcurrencyExpertSkill } from "../swift-concurrency-expert/index";
@@ -68,14 +69,32 @@ export const swiftuiUiPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "新建页面前先读取 components-index 和 app-wiring，选择最接近的组件或接线 reference。",
-      "按场景选择 TabView、NavigationStack、sheet(item:)、searchable、form、split view 或 overlay，不默认造 view model。",
-      "把状态留在最近拥有者；根视图持有 `@Observable`，下游只接收必要输入。",
-      "sheet 能表达选中对象时优先 `.sheet(item:)`；sheet 自己负责 dismiss，不把关闭逻辑散在父视图。",
-      "重构时先保证行为不变，再统一成员顺序：环境依赖、let、@State、非视图计算属性、init、body、子视图/helper。",
-      "大型 body 拆成可命名子区域；MV 理念和重构反模式需要时读取 mv-patterns 与 view-refactoring。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "新建页面前先读取 components-index 和 app-wiring，选择最接近的组件或接线 reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按场景选择 TabView、NavigationStack、sheet(item:)、searchable、form、split view 或 overlay，不默认造 view model。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "把状态留在最近拥有者；根视图持有 `@Observable`，下游只接收必要输入。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "sheet 能表达选中对象时优先 `.sheet(item:)`；sheet 自己负责 dismiss，不把关闭逻辑散在父视图。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "重构时先保证行为不变，再统一成员顺序：环境依赖、let、@State、非视图计算属性、init、body、子视图/helper。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "大型 body 拆成可命名子区域；MV 理念和重构反模式需要时读取 mv-patterns 与 view-refactoring。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

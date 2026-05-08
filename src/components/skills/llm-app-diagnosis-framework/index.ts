@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { llmAppDesignPipelineSkill } from "../llm-app-design-pipeline/index";
 import { llmEvaluationSkill } from "../llm-evaluation/index";
@@ -74,14 +75,32 @@ export const llmAppDiagnosisFrameworkSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先设计可复现离线 eval case，记录 baseline；没有 eval 不评价改动优劣。",
-      "按输入侧、检索、推理、输出侧四层排查：输入字段/上下文、chunking/embedding/rerank、工具/温度/示例、引用/parser/max_tokens/guardrails。",
-      "每个问题只在对应层修复，检索失败不写成 prompt 问题，幻觉不写成 embedding 问题。",
-      "Model-first vs prompt-first 用 10 个 case 决策：单 prompt 拆解正确且无关键步骤跳过达到 8 个以上，保留 model-first；否则对失败 case 设计 chain。",
-      "建立改动队列：改动、假设、绑定 eval case、baseline 对比、目标分数和风险场景。",
-      "检索调参同时报告召回、延迟、内存/成本，不只看回答主观质量。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先设计可复现离线 eval case，记录 baseline；没有 eval 不评价改动优劣。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按输入侧、检索、推理、输出侧四层排查：输入字段/上下文、chunking/embedding/rerank、工具/温度/示例、引用/parser/max_tokens/guardrails。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "每个问题只在对应层修复，检索失败不写成 prompt 问题，幻觉不写成 embedding 问题。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Model-first vs prompt-first 用 10 个 case 决策：单 prompt 拆解正确且无关键步骤跳过达到 8 个以上，保留 model-first；否则对失败 case 设计 chain。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "建立改动队列：改动、假设、绑定 eval case、baseline 对比、目标分数和风险场景。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "检索调参同时报告召回、延迟、内存/成本，不只看回答主观质量。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

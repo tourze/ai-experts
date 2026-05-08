@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, securityOwnershipMapBuildOwnershipMap, securityOwnershipMapCommunityMaintainers, securityOwnershipMapQueryOwnership, securityOwnershipMapRunOwnershipMap } from "../../procedures/index";
 
@@ -57,13 +58,28 @@ export const securityOwnershipMapSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "确认分析范围、时间窗、身份归并规则、敏感文件规则和输出格式。",
-      "调用 ownership map 相关 procedure 构建 `summary.json`、`people.csv`、`files.csv`、`edges.csv` 等产物。",
-      "查询高风险文件、敏感规则命中、owner 覆盖度、bus factor 和 co-change 关系。",
-      "需要社区或图结构分析时调用 community procedure；需要图数据库可视化时读取 `neo4j-import` reference。",
-      "把所有发现绑定到文件、作者、时间窗、规则命中和共改证据，避免只用活跃度下结论。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "确认分析范围、时间窗、身份归并规则、敏感文件规则和输出格式。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "调用 ownership map 相关 procedure 构建 `summary.json`、`people.csv`、`files.csv`、`edges.csv` 等产物。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "查询高风险文件、敏感规则命中、owner 覆盖度、bus factor 和 co-change 关系。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "需要社区或图结构分析时调用 community procedure；需要图数据库可视化时读取 `neo4j-import` reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "把所有发现绑定到文件、作者、时间窗、规则命中和共改证据，避免只用活跃度下结论。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

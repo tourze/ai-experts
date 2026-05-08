@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { thinkingPartnerSkill } from "../thinking-partner/index";
 import { whatIfOracleSkill } from "../what-if-oracle/index";
@@ -63,14 +64,32 @@ export const priorityJudgeSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先完整收集待办、约束、截止时间、依赖和用户当前精力，不边听边排序。",
-      "为每个任务标注清晰度、截止时间、影响、依赖和下一步是否明确。",
-      "把任务分到四类：现在做、然后做、先澄清再做、暂缓/放弃。",
-      "每轮只锁定 1-2 个现在做的任务；有截止但不清楚的任务先安排澄清动作。",
-      "核心目标不清时联动 `thinking-partner`；高风险分支犹豫时联动 `what-if-oracle`。",
-      "给出粗粒度行动顺序、延后理由和需要再次排序的触发条件。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先完整收集待办、约束、截止时间、依赖和用户当前精力，不边听边排序。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "为每个任务标注清晰度、截止时间、影响、依赖和下一步是否明确。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "把任务分到四类：现在做、然后做、先澄清再做、暂缓/放弃。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "每轮只锁定 1-2 个现在做的任务；有截止但不清楚的任务先安排澄清动作。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "核心目标不清时联动 `thinking-partner`；高风险分支犹豫时联动 `what-if-oracle`。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "给出粗粒度行动顺序、延后理由和需要再次排序的触发条件。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const engineeringRetroSkill = defineSkill({
@@ -46,15 +47,36 @@ export const engineeringRetroSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "解析 `/engineering-retro [TIME_WINDOW] [PATH_SCOPE]`；默认 7d，路径范围一旦存在，所有 Git 命令都带 `-- <PATH_SCOPE>`。",
-      "动态探测默认分支：先读 `refs/remotes/origin/HEAD`，失败再 `git remote show origin`；时区用 `date +%Z`。",
-      "采集 commit、作者、时间、标题、numstat 和文件触达；只读分析，不改工作树。",
-      "计算总提交、贡献者、文件数、增删行、净增量、平均提交规模、聚焦度和热点文件。",
-      "先按 Conventional Commit 前缀分类，再用 diff 特征兜底；按主题聚类后再叙事。",
-      "GitHub/`gh` 可用时补 merged PR 体量和评审时效，不可用时优雅跳过。",
-      "只有用户明确要求保留快照时才写 `.engineering-retros/<YYYY-MM-DD>.json`；经验提炼细节读取 lesson-learned。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "解析 `/engineering-retro [TIME_WINDOW] [PATH_SCOPE]`；默认 7d，路径范围一旦存在，所有 Git 命令都带 `-- <PATH_SCOPE>`。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "动态探测默认分支：先读 `refs/remotes/origin/HEAD`，失败再 `git remote show origin`；时区用 `date +%Z`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "采集 commit、作者、时间、标题、numstat 和文件触达；只读分析，不改工作树。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "计算总提交、贡献者、文件数、增删行、净增量、平均提交规模、聚焦度和热点文件。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "先按 Conventional Commit 前缀分类，再用 diff 特征兜底；按主题聚类后再叙事。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "GitHub/`gh` 可用时补 merged PR 体量和评审时效，不可用时优雅跳过。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "只有用户明确要求保留快照时才写 `.engineering-retros/<YYYY-MM-DD>.json`；经验提炼细节读取 lesson-learned。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { fridaDynamicAnalysisSkill } from "../frida-dynamic-analysis/index";
 import { iosBinaryAnalysisSkill } from "../ios-binary-analysis/index";
@@ -55,13 +56,28 @@ export const iosSecretScanSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先用 iOS 二进制分析流程定位主 Mach-O、Info.plist、headers 和 strings 输出；命令细节读取 `scan-runbook`。",
-      "按云服务、支付、通用 API key / secret、Bearer token 等类别扫描字符串，并对每个命中保留上下文。",
-      "把命中分类为 client-safe、server-only、测试数据、示例值或疑似泄漏；高危值只报告脱敏片段。",
-      "审计 ATS 配置、弱加密 API、Keychain 保护级别、越狱检测和反调试线索。",
-      "必要时联动 Frida 做运行时验证，例如证书 pinning、越狱检测或密钥实际使用路径。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先用 iOS 二进制分析流程定位主 Mach-O、Info.plist、headers 和 strings 输出；命令细节读取 `scan-runbook`。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按云服务、支付、通用 API key / secret、Bearer token 等类别扫描字符串，并对每个命中保留上下文。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "把命中分类为 client-safe、server-only、测试数据、示例值或疑似泄漏；高危值只报告脱敏片段。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "审计 ATS 配置、弱加密 API、Keychain 保护级别、越狱检测和反调试线索。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "必要时联动 Frida 做运行时验证，例如证书 pinning、越狱检测或密钥实际使用路径。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

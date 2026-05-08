@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { planningUnderUncertaintySkill } from "../planning-under-uncertainty/index";
 import { processOptimizationSkill } from "../process-optimization/index";
@@ -57,14 +58,32 @@ export const systemsThinkingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先定义系统边界、时间尺度、关键参与方、资源流和要解释的结果。",
-      "按参与方 -> 激励 -> 行为 -> 结果 -> 反馈回路 -> 杠杆点展开分析。",
-      "识别增强回路、平衡回路、延迟、库存/流量和可能的反直觉结果。",
-      "需要案例或特定领域经验时读取 `guest-insights`、`channel-economics`、`greiner-growth-model` 或 `value-chain-analysis` reference。",
-      "把症状和结构分开，指出当前动作会如何改变激励、行为和副作用。",
-      "输出最小杠杆动作、监测指标和需要延迟观察的二阶效应。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先定义系统边界、时间尺度、关键参与方、资源流和要解释的结果。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按参与方 -> 激励 -> 行为 -> 结果 -> 反馈回路 -> 杠杆点展开分析。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "识别增强回路、平衡回路、延迟、库存/流量和可能的反直觉结果。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "需要案例或特定领域经验时读取 `guest-insights`、`channel-economics`、`greiner-growth-model` 或 `value-chain-analysis` reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "把症状和结构分开，指出当前动作会如何改变激励、行为和副作用。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出最小杠杆动作、监测指标和需要延迟观察的二阶效应。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

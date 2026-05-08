@@ -3,7 +3,8 @@ import {
   Platform,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { businessModelSkill } from "../business-model/index";
 import { evidenceQualityFrameworkSkill } from "../evidence-quality-framework/index";
@@ -64,15 +65,36 @@ export const structuredBusinessAnalysisFrameworkSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "用 5W2H 定义 Why、What、Who、Where、When、How、How much，明确回答什么和不回答什么。",
-      "构建 MECE 假设树：一级分支互不重叠且覆盖问题空间，二级假设每条可验证。",
-      "按 P0/P1/P2 标注假设优先级：>30% 解释力、10-30%、<10%。",
-      "对每个发现标注事实、推断、假设或待确认，并写明来源或缺口。",
-      "按问题类型选模型：宏观 PESTEL、行业五力、竞争 3C、商业模式 BMC、经营健康度记分卡、营销 4P。",
-      "为 P0 假设写最小验证计划：假设、数据来源、验证方法、通过标准、反证信号。",
-      "最终行动建议不超过 3 条，每条带验证指标和停止条件。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "用 5W2H 定义 Why、What、Who、Where、When、How、How much，明确回答什么和不回答什么。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "构建 MECE 假设树：一级分支互不重叠且覆盖问题空间，二级假设每条可验证。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "按 P0/P1/P2 标注假设优先级：>30% 解释力、10-30%、<10%。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "对每个发现标注事实、推断、假设或待确认，并写明来源或缺口。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "按问题类型选模型：宏观 PESTEL、行业五力、竞争 3C、商业模式 BMC、经营健康度记分卡、营销 4P。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "为 P0 假设写最小验证计划：假设、数据来源、验证方法、通过标准、反证信号。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "最终行动建议不超过 3 条，每条带验证指标和停止条件。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -4,7 +4,8 @@ import {
   defineSkill,
   defineSkillOutputs,
   defineSkillParameter,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const speckitCheckerSkill = defineSkill({
@@ -21,17 +22,32 @@ export const speckitCheckerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "检测项目配置：`package.json`、`pyproject.toml`、`go.mod`、`Cargo.toml`、`pom.xml`。",
-      "检测可用检查器：`eslint`、`ruff`、`mypy`、`golangci-lint`、`clippy` 等。",
-      "仅执行当前环境可运行的命令，避免伪失败。",
-      `统一归并结果：
+      defineWorkflowStep({
+        id: "step-1",
+        label: "检测项目配置：`package.json`、`pyproject.toml`、`go.mod`、`Cargo.toml`、`pom.xml`。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "检测可用检查器：`eslint`、`ruff`、`mypy`、`golangci-lint`、`clippy` 等。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "仅执行当前环境可运行的命令，避免伪失败。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: `统一归并结果：
    - 语法错误
    - 类型错误
    - 规范问题
    - 安全告警`,
-      "产出修复优先级（P0/P1/P2）与建议顺序。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "产出修复优先级（P0/P1/P2）与建议顺序。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

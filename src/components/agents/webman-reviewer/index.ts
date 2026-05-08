@@ -1,10 +1,10 @@
 import {
   AgentSandbox,
   defineAgent,
-  defineAgentWorkflow,
-  defineAgentWorkflowGate,
-  defineAgentWorkflowRoute,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowGate,
+  defineWorkflowRoute,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -21,22 +21,22 @@ export const webmanReviewerAgent = defineAgent({
   description: "当需要只读审查 Webman 命名规范、自定义进程、WebSocket、插件机制以及 worker 长生命周期风险时使用。",
   role: `你是资深 Webman / Workerman 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     gates: [
-      defineAgentWorkflowGate({
+      defineWorkflowGate({
         id: "gate-1",
         skill: webmanNamingConventionsSkill.id,
         label: "门禁 1",
         checks: "命名合规：目录大小写、Controller/Service 后缀、命名空间与 PSR-4 对齐",
       }),
-      defineAgentWorkflowGate({
+      defineWorkflowGate({
         id: "gate-2",
         skill: webmanCustomProcessesSkill.id,
         label: "门禁 2",
         checks: "进程声明：count、reloadable、crash-restart 策略",
       }),
-      defineAgentWorkflowGate({
+      defineWorkflowGate({
         id: "gate-3",
         skill: evidenceQualityFrameworkSkill.id,
         label: "门禁 3",
@@ -44,42 +44,42 @@ export const webmanReviewerAgent = defineAgent({
       }),
     ],
     routes: [
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-webman-custom-processes",
         triggers: ["Timer", "Crontab", "process"],
         skill: webmanCustomProcessesSkill.id,
         checks: "定时器生命周期、Crontab 调度、进程间通信、crash-restart",
         output: "进程审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-webman-websocket-patterns",
         triggers: ["WebSocket", "onMessage", "GatewayWorker", "Channel"],
         skill: webmanWebsocketPatternsSkill.id,
         checks: "连接生命周期、心跳、广播、频道订阅、退避重连、半开连接清理",
         output: "WebSocket 审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-webman-plugin-development",
         triggers: ["Install.php", "plugin", "Bootstrap"],
         skill: webmanPluginDevelopmentSkill.id,
         checks: "插件安装/卸载、配置发布路径、跨插件冲突",
         output: "插件审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-webman-custom-processes-2",
         triggers: ["$_SESSION"],
         skill: webmanCustomProcessesSkill.id,
         checks: "worker 状态污染、内存泄漏、跨请求脏数据",
         output: "worker 生命周期审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-webman-custom-processes-3",
         triggers: ["PDO", "Illuminate\\Database"],
         skill: webmanCustomProcessesSkill.id,
         checks: "长连接断线重连、事务跨请求边界、连接预热",
         output: "数据库连接审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-webman-custom-processes-4",
         triggers: ["file_get_contents", "sleep", "curl"],
         skill: webmanCustomProcessesSkill.id,
@@ -88,23 +88,23 @@ export const webmanReviewerAgent = defineAgent({
       }),
     ],
     finalSteps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-1",
         label: "门禁：webman-naming-conventions → webman-custom-processes → 确认基线",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-2",
         label: "路由：按 diff 内容匹配场景路由表，逐项深入",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-3",
         label: "证据：每条发现绑定 文件:行 + 代码片段",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-4",
         label: "标注：事实/推断/假设",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-5",
         label: "排序：worker 状态污染 > 连接池失效 > event loop 阻塞 > WebSocket 泄漏 > 命名/结构",
       }),

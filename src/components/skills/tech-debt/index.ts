@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { complexityReducerSkill } from "../complexity-reducer/index";
 import { refactoringPatternsSkill } from "../refactoring-patterns/index";
@@ -64,14 +65,32 @@ export const techDebtSkill = defineSkill({
       reason: "债务项需要落到具体重构手法、测试接缝或分步整改序列时联动。",
     },
   ],
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先收集债项并按代码、架构、测试、依赖、文档、基础设施分类；债项多时先按模块或领域分组。",
-      "为每条债务写清不修的业务或工程后果、影响范围、风险和 owner。",
-      "用默认优先级公式 `(影响 + 风险) × (6 - 工作量)` 排序，不把所有不喜欢的代码都标成 P0。",
-      "需要治理视角或组织案例时读取 `guest-insights` reference。",
-      "把建议切成立即止血、近期治理、长期重构三层，并说明建议时机和迭代预算。",
-      "为每项治理定义收益、验证指标、退出条件和可回滚路径。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先收集债项并按代码、架构、测试、依赖、文档、基础设施分类；债项多时先按模块或领域分组。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "为每条债务写清不修的业务或工程后果、影响范围、风险和 owner。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "用默认优先级公式 `(影响 + 风险) × (6 - 工作量)` 排序，不把所有不喜欢的代码都标成 P0。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "需要治理视角或组织案例时读取 `guest-insights` reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "把建议切成立即止血、近期治理、长期重构三层，并说明建议时机和迭代预算。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "为每项治理定义收益、验证指标、退出条件和可回滚路径。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

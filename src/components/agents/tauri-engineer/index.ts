@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -21,26 +21,26 @@ export const tauriEngineerAgent = defineAgent({
   description: "当需要端到端设计或实现 Tauri v2 桌面应用时使用——覆盖项目搭建、IPC 命令设计、权限模型、React 前端集成、插件开发、构建打包与代码签名。它可以读取源码、设计方案、编写实现，在用户指定目录下产出代码与设计文档。",
   role: `你是资深 Tauri 工程师。你可以读取项目源码、tauri.conf.json 与 Cargo 配置，设计方案并在用户指定目录下编写或修改 Rust 后端、前端集成代码、测试与设计文档；不修改签名证书、密钥或发布配置。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先确认范围：新项目搭建 / IPC 接口设计 / 前端集成 / 插件开发 / 构建打包 / 安全加固；明确 Tauri 版本、前端框架和目标平台。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "现状评估：读取既有项目结构、capabilities 声明、IPC command 定义和构建配置，建立基线。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "设计优先：涉及 IPC 边界、权限范围、多窗口架构的改动先出设计，再落代码。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "实现闭环：写 Rust 后端 → 写前端 invoke 封装 → 补测试 → cargo check → cargo clippy → 前端构建验证。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-5",
         label: "交付：代码变更 + 测试 + 构建验证 + IPC 契约文档。",
       }),

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { featureDevSkill } from "../feature-dev/index";
 import { planReviewSkill } from "../plan-review/index";
@@ -75,14 +76,32 @@ export const taskDecomposerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先写清用户目标、验收标准、范围边界、非目标和关键假设；需求太模糊时先列假设，不硬拆。",
-      "默认按 Foundation、Core Logic、Integration、Polish 四阶段组织，并读取 decomposition-patterns、sizing-guide 和 edge-case-checklist。",
-      "显式区分硬依赖、软依赖和可并行任务；关键路径和高风险项必须标注。",
-      "每个任务切到单 PR 可完成、可验证、可交付，并同时覆盖开发、边界场景、验证和发布。",
-      "需要子代理/多 agent 计划时追加 Execution Contract：waves、read_scope、write_scope、depends_on、acceptance_refs 和 acceptance。",
-      "同一 wave 的 write_scope 不能重叠；实现任务必须至少绑定一个 acceptance_ref，command 验收只放真实可运行命令。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先写清用户目标、验收标准、范围边界、非目标和关键假设；需求太模糊时先列假设，不硬拆。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "默认按 Foundation、Core Logic、Integration、Polish 四阶段组织，并读取 decomposition-patterns、sizing-guide 和 edge-case-checklist。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "显式区分硬依赖、软依赖和可并行任务；关键路径和高风险项必须标注。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "每个任务切到单 PR 可完成、可验证、可交付，并同时覆盖开发、边界场景、验证和发布。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "需要子代理/多 agent 计划时追加 Execution Contract：waves、read_scope、write_scope、depends_on、acceptance_refs 和 acceptance。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "同一 wave 的 write_scope 不能重叠；实现任务必须至少绑定一个 acceptance_ref，command 验收只放真实可运行命令。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

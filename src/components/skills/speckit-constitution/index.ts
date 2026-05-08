@@ -3,7 +3,8 @@ import {
   Platform,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const speckitConstitutionSkill = defineSkill({
@@ -20,19 +21,34 @@ export const speckitConstitutionSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "读取宪章模板，识别占位符（如 `[PROJECT_NAME]`）。",
-      "根据用户输入和仓库上下文填充内容。",
-      `按语义版本规则更新版本号：
+      defineWorkflowStep({
+        id: "step-1",
+        label: "读取宪章模板，识别占位符（如 `[PROJECT_NAME]`）。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "根据用户输入和仓库上下文填充内容。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: `按语义版本规则更新版本号：
    - MAJOR：原则被重定义/移除
    - MINOR：新增原则或明显扩展
    - PATCH：文字澄清`,
-      `同步检查并更新：
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: `同步检查并更新：
    - \`.specify/templates/plan-template.md\`
    - \`.specify/templates/spec-template.md\`
    - \`.specify/templates/tasks-template.md\``,
-      "在宪章头部输出变更摘要（版本、原则变更、影响面）。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "在宪章头部输出变更摘要（版本、原则变更、影响面）。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

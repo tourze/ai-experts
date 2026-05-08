@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { graalvmNativeImageSkill } from "../graalvm-native-image/index";
 
@@ -51,13 +52,28 @@ export const gradleBuildPerformanceSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先记录 clean build、增量 build 和 CI build 基线，不在没有基线时改配置。",
-      "用 `./gradlew assembleDebug --scan` 或 `./gradlew assembleDebug --profile` 定位初始化、配置、执行和依赖解析阶段。",
-      "一次只做一个优化：Configuration Cache、Build Cache、parallel、JVM args、仓库顺序、kapt->ksp 或 task 懒创建分开验证。",
-      "缓存类优化必须记录兼容性告警、cache miss 原因、远端缓存命中率和 JDK/Gradle 版本一致性。",
-      "自定义 task 避免配置期 I/O，优先 tasks.register、Provider API 和执行期读取。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先记录 clean build、增量 build 和 CI build 基线，不在没有基线时改配置。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "用 `./gradlew assembleDebug --scan` 或 `./gradlew assembleDebug --profile` 定位初始化、配置、执行和依赖解析阶段。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "一次只做一个优化：Configuration Cache、Build Cache、parallel、JVM args、仓库顺序、kapt->ksp 或 task 懒创建分开验证。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "缓存类优化必须记录兼容性告警、cache miss 原因、远端缓存命中率和 JDK/Gradle 版本一致性。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "自定义 task 避免配置期 I/O，优先 tasks.register、Provider API 和执行期读取。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

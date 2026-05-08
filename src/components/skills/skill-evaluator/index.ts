@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const skillEvaluatorSkill = defineSkill({
@@ -39,14 +40,32 @@ export const skillEvaluatorSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先路由：设计质量评分用 Mode A，源材料覆盖验证用 Mode B，新建 skill 转 skill-creator，迁移优化转 skill-evolver，description 触发优化转 skill-activation-analyzer。",
-      "Mode A 读取 evaluation-dimensions 和 evaluation-protocol，按 Knowledge Delta、Mindset/Procedures、Anti-Pattern、Specification、Progressive Disclosure、Freedom、Pattern、Usability 评分。",
-      "Mode A 对每节标 Expert、Activation 或 Redundant，再给 120 分总分和 A/B/C/D/F 等级。",
-      "Mode B 让 examiner 只读 source-path 出 5-8 题，每题含 answer_key 和 required_facts，覆盖细节、逻辑、集成三类。",
-      "Mode B 让 examinee 只读 skill-path 答题，答不出写 CANNOT_ANSWER；逐题按 required_facts 判定 PASS/FAIL。",
-      "失败时展示缺口建议补充，最多 3 轮；100% 通过后输出验证报告。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先路由：设计质量评分用 Mode A，源材料覆盖验证用 Mode B，新建 skill 转 skill-creator，迁移优化转 skill-evolver，description 触发优化转 skill-activation-analyzer。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "Mode A 读取 evaluation-dimensions 和 evaluation-protocol，按 Knowledge Delta、Mindset/Procedures、Anti-Pattern、Specification、Progressive Disclosure、Freedom、Pattern、Usability 评分。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "Mode A 对每节标 Expert、Activation 或 Redundant，再给 120 分总分和 A/B/C/D/F 等级。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Mode B 让 examiner 只读 source-path 出 5-8 题，每题含 answer_key 和 required_facts，覆盖细节、逻辑、集成三类。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "Mode B 让 examinee 只读 skill-path 答题，答不出写 CANNOT_ANSWER；逐题按 required_facts 判定 PASS/FAIL。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "失败时展示缺口建议补充，最多 3 轮；100% 通过后输出验证报告。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

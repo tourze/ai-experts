@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, preLandingReviewCollectDiff, preLandingReviewRenderReport } from "../../procedures/index";
 
@@ -58,13 +59,28 @@ export const preLandingReviewSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先读取 checklist 和 discipline-guard；没有实际 diff 和验证命令，不得声称可以落地。",
-      "调用 pre-landing-review-collect-diff 锁定审查范围，得到 files、numstat 和 stat JSON。",
-      "人工判断每个变更点的 severity、阻断/建议属性、文件位置、风险证据和缺失验证。",
-      "每个阻断项都给用户三选一：立即修复、确认风险、误报；建议项不阻断但必须记录。",
-      "调用 pre-landing-review-render-report 把 findings JSON 渲染成阻断项/建议项/门禁结论的标准报告。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先读取 checklist 和 discipline-guard；没有实际 diff 和验证命令，不得声称可以落地。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "调用 pre-landing-review-collect-diff 锁定审查范围，得到 files、numstat 和 stat JSON。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "人工判断每个变更点的 severity、阻断/建议属性、文件位置、风险证据和缺失验证。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "每个阻断项都给用户三选一：立即修复、确认风险、误报；建议项不阻断但必须记录。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "调用 pre-landing-review-render-report 把 findings JSON 渲染成阻断项/建议项/门禁结论的标准报告。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

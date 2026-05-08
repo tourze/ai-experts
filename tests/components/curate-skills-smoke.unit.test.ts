@@ -6,7 +6,7 @@ import { describe, test } from "vitest";
 import { main as curateSkillsMain } from "../../src/components/procedures/sources/skills-prune-and-sync-readme/curate_skills.ts";
 function writeComponentSkill(skillDir: any, id: any, description: any, body: any): any {
     fs.mkdirSync(skillDir, { recursive: true });
-    fs.writeFileSync(path.join(skillDir, "index.ts"), `import { defineSkill, defineSkillWorkflow } from "../../sdk";\n\nexport const ${id.replaceAll("-", "_")} = defineSkill({\n  id: "${id}",\n  fullName: "${id}",\n  description: "${description}",\n  useCases: [\n    "${description}",\n  ],\n  constraints: [\n    "遵循该 skill 的正文流程、边界和检查清单。",\n  ],\n  sourceDir: new URL("./", import.meta.url),\n  workflow: defineSkillWorkflow({ steps: [${JSON.stringify(body)}] }),\n});\n`, "utf8");
+    fs.writeFileSync(path.join(skillDir, "index.ts"), `import { defineSkill, defineWorkflow, defineWorkflowStep } from "../../sdk";\n\nexport const ${id.replaceAll("-", "_")} = defineSkill({\n  id: "${id}",\n  fullName: "${id}",\n  description: "${description}",\n  useCases: [\n    "${description}",\n  ],\n  constraints: [\n    "遵循该 skill 的正文流程、边界和检查清单。",\n  ],\n  sourceDir: new URL("./", import.meta.url),\n  workflow: defineWorkflow({ steps: [defineWorkflowStep({ id: "step-1", label: ${JSON.stringify(body)} })] }),\n});\n`, "utf8");
 }
 function runCommand(...args: any): any {
     const originalStdoutWrite = process.stdout.write;

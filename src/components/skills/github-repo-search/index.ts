@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const githubRepoSearchSkill = defineSkill({
@@ -44,14 +45,32 @@ export const githubRepoSearchSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先收敛输入：主题、Top N、最低 stars、排序模式和目标形态；缺失时只做必要澄清。",
-      "设计 5-10 组查询，每组写明目的，例如高召回核心主题、补同义词盲区、框架/产品/工具服务分支。",
-      "每组 query 抓 30-50 个候选，按 owner/repo 去重并应用默认或用户指定硬过滤。",
-      "记录检索时间、过滤规则、配额状态和排序依据，保证结果可复现。",
-      "按需求相关性、场景适配、活跃度、工程成熟度、license、示例和 stars 综合重排。",
-      "给每个仓库打角色标签：通用框架、应用产品、基础设施、MCP/工具服务、目录清单、方法论/研究。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先收敛输入：主题、Top N、最低 stars、排序模式和目标形态；缺失时只做必要澄清。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "设计 5-10 组查询，每组写明目的，例如高召回核心主题、补同义词盲区、框架/产品/工具服务分支。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "每组 query 抓 30-50 个候选，按 owner/repo 去重并应用默认或用户指定硬过滤。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "记录检索时间、过滤规则、配额状态和排序依据，保证结果可复现。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "按需求相关性、场景适配、活跃度、工程成熟度、license、示例和 stars 综合重排。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "给每个仓库打角色标签：通用框架、应用产品、基础设施、MCP/工具服务、目录清单、方法论/研究。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

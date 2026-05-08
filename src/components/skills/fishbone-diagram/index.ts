@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
 import { mckinseyStepSkill } from "../mckinsey-7-step/index";
@@ -61,15 +62,36 @@ export const fishboneDiagramSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先界定问题：现象、影响对象、时间范围、地点/系统边界、当前证据；范围不清时读取 `five-w-two-h` reference 辅助定义。",
-      "选择大骨类别：制造业用人/机/料/法/环，服务业用人员/流程/政策/设备/外部，软件/产品用产品/技术/运营/市场/组织。",
-      "在每个类别下列出第一层可能原因，并标注已有证据、推断和未知项。",
-      "对高可疑原因连续追问 2-3 层“为什么”，直到落到可改变、可验证的机制或条件。",
-      "合并重复原因，区分症状、近因和根因；避免把负责人、团队或单个事件当作终点。",
-      "按影响、证据强度、可验证性和可干预性筛出 1-3 个根本原因。",
-      "为每个候选根因设计验证方法：要看什么数据、做什么实验、找谁确认、成功/失败判据是什么。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先界定问题：现象、影响对象、时间范围、地点/系统边界、当前证据；范围不清时读取 `five-w-two-h` reference 辅助定义。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "选择大骨类别：制造业用人/机/料/法/环，服务业用人员/流程/政策/设备/外部，软件/产品用产品/技术/运营/市场/组织。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "在每个类别下列出第一层可能原因，并标注已有证据、推断和未知项。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "对高可疑原因连续追问 2-3 层“为什么”，直到落到可改变、可验证的机制或条件。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "合并重复原因，区分症状、近因和根因；避免把负责人、团队或单个事件当作终点。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "按影响、证据强度、可验证性和可干预性筛出 1-3 个根本原因。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "为每个候选根因设计验证方法：要看什么数据、做什么实验、找谁确认、成功/失败判据是什么。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

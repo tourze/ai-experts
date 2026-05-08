@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { prlctlVmControlSkill } from "../prlctl-vm-control/index";
 import { windowsUiAutomationSkill } from "../windows-ui-automation/index";
@@ -60,13 +61,28 @@ export const windowsKernelSecuritySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先采集静态分析、日志、符号和环境证据，再决定是否实验；真实主机上不得盲改驱动或内核状态。",
-      "从 IOCTL 与设备边界反查信任面：定位 IRP_MJ_DEVICE_CONTROL、CTL_CODE、METHOD_*、DeviceIoControl 和 CreateFile/Zw* 入口。",
-      "从回调注册点回溯对象生命周期：检查 PsSetCreateProcessNotifyRoutine*、ObRegisterCallbacks、CmRegisterCallbackEx、FltRegisterFilter 等。",
-      "把问题拆成入口、权限边界、状态拥有者、副作用、检测面五层，分别标注证据与未确认项。",
-      "实验涉及 PatchGuard、DSE、HVCI、VBS、Secure Boot 或破坏性动作时，先确认 VM 快照、符号、日志和回滚方案。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先采集静态分析、日志、符号和环境证据，再决定是否实验；真实主机上不得盲改驱动或内核状态。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "从 IOCTL 与设备边界反查信任面：定位 IRP_MJ_DEVICE_CONTROL、CTL_CODE、METHOD_*、DeviceIoControl 和 CreateFile/Zw* 入口。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "从回调注册点回溯对象生命周期：检查 PsSetCreateProcessNotifyRoutine*、ObRegisterCallbacks、CmRegisterCallbackEx、FltRegisterFilter 等。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "把问题拆成入口、权限边界、状态拥有者、副作用、检测面五层，分别标注证据与未确认项。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "实验涉及 PatchGuard、DSE、HVCI、VBS、Secure Boot 或破坏性动作时，先确认 VM 快照、符号、日志和回滚方案。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

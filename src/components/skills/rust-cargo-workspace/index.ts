@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const rustCargoWorkspaceSkill = defineSkill({
@@ -47,12 +48,24 @@ export const rustCargoWorkspaceSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认 crate 成员、发布边界、共享依赖、feature 关系和 CI 目标。",
-      "统一 `[workspace.dependencies]`、`resolver = \"2\"`、path / version 依赖和 additive feature 策略。",
-      "检查 `build.rs` 是否只写 `OUT_DIR`，跨 crate 集成测试是否放在专用 test crate。",
-      "按需读取 `patterns` 中的 workspace Cargo.toml、feature flag、build.rs 和 CI 缓存模式。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认 crate 成员、发布边界、共享依赖、feature 关系和 CI 目标。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "统一 `[workspace.dependencies]`、`resolver = \"2\"`、path / version 依赖和 additive feature 策略。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "检查 `build.rs` 是否只写 `OUT_DIR`，跨 crate 集成测试是否放在专用 test crate。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "按需读取 `patterns` 中的 workspace Cargo.toml、feature flag、build.rs 和 CI 缓存模式。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

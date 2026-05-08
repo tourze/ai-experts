@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { docCoauthoringSkill } from "../doc-coauthoring/index";
 import { markdownMermaidWritingSkill } from "../markdown-mermaid-writing/index";
@@ -82,14 +83,32 @@ export const tutorialBuilderSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先建立 brief：topic、audience、learning_goal、language、material_tier 和 output_formats；字段合同读取 tutorial-package-contract。",
-      "判断用户材料等级 rich/moderate/thin，并据此控制外部研究预算；用户材料强时以其为主线。",
-      "先写来源登记和 evidence map，再写大纲；不要边搜边写正文。",
-      "每章包含学习目标、概念、视觉、例子、坑、练习、checkpoint 和 source IDs。",
-      "章节视觉先写 visual-spec，明确 visual_type、learning_point、elements 和 caption，不直接堆装饰图。",
-      "以 Markdown 正文作为 canonical source，再规划 DOCX/PDF/HTML 或演示材料导出。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先建立 brief：topic、audience、learning_goal、language、material_tier 和 output_formats；字段合同读取 tutorial-package-contract。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "判断用户材料等级 rich/moderate/thin，并据此控制外部研究预算；用户材料强时以其为主线。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "先写来源登记和 evidence map，再写大纲；不要边搜边写正文。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "每章包含学习目标、概念、视觉、例子、坑、练习、checkpoint 和 source IDs。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "章节视觉先写 visual-spec，明确 visual_type、learning_point、elements 和 caption，不直接堆装饰图。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "以 Markdown 正文作为 canonical source，再规划 DOCX/PDF/HTML 或演示材料导出。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

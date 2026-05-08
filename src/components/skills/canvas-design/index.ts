@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, canvasDesignBaoyuArticleIllustratorBuildBatch, canvasDesignConceptToImageRenderToImage, canvasDesignConceptToVideoAddAudio, canvasDesignConceptToVideoRenderVideo } from "../../procedures/index";
 
@@ -48,14 +49,32 @@ export const canvasDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先产出 philosophy.md，包含运动/流派名称、4-6 段审美阐述，以及空间、色彩、节奏、材质、排版和工艺约束。",
-      "确认画布尺寸、边距、主视觉、次级视觉、字体组合、字号层级和导出格式。",
-      "优先使用 `assets/canvas-fonts` 中的字体；按作品气质选择 InstrumentSans、IBMPlexSerif、JetBrainsMono、GeistMono、BigShoulders 或 Tektur 等字族。",
-      "把设计哲学转成单页成品，默认 90% 视觉、10% 必要文字，避免说明文堆叠。",
-      "需要 PNG 时用 concept-to-image 渲染；需要视频时先渲染帧序列再用 ffmpeg 合成和加音频。",
-      "最后确认 philosophy.md 与最终 png/pdf/video 同时存在，元素不越界、不重叠且没有复刻现实品牌或艺术家。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先产出 philosophy.md，包含运动/流派名称、4-6 段审美阐述，以及空间、色彩、节奏、材质、排版和工艺约束。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "确认画布尺寸、边距、主视觉、次级视觉、字体组合、字号层级和导出格式。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "优先使用 `assets/canvas-fonts` 中的字体；按作品气质选择 InstrumentSans、IBMPlexSerif、JetBrainsMono、GeistMono、BigShoulders 或 Tektur 等字族。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "把设计哲学转成单页成品，默认 90% 视觉、10% 必要文字，避免说明文堆叠。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "需要 PNG 时用 concept-to-image 渲染；需要视频时先渲染帧序列再用 ffmpeg 合成和加音频。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "最后确认 philosophy.md 与最终 png/pdf/video 同时存在，元素不越界、不重叠且没有复刻现实品牌或艺术家。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const goConcurrencyPatternsSkill = defineSkill({
@@ -58,12 +59,24 @@ export const goConcurrencyPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认任务所有者、取消路径、并发上限、结果收集和错误传播策略。",
-      "优先用 errgroup + context 管理先失败先取消；worker pool 必须有界并可关闭。",
-      "检查 goroutine 泄漏、无缓冲阻塞、锁粒度、channel 关闭方和 context 传递边界。",
-      "errgroup / worker pool 速查读取 `runtime-patterns`；fan-out、context、channel、sync 深入读取对应 references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认任务所有者、取消路径、并发上限、结果收集和错误传播策略。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "优先用 errgroup + context 管理先失败先取消；worker pool 必须有界并可关闭。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "检查 goroutine 泄漏、无缓冲阻塞、锁粒度、channel 关闭方和 context 传递边界。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "errgroup / worker pool 速查读取 `runtime-patterns`；fan-out、context、channel、sync 深入读取对应 references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

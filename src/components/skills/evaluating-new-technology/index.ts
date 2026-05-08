@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { planningUnderUncertaintySkill } from "../planning-under-uncertainty/index";
 
@@ -50,13 +51,28 @@ export const evaluatingNewTechnologySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先定义要解决的业务问题、成功标准、约束和不可接受风险。",
-      "列出候选技术/供应商、替代方案和不采用的基线方案。",
-      "比较能力匹配、成熟度、集成成本、迁移成本、团队学习成本、供应商锁定和安全/合规风险。",
-      "设计试点或验证路径，明确验证指标、时间盒和退出条件；长期不确定性可联动 `planning-under-uncertainty`。",
-      "输出建议、保留条件、后续验证和退出策略。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先定义要解决的业务问题、成功标准、约束和不可接受风险。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "列出候选技术/供应商、替代方案和不采用的基线方案。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "比较能力匹配、成熟度、集成成本、迁移成本、团队学习成本、供应商锁定和安全/合规风险。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "设计试点或验证路径，明确验证指标、时间盒和退出条件；长期不确定性可联动 `planning-under-uncertainty`。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "输出建议、保留条件、后续验证和退出策略。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

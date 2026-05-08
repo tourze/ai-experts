@@ -4,7 +4,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { bcgMatrixSkill } from "../bcg-matrix/index";
 import { designingGrowthLoopsSkill } from "../designing-growth-loops/index";
@@ -52,14 +53,32 @@ export const customerLifecycleSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认分析轴：客户价值分层、客户生命周期、产品 PLC，或三者组合，并明确数据来源和样本规模。",
-      "按利润贡献/CLV 做客户分层，不用收入或频次替代；对铅层给出提价、减服务或放弃方案。",
-      "判断客户生命周期阶段：观望、激活、扩展、续约、赢回，并匹配对应营销动作。",
-      "判断产品 PLC 阶段：导入、成长、成熟、衰退，并保持它与客户生命周期分开分析。",
-      "需要选择具体策略时读取 `strategy-matrix` reference，再评估铂金+金层利润占比、铅层占比和层级流动性。",
-      "输出分层健康度、阶段策略、风险假设和下一步验证。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认分析轴：客户价值分层、客户生命周期、产品 PLC，或三者组合，并明确数据来源和样本规模。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按利润贡献/CLV 做客户分层，不用收入或频次替代；对铅层给出提价、减服务或放弃方案。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "判断客户生命周期阶段：观望、激活、扩展、续约、赢回，并匹配对应营销动作。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "判断产品 PLC 阶段：导入、成长、成熟、衰退，并保持它与客户生命周期分开分析。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "需要选择具体策略时读取 `strategy-matrix` reference，再评估铂金+金层利润占比、铅层占比和层级流动性。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出分层健康度、阶段策略、风险假设和下一步验证。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

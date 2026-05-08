@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { binaryAnalysisPatternsSkill } from "../binary-analysis-patterns/index";
 import { fridaDynamicAnalysisSkill } from "../frida-dynamic-analysis/index";
@@ -55,13 +56,28 @@ export const iosBinaryAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认 IPA 是否可解包、主 Mach-O 路径、目标架构和 FairPlay 加密状态；命令细节读取 `analysis-runbook`。",
-      "读取 Info.plist、entitlements 和 Frameworks 清单，标注 bundle、URL scheme、ATS、权限与第三方依赖。",
-      "用 `ipsw class-dump` 生成头文件或目录，按 ViewController、ViewModel、Service、API、Repository 等命名线索建立结构地图。",
-      "结合 `rg` 与 `strings` 搜索网络库、API 端点、认证 token 和关键业务类名，追踪 UI 到网络层的调用链。",
-      "需要深入时用 otool、rizin 或同类工具查看动态库、ObjC 元数据和函数列表；运行时验证交给 Frida 相关 skill。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认 IPA 是否可解包、主 Mach-O 路径、目标架构和 FairPlay 加密状态；命令细节读取 `analysis-runbook`。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "读取 Info.plist、entitlements 和 Frameworks 清单，标注 bundle、URL scheme、ATS、权限与第三方依赖。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "用 `ipsw class-dump` 生成头文件或目录，按 ViewController、ViewModel、Service、API、Repository 等命名线索建立结构地图。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "结合 `rg` 与 `strings` 搜索网络库、API 端点、认证 token 和关键业务类名，追踪 UI 到网络层的调用链。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "需要深入时用 otool、rizin 或同类工具查看动态库、ObjC 元数据和函数列表；运行时验证交给 Frida 相关 skill。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const owaspAuthDataAuditSkill = defineSkill({
@@ -38,14 +39,32 @@ export const owaspAuthDataAuditSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先按触发信号路由：token/JWT/session/cookie/OAuth 为认证会话，secret/key/password/PII/process.env 为密钥管理，assign/bind/updateAll/ORM save 为批量赋值。",
-      "认证会话检查 access token 时长、JWT `exp/iat/nbf`、refresh token 撤销、cookie flags、SPA token 存储、session fixation、OAuth state/redirect_uri/code。",
-      "敏感操作检查修改密码、绑定手机、提现等是否有 MFA 或服务端二次鉴权。",
-      "密钥管理检查源码、配置、CI、日志、错误消息、`.env` 跟踪、历史提交和 scope/IP/rate limit。",
-      "批量赋值检查 ORM/DTO 字段白名单，确认请求是否可改 role、isAdmin、balance、verified、status。",
-      "每条发现按 confirmed、likely、speculative 标注可利用性，并给出最小修复和验证方法。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先按触发信号路由：token/JWT/session/cookie/OAuth 为认证会话，secret/key/password/PII/process.env 为密钥管理，assign/bind/updateAll/ORM save 为批量赋值。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "认证会话检查 access token 时长、JWT `exp/iat/nbf`、refresh token 撤销、cookie flags、SPA token 存储、session fixation、OAuth state/redirect_uri/code。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "敏感操作检查修改密码、绑定手机、提现等是否有 MFA 或服务端二次鉴权。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "密钥管理检查源码、配置、CI、日志、错误消息、`.env` 跟踪、历史提交和 scope/IP/rate limit。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "批量赋值检查 ORM/DTO 字段白名单，确认请求是否可改 role、isAdmin、balance、verified、status。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "每条发现按 confirmed、likely、speculative 标注可利用性，并给出最小修复和验证方法。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

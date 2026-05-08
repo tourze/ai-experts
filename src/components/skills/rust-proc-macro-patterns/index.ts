@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const rustProcMacroPatternsSkill = defineSkill({
@@ -45,12 +46,24 @@ export const rustProcMacroPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认宏类型、输入语法、生成代码边界、错误路径和测试策略。",
-      "检查 `proc-macro = true`、syn 2.x / quote / proc-macro2 版本和核心逻辑拆分。",
-      "所有错误返回 `compile_error!` 并绑定有意义 Span，不在宏内 panic。",
-      "按需读取 `patterns` 中的 derive、attribute、Span 错误报告和 trybuild 模式。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认宏类型、输入语法、生成代码边界、错误路径和测试策略。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "检查 `proc-macro = true`、syn 2.x / quote / proc-macro2 版本和核心逻辑拆分。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "所有错误返回 `compile_error!` 并绑定有意义 Span，不在宏内 panic。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "按需读取 `patterns` 中的 derive、attribute、Span 错误报告和 trybuild 模式。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

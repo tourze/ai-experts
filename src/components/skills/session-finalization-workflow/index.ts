@@ -4,7 +4,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const sessionFinalizationWorkflowSkill = defineSkill({
@@ -31,15 +32,36 @@ export const sessionFinalizationWorkflowSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "Step 1 自检验证：审查 `git diff --cached`、运行相关验证命令、确认无新增 lint/类型/测试失败、无调试语句和敏感信息。",
-      "Step 2 分支收尾：用 `git status --short` 查遗漏文件，排除无关 hunk，确认分支名与改动一致。",
-      "Step 3 提交：Conventional Commits、跨关注点拆分、`git diff --cached --stat` 确认提交范围。",
-      "Step 4 会话记录：基于 git log/diff/status 采集事实，按 session-record 模板记录完成工作、关键决策、遗留事项和变更文件。",
-      "Step 5 复盘：识别效率瓶颈、方向调整、信息不足和可沉淀规则。",
-      "Step 6 评审响应：逐条处理 PR review，先解决冲突再提交。",
-      "深度复盘只在任务闭合或出现长期规则信号时做，治理建议先去重、量化收益，并经用户确认后再落盘。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "Step 1 自检验证：审查 `git diff --cached`、运行相关验证命令、确认无新增 lint/类型/测试失败、无调试语句和敏感信息。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "Step 2 分支收尾：用 `git status --short` 查遗漏文件，排除无关 hunk，确认分支名与改动一致。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "Step 3 提交：Conventional Commits、跨关注点拆分、`git diff --cached --stat` 确认提交范围。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Step 4 会话记录：基于 git log/diff/status 采集事实，按 session-record 模板记录完成工作、关键决策、遗留事项和变更文件。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "Step 5 复盘：识别效率瓶颈、方向调整、信息不足和可沉淀规则。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "Step 6 评审响应：逐条处理 PR review，先解决冲突再提交。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "深度复盘只在任务闭合或出现长期规则信号时做，治理建议先去重、量化收益，并经用户确认后再落盘。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -3,7 +3,8 @@ import {
   Platform,
   defineSkill,
   defineSkillParameter,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const speckitSpecifySkill = defineSkill({
@@ -22,17 +23,38 @@ export const speckitSpecifySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "确保 `.specify/scripts` 与 `.specify/templates` 存在；若缺失，先调用 `speckit-baseline` skill 完成 `.specify/` 初始化，完成后回到本流程。",
-      "从需求生成 `slug`（2-4 词，连字符）。",
-      "在当前仓库创建或复用目录：`.specify/features/<slug>/`",
-      `使用模板生成/更新：\`.specify/features/<slug>/spec.md\`
+      defineWorkflowStep({
+        id: "step-1",
+        label: "确保 `.specify/scripts` 与 `.specify/templates` 存在；若缺失，先调用 `speckit-baseline` skill 完成 `.specify/` 初始化，完成后回到本流程。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "从需求生成 `slug`（2-4 词，连字符）。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "在当前仓库创建或复用目录：`.specify/features/<slug>/`",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: `使用模板生成/更新：\`.specify/features/<slug>/spec.md\`
    - 模板来源：\`.specify/templates/spec-template.md\`（由步骤 1 的 bootstrap 拷入）。`,
-      "在 feature 目录内同步创建/更新：`.specify/features/<slug>/checklists/requirements.md`。",
-      `写入 \`.specify/feature.json\`，内容至少包含：
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "在 feature 目录内同步创建/更新：`.specify/features/<slug>/checklists/requirements.md`。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: `写入 \`.specify/feature.json\`，内容至少包含：
    - \`feature_directory: ".specify/features/<slug>"\``,
-      "输出：feature 目录、spec 路径、待澄清项。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "输出：feature 目录、spec 路径、待澄清项。",
+      }),
     ],
   }),
   parameters: [

@@ -3,7 +3,8 @@ import {
   Platform,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const codeEngineerAgentFrameworkSkill = defineSkill({
@@ -23,14 +24,32 @@ export const codeEngineerAgentFrameworkSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认目标、范围、非目标、约束、验收标准和允许写入的位置。",
-      "读取相关源码、配置、测试、调用点和同层实现，建立现状基线。",
-      "复杂改动先设计再实现，明确接口契约、数据流、错误路径、并发/事务边界和迁移影响。",
-      "按最小实现改动，只触达目标相关文件，不顺手重构无关代码。",
-      "补测试或说明无需补测的理由，并运行相关测试、类型检查、lint 或构建。",
-      "收尾报告必须区分已验证、未验证和已知风险；专项 engineer agent 追加语言/框架重点和最小验证命令。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认目标、范围、非目标、约束、验收标准和允许写入的位置。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "读取相关源码、配置、测试、调用点和同层实现，建立现状基线。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "复杂改动先设计再实现，明确接口契约、数据流、错误路径、并发/事务边界和迁移影响。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "按最小实现改动，只触达目标相关文件，不顺手重构无关代码。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "补测试或说明无需补测的理由，并运行相关测试、类型检查、lint 或构建。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "收尾报告必须区分已验证、未验证和已知风险；专项 engineer agent 追加语言/框架重点和最小验证命令。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { symfonyMessengerSkill } from "../symfony-messenger/index";
 import { twigComponentsSkill } from "../twig-components/index";
@@ -60,12 +61,24 @@ export const symfonyUxSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认交互是否需要服务端参与、是否只需局部导航、表单增强、实时搜索或第三方 JS。",
-      "优先从 Turbo Drive / Frame 思考页面流，纯前端行为用 Stimulus，需要服务端状态参与再用 LiveComponent。",
-      "同一块 DOM 只能有一个主导状态机制，避免 Turbo、Stimulus、LiveComponent 抢控制权。",
-      "Turbo Frame、Stimulus、LiveComponent 和 UX Icons 示例读取 `ux-component-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认交互是否需要服务端参与、是否只需局部导航、表单增强、实时搜索或第三方 JS。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "优先从 Turbo Drive / Frame 思考页面流，纯前端行为用 Stimulus，需要服务端状态参与再用 LiveComponent。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "同一块 DOM 只能有一个主导状态机制，避免 Turbo、Stimulus、LiveComponent 抢控制权。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Turbo Frame、Stimulus、LiveComponent 和 UX Icons 示例读取 `ux-component-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

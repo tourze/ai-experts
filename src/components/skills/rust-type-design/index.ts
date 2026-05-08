@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { rustOwnershipIdiomsSkill } from "../rust-ownership-idioms/index";
 import { rustPerformanceSkill } from "../rust-performance/index";
@@ -59,12 +60,24 @@ export const rustTypeDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认是否真的需要多态、类型是否编译期确定、是否存在阶段化状态机。",
-      "默认选择泛型静态分发，只在异构集合、插件边界或编译时间压力下选择 dyn Trait。",
-      "检查 trait object safety：无泛型方法、不返回 `Self`、receiver 兼容。",
-      "分发决策树和 typestate 速查读取 `type-dispatch-guide`；深入示例读取 `chapter-06` / `chapter-07`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认是否真的需要多态、类型是否编译期确定、是否存在阶段化状态机。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "默认选择泛型静态分发，只在异构集合、插件边界或编译时间压力下选择 dyn Trait。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "检查 trait object safety：无泛型方法、不返回 `Self`、receiver 兼容。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "分发决策树和 typestate 速查读取 `type-dispatch-guide`；深入示例读取 `chapter-06` / `chapter-07`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

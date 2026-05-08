@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { reactNativeJsPerformanceSkill } from "../react-native-js-performance/index";
 
@@ -56,14 +57,32 @@ export const reactNativeDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认页面目标、导航层级、视觉状态、平台差异、安全区、触控反馈和动画需求。",
-      "样式和主题实现读取 `styling-patterns` reference；快速代码样例读取 `component-code-patterns`。",
-      "导航结构、深链和 auth flow 读取 `navigation-patterns` reference，避免手写伪导航状态。",
-      "手势和动画读取 `reanimated-patterns` reference，跟手动画放到 Reanimated worklet/UI 线程。",
-      "平台分支集中在边界组件或样式层，避免散落在业务 JSX。",
-      "输出组件结构、样式策略、导航/动画实现、状态覆盖和跨设备验证清单。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认页面目标、导航层级、视觉状态、平台差异、安全区、触控反馈和动画需求。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "样式和主题实现读取 `styling-patterns` reference；快速代码样例读取 `component-code-patterns`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "导航结构、深链和 auth flow 读取 `navigation-patterns` reference，避免手写伪导航状态。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "手势和动画读取 `reanimated-patterns` reference，跟手动画放到 Reanimated worklet/UI 线程。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "平台分支集中在边界组件或样式层，避免散落在业务 JSX。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出组件结构、样式策略、导航/动画实现、状态覆盖和跨设备验证清单。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

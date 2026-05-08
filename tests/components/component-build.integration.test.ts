@@ -1071,7 +1071,7 @@ describe("component build integration", () => {
       writeFileSync(
         join(curateSkillDir, "index.ts"),
         [
-          'import { defineSkill, defineSkillWorkflow } from "../../sdk";',
+          'import { defineSkill, defineWorkflow, defineWorkflowStep } from "../../sdk";',
           "",
           "export const stubSkill = defineSkill({",
           '  id: "stub-skill",',
@@ -1080,7 +1080,7 @@ describe("component build integration", () => {
           '  useCases: ["TODO"],',
           '  constraints: ["TODO"],',
           '  sourceDir: new URL("./", import.meta.url),',
-          '  workflow: defineSkillWorkflow({ steps: ["TODO"] }),',
+          '  workflow: defineWorkflow({ steps: [defineWorkflowStep({ id: "step-1", label: "TODO" })] }),',
           "});",
           "",
         ].join("\n"),

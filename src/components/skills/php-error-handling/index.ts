@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { phpTestingSkill } from "../php-testing/index";
 import { phpTypeSafetySkill } from "../php-type-safety/index";
@@ -57,12 +58,24 @@ export const phpErrorHandlingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先划分验证错误、业务规则错误、外部依赖错误和系统故障，不在全局 catch 里吞掉未知异常。",
-      "用户可见消息与内部调试细节分离，禁止暴露 SQL、文件路径、堆栈和敏感数据。",
-      "批量处理要保留成功项、失败项和失败原因；try/catch 只放在需要处理或转换异常的边界。",
-      "异常层级速查读取 `error-boundary-map`；具体输入校验和错误映射代码读取 `patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先划分验证错误、业务规则错误、外部依赖错误和系统故障，不在全局 catch 里吞掉未知异常。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "用户可见消息与内部调试细节分离，禁止暴露 SQL、文件路径、堆栈和敏感数据。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "批量处理要保留成功项、失败项和失败原因；try/catch 只放在需要处理或转换异常的边界。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "异常层级速查读取 `error-boundary-map`；具体输入校验和错误映射代码读取 `patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

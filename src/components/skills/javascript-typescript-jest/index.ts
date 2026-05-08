@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { modernJavascriptPatternsSkill } from "../modern-javascript-patterns/index";
 import { reactHooksSkill } from "../react-hooks/index";
@@ -75,12 +76,24 @@ export const javascriptTypescriptJestSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认被测行为、外部边界、异步完成方式、共享状态和项目既有 Jest / RTL helper。",
-      "按 Arrange-Act-Assert 写清行为，外部依赖只 mock 边界，不 mock 被测对象内部。",
-      "异步测试必须显式 `await`、`return`、`resolves` 或 `rejects`，共享状态用 beforeEach / afterEach 收敛。",
-      "sum、async mock 和 beforeEach 示例读取 `jest-code-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认被测行为、外部边界、异步完成方式、共享状态和项目既有 Jest / RTL helper。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按 Arrange-Act-Assert 写清行为，外部依赖只 mock 边界，不 mock 被测对象内部。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "异步测试必须显式 `await`、`return`、`resolves` 或 `rejects`，共享状态用 beforeEach / afterEach 收敛。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "sum、async mock 和 beforeEach 示例读取 `jest-code-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

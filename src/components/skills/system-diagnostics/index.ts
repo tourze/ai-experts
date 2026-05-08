@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { networkTroubleshooterSkill } from "../network-troubleshooter/index";
 
@@ -52,12 +53,24 @@ export const systemDiagnosticsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先记录主机名、采样时间、发行版、内核、启动时长和负载，命令失败时记录错误并继续。",
-      "采样 CPU/负载、内存、磁盘、网络接口、失败服务、Top CPU/内存进程、socket 摘要和最近错误日志。",
-      "报告同时给出原始指标和解释性结论，不偷偷安装软件、改配置或重启服务。",
-      "磁盘不足读取 disk-cleanup reference；性能瓶颈读取 performance-optimizer；网络问题转 network-troubleshooter。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先记录主机名、采样时间、发行版、内核、启动时长和负载，命令失败时记录错误并继续。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "采样 CPU/负载、内存、磁盘、网络接口、失败服务、Top CPU/内存进程、socket 摘要和最近错误日志。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "报告同时给出原始指标和解释性结论，不偷偷安装软件、改配置或重启服务。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "磁盘不足读取 disk-cleanup reference；性能瓶颈读取 performance-optimizer；网络问题转 network-troubleshooter。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, androidDeviceAutomationAppLauncher, androidDeviceAutomationBuildAndTest, androidDeviceAutomationDiagnoseApp, androidDeviceAutomationEmuHealthCheck, androidDeviceAutomationEmulatorManage, androidDeviceAutomationGesture, androidDeviceAutomationKeyboard, androidDeviceAutomationLogMonitor, androidDeviceAutomationNavigator, androidDeviceAutomationScreenMapper } from "../../procedures/index";
 
@@ -35,14 +36,32 @@ export const androidDeviceAutomationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先运行健康检查或等价检查，确认 adb、Java、Android SDK 和目标设备 / AVD 状态。",
-      "选择设备：单设备可自动选择，多设备必须明确 serial；模拟器管理用 emulator-manage 相关 procedure。",
-      "按任务路由 procedure：构建安装走 build-and-test，启动/停止/安装/卸载走 app-launcher，日志走 log-monitor，诊断包走 diagnose-app。",
-      "界面操作先用 screen-mapper 读取 UI 层级，再用 navigator 通过文本、resource-id 或 content-description 定位元素。",
-      "手势、按键和坐标点击只在语义节点不足时使用；关键动作后立即截图、dump UI 或抓日志确认。",
-      "需要机器可读输出时传 `--json`，需要完整参数时调用对应 procedure 的 `--help`；原始 ADB 流程读取 `adb-runbook`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先运行健康检查或等价检查，确认 adb、Java、Android SDK 和目标设备 / AVD 状态。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "选择设备：单设备可自动选择，多设备必须明确 serial；模拟器管理用 emulator-manage 相关 procedure。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "按任务路由 procedure：构建安装走 build-and-test，启动/停止/安装/卸载走 app-launcher，日志走 log-monitor，诊断包走 diagnose-app。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "界面操作先用 screen-mapper 读取 UI 层级，再用 navigator 通过文本、resource-id 或 content-description 定位元素。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "手势、按键和坐标点击只在语义节点不足时使用；关键动作后立即截图、dump UI 或抓日志确认。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "需要机器可读输出时传 `--json`，需要完整参数时调用对应 procedure 的 `--help`；原始 ADB 流程读取 `adb-runbook`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

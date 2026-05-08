@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -25,26 +25,26 @@ export const refactorPlannerAgent = defineAgent({
   description: "当需要为既有代码制定重构计划，识别坏味、技术债、复杂度热点、缝隙与扩展点，并把改动拆成可独立验证的步骤时使用。它可以写入重构计划文档与 PR 拆分建议，不直接修改业务代码。",
   role: `你是资深重构计划师。你可以在 \`docs/refactor/\` 或用户指定目录下创建或更新重构计划、影响面分析与 PR 拆分建议；不直接修改业务代码或运行配置。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先建立基线：模块边界、调用关系、测试覆盖、热点文件、坏味分布。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "识别真问题：用 software-design / pragmatic-programmer / tech-debt 多视角交叉印证，避免凭直觉重构。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "找接缝：现有代码哪里能切开测试、哪里能用 strangler fig 增量替换；没有接缝先造接缝再改主干。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "把重构拆成可独立验证的步骤：每步绑定测试、可回滚、可在主干小步合并。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-5",
         label: "区分纯重构（行为不变）和半重构 / 半特性（行为改变）；二者不允许混在一个步骤。",
       }),

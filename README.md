@@ -96,6 +96,8 @@ import {
   defineAntiPattern,
   defineReference,
   defineSkill,
+  defineWorkflow,
+  defineWorkflowStep,
   InvocationPolicy,
   KnownTool,
   Platform,
@@ -136,6 +138,12 @@ export const typescriptTypeSafety = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   body: new URL("./SKILL.body.md", import.meta.url),
+  workflow: defineWorkflow({
+    steps: [
+      defineWorkflowStep({ id: "collect", label: "读取完整编译错误和边界输入样例。" }),
+      defineWorkflowStep({ id: "fix-contract", label: "先修上游类型合同，再处理下游症状。" }),
+    ],
+  }),
   tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob, KnownTool.Bash],
   procedures: [
     procedureUse(typescriptTypeSafetyExtractTsErrors, {
@@ -164,6 +172,7 @@ export const typescriptTypeSafety = defineSkill({
 - 每个 skill 必须声明 `useCases` 与 `constraints`，最终 `SKILL.md` 的 `## 适用场景` 和 `## 核心约束` 只由生成器输出；`SKILL.body.md` 不再手写这两个章节。
 - `SKILL.body.md` 第一个非空行必须是 `## ...`，不要在正文开头写一句简介；简介类内容放进 `description`、`useCases` 或 `constraints`。
 - 检查清单使用 `checklist` 声明为普通字符串数组；构建器会生成 `## 检查清单`，并放在生成的 `## 反模式` 之后。不要在 `SKILL.body.md` 手写 `## 检查清单`，分组清单改写成 `分组：检查项`。
+- 工作流程使用 `workflow: defineWorkflow({ steps/gates/routes/finalSteps })` 声明，节点用 `defineWorkflowStep()` / `defineWorkflowGate()` / `defineWorkflowRoute()`；Skill 与 Agent 共用同一套工作流模型，构建器统一生成 `## 工作流` Mermaid flowchart。不要在 `SKILL.body.md` 手写流程图或 `## 执行步骤`。
 - 反模式使用 `antiPatterns` 声明，每行必须通过 `defineAntiPattern({ fail, pass })` 定义；构建器会生成 `## 反模式` Markdown 表格。不要在 `SKILL.body.md` 手写 `## 反模式`，大段代码对照放进 `references/`。
 - 交叉引用其他 skill 时使用 `relatedSkills` 声明；构建器会生成 `## 相关 Skill`。`relatedSkills` 必须 import 对应 skill definition，并通过 `get id() { return otherSkill.id; }` 延迟读取，避免双向关系造成 ESM 初始化循环；仅单平台可用的关系使用 `platforms` 收窄，不要牺牲另一个平台的输出；不要在 `SKILL.body.md`、`useCases` 或 `constraints` 里手写 `../other-skill/SKILL.md` 或旧 `plugin:skill` 链接。
 - 每个可执行过程必须在 `src/components/procedures/` 登记为 Procedure；skill/agent 通过 `procedureUse(procedureDefinition)` 引用，不手写裸 procedure id。
@@ -181,8 +190,8 @@ Agent 是隔离上下文执行者，可编排多个 skill。
 ```ts
 import {
   defineAgent,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -195,10 +204,10 @@ export const typescriptReviewer = defineAgent({
   description: "审查 TypeScript 类型安全、调试证据、行为回归和测试缺口。",
   platforms: [Platform.Claude, Platform.Codex],
   role: "你是资深 TypeScript Reviewer。只读审查类型合同、行为回归和测试缺口。",
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      defineAgentWorkflowStep({ id: "inspect", label: "读取改动范围、类型边界和失败证据。" }),
-      defineAgentWorkflowStep({ id: "report", label: "按严重度输出发现、证据和修复方向。" }),
+      defineWorkflowStep({ id: "inspect", label: "读取改动范围、类型边界和失败证据。" }),
+      defineWorkflowStep({ id: "report", label: "按严重度输出发现、证据和修复方向。" }),
     ],
   }),
   tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob, KnownTool.Bash],

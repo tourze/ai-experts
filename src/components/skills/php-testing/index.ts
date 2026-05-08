@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { phpXFeaturesSkill } from "../php-8x-features/index";
 import { phpErrorHandlingSkill } from "../php-error-handling/index";
@@ -71,14 +72,32 @@ export const phpTestingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "确认被测行为、测试层级、依赖边界和现有测试风格；需要具体写法时读取 `examples` reference，需要专项规范时读取 `rules` reference。",
-      "选择 PHPUnit 或 Pest 结构，优先使用 `#[Test]`、`#[DataProvider]`、`#[CoversClass]` 等 PHP 8 属性。",
-      "设计 Arrange-Act-Assert、fixture、数据提供者和外部边界 mock，避免 mock 被测对象内部。",
-      "为集成测试明确状态清理、事务边界、环境依赖和 HTTP/CLI 冒烟路径。",
-      "审查 `phpunit.xml` 的严格模式、测试套件、覆盖率和分组策略。",
-      "输出新增/重构测试、覆盖边界和仍需补测的风险。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "确认被测行为、测试层级、依赖边界和现有测试风格；需要具体写法时读取 `examples` reference，需要专项规范时读取 `rules` reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "选择 PHPUnit 或 Pest 结构，优先使用 `#[Test]`、`#[DataProvider]`、`#[CoversClass]` 等 PHP 8 属性。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "设计 Arrange-Act-Assert、fixture、数据提供者和外部边界 mock，避免 mock 被测对象内部。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "为集成测试明确状态清理、事务边界、环境依赖和 HTTP/CLI 冒烟路径。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "审查 `phpunit.xml` 的严格模式、测试套件、覆盖率和分组策略。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出新增/重构测试、覆盖边界和仍需补测的风险。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

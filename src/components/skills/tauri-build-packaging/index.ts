@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const tauriBuildPackagingSkill = defineSkill({
@@ -52,14 +53,32 @@ export const tauriBuildPackagingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认目标平台、安装器格式、签名证书、CI 环境、自动更新需求和外部二进制/资源清单。",
-      "读取 `build-packaging-patterns` reference，配置 bundle、resources、sidecar、updater、公证和平台签名。",
-      "检查密钥边界：私钥和证书只通过 CI secrets 注入，仓库只保留公钥和非敏感配置。",
-      "按平台分别验证 macOS 签名/公证/装订、Windows Authenticode/SmartScreen、Linux 包格式和依赖。",
-      "优化 release profile、缓存策略和构建矩阵，确保干净环境能复现产物。",
-      "输出发布前检查清单、CI 变量、构建命令和失败回滚路径。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认目标平台、安装器格式、签名证书、CI 环境、自动更新需求和外部二进制/资源清单。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "读取 `build-packaging-patterns` reference，配置 bundle、resources、sidecar、updater、公证和平台签名。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "检查密钥边界：私钥和证书只通过 CI secrets 注入，仓库只保留公钥和非敏感配置。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "按平台分别验证 macOS 签名/公证/装订、Windows Authenticode/SmartScreen、Linux 包格式和依赖。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "优化 release profile、缓存策略和构建矩阵，确保干净环境能复现产物。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出发布前检查清单、CI 变量、构建命令和失败回滚路径。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

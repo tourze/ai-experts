@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { asyncPythonPatternsSkill } from "../async-python-patterns/index";
 import { pythonErrorHandlingSkill } from "../python-error-handling/index";
@@ -66,12 +67,24 @@ export const pythonTestingPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认被测边界、外部依赖、失败路径、是否异步和测试数据最小集合。",
-      "单元测试聚焦业务规则和边界条件，外部依赖用 fixture / mock / monkeypatch 隔离。",
-      "参数化测试命名输入和预期，集成测试与单元测试分层运行。",
-      "pytest fixture 和参数化代码模式读取 `pytest-patterns`；异步、monkeypatch、临时目录和 property-based 读取 `advanced-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认被测边界、外部依赖、失败路径、是否异步和测试数据最小集合。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "单元测试聚焦业务规则和边界条件，外部依赖用 fixture / mock / monkeypatch 隔离。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "参数化测试命名输入和预期，集成测试与单元测试分层运行。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "pytest fixture 和参数化代码模式读取 `pytest-patterns`；异步、monkeypatch、临时目录和 property-based 读取 `advanced-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

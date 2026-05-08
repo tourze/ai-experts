@@ -1,10 +1,10 @@
 import {
   AgentSandbox,
   defineAgent,
-  defineAgentWorkflow,
-  defineAgentWorkflowGate,
-  defineAgentWorkflowRoute,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowGate,
+  defineWorkflowRoute,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -24,22 +24,22 @@ export const androidReviewerAgent = defineAgent({
   description: "当需要只读审查 Android 架构、Lifecycle、Jetpack Compose、无障碍、性能、Gradle 和 Manifest 时使用。",
   role: `你是资深 Android 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     gates: [
-      defineAgentWorkflowGate({
+      defineWorkflowGate({
         id: "gate-1",
         skill: androidArchitectureSkill.id,
         label: "门禁 1",
         checks: "分层合规：Clean Architecture 分层、Hilt scope、模块边界",
       }),
-      defineAgentWorkflowGate({
+      defineWorkflowGate({
         id: "gate-2",
         skill: androidDesignGuidelinesSkill.id,
         label: "门禁 2",
         checks: "设计合规：Material Design 3 组件使用、动态颜色、触摸目标",
       }),
-      defineAgentWorkflowGate({
+      defineWorkflowGate({
         id: "gate-3",
         skill: evidenceQualityFrameworkSkill.id,
         label: "门禁 3",
@@ -47,49 +47,49 @@ export const androidReviewerAgent = defineAgent({
       }),
     ],
     routes: [
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-android-architecture",
         triggers: ["ViewModel", "Lifecycle", "repeatOnLifecycle", "launch"],
         skill: androidArchitectureSkill.id,
         checks: "ViewModel scope、SavedStateHandle、生命周期感知收集",
         output: "生命周期审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-android-coroutines",
         triggers: ["suspend", "Flow", "StateFlow", "CoroutineScope", "Dispatchers"],
         skill: androidCoroutinesSkill.id,
         checks: "Dispatcher 注入、Main-Safety、GlobalScope 禁用、协作取消",
         output: "协程安全结论",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-android-design-guidelines",
         triggers: ["@Composable", "remember", "LaunchedEffect", "LazyColumn"],
         skill: androidDesignGuidelinesSkill.id,
         checks: "Compose 稳定性、recomposition、side-effect 位置、Lazy list key",
         output: "Compose 审查",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-android-accessibility",
         triggers: ["contentDescription", "semantics", "touchTarget", "Accessibility"],
         skill: androidAccessibilitySkill.id,
         checks: "TalkBack、触摸目标 48dp、对比度、焦点管理",
         output: "无障碍审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-android-testing",
         triggers: ["@Test", "HiltAndroidTest", "Roborazzi", "ComposeTest"],
         skill: androidTestingSkill.id,
         checks: "测试分层、Hilt 集成测试、截图测试、Compose 测试",
         output: "测试质量审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-gradle-build-performance",
         triggers: ["Gradle 构建慢", "依赖冲突"],
         skill: gradleBuildPerformanceSkill.id,
         checks: "配置阶段耗时、并行构建、依赖缓存",
         output: "构建优化建议",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-android-redex",
         triggers: ["APK", "AAB 体积", "ReDex 配置"],
         skill: androidRedexSkill.id,
@@ -98,23 +98,23 @@ export const androidReviewerAgent = defineAgent({
       }),
     ],
     finalSteps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-1",
         label: "门禁：android-architecture → android-design-guidelines → 确认基线",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-2",
         label: "路由：按 diff 内容匹配场景路由表，逐项深入",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-3",
         label: "证据：每条发现绑定 文件:行 + 代码片段",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-4",
         label: "标注：事实/推断/假设",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-5",
         label: "排序：安全 > 正确性 > 影响面 > 执行成本",
       }),

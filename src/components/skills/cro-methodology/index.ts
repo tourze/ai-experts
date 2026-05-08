@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { redesignMyLandingpageSkill } from "../redesign-my-landingpage/index";
 
@@ -55,14 +56,32 @@ export const croMethodologySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先定义页面目标、关键路径、主指标、次指标、样本窗口和当前基线。",
-      "按流量质量、页面表达、证据链、摩擦四层定位阻塞点。",
-      "根据对象读取相关 reference：页面读 `page-cro`，漏斗读 `funnel-analysis`，注册读 `signup-flow-cro`，弹窗读 `popup-cro`。",
-      "把每个问题写成实验假设：问题、假设、实验、主指标、次指标、失败回滚条件。",
-      "按影响、信心、实施成本和学习价值排序实验，一次只改一个主要变量。",
-      "需要产出实现代码或页面重做时联动 `redesign-my-landingpage`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先定义页面目标、关键路径、主指标、次指标、样本窗口和当前基线。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按流量质量、页面表达、证据链、摩擦四层定位阻塞点。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "根据对象读取相关 reference：页面读 `page-cro`，漏斗读 `funnel-analysis`，注册读 `signup-flow-cro`，弹窗读 `popup-cro`。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "把每个问题写成实验假设：问题、假设、实验、主指标、次指标、失败回滚条件。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "按影响、信心、实施成本和学习价值排序实验，一次只改一个主要变量。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "需要产出实现代码或页面重做时联动 `redesign-my-landingpage`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

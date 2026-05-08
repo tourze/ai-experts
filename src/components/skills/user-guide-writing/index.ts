@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { docCoauthoringSkill } from "../doc-coauthoring/index";
 import { readmeBlueprintGeneratorSkill } from "../readme-blueprint-generator/index";
@@ -58,12 +59,24 @@ export const userGuideWritingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认目标读者、文档类型、关键任务、前置条件、权限限制和成功标准。",
-      "按任务组织章节，使用开始前准备、步骤、常见问题、失败时怎么办的顺序；一步只做一件事。",
-      "必要截图只放在关键分叉或状态确认处，并说明截图位置、状态和成功标准。",
-      "交付前检查用户语言、异常路径、权限限制和内部术语，避免把实现细节暴露给终端用户。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认目标读者、文档类型、关键任务、前置条件、权限限制和成功标准。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按任务组织章节，使用开始前准备、步骤、常见问题、失败时怎么办的顺序；一步只做一件事。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "必要截图只放在关键分叉或状态确认处，并说明截图位置、状态和成功标准。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "交付前检查用户语言、异常路径、权限限制和内部术语，避免把实现细节暴露给终端用户。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

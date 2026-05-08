@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { architectureReviewerSkill } from "../architecture-reviewer/index";
 import { deepCodeReadSkill } from "../deep-code-read/index";
@@ -63,15 +64,36 @@ export const codebaseArchitectureAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "模块地图：列出目录/包边界、public interface 和职责声明，标注 ownership 模糊点。",
-      "依赖图：绘制 import/require/use 关系，识别循环依赖、越层调用和不必要耦合。",
-      "架构合规：对照 MVC、Clean Architecture、Hexagonal 或本仓库声明约束，检测违规点。",
-      "状态流：追踪核心业务对象生命周期，包括入口、处理、输出、错误路径、副作用和状态转移。",
-      "变更热点：用 git 历史识别高 churn 文件、shotgun surgery 模式和长寿分支波及面。",
-      "健康度评分：按模块边界清晰度、依赖复杂度、分层合规率和变更热点密度给出 S1-S5 评级。",
-      "修改指南：为核心模块给出新增功能、改变行为、扩展接口的具体操作路径；详细命令模板读取 `code-patterns` reference。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "模块地图：列出目录/包边界、public interface 和职责声明，标注 ownership 模糊点。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "依赖图：绘制 import/require/use 关系，识别循环依赖、越层调用和不必要耦合。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "架构合规：对照 MVC、Clean Architecture、Hexagonal 或本仓库声明约束，检测违规点。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "状态流：追踪核心业务对象生命周期，包括入口、处理、输出、错误路径、副作用和状态转移。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "变更热点：用 git 历史识别高 churn 文件、shotgun surgery 模式和长寿分支波及面。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "健康度评分：按模块边界清晰度、依赖复杂度、分层合规率和变更热点密度给出 S1-S5 评级。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "修改指南：为核心模块给出新增功能、改变行为、扩展接口的具体操作路径；详细命令模板读取 `code-patterns` reference。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

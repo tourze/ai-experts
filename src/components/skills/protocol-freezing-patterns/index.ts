@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { errorHandlingPatternsSkill } from "../error-handling-patterns/index";
 import { systemDesignSkill } from "../system-design/index";
@@ -64,14 +65,32 @@ export const protocolFreezingPatternsSkill = defineSkill({
       reason: "版本协商、未知字段、兼容失败或 breaking change 需要错误语义和降级策略时联动。",
     },
   ],
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "盘点已部署消息、字段、编码、版本标签、客户端版本和兼容性承诺。",
-      "判断本次变化属于新增、废弃、删除、语义调整还是线格式破坏；字段演进细节按需读取 `field-evolution` reference。",
-      "为新增字段设计可选默认值，为删除字段制定标记废弃 -> 停写 -> 停读 -> 移除四阶段计划。",
-      "设计版本标签、版本化信封或协商机制；需要方案时读取 `versioned-envelope` 和 `version-negotiation` references。",
-      "为每个历史版本补 golden file 反序列化测试，测试方法按需读取 `golden-file-testing` reference。",
-      "输出兼容性矩阵、迁移计划、测试清单和破坏性变更决策。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "盘点已部署消息、字段、编码、版本标签、客户端版本和兼容性承诺。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "判断本次变化属于新增、废弃、删除、语义调整还是线格式破坏；字段演进细节按需读取 `field-evolution` reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "为新增字段设计可选默认值，为删除字段制定标记废弃 -> 停写 -> 停读 -> 移除四阶段计划。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "设计版本标签、版本化信封或协商机制；需要方案时读取 `versioned-envelope` 和 `version-negotiation` references。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "为每个历史版本补 golden file 反序列化测试，测试方法按需读取 `golden-file-testing` reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出兼容性矩阵、迁移计划、测试清单和破坏性变更决策。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

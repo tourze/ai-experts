@@ -121,12 +121,12 @@ describe("component source conventions", () => {
     assert.match(readme, /`InvocationPolicy\.ModelOnly` 只用于 Claude-only skill/);
     assert.match(readme, /`procedureUse\(procedureDefinition, \{ platforms: \[\.\.\.\] \}\)`/);
     assert.match(readme, /仅单平台可用的关系使用 `platforms` 收窄/);
-    assert.match(readme, /defineAgentWorkflow\(\{/);
+    assert.match(readme, /defineWorkflow\(\{/);
     assert.match(
       readme,
-      /defineAntiPattern,\n  defineReference,\n  defineSkill,\n  InvocationPolicy,\n  KnownTool,\n  Platform,\n\} from "\.\.\/\.\.\/sdk"/,
+      /defineAntiPattern,\n  defineReference,\n  defineSkill,\n  defineWorkflow,\n  defineWorkflowStep,\n  InvocationPolicy,\n  KnownTool,\n  Platform,\n\} from "\.\.\/\.\.\/sdk"/,
     );
-    assert.match(readme, /defineAgent,\n  defineAgentWorkflow,\n  defineAgentWorkflowStep,\n  KnownTool,\n  Platform,\n  SkillUseMode,\n\} from "\.\.\/\.\.\/sdk"/);
+    assert.match(readme, /defineAgent,\n  defineWorkflow,\n  defineWorkflowStep,\n  KnownTool,\n  Platform,\n  SkillUseMode,\n\} from "\.\.\/\.\.\/sdk"/);
     assert.match(readme, /type NormalizedHookPayload,\n  type NormalizedHookResult,\n\} from "\.\.\/\.\.\/sdk"/);
     assert.match(readme, /from "\.\.\/\.\.\/skills\/typescript-type-safety\/index"/);
     assert.doesNotMatch(readme, /from "\.\.\/skills\//);
@@ -420,6 +420,26 @@ describe("component source conventions", () => {
         `${sourceFile} should include Codex in cross-platform AI collaboration examples`,
       );
     }
+  });
+
+  test("component workflow declarations use the shared workflow API", () => {
+    const legacyWorkflowHelpers: string[] = [];
+    const componentSources = collectFiles(join(repoRoot, "src/components"), (file) =>
+      file.endsWith(".ts") && !file.endsWith("sdk.ts"),
+    );
+
+    for (const sourceFile of componentSources) {
+      const source = readFileSync(sourceFile, "utf-8");
+      if (/\bdefine(?:Agent|Skill)Workflow(?:Step|Gate|Route)?\b/u.test(source)) {
+        legacyWorkflowHelpers.push(relative(repoRoot, sourceFile));
+      }
+    }
+
+    assert.deepEqual(
+      legacyWorkflowHelpers,
+      [],
+      "component sources should use defineWorkflow* helpers so skills and agents share one workflow model",
+    );
   });
 
   test("cross-platform skill guidance does not recommend Claude Code without Codex", () => {
@@ -953,7 +973,7 @@ describe("component source conventions", () => {
       const hasBashBoundary = /\n\s*bashBoundary:\s*\[/.test(source);
       const hasQualityStandards = /\n\s*qualityStandards:\s*\[/.test(source);
       const hasOutputFormat = /\n\s*outputFormat:\s*defineAgentOutputFormat\(\{/.test(source);
-      const hasWorkflow = /\n\s*workflow:\s*defineAgentWorkflow\(\{/.test(source);
+      const hasWorkflow = /\n\s*workflow:\s*defineWorkflow\(\{/.test(source);
 
       assert.doesNotMatch(
         source,
@@ -1024,15 +1044,15 @@ describe("component source conventions", () => {
         agentWorkflowCount += 1;
         assert.match(
           source,
-          /defineAgentWorkflow(?:Step|Gate|Route)\(\{/,
-          `${agentSourceFile} should define workflow nodes through defineAgentWorkflow* helpers`,
+          /defineWorkflow(?:Step|Gate|Route)\(\{/,
+          `${agentSourceFile} should define workflow nodes through defineWorkflow* helpers`,
         );
         assert.doesNotMatch(
           source,
           /\n\s*workflow:\s*\[/,
           `${agentSourceFile} should define a single workflow object, not multiple workflows`,
         );
-        if (/defineAgentWorkflow(?:Gate|Route)\(\{/.test(source)) {
+        if (/defineWorkflow(?:Gate|Route)\(\{/.test(source)) {
           assert.doesNotMatch(
             source,
             /\n\s*skill:\s*"[^"]+"/,
@@ -1262,7 +1282,7 @@ describe("component source conventions", () => {
         assert.equal(hasSourceDir, true, `${skillSourceFile} should define sourceDir when it omits SKILL.body.md`);
         assert.match(
           source,
-          /\n\s*(?:goal|workflow|outputs):\s*defineSkill(?:Goal|Workflow|Outputs)\(\{/,
+          /\n\s*(?:(?:goal|outputs):\s*defineSkill(?:Goal|Outputs)|workflow:\s*defineWorkflow)\(\{/,
           `${skillSourceFile} should define structured skill content when it omits SKILL.body.md`,
         );
       }

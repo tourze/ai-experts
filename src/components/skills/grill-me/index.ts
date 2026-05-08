@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { thinkingPartnerSkill } from "../thinking-partner/index";
 
@@ -54,13 +55,28 @@ export const grillMeSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认要压力测试的具体方案和单一成功标准；问题本身不清时转 thinking-partner 收敛。",
-      "一次只问一个问题，每问都说明为什么现在问、它位于范围/约束/风险/验证/发布哪一层。",
-      "每个问题给推荐基线答案，让用户知道什么样的回答才算过关。",
-      "如果回答已压实，就关闭该分支；如果回答仍模糊，就继续追问验证路径、负责人、回滚或监控。",
-      "关键分支收敛后停止追问，输出未关闭风险和下一步验证动作。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认要压力测试的具体方案和单一成功标准；问题本身不清时转 thinking-partner 收敛。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "一次只问一个问题，每问都说明为什么现在问、它位于范围/约束/风险/验证/发布哪一层。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "每个问题给推荐基线答案，让用户知道什么样的回答才算过关。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "如果回答已压实，就关闭该分支；如果回答仍模糊，就继续追问验证路径、负责人、回滚或监控。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "关键分支收敛后停止追问，输出未关闭风险和下一步验证动作。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

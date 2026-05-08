@@ -3,7 +3,8 @@ import {
   Platform,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const codeReviewAgentFrameworkSkill = defineSkill({
@@ -23,14 +24,32 @@ export const codeReviewAgentFrameworkSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认用户目标、输入范围、约束和验收标准。",
-      "读取相关文件、配置、调用点、测试和同层模式，建立证据链。",
-      "每条发现标注事实、推断或假设；推断必须说明还需确认什么。",
-      "只读 Bash 可用于版本查询、git 历史、文件统计、lint/typecheck 和测试执行。",
-      "专项审计按触发信号路由：静态检查/lint、安全红线、证据标注是每次必经门禁。",
-      "最终按阻断、高风险、建议、信息排序，并明确范围限制和未覆盖路径。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认用户目标、输入范围、约束和验收标准。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "读取相关文件、配置、调用点、测试和同层模式，建立证据链。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "每条发现标注事实、推断或假设；推断必须说明还需确认什么。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "只读 Bash 可用于版本查询、git 历史、文件统计、lint/typecheck 和测试执行。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "专项审计按触发信号路由：静态检查/lint、安全红线、证据标注是每次必经门禁。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "最终按阻断、高风险、建议、信息排序，并明确范围限制和未覆盖路径。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

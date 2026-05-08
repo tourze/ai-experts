@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { ragAuditorSkill } from "../rag-auditor/index";
 import { similaritySearchPatternsSkill } from "../similarity-search-patterns/index";
@@ -63,12 +64,24 @@ export const embeddingStrategiesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认任务类型、语种、领域、文档结构、成本/延迟约束和评测样本，不看榜单直接选模型。",
-      "同时设计 embedding model、distance metric、chunk size、chunk overlap、metadata fields 和 query/document 双塔约束。",
-      "文档先按语义边界清洗和分块，再向量化、建索引、检索、重排/生成；不要只调 chunk size 掩盖上游问题。",
-      "用离线样本评估召回和答案质量；无法归因时转 rag-auditor 分层审计。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认任务类型、语种、领域、文档结构、成本/延迟约束和评测样本，不看榜单直接选模型。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "同时设计 embedding model、distance metric、chunk size、chunk overlap、metadata fields 和 query/document 双塔约束。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "文档先按语义边界清洗和分块，再向量化、建索引、检索、重排/生成；不要只调 chunk size 掩盖上游问题。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "用离线样本评估召回和答案质量；无法归因时转 rag-auditor 分层审计。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

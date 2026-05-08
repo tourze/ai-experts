@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
 import { scientificBrainstormingSkill } from "../scientific-brainstorming/index";
@@ -63,13 +64,28 @@ export const crossPollinationEngineSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先把问题改写成核心任务，去掉行业行话、既有方案和表面诉求。",
-      "选择 2-4 个相距较远的借鉴源，不做同业竞品互抄；需要案例时读取 examples。",
-      "对每个借鉴源拆出他们怎么解决、背后的机制、激励结构、体验原则和迁移条件。",
-      "把机制翻译成当前场景的最小可试版本，并保留成本、监管、团队能力和用户习惯约束。",
-      "最后收敛成一个本周能验证的小实验，定义成功信号和反证条件。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先把问题改写成核心任务，去掉行业行话、既有方案和表面诉求。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "选择 2-4 个相距较远的借鉴源，不做同业竞品互抄；需要案例时读取 examples。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "对每个借鉴源拆出他们怎么解决、背后的机制、激励结构、体验原则和迁移条件。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "把机制翻译成当前场景的最小可试版本，并保留成本、监管、团队能力和用户习惯约束。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "最后收敛成一个本周能验证的小实验，定义成功信号和反证条件。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

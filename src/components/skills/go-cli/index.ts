@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { goCodeStyleSkill } from "../go-code-style/index";
 import { goConcurrencyPatternsSkill } from "../go-concurrency-patterns/index";
@@ -79,12 +80,24 @@ export const goCliSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认 CLI 的入口、subcommand 层级、配置来源、环境变量前缀、退出码和发布方式。",
-      "按 root command、subcommand 注册、flags / viper 配置绑定和信号处理建立骨架。",
-      "明确用法错误、业务错误和中断退出的 exit code，版本号通过 ldflags 注入。",
-      "常用代码模式读取 `cli-patterns`；Cobra / Viper 细节读取 `cobra-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认 CLI 的入口、subcommand 层级、配置来源、环境变量前缀、退出码和发布方式。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按 root command、subcommand 注册、flags / viper 配置绑定和信号处理建立骨架。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "明确用法错误、业务错误和中断退出的 exit code，版本号通过 ldflags 注入。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "常用代码模式读取 `cli-patterns`；Cobra / Viper 细节读取 `cobra-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { dbSchemaDesignSkill } from "../db-schema-design/index";
 
@@ -89,13 +90,28 @@ export const sqlReviewOptimizationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "审查先看安全边界和正确性，再谈性能；权限、条件或事务边界错了，查询跑得快也不能放行。",
-      "优化先拿 EXPLAIN/EXPLAIN ANALYZE、真实行数、延迟、锁等待和资源消耗，再决定改 SQL、改索引或改执行位置。",
-      "代码模式优先读取 code-patterns；索引模式读取 index-patterns；深度索引读取 index-strategy 及数据库特化 reference。",
-      "逐项检查参数化、显式列、JOIN 条件、WHERE/ORDER BY 访问路径、复合索引顺序、分页方式、批处理和 N+1。",
-      "迁移脚本必须评估锁范围、回填、回滚、灰度和审计恢复路径；报表查询不得塞进 OLTP 热链路。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "审查先看安全边界和正确性，再谈性能；权限、条件或事务边界错了，查询跑得快也不能放行。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "优化先拿 EXPLAIN/EXPLAIN ANALYZE、真实行数、延迟、锁等待和资源消耗，再决定改 SQL、改索引或改执行位置。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "代码模式优先读取 code-patterns；索引模式读取 index-patterns；深度索引读取 index-strategy 及数据库特化 reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "逐项检查参数化、显式列、JOIN 条件、WHERE/ORDER BY 访问路径、复合索引顺序、分页方式、批处理和 N+1。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "迁移脚本必须评估锁范围、回填、回滚、灰度和审计恢复路径；报表查询不得塞进 OLTP 热链路。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const concurrencyPatternsSkill = defineSkill({
@@ -50,13 +51,28 @@ export const concurrencyPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先画出入口、子任务、外部依赖、共享状态和长期运行任务，明确每个任务的 owner。",
-      "为任务队列、worker 池或批量请求设置并发上限；溢出策略在排队、背压和快速失败中明确选择。",
-      "把 timeout/cancel 信号从入口传给所有子任务，并检查每个 await/yield/select 点能退出。",
-      "跨并发边界优先消息传递；必须共享可变状态时写清锁范围、顺序和死锁规避。",
-      "设计优雅停机：收到信号后停止接收新工作、在超时内排空、关闭连接池并刷新缓冲。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先画出入口、子任务、外部依赖、共享状态和长期运行任务，明确每个任务的 owner。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "为任务队列、worker 池或批量请求设置并发上限；溢出策略在排队、背压和快速失败中明确选择。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "把 timeout/cancel 信号从入口传给所有子任务，并检查每个 await/yield/select 点能退出。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "跨并发边界优先消息传递；必须共享可变状态时写清锁范围、顺序和死锁规避。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "设计优雅停机：收到信号后停止接收新工作、在超时内排空、关闭连接池并刷新缓冲。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

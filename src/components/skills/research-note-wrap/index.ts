@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const researchNoteWrapSkill = defineSkill({
@@ -58,13 +59,28 @@ export const researchNoteWrapSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先决定范围：默认 current-session，只有用户显式给出“今天 + 主题”才走 today-topic-synthesis。",
-      "读取记忆文件确认输出目录；未定义则先询问，并建议写回记忆文件。",
-      "先草拟主要问题表等待确认，再草拟核心结论表和关键结论编号列表等待确认。",
-      "确认后套用 `output-template` 落盘；引用位点前读取 `citation-validator`，反模式检查读 `anti-patterns`。",
-      "跨会话第一版不自动检索 transcript，由用户提供具体会话或要点，并在 frontmatter 标注来源。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先决定范围：默认 current-session，只有用户显式给出“今天 + 主题”才走 today-topic-synthesis。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "读取记忆文件确认输出目录；未定义则先询问，并建议写回记忆文件。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "先草拟主要问题表等待确认，再草拟核心结论表和关键结论编号列表等待确认。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "确认后套用 `output-template` 落盘；引用位点前读取 `citation-validator`，反模式检查读 `anti-patterns`。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "跨会话第一版不自动检索 transcript，由用户提供具体会话或要点，并在 frontmatter 标注来源。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

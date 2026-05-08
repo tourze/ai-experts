@@ -4,7 +4,8 @@ import {
   defineSkill,
   defineAntiPattern,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const benchmarkResultAnalyzerSkill = defineSkill({
@@ -46,13 +47,28 @@ export const benchmarkResultAnalyzerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先读取 comparison、grading 或 benchmark 汇总，记录原始胜负判断，不重新替代 comparator 判胜。",
-      "并排读取胜者/败者 skill、关键资源、transcript 和输出，比较指令遵循、工具使用和失败恢复。",
-      "区分 skill 指令问题、executor 执行问题、eval assertion 问题和任务本身不合理。",
-      "从多轮结果中识别稳定失败、稳定通过、异常波动和只在特定 expectation 上暴露的问题。",
-      "按 impact 排序建议；每条建议必须绑定可观察失败原因、category、priority、expected_impact 和下一轮验证方式。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先读取 comparison、grading 或 benchmark 汇总，记录原始胜负判断，不重新替代 comparator 判胜。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "并排读取胜者/败者 skill、关键资源、transcript 和输出，比较指令遵循、工具使用和失败恢复。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "区分 skill 指令问题、executor 执行问题、eval assertion 问题和任务本身不合理。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "从多轮结果中识别稳定失败、稳定通过、异常波动和只在特定 expectation 上暴露的问题。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "按 impact 排序建议；每条建议必须绑定可观察失败原因、category、priority、expected_impact 和下一轮验证方式。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
 import { planningUnderUncertaintySkill } from "../planning-under-uncertainty/index";
@@ -62,14 +63,32 @@ export const runningDecisionProcessesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先写清决策问题、影响范围、不可逆程度、deadline 和不决策的代价。",
-      "列出备选项、决策标准、最低所需证据和明确不讨论的范围。",
-      "定义角色分工：谁输入、谁建议、谁决策、谁执行、谁被通知，避免多人参与但无人负责。",
-      "需要突破僵局或参考常见陷阱时读取 `guest-insights` reference；高不确定性可联动 `planning-under-uncertainty`。",
-      "设定决策时间点、升级条件、记录格式和复盘触发条件。",
-      "形成 decision log，记录结论、理由、前提、反对意见和后续动作。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先写清决策问题、影响范围、不可逆程度、deadline 和不决策的代价。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "列出备选项、决策标准、最低所需证据和明确不讨论的范围。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "定义角色分工：谁输入、谁建议、谁决策、谁执行、谁被通知，避免多人参与但无人负责。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "需要突破僵局或参考常见陷阱时读取 `guest-insights` reference；高不确定性可联动 `planning-under-uncertainty`。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "设定决策时间点、升级条件、记录格式和复盘触发条件。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "形成 decision log，记录结论、理由、前提、反对意见和后续动作。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

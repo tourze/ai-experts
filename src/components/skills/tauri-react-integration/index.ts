@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const tauriReactIntegrationSkill = defineSkill({
@@ -51,14 +52,32 @@ export const tauriReactIntegrationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认 React 前端路由、状态边界、IPC 调用点、事件订阅点和错误展示策略。",
-      "读取 `react-integration-patterns` reference，封装 `useInvoke`、`useTauriEvent` 和 IPC 错误边界。",
-      "读取 `deeplink-state-sync-patterns` reference，处理 Rust `on_open_url`、React Router 和状态同步事件。",
-      "确保前端不调用 Node.js API，系统能力都通过 `invoke()` 或 Tauri JS API。",
-      "Rust 状态变更后显式 `emit()`，React 订阅 cleanup 必须 `unlisten()` 并处理卸载竞态。",
-      "输出 hooks、类型合同、错误状态、深链接路由和同步测试点。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认 React 前端路由、状态边界、IPC 调用点、事件订阅点和错误展示策略。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "读取 `react-integration-patterns` reference，封装 `useInvoke`、`useTauriEvent` 和 IPC 错误边界。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "读取 `deeplink-state-sync-patterns` reference，处理 Rust `on_open_url`、React Router 和状态同步事件。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "确保前端不调用 Node.js API，系统能力都通过 `invoke()` 或 Tauri JS API。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "Rust 状态变更后显式 `emit()`，React 订阅 cleanup 必须 `unlisten()` 并处理卸载竞态。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出 hooks、类型合同、错误状态、深链接路由和同步测试点。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

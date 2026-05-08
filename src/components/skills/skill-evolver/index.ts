@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { skillActivationAnalyzerSkill } from "../skill-activation-analyzer/index";
 import { skillCreatorSkill } from "../skill-creator/index";
@@ -63,15 +64,36 @@ export const skillEvolverSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先读取 migration-protocol，确认目标 A、参考 B、模式：compare-only、sandbox 或 write。",
-      "安全扫读两个 skill 的 `SKILL.md`、`references/`、`assets/`、`evals/` 和 Procedure 调用说明，不自动执行不明辅助代码。",
-      "建立能力地图：触发域、知识增量、流程控制、工具/Procedure、输出约束、错误处理和 eval 覆盖。",
-      "优先复用目标 skill 的 eval cases；不足时补 3-5 个代表任务，至少包含一个压力或反例任务。",
-      "能跑就做 A/B 或 old/candidate 对比；不能跑时只输出静态报告并标明证据等级。",
-      "把参考优势反向工程成一个可迁移模式，写清适用条件、不适用场景、迁移步骤和副作用。",
-      "先在快照或临时副本注入一个模式并验证，正式写入前确认范围；真实结果才可沉淀 benchmark。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先读取 migration-protocol，确认目标 A、参考 B、模式：compare-only、sandbox 或 write。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "安全扫读两个 skill 的 `SKILL.md`、`references/`、`assets/`、`evals/` 和 Procedure 调用说明，不自动执行不明辅助代码。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "建立能力地图：触发域、知识增量、流程控制、工具/Procedure、输出约束、错误处理和 eval 覆盖。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "优先复用目标 skill 的 eval cases；不足时补 3-5 个代表任务，至少包含一个压力或反例任务。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "能跑就做 A/B 或 old/candidate 对比；不能跑时只输出静态报告并标明证据等级。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "把参考优势反向工程成一个可迁移模式，写清适用条件、不适用场景、迁移步骤和副作用。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "先在快照或临时副本注入一个模式并验证，正式写入前确认范围；真实结果才可沉淀 benchmark。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

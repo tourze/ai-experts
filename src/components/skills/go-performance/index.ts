@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { goConcurrencyPatternsSkill } from "../go-concurrency-patterns/index";
 import { goErrorHandlingSkill } from "../go-error-handling/index";
@@ -76,12 +77,24 @@ export const goPerformanceSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认是否外部瓶颈，再用 CPU / heap / goroutine / mutex / block profile 和 trace 定位 Go 侧问题。",
-      "按算法复杂度、分配、系统调用、GC、锁竞争和并发度顺序收敛，不凭直觉优化。",
-      "逃逸分析、alloc profile 和 trace 结果必须绑定命令和输入场景。",
-      "排查决策树读取 `performance-triage`；pprof / benchmark 细节读取对应 references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认是否外部瓶颈，再用 CPU / heap / goroutine / mutex / block profile 和 trace 定位 Go 侧问题。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按算法复杂度、分配、系统调用、GC、锁竞争和并发度顺序收敛，不凭直觉优化。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "逃逸分析、alloc profile 和 trace 结果必须绑定命令和输入场景。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "排查决策树读取 `performance-triage`；pprof / benchmark 细节读取对应 references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { doctrineEntityPatternsSkill } from "../doctrine-entity-patterns/index";
 
@@ -53,14 +54,32 @@ export const symfonyBundleArchitectureSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "读取 Bundle 类、Extension、配置文件、CompilerPass、服务定义和 Bundle 间依赖；完整示例按需读取 `bundle-reference`。",
-      "检查 Bundle 类是否只做依赖声明和 CompilerPass 注册，不承载运行时逻辑。",
-      "检查 Extension 是否只加载配置，不直接构造服务或访问运行时状态。",
-      "检查 services.yaml 是否按命名空间 resource 扫描、默认 private、避免无意义 public 服务。",
-      "检查 CompilerPass 是否只处理标签或配置无法覆盖的操作，并在 `hasDefinition()` 后再改定义。",
-      "检查显式依赖、可选依赖降级和多 Bundle monorepo 协作边界。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "读取 Bundle 类、Extension、配置文件、CompilerPass、服务定义和 Bundle 间依赖；完整示例按需读取 `bundle-reference`。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "检查 Bundle 类是否只做依赖声明和 CompilerPass 注册，不承载运行时逻辑。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "检查 Extension 是否只加载配置，不直接构造服务或访问运行时状态。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "检查 services.yaml 是否按命名空间 resource 扫描、默认 private、避免无意义 public 服务。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "检查 CompilerPass 是否只处理标签或配置无法覆盖的操作，并在 `hasDefinition()` 后再改定义。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "检查显式依赖、可选依赖降级和多 Bundle monorepo 协作边界。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

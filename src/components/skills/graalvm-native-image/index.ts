@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { gradleBuildPerformanceSkill } from "../gradle-build-performance/index";
 
@@ -53,13 +54,28 @@ export const graalvmNativeImageSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认 Java 版本、构建工具、框架、GraalVM/Native Build Tools 版本和完整 native build 日志。",
-      "Maven 路线读取 maven-native-profile；Gradle 路线读取 gradle-native-plugin；Spring Boot 3.x 读取 spring-boot-native。",
-      "一次只修第一条阻断错误，区分反射、资源、代理、序列化、JNI 和类初始化问题。",
-      "Spring Boot 3.x 优先 RuntimeHints；第三方库或无法代码注册时才退回 JSON metadata，位置放在 META-INF/native-image/<group>/<artifact>/。",
-      "需要自动收集 metadata 时读取 tracing-agent；构建成功后验证启动、健康检查、启动时长和 RSS。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认 Java 版本、构建工具、框架、GraalVM/Native Build Tools 版本和完整 native build 日志。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "Maven 路线读取 maven-native-profile；Gradle 路线读取 gradle-native-plugin；Spring Boot 3.x 读取 spring-boot-native。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "一次只修第一条阻断错误，区分反射、资源、代理、序列化、JNI 和类初始化问题。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Spring Boot 3.x 优先 RuntimeHints；第三方库或无法代码注册时才退回 JSON metadata，位置放在 META-INF/native-image/<group>/<artifact>/。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "需要自动收集 metadata 时读取 tracing-agent；构建成功后验证启动、健康检查、启动时长和 RSS。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

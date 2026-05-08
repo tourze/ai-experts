@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { goDataStructuresSkill } from "../go-data-structures/index";
 import { goErrorHandlingSkill } from "../go-error-handling/index";
@@ -83,12 +84,24 @@ export const goCodeStyleSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先识别函数职责、错误路径、参数列表、条件复杂度和注释噪声。",
-      "用早返回保持主路径清晰，用领域对象收口参数膨胀，用命名布尔表达式拆复杂条件。",
-      "注释优先解释原因和不变量，不翻译代码；公共 API 文档另按文档规范处理。",
-      "常用代码模式读取 `code-patterns`；更完整文档规则读取 `documentation`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先识别函数职责、错误路径、参数列表、条件复杂度和注释噪声。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "用早返回保持主路径清晰，用领域对象收口参数膨胀，用命名布尔表达式拆复杂条件。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "注释优先解释原因和不变量，不翻译代码；公共 API 文档另按文档规范处理。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "常用代码模式读取 `code-patterns`；更完整文档规则读取 `documentation`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

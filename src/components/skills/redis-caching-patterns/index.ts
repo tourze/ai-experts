@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { redisDataModelingSkill } from "../redis-data-modeling/index";
 
@@ -58,12 +59,24 @@ export const redisCachingPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认读写路径、数据源真源、热点 key、TTL 策略、不存在 key 行为和删除失败补偿。",
-      "cache-aside 读路径保持 check cache、miss、query DB、set cache；写路径先写 DB 再删缓存。",
-      "高并发热点用 `SET key value NX EX seconds` 做互斥刷新；穿透防御用短 TTL 空值缓存或布隆过滤器。",
-      "所有 TTL 加随机抖动；具体代码实现和补偿模式读取 code-patterns reference。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认读写路径、数据源真源、热点 key、TTL 策略、不存在 key 行为和删除失败补偿。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "cache-aside 读路径保持 check cache、miss、query DB、set cache；写路径先写 DB 再删缓存。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "高并发热点用 `SET key value NX EX seconds` 做互斥刷新；穿透防御用短 TTL 空值缓存或布隆过滤器。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "所有 TTL 加随机抖动；具体代码实现和补偿模式读取 code-patterns reference。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

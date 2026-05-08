@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { phpXFeaturesSkill } from "../php-8x-features/index";
 import { phpDesignPatternsSkill } from "../php-design-patterns/index";
@@ -81,12 +82,24 @@ export const phpTypeSafetySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认 PHPStan / Psalm 级别、裸 array / mixed 分布、公共 API 签名和框架类型约束。",
-      "优先用原生签名表达参数、返回值和属性；PHPDoc 只补类型系统表达不了的信息。",
-      "array shapes、list、泛型、条件返回和 assert 必须与实现和测试保持一致。",
-      "常用标注速查读取 `type-annotation-cheatsheet`；基础模式读取 `patterns`；复杂泛型和条件返回读取 `advanced-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认 PHPStan / Psalm 级别、裸 array / mixed 分布、公共 API 签名和框架类型约束。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "优先用原生签名表达参数、返回值和属性；PHPDoc 只补类型系统表达不了的信息。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "array shapes、list、泛型、条件返回和 assert 必须与实现和测试保持一致。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "常用标注速查读取 `type-annotation-cheatsheet`；基础模式读取 `patterns`；复杂泛型和条件返回读取 `advanced-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

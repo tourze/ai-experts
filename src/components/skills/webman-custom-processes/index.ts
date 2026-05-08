@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const webmanCustomProcessesSkill = defineSkill({
@@ -48,14 +49,32 @@ export const webmanCustomProcessesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认进程用途、`config/process.php` handler、count、是否长连接、是否可 reload 和停止语义。",
-      "生命周期初始化读取 `process-lifecycle` reference，连接和资源放在 `onWorkerStart`。",
-      "Timer/Crontab 读取 `timer-management` 与 `crontab-scheduling`，追踪 Timer ID 并在 `onWorkerStop` 清理。",
-      "排查阻塞读取 `event-loop-blocking`，移除 `sleep()` 和同步阻塞调用。",
-      "崩溃恢复读取 `crash-recovery`，不可恢复错误用 `Worker::stopAll()` 或明确退出策略。",
-      "输出 process 配置、生命周期钩子、清理逻辑和验证命令。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认进程用途、`config/process.php` handler、count、是否长连接、是否可 reload 和停止语义。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "生命周期初始化读取 `process-lifecycle` reference，连接和资源放在 `onWorkerStart`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "Timer/Crontab 读取 `timer-management` 与 `crontab-scheduling`，追踪 Timer ID 并在 `onWorkerStop` 清理。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "排查阻塞读取 `event-loop-blocking`，移除 `sleep()` 和同步阻塞调用。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "崩溃恢复读取 `crash-recovery`，不可恢复错误用 `Worker::stopAll()` 或明确退出策略。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出 process 配置、生命周期钩子、清理逻辑和验证命令。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

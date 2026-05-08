@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, webContentFetcherFetch } from "../../procedures/index";
 
@@ -56,12 +57,24 @@ export const webContentFetcherSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认用户给的是具体 URL；深度研究前需要精炼问题时读取 `question-refiner`。",
-      "根据域名选择模式：微信公众号、知乎专栏、掘金优先 stealth；少数派、CSDN、OpenAI、Google Blog 先默认模式。",
-      "默认 fast 模式内容过短会自动用 browser-header 重试，不要对同一 URL 无脑重复调用。",
-      "提取失败两次后停止重试，保留错误和模式信息，回到上层研究流程选择浏览器或其他方案。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认用户给的是具体 URL；深度研究前需要精炼问题时读取 `question-refiner`。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "根据域名选择模式：微信公众号、知乎专栏、掘金优先 stealth；少数派、CSDN、OpenAI、Google Blog 先默认模式。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "默认 fast 模式内容过短会自动用 browser-header 重试，不要对同一 URL 无脑重复调用。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "提取失败两次后停止重试，保留错误和模式信息，回到上层研究流程选择浏览器或其他方案。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

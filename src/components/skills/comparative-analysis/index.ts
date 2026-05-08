@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { deepResearchSkill } from "../deep-research/index";
 
@@ -56,14 +57,32 @@ export const comparativeAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先澄清对比目标、用户决策场景、约束和必须下判断的问题。",
-      "确定统一维度：功能、架构、性能、生态、学习曲线、维护、许可证或用户指定维度。",
-      "逐维度收集证据；代码仓看代码和 git 历史，外部产品查官方文档、定价、案例和限制。",
-      "检查定位不对称和遗漏维度，避免把解决不同问题的对象硬凑成同类比较。",
-      "需要标准报告格式时读取 `output-template` reference；外部概念资料不足时联动 `deep-research`。",
-      "输出矩阵、详细分析和条件化建议：场景 X 选 A，场景 Y 选 B。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先澄清对比目标、用户决策场景、约束和必须下判断的问题。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "确定统一维度：功能、架构、性能、生态、学习曲线、维护、许可证或用户指定维度。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "逐维度收集证据；代码仓看代码和 git 历史，外部产品查官方文档、定价、案例和限制。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "检查定位不对称和遗漏维度，避免把解决不同问题的对象硬凑成同类比较。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "需要标准报告格式时读取 `output-template` reference；外部概念资料不足时联动 `deep-research`。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出矩阵、详细分析和条件化建议：场景 X 选 A，场景 Y 选 B。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

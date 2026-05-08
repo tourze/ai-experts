@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { planReviewSkill } from "../plan-review/index";
 import { taskDecomposerSkill } from "../task-decomposer/index";
@@ -57,15 +58,36 @@ export const featureDevSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "发现：定义功能目标、成功标准、范围边界和非目标。",
-      "代码库探索：识别相关文件、既有模式、相似实现和集成点。",
-      "澄清问题：补齐业务规则、边界情况、数据迁移、兼容性和验收标准。",
-      "架构设计：至少比较两种方案，说明复杂度、风险和集成成本。",
-      "实现：按既有模式改代码，必要时先补测试或验证脚手架。",
-      "质量复核：跑测试/检查，审查回归面、错误处理、日志、文档和交接需求。",
-      "总结：记录关键决策、限制、验证结果和后续动作。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "发现：定义功能目标、成功标准、范围边界和非目标。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "代码库探索：识别相关文件、既有模式、相似实现和集成点。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "澄清问题：补齐业务规则、边界情况、数据迁移、兼容性和验收标准。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "架构设计：至少比较两种方案，说明复杂度、风险和集成成本。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "实现：按既有模式改代码，必要时先补测试或验证脚手架。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "质量复核：跑测试/检查，审查回归面、错误处理、日志、文档和交接需求。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "总结：记录关键决策、限制、验证结果和后续动作。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const competitiveIntelligenceSkill = defineSkill({
@@ -53,14 +54,32 @@ export const competitiveIntelligenceSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先明确目的：赢单、路线图决策、定位更新或市场监控，并确定时间窗口和目标受众。",
-      "聚焦 Direct、Adjacent、Watch 三类中的 2-3 个真实威胁，不把十几个竞品摊平比较。",
-      "基础档输出近期变化、对我方影响、推荐动作和 battlecard：客户问法、竞品弱点、我方优势、一句话回应。",
-      "高级档先收集竞品列表、功能矩阵、定价、渠道、目标客户和市场数据，不先选框架。",
-      "选择 3-5 个互补框架独立分析，再交叉验证共识点、矛盾点和盲区；只输出高置信结论。",
-      "需要单一竞品深拆或多框架模板时读取 competitive-teardown 或 multi-framework-output-template。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先明确目的：赢单、路线图决策、定位更新或市场监控，并确定时间窗口和目标受众。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "聚焦 Direct、Adjacent、Watch 三类中的 2-3 个真实威胁，不把十几个竞品摊平比较。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "基础档输出近期变化、对我方影响、推荐动作和 battlecard：客户问法、竞品弱点、我方优势、一句话回应。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "高级档先收集竞品列表、功能矩阵、定价、渠道、目标客户和市场数据，不先选框架。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "选择 3-5 个互补框架独立分析，再交叉验证共识点、矛盾点和盲区；只输出高置信结论。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "需要单一竞品深拆或多框架模板时读取 competitive-teardown 或 multi-framework-output-template。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const estimateCalibratorSkill = defineSkill({
@@ -41,13 +42,28 @@ export const estimateCalibratorSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先界定范围、交付物、完成定义和外部依赖；边界不清时先澄清。",
-      "把工作拆成可独立讨论的不确定性单元，避免对大块需求报单点数值。",
-      "为每项给出 Best / Likely / Worst，并写明主要未知项、风险来源和假设。",
-      "按历史数据或类比案例校准估算；需要方法时读取 `estimation-methods`、`sizing-heuristics` 或 `unknown-categories` references。",
-      "输出区间、置信度、缓冲建议和需要先验证的未知项。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先界定范围、交付物、完成定义和外部依赖；边界不清时先澄清。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "把工作拆成可独立讨论的不确定性单元，避免对大块需求报单点数值。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "为每项给出 Best / Likely / Worst，并写明主要未知项、风险来源和假设。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "按历史数据或类比案例校准估算；需要方法时读取 `estimation-methods`、`sizing-heuristics` 或 `unknown-categories` references。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "输出区间、置信度、缓冲建议和需要先验证的未知项。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

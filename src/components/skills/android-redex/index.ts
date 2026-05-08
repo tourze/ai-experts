@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const androidRedexSkill = defineSkill({
@@ -35,14 +36,32 @@ export const androidRedexSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "根据用户意图选择路径：安装、pass 选择、基本集成、优化问题排查或 pass 原理解释。",
-      "基本集成先读取 `quickstart`，确认输入 APK、配置文件、Android SDK、签名材料和输出路径。",
-      "选择 pass 时读取 `passes`，按体积、性能、调试信息或风险级别渐进组合。",
-      "接入 Gradle 或 CI 时把 ReDex 放在 `assembleRelease` 后，并保留 zipalign、apksigner 和安装启动验证。",
-      "优化后异常时读取 `troubleshooting`，使用 `--stop-pass`、mapping、keep 规则和 `TRACE=1` 缩小责任 pass。",
-      "输出结论时同时报告优化收益、验证覆盖、风险 pass 和回滚路径。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "根据用户意图选择路径：安装、pass 选择、基本集成、优化问题排查或 pass 原理解释。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "基本集成先读取 `quickstart`，确认输入 APK、配置文件、Android SDK、签名材料和输出路径。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "选择 pass 时读取 `passes`，按体积、性能、调试信息或风险级别渐进组合。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "接入 Gradle 或 CI 时把 ReDex 放在 `assembleRelease` 后，并保留 zipalign、apksigner 和安装启动验证。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "优化后异常时读取 `troubleshooting`，使用 `--stop-pass`、mapping、keep 规则和 `TRACE=1` 缩小责任 pass。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出结论时同时报告优化收益、验证覆盖、风险 pass 和回滚路径。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { redisDataModelingSkill } from "../redis-data-modeling/index";
 
@@ -60,12 +61,24 @@ export const redisClusterHaSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先按业务目标选择 Sentinel 还是 Cluster：高可用主从切换用 Sentinel，容量水平扩展和 slot 分片用 Cluster。",
-      "Sentinel 至少 3 节点并设置多数派 quorum；Cluster multi-key 操作必须用 `{hashtag}` 保证同 slot。",
-      "生产至少开启 AOF，并根据 RPO/RTO 选择 RDB/AOF 混合策略；`maxmemory` 预留 20-30% fork copy-on-write 余量。",
-      "配置 `slowlog-log-slower-than`、`slowlog-max-len` 和周期巡检；完整配置模板读取 code-patterns reference。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先按业务目标选择 Sentinel 还是 Cluster：高可用主从切换用 Sentinel，容量水平扩展和 slot 分片用 Cluster。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "Sentinel 至少 3 节点并设置多数派 quorum；Cluster multi-key 操作必须用 `{hashtag}` 保证同 slot。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "生产至少开启 AOF，并根据 RPO/RTO 选择 RDB/AOF 混合策略；`maxmemory` 预留 20-30% fork copy-on-write 余量。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "配置 `slowlog-log-slower-than`、`slowlog-max-len` 和周期巡检；完整配置模板读取 code-patterns reference。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

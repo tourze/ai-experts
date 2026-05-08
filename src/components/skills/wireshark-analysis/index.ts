@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { ethicalHackingMethodologySkill } from "../ethical-hacking-methodology/index";
 import { protocolReverseEngineeringSkill } from "../protocol-reverse-engineering/index";
@@ -62,13 +63,28 @@ export const wiresharkAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认抓包点、时间窗口、时区、过滤目标和是否存在采样 / 丢包。",
-      "用协议、端点、端口、会话和时间过滤器逐步收窄流量，不在全量包里盲看。",
-      "对关键连接跟流、导出字段表和原始 packet number，保留显示过滤表达式。",
-      "区分基线流量、异常流量、重传 / 握手失败和应用层错误。",
-      "常用 tshark 过滤、conversation 和 verbose 命令读取 `tshark-triage`；私有协议样本交给 `protocol-reverse-engineering`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认抓包点、时间窗口、时区、过滤目标和是否存在采样 / 丢包。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "用协议、端点、端口、会话和时间过滤器逐步收窄流量，不在全量包里盲看。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "对关键连接跟流、导出字段表和原始 packet number，保留显示过滤表达式。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "区分基线流量、异常流量、重传 / 握手失败和应用层错误。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "常用 tshark 过滤、conversation 和 verbose 命令读取 `tshark-triage`；私有协议样本交给 `protocol-reverse-engineering`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

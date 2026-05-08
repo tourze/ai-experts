@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { marketSizingAnalysisSkill } from "../market-sizing-analysis/index";
 
@@ -50,14 +51,32 @@ export const startupIcpDefinerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先收集现有客户、赢单/输单、销售管道、使用数据和创始人假设；资料不足时说明置信度。",
-      "区分公司画像、买方角色、使用者角色和影响者，不把 persona 写成单一人设。",
-      "按痛点强度、付费意愿、成交概率、可触达性、部署复杂度和战略价值筛选候选 ICP。",
-      "为每个候选 ICP 写清触发事件、预算来源、典型异议、成功信号和排除条件。",
-      "需要完整方法时读取 `full-guide` reference；需要市场空间校验时联动 `market-sizing-analysis`。",
-      "把 ICP 转成销售名单筛选规则、信息架构、产品路线图和不服务客户标准。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先收集现有客户、赢单/输单、销售管道、使用数据和创始人假设；资料不足时说明置信度。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "区分公司画像、买方角色、使用者角色和影响者，不把 persona 写成单一人设。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "按痛点强度、付费意愿、成交概率、可触达性、部署复杂度和战略价值筛选候选 ICP。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "为每个候选 ICP 写清触发事件、预算来源、典型异议、成功信号和排除条件。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "需要完整方法时读取 `full-guide` reference；需要市场空间校验时联动 `market-sizing-analysis`。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "把 ICP 转成销售名单筛选规则、信息架构、产品路线图和不服务客户标准。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

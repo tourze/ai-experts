@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { testingStrategySkill } from "../testing-strategy/index";
 
@@ -61,13 +62,28 @@ export const webappTestingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认目标 URL 可访问和验证目标；本地开发站点需要确认 dev server 状态。",
-      "优先用 Playwright 能力；环境不支持时退回本地 Node + Playwright，并复用 test-helper asset。",
-      "选择器优先 data-testid、role、可访问名称；避免脆弱 CSS 选择器。",
-      "导航、表单提交和异步状态后使用显式等待，如 waitForURL、locator 可见性或业务 ready 标记。",
-      "失败时截图并收集控制台日志；结束后关闭浏览器上下文，避免遗留进程。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认目标 URL 可访问和验证目标；本地开发站点需要确认 dev server 状态。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "优先用 Playwright 能力；环境不支持时退回本地 Node + Playwright，并复用 test-helper asset。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "选择器优先 data-testid、role、可访问名称；避免脆弱 CSS 选择器。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "导航、表单提交和异步状态后使用显式等待，如 waitForURL、locator 可见性或业务 ready 标记。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "失败时截图并收集控制台日志；结束后关闭浏览器上下文，避免遗留进程。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

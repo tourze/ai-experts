@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { asyncPythonPatternsSkill } from "../async-python-patterns/index";
 import { pythonDesignPatternsSkill } from "../python-design-patterns/index";
@@ -63,12 +64,24 @@ export const pythonPerformanceOptimizationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认慢在 CPU、内存、数据库、网络、锁竞争还是外部服务，不用直觉猜热点。",
-      "用 cProfile、pstats、timeit 或项目 benchmark 固定输入规模、轮次和环境。",
-      "一次只改一个变量，先做算法和数据结构优化，再考虑局部微调。",
-      "cProfile 和测量代码模式读取 `profiling-patterns`；NumPy、并行和缓存策略读取 `advanced-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认慢在 CPU、内存、数据库、网络、锁竞争还是外部服务，不用直觉猜热点。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "用 cProfile、pstats、timeit 或项目 benchmark 固定输入规模、轮次和环境。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "一次只改一个变量，先做算法和数据结构优化，再考虑局部微调。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "cProfile 和测量代码模式读取 `profiling-patterns`；NumPy、并行和缓存策略读取 `advanced-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

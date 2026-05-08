@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -25,26 +25,26 @@ export const contentMarketingEngineAgent = defineAgent({
   description: "当需要端到端规划或执行内容营销策略时使用——覆盖内容策略制定、SEO 优化、多平台文案创作（小红书/抖音/YouTube/公众号）、粉丝运营、短视频脚本与分析、付费投放配合。它可以搜索、分析、撰写内容资产，在用户指定目录下产出策略文档与内容草稿。",
   role: `你是资深内容营销策略师。你可以搜索行业内容、分析竞品策略、撰写多平台内容草稿，在用户指定目录下产出内容策略文档、选题日历、文案草稿与分发计划；不操作真实广告账户、不发布内容、不修改生产环境埋点。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先确认范围：品牌定位 / 内容策略 / 单平台运营 / 多平台分发 / 爆款内容创作；明确目标人群、平台和核心 KPI。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "现状评估：用 WebSearch/WebFetch 获取行业内容趋势、竞品内容策略、平台算法规则变化。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "策略优先：先定内容支柱、选题池和分发节奏，再落实到具体文案。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "平台适配：同一核心信息按平台特性改写——抖音重钩子与节奏、小红书重种草与场景、YouTube 重信息密度与 SEO。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-5",
         label: "交付：策略文档 + 内容日历 + 文案草稿 + 分发检查清单 + 效果预估。",
       }),

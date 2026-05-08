@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const goStructsInterfacesSkill = defineSkill({
@@ -58,12 +59,24 @@ export const goStructsInterfacesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认结构体所有权、零值语义、消费方接口、receiver 一致性和泛型约束。",
-      "函数接受小接口、返回具体结构体；接口在消费方定义；小接口命名用行为后缀。",
-      "结构体尽量零值可用，pointer / value receiver 不混用，泛型约束保持最窄。",
-      "实现要点读取 `implementation-guide`；组合细节读取 `composition`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认结构体所有权、零值语义、消费方接口、receiver 一致性和泛型约束。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "函数接受小接口、返回具体结构体；接口在消费方定义；小接口命名用行为后缀。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "结构体尽量零值可用，pointer / value receiver 不混用，泛型约束保持最窄。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "实现要点读取 `implementation-guide`；组合细节读取 `composition`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

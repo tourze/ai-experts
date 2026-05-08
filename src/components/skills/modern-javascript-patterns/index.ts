@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { javascriptTypescriptJestSkill } from "../javascript-typescript-jest/index";
 import { reactHooksSkill } from "../react-hooks/index";
@@ -80,12 +81,24 @@ export const modernJavascriptPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认目标是语法升级、异步收口、数据变换、模块边界还是热路径优化。",
-      "优先使用 `const` / `let`、解构、展开、可选链、空值合并和 `async/await` 消除隐式状态。",
-      "数据转换默认不可变，Promise 并发只用于互不依赖步骤；微优化必须先有 profiler 证据。",
-      "解构、async/await 和纯函数流水线示例读取 `core-refactor-patterns`；高级抽象和微优化读取对应 references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认目标是语法升级、异步收口、数据变换、模块边界还是热路径优化。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "优先使用 `const` / `let`、解构、展开、可选链、空值合并和 `async/await` 消除隐式状态。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "数据转换默认不可变，Promise 并发只用于互不依赖步骤；微优化必须先有 profiler 证据。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "解构、async/await 和纯函数流水线示例读取 `core-refactor-patterns`；高级抽象和微优化读取对应 references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

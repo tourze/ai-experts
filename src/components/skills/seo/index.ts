@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { contentStrategySkill } from "../content-strategy/index";
 
@@ -55,12 +56,24 @@ export const seoSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先判断页面或站点是否值得被索引，再按可抓取性、可索引性、页面语义、E-E-A-T、结构化数据、内链的顺序审计。",
-      "技术改动必须逐项说明 robots、canonical、noindex、重定向、sitemap 和结构化数据的影响范围与回滚路径。",
-      "E-E-A-T 审计分 Experience、Expertise、Authoritativeness、Trustworthiness 四类证据，不把品牌自述当作外部权威。",
-      "按站点类型读取 site-type-checklists；站点架构读取 site-architecture，程序化 SEO 读取 programmatic-seo-playbooks，AI 搜索优化读取 aeo-geo。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先判断页面或站点是否值得被索引，再按可抓取性、可索引性、页面语义、E-E-A-T、结构化数据、内链的顺序审计。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "技术改动必须逐项说明 robots、canonical、noindex、重定向、sitemap 和结构化数据的影响范围与回滚路径。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "E-E-A-T 审计分 Experience、Expertise、Authoritativeness、Trustworthiness 四类证据，不把品牌自述当作外部权威。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "按站点类型读取 site-type-checklists；站点架构读取 site-architecture，程序化 SEO 读取 programmatic-seo-playbooks，AI 搜索优化读取 aeo-geo。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

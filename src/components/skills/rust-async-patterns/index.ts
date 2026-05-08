@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const rustAsyncPatternsSkill = defineSkill({
@@ -33,12 +34,24 @@ export const rustAsyncPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认任务是谁 spawn 的、数据所有权如何进入 `'static` future、取消信号是否能传到每个分支。",
-      "为并发设置上限：JoinSet 收尸，Semaphore 限流，channel 容量提供背压。",
-      "检查阻塞工作、锁跨 await、任务泄漏、超时缺失和 future is not Send 编译错误。",
-      "JoinSet / Semaphore 和 CancellationToken 示例读取 `runtime-examples`；阻塞、死锁和 Send 陷阱读取 `advanced-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认任务是谁 spawn 的、数据所有权如何进入 `'static` future、取消信号是否能传到每个分支。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "为并发设置上限：JoinSet 收尸，Semaphore 限流，channel 容量提供背压。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "检查阻塞工作、锁跨 await、任务泄漏、超时缺失和 future is not Send 编译错误。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "JoinSet / Semaphore 和 CancellationToken 示例读取 `runtime-examples`；阻塞、死锁和 Send 陷阱读取 `advanced-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

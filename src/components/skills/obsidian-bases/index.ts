@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const obsidianBasesSkill = defineSkill({
@@ -52,15 +53,36 @@ export const obsidianBasesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认目标视图和结果集；Bases 没有 `from`、`source`、`where` 段，结果集完全由 `filters` 决定。",
-      "从最小 `.base` 骨架开始：全局 `filters`、可选 `formulas`、`properties`、`views`。",
-      "视图级 filters 与全局 filters 会 AND 拼接，不重复堆同一条件。",
-      "引用属性时区分笔记属性、`file.*` 和 `formula.*`；`formula.X` 使用前必须先在 `formulas` 定义。",
-      "日期相减按毫秒差处理；需要 duration 运算时显式使用 `duration(\"1d\")` 等值。",
-      "`this.file.*` 要按主区、嵌入块或侧栏上下文解释；反链优先 `file.hasLink(this.file)`。",
-      "嵌入用 `![[Reading.base]]` 或 `![[Reading.base#Books]]`；map 视图必须说明需要官方 Maps 插件。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认目标视图和结果集；Bases 没有 `from`、`source`、`where` 段，结果集完全由 `filters` 决定。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "从最小 `.base` 骨架开始：全局 `filters`、可选 `formulas`、`properties`、`views`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "视图级 filters 与全局 filters 会 AND 拼接，不重复堆同一条件。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "引用属性时区分笔记属性、`file.*` 和 `formula.*`；`formula.X` 使用前必须先在 `formulas` 定义。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "日期相减按毫秒差处理；需要 duration 运算时显式使用 `duration(\"1d\")` 等值。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "`this.file.*` 要按主区、嵌入块或侧栏上下文解释；反链优先 `file.hasLink(this.file)`。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "嵌入用 `![[Reading.base]]` 或 `![[Reading.base#Books]]`；map 视图必须说明需要官方 Maps 插件。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

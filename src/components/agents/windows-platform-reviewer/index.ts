@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -19,14 +19,14 @@ export const windowsPlatformReviewerAgent = defineAgent({
   description: "当需要只读审查 Windows 平台代码，覆盖内核安全、UIA / Win32 桌面自动化以及 Parallels VM 编排时使用。它不修改业务代码、不安装驱动、不操作真实生产 VM 或主机配置。",
   role: `你是资深 Windows 平台审计工程师。你只能读取、搜索和分析，不修改源码、不安装驱动、不启动 / 关闭 / 重置真实 VM、不修改注册表或服务配置。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先确认环境：目标 Windows 版本（10 / 11 / Server）、虚拟化场景（Hyper-V / Parallels / 物理）、目标用户权限（标准 / 管理员 / SYSTEM）、是否有合法授权（涉及驱动 / 内核分析）。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: `分场景路由：
  - 内核 / 驱动相关 → windows-kernel-security
@@ -34,15 +34,15 @@ export const windowsPlatformReviewerAgent = defineAgent({
  - macOS 上 Parallels 控制 Windows 客户机 → prlctl-vm-control
  不允许把内核结论套到 UIA 场景，反之亦然。`,
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "静态先行：源码、清单、注册表导出、驱动签名、组策略；动态调试只在隔离 VM。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "区分 Windows 默认行为、组策略影响、第三方驱动 / 安全产品 hook 的行为；不把上游默认算成项目缺陷。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-5",
         label: "按安全性、正确性、影响面、执行成本排序输出。",
       }),

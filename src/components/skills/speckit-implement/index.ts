@@ -2,7 +2,8 @@ import {
   InvocationPolicy,
   Platform,
   defineSkill,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const speckitImplementSkill = defineSkill({
@@ -22,20 +23,34 @@ export const speckitImplementSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
-    title: "执行协议",
+  workflow: defineWorkflow({
     steps: [
-      "先读 `tasks.md`，按依赖顺序执行。",
-      `每个任务先做影响半径分析：
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先读 `tasks.md`，按依赖顺序执行。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: `每个任务先做影响半径分析：
    - 被改函数/模块
    - 调用方数量
    - 回归风险等级`,
-      "先补或确认可复现验证（测试/脚本），再改实现。",
-      "每次只改一个逻辑单元并立即验证。",
-      `输出任务完成状态：
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "先补或确认可复现验证（测试/脚本），再改实现。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "每次只改一个逻辑单元并立即验证。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: `输出任务完成状态：
    - 已完成
    - 阻塞原因
    - 下一步建议`,
+      }),
     ],
   }),
 });

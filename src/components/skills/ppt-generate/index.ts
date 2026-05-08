@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const pptGenerateSkill = defineSkill({
@@ -54,14 +55,32 @@ export const pptGenerateSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "阶段 1 轻量需求确认并 hard stop：用途、受众、页数/时长、材料状态、身份锚点和交付偏好。",
-      "阶段 1.5 生成内容基底：薄材料先写 content_basis.md，完整材料只抽取结构，并标注 user_provided、inferred、needs_confirmation。",
-      "阶段 2 锁定视觉策略和大纲并 hard stop：必要时先给 16:9 首页、目录页、正文页真实预览，再产出 design_spec、spec_lock 和 outline。",
-      "阶段 3 确认生成分支并 hard stop：默认可编辑 SVG 到 DrawingML PPTX；用户明确 image-first 或视觉保真优先才走整页图像。",
-      "阶段 4 逐页生成与转换：每页前重读 spec_lock；SVG 分支校验内联属性，image-first 分支默认零后期覆盖。",
-      "阶段 5 初稿评审并 hard stop；阶段 6 按页返修，区分 SVG 修改、整页重生、局部编辑或内容蓝图变更。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "阶段 1 轻量需求确认并 hard stop：用途、受众、页数/时长、材料状态、身份锚点和交付偏好。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "阶段 1.5 生成内容基底：薄材料先写 content_basis.md，完整材料只抽取结构，并标注 user_provided、inferred、needs_confirmation。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "阶段 2 锁定视觉策略和大纲并 hard stop：必要时先给 16:9 首页、目录页、正文页真实预览，再产出 design_spec、spec_lock 和 outline。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "阶段 3 确认生成分支并 hard stop：默认可编辑 SVG 到 DrawingML PPTX；用户明确 image-first 或视觉保真优先才走整页图像。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "阶段 4 逐页生成与转换：每页前重读 spec_lock；SVG 分支校验内联属性，image-first 分支默认零后期覆盖。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "阶段 5 初稿评审并 hard stop；阶段 6 按页返修，区分 SVG 修改、整页重生、局部编辑或内容蓝图变更。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

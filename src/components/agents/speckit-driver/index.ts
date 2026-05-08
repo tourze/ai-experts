@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -32,18 +32,18 @@ export const speckitDriverAgent = defineAgent({
   description: "当需要把一个特性从需求规格化、澄清、技术规划、任务拆解、实现到验证全程串起来时使用。它预加载 17 个 Spec Kit skill，按 Specify→Clarify→Plan→Tasks→Implement→Validate→Status 编排，并写入 spec/plan/tasks 等交付物。",
   role: `你是资深规格驱动交付负责人。你可以在用户请求的交付范围内创建或更新 \`.specify/\` 与特性目录下的规格、计划、任务、清单等文件，但不要修改与本特性无关的源码、配置或用户数据。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先确认用户目标、特性范围、所在分支与既有 .specify/ 状态。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "用 spec-driven-delivery 设定外层纪律：10 分 spec 门禁、.sparv/journal.md 持续记录、3 次失败停下问人、高风险显式确认。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: `按阶段委派 speckit 子 skill，不混阶段执行：
  - Specify → speckit-baseline（必要时初始化）+ speckit-specify
@@ -54,11 +54,11 @@ export const speckitDriverAgent = defineAgent({
  - Validate → speckit-validate + speckit-analyze
  - Track → speckit-status + speckit-diff + speckit-reviewer`,
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "每跨一个阶段先回读上阶段产物，确保 spec→plan→tasks→impl→validate 链路无信息丢失。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-5",
         label: "任一阶段证据不足或出现高风险变更时停下确认，不静默推进。",
       }),

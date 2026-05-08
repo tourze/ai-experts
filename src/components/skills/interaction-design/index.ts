@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { modernWebDesignSkill } from "../modern-web-design/index";
 
@@ -56,14 +57,32 @@ export const interactionDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先说明每个动效告诉用户什么：反馈、导向、层级、连续性或状态变化。",
-      "补齐 hover、focus、active、disabled、loading、success 和 error 状态，不用动效掩盖信息架构问题。",
-      "按钮按压默认 scale 0.96，不低于 0.95；图标切换用 opacity、scale、blur 或 AnimatePresence 交叉过渡。",
-      "控制时长：100-150ms 即时反馈，200-300ms 轻过渡，300-500ms 中型切换。",
-      "优先 CSS 或轻量能力；复杂编排才读取 animation-libraries、microinteraction-patterns 或 press-and-icon-patterns。",
-      "为 `prefers-reduced-motion` 提供降级，并检查低性能设备、可读性和主要操作是否被阻塞。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先说明每个动效告诉用户什么：反馈、导向、层级、连续性或状态变化。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "补齐 hover、focus、active、disabled、loading、success 和 error 状态，不用动效掩盖信息架构问题。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "按钮按压默认 scale 0.96，不低于 0.95；图标切换用 opacity、scale、blur 或 AnimatePresence 交叉过渡。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "控制时长：100-150ms 即时反馈，200-300ms 轻过渡，300-500ms 中型切换。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "优先 CSS 或轻量能力；复杂编排才读取 animation-libraries、microinteraction-patterns 或 press-and-icon-patterns。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "为 `prefers-reduced-motion` 提供降级，并检查低性能设备、可读性和主要操作是否被阻塞。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

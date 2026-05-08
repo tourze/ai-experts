@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const designingGrowthLoopsSkill = defineSkill({
@@ -40,14 +41,32 @@ export const designingGrowthLoopsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认产品的核心用户价值、留存基础、自然传播时刻和当前增长阶段；留存不足时先回到产品价值修复。",
-      "画出主循环：输入动作 -> 用户获得价值 -> 产生可传播资产 -> 新用户进入 -> 留存放大。",
-      "标注每个节点的放大条件、阻尼项和可控杠杆，区分产品机制、运营动作和激励机制。",
-      "需要判断阶段或模式时读取 `s-curve-growth`、`crossing-the-chasm`、`plg-readiness` 或 `guest-insights` reference。",
-      "为循环设置指标：触发率、转化率、留存、分享率、回流效率和循环周期。",
-      "把最大不确定性转成实验，定义样本、阈值、观察期和停止条件。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认产品的核心用户价值、留存基础、自然传播时刻和当前增长阶段；留存不足时先回到产品价值修复。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "画出主循环：输入动作 -> 用户获得价值 -> 产生可传播资产 -> 新用户进入 -> 留存放大。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "标注每个节点的放大条件、阻尼项和可控杠杆，区分产品机制、运营动作和激励机制。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "需要判断阶段或模式时读取 `s-curve-growth`、`crossing-the-chasm`、`plg-readiness` 或 `guest-insights` reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "为循环设置指标：触发率、转化率、留存、分享率、回流效率和循环周期。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "把最大不确定性转成实验，定义样本、阈值、观察期和停止条件。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

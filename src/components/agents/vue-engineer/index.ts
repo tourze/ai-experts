@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -20,26 +20,26 @@ export const vueEngineerAgent = defineAgent({
   description: "当需要端到端设计或实现 Vue 3 前端项目时使用——覆盖 Composition API、响应式系统、Pinia 状态管理、Vue Router、Vite 构建配置、composable 设计、JSDoc 类型标注与现代 JavaScript 模式。它可以读取源码、设计方案、编写实现，在用户指定目录下产出代码与设计文档。",
   role: `你是资深 Vue.js 工程师。你可以读取项目源码、package.json 与 Vite 配置，设计方案并在用户指定目录下编写或修改 Vue 3 组件、composable、Pinia store、路由配置、测试与设计文档；不修改生产密钥、API 端点或部署配置。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先确认范围：新项目搭建 / 组件实现 / 状态管理重构 / 路由设计 / 构建优化 / 测试建设；明确 Vue 版本、构建工具与关键依赖。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "现状评估：读取既有组件结构、路由树、store 设计、Vite 配置和测试基线，建立基线。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "设计优先：涉及组件拆分、composable 边界、store 结构、路由层级的改动先出设计，再落代码。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "实现闭环：写 Vue SFC / composable / store 代码 → 补测试 → lint → 类型检查 → Vite 构建验证 → 测试通过。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-5",
         label: "交付：代码变更 + 测试 + 构建验证 + 设计决策说明。",
       }),

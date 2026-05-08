@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { sqlReviewOptimizationSkill } from "../sql-review-optimization/index";
 
@@ -71,13 +72,28 @@ export const dbSchemaDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认数据库引擎、版本、写入规模、查询路径、保留周期、外键策略和迁移约束。",
-      "按业务实体拆表，确定主键、唯一约束、外键/应用层约束、nullable 语义和默认值。",
-      "逐列选择类型：金额用精确数值，时间按引擎规范，字符串和枚举避免过度限制或隐式截断。",
-      "半结构化字段先判断独立列、子表、JSON/JSONB 或生成列；高频过滤字段必须可索引。",
-      "需要示例或引擎专有细节时读取 code-patterns、mysql-schema-design、pgsql-schema-design、json-patterns 等 reference。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认数据库引擎、版本、写入规模、查询路径、保留周期、外键策略和迁移约束。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按业务实体拆表，确定主键、唯一约束、外键/应用层约束、nullable 语义和默认值。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "逐列选择类型：金额用精确数值，时间按引擎规范，字符串和枚举避免过度限制或隐式截断。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "半结构化字段先判断独立列、子表、JSON/JSONB 或生成列；高频过滤字段必须可索引。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "需要示例或引擎专有细节时读取 code-patterns、mysql-schema-design、pgsql-schema-design、json-patterns 等 reference。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

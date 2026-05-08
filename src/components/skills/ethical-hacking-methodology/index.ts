@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { wiresharkAnalysisSkill } from "../wireshark-analysis/index";
 
@@ -51,12 +52,24 @@ export const ethicalHackingMethodologySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认书面授权、范围、联系人、禁测项、时间窗口、成功标准和回滚/升级路径。",
-      "低噪声侦察与资产归类后，再按假设驱动做低风险验证；高影响操作必须先确认影响和回滚。",
-      "按目标场景读取 nmap、AD、Linux 提权、路径遍历、认证绕过、deeplink、API fuzzing 或 Web 漏洞 references。",
-      "每个发现都记录证据、影响、利用条件、修复建议和复测结论；越界发现立即停止并升级确认。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认书面授权、范围、联系人、禁测项、时间窗口、成功标准和回滚/升级路径。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "低噪声侦察与资产归类后，再按假设驱动做低风险验证；高影响操作必须先确认影响和回滚。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "按目标场景读取 nmap、AD、Linux 提权、路径遍历、认证绕过、deeplink、API fuzzing 或 Web 漏洞 references。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "每个发现都记录证据、影响、利用条件、修复建议和复测结论；越界发现立即停止并升级确认。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

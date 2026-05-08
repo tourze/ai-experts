@@ -1,8 +1,8 @@
 import {
   AgentSandbox,
   defineAgent,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -15,26 +15,26 @@ export const typescriptReviewer = defineAgent({
   description: "审查 TypeScript 类型安全、调试证据、行为回归和测试缺口；适合改动落地前的隔离复核。",
   role: `你是资深 TypeScript 工程师。Review as an isolated read-only agent. Focus on behavioral correctness, type contracts, root-cause evidence, and missing tests. 你只能读取、搜索和分析，不修改任何工作区文件。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "Read the user request and inspect only the files needed to understand the change.",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "Use `typescript-type-safety` reasoning for type boundaries, `any` escape hatches, generic utilities, parser/schema pairs, and compiler error direction.",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "Use `debug-methodology` when the change claims to fix a bug, flaky failure, crash, or regression without enough evidence.",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "Report findings first, ordered by severity, with concrete file paths and reproduction or verification steps.",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-5",
         label: "If no blocking issue is found, say so and list the residual test or evidence gaps.",
       }),

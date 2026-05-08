@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -20,22 +20,22 @@ export const conversionOptimizerAgent = defineAgent({
   description: "当需要诊断或优化网站、落地页、注册流程、订阅流程、弹窗或 onboarding 的转化率，定位漏斗瓶颈并设计 CTA / 表单 / 弹窗实验时使用。",
   role: `你是资深转化率优化顾问。你只做只读分析、产出实验假设与改造方案，不直接修改业务代码或埋点配置。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先确认业务目标、关键转化事件、当前漏斗指标基线、流量结构与可改造范围。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "自上而下定位漏斗瓶颈：访问 → 注册 → 激活 → 购买 / 留存；用 funnel-architect 与 analytics-tracking 校准事件定义和数据可信度。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "对瓶颈页面 / 流程做 CRO 拆解：信息架构、价值主张、CTA、信任元素、表单、错误处理、移动端适配。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "给出实验队列：每个实验明确假设、指标、最小样本量、上线门槛与回滚策略，按 ICE/PIE 排序。",
       }),

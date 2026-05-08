@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, iconRetrievalSearch } from "../../procedures/index";
 
@@ -65,12 +66,24 @@ export const iconRetrievalSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先把用户需求转成具体业务语义词，优先搜索 security shield、document upload 这类概念词。",
-      "调用 icon-retrieval-search，topK 必须是正整数；默认先拿 3-5 个可比较候选。",
-      "结果中的 SVG 是原始字符串，落库或渲染前必须按项目安全、压缩、颜色和包装器规范处理。",
-      "用于界面前检查尺寸、线宽、圆角、语义、可访问名称和与现有设计系统的一致性。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先把用户需求转成具体业务语义词，优先搜索 security shield、document upload 这类概念词。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "调用 icon-retrieval-search，topK 必须是正整数；默认先拿 3-5 个可比较候选。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "结果中的 SVG 是原始字符串，落库或渲染前必须按项目安全、压缩、颜色和包装器规范处理。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "用于界面前检查尺寸、线宽、圆角、语义、可访问名称和与现有设计系统的一致性。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

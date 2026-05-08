@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { businessHealthDiagnosticSkill } from "../business-health-diagnostic/index";
 import { debugMethodologySkill } from "../debug-methodology/index";
@@ -124,14 +125,32 @@ export const structuredProblemDecompositionSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "问题界定：用一句话说明回答什么、不回答什么；说不清时先收敛范围。",
-      "结构化拆解：建立 MECE 假设树，确保每个 P0 假设都有验证方式。",
-      "根因分析：用鱼骨或第一性原理展开候选根因，至少一个根因证据强度达到事实，并排除明显伪相关。",
-      "系统动态：识别反馈回路、瓶颈、延迟和“修 A 会不会搞坏 B”的二阶风险。",
-      "决策推进：给出决策人、时间窗、选项、触发条件和回退策略。",
-      "PDCA 闭环：定义行动、负责人、检查点、指标和兜底方案；阶段细节需要时读取 six-phases。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "问题界定：用一句话说明回答什么、不回答什么；说不清时先收敛范围。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "结构化拆解：建立 MECE 假设树，确保每个 P0 假设都有验证方式。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "根因分析：用鱼骨或第一性原理展开候选根因，至少一个根因证据强度达到事实，并排除明显伪相关。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "系统动态：识别反馈回路、瓶颈、延迟和“修 A 会不会搞坏 B”的二阶风险。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "决策推进：给出决策人、时间窗、选项、触发条件和回退策略。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "PDCA 闭环：定义行动、负责人、检查点、指标和兜底方案；阶段细节需要时读取 six-phases。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

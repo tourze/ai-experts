@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const securityThreatModelSkill = defineSkill({
@@ -42,14 +43,32 @@ export const securityThreatModelSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认分析范围、仓库证据、关键假设和缺失上下文；上下文不足时先问 1 到 3 个高价值问题。",
-      "列出资产、信任边界、入口、攻击者能力和现有控制，区分运行时路径与 CI/构建/开发工具。",
-      "按 STRIDE 枚举威胁；需要系统化分类时读取 `stride-analysis-patterns` reference。",
-      "对高价值资产构建攻击树；需要路径展开时读取 `attack-tree-construction` reference。",
-      "把威胁映射到现有控制和缓解措施，读取 `security-controls-and-assets` 与 `threat-mitigation-mapping`。",
-      "从威胁中提取安全需求，读取 `security-requirement-extraction`，并区分证据、推断和待确认项。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认分析范围、仓库证据、关键假设和缺失上下文；上下文不足时先问 1 到 3 个高价值问题。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "列出资产、信任边界、入口、攻击者能力和现有控制，区分运行时路径与 CI/构建/开发工具。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "按 STRIDE 枚举威胁；需要系统化分类时读取 `stride-analysis-patterns` reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "对高价值资产构建攻击树；需要路径展开时读取 `attack-tree-construction` reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "把威胁映射到现有控制和缓解措施，读取 `security-controls-and-assets` 与 `threat-mitigation-mapping`。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "从威胁中提取安全需求，读取 `security-requirement-extraction`，并区分证据、推断和待确认项。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

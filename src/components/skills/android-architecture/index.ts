@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const androidArchitectureSkill = defineSkill({
@@ -48,14 +49,32 @@ export const androidArchitectureSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先画出现有模块、包、入口页面、ViewModel、UseCase、Repository 和 DataSource 的依赖关系。",
-      "按 UI、Domain、Data 三层归类职责；Domain 可选但推荐，用于收敛业务规则和纯 Kotlin model。",
-      "检查状态边界：ViewModel 只暴露只读状态，UI 不直接依赖 Data 层实现。",
-      "检查数据边界：Repository 接口放在内层，Data 层实现远端、本地和缓存兜底，`suspend` 函数保持 main-safe。",
-      "检查 Hilt 模块：接口绑定、第三方实例、scope 和 feature 自有 Module 是否归属清晰；代码模式读取 `architecture-patterns`。",
-      "给出模块拆分、依赖倒置、迁移顺序和验证点，避免一次性大重构破坏交付。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先画出现有模块、包、入口页面、ViewModel、UseCase、Repository 和 DataSource 的依赖关系。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按 UI、Domain、Data 三层归类职责；Domain 可选但推荐，用于收敛业务规则和纯 Kotlin model。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "检查状态边界：ViewModel 只暴露只读状态，UI 不直接依赖 Data 层实现。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "检查数据边界：Repository 接口放在内层，Data 层实现远端、本地和缓存兜底，`suspend` 函数保持 main-safe。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "检查 Hilt 模块：接口绑定、第三方实例、scope 和 feature 自有 Module 是否归属清晰；代码模式读取 `architecture-patterns`。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "给出模块拆分、依赖倒置、迁移顺序和验证点，避免一次性大重构破坏交付。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

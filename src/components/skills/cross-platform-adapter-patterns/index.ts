@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { architectureReviewerSkill } from "../architecture-reviewer/index";
 import { refactoringPatternsSkill } from "../refactoring-patterns/index";
@@ -58,14 +59,32 @@ export const crossPlatformAdapterPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先列出需要跨平台支持的能力、目标平台、差异点和最低可接受降级行为。",
-      "定义共享层接口和错误/降级合同，接口设计细节按需读取 `adapter-interface` reference。",
-      "为每个平台设计独立实现和注册位置，避免平台包互相依赖；DI 方案按需读取 `di-container` reference。",
-      "检查 monorepo 包边界和依赖方向，目录布局按需读取 `monorepo-layout` reference。",
-      "如果涉及 Rust 条件编译或平台特性门控，读取 `rust-cfg-abstraction` reference。",
-      "输出边界图、接口草案、平台实现清单和验证方案。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先列出需要跨平台支持的能力、目标平台、差异点和最低可接受降级行为。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "定义共享层接口和错误/降级合同，接口设计细节按需读取 `adapter-interface` reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "为每个平台设计独立实现和注册位置，避免平台包互相依赖；DI 方案按需读取 `di-container` reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "检查 monorepo 包边界和依赖方向，目录布局按需读取 `monorepo-layout` reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "如果涉及 Rust 条件编译或平台特性门控，读取 `rust-cfg-abstraction` reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出边界图、接口草案、平台实现清单和验证方案。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

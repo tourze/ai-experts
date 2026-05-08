@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { dataAnalysisSkill } from "../data-analysis/index";
 import { dataStorytellingSkill } from "../data-storytelling/index";
@@ -76,14 +77,32 @@ export const dataVisualizationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先判断主问题：趋势、对比、构成、分布、相关或流转；每张图只回答一个主问题。",
-      "按数据形状选首选图：时间序列用 line/area，对比用 bar/column，分布用 histogram/box，相关用 scatter，流转用 funnel/sankey。",
-      "再过禁用清单：类别数过多、饼图切片过多、双轴、3D、彩虹色、类别轴折线都要降级或改图。",
-      "需要代码时优先生成最小 matplotlib/Altair/Plotly 示例，包含标题、轴标签、单位、图例和布局收口。",
-      "加入注释、数值标签或参考线时只服务结论，不做装饰。",
-      "输出时补 a11y 兜底：文本摘要、数据表或 CSV；需要复杂选型时读取 chart-decision-matrix。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先判断主问题：趋势、对比、构成、分布、相关或流转；每张图只回答一个主问题。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按数据形状选首选图：时间序列用 line/area，对比用 bar/column，分布用 histogram/box，相关用 scatter，流转用 funnel/sankey。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "再过禁用清单：类别数过多、饼图切片过多、双轴、3D、彩虹色、类别轴折线都要降级或改图。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "需要代码时优先生成最小 matplotlib/Altair/Plotly 示例，包含标题、轴标签、单位、图例和布局收口。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "加入注释、数值标签或参考线时只服务结论，不做装饰。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出时补 a11y 兜底：文本摘要、数据表或 CSV；需要复杂选型时读取 chart-decision-matrix。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

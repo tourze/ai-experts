@@ -3,7 +3,8 @@ import {
   Platform,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const speckitStatusSkill = defineSkill({
@@ -20,19 +21,31 @@ export const speckitStatusSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "扫描 `.specify/features/*`。",
-      `对每个 feature 统计：
+      defineWorkflowStep({
+        id: "step-1",
+        label: "扫描 `.specify/features/*`。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: `对每个 feature 统计：
    - \`spec.md\` 是否存在
    - \`plan.md\` 是否存在
    - \`tasks.md\` 完成率（\`[x] / [ ] / [/]\`）
    - \`<feature>/checklists/requirements.md\` 完成率`,
-      `标记阻塞项：
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: `标记阻塞项：
    - 待澄清标记
    - 缺关键文档
    - 长期未推进任务`,
-      "输出看板与优先处理建议。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "输出看板与优先处理建议。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

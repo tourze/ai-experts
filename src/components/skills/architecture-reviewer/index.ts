@@ -6,7 +6,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, architectureReviewerScanCodebase } from "../../procedures/index";
 import { apiTraceReaderSkill } from "../api-trace-reader/index";
@@ -61,14 +62,32 @@ export const architectureReviewerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先判断输入模式：代码库、文档或混合；再选择 Quick 或 Exhaustive 深度。",
-      "代码库模式先调用 architecture-reviewer-scan-codebase 获取结构指纹，再只读取当前维度需要的 reference。",
-      "按结构、扩展性、安全、性能、企业就绪、运维、数据架构七维覆盖证据，不把单点印象当总评。",
-      "Exhaustive 模式先列子系统清单：模块、文件范围、优先级、副作用；优先审状态、副作用、并发、认证和安全边界。",
-      "逐子系统审计后合并重复根因，区分现象与根因，按 Critical/High/Medium/Low 或 S1-S5 给修复顺序。",
-      "需要画图读取 architecture-diagram reference；需要蓝图读取 architecture-blueprint-generator。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先判断输入模式：代码库、文档或混合；再选择 Quick 或 Exhaustive 深度。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "代码库模式先调用 architecture-reviewer-scan-codebase 获取结构指纹，再只读取当前维度需要的 reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "按结构、扩展性、安全、性能、企业就绪、运维、数据架构七维覆盖证据，不把单点印象当总评。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Exhaustive 模式先列子系统清单：模块、文件范围、优先级、副作用；优先审状态、副作用、并发、认证和安全边界。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "逐子系统审计后合并重复根因，区分现象与根因，按 Critical/High/Medium/Low 或 S1-S5 给修复顺序。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "需要画图读取 architecture-diagram reference；需要蓝图读取 architecture-blueprint-generator。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

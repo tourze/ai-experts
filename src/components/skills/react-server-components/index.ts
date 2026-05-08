@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { nextjsDeveloperSkill } from "../nextjs-developer/index";
 import { webPerformanceDiagnosisSkill } from "../web-performance-diagnosis/index";
@@ -81,12 +82,24 @@ export const reactServerComponentsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先识别组件是否真的需要客户端交互，默认保留 Server Component，只在交互叶子加 `'use client'`。",
-      "并行化互不依赖的数据获取，使用 Suspense / streaming 暴露加载边界，避免嵌套 waterfall。",
-      "Server Action 内部执行鉴权、授权、输入校验和重验证；Client Component props 只传最小可序列化数据。",
-      "并行 fetch 代码读取 `server-component-patterns`；缓存、streaming 和高级反模式读取 `advanced` / `advanced-patterns` / `rsc-rules`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先识别组件是否真的需要客户端交互，默认保留 Server Component，只在交互叶子加 `'use client'`。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "并行化互不依赖的数据获取，使用 Suspense / streaming 暴露加载边界，避免嵌套 waterfall。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "Server Action 内部执行鉴权、授权、输入校验和重验证；Client Component props 只传最小可序列化数据。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "并行 fetch 代码读取 `server-component-patterns`；缓存、streaming 和高级反模式读取 `advanced` / `advanced-patterns` / `rsc-rules`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -6,7 +6,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { croMethodologySkill } from "../cro-methodology/index";
 
@@ -52,12 +53,24 @@ export const redesignMyLandingpageSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先锁定目标用户、单一主转化动作、核心价值、信任证据和页面当前转化阻塞点。",
-      "页面结构先参考 landing-page-anatomy 和 section-templates；文案读取 copy-templates，视觉方向读取 aesthetic-directions。",
-      "实现默认走 React + Vite + TypeScript + Tailwind + shadcn/ui + Iconify，项目初始化或配置问题读取 shadcn-vite-setup。",
-      "需要代码时优先复用资产中的 LandingPage 示例和 shadcn/Button/Iconify 模式；移动端、可访问性和 CTA 重复位置必须复查。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先锁定目标用户、单一主转化动作、核心价值、信任证据和页面当前转化阻塞点。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "页面结构先参考 landing-page-anatomy 和 section-templates；文案读取 copy-templates，视觉方向读取 aesthetic-directions。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "实现默认走 React + Vite + TypeScript + Tailwind + shadcn/ui + Iconify，项目初始化或配置问题读取 shadcn-vite-setup。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "需要代码时优先复用资产中的 LandingPage 示例和 shadcn/Button/Iconify 模式；移动端、可访问性和 CTA 重复位置必须复查。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

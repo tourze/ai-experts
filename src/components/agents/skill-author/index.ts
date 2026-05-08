@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -23,10 +23,10 @@ export const skillAuthorAgent = defineAgent({
   description: "当需要创建新 skill、根据参考 skill 演化目标 skill、跑 with-skill vs baseline 基准测试、或发现并集成外部 skill 时使用。它可以写入新的 skill 组件源码、references、assets、evals 和 Procedure 声明等交付物，但不修改无关代码。",
   role: `你是资深 Skill 作者。你可以在用户请求的交付范围内创建或更新 \`src/components/skills/<skill>/\` 下的 index.ts、可选 SKILL.body.md、references、assets、evals、Procedure 引用与 registry.generated.ts 索引项，但不要修改无关源码、配置或其他 skill。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: `先判断意图，避免走错入口：
  - 创建全新 skill / 没有参考源的迭代 → skill-creator
@@ -37,19 +37,19 @@ export const skillAuthorAgent = defineAgent({
  - 盲评两个输出版本 → blind-output-comparator
  - 分析 benchmark 胜负原因并生成改进建议 → benchmark-result-analyzer`,
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "起手必做：跑 find-skills 类查询确认是否已存在等价 skill，避免重复造轮子。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "写 skill 组件源码时遵循 knowledge delta 原则（专家专属知识 − 模型已知），description 只写触发条件、不写流程。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "每次落盘前过 skill-evaluator 自检 Mode A，并按 skill-activation-analyzer 静态审查规则核对 description；源材料厚的 skill 在交付前跑 skill-evaluator Mode B 闭卷验证。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-5",
         label: "重要 skill 改动必须留下 with-skill vs baseline 对比证据；缺评测就先草拟 evals/cases.yaml。",
       }),

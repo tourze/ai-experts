@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const stpSegmentationSkill = defineSkill({
@@ -39,14 +40,32 @@ export const stpSegmentationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认产品、市场边界、竞争对象和可用数据；已有明确 ICP 时只补定位，不重复做完整 STP。",
-      "S：至少用两个细分维度划分市场，并逐项检查可衡量、可进入、有规模、可区分、可操作。",
-      "T：为候选细分市场设定选择标准，比较规模、进入成本、竞争强度、战略匹配和短期可验证性。",
-      "确定目标策略：无差异、差异化或集中；资源有限时优先解释为什么选择集中或为什么不适用。",
-      "P：用固定句式写出定位主张，明确目标客户、品类、核心利益、竞品和差异化依据。",
-      "用证据检验定位是否可防守、可传播、可兑现，并列出下一步验证动作。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认产品、市场边界、竞争对象和可用数据；已有明确 ICP 时只补定位，不重复做完整 STP。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "S：至少用两个细分维度划分市场，并逐项检查可衡量、可进入、有规模、可区分、可操作。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "T：为候选细分市场设定选择标准，比较规模、进入成本、竞争强度、战略匹配和短期可验证性。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "确定目标策略：无差异、差异化或集中；资源有限时优先解释为什么选择集中或为什么不适用。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "P：用固定句式写出定位主张，明确目标客户、品类、核心利益、竞品和差异化依据。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "用证据检验定位是否可防守、可传播、可兑现，并列出下一步验证动作。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

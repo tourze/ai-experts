@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, baoyuCompressImageMain } from "../../procedures/index";
 
@@ -46,13 +47,28 @@ export const baoyuCompressImageSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认输入是单文件还是目录、目标格式、quality、是否递归和是否需要保留源文件。",
-      "调用 baoyu-compress-image-main；单文件可传 output，目录批处理禁止传自定义 output。",
-      "默认 keep=false，成功转码后会删除原文件；只有用户明确要求保留时才传 --keep。",
-      "目录默认不递归，需要跨子目录时显式传 --recursive；输出格式必须与后缀一致。",
-      "压缩后检查 input、output、ratio 和失败项；全部失败时按错误处理，不输出空摘要。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认输入是单文件还是目录、目标格式、quality、是否递归和是否需要保留源文件。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "调用 baoyu-compress-image-main；单文件可传 output，目录批处理禁止传自定义 output。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "默认 keep=false，成功转码后会删除原文件；只有用户明确要求保留时才传 --keep。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "目录默认不递归，需要跨子目录时显式传 --recursive；输出格式必须与后缀一致。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "压缩后检查 input、output、ratio 和失败项；全部失败时按错误处理，不输出空摘要。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

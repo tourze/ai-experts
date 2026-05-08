@@ -3,7 +3,8 @@ import {
   Platform,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const speckitTasksSkill = defineSkill({
@@ -20,22 +21,40 @@ export const speckitTasksSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "确保 `.specify/scripts/check-prerequisites.mjs` 存在；若缺失，先调用 `speckit-baseline` skill 完成 `.specify/` 初始化，完成后回到本流程。",
-      "运行：`node .specify/scripts/check-prerequisites.mjs --json`",
-      "读取：`plan.md`、`spec.md`，并按需读取 `data-model.md`、`contracts/`、`research.md`。",
-      `以用户故事为单位生成任务阶段：
+      defineWorkflowStep({
+        id: "step-1",
+        label: "确保 `.specify/scripts/check-prerequisites.mjs` 存在；若缺失，先调用 `speckit-baseline` skill 完成 `.specify/` 初始化，完成后回到本流程。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "运行：`node .specify/scripts/check-prerequisites.mjs --json`",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "读取：`plan.md`、`spec.md`，并按需读取 `data-model.md`、`contracts/`、`research.md`。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: `以用户故事为单位生成任务阶段：
    - Setup
    - Foundation
    - Story P1/P2/P3
    - Polish`,
-      `每个任务必须包含：
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: `每个任务必须包含：
    - 唯一编号
    - 明确文件路径
    - 验收标准
    - 依赖关系`,
-      "确保每个故事可独立验证。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "确保每个故事可独立验证。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

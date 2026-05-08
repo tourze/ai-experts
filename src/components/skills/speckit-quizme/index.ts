@@ -3,7 +3,8 @@ import {
   Platform,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const speckitQuizmeSkill = defineSkill({
@@ -20,17 +21,32 @@ export const speckitQuizmeSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "读取当前 `spec.md`（若有 `plan.md` 也读取）。",
-      `识别典型薄弱区：
+      defineWorkflowStep({
+        id: "step-1",
+        label: "读取当前 `spec.md`（若有 `plan.md` 也读取）。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: `识别典型薄弱区：
    - 快乐路径偏置
    - 状态竞争与重复提交
    - 权限与越权边界
    - 异常链路与补偿策略`,
-      "逐条提出 3-5 个场景问题（一次一个）。",
-      "基于用户回答继续追问，直到可落地。",
-      "经用户同意后，把结论写入 `Edge Cases`/`Requirements`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "逐条提出 3-5 个场景问题（一次一个）。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "基于用户回答继续追问，直到可落地。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "经用户同意后，把结论写入 `Edge Cases`/`Requirements`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

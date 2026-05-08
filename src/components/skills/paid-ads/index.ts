@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { redesignMyLandingpageSkill } from "../redesign-my-landingpage/index";
 
@@ -55,12 +56,24 @@ export const paidAdsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先明确业务目标、目标 CPA/ROAS、预算边界、转化动作、归因方式和学习期预期。",
-      "搭建或诊断账户结构时按 Brand、Non-brand、Retargeting、实验流量等层级拆开。",
-      "每层输出目标受众、关键词/兴趣、创意变量、着陆页、停投/扩量/复盘条件。",
-      "平台设置读取 `platform-setup-checklists`，受众读 `audience-targeting`，文案和创意读 ad copy / creative references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先明确业务目标、目标 CPA/ROAS、预算边界、转化动作、归因方式和学习期预期。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "搭建或诊断账户结构时按 Brand、Non-brand、Retargeting、实验流量等层级拆开。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "每层输出目标受众、关键词/兴趣、创意变量、着陆页、停投/扩量/复盘条件。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "平台设置读取 `platform-setup-checklists`，受众读 `audience-targeting`，文案和创意读 ad copy / creative references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

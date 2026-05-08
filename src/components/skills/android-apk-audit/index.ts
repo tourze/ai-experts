@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { ethicalHackingMethodologySkill } from "../ethical-hacking-methodology/index";
 import { fridaDynamicAnalysisSkill } from "../frida-dynamic-analysis/index";
@@ -64,14 +65,32 @@ export const androidApkAuditSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先记录授权范围、APK 哈希、包名、版本、minSdk / targetSdk 和工具可用性；命令细节读取 `audit-runbook`。",
-      "识别应用框架与保护形态，建立 Activity、Service、Receiver、Provider、permission、deep link、FileProvider 和 network security config 攻击面表。",
-      "围绕 IPC、WebView、存储、网络 TLS、加密和 native 边界做入口到 sink 的定向搜索，避免全仓库关键词轰炸。",
-      "对每条可疑路径标注 source、传播节点、sink、保护条件和证据类型，并按 Confirmed / Likely / Needs Dynamic Confirmation 分级。",
-      "只有静态阶段提出明确假设后再使用 Frida、Objection 或 ADB，优先验证能改变风险等级的路径。",
-      "报告按严重性排序并去重同一根因，每个发现包含证据、PoC、影响、修复、置信度、验证状态和覆盖声明。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先记录授权范围、APK 哈希、包名、版本、minSdk / targetSdk 和工具可用性；命令细节读取 `audit-runbook`。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "识别应用框架与保护形态，建立 Activity、Service、Receiver、Provider、permission、deep link、FileProvider 和 network security config 攻击面表。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "围绕 IPC、WebView、存储、网络 TLS、加密和 native 边界做入口到 sink 的定向搜索，避免全仓库关键词轰炸。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "对每条可疑路径标注 source、传播节点、sink、保护条件和证据类型，并按 Confirmed / Likely / Needs Dynamic Confirmation 分级。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "只有静态阶段提出明确假设后再使用 Frida、Objection 或 ADB，优先验证能改变风险等级的路径。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "报告按严重性排序并去重同一根因，每个发现包含证据、PoC、影响、修复、置信度、验证状态和覆盖声明。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { prlctlVmControlSkill } from "../prlctl-vm-control/index";
 import { windowsKernelSecuritySkill } from "../windows-kernel-security/index";
@@ -62,14 +63,32 @@ export const windowsUiAutomationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先判断权限层级：read-only、click、input 或高风险复现；默认从只读窗口/元素查询开始。",
-      "定义阻断名单：密码管理器、系统管理工具、shell、注册表、提权窗口和敏感热键。",
-      "自动化前校验目标进程、完整性级别、source/target 是否跨提权边界，以及操作类型。",
-      "元素定位按窗口标题、AutomationId、控件类型、可见性和焦点约束组合，不把 UIA 失败降级成坐标猜测。",
-      "等待策略先建模 timeout、poll interval、重试和失败回退，再调用 UIA/Win32。",
-      "每次动作至少记录目标进程、窗口标识、操作类型、权限层级、超时和结果；需要复杂场景时读取 advanced-patterns、安全示例或 threat-model。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先判断权限层级：read-only、click、input 或高风险复现；默认从只读窗口/元素查询开始。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "定义阻断名单：密码管理器、系统管理工具、shell、注册表、提权窗口和敏感热键。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "自动化前校验目标进程、完整性级别、source/target 是否跨提权边界，以及操作类型。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "元素定位按窗口标题、AutomationId、控件类型、可见性和焦点约束组合，不把 UIA 失败降级成坐标猜测。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "等待策略先建模 timeout、poll interval、重试和失败回退，再调用 UIA/Win32。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "每次动作至少记录目标进程、窗口标识、操作类型、权限层级、超时和结果；需要复杂场景时读取 advanced-patterns、安全示例或 threat-model。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { architectureReviewerSkill } from "../architecture-reviewer/index";
 import { planReviewSkill } from "../plan-review/index";
@@ -62,12 +63,24 @@ export const apiTraceReaderSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先判断入口类型是 HTTP、CLI、消费者、定时任务、事件还是 webhook，必要时读取 `entry-types`。",
-      "沿代码逐级追踪调用者、被调者、关键参数和分支条件，不执行会改状态的命令。",
-      "单列 READ / WRITE / CACHE / MQ / EXTERNAL / FS 副作用，并补齐重试、监听器、延迟任务和异步链路。",
-      "输出格式对齐 `output-example`，风险分级读取 `risk-rubric`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先判断入口类型是 HTTP、CLI、消费者、定时任务、事件还是 webhook，必要时读取 `entry-types`。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "沿代码逐级追踪调用者、被调者、关键参数和分支条件，不执行会改状态的命令。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "单列 READ / WRITE / CACHE / MQ / EXTERNAL / FS 副作用，并补齐重试、监听器、延迟任务和异步链路。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "输出格式对齐 `output-example`，风险分级读取 `risk-rubric`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

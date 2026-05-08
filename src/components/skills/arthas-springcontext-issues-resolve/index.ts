@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { arthasCpuHighSkill } from "../arthas-cpu-high/index";
 
@@ -51,13 +52,28 @@ export const arthasSpringcontextIssuesResolveSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先用 `vmtool --action getInstances --className org.springframework.context.support.AbstractApplicationContext -l 5` 枚举上下文。",
-      "确认 ApplicationContext 与类加载器后，再用 containsBean、containsBeanDefinition 或 getBeanNamesForType 做只读检查。",
-      "查询配置值时通过 Environment 读取值和来源，避免只报值不报来源。",
-      "多个候选 Bean 时列出候选名、类型、Profile/Conditional 条件和实际装配规则。",
-      "ClassNotFound 或表达式失败时先回溯 classLoader/classLoaderClass 选择，不直接判定 Bean 不存在。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先用 `vmtool --action getInstances --className org.springframework.context.support.AbstractApplicationContext -l 5` 枚举上下文。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "确认 ApplicationContext 与类加载器后，再用 containsBean、containsBeanDefinition 或 getBeanNamesForType 做只读检查。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "查询配置值时通过 Environment 读取值和来源，避免只报值不报来源。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "多个候选 Bean 时列出候选名、类型、Profile/Conditional 条件和实际装配规则。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "ClassNotFound 或表达式失败时先回溯 classLoader/classLoaderClass 选择，不直接判定 Bean 不存在。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

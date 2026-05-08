@@ -13,7 +13,7 @@ import type {
   SkillOutputsDefinition,
   SkillParameter,
   SkillReferenceDefinition,
-  SkillWorkflowDefinition,
+  WorkflowDefinition,
 } from "../components/sdk";
 import {
   copyComponentPath,
@@ -33,6 +33,7 @@ import {
   renderMarkdownBulletList,
   renderMarkdownTableCell,
 } from "./markdown.ts";
+import { renderWorkflowSection, validateWorkflow } from "./workflows.ts";
 
 type TextListProperty = "useCases" | "constraints" | "checklist";
 
@@ -287,24 +288,8 @@ export function validateSkillGoal(skill: SkillDefinition): SkillGoalDefinition |
   return goal;
 }
 
-export function validateSkillWorkflow(skill: SkillDefinition): SkillWorkflowDefinition | null {
-  const workflow = skill.workflow;
-  if (workflow === undefined) return null;
-  if (!workflow || typeof workflow !== "object" || Array.isArray(workflow)) {
-    throw new Error(`Skill ${skill.id} workflow must be a single object when defined`);
-  }
-  if (workflow.title !== undefined && (typeof workflow.title !== "string" || workflow.title.trim() === "")) {
-    throw new Error(`Skill ${skill.id} workflow.title must be non-empty when defined`);
-  }
-  if (!Array.isArray(workflow.steps) || workflow.steps.length === 0) {
-    throw new Error(`Skill ${skill.id} workflow.steps must be a non-empty array`);
-  }
-  for (const [index, step] of workflow.steps.entries()) {
-    if (typeof step !== "string" || step.trim() === "") {
-      throw new Error(`Skill ${skill.id} workflow.steps[${index}] must be a non-empty string`);
-    }
-  }
-  return workflow;
+export function validateSkillWorkflow(skill: SkillDefinition): WorkflowDefinition | null {
+  return validateWorkflow(`Skill ${skill.id}`, skill.workflow);
 }
 
 export function validateSkillOutputs(skill: SkillDefinition): SkillOutputsDefinition | null {
@@ -364,8 +349,7 @@ function renderSkillGoal(skill: SkillDefinition): string {
 function renderSkillWorkflow(skill: SkillDefinition): string {
   const workflow = validateSkillWorkflow(skill);
   if (!workflow) return "";
-  const lines = workflow.steps.map((step, index) => `${index + 1}. ${step.trim()}`);
-  return `## ${workflow.title?.trim() ?? "执行步骤"}\n\n${lines.join("\n")}\n`;
+  return renderWorkflowSection(workflow);
 }
 
 function renderSkillOutputs(skill: SkillDefinition): string {

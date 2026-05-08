@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { goErrorHandlingSkill } from "../go-error-handling/index";
 import { goPerformanceSkill } from "../go-performance/index";
@@ -80,12 +81,24 @@ export const goGrpcSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认 proto、生成命令、服务端注册、客户端凭据、deadline 和拦截器需求。",
-      "服务端用生成的 Register 方法注册实现，客户端统一设置 transport credentials 和超时。",
-      "错误必须转成 `status.Errorf(codes.XXX, ...)`，拦截器用 chain 组合。",
-      "实现要点读取 `implementation-guide`；protoc / buf / 生成细节读取 `protoc-reference`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认 proto、生成命令、服务端注册、客户端凭据、deadline 和拦截器需求。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "服务端用生成的 Register 方法注册实现，客户端统一设置 transport credentials 和超时。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "错误必须转成 `status.Errorf(codes.XXX, ...)`，拦截器用 chain 组合。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "实现要点读取 `implementation-guide`；protoc / buf / 生成细节读取 `protoc-reference`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

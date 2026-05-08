@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { javascriptTypescriptJestSkill } from "../javascript-typescript-jest/index";
 import { openapiSpecGenerationSkill } from "../openapi-spec-generation/index";
@@ -71,12 +72,24 @@ export const nestjsLayeringPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认触及模块、控制器、服务、DTO、认证授权、配置、数据库和测试中的哪些层。",
-      "控制器只处理协议层，Service / Use Case 承载业务规则，输入边界统一走 DTO + ValidationPipe。",
-      "依赖通过 provider 和构造函数注入，不手写 `new Service()` 绕过容器；配置和密钥走 ConfigModule。",
-      "主题选择表读取 `topic-map`；完整骨架读取 `basic-scaffold`；认证、DTO、测试、迁移按需读取对应 references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认触及模块、控制器、服务、DTO、认证授权、配置、数据库和测试中的哪些层。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "控制器只处理协议层，Service / Use Case 承载业务规则，输入边界统一走 DTO + ValidationPipe。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "依赖通过 provider 和构造函数注入，不手写 `new Service()` 绕过容器；配置和密钥走 ConfigModule。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "主题选择表读取 `topic-map`；完整骨架读取 `basic-scaffold`；认证、DTO、测试、迁移按需读取对应 references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

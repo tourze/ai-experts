@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { symfonyMessengerSkill } from "../symfony-messenger/index";
 import { symfonyVotersSkill } from "../symfony-voters/index";
@@ -58,12 +59,24 @@ export const doctrineBatchProcessingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认数据量、查询方式、事务范围、锁影响、监听器副作用和是否需要 ORM 生命周期事件。",
-      "ORM 批处理用 `toIterable()`，按批次 `flush()` / `clear()`，必要时收敛 SQL logger 和 UnitOfWork 膨胀。",
-      "能用 DBAL 一条 SQL 完成的批量更新优先走 DBAL / 原生 SQL，不强行绕回 ORM。",
-      "基础 ORM 批处理读取 `orm-batch-patterns`；完整命令、分页和失败模式读取 `implementation-reference`；DBAL / migration 深入读取 `advanced-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认数据量、查询方式、事务范围、锁影响、监听器副作用和是否需要 ORM 生命周期事件。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "ORM 批处理用 `toIterable()`，按批次 `flush()` / `clear()`，必要时收敛 SQL logger 和 UnitOfWork 膨胀。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "能用 DBAL 一条 SQL 完成的批量更新优先走 DBAL / 原生 SQL，不强行绕回 ORM。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "基础 ORM 批处理读取 `orm-batch-patterns`；完整命令、分页和失败模式读取 `implementation-reference`；DBAL / migration 深入读取 `advanced-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

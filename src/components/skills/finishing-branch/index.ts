@@ -3,7 +3,8 @@ import {
   Platform,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const finishingBranchSkill = defineSkill({
@@ -33,16 +34,40 @@ export const finishingBranchSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先运行项目测试套件；测试失败就展示失败列表并停止，不进入选项展示。",
-      "测试通过后确定基线分支：`git merge-base HEAD main`，失败再尝试 `master`。",
-      "展示且只展示 4 个选项：本地合并回基线、推送并创建 PR、保留分支原样、丢弃这些工作。",
-      "选项 1 本地合并：切到基线、pull、merge feature、合并后重新跑测试，测试通过才删除 feature 分支。",
-      "选项 2 创建 PR：push feature 分支并创建 PR，保留 worktree。",
-      "选项 3 保留原样：报告分支名和 worktree 路径，不清理。",
-      "选项 4 丢弃：展示将删除的分支、提交和 worktree，等待用户输入 `discard` 或 `确认丢弃`。",
-      "对选项 1、2、4 检查 worktree 状态并按选择清理；选项 3 保留。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先运行项目测试套件；测试失败就展示失败列表并停止，不进入选项展示。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "测试通过后确定基线分支：`git merge-base HEAD main`，失败再尝试 `master`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "展示且只展示 4 个选项：本地合并回基线、推送并创建 PR、保留分支原样、丢弃这些工作。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "选项 1 本地合并：切到基线、pull、merge feature、合并后重新跑测试，测试通过才删除 feature 分支。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "选项 2 创建 PR：push feature 分支并创建 PR，保留 worktree。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "选项 3 保留原样：报告分支名和 worktree 路径，不清理。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "选项 4 丢弃：展示将删除的分支、提交和 worktree，等待用户输入 `discard` 或 `确认丢弃`。",
+      }),
+      defineWorkflowStep({
+        id: "step-8",
+        label: "对选项 1、2、4 检查 worktree 状态并按选择清理；选项 3 保留。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

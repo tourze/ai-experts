@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const meetingInsightsAnalyzerSkill = defineSkill({
@@ -47,12 +48,24 @@ export const meetingInsightsAnalyzerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先定位会议转写、字幕或文本文件，并确认分析对象、说话人映射、会议数量、时间窗和数据缺口。",
-      "只有在说话人和时间戳足够可靠时才输出发言占比、打断、口头禅等指标；否则先声明边界。",
-      "每条发现按观察、影响、建议组织，至少绑定会议名称、时间点或原句片段。",
-      "如果用户只需要摘要、决策或行动项，改读会议纪要 references，而不是做行为反馈。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先定位会议转写、字幕或文本文件，并确认分析对象、说话人映射、会议数量、时间窗和数据缺口。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "只有在说话人和时间戳足够可靠时才输出发言占比、打断、口头禅等指标；否则先声明边界。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "每条发现按观察、影响、建议组织，至少绑定会议名称、时间点或原句片段。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "如果用户只需要摘要、决策或行动项，改读会议纪要 references，而不是做行为反馈。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

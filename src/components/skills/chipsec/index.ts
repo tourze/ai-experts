@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { binaryAnalysisPatternsSkill } from "../binary-analysis-patterns/index";
 
@@ -51,13 +52,28 @@ export const chipsecSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认固件来源、采集方式、哈希、平台信息和文件格式，所有分析基于副本进行。",
-      "优先执行离线只读命令：EFI inventory、blocked threat scan、UEFI decode 和 NVRAM 提取。",
-      "把 CHIPSEC 的 WARNING / FAILED / module error 与真实安全结论分开记录。",
-      "需要深挖 EFI 可执行模块时联动 `binary-analysis-patterns`，不要直接进入 live system 写操作。",
-      "命令、flag、exit code、workflow、威胁库和排错方式读取 `offline-analysis-guide` reference。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认固件来源、采集方式、哈希、平台信息和文件格式，所有分析基于副本进行。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "优先执行离线只读命令：EFI inventory、blocked threat scan、UEFI decode 和 NVRAM 提取。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "把 CHIPSEC 的 WARNING / FAILED / module error 与真实安全结论分开记录。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "需要深挖 EFI 可执行模块时联动 `binary-analysis-patterns`，不要直接进入 live system 写操作。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "命令、flag、exit code、workflow、威胁库和排错方式读取 `offline-analysis-guide` reference。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

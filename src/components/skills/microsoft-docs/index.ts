@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const microsoftDocsSkill = defineSkill({
@@ -44,13 +45,28 @@ export const microsoftDocsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先把查询收窄为产品名、任务意图、版本、平台或语言上下文，不用单个宽泛关键词。",
-      "先搜索再抓取：摘要能回答就不抓整页，确认命中和页面相关性后再 fetch。",
-      "概念、教程、配置、限制/配额、最佳实践分别用不同查询意图约束结果范围。",
-      "microsoft_docs_fetch 只接受文档 URL；section、max-chars 是 CLI fetch 参数，不是 MCP 工具参数。",
-      "进入写代码、修 SDK 调用或核对 API 签名时读取 code-reference；CLI 只作为 search/fetch/doctor 回退链路。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先把查询收窄为产品名、任务意图、版本、平台或语言上下文，不用单个宽泛关键词。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "先搜索再抓取：摘要能回答就不抓整页，确认命中和页面相关性后再 fetch。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "概念、教程、配置、限制/配额、最佳实践分别用不同查询意图约束结果范围。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "microsoft_docs_fetch 只接受文档 URL；section、max-chars 是 CLI fetch 参数，不是 MCP 工具参数。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "进入写代码、修 SDK 调用或核对 API 签名时读取 code-reference；CLI 只作为 search/fetch/doctor 回退链路。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

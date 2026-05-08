@@ -3,8 +3,9 @@ import {
   Platform,
   defineAntiPattern,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
   defineSkill,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const triggerTelemetryAdvisorSkill = defineSkill({
@@ -41,14 +42,32 @@ export const triggerTelemetryAdvisorSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认当前仓库是否实际安装并启用了 ai-experts hook telemetry。",
-      "读取 runtime 记录、hook 配置和相关 skill 定义，优先使用本地日志而不是触发描述。",
-      "当前会话请求先检查 `session_id` 或 `transcript_path`；缺失时退回工作区时间窗分析。",
-      "跨进程或跨目录总览按 workspace、session、platform 和 hook id 聚合，避免混用口径。",
-      "人工校准热点时优先定位 `error`、重复 `block`、高频不可行动 `report`、`skip` 缺失和异常耗时。",
-      "回到源码和测试验证规则是否过宽，再给出具体修改文件和最小验证命令。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认当前仓库是否实际安装并启用了 ai-experts hook telemetry。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "读取 runtime 记录、hook 配置和相关 skill 定义，优先使用本地日志而不是触发描述。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "当前会话请求先检查 `session_id` 或 `transcript_path`；缺失时退回工作区时间窗分析。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "跨进程或跨目录总览按 workspace、session、platform 和 hook id 聚合，避免混用口径。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "人工校准热点时优先定位 `error`、重复 `block`、高频不可行动 `report`、`skip` 缺失和异常耗时。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "回到源码和测试验证规则是否过宽，再给出具体修改文件和最小验证命令。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

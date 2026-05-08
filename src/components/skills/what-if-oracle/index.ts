@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
 import { priorityJudgeSkill } from "../priority-judge/index";
@@ -70,12 +71,24 @@ export const whatIfOracleSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先把问题收紧为单变量：变量、幅度、时间窗口和当前状态。",
-      "生成 4-6 条互相区分的分支，覆盖最好、最可能、最坏、意外变量、反共识和二阶连锁。",
-      "每条分支写清概率、触发信号、立即后果、后续影响和应对动作；概率总和应接近 100%。",
-      "结尾明确这是推演不是预测，并给出稳健动作、对冲动作和决策触发器。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先把问题收紧为单变量：变量、幅度、时间窗口和当前状态。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "生成 4-6 条互相区分的分支，覆盖最好、最可能、最坏、意外变量、反共识和二阶连锁。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "每条分支写清概率、触发信号、立即后果、后续影响和应对动作；概率总和应接近 100%。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "结尾明确这是推演不是预测，并给出稳健动作、对冲动作和决策触发器。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

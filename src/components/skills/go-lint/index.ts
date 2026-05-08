@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const goLintSkill = defineSkill({
@@ -55,12 +56,24 @@ export const goLintSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认 Go 版本、CI 时限、已有 lint 报告、允许的规则集和渐进收敛策略。",
-      "从最小可用 golangci 配置开始，启用 errcheck、govet、staticcheck、revive、gosec、gofmt / gofumpt 等核心规则。",
-      "`nolint` 必须指定 linter 和原因，支持自动修复的规则先运行 `--fix`。",
-      "配置模板和抑制示例读取 `golangci-guide`；完整规则参考读取 `linter-reference`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认 Go 版本、CI 时限、已有 lint 报告、允许的规则集和渐进收敛策略。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "从最小可用 golangci 配置开始，启用 errcheck、govet、staticcheck、revive、gosec、gofmt / gofumpt 等核心规则。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "`nolint` 必须指定 linter 和原因，支持自动修复的规则先运行 `--fix`。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "配置模板和抑制示例读取 `golangci-guide`；完整规则参考读取 `linter-reference`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, complexityReducerComplexityReport } from "../../procedures/index";
 import { codeReviewSkill } from "../code-review/index";
@@ -75,12 +76,24 @@ export const complexityReducerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先用阅读或 `complexity-reducer-complexity-report` 定位嵌套、长函数、参数爆炸、布尔组合、特性嫉妒、原始类型偏执或条件过长。",
-      "按问题、最小重构动作、风险、验证方式组织计划；语言细节读取对应 language reference，通用手法读取 patterns reference。",
-      "每次只处理一个主要来源：深嵌套优先 guard clause，长函数按段落抽取，过多参数改参数对象或拆分，复杂条件抽命名布尔或查找表。",
-      "每步后跑测试或最小验证，关闭任务前读取 verification checklist 和 task-closure reference。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先用阅读或 `complexity-reducer-complexity-report` 定位嵌套、长函数、参数爆炸、布尔组合、特性嫉妒、原始类型偏执或条件过长。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按问题、最小重构动作、风险、验证方式组织计划；语言细节读取对应 language reference，通用手法读取 patterns reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "每次只处理一个主要来源：深嵌套优先 guard clause，长函数按段落抽取，过多参数改参数对象或拆分，复杂条件抽命名布尔或查找表。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "每步后跑测试或最小验证，关闭任务前读取 verification checklist 和 task-closure reference。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

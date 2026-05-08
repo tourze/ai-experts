@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { rustErrorHandlingSkill } from "../rust-error-handling/index";
 import { rustOwnershipIdiomsSkill } from "../rust-ownership-idioms/index";
@@ -66,12 +67,24 @@ export const rustTestingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认被测边界是内部逻辑、公共 API、文档示例还是复杂输出。",
-      "按测试类型选择 `#[cfg(test)]`、`tests/*.rs`、rustdoc 代码块或 cargo-insta snapshot。",
-      "测试名表达输入、条件和预期；错误路径用 Result 断言，不滥用 `#[should_panic]`。",
-      "测试类型速查读取 `testing-matrix`，详细命名、snapshot 和组织模式读取 `chapter-05`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认被测边界是内部逻辑、公共 API、文档示例还是复杂输出。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按测试类型选择 `#[cfg(test)]`、`tests/*.rs`、rustdoc 代码块或 cargo-insta snapshot。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "测试名表达输入、条件和预期；错误路径用 Result 断言，不滥用 `#[should_panic]`。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "测试类型速查读取 `testing-matrix`，详细命名、snapshot 和组织模式读取 `chapter-05`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

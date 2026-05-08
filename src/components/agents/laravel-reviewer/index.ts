@@ -1,10 +1,10 @@
 import {
   AgentSandbox,
   defineAgent,
-  defineAgentWorkflow,
-  defineAgentWorkflowGate,
-  defineAgentWorkflowRoute,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowGate,
+  defineWorkflowRoute,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -21,22 +21,22 @@ export const laravelReviewerAgent = defineAgent({
   description: "当需要只读审查 Laravel 分层、Eloquent、Validation、Authorization、Migration 和 Queue 时使用。",
   role: `你是资深 Laravel 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     gates: [
-      defineAgentWorkflowGate({
+      defineWorkflowGate({
         id: "gate-1",
         skill: laravelVerificationSkill.id,
         label: "门禁 1",
         checks: "发版前自检：composer audit、phpstan、pint、migration 可逆性",
       }),
-      defineAgentWorkflowGate({
+      defineWorkflowGate({
         id: "gate-2",
         skill: laravelSecuritySkill.id,
         label: "门禁 2",
         checks: "安全红线：Sanctum/Policy 覆盖、FormRequest 校验、文件上传、XSS/CSRF",
       }),
-      defineAgentWorkflowGate({
+      defineWorkflowGate({
         id: "gate-3",
         skill: evidenceQualityFrameworkSkill.id,
         label: "门禁 3",
@@ -44,35 +44,35 @@ export const laravelReviewerAgent = defineAgent({
       }),
     ],
     routes: [
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-laravel-patterns",
         triggers: ["Controller", "FormRequest", "Service", "Action", "Job"],
         skill: laravelPatternsSkill.id,
         checks: "分层责任边界、Service/Action 粒度、scopeBindings、多租户路由",
         output: "分层审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-laravel-patterns-2",
         triggers: ["Model", "HasMany", "BelongsTo", "scope", "$casts"],
         skill: laravelPatternsSkill.id,
         checks: "Eloquent 关系、N+1 预加载、mass assignment、casts、observer",
         output: "Eloquent 审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-laravel-security",
         triggers: ["Policy", "Gate", "middleware", "$this->authorize"],
         skill: laravelSecuritySkill.id,
         checks: "对象级权限覆盖、Policy 自动发现、middleware 链",
         output: "授权审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-laravel-patterns-3",
         triggers: ["Migration", "Queue", "Job", "dispatch", "ShouldQueue"],
         skill: laravelPatternsSkill.id,
         checks: "migration 可逆性、大表锁、queue 幂等性、失败恢复、retry",
         output: "基础设施审计",
       }),
-      defineAgentWorkflowRoute({
+      defineWorkflowRoute({
         id: "route-laravel-tdd",
         triggers: ["@test", "Pest", "RefreshDatabase", "Queue::fake"],
         skill: laravelTddSkill.id,
@@ -81,23 +81,23 @@ export const laravelReviewerAgent = defineAgent({
       }),
     ],
     finalSteps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-1",
         label: "门禁：laravel-verification → laravel-security → 确认基线干净",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-2",
         label: "路由：按 diff 内容匹配场景路由表，逐项深入",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-3",
         label: "证据：每条发现绑定 文件:行 + 代码片段",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-4",
         label: "标注：事实/推断/假设",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "final-5",
         label: "排序：安全（Policy/Gate/XSS） > 数据完整性 > 影响面 > 执行成本",
       }),

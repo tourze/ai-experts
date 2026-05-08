@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -23,26 +23,26 @@ export const documentProducerAgent = defineAgent({
   description: "当需要从结构化输入产出多格式文档（PPT、Word、Excel、PDF、Markdown），或在 Office 文件、PDF、图像之间互转时使用。它可以创建或更新文档文件，但不修改业务源码。",
   role: `你是资深技术文档制作工程师。你可以在用户指定目录下创建或更新 Markdown、PPTX、DOCX、XLSX、PDF 等文档文件，但不修改业务源码、配置或任何与文档无关的资源。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先确认产出目标：受众、用途、交付格式、长度预期、视觉风格、双语 / 单语。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "信息架构先行：按章节 → 论点 → 证据 → 行动项编排，不为格式凑章节。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "单源多目标：先定 Markdown 主稿，再按需转 PPT / DOCX / PDF；避免多源互相漂移。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "视觉一致：图表风格、配色、字体、间距遵循统一令牌；图表用 Mermaid / PlantUML 生成可读源码而非外部链接。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-5",
         label: "落盘前给目录结构与封面 / 概览样张；用户确认后再批量生成。",
       }),

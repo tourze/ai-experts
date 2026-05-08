@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { mysqlTransactionLockingSkill } from "../mysql-transaction-locking/index";
 
@@ -68,12 +69,24 @@ export const dbHaReplicationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认拓扑、MySQL 版本、复制账号、GTID、binlog 格式、半同步要求、读写分离策略和 RPO/RTO。",
-      "Replica 配置复制源时使用 GTID auto-position；检查 `SHOW REPLICA STATUS\\G`、复制线程和 `@@global.gtid_executed`。",
-      "延迟监控同时看 `Seconds_Behind_Source`、心跳表和业务写入延迟；半同步降级必须告警。",
-      "故障切换前核对所有 Replica 的 GTID 集合和缺口；详细参数和运维命令读取 replication references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认拓扑、MySQL 版本、复制账号、GTID、binlog 格式、半同步要求、读写分离策略和 RPO/RTO。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "Replica 配置复制源时使用 GTID auto-position；检查 `SHOW REPLICA STATUS\\G`、复制线程和 `@@global.gtid_executed`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "延迟监控同时看 `Seconds_Behind_Source`、心跳表和业务写入延迟；半同步降级必须告警。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "故障切换前核对所有 Replica 的 GTID 集合和缺口；详细参数和运维命令读取 replication references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import {
   appStoreOptimizationAbTestPlanner,
@@ -71,14 +72,32 @@ export const appStoreOptimizationSkill = defineSkill({
       reason: "ASO 或发版文案需要进入审核合规、拒审风险或 reviewer notes 视角时联动。",
     },
   ],
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认平台、市场、应用类别、目标用户、当前元数据、关键词、评分评论、竞品和可用转化数据。",
-      "按任务路由 procedure：元数据、关键词、竞品、评分健康分、评论洞察、本地化、A/B 测试、上线检查或发版改动采集。",
-      "所有关键词、搜索量、竞争度、转化率和竞品判断都要标明数据来源；缺数据时输出假设和需要补采的数据。",
-      "Apple / Google 字段分别做字符数和策略校验，避免把一个平台的格式硬套到另一个平台。",
-      "更新文案先读取 `changelog-guide` 和真实提交 / tag 范围，只保留用户可感知改动。",
-      "输入清单、常见流程和输出形态读取 `briefing-guide`；procedure 路由读取 `procedure-recipes`，完整参数以生成的 Procedure 调用说明为准。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认平台、市场、应用类别、目标用户、当前元数据、关键词、评分评论、竞品和可用转化数据。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按任务路由 procedure：元数据、关键词、竞品、评分健康分、评论洞察、本地化、A/B 测试、上线检查或发版改动采集。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "所有关键词、搜索量、竞争度、转化率和竞品判断都要标明数据来源；缺数据时输出假设和需要补采的数据。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Apple / Google 字段分别做字符数和策略校验，避免把一个平台的格式硬套到另一个平台。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "更新文案先读取 `changelog-guide` 和真实提交 / tag 范围，只保留用户可感知改动。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输入清单、常见流程和输出形态读取 `briefing-guide`；procedure 路由读取 `procedure-recipes`，完整参数以生成的 Procedure 调用说明为准。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

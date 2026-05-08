@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { arthasSpringcontextIssuesResolveSkill } from "../arthas-springcontext-issues-resolve/index";
 
@@ -51,13 +52,28 @@ export const arthasCpuHighSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先执行 `dashboard -n 3` 看整体趋势，再执行 `thread -n 5` 找最忙线程，不直接上重型 trace/watch。",
-      "对热点线程执行 `thread <threadId>`，记录线程 ID、线程名、状态和关键堆栈。",
-      "大量 BLOCKED 时先定位阻塞源头，不把阻塞线程误判为 CPU 热点；GC、日志、序列化和锁竞争要分开判断。",
-      "堆栈收敛到具体类/方法后，才用有限 `trace ... '#cost > 20' -n 5` 或 `watch ... -n 3`。",
-      "输出时分清观察事实和基于事实的推断，并说明下一步该 trace 哪个方法或需要补哪个业务入口。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先执行 `dashboard -n 3` 看整体趋势，再执行 `thread -n 5` 找最忙线程，不直接上重型 trace/watch。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "对热点线程执行 `thread <threadId>`，记录线程 ID、线程名、状态和关键堆栈。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "大量 BLOCKED 时先定位阻塞源头，不把阻塞线程误判为 CPU 热点；GC、日志、序列化和锁竞争要分开判断。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "堆栈收敛到具体类/方法后，才用有限 `trace ... '#cost > 20' -n 5` 或 `watch ... -n 3`。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "输出时分清观察事实和基于事实的推断，并说明下一步该 trace 哪个方法或需要补哪个业务入口。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

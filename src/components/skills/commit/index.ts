@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const commitSkill = defineSkill({
@@ -39,15 +40,36 @@ export const commitSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先并行查看 `git status --short`、`git diff --stat`、`git log --oneline -5`，识别改动范围和最近提交风格。",
-      "逐个或按同模块显式路径 `git add <file...>` 暂存当前任务文件，不使用批量 add。",
-      "审查 `git diff --cached --stat` 和完整 `git diff --cached`，确认没有无关文件、调试代码、敏感信息或错误范围。",
-      "若存在部分暂存，分别运行 `git diff --cached -- <file>` 和 `git diff -- <file>` 检查 staged/unstaged。",
-      "按 `<type>(<scope>): <description>` 写提交信息；type 使用 feat/fix/docs/style/refactor/perf/test/build/ci/chore/revert。",
-      "用 `git commit -m \"...\"` 或多个 `-m` 提交，禁止 heredoc 和不带 `-m` 的交互提交。",
-      "提交后运行 `git log --oneline -3` 验证成功记录。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先并行查看 `git status --short`、`git diff --stat`、`git log --oneline -5`，识别改动范围和最近提交风格。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "逐个或按同模块显式路径 `git add <file...>` 暂存当前任务文件，不使用批量 add。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "审查 `git diff --cached --stat` 和完整 `git diff --cached`，确认没有无关文件、调试代码、敏感信息或错误范围。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "若存在部分暂存，分别运行 `git diff --cached -- <file>` 和 `git diff -- <file>` 检查 staged/unstaged。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "按 `<type>(<scope>): <description>` 写提交信息；type 使用 feat/fix/docs/style/refactor/perf/test/build/ci/chore/revert。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "用 `git commit -m \"...\"` 或多个 `-m` 提交，禁止 heredoc 和不带 `-m` 的交互提交。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "提交后运行 `git log --oneline -3` 验证成功记录。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

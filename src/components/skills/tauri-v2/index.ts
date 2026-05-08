@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const tauriV2Skill = defineSkill({
@@ -62,14 +63,32 @@ export const tauriV2Skill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认任务类型：新建骨架、命令/IPC、插件权限、capability、移动端、运行时特性、签名更新或故障排查。",
-      "保持 `main.rs` 为薄入口，核心构建器、命令注册、插件注册和状态注入放在 `lib.rs::run()`；代码片段读取 `quick-patterns` reference。",
-      "每个 `#[tauri::command]` 都进入 `generate_handler!`，async 参数使用拥有所有权的类型。",
-      "调用核心 JS API 或插件 JS API 时，核对 capability、permission、scope 和目标窗口。",
-      "按专题读取 reference：capability、IPC、插件、updater、advanced runtime 或 README 索引。",
-      "交付前运行 `cargo tauri info` 和目标平台构建命令，验证 beforeDev/beforeBuild、签名和更新配置。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认任务类型：新建骨架、命令/IPC、插件权限、capability、移动端、运行时特性、签名更新或故障排查。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "保持 `main.rs` 为薄入口，核心构建器、命令注册、插件注册和状态注入放在 `lib.rs::run()`；代码片段读取 `quick-patterns` reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "每个 `#[tauri::command]` 都进入 `generate_handler!`，async 参数使用拥有所有权的类型。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "调用核心 JS API 或插件 JS API 时，核对 capability、permission、scope 和目标窗口。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "按专题读取 reference：capability、IPC、插件、updater、advanced runtime 或 README 索引。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "交付前运行 `cargo tauri info` 和目标平台构建命令，验证 beforeDev/beforeBuild、签名和更新配置。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

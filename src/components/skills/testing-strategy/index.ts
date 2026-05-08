@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { preLandingReviewSkill } from "../pre-landing-review/index";
 import { testingPatternsSkill } from "../testing-patterns/index";
@@ -85,12 +86,24 @@ export const testingStrategySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先识别业务关键路径、失败路径、边界条件、安全边界、现有覆盖缺口和不值得自动化的区域。",
-      "每个测试项都说明为什么测、用什么层级测，并按成本与信心权衡单测、集成、E2E 和人工验证。",
-      "用风险矩阵决定测试深度和质量门，覆盖率必须结合风险分布解释。",
-      "轻量测试计划、覆盖目标、风险矩阵和质量门示例读取 `test-plan-patterns`；缺陷扩面和验证循环读取对应 references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先识别业务关键路径、失败路径、边界条件、安全边界、现有覆盖缺口和不值得自动化的区域。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "每个测试项都说明为什么测、用什么层级测，并按成本与信心权衡单测、集成、E2E 和人工验证。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "用风险矩阵决定测试深度和质量门，覆盖率必须结合风险分布解释。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "轻量测试计划、覆盖目标、风险矩阵和质量门示例读取 `test-plan-patterns`；缺陷扩面和验证循环读取对应 references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

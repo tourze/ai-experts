@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const svnWorkflowSkill = defineSkill({
@@ -54,14 +55,32 @@ export const svnWorkflowSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "日常提交先 `svn update`、`svn status -u`、`svn diff <path>`，只提交当前任务显式路径。",
-      "创建分支或标签用 `svn copy <trunk-url> <branches-or-tags-url> -m ...`；`tags/` 只做发布快照。",
-      "工作副本切换用 `svn switch <branch-url>` 后 `svn info` 核对目标路径。",
-      "挑单个修订用 `svn merge -c <rev> <source-url>`；整分支回合并到 trunk 前先更新干净 trunk 工作副本。",
-      "查询合并状态显式使用 `svn mergeinfo --show-revs=eligible|merged <source-url> .`。",
-      "属性、仓库 hotcopy/dump/load、cleanup 和 SVN→Git 迁移细节读取 properties-and-admin。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "日常提交先 `svn update`、`svn status -u`、`svn diff <path>`，只提交当前任务显式路径。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "创建分支或标签用 `svn copy <trunk-url> <branches-or-tags-url> -m ...`；`tags/` 只做发布快照。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "工作副本切换用 `svn switch <branch-url>` 后 `svn info` 核对目标路径。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "挑单个修订用 `svn merge -c <rev> <source-url>`；整分支回合并到 trunk 前先更新干净 trunk 工作副本。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "查询合并状态显式使用 `svn mergeinfo --show-revs=eligible|merged <source-url> .`。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "属性、仓库 hotcopy/dump/load、cleanup 和 SVN→Git 迁移细节读取 properties-and-admin。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

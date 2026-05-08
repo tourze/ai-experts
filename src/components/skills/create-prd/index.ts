@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { agileProductOwnerSkill } from "../agile-product-owner/index";
 import { prfaqSkill } from "../prfaq/index";
@@ -59,12 +60,24 @@ export const createPrdSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先写背景与问题、目标与成功指标、用户与场景、方案概述、详细需求；轻量 PRD 至少覆盖 1-5 段。",
-      "中型项目补非目标与排除项、风险与依赖、发布与上线计划；完整 PRD 再补数据与监控、附录。",
-      "Epic 分解读 epic references，用户故事读 user-story references，MVP 范围取舍读 scoping references。",
-      "确保每条需求可验证、可拆任务、可测试，并明确上线方式、回滚预案和非目标。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先写背景与问题、目标与成功指标、用户与场景、方案概述、详细需求；轻量 PRD 至少覆盖 1-5 段。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "中型项目补非目标与排除项、风险与依赖、发布与上线计划；完整 PRD 再补数据与监控、附录。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "Epic 分解读 epic references，用户故事读 user-story references，MVP 范围取舍读 scoping references。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "确保每条需求可验证、可拆任务、可测试，并明确上线方式、回滚预案和非目标。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

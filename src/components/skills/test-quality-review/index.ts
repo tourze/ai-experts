@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { preLandingReviewSkill } from "../pre-landing-review/index";
 
@@ -52,12 +53,24 @@ export const testQualityReviewSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "必须先读取真实测试代码，再按 T1-T6 六类衰退风险逐项扫描。",
-      "每条发现用 Symptom / Source / Consequence / Remedy 四要素表达，并区分关键、重要、建议。",
-      "检查每类风险的不应标记规则，避免把风格偏好误报为测试衰退。",
-      "审查维度和纪律读取 `review-workflow`；六类风险和 Test Health Score 读取对应 references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "必须先读取真实测试代码，再按 T1-T6 六类衰退风险逐项扫描。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "每条发现用 Symptom / Source / Consequence / Remedy 四要素表达，并区分关键、重要、建议。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "检查每类风险的不应标记规则，避免把风格偏好误报为测试衰退。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "审查维度和纪律读取 `review-workflow`；六类风险和 Test Health Score 读取对应 references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

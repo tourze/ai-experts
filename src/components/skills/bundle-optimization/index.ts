@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { webPerformanceDiagnosisSkill } from "../web-performance-diagnosis/index";
 
@@ -57,12 +58,24 @@ export const bundleOptimizationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先用 bundle analyzer 量化最大模块、入口 chunk、初始 JS、gzip/brotli 和 parse/execute 成本。",
-      "把 barrel imports 改成 direct path imports，重型且非首屏必需的组件改为动态导入。",
-      "第三方库按需加载，preload 只用于高概率路径，避免为了体积拆分破坏首屏体验。",
-      "barrel import 和 dynamic import 示例读取 `bundle-code-patterns`；专项规则读取 `bundle-rules`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先用 bundle analyzer 量化最大模块、入口 chunk、初始 JS、gzip/brotli 和 parse/execute 成本。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "把 barrel imports 改成 direct path imports，重型且非首屏必需的组件改为动态导入。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "第三方库按需加载，preload 只用于高概率路径，避免为了体积拆分破坏首屏体验。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "barrel import 和 dynamic import 示例读取 `bundle-code-patterns`；专项规则读取 `bundle-rules`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { dataAnalysisSkill } from "../data-analysis/index";
 import { dataStorytellingSkill } from "../data-storytelling/index";
@@ -74,12 +75,24 @@ export const statisticalAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认数据生成过程、样本量、时间窗口、过滤条件、采样机制和缺失/异常值。",
-      "先看分布、分位数和异常，再做比较、相关、回归或假设检验；不要只看均值。",
-      "显著性结论同时报告效应量、置信区间或业务影响；相关、趋势和因果分开表述。",
-      "样本太小、偏差太大或采样不清时降低结论强度，并说明需要补充的数据。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认数据生成过程、样本量、时间窗口、过滤条件、采样机制和缺失/异常值。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "先看分布、分位数和异常，再做比较、相关、回归或假设检验；不要只看均值。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "显著性结论同时报告效应量、置信区间或业务影响；相关、趋势和因果分开表述。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "样本太小、偏差太大或采样不清时降低结论强度，并说明需要补充的数据。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

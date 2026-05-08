@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, pdfCheckBoundingBoxes, pdfCheckFillableFields, pdfConvertPdfToImages, pdfCreateValidationImage, pdfExtractFormFieldInfo, pdfExtractFormStructure, pdfFillFillableFields, pdfFillPdfFormWithAnnotations } from "../../procedures/index";
 
@@ -45,12 +46,24 @@ export const pdfSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先判断任务是纯抽取、可填写表单、视觉型表单写入、坐标校验还是 PDF 转图片。",
-      "可填写表单先运行字段/结构发现 procedure，确认字段 ID、页码、合法值和字段类型。",
-      "视觉型 PDF 先渲染或创建标注图，再按 bounding boxes / 抽样核验坐标，不能凭感觉填。",
-      "表单链路读取 `forms` 和 `runtime-reference`；纯抽取任务读取 `pdf-extraction`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先判断任务是纯抽取、可填写表单、视觉型表单写入、坐标校验还是 PDF 转图片。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "可填写表单先运行字段/结构发现 procedure，确认字段 ID、页码、合法值和字段类型。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "视觉型 PDF 先渲染或创建标注图，再按 bounding boxes / 抽样核验坐标，不能凭感觉填。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "表单链路读取 `forms` 和 `runtime-reference`；纯抽取任务读取 `pdf-extraction`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

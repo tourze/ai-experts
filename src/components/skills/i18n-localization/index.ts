@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, i18nLocalizationI18nChecker } from "../../procedures/index";
 
@@ -68,13 +69,28 @@ export const i18nLocalizationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先盘点用户可见文案、目标语言/地区、命名空间、locale 目录和当前硬编码来源。",
-      "把自然语言从组件逻辑迁移到语义翻译键；句子级翻译优先，不用字符串拼接造句。",
-      "复数、日期、时间、数字和货币使用地区化 API 或 ICU 规则；缺失翻译必须有明确回退策略。",
-      "RTL 场景检查布局、图标方向、滚动、动画、文本对齐和响应式溢出。",
-      "上线前运行 i18n-localization-i18n-checker 或等价 lint，记录缺失键、硬编码和目录组织问题。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先盘点用户可见文案、目标语言/地区、命名空间、locale 目录和当前硬编码来源。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "把自然语言从组件逻辑迁移到语义翻译键；句子级翻译优先，不用字符串拼接造句。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "复数、日期、时间、数字和货币使用地区化 API 或 ICU 规则；缺失翻译必须有明确回退策略。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "RTL 场景检查布局、图标方向、滚动、动画、文本对齐和响应式溢出。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "上线前运行 i18n-localization-i18n-checker 或等价 lint，记录缺失键、硬编码和目录组织问题。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

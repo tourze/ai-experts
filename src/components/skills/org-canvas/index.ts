@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { raciMatrixSkill } from "../raci-matrix/index";
 
@@ -50,14 +51,32 @@ export const orgCanvasSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先定义中心命题：企业定位、当前阶段、业务边界和这次组织设计要解决的问题。",
-      "围绕中心填写六个维度：挑战与问题、未来愿景、产品与服务、策略与机会、市场定位，以及中心企业定位。",
-      "逐项做一致性交叉检查：战略是否支撑愿景，产品是否服务定位，组织能力是否能承接策略。",
-      "把不一致处翻译成组织设计问题：职责缺口、协作断点、能力缺口、决策瓶颈或汇报关系错配。",
-      "需要深入人才管理或团队构成时读取对应 reference，不在画布里伪造人才结论。",
-      "输出调整方向，并说明哪些问题只需用 `raci-matrix` 理清职责，不需要重组。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先定义中心命题：企业定位、当前阶段、业务边界和这次组织设计要解决的问题。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "围绕中心填写六个维度：挑战与问题、未来愿景、产品与服务、策略与机会、市场定位，以及中心企业定位。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "逐项做一致性交叉检查：战略是否支撑愿景，产品是否服务定位，组织能力是否能承接策略。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "把不一致处翻译成组织设计问题：职责缺口、协作断点、能力缺口、决策瓶颈或汇报关系错配。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "需要深入人才管理或团队构成时读取对应 reference，不在画布里伪造人才结论。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出调整方向，并说明哪些问题只需用 `raci-matrix` 理清职责，不需要重组。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

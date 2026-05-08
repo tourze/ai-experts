@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { phpDesignPatternsSkill } from "../php-design-patterns/index";
 import { phpErrorHandlingSkill } from "../php-error-handling/index";
@@ -74,12 +75,24 @@ export const phpXFeaturesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认项目最低 PHP 版本、strict_types 状态、静态分析级别和框架约束。",
-      "DTO / 值对象优先考虑 readonly class，魔法字符串和常量组优先考虑 backed enum。",
-      "多分支条件优先用 `match` 表达严格比较和穷尽性；高级类型和 attributes 只在提升边界清晰度时使用。",
-      "readonly、enum、match 和版本速查读取 `language-feature-patterns`；交叉类型、DNF 类型和 attributes 读取 `advanced-types-and-attributes`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认项目最低 PHP 版本、strict_types 状态、静态分析级别和框架约束。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "DTO / 值对象优先考虑 readonly class，魔法字符串和常量组优先考虑 backed enum。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "多分支条件优先用 `match` 表达严格比较和穷尽性；高级类型和 attributes 只在提升边界清晰度时使用。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "readonly、enum、match 和版本速查读取 `language-feature-patterns`；交叉类型、DNF 类型和 attributes 读取 `advanced-types-and-attributes`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

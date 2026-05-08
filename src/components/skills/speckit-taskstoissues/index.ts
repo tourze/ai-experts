@@ -2,7 +2,8 @@ import {
   InvocationPolicy,
   Platform,
   defineSkill,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const speckitTaskstoissuesSkill = defineSkill({
@@ -19,17 +20,35 @@ export const speckitTaskstoissuesSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "确保 `.specify/scripts/check-prerequisites.mjs` 存在；若缺失，先调用 `speckit-baseline` skill 完成 `.specify/` 初始化，完成后回到本流程。",
-      "运行：`node .specify/scripts/check-prerequisites.mjs --json --require-tasks --include-tasks`",
-      "读取 `tasks.md` 并提取任务列表。",
-      "读取 `git remote.origin.url`。",
-      "仅当远端是 GitHub 且仓库匹配时创建 issue。",
-      `每个 issue 包含：
+      defineWorkflowStep({
+        id: "step-1",
+        label: "确保 `.specify/scripts/check-prerequisites.mjs` 存在；若缺失，先调用 `speckit-baseline` skill 完成 `.specify/` 初始化，完成后回到本流程。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "运行：`node .specify/scripts/check-prerequisites.mjs --json --require-tasks --include-tasks`",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "读取 `tasks.md` 并提取任务列表。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "读取 `git remote.origin.url`。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "仅当远端是 GitHub 且仓库匹配时创建 issue。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: `每个 issue 包含：
    - 任务编号与标题
    - 验收标准
    - 依赖关系`,
+      }),
     ],
   }),
   tools: [

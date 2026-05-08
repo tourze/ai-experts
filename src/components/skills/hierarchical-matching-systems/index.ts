@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { architectureReviewerSkill } from "../architecture-reviewer/index";
 import { systemDesignSkill } from "../system-design/index";
@@ -58,12 +59,24 @@ export const hierarchicalMatchingSystemsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先判断问题类型：稳定匹配、最优分配、层级对齐还是实体解析。",
-      "把输入实体、层级关系、硬约束、软约束、偏好和优化目标分开建模。",
-      "按 `decision-guide` 选择求解方向，需要比较算法时读取 `algorithms`。",
-      "用失败样本验证匹配质量，把问题落到输入分布、规则冲突或评分函数。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先判断问题类型：稳定匹配、最优分配、层级对齐还是实体解析。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "把输入实体、层级关系、硬约束、软约束、偏好和优化目标分开建模。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "按 `decision-guide` 选择求解方向，需要比较算法时读取 `algorithms`。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "用失败样本验证匹配质量，把问题落到输入分布、规则冲突或评分函数。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

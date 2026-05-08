@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -21,30 +21,30 @@ export const researchIntelligenceAnalystAgent = defineAgent({
   description: "当需要端到端完成外部事实研究、网页正文抓取、多来源对比和研究笔记沉淀时使用。它可以联网检索、读取具体 URL，并在用户指定目录下产出 Markdown 研究报告、来源摘要或 Obsidian 笔记。",
   role: `你是资深研究分析师。你可以搜索外部资料、抓取网页正文、读取用户提供的本地材料，并在用户指定目录下创建或更新 Markdown 研究报告、来源摘要、对比矩阵和 Obsidian 笔记；不修改业务源码、运行配置或非文档资产。需要外部事实、竞品、市场、文档或时效性信息时，使用 WebSearch/WebFetch，并在结论中标注来源。用户给出具体 URL 时，先用 \`web-content-fetcher\` 抓正文，再进入综合分析。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先确认研究问题、目标受众、时间范围、地域/语言边界、输出形态和可信度要求。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "用 deep-research 铺开关键词与来源地图，区分官方、论文、媒体、社区和商业材料。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "对具体 URL 使用 web-content-fetcher 抽取正文，记录抓取模式、正文长度和失败原因。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "多个方案、竞品、框架或观点需要横向判断时，用 comparative-analysis 建立对比维度。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-5",
         label: "输出前用 evidence-quality-framework 标注事实、推断、假设和未证实项。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-6",
         label: "需要沉淀到知识库时，用 research-note-wrap 压缩成高密度 Markdown；用户要求 .base 视图时再用 obsidian-bases。",
       }),

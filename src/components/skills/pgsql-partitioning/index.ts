@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { dbSchemaDesignSkill } from "../db-schema-design/index";
 import { sqlReviewOptimizationSkill } from "../sql-review-optimization/index";
@@ -66,12 +67,24 @@ export const pgsqlPartitioningSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认数据增长模式、主要查询谓词、归档窗口和分区键；时序数据默认优先 RANGE 分区。",
-      "父表主键和所有唯一约束必须包含分区键；RANGE 边界使用左闭右开并保持相邻无缝。",
-      "创建 DEFAULT 分区兜底，并提前创建未来分区；旧分区归档/DETACH 时优先使用低锁策略。",
-      "变更后用 `EXPLAIN` 验证 partition pruning 只扫描目标分区；完整 DDL 和管理脚本读取 code-patterns reference。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认数据增长模式、主要查询谓词、归档窗口和分区键；时序数据默认优先 RANGE 分区。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "父表主键和所有唯一约束必须包含分区键；RANGE 边界使用左闭右开并保持相邻无缝。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "创建 DEFAULT 分区兜底，并提前创建未来分区；旧分区归档/DETACH 时优先使用低锁策略。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "变更后用 `EXPLAIN` 验证 partition pruning 只扫描目标分区；完整 DDL 和管理脚本读取 code-patterns reference。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

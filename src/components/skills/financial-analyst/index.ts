@@ -6,7 +6,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, financialAnalystBudgetVarianceAnalyzer, financialAnalystDcfValuation, financialAnalystForecastBuilder, financialAnalystRatioCalculator, financialAnalystRatioInputValidation } from "../../procedures/index";
 
@@ -50,13 +51,28 @@ export const financialAnalystSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先判断分析类型：比率分析、DCF 估值、预算差异、滚动预测或输入校验，并选择对应 procedure。",
-      "确认输入是工具专用 JSON 或聚合样例的正确子段；Excel、CSV、数据库抽取不在本 skill 内完成。",
-      "需要公式、行业口径或估值方法时读取 financial-ratios-guide、valuation-methodology、forecasting-best-practices 或 industry-adaptations。",
-      "运行 procedure 后先检查 0、空列表、异常大数和字段错配，再解释结果。",
-      "需要报告时使用 variance_report_template、dcf_analysis_template 或 forecast_report_template，区分事实计算、假设和管理层判断。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先判断分析类型：比率分析、DCF 估值、预算差异、滚动预测或输入校验，并选择对应 procedure。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "确认输入是工具专用 JSON 或聚合样例的正确子段；Excel、CSV、数据库抽取不在本 skill 内完成。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "需要公式、行业口径或估值方法时读取 financial-ratios-guide、valuation-methodology、forecasting-best-practices 或 industry-adaptations。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "运行 procedure 后先检查 0、空列表、异常大数和字段错配，再解释结果。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "需要报告时使用 variance_report_template、dcf_analysis_template 或 forecast_report_template，区分事实计算、假设和管理层判断。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

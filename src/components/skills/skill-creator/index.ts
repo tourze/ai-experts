@@ -6,7 +6,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, skillCreatorAggregateBenchmark, skillCreatorGenerateReview, skillCreatorGenerateReport, skillCreatorImproveDescription, skillCreatorPackageSkill, skillCreatorQuickValidate, skillCreatorRunEval, skillCreatorRunLoop } from "../../procedures/index";
 
@@ -38,16 +39,40 @@ export const skillCreatorSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先捕获意图：skill 要让 agent 做什么、何时触发、期望输出、是否需要 eval，以及来源材料是什么。",
-      "写或改 skill 时聚焦 expert-only 行为增量，把细节拆到 references/assets/procedures，保持主说明短而可执行。",
-      "设计 2-3 个真实 eval prompts，压力敏感 skill 至少包含一个诱导跳过规则的 prompt；保存到 `evals/cases.yaml`。",
-      "运行评估时为每个 eval 同轮启动 with-skill 和 baseline/old-skill，创建 workspace/iteration/eval 目录和 metadata。",
-      "运行期间起草客观 assertions，完成后记录 timing，评分生成 `grading.json`，聚合 benchmark 并用 review viewer 收集用户反馈。",
-      "根据反馈泛化原则、精简无效指令、补 Procedure、eval 辅助代码或 references，再进入下一轮 iteration。",
-      "创建或改进完成后，可运行 description optimization：生成真实触发 eval queries、让用户 review、运行优化 loop、应用 best_description。",
-      "需要交付时使用 package procedure 打包，并按环境差异处理 Claude.ai、Cowork、headless viewer 和只读安装路径。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先捕获意图：skill 要让 agent 做什么、何时触发、期望输出、是否需要 eval，以及来源材料是什么。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "写或改 skill 时聚焦 expert-only 行为增量，把细节拆到 references/assets/procedures，保持主说明短而可执行。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "设计 2-3 个真实 eval prompts，压力敏感 skill 至少包含一个诱导跳过规则的 prompt；保存到 `evals/cases.yaml`。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "运行评估时为每个 eval 同轮启动 with-skill 和 baseline/old-skill，创建 workspace/iteration/eval 目录和 metadata。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "运行期间起草客观 assertions，完成后记录 timing，评分生成 `grading.json`，聚合 benchmark 并用 review viewer 收集用户反馈。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "根据反馈泛化原则、精简无效指令、补 Procedure、eval 辅助代码或 references，再进入下一轮 iteration。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "创建或改进完成后，可运行 description optimization：生成真实触发 eval queries、让用户 review、运行优化 loop、应用 best_description。",
+      }),
+      defineWorkflowStep({
+        id: "step-8",
+        label: "需要交付时使用 package procedure 打包，并按环境差异处理 Claude.ai、Cowork、headless viewer 和只读安装路径。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

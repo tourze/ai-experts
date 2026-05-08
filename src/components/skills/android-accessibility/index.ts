@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const androidAccessibilitySkill = defineSkill({
@@ -39,14 +40,32 @@ export const androidAccessibilitySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "逐屏用 TalkBack 扫描核心任务路径，记录缺失、冗余或顺序错误的播报。",
-      "用 Layout Inspector 或 UI 层级确认交互元素的语义、状态、分组和最小触摸区域。",
-      "用 Accessibility Scanner 自动检测触摸目标、标签、对比度和可聚焦性问题。",
-      "用外接键盘或 Switch Access 跑一遍 Tab / 方向键路径，确认所有功能都有非触摸操作方式。",
-      "在 200% 字体、粗体文本和高对比度模式下复测关键页面，确认文案不裁切、状态仍可识别。",
-      "遇到自定义控件、Canvas 或复杂状态时读取 `advanced-patterns` reference，再给出具体修复方案。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "逐屏用 TalkBack 扫描核心任务路径，记录缺失、冗余或顺序错误的播报。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "用 Layout Inspector 或 UI 层级确认交互元素的语义、状态、分组和最小触摸区域。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "用 Accessibility Scanner 自动检测触摸目标、标签、对比度和可聚焦性问题。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "用外接键盘或 Switch Access 跑一遍 Tab / 方向键路径，确认所有功能都有非触摸操作方式。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "在 200% 字体、粗体文本和高对比度模式下复测关键页面，确认文案不裁切、状态仍可识别。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "遇到自定义控件、Canvas 或复杂状态时读取 `advanced-patterns` reference，再给出具体修复方案。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

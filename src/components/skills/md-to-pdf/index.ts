@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, mdToPdfKatexRender, mdToPdfMdToPdf, mdToPdfSetup } from "../../procedures/index";
 
@@ -59,12 +60,24 @@ export const mdToPdfSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认源 `.md`、目标 `.pdf`、纸张格式、页边距、页眉页脚、CSS 和是否包含 Mermaid/数学公式。",
-      "先调用 `md-to-pdf-setup` 做依赖检查；需要排版细节时读取 README 和示例文档资源。",
-      "用 `md-to-pdf-md-to-pdf` 执行渲染；只有依赖缺失且用户接受降级时才使用无 Mermaid 或无数学公式路径。",
-      "交付前抽查首尾页、目录、宽表格、长代码块、Mermaid、数学公式和分页位置。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认源 `.md`、目标 `.pdf`、纸张格式、页边距、页眉页脚、CSS 和是否包含 Mermaid/数学公式。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "先调用 `md-to-pdf-setup` 做依赖检查；需要排版细节时读取 README 和示例文档资源。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "用 `md-to-pdf-md-to-pdf` 执行渲染；只有依赖缺失且用户接受降级时才使用无 Mermaid 或无数学公式路径。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "交付前抽查首尾页、目录、宽表格、长代码块、Mermaid、数学公式和分页位置。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

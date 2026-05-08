@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { laravelTddSkill } from "../laravel-tdd/index";
 import { laravelVerificationSkill } from "../laravel-verification/index";
@@ -73,12 +74,24 @@ export const laravelSecuritySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先列出受保护路由、用户输入、文件上传、令牌、Webhook、高风险入口和目标部署环境。",
-      "入口用 auth 中间件保护，资源权限用 Policy / authorize 判断，写入口先经过 FormRequest。",
-      "上传校验 MIME、大小和磁盘；登录、重置密码、OTP、导出和 Webhook 设独立限流。",
-      "FormRequest 上传和 RateLimiter 示例读取 `security-code-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先列出受保护路由、用户输入、文件上传、令牌、Webhook、高风险入口和目标部署环境。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "入口用 auth 中间件保护，资源权限用 Policy / authorize 判断，写入口先经过 FormRequest。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "上传校验 MIME、大小和磁盘；登录、重置密码、OTP、导出和 Webhook 设独立限流。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "FormRequest 上传和 RateLimiter 示例读取 `security-code-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

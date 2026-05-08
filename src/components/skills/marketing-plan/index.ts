@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { contentStrategySkill } from "../content-strategy/index";
 import { paidAdsSkill } from "../paid-ads/index";
@@ -63,14 +64,32 @@ export const marketingPlanSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先做 Brief 梳理：What、Who、When、Why、How、Where、目标、预算/资源、素材、限制和待确认项。",
-      "分析输入：产品功能/玩法/调性/卖点/可信证据，竞品定位/打法/渠道，可区隔机会和用户转化阻力。",
-      "输出定位包装：卖点 x 市场区隔 x 用户洞察的一句话定位，拆 3-5 个信息支柱，必要时给 slogan 方向。",
-      "制定策略规划：一句话主轴、阶段主题、目标、人群、核心事件、渠道组合和指标。",
-      "做节奏校验：每阶段必须承接上一阶段用户状态变化，不只列时间轴或渠道清单。",
-      "落活动卡和资源清单：时间、目的、对象、流程、渠道/素材、指标、依赖、风险和分工；模板细节读取 market-plan-template。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先做 Brief 梳理：What、Who、When、Why、How、Where、目标、预算/资源、素材、限制和待确认项。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "分析输入：产品功能/玩法/调性/卖点/可信证据，竞品定位/打法/渠道，可区隔机会和用户转化阻力。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "输出定位包装：卖点 x 市场区隔 x 用户洞察的一句话定位，拆 3-5 个信息支柱，必要时给 slogan 方向。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "制定策略规划：一句话主轴、阶段主题、目标、人群、核心事件、渠道组合和指标。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "做节奏校验：每阶段必须承接上一阶段用户状态变化，不只列时间轴或渠道清单。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "落活动卡和资源清单：时间、目的、对象、流程、渠道/素材、指标、依赖、风险和分工；模板细节读取 market-plan-template。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

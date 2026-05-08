@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -21,22 +21,22 @@ export const incidentResponderAgent = defineAgent({
   description: "当线上服务异常、性能下降、报错或中断需要做事故应急响应、按时间线还原、定位根因并提出止血与修复方案时使用。它只读分析日志、监控与配置，不修改运行时。",
   role: `你是资深 SRE / 事故应急响应工程师。你只读取日志、metrics、配置和源码，不修改生产环境、不重启服务、不改告警阈值。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先确认事故现状：影响面、起始时间、严重度、上下游依赖、用户可见症状。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "时间线优先：按 UTC 对齐日志、metrics、deploy / config change、外部事件，构建有序时间线。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "根因 vs 触发因素：区分「让事故有可能发生的脆弱性」与「这次触发的具体动作」，不混用。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "先给止血方案再给根因修复：止血在事故窗口内可执行，根因修复进 follow-up。",
       }),

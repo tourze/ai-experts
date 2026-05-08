@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { androidApkAuditSkill } from "../android-apk-audit/index";
 import { binaryAnalysisPatternsSkill } from "../binary-analysis-patterns/index";
@@ -54,14 +55,32 @@ export const fridaDynamicAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先静态定位 hook 点：包名、PID、模块名、导出符号、Java 类/方法或 ObjC selector。",
-      "选择启动方式：`frida -U -f <pkg> -l hook.js` spawn、`frida -U <pkg> -l hook.js` attach，或 `frida -U -p <pid> -l hook.js`。",
-      "Native hook 用 `Process.getModuleByName()` 和 `mod.getExportByName()`，早加载模块先轮询 `Process.findModuleByName()`。",
-      "Android Java hook 包在 `Java.perform()` 内；iOS ObjC hook 从 `ObjC.classes` 取 selector implementation。",
-      "二进制数据用 `hexdump()`，hook 回调用 try/catch，避免脚本异常放大成目标崩溃。",
-      "自适应 bypass 按静态定位、首次 hook、运行/崩溃/诊断、迭代修复推进；crash log 决定下一轮 hook 点。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先静态定位 hook 点：包名、PID、模块名、导出符号、Java 类/方法或 ObjC selector。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "选择启动方式：`frida -U -f <pkg> -l hook.js` spawn、`frida -U <pkg> -l hook.js` attach，或 `frida -U -p <pid> -l hook.js`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "Native hook 用 `Process.getModuleByName()` 和 `mod.getExportByName()`，早加载模块先轮询 `Process.findModuleByName()`。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Android Java hook 包在 `Java.perform()` 内；iOS ObjC hook 从 `ObjC.classes` 取 selector implementation。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "二进制数据用 `hexdump()`，hook 回调用 try/catch，避免脚本异常放大成目标崩溃。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "自适应 bypass 按静态定位、首次 hook、运行/崩溃/诊断、迭代修复推进；crash log 决定下一轮 hook 点。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

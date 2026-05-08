@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { embeddingStrategiesSkill } from "../embedding-strategies/index";
 import { llmEvaluationSkill } from "../llm-evaluation/index";
@@ -72,12 +73,24 @@ export const ragAuditorSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先收集 query、gold docs、召回文档、引用片段、模型输出、prompt 和日志；缺证据时不直接定性 hallucination。",
-      "构造覆盖主路径、易混淆路径和长尾样例的 query set，必要时读取 diagnostic-queries reference。",
-      "先评估 retrieval@k、precision/recall/MRR，再评估 groundedness、completeness 和 hallucination rate。",
-      "把失败样例映射到 failure taxonomy，并按 chunk、embedding、索引、重排、prompt、answer synthesis 给 P0/P1/P2 改进优先级。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先收集 query、gold docs、召回文档、引用片段、模型输出、prompt 和日志；缺证据时不直接定性 hallucination。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "构造覆盖主路径、易混淆路径和长尾样例的 query set，必要时读取 diagnostic-queries reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "先评估 retrieval@k、precision/recall/MRR，再评估 groundedness、completeness 和 hallucination rate。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "把失败样例映射到 failure taxonomy，并按 chunk、embedding、索引、重排、prompt、answer synthesis 给 P0/P1/P2 改进优先级。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

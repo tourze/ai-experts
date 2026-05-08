@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const redisPitfallDiagnosticsSkill = defineSkill({
@@ -51,12 +52,24 @@ export const redisPitfallDiagnosticsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先收集时间窗、实例角色、Redis 版本、调用方、key 类型、元素数、`INFO`、`CONFIG GET`、`SLOWLOG` 和命令调用点。",
-      "先归类到命令语义、内存/持久化、复制/故障切换、版本/配置差异；每个结论都保留可证伪假设。",
-      "TTL 异常重点检查 `SET` 未带 EX/PX/EXAT/PXAT/KEEPTTL 覆盖旧值；big key 删除前量化 `TYPE`、`MEMORY USAGE` 和元素数。",
-      "主从/持久化问题必须说明异步复制、AOF/RDB RPO/RTO、rewrite/fork COW 余量和 replica 配置一致性；命令模板读取 code-patterns reference。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先收集时间窗、实例角色、Redis 版本、调用方、key 类型、元素数、`INFO`、`CONFIG GET`、`SLOWLOG` 和命令调用点。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "先归类到命令语义、内存/持久化、复制/故障切换、版本/配置差异；每个结论都保留可证伪假设。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "TTL 异常重点检查 `SET` 未带 EX/PX/EXAT/PXAT/KEEPTTL 覆盖旧值；big key 删除前量化 `TYPE`、`MEMORY USAGE` 和元素数。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "主从/持久化问题必须说明异步复制、AOF/RDB RPO/RTO、rewrite/fork COW 余量和 replica 配置一致性；命令模板读取 code-patterns reference。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

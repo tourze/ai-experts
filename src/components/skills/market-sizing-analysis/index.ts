@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { fundraiseAdvisorSkill } from "../fundraise-advisor/index";
 import { startupIcpDefinerSkill } from "../startup-icp-definer/index";
@@ -57,14 +58,32 @@ export const marketSizingAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先定义市场边界、地区、年份、币种、客户单位、收入模型和 TAM/SAM/SOM 口径。",
-      "读取 `data-sources` reference 查找或评估数据来源，记录数据年份、可信度和缺口。",
-      "至少做两种估算：top-down、bottom-up 或 value theory，并分别列出假设、公式和结果。",
-      "检查 TAM/SAM/SOM 是否使用一致口径，避免用户数、收入、地区或价格体系混算。",
-      "把 SAM/SOM 与 ICP、渠道能力、销售周期、资源约束和融资叙事对齐。",
-      "做敏感性分析：找出最影响结论的价格、渗透率、转化率、市场增长率或覆盖范围。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先定义市场边界、地区、年份、币种、客户单位、收入模型和 TAM/SAM/SOM 口径。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "读取 `data-sources` reference 查找或评估数据来源，记录数据年份、可信度和缺口。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "至少做两种估算：top-down、bottom-up 或 value theory，并分别列出假设、公式和结果。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "检查 TAM/SAM/SOM 是否使用一致口径，避免用户数、收入、地区或价格体系混算。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "把 SAM/SOM 与 ICP、渠道能力、销售周期、资源约束和融资叙事对齐。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "做敏感性分析：找出最影响结论的价格、渗透率、转化率、市场增长率或覆盖范围。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

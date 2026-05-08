@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { refactoringPatternsSkill } from "../refactoring-patterns/index";
 
@@ -69,12 +70,24 @@ export const softwareDesignSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先判断问题是职责边界、抽象层次、I/O 隔离、依赖方向还是复杂度泄漏。",
-      "以是否降低整体复杂度为最高标准，不为局部优雅引入浅模块或跳转成本。",
-      "检查模块是否隐藏变化知识、接口是否最小、依赖是否单向、业务逻辑是否脱离框架边界。",
-      "设计原则和分层速查读取 `design-principles`；深模块、信息隐藏和复杂度症状读取对应 references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先判断问题是职责边界、抽象层次、I/O 隔离、依赖方向还是复杂度泄漏。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "以是否降低整体复杂度为最高标准，不为局部优雅引入浅模块或跳转成本。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "检查模块是否隐藏变化知识、接口是否最小、依赖是否单向、业务逻辑是否脱离框架边界。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "设计原则和分层速查读取 `design-principles`；深模块、信息隐藏和复杂度症状读取对应 references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

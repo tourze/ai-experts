@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { portersFiveForcesSkill } from "../porters-five-forces/index";
 import { pricingStrategySkill } from "../pricing-strategy/index";
@@ -70,14 +71,32 @@ export const businessModelSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先选择主分支：`idea_to_model`、`model_diagnosis` 或 `company_case_study`，并说明辅助模块如何处理。",
-      "读取 `report-contract` reference，按分支确认必备字段、章节约定和输出边界。",
-      "建立 `market_environment`：目标市场、买方、渠道、监管、支付、交付约束和竞争环境。",
-      "收集证据并分级：`S/A` 支撑摘要事实，`B/C/D` 只支撑信号、估算或假设。",
-      "需要 JSON 审计源或字段示例时读取 `analysis-json-template` reference；中国市场因果链读取 `weizhu-model`，一致性检查读取 `iron-triangle`。",
-      "生成结构化 JSON 作为审计源，再输出人类可读摘要、关键判断和 HTML 模块规划。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先选择主分支：`idea_to_model`、`model_diagnosis` 或 `company_case_study`，并说明辅助模块如何处理。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "读取 `report-contract` reference，按分支确认必备字段、章节约定和输出边界。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "建立 `market_environment`：目标市场、买方、渠道、监管、支付、交付约束和竞争环境。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "收集证据并分级：`S/A` 支撑摘要事实，`B/C/D` 只支撑信号、估算或假设。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "需要 JSON 审计源或字段示例时读取 `analysis-json-template` reference；中国市场因果链读取 `weizhu-model`，一致性检查读取 `iron-triangle`。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "生成结构化 JSON 作为审计源，再输出人类可读摘要、关键判断和 HTML 模块规划。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

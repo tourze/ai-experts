@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { asyncPythonPatternsSkill } from "../async-python-patterns/index";
 import { pythonBackgroundJobsSkill } from "../python-background-jobs/index";
@@ -70,12 +71,24 @@ export const pythonObservabilitySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认请求入口、外部调用、任务边界、失败路径、敏感字段和现有日志字段。",
-      "结构化日志固定 `event`、`request_id`、`elapsed_ms` 等键名，错误日志带堆栈和业务标签。",
-      "指标覆盖吞吐、延迟、错误率和队列长度；trace/span 边界要贴近真实业务边界。",
-      "logging context manager 和耗时字段示例读取 `logging-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认请求入口、外部调用、任务边界、失败路径、敏感字段和现有日志字段。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "结构化日志固定 `event`、`request_id`、`elapsed_ms` 等键名，错误日志带堆栈和业务标签。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "指标覆盖吞吐、延迟、错误率和队列长度；trace/span 边界要贴近真实业务边界。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "logging context manager 和耗时字段示例读取 `logging-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

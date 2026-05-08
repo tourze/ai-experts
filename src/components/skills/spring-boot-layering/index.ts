@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { arthasCpuHighSkill } from "../arthas-cpu-high/index";
 import { arthasSpringcontextIssuesResolveSkill } from "../arthas-springcontext-issues-resolve/index";
@@ -82,13 +83,28 @@ export const springBootLayeringSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认 Java 21、Spring Boot 3.x 和 jakarta.* 基线，以及 API、持久化、事务和错误处理范围。",
-      "Controller 只处理 HTTP 协议转换和校验，不直接依赖 Repository；输入输出使用 DTO，不暴露 Entity。",
-      "Service 承担业务逻辑与事务边界：读操作 readOnly，写操作显式 @Transactional。",
-      "Repository 只做持久化；JPA 查询检查分页、N+1、索引命中、懒加载和事务边界。",
-      "异常统一经 @RestControllerAdvice 或等价机制输出稳定错误码和消息，日志/指标/审计放在明确可观测性边界。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认 Java 21、Spring Boot 3.x 和 jakarta.* 基线，以及 API、持久化、事务和错误处理范围。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "Controller 只处理 HTTP 协议转换和校验，不直接依赖 Repository；输入输出使用 DTO，不暴露 Entity。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "Service 承担业务逻辑与事务边界：读操作 readOnly，写操作显式 @Transactional。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Repository 只做持久化；JPA 查询检查分页、N+1、索引命中、懒加载和事务边界。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "异常统一经 @RestControllerAdvice 或等价机制输出稳定错误码和消息，日志/指标/审计放在明确可观测性边界。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { complexityReducerSkill } from "../complexity-reducer/index";
 import { refactoringChecklistSkill } from "../refactoring-checklist/index";
@@ -65,14 +66,32 @@ export const refactoringPatternsSkill = defineSkill({
       reason: "重构前需要检查测试基线、范围界定、行为变更隔离和回滚方案时联动。",
     },
   ],
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先说明代码异味、目标状态、行为是否保持不变，以及验证路径。",
-      "读取 `smell-catalog` reference 归类异味，不为了套模式强行重构。",
-      "按问题读取动作库：函数组合读 `composing-methods`，职责搬移读 `moving-features`，数据整理读 `organizing-data`，条件简化读 `simplifying-conditionals`。",
-      "需要排序完整步骤时读取 `refactoring-workflow` reference；遗留代码隔离测试时读取 `seam-ripper`。",
-      "把重构和行为变更拆成两步，优先选择小步、安全、可回滚的动作序列。",
-      "标记需要补测试、人工验证或拆 commit 的高风险步骤。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先说明代码异味、目标状态、行为是否保持不变，以及验证路径。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "读取 `smell-catalog` reference 归类异味，不为了套模式强行重构。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "按问题读取动作库：函数组合读 `composing-methods`，职责搬移读 `moving-features`，数据整理读 `organizing-data`，条件简化读 `simplifying-conditionals`。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "需要排序完整步骤时读取 `refactoring-workflow` reference；遗留代码隔离测试时读取 `seam-ripper`。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "把重构和行为变更拆成两步，优先选择小步、安全、可回滚的动作序列。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "标记需要补测试、人工验证或拆 commit 的高风险步骤。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

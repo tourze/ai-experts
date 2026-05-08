@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const reactNativeMetroConfigSkill = defineSkill({
@@ -48,14 +49,32 @@ export const reactNativeMetroConfigSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认项目结构、包管理器、workspace 边界、平台扩展、CI 环境和当前 Metro 报错/性能症状。",
-      "monorepo 或 workspace 问题读取 `monorepo-config` reference，核对 `watchFolders`、resolver 和重复依赖。",
-      "自定义平台后缀读取 `custom-platform-exts` reference，确认扩展顺序和平台目标。",
-      "CI 慢或缓存不稳定读取 `ci-performance-config` reference，拆分 Metro、node_modules 和构建缓存。",
-      "验证配置不会引入重复 React/RN、错误 symlink 解析或平台文件优先级错乱。",
-      "输出 Metro 配置变更、风险、验证命令和回滚方式。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认项目结构、包管理器、workspace 边界、平台扩展、CI 环境和当前 Metro 报错/性能症状。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "monorepo 或 workspace 问题读取 `monorepo-config` reference，核对 `watchFolders`、resolver 和重复依赖。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "自定义平台后缀读取 `custom-platform-exts` reference，确认扩展顺序和平台目标。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "CI 慢或缓存不稳定读取 `ci-performance-config` reference，拆分 Metro、node_modules 和构建缓存。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "验证配置不会引入重复 React/RN、错误 symlink 解析或平台文件优先级错乱。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出 Metro 配置变更、风险、验证命令和回滚方式。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { reactPerformanceSkill } from "../react-performance/index";
 import { reactServerComponentsSkill } from "../react-server-components/index";
@@ -84,12 +85,24 @@ export const reactHooksSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先判断逻辑属于 state、reducer、ref、effect、memo 还是自定义 Hook，避免把纯派生塞进 effect。",
-      "`useEffect` 只同步 React 外部系统，依赖数组必须表达真实读集，清理函数释放订阅、定时器和事件监听。",
-      "复杂状态机优先 `useReducer`，跨渲染可变值用 `useRef`，需要触发渲染才用 state。",
-      "useReducer + useEffect 示例读取 `hooks-code-patterns`；自定义 Hook 和 useMemo 派生值读取 `advanced-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先判断逻辑属于 state、reducer、ref、effect、memo 还是自定义 Hook，避免把纯派生塞进 effect。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "`useEffect` 只同步 React 外部系统，依赖数组必须表达真实读集，清理函数释放订阅、定时器和事件监听。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "复杂状态机优先 `useReducer`，跨渲染可变值用 `useRef`，需要触发渲染才用 state。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "useReducer + useEffect 示例读取 `hooks-code-patterns`；自定义 Hook 和 useMemo 派生值读取 `advanced-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { logAnalyzerSkill } from "../log-analyzer/index";
 import { monitoringObservabilitySkill } from "../monitoring-observability/index";
@@ -74,15 +75,36 @@ export const incidentResponseSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "Triage 先确认影响面、起始时间、严重度、用户可见症状、上下游依赖和收入/业务影响。",
-      "只读采集服务状态、错误日志、磁盘、端口、进程和最近部署/配置/feature flag 变化。",
-      "生成 2-3 个候选假设，逐个验证和反证；每次只验证一个假设。",
-      "按 P0/P1/P2/P3 分级：核心全阻、核心严重降级、部分异常、非核心异常。",
-      "构建 UTC 时间线，对齐 log、metric、deploy、config change、计划任务和外部事件。",
-      "止血方案只选可逆动作：切流、回滚、限流、降级；写明回滚条件和生效时间。",
-      "根因分析区分触发动作和系统脆弱性，修复路线按短期、本月、季度拆分。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "Triage 先确认影响面、起始时间、严重度、用户可见症状、上下游依赖和收入/业务影响。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "只读采集服务状态、错误日志、磁盘、端口、进程和最近部署/配置/feature flag 变化。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "生成 2-3 个候选假设，逐个验证和反证；每次只验证一个假设。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "按 P0/P1/P2/P3 分级：核心全阻、核心严重降级、部分异常、非核心异常。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "构建 UTC 时间线，对齐 log、metric、deploy、config change、计划任务和外部事件。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "止血方案只选可逆动作：切流、回滚、限流、降级；写明回滚条件和生效时间。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "根因分析区分触发动作和系统脆弱性，修复路线按短期、本月、季度拆分。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

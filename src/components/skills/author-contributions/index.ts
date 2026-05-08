@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const authorContributionsSkill = defineSkill({
@@ -43,14 +44,32 @@ export const authorContributionsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先用 `git log --format=\"%an <%ae>\" <upstream>..<branch> | sort -u` 枚举精确作者身份。",
-      "按精确 `--author=` 收集作者 commit，再用 `git diff-tree --no-commit-id --name-only -r <hash>` 合并 `author_files`。",
-      "对整条分支所有 commit 跑 `git diff-tree --no-commit-id -r -M <hash>`，构建 `new_path -> old_paths` rename 图。",
-      "rename 追踪必须做传递闭包，支持 `a -> b -> c` 多跳，不只查一跳。",
-      "最终文件只取 `git diff --name-only <upstream>..<branch>`，再与 author_files 和 rename 祖先求交。",
-      "输出时用 `git diff --stat <upstream>..<branch> -- <files>` 补统计，标记 DIRECT 或 VIA_RENAME。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先用 `git log --format=\"%an <%ae>\" <upstream>..<branch> | sort -u` 枚举精确作者身份。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按精确 `--author=` 收集作者 commit，再用 `git diff-tree --no-commit-id --name-only -r <hash>` 合并 `author_files`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "对整条分支所有 commit 跑 `git diff-tree --no-commit-id -r -M <hash>`，构建 `new_path -> old_paths` rename 图。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "rename 追踪必须做传递闭包，支持 `a -> b -> c` 多跳，不只查一跳。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "最终文件只取 `git diff --name-only <upstream>..<branch>`，再与 author_files 和 rename 祖先求交。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出时用 `git diff --stat <upstream>..<branch> -- <files>` 补统计，标记 DIRECT 或 VIA_RENAME。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

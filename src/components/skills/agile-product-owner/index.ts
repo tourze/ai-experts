@@ -6,7 +6,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, agileProductOwnerUserStoryGenerator } from "../../procedures/index";
 
@@ -54,12 +55,24 @@ export const agileProductOwnerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认业务目标、用户角色、成功标准、非目标、依赖和 Sprint 容量。",
-      "按用户故事模板写成“作为<角色>，我想要<动作>，以便<收益>”，验收标准使用 Given / When / Then。",
-      "需要故事、Sprint 或版本模板时读取 user-story / sprint / version references，生成样例 Backlog 时调用 procedure。",
-      "检查 Story 是否可在一个 Sprint 内完成，Stretch 不挤占 committed 范围。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认业务目标、用户角色、成功标准、非目标、依赖和 Sprint 容量。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按用户故事模板写成“作为<角色>，我想要<动作>，以便<收益>”，验收标准使用 Given / When / Then。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "需要故事、Sprint 或版本模板时读取 user-story / sprint / version references，生成样例 Backlog 时调用 procedure。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "检查 Story 是否可在一个 Sprint 内完成，Stretch 不挤占 committed 范围。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -25,22 +25,22 @@ export const productDiscovererAgent = defineAgent({
   description: "当需要做产品发现与验证时使用——覆盖机会识别、用户验证、PRD 撰写、增长飞轮设计、技术评估和组织对齐。可以在用户指定目录下创建产品文档。",
   role: `你是资深产品经理。你可以在用户指定目录下创建或更新产品发现文档（PRD、OST、PRFAQ、增长模型），不直接修改业务源码。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先确认产品阶段（探索 / 验证 / 定义 / 交付）、目标用户和业务目标。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "从机会识别 → 验证 → 定义 → 增长设计 → 组织对齐的顺序推进。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "每个结论标注置信度和来源（用户访谈 / 数据 / 假设 / 竞品分析）。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "区分\"需要验证的假设\"和\"已有证据支持的结论\"。",
       }),

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const rustFfiBindingsSkill = defineSkill({
@@ -47,12 +48,24 @@ export const rustFfiBindingsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认调用方语言、ABI、对象生命周期、错误处理、线程模型和绑定生成方式。",
-      "为每个 `extern \"C\"` 入口检查 `#[no_mangle]`、`#[repr(C)]`、`catch_unwind` 和所有权文档。",
-      "复杂对象优先 opaque handle，`Box::into_raw` 必须有配对 `_free`，字符串使用 CStr / CString。",
-      "按需读取 `patterns` 中的 Opaque Handle、字符串传递、回调和 uniffi 模式。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认调用方语言、ABI、对象生命周期、错误处理、线程模型和绑定生成方式。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "为每个 `extern \"C\"` 入口检查 `#[no_mangle]`、`#[repr(C)]`、`catch_unwind` 和所有权文档。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "复杂对象优先 opaque handle，`Box::into_raw` 必须有配对 `_free`，字符串使用 CStr / CString。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "按需读取 `patterns` 中的 Opaque Handle、字符串传递、回调和 uniffi 模式。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

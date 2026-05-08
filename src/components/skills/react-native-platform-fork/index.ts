@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const reactNativePlatformForkSkill = defineSkill({
@@ -48,14 +49,32 @@ export const reactNativePlatformForkSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认平台差异类型：样式值、API 能力、组件实现、导航流程、原生模块或完整平台目标。",
-      "小型值差异读取 `platform-select-values`，用 `Platform.select` 收敛到样式/配置层。",
-      "组件或 API 差异读取 `boundary-file-pattern` 和 `adapter-interface`，把分叉放到边界文件或接口适配层。",
-      "自定义平台后缀或非 iOS/Android 目标读取 `metro-custom-platforms`，确认 resolver 扩展顺序。",
-      "避免在业务组件内部散落 `Platform.OS`，并保持类型合同一致。",
-      "输出分叉边界、共享代码、平台专属文件和验证矩阵。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认平台差异类型：样式值、API 能力、组件实现、导航流程、原生模块或完整平台目标。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "小型值差异读取 `platform-select-values`，用 `Platform.select` 收敛到样式/配置层。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "组件或 API 差异读取 `boundary-file-pattern` 和 `adapter-interface`，把分叉放到边界文件或接口适配层。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "自定义平台后缀或非 iOS/Android 目标读取 `metro-custom-platforms`，确认 resolver 扩展顺序。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "避免在业务组件内部散落 `Platform.OS`，并保持类型合同一致。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出分叉边界、共享代码、平台专属文件和验证矩阵。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

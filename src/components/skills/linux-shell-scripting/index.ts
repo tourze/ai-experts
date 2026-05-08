@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { networkTroubleshooterSkill } from "../network-troubleshooter/index";
 import { systemDiagnosticsSkill } from "../system-diagnostics/index";
@@ -61,13 +62,28 @@ export const linuxShellScriptingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "默认使用 `#!/usr/bin/env bash` 和 `set -euo pipefail`；仅在明确需要 POSIX sh 时降级。",
-      "先定义 usage、参数校验、require_cmd、日志函数、失败返回码和 dry-run 行为。",
-      "所有变量和路径加双引号，避免 for f in $(ls ...)；破坏性删除/覆盖/远程执行必须先输出计划。",
-      "临时文件、锁文件和后台进程用 trap 清理；长循环、网络重试和并发任务设置超时与限次。",
-      "涉及系统快照联动 system-diagnostics，涉及网络探测或重试联动 network-troubleshooter。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "默认使用 `#!/usr/bin/env bash` 和 `set -euo pipefail`；仅在明确需要 POSIX sh 时降级。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "先定义 usage、参数校验、require_cmd、日志函数、失败返回码和 dry-run 行为。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "所有变量和路径加双引号，避免 for f in $(ls ...)；破坏性删除/覆盖/远程执行必须先输出计划。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "临时文件、锁文件和后台进程用 trap 清理；长循环、网络重试和并发任务设置超时与限次。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "涉及系统快照联动 system-diagnostics，涉及网络探测或重试联动 network-troubleshooter。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

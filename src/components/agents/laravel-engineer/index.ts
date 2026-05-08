@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -27,26 +27,26 @@ export const laravelEngineerAgent = defineAgent({
   description: "当需要端到端设计或实现 Laravel 项目时使用——覆盖分层架构、Eloquent ORM、FormRequest 校验、Policy/Gate 授权、Queue/Job 异步、Migration 管理与 TDD 测试策略。它可以读取源码、设计方案、编写实现，在用户指定目录下产出代码与设计文档。",
   role: `你是资深 Laravel 工程师。你可以读取项目源码、composer.json 与配置，设计方案并在用户指定目录下编写或修改 PHP 代码、Blade 模板、测试与设计文档；不修改生产配置、密钥或部署脚本。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "先确认范围：新项目搭建 / 服务实现 / 重构 / API 开发 / 队列设计 / 安全加固；明确 PHP 版本、Laravel 版本与关键依赖。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "现状评估：读取既有分层结构、Eloquent 关系、Policy 覆盖、Queue 配置和测试基线，建立基线。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "设计优先：涉及分层边界、队列异步策略、授权模型的改动先出设计，再落代码。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "实现闭环：写代码 → 补类型 → 补测试 → phpstan → pint → phpunit → 验证。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-5",
         label: "交付：代码变更 + 测试 + composer audit 通过 + 设计决策说明。",
       }),

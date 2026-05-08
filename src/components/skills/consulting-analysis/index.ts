@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { proposalWriterSkill } from "../proposal-writer/index";
 
@@ -52,14 +53,32 @@ export const consultingAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先明确研究主题、目标读者、分析目标、地区/时间范围、交付物形态和决策场景。",
-      "读取 `report-brief-template` reference，生成研究 brief 和报告骨架。",
-      "为每个章节指定分析模型，例如 TAM/SAM/SOM、五力、SWOT、漏斗、单位经济模型或尽调框架。",
-      "列出数据需求、来源优先级、不可替代的一手证据和无法取得数据时的替代方案。",
-      "按事实、推断、建议分层写结论，并标注来源类型、时间范围和置信度。",
-      "需要把研究结果转成提案时联动 `proposal-writer`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先明确研究主题、目标读者、分析目标、地区/时间范围、交付物形态和决策场景。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "读取 `report-brief-template` reference，生成研究 brief 和报告骨架。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "为每个章节指定分析模型，例如 TAM/SAM/SOM、五力、SWOT、漏斗、单位经济模型或尽调框架。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "列出数据需求、来源优先级、不可替代的一手证据和无法取得数据时的替代方案。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "按事实、推断、建议分层写结论，并标注来源类型、时间范围和置信度。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "需要把研究结果转成提案时联动 `proposal-writer`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

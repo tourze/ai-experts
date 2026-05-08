@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { crossPollinationEngineSkill } from "../cross-pollination-engine/index";
 
@@ -57,12 +58,24 @@ export const firstPrinciplesDecomposerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先用一句话定义问题、现有做法和要挑战的边界；问题没收敛前不要进入推导。",
-      "列出至少 3 个关键假设，并逐个区分事实、推断、行业惯例、竞品做法和客户原话。",
-      "连续追问为什么，直到触达不可轻易反驳的物理事实、制度条件、用户底层需求或资源约束。",
-      "只基于基础事实重建最小可行解，并对比常规方案：少了什么、保留什么、为什么更合理、下一步如何验证。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先用一句话定义问题、现有做法和要挑战的边界；问题没收敛前不要进入推导。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "列出至少 3 个关键假设，并逐个区分事实、推断、行业惯例、竞品做法和客户原话。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "连续追问为什么，直到触达不可轻易反驳的物理事实、制度条件、用户底层需求或资源约束。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "只基于基础事实重建最小可行解，并对比常规方案：少了什么、保留什么、为什么更合理、下一步如何验证。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -29,10 +29,10 @@ import {
   defineAgentOutputFormat,
   defineAgentOutputSection,
   defineAgentOutputTemplate,
-  defineAgentWorkflow,
-  defineAgentWorkflowGate,
-  defineAgentWorkflowRoute,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowGate,
+  defineWorkflowRoute,
+  defineWorkflowStep,
   defineAsset,
   defineHook,
   defineAgentInput,
@@ -43,7 +43,6 @@ import {
   defineSkill,
   defineSkillGoal,
   defineSkillOutputs,
-  defineSkillWorkflow,
 } from "../../src/components/sdk.ts";
 import { debugMethodologyDebugChecklist, procedureUse } from "../../src/components/procedures/index.ts";
 
@@ -160,11 +159,11 @@ function createFixture() {
         }),
       ],
     }),
-    workflow: defineAgentWorkflow({
-      steps: [defineAgentWorkflowStep({ id: "analyze", label: "分析" })],
-      gates: [defineAgentWorkflowGate({ id: "gate-check", skill: skill.id, label: "门禁", checks: "检查证据" })],
-      routes: [defineAgentWorkflowRoute({ id: "route-a", triggers: ["需要技能"], skill: skill.id, checks: "路由检查", output: "产出结果" })],
-      finalSteps: [defineAgentWorkflowStep({ id: "finalize", label: "收尾" })],
+    workflow: defineWorkflow({
+      steps: [defineWorkflowStep({ id: "analyze", label: "分析" })],
+      gates: [defineWorkflowGate({ id: "gate-check", skill: skill.id, label: "门禁", checks: "检查证据" })],
+      routes: [defineWorkflowRoute({ id: "route-a", triggers: ["需要技能"], skill: skill.id, checks: "路由检查", output: "产出结果" })],
+      finalSteps: [defineWorkflowStep({ id: "finalize", label: "收尾" })],
     }),
     skills: [{ id: skill.id, mode: SkillUseMode.Route, reason: "fixture routing" }],
     sandbox: AgentSandbox.WorkspaceWrite,
@@ -244,10 +243,10 @@ describe("build/pipeline modules", () => {
       sourceDir: pathToFileURL(`${fixture.root}/skill/`),
       procedures: [],
       goal: defineSkillGoal({ title: "完成条件", body: "明确流程目标。" }),
-      workflow: defineSkillWorkflow({
+      workflow: defineWorkflow({
         steps: [
-          "读取输入。",
-          "执行检查。",
+          defineWorkflowStep({ id: "step-1", label: "读取输入。" }),
+          defineWorkflowStep({ id: "step-2", label: "执行检查。" }),
         ],
       }),
       outputs: defineSkillOutputs({ items: ["结论", "后续动作"] }),
@@ -255,7 +254,9 @@ describe("build/pipeline modules", () => {
     expect(() => validateRegistry({ ...fixture.registry, skills: [fixture.skill, structuredSkill] })).not.toThrow();
     const structuredRendered = renderSkillMd(structuredSkill, Platform.Claude, procedureMap);
     expect(structuredRendered).toContain("## 完成条件\n\n明确流程目标。");
-    expect(structuredRendered).toContain("## 执行步骤\n\n1. 读取输入。\n2. 执行检查。");
+    expect(structuredRendered).toContain("## 工作流\n\n```mermaid\nflowchart TD");
+    expect(structuredRendered).toContain('step_1["读取输入。"]\n  start --> step_1');
+    expect(structuredRendered).toContain('step_2["执行检查。"]\n  step_1 --> step_2');
     expect(structuredRendered).toContain("## 输出\n\n- 结论\n- 后续动作");
     expect(() =>
       validateRegistry({
@@ -409,9 +410,9 @@ describe("build/pipeline modules", () => {
       skills: [{ ...fixture.skill, platforms: [ComponentPlatform.Claude] }],
       agents: [{
         ...fixture.agent,
-        workflow: defineAgentWorkflow({
+        workflow: defineWorkflow({
           gates: [
-            defineAgentWorkflowGate({
+            defineWorkflowGate({
               id: "gate-check",
               skill: fixture.skill.id,
               label: "门禁",
@@ -431,9 +432,9 @@ describe("build/pipeline modules", () => {
       skills: [{ ...fixture.skill, platforms: [ComponentPlatform.Claude] }],
       agents: [{
         ...fixture.agent,
-        workflow: defineAgentWorkflow({
+        workflow: defineWorkflow({
           routes: [
-            defineAgentWorkflowRoute({
+            defineWorkflowRoute({
               id: "route-a",
               triggers: ["需要技能"],
               skill: fixture.skill.id,

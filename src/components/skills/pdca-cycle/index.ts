@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { fishboneDiagramSkill } from "../fishbone-diagram/index";
 
@@ -46,13 +47,28 @@ export const pdcaCycleSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "Plan：定义问题、现状基线、量化目标、根因假设、措施、负责人、截止时间和风险；根因不清时先用 `fishbone-diagram`。",
-      "Do：按最小可控范围执行措施，记录变更内容、执行时间、受影响对象和异常情况。",
-      "Check：用目标值 vs 实际值做量化对比，解释偏差来源，并判断措施是否真正影响目标指标。",
-      "Act：把有效措施标准化，把无效或副作用措施回滚/修正，同时提出下一轮要解决的新问题。",
-      "进入下一轮：保留本轮证据、决策和未解决项，不把一次性行动计划伪装成 PDCA。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "Plan：定义问题、现状基线、量化目标、根因假设、措施、负责人、截止时间和风险；根因不清时先用 `fishbone-diagram`。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "Do：按最小可控范围执行措施，记录变更内容、执行时间、受影响对象和异常情况。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "Check：用目标值 vs 实际值做量化对比，解释偏差来源，并判断措施是否真正影响目标指标。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Act：把有效措施标准化，把无效或副作用措施回滚/修正，同时提出下一轮要解决的新问题。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "进入下一轮：保留本轮证据、决策和未解决项，不把一次性行动计划伪装成 PDCA。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

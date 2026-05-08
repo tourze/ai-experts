@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { laravelPatternsSkill } from "../laravel-patterns/index";
 import { laravelSecuritySkill } from "../laravel-security/index";
@@ -61,12 +62,24 @@ export const laravelVerificationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认 PHP、Composer、Artisan、.env、数据库连接和目标环境配置。",
-      "按 composer validate、dump-autoload、pint、phpstan / psalm、test、composer audit、migration 顺序验证。",
-      "迁移检查 `--pretend`、状态、回滚路径、破坏性变更和灰度步骤。",
-      "环境、质量、迁移、缓存、调度、队列和 Horizon 命令读取 `verification-commands`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认 PHP、Composer、Artisan、.env、数据库连接和目标环境配置。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按 composer validate、dump-autoload、pint、phpstan / psalm、test、composer audit、migration 顺序验证。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "迁移检查 `--pretend`、状态、回滚路径、破坏性变更和灰度步骤。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "环境、质量、迁移、缓存、调度、队列和 Horizon 命令读取 `verification-commands`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

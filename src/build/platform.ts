@@ -235,6 +235,22 @@ function validateRelatedSkillPlatform(
   }
 }
 
+function validateSkillWorkflowSkillPlatform(
+  skill: SkillDefinition,
+  targetSkillId: string,
+  skillsById: ReadonlyMap<string, SkillDefinition>,
+  context: string,
+): void {
+  const targetSkill = skillsById.get(targetSkillId);
+  if (!targetSkill) return;
+  const missingPlatforms = skill.platforms.filter((platform) => !targetSkill.platforms.includes(platform));
+  if (missingPlatforms.length > 0) {
+    throw new Error(
+      `Skill ${skill.id} ${context} ${targetSkillId} unavailable on platform(s): ${missingPlatforms.join(", ")}`,
+    );
+  }
+}
+
 function validateProcedureUsePlatforms(
   component: SkillDefinition | AgentDefinition,
   procedureUse: ResolvedProcedureUse,
@@ -381,7 +397,15 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
       throw new Error(`Skill ${skill.id} body must start with an H2 section; move intro text to index.ts fields`);
     }
     validateSkillGoal(skill);
-    validateSkillWorkflow(skill);
+    const skillWorkflow = validateSkillWorkflow(skill);
+    for (const gate of skillWorkflow?.gates ?? []) {
+      if (!skillIds.has(gate.skill)) throw new Error(`Skill ${skill.id} workflow gate references missing skill: ${gate.skill}`);
+      validateSkillWorkflowSkillPlatform(skill, gate.skill, skillsById, "workflow gate references skill");
+    }
+    for (const route of skillWorkflow?.routes ?? []) {
+      if (!skillIds.has(route.skill)) throw new Error(`Skill ${skill.id} workflow route references missing skill: ${route.skill}`);
+      validateSkillWorkflowSkillPlatform(skill, route.skill, skillsById, "workflow route references skill");
+    }
     validateSkillOutputs(skill);
     if (bodySource.trim() === "" && !hasStructuredSkillBody(skill)) {
       throw new Error(`Skill ${skill.id} must define body content or structured skill sections`);

@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { rustOwnershipIdiomsSkill } from "../rust-ownership-idioms/index";
 import { rustTypeDesignSkill } from "../rust-type-design/index";
@@ -64,12 +65,24 @@ export const rustPerformanceSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认性能目标、release 基线、硬件 / 数据集和可复现 benchmark。",
-      "从 Clippy、cargo bench / criterion、flamegraph、系统 profiler 和堆分配工具逐层定位。",
-      "优先改算法和数据结构，再评估 API 边界、分配策略和局部微优化。",
-      "工具速查读取 `profiling-tools`，详细 benchmark 和归因流程读取 `chapter-03`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认性能目标、release 基线、硬件 / 数据集和可复现 benchmark。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "从 Clippy、cargo bench / criterion、flamegraph、系统 profiler 和堆分配工具逐层定位。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "优先改算法和数据结构，再评估 API 边界、分配策略和局部微优化。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "工具速查读取 `profiling-tools`，详细 benchmark 和归因流程读取 `chapter-03`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

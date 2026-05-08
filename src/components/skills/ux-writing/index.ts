@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { i18nLocalizationSkill } from "../i18n-localization/index";
 import { modernWebDesignSkill } from "../modern-web-design/index";
@@ -74,13 +75,28 @@ export const uxWritingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先盘出场景类型：按钮、错误、空态、helper、确认、toast、敬告、onboarding 或敏感操作。",
-      "按场景读取 copy-patterns 模板，明确用户当前状态、下一步动作、限制条件和真实后果。",
-      "重写按钮为动词+名词；错误写 what/why/fix；空态说明这是什么、为什么空和下一步 CTA。",
-      "统一声音：友好、专业、权威或技术只选一种；删掉 AI 腔、客套词和不承担后果的模糊动词。",
-      "做 i18n 预审：不使用字符串拼接，变量可翻译，预留 30% 膨胀空间，placeholder 不替代 label。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先盘出场景类型：按钮、错误、空态、helper、确认、toast、敬告、onboarding 或敏感操作。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按场景读取 copy-patterns 模板，明确用户当前状态、下一步动作、限制条件和真实后果。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "重写按钮为动词+名词；错误写 what/why/fix；空态说明这是什么、为什么空和下一步 CTA。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "统一声音：友好、专业、权威或技术只选一种；删掉 AI 腔、客套词和不承担后果的模糊动词。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "做 i18n 预审：不使用字符串拼接，变量可翻译，预留 30% 膨胀空间，placeholder 不替代 label。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

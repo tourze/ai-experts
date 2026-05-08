@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { goPerformanceSkill } from "../go-performance/index";
 import { goTroubleshootingSkill } from "../go-troubleshooting/index";
@@ -75,12 +76,24 @@ export const goObservabilitySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认服务边界、关键 SLO、已有日志 / 指标 / trace / profile 和告警来源。",
-      "按五大信号补齐事件、趋势、调用链、性能采样和症状告警，不用单一日志代替观测体系。",
-      "迁移 slog 时先拆字段、注入 trace_id / span_id、设置 JSON handler 和采样策略。",
-      "五大信号和 slog 迁移读取 `signals-and-migration`；日志细节读取 `logging`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认服务边界、关键 SLO、已有日志 / 指标 / trace / profile 和告警来源。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按五大信号补齐事件、趋势、调用链、性能采样和症状告警，不用单一日志代替观测体系。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "迁移 slog 时先拆字段、注入 trace_id / span_id、设置 JSON handler 和采样策略。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "五大信号和 slog 迁移读取 `signals-and-migration`；日志细节读取 `logging`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

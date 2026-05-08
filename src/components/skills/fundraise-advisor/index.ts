@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { marketSizingAnalysisSkill } from "../market-sizing-analysis/index";
 
@@ -50,12 +51,24 @@ export const fundraiseAdvisorSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认融资目的、跑道、目标金额、关键里程碑、资金用途和当前牵引力。",
-      "把融资故事拆成问题/机会、牵引力、市场、团队、资金用途和下一阶段里程碑。",
-      "投资人按优先级分层推进，保持会前材料、Deck、数据室和口径一致。",
-      "需要展开完整流程时读取 `full-guide`，市场规模证据不足时联动 market sizing。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认融资目的、跑道、目标金额、关键里程碑、资金用途和当前牵引力。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "把融资故事拆成问题/机会、牵引力、市场、团队、资金用途和下一阶段里程碑。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "投资人按优先级分层推进，保持会前材料、Deck、数据室和口径一致。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "需要展开完整流程时读取 `full-guide`，市场规模证据不足时联动 market sizing。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

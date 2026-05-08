@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { canvasDesignSkill } from "../canvas-design/index";
 import { dataVisualizationSkill } from "../data-visualization/index";
@@ -53,14 +54,32 @@ export const algoVisualizationSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先判断输入类型：PDF/教材、无代码算法主题、含代码执行过程或概念对比，并选择对应页面骨架。",
-      "按来源脉络组织内容：有 PDF 时顺原文页面和例子，无来源时按是什么、怎么工作、实例、总结。",
-      "先读取 iron-rules，再读取 page-skeleton、steps-shapes、rationalizations；需要堆示例时读取 heap_overview。",
-      "根据数据形态选 JS 模板：数组+完全二叉树用 A，不规则树用 B，纯数组用 C；代码联动必须带 line 和 hlLines。",
-      "嵌入 assets 时按块摘取工具函数、模板、可选高亮、键盘导航和自己的 steps，避免重复顶层变量。",
-      "生成后检查 SVG 间距、viewBox、高亮联动、静态/交互比例、可直接打开和来源引用。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先判断输入类型：PDF/教材、无代码算法主题、含代码执行过程或概念对比，并选择对应页面骨架。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按来源脉络组织内容：有 PDF 时顺原文页面和例子，无来源时按是什么、怎么工作、实例、总结。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "先读取 iron-rules，再读取 page-skeleton、steps-shapes、rationalizations；需要堆示例时读取 heap_overview。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "根据数据形态选 JS 模板：数组+完全二叉树用 A，不规则树用 B，纯数组用 C；代码联动必须带 line 和 hlLines。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "嵌入 assets 时按块摘取工具函数、模板、可选高亮、键盘导航和自己的 steps，避免重复顶层变量。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "生成后检查 SVG 间距、viewBox、高亮联动、静态/交互比例、可直接打开和来源引用。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

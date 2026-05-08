@@ -6,7 +6,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { mdToPdfSkill } from "../md-to-pdf/index";
 
@@ -54,12 +55,24 @@ export const markdownMermaidWritingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确定文档类型、读者和结论，再选择 `templates` reference 下的合适模板，不从空白页硬写。",
-      "读取 Markdown 与 Mermaid 样式指南，保持标题层级、列表、表格、代码块和节点命名一致。",
-      "图表先服务于一个明确问题；复杂主题拆成多个 Mermaid 小图，常见图示参考 diagrams reference。",
-      "交付前检查 Mermaid 语法、节点命名、图表是否支撑结论；需要 SVG/ASCII 输出时读取 `pretty-mermaid` reference。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确定文档类型、读者和结论，再选择 `templates` reference 下的合适模板，不从空白页硬写。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "读取 Markdown 与 Mermaid 样式指南，保持标题层级、列表、表格、代码块和节点命名一致。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "图表先服务于一个明确问题；复杂主题拆成多个 Mermaid 小图，常见图示参考 diagrams reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "交付前检查 Mermaid 语法、节点命名、图表是否支撑结论；需要 SVG/ASCII 输出时读取 `pretty-mermaid` reference。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

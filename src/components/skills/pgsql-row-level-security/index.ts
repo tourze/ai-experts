@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { dbSchemaDesignSkill } from "../db-schema-design/index";
 import { sqlReviewOptimizationSkill } from "../sql-review-optimization/index";
@@ -66,12 +67,24 @@ export const pgsqlRowLevelSecuritySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认租户边界、角色模型、表 owner、连接池行为和应用层会话变量设置点。",
-      "对目标表同时启用 `ENABLE ROW LEVEL SECURITY` 与 `FORCE ROW LEVEL SECURITY`，避免 owner 绕过策略。",
-      "为读写路径分别写清 `USING` 与 `WITH CHECK`，常见租户隔离谓词是 `tenant_id = current_setting('app.tenant_id')::BIGINT`。",
-      "每个事务开始时通过中间件设置 `SET LOCAL app.tenant_id`；用 `SET ROLE`、正向/反向样例和索引计划验证隔离与性能。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认租户边界、角色模型、表 owner、连接池行为和应用层会话变量设置点。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "对目标表同时启用 `ENABLE ROW LEVEL SECURITY` 与 `FORCE ROW LEVEL SECURITY`，避免 owner 绕过策略。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "为读写路径分别写清 `USING` 与 `WITH CHECK`，常见租户隔离谓词是 `tenant_id = current_setting('app.tenant_id')::BIGINT`。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "每个事务开始时通过中间件设置 `SET LOCAL app.tenant_id`；用 `SET ROLE`、正向/反向样例和索引计划验证隔离与性能。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

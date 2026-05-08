@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { refactoringPatternsSkill } from "../refactoring-patterns/index";
 import { softwareDesignSkill } from "../software-design/index";
@@ -58,14 +59,32 @@ export const pragmaticProgrammerSkill = defineSkill({
       reason: "需要从耦合、抽象、复杂度或设计原则层面治理方案时联动。",
     },
   ],
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先明确当前决策、约束、不可逆点、反馈周期和要避免的复杂度。",
-      "按问题读取 reference：估算读 `estimation-portfolio`，示踪弹读 `tracer-bullets`，DRY/正交性读 `dry-orthogonality`，契约读 `contracts-assertions`，破窗读 `broken-windows`。",
-      "判断重复是否是真正重复的知识，避免把相似但不同的逻辑强行合并。",
-      "设计最小可验证路径；示踪弹必须能演进，不能变成无质量边界的临时代码。",
-      "对不可逆决策读取 `reversibility`，先验证边界再承诺。",
-      "输出原则如何改变本次选择，以及今天该做的最小动作。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先明确当前决策、约束、不可逆点、反馈周期和要避免的复杂度。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按问题读取 reference：估算读 `estimation-portfolio`，示踪弹读 `tracer-bullets`，DRY/正交性读 `dry-orthogonality`，契约读 `contracts-assertions`，破窗读 `broken-windows`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "判断重复是否是真正重复的知识，避免把相似但不同的逻辑强行合并。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "设计最小可验证路径；示踪弹必须能演进，不能变成无质量边界的临时代码。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "对不可逆决策读取 `reversibility`，先验证边界再承诺。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "输出原则如何改变本次选择，以及今天该做的最小动作。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

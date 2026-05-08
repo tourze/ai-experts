@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const evidenceQualityFrameworkSkill = defineSkill({
@@ -41,13 +42,28 @@ export const evidenceQualityFrameworkSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先采集实际代码、diff、日志、metric、commit 或命令输出片段；没有实际片段时只能标为假设或待验证。",
-      "每条结论标注 `[事实]`、`[推断]` 或 `[假设]`；事实附定位，推断给依据链，假设给最小验证实验。",
-      "每条发现绑定定位、证据片段和触发条件，定位优先级为文件:行 > log+trace_id > commit > metric > 命令输出。",
-      "性能、安全、并发类断言必须有实验或观测窗口；纯代码扫描只能标为推断。",
-      "综合结论按最弱证据降级；需要示例时读取 anti-patterns、tri-state-examples 或 binding-examples。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先采集实际代码、diff、日志、metric、commit 或命令输出片段；没有实际片段时只能标为假设或待验证。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "每条结论标注 `[事实]`、`[推断]` 或 `[假设]`；事实附定位，推断给依据链，假设给最小验证实验。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "每条发现绑定定位、证据片段和触发条件，定位优先级为文件:行 > log+trace_id > commit > metric > 命令输出。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "性能、安全、并发类断言必须有实验或观测窗口；纯代码扫描只能标为推断。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "综合结论按最弱证据降级；需要示例时读取 anti-patterns、tri-state-examples 或 binding-examples。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

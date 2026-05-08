@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { javascriptTypescriptJestSkill } from "../javascript-typescript-jest/index";
 
@@ -58,13 +59,28 @@ export const detoxMobileTestSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认 React Native 项目、Detox 配置、app/device/configuration 名称、本地与 CI 命令是否一致。",
-      "关键流程用 testID/by.id 作为主选择器，by.text 只做补充；断言用户可感知行为，不依赖内部实现。",
-      "每条用例独立启动和清理状态，避免依赖前一个测试的登录态、缓存或数据。",
-      "所有异步等待绑定可观察状态，如 waitFor(...).toBeVisible()，禁止固定 sleep 掩盖时序问题。",
-      "复杂配置、flaky 排查、高级等待或 matcher 策略读取 advanced-patterns。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认 React Native 项目、Detox 配置、app/device/configuration 名称、本地与 CI 命令是否一致。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "关键流程用 testID/by.id 作为主选择器，by.text 只做补充；断言用户可感知行为，不依赖内部实现。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "每条用例独立启动和清理状态，避免依赖前一个测试的登录态、缓存或数据。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "所有异步等待绑定可观察状态，如 waitFor(...).toBeVisible()，禁止固定 sleep 掩盖时序问题。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "复杂配置、flaky 排查、高级等待或 matcher 策略读取 advanced-patterns。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

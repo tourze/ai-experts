@@ -6,7 +6,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, markitdownBatchConvert, markitdownConvertLiterature, markitdownConvertWithAi } from "../../procedures/index";
 
@@ -73,12 +74,24 @@ export const markitdownSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认用户要的是 Markdown 抽取；若要保留或回写原 Office 格式，转向文档/PPT 相关 skill。",
-      "根据输入格式读取 `file-formats`，需要 CLI/API 参数时读取 `api-reference`，示例用法看 asset `example-usage`。",
-      "批量转换时明确输入目录、输出目录、递归策略、扩展名过滤和原目录结构保留方式。",
-      "AI 增强只在图片理解确有必要时启用，并明确模型、密钥来源和抽样验收页。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认用户要的是 Markdown 抽取；若要保留或回写原 Office 格式，转向文档/PPT 相关 skill。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "根据输入格式读取 `file-formats`，需要 CLI/API 参数时读取 `api-reference`，示例用法看 asset `example-usage`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "批量转换时明确输入目录、输出目录、递归策略、扩展名过滤和原目录结构保留方式。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "AI 增强只在图片理解确有必要时启用，并明确模型、密钥来源和抽样验收页。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

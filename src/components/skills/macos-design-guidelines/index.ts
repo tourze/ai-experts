@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { iosHigDesignSkill } from "../ios-hig-design/index";
 import { swiftuiUiPatternsSkill } from "../swiftui-ui-patterns/index";
@@ -86,14 +87,32 @@ export const macosDesignGuidelinesSkill = defineSkill({
       loadWhen: "需要核对资料范围、版本和官方链接时读取。",
     }),
   ],
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认产品是原生 macOS、Mac Catalyst 还是跨平台桌面，并列出核心桌面任务。",
-      "设计菜单栏、Settings、常用命令、快捷键和上下文菜单；命令不要只藏在悬浮按钮。",
-      "设置主窗口最小尺寸、默认尺寸、可调整大小、全屏和多窗口策略。",
-      "用 NavigationSplitView、侧边栏、工具栏、搜索和右键菜单组织桌面工作流。",
-      "检查指针、拖拽、键盘导航和桌面多窗口预期，不按 iPhone 交互假设设计 Mac。",
-      "需要实现示例时输出 SwiftUI WindowGroup、Settings、commands、defaultSize、toolbar 和 split view 方案。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认产品是原生 macOS、Mac Catalyst 还是跨平台桌面，并列出核心桌面任务。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "设计菜单栏、Settings、常用命令、快捷键和上下文菜单；命令不要只藏在悬浮按钮。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "设置主窗口最小尺寸、默认尺寸、可调整大小、全屏和多窗口策略。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "用 NavigationSplitView、侧边栏、工具栏、搜索和右键菜单组织桌面工作流。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "检查指针、拖拽、键盘导航和桌面多窗口预期，不按 iPhone 交互假设设计 Mac。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "需要实现示例时输出 SwiftUI WindowGroup、Settings、commands、defaultSize、toolbar 和 split view 方案。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

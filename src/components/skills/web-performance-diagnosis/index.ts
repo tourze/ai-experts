@@ -4,7 +4,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, webPerformanceDiagnosisAnalyze } from "../../procedures/index";
 
@@ -83,12 +84,24 @@ export const webPerformanceDiagnosisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先区分 lab / RUM 数据、页面场景、设备网络和目标指标，不看数据不猜瓶颈。",
-      "按网络层、渲染层、运行时分段定位 LCP、INP、CLS、瀑布流、hydration 和长任务。",
-      "每条发现按 P0/P1/P2 排序，绑定页面、元素、文件、证据和复测方式。",
-      "三段式概览读取 `diagnosis-overview`；深度流程、CWV、质量审计和瀑布流读取对应 references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先区分 lab / RUM 数据、页面场景、设备网络和目标指标，不看数据不猜瓶颈。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按网络层、渲染层、运行时分段定位 LCP、INP、CLS、瀑布流、hydration 和长任务。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "每条发现按 P0/P1/P2 排序，绑定页面、元素、文件、证据和复测方式。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "三段式概览读取 `diagnosis-overview`；深度流程、CWV、质量审计和瀑布流读取对应 references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

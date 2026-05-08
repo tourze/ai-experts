@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { competitiveIntelligenceSkill } from "../competitive-intelligence/index";
 import { portersFiveForcesSkill } from "../porters-five-forces/index";
@@ -57,13 +58,28 @@ export const swotAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先界定分析对象、目标、时间尺度和证据来源。",
-      "把 Strength/Weakness 限定为内部能力，把 Opportunity/Threat 限定为外部环境。",
-      "为每个点写事实/证据、战略含义和可行动建议，避免口号和偏好。",
-      "组合形成 SO/WO/ST/WT 动作，并按影响、可行性、风险和资源约束排序。",
-      "需要行业结构或竞争视角时联动 `porters-five-forces` 或 `competitive-intelligence`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先界定分析对象、目标、时间尺度和证据来源。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "把 Strength/Weakness 限定为内部能力，把 Opportunity/Threat 限定为外部环境。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "为每个点写事实/证据、战略含义和可行动建议，避免口号和偏好。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "组合形成 SO/WO/ST/WT 动作，并按影响、可行性、风险和资源约束排序。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "需要行业结构或竞争视角时联动 `porters-five-forces` 或 `competitive-intelligence`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

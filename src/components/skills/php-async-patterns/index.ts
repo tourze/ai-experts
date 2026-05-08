@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { phpXFeaturesSkill } from "../php-8x-features/index";
 import { phpErrorHandlingSkill } from "../php-error-handling/index";
@@ -58,12 +59,24 @@ export const phpAsyncPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认部署是否允许 C 扩展、是否需要内置 HTTP/WebSocket 服务器、并发 I/O 类型和长期运行时长。",
-      "按 Swoole、ReactPHP、Amphp、原生 Fiber 的约束选择方案，避免把同步阻塞 I/O 混进协程。",
-      "协程间共享状态必须通过 Channel / Mutex / 消息边界，长驻进程要设计 max_request、心跳、超时和清理策略。",
-      "运行时选型矩阵读取 `runtime-selection`；具体协程、Channel、定时器和并发控制代码读取 `patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认部署是否允许 C 扩展、是否需要内置 HTTP/WebSocket 服务器、并发 I/O 类型和长期运行时长。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按 Swoole、ReactPHP、Amphp、原生 Fiber 的约束选择方案，避免把同步阻塞 I/O 混进协程。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "协程间共享状态必须通过 Channel / Mutex / 消息边界，长驻进程要设计 max_request、心跳、超时和清理策略。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "运行时选型矩阵读取 `runtime-selection`；具体协程、Channel、定时器和并发控制代码读取 `patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

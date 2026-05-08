@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const owaspXssMisconfigAuditSkill = defineSkill({
@@ -38,14 +39,32 @@ export const owaspXssMisconfigAuditSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先按触发信号路由：危险 DOM/API 为 XSS，CORS/CSP/HSTS/helmet/cookie 为安全头，依赖声明和 lockfile 为依赖风险。",
-      "XSS 检查输出编码、框架自动转义、`innerHTML`/`dangerouslySetInnerHTML`/`v-html`/`document.write`/`eval`、富文本清洗和 URL/hash/postMessage/localStorage 来源。",
-      "CSP 检查 `script-src`、`style-src`、`connect-src`、nonce/hash、`report-uri` 或 `report-to`，并标注 `unsafe-inline/eval` 风险。",
-      "安全头检查 CORS 白名单、HSTS max-age/includeSubDomains、cookie Secure/httpOnly/SameSite、nosniff、X-Frame-Options、Referrer-Policy、Permissions-Policy 和版本泄漏头。",
-      "依赖风险检查 NVD/GitHub Advisory/OSV、修复版本、间接依赖、lockfile、低维护包、typosquatting 和许可证兼容。",
-      "每条发现按 confirmed、likely、speculative 标注可利用性，并给出最小修复和验证方式。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先按触发信号路由：危险 DOM/API 为 XSS，CORS/CSP/HSTS/helmet/cookie 为安全头，依赖声明和 lockfile 为依赖风险。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "XSS 检查输出编码、框架自动转义、`innerHTML`/`dangerouslySetInnerHTML`/`v-html`/`document.write`/`eval`、富文本清洗和 URL/hash/postMessage/localStorage 来源。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "CSP 检查 `script-src`、`style-src`、`connect-src`、nonce/hash、`report-uri` 或 `report-to`，并标注 `unsafe-inline/eval` 风险。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "安全头检查 CORS 白名单、HSTS max-age/includeSubDomains、cookie Secure/httpOnly/SameSite、nosniff、X-Frame-Options、Referrer-Policy、Permissions-Policy 和版本泄漏头。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "依赖风险检查 NVD/GitHub Advisory/OSV、修复版本、间接依赖、lockfile、低维护包、typosquatting 和许可证兼容。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "每条发现按 confirmed、likely、speculative 标注可利用性，并给出最小修复和验证方式。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

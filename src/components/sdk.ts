@@ -155,9 +155,34 @@ export type SkillGoalDefinition = {
   body: string;
 };
 
-export type SkillWorkflowDefinition = {
-  title?: string;
-  steps: readonly string[];
+export type WorkflowDirection = "TD" | "TB" | "BT" | "RL" | "LR";
+
+export type WorkflowStepDefinition = {
+  id: string;
+  label: string;
+};
+
+export type WorkflowGateDefinition = {
+  id: string;
+  skill: string;
+  label: string;
+  checks: string;
+};
+
+export type WorkflowRouteDefinition = {
+  id: string;
+  triggers: readonly string[];
+  skill: string;
+  checks: string;
+  output: string;
+};
+
+export type WorkflowDefinition = {
+  direction?: WorkflowDirection;
+  steps?: readonly WorkflowStepDefinition[];
+  gates?: readonly WorkflowGateDefinition[];
+  routes?: readonly WorkflowRouteDefinition[];
+  finalSteps?: readonly WorkflowStepDefinition[];
 };
 
 export type SkillOutputsDefinition = {
@@ -180,7 +205,7 @@ export type SkillDefinition = {
   body?: ComponentFile;
   sourceDir?: ComponentFile;
   goal?: SkillGoalDefinition;
-  workflow?: SkillWorkflowDefinition;
+  workflow?: WorkflowDefinition;
   outputs?: SkillOutputsDefinition;
   tools?: readonly ToolMatcher[];
   procedures?: readonly ProcedureUseReference[];
@@ -273,36 +298,6 @@ export type AgentOutputFormatDefinition =
       body: string;
     };
 
-export type AgentWorkflowDirection = "TD" | "TB" | "BT" | "RL" | "LR";
-
-export type AgentWorkflowStepDefinition = {
-  id: string;
-  label: string;
-};
-
-export type AgentWorkflowGateDefinition = {
-  id: string;
-  skill: string;
-  label: string;
-  checks: string;
-};
-
-export type AgentWorkflowRouteDefinition = {
-  id: string;
-  triggers: readonly string[];
-  skill: string;
-  checks: string;
-  output: string;
-};
-
-export type AgentWorkflowDefinition = {
-  direction?: AgentWorkflowDirection;
-  steps?: readonly AgentWorkflowStepDefinition[];
-  gates?: readonly AgentWorkflowGateDefinition[];
-  routes?: readonly AgentWorkflowRouteDefinition[];
-  finalSteps?: readonly AgentWorkflowStepDefinition[];
-};
-
 export type AgentDefinition = {
   kind: ComponentKind.Agent;
   id: string;
@@ -315,7 +310,7 @@ export type AgentDefinition = {
   bashBoundary?: AgentBashBoundaryDefinition;
   qualityStandards?: AgentQualityStandardsDefinition;
   outputFormat?: AgentOutputFormatDefinition;
-  workflow?: AgentWorkflowDefinition;
+  workflow?: WorkflowDefinition;
   tools?: readonly ToolMatcher[];
   skills?: readonly AgentSkillUse[];
   procedures?: readonly ProcedureUseReference[];
@@ -399,9 +394,27 @@ export function defineSkillGoal(
   return definition;
 }
 
-export function defineSkillWorkflow(
-  definition: SkillWorkflowDefinition,
-): SkillWorkflowDefinition {
+export function defineWorkflow(
+  definition: WorkflowDefinition,
+): WorkflowDefinition {
+  return definition;
+}
+
+export function defineWorkflowStep(
+  definition: WorkflowStepDefinition,
+): WorkflowStepDefinition {
+  return definition;
+}
+
+export function defineWorkflowGate(
+  definition: WorkflowGateDefinition,
+): WorkflowGateDefinition {
+  return definition;
+}
+
+export function defineWorkflowRoute(
+  definition: WorkflowRouteDefinition,
+): WorkflowRouteDefinition {
   return definition;
 }
 
@@ -445,30 +458,6 @@ export function defineAgentOutputSection(
 export function defineAgentOutputTemplate(
   definition: AgentOutputTemplateDefinition,
 ): AgentOutputTemplateDefinition {
-  return definition;
-}
-
-export function defineAgentWorkflow(
-  definition: AgentWorkflowDefinition,
-): AgentWorkflowDefinition {
-  return definition;
-}
-
-export function defineAgentWorkflowStep(
-  definition: AgentWorkflowStepDefinition,
-): AgentWorkflowStepDefinition {
-  return definition;
-}
-
-export function defineAgentWorkflowGate(
-  definition: AgentWorkflowGateDefinition,
-): AgentWorkflowGateDefinition {
-  return definition;
-}
-
-export function defineAgentWorkflowRoute(
-  definition: AgentWorkflowRouteDefinition,
-): AgentWorkflowRouteDefinition {
   return definition;
 }
 

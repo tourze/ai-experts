@@ -5,7 +5,8 @@ import {
   defineAsset,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, modelFirstReasoningValidateModel } from "../../procedures/index";
 
@@ -61,12 +62,24 @@ export const modelFirstReasoningSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "Phase 1 只产出模型：deliverable、goals、entities、states、actions、constraints、unknowns 和 requirement trace。",
-      "把每条用户需求映射到 `goal`、`constraint` 或 `action`；映射不了就标入 `unknowns`。",
-      "运行 `model-first-reasoning-validate-model` 校验结构；`unknowns` 不为空时返回 `MODEL INCOMPLETE`，不进入实现。",
-      "Phase 2 只能在冻结模型内实现；发现新实体、新状态或新约束时先回到 Phase 1 更新模型。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "Phase 1 只产出模型：deliverable、goals、entities、states、actions、constraints、unknowns 和 requirement trace。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "把每条用户需求映射到 `goal`、`constraint` 或 `action`；映射不了就标入 `unknowns`。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "运行 `model-first-reasoning-validate-model` 校验结构；`unknowns` 不为空时返回 `MODEL INCOMPLETE`，不进入实现。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "Phase 2 只能在冻结模型内实现；发现新实体、新状态或新约束时先回到 Phase 1 更新模型。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

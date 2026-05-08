@@ -3,10 +3,11 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
   InvocationPolicy,
   KnownTool,
   Platform,
+  defineWorkflowStep,
 } from "../../sdk";
 import { procedureUse, typescriptTypeSafetyExtractTsErrors } from "../../procedures/index";
 
@@ -51,12 +52,24 @@ export const typescriptTypeSafetySkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先获取完整 `tsc --noEmit` 输出；已有输出文件时用 `extract-ts-errors` 归组错误。",
-      "按文件、错误码和边界合同定位上游 schema / DTO / 泛型漂移，再处理下游症状。",
-      "`any` 优先改为 `unknown` + 类型守卫、schema parser、判别联合或必要泛型约束。",
-      "诊断顺序读取 `diagnosis-workflow`；高级类型读取 `advanced-patterns`；边界合同代码读取 `code-patterns`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先获取完整 `tsc --noEmit` 输出；已有输出文件时用 `extract-ts-errors` 归组错误。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按文件、错误码和边界合同定位上游 schema / DTO / 泛型漂移，再处理下游症状。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "`any` 优先改为 `unknown` + 类型守卫、schema parser、判别联合或必要泛型约束。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "诊断顺序读取 `diagnosis-workflow`；高级类型读取 `advanced-patterns`；边界合同代码读取 `code-patterns`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

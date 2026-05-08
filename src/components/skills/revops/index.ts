@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const revopsSkill = defineSkill({
@@ -62,14 +63,32 @@ export const revopsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先定义线索生命周期：Subscriber、Lead、MQL、SQL、Opportunity、Customer、Evangelist，以及每阶段客观进入标准。",
-      "建立 lead scoring：显性 fit、隐性 engagement、负分和时间衰减三类规则缺一不可；细节读取 scoring-and-pipeline。",
-      "设计 MQL 到 SQL 交接 SLA：4 小时内首次联系，48 小时内 qualify/reject 并记录原因。",
-      "设计路由和兜底：轮询、区域、账户或技能优先，主负责人未响应时转备选并通知管理者。",
-      "管理 Pipeline：阶段推进要有客观标准，停留超阶段均值 2 倍触发复盘，丢单必须记录原因。",
-      "最后落 CRM 自动化和数据治理：生命周期升级、任务、SLA 告警、阶段通知、赢输触发、去重、必填字段和季度审计。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先定义线索生命周期：Subscriber、Lead、MQL、SQL、Opportunity、Customer、Evangelist，以及每阶段客观进入标准。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "建立 lead scoring：显性 fit、隐性 engagement、负分和时间衰减三类规则缺一不可；细节读取 scoring-and-pipeline。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "设计 MQL 到 SQL 交接 SLA：4 小时内首次联系，48 小时内 qualify/reject 并记录原因。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "设计路由和兜底：轮询、区域、账户或技能优先，主负责人未响应时转备选并通知管理者。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "管理 Pipeline：阶段推进要有客观标准，停留超阶段均值 2 倍触发复盘，丢单必须记录原因。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "最后落 CRM 自动化和数据治理：生命周期升级、任务、SLA 告警、阶段通知、赢输触发、去重、必填字段和季度审计。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

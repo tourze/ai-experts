@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { codeReviewSkill } from "../code-review/index";
 import { complexityReducerSkill } from "../complexity-reducer/index";
@@ -68,12 +69,24 @@ export const refactoringChecklistSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先做准入四项：测试基线、范围界定、目标明确、回滚方案。",
-      "没有可信测试覆盖时先补表征测试；行为变更、bug 修复和重构必须分开提交。",
-      "按小步修改、跑测试、提交、重复的循环推进，每步保持系统可运行且可回滚。",
-      "准入、增量循环和纪律守卫读取 `refactor-safety-workflow`；具体检查项和 DOT 流程读取对应 references。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先做准入四项：测试基线、范围界定、目标明确、回滚方案。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "没有可信测试覆盖时先补表征测试；行为变更、bug 修复和重构必须分开提交。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "按小步修改、跑测试、提交、重复的循环推进，每步保持系统可运行且可回滚。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "准入、增量循环和纪律守卫读取 `refactor-safety-workflow`；具体检查项和 DOT 流程读取对应 references。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

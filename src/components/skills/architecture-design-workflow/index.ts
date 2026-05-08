@@ -3,7 +3,8 @@ import {
   Platform,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { architectureDecisionRecordsSkill } from "../architecture-decision-records/index";
 import { errorHandlingPatternsSkill } from "../error-handling-patterns/index";
@@ -68,15 +69,36 @@ export const architectureDesignWorkflowSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "阶段 1 需求澄清：确认功能边界、量化约束、既有系统和非目标；缺数字标 `[待确认]` 并说明影响。",
-      "阶段 2 先画高层架构：服务/组件边界、部署拓扑、数据流方向，优先用 ASCII 框图表达。",
-      "对每个关键选择写 ADR：Context、Decision、Consequences、trade-off 和假设不成立时降级路径。",
-      "定义接口契约：API 风格、版本策略、错误码、认证模型和兼容策略。",
-      "设计数据模型：实体关系、读写路径、事件流、存储选型和一致性边界。",
-      "定义弹性策略：故障模式、降级、超时、重试、熔断的具体数值。",
-      "阶段 3 拆实施计划：2-4 个阶段，每阶段有验收标准、未验证项、风险、缓解和触发条件。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "阶段 1 需求澄清：确认功能边界、量化约束、既有系统和非目标；缺数字标 `[待确认]` 并说明影响。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "阶段 2 先画高层架构：服务/组件边界、部署拓扑、数据流方向，优先用 ASCII 框图表达。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "对每个关键选择写 ADR：Context、Decision、Consequences、trade-off 和假设不成立时降级路径。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "定义接口契约：API 风格、版本策略、错误码、认证模型和兼容策略。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "设计数据模型：实体关系、读写路径、事件流、存储选型和一致性边界。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "定义弹性策略：故障模式、降级、超时、重试、熔断的具体数值。",
+      }),
+      defineWorkflowStep({
+        id: "step-7",
+        label: "阶段 3 拆实施计划：2-4 个阶段，每阶段有验收标准、未验证项、风险、缓解和触发条件。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

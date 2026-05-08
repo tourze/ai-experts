@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { businessHealthDiagnosticSkill } from "../business-health-diagnostic/index";
 import { pestelAnalysisSkill } from "../pestel-analysis/index";
@@ -60,14 +61,32 @@ export const scpAnalysisSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "定义外部冲击：政策、技术、经济或社会变化是什么，发生时间、强度、确定性和影响范围如何。",
-      "分析行业结构变化：供需、进入壁垒、替代品、渠道、成本结构、规模经济和议价权发生了什么变化。",
-      "推导企业行为变化：领先企业、中小企业和自身可能如何定价、投资、扩张、收缩、合作或转型。",
-      "推导经营绩效影响：收入、成本、利润率、现金流、增长、风险暴露和估值逻辑如何变化。",
-      "检查传导链完整性：不能从冲击直接跳到绩效结论，必须说明结构和行为中间环节。",
-      "给出战略选项：列出适应结构变化的动作、触发条件、风险和监测指标。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "定义外部冲击：政策、技术、经济或社会变化是什么，发生时间、强度、确定性和影响范围如何。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "分析行业结构变化：供需、进入壁垒、替代品、渠道、成本结构、规模经济和议价权发生了什么变化。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "推导企业行为变化：领先企业、中小企业和自身可能如何定价、投资、扩张、收缩、合作或转型。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "推导经营绩效影响：收入、成本、利润率、现金流、增长、风险暴露和估值逻辑如何变化。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "检查传导链完整性：不能从冲击直接跳到绩效结论，必须说明结构和行为中间环节。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "给出战略选项：列出适应结构变化的动作、触发条件、风险和监测指标。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

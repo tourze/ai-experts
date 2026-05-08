@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { createPrdSkill } from "../create-prd/index";
 
@@ -48,14 +49,32 @@ export const opportunitySolutionTreeSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先定义树顶 outcome：单一、可度量、有时间边界，并说明它和业务目标的关系。",
-      "从研究证据、客户反馈或行为数据中提取 opportunities，写成用户问题、欲望或阻碍。",
-      "为每个高优机会生成多个 solution，不把第一个想到的功能当作唯一答案。",
-      "把 solution 落到 experiments，预设样本、阈值、观察期、风险和决策规则。",
-      "按机会影响、信心、成本和学习价值排序，明确暂缓分支和原因。",
-      "需要进入需求文档或版本规划时联动 `create-prd`，把实验结论转成 PRD 输入。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先定义树顶 outcome：单一、可度量、有时间边界，并说明它和业务目标的关系。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "从研究证据、客户反馈或行为数据中提取 opportunities，写成用户问题、欲望或阻碍。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "为每个高优机会生成多个 solution，不把第一个想到的功能当作唯一答案。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "把 solution 落到 experiments，预设样本、阈值、观察期、风险和决策规则。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "按机会影响、信心、成本和学习价值排序，明确暂缓分支和原因。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "需要进入需求文档或版本规划时联动 `create-prd`，把实验结论转成 PRD 输入。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

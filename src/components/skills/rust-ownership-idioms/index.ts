@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { rustAsyncPatternsSkill } from "../rust-async-patterns/index";
 import { rustErrorHandlingSkill } from "../rust-error-handling/index";
@@ -78,12 +79,24 @@ export const rustOwnershipIdiomsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认数据所有者、调用生命周期、线程边界、热路径和是否需要共享可变状态。",
-      "默认借用和泛型，只有边界需要才转所有权、智能指针或 dyn Trait。",
-      "审查循环内 clone / collect、unwrap 控制流和 `#[allow]` lint 豁免。",
-      "智能指针速查读取 `pointer-guide`；借用、Clippy 和 Send / Sync 深入内容读取对应 chapter reference。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认数据所有者、调用生命周期、线程边界、热路径和是否需要共享可变状态。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "默认借用和泛型，只有边界需要才转所有权、智能指针或 dyn Trait。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "审查循环内 clone / collect、unwrap 控制流和 `#[allow]` lint 豁免。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "智能指针速查读取 `pointer-guide`；借用、Clippy 和 Send / Sync 深入内容读取对应 chapter reference。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

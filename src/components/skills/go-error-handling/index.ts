@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const goErrorHandlingSkill = defineSkill({
@@ -48,12 +49,24 @@ export const goErrorHandlingSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认错误是否跨包暴露、调用方是否需要 `errors.Is` / `errors.As`、是否需要稳定合同。",
-      "保留错误链用 `%w`，sentinel error 表达稳定可匹配状态，自定义类型携带结构化字段。",
-      "错误信息保留操作和关键上下文，但不要重复上层已经会补的内容。",
-      "快速代码模式读取 `error-patterns`；创建和包装细节读取 `error-creation` / `error-wrapping`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认错误是否跨包暴露、调用方是否需要 `errors.Is` / `errors.As`、是否需要稳定合同。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "保留错误链用 `%w`，sentinel error 表达稳定可匹配状态，自定义类型携带结构化字段。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "错误信息保留操作和关键上下文，但不要重复上层已经会补的内容。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "快速代码模式读取 `error-patterns`；创建和包装细节读取 `error-creation` / `error-wrapping`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

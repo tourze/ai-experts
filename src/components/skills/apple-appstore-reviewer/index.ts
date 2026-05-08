@@ -5,7 +5,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { appStoreOptimizationSkill } from "../app-store-optimization/index";
 import { iosHigDesignSkill } from "../ios-hig-design/index";
@@ -65,14 +66,32 @@ export const appleAppstoreReviewerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先识别 App 核心用途、目标平台、首屏路径、审核账号、演示数据和 reviewer notes 是否齐全。",
-      "检查权限文案、隐私清单、第三方 SDK、账号登录 / 删除、IAP / 订阅 / 恢复购买和外链支付。",
-      "检查审核可达性：空状态、离线、崩溃、受限内容、付费墙、演示账号和核心功能是否能被 reviewer 复现。",
-      "把每个风险写入 P0 / P1 / P2 风险表，证据必须落到文件、配置、符号、屏幕流程或网络行为。",
-      "需要真实复现时联动 iOS Simulator；需要界面平台合规时联动 iOS HIG；模板读取 `review-templates` reference。",
-      "第一轮只输出审计和修复建议；用户确认后再进入代码或配置修改。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先识别 App 核心用途、目标平台、首屏路径、审核账号、演示数据和 reviewer notes 是否齐全。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "检查权限文案、隐私清单、第三方 SDK、账号登录 / 删除、IAP / 订阅 / 恢复购买和外链支付。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "检查审核可达性：空状态、离线、崩溃、受限内容、付费墙、演示账号和核心功能是否能被 reviewer 复现。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "把每个风险写入 P0 / P1 / P2 风险表，证据必须落到文件、配置、符号、屏幕流程或网络行为。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "需要真实复现时联动 iOS Simulator；需要界面平台合规时联动 iOS HIG；模板读取 `review-templates` reference。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "第一轮只输出审计和修复建议；用户确认后再进入代码或配置修改。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { embeddingStrategiesSkill } from "../embedding-strategies/index";
 import { ragAuditorSkill } from "../rag-auditor/index";
@@ -63,12 +64,24 @@ export const similaritySearchPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确定检索目标、数据规模、写入/更新频率、召回要求、延迟预算、租户隔离和成本约束。",
-      "确认 embedding 维度、distance metric、top_k、索引类型和过滤条件一致；模型、距离和索引不能孤立替换。",
-      "根据 workload 选择 pgvector、Qdrant、Pinecone、Weaviate 等路线；同时设计 metadata filter、hybrid ranking 和 rerank。",
-      "用真实 query 和 gold set 验证 recall、precision、latency 与过滤正确性；性能调参转 vector-index-tuning。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确定检索目标、数据规模、写入/更新频率、召回要求、延迟预算、租户隔离和成本约束。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "确认 embedding 维度、distance metric、top_k、索引类型和过滤条件一致；模型、距离和索引不能孤立替换。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "根据 workload 选择 pgvector、Qdrant、Pinecone、Weaviate 等路线；同时设计 metadata filter、hybrid ranking 和 rerank。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "用真实 query 和 gold set 验证 recall、precision、latency 与过滤正确性；性能调参转 vector-index-tuning。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

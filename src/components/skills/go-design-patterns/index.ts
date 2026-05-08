@@ -5,7 +5,8 @@ import {
   defineReference,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 
 export const goDesignPatternsSkill = defineSkill({
@@ -56,12 +57,24 @@ export const goDesignPatternsSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先确认问题是构造参数膨胀、可选配置、重试容错、生命周期管理还是依赖替换。",
-      "函数式选项用于稳定构造 API；重试必须检查 context；优雅停机必须有超时。",
-      "不要为模式而模式，优先使用简单函数、接口和组合。",
-      "常用代码模式读取 `implementation-patterns`；依赖注入细节读取 `di`。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先确认问题是构造参数膨胀、可选配置、重试容错、生命周期管理还是依赖替换。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "函数式选项用于稳定构造 API；重试必须检查 context；优雅停机必须有超时。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "不要为模式而模式，优先使用简单函数、接口和组合。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "常用代码模式读取 `implementation-patterns`；依赖注入细节读取 `di`。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { paidAdsSkill } from "../paid-ads/index";
 
@@ -50,12 +51,24 @@ export const leadChannelOptimizerSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先统一时间窗、归因方式、目标客户定义、线索质量口径和是否计入销售成本。",
-      "按渠道比较成本、线索质量、规模潜力、稳定性、执行复杂度和闭环转化。",
-      "把渠道分成继续投入、保持、缩减、暂停四类动作，并说明资源重分配后的下一步。",
-      "若结论指向广告账户结构或创意/受众问题，联动 paid-ads。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先统一时间窗、归因方式、目标客户定义、线索质量口径和是否计入销售成本。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "按渠道比较成本、线索质量、规模潜力、稳定性、执行复杂度和闭环转化。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "把渠道分成继续投入、保持、缩减、暂停四类动作，并说明资源重分配后的下一步。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "若结论指向广告账户结构或创意/受众问题，联动 paid-ads。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { runningDecisionProcessesSkill } from "../running-decision-processes/index";
 
@@ -48,14 +49,32 @@ export const raciMatrixSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先列出需要明确职责的任务、决策或流程节点，并确认参与角色而不是具体人名。",
-      "为每行分配 R/A/C/I：R 可多个，A 必须且只能一个，C 控制在必要少数，I 只接收通知。",
-      "逐行检查：是否无 A、多个 A、所有人都是 R、C 过多或关键角色缺席。",
-      "纵向检查角色负载：谁 A 太多形成瓶颈，谁长期无角色，谁在跨部门事项里缺少结果责任。",
-      "对跨部门任务，把 A 放给最关心结果且能推动结果的人，而不是默认给职级最高者。",
-      "定义更新触发条件：组织调整、人员变动、流程变化或关键职责争议。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先列出需要明确职责的任务、决策或流程节点，并确认参与角色而不是具体人名。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "为每行分配 R/A/C/I：R 可多个，A 必须且只能一个，C 控制在必要少数，I 只接收通知。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "逐行检查：是否无 A、多个 A、所有人都是 R、C 过多或关键角色缺席。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "纵向检查角色负载：谁 A 太多形成瓶颈，谁长期无角色，谁在跨部门事项里缺少结果责任。",
+      }),
+      defineWorkflowStep({
+        id: "step-5",
+        label: "对跨部门任务，把 A 放给最关心结果且能推动结果的人，而不是默认给职级最高者。",
+      }),
+      defineWorkflowStep({
+        id: "step-6",
+        label: "定义更新触发条件：组织调整、人员变动、流程变化或关键职责争议。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

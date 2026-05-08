@@ -4,7 +4,8 @@ import {
   defineAntiPattern,
   defineSkill,
   defineSkillOutputs,
-  defineSkillWorkflow,
+  defineWorkflow,
+  defineWorkflowStep,
 } from "../../sdk";
 import { markdownMermaidWritingSkill } from "../markdown-mermaid-writing/index";
 import { userGuideWritingSkill } from "../user-guide-writing/index";
@@ -58,12 +59,24 @@ export const readmeBlueprintGeneratorSkill = defineSkill({
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
-  workflow: defineSkillWorkflow({
+  workflow: defineWorkflow({
     steps: [
-      "先扫描 README、copilot instructions、包管理配置、Makefile、CI 配置和关键目录，确认项目真实运行方式。",
-      "用 `rg --files` 和对包管理文件的脚本/测试/build/start 字段检查，避免把猜测写成事实。",
-      "按项目简介、技术栈、快速开始、项目结构、开发流程、测试与质量保障组织蓝图。",
-      "缺失信息标为待补；面向开发者写可执行命令，不混入营销式描述。",
+      defineWorkflowStep({
+        id: "step-1",
+        label: "先扫描 README、copilot instructions、包管理配置、Makefile、CI 配置和关键目录，确认项目真实运行方式。",
+      }),
+      defineWorkflowStep({
+        id: "step-2",
+        label: "用 `rg --files` 和对包管理文件的脚本/测试/build/start 字段检查，避免把猜测写成事实。",
+      }),
+      defineWorkflowStep({
+        id: "step-3",
+        label: "按项目简介、技术栈、快速开始、项目结构、开发流程、测试与质量保障组织蓝图。",
+      }),
+      defineWorkflowStep({
+        id: "step-4",
+        label: "缺失信息标为待补；面向开发者写可执行命令，不混入营销式描述。",
+      }),
     ],
   }),
   outputs: defineSkillOutputs({

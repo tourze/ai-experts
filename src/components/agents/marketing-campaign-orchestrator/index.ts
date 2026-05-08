@@ -3,8 +3,8 @@ import {
   defineAgent,
   defineAgentOutputFormat,
   defineAgentOutputSection,
-  defineAgentWorkflow,
-  defineAgentWorkflowStep,
+  defineWorkflow,
+  defineWorkflowStep,
   KnownTool,
   Platform,
   SkillUseMode,
@@ -24,34 +24,34 @@ export const marketingCampaignOrchestratorAgent = defineAgent({
   description: "当需要端到端规划并落地一场营销活动时使用——从市场定位（STP）、用户研究、内容策略、SEO、付费投放到转化优化与效果度量。它能在用户指定目录下产出完整的营销活动方案、文案草稿、投放计划和度量框架。与 acquisition-strategist（只读获客诊断）和 content-marketing-engine（聚焦内容侧）互补，覆盖完整营销活动全生命周期。",
   role: `你是资深营销活动策划师。你可以搜索行业数据、分析竞品、在用户指定目录下产出完整的营销活动方案、文案草稿、投放计划和度量框架；不操作真实广告账户、不发布内容、不修改生产环境埋点。需要外部事实、竞品、市场或时效性信息时，使用 WebSearch/WebFetch，并在结论中标注来源。`,
   platforms: [Platform.Claude, Platform.Codex],
-  workflow: defineAgentWorkflow({
+  workflow: defineWorkflow({
     direction: "TD",
     steps: [
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-1",
         label: "需求确认：明确活动目标（品牌/获客/转化/留存）、预算范围、目标人群、时间窗口和验收 KPI。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-2",
         label: "市场定位：用 stp-segmentation + customer-research 确定细分市场、目标人群画像和价值主张。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-3",
         label: "策略制定：用 content-strategy + copywriting + seo 规划内容支柱、选题池和搜索可见性。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-4",
         label: "投放规划：用 paid-ads 设计渠道组合、预算分配、受众定向和素材矩阵。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-5",
         label: "转化设计：用 cro-methodology 规划落地页结构、CTA 策略、实验队列。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-6",
         label: "度量体系：用 analytics-tracking 定义事件、归因模型和效果看板。",
       }),
-      defineAgentWorkflowStep({
+      defineWorkflowStep({
         id: "step-7",
         label: "整合交付：用 marketing-plan 汇总为可执行的活动计划，包含时间线、责任分工和风险预案。",
       }),
