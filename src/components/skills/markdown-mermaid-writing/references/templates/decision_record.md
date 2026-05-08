@@ -194,9 +194,9 @@ flowchart LR
 
 ## 🔗 References
 
-- [Related ADR or RFC](../adr/ADR-001-agent-optimized-documentation-system.md)
+- Related ADR or RFC: `docs/decisions/ADR-NNN-title.md`
 - [External documentation or benchmark](https://example.com)
-- [Relevant issue or discussion thread](../../docs/project/issues/issue-00000001-agentic-documentation-system.md)
+- Relevant issue or discussion thread: `docs/project/issues/issue-NNNNNNNN-title.md`
 
 ---
 

@@ -46,7 +46,7 @@ Everything below the line is the template. Copy from here:
 | **Date**            | [YYYY-MM-DD]                                                                                                                                                                                  |
 | **Status**          | [Open / Merged / Closed]                                                                                                                                                                      |
 | **Branch**          | `[feature/branch-name]` → `main`                                                                                                                                                              |
-| **Related issues**  | [#ISSUE](../../docs/project/issues/issue-00000001-agentic-documentation-system.md), [#ISSUE2](../../docs/project/issues/issue-00000002-provider-priority-fail-fast-review-cost-visibility.md) |
+| **Related issues**  | `docs/project/issues/issue-NNNNNNNN-title.md`, `docs/project/issues/issue-NNNNNNNN-title-2.md`                                                                  |
 | **Deploy strategy** | [Standard / Canary / Blue-green / Feature flag]                                                                                                                                               |
 
 ---
@@ -303,15 +303,15 @@ git revert [commit-sha]
 
 ### Follow-up items
 
-- [ ] [Task that should happen after merge but isn't blocking](../../docs/project/issues/issue-00000003-local-review-context-pack-and-resilience.md)
-- [ ] [Technical debt to address later](../../docs/project/issues/issue-00000004-memory-backend-self-hosted-and-sql-seed.md)
+- [ ] Task that should happen after merge but isn't blocking: `docs/project/issues/issue-NNNNNNNN-follow-up.md`
+- [ ] Technical debt to address later: `docs/project/issues/issue-NNNNNNNN-tech-debt.md`
 
 ---
 
 ## 🔗 References
 
-- [Design document or ADR](../adr/ADR-001-agent-optimized-documentation-system.md)
-- [Related issue](../../docs/project/issues/issue-00000001-agentic-documentation-system.md)
+- Design document or ADR: `docs/decisions/ADR-NNN-title.md`
+- Related issue: `docs/project/issues/issue-NNNNNNNN-title.md`
 - [Relevant documentation](https://example.com)
 
 ---

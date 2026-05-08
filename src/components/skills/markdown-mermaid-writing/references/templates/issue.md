@@ -57,7 +57,7 @@ This template has two variants — use the section that matches your issue type:
 | **Status**             | [Open / In progress / Resolved / Closed / Won't fix]                                              |
 | **Users affected**     | [Count or segment — e.g., "~2,000 free-tier users" / "All API consumers"]                         |
 | **Revenue impact**     | [None / Indirect / Direct — $N/day or N% of transactions]                                         |
-| **Resolved in**        | [PR-#NUMBER](../../docs/project/pr/pr-00000001-agentic-docs-and-monorepo-modernization.md) or N/A |
+| **Resolved in**        | `docs/project/pr/pr-NNNNNNNN-title.md` or N/A                                                    |
 | **Time to resolution** | [N hours / N days — from report to fix deployed]                                                  |
 
 ---
@@ -160,7 +160,7 @@ flowchart TB
 
 [What was changed to fix the bug. Link to the PR.]
 
-**Fixed in:** [PR-#NUMBER](../../docs/project/pr/pr-00000001-agentic-docs-and-monorepo-modernization.md)
+**Fixed in:** `docs/project/pr/pr-NNNNNNNN-title.md`
 
 ### Verification
 
@@ -177,7 +177,7 @@ flowchart TB
 
 ## 🔗 References
 
-- [Related issues](../../docs/project/issues/issue-00000001-agentic-documentation-system.md)
+- Related issues: `docs/project/issues/issue-NNNNNNNN-title.md`
 - [Relevant documentation](https://example.com)
 - [Monitoring dashboard or alert](https://example.com)
 
@@ -205,7 +205,7 @@ _Last updated: [Date]_
 | **Date requested** | [YYYY-MM-DD]                                                                                      |
 | **Status**         | [Proposed / Accepted / In progress / Shipped / Declined]                                          |
 | **Target release** | [Version, sprint, or quarter]                                                                     |
-| **Shipped in**     | [PR-#NUMBER](../../docs/project/pr/pr-00000001-agentic-docs-and-monorepo-modernization.md) or N/A |
+| **Shipped in**     | `docs/project/pr/pr-NNNNNNNN-title.md` or N/A                                                    |
 
 ---
 
@@ -295,8 +295,8 @@ flowchart TB
 
 - [User feedback or support tickets](https://example.com)
 - [Competitive analysis](https://example.com)
-- [Related feature requests](../../docs/project/issues/issue-00000001-agentic-documentation-system.md)
-- [Design document or ADR](../adr/ADR-001-agent-optimized-documentation-system.md)
+- Related feature requests: `docs/project/issues/issue-NNNNNNNN-title.md`
+- Design document or ADR: `docs/decisions/ADR-NNN-title.md`
 
 ---
 

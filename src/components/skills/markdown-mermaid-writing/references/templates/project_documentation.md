@@ -405,7 +405,7 @@ git clone https://github.com/[your-fork]/[repo].git
 
 - [Official framework docs](https://example.com) — [What version and which sections are most relevant]
 - [API specification](https://example.com) — [OpenAPI/Swagger link if applicable]
-- [Architecture Decision Records](../adr/) — [Why key decisions were made]
+- Architecture Decision Records: `docs/decisions/` — [Why key decisions were made]
 
 ---
 

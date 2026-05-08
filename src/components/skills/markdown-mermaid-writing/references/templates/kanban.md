@@ -124,7 +124,7 @@ _Items awaiting or in code review. Include at least one placeholder item if empt
 
 | Item        | Author   | Reviewer | PR                                                                                   | Days in review | Aging | Status                                           |
 | ----------- | -------- | -------- | ------------------------------------------------------------------------------------ | -------------- | ----- | ------------------------------------------------ |
-| [Work item] | [Person] | [Person] | [#NNN](../../docs/project/pr/pr-00000001-agentic-docs-and-monorepo-modernization.md) | [N]            | 🟢    | [Awaiting review / Changes requested / Approved] |
+| [Work item] | [Person] | [Person] | `docs/project/pr/pr-NNNNNNNN-title.md` | [N]            | 🟢    | [Awaiting review / Changes requested / Approved] |
 |             |          |          |                                                                                      |                |       | _[No items yet]_                                 |
 
 ---
@@ -135,7 +135,7 @@ _Completed this period. Include at least one placeholder item if empty._
 
 | Item        | Assignee | Completed | Cycle time | PR                                                                                   |
 | ----------- | -------- | --------- | ---------- | ------------------------------------------------------------------------------------ |
-| [Work item] | [Person] | [Date]    | [N days]   | [#NNN](../../docs/project/pr/pr-00000001-agentic-docs-and-monorepo-modernization.md) |
+| [Work item] | [Person] | [Date]    | [N days]   | `docs/project/pr/pr-NNNNNNNN-title.md` |
 |             |          |           |            | _[No items completed this period]_                                                   |
 
 ---
@@ -214,9 +214,9 @@ _Explicitly out of scope for this board period. Capture rationale so these decis
 
 ## 🔗 References
 
-- [Live project board](../../docs/project/kanban/sprint-2026-w08-crewai-review-hardening-and-memory.md) — Real-time tracking
-- [Previous board](../../docs/project/kanban/sprint-2026-w07-agentic-template-modernization.md) — Last period's snapshot
-- [Status report](../../docs/project/pr/pr-00000001-agentic-docs-and-monorepo-modernization.md) — Executive summary of this period
+- Live project board: `docs/project/kanban/current-board.md` — Real-time tracking
+- Previous board: `docs/project/kanban/previous-board.md` — Last period's snapshot
+- Status report: `docs/project/status/status-YYYY-MM-DD.md` — Executive summary of this period
 
 ---
 

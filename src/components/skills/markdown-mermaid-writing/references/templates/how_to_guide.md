@@ -234,9 +234,9 @@ Run through these checks to confirm everything is working:
 
 ### Still stuck?
 
-- **Search existing issues:** [docs/project/issues/](../../docs/project/issues/)
-- **Ask for help:** [docs/project/kanban/](../../docs/project/kanban/)
-- **File a bug:** [issue template](../../docs/project/issues/issue-00000001-agentic-documentation-system.md)
+- **Search existing issues:** `docs/project/issues/`
+- **Ask for help:** `docs/project/kanban/`
+- **File a bug:** use `docs/project/issues/issue-NNNNNNNN-title.md`
 
 ---
 
@@ -244,9 +244,9 @@ Run through these checks to confirm everything is working:
 
 Now that you've completed this guide:
 
-- **[Next tutorial]** — [What it covers and why you'd want to do it next](../workflow_guide.md)
+- **[Next tutorial]** — point to `docs/tutorials/next-topic.md` and explain why it is next
 - **[Reference docs]** — [Where to learn the full feature set](../markdown_style_guide.md)
-- **[Advanced topic]** — [Deeper dive for when you're ready](../operational_readiness.md)
+- **[Advanced topic]** — point to `docs/advanced/topic.md` for the deeper dive
 
 <details>
 <summary><strong>📋 Quick reference card</strong></summary>

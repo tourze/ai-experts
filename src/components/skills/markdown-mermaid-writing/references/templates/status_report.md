@@ -177,8 +177,8 @@ _[Author] · [Date]_
 ## 🔗 References
 
 - [Project board / Jira / Linear](https://example.com) — Live work tracking
-- [Previous status report](../../docs/project/kanban/sprint-2026-w07-agentic-template-modernization.md) — For context on trends
-- [Relevant decision record](../adr/ADR-001-agent-optimized-documentation-system.md) — Background on recent changes
+- Previous status report: `docs/project/status/status-YYYY-MM-DD.md` — For context on trends
+- Relevant decision record: `docs/decisions/ADR-NNN-title.md` — Background on recent changes
 
 ---
 
