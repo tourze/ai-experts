@@ -164,7 +164,7 @@ client = OpenAI(
     base_url="https://openrouter.ai/api/v1"
 )
 
-# Scientific papers - use Claude for technical analysis
+# Scientific papers - use a technical vision model
 scientific_md = MarkItDown(
     llm_client=client,
     llm_model="anthropic/claude-sonnet-4.5",
@@ -174,7 +174,7 @@ scientific_md = MarkItDown(
 # Presentations - use GPT-4o for visual understanding
 presentation_md = MarkItDown(
     llm_client=client,
-    llm_model="anthropic/claude-sonnet-4.5",
+    llm_model="openai/gpt-4o",
     llm_prompt="Summarize slide content and key visual elements"
 )
 
@@ -460,4 +460,3 @@ def process_by_format(filepath):
 content = process_by_format("presentation.pptx")
 print(content)
 ```
-

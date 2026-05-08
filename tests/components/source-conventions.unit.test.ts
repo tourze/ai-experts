@@ -476,7 +476,7 @@ describe("component source conventions", () => {
       file.endsWith(".md"),
     );
     const claudeActorPattern =
-      /Claude 阅读|Claude 应|Claude 会|Claude 需要|向 Claude|让 Claude|告诉 Claude|为 Claude/u;
+      /Claude 阅读|Claude 应|Claude 会|Claude 需要|向 Claude|让 Claude|告诉 Claude|为 Claude|\buse Claude for\b/iu;
 
     for (const sourceFile of skillSources) {
       const source = readFileSync(sourceFile, "utf-8");
@@ -1095,6 +1095,24 @@ describe("component source conventions", () => {
         runtimeSource,
         /\bWebSearch\b|\bWebFetch\b/,
         `${skillRuntimeFile} should not expose platform-specific web tool names in runtime guidance`,
+      );
+    }
+  });
+
+  test("skill runtime guidance avoids Claude-specific temporary paths", () => {
+    const skillRuntimeFiles = collectFiles(
+      join(repoRoot, "src/components/skills"),
+      (file) =>
+        (file.endsWith(".md") || file.endsWith("index.ts")) &&
+        !file.split(/[\\/]/).includes("evals"),
+    );
+
+    for (const skillRuntimeFile of skillRuntimeFiles) {
+      const source = readFileSync(skillRuntimeFile, "utf-8");
+      assert.doesNotMatch(
+        source,
+        /Claude\s*\/\s*CLI|\/private\/tmp\/claude-|claude-\*\/\*\/tasks\/\*\.output/u,
+        `${skillRuntimeFile} should describe temporary CLI artifacts without Claude-specific paths`,
       );
     }
   });
