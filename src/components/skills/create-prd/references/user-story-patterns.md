@@ -3,9 +3,9 @@
 
 ## 适用场景
 - 把需求转写成符合 INVEST 的用户故事。
-- 故事太大无法在一个 Sprint 完成，需要系统化拆分。详见 [references/splitting-patterns.md](./splitting-patterns.md)。
+- 故事太大无法在一个 Sprint 完成，需要系统化拆分。详见 [user-story-splitting-patterns](./user-story-splitting-patterns.md)。
 - 与 [agile-product-owner](../../agile-product-owner/SKILL.md) 配合做 Sprint 规划，与 [epic-decomposition](./epic-decomposition.md) 配合从 Epic 层级开始分解。
-- INVEST 检查详见 [references/invest-checklist.md](./invest-checklist.md)。
+- INVEST 检查详见 [user-story-invest-checklist](./user-story-invest-checklist.md)。
 
 ## 核心约束
 - 每条故事必须满足 INVEST（Independent, Negotiable, Valuable, Estimable, Small, Testable）。
@@ -24,7 +24,7 @@
 - Given <边界条件> When <动作> Then <边界结果>
 ```
 
-8 种拆分模式速查：工作流步骤 | 业务规则 | 数据变体 | 界面复杂度 | CRUD | 角色权限 | 性能级别 | 先能用再好用。详见 [references/splitting-patterns.md](./splitting-patterns.md)。
+8 种拆分模式速查：工作流步骤 | 业务规则 | 数据变体 | 界面复杂度 | CRUD | 角色权限 | 性能级别 | 先能用再好用。详见 [user-story-splitting-patterns](./user-story-splitting-patterns.md)。
 
 ## 检查清单
 - [ ] 每条故事有角色、动作、收益三要素。
