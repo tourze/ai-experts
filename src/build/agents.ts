@@ -16,10 +16,10 @@ import {
   tomlString,
   writeText,
   yamlScalar,
-} from "./core.ts";
-import { renderMarkdownBulletList } from "./markdown.ts";
-import { validateMermaidSyntax } from "./mermaid.ts";
-import { renderWorkflowMermaidSource, renderWorkflowSection, validateWorkflow } from "./workflows.ts";
+} from "./core";
+import { renderMarkdownBulletList } from "./markdown";
+import { validateMermaidSyntax } from "./mermaid";
+import { renderWorkflowMermaidSource, renderWorkflowSection, validateWorkflow } from "./workflows";
 
 export function hasStringTool(
   component: { tools?: readonly ToolMatcher[] },

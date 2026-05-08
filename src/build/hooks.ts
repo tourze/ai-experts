@@ -9,7 +9,7 @@ import {
   stripBundledSourcePathComments,
   toAbsolutePath,
   writeText,
-} from "./core.ts";
+} from "./core";
 
 type CompiledHook = {
   id: string;

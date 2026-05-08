@@ -22,7 +22,7 @@ import {
   readComponentText,
   toAbsolutePath,
   writeText,
-} from "./core.ts";
+} from "./core";
 import {
   emitAgent,
   hasStringTool,
@@ -31,12 +31,12 @@ import {
   validateAgentOutputFormat,
   validateAgentQualityStandards,
   validateAgentWorkflow,
-} from "./agents.ts";
-import { compileHookModules, renderCodexConfig, renderHookConfig } from "./hooks.ts";
-import { materializeRegistry } from "./registry.ts";
-import { listProcedureUses } from "./procedure-uses.ts";
-import type { ResolvedProcedureUse } from "./procedure-uses.ts";
-import { emitProcedureRuntime } from "./procedures.ts";
+} from "./agents";
+import { compileHookModules, renderCodexConfig, renderHookConfig } from "./hooks";
+import { materializeRegistry } from "./registry";
+import { listProcedureUses } from "./procedure-uses";
+import type { ResolvedProcedureUse } from "./procedure-uses";
+import { emitProcedureRuntime } from "./procedures";
 import {
   emitSkill,
   skillSourceRoot,
@@ -46,8 +46,8 @@ import {
   validateSkillOutputs,
   validateSkillWorkflow,
   validateTextList,
-} from "./skills.ts";
-import type { ComponentRegistry, ComponentSurface } from "./types.ts";
+} from "./skills";
+import type { ComponentRegistry, ComponentSurface } from "./types";
 
 const manifestSchemaVersion = 5;
 

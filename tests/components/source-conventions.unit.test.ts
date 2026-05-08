@@ -125,6 +125,7 @@ describe("component source conventions", () => {
 
   test("component check script runs every typecheck gate", () => {
     const packageJson = JSON.parse(readFileSync(join(repoRoot, "package.json"), "utf-8"));
+    const buildTsconfig = JSON.parse(readFileSync(join(repoRoot, "tsconfig.build.json"), "utf-8"));
     const scripts = packageJson.scripts as Record<string, string>;
     const checkComponents = scripts["check:components"] ?? "";
     const typecheckScripts = Object.keys(scripts)
@@ -140,6 +141,11 @@ describe("component source conventions", () => {
       "`check:components` should run every dedicated typecheck script",
     );
     assert.match(checkComponents, /tsx src\/build\.ts --check/);
+    assert.equal(
+      Object.hasOwn(buildTsconfig.compilerOptions ?? {}, "allowImportingTsExtensions"),
+      false,
+      "build source should not opt back into .ts extension imports",
+    );
   });
 
   test("component API exposes procedures through the single component layout", () => {
@@ -1198,14 +1204,16 @@ describe("component source conventions", () => {
   });
 
   test("TypeScript source keeps extensionless relative imports", () => {
-    for (const sourceFile of collectFiles(
-      join(repoRoot, "src/components"),
-      (file) => file.endsWith(".ts"),
-    )) {
+    const sourceFiles = [
+      join(repoRoot, "src/build.ts"),
+      ...collectFiles(join(repoRoot, "src/build"), (file) => file.endsWith(".ts")),
+      ...collectFiles(join(repoRoot, "src/components"), (file) => file.endsWith(".ts")),
+    ];
+    for (const sourceFile of sourceFiles) {
       const source = readFileSync(sourceFile, "utf-8");
       assert.doesNotMatch(
         source,
-        /from\s+["']\.[^"']+\.js["']|import\s+["']\.[^"']+\.js["']|import\(\s*["']\.[^"']+\.js["']\s*\)/,
+        /from\s+["']\.[^"']+\.(?:ts|js)["']|import\s+["']\.[^"']+\.(?:ts|js)["']|import\(\s*["']\.[^"']+\.(?:ts|js)["']\s*\)/,
         `${sourceFile} should use extensionless relative imports`,
       );
     }

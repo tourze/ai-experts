@@ -27,15 +27,15 @@ import {
   toAbsolutePath,
   writeText,
   yamlScalar,
-} from "./core.ts";
-import { listProcedureUses, procedureUseAppliesToPlatform } from "./procedure-uses.ts";
-import type { ResolvedProcedureUse } from "./procedure-uses.ts";
+} from "./core";
+import { listProcedureUses, procedureUseAppliesToPlatform } from "./procedure-uses";
+import type { ResolvedProcedureUse } from "./procedure-uses";
 import {
   renderMarkdownBulletList,
   renderMarkdownTableCell,
-} from "./markdown.ts";
-import { validateMermaidSyntax } from "./mermaid.ts";
-import { renderWorkflowMermaidSource, renderWorkflowSection, validateWorkflow } from "./workflows.ts";
+} from "./markdown";
+import { validateMermaidSyntax } from "./mermaid";
+import { renderWorkflowMermaidSource, renderWorkflowSection, validateWorkflow } from "./workflows";
 
 type TextListProperty = "useCases" | "constraints" | "checklist";
 

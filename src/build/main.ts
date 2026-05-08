@@ -1,10 +1,10 @@
 import { readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { parseArgs, Platform } from "./core.ts";
-import { compileRegistry } from "./registry.ts";
-import { emitPlatform, validateRegistry } from "./platform.ts";
-import type { BuildStats } from "./types.ts";
+import { parseArgs, Platform } from "./core";
+import { compileRegistry } from "./registry";
+import { emitPlatform, validateRegistry } from "./platform";
+import type { BuildStats } from "./types";
 
 type PlatformManifest = {
   skills?: unknown;

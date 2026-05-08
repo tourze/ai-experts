@@ -486,25 +486,22 @@ describe("component build integration", () => {
   });
 
   test("emits reproducible manifests and procedure bundles", () => {
-    const firstDistDir = mkdtempSync(join(tmpdir(), "ai-experts-repro-a-"));
     const secondDistDir = mkdtempSync(join(tmpdir(), "ai-experts-repro-b-"));
     try {
-      buildComponents(firstDistDir);
       buildComponents(secondDistDir);
       for (const platform of ["claude", "codex"]) {
         assert.equal(
-          readFileSync(join(firstDistDir, platform, "procedures.js"), "utf-8"),
+          readFileSync(join(tmpDistDir, platform, "procedures.js"), "utf-8"),
           readFileSync(join(secondDistDir, platform, "procedures.js"), "utf-8"),
           `${platform} procedure bundle should be reproducible`,
         );
         assert.equal(
-          readFileSync(join(firstDistDir, platform, "manifest.json"), "utf-8"),
+          readFileSync(join(tmpDistDir, platform, "manifest.json"), "utf-8"),
           readFileSync(join(secondDistDir, platform, "manifest.json"), "utf-8"),
           `${platform} manifest should be reproducible`,
         );
       }
     } finally {
-      rmSync(firstDistDir, { recursive: true, force: true });
       rmSync(secondDistDir, { recursive: true, force: true });
     }
   }, 120_000);

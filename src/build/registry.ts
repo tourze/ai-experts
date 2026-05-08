@@ -3,8 +3,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import * as esbuild from "esbuild";
-import { collectFiles, rewriteCompiledJsImports, sourceRoot, writeText } from "./core.ts";
-import { listProcedureUses } from "./procedure-uses.ts";
+import { collectFiles, rewriteCompiledJsImports, sourceRoot, writeText } from "./core";
+import { listProcedureUses } from "./procedure-uses";
 import type {
   AgentDefinition,
   HookDefinition,
@@ -12,7 +12,7 @@ import type {
   ProcedureDefinition,
   SkillDefinition,
 } from "../components/sdk";
-import type { ComponentRegistry, ComponentSurface } from "./types.ts";
+import type { ComponentRegistry, ComponentSurface } from "./types";
 
 export function byId<T extends { id: string }>(items: readonly T[] | undefined, kind: string): Map<string, T> {
   const map = new Map<string, T>();

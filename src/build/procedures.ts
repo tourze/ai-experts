@@ -8,9 +8,9 @@ import type {
   ProcedureDefinition,
   ProcedureUseReference,
 } from "../components/sdk";
-import { sourceRoot, toAbsolutePath } from "./core.ts";
-import { listProcedureUses, procedureUseAppliesToPlatform } from "./procedure-uses.ts";
-import type { ComponentSurface } from "./types.ts";
+import { sourceRoot, toAbsolutePath } from "./core";
+import { listProcedureUses, procedureUseAppliesToPlatform } from "./procedure-uses";
+import type { ComponentSurface } from "./types";
 
 type RuntimeProcedureEntry = {
   id: string;
