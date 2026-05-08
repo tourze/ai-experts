@@ -35,6 +35,13 @@ function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function isLikelyLocalDefinitionPath(href: string): boolean {
+  return href.startsWith("./")
+    || href.startsWith("../")
+    || href.includes("/")
+    || /\.[A-Za-z0-9]+$/u.test(href);
+}
+
 function parseGeneratedToml(source: string, label: string): ParsedGeneratedToml {
   const parsed: ParsedGeneratedToml = { root: {}, sections: {}, arrays: {} };
   let current = parsed.root;
@@ -1958,6 +1965,16 @@ describe("component build integration", () => {
           const [pathWithoutAnchor] = href.split("#", 1);
           if (pathWithoutAnchor && !existsSync(resolve(dirname(markdownFile), pathWithoutAnchor))) {
             brokenLocalLinks.push(`${markdownFile}: ${href}`);
+          }
+        }
+        for (const match of markdown.matchAll(/^\s*\[([^\]\n]+)\]:\s+([^\n]+)$/gmu)) {
+          const label = (match[1] ?? "").trim();
+          if (label.startsWith("^")) continue;
+          const href = markdownDestination(match[2] as string);
+          if (/^[a-z][a-z0-9+.-]*:|^#|^\//iu.test(href) || !isLikelyLocalDefinitionPath(href)) continue;
+          const [pathWithoutAnchor] = href.split("#", 1);
+          if (pathWithoutAnchor && !existsSync(resolve(dirname(markdownFile), pathWithoutAnchor))) {
+            brokenLocalLinks.push(`${markdownFile}: [${label}] -> ${href}`);
           }
         }
       }
