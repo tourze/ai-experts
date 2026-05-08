@@ -1346,16 +1346,6 @@ describe("component build integration", () => {
       "source skills should avoid hard-coded dual-platform invocation syntax",
     );
 
-    const legacyScriptCommandsInSkillBodies = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
-      file.endsWith("SKILL.body.md") &&
-      /node\s+(?:\.\/)?scripts\/[A-Za-z0-9._/-]+\.mjs/.test(readFileSync(file, "utf-8")),
-    );
-    assert.deepEqual(
-      legacyScriptCommandsInSkillBodies,
-      [],
-      "SKILL.body.md should not describe legacy local node scripts; use procedureUse metadata instead",
-    );
-
     const procedureUseIdReferences = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
       file.endsWith("index.ts") &&
       /procedureUse\([A-Za-z_][A-Za-z0-9_]*\.id\b/.test(readFileSync(file, "utf-8")),

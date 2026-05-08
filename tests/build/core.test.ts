@@ -13,7 +13,6 @@ import {
   nodeScriptBanner,
   parseArgs,
   readComponentText,
-  readOptionalComponentText,
   removeFiles,
   renderHookMatcher,
   renderToolMatcher,
@@ -101,7 +100,6 @@ describe("build/core", () => {
     const sourceUrl = new URL(`file://${join(root, "entry.txt")}`);
     expect(toAbsolutePath(sourceUrl)).toBe(join(root, "entry.txt"));
     expect(readComponentText(sourceUrl)).toBe("hello");
-    expect(readOptionalComponentText(undefined)).toBe("");
     expect(displayPath(sourceUrl)).toBe(join(root, "entry.txt"));
     expect(displayPath("README.md")).toBe("README.md");
 

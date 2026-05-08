@@ -22,7 +22,6 @@ import {
   ensureDir,
   InvocationPolicy,
   Platform,
-  readOptionalComponentText,
   toAbsolutePath,
   writeText,
   yamlScalar,
@@ -39,9 +38,8 @@ import { renderWorkflowMermaidSource, renderWorkflowSection, validateWorkflow } 
 type TextListProperty = "useCases" | "constraints" | "checklist";
 
 export function skillSourceRoot(skill: SkillDefinition): string {
-  if (skill.body !== undefined) return dirname(toAbsolutePath(skill.body));
   if (skill.sourceDir !== undefined) return toAbsolutePath(skill.sourceDir);
-  throw new Error(`Skill ${skill.id} must define body or sourceDir`);
+  throw new Error(`Skill ${skill.id} must define sourceDir`);
 }
 
 function renderSkillFrontmatter(skill: SkillDefinition, platform: PlatformType): string {
@@ -371,7 +369,7 @@ function renderSkillOutputs(skill: SkillDefinition): string {
   return `## ${title}\n\n${outputs.body?.trim()}\n`;
 }
 
-export function hasStructuredSkillBody(skill: SkillDefinition): boolean {
+export function hasStructuredSkillContent(skill: SkillDefinition): boolean {
   return skill.goal !== undefined || skill.workflow !== undefined || skill.outputs !== undefined;
 }
 
@@ -427,7 +425,6 @@ export function renderSkillMd(
   }
   const body = [
     renderStructuredSkillBody(skill),
-    readOptionalComponentText(skill.body).trimEnd(),
   ].filter((section) => section.trim() !== "")
     .join("\n\n");
   const generatedBody = renderBodyWithGeneratedSections(skill, body);
@@ -687,7 +684,6 @@ function copySupplementalSkillRootFiles(skill: SkillDefinition, skillRoot: strin
   const reserved = new Set([
     "index.ts",
     "index.js",
-    "SKILL.body.md",
     "AGENTS.md",
     "CLAUDE.md",
     "metadata.json",

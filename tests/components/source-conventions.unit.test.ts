@@ -9,11 +9,7 @@ import { registry } from "../../src/components/registry.ts";
 import { Platform } from "../../src/components/sdk.ts";
 import {
   collectFiles,
-  countH2OutsideCodeFence,
-  countH2OutsideCodeFenceMatching,
   extractPropertyArray,
-  firstNonEmptyLine,
-  hasTopLevelHeadingOutsideCodeFence,
   markdownDestination,
   repoRoot,
   stripMarkdownCode,
@@ -105,6 +101,8 @@ describe("component source conventions", () => {
     assert.match(readme, /procedureUse\(procedureDefinition\)/);
     assert.match(readme, /构建器会生成 `## 检查清单`，并放在生成的 `## 反模式` 之后/);
     assert.match(readme, /Agent 不再使用 `AGENT\.body\.md`/);
+    assert.match(readme, /sourceDir: new URL\("\.\/", import\.meta\.url\)/);
+    assert.doesNotMatch(readme, /SKILL\.body\.md|body: new URL\("\.\/SKILL\.body\.md"/);
     assert.match(readme, /`InvocationPolicy\.ModelOnly` 只用于 Claude-only skill/);
     assert.match(readme, /`procedureUse\(procedureDefinition, \{ platforms: \[\.\.\.\] \}\)`/);
     assert.match(readme, /仅单平台可用的关系使用 `platforms` 收窄/);
@@ -349,11 +347,11 @@ describe("component source conventions", () => {
   test("skill author agent uses source component filenames for authoring", () => {
     const skillAuthorSource = readFileSync(join(repoRoot, "src/components/agents/skill-author/index.ts"), "utf-8");
 
-    assert.match(skillAuthorSource, /index\.ts、可选 SKILL\.body\.md/);
+    assert.match(skillAuthorSource, /index\.ts、references、assets、evals、Procedure 引用/);
     assert.match(skillAuthorSource, /registry\.generated\.ts/);
     assert.doesNotMatch(
       skillAuthorSource,
-      /src\/components\/skills\/<skill>\/` 下的 SKILL\.md|写 SKILL\.md 时|README 索引项|\[SKILL\.md \//u,
+      /SKILL\.body\.md|src\/components\/skills\/<skill>\/` 下的 SKILL\.md|写 SKILL\.md 时|README 索引项|\[SKILL\.md \//u,
       "skill author should describe source component files instead of generated SKILL.md output",
     );
   });
@@ -1145,48 +1143,12 @@ describe("component source conventions", () => {
     }
   });
 
-  test("skill body markdown keeps generator-owned sections out", () => {
-    for (const bodyFile of collectFiles(
+  test("skill source does not use markdown body files", () => {
+    const bodyFiles = collectFiles(
       join(repoRoot, "src/components/skills"),
       (file) => file.endsWith("SKILL.body.md"),
-    )) {
-      const source = readFileSync(bodyFile, "utf-8");
-      assert.equal(
-        hasTopLevelHeadingOutsideCodeFence(source),
-        false,
-        `${bodyFile} should not contain an H1 heading; set fullName in index.ts instead`,
-      );
-      assert.match(
-        firstNonEmptyLine(source),
-        /^##\s+\S/,
-        `${bodyFile} should start with an H2 section, not an intro paragraph`,
-      );
-      assert.equal(
-        countH2OutsideCodeFence(source, "适用场景"),
-        0,
-        `${bodyFile} should not contain a useCases section; set useCases in index.ts instead`,
-      );
-      assert.equal(
-        countH2OutsideCodeFenceMatching(source, (title) => title.startsWith("核心约束")),
-        0,
-        `${bodyFile} should not contain a constraints section; set constraints in index.ts instead`,
-      );
-      assert.equal(
-        countH2OutsideCodeFence(source, "检查清单"),
-        0,
-        `${bodyFile} should not contain a checklist section; set checklist in index.ts instead`,
-      );
-      assert.equal(
-        countH2OutsideCodeFence(source, "反模式"),
-        0,
-        `${bodyFile} should not contain an anti-pattern section; set antiPatterns in index.ts instead`,
-      );
-      assert.doesNotMatch(
-        source,
-        /\]\(\.\.\/[^)]+\/SKILL\.md\)|\]\([a-z0-9-]+-expert:[a-z0-9-]+\)/,
-        `${bodyFile} should not contain explicit cross-skill links; set relatedSkills in index.ts instead`,
-      );
-    }
+    );
+    assert.deepEqual(bodyFiles, [], "skill Markdown bodies should be split into structured index.ts fields");
   });
 
   test("skill source does not keep root package artifacts", () => {
@@ -1206,7 +1168,6 @@ describe("component source conventions", () => {
     const reservedSkillRootEntries = new Set([
       "index.ts",
       "index.js",
-      "SKILL.body.md",
       "scripts",
       "references",
       "assets",
@@ -1286,16 +1247,14 @@ describe("component source conventions", () => {
       if (/\bKnownTool\b/.test(source)) {
         assert.match(source, /KnownTool\./, `${skillSourceFile} should import KnownTool only when a tool is declared`);
       }
-      const hasSkillBody = /\n\s*body:\s*new URL\("\.\/SKILL\.body\.md", import\.meta\.url\)/.test(source);
       const hasSourceDir = /\n\s*sourceDir:\s*new URL\("\.\/", import\.meta\.url\)/.test(source);
-      if (!hasSkillBody) {
-        assert.equal(hasSourceDir, true, `${skillSourceFile} should define sourceDir when it omits SKILL.body.md`);
-        assert.match(
-          source,
-          /\n\s*(?:(?:goal|outputs):\s*defineSkill(?:Goal|Outputs)|workflow:\s*defineWorkflow)\(\{/,
-          `${skillSourceFile} should define structured skill content when it omits SKILL.body.md`,
-        );
-      }
+      assert.doesNotMatch(source, /\n\s*body:\s*new URL\("\.\/SKILL\.body\.md", import\.meta\.url\)/);
+      assert.equal(hasSourceDir, true, `${skillSourceFile} should define sourceDir`);
+      assert.match(
+        source,
+        /\n\s*(?:(?:goal|outputs):\s*defineSkill(?:Goal|Outputs)|workflow:\s*defineWorkflow)\(\{/,
+        `${skillSourceFile} should define structured skill content`,
+      );
       if (/\n\s*goal:\s*defineSkillGoal\(\{/.test(source)) {
         goalDefinitionFiles.push(skillSourceFile);
         assert.doesNotMatch(

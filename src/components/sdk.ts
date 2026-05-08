@@ -202,7 +202,6 @@ export type SkillDefinition = {
   antiPatterns?: readonly AntiPatternDefinition[];
   invocation: InvocationPolicy;
   platforms: PlatformList;
-  body?: ComponentFile;
   sourceDir?: ComponentFile;
   goal?: SkillGoalDefinition;
   workflow?: WorkflowDefinition;

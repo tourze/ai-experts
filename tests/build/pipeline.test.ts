@@ -75,10 +75,8 @@ function createFixture() {
   ensureDir(hooksRoot);
   ensureDir(instructionRoot);
 
-  const skillBody = join(skillRoot, "SKILL.body.md");
   const skillReference = join(skillRoot, "references", "reference.md");
   const skillAsset = join(skillRoot, "assets", "asset.txt");
-  writeText(skillBody, "## 步骤\n\n执行检查。\n");
   writeText(skillReference, "# Ref\n");
   writeText(skillAsset, "asset");
 
@@ -117,7 +115,11 @@ function createFixture() {
     antiPatterns: [{ fail: "直接跳过验证。", pass: "执行并验证输出。" }],
     invocation: InvocationPolicy.ExplicitOnly,
     platforms: [ComponentPlatform.Claude, ComponentPlatform.Codex],
-    body: pathToFileURL(skillBody),
+    sourceDir: pathToFileURL(`${skillRoot}/`),
+    workflow: defineWorkflow({
+      steps: [defineWorkflowStep({ id: "inspect", label: "执行检查。" })],
+    }),
+    outputs: defineSkillOutputs({ items: ["检查结论"] }),
     tools: [KnownTool.Read, KnownTool.Grep],
     procedures: [defineProcedureUse({ id: procedure.id })],
     references: [
@@ -235,7 +237,6 @@ describe("build/pipeline modules", () => {
       ...fixture.skill,
       id: "structured-skill",
       fullName: "Structured Skill",
-      body: undefined,
       sourceDir: pathToFileURL(`${fixture.root}/skill/`),
       procedures: [],
       goal: defineSkillGoal({ title: "完成条件", body: "明确流程目标。" }),
@@ -264,21 +265,6 @@ describe("build/pipeline modules", () => {
       validateMermaidSyntax("broken workflow", "flowchart TD\n  start -->"),
     ).rejects.toThrow("broken workflow generated Mermaid diagram is invalid");
 
-    const legacyWorkflowRoot = createTempDir("ai-experts-legacy-workflow-body-");
-    for (const legacyWorkflowHeading of ["执行步骤", "工作流"]) {
-      const legacyWorkflowBody = join(legacyWorkflowRoot, `legacy-${legacyWorkflowHeading}.body.md`);
-      writeText(legacyWorkflowBody, `## ${legacyWorkflowHeading}\n\n1. 旧流程。\n`);
-      expect(() =>
-        validateRegistry({
-          ...fixture.registry,
-          skills: [{
-            ...fixture.skill,
-            body: pathToFileURL(legacyWorkflowBody),
-          }],
-        })
-      ).toThrow("must move workflow sections from SKILL.body.md to workflow");
-    }
-
     expect(() =>
       validateRegistry({
         ...fixture.registry,
@@ -290,7 +276,7 @@ describe("build/pipeline modules", () => {
           outputs: undefined,
         }],
       })
-    ).toThrow("must define body or sourceDir");
+    ).toThrow("must define sourceDir");
 
     const codexRoot = createTempDir("ai-experts-emit-skill-");
     await emitSkill(fixture.skill, codexRoot, Platform.Codex, procedureMap, new Set([fixture.skill.id]));
@@ -613,17 +599,6 @@ describe("build/pipeline modules", () => {
       })
     ).toThrow("duplicate related skill entry: other-skill");
 
-    const bodyWithMissingSkillLink = join(fixture.root, "skill", "missing-link.body.md");
-    writeText(bodyWithMissingSkillLink, "## 步骤\n\n参见 [missing](../missing-skill/SKILL.md)。\n");
-    expect(() =>
-      validateRegistry({
-        ...fixture.registry,
-        skills: [{
-          ...fixture.skill,
-          body: pathToFileURL(bodyWithMissingSkillLink),
-        }],
-      })
-    ).toThrow("markdown link to missing skill: missing-skill");
   });
 
   test("procedure references support structured links and helper guard", () => {

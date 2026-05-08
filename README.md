@@ -87,7 +87,7 @@ TS 源码统一使用无后缀相对 import，例如 `../../sdk`，不写 `../..
 
 ## Skill
 
-Skill 是工作流和能力单元。`SKILL.body.md` 只保留主体流程和必要红线，不写一级标题，也不写开头简介段；正文必须从二级标题开始。大资料放 `references/`，输出资产放 `assets/`，可执行过程放 `src/components/procedures/sources/` 并由 skill/agent 通过 `procedureUse()` 引用。一级标题由 `index.ts` 的 `fullName` 统一生成到最终 `SKILL.md`，适用场景、核心约束、检查清单和反模式分别由 `index.ts` 的结构化字段统一生成。
+Skill 是工作流和能力单元。运行时正文由 `index.ts` 的结构化字段生成；大资料放 `references/`，输出资产放 `assets/`，可执行过程放 `src/components/procedures/sources/` 并由 skill/agent 通过 `procedureUse()` 引用。一级标题由 `fullName` 统一生成到最终 `SKILL.md`，适用场景、核心约束、工作流、输出、检查清单和反模式分别由结构化字段统一生成。
 
 定义示例：
 
@@ -137,7 +137,7 @@ export const typescriptTypeSafety = defineSkill({
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],
-  body: new URL("./SKILL.body.md", import.meta.url),
+  sourceDir: new URL("./", import.meta.url),
   workflow: defineWorkflow({
     steps: [
       defineWorkflowStep({ id: "collect", label: "读取完整编译错误和边界输入样例。" }),
@@ -168,13 +168,13 @@ export const typescriptTypeSafety = defineSkill({
 
 规则：
 
-- `body`、Procedure `entry`、reference `source`、asset `source` 使用 `new URL("./file", import.meta.url)`。
-- 每个 skill 必须声明 `useCases` 与 `constraints`，最终 `SKILL.md` 的 `## 适用场景` 和 `## 核心约束` 只由生成器输出；`SKILL.body.md` 不再手写这两个章节。
-- `SKILL.body.md` 第一个非空行必须是 `## ...`，不要在正文开头写一句简介；简介类内容放进 `description`、`useCases` 或 `constraints`。
-- 检查清单使用 `checklist` 声明为普通字符串数组；构建器会生成 `## 检查清单`，并放在生成的 `## 反模式` 之后。不要在 `SKILL.body.md` 手写 `## 检查清单`，分组清单改写成 `分组：检查项`。
-- 工作流程使用 `workflow: defineWorkflow({ steps/gates/routes/finalSteps })` 声明，节点用 `defineWorkflowStep()` / `defineWorkflowGate()` / `defineWorkflowRoute()`；Skill 与 Agent 共用同一套工作流模型，构建器统一生成 `## 工作流` Mermaid flowchart。不要在 `SKILL.body.md` 手写流程图或 `## 执行步骤`。
-- 反模式使用 `antiPatterns` 声明，每行必须通过 `defineAntiPattern({ fail, pass })` 定义；构建器会生成 `## 反模式` Markdown 表格。不要在 `SKILL.body.md` 手写 `## 反模式`，大段代码对照放进 `references/`。
-- 交叉引用其他 skill 时使用 `relatedSkills` 声明；构建器会生成 `## 相关 Skill`。`relatedSkills` 必须 import 对应 skill definition，并通过 `get id() { return otherSkill.id; }` 延迟读取，避免双向关系造成 ESM 初始化循环；仅单平台可用的关系使用 `platforms` 收窄，不要牺牲另一个平台的输出；不要在 `SKILL.body.md`、`useCases` 或 `constraints` 里手写 `../other-skill/SKILL.md` 或旧 `plugin:skill` 链接。
+- `sourceDir` 使用 `new URL("./", import.meta.url)`；Procedure `entry`、reference `source`、asset `source` 使用 `new URL("./file", import.meta.url)`。
+- 每个 skill 必须声明 `useCases` 与 `constraints`，最终 `SKILL.md` 的 `## 适用场景` 和 `## 核心约束` 只由生成器输出。
+- 不再使用 Markdown body 文件；主体内容拆入 `workflow`、`outputs`、`goal`、`checklist`、`antiPatterns`、`relatedSkills`、`parameters` 和 reference/asset/procedure 元数据。
+- 检查清单使用 `checklist` 声明为普通字符串数组；构建器会生成 `## 检查清单`，并放在生成的 `## 反模式` 之后。分组清单改写成 `分组：检查项`。
+- 工作流程使用 `workflow: defineWorkflow({ steps/gates/routes/finalSteps })` 声明，节点用 `defineWorkflowStep()` / `defineWorkflowGate()` / `defineWorkflowRoute()`；Skill 与 Agent 共用同一套工作流模型，构建器统一生成 `## 工作流` Mermaid flowchart。
+- 反模式使用 `antiPatterns` 声明，每行必须通过 `defineAntiPattern({ fail, pass })` 定义；构建器会生成 `## 反模式` Markdown 表格。大段代码对照放进 `references/`。
+- 交叉引用其他 skill 时使用 `relatedSkills` 声明；构建器会生成 `## 相关 Skill`。`relatedSkills` 必须 import 对应 skill definition，并通过 `get id() { return otherSkill.id; }` 延迟读取，避免双向关系造成 ESM 初始化循环；仅单平台可用的关系使用 `platforms` 收窄，不要牺牲另一个平台的输出；不要在 `useCases` 或 `constraints` 里手写 `../other-skill/SKILL.md` 或旧 `plugin:skill` 链接。
 - 每个可执行过程必须在 `src/components/procedures/` 登记为 Procedure；skill/agent 通过 `procedureUse(procedureDefinition)` 引用，不手写裸 procedure id。
 - reference 必须通过 `defineReference()` 登记，asset 必须通过 `defineAsset()` 登记。
 - `evals/` 是源码侧质量验证材料，不是运行时参考资料，不能登记为 reference，也不会复制到 `dist/*/skills/*/references/`。

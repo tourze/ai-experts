@@ -19,7 +19,6 @@ import {
   isSameOrInsidePath,
   Platform,
   readComponentText,
-  readOptionalComponentText,
   toAbsolutePath,
   writeText,
 } from "./core.ts";
@@ -33,14 +32,13 @@ import {
   validateAgentWorkflow,
 } from "./agents.ts";
 import { compileHookModules, renderCodexConfig, renderHookConfig } from "./hooks.ts";
-import { hasH2SectionMatching, startsWithH2Section } from "./markdown.ts";
 import { materializeRegistry } from "./registry.ts";
 import { listProcedureUses } from "./procedure-uses.ts";
 import type { ResolvedProcedureUse } from "./procedure-uses.ts";
 import { emitProcedureRuntime } from "./procedures.ts";
 import {
   emitSkill,
-  hasStructuredSkillBody,
+  hasStructuredSkillContent,
   skillSourceRoot,
   validateAntiPatterns,
   validateParameters,
@@ -137,14 +135,6 @@ function validateUniqueProcedureUses(componentId: string, procedureUses: readonl
 
 const validPlatformValues = new Set<string>(Object.values(Platform));
 const codexSystemSkillIds = new Set(["imagegen", "openai-docs", "plugin-creator", "skill-creator", "skill-installer"]);
-const skillWorkflowBodySectionTitles = new Set([
-  "工作流",
-  "执行步骤",
-  "工作方式",
-  "必经门禁",
-  "场景路由",
-  "编排顺序",
-]);
 
 function validatePlatformList(
   platforms: readonly unknown[] | undefined,
@@ -182,15 +172,6 @@ function duplicateValues(values: readonly string[]): string[] {
 
 function procedureOwnerKey(ownerId: string, procedureId: string): string {
   return `${ownerId}\0${procedureId}`;
-}
-
-function validateSkillBodyCrossSkillLinks(skill: SkillDefinition, bodySource: string, skillIds: ReadonlySet<string>): void {
-  for (const match of bodySource.matchAll(/\]\(\.\.\/([a-z0-9]+(?:-[a-z0-9]+)*)\/SKILL\.md(?:#[^)]+)?\)/gu)) {
-    const targetSkillId = match[1] as string;
-    if (!skillIds.has(targetSkillId)) {
-      throw new Error(`Skill ${skill.id} contains a markdown link to missing skill: ${targetSkillId}`);
-    }
-  }
 }
 
 function validateAgentSkillPlatform(
@@ -392,21 +373,11 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     }
     validateTextList(skill, "useCases", "useCase");
     validateTextList(skill, "constraints", "constraint");
-    if (skill.body !== undefined && !existsSync(toAbsolutePath(skill.body))) {
-      throw new Error(`Skill ${skill.id} body is missing: ${displayPath(skill.body)}`);
-    }
-    if (skill.body === undefined && skill.sourceDir === undefined) {
-      throw new Error(`Skill ${skill.id} must define body or sourceDir`);
+    if (skill.sourceDir === undefined) {
+      throw new Error(`Skill ${skill.id} must define sourceDir`);
     }
     if (skill.sourceDir !== undefined && !existsSync(toAbsolutePath(skill.sourceDir))) {
       throw new Error(`Skill ${skill.id} sourceDir is missing: ${displayPath(skill.sourceDir)}`);
-    }
-    const bodySource = readOptionalComponentText(skill.body);
-    if (bodySource.trim() !== "" && !startsWithH2Section(bodySource)) {
-      throw new Error(`Skill ${skill.id} body must start with an H2 section; move intro text to index.ts fields`);
-    }
-    if (hasH2SectionMatching(bodySource, (title) => skillWorkflowBodySectionTitles.has(title))) {
-      throw new Error(`Skill ${skill.id} must move workflow sections from SKILL.body.md to workflow`);
     }
     validateSkillGoal(skill);
     const skillWorkflow = validateSkillWorkflow(skill);
@@ -419,39 +390,14 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
       validateSkillWorkflowSkillPlatform(skill, route.skill, skillsById, "workflow route references skill");
     }
     validateSkillOutputs(skill);
-    if (bodySource.trim() === "" && !hasStructuredSkillBody(skill)) {
-      throw new Error(`Skill ${skill.id} must define body content or structured skill sections`);
-    }
-    if (hasH2SectionMatching(bodySource, (title) => title === "适用场景")) {
-      throw new Error(`Skill ${skill.id} must move ## 适用场景 from SKILL.body.md to useCases`);
-    }
-    if (hasH2SectionMatching(bodySource, (title) => title.startsWith("核心约束"))) {
-      throw new Error(`Skill ${skill.id} must move ## 核心约束 from SKILL.body.md to constraints`);
-    }
-    if (hasH2SectionMatching(bodySource, (title) => title === "检查清单")) {
-      throw new Error(`Skill ${skill.id} must move ## 检查清单 from SKILL.body.md to checklist`);
+    if (!hasStructuredSkillContent(skill)) {
+      throw new Error(`Skill ${skill.id} must define structured skill sections`);
     }
     if (skill.checklist !== undefined) {
       validateTextList(skill, "checklist", "checklist item");
     }
-    if (hasH2SectionMatching(bodySource, (title) => title === "反模式")) {
-      throw new Error(`Skill ${skill.id} must move ## 反模式 from SKILL.body.md to antiPatterns`);
-    }
-    if (hasH2SectionMatching(bodySource, (title) => title === "用户输入")) {
-      throw new Error(`Skill ${skill.id} must move ## 用户输入 from SKILL.body.md to parameters`);
-    }
-    if (hasH2SectionMatching(bodySource, (title) => title === "交叉引用")) {
-      throw new Error(`Skill ${skill.id} must move ## 交叉引用 from SKILL.body.md to relatedSkills`);
-    }
     validateAntiPatterns(skill);
     validateParameters(skill);
-    validateSkillBodyCrossSkillLinks(skill, bodySource, skillIds);
-    if (/\]\(\.\.\/[^)]+\/SKILL\.md\)|\]\([a-z0-9-]+-expert:[a-z0-9-]+\)/u.test(bodySource)) {
-      throw new Error(`Skill ${skill.id} must move explicit cross-skill links from SKILL.body.md to relatedSkills`);
-    }
-    if (/node\s+(?:\.\/)?scripts\/[A-Za-z0-9._/-]+\.mjs/u.test(bodySource)) {
-      throw new Error(`Skill ${skill.id} must move legacy local script commands from SKILL.body.md to procedures`);
-    }
 
     const seenRelatedSkills = new Set<string>();
     for (const related of skill.relatedSkills ?? []) {

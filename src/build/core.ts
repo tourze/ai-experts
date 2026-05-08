@@ -138,10 +138,6 @@ export function readComponentText(source: ComponentFile): string {
   return readFileSync(toAbsolutePath(source), "utf-8");
 }
 
-export function readOptionalComponentText(source: ComponentFile | undefined): string {
-  return source === undefined ? "" : readComponentText(source);
-}
-
 export function copyComponentPath(source: ComponentFile, target: string): void {
   const absoluteSource = toAbsolutePath(source);
   if (!existsSync(absoluteSource)) {
