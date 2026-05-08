@@ -700,20 +700,27 @@ describe("component source conventions", () => {
 
     for (const sourceFile of referenceMarkdownSources) {
       const source = stripMarkdownCode(readFileSync(sourceFile, "utf-8"));
-      for (const match of source.matchAll(/(!?)\[[^\]\n]+\]\(([^)\n]+)\)/gu)) {
-        if (match[1] === "!") continue;
-        const targetPath = localMarkdownPath(markdownDestination(match[2] ?? ""));
-        if (!targetPath) continue;
+      const collectSkillLinkTarget = (targetPath: string | null): void => {
+        if (!targetPath) return;
         if (targetPath !== "../SKILL.md" && targetPath !== "./SKILL.md" && !targetPath.endsWith("/SKILL.md")) {
-          continue;
+          return;
         }
 
         const targetSkillDir = dirname(resolve(dirname(sourceFile), targetPath));
         const relativeSkillDir = relative(skillSourceRoot, targetSkillDir);
-        if (relativeSkillDir === "" || relativeSkillDir.startsWith("..")) continue;
+        if (relativeSkillDir === "" || relativeSkillDir.startsWith("..")) return;
         if (!existsSync(join(targetSkillDir, "index.ts"))) {
           missingSkillLinks.push(`${relative(repoRoot, sourceFile)}: ${targetPath}`);
         }
+      };
+
+      for (const match of source.matchAll(/(!?)\[[^\]\n]+\]\(([^)\n]+)\)/gu)) {
+        if (match[1] === "!") continue;
+        collectSkillLinkTarget(localMarkdownPath(markdownDestination(match[2] ?? "")));
+      }
+
+      for (const match of source.matchAll(/^\s*\[[^\]\n]+\]:\s+(\S+)/gmu)) {
+        collectSkillLinkTarget(localMarkdownPath(markdownDestination(match[1] ?? "")));
       }
     }
 
@@ -745,23 +752,29 @@ describe("component source conventions", () => {
 
     for (const sourceFile of referenceMarkdownSources) {
       const source = stripMarkdownCode(readFileSync(sourceFile, "utf-8"));
-      const relativeSource = relative(skillSourceRoot, sourceFile);
-      const skillId = relativeSource.split(/[\\/]/)[0];
+      const relativeSourceFile = relative(repoRoot, sourceFile);
+      const skillId = relative(skillSourceRoot, sourceFile).split(/[\\/]/)[0];
       const assetTargets = assetTargetsBySkill.get(skillId) ?? new Set<string>();
-
-      for (const match of source.matchAll(/(!?)\[[^\]\n]+\]\(([^)\n]+)\)/gu)) {
-        if (match[1] === "!") continue;
-        const targetPath = localMarkdownPath(markdownDestination(match[2] ?? ""));
-        if (!targetPath || !targetPath.startsWith("../assets/")) continue;
+      const collectAssetLinkTarget = (targetPath: string | null): void => {
+        if (!targetPath || !targetPath.startsWith("../assets/")) return;
 
         const absoluteTarget = resolve(dirname(sourceFile), targetPath);
         const packagedTarget = targetPath.replace(/^\.\.\/assets\//u, "assets/");
         if (!existsSync(absoluteTarget)) {
-          missingAssetLinks.push(`${relative(repoRoot, sourceFile)}: ${targetPath}`);
+          missingAssetLinks.push(`${relativeSourceFile}: ${targetPath}`);
         }
         if (!assetTargets.has(packagedTarget)) {
-          unregisteredAssetLinks.push(`${relative(repoRoot, sourceFile)}: ${targetPath}`);
+          unregisteredAssetLinks.push(`${relativeSourceFile}: ${targetPath}`);
         }
+      };
+
+      for (const match of source.matchAll(/(!?)\[[^\]\n]+\]\(([^)\n]+)\)/gu)) {
+        if (match[1] === "!") continue;
+        collectAssetLinkTarget(localMarkdownPath(markdownDestination(match[2] ?? "")));
+      }
+
+      for (const match of source.matchAll(/^\s*\[[^\]\n]+\]:\s+(\S+)/gmu)) {
+        collectAssetLinkTarget(localMarkdownPath(markdownDestination(match[1] ?? "")));
       }
     }
 
