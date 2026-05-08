@@ -174,6 +174,11 @@ describe("component source conventions", () => {
       [],
       "build code should not expose alternate component source roots",
     );
+    assert.doesNotMatch(
+      buildSources,
+      /ai-components-/,
+      "build temp/runtime labels should use ai-experts naming instead of legacy ai-components prefixes",
+    );
     assert.equal(
       existsSync(join(repoRoot, "plugins")),
       false,

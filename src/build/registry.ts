@@ -55,7 +55,7 @@ export function materializeRegistry(registry: ComponentRegistry): ComponentSurfa
 }
 
 export async function compileRegistry(): Promise<{ registry: ComponentRegistry; tempDir: string }> {
-  const tempDir = join(tmpdir(), `ai-components-${process.pid}-${Date.now()}`);
+  const tempDir = join(tmpdir(), `ai-experts-registry-${process.pid}-${Date.now()}`);
   const tempComponentsRoot = join(tempDir, "components");
   cpSync(sourceRoot, tempComponentsRoot, { recursive: true, force: true });
   writeText(join(tempDir, "package.json"), JSON.stringify({ type: "module" }, null, 2) + "\n");
