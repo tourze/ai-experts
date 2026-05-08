@@ -401,6 +401,7 @@ export function main(rawArgv = process.argv.slice(2)) {
     });
 
     const success = (child.status ?? 1) === 0;
+    if (!success) process.exitCode = child.status ?? 1;
     const payload = {
       ok: success,
       procedureId: procedure.id,
@@ -424,6 +425,7 @@ export function main(rawArgv = process.argv.slice(2)) {
     printResult(payload);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
+    process.exitCode = 1;
     printResult({
       ok: false,
       procedureId: parsed?.procedureId ?? null,

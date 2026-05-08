@@ -881,52 +881,68 @@ describe("component build integration", () => {
     const runPath = join(tmpDistDir, "claude/run.js");
     assert.equal(existsSync(runPath), false);
 
-    const missingScriptId = JSON.parse(execFileSync(process.execPath, [proceduresPath], { encoding: "utf-8" }));
+    function runProcedureProcess(args: string[]): { status: number | null; payload: any; stderr: string } {
+      const result = spawnSync(process.execPath, [proceduresPath, ...args], { encoding: "utf-8" });
+      assert.equal(result.stderr, "", `procedure runtime should emit machine-readable errors on stdout: ${result.stderr}`);
+      return {
+        status: result.status,
+        payload: JSON.parse(result.stdout),
+        stderr: result.stderr,
+      };
+    }
+
+    const missingScriptIdResult = runProcedureProcess([]);
+    assert.equal(missingScriptIdResult.status, 1);
+    const missingScriptId = missingScriptIdResult.payload;
     assert.equal(missingScriptId.ok, false);
     assert.equal(missingScriptId.error.code, "RUNNER_ERROR");
     assert.match(missingScriptId.error.message, /--procedure-id is required/);
 
-    const unknownScript = JSON.parse(execFileSync(process.execPath, [
-      proceduresPath,
+    const unknownScriptResult = runProcedureProcess([
       "--procedure-id",
       "not-exists",
       "--trigger-skill",
       "debug-methodology",
-    ], { encoding: "utf-8" }));
+    ]);
+    assert.equal(unknownScriptResult.status, 1);
+    const unknownScript = unknownScriptResult.payload;
     assert.equal(unknownScript.ok, false);
     assert.match(unknownScript.error.message, /procedure not found/);
 
-    const helperOnlyProcedure = JSON.parse(execFileSync(process.execPath, [
-      proceduresPath,
+    const helperOnlyProcedureResult = runProcedureProcess([
       "--procedure-id",
       "android-device-automation-common",
       "--trigger-skill",
       "android-device-automation",
-    ], { encoding: "utf-8" }));
+    ]);
+    assert.equal(helperOnlyProcedureResult.status, 1);
+    const helperOnlyProcedure = helperOnlyProcedureResult.payload;
     assert.equal(helperOnlyProcedure.ok, false);
     assert.match(helperOnlyProcedure.error.message, /procedure not found/);
 
-    const ownerMismatch = JSON.parse(execFileSync(process.execPath, [
-      proceduresPath,
+    const ownerMismatchResult = runProcedureProcess([
       "--procedure-id",
       "debug-methodology-debug-checklist",
       "--trigger-skill",
       "screenshot",
       "--request-json",
       "{\"args\":[\"--title\",\"owner-mismatch\"]}",
-    ], { encoding: "utf-8" }));
+    ]);
+    assert.equal(ownerMismatchResult.status, 1);
+    const ownerMismatch = ownerMismatchResult.payload;
     assert.equal(ownerMismatch.ok, false);
     assert.match(ownerMismatch.error.message, /not callable by trigger skill/);
 
-    const invalidJson = JSON.parse(execFileSync(process.execPath, [
-      proceduresPath,
+    const invalidJsonResult = runProcedureProcess([
       "--procedure-id",
       "debug-methodology-debug-checklist",
       "--trigger-skill",
       "debug-methodology",
       "--request-json",
       "{not-json}",
-    ], { encoding: "utf-8" }));
+    ]);
+    assert.equal(invalidJsonResult.status, 1);
+    const invalidJson = invalidJsonResult.payload;
     assert.equal(invalidJson.ok, false);
     assert.match(invalidJson.error.message, /Unexpected token|JSON/i);
 
@@ -949,15 +965,16 @@ describe("component build integration", () => {
     assert.equal(typeof success.timingMs, "number");
     assert.match(success.result.stdout, /Debug Checklist: fixture-checklist/);
 
-    const executionFailure = JSON.parse(execFileSync(process.execPath, [
-      proceduresPath,
+    const executionFailureResult = runProcedureProcess([
       "--procedure-id",
       "web-content-fetcher-fetch",
       "--trigger-skill",
       "web-content-fetcher",
       "--request-json",
       "{\"args\":[\"--invalid\"]}",
-    ], { encoding: "utf-8" }));
+    ]);
+    assert.notEqual(executionFailureResult.status, 0);
+    const executionFailure = executionFailureResult.payload;
     assert.equal(executionFailure.ok, false);
     assert.equal(executionFailure.error.code, "PROCEDURE_EXECUTION_FAILED");
     assert.equal(typeof executionFailure.result.exitCode, "number");
@@ -1007,52 +1024,66 @@ describe("component build integration", () => {
     const proceduresPath = join(tmpDistDir, "claude/procedures.js");
     const runtimeTmp = mkdtempSync(join(tmpdir(), "ai-experts-procedure-runtime-"));
 
+    function runProcedureCommand(args: string[], options: { cwd?: string; env?: NodeJS.ProcessEnv } = {}): any {
+      const result = spawnSync(process.execPath, [proceduresPath, ...args], {
+        cwd: options.cwd,
+        encoding: "utf-8",
+        env: options.env,
+        timeout: 20_000,
+      });
+      assert.ifError(result.error);
+      assert.equal(result.stderr, "", `procedure runtime should emit machine-readable errors on stdout: ${result.stderr}`);
+      const payload = JSON.parse(result.stdout);
+      if (payload.ok) {
+        assert.equal(result.status, 0, payload.result?.stderr ?? payload.error?.message);
+      } else {
+        assert.notEqual(result.status, 0, payload.result?.stderr ?? payload.error?.message);
+      }
+      return payload;
+    }
+
     function runProcedure(id: string, skillId: string, args: string[]): any {
-      return JSON.parse(execFileSync(process.execPath, [
-        proceduresPath,
+      return runProcedureCommand([
         "--procedure-id",
         id,
         "--trigger-skill",
         skillId,
         "--request-json",
         JSON.stringify({ args }),
-      ], { encoding: "utf-8", timeout: 20_000 }));
+      ]);
     }
 
     function runProcedureRequest(id: string, skillId: string, request: Record<string, unknown>): any {
-      return JSON.parse(execFileSync(process.execPath, [
-        proceduresPath,
+      return runProcedureCommand([
         "--procedure-id",
         id,
         "--trigger-skill",
         skillId,
         "--request-json",
         JSON.stringify(request),
-      ], { encoding: "utf-8", timeout: 20_000 }));
+      ]);
     }
 
     function runProcedureWithEnv(id: string, skillId: string, args: string[], env: NodeJS.ProcessEnv): any {
-      return JSON.parse(execFileSync(process.execPath, [
-        proceduresPath,
+      return runProcedureCommand([
         "--procedure-id",
         id,
         "--trigger-skill",
         skillId,
         "--request-json",
         JSON.stringify({ args }),
-      ], { encoding: "utf-8", env: { ...process.env, ...env }, timeout: 20_000 }));
+      ], { env: { ...process.env, ...env } });
     }
 
     function runProcedureInCwd(id: string, skillId: string, args: string[], cwd: string): any {
-      return JSON.parse(execFileSync(process.execPath, [
-        proceduresPath,
+      return runProcedureCommand([
         "--procedure-id",
         id,
         "--trigger-skill",
         skillId,
         "--request-json",
         JSON.stringify({ args }),
-      ], { cwd, encoding: "utf-8", timeout: 20_000 }));
+      ], { cwd });
     }
 
     try {
