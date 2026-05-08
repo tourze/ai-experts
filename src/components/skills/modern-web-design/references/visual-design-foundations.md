@@ -7,7 +7,7 @@
 - 需要把设计语言转换成前端可实现的 token 或样式约束。
 - 需要检查对比度、字号、间距、触控区是否满足基础可访问性。
 - 如果问题本质是任务流、命名、反馈缺失，优先回到 [ux-heuristics](../../ux-heuristics/SKILL.md)；如果需要研究证据支持视觉改版，联动 [ux-researcher-designer](../../ux-researcher-designer/SKILL.md)。
-- 详细参考优先查看 [color-systems](./color-systems.md)、[typography-systems](./typography-systems.md)、[spacing-iconography](./spacing-iconography.md)。
+- 详细参考优先查看 [vdf-color-systems](./vdf-color-systems.md)、[vdf-typography-systems](./vdf-typography-systems.md)、[vdf-spacing-iconography](./vdf-spacing-iconography.md)。
 
 ## 核心约束
 

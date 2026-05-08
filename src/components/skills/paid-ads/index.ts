@@ -101,6 +101,22 @@ export const paidAdsSkill = defineSkill({
       loadWhen: "需要设计广告创意素材或规划创意 A/B 测试方案时读取。",
     }),
     defineReference({
+      id: "platform-specs",
+      source: new URL("./references/platform-specs.md", import.meta.url),
+      target: "references/platform-specs.md",
+      title: "platform-specs.md",
+      summary: "Google、Meta、LinkedIn、TikTok 等平台的创意字符、尺寸和组合限制。",
+      loadWhen: "需要输出广告标题、主文案、图片或视频规格，避免上线截断或不合规时读取。",
+    }),
+    defineReference({
+      id: "generative-tools",
+      source: new URL("./references/generative-tools.md", import.meta.url),
+      target: "references/generative-tools.md",
+      title: "generative-tools.md",
+      summary: "使用生成式工具批量产出广告创意角度、文案变体和素材 prompt 的方法。",
+      loadWhen: "需要批量生成广告创意变量或把创意 brief 转成图片/视频 prompt 时读取。",
+    }),
+    defineReference({
       id: "audience-targeting",
       source: new URL("./references/audience-targeting.md", import.meta.url),
       target: "references/audience-targeting.md",
