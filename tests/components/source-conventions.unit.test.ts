@@ -312,6 +312,39 @@ describe("component source conventions", () => {
     );
   });
 
+  test("source skill script commands are backed by registered procedure targets", () => {
+    const proceduresBySkillAndTarget = new Set(
+      registry.procedures.flatMap((procedure) =>
+        (procedure.owners.skillIds ?? []).map((skillId) => `${skillId}:${procedure.target ?? ""}`)
+      ),
+    );
+    const unmappedScriptCommands: string[] = [];
+    const skillSourceRoot = join(repoRoot, "src/components/skills");
+    const scriptCommandPattern = /\bnode\s+(?:\.\/)?scripts\/([A-Za-z0-9._/-]+\.mjs)\b/gu;
+
+    for (const sourceFile of collectFiles(
+      skillSourceRoot,
+      (file) => file.endsWith(".md") && !file.split(/[\\/]/).includes("evals"),
+    )) {
+      const relativeSource = relative(skillSourceRoot, sourceFile);
+      const skillId = relativeSource.split(/[\\/]/)[0];
+      if (!skillId) continue;
+      const source = readFileSync(sourceFile, "utf-8");
+      for (const match of source.matchAll(scriptCommandPattern)) {
+        const target = `scripts/${match[1]}`;
+        if (!proceduresBySkillAndTarget.has(`${skillId}:${target}`)) {
+          unmappedScriptCommands.push(`${relative(repoRoot, sourceFile)}: ${match[0]}`);
+        }
+      }
+    }
+
+    assert.deepEqual(
+      unmappedScriptCommands,
+      [],
+      "source skill Markdown may use short node scripts commands only when emitSkill can rewrite them to owned procedures",
+    );
+  });
+
   test("skill authoring guidance does not reintroduce skill-local scripts directories", () => {
     const authoringSources = [
       join(repoRoot, "src/components/agents/skill-author/index.ts"),
