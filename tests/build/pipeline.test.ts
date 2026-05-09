@@ -1666,6 +1666,16 @@ describe("build/pipeline modules", () => {
 
     expect(validateAgentOutputFormat(jsonAgent)?.kind).toBe("json");
     expect(validateAgentOutputFormat(fileSetAgent)?.kind).toBe("file-set");
+    expect(() =>
+      validateAgentOutputFormat({
+        ...fileSetAgent,
+        outputFormat: defineAgentOutputFormat({
+          kind: "file-set",
+          introduction: "写入文件结构：",
+          files: ["report.md\nextra.md"],
+        }),
+      })
+    ).toThrow("outputFormat.files[0] must be a single line");
     await emitAgent(jsonAgent, out, Platform.Claude);
     await emitAgent(fileSetAgent, out, Platform.Claude);
     const jsonAgentBody = readFileSync(join(out, "agents", "json-agent.md"), "utf-8");

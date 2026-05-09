@@ -220,7 +220,10 @@ export function validateAgentOutputFormat(
     if (typeof format.introduction !== "string" || format.introduction.trim() === "") {
       throw new Error(`Agent ${agent.id} outputFormat.introduction must be a non-empty string`);
     }
-    validateStringArray(agent.id, format.files, "outputFormat.files", { required: true });
+    const files = validateStringArray(agent.id, format.files, "outputFormat.files", { required: true });
+    for (const [index, file] of files.entries()) {
+      validateSingleLineText(`Agent ${agent.id}`, `outputFormat.files[${index}]`, file);
+    }
     if (format.templates !== undefined) {
       if (!Array.isArray(format.templates) || format.templates.length === 0) {
         throw new Error(`Agent ${agent.id} outputFormat.templates must be a non-empty array when defined`);
