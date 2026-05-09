@@ -372,6 +372,16 @@ describe("build/pipeline modules", () => {
     });
     const claudeSkill = renderSkillMd(fixture.skill, Platform.Claude, procedureMap);
     expect(claudeSkill).toContain("  - mcp__fixture__lookup");
+    expect(claudeSkill).toContain(
+      "| [fixture-ref](references/reference.md) | fixture summary<br>with detail | 需要参考 \\| 样例时 |",
+    );
+    const parameterSkill = {
+      ...fixture.skill,
+      parameters: [{ name: "scope", description: "包含 A | B\n换行", type: "string" as const }],
+    };
+    expect(renderSkillMd(parameterSkill, Platform.Codex, procedureMap)).toContain(
+      "| `scope` | string | 是 | 包含 A \\| B<br>换行 |",
+    );
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "references", "index.md"))).toBe(true);
     const referenceIndex = readFileSync(join(codexRoot, "skills", fixture.skill.id, "references", "index.md"), "utf-8");
     expect(referenceIndex).toContain("Fixture \\| Ref");

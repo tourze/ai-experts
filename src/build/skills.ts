@@ -162,9 +162,14 @@ function renderReferenceMap(skill: SkillDefinition): string {
   const rows = [
     "| Reference | 内容 | 何时读取 |",
     "|-----------|------|----------|",
-    ...skill.references.map((reference) =>
-      `| [${reference.id}](${renderReferenceLinkTarget(reference)}) | ${reference.summary} | ${reference.loadWhen} |`
-    ),
+    ...skill.references.map((reference) => {
+      const cells = [
+        `[${reference.id}](${renderReferenceLinkTarget(reference)})`,
+        reference.summary,
+        reference.loadWhen,
+      ];
+      return `| ${cells.map(renderMarkdownTableCell).join(" | ")} |`;
+    }),
   ];
   return `\n## Reference Map\n\n${rows.join("\n")}\n`;
 }
@@ -383,9 +388,15 @@ function renderUserInput(skill: SkillDefinition, platform: PlatformType): string
   const rows = [
     "| 参数 | 类型 | 必填 | 说明 |",
     "|------|------|------|------|",
-    ...params.map((p) =>
-      `| \`${p.name}\` | ${p.type ?? "string"} | ${p.required !== false ? "是" : "否"} | ${p.description} |`
-    ),
+    ...params.map((p) => {
+      const cells = [
+        `\`${p.name}\``,
+        p.type ?? "string",
+        p.required !== false ? "是" : "否",
+        p.description,
+      ];
+      return `| ${cells.map(renderMarkdownTableCell).join(" | ")} |`;
+    }),
   ];
   return `## 用户输入\n\n${rows.join("\n")}\n`;
 }
